@@ -1,20 +1,35 @@
-## CURRENT — FG01 face-gauge factory contract defined; independent Review next (2026-10-23)
+## CURRENT — RA-146 FG01 reviewed; bounded fixture correction next (2026-10-23)
 
-- [x] **FG01 DEFN:** inspected six `face-gauge-missing` inherited REDs (selector 220/221/296/302/304/439): common `direct_periodic_owner_fixture()` omits the mandatory per-source-face Z4 gauge despite building an A3 atlas. Selected fixture-only correction from A3 reciprocal transport/typed face mapping, pending independent Review; no production/test/selector mutation. `Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_20261023.md`.
-- [ ] **Exact next:** `M6-CP3-DEFN-FG01-RP01-PERIODIC-FACE-GAUGE-FACTORY-CONTRACT-REV` independently adjudicates the fixture-only contract, synthetic periodic relation admissibility, non-vacuity and negative/invariance oracles. Do not authorize CB before Review assigns its exact identity. Frozen stable 66/17/49, debt1, accepted CP2 491/491, TB31 472/497 candidate, selector497 unchanged, RP-01 open.
+- [x] FG01 independent Review: missing gauge confirmed from six immutable logs and code; fixture-only correction accepted with amendments. Owner-map admission does not establish reciprocal periodic action or produced topology. Decision: `.agents/Directional/Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md`.
+- [ ] **NEXT_TURN:** `M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE`. One test file: shared helper gauge plus three named factory controls. Compile/package only; no production or original-assertion changes.
+- [ ] **Separate follow-up:** real odd atlas transport + unequal gauges + row/cyclic-corner remapping and stale-vector/inverse negatives. Not in CB30.
+- [ ] **Carried:** RA-45.4 produced A6 outcome invariance is not proved by factory uniform-shift admission; its existing test is absent from TB31's 497 manifest. Periodic/DEFN-T1 owner retains it.
+- Stable 66/17/49, debt1; CP2 491/491 accepted; TB31 472/497 candidate; frozen 497, RP-01 open, RP-02 unreached.
+
+### Authorized and planned turn sequence
+
+| Step | Canonical turn | Condition / boundary |
+|---|---|---|
+| 1 — next | `M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE` | Shared periodic-owner fixture gauge plus three factory controls; one test file, compile/package only |
+| 2 — conditional | `M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-REV` | Review exact completed package/diff, or adjudicate a blocked CB30; no runtime |
+| 3 — planned, not yet authorized | TB32 immutable verification → independent Review; exact IDs assigned by step 2 | Six original cases + three controls; frozen 497 census retained. Prediction 478/497 + three focused PASS, no acceptance inferred |
+| 4 — planned, not yet authorized | Odd-transport/permutation CB → TB → Review | Real odd transition, unequal gauges, complete remap positive/stale-vector negative; separate from initial repair |
+| later — UNKNOWN until assigned | Remaining 19 RED owners → census → RP-01 Review | Seven A3 cycle, seven untyped, A5 focused30:12, A4 cp3entry:4, selector:442, DEFN-T1 cp3entry:1/2. Produced A6 gauge-invariance evidence remains separately owned |
+| deferred | DIAG-RETAIN, DEFN-SEAM-NZ and Periodic follow-up | Existing separate witness and sequencing gates remain in force |
+
 
 ---
 
 ## HISTORY — RA-145 TB31 independent census Review; FG01 Definition next (2026-10-23)
 
 - [x] **TB31-REV accepted as evidence, not gate promotion:** immutable 497/497 with 472 PASS / 25 inherited RED / 0 INVALID, ten RED→PASS and no PASS→RED. Independently verified 1,000 checksum entries, 497 case identities/log hashes and TB28 ledger. Decision `Architecture_M6_CP3_TB31_Selector_497_Census_Review_Decision_20261023.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-DEFN-FG01-RP01-PERIODIC-FACE-GAUGE-FACTORY-CONTRACT` — documents-only evaluation of `selector:220,221,296,302,304,439`; disambiguate missing fixture face gauge vs checked-factory contract, supply falsifiable options. No code/test/fixture/selector change; next Review before CB.
+- [x] **Historical successor (completed, superseded by RA-146):** `M6-CP3-DEFN-FG01-RP01-PERIODIC-FACE-GAUGE-FACTORY-CONTRACT` — documents-only evaluation of `selector:220,221,296,302,304,439`; disambiguate missing fixture face gauge vs checked-factory contract, supply falsifiable options. No code/test/fixture/selector change; next Review before CB.
 - [ ] Planned, **not yet authorized** (each independent owner gate): A3 cycle-locus seven → seven untyped producer/oracle cases → A5 `focused30:12` → A4 `cp3entry:4` → A3 `selector:442` → DEFN-T1 `cp3entry:1/2` → new census → RP-01 Review. `DIAG-RETAIN`, `DEFN-SEAM-NZ` and Periodic remain separately gated.
 - Frozen: stable 66/17/49, debt1, CP2 491/491 accepted; R3 403/497 rejected; TB31 472/497 candidate only. Selector 497 byte-frozen, RP-01 open, RP-02 UNREACHED, Gate C suspended.
 
 ---
 
-## CURRENT — TB31 immutable selector-497 census complete; independent review next (2026-10-23)
+## HISTORY — TB31 immutable selector-497 census complete; independent review next (2026-10-23)
 
 - [x] Review (RA-144, TB30-REV):
   - CB29 `2602e7398` matches RA-143.3;
@@ -559,7 +574,7 @@
 
 ---
 
-## CURRENT — CB10 compile verified; TB10 artifact-only successor (2026-10-16)
+## HISTORY — CB10 compile verified; TB10 artifact-only successor (2026-10-16)
 
 - [x] `M6-CP3-CB10-R9-CARRIER-ENDPOINT-SUBCONDITION-PROBE`: +26 diagnostic-only lines; source `d938ecb57e1040c2a73d5d25c4a613414556cb18`; eight-target GMP/GMPXX compile GREEN [38938801351](https://github.com/akashskypatel/Directional/actions/runs/38938801351); artifact `12062565622`, SHA-256 `30111e7f26c8bbeb7ef9762e31fea5fb449b70c9cbdee64a27d4fc660834ef4f`, 28/28 manifest, 0/0 preflight/build, clean source, `runtimeExecution=false`. Composite predicate unchanged; no runtime membership outcome claimed. Owning record `Architecture_M6_CP3_CB10_Carrier_Endpoint_Subcondition_Probe_Code_Build_Record_20261016.md`.
 - [ ] **NEXT:** `M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST` — consume immutable compile artifact, measure both membership halves on authorized selected logs only; no code mutation or hypothetical repair. Strict separation: any subsequent repair/definition requires separate Review authority.
@@ -567,7 +582,7 @@
 
 ---
 
-## CURRENT — RA-80 frozen; branch V measured NOT APPLICABLE (0/21); the star path passes and an unexamined membership test fails (2026-10-16)
+## HISTORY — RA-80 frozen; branch V measured NOT APPLICABLE (0/21); the star path passes and an unexamined membership test fails (2026-10-16)
 
 ### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
 
@@ -605,7 +620,7 @@
 
 ---
 
-## CURRENT — TB9 artifact-only harvest complete; independent Review required (2026-10-16)
+## HISTORY — TB9 artifact-only harvest complete; independent Review required (2026-10-16)
 
 - [x] `M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE`: compile-only, source `18cc4da5e2bc41138c5363a74de4e2db1e28ef23`, immutable compile artifact `12052388003`, no runtime in CB9.
 - [x] `M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST`: [run 38921052963](https://github.com/akashskypatel/Directional/actions/runs/38921052963), result `12055460315`, 44/44 selected, 44 RED, 0 missing, postflight immutable. The 48 `a3Probe` observations contain 21 exact-one-hot vertex cases and 27 controls; **0/21** vertex cases satisfy the complete branch-V conjunction because `a3ProbePublishedCarrierEndpoint=0`. Root-cause candidate recorded as non-stable in `Regression_Root_Cause_Tracker.md`; stable ledger unchanged.
@@ -615,19 +630,19 @@ Owning report: `.agents/Directional/Architecture_M6_CP3_TB9_Terminal_Star_Path_H
 
 ---
 
-## CURRENT — CB9 compile/package verified; TB9 separate (2026-10-16)
+## HISTORY — CB9 compile/package verified; TB9 separate (2026-10-16)
 
 The diagnostic-only terminal-star-path probe is compile/package GREEN at `18cc4da5e2bc41138c5363a74de4e2db1e28ef23` (run `38916496178`, artifact `12052388003`, 28/28 packaged hashes, 8/8 targets, mandatory GMP/GMPXX, clean source, no runtime). No test or benchmark executed. CB9 final beacon pending; afterward `M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST` alone is next. RP-01 open, RP-02 UNREACHED, RA-79 66/17/49, debt1, CP2 491/491, R3 403/497, selector497 unchanged.
 
 ---
 
-## CURRENT — CB9 rejection-only terminal-star-path probe (2026-10-16)
+## HISTORY — CB9 rejection-only terminal-star-path probe (2026-10-16)
 
 Source-only probe committed at `81101d7370a7d3cfe36baa57b4635ef7e0819bb2`; Drive patch-apply `38911327141` verified exact one-path change. GMP/GMPXX eight-target compile dispatched from `a17e59517486470d1a89eceab91b70c5214cce26`; immutable package verification pending. Neither 497 selector nor tests/benchmarks were executed. `RP-01` open, `RP-02` UNREACHED; unchanged 66/17/49, debt1, CP2 491/491, R3 403/497. CB9 remains IN_PROGRESS; TB9 cannot start before CB9 formal closeout.
 
 ---
 
-## CURRENT — RA-79 frozen; contract admissible, precedent is a five-part conjunction, applicability to the 21 unmeasured (2026-10-16)
+## HISTORY — RA-79 frozen; contract admissible, precedent is a five-part conjunction, applicability to the 21 unmeasured (2026-10-16)
 
 ### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
 
@@ -673,14 +688,14 @@ Source-only probe committed at `81101d7370a7d3cfe36baa57b4635ef7e0819bb2`; Drive
 
 ---
 
-## CURRENT — R9B endpoint-equivalence contract specified (2026-10-16)
+## HISTORY — R9B endpoint-equivalence contract specified (2026-10-16)
 
 - [x] `M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC`: documents-only proposed V/I/C equivalence contract, both consumer checkers, missing/ambiguous rejection proof obligations, one-ULP strict interior limit, RA-65.5 and RA-72.5 dispositions. See `.agents/Directional/Architecture_M6_CP3_R9B_Endpoint_Equivalence_Contract_Specification_20261016.md`. No implementation, compile or runtime authorized; independent review pending with exact successor name UNKNOWN.
 - [ ] Obtain independent Review of R9B contract before any producer repair. No selector, frozen accounting or RP-02 promotion. `RP-01` open, Gate C suspended.
 
 ---
 
-## CURRENT — RA-78 frozen; census corrects the localization and finds a second active admission path; next rung writes the contract against both (2026-10-16)
+## HISTORY — RA-78 frozen; census corrects the localization and finds a second active admission path; next rung writes the contract against both (2026-10-16)
 
 ### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
 
@@ -723,7 +738,7 @@ Source-only probe committed at `81101d7370a7d3cfe36baa57b4635ef7e0819bb2`; Drive
 
 ---
 
-## CURRENT — R9A endpoint face-comparison census delivered; independent Review required (2026-10-16)
+## HISTORY — R9A endpoint face-comparison census delivered; independent Review required (2026-10-16)
 
 - [x] `M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS` — static, document-only census: `.agents/Directional/Architecture_M6_CP3_R9A_Endpoint_Face_Comparison_Census_20261016.md`. Active constructor, face-keyed A3 sector paths, independent checked-product validator, and rejection-only diagnostics distinguished with source line anchors. The exact source snapshot was `b34c571768e2227a8ea2fed42e7b287e21e466eb`; semantic producer `f0d724045` unchanged. RA-76's 48 same-source-vertex mismatched-face samples and 324 exact one-ULP same-edge representations retained without claiming parameter identity or tolerance.
 - [ ] **Next authorization gate: independent R9A census Review**, not R9B implementation or predicate design. R9B remains conditional on review of the census; it alone owns the contract and non-weakening proof. No formal review turn identifier is assumed here.
@@ -732,7 +747,7 @@ Source-only probe committed at `81101d7370a7d3cfe36baa57b4635ef7e0819bb2`; Drive
 
 ---
 
-## CURRENT — RA-77 frozen; rung 19 returned no deliverable and is split into 19a/19b; the reviewer over-scoped it (2026-10-16)
+## HISTORY — RA-77 frozen; rung 19 returned no deliverable and is split into 19a/19b; the reviewer over-scoped it (2026-10-16)
 
 ### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
 
@@ -774,7 +789,7 @@ Source-only probe committed at `81101d7370a7d3cfe36baa57b4635ef7e0819bb2`; Drive
 
 ---
 
-## CURRENT — RA-76 frozen; branch (b) settled, every producer exonerated, RP-01 localized to the consumer's equivalence contract (2026-10-16)
+## HISTORY — RA-76 frozen; branch (b) settled, every producer exonerated, RP-01 localized to the consumer's equivalence contract (2026-10-16)
 
 ### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
 
@@ -816,13 +831,13 @@ Source-only probe committed at `81101d7370a7d3cfe36baa57b4635ef7e0819bb2`; Drive
 
 ---
 
-## CURRENT — M6 CP3 CB8 source-entity probe, compile-only (2026-10-16)
+## HISTORY — M6 CP3 CB8 source-entity probe, compile-only (2026-10-16)
 
 `M6-CP3-CB8-R8-SOURCE-ENTITY-EQUIVALENCE-PROBE` records boundary override activation and exact chart/accepted source-entity representations for every reached boundary lattice node in a rejected region, without modifying admission or selecting either repair branch. Semantic `f0d7240455b10237af47de58c035cd4c576d889a`; verified application run `38877023124`. GMP/GMPXX eight-target **GREEN**, workflow `38877282902`, immutable artifact `12035788036`, outer ZIP SHA-256 `1967771d10b765168102158ae8460a7973319f0bbec452166a1c732a6e7c097d`; exact source `f0d7240455b10237af47de58c035cd4c576d889a`, 28/28 packaged hashes, 8/8 targets, preflight/build 0/0, five empty source-status files, `DIRECTIONAL_ENABLE_GMP=ON`, real link includes GMPXX/GMP, `exactArithmeticBackend=GMP`, `runtimeExecution=false`. No runtime, tests, benchmarks or selector 497; RP-01 remains unresolved and RP-02 UNREACHED. **Next authorized separate turn:** `M6-CP3-TB8-R8-SOURCE-ENTITY-EQUIVALENCE-HARVEST` (artifact-only). Detailed evidence: `.agents/Directional/Architecture_M6_CP3_R8_Source_Entity_Equivalence_Probe_Code_Build_Record_20261016.md`. Historical current sections below are superseded, not deleted.
 
 ---
 
-## CURRENT — RA-75 frozen; the overriding face is legitimately derived; RP-01 splits into two branches with opposite repairs (2026-10-16)
+## HISTORY — RA-75 frozen; the overriding face is legitimately derived; RP-01 splits into two branches with opposite repairs (2026-10-16)
 
 ### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
 
@@ -863,13 +878,13 @@ Source-only probe committed at `81101d7370a7d3cfe36baa57b4635ef7e0819bb2`; Drive
 
 ---
 
-## CURRENT — M6 CP3 R8 Definition recorded (2026-10-16)
+## HISTORY — M6 CP3 R8 Definition recorded (2026-10-16)
 
 - [x] Four-question source-static boundary override authority Definition: `Architecture_M6_CP3_R8_Boundary_Override_Authority_Specification_20261016.md`.
 - [ ] **Next:** independent `M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC-REV` to rederive face ownership, cohort distinction, RA-65.5 and F1–F7; repair code held.
 - [ ] RP-01 source-entity/sheet and per-side carrier proof; RP-02 unreached. 66/17/49, debt1; CP2 491/491, R3 403/497, selector497 frozen. No runtime evidence.
 
-## CURRENT — RA-74 frozen; the sampler is exonerated and the point is overwritten by the accepted conformity boundary; next rung names the owning authority (2026-10-16)
+## HISTORY — RA-74 frozen; the sampler is exonerated and the point is overwritten by the accepted conformity boundary; next rung names the owning authority (2026-10-16)
 
 ### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
 
@@ -908,7 +923,7 @@ Source-only probe committed at `81101d7370a7d3cfe36baa57b4635ef7e0819bb2`; Drive
 
 ---
 
-## CURRENT — TB7 pre-snap candidate harvest verified (2026-10-16)
+## HISTORY — TB7 pre-snap candidate harvest verified (2026-10-16)
 
 - [x] `M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST`: immutable [run 38861867717](https://github.com/akashskypatel/Directional/actions/runs/38861867717) verified; 44/44 selected, 44 RED unchanged, 96 endpoint records. Report: `.agents/Directional/Architecture_M6_CP3_R7_Lattice_UV_Candidate_Harvest_TB_Report_20261016.md`.
 - [ ] **NEXT — independent Review, exact turn ID not yet frozen.** Adjudicate the accepted boundary override (original sampled SecondFrom face 3, published face 7) against authoritative A2b endpoint/carrier contracts. Do **not** implement repair without the Review/Definition gate.
@@ -916,7 +931,7 @@ Source-only probe committed at `81101d7370a7d3cfe36baa57b4635ef7e0819bb2`; Drive
 
 ---
 
-## CURRENT — CB7 pre-snap producer-candidate probe compile complete; TB7 next (2026-10-16)
+## HISTORY — CB7 pre-snap producer-candidate probe compile complete; TB7 next (2026-10-16)
 
 - [x] `M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE`: producer-captured pre-snap UV, raw candidate barycentrics and pass/fail published only in original rejection diagnostic; one source file (+123), source commit `cdd6dc4a9ba95a42aace6226194b38e712b53e4b`. Exact apply and compile-only evidence: `.agents/Directional/Architecture_M6_CP3_R7_Lattice_UV_Candidate_Probe_Code_Build_Record_20261016.md`.
 - [ ] **NEXT: `M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST`** — immutable artifact-only harvest; answer the producer sample-point minimum-admissible selection question. No code repair in this turn.
@@ -926,7 +941,7 @@ Immutable GMP compile [38859497594](https://github.com/akashskypatel/Directional
 
 ---
 
-## CURRENT — RA-73 frozen; RA-72.8 falsified; the junction cases are exactly where one corner had three candidates and the producer took the largest (2026-10-16)
+## HISTORY — RA-73 frozen; RA-72.8 falsified; the junction cases are exactly where one corner had three candidates and the producer took the largest (2026-10-16)
 
 ### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
 
@@ -965,7 +980,7 @@ Immutable GMP compile [38859497594](https://github.com/akashskypatel/Directional
 
 ---
 
-## CURRENT — 2026-10-16 CB6 rejection-only node/side face census compiled; TB6 harvest next
+## HISTORY — 2026-10-16 CB6 rejection-only node/side face census compiled; TB6 harvest next
 
 `M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE` completed its **Code + Build** boundary. Exact semantic commit `4d64b7684ac7ec2d0655f96c88ecf05f2906bca7` changes only `src/geometry/SurfaceCellTracing.cpp` (+73 lines): after the existing A2b endpoint-certificate rejection, emit producer-region `ActiveFaces`, independent `From/ToAdmissibleFaces` evaluated through the original `point_on_source` containment predicate at the **actual published endpoint position** (not inferred lattice-node UV), and previously existing `PathFaces` for each directed side. Planar-frame-unavailable cases explicitly report `Frame=not-planar`. It does **not** change admission, topology, tolerance, tests, selectors or frozen evidence.
 
@@ -1011,7 +1026,7 @@ Patch transport `38850167371` (result artifact `12024129249`) verified base `5f7
 
 ---
 
-## CURRENT — R7 definition prepared; independent review required (2026-10-16)
+## HISTORY — R7 definition prepared; independent review required (2026-10-16)
 
 - [x] `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC`: source witnesses enumerated; per-node face proven insufficient as a general side authority; source-attested per-directed-side endpoint repair shape and blast radius defined. Report: `.agents/Directional/Architecture_M6_CP3_R7_Corner_Face_Selection_Repair_Specification_20261016.md`.
 - [ ] Obtain independent Review decision on the bounded repair witness/negative controls and the unproved path-face tie-break. **No Code + Build successor is authorized yet.** No runtime execution, selector or stable ledger change.
@@ -1051,7 +1066,7 @@ Patch transport `38850167371` (result artifact `12024129249`) verified base `5f7
 
 ---
 
-## CURRENT — R6 Definition source-static result; Review gate only (2026-10-16)
+## HISTORY — R6 Definition source-static result; Review gate only (2026-10-16)
 
 - [x] `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC`: exact verified source shows RA-70.14 predicted `:11269` cause is unreachable for rejected phase fronts; `:10479` also fallback-only and `:19790` produced-success copy. Actual responsible boundary: planar `point_on_source` first-containing-face selection (`SurfaceCellTracing.cpp:11477-11509`), propagated to phase-front corners (`:12953-12959`, `:12985-12989`) before side paths (`:13012-13022`); closure compares only 3D positions (`:7319-7357`), so source-face disagreement can survive. See `Architecture_M6_CP3_R6_Corner_Assignment_Authority_Specification_20261016.md` for bounded source evidence and falsifiers.
 - [ ] Next and only authorized turn: `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC-REV` independent source-static Review; adjudicate whether this producer supplies the measured f7 vs f3 mismatch and whether any pre-A4 reconciliation exists. **No Code+Build, TB, repair or rung11 implementation is authorized.**
@@ -1059,7 +1074,7 @@ Patch transport `38850167371` (result artifact `12024129249`) verified base `5f7
 
 ---
 
-## CURRENT — RA-69/RA-70 frozen; RP-01's producer locus localized; next rung is a corner-assignment definition, documents only (2026-10-16)
+## HISTORY — RA-69/RA-70 frozen; RP-01's producer locus localized; next rung is a corner-assignment definition, documents only (2026-10-16)
 
 ### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
 
@@ -1093,19 +1108,19 @@ Patch transport `38850167371` (result artifact `12024129249`) verified base `5f7
 
 ---
 
-## CURRENT — 2026-10-16 TB5 route/path reconciliation harvest verified (separate independent decision pending)
+## HISTORY — 2026-10-16 TB5 route/path reconciliation harvest verified (separate independent decision pending)
 
 `M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST` completed its bounded artifact-only observation. Workflow [38831615391](https://github.com/akashskypatel/Directional/actions/runs/38831615391) **succeeded**, immutable result artifact `12017109271` outer SHA-256 `e394c4deab99e5f8dca919a7a8e61a24aa93de3ba0ed96c3c3afddc19f8b9458`, internal SHA256SUMS verified; packaged source `a143af264bc8b33f0e1b2f8def16b2479b53d5fc` from build artifact `12015849679`. **44/44 separate processes executed; 44 RED, zero missing, postflight passed**, with no compile or benchmark. Diagnostic multiplicity was verified (42×1, 2×3). **RA-68.9 confirmed observationally:** 21/21 junction cases have no route edge incident to the to-attachment face (to row 7, traced second boundary path row 3); 23/23 interior controls have route incidence (to row 3). This supports investigating A4 corner/path producer reconciliation but neither prior repair shape is authorized; no specific producer cause has been proven. First harness attempt [38831159326](https://github.com/akashskypatel/Directional/actions/runs/38831159326) failed postflight due to aggregating multiple diagnostic occurrences; diagnosed retry did not modify production/test semantics. Full record: `.agents/Directional/Architecture_M6_CP3_R5_Route_Path_Reconciliation_Harvest_Artifact_Only_TB_Report_20261016.md`. Ledger 66/17/49 debt 1, CP2 491/491, R3 403/497, frozen 497; RP-02 unreached. Next separately authorized independent decision; no successor ID established.
 
 ---
 
-## CURRENT — 2026-10-16 CB5 route/path reconciliation probe — compile GREEN
+## HISTORY — 2026-10-16 CB5 route/path reconciliation probe — compile GREEN
 
 `M6-CP3-CB5-R5-ROUTE-PATH-RECONCILIATION-PROBE` completed its narrow Code + Build scope. In the post-decision rejection-only A4 endpoint diagnostic, the source now emits each oriented route step's topology key and the distinct source-face sets visited by each owning cell's actual traced boundary path. Exact semantic source [`a143af264bc8b33f0e1b2f8def16b2479b53d5fc`](https://github.com/akashskypatel/Directional/commit/a143af264bc8b33f0e1b2f8def16b2479b53d5fc); snapshot run `38828612903`, artifact `12016346107`, 5651/5651 source hashes verified. **Compile GREEN:** workflow [38829147491](https://github.com/akashskypatel/Directional/actions/runs/38829147491), job `116743695976`, source `a143af264bc8b33f0e1b2f8def16b2479b53d5fc`, artifact `12015849679` outer ZIP SHA-256 `92a014a6d0bc4de3bef55b2ebcec2fd8c5095d3b65f90eb7bd79567dbcb10444`; 28/28 SHA256SUMS, all eight targets, GMPXX and GMP linked, build/preflight exits 0/0, five source-status snapshots empty, `runtimeExecution=false`. No Directional executable, test, benchmark, TB5 or frozen 497 selector was run; no predicates, topology, fixtures, ledgers, gate decisions or source repair changed. The separate authorized successor is `M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST`, to be started in its own turn; no interpretation of newly emitted fields in CB5. Evidence: `.agents/Directional/Architecture_M6_CP3_R5_Route_Path_Reconciliation_Probe_Code_Build_Record_20261016.md`. Historical CURRENT sections follow. Ledger 66/17/49 debt 1, CP2 491/491, R3 403/497, frozen selector 497, RP-02 unreached remain unchanged.
 
 ---
 
-## CURRENT — RA-68 frozen; both repair shapes inadmissible; next rung is a probe, not a producer (2026-10-15)
+## HISTORY — RA-68 frozen; both repair shapes inadmissible; next rung is a probe, not a producer (2026-10-15)
 
 ### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
 
@@ -1133,7 +1148,7 @@ Patch transport `38850167371` (result artifact `12024129249`) verified base `5f7
 
 ---
 
-## CURRENT — R5 junction/carrier definition delivered; independent decision gate (2026-10-15)
+## HISTORY — R5 junction/carrier definition delivered; independent decision gate (2026-10-15)
 
 - [x] `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC`: independent source/fixture check confirms RA-67.6 for 21 junction cases only. Recorded existing producer/witness census, both candidate repair shapes and concrete falsifiers in `.agents/Directional/Architecture_M6_CP3_R5_Junction_Carrier_Authority_Specification_20261015.md`; no implementation or runtime authority inferred.
 - [x] Both candidate shapes examined against actual producer ordering. Neither presently has the requisite pre-admission junction witness; naive division of a one-step carrier route is insufficient. The 23 nonjunction REDs remain separate controls. Gate C SUSPENDED; no replacement predicate licensed.
@@ -1141,7 +1156,7 @@ Patch transport `38850167371` (result artifact `12024129249`) verified base `5f7
 
 ---
 
-## CURRENT — TB4 endpoint-chart harvest evidence durably recorded; independent Review separately required (2026-10-15)
+## HISTORY — TB4 endpoint-chart harvest evidence durably recorded; independent Review separately required (2026-10-15)
 
 - [x] `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST`: 44/44 artifact-only identities executed against new immutable package `11994726341` and semantic source `5be5e123e`, 44 RED / 0 missing, run `38782417387`, result `11996317553`, ZIP SHA-256 `44df6e2fc1bdba1e15f81e11ddec7bbb6cc90e2d43adcda4f334d875d1dbd9c9`. Observed 23 both-attached interior and 21 from-only junction cases; computed canonical carrier edges, no emitted `a2bProbeCarrierEdge`. Detailed report: `.agents/Directional/Architecture_M6_CP3_R4_Endpoint_Chart_Harvest_Artifact_Only_TB_Report_20261015.md`.
 - [x] Append `R4-VIN-01` non-stable vintage in protected regression tracker and preserve previous headings and line floors; update handoff and two changelogs, using exact 5,647/5,647 verified source snapshot `393d6c5488ff2a8866327fad9bab27a8389619d6` (run `38805395498`). Earlier CURRENT section's unchecked closeout item is superseded by this evidence entry without erasing the historical task record.
@@ -1149,80 +1164,80 @@ Patch transport `38850167371` (result artifact `12024129249`) verified base `5f7
 
 ---
 
-## CURRENT — endpoint chart artifact-only harvest measured; durable closeout pending (2026-10-15)
+## HISTORY — endpoint chart artifact-only harvest measured; durable closeout pending (2026-10-15)
 
 - [x] `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST` executed 44/44 identities on **new immutable artifact 11994726341** at semantic `5be5e123e`, workflow [38782417387](https://github.com/akashskypatel/Directional/actions/runs/38782417387), result artifact `11996317553`, ZIP SHA-256 `44df6e2fc1bdba1e15f81e11ddec7bbb6cc90e2d43adcda4f334d875d1dbd9c9`, entire manifest verified. **44 RED, 0 missing**, fail-closed. All 21 carrier-orientation cases measured actual rows `0→7`, with exactly one endpoint attachment in the carrier face pair: 15 computed edge (1,4), 6 computed edge (1,2). Full per-identity record: `.agents/Directional/Architecture_M6_CP3_R4_Endpoint_Chart_Harvest_Artifact_Only_TB_Report_20261015.md`.
 - [ ] **Durable turn closeout remains pending:** append the non-stable recurring `R4-VIN-01` measurement to `.agents/Directional/Regression_Root_Cause_Tracker.md` and verify the full long-file protected-history constraints; update handoff/changelogs without truncation; set final STATUS only after these are committed. Independent Review is separately required before any `RP-01` code correction or sector/mechanism claim. Do not run TB497, change frozen selectors, alter acceptance or ledger counts, or reuse the old artifact. The tracker exceeds the GitHub contents read ceiling; a fresh exact source snapshot and verified Drive patch transport are required for its safe mutation. Until complete, continue **the same TB4 turn**, not a successor.
 
 ---
 
-## CURRENT — endpoint chart probe compile-only completion (2026-10-15)
+## HISTORY — endpoint chart probe compile-only completion (2026-10-15)
 
 - [x] `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE`: rejection-only actual endpoint face/source topology/carrier face diagnostic published at semantic `5be5e123e14e2ddab8bb8c0db2a354a0a900435a`; compile GREEN [38776964197](https://github.com/akashskypatel/Directional/actions/runs/38776964197), artifact `11994726341`, SHA256 `b59dc16f4417693c4aec79025160da2054cfbca3a1589ef051ee3a171d3185bb`, 28/28 manifest, eight GMP/GMPXX targets, preflight/build 0/0, no runtime. Owning record `.agents/Directional/Architecture_M6_CP3_R4_Endpoint_Chart_Probe_Code_Build_Record_20261015.md`.
 - [ ] **Separate authority required** for immutable artifact-only diagnostic execution and independent Review. Do not invent successor, repair RP-01, assume endpoint face pair, promote credits, run frozen TB497, or change ledger (66/17/49; debt 1; CP2 491/491; R3 403/497).
 
 ---
 
-## CURRENT — endpoint chart source diagnostic Code + Build (2026-10-15)
+## HISTORY — endpoint chart source diagnostic Code + Build (2026-10-15)
 
 - [ ] `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE`: publish post-rejection source-face rows and source topology attachment/carrier keys, apply the source patch, and verify exact-source mandatory eight-target GMP/GMPXX compile. No runtime, no `RP-01` repair, no selector/ledger changes. Evidence record `.agents/Directional/Architecture_M6_CP3_R4_Endpoint_Chart_Probe_Code_Build_Record_20261015.md`.
 - [ ] Separately authorize artifact-only diagnostic execution and independent Review after this compile, without assuming endpoint faces `{0,7}` or inventing a vertex-star authority product. Preserve RA-65 amendments, frozen 497 selectors and historical ledgers.
 
 ---
 
-## CURRENT — R4 ledger content floor completed (2026-10-15)
+## HISTORY — R4 ledger content floor completed (2026-10-15)
 
 - [x] `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR`: Python-only nonzero committed-history heading/line floors, tracker zero-tolerance, consumed request cleared to noop. Isolated destructive-equal-line rejection and legitimate-prepend acceptance checked, no simulations committed. Evidence: `.agents/Directional/Architecture_M6_CP3_R4_Ledger_Content_Floor_20261015.md`. No C++ build, runtime, selectors, ledger credit.
 - [ ] Next separately authorized `M6-CP3-TB3-R4-PROBE-HARVEST`: artifact-only on the current new diagnostic source; no `RP-01` repair or RA-61.9 remedy. Ledger 66/17/49, debt 1, CP2 491/491 and R3 403/497 frozen.
 
 ---
-## CURRENT — R4 predicate diagnostics compile-only complete (2026-10-15)
+## HISTORY — R4 predicate diagnostics compile-only complete (2026-10-15)
 
 - [x] `M6-CP3-CB2-R4-PREDICATE-SEPARATION`: RA-62.2 committed-history durable integrity guard for handoff/ORIENTATION plus decision-neutral A2b actual one-hot source vertex, both exact-rational shared intervals/ordinals and typed first-rejection diagnostic. Semantic `16c3134c02ab3872eee77a6b9dcc9d3fc6e01b7b`, apply [38742750098](https://github.com/akashskypatel/Directional/actions/runs/38742750098). Source-exact GMP/GMPXX eight-target compile [38743048456](https://github.com/akashskypatel/Directional/actions/runs/38743048456), job `116449586867`, artifact `11976790988`, ZIP SHA-256 `31faf55a33c31abb60c8f34acb64ad901514de821cd6d2f3acbdcd817b1dbb36`, **28/28** digests; no runtime. No test/fixture/selector changes. Details in handoff and both changelogs.
 - [ ] **No named successor currently authorized.** Future immutable artifact-only targeted Test + Benchmark and independent Review require separate explicit turn authority. Do not run TB497, infer predicate acceptance, repair `RP-01`, promote historical counts, or begin a successor from a `Successor: UNKNOWN` beacon. Keep ledger 66/17/49, debt 1, CP2 491/491, R3 403/497, frozen 497; `RP-02` unreached, PR #8 draft/open.
 
 ---
-## CURRENT — R4 immutable terminal-conjunct extraction complete (2026-10-15)
+## HISTORY — R4 immutable terminal-conjunct extraction complete (2026-10-15)
 
 - [x] `M6-CP3-TB2-R4-CONJUNCT-EXTRACT`: existing artifact `11967601999` from workflow `38725063279`, outer SHA-256 `8b52373eebc7bda574f1fed2914dec4577ff70c670396f2ea3b19383d0fd25f1`, **50/50** manifest. All 45 original log rows classified without rerun: **23 interior-shaped**, **21 one-hot**, **ordinal 405 separate**. In every one-hot case candidate 1 belongs to the carrier edge but fails both exact-corner checks; candidate 6 or 7 fails all three. No source/test edits, workflow dispatch, executable, acceptance or ledger credit. Full evidence: `.agents/Directional/Architecture_M6_CP3_R4_Terminal_Conjunct_Artifact_Extraction_20261015.md`.
 - [ ] **Next separately authorized `M6-CP3-CB2-R4-PREDICATE-SEPARATION`**: diagnostic-only distinct A2b first-rejection reasons, plus `sharedBoundaryInterval` presence and exact ordinals (RA-61.9 falsifier (i)); acceptance MUST remain unchanged. No epsilon, unreviewed RA-61.9 remedy, combined test runtime, or TB497. `RP-02` not reached. Ledger 66/17/49, debt 1, CP2 491/491, R3 403/497, frozen 497 unchanged; PR #8 draft/open.
 
 ---
 
-## CURRENT — R4 interior carrier witness Code + Build compile complete (2026-10-15)
+## HISTORY — R4 interior carrier witness Code + Build compile complete (2026-10-15)
 
 - [x] `M6-CP3-CB1-R4-WITNESS-REPAIR`: RA-59.9 approved exact source-carrier certificate implemented at `570c51733761c17a198bda6c9aba7d8b1e7ae2dd`; mandatory eight-target GMP/GMPXX compile GREEN workflow 38720128740 result artifact 11964478813, 28/28 verified, no test runtime. Owner report `Architecture_M6_CP3_R4_Witness_Repair_Code_Build_Record_20261015.md`.
 - [ ] **Separately authorize immutable artifact-only supplemental TB and independent Review** of RP-02 original positive/typed tamper negatives, stop on first RED, then other six only as prescribed. Exact successor turn ID not yet frozen; do not invent. Historical Phase14 packaging is separate. Frozen 497 and ledger unchanged (66/17/49 debt1; 491/491 CP2; R3 403/497). The TODO CURRENT blocks below are historical superseded states.
 
 ---
-## CURRENT — Endpoint39 census measured; carrier independent Review is the next authorized turn (2026-10-15)
+## HISTORY — Endpoint39 census measured; carrier independent Review is the next authorized turn (2026-10-15)
 
 - [x] `M6-CP3-TB1-R4-ENDPOINT39-CENSUS`: artifact-only workflow 38687783618; 39/39 exact identities executed, 39 RED, 0 missing, immutable package/selector/source, 28/28 manifest before and after, no build/TB497. Detailed report `Architecture_M6_CP3_R4_Endpoint39_Census_Artifact_Only_TB_Report_20261015.md` and 39-row `Architecture_M6_CP3_R4_Endpoint39_Census_Measured_Identities_20261015.tsv`. 38 endpoint-1/no-exact-terminal-corner; 1 endpoint-0/missing-terminal-or-closed-rail-provenance; shared thrown fixture causes flagged; no semantic acceptance, no new stable regression or ledger change.
 - [ ] **Next turn only: `M6-CP3-TB1-R4-CARRIER-REV`**, mandatory independent architecture Review; adjudicate terminal certificate / incorrect pairing / truncated route with RA-58 and the full 39-row census. Do not silently pick hypothesis or relax terminal authority. Retained `M6-CP3-CB1-R4-WITNESS-REPAIR` requires subsequent authorization and RA-57.5 across-rail terminology correction; RA-58.7 A5/A6/A7 and RP-02 are independent debt. Frozen selector 497 untouched, stable 66/17/49, debt 1, CP2 491/491, R3 403/497, PR #8 open draft.
 
 ---
-## CURRENT — true controls measured; 39-identity R4 census next (2026-10-15)
+## HISTORY — true controls measured; 39-identity R4 census next (2026-10-15)
 
 - [x] `M6-CP3-TB1-R4-TRUE-CONTROL` 4/4 executed, square/cylinder PASS, both closed-chain torus tests RED. Orchestration complete with intact immutable package and 28/28 pre/post checksums; exact torus failures are missing arrangement/occurrence products, **not** proven open-rail `no-exact-terminal-corner`. See `Architecture_M6_CP3_R4_True_Control_Artifact_Only_TB_Report_20261015.md`.
 - [ ] **Next only `M6-CP3-TB1-R4-ENDPOINT39-CENSUS`** (new artifact-only turn), same immutable package and all 39 exact identities. Record owning fixture singleton, first predicate, `a2bProbeFailure`, `routeLength/step/chi`, source probe charts/parameters, `closedChainPresent` and complete `faceEnds`/rail/edge details (RA-57.12). No build, source/test/selector mutation, TB497 or acceptance. Then independent `M6-CP3-TB1-R4-CARRIER-REV` before any approved repair. Ledger 66/17/49, debt1 unchanged.
 
 ---
 
-## CURRENT — RP-02 first-RED independent Review, 2026-10-15
+## HISTORY — RP-02 first-RED independent Review, 2026-10-15
 
 - [x] `M6-CP3-TB1-R4-WITNESS-REV` independently localized `R4-TB-A-RP02-01`: paired source-edge-interior samples are not authentic whole-rail terminal source vertices; terminal-corner gate correctly rejects the incorrectly routed interval. Detailed `Architecture_M6_CP3_R4_Witness_First_RED_Independent_Review_Decision_20261015.md`. Valid first-RED measurement; non-stable; no RP-02 runtime PASS.
 - [ ] **Next only `M6-CP3-CB1-R4-WITNESS-REPAIR`**, exact typed source-edge/interval-vs-terminal correction, 8-target GMP compile-only; see `Architecture_M6_CP3_R4_Witness_Interval_Terminal_Recovery_Code_Build_Plan.md`. Stop for Review if a sound interior certificate cannot be expressed without relaxing terminal authority. Separate immutably packaged supplemental TB/Review before TB497; six identities unexecuted, Phase14 historical binary still missing. Stable 66/17/49, debt1, 491/491 accepted CP2 and 403/497 rejected R3 frozen.
 
 ---
 
-## CURRENT — R4 supplemental TB first-execution RED (2026-10-15)
+## HISTORY — R4 supplemental TB first-execution RED (2026-10-15)
 
 - [x] `M6-CP3-TB1-R4-WITNESS-EXEC` immutable artifact-only run 38668126299; 1/1 executed RED at `SurfaceCellAuthorityContractCutover.ProducedRailIntervalReachesNetworkBoundOpenFrontConsumer` initial `Produced` precondition; actual `a2bProbeFailure=no-exact-terminal-corner` / no closed chain. 6 planned witnesses not executed under mandatory stop-on-first-RED. Artifact/source/selector immutable, no TB497 or benchmark.
 - [ ] **Next separate independent Review `M6-CP3-TB1-R4-WITNESS-REV`**: determine causal fork between source A2b terminal-corner failure and witness fixture validity. Preserve `RP-02` coverage gap; classify candidate `R4-TB-A-RP02-01` before a Code + Build correction. Future Phase14 executions also require separate immutable package with historical test executable.
 
 ---
 
-## CURRENT — RP-02 network-bound open-front consumer witness compiled (2026-10-15 UTC)
+## HISTORY — RP-02 network-bound open-front consumer witness compiled (2026-10-15 UTC)
 
 `M6-CP3-CB1-R4-RP02-WITNESS` authored **one** nonvacuous producer-to-consumer source test `SurfaceCellAuthorityContractCutover.ProducedRailIntervalReachesNetworkBoundOpenFrontConsumer` in `tests/SurfaceCellsPhase10Tests.cpp`: authentic A2a network and producer rail must yield an A4 `HardRail` open-front edge and an actual filled cell/side with typed route, while a forged typed rail source edge must cause `InvalidFrontBoundaryAuthority` at that same A4 consumer. The test fails if `assign_open_front_boundary_authority` is skipped. Semantic source `953f812ff1f431e3ad3af3b68a92284a7831c94a`; pinned eight-target GMP/GMPXX compile [38664036225](https://github.com/akashskypatel/Directional/actions/runs/38664036225), artifact `11939982141` SHA-256 `2d5d1fc3f75b573307cae8af3c837da3dde2302ffdb4fe0ef3dd34d2aafeed7a`. **Compile-only; no binaries, tests, benchmarks or TB497 executed; no runtime PASS.** Detailed evidence `.agents/Directional/Architecture_M6_CP3_R4_RP02_Network_Bound_Consumer_Witness_20261015.md`.
 
@@ -1230,41 +1245,41 @@ Patch transport `38850167371` (result artifact `12024129249`) verified base `5f7
 
 ---
 
-## CURRENT — OHF-01 overfull hard-feature factory reachability probe (2026-10-15 UTC)
+## HISTORY — OHF-01 overfull hard-feature factory reachability probe (2026-10-15 UTC)
 
 `M6-CP3-CB1-R4-OHF01-PROBE` answers **(b) UNREACHABLE through the checked source/atlas construction path**, source-only. `SourceTopologyRegions::make` can encode three incident faces, but `TriMesh::set_mesh` derives topology and rejects repeated directed halfedges via `DCEL::check_consistency` (three undirected-edge incidences force a duplicate direction), `FieldTransportAtlas::make` has no alternate supported construction seam, and `SurfacePhaseFrontProduct::make` pins the same source faces/regions to that atlas **before** counting rail incidences. Coupled retirement only; retain the fail-closed `OverfullHardFeatureIncidence` guard, reopen if any checked-construction/atlas-binding guard weakens. Evidence: `.agents/Directional/Architecture_M6_CP3_R4_OHF01_Overfull_Hard_Feature_Reachability_Probe_20261015.md`; source `3b655c44dc102603d1c7b16b2d1f4fa4a1c02987` snapshot run `38660874872`, artifact `11938238763`, **5604/5604** hashes. No implementation/test edits, compile, executable, benchmark or TB497. The only next Code + Build authoring turn is **`M6-CP3-CB1-R4-RP02-WITNESS`**, separate and not started; subsequent runtime requires separately authorized immutable-artifact TB. Ledger 66/17/49 and debt 1, accepted 491/491, R3 403/497, PR #8 draft/open remain unchanged.
 
 ---
 
-## CURRENT — RA-43.4 standalone geometry helper disposition (2026-10-14)
+## HISTORY — RA-43.4 standalone geometry helper disposition (2026-10-14)
 
 - [x] `M6-CP3-CB1-R4-RA434-DISPOSE`: source-only no-op; retain `rail_sample_source_vertex` and `rail_sample_geometry_is_valid` with its explicitly scoped untyped diagnostic fallback. No independent untyped production caller or network bypass; strict production caller census 3/3. Frozen RA-52.6 preserves named opt-out and network override. Evidence `.agents/Directional/Architecture_M6_CP3_R4_RA434_Standalone_Geometry_Helper_Disposition_20261014.md`; exact verified snapshot `fa230b2a00e698eee9478fc06b3490cba5a86a11`, run 38656142605, artifact 11937071668, 5603/5603 hashes. No code/test/build/runtime/ledger/selector change.
 - [ ] Main R4 Code + Build and RP-02/39/34/7/88/six/organic/A1/odd-τ/multi-carrier evidence remain open. The frozen ladder names no additional successor; require fresh authorized next turn rather than inventing one. No TB497 here.
 
 ---
 
-## CURRENT — RA-43.4 standalone geometry diagnostic census (2026-10-14)
+## HISTORY — RA-43.4 standalone geometry diagnostic census (2026-10-14)
 
 - [x] `M6-CP3-CB1-R4-RA434-CENSUS`: exact source `b0d5c584a98d5ad321c324be9f18db5ba03d434b`, snapshot `38653652905`, artifact `11935277891`, 5602/5602 hashes. Two identity-relevant standalone geometry helper APIs; no direct untyped production caller and no production legacy named opt-out. Frozen RA-52.6 caller table retained in `.agents/Directional/Architecture_M6_CP3_R4_RA434_Standalone_Geometry_Diagnostic_Census_20261014.md`. No runtime/build/test.
 - [ ] Next separate `M6-CP3-CB1-R4-RA434-DISPOSE`: adjudicate only those helpers without removing RA-52.6 opt-out or weakening the network override. R4, RP-02 and historical test gates remain open.
 
 ---
 
-## CURRENT — RA-46.6 typed factory subcodes (2026-10-14)
+## HISTORY — RA-46.6 typed factory subcodes (2026-10-14)
 
 - [x] `M6-CP3-CB1-R4-RA466-SUBCODES`: exact source `0f2b1822cf3fecd209a610b6055549c561a000c3` already implements the seven frozen typed distinctions. No duplicate production/test changes or unchanged-source compile. See `.agents/Directional/Architecture_M6_CP3_R4_RA466_Typed_Factory_Subcodes_NoOp_20261014.md`.
 - [ ] The next **separate** `M6-CP3-CB1-R4-RA434-CENSUS` must inventory other standalone geometry diagnostic sites while preserving RA-52.6 and no-network opt-out; no TB497 or ledger update.
 
 ---
 
-## CURRENT — RA-47.12 default-path consumer-liveness census (2026-10-14)
+## HISTORY — RA-47.12 default-path consumer-liveness census (2026-10-14)
 
 - [x] `M6-CP3-CB1-R4-RA4712-LIVENESS` source-only audit at verified snapshot `f983508edcd0157ca3c93832753102067ab392ef` (run 38645902635, artifact 11932381704, 5600/5600 files). Source path offers network-bound typed interval validation, but no *executed* normal-pipeline witness proves the consumer was reached with producer-built rails. **RP-02 TEST_AUTHORITY_COVERAGE_GAP**; see `.agents/Directional/Architecture_M6_CP3_R4_RA4712_Default_Path_Typed_Interval_Liveness_Census_20261014.md`. Prior authored factory/producer assertions do not close execution liveness.
 - [ ] Separate artifact-only TB and Review must supply a nonzero, non-vacuous real-consumer receipt; no runtime accepted here. The next separate Code + Build rung is `M6-CP3-CB1-R4-RA466-SUBCODES` (reachable predicates only); retain frozen RA-52/RA-53 and historical 497/ledger gates. No test/production code/build/TB performed here.
 
 ---
 
-## CURRENT — RA-47.11 seven-site source-only census (2026-10-14)
+## HISTORY — RA-47.11 seven-site source-only census (2026-10-14)
 
 - [x] Audit all seven `source_edge_index` textual sites at exact source `09e8451ed6314a458e9abe8c6b74e866d19728fc` (snapshot 38640107266, artifact 11930195949, 5598/5598 file hashes). All six callers require real EV rows or mesh-edge membership; the seventh site is the typed-key-to-row helper. **No wrongly untyped site or migration target**. Record: `.agents/Directional/Architecture_M6_CP3_R4_RA4711_Seven_Source_Edge_Index_Census_20261014.md`. No tests, builds or runtime ran.
 - [x] `M6-CP3-CB1-R4-RA4711-MIGRATE` disposed as a documented **no-op** because all seven sites were legitimate; zero edits, zero unchanged-source compiles. Record: `.agents/Directional/Architecture_M6_CP3_R4_RA4711_Migration_NoOp_20261014.md`.
@@ -1272,41 +1287,41 @@ Patch transport `38850167371` (result artifact `12024129249`) verified base `5f7
 
 ---
 
-## CURRENT — R4 verified current source; independent selected-branch Review prerequisite (2026-10-14 18:30 UTC)
+## HISTORY — R4 verified current source; independent selected-branch Review prerequisite (2026-10-14 18:30 UTC)
 
 R4 remains Code + Build with exact compile-GREEN source `5ecaa2acbec9a03622e14e6afac4dfc71763778f` / immutable GMP package `11919172109` / `38613136344` (28/28 checksums, 8/8 targets, runtimeExecution=false). Current source snapshot `8f490bd7fb196bfb2a9d8b83cf9c65c5d6c001d0` / [38615232734](https://github.com/akashskypatel/Directional/actions/runs/38615232734), artifact `11919555806`, 5594/5594 source hashes; no semantic source/test drift. Re-inspection confirms A4 junction route certificates cannot authenticate the A1 branch *selected* at the directed arrival and the oriented filled side. RA-43.4 production entries are typed; the explicit standalone opt-out has no demonstrated network-bound bypass, but its retention is an independent Review policy question. **Do not invent a selected-branch receipt or remove the opt-out without independent Review**; no newly verified unblocked source edit remains. Exact source/first-failure Review request: `Architecture_M6_CP3_R4_Source_Current_Review_Gate_20261014.md`. No runtime tests, TB497, successor, selector/accepted-ledger changes. 39/34/7/88/six and organic/A1/RA-47.12 remain for later authorized TB and acceptance Review.
 
 ---
 
-## CURRENT — R4 standalone negative curve-owner sentinel (2026-10-14)
+## HISTORY — R4 standalone negative curve-owner sentinel (2026-10-14)
 
 - [x] R4 standalone rail negative-owner sentinel guard: exact source `42d7915e9e3ba34216a50ff48974c8e9734af91f` now rejects `AdaptiveFeatureEdge::curve=-2` for a source-valid unowned rail (only `-1` denotes unassigned). Existing producer rejection test expanded, no new test identity. Apply run 38600624930 artifact 11913556037 verified; mandatory eight GMP/GMPXX targets compile GREEN in run 38600920037 job 115979814702, package 11913234237, SHA-256 `89d899cffebdf077c2903c88de716cf94862ae15512787410c3eafda9d339829`, manifest 28/28; no executable test, benchmark or acceptance claim. Owning record `Architecture_M6_CP3_R4_Standalone_Negative_Curve_Owner_Guard_20261014.md`.
 - [ ] Preserve seven DCEL historical first-failure oracles, RA-43.1/.2/.4 independent decisions and future artifact-only 497 gate; compile GREEN does not close those obligations.
 
 ---
 
-## CURRENT — R4 historical seven-DCEL regression static census (2026-10-14)
+## HISTORY — R4 historical seven-DCEL regression static census (2026-10-14)
 
 - [x] Source-fixture migration already present for selector449 R3 DCEL-RED ordinals 40/220/221/296/302/304/439; dual-triangle source-matched A3 and original test oracles verified statically against snapshot 38596495573 (5963/5963 hashes). See `Architecture_M6_CP3_R4_Seven_DCEL_Fixture_Static_Census_20261014.md`. Do not repeat these implementation edits.
 - [ ] All seven remain unverified at runtime: only future immutable artifact-only TB plus Review can restore their accepted-prefix credit. Frozen 497, ledger, RA-43.1/.2/.4, RA-47.12, 39/34/88/six and organic CP3 witnesses remain unchanged.
 
 ---
 
-## CURRENT — R4 duplicate curve-owner correction (2026-10-14)
+## HISTORY — R4 duplicate curve-owner correction (2026-10-14)
 
 - [x] Apply two-file curve-owner ID integrity guard, semantic `6d6d269dd2df211a96de1fcd20bacb54a4e34358`, apply workflow [38593331149](https://github.com/akashskypatel/Directional/actions/runs/38593331149) GREEN, result artifact `11909000384` SHA256 `5584bc466c04a8f696ededf55b9b129fd4ec1b972815e14078c08edb95964f81`, staging owner-deleted, exact two-file +26-line change. No new test identity, selector or ABI change.
 - [ ] Pinned eight-target GMP/GMPXX compile result: compile GREEN in [run 38593643840](https://github.com/akashskypatel/Directional/actions/runs/38593643840), job `115954831123`, artifact `11909760571`, outer SHA256 `b84cf6a8215c8cbf02a8b0f5a443854a18cf738d9144f7fb0b29bfabfd206fa8`, root manifest 28/28, all eight GMP/GMPXX targets, preflight/build 0/0, clean source, `runtimeExecution=false` (no tests/benchmarks); independent RA-43.1/.2 and RA-43.4, 39/34/7/88/six and all organic/RA-47.12/odd-τ TB obligations stay open. No runtime acceptance or successor.
 
 ---
 
-## CURRENT — `M6-CP3-CB1-ENTRY-R4` compile evidence reconciled (2026-10-14)
+## HISTORY — `M6-CP3-CB1-ENTRY-R4` compile evidence reconciled (2026-10-14)
 
 - [x] Correct source-curve membership for uncovered standalone hard rails: semantic `f026512e`, compile run `38586952664`, eight GMP/GMPXX targets GREEN, 28/28 manifest, no runtime; evidence `Architecture_M6_CP3_R4_Orphan_Curve_Membership_Source_Guard_20261014.md`.
 - [ ] Remain R4 Code + Build; independent RA-43.1/.2 provenance Review and RA-43.4 diagnostic API decision open. Retain 39/34/7/88/six and organic D1/D2/D3/D5/A6/A7/RA-47.12/odd-τ obligations for separately authorized artifact-only TB; no selector or acceptance promotion.
 
 ---
 
-## CURRENT — R4 produced odd-τ admitted A1 germ fan typed topology and directed branch-lift compile (2026-10-14 UTC)
+## HISTORY — R4 produced odd-τ admitted A1 germ fan typed topology and directed branch-lift compile (2026-10-14 UTC)
 
 Canonical `M6-CP3-CB1-ENTRY-R4` **IN_PROGRESS Code + Build**, PR #8 draft/open; continue this same turn, not TB497/successor. Existing `SurfaceCellPipelinePhase20.ProducedNonconstantTwoCarrierOddTauSharesA1VertexGerm` source-only test now independently attests all sectors of a **genuinely admitted** A1 vertex-star owner on the real A4-produced two-carrier odd-τ rail: source-component/topology-region/junction containment, continuous radial edge ordering, absence of atlas nontraversable and A4 hard carrier crossings, actual directed `topology.transport`, and exact `FieldBranch` rotation under each signed A3 lift. Rejected diagnostic paths remain nonaccepting. Two isolated commits [c937c29](https://github.com/akashskypatel/Directional/commit/c937c29e91576313437d5ee2dd9427c452e1640d) and final [d47b363](https://github.com/akashskypatel/Directional/commit/d47b363682e449bb6525ec9fc4f6fd4d56c04d14) modify **only** this existing test; final Git blob `841eac2a7d8fd4f15f3405b6fefac83f937870a2`. Full-index verified recovery patches preserved in Directional Library.
 
@@ -1316,7 +1331,7 @@ Canonical `M6-CP3-CB1-ENTRY-R4` **IN_PROGRESS Code + Build**, PR #8 draft/open; 
 
 ---
 
-## CURRENT — R4 RA-43.1 A4/A1 selected-branch attribution gap (source-only; 2026-10-14 UTC)
+## HISTORY — R4 RA-43.1 A4/A1 selected-branch attribution gap (source-only; 2026-10-14 UTC)
 
 Canonical `M6-CP3-CB1-ENTRY-R4` remains **IN_PROGRESS Code + Build**, PR #8 draft/open. Reused verified exact compile source `182b0b835148ac80c9add15a38f2a9d4380fada6` (artifact `11873407961`, 28/28 manifest). **New source-census finding:** the compiled `ProducedNonconstantTwoCarrierOddTauSharesA1VertexGerm` now requires an admitted unique A1 owner, but independently searches **all** sector seed-face `FieldBranch` pairings. The A4 `SurfaceHardRailRouteJunctionCertificate` attests source vertex, A3 source-edge/face/quarter-turn paths and a two-carrier route, **not the selected A1 field branch of the corresponding A4 trace**. Thus the source-authored positive does not yet prove *branch-specific* A4/A1 ownership, even if it passes at runtime. The trace/front `branchRotation` and A1 `FieldBranch` mapping needs an independently sourced orientation and source-gauge receipt; the existing RA-43.2 producer-side oriented terminal review gate is related but does not itself supply it. Do not fabricate a branch from geometric coincidence or weaken the current admitted-owner assertion.
 
@@ -1324,7 +1339,7 @@ Durable source-only evidence and prescriptive next steps: `.agents/Directional/A
 
 ---
 
-## CURRENT — R4 odd-τ positive no longer accepts rejected vertex-transit diagnostics (2026-10-14 UTC)
+## HISTORY — R4 odd-τ positive no longer accepts rejected vertex-transit diagnostics (2026-10-14 UTC)
 
 Canonical `M6-CP3-CB1-ENTRY-R4` **IN_PROGRESS Code + Build**, PR #8 draft/open. Static source review uncovered a material false-positive in `SurfaceCellPipelinePhase20.ProducedNonconstantTwoCarrierOddTauSharesA1VertexGerm`: the original accepting sum (`verifiedOwners + evaluatedNontrivialGerms`) counted *rejected* `FieldAlignedCurveNetworkError::vertexTransitStates` diagnostic walks as if an admitted A1 vertex-star owner existed. Real `resolve_field_vertex_transit` returns `FieldVertexTransitDecision` only after certifying an eligible owner; an evaluated path preceding a fail-closed return is not admissible. Corrected existing test to require `verifiedOwners > 0` for its positive assertion; failed-walk counts are diagnostic only. Exact semantic [182b0b8](https://github.com/akashskypatel/Directional/commit/182b0b835148ac80c9add15a38f2a9d4380fada6), test blob `8b26c8fa80a7a3ccf1eb6db63c79972f84d90cb1`; verified exact-base patch SHA-256 `3b5c6abc9af2cfcfb2efeb2c749438f903b081a805465f286d9a4c0004ac57de` backed up to Directional Library Evidence.
 
@@ -1334,7 +1349,7 @@ Continue the **same R4**: RA-43.1/43.4 source/consumer obligations, RA-47.12 run
 
 ---
 
-## CURRENT — R4 paired odd-τ terminal identities and A1 vertex-germ seed compiled (2026-10-14 UTC)
+## HISTORY — R4 paired odd-τ terminal identities and A1 vertex-germ seed compiled (2026-10-14 UTC)
 
 Same canonical `M6-CP3-CB1-ENTRY-R4` **IN_PROGRESS Code + Build**; do not begin TB497 or successor. The existing genuine `ProducedNonconstantTwoCarrierOddTauSharesA1VertexGerm` test now requires the two A4 endpoint certificates to use **both distinct producer-published hard edges** (1,4)/(4,7), and requires every successful elected A1 germ audit seed to exactly match the actual typed junction, arrival face, branch, and arrival mode. This eliminates duplicate-terminal or unrelated-seed credit without changing the algorithm, test identity, frozen 497 selector or workflow. Exact semantic [9780154](https://github.com/akashskypatel/Directional/commit/9780154878a37b9792179b76c4bc7b39d5b2667c), test Git blob `6eb202471a421db6aa1ab32ff412cd5a7e82ed3b`, verified full-index source patch SHA-256 `78b288eed8989273a719bd16e052ecb4e3c8f7819206b354a0ad4768509879c1` backed up in Directional Library.
 
@@ -1344,7 +1359,7 @@ Remaining R4: actual odd-τ multi-carrier execution only in separately authorize
 
 ---
 
-## CURRENT — R4 combined odd-τ A1 diagnostic directed-walk source proof (2026-10-14 UTC)
+## HISTORY — R4 combined odd-τ A1 diagnostic directed-walk source proof (2026-10-14 UTC)
 
 Canonical `M6-CP3-CB1-ENTRY-R4` stays **IN_PROGRESS Code + Build**, PR #8 draft/open; do not begin successor or TB497. Strengthened the existing `SurfaceCellPipelinePhase20.ProducedNonconstantTwoCarrierOddTauSharesA1VertexGerm` producer fixture's *evaluated failure diagnostic* path: each source edge must touch the actual junction, avoid A4 hard carriers, resolve to the next A1 typed source face with available **directed** A3 transport, and reproduce the diagnostic terminal source face, mod-4 signed lift and branch rotation. This closes a source-oracle loophole where an unrelated nonempty path could count toward the combined germ. No new test identity, algorithm, selector or workflow change. Semantic [853f2eb](https://github.com/akashskypatel/Directional/commit/853f2eb6d43bd23c866db3d9ceaaf5367b6b85ee), exact blob `89c6893b85158aea83ffeaf2b359ac3a24a41ce1`; verified exact-base patch SHA256 `4e1a1ae0fe14cad5309ad9de9bf22190b22e7e6f1851bb09e82aaff75c1dbbd7` preserved in Directional Library.
 
@@ -1354,7 +1369,7 @@ Remain on the same R4: source/consumer RA-43.1/.4 work, executed RA-47.12 only i
 
 ---
 
-## CURRENT — R4 genuine nonconstant paired odd-τ carrier/A1 germ compiled (2026-10-14 UTC)
+## HISTORY — R4 genuine nonconstant paired odd-τ carrier/A1 germ compiled (2026-10-14 UTC)
 
 Canonical `M6-CP3-CB1-ENTRY-R4` **IN_PROGRESS Code + Build**, continue this turn only; PR #8 draft/open. A new source-authored positive in existing `tests/SurfaceCellREPackageTests.cpp`, `SurfaceCellPipelinePhase20.ProducedNonconstantTwoCarrierOddTauSharesA1VertexGerm`, requires the **same genuinely A4-produced two-edge midline rail** `(1,4),(4,7)` from a nonconstant quarter-turned source field to have odd (1/3) A1-authenticated carrier τ **and** an A1 vertex-star owner/nontrivial evaluated walk at the real junction vertex 4, using typed A1 hard-edge barriers. It is an independent combined source obligation, **not a runtime witness or accepted result**. Initial semantic [b640d51](https://github.com/akashskypatel/Directional/commit/b640d51a9e3369449ea4cc75ca5939754443740c) compile [38514059053](https://github.com/akashskypatel/Directional/actions/runs/38514059053) FAILED with ten `DomainResult` test-source dereference errors; corrected all ten to `.value()` in exact semantic [651da42](https://github.com/akashskypatel/Directional/commit/651da423b66645a2e1fc1962d04acc047eef8070). Corrected source blob `9c1e333c82d4cf5a45eaaa11a6c91d36bda509c2` verified against local work-preservation patch.
 
@@ -1364,7 +1379,7 @@ Canonical `M6-CP3-CB1-ENTRY-R4` **IN_PROGRESS Code + Build**, continue this turn
 
 ---
 
-## CURRENT — R4 genuine multi-carrier A1 vertex-germ compile-only checkpoint (2026-10-14 UTC)
+## HISTORY — R4 genuine multi-carrier A1 vertex-germ compile-only checkpoint (2026-10-14 UTC)
 
 Canonical `M6-CP3-CB1-ENTRY-R4` remains **IN_PROGRESS, Code + Build**; not TB497/successor. The real producer-generated two-hard-edge A4 junction fixture in `tests/SurfaceCellREPackageTests.cpp` now calls the A1 `resolve_field_vertex_transit` germ with atlas-owned hard-carrier pointers, reconstructs each diagnostic source-edge path and checks face-contiguous directed A3 signed lifts/branch rotations without crossing producer hard carriers, and requires a nonvacuous real germ owner or examined path. **This is an extended existing source oracle, not synthetic multi-carrier or odd-τ runtime success.** Source-only commit [49c5362](https://github.com/akashskypatel/Directional/commit/49c5362dd58365abdee05307b75e197bd0c071cf), exact one-file blob `38cf9c99fa1d6483230c254cf6f6c16fffd04a59`; patch SHA-256 `474b986927987842d79594ca468a75338a8083d864ccfb5abb10c0575d73a0f0` preserved in Directional Library Evidence.
 
@@ -1374,7 +1389,7 @@ Canonical `M6-CP3-CB1-ENTRY-R4` remains **IN_PROGRESS, Code + Build**; not TB497
 
 ---
 
-## CURRENT — R4 open-rail component GMP compile and producer vertex-star callsite proof (2026-10-14 UTC)
+## HISTORY — R4 open-rail component GMP compile and producer vertex-star callsite proof (2026-10-14 UTC)
 
 Canonical `M6-CP3-CB1-ENTRY-R4` remains **IN_PROGRESS Code + Build**; continue this turn, not TB497/successor. Genuine two-file open-rail A4 first-consumer component check landed as semantic [`43e090c`](https://github.com/akashskypatel/Directional/commit/43e090ccb887a87c76f6242f498f78182103cee0) in Drive apply [38508173122](https://github.com/akashskypatel/Directional/actions/runs/38508173122). Pinned eight-target GMP/GMPXX compile **GREEN** in [38508335369](https://github.com/akashskypatel/Directional/actions/runs/38508335369), artifact `11869275592`, outer ZIP SHA-256 `6da4a5f47c2072e7f0d0216b517ed95299b8a19d5ccdff1d122a32a5dbd75ed2`: 28/28 package file hashes, eight targets, exits `0/0`, GMP/GMPXX linked, five clean source-status records, `runtimeExecution=false`. **Do not claim runtime PASS** for the new regression `ForeignOpenRailComponentRejectsAtFirstA4ConsumerPredicate`; no binaries/tests/benchmarks executed. Staging Drive file was owner-deleted. Evidence `.agents/Directional/Architecture_M6_CP3_R4_Open_Rail_Component_First_A4_Consumer_20261014.md`.
 
@@ -1384,13 +1399,13 @@ Still open: RA-43.1 real organic multi-carrier vertex germ and RA-43.4 diagnosti
 
 ---
 
-## CURRENT — R4 RA-46.5 / RA-43.4 nonduplicative source census (2026-10-14 UTC)
+## HISTORY — R4 RA-46.5 / RA-43.4 nonduplicative source census (2026-10-14 UTC)
 
 Same canonical `M6-CP3-CB1-ENTRY-R4` Code + Build IN_PROGRESS. Exact current snapshot `0326e9ac3091b3e1fa0ef62ea8224cc4d218e5e2` (run `38505236129`, `5827/5827` hashes). Static coverage census `.agents/Directional/Architecture_M6_CP3_R4_RA465_RA434_Static_Coverage_Census_20261014.md`: reachable first-A4-consumer negative source oracles for duplicated typed terminal contact, foreign source vertex, and missing terminal A3 path already exist; RA-46.6 typed factory disjunction already exists; RA-49/51 retirement applies to the other unrepresentable disjuncts under preserved guards. All three production rail interval callers explicitly require typed source and edge keys; standalone no-network legacy opt-out remains test-only. **Do not duplicate these compile-only fixtures or claim runtime PASS**. Remaining R4 work is the genuine nonduplicated RA-43.1/43.4 organic consumer/producer gap, runtime liveness/acceptance only in a separate TB, historical restoration, and multi-carrier odd-τ. No source change, build, runtime, TB497, or successor in this census.
 
 ---
 
-## CURRENT — R4 produced nonhard A3 corrected compile GREEN (2026-10-14 UTC)
+## HISTORY — R4 produced nonhard A3 corrected compile GREEN (2026-10-14 UTC)
 
 Canonical `M6-CP3-CB1-ENTRY-R4` remains **IN_PROGRESS** (Code + Build); successor is the same canonical R4, not TB497. FieldBranchTransportAdjacency member-name correction applied as [`524a029`](https://github.com/akashskypatel/Directional/commit/524a0291847e08c33f316c9db71fc90a002d58db), modifying only `tests/SurfaceCellsPhase10Tests.cpp`. Original compile [38501717039](https://github.com/akashskypatel/Directional/actions/runs/38501717039) failed for the diagnosed test-source fields; that run is **not** green. Replacement compile [38503341223](https://github.com/akashskypatel/Directional/actions/runs/38503341223) job `115655195706` passed against **exact source** `524a0291847e08c33f316c9db71fc90a002d58db`: eight approved targets, preflight/build exits `0/0`, generated GMPXX+GMP link, `DIRECTIONAL_ENABLE_GMP=ON`, `exactArithmeticBackend=GMP`, five clean source-status files, `28/28` artifact SHA-256 checks, and `runtimeExecution=false`. Result artifact `11866374487`, outer SHA-256 `54b349c04dc818f2ac6e6a1b4d31f6335da8393a11be46551b5866bada93d9df`; mailbox `m6-cp3-r4-nonhard-a3-fixed-compile`. No tests/benchmarks run.
 
@@ -1400,7 +1415,7 @@ Outstanding: broader RA-43.1/43.4 source coverage, reachable RA-46.5 first-rejec
 
 ---
 
-## CURRENT — R4 producer nonhard directed A3 parity checkpoint (2026-10-14 UTC)
+## HISTORY — R4 producer nonhard directed A3 parity checkpoint (2026-10-14 UTC)
 
 `M6-CP3-CB1-ENTRY-R4` Code + Build **IN_PROGRESS**, no successor. Source/test-only RA-43.1 producer differential now asserts that every genuine nonhard traversable atlas link retains the same two directed A3 values as `transition_value`, including reciprocal quarter-turn, signed lift and effort; hard carrier values remain nontraversable. Semantic commit [`3a461b7`](https://github.com/akashskypatel/Directional/commit/3a461b747579220cfac6b15049f6cab70b89f1eb), verified single test-source path. Source snapshot [38500983174](https://github.com/akashskypatel/Directional/actions/runs/38500983174), 5810/5810 SHA-256 file checks. Patch SHA-256 `5c1afff29783cf0d3621cd9b8f28a2ffeaecb8924639cc6d9c9563bb9655447c`, Drive apply [38501554940](https://github.com/akashskypatel/Directional/actions/runs/38501554940), staging retired. **FIRST PINNED COMPILE FAILED**: workflow 38501717039, compile job 115650065161, source 3a461b747579220cfac6b15049f6cab70b89f1eb, diagnostic artifact 11866206890 (SHA-256 36914a8fd1d69af77d0a7f6a9117a7e95cd0d929372f53444c700db4cf9c8546). Diagnosed test-source field-name mismatch: FieldBranchTransportAdjacency exposes firstFace/secondFace/forward/forwardLift, not FieldTransportStep fields. Bounded fix patch cc31065f8d97c56e0a21dfb28d20a95bdc0c07b210bec314309c07d16114af94 exact-base 3a461b7, forward/reverse/whitespace verified, staged in Drive and dispatched via 8185292a15352ca38691409f9d4fd1e2501bc8df to m6-cp3-r4-nonhard-a3-fix-apply. Subsequent fix applied as 524a029; replacement compile was later verified GREEN by run 38503341223 (see superseding checkpoint above); runtime still not executed.
 
@@ -1408,13 +1423,13 @@ Tests and runtime gates **not executed**. RA-43.1/43.4 global, RA-46.5, RA-47.12
 
 ---
 
-## CURRENT — R4 A1 directed nontraversable row-order regression (2026-10-14 UTC)
+## HISTORY — R4 A1 directed nontraversable row-order regression (2026-10-14 UTC)
 
 Same canonical `M6-CP3-CB1-ENTRY-R4` Code + Build **IN_PROGRESS**. Existing A1 hard-feature/non-hard seam regression now compares exact directed `QuarterTurn` and signed lift under source-face row order swap with branch gauges anchored to physical face IDs; ordinary traversable adjacency stays absent. One-test-source change, no production or frozen selector change. Verified patch SHA-256 `8b67e67f48d01d7c48912b357d4178ed35da1eb5eb767735f84935798803df95`; full result at `Architecture_M6_CP3_R4_RA431_Directed_Seam_Row_Permutation_20261014.md`. Source patch applied `7e8f7cd`; pinned eight-target GMP/GMPXX compile **GREEN**, run `38497529587` / artifact `11864830175` SHA-256 `cedb6cbe6716fe1ff7517b76e022ccaed8a2ee0ef9fcddd5f780b588c843b324`, 28/28 checksums, 8/8 targets, preflight/build `0/0`, GMPXX/GMP, five clean source-status records, `runtimeExecution=false`. All assertions remain runtime-unexecuted; no TB497 or successor. Other RA-43.1/.4, RA-46.5, RA-47.12, 39/34/7/88/six, organic and real multi-carrier odd-τ obligations remain open.
 
 ---
 
-## CURRENT — R4 RA-43.4 source census + replacement pinned compile GREEN (2026-10-14 UTC)
+## HISTORY — R4 RA-43.4 source census + replacement pinned compile GREEN (2026-10-14 UTC)
 
 Same canonical `M6-CP3-CB1-ENTRY-R4`, Code + Build, **IN_PROGRESS**; no review blocker or successor. Source snapshot `13df05220f84cba35923855ec50d8aa6c7a6d088`, workflow [38492441978](https://github.com/akashskypatel/Directional/actions/runs/38492441978), immutable artifact `11862018574`, outer SHA-256 `a58b3e902b224a7bffb15598cfe399df64cd5b5b9a5588e3a7bf7f15f782c3d6`, **5789/5789** source-file SHA-256 checks and inner archive valid. Static RA-43.4 census: all three production `rail_interval_refs` callers explicitly require typed source; the exact-barycentric fallback remains only the named no-network standalone diagnostic, and network presence overrides that opt-out. Evidence `.agents/Directional/Architecture_M6_CP3_R4_RA434_Static_Ingress_Census_20261014.md` (commit `bdc3e8d66d8721937e026f47df4176fda7650532`). No runtime credit.
 
@@ -1424,14 +1439,14 @@ The **older** closed-rail compile request at `608c5338f4a04a3ba3194a7e11ec7956e4
 
 ---
 
-## CURRENT — R4 closed-rail source-component authority (2026-10-14 UTC)
+## HISTORY — R4 closed-rail source-component authority (2026-10-14 UTC)
 
 - [x] Same canonical `M6-CP3-CB1-ENTRY-R4` Code + Build. First A4 consumer now checks the contact-free closed chain's claimed component against **both** authentic source attachment components before granting a cyclic bypass; a differential Phase10 negative changes only the claimed component, contrasting against the same endpoint-owning chain with real component. Exact two-file patch SHA-256 `5afc476876a1517b797af1627cee7bbbebd8b618fb3ceb59339446d49665519c`, apply commit `62fec4a7f4ccf05a6fe8bc14f81d4b8ff774d809`, dispatcher [38488410002](https://github.com/akashskypatel/Directional/actions/runs/38488410002), matching receipt verified; transient staging file retired.
 - [ ] Pinned eight-target GMP/GMPXX compile request at dispatcher commit `608c5338f4a04a3ba3194a7e11ec7956e482c793`, exact semantic source `62fec4a7f4ccf05a6fe8bc14f81d4b8ff774d809`, mailbox `m6-cp3-r4-closedrail-component-compile`: **PENDING**; do not claim GREEN/RED until the immutable compile artifact and source/link evidence are verified. Code + Build only; no executable/test/benchmark run, no TB497, no runtime PASS, no frozen-selector or downstream factory changes. All open R4 historical/organic, RA-43.1/.4, RA-47.12 and genuine odd-τ multi-carrier duties carry forward. The older WIP subsection below is historical and superseded by this applied checkpoint.
 
 ---
 
-## CURRENT — RA-51 terminal-A3 reachability resolved; R4 Code + Build resumes (2026-10-13 UTC)
+## HISTORY — RA-51 terminal-A3 reachability resolved; R4 Code + Build resumes (2026-10-13 UTC)
 
 - [x] The independent RA-51 Review **discharged** `R4-TA3-01`: `missing-or-nonreciprocal-terminal-A3` is unreachable under H1–H6 and `overlapping-terminal-sectors` is unreachable under K1–K5. Both fixture obligations are **RETIRED**, their runtime fail-closed guards **retained**. RA-48.3 already landed; its unconditional topology derivation keeps R4-OVF-01 **closed**. Authority: `Architecture_M6_CP3_R4_Terminal_A3_First_Rejection_Review_Decision.md` and frozen `Architecture_M6_Frozen_Definitions.md` RA-51. Do not resurrect these negatives without a broken guard premise or mint dead-disjunct typed sub-codes (RA-51.7).
 - [x] The most recent RA-43.1 source-star continuity oracle in `tests/SurfaceCellREPackageTests.cpp` is **compiled only**, exact source `2e27e52e72e6325fa980bbf531a3f0d6b3bafc4a`, pinned eight-target GMP/GMPXX compile workflow `38444070795` (28/28 packaged hashes, 8/8 targets, no runtime). This is not a PASS or completed RA-43.1 proof. See `Architecture_M6_CP3_R4_RA431_Produced_Hard_Barrier_Authority_Oracle_20261013.md`.
@@ -1446,174 +1461,174 @@ The **older** closed-rail compile request at `608c5338f4a04a3ba3194a7e11ec7956e4
 
 ---
 
-## CURRENT — R4 RA-43.1 real A1 hard-barrier production compile GREEN (2026-10-13 UTC)
+## HISTORY — R4 RA-43.1 real A1 hard-barrier production compile GREEN (2026-10-13 UTC)
 
 - [x] Applied at `cf87a8e10d3a390efbdc748c23388ae0da7965c4` by `38392849958`, eight-target GMP/GMPXX compile GREEN `38393072606` (artifact `11809223261`, SHA256 `1b06fe10a15ce5134bd7744436adaab6cc3beb0151812ee330ba8b028082503d`, 28/28 hashes, no runtime), source regression `ProducedHardCarriersAreAtlasBarriersNotSourceBoundaryTransit`; source barrier origin is genuine atlas output, not test-labelled. Evidence `Architecture_M6_CP3_R4_RA431_Produced_Hard_Barrier_Authority_Oracle_20261013.md`.
 - [ ] Runtime proof and full A1 consumer/germ, RA-43.1/.4, RA-46.5, RA-47.12, 39/34/7/88/six and genuine odd-tau multi-carrier remain open. No TB497 or successor.
 
 ---
 
-## CURRENT — R4 RA-43.1 producer barrier authority source oracle (2026-10-13 UTC)
+## HISTORY — R4 RA-43.1 producer barrier authority source oracle (2026-10-13 UTC)
 
 - [ ] Apply and compile-only verify `SurfaceCellAuthorityContractCutover.ProducedHardCarriersAreAtlasBarriersNotSourceBoundaryTransit` against verified source `45d09820b25f4330bad825cee1e5a1349d9fc0c1` (5668/5668 hashes). It checks unmodified A1 producer hard/barrier kinds, full typed key set, exclusion of hard A3 traversals, and mandatory A2a rail ID ownership; distinct from test-labelled RA-43.1 star filter. No runtime or TB497 in Code + Build. See `Architecture_M6_CP3_R4_RA431_Produced_Hard_Barrier_Authority_Oracle_20261013.md`.
 - [ ] RA-43.1/.4 broader producer/consumer evidence, RA-46.5, RA-47.12 executed liveness, 39/34/7/88/six historical cases and real odd-tau multi-carrier remain open. RA-50 discharges RA-43.2.
 
 ---
 
-## CURRENT — R4 RA-47.12 no-injection pipeline source oracle compiled (2026-10-13 UTC)
+## HISTORY — R4 RA-47.12 no-injection pipeline source oracle compiled (2026-10-13 UTC)
 
 - [x] Applied at `3b8b14e31f7546eb59f71fa9c1b3617b83ed59c7` in `38390007877`; eight-target GMP/GMPXX compile GREEN `38390222662` (artifact `11808227197`, SHA-256 `a02f07389274950cdcd20ebc7e9d2ae63445956cda9a6d1aabb7807ce4ad1530`, 28/28 manifest). Source test only; **no runtime execution**. See `Architecture_M6_CP3_R4_RA4712_Uninjected_Pipeline_Rail_Liveness_Source_Oracle_20261013.md`.
 - [ ] RA-47.12 actual uninjected runtime liveness, RA-43.1/.4, RA-46.5, historical 39/34/7/88/six and organic multi-carrier/odd-tau still open. No TB497 or successor.
 
 ---
 
-## CURRENT — RA-47.12 default-path liveness source coverage (2026-10-13 UTC)
+## HISTORY — RA-47.12 default-path liveness source coverage (2026-10-13 UTC)
 
 - [ ] Apply and compile-only verify `DefaultPipelinePublishesSourceBoundMandatoryRailKeysWithoutInjection` against exact verified source `f1dbd6c6ddeb60c3c74b0a40862fd26340d7b4b5`; positive requires actual uninjected pipeline publishing producer-matched typed hard rail keys `(1,4)` and `(4,7)` through the field-aligned network. This is an **unexecuted** source oracle. No TB497 or runtime tests in Code + Build. Evidence plan `Architecture_M6_CP3_R4_RA4712_Uninjected_Pipeline_Rail_Liveness_Source_Oracle_20261013.md`.
 - [ ] RA-47.12 executed liveness and remaining R4 RA-43.1/.4, RA-46.5, 39/34/7/88/six and genuine odd-tau multi-carrier remain open; RA-50 discharged RA-43.2.
 
 ---
 
-## CURRENT — R4 RA-43.1 borrowed barrier differential regression (2026-10-13 UTC)
+## HISTORY — R4 RA-43.1 borrowed barrier differential regression (2026-10-13 UTC)
 
 - [x] Applied at `3bb0733267a18e151866a3f25e388a173b56f8b4` (workflow `38387022153`) and eight-target GMP/GMPXX compile GREEN `38387271419` (artifact `11806403200`, 28/28 checksums; no runtime). Compile-only verify new `ResolvedBranchCorrection.HardCarrierStarCutPreservesBoundaryTransit` on the exact applied source. Test category labels distinguish hard-carrier cut from boundary traversal over identical real A1 topology transports; they are diagnostic, not A1 producer attestations. Runtime/TB497 forbidden within CB. Evidence: `Architecture_M6_CP3_R4_RA431_Borrowed_Barrier_Differential_Oracle_20261013.md`.
 - [ ] R4's other source/producer authority, RA-43.4/46.5, RA-47.12 liveness, historical 39/34/7/88/six and genuine odd-tau multi-carrier remain. RA-50 discharges RA-43.2. No successor.
 
 ---
 
-## CURRENT — R4 RA-47.7 component aggregation typed-key equality oracle (2026-10-13 UTC)
+## HISTORY — R4 RA-47.7 component aggregation typed-key equality oracle (2026-10-13 UTC)
 
 - [x] Applied the source-exact independent-component/aggregated typed `sourceEdges` equality oracle at `007585f8eac57a74e89e62a416a844e21c15fe35` (Drive workflow `38383973192`); mandatory eight-target GMP/GMPXX compile GREEN `38384224673`, immutable artifact `11805220540` SHA-256 `e564eed3ea3636f1b36262dc91c29e9a65af6c229efc74e58d7935da0c07ddca`, 28/28 manifest and no runtime. Prior transport blocker cleared, Drive file retired. Evidence `Architecture_M6_CP3_R4_RA477_Component_Aggregation_Independent_Rail_Key_Oracle_20261013.md`. **Unexecuted source oracle, not runtime PASS.**
 - [ ] Remain within canonical R4; RA-47.12 executed producer liveness, RA-43.1/.4, RA-46.5, 39/34/7/88/six, odd-τ multi-carrier and separate artifact-only TB remain open. Frozen 497 selector unchanged; no successor.
 
 ---
 
-## CURRENT — R4 RA-47.10 ordinal-discriminating producer positive (2026-10-13 UTC)
+## HISTORY — R4 RA-47.10 ordinal-discriminating producer positive (2026-10-13 UTC)
 
 - [x] Applied the one-test ordinal-discriminating positive at `1ee05785c9f35d60d7dc2264f92bccb0fe423b24` (workflow `38373640827`); mandatory eight-target GMP/GMPXX compile GREEN run `38373896079`, 28/28 artifact hashes and runtime disabled. See `Architecture_M6_CP3_R4_RA4710_Lexical_DCEL_Positive_Code_Build_Record_20261013.md`. This is not a runtime PASS.
 - [ ] R4 remains unfinished: RA-43.1/.4, RA-46.5, RA-47.12 executed liveness, RA-47.10 component-decomposed equality, historical 39/34/7/88/six and odd-τ genuine multi-carrier. No Test + Benchmark, no TB497 or successor; RA-50 discharges RA-43.2.
 
 ---
 
-## CURRENT — R4 RA-46.5 A4 missing terminal A3 consumer oracle (2026-10-13 UTC)
+## HISTORY — R4 RA-46.5 A4 missing terminal A3 consumer oracle (2026-10-13 UTC)
 
 - [x] Applied at `d6240c9bc2d59899829ec259e9babd2878736e50` and compile-only verified in `38370592790` (28/28 hashes, all 8 GMP/GMPXX targets, no runtime) the new Phase10 source test `MissingTerminalA3PathRejectsAtFirstA4ConsumerPredicate`: choose a genuinely produced non-hard A3 terminal step, block only that step in replay, require consumer `EndpointAttachment` and `a2bProbeFailure=missing-terminal-A3-path`. Existing checked-factory `MissingTerminalA3Path` is a separate later-stage oracle and cannot satisfy this coverage. No test runtime, TB497, selector change or successor. Evidence: `Architecture_M6_CP3_R4_RA465_A4_Missing_Terminal_A3_Consumer_Oracle_20261013.md`.
 - [ ] R4 RA-43.1/.4, RA-46.5 other consumer negatives, RA-47.12 executed liveness, historical 39/34/7/88/six and odd-τ multi-carrier obligations remain. RA-43.2 discharged under RA-50.
 
 ---
 
-## CURRENT — R4 public strict trace foreign-key compile verified (2026-10-13 UTC)
+## HISTORY — R4 public strict trace foreign-key compile verified (2026-10-13 UTC)
 
 - [x] Verified and applied published present/in-range foreign `sourceEdges` negative at public `trace_surface_field` entry, exact source `f5c0d0b325ecf7333abbd3573759ed09a011ea3e`, Drive apply `38366995891`. Mandatory compile-only GMP/GMPXX run `38367436364` GREEN, artifact `11796334785`, SHA-256 `1a56a2ee7fee179e9c5c251e5d68560fb3e714364f8b89084b6ec39707b40f19`, internal 28/28, 8/8 compiled, exit 0/0, GMPXX/GMP generated linkage, five clean source status files, runtime disabled. Initial request rejected targets string before compile; corrected array executed successfully. See `Architecture_M6_CP3_R4_Public_Trace_Foreign_Edge_Oracle_Compile_Record_20261013.md`.
 - [ ] Continue same canonical R4 Code + Build. RA-43.1/.4 global, RA-46.5, RA-47.12 executed liveness, historical 39 endpoint / 34 Phase10 / 7 DCEL / 88 accepted restoration / six CP3 and true odd-τ multi-carrier remain open. RA-43.2 discharged by RA-50; no fabricated filled-side owner. No TB497, no runtime acceptance, no successor.
 
 ---
 
-## CURRENT — R4 strict trace public-entry foreign published edge key (2026-10-13 UTC)
+## HISTORY — R4 strict trace public-entry foreign published edge key (2026-10-13 UTC)
 
 - [ ] Test-only, unexecuted extension to `SurfaceCellTracingPhase14.ProducedRailEndpointsRequireExactSourceVertexIncidence`: preserve the valid public trace baseline and missing-key negative; additionally replace only the published key with a distinct in-range source key `(1,4)` and require `FieldMetadata` at `trace_surface_field` strict no-network entry. Lower-level foreign-key check already exists, but is not equivalent to public ingress coverage. Patch authored against verified snapshot `45d210e51a12dd3b8416c5179e6737edbb53e4e3` (snapshot workflow `38359143085`, 5612/5612 checksums). Code + Build source compilation and immutable evidence remain pending; do not claim runtime acceptance, start TB497 or successor. Same canonical `M6-CP3-CB1-ENTRY-R4`.
 
 ---
 
-## CURRENT — R4 RA-43.4 strict no-network default tracing ingress (2026-10-13 UTC)
+## HISTORY — R4 RA-43.4 strict no-network default tracing ingress (2026-10-13 UTC)
 
 - [x] Applied and compile-only verified the typed rail positive and missing-published-key negative in existing Phase14 `trace_surface_field` entry (semantic `f1fbf8561d3d6d77f6807d0178263fa0a9ba11ef`, compile GREEN `38357644503`, 28/28 hashes, 8/8 targets, generated GMPXX/GMP, no runtime). Exact snapshot `fc22e74ec72570d401a14f7146cda8a8a82ffaec` (run `38356618714`), source-only oracle. Apply and compile eight GMP/GMPXX targets through durable Actions; no runtime test/benchmark, no TB497. Scope and non-vacuity: `Architecture_M6_CP3_R4_RA434_Strict_Trace_Entry_Missing_Edge_Oracle_20261013.md`.
 - [ ] R4 remains IN_PROGRESS: RA-43.1/.4 global, RA-46.5, RA-47.12 runtime liveness, historical 39/34/7/88/six and genuine odd-τ multi-carrier remain open. RA-43.2 discharged under RA-50.
 
 ---
 
-## CURRENT — R4 RA-43.4 strict no-network published-edge key migration (2026-10-13 UTC)
+## HISTORY — R4 RA-43.4 strict no-network published-edge key migration (2026-10-13 UTC)
 
 - [x] Applied at `52389f6749e90e9fdc9c9f2b711ea0c339e323ca` and exact eight-target GMP/GMPXX compile GREEN in `38355543522` (28/28 package checksums, 8/8 targets, GMPXX/GMP link, runtime disabled) the `rail_interval_refs` default strict no-network producer edge-list requirement plus Phase14 / REPackage authored typed source-edge fixture migration, preserving first-rejection predicates and named no-network diagnostic mode. Frozen selector unchanged; no executable/test/benchmark run. Inspect `Architecture_M6_CP3_R4_RA434_Strict_NoNetwork_Published_Edge_Keys_Code_Build_Record_20261013.md` for exact snapshot/patch/authority. Update compile evidence only after verifying immutable package.
 - [ ] R4 remains IN_PROGRESS: RA-43.1/43.4 global, RA-46.5 first rejections, RA-47.12 executed liveness, historical 39/34/7/88/six and odd-τ multi-carrier remain open. No TB497 or successor.
 
 ---
 
-## CURRENT — R4 RA-43.4 network-bound foreign published edge key (2026-10-13 UTC)
+## HISTORY — R4 RA-43.4 network-bound foreign published edge key (2026-10-13 UTC)
 
 - [x] Applied and compile-only verified the test-source oracle extending `StandaloneRailDiagnosticModeCannotBypassProducedNetworkTypedIngress` to reject a present but *wrong* producer source-edge key at the `rail_interval_refs` consumer. This is distinct from the existing network **factory** forged-key oracle; requires producer-backed full-network positive, real alternate feature-edge key, wrong-key `TypedAuthorityMismatch` and correct failing rail ID. Applied source `91e5c2a` (Drive `38352833746`), eight-target GMP/GMPXX compile GREEN `38352976015` (artifact `11791682503`, ZIP SHA-256 `c449ccb818e42882106186afdae2066b3c1e7e591e454b4e62906617eaa7d764`, 28/28 hashes, 8/8 targets, exit 0/0, gmpxx/gmp linkage, clean source, no runtime). Exact snapshot `a2e63a6`, workflow `38352281752`, 5585/5585 file hashes; see `Architecture_M6_CP3_R4_RA434_Consumer_Foreign_Edge_Key_Regression_20261013.md`. No runtime, selectors or TB497.
 - [ ] Separately migrate remaining standalone Phase14 strict no-network typed vertex fixtures before globally requiring published `sourceEdges` at no-network helper ingress. Do not incorrectly claim previous network-bound cardinality guard closed this seam. RA-50 prohibits upstream filled-side receipt; R4 still carries remaining RA-43/46/47 and historical/multi-carrier gates.
 
 ---
 
-## CURRENT — R4 RA-43.4 network-bound missing typed edge-key check (2026-10-13 UTC)
+## HISTORY — R4 RA-43.4 network-bound missing typed edge-key check (2026-10-13 UTC)
 
 - [x] Applied the source-exact `rail_interval_refs` network-bound published-edge key cardinality guard and Phase10 positive/negative (same test identity) at `c11eb6f4aac75676f864c84aed501dcd38d2aeb6`; eight-target GMP/GMPXX compile **GREEN** workflow `38350909779`, artifact `11790937173` SHA-256 `959cab5897c43900d4ec3986ecb4e6b75a74d06401be6eddd0ab24bf23660b36`, 28/28 hashes, exits 0/0, clean source and runtime disabled. The missing-key rejection must occur even in named legacy diagnostic mode when a real network exists; the source-only no-network diagnostic stays unchanged. Record: `Architecture_M6_CP3_R4_RA434_Network_Bound_Typed_Rail_Edge_Key_Code_Build_Record_20261013.md`; snapshot `ea25856980b5ac8b8ddd643151c31affb1ea785b`, 5576/5576 checksums. No runtime or TB497.
 - [ ] Continue R4 RA-43.1/.4 global, RA-46.5, RA-47.12 executed, historical 39/34/7/88/six and odd-τ multi-carrier gates. RA-50 discharges RA-43.2 and forbids invented filled-side receipts.
 
 ---
 
-## CURRENT — R4-SID-01 corrected A5 GMP compile verified (2026-10-13 UTC)
+## HISTORY — R4-SID-01 corrected A5 GMP compile verified (2026-10-13 UTC)
 
 - [x] Source `b836329e540ddaca5a7e4d233a6c0a99f574fd85` compiled on all eight required GMP/GMPXX targets in workflow `38348617454`, artifact `11790165302`, SHA-256 `8542f0118b4f85cbaa8da3ae94c4b125421da234fdf8e7dc401206bcbbcc1a3b`. Verified 28/28 artifact SHA256SUMS, 8/8 targets, preflight/build 0/0, actual GMPXX/GMP link, clean source and `runtimeExecution=false`. This resolves the previous connector dispatch issue and corrects the earlier A5 test-only compiler error; see `Architecture_M6_CP3_R4_SID01_A5_Selected_Face_Pin_Code_Build_Record_20261013.md`.
 - [ ] Runtime A4 acceptance/A5 `HardRailRouteAuthorityInvalid` rejection has **not** been tested. The A4 side-swap test is likewise compile-only. Continue same R4 Code + Build; preserve RA-50 side-authority scope, the frozen 497-selector/TB boundary, remaining producer/rejection/historical/odd-τ gates. **No TB497 or successor.**
 
 ---
 
-## CURRENT — R4-SID-01 A5 selected-face pin (2026-10-13 UTC)
+## HISTORY — R4-SID-01 A5 selected-face pin (2026-10-13 UTC)
 
 - [ ] Apply and compile-only verify `M6CP3.A5RejectsSourceEquivalentHardRailSelectedFaceRechart` against exact source `9c126c1a9d814c39742bd63acbf9dbac3261a0da` (snapshot workflow `38340642958`, 5,561/5,561 hashes). It recharts only one produced hard-rail cell corner to a distinct same-region/sheet source face carrying the same intrinsic point, requires checked A4 acceptance and A5 `HardRailRouteAuthorityInvalid` rejection with self-inverse τ. Runtime tests deferred; no TB497.
 - [ ] R4-SID-01 A4 and A5 test sources are separate checks; both remain unexecuted. RA-43.2 discharged; do not invent upstream filled-side receipts. Preserve remaining R4 gates, full 497 selector freeze and independent Review decisions. See `Architecture_M6_CP3_R4_SID01_A5_Selected_Face_Pin_Code_Build_Record_20261013.md`.
 
-## CURRENT — R4-SID-01 load-bearing A4 trace-to-certificate side pin (2026-10-13 UTC)
+## HISTORY — R4-SID-01 load-bearing A4 trace-to-certificate side pin (2026-10-13 UTC)
 
 - [ ] Apply the source-only `M6CP3.CheckedA4RejectsGlobalHardRailSideSwapWithSelfInverseTau` test from verified snapshot `2ddf6fa143f61335fbfba511943d5e9cdde3dbe6`, record exact Drive dispatcher semantics and compile the standard eight GMP/GMPXX targets. The test uses real produced τ=0/2 certificates and swaps both sides without changing composed transport; checked A4 must reject the trace-attachment mismatch. **No execution or TB497 during Code + Build.** See `Architecture_M6_CP3_R4_SID01_SelfInverse_Side_Pin_Code_Build_Record_20261013.md`.
 - [ ] Independently protect the distinct A5 selected-face pin in later evidence; do not claim this A4 negative verifies it. Preserve RA-50's RA-43.2 discharge and prohibition on invented upstream filled-side authority. All remaining R4 production/first-rejection/historical gates stay open.
 
-## CURRENT — RA-47.11 test EV-row census verified (2026-10-13 UTC)
+## HISTORY — RA-47.11 test EV-row census verified (2026-10-13 UTC)
 
 - [x] Classified all five remaining `source_edge_index` test call sites (six textual uses including definition) as legitimate typed-key → DCEL `EV` row lookups for `EF`, indexed transition diagnostics or real topology membership; none republishes an EV index as `SurfaceCellRail::sourceEdges`. See `Architecture_M6_CP3_R4_RA4711_Test_EV_Row_Disposition_20261013.md`.
 - [x] RA-43.2 is DISCHARGED by RA-50; the suggested new source-authored filled-cell/side receipt is REFUSED and must not be implemented. The earlier RA-43.2 open item below is superseded by RA-50.
 - [ ] R4 Code + Build still requires independently scoped RA-43.1/.4, RA-46.5, RA-47.12 and historical/odd-τ gates. No TB497 or Test + Benchmark execution is authorized here; static census is not runtime PASS.
 
-## CURRENT — R4 RA-43.2 source-owner design gate (2026-10-13 UTC)
+## HISTORY — R4 RA-43.2 source-owner design gate (2026-10-13 UTC)
 
 - [ ] Independently resolve which producer binds `(rail, terminal, oriented source-face germ, filled-side owner)` before A4 uses trace rows. Triangle winding plus ordered rail edges can supply source carrier-side ordering but **not the independent A4 filled-side owner mapping**. See `Architecture_M6_CP3_R4_RA432_Oriented_Germ_Producer_Boundary_Review_Request_20261013.md`; do not accept trace-face/self-certified A4 evidence as producer authority.
 - [ ] Distinguish the already authored **factory** `MissingTerminalA3Path` tamper oracle from the still-open **A4 consumer first-rejection** `missing-terminal-A3-path` obligation; avoid duplicating or double-counting. `overlapping-terminal-sectors` and `missing-or-nonreciprocal-terminal-A3` feasibility remains unadjudicated.
 - [ ] R4 still carries RA-43.4 diagnostic retirement, RA-46.5, RA-47.12 runtime, 39/34/7/88/six and odd-tau multi-carrier. No TB497 or successor.
 
-## CURRENT — R4 RA-43.4 compile-only network override checkpoint (2026-10-13 UTC)
+## HISTORY — R4 RA-43.4 compile-only network override checkpoint (2026-10-13 UTC)
 
 - [x] Apply producer-backed typed-network override regression at semantic `f08770f004404f46356cc6fac59882aae5508849` through Drive workflow `38329088933`; consumed Drive stage deleted, source and test identity preserved.
 - [x] Pinned eight-target GMP/GMPXX compile GREEN workflow `38329228942`, artifact `11781824492`, ZIP SHA-256 `e76c87f5ecd5285192785278e5fdb8a9be3ae79ca7e4317e43f029df9372f486`; 28/28 hashes, 8/8 targets, preflight/build 0/0, GMPXX/GMP linkage, clean source, `runtimeExecution=false`.
 - [ ] Do not claim runtime PASS. Global RA-43.4 legacy exception disposition, RA-43.2 oriented terminal-side authority, remaining RA-46.5 and RA-47.12 executed liveness, historical 39/34/7/88/six and true odd-τ multi-carrier remain open. R4 continues; TB497 forbidden.
 
-## CURRENT — R4 RA-43.4 verified compile / mandatory typed network override (2026-10-13)
+## HISTORY — R4 RA-43.4 verified compile / mandatory typed network override (2026-10-13)
 
 - [x] Exact source `40f3e7a8307bd0626e99318e3a295caa3978cd37` named-mode migration compiled GREEN, workflow `38327322520`, artifact `11781461538`, ZIP SHA-256 `995f98408d7d465b400051cf5626992481aee132d9fdd4dcf93406bb3f7a7e22`, 28/28 hashes, eight targets, GMPXX/GMP, clean source, `runtimeExecution=false`.
 - [ ] Apply and compile-check the new producer-backed Phase10 trust-boundary regression: explicitly named standalone diagnostic accepts geometrically valid untyped rail only with no network; default strict and actual producer A2a network both reject `TypedAuthorityMismatch`. No test execution or TB497 in current turn. Owning record: `Architecture_M6_CP3_R4_RA434_Explicit_Standalone_Diagnostic_Optout_Code_Build_Record_20261013.md`.
 - [ ] Continue RA-43.2 independently oriented terminal-side producer, global RA-43.4 legacy disposition, remaining RA-46.5 and RA-47.12 runtime, historical 39/34/7/88/six, odd-τ multi-carrier. No successor until formal complete.
 
-## CURRENT — R4 RA-43.4 explicitly named standalone diagnostic exception (2026-10-13)
+## HISTORY — R4 RA-43.4 explicitly named standalone diagnostic exception (2026-10-13)
 
 - [ ] Apply/compile-source-check the exact-base `RailIntervalAuthorityMode` migration in `rail_interval_refs`: strict typed default, explicit standalone diagnostic-only opt-out, network still forbids untyped ingress. No test/benchmark execution; this is not global legacy retirement. See `Architecture_M6_CP3_R4_RA434_Explicit_Standalone_Diagnostic_Optout_Code_Build_Record_20261013.md`.
 - [ ] R4 oriented producer-side binding and remaining RA-43.4/46.5/47.12/historical/odd-τ gates remain open. No TB497.
 
-## CURRENT — R4 RA-43.2 missing open-rail provenance compile receipt (2026-10-13 UTC)
+## HISTORY — R4 RA-43.2 missing open-rail provenance compile receipt (2026-10-13 UTC)
 
 - [x] Source-only first-consumer missing-contact negative applied `03b712e660d2bfd0dd8114a158158540a7808a4e` and compiled via workflow `38324952482`, artifact `11781035489`, SHA-256 `4251a424b3371eb0ada98c1e43fd2357199cb943ce3637060ba2bf1a0d4e41a9` (28/28 packaged hashes; 8/8 requested targets; preflight/build exits 0/0; GMP/GMPXX linker; five source-status files clean; exactArithmeticBackend=GMP; runtimeExecution=false); no test runtime.
 - [ ] Producer-authored oriented side occurrence still unimplemented; remaining RA-43.4/46.5/47.12 and frozen R4 historical/multi-carrier gates open; do not start TB497. Owning evidence record: `Architecture_M6_CP3_R4_RA432_Open_Terminal_Contact_First_Rejection_Code_Build_Record_20261012.md`.
 
-## CURRENT — R4 open-rail terminal provenance first rejection (2026-10-12)
+## HISTORY — R4 open-rail terminal provenance first rejection (2026-10-12)
 
 - [ ] Verify source-exact RA-43.2/RA-46.5 missing-open-contact first-rejection negative at compile only. No runtime acceptance. Source snapshot `4a68d108a592126a9443ae8644c2fcab2df6d181`, 6574/6574 hashes. New `MissingOpenRailTerminalContactRejectsBeforeClosedRailFallback` uses produced source-authenticated open rail, removes only the selected terminal contact, and requires consumer `missing-terminal-or-closed-rail-provenance`. Evidence: `Architecture_M6_CP3_R4_RA432_Open_Terminal_Contact_First_Rejection_Code_Build_Record_20261012.md`. Oriented producer side-binding RA-43.2, RA-43.4, other RA-46.5 negatives, RA-47.12 runtime and historical R4 gates remain open. No TB497.
 
-## CURRENT — R4 RA-47.12 compile evidence recorded (2026-10-12)
+## HISTORY — R4 RA-47.12 compile evidence recorded (2026-10-12)
 
 Production-path rail liveness test source is applied at `60d3292018105ffd4e0064dd9b6849ffecefc2e0` and compiled in workflow `38322933412` (artifact `11779273254`, SHA-256 `75a86ca1c88c2c3c8537f84a25dfe2b7487034a26438482b513adfd95f251849`). 28/28 checksums; 8/8 targets; preflight/build 0/0, GMPXX/GMP linker, clean source, exactArithmeticBackend=GMP, runtimeExecution=false. **Not a runtime PASS;** RA-47.12 executed witness and all other R4 goals remain open. See `Architecture_M6_CP3_R4_RA4712_Default_Producer_Rail_Liveness_Code_Build_Record_20261012.md`.
 
-## CURRENT — R4 RA-47.12 authored default-path liveness oracle (2026-10-12)
+## HISTORY — R4 RA-47.12 authored default-path liveness oracle (2026-10-12)
 
 An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative was added to the existing Phase10 fixture. Apply/compile source first; defer execution to authorized TB/Review. RA-47.12 remains observationally open; no runtime PASS. See `Architecture_M6_CP3_R4_RA4712_Default_Producer_Rail_Liveness_Code_Build_Record_20261012.md`. R4 remains IN_PROGRESS and TB497 remains held.
 
-## CURRENT — R4 typed rail helper source-corner confirmation (2026-10-12)
+## HISTORY — R4 typed rail helper source-corner confirmation (2026-10-12)
 
 - [x] Apply and eight-target GMP/GMPXX compile-check source-exact RA-43.4 shared-helper counterexample patch. Exact snapshot `b178f5628bf9e07a4ede14f4717fbe37c2b6e3ab`, 6556/6556 hashes. Test source extends the existing Phase14 typed rail case with coincident distinct source-vertex ID and near-corner geometry negatives; production/legacy diagnostic contracts remain unchanged. Compile GREEN workflow `38320820157`, source `e15e1d18a38308f2c4c83b1a616a85f73af37ac7`, artifact `11778313525`, 28/28, 8/8, runtime disabled. See `Architecture_M6_CP3_R4_RA434_Typed_Rail_Corner_Confirmation_Code_Build_Record_20261012.md`.
 - [ ] Continue same R4 turn afterward. RA-43.2 producer-oriented side binding, global RA-43.4 legacy migration, RA-46.5 first-rejection set, RA-47.12 observed liveness, and carried recovery matrix remain open. TB497 forbidden in this Code + Build turn.
 
 ---
 
-## CURRENT — RA-49 unblocked; R4 duplicate terminal first-rejection regression prepared (2026-10-12)
+## HISTORY — RA-49 unblocked; R4 duplicate terminal first-rejection regression prepared (2026-10-12)
 
 - [x] Independent RA-49 decides duplicate `{v,v}` `ambiguous-terminal-contact` is reachable at the A4 consumer; the earlier proposed retirement is rejected. `nonmanifold-terminal-star-spoke` negative is retired (guard kept), and `R4-CTC-01` validate-after-use is reserved for a Definition turn.
 - [x] Exact-source snapshot `7c228ec451ab605e9a1b913ec2dca8a2c14db365` verified (workflow `38315391692`, artifact `11775764498`, 6541/6541 files). The RA-49.2 regression in the existing rectangular HardRail tests injects duplicated original typed terminal ID, requiring the consumer's first-rejection diagnostic.
@@ -1630,14 +1645,14 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 RA-43.4 compile GREEN; canonical turn remains open (2026-10-12 19:10Z)
+## HISTORY — R4 RA-43.4 compile GREEN; canonical turn remains open (2026-10-12 19:10Z)
 
 - [x] Exact semantic `9c75f44dab79cd3b5ad014d918f15f808b6ac504` compiled in run `38293645339`, eight targets, 28/28 manifest, GMPXX/GMP, no runtime. Evidence in `Architecture_M6_CP3_R4_RA434_Default_Strict_Source_Vertex_Contract_20261012.md`.
 - [ ] Continue `M6-CP3-CB1-ENTRY-R4`, not its successor: RA-43.2 producer-bound endpoint certificate; RA-43.4 legacy diagnostic opt-out; RA-46.5 actual first-rejection negative witnesses; RA-47.12 liveness; all carried first-rejection, 39/34/7/88/six CP3 and genuine odd-τ/multi-carrier obligations. Freeze selector 497. No tests/benchmarks within Code + Build.
 
 ---
 
-## CURRENT — RA-47 typed rail implementation source staged (2026-10-12)
+## HISTORY — RA-47 typed rail implementation source staged (2026-10-12)
 
 - [x] Frozen RA-47 review replaces raw rail-edge index with canonical typed `SourceEdgeTopologyKey` keys; source and test changes prepared from verified snapshot `1bcc068c`, including `(0,2)` differing-index regression.
 - [ ] Verify exact GMP/GMPXX eight-target compile on applied semantic source. Do not infer runtime PASS from compile.
@@ -1654,7 +1669,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 typed rail raw-sidecar interval count integrity (2026-10-12)
+## HISTORY — R4 typed rail raw-sidecar interval count integrity (2026-10-12)
 
 - [x] Verify previous RA-43.4 strict production interval guard exact eight-target GMP/GMPXX build GREEN at `0cd4391b976141ec6499378a319d933a9f7ec6c2`: run `38234679163`, result `11740820820` SHA-256 `13b2f1773e8625255482611e99cf20a3c3b65634912e1161407676757ca6f903`, 28/28 checksums, preflight/build 0/0, GMPXX/GMP linked, runtimeExecution=false.
 - [x] Source hardening: typed rail with nonempty `sourceEdges` must have exact interval count; existing Phase14 source-incidence test adds mismatch negative without altering identity. Source `dcf24e2c881b9ed67ec8f992d94d4b4e364fd4e2`, Drive apply `38236532142` GREEN, consumed stage deleted, recovery patch in Library. Record `Architecture_M6_CP3_R4_Typed_Raw_Edge_Cardinality_Code_Build_Record_20261012.md`.
@@ -1663,7 +1678,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 RA-43.4 production interval-rail typed-source gate (2026-10-12)
+## HISTORY — R4 RA-43.4 production interval-rail typed-source gate (2026-10-12)
 
 - [x] On exact source `5ebddc55...` (snapshot `38231038572`, 6446/6446), add production-enforced `requireTypedSourceVertices` to three actual `rail_interval_refs` call sites, preserving standalone helper legacy negative diagnostics. Four-file source `0cd4391b976141ec6499378a319d933a9f7ec6c2`, Drive apply `38234541145` successful; patch stored in Library and Drive stage deleted.
 - [x] Extend existing Phase14 rail-source-incidence test to require valid typed production rail and reject otherwise geometrically-valid untyped rail at strict helper and actual production trace-entry. No test names, frozen selector, network ABI, or workflow permissions changed.
@@ -1672,7 +1687,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 seven historical DCEL fixtures: implementation census, NOT runtime PASS (2026-10-12)
+## HISTORY — R4 seven historical DCEL fixtures: implementation census, NOT runtime PASS (2026-10-12)
 
 - [x] Verify exact independent source snapshot `38231038572` at `5ebddc55b47167d5062914156c4be66a390df41c`: archive SHA verified, all `6446/6446` file hashes valid.
 - [x] Source-prove six historical periodic-owner fixture identities (220, 221, 296, 302, 304, 439) now share a DCEL-valid oriented two-triangle disk and source-owned A3; the seventh (40, FlowRep support) has its own DCEL-valid two-triangle source and independent A3. Record `.agents/Directional/Architecture_M6_CP3_R4_Seven_DCEL_Fixture_Static_Source_Census_20261012.md`.
@@ -1681,7 +1696,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 typed rail rejects foreign valid face-local edge (2026-10-12)
+## HISTORY — R4 typed rail rejects foreign valid face-local edge (2026-10-12)
 
 - [x] Source-independent Phase14 typed chain `(0,4)` vs valid but foreign local source edge `(1,4)` rejected by existing preprocessor oracle at interval 0; semantic `34379d974819be5586e7ef5dfaef00912ad4a343`; source patch `eac5243e1def71a503b193eedd87e5e2400276ca3a63f2639bf47ad6cd3bfc0e`, apply workflow `38228853566`.
 - [x] Exact source eight-target GMP/GMPXX compile GREEN, run `38228978981`, job `114743570982`, result `11737497543` ZIP SHA-256 `bf6500a06082adaab384ee76cf7b72106cebebf0ee7c2103013ce966fd33b50a`, 28/28 manifest, preflight/build 0/0, `runtimeExecution=false`.
@@ -1689,7 +1704,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 closed-rail wraparound wrong raw-index rejection (2026-10-12)
+## HISTORY — R4 closed-rail wraparound wrong raw-index rejection (2026-10-12)
 
 - [x] Existing closed-rail rotation/reversal fixture now asserts a distinct in-range incorrect source-edge index on typed closing interval is rejected at `InvalidRailGeometry`; semantic `cc7f6b1010309d3eb82d78c33fbddc66ef6c7e1a`, Drive apply `38226080567`, staging deleted.
 - [x] Exact-source 8-target GMP/GMPXX compile GREEN, workflow `38226217402`, result `11736147455` SHA-256 `581cbe9eb2a9f3b3b7e07db2e742328e9c267442234d5a2b6a139b3b95f7aecb`, 28/28 manifest, clean source, no runtime.
@@ -1697,7 +1712,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 produced raw rail index positive oracle (2026-10-12)
+## HISTORY — R4 produced raw rail index positive oracle (2026-10-12)
 
 - [x] One existing Phase20 produced rail test gains original-source `TriMesh::EV` bounds and topology identity checks; semantic `702dfbb89df40f4f2dabddb24400911c4460ca79`, exact snapshot `38220631107` manifest 6418/6418.
 - [x] Exact eight-target GMP/GMPXX compile GREEN at `702dfbb89df40f4f2dabddb24400911c4460ca79`, workflow `38221325600`, job `114718105515`, result `11734432831` ZIP SHA-256 `9c2120f3bcd65dd07a4a1e2ded691557b33333b53b82ca014c77d8da7624b11d`, manifest 28/28, preflight/build 0/0, GMPXX/GMP linked, runtimeExecution=false.
@@ -1705,7 +1720,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 typed rail index consistency compile correction pending (2026-10-12)
+## HISTORY — R4 typed rail index consistency compile correction pending (2026-10-12)
 
 - [x] Original-source edge-index/typed chain binding added at semantic `a92ddb5`, corrected after `DomainResult` compile failure at source `b970e1a113fe00b90e225d917597c649f9e1aa1d`; apply workflow `38213040179` succeeded.
 - [x] Corrected `b970e1a113fe00b90e225d917597c649f9e1aa1d` compiled **GREEN** via workflow `38214261145`, job `114695273536`, artifact `11732105024` SHA-256 `f6f5f73de7626bb29402f61dd79b01091c65b712fd74fa1c03725ac1a428511d`: eight targets, GMP/GMPXX link, 28/28 checksums, source clean, `runtimeExecution=false`. Initial `38212754554` preflight failure preserved as history; no runtime PASS established.
@@ -1713,7 +1728,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 unsupported-sheet first-rejection original-source A3 (2026-10-12)
+## HISTORY — R4 unsupported-sheet first-rejection original-source A3 (2026-10-12)
 
 - [x] Source-bounded negative fixture A2/A3 ingress, source `24fbd353332c1d55ec2612e9a0ccbe748a861d9f`, apply workflow `38208759469`, Drive stage owner-deleted.
 - [x] Eight-target GMP/GMPXX compile GREEN, workflow `38208927096`, result `11728751414`, no runtime.
@@ -1721,7 +1736,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 M6 CP3 produced seam witness source-A3 ingress (2026-10-12)
+## HISTORY — R4 M6 CP3 produced seam witness source-A3 ingress (2026-10-12)
 
 - [x] Correct one original CP3 A5/A6/A7 seam candidate builder's missing original-source A2/A3; semantic `b58314b3c8f024d2e6a3ce6092ad87b85425d40f`, Drive apply `38207015195`, staging retired; 3 source lines, unchanged existing test identities and topology.
 - [x] Exact-source eight-target GMP/GMPXX compile **GREEN**: workflow `38207150160`, job `114673117668`, result artifact `11727628126` ZIP SHA-256 `59145348b1324241ea596fbcce410c75b016881b9abc2d06917be43d21d045b7`, manifest **28/28**, preflight/build exits **0/0**, `DIRECTIONAL_ENABLE_GMP=ON`, generated link includes GMPXX/GMP, `exactArithmeticBackend=GMP`, clean source, `runtimeExecution=false`. Diagnostic artifact `11727807480` ZIP SHA-256 `36decf1318c952fdb6bfcb222acd7336918ab6aa18540f3a82095db6a960e44d`.
@@ -1729,7 +1744,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 composite bounded/periodic negative source-A3 ingress (2026-10-12)
+## HISTORY — R4 composite bounded/periodic negative source-A3 ingress (2026-10-12)
 
 - [x] Exact source `0ffc7857c544d050a70516dbaeea6092fad1b6d7`, one Phase10 test ingress through original-source A2/A3; original `InvalidBoundedDiskFrontPairing` oracle, fixture and selector unchanged. Drive apply `38205257494`, stage retired; source patch preserved.
 - [x] Exact eight-target GMP/GMPXX compile GREEN: workflow `38205407002`, job `114667758421`, result `11727133144` ZIP SHA-256 `82026586b7286971b8aadb16a6e8031f338ca4ff65b0b2facc9b0a156ef537a6`, 28/28 manifest, preflight/build 0/0, GMPXX/GMP linked, clean source, `runtimeExecution=false`.
@@ -1737,7 +1752,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 two Phase10 negative source-A3 fixture ingresses (2026-10-12)
+## HISTORY — R4 two Phase10 negative source-A3 fixture ingresses (2026-10-12)
 
 - [x] Source-only +21/-0 two original Phase10 negatives with independently original-source-bound A3: periodic ring ambiguity and two-triangle disk invalid cyclic turn. Source `2be8da1198f9861efb7231c9468760df787b22f5`, apply run `38203661294`, Drive staging deleted; unchanged test identities and original oracles.
 - [x] Exact eight-target GMP/GMPXX compile `38203770454` GREEN; result `11726506719`, ZIP SHA-256 `a5399cd78e5a38e8f2969c00dc453fa66079f0cf2f31bc8b603658cc5078a972`, 28/28 manifest, preflight/build exits 0/0, source clean, `runtimeExecution=false`.
@@ -1745,7 +1760,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 three Phase10 source A3 fixture repairs (2026-10-12)
+## HISTORY — R4 three Phase10 source A3 fixture repairs (2026-10-12)
 
 - [x] One source test file +24/-4, unchanged three selector identities and oracles; semantic source `8df105b560625ea09b3ac136b3ee4b9656a38e2f`. Source apply `38202273478` success, staged patch deleted.
 - [x] Mandatory eight-target GMP/GMPXX compile `38202384969` GREEN, artifact `11725774026`, manifest 28/28, preflight/build 0/0, clean source, `runtimeExecution=false`.
@@ -1753,7 +1768,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 produced rail source-chain oracle (2026-10-12)
+## HISTORY — R4 produced rail source-chain oracle (2026-10-12)
 
 - [x] Compile-visible RA-43.2/RA-43.4 source-chain assertions in the existing producer integration test, plus exact `{0,3}` interior hard-rail seed fixture. Source `e7a39b891a046df46811bc9f792a17e0c33e7da9`, one test path +24/-0, Drive apply `38200534499` success, stage owner-deleted.
 - [x] Exact source eight-target GMP/GMPXX compilation **GREEN**: workflow `38200681852`, job `114653260254`, result artifact `11725410765`, ZIP SHA-256 `ee7472bc18b63bff93c24a1c4cd7a848eb8f30ff113e99e87b25da5f6d0ff44c`, package manifest **28/28**, preflight/build exits **0/0**, **8/8** required targets, CMake GMP enabled and GMPXX/GMP linker verified, clean source, `runtimeExecution=false`.
@@ -1761,7 +1776,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 Phase14 typed rail first-rejection coverage (2026-10-12)
+## HISTORY — R4 Phase14 typed rail first-rejection coverage (2026-10-12)
 
 - [x] Source `4d51805d79994f1d718d71332be06f504d6312cf` migrates two existing Phase14 supplemental tests to authentic typed ordered source-vertex chains, one test file +9/-0, unchanged assertions/identities/frozen selectors. Genuine `Valid` baseline added; disconnected negative remains deliberately untyped so its intended first rejection is not masked. Exact patch `cc819992da00acd005904c69a8203f457aff116d749ab00161ce4156c404fb42`, apply workflow `38198898409` success, Drive patch deleted.
 - [x] Exact-source eight-target GMP/GMPXX compile **GREEN**: workflow `38198996718`, job `114648012662`, source `4d51805d79994f1d718d71332be06f504d6312cf`, result artifact `11723819181`, ZIP SHA-256 `23ee086aaeef3fec3ff9b04dc200e8de2fb54c9350f33f7925458dda9ab63d73`; manifest 28/28, preflight/build 0/0, GMP/GMPXX linker verified, source clean, `runtimeExecution=false`.
@@ -1769,7 +1784,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 Phase14 incident-order/barrier source vertices (2026-10-12)
+## HISTORY — R4 Phase14 incident-order/barrier source vertices (2026-10-12)
 
 - [x] Authenticated two remaining Phase14 fixtures with exact typed source-vertex chain `{0,4,7}` in source `9709bd8e855e4f6a92165b082ba9b3f4330f8411`, only two insertions in one test file, all original oracles/identities unchanged.
 - [x] Mandatory eight-target GMP/GMPXX compilation GREEN — exact source `9709bd8e855e4f6a92165b082ba9b3f4330f8411`, dispatcher event `c6cf2651f5d5fcfbcbdaa53b79d2fbaed6a29261`, workflow `38196555564`, compile job `114640470513`, result artifact `11723373444` ZIP SHA-256 `a122eb21e00a387d5585d6cf55244a79a15a2091138343051eb98192266d9b7f`; eight required targets, preflight/build 0/0, manifest 28/28, GMP/GMPXX generated linker evidence, clean source before/after, `runtimeExecution=false`.
@@ -1777,7 +1792,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 Phase14 positive rail source-vertex migration (2026-10-12)
+## HISTORY — R4 Phase14 positive rail source-vertex migration (2026-10-12)
 
 - [x] Source-owned exact `sourceVertices` published on 10 previously untyped valid Phase14 rail instances across seven existing tests. Applied in commit `10afde93e4de3202d5bc8d2bbd0304f629a2375e`, workflow `38194680839`, result `11722878840` (patch hash verified; Drive staging deleted). One test file, ten insertions, no deletions, seven unchanged Phase14 test identities and oracles; closed, reversed, multi-interval and side-chart sample topology checked against exact source faces. No runtime Directional tests or frozen 497 execution.
 - [x] Exact-source mandatory eight-target GMP/GMPXX compile **GREEN**; workflow `38194789102`, job `114635016916`, result artifact `11723220719`, ZIP SHA-256 `3340a26bc7fc8a543843981d0040a84339ec44490ed26c17b5541f1cc53e6039`. Eight targets verified; CMake `DIRECTIONAL_ENABLE_GMP=ON`, actual generated linker command references both `libgmpxx.so` and `libgmp.so`, package 28/28 checksum manifest, preflight/build exit 0/0, source worktree clean and `runtimeExecution=false`. No Directional test or benchmark executed.
@@ -1785,21 +1800,21 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 Phase14 typed-rail valid positive (2026-10-12)
+## HISTORY — R4 Phase14 typed-rail valid positive (2026-10-12)
 
 - [x] One source-owned positive fixture migration in `SurfaceCellTracingPhase14Tests.cpp`: `validRail.sourceVertices={0,4}`, preserving original negative and open-endpoint assertions, commit `5fbfa5de3f1421dab122ea70ba677efb6dd6f5f1`, apply `38193068301`; stage deleted. Exact-source 8/8 GMP/GMPXX compile GREEN workflow `38193556754`, job `114631316138`, artifact `11721982481` SHA-256 `2e665b1a2d7833c979e2bc5975979f36053e218443934de26c2cf208076637b2`, manifest 28/28, exits 0/0, clean source, `runtimeExecution=false`.
 - [ ] No runtime acceptance. Remaining RA-43.4 legacy rail migration, overfull-A3 independent Review, endpoint/Phase10/DCEL/CP2/CP3/multi-carrier R4 obligations and frozen TB497 gate remain open.
 
 ---
 
-## CURRENT — R4 overfull same-edge source/A3 feasibility (2026-10-12)
+## HISTORY — R4 overfull same-edge source/A3 feasibility (2026-10-12)
 
 - [x] Identified source-exact reachability conflict for the supplemental three-face rail-incidence fixture: three triangles incident to the same source edge repeat one directed halfedge and are rejected by `TriMesh` DCEL consistency before A3 construction. The checked A4 factory requires a matching source-bound A3 before its later `railIncidenceCounts > 2` guard. Independent review requested in `.agents/Directional/Architecture_M6_CP3_R4_Overfull_A3_Feasibility_Review_Request_20261012.md` (commit `82d0942d05bbf8c9859d54daea5230f8dff2f323`). This is static proof, not executed evidence.
 - [ ] Obtain independent Definition/Review ruling before modifying the supplemental three-face test expectation, retiring a source-valid A4-overfull witness, or replacing it with a producer-source invalidity negative. Preserve existing A4 guard, A3 gate, frozen selectors, accepted baselines, and all outstanding R4 obligations; no TB497.
 
 ---
 
-## CURRENT — R4 typed missing-path regression oracle repair (2026-10-12)
+## HISTORY — R4 typed missing-path regression oracle repair (2026-10-12)
 
 - [x] Static first-rejection audit found `74e74e41` fixture would trip certificate/front attachment equality before typed missing-path check. Corrected one test source file without changing frozen identity or production guard; apply `38188448212`, semantic source `3c1f001fa03dde476222bbad48ae46cfebe12c9a`, owner Drive stage deleted.
 - [x] Exact-source eight-target GMP/GMPXX compile **GREEN** for corrected test: request `1b60967136ad863491a2ab15dfb63a491bb07a3e`, workflow `38188542762`, job `114616135782`, source `3c1f001fa03dde476222bbad48ae46cfebe12c9a`, result artifact `11720182846`, ZIP SHA-256 `3ef4c113979d2e861df4d4b30f1c529ba56a408e67c5d250a970bff22823e679`; 28/28 manifest, 8/8 targets, GMP/GMPXX, clean source, preflight/build 0/0, `runtimeExecution=false`. The earlier compile `38187046419` covers only superseded source.
@@ -1807,7 +1822,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4-A3U-01 source-exact correction (2026-10-12)
+## HISTORY — R4-A3U-01 source-exact correction (2026-10-12)
 
 - [x] Independent terminal path uniqueness review confirmed RA-46; the impossible literal two-path fixture was retired without weakening A4.
 - [x] Checked factory distinguishes typed missing versus ambiguous A3 terminal-star paths; safe source-incidence lookup; produced-terminal missing-path regression authored. Semantic source `74e74e41a7f040f34798d998dba36677e7ff07d4`, apply runs `38186808688` and `38186915904`; both Drive stages deleted.
@@ -1819,7 +1834,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 four legacy Phase10 producer positives receive source-owned A2/A3 (2026-10-11)
+## HISTORY — R4 four legacy Phase10 producer positives receive source-owned A2/A3 (2026-10-11)
 
 - [x] Four unchanged `SurfaceCellsPhase10` produced-positive test identities now call existing independently source-built A2/A3 helper, semantic source `ee800cce8d3bef34a8f2f891d0482cd8ff7a9f68`; source apply `38170296491` succeeded; Drive staging retired. Only `tests/SurfaceCellsPhase10Tests.cpp` changed.
 - [x] Eight-target source-exact GMP/GMPXX compile **GREEN**: workflow `38170442175`, job `114561804678`, source `ee800cce8d3bef34a8f2f891d0482cd8ff7a9f68`; preflight/build exits `0/0`, 8/8 targets, CMake `DIRECTIONAL_ENABLE_GMP=ON`, both `libgmpxx.so` and `libgmp.so` linked, package `SHA256SUMS` 28/28, clean source, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result artifact `11713818041` outer ZIP SHA-256 `dd506cef5b50423857893f35266404c699ed4dea42ebaff6345187c86c7eb269`, diagnostic artifact `11713098129` ZIP SHA-256 `b3c68ccf3dda22893daf2daaf80a237b618876a54140084e9d0a323a7388228a`.
@@ -1827,7 +1842,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 A2b closed-chain-vs-absent-contact source producer guard (2026-10-11)
+## HISTORY — R4 A2b closed-chain-vs-absent-contact source producer guard (2026-10-11)
 
 - [x] Source `d8698996f3c3206830bc2aedeae06d7019d523a3` rejects contactless hard-rail endpoint A2b certificates without exact same-ID closed-chain authority, while retaining valid closed-only behavior. One `SurfaceCellTracing.cpp` change, apply `38167011887`; stages owner-deleted.
 - [x] Exact eight-target GMP/GMPXX compile **GREEN**: workflow `38167114181`, job `114551928729`, source `d8698996f3c3206830bc2aedeae06d7019d523a3`, preflight/build `0/0`, eight targets built, CMake linked `libgmpxx.so` and `libgmp.so`, package checksum manifest `28/28`, source tree clean, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result artifact `11712702267` ZIP SHA-256 `7e285a50395217a3d47c5dafd6a851c695eaebceaf6e64cb7c9e3675d0e6e9a6`, diagnostic artifact `11712622481` ZIP SHA-256 `77fdd8868e9aba9e43df1ccab219cd8592c97274678e806f68c46cc19b835f14`. No runtime tests, benchmarks, or selector discovery executed.
@@ -1835,7 +1850,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 checked A4 terminal-contact absence / foreign-source negatives (2026-10-11)
+## HISTORY — R4 checked A4 terminal-contact absence / foreign-source negatives (2026-10-11)
 
 - [x] Exact source `72615c7a0bf7ca4d3b9d3729c81eb47842278251` adds two negative cases to the original `CheckedFactoryRejectsForgedTerminalA2bSideGerm` selected test: remove one genuine contact; substitute real source vertex 0 (not on the hard rail). Retains original source A3 and producer baseline. Source apply `38164373890`, follow-up typed DomainResult fix `38164686585`; both Drive stages deleted.
 - [x] Exact eight-target mandatory GMP/GMPXX compile **GREEN**: workflow `38164832322`, job `114545168786`, semantic source `72615c7a0bf7ca4d3b9d3729c81eb47842278251`, preflight/build exit `0/0`, both GMP libraries linked, manifest `28/28` clean, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result artifact `11711333843` ZIP SHA-256 `af09d91d99b3e0e3b0c3bac3161fd6e2d4fa9054cbfb7065f8f8de792c7e35c8`, log `11711413607` ZIP SHA-256 `dce3dc30b92f025fa63bb4c221a78c5e9c742a86fa75d50bf0c68f7309b61f54.
@@ -1843,7 +1858,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 periodic malformed-crossing independent A3 ingress (2026-10-11)
+## HISTORY — R4 periodic malformed-crossing independent A3 ingress (2026-10-11)
 
 - [x] Source-only test migration `e0cc0415b447c045443e3d498c6d6f50769b29e8` removes legacy A3-unbound periodic builder and passes original-source A2/A3 to `MalformedAuthoritativeCrossingProvenanceFailsClosed` without changing its malformed metadata or expected `PeriodicHolonomyMismatch`. Apply `38161729069`, verified; staged Drive patch permanently deleted; frozen identities/selectors unchanged.
 - [x] Exact eight-target GMP/GMPXX compile GREEN: `38161835655` job `114536250404`, preflight/build `0/0`, clean source, `28/28` self-manifest, GMP linked, `exactArithmeticBackend=GMP`, `runtimeExecution=false`, result artifact `11710631873` ZIP SHA256 `8e672d4720e4ff244dc80a540a0c1989a67b43155a01883fced3c8d9c1a9d9c7`, log artifact `11710816692` SHA256 `74210d3d205f49f22f38ded7598514edb772689c750bbef84165efaeaa31276e`.
@@ -1851,7 +1866,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 supplemental hard-rail source A3 positive-control non-vacuity (2026-10-11)
+## HISTORY — R4 supplemental hard-rail source A3 positive-control non-vacuity (2026-10-11)
 
 - [x] Source `e7871efaf56a1ee717cea5b66115e5c50a125d46` strengthens the original *supplemental* `HardRailTransitionNeedsExactlyTwoSourceFaceIncidences` with independent A3 non-null positive control and an actually published two-face A3 carrier. One test file, 12 lines; Drive apply `38158972074` succeeded and stage retired.
 - [x] Exact GMP/GMPXX eight-target compile GREEN: workflow `38159098983`, job `114528148302`, semantic source `e7871efaf56a1ee717cea5b66115e5c50a125d46`, preflight/build exits `0/0`, real `libgmpxx.so` and `libgmp.so` linked, `DIRECTIONAL_ENABLE_GMP=ON`, source clean, manifest `28/28`, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result artifact `11708843472` ZIP SHA-256 `39fc4fdb3020d6c3f8902264c2297818a9b840d9b1330fc86b7a08dec509786c`, log artifact `11708998433` ZIP SHA-256 `072db2fe296a1d336e572ccfbdc619a79bf30747523c428b8c4d084defd9e670`.
@@ -1859,14 +1874,14 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 factory-incidence negative oracle and frozen DCEL static audit (2026-10-11)
+## HISTORY — R4 factory-incidence negative oracle and frozen DCEL static audit (2026-10-11)
 
 - [x] Exact snapshot `38154965590`, 6207/6207 verifies. Identified potential overfull-rail negative vacuity: for three shared-edge triangles, missing/nonconstructible A3 can yield `InvalidSourceAuthority` **before** the intended checked incidence guard; no runtime evidence. Seven frozen R3 DCEL fixtures currently share source-valid-looking two-face disk topology; none is verified PASS.
 - [ ] Independent A3/manifoldness feasibility decision for the three-face negative; preserve A3 matching, hard-feature incidence guard and all frozen selectors. Runtime-check seven original DCEL negatives only in a future independently authorized artifact-only Test + Benchmark. Full evidence `.agents/Directional/Architecture_M6_CP3_R4_Factory_Incidence_Oracle_Source_Validity_Static_Audit_20261011.md`. All 39 endpoint / 34 Phase10 / 88 CP2 / six CP3 / multi-carrier odd-τ / terminal dual-path obligations remain; R4 IN_PROGRESS, successor UNKNOWN.
 
 ---
 
-## CURRENT — R4 supplemental hard-rail incidence receipt (2026-10-11)
+## HISTORY — R4 supplemental hard-rail incidence receipt (2026-10-11)
 
 - [x] Diagnose missing open-rail terminal-contact provenance on supposedly valid one/two-face incidence cases; patch original supplemental factory negative with source-owned terminal contact (`3a5b1d852fb2c91464969612a312679271043ad2`), followed by exact `DomainResult::value()` compiler fix (`b2b398591e399f2a8aeeea811c0850c45b128283`). Apply `38152596179` and `38152951894` succeeded and consumed Drive stages were retired. One test file only.
 - [x] Exact GMP/GMPXX eight-target compile **GREEN**: workflow `38153070583`, compile job `114510410732`, semantic source `b2b398591e399f2a8aeeea811c0850c45b128283`, eight requested targets, `0/0` preflight/build exits, 28/28 artifact manifest checksums, linked both `/usr/lib/x86_64-linux-gnu/libgmpxx.so` and `libgmp.so`, source tree clean, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result artifact `11706799174` ZIP SHA256 `81a9a52a14db4ef03f60e56737be007baedeea6c19ad98e3383d54615f4617ef`, log artifact `11706888808` ZIP SHA256 `0243bffa99b76b8947c6568145b063673375e073db3683f7bc2e5837875d9f18`.
@@ -1874,7 +1889,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 FlowRep singularity-support fixture (2026-10-11)
+## HISTORY — R4 FlowRep singularity-support fixture (2026-10-11)
 
 - [x] Exact source `245ef12a10dca2f258d53dcf997f43e2a7567de4` replaces a one-triangle supplemental singularity-support source fixture with a consistently oriented two-triangle disk while preserving the original rail/trace geometry, test identity and oracle. Apply `38150151923`; Drive staging permanently deleted.
 - [x] Exact mandatory GMP/GMPXX eight-target compile GREEN `38150289951`, job `114502218749`, source `245ef12a10dca2f258d53dcf997f43e2a7567de4`, preflight/build 0/0, both GMP libraries linked, clean tree, 28/28 ZIP manifest, `runtimeExecution=false`; result `11706318595` SHA-256 `7f0db84857a847378b07b998d02cf592cab47f8c2bdae72d8dfab819669e6be2` and log `11706588040` SHA-256 `c9933e7976cdc2062514d1d536c25fc04e8f1122d9d732d6c8d5cc31c2471c9b`.
@@ -1882,7 +1897,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 rejected terminal source-point coordinates (2026-10-11)
+## HISTORY — R4 rejected terminal source-point coordinates (2026-10-11)
 
 - [x] Verified exact snapshot `38146355008`, 6,174/6,174 entries. Applied source-only diagnostic `5650747e75703d644ba7f7b888981fe32fbce542` through `38146992456`; one code file, original A2b/A3 selection unchanged, Drive staging deleted.
 - [x] Mandatory GMP/GMPXX compile `38147128884` GREEN: 8/8, preflight/build `0/0`, manifest `28/28`, clean source, `runtimeExecution=false` (result `11704508997`).
@@ -1890,21 +1905,21 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 carried 39 endpoint static grouping (2026-10-11)
+## HISTORY — R4 carried 39 endpoint static grouping (2026-10-11)
 
 - [x] Crosswalked all 39 frozen A4 route-certificate RED rows: 31 share the internal-midline hard-carrier endpoint predicate (17 constant fixture, 12 fixed-plan variants, two odd χ); eight have distinct observed first failures. Independently mapped the 3×3 source-star spokes; no extrapolated runtime evidence. Exact record: `.agents/Directional/Architecture_M6_CP3_R4_Carried_39_Endpoint_Fingerprint_Source_Star_Triage_20261011.md`.
 - [ ] Determine authentic traced terminal corner/contact vs source-star paths and resolve real first predicate without weakening A2b/A3. No 39 endpoint, 34 Phase10, seven DCEL, 88 CP2, six CP3 or multi-carrier/odd-τ PASS claimed. Dual-path Review pending; no TB497.
 
 ---
 
-## CURRENT — R4 terminal dual-path source-topology Review gate (2026-10-11)
+## HISTORY — R4 terminal dual-path source-topology Review gate (2026-10-11)
 
 - [x] Verified exact source snapshot `5a7288c254f2b6d96320a5f645d3dcfb4bc4254b`, workflow `38139725760`, source archive SHA/6,164 manifest entries. Static graph argument: an accepted two-manifold terminal face-star is a link path/cycle, and removing the incident hard-carrier spoke leaves at most one simple non-hard A3 path to its carrier face. Full bounded proof and precise independent Review question: `.agents/Directional/Architecture_M6_CP3_R4_Terminal_A3_Uniqueness_Design_Review_Request_20261011.md`. **Not** a revised normative definition or runtime evidence.
 - [ ] Independent Definition/producer Review must either provide a source-valid two-path counterexample under existing rules or amend only that impossible witness obligation. Maintain all A4 fail-closed checks and frozen selectors. R4 other 39 endpoint / 34 Phase10 / seven DCEL / 88 CP2 / six CP3 / genuine odd-τ multi-carrier gates remain open; do not run TB497 here.
 
 ---
 
-## CURRENT — R4 A2b terminal missing/ambiguous simple-path diagnostic (2026-10-11)
+## HISTORY — R4 A2b terminal missing/ambiguous simple-path diagnostic (2026-10-11)
 
 - [x] Diagnostic-only source `3bcbb1f28adaa5b1b7dc5de9bc31e8be46ef5a4c`: report finite A3-admissible simple-path count to distinguish missing/ambiguous terminal path *on already rejected A4 endpoint certificates*, retaining typed first-failure and all checked A2b/A3/sector/orientation gates. Apply `38137073789` verified; patch `cb0702f4382d247dd9b5eec0d202bc1ecbb34ed0e291efd9c00af422bffcf3a2` backed up; transient Drive staging deleted.
 - [x] Mandatory GMP/GMPXX compile GREEN: workflow `38137200763`, job `114463449240`, 8/8 targets, preflight/build 0/0, 28/28 checksums, final tree clean, `runtimeExecution=false`, result `11702155468` SHA-256 `f5cb12568e252e2d2a5280f2bd1daffb4a98fd934a327151b6be437861464d0e`, separate log `11701761274` SHA-256 `c6ca9ea7c62e3f7a31049a0b13550f2592c9ece2395edea96a92b36cbd587f40`.
@@ -1912,7 +1927,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 endpoint A2b first-rejection localization (2026-10-11)
+## HISTORY — R4 endpoint A2b first-rejection localization (2026-10-11)
 
 - [x] Source `13139486e9a4ae4ff9fb1df48860026efc8b7b63`: rejection-only `a2bProbeFailure` records actual first failed A2b terminal predicate (source-face, carrier, contact, A3, sector path or orientation) alongside earlier source-corner presence probes. Existing A4/A2b approval, route-certificate reason and selectors unchanged; Drive apply `38134295353` confirmed; File-Library patch backed up, consumed Drive staging deleted.
 - [x] Mandatory GMP/GMPXX eight-target compile GREEN: workflow `38134409505`, job `114455278370`, semantic source `13139486e9a4ae4ff9fb1df48860026efc8b7b63`, preflight/build 0/0, package 28/28, source clean, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result `11700646459` ZIP SHA-256 `aee723437263bfe017297cc56ac3923ec8a7b7080e804b0819f3f12226c524ef`, log `11700402184` ZIP SHA-256 `19fbaac9f45ad37c8b427ddf4a125b98cc53b44d6cec8751c8d359b502ec0027`.
@@ -1920,7 +1935,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 post-rejection hard-rail A2b endpoint evidence (2026-10-11)
+## HISTORY — R4 post-rejection hard-rail A2b endpoint evidence (2026-10-11)
 
 - [x] Source `3f9dd2b390caf03e3e780aab6e58ba26fc4a8d58`: diagnostic-only endpoint rejection probe, verified one-file Drive apply `38131410373`; unchanged A2b/A3 acceptance and frozen selectors. Source patch backed up in `/Directional/Evidence/`; staging owner-deleted.
 - [x] Mandatory eight-target GMP/GMPXX compile verified: workflow `38131508716`, job `114446675580`, semantic source `3f9dd2b390caf03e3e780aab6e58ba26fc4a8d58`, eight requested targets, GMP/GMPXX linked, preflight/build exit 0/0, package 28/28 manifest, clean final source, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result `11699316241` ZIP SHA256 `bc8d5c35428ebe03b17a6f84f96d0573134c16ab4b1e4ab8c3fa2259c01845ad`, log `11699830258` ZIP SHA256 `0331a56d385125966be78481e0b5fefbd72c0b0b0a58da557c19612935826ffb.
@@ -1928,14 +1943,14 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 R3 Phase10 source-atlas ingress census (2026-10-11)
+## HISTORY — R4 R3 Phase10 source-atlas ingress census (2026-10-11)
 
 - [x] Static source/overlay crosswalk at `fa03f13298c1ade7b46ba6bf4ca515c9831409ed`: 52/94 R3 RED identities owned by `SurfaceCellsPhase10Tests.cpp`, all 52 CP2-accepted by independent recomputation; 22 untyped, 18 A4 rail-route certificates, 12 invalid final-cell-state first predicates. Direct-builder ordinals 199/247 already have independently sourced A3; 29 delegated identities require separate analysis. Full evidence: `.agents/Directional/Architecture_M6_CP3_R4_Phase10_R3_RED_Source_Atlas_Static_Census_20261011.md`.
 - [ ] No case is runtime-restored by this census. Diagnose route-certificate/39 endpoint and source final-cell-state owners instead of blindly attaching another atlas; preserve 34 Phase10, seven DCEL, 88 CP2 regression obligations, authentic multi-carrier/odd-τ and independent dual-path review. R4 remains Code + Build; no frozen TB497.
 
 ---
 
-## CURRENT — R4 original-source A3 ingress for two region-reference negatives (2026-10-11)
+## HISTORY — R4 original-source A3 ingress for two region-reference negatives (2026-10-11)
 
 - [x] Frozen CP2-accepted/R3-RED ordinals 123/124: correct missing original-source A2/A3 authority in their initial positive producer, leaving checked A4 region mutation, expected typed reasons, identities and selectors unchanged. Exact source `d3a70402a999b34fe69cacd4905440f7d529e3ab`, apply workflow `38125626216`; one test file; patch backup retained and staging retired.
 - [x] Eight-target mandatory GMP/GMPXX compile GREEN: run `38125718129`, job `114429605388`, source `d3a70402a999b34fe69cacd4905440f7d529e3ab`, all eight required targets, GMP/GMPXX links, configure/preflight/build `0/0`, manifest `28/28`, clean source, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result artifact `11697351263` ZIP SHA256 `85074becb5acfb2170b406126b67d99e0cf8873252ec63adc54f71b731f27e44`, log artifact `11696729558` ZIP SHA256 `3a180fd2ddf4338104313ad423efc39b3cb42d7d405623bdb25384a5e36c17ea.
@@ -1943,7 +1958,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 periodic cylinder malformed-holonomy independent A3 ingress (2026-10-11)
+## HISTORY — R4 periodic cylinder malformed-holonomy independent A3 ingress (2026-10-11)
 
 - [x] Frozen CP2-accepted/R3-RED ordinal 247, `SurfaceCellsPhase10.PeriodicPhaseFrontMalformedHolonomyFailsClosedWithTypedReason`: exact test-only source `285a501053fa7a1c80683fb12d98d31052cd7239` adds independent original mesh/cross-field A2/A3 to the positive and deliberately malformed selected inputs without changing existing assertions, name, selector or production code. Apply `38123037201`; Drive stage owner-deleted.
 - [x] Eight-target exact-source GMP/GMPXX compile GREEN `38123145650`, job `114421910761`, source `285a501053fa7a1c80683fb12d98d31052cd7239`, exits 0/0, both GMP libraries, 28/28 checksums, final clean source, `runtimeExecution=false`; result `11696216443` ZIP SHA256 `9fc195ee2fc4c034ff26188e19d381385a75655ff03674e4d337e42890082deb`, diagnostic `11696116646` ZIP SHA256 `135481236e1ea87eaf1c9e2c03e7c3c0276b6e0ab9ab25b942eaef49f9fad8e8`.
@@ -1951,7 +1966,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 two original-source A3 periodic / chart fixtures (2026-10-11)
+## HISTORY — R4 two original-source A3 periodic / chart fixtures (2026-10-11)
 
 - [x] Migrate existing frozen 192/199 A4 positive subject ingress to original-mesh/source-field A2/A3; preserve ordinal 192's separately mutated nonzero tracing input, original negative assertion and both original test identities. Source `2be228d96c5a69ef2da584a221ae2fa6d4b5e720`, apply `38120304731`, one test file, Drive stage owner-deleted.
 - [x] Mandatory compile-only GMP/GMPXX GREEN `38120408348`, job `114413835117`, source `2be228d96c5a69ef2da584a221ae2fa6d4b5e720`, 8/8 targets, `0/0` exits, 28/28 manifest, clean source, `runtimeExecution=false`; result `11695256383` ZIP SHA256 `8b581fa5b391e22b59fea07035ec69285e495d9536b2066050d19460978339e7`, log `11695226430` ZIP SHA256 `2f0b040357319c40e2084755e2384360a6b39c87d69e6a7bda53f3592d74152c`.
@@ -1959,7 +1974,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 five periodic route source-A3 ingress candidates (2026-10-11)
+## HISTORY — R4 five periodic route source-A3 ingress candidates (2026-10-11)
 
 - [x] Existing frozen R3-RED 189, 190, 193, 194, 195 use independent original-source A2/A3 in positive fixtures; source `7ccdcd527380f8ab0fb2c19fbc08a7ab4dbd0819`, apply run `38117860858`, no production/selectors/assertions altered.
 - [x] GMP/GMPXX compile-only workflow `38117950975`, job `114406619697`, exact semantic source `7ccdcd527380f8ab0fb2c19fbc08a7ab4dbd0819`, all eight requested targets, preflight/build exits `0/0`, real `gmpxx`/`gmp` linkage, `exactArithmeticBackend=GMP`, 28/28 self-manifest checksums, clean final source, and `runtimeExecution=false`. Result artifact `11693642603` ZIP SHA256 `0fbc36cbdf35567a0dedaa27bc9cd92f8d22b0515e8e1e0767785f1cd4bd2664`; separate log `11694026916` ZIP SHA256 `27c0681a455bfae283a915afbf7e8241ff466032ec632c4e624ffdcca75a07bf`.
@@ -1967,7 +1982,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 two Phase10 composite A3 atlas candidates (2026-10-11)
+## HISTORY — R4 two Phase10 composite A3 atlas candidates (2026-10-11)
 
 - [x] Existing R3-RED ordinals 239 and 250 now build original source A2/A3 before checked A4, preserving all prior assertions and hard-feature/sheet metadata; semantic source `9535719a9d0e796ec455b721a199f0d6551530ae`, apply workflow `38115050210`.
 - [x] Exact eight-target GMP/GMPXX compile-only GREEN workflow `38115159602` job `114398532401`, source `9535719a9d0e796ec455b721a199f0d6551530ae`, exits 0/0, manifest `28/28`, clean source, `runtimeExecution=false`; result `11693471916` ZIP SHA256 `5777133eb4b189023450f9b1a6b2eb02355c177b5c1cf310ea142e025afd9853`, log `11692992849` ZIP SHA256 `96557fd19e09e599106ae8556d4115a9ba1f98d3ed63912a228c13d78c9808b1`.
@@ -1975,7 +1990,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 segment-route independent A3 fixture ingress (2026-10-11)
+## HISTORY — R4 segment-route independent A3 fixture ingress (2026-10-11)
 
 - [x] Six frozen R3-RED `SurfaceCellSegmentRouteTransportAuthorityMigration` identities at 202–207 share a source-owned A2/A3 fixture constructor, without changing raw/legacy/malformed test inputs, original test names or assertions. Exact source `4ee15ada1493e14ed49ab542025040ce6e9dd91a`, apply run `38112589873`, only one test file modified; Drive staging retired.
 - [x] Mandatory eight-target compile-only GMP/GMPXX: GREEN run `38112672216`, job `114391347393`; preflight/build `0/0`, source `4ee15ada1493e14ed49ab542025040ce6e9dd91a`, 28/28 checksums, clean source, `runtimeExecution=false`, artifact `11691733820` ZIP SHA256 `555573b5d42e78f1f06c69d042e8d809a1f84d0830341bbaa9334a67816854e4`, log `11691718914` ZIP SHA256 `33351ed67361d8ca882851303fbbb04044236433a3222a4eeaa473d25821689c`.
@@ -1983,7 +1998,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 seven Phase10 source-A3 ingress candidate repairs (2026-10-11)
+## HISTORY — R4 seven Phase10 source-A3 ingress candidate repairs (2026-10-11)
 
 - [x] Seven frozen CP2-accepted/R3-RED ordinals 144/145/152/200/246/249/256 migrated to independent source-owned A2/A3; source `d268e7660648ddfaf689f2fd00a5d2e2ada6497a`, apply run `38109848235`; original assertions/selector identities unchanged.
 - [x] Eight-target GMP/GMPXX compile GREEN: Run `38109941607` / job `114383284022`; exact source `d268e7660648ddfaf689f2fd00a5d2e2ada6497a`; eight mandatory targets, GMP/GMPXX linked, preflight/build exits `0/0`, manifest `28/28`, clean source, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result artifact `11690494421` ZIP SHA256 `b81f408a7367126d50108be60cb1f467cf976a330570aaa1046f84a7989b980c`; diagnostic `11690928607` ZIP SHA256 `9f783d727ba6de013e65452725cd990d0cc9a85de0ac47cfa4bac9643e1159a6`.
@@ -1991,7 +2006,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 four Phase10 source-A3 fixture migrations (2026-10-11)
+## HISTORY — R4 four Phase10 source-A3 fixture migrations (2026-10-11)
 
 - [x] Four frozen R3-RED Phase10 identities 119/129/196/248 migrated at six A4 ingress sites to existing independent `build_phase10_with_source_atlas` helper. Applied source `4467edc69f6c8b2d4530cd902d4de32681aa3671`, workflow `38107433774` (one test file). Original assertions, selectors and production code unchanged; Drive stage owner-deleted.
 - [x] Mandatory eight-target GMP/GMPXX compile GREEN `38107520617` job `114376101533`, source `4467edc69f6c8b2d4530cd902d4de32681aa3671`; exit 0/0, clean, 28/28 manifest and `runtimeExecution=false`. Result `11689459391` SHA256 `a6b1a0ab0f91694ba33d730de0a596be8d49cd1d72ef799323ee37a826646506`, log `11689613812` SHA256 `ac7d3802a0ee67df5391ee12af6ab1df0d0d2f1a4370612f3f5567ec81981434`.
@@ -1999,7 +2014,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — Three R4 Phase10 A2/A3 row-order candidate repairs (2026-10-11)
+## HISTORY — Three R4 Phase10 A2/A3 row-order candidate repairs (2026-10-11)
 
 - [x] Source `2626a053424cc8ff53c31c13fe5559494835b1af` migrated frozen ordinals 245/255/257 to independent A2/A3; apply `38104841732`, exact one-file change and Drive stage cleanup.
 - [x] Compile-only eight-target GMP/GMPXX GREEN `38104929249` job `114368349287`, 0/0 exits, 28/28, clean source and `runtimeExecution=false`, artifacts `11689775162` ZIP SHA `841dfae0769f52f71578cc2b75fc8607329304a699c9154a88fa94ffb1771dcd`, log `11688649940` SHA `9a15450a17cb68d98cd6ee65fa9fd69cc74f2616a605fca7da5117314a529d12`.
@@ -2007,7 +2022,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 complete checked-A4 region-reference negative witnesses (2026-10-11)
+## HISTORY — R4 complete checked-A4 region-reference negative witnesses (2026-10-11)
 
 - [x] `ConflictingCellRegionFailsBeforeMaterialization` and `ConflictingEdgeRegionFailsBeforeMaterialization` preserve source-owned A3 and all produced A2b/conformity evidence, positively reconstruct original A4 before sole region mutation, then assert original typed `InvalidCellRegion` / `InvalidEdgeRegion`. Exact source `e200af8b0e2984ae6a452df9fd8520016043cc7d`, Drive apply `38102136461`; source patch backed up in `/Directional/Evidence/`, staging deleted. No production/selector change.
 - [x] Exact eight-target GMP/GMPXX compile GREEN: run `38102239838`, job `114360426650`, source `e200af8b0e2984ae6a452df9fd8520016043cc7d`, preflight/build 0/0, 8/8 targets, 28/28 checksum manifest, clean source, both GMP libraries verified, `runtimeExecution=false`. Result `11688525324` SHA256 `509da9e590f598bf262b63e55bd2d10ef59d94e47579d5cbbab3c0cf22aff634`; diagnostic `11687754449` SHA256 `812a2a2fea38cf70d9c60a1b88b1c7dc9b466701e17eec1065567c719d75fa0f`.
@@ -2015,7 +2030,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 curved-disk complete A4 checked-factory bounded-disk negatives (2026-10-11)
+## HISTORY — R4 curved-disk complete A4 checked-factory bounded-disk negatives (2026-10-11)
 
 - [x] Correct both curved-disk A4 negative tests to reconstruct full source authority and assert a successful unmodified positive checked-factory round-trip. Source `10fe9476be39f71171d6df33bc282089c0461944`, apply workflow `38099335208`, original test identities/expected errors preserved; source patch retained in `/Directional/Evidence/` and consumed Drive staging retired.
 - [x] Exact mandatory GMP/GMPXX compile GREEN: workflow `38099415226` / job `114352107025`, exact semantic source `10fe9476be39f71171d6df33bc282089c0461944`, all eight required targets linked, preflight/build exit `0/0`, CMake `DIRECTIONAL_ENABLE_GMP=ON`, authoritative link command includes both `libgmpxx` and `libgmp`, 28/28 package self-manifest checksums verified, final source clean, `exactArithmeticBackend=GMP`, `runtimeExecution=false`. Result artifact `11686914874` ZIP SHA-256 `decfd995e52efa2f6a3f242bbbdbe7d2279d38e6bf18834a3a4e190fd7c01643`; diagnostic log artifact `11687480020` ZIP SHA-256 `ca6806b77e0d33eb55cf91cc12c2880695e0d8cc8778f3856c5dfd16fc096340`.
@@ -2023,7 +2038,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 Phase10 shared-boundary negative A4 authority correction (2026-10-10)
+## HISTORY — R4 Phase10 shared-boundary negative A4 authority correction (2026-10-10)
 
 - [x] Source `f7be55e01c525ef4ae7c8db0039956246d8f04cc` fixes the existing missing/tampered interval negative fixture to preserve full hard-rail A2b/A3 authority and require successful positive checked A4 reconstruction before negative checks. Drive apply `38096715429` verified. No production code, selector changes or runtime execution.
 - [x] Exact GMP/GMPXX compile GREEN: workflow `38096829899`, job `114344387141`, semantic source `f7be55e01c525ef4ae7c8db0039956246d8f04cc`, eight required targets, preflight/build exit `0/0`, CMake GMP discovery and both `libgmpxx` / `libgmp` link verified, 28/28 recursive package checksums, clean source and `runtimeExecution=false`; result artifact `11686391124` ZIP SHA-256 `cbfbe488bda31b5542bb19ceefc80628181d65e1c0bf36ad8f91cec533c3efaa`, log artifact `11686760574` ZIP SHA-256 `7d0ef296ef8d9074c83604fa9ad845e3d38cfffac8f22151d18c385c9e4190d1`.
@@ -2031,7 +2046,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 Phase10 source-owned A2/A3 fixture ingress (2026-10-10)
+## HISTORY — R4 Phase10 source-owned A2/A3 fixture ingress (2026-10-10)
 
 - [x] Source-only candidate migration of frozen ordinals `128` and `146`, previously accepted CP2 but R3 RED: original TriMesh/CrossFieldResult produces independent A2/A3 atlas; unchanged A4 factory validates the source; semantic commit `f9db8c009835435aa1b64f07058244e58518b50b` via Drive apply `38092755831`. No selector edits or acceptance claim.
 - [x] Exact GMP/GMPXX compile GREEN: run `38092868020` / job `114332779081`; source `f9db8c009835435aa1b64f07058244e58518b50b`; 8/8 GMP/GMPXX, preflight/build exit 0/0, self-manifest 28/28, clean source, `runtimeExecution=false`; result `11685040908` SHA256 `bc2648aa9a679dc344398d8abd83a90c11c55a42a0bd36b478fb8214199e0197`; log `11684876187` SHA256 `d5c8d86b89d86f3f1be81c4ec54e561629dc14e9571b2cbf8d0ab5292195175a`.
@@ -2039,7 +2054,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 A5-reachable hard-rail lattice branch negative (2026-10-10)
+## HISTORY — R4 A5-reachable hard-rail lattice branch negative (2026-10-10)
 
 - [x] Source `7ac899b2d91e9d8c0925bbb4cc1ccd367872dcc4` adds a produced-baseline, complete-A4-accepted, A5-expected `HardRailTransportMismatch` regression. Apply workflow `38091134482`; Drive staging retired; no tests run.
 - [x] Exact GMP/GMPXX compile GREEN: run `38091230910` (job `114327961939`), semantic source `7ac899b2d91e9d8c0925bbb4cc1ccd367872dcc4`, eight requested targets built, preflight/build exits `0/0`, `DIRECTIONAL_ENABLE_GMP=ON`, both `libgmpxx` and `libgmp` linked, clean source, 28/28 checksums, `runtimeExecution=false`; result artifact `11684470998` (ZIP SHA-256 `98434eea000957664acee32c57cba233642142da0ef40afcc4fb9d663f9e9fc2`) and log artifact `11684296178` (ZIP SHA-256 `5b6abc8f86fd852a002ee48709089a4d0628fe710f487c07ac17395fe9554d89`).
@@ -2047,7 +2062,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 complete draft authority and A3-correct D2 mutation oracle (2026-10-10)
+## HISTORY — R4 complete draft authority and A3-correct D2 mutation oracle (2026-10-10)
 
 - [x] Exact source `a6b803fb08ccbc99d87a4fa9e1635c451e902c60`: `PhaseFrontDraft` now carries produced `conformityPlanReceipt`, terminal contacts, and closed-rail chains through factory reconstruction; D2 asserts a real reconstructed product and checks that forged odd rail chi fails the immutable A3 check at A4, rather than claiming impossible A5 rejection. Drive apply `38089504108` succeeded. Compile-only; tests not executed.
 - [x] Exact compile GREEN: workflow `38089604435`, job `114323207863`, source `a6b803fb08ccbc99d87a4fa9e1635c451e902c60`, 8/8 GMP/GMPXX targets, 0/0 exits, 28/28 package checksums, clean source, `runtimeExecution=false`, result artifact `11682953835` (ZIP SHA256 `9e3c258011e6b0ca8d010a66f50110dde3f824591fa3e594ee267fcd060eef7c`), log artifact `11683118643` (ZIP SHA256 `ca9813122d080e9d2da946776334f19c49e3e6955ecacff184091c965fc1ca3d`).
@@ -2055,7 +2070,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 D2 attached-tau relational witness correction (2026-10-10)
+## HISTORY — R4 D2 attached-tau relational witness correction (2026-10-10)
 
 - [x] Source `e3d2a1bcdb6965ec48f11af5add0113c4eae2785` corrects D2 odd-carrier witness to use full A2b source-star attachment transport in the A5 endpoint equation while keeping odd carrier chi as a separate mutation guard. Source patch applied in run `38088012591`; Drive staging retired; tests not executed.
 - [x] Compile-only GREEN: `38088126976` job `114318883131`, exact `e3d2a1bcdb6965ec48f11af5add0113c4eae2785`, 8/8 GMP/GMPXX, exits 0, 28/28 manifest, clean source, `runtimeExecution=false`, result artifact `11683325306` ZIP SHA256 `0486bc6e5780ccced5d5dd30a74d83248fbf465ecf2ee34157bf2def0c93a2b8`, log `11683815002` ZIP SHA256 `cbdbf250a2539f473d310c6e5ab0940e7b330d8c8f35c5ca5e7fe2b7352301e4`.
@@ -2063,7 +2078,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 D2 terminal A2b/A3 typed row-permutation attestation (2026-10-10)
+## HISTORY — R4 D2 terminal A2b/A3 typed row-permutation attestation (2026-10-10)
 
 - [x] Compile-only D2 regression extension applied at source `5a8f79f62a671345da9bb1c2ded320e2d8daccdc`, Drive apply run `38086310642`. Checks non-hard source-vertex A2b path steps bidirectionally against the independent A3 atlas and compares normalized typed step multisets across face-row permutations. Requires a produced nonempty step. No runtime tests.
 - [x] **Compile VERIFIED:** Exact GMP/GMPXX compile GREEN: workflow `38086431310`, job `114313866942`, source `5a8f79f62a671345da9bb1c2ded320e2d8daccdc`, 8/8 requested targets, preflight/build exits 0/0, clean source, 28/28 manifest, `runtimeExecution=false`, result artifact `11682567721` ZIP SHA256 `37d9c9f0f163c3d8fccca4072494744d22233d44d48c808a04a8d24b4275eb2f`, log artifact `11682517856` ZIP SHA256 `992bc2ad7000ca12fedc94c0ce6deff8e0e74f4cc1803eb90c98f0c2faa839dc`. No test/benchmark executed.**
@@ -2071,7 +2086,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 D2 multi-carrier endpoint A2b checked-factory test correction (2026-10-10)
+## HISTORY — R4 D2 multi-carrier endpoint A2b checked-factory test correction (2026-10-10)
 
 - [x] Source `e1e2821a4b3e28aec9a18c871eb259bdb9fb1925` restores real terminal-contact and closed-chain authority in the existing D2 factory tamper/regression test; validates nonrail A2b path endpoint composition instead of deprecated direct-face equality. Applied run `38084818029`; Drive staging retired.
 - [x] Eight-target compile: GREEN — 8/8 GMP/GMPXX targets, preflight/build exit 0, 28/28 ZIP manifest, clean source, runtimeExecution=false; workflow 38084965438 (job 114309529227), result artifact 11681609714 (SHA256 31562ad01a696a8c39dbe946c9ece0026eaf1963aa5cb13b932de7f35de5197f), log artifact 11681871272 (SHA256 071f6ebc48068114bda8156227e202a5af9bf07bd8ecf3ab7dfebb3bb9ce7591), exact semantic source e1e2821a4b3e28aec9a18c871eb259bdb9fb1925.
@@ -2079,7 +2094,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 forged terminal-germ negative oracle (2026-10-10)
+## HISTORY — R4 forged terminal-germ negative oracle (2026-10-10)
 
 - [x] Source `1da010b6b607aca3f5a2e3078b32f5fb94d4d34b` adds a producer-nonvacuous checked-factory negative for an omitted A2b terminal path and a forged A3 side-germ step. Drive-apply `38083050527` succeeded; source patch owner deleted. Compile-only; tests not executed.
 - [x] Exact eight-target GMP/GMPXX compile `GREEN: eight targets, GMP/GMPXX, 28/28 archive checksums, clean source, exits 0, runtimeExecution=false` (run `38083162432 (job 114304131242)`, artifact `11680664166, ZIP SHA256 ebbf236e3a389fcff744ca2ae47acf2014dea2f487cb759d9ee0795651d3f33e`). Do not start TB497.
@@ -2087,7 +2102,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 A2b checked-factory uniqueness increment (2026-10-10)
+## HISTORY — R4 A2b checked-factory uniqueness increment (2026-10-10)
 
 - [x] Exact source patch `c28f1d241e6d84503e4ab38ce02b7200b8c9cfe5`
   independently re-derives unique nonhard A2b source-star paths at factory,
@@ -2102,7 +2117,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 typed terminal source-star germ (2026-10-10)
+## HISTORY — R4 typed terminal source-star germ (2026-10-10)
 
 - [x] Bounded A4 terminal source-star paths with typed endpoint vertex and
   A3-authenticated non-rail transitions landed at semantic source `991f6551...`;
@@ -2115,7 +2130,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — `M6-CP3-CB1-ENTRY-R4` resumed (RA-45, 2026-10-10)
+## HISTORY — `M6-CP3-CB1-ENTRY-R4` resumed (RA-45, 2026-10-10)
 
 - [ ] **Continue same Code + Build turn.** The earlier `M6-DEFN-R5-R4-REV` HOLD at the top of the historical TODO sections below is superseded by independent RA-43/RA-45 decisions. `M6-CP3-CB1-ENTRY-R4` is released and IN_PROGRESS, not complete.
 - [x] **Second incremental exact legacy-corner change compiled:** `rail_sample_source_vertex` no longer promotes tolerance-close samples to vertices; the existing Phase14 fixture covers untyped near-corner rejection and exact-corner acceptance. Semantic source `68533fd7faf80efa8b7388f8af83f0bfd269bca4`, GMP/GMPXX compile `38078250813`, artifact `11678578265`, 28/28 manifest, runtime-free. **No runtime proof or R4 closure.**
@@ -2125,7 +2140,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R5/R4 source-exact Review STOP (2026-10-10)
+## HISTORY — R5/R4 source-exact Review STOP (2026-10-10)
 
 - [ ] **R4-REV-01A:** independently attest source-entity conversion of raw rail face/edge IDs and uniquely associate an oriented front endpoint with one rail vertex/interval and side germ; reject missing or ambiguous producer contact, no barycentric-epsilon authority.
 - [ ] **R4-REV-01B:** identify actual existing source-star/rail-cut producer (the previously cited `SurfaceCellTracing.cpp:18120-18206` is isolation-seam processing), or explicitly design the missing producer without claiming it exists.
@@ -2134,7 +2149,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — mandatory M6 R4 independent Review blockers (2026-10-10)
+## HISTORY — mandatory M6 R4 independent Review blockers (2026-10-10)
 
 - [ ] `R4-REV-01`: authenticate the **producer-owned** terminal source-vertex side germ, actual trace endpoint occurrence, unique ordered nonrail A2b path and bidirectional A3 φ. Face `2 -> 3` via `(1,5)` is **only** a geometrically valid candidate, not a published producer certificate. Keep RA-38.3 multi-carrier boundary through-junction prohibition; distinguish terminal boundary germs.
 - [ ] `R4-REV-02`: explicitly adjudicate conflict between RA-40.1's mandatory matched A3 at `make` and RA-41.1's proposed null-atlas exemption. Prove complete gauge/periodic/isolation source dependency or retain RA-40 and migrate legacy inputs. Typed first-failure instrumentation for all 34 Phase10 observations remains required.
@@ -2142,13 +2157,13 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — R4 Definition candidate for independent Review
+## HISTORY — R4 Definition candidate for independent Review
 
 - [x] `M6-DEFN-R5-R4`: draft source-exact RA-41 authority-domain, local-endpoint-contact and DCEL-valid fixture **Definition proposal**; no code, build or runtime; current candidate is not independently accepted.
 - [ ] **Mandatory `M6-DEFN-R5-R4-REV`**: adjudicate conditional A3/gauge provenance and producer-owned terminal rail side-germ/A2b/A3 contact proof before releasing the one HELD `M6-CP3-CB1-ENTRY-R4` plan. A missing implementable source witness is an architectural STOP, not a reason to accept fake source/gauge.
 - [ ] Future R4 code/compile and separate artifact-only frozen 497 TB/independent Review must restore 88 CP2 accepted RED, all 94 distinct R3 REDs, six CP3 entry witnesses. Preserve 66/17/49 debt 1; four RA-40(C) supplementals remain separate/unexecuted diagnostic-only.
 
-## CURRENT — 2026-10-10 independent Review `M6-CP3-TB1-ENTRY-R3-REV`: R3 REJECTED
+## HISTORY — 2026-10-10 independent Review `M6-CP3-TB1-ENTRY-R3-REV`: R3 REJECTED
 
 **Review verdict: R3 candidate is REJECTED / UNPROMOTED, but artifact-only execution is mechanically valid.** Frozen 497 fresh processes: **403 PASS / 94 RED** (30:15/15, 12:10/2, 449:378/71, 6:0/6); 1019/1019 result checksums and 497/497 individual log hashes independently verified; no test skipped or rebuilt. Exact source `d82e34427adc6fe09ad216a4363fea23dd0ae0b8`; runtime `38030196207`, artifact `11661044443`, SHA256 `555b973a69810f95a2f170fdea30aac11c0805ba7e25bc9914577bdd1bb26ac5`. **53/53 historical R2 RED remain RED, zero recovered; 41 additional accepted CP2 tests turn RED, making 88/491 accepted CP2 identities RED in R3** (47 R2-carried + 41 new). The prior 94-row EXEC report incorrectly tagged these 41 as `CP2_ACCEPTED=false`; its historical file is preserved, with a distinct independent 94-row corrected overlay. New accepted-loss families: 34 A4 publication/authority ingress failures (`R3-REV-NEW-01`) and seven synthetic mesh DCEL fixture exceptions (`R3-REV-NEW-02`); first rejected predicates observed, exact algorithmic roots not yet proven. Stable events now **66 / 17 / 49** (two grouped new recurrences), debt **1**. CP2 **491/491** remains latest reviewed accepted candidate; R3 may not be promoted. The 39 carried R2 rail endpoint errors are not counted a second time. Four RA-40(C) supplemental tests remain unexecuted and excluded from 497.
 
@@ -2160,7 +2175,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 - [ ] `M6-DEFN-R5-R4`: resolve mandatory-A3 ingress for 34 previously accepted producer positives, DCEL-valid source fixtures for seven, and existing endpoint-0 rail misattachment for 39; conduct independent Definition Review before changes.
 - [ ] Restore every prior CP2 accepted test (88 RED), all 53 historic R2 failures and all six CP3 organic witness gates through later source-exact GMP compile and separate artifact-only 497 TB. Four supplemental diagnostic tests require separately counted non-acceptance TB.
 
-## CURRENT — `M6-CP3-TB1-ENTRY-R3-EXEC` frozen TB evidence (2026-10-10 06:20Z)
+## HISTORY — `M6-CP3-TB1-ENTRY-R3-EXEC` frozen TB evidence (2026-10-10 06:20Z)
 
 **EXEC mechanically COMPLETE; candidate REJECTED / UNPROMOTED.** Immutable run `38030196207`, result artifact `11661044443` provider ZIP SHA-256 `555b973a69810f95a2f170fdea30aac11c0805ba7e25bc9914577bdd1bb26ac5`, self-manifest **1019/1019**, exact source `d82e34427adc6fe09ad216a4363fea23dd0ae0b8`, 497 fresh exact-one processes, zero skips/configure/compile/relink/benchmarks/mutations. **403 PASS / 94 RED** = focused30 15/15, focused12 10/2, selector449 378/71, CP3entry6 0/6. All **53** historical R2 REDs remain RED, all **47** formerly CP2-accepted remain RED; **41 newly RED** identity-exact vs R2. Review-only provisional groups (39 A4 route cert, 22 A4 not-produced, 14 InvalidFinalCellState, 7 DCEL exceptions, 5 odd-τ witness absent, 4 A5 occurrence-mismatch, 2 A5 seam equivalent, 1 other). Complete 94-row raw-hashed first-failure inventory in `.agents/Directional/Architecture_M6_CP3_TB1_Entry_R3_Red_Classification.tsv`; historical 53 comparison in `.agents/Directional/Architecture_M6_CP3_TB1_Entry_R3_R2_Identity_Comparison.tsv`. Full report `.agents/Directional/Architecture_M6_CP3_TB1_Entry_R3_Execution_Record.md`. **Mandatory independent successor `M6-CP3-TB1-ENTRY-R3-REV`; no unreviewed fix, no promotion, no replay.** Four RA-40 supplemental tests remain separate/unrun. Stable ledger 64 events /17 categories /47 recurrences, debt 1, unchanged pending Review.
 
@@ -2402,7 +2417,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 
 ---
 
-## CURRENT — M6-DEFN-R5-R3 candidate RA-37 ready for independent Review (2026-10-08)
+## HISTORY — M6-DEFN-R5-R3 candidate RA-37 ready for independent Review (2026-10-08)
 
 - [x] Read exact source snapshot `fade2a964355adeb4c94d5fc28f322343e60abae`; independently verify R2 ZIP checksums and 497/53 ledger. Write topology-owned A4 two-sided face-star transport definition and zero/single/multi-route falsifiers in `Architecture_M6_DEFN_R5_R3_CP3_Entry_Recovery_Definition_Record.md`; no product/fixture/test/selector/build/runtime mutation.
 - [x] Prepare one **HELD** `Architecture_M6_CP3_CB1_Entry_R3_Recovery_Code_Build_Plan.md` with A4→A5/A6 ordering, real producer witnesses, all-eight GMP compile and separate 497 immutable TB gate.
@@ -2479,7 +2494,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 - [ ] **Exact next `M6-CP3-CB1-ENTRY-R1`**: P1, P2, T1, T2 (with stop), T4; remove the certificate rejection; identity 2 pre-registered RED; identity 6 must pass.
 - [ ] TB1-R1 497 → R1 Review → `M6-DEFN-R5-R1` (D2 redefinition) → D2 CB → CB2 (D5/D6/D8) → CP3 close.
 
-## CURRENT — M6-CP3 entry recovery
+## HISTORY — M6-CP3 entry recovery
 
 - **Exact next:** `M6-CP3-CB1-ENTRY-R1` under RA-31.
 - Fix only: complete A4 face-gauge publication in uniform/periodic regional producers; scope A6 OrdinaryFront isolation evidence to certified cross-sheet seams; repair focused30 ordinal12 relabel; repair D1/D2 produced witnesses; rewrite D4 barrier oracle.
@@ -2641,7 +2656,7 @@ An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative 
 - [ ] **Exact next `M6-CP2-CB1-VERIFIER-R2`** (RA-29 + RA-29a; compile/package only).
 - [ ] TB1-R1 **491** → mandatory R1 Review.
 
-## CURRENT — M6-CP2 verifier R2 recovery
+## HISTORY — M6-CP2 verifier R2 recovery
 
 - [ ] Execute `M6-CP2-CB1-VERIFIER-R2` under RA-29.
 - [ ] Repair the three non-vacuous CP2 witnesses plus identity8 valid-region authority, carried full-pipeline verification report, shared support-kernel check, and independent selected-forest path verification.

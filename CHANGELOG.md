@@ -1,3 +1,10 @@
+## 2026-10-23 — RA-146 FG01 independent factory-contract review
+
+- Reviewed origin 44ac66b3660b3a643f5ca677c24e41e314123619 against unchanged CB29 semantic 2602e7398cdc6f1281abe11a758de35166b6590c. Verified TB31 artifact 12506242253 (run 39959505758), ZIP SHA-256 97828fac57a63b5d8ca85ef0e5fd35fb7d5ed71c2b2579cd463bacc20d5e947b, 1,000 checksums and six raw first-failure logs; rehashed frozen selectors/manifest.
+- Accepted fixture-only FG01 with amendments: unpaired synthetic owner records prove no reciprocal periodic action/production topology; unequal gauges and odd transport are necessary for discriminating permutation coverage; factory shift admission does not discharge produced A6 invariance.
+- Authorized only M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE: one test-file fixture correction and three factory controls, compile-only. Handoff/TODO freeze CB30 → CB30-REV; immutable TB and odd-transport/permutation units remain separately gated.
+- Amended definition and live guidance; no runtime, product/test/selector/workflow changes or gate promotion. CP2 491/491 accepted; TB31 472/497 candidate; stable 66/17/49, debt1 unchanged. Full decision: .agents/Directional/Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md.
+
 ## 2026-10-23 — FG01 periodic-owner face-gauge factory contract (definition; Review next)
 
 - Defined the cause of all six TB31 `face-gauge-missing` first failures: the shared two-face synthetic periodic-owner fixture supplies an A3 atlas but omits the checked factory's mandatory face-gauge vector. Selected A3-derived, reciprocal-checked, typed-face relational fixture correction for independent `M6-CP3-DEFN-FG01-RP01-PERIODIC-FACE-GAUGE-FACTORY-CONTRACT-REV`. Recorded falsifiers for tampering, uniform gauge shift, face-row invariance and each original owner assertion; later synthetic periodic topology admission remains unverified. No source, tests, selectors, compile or runtime changes and no acceptance promotion. Record `Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_20261023.md`. Stable 66/17/49, debt1; TB31 472/497 remains candidate only.
