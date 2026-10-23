@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb30-gauge-doc-closeout-20261023-r1",
+  "request_id": "m6-cp3-cb30-review-doc-closeout-20261023-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb30-gauge-doc-closeout",
-  "file_id": "1FpGpi_1wmPo77voJCFopb8_LtN4l2iRp",
-  "patch_sha256": "eed913a1682d01710a21c74d9d5b5b375027ed4ef97e223a2c3a8e2f991c6fc0",
-  "base_sha": "79aeb3ddcbe3c6c97163e7b57232d4226571678e",
+  "mailbox_key": "m6-cp3-cb30-review-doc-closeout",
+  "file_id": "15TMgYx26QY2oEKp4K3k_flL-OqjGadSq",
+  "patch_sha256": "e73769ff99f9a8157c139570dfa66248ae3b570174118f4db0948d59fe3ed20e",
+  "base_sha": "e4a03cd282e1ef641809e531ef8870c1e70504b5",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close out CB30 fixture gauge compile evidence",
+  "commit_message": "docs(directional): independently review CB30 gauge and authorize TB32",
   "retention_days": 7
 }
