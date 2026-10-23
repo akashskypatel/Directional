@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb31-odd-atlas-compile-fixed-20261023",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb31-odd-atlas-compile-fixed",
-  "source_sha": "ce13d438e65daf07a770cafa15ac4cef7046f931",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb31-odd-atlas-fixed"
+  "request_id": "m6-cp3-cb31-closeout-docs-20261023",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb31-closeout-docs",
+  "file_id": "1oBQ5PjmvoUM-C3_ws7SIziGqgS1EHw6u",
+  "patch_sha256": "874111b5ee99320244856a6628444ab6df3e19fd41402126c80d2a5f48f449bf",
+  "base_sha": "6d4974b3676a08410482cea139923f0c97c05801",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB31 compiled odd atlas proof and hand off review",
+  "retention_days": 7
 }
