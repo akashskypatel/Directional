@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb31-odd-atlas-accessor-fix-20261023",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb31-odd-atlas-fix",
-  "file_id": "1RbX9dgKRA9T-fgyBalILIinvhtLZP8Qr",
-  "patch_sha256": "7a5fab23f51a56172c17eedaf430834ac4a5d432d86d796ba2d84ebefd82b4d6",
-  "base_sha": "01a511cfd237e5618cb1ccabe0733be3baa1be9c",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): fix typed face accessor use in CB31 fixtures",
-  "retention_days": 7
+  "request_id": "m6-cp3-cb31-odd-atlas-compile-fixed-20261023",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb31-odd-atlas-compile-fixed",
+  "source_sha": "ce13d438e65daf07a770cafa15ac4cef7046f931",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb31-odd-atlas-fixed"
 }
