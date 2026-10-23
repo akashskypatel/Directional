@@ -9128,6 +9128,193 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
   }
 }
 
+// CB31: rebuild the two-face checked-factory witness from actual raw-field A3
+// ingress. The second semantic face selects the next (or previous) cross arm;
+// no transition or atlas record is constructed by the test.
+PhaseFrontDraft odd_atlas_owner_draft(const bool swapRows,
+                                     const bool cycleCorners,
+                                     const bool inverseArm = false) {
+  const auto fixture = direct_periodic_owner_fixture();
+  auto draft = phase_front_draft(fixture);
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+              1.0, 1.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces = fixture.sourceFaces;
+  auto raw = constant_xy_field(2);
+  if (inverseArm) {
+    raw.row(1) << 0.0, -1.0, 0.0, 1.0, 0.0, 0.0,
+                  0.0, 1.0, 0.0, -1.0, 0.0, 0.0;
+  } else {
+    raw.row(1) << 0.0, 1.0, 0.0, -1.0, 0.0, 0.0,
+                  0.0, -1.0, 0.0, 1.0, 0.0, 0.0;
+  }
+  if (swapRows) {
+    faces.row(0).swap(faces.row(1));
+    raw.row(0).swap(raw.row(1));
+  }
+  if (cycleCorners) {
+    const auto originalFaces = faces.eval();
+    for (int face = 0; face < faces.rows(); ++face) {
+      for (int corner = 0; corner < 3; ++corner)
+        faces(face, corner) = originalFaces(face, (corner + 1) % 3);
+    }
+  }
+
+  const auto &original = fixture.product.sourceTopologyRegions();
+  const auto row0 = directional::authority::SourceFaceId::from_index(0, 2);
+  const auto row1 = directional::authority::SourceFaceId::from_index(1, 2);
+  if (!row0 || !row1) throw std::runtime_error("CB31 invalid face IDs");
+  const auto firstTopology = original.topology_for_row(*row0);
+  const auto secondTopology = original.topology_for_row(*row1);
+  const std::vector<directional::authority::SourceFaceTopologyKey> topology =
+      swapRows ? std::vector{secondTopology, firstTopology}
+               : std::vector{firstTopology, secondTopology};
+  const auto component = original.component_for_row(*row0);
+  const auto sheet = original.sheet_for_row(*row0);
+  auto authority = directional::geometry::SourceTopologyRegions::make(
+      topology, {component, component}, {sheet, sheet}, original.regions());
+  if (!authority || !authority->matches_source_faces(faces, 4U))
+    throw std::runtime_error("CB31 topology-keyed authority remap failed");
+
+  directional::TriMesh mesh;
+  mesh.set_mesh(vertices, faces);
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(mesh, raw);
+  auto atlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *authority, {}, crossField);
+  if (!atlas) throw std::runtime_error("CB31 actual raw-field A3 rejected");
+  const auto from = authority->row_for_topology(firstTopology);
+  const auto to = authority->row_for_topology(secondTopology);
+  const auto edge = test_source_edge_topology(0, 2, 4U);
+  if (!from || !to || *from == *to ||
+      !atlas.value().find_adjacency(edge))
+    throw std::runtime_error("CB31 shared admissible source edge absent");
+  const auto forward = atlas.value().transition_value(edge, *from, *to);
+  const auto reverse = atlas.value().transition_value(edge, *to, *from);
+  if (!forward || !reverse ||
+      reverse->transport != forward->transport.inverse())
+    throw std::runtime_error("CB31 nonreciprocal real A3 ingress");
+  draft.sourceFaceBranchRotations.assign(2, -1);
+  draft.sourceFaceBranchRotations[from->index()] = 0;
+  draft.sourceFaceBranchRotations[to->index()] =
+      static_cast<int>(forward->transport.value());
+  draft.sourceAuthority = std::move(*authority);
+  draft.sourceFaces = faces;
+  draft.sourceAtlas = std::move(atlas.value());
+  return draft;
+}
+
+TEST(SurfacePhaseFrontProductFactoryAuthority,
+     OddAtlasTransportAndCanonicalOwnersSurviveTopologyPermutations) {
+  const auto original = odd_atlas_owner_draft(false, false);
+  const auto edge = test_source_edge_topology(0, 2, 4U);
+  const auto sourceRow = directional::authority::SourceFaceId::from_index(0, 2);
+  const auto other = directional::authority::SourceFaceId::from_index(1, 2);
+  ASSERT_TRUE(sourceRow.has_value());
+  ASSERT_TRUE(other.has_value());
+  ASSERT_TRUE(original.sourceAtlas.has_value());
+  ASSERT_EQ(original.sourceAuthority.component_for_row(*sourceRow),
+            original.sourceAuthority.component_for_row(*other));
+  ASSERT_EQ(original.sourceAuthority.sheet_for_row(*sourceRow),
+            original.sourceAuthority.sheet_for_row(*other));
+  ASSERT_FALSE(original.hardFeatureEdges.contains(edge));
+  const auto directed = original.sourceAtlas->transition_value(
+      edge, *sourceRow, *other);
+  const auto reciprocal = original.sourceAtlas->transition_value(
+      edge, *other, *sourceRow);
+  ASSERT_TRUE(directed.has_value());
+  ASSERT_TRUE(reciprocal.has_value());
+  ASSERT_TRUE(directed->transport.value() == 1 ||
+              directed->transport.value() == 3);
+  EXPECT_EQ(directed->transport.inverse(), reciprocal->transport);
+  EXPECT_NE(original.sourceFaceBranchRotations[0],
+            original.sourceFaceBranchRotations[1]);
+  auto baseline = construct_phase_front_product(original);
+  const auto *before =
+      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&baseline);
+  ASSERT_NE(nullptr, before);
+  ASSERT_EQ(2U, before->periodicHolonomies().size());
+
+  for (const auto [swapRows, cycleCorners] :
+       {std::pair{true, false}, std::pair{false, true},
+        std::pair{true, true}}) {
+    const auto permuted = odd_atlas_owner_draft(swapRows, cycleCorners);
+    ASSERT_TRUE(permuted.sourceAtlas.has_value());
+    if (swapRows) {
+      EXPECT_NE(original.sourceFaceBranchRotations,
+                permuted.sourceFaceBranchRotations);
+    } else {
+      EXPECT_EQ(original.sourceFaceBranchRotations,
+                permuted.sourceFaceBranchRotations);
+    }
+    auto checked = construct_phase_front_product(permuted);
+    const auto *after =
+        std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&checked);
+    ASSERT_NE(nullptr, after) << "valid topology-keyed remap rejected: "
+                              << swapRows << "," << cycleCorners;
+    EXPECT_EQ(permuted.sourceFaceBranchRotations,
+              after->sourceFaceBranchRotations());
+    EXPECT_EQ(before->periodicHolonomies(), after->periodicHolonomies());
+    ASSERT_EQ(before->edges().size(), after->edges().size());
+    for (std::size_t i = 0; i < before->edges().size(); ++i)
+      EXPECT_EQ(before->edges()[i].periodicRelation,
+                after->edges()[i].periodicRelation);
+  }
+}
+
+TEST(SurfacePhaseFrontProductFactoryAuthority,
+     OddAtlasStaleFaceGaugeVectorRejectsAtCanonicalEdge) {
+  const auto baseline = odd_atlas_owner_draft(false, false);
+  auto permuted = odd_atlas_owner_draft(true, true);
+  ASSERT_NE(baseline.sourceFaceBranchRotations,
+            permuted.sourceFaceBranchRotations);
+  auto positive = construct_phase_front_product(permuted);
+  ASSERT_NE(nullptr, std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+                         &positive));
+  permuted.sourceFaceBranchRotations = baseline.sourceFaceBranchRotations;
+  auto rejected = construct_phase_front_product(std::move(permuted));
+  const auto *error =
+      std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&rejected);
+  ASSERT_NE(nullptr, error);
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontProductErrorCode::
+                InvalidSourceAuthority, error->code);
+  EXPECT_EQ("gauge-pin-consistency;edge=0,2", error->sourceAuthoritySite);
+}
+
+TEST(SurfacePhaseFrontProductFactoryAuthority,
+     OddAtlasWrongDirectedInverseRejectsAtCanonicalEdge) {
+  const auto baseline = odd_atlas_owner_draft(false, false);
+  auto invertedIngress = odd_atlas_owner_draft(false, false, true);
+  ASSERT_TRUE(baseline.sourceAtlas.has_value());
+  ASSERT_TRUE(invertedIngress.sourceAtlas.has_value());
+  const auto row0 = directional::authority::SourceFaceId::from_index(0, 2);
+  const auto row1 = directional::authority::SourceFaceId::from_index(1, 2);
+  ASSERT_TRUE(row0.has_value());
+  ASSERT_TRUE(row1.has_value());
+  const auto edge = test_source_edge_topology(0, 2, 4U);
+  const auto forward = baseline.sourceAtlas->transition_value(edge, *row0, *row1);
+  const auto inverse = invertedIngress.sourceAtlas->transition_value(
+      edge, *row0, *row1);
+  ASSERT_TRUE(forward.has_value());
+  ASSERT_TRUE(inverse.has_value());
+  ASSERT_TRUE(forward->transport.value() == 1 ||
+              forward->transport.value() == 3);
+  ASSERT_EQ(forward->transport.inverse(), inverse->transport);
+  ASSERT_NE(forward->transport, inverse->transport);
+  auto admitted = construct_phase_front_product(invertedIngress);
+  ASSERT_NE(nullptr, std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+                         &admitted));
+  invertedIngress.sourceFaceBranchRotations =
+      baseline.sourceFaceBranchRotations;
+  auto rejected = construct_phase_front_product(std::move(invertedIngress));
+  const auto *error =
+      std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&rejected);
+  ASSERT_NE(nullptr, error);
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontProductErrorCode::
+                InvalidSourceAuthority, error->code);
+  EXPECT_EQ("gauge-pin-consistency;edge=0,2", error->sourceAuthoritySite);
+}
+
 TEST(SurfaceCellTransitionQuotient,
      MissingPeriodicRelationOwnerIsRejected) {
   PhaseFrontDraft tampered = phase_front_draft(direct_periodic_owner_fixture());
