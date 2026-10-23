@@ -1,12 +1,23 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb30-review-doc-closeout-20261023-r2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb30-review-doc-closeout-r2",
-  "file_id": "15TMgYx26QY2oEKp4K3k_flL-OqjGadSq",
-  "patch_sha256": "4d645e3acc037591b1d7a0a4f0ab67164580ee275b7572afd8796394d483c748",
-  "base_sha": "e4a03cd282e1ef641809e531ef8870c1e70504b5",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): independently review CB30 gauge and authorize TB32",
-  "retention_days": 7
+  "request_id": "m6-cp3-tb32-owner-gauge-20261023",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb32-owner-gauge-verify",
+  "executor_sha": "1b12e128e8e2cca3b849703df60f9783a70b7d31",
+  "semantic_source_sha": "19267540081a4ff3a99826e3b9a766f1dbbded42",
+  "turn_id": "M6-CP3-TB32-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-VERIFY",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "436f5fff9c3bec97457f4bc6b7c2b6182cb3f47707eb14a66af3b6a3f3dc3c9a",
+  "artifact_prefix": "m6-cp3-tb32-owner-gauge",
+  "retention_days": 7,
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "12531891913",
+    "EXPECTED_SOURCE_SHA": "19267540081a4ff3a99826e3b9a766f1dbbded42",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "040b7b12e4b36fa78f2c5eae6465ddaadd2a1fbd8ee9bf18ebda6e35e9a3b97b",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "79206f7810247592fca79c9e89fbe1b2fdb3760b372708c0c56721487acd79d0",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "1a1e7ea185a8f4cde09083f11303c320a9708fa3373f872a19ad312ac1618382",
+    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "597741409f06a80877cb8ae6f5fd2f92785de99a629a7d2c6453921858996437",
+    "EXPECTED_CASE_COUNT": 500
+  }
 }
