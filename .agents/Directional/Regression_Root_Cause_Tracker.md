@@ -1,3 +1,7 @@
+## RA-137 — TB29 block resolved (2026-10-23)
+
+TB29 stopped before any execution because no authorized 44-identity harness existed. Review now owns the case manifest (`Architecture_M6_CP3_TB29_Targeted_Case_Manifest.tsv`, 44 rows); TB29H builds one reusable input-driven harness, then TB29 resumes on the CB28A package. Guard trio corrected to RA-130.9's. No count changes. Record: `Architecture_M6_CP3_TB29_Harness_Authorization_Design_Review_Decision_20261023.md`.
+
 ## RA-136 — CB28 reviewed (2026-10-22)
 
 CB28 diagnostics are message-only and accepted. 18 of the 21 silent REDs now report a typed reason. `focused30:12` and `focused30:22/23` (the M1 precedence tests) are still silent; CB28A adds those messages before TB29. TB29 will measure all 35 REDs. No count changes. Record: `Architecture_M6_CP3_CB28_Factory_Error_Diagnostics_Review_Decision_20261022.md`.

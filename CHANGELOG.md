@@ -1,3 +1,9 @@
+## 2026-10-23 — TB29 block resolved (RA-137): reviewed test list plus one reusable test runner
+
+- The planned run of 44 tests could not start: no approved script existed to run exactly those tests, and the run turn was not allowed to write one. Every targeted run so far had written its own single-use script.
+- Now Review publishes the test list as a fixed, hashed file. The implementation agent writes one reusable runner (TB29H), reviewed once, which reads any such list and prints the typed failure reason for each failing test. The list also restores the three guard tests used in earlier runs.
+- Next: TB29H, then its review, then the TB29 run. The package it runs on expires 2026-10-29. Accounting unchanged. Record: `Architecture_M6_CP3_TB29_Harness_Authorization_Design_Review_Decision_20261023.md`.
+
 ## 2026-10-22 — CB28A independently accepted (static Review); TB29 scoped
 
 - Independent Review verified semantic `4473e41e94a35f1bf189fa046e86bac92c7391fb` (+16/−3 in TQ only), three guarded diagnostic streams by test name, build package `12465330920` with 28/28 hashes, eight GMP/GMPXX targets and `runtimeExecution=false`; no runtime or gate promotion.

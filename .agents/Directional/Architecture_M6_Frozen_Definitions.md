@@ -1,3 +1,13 @@
+## RA-137 — TB29 block resolved: Review-owned manifest; reusable targeted harness (2026-10-23)
+
+Authority: `Architecture_M6_CP3_TB29_Harness_Authorization_Design_Review_Decision_20261023.md`.
+
+- **RA-137.1** Guard trio = RA-130.9's (`M6CP1.A7CrossSheetBindingRequiresConnectingIsolationTransition`, `M6CP2.A7WedgeTransitionWrongRegionRejects`, `M6CP2.A7WedgeTransitionTouchWithoutConnectivityRejects`). Binaries: producer tests for all but `selector:442` (authority-kernel tests).
+- **RA-137.2** Case manifest `Architecture_M6_CP3_TB29_Targeted_Case_Manifest.tsv`, SHA-256 `39fa5eb83e2da1b0668bc7368c5304011ec13de8804c54a2a3466f927c42d236`, 44 rows (4 NEGATIVE, 2 POSITIVE, 3 GUARD, 35 RED from the TB28 inventory).
+- **RA-137.3** TB29H: `m6_cp3_targeted_artifact_harness.sh` derived from the TB27 harness. Environment inputs (package values plus `CASE_MANIFEST` and its SHA); multi-binary; one run per case; typed-reason extraction; fail-closed control gates; `--self-check`; static validation only.
+- **RA-137.4** TB29H → REV → TB29 (CB28A package `12465330920`, expires 2026-10-29T22:54:39Z) → REV → DEFN-M1 → REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+---
 ## RA-136 — CB28 reviewed: 18/21 silent REDs covered; CB28A before TB29 (2026-10-22)
 
 Authority: `Architecture_M6_CP3_CB28_Factory_Error_Diagnostics_Review_Decision_20261022.md`.

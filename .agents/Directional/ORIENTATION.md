@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-22 · Independent CB28A-REV ACCEPTS three error-message-only assertions and GMP/GMPXX compile package 12465330920 (28/28; no runtime). Next: M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST, artifact-only 44-identity typed-cause harvest; TB28 462/497 candidate, CP2 491/491 accepted; stable 66/17/49, debt 1; RP-01 open, RP-02 unreached.
+**Currency:** 2026-10-23 · RA-137 resolves the TB29 block. Review now owns the 44-test case manifest; TB29H builds one reusable harness that runs any reviewed manifest and reports typed failure reasons. Then TB29 runs on the CB28A package (expires 2026-10-29), and DEFN-M1 follows from the measured causes. Accepted CP2 491/491; TB28 462/497 candidate; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
