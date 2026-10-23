@@ -388,11 +388,41 @@ direct_periodic_owner_fixture() {
   auto sourceAtlas = directional::authority::FieldTransportAtlas::make(
       sourceMesh, authority.value(), {}, sourceField);
   if (!sourceAtlas) throw std::runtime_error("Direct periodic source A3 unavailable.");
+
+  // Fix the local gauge representative from typed source faces, not row order.
+  const auto firstRow = authority->row_for_topology(projection.face);
+  const auto secondRow = authority->row_for_topology(secondFace.value());
+  const auto diagonal = directional::authority::SourceEdgeTopologyKey::make(
+      vertices[0], vertices[2]);
+  if (!firstRow || !secondRow || !diagonal || *firstRow == *secondRow ||
+      authority->face_count() != 2U ||
+      authority->region_for_row(*firstRow) != regionId.value() ||
+      authority->region_for_row(*secondRow) != regionId.value() ||
+      std::find(boundaryTopology.begin(), boundaryTopology.end(),
+                *diagonal) != boundaryTopology.end() ||
+      !sourceAtlas->find_adjacency(*diagonal)) {
+    throw std::runtime_error("Invalid direct periodic-owner interior gauge edge.");
+  }
+  const auto forward = sourceAtlas->transition_value(
+      *diagonal, *firstRow, *secondRow);
+  const auto reverse = sourceAtlas->transition_value(
+      *diagonal, *secondRow, *firstRow);
+  if (!forward || !reverse ||
+      reverse->transport != forward->transport.inverse()) {
+    throw std::runtime_error("Invalid direct periodic-owner reciprocal A3 gauge.");
+  }
+  std::vector<int> faceGauge(authority->face_count(), -1);
+  const auto firstGauge = directional::authority::QuarterTurn::from_integer(0);
+  faceGauge[firstRow->index()] = static_cast<int>(firstGauge.value());
+  faceGauge[secondRow->index()] = static_cast<int>(
+      compose(forward->transport, firstGauge).value());
+
   auto product = directional::geometry::SurfacePhaseFrontProduct::make(
       0, 0, std::move(authority.value()), sourceFaces,
       static_cast<std::size_t>(sourceVertices.rows()), &sourceAtlas.value(),
       {}, std::move(relations), {},
-      std::move(edges), {}, std::move(cells));
+      std::move(edges), {}, std::move(cells),
+      std::nullopt, {}, std::move(faceGauge));
   auto *value =
       std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&product);
   if (value == nullptr) {
@@ -9001,6 +9031,101 @@ TEST(SurfaceCellTransitionQuotient,
       construct_phase_front_product(std::move(tampered)),
       directional::geometry::SurfacePhaseFrontProductErrorCode::
           NonReciprocalPeriodicRelation);
+}
+
+TEST(SurfacePhaseFrontProductFactoryAuthority,
+     PeriodicOwnerFixtureMissingGaugeRejects) {
+  const auto fixture = direct_periodic_owner_fixture();
+  auto original = phase_front_draft(fixture);
+  ASSERT_EQ(original.sourceAuthority.face_count(),
+            original.sourceFaceBranchRotations.size());
+  auto baseline = construct_phase_front_product(original);
+  ASSERT_NE(nullptr, std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+                         &baseline));
+
+  original.sourceFaceBranchRotations.clear();
+  const auto rejected = construct_phase_front_product(std::move(original));
+  const auto *error =
+      std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&rejected);
+  ASSERT_NE(nullptr, error);
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontProductErrorCode::
+                InvalidSourceAuthority,
+            error->code);
+  EXPECT_EQ("face-gauge-missing", error->sourceAuthoritySite);
+}
+
+TEST(SurfacePhaseFrontProductFactoryAuthority,
+     PeriodicOwnerFixtureOneFaceGaugeTamperRejects) {
+  const auto fixture = direct_periodic_owner_fixture();
+  auto original = phase_front_draft(fixture);
+  auto baseline = construct_phase_front_product(original);
+  ASSERT_NE(nullptr, std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+                         &baseline));
+  ASSERT_EQ(2U, original.sourceFaceBranchRotations.size());
+
+  const auto &rowFaces = original.sourceAuthority;
+  const auto faceId = directional::authority::SourceFaceId::from_index(
+      0, rowFaces.face_count());
+  ASSERT_TRUE(faceId.has_value());
+  const auto &firstFace = rowFaces.topology_for_row(faceId.value());
+  const auto &firstCorners = firstFace.vertices();
+  const auto sharedEdge = test_source_edge_topology(0, 2, 4U);
+  const auto *firstRegionFace = rowFaces.region(
+      rowFaces.region_for_row(faceId.value())).find_face(firstFace);
+  ASSERT_NE(nullptr, firstRegionFace);
+  EXPECT_TRUE(std::find(firstCorners.begin(), firstCorners.end(),
+                        sharedEdge.first()) != firstCorners.end());
+  EXPECT_TRUE(std::find(firstCorners.begin(), firstCorners.end(),
+                        sharedEdge.second()) != firstCorners.end());
+  original.sourceFaceBranchRotations[faceId->index()] =
+      (original.sourceFaceBranchRotations[faceId->index()] + 1) % 4;
+  const auto rejected = construct_phase_front_product(std::move(original));
+  const auto *error =
+      std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&rejected);
+  ASSERT_NE(nullptr, error);
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontProductErrorCode::
+                InvalidSourceAuthority,
+            error->code);
+  EXPECT_EQ("gauge-pin-consistency;edge=0,2", error->sourceAuthoritySite);
+}
+
+TEST(SurfacePhaseFrontProductFactoryAuthority,
+     PeriodicOwnerFixtureUniformGaugeShiftPreservesOwners) {
+  const auto fixture = direct_periodic_owner_fixture();
+  auto original = phase_front_draft(fixture);
+  auto baseline = construct_phase_front_product(original);
+  const auto *before =
+      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&baseline);
+  ASSERT_NE(nullptr, before);
+  ASSERT_EQ(2U, original.sourceFaceBranchRotations.size());
+  ASSERT_EQ(2U, before->periodicHolonomies().size());
+
+  for (int &gauge : original.sourceFaceBranchRotations) {
+    gauge = (gauge + 1) % 4;
+  }
+  const auto shiftedGauge = original.sourceFaceBranchRotations;
+  auto shifted = construct_phase_front_product(std::move(original));
+  const auto *after =
+      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&shifted);
+  ASSERT_NE(nullptr, after);
+  EXPECT_EQ(shiftedGauge, after->sourceFaceBranchRotations());
+  ASSERT_EQ(before->periodicHolonomies().size(),
+            after->periodicHolonomies().size());
+  ASSERT_EQ(before->edges().size(), after->edges().size());
+  std::map<directional::authority::PeriodicRelationId,
+           directional::geometry::SurfacePeriodicHolonomy> owners;
+  for (const auto &owner : before->periodicHolonomies()) {
+    ASSERT_TRUE(owners.emplace(owner.id(), owner).second);
+  }
+  for (const auto &owner : after->periodicHolonomies()) {
+    const auto it = owners.find(owner.id());
+    ASSERT_NE(owners.end(), it);
+    EXPECT_EQ(it->second, owner);
+  }
+  for (std::size_t index = 0; index < before->edges().size(); ++index) {
+    EXPECT_EQ(before->edges()[index].periodicRelation,
+              after->edges()[index].periodicRelation);
+  }
 }
 
 TEST(SurfaceCellTransitionQuotient,
