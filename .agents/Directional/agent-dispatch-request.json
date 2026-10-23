@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb29-rev-apply-20261023-01",
+  "request_id": "m6-cp3-tb29-rev-consolidate-20261023-01",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb29-rev-apply",
-  "file_id": "1vHPBHCBs7sqerPmh2ZFptMzR7nQCZzvX",
-  "patch_sha256": "1dca8189ddc24b0f8ff62c3e848fd279b2ad0663536382bbbe54784a4384baf5",
-  "base_sha": "b56ccc26d15b975de47a3569e298b72aeccd2931",
+  "mailbox_key": "m6-cp3-tb29-rev-consolidate",
+  "file_id": "1zhna62VlcNuVhHD6wt-SFb5HTJrJ4hfe",
+  "patch_sha256": "42a34b55c4c8660af008bed0f23e09ecf3df9edf74233b907d6837eb5651bdd1",
+  "base_sha": "c4263fab7e5dfe976b68b076e093eff13399240a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): independent TB29 typed factory cause review and DEFN-M1 handoff",
+  "commit_message": "docs(directional): fold consumed TB29 plan into M6 consolidated record",
   "retention_days": 7
 }
