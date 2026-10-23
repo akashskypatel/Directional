@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-23 · RA-139 audits the TB29H review. Its three runner defects are confirmed and three more are added: a timeout leaves the test running, timing output is mixed into logs, and reasons are read from the whole log. The correction (TB29H-RP02) must ship a built-in self-test and a count gate. TB29 stays on hold until then; the CB28A package expires 2026-10-29. Accepted CP2 491/491; TB28 462/497 candidate; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
+**Currency:** 2026-10-23 · TB29H-RP02 harness-only correction landed at `813d377e`; 12/12 synthetic self-test and frozen-manifest/negative checks passed, no Directional binary executed. Independent RP02-REV must accept H1–H6 before TB29 resumes. CB28A package expires 2026-10-29. Accepted CP2 491/491; TB28 462/497 candidate; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current harness gate:** RA-138 rejects TB29H static-to-runtime authorization until RP02 correction + Review; no product runtime was executed in this Review.
+**Current harness gate:** corrected H1–H6 committed and statically verified; independent RP02-REV outstanding. TB29 remains on hold until its decision.
 
 **Latest candidate (TB28, reviewed by RA-133):** 462 PASS / 35 inherited RED on the frozen 497-row CP3 selector, with 13 RED→PASS and no PASS→RED vs TB21. The 12 seam-family cases and selector:447 are PASS. All 35 inherited first failures are classified in `Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md`; M1, D2 and fixture-debt causal obligations remain. TB28 is NOT accepted CP3 evidence; CP2 remains 491/491. CB27A has statically accepted A7 negative oracles; CB28 and CB28A diagnostic-only changes are compiled and independently reviewed, but the negatives and the 35 inherited TB28 REDs remain unexecuted on this package until TB29.
 

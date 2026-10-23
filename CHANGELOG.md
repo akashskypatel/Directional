@@ -1,3 +1,7 @@
+## 2026-10-23 — TB29H RP02 harness correction (control-plane only)
+
+- Corrected reusable 44-case artifact harness H1–H6: terminal outcome classification, expected row count, A5 causes, timeout process-group reaping, separate resource files and scoped failure extraction. Built-in 12-case self-test and manifest negative checks passed; source commit `813d377e`, SHA-256 `436f5fff9c3b`; no Directional binary or benchmark. Independent RP02-REV is next; TB29 remains held. See `Architecture_M6_CP3_TB29H_RP02_Harness_Correction_Code_Build_Record_20261023.md`.
+
 ## 2026-10-23 — Audit of the TB29H review (RA-139): more runner fixes, plus a built-in self-test
 
 - The review was right on all three points. The test runner would count a crashed or timed-out test as an ordinary failure, it accepted a test list of the wrong length, and it cut some failure reasons short.
