@@ -45,7 +45,7 @@ Authorize only `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` (no sou
 | ROADMAP | No checkpoint status movement; unchanged for substantive reason. |
 | Selector manifest | Unchanged; no selector added or accepted. |
 | LESSONS | Existing evidence/diagnostic/precedence lessons apply; no new lesson. |
-| Consolidation under CLEAN_UP_POLICY | Fold consumed TB29 plan into M6 consolidated index only after preserving its full contents and reference mapping; pending. |
+| Consolidation under CLEAN_UP_POLICY | Folded consumed TB29 artifact-only plan into `M6_Consolidated_Record.md` with its exact filename/verdict, complete verbatim text and provenance resolver; retained authoritative TB29 report, RA-141 Review and next DEFN-M1 plan. |
 | Successor frozen | `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` with falsifiers here and in next Definition plan. |
 | Turn boundary held | Static independent Review only; no Directional binary, configure, compile, relink, benchmark, code/test/selector mutation. |
 | review_check.py boundary | Pending authoritative Git-history check; synthetic snapshot history is not an authentic historical baseline. |
