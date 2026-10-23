@@ -1,3 +1,9 @@
+## 2026-10-23 — CB29 A4/A5 certificate-association ownership (Code + Build)
+
+- Under RA-143.3, changed only `src/geometry/SurfaceCellTracing.cpp` certificate-pair clause: A4 retains both `HardRail` kinds and its certificate authenticity/structural reciprocity guards while A5 owns the removed edge/certificate association comparisons. Applied commit `2602e7398cdc6f1281abe11a758de35166b6590c`; patch SHA-256 `cd7401cbc7f966f6bc70139bef9199f7beb616301145408e5d826aeecd773467`.
+- Eight GMP/GMPXX targets compiled from exact source in [run 39932638282](https://github.com/akashskypatel/Directional/actions/runs/39932638282), artifact `12492950387`, ZIP SHA-256 `9e2da1f4b5cf95ac45364e8c428f0bd9116dcfe96772de18d02a5a7bfb167319`; 28/28 checksums, preflight/build exits 0/0, `runtimeExecution=false`. No test/benchmark execution and no runtime acceptance claim. Record: `.agents/Directional/Architecture_M6_CP3_CB29_A4_Certificate_Association_Ownership_Code_Build_Record_20261023.md`.
+- Next mandatory turn: `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP-REV` (independent Review, then targeted TB30 manifest); all stable regression/selector accounting unchanged.
+
 ## 2026-10-23 — M1 design block resolved (RA-143): who checks hard-rail certificates against edges
 
 - The M1 definition stopped on one question: should the phase-front product stage refuse hard-rail edges that don't match their certificate, or leave that to the next stage (A5)?

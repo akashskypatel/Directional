@@ -34,50 +34,39 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-23, after the DEFN-M1 architecture review (RA-143). The blocked DEFN-M1 contract is accepted, and its open question is resolved. A4 keeps certificate **authenticity** (RA-40.1). Edge-to-certificate **association** (opposite edge, rail id, route, region) belongs to A5 under RA-15/RA-16 §5. A5 already enforces it in the frozen order (RP:4904–4925, then the certificate lookup at RP:5040–5051) and is its only consumer. No passing test depends on A4 doing the association. CB29 removes those five predicates from A4's pair clause. |
-| Working branch / semantic source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open. CB28A semantic source `4473e41e94a35f1bf189fa046e86bac92c7391fb`. |
+| Currency | 2026-10-23: CB29 completed its compile-only A4/A5 certificate-association owner split under RA-143.3. The first certificate pair clause now checks only the two HardRail kinds; A4 continues to authenticate certificates and enforce structural opposite reciprocity; A5 owns edge-to-certificate association. Independent CB29 Review must inspect the exact diff and issue the TB30 manifest; no runtime/test acceptance claimed. |
+| Working branch / semantic source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open. CB29 compiled exact source `2602e7398cdc6f1281abe11a758de35166b6590c`; CB28A prior semantic source `4473e41e94a35f1bf189fa046e86bac92c7391fb`. |
+| CB29 compile evidence | [run 39932638282](https://github.com/akashskypatel/Directional/actions/runs/39932638282), package `12492950387`, ZIP SHA-256 `9e2da1f4b5cf95ac45364e8c428f0bd9116dcfe96772de18d02a5a7bfb167319`; 28/28 hashes, 8 targets, preflight/build 0/0, GMP/GMPXX, runtimeExecution=false; no binaries executed. Owning record `Architecture_M6_CP3_CB29_A4_Certificate_Association_Ownership_Code_Build_Record_20261023.md`. |
 | Accepted vs candidate | CP2 491/491 accepted. R3 403/497 rejected; TB28 462/497 candidate only. Selector 497 byte-frozen. |
 | TB29 evidence | [run 39906802267](https://github.com/akashskypatel/Directional/actions/runs/39906802267), artifact `12481556884`, ZIP SHA-256 `4e639a633a64df419f1891083911506679c6c4848f1ecbce7b206c4f5d653ae1`; 44/44, 9 PASS/35 RED, 92/92 checksums, 44/44 log/manifest identity matches. |
 | Independently reviewed partition | RA-141: six R2 certificate-pair M1 first failures, six earlier face-gauge missing, one open-rail-chain; A3 eight (7 cycle + 1 singularity), A5 one, untyped thirteen. Cause not extrapolated. |
 | Accounting | Stable 66/17/49; debt 1; RP-01 open, RP-02 unreached, Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP-REV` — EXACT NEXT
 
-- **Type / owner:** Code + Build, compile only; implementation agent. Authority: RA-143.3 (`Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Review_Decision_20261023.md`), on the accepted contract `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_20261023.md`.
-- **Objective:** let each of the ten M1 tampers reach its frozen owner, by moving edge-to-certificate association out of A4's pair clause. A5 already enforces it.
-- **Read before work:** RA-143 (all); the DEFN-M1 contract §§1–4; SCT:8814–8960 (certificate loop); SCT:≈9331–9353 (`InvalidOppositeEdge`); RP:4904–4925 and 5040–5051 (A5 checks); RA-15 and RA-16 §5.
-- **In scope** (`src/geometry/SurfaceCellTracing.cpp` only): in the pair clause (SCT:8831–8841):
-  1. remove `first.oppositeEdge != certificate.secondFrontEdge`, `second.oppositeEdge != certificate.firstFrontEdge`, both `railId` comparisons, `first.route != certificate.route`, `second.route != certificate.route.reversed()`, and `first.sourceTopologyRegion == second.sourceTopologyRegion`;
-  2. keep both `HardRail` kind checks with site `certificate-pair-binding`;
-  3. add one comment citing RA-15/RA-16 §5/RA-143 (A4 authenticates, A5 associates).
-
-  Lines at most 100 columns.
-- **Out of scope:** RP/A5 (it already enforces), headers, tests, selectors, workflows; any other A4 clause; runtime.
-- **Success evidence:**
-  - a diff confined to that clause plus the comment;
-  - eight targets compile with GMP/GMPXX, `runtimeExecution=false`;
-  - record `Architecture_M6_CP3_CB29_A4_Certificate_Association_Ownership_Code_Build_Record_20261023.md` (at most 30 lines) with the hunk, package id and hashes;
-  - STATUS COMPLETE.
-- **On success:** `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP-REV` (Review, mandatory): static diff check; issues the TB30 manifest (RA-143.4).
-- **On failure/blocker:** STOP and return to Review if a later clause in the same loop reads a removed field assuming it was bound, or if any edit outside the clause is needed.
+- **Type / owner:** Independent Review; CB29 compile-only closeout under RA-143.3, then RA-143.4 TB30 manifest decision.
+- **Authority:** RA-143 (`Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Review_Decision_20261023.md`), DEFN-M1 accepted contract, CB29 build record, compiled source `2602e7398cdc6f1281abe11a758de35166b6590c`.
+- **Required review:** inspect the exact `src/geometry/SurfaceCellTracing.cpp` pair-clause diff; confirm two HardRail kinds and `certificate-pair-binding` retained; verify A4 certificate authenticity and `InvalidOppositeEdge`, and A5 downstream edge/rail/route/region ownership. Confirm no other implementation/test/selector/workflow changes, no executable run, source exactness and eight-target GMP/GMPXX package evidence.
+- **Decision:** if approved, issue the targeted TB30 manifest prescribed by RA-143.4: ten M1 frozen-first-owner rows, seven non-M1 factory rows unchanged RED, nine TB29 controls, three certificate-authenticity guards. TB30 remains **unauthorized until this Review issues its manifest**. No full 497-case census or successor implementation here.
+- **Frozen accounting:** stable 66/17/49; debt 1; CP2 491/491; R3 403/497 rejected; TB28 462/497 candidate. RP-01 open, RP-02 unreached, Gate C suspended.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP` | Code + Build, compile only (RA-143.3): remove the five association predicates from A4's pair clause. |
-| 2 — conditional | `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP-REV` | Review, only after step 1 completes: static diff check; issues the TB30 manifest. |
+| 1 — complete | `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP` | Compile-only eight targets succeeded; evidence in owning CB29 record. |
+| 2 — next | `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP-REV` | Mandatory independent Review: static diff check; issues the TB30 manifest if approved. |
 | later — UNKNOWN until assigned | TB30 (targeted harness `436f5fff…c9a`; Review-owned manifest: 10 M1 rows expected PASS, 7 non-M1 factory rows expected unchanged RED, 9 TB29 controls, 3 certificate-authenticity guards; RA-143.4) → TB30-REV → owners for face-gauge-missing (6), A3 cycle locus (7) / `selector:442`, A5 `focused30:12` → DEFN-T1 (`cp3entry:1/2`) → fixture debt → census (RA-139.5 harness) → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness | Planned, not authorized; each Review assigns the next edge. |
 | later — UNKNOWN until assigned | `DIAG-RETAIN` (user-directed): retain A5 occurrences and relations, A6 merged classes and A7 vertex geometry as diagnostic snapshots for GUI/CLI; scope in `TODO.md` | Planned, not authorized; Review places it in the sequence clear of RP-01 turns. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **code-build** — CB29: SCT-only removal of five association predicates from A4's certificate pair clause (RA-143.3); compile only.
+`load_next`: **review** — CB29-REV: independently review exact A4/A5 owner-split diff and compile artifact; issue the TB30 manifest only after approval.
 
 Minimum next context after mandatory start/policies:
 
 0. `.agents/Directional/ORIENTATION.md`; `.agents/Directional/ROADMAP.md`.
-1. `.agents/Directional/Future_Chat_Session_Handoff.md` and `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Plan_20261023.md`.
+1. `.agents/Directional/Future_Chat_Session_Handoff.md`, CB29 code/build record and RA-143 review decision.
 2. RA-141 review and TB29 raw result artifact `12481556884`; RA-140.4; RA-105.3; TB28 RED inventory.
 3. `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Review_Decision_20261023.md` (RA-143: owner split, predicate table, CB29 scope, TB30 plan); `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_20261023.md` (accepted contract); `Architecture_M6_CP3_TB29_Review_Audit_Decision_20261023.md` (RA-142).
 4. Review helpers in `.agents/Directional/tools/` for independent evidence. Do not interpret a synthetic snapshot's git-history checks as authoritative.

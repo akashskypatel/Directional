@@ -1,4 +1,4 @@
-## CURRENT — RA-143: certificate ownership split resolved; CB29 next (2026-10-23)
+## CURRENT — CB29 compile complete; independent CB29 review next (2026-10-23)
 
 - [x] DEFN-M1 written and BLOCKED: the ten-row matrix showed that no option fit without deciding A4-versus-A5 ownership.
 - [x] Review (RA-143, DEFN-M1-REV):
@@ -7,20 +7,20 @@
   - only consumers: the A5 lookup and a hash;
   - no passing test depends on A4 association;
   - R2's clause (`80fc1688f`) is not frozen authority. Record: `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Review_Decision_20261023.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP` — SCT only, compile only:
+- [x] **CB29 COMPLETE:** `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP` — SCT only, compile only:
   1. in the pair clause SCT:8831–8841, remove both `oppositeEdge`, both `railId`, both route comparisons and the region inequality;
   2. keep the `HardRail` kind checks;
   3. add an RA-15/16/143 comment.
 
-  Record `Architecture_M6_CP3_CB29_A4_Certificate_Association_Ownership_Code_Build_Record_20261023.md`. STOP if a later A4 clause relies on a removed binding.
-- [ ] **CONDITIONAL:** `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP-REV` — Review: static check; issues the TB30 manifest.
+  Verified [compile run 39932638282](https://github.com/akashskypatel/Directional/actions/runs/39932638282), result `12492950387` (28/28 checksums, exact GMP/GMPXX link, 8/8 targets, runtimeExecution=false). Source `2602e7398cdc6f1281abe11a758de35166b6590c`. Record `Architecture_M6_CP3_CB29_A4_Certificate_Association_Ownership_Code_Build_Record_20261023.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP-REV` — independent Review: static diff/guard ownership check, issue TB30 manifest; no Code + Build runtime execution.
 - [ ] Planned, not authorized: TB30 (targeted harness `436f5fff…c9a`; Review-owned manifest: 10 M1 rows expected PASS, 7 non-M1 factory rows expected unchanged RED, 9 TB29 controls, 3 certificate-authenticity guards; RA-143.4) → TB30-REV → owners for face-gauge-missing (6), A3 cycle locus (7) / `selector:442`, A5 `focused30:12` → DEFN-T1 (`cp3entry:1/2`) → fixture debt → census (RA-139.5 harness) → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
   - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Turn sequence:** TB29-REV (RA-141) → audit (RA-142) → DEFN-M1 [BLOCKED] → DEFN-M1-REV (RA-143) → **CB29** → CB29-REV → TB30 → TB30-REV → face-gauge / A3 / A5 owners → DEFN-T1 → fixture debt → census → RP-01 Review.
+- **Turn sequence:** TB29-REV (RA-141) → audit (RA-142) → DEFN-M1 [BLOCKED] → DEFN-M1-REV (RA-143) → CB29 [complete] → **CB29-REV** → TB30 → TB30-REV → face-gauge / A3 / A5 owners → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
 
 ---
