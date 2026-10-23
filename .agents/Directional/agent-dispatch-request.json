@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb30-gauge-compile-fixed-20261023-r1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb30-gauge-fixed-compile",
-  "source_sha": "19267540081a4ff3a99826e3b9a766f1dbbded42",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb30-gauge-fixed"
+  "request_id": "m6-cp3-cb30-gauge-doc-closeout-20261023-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb30-gauge-doc-closeout",
+  "file_id": "1FpGpi_1wmPo77voJCFopb8_LtN4l2iRp",
+  "patch_sha256": "eed913a1682d01710a21c74d9d5b5b375027ed4ef97e223a2c3a8e2f991c6fc0",
+  "base_sha": "79aeb3ddcbe3c6c97163e7b57232d4226571678e",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close out CB30 fixture gauge compile evidence",
+  "retention_days": 7
 }
