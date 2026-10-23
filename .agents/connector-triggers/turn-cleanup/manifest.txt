@@ -1,0 +1,2 @@
+# TB29 independent review temporary source-snapshot trigger
+.agents/connector-triggers/source-snapshot/m6-cp3-tb29-rev-20261023.txt
