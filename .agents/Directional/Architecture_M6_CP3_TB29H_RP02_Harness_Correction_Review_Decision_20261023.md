@@ -48,5 +48,5 @@
 | Successor frozen | `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST` with prior plan's exact falsifiers and the expiry guard above |
 | Turn boundary held | Review-only; no runtime, product/test/fixture/selector/manifest/workflow mutation |
 | review_check.py boundary | Attempted on verified source snapshot; FAIL for Git-ancestry baselines because snapshot deliberately has no `.git` history. Not represented as a passed gate; independently compared correction paths instead |
-| `STATUS` lifecycle maintained | Entry written; final COMPLETE beacon to be written **after** repository documentation application/cleanup and verification |
-| Pushed to origin, branch in sync | Pending remote documentation application and branch readback; not claimed yet |
+| `STATUS` lifecycle maintained | Entry beacon written; review documents applied through verified Drive patch workflow; final COMPLETE beacon published as the final repository write |
+| Pushed to origin, branch in sync | Repository documentation patch applied through successful Actions run 39903621578 and source-snapshot trigger cleaned up; GitHub branch readback confirmed review record, local `git status -sb` unavailable in the Git-less exact snapshot |
