@@ -1,3 +1,8 @@
+## 2026-10-23 — CB31 odd atlas transport/permutation compiled (static Review next)
+
+- Test-only source `ce13d438e65daf07a770cafa15ac4cef7046f931` adds actual raw-field A3 odd 1/3 transport, topology-keyed face-row/cyclic-corner positive controls, stale-vector and wrong directed-inverse negatives; original owner cases, production, 497 selector and TB32 500 manifest unchanged. Initial compile failed on `DomainResult` syntax; repaired without changing test semantics.
+- Compile-only [run 40039880387](https://github.com/akashskypatel/Directional/actions/runs/40039880387), artifact `12538139984` ZIP SHA-256 `a5fd12d07ae2824e813e3fb4e0c576efff99321133601cab62739e863a59329a`; 28/28 packaged hashes checked, all eight GMP/GMPXX targets, `runtimeExecution=false`. No tests/benchmarks/runtime executed. Source/test result not yet independently reviewed or executed. Stable 66/17/49 debt1, CP2 491/491 accepted, CP3 unaccepted. [Record](.agents/Directional/Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Code_Build_Record_20261023.md). Next `M6-CP3-CB31-RP01-ODD-ATLAS-TRANSPORT-PERMUTATION-REV`.
+
 ## 2026-10-23 — RA-148 independent TB32 Review (scoped candidate accepted; CB31 next)
 
 - Independently re-derived TB32 500/500 outcomes from 1,006 hashes/raw logs against TB31 1,000 hash baseline and CB30 28-hash GMP/GMPXX package. Original 497: 478 PASS / 19 inherited RED versus 472 / 25; six original owner tests recovered, three factory tamper/shift controls PASS, zero regressions. Factory-only scope accepted; no direct/periodic/A6/CP3 promotion.

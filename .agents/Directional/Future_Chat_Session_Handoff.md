@@ -34,38 +34,34 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-23, RA-148 independent TB32 Review accepted six recovered synthetic factory/owner tests and three controls **within their bounded scope only**. Next CB31 odd atlas transport/permutation, compile-only. |
-| Branch/source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open. CB30 semantic `19267540081a4ff3a99826e3b9a766f1dbbded42`; compile package `12531891913` (28/28 hashes, eight GMP/GMPXX targets, `runtimeExecution=false`). |
-| TB32 reviewed candidate | Run [40028643379](https://github.com/akashskypatel/Directional/actions/runs/40028643379), artifact `12534679588`, outer SHA-256 `2c809e72489a69396c3c9e97e2a40ebb15f726de84a19b5610bb092fb9f85ddd`; 1,006/1,006 checksum and 500/500 distinct individual log audits. 481 PASS/19 inherited RED/0 INVALID; frozen original 497: **478 PASS/19 RED**, six recovered, three new controls PASS, zero regressions. [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md), [TB32 report](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Report_20261023.md), [remaining cases](Architecture_M6_CP3_TB32_Residual_Red_Inventory.tsv). |
-| Baseline | TB31 run `39959505758`, artifact `12506242253`: 472/497 PASS with 25 RED and 1,000/1,000 checksums, independently compared again in RA-148. |
-| Accepted vs candidate | CP2 **491/491 accepted**; CP3 **unaccepted**. TB28 462/497, TB31 472/497, TB32 478/497 candidate only. Selector 497 byte-frozen. Stable 66/17/49, debt1; RP-01 open, RP-02 unreached, Gate C suspended. |
+| Currency | 2026-10-23, CB31 test-only Code + Build compiled. Exact next independent CB31-REV; no runtime, candidate acceptance or new gate promotion. |
+| Branch/source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; CB31 semantic `ce13d438e65daf07a770cafa15ac4cef7046f931`. Compile-only [run 40039880387](https://github.com/akashskypatel/Directional/actions/runs/40039880387), artifact `12538139984` ZIP SHA-256 `a5fd12d07ae2824e813e3fb4e0c576efff99321133601cab62739e863a59329a`; 28/28 packaged hashes checked, all eight GMP/GMPXX targets, `runtimeExecution=false`. No tests/benchmarks/runtime executed. |
+| TB32 scoped candidate | RA-148 accepted synthetic factory/owner scope: 481/500 PASS and 19 inherited RED; frozen original 497 is **478 PASS / 19 RED**. [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md). No A6 or produced periodic claim. |
+| Accepted vs candidate | CP2 **491/491 accepted**, CP3 unaccepted; stable 66/17/49, debt1; RP-01 open, RP-02 unreached, Gate C suspended; selector497 and TB32 manifest frozen. |
 
-## Mandatory next turn — `M6-CP3-CB31-RP01-ODD-ATLAS-TRANSPORT-PERMUTATION` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB31-RP01-ODD-ATLAS-TRANSPORT-PERMUTATION-REV` — EXACT NEXT
 
-- **Type:** Code + Build, test-only topology-keyed odd-transport/permutation proof. Read [precommitted plan](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Code_Build_Plan_20261023.md) and [RA-148 Review](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md); use exact verified source authority per policy. No runtime, Test + Benchmark, selector/benchmark or production-code changes in this unit.
-- **Required premise:** actual A3 directed quarter-turn **1 or 3** on a same-sheet non-hard shared edge, reciprocal inverse and unequal real derived gauges; use the raw-field/atlas ingress, not forged transport state. Valid row, field and orientation-preserving cyclic-corner permutation must preserve canonical owner outcomes with all references/gauges remapped.
-- **Negative oracles:** stale old gauge vector and wrong directed inverse must reject at the canonical edge; independent expected values, non-vacuous baseline. Retain six original owner assertions and three factory controls. A6 produced outcome and real periodic topology remain separate.
-- **Stop rules:** if actual ingress erases odd transport, if independent face/corner mapping cannot be derived, if any negative oracle is inert or if the production checker must be edited, **STOP and preserve evidence**. No relaxing odd→even, changing frozen selector, or claims of runtime success. Compile/package eight GMP/GMPXX targets only after bounded implementation.
-- **Boundary:** RA-148 Review has already ended its scope; CB31 is a separate turn. Exact later conditional CB31-REV, then separate immutable TB/Review, not combined.
+- **Type:** independent Code + Build Review, read-only, no runtime. Read [CB31 record](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Code_Build_Record_20261023.md), [precommitted plan](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Code_Build_Plan_20261023.md), [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md) and immutable compile artifacts.
+- **Required proof:** independently inspect actual A3 raw-ingress odd 1/3 reciprocal transition, non-hard same-sheet source edge, non-equal face gauges, correct face/raw/topology/corner permutation, and genuinely independent stale-vector/wrong-inverse rejection at canonical edge. Review exact diff and preservation of all original six assertions and three factory controls.
+- **Boundary:** immutable compile + static Review only; no test execution, package rebuild, production checker, selector, benchmark or manifest modification. Compile-only evidence is not an A3/A5/A6 runtime verdict. Stop on falsified premise or inert negative oracle; assign corrective owner through Review, never relax assertions.
+- **On accept:** authorize separate immutable Test + Benchmark only after independently freezing its exact cases and authority; next canonical ID **UNKNOWN** until Review assigns it.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
-|---|---|---|
-| 1 — exact next | `M6-CP3-CB31-RP01-ODD-ATLAS-TRANSPORT-PERMUTATION` | Test-only real odd transport/permutation; compile/package-only |
-| 2 — conditional | `M6-CP3-CB31-RP01-ODD-ATLAS-TRANSPORT-PERMUTATION-REV` | Independent source/compile Review after complete CB31 |
-| 3 — unassigned | `UNKNOWN` | Immutable TB and TB-REV separately authorized after CB31 Review |
-| later — unassigned | `UNKNOWN` | 19 inherited RED owners, produced A6 and G4-B002 witness, census/RP-01 Review |
+|---|---|
+| 1 — exact next | `M6-CP3-CB31-RP01-ODD-ATLAS-TRANSPORT-PERMUTATION-REV` | Independent exact-source static/compile Review, no runtime |
+| 2 — conditional | `UNKNOWN` | Immutable TB and TB-REV only after Review accepts and assigns distinct boundaries |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **code-build** — implement only CB31 real odd A3 transport/permutation test proof under frozen RA-148 plan; compile/package only, no runtime.
+`load_next`: **review** — independent CB31 static source/compile decision, not another Code + Build or runtime turn.
 
 Minimum context after mandatory policies:
-0. ORIENTATION, ROADMAP, this handoff, TODO, RA-147 decision and TB32 report/inventory.
-1. Immutable TB32 run 40028643379, result 12534679588, exact package 12531891913, TB32 manifest and frozen 497 selector.
-2. TB31 472/497 Review and RED inventory, RA-145 and RA-146.2–4 witness limitations, RA-45.4 produced A6 invariance.
-3. Regression tracker and frozen authority definitions; preserve stable counts and assign subsequent turn only after Review.
+0. ORIENTATION, ROADMAP, handoff, TODO, [CB31 record](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Code_Build_Record_20261023.md) and RA-148/CB31 plan.
+1. Semantic source `ce13d438e65daf07a770cafa15ac4cef7046f931` and immutable compile [run 40039880387](https://github.com/akashskypatel/Directional/actions/runs/40039880387), artifact `12538139984`, artifact SHA-256 `a5fd12d07ae2824e813e3fb4e0c576efff99321133601cab62739e863a59329a`.
+2. TB32 481/500 candidate and frozen 497 478/497; TB31 472/497, RA-146.2–4 synthetic/produced limits and G4-B002.
+3. Regression tracker and 19 RED owner inventory; no gate promotion.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
