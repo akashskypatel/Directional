@@ -1,2 +1,0 @@
-Purpose: freeze repository source for M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST.
-Entry beacon: 77db5be538a5a75bbe63fbad1d323145ec4a2c03
