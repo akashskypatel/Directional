@@ -29,6 +29,10 @@ Stable **66 events / 17 categories / 49 recurrences**, produced witness debt **1
 
 Authorize only `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` (no source change, build, test or runtime). It must derive a clause-specific ownership/precedence contract for six observed R2 cases, retain all four adjacent untyped oracles as unresolved, spell out the A4/A5 responsibility and non-weakening table, and pre-register falsifiers **before** any subsequent CB: an invalid certificate must still reject; an A5-invalid pair must retain its specified error; existing A7/D3/D7 positive and negative paths must still discriminate; no change to other typed factory sites; no selector mutation. Halt if this ownership cannot be specified without guessing from the six log messages. Following Definition, separate independent DEFN review is mandatory before any CB; later A3/A5/witness work gets separate authority. RA-139.5 corrected crash-safe 497-case census harness remains owed and may not be satisfied by this 44-case tool.
 
+## RA-141.4 Authentic committed-history verification
+
+Read-only GitHub Actions [run 39916753662](https://github.com/akashskypatel/Directional/actions/runs/39916753662) checked out real Git history at `6c0d5a7b88d6af600f3e9344622011b8866aeebb` (identical to `origin/agent/surface_cell_quad/p5-recover-bridge-healing` at audit time), not snapshot-synthesized history. Immutable diagnostic-log artifact `12484718148`, provider ZIP SHA-256 `1b492d9a6c251b5dd62edfe0a17e10e86304dc9796bc6285dd66af1e255437b1` independently verified. Original `review_check.py boundary` and `ledgers --base 8b7299b43` both exited 0 with `ALL CHECKS PASSED`; rewrite baseline `8b7299b43764a6ba3444e5bc774a2f1b65e99731` is a real ancestor, all enumerated selector hashes matched, durable rewrite headings were preserved (handoff 4/4, orientation 1/1, tracker 0/0), and no append-only `CHANGELOG.md` or `LESSONS.md` historical shrinkage was found. No runtime, compilation, product-test execution or modification occurred. The runner's detached checkout had a clean worktree and identical remote-ref SHA; it is not evidence of a separate branch-local `git status -sb` tracking display after future writes.
+
 ## Review closeout
 
 | Duty | Answer |
@@ -38,16 +42,16 @@ Authorize only `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` (no sou
 | Non-vacuity checked | A7 negatives source-inspected at TQ:4123–4422 with original A6 independent guard, positive produced checks and site assertions; no dynamic mutation testing performed in this review. |
 | Prior obligations discharged/carried | RA-140.4 M1 partition discharged to six exact observed clauses; A3 189–195 and 442, A5 focused30:12, cp3entry:1/2, 13 insufficiently typed and RA-139.5 census-harness debt carried to their separate owners. |
 | Stable accounting | 66/17/49; debt 1; CP2 491/491 accepted; R3 403/497 rejected; TB28 462/497 candidate; RP-01 open, RP-02 unreached. |
-| New candidates/obligations recorded | Seven typed non-M1 factory, A3/A5 and untyped adjudications; tracker update required. |
-| ORIENTATION currency line | Update required before formal closeout. |
-| ORIENTATION §3 / §4 / §7 / §8 | Update required; §4 no witness promotion, §8 no new pattern. |
-| CHANGELOG | Update required. |
+| New candidates/obligations recorded | The tracker records seven typed non-M1 factory, eight A3, one A5 and thirteen untyped first failures with separate owners/falsifiers; no promotion. |
+| ORIENTATION currency line | Updated to RA-141/TB29 2026-10-23 with the correct next Definition boundary. |
+| ORIENTATION §3 / §4 / §7 / §8 | §3 updated for TB29 and accepted/candidate gates; §4 no new witness; §7 updated ownership priorities, §8 unchanged because no new pattern. |
+| CHANGELOG | RA-141 independent-review entry committed in root `CHANGELOG.md`. |
 | ROADMAP | No checkpoint status movement; unchanged for substantive reason. |
 | Selector manifest | Unchanged; no selector added or accepted. |
 | LESSONS | Existing evidence/diagnostic/precedence lessons apply; no new lesson. |
 | Consolidation under CLEAN_UP_POLICY | Folded consumed TB29 artifact-only plan into `M6_Consolidated_Record.md` with its exact filename/verdict, complete verbatim text and provenance resolver; retained authoritative TB29 report, RA-141 Review and next DEFN-M1 plan. |
 | Successor frozen | `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` with falsifiers here and in next Definition plan. |
 | Turn boundary held | Static independent Review only; no Directional binary, configure, compile, relink, benchmark, code/test/selector mutation. |
-| review_check.py boundary | Pending authoritative Git-history check; synthetic snapshot history is not an authentic historical baseline. |
-| `STATUS` lifecycle maintained | Entry beacon IN_PROGRESS; final beacon required after remote evidence/doc synchronization. |
-| Pushed to origin, branch in sync | Pending remote patch application and head confirmation; no push claimed. |
+| review_check.py boundary | PASS on authentic Git history, run 39916753662, log artifact 12484718148, source `6c0d5a7b...`; `ledgers --base 8b7299b43` PASS. |
+| `STATUS` lifecycle maintained | Entry and both continuation resumes written; final terminal beacon is the last repository action after remaining closeout/cleanup. |
+| Pushed to origin, branch in sync | Initial and consolidation patches are committed and verified on PR #8; authentic runner checked exact origin ref equality and clean worktree. Final closeout commit/ref synchronization must be checked after remaining writes. |
