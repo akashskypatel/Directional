@@ -1,1 +1,0 @@
-Snapshot request for independent static harness review; no runtime execution.
