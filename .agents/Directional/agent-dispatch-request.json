@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb29-a4-association-ownership-20261023-01",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb29-a4-ownership-apply",
-  "file_id": "1aukt4C8pbKS9RfESgf3FvuXVYXatATwe",
-  "patch_sha256": "cd7401cbc7f966f6bc70139bef9199f7beb616301145408e5d826aeecd773467",
-  "base_sha": "b592ab719b8f2c284921929296033836840264fd",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): assign certificate edge association to A5",
-  "retention_days": 7
+  "request_id": "m6-cp3-cb29-a4-ownership-compile-20261023-01",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb29-a4-ownership-compile",
+  "source_sha": "2602e7398cdc6f1281abe11a758de35166b6590c",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb29-compile"
 }
