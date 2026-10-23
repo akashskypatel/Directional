@@ -1,10 +1,37 @@
-## CURRENT — RA-142 audit: TB29 upheld; M1 is ten rows; DEFN-M1 next (2026-10-23)
+## CURRENT — RA-143: certificate ownership split resolved; CB29 next (2026-10-23)
+
+- [x] DEFN-M1 written and BLOCKED: the ten-row matrix showed that no option fit without deciding A4-versus-A5 ownership.
+- [x] Review (RA-143, DEFN-M1-REV):
+  - contract accepted;
+  - **A4 keeps authenticity** (RA-40.1); **A5 owns edge-to-certificate association** (RA-15/RA-16 §5), which it already enforces in the frozen order (RP:4904–4925, then lookup at RP:5040–5051);
+  - only consumers: the A5 lookup and a hash;
+  - no passing test depends on A4 association;
+  - R2's clause (`80fc1688f`) is not frozen authority. Record: `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Review_Decision_20261023.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP` — SCT only, compile only:
+  1. in the pair clause SCT:8831–8841, remove both `oppositeEdge`, both `railId`, both route comparisons and the region inequality;
+  2. keep the `HardRail` kind checks;
+  3. add an RA-15/16/143 comment.
+
+  Record `Architecture_M6_CP3_CB29_A4_Certificate_Association_Ownership_Code_Build_Record_20261023.md`. STOP if a later A4 clause relies on a removed binding.
+- [ ] **CONDITIONAL:** `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP-REV` — Review: static check; issues the TB30 manifest.
+- [ ] Planned, not authorized: TB30 (targeted harness `436f5fff…c9a`; Review-owned manifest: 10 M1 rows expected PASS, 7 non-M1 factory rows expected unchanged RED, 9 TB29 controls, 3 certificate-authenticity guards; RA-143.4) → TB30-REV → owners for face-gauge-missing (6), A3 cycle locus (7) / `selector:442`, A5 `focused30:12` → DEFN-T1 (`cp3entry:1/2`) → fixture debt → census (RA-139.5 harness) → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness.
+- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
+  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
+  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
+  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
+  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- **Turn sequence:** TB29-REV (RA-141) → audit (RA-142) → DEFN-M1 [BLOCKED] → DEFN-M1-REV (RA-143) → **CB29** → CB29-REV → TB30 → TB30-REV → face-gauge / A3 / A5 owners → DEFN-T1 → fixture debt → census → RP-01 Review.
+- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+
+---
+
+## HISTORY — RA-142 audit; DEFN-M1 blocked; RA-143 resolution (2026-10-23)
 
 - [x] Audit (RA-142) of the TB29 review (RA-141):
   - re-verified result `12481556884` (92/92; 44 executed, 9 PASS, 35 RED, exit 0) and RA-141's partition;
   - **corrected:** `selector:211/219` (wrong `oppositeEdge`; actual code 0 = `InvalidSourceAuthority`, expected `InvalidOppositeEdge`) and `selector:227/230` (wrong `route`; the factory rejection shows as `InvalidPhaseFrontProduct`) reach the R2 `certificate-pair-binding` clause first (SCT:8833–8837, before SCT:9350), proven statically;
   - M1 = ten rows, and these four are its frozen-precedence oracles. Record: `Architecture_M6_CP3_TB29_Review_Audit_Decision_20261023.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` — documents only. Write `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_20261023.md` (at most 100 lines):
+- **EXACT NEXT:** `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` — documents only. Write `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_20261023.md` (at most 100 lines):
   1. clause audit;
   2. ten-row ownership matrix;
   3. option (a), (b) or (c) with RA-15/RA-19/RA-105.3 rationale;
@@ -13,13 +40,8 @@
   6. exclusions with owners.
 
   STOP if no option meets all ten frozen expectations without changing a test.
-- [ ] **CONDITIONAL:** `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE-REV` — Review: adjudicates; scopes the corrective CB.
-- [ ] Planned, not authorized: corrective CB (product; scoped by DEFN-M1-REV) → CB-REV → TB (10 M1 rows + 7 non-M1 factory rows + 9 TB29 controls; targeted harness with a Review-owned manifest) → TB-REV → owners for face-gauge-missing (6), A3 cycle locus (7) and `selector:442`, A5 `focused30:12` (each DEFN or diagnostic first) → DEFN-T1 (`cp3entry:1/2`) → fixture debt → census (needs an RA-139.3-compliant harness) → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness.
-- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
-  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
-  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
-  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
-  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- **CONDITIONAL:** `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE-REV` — Review: adjudicates; scopes the corrective CB.
+- Planned, not authorized: corrective CB (product; scoped by DEFN-M1-REV) → CB-REV → TB (10 M1 rows + 7 non-M1 factory rows + 9 TB29 controls; targeted harness with a Review-owned manifest) → TB-REV → owners for face-gauge-missing (6), A3 cycle locus (7) and `selector:442`, A5 `focused30:12` (each DEFN or diagnostic first) → DEFN-T1 (`cp3entry:1/2`) → fixture debt → census (needs an RA-139.3-compliant harness) → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness.
 - **Turn sequence:** TB29H-RP02 → RP02-REV → audit (RA-140) → TB29 → TB29-REV (RA-141) → audit (RA-142) → **DEFN-M1** → DEFN-M1-REV → corrective CB → CB-REV → TB → TB-REV → face-gauge / A3 / A5 owners → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
 

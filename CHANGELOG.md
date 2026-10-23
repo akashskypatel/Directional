@@ -1,3 +1,9 @@
+## 2026-10-23 — M1 design block resolved (RA-143): who checks hard-rail certificates against edges
+
+- The M1 definition stopped on one question: should the phase-front product stage refuse hard-rail edges that don't match their certificate, or leave that to the next stage (A5)?
+- Review: the frozen rules make A5 the owner of that matching, and A5 already does it, in the required order and with the error codes the tests expect. The earlier stage keeps checking that the certificates themselves are genuine. Five matching checks that were added later (on 2026-10-08) will be removed from it, so each of the ten tests reaches the check it was written for. No other test relies on those five checks.
+- Next: CB29, compile only. Accounting unchanged. Record: `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Review_Decision_20261023.md`.
+
 ## 2026-10-23 — Audit of the TB29 review (RA-142): the M1 problem covers ten tests, not six
 
 - The TB29 run and its review are confirmed.

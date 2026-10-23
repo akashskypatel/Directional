@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-23 · RA-142 audits the TB29 review. The evidence is upheld, and M1 covers ten tests, not six: four tests that define which error should win are rejected first by the same certificate check (proven from the source). Next: DEFN-M1, a documents-only contract for which check should reject each of the ten. Accepted CP2 491/491; TB28 462/497 candidate; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
+**Currency:** 2026-10-23 · RA-143 resolves the M1 design block. The phase-front product stage keeps checking that hard-rail certificates are genuine; matching edges to certificates belongs to A5, which already does it in the frozen order. CB29 removes five matching checks from the earlier stage so each of the ten M1 tests reaches its intended check. Accepted CP2 491/491; TB28 462/497 candidate; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 

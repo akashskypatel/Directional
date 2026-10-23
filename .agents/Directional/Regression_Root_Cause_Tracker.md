@@ -1,3 +1,7 @@
+## RA-143 — DEFN-M1 architecture block resolved (2026-10-23)
+
+M1 (10 rows) cause: A4's R2 pair clause (`80fc1688f`) checks edge-to-certificate association, which RA-15/RA-16 §5 assign to A5. A5 already enforces it with the frozen codes. CB29 removes five predicates from A4; A4 keeps authenticity. No count changes. Record: `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Review_Decision_20261023.md`.
+
 ## RA-142 — audit of the TB29 review (2026-10-23)
 
 TB29 evidence upheld. M1 is RA-105.3's ten rows: six measured at `certificate-pair-binding`, plus `selector:211, 219, 227, 230`, which are statically proven to reach the same clause (SCT:8833–8837) before their frozen `InvalidOppositeEdge`/`InvalidHardRailAuthority` checks. DEFN-M1 covers all ten. No count changes. Record: `Architecture_M6_CP3_TB29_Review_Audit_Decision_20261023.md`.

@@ -1,3 +1,14 @@
+## RA-143 — DEFN-M1 resolved: A4 authenticates hard-rail certificates; A5 binds edges to them (2026-10-23)
+
+Authority: `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Review_Decision_20261023.md`; contract `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_20261023.md` (accepted).
+
+- **RA-143.1** RA-15 and RA-16 §5 make A5 the owner of route authority and pair checks; RA-40.1 makes A4 the owner of certificate value authenticity only. R2's association predicates (`80fc1688f`) have no frozen authority. A5 enforces association (RP:4904–4925, 5040–5051) and is its only consumer.
+- **RA-143.2** Removed from A4's pair clause: both `oppositeEdge`, both `railId`, both route comparisons, region inequality. Kept: indices, `HardRail` kinds, attachments, route length, junctions, chain intervals, endpoints, tau. Product contract: structurally valid edges and authentic certificates; association is an A5 admission predicate.
+- **RA-143.3** Next: `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP` (SCT pair clause only; compile only).
+- **RA-143.4** TB30: 10 M1 (PASS), 7 non-M1 factory (unchanged), 9 TB29 controls, 3 authenticity guards.
+- **RA-143.5** CB29 → REV → TB30 → REV → face-gauge / A3 / A5 owners → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+---
 ## RA-142 — Audit of the TB29 review (RA-141): M1 is ten rows (2026-10-23)
 
 Authority: `Architecture_M6_CP3_TB29_Review_Audit_Decision_20261023.md`; reviewed `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Review_Decision_20261023.md` (RA-141).
