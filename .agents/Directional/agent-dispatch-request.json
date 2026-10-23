@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb31-docs-20261023-01",
+  "request_id": "m6-cp3-tb31-rev-docs-20261023-r2",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb31-docs-20261023",
-  "file_id": "1o-t6ZLN7fJZmeyrb9jJlpUuxNmIvHrvT",
-  "patch_sha256": "8c36f69d458e7f91f75c542efd63d33d30352de665a25d525af9a5656c87cb3b",
-  "base_sha": "a2dafcc702f9de262d3315fad7645b0f400ec2d4",
+  "mailbox_key": "m6-cp3-tb31-rev-docs-20261023-r2",
+  "file_id": "1--XauiB3eDzl6MzYrCeqFHgaUW8A9X0J",
+  "patch_sha256": "1a2c7cf19ef0f37cb190b552353fe04a53380b5d7909e3beab44e183ca022596",
+  "base_sha": "988365af2810afdd1bf3570fdeca92c189e597dd",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): preserve TB31 497-case census evidence and review handoff",
+  "commit_message": "docs(directional): independently review TB31 selector-497 census",
   "retention_days": 7
 }
