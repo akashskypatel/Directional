@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb29h-rp02-apply-20261023-v1",
+  "request_id": "m6-cp3-tb29h-rp02-closeout-docs-20261023-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb29h-rp02-apply",
-  "file_id": "1gndGH85WzLSI2088vFN9KZEXXcZDwCm9",
-  "patch_sha256": "cd0217bb9a128438ec35eec8d8ab1d6f6433c877673744d662f15c3c41ca7e20",
+  "mailbox_key": "m6-cp3-tb29h-rp02-closeout-docs",
+  "file_id": "1rHC_zkBXMnd3umoQOzUtumRLRCQ_0PKn",
+  "patch_sha256": "eacbb59103b9467f6c87673f12fe94467022d3625a55e9d73230cddd853669eb",
   "base_sha": "7e2e0895b98a928f84045bfa1f9ef1adfb46290b",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(directional): correct TB29 targeted artifact harness evidence rules",
+  "commit_message": "docs(directional): close TB29H RP02 and hand off independent review",
   "retention_days": 7
 }
