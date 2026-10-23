@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb29-doc-closeout-20261023-02",
+  "request_id": "m6-cp3-cb29-review-closeout-20261023-01",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb29-doc-closeout",
-  "file_id": "1BklE12RD9dJcLUXe4XGKefMO-koB3skd",
-  "patch_sha256": "ab2e7ae5f7b19b0dd3ab8ba234e4093974e188b782ff9663e8580375bbb0dcea",
-  "base_sha": "a3a8ea97192141a43104e882c3a903fc23007635",
+  "mailbox_key": "m6-cp3-cb29-review-closeout",
+  "file_id": "1FmxmCk3-yl5FgAtKJxMHw20hSfVS-H4B",
+  "patch_sha256": "2aa5acffe200d57894ae88d09ef11a847c94faddae1cf1b36c3d5947914bda5b",
+  "base_sha": "7d97284b909821e89fdec919850c2a2f384f7da6",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB29 compile and hand off independent review",
+  "commit_message": "docs(directional): review CB29 and authorize targeted TB30",
   "retention_days": 7
 }
