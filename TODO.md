@@ -1,3 +1,12 @@
+## CURRENT REVIEW FINDING — RA-141, TB29 44-case typed factory evidence (2026-10-23)
+
+- [x] Independently verified immutable TB29 artifact `12481556884`: 44/44 logs, 9 PASS, 35 RED, 92/92 hashes; all 35 match TB28 identities, no unmeasured green promotion.
+- [x] First-clause measured: M1 R2 certificate pair **six** (`focused30:3,22,23`; `selector:139,140,142`). Six `face-gauge-missing`, one `open-rail-chain`, eight A3, one A5, thirteen untyped are separate until reviewed. A3 189–195 lack cycle-locus proof; `cp3entry:1/2` still lack producer witnesses.
+- [ ] **Only next after formal review closeout:** `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` (Definition only, six sites, non-weakening, then independent DEFN-REV). Do not launch source work, TB or 497-case census from TB29 alone.
+- [ ] Independent A3 cycle-locus/fixture, A5 focused30:12, 13 untyped, and RA-139.5 census harness remain later separate obligations; stable 66/17/49, debt 1, CP2 491/491; TB28 462/497 candidate.
+
+---
+
 ## CURRENT — TB29 immutable 44-case harvest complete; TB29-REV next (2026-10-23)
 
 - [x] Audit (RA-140) of the RP02 harness review:

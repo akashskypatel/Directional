@@ -34,47 +34,42 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-23, after the artifact-only TB29 44-case harvest; pending mandatory independent TB29-REV. |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 open/draft. Semantic source `4473e41e94a35f1bf189fa046e86bac92c7391fb` (CB28A); implementation HEAD also carries dispatch/control/documentation commits. |
-| Last accepted semantic runtime | CP2 **491/491**, package `11391685901` / source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`; R3 **403/497** rejected. |
-| Latest candidate evidence | TB29 [run 39906802267](https://github.com/akashskypatel/Directional/actions/runs/39906802267), result `12481556884`, outer ZIP SHA-256 `4e639a633a64df419f1891083911506679c6c4848f1ecbce7b206c4f5d653ae1`: **44/44** artifact-only cases, **9 PASS / 35 RED**, all 92 checksums, 44/44 manifest/log identities; no invalid or bad controls. 13 checked-factory, 8 A3, 1 A5, 13 untyped. Owning report `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Report_20261023.md`. TB28 462/497 remains candidate only. |
-| Regression accounting and debt | Stable **66/17/49**, witness debt **1**, 497-case selector frozen, RP-01 OPEN, RP-02 UNREACHED, Gate C suspended. Tracker `Regression_Root_Cause_Tracker.md`. |
-| Active boundary | No causality/promotion from TB29: 13 failures retain `reason-not-observed`, factory emits `code=0`, A3/A5 failure ownership is not resolved. Independent Review must decide DEFN-M1 scope, A3 / `focused30:12` / `cp3entry:1,2` dispositions per RA-140.4; may not assume all failures share one cause. |
+| Currency | 2026-10-23; RA-141 independent TB29 44-case typed-failure review complete as source/evidence analysis. |
+| Working branch / semantic source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open. CB28A semantic source `4473e41e94a35f1bf189fa046e86bac92c7391fb`. |
+| Accepted vs candidate | CP2 491/491 accepted. R3 403/497 rejected; TB28 462/497 candidate only. Selector 497 byte-frozen. |
+| TB29 evidence | [run 39906802267](https://github.com/akashskypatel/Directional/actions/runs/39906802267), artifact `12481556884`, ZIP SHA-256 `4e639a633a64df419f1891083911506679c6c4848f1ecbce7b206c4f5d653ae1`; 44/44, 9 PASS/35 RED, 92/92 checksums, 44/44 log/manifest identity matches. |
+| Independently reviewed partition | RA-141: six R2 certificate-pair M1 first failures, six earlier face-gauge missing, one open-rail-chain; A3 eight (7 cycle + 1 singularity), A5 one, untyped thirteen. Cause not extrapolated. |
+| Accounting | Stable 66/17/49; debt 1; RP-01 open, RP-02 unreached, Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST-REV` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` — EXACT NEXT AFTER RA-141 REMOTE CLOSEOUT
 
-- **Type / owner:** Independent Review, from RA-140.4 and the TB29 plan; not a Code + Build or another TB run.
-- **Objective:** independently review complete 44-case evidence and typed first-failure categories; decide DEFN-M1 exact scope, A3 atlas mismatch, `focused30:12` A5 transport, `cp3entry:1/2` fixture/witness dispositions, and untyped first failures without inferring causality.
-- **Read before work:** `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Report_20261023.md`, result artifact `12481556884` (ledger/raw logs), `Architecture_M6_CP3_TB29H_RP02_Review_Audit_Decision_20261023.md` RA-140.4, TB29 plan, TB28 reviewed inventory, tracker.
-- **In scope:** independent evidence audit, root-cause adjudication, bounded DEFN-M1 ownership decision, Review documentation/consolidation and ORIENTATION update.
-- **Out of scope:** correcting source, test, harness, manifest, selector; compile, rerun or benchmark; unreviewed promotion of 497-case CP3.
-- **Success evidence:** independently reproduced 44-case/control/hash partition and decisions for factory, A3, A5, untyped and witness gaps; Review findings and updated records. Preserve stable counts unless independently justified.
-- **On success:** assign precise authorized DEFN-M1 successor only through this Review; otherwise `UNKNOWN — STOP`.
-- **On failure/blocker:** stop, preserve evidence, no speculative corrective turn.
+- **Type:** Definition only; no product, tests, fixtures, harness, selectors, compilation, benchmark or runtime.
+- **Goal:** freeze responsibility and exact validation precedence for six first-rejected R2 certificate-pair cases (`focused30:3,22,23`, `selector:139,140,142`), preserving RA-15 and RA-19 named error semantics and invalid certificate rejection.
+- **Read:** `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Review_Decision_20261023.md` (RA-141), `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Plan_20261023.md`, TB29 report and 44-log artifact, RA-105.3 and RA-140.4, tracker.
+- **Excluded:** six face-gauge-missing and one open-rail-chain factory cases; A3 189–195/442, A5 focused30:12, thirteen untyped rows including 211/219/227/230, cp3entry:1/2 lacking witnesses, census-harness RA-139.5. Maintain separate owners.
+- **Falsifiers:** any proposal weakens hard-rail certificate, bypasses A5 route precedence, changes tests/selector, invents a missing witness, treats all REDs as same cause, or invokes an unreviewed CB.
+- **Exit:** separate independent DEFN-REV; no CB authorization from this handoff alone.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
-|---|---|
-| 1 — next | `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST-REV` | Mandatory independent Review of TB29 immutable evidence; scope DEFN-M1, decide A3/A5 and fixture debts. |
-| later — UNKNOWN until assigned | DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review | Planned only; separate Review authorizes each edge. |
-| later — UNKNOWN until assigned | `DIAG-RETAIN` A5–A7 snapshots for GUI/CLI | Planned user-directed work; Review schedules clear of RP-01 path. |
+|---|---|---|
+| next after RA-141 closeout | `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` | Definition for six R2 certificate-binding first-failures only. |
+| later | separate independent DEFN-M1-REV | Must accept exact contract before any corrective CB. |
+| later — UNKNOWN until assigned | corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review | Planned only; each edge requires authoritative review. |
+| later — UNKNOWN until assigned | `DIAG-RETAIN` A5–A7 snapshots for GUI/CLI | Separate user-directed work, scheduled clear of RP-01. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **review** — independent TB29-REV of the verified 44-case artifact-only result; no code/build/test.
+`load_next`: **definition**; do not start before RA-141's repo `STATUS` COMPLETE.
 
-Minimum successor context **after the mandatory start checklist and policies**:
+Minimum next context after mandatory start/policies:
 
-0. `.agents/Directional/ORIENTATION.md` — project context, read first.
-1. `.agents/Directional/ROADMAP.md` — milestone position only.
-2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
-3. `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Report_20261023.md` and result artifact `12481556884` (44 logs); `Architecture_M6_CP3_TB29H_RP02_Review_Audit_Decision_20261023.md` RA-140.4; `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Plan_20261022.md`; TB28 reviewed RED inventory.
-4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
-
-**Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
-`review_check.py boundary`, `selector_probe.py` for selector hashes, ordinal ↔ identity and identity-existence
-checks, and `fixture_probe.py` for fixture topology and vertex fans. See `tools/README.md` for the caveats.
+0. `.agents/Directional/ORIENTATION.md`; `.agents/Directional/ROADMAP.md`.
+1. `.agents/Directional/Future_Chat_Session_Handoff.md` and `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Plan_20261023.md`.
+2. RA-141 review and TB29 raw result artifact `12481556884`; RA-140.4; RA-105.3; TB28 RED inventory.
+3. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `DESIGN.md`, `REORIENTATION_PLAN.md`, `LESSONS.md`.
+4. Review helpers in `.agents/Directional/tools/` for independent evidence. Do not interpret a synthetic snapshot's git-history checks as authoritative.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

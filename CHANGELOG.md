@@ -1,3 +1,7 @@
+## 2026-10-23 — RA-141 TB29 independent typed-cause review (documentation candidate)
+
+Recomputed TB29 artifact outer SHA, 92 packaged hashes, 44 exact one-RUN raw logs and 35 earlier RED mappings. First-failure M1 R2 certificate binding is limited to 6 typed sites; six face-gauge, one open-rail, eight A3, one A5, 13 untyped remain distinct. Original A6-backed A7 negatives have discriminating asserted A7 sites. A3 cycle locus is insufficient to assign fixture versus product ownership; D2/midline witnesses unproved. No new stable event, no selector/acceptance promotion. Review record RA-141 and bounded DEFN-M1 plan. This is review documentation, not runtime/compile evidence.
+
 ## 2026-10-23 — TB29 targeted typed factory cause harvest (Test + Benchmark)
 
 - Completed immutable CB28A artifact-only run [39906802267](https://github.com/akashskypatel/Directional/actions/runs/39906802267), result `12481556884`, ZIP SHA-256 `4e639a633a64df419f1891083911506679c6c4848f1ecbce7b206c4f5d653ae1`. Verified 92/92 checksums, 44/44 manifest/log mappings; 9 PASS controls, 35 inherited RED, zero invalid/missing/skipped/bad controls/unexpected PASS. Observed typed classes: factory 13, A3 8, A5 1, untyped 13. Did not compile, repair, relink, mutate test/source/selector, or rerun cases. Report: `.agents/Directional/Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Report_20261023.md`.

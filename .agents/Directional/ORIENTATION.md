@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-23 · RA-140 upholds the corrected test runner and validates it on real logs (35/35 known failures, 21/21 known passes classified correctly). TB29, the 44-test typed-cause run, is released with complete inputs and must run before the package expires on 2026-10-29. Then TB29-REV scopes DEFN-M1 from measured causes. Accepted CP2 491/491; TB28 462/497 candidate; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
+**Currency:** 2026-10-23 · RA-141 independently rehashed the TB29 44-case artifact (9 PASS / 35 RED). M1's measured R2 certificate-pair first failures are six, not all historical M1 candidates; A3/A5, other factory clauses and 13 untyped remain distinct. Exact next after review closeout: scoped DEFN-M1, independent Definition Review before CB. Accepted CP2 491/491; TB28 462/497 candidate; stable 66/17/49, debt 1; RP-01 OPEN, RP-02 UNREACHED.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,9 +50,9 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current harness gate:** TB29H-RP02-REV independently accepted the exact corrected 44-case harness for TB29 execution. TB29 itself remains unexecuted; package expiry and first-failure controls remain binding.
+**Current evidence:** TB29 executed all 44 exact cases with 9 PASS controls and 35 RED; the 92/92 package checksum and all case identities were independently re-derived in RA-141. This diagnostic run does not promote the 497-row candidate.
 
-**Latest candidate (TB28, reviewed by RA-133):** 462 PASS / 35 inherited RED on the frozen 497-row CP3 selector, with 13 RED→PASS and no PASS→RED vs TB21. The 12 seam-family cases and selector:447 are PASS. All 35 inherited first failures are classified in `Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md`; M1, D2 and fixture-debt causal obligations remain. TB28 is NOT accepted CP3 evidence; CP2 remains 491/491. CB27A has statically accepted A7 negative oracles; CB28 and CB28A diagnostic-only changes are compiled and independently reviewed, but the negatives and the 35 inherited TB28 REDs remain unexecuted on this package until TB29.
+**Latest candidate (TB28, reviewed by RA-133):** 462 PASS / 35 inherited RED on the frozen 497-row CP3 selector, with 13 RED→PASS and no PASS→RED vs TB21. The 12 seam-family cases and selector:447 are PASS. All 35 inherited first failures are classified in `Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md`; M1, D2 and fixture-debt causal obligations remain. TB28 is NOT accepted CP3 evidence; CP2 remains 491/491. CB27A has statically accepted A7 negative oracles; CB28 and CB28A diagnostic-only changes are compiled and independently reviewed, and TB29 executed the four negative controls and all 35 inherited REDs as a 44-case targeted diagnostic; the frozen 497-case CP3 gate remains unpromoted.
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md) and [regression tracker](Regression_Root_Cause_Tracker.md).
 
@@ -104,7 +104,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Preserve TB28 462/497 candidate; CB27A-REV accepts the corrected A7 wedge-membership negative as a static oracle (RA-135). For the 35 inherited REDs, use the independently accepted H1–H6 harness (RP02-REV), then measure typed reasons (TB29): the checked phase-front factory is the first failure in 17. Then M1, D2 and fixture-debt adjudication. No promotion of CP3 or modification to the frozen selector. | M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST → TB29-REV → DEFN-M1 / DEFN-T1; [handoff](Future_Chat_Session_Handoff.md) |
+| **1** | RA-141 independently confirmed 44-case TB29: only six first failures at R2 certificate-pair binding; six at A6 face-gauge, one open rail, eight A3, one A5 and thirteen untyped. DEFN-M1 must cover only the six typed R2 failures; do not promote CP3 or change selector. | M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE → independent DEFN-REV; [handoff](Future_Chat_Session_Handoff.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
