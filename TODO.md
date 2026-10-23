@@ -1,7 +1,8 @@
-## CURRENT — CB29 independent review approved; targeted TB30 next (2026-10-23)
+## CURRENT — targeted TB30 verified; independent TB30 review next (2026-10-23)
 
 - [x] **CB29-REV static ACCEPT:** one-clause diff, A4 certificate authentication/opposite reciprocity, A5 route-before-pair certificate binding, exact GMP 8-target package verified; no runtime acceptance. Decision `Architecture_M6_CP3_CB29_A4_Certificate_Association_Ownership_Review_Decision_20261023.md`.
-- [ ] **EXACT NEXT `M6-CP3-TB30-RP01-CERTIFICATE-ASSOCIATION-OWNERSHIP-VERIFICATION`:** artifact-only 29 cases from `Architecture_M6_CP3_TB30_Targeted_Case_Manifest.tsv` SHA `2b41ac11aad179770c5eb538876abcfb8fa0fd1d8df5315af0605ab35a7c59f6` on CB29 package `12492950387`, target harness `436f5fff9c3bec97457f4bc6b7c2b6182cb3f47707eb14a66af3b6a3f3dc3c9a`. 10 M1 PASS / 7 non-M1 same typed RED / 9 controls PASS / 3 authenticity guards PASS. No rebuild, no full census; independent TB30-REV required.
+- [x] **TB30 targeted runtime verification:** [run 39949886169](https://github.com/akashskypatel/Directional/actions/runs/39949886169), artifact `12500088095`, 29/29 with 22 expected PASS (9 controls, 10 M1, 3 A4 authenticity guards), seven expected unchanged typed RED (six face-gauge-missing; one open-rail-chain); zero invalid/skipped/duplicates/unexpected-pass. Result verified 61/61 hashes; no configure/compile/relink/benchmark. `Architecture_M6_CP3_TB30_Certificate_Association_Ownership_Verification_Report_20261023.md`; CP3 not accepted.
+- [ ] **EXACT NEXT ACTION — independent TB30-REV, canonical ID UNKNOWN:** review the immutable 29-case result, seven typed REDs and ten M1 outcomes; register any causal attribution and future owner. The CB29 independent review requires a separate TB30-REV but does not freeze its full canonical identifier. STOP before another Definition/CB/census until Review identity/authority is assigned.
 - [x] DEFN-M1 written and BLOCKED: the ten-row matrix showed that no option fit without deciding A4-versus-A5 ownership.
 - [x] Review (RA-143, DEFN-M1-REV):
   - contract accepted;
@@ -16,13 +17,13 @@
 
   Verified [compile run 39932638282](https://github.com/akashskypatel/Directional/actions/runs/39932638282), result `12492950387` (28/28 checksums, exact GMP/GMPXX link, 8/8 targets, runtimeExecution=false). Source `2602e7398cdc6f1281abe11a758de35166b6590c`. Record `Architecture_M6_CP3_CB29_A4_Certificate_Association_Ownership_Code_Build_Record_20261023.md`.
 - [x] **CB29-REV:** independent static Review accepted; 29-row TB30 manifest issued. No runtime.
-- [ ] Planned after authorized TB30: TB30-REV → owners for face-gauge-missing (6), A3 cycle locus (7) / `selector:442`, A5 `focused30:12` → DEFN-T1 (`cp3entry:1/2`) → fixture debt → census (RA-139.5 harness) → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness.
+- [ ] Planned after independent TB30-REV: owners for face-gauge-missing (6), A3 cycle locus (7) / `selector:442`, A5 `focused30:12` → DEFN-T1 (`cp3entry:1/2`) → fixture debt → census (RA-139.5 harness) → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
   - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Turn sequence:** TB29-REV (RA-141) → audit (RA-142) → DEFN-M1 [BLOCKED] → DEFN-M1-REV (RA-143) → CB29 [complete] → CB29-REV [complete] → **TB30** → TB30-REV → face-gauge / A3 / A5 owners → DEFN-T1 → fixture debt → census → RP-01 Review.
+- **Turn sequence:** TB29-REV (RA-141) → audit (RA-142) → DEFN-M1 [BLOCKED] → DEFN-M1-REV (RA-143) → CB29 [complete] → CB29-REV [complete] → TB30 [complete, independent review pending] → **TB30-REV (ID UNKNOWN)** → face-gauge / A3 / A5 owners → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
 
 ---

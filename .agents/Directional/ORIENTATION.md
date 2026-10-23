@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-23 · CB29 independent Review accepted static A4 certificate-authenticity / A5 edge-association ownership and issued 29-case targeted TB30 verification; runtime outcome unmeasured. CP2 491/491 accepted; TB28 462/497 candidate, stable 66/17/49, debt 1; RP-01 open, RP-02 unreached.
+**Currency:** 2026-10-23 · TB30 targeted artifact-only verification measured 29/29 expected outcomes (22 PASS, 7 inherited typed RED); independent TB30-REV pending, no CP3 acceptance. CP2 491/491 accepted; TB28 462/497 candidate, stable 66/17/49, debt 1; RP-01 open, RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current evidence:** TB29 executed all 44 exact cases with 9 PASS controls and 35 RED; the 92/92 package checksum and all case identities were independently re-derived in RA-141. This diagnostic run does not promote the 497-row candidate.
+**Current evidence:** TB30 executed the 29-case review-owned subset: 22 expected PASS (including all ten certificate-association M1 and three authenticity guards) and seven inherited, unchanged typed RED. The immutable result has 61/61 hashes verified; independent TB30-REV is still required. The prior TB29 44-case result (9 PASS/35 RED) and TB28 462/497 candidate remain unpromoted.
 
 **Latest candidate (TB28, reviewed by RA-133):** 462 PASS / 35 inherited RED on the frozen 497-row CP3 selector, with 13 RED→PASS and no PASS→RED vs TB21. The 12 seam-family cases and selector:447 are PASS. All 35 inherited first failures are classified in `Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md`; M1, D2 and fixture-debt causal obligations remain. TB28 is NOT accepted CP3 evidence; CP2 remains 491/491. CB27A has statically accepted A7 negative oracles; CB28 and CB28A diagnostic-only changes are compiled and independently reviewed, and TB29 executed the four negative controls and all 35 inherited REDs as a 44-case targeted diagnostic; the frozen 497-case CP3 gate remains unpromoted.
 
