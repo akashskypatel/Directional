@@ -1,0 +1,3 @@
+CB31 exact source snapshot request
+Entry head: f2cc1ba0bec6a25ea38dadb97d99421b9b66cc40
+Source authority: snapshot trigger commit itself
