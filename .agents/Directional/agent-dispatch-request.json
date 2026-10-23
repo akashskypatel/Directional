@@ -1,12 +1,23 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb29-review-closeout-20261023-01",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb29-review-closeout",
-  "file_id": "1FmxmCk3-yl5FgAtKJxMHw20hSfVS-H4B",
-  "patch_sha256": "2aa5acffe200d57894ae88d09ef11a847c94faddae1cf1b36c3d5947914bda5b",
-  "base_sha": "7d97284b909821e89fdec919850c2a2f384f7da6",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): review CB29 and authorize targeted TB30",
+  "request_id": "m6-cp3-tb30-cert-assoc-20261023-01",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb30-certificate-association",
+  "executor_sha": "085f12c970fb14aaae3e11071f74f64eb83ecf3a",
+  "semantic_source_sha": "2602e7398cdc6f1281abe11a758de35166b6590c",
+  "turn_id": "M6-CP3-TB30-RP01-CERTIFICATE-ASSOCIATION-OWNERSHIP-VERIFICATION",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "436f5fff9c3bec97457f4bc6b7c2b6182cb3f47707eb14a66af3b6a3f3dc3c9a",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "12492950387",
+    "EXPECTED_SOURCE_SHA": "2602e7398cdc6f1281abe11a758de35166b6590c",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "9e2da1f4b5cf95ac45364e8c428f0bd9116dcfe96772de18d02a5a7bfb167319",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "5f7259b7ec0f420c8d161973f450e99e76684b0643c8e21074d192931747320d",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "e5ec539063d7bf6dfbe06b1552c081d117e052f8090a58aaa6ac754242e8f53a",
+    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_CP3_TB30_Targeted_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "2b41ac11aad179770c5eb538876abcfb8fa0fd1d8df5315af0605ab35a7c59f6",
+    "EXPECTED_CASE_COUNT": "29"
+  },
+  "artifact_prefix": "m6-cp3-tb30-cert-assoc",
   "retention_days": 7
 }
