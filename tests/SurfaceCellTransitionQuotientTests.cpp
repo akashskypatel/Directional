@@ -399,14 +399,14 @@ direct_periodic_owner_fixture() {
       authority->region_for_row(*firstRow) != regionId.value() ||
       authority->region_for_row(*secondRow) != regionId.value() ||
       std::find(boundaryTopology.begin(), boundaryTopology.end(),
-                *diagonal) != boundaryTopology.end() ||
-      !sourceAtlas->find_adjacency(*diagonal)) {
+                diagonal.value()) != boundaryTopology.end() ||
+      !sourceAtlas.value().find_adjacency(diagonal.value())) {
     throw std::runtime_error("Invalid direct periodic-owner interior gauge edge.");
   }
-  const auto forward = sourceAtlas->transition_value(
-      *diagonal, *firstRow, *secondRow);
-  const auto reverse = sourceAtlas->transition_value(
-      *diagonal, *secondRow, *firstRow);
+  const auto forward = sourceAtlas.value().transition_value(
+      diagonal.value(), *firstRow, *secondRow);
+  const auto reverse = sourceAtlas.value().transition_value(
+      diagonal.value(), *secondRow, *firstRow);
   if (!forward || !reverse ||
       reverse->transport != forward->transport.inverse()) {
     throw std::runtime_error("Invalid direct periodic-owner reciprocal A3 gauge.");
@@ -9077,8 +9077,8 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
                         sharedEdge.first()) != firstCorners.end());
   EXPECT_TRUE(std::find(firstCorners.begin(), firstCorners.end(),
                         sharedEdge.second()) != firstCorners.end());
-  original.sourceFaceBranchRotations[faceId->index()] =
-      (original.sourceFaceBranchRotations[faceId->index()] + 1) % 4;
+  original.sourceFaceBranchRotations[faceId.value().index()] =
+      (original.sourceFaceBranchRotations[faceId.value().index()] + 1) % 4;
   const auto rejected = construct_phase_front_product(std::move(original));
   const auto *error =
       std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&rejected);
