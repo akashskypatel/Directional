@@ -1,3 +1,9 @@
+## 2026-10-23 — Audit of the TB29 review (RA-142): the M1 problem covers ten tests, not six
+
+- The TB29 run and its review are confirmed.
+- Four tests the review set aside as "reason unknown" are in fact rejected by the same certificate check as the six measured tests. That check runs before the more specific checks these four tests expect. The source shows this, and one pair's logs already show the matching error code.
+- These four tests define which error should win, so the M1 definition now covers all ten. Accounting unchanged. Record: `Architecture_M6_CP3_TB29_Review_Audit_Decision_20261023.md`.
+
 ## 2026-10-23 — RA-141 TB29 independent typed-cause review (documentation candidate)
 
 Recomputed TB29 artifact outer SHA, 92 packaged hashes, 44 exact one-RUN raw logs and 35 earlier RED mappings. First-failure M1 R2 certificate binding is limited to 6 typed sites; six face-gauge, one open-rail, eight A3, one A5, 13 untyped remain distinct. Original A6-backed A7 negatives have discriminating asserted A7 sites. A3 cycle locus is insufficient to assign fixture versus product ownership; D2/midline witnesses unproved. No new stable event, no selector/acceptance promotion. Review record RA-141 and bounded DEFN-M1 plan. This is review documentation, not runtime/compile evidence.

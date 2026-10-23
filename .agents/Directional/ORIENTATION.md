@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-23 · RA-141 independently rehashed the TB29 44-case artifact (9 PASS / 35 RED). M1's measured R2 certificate-pair first failures are six, not all historical M1 candidates; A3/A5, other factory clauses and 13 untyped remain distinct. Exact next after review closeout: scoped DEFN-M1, independent Definition Review before CB. Accepted CP2 491/491; TB28 462/497 candidate; stable 66/17/49, debt 1; RP-01 OPEN, RP-02 UNREACHED.
+**Currency:** 2026-10-23 · RA-142 audits the TB29 review. The evidence is upheld, and M1 covers ten tests, not six: four tests that define which error should win are rejected first by the same certificate check (proven from the source). Next: DEFN-M1, a documents-only contract for which check should reject each of the ten. Accepted CP2 491/491; TB28 462/497 candidate; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 

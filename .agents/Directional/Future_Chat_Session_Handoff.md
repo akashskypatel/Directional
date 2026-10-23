@@ -34,41 +34,53 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-23; RA-141 independent TB29 44-case typed-failure review complete as source/evidence analysis. |
+| Currency | 2026-10-23, after the audit of the TB29 review (RA-142). TB29's evidence and RA-141's partition are upheld. Corrected: M1 is RA-105.3's **ten** rows. Six are measured at `certificate-pair-binding`. `selector:211/219` (wrong `oppositeEdge`; actual code 0 = `InvalidSourceAuthority`) and `selector:227/230` (wrong `route`; any factory rejection reported as `InvalidPhaseFrontProduct`) are statically proven to reach the same clause (SCT:8833–8837) before `InvalidOppositeEdge` (SCT:9350). They are M1's frozen-precedence oracles, so DEFN-M1 covers all ten. |
 | Working branch / semantic source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open. CB28A semantic source `4473e41e94a35f1bf189fa046e86bac92c7391fb`. |
 | Accepted vs candidate | CP2 491/491 accepted. R3 403/497 rejected; TB28 462/497 candidate only. Selector 497 byte-frozen. |
 | TB29 evidence | [run 39906802267](https://github.com/akashskypatel/Directional/actions/runs/39906802267), artifact `12481556884`, ZIP SHA-256 `4e639a633a64df419f1891083911506679c6c4848f1ecbce7b206c4f5d653ae1`; 44/44, 9 PASS/35 RED, 92/92 checksums, 44/44 log/manifest identity matches. |
 | Independently reviewed partition | RA-141: six R2 certificate-pair M1 first failures, six earlier face-gauge missing, one open-rail-chain; A3 eight (7 cycle + 1 singularity), A5 one, untyped thirteen. Cause not extrapolated. |
 | Accounting | Stable 66/17/49; debt 1; RP-01 open, RP-02 unreached, Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` — EXACT NEXT AFTER RA-141 REMOTE CLOSEOUT
+## Mandatory next turn — `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` — EXACT NEXT
 
-- **Type:** Definition only; no product, tests, fixtures, harness, selectors, compilation, benchmark or runtime.
-- **Goal:** freeze responsibility and exact validation precedence for six first-rejected R2 certificate-pair cases (`focused30:3,22,23`, `selector:139,140,142`), preserving RA-15 and RA-19 named error semantics and invalid certificate rejection.
-- **Read:** `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Review_Decision_20261023.md` (RA-141), `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Plan_20261023.md`, TB29 report and 44-log artifact, RA-105.3 and RA-140.4, tracker.
-- **Excluded:** six face-gauge-missing and one open-rail-chain factory cases; A3 189–195/442, A5 focused30:12, thirteen untyped rows including 211/219/227/230, cp3entry:1/2 lacking witnesses, census-harness RA-139.5. Maintain separate owners.
-- **Falsifiers:** any proposal weakens hard-rail certificate, bypasses A5 route precedence, changes tests/selector, invents a missing witness, treats all REDs as same cause, or invokes an unreviewed CB.
-- **Exit:** separate independent DEFN-REV; no CB authorization from this handoff alone.
+- **Type / owner:** DEFN (documents only); implementation agent. Authority: RA-141 (`Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Review_Decision_20261023.md`) as amended by RA-142 (`Architecture_M6_CP3_TB29_Review_Audit_Decision_20261023.md`); plan `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Plan_20261023.md` (annotated by RA-142).
+- **Objective:** a precedence and ownership contract under which each of the ten M1 tampers is rejected first by the owner and with the typed code that its frozen test names, without weakening the A4 certificate binding.
+- **Read before work:**
+  - RA-142 (all), RA-141.1, RA-105.3; RA-15.2–15.4 and RA-19.1 (`Architecture_M6_Frozen_Definitions.md`);
+  - the TB29 report `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Report_20261023.md`;
+  - SCT:8439 (`SurfacePhaseFrontProduct::make`), SCT:8814–8841 (R2 binding), SCT:9350 (`InvalidOppositeEdge`);
+  - the ten tests: TQ `focused30:3, 22, 23`, TQ:9049, 9067, 10146, 10189; SP10 `selector:139/140/142`; TQ:2551 (`materialize`).
+- **In scope:** write `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_20261023.md` (at most 100 lines, anchored at HEAD):
+  1. a clause audit of the factory validation order and the downstream A5 and pipeline owners the tests expect;
+  2. a ten-row ownership matrix (tamper; frozen expected code and owner; reached clause, measured or static; proposed first clause);
+  3. the chosen option (a) structural-first, (b) field-specific binding codes, or (c) A5-owned checks leave A4, with its rationale traced to RA-15/RA-19/RA-105.3;
+  4. a non-weakening table (forged or absent certificate, wrong rail, reversed route, same region all still reject, with the clause named);
+  5. corrective-TB predictions and falsifiers (ten rows reach their frozen outcomes; seven non-M1 factory rows unchanged; nine TB29 controls PASS);
+  6. the exclusions, each with its owner.
+- **Out of scope:** any code, test, fixture, selector or runtime change; changing test expectations; the face-gauge, A3, A5 `focused30:12` and D2 work.
+- **Success evidence:** the contract committed with all six parts; STATUS COMPLETE.
+- **On success:** `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE-REV` (Review, mandatory); it scopes the corrective CB.
+- **On failure/blocker:** STOP and return to Review if no option satisfies all ten frozen expectations without a test change or a disabled guard.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| next after RA-141 closeout | `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` | Definition for six R2 certificate-binding first-failures only. |
-| later | separate independent DEFN-M1-REV | Must accept exact contract before any corrective CB. |
-| later — UNKNOWN until assigned | corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review | Planned only; each edge requires authoritative review. |
-| later — UNKNOWN until assigned | `DIAG-RETAIN` A5–A7 snapshots for GUI/CLI | Separate user-directed work, scheduled clear of RP-01. |
+| 1 — next | `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` | DEFN, documents only, ten-row scope (RA-142.4). |
+| 2 — conditional | `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE-REV` | Review, only after step 1 completes: adjudicates the contract; scopes the corrective CB. |
+| later — UNKNOWN until assigned | corrective CB (product; scoped by DEFN-M1-REV) → CB-REV → TB (10 M1 rows + 7 non-M1 factory rows + 9 TB29 controls; targeted harness with a Review-owned manifest) → TB-REV → owners for face-gauge-missing (6), A3 cycle locus (7) and `selector:442`, A5 `focused30:12` (each DEFN or diagnostic first) → DEFN-T1 (`cp3entry:1/2`) → fixture debt → census (needs an RA-139.3-compliant harness) → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness | Planned, not authorized; each Review assigns the next edge. |
+| later — UNKNOWN until assigned | `DIAG-RETAIN` (user-directed): retain A5 occurrences and relations, A6 merged classes and A7 vertex geometry as diagnostic snapshots for GUI/CLI; scope in `TODO.md` | Planned, not authorized; Review places it in the sequence clear of RP-01 turns. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **definition**; do not start before RA-141's repo `STATUS` COMPLETE.
+`load_next`: **plan** — DEFN-M1: ten-row certificate-pair-binding precedence contract (RA-141, RA-142); documents only.
 
 Minimum next context after mandatory start/policies:
 
 0. `.agents/Directional/ORIENTATION.md`; `.agents/Directional/ROADMAP.md`.
 1. `.agents/Directional/Future_Chat_Session_Handoff.md` and `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Plan_20261023.md`.
 2. RA-141 review and TB29 raw result artifact `12481556884`; RA-140.4; RA-105.3; TB28 RED inventory.
-3. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `DESIGN.md`, `REORIENTATION_PLAN.md`, `LESSONS.md`.
+3. `Architecture_M6_CP3_TB29_Review_Audit_Decision_20261023.md` (RA-142: ten-row M1 scope, static proofs, design question, deliverables); `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Review_Decision_20261023.md` (RA-141); `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Report_20261023.md`; `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Plan_20261023.md`.
 4. Review helpers in `.agents/Directional/tools/` for independent evidence. Do not interpret a synthetic snapshot's git-history checks as authoritative.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE

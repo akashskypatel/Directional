@@ -1,13 +1,31 @@
-## CURRENT REVIEW FINDING — RA-141, TB29 44-case typed factory evidence (2026-10-23)
+## CURRENT — RA-142 audit: TB29 upheld; M1 is ten rows; DEFN-M1 next (2026-10-23)
 
-- [x] Independently verified immutable TB29 artifact `12481556884`: 44/44 logs, 9 PASS, 35 RED, 92/92 hashes; all 35 match TB28 identities, no unmeasured green promotion.
-- [x] First-clause measured: M1 R2 certificate pair **six** (`focused30:3,22,23`; `selector:139,140,142`). Six `face-gauge-missing`, one `open-rail-chain`, eight A3, one A5, thirteen untyped are separate until reviewed. A3 189–195 lack cycle-locus proof; `cp3entry:1/2` still lack producer witnesses.
-- [ ] **Only next after formal review closeout:** `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` (Definition only, six sites, non-weakening, then independent DEFN-REV). Do not launch source work, TB or 497-case census from TB29 alone.
-- [ ] Independent A3 cycle-locus/fixture, A5 focused30:12, 13 untyped, and RA-139.5 census harness remain later separate obligations; stable 66/17/49, debt 1, CP2 491/491; TB28 462/497 candidate.
+- [x] Audit (RA-142) of the TB29 review (RA-141):
+  - re-verified result `12481556884` (92/92; 44 executed, 9 PASS, 35 RED, exit 0) and RA-141's partition;
+  - **corrected:** `selector:211/219` (wrong `oppositeEdge`; actual code 0 = `InvalidSourceAuthority`, expected `InvalidOppositeEdge`) and `selector:227/230` (wrong `route`; the factory rejection shows as `InvalidPhaseFrontProduct`) reach the R2 `certificate-pair-binding` clause first (SCT:8833–8837, before SCT:9350), proven statically;
+  - M1 = ten rows, and these four are its frozen-precedence oracles. Record: `Architecture_M6_CP3_TB29_Review_Audit_Decision_20261023.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` — documents only. Write `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_20261023.md` (at most 100 lines):
+  1. clause audit;
+  2. ten-row ownership matrix;
+  3. option (a), (b) or (c) with RA-15/RA-19/RA-105.3 rationale;
+  4. non-weakening table;
+  5. corrective-TB predictions and falsifiers (10 M1, 7 non-M1 factory rows, 9 controls);
+  6. exclusions with owners.
+
+  STOP if no option meets all ten frozen expectations without changing a test.
+- [ ] **CONDITIONAL:** `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE-REV` — Review: adjudicates; scopes the corrective CB.
+- [ ] Planned, not authorized: corrective CB (product; scoped by DEFN-M1-REV) → CB-REV → TB (10 M1 rows + 7 non-M1 factory rows + 9 TB29 controls; targeted harness with a Review-owned manifest) → TB-REV → owners for face-gauge-missing (6), A3 cycle locus (7) and `selector:442`, A5 `focused30:12` (each DEFN or diagnostic first) → DEFN-T1 (`cp3entry:1/2`) → fixture debt → census (needs an RA-139.3-compliant harness) → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness.
+- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
+  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
+  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
+  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
+  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- **Turn sequence:** TB29H-RP02 → RP02-REV → audit (RA-140) → TB29 → TB29-REV (RA-141) → audit (RA-142) → **DEFN-M1** → DEFN-M1-REV → corrective CB → CB-REV → TB → TB-REV → face-gauge / A3 / A5 owners → DEFN-T1 → fixture debt → census → RP-01 Review.
+- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
 
 ---
 
-## CURRENT — TB29 immutable 44-case harvest complete; TB29-REV next (2026-10-23)
+## HISTORY — TB29 harvested; RA-141 review; RA-142 audit (2026-10-23)
 
 - [x] Audit (RA-140) of the RP02 harness review:
   - reproduced the harness SHA `436f5fff…c9a`, `bash -n`, `--self-test` (12/12) and `--self-check` (44);
@@ -15,15 +33,19 @@
   - TB29's missing root-manifest (`e6149577…454b`) and source-archive (`d06d8484…371e`) hashes derived from the package;
   - TB29-REV's decisions pre-registered (M1 scope by factory clause; A3 route; `focused30:12`). Record: `Architecture_M6_CP3_TB29H_RP02_Review_Audit_Decision_20261023.md`.
 - [x] **TB29 COMPLETE (artifact-only):** [run 39906802267](https://github.com/akashskypatel/Directional/actions/runs/39906802267), result `12481556884`, CB28A package `12465330920`: 44/44, 9 PASS controls, 35 RED, 0 invalid/controls bad, 92/92 package hashes verified; 13 checked factory, 8 A3, 1 A5, 13 untyped. Report `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Report_20261023.md`. No 497-case promotion or stable-count change.
-- [ ] **EXACT NEXT:** `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST-REV` — mandatory independent Review: adjudicate typed first-failure causes, 13 untyped failures, A3/A5 and D2/fixture debt; scope DEFN-M1, no rerun or implementation.
-- [ ] Planned, not authorized: DEFN-M1 (scoped from measured factory clauses, RA-140.4) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census (needs an RA-139.3-compliant harness, RA-139.5) → RP-01 Review; recompile-only CB of `4473e41e9` if package `12465330920` lapses before TB29; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness.
-- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
-  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
-  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
-  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
-  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- **EXACT NEXT:** `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST-REV` — mandatory independent Review: adjudicate typed first-failure causes, 13 untyped failures, A3/A5 and D2/fixture debt; scope DEFN-M1, no rerun or implementation.
+- Planned, not authorized: DEFN-M1 (scoped from measured factory clauses, RA-140.4) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census (needs an RA-139.3-compliant harness, RA-139.5) → RP-01 Review; recompile-only CB of `4473e41e9` if package `12465330920` lapses before TB29; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness.
 - **Turn sequence:** TB29H-REV (RA-138) → audit (RA-139) → TB29H-RP02 → RP02-REV → audit (RA-140) → TB29 [done] → **TB29-REV** → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+
+---
+
+### RA-141 review finding (superseded in part by RA-142)
+
+- [x] Independently verified immutable TB29 artifact `12481556884`: 44/44 logs, 9 PASS, 35 RED, 92/92 hashes; all 35 match TB28 identities, no unmeasured green promotion.
+- [x] First-clause measured: M1 R2 certificate pair **six** (`focused30:3,22,23`; `selector:139,140,142`). Six `face-gauge-missing`, one `open-rail-chain`, eight A3, one A5, thirteen untyped are separate until reviewed. A3 189–195 lack cycle-locus proof; `cp3entry:1/2` still lack producer witnesses.
+- **Only next after formal review closeout:** `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` (Definition only, six sites, non-weakening, then independent DEFN-REV). Do not launch source work, TB or 497-case census from TB29 alone.
+- Independent A3 cycle-locus/fixture, A5 focused30:12, 13 untyped, and RA-139.5 census harness remain later separate obligations; stable 66/17/49, debt 1, CP2 491/491; TB28 462/497 candidate.
 
 ---
 

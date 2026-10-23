@@ -1,3 +1,14 @@
+## RA-142 — Audit of the TB29 review (RA-141): M1 is ten rows (2026-10-23)
+
+Authority: `Architecture_M6_CP3_TB29_Review_Audit_Decision_20261023.md`; reviewed `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Review_Decision_20261023.md` (RA-141).
+
+- **RA-142.1** TB29 `12481556884` verified (92/92, 44/9/35, exit 0); RA-141's partition upheld; factory code 0 = `InvalidSourceAuthority`.
+- **RA-142.2** `selector:211/219` (`oppositeEdge`) and `227/230` (`route`) reach R2 `certificate-pair-binding` (SCT:8833–8837) before `InvalidOppositeEdge` (SCT:9350). Static proof; falsifiable at the post-fix TB. M1 = `focused30:3, 22, 23`; `selector:139, 140, 142, 211, 219, 227, 230`.
+- **RA-142.3** Design question: the A4 binding's generic `InvalidSourceAuthority` preempts frozen field-specific owners. Options: (a) structural-first, (b) field-specific binding codes, (c) A5-owned checks leave A4.
+- **RA-142.4** DEFN-M1 deliverables: clause audit, ten-row matrix, chosen option, non-weakening table, predictions and falsifiers, exclusions.
+- **RA-142.5** DEFN-M1 → REV → corrective CB → REV → TB → REV → face-gauge / A3 / A5 owners → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+---
 ## RA-140 — Audit of the RP02 harness review: upheld; validated on real logs; TB29 inputs completed (2026-10-23)
 
 Authority: `Architecture_M6_CP3_TB29H_RP02_Review_Audit_Decision_20261023.md`.

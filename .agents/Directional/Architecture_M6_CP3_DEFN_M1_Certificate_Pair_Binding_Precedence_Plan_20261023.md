@@ -1,5 +1,8 @@
 # DEFN-M1 — certificate-pair binding validation precedence (2026-10-23)
 
+> **Amended by RA-142 (`Architecture_M6_CP3_TB29_Review_Audit_Decision_20261023.md`):** the scope is the **ten** RA-105.3 rows. Six are measured at `certificate-pair-binding`; `selector:211, 219, 227, 230` are proven statically to reach the same clause first (SCT:8833–8837), and they carry the frozen `InvalidOppositeEdge`/`InvalidHardRailAuthority` expectations. RA-142.4 deliverables apply; where this plan conflicts, RA-142 governs.
+
+
 **Authorized only after RA-141 Review closeout:** `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` — Definition/documentation only. No code, tests, fixtures, selector edits, compile, benchmark or runtime. Source semantic authority remains `4473e41e94a35f1bf189fa046e86bac92c7391fb`; TB29 artifact `12481556884` immutable; CP2 491/491 accepted.
 
 Scope exactly the six typed R2 `certificate-pair-binding` first failures: `focused30:3,22,23`, `selector:139,140,142`. Source clause in `SurfaceCellTracing.cpp` at certificate pair route/rail/region validation. Determine which stage owns each failure and how to preserve the frozen RA-15/RA-19 precedence while retaining fail-closed enforcement. Do not combine unrelated failures under one repair.
