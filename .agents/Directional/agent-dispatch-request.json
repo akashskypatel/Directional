@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb30-review-doc-closeout-20261023-r1",
+  "request_id": "m6-cp3-cb30-review-doc-closeout-20261023-r2",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb30-review-doc-closeout",
+  "mailbox_key": "m6-cp3-cb30-review-doc-closeout-r2",
   "file_id": "15TMgYx26QY2oEKp4K3k_flL-OqjGadSq",
-  "patch_sha256": "e73769ff99f9a8157c139570dfa66248ae3b570174118f4db0948d59fe3ed20e",
+  "patch_sha256": "4d645e3acc037591b1d7a0a4f0ab67164580ee275b7572afd8796394d483c748",
   "base_sha": "e4a03cd282e1ef641809e531ef8870c1e70504b5",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "docs(directional): independently review CB30 gauge and authorize TB32",
