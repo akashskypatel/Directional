@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb29h-harness-20261023-r1",
+  "request_id": "m6-cp3-tb29h-rp01-review-closeout-20261023-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb29h-harness",
-  "file_id": "1d3gItc-IJz9PhR9gBwq0jW8DYjYmv-6w",
-  "patch_sha256": "012e7ea6f7c365a4230b61480b9188aa977f5654f1411d9f783da2d0570cb77d",
-  "base_sha": "b9b01ad9dcb7ee0e1279520f8327f58dc7b36287",
+  "mailbox_key": "m6-cp3-tb29h-rp01-review-apply",
+  "file_id": "1glJVJ2wS12TvAZAFZ4PxJmBQDVp1LbJ0",
+  "patch_sha256": "c4dbd00afe90a9e04e3826cf4481844945b855a128f2be232d1a09a51cbe964a",
+  "base_sha": "bdc8baee2321a2c5f7c65d8668feeb9cbeb73fdc",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(directional): add statically validated targeted TB29 artifact harness",
+  "commit_message": "docs(directional): review TB29H harness, hold runtime and scope correction",
   "retention_days": 7
 }
