@@ -1,23 +1,30 @@
 #!/usr/bin/env bash
 set -euo pipefail
-if [[ "${1:-}" == "--self-check" && "$#" -eq 2 ]]; then
+if [[ "${1:-}" == "--self-check" && "$#" -eq 3 ]]; then
   mode=self-check
   manifest_arg=$2
+  count_arg=$3
+elif [[ "${1:-}" == "--self-test" && "$#" -eq 1 ]]; then
+  mode=self-test
+  manifest_arg=''
+  count_arg=''
 elif [[ "${1:-}" == "--execute" && "$#" -eq 1 ]]; then
   mode=execute
   manifest_arg=''
+  count_arg=''
   : "${RUNNER_TEMP:?}"
   : "${TURN_ID:?}"
   exec > >(tee "$RUNNER_TEMP/$TURN_ID.log") 2>&1
 else
-  echo 'usage: harness --self-check <case-manifest.tsv> | --execute' >&2
+  echo 'usage: harness --self-check <case-manifest.tsv> <expected-count> | --self-test | --execute' >&2
   exit 64
 fi
-python3 - "$mode" "$manifest_arg" <<'PY'
+python3 - "$mode" "$manifest_arg" "$count_arg" <<'PY'
 import csv
 import hashlib
 import json
 import os
+import signal
 from pathlib import Path
 import re
 import shutil
@@ -25,7 +32,7 @@ import subprocess
 import sys
 import tarfile
 
-MODE, MANIFEST_ARG = sys.argv[1:]
+MODE, MANIFEST_ARG, COUNT_ARG = sys.argv[1:]
 HEADER = ['row', 'kind', 'identity', 'test', 'binary', 'expect', 'asserted_site']
 KINDS = {'NEGATIVE', 'POSITIVE', 'GUARD', 'RED'}
 HEX64 = re.compile(r'[0-9a-f]{64}\Z')
@@ -44,12 +51,16 @@ def digest(path):
             sha.update(chunk)
         return sha.hexdigest()
 
-def read_cases(path):
+def expected_count(value):
+    require(re.fullmatch(r'[1-9][0-9]*', value) is not None, 'invalid expected case count')
+    return int(value)
+
+def read_cases(path, count):
     with Path(path).open(newline='', encoding='utf-8') as stream:
         reader = csv.reader(stream, delimiter='\t', strict=True)
         require(next(reader, None) == HEADER, 'wrong case manifest header')
         cases = list(reader)
-    require(bool(cases), 'empty case manifest')
+    require(len(cases) == count, f'case count mismatch: expected {count}, got {len(cases)}')
     identities, tests = set(), set()
     for index, case in enumerate(cases, 1):
         require(len(case) == len(HEADER), f'row {index}: wrong column count')
@@ -67,28 +78,6 @@ def read_cases(path):
         tests.add(test)
     return cases
 
-if MODE == 'self-check':
-    try:
-        cases = read_cases(MANIFEST_ARG)
-        print(f'SELF_CHECK_PASS cases={len(cases)}')
-    except Exception as error:
-        print(f'SELF_CHECK_FAIL {error}', file=sys.stderr)
-        sys.exit(1)
-    sys.exit(0)
-
-ROOT = Path(os.environ['RUNNER_TEMP']) / os.environ['TURN_ID']
-OUT = Path(str(ROOT) + '-result')
-(OUT / 'raw').mkdir(parents=True, exist_ok=True)
-ROOT.mkdir(parents=True, exist_ok=True)
-state = dict(planned=0, executed=0, passed=0, red=0, missing=0,
-             skipped=0, duplicate=0, control_bad=0, unexpected_pass=0,
-             postflight=False)
-rows = []
-exit_code = 90
-source_sha = ''
-artifact_id = None
-error_message = ''
-
 # Preserve all completed execution evidence even when a later gate fails.
 def sha_manifest(path):
     result = []
@@ -102,32 +91,130 @@ def sha_manifest(path):
     require(bool(result) and len(result) == len(set(result)), 'empty or duplicate package checksum entries')
     return len(result)
 
+def failure_block(text):
+    lines = text.splitlines()
+    start = next((i for i, line in enumerate(lines)
+                  if ': Failure' in line), None)
+    if start is None:
+        return ''
+    end = next((i for i in range(start + 1, len(lines))
+                if lines[i].startswith('[  FAILED  ] ')), len(lines) - 1)
+    return '\n'.join(lines[start:end + 1])
+
 def typed_reason(text):
-    # Prefer a checked-factory reason, then a named atlas reason, A5, or pipeline/A7.
+    block = failure_block(text)
     expressions = [
         r'code=[0-9]+;sourceAuthoritySite=[^\s"\r\n]+',
         r'code=[A-Za-z][A-Za-z0-9_]*(?:;sourceEdge=\([^\r\n)]*\)[^\s"\r\n]*)?',
-        r'A5:[A-Za-z][A-Za-z0-9_]*(?:;site=[^\s;"\r\n]+)?',
+        r'A5:[A-Za-z][A-Za-z0-9_-]*(?:;site=[^\s;"\r\n]+)?',
         r'firstStage=[^\s;"\r\n]+;firstReason=[^\s"\r\n]+',
         r'firstReason=[^\s"\r\n]+',
         r'site=[^\s;"\r\n]+',
     ]
     for expression in expressions:
-        match = re.search(expression, text)
+        match = re.search(expression, block)
         if match:
             return match.group(0)
     return 'reason-not-observed'
 
 def first_failure(text):
-    return next((line.strip() for line in text.splitlines() if
-                ': Failure' in line or 'producer failed:' in line or
-                'firstReason=' in line or 'firstStage=' in line or
-                line.startswith('[  FAILED  ] ')), 'failure-line-not-observed')
+    return next((line.strip() for line in failure_block(text).splitlines() if
+                 ': Failure' in line or 'producer failed:' in line or
+                 'firstReason=' in line or 'firstStage=' in line or
+                 line.startswith('[  FAILED  ] ')), 'failure-line-not-observed')
+
+def classify_case(text, test, code):
+    run_names = re.findall(r'(?m)^\[ RUN      \] ([^\r\n]+)', text)
+    ok_names = re.findall(r'(?m)^\[       OK \] ([^\r\n]+)', text)
+    skipped = len(re.findall(r'(?m)^\[  SKIPPED \] ', text))
+    failed_lines = re.findall(r'(?m)^\[  FAILED  \] ([^\r\n]+)', text)
+    # Only exact, unadorned per-test lines are terminal verdicts; ignore
+    # GoogleTest's summary counts and decorated per-test timing lines.
+    terminal_tests = [value for value in failed_lines if TEST.fullmatch(value)]
+    run = len(run_names)
+    passed = len(ok_names)
+    if (code == 0 and run_names == [test] and passed == 1 and
+            ok_names[0].split(' (', 1)[0] == test and skipped == 0 and
+            not failed_lines):
+        verdict = 'PASS'
+    elif (code == 1 and run_names == [test] and not ok_names and
+          skipped == 0 and terminal_tests == [test]):
+        verdict = 'RED'
+    else:
+        verdict = 'INVALID'
+    return verdict, run, passed, skipped
+
+def self_test():
+    test = 'Suite.Case'
+    run = '[ RUN      ] Suite.Case\n'
+    ok = '[       OK ] Suite.Case (0 ms)\n'
+    fail = '[  FAILED  ] Suite.Case\n'
+    header = 'file.cpp:12: Failure\n'
+    examples = [
+        ('pass', run + ok, 0, 'PASS', 'reason-not-observed'),
+        ('red', run + header + 'assertion failed\n' + fail, 1, 'RED', 'reason-not-observed'),
+        ('crash', run + 'Segmentation fault\n', 139, 'INVALID', 'reason-not-observed'),
+        ('timeout', run + 'HARNESS_TIMEOUT 600s\n', 124, 'INVALID', 'reason-not-observed'),
+        ('skip', run + '[  SKIPPED ] Suite.Case\n', 0, 'INVALID', 'reason-not-observed'),
+        ('zero-run', header + fail, 1, 'INVALID', 'reason-not-observed'),
+        ('factory', run + header + 'code=23;sourceAuthoritySite=phase-front\n' + fail,
+         1, 'RED', 'code=23;sourceAuthoritySite=phase-front'),
+        ('atlas', run + header + 'code=SingularityMismatch;sourceEdge=(2,3)\n' + fail,
+         1, 'RED', 'code=SingularityMismatch;sourceEdge=(2,3)'),
+        ('a5-site', run + header + 'A5:InvalidX;site=corner\n' + fail,
+         1, 'RED', 'A5:InvalidX;site=corner'),
+        ('a5-hyphens', run + header + 'A5:no-produced-certified-ordinary-seam\n' + fail,
+         1, 'RED', 'A5:no-produced-certified-ordinary-seam'),
+        ('pre-failure', 'site=early\nfirstReason=wrong\n' + run + header +
+         'code=17;sourceAuthoritySite=valid\n' + fail,
+         1, 'RED', 'code=17;sourceAuthoritySite=valid'),
+        ('no-typed', run + header + 'assertion failed without typed data\n' + fail,
+         1, 'RED', 'reason-not-observed'),
+    ]
+    for name, data, code, expected_verdict, expected_reason in examples:
+        verdict, _, _, _ = classify_case(data, test, code)
+        require(verdict == expected_verdict, f'{name}: verdict {verdict}, expected {expected_verdict}')
+        reason = typed_reason(data)
+        require(reason == expected_reason, f'{name}: reason {reason}, expected {expected_reason}')
+    require('site=early' not in failure_block(examples[10][1]), 'failure block leaks preamble')
+    require(first_failure(examples[10][1]) == 'file.cpp:12: Failure', 'first failure leaks preamble')
+    print(f'SELF_TEST_PASS cases={len(examples)}')
+
+if MODE == 'self-test':
+    try:
+        self_test()
+    except Exception as error:
+        print(f'SELF_TEST_FAIL {error}', file=sys.stderr)
+        sys.exit(1)
+    sys.exit(0)
+if MODE == 'self-check':
+    try:
+        cases = read_cases(MANIFEST_ARG, expected_count(COUNT_ARG))
+        print(f'SELF_CHECK_PASS cases={len(cases)}')
+    except Exception as error:
+        print(f'SELF_CHECK_FAIL {error}', file=sys.stderr)
+        sys.exit(1)
+    sys.exit(0)
+
+ROOT = Path(os.environ['RUNNER_TEMP']) / os.environ['TURN_ID']
+OUT = Path(str(ROOT) + '-result')
+(OUT / 'raw').mkdir(parents=True, exist_ok=True)
+(OUT / 'resources').mkdir(parents=True, exist_ok=True)
+ROOT.mkdir(parents=True, exist_ok=True)
+state = dict(planned=0, executed=0, passed=0, red=0, missing=0,
+             skipped=0, duplicate=0, control_bad=0, unexpected_pass=0,
+             postflight=False)
+rows = []
+exit_code = 90
+source_sha = ''
+artifact_id = None
+error_message = ''
 
 try:
     required = ['CANDIDATE_ARTIFACT_ID', 'EXPECTED_SOURCE_SHA',
                 'EXPECTED_CANDIDATE_ZIP_SHA256', 'EXPECTED_ROOT_MANIFEST_SHA256',
-                'EXPECTED_SOURCE_ARCHIVE_SHA256', 'CASE_MANIFEST', 'CASE_MANIFEST_SHA256']
+                'EXPECTED_SOURCE_ARCHIVE_SHA256', 'CASE_MANIFEST', 'CASE_MANIFEST_SHA256',
+                'EXPECTED_CASE_COUNT']
     values = {name: os.environ[name] for name in required}
     artifact_id = int(values['CANDIDATE_ARTIFACT_ID'])
     require(artifact_id > 0 and str(artifact_id) == values['CANDIDATE_ARTIFACT_ID'], 'invalid artifact ID')
@@ -144,7 +231,7 @@ try:
     case_path = (workspace / relative_manifest).resolve()
     require(workspace in case_path.parents and case_path.is_file() and not case_path.is_symlink(), 'manifest missing/unsafe')
     require(digest(case_path) == values['CASE_MANIFEST_SHA256'], 'case manifest checksum mismatch')
-    cases = read_cases(case_path)
+    cases = read_cases(case_path, expected_count(values['EXPECTED_CASE_COUNT']))
     state['planned'] = len(cases)
     print(f'PREFLIGHT cases={len(cases)} source={source_sha} artifact={artifact_id}', flush=True)
 
@@ -199,23 +286,26 @@ try:
         workdir = ROOT / 'run' / row
         workdir.mkdir(parents=True, exist_ok=True)
         log = OUT / 'raw' / f'{row}.log'
-        command = ['/usr/bin/time', '-v', 'env', 'GTEST_FAIL_IF_NO_TEST_SELECTED=1',
-                   'GTEST_COLOR=no', str(executable), '--gtest_filter=' + test]
-        try:
-            with log.open('w') as stream:
-                result = subprocess.run(command, cwd=workdir, stdout=stream,
-                                        stderr=subprocess.STDOUT, timeout=600)
-            code = result.returncode
-        except subprocess.TimeoutExpired:
-            with log.open('a') as stream:
+        resource = OUT / 'resources' / f'{row}.time.txt'
+        command = ['/usr/bin/time', '-v', '-o', str(resource), 'env',
+                   'GTEST_FAIL_IF_NO_TEST_SELECTED=1', 'GTEST_COLOR=no',
+                   str(executable), '--gtest_filter=' + test]
+        with log.open('w') as stream:
+            process = subprocess.Popen(command, cwd=workdir, stdout=stream,
+                                       stderr=subprocess.STDOUT, start_new_session=True)
+            try:
+                code = process.wait(timeout=600)
+            except subprocess.TimeoutExpired:
+                try:
+                    os.killpg(process.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+                process.wait()  # Reap before closing or reading the log.
                 stream.write('\nHARNESS_TIMEOUT 600s\n')
-            code = 124
+                stream.flush()
+                code = 124
         data = log.read_text(errors='replace')
-        run = len(re.findall(r'(?m)^\[ RUN      \] ', data))
-        passed = len(re.findall(r'(?m)^\[       OK \] ', data))
-        skipped = len(re.findall(r'(?m)^\[  SKIPPED \] ', data))
-        verdict = ('PASS' if code == 0 and run == passed == 1 and skipped == 0 else
-                   'RED' if code != 0 and run == 1 and passed == skipped == 0 else 'INVALID')
+        verdict, run, passed, skipped = classify_case(data, test, code)
         state['executed'] += int(run == 1 and skipped == 0)
         state['passed'] += int(verdict == 'PASS')
         state['red'] += int(verdict == 'RED')
