@@ -1,2 +1,0 @@
-# CB30-REV ephemeral source snapshot trigger
-.agents/connector-triggers/source-snapshot/cb30-review-20261023211021.txt
