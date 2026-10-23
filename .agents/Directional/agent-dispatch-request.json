@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb30-gauge-compile-fix-20261023-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb30-gauge-fix-apply",
-  "file_id": "1NUCUunx_P10m6CNw5w89-cOvSmRS45Sm",
-  "patch_sha256": "79086ab519bedcb5510cb8856f95a8de25199894f3ad10de74298899fe393cf3",
-  "base_sha": "e98b6e8c7b70ce320ccc7888ec15f3fdb620b5d6",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(test): use value accessors for periodic gauge fixture types",
-  "retention_days": 7
+  "request_id": "m6-cp3-cb30-gauge-compile-fixed-20261023-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb30-gauge-fixed-compile",
+  "source_sha": "19267540081a4ff3a99826e3b9a766f1dbbded42",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb30-gauge-fixed"
 }
