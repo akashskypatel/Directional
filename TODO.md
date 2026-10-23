@@ -1,3 +1,12 @@
+## CURRENT — RA-145 TB31 independent census Review; FG01 Definition next (2026-10-23)
+
+- [x] **TB31-REV accepted as evidence, not gate promotion:** immutable 497/497 with 472 PASS / 25 inherited RED / 0 INVALID, ten RED→PASS and no PASS→RED. Independently verified 1,000 checksum entries, 497 case identities/log hashes and TB28 ledger. Decision `Architecture_M6_CP3_TB31_Selector_497_Census_Review_Decision_20261023.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-DEFN-FG01-RP01-PERIODIC-FACE-GAUGE-FACTORY-CONTRACT` — documents-only evaluation of `selector:220,221,296,302,304,439`; disambiguate missing fixture face gauge vs checked-factory contract, supply falsifiable options. No code/test/fixture/selector change; next Review before CB.
+- [ ] Planned, **not yet authorized** (each independent owner gate): A3 cycle-locus seven → seven untyped producer/oracle cases → A5 `focused30:12` → A4 `cp3entry:4` → A3 `selector:442` → DEFN-T1 `cp3entry:1/2` → new census → RP-01 Review. `DIAG-RETAIN`, `DEFN-SEAM-NZ` and Periodic remain separately gated.
+- Frozen: stable 66/17/49, debt1, CP2 491/491 accepted; R3 403/497 rejected; TB31 472/497 candidate only. Selector 497 byte-frozen, RP-01 open, RP-02 UNREACHED, Gate C suspended.
+
+---
+
 ## CURRENT — TB31 immutable selector-497 census complete; independent review next (2026-10-23)
 
 - [x] Review (RA-144, TB30-REV):
