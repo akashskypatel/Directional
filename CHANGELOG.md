@@ -1,3 +1,7 @@
+## 2026-10-23 — TB31 complete: 472/497, ten RED recoveries and no regression (candidate; Review next)
+
+- [Run 39959505758](https://github.com/akashskypatel/Directional/actions/runs/39959505758), immutable result artifact `12506242253` ZIP SHA-256 `97828fac57a63b5d8ca85ef0e5fd35fb7d5ed71c2b2579cd463bacc20d5e947b`, exact CB29 source `2602e7398` / package `12492950387`. **497/497** executed, 472 PASS, 25 inherited RED, 0 INVALID; ten TB28 RED→PASS and zero PASS→RED. All 1,000 result digests and 497 raw process logs reverified; 497/497 exact Review-owned manifest identities matched predictions; zero missing, skipped, duplicate or bad-control cases, postflight true, no configure/compile/relink/benchmark. Full evidence: `Architecture_M6_CP3_TB31_Selector_497_Census_Report_20261023.md` and `Architecture_M6_CP3_TB31_Selector_497_Red_Inventory.tsv`. No stable count/selection changes. Accepted CP2 491/491, CP3 remains candidate/unaccepted; next mandatory `M6-CP3-TB31-RP01-SELECTOR-497-CENSUS-REV` (Review).
+
 ## 2026-10-23 — TB30 reviewed (RA-144): the ten M1 tests pass; full census next
 
 - Review verified TB30. After CB29, all ten M1 tests pass. The seven other phase-front failures are unchanged, and every guard test still passes.

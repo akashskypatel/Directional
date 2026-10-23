@@ -1,4 +1,4 @@
-## CURRENT — RA-144: M1 resolved on the targeted gate; census (TB31) next (2026-10-23)
+## CURRENT — TB31 immutable selector-497 census complete; independent review next (2026-10-23)
 
 - [x] Review (RA-144, TB30-REV):
   - CB29 `2602e7398` matches RA-143.3;
@@ -7,16 +7,16 @@
   - RA-142.2's static claim confirmed;
   - a census is required because CB29 changes A4 admission for every hard-rail certificate;
   - Review-owned 497-row manifest `Architecture_M6_CP3_TB31_Census_Case_Manifest.tsv` (SHA-256 `b1c135d429f8c659e190f648b8678669cb7c14d393e0db9069568ea3838aa43e`, from TB28's ledger; 472 GUARD + 25 RED; self-check passes; all four binaries link GMP). Record: `Architecture_M6_CP3_TB30_Certificate_Association_Ownership_Verification_Review_Decision_20261023.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-TB31-RP01-SELECTOR-497-CENSUS` — artifact-only: harness `436f5fff…c9a`, manifest above, `EXPECTED_CASE_COUNT=497`, CB29 package `12492950387` (full inputs in the handoff; expires 2026-10-30T09:34:32Z). Predicted 472/497 with 0 PASS→RED. Report `Architecture_M6_CP3_TB31_Selector_497_Census_Report_20261023.md` plus a RED inventory.
-- [ ] **CONDITIONAL:** `M6-CP3-TB31-RP01-SELECTOR-497-CENSUS-REV` — Review: census adjudication; orders the per-owner turns.
+- [x] **TB31 COMPLETE:** immutable [run 39959505758](https://github.com/akashskypatel/Directional/actions/runs/39959505758), result `12506242253` SHA-256 `97828fac57a63b5d8ca85ef0e5fd35fb7d5ed71c2b2579cd463bacc20d5e947b`. Exact 497/497 cases, 472 PASS / 25 inherited RED / 0 INVALID; 10 RED→PASS and 0 PASS→RED against TB28; 1,000/1,000 result SHA-256 checks, 497/497 manifest identity/owner/expectation matches; no missing/skips/duplicates/bad controls/unexpected passes; immutable postflight. CB29 source/package and selector unchanged; no compile/relink/benchmark. Own reports: `Architecture_M6_CP3_TB31_Selector_497_Census_Report_20261023.md` and `Architecture_M6_CP3_TB31_Selector_497_Red_Inventory.tsv`.
+- [ ] **EXACT NEXT:** `M6-CP3-TB31-RP01-SELECTOR-497-CENSUS-REV` — independent evidence Review. Adjudicate measured 472/497, all 25 inherited REDs, the ten recoveries and zero regressions, and order per-owner turns. No further implementation or census work is authorized in this TB31 turn.
 - [ ] Planned, not authorized: per-owner turns (each DEFN or diagnostic first): face-gauge-missing (6) → A3 cycle locus (7, diagnostic) → untyped producer/oracle rows (7) → A5 `focused30:12` → `cp3entry:4` open-rail-chain → `selector:442` → DEFN-T1 (`cp3entry:1/2`) → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
   - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Turn sequence:** DEFN-M1-REV (RA-143) → CB29 → CB29-REV → TB30 → TB30-REV (RA-144) → **TB31 census** → TB31-REV → per-owner turns (face-gauge 6, A3 cycle 7, untyped 7, A5 focused30:12, cp3entry:4, selector:442, DEFN-T1) → census → RP-01 Review.
-- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+- **Turn sequence:** DEFN-M1-REV (RA-143) → CB29 → CB29-REV → TB30 → TB30-REV (RA-144) → TB31 census [complete] → **TB31-REV** → per-owner turns (face-gauge 6, A3 cycle 7, untyped 7, A5 focused30:12, cp3entry:4, selector:442, DEFN-T1) → census → RP-01 Review.
+- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 candidate superseded by TB31 472/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
 
 ---
 
