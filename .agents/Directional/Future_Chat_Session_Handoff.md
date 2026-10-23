@@ -34,46 +34,43 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-23, RA-146 FG01 independent Review: fixture-only correction accepted with binding amendments; synthetic evidence limited to owner bookkeeping, odd-transport/permutation split out. No code/runtime change; TB31 remains candidate. |
-| Branch/source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open. CB29 semantic `2602e7398cdc6f1281abe11a758de35166b6590c`; CB29 compile [run 39932638282](https://github.com/akashskypatel/Directional/actions/runs/39932638282), package `12492950387` ZIP SHA `9e2da1f4b5cf95ac45364e8c428f0bd9116dcfe96772de18d02a5a7bfb167319`; GMP eight targets, 28/28 hashes, compile-only. |
+| Currency | 2026-10-23, CB30 test-only periodic-owner gauge patch applied and GMP eight-target package verified; pending independent CB30-REV. No runtime or gate promotion. |
+| Branch/source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open. CB30 semantic `19267540081a4ff3a99826e3b9a766f1dbbded42`; compile [run 40023541183](https://github.com/akashskypatel/Directional/actions/runs/40023541183), artifact `12531891913` ZIP SHA-256 `040b7b12e4b36fa78f2c5eae6465ddaadd2a1fbd8ee9bf18ebda6e35e9a3b97b`; 28/28 hashes verified, GMP/GMPXX eight targets, `runtimeExecution=false`. |
 | TB30 runtime evidence | [run 39949886169](https://github.com/akashskypatel/Directional/actions/runs/39949886169), immutable result `12500088095` ZIP SHA-256 `bba928eb45957a29521a221ad093891de29f6a498c156691acc9c68b3a7308bf`; all 29 identities once, 22 PASS / 7 typed RED, 61/61 result hashes, no missing/skip/invalid/duplicates/unexpected PASS, no rebuild. Owning `Architecture_M6_CP3_TB30_Certificate_Association_Ownership_Verification_Report_20261023.md`. |
 | Unresolved first failures | Six `face-gauge-missing` (`selector:220,221,296,302,304,439`) and one `open-rail-chain` (`cp3entry:4`) remain inherited typed RED, no new stable regression or resolved causal assignment. |
 | TB31 independently reviewed evidence | [run 39959505758](https://github.com/akashskypatel/Directional/actions/runs/39959505758), result `12506242253`, ZIP SHA-256 `97828fac57a63b5d8ca85ef0e5fd35fb7d5ed71c2b2579cd463bacc20d5e947b`; 1,000/1,000 checksum entries and 497/497 raw logs verified. All 497 Review-owned manifest rows matched exact test/binary/expected outcome; exit 0, postflight true, no compile/relink/benchmark. Report `Architecture_M6_CP3_TB31_Selector_497_Census_Report_20261023.md`, RED inventory and RA-145 review retained. |
 | Accepted versus candidate | CP2 491/491 accepted. R3 403/497 rejected; TB28 462/497 superseded as candidate by TB31 472/497, **unaccepted**. Selector 497 byte-frozen; stable 66/17/49, debt 1; RP-01 open, RP-02 unreached, Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-REV` — EXACT NEXT
 
-- **Type / owner:** Code + Build, compile-only; RA-146 [decision](Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md).
-- **Objective:** restore six periodic-owner tests' factory preconditions without weakening factory admission or changing their owner assertions.
-- **Read:** RA-146 (including six-case table and falsifiers), amended FG01 definition, frozen RA-45/RA-111, shared fixture and draft reconstruction, factory gauge/owner checks.
-- **In scope:** only executable source `tests/SurfaceCellTransitionQuotientTests.cpp`: derive the two face gauges from real reciprocal atlas transport and topology-keyed faces; pass the vector; add the three explicitly named baseline/missing/one-face/uniform-shift controls defined in RA-146. Compile/package with GMP/GMPXX.
-- **Out of scope:** production source, original six assertions, selector/manifest changes, runtime/discovery/benchmarks, periodic topology redesign, nonzero/permutation follow-up and other owners.
-- **Success evidence:** exact one-file semantic diff, unchanged six assertions, complete narrowly named controls, immutable compile package. No runtime claim.
-- **On success:** `M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-REV`.
-- **On failure/blocker:** stop; same CB30-REV adjudicates exact failed prerequisite/compile or out-of-scope need. Never weaken a guard or expand the repair.
-- **Preserve:** CP2 491/491 accepted; TB31 472/497 candidate; frozen 497; stable 66/17/49, debt1; RP-01 open, RP-02 unreached.
+- **Type/owner:** independent Review of completed CB30 code/build. No runtime, benchmark, or code changes.
+- **Authority:** RA-146, FG01, exact changed-file diff, immutable `19267540081a4ff3a99826e3b9a766f1dbbded42` and compile [run 40023541183](https://github.com/akashskypatel/Directional/actions/runs/40023541183), artifact `12531891913` ZIP SHA-256 `040b7b12e4b36fa78f2c5eae6465ddaadd2a1fbd8ee9bf18ebda6e35e9a3b97b`; 28/28 hashes verified, GMP/GMPXX eight targets, `runtimeExecution=false`.
+- **Verify:** only `tests/SurfaceCellTransitionQuotientTests.cpp` changed as executable source; six original owner assertions remain unchanged; three focused controls cover missing gauge, one-face +1 negative and uniform +1 positive; gauge derives from typed topology and reciprocal A3. Check no claimed produced periodic equivalence or A6 result.
+- **On acceptance:** independently authorize/define TB32 immutable six-plus-three controls and frozen 497 census, with amended predictions. Not authorized in CB30.
+- **On rejection:** adjudicate the exact failed precondition without lowering production checks or expanding scope.
+- **Evidence:** `.agents/Directional/Architecture_M6_CP3_CB30_Periodic_Owner_Fixture_Gauge_Code_Build_Record_20261023.md`. Preserve CP2 491/491 accepted; TB31 472/497 candidate, stable 66/17/49 debt1, RP-01 open, RP-02 unreached.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE` | Shared periodic-owner fixture gauge plus three factory controls; one test file, compile/package only |
-| 2 — conditional | `M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-REV` | Review exact completed package/diff, or adjudicate a blocked CB30; no runtime |
-| 3 — planned, not yet authorized | TB32 immutable verification → independent Review; exact IDs assigned by step 2 | Six original cases + three controls; frozen 497 census retained. Prediction 478/497 + three focused PASS, no acceptance inferred |
-| 4 — planned, not yet authorized | Odd-transport/permutation CB → TB → Review | Real odd transition, unequal gauges, complete remap positive/stale-vector negative; separate from initial repair |
-| later — UNKNOWN until assigned | Remaining 19 RED owners → census → RP-01 Review | Seven A3 cycle, seven untyped, A5 focused30:12, A4 cp3entry:4, selector:442, DEFN-T1 cp3entry:1/2. Produced A6 gauge-invariance evidence remains separately owned |
-| deferred | DIAG-RETAIN, DEFN-SEAM-NZ and Periodic follow-up | Existing separate witness and sequencing gates remain in force |
+| 1 — next | `M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-REV` | Review exact test diff and compile package; no runtime |
+| 2 — conditional | TB32 — exact ID defined by Review | Immutable six recovered owner tests, three controls, frozen 497; not yet authorized |
+| 3 — planned | TB32 independent Review | Adjudicate first failures and candidate census; no acceptance inferred |
+| 4 — separately planned | Odd-transport/permutation CB → TB → Review | Real odd transport and unequal gauges, remap/stale negatives; new authorization required |
+| later — UNKNOWN | Remaining RED owners → census → RP-01 Review | A3 cycle, untyped, A5, A4 open-rail, selector 442, DEFN-T1, A6 produced invariance |
+| deferred | DIAG-RETAIN, DEFN-SEAM-NZ and periodic follow-up | Separate authority gates remain in force |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **code-build** — only the bounded fixture repair; no project runtime.
+`load_next`: **review** — only the exact CB30 code/build evidence; no project runtime.
 
 Minimum context after mandatory policies:
-0. ORIENTATION, ROADMAP, this handoff.
-1. RA-146 `Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md` and amended FG01 definition.
-2. `tests/SurfaceCellTransitionQuotientTests.cpp` direct fixture, its six callers, draft copy/reconstruction; factory gauge and periodic-owner branches in SurfaceCellTracing.cpp.
-3. Frozen RA-45 relational-gauge and RA-111 pin-domain rules; RA-145/TB31 remain runtime authority.
-4. TODO and regression tracker, especially RA-146's synthetic evidence limits and separately gated nonzero/permutation/A6 obligations.
+0. ORIENTATION, ROADMAP, this handoff, TODO, and RA-146 decision.
+1. CB30 record `.agents/Directional/Architecture_M6_CP3_CB30_Periodic_Owner_Fixture_Gauge_Code_Build_Record_20261023.md` and immutable [run 40023541183](https://github.com/akashskypatel/Directional/actions/runs/40023541183), artifact `12531891913` ZIP SHA-256 `040b7b12e4b36fa78f2c5eae6465ddaadd2a1fbd8ee9bf18ebda6e35e9a3b97b`; 28/28 hashes verified, GMP/GMPXX eight targets, `runtimeExecution=false`.
+2. Exact code diff `19267540081a4ff3a99826e3b9a766f1dbbded42` versus its pre-patch parent; six original owner assertions and three focused controls.
+3. Source A3 / factory gauge pin and the remaining RA-146.2–4 witness limitations.
+4. Frozen RA-45/RA-111 rules and RA-145/TB31 census evidence; no gate promotion.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

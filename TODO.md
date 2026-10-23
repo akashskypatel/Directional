@@ -1,7 +1,8 @@
-## CURRENT — RA-146 FG01 reviewed; bounded fixture correction next (2026-10-23)
+## CURRENT — CB30 fixture gauge compiled; independent review next (2026-10-23)
 
 - [x] FG01 independent Review: missing gauge confirmed from six immutable logs and code; fixture-only correction accepted with amendments. Owner-map admission does not establish reciprocal periodic action or produced topology. Decision: `.agents/Directional/Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md`.
-- [ ] **NEXT_TURN:** `M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE`. One test file: shared helper gauge plus three named factory controls. Compile/package only; no production or original-assertion changes.
+- [x] **CB30:** test-only reciprocal gauge fix and three factory controls at `19267540081a4ff3a99826e3b9a766f1dbbded42`; compile-only [run 40023541183](https://github.com/akashskypatel/Directional/actions/runs/40023541183), artifact `12531891913` ZIP SHA-256 `040b7b12e4b36fa78f2c5eae6465ddaadd2a1fbd8ee9bf18ebda6e35e9a3b97b`; 28/28 hashes verified, GMP/GMPXX eight targets, `runtimeExecution=false`. No runtime validation.
+- [ ] **NEXT_TURN:** `M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-REV` — independently inspect exact diff/package and preserve frozen 497; review decides if TB32 may be scheduled.
 - [ ] **Separate follow-up:** real odd atlas transport + unequal gauges + row/cyclic-corner remapping and stale-vector/inverse negatives. Not in CB30.
 - [ ] **Carried:** RA-45.4 produced A6 outcome invariance is not proved by factory uniform-shift admission; its existing test is absent from TB31's 497 manifest. Periodic/DEFN-T1 owner retains it.
 - Stable 66/17/49, debt1; CP2 491/491 accepted; TB31 472/497 candidate; frozen 497, RP-01 open, RP-02 unreached.
@@ -10,8 +11,8 @@
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE` | Shared periodic-owner fixture gauge plus three factory controls; one test file, compile/package only |
-| 2 — conditional | `M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-REV` | Review exact completed package/diff, or adjudicate a blocked CB30; no runtime |
+| 1 — next | `M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-REV` | Independently review exact CB30 diff and GMP compile package; no runtime |
+| 2 — conditional | TB32 identity assigned by Review | Immutable original six, three new controls, and frozen 497 census only after Review authority |
 | 3 — planned, not yet authorized | TB32 immutable verification → independent Review; exact IDs assigned by step 2 | Six original cases + three controls; frozen 497 census retained. Prediction 478/497 + three focused PASS, no acceptance inferred |
 | 4 — planned, not yet authorized | Odd-transport/permutation CB → TB → Review | Real odd transition, unequal gauges, complete remap positive/stale-vector negative; separate from initial repair |
 | later — UNKNOWN until assigned | Remaining 19 RED owners → census → RP-01 Review | Seven A3 cycle, seven untyped, A5 focused30:12, A4 cp3entry:4, selector:442, DEFN-T1 cp3entry:1/2. Produced A6 gauge-invariance evidence remains separately owned |
