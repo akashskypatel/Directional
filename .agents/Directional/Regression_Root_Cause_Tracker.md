@@ -1,3 +1,12 @@
+## RA-139 — audit of the TB29H review (2026-10-23)
+
+RA-138's H1–H3 upheld. Added three harness defects:
+- H4: on timeout the test process survives and can append to its hashed log;
+- H5: timing output is merged into the test log;
+- H6: reasons are read from the whole log rather than the failure block.
+
+A built-in `--self-test` and a count gate are now required. The census harness shares H1 (carried to the next census). No count changes. Record: `Architecture_M6_CP3_TB29H_Review_Audit_Decision_20261023.md`.
+
 ## RA-138 — TB29H harness runtime authorization rejected (2026-10-23)
 
 **Candidate/non-stable control-plane evidence defect, not a product regression.** RA-138-H1: timeout/crash with one `[ RUN ]` is misclassified `RED`, which can produce successful harness exit for a RED-kind case without a terminal GoogleTest result. RA-138-H2: one-row self-check passes despite RA-137 required count check. RA-138-H3: A5 hyphenated reasons are truncated. Owner: `M6-CP3-TB29H-RP02-TARGETED-ARTIFACT-HARNESS-CORRECTION`, independent RP02-REV. Falsifiers: timeout/crash/truncated RED => INVALID + nonzero; declared case count enforced for 44 and future manifests; full A5 code/site preserved. **Forbidden:** TB29 execution or attribution of typed causes from this unaccepted harness, changing frozen manifest/selector or product tests. Accepted 66/17/49, debt 1, CP2 491/491, TB28 462/497 candidate unchanged. Review: `Architecture_M6_CP3_TB29H_Targeted_Harness_Review_Decision_20261023.md`.

@@ -1,3 +1,12 @@
+## 2026-10-23 — Audit of the TB29H review (RA-139): more runner fixes, plus a built-in self-test
+
+- The review was right on all three points. The test runner would count a crashed or timed-out test as an ordinary failure, it accepted a test list of the wrong length, and it cut some failure reasons short.
+- Three more problems:
+  - when a test times out, only the timing wrapper is killed, so the test can keep running and change its log after the log is fingerprinted;
+  - timing output is mixed into test logs;
+  - the failure reason is searched for in the whole log instead of just the failure.
+- The fix must include a built-in self-test that later reviews can re-run. The script used for the full 497-test runs has the same crash-counting flaw; it must be fixed before the next full run. Accounting unchanged. Record: `Architecture_M6_CP3_TB29H_Review_Audit_Decision_20261023.md`.
+
 ## 2026-10-23 — TB29H reusable targeted artifact-only harness statically validated
 
 - **2026-10-23 — RA-138 TB29H-REV:** Independent static harness review: syntax, manifest hashes, case census and negative self-checks verified; runtime authorization **rejected** for timeout/crash-as-RED, missing case-count commitment and truncated A5 reasons. No Directional binaries run, no product/selector mutation. Exact next `M6-CP3-TB29H-RP02-TARGETED-ARTIFACT-HARNESS-CORRECTION`; TB29 held until corrective independent Review. [Decision](.agents/Directional/Architecture_M6_CP3_TB29H_Targeted_Harness_Review_Decision_20261023.md).

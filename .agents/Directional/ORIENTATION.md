@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-23 · RA-138 independent Review rejected TB29H runtime release: RED terminal status must distinguish aborted tests, self-check must enforce reviewed count, and A5 typed reasons must retain full text. RP02 repairs the harness statically before a separate Review can release TB29 on CB28A (expires 2026-10-29). Accepted CP2 491/491; TB28 462/497 candidate; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
+**Currency:** 2026-10-23 · RA-139 audits the TB29H review. Its three runner defects are confirmed and three more are added: a timeout leaves the test running, timing output is mixed into logs, and reasons are read from the whole log. The correction (TB29H-RP02) must ship a built-in self-test and a count gate. TB29 stays on hold until then; the CB28A package expires 2026-10-29. Accepted CP2 491/491; TB28 462/497 candidate; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 

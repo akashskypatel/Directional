@@ -1,3 +1,15 @@
+## RA-139 — Audit of the TB29H review (RA-138): H1–H3 upheld; H4–H6 added; self-test and count gate (2026-10-23)
+
+Authority: `Architecture_M6_CP3_TB29H_Review_Audit_Decision_20261023.md`; reviewed `Architecture_M6_CP3_TB29H_Targeted_Harness_Review_Decision_20261023.md` (RA-138).
+
+- **RA-139.1** Harness `be3db020…b412` and manifest `39fa5eb8…d236` re-hashed; H1–H3 confirmed; GMP preflight sound (`DT_NEEDED` of both binaries); extractor over 35 TB28 logs finds no early match.
+- **RA-139.2** H4: kill the process group on timeout and reap before reading the log. H5: `time -o` to `resources/<row>.time.txt`. H6: extraction scoped to the first failure block.
+- **RA-139.3** PASS = exit 0, 1 RUN, 1 OK. RED = 1 RUN, 1 `[  FAILED  ] <test>`, exit 1. Otherwise INVALID (counts as missing, so the harness exits non-zero).
+- **RA-139.4** `--self-test` with 12 embedded synthetic cases. Count gate: `--self-check <m> <n>` plus `EXPECTED_CASE_COUNT`.
+- **RA-139.5** The census harness `947a95ee…79dd` shares H1 (lines 311–312); the next census needs an RA-139.3-compliant harness.
+- **RA-139.6** RP02 → REV → TB29 → REV → DEFN-M1 → … → census → RP-01 Review. If package `12465330920` expires (2026-10-29T22:54:39Z): a recompile-only CB of `4473e41e9`.
+
+---
 ## RA-137 — TB29 block resolved: Review-owned manifest; reusable targeted harness (2026-10-23)
 
 Authority: `Architecture_M6_CP3_TB29_Harness_Authorization_Design_Review_Decision_20261023.md`.
