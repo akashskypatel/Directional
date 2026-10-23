@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb29-rev-history-closeout-20261023-01",
+  "request_id": "m6-cp3-cb29-a4-association-ownership-20261023-01",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb29-rev-history-closeout",
-  "file_id": "10Cqqan3qdNJAgIBVidnPAz5zpguDL5xh",
-  "patch_sha256": "022e073e04919cbafbf84d1b964489fdb2e0086555ec44e69394275a6598b508",
-  "base_sha": "6c0d5a7b88d6af600f3e9344622011b8866aeebb",
+  "mailbox_key": "m6-cp3-cb29-a4-ownership-apply",
+  "file_id": "1aukt4C8pbKS9RfESgf3FvuXVYXatATwe",
+  "patch_sha256": "cd7401cbc7f966f6bc70139bef9199f7beb616301145408e5d826aeecd773467",
+  "base_sha": "b592ab719b8f2c284921929296033836840264fd",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record authenticated TB29 review closeout history evidence",
+  "commit_message": "fix(surface-cells): assign certificate edge association to A5",
   "retention_days": 7
 }
