@@ -1,3 +1,13 @@
+## RA-144 — TB30 reviewed: M1 10/10 on the targeted gate; census next (2026-10-23)
+
+Authority: `Architecture_M6_CP3_TB30_Certificate_Association_Ownership_Verification_Review_Decision_20261023.md`.
+
+- **RA-144.1** CB29 `2602e7398` matches RA-143.3. Package `12492950387` (root manifest `5f7259b7…320d`, source archive `e5ec5390…f53a`). TB30 `12500088095` verified: 29/29 as predicted.
+- **RA-144.2** 25 REDs, each with an owner: face-gauge-missing 6; open-rail-chain 1; A3 cycle 7; A3 singularity 1; A5 1; witness 2; untyped producer/oracle 7.
+- **RA-144.3** TB31: targeted harness `436f5fff…c9a` + manifest `Architecture_M6_CP3_TB31_Census_Case_Manifest.tsv` (`b1c135d429f8c659e190f648b8678669cb7c14d393e0db9069568ea3838aa43e`, 472 GUARD / 25 RED, from TB28's ledger); predicted 472/497. Discharges RA-139.5.
+- **RA-144.4** TB31 → REV → per-owner turns → DEFN-T1 → census → RP-01 Review.
+
+---
 ## RA-143 — DEFN-M1 resolved: A4 authenticates hard-rail certificates; A5 binds edges to them (2026-10-23)
 
 Authority: `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Review_Decision_20261023.md`; contract `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_20261023.md` (accepted).

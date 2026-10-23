@@ -1,3 +1,9 @@
+## 2026-10-23 — TB30 reviewed (RA-144): the ten M1 tests pass; full census next
+
+- Review verified TB30. After CB29, all ten M1 tests pass. The seven other phase-front failures are unchanged, and every guard test still passes.
+- CB29 affects every hard-rail certificate, not just these tests, so the full 497-test census runs next. It uses the corrected test runner and a Review-written list of all 497 tests (472 expected to pass, 25 expected to fail).
+- Accounting unchanged. Record: `Architecture_M6_CP3_TB30_Certificate_Association_Ownership_Verification_Review_Decision_20261023.md`.
+
 ## 2026-10-23 — TB30 certificate-association ownership verification (artifact-only; Review pending)
 
 - `M6-CP3-TB30-RP01-CERTIFICATE-ASSOCIATION-OWNERSHIP-VERIFICATION`: CB29 immutable source `2602e7398cdc6f1281abe11a758de35166b6590c`, package `12492950387`; [run 39949886169](https://github.com/akashskypatel/Directional/actions/runs/39949886169) result `12500088095` SHA `bba928eb45957a29521a221ad093891de29f6a498c156691acc9c68b3a7308bf`. Exact 29-case manifest SHA `2b41ac11aad179770c5eb538876abcfb8fa0fd1d8df5315af0605ab35a7c59f6`; 29/29 run, 22 expected PASS, 7 unchanged typed RED; 61/61 result checksums verified, no invalid/skip/duplicate/unexpected PASS, postflight clean, no configure/compile/relink/benchmark. Ten M1 cases and three RA-143.4 authenticity guards pass; six prior `face-gauge-missing` and one `open-rail-chain` remain typed RED. Only the bounded targeted gate was measured: no 497-case census or CP3 promotion. Frozen stable 66/17/49 and debt 1. Owning report `Architecture_M6_CP3_TB30_Certificate_Association_Ownership_Verification_Report_20261023.md`; independent TB30-REV required before further semantic work; full review identifier remains to be assigned.

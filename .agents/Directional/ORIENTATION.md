@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-23 · TB30 targeted artifact-only verification measured 29/29 expected outcomes (22 PASS, 7 inherited typed RED); independent TB30-REV pending, no CP3 acceptance. CP2 491/491 accepted; TB28 462/497 candidate, stable 66/17/49, debt 1; RP-01 open, RP-02 unreached.
+**Currency:** 2026-10-23 · RA-144 reviews TB30: after CB29, all ten M1 tests pass and nothing else in the targeted set changed. The full 497-test census (TB31) runs next with the corrected runner; predicted 472/497. Then the 25 remaining failures are handled by owner. Accepted CP2 491/491; TB28 462/497 candidate; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
