@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb31-rev-docs-20261023-r2",
+  "request_id": "m6-cp3-fg01-defn-docs-20261023-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb31-rev-docs-20261023-r2",
-  "file_id": "1--XauiB3eDzl6MzYrCeqFHgaUW8A9X0J",
-  "patch_sha256": "1a2c7cf19ef0f37cb190b552353fe04a53380b5d7909e3beab44e183ca022596",
-  "base_sha": "988365af2810afdd1bf3570fdeca92c189e597dd",
+  "mailbox_key": "m6-cp3-fg01-defn-docs",
+  "file_id": "1C9-gzO1wsKXkX9nuCI_L1Dy7iWnDiHqh",
+  "patch_sha256": "47c1941a64eeb8b5f298de263722a3e752edc199752d2a9f7b5f5219068c0278",
+  "base_sha": "5ade6d588814246474ebca9debcf0d6f00a31df0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): independently review TB31 selector-497 census",
+  "commit_message": "docs(directional): define periodic-owner face-gauge factory contract",
   "retention_days": 7
 }
