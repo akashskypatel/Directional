@@ -1,3 +1,8 @@
+## 2026-10-23 — RA-148 independent TB32 Review (scoped candidate accepted; CB31 next)
+
+- Independently re-derived TB32 500/500 outcomes from 1,006 hashes/raw logs against TB31 1,000 hash baseline and CB30 28-hash GMP/GMPXX package. Original 497: 478 PASS / 19 inherited RED versus 472 / 25; six original owner tests recovered, three factory tamper/shift controls PASS, zero regressions. Factory-only scope accepted; no direct/periodic/A6/CP3 promotion.
+- Preserved 19 first-site owner obligations; new CB31 compile-only test proof is frozen for real odd 1/3 transport, unequal gauges, topology-keyed row/corner permutations and stale-vector/inverse negative controls. No production code/test/runtime/build/selector edited in Review. [RA-148](.agents/Directional/Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md); [CB31 plan](.agents/Directional/Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Code_Build_Plan_20261023.md). Stable 66/17/49 debt1, CP2 491/491 accepted, RP-01 open, RP-02 unreached.
+
 ## 2026-10-23 — TB32 immutable 500-case gauge verification (candidate; independent Review next)
 
 - Artifact-only [run 40028643379](https://github.com/akashskypatel/Directional/actions/runs/40028643379), CB30 compiled source `19267540081a4ff3a99826e3b9a766f1dbbded42`, result artifact `12534679588`, ZIP SHA-256 `2c809e72489a69396c3c9e97e2a40ebb15f726de84a19b5610bb092fb9f85ddd`; 1,006/1,006 checksums and 500/500 individual raw logs independently verified. No rebuild, relink, configuration, benchmark or case/selector mutation.

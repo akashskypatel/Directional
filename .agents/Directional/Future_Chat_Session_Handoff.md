@@ -34,34 +34,32 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-23, TB32 immutable 500-case result fully observed and independently log/hash audited; TB32-REV is next, with no runtime or gate promotion. |
-| Branch/source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open. CB30 semantic `19267540081a4ff3a99826e3b9a766f1dbbded42`, compile artifact `12531891913` (28/28 hashes, eight GMP/GMPXX targets, `runtimeExecution=false`). |
-| TB32 candidate evidence | [run 40028643379](https://github.com/akashskypatel/Directional/actions/runs/40028643379), result artifact `12534679588`, outer ZIP SHA-256 `2c809e72489a69396c3c9e97e2a40ebb15f726de84a19b5610bb092fb9f85ddd`; 1,006/1,006 checksums, all 500 raw logs independently verified; 481 PASS / 19 inherited RED / 0 INVALID. Frozen 497 subset 478 PASS / 19 RED. [TB32 report](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Report_20261023.md) and [residual inventory](Architecture_M6_CP3_TB32_Residual_Red_Inventory.tsv). |
-| Six resolved candidates | `selector:220,221,296,302,304,439` change RED→PASS and three new factory controls pass; no PASS→RED, no inherited first-site drift. This proves bounded synthetic factory behavior, **not** produced periodic topology, odd-transport/permutation or A6 invariance. |
-| Last reviewed evidence | TB31 [run 39959505758](https://github.com/akashskypatel/Directional/actions/runs/39959505758), 472/497 candidate-only independently reviewed in RA-145, 25 inherited RED; baseline for TB32 comparison. |
-| Accepted versus candidate | CP2 491/491 accepted; M6-CP3 unaccepted. R3 403/497 rejected; TB28 462/497, TB31 472/497, TB32 **478/497** are candidate counts. Frozen selector 497. Stable 66/17/49, debt 1; RP-01 open, RP-02 unreached, Gate C suspended. |
+| Currency | 2026-10-23, RA-148 independent TB32 Review accepted six recovered synthetic factory/owner tests and three controls **within their bounded scope only**. Next CB31 odd atlas transport/permutation, compile-only. |
+| Branch/source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open. CB30 semantic `19267540081a4ff3a99826e3b9a766f1dbbded42`; compile package `12531891913` (28/28 hashes, eight GMP/GMPXX targets, `runtimeExecution=false`). |
+| TB32 reviewed candidate | Run [40028643379](https://github.com/akashskypatel/Directional/actions/runs/40028643379), artifact `12534679588`, outer SHA-256 `2c809e72489a69396c3c9e97e2a40ebb15f726de84a19b5610bb092fb9f85ddd`; 1,006/1,006 checksum and 500/500 distinct individual log audits. 481 PASS/19 inherited RED/0 INVALID; frozen original 497: **478 PASS/19 RED**, six recovered, three new controls PASS, zero regressions. [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md), [TB32 report](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Report_20261023.md), [remaining cases](Architecture_M6_CP3_TB32_Residual_Red_Inventory.tsv). |
+| Baseline | TB31 run `39959505758`, artifact `12506242253`: 472/497 PASS with 25 RED and 1,000/1,000 checksums, independently compared again in RA-148. |
+| Accepted vs candidate | CP2 **491/491 accepted**; CP3 **unaccepted**. TB28 462/497, TB31 472/497, TB32 478/497 candidate only. Selector 497 byte-frozen. Stable 66/17/49, debt1; RP-01 open, RP-02 unreached, Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-TB32-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-VERIFY-REV` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB31-RP01-ODD-ATLAS-TRANSPORT-PERMUTATION` — EXACT NEXT
 
-- **Type/owner:** independent Review of immutable TB32 artifact and primary log evidence; no runtime, compilation, relinking, source, fixture, selector or expected-verdict changes.
-- **Exact evidence:** semantic source `19267540081a4ff3a99826e3b9a766f1dbbded42`; [run 40028643379](https://github.com/akashskypatel/Directional/actions/runs/40028643379), artifact `12534679588`, ZIP SHA-256 `2c809e72489a69396c3c9e97e2a40ebb15f726de84a19b5610bb092fb9f85ddd`; 500 manifest `597741409f06a80877cb8ae6f5fd2f92785de99a629a7d2c6453921858996437`, verified 1,006/1,006 internal hashes, 481/500 PASS and 19 RED. Owning TB32 report/inventory above and RA-147 Review.
-- **Independent adjudication:** independently rederive exact 500 identity/name/binary/exit/raw-log outcomes; compare 497 with TB31, verify the six recovered original owner tests and three new controls are nonvacuous; audit all 19 unchanged RED typed first-sites. Resolve evidence scope and assign only independently authorized next owner. Preserve RA-146.2–4 and RA-45.4 limitations; synthetic factory passing cannot discharge produced periodic/A5/A6 topology or odd-transport/permutation obligations.
-- **Stop rules:** any independent artifact/manifest/hash/log mismatch, changed first failure, unexpected verdict, non-discriminating control, or unproved causal assignment must be recorded and reviewed; do not silently change frozen expectations, accepted gate or stable counts.
-- **Acceptance boundary:** Review may accept TB32 evidence, not promote CP3 without separate required produced witnesses. CP2 491/491 accepted, stable 66/17/49 debt1, RP-01 open / RP-02 unreached. Conditional successor after Review **UNKNOWN until independently assigned**; do not assume odd-transport or other owner implementation.
+- **Type:** Code + Build, test-only topology-keyed odd-transport/permutation proof. Read [precommitted plan](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Code_Build_Plan_20261023.md) and [RA-148 Review](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md); use exact verified source authority per policy. No runtime, Test + Benchmark, selector/benchmark or production-code changes in this unit.
+- **Required premise:** actual A3 directed quarter-turn **1 or 3** on a same-sheet non-hard shared edge, reciprocal inverse and unequal real derived gauges; use the raw-field/atlas ingress, not forged transport state. Valid row, field and orientation-preserving cyclic-corner permutation must preserve canonical owner outcomes with all references/gauges remapped.
+- **Negative oracles:** stale old gauge vector and wrong directed inverse must reject at the canonical edge; independent expected values, non-vacuous baseline. Retain six original owner assertions and three factory controls. A6 produced outcome and real periodic topology remain separate.
+- **Stop rules:** if actual ingress erases odd transport, if independent face/corner mapping cannot be derived, if any negative oracle is inert or if the production checker must be edited, **STOP and preserve evidence**. No relaxing odd→even, changing frozen selector, or claims of runtime success. Compile/package eight GMP/GMPXX targets only after bounded implementation.
+- **Boundary:** RA-148 Review has already ended its scope; CB31 is a separate turn. Exact later conditional CB31-REV, then separate immutable TB/Review, not combined.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-TB32-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-VERIFY-REV` | Independently assess exact TB32 evidence, no runtime |
-| 2 — conditional | `UNKNOWN` | Next owner depends on independent Review decision; do not assume successor |
-| 3 — separately planned | Odd-transport/permutation CB → TB → Review | Real odd A3 transport and unequal gauge, full row/corner remap, stale-vector/inverse negatives; new authorization required |
-| later — UNKNOWN | Remaining 19 RED owners → census → RP-01 Review | Cycle locus, untyped cases, A5, open-rail, selector442, DEFN-T1; A6 produced invariance separately retained |
-| deferred | DIAG-RETAIN, DEFN-SEAM-NZ and periodic follow-up | Existing separate gates retained |
+| 1 — exact next | `M6-CP3-CB31-RP01-ODD-ATLAS-TRANSPORT-PERMUTATION` | Test-only real odd transport/permutation; compile/package-only |
+| 2 — conditional | `M6-CP3-CB31-RP01-ODD-ATLAS-TRANSPORT-PERMUTATION-REV` | Independent source/compile Review after complete CB31 |
+| 3 — unassigned | `UNKNOWN` | Immutable TB and TB-REV separately authorized after CB31 Review |
+| later — unassigned | `UNKNOWN` | 19 inherited RED owners, produced A6 and G4-B002 witness, census/RP-01 Review |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **review** — independently adjudicate TB32 500-case immutable result against TB31 and RA-147; no runtime execution.
+`load_next`: **code-build** — implement only CB31 real odd A3 transport/permutation test proof under frozen RA-148 plan; compile/package only, no runtime.
 
 Minimum context after mandatory policies:
 0. ORIENTATION, ROADMAP, this handoff, TODO, RA-147 decision and TB32 report/inventory.

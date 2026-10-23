@@ -1,24 +1,19 @@
-## CURRENT — TB32 immutable runtime verified; independent TB32 Review next (2026-10-23)
+## CURRENT — RA-148 TB32 scoped Review accepted; CB31 odd-transport witness next (2026-10-23)
 
-- [x] FG01 independent Review: missing gauge confirmed from six immutable logs and code; fixture-only correction accepted with amendments. Owner-map admission does not establish reciprocal periodic action or produced topology. Decision: `.agents/Directional/Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md`.
-- [x] **CB30:** test-only reciprocal gauge fix and three factory controls at `19267540081a4ff3a99826e3b9a766f1dbbded42`; compile-only [run 40023541183](https://github.com/akashskypatel/Directional/actions/runs/40023541183), artifact `12531891913` ZIP SHA-256 `040b7b12e4b36fa78f2c5eae6465ddaadd2a1fbd8ee9bf18ebda6e35e9a3b97b`; 28/28 hashes verified, GMP/GMPXX eight targets, `runtimeExecution=false`. TB32 runtime verification now measured separately; no CB runtime was performed.
-- [x] **RA-147 CB30-REV:** accepted fixture-only static diff and GMP/GMPXX eight-target package; did not execute binaries or claim runtime. [Review decision](.agents/Directional/Architecture_M6_CP3_CB30_Periodic_Owner_Fixture_Gauge_Review_Decision_20261023.md).
-- [x] **TB32 measured:** [run 40028643379](https://github.com/akashskypatel/Directional/actions/runs/40028643379), artifact `12534679588` SHA-256 `2c809e72489a69396c3c9e97e2a40ebb15f726de84a19b5610bb092fb9f85ddd`; 500/500, **481 PASS / 19 inherited RED**, original 497 **478/497**, six `face-gauge-missing` RED→PASS, all three controls PASS, zero PASS→RED, 1,006/1,006 digests, no build. Candidate only. [Report](.agents/Directional/Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Report_20261023.md).
-- [ ] **NEXT_TURN:** `M6-CP3-TB32-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-VERIFY-REV` — independent evidence Review of exact 500 logs and 19 inherited RED owners; do not execute runtime or promote CP3 without adjudication.
-- [ ] **Separate follow-up:** real odd atlas transport + unequal gauges + row/cyclic-corner remapping and stale-vector/inverse negatives. Not in CB30.
-- [ ] **Carried:** RA-45.4 produced A6 outcome invariance is not proved by factory uniform-shift admission; its existing test is absent from TB31's 497 manifest. Periodic/DEFN-T1 owner retains it.
-- Stable 66/17/49, debt1; CP2 491/491 accepted; TB31 472/497 and TB32 478/497 candidates; frozen 497, RP-01 open, RP-02 unreached.
+- [x] **RA-148 TB32-REV:** independently audited 500/500 raw cases, 1,006/1,006 result checksums, immutable 28/28 CB30 compile package and 1,000/1,000 TB31 baseline hashes. TB32 **481 PASS / 19 RED**, frozen 497 subset **478 PASS / 19 RED**; six owner-map RED→PASS, three new factory controls PASS, zero PASS→RED. [Decision](.agents/Directional/Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md). Only synthetic factory/owner scope accepted.
+- [x] RA-146.1/RA-147/FG01 direct fixture reachability verified. Synthetic unpaired front does **not** certify real odd transport, periodic action, A5/A6 produced outcomes or G4-B002.
+- [ ] **EXACT NEXT:** `M6-CP3-CB31-RP01-ODD-ATLAS-TRANSPORT-PERMUTATION` — Code + Build test-only odd A3 transport 1/3 with unequal gauges, full topology-keyed face/field/cyclic-corner remapping, stale-vector/inverse negatives and mandatory compile-only GMP/GMPXX; [precommitted plan](.agents/Directional/Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Code_Build_Plan_20261023.md). Stop if odd transport cannot be produced through real ingress.
+- [ ] **CARRIED:** all 19 original RED identities, RA-146.2/3/4, RA-45.4 produced A6 gauge outcome, unavailable A3 route and seven untyped first failures, G4-B002, DIAG-RETAIN, DEFN-SEAM-NZ and periodic/DEFN-T1. No unproved promotion.
+- **Frozen:** CP2 491/491 accepted; CP3 unaccepted, candidate 478/497; stable 66/17/49, debt1; RP-01 open, RP-02 unreached, Gate C suspended; selector497 and TB32 500 manifest byte-frozen.
 
-### Authorized and planned turn sequence
+### Authorized turn sequence
 
-| Step | Canonical turn | Condition / boundary |
+| Step | Canonical turn | Boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-TB32-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-VERIFY-REV` | Independently review exact TB32 500-case result and inherited 19 RED owners; no runtime |
-| 2 — conditional | `UNKNOWN` | Next bounded owner decision only after TB32 Review; no autonomous continuation |
-| 3 — evidence gate | Review measured TB32 497 selector plus 3 controls | Actual 478/497 and 481/500 PASS; candidate not accepted pending independent Review |
-| 4 — planned, not yet authorized | Odd-transport/permutation CB → TB → Review | Real odd transition, unequal gauges, complete remap positive/stale-vector negative; separate from initial repair |
-| later — UNKNOWN until assigned | Remaining 19 RED owners → census → RP-01 Review | Seven A3 cycle, seven untyped, A5 focused30:12, A4 cp3entry:4, selector:442, DEFN-T1 cp3entry:1/2. Produced A6 gauge-invariance evidence remains separately owned |
-| deferred | DIAG-RETAIN, DEFN-SEAM-NZ and Periodic follow-up | Existing separate witness and sequencing gates remain in force |
+| 1 — exact next | `M6-CP3-CB31-RP01-ODD-ATLAS-TRANSPORT-PERMUTATION` | Test-only odd atlas transport/permutation proof; compile only; no project runtime or production patch |
+| 2 — conditional | `M6-CP3-CB31-RP01-ODD-ATLAS-TRANSPORT-PERMUTATION-REV` | Separate independent Code+Build static/compile review, only if CB31 publishes a valid immutable package |
+| 3 — conditional | `UNKNOWN` | Later immutable TB and separate TB-REV after code review; freeze exact cases before executing |
+| later | `UNKNOWN` | 19 residual RED owners → census → RP-01 review; produced A6 and real closed-complex proof stay separate |
 
 
 ---

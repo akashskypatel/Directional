@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Updated:** 2026-10-22 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
+**Updated:** 2026-10-23 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
 
 This roadmap answers **what is done, what comes next, and what each milestone delivers**. It is not a turn log, task queue, test ledger, definition spec, or implementation handoff. The product and acceptance contract is [DESIGN.md](DESIGN.md) (especially §§2 and 14); status, detailed plans, unresolved findings, and exact next-turn authorization live in [ORIENTATION.md](ORIENTATION.md), [Future_Chat_Session_Handoff.md](Future_Chat_Session_Handoff.md), [TODO.md](../../TODO.md), and [Regression_Root_Cause_Tracker.md](Regression_Root_Cause_Tracker.md).
 
@@ -47,7 +47,7 @@ Each completed milestone's [closure record](M3_Closure_Record.md) retains detail
 | **M6-CP2** | Independent `SurfaceProductVerifier`: recompute permitted invariants; reject malformed authority without repair. | **Closed** · [closure](M6_CP2_Closure_Record.md) |
 | **M6-CP3** | End-to-end direct-production and invariant re-proof, including the remaining closed-complex candidate-extraction witness and discriminating tamper. | **Active / blocked on evidence; not accepted** |
 
-**Current CP3 boundary (2026-10-23; RA-145 independent TB31 Review):** the CB29 497-case census yielded 472 PASS / 25 inherited RED, ten RED→PASS versus TB28 and zero PASS→RED. This remains a diagnostic candidate and is not promoted to M6-CP3 acceptance. RA-146 has accepted the fixture-only FG01 correction with binding amendments: bounded CB30 fixes the shared gauge input, then separate review/runtime evidence; nonzero-transport/permutation work is a later unit. Synthetic owner-map recovery grants no direct-production credit. Last accepted CP2 remains 491/491, stable 66/17/49, debt 1; RP-01 unresolved.
+**Current CP3 boundary (2026-10-23; RA-148 independent TB32 Review):** the immutable CB30 500-case artifact has **481 PASS / 19 inherited RED**; the frozen 497 subset is **478 PASS / 19 RED**, six recovered synthetic owner fixture cases versus TB31 (472/497) and zero regressions. This is a **candidate, not M6-CP3 acceptance**. Next bounded CB31 targets odd A3 transport/unequal-gauge topology-keyed permutation witness as *test source* with stale-vector/inverse falsifiers; its outcome is unmeasured. Last accepted CP2 remains 491/491, stable 66/17/49, debt1; RP-01 unresolved. No produced A6/periodic/G4-B002 credit. [RA-148]('+review_name+').
 
 **Outstanding M6 exit dependency:** The single remaining produced-witness debt, **`G4-B002` closed-complex candidate extraction**, must be proved on real pipeline-produced authority at CP3. The active CP3 source/transport issue (`RP-01`) remains unresolved; the relevant downstream consumer (`RP-02`) has not been reached. Milestone M6 remains open until its specified direct-production and invariant evidence is independently accepted. Detailed fault classification belongs in the regression tracker, not here.
 
