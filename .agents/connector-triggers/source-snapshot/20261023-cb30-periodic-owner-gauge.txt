@@ -1,3 +1,0 @@
-request: M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE
-starting_source_sha: 73be3692ffce86b7d1a026ec6a1532c38532821a
-requested_at: 2026-10-23T20:47:04Z
