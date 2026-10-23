@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-23 · RA-143 resolves the M1 design block. The phase-front product stage keeps checking that hard-rail certificates are genuine; matching edges to certificates belongs to A5, which already does it in the frozen order. CB29 removes five matching checks from the earlier stage so each of the ten M1 tests reaches its intended check. Accepted CP2 491/491; TB28 462/497 candidate; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
+**Currency:** 2026-10-23 · CB29 independent Review accepted static A4 certificate-authenticity / A5 edge-association ownership and issued 29-case targeted TB30 verification; runtime outcome unmeasured. CP2 491/491 accepted; TB28 462/497 candidate, stable 66/17/49, debt 1; RP-01 open, RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -101,6 +101,9 @@ Fixture generation, provenance, licenses and checksums are recorded in [generate
 The separation is deliberate: accepted selector continuity and frozen invariants are not negotiable fixes for a RED; diagnostics are not acceptance; representative production claims require production-path witnesses. See the [review policy](REVIEW_TURN_POLICY.md), [testing strategy](../../tests/TESTING_STRATEGY.md) and [workflow policy](GitHub_Workflow_Policy.md) for actual requirements, repository operation, artifact transport and mailbox behavior.
 
 ## 7. Open problems — priority, not a task ledger
+
+**Immediate:** TB30 verifies ten M1 producer-owner outcomes, seven unchanged first-failure reasons, nine controls and three authenticity guards on the immutable CB29 package. Earlier M1 A4/A5 design ownership is resolved; its runtime acceptance remains open.
+
 
 | Priority | Missing outcome | Owner |
 |---|---|---|

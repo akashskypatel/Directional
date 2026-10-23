@@ -1,3 +1,8 @@
+## 2026-10-23 — CB29 independent Review; targeted TB30 manifest authorized
+
+- Independently checked single-clause diff, A4 authenticity/reciprocal-structure preservation, A5 route/owner/region/certificate admission, exact CB29 eight-target GMP/GMPXX compile package (28/28 hashes, source `2602e7398cdc6f1281abe11a758de35166b6590c`, runtimeExecution=false). Approved static CB29 without implying a test result.
+- Issued 29-row TB30 frozen case manifest `Architecture_M6_CP3_TB30_Targeted_Case_Manifest.tsv` SHA-256 `2b41ac11aad179770c5eb538876abcfb8fa0fd1d8df5315af0605ab35a7c59f6`; authorized only targeted artifact-only verification and mandatory TB30-REV. CP3 still open; accounting unchanged. Review `Architecture_M6_CP3_CB29_A4_Certificate_Association_Ownership_Review_Decision_20261023.md`.
+
 ## 2026-10-23 — CB29 A4/A5 certificate-association ownership (Code + Build)
 
 - Under RA-143.3, changed only `src/geometry/SurfaceCellTracing.cpp` certificate-pair clause: A4 retains both `HardRail` kinds and its certificate authenticity/structural reciprocity guards while A5 owns the removed edge/certificate association comparisons. Applied commit `2602e7398cdc6f1281abe11a758de35166b6590c`; patch SHA-256 `cd7401cbc7f966f6bc70139bef9199f7beb616301145408e5d826aeecd773467`.

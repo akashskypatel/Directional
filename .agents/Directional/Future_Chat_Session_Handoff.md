@@ -34,7 +34,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-23: CB29 completed its compile-only A4/A5 certificate-association owner split under RA-143.3. The first certificate pair clause now checks only the two HardRail kinds; A4 continues to authenticate certificates and enforce structural opposite reciprocity; A5 owns edge-to-certificate association. Independent CB29 Review must inspect the exact diff and issue the TB30 manifest; no runtime/test acceptance claimed. |
+| Currency | 2026-10-23: CB29 independent static Review accepted the one-clause A4/A5 owner split and verified eight-target GMP compile evidence; it issued the exact 29-case targeted TB30 manifest. No runtime/test acceptance claimed. |
 | Working branch / semantic source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open. CB29 compiled exact source `2602e7398cdc6f1281abe11a758de35166b6590c`; CB28A prior semantic source `4473e41e94a35f1bf189fa046e86bac92c7391fb`. |
 | CB29 compile evidence | [run 39932638282](https://github.com/akashskypatel/Directional/actions/runs/39932638282), package `12492950387`, ZIP SHA-256 `9e2da1f4b5cf95ac45364e8c428f0bd9116dcfe96772de18d02a5a7bfb167319`; 28/28 hashes, 8 targets, preflight/build 0/0, GMP/GMPXX, runtimeExecution=false; no binaries executed. Owning record `Architecture_M6_CP3_CB29_A4_Certificate_Association_Ownership_Code_Build_Record_20261023.md`. |
 | Accepted vs candidate | CP2 491/491 accepted. R3 403/497 rejected; TB28 462/497 candidate only. Selector 497 byte-frozen. |
@@ -42,31 +42,30 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Independently reviewed partition | RA-141: six R2 certificate-pair M1 first failures, six earlier face-gauge missing, one open-rail-chain; A3 eight (7 cycle + 1 singularity), A5 one, untyped thirteen. Cause not extrapolated. |
 | Accounting | Stable 66/17/49; debt 1; RP-01 open, RP-02 unreached, Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP-REV` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB30-RP01-CERTIFICATE-ASSOCIATION-OWNERSHIP-VERIFICATION` — EXACT NEXT
 
-- **Type / owner:** Independent Review; CB29 compile-only closeout under RA-143.3, then RA-143.4 TB30 manifest decision.
-- **Authority:** RA-143 (`Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Review_Decision_20261023.md`), DEFN-M1 accepted contract, CB29 build record, compiled source `2602e7398cdc6f1281abe11a758de35166b6590c`.
-- **Required review:** inspect the exact `src/geometry/SurfaceCellTracing.cpp` pair-clause diff; confirm two HardRail kinds and `certificate-pair-binding` retained; verify A4 certificate authenticity and `InvalidOppositeEdge`, and A5 downstream edge/rail/route/region ownership. Confirm no other implementation/test/selector/workflow changes, no executable run, source exactness and eight-target GMP/GMPXX package evidence.
-- **Decision:** if approved, issue the targeted TB30 manifest prescribed by RA-143.4: ten M1 frozen-first-owner rows, seven non-M1 factory rows unchanged RED, nine TB29 controls, three certificate-authenticity guards. TB30 remains **unauthorized until this Review issues its manifest**. No full 497-case census or successor implementation here.
-- **Frozen accounting:** stable 66/17/49; debt 1; CP2 491/491; R3 403/497 rejected; TB28 462/497 candidate. RP-01 open, RP-02 unreached, Gate C suspended.
+- **Type / boundary:** artifact-only targeted Test + Benchmark, separately authorized by CB29-REV. No build/relink/fixture/selector modifications.
+- **Authority:** CB29-REV `Architecture_M6_CP3_CB29_A4_Certificate_Association_Ownership_Review_Decision_20261023.md`, RA-143.4; package `12492950387`, source `2602e7398cdc6f1281abe11a758de35166b6590c`.
+- **Manifest:** `Architecture_M6_CP3_TB30_Targeted_Case_Manifest.tsv` SHA-256 `2b41ac11aad179770c5eb538876abcfb8fa0fd1d8df5315af0605ab35a7c59f6`, 29 unique cases: 9 controls, 10 M1 expected PASS, 7 non-M1 expected same RED/typed cause, 3 certificate authenticity guards PASS. Existing targeted harness SHA `436f5fff9c3bec97457f4bc6b7c2b6182cb3f47707eb14a66af3b6a3f3dc3c9a`. Independent TB30-REV required after evidence. Falsifiers and extraction boundary in CB29 Review.
+- **Frozen accounting:** stable 66/17/49; debt 1; CP2 491/491; R3 403/497 rejected; TB28 462/497 candidate; CP3 not accepted; RP-01 open, RP-02 unreached, Gate C suspended.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
 | 1 — complete | `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP` | Compile-only eight targets succeeded; evidence in owning CB29 record. |
-| 2 — next | `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP-REV` | Mandatory independent Review: static diff check; issues the TB30 manifest if approved. |
-| later — UNKNOWN until assigned | TB30 (targeted harness `436f5fff…c9a`; Review-owned manifest: 10 M1 rows expected PASS, 7 non-M1 factory rows expected unchanged RED, 9 TB29 controls, 3 certificate-authenticity guards; RA-143.4) → TB30-REV → owners for face-gauge-missing (6), A3 cycle locus (7) / `selector:442`, A5 `focused30:12` → DEFN-T1 (`cp3entry:1/2`) → fixture debt → census (RA-139.5 harness) → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness | Planned, not authorized; each Review assigns the next edge. |
+| 2 — complete | `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP-REV` | Independent static Review approved; targeted TB30 manifest issued. |
+| 3 — next | `M6-CP3-TB30-RP01-CERTIFICATE-ASSOCIATION-OWNERSHIP-VERIFICATION` | Targeted artifact-only 29-case TB30 per review manifest; mandatory independent TB30-REV after runtime evidence. |
 | later — UNKNOWN until assigned | `DIAG-RETAIN` (user-directed): retain A5 occurrences and relations, A6 merged classes and A7 vertex geometry as diagnostic snapshots for GUI/CLI; scope in `TODO.md` | Planned, not authorized; Review places it in the sequence clear of RP-01 turns. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **review** — CB29-REV: independently review exact A4/A5 owner-split diff and compile artifact; issue the TB30 manifest only after approval.
+`load_next`: **test_benchmark** — TB30: exact 29-case review-owned manifest on immutable CB29 package; no compile; preserve seven non-M1 RED typed causes and require independent TB30-REV.
 
 Minimum next context after mandatory start/policies:
 
 0. `.agents/Directional/ORIENTATION.md`; `.agents/Directional/ROADMAP.md`.
-1. `.agents/Directional/Future_Chat_Session_Handoff.md`, CB29 code/build record and RA-143 review decision.
+1. `.agents/Directional/Future_Chat_Session_Handoff.md`, CB29 code/build record, CB29 independent Review decision and TB30 manifest.
 2. RA-141 review and TB29 raw result artifact `12481556884`; RA-140.4; RA-105.3; TB28 RED inventory.
 3. `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_Review_Decision_20261023.md` (RA-143: owner split, predicate table, CB29 scope, TB30 plan); `Architecture_M6_CP3_DEFN_M1_Certificate_Pair_Binding_Precedence_20261023.md` (accepted contract); `Architecture_M6_CP3_TB29_Review_Audit_Decision_20261023.md` (RA-142).
 4. Review helpers in `.agents/Directional/tools/` for independent evidence. Do not interpret a synthetic snapshot's git-history checks as authoritative.
