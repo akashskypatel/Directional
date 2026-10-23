@@ -1,3 +1,0 @@
-Source snapshot for M6-CP3-TB29H-RP01-TARGETED-ARTIFACT-HARNESS
-Source authority: 787cbd311d1d27c309cdf7aa5bc552a028891110 (entry beacon)
-Execution: source snapshot only; no tests or builds
