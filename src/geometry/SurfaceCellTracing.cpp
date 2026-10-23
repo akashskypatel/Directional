@@ -8828,14 +8828,9 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     }
     const auto &first = edges[static_cast<std::size_t>(certificate.firstFrontEdge)];
     const auto &second = edges[static_cast<std::size_t>(certificate.secondFrontEdge)];
+    // RA-15/RA-16 §5/RA-143: A4 authenticates certificates; A5 binds edges to them.
     if (first.boundaryKind != SurfaceFrontBoundaryKind::HardRail ||
-        second.boundaryKind != SurfaceFrontBoundaryKind::HardRail ||
-        first.oppositeEdge != certificate.secondFrontEdge ||
-        second.oppositeEdge != certificate.firstFrontEdge ||
-        first.railId != certificate.rail || second.railId != certificate.rail ||
-        first.route != certificate.route ||
-        second.route != certificate.route.reversed() ||
-        first.sourceTopologyRegion == second.sourceTopologyRegion) {
+        second.boundaryKind != SurfaceFrontBoundaryKind::HardRail) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
       error.sourceAuthoritySite = certificate_site("certificate-pair-binding");
       return error;
