@@ -1,3 +1,8 @@
+## 2026-10-23 — TB29 targeted typed factory cause harvest (Test + Benchmark)
+
+- Completed immutable CB28A artifact-only run [39906802267](https://github.com/akashskypatel/Directional/actions/runs/39906802267), result `12481556884`, ZIP SHA-256 `4e639a633a64df419f1891083911506679c6c4848f1ecbce7b206c4f5d653ae1`. Verified 92/92 checksums, 44/44 manifest/log mappings; 9 PASS controls, 35 inherited RED, zero invalid/missing/skipped/bad controls/unexpected PASS. Observed typed classes: factory 13, A3 8, A5 1, untyped 13. Did not compile, repair, relink, mutate test/source/selector, or rerun cases. Report: `.agents/Directional/Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Report_20261023.md`.
+- **No promotion:** CP2 491/491 accepted, TB28 462/497 candidate, stable 66/17/49 and witness debt 1 unchanged. Mandatory independent `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST-REV` is authorized next.
+
 ## 2026-10-23 — Audit of the RP02 runner review (RA-140): validated on real logs; TB29 released
 
 - The corrected test runner was previously checked only against made-up logs. This audit ran its classification code over real logs from earlier runs: all 35 known failures were classified as failures and all 21 known passes as passes.
