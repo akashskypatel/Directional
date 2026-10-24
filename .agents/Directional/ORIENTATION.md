@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-24 · CB32-REV accepts independently source-derived signed odd A3 test oracles **for immutable artifact-only TB**, not runtime or product acceptance. Exact next `M6-CP3-TB33-RP01-ODD-ATLAS-ORACLE-VERIFICATION`; TB32 candidate 481/500 (497: 478 PASS/19 inherited RED); CP2 491/491 accepted, CP3 unaccepted; stable 66/17/49, debt1; RP-01 open, RP-02 unreached.
+**Currency:** 2026-10-24 · RA-149 accepts TB33 (synthetic odd-atlas oracles) and realigns onto the 19 remaining failures. First: the seven atlas cycle-transport failures, whose error can come from two places that are currently indistinguishable. CB33 adds diagnostics to tell them apart, then TB34 measures. Accepted CP2 491/491; TB32 481/500 candidate; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 

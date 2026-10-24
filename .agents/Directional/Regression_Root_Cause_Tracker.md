@@ -1,3 +1,15 @@
+## RA-149 — TB33 reviewed; residual-RED order (2026-10-24)
+
+TB33 accepted, synthetic scope only. 19 residual REDs, in this order:
+1. A3 cycle (7), diagnostic first, via CB33;
+2. untyped (7);
+3. `focused30:12`;
+4. `cp3entry:4`;
+5. `selector:442`;
+6. `cp3entry:1/2`.
+
+A3 `CycleTransportMismatch` has two indistinguishable raise sites (FTA:2582–2585, 2691–2695). No count changes. Record: `Architecture_M6_CP3_TB33_Odd_Atlas_Oracle_Verification_Review_Decision_20261024.md`.
+
 ## CB32-REV — independently corrected odd raw transport test oracle (candidate/non-stable, 2026-10-24)
 
 ## TB33 — odd raw atlas oracle runtime, candidate/non-stable (2026-10-24)

@@ -1,3 +1,14 @@
+## RA-149 — TB33 reviewed; residual-RED realignment; A3 cycle diagnostic first (2026-10-24)
+
+Authority: `Architecture_M6_CP3_TB33_Odd_Atlas_Oracle_Verification_Review_Decision_20261024.md`.
+
+- **RA-149.1** TB33 `12543546779` verified (15/15, 6/6 PASS); oracles non-vacuous; RA-146.3 discharged in synthetic scope; no produced periodic, A5/A6 or G4-B002 credit.
+- **RA-149.2** Residual-RED order: A3 cycle (7) → untyped (7) → `focused30:12` → `cp3entry:4` → `selector:442` → `cp3entry:1/2`.
+- **RA-149.3** `CycleTransportMismatch` S1 (FTA:2582–2585) and S2 (FTA:2691–2695) both drop their locus.
+- **RA-149.4** Next: `M6-CP3-CB33-RP01-A3-CYCLE-MISMATCH-LOCUS-DIAGNOSTIC` — `FieldAtlasBuildError::site`; S1 `cycle-transport` plus ordering diagnostics; S2 `cycle-boundary-corrected-lift` plus boundary row; SP10 formatter. Diagnostic only.
+- **RA-149.5** TB34: `selector:189–195` + 2 A3 guards + 3 TB33 controls.
+
+---
 ## RA-144 — TB30 reviewed: M1 10/10 on the targeted gate; census next (2026-10-23)
 
 Authority: `Architecture_M6_CP3_TB30_Certificate_Association_Ownership_Verification_Review_Decision_20261023.md`.

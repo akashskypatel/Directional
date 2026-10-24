@@ -1,8 +1,33 @@
-## CURRENT — TB33 immutable odd-atlas runtime complete, independent review pending (2026-10-24)
+## CURRENT — RA-149: TB33 accepted (synthetic scope); attack the 19 residual REDs, A3 cycle cluster first (2026-10-24)
+
+- [x] Review (RA-149, TB33-REV):
+  - result `12543546779` verified (15/15; 6 executed, 6 PASS; exit 0); the oracle tests are non-vacuous (odd turn 3 asserted; negatives assert the code and the exact site; no early exits);
+  - RA-146.3 discharged in synthetic scope;
+  - **realigned:** the CB31–TB33 work removed no RED, so attention moves to the 19 residual REDs. Record: `Architecture_M6_CP3_TB33_Odd_Atlas_Oracle_Verification_Review_Decision_20261024.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-CB33-RP01-A3-CYCLE-MISMATCH-LOCUS-DIAGNOSTIC` — compile-only, diagnostic only:
+  1. header: `std::string site` on `FieldAtlasBuildError`;
+  2. FTA S1 (2582–2585): `cycle-transport` plus `cycleOrderingDiagnostics`;
+  3. FTA S2 (2691–2695): `cycle-boundary-corrected-lift` plus the boundary row;
+  4. SP10 formatter prints site, row and kind.
+
+  No code, return or control-flow change. Record `Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Code_Build_Record_20261024.md`.
+- [ ] **CONDITIONAL:** `M6-CP3-CB33-RP01-A3-CYCLE-MISMATCH-LOCUS-DIAGNOSTIC-REV` — Review: static check; issues the TB34 manifest.
+- [ ] Planned, not authorized: TB34 (targeted harness: `selector:189–195` RED with site and cycle locus + 2 A3 cycle guards + 3 TB33 factory controls; manifest at CB33-REV) → TB34-REV (owner from S1 versus S2) → A3-cycle owner turn → per-row pins for `selector:174, 201, 204, 242, 247, 250, 405` → `focused30:12` DEFN → `cp3entry:4` DEFN → `selector:442` → DEFN-T1 (`cp3entry:1/2`) → census → RP-01 Review; carried: RA-146.2, RA-146.4/RA-45.4, G4-B002, `DEFN-SEAM-NZ`, Periodic follow-up.
+- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
+  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
+  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
+  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
+  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- **Turn sequence:** TB31-REV (RA-145) → FG01 → FG01-REV → CB30 → CB30-REV → TB32 → TB32-REV (RA-148) → CB31 → CB31-REV → CB32 → CB32-REV → TB33 → TB33-REV (RA-149) → **CB33** → CB33-REV → TB34 → TB34-REV → A3-cycle owner → untyped-row pins → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review.
+- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB32 481/500 **candidate only** (478/497 original); selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+
+---
+
+## HISTORY — TB33 run; RA-149 review (2026-10-24)
 
 - [x] `M6-CP3-TB33-RP01-ODD-ATLAS-ORACLE-VERIFICATION`: six prescribed fresh GTest processes on unchanged CB32 package `12541198172`, semantic `30e46b9aabc44925643f46bab20db40962a5e494`; [run 40051854120](https://github.com/akashskypatel/Directional/actions/runs/40051854120), result `12543546779`, 15/15 checksums. **6/6 PASS**, zero RED/invalid/skips/duplicate, immutable postflight, no compile/relink/benchmark. [Report](.agents/Directional/Architecture_M6_CP3_TB33_Odd_Atlas_Oracle_Verification_Report_20261024.md).
-- [ ] **EXACT NEXT ROLE, CANONICAL ID UNKNOWN:** separate independent TB33 Review of immutable 6-case evidence, raw-source signed inverse/gauge oracles and negative non-vacuity. Do not promote CP3, A5/A6, periodic production, or G4-B002 on TB33 alone.
-- [ ] **CARRIED:** TB32 481/500 candidate / 19 inherited RED, RA-146.2/4, RA-45.4, G4-B002, DIAG-RETAIN, DEFN-SEAM-NZ, periodic/DEFN-T1. CP2 491/491 accepted, CP3 not, frozen selector497, stable 66/17/49 debt1; RP-01 open, RP-02 unreached.
+- **EXACT NEXT ROLE, CANONICAL ID UNKNOWN:** separate independent TB33 Review of immutable 6-case evidence, raw-source signed inverse/gauge oracles and negative non-vacuity. Do not promote CP3, A5/A6, periodic production, or G4-B002 on TB33 alone.
+- **CARRIED:** TB32 481/500 candidate / 19 inherited RED, RA-146.2/4, RA-45.4, G4-B002, DIAG-RETAIN, DEFN-SEAM-NZ, periodic/DEFN-T1. CP2 491/491 accepted, CP3 not, frozen selector497, stable 66/17/49 debt1; RP-01 open, RP-02 unreached.
 
 ### Authorized turn sequence
 

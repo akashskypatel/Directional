@@ -1,3 +1,9 @@
+## 2026-10-24 — TB33 reviewed (RA-149): back to the remaining 19 failures
+
+- Review verified TB33. The six oracle tests for odd field transport and the related product checks pass, and they really check what they claim. This covers synthetic inputs only.
+- Since the last census, the oracle work has added tests but fixed no failing ones. Work now returns to the 19 remaining failures, largest group first: seven tests fail because the field atlas reports a cycle-transport mismatch. That error can come from two different places, and today neither says which cycle failed.
+- Next: CB33, a diagnostics-only change that records which place fired and which cycle. Accounting unchanged. Record: `Architecture_M6_CP3_TB33_Odd_Atlas_Oracle_Verification_Review_Decision_20261024.md`.
+
 # TB33 six-case immutable odd-atlas oracle verification — 2026-10-24
 
 - `M6-CP3-TB33-RP01-ODD-ATLAS-ORACLE-VERIFICATION`: immutable CB32 source `30e46b9aabc44925643f46bab20db40962a5e494` / package `12541198172`; [run 40051854120](https://github.com/akashskypatel/Directional/actions/runs/40051854120), result artifact `12543546779`, outer SHA256 `217f6b214707b4165252a23537284f5aa6ebf242e2de1d8b691774d35272c09d`, 15/15 result checksum verification, six fresh process identities **6 PASS / 0 RED / 0 INVALID**. Exact odd signed raw-source 3/1, stale-gauge/inverse negative and factory controls run in bounded scope, postflight true, no rebuild/relink/configure/benchmark or semantic/selector mutation. TB33 is candidate evidence pending independently authorized TB33 Review, not CP3/product acceptance. Stable 66/17/49 debt1, accepted CP2 491/491 and TB32 481/500 candidate with 19 inherited RED unchanged. [Report](.agents/Directional/Architecture_M6_CP3_TB33_Odd_Atlas_Oracle_Verification_Report_20261024.md).
