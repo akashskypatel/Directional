@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb33-odd-atlas-20261024-r1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb33-odd-atlas-oracle",
-  "executor_sha": "7e9004cbb2292ed3957f3c8b161d46f04613e2b1",
-  "semantic_source_sha": "30e46b9aabc44925643f46bab20db40962a5e494",
-  "turn_id": "M6-CP3-TB33-RP01-ODD-ATLAS-ORACLE-VERIFICATION",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "436f5fff9c3bec97457f4bc6b7c2b6182cb3f47707eb14a66af3b6a3f3dc3c9a",
-  "artifact_prefix": "m6-cp3-tb33-odd-atlas",
-  "retention_days": 7,
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": 12541198172,
-    "EXPECTED_SOURCE_SHA": "30e46b9aabc44925643f46bab20db40962a5e494",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "17a121aac12d288892853a2455d3f72411a5538eeda512a7d2c9c096a7d47651",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "a0f22243571ce3a1ed6de752895633275eba64f01b40dd9d5527f1ddb8c92354",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "9e0e0d7dfcfb6a0694da90bd162a58e94f3df9e912564c2dd800609db46ccf8b",
-    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_CP3_TB33_Odd_Atlas_Oracle_Cases.tsv",
-    "CASE_MANIFEST_SHA256": "09c0d0650803397d80868b289faff14f1d068863e00dfe06311d1e77d69ef872",
-    "EXPECTED_CASE_COUNT": 6
-  }
+  "request_id": "m6-cp3-tb33-docs-20261024-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb33-docs-apply",
+  "file_id": "1PBBmN_mJh-Ms4eGJ_I8zlEJRd7-xQ3O6",
+  "patch_sha256": "1c73cb1e2230b72ec7ea6228dc1fb047be2c105874c39186b82ac0b346d1a4df",
+  "base_sha": "aef8ced3b1b1d7515b4656fadf214be11ffd4612",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record immutable TB33 odd-atlas oracle results",
+  "retention_days": 7
 }
