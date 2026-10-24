@@ -1,3 +1,15 @@
+## RA-152 — TB35-REV audited: A4 periodic rotation guard dead on the atlas path; witness-first F1 track (2026-10-24)
+
+Authority: `Architecture_M6_CP3_TB35_REV_Audit_Periodic_Route_Transport_Decision_20261024.md`.
+
+- **RA-152.1** TB35-REV evidence, mechanism (atlas overload discards raw containers) and non-promotion accepted; 189/190 non-discriminating (RA-151.2) accepted.
+- **RA-152.2** F1: on the atlas path the periodic observed-step loop never reads the atlas. Its steps are identity; the guard (`SurfaceCellTracing.cpp:15000`) is unreachable; strip closure (`:14369`) is unvalidated; published route transports are wrong. RA-151's "zero canonical route rotation from the unchanged atlas" is withdrawn.
+- **RA-152.3** 189–192 used legacy no-atlas ingress at the accepted 449; R4 `7ccdcd527` made 191/192 unsatisfiable; 193 is non-discriminating at A4.
+- **RA-152.4** D1 single writer: A4 reads atlas transitions only, with no container pass-through or cross-check. D2: observed steps use `atlas->transport`; a missing transport fails closed `PeriodicHolonomyMismatch(face, targetFace)`. D3: witness first, using a production-finalized turning field with k=1 and k=2. D4: re-homing of the frozen 189–192 bodies is deferred to a DEFN.
+- **RA-152.5** Carried candidate: tracing axes are not bound to the atlas source field.
+- **RA-152.6** Sequence: CB35 → REV → TB36 (pre-fix RED baseline) → REV → CB36 (D2) → REV → TB37 (+ 497 census) → REV → DEFN legacy-oracle homes. `M6-CP3-DEFN-RP01-PERIODIC-INGRESS-AUTHORITY` withdrawn.
+
+---
 ## RA-150 — TB34-REV audited: fixture owner kept; CB34 must be a true face gauge (2026-10-24)
 
 Authority: `Architecture_M6_CP3_TB34_REV_Audit_Face_Gauge_Representation_Decision_20261024.md`.

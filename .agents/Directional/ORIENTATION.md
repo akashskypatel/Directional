@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-24 · TB35-REV verifies 13/13 immutable processes, 11 PASS / 2 RED; source-based review finds that negatives 191/192 mutate legacy inputs discarded at the authoritative atlas ingress. No A4 defect or passing legacy migration proof inferred; next is `M6-CP3-DEFN-RP01-PERIODIC-INGRESS-AUTHORITY`. CP2 491/491 accepted, TB32 481/500 candidate, stable 66/17/49 debt1; RP-01 open.
+**Currency:** 2026-10-24 · RA-152 audits TB35-REV. Its evidence and 191/192 mechanism stand, but production defect F1 was missed: on the atlas path, A4 periodic route steps never read the atlas, so the steps are identity, the rotation guard is unreachable and closure is unvalidated. The ingress DEFN is withdrawn; next is `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS` (test-only witnesses, compile only). CP2 491/491 accepted, TB32 481/500 candidate, stable 66/17/49 debt1; RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 

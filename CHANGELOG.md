@@ -1,3 +1,10 @@
+- **2026-10-24 — `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY-REV-AUDIT` (RA-152, Review).**
+  - Accepted TB35-REV's evidence and its 191/192 mechanism.
+  - Found production defect F1, which TB35-REV missed: on the atlas path the A4 periodic route steps never read the atlas. As a result they are identity, the rotation guard is dead, and closure is unvalidated.
+  - Recorded that R4 had made 191/192 unsatisfiable.
+  - Decided the single-writer contract D1–D4 and withdrew the ingress DEFN.
+  - Next: CB35, test-only witnesses compiled before any fix.
+  - [Decision](.agents/Directional/Architecture_M6_CP3_TB35_REV_Audit_Periodic_Route_Transport_Decision_20261024.md).
 - **2026-10-24 — `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY-REV` (independent review, non-promoting).** Reopened original TB35 immutable 13-case report and raw logs: ZIP SHA `155ae1c43c7c83b43decf43ba5b8a711860cf00f304e9f975a0c552a26e1309e`, 18/18 internal, 11 PASS / 2 RED; verified manifest `d67e503d...e75af8` and unchanged CB34 test/production source. Identified 191/192 negative mutations discarded by atlas-owned cross-field ingress, 189/190 nondiscriminating legacy-path positives; RA-151.1/.2 candidate recorded. No CP3/497 acceptance, stable 66/17/49 debt1, CP2 491/491 accepted; exactly next `M6-CP3-DEFN-RP01-PERIODIC-INGRESS-AUTHORITY`. [Decision](.agents/Directional/Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md).
 ## 2026-10-24 — TB35 immutable face-gauge verification: 11 PASS / 2 RED
 

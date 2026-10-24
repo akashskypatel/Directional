@@ -34,37 +34,41 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-24, TB35-REV independently verifies 13/13, 11 PASS / 2 RED and attributes 191/192 to raw input mutations bypassed by atlas-owned ingress, without proving a missing A4 guard. 189/190 PASS is nondiscriminating as legacy migration evidence. No promotion; ingress Definition next. |
+| Currency | 2026-10-24, RA-152 audits TB35-REV. Its mechanism for 191/192 (atlas overload discards raw containers) stands, but it missed production defect F1: on the atlas path the A4 periodic observed-step loop never reads the atlas, so every route step is identity, the rotation guard is unreachable and strip closure is unvalidated. Ingress DEFN withdrawn; test-first F1 track next. |
 | Source/package | CB34 semantic `d5fc8f22fd309ba90ad1fd7b4fbdc3491a5a8f7d`; [compile run 40111610291](https://github.com/akashskypatel/Directional/actions/runs/40111610291), package `12566907246`, ZIP `ca5c490bae2d65f9c043636c285d29edcfe5695b9334c24edcc281fac26c6a17`; 28/28 manifest entries, eight GMP/GMPXX targets, `runtimeExecution=false`. [Record](Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Record_20261024.md). |
-| Reviewed decision | [TB35-REV](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) holds both negatives, identifies ingress authority gap, and commissions Definition; [CB34-REV](Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Review_Decision_20261024.md) accepted static gauge only. [TB35 report](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Verification_Report_20261024.md) measures 5/7 selector positives, 2 A4 negative RED, all six oracle/guard/control PASS; independent Review pending. |
+| Reviewed decision | [RA-152](Architecture_M6_CP3_TB35_REV_Audit_Periodic_Route_Transport_Decision_20261024.md) accepts TB35-REV evidence and non-promotion, corrects its owner (F1), decides single-writer D1–D4, and replaces the ingress DEFN with CB35 → TB36 → CB36 → TB37 → legacy-oracle DEFN. [TB35-REV](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) (RA-151) verified 13/13, 11 PASS / 2 RED. |
 | Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500** (19 inherited RED); TB34 **5 PASS / 7 inherited RED** (12 measured), TB33 synthetic **6/6** only; selector497 frozen; stable **66/17/49**, debt 1. RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-DEFN-RP01-PERIODIC-INGRESS-AUTHORITY` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS` — EXACT NEXT
 
-- **Type:** Definition/review and plan only; runtime-free. The former TB35-REV is complete as evidence adjudication, **not** product acceptance. Preserve frozen selector497, two negative RED and CP2 accepted authority.
-- **Evidence:** [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md); original manifest SHA `d67e503db14f2cb1ae978482665057372edd2e56d7763cd38288469174e75af8`, [run 40116807908](https://github.com/akashskypatel/Directional/actions/runs/40116807908), artifact `12569985565` outer SHA `155ae1c43c7c83b43decf43ba5b8a711860cf00f304e9f975a0c552a26e1309e`, compiled semantic `d5fc8f22fd309ba90ad1fd7b4fbdc3491a5a8f7d`.
-- **Decisive task:** specify whether a supplied atlas requires rejecting contradictory `CrossFieldResult` legacy containers or mandates consumers use only the atlas, and formulate independent positive/negative evidence that actually changes A3-owned transitions or proven A4-carried route. Identify exact first validator owner; do not manufacture a valid A3 result by bypassing S1, do not silently substitute or retune frozen test assertions.
-- **Falsifiers/stop rules:** negative fixture changes only ignored containers; a proposed nonzero atlas fails at A3 local-cycle validation and never reaches A4; passing +4/legacy cases are unchanged-atlas no-ops; regression to two-edge-only S1-invalid gauge; weakening accepted selectors or accepting subset as full M6 entry. In each case stop for independent normative adjudication before CB authorization.
-- **Unchanged accounting:** stable 66/17/49 debt1, CP2 accepted 491/491, TB32 481/500 candidate/19 inherited RED, RP-01 open, RP-02 unreached, frozen 497; `DIAG-RETAIN` and remaining untyped/periodic owners carried.
+- **Type:** Code + Build, test-only, compile-only. **Authority:** [RA-152](Architecture_M6_CP3_TB35_REV_Audit_Periodic_Route_Transport_Decision_20261024.md) D3; [plan](Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Code_Build_Plan_20261024.md).
+- **Edit (`tests/SurfaceCellsPhase10Tests.cpp` only):** helper `turning_periodic_route_field(fixture, k)` rotates each face's raw cross by `k·(π/2)·φ/2π` about its normal and finalizes it via `finalize_surface_cell_raw_cross_field`. Add three tests: `AuthoritativeQuarterTurnMonodromyRejectsAtPeriodicGuard` (k=1), `AuthoritativeHalfTurnMonodromyRejectsAtPeriodicGuard` (k=2), both with 192's exact assertion set and the same field as tracing and source; and `PublishedRouteStepsCarryAtlasTransport` (route[0]/route[1] steps ±1 and inverse, all others identity).
+- **Out of scope:** production code, the seven frozen bodies and existing helpers, selectors, workflows, runtime.
+- **Evidence:** 8 GMP/GMPXX targets, `runtimeExecution=false`; record ≤30 lines.
+- **STOP → Review:** a non-public API is needed; the finalizer is unavailable to the test target; any production or frozen-test edit is required.
+- **Unchanged accounting:** stable 66/17/49 debt 1, CP2 491/491, TB32 481/500 candidate (19 RED), TB35 11/2 focused candidate, selector 497 frozen, RP-01 open, RP-02 unreached; `DIAG-RETAIN` carried.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| done | `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST-REV` → `…-REV-AUDIT` (RA-150) | Owner kept; CB34 transformation corrected. |
-| done | `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR` | Gauge helper/oracle compiled; no runtime. |
-| done | `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR-REV` | Static gauge/source/compile accepted; TB35 manifest issued; no runtime. |
-| done | `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY` | 13 cases, 11 PASS / 2 RED, 18/18 checksums; no runtime acceptance. |
-| done | `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY-REV` | 11/13 mechanically verified, both negatives originate in ignored raw input; 189/190 nondiscriminating for legacy consumption. |
-| 1 — next | `M6-CP3-DEFN-RP01-PERIODIC-INGRESS-AUTHORITY` | Freeze authoritative ingress contract, independent positive/negative falsifiers; no runtime/code mutation. |
-| 4 | Untyped 7 (`selector:174,201,204,242,247,250,405`) per-row first-site pins → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) | One owner per turn; DEFN or diagnostic first. |
-| 5 | Census → RP-01 Review | Review-owned 497(+) manifest. |
+| done | `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR` → `…-REV` | Gauge helper/oracle compiled and statically accepted; TB35 manifest issued. |
+| done | `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY` → `…-REV` (RA-151) | 13 cases, 11 PASS / 2 RED; 191/192 mutate discarded containers; 189/190 non-discriminating. |
+| done | `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY-REV-AUDIT` (RA-152) | F1 found: atlas-path route steps identity, guard dead; ingress DEFN withdrawn. |
+| 1 — next | `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS` | Test-only helper + 3 witnesses; compile only. |
+| 2 | `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS-REV` | Static; issues TB36 manifest (3 witnesses + 191/192). |
+| 3 | `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE` → `…-REV` | Pre-fix: witnesses predicted RED. STOP if any witness is GREEN, A3 rejects k=2, or a witness fails before the periodic producer. |
+| 4 | `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT` → `…-REV` | Production D2 only: observed steps read `atlas->transport`; missing transport fails closed with location; compile only. |
+| 5 | `M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY` → `…-REV` | Witnesses GREEN, TB35 13 cases, full 497 census (route digests change). |
+| 6 | `M6-CP3-DEFN-RP01-PERIODIC-LEGACY-ORACLE-HOMES` → CB/TB | Runtime-free re-homing of frozen 189–192 (D4). |
+| 7 | Untyped 7 (`selector:174,201,204,242,247,250,405`) → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) | One owner per turn; DEFN or diagnostic first. |
+| 8 | Census → RP-01 Review | Review-owned 497(+) manifest. |
 | carried | `DIAG-RETAIN` (A5–A7 diagnostic snapshots; full scope in TODO CURRENT) | Review places it clear of RP-01 corrective turns; edits `RemeshPipeline.cpp`. |
-| carried | DEFN-SEAM-NZ, Periodic follow-up, RA-146.2/4, RA-45.4, G4-B002 | After a witness / separate gates. |
+| carried | RA-152.5 axis-binding, DEFN-SEAM-NZ, Periodic follow-up, RA-146.2/4, RA-45.4, G4-B002 | After a witness / separate gates. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-DEFN-RP01-PERIODIC-INGRESS-AUTHORITY** — read [TB35-REV](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md), the frozen 191/192 bodies and `build_surface_cell_network` atlas overload, then specify testable single-writer ingress semantics with stop rules. No code/test/runtime/selector mutation in Definition.
+`load_next`: **M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS** — read [RA-152](Architecture_M6_CP3_TB35_REV_Audit_Periodic_Route_Transport_Decision_20261024.md) and the [CB35 plan](Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Code_Build_Plan_20261024.md), `tests/SurfaceCellsPhase10Tests.cpp:4228–4530` (fixture, route rotation, network helper) and 4608–4660 (192 body), `SurfaceCellTracing.cpp:14905–15004`. Test-only; compile only.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
