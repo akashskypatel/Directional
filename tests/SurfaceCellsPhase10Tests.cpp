@@ -4,6 +4,8 @@
 #include <directional/geometry/SurfaceCellTracing.h>
 #include <directional/pipeline/RemeshPipeline.h>
 
+#include <Eigen/Eigenvalues>
+
 #include "TestFixturePaths.h"
 #include <directional/validation/MeshValidator.h>
 #include <directional/validation/ValidationVisualizer.h>
@@ -4526,6 +4528,165 @@ directional::fields::CrossFieldResult make_legacy_periodic_route_field(
   }
   legacy.edgeTransitions.clear();
   return legacy;
+}
+
+directional::fields::CrossFieldResult turning_periodic_route_field(
+    const PeriodicHolonomyRouteFixture &fixture, const int quarterTurns) {
+  const Eigen::Vector3d center = fixture.mesh.V.colwise().mean().transpose();
+  // The fixture has equal positional variances in all three axes. The null
+  // principal direction of its face-normal covariance is the cylinder axis.
+  Eigen::Matrix3d normalCovariance = Eigen::Matrix3d::Zero();
+  for (int face = 0; face < fixture.mesh.F.rows(); ++face) {
+    const Eigen::Vector3d a =
+        fixture.mesh.V.row(fixture.mesh.F(face, 0)).transpose();
+    const Eigen::Vector3d b =
+        fixture.mesh.V.row(fixture.mesh.F(face, 1)).transpose();
+    const Eigen::Vector3d c =
+        fixture.mesh.V.row(fixture.mesh.F(face, 2)).transpose();
+    const Eigen::Vector3d normal = (b - a).cross(c - a).normalized();
+    normalCovariance += normal * normal.transpose();
+  }
+  const Eigen::SelfAdjointEigenSolver<Eigen::Matrix3d> solver(normalCovariance);
+  if (solver.info() != Eigen::Success || solver.eigenvalues()[1] <= 0.0) {
+    throw std::runtime_error("Cylinder normal principal axis is undefined.");
+  }
+  Eigen::Vector3d axis = solver.eigenvectors().col(0);
+  Eigen::Index major = 0;
+  axis.cwiseAbs().maxCoeff(&major);
+  if (axis[major] < 0.0) axis = -axis;
+
+  const auto face_centroid = [&](const int face) -> Eigen::Vector3d {
+    Eigen::Vector3d centroid = Eigen::Vector3d::Zero();
+    for (int corner = 0; corner < 3; ++corner) {
+      centroid += fixture.mesh.V.row(fixture.mesh.F(face, corner)).transpose();
+    }
+    return centroid / 3.0;
+  };
+  const auto radial = [&](const int face) -> Eigen::Vector3d {
+    const Eigen::Vector3d offset = face_centroid(face) - center;
+    return (offset - offset.dot(axis) * axis).normalized();
+  };
+  const Eigen::Vector3d basisU = radial(0);
+  const Eigen::Vector3d basisV = axis.cross(basisU);
+  const double twoPi = 2.0 * std::acos(-1.0);
+  Eigen::MatrixXd rotatedRaw = fixture.rawField;
+  for (int face = 0; face < fixture.mesh.F.rows(); ++face) {
+    const Eigen::Vector3d r = radial(face);
+    double azimuth = std::atan2(r.dot(basisV), r.dot(basisU));
+    if (azimuth < 0.0) azimuth += twoPi;
+    const double alpha = quarterTurns * (twoPi / 4.0) * azimuth / twoPi;
+    const Eigen::Vector3d a =
+        fixture.mesh.V.row(fixture.mesh.F(face, 0)).transpose();
+    const Eigen::Vector3d b =
+        fixture.mesh.V.row(fixture.mesh.F(face, 1)).transpose();
+    const Eigen::Vector3d c =
+        fixture.mesh.V.row(fixture.mesh.F(face, 2)).transpose();
+    const Eigen::Vector3d normal = (b - a).cross(c - a).normalized();
+    for (int branch = 0; branch < 4; ++branch) {
+      const Eigen::Vector3d v =
+          fixture.rawField.block(face, 3 * branch, 1, 3).transpose();
+      rotatedRaw.block(face, 3 * branch, 1, 3) =
+          (std::cos(alpha) * v + std::sin(alpha) * normal.cross(v)).transpose();
+    }
+  }
+  return directional::pipeline::finalize_surface_cell_raw_cross_field(
+      fixture.mesh, rotatedRaw);
+}
+
+void expect_authoritative_periodic_monodromy_rejected(const int quarterTurns) {
+  const auto fixture = make_periodic_holonomy_route_fixture();
+  const auto field = turning_periodic_route_field(fixture, quarterTurns);
+  ASSERT_EQ(0U, field.singularIndices.size());
+  const auto rotation = periodic_route_rotation(fixture, field);
+  ASSERT_TRUE(rotation.has_value());
+  ASSERT_NE(directional::authority::QuarterTurn{}, *rotation);
+  const auto expected = directional::authority::QuarterTurn::from_integer(quarterTurns);
+  ASSERT_TRUE(*rotation == expected || *rotation == expected.inverse())
+      << "observed rotation=" << static_cast<int>(rotation->value());
+
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  const auto source = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(fixture.mesh.F, options);
+  ASSERT_TRUE(source.has_value());
+  const auto atlas = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *source, options.hardFeatureEdges, field);
+  ASSERT_TRUE(atlas.has_value())
+      << (atlas.has_value() ? "" : describe_field_atlas_build_error(atlas.error()));
+
+  const auto rejected = build_periodic_route_network_with_source_atlas(
+      fixture, field, field);
+  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            rejected.phaseFront.disposition());
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                PeriodicHolonomyMismatch,
+            rejected.phaseFront.rejection_reason());
+  EXPECT_TRUE(rejected.phaseFront.is_rejected());
+  EXPECT_FALSE(rejected.phaseFront.is_produced());
+  EXPECT_EQ(nullptr, rejected.phaseFront.produced_product());
+  const auto &failure = phase_front_rejection(rejected.phaseFront);
+  EXPECT_EQ(-1, failure.cell);
+  EXPECT_EQ(-1, failure.side);
+  EXPECT_EQ(-1, failure.face);
+  EXPECT_EQ(-1, failure.targetFace);
+  EXPECT_EQ(-1, failure.sourceVertex);
+  EXPECT_EQ(-1, failure.sourceEdge);
+  EXPECT_EQ(-1, failure.secondarySourceEdge);
+}
+
+TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
+     AuthoritativeQuarterTurnMonodromyRejectsAtPeriodicGuard) {
+  expect_authoritative_periodic_monodromy_rejected(1);
+}
+
+TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
+     AuthoritativeHalfTurnMonodromyRejectsAtPeriodicGuard) {
+  expect_authoritative_periodic_monodromy_rejected(2);
+}
+
+TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
+     PublishedRouteStepsCarryAtlasTransport) {
+  const auto fixture = make_periodic_holonomy_route_fixture();
+  const auto field = balanced_periodic_route_field(fixture);
+  const auto network = build_periodic_route_network_with_source_atlas(
+      fixture, field, field);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition())
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.rejection_reason());
+  ASSERT_EQ(1U, network.phaseFront.product().periodicHolonomies().size());
+  const auto &route =
+      network.phaseFront.product().periodicHolonomies().front().route();
+  const auto steps = route.oriented_steps();
+  ASSERT_EQ(fixture.expectedRoute.size(), steps.size());
+  const auto first = fixture.expectedRoute[0].currentTopology;
+  const auto second = fixture.expectedRoute[1].currentTopology;
+  const auto identity = directional::authority::QuarterTurn{};
+  std::optional<directional::authority::QuarterTurn> firstRotation;
+  std::optional<directional::authority::QuarterTurn> secondRotation;
+  directional::authority::GridAutomorphism total =
+      directional::authority::GridAutomorphism::identity();
+  for (const auto &step : steps) {
+    const auto rotation = step.transport().rotation;
+    if (step.topology() == first) {
+      ASSERT_FALSE(firstRotation.has_value());
+      firstRotation = rotation;
+      EXPECT_TRUE(rotation.value() == 1U || rotation.value() == 3U);
+    } else if (step.topology() == second) {
+      ASSERT_FALSE(secondRotation.has_value());
+      secondRotation = rotation;
+    } else {
+      EXPECT_EQ(identity, rotation);
+    }
+    total = compose(step.transport(), total);
+  }
+  ASSERT_TRUE(firstRotation.has_value());
+  ASSERT_TRUE(secondRotation.has_value());
+  EXPECT_EQ(firstRotation->inverse(), *secondRotation);
+  EXPECT_EQ(identity, total.rotation);
 }
 
 TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
