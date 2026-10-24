@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-24 · CB35-REV statically verified exact test-only compile/package but did **not** accept the third published-route oracle: it omits full automorphism/route-identity checks. Corrective `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION` precedes independent re-review and TB36. F1 unresolved; CP2 491/491 accepted, TB32 481/500 candidate, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-24 · CB35-R1-REV verifies R1 full-automorphism/zero-shift checks but **does not accept** the directed published-route oracle: canonical storage comparison cannot reject route reversal. Corrective `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE` precedes independent re-review and TB36. F1 unresolved; CP2 491/491 accepted, TB32 481/500 candidate, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -102,16 +102,18 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** CB35-REV rejected the third test-only oracle for incomplete route and automorphism identity assertions. `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION` repairs the test only and is followed by independent Review before TB36. RA-152 withdrew the older ingress DEFN. TB35 191/192 remain RED and 189/190 inconclusive; 19 inherited census RED and S1/A4 obligations remain.
+**Immediate:** CB35-R1-REV rejects the still-vacuous *directed* route oracle: `route_topology()` compares canonical storage, not `oriented_steps()`, allowing reversal. `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE` is the next test-only Code + Build, followed by independent Review before TB36. RA-152 withdrew the older ingress DEFN. TB35 191/192 remain RED and 189/190 inconclusive; 19 inherited census RED and S1/A4 obligations remain.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | CB35-REV rejects incomplete full-route/translation oracle; R1 is test-only and must be re-reviewed before TB36. RA-152 owns periodic atlas F1; no premature producer fix. | `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION`; [TB35-REV](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md), [CB32-REV](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Review_Decision_20261024.md), [CB31-REV](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md), [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md) and [RA-146](Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md) |
+| **1** | CB35-R1-REV discharges R1 canonical/translation checks but rejects oriented-route proof (R-2); reversal remains undetected; R2 test-only correction and independent Review must precede TB36. RA-152 owns periodic atlas F1; no premature producer fix. | `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE`; [CB35-R1-REV](Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Independent_Review_20261024.md), [TB35-REV](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md), [CB32-REV](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Review_Decision_20261024.md), [CB31-REV](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md), [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md) and [RA-146](Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
+
+- **Canonical storage is not directed witness order (CB35-R1-REV):** `CanonicalRoute::steps()` remains identical under `reversed()` even as `oriented_steps()` changes. An oracle that claims directed route identity must compare observed oriented steps to an independent oriented expectation and reject reversal.
 
 - **Partially asserted composed identity (CB35-REV):** checking only a grid automorphism’s rotation leaves translation unconstrained; checking two distinguished route keys without ordered whole-route identity leaves unmarked edges unconstrained. A witness must reject changes to every advertised contract component.
 
