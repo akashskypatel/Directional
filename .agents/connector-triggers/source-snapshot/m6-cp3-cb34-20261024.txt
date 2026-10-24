@@ -1,0 +1,1 @@
+CB34 source snapshot request, test-only gauge repair; event commit is source authority.
