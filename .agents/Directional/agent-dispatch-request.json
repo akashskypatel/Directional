@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb35-monodromy-witness-20261024-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb35-monodromy-apply",
-  "file_id": "1Lub0IavQxIMWZDx2UAzxxP6dMUfvn1ZI",
-  "patch_sha256": "4b940c7f7dce216595d67b324e4c388a0ed5d940a6b3adff256e1f4a24045adc",
-  "base_sha": "2f8972f5b91bbaf9c4e9531cd714ab60dd977636",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: add authoritative periodic monodromy witnesses",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb35-monodromy-compile-20261024-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb35-monodromy-compile",
+  "source_sha": "6c94c053e5d20331e06a93d26437aa864171031f",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb35-monodromy-compile"
 }
