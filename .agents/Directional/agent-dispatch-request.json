@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb31-closeout-docs-20261023-r1",
+  "request_id": "m6-cp3-cb31rev-docs-20261023-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb31-closeout-docs-r1",
-  "file_id": "1zKO_RZNwylia26j7p5Wzx43CZGPM_7DJ",
-  "patch_sha256": "2017450f15c20b5bde29a7350f6c2b68d3faf08e14fccab9ab65d473fe036371",
-  "base_sha": "6d4974b3676a08410482cea139923f0c97c05801",
+  "mailbox_key": "m6-cp3-cb31rev-docs-r1",
+  "file_id": "1v6tP__vgiTHpL-5sUpnkr-hN_ci99WkY",
+  "patch_sha256": "da536349f86fa176b31c7563a85acfc7af511dc7a67b0167f7911c57c2dd1a03",
+  "base_sha": "27cc8365f643622a3d98df32dc8e8ea67f8efad3",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB31 compiled odd atlas proof and hand off review",
+  "commit_message": "docs(directional): review CB31 odd inverse oracle and freeze CB32",
   "retention_days": 7
 }
