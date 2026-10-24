@@ -1,10 +1,11 @@
-## CURRENT — CB35-REV NOT ACCEPTED; exact next `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION` (2026-10-24)
+## CURRENT — CB35-R1 compiled; independent Review exact next (2026-10-24)
 
-- [x] CB35-REV independently verified test-only semantic commit, 28/28 package hashes, eight GMP/GMPXX targets, and 5,856/5,856 source snapshot.
-- [ ] **R-1 test-authority gap:** third witness checks route length and only two edge identities, and compares composed rotation rather than full automorphism identity. Fix exact ordered 32-edge route, zero per-step shifts, and full composition; preserve all other oracles. [Review](.agents/Directional/Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Independent_Review_20261024.md) / [plan](.agents/Directional/Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Correction_Plan_20261024.md).
-- [ ] Independent R1 Review must approve before TB36 five-case pre-fix evidence. RA-152 F1 stays candidate, no TB36 manifest yet. Stable 66/17/49 debt1, CP2 491/491, selector497 unchanged.
+- [x] R-1 correction: exact ordered 32-route comparison, zero lattice shift per step and complete `GridAutomorphism::identity()` asserted in `tests/SurfaceCellsPhase10Tests.cpp`, +5/-1 lines. Exact semantic `c67c6e72a21c89b0fa202cdd593982f8cb0646b0`.
+- [x] Eight GMP/GMPXX compile targets only: [run 40138512704](https://github.com/akashskypatel/Directional/actions/runs/40138512704), immutable artifact `12577649024`, ZIP SHA `2911d931a5faf172097d0291ae47ea17d839cf089bfb114d11b791e057304a9a`, 28/28 manifest, `runtimeExecution=false`. No tests/benchmarks.
+- [ ] **EXACT NEXT:** `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION-REV`. Independent check of full route/translation oracle non-vacuity and exact compiled artifact; no TB36 authority until Review accepts. [Record](.agents/Directional/Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Correction_Code_Build_Record_20261024.md).
+- [ ] RA-152 production F1 remains candidate; no change to frozen 189–192, selector497, stable 66/17/49 debt1, CP2 accepted 491/491, RP-01 open, RP-02 unreached.
 
-## CURRENT — CB35 compiled; independent witness Review next (2026-10-24)
+## HISTORY — CB35 compiled; independent witness Review (superseded by R1) (2026-10-24)
 
 - [x] `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY-REV-AUDIT` (RA-152):
   - TB35-REV's evidence, mechanism and non-promotion are accepted;

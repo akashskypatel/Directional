@@ -34,18 +34,17 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-24, CB35-REV found one material test-oracle gap and withheld TB36 authority; compiled witnesses remain runtime-unexecuted. Next is narrow test-only `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION`, then independent Review. A4 F1 remains unresolved. |
-| Source/package | CB35 test-only semantic `6c94c053e5d20331e06a93d26437aa864171031f`; [run 40131078824](https://github.com/akashskypatel/Directional/actions/runs/40131078824), package `12575180700`, ZIP `f94a7a3644d976cac44bf519afa383b4d94a99ca0663aa2608d68b681e8003bd`; 28/28 manifest entries, eight GMP/GMPXX targets, `runtimeExecution=false`. [CB35 record](Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Code_Build_Record_20261024.md). CB34 package authority is retained in its own record. |
+| Currency | 2026-10-24, CB35-R1 complete: corrected third published-route witness compiled only; independent CB35-R1-REV is exact next turn and must approve the non-vacuous route and translation oracle before TB36. No runtime execution, no production acceptance; A4 F1 remains unresolved. |
+| Source/package | CB35-R1 exact semantic `c67c6e72a21c89b0fa202cdd593982f8cb0646b0`; [run 40138512704](https://github.com/akashskypatel/Directional/actions/runs/40138512704), package `12577649024`, ZIP `2911d931a5faf172097d0291ae47ea17d839cf089bfb114d11b791e057304a9a`; 28/28 manifest entries, eight GMP/GMPXX targets, `runtimeExecution=false`; zero runtime/tests/benchmarks. [R1 record](Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Correction_Code_Build_Record_20261024.md). CB35/CB34 package authority remains in prior records. |
 | Reviewed decision | [RA-152](Architecture_M6_CP3_TB35_REV_Audit_Periodic_Route_Transport_Decision_20261024.md) accepts TB35-REV evidence and non-promotion, corrects its owner (F1), decides single-writer D1–D4, and replaces the ingress DEFN with CB35 → TB36 → CB36 → TB37 → legacy-oracle DEFN. [TB35-REV](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) (RA-151) verified 13/13, 11 PASS / 2 RED. |
 | Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500** (19 inherited RED); TB34 **5 PASS / 7 inherited RED** (12 measured), TB33 synthetic **6/6** only; selector497 frozen; stable **66/17/49**, debt 1. RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION-REV` — EXACT NEXT
 
-- **Type:** separate test-only Code + Build correction under [CB35-REV](Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Independent_Review_20261024.md) and [R1 plan](Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Correction_Plan_20261024.md).
-- **Objective:** make the third CB35 witness prove both full ordered 32-edge route topology and full `GridAutomorphism` identity (including translation); retain ±1/inverse/identity assertions.
-- **Scope:** change only `tests/SurfaceCellsPhase10Tests.cpp`; compile eight GMP/GMPXX targets, no binaries/tests/benchmarks. Preserve frozen 189–192, selector497, production, and all negative witnesses.
-- **Gate:** independent follow-up Review of the exact diff/package must accept these assertions before authorizing TB36's five-case immutable pre-fix manifest. RA-152 stop rules continue unchanged. If genuine nonzero translation or alternative canonical route is required, stop for Definition instead of weakening assertions.
-- **Accounting:** stable 66/17/49 debt1; CP2 491/491; TB32 481/500, TB35 11/2; selector497 frozen, RP-01 open and RP-02 unreached.
+- **Type:** independent static Review of [CB35-R1 compiled witness](Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Correction_Code_Build_Record_20261024.md) against [R1 plan](Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Correction_Plan_20261024.md) and [CB35-REV R-1 finding](Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Independent_Review_20261024.md).
+- **Objective:** independently check complete ordered 32-step route identity, translation-free per-step witnesses, full composed `GridAutomorphism` identity, non-vacuity and the preserved ±1/inverse/identity and negative oracles. Reverify exact test-only diff, GMP/GMPXX package, immutable hashes, selector and frozen identities. No runtime in Review.
+- **Gate:** only independent acceptance authorizes the frozen five-case TB36 pre-fix baseline. RA-152 stop rules apply; if a genuine nonzero translation or alternative canonical route is required, request Definition rather than weakening the oracle.
+- **Accounting:** stable 66/17/49 debt1, CP2 491/491; TB32 481/500 candidate, TB35 11 PASS / 2 RED; selector497 frozen, RP-01 open and RP-02 unreached.
 
 ## Turn Sequence
 
@@ -56,7 +55,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | done | `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY-REV-AUDIT` (RA-152) | F1 found: atlas-path route steps identity, guard dead; ingress DEFN withdrawn. |
 | done | `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS` | Test-only helper + 3 witnesses compiled; no runtime. |
 | done, not accepted | `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS-REV` | Found incomplete published-route identity assertion; no TB36 manifest. |
-| 1 — next | `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION` → `…-REV` | Test-only correction, compile-only; then independent acceptance gate. |
+| done | `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION` | Test-only R-1 correction compiled and packaged without execution. |
+| 2 — next | `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION-REV` | Independent static non-vacuity/package review; only then may authorize TB36. |
 | 3 | `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE` → `…-REV` | Pre-fix: witnesses predicted RED. STOP if any witness is GREEN, A3 rejects k=2, or a witness fails before the periodic producer. |
 | 4 | `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT` → `…-REV` | Production D2 only: observed steps read `atlas->transport`; missing transport fails closed with location; compile only. |
 | 5 | `M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY` → `…-REV` | Witnesses GREEN, TB35 13 cases, full 497 census (route digests change). |
@@ -68,7 +68,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION** — review [CB35-REV](Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Independent_Review_20261024.md) and [R1 plan](Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Correction_Plan_20261024.md); update only third witness to assert whole ordered route and full automorphism including translation. Compile eight GMP/GMPXX targets, no runtime; separate Review before TB36.
+`load_next`: **M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION-REV** — independently inspect [R1 compiled record](Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Correction_Code_Build_Record_20261024.md), exact test-only diff and 28/28 packaged evidence; audit full ordered route and zero translations for non-vacuity, retain earlier witnesses. Accept or reject R-1 without running binaries; only accepted Review may issue TB36 manifest.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
