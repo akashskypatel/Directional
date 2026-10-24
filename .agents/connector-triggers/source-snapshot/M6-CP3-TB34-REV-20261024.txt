@@ -1,0 +1,2 @@
+Review source snapshot request for M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST-REV
+Freeze source at the trigger commit; runtime execution not authorized.
