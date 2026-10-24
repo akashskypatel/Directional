@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb34-gauge-compile-fix-build-20261024-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb34-gauge-compile-fix-build",
-  "source_sha": "d5fc8f22fd309ba90ad1fd7b4fbdc3491a5a8f7d",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb34-gauge-compile-fix"
+  "request_id": "m6-cp3-cb34-gauge-closeout-docs-20261024-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb34-gauge-closeout-docs",
+  "file_id": "1sRExtU8YR1W5Oe93_TJxZnPqCksRQzE1",
+  "patch_sha256": "d5511ddb09dcc07be3aff73a05a60c3150af2b4df8ceab600d8c0ba98e302ebf",
+  "base_sha": "f106cabcde8f1cc026f62b4f4e4cb464d76ba4b0",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close CB34 compile evidence and hand off independent review"
 }
