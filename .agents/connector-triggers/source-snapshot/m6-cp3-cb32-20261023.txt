@@ -1,0 +1,3 @@
+Snapshot request for M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION
+Entry beacon SHA bd9edf07bda9e324fd31ca7d5fbab2f6095b315f
+Snapshot source authority is this push event SHA.
