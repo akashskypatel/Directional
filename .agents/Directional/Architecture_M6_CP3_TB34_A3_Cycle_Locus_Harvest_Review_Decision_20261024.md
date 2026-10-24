@@ -8,6 +8,13 @@
 - **Seven actual RED logs:** selectors189–195 each run exactly one GoogleTest, exit 1, report first exception `periodic-route fixture source A3 unavailable;code=CycleTransportMismatch;topologyRegion=0;site=cycle-transport;cycleRowIndex=0;cycleKind=LocalVertex`. **Five actual PASS logs:** two unchanged atlas tamper guards and three TB33 factory controls, each exactly one test, exit 0. Thus the seven are **one fixture-root family**, not seven independently supported A3 defects. TB34 is 5 PASS / 7 RED.
 - Compared the original `tests/SurfaceCellsPhase10Tests.cpp` helper and the actual `benchmarks/fixtures/milestone-g/cylinder.obj` (80 vertices, 128 triangles), `src/authority/FieldTransportAtlas.cpp`, `include/directional/fields/CrossField.h`, and `src/fields/FieldMatching.cpp` from a 5,843-file hash-verified source snapshot at `e11a4cd2fe2b963e7fbb3560ef94712693abb877`. GitHub compare to the review marker commit `0164468a5c2d480c11799c4da07be40caae376b5` contains only the source-snapshot marker and `STATUS`, with no semantic/test changes from the verified CB33 snapshot. No binaries were executed in Review.
 
+## Additional independent closure verification (2026-10-24T14:41Z)
+
+- Independently verified the newer exact source-snapshot artifact `12563781300`, run `40103512430`, source/event `388854b4a611b788c2c41991cd991ae6fc574be3`: outer SHA-256 `5491250e51d1546298bd09bfcb0a4ad6a00866f0b99161da593331ac97569b2b`, source archive verified, **5847/5847** per-file checksums. The snapshot contains no runtime execution and the review source and fixtures were unchanged relative to CB33: GitHub `compare_commits` CB33 source `f807c2b8...` → snapshot marker reports 44 intervening control/documentation commits, no `src/`, `include/`, `tests/`, `benchmarks/`, CMake or selector changes.
+- Independently rehashed accepted `Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt`: LF SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414` over exactly **449** lines. Independently rehashed TB34 12-case manifest `c8782727bcf15c234ba50070284b9d6965eb339b956b7bdbffd3fd3f35bc6cff`. Joined all 12 distinct ledger identities, recomputed all 12 raw-log SHA-256 digests and verified exact-one/zero-skip, 7 RED/5 PASS.
+- Parsed the committed OBJ directly: 80 vertices/128 triangles; zero-based face1 `(0,2,3)` is adjacent to face0 via edge `(0,2)`, face30 via `(0,3)` and face32 via the **unmodified** `(2,3)` edge. Vertex2 has six incident triangles and no boundary edge, while vertex0 is a boundary vertex. This independently substantiates the first local vertex-star mismatch.
+- Executed `python3 .agents/Directional/tools/review_check.py boundary` against the hash-verified extracted source snapshot. It exits **1**, because snapshot packaging intentionally excludes `.git`; rewrite baseline ancestry and Git-history-derived durable-section checks are unavailable, and historical selectors appear as `untracked`. The check's current-tree product/test/fixture/build mutation and selector-byte checks report PASS, but **this is not a fully passing boundary check**. Separately, GitHub's source SHA comparison establishes no semantic or selector changes since CB33; no test binary was executed.
+
 ## Independent causal derivation — first predicate and owner
 
 1. `balanced_periodic_route_field()` copies `fixture.authoritativeField`, then calls `assign_directed_matching` on only `expectedRoute[0]` and `[1]`, setting directed matches to **+1** and **−1**, respectively. `assign_directed_matching` changes `CrossFieldEdgeTransition::matching` **only**; it does **not** change `effort` or any other incident edge matching. This is exactly the `sourceField` passed into `FieldTransportAtlas::make`, before network construction, for all seven tests (including the negative cases).
@@ -33,7 +40,7 @@ Before claiming the correction, independently establish from *raw source topolog
 
 | Duty | Answer |
 |---|---|
-| Accepted selector prefix re-hashed | Frozen selector449 expected LF SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`; selector was unchanged and no new prefix generated; independent selector byte rehash pending if the exact manifest file is not locally present |
+| Accepted selector prefix re-hashed | Independently rehashed exact 449-line selector: LF SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`; no selector or prefix change |
 | Decisive claims independently re-derived | 17/17 hashes; 12 row/log hashes; 7× S1 actual logs; committed OBJ face/edge/star; matching vs effort dataflow and S1 modulo-four predicate |
 | Non-vacuity checked | Guards reject independent tamper but do not certify periodic route; TB33 controls cannot establish A4 route; seven RED do reach S1 formatter |
 | Prior obligations discharged/carried | RA-149.3 corrected, RA-149.4 diagnostic discharged, RA-149.5 measurement discharged / fixture repair to CB34; all other inherited obligations carried |
@@ -48,6 +55,6 @@ Before claiming the correction, independently establish from *raw source topolog
 | Consolidation under CLEAN_UP_POLICY | No obsolete record deleted; no historical facts dropped |
 | Successor frozen | `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR`; scope/stop rules in linked plan |
 | Turn boundary held | Review-only static calculations and immutable artifact inspection, no tests/builds/product/fixture/selector mutation |
-| review_check.py boundary | Pending review static check receipt; review cannot assert test execution |
-| `STATUS` lifecycle maintained | New attempt started previously, resumed at 2026-10-24T13:28:19Z; final COMPLETE beacon only after durable publication and cleanup |
-| Pushed to origin, branch in sync | Pending verified remote patch application and compare-and-swap closeout |
+| review_check.py boundary | Executed, exit 1 due to absent `.git` metadata in source-snapshot package; product/fixture/build/selector diff checks PASS, history checks unavailable; independently checked 44-commit GitHub source diff with no semantic/test/selector changes |
+| `STATUS` lifecycle maintained | Entry/resume beacon published with original start 2026-10-24T12:20:24Z and latest resumed 2026-10-24T14:38:42Z; separate direct-write final beacon required as final repository action |
+| Pushed to origin, branch in sync | Documentation already present on working branch; final small review-evidence receipt published by direct GitHub connector; no local git checkout to run `git status -sb`, so remote GitHub SHA/comparison is the authority |
