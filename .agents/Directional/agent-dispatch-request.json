@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb35-gauge-verify-20261024-v1",
+  "request_id": "m6-cp3-tb35-gauge-verify-20261024-v2",
   "operation": "test_benchmark",
   "mailbox_key": "m6-cp3-tb35-gauge-verify",
-  "executor_sha": "141a8d90938f5d48a25bf99895dc8a0de115ab7e",
+  "executor_sha": "ab57c9f62e0b738b0ed98d8e6fd2a2e35bd08453",
   "semantic_source_sha": "d5fc8f22fd309ba90ad1fd7b4fbdc3491a5a8f7d",
   "turn_id": "M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY",
   "harness_path": ".agents/Directional/tools/m6_cp3_tb35_periodic_route_gauge_harness.sh",
-  "harness_sha256": "8a28797fed7e0690adc38cce2ec0815bbd227f4d4aadc3a84bb81055a2b0b929",
+  "harness_sha256": "83edec8624c7552ed82f7b1dff0ae28601be243f3e9d2a21873fadca16b41243",
   "environment": {},
   "artifact_prefix": "m6-cp3-tb35-gauge-result",
   "retention_days": 14
