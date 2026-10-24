@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb35-monodromy-compile-20261024-r1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb35-monodromy-compile",
-  "source_sha": "6c94c053e5d20331e06a93d26437aa864171031f",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb35-monodromy-compile"
+  "request_id": "m6-cp3-cb35-monodromy-docs-20261024-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb35-monodromy-docs-apply",
+  "file_id": "1wfpSokbAS2zSG4cPo6qd3M3yCtdB-b4V",
+  "patch_sha256": "ff288328f4de20a4e3bd507f5fecfdd54bab66baa5b966ea281a0ecb03019bf5",
+  "base_sha": "2f8972f5b91bbaf9c4e9531cd714ab60dd977636",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB35 compile-only witness turn",
+  "retention_days": 14
 }
