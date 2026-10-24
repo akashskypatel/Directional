@@ -1,0 +1,3 @@
+Purpose: frozen-source inspection for M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST-REV.
+Pretrigger working head: d103b2d5ae1919be93772e5a248bc190f79b2b0a
+Runtime execution: false
