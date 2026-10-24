@@ -4346,13 +4346,46 @@ bool assign_directed_matching(
 
 directional::fields::CrossFieldResult balanced_periodic_route_field(
     const PeriodicHolonomyRouteFixture &fixture) {
-  if (fixture.expectedRoute.size() != 32U) {
-    throw std::runtime_error("Unexpected periodic route cardinality.");
+  if (fixture.expectedRoute.size() != 32U ||
+      fixture.expectedRoute[0].targetFace != fixture.expectedRoute[1].sourceFace) {
+    throw std::runtime_error("Unexpected periodic route gauge face.");
+  }
+  const int gaugeFace = fixture.expectedRoute[0].targetFace;
+  if (gaugeFace < 0 || gaugeFace >= fixture.mesh.F.rows()) {
+    throw std::runtime_error("Periodic route gauge face is outside source mesh.");
   }
   auto field = fixture.authoritativeField;
-  if (!assign_directed_matching(field, fixture.expectedRoute[0], 1) ||
-      !assign_directed_matching(field, fixture.expectedRoute[1], -1)) {
-    throw std::runtime_error("Could not author nonzero periodic transport.");
+  std::array<directional::fields::CrossFieldEdgeTransition *, 3> edges{};
+  for (int corner = 0; corner < 3; ++corner) {
+    const auto topology = test_source_edge_topology(
+        fixture.mesh.F(gaugeFace, corner),
+        fixture.mesh.F(gaugeFace, (corner + 1) % 3));
+    auto *edge = transition_for_edge(field, topology);
+    if (edge == nullptr ||
+        (edge->firstFace != gaugeFace && edge->secondFace != gaugeFace) ||
+        edge->firstFace < 0 || edge->secondFace < 0 ||
+        edge->matching != 0 || edge->sourceEdge < 0 ||
+        edge->sourceEdge >= field.matching.size() ||
+        field.matching[edge->sourceEdge] != 0) {
+      throw std::runtime_error(
+          "Periodic route face gauge requires three zero interior matchings.");
+    }
+    edges[static_cast<std::size_t>(corner)] = edge;
+  }
+  for (auto *edge : edges) {
+    // The gauge difference g(to)-g(from) is +1 into this face, -1 out.
+    edge->matching += edge->secondFace == gaugeFace ? 1 : -1;
+    field.matching[edge->sourceEdge] = edge->matching;
+  }
+
+  const Eigen::RowVector3d primary = field.primaryDirections.row(gaugeFace);
+  const Eigen::RowVector3d secondary = field.secondaryDirections.row(gaugeFace);
+  field.primaryDirections.row(gaugeFace) = -secondary;
+  field.secondaryDirections.row(gaugeFace) = primary;
+  const Eigen::Matrix<double, 1, 12> original = field.rawField.row(gaugeFace);
+  for (int branch = 0; branch < 4; ++branch) {
+    field.rawField.block(gaugeFace, 3 * branch, 1, 3) =
+        original.block(0, 3 * ((branch + 3) % 4), 1, 3);
   }
   return field;
 }
@@ -4493,6 +4526,83 @@ directional::fields::CrossFieldResult make_legacy_periodic_route_field(
   }
   legacy.edgeTransitions.clear();
   return legacy;
+}
+
+TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
+     BalancedRouteFieldIsPureFaceGauge) {
+  const auto fixture = make_periodic_holonomy_route_fixture();
+  const auto gaugedField = balanced_periodic_route_field(fixture);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  const auto source = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(fixture.mesh.F, options);
+  ASSERT_TRUE(source.has_value());
+  const auto originalAtlas = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *source, options.hardFeatureEdges, fixture.authoritativeField);
+  ASSERT_TRUE(originalAtlas);
+  const auto gaugedAtlas = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *source, options.hardFeatureEdges, gaugedField);
+  ASSERT_TRUE(gaugedAtlas);
+  EXPECT_EQ(originalAtlas.value().branch_topology().semantic_digest(),
+            gaugedAtlas.value().branch_topology().semantic_digest());
+  EXPECT_EQ(originalAtlas.value().branch_topology().frames(),
+            gaugedAtlas.value().branch_topology().frames());
+  EXPECT_EQ(originalAtlas.value().branch_topology().transports(),
+            gaugedAtlas.value().branch_topology().transports());
+
+  const auto check_raw_step = [&](
+      const directional::authority::SourceEdgeTopologyKey &edge,
+      const int from, const int to, const int expected) {
+    const auto sourceFace = directional::authority::SourceFaceId::from_index(
+        static_cast<std::size_t>(from),
+        static_cast<std::size_t>(fixture.mesh.F.rows()));
+    const auto targetFace = directional::authority::SourceFaceId::from_index(
+        static_cast<std::size_t>(to),
+        static_cast<std::size_t>(fixture.mesh.F.rows()));
+    if (!sourceFace || !targetFace) return false;
+    const auto value = gaugedAtlas.value().transition_value(
+        edge, *sourceFace, *targetFace);
+    return value && value->signedLift == expected;
+  };
+  const auto &into = fixture.expectedRoute[0];
+  const auto &out = fixture.expectedRoute[1];
+  ASSERT_EQ(into.targetFace, out.sourceFace);
+  EXPECT_TRUE(check_raw_step(
+      into.currentTopology, into.sourceFace, into.targetFace, 1));
+  EXPECT_TRUE(check_raw_step(
+      out.currentTopology, out.sourceFace, out.targetFace, -1));
+  const int gaugeFace = into.targetFace;
+  int remainingEdges = 0;
+  for (int corner = 0; corner < 3; ++corner) {
+    const auto edge = test_source_edge_topology(
+        fixture.mesh.F(gaugeFace, corner),
+        fixture.mesh.F(gaugeFace, (corner + 1) % 3));
+    if (edge == into.currentTopology || edge == out.currentTopology) continue;
+    const auto *transition = transition_for_edge(gaugedField, edge);
+    ASSERT_NE(nullptr, transition);
+    const int neighbor = transition->firstFace == gaugeFace
+                             ? transition->secondFace : transition->firstFace;
+    EXPECT_TRUE(check_raw_step(edge, gaugeFace, neighbor, -1));
+    ++remainingEdges;
+  }
+  EXPECT_EQ(1, remainingEdges);
+
+  auto invalidTwoEdgeField = fixture.authoritativeField;
+  ASSERT_TRUE(assign_directed_matching(invalidTwoEdgeField, into, 1));
+  ASSERT_TRUE(assign_directed_matching(invalidTwoEdgeField, out, -1));
+  const auto invalidAtlas = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *source, options.hardFeatureEdges, invalidTwoEdgeField);
+  ASSERT_FALSE(invalidAtlas);
+  EXPECT_EQ(
+      directional::authority::FieldAtlasBuildErrorCode::CycleTransportMismatch,
+      invalidAtlas.error().code);
+  EXPECT_EQ("cycle-transport", invalidAtlas.error().site);
+  ASSERT_TRUE(invalidAtlas.error().cycleOrderingDiagnostics.has_value());
+  EXPECT_EQ(directional::authority::FieldCycleKind::LocalVertex,
+            invalidAtlas.error().cycleOrderingDiagnostics->cycleKind);
 }
 
 TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
