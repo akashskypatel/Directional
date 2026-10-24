@@ -1,3 +1,7 @@
+## 2026-10-24 — TB34 immutable A3 cycle-locus measurement
+
+- Twelve fresh-process focused tests on unchanged CB33 `12556364042` ([run 40090972464](https://github.com/akashskypatel/Directional/actions/runs/40090972464), artifact `12558378347`, 17/17 checksums): 7 inherited A3 RED all `cycle-transport`, `LocalVertex`, cycle row 0, region 0; 5 controls PASS. No rebuild, relink, source/test/selector mutation or product acceptance. Next independent Review `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST-REV`; frozen counts unchanged. [Report](.agents/Directional/Architecture_M6_CP3_TB34_A3_Cycle_Locus_Harvest_Report_20261024.md).
+
 ## 2026-10-24 — CB33 independent Review accepts compile fidelity; corrects S2 premise
 
 - `M6-CP3-CB33-RP01-A3-CYCLE-MISMATCH-LOCUS-DIAGNOSTIC-REV` independently verified commit `f807c2b890b990fc53ea8f84c7228edd94f0659d` (three intended files), eight-target GMP/GMPXX package `12556364042` and 28/28 hashes, `runtimeExecution=false`. No runtime/test changes. The earlier S2 index-sum correction is a multiple of 4, making S2 `CycleTransportMismatch` unreachable once S1 passes; S2's stored cycle index and S1's region-local row use distinct namespaces. Diagnostic S1 source site/kind/row remains suitable for the seven REDs. Full [Review](.agents/Directional/Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Review_Decision_20261024.md) and [TB34 manifest](.agents/Directional/Architecture_M6_CP3_TB34_A3_Cycle_Locus_Cases.tsv).
