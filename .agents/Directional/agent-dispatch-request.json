@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb32-test-oracle-apply-20261024-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb32-test-oracle-apply",
-  "file_id": "1Z0FvSS9TgFXMrHZZDThovw96avGiO138",
-  "patch_sha256": "a9f3f11cc1e28d01611f1b5181a39dea39d56fab15debc40d5414673e519ffae",
-  "base_sha": "d9d24c35be46a90fa94902bddd19d755df9a6ad6",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): independently derive odd transport and canonical gauges",
-  "retention_days": 7
+  "request_id": "m6-cp3-cb32-odd-oracle-gmp-compile-20261024-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb32-odd-oracle-gmp-compile",
+  "source_sha": "30e46b9aabc44925643f46bab20db40962a5e494",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb32-odd-oracle-gmp-compile"
 }
