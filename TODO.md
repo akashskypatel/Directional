@@ -1,21 +1,18 @@
-## CURRENT — CB31 odd atlas transport compiled; independent CB31 Review next (2026-10-23)
+## CURRENT — CB31 independent Review rejects non-distinct inverse oracle; CB32 next (2026-10-23)
 
-- [x] **RA-148 TB32-REV:** independently audited 500/500 raw cases, 1,006/1,006 result checksums, immutable 28/28 CB30 compile package and 1,000/1,000 TB31 baseline hashes. TB32 **481 PASS / 19 RED**, frozen 497 subset **478 PASS / 19 RED**; six owner-map RED→PASS, three new factory controls PASS, zero PASS→RED. [Decision](.agents/Directional/Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md). Only synthetic factory/owner scope accepted.
-- [x] RA-146.1/RA-147/FG01 direct fixture reachability verified. Synthetic unpaired front does **not** certify real odd transport, periodic action, A5/A6 produced outcomes or G4-B002.
-- [x] **CB31 Code + Build:** test-only odd A3 ingress/row/corner permutations and stale gauge/wrong inverse controls at source `ce13d438e65daf07a770cafa15ac4cef7046f931`; 28/28 compile-artifact hashes, GMP/GMPXX eight targets; no runtime. [Record](.agents/Directional/Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Code_Build_Record_20261023.md).
-- [ ] **EXACT NEXT:** `M6-CP3-CB31-RP01-ODD-ATLAS-TRANSPORT-PERMUTATION-REV` — independent static/compile Review. Re-derive odd premises, topology-keyed remapping, nonvacuous negatives and immutable package; separate TB required before any runtime/acceptance claim.
-- [ ] **CARRIED:** all 19 original RED identities, RA-146.2/3/4, RA-45.4 produced A6 gauge outcome, unavailable A3 route and seven untyped first failures, G4-B002, DIAG-RETAIN, DEFN-SEAM-NZ and periodic/DEFN-T1. No unproved promotion.
-- **Frozen:** CP2 491/491 accepted; CP3 unaccepted, candidate 478/497; stable 66/17/49, debt1; RP-01 open, RP-02 unreached, Gate C suspended; selector497 and TB32 500 manifest byte-frozen.
+- [x] CB31 source `ce13d438e65daf07a770cafa15ac4cef7046f931` compile-only green; eight GMP/GMPXX targets and 28/28 package checksums verified, zero runtime. Existing six owner assertions/three factory controls unchanged.
+- [x] **CB31-REV decision:** the inverse-arm raw mutation is legitimate, but its expected directed sign is computed from the atlas being tested; permutation test obtains expected gauge from the atlas under test. No independent signed-inverse/canonical-gauge proof. [Review](.agents/Directional/Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md). No runtime success/failure claimed.
+- [ ] **EXACT NEXT:** `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION` — independent signed raw/atlas topology-keyed gauge and genuinely distinct directed-inverse/stale-gauge negative oracles. [Plan](.agents/Directional/Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Plan_20261023.md). Test-only, compile-only; mandatory separate CB32-REV.
+- [ ] **CARRIED:** 19 TB32 original-selector REDs, RA-146.2/3/4, RA-45.4 A6 produced outcome, G4-B002, DIAG-RETAIN, DEFN-SEAM-NZ, periodic/DEFN-T1. No new stable event.
+- **Frozen:** TB32 481/500 candidate (original 497 478/497), CP2 491/491 accepted, CP3 unaccepted; 66/17/49, debt1; RP-01 open, RP-02 unreached, Gate C suspended; original 497 selector and TB32 manifest unchanged.
 
 ### Authorized turn sequence
 
 | Step | Canonical turn | Boundary |
 |---|---|---|
-| 1 — exact next | `M6-CP3-CB31-RP01-ODD-ATLAS-TRANSPORT-PERMUTATION-REV` | Independent exact source/static/compile Review; no project runtime |
-| 2 — conditional | `UNKNOWN` | Freeze immutable TB manifest and independent TB/Review only if CB31 Review accepts |
-| 3 — conditional | `UNKNOWN` | Later immutable TB and separate TB-REV after code review; freeze exact cases before executing |
-| later | `UNKNOWN` | 19 residual RED owners → census → RP-01 review; produced A6 and real closed-complex proof stay separate |
-
+| 1 — exact next | `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION` | Test-only Code+Build, compile only, independent directed-inverse/gauge negatives |
+| 2 — conditional | `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION-REV` | Independent evidence Review after CB32 compile |
+| later | `UNKNOWN` | Immutable TB after Review freezes exact cases; 19 carried RED owners stay independent |
 
 ---
 

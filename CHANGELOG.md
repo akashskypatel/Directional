@@ -1,3 +1,7 @@
+## 2026-10-23 — CB31 independent source/compile Review (static, runtime-free)
+
+- [M6-CP3-CB31-RP01-ODD-ATLAS-TRANSPORT-PERMUTATION-REV](.agents/Directional/Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md): independent exact source and artifact verification accepted compile provenance (CB31 semantic `ce13d438e65daf07a770cafa15ac4cef7046f931`; source snapshot 5,832/5,832; package 28/28, eight GMP/GMPXX, no runtime). **Rejected** claimed inverse-negative sufficiency: inverse-arm input mutation lacks independently derived signed inverse despite valid checked-factory gauge-mismatch rejection, and expected permuted gauge comes from atlas under test. Distinct inverse and canonical transport oracle remain unproved; corrected test-only Code+Build [M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION](.agents/Directional/Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Plan_20261023.md) authorized next. No selector/production/accepted-ledger promotion; CP2 491/491, CP3 unaccepted, stable 66/17/49 debt1.
+
 ## 2026-10-23 — CB31 odd atlas transport/permutation compiled (static Review next)
 
 - Test-only source `ce13d438e65daf07a770cafa15ac4cef7046f931` adds actual raw-field A3 odd 1/3 transport, topology-keyed face-row/cyclic-corner positive controls, stale-vector and wrong directed-inverse negatives; original owner cases, production, 497 selector and TB32 500 manifest unchanged. Initial compile failed on `DomainResult` syntax; repaired without changing test semantics.

@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-23 · RA-148 independently accepted TB32 bounded factory evidence (481/500; original 497: 478 PASS / 19 inherited RED); next CB31 odd-transport/permutation compile-only. CP2 491/491 accepted, CP3 unaccepted; stable 66/17/49, debt1; RP-01 open, RP-02 unreached.
+**Currency:** 2026-10-23 · CB31 independent static Review rejected the claimed inverse/permutation oracle sufficiency; compiled test-only CB31 source remains unaccepted. Next CB32 independent-oracle correction (compile-only). TB32 candidate 481/500 (original 497 478 PASS / 19 inherited RED); CP2 491/491 accepted, CP3 unaccepted; stable 66/17/49, debt1; RP-01 open, RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current evidence (RA-148):** Independent TB32 Review rechecked 1,006/1,006 artifact checksums and 500 distinct raw logs. Its original 497-case selector measured **478 PASS / 19 inherited RED** (six RED→PASS over TB31's 472/497, zero regressions), plus three PASS factory controls for **481/500**. The six recovered cases prove synthetic checked-factory fixture/owner assertions, not real odd atlas transport, periodic topology or produced A6 behavior. The 19 REDs remain at unchanged first sites, including seven A3 unavailable-route fixture exceptions and seven untyped cases. CB31 now owns a separately falsifiable odd-transport/unequal-gauge/row+corner permutation **test-only** proof. No M6-CP3 acceptance. Prior TB28/TB30/TB31 reports remain historical comparison baselines.
+**Current evidence (RA-148 and CB31-REV):** Independent TB32 Review rechecked 1,006/1,006 artifact checksums and 500 distinct raw logs. Its original 497-case selector measured **478 PASS / 19 inherited RED** (six RED→PASS over TB31's 472/497, zero regressions), plus three PASS factory controls for **481/500**. The six recovered cases prove synthetic checked-factory fixture/owner assertions, not real odd atlas transport, periodic topology or produced A6 behavior. The 19 REDs remain at unchanged first sites, including seven A3 unavailable-route fixture exceptions and seven untyped cases. CB31 compiled an actual raw-A3 odd-ingress test fixture, but independent CB31 Review rejected the absence of an independently derived inverse sign and topology-keyed expected gauge. **CB32** owns a genuine independent inverse/transport and canonical-gauge proof; no M6-CP3 acceptance. Prior TB28/TB30/TB31 reports remain historical comparison baselines.
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md) and [regression tracker](Regression_Root_Cause_Tracker.md).
 
@@ -100,19 +100,19 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** CB31 must establish a discriminating real odd (1/3) A3 transport and unequal-gauge, topology-keyed row/cyclic-corner permutation test fixture with stale-vector and inverse negatives. [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md) accepts TB32 runtime evidence only within the checked-factory scope; six owner tests and all three controls are now measured PASS.
+**Immediate:** CB32 must correct the CB31-REV rejected oracle and independently establish real odd (1/3) A3 transport and unequal-gauge, topology-keyed row/cyclic-corner permutation test fixture with stale-vector and inverse negatives. [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md) accepts TB32 runtime evidence only within the checked-factory scope; six owner tests and all three controls are now measured PASS.
 
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Six owner-map tests and three factory controls are **discharged in synthetic scope** at RA-148. The remaining discriminator is a real odd atlas transport/unequal-gauge face-row and cyclic-corner permutation with independent stale-vector/inverse negatives; produced periodic/A6 obligations stay separate. | CB31; [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md) and [RA-146](Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md) |
+| **1** | Six owner-map tests and three factory controls are **discharged in synthetic scope** at RA-148. The CB31-REV remaining discriminator is a raw-derived odd atlas transport/unequal-gauge face-row and cyclic-corner permutation with distinct stale-vector and wrong-inverse-arm falsifiers with independent signed expectations; produced periodic/A6 obligations stay separate. | CB32; [CB31-REV](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md), [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md) and [RA-146](Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
 
-- **Vacuous witness:** RA-146/148: equal-gauge row permutations cannot distinguish stale mapping; unpaired front records do not reach reciprocal periodic action guards. A path that is never reached, or a relation whose operands share an object (RA-124), cannot independently prove its advertised contract. Require separately sourced positive/negative oracles and actual prerequisite reachability.
+- **Vacuous witness:** RA-146/148 and CB31-REV: equal-gauge row permutations cannot distinguish stale mapping; unpaired front records do not reach reciprocal periodic action guards. A path that is never reached, or a relation whose operands share an object (RA-124), cannot independently prove its advertised contract. Require separately sourced positive/negative oracles and actual prerequisite reachability.
 - **Conflated authority:** row number, gauge, semantic ID, terminal incidence, certificate provenance or a per-node representative face (RA-72.4, RA-123) used as interchangeable identities. Find the unique writer and exact typed correspondence.
 - **Premature credit:** compile-green, diagnostic data or focused PASS/RED presented as cumulative acceptance. Separate candidate evidence from reviewed promotion.
 - **Predicted cause substituted for measured cause:** inspect the **actual first rejecting predicate** and discriminate its subconditions before proposing a repair.
