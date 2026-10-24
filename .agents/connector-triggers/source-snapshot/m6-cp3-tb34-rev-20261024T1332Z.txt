@@ -1,0 +1,3 @@
+Review-only source snapshot for M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST-REV
+Frozen pre-trigger ref: 01ce9499d573bc253e766d51678bebdcaaf2eec5
+No source or fixture mutation.
