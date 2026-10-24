@@ -1,0 +1,54 @@
+phase	ordinal	identity	CP2_accepted	R1	R2	R3	R2_candidate
+focused30	3	M6CP1.SurfaceOccurrenceComplexRejectsMalformedMissingAndDuplicateRelationEndpoints	PASS	PASS	RED	RED	R2-CAND-01
+focused30	6	M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection	PASS	RED	RED	RED	R2-CAND-03
+focused30	12	M6CP1.RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant	PASS	PASS	RED	RED	R2-CAND-01
+focused30	14	M6CP1.A7ExactSourceSupportAcceptsVertexEdgeAndFaceInteriorClasses	PASS	PASS	RED	RED	R2-CAND-01
+focused30	15	M6CP1.A7RejectsSupportKindIdentityAndSameSimplexPointMismatches	PASS	PASS	RED	RED	R2-CAND-01
+focused30	17	M6CP1.A7ProjectsCompleteClassLineageAndSelectedRelationValues	PASS	PASS	RED	RED	R2-CAND-01
+focused30	18	M6CP1.A7NeverConsumesPlacementTransportForGeometryOrLineage	PASS	PASS	RED	RED	R2-CAND-01
+focused30	20	M6CP1.NonzeroZ4WitnessPassesProductionCompletionOwnership	PASS	RED	RED	RED	R2-CAND-03
+focused30	22	M6CP1.A5OwnsIsolationAndHardRailRouteValidationWithFrozenNames	PASS	PASS	RED	RED	R2-CAND-01
+focused30	23	M6CP1.A5ValidationPrecedencePreservesHardRailAuthorityBeforeTransport	PASS	PASS	RED	RED	R2-CAND-01
+focused30	24	M6CP1.ThinAdapterOutputIsPureProjectionOfStageProducts	PASS	RED	RED	RED	R2-CAND-01
+focused30	25	M6CP1.A6ClosedComplexBoundaryIsCombinatoriallyEquivalentOnProducedTorus	PASS	RED	RED	RED	R2-CAND-04
+focused30	26	M6CP1.A6ClosedComplexBoundaryPreservesHardRailAndPeriodicLabels	PASS	RED	RED	RED	R2-CAND-04
+focused30	27	M6CP1.A6ClosedComplexBoundaryPreservesQuotientVertexLineage	PASS	RED	RED	RED	R2-CAND-04
+focused30	28	M6CP1.A6BoundaryCandidateExtractionHasIndependentEligibilityOracle	PASS	RED	RED	RED	R2-CAND-04
+focused12	5	M6CP2.VerifierRejectsEveryForbiddenRepairClassWithoutMutation	PASS	PASS	RED	RED	R2-CAND-01
+focused12	6	M6CP2.CertificateChainRequiresExactA5A6A7PayloadBinding	PASS	PASS	RED	RED	R2-CAND-01
+selector	115	SurfaceCellAuthorityContractCutover.AuthoritativePhaseFrontClosureProjectsAndValidatesBeforeOptimizer	PASS	PASS	RED	RED	R2-CAND-01
+selector	116	SurfaceCellAuthorityContractCutover.AuthoritativePhaseFrontClosureRejectsIncompleteOrForeignAuthority	PASS	PASS	RED	RED	R2-CAND-02
+selector	117	SurfaceCellAuthorityContractCutover.AuthoritativePhaseFrontPublishesCanonicalSourceChartsBeforeMaterialization	PASS	PASS	RED	RED	R2-CAND-01
+selector	122	SurfaceCellAuthorityContractCutover.ComponentFeatureRailTamperRejectsAtAggregationSeam	PASS	PASS	RED	RED	R2-CAND-02
+selector	130	SurfaceCellAuthorityContractCutover.FeatureBearingFinalMergedOracleAcceptsPresentRemappedFeatureAuthority	PASS	PASS	RED	RED	R2-CAND-02
+selector	132	SurfaceCellAuthorityContractCutover.FinalMergedOracleRejectsChangedRemappedFeatureRailContent	PASS	PASS	RED	RED	R2-CAND-02
+selector	134	SurfaceCellAuthorityContractCutover.FinalMergedOracleRejectsMissingRemappedFeatureAuthority	PASS	PASS	RED	RED	R2-CAND-02
+selector	137	SurfaceCellAuthorityContractCutover.FinalOracleRejectsMissingForeignOrUncertifiedHardRailChartAuthority	PASS	PASS	RED	RED	R2-CAND-02
+selector	139	SurfaceCellAuthorityContractCutover.HardRailPairChangedRouteContentRejectsStrictTransport	PASS	PASS	RED	RED	R2-CAND-02
+selector	140	SurfaceCellAuthorityContractCutover.HardRailPairExplicitRailIdMismatchRejectsStrictTransport	PASS	PASS	RED	RED	R2-CAND-02
+selector	141	SurfaceCellAuthorityContractCutover.HardRailPairPublishesReverseRouteTransportBeforeMaterialization	PASS	PASS	RED	RED	R2-CAND-01
+selector	142	SurfaceCellAuthorityContractCutover.HardRailPairSameOrientationRejectsStrictTransport	PASS	PASS	RED	RED	R2-CAND-02
+selector	143	SurfaceCellAuthorityContractCutover.HardRailPairingIsFaceRowOrderInvariant	PASS	PASS	RED	RED	R2-CAND-02
+selector	150	SurfaceCellAuthorityContractCutover.RectangularInternalHardFeatureProducesAuthoritativePhaseFrontPerComponent	PASS	PASS	RED	RED	R2-CAND-01
+selector	176	SurfaceCellFieldAlignedNetworkAuthority.ProductionConsumesTypedSkeletonWithoutRawSingularityProjection	PASS	PASS	RED	RED	R2-CAND-07
+selector	201	SurfaceCellPipelinePhase20.AuthoritativePhaseFrontPropagatesBoundaryAndHardFeatureRailsThroughFlowRepAndArrangement	PASS	PASS	RED	RED	R2-CAND-07
+selector	211	SurfaceCellTransitionQuotient.AmbiguousHardRailCounterpartIsRejected	PASS	PASS	RED	RED	R2-CAND-01
+selector	217	SurfaceCellTransitionQuotient.ExactHardRailCounterpartsStitchAcrossTopologyRegions	PASS	PASS	RED	RED	R2-CAND-01
+selector	219	SurfaceCellTransitionQuotient.MissingHardRailCounterpartIsRejected	PASS	PASS	RED	RED	R2-CAND-01
+selector	227	SurfaceCellTypedTransportAuthority.DuplicateSemanticRouteTopologyFailsClosed	PASS	PASS	RED	RED	R2-CAND-01
+selector	230	SurfaceCellTypedTransportAuthority.RouteTopologyTransitionMismatchFailsClosed	PASS	PASS	RED	RED	R2-CAND-01
+selector	231	SurfaceCellTypedTransportAuthority.ValidHardRailRouteUsesTypedIdentity	PASS	PASS	RED	RED	R2-CAND-01
+selector	404	SurfaceCellAuthorityContractCutover.ProductionA4PublishesAcceptedA2bA3ConformityReceipt	PASS	PASS	RED	RED	R2-CAND-01
+selector	405	SurfaceCellAuthorityContractCutover.FixedConformityPlanTargetPerturbationPreservesSharedBoundaryIntervals	PASS	PASS	RED	RED	R2-CAND-01
+selector	406	SurfaceCellAuthorityContractCutover.ExactSharedBoundaryIntervalRejectsMissingOrTamperedIdentityWithoutFallback	PASS	PASS	RED	RED	R2-CAND-02
+selector	407	SurfaceCellAuthorityContractCutover.A3SharedBoundaryCutoverPreservesA4LocalFamilyAndAdvanceSign	PASS	PASS	RED	RED	R2-CAND-02
+selector	444	M5CP3.ProducedTorusPeriodicRelationStoragePermutationPreservesSelectedCertificate	PASS	RED	RED	RED	R2-CAND-04
+selector	446	M5CP3.ProducedTorusNonzeroZ4RotationTranslationMaterializes	PASS	RED	RED	RED	R2-CAND-03
+selector	447	M5CP3.ProducedTorusTamperedNonzeroZ4TransformRejectsTyped	PASS	PASS	RED	RED	R2-CAND-03
+selector	448	M5CP3.ProducedTorusUnusedValidRelationDoesNotAlterSelectedCertificate	PASS	RED	RED	RED	R2-CAND-04
+cp3entry	1	M6CP3.PeriodicExactA3UnequalFaceGaugeUsesRelationAndOccurrenceAuthority	N/A CP3	RED	RED	RED	R2-CAND-03
+cp3entry	2	M6CP3.HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge	N/A CP3	RED	RED	RED	R2-CAND-01
+cp3entry	3	M6CP3.OrdinaryFrontIsolationSeamUsesCoordinateIdentityAndCertifiedSheetTransition	N/A CP3	RED	RED	RED	R2-CAND-05
+cp3entry	4	M6CP3.A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds	N/A CP3	RED	RED	RED	R2-CAND-06
+cp3entry	5	M6CP3.ProducedSeamCollinearOrdinaryFrontRequiresExactCrossSheetTransition	N/A CP3	RED	RED	RED	R2-CAND-05
+cp3entry	6	M6CP3.HardRailCrossRegionBindingDoesNotCompareGlobalSheetLabels	N/A CP3	PASS	RED	RED	R2-CAND-01

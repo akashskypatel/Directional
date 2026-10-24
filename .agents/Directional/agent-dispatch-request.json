@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "request_id": "m6-cp3-tb35-docs-20261024-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb35-docs-apply",
+  "file_id": "18zT2z62EKRwdk4obJafNqSrlv_wmwTmp",
+  "patch_sha256": "868982d810f0fe2cc69def22f24ed5f1e482fb89b7af16db16d29c5ddf03c78c",
+  "base_sha": "14635e3aecf8b08f59d5c615df351defcb244b81",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record immutable TB35 results and next independent review",
+  "retention_days": 14
+}

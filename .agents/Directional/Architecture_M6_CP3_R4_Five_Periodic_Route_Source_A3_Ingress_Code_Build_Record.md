@@ -1,0 +1,19 @@
+# M6-CP3-CB1-ENTRY-R4 — five periodic route source-owned A3 fixture candidates
+
+## Source authority
+
+Verified exact source snapshot workflow `38117592514`, event SHA `03e14caff67a7f36b615b65725a956ed5748dc6f`, artifact `11694386360` outer ZIP SHA256 `7a7c124124929cd550ff347b743df37fd2f07ecad0e69eb54f9172da5bdcce0b`, source tar SHA256 `d343c1820567a3a4085f2828afe7011916990fa5adeba3da79b8d111d571d03d`, complete source file manifest 6098/6098 valid and `runtimeExecution=false`.
+
+## Code correction
+
+Five R3-RED periodic-route positives (frozen ordinals 189, 190, 193, 194, 195) use independent source-owned A2/A3 built from original fixture mesh and full cross field. The selected tracing field remains unmodified (including signed +4 representation, face-row permutation and legacy compact matching); the two malformed/negative cases are not migrated and their expected reason is unchanged. One test source file, no production contract, selector, name, or assertion changes. Source `7ccdcd527380f8ab0fb2c19fbc08a7ab4dbd0819`, apply workflow `38117860858`, patch SHA256 `029bc739c0d8e268290d19a5356631e0e6957171ed7853ab350d87070b8f02ef`; consumed Drive staging owner-deleted. GMP/GMPXX compile-only workflow `38117950975`, job `114406619697`, exact semantic source `7ccdcd527380f8ab0fb2c19fbc08a7ab4dbd0819`, all eight requested targets, preflight/build exits `0/0`, real `gmpxx`/`gmp` linkage, `exactArithmeticBackend=GMP`, 28/28 self-manifest checksums, clean final source, and `runtimeExecution=false`. Result artifact `11693642603` ZIP SHA256 `0fbc36cbdf35567a0dedaa27bc9cd92f8d22b0515e8e1e0767785f1cd4bd2664`; separate log `11694026916` ZIP SHA256 `27c0681a455bfae283a915afbf7e8241ff466032ec632c4e624ffdcca75a07bf`. **No test, benchmark, discovery, or frozen 497-case acceptance ran; none of these five is proven recovered.**
+
+`tests/SurfaceCellsPhase10Tests.cpp` introduces `build_periodic_route_network_with_source_atlas` to construct original A2 source topology and independent A3 `FieldTransportAtlas` from the original full fixture cross field, then passes a distinct selected tracing field into the existing unchanged `build_surface_cell_network`. Five positive tests use it, including legacy `edgeTransitions`-empty and +4 signed matching cases; malformed input and nonzero holonomy negative tests remain on their original helper. The helper's lifetime keeps atlas alive throughout synchronous network construction. This is a candidate ingress repair; R3 historical first failure was `A4_NOT_PRODUCED_UNTYPED` for four and `A4_INVALID_FINAL_CELL_STATE` for ordinal 193. No runtime evidence exists that they are now PASS or that ordinal 193's final-state failure is resolved.
+
+## Compile/evidence boundary
+
+GMP/GMPXX compile-only workflow `38117950975`, job `114406619697`, exact semantic source `7ccdcd527380f8ab0fb2c19fbc08a7ab4dbd0819`, all eight requested targets, preflight/build exits `0/0`, real `gmpxx`/`gmp` linkage, `exactArithmeticBackend=GMP`, 28/28 self-manifest checksums, clean final source, and `runtimeExecution=false`. Result artifact `11693642603` ZIP SHA256 `0fbc36cbdf35567a0dedaa27bc9cd92f8d22b0515e8e1e0767785f1cd4bd2664`; separate log `11694026916` ZIP SHA256 `27c0681a455bfae283a915afbf7e8241ff466032ec632c4e624ffdcca75a07bf`.
+
+## Open obligations
+
+R4 remains `IN_PROGRESS` with `UNKNOWN` successor. Frozen CP2 accepted 491/491 and R3 rejected 403/497, 94 RED (88 CP2 accepted losses) remain the latest independently reviewed results. No runtime test, benchmark, discovery, listing or CLI was executed in this Code + Build turn. Separate authorized artifact-only Test + Benchmark is required for all acceptance claims. Genuine multi-carrier/odd-τ, terminal A5/A6, 39 endpoint/34 Phase10/seven DCEL/88 CP2 regression recovery, six CP3 gates, and independently adjudicated dual-path witness remain open. No selector, threshold or frozen acceptance altered.

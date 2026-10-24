@@ -61,7 +61,7 @@ struct StreamlineState {
   Eigen::Matrix<bool, Eigen::Dynamic, 1> segmentAlive;
 
   // current time (live segments are such that beginTimes <= currTime < endTime
-  double currTime;
+  double currTime = 0.0; // read by streamlines_init before the first step
 
   std::vector<Eigen::RowVector3d> segStart, segEnd,
       segNormal;                               // traced segments features

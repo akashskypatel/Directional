@@ -211,10 +211,10 @@ TEST(IntegerTransitionBasisPhase03,
   const directional::pipeline::RemeshResult enabled =
       run_reduction_integration(true);
 
-  ASSERT_TRUE(disabled.success);
-  ASSERT_TRUE(enabled.success);
-  EXPECT_EQ(enabled.faces.rows(), disabled.faces.rows());
-  EXPECT_EQ(enabled.degrees.size(), disabled.degrees.size());
+  ASSERT_TRUE(disabled.is_produced());
+  ASSERT_TRUE(enabled.is_produced());
+  EXPECT_EQ(enabled.product().faces.rows(), disabled.product().faces.rows());
+  EXPECT_EQ(enabled.product().degrees.size(), disabled.product().degrees.size());
   EXPECT_EQ(enabled.diagnostics.integration.reducedIntegerVariableCount,
             disabled.diagnostics.integration.reducedIntegerVariableCount);
   EXPECT_FALSE(enabled.diagnostics.integration

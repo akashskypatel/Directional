@@ -1,0 +1,12 @@
+# CB27A — certified-seam wedge-membership negative oracle: Code + Build (2026-10-22)
+
+- Turn: `M6-CP3-CB27A-RP01-A7-WEDGE-MEMBERSHIP-ORACLE-CORRECTION`; RA-135 authorized only `tests/SurfaceCellTransitionQuotientTests.cpp`, compile-only.
+- Frozen exact patch base: `aa143c3003dc9b0a21a50951b90c56987e178a6d`; one-file patch SHA-256 `5e5b4c26363d66453ee59f0745b98ac1c0d612bb37ebcad8f0a4c99f11fb294d`, diff-body `12f0a0bd088b055ceec7c2395969fec6a8e5221cad98fcaee7f4846490a65fa5`.
+- Patch applied by validated Google Drive workflow [run 39838423046](https://github.com/akashskypatel/Directional/actions/runs/39838423046), result artifact `12452615445`, source commit `f021e8f7b876c261b8337334596f519f4b7652a7`; Drive transport retired after push.
+- Changed source only `tests/SurfaceCellTransitionQuotientTests.cpp` (+101/-20); no production, header, fixture, selector, workflow or other test edits.
+- Replaced non-discriminating `CertifiedSeamRejectsSpanBindingOutsideEndpointWedge` with `CertifiedSeamRejectsSpanBindingWithdrawnFromEndpointWedge`: remove one authentic span binding from the first eligible endpoint's wedge (D7: second), retain same-sheet sibling and full certificate.
+- P1–P6 assert actual membership and sibling, unchanged sheet set, shared-node identity, opposite face/sheet-only certificate sides, and exact certificate transition evidence. A6 expects `InvalidIsolationEvidence`; A7 expects `UncertifiedCrossSheetBinding` at `cross-sheet:seam-direction`, locus `relation.id.first`.
+- Original three negative cases and D3/D7 positives unchanged; optional helper locus assertion defaults off; same-side witness remains unreachable on D7 (RA-135.1).
+- GMP/GMPXX compile-only [run 39838687950](https://github.com/akashskypatel/Directional/actions/runs/39838687950), artifact `12452346647`, ZIP SHA-256 `c650a9d5463fde132dfc270356ef7538d7fe11c6ec0ef3cdde54d6f3e5602af4`. Eight prescribed targets compiled; verified 28/28 manifest, GMP/GMPXX linkage, clean source receipts, `runtimeExecution=false`, `exactArithmeticBackend=GMP`. No runtime tests or benchmarks executed.
+- Stable 66/17/49; witness debt 1; CP2 491/491 accepted; TB28 462/497 candidate unpromoted; selector 497 frozen; RP-01 open, RP-02 UNREACHED, Gate C suspended.
+- Mandatory independent successor: `M6-CP3-CB27A-RP01-A7-WEDGE-MEMBERSHIP-ORACLE-CORRECTION-REV`; static non-vacuity review must adjudicate CB27A before CB28/TB29.

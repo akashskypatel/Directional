@@ -1,0 +1,2 @@
+Snapshot for M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE.
+Must remain source-only; no runtime or tests.
