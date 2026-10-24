@@ -1,3 +1,0 @@
-CB32 independent review source snapshot trigger.
-review_turn=M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION-REV
-entry_status_commit=2174e79c2e1b3b010781e042172264e34de3c871
