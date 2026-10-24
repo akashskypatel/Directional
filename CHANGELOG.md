@@ -1,3 +1,7 @@
+## 2026-10-24 — CB34 independent Review accepts static face-gauge correction, authorizes TB35
+
+- Re-hashed source snapshots (5,847 and 5,848 files), exact CB34 package (28/28, eight GMP/GMPXX, runtime disabled), selector449 and test diff. A3 canonical transport invariance follows from `(p,s)→(-s,p)` and directed face coboundary; all seven original tests unchanged. Independent [review](.agents/Directional/Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Review_Decision_20261024.md) issues [13-case TB35 manifest](.agents/Directional/Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Case_Manifest.tsv). No runtime acceptance, no change to 19 RED or CP3.
+
 ## 2026-10-24 — CB34 periodic face-gauge test helper compiled; independent Review next
 
 - Implemented the RA-150 complete face gauge and A3 invariance oracle exclusively in `SurfaceCellsPhase10Tests.cpp`. The initial compile found a `DomainResult` dereference error; fixed with `.value()` and verified eight GMP/GMPXX compile targets without runtime. Exact source `d5fc8f22fd309ba90ad1fd7b4fbdc3491a5a8f7d`, run [#40111610291](https://github.com/akashskypatel/Directional/actions/runs/40111610291), package `12566907246`; [code/build record](.agents/Directional/Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Record_20261024.md). Seven inherited REDs remain; accepted ledgers and selector unchanged. Next: independent CB34-REV.
