@@ -39,11 +39,10 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Reviewed decision | [CB35-R1-REV](Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Independent_Review_20261024.md) rejects directed-route non-vacuity (R-2), while discharging R1 canonical and translation obligations; [RA-152](Architecture_M6_CP3_TB35_REV_Audit_Periodic_Route_Transport_Decision_20261024.md) accepts TB35-REV evidence and non-promotion, corrects its owner (F1), decides single-writer D1–D4, and replaces the ingress DEFN with CB35 → TB36 → CB36 → TB37 → legacy-oracle DEFN. [TB35-REV](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) (RA-151) verified 13/13, 11 PASS / 2 RED. |
 | Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500** (19 inherited RED); TB34 **5 PASS / 7 inherited RED** (12 measured), TB33 synthetic **6/6** only; selector497 frozen; stable **66/17/49**, debt 1. RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION-REV` — SAME-TURN CONTINUATION
+## Mandatory next turn — `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE` — Code + Build
 
-- **Current review:** R-2 directed-route oracle was rejected on static evidence. Eight-file documentation patch committed at `ba5e35b6d697459a57667b8242638b07f7efb66b`; Drive staging retired and cleanup succeeded.
-- **Outstanding before formal closeout:** `review_check.py boundary` must be verified on genuine full Git history, including rewrite baseline ancestry and source preservation; the synthetic extracted snapshot cannot prove those conditions. Record the actual result. Then finish the Review beacon and authorize the already-frozen R2 corrective plan.
-- **Conditional successor only after COMPLETE:** `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE` ([plan](Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Plan_20261024.md)); test-only, eight-target GMP/GMPXX compile, no tests or benchmarks in Code+Build. TB36 remains prohibited until its independent R2 Review accepts.
+- **Previous Review closed:** CB35-R1-REV rejected directed-route oracle (R-2) on independent static evidence; exact semantic/compile package unchanged. Documentation patch committed at `ba5e35b6d697459a57667b8242638b07f7efb66b`; owner-side Drive retirement and cleanup succeeded. Genuine full-history `review_check.py boundary` PASSED in [run 40142803596](https://github.com/akashskypatel/Directional/actions/runs/40142803596), with all selector hashes, ancestor rewrite baseline and durable sections verified.
+- **Current authorized successor:** `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE` ([plan](Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Plan_20261024.md)); test-only correction, approved eight-target GMP/GMPXX compile/package, no tests or benchmarks in Code+Build. Do not start before previous Review's final COMPLETE `STATUS` beacon. TB36 remains prohibited until independent R2 Review accepts.
 - **Frozen state:** CP2 491/491; TB32 481/500 candidate; TB35 11 PASS/2 RED; stable 66/17/49 debt1, selector497 unchanged, RP-01 open.
 
 ## Turn Sequence
@@ -57,7 +56,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | done, not accepted | `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS-REV` | Found incomplete published-route identity assertion; no TB36 manifest. |
 | done | `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION` | Test-only R-1 correction compiled and packaged without execution. |
 | done, not accepted | `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION-REV` | R-2 canonical-versus-oriented false positive; TB36 still prohibited. |
-| conditional | `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE` → `…-REV` | Only after current Review's full-history closeout; directed 32-step oracle + reversal-negative. |
+| next | `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE` → `…-REV` | Directed 32-step oracle + reversal-negative; Code+Build compile-only and independent Review before TB36. |
 | 3 | `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE` → `…-REV` | Pre-fix: witnesses predicted RED. STOP if any witness is GREEN, A3 rejects k=2, or a witness fails before the periodic producer. |
 | 4 | `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT` → `…-REV` | Production D2 only: observed steps read `atlas->transport`; missing transport fails closed with location; compile only. |
 | 5 | `M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY` → `…-REV` | Witnesses GREEN, TB35 13 cases, full 497 census (route digests change). |
@@ -69,7 +68,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION-REV**, same-turn resume. Reuse published [Review](Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Independent_Review_20261024.md) and artifacts; obtain real-history `review_check.py boundary` evidence, then close Review. Only then begin [R2](Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Plan_20261024.md) in a separate turn. No TB36.
+`load_next`: **M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE**, separate test-only Code + Build turn. Follow the [frozen R2 plan](Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Plan_20261024.md) and rejected [R1 Review](Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Independent_Review_20261024.md); use a new entry STATUS beacon only after R1 Review publishes COMPLETE. No TB36.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
