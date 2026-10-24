@@ -1,0 +1,2 @@
+# TB33 temporary source-snapshot trigger to delete; preserve durable dispatcher and orphan mailbox.
+.agents/connector-triggers/source-snapshot/m6-cp3-tb33-20261024.txt
