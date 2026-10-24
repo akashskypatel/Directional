@@ -259,6 +259,7 @@ struct FieldAtlasBuildError {
   std::optional<FieldCycleOrderingDiagnostics> cycleOrderingDiagnostics;
   std::vector<FieldAtlasRegionCycleBasisDiagnostics> regionCycleBasisDiagnostics;
   std::vector<FieldTransportRegionDiagnostics> regionTransportDiagnostics;
+  std::string site;
 
   auto operator<=>(const FieldAtlasBuildError &) const = default;
 };

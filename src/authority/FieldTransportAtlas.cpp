@@ -2581,8 +2581,12 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
       const QuarterTurn composed = compose_cycle(*ordered);
       if (static_cast<int>(composed.value()) !=
           normalized_quarter_turn(turningLift)) {
-        return fail(FieldAtlasBuildErrorCode::CycleTransportMismatch,
-                    std::nullopt, std::nullopt, std::nullopt, region.id());
+        FieldAtlasBuildError error;
+        error.code = FieldAtlasBuildErrorCode::CycleTransportMismatch;
+        error.topologyRegion = region.id();
+        error.cycleOrderingDiagnostics = orderingDiagnostics;
+        error.site = "cycle-transport";
+        return FieldTransportAtlasBuildResult(std::move(error));
       }
 
       FieldCycleKind kind = FieldCycleKind::HandleGenerator;
@@ -2691,8 +2695,15 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
       canonicalBoundary.turningLift += correction;
       if (static_cast<int>(canonicalBoundary.composedTransport.value()) !=
           normalized_quarter_turn(canonicalBoundary.turningLift)) {
-        return fail(FieldAtlasBuildErrorCode::CycleTransportMismatch,
-                    std::nullopt, std::nullopt, std::nullopt, region.id());
+        FieldCycleOrderingDiagnostics cycleDiagnostics;
+        cycleDiagnostics.cycleKind = FieldCycleKind::BoundaryLoop;
+        cycleDiagnostics.cycleRowIndex = boundaryCycleIndices.front();
+        FieldAtlasBuildError error;
+        error.code = FieldAtlasBuildErrorCode::CycleTransportMismatch;
+        error.topologyRegion = region.id();
+        error.cycleOrderingDiagnostics = cycleDiagnostics;
+        error.site = "cycle-boundary-corrected-lift";
+        return FieldTransportAtlasBuildResult(std::move(error));
       }
       witness.indexSum = requiredIndexSum;
     }

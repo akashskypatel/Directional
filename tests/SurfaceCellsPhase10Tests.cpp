@@ -82,6 +82,12 @@ std::string describe_field_atlas_build_error(
   if (error.sourceFace) out << ";sourceFace=" << error.sourceFace->index();
   if (error.sourceVertex) out << ";sourceVertex=" << error.sourceVertex->index();
   if (error.topologyRegion) out << ";topologyRegion=" << error.topologyRegion->index();
+  if (!error.site.empty()) out << ";site=" << error.site;
+  if (error.cycleOrderingDiagnostics) {
+    out << ";cycleRowIndex=" << error.cycleOrderingDiagnostics->cycleRowIndex;
+    out << ";cycleKind=" << directional::authority::field_cycle_kind_name(
+                               error.cycleOrderingDiagnostics->cycleKind);
+  }
   if (error.incompleteCycleBasisReason) {
     out << ";incompleteCycleBasisReason="
         << directional::authority::incomplete_cycle_basis_reason_name(
