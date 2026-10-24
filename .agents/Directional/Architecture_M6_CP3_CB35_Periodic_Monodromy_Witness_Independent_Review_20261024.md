@@ -28,6 +28,13 @@ The third test (`tests/SurfaceCellsPhase10Tests.cpp:4650–4690`) creates a `Gri
 - **Accounting:** CP2 accepted 491/491; TB32 candidate 481/500 (19 inherited RED); TB35 focused 11 PASS/2 RED; stable 66 events/17 categories/49 recurrences, debt 1, selector497 frozen; RP-01 open, RP-02 unreached. No stable loss proven.
 - **Carried:** RA-152 D1 single-writer, D2 F1 future owner, D3 pre-fix evidence, D4 frozen-body rehoming, RA-152.5 axis-binding, DIAG-RETAIN and other handoff debts. New R-1 test-authority obligation belongs to the corrective turn; falsifier is an independently checked complete route and automorphism identity oracle.
 
+## Authoritative committed-history verification
+
+- A one-use Review-only Actions caller checked out the actual repository with full Git history, without running any Directional executable. [Run 40134815841](https://github.com/akashskypatel/Directional/actions/runs/40134815841) completed both SchemaStore workflow validation and the read-only historical boundary.
+- Event/source commit: `f8c815d01d0ac0ea9c531be9c3260f70ecad05cf`. The uploaded [evidence artifact](https://github.com/akashskypatel/Directional/actions/runs/40134815841/artifacts/12576287403) has exact ZIP SHA-256 `3f6bbeebb048567c023ecbbf88dfecedd81b4ebbd77f21dc8922a18ab2857003`.
+- The independently re-read log shows `review_check.py boundary` **ALL CHECKS PASSED**: no working-tree code/test/fixture/build or selector mutation, all 49 present historical selector files matching their committed content, rewrite baseline `8b7299b43764a6ba3444e5bc774a2f1b65e99731` exists and is an ancestor, and preserved durable headings in handoff (4/4), orientation (1/1), tracker (0/0 under the script's heading pattern). A fresh `git status -sb` printed a clean branch tracking origin at the observed event commit.
+- A separate exact GitHub compare from the compiled semantic CB35 commit to review entry found only documentation, dispatcher and `STATUS` modifications. The temporary history-check workflow caller was removed before its trigger marker, and neither is part of the durable product. Review non-acceptance R-1 and the separate corrective successor remain unchanged.
+
 ## Review closeout
 
 | Duty | Answer |
@@ -47,6 +54,6 @@ The third test (`tests/SurfaceCellsPhase10Tests.cpp:4650–4690`) creates a `Gri
 | Consolidation under CLEAN_UP_POLICY | No historical material deleted; stale orientation next owner replaced |
 | Successor frozen | `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION`, falsifiers in corrective plan |
 | Turn boundary held | Static review, no test/runtime/benchmark/source-test edits |
-| review_check.py boundary | Executed on a synthetic local snapshot and FAILED (missing historical `.git` and rewrite baseline); NOT an authoritative boundary PASS. Exact remote compare shows documentation-only mutations, but a history-backed rerun remains required |
-| `STATUS` lifecycle maintained | Entry beacon committed; final beacon must follow completed remote publication |
-| Pushed to origin, branch in sync | Workflow 40133802551 applied commit 9ecf4f912684c5cc8f4644b5786f111c9d13a12c; exact changed-path comparison verified only documents and dispatcher. A true `git status -sb` check against complete history is still unavailable |
+| review_check.py boundary | **PASS on real Git history**: workflow 40134815841, exact artifact 12576287403 / SHA-256 `3f6bbe...85003`, full-depth origin-tracking checkout; required durable and selector gates passed |
+| `STATUS` lifecycle maintained | Entry and 2026-10-24T21:30:51Z resume beacons committed; final COMPLETE beacon is the last repository write after review record verification |
+| Pushed to origin, branch in sync | Review docs were applied by run 40133802551; actual full-history Actions checkout at event `f8c815d` reported a clean branch tracking `origin`; temporary workflow/trigger cleanup and this record update are direct branch commits |
