@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb34-rev-doc-closeout-20261024-v1",
+  "request_id": "m6-cp3-cb34-face-gauge-apply-20261024-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb34-rev-doc-closeout",
-  "file_id": "1RAw_JkvS4r5n2eMwfq6h9WKmqaesrKNH",
-  "patch_sha256": "817a8c21be2e6b568db1d9da092c0fb28328923927e29d1a54aa265c2ad78e44",
-  "base_sha": "0164468a5c2d480c11799c4da07be40caae376b5",
+  "mailbox_key": "m6-cp3-cb34-face-gauge-apply",
+  "file_id": "18I7H13NREw_YbEnhp-a9YQDyVSl65cuE",
+  "patch_sha256": "00322d2e773d9eea55b4d0e5dac3ac51f5af18aa3c0ff85eb3e04d8ede5c30a0",
+  "base_sha": "5345657acdea912cfd40a12775c5625e2565f05b",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: independently classify TB34 periodic route gauge fixture failure",
+  "commit_message": "test: apply consistent periodic-route face gauge oracle",
   "retention_days": 7
 }
