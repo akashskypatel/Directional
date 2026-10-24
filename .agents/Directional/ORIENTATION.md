@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-24 · CB34-REV statically accepts the exact three-edge representation face gauge and independent A3 invariance oracle; separately authorized TB35 13-case immutable runtime verification is next. No original RED or CP3 credit promoted. CP2 491/491 accepted, TB32 481/500 candidate/19 RED, stable 66/17/49, debt 1; RP-01 open.
+**Currency:** 2026-10-24 · TB35-REV verifies 13/13 immutable processes, 11 PASS / 2 RED; source-based review finds that negatives 191/192 mutate legacy inputs discarded at the authoritative atlas ingress. No A4 defect or passing legacy migration proof inferred; next is `M6-CP3-DEFN-RP01-PERIODIC-INGRESS-AUTHORITY`. CP2 491/491 accepted, TB32 481/500 candidate, stable 66/17/49 debt1; RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current CB34 independent Review:** The invalid two-edge-only TB34 source fixture violated both the vertex-2 and vertex-3 star cycles. CB34 replaces it with a complete three-edge frame-and-matching gauge; independent static Review accepts the change and exact compile provenance, while the seven original tests remain unexecuted on the corrected package. [CB34-REV decision](Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Review_Decision_20261024.md) authorizes a separate [TB35 13-case manifest](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Case_Manifest.tsv); any new A4 failure transfers to its producer, not fixture retuning.
+**Current TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 
 **Historical evidence (RA-148 and CB31-REV):** Independent TB32 Review rechecked 1,006/1,006 artifact checksums and 500 distinct raw logs. Its original 497-case selector measured **478 PASS / 19 inherited RED** (six RED→PASS over TB31's 472/497, zero regressions), plus three PASS factory controls for **481/500**. The six recovered cases prove synthetic checked-factory fixture/owner assertions, not real odd atlas transport, periodic topology or produced A6 behavior. The 19 REDs remain at unchanged first sites, including seven A3 unavailable-route fixture exceptions and seven untyped cases. CB31 lacked independent raw signed-inverse and topology-keyed gauge expectations. **CB32-REV** verifies the corrected expected (3/1) from signed raw arms, semantic source-face mapping and guarded false-gauge negatives; eight-target GMP compile source is verified. Static sufficiency only: `M6-CP3-TB33-RP01-ODD-ATLAS-ORACLE-VERIFICATION` must execute the immutable artifact before runtime credit; no M6-CP3 acceptance. Prior TB28/TB30/TB31 reports remain historical comparison baselines.
 
@@ -102,16 +102,18 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** Execute separately authorized TB35 immutable 13-case focused suite on CB34 package, then independent TB35-REV. The seven prior S1 REDs are not yet recovered; preserve all 19 inherited REDs and A3 S2 unreachability. If cleared S1 reveals an A4 first failure, assign the periodic producer via DEFN, not another fixture edit.
+**Immediate:** `M6-CP3-DEFN-RP01-PERIODIC-INGRESS-AUTHORITY` must define authoritative atlas/legacy ingress and independently discriminatory negative periodic oracles; no producer implementation until normative semantics are accepted. TB35 191/192 remain RED and 189/190 passing but legacy-coverage-inconclusive; 19 inherited full-census RED and S1/A4 obligations remain.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | CB34 gauge correction accepted statically, compile verified; TB35 13-case independent execution and TB35-REV must determine whether seven inherited REDs clear S1. Produced periodic/A6 remain separate. | M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY; [CB32-REV](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Review_Decision_20261024.md), [CB31-REV](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md), [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md) and [RA-146](Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md) |
+| **1** | TB35-REV independently verifies 5/7 PASS, two ignored-input negative RED and non-discriminating legacy positives; Definition must own atlas/legacy ingress and periodic A4 validation. Produced periodic/A6 remain separate. | M6-CP3-DEFN-RP01-PERIODIC-INGRESS-AUTHORITY; [TB35-REV](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md), [CB32-REV](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Review_Decision_20261024.md), [CB31-REV](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md), [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md) and [RA-146](Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
+
+- **Unconsumed negative stimulus (TB35-REV):** when checked atlas authority bypasses raw matching and edge-transition containers, mutating those containers does not exercise periodic negative guards; passing +4/legacy variants can also be vacuous. Bind expected failure to the actual single-writer source, without weakening tests.
 
 - **Route cancellation is not local-cycle consistency (TB34-REV):** changing two matchings so a chosen periodic route sums to zero can leave nonzero residuals in distinct vertex stars. A valid face gauge must update every incident transition; never suppress the atlas cycle predicate to admit invalid fixture authority.
 
