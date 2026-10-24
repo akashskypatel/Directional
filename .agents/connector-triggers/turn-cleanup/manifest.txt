@@ -1,0 +1,2 @@
+# CB35-R2 cleanup: source-snapshot marker; preserve dispatcher and mailbox
+.agents/connector-triggers/source-snapshot/M6-CP3-CB35-R2-20261024T2349Z.json
