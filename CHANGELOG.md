@@ -1,3 +1,12 @@
+## 2026-10-24 — TB34-REV audited (RA-150): CB34 corrected to a true face gauge
+
+- Review kept TB34-REV's fixture-owner classification, recomputed from mesh and raw field: all principal matchings are 0, and both the vertex-2 and vertex-3 stars are broken. It withdrew RA-149.3 (S2 unreachable).
+- Corrected the CB34 plan:
+  - the gauge must relabel face 1's frame as well as add +1/−1/−1 to its three edge matchings;
+  - an A3 branch-topology invariance oracle, a new test outside the selector, guards the change;
+  - switching the source field is prohibited.
+- Recorded the R3/R4 history of the accepted-prefix rows `selector:189–195`. [RA-150](.agents/Directional/Architecture_M6_CP3_TB34_REV_Audit_Face_Gauge_Representation_Decision_20261024.md). Stable 66/17/49, debt 1; CP2 491/491; RP-01 open.
+
 ## 2026-10-24 — TB34 independent Review assigns source-fixture cycle owner
 
 - Independent 17/17 artifact and twelve raw-log receipts confirm all seven inherited selector189–195 first reject at A3 S1 LocalVertex row0. Static OBJ/field derivation shows partial two-edge gauge matching edits (+1/−1) cancel around the selected periodic route but fail at local source vertex2; effort remains unchanged. This is invalid periodic-route test authority, not an established A3 producer bug. Five controls remain PASS; no runtime/acceptance change. [Review](.agents/Directional/Architecture_M6_CP3_TB34_A3_Cycle_Locus_Harvest_Review_Decision_20261024.md).

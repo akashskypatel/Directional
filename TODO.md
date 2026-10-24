@@ -1,9 +1,37 @@
-## CURRENT — TB34 immutable A3 cycle-locus harvest complete; independent Review next (2026-10-24)
+## CURRENT — RA-150 TB34-REV audit; CB34 corrected to a true face gauge (2026-10-24)
+
+- [x] `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST-REV-AUDIT` (RA-150):
+  - TB34-REV's invalid-fixture owner is confirmed independently: faces 0/1/30/32 adjacency, all principal matchings 0, vertex-2 **and** vertex-3 stars broken;
+  - S2 is unreachable (RA-149.3 withdrawn);
+  - the CB34 plan is corrected: a face gauge needs the frame relabel too;
+  - switching `sourceField` is prohibited;
+  - R3/R4 history recorded. [Decision](.agents/Directional/Architecture_M6_CP3_TB34_REV_Audit_Face_Gauge_Representation_Decision_20261024.md).
+- [ ] **EXACT NEXT:** `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR`. This is test-only and compile-only. [Amended plan](.agents/Directional/Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Plan_20261024.md).
+  - Change `balanced_periodic_route_field` to a representation gauge g(face1)=+1:
+    - find the face by route topology;
+    - the original matchings must be 0;
+    - apply +1/−1/−1 additively on all three face-1 edges, keeping the compact matching consistent and `effort` unchanged;
+    - relabel face 1's frame so A3 `rawGauge` shifts by +1.
+  - Add the test `BalancedRouteFieldIsPureFaceGauge` (A3 branch-topology invariance; raw +1/−1/−1; the two-edge-only construction still rejects at S1).
+  - The seven test bodies, `sourceField` arguments, production code and selectors stay unchanged. Record ≤30 lines.
+- [ ] Then: CB34-REV (static; issues the TB35 manifest) → TB35 (7 rows + oracle + 2 A3 guards + 3 TB33 controls) → TB35-REV. If S1 clears but an A4 RED follows → DEFN for the periodic-producer owner.
+- [ ] Then, one owner per turn: untyped 7 (`selector:174,201,204,242,247,250,405`) → A5 `focused30:12` → A4 `cp3entry:4` → A3 `selector:442` → DEFN-T1 (`cp3entry:1/2`) → census → RP-01 Review. Carried: DEFN-SEAM-NZ, Periodic follow-up, RA-146.2/4, RA-45.4, G4-B002.
+- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
+  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
+  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
+  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
+  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- **Turn sequence:** TB34 → TB34-REV → TB34-REV-AUDIT (RA-150) → **CB34** → CB34-REV → TB35 → TB35-REV → untyped 7 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review; `DIAG-RETAIN` carried.
+- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 candidate (19 inherited RED); TB34 5 PASS / 7 RED diagnostic; selector 497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+
+---
+
+## HISTORY — CB33-REV; TB34 harvest; TB34-REV (2026-10-24)
 
 - [x] `M6-CP3-CB33-RP01-A3-CYCLE-MISMATCH-LOCUS-DIAGNOSTIC-REV`: independent three-file diff and 28/28 eight-target GMP/GMPXX compile/package audit; `runtimeExecution=false`. S1 row/kind now visible; mathematical S2 unreachable and row-index namespace warning documented in [Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Review_Decision_20261024.md](.agents/Directional/Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Review_Decision_20261024.md). No new runtime acceptance.
 - [x] `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST`: [run 40090972464](https://github.com/akashskypatel/Directional/actions/runs/40090972464), result `12558378347`, 17/17 hashes; seven inherited A3 REDs all at `cycle-transport`, `LocalVertex`, row 0, region 0; five controls PASS, 12/12 complete, immutable postflight. [Report](.agents/Directional/Architecture_M6_CP3_TB34_A3_Cycle_Locus_Harvest_Report_20261024.md).
 - [x] `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST-REV` — independently adjudicated: two-edge-only gauge fixture invalid, A3 S1 appropriate. [Review](.agents/Directional/Architecture_M6_CP3_TB34_A3_Cycle_Locus_Harvest_Review_Decision_20261024.md).
-- [ ] **EXACT NEXT:** `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR` — fixture-only full face-gauge correction; compile-only, original oracles and selectors unchanged. [Plan](.agents/Directional/Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Plan_20261024.md).
+- [x] (superseded by RA-150 amendment) CB34 handoff by TB34-REV. [Plan](.agents/Directional/Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Plan_20261024.md).
 - [x] TB34 independent Review assigned invalid periodic-route fixture as first owner; subsequent CB and immutable TB needed before recovery credit. 19 inherited REDs, CP2 491/491, TB32 481/500 candidate, stable 66/17/49 debt1 unchanged; RP-01 open, RP-02 unreached.
 
 ## HISTORY — TB33 run; RA-149 review (2026-10-24)

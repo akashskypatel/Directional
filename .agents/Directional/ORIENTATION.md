@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-24 · TB34-REV independently attributes seven A3 S1 LocalVertex REDs to a test fixture that mutates two matching edges without a complete face-gauge compensation. Atlas correctly rejects; CB34 fixture-only compile next. CP2 491/491 accepted; TB32 481/500 candidate, 19 RED; stable 66/17/49, debt1; RP-01 open.
+**Currency:** 2026-10-24 · RA-150 audit keeps TB34-REV's fixture owner for `selector:189–195`, but CB34 must be a true face gauge (frame relabel + three transitions, A3 invariance oracle). CB34 is compile only. CP2 491/491 accepted; TB32 481/500 candidate, 19 RED; stable 66/17/49, debt 1; RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 

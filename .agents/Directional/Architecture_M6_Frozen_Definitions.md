@@ -1,3 +1,13 @@
+## RA-150 — TB34-REV audited: fixture owner kept; CB34 must be a true face gauge (2026-10-24)
+
+Authority: `Architecture_M6_CP3_TB34_REV_Audit_Face_Gauge_Representation_Decision_20261024.md`.
+
+- **RA-150.1** TB34-REV owner accepted: the two-edge edit breaks the vertex-2 and vertex-3 LocalVertex cycles; S1 is correct; S2 is unreachable (RA-149.3 withdrawn).
+- **RA-150.2** `selector:189–195` are accepted-prefix rows, RED since R3. R4 bound source A3 to the edited field. Switching `sourceField` to the unedited field is prohibited. An A4 failure after S1 clears is a producer owner (STOP).
+- **RA-150.3** CB34 gauge g(face1)=+1 = frame relabel (`p'=−s, s'=p`, confirmed by oracle) + additive transitions +1/−1/−1 on all three face-1 edges + precondition that the originals are 0. The invariance oracle requires A3 branch topology equal to the unedited field's.
+- **RA-150.4** CB34 (helper + `BalancedRouteFieldIsPureFaceGauge`, compile only) → CB34-REV (issues the TB35 manifest) → TB35 → TB35-REV.
+
+---
 ## RA-149 — TB33 reviewed; residual-RED realignment; A3 cycle diagnostic first (2026-10-24)
 
 Authority: `Architecture_M6_CP3_TB33_Odd_Atlas_Oracle_Verification_Review_Decision_20261024.md`.
