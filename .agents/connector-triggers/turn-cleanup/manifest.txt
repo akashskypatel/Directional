@@ -1,2 +1,0 @@
-# CB33 temporary state cleanup; durable dispatcher, source/package records and workflow mailbox are retained.
-.agents/connector-triggers/source-snapshot/m6-cp3-cb33-a3-locus-20261024.txt
