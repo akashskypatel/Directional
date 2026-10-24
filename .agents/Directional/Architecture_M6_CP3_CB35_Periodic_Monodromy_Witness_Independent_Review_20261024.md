@@ -51,7 +51,7 @@ The third test (`tests/SurfaceCellsPhase10Tests.cpp:4650–4690`) creates a `Gri
 | ROADMAP | n/a: M6-CP3 remains active, no checkpoint moves |
 | Selector manifest | n/a: no selector change or promotion |
 | LESSONS | Existing non-vacuity and incomplete-case lessons apply; no new global principle |
-| Consolidation under CLEAN_UP_POLICY | No historical material deleted; stale orientation next owner replaced |
+| Consolidation under CLEAN_UP_POLICY | Inspected M6 folded index and active CB34/TB35/RA-152 lineage; no files folded: these records remain cited as upstream evidence while CB35 R1 depends on them, so deletion would be premature. No stale current owner retained in orientation |
 | Successor frozen | `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION`, falsifiers in corrective plan |
 | Turn boundary held | Static review, no test/runtime/benchmark/source-test edits |
 | review_check.py boundary | **PASS on real Git history**: workflow 40134815841, exact artifact 12576287403 / SHA-256 `3f6bbe...85003`, full-depth origin-tracking checkout; required durable and selector gates passed |
