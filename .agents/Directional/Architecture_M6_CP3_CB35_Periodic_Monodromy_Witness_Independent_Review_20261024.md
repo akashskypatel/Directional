@@ -47,6 +47,6 @@ The third test (`tests/SurfaceCellsPhase10Tests.cpp:4650–4690`) creates a `Gri
 | Consolidation under CLEAN_UP_POLICY | No historical material deleted; stale orientation next owner replaced |
 | Successor frozen | `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION`, falsifiers in corrective plan |
 | Turn boundary held | Static review, no test/runtime/benchmark/source-test edits |
-| review_check.py boundary | Pending authoritative committed-history validation; local source archive lacks Git history and cannot establish an authoritative PASS |
+| review_check.py boundary | Executed on a synthetic local snapshot and FAILED (missing historical `.git` and rewrite baseline); NOT an authoritative boundary PASS. Exact remote compare shows documentation-only mutations, but a history-backed rerun remains required |
 | `STATUS` lifecycle maintained | Entry beacon committed; final beacon must follow completed remote publication |
-| Pushed to origin, branch in sync | Pending remote patch publication, readback and final authority check |
+| Pushed to origin, branch in sync | Workflow 40133802551 applied commit 9ecf4f912684c5cc8f4644b5786f111c9d13a12c; exact changed-path comparison verified only documents and dispatcher. A true `git status -sb` check against complete history is still unavailable |
