@@ -1,2 +1,0 @@
-# CB35-R1 independent Review source snapshot trigger; cleanup only after source evidence is preserved
-.agents/connector-triggers/source-snapshot/cb35-r1-rev-20261024T23032.txt
