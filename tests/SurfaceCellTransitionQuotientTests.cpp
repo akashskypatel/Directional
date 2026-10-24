@@ -9128,12 +9128,81 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
   }
 }
 
+// Independent oracle for the planar odd-arm witness. Unlike the A3 matching
+// producer this uses the oriented source-edge incidence and the signed cross
+// product of the literal *raw* first arms. In this fixture their separation is
+// exactly a quarter-turn: the target's branch that matches the source's first
+// arm is the inverse of that directed raw rotation. No A3 value enters the
+// expected transport or the topology-keyed gauge assignment.
+int independent_odd_raw_transport(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &raw,
+    const directional::authority::SourceFaceTopologyKey &fromTopology,
+    const directional::authority::SourceFaceTopologyKey &toTopology) {
+  const auto find_row = [&](const auto &topology) {
+    std::array<int, 3> sought{};
+    for (int corner = 0; corner < 3; ++corner)
+      sought[static_cast<std::size_t>(corner)] =
+          static_cast<int>(topology.vertices()[static_cast<std::size_t>(corner)].index());
+    std::sort(sought.begin(), sought.end());
+    int selected = -1;
+    for (int row = 0; row < faces.rows(); ++row) {
+      std::array<int, 3> actual{faces(row, 0), faces(row, 1), faces(row, 2)};
+      std::sort(actual.begin(), actual.end());
+      if (actual == sought) {
+        if (selected >= 0) throw std::runtime_error("CB32 duplicate topology face");
+        selected = row;
+      }
+    }
+    if (selected < 0) throw std::runtime_error("CB32 source topology face missing");
+    return selected;
+  };
+  const int from = find_row(fromTopology);
+  const int to = find_row(toTopology);
+  if (from == to || faces.rows() != 2 || raw.rows() != faces.rows() ||
+      raw.cols() != 12)
+    throw std::runtime_error("CB32 invalid independent raw-transport domain");
+
+  // Both charts must traverse the actual shared source edge in opposite
+  // directions; an arbitrary row number does not provide its orientation.
+  const auto edge_sign = [&](const int row) {
+    for (int corner = 0; corner < 3; ++corner) {
+      const int a = faces(row, corner);
+      const int b = faces(row, (corner + 1) % 3);
+      if (a == 0 && b == 2) return 1;
+      if (a == 2 && b == 0) return -1;
+    }
+    return 0;
+  };
+  if (edge_sign(from) == 0 || edge_sign(from) != -edge_sign(to))
+    throw std::runtime_error("CB32 shared source edge is not reciprocal");
+  const auto normal_for = [&](const int row) {
+    const Eigen::Vector3d p = vertices.row(faces(row, 0)).transpose();
+    const Eigen::Vector3d q = vertices.row(faces(row, 1)).transpose();
+    const Eigen::Vector3d r = vertices.row(faces(row, 2)).transpose();
+    return (q - p).cross(r - p).normalized().eval();
+  };
+  const Eigen::Vector3d normal = normal_for(from);
+  if (!normal.allFinite() || normal.dot(normal_for(to)) < 1.0 - 1.0e-12)
+    throw std::runtime_error("CB32 raw charts have incompatible orientations");
+  const Eigen::Vector3d first = raw.block<1, 3>(from, 0).transpose();
+  const Eigen::Vector3d second = raw.block<1, 3>(to, 0).transpose();
+  const double cosine = first.dot(second);
+  const double sine = normal.dot(first.cross(second));
+  if (std::abs(cosine) > 1.0e-12 ||
+      std::abs(std::abs(sine) - 1.0) > 1.0e-12)
+    throw std::runtime_error("CB32 witness is not a signed odd quarter-turn");
+  // Positive raw rotation maps arm 0 to target arm 3, negative to arm 1.
+  return sine > 0.0 ? 3 : 1;
+}
+
 // CB31: rebuild the two-face checked-factory witness from actual raw-field A3
 // ingress. The second semantic face selects the next (or previous) cross arm;
 // no transition or atlas record is constructed by the test.
 PhaseFrontDraft odd_atlas_owner_draft(const bool swapRows,
                                      const bool cycleCorners,
-                                     const bool inverseArm = false) {
+                                     const bool inverseArm = false,
+                                     int *independentTurn = nullptr) {
   const auto fixture = direct_periodic_owner_fixture();
   auto draft = phase_front_draft(fixture);
   Eigen::MatrixXd vertices(4, 3);
@@ -9176,6 +9245,10 @@ PhaseFrontDraft odd_atlas_owner_draft(const bool swapRows,
   if (!authority || !authority->matches_source_faces(faces, 4U))
     throw std::runtime_error("CB31 topology-keyed authority remap failed");
 
+  const int predictedTurn = independent_odd_raw_transport(
+      vertices, faces, raw, firstTopology, secondTopology);
+  if (independentTurn != nullptr) *independentTurn = predictedTurn;
+
   directional::TriMesh mesh;
   mesh.set_mesh(vertices, faces);
   const auto crossField =
@@ -9194,10 +9267,13 @@ PhaseFrontDraft odd_atlas_owner_draft(const bool swapRows,
   if (!forward || !reverse ||
       reverse->transport != forward->transport.inverse())
     throw std::runtime_error("CB31 nonreciprocal real A3 ingress");
+  if (static_cast<int>(forward->transport.value()) != predictedTurn ||
+      static_cast<int>(reverse->transport.value()) !=
+          (4 - predictedTurn) % 4)
+    throw std::runtime_error("CB32 independent signed raw-to-A3 oracle failed");
   draft.sourceFaceBranchRotations.assign(2, -1);
   draft.sourceFaceBranchRotations[from->index()] = 0;
-  draft.sourceFaceBranchRotations[to->index()] =
-      static_cast<int>(forward->transport.value());
+  draft.sourceFaceBranchRotations[to->index()] = predictedTurn;
   draft.sourceAuthority = std::move(*authority);
   draft.sourceFaces = faces;
   draft.sourceAtlas = std::move(atlas.value());
@@ -9206,7 +9282,9 @@ PhaseFrontDraft odd_atlas_owner_draft(const bool swapRows,
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
      OddAtlasTransportAndCanonicalOwnersSurviveTopologyPermutations) {
-  const auto original = odd_atlas_owner_draft(false, false);
+  int expectedTurn = -1;
+  const auto original = odd_atlas_owner_draft(false, false, false, &expectedTurn);
+  ASSERT_EQ(3, expectedTurn); // +90-degree raw arm change -> -1 branch.
   const auto edge = test_source_edge_topology(0, 2, 4U);
   const auto sourceRow = directional::authority::SourceFaceId::from_index(0, 2);
   const auto other = directional::authority::SourceFaceId::from_index(1, 2);
@@ -9238,8 +9316,35 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
   for (const auto [swapRows, cycleCorners] :
        {std::pair{true, false}, std::pair{false, true},
         std::pair{true, true}}) {
-    const auto permuted = odd_atlas_owner_draft(swapRows, cycleCorners);
+    int permutedTurn = -1;
+    const auto permuted = odd_atlas_owner_draft(
+        swapRows, cycleCorners, false, &permutedTurn);
+    ASSERT_EQ(3, permutedTurn);
     ASSERT_TRUE(permuted.sourceAtlas.has_value());
+    // Independent raw expectation is keyed by *semantic source triangles*,
+    // not by their row positions or the cyclic starting corner.
+    for (int semantic = 0; semantic < 2; ++semantic) {
+      const auto key = original.sourceAuthority.topology_for_row(
+          directional::authority::SourceFaceId::from_index(semantic, 2).value());
+      const auto mapped = permuted.sourceAuthority.row_for_topology(key);
+      ASSERT_TRUE(mapped.has_value());
+      EXPECT_EQ(semantic == 0 ? 0 : 3,
+                permuted.sourceFaceBranchRotations[mapped->index()]);
+    }
+    const auto semanticFirst = permuted.sourceAuthority.row_for_topology(
+        original.sourceAuthority.topology_for_row(sourceRow.value()));
+    const auto semanticSecond = permuted.sourceAuthority.row_for_topology(
+        original.sourceAuthority.topology_for_row(other.value()));
+    ASSERT_TRUE(semanticFirst.has_value());
+    ASSERT_TRUE(semanticSecond.has_value());
+    const auto mappedForward = permuted.sourceAtlas->transition_value(
+        edge, *semanticFirst, *semanticSecond);
+    const auto mappedReverse = permuted.sourceAtlas->transition_value(
+        edge, *semanticSecond, *semanticFirst);
+    ASSERT_TRUE(mappedForward.has_value());
+    ASSERT_TRUE(mappedReverse.has_value());
+    EXPECT_EQ(3, mappedForward->transport.value());
+    EXPECT_EQ(1, mappedReverse->transport.value());
     if (swapRows) {
       EXPECT_NE(original.sourceFaceBranchRotations,
                 permuted.sourceFaceBranchRotations);
@@ -9264,8 +9369,15 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
      OddAtlasStaleFaceGaugeVectorRejectsAtCanonicalEdge) {
-  const auto baseline = odd_atlas_owner_draft(false, false);
-  auto permuted = odd_atlas_owner_draft(true, true);
+  int baselineTurn = -1;
+  int permutedTurn = -1;
+  const auto baseline = odd_atlas_owner_draft(false, false, false, &baselineTurn);
+  auto permuted = odd_atlas_owner_draft(true, true, false, &permutedTurn);
+  ASSERT_EQ(3, baselineTurn);
+  ASSERT_EQ(baselineTurn, permutedTurn);
+  const auto admittedBaseline = construct_phase_front_product(baseline);
+  ASSERT_NE(nullptr, std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+                         &admittedBaseline));
   ASSERT_NE(baseline.sourceFaceBranchRotations,
             permuted.sourceFaceBranchRotations);
   auto positive = construct_phase_front_product(permuted);
@@ -9283,8 +9395,16 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
      OddAtlasWrongDirectedInverseRejectsAtCanonicalEdge) {
-  const auto baseline = odd_atlas_owner_draft(false, false);
-  auto invertedIngress = odd_atlas_owner_draft(false, false, true);
+  int baselineTurn = -1;
+  int inverseTurn = -1;
+  const auto baseline = odd_atlas_owner_draft(false, false, false, &baselineTurn);
+  auto invertedIngress = odd_atlas_owner_draft(false, false, true, &inverseTurn);
+  ASSERT_EQ(3, baselineTurn);
+  ASSERT_EQ(1, inverseTurn);
+  ASSERT_EQ((4 - baselineTurn) % 4, inverseTurn);
+  const auto admittedBaseline = construct_phase_front_product(baseline);
+  ASSERT_NE(nullptr, std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+                         &admittedBaseline));
   ASSERT_TRUE(baseline.sourceAtlas.has_value());
   ASSERT_TRUE(invertedIngress.sourceAtlas.has_value());
   const auto row0 = directional::authority::SourceFaceId::from_index(0, 2);
