@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb32-closeout-docs-20261024-r2",
+  "request_id": "m6-cp3-cb32-rev-docs-20261024-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb32-closeout-docs-r2",
-  "file_id": "1M4KpGfgs7US0y4x_OcEKAOlP1mDGUusq",
-  "patch_sha256": "6cd82e0ca967d4a31c69d129c1d2999df21190f0c58667f21c48fbf97e3b65d9",
-  "base_sha": "30e46b9aabc44925643f46bab20db40962a5e494",
+  "mailbox_key": "m6-cp3-cb32-rev-docs",
+  "file_id": "1iKRXx6lZZLjpen0q8LqkPuVZPxpONYuH",
+  "patch_sha256": "de05c564be0cd395c02307da338897b9a1dfb463a820771fb0ba8b6f1d818885",
+  "base_sha": "928235208d2c2ed569cf19eca66e26cd860d99ab",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record CB32 compile and hand off independent oracle review",
+  "commit_message": "docs(directional): independently review CB32 signed transport oracle",
   "retention_days": 7
 }
