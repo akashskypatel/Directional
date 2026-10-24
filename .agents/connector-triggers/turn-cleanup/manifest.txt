@@ -1,0 +1,2 @@
+# TB35 temporary control state; dispatcher request and workflow mailbox are durable.
+.agents/connector-triggers/source-snapshot/tb35-20261024.txt
