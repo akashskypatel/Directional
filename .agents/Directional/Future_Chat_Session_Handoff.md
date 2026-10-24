@@ -34,34 +34,33 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-23, CB31 independent static Review **REJECTED** test-oracle sufficiency, despite exact compile-valid artifact; separate CB32 corrective Code + Build next. [Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md). |
-| Branch/source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; CB31 semantic `ce13d438e65daf07a770cafa15ac4cef7046f931`; immutable compile [run 40039880387](https://github.com/akashskypatel/Directional/actions/runs/40039880387), artifact `12538139984`, SHA-256 `a5fd12d07ae2824e813e3fb4e0c576efff99321133601cab62739e863a59329a`, 28/28, eight GMP/GMPXX targets, `runtimeExecution=false`. |
+| Currency | 2026-10-24, CB32 test-only oracle correction compiled without runtime (pending independent CB32-REV). The CB31 rejection is addressed as an unreviewed source candidate only; accepted product/selector state remains unchanged. [CB32 record](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Record_20261024.md). |
+| Branch/source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; CB32 semantic `30e46b9aabc44925643f46bab20db40962a5e494`, immutable compile [run 40046062512](https://github.com/akashskypatel/Directional/actions/runs/40046062512), artifact `12541198172`, ZIP SHA-256 `17a121aac12d288892853a2455d3f72411a5538eeda512a7d2c9c096a7d47651`, 28/28 checksums, eight GMP/GMPXX targets, `runtimeExecution=false`. [Record](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Record_20261024.md). |
 | TB32 scoped candidate | RA-148 reviewed **481/500 PASS / 19 RED**; original 497 **478 PASS / 19 inherited RED**, no regressions. Factory only; no generated odd inverse or A6 acceptance. |
 | Accepted vs candidate | CP2 **491/491 accepted**, CP3 unaccepted; stable **66/17/49**, debt1; RP-01 open, RP-02 unreached, Gate C suspended; selector497 and TB32 manifest frozen. |
 
-## Mandatory next turn — `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION-REV` — EXACT NEXT
 
-- **Type:** test-only Code + Build / eight-target GMP/GMPXX compile, no runtime. Read [Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md), [correction plan](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Plan_20261023.md), CB31 compiled source, RA-148 and `LESSONS.md` §2.
-- **Required proof:** independently establish actual signed raw-to-A3 1/3 transport and expected canonical per-topology-face gauge under face-row and cyclic-corner permutation, not merely echo atlas-derived vector. Prove the two admissible stale-gauge and inverse-arm tamper cases reach the expected checked guard and independently derive their raw-source signed inverse expectation.
-- **Boundary:** no product algorithm, checker, selector/manifest, workflow, benchmark, accepted ledgers or original nine assertions/controls changed. No Code + Build runtime. CB31 compile-green is not TB or acceptance; all 19 inherited RED remain.
-- **Stop:** if raw-source signed inverse cannot be independently established under the source face/corner mapping, return to Review; never forge a nonreciprocal typed atlas or relabel a gauge consistency failure as a reciprocal-constructor test. Halt for actual conflicting source semantics or inert controls.
-- **After:** independent CB32-REV before any immutable TB; exact subsequent release solely by Review, with no same-turn successor work.
+- **Type:** independent static Review of CB32 code/compile provenance; no runtime.
+- **Required proof:** rederive expected odd signed transport from raw cross arms, oriented source edge and semantic topology; check row/corner remapping, distinct stale-gauge and inverse-arm falsifiers, and ensure unchanged nine preexisting cases. Source is a compile-only candidate, not a runtime PASS.
+- **Read:** [CB32 plan](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Plan_20261023.md), [CB31 rejection](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md), [CB32 code/build record](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Record_20261024.md), RA-148 and `LESSONS.md` §2.
+- **Boundary:** no source/product/test/selector/manifest/workflow changes or binaries in Review. No semantic acceptance or gate promotion without separately reviewed immutable test evidence.
+- **Stop:** reject the candidate if expected signed inverse is circular, source topology assumptions are wrong, negatives are inert or an earlier guard masks the target. Review owns next-turn authorization; immutable TB remains `UNKNOWN` pending accepted Review.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — exact next | `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION` | Test-only independent-oracle correction, compile only |
-| 2 — conditional | `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION-REV` | Independent review on separate turn, after CB32 compile evidence |
+| 1 — exact next | `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION-REV` | Independent static oracle and compile-evidence Review; no runtime |
 | 3 — conditional | `UNKNOWN` | Immutable TB only when separate CB32 Review accepts and freezes identities |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **code-build** — correct distinct independently falsifiable A3/face-gauge oracle, do not continue CB31 Review or start TB.
+`load_next`: **review** — independently reassess CB32 raw signed-oracle and compile provenance, no test execution or successor work.
 
 Minimum context after mandatory policies:
-0. ORIENTATION, ROADMAP, this handoff, TODO, [Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md) and [Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Plan_20261023.md](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Plan_20261023.md).
-1. Exact compiled source `ce13d438e65daf07a770cafa15ac4cef7046f931`, [CB31 package 40039880387](https://github.com/akashskypatel/Directional/actions/runs/40039880387), CB31 original plan and record.
+0. ORIENTATION, ROADMAP, this handoff, TODO, CB32 record and plan, CB31 rejection decision, and exact CB32 compile artifacts.
+1. Exact compiled CB32 source `30e46b9aabc44925643f46bab20db40962a5e494`, [CB32 package 40046062512](https://github.com/akashskypatel/Directional/actions/runs/40046062512) and [CB32 record](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Record_20261024.md), plus prior CB31 source and decision.
 2. RA-148 TB32 481/500 candidate and frozen 497 478/497, 19 RED; RA-146.2–4, RA-45.4.
 3. Tracker carried obligations and lessons §2; no gate promotion.
 

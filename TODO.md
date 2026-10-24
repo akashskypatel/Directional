@@ -1,18 +1,16 @@
-## CURRENT — CB31 independent Review rejects non-distinct inverse oracle; CB32 next (2026-10-23)
+## CURRENT — CB32 compiled oracle candidate; independent static Review next (2026-10-24)
 
-- [x] CB31 source `ce13d438e65daf07a770cafa15ac4cef7046f931` compile-only green; eight GMP/GMPXX targets and 28/28 package checksums verified, zero runtime. Existing six owner assertions/three factory controls unchanged.
-- [x] **CB31-REV decision:** the inverse-arm raw mutation is legitimate, but its expected directed sign is computed from the atlas being tested; permutation test obtains expected gauge from the atlas under test. No independent signed-inverse/canonical-gauge proof. [Review](.agents/Directional/Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md). No runtime success/failure claimed.
-- [ ] **EXACT NEXT:** `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION` — independent signed raw/atlas topology-keyed gauge and genuinely distinct directed-inverse/stale-gauge negative oracles. [Plan](.agents/Directional/Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Plan_20261023.md). Test-only, compile-only; mandatory separate CB32-REV.
-- [ ] **CARRIED:** 19 TB32 original-selector REDs, RA-146.2/3/4, RA-45.4 A6 produced outcome, G4-B002, DIAG-RETAIN, DEFN-SEAM-NZ, periodic/DEFN-T1. No new stable event.
-- **Frozen:** TB32 481/500 candidate (original 497 478/497), CP2 491/491 accepted, CP3 unaccepted; 66/17/49, debt1; RP-01 open, RP-02 unreached, Gate C suspended; original 497 selector and TB32 manifest unchanged.
+- [x] **CB32 Code + Build:** one test-only file `tests/SurfaceCellTransitionQuotientTests.cpp` +129/−9 from source `d9d24c35be46`, applied exact semantic commit `30e46b9aabc44925643f46bab20db40962a5e494` using SHA-256 `a9f3f11cc1e28d01611f1b5181a39dea39d56fab15debc40d5414673e519ffae`. Independent raw quarter-turn and topology-keyed canonical face gauges, distinct inverse-arm and stale-vector checks; no selector/product/fixture change.
+- [x] Eight-target GMP/GMPXX compile-only [run 40046062512](https://github.com/akashskypatel/Directional/actions/runs/40046062512), artifact `12541198172`, ZIP SHA-256 `17a121aac12d288892853a2455d3f72411a5538eeda512a7d2c9c096a7d47651`, 28/28 checksums; `runtimeExecution=false`. [Record](.agents/Directional/Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Record_20261024.md). Not runtime tested and not independently reviewed.
+- [ ] **EXACT NEXT:** `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION-REV` — independently verify signed inverse and topology-keyed oracles and preservation of nine prior assertions/controls; no runtime, no successor work. Review may reject; immutable TB requires separately authorized review outcome.
+- [ ] **CARRIED:** all 19 TB32 REDs, RA-146.2/3/4, RA-45.4, G4-B002, DIAG-RETAIN, DEFN-SEAM-NZ, periodic/DEFN-T1. No stable event or selector promotion. CP2 491/491 accepted, CP3 unaccepted; 66/17/49 debt1; RP-01 open, RP-02 unreached.
 
 ### Authorized turn sequence
 
 | Step | Canonical turn | Boundary |
 |---|---|---|
-| 1 — exact next | `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION` | Test-only Code+Build, compile only, independent directed-inverse/gauge negatives |
-| 2 — conditional | `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION-REV` | Independent evidence Review after CB32 compile |
-| later | `UNKNOWN` | Immutable TB after Review freezes exact cases; 19 carried RED owners stay independent |
+| 1 — exact next | `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION-REV` | Independent static Review of code+compile evidence, no runtime |
+| later | `UNKNOWN` | Only independent Review can authorize an immutable TB |
 
 ---
 
