@@ -1,2 +1,0 @@
-Execute read-only review_check.py boundary against this exact GitHub event SHA and full genuine history.
-Recheck finalized review documentation and explicit git status -sb after documentation commits.
