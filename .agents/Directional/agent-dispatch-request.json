@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb32-odd-oracle-gmp-compile-20261024-r1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb32-odd-oracle-gmp-compile",
-  "source_sha": "30e46b9aabc44925643f46bab20db40962a5e494",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb32-odd-oracle-gmp-compile"
+  "request_id": "m6-cp3-cb32-closeout-docs-20261024-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb32-closeout-docs",
+  "file_id": "1NaLjx0GXv0R34sX8VEvPOywqFtn5kPlU",
+  "patch_sha256": "87e6e54a89d66f6422ca81780303182ba2552b9a6597b2ab748dccf3556c100e",
+  "base_sha": "30e46b9aabc44925643f46bab20db40962a5e494",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record CB32 compile and hand off independent oracle review",
+  "retention_days": 7
 }
