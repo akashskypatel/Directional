@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb33-a3-durable-docs-20261024-r1",
+  "request_id": "m6-cp3-cb33-review-docs-20261024-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb33-a3-durable-docs-r1",
-  "file_id": "1J3LB5VmW3Uwrxvj-_w2eBJ3DNShoxfyP",
-  "patch_sha256": "52f8a092b7f422b579c581d0acba62571cbf7ad3e31c670e330c0ef8ebafe15a",
-  "base_sha": "56619da0d61910b57f1a1b4e6214187f3ffe18f0",
+  "mailbox_key": "m6-cp3-cb33-review-docs-r1",
+  "file_id": "1koMjtvEWddbLa_heb0dVfrWf2kcIBtW7",
+  "patch_sha256": "1ce0e24cd243b6bf5b5365bae82062b497826ac071b126cbe3f8049b9b439e25",
+  "base_sha": "b59b28c80d8ea7c5f802da6b9b7fda0861f5ca31",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): close CB33 A3 diagnostic build with immutable evidence",
+  "commit_message": "docs(agent): review CB33 A3 diagnostic and freeze TB34 manifest",
   "retention_days": 7
 }
