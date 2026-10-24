@@ -1,3 +1,9 @@
+## 2026-10-24 — CB33 A3 cycle-mismatch diagnostics compiled (runtime-free)
+
+- Diagnostic-only semantic source `f807c2b890b990fc53ea8f84c7228edd94f0659d` adds S1/S2 cycle mismatch site and cycle row/kind to the error and SP10 formatter; S1 sourceVertex remains absent when unavailable before failure, per RA-149.4. Exactly three source files touched; codes/control flow/tests/selectors unchanged.
+- Eight GMP/GMPXX targets compiled without runtime; [run 40084311360](https://github.com/akashskypatel/Directional/actions/runs/40084311360), artifact `12556364042`, ZIP SHA-256 `f984368a213012b2adf5996afe7443817b024f2cb9ef579e5e77e1c99e5ca291`, 28/28 internal hashes. No runtime or production acceptance; CP2 491/491, TB32 481/500 candidate with 19 RED, stable 66/17/49 debt1 unchanged. [CB33 record](.agents/Directional/Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Code_Build_Record_20261024.md).
+- Next mandatory independent Review: `M6-CP3-CB33-RP01-A3-CYCLE-MISMATCH-LOCUS-DIAGNOSTIC-REV`; static diagnostic scope check and targeted TB34 manifest authoring only.
+
 ## 2026-10-24 — TB33 reviewed (RA-149): back to the remaining 19 failures
 
 - Review verified TB33. The six oracle tests for odd field transport and the related product checks pass, and they really check what they claim. This covers synthetic inputs only.
