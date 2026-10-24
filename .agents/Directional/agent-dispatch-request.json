@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb35-rev-docs-20261024-r1",
+  "request_id": "m6-cp3-cb35-monodromy-witness-20261024-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb35-rev-docs-apply",
-  "file_id": "1Rp-jbkTLnmKUWc7qnbDFiZ-887R8nYYo",
-  "patch_sha256": "be26afb2463f90f06f3b3da0feb41066d4d6b1418d9e02e84cfd78f83d4ddb23",
-  "base_sha": "0036b43a8a6fed38d0826fd15f2de55f9269b60a",
+  "mailbox_key": "m6-cp3-cb35-monodromy-apply",
+  "file_id": "1Lub0IavQxIMWZDx2UAzxxP6dMUfvn1ZI",
+  "patch_sha256": "4b940c7f7dce216595d67b324e4c388a0ed5d940a6b3adff256e1f4a24045adc",
+  "base_sha": "2f8972f5b91bbaf9c4e9531cd714ab60dd977636",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: adjudicate TB35 periodic ingress authority and next definition",
+  "commit_message": "test: add authoritative periodic monodromy witnesses",
   "retention_days": 14
 }
