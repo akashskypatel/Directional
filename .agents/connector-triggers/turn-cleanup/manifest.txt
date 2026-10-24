@@ -1,2 +1,0 @@
-# CB35-R1 turn temporary-state cleanup
-.agents/connector-triggers/source-snapshot/cb35-r1-20261024-2216.txt
