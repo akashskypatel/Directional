@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb35-r1-route-oracle-apply-20261024",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb35-r1-route-oracle-apply",
-  "file_id": "16NzjgyHveCHNFb43VHtOASIJcUp0vXw4",
-  "patch_sha256": "5831435c482decc691916aa51c4f3507040b001ab62de27a686d5541f3f113e0",
-  "base_sha": "057affbb56050a57b9b35c154982606ee20a15b1",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): assert complete published periodic route and automorphism",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb35-r1-route-oracle-compile-20261024",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb35-r1-route-oracle-compile",
+  "source_sha": "c67c6e72a21c89b0fa202cdd593982f8cb0646b0",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb35-r1-route-oracle-compile"
 }
