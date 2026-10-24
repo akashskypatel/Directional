@@ -1,4 +1,13 @@
-## CURRENT — RA-150 TB34-REV audit; CB34 corrected to a true face gauge (2026-10-24)
+## CURRENT — CB34 test-only face gauge compiled; independent static Review next (2026-10-24)
+
+- [x] `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR`: helper's complete face gauge and new invariance oracle compiled with GMP/GMPXX. An initial compile failed due to `DomainResult` dereference; the one-line `.value()` correction was verified and compiled. [Record](.agents/Directional/Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Record_20261024.md). No runtime execution, acceptance, or frozen selector changes.
+- [ ] **EXACT NEXT:** `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR-REV`, independent static review. Only after its acceptance may TB35 run 7 rows + oracle + 2 A3 guards + 3 TB33 controls; then TB35-REV.
+- [ ] Preserve the prior per-owner queue and separately gated `DIAG-RETAIN` from the historical CURRENT section below. If TB35 clears S1 but A4 remains RED, open DEFN for periodic-producer owner rather than retuning fixture.
+- Frozen: stable 66/17/49, debt 1; CP2 accepted 491/491; TB32 candidate 481/500 (19 inherited RED); selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+
+---
+
+## HISTORY — RA-150 TB34-REV audit; CB34 corrected to a true face gauge (2026-10-24)
 
 - [x] `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST-REV-AUDIT` (RA-150):
   - TB34-REV's invalid-fixture owner is confirmed independently: faces 0/1/30/32 adjacency, all principal matchings 0, vertex-2 **and** vertex-3 stars broken;

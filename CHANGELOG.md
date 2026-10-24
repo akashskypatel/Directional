@@ -1,3 +1,7 @@
+## 2026-10-24 — CB34 periodic face-gauge test helper compiled; independent Review next
+
+- Implemented the RA-150 complete face gauge and A3 invariance oracle exclusively in `SurfaceCellsPhase10Tests.cpp`. The initial compile found a `DomainResult` dereference error; fixed with `.value()` and verified eight GMP/GMPXX compile targets without runtime. Exact source `d5fc8f22fd309ba90ad1fd7b4fbdc3491a5a8f7d`, run [#40111610291](https://github.com/akashskypatel/Directional/actions/runs/40111610291), package `12566907246`; [code/build record](.agents/Directional/Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Record_20261024.md). Seven inherited REDs remain; accepted ledgers and selector unchanged. Next: independent CB34-REV.
+
 ## 2026-10-24 — TB34-REV audited (RA-150): CB34 corrected to a true face gauge
 
 - Review kept TB34-REV's fixture-owner classification, recomputed from mesh and raw field: all principal matchings are 0, and both the vertex-2 and vertex-3 stars are broken. It withdrew RA-149.3 (S2 unreachable).

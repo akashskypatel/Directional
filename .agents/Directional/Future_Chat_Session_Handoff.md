@@ -34,34 +34,26 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-24, RA-150 audit of TB34-REV: owner = invalid two-edge fixture (vertex-2 and vertex-3 stars) is kept; CB34 is corrected to a true face gauge (face-1 frame relabel + additive +1/−1/−1 on all three face-1 edges) proven by an A3 branch-topology invariance oracle. CB34 compile only next. |
-| Source/package | CB33 semantic `f807c2b890b990fc53ea8f84c7228edd94f0659d`; [compile run 40084311360](https://github.com/akashskypatel/Directional/actions/runs/40084311360), package `12556364042`, ZIP `f984368a213012b2adf5996afe7443817b024f2cb9ef579e5e77e1c99e5ca291`; 28/28 hashes, eight GMP/GMPXX targets, `runtimeExecution=false`. |
+| Currency | 2026-10-24, CB34 test-only face gauge corrected and GMP/GMPXX compile-only verified. Next independent static CB34-REV; TB35 must be separately authorized. |
+| Source/package | CB34 semantic `d5fc8f22fd309ba90ad1fd7b4fbdc3491a5a8f7d`; [compile run 40111610291](https://github.com/akashskypatel/Directional/actions/runs/40111610291), package `12566907246`, ZIP `ca5c490bae2d65f9c043636c285d29edcfe5695b9334c24edcc281fac26c6a17`; 28/28 manifest entries, eight GMP/GMPXX targets, `runtimeExecution=false`. [Record](Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Record_20261024.md). |
 | Reviewed decision | [RA-150](Architecture_M6_CP3_TB34_REV_Audit_Face_Gauge_Representation_Decision_20261024.md) amends [TB34-REV](Architecture_M6_CP3_TB34_A3_Cycle_Locus_Harvest_Review_Decision_20261024.md). S2 unreachable (RA-149.3 withdrawn). Switching `sourceField` to the unedited field is prohibited (RA-150.2). |
 | Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500** (19 inherited RED); TB34 **5 PASS / 7 inherited RED** (12 measured), TB33 synthetic **6/6** only; selector497 frozen; stable **66/17/49**, debt 1. RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR-REV` — EXACT NEXT
 
-- **Type:** Test-only Code + Build (`tests/SurfaceCellsPhase10Tests.cpp`); eight-target GMP/GMPXX compile, `runtimeExecution=false`.
-- **Authority:** [CB34 plan (amended by RA-150)](Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Plan_20261024.md); [RA-150](Architecture_M6_CP3_TB34_REV_Audit_Face_Gauge_Representation_Decision_20261024.md) §3 governs.
-- **Edit:** `balanced_periodic_route_field` → representation gauge g(face1)=+1:
-  - face located by route topology;
-  - precondition: the original three directed matchings are 0;
-  - additive +1 (0→1) / −1 (1→30) / −1 (1→32), compact matching kept consistent, `effort` unchanged;
-  - face-1 `primaryDirections`/`secondaryDirections`/`rawField` relabelled so A3 `rawGauge` shifts by +1.
-- **Add:** `SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration.BalancedRouteFieldIsPureFaceGauge`:
-  - A3 succeeds;
-  - branch-topology digest, frames and transports equal those from the unedited field;
-  - raw `transition_value` is +1/−1/−1;
-  - the two-edge-only construction rejects at `cycle-transport` LocalVertex.
-- **Stops:** nonzero original matching; no relabel satisfies the invariance on paper; any need to change `sourceField`, production, a frozen test body or a selector.
+- **Type:** Independent static Review; no implementation, no compile, no runtime or tests.
+- **Authority:** [RA-150](Architecture_M6_CP3_TB34_REV_Audit_Face_Gauge_Representation_Decision_20261024.md) §3–4, [CB34 plan](Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Plan_20261024.md), [code/build record](Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Record_20261024.md).
+- **Review:** inspect `tests/SurfaceCellsPhase10Tests.cpp` gauge helper and independent `BalancedRouteFieldIsPureFaceGauge` oracle; rederive face-frame relabel/edge coboundary equivalence and zero-matching preconditions; verify the eight-target GMP source/package and no frozen body/selector/production changes.
+- **If accepted:** issue TB35 exact manifest (seven selector rows, gauge oracle, two A3 guards, three TB33 controls) in a separate Test + Benchmark turn. The compile is not runtime evidence.
+- **Stops:** any geometric inconsistency or non-independent oracle must be reported to Review, not silenced by test changes.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
 | done | `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST-REV` → `…-REV-AUDIT` (RA-150) | Owner kept; CB34 transformation corrected. |
-| 1 — next | `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR` | Test-only helper + one invariance-oracle test; compile only. |
-| 2 | `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR-REV` | Static review; issues the TB35 manifest (7 rows + oracle + 2 A3 guards + 3 TB33 controls). |
+| done | `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR` | Gauge helper/oracle compiled; no runtime. |
+| 1 — next | `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR-REV` | Independent static review; issues TB35 manifest only if accepted. |
 | 3 | `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY` → TB35-REV | Targeted harness, fresh processes. S1-cleared A4 RED → DEFN for the periodic-producer owner (no fixture tuning). |
 | 4 | Untyped 7 (`selector:174,201,204,242,247,250,405`) per-row first-site pins → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) | One owner per turn; DEFN or diagnostic first. |
 | 5 | Census → RP-01 Review | Review-owned 497(+) manifest. |
@@ -70,7 +62,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **Code + Build test-fixture gauge** — read RA-150 §2–3 and the amended CB34 plan; `tests/SurfaceCellsPhase10Tests.cpp:4182–4420` (rings, route, helper, source-atlas builder) and 4497–4760 (seven tests); `src/authority/FieldTransportAtlas.cpp:233–310` (rawGauge from `{p,s,−p,−s}`), 347–380 (canonical lift), 2020–2045 (raw `transition_value`); `cylinder.obj`/`.rawfield`. No production edit, no runtime.
+`load_next`: **CB34 independent static Review** — read RA-150 §2–4, the CB34 code/build record and compile package evidence; `tests/SurfaceCellsPhase10Tests.cpp:4182–4420` (rings, route, helper, source-atlas builder) and 4497–4760 (seven tests); `src/authority/FieldTransportAtlas.cpp:233–310` (rawGauge from `{p,s,−p,−s}`), 347–380 (canonical lift), 2020–2045 (raw `transition_value`); `cylinder.obj`/`.rawfield`. No production edit, no runtime.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
