@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb35-monodromy-docs-20261024-r2",
+  "request_id": "m6-cp3-cb35-review-docs-20261024-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb35-monodromy-docs-apply",
-  "file_id": "1UX1YB6ah1pVfqFbqB2guuP6buXNId6BP",
-  "patch_sha256": "8ea21ed015c6e8cb342b63c926a8ddc9cc7806a1b1a895b8265587fafbb0ee66",
-  "base_sha": "2f8972f5b91bbaf9c4e9531cd714ab60dd977636",
+  "mailbox_key": "m6-cp3-cb35-review-docs-apply",
+  "file_id": "1vYbBRC5hnWSrHvCS0EmXkV1v5mCXZISI",
+  "patch_sha256": "a872d24c2d364ec36a18606a84dfc9e46956659055fe843eb3c1da0c5a9cda2f",
+  "base_sha": "36513afd77c18e3891b86532f6048af815197ecf",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB35 compile-only witness turn",
+  "commit_message": "docs(directional): record CB35 independent review and R1 corrective plan",
   "retention_days": 14
 }
