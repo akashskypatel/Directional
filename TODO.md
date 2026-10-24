@@ -1,16 +1,14 @@
-## CURRENT — CB32 corrected oracle independently accepted for immutable TB (2026-10-24)
+## CURRENT — TB33 immutable odd-atlas runtime complete, independent review pending (2026-10-24)
 
-- [x] CB32 test-only signed raw arm oracle at semantic `30e46b9aabc44925643f46bab20db40962a5e494`; immutable eight-target GMP/GMPXX compile [40046062512](https://github.com/akashskypatel/Directional/actions/runs/40046062512), artifact `12541198172`, 28/28 checksums, `runtimeExecution=false`.
-- [x] Independent `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION-REV` **static source-oracle Review**: source-derived signed (3/1) reciprocal branch, face-topology gauge remap under row/corner permutations and distinct stale-versus-inverse-arm negatives verified. **No runtime**. [Decision](.agents/Directional/Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Review_Decision_20261024.md).
-- [ ] **EXACT NEXT:** `M6-CP3-TB33-RP01-ODD-ATLAS-ORACLE-VERIFICATION` — three focused odd-atlas cases plus the three existing factory controls (six fresh processes); six recovered selector identities remain prior reviewed evidence, immutable package only; exact case count, one fresh process each, raw guard site and postflight, no compile, benchmark, fix, selector or source mutation. Stop on INVALID, carry any RED.
-- [ ] **CARRIED:** 19 TB32 inherited REDs, RA-146.2/3(runtime)/4, RA-45.4, G4-B002, DIAG-RETAIN, DEFN-SEAM-NZ, periodic/DEFN-T1. CP2 491/491 accepted, CP3 not; TB32 481/500 candidate; stable 66/17/49 debt1, RP-01 open, RP-02 unreached.
+- [x] `M6-CP3-TB33-RP01-ODD-ATLAS-ORACLE-VERIFICATION`: six prescribed fresh GTest processes on unchanged CB32 package `12541198172`, semantic `30e46b9aabc44925643f46bab20db40962a5e494`; [run 40051854120](https://github.com/akashskypatel/Directional/actions/runs/40051854120), result `12543546779`, 15/15 checksums. **6/6 PASS**, zero RED/invalid/skips/duplicate, immutable postflight, no compile/relink/benchmark. [Report](.agents/Directional/Architecture_M6_CP3_TB33_Odd_Atlas_Oracle_Verification_Report_20261024.md).
+- [ ] **EXACT NEXT ROLE, CANONICAL ID UNKNOWN:** separate independent TB33 Review of immutable 6-case evidence, raw-source signed inverse/gauge oracles and negative non-vacuity. Do not promote CP3, A5/A6, periodic production, or G4-B002 on TB33 alone.
+- [ ] **CARRIED:** TB32 481/500 candidate / 19 inherited RED, RA-146.2/4, RA-45.4, G4-B002, DIAG-RETAIN, DEFN-SEAM-NZ, periodic/DEFN-T1. CP2 491/491 accepted, CP3 not, frozen selector497, stable 66/17/49 debt1; RP-01 open, RP-02 unreached.
 
 ### Authorized turn sequence
 
 | Step | Canonical turn | Boundary |
 |---|---|---|
-| 1 — exact next | `M6-CP3-TB33-RP01-ODD-ATLAS-ORACLE-VERIFICATION` | Immutable artifact-only TB; no compilation or code changes |
-| later | `UNKNOWN` | Independent TB Review required before any acceptance |
+| 1 — role next | `UNKNOWN` | Independent TB33 Review, assigned by repository authority; do not invent ID |
 
 ---
 
