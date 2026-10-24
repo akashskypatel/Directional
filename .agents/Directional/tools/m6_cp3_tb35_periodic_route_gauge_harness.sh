@@ -25,10 +25,10 @@ state={"planned":13,"executed":0,"red":0,"pass":0,"missing":0,"locus_bad":0,"con
 rows=[]; rc=90
 try:
  manifest=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Case_Manifest.tsv"
- require(sha(manifest)==manifesthash,"TB34 manifest drift")
+ require(sha(manifest)==manifesthash,"TB35 manifest drift")
  with manifest.open(newline="") as f:cases=list(csv.DictReader(f,delimiter="\t"))
  require(len(cases)==13 and [int(c["row"]) for c in cases]==list(range(1,14)),"TB35 13 rows")
- require(len({c["test"] for c in cases})==12 and len({c["identity"] for c in cases})==12,"duplicate case")
+ require(len({c["test"] for c in cases})==13 and len({c["identity"] for c in cases})==13,"duplicate case")
  require([c["pre_run"] for c in cases]==["UNMEASURED"]*13,"TB35 outcomes preassigned")
  require([c["kind"] for c in cases]==["SELECTOR_FROZEN"]*7+["NEW_ORACLE"]+["GUARD"]*2+["FACTORY_CONTROL"]*3,"TB35 kind/order drift")
  require({c["binary"] for c in cases}=={"directional_surface_cell_producer_tests","directional_surface_cell_authority_kernel_tests"},"binary ownership drift")
