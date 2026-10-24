@@ -41,6 +41,6 @@
 | Consolidation under CLEAN_UP_POLICY | Current CB33 code/build record and RA-149 runtime authority still needed; no superseded current family record folded; current review linked from M6 consolidated index |
 | Successor frozen | `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST` with 12-row manifest and falsifiers above |
 | Turn boundary held | Static Review only; zero runtime, zero product/test/selector/build mutations |
-| review_check.py boundary | Not claimed on synthetic snapshot: historical Git metadata absent; remote source compare and exact path/hash audit independently completed; historical baseline check remains separately unverified |
+| review_check.py boundary | Executed on verified snapshot with synthetic Git; code/selector checks passed, but rewrite-history checks failed because original Git objects were excluded. Independently verified real Git ancestry by GitHub compare `8b7299b43..081b30ec` (1192 ahead, zero behind, merge-base equals rewrite baseline), and all protected headings in the three durable docs against their actual baseline blobs. A full original-history local script PASS is not claimed. |
 | `STATUS` lifecycle maintained | Entry beacon published; final beacon must match Review closeout |
-| Pushed to origin, branch in sync | To be confirmed only after a successful remote apply and branch-authority readback |
+| Pushed to origin, branch in sync | Durable Drive apply run 40088654321 succeeded; exact patch SHA and applied commit `081b30ec8a29f158f34b35bbc732f4e28e6cb849` independently verified; PR #8 head matched that commit. No real-clone `git status -sb` result claimed. |
