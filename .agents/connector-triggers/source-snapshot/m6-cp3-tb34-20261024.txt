@@ -1,0 +1,4 @@
+Purpose: exact source snapshot for M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST
+Branch: agent/surface_cell_quad/p5-recover-bridge-healing
+Initial authority: 58c458bce22d79ff5f73a52fc1e81d4fe94ce0a4
+No runtime execution requested.
