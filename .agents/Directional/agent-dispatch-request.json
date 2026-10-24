@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb34-face-gauge-compile-20261024-v1",
+  "request_id": "m6-cp3-cb34-face-gauge-compile-20261024-v2",
   "operation": "compile",
   "mailbox_key": "m6-cp3-cb34-face-gauge-compile",
   "source_sha": "d3bbc8e9cc41086be10447e4672e0f1ed7245456",
@@ -14,6 +14,5 @@
     "directional_compiled_api_tests",
     "directional_benchmarks"
   ],
-  "artifact_prefix": "m6-cp3-cb34-face-gauge",
-  "retention_days": 7
+  "artifact_prefix": "m6-cp3-cb34-face-gauge"
 }
