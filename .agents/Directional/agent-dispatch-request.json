@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb34-doc-closeout-20261024-v3",
+  "request_id": "m6-cp3-tb34-rev-doc-closeout-20261024-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb34-doc-closeout",
-  "file_id": "1Tx6EJqTEO8aPtON5pZu_5m0UVbhi4FkG",
-  "patch_sha256": "68661c18cfb2d753852e7bf15092af07a062a9f7c67519656e65ba98bd7d905d",
-  "base_sha": "ea9d31bd5d3e580ca3726f636a79ddcea8776115",
+  "mailbox_key": "m6-cp3-tb34-rev-doc-closeout",
+  "file_id": "1RAw_JkvS4r5n2eMwfq6h9WKmqaesrKNH",
+  "patch_sha256": "817a8c21be2e6b568db1d9da092c0fb28328923927e29d1a54aa265c2ad78e44",
+  "base_sha": "0164468a5c2d480c11799c4da07be40caae376b5",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close out TB34 immutable A3 cycle locus harvest evidence",
+  "commit_message": "docs: independently classify TB34 periodic route gauge fixture failure",
   "retention_days": 7
 }
