@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb31rev-docs-20261023-r2",
+  "request_id": "m6-cp3-cb32-test-oracle-apply-20261024-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb31rev-docs-r2",
-  "file_id": "1aHuk3-gpUXtqSoSaB3tmC0gYItxggPfm",
-  "patch_sha256": "8f7b000d26847526cfdce6282d171d55da09d2663b592d7d2c8a766001aed2b2",
-  "base_sha": "27cc8365f643622a3d98df32dc8e8ea67f8efad3",
+  "mailbox_key": "m6-cp3-cb32-test-oracle-apply",
+  "file_id": "1Z0FvSS9TgFXMrHZZDThovw96avGiO138",
+  "patch_sha256": "a9f3f11cc1e28d01611f1b5181a39dea39d56fab15debc40d5414673e519ffae",
+  "base_sha": "d9d24c35be46a90fa94902bddd19d755df9a6ad6",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): review CB31 signed inverse oracle and freeze CB32",
+  "commit_message": "test(directional): independently derive odd transport and canonical gauges",
   "retention_days": 7
 }
