@@ -1,3 +1,8 @@
+## 2026-10-24 — TB34 independent Review assigns source-fixture cycle owner
+
+- Independent 17/17 artifact and twelve raw-log receipts confirm all seven inherited selector189–195 first reject at A3 S1 LocalVertex row0. Static OBJ/field derivation shows partial two-edge gauge matching edits (+1/−1) cancel around the selected periodic route but fail at local source vertex2; effort remains unchanged. This is invalid periodic-route test authority, not an established A3 producer bug. Five controls remain PASS; no runtime/acceptance change. [Review](.agents/Directional/Architecture_M6_CP3_TB34_A3_Cycle_Locus_Harvest_Review_Decision_20261024.md).
+- Authorized `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR` repairs the test helper via complete face-gauge coboundary only, then eight-target GMP compile without test execution; subsequent TB+REV must independently prove original assertions. [Plan](.agents/Directional/Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Plan_20261024.md). Stable 66/17/49 debt1, accepted CP2 491/491, TB32 481/500 candidate 19 RED, frozen selector497.
+
 ## 2026-10-24 — TB34 immutable A3 cycle-locus measurement
 
 - Twelve fresh-process focused tests on unchanged CB33 `12556364042` ([run 40090972464](https://github.com/akashskypatel/Directional/actions/runs/40090972464), artifact `12558378347`, 17/17 checksums): 7 inherited A3 RED all `cycle-transport`, `LocalVertex`, cycle row 0, region 0; 5 controls PASS. No rebuild, relink, source/test/selector mutation or product acceptance. Next independent Review `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST-REV`; frozen counts unchanged. [Report](.agents/Directional/Architecture_M6_CP3_TB34_A3_Cycle_Locus_Harvest_Report_20261024.md).

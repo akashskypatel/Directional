@@ -2,8 +2,9 @@
 
 - [x] `M6-CP3-CB33-RP01-A3-CYCLE-MISMATCH-LOCUS-DIAGNOSTIC-REV`: independent three-file diff and 28/28 eight-target GMP/GMPXX compile/package audit; `runtimeExecution=false`. S1 row/kind now visible; mathematical S2 unreachable and row-index namespace warning documented in [Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Review_Decision_20261024.md](.agents/Directional/Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Review_Decision_20261024.md). No new runtime acceptance.
 - [x] `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST`: [run 40090972464](https://github.com/akashskypatel/Directional/actions/runs/40090972464), result `12558378347`, 17/17 hashes; seven inherited A3 REDs all at `cycle-transport`, `LocalVertex`, row 0, region 0; five controls PASS, 12/12 complete, immutable postflight. [Report](.agents/Directional/Architecture_M6_CP3_TB34_A3_Cycle_Locus_Harvest_Report_20261024.md).
-- [ ] **EXACT NEXT:** `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST-REV` — independently adjudicate whether shared row-0 cycle rejection is fixture invalidity or A3 producer defect. Do not promote diagnostics to repair/production acceptance.
-- [ ] TB34 independent Review assigns A3 cycle owner from measured actual S1 cycles. 19 inherited REDs, CP2 491/491, TB32 481/500 candidate, stable 66/17/49 debt1 unchanged; RP-01 open, RP-02 unreached.
+- [x] `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST-REV` — independently adjudicated: two-edge-only gauge fixture invalid, A3 S1 appropriate. [Review](.agents/Directional/Architecture_M6_CP3_TB34_A3_Cycle_Locus_Harvest_Review_Decision_20261024.md).
+- [ ] **EXACT NEXT:** `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR` — fixture-only full face-gauge correction; compile-only, original oracles and selectors unchanged. [Plan](.agents/Directional/Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Plan_20261024.md).
+- [x] TB34 independent Review assigned invalid periodic-route fixture as first owner; subsequent CB and immutable TB needed before recovery credit. 19 inherited REDs, CP2 491/491, TB32 481/500 candidate, stable 66/17/49 debt1 unchanged; RP-01 open, RP-02 unreached.
 
 ## HISTORY — TB33 run; RA-149 review (2026-10-24)
 

@@ -34,35 +34,29 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-24, TB34 measured seven inherited A3 CycleTransportMismatch RED at S1 LocalVertex row0 region0; five controls passed; awaiting independent TB34-REV, no runtime acceptance. |
+| Currency | 2026-10-24, TB34-REV independently attributes seven S1 LocalVertex RED to invalid two-edge-only gauge fixture (matchings changed without complete face-star compensation); source A3 rejection is appropriate. CB34 fixture-only Code+Build next; no runtime acceptance. |
 | Source/package | CB33 semantic `f807c2b890b990fc53ea8f84c7228edd94f0659d`; [compile run 40084311360](https://github.com/akashskypatel/Directional/actions/runs/40084311360), package `12556364042`, ZIP `f984368a213012b2adf5996afe7443817b024f2cb9ef579e5e77e1c99e5ca291`; 28/28 hashes, eight GMP/GMPXX targets, `runtimeExecution=false`. |
 | Reviewed decision | [Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Review_Decision_20261024.md](Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Review_Decision_20261024.md): S1 `cycle-transport` carries local row/kind; S2 boundary correction cannot change residue mod4. TB34 must collect seven true S1 loci without inferring S2 failure. |
 | Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500** (19 inherited RED); TB34 **5 PASS / 7 inherited RED** (12 measured), TB33 synthetic **6/6** only; selector497 frozen; stable **66/17/49**, debt 1. RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST-REV` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR` — EXACT NEXT
 
-- **Type:** Independent Review of immutable TB34 evidence, no code/fixture/test/selector changes and no new test execution.
-- **Evidence:** CB33 immutable package `12556364042`, source `f807c2b890b990fc53ea8f84c7228edd94f0659d`; TB34 [run 40090972464](https://github.com/akashskypatel/Directional/actions/runs/40090972464), result artifact `12558378347`, outer SHA-256 `0755af052c5a2642d5a0f132c348eccb0dd2b6e8312e0805effdfaae19c98118`, 17/17 packaged checksums; [report](Architecture_M6_CP3_TB34_A3_Cycle_Locus_Harvest_Report_20261024.md).
-- **Observed:** selector189–195 all RED at first `CycleTransportMismatch`, `site=cycle-transport`, `cycleKind=LocalVertex`, region-local `cycleRowIndex=0`, `topologyRegion=0`; two atlas guards and three TB33 controls PASS; 12/12 terminal, zero missing.
-- **Review questions:** re-open all seven raw logs and original source/fixtures, independently derive cycle authority and whether shared row0 is invalid fixture construction or real producer contract failure; preserve S2 mathematical unreachability, distinguish region-local S1 index from S2 atlas-global index, check guard non-vacuity, determine required correction without guessing. No diagnostic-only acceptance or direct production credit.
-- **Accounting:** CP2 accepted 491/491, TB32 481/500 candidate with 19 inherited RED, selector497 unchanged; stable 66/17/49 debt1, RP-01 open, RP-02 unreached, Gate C suspended.
+- **Type:** Fixture-only Code + Build; compile-only, no test/benchmark execution or production source change.
+- **Authority:** [TB34 independent Review](Architecture_M6_CP3_TB34_A3_Cycle_Locus_Harvest_Review_Decision_20261024.md) and [CB34 plan](Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Plan_20261024.md). Original TB34 run `40090972464` / result `12558378347` established seven identical S1 first failures, with five controls PASS, no valid A4 route execution.
+- **Root:** `balanced_periodic_route_field` edits only edge `(0,2)` and `(0,3)` matchings (+1/−1), but leaves the third incident face1 edge `(2,3)` unchanged. These mutations cancel on the periodic route but not around local vertex2 (region0 row0). Atlas S1 correctly rejects inconsistent transport/effort. Replace with full face-gauge coboundary, preserving every original independent positive/negative oracle and freeze.
+- **Boundaries:** No production source/validator/selector changes; eight-target GMP/GMPXX compile/package only, no runtime. If a gauge-coboundary cannot satisfy every original invariant, stop for independent Review rather than weaken assertions.
+- **Accounting:** CP2 accepted 491/491, TB32 481/500 candidate with 19 inherited RED; stable 66/17/49 debt1, RP-01 open, RP-02 unreached, Gate C suspended.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST-REV` | Independent evidence Review and exact owner adjudication, no TB/CB work. |
-| 2 — conditional | UNKNOWN | Review assigns authorized successor based on first-error findings. |
+| 1 — next | `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR` | Test-fixture-only CB + eight-target GMP compile, no runtime. |
+| 2 — conditional | UNKNOWN | Separate immutable TB of CB34 package and independent TB-REV; freeze identity only after completed CB. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **independent Review** — TB34 run `40090972464`, result `12558378347`, [report](Architecture_M6_CP3_TB34_A3_Cycle_Locus_Harvest_Report_20261024.md), exact manifest and raw logs, CB33 source/package, CB33-REV S2 unreachability, TB32 19 inherited REDs and accepted CP2 491/491.
-
-Minimum context after mandatory policies:
-0. ORIENTATION, ROADMAP, TODO, this handoff, TB34 report/result and frozen manifest.
-1. Independently read TB34 raw logs and ledger, checksum every result entry, compare actual first failures to 12 frozen identities.
-2. Re-derive `LocalVertex` row0 S1 predicate against CB33 source and test fixture, using CB33-REV S2 proof; independently check atlas guards and TB33 controls.
-3. Keep all 19 inherited REDs and CP3 acceptance debt carried; do not use S2 as an independent cause.
+`load_next`: **Code + Build fixture correction** — open TB34-REV and CB34 plan; exact CB33 source `f807c2b890b990fc53ea8f84c7228edd94f0659d`, immutable result `12558378347`; use original `SurfaceCellsPhase10Tests.cpp` periodic route helper, `cylinder.obj`, and atlas S1 predicate, plus frozen 497 identity/CP2 491 accepted. Verify every incident face gauge transition and independent local cycle. No A3 source changes or runtime within CB.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

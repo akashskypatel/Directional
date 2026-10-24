@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-24 · CB33-REV independently accepts diagnostic-only compile fidelity; the seven A3 cycle REDs await immutable TB34 locus harvest. The supposed second S2 mismatch site is statically unreachable (boundary correction multiple of 4); do not classify it as an independent failure. CP2 491/491 accepted; TB32 481/500 candidate, 19 RED; stable 66/17/49, debt1; RP-01 open.
+**Currency:** 2026-10-24 · TB34-REV independently attributes seven A3 S1 LocalVertex REDs to a test fixture that mutates two matching edges without a complete face-gauge compensation. Atlas correctly rejects; CB34 fixture-only compile next. CP2 491/491 accepted; TB32 481/500 candidate, 19 RED; stable 66/17/49, debt1; RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current CB33 Review evidence:** A3 site S1 preserves its code and now reports actual cycle row/kind. The S2 boundary-correction mismatch cannot trigger in defined integer arithmetic because S1 already established equality mod4 and the correction is divisible by4. Targeted TB34 measures seven inherited A3 RED rows with two A3 and three TB33 controls; none are accepted as runtime improvement yet. See the current handoff and CB33 independent Review.
+**Current TB34 independent Review:** The seven selector189–195 source A3 failures all occur at the first `LocalVertex` S1 cycle. Original fixture changes only two edge matchings with unchanged efforts, leaving nonzero local curl at vertex2. This is fixture-invalidity, not a demonstrated A3 defect. CB34 test-only complete face-gauge correction and compile are next; runtime acceptance still absent. See [review](Architecture_M6_CP3_TB34_A3_Cycle_Locus_Harvest_Review_Decision_20261024.md) and [plan](Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Plan_20261024.md).
 
 **Historical evidence (RA-148 and CB31-REV):** Independent TB32 Review rechecked 1,006/1,006 artifact checksums and 500 distinct raw logs. Its original 497-case selector measured **478 PASS / 19 inherited RED** (six RED→PASS over TB31's 472/497, zero regressions), plus three PASS factory controls for **481/500**. The six recovered cases prove synthetic checked-factory fixture/owner assertions, not real odd atlas transport, periodic topology or produced A6 behavior. The 19 REDs remain at unchanged first sites, including seven A3 unavailable-route fixture exceptions and seven untyped cases. CB31 lacked independent raw signed-inverse and topology-keyed gauge expectations. **CB32-REV** verifies the corrected expected (3/1) from signed raw arms, semantic source-face mapping and guarded false-gauge negatives; eight-target GMP compile source is verified. Static sufficiency only: `M6-CP3-TB33-RP01-ODD-ATLAS-ORACLE-VERIFICATION` must execute the immutable artifact before runtime credit; no M6-CP3 acceptance. Prior TB28/TB30/TB31 reports remain historical comparison baselines.
 
@@ -102,17 +102,18 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** Execute immutable `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST` per its frozen 12-case manifest, first measuring actual A3 S1 cycle kinds/rows across selector189–195. S2 cannot be the rejecting site in defined arithmetic; see CB33-REV. TB33 already accepted synthetic oracle runtime only. [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md) accepts TB32 runtime evidence only within the checked-factory scope; six owner tests and all three controls are now measured PASS.
-
+**Immediate:** Correct the invalid periodic-route gauge fixture in `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR` under the frozen seven original test identities. The seven S1 REDs are one invalid-source fixture family; retain all 19 inherited REDs until genuine unchanged-oracle runtime evidence. A3 S2 remains unreachable; see [TB34-REV](Architecture_M6_CP3_TB34_A3_Cycle_Locus_Harvest_Review_Decision_20261024.md).
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Six owner-map tests, three factory controls and TB33 odd-atlas 6/6 are discharged for synthetic runtime scope. The next immutable TB is A3 cycle-locus harvest, not another synthetic odd-atlas re-run; produced periodic/A6 remain separate. | M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST; [CB32-REV](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Review_Decision_20261024.md), [CB31-REV](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md), [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md) and [RA-146](Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md) |
+| **1** | Six owner-map tests, three factory controls and TB33 odd-atlas 6/6 are discharged for synthetic runtime scope. The next fixture-only CB repairs the invalid A3 route gauge; produced periodic/A6 remain separate. | M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR; [CB32-REV](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Review_Decision_20261024.md), [CB31-REV](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md), [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md) and [RA-146](Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
+
+- **Route cancellation is not local-cycle consistency (TB34-REV):** changing two matchings so a chosen periodic route sums to zero can leave nonzero residuals in distinct vertex stars. A valid face gauge must update every incident transition; never suppress the atlas cycle predicate to admit invalid fixture authority.
 
 - **Vacuous witness:** RA-146/148 and CB31-REV (corrected statically in CB32-REV): equal-gauge row permutations cannot distinguish stale mapping; unpaired front records do not reach reciprocal periodic action guards. A path that is never reached, or a relation whose operands share an object (RA-124), cannot independently prove its advertised contract. Require separately sourced positive/negative oracles and actual prerequisite reachability.
 - **Conflated authority:** row number, gauge, semantic ID, terminal incidence, certificate provenance or a per-node representative face (RA-72.4, RA-123) used as interchangeable identities. Find the unique writer and exact typed correspondence.
