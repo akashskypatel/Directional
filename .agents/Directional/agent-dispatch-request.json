@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb35-r1-closeout-docs-corrected-20261024",
+  "request_id": "m6-cp3-cb35-r1-rev-docs-20261024-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb35-r1-closeout-docs-corrected",
-  "file_id": "1M9svbTEEnw9Ounk7kl1yp5qsfp025xDA",
-  "patch_sha256": "80f1d6f09aab483241c643868db07833c3f4bb58ce9558ae2fbc1b3555f3ec36",
-  "base_sha": "c67c6e72a21c89b0fa202cdd593982f8cb0646b0",
+  "mailbox_key": "m6-cp3-cb35-r1-rev-docs",
+  "file_id": "1CmLVBer7q6ZeERwj9FNU1Xihy8vE-Dk1",
+  "patch_sha256": "bfe20c2de3f1e03bbcc97b61276ceaca79936c11df13f7ea981b432d204f033f",
+  "base_sha": "4d3bc5efbcb270b3e6f3805bf5f51bc768cce2fa",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close out CB35-R1 compiled test witness and handoff to review",
+  "commit_message": "docs(directional): record CB35-R1 review rejection and R2 correction plan",
   "retention_days": 14
 }
