@@ -4662,14 +4662,18 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
       network.phaseFront.product().periodicHolonomies().front().route();
   const auto steps = route.oriented_steps();
   ASSERT_EQ(fixture.expectedRoute.size(), steps.size());
+  ASSERT_EQ(32U, steps.size());
+  EXPECT_EQ(periodic_route_topology(fixture), route_topology(route));
   const auto first = fixture.expectedRoute[0].currentTopology;
   const auto second = fixture.expectedRoute[1].currentTopology;
   const auto identity = directional::authority::QuarterTurn{};
+  const auto zeroShift = directional::authority::LatticeTranslation{};
   std::optional<directional::authority::QuarterTurn> firstRotation;
   std::optional<directional::authority::QuarterTurn> secondRotation;
   directional::authority::GridAutomorphism total =
       directional::authority::GridAutomorphism::identity();
   for (const auto &step : steps) {
+    EXPECT_EQ(zeroShift, step.transport().shift);
     const auto rotation = step.transport().rotation;
     if (step.topology() == first) {
       ASSERT_FALSE(firstRotation.has_value());
@@ -4686,7 +4690,7 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   ASSERT_TRUE(firstRotation.has_value());
   ASSERT_TRUE(secondRotation.has_value());
   EXPECT_EQ(firstRotation->inverse(), *secondRotation);
-  EXPECT_EQ(identity, total.rotation);
+  EXPECT_EQ(directional::authority::GridAutomorphism::identity(), total);
 }
 
 TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
