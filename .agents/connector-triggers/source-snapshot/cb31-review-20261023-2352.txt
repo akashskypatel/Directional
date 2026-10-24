@@ -1,1 +1,0 @@
-CB31 Review immutable source snapshot request; review only. Requested underlying semantic commit ce13d438e65daf07a770cafa15ac4cef7046f931; verify snapshot head and compare semantic differences.
