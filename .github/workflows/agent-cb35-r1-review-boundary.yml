@@ -60,9 +60,12 @@ jobs:
           git merge-base --is-ancestor 8b7299b43764a6ba3444e5bc774a2f1b65e99731 HEAD
           git status --porcelain
           python3 .agents/Directional/tools/review_check.py boundary
+          git status -sb
           git status --porcelain
           echo "boundary_result=PASS"
-          echo "origin_branch_sha=$(git ls-remote origin refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing | cut -f1)"
+          remote_sha="$(git ls-remote origin refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing | cut -f1)"
+          echo "origin_branch_sha=${remote_sha}"
+          test "${remote_sha}" = "${GITHUB_SHA}"
 
       - name: Upload independent boundary report
         if: always()
