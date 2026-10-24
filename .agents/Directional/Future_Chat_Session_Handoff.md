@@ -34,32 +34,31 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-24, CB32 test-only oracle correction compiled without runtime (pending independent CB32-REV). The CB31 rejection is addressed as an unreviewed source candidate only; accepted product/selector state remains unchanged. [CB32 record](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Record_20261024.md). |
+| Currency | 2026-10-24, independent CB32-REV **accepts static signed raw-source oracle sufficiency** and exact compile provenance for separate immutable TB, not runtime acceptance. [M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION-REV decision](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Review_Decision_20261024.md). |
 | Branch/source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; CB32 semantic `30e46b9aabc44925643f46bab20db40962a5e494`, immutable compile [run 40046062512](https://github.com/akashskypatel/Directional/actions/runs/40046062512), artifact `12541198172`, ZIP SHA-256 `17a121aac12d288892853a2455d3f72411a5538eeda512a7d2c9c096a7d47651`, 28/28 checksums, eight GMP/GMPXX targets, `runtimeExecution=false`. [Record](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Record_20261024.md). |
 | TB32 scoped candidate | RA-148 reviewed **481/500 PASS / 19 RED**; original 497 **478 PASS / 19 inherited RED**, no regressions. Factory only; no generated odd inverse or A6 acceptance. |
 | Accepted vs candidate | CP2 **491/491 accepted**, CP3 unaccepted; stable **66/17/49**, debt1; RP-01 open, RP-02 unreached, Gate C suspended; selector497 and TB32 manifest frozen. |
 
-## Mandatory next turn — `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION-REV` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB33-RP01-ODD-ATLAS-ORACLE-VERIFICATION` — EXACT NEXT
 
-- **Type:** independent static Review of CB32 code/compile provenance; no runtime.
-- **Required proof:** rederive expected odd signed transport from raw cross arms, oriented source edge and semantic topology; check row/corner remapping, distinct stale-gauge and inverse-arm falsifiers, and ensure unchanged nine preexisting cases. Source is a compile-only candidate, not a runtime PASS.
-- **Read:** [CB32 plan](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Plan_20261023.md), [CB31 rejection](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md), [CB32 code/build record](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Record_20261024.md), RA-148 and `LESSONS.md` §2.
-- **Boundary:** no source/product/test/selector/manifest/workflow changes or binaries in Review. No semantic acceptance or gate promotion without separately reviewed immutable test evidence.
-- **Stop:** reject the candidate if expected signed inverse is circular, source topology assumptions are wrong, negatives are inert or an earlier guard masks the target. Review owns next-turn authorization; immutable TB remains `UNKNOWN` pending accepted Review.
+- **Type:** immutable-artifact Test + Benchmark, no configure/build/relink/source/test/selector mutation. Source package `12541198172`, CB32 semantic SHA `30e46b9aabc44925643f46bab20db40962a5e494`.
+- **Execute:** three new odd-atlas cases and three unchanged factory controls (six named processes); six earlier recovered selector identities are preserved without unnecessary re-execution; exact named GTest selectors and preflight/postflight are frozen in [M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION-REV decision](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Review_Decision_20261024.md). Independent count, one fresh process per identity, no skips; capture complete raw logs and first guard/locus.
+- **Stop:** missing identity, wrong guard, invalid artifact, nonterminal test, skip, timeout, or source/package drift invalidates evidence. Semantic RED stays RED; no post-hoc oracle rewrite. No other cases and no benchmark.
+- **Boundary:** the Review accepted only source-oracle sufficiency and compile provenance; all 19 historical RED, accepted CP2 491/491, selector497 and stable 66/17/49 remain unchanged. TB output requires separate TB Review before any gate credit.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — exact next | `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION-REV` | Independent static oracle and compile-evidence Review; no runtime |
-| 3 — conditional | `UNKNOWN` | Immutable TB only when separate CB32 Review accepts and freezes identities |
+| 1 — exact next | `M6-CP3-TB33-RP01-ODD-ATLAS-ORACLE-VERIFICATION` | Immutable CB32 focused GTest execution only, no recompile |
+| 2 — conditional | `UNKNOWN` | Independent TB Review only after valid evidence; TB cannot claim promotion |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **review** — independently reassess CB32 raw signed-oracle and compile provenance, no test execution or successor work.
+`load_next`: **test_benchmark** — immutable CB32 artifact-only odd atlas tests, exact case identities and stop rules from the CB32-REV decision; no compile or test-source edit.
 
 Minimum context after mandatory policies:
-0. ORIENTATION, ROADMAP, this handoff, TODO, CB32 record and plan, CB31 rejection decision, and exact CB32 compile artifacts.
+0. ORIENTATION, ROADMAP, this handoff, TODO, CB32-REV decision, CB32 record and plan, CB31 rejection, and exact immutable CB32 compile artifact.
 1. Exact compiled CB32 source `30e46b9aabc44925643f46bab20db40962a5e494`, [CB32 package 40046062512](https://github.com/akashskypatel/Directional/actions/runs/40046062512) and [CB32 record](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Record_20261024.md), plus prior CB31 source and decision.
 2. RA-148 TB32 481/500 candidate and frozen 497 478/497, 19 RED; RA-146.2–4, RA-45.4.
 3. Tracker carried obligations and lessons §2; no gate promotion.

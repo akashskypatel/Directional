@@ -1,3 +1,7 @@
+# CB32 independent static oracle Review — 2026-10-24
+
+- **M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION-REV:** independently rederived baseline odd raw first-arm +90° → inverse branch 3 and alternate −90° → branch 1, canonical face-topology gauge remapping under row/corner permutations, and distinct admissible stale-gauge/inverse-arm negative guards. **Accepted static test-oracle sufficiency only**, with no runtime or production credit. Exact semantic source `30e46b9aabc44925643f46bab20db40962a5e494`; eight-target GMP/GMPXX compile artifact `12541198172`, manifest 28/28, `runtimeExecution=false`, tests unexecuted. Existing accepted CP2 491/491, stable 66/17/49 debt1 and TB32 481/500 candidate carried without change. Next separately bounded immutable TB `M6-CP3-TB33-RP01-ODD-ATLAS-ORACLE-VERIFICATION`. [Review](.agents/Directional/Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Review_Decision_20261024.md).
+
 ## 2026-10-24 — CB32 independently sourced odd transport oracle compiled (runtime-free)
 
 - Corrected only `tests/SurfaceCellTransitionQuotientTests.cpp` (+129/−9), semantic commit `30e46b9aabc44925643f46bab20db40962a5e494`, patch SHA-256 `a9f3f11cc1e28d01611f1b5181a39dea39d56fab15debc40d5414673e519ffae`. Baseline raw cross arms, source edge orientation and semantic topology now derive signed odd transport and expected gauges without echoing A3; distinct inverse-arm/stale-gauge controls retained. No original cases, product algorithms, selectors or manifests modified.

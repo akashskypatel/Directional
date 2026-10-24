@@ -1,16 +1,16 @@
-## CURRENT — CB32 compiled oracle candidate; independent static Review next (2026-10-24)
+## CURRENT — CB32 corrected oracle independently accepted for immutable TB (2026-10-24)
 
-- [x] **CB32 Code + Build:** one test-only file `tests/SurfaceCellTransitionQuotientTests.cpp` +129/−9 from source `d9d24c35be46`, applied exact semantic commit `30e46b9aabc44925643f46bab20db40962a5e494` using SHA-256 `a9f3f11cc1e28d01611f1b5181a39dea39d56fab15debc40d5414673e519ffae`. Independent raw quarter-turn and topology-keyed canonical face gauges, distinct inverse-arm and stale-vector checks; no selector/product/fixture change.
-- [x] Eight-target GMP/GMPXX compile-only [run 40046062512](https://github.com/akashskypatel/Directional/actions/runs/40046062512), artifact `12541198172`, ZIP SHA-256 `17a121aac12d288892853a2455d3f72411a5538eeda512a7d2c9c096a7d47651`, 28/28 checksums; `runtimeExecution=false`. [Record](.agents/Directional/Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Code_Build_Record_20261024.md). Not runtime tested and not independently reviewed.
-- [ ] **EXACT NEXT:** `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION-REV` — independently verify signed inverse and topology-keyed oracles and preservation of nine prior assertions/controls; no runtime, no successor work. Review may reject; immutable TB requires separately authorized review outcome.
-- [ ] **CARRIED:** all 19 TB32 REDs, RA-146.2/3/4, RA-45.4, G4-B002, DIAG-RETAIN, DEFN-SEAM-NZ, periodic/DEFN-T1. No stable event or selector promotion. CP2 491/491 accepted, CP3 unaccepted; 66/17/49 debt1; RP-01 open, RP-02 unreached.
+- [x] CB32 test-only signed raw arm oracle at semantic `30e46b9aabc44925643f46bab20db40962a5e494`; immutable eight-target GMP/GMPXX compile [40046062512](https://github.com/akashskypatel/Directional/actions/runs/40046062512), artifact `12541198172`, 28/28 checksums, `runtimeExecution=false`.
+- [x] Independent `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION-REV` **static source-oracle Review**: source-derived signed (3/1) reciprocal branch, face-topology gauge remap under row/corner permutations and distinct stale-versus-inverse-arm negatives verified. **No runtime**. [Decision](.agents/Directional/Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Review_Decision_20261024.md).
+- [ ] **EXACT NEXT:** `M6-CP3-TB33-RP01-ODD-ATLAS-ORACLE-VERIFICATION` — three focused odd-atlas cases plus the three existing factory controls (six fresh processes); six recovered selector identities remain prior reviewed evidence, immutable package only; exact case count, one fresh process each, raw guard site and postflight, no compile, benchmark, fix, selector or source mutation. Stop on INVALID, carry any RED.
+- [ ] **CARRIED:** 19 TB32 inherited REDs, RA-146.2/3(runtime)/4, RA-45.4, G4-B002, DIAG-RETAIN, DEFN-SEAM-NZ, periodic/DEFN-T1. CP2 491/491 accepted, CP3 not; TB32 481/500 candidate; stable 66/17/49 debt1, RP-01 open, RP-02 unreached.
 
 ### Authorized turn sequence
 
 | Step | Canonical turn | Boundary |
 |---|---|---|
-| 1 — exact next | `M6-CP3-CB32-RP01-ODD-TRANSPORT-ORACLE-CORRECTION-REV` | Independent static Review of code+compile evidence, no runtime |
-| later | `UNKNOWN` | Only independent Review can authorize an immutable TB |
+| 1 — exact next | `M6-CP3-TB33-RP01-ODD-ATLAS-ORACLE-VERIFICATION` | Immutable artifact-only TB; no compilation or code changes |
+| later | `UNKNOWN` | Independent TB Review required before any acceptance |
 
 ---
 
