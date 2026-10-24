@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb34-face-gauge-compile-20261024-v2",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb34-face-gauge-compile",
-  "source_sha": "d3bbc8e9cc41086be10447e4672e0f1ed7245456",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb34-face-gauge"
+  "request_id": "m6-cp3-cb34-gauge-compile-fix-apply-20261024-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb34-gauge-compile-fix-apply",
+  "file_id": "1qKqKmCbI9FD5nXlQ3vq_OiZcy1KrY_4S",
+  "patch_sha256": "1a5e2ab5872edca5dc03d17dd1dd0d32439a46ac1886d6f710d50c6ca1405222",
+  "base_sha": "f106cabcde8f1cc026f62b4f4e4cb464d76ba4b0",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "test: fix CB34 DomainResult face ID access"
 }
