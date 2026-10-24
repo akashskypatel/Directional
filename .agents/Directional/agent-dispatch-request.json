@@ -1,14 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb34-a3-cycle-locus-20261024-v1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb34-a3-cycle-locus",
-  "executor_sha": "e1feb9de2beea1d789436ed1708b0c46875a1e1a",
-  "semantic_source_sha": "f807c2b890b990fc53ea8f84c7228edd94f0659d",
-  "turn_id": "M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST",
-  "harness_path": ".agents/Directional/tools/m6_cp3_tb34_a3_cycle_locus_harvest_harness.sh",
-  "harness_sha256": "45fcbb77173ecaea4a382e94b81f14ff6f427522d3c150de32e8c45dbb913d7a",
-  "environment": {},
-  "artifact_prefix": "m6-cp3-tb34-a3-cycle-locus",
+  "request_id": "m6-cp3-tb34-doc-closeout-20261024-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb34-doc-closeout",
+  "file_id": "1EshWLraNO6NScIYaMbz3ipw3mFi3ICki",
+  "patch_sha256": "bd7e32f1e3a37134fee0092888ace16e5cf7942c2d741b54597e836462de2dcc",
+  "base_sha": "ea9d31bd5d3e580ca3726f636a79ddcea8776115",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close out TB34 immutable A3 cycle locus harvest evidence",
   "retention_days": 7
 }
