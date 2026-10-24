@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-24 · RA-152 audits TB35-REV. Its evidence and 191/192 mechanism stand, but production defect F1 was missed: on the atlas path, A4 periodic route steps never read the atlas, so the steps are identity, the rotation guard is unreachable and closure is unvalidated. The ingress DEFN is withdrawn; next is `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS` (test-only witnesses, compile only). CP2 491/491 accepted, TB32 481/500 candidate, stable 66/17/49 debt1; RP-01 open.
+**Currency:** 2026-10-24 · CB35 under RA-152 D3 compiled three test-only periodic monodromy/transport witnesses at `6c94c053e5d2`; no runtime acceptance. F1 (atlas-path A4 periodic route transports default to identity) remains unresolved; next `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS-REV` independently audits witnesses and compile evidence before TB36. CP2 491/491 accepted, TB32 481/500 candidate, stable 66/17/49 debt1; RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 

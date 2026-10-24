@@ -34,19 +34,21 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-24, RA-152 audits TB35-REV. Its mechanism for 191/192 (atlas overload discards raw containers) stands, but it missed production defect F1: on the atlas path the A4 periodic observed-step loop never reads the atlas, so every route step is identity, the rotation guard is unreachable and strip closure is unvalidated. Ingress DEFN withdrawn; test-first F1 track next. |
-| Source/package | CB34 semantic `d5fc8f22fd309ba90ad1fd7b4fbdc3491a5a8f7d`; [compile run 40111610291](https://github.com/akashskypatel/Directional/actions/runs/40111610291), package `12566907246`, ZIP `ca5c490bae2d65f9c043636c285d29edcfe5695b9334c24edcc281fac26c6a17`; 28/28 manifest entries, eight GMP/GMPXX targets, `runtimeExecution=false`. [Record](Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Record_20261024.md). |
+| Currency | 2026-10-24, CB35 test-only witnesses compiled under RA-152 D3; no runtime execution. Periodic A4 atlas-path F1 remains unresolved; next is independent CB35-REV to verify witness construction and issue a pre-fix TB36 manifest. |
+| Source/package | CB35 test-only semantic `6c94c053e5d20331e06a93d26437aa864171031f`; [run 40131078824](https://github.com/akashskypatel/Directional/actions/runs/40131078824), package `12575180700`, ZIP `f94a7a3644d976cac44bf519afa383b4d94a99ca0663aa2608d68b681e8003bd`; 28/28 manifest entries, eight GMP/GMPXX targets, `runtimeExecution=false`. [CB35 record](Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Code_Build_Record_20261024.md). CB34 package authority is retained in its own record. |
 | Reviewed decision | [RA-152](Architecture_M6_CP3_TB35_REV_Audit_Periodic_Route_Transport_Decision_20261024.md) accepts TB35-REV evidence and non-promotion, corrects its owner (F1), decides single-writer D1–D4, and replaces the ingress DEFN with CB35 → TB36 → CB36 → TB37 → legacy-oracle DEFN. [TB35-REV](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) (RA-151) verified 13/13, 11 PASS / 2 RED. |
 | Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500** (19 inherited RED); TB34 **5 PASS / 7 inherited RED** (12 measured), TB33 synthetic **6/6** only; selector497 frozen; stable **66/17/49**, debt 1. RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS-REV` — EXACT NEXT
 
-- **Type:** Code + Build, test-only, compile-only. **Authority:** [RA-152](Architecture_M6_CP3_TB35_REV_Audit_Periodic_Route_Transport_Decision_20261024.md) D3; [plan](Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Code_Build_Plan_20261024.md).
-- **Edit (`tests/SurfaceCellsPhase10Tests.cpp` only):** helper `turning_periodic_route_field(fixture, k)` rotates each face's raw cross by `k·(π/2)·φ/2π` about its normal and finalizes it via `finalize_surface_cell_raw_cross_field`. Add three tests: `AuthoritativeQuarterTurnMonodromyRejectsAtPeriodicGuard` (k=1), `AuthoritativeHalfTurnMonodromyRejectsAtPeriodicGuard` (k=2), both with 192's exact assertion set and the same field as tracing and source; and `PublishedRouteStepsCarryAtlasTransport` (route[0]/route[1] steps ±1 and inverse, all others identity).
-- **Out of scope:** production code, the seven frozen bodies and existing helpers, selectors, workflows, runtime.
-- **Evidence:** 8 GMP/GMPXX targets, `runtimeExecution=false`; record ≤30 lines.
-- **STOP → Review:** a non-public API is needed; the finalizer is unavailable to the test target; any production or frozen-test edit is required.
-- **Unchanged accounting:** stable 66/17/49 debt 1, CP2 491/491, TB32 481/500 candidate (19 RED), TB35 11/2 focused candidate, selector 497 frozen, RP-01 open, RP-02 unreached; `DIAG-RETAIN` carried.
+- **Type / owner:** independent static Review, authorized by RA-152 D3 and the CB35 plan; review [CB35 code/build record](Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Code_Build_Record_20261024.md).
+- **Objective:** independently verify that three witnesses distinguish authoritative periodic atlas transport and are non-vacuous without changing existing tests or production code.
+- **Read before work:** RA-152 D1–D4, CB35 plan/record, actual committed test-only diff, immutable eight-target GMP/GMPXX package and primary source paths.
+- **In scope:** inspect helper axis/azimuth/face-normal rotation, raw field finalization, k=1/k=2 assertion parity with frozen 192, A3 preconditions, and exact published step ±1/inverse/identity expectations; issue the exact TB36 manifest only after acceptance.
+- **Out of scope:** test/runtime execution, production fixes, selector changes, frozen-body edits, benchmarks or acceptance promotion.
+- **Success evidence:** independent static diff/API/witness audit, re-hashed compile/package evidence, source/target identity, non-vacuity and typed review disposition. Next only after a passing Review: `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE`.
+- **On failure:** identify defects and authorize targeted corrections separately; do not run TB36 on insufficient witness authority.
+- **Unchanged accounting:** stable 66/17/49 debt 1, CP2 491/491, TB32 candidate 481/500 with 19 RED, TB35 11 PASS/2 RED; selector497 frozen, RP-01 open, RP-02 unreached, `DIAG-RETAIN` carried.
 
 ## Turn Sequence
 
@@ -55,8 +57,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | done | `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR` → `…-REV` | Gauge helper/oracle compiled and statically accepted; TB35 manifest issued. |
 | done | `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY` → `…-REV` (RA-151) | 13 cases, 11 PASS / 2 RED; 191/192 mutate discarded containers; 189/190 non-discriminating. |
 | done | `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY-REV-AUDIT` (RA-152) | F1 found: atlas-path route steps identity, guard dead; ingress DEFN withdrawn. |
-| 1 — next | `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS` | Test-only helper + 3 witnesses; compile only. |
-| 2 | `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS-REV` | Static; issues TB36 manifest (3 witnesses + 191/192). |
+| done | `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS` | Test-only helper + 3 witnesses compiled; no runtime. |
+| 1 — next | `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS-REV` | Static; issues TB36 manifest only after independent acceptance. |
 | 3 | `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE` → `…-REV` | Pre-fix: witnesses predicted RED. STOP if any witness is GREEN, A3 rejects k=2, or a witness fails before the periodic producer. |
 | 4 | `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT` → `…-REV` | Production D2 only: observed steps read `atlas->transport`; missing transport fails closed with location; compile only. |
 | 5 | `M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY` → `…-REV` | Witnesses GREEN, TB35 13 cases, full 497 census (route digests change). |
@@ -68,7 +70,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS** — read [RA-152](Architecture_M6_CP3_TB35_REV_Audit_Periodic_Route_Transport_Decision_20261024.md) and the [CB35 plan](Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Code_Build_Plan_20261024.md), `tests/SurfaceCellsPhase10Tests.cpp:4228–4530` (fixture, route rotation, network helper) and 4608–4660 (192 body), `SurfaceCellTracing.cpp:14905–15004`. Test-only; compile only.
+`load_next`: **M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS-REV** — static Review of [RA-152](Architecture_M6_CP3_TB35_REV_Audit_Periodic_Route_Transport_Decision_20261024.md), [CB35 plan](Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Code_Build_Plan_20261024.md) and [compiled CB35 record](Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Code_Build_Record_20261024.md); compare `tests/SurfaceCellsPhase10Tests.cpp` at exact semantic commit `6c94c053e5d2` with predecessor and inspect original frozen test 192, finalizer public contract, `SurfaceCellTracing.cpp:14905–15004`. Audit package and author TB36 manifest without runtime.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

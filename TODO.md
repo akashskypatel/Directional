@@ -1,4 +1,4 @@
-## CURRENT — RA-152 TB35-REV audit; F1 witness first (2026-10-24)
+## CURRENT — CB35 compiled; independent witness Review next (2026-10-24)
 
 - [x] `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY-REV-AUDIT` (RA-152):
   - TB35-REV's evidence, mechanism and non-promotion are accepted;
@@ -9,12 +9,13 @@
   - 191–192 history: at the accepted 449 these used legacy no-atlas ingress, and R4 `7ccdcd527` made them unsatisfiable; 193 is also non-discriminating;
   - D1 single writer (no container pass-through or cross-check); D2 the owner fix; D3 witness first; D4 frozen-body re-homing is deferred to a DEFN;
   - the ingress DEFN is withdrawn. [Decision](.agents/Directional/Architecture_M6_CP3_TB35_REV_Audit_Periodic_Route_Transport_Decision_20261024.md).
-- [ ] **EXACT NEXT:** `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS`. This is test-only and compile-only. [Plan](.agents/Directional/Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Code_Build_Plan_20261024.md).
+- [x] `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS` — test-only, compile-only (no runtime). [Plan](.agents/Directional/Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Code_Build_Plan_20261024.md).
   - Add the helper `turning_periodic_route_field(fixture, k)`: a raw-cross rotation `k·(π/2)·φ/2π` about the face normal, then the production finalizer.
   - `AuthoritativeQuarterTurnMonodromyRejectsAtPeriodicGuard` (k=1) and `AuthoritativeHalfTurnMonodromyRejectsAtPeriodicGuard` (k=2): 192's assertion set, with the same field as tracing and source. Preconditions: no singularities; route rotation ±k and not identity; A3 make succeeds.
   - `PublishedRouteStepsCarryAtlasTransport`: the gauged field; the steps at route[0]/route[1] are ±1 and inverse; all others identity.
-  - No production, frozen-test, selector or runtime change. Record ≤30 lines.
-- [ ] Then: CB35-REV (static; issues the TB36 manifest) → **TB36** pre-fix baseline → TB36-REV.
+  - No production, frozen-test, selector or runtime change. [Verified record](.agents/Directional/Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Code_Build_Record_20261024.md); 28/28 GMP/GMPXX package, eight targets, runtimeExecution=false.
+- [ ] **EXACT NEXT:** `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS-REV` — independent static witness/API/source/package review; only if accepted, author exact TB36 manifest (new 3 + frozen 191/192). No runtime in this Review.
+- [ ] Then: **TB36** pre-fix baseline → TB36-REV.
   - TB36 runs the 3 witnesses + 191/192; the witnesses are predicted RED.
   - STOP if a witness is GREEN pre-fix, A3 rejects k=2, or a witness fails before the periodic producer.
 - [ ] Then: **CB36** `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT` → CB36-REV → **TB37** → TB37-REV.
@@ -27,7 +28,7 @@
   - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Turn sequence:** TB35 → TB35-REV → TB35-REV-AUDIT (RA-152) → **CB35** → CB35-REV → TB36 → TB36-REV → CB36 → CB36-REV → TB37 → TB37-REV → DEFN legacy-oracle homes → untyped 7 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review; `DIAG-RETAIN` carried.
+- **Turn sequence:** TB35 → TB35-REV → TB35-REV-AUDIT (RA-152) → CB35 compiled → **CB35-REV** → TB36 → TB36-REV → CB36 → CB36-REV → TB37 → TB37-REV → DEFN legacy-oracle homes → untyped 7 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review; `DIAG-RETAIN` carried.
 - Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 candidate (19 inherited RED); TB35 11 PASS / 2 RED focused candidate; selector 497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
 
 ---
