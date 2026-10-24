@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb33-review-docs-20261024-r1",
+  "request_id": "m6-cp3-cb33-review-docs-20261024-r2",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb33-review-docs-r1",
-  "file_id": "1koMjtvEWddbLa_heb0dVfrWf2kcIBtW7",
-  "patch_sha256": "1ce0e24cd243b6bf5b5365bae82062b497826ac071b126cbe3f8049b9b439e25",
+  "mailbox_key": "m6-cp3-cb33-review-docs-r2",
+  "file_id": "1PcG5fhyfKdVDuNAtwI2GpF6befdWzLgk",
+  "patch_sha256": "f14ab9cbe5c0da083a18777b217c3d7a97bbd314eb6908e02c57fee583196513",
   "base_sha": "b59b28c80d8ea7c5f802da6b9b7fda0861f5ca31",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): review CB33 A3 diagnostic and freeze TB34 manifest",
+  "commit_message": "docs(agent): accept CB33 diagnostic review and freeze TB34 evidence manifest",
   "retention_days": 7
 }
