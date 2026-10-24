@@ -1,9 +1,9 @@
-## CURRENT — CB34-REV static gauge accepted; immutable TB35 next (2026-10-24)
+## CURRENT — TB35 measured 11/13; independent TB35-REV next (2026-10-24)
 
-- [x] `M6-CP3-CB34-RP01-PERIODIC-ROUTE-FACE-GAUGE-REPAIR`: helper's complete face gauge and new invariance oracle compiled with GMP/GMPXX. An initial compile failed due to `DomainResult` dereference; the one-line `.value()` correction was verified and compiled. [Record](.agents/Directional/Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Record_20261024.md). No runtime execution, acceptance, or frozen selector changes.
-- [x] CB34 independent static Review accepts gauge equivalence and compile provenance only; [decision](.agents/Directional/Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Review_Decision_20261024.md).
-- [ ] **EXACT NEXT:** `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY`: 13 immutable fresh processes from [manifest](.agents/Directional/Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Case_Manifest.tsv), then separate TB35-REV. Any S1-cleared A4 RED transfers to producer DEFN; no test retuning or CP3 promotion.
-- [ ] Preserve the prior per-owner queue and separately gated `DIAG-RETAIN` from the historical CURRENT section below. If TB35 clears S1 but A4 remains RED, open DEFN for periodic-producer owner rather than retuning fixture.
+- [x] CB34 static face-gauge correction and independent CB34-REV compile/source review remain accepted (no runtime credit).
+- [x] `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY`: 13/13 immutable fresh processes, **11 PASS / 2 RED**; selector189,190,193–195 PASS, selector191/192 RED (expected A4 `PeriodicHolonomyMismatch` but phase-front `Produced`). Face-gauge invariant, two atlas guards, three factory controls PASS. [TB35 report](.agents/Directional/Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Verification_Report_20261024.md); first zero-test harness preflight failure disclosed, corrected and rerun. No source, test, selector or package changes.
+- [ ] **EXACT NEXT:** independent `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY-REV`: reopen all 13 raw tests/hashes and prove the first rejecting/non-rejecting predicate and whether selector191/192 represent A4 producer failure. Do not promote 5 recovered positives to accepted CP3 prefix without independent review; no fixture retuning. A4 DEFN is a *conditional later turn* requiring Review authorization.
+- [ ] Preserve prior queue: untyped seven → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1, and `DIAG-RETAIN` separate. No new whole-497 census executed.
 - Frozen: stable 66/17/49, debt 1; CP2 accepted 491/491; TB32 candidate 481/500 (19 inherited RED); selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
 
 ---

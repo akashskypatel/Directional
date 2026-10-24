@@ -1,3 +1,7 @@
+## 2026-10-24 — TB35 immutable face-gauge verification: 11 PASS / 2 RED
+
+- Thirteen distinct unchanged selector/oracle/guard/control tests executed in fresh processes on CB34 immutable package `12566907246` (`d5fc8f22…`), [run 40116807908](https://github.com/akashskypatel/Directional/actions/runs/40116807908), result `12569985565` (`155ae1c4…`, 18/18 hashes). 5/7 original selectors PASS, 2 RED (`selector:191/192`, expected `PeriodicHolonomyMismatch` but phase-front `Produced`); invariance oracle, atlas guards 2/2, factory controls 3/3 PASS; no rebuild/relink/benchmark/selector edit. First attempt ran zero tests due harness uniqueness count typo, corrected and retried. [Report](.agents/Directional/Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Verification_Report_20261024.md). Candidate only, TB35-REV mandatory before promotion; stable 66/17/49 debt1 and CP2 accepted 491/491 unchanged.
+
 ## 2026-10-24 — CB34 independent Review accepts static face-gauge correction, authorizes TB35
 
 - Re-hashed source snapshots (5,847 and 5,848 files), exact CB34 package (28/28, eight GMP/GMPXX, runtime disabled), selector449 and test diff. A3 canonical transport invariance follows from `(p,s)→(-s,p)` and directed face coboundary; all seven original tests unchanged. Independent [review](.agents/Directional/Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Review_Decision_20261024.md) issues [13-case TB35 manifest](.agents/Directional/Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Case_Manifest.tsv). No runtime acceptance, no change to 19 RED or CP3.
