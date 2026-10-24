@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb35-docs-20261024-v1",
+  "request_id": "m6-cp3-tb35-rev-docs-20261024-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb35-docs-apply",
-  "file_id": "18zT2z62EKRwdk4obJafNqSrlv_wmwTmp",
-  "patch_sha256": "868982d810f0fe2cc69def22f24ed5f1e482fb89b7af16db16d29c5ddf03c78c",
-  "base_sha": "14635e3aecf8b08f59d5c615df351defcb244b81",
+  "mailbox_key": "m6-cp3-tb35-rev-docs-apply",
+  "file_id": "1Rp-jbkTLnmKUWc7qnbDFiZ-887R8nYYo",
+  "patch_sha256": "be26afb2463f90f06f3b3da0feb41066d4d6b1418d9e02e84cfd78f83d4ddb23",
+  "base_sha": "0036b43a8a6fed38d0826fd15f2de55f9269b60a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record immutable TB35 results and next independent review",
+  "commit_message": "docs: adjudicate TB35 periodic ingress authority and next definition",
   "retention_days": 14
 }
