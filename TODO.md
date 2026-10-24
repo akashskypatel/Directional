@@ -1,16 +1,8 @@
-## CURRENT — CB33 diagnostic-only source and compile complete; independent review next (2026-10-24)
+## CURRENT — CB33 Review complete; 12-case immutable TB34 next (2026-10-24)
 
-- [x] `M6-CP3-CB33-RP01-A3-CYCLE-MISMATCH-LOCUS-DIAGNOSTIC`: source `f807c2b890b990fc53ea8f84c7228edd94f0659d`; exact three-file S1/S2 site/cycle-locus additions; no semantic changes. Eight GMP/GMPXX targets compiled, runtime-free. [Run 40084311360](https://github.com/akashskypatel/Directional/actions/runs/40084311360); package `12556364042` SHA256 `f984368a213012b2adf5996afe7443817b024f2cb9ef579e5e77e1c99e5ca291`. [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Code_Build_Record_20261024.md).
-- [ ] **EXACT NEXT:** `M6-CP3-CB33-RP01-A3-CYCLE-MISMATCH-LOCUS-DIAGNOSTIC-REV` — mandatory independent static Review of diagnostic-only changes and compile evidence; issue targeted TB34 manifest. No runtime this turn; no subsequent A3 repair without Review.
-- [ ] Planned, not authorized: TB34 targeted `selector:189–195` plus 2 A3 cycle guards and 3 TB33 factory controls; TB34-REV then assigns the A3-cycle owner from measured S1/S2 locus. Other residual 12 REDs and carried obligations remain per RA-149 and handoff.
-- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
-  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
-  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
-  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
-  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- Frozen: accepted CP2 491/491; TB32 481/500 candidate with 19 inherited REDs, selector497 byte-frozen; stable 66/17/49, debt 1, RP-01 open, RP-02 unreached, Gate C suspended. No CP3 acceptance.
-
----
+- [x] `M6-CP3-CB33-RP01-A3-CYCLE-MISMATCH-LOCUS-DIAGNOSTIC-REV`: independent three-file diff and 28/28 eight-target GMP/GMPXX compile/package audit; `runtimeExecution=false`. S1 row/kind now visible; mathematical S2 unreachable and row-index namespace warning documented in [Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Review_Decision_20261024.md](.agents/Directional/Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Review_Decision_20261024.md). No new runtime acceptance.
+- [ ] **EXACT NEXT:** `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST` — immutable artifact-only 12-case harvest: selector189–195 (RED), two atlas guards (PASS), three TB33 factory controls (PASS). Frozen [Architecture_M6_CP3_TB34_A3_Cycle_Locus_Cases.tsv](.agents/Directional/Architecture_M6_CP3_TB34_A3_Cycle_Locus_Cases.tsv); no rebuild, test edits, or semantic mutation.
+- [ ] TB34 independent Review assigns A3 cycle owner from measured actual S1 cycles. 19 inherited REDs, CP2 491/491, TB32 481/500 candidate, stable 66/17/49 debt1 unchanged; RP-01 open, RP-02 unreached.
 
 ## HISTORY — TB33 run; RA-149 review (2026-10-24)
 

@@ -1,3 +1,5 @@
+**CB33-REV A3 diagnostic note (2026-10-24; non-stable / no newly measured regression):** seven inherited `selector:189–195` `CycleTransportMismatch` cases retain unknown fixture-versus-producer owner pending TB34. S1 can now report region-local cycle row/kind, but its `sourceVertex` is not yet available on that rejection branch. S2 is mathematically unreachable after S1 because the sole correction is a multiple of 4, and its `cycleRowIndex` expression is atlas-global rather than region-local. Falsifier: an exact immutable run reporting S2 after both S1 and correction guard are satisfied, or source audit exposing a mutation of the cycle between those checks; absent that, TB34 must classify only measured S1 cycles. No change to stable 66/17/49, debt1 or accepted CP2 491/491. Owner: TB34 then TB34-REV; prohibited: treating absent S2 observations as proof of an index-sum defect. See CB33-REV.
+
 ## RA-149 — TB33 reviewed; residual-RED order (2026-10-24)
 
 TB33 accepted, synthetic scope only. 19 residual REDs, in this order:

@@ -1,3 +1,8 @@
+## 2026-10-24 — CB33 independent Review accepts compile fidelity; corrects S2 premise
+
+- `M6-CP3-CB33-RP01-A3-CYCLE-MISMATCH-LOCUS-DIAGNOSTIC-REV` independently verified commit `f807c2b890b990fc53ea8f84c7228edd94f0659d` (three intended files), eight-target GMP/GMPXX package `12556364042` and 28/28 hashes, `runtimeExecution=false`. No runtime/test changes. The earlier S2 index-sum correction is a multiple of 4, making S2 `CycleTransportMismatch` unreachable once S1 passes; S2's stored cycle index and S1's region-local row use distinct namespaces. Diagnostic S1 source site/kind/row remains suitable for the seven REDs. Full [Review](.agents/Directional/Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Review_Decision_20261024.md) and [TB34 manifest](.agents/Directional/Architecture_M6_CP3_TB34_A3_Cycle_Locus_Cases.tsv).
+- Exact next `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST` (12 immutable cases); no CP3 acceptance or ledger change: CP2 491/491, TB32 481/500 candidate/19 RED, stable 66/17/49 debt1.
+
 ## 2026-10-24 — CB33 A3 cycle-mismatch diagnostics compiled (runtime-free)
 
 - Diagnostic-only semantic source `f807c2b890b990fc53ea8f84c7228edd94f0659d` adds S1/S2 cycle mismatch site and cycle row/kind to the error and SP10 formatter; S1 sourceVertex remains absent when unavailable before failure, per RA-149.4. Exactly three source files touched; codes/control flow/tests/selectors unchanged.

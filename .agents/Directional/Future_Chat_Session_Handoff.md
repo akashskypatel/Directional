@@ -34,38 +34,36 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-24, after CB33 diagnostic-only GMP compile/package. CB33 adds source-site and cycle-locus detail; no runtime repair or CP3 acceptance. |
-| Source and package | Branch `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; CB33 semantic `f807c2b890b990fc53ea8f84c7228edd94f0659d`; compile [run 40084311360](https://github.com/akashskypatel/Directional/actions/runs/40084311360), artifact `12556364042`, ZIP SHA-256 `f984368a213012b2adf5996afe7443817b024f2cb9ef579e5e77e1c99e5ca291`, 28/28 checksums, GMP/GMPXX, `runtimeExecution=false`. |
-| Current runtime candidate | TB33 synthetic odd-atlas oracle evidence [run 40051854120](https://github.com/akashskypatel/Directional/actions/runs/40051854120), artifact `12543546779`, 6/6 PASS; **synthetic scope only**. TB32 full candidate 481/500 with 19 inherited RED, no production acceptance. |
-| Accepted vs candidate | Accepted CP2 **491/491**; TB32 481/500 candidate; selector497 frozen. Stable **66/17/49**, debt 1; RP-01 open, RP-02 unreached, Gate C suspended. |
+| Currency | 2026-10-24, CB33 independent Review accepts diagnostic-only compile fidelity but proves RA-149.3 S2 site unreachable under modulo-four boundary correction; no runtime advance. |
+| Source/package | CB33 semantic `f807c2b890b990fc53ea8f84c7228edd94f0659d`; [compile run 40084311360](https://github.com/akashskypatel/Directional/actions/runs/40084311360), package `12556364042`, ZIP `f984368a213012b2adf5996afe7443817b024f2cb9ef579e5e77e1c99e5ca291`; 28/28 hashes, eight GMP/GMPXX targets, `runtimeExecution=false`. |
+| Reviewed decision | [Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Review_Decision_20261024.md](Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Review_Decision_20261024.md): S1 `cycle-transport` carries local row/kind; S2 boundary correction cannot change residue mod4. TB34 must collect seven true S1 loci without inferring S2 failure. |
+| Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500** (19 inherited RED); TB33 synthetic **6/6** only; selector497 frozen; stable **66/17/49**, debt 1. RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-CB33-RP01-A3-CYCLE-MISMATCH-LOCUS-DIAGNOSTIC-REV` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST` — EXACT NEXT
 
-- **Type / owner:** independent Review of CB33 Code + Build under RA-149.4; may be same agent with independent re-derivation.
-- **Objective:** verify exactly three diagnostic-only code hunks, S1/S2 locus, unchanged codes/returns, SP10 display, eight-target GMP package and `runtimeExecution=false`; freeze targeted TB34 manifest.
-- **Read before work:** RA-149 (`Architecture_M6_CP3_TB33_Odd_Atlas_Oracle_Verification_Review_Decision_20261024.md`); CB33 report `Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Code_Build_Record_20261024.md`; exact source patch and compile package; existing cycle guards and TB33 control tests; `LESSONS.md` §§2,5.
-- **In scope:** static Review, artifact/hash/compile provenance, independent diagnostic-locus inspection, TB34 manifest and Review decision. Complete required Review document consolidation.
-- **Out of scope:** source/test semantic modification, runtime tests, selector changes, unrelated architecture or repairs.
-- **Success evidence:** Review decision with diff and package audit; targeted immutable TB34 manifest (`selector:189–195`, 2 A3 cycle guards, 3 TB33 factory controls), then authority for TB34.
-- **On success:** `UNKNOWN` until Review issues authorized canonical TB34 ID; STOP without inventing it.
-- **On failure/blocker:** record precise evidence and corrective owner; no TB until Review adjudicates.
+- **Type:** artifact-only Test + Benchmark; no code, test, fixture, selector, compile or relink changes.
+- **Source:** immutable CB33 compile package `12556364042` and source `f807c2b890b990fc53ea8f84c7228edd94f0659d`. Confirm package SHA-256 against `f984368a213012b2adf5996afe7443817b024f2cb9ef579e5e77e1c99e5ca291` before executing.
+- **Frozen input manifest:** [Architecture_M6_CP3_TB34_A3_Cycle_Locus_Cases.tsv](Architecture_M6_CP3_TB34_A3_Cycle_Locus_Cases.tsv) — 12 cases: selector189–195 (7 RED), 2 atlas tamper guards (PASS) and 3 TB33 factory controls (PASS). All in separate fresh GoogleTest processes, actual case identity, binaries, raw logs, postflight and exact hashes.
+- **Measurement:** for each seven-row inherited A3 `CycleTransportMismatch`, record first real failure, `site`, `cycleKind`, `cycleRowIndex`, region, and compare with the preflight expectation. A missing site/earlier rejection is not a successful diagnostic. S2 is statically unreachable in defined arithmetic; do not classify it as a separate cause.
+- **Stop/falsifiers:** incorrect immutable package/source; checksum mismatch; incomplete/duplicate/skipped cases; failure to reach the formatter; changed guard/control outcomes; unexpected PASS recorded as evidence, not forced RED. No implementation repair or acceptance credit.
+- **After TB34:** mandatory independent TB34-REV, ID assigned by TB34 authority. Separate Review must adjudicate actual cycle kinds/rows, fixture debt versus A3 defect, without inferring a repair from diagnostic code alone.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
-|---|---|---|
-| 1 — next | `M6-CP3-CB33-RP01-A3-CYCLE-MISMATCH-LOCUS-DIAGNOSTIC-REV` | Independent static Review; freeze TB34 manifest. |
-| 2 — conditional | `UNKNOWN` | TB34 exact ID/manifest assigned by Review only; no automatic execution. |
+|---|---|
+| 1 — next | `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST` | Immutable 12-case diagnostic harvest from CB33 package only. |
+| 2 — conditional | UNKNOWN | TB34-REV after package and exact raw evidence; TB names successor. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **review** — independent CB33 A3 cycle-site/locus static and GMP compile/package check; issue targeted TB34 manifest.
+`load_next`: **test/benchmark** — source package `12556364042`; manifest `Architecture_M6_CP3_TB34_A3_Cycle_Locus_Cases.tsv`; review `Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Review_Decision_20261024.md`; RA-149/TB33 synthetic scope, TB32 19 REDs, accepted CP2 491/491.
 
 Minimum context after mandatory policies:
-0. ORIENTATION, ROADMAP, this handoff, TODO, TB33 report, exact TB33 manifest, CB32-REV decision/CB32 source oracle tests, original immutable package authority.
-1. Immutable [TB33 run 40051854120](https://github.com/akashskypatel/Directional/actions/runs/40051854120), result artifact `12543546779`, ZIP SHA-256 `217f6b214707b4165252a23537284f5aa6ebf242e2de1d8b691774d35272c09d`, ledger and raw logs.
-2. RA-148 TB32 reviewed 481/500 candidate and 19 inherited RED; RA-146.2–4, RA-45.4, G4-B002, retained CP2 491/491 and stable 66/17/49 debt1.
-3. RA-149 and CB33 Code + Build record `Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Code_Build_Record_20261024.md`; targeted A3 source raise sites, formatter and unchanged code-only guards; `LESSONS.md` §§2,5,7.
+0. ORIENTATION, ROADMAP, TODO, this handoff, review verdict and frozen manifest.
+1. CB33 compile report `Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Code_Build_Record_20261024.md`; source SHA/package/28 checksums, no runtime.
+2. RA-149, TB31/TB32 first-failure evidence for selector189–195 and the SP10 formatter; existing atlas cycle guards and TB33 factory controls.
+3. Keep all 19 inherited REDs and CP3 acceptance debt carried; do not use S2 as an independent cause.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
