@@ -4564,7 +4564,7 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
         static_cast<std::size_t>(fixture.mesh.F.rows()));
     if (!sourceFace || !targetFace) return false;
     const auto value = gaugedAtlas.value().transition_value(
-        edge, *sourceFace, *targetFace);
+        edge, sourceFace.value(), targetFace.value());
     return value && value->signedLift == expected;
   };
   const auto &into = fixture.expectedRoute[0];
