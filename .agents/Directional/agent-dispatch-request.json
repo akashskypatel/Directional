@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb33-docs-20261024-r2",
+  "request_id": "m6-cp3-cb33-a3-cycle-locus-20261024-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb33-docs-apply-r2",
-  "file_id": "1AhnnXkf5YxtQNuJGYImiL1cmPVPFFTsO",
-  "patch_sha256": "b46c22aed861f746908ff11516501c2a021921c0bc33baad543d535c518eec3e",
-  "base_sha": "aef8ced3b1b1d7515b4656fadf214be11ffd4612",
+  "mailbox_key": "m6-cp3-cb33-a3-locus-apply-r1",
+  "file_id": "1OHosND-FSCfudu9WgOM8MmJgUY0Zed8P",
+  "patch_sha256": "6d1270846e863545051956482ea9b6078bd4ca4022cf56e23b56021102de002c",
+  "base_sha": "56619da0d61910b57f1a1b4e6214187f3ffe18f0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record immutable TB33 odd-atlas oracle results",
+  "commit_message": "fix(directional): preserve A3 cycle mismatch site and locus",
   "retention_days": 7
 }
