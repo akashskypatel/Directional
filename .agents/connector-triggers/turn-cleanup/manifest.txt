@@ -1,2 +1,0 @@
-# Temporary source-snapshot trigger created for TB36-R1
-.agents/connector-triggers/source-snapshot/m6-cp3-tb36-r1-20261025.txt
