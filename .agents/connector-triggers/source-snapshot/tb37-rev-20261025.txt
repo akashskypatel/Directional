@@ -1,0 +1,3 @@
+source_commit_before_trigger=ff8bd8fe67bd4bd180310f6393a27564a981ba48
+turn=M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY-REV
+purpose=verified_snapshot_review
