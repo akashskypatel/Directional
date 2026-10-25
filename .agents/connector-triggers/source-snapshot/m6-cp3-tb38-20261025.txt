@@ -1,1 +1,0 @@
-Source snapshot for M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS. Freeze source at this trigger commit. Read-only artifact verification; no compile or source changes.
