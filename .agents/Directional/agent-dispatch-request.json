@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb36-r1-report-drive-apply-20261025-a2",
+  "request_id": "m6-cp3-tb36-rev-drive-apply-20261025-a1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb36-r1-report-apply-r2",
-  "file_id": "1r_JHdcP3ityDN-51Hm4o88VDHUIpzR42",
-  "patch_sha256": "ad4acba1a3f55e79042172fd4cf804c7682101d4e7493e780f87a70d90ec20c6",
-  "base_sha": "0053f6a779793c274bad3fcd8a2f58dbd8dba032",
+  "mailbox_key": "m6-cp3-tb36-rev-apply",
+  "file_id": "1OrrqJCKz8EmUOYSktDLzHL_wKamjmdBB",
+  "patch_sha256": "7acffed0b1969714b3f3a6111e4b071c4c34481b2e12d68ba59f3924fbf001fa",
+  "base_sha": "330fefed1b56e8cfc7cd3f4cd062192abf72af47",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): record TB36-R1 periodic baseline and independent Review handoff",
+  "commit_message": "docs(agent): independently review TB36 periodic monodromy baseline",
   "retention_days": 14
 }
