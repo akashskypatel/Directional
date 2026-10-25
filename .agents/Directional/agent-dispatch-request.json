@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb37-close-docs-20261025-r1",
+  "request_id": "m6-cp3-tb37-rev-docs-20261025-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb37-close-docs",
-  "file_id": "1M1I64qek95-lFdegm-ccpv0FaUkbJXwn",
-  "patch_sha256": "98bfc42963b82577349c925255ed12bbaaece1fe7165d354db9241a8dd62ed31",
-  "base_sha": "48e0ba687079a7bf528d592d5a3e6472a4486952",
+  "mailbox_key": "m6-cp3-tb37-rev-docs",
+  "file_id": "1ncVkYHxDQwtQTfnrrjIuAF2Jjy-v7Rcb",
+  "patch_sha256": "4954b2942e96d46f0c1e6662b95111e2fbffbe9dbf73092e77c79446fdf2f770",
+  "base_sha": "33c688ba5cf0ff1a80e8a3837c84723e1b821fe6",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB37 candidate verification and handoff",
+  "commit_message": "docs(directional): independently review TB37 periodic atlas evidence",
   "retention_days": 14
 }
