@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb38-closeout-docs-r2-20261025t2053z",
+  "request_id": "m6-cp3-cb38-rev-closeout-20261025t2135z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb38-closeout-docs-r2",
-  "file_id": "1IcY2azm6bYRDzG-6xtKcNJvenna3yCSN",
-  "patch_sha256": "9042bc4fc752e7e73ed46d7ac589765df43155d28ee74eafe9947fa78db63451",
-  "base_sha": "caf5c549d2bca2a70b5198c88eb12df2d9b0d1a0",
+  "mailbox_key": "m6-cp3-cb38-rev-closeout-2135",
+  "file_id": "12z4vQtlfPvGDp9hfl3hNZX6hOJ6uI7Iu",
+  "patch_sha256": "bbfbdcd6e71b42657ab41afa0dc9dafa36fe92e58f4107b22220a97da30bc1cb",
+  "base_sha": "01d3fce034e7cdb154cbe0cca3b393aaf956b59c",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close CB38 GMP compile and hand off independent rail-authority review",
+  "commit_message": "docs: independently review CB38 and freeze TB40 witness manifest",
   "retention_days": 14
 }
