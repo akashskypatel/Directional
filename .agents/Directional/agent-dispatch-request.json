@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb38-selector250-rail-apply-r2-20261025t2043z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb38-selector250-rail-apply-r2",
-  "file_id": "1bQpv7lXZrzacJoM8JIfwMZo3SjTXRfT6",
-  "patch_sha256": "3e822d95ecfb5e40795ce9cea19ad7e1480ee7f8c616f608028f273b799021bb",
-  "base_sha": "1e05d560f5a4bcf8ddc48f703b74d7d549f8493e",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surface-cells): restore selector 250 disk rail authority",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb38-selector250-rail-compile-20261025t2044z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb38-selector250-rail-compile",
+  "source_sha": "41f39ba920eace2dad7b36d2b26c8073ce740239",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb38-rail-compile"
 }
