@@ -1,2 +1,0 @@
-CB36 periodic route atlas transport: exact source snapshot following entry STATUS.
-No build/test execution.
