@@ -1,4 +1,0 @@
-Review snapshot request
-Turn: M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE-REV
-Frozen source commit: 228329ef7fa229697fd516983a81a46b9cc858d7
-Reason: independent review of baseline run 40159803899; source-only snapshot, no runtime.
