@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb39-rev-factory-site-doc-apply-20261025-r1",
+  "request_id": "m6-cp3-cb38-selector250-rail-apply-20261025",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb39-rev-factory-site-doc-r1",
-  "file_id": "1KSPID_NUXKtIuXm4gUvYboRAwHn4tLQD",
-  "patch_sha256": "e899c74f49861056a2c54698df5dd984440595661ca78c019a067ac1a6bf14ce",
-  "base_sha": "0c39ce0b6d3652eb49ae2be7fde2d1edac7e7d41",
+  "mailbox_key": "m6-cp3-cb38-selector250-rail-apply",
+  "file_id": "1llllvjwzmg2MO8N2rhsfrL6klWY_EJ2T",
+  "patch_sha256": "9a01c79bc39cfb806029a5390b58faf3aa6d0226a7a5c1c5b0f77f5dcc452281",
+  "base_sha": "1e05d560f5a4bcf8ddc48f703b74d7d549f8493e",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): independently review TB39 factory-site rejection",
+  "commit_message": "test(surface-cells): restore selector 250 disk rail authority",
   "retention_days": 14
 }
