@@ -43,6 +43,6 @@ The current 449-row accepted-selector source file re-hashes to `d4a0d1b731cfd99e
 | Consolidation under CLEAN_UP_POLICY | CB36 code/build and RA-153 remain current/live causal references; index adds their role, no destructive fold of load-bearing current files. |
 | Successor frozen | `M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY`; 16-row manifest and RA-153.4 STOP rules above. |
 | Turn boundary held | Review static only; no product/test/fixture/selector/benchmark/build mutations or runtime. |
-| review_check.py boundary | To be run on snapshot-local synthetic Git base; historical Git ancestry/ledger checks **cannot** be certified from a shallow no-history snapshot, and are not claimed green. |
+| review_check.py boundary | Snapshot-local `review_check.py boundary` **executed, exit 1**: the four rewrite-ancestry/source checks cannot succeed in a no-history synthetic snapshot. The actual rewrite baseline's five protected headings were independently retrieved from GitHub and are preserved; exact semantic commit review shows no product/test/selector changes. Full committed-history boundary/ledger verification remains **unresolved**, not green. |
 | `STATUS` lifecycle maintained | Entry beacon created; final direct-write required after remote documentation publication. |
-| Pushed to origin, branch in sync | To be established from verified remote patch application; local snapshot has no original Git history, so no fabricated `git status -sb` origin-sync claim. |
+| Pushed to origin, branch in sync | Verified push at `1fcd84643c2e1f8cdbf60f473e02253e0643c10c`, exactly the nine intended paths, and matching open/draft PR #8 head. Local synthetic snapshot cannot attest `git status -sb` against the actual origin; no false local-sync claim. |
