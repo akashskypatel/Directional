@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb38-periodic-route-atlas-census-20261025-r1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb38-periodic-route-atlas-census",
-  "executor_sha": "3b5ac185fca3034cf0b6762d8f2f7e30d4f5e74d",
-  "semantic_source_sha": "038ae7fd7c290731c28225d2693a3e13866e325a",
-  "turn_id": "M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "436f5fff9c3bec97457f4bc6b7c2b6182cb3f47707eb14a66af3b6a3f3dc3c9a",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "12590917524",
-    "EXPECTED_SOURCE_SHA": "038ae7fd7c290731c28225d2693a3e13866e325a",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "6dcbfe5a468be5f548c368bfebeba411c6abd19ed4a4efd01be9923da9eb7d03",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "98f1dd214596b9ed2217fa316efc7e0511018079b1e1b400c417135bb12e1fb3",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "e9540142f32d6482135c4758d6f1eec2067cd9f1541e1de5f950fb08c13cf3e8",
-    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "b27eecb6b4f6f32fd060b8510a0cabf71f86b8fe1028dbb10c36003867dcf8c2",
-    "EXPECTED_CASE_COUNT": "504"
-  },
-  "artifact_prefix": "m6-cp3-tb38-periodic-atlas",
+  "request_id": "m6-cp3-tb38-doc-closeout-20261025-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb38-doc-closeout",
+  "file_id": "148xbLH3N0DXVIDSM4zEXL2i2vrPAwCWs",
+  "patch_sha256": "f334dd95e8e40e164973d3f6438ffdcaaf0b4b64bd014c0fd5f01a083fc5ed63",
+  "base_sha": "3b5ac185fca3034cf0b6762d8f2f7e30d4f5e74d",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record TB38 periodic-route atlas census",
   "retention_days": 14
 }
