@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-25 · TB39 executed seven frozen artifact-only cases (6 PASS guards, selector250 expected RED) against CB37; `site=hard-rail-contact-missing`, error=0/detail=6 measured. Independent TB39-REV must classify; this is not production acceptance. CP2 491/491 accepted; stable 66/17/49 debt1; RP-01 open.
+**Currency:** 2026-10-25 · TB39-REV independently classified selector250 checked-factory `InvalidSourceAuthority(0)` / `MissingRailTerminalContact(6)` as missing authentic hard-rail provenance in its composed positive fixture. No CP3 acceptance; next CB38-A. CP2 491/491 accepted; stable 66/17/49 debt1; RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current test authority:** TB38-REV accepts the immutable 504-case census as **reviewed candidate** (490 PASS / 14 RED; original 497 selector 483/14), not CP3 acceptance. Five expected former RED now PASS; four appended guards PASS; no accepted-green loss. 191/192 reach the intended negative assertions but remain Produced/None, and 250 remains `PublishedProductRejected(68)` with unmeasured factory sub-site. The next bounded step is independent TB39-REV owner classification of the measured `hard-rail-contact-missing` site, then the Review-bound A/B/C test-only re-homes; stable 66/17/49 debt1, CP2 491/491, frozen selector497. [TB38-REV decision](Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Independent_Review_Decision_20261025.md).
+**Current test authority:** TB38-REV accepts the immutable 504-case census as **reviewed candidate** (490 PASS / 14 RED; original 497 selector 483/14), not CP3 acceptance. Five expected former RED now PASS; four appended guards PASS; no accepted-green loss. 191/192 reach the intended negative assertions but remain Produced/None, and 250 remains `PublishedProductRejected(68)` with now-measured code 0/detail6 hard-rail-contact-missing; independent TB39-REV assigns missing source-rail fixture authority. The next bounded step is CB38-A A3 tamper re-home, then remaining B/C test-only re-homes; stable 66/17/49 debt1, CP2 491/491, frozen selector497. [TB38-REV decision](Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Independent_Review_Decision_20261025.md).
 
 **Prior TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 
@@ -104,16 +104,18 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** TB39 observed selector250 code 0/detail 6 and `site=hard-rail-contact-missing`; TB39-REV must independently assign the owner before follow-on work. Then the Review-bound test-only re-homes A/B/C (RA-155.3), then the narrowed DEFN for 190 and 242.
+**Immediate:** TB39-REV assigned selector250 code 0/detail6 to the positive fixture’s missing source-rail authority, not O1. Next CB38-A re-home, then B/C and the narrowed DEFN. A later separately reviewed 250-owner turn must publish independently valid rail provenance and prove the positive path without weakening the checked factory.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Harvest the 250 checked-factory site (TB39 → TB39-REV), then re-home tamper oracles A/B/C and verify them (TB40). | `M6-CP3-TB39-RP01-SELECTOR250-FACTORY-SITE-HARVEST-REV`; [RA-155](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md) |
+| **1** | Re-home tamper oracles A/B/C (CB38-A first), verify by TB40, then address the separately bound 250 positive-fixture rail authority. | `CB38-A`; [TB39-REV](Architecture_M6_CP3_TB39_Selector250_Factory_Site_Independent_Review_20261025.md), [RA-155](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
+
+- **Positive fixture missing independently published source-rail provenance (TB39-REV):** adding hard-feature edge keys does not publish their source-owned open contacts or closed chains. Checked A4 rejects this under `InvalidSourceAuthority(0)` / `MissingRailTerminalContact(6)` even when its upstream A2/A3 atlas was built. Correct the fixture authority at its originating producer; do not relax the validator or interpret its wrapper as an A4 periodic-action mismatch. [Review](Architecture_M6_CP3_TB39_Selector250_Factory_Site_Independent_Review_20261025.md).
 
 - **Producer step authority omitted under atlas ingress (RA-152 F1; TB36-REV):** branch propagation reads `FieldTransportAtlas` but A4 periodic observed-step publication historically used null legacy containers and inserted zero rotations; CB36-REV accepted its atlas-first correction and TB37-REV now confirms three focused runtime witnesses; full 497-row census remains unmeasured. A checked factory rejection after A4 is not an A4 guard success; preserve its underlying site before assigning the secondary factory cause.
 
