@@ -1,4 +1,4 @@
-## CURRENT — RA-156 TB39-REV audit; 250 rail authority first (2026-10-25)
+## CURRENT — CB38 compiled; independent review next (2026-10-25)
 
 - [x] **RA-156 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md)):
   - TB39-REV accepted: 17/17 hashes and 7 log hashes verified; 250 site `hard-rail-contact-missing` (code 0, detail 6) is owned by the fixture, not O1.
@@ -6,13 +6,13 @@
   - J2: the 250 owner is known and small, so it moves first; the A/B/C re-homes follow.
   - J3/O3: the polygonal-disk rejection oracles (251, 252, `:2936`) check the reason only; that reason has 5 sites. Pin `cell=-1, side=-1`.
   - J4: guards use only the in-selector PASS rows; `:3380` and the `:10092` negative are unmeasured.
-- [ ] **EXACT NEXT `M6-CP3-CB38-RP01-SELECTOR250-RAIL-AUTHORITY`** (test-only, compile only; RA-156.3). Inside test 250 only:
+- [x] **COMPLETED `M6-CP3-CB38-RP01-SELECTOR250-RAIL-AUTHORITY`** (test-only, compile only; RA-156.3). Inside test 250 only:
   - build a combined-mesh feature map (closed `Hard` ring, `component=2`, plus `diskOffset`);
   - call `build_authoritative_surface_cell_rails`;
   - set `authoritativeRails` and the three provenance maps;
   - require the edge-key identity `== hardFeatureEdges`.
-  - Assertions unchanged. Record of 30 lines or fewer.
-- [ ] Then CB38-REV, which freezes the TB40 manifest (RA-156.4).
+  - Assertions unchanged. [CB38 record](.agents/Directional/Architecture_M6_CP3_CB38_Selector250_Rail_Authority_Code_Build_Record_20261025.md) verifies one hunk, eight GMP/GMPXX targets, 28/28 checksums, no runtime.
+- [ ] **EXACT NEXT `M6-CP3-CB38-RP01-SELECTOR250-RAIL-AUTHORITY-REV`** — independently review the exact CB38 hunk/source/package and freeze the TB40 manifest (RA-156.4) if accepted.
 - [ ] Then TB40 → TB40-REV: discharge 250 as a candidate, or bind one new owner.
 - [ ] Then the re-homes, each test-only and followed by its REV:
   - CB39-A (191+204 → A3 `NonReciprocalAdjacency`);
@@ -30,7 +30,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: RA-155 → CB37 → CB37-REV → TB39 → TB39-REV → TB39-REV-AUDIT (RA-156).
-  - **CB38 (250 rail authority) → REV → TB40 → REV.**
+  - **CB38 DONE → CB38-REV next → TB40 → REV.**
   - CB39-A → REV → CB40-B → REV → CB41-C → REV → CB42-O3 → REV → TB41 → REV.
   - DEFN legacy-path and seam oracles → REV.
   - TB40-REV owner → 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review.

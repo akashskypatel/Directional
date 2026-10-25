@@ -34,24 +34,18 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-25: RA-156 audit. TB39-REV accepted: 250 fails at the factory check `hard-rail-contact-missing` (code 0, detail 6), owned by the fixture, not O1. Its corrective spec is replaced: test 250 drops all four rail-authority fields that `make_curved_disk_fixture` already builds. The 250 owner moves first. CP3 and the selector stay unpromoted. |
-| Source/package | CB37 exact semantic `c9d7c80f6d41abdbc2ecd02de7006c7847988df8`; [run 40216902065](https://github.com/akashskypatel/Directional/actions/runs/40216902065), package `12607777892`, ZIP SHA256 `fa437659c633de1b5e69dc93b35bcbb65dec84c212a957d005ada58e4dd01b58`; 28/28 hashes, eight GMP/GMPXX targets, clean source, `runtimeExecution=false`. [CB37 record](Architecture_M6_CP3_CB37_Selector250_Factory_Site_Message_Prepared_Patch_Record_20261025.md). |
+| Currency | 2026-10-25: CB38 test-only source and eight GMP/GMPXX compile targets verified; no runtime evidence for selector 250. Next independent CB38-REV freezes TB40 manifest (RA-156.4). CP3 and selector remain unpromoted. |
+| Source/package | CB38 test-only `41f39ba920eace2dad7b36d2b26c8073ce740239`; [compile 40232132945](https://github.com/akashskypatel/Directional/actions/runs/40232132945), artifact `12613073521`, ZIP SHA256 `ca7358b7de3ff7ce5bc234f69c2b06036a7a5681f96d9a2d6c9e7cd298797ab3`; 28/28 hashes, eight GMP/GMPXX targets, clean, `runtimeExecution=false`. [CB38 record](Architecture_M6_CP3_CB38_Selector250_Rail_Authority_Code_Build_Record_20261025.md). CB37 predecessor preserved in its separate record. |
 | Reviewed decision | [RA-156](Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md): TB39 re-verified (17/17 hashes, 7 log hashes, 6 PASS / 1 RED). J1: derive `authoritativeRails` plus the three provenance maps through the production functions. J2: the 250 owner moves first. J3/O3: the polygonal-disk rejection oracles are vacuous on the reason alone. J4: guard set. J5: sequence numbering fixed. RA-155 homes A/B/C and the narrowed DEFN still stand. |
 | Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500**; TB37 focused **14/16 reviewed**; TB38 independently reviewed **candidate 490/504** (497 prefix 483/14), unpromoted; selector497 frozen and unpromoted; stable **66/17/49**, debt 1; RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-CB38-RP01-SELECTOR250-RAIL-AUTHORITY` — CODE + BUILD (test-only)
+## Mandatory next turn — `M6-CP3-CB38-RP01-SELECTOR250-RAIL-AUTHORITY-REV` — independent REVIEW
 
-- **Authority:** [RA-156.3](Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md).
-- **Edit:** only the body of test 250 (`tests/SurfaceCellsPhase10Tests.cpp:3595`), inline. Insert it after the hard-edge insertions (`:3649–3662`) and before `build_phase10_with_source_atlas`:
-  - Build a combined-mesh `AdaptiveFeatureMap` with one closed `Hard` curve, `component=2`, ring `{0,1,2,5,8,7,6,3,0}` plus `diskOffset`, and incidence taken from the combined `faces`; throw unless every edge has exactly 1 incident face.
-  - Call `build_authoritative_surface_cell_rails(mesh, features)`.
-  - Set `authoritativeRails`, `hardRailTerminalContacts`, `hardRailClosedChains` and `hardRailOpenChains` from `hard_rail_source_provenance_from_rails`.
-  - Require that `closedChains` is non-empty and `hard_feature_edge_keys_from_rails(...) == options.hardFeatureEdges`.
-  - Mirror the existing fixture code at `:2582–2626`.
-- **Must not change:** the hard-edge insertions, the `:3666` assertion and its message, later assertions, `make_curved_disk_fixture`, production code, selectors, the harness or workflows.
-- **Evidence:** 8 GMP/GMPXX targets, `runtimeExecution=false`, and a record of 30 lines or fewer with the exact hunk.
-- **STOP → Review:** the rail builder rejects, the edge-key identity differs, or an edit outside test 250 is needed.
-- **Preserve:** stable 66/17/49, debt 1; CP2 491/491; TB32 481/500 and TB38 490/504 candidate; selector497 frozen; RP-01 open; carried items listed below.
+- Reopen the exact [CB38 Code + Build record](Architecture_M6_CP3_CB38_Selector250_Rail_Authority_Code_Build_Record_20261025.md) and source commit `41f39ba920eace2dad7b36d2b26c8073ce740239`.
+- Independently verify the RA-156.3 scope: only test 250; combined mesh rail authority and three provenance maps; unchanged hard-edge insertions, assertion and later checks; no production or selector edits.
+- Verify the eight-target GMP/GMPXX compile-only artifact `12613073521` and its 28 checksums, clean source and `runtimeExecution=false`; do not infer selector 250 runtime PASS.
+- If accepted, freeze the TB40 manifest defined by RA-156.4 (250 as expected RED, guarded PASS rows 199, 235, 236, 249, 251, 252, TB36 three witnesses, 193–195), then authorize only `M6-CP3-TB40-RP01-SELECTOR250-RAIL-AUTHORITY-VERIFY`.
+- If rejected, assign a precise same-owner correction. Preserve CP2 491/491, TB38 490/504 candidate, selector497, stable 66/17/49 and debt1.
 
 ## Turn Sequence
 
@@ -59,7 +53,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 |---|---|---|
 | done | TB38 → TB38-REV → audit ([RA-155](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md)) | 490/504 candidate; homes A/B/C bound; DEFN narrowed. |
 | done | CB37 → REV → TB39 → TB39-REV → audit ([RA-156](Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md)) | 250 site `hard-rail-contact-missing`; fixture rail authority; 250 owner first. |
-| 1 — next | `M6-CP3-CB38-RP01-SELECTOR250-RAIL-AUTHORITY` → REV | Test-only, compile only; the REV freezes the TB40 manifest (RA-156.4). |
+| done | `M6-CP3-CB38-RP01-SELECTOR250-RAIL-AUTHORITY` | Test-only hunk compiled, exact package verified; no runtime. |
+| 1 — next | `M6-CP3-CB38-RP01-SELECTOR250-RAIL-AUTHORITY-REV` | Independent review freezes TB40 manifest (RA-156.4), if accepted. |
 | 2 | `M6-CP3-TB40-RP01-SELECTOR250-RAIL-AUTHORITY-VERIFY` → REV | 250 kind RED; GUARD rows 199, 235, 236, 249, 251, 252, the 3 TB36 witnesses and 193–195. The REV discharges 250 or binds one new owner. |
 | 3 | CB39-A (191+204 → A3 `NonReciprocalAdjacency`) → REV | RA-155.3 A; test-only. |
 | 4 | CB40-B (192 k=1, 247 k=2 monodromy) → REV | RA-155.3 B; test-only. |
@@ -74,7 +69,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB38-RP01-SELECTOR250-RAIL-AUTHORITY** — [RA-156.3](Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md); `tests/SurfaceCellsPhase10Tests.cpp:2582–2626` (the fixture to mirror) and `:3595–3669` (test 250); `RemeshPipeline.h:1860–1879` (rail functions). Test-only; compile only.
+`load_next`: **M6-CP3-CB38-RP01-SELECTOR250-RAIL-AUTHORITY-REV** — [CB38 record](Architecture_M6_CP3_CB38_Selector250_Rail_Authority_Code_Build_Record_20261025.md), [RA-156.3/4](Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md), test 250 and `make_curved_disk_fixture` in `tests/SurfaceCellsPhase10Tests.cpp`, authoritative rails functions. Review exact patch/package; freeze TB40 manifest only after independent acceptance.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
