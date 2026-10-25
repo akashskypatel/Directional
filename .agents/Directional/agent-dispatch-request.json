@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb35-r2-compile-20261025-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb35-r2-compile",
-  "source_sha": "7de805c487fa66bcb96744f51b8bfbe7210ee8dc",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb35-r2-gmp-compile"
+  "request_id": "m6-cp3-cb35-r2-durable-docs-20261025-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb35-r2-durable-docs",
+  "file_id": "1tB4C4bGxb9o6PnWRNPnltVtEBCeJ9DqE",
+  "patch_sha256": "f965099fe0b97df4be4d2d83cf4a76dfecf5a73499c77b1cafb0a4f2dc07ef81",
+  "base_sha": "f7079c957f21efa7196e0b70b0bc903f761be7d9",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB35-R2 build and hand off independent route review",
+  "retention_days": 14
 }
