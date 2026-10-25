@@ -61,5 +61,5 @@ The RA-154.4 stop clause on assertion drift is satisfied **only with its explici
 | Successor frozen | `M6-CP3-DEFN-RP01-ATLAS-INGRESS-TAMPER-ORACLE-HOMES`; falsifiers above. |
 | Turn boundary held | Review-only inspection; no local runtime/build, source/test/selector/fixture mutation. |
 | review_check.py boundary | Not independently verified against real Git history from the GitHub snapshot (snapshot excludes .git). |
-| `STATUS` lifecycle maintained | Entry beacon published; final beacon pending remote documentation application. |
-| Pushed to origin, branch in sync | Pending remote patch application and authoritative history check; do not claim success. |
+| `STATUS` lifecycle maintained | Entry and resume beacons published; final beacon remains pending history-sensitive boundary check. |
+| Pushed to origin, branch in sync | Verified remote patch application `9dcc8747bc98f250aabc4c08f910fcc202281567` (eight intended review/document paths) via GitHub Actions run `40197583225`; later branch comparison showed only `STATUS` changed. Local `git status -sb` unavailable in ChatGPT Web; no local sync assertion. |
