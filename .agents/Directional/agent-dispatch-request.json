@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb38-doc-closeout-20261025-r3",
+  "request_id": "m6-cp3-tb38-rev-doc-closeout-20261025-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb38-doc-closeout-r3",
-  "file_id": "1131ZEt3Ux5EDU-Ec016syntYxx3eHDCL",
-  "patch_sha256": "f6924c10f88b157de91765b6b6e512209e61b7986e8b622a84b4ea931113cb4d",
-  "base_sha": "3b5ac185fca3034cf0b6762d8f2f7e30d4f5e74d",
+  "mailbox_key": "m6-cp3-tb38-rev-doc-closeout",
+  "file_id": "1nKOgX6i7vSVy6W4qd0pGOPRMzLr4LLfj",
+  "patch_sha256": "132f44d468c968ae974ec6189bb964640944a9ca6a0ce9f9c77a9c7eb30dbee5",
+  "base_sha": "0148015ab741329a99d973177602823b66acba37",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record verified TB38 atlas census",
+  "commit_message": "docs(directional): independently review TB38 atlas census",
   "retention_days": 14
 }
