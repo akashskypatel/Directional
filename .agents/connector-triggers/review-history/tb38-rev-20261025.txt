@@ -1,3 +1,0 @@
-turn=M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS-REV
-caller_installed=d1563529afa630e20408ba0dc490bd0e72dde7ef
-scope=read-only historical review_check authority/boundary/ledgers
