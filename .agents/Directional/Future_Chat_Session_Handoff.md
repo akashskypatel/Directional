@@ -39,7 +39,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Reviewed decision | [RA-153](Architecture_M6_CP3_TB36_REV_Audit_Periodic_Route_Atlas_Transport_Decision_20261025.md) binds CB36 and CB36-REV; TB36-R1 0 PASS / 5 RED remains the pre-fix baseline. Missing transport falsifier is static-only. TB37 is focused 16 rows and TB38 is a separate census. |
 | Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500** (19 inherited RED); TB35 **11/13**, TB36-R1 **0/5**; selector497 frozen; stable **66/17/49**, debt 1; RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY` — EXACT NEXT
+## Conditional successor — `M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY` — ONLY AFTER REVIEW CLOSEOUT
 
 - **Type:** artifact-only focused Test + Benchmark, 16 individually selected fresh processes. No compile/relink/runtime source alteration; use only CB36's immutable package `12590917524` (semantic `038ae7fd7c290731c28225d2693a3e13866e325a`), ZIP digest `6dcbfe5a468be5f548c368bfebeba411c6abd19ed4a4efd01be9923da9eb7d03`.
 - **Manifest:** [Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Case_Manifest.tsv](Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Case_Manifest.tsv) (SHA-256 `d14b24d96c66c6a2c346b60003a5697dfab1764109b45854a3f145bba70b667d`); 3 TB36 witnesses plus the unchanged 13 TB35 controls. Review authority: [Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Independent_Review_Decision_20261025.md](Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Independent_Review_Decision_20261025.md) and RA-153.4.
@@ -55,8 +55,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | done | TB36 (invalid harness) → `M6-CP3-CB36-ORCH-RP01-TB36-HARNESS-CORRECTION` → TB36-R1 → TB36-REV | Valid 0/5 pre-fix baseline; F1 confirmed. |
 | done | `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE-REV-AUDIT` (RA-153) | TB36-REV accepted; CB36 spec bound; RA-152 errata E1/E2; TB37 split. |
 | done | `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT` | D2 only; compiled eight GMP/GMPXX targets, no runtime. |
-| done | `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT-REV` | Static accepted, 16-row manifest published; no runtime. |
-| 1 — next | `M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY` → `…-REV` | 3 witnesses GREEN; TB35 189,190,193–195 + 6 controls PASS; 191/192 RED unchanged. STOP if 68 persists, 191/192 change, or a PASS regresses. |
+| in progress | `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT-REV` | Static accepted, 16-row manifest committed; actual-Git-history boundary/ledger verification remains unproved. |
+| next after review | `M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY` → `…-REV` | 3 witnesses GREEN; TB35 189,190,193–195 + 6 controls PASS; 191/192 RED unchanged. STOP if 68 persists, 191/192 change, or a PASS regresses. |
 | 4 | `M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS` → `…-REV` | Full 497 vs TB32 ledger; no accepted-green loss. |
 | 5 | `M6-CP3-DEFN-RP01-PERIODIC-LEGACY-ORACLE-HOMES` → CB/TB | D4 + E1: 191 → A3 `NonReciprocalAdjacency`; 192 → k=1 field; 189/190 → A3-level or retired. |
 | 6 | Untyped 7 (`selector:174,201,204,242,247,250,405`) → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) | One owner per turn; DEFN or diagnostic first. |
@@ -66,7 +66,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY** — use the verified 16-row manifest, RA-153.4 predictions and immutable package evidence; CB36 static Review [Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Independent_Review_Decision_20261025.md](Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Independent_Review_Decision_20261025.md) accepted. Historical [CB36 record](Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Record_20261025.md), source hunk `SurfaceCellTracing.cpp:14934–14998`, RA-153.3/.4, `FieldTransportAtlas::transport` and the immutable package. Review only; no runtime.
+`load_next`: **M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT-REV** until actual-Git-history review boundary/ledger verification is established; then **M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY** — use the verified 16-row manifest, RA-153.4 predictions and immutable package evidence; CB36 static Review [Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Independent_Review_Decision_20261025.md](Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Independent_Review_Decision_20261025.md) accepted. Historical [CB36 record](Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Record_20261025.md), source hunk `SurfaceCellTracing.cpp:14934–14998`, RA-153.3/.4, `FieldTransportAtlas::transport` and the immutable package. Review only; no runtime.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
