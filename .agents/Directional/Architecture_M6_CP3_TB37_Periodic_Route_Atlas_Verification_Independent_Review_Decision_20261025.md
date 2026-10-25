@@ -43,5 +43,5 @@ RA-153.4 preregistered STOP conditions are independently checked: new witnesses 
 | Successor frozen | `M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS` with falsifiers and stop conditions above |
 | Turn boundary held | Review analysis only; no implementation/test/fixture/selector mutation, no compile or benchmark |
 | review_check.py boundary | Local synthetic snapshot baseline: all selector hashes and no source/test changes PASS; historical rewrite-ancestor and blob checks FAIL because snapshot omits real Git history. These are verification limits, not a claimed clean full check |
-| `STATUS` lifecycle maintained | Entry beacon written; final beacon to be written directly after remote closeout, with same start timestamp |
-| Pushed to origin, branch in sync | Pending Google Drive patch transport; verify applied commit and current branch before final beacon; no claim that synthetic local Git HEAD proves remote sync |
+| `STATUS` lifecycle maintained | Entry beacon written; final beacon is reserved as the last repository action, preserving the 2026-10-25T09:48:19Z start timestamp |
+| Pushed to origin, branch in sync | Verified Drive patch applied and pushed at 937abf0b8ea159391c4ffdeef34fc6780c12558e; GitHub branch head matched this commit before cleanup; synthetic local Git is not remote-history evidence |
