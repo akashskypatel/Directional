@@ -1,4 +1,4 @@
-## CURRENT — CB37 compiled; independent CB37-REV next (2026-10-25)
+## CURRENT — CB37-REV static review accepted; TB39 artifact-only next (2026-10-25)
 
 - [x] **RA-155 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md)):
   - TB38-REV accepted: 1,014/1,014 hashes; 490/14; 191/192/250 raw logs re-checked.
@@ -10,7 +10,8 @@
   - H3: 242's tampered edge is a cross-region seam with no A2–A4 consumer.
   - H5: 250 still 68; the failure already carries the code, detail and site.
 - [x] **CB37 compiled (test-only):** changed only the streamed diagnostic message at `tests/SurfaceCellsPhase10Tests.cpp:3666–3669` (assertion unchanged). Exact source `c9d7c80f6d41abdbc2ecd02de7006c7847988df8`; [run 40216902065](https://github.com/akashskypatel/Directional/actions/runs/40216902065), package `12607777892`, ZIP SHA256 `fa437659c633de1b5e69dc93b35bcbb65dec84c212a957d005ada58e4dd01b58`; eight targets GMP/GMPXX, `runtimeExecution=false`, no tests/benchmarks. [Record](.agents/Directional/Architecture_M6_CP3_CB37_Selector250_Factory_Site_Message_Prepared_Patch_Record_20261025.md).
-- [ ] **EXACT NEXT** `M6-CP3-CB37-RP01-SELECTOR250-FACTORY-SITE-MESSAGE-REV` — independent static source/package Review; issue TB39 manifest only if accepted. Followed by `M6-CP3-TB39-RP01-SELECTOR250-FACTORY-SITE-HARVEST` → TB39-REV (250 site classification).
+- [x] **CB37-REV** — independently accepted one streamed-message hunk and the exact CB37 package (28/28 hashes; eight GMP/GMPXX targets; no runtime). Seven-row TB39 manifest frozen (`a304aeebb6bbbaadf17be43c56b080714e2e39fe4e7f8615da126f3f0150cc61`); no selector or CP3 promotion.
+- [ ] **EXACT NEXT** `M6-CP3-TB39-RP01-SELECTOR250-FACTORY-SITE-HARVEST` — immutable CB37 package, selector250 RED plus three TB36 guards and 193–195 guards; `…-REV` classifies the measured factory site.
 - [ ] Then the re-home groups, each test-only and followed by its REV: CB38-A (191+204), CB39-B (192+247), CB40-C (189). Then TB40 focused (189, 191, 192, 204, 247 + guards) → TB40-REV.
 - [ ] Then `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES` (design only: 190 retire or A3 `MissingAdjacency` negative with accepted-prefix accounting; 242 downstream seam consumer or retire; O2 legacy-branch removal scope; inventory `CurvedBoundedDiskInvalidReciprocalTransportFailsClosed`) → REV.
 - [ ] Then the 250 owner turns → 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) → census → RP-01 Review.
@@ -22,7 +23,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: TB38 → TB38-REV → TB38-REV-AUDIT (RA-155) → CB37.
-  - **CB37-REV** → TB39 → REV.
+  - **CB37-REV complete** → TB39 → REV.
   - CB38-A → REV → CB39-B → REV → CB40-C → REV → TB40 → REV.
   - DEFN legacy-path and seam oracles → REV.
   - 250 owner → 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review.
