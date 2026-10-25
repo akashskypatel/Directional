@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb37-periodic-route-atlas-verify-20261025-r1",
+  "request_id": "m6-cp3-tb37-periodic-route-atlas-verify-20261025-r2",
   "operation": "test_benchmark",
   "mailbox_key": "m6-cp3-tb37-periodic-route-atlas-verify",
-  "executor_sha": "595f1c2aecbaa1ada3e4bcc21da9310444608270",
+  "executor_sha": "35b808fbbcc7a8337005a1af59b75c4caaaa8217",
   "semantic_source_sha": "038ae7fd7c290731c28225d2693a3e13866e325a",
   "turn_id": "M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY",
   "harness_path": ".agents/Directional/tools/m6_cp3_tb37_periodic_route_atlas_verify_harness.sh",
-  "harness_sha256": "a2369f5c1b5f37c1c8475fb8b23681bcace0bd9ac93b9b67fff0106d4b0f0f5e",
+  "harness_sha256": "63f705366a457a7c50f1096ce9ed86c67d29e00123f89ae56e51bb742966b08b",
   "environment": {},
   "artifact_prefix": "m6-cp3-tb37-periodic-route-atlas",
   "retention_days": 14
