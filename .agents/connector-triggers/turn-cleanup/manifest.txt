@@ -1,2 +1,0 @@
-# TB36 invalid preflight attempt temporary source-snapshot trigger
-.agents/connector-triggers/source-snapshot/tb36-20261025.txt
