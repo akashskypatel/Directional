@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb36-rp01-periodic-route-atlas-apply-20261025-a1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb36-rp01-atlas-apply",
-  "file_id": "1vMALkIDIe85vQXZuin3cXYXSwy8nU5by",
-  "patch_sha256": "ca08dbf17d4bdeda91306800b4b00bc1664c86dbfa3834ac6bc1a3abb1006d80",
-  "base_sha": "ec8f8f3fbb16c029647bf83093974d97c6fc6130",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): use atlas transport for periodic route steps",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb36-rp01-periodic-route-atlas-compile-20261025-a1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb36-rp01-atlas-compile",
+  "source_sha": "038ae7fd7c290731c28225d2693a3e13866e325a",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb36-rp01-atlas-compile"
 }
