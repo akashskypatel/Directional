@@ -28,7 +28,7 @@ try:
  require(sha(manifest)==manifesthash,"TB36 manifest drift")
  with manifest.open(newline="") as f:cases=list(csv.DictReader(f,delimiter="\t"))
  require(len(cases)==5 and [int(c["row"]) for c in cases]==list(range(1,6)),"TB36 five rows")
- require(len({c["test"] for c in cases})==13 and len({c["identity"] for c in cases})==13,"duplicate case")
+ require(len({c["test"] for c in cases})==5 and len({c["identity"] for c in cases})==5,"duplicate case")
  require([c["pre_run"] for c in cases]==["UNMEASURED_PREDICTED_RED"]*3+["UNMEASURED_HISTORICAL_RED"]*2,"TB36 prediction drift")
  require([c["kind"] for c in cases]==["NEW_ORACLE"]*3+["FROZEN_SELECTOR"]*2,"TB36 kind drift")
  require({c["binary"] for c in cases}=={"directional_surface_cell_producer_tests"},"binary ownership drift")
@@ -79,9 +79,9 @@ try:
   verdict=("PASS" if status==0 and passed==1 else "RED") if complete else "INCOMPLETE"
   state["executed"]+=int(complete);state["missing"]+=int(not complete)
   state["red"]+=int(verdict=="RED");state["pass"]+=int(verdict=="PASS")
-  failures=re.findall(r"SurfaceCellsPhase10Tests\\.cpp:(\\d+): Failure",data)
+  failures=re.findall(r"SurfaceCellsPhase10Tests\.cpp:(\d+): Failure",data)
   first_line=int(failures[0]) if failures else None
-  first_failure=next((line.strip() for line in data.splitlines() if re.search(r"SurfaceCellsPhase10Tests\\.cpp:\\d+: Failure",line)),"")
+  first_failure=next((line.strip() for line in data.splitlines() if re.search(r"SurfaceCellsPhase10Tests\.cpp:\d+: Failure",line)),"")
   reason=None
   if verdict=="INCOMPLETE":reason="NONTERMINAL_OR_MISSING_EXACT_TEST"
   elif c["kind"]=="NEW_ORACLE" and verdict=="PASS":reason="UNEXPECTED_GREEN_PREFIX"
