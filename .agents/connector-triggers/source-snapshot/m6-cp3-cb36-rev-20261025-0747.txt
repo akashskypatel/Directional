@@ -1,2 +1,0 @@
-Review snapshot of M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT-REV
-Freeze the source exactly at this trigger commit; no runtime execution.
