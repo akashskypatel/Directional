@@ -1,2 +1,0 @@
-# CB37 temporary source-snapshot trigger
-.agents/connector-triggers/source-snapshot/cb37-factory-site-20261025.txt

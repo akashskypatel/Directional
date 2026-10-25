@@ -1,2 +1,0 @@
-Snapshot request for M6-CP3-CB37-RP01-SELECTOR250-FACTORY-SITE-MESSAGE
-Frozen source after entry beacon: e48081a33e32ad2406d45e4bd21ace9f217af60c
