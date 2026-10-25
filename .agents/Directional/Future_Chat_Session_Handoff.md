@@ -34,38 +34,41 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-25: TB38-REV independently accepts TB38 504-row census as candidate-only (490 PASS / 14 RED, 497-prefix 483/14); no new stable event or CP3/selector promotion. Review history and document-closeout verified by full-depth GitHub Actions run `40211601306`; DEFN authorized only after this Review COMPLETE beacon. |
+| Currency | 2026-10-25: RA-155 audit. TB38-REV is accepted (candidate 490/504). Its seven-oracle DEFN is replaced by Review-bound homes (A/B/C) and a narrowed DEFN (190, 242). The 250 factory-site message is first. CP3 and the selector stay unpromoted. |
 | Source/package | CB36 exact semantic `038ae7fd7c290731c28225d2693a3e13866e325a`; [compile run 40173209091](https://github.com/akashskypatel/Directional/actions/runs/40173209091), artifact `12590917524`, ZIP SHA256 `6dcbfe5a468be5f548c368bfebeba411c6abd19ed4a4efd01be9923da9eb7d03`; 28/28 hashes, all eight GMP/GMPXX targets, clean source, `runtimeExecution=false`. [CB36 record](Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Record_20261025.md). |
-| Reviewed decision | [RA-154](Architecture_M6_CP3_TB37_REV_Audit_Periodic_Census_Manifest_Decision_20261025.md) independently re-verified TB37: 21/21 hashes, 14/2, k=1/k=2 reason 29 with all-−1 locus. TB38 is bound to [manifest](Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Case_Manifest.tsv) (SHA-256 `b27eecb6…dcf8c2`) and the unchanged harness `436f5fff…3c9a`. 250 is D2-reachable. O1: cut-route steps publish identity transport. |
+| Reviewed decision | [RA-155](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md): TB38 re-verified (1,014/1,014 hashes, 490/14). H2/O2: `make` requires an atlas, so legacy paths cannot produce output. H3: 242 is a cross-region seam with no A2–A4 consumer. H4: 192's own stimulus is an S1 negative, not a monodromy. H5: 250 site exposure first. |
 | Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500**; TB37 focused **14/16 reviewed**; TB38 independently reviewed **candidate 490/504** (497 prefix 483/14), unpromoted; selector497 frozen and unpromoted; stable **66/17/49**, debt 1; RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-DEFN-RP01-ATLAS-INGRESS-TAMPER-ORACLE-HOMES` — design only
+## Mandatory next turn — `M6-CP3-CB37-RP01-SELECTOR250-FACTORY-SITE-MESSAGE` — CODE + BUILD (test-only)
 
-- **Authority:** [RA-154.5](Architecture_M6_CP3_TB37_REV_Audit_Periodic_Census_Manifest_Decision_20261025.md), [TB38-REV decision](Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Independent_Review_Decision_20261025.md), and verified TB38 raw evidence `12597140251` (1,014/1,014 hashes, 504 fresh-process logs, 490 PASS / 14 RED).
-- **Scope:** for selector 189,190,191,192,204,242,247, identify the stated property, the authoritative single-writer ingress, keep-and-rehome versus retire, independent negative and positive discrimination, and frozen-selector bookkeeping. Also inventory the out-of-selector `CurvedBoundedDiskInvalidReciprocalTransportFailsClosed` analog.
-- **Stop/falsifiers:** no negative oracle may mutate only unconsumed tracing containers while claiming atlas-owned rejection; no weakening of rejections, blind PASS credit, selector edits, tests or binaries in this definition turn. An unassigned oracle home or unresolved normative choice requires explicit separate review/decision, not guessed implementation.
-- **Next boundary:** separate `…-REV`, then test-only CB groups A/B/C per RA-154.5, independently reviewed and compiled only, then a separate focused TB. Preserve 250 typed 68 diagnostic as conditional future work, carry other RA-154 obligations separately.
-- **Stable authority:** 66/17/49 debt1; CP2 accepted 491/491; TB38 candidate 490/504 only; selector497 frozen; RP-01 open, RP-02 unreached.
+- **Authority:** [RA-155.5](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md).
+- **Edit:** only the **streamed message** of the existing `ASSERT_EQ(Produced, network.phaseFront.disposition())` at `tests/SurfaceCellsPhase10Tests.cpp:3666–3669`. Replace it with `curved_disk_factory_rejection_detail(network.phaseFront)` (helper at `:2630`), followed by `" site="` and `rejection()->publishedProductSourceAuthoritySite`, null-guarded.
+- **Must not change:** the assertion operands or macro, any other line, production code, selectors, the harness or workflows.
+- **Evidence:** 8 GMP/GMPXX targets, `runtimeExecution=false`, and a record of 30 lines or fewer with the exact hunk.
+- **STOP → Review:** the helper is not visible at the site, or the field name differs.
+- **Preserve:** stable 66/17/49, debt 1; CP2 491/491; TB32 481/500 and TB38 490/504 candidate; selector497 frozen; RP-01 open; `DIAG-RETAIN`, O1, O2, RA-152.5, RA-146.2/.4, RA-45.4 and G4-B002 kept separate.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| done | TB35 → REV → AUDIT (RA-152); CB35 → R1 → R2 (all REV) | F1 found; D1–D4; 3 witnesses statically accepted. |
-| done | TB36-R1 → TB36-REV → AUDIT (RA-153) → CB36 → CB36-REV | 0/5 pre-fix baseline; D2 compiled and accepted (static). |
-| done | TB37 → TB37-REV → `…-REV-AUDIT` ([RA-154](Architecture_M6_CP3_TB37_REV_Audit_Periodic_Census_Manifest_Decision_20261025.md)) | 14/16 focused accepted; TB38 manifest issued; tamper family reclassified. |
-| done | TB38 → TB38-REV | Candidate 490/14 independently reviewed; authentic Git-history authority/boundary/ledgers PASS in run `40211601306`. |
-| next | `M6-CP3-DEFN-RP01-ATLAS-INGRESS-TAMPER-ORACLE-HOMES` → `…-REV` | Design only: 189, 190, 191, 192, 204, 242, 247. Per oracle: home, keep or retire, selector bookkeeping. |
-| 3 | Test-only CB groups A (191+204), B (192+247), C (242+189/190), each → REV; then one focused TB → REV | Compile only per CB; no production edits. |
-| 4 | 250 `publishedProductError` site diagnostic (only if TB38 still shows 68) | Diagnostic only. |
-| 5 | 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) | One owner per turn; DEFN or diagnostic first. |
-| 6 | Census → RP-01 Review | Review-owned manifest. |
-| carried | `DIAG-RETAIN` (A5–A7 diagnostic snapshots; full scope in TODO CURRENT) | Review places it clear of RP-01 corrective turns; edits `RemeshPipeline.cpp`. |
-| carried | RA-154 O1 (cut-route identity transport), RA-152.5 axis binding, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002 | Separate gates. |
+| done | TB35…TB37 chain (RA-152, RA-153, RA-154); CB36 D2 | F1 fixed and verified (focused 14/16). |
+| done | TB38 → TB38-REV → `…-REV-AUDIT` ([RA-155](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md)) | 490/504 candidate; homes A/B/C bound; DEFN narrowed. |
+| 1 — next | `M6-CP3-CB37-RP01-SELECTOR250-FACTORY-SITE-MESSAGE` → `…-REV` | Message-only test edit; the REV issues the TB39 manifest. |
+| 2 | `M6-CP3-TB39-RP01-SELECTOR250-FACTORY-SITE-HARVEST` → `…-REV` | 250 RED + 3 TB36 witnesses + 193–195 GUARD; the REV classifies the site (56–66 → periodic action / O1) and binds the 250 owner. |
+| 3 | CB38-A (191+204 → A3 `NonReciprocalAdjacency`) → REV | Test-only; identities kept. |
+| 4 | CB39-B (192 k=1, 247 k=2 turning-field monodromy) → REV | Test-only; original A4 assertions kept. |
+| 5 | CB40-C (189: A3 from its own ±4 field) → REV | Test-only. |
+| 6 | TB40 focused re-homes → REV | 189, 191, 192, 204, 247 + guards. |
+| 7 | `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES` → REV | 190, 242, O2; design only. |
+| 8 | 250 owner → 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) | One owner per turn. |
+| 9 | Census → RP-01 Review | Review-owned manifest. |
+| carried | `DIAG-RETAIN` (full scope in TODO CURRENT) | Review places it clear of RP-01 corrective turns; edits `RemeshPipeline.cpp`. |
+| carried | O1 (cut-route identity), O2 (legacy branches unreachable), RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002 | Separate gates. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-DEFN-RP01-ATLAS-INGRESS-TAMPER-ORACLE-HOMES** — [RA-154.5](Architecture_M6_CP3_TB37_REV_Audit_Periodic_Census_Manifest_Decision_20261025.md), [TB38-REV](Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Independent_Review_Decision_20261025.md). Design-only dispositions for 189/190/191/192/204/242/247; no test/code/selector changes. Preserve TB38 artifact `12597140251`, TB32 `12534679588`, CB36 package `12590917524` as baseline evidence.
+`load_next`: **M6-CP3-CB37-RP01-SELECTOR250-FACTORY-SITE-MESSAGE** — [RA-155.5](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md); `tests/SurfaceCellsPhase10Tests.cpp:2630` (helper) and `:3666–3669` (site); `SurfacePhaseFrontFailure` (`SurfaceCellTracing.h:1866–1890`). Message-only edit; compile only.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

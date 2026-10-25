@@ -1,3 +1,14 @@
+**RA-155 TB38-REV audit (2026-10-25, candidate/non-stable):**
+- TB38 is re-verified at 490/14.
+- **Owners bound:**
+  - 191 and 204 → A3 `NonReciprocalAdjacency` re-home (CB38-A);
+  - 192 and 247 → turning-field monodromy (CB39-B);
+  - 189 → equivalent-lift A3 ingress (CB40-C);
+  - 190 and 242 → narrowed DEFN (legacy path unreachable: `make` requires an atlas; 242 has no A2–A4 seam consumer);
+  - 250 (68) → CB37 factory-site message, then TB39 harvest.
+- **Falsifier:** a re-homed oracle passes without its typed failure, or 250's site cannot be printed.
+- No stable event; 66/17/49, debt 1. [RA-155](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md).
+
 **TB38-REV independently accepted candidate census (2026-10-25; non-stable):** Re-downloaded `12597140251` (ZIP `0cdfe445…2a9870`, 1,014/1,014) and TB32 `12534679588` (ZIP `2c809e72…5ddd`, 1,006/1,006), rejoined all raw logs and rederived 504-row manifest against frozen TB32 prefix. 490/14 overall, 497-prefix 483/14; zero accepted-green loss. 191/192 moved from A3 fixture exception to expected Rejected vs actual Produced/None as RA-154 explicitly predicted, without negative-oracle acceptance; 250 remains `PublishedProductRejected(68)`, sub-site unknown. No stable event added. **Falsifiers:** unconsumed legacy-container tamper asserted as atlas rejection, any previously green lost case, or promotion without separately accepted ingress oracles. Owner: `M6-CP3-DEFN-RP01-ATLAS-INGRESS-TAMPER-ORACLE-HOMES` (189/190/191/192/204/242/247); 250 factory-site diagnostic separately after definition. Stable 66/17/49 debt1, CP2 491/491; selector497 unchanged. [Review](Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Independent_Review_Decision_20261025.md).
 
 **TB38 immutable 504-case candidate census (2026-10-25; independent Review pending):** [run 40185527486](https://github.com/akashskypatel/Directional/actions/runs/40185527486), artifact `12597140251` SHA-256 `0cdfe445fbc5388b8e95331f87c4a291001645f30458001bb5426244022a9870`; 1,014/1,014 package hashes, 504/504 ledger/log joins, **490 PASS / 14 inherited RED**, no integrity/selector drift. Selector497 measured **483/14** versus TB32 **478/19**, exactly five RA-154 predicted RED→GUARD/PASS; four appended guards PASS. 191/192 advance from unavailable A3 fixture to **Rejected expected / Produced observed**, matching RA-154's explicit prediction but changing their original first-failure assertion; 204, 242, 247 remain same tamper-oracle RED. Case 250 remains `PublishedProductRejected(68)` with no checked-factory sub-site. All other RED assertion families unchanged (ignoring relocated line numbers and pointer address). **No stable regression or accepted CP3 promotion**; stable 66/17/49, debt1; CP2 491/491. Owner: TB38 independent Review, then atlas-ingress tamper-oracle homes DEFN. [Owning report](Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Report_20261025.md).

@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-25 · TB38-REV closed with full Git-history authority/boundary/ledgers PASS ([run 40211601306](https://github.com/akashskypatel/Directional/actions/runs/40211601306)); independently accepts TB38 as **candidate census evidence only**: 504 executed, 490 PASS / 14 inherited RED; no guard loss, 497 selector 483/14 candidate, no CP3 promotion. Next DEFN handles atlas-ingress tamper-oracle homes (189/190/191/192/204/242/247). Stable 66/17/49 debt1; CP2 491/491 accepted; RP-01 open. [Review](Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Independent_Review_Decision_20261025.md).
+**Currency:** 2026-10-25 · RA-155 audited TB38-REV (accepted; candidate 490/504). It bound tamper-oracle homes A/B/C, narrowed the DEFN to 190 and 242, and recorded O2 (legacy paths cannot produce output). Exact next is CB37, the message-only 250 factory-site exposure. CP2 491/491 accepted; stable 66/17/49 debt1; RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,11 +104,11 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** TB38-REV accepts the measured 504-row census as candidate evidence only. The next DEFN must re-home or retire legacy ingress oracles 189/190/191/192/204/242/247 before any test-only CB; 250 remains a separate typed-68 site diagnostic.
+**Immediate:** 250, the only positive periodic composition still failing (68), gets its `make` site exposed first: CB37 then TB39. Then the Review-bound test-only re-homes A/B/C (RA-155.3), then the narrowed DEFN for 190 and 242.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Define atlas-ingress tamper-oracle homes (189–192, 204, 242, 247), then independently review before any test-only CB or focused TB. | `M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS`; [RA-154](Architecture_M6_CP3_TB37_REV_Audit_Periodic_Census_Manifest_Decision_20261025.md) |
+| **1** | Expose and harvest the 250 checked-factory site (CB37 → TB39), then re-home tamper oracles A/B/C and verify them (TB40). | `M6-CP3-CB37-RP01-SELECTOR250-FACTORY-SITE-MESSAGE`; [RA-155](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

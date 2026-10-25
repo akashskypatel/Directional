@@ -1,3 +1,11 @@
+- **2026-10-25 — RA-155 TB38-REV audit: tamper-oracle homes bound; 250 factory-site message first.**
+  - TB38 independently re-verified.
+  - Seven-oracle DEFN replaced: homes A (191, 204 → A3 `NonReciprocalAdjacency`), B (192, 247 → turning-field monodromy) and C (189 → equivalent-lift A3 ingress) bound by Review.
+  - Narrowed DEFN keeps 190 and 242.
+  - O2 recorded: legacy matching branches cannot produce output.
+  - Next: CB37, the message-only 250 site exposure.
+  - [Decision](.agents/Directional/Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md).
+
 ## 2026-10-25 — M6 CP3 TB38 independent Review (candidate accepted)
 
 **Formal closeout verification:** [run 40211601306](https://github.com/akashskypatel/Directional/actions/runs/40211601306), immutable artifact `12605233980`, SHA256 `414885fd80fbbfb3d86b043cf1cc39ce93f767952fbc9be02a4e14642d2ca728` (6/6 package hashes). Authentic full-depth Git history: `review_check.py authority`, `boundary`, `ledgers --base 8b7299b43` all PASS; clean source status; no product/test/selector drift. Superseded invalid TB36 orchestration-attempt document folded verbatim/indexed in M6 consolidated record. No M6-CP3 promotion.

@@ -1,3 +1,21 @@
+## RA-155 — TB38-REV audited: tamper-oracle homes bound; 250 site first (2026-10-25)
+
+Authority: `Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md`.
+
+- **RA-155.1** TB38-REV accepted: 1,014/1,014 hashes; 490/14 candidate.
+- **RA-155.2**
+  - H2/O2: `make` requires an atlas (`SurfaceCellTracing.cpp:8462`) and A3 requires edge records, so no legacy matching path can produce output; the legacy branches (`:14950–14979`, `:6731ff`) are unreachable for output.
+  - H3: 242's tampered edge is a cross-region seam with no A2–A4 consumer.
+  - H4: 192's single-edge stimulus would be an A3 S1 negative.
+  - H5: 250's factory code, detail and site are already on the failure.
+- **RA-155.3** Bound homes; test identities are kept.
+  - A — 191, 204: A3 `NonReciprocalAdjacency` at the tampered key, covering the untested `FieldTransportAtlas.cpp:2020`.
+  - B — 192 (k=1), 247 (k=2): turning-field monodromy, with the A4 assertions kept.
+  - C — 189: each run's A3 is built from its own (±4) field; snapshots equal.
+- **RA-155.4** Narrowed DEFN: 190 (retire or A3 `MissingAdjacency`, with accounting), 242 (downstream seam consumer or retire), O2.
+- **RA-155.5** CB37 is a message-only edit at `Phase10Tests:3666–3669`.
+- **RA-155.6** Sequence: CB37 → REV → TB39 → REV → CB38-A → CB39-B → CB40-C (each REV) → TB40 → REV → DEFN → REV → 250 owner → 405 → …
+
 ## RA-154 — TB37-REV audited: Review-owned TB38 manifest; tamper-oracle family (2026-10-25)
 
 Authority: `Architecture_M6_CP3_TB37_REV_Audit_Periodic_Census_Manifest_Decision_20261025.md`.
