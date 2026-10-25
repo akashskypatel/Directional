@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb37-selector250-compile-20261025-r1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb37-selector250-compile",
-  "source_sha": "c9d7c80f6d41abdbc2ecd02de7006c7847988df8",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb37-selector250-compile"
+  "request_id": "m6-cp3-cb37-doc-closeout-20261025-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb37-doc-closeout",
+  "file_id": "16ie62Ivf_PwrWoJDHdA-MSxXs7zOQkuU",
+  "patch_sha256": "1fba4489fc502453f2199045dd62ecbb9de9c1c2f5b503667f91218240b5551c",
+  "base_sha": "62dce7e77e745b450cc7c0ad723a6628b8a359e7",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB37 compile and hand off static review",
+  "retention_days": 14
 }
