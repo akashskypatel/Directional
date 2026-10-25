@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-24 · CB35-R1-REV verifies R1 full-automorphism/zero-shift checks but **does not accept** the directed published-route oracle: canonical storage comparison cannot reject route reversal. Corrective `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE` precedes independent re-review and TB36. F1 unresolved; CP2 491/491 accepted, TB32 481/500 candidate, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-25 · `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE-REV` independently accepts static oriented 32-edge oracle and reversal discriminator; no test/runtime execution or production acceptance. Next `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE` artifact-only five-case pre-fix baseline. F1 unresolved; CP2 491/491 accepted, TB32 481/500 candidate, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -49,6 +49,8 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
+
+**Current test authority:** CB35-R2-REV accepts independent full directed published-route identity and reversal falsifier, and releases only the frozen five-case TB36 artifact-only baseline; no source/runtime repair or selector promotion. [Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Independent_Review_20261025.md](Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Independent_Review_20261025.md).
 
 **Prior TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 
@@ -106,14 +108,14 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | CB35-R1-REV discharges R1 canonical/translation checks but rejects oriented-route proof (R-2); reversal remains undetected; R2 test-only correction and independent Review must precede TB36. RA-152 owns periodic atlas F1; no premature producer fix. | `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE`; [CB35-R1-REV](Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Independent_Review_20261024.md), [TB35-REV](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md), [CB32-REV](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Review_Decision_20261024.md), [CB31-REV](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md), [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md) and [RA-146](Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md) |
+| **1** | CB35-R2-REV discharges R-2 static oriented-route witness only; immutable five-case TB36 baseline must now establish the actual pre-fix A4 first rejecting producer (or STOP on unexpected GREEN/A3 failure). RA-152 F1 still unproved; do not perform premature producer fix. | `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE`; [CB35-R2-REV](Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Independent_Review_20261025.md), [CB35-R1-REV](Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Independent_Review_20261024.md), [TB35-REV](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md), [CB32-REV](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Review_Decision_20261024.md), [CB31-REV](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md), [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md) and [RA-146](Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
 
-- **Canonical storage is not directed witness order (CB35-R1-REV):** `CanonicalRoute::steps()` remains identical under `reversed()` even as `oriented_steps()` changes. An oracle that claims directed route identity must compare observed oriented steps to an independent oriented expectation and reject reversal.
+- **Canonical storage is not directed witness order (CB35-R1-REV; R-2 discharged by CB35-R2-REV):** `CanonicalRoute::steps()` remains identical under `reversed()` even as `oriented_steps()` changes. An oracle that claims directed route identity must compare observed oriented steps to an independent oriented expectation and reject reversal.
 
 - **Partially asserted composed identity (CB35-REV):** checking only a grid automorphism’s rotation leaves translation unconstrained; checking two distinguished route keys without ordered whole-route identity leaves unmarked edges unconstrained. A witness must reject changes to every advertised contract component.
 
