@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb36-rp01-periodic-route-atlas-compile-20261025-a1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb36-rp01-atlas-compile",
-  "source_sha": "038ae7fd7c290731c28225d2693a3e13866e325a",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb36-rp01-atlas-compile"
+  "request_id": "m6-cp3-cb36-rp01-docs-apply-20261025-a1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb36-rp01-docs-apply",
+  "file_id": "1QzgCHIUju6nebLq7rUT7d-tyhic4rZ1x",
+  "patch_sha256": "167924ce951d1741deaddbd19f969d47d26172f46ec0c643eda4876b6dbe4bd5",
+  "base_sha": "038ae7fd7c290731c28225d2693a3e13866e325a",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB36 compile and hand off independent review",
+  "retention_days": 14
 }
