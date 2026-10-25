@@ -1,0 +1,3 @@
+Source snapshot for M6-CP3-TB39-RP01-SELECTOR250-FACTORY-SITE-HARVEST.
+Entry beacon commit: 40538fcbf70080d5fa9867539cda3dab3d8d82bc
+Snapshot trigger is control metadata only; no source code edits.
