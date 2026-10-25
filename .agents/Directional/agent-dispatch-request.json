@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb35-r2-durable-docs-20261025-v1",
+  "request_id": "m6-cp3-cb35-r2-review-docs-20261025-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb35-r2-durable-docs",
-  "file_id": "1tB4C4bGxb9o6PnWRNPnltVtEBCeJ9DqE",
-  "patch_sha256": "f965099fe0b97df4be4d2d83cf4a76dfecf5a73499c77b1cafb0a4f2dc07ef81",
-  "base_sha": "f7079c957f21efa7196e0b70b0bc903f761be7d9",
+  "mailbox_key": "m6-cp3-cb35-r2-review-docs",
+  "file_id": "1Pwp-KYOo7ujFoVqYzgn6Lu_R4TRSMfhx",
+  "patch_sha256": "7d552270ae673d38b995fd99b010c4df0885f1276de070e601a426210b974c46",
+  "base_sha": "e3c04795d049b1c87be1bacd8e3d4c6c53689b05",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB35-R2 build and hand off independent route review",
+  "commit_message": "docs(directional): independently review oriented-route oracle and freeze TB36 baseline",
   "retention_days": 14
 }
