@@ -1,14 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb37-periodic-route-atlas-verify-20261025-r2",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb37-periodic-route-atlas-verify",
-  "executor_sha": "35b808fbbcc7a8337005a1af59b75c4caaaa8217",
-  "semantic_source_sha": "038ae7fd7c290731c28225d2693a3e13866e325a",
-  "turn_id": "M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY",
-  "harness_path": ".agents/Directional/tools/m6_cp3_tb37_periodic_route_atlas_verify_harness.sh",
-  "harness_sha256": "63f705366a457a7c50f1096ce9ed86c67d29e00123f89ae56e51bb742966b08b",
-  "environment": {},
-  "artifact_prefix": "m6-cp3-tb37-periodic-route-atlas",
+  "request_id": "m6-cp3-tb37-close-docs-20261025-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb37-close-docs",
+  "file_id": "1M1I64qek95-lFdegm-ccpv0FaUkbJXwn",
+  "patch_sha256": "98bfc42963b82577349c925255ed12bbaaece1fe7165d354db9241a8dd62ed31",
+  "base_sha": "48e0ba687079a7bf528d592d5a3e6472a4486952",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close TB37 candidate verification and handoff",
   "retention_days": 14
 }
