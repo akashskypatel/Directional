@@ -1,0 +1,4 @@
+Purpose: one exact-source snapshot for CB35-R2 test-only Code + Build continuation.
+Prior branch head: ffafa929d3c0a729987ce55925ac01c80476d809
+Source authority: this trigger commit (github.sha), include submodules.
+Runtime execution: forbidden.
