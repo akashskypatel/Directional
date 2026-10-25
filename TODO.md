@@ -1,4 +1,4 @@
-## CURRENT — CB38-REV accepted statically; TB40 runtime verification next (2026-10-25)
+## CURRENT — TB40 focused 13/13 PASS candidate; TB40-REV next (2026-10-25)
 
 - [x] **RA-156 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md)):
   - TB39-REV accepted: 17/17 hashes and 7 log hashes verified; 250 site `hard-rail-contact-missing` (code 0, detail 6) is owned by the fixture, not O1.
@@ -13,8 +13,8 @@
   - require the edge-key identity `== hardFeatureEdges`.
   - Assertions unchanged. [CB38 record](.agents/Directional/Architecture_M6_CP3_CB38_Selector250_Rail_Authority_Code_Build_Record_20261025.md) verifies one hunk, eight GMP/GMPXX targets, 28/28 checksums, no runtime.
 - [x] **COMPLETED `M6-CP3-CB38-RP01-SELECTOR250-RAIL-AUTHORITY-REV`** — exact one-hunk test correction and immutable compile accepted, no runtime; [decision](.agents/Directional/Architecture_M6_CP3_CB38_Selector250_Rail_Authority_Independent_Review_Decision_20261025.md). TB40 13-case manifest SHA256 `5dd7d9499918b04a277b907835993beb7829e6d9f52c4cc345faf5e3cd2158e4` frozen.
-- [ ] **EXACT NEXT `M6-CP3-TB40-RP01-SELECTOR250-RAIL-AUTHORITY-VERIFY`** — artifact-only runtime evaluation, no build or source mutation.
-- [ ] Then TB40 → TB40-REV: discharge 250 as a candidate, or bind one new owner.
+- [x] **COMPLETED `M6-CP3-TB40-RP01-SELECTOR250-RAIL-AUTHORITY-VERIFY`** — [run 40240164913](https://github.com/akashskypatel/Directional/actions/runs/40240164913), 13/13 PASS, 12/12 guards, selector250 unexpected PASS, clean immutable postflight; candidate only. [Report](.agents/Directional/Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Verification_Report_20261025.md).
+- [ ] **EXACT NEXT STAGE TB40-REV** — independently adjudicate selector250 PASS/guard evidence; canonical full turn ID not yet specified. No CP3 or selector497 promotion in TB40.
 - [ ] Then the re-homes, each test-only and followed by its REV:
   - CB39-A (191+204 → A3 `NonReciprocalAdjacency`);
   - CB40-B (192 k=1, 247 k=2);
@@ -31,7 +31,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: RA-155 → CB37 → CB37-REV → TB39 → TB39-REV → TB39-REV-AUDIT (RA-156).
-  - **CB38 DONE → CB38-REV DONE → TB40 next → REV.**
+  - **CB38 DONE → CB38-REV DONE → TB40 DONE (candidate) → TB40-REV next.**
   - CB39-A → REV → CB40-B → REV → CB41-C → REV → CB42-O3 → REV → TB41 → REV.
   - DEFN legacy-path and seam oracles → REV.
   - TB40-REV owner → 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review.

@@ -1,3 +1,7 @@
+## 2026-10-25 — TB40 immutable rail-authority verification: 13/13 PASS (candidate)
+
+- [Run 40240164913](https://github.com/akashskypatel/Directional/actions/runs/40240164913) used exact CB38 source `41f39ba920eace2dad7b36d2b26c8073ce740239`, immutable artifact `12613073521` without rebuild/relink and frozen 13-case manifest. Selector250 moved from RED to PASS (`unexpected_pass=1` as preregistered); 12 guards PASS. All 13 executed and postflight verified, result `12616556389`, ZIP SHA-256 `84d63107293cd7e3f47969849507e2a96c3435a97613345f4723906dd7e7a320`. Candidate only pending independent TB40 Review; stable ledger 66/17/49 debt1, CP2 491/491, frozen selector497 and RP-01 unpromoted. [Report](.agents/Directional/Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Verification_Report_20261025.md).
+
 - **2026-10-25 — CB38-REV static review:** Exact test-only hunk accepted, CB38 source/package rechecked (28/28, GMP/GMPXX, runtimeExecution=false); 13-row TB40 manifest `5dd7d9499918b04a277b907835993beb7829e6d9f52c4cc345faf5e3cd2158e4` frozen; no runtime, CP3 or selector promotion. [Decision](.agents/Directional/Architecture_M6_CP3_CB38_Selector250_Rail_Authority_Independent_Review_Decision_20261025.md).
 
 - **2026-10-25 — RA-156 TB39-REV audit: 250 rail authority bound and moved first.**
