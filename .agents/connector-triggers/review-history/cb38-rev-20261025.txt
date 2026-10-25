@@ -1,1 +1,0 @@
-Run read-only CB38 independent review history verification using full Git history; do not run code or test binaries.
