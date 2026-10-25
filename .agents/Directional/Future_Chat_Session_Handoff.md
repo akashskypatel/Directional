@@ -34,18 +34,18 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-25: RA-155 audit. TB38-REV is accepted (candidate 490/504). Its seven-oracle DEFN is replaced by Review-bound homes (A/B/C) and a narrowed DEFN (190, 242). The 250 factory-site message is first. CP3 and the selector stay unpromoted. |
-| Source/package | CB36 exact semantic `038ae7fd7c290731c28225d2693a3e13866e325a`; [compile run 40173209091](https://github.com/akashskypatel/Directional/actions/runs/40173209091), artifact `12590917524`, ZIP SHA256 `6dcbfe5a468be5f548c368bfebeba411c6abd19ed4a4efd01be9923da9eb7d03`; 28/28 hashes, all eight GMP/GMPXX targets, clean source, `runtimeExecution=false`. [CB36 record](Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Record_20261025.md). |
+| Currency | 2026-10-25: CB37 compiled the RA-155.5 test-only selector250 rejection-site message. No runtime/acceptance promotion. Next independent CB37-REV checks exact one-assertion diagnostic change and eight-target source/package before TB39 manifest. |
+| Source/package | CB37 exact semantic `c9d7c80f6d41abdbc2ecd02de7006c7847988df8`; [run 40216902065](https://github.com/akashskypatel/Directional/actions/runs/40216902065), package `12607777892`, ZIP SHA256 `fa437659c633de1b5e69dc93b35bcbb65dec84c212a957d005ada58e4dd01b58`; 28/28 hashes, eight GMP/GMPXX targets, clean source, `runtimeExecution=false`. [CB37 record](Architecture_M6_CP3_CB37_Selector250_Factory_Site_Message_Prepared_Patch_Record_20261025.md). |
 | Reviewed decision | [RA-155](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md): TB38 re-verified (1,014/1,014 hashes, 490/14). H2/O2: `make` requires an atlas, so legacy paths cannot produce output. H3: 242 is a cross-region seam with no A2–A4 consumer. H4: 192's own stimulus is an S1 negative, not a monodromy. H5: 250 site exposure first. |
 | Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500**; TB37 focused **14/16 reviewed**; TB38 independently reviewed **candidate 490/504** (497 prefix 483/14), unpromoted; selector497 frozen and unpromoted; stable **66/17/49**, debt 1; RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-CB37-RP01-SELECTOR250-FACTORY-SITE-MESSAGE` — CODE + BUILD (test-only)
+## Mandatory next turn — `M6-CP3-CB37-RP01-SELECTOR250-FACTORY-SITE-MESSAGE-REV` — REVIEW (static only)
 
-- **Authority:** [RA-155.5](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md).
-- **Edit:** only the **streamed message** of the existing `ASSERT_EQ(Produced, network.phaseFront.disposition())` at `tests/SurfaceCellsPhase10Tests.cpp:3666–3669`. Replace it with `curved_disk_factory_rejection_detail(network.phaseFront)` (helper at `:2630`), followed by `" site="` and `rejection()->publishedProductSourceAuthoritySite`, null-guarded.
-- **Must not change:** the assertion operands or macro, any other line, production code, selectors, the harness or workflows.
-- **Evidence:** 8 GMP/GMPXX targets, `runtimeExecution=false`, and a record of 30 lines or fewer with the exact hunk.
-- **STOP → Review:** the helper is not visible at the site, or the field name differs.
+- **Authority:** [RA-155.5/6](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md).
+- **Review:** independently verify the sole streamed-message hunk at `tests/SurfaceCellsPhase10Tests.cpp:3666–3669` against `c9d7c80f6d41abdbc2ecd02de7006c7847988df8`, and source/package integrity and eight GMP/GMPXX compile targets.
+- **Out of scope:** change to assertion operands, source/test/fixture/selector/harness/production, or runtime test/benchmark execution.
+- **On acceptance:** issue exact TB39 manifest for `M6-CP3-TB39-RP01-SELECTOR250-FACTORY-SITE-HARVEST`: selector250 RED plus three TB36 witnesses and 193–195 GUARD. Its later independent Review binds the 250 owner.
+- **On finding:** record independent corrective measure; no silent admission or TB39 execution.
 - **Preserve:** stable 66/17/49, debt 1; CP2 491/491; TB32 481/500 and TB38 490/504 candidate; selector497 frozen; RP-01 open; `DIAG-RETAIN`, O1, O2, RA-152.5, RA-146.2/.4, RA-45.4 and G4-B002 kept separate.
 
 ## Turn Sequence
@@ -54,7 +54,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 |---|---|---|
 | done | TB35…TB37 chain (RA-152, RA-153, RA-154); CB36 D2 | F1 fixed and verified (focused 14/16). |
 | done | TB38 → TB38-REV → `…-REV-AUDIT` ([RA-155](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md)) | 490/504 candidate; homes A/B/C bound; DEFN narrowed. |
-| 1 — next | `M6-CP3-CB37-RP01-SELECTOR250-FACTORY-SITE-MESSAGE` → `…-REV` | Message-only test edit; the REV issues the TB39 manifest. |
+| 1 — next | `M6-CP3-CB37-RP01-SELECTOR250-FACTORY-SITE-MESSAGE-REV` | Independent static source/package Review; on acceptance issue TB39 manifest. |
 | 2 | `M6-CP3-TB39-RP01-SELECTOR250-FACTORY-SITE-HARVEST` → `…-REV` | 250 RED + 3 TB36 witnesses + 193–195 GUARD; the REV classifies the site (56–66 → periodic action / O1) and binds the 250 owner. |
 | 3 | CB38-A (191+204 → A3 `NonReciprocalAdjacency`) → REV | Test-only; identities kept. |
 | 4 | CB39-B (192 k=1, 247 k=2 turning-field monodromy) → REV | Test-only; original A4 assertions kept. |
@@ -68,7 +68,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB37-RP01-SELECTOR250-FACTORY-SITE-MESSAGE** — [RA-155.5](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md); `tests/SurfaceCellsPhase10Tests.cpp:2630` (helper) and `:3666–3669` (site); `SurfacePhaseFrontFailure` (`SurfaceCellTracing.h:1866–1890`). Message-only edit; compile only.
+`load_next`: **M6-CP3-CB37-RP01-SELECTOR250-FACTORY-SITE-MESSAGE-REV** — [RA-155.5/6](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md); CB37 exact hunk and [record](Architecture_M6_CP3_CB37_Selector250_Factory_Site_Message_Prepared_Patch_Record_20261025.md); [run 40216902065](https://github.com/akashskypatel/Directional/actions/runs/40216902065), package `12607777892`, ZIP SHA256 `fa437659c633de1b5e69dc93b35bcbb65dec84c212a957d005ada58e4dd01b58`. Static Review only; if accepted, author TB39 immutable manifest.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

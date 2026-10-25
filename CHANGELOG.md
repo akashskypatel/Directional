@@ -1,3 +1,5 @@
+- **2026-10-25 — CB37 selector 250 factory-site diagnostic compiled (no runtime).** Message-only test change at `c9d7c80f6d41abdbc2ecd02de7006c7847988df8` preserves the original Produced assertion and adds the checked-factory error/detail/site to its stream. [run 40216902065](https://github.com/akashskypatel/Directional/actions/runs/40216902065), package `12607777892`, ZIP SHA256 `fa437659c633de1b5e69dc93b35bcbb65dec84c212a957d005ada58e4dd01b58`; eight GMP/GMPXX targets, `runtimeExecution=false`; independent `M6-CP3-CB37-RP01-SELECTOR250-FACTORY-SITE-MESSAGE-REV` next. [Record](.agents/Directional/Architecture_M6_CP3_CB37_Selector250_Factory_Site_Message_Prepared_Patch_Record_20261025.md).
+
 - **2026-10-25 — RA-155 TB38-REV audit: tamper-oracle homes bound; 250 factory-site message first.**
   - TB38 independently re-verified.
   - Seven-oracle DEFN replaced: homes A (191, 204 → A3 `NonReciprocalAdjacency`), B (192, 247 → turning-field monodromy) and C (189 → equivalent-lift A3 ingress) bound by Review.
