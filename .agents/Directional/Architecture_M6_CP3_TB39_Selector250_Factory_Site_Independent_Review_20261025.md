@@ -39,6 +39,6 @@
 | Consolidation under CLEAN_UP_POLICY | n/a — TB39 report retains raw artifact and is still current measurement authority; prior RA-155 remains active; deleting either would lose live evidence. |
 | Successor frozen | `CB38-A` exactly as RA-155.6; test-only 191/204 A3 source-edge tamper and unweakened typed negative; after CB38-A, mandatory independent Review. |
 | Turn boundary held | Static review only; no runtime, recompilation, product/test/fixture/selector source mutation. |
-| review_check.py boundary | Execute against prepared documentation patch and report actual result before final beacon. |
-| `STATUS` lifecycle maintained | Entry beacon written; final direct beacon only after durable record publication. |
-| Pushed to origin, branch in sync | Publication and remote verification required before final beacon; not claimed by this prepared record. |
+| review_check.py boundary | **PASS, exit 0**, unchanged checker in full-history GitHub Actions run `40226915850` (job `121270167612`, result artifact `12611169499`); all 39 selectors matched HEAD, ancestor `8b7299b43` established, retained headings 4/4 handoff, 1/1 orientation, 0/0 tracker. Initial shallow-snapshot attempt failed solely because Git history was absent; it was not a product-regression result. |
+| `STATUS` lifecycle maintained | Entry/resume beacon direct-written; final COMPLETE beacon follows published records and temporary workflow cleanup as the last repository mutation. |
+| Pushed to origin, branch in sync | Prior seven-file review patch is on the working branch (`2eb7444`); final review-document correction direct-written on that branch and remote-head verified. Full-history Actions checkout was clean. No local tracking branch exists in this web session, so a local `git status -sb` sync observation is not claimed. |
