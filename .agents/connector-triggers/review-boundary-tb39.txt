@@ -1,3 +1,0 @@
-turn=M6-CP3-TB39-RP01-SELECTOR250-FACTORY-SITE-HARVEST-REV
-purpose=full-history-read-only-review-check-boundary
-source=579fa5dff3e534be08d2421b02bd4bf8b0ea987f
