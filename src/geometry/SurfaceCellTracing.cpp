@@ -14934,8 +14934,21 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
                               -1, -1, sourceFace, targetFace, -1, sourceEdge);
       return result;
     }
-    int matching = 0;
-    if (hasTransitions) {
+    authority::QuarterTurn stepRotation{};
+    if (transitionLookup.atlas != nullptr) {
+      const auto directed = transitionLookup.atlas->transport(
+          *sharedKey, faceCycle[index],
+          faceCycle[(index + 1U) % faceCycle.size()]);
+      if (!directed.has_value()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+                                -1, -1, sourceFace, targetFace, -1, sourceEdge);
+        return result;
+      }
+      stepRotation = directed->transport;
+    } else if (hasTransitions) {
+      int matching = 0;
       const auto found = transitionLookup.byEdge.find(*sharedKey);
       if (found == transitionLookup.byEdge.end() ||
           !transition_faces_match(found->second, sourceFace, targetFace)) {
@@ -14947,7 +14960,9 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
       }
       matching = found->second.matching;
       if (found->second.secondFace == sourceFace) matching = -matching;
+      stepRotation = authority::QuarterTurn::from_integer(matching);
     } else if (edgeMatching != nullptr && edgeMatching->size() > 0) {
+      int matching = 0;
       const auto matchingIndex = matchingIndices.find(*sharedKey);
       if (matchingIndex == matchingIndices.end() ||
           matchingIndex->second >= edgeMatching->size()) {
@@ -14960,6 +14975,7 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
       matching = (*edgeMatching)[matchingIndex->second];
       const auto topology = incident.find(*sharedKey);
       if (topology != incident.end() && topology->second[1] == sourceFace) matching = -matching;
+      stepRotation = authority::QuarterTurn::from_integer(matching);
     }
 
     const authority::SourceEdgeTopologyKey &topology = *sharedKey;
@@ -14977,9 +14993,8 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
         topology,
         std::optional<authority::InteriorTransitionId>{
             interiorTransition.value()},
-        authority::GridAutomorphism{
-            authority::QuarterTurn::from_integer(matching),
-            authority::LatticeTranslation{0, 0}},
+        authority::GridAutomorphism{stepRotation,
+                                    authority::LatticeTranslation{0, 0}},
         authority::Orientation::Forward);
     if (!typedStep) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
