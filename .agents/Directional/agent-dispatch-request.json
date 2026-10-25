@@ -1,12 +1,23 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb38-rev-closeout-20261025t2135z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb38-rev-closeout-2135",
-  "file_id": "12z4vQtlfPvGDp9hfl3hNZX6hOJ6uI7Iu",
-  "patch_sha256": "bbfbdcd6e71b42657ab41afa0dc9dafa36fe92e58f4107b22220a97da30bc1cb",
-  "base_sha": "01d3fce034e7cdb154cbe0cca3b393aaf956b59c",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: independently review CB38 and freeze TB40 witness manifest",
-  "retention_days": 14
+  "request_id": "m6-cp3-tb40-rail-20261025t2227z",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb40-rail-verify",
+  "executor_sha": "d8d9b8c1148f73812ae6eff6aca71d9ee676ab07",
+  "semantic_source_sha": "41f39ba920eace2dad7b36d2b26c8073ce740239",
+  "turn_id": "M6-CP3-TB40-RP01-SELECTOR250-RAIL-AUTHORITY-VERIFY",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "436f5fff9c3bec97457f4bc6b7c2b6182cb3f47707eb14a66af3b6a3f3dc3c9a",
+  "artifact_prefix": "m6-cp3-tb40-rail-verification",
+  "retention_days": 14,
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "12613073521",
+    "EXPECTED_SOURCE_SHA": "41f39ba920eace2dad7b36d2b26c8073ce740239",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "ca7358b7de3ff7ce5bc234f69c2b06036a7a5681f96d9a2d6c9e7cd298797ab3",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "250e5da9175b89f9ee3857afe094127bc4c96f0006f39526b8847223a3275234",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "b2c8d4c8cbdf98535873fe76e3478dd0cf19b375db8ec295c0c431dcd1aec8e8",
+    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Verification_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "5dd7d9499918b04a277b907835993beb7829e6d9f52c4cc345faf5e3cd2158e4",
+    "EXPECTED_CASE_COUNT": "13"
+  }
 }
