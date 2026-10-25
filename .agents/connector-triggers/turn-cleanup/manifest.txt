@@ -1,0 +1,2 @@
+# CB35-R2 source snapshot temporary trigger cleanup
+.agents/connector-triggers/source-snapshot/m6-cp3-cb35-r2-20261025T0037Z.txt
