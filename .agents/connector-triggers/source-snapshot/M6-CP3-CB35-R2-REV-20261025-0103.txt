@@ -1,3 +1,0 @@
-Purpose: exact source snapshot for independent oriented-route oracle review.
-Frozen semantic source: 7de805c487fa66bcb96744f51b8bfbe7210ee8dc
-No compile or runtime authorized.
