@@ -1,2 +1,0 @@
-Turn=M6-CP3-TB40-RP01-SELECTOR250-RAIL-AUTHORITY-VERIFY
-Purpose=exact repository source snapshot for current Test+Benchmark turn
