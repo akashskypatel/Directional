@@ -1,37 +1,17 @@
-## CURRENT — RA-153 TB36-REV audit; CB36 D2 next (2026-10-25)
+## CURRENT — CB36 D2 compiled; CB36-REV exact next (2026-10-25)
 
-- [x] `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE-REV-AUDIT` (RA-153):
-  - TB36-REV accepted: a 0/5 pre-fix baseline, A3 admits k=1 and k=2, both reach A4 and end in the `make` backstop (68), and the directed route is published with identity steps;
-  - RA-152 errata: E1, A3 already rejects a `sourceEdge` mismatch (`FieldTransportAtlas.cpp:2020–2027`); E2, D2 changes no relation ids (carrier identity excludes transport);
-  - the CB36 spec is bound (`transport()` as the first branch; the existing locus; the missing-transport branch is static-only);
-  - TB37 split into a focused 16-row run and a TB38 census. [Decision](.agents/Directional/Architecture_M6_CP3_TB36_REV_Audit_Periodic_Route_Atlas_Transport_Decision_20261025.md).
-- [ ] **EXACT NEXT:** `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT`. Production, compile-only. [Plan](.agents/Directional/Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Plan_20261025.md).
-  - Only `SurfaceCellTracing.cpp:14937–14982` changes:
-    - a new first branch `transitionLookup.atlas != nullptr` → `atlas->transport(*sharedKey, faceCycle[i], faceCycle[i+1])->transport`;
-    - a missing transport → `PeriodicHolonomyMismatch(-1,-1,sourceFace,targetFace,-1,sourceEdge)`;
-    - the legacy branches are unchanged;
-    - the step uses `GridAutomorphism{stepRotation,{0,0}}`.
-  - No other line, test, selector or runtime change. 8 GMP/GMPXX targets. Record ≤30 lines with the hunk.
-- [ ] Then: CB36-REV (static; issues the TB37 16-row manifest).
-- [ ] Then: **TB37** → TB37-REV. TB37 runs the 3 witnesses + TB35's 13. Predictions:
-  - witnesses GREEN;
-  - 189, 190, 193–195, the face-gauge oracle, both guards and all 3 controls PASS;
-  - 191/192 RED unchanged.
-  - STOP if 68 persists (next turn: a test-side diagnostic), 191/192 change, or a PASS regresses.
-- [ ] Then: **TB38** full 497 census vs the TB32 ledger → TB38-REV.
-- [ ] Then: `M6-CP3-DEFN-RP01-PERIODIC-LEGACY-ORACLE-HOMES`:
-  - 191 → A3 `NonReciprocalAdjacency` negative;
-  - 192 → k=1 authoritative field;
-  - 189/190 → A3-level or retired.
-  - Runtime-free; then CB/TB.
-- [ ] Then, one owner per turn: untyped 7 (`selector:174,201,204,242,247,250,405`) → A5 `focused30:12` → A4 `cp3entry:4` → A3 `selector:442` → DEFN-T1 (`cp3entry:1/2`) → census → RP-01 Review. Carried: RA-152.5 axis binding, DEFN-SEAM-NZ, Periodic follow-up, RA-146.2/4, RA-45.4, G4-B002.
+- [x] `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT`: production `SurfaceCellTracing.cpp` periodic observed-step atlas transport first, missing transport fail-closed with existing locus; legacy branches preserved. Exact semantic `038ae7fd7c290731c28225d2693a3e13866e325a`; [record](.agents/Directional/Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Record_20261025.md).
+- [x] Eight-target compile-only [run 40173209091](https://github.com/akashskypatel/Directional/actions/runs/40173209091), artifact `12590917524` ZIP SHA256 `6dcbfe5a468be5f548c368bfebeba411c6abd19ed4a4efd01be9923da9eb7d03`; 28/28 hashes, GMP/GMPXX, `runtimeExecution=false`, no tests/benchmarks.
+- [ ] **EXACT NEXT** `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT-REV` independent static Review of one-site implementation, unchanged legacy behavior, atlas accessor, fail-closed locus, source/package, GMP and 28/28. On acceptance issue TB37 16-row manifest with RA-153.4 predictions; never claim runtime success from compilation.
+- [ ] Then TB37 focused 16 rows → TB37-REV; STOP if k1/k2 reason 68 persists, 191/192 change, or a prior PASS regresses. Then TB38 full 497 census → TB38-REV. Then DEFN legacy-oracle homes (191 A3, 192 k1, 189/190 re-home or retire).
+- [ ] Then untyped 7 (`selector:174,201,204,242,247,250,405`) → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) → census → RP-01 Review; RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002 carried separately.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
   - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Turn sequence:** TB36-R1 → TB36-REV → TB36-REV-AUDIT (RA-153) → **CB36** → CB36-REV → TB37 → TB37-REV → TB38 → TB38-REV → DEFN legacy-oracle homes → untyped 7 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review; `DIAG-RETAIN` carried.
-- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 candidate (19 inherited RED); TB35 11/2 and TB36 0/5 focused candidates; selector 497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+- **Turn sequence:** TB36-R1 → TB36-REV → TB36-REV-AUDIT (RA-153) → CB36 compiled → **CB36-REV** → TB37 → TB37-REV → TB38 → TB38-REV → DEFN legacy-oracle homes → untyped 7 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review; `DIAG-RETAIN` carried.
+- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 candidate (19 inherited RED); TB35 11/13, TB36 0/5; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
 
 ---
 

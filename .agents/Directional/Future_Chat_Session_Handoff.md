@@ -34,24 +34,18 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-25, RA-153 audits TB36-REV. The 0/5 pre-fix baseline and F1 are confirmed, and CB36 (D2) is authorized with a binding exact spec. RA-152 errata: A3 already validates `sourceEdge` (`NonReciprocalAdjacency`), and D2 does not change relation ids. TB37 is split into a focused 16-row run and a separate TB38 census. No promotion. |
-| Source/package | CB35-R2 exact semantic `7de805c487fa66bcb96744f51b8bfbe7210ee8dc`; [compile run 40147720351](https://github.com/akashskypatel/Directional/actions/runs/40147720351), package `12580989509`, ZIP `a594b8617493087ff9ab50391e30cc7a8870f2dcf92427c03899b076e344bb54`; 28/28 hashes, eight GMP/GMPXX targets, `runtimeExecution=false`; no runtime/tests/benchmarks. [R2 record](Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Code_Build_Record_20261025.md). Earlier R1/CB35/CB34 packages remain in records. |
-| Reviewed decision | [RA-153](Architecture_M6_CP3_TB36_REV_Audit_Periodic_Route_Atlas_Transport_Decision_20261025.md) accepts [TB36-REV](Architecture_M6_CP3_TB36_R1_Periodic_Monodromy_Baseline_Independent_Review_Decision_20261025.md): TB36-R1 run 40159803899, artifact `12586275698`, 0 PASS / 5 RED. It fixes CB36 to `transport()` as the first branch, with the existing locus convention and a static-only missing-transport falsifier. [RA-152](Architecture_M6_CP3_TB35_REV_Audit_Periodic_Route_Transport_Decision_20261024.md) carries F1/D1–D4. [CB35-R2-REV](Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Independent_Review_20261025.md) statically accepted the witnesses. |
-| Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500** (19 inherited RED); TB34 **5 PASS / 7 inherited RED** (12 measured), TB33 synthetic **6/6** only; selector497 frozen; stable **66/17/49**, debt 1. RP-01 open, RP-02 unreached. |
+| Currency | 2026-10-25: CB36 D2 production source compiled, not runtime-tested. RA-153 remains the Review authority; CB36-REV is the exact next turn. No acceptance or selector promotion. |
+| Source/package | CB36 exact semantic `038ae7fd7c290731c28225d2693a3e13866e325a`; [compile run 40173209091](https://github.com/akashskypatel/Directional/actions/runs/40173209091), artifact `12590917524`, ZIP SHA256 `6dcbfe5a468be5f548c368bfebeba411c6abd19ed4a4efd01be9923da9eb7d03`; 28/28 hashes, all eight GMP/GMPXX targets, clean source, `runtimeExecution=false`. [CB36 record](Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Record_20261025.md). |
+| Reviewed decision | [RA-153](Architecture_M6_CP3_TB36_REV_Audit_Periodic_Route_Atlas_Transport_Decision_20261025.md) binds CB36 and CB36-REV; TB36-R1 0 PASS / 5 RED remains the pre-fix baseline. Missing transport falsifier is static-only. TB37 is focused 16 rows and TB38 is a separate census. |
+| Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500** (19 inherited RED); TB35 **11/13**, TB36-R1 **0/5**; selector497 frozen; stable **66/17/49**, debt 1; RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT-REV` — EXACT NEXT
 
-- **Type:** Code + Build, production, compile-only. **Authority:** RA-152 D2 as specified by [RA-153.3](Architecture_M6_CP3_TB36_REV_Audit_Periodic_Route_Atlas_Transport_Decision_20261025.md); [plan](Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Plan_20261025.md).
-- **Edit (`SurfaceCellTracing.cpp:14937–14982` only):**
-  - The step rotation becomes `authority::QuarterTurn stepRotation`.
-  - A new **first** branch `if (transitionLookup.atlas != nullptr)` uses `atlas->transport(*sharedKey, faceCycle[index], faceCycle[(index+1)%n])->transport`.
-  - A missing transport is rejected with `PeriodicHolonomyMismatch`, locus `(-1,-1,sourceFace,targetFace,-1,sourceEdge)`.
-  - The legacy `else if` branches are unchanged and end in `from_integer(matching)`.
-  - `TransitionStep::interior` takes `GridAutomorphism{stepRotation, {0,0}}`.
-- **Out of scope:** the guard (`:15000`), action, cut route, BFS, overload, `make`, all tests (witnesses and the frozen 189–195), selectors, workflows, runtime.
-- **Evidence:** 8 GMP/GMPXX targets, `runtimeExecution=false`; record ≤30 lines with the exact hunk.
-- **STOP → Review:** typed faces unavailable without plumbing; `transport()` not callable; any edit outside the site.
-- **Preserve:** stable 66/17/49 debt 1, CP2 491/491, TB32 481/500 candidate, TB35 11/13, TB36 0/5, selector 497 frozen; RP-01 open, RP-02 unreached. `DIAG-RETAIN`, RA-152.5, RA-146.2/.4, RA-45.4 and G4-B002 stay separate.
+- **Type:** independent static Review, no runtime; inspect the exact one-site CB36 source diff, atlas `transport()` accessor, first-branch authority, missing-transport `PeriodicHolonomyMismatch` with six-argument locus, unchanged legacy branches and `GridAutomorphism` propagation.
+- **Evidence:** [CB36 record](Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Record_20261025.md), exact semantic `038ae7fd7c290731c28225d2693a3e13866e325a`, [compile artifact](https://github.com/akashskypatel/Directional/actions/runs/40173209091) `12590917524`. Verify its 28 checksums, all eight GMP/GMPXX targets, source SHA and `runtimeExecution=false` independently.
+- **Falsifiers:** atlas branch not first; transport accessor differs; legacy matching changed; missing transport admitted or locus wrong; any non-target source change; missing GMP/link/compile evidence. Do not invent a public missing-transport witness.
+- **On acceptance:** issue exact TB37 focused 16-row manifest with [RA-153.4](Architecture_M6_CP3_TB36_REV_Audit_Periodic_Route_Atlas_Transport_Decision_20261025.md) predictions and STOP rules. TB37 must not begin before accepted CB36-REV.
+- **Preserve:** stable 66/17/49 debt1; CP2 491/491, TB32 481/500 candidate, TB35 11/13, TB36 0/5, selector497 frozen; RP-01 open, RP-02 unreached; `DIAG-RETAIN`, RA-152.5, RA-146.2/.4, RA-45.4 and G4-B002 remain separate.
 
 ## Turn Sequence
 
@@ -61,8 +55,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | done | CB35 → REV → CB35-R1 → REV → CB35-R2 → REV | 3 witnesses; directed 32-step and reversal oracle statically accepted. |
 | done | TB36 (invalid harness) → `M6-CP3-CB36-ORCH-RP01-TB36-HARNESS-CORRECTION` → TB36-R1 → TB36-REV | Valid 0/5 pre-fix baseline; F1 confirmed. |
 | done | `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE-REV-AUDIT` (RA-153) | TB36-REV accepted; CB36 spec bound; RA-152 errata E1/E2; TB37 split. |
-| 1 — next | `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT` | D2 only; compile only. |
-| 2 | `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT-REV` | Static; issues the TB37 16-row manifest with RA-153.4 predictions. |
+| done | `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT` | D2 only; compiled eight GMP/GMPXX targets, no runtime. |
+| 1 — next | `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT-REV` | Independent static review; issues TB37 focused 16-row manifest if accepted. |
 | 3 | `M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY` → `…-REV` | 3 witnesses GREEN; TB35 189,190,193–195 + 6 controls PASS; 191/192 RED unchanged. STOP if 68 persists, 191/192 change, or a PASS regresses. |
 | 4 | `M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS` → `…-REV` | Full 497 vs TB32 ledger; no accepted-green loss. |
 | 5 | `M6-CP3-DEFN-RP01-PERIODIC-LEGACY-ORACLE-HOMES` → CB/TB | D4 + E1: 191 → A3 `NonReciprocalAdjacency`; 192 → k=1 field; 189/190 → A3-level or retired. |
@@ -73,7 +67,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT** — read [RA-153](Architecture_M6_CP3_TB36_REV_Audit_Periodic_Route_Atlas_Transport_Decision_20261025.md) §3 and the [CB36 plan](Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Plan_20261025.md), then `SurfaceCellTracing.cpp:14905–15004` and `:6718–6730`, and `FieldTransportAtlas::transport`. Production D2 only; compile only.
+`load_next`: **M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT-REV** — inspect [CB36 record](Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Record_20261025.md), source hunk `SurfaceCellTracing.cpp:14934–14998`, RA-153.3/.4, `FieldTransportAtlas::transport` and the immutable package. Review only; no runtime.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
