@@ -1,12 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb35-r2-rev-apply-20261025-v2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb35-r2-rev-apply",
-  "file_id": "1krwEbuBjKswtgT84a7143AN6QMVlFbG8",
-  "patch_sha256": "490c4aee76f3c645feff4578cb449fe5e8514791ac1657211626b097da7f1c9f",
-  "base_sha": "e3c04795d049b1c87be1bacd8e3d4c6c53689b05",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): accept independent CB35-R2 oracle review and freeze TB36 scope",
+  "request_id": "m6-cp3-tb36-baseline-20261025-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb36-periodic-monodromy-baseline",
+  "executor_sha": "e9850781601e579c7332683a207a70034bae3f0e",
+  "semantic_source_sha": "7de805c487fa66bcb96744f51b8bfbe7210ee8dc",
+  "turn_id": "M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_tb36_periodic_monodromy_baseline_harness.sh",
+  "harness_sha256": "99eb3f4bbdaab1c5e5c7cd385738f8349c4fbfbbb96edb34719518423cbcf0f7",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb36-periodic-baseline",
   "retention_days": 14
 }
