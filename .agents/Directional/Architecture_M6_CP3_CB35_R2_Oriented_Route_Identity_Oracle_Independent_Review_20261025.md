@@ -54,4 +54,4 @@ The five-case manifest above holds exactly three newly compiled witnesses and fr
 | Turn boundary held | Static Review only, no product/test/fixture/selector/build source changes or runtime execution. |
 | review_check.py boundary | Local `review_check.py boundary` executed: product/test/selector surface and all selector hashes PASS; helper exits 1 on its three historical durable-baseline checks plus missing `8b7299b43` ancestor because this verified source snapshot lacks the upstream Git object history. This is an explicit tooling limitation, **not a green boundary result**. |
 | `STATUS` lifecycle maintained | Entry beacon set; final direct-write beacon after patch application/cleanup. |
-| Pushed to origin, branch in sync | Required patch-transport result and final branch authority to be recorded at closeout; not claimed by static report alone. |
+| Pushed to origin, branch in sync | Verified Drive patch apply run `40152327171` succeeded and pushed exactly seven reviewed paths. GitHub compare confirms the committed change; no local remote-tracking Git check was available. |
