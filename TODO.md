@@ -1,36 +1,10 @@
-## CURRENT — RA-154 TB37-REV audit; TB38 504-row census next (2026-10-25)
+## CURRENT — TB38 504-case census measured; independent TB38-REV next (2026-10-25)
 
-- [x] **RA-154 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB37_REV_Audit_Periodic_Census_Manifest_Decision_20261025.md)):
-  - TB37-REV accepted after independent re-verification: 21/21 hashes, 14/2, k=1/k=2 reason 29 with all-−1 locus.
-  - The TB38 hand-off is replaced by a Review-owned [504-row manifest](.agents/Directional/Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Case_Manifest.tsv), SHA-256 `b27eecb6…dcf8c2`; `--self-check 504` PASS.
-  - Findings:
-    - G2: 204, 242 and 247 are atlas-ingress tamper oracles (Rejected expected, Produced observed), the same class as 191/192.
-    - G3: 250 (68) is D2-reachable.
-    - G4: the TB37 harness is retired.
-    - G5: first failures are compared by assertion.
-    - O1: cut-route steps publish identity transport; the digest changes across CB36.
-- [ ] **EXACT NEXT** `M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS`:
-  - CB36 package `12590917524`, unchanged harness `436f5fff…3c9a`, `EXPECTED_CASE_COUNT=504`.
-  - Predicted 490 PASS / 14 RED; RED = `focused30:12`, `cp3entry:1/2/4`, 442, 174, 201, 405 (same assertion) + 191, 192, 204, 242, 247 (Rejected→Produced) + 250 (drift admissible).
-  - STOP: a GUARD row not PASS, a RED row passing, assertion drift outside 250, any integrity failure.
-  - No edits, no compile.
-- [ ] Then `TB38-REV` → `M6-CP3-DEFN-RP01-ATLAS-INGRESS-TAMPER-ORACLE-HOMES` (design only: 189, 190, 191, 192, 204, 242, 247) → DEFN-REV.
-  - Then test-only CB groups, each → REV: A (191+204 → A3 `NonReciprocalAdjacency`), B (192+247 → k=1/k=2 or retire), C (242 + 189/190).
-  - Then one focused TB → REV.
-- [ ] Then the 250 `publishedProductError` site diagnostic (only if 68 persists) → 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) → census → RP-01 Review.
-- [ ] Carried separately: RA-154 O1, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002.
-- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
-  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
-  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
-  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
-  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Turn sequence:**
-  - Done: TB37 → TB37-REV → TB37-REV-AUDIT (RA-154).
-  - **TB38** → TB38-REV → DEFN tamper-oracle homes → DEFN-REV.
-  - CB-A → REV → CB-B → REV → CB-C → REV → focused TB → REV.
-  - [250 diagnostic] → 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review.
-  - `DIAG-RETAIN` carried.
-- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 candidate (19 inherited RED); TB35 11/13, TB36 0/5, TB37 14/16 focused accepted; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+- [x] **TB38 artifact-only**: [run 40185527486](https://github.com/akashskypatel/Directional/actions/runs/40185527486), source/package CB36 `038ae7fd7`/`12590917524`, immutable result `12597140251` outer SHA-256 `0cdfe445fbc5388b8e95331f87c4a291001645f30458001bb5426244022a9870`, 1,014/1,014 manifest hashes; **504/504 executed; 490 PASS / 14 RED; 0 missing/skipped/duplicates/control bad/unexpected pass; postflight true**. 497-selector 483/14 vs TB32 478/19; 5 expected legacy RED→GUARD, 4 new guards PASS. No compile/relink/source/test/selector change. [Owning report](.agents/Directional/Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Report_20261025.md).
+- [ ] **EXACT NEXT:** `M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS-REV` — independent raw-assertion/log review and candidate disposition. 191/192 expected A3-exception→Rejected-vs-Produced shift; `cp3entry:2` pointer bytes irrelevant; 250 still `PublishedProductRejected(68)` (site unmeasured). No accepted CP3 or selector promotion.
+- [ ] If Review accepts: `M6-CP3-DEFN-RP01-ATLAS-INGRESS-TAMPER-ORACLE-HOMES` (189,190,191,192,204,242,247), then DEFN-REV; test-only CB groups A/B/C each independently reviewed, focused TB; then 250 site diagnostic only if 68 remains, 405 → 174/201 → focused30:12 → cp3entry:4 → selector:442 → DEFN-T1 → census → RP-01 Review.
+- [ ] `DIAG-RETAIN` separately: retain A5–A7 diagnostic snapshots (A5 corner occurrences and relations; A6 quotient classes; A7 geometry) under `retainIntermediateGeometry`, CLI/GUI reachability, no feedback into stage authority, bounded memory. Sequencing by Review clear of RP-01 mutation. RA-154 O1 (cut-route identity transport), RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4 and G4-B002 carried.
+- **Frozen accounting:** stable **66/17/49**, debt 1; CP2 **491/491 accepted**; TB32 481/500 candidate; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
 
 ---
 

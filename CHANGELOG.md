@@ -1,3 +1,5 @@
+- **2026-10-25 — TB38 immutable periodic-route atlas census executed (candidate evidence).** [Run 40185527486](https://github.com/akashskypatel/Directional/actions/runs/40185527486) executed the exact Review-owned 504-case manifest against unchanged CB36 package `12590917524`: 490 PASS / 14 inherited RED, 0 skips/missing/duplicates, immutable postflight, no compile/relink/benchmark. Result artifact `12597140251`, SHA-256 `0cdfe445fbc5388b8e95331f87c4a291001645f30458001bb5426244022a9870`, 1,014/1,014 integrity entries. Selector497 483/14; 191/192 now reach predicted tamper-oracle Produced-versus-Rejected failure, 250 remains 68. No stable or CP3 promotion; independent TB38-REV next. [Report](.agents/Directional/Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Report_20261025.md).
+
 - **2026-10-25 — RA-154 TB37-REV audit: Review-owned TB38 manifest; tamper-oracle family reclassified.**
   - TB37 independently re-verified.
   - TB38 bound to a 504-row manifest (`b27eecb6…`, 490/14 predicted) on the unchanged targeted harness.
