@@ -42,4 +42,4 @@
 | Turn boundary held | Static review only; no product, test, fixture, benchmark, selector or build source mutation; no runtime execution |
 | review_check.py boundary | Not claimed: downloaded snapshot excludes Git history and local Git reconstruction cannot independently verify historical boundary; repository real-history execution remains an unverified procedural gate |
 | `STATUS` lifecycle maintained | Entry beacon written; final beacon publication required after all durable content writes |
-| Pushed to origin, branch in sync | Pending verification after applying this record and durable closeout |
+| Pushed to origin, branch in sync | Durable dispatcher pushed the seven-path patch; GitHub remote comparison and PR-head readback verified the intended changes. A local `git status -sb` on authentic repository history has not been performed. |
