@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb39-selector250-factory-site-20261025-r1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb39-selector250-factory-site",
-  "executor_sha": "4b3932b3a7e709b04bfbba5747ea361eda682f9c",
-  "semantic_source_sha": "c9d7c80f6d41abdbc2ecd02de7006c7847988df8",
-  "turn_id": "M6-CP3-TB39-RP01-SELECTOR250-FACTORY-SITE-HARVEST",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "436f5fff9c3bec97457f4bc6b7c2b6182cb3f47707eb14a66af3b6a3f3dc3c9a",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "12607777892",
-    "EXPECTED_SOURCE_SHA": "c9d7c80f6d41abdbc2ecd02de7006c7847988df8",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "fa437659c633de1b5e69dc93b35bcbb65dec84c212a957d005ada58e4dd01b58",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "314f0f455360e2c22d6fd2abf7a6c6dc03943187929b7796145cee8c3b34c46c",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "d82c4d2ce9314e2f0f98a62be2a010e66f2f65b37458551f43e3f8c5c84069bc",
-    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_CP3_TB39_Selector250_Factory_Site_Harvest_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "a304aeebb6bbbaadf17be43c56b080714e2e39fe4e7f8615da126f3f0150cc61",
-    "EXPECTED_CASE_COUNT": "7"
-  },
-  "artifact_prefix": "m6-cp3-tb39-selector250-factory-site",
+  "request_id": "m6-cp3-tb39-selector250-doc-apply-20261025-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb39-selector250-doc-apply",
+  "file_id": "1DrkvdGHk5ldJiB1tH3S88pE8OQ4IwpCY",
+  "patch_sha256": "6ad8e88c0e89686a6ea24ec5223f52fb02db784645c427a758bf9337ba4aa9c4",
+  "base_sha": "4b3932b3a7e709b04bfbba5747ea361eda682f9c",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record TB39 selector250 factory-site evidence",
   "retention_days": 14
 }
