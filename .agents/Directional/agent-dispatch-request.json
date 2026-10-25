@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb36-rev-docs-apply-20261025-r2",
+  "request_id": "m6-cp3-cb36-rev-history-close-20261025-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb36-rev-docs-apply-r2",
-  "file_id": "14uKiNp9bz3-imp4VylFoB_y604DqEkyj",
-  "patch_sha256": "9a5669ba2e29173d4c1bc25e57b2d279e33cf00e7ec971ea2cd39e715602faeb",
-  "base_sha": "9f691d975f53af467a45cdbeaa3abdb4d89e5d6f",
+  "mailbox_key": "m6-cp3-cb36-rev-history-close",
+  "file_id": "1r7OjlEm58vtb7LAG1DqIkzHWDwmskyCW",
+  "patch_sha256": "438a7d2a6ce807e7225a76b425b985b00c365f385dc66c08f36ba1bc49dd3e75",
+  "base_sha": "2d870dccda6d97ae763120b5f0048ba4cc701772",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): complete CB36 independent review and TB37 plan",
+  "commit_message": "docs(directional): certify CB36 history audit and close review",
   "retention_days": 14
 }
