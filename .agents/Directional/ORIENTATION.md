@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-25 · `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE-REV` independently accepts static oriented 32-edge oracle and reversal discriminator; no test/runtime execution or production acceptance. Next `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE` artifact-only five-case pre-fix baseline. F1 unresolved; CP2 491/491 accepted, TB32 481/500 candidate, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-25 · `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE-REV` validates TB36-R1 5/5 RED pre-fix and confirms RA-152 F1 A4 atlas-path omission; successor `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT` D2-only Code + Build, no runtime/acceptance promotion. CP2 491/491 accepted, TB32 481/500 candidate, stable 66/17/49 debt1; RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current test authority:** CB35-R2-REV accepts independent full directed published-route identity and reversal falsifier, and releases only the frozen five-case TB36 artifact-only baseline; no source/runtime repair or selector promotion. [Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Independent_Review_20261025.md](Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Independent_Review_20261025.md).
+**Current test authority:** TB36-R1 independently reviewed: 0/5 GREEN, two post-A4 `PublishedProductRejected(68)` rather than guard 29, directed route step non-odd, frozen 191/192 unchanged RED. F1 confirmed by source control flow; authorize D2 only, with factory sub-site unmeasured. [Decision](Architecture_M6_CP3_TB36_R1_Periodic_Monodromy_Baseline_Independent_Review_Decision_20261025.md).
 
 **Prior TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 
@@ -104,16 +104,18 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** CB35-R1-REV rejects the still-vacuous *directed* route oracle: `route_topology()` compares canonical storage, not `oriented_steps()`, allowing reversal. `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE` is the next test-only Code + Build, followed by independent Review before TB36. RA-152 withdrew the older ingress DEFN. TB35 191/192 remain RED and 189/190 inconclusive; 19 inherited census RED and S1/A4 obligations remain.
+**Immediate:** Validated TB36-R1 shows A4 ignores atlas periodic-step transport; D2 narrow producer correction and compile-only verification next, then independent Review before TB37. Original 191/192 remain RED from discarded tracing-container mutations; RA-152 D4 separate. 19 inherited REDs and RP-01 remain open.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | CB35-R2-REV discharges R-2 static oriented-route witness only; immutable five-case TB36 baseline must now establish the actual pre-fix A4 first rejecting producer (or STOP on unexpected GREEN/A3 failure). RA-152 F1 still unproved; do not perform premature producer fix. | `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE`; [CB35-R2-REV](Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Independent_Review_20261025.md), [CB35-R1-REV](Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Independent_Review_20261024.md), [TB35-REV](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md), [CB32-REV](Architecture_M6_CP3_CB32_Odd_Transport_Oracle_Correction_Review_Decision_20261024.md), [CB31-REV](Architecture_M6_CP3_CB31_Odd_Atlas_Transport_Permutation_Review_Decision_20261023.md), [RA-148](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Review_Decision_20261023.md) and [RA-146](Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md) |
+| **1** | Repair only atlas-backed A4 periodic observed-step transport and missing-directed-edge failure locus; preserve frozen controls and run a separate TB37. | `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT`; [TB36-REV](Architecture_M6_CP3_TB36_R1_Periodic_Monodromy_Baseline_Independent_Review_Decision_20261025.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
+
+- **Producer step authority omitted under atlas ingress (RA-152 F1; TB36-REV):** branch propagation reads `FieldTransportAtlas` but A4 periodic observed-step publication uses null legacy containers and inserts zero rotations. A checked factory rejection after A4 is not an A4 guard success; preserve its underlying site before assigning the secondary factory cause.
 
 - **Canonical storage is not directed witness order (CB35-R1-REV; R-2 discharged by CB35-R2-REV):** `CanonicalRoute::steps()` remains identical under `reversed()` even as `oriented_steps()` changes. An oracle that claims directed route identity must compare observed oriented steps to an independent oriented expectation and reject reversal.
 
