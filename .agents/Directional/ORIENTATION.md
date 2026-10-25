@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-25 · RA-156 audited TB39-REV. 250 fails at `hard-rail-contact-missing` because test 250 drops the disk rail authority (rails plus provenance) that its own fixture builds. Next is CB38 (test-only rail authority), then TB40. No CP3 acceptance. CP2 491/491 accepted; stable 66/17/49, debt 1; RP-01 open.
+**Currency:** 2026-10-25 · CB38-REV statically accepted test-only correction and eight-target GMP/GMPXX compile; 13-case TB40 manifest frozen. Selector250 runtime remains open. CP3 unaccepted; CP2 491/491 accepted; stable 66/17/49 debt1; RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,11 +104,11 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** RA-156 moves the 250 owner first. CB38 derives the disk's `authoritativeRails` and provenance through the production rail functions inside test 250 (assertions unchanged), and TB40 measures it. Then the A/B/C re-homes (CB39–CB41), the CB42-O3 polygonal locus pins, TB41, and the narrowed DEFN.
+**Immediate:** CB38-REV accepted the test-only rail-authority correction on static evidence. Run frozen TB40 (selector250 and twelve PASS guards), then TB40-REV. RA-156 A/B/C re-homes and O3 remain subsequent independent turns; no new runtime PASS inferred.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Restore the only positive periodic-plus-disk composition (250) with authentic rail authority, then re-home the tamper oracles A/B/C and pin the O3 locus. | `M6-CP3-CB38-RP01-SELECTOR250-RAIL-AUTHORITY`; [RA-156](Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md) |
+| **1** | Restore the only positive periodic-plus-disk composition (250) with authentic rail authority, then re-home the tamper oracles A/B/C and pin the O3 locus. | `M6-CP3-TB40-RP01-SELECTOR250-RAIL-AUTHORITY-VERIFY`; [RA-156](Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

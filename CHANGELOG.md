@@ -1,3 +1,5 @@
+- **2026-10-25 — CB38-REV static review:** Exact test-only hunk accepted, CB38 source/package rechecked (28/28, GMP/GMPXX, runtimeExecution=false); 13-row TB40 manifest `5dd7d9499918b04a277b907835993beb7829e6d9f52c4cc345faf5e3cd2158e4` frozen; no runtime, CP3 or selector promotion. [Decision](.agents/Directional/Architecture_M6_CP3_CB38_Selector250_Rail_Authority_Independent_Review_Decision_20261025.md).
+
 - **2026-10-25 — RA-156 TB39-REV audit: 250 rail authority bound and moved first.**
   - TB39 independently re-verified; TB39-REV's classification (fixture-owned `hard-rail-contact-missing`, not O1) accepted.
   - Corrective spec replaced: test 250 must derive `authoritativeRails` and all three provenance maps through the production rail functions, as `make_curved_disk_fixture` does.

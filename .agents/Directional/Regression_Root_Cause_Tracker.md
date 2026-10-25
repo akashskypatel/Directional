@@ -1,3 +1,5 @@
+**CB38-REV static acceptance (2026-10-25):** RA-156 J1 test-only repair accepted without runtime credit; 13-case TB40 manifest `5dd7d9499918b04a277b907835993beb7829e6d9f52c4cc345faf5e3cd2158e4` frozen. First-failure owner if 250 remains RED is TB40-REV; O1/O2/O3 unchanged; stable 66/17/49 debt1, CP2 491/491, selector497 frozen. [Review](Architecture_M6_CP3_CB38_Selector250_Rail_Authority_Independent_Review_Decision_20261025.md).
+
 **RA-156 TB39-REV audit (2026-10-25, candidate/non-stable):**
 - TB39 is re-verified. 250's owner is refined: test 250 copies the disk mesh but discards `authoritativeRails` and all three provenance maps that `make_curved_disk_fixture` builds through the production rail functions. The tracing seeds are therefore missing as well, not only the factory provenance.
 - **Owner:** `M6-CP3-CB38-RP01-SELECTOR250-RAIL-AUTHORITY` (test-only), then TB40.
