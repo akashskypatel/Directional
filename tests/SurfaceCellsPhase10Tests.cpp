@@ -4664,6 +4664,32 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   ASSERT_EQ(fixture.expectedRoute.size(), steps.size());
   ASSERT_EQ(32U, steps.size());
   EXPECT_EQ(periodic_route_topology(fixture), route_topology(route));
+  // The fixture defines a directed face cycle independently of the published
+  // route. Canonical steps alone cannot detect an inverted published traversal.
+  const auto expectedCompact = independent_periodic_route_compact_ids(fixture);
+  const auto matchesDirectedFixture = [&](const directional::authority::CanonicalRoute &candidate) {
+    const auto oriented = candidate.oriented_steps();
+    if (oriented.size() != fixture.expectedRoute.size() ||
+        oriented.size() != expectedCompact.size()) {
+      return false;
+    }
+    for (std::size_t index = 0; index < oriented.size(); ++index) {
+      const auto &step = oriented[index];
+      if (step.topology() != fixture.expectedRoute[index].currentTopology ||
+          step.orientation() != directional::authority::Orientation::Forward ||
+          step.kind() != directional::authority::TransitionStepKind::Interior ||
+          !step.interior().has_value() ||
+          static_cast<int>(step.interior()->index()) != expectedCompact[index]) {
+        return false;
+      }
+    }
+    return true;
+  };
+  EXPECT_TRUE(matchesDirectedFixture(route));
+  // Reversal preserves canonical storage, so this must specifically reject a
+  // different oriented traversal rather than a canonicalized self-comparison.
+  EXPECT_EQ(route_topology(route), route_topology(route.reversed()));
+  EXPECT_FALSE(matchesDirectedFixture(route.reversed()));
   const auto first = fixture.expectedRoute[0].currentTopology;
   const auto second = fixture.expectedRoute[1].currentTopology;
   const auto identity = directional::authority::QuarterTurn{};
