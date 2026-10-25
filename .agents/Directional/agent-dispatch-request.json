@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb35-r2-route-oracle-apply-20261025-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb35-r2-route-oracle-apply",
-  "file_id": "1sKgknQa6P9R2htn7oajL75Fkg2atekOV",
-  "patch_sha256": "b1503dedd408749db20724016cda5e3b4b64c72db2bcb3dab1c15be7cec64550",
-  "base_sha": "d21fe2bebcae03d410dd01846d617a78a27c55c8",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surface-cells): verify published route oriented traversal and reversal discrimination",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb35-r2-compile-20261025-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb35-r2-compile",
+  "source_sha": "7de805c487fa66bcb96744f51b8bfbe7210ee8dc",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb35-r2-gmp-compile"
 }
