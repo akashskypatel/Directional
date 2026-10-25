@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-25 · `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE-REV` validates TB36-R1 5/5 RED pre-fix and confirms RA-152 F1 A4 atlas-path omission; successor `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT` D2-only Code + Build, no runtime/acceptance promotion. CP2 491/491 accepted, TB32 481/500 candidate, stable 66/17/49 debt1; RP-01 open.
+**Currency:** 2026-10-25 · RA-153 accepts TB36-REV (0/5 pre-fix baseline; F1 confirmed) and binds the CB36 D2 spec (`atlas->transport()` as the first branch, the existing locus). It also corrects RA-152: A3 already validates `sourceEdge`, and relation ids are unchanged by D2. Next is `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT` (compile only), then TB37 (focused 16 rows) and TB38 (census). CP2 491/491 accepted, TB32 481/500 candidate, stable 66/17/49 debt1; RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 

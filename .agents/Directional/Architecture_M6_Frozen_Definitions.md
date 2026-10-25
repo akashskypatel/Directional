@@ -1,3 +1,14 @@
+## RA-153 — TB36-REV audited: CB36 D2 spec bound; RA-152 errata; TB37/TB38 split (2026-10-25)
+
+Authority: `Architecture_M6_CP3_TB36_REV_Audit_Periodic_Route_Atlas_Transport_Decision_20261025.md`.
+
+- **RA-153.1** TB36-REV accepted: TB36-R1 0/5 pre-fix; A3 admits k=1 and k=2; both end in the `make` backstop (68); the directed route is published with identity steps. F1 confirmed.
+- **RA-153.2** Errata to RA-152. E1: A3 rejects a `sourceEdge` mismatch with `NonReciprocalAdjacency` (`FieldTransportAtlas.cpp:2020–2027`). E2: D2 changes no periodic relation ids; carrier identity excludes transport.
+- **RA-153.3** CB36: the first branch reads `atlas->transport()` for the directed face pair; a missing transport is rejected with `PeriodicHolonomyMismatch(-1,-1,sourceFace,targetFace,-1,sourceEdge)` and is falsifiable statically only; the legacy branches and everything else are unchanged.
+- **RA-153.4** TB37 focused 16 rows: witnesses GREEN; TB35's 11 PASS kept; 191/192 RED unchanged. STOP on 68, on a 191/192 change, or on a regression. TB38 is the separate full 497 census.
+- **RA-153.5** Sequence: CB36 → REV → TB37 → REV → TB38 → REV → DEFN legacy-oracle homes (191 → A3 negative; 192 → k=1).
+
+---
 ## RA-152 — TB35-REV audited: A4 periodic rotation guard dead on the atlas path; witness-first F1 track (2026-10-24)
 
 Authority: `Architecture_M6_CP3_TB35_REV_Audit_Periodic_Route_Transport_Decision_20261024.md`.

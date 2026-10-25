@@ -1,4 +1,41 @@
-## CURRENT — TB36 independent Review validates F1; CB36 D2-only next (2026-10-25)
+## CURRENT — RA-153 TB36-REV audit; CB36 D2 next (2026-10-25)
+
+- [x] `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE-REV-AUDIT` (RA-153):
+  - TB36-REV accepted: a 0/5 pre-fix baseline, A3 admits k=1 and k=2, both reach A4 and end in the `make` backstop (68), and the directed route is published with identity steps;
+  - RA-152 errata: E1, A3 already rejects a `sourceEdge` mismatch (`FieldTransportAtlas.cpp:2020–2027`); E2, D2 changes no relation ids (carrier identity excludes transport);
+  - the CB36 spec is bound (`transport()` as the first branch; the existing locus; the missing-transport branch is static-only);
+  - TB37 split into a focused 16-row run and a TB38 census. [Decision](.agents/Directional/Architecture_M6_CP3_TB36_REV_Audit_Periodic_Route_Atlas_Transport_Decision_20261025.md).
+- [ ] **EXACT NEXT:** `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT`. Production, compile-only. [Plan](.agents/Directional/Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Plan_20261025.md).
+  - Only `SurfaceCellTracing.cpp:14937–14982` changes:
+    - a new first branch `transitionLookup.atlas != nullptr` → `atlas->transport(*sharedKey, faceCycle[i], faceCycle[i+1])->transport`;
+    - a missing transport → `PeriodicHolonomyMismatch(-1,-1,sourceFace,targetFace,-1,sourceEdge)`;
+    - the legacy branches are unchanged;
+    - the step uses `GridAutomorphism{stepRotation,{0,0}}`.
+  - No other line, test, selector or runtime change. 8 GMP/GMPXX targets. Record ≤30 lines with the hunk.
+- [ ] Then: CB36-REV (static; issues the TB37 16-row manifest).
+- [ ] Then: **TB37** → TB37-REV. TB37 runs the 3 witnesses + TB35's 13. Predictions:
+  - witnesses GREEN;
+  - 189, 190, 193–195, the face-gauge oracle, both guards and all 3 controls PASS;
+  - 191/192 RED unchanged.
+  - STOP if 68 persists (next turn: a test-side diagnostic), 191/192 change, or a PASS regresses.
+- [ ] Then: **TB38** full 497 census vs the TB32 ledger → TB38-REV.
+- [ ] Then: `M6-CP3-DEFN-RP01-PERIODIC-LEGACY-ORACLE-HOMES`:
+  - 191 → A3 `NonReciprocalAdjacency` negative;
+  - 192 → k=1 authoritative field;
+  - 189/190 → A3-level or retired.
+  - Runtime-free; then CB/TB.
+- [ ] Then, one owner per turn: untyped 7 (`selector:174,201,204,242,247,250,405`) → A5 `focused30:12` → A4 `cp3entry:4` → A3 `selector:442` → DEFN-T1 (`cp3entry:1/2`) → census → RP-01 Review. Carried: RA-152.5 axis binding, DEFN-SEAM-NZ, Periodic follow-up, RA-146.2/4, RA-45.4, G4-B002.
+- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
+  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
+  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
+  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
+  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- **Turn sequence:** TB36-R1 → TB36-REV → TB36-REV-AUDIT (RA-153) → **CB36** → CB36-REV → TB37 → TB37-REV → TB38 → TB38-REV → DEFN legacy-oracle homes → untyped 7 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review; `DIAG-RETAIN` carried.
+- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 candidate (19 inherited RED); TB35 11/2 and TB36 0/5 focused candidates; selector 497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+
+---
+
+## HISTORY — CB35-R1/R2; TB36 harness correction; TB36-R1; TB36-REV (2026-10-25)
 
 - [x] `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION` compiled test-only +5/−1; immutable artifact 12577649024 verified 28/28, GMP/GMPXX, no runtime. R1 canonical-key and translation checks are present.
 - [x] **CB35-R1-REV material finding R-2:** `route_topology(route)` compares `CanonicalRoute::steps()` rather than observed `oriented_steps()`. `CanonicalRoute::reversed()` preserves canonical keys while reversing the published traversal; remaining shift/±1/total identity assertions can still pass. Review **NOT ACCEPTED**; see [decision](.agents/Directional/Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Independent_Review_20261024.md).
@@ -7,7 +44,7 @@
 - [x] **Invalid TB36 attempt + control-plane correction:** first run `40155549123` executed 0/5 due five-row uniqueness gate and bad source-location regex (invalid orchestration, no semantic result). `M6-CP3-CB36-ORCH-RP01-TB36-HARNESS-CORRECTION` changed harness only at `0ba22724c97e9231f24a6d9bc7201e58b3c6da81`, corrected SHA-256 `343cdc6e53daf33da7d2893086751e0f762e6a3ed2111e69bf077555a4e3f439`, local static checks PASS; [record](.agents/Directional/Architecture_M6_CP3_CB36_TB36_Harness_Orchestration_Correction_Record_20261025.md). No build or Directional execution.
 - [x] **TB36-R1 VALID / CANDIDATE:** [run `40159803899`](https://github.com/akashskypatel/Directional/actions/runs/40159803899), artifact `12586275698`, five distinct fresh-process cases, **0 PASS / 5 RED**, exact immutable package and postflight; witness1/2 `PublishedProductRejected(68)` vs expected `PeriodicHolonomyMismatch(29)`, route witness3 non-odd rotation, frozen 191/192 still Produced/None. No compile/relink/repair/selector changes. [Report](.agents/Directional/Architecture_M6_CP3_TB36_R1_Periodic_Monodromy_Baseline_Report_20261025.md).
 - [x] **TB36 independent Review:** 5/5 RED validated, A4 missing atlas read confirmed; `PublishedProductRejected(68)` is a downstream checked-factory rejection with unmeasured sub-site. No stable or selector promotion. [Decision](.agents/Directional/Architecture_M6_CP3_TB36_R1_Periodic_Monodromy_Baseline_Independent_Review_Decision_20261025.md).
-- [ ] **EXACT NEXT:** `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT` — RA-152 D2 only, compile-only; no test, fixture, selector, or legacy-ingress edit. Then CB36-REV before TB37. Stable 66/17/49, debt1; 497 frozen; RP-01 still open.
+- [x] CB36 successor confirmed and spec bound by RA-153 (see CURRENT).
 - [ ] Carried: RA-152 A4 periodic F1; frozen 189–192 no edits; selector497 frozen; CP2 491/491 accepted, TB32 481/500 candidate, TB35 11 PASS/2 RED, stable 66/17/49 debt1; RP-01 open/RP-02 unreached. Continue prior queue only after accepted witness evidence.
 
 ## HISTORY — CB35 compiled; independent witness Review (superseded by R1) (2026-10-24)
