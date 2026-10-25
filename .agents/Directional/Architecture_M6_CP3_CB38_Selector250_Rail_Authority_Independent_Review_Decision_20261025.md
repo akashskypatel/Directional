@@ -21,6 +21,8 @@
 
 **Carried:** O1 (periodic route), O2 (legacy/seam), O3 (polygonal rejection site to CB42), RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002, DIAG-RETAIN, and the subsequent CB39-A/CB40-B/CB41-C/CB42-O3 test-authority turns. None is discharged by compile-only evidence. Stable 66 events / 17 categories / 49 recurrences, debt 1; CP2 accepted 491/491; TB32 candidate 481/500, TB38 candidate 490/504; selector497 frozen; RP-01 open, RP-02 unreached.
 
+Both consumed Drive patches were deleted (404 readback), and the temporary history workflow and trigger were retired. No runtime tests were run.
+
 ## Review closeout
 
 | Duty | Answer |
@@ -40,6 +42,6 @@
 | Consolidation under CLEAN_UP_POLICY | No load-bearing superseded CB38 document deleted; CB38 record retained as immutable current compile authority; existing consolidated index preserved |
 | Successor frozen | Exact TB40 13-row manifest; falsifiers and stop rules in this record |
 | Turn boundary held | Static review only; no product, test, fixture, benchmark, selector or build source mutation; no runtime execution |
-| review_check.py boundary | Not claimed: downloaded snapshot excludes Git history and local Git reconstruction cannot independently verify historical boundary; repository real-history execution remains an unverified procedural gate |
+| review_check.py boundary | PASS: [run 40238062726](https://github.com/akashskypatel/Directional/actions/runs/40238062726), full-history checkout; source authority, boundary and ledgers all PASS. Artifact `12615493619`, ZIP SHA-256 `aa2f6a2b5ebd748aa2384837cd7d892fb1c3df280eb67e90187f3528416c6c5c`. |
 | `STATUS` lifecycle maintained | Entry beacon written; final beacon publication required after all durable content writes |
-| Pushed to origin, branch in sync | Durable dispatcher pushed the seven-path patch; GitHub remote comparison and PR-head readback verified the intended changes. A local `git status -sb` on authentic repository history has not been performed. |
+| Pushed to origin, branch in sync | Remote comparison and PR head verified the pushed patch. Real-history runner reported `## HEAD (no branch)` with clean checkout; tracking/ahead-behind not inferred. |
