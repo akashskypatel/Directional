@@ -1,3 +1,17 @@
+## RA-156 — TB39-REV audited: 250 rail authority bound and moved first (2026-10-25)
+
+Authority: `Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md`.
+
+- **RA-156.1** TB39 re-verified: 17/17 hashes, 7 log hashes, 6 PASS / 1 RED. 250 fails at `SurfaceCellTracing.cpp:8655–8661` (`InvalidSourceAuthority` 0, `MissingRailTerminalContact` 6).
+- **RA-156.2**
+  - J1: test 250 discards all four rail-authority fields built by `make_curved_disk_fixture` (`Phase10Tests:2582–2626`). With no `authoritativeRails`, the disk sheet also gets no tracing seeds.
+  - J2: the 250 owner moves first.
+  - J3/O3: the polygonal-disk rejection oracles (251, 252, `:2936`) check the reason only. That reason is set at 5 sites; only `:17190` leaves both `cell` and `side` at −1.
+  - J4: guards are the in-selector PASS rows only.
+- **RA-156.3** CB38 spec: build a combined-mesh feature map (closed `Hard` ring, `component=2`), call `build_authoritative_surface_cell_rails`, then `hard_rail_source_provenance_from_rails`, and require the edge-key identity. Test 250 only; assertions unchanged.
+- **RA-156.4** TB40 outline: 250 is kind RED; GUARD rows 199, 235, 236, 249, 251, 252, the 3 TB36 witnesses and 193–195.
+- **RA-156.5** Sequence: CB38 → TB40 → CB39-A → CB40-B → CB41-C → CB42-O3 → TB41 → DEFN (legacy path and seam) → owners → census.
+
 ## RA-155 — TB38-REV audited: tamper-oracle homes bound; 250 site first (2026-10-25)
 
 Authority: `Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md`.

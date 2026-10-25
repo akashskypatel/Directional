@@ -1,5 +1,45 @@
-## CURRENT — TB39-REV adjudicated missing source-rail fixture provenance; CB38-A next (2026-10-25)
+## CURRENT — RA-156 TB39-REV audit; 250 rail authority first (2026-10-25)
 
+- [x] **RA-156 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md)):
+  - TB39-REV accepted: 17/17 hashes and 7 log hashes verified; 250 site `hard-rail-contact-missing` (code 0, detail 6) is owned by the fixture, not O1.
+  - J1: test 250 discards all four rail-authority fields that `make_curved_disk_fixture` builds (`:2582–2626`). Without `authoritativeRails`, tracing also gets no disk rail seeds. Derive all four through the production rail functions.
+  - J2: the 250 owner is known and small, so it moves first; the A/B/C re-homes follow.
+  - J3/O3: the polygonal-disk rejection oracles (251, 252, `:2936`) check the reason only; that reason has 5 sites. Pin `cell=-1, side=-1`.
+  - J4: guards use only the in-selector PASS rows; `:3380` and the `:10092` negative are unmeasured.
+- [ ] **EXACT NEXT `M6-CP3-CB38-RP01-SELECTOR250-RAIL-AUTHORITY`** (test-only, compile only; RA-156.3). Inside test 250 only:
+  - build a combined-mesh feature map (closed `Hard` ring, `component=2`, plus `diskOffset`);
+  - call `build_authoritative_surface_cell_rails`;
+  - set `authoritativeRails` and the three provenance maps;
+  - require the edge-key identity `== hardFeatureEdges`.
+  - Assertions unchanged. Record of 30 lines or fewer.
+- [ ] Then CB38-REV, which freezes the TB40 manifest (RA-156.4).
+- [ ] Then TB40 → TB40-REV: discharge 250 as a candidate, or bind one new owner.
+- [ ] Then the re-homes, each test-only and followed by its REV:
+  - CB39-A (191+204 → A3 `NonReciprocalAdjacency`);
+  - CB40-B (192 k=1, 247 k=2);
+  - CB41-C (189);
+  - CB42-O3 (polygonal locus).
+- [ ] Then TB41 focused (189, 191, 192, 204, 247, 251, 252 + guards) → REV.
+- [ ] Then `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES` (design only: 190, 242, O2; inventory `CurvedBoundedDiskInvalidReciprocalTransportFailsClosed`) → REV.
+- [ ] Then the TB40-REV owner (if any) → 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) → census → RP-01 Review.
+- [ ] Carried separately: O1, O2, O3 (until CB42), RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002.
+- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
+  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
+  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
+  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
+  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- **Turn sequence:**
+  - Done: RA-155 → CB37 → CB37-REV → TB39 → TB39-REV → TB39-REV-AUDIT (RA-156).
+  - **CB38 (250 rail authority) → REV → TB40 → REV.**
+  - CB39-A → REV → CB40-B → REV → CB41-C → REV → CB42-O3 → REV → TB41 → REV.
+  - DEFN legacy-path and seam oracles → REV.
+  - TB40-REV owner → 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review.
+  - `DIAG-RETAIN` carried.
+- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 and TB38 490/504 candidate; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+
+---
+
+## HISTORY — RA-155; CB37; CB37-REV; TB39; TB39-REV (2026-10-25)
 - [x] **RA-155 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md)):
   - TB38-REV accepted: 1,014/1,014 hashes; 490/14; 191/192/250 raw logs re-checked.
   - The seven-oracle DEFN is replaced, because Review binds the determinate homes:
@@ -13,24 +53,7 @@
 - [x] **CB37-REV** — independently accepted one streamed-message hunk and the exact CB37 package (28/28 hashes; eight GMP/GMPXX targets; no runtime). Seven-row TB39 manifest frozen (`a304aeebb6bbbaadf17be43c56b080714e2e39fe4e7f8615da126f3f0150cc61`); no selector or CP3 promotion.
 - [x] **TB39 executed (artifact-only):** [run 40221114658](https://github.com/akashskypatel/Directional/actions/runs/40221114658), 7/7 fresh cases, six PASS guards and expected RED selector250; `publishedProductError=0`, `publishedProductSourceAuthorityDetail=6`, `site=hard-rail-contact-missing`; result 12609665120, 17/17 hashes, 0 missing/skipped, postflight true. [Report](.agents/Directional/Architecture_M6_CP3_TB39_Selector250_Factory_Site_Harvest_Report_20261025.md).
 - [x] **TB39-REV** — independently rehashed 17/17 result members and the 7/7 raw logs; traced code 0/detail 6 to missing open/closed hard-rail provenance in selector250 combined positive fixture, not periodic-action O1. No selector or CP3 promotion. [Decision](.agents/Directional/Architecture_M6_CP3_TB39_Selector250_Factory_Site_Independent_Review_20261025.md).
-- [ ] **EXACT NEXT `CB38-A`** — test-only re-home 191+204 to A3 `NonReciprocalAdjacency` at the tampered source key, with independent precondition and following Review per RA-155.3. Separate later selector250 owner: publish authentic source-rail provenance for the combined positive fixture, keep factory validators/Produced assertion unchanged; TB/Review re-prove the remaining positive contract.
-- [ ] Then the re-home groups, each test-only and followed by its REV: CB38-A (191+204), CB39-B (192+247), CB40-C (189). Then TB40 focused (189, 191, 192, 204, 247 + guards) → TB40-REV.
-- [ ] Then `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES` (design only: 190 retire or A3 `MissingAdjacency` negative with accepted-prefix accounting; 242 downstream seam consumer or retire; O2 legacy-branch removal scope; inventory `CurvedBoundedDiskInvalidReciprocalTransportFailsClosed`) → REV.
-- [ ] Then the 250 owner turns → 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) → census → RP-01 Review.
-- [ ] Carried separately: O1, O2, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002.
-- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
-  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
-  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
-  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
-  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Turn sequence:**
-  - Done: TB38 → TB38-REV → TB38-REV-AUDIT (RA-155) → CB37.
-  - **CB37-REV complete** → **TB39 executed** → **TB39-REV complete** (source-rail authority) → CB38-A.
-  - CB38-A → REV → CB39-B → REV → CB40-C → REV → TB40 → REV.
-  - DEFN legacy-path and seam oracles → REV.
-  - 250 owner → 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review.
-  - `DIAG-RETAIN` carried.
-- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 and TB38 490/504 candidate; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+- **Frozen accounting:** stable **66/17/49**, debt 1; CP2 **491/491 accepted**; TB32 481/500 and TB38 490/504 candidate; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
 
 ---
 
