@@ -1,14 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb36-r1-periodic-monodromy-20261025-a1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb36-r1-periodic-monodromy",
-  "executor_sha": "0053f6a779793c274bad3fcd8a2f58dbd8dba032",
-  "semantic_source_sha": "7de805c487fa66bcb96744f51b8bfbe7210ee8dc",
-  "turn_id": "M6-CP3-TB36-R1-RP01-PERIODIC-MONODROMY-BASELINE",
-  "harness_path": ".agents/Directional/tools/m6_cp3_tb36_periodic_monodromy_baseline_harness.sh",
-  "harness_sha256": "343cdc6e53daf33da7d2893086751e0f762e6a3ed2111e69bf077555a4e3f439",
-  "environment": {},
-  "artifact_prefix": "m6-cp3-tb36-r1-periodic-monodromy",
+  "request_id": "m6-cp3-tb36-r1-report-drive-apply-20261025-a1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb36-r1-report-apply",
+  "file_id": "1MaR0MW6E9odeE0qX-9qtjyQOu8DrBuwu",
+  "patch_sha256": "693232a05176d9238f87b416107ebd2a3ea7957c8d99d2585ca6ee8264d314ae",
+  "base_sha": "0053f6a779793c274bad3fcd8a2f58dbd8dba032",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(agent): record TB36-R1 periodic baseline and independent Review handoff",
   "retention_days": 14
 }
