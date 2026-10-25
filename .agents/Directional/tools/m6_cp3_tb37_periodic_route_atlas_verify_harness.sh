@@ -28,7 +28,7 @@ try:
  require(sha(manifest)==manifesthash,"TB37 manifest drift")
  with manifest.open(newline="") as f:cases=list(csv.DictReader(f,delimiter="\t"))
  require(len(cases)==16 and [int(c["row"]) for c in cases]==list(range(1,17)),"TB37 16 rows")
- require(len({c["test"] for c in cases})==13 and len({c["identity"] for c in cases})==13,"duplicate case")
+ require(len({c["test"] for c in cases})==16 and len({c["identity"] for c in cases})==16,"duplicate case")
  require([c["predicted"] for c in cases]==["GREEN"]*5+["RED_UNCHANGED"]*2+["GREEN"]*9,"TB37 preregistered predictions drift")
  require([c["kind"] for c in cases]==["NEW_ORACLE"]*3+["SELECTOR_FROZEN"]*7+["NEW_ORACLE"]+["GUARD"]*2+["FACTORY_CONTROL"]*3,"TB37 kind/order drift")
  require({c["binary"] for c in cases}=={"directional_surface_cell_producer_tests","directional_surface_cell_authority_kernel_tests"},"binary ownership drift")
