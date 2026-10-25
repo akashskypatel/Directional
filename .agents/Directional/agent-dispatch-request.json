@@ -1,12 +1,23 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb37-rev-docs-20261025-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb37-rev-docs",
-  "file_id": "1ncVkYHxDQwtQTfnrrjIuAF2Jjy-v7Rcb",
-  "patch_sha256": "4954b2942e96d46f0c1e6662b95111e2fbffbe9dbf73092e77c79446fdf2f770",
-  "base_sha": "33c688ba5cf0ff1a80e8a3837c84723e1b821fe6",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): independently review TB37 periodic atlas evidence",
+  "request_id": "m6-cp3-tb38-periodic-route-atlas-census-20261025-r1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb38-periodic-route-atlas-census",
+  "executor_sha": "3b5ac185fca3034cf0b6762d8f2f7e30d4f5e74d",
+  "semantic_source_sha": "038ae7fd7c290731c28225d2693a3e13866e325a",
+  "turn_id": "M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "436f5fff9c3bec97457f4bc6b7c2b6182cb3f47707eb14a66af3b6a3f3dc3c9a",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "12590917524",
+    "EXPECTED_SOURCE_SHA": "038ae7fd7c290731c28225d2693a3e13866e325a",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "6dcbfe5a468be5f548c368bfebeba411c6abd19ed4a4efd01be9923da9eb7d03",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "98f1dd214596b9ed2217fa316efc7e0511018079b1e1b400c417135bb12e1fb3",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "e9540142f32d6482135c4758d6f1eec2067cd9f1541e1de5f950fb08c13cf3e8",
+    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "b27eecb6b4f6f32fd060b8510a0cabf71f86b8fe1028dbb10c36003867dcf8c2",
+    "EXPECTED_CASE_COUNT": "504"
+  },
+  "artifact_prefix": "m6-cp3-tb38-periodic-atlas",
   "retention_days": 14
 }
