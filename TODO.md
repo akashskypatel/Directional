@@ -2,7 +2,8 @@
 
 - [x] `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT`: production `SurfaceCellTracing.cpp` periodic observed-step atlas transport first, missing transport fail-closed with existing locus; legacy branches preserved. Exact semantic `038ae7fd7c290731c28225d2693a3e13866e325a`; [record](.agents/Directional/Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Record_20261025.md).
 - [x] Eight-target compile-only [run 40173209091](https://github.com/akashskypatel/Directional/actions/runs/40173209091), artifact `12590917524` ZIP SHA256 `6dcbfe5a468be5f548c368bfebeba411c6abd19ed4a4efd01be9923da9eb7d03`; 28/28 hashes, GMP/GMPXX, `runtimeExecution=false`, no tests/benchmarks.
-- [ ] **EXACT NEXT** `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT-REV` independent static Review of one-site implementation, unchanged legacy behavior, atlas accessor, fail-closed locus, source/package, GMP and 28/28. On acceptance issue TB37 16-row manifest with RA-153.4 predictions; never claim runtime success from compilation.
+- [x] `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT-REV` independent static Review: D2 one-site semantics/source/package/GMP 28/28 accepted **without runtime**. [Decision](.agents/Directional/Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Independent_Review_Decision_20261025.md).
+- [ ] **EXACT NEXT** `M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY`: 16-row immutable focused manifest with pre-registered predictions, no rebuild, and strict RA-153.4 STOP. [Manifest](.agents/Directional/Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Case_Manifest.tsv).
 - [ ] Then TB37 focused 16 rows → TB37-REV; STOP if k1/k2 reason 68 persists, 191/192 change, or a prior PASS regresses. Then TB38 full 497 census → TB38-REV. Then DEFN legacy-oracle homes (191 A3, 192 k1, 189/190 re-home or retire).
 - [ ] Then untyped 7 (`selector:174,201,204,242,247,250,405`) → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) → census → RP-01 Review; RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002 carried separately.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
@@ -10,7 +11,7 @@
   - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Turn sequence:** TB36-R1 → TB36-REV → TB36-REV-AUDIT (RA-153) → CB36 compiled → **CB36-REV** → TB37 → TB37-REV → TB38 → TB38-REV → DEFN legacy-oracle homes → untyped 7 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review; `DIAG-RETAIN` carried.
+- **Turn sequence:** TB36-R1 → TB36-REV → TB36-REV-AUDIT (RA-153) → CB36 compiled → CB36-REV accepted (static) → **TB37** → TB37-REV → TB38 → TB38-REV → DEFN legacy-oracle homes → untyped 7 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review; `DIAG-RETAIN` carried.
 - Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 candidate (19 inherited RED); TB35 11/13, TB36 0/5; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
 
 ---

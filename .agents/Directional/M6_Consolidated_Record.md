@@ -1,3 +1,7 @@
+## 2026-10-25 — CB36 periodic atlas transport Review / current authority index
+
+`Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Independent_Review_Decision_20261025.md` is the current independent static Review; `Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Case_Manifest.tsv` is the current 16-row future TB37 gate; `Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Record_20261025.md` and `Architecture_M6_CP3_TB36_REV_Audit_Periodic_Route_Atlas_Transport_Decision_20261025.md` remain live causal/compile authority and are **not folded**. No superseded, uniquely indexed document was safely retired in this Review. Exact source `038ae7fd7c290731c28225d2693a3e13866e325a`, compile artifact `12590917524`, 28/28 GMP, no runtime or acceptance.
+
 ## 2026-10-24 — CB33 independent diagnostic Review index
 
 Current CB33 code/build report `Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Code_Build_Record_20261024.md` and current Review `Architecture_M6_CP3_CB33_A3_Cycle_Mismatch_Locus_Diagnostic_Review_Decision_20261024.md` retained as live authorities, **not folded**. CB33-REV accepts static compile fidelity, corrects the RA-149.3 S2 reachability premise and freezes the 12-case TB34 manifest `Architecture_M6_CP3_TB34_A3_Cycle_Locus_Cases.tsv`. No older per-turn document retired by this Review; folded index unchanged.

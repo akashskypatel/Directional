@@ -1,3 +1,5 @@
+**CB36-REV status update (2026-10-25, non-stable):** RA-152 F1 narrow atlas-step correction is independently accepted on source and GMP compile evidence only (CB36 commit `038ae7fd7c290731c28225d2693a3e13866e325a`, 28/28 checksums; `runtimeExecution=false`). Behavioral resolution remains **unproved** until TB37 three witnesses plus TB35 13; original 191/192 remain RED. No new candidate or stable event, no tally change (66/17/49, debt1). [Review](Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Independent_Review_Decision_20261025.md).
+
 **RA-153 TB36-REV audit (2026-10-25, candidate/non-stable):**
 - F1 confirmed by the TB36-R1 0/5 pre-fix baseline. Both monodromy witnesses (A3-admitted) end in the `make` backstop (68), with the sub-site unmeasured. The directed route is published with identity steps.
 - RA-152 errata: A3 already enforces `sourceEdge` (E1); relation ids are transport-free (E2).
