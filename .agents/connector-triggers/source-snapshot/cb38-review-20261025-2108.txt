@@ -1,4 +1,0 @@
-Snapshot request for independent CB38-REV.
-Pre-trigger HEAD 2e771953bde5b24c0c4df110945a8b12c0720c8c
-CB38 semantic source 41f39ba920eace2dad7b36d2b26c8073ce740239
-Review source semantics only; no test execution.
