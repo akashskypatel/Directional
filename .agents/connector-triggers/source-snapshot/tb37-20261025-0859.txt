@@ -1,1 +1,0 @@
-TB37 source snapshot trigger. Preserve exact event SHA; no semantic edits.
