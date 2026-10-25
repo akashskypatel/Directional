@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb38-selector250-rail-compile-20261025t2044z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb38-selector250-rail-compile",
-  "source_sha": "41f39ba920eace2dad7b36d2b26c8073ce740239",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb38-rail-compile"
+  "request_id": "m6-cp3-cb38-closeout-docs-20261025t2051z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb38-closeout-docs",
+  "file_id": "14u1U1PIBXNj1faaZeFnIjZuc8q6sBVr5",
+  "patch_sha256": "dcf979d7f6d3646650460616790e15c797c3f41c1dc0a3ca32629cc0df4e2c63",
+  "base_sha": "caf5c549d2bca2a70b5198c88eb12df2d9b0d1a0",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close CB38 GMP compile and hand off independent rail-authority review",
+  "retention_days": 14
 }
