@@ -1,12 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb36-harness-docs-apply-20261025-r2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb36-harness-docs-apply-r2",
-  "file_id": "102cek6BbD2jVw3de5GuS8H8yi45H3zCV",
-  "patch_sha256": "7c50eff9063280b58352b47d9ba793d83abee53d31aff85eed4d405df1ecb3d3",
-  "base_sha": "0ba22724c97e9231f24a6d9bc7201e58b3c6da81",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): record CB36 harness correction and authorize fresh TB36 attempt",
+  "request_id": "m6-cp3-tb36-r1-periodic-monodromy-20261025-a1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb36-r1-periodic-monodromy",
+  "executor_sha": "0053f6a779793c274bad3fcd8a2f58dbd8dba032",
+  "semantic_source_sha": "7de805c487fa66bcb96744f51b8bfbe7210ee8dc",
+  "turn_id": "M6-CP3-TB36-R1-RP01-PERIODIC-MONODROMY-BASELINE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_tb36_periodic_monodromy_baseline_harness.sh",
+  "harness_sha256": "343cdc6e53daf33da7d2893086751e0f762e6a3ed2111e69bf077555a4e3f439",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb36-r1-periodic-monodromy",
   "retention_days": 14
 }
