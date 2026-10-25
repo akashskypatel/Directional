@@ -1,3 +1,11 @@
+- **2026-10-25 — RA-154 TB37-REV audit: Review-owned TB38 manifest; tamper-oracle family reclassified.**
+  - TB37 independently re-verified.
+  - TB38 bound to a 504-row manifest (`b27eecb6…`, 490/14 predicted) on the unchanged targeted harness.
+  - 204, 242 and 247 join 191/192 as atlas-ingress tamper oracles.
+  - 250 flagged as D2-reachable.
+  - O1 recorded: cut-route identity transport, and A4 digests change across CB36.
+  - [Decision](.agents/Directional/Architecture_M6_CP3_TB37_REV_Audit_Periodic_Census_Manifest_Decision_20261025.md).
+
 - **2026-10-25 — TB37-REV focused independent Review ACCEPTED; TB38 census next.** Direct archive audit: 16 unique processes, 14 PASS / 2 identical inherited RED (191/192), 21/21 result + 28/28 CB36 package hashes, 16/16 raw joins and frozen manifest digest. Numeric enum bytes match TB36; two harness text-based disposition warnings false, not new regressions. Three new periodic-route witnesses now PASS; no full-selector/CP3/accepted-prefix promotion. Stable 66/17/49 debt1; full 497 TB38 against TB32 is single successor. [Decision](.agents/Directional/Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Independent_Review_Decision_20261025.md).
 
 - **2026-10-25 — TB37 artifact-only focus 16/16 executed (candidate):** [https://github.com/akashskypatel/Directional/actions/runs/40179570318](https://github.com/akashskypatel/Directional/actions/runs/40179570318), 14 PASS including three new k1/k2/route witnesses and 11 unchanged controls; frozen 191/192 remain RED/Produced/None. Verified 21/21 result and 28/28 package entries, no compile/relink/mutation, postflight clean. First 0/16 run failed a stale harness cardinality guard; corrected retry valid. Harness stop flags on frozen RED are text-parser false positives against numeric enums. No stable/selector/CP3 promotion; independent TB37-REV next. [Report](.agents/Directional/Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Report_20261025.md).

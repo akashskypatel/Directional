@@ -1,3 +1,21 @@
+## RA-154 — TB37-REV audited: Review-owned TB38 manifest; tamper-oracle family (2026-10-25)
+
+Authority: `Architecture_M6_CP3_TB37_REV_Audit_Periodic_Census_Manifest_Decision_20261025.md`.
+
+- **RA-154.1** TB37-REV accepted.
+  - Re-verification: 21/21 hashes; 14/2; raw logs; CB36 hunk equals RA-153.3.
+  - The k=1/k=2 witnesses (reason 29, all locations −1) isolate the route guard at `SurfaceCellTracing.cpp:15015`.
+- **RA-154.2 G2** Atlas-ingress tamper oracles are one class: 191, 192, 204 (`sourceEdge=-1`), 242 and 247 (`matching+=1`). Each builds A3 from the unmodified field, tampers only the tracing copy, expects `Rejected` and gets `Produced`. Under D1 the oracle cannot be satisfied; this is not a producer defect.
+- **RA-154.2 other gaps**
+  - G3: 250 (68) is D2-reachable; drift is admissible.
+  - G4: the TB37 harness is retired; TB38 reuses `m6_cp3_targeted_artifact_harness.sh` (`436f5fff…`).
+  - G5: first failures are compared by assertion, not line.
+- **RA-154.3 O1** Cut-route steps carry identity transport (`:15051`). The digest hashes step transports, so D2 changes A4 digests. Any future consumer of `cutRoute()` transports must source them from the atlas.
+- **RA-154.4** TB38 uses manifest `…TB38…Census_Case_Manifest.tsv` (504 rows, `b27eecb6…dcf8c2`).
+  - Prediction: 490 PASS / 14 RED.
+  - STOP on: a GUARD row not PASS; a RED row passing; assertion drift except 250; any integrity failure.
+- **RA-154.5** Sequence: TB38 → REV → DEFN atlas-ingress tamper-oracle homes (189–192, 204, 242, 247) → REV → CB groups A/B/C → focused TB → [250 diagnostic] → 405 → 174/201 → …
+
 ## RA-153 — TB36-REV audited: CB36 D2 spec bound; RA-152 errata; TB37/TB38 split (2026-10-25)
 
 Authority: `Architecture_M6_CP3_TB36_REV_Audit_Periodic_Route_Atlas_Transport_Decision_20261025.md`.

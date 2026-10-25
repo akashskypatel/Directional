@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-25 · TB37-REV independently accepted 16-row focused TB37 (14 PASS / 2 inherited frozen RED), confirmed the harness numeric-enum warning as false; 21/21 result and 28/28 CB36 package hashes independently verified. Exact next is TB38 immutable full 497-row census, not CP3 promotion. CP2 491/491 accepted; TB32 481/500 candidate; stable 66/17/49 debt1; RP-01 open.
+**Currency:** 2026-10-25 · RA-154 audited TB37-REV (accepted) and issued a Review-owned 504-row TB38 manifest (490/14 predicted). It reclassified 204, 242 and 247 as atlas-ingress tamper oracles alongside 191/192 and flagged 250 as D2-reachable. Exact next is TB38. CP2 491/491 accepted; TB32 481/500 candidate; stable 66/17/49 debt1; RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,11 +104,11 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** TB37-REV accepts D2 focused 14/16 evidence, with numeric-enum harness flags adjudicated as false positives; full TB38 497-row census now has priority. Original 191/192 remain RED from discarded tracing-container mutations; RA-153 E1/D4 separate. 19 inherited REDs and RP-01 remain open.
+**Immediate:** RA-154 replaces the TB38 hand-off with a Review-owned 504-row manifest (490/14 predicted). It also reclassifies 204, 242 and 247 with 191/192 as atlas-ingress tamper oracles, owned by a DEFN after TB38-REV rather than producer work.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Execute separately authorized TB38 immutable 497-row census; compare every identity against TB32 ledger with no accepted-green loss, immutable-source drift, missing/duplicate case or bad postflight. | `M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS`; [TB37-REV](Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Independent_Review_Decision_20261025.md) |
+| **1** | Execute TB38 on the Review-issued 504-row manifest with the unchanged targeted harness, then TB38-REV; then the DEFN on atlas-ingress tamper-oracle homes (189–192, 204, 242, 247). | `M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS`; [RA-154](Architecture_M6_CP3_TB37_REV_Audit_Periodic_Census_Manifest_Decision_20261025.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
@@ -121,7 +121,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 - **Partially asserted composed identity (CB35-REV):** checking only a grid automorphism’s rotation leaves translation unconstrained; checking two distinguished route keys without ordered whole-route identity leaves unmarked edges unconstrained. A witness must reject changes to every advertised contract component.
 
-- **Unconsumed negative stimulus (TB35-REV):** when checked atlas authority bypasses raw matching and edge-transition containers, mutating those containers does not exercise periodic negative guards; passing +4/legacy variants can also be vacuous. Bind expected failure to the actual single-writer source, without weakening tests.
+- **Unconsumed negative stimulus (TB35-REV; RA-154 adds 204/242/247):** when checked atlas authority bypasses raw matching and edge-transition containers, mutating those containers does not exercise periodic negative guards; passing +4/legacy variants can also be vacuous. Bind expected failure to the actual single-writer source, without weakening tests.
 
 - **Route cancellation is not local-cycle consistency (TB34-REV):** changing two matchings so a chosen periodic route sums to zero can leave nonzero residuals in distinct vertex stars. A valid face gauge must update every incident transition; never suppress the atlas cycle predicate to admit invalid fixture authority.
 
