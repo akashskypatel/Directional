@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-25 · CB37-REV independently accepted the diagnostic-only selector250 message and verified the CB37 immutable source/package. The seven-row TB39 manifest is frozen for artifact-only site harvesting; it is not runtime evidence. CP2 491/491 accepted; stable 66/17/49 debt1; RP-01 open.
+**Currency:** 2026-10-25 · TB39 executed seven frozen artifact-only cases (6 PASS guards, selector250 expected RED) against CB37; `site=hard-rail-contact-missing`, error=0/detail=6 measured. Independent TB39-REV must classify; this is not production acceptance. CP2 491/491 accepted; stable 66/17/49 debt1; RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current test authority:** TB38-REV accepts the immutable 504-case census as **reviewed candidate** (490 PASS / 14 RED; original 497 selector 483/14), not CP3 acceptance. Five expected former RED now PASS; four appended guards PASS; no accepted-green loss. 191/192 reach the intended negative assertions but remain Produced/None, and 250 remains `PublishedProductRejected(68)` with unmeasured factory sub-site. The next bounded step is TB39 artifact-only selector250 site harvesting, then the Review-bound A/B/C test-only re-homes; stable 66/17/49 debt1, CP2 491/491, frozen selector497. [TB38-REV decision](Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Independent_Review_Decision_20261025.md).
+**Current test authority:** TB38-REV accepts the immutable 504-case census as **reviewed candidate** (490 PASS / 14 RED; original 497 selector 483/14), not CP3 acceptance. Five expected former RED now PASS; four appended guards PASS; no accepted-green loss. 191/192 reach the intended negative assertions but remain Produced/None, and 250 remains `PublishedProductRejected(68)` with unmeasured factory sub-site. The next bounded step is independent TB39-REV owner classification of the measured `hard-rail-contact-missing` site, then the Review-bound A/B/C test-only re-homes; stable 66/17/49 debt1, CP2 491/491, frozen selector497. [TB38-REV decision](Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Independent_Review_Decision_20261025.md).
 
 **Prior TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 
@@ -104,11 +104,11 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** CB37-REV statically accepted the diagnostic-only site print; TB39 must now measure the selector250 `make` site before an owner can be assigned. Then the Review-bound test-only re-homes A/B/C (RA-155.3), then the narrowed DEFN for 190 and 242.
+**Immediate:** TB39 observed selector250 code 0/detail 6 and `site=hard-rail-contact-missing`; TB39-REV must independently assign the owner before follow-on work. Then the Review-bound test-only re-homes A/B/C (RA-155.3), then the narrowed DEFN for 190 and 242.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Harvest the 250 checked-factory site (TB39 → TB39-REV), then re-home tamper oracles A/B/C and verify them (TB40). | `M6-CP3-TB39-RP01-SELECTOR250-FACTORY-SITE-HARVEST`; [RA-155](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md) |
+| **1** | Harvest the 250 checked-factory site (TB39 → TB39-REV), then re-home tamper oracles A/B/C and verify them (TB40). | `M6-CP3-TB39-RP01-SELECTOR250-FACTORY-SITE-HARVEST-REV`; [RA-155](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
