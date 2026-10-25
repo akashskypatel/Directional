@@ -3660,6 +3660,56 @@ TEST(SurfaceCellsPhase10, PhaseFrontComposesPlanarPeriodicAndCurvedDiskSheets) {
     addDiskBoundary(y * 3, (y + 1) * 3);
     addDiskBoundary(y * 3 + 2, (y + 1) * 3 + 2);
   }
+  directional::geometry::AdaptiveFeatureMap features;
+  directional::geometry::AdaptiveFeatureCurve boundary;
+  boundary.id = 0;
+  boundary.component = 2;
+  boundary.closed = true;
+  for (const int vertex : {0, 1, 2, 5, 8, 7, 6, 3, 0}) {
+    boundary.vertices.push_back(diskOffset + vertex);
+  }
+  for (std::size_t i = 0; i + 1 < boundary.vertices.size(); ++i) {
+    const int a = boundary.vertices[i];
+    const int b = boundary.vertices[i + 1];
+    directional::geometry::AdaptiveFeatureEdge edge;
+    edge.vertices = {a, b};
+    edge.edgeClass = directional::geometry::AdaptiveFeatureClass::Hard;
+    edge.component = 2;
+    edge.curve = boundary.id;
+    for (int f = 0; f < faces.rows(); ++f) {
+      bool hasA = false;
+      bool hasB = false;
+      for (int c = 0; c < 3; ++c) {
+        hasA |= faces(f, c) == a;
+        hasB |= faces(f, c) == b;
+      }
+      if (hasA && hasB) edge.incidentFaces.push_back(f);
+    }
+    if (edge.incidentFaces.size() != 1U) {
+      throw std::runtime_error("Combined curved-disk rail is not a boundary edge");
+    }
+    boundary.edges.push_back(static_cast<int>(features.edges.size()));
+    features.edges.push_back(std::move(edge));
+  }
+  features.curves.push_back(std::move(boundary));
+  const auto built = directional::pipeline::build_authoritative_surface_cell_rails(
+      mesh, features);
+  if (!built.is_produced() || built.product().rails.size() != 1U ||
+      !built.product().rails.front().closed) {
+    throw std::runtime_error("Combined curved-disk rail production failed");
+  }
+  options.authoritativeRails = built.product().rails;
+  const auto provenance = directional::pipeline::hard_rail_source_provenance_from_rails(
+      options.authoritativeRails, static_cast<std::size_t>(vertices.rows()));
+  if (!provenance || provenance->closedChains.empty() ||
+      directional::pipeline::hard_feature_edge_keys_from_rails(
+          options.authoritativeRails, static_cast<std::size_t>(vertices.rows())) !=
+          options.hardFeatureEdges) {
+    throw std::runtime_error("Combined curved-disk hard rail authority is incomplete");
+  }
+  options.hardRailTerminalContacts = provenance->terminalContacts;
+  options.hardRailClosedChains = provenance->closedChains;
+  options.hardRailOpenChains = provenance->openChains;
   const Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(vertices.rows(), 0.25);
   const auto network = build_phase10_with_source_atlas(
       mesh, crossField, targetSize, options);
