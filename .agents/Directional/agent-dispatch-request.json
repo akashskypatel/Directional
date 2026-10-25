@@ -1,14 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb36-baseline-20261025-v1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb36-periodic-monodromy-baseline",
-  "executor_sha": "e9850781601e579c7332683a207a70034bae3f0e",
-  "semantic_source_sha": "7de805c487fa66bcb96744f51b8bfbe7210ee8dc",
-  "turn_id": "M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE",
-  "harness_path": ".agents/Directional/tools/m6_cp3_tb36_periodic_monodromy_baseline_harness.sh",
-  "harness_sha256": "99eb3f4bbdaab1c5e5c7cd385738f8349c4fbfbbb96edb34719518423cbcf0f7",
-  "environment": {},
-  "artifact_prefix": "m6-cp3-tb36-periodic-baseline",
+  "request_id": "m6-cp3-cb36-harness-docs-apply-20261025-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb36-harness-docs-apply-r1",
+  "file_id": "1Gzkz2732znfidFGUgRGWNUWTTHrUBY01",
+  "patch_sha256": "5e8572695fd87d98f19fef5cdafcde5514b8edd9e885321e2828884a103f786e",
+  "base_sha": "0ba22724c97e9231f24a6d9bc7201e58b3c6da81",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(agent): record CB36 harness correction and authorize fresh TB36 attempt",
   "retention_days": 14
 }
