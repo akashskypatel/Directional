@@ -3665,8 +3665,11 @@ TEST(SurfaceCellsPhase10, PhaseFrontComposesPlanarPeriodicAndCurvedDiskSheets) {
       mesh, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition())
-      << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.rejection_reason());
+      << curved_disk_factory_rejection_detail(network.phaseFront)
+      << " site="
+      << (network.phaseFront.rejection()
+              ? network.phaseFront.rejection()->publishedProductSourceAuthoritySite
+              : std::string{});
 
   using SourceScope = std::pair<directional::authority::SourceComponentId,
                                 directional::authority::IsolationSheetId>;
