@@ -1,3 +1,7 @@
+## 2026-10-25 — TB38 independent census Review / current authority index
+
+`Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Report_20261025.md` remains the current **runtime evidence report**; `Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Independent_Review_Decision_20261025.md` is the current **independent candidate Review**. The 504-row manifest is retained unchanged. No per-turn evidence file was folded/deleted in this step because those predecessors are still cited as independent baselines or retained proof; before retiring any, index exact names and adjudications and preserve their facts. Reviewed 490/504 candidate, 14 inherited RED; no CP3/selector promotion; successor atlas-ingress tamper-oracle DEFN.
+
 ## 2026-10-25 — CB36 periodic atlas transport Review / current authority index
 
 `Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Independent_Review_Decision_20261025.md` is the current independent static Review; `Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Case_Manifest.tsv` is the current 16-row future TB37 gate; `Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Record_20261025.md` and `Architecture_M6_CP3_TB36_REV_Audit_Periodic_Route_Atlas_Transport_Decision_20261025.md` remain live causal/compile authority and are **not folded**. No superseded, uniquely indexed document was safely retired in this Review. Exact source `038ae7fd7c290731c28225d2693a3e13866e325a`, compile artifact `12590917524`, 28/28 GMP, no runtime or acceptance.

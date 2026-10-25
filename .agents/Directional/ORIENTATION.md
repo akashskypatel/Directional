@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-25 · RA-154 audited TB37-REV (accepted) and issued a Review-owned 504-row TB38 manifest (490/14 predicted). It reclassified 204, 242 and 247 as atlas-ingress tamper oracles alongside 191/192 and flagged 250 as D2-reachable. Exact next is TB38. CP2 491/491 accepted; TB32 481/500 candidate; stable 66/17/49 debt1; RP-01 open.
+**Currency:** 2026-10-25 · TB38-REV independently verifies and accepts TB38 as **candidate census evidence only**: 504 executed, 490 PASS / 14 inherited RED; no guard loss, 497 selector 483/14 candidate, no CP3 promotion. Next DEFN handles atlas-ingress tamper-oracle homes (189/190/191/192/204/242/247). Stable 66/17/49 debt1; CP2 491/491 accepted; RP-01 open. [Review](Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Independent_Review_Decision_20261025.md).
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current test authority:** [Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Independent_Review_Decision_20261025.md](Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Independent_Review_Decision_20261025.md) accepts TB37 focused runtime measurement only (14/16; new k1/k2/route witnesses passed, 191/192 frozen RED unchanged). TB38 full census is next; no CP3 acceptance. Prior TB36-R1 independently reviewed: 0/5 GREEN, two post-A4 `PublishedProductRejected(68)` rather than guard 29, directed route step non-odd, frozen 191/192 unchanged RED. F1 confirmed by source control flow; authorize D2 only, with factory sub-site unmeasured. [Decision](Architecture_M6_CP3_TB36_R1_Periodic_Monodromy_Baseline_Independent_Review_Decision_20261025.md).
+**Current test authority:** TB38-REV accepts the immutable 504-case census as **reviewed candidate** (490 PASS / 14 RED; original 497 selector 483/14), not CP3 acceptance. Five expected former RED now PASS; four appended guards PASS; no accepted-green loss. 191/192 reach the intended negative assertions but remain Produced/None, and 250 remains `PublishedProductRejected(68)` with unmeasured factory sub-site. The next bounded step is atlas-ingress tamper-oracle homes DEFN, then test-only CB groups; stable 66/17/49 debt1, CP2 491/491, frozen selector497. [TB38-REV decision](Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Independent_Review_Decision_20261025.md).
 
 **Prior TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 
@@ -104,11 +104,11 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** RA-154 replaces the TB38 hand-off with a Review-owned 504-row manifest (490/14 predicted). It also reclassifies 204, 242 and 247 with 191/192 as atlas-ingress tamper oracles, owned by a DEFN after TB38-REV rather than producer work.
+**Immediate:** TB38-REV accepts the measured 504-row census as candidate evidence only. The next DEFN must re-home or retire legacy ingress oracles 189/190/191/192/204/242/247 before any test-only CB; 250 remains a separate typed-68 site diagnostic.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Execute TB38 on the Review-issued 504-row manifest with the unchanged targeted harness, then TB38-REV; then the DEFN on atlas-ingress tamper-oracle homes (189–192, 204, 242, 247). | `M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS`; [RA-154](Architecture_M6_CP3_TB37_REV_Audit_Periodic_Census_Manifest_Decision_20261025.md) |
+| **1** | Define atlas-ingress tamper-oracle homes (189–192, 204, 242, 247), then independently review before any test-only CB or focused TB. | `M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS`; [RA-154](Architecture_M6_CP3_TB37_REV_Audit_Periodic_Census_Manifest_Decision_20261025.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
