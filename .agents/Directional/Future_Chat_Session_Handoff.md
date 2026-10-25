@@ -34,17 +34,17 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-25, CB35-R2-REV **STATICALLY ACCEPTED** the 32-step directed oracle and reversal negative; TB36 is authorized but not executed, with zero runtime/acceptance or A4 F1 production repair. |
+| Currency | 2026-10-25, CB35-R2-REV static oracle acceptance remains. TB36 first runner attempt (40155549123) **FAILED ORCHESTRATION BEFORE ANY TEST** (0/5); manifest cardinality assertion inherited 13 instead of 5, plus overescaped failure-location regex. Correct runner in separate control-plane-only CB; immutable source/package and all runtime/acceptance authority unchanged. |
 | Source/package | CB35-R2 exact semantic `7de805c487fa66bcb96744f51b8bfbe7210ee8dc`; [compile run 40147720351](https://github.com/akashskypatel/Directional/actions/runs/40147720351), package `12580989509`, ZIP `a594b8617493087ff9ab50391e30cc7a8870f2dcf92427c03899b076e344bb54`; 28/28 hashes, eight GMP/GMPXX targets, `runtimeExecution=false`; no runtime/tests/benchmarks. [R2 record](Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Code_Build_Record_20261025.md). Earlier R1/CB35/CB34 packages remain in records. |
 | Reviewed decision | [CB35-R2-REV](Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Independent_Review_20261025.md) accepts static directed-route R-2 with independent 32-edge reconstruction and 28/28 package hashes; [CB35-R1-REV](Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Independent_Review_20261024.md) rejects directed-route non-vacuity (R-2), while discharging R1 canonical and translation obligations; [RA-152](Architecture_M6_CP3_TB35_REV_Audit_Periodic_Route_Transport_Decision_20261024.md) accepts TB35-REV evidence and non-promotion, corrects its owner (F1), decides single-writer D1–D4, and replaces the ingress DEFN with CB35 → TB36 → CB36 → TB37 → legacy-oracle DEFN. [TB35-REV](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) (RA-151) verified 13/13, 11 PASS / 2 RED. |
 | Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500** (19 inherited RED); TB34 **5 PASS / 7 inherited RED** (12 measured), TB33 synthetic **6/6** only; selector497 frozen; stable **66/17/49**, debt 1. RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE` — Test + Benchmark
-
-- **Current Review accepted static test authority only:** [Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Independent_Review_20261025.md](Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Independent_Review_20261025.md). Exact compiled source `7de805c487fa66bcb96744f51b8bfbe7210ee8dc`; immutable [run 40147720351](https://github.com/akashskypatel/Directional/actions/runs/40147720351) package `12580989509` (ZIP SHA-256 `a594b8617493087ff9ab50391e30cc7a8870f2dcf92427c03899b076e344bb54`, 28/28). No runtime.
-- **Next owner:** `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE`. Execute five exact fresh processes, **artifact-only** from the frozen package, using [Architecture_M6_CP3_TB36_Periodic_Monodromy_Baseline_Case_Manifest.tsv](Architecture_M6_CP3_TB36_Periodic_Monodromy_Baseline_Case_Manifest.tsv); three new periodic/route witnesses and two frozen selectors 191/192. Do not rebuild, edit tests/fixtures, reinterpret RED as green, or repair F1 inside TB36. The three new witnesses are pre-fix predicted RED only; preserve actual result and first rejecting stage.
-- **STOP** if any new witness is GREEN, k=2 fails in A3, an expected witness fails before the A4 producer, or an artifact/source identity condition fails. Route outcome to `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE-REV` before any CB36 production fix.
-- **Frozen state:** CP2 491/491; TB32 481/500 candidate; TB35 11 PASS/2 RED; stable 66/17/49 debt1, selector497 unchanged, RP-01 open.
+## Mandatory next turn — `M6-CP3-CB36-ORCH-RP01-TB36-HARNESS-CORRECTION` — control-plane-only Code + Build
+ 
+- **Failed predecessor:** TB36 preflight attempt [run 40155549123](https://github.com/akashskypatel/Directional/actions/runs/40155549123), `0/5` executed; **INVALID ORCHESTRATION**, not a semantic RED/GREEN. See [permanent attempt report](Architecture_M6_CP3_TB36_Baseline_Orchestration_Attempt_20261025.md). Harness exits 90 because copied 13-row uniqueness requirement rejects a valid 5-row manifest. The new failure-location regex is also overescaped.
+- **Correct only the test harness/control plane** in `.agents/Directional/tools/m6_cp3_tb36_periodic_monodromy_baseline_harness.sh`: change both uniqueness cardinalities from 13 to 5; fix Python raw-regex escaping; verify static harness with `bash -n` and independent manifest/regex checks. Make no runtime, semantic source, test-body, fixture, selector, GMP build/package or workflow-permission changes.
+- **After compile-free control-plane correction:** freeze a fresh executor SHA and corrected runner hash, then authorize a **new artifact-only TB36 attempt** with the same five frozen manifest identities, immutable semantic source `7de805c487fa66bcb96744f51b8bfbe7210ee8dc`, package `12580989509`, and original stop conditions. Preserve failed attempt evidence and do not retry it unchanged.
+- **Subsequent boundary:** valid TB36 evidence must go to TB36-REV (not directly to CB36 production repair). RA-152 F1 and the immutable accepted baseline are unresolved/unchanged.
 
 ## Turn Sequence
 
@@ -59,7 +59,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | done, not accepted | `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION-REV` | R-2 canonical-versus-oriented false positive; TB36 still prohibited. |
 | done, statically accepted | `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE` | Exact test-only directed 32-step and reversal-negative; eight GMP/GMPXX targets compiled without runtime. |
 | done, accepted static Review | `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE-REV` | Directed-route identity and reversal rejection re-derived; no runtime promotion. |
-| next | `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE` → `…-REV` | Pre-fix: witnesses predicted RED. STOP if any witness is GREEN, A3 rejects k=2, or a witness fails before the periodic producer. |
+| invalid attempt | `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE` | Harness preflight 0/5; no semantic evidence; control-plane-only CB required. |
+| next | `M6-CP3-CB36-ORCH-RP01-TB36-HARNESS-CORRECTION` | Correct harness preflight cardinality/regex only; then new immutable artifact-only TB36 execution turn. |
 | 4 | `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT` → `…-REV` | Production D2 only: observed steps read `atlas->transport`; missing transport fails closed with location; compile only. |
 | 5 | `M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY` → `…-REV` | Witnesses GREEN, TB35 13 cases, full 497 census (route digests change). |
 | 6 | `M6-CP3-DEFN-RP01-PERIODIC-LEGACY-ORACLE-HOMES` → CB/TB | Runtime-free re-homing of frozen 189–192 (D4). |
@@ -70,7 +71,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE**, artifact-only Test + Benchmark. Read [Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Independent_Review_20261025.md](Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Independent_Review_20261025.md), [Architecture_M6_CP3_TB36_Periodic_Monodromy_Baseline_Case_Manifest.tsv](Architecture_M6_CP3_TB36_Periodic_Monodromy_Baseline_Case_Manifest.tsv), exact R2 build package manifest and TB35/RA-152 decisions. Execute only the five frozen case identities once per fresh process, record stage and first predicate, then hand off to TB36-REV. No source rebuild, production repair or accepted-selector mutation.
+`load_next`: **M6-CP3-CB36-ORCH-RP01-TB36-HARNESS-CORRECTION**, control-plane-only Code + Build (no compilation). Read [Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Independent_Review_20261025.md](Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Independent_Review_20261025.md), [Architecture_M6_CP3_TB36_Periodic_Monodromy_Baseline_Case_Manifest.tsv](Architecture_M6_CP3_TB36_Periodic_Monodromy_Baseline_Case_Manifest.tsv), exact R2 build package manifest and TB35/RA-152 decisions. Correct two `13` uniqueness checks to `5` and raw-regex escaping in the TB36 harness; preserve source package/manifest. After a new executor SHA is committed, a separate Test + Benchmark turn must execute the five frozen identities. Do not credit run 40155549123 as test evidence.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
