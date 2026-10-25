@@ -1,8 +1,9 @@
-## CURRENT — R1 reviewed but directed-route oracle NOT ACCEPTED (2026-10-24)
+## CURRENT — CB35-R2 compiled; independent oriented-route oracle Review next (2026-10-25)
 
 - [x] `M6-CP3-CB35-R1-RP01-PUBLISHED-ROUTE-ORACLE-CORRECTION` compiled test-only +5/−1; immutable artifact 12577649024 verified 28/28, GMP/GMPXX, no runtime. R1 canonical-key and translation checks are present.
 - [x] **CB35-R1-REV material finding R-2:** `route_topology(route)` compares `CanonicalRoute::steps()` rather than observed `oriented_steps()`. `CanonicalRoute::reversed()` preserves canonical keys while reversing the published traversal; remaining shift/±1/total identity assertions can still pass. Review **NOT ACCEPTED**; see [decision](.agents/Directional/Architecture_M6_CP3_CB35_R1_Published_Route_Oracle_Independent_Review_20261024.md).
-- [ ] **EXACT NEXT:** `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE`. Test-only directed step identity and reversal-negative discriminator, as frozen in [R2 plan](.agents/Directional/Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Plan_20261024.md); compile only eight GMP/GMPXX targets, then separate R2 Review. TB36 remains unapproved.
+- [x] `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE` — test-only oriented 32-step route identity + reversal-negative; exact semantic `7de805c487fa66bcb96744f51b8bfbe7210ee8dc`, [compile run 40147720351](https://github.com/akashskypatel/Directional/actions/runs/40147720351), artifact `12580989509` 28/28 GMP/GMPXX. No runtime. [Record](.agents/Directional/Architecture_M6_CP3_CB35_R2_Oriented_Route_Identity_Oracle_Code_Build_Record_20261025.md).
+- [ ] **EXACT NEXT:** `M6-CP3-CB35-R2-RP01-ORIENTED-ROUTE-IDENTITY-ORACLE-REV` — independently audit oriented-route expectation, reversed-route falsifier, exact test-only diff and immutable package. TB36 remains unapproved pending Review acceptance.
 - [ ] Carried: RA-152 A4 periodic F1; frozen 189–192 no edits; selector497 frozen; CP2 491/491 accepted, TB32 481/500 candidate, TB35 11 PASS/2 RED, stable 66/17/49 debt1; RP-01 open/RP-02 unreached. Continue prior queue only after accepted witness evidence.
 
 ## HISTORY — CB35 compiled; independent witness Review (superseded by R1) (2026-10-24)
