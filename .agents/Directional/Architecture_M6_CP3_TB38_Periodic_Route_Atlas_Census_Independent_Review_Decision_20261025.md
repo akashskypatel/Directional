@@ -57,9 +57,9 @@ The RA-154.4 stop clause on assertion drift is satisfied **only with its explici
 | ROADMAP | CP3 remains active; next-turn reference updated. |
 | Selector manifest | n/a: unchanged byte-frozen selectors, no selector accepted. |
 | LESSONS | Existing non-vacuity / single-writer ingress lessons apply; no new pattern. |
-| Consolidation under CLEAN_UP_POLICY | Current TB38 source report retained; no prior report removed pending fully indexed, safe fact-preserving fold. M6 consolidated authority index updated; substantive consolidation outstanding. |
+| Consolidation under CLEAN_UP_POLICY | Folded the superseded 32-line invalid TB36 orchestration-attempt record verbatim into the M6 consolidated record with exact filename, failed verdict, artifact IDs, and cause; no live references to its former file. All current TB38 and cited causal authorities retained. |
 | Successor frozen | `M6-CP3-DEFN-RP01-ATLAS-INGRESS-TAMPER-ORACLE-HOMES`; falsifiers above. |
 | Turn boundary held | Review-only inspection; no local runtime/build, source/test/selector/fixture mutation. |
-| review_check.py boundary | Not independently verified against real Git history from the GitHub snapshot (snapshot excludes .git). |
-| `STATUS` lifecycle maintained | Entry and resume beacons published; final beacon remains pending history-sensitive boundary check. |
-| Pushed to origin, branch in sync | Verified remote patch application `9dcc8747bc98f250aabc4c08f910fcc202281567` (eight intended review/document paths) via GitHub Actions run `40197583225`; later branch comparison showed only `STATUS` changed. Local `git status -sb` unavailable in ChatGPT Web; no local sync assertion. |
+| review_check.py boundary | **PASS** on authentic full-depth history at Actions run `40211601306` / source `b414219b51b99aa89381496e2b431d262064aae9`; `authority`, `boundary`, and `ledgers --base 8b7299b43` each exit 0. Result artifact `12605233980`, ZIP SHA256 `414885fd80fbbfb3d86b043cf1cc39ce93f767952fbc9be02a4e14642d2ca728`, all 6/6 internal hashes verified. |
+| `STATUS` lifecycle maintained | Entry/resume beacons published; final COMPLETE beacon is the last repository write after verified document publication and temporary workflow cleanup. |
+| Pushed to origin, branch in sync | Existing Review patch was committed by run `40197583225`. Full-history GitHub Actions check reports clean `git status --porcelain` (0 lines); a local `git status -sb` against a cloned repository is unavailable in ChatGPT Web and is not falsely claimed. Final changes verified on the target branch through the connector. |

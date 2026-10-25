@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-25 · TB38-REV independently verifies and accepts TB38 as **candidate census evidence only**: 504 executed, 490 PASS / 14 inherited RED; no guard loss, 497 selector 483/14 candidate, no CP3 promotion. Next DEFN handles atlas-ingress tamper-oracle homes (189/190/191/192/204/242/247). Stable 66/17/49 debt1; CP2 491/491 accepted; RP-01 open. [Review](Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Independent_Review_Decision_20261025.md).
+**Currency:** 2026-10-25 · TB38-REV closed with full Git-history authority/boundary/ledgers PASS ([run 40211601306](https://github.com/akashskypatel/Directional/actions/runs/40211601306)); independently accepts TB38 as **candidate census evidence only**: 504 executed, 490 PASS / 14 inherited RED; no guard loss, 497 selector 483/14 candidate, no CP3 promotion. Next DEFN handles atlas-ingress tamper-oracle homes (189/190/191/192/204/242/247). Stable 66/17/49 debt1; CP2 491/491 accepted; RP-01 open. [Review](Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Independent_Review_Decision_20261025.md).
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
