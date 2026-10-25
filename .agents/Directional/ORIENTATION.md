@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-25 · CB36-REV independently accepted the D2 atlas-first periodic transport source and eight-target GMP/GMPXX compile artifact (28/28; no runtime). Exact next is focused TB37 (16 unique cases) followed by TB37-REV; TB38 497-row census is separate. CP2 491/491 accepted; TB32 481/500 candidate, TB35 11/13 and TB36 0/5 unchanged; stable 66/17/49 debt1; RP-01 open.
+**Currency:** 2026-10-25 · TB37-REV independently accepted 16-row focused TB37 (14 PASS / 2 inherited frozen RED), confirmed the harness numeric-enum warning as false; 21/21 result and 28/28 CB36 package hashes independently verified. Exact next is TB38 immutable full 497-row census, not CP3 promotion. CP2 491/491 accepted; TB32 481/500 candidate; stable 66/17/49 debt1; RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current test authority:** CB36-REV independently verifies the D2 source/compile boundary and authorizes 16-row TB37 only; no runtime or CP3 acceptance. Prior TB36-R1 independently reviewed: 0/5 GREEN, two post-A4 `PublishedProductRejected(68)` rather than guard 29, directed route step non-odd, frozen 191/192 unchanged RED. F1 confirmed by source control flow; authorize D2 only, with factory sub-site unmeasured. [Decision](Architecture_M6_CP3_TB36_R1_Periodic_Monodromy_Baseline_Independent_Review_Decision_20261025.md).
+**Current test authority:** [Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Independent_Review_Decision_20261025.md](Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Independent_Review_Decision_20261025.md) accepts TB37 focused runtime measurement only (14/16; new k1/k2/route witnesses passed, 191/192 frozen RED unchanged). TB38 full census is next; no CP3 acceptance. Prior TB36-R1 independently reviewed: 0/5 GREEN, two post-A4 `PublishedProductRejected(68)` rather than guard 29, directed route step non-odd, frozen 191/192 unchanged RED. F1 confirmed by source control flow; authorize D2 only, with factory sub-site unmeasured. [Decision](Architecture_M6_CP3_TB36_R1_Periodic_Monodromy_Baseline_Independent_Review_Decision_20261025.md).
 
 **Prior TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 
@@ -104,18 +104,18 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** CB36-REV accepts D2 atlas-first periodic-step transport statically and authorizes focused TB37 immutable execution next (16 rows), with separate TB38 census after TB37-REV. Original 191/192 remain RED from discarded tracing-container mutations; RA-152 D4 separate. 19 inherited REDs and RP-01 remain open.
+**Immediate:** TB37-REV accepts D2 focused 14/16 evidence, with numeric-enum harness flags adjudicated as false positives; full TB38 497-row census now has priority. Original 191/192 remain RED from discarded tracing-container mutations; RA-153 E1/D4 separate. 19 inherited REDs and RP-01 remain open.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Measure whether reviewed CB36 atlas-backed A4 periodic observed-step transport produces k1/k2 guard 29, odd/inverse route steps and unchanged TB35 controls in TB37; TB38 remains separate. | `M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY`; [TB36-REV](Architecture_M6_CP3_TB36_R1_Periodic_Monodromy_Baseline_Independent_Review_Decision_20261025.md) |
+| **1** | Execute separately authorized TB38 immutable 497-row census; compare every identity against TB32 ledger with no accepted-green loss, immutable-source drift, missing/duplicate case or bad postflight. | `M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS`; [TB37-REV](Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Independent_Review_Decision_20261025.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
 
-- **Producer step authority omitted under atlas ingress (RA-152 F1; TB36-REV):** branch propagation reads `FieldTransportAtlas` but A4 periodic observed-step publication historically used null legacy containers and inserted zero rotations; CB36-REV now statically accepts its atlas-first correction, pending TB37 runtime. A checked factory rejection after A4 is not an A4 guard success; preserve its underlying site before assigning the secondary factory cause.
+- **Producer step authority omitted under atlas ingress (RA-152 F1; TB36-REV):** branch propagation reads `FieldTransportAtlas` but A4 periodic observed-step publication historically used null legacy containers and inserted zero rotations; CB36-REV accepted its atlas-first correction and TB37-REV now confirms three focused runtime witnesses; full 497-row census remains unmeasured. A checked factory rejection after A4 is not an A4 guard success; preserve its underlying site before assigning the secondary factory cause.
 
 - **Canonical storage is not directed witness order (CB35-R1-REV; R-2 discharged by CB35-R2-REV):** `CanonicalRoute::steps()` remains identical under `reversed()` even as `oriented_steps()` changes. An oracle that claims directed route identity must compare observed oriented steps to an independent oriented expectation and reject reversal.
 

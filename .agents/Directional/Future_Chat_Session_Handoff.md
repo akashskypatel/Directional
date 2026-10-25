@@ -34,17 +34,17 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-25: TB37 16/16 focused executed, 14 PASS + two inherited RED; candidate only, no CP3 or selector promotion. Independent TB37-REV is exact next. |
+| Currency | 2026-10-25: TB37-REV independently accepted focused 14 PASS / two inherited frozen RED; harness disposition-change flags are numeric-enum text-parser false positives. Full TB38 immutable census is exact next; CP3/selector unpromoted. |
 | Source/package | CB36 exact semantic `038ae7fd7c290731c28225d2693a3e13866e325a`; [compile run 40173209091](https://github.com/akashskypatel/Directional/actions/runs/40173209091), artifact `12590917524`, ZIP SHA256 `6dcbfe5a468be5f548c368bfebeba411c6abd19ed4a4efd01be9923da9eb7d03`; 28/28 hashes, all eight GMP/GMPXX targets, clean source, `runtimeExecution=false`. [CB36 record](Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Record_20261025.md). |
-| Reviewed decision | [RA-153](Architecture_M6_CP3_TB36_REV_Audit_Periodic_Route_Atlas_Transport_Decision_20261025.md) binds CB36 and CB36-REV; TB36-R1 0 PASS / 5 RED is the pre-fix baseline. TB37 focused 14 PASS / 2 unchanged RED; 21 verified result digests. TB38 remains a separate later census. |
-| Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500** (19 inherited RED); TB35 **11/13**, TB36-R1 **0/5**, TB37 **14/16 candidate**; selector497 frozen; stable **66/17/49**, debt 1; RP-01 open, RP-02 unreached. |
+| Reviewed decision | [TB37-REV](Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Independent_Review_Decision_20261025.md) independently verified 16/16 unique fresh tests, 14/2 outcomes, 21/21 result hashes, 28/28 package hashes and matching frozen 191/192 enum bytes against TB36-R1. Focused D2 measured; full 497-row TB38 remains unmeasured. |
+| Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500** (19 inherited RED); TB35 **11/13**, TB36-R1 **0/5**, TB37 focused **14/16 reviewed/accepted within scope**; selector497 frozen and unpromoted; stable **66/17/49**, debt 1; RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY-REV` — INDEPENDENT REVIEW
+## Mandatory next turn — `M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS` — TEST + BENCHMARK
 
-- **Type:** independent artifact-only Review of the executed focused TB37 (no runtime, compile, source/test/selector mutation). [TB37 report](Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Report_20261025.md); [run](https://github.com/akashskypatel/Directional/actions/runs/40179570318), result artifact `12593545901` ZIP SHA256 `d7fd939bfb3ab79b412d856ce214082558c3039c4a692b08613478dbafa31348`, log artifact `12593955561` ZIP SHA256 `9ed45905ac1235ad0d6893c79cbd10b38e6cd69c9fea2e180f7e1c137aad28b8`.
-- **Exact verdict to audit:** 16/16 selected and executed, 14 PASS, 2 frozen RED (191/192), 21/21 result hashes, 28/28 immutable package hashes, postflight clean. New k1/k2 and directed-route witnesses pass; all previous PASS controls retain PASS.
-- **Review exception:** harness warning `FROZEN_191_192_DISPOSITION_CHANGED` is an erroneous text search against GTest's numeric 4-byte enum output. Raw rows 6/7 show `Produced=<01-00 00-00>` and reason zero versus expected Rejected=2 and mismatch=29, consistent with prior TB35/TB36; distinguish classification warning from actual regression. Initial 0/16 uniqueness-gate failure was corrected and has no semantic credit.
-- **Preserve:** stable 66/17/49 debt1, CP2 491/491 accepted; selector497 frozen, CP3 unpromoted, RP-01 open. Only after independent TB37-REV adjudication may the separate TB38 census become next.
+- **Authority:** [TB37-REV](Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Independent_Review_Decision_20261025.md) accepted only the focused immutable 16-row TB37 evidence; 14 PASS / 2 frozen RED are scoped to periodic transport. Full TB38 497-row independent census against TB32 481/500 historical ledger is newly authorized; no CP3 promotion.
+- **Boundaries:** reuse immutable CB36 semantic source `038ae7fd7c290731c28225d2693a3e13866e325a`, artifact `12590917524` (ZIP SHA256 `6dcbfe5a468be5f548c368bfebeba411c6abd19ed4a4efd01be9923da9eb7d03`); fixed 497-row entry identities, accepted 491 prefix; no compile, relink, repairs, fixture/test/selector edits or discovery drift.
+- **Falsifiers/STOP:** any accepted-green loss, duplicate/missing/unselected case, immutable package or manifest drift, bad postflight, changed typed first-failure ownership, or unsupported claim that TB37 focused PASS closes the full 497-case gate. Stop and hand the evidence to independent TB38-REV; no unreviewed acceptance.
+- **Carried:** legacy 191/192 still RED (`Produced`/None); RA-153 E1/D4 requires separate DEFN after TB38-REV. Stable 66/17/49 debt1, accepted CP2 491/491, RP-01 open, G4-B002 unproved. Work on other owners remains gated.
 
 ## Turn Sequence
 
@@ -56,8 +56,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | done | `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE-REV-AUDIT` (RA-153) | TB36-REV accepted; CB36 spec bound; RA-152 errata E1/E2; TB37 split. |
 | done | `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT` | D2 only; compiled eight GMP/GMPXX targets, no runtime. |
 | done | `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT-REV` | Static accepted; GitHub historical audit: 165 CHANGELOG and 16 LESSONS commits with no line shrink; all five protected headings preserved. |
-| next | `M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY-REV` | Independently validate 14 PASS / two inherited RED and numeric-enum harness-warning false positives; no runtime. |
-| 4 | `M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS` → `…-REV` | Full 497 vs TB32 ledger; no accepted-green loss. |
+| done | `M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY-REV` | Independently accepted focused 14 PASS / two inherited RED and numeric-enum harness-warning false positives. |
+| next | `M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS` → `…-REV` | Full 497 vs TB32 ledger; stop on any accepted-green loss or invalid immutable execution. |
 | 5 | `M6-CP3-DEFN-RP01-PERIODIC-LEGACY-ORACLE-HOMES` → CB/TB | D4 + E1: 191 → A3 `NonReciprocalAdjacency`; 192 → k=1 field; 189/190 → A3-level or retired. |
 | 6 | Untyped 7 (`selector:174,201,204,242,247,250,405`) → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) | One owner per turn; DEFN or diagnostic first. |
 | 7 | Census → RP-01 Review | Review-owned 497(+) manifest. |
@@ -66,7 +66,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY-REV** — inspect [TB37 report](Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Report_20261025.md), immutable [run](https://github.com/akashskypatel/Directional/actions/runs/40179570318) artifact `12593545901`, raw 6/7 GTest enum bytes, and RA-153.4. No runtime in Review. TB38 only after accepted Review.
+`load_next`: **M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS** — reuse CB36 immutable package `12590917524`, freeze 497 entries and TB32 historical ledger, verify immutable postflight and each expected outcome. [TB37-REV](Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Independent_Review_Decision_20261025.md) sets stop conditions. No source/test/selector changes; independent TB38-REV afterward.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
