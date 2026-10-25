@@ -9,7 +9,7 @@
 - Static verification: `git apply --check` PASS; `git diff --check` PASS. No compilation, test or benchmark execution.
 - Initial `container_path` transport failed; exact source-file reference staged to Google Drive as `1fhK44VCv8mImClm0QeH79CzIndmTfwT_`.
 - Durable `drive_apply` [run 40215866109](https://github.com/akashskypatel/Directional/actions/runs/40215866109) SUCCESS: applied commit `c9d7c80f6d41abdbc2ecd02de7006c7847988df8`, patch SHA matched, `runtimeExecution=false`.
-- Compile/package **NOT STARTED**; no 8-target GMP evidence yet. Do not mark CB37 complete.
+- Drive staged patch permanently deleted by owner connector after successful application. Compile/package **NOT STARTED**; no 8-target GMP evidence yet. Do not mark CB37 complete.
 
 Exact authorized hunk:
 ```diff
