@@ -1,5 +1,7 @@
 # CB45 specification — selector242 seam-consumer re-home (definition-stage draft, 2026-10-26)
 
+> **SUPERSEDED by [RA-163.3](Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md).** Do not implement this conditional draft.
+
 **Dependency:** independent approval of `Architecture_M6_CP3_DEFN_Selector242_Cross_Region_Seam_Consumer_Decision_20261026.md` under RA-162.4. This document **does not authorize CB45** by itself. Canonical intended CB `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME`; next CB independent Review; TB45 separately authorized.
 
 ## Fixed boundary

@@ -1,3 +1,13 @@
+## RA-163 — selector242 DEFN Review: certificate-factory owner; A3 accepts; 242 re-homed (2026-10-26)
+
+[Decision](Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md).
+
+- **RA-163.1** R1 owner = `SurfaceIsolationSeamTransportCertificate::make` / `NonReciprocalTransport` (selector185); R2 mutated A3 accepts (tree-dual gauge relabel); R3 old A4 expectation unreachable; R4 Branch B rejected.
+- **RA-163.2** 242 same identity; meaning: non-reciprocity unrepresentable through A3 and rejected at the certificate owner on the source-adjacent seam.
+- **RA-163.3** CB45: 242 body only — produce, two owner negatives, owner control, A3 representation pin; remove unreachable A4 expectations.
+- **RA-163.4** SEAM-NZ hint (cyclic raw shift), unverified.
+- **RA-163.5** Frozen IDs: CB45 → REV → `M6-CP3-TB45-RP01-SELECTOR242-SEAM-REHOME-VERIFY` (242 POSITIVE; GUARD 239, 185) → REV.
+
 ## RA-162 — TB44-REV audited: P1-a torn input; RA-162 C1; selector242 DEFN scope (2026-10-26)
 
 [Decision](Architecture_M6_CP3_TB44_REV_Audit_P1_Torn_Input_Selector242_Scope_Decision_20261026.md).

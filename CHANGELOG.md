@@ -1,3 +1,7 @@
+## 2026-10-26 — RA-163 selector242 DEFN Review: owner corrected, A3 branch decided, CB45 respecified
+
+- [RA-163](.agents/Directional/Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md): DEFN partially accepted. D1 missed `SurfaceIsolationSeamTransportCertificate::make` → `NonReciprocalTransport` (accepted selector185). D2 decided statically: the disk's only inner edge cancels out of the dual-cycle basis, so the mutation is a gauge relabel and A3 accepts it. Branch B rejected. 242 re-homed under the same identity; CB45 draft superseded by RA-163.3. No code, build or runtime.
+
 ## 2026-10-26 — selector242 cross-region seam-consumer definition (no runtime)
 
 - [D1–D4 decision](.agents/Directional/Architecture_M6_CP3_DEFN_Selector242_Cross_Region_Seam_Consumer_Decision_20261026.md) and [CB45 specification](.agents/Directional/Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Specification_20261026.md): A3 manufactures inverse transport; A4 consumes A3 seam certificates. The original selector242 changes only a legacy container hidden by an unmodified bound atlas. Static evidence cannot establish the independently mutated A3 outcome/edge; both branches registered, with production-reachability falsifiers and independent Review before CB45. Exact snapshot `9ab1563e`, run 40407525042, 5926/5926 checksums. No test/build/selector/runtime or accepted-accounting change; CP2 491/491, stable 66/17/49 debt1, selector497 frozen, RP-01 open. Next `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER-REV`.

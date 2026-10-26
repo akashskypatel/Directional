@@ -1,3 +1,7 @@
+**RA-163 selector242 DEFN Review (2026-10-26, candidate/non-stable):**
+
+- 242's TB38 RED is a vacuous legacy negative: the single-edge matching mutation is never read by atlas-bound A4 and is a gauge relabel at A3 (no cycle observes the edge). Non-reciprocity is owned by the certificate factory (`NonReciprocalTransport`, selector185). Re-homed under the same identity (RA-163.2). No stable event; 66/17/49, debt 1. [RA-163](Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md).
+
 **RA-162 TB44-REV audit (2026-10-26, candidate/non-stable):**
 
 - 405 focused PASS confirmed; 8219 RED is a torn-input fixture (non-rail spoke in `hardFeatureEdges`, absent provenance), not a production regression. Remedy must be production-reachable. New obligation RA-162 C1 (open-rail hard-edge cover asymmetry, `SurfaceCellTracing.cpp:8655–8716`), O5 owner.

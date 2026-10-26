@@ -1,4 +1,33 @@
-## CURRENT — selector242 DEFN completed; independent DEFN Review next (2026-10-26)
+## CURRENT — RA-163 selector242 DEFN Review; CB45 next (2026-10-26)
+
+- [x] **RA-163 DEFN Review** ([decision](.agents/Directional/Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md)): partially accepted.
+  - R1: D1 missed the typed owner — `SurfaceIsolationSeamTransportCertificate::make` → `NonReciprocalTransport` (`SurfaceCellTracing.cpp:8146–8150`), already pinned by accepted `selector:185`.
+  - R2: D2 decided statically — the 242 disk's only inner edge cancels out of the dual-cycle basis (`MeshTopology.cpp:130–133, 281–288, 329`); a one-edge matching change on a tree-dual region is a gauge relabel; mutated A3 accepts. Branch A dead.
+  - R3: old A4 `InvalidTopologyRegionTransport` expectation unreachable on every path.
+  - R4: Branch B rejected (swaps reciprocity for cycle holonomy; speculative fixture). CB45 draft superseded by RA-163.3.
+  - 242 meaning re-homed, same identity (RA-163.2). SEAM-NZ hint recorded (RA-163.4).
+- [ ] **NEXT `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME`** (test-only, compile only, RA-163.3) → `…-REV` (issues TB45 manifest).
+- [ ] `M6-CP3-TB45-RP01-SELECTOR242-SEAM-REHOME-VERIFY` (242 POSITIVE; GUARD `selector:239`, `selector:185`) → `…-REV`.
+- [ ] Then 174 → 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`).
+- [ ] Then O4 DEFN and O5 DEFN (O5 + P1-a re-scoped + P1-b + RA-162 C1; separate test-only CB/TB/REV for P1) → REV each → census → RP-01 Review (O6 scope).
+- [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS-RETIREMENT` (RA-160.4 + RA-161 T2).
+- [ ] Carried separately: O1, O2 (post-RP-01), O4, O5, O6, P1, C1, RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4, G4-B002.
+- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
+  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
+  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
+  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
+  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- **Turn sequence:**
+  - Done: RA-162 → DEFN 242 → REV (RA-163).
+  - **Next: CB45 → REV → TB45 → REV.**
+  - 174 → 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1.
+  - DEFN O4, DEFN O5 (+P1, C1) → census → RP-01 Review (O6 scope). Post-RP-01: O2 DEFN.
+  - `DIAG-RETAIN` carried.
+- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 and TB38 490/504 candidate; TB41 18/18, TB42 1/1, TB43 4/4, TB44 405 PASS (guards 3/4) focused candidate; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+
+---
+
+## HISTORY — RA-162; selector242 DEFN (2026-10-26)
 
 - [x] **RA-162 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB44_REV_Audit_P1_Torn_Input_Selector242_Scope_Decision_20261026.md)):
   - TB44-REV confirmed: ZIP `f1b30006…6b986`, **11/11** members (records said 10/10), 4/4 log joins, manifest `f410b550…a6a8a` frozen at `2d0a23005` before dispatch; no source drift since CB44 `c25667111`. 405 PASS is invariance by construction (target dead under accepted conformity) — valid regression guard.
@@ -7,25 +36,6 @@
   - F3: P1-b confirmed (`SurfaceCellTracing.cpp:6160–6168`); pre-register the differential as a pair of first-sites.
   - F4: 242 mutates `crossField.edgeTransitions` after the atlas is built from `sourceField`; atlas-bound A4 never reads it (`SurfaceCellTracing.cpp:21181–21184`); A3 reciprocity is structural (`FieldTransportAtlas.cpp:2033–2036`). DEFN scoped in RA-162.4.
 - [x] **`M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER`** — [decision](.agents/Directional/Architecture_M6_CP3_DEFN_Selector242_Cross_Region_Seam_Consumer_Decision_20261026.md) and [CB45 spec](.agents/Directional/Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Specification_20261026.md); A3 matching inverse is structural; A4 certificate owner; independent A3 outcome not run, B production reachability conditional. No code/tests/selector/build/runtime.
-- [ ] **NEXT `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER-REV`** — approve/reject D1–D4 conditional re-home and selector semantic disposition before CB45.
-- [ ] `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME` (test-only, compile only) → `…-REV` (issues TB45 manifest).
-- [ ] `M6-CP3-TB45-RP01-SELECTOR242-SEAM-REHOME-VERIFY` (242 POSITIVE; GUARD `Phase10Tests:3270`) → `…-REV`.
-- [ ] Then 174 → 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`).
-- [ ] Then O4 DEFN and O5 DEFN (O5 + P1-a re-scoped + P1-b + RA-162 C1; separate test-only CB/TB/REV for P1) → REV each → census → RP-01 Review (O6 scope).
-- [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS-RETIREMENT` (RA-160.4 + RA-161 T2).
-- [ ] Carried separately: O1, O2 (post-RP-01), O4, O5, O6, P1, C1, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002.
-- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
-  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
-  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
-  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
-  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Turn sequence:**
-  - Done: RA-161 → CB44 → REV → TB44 → REV → audit (RA-162).
-  - **Next: DEFN 242 REV → CB45 → REV → TB45 → REV.**
-  - 174 → 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1.
-  - DEFN O4, DEFN O5 (+P1, C1) → census → RP-01 Review (O6 scope). Post-RP-01: O2 DEFN.
-  - `DIAG-RETAIN` carried.
-- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 and TB38 490/504 candidate; TB41 18/18, TB42 1/1, TB43 4/4, TB44 405 PASS (guards 3/4) focused candidate; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
 
 ---
 
