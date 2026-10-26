@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb40-monodromy-compile-20261026-1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb40-monodromy-compile",
-  "source_sha": "c892c7bb74470cd6cc8cd7bc3864c009decfbe51",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb40-monodromy-compile"
+  "request_id": "m6-cp3-cb40-eigen-assert-fix-20261026-1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb40-eigen-assert-fix",
+  "file_id": "1EA1k7SqxRQK6GhNJKvxQhw8Ln1msNXXj",
+  "patch_sha256": "73e58e54e7fcd73fbd22e3ad524fe64efd115aa356574943d19b885adff7f836",
+  "base_sha": "c892c7bb74470cd6cc8cd7bc3864c009decfbe51",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "test(surface-cells): fix Eigen singular-index empty assertions",
+  "retention_days": 14
 }
