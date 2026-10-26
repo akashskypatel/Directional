@@ -41,4 +41,5 @@ Carry: **RA-155.3 A** (191/204 A3 tamper, next `M6-CP3-CB39-RP01-A3-SOURCE-EDGE-
 | Turn boundary held | static-only; no build, runtime, code/test/selector edits |
 | review_check.py boundary | partial local PASS for source/selector changes; durable-ancestry checks FAIL because snapshot has no historical ancestry; not represented as full PASS |
 | `STATUS` lifecycle maintained | entry beacon written; terminal beacon required after all other repo actions |
-| Pushed to origin, branch in sync | pending verified Drive patch push/remote HEAD check; cannot assert `git status -sb` against shallow snapshot |
+| Document drift audit | Read-only audit against patched source: exit 0, zero errors, zero warnings; actual-history boundary checker remains limited as stated |
+| Pushed to origin, branch in sync | Verified Drive apply run 40250640888, applied commit `a57af9fd4ed3a3852b221a3a851aaed7bf2b88dd` and PR #8 remote HEAD matched; GitHub compare confirms seven intended docs plus STATUS/dispatcher/trigger control-state changes. Local snapshot cannot truthfully provide `git status -sb` tracking evidence |
