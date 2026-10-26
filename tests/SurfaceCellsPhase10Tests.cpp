@@ -7582,10 +7582,15 @@ TEST(SurfaceCellAuthorityContractCutover,
 TEST(SurfaceCellAuthorityContractCutover,
      FixedConformityPlanTargetPerturbationPreservesSharedBoundaryIntervals) {
   const auto fixture = build_rectangular_hard_rail_phase_front();
-  const auto fine =
-      build_fixed_plan_rectangular_hard_rail_network(fixture, 0.5);
-  const auto coarse =
-      build_fixed_plan_rectangular_hard_rail_network(fixture, 2.0);
+  const auto provenance = directional::pipeline::hard_rail_source_provenance_from_rails(
+      fixture.rails, static_cast<std::size_t>(fixture.mesh.V.rows()));
+  ASSERT_TRUE(provenance.has_value());
+  const auto fine = build_fixed_plan_rectangular_hard_rail_network(
+      fixture, 0.5, &provenance->terminalContacts, nullptr,
+      &provenance->closedChains);
+  const auto coarse = build_fixed_plan_rectangular_hard_rail_network(
+      fixture, 2.0, &provenance->terminalContacts, nullptr,
+      &provenance->closedChains);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             fine.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
