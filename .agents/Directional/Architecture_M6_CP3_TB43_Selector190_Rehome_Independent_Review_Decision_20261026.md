@@ -37,10 +37,10 @@
 | Prior obligations discharged/carried | RA-160 selector190 focused runtime discharged; D2–D5 / O1–O6 / other listed issues carried. |
 | Stable accounting | 66/17/49 debt1; CP2 491/491, selector497 frozen; CP3 not accepted. |
 | New candidates/obligations recorded | None observed; no new stable event and no tracker edit. |
-| ORIENTATION currency line | Proposed update to TB43-REV and next O4 DEFN in this same patch; requires remote application verification. |
-| ORIENTATION §3 / §4 / §7 / §8 | Proposed §3/§7 advance, §4 unchanged (no representative fixture), §8 existing vacuity pattern corrected to re-homed status. |
-| CHANGELOG | Proposed independent-review entry in this patch. |
-| ROADMAP | Proposed same CP3 gate status with TB43 focused-review clarification. |
+| ORIENTATION currency line | Updated for TB43-REV and next O4 DEFN; six-document patch applied through verified drive_apply run 40362304281. |
+| ORIENTATION §3 / §4 / §7 / §8 | §3/§7 advanced, §4 unchanged (no representative fixture), §8 corrected to reflect focused re-home and retained historical vacuity. |
+| CHANGELOG | Independent-review entry committed in six-file patch. |
+| ROADMAP | CP3 remains open and unpromoted; TB43 focused-review clarification committed. |
 | Selector manifest | Frozen manifest unchanged; no selector accepted or added. |
 | LESSONS | Existing non-vacuity / immutable evidence rules; no genuinely novel pattern. |
 | Consolidation under CLEAN_UP_POLICY | No live TB43/CB43 source records removed before retention/index audit; continuation must perform any justified fold. |
@@ -48,4 +48,4 @@
 | Turn boundary held | Review did not execute binaries, recompile, or edit implementation/fixtures/tests/selectors. |
 | review_check.py boundary | Not independently verified against authentic git ancestry; remains a closeout duty, not a PASS. |
 | `STATUS` lifecycle maintained | Entry beacon committed; final same-turn beacon required only after remote document/cleanup verification. |
-| Pushed to origin, branch in sync | Pending verified Drive patch application; synthetic local snapshot cannot establish authentic branch sync. |
+| Pushed to origin, branch in sync | Applied commit 3ab5066a332d0477dbc5ebed64fd25efcda1bf2b verified from immutable drive_apply result and authenticated GitHub compare with exactly six documentation paths; PR head matched this commit. No local git status -sb claimed. |
