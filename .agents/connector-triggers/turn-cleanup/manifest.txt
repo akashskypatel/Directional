@@ -1,0 +1,2 @@
+# CB43 temporary-state cleanup; preserve dispatcher and workflow-mailbox
+.agents/connector-triggers/source-snapshot/m6-cp3-cb43-20261026.txt
