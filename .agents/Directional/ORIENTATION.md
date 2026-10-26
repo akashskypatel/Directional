@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-26 · CB40-REV accepted static selector192/247 k=1/k=2 re-home, genuine Git checks PASS ([run 40271541658](https://github.com/akashskypatel/Directional/actions/runs/40271541658)); next CB41 selector189 test-only. TB41 unrun; CP2 491/491 accepted, TB38 490/504 candidate, stable 66/17/49, debt 1; RP-01 open.
+**Currency:** 2026-10-26 · CB41-REV statically accepted selector189 own-field ±4 A3/A4 oracle ([decision](Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Independent_Review_Decision_20261026.md)); next CB42 polygonal-disk locus pin. TB41 runtime unrun; CP2 491/491 accepted, TB38 490/504 candidate, stable 66/17/49 debt1; RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current test authority:** [TB40-REV](Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Independent_Review_20261025.md) independently rechecked 29/29 artifact hashes and 13/13 raw joins: selector250 now PASS with authentic closed Hard rail and production provenance; 12/12 guards PASS. This discharges only the focused RA-156 fixture owner, not the selector497 or CP3 gate. TB38 remains reviewed candidate 490/504; CP2 491/491 accepted; stable 66/17/49, debt 1. A/B/C tamper re-homes, polygonal-disk locus pin and RP-01 remain open. CB39-REV statically accepted the 191/204 oracle re-home (no runtime); CB40 selector192/247 k=1/k=2 re-home is independently statically accepted with authentic-Git checks PASS in [full-history run 40271541658](https://github.com/akashskypatel/Directional/actions/runs/40271541658), no runtime. Exact next separately bounded turn: CB41 (189) test-only, then its own Review.
+**Current test authority:** [TB40-REV](Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Independent_Review_20261025.md) independently rechecked 29/29 artifact hashes and 13/13 raw joins: selector250 now PASS with authentic closed Hard rail and production provenance; 12/12 guards PASS. This discharges only the focused RA-156 fixture owner, not the selector497 or CP3 gate. TB38 remains reviewed candidate 490/504; CP2 491/491 accepted; stable 66/17/49, debt 1. A/B/C tamper re-homes now statically reviewed (189, 191/204, 192/247); polygonal-disk locus pin and RP-01 remain open. CB39-REV statically accepted the 191/204 oracle re-home (no runtime); CB40 selector192/247 k=1/k=2 re-home is independently statically accepted with authentic-Git checks PASS in [full-history run 40271541658](https://github.com/akashskypatel/Directional/actions/runs/40271541658), no runtime. CB41-REV statically accepted selector189 ([decision](Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Independent_Review_Decision_20261026.md)); exact next CB42 (O3) test-only, followed by CB42-REV and later TB41 runtime.
 
 **Prior TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 
@@ -104,11 +104,11 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** CB41 selector189 equivalent ±4 own-field A3 re-home (test-only compile), then its independent Review; CB42 polygonal locus, TB41 runtime, and the legacy-path DEFN (190, 242, O2, O4) remain separate. CB40-REV complete statically, NOT runtime acceptance.
+**Immediate:** CB41 selector189 own-field A3/A4 re-home is independently accepted for static test authority (no runtime). CB42 polygonal-disk rejection locus (251, 252, `:2936`) is next, then CB42-REV and TB41. The legacy-path DEFN (190, 242, O2, O4) stays separate; no CP3 promotion.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Re-home the tamper oracles that cannot be satisfied under D1 (191/204 → A3; 192/247; 189) and pin the O3 locus. 250 is now a focused candidate. | `M6-CP3-CB41-RP01-EQUIVALENT-LIFT-A3-INGRESS-REHOME` (next test-only Code + Build); [RA-157](Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md) |
+| **1** | Pin O3 polygonal-disk locus for 251, 252 and `:2936`; tamper re-homes (189, 191/204, 192/247) statically reviewed, pending TB41 runtime. 250 is a focused candidate. | `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN` (next test-only Code + Build); [RA-157](Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

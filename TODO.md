@@ -1,4 +1,4 @@
-## CURRENT — CB41 compile complete; CB41-REV next (2026-10-26)
+## CURRENT — CB41-REV static acceptance; CB42 next (2026-10-26)
 
 - [x] **RA-157 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md)):
   - TB40-REV accepted: 29/29 hashes and 13/13 rows; the CB37→CB38 diff is the test hunk only. 250 is a focused candidate (no promotion).
@@ -11,9 +11,9 @@
 - [x] **CB40 turning-field monodromy re-home compiled** — [record](.agents/Directional/Architecture_M6_CP3_CB40_Turning_Field_Monodromy_Rehome_Code_Build_Record_20261026.md); exact source `0d227875d8f031a467e661be2da4dd901846797c`, [compile 40264202131](https://github.com/akashskypatel/Directional/actions/runs/40264202131), artifact `12625069994`, verified eight GMP/GMPXX targets and `runtimeExecution=false`; 192 k=1 and 247 k=2 require A3 acceptance; original A4 assertions retained. No runtime or selector promotion.
 - [x] **COMPLETED `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME-REV`** — [decision](.agents/Directional/Architecture_M6_CP3_CB40_Turning_Field_Monodromy_Rehome_Independent_Review_Decision_20261026.md) independently re-derived k=1/k=2 A3/atlas and A4 oracles, 28/28 compile package manifest, 5898/5898 frozen snapshot, and [full-history run 40271541658](https://github.com/akashskypatel/Directional/actions/runs/40271541658) PASS on authority, boundary and ledgers. No runtime, no selector497/CP3 promotion.
 - [x] **CB41 equivalent-lift A3 ingress test compiled** — RA-155.3 C selector189; independently build both A3 atlases from each ±4 raw field, assert signed-lift relationship and unchanged quarter-turn transport; preserve A4 periodic snapshots. Corrected source `53830149ea16473d0321e53da2587695916fd9cb`; [compile 40275357335](https://github.com/akashskypatel/Directional/actions/runs/40275357335), artifact `12630300861`; eight GMP/GMPXX targets, 28/28 checksums, `runtimeExecution=false`. Initial compile 40274040338 failed on result API and was corrected, not counted as passing. [Record](.agents/Directional/Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Code_Build_Record_20261026.md).
-- [ ] **NEXT `M6-CP3-CB41-RP01-EQUIVALENT-LIFT-A3-INGRESS-REHOME-REV`** — independent static selector189 and compile evidence review; TB41 later runs immutable artifact only.
+- [x] **CB41-REV static decision** — independently verified exact test bytes and own-field A3 ±4/transport/A4 non-vacuity against compile source and 5900-hash snapshot, 28/28 package hashes. [Decision](.agents/Directional/Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Independent_Review_Decision_20261026.md); no runtime or selector/CP3 promotion.
+- [ ] **NEXT `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN`** — test-only RA-156 J3/O3: pin polygonal-disk `cell=-1,side=-1` in 251/252/`:2936`, compile only, then separate CB42-REV.
 - [ ] Then, each test-only and followed by its `-REV`:
-  - `M6-CP3-CB41-RP01-EQUIVALENT-LIFT-A3-INGRESS-REHOME-REV` (189 source/compile Review);
   - `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN` (O3: 251, 252, `:2936`).
 - [ ] Then `M6-CP3-TB41-RP01-REHOMED-ORACLE-VERIFY` (189, 191, 192, 204, 247, 250, 251, 252 + TB40 guards) → REV.
 - [ ] Then `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES` (design only: 190, 242, O2, O4; inventory `CurvedBoundedDiskInvalidReciprocalTransportFailsClosed`) → REV.
@@ -26,7 +26,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: RA-156 → CB38 → CB38-REV → TB40 → TB40-REV → audit (RA-157).
-  - **CB39 → CB39-REV → CB40 → CB40-REV → CB41 CODE+BUILD COMPLETE (static only)** → CB41-REV (next) → CB42 → REV → TB41 → REV.
+  - **CB39 → CB39-REV → CB40 → CB40-REV → CB41 CODE+BUILD → CB41-REV COMPLETE (static only)** → CB42 (next) → REV → TB41 → REV.
   - DEFN legacy-path and seam oracles (adds O4) → REV.
   - 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review.
   - `DIAG-RETAIN` carried.

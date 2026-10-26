@@ -34,18 +34,17 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-26: CB41 selector189 re-home Code + Build compiled on exact source `53830149ea16473d0321e53da2587695916fd9cb` in run 40275357335, artifact 12630300861; test-only, no runtime or CP3/selector497 promotion. Authorized next independent CB41-REV before CB42/TB41. Stable 66/17/49, debt 1. |
+| Currency | 2026-10-26: CB41 selector189 re-home Code + Build compiled on exact source `53830149ea16473d0321e53da2587695916fd9cb` in run 40275357335, artifact 12630300861; test-only, no runtime or CP3/selector497 promotion. CB41-REV accepted statically; next CB42 test-only before CB42-REV/TB41. Stable 66/17/49, debt 1. |
 | Previous reviewed package | CB40 test-only `0d227875d8f031a467e661be2da4dd901846797c`; [compile 40264202131](https://github.com/akashskypatel/Directional/actions/runs/40264202131), artifact `12625069994`, ZIP SHA256 `0f5e554b975bd1306df587f7bb0031707136f2a629fb550beab61e02301e3d41`; eight GMP/GMPXX targets, `runtimeExecution=false`. [CB40 record](Architecture_M6_CP3_CB40_Turning_Field_Monodromy_Rehome_Code_Build_Record_20261026.md); [CB40-REV independent review decision](Architecture_M6_CP3_CB40_Turning_Field_Monodromy_Rehome_Independent_Review_Decision_20261026.md) and [authentic Git check 40271541658](https://github.com/akashskypatel/Directional/actions/runs/40271541658) PASS. Prior CB39 source/package and Review remain preserved in their separate record and decision. |
 | Latest compile | CB41 test-only `53830149ea16473d0321e53da2587695916fd9cb`; [compile 40275357335](https://github.com/akashskypatel/Directional/actions/runs/40275357335), artifact `12630300861` ZIP SHA256 `4e0d81532a8c33733b06ffb5be2054fc32e451fd54205d3784d778ab9fb0b2b1`; 28/28 file hashes, eight GMP/GMPXX targets, `runtimeExecution=false`. [CB41 record](Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Code_Build_Record_20261026.md). |
-| Reviewed decision | [RA-157](Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md): TB40 re-verified (29/29 hashes, 13/13 rows; the CB37→CB38 diff is the test hunk only). K1: CB39 needs an untampered-A3 baseline, `code`+`sourceEdge` assertions, and removal of the unsatisfiable A4 negatives. K2/O4: A4 `MissingTransitionProvenance` loses its only witness. K4: doc drift fixed. |
+| Reviewed decision | [CB41-REV](Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Independent_Review_Decision_20261026.md) statically accepted own-field selector189 A3/A4 oracle and compile package; RA-155.3 C satisfied (runtime TB41 pending). [RA-157](Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md): TB40 re-verified (29/29 hashes, 13/13 rows; the CB37→CB38 diff is the test hunk only). K1: CB39 needs an untampered-A3 baseline, `code`+`sourceEdge` assertions, and removal of the unsatisfiable A4 negatives. K2/O4: A4 `MissingTransitionProvenance` loses its only witness. K4: doc drift fixed. |
 | Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500**; TB37 focused **14/16 reviewed**; TB38 independently reviewed **candidate 490/504** (497 prefix 483/14), unpromoted; selector497 frozen and unpromoted; stable **66/17/49**, debt 1; RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-CB41-RP01-EQUIVALENT-LIFT-A3-INGRESS-REHOME-REV` — INDEPENDENT STATIC REVIEW
+## Mandatory next turn — `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN` — TEST-ONLY CODE + BUILD
 
-- **Authority:** RA-155.3 C after CB41 test-only Code + Build and accepted CB40-REV. Review selector189 on the exact compiled source/package using the [CB41 record](Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Code_Build_Record_20261026.md); reopen primary evidence and re-derive rather than trusting the author report.
-- **Review scope:** verify both independently constructed own-field A3 atlases, signed ±4 lift changes vs unchanged quarter-turn transport, A4 subject's matching field/source atlas, preserved positive baseline and periodic snapshots, genuine non-vacuity; inspect final two-line `.value()` compile correction, original/fixed diff and eight GMP/GMPXX source/package hashes. Do not execute binaries or alter test/product/selector code in this Review.
-- **On success:** issue exact binding handoff to `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN` (test-only, followed by `-REV`), then TB41 artifact-only at its separately authorized stage. No runtime/selector/CP3 promotion at CB41-REV alone.
-- **Stop:** reject if the A3 baseline, expected +4/−4 signed-lift relationship or exact own-field A4 route is not independently supported; record actionable findings and no false acceptance.
+- **Authority:** [CB41-REV decision](Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Independent_Review_Decision_20261026.md) independently reviews the RA-155.3 C selector189 own-field A3 ±4 lift oracle, exact compiled source/package and unchanged A4 snapshots. No runtime acceptance, selector497 or CP3 promotion.
+- **Authorized change:** RA-156 J3/O3 polygonal-disk rejection-locus tests 251, 252 and `:2936`: assert the exact `cell=-1,side=-1` owner at the currently reached typed rejection point; preserve the reason, prior positive/negative expectations, fixture and source authority. No production, selector, benchmark or workflow changes.
+- **Boundary:** compile only with GMP/GMPXX; execute no binary. Stop if the actual rejection does not expose the exact locus rather than altering a predicate to force the assertion. Then separate CB42-REV, followed by immutable TB41 only when authorized.
 
 ## Turn Sequence
 
@@ -53,8 +52,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 |---|---|---|
 | done | CB38 → CB38-REV → TB40 → TB40-REV → audit ([RA-157](Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md)) | 250 focused candidate discharge; CB39 spec re-bound. |
 | done | `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME-REV` | Static Review accepted with authentic Git-history PASS; no runtime or promotion. |
-| 1 — next | `M6-CP3-CB41-RP01-EQUIVALENT-LIFT-A3-INGRESS-REHOME-REV` | Independently check selector189 own-field A3/A4 oracle and immutable compile evidence, no runtime. |
-| 3 | `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN` → `…-REV` | RA-156 J3/O3: `cell=-1,side=-1` in 251, 252, `:2936`; test-only. |
+| done | `M6-CP3-CB41-RP01-EQUIVALENT-LIFT-A3-INGRESS-REHOME-REV` | Static acceptance on 189 own-field A3 ±4 and A4 snapshot; no runtime. |
+| 1 — next | `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN` → `…-REV` | RA-156 J3/O3: `cell=-1,side=-1` in 251, 252, `:2936`; test-only. |
 | 4 | `M6-CP3-TB41-RP01-REHOMED-ORACLE-VERIFY` → `…-REV` | Artifact-only: 189, 191, 192, 204, 247, 250, 251, 252 + TB40 guards. |
 | 5 | `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES` → `…-REV` | 190, 242, O2, O4; design only. |
 | 6 | 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) | One owner per turn; Review assigns the canonical IDs. |
@@ -64,7 +63,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB41-RP01-EQUIVALENT-LIFT-A3-INGRESS-REHOME-REV** — independent static Review of RA-155.3 C selector189 A3 own-field/±4 and A4 periodic snapshots, exact corrected compiled source/package. Read [CB41 record](Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Code_Build_Record_20261026.md), RA-155, accepted CB40-REV, active TODO, frozen selector requirements and Review policy; independently re-derive test non-vacuity, compiled package and source history. No runtime, CP3 or selector promotion. Subsequent CB42 only after Review formal completion.
+`load_next`: **M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN** — test-only RA-156 J3/O3 polygonal-disk rejection-locus pin. Read [CB41-REV decision](Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Independent_Review_Decision_20261026.md), [RA-156](Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md), TODO, frozen selector/test contracts and GMP policy. Only 251, 252 and `:2936`; pin `cell=-1,side=-1` with source-authoritative failure; compile-only, no runtime or selector/CP3 promotion. Next independent CB42-REV.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
