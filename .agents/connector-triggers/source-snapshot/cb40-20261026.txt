@@ -1,0 +1,1 @@
+CB40 source snapshot; exact event commit is frozen source authority. Triggered on 2026-10-26; no build/test.
