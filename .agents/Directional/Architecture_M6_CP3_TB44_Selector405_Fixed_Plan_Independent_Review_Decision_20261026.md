@@ -47,4 +47,4 @@ Review boundary: no code, tests, fixtures, selectors, workflow, build, or runtim
 | Turn boundary held | Source-only independent Review; no build, executable execution, or product/test mutation |
 | review_check.py boundary | Local snapshot-only `review_check.py boundary` FAILED ancestor checks (no history in snapshot-created temporary Git repo); selector hashes and source/test path boundary independently checked; run on full-history workflow if later needed |
 | `STATUS` lifecycle maintained | Entry/resume beacon written; final COMPLETE beacon only after durable patch is applied and verified |
-| Pushed to origin, branch in sync | Not yet established within source snapshot; verify on remote after patch workflow before COMPLETE beacon |
+| Pushed to origin, branch in sync | Drive-apply workflow `40401708911` completed successfully, verified full patch/base/body hashes and pushed six intended documentation paths to the working branch; subsequent GitHub comparison showed ancestor continuity and PR head matched. Final STATUS beacon is a separate last write. |
