@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb43-selector190-compile-20261026-c1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb43-selector190-compile",
-  "source_sha": "d354d6ae95afc73df968fc5cc4ee69fe5b7de451",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb43-selector190-code-build"
+  "request_id": "m6-cp3-cb43-selector190-docs-apply-20261026-d1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb43-selector190-docs",
+  "file_id": "1FGJ0-wrENMxeoDPIV8Vu0sqBdvRsdqE4",
+  "patch_sha256": "8dffcaecee30d79a95d342ce44692d239f464f754c7cdf0f782d1dede6ba804a",
+  "base_sha": "30cdd46071d314b944afb7c2e5ec7175de347833",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB43 compile and hand off static review",
+  "retention_days": 14
 }
