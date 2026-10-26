@@ -1,0 +1,1 @@
+Request exact source snapshot for M6-CP3-TB44. Artifact-only verification; no source compilation.
