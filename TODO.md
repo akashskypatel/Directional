@@ -1,4 +1,4 @@
-## CURRENT — CB41-REV static acceptance; CB42 next (2026-10-26)
+## CURRENT — CB42 polygonal-disk locus compiled; independent CB42-REV next (2026-10-26)
 
 - [x] **RA-157 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md)):
   - TB40-REV accepted: 29/29 hashes and 13/13 rows; the CB37→CB38 diff is the test hunk only. 250 is a focused candidate (no promotion).
@@ -12,13 +12,14 @@
 - [x] **COMPLETED `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME-REV`** — [decision](.agents/Directional/Architecture_M6_CP3_CB40_Turning_Field_Monodromy_Rehome_Independent_Review_Decision_20261026.md) independently re-derived k=1/k=2 A3/atlas and A4 oracles, 28/28 compile package manifest, 5898/5898 frozen snapshot, and [full-history run 40271541658](https://github.com/akashskypatel/Directional/actions/runs/40271541658) PASS on authority, boundary and ledgers. No runtime, no selector497/CP3 promotion.
 - [x] **CB41 equivalent-lift A3 ingress test compiled** — RA-155.3 C selector189; independently build both A3 atlases from each ±4 raw field, assert signed-lift relationship and unchanged quarter-turn transport; preserve A4 periodic snapshots. Corrected source `53830149ea16473d0321e53da2587695916fd9cb`; [compile 40275357335](https://github.com/akashskypatel/Directional/actions/runs/40275357335), artifact `12630300861`; eight GMP/GMPXX targets, 28/28 checksums, `runtimeExecution=false`. Initial compile 40274040338 failed on result API and was corrected, not counted as passing. [Record](.agents/Directional/Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Code_Build_Record_20261026.md).
 - [x] **CB41-REV static decision** — independently verified exact test bytes and own-field A3 ±4/transport/A4 non-vacuity against compile source and 5900-hash snapshot, 28/28 package hashes. [Decision](.agents/Directional/Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Independent_Review_Decision_20261026.md); no runtime or selector/CP3 promotion.
-- [ ] **NEXT `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN`** — test-only RA-156 J3/O3: pin polygonal-disk `cell=-1,side=-1` in 251/252/`:2936`, compile only, then separate CB42-REV.
+- [x] **CB42 polygonal-disk locus pin compiled (static only)** — RA-156 J3/O3: 12 rejection-locus assertions in 251, 252 and `:2936`; source `8dc8cdeae6f6ac05c28aaa4504ca2c42c3177ded`, [compile 40285233031](https://github.com/akashskypatel/Directional/actions/runs/40285233031), artifact `12634151125`, 28/28 checksum manifest, eight GMP/GMPXX targets, `runtimeExecution=false`. [Record](.agents/Directional/Architecture_M6_CP3_CB42_Polygonal_Disk_Locus_Pin_Code_Build_Record_20261026.md). No runtime evidence or promotion.
+- [ ] **NEXT `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN-REV`** — independently review exact source diff and first-rejection locus specificity against RA-156 J3, compile package, unchanged selectors and preserved evidence. Do not execute TB41 here.
 - [ ] Then, each test-only and followed by its `-REV`:
-  - `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN` (O3: 251, 252, `:2936`).
+  - `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN-REV` (O3 static review; separate runtime TB41).
 - [ ] Then `M6-CP3-TB41-RP01-REHOMED-ORACLE-VERIFY` (189, 191, 192, 204, 247, 250, 251, 252 + TB40 guards) → REV.
 - [ ] Then `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES` (design only: 190, 242, O2, O4; inventory `CurvedBoundedDiskInvalidReciprocalTransportFailsClosed`) → REV.
 - [ ] Then 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) → census → RP-01 Review.
-- [ ] Carried separately: O1, O2, O3 (until CB42), O4 (until DEFN), RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002.
+- [ ] Carried separately: O1, O2, O3 (compiled pin; pending CB42-REV/TB41 runtime), O4 (until DEFN), RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
   - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
@@ -26,7 +27,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: RA-156 → CB38 → CB38-REV → TB40 → TB40-REV → audit (RA-157).
-  - **CB39 → CB39-REV → CB40 → CB40-REV → CB41 CODE+BUILD → CB41-REV COMPLETE (static only)** → CB42 (next) → REV → TB41 → REV.
+  - **CB39 → CB39-REV → CB40 → CB40-REV → CB41 CODE+BUILD → CB41-REV COMPLETE → CB42 COMPILED (static only)** → CB42-REV (next) → TB41 → REV.
   - DEFN legacy-path and seam oracles (adds O4) → REV.
   - 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review.
   - `DIAG-RETAIN` carried.

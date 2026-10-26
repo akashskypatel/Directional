@@ -1,3 +1,8 @@
+## 2026-10-26 — CB42 polygonal-disk rejection locus compiled (test-only; no runtime)
+
+- RA-156 J3/O3: selector251/252 and off-selector `:2936` now require actual `InvalidBoundedDiskFrontPairing` rejection plus `cell=-1,side=-1` in all three tests, including reversed face ordering; 12 assertion lines in `tests/SurfaceCellsPhase10Tests.cpp`, no producer/selector/fixture/benchmark/workflow edits.
+- Exact source `8dc8cdeae6f6ac05c28aaa4504ca2c42c3177ded` (Drive apply [40284955202](https://github.com/akashskypatel/Directional/actions/runs/40284955202)); [compile-only 40285233031](https://github.com/akashskypatel/Directional/actions/runs/40285233031), artifact `12634151125` ZIP SHA256 `d7f7b8302966b14acd919eeef4465d518a6179f1823fbb86ad0e5b1b43488b87`, 28/28 package checksums, eight GMP/GMPXX targets and `runtimeExecution=false`. [Record](.agents/Directional/Architecture_M6_CP3_CB42_Polygonal_Disk_Locus_Pin_Code_Build_Record_20261026.md). Source snapshot verified 5901/5901. No runtime, CP3 or selector497 promotion; stable 66/17/49 debt1, CP2 accepted 491/491. Next independent `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN-REV`.
+
 ## 2026-10-26 — CB41-REV independent static selector189 review accepted (no runtime)
 
 - Independently reviewed RA-155.3 C from corrected compile source `53830149ea16473d0321e53da2587695916fd9cb` and [CB41-REV decision](.agents/Directional/Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Independent_Review_Decision_20261026.md): two own-field A3 atlases, ±4 directed matching lifts vs unchanged mod-4 transport, positive A4 Produced and full periodic-holonomy snapshot equality. Two `.value()` accesses are a compile-only API correction. No test, benchmark or product executed or edited.

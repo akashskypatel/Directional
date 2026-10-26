@@ -34,17 +34,17 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-26: CB41 selector189 re-home Code + Build compiled on exact source `53830149ea16473d0321e53da2587695916fd9cb` in run 40275357335, artifact 12630300861; test-only, no runtime or CP3/selector497 promotion. CB41-REV approved selector189 with authentic-Git boundary and source-authority PASS in run 40282179241; CB42 follows final beacon. Stable 66/17/49, debt 1. |
+| Currency | 2026-10-26: CB42 RA-156 J3/O3 test-only source `8dc8cdeae6f6ac05c28aaa4504ca2c42c3177ded` compiled in run 40285233031 (artifact 12634151125, 28/28 hashes, eight GMP/GMPXX targets, runtime disabled). First-rejection locus pinned in 251/252/`:2936` with no runtime execution. Independent CB42-REV is next; TB41 remains separate. Stable 66/17/49, debt 1. |
 | Previous reviewed package | CB40 test-only `0d227875d8f031a467e661be2da4dd901846797c`; [compile 40264202131](https://github.com/akashskypatel/Directional/actions/runs/40264202131), artifact `12625069994`, ZIP SHA256 `0f5e554b975bd1306df587f7bb0031707136f2a629fb550beab61e02301e3d41`; eight GMP/GMPXX targets, `runtimeExecution=false`. [CB40 record](Architecture_M6_CP3_CB40_Turning_Field_Monodromy_Rehome_Code_Build_Record_20261026.md); [CB40-REV independent review decision](Architecture_M6_CP3_CB40_Turning_Field_Monodromy_Rehome_Independent_Review_Decision_20261026.md) and [authentic Git check 40271541658](https://github.com/akashskypatel/Directional/actions/runs/40271541658) PASS. Prior CB39 source/package and Review remain preserved in their separate record and decision. |
-| Latest compile | CB41 test-only `53830149ea16473d0321e53da2587695916fd9cb`; [compile 40275357335](https://github.com/akashskypatel/Directional/actions/runs/40275357335), artifact `12630300861` ZIP SHA256 `4e0d81532a8c33733b06ffb5be2054fc32e451fd54205d3784d778ab9fb0b2b1`; 28/28 file hashes, eight GMP/GMPXX targets, `runtimeExecution=false`. [CB41 record](Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Code_Build_Record_20261026.md). |
+| Latest compile | CB42 test-only `8dc8cdeae6f6ac05c28aaa4504ca2c42c3177ded`; [compile 40285233031](https://github.com/akashskypatel/Directional/actions/runs/40285233031), artifact `12634151125` ZIP SHA256 `d7f7b8302966b14acd919eeef4465d518a6179f1823fbb86ad0e5b1b43488b87`; 28/28 file hashes, eight GMP/GMPXX targets, `runtimeExecution=false`. [CB42 record](Architecture_M6_CP3_CB42_Polygonal_Disk_Locus_Pin_Code_Build_Record_20261026.md). Previous CB41 source/package retained in its record. |
 | Reviewed decision | [CB41-REV](Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Independent_Review_Decision_20261026.md) statically accepted own-field selector189 A3/A4 oracle and compile package; RA-155.3 C satisfied (runtime TB41 pending). [RA-157](Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md): TB40 re-verified (29/29 hashes, 13/13 rows; the CB37→CB38 diff is the test hunk only). K1: CB39 needs an untampered-A3 baseline, `code`+`sourceEdge` assertions, and removal of the unsatisfiable A4 negatives. K2/O4: A4 `MissingTransitionProvenance` loses its only witness. K4: doc drift fixed. |
 | Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500**; TB37 focused **14/16 reviewed**; TB38 independently reviewed **candidate 490/504** (497 prefix 483/14), unpromoted; selector497 frozen and unpromoted; stable **66/17/49**, debt 1; RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN` — TEST-ONLY CODE + BUILD
+## Mandatory next turn — `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN-REV` — INDEPENDENT STATIC REVIEW
 
-- **Entry gate:** CB41-REV accepted selector189 ±4 own-field A3/A4 oracle. Authentic-Git `review_check.py boundary` and `authority` both PASS in [run 40282179241](https://github.com/akashskypatel/Directional/actions/runs/40282179241). No runtime, selector497 or CP3 promotion.
-- **Authority:** RA-156 J3/O3: assert `cell=-1,side=-1` rejection locus in polygonal-disk cases 251, 252 and `:2936`, retaining reason, fixtures and source ownership.
-- **Boundary:** compile-only with GMP/GMPXX; no product, selector, benchmark, workflow or runtime changes. Stop if source-owned rejection does not expose the locus; never weaken assertions. CB42-REV follows before artifact-only TB41.
+- **Entry evidence:** RA-156 J3/O3; exact CB42 test-only source `8dc8cdeae6f6ac05c28aaa4504ca2c42c3177ded`, three polygonal-disk assertion sites, compile-only package in [run 40285233031](https://github.com/akashskypatel/Directional/actions/runs/40285233031). [CB42 record](Architecture_M6_CP3_CB42_Polygonal_Disk_Locus_Pin_Code_Build_Record_20261026.md).
+- **Review obligations:** independently confirm `InvalidBoundedDiskFrontPairing` still asserted with non-null rejection and `cell=-1,side=-1` for 251/252 and `:2936` including face-order variants, without weakening the test. Re-open the exact compiled package and verify source/8 targets/GMP/GMPXX/manifest/no-runtime; audit immutable selectors and real-Git protected-history boundaries. Record a separate decision.
+- **Boundary:** review only; no test/benchmark runtime or CP3/selector497 promotion. TB41 remains unstarted until independent acceptance.
 
 ## Turn Sequence
 
@@ -53,17 +53,17 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | done | CB38 → CB38-REV → TB40 → TB40-REV → audit ([RA-157](Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md)) | 250 focused candidate discharge; CB39 spec re-bound. |
 | done | `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME-REV` | Static Review accepted with authentic Git-history PASS; no runtime or promotion. |
 | done | `M6-CP3-CB41-RP01-EQUIVALENT-LIFT-A3-INGRESS-REHOME-REV` | Static accepted; authentic-Git boundary/source authority PASS, run 40282179241. |
-| 1 — next | `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN` → `…-REV` | RA-156 J3/O3: `cell=-1,side=-1` in 251, 252, `:2936`; test-only. |
+| done / 1 — next | CB42 compiled → `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN-REV` | RA-156 J3/O3: locus assertions statically built; independent source/compile/immutability review pending. |
 | 4 | `M6-CP3-TB41-RP01-REHOMED-ORACLE-VERIFY` → `…-REV` | Artifact-only: 189, 191, 192, 204, 247, 250, 251, 252 + TB40 guards. |
 | 5 | `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES` → `…-REV` | 190, 242, O2, O4; design only. |
 | 6 | 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) | One owner per turn; Review assigns the canonical IDs. |
 | 7 | Census → RP-01 Review | Review-owned manifest. |
 | carried | `DIAG-RETAIN` (full scope in TODO CURRENT) | Review places it clear of RP-01 corrective turns; edits `RemeshPipeline.cpp`. |
-| carried | O1, O2, O3 (until CB42), O4 (until DEFN), RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002 | Separate gates. |
+| carried | O1, O2, O3 (compiled, pending Review/TB41), O4 (until DEFN), RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002 | Separate gates. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN** — CB41-REV history checks passed; begin test-only Code + Build. Read [CB41-REV decision](Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Independent_Review_Decision_20261026.md), [RA-156](Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md), TODO, frozen selector/test contracts and GMP policy. Only 251, 252 and `:2936`; pin `cell=-1,side=-1` with source-authoritative failure; compile-only, no runtime or selector/CP3 promotion. Next independent CB42-REV.
+`load_next`: **M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN-REV** — independent source/compile review. Read [RA-156 J3/O3](Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md), [CB42 Code + Build record](Architecture_M6_CP3_CB42_Polygonal_Disk_Locus_Pin_Code_Build_Record_20261026.md), frozen selector/test authority, review policy and source package. Re-derive exact rejection-site assertions and non-vacuity, verify immutable compiled package and authentic Git history. No runtime or CP3 promotion; separately planned TB41 follows accepted Review.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
