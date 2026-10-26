@@ -1,2 +1,0 @@
-# Temporary state consumed by M6-CP3-DEFN legacy matching path disposition
-.agents/connector-triggers/source-snapshot/20261026-legacy-matching-defn.txt
