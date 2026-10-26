@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb40-monodromy-drive-20261026-1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb40-monodromy-apply",
-  "file_id": "18OGR0Q5K1oEOw66-dggNv3u8otLywz00",
-  "patch_sha256": "ca3f7008bfd1bd108eb729525d6236318ac81416e3ebc619156821d9a61032af",
-  "base_sha": "f262f153e8acc87c6c76e0e34d08841792ab5735",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surface-cells): rehome turning-field monodromy A4 negatives",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb40-monodromy-compile-20261026-1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb40-monodromy-compile",
+  "source_sha": "c892c7bb74470cd6cc8cd7bc3864c009decfbe51",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb40-monodromy-compile"
 }
