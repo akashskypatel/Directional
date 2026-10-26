@@ -1,4 +1,4 @@
-## CURRENT — RA-161 TB43-REV audit; CB44 selector405 fixture provenance next (2026-10-26)
+## CURRENT — CB44 selector405 fixture provenance compiled; CB44-REV next (2026-10-26)
 
 - [x] **RA-161 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md)):
   - TB43-REV confirmed: ZIP `fbe75000…26804`, 12/12 hashes, 4/4 log joins, manifest `812b843b…ffc676` frozen before dispatch; no source drift since CB43 `d354d6ae9`.
@@ -6,8 +6,8 @@
   - T3: O4 closes no RED; nine TB38 REDs remain (174, 201, 242, 405, 442 accepted-prefix; focused30:12; cp3entry:1/2/4). O4 demoted beside O5.
   - 405 root cause: fixed-plan helper (`Phase10Tests:7099–7132`) omits A2b terminal contacts/closed/open chains that production always sets (`RemeshPipeline.cpp:12775–12782`); TB38 log shows `a2bProbeFailure=missing-terminal-or-closed-rail-provenance`. Stale fixture, not an A4 defect.
   - P1: off-gate negatives `:7414`, `:8219` use the same empty default; disposition at TB44-REV.
-- [ ] **NEXT `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE`** — test-only, compile only; 405 body derives `hard_rail_source_provenance_from_rails(fixture.rails, …)` and passes contacts + closed chains to both helper calls (RA-161.4).
-- [ ] Then `M6-CP3-CB44-…-REV` (static; issues TB44 manifest) → `M6-CP3-TB44-RP01-SELECTOR405-FIXED-PLAN-VERIFY` (405 POSITIVE; GUARD `:7614/7414/8219`) → `…-REV` (disposes P1).
+- [x] **COMPLETE `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE`** — [CB44 record](.agents/Directional/Architecture_M6_CP3_CB44_Selector405_Fixed_Plan_Rail_Provenance_Code_Build_Record_20261026.md): test-only 405 body forwards producer-derived A2b contacts/closed chains at scales 0.5/2.0. Source `c256671115c92f7dd55fea5d680feeac3cbb5190`; compile [40373930737](https://github.com/akashskypatel/Directional/actions/runs/40373930737) artifact `12674401457`, 28/28 hashes, eight GMP/GMPXX targets, `runtimeExecution=false`. No tests executed or selector/CP3 promotion.
+- [ ] **NEXT `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE-REV`** — independent static source/compile Review; freeze TB44 manifest only after evidence checks. Then `M6-CP3-TB44-RP01-SELECTOR405-FIXED-PLAN-VERIFY` (405 POSITIVE; GUARD `:7614/7414/8219`) → `…-REV` (disposes P1).
 - [ ] Then `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` → REV.
 - [ ] Then 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`).
 - [ ] Then O4 and O5 DEFNs → REV each → census → RP-01 Review (with O6 scope statement).
@@ -20,7 +20,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: RA-160 → CB43 → REV → TB43 → REV → audit (RA-161).
-  - **CB44 405 fixture provenance → REV → TB44 → REV.**
+  - **CB44 compiled → next REV → TB44 → REV.**
   - DEFN 242 → REV → its CB/TB.
   - 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1.
   - DEFN O4, DEFN O5 → census → RP-01 Review (O6 scope). Post-RP-01: O2 DEFN.

@@ -34,27 +34,28 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-26, after [RA-161](Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md) (TB43-REV confirmed; selector405 root-caused to fixture rail provenance; O4 demoted behind the REDs). |
+| Currency | 2026-10-26: CB44 selector405 provenance fixture correction [compiled](Architecture_M6_CP3_CB44_Selector405_Fixed_Plan_Rail_Provenance_Code_Build_Record_20261026.md) (source `c256671115c92f7dd55fea5d680feeac3cbb5190`, package `12674401457`, compile-only). Independent CB44-REV is next; no new runtime evidence or gate promotion. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted 2026-10-06 (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
 | Latest candidate or rejected evidence | TB43 **4/4** on CB43 source `d354d6ae9`, package `12657932087` ([run 40353956056](https://github.com/akashskypatel/Directional/actions/runs/40353956056), result `12664712967`, ZIP `fbe75000…26804`, [TB43-REV](Architecture_M6_CP3_TB43_Selector190_Rehome_Independent_Review_Decision_20261026.md)). Earlier focused: TB41 18/18, TB42 1/1 (O3 3/3). TB32 481/500 and TB38 490/504 candidate; selector497 frozen, unpromoted. |
 | Regression accounting and debt | Stable **66/17/49**, debt 1 ([tracker](Regression_Root_Cause_Tracker.md)). No new stable event. |
 | Active boundary | RP-01 open, RP-02 unreached. Nine TB38 REDs remain: `selector:174, 201, 242, 405, 442` (accepted-prefix regressions), `focused30:12`, `cp3entry:1, 2, 4`. 405 = fixture omits A2b rail provenance (RA-161.3). P1: two off-gate negatives use the same empty default. O5: 249 off-gate producer tests. O6: nonrectangular disks unowned. Carried: DIAG-RETAIN, O1, O2 (post-RP-01, + RA-161 T2), O4, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002. |
 
-## Mandatory next turn — `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE-REV` — EXACT NEXT
 
-- **Authority:** [RA-161.4](Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md). Test-only Code+Build, compile only; edit only the body of `FixedConformityPlanTargetPerturbationPreservesSharedBoundaryIntervals` (`tests/SurfaceCellsPhase10Tests.cpp:7583–7609`).
-- **Change:** derive `provenance = directional::pipeline::hard_rail_source_provenance_from_rails(fixture.rails, V.rows())`, `ASSERT_TRUE(provenance.has_value())`; pass `&provenance->terminalContacts, nullptr, &provenance->closedChains` to both the 0.5 and 2.0 helper calls. Keep every existing assertion and message.
-- **Evidence:** 8 GMP/GMPXX targets, `runtimeExecution=false`, record ≤30 lines with the exact hunk.
-- **STOP → Review:** symbol not visible; helper change needed; selector bytes would change. A runtime rejection after the fix is a TB44 finding, not a CB fix.
-- **On success:** `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE-REV` (static; issues TB44 manifest).
+- **Type / authority:** independent static CB44 Review under [RA-161.4](Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md) and [CB44 record](Architecture_M6_CP3_CB44_Selector405_Fixed_Plan_Rail_Provenance_Code_Build_Record_20261026.md).
+- **Objective:** independently inspect the exact one-test-body diff, required A2b producer provenance, unchanged assertions and frozen selector; audit immutable compile provenance before freezing the four-case TB44 manifest.
+- **Evidence to inspect:** source commit `c256671115c92f7dd55fea5d680feeac3cbb5190`; [snapshot run 40372216512](https://github.com/akashskypatel/Directional/actions/runs/40372216512) artifact `12673008464`; [compile run 40373930737](https://github.com/akashskypatel/Directional/actions/runs/40373930737) artifact `12674401457` (28/28 checksums, eight GMP/GMPXX targets, `runtimeExecution=false`). Read the RA-161 decision and CB44 record first.
+- **Scope / exclusions:** static source/build review only; no test/benchmark execution, no Code+Build changes, no selector edits, no accepted-prefix/CP3 promotion. Record evidence independently; do not infer runtime success from compilation.
+- **On acceptance:** authorize frozen `M6-CP3-TB44-RP01-SELECTOR405-FIXED-PLAN-VERIFY` (405 POSITIVE and reviewed three guards) for a *separate* artifact-only turn, followed by its Review.
+- **On failure:** document exact discrepancies and remediation authority; do not run TB44 or invent a code-fix successor.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| done | CB43 → REV → TB43 → REV → audit ([RA-161](Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md)) | 190 re-home 4/4 focused candidate; 405 root-caused. |
-| 1 — next | `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE` → `…-REV` | Test-only, one test body; REV issues TB44 manifest. |
+| done | CB43 → REV → TB43 → REV → audit ([RA-161](Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md)); CB44 compiled | 190 re-home 4/4 focused candidate; 405 fixture correction compiled, no runtime. |
+| 1 — next | `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE-REV` | Independently review CB44 test-only diff/immutable compile and freeze TB44 manifest. |
 | 2 | `M6-CP3-TB44-RP01-SELECTOR405-FIXED-PLAN-VERIFY` → `…-REV` | Artifact-only, CB44 package: 405 POSITIVE; GUARD `Phase10Tests:7614/7414/8219` companions (off-gate). REV disposes P1. |
 | 3 | `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` → `…-REV` | RED 242; coordinate DEFN-SEAM-NZ; design only. |
 | 4 | 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) | One owner per turn; Review assigns IDs. |
@@ -66,7 +67,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE** — test-only per [RA-161.4](Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md). Load `tests/SurfaceCellsPhase10Tests.cpp:6981–7028` (fixture), `7099–7132` (fixed-plan helper), `7583–7609` (405), `include/directional/pipeline/RemeshPipeline.h:1863–1871`, `src/pipeline/RemeshPipeline.cpp:12775–12782`. Compile only; no helper, production, selector, harness or workflow change.
+`load_next`: **M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE-REV** — static Review under RA-161.4. Read [CB44 compile record](Architecture_M6_CP3_CB44_Selector405_Fixed_Plan_Rail_Provenance_Code_Build_Record_20261026.md), [RA-161 decision](Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md), verified source diff and packaged compile manifest/logs. Verify test fixture/helper (`tests/SurfaceCellsPhase10Tests.cpp:6981–7028, 7099–7132, 7583–7620`), producer rail authority (`src/pipeline/RemeshPipeline.cpp:12775–12782`), helper declaration (`include/directional/pipeline/RemeshPipeline.h:1863–1871`), and frozen TB44 guard identities. Do not execute binaries, modify production/fixtures or claim runtime acceptance.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-26 · [RA-161](Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md) confirmed TB43-REV (selector190 re-home 4/4 focused candidate) and root-caused accepted-prefix RED selector405 to a fixed-plan test helper that omits the producer-owned A2b rail provenance production always supplies. O4 demoted behind the nine remaining REDs. Candidate only: CP2 491/491 accepted, TB38 490/504 candidate, selector497 frozen/unpromoted, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-26 · CB44 selector405 hard-rail provenance fixture correction [compiled](Architecture_M6_CP3_CB44_Selector405_Fixed_Plan_Rail_Provenance_Code_Build_Record_20261026.md) at source `c256671115c92f7dd55fea5d680feeac3cbb5190`; exact eight GMP/GMPXX targets, runtime disabled. Independent CB44-REV next before separate artifact-only TB44. CP2 491/491 remains last accepted runtime, TB38 490/504 candidate, selector497 frozen/unpromoted, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,7 +104,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE` (test-only, compile only; RA-161.4) → REV → TB44 → REV, then the 242 DEFN. No CP3/selector497 promotion.
+**Immediate:** `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE-REV` (static source/compile review; RA-161.4) → TB44 (artifact-only) → REV, then the 242 DEFN. No CP3/selector497 promotion.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|

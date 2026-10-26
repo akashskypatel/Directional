@@ -1,3 +1,8 @@
+## 2026-10-26 — CB44 selector405 A2b rail-provenance fixture correction compiled (no runtime)
+
+- [Code+Build record](.agents/Directional/Architecture_M6_CP3_CB44_Selector405_Fixed_Plan_Rail_Provenance_Code_Build_Record_20261026.md) documents the authorized one-test-body correction: the 0.5/2.0 fixed-plan calls now forward authoritative hard-rail terminal contacts and closed chains; the original assertions and other code remain unchanged.
+- Source `c256671115c92f7dd55fea5d680feeac3cbb5190`; [compile run 40373930737](https://github.com/akashskypatel/Directional/actions/runs/40373930737), artifact `12674401457`, 28/28 hashes, eight GMP/GMPXX targets, `runtimeExecution=false`. Source/test/selector scope audited; no runtime test, benchmark, accepted-prefix or CP3 promotion. Next: `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE-REV` static Review and TB44 manifest issuance.
+
 ## 2026-10-26 — RA-161 TB43-REV audit: selector405 root-caused; O4 demoted
 
 - [RA-161](.agents/Directional/Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md) confirmed TB43-REV (12/12 hashes, 4/4 log joins). 190 half (d) pins the `atlas-binding` locus but cannot detect a silent identity fallback (carried to the O2 DEFN).
