@@ -1,7 +1,7 @@
 # CB41 independent review — selector189 equivalent signed-lift A3 ingress (2026-10-26)
 
 **Canonical turn:** `M6-CP3-CB41-RP01-EQUIVALENT-LIFT-A3-INGRESS-REHOME-REV`
-**Static disposition:** source/test review supports CB42 conditionally; formal closeout awaits the mandatory authentic-Git `review_check.py boundary` proof. **Not runtime acceptance.** This review derives the assertions from the independently retrieved immutable compile package and byte-matched full source snapshot. No Directional binary, test, benchmark, compilation or source repair was run by this Review.
+**Static disposition:** APPROVED for CB42 following authenticated Git-history boundary and source-authority checks. **Not runtime acceptance.** This review derives the assertions from the independently retrieved immutable compile package and byte-matched full source snapshot. No Directional binary, test, benchmark, compilation or source repair was run by this Review.
 
 ## Evidence and source authority
 
@@ -31,7 +31,7 @@ The first documentation apply (run 40279714936) failed the workflow whitespace g
 
 | Duty | Answer |
 |---|---|
-| Accepted selector prefix re-hashed | n/a — CB41 changes no selector bytes or accepted prefix. Source GitHub compare has no selector file; existing accepted 491/491 not reexecuted. |
+| Accepted selector prefix re-hashed | Git-history run 40282179241 verified all 39 numbered selector files against committed bytes, including selector 378 `86259d919b387ba4...`; no selector mutation or accepted-prefix change. The accepted 491/491 was not rerun. |
 | Decisive claims independently re-derived | Own-field A3 make, raw ±4 directed lift, mod-4 transport, full A4 snapshot, two guarded `.value()` accesses; 28/28 compile hashes and 5900/5900 snapshot hashes. |
 | Non-vacuity checked | Two different raw-field A3 constructors, exact signed integer checks, own-field A4 route, positive Produced and full snapshot checks; runtime pending TB41. |
 | Prior obligations discharged/carried | RA-155.3 C statically discharged; O3→CB42, runtime→TB41, all named carried obligations preserved. |
@@ -46,6 +46,6 @@ The first documentation apply (run 40279714936) failed the workflow whitespace g
 | Consolidation under CLEAN_UP_POLICY | CP3 census: no safely superseded documents; zero folded; pending TB41 still needs historic compile/review files. |
 | Successor frozen | `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN`; O3 `cell=-1,side=-1` and failure-stop contract above. |
 | Turn boundary held | Static source/artifact review; no runtime or product/test/fixture/selector/build changes. |
-| review_check.py boundary | **PENDING**: not run against authentic Git history; exact source/snapshot hashes and GitHub changed-file inventory are supporting but not substitute evidence. Do not claim a boundary PASS or formal review closure. |
-| `STATUS` lifecycle maintained | Entry/resume beacons published. Retain same-turn IN_PROGRESS until authentic-Git boundary proof and final COMPLETE beacon. |
-| Pushed to origin, branch in sync | Corrected patch applied by workflow 40280230101 at commit `9870215dedb4dfe820b97ce784f84495e021d075`; exact six document paths independently verified via GitHub commit inventory. Authentic `git status -sb` not established. |
+| review_check.py boundary | **PASS**, authentic full-history checkout and real Git baseline, [run 40282179241](https://github.com/akashskypatel/Directional/actions/runs/40282179241), result log artifact `12632486829` (`sha256:cd7512c8907f86b74d36fba35806dd4708f2c0d7983c10cd9e243543454293c8`). Verified no source/selector mutations, 39 numbered selector file hashes, protected headings 4/4 and 1/1, rewrite base `8b7299b43` ancestor; `review_check.py authority 53830149...` also PASS without code drift. |
+| `STATUS` lifecycle maintained | Entry/resume beacons published; final COMPLETE beacon must be last repository mutation after cleanup and durable-document closeout. |
+| Pushed to origin, branch in sync | Corrected patch applied by workflow 40280230101 at commit `9870215dedb4dfe820b97ce784f84495e021d075`; six exact documentation paths verified. Authentic full-history run 40282179241 verified `HEAD == FETCH_HEAD` and clean `git status -sb`. Subsequent documentation/cleanup commits require final remote branch re-verification. |
