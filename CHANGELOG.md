@@ -1,3 +1,8 @@
+## 2026-10-26 — TB41 immutable re-homed oracles verified (18/18 focused PASS; Review pending)
+
+- [TB41 report](.agents/Directional/Architecture_M6_CP3_TB41_Rehomed_Oracle_Verification_Report_20261026.md) / [run 40296007299](https://github.com/akashskypatel/Directional/actions/runs/40296007299): exact CB42 source `8dc8cdeae6f6ac05c28aaa4504ca2c42c3177ded`, immutable compile artifact `12634151125`; 18/18 distinct case processes PASS (eight re-homed oracles plus ten TB40 guards), zero RED/missing/skipped/duplicates/control failures, 39/39 result hashes, `postflight=true`, no rebuild/relink/test/selector edits. Result `12638251384` SHA256 `1817f8295709a88bb3a561734b345cc50e81da056684501d714aac08fb7dd854`.
+- Runtime evidence is **focused candidate only** pending `M6-CP3-TB41-RP01-REHOMED-ORACLE-VERIFY-REV`; stable 66/17/49 debt1, CP2 491/491 accepted, TB38 490/504 candidate, selector497 frozen/unpromoted, RP-01 open. No observed regression or new stable classification in this gate.
+
 ## 2026-10-26 — CB42-REV independently approved polygonal-disk locus test authority (static only)
 
 - [CB42-REV decision](Architecture_M6_CP3_CB42_Polygonal_Disk_Locus_Pin_Independent_Review_Decision_20261026.md) independently verified 12 locus assertions across 251/252/`:2936` including reversed face order. All five same-reason production rejection sites discriminated: only the intended polygonal-disk initial rejection has `cell=-1, side=-1`; original typed reason and no-product checks retained.
