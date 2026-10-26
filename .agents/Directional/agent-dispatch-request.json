@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb42-rev-patch-closeout-20261026-r1",
+  "request_id": "m6-cp3-legacy-matching-defn-docs-20261026-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb42-rev-patch-closeout",
-  "file_id": "1UcBKkV0MOKWqHmO3HfJ__sqsFYNgy1gv",
-  "patch_sha256": "57838eb88586d822e275ae96f77503fb50fd1377b7508f611774481436d711a7",
-  "base_sha": "8741984c8d5cb10a446cbb4b2db9e3724a07611b",
+  "mailbox_key": "m6-cp3-legacy-matching-defn-docs",
+  "file_id": "1tWtdn9fKjbID2xzt6fAws-ZizvVhj5CF",
+  "patch_sha256": "10216dd6388ce933b2fdd8a7ed1a3c7e76a2f0d73342cfff865d0c300ad2d06f",
+  "base_sha": "3c8068da2064d25f852f151aee11b4c23a60cae2",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): complete TB42 O3 independent evidence review",
+  "commit_message": "docs(directional): synchronize legacy matching path DEFN handoff and trackers",
   "retention_days": 14
 }
