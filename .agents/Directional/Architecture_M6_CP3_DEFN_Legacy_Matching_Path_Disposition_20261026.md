@@ -29,7 +29,7 @@ STOP on no-atlas published product, unexpected A3 code/key, changed first reject
 | Previous obligations | Six questions answered; O2 detail and other owners carried |
 | Accounting | Stable 66/17/49 debt1; CP2 491/491 historical only |
 | New candidate | 190 A3 oracle re-home and O2 detail coexistence, no stable event |
-| ORIENTATION currency | Pending durable sync; source snapshot audit performed |
+| ORIENTATION currency | Synchronized on 2026-10-26 with Review successor and current accounting; local static drift audit 0 errors / 0 warnings |
 | ORIENTATION §3/§4/§7/§8 | Stable/witness tables unchanged; priority and vacuity note in prepared patch |
 | CHANGELOG | Prepared in preservation patch |
 | ROADMAP | Unchanged; RP-01 remains open |
@@ -40,4 +40,4 @@ STOP on no-atlas published product, unexpected A3 code/key, changed first reject
 | Boundary | Definition only; no source/test/selector/compile/runtime |
 | review_check.py boundary | Snapshot has no authentic Git history; no passing result claimed |
 | STATUS | Entry beacon written; closeout beacon pending |
-| Origin sync | This definition record is being published; other prepared documentation remains pending patch transport |
+| Origin sync | Definition record committed; handoff, ORIENTATION, tracker, CHANGELOG, TODO applied at `e404dc9e4e574a34be052b4fb9efa791d3c68f5b` (five exact paths, checked result hash); Drive staged copies retired; cleanup at `1693c76fb93e825be4868c90e3c94ba1e2562bf2` |
