@@ -1,3 +1,7 @@
+## 2026-10-26 — TB43 artifact-only four-case PASS; independent Review next
+
+- [TB43 report](.agents/Directional/Architecture_M6_CP3_TB43_Selector190_Rehome_Verification_Report_20261026.md): frozen CB43 package 12657932087, [run 40353956056](https://github.com/akashskypatel/Directional/actions/runs/40353956056), result 12664712967 ZIP `fbe75000…b26804`, 12/12 result checksums; selector190 plus guards 28/179/233 4/4 PASS, postflight true, no compile/repair. Focused candidate only; CP2 491/491, stable 66/17/49 debt1 unchanged; next TB43-REV.
+
 ## 2026-10-26 — CB43 independent static Review accepted; TB43 manifest frozen
 
 - [CB43-REV](.agents/Directional/Architecture_M6_CP3_CB43_Selector190_Legacy_Ingress_Rehome_Independent_Review_Decision_20261026.md) independently confirmed the one-test CB43 hunk, A3 negative/restored transition and A4 no-atlas typed oracle scope, immutable 28/28 GMP compile evidence, and 47/47 frozen selector-file identity. No runtime claim. Four-case [TB43 manifest](.agents/Directional/Architecture_M6_CP3_TB43_Selector190_Rehome_Verification_Case_Manifest.tsv) now authorizes only selector190 positive plus guards 28/179/233; CP2 491/491 and stable 66/17/49 debt1 unchanged. Next `M6-CP3-TB43-RP01-SELECTOR190-REHOME-VERIFY`.
