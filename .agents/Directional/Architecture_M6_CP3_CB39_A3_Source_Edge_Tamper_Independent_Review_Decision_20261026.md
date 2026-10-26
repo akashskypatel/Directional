@@ -18,6 +18,12 @@ CB39 satisfies the authorized *static* test-body and compile contract. Freeze th
 
 The next turn `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME` is limited to selector192 (k=1) and selector247 (k=2), re-homing the turning-field monodromy negative stimulus while retaining A4 assertions. Falsifiers: the actual A3 prerequisite rejects the intended balanced field; either negative fails to reach intended A4 owner; the two witnesses collapse into a vacuous identical case; or unrelated test/production/selector bytes change. Stop on any falsifier and route to Review rather than compensating through validator weakening. No successor source work occurs in this Review.
 
+## Remote closeout evidence (same-turn continuation)
+
+- The exact preserved patch (`e92df86644080c6cc328ff67d0167e52bbe5d10a6f8a0fc93467a8f6da91ab44`, 29,929 bytes) was staged by file ID, applied and pushed through [run 40259353864](https://github.com/akashskypatel/Directional/actions/runs/40259353864); the verified result archive SHA-256 was `65d01fd21522df313dc7785f1035849b888444114d2ae5107c0755ae2eab363d`, and the result identifies applied commit `72fffb727dde6c91fefc687172ce7c731d8a4420`. Independently fetched commit lists exactly the six authorized documentation paths, no source/test/selector/build changes. Workflow reported `runtimeExecution=false`; compile and Test + Benchmark jobs skipped.
+- Owner-authorized Drive deletion of consumed transport file `10Leq401yeruPqFnA7z3pTBFrhVrxhXl8` succeeded. The dispatcher request slot is retained as durable control state.
+- A local attempt at `review_check.py boundary` returned exit 1 because the downloadable source snapshot has no Git history or rewrite-baseline commit `8b7299b43`. Local code/selector dirty-path checks reported clean but do not establish a full boundary-script PASS. GitHub commit changed-path evidence independently supports the review boundary; a proper-history `review_check.py` run remains unverified, not silently marked green.
+
 ## Review closeout
 
 | Duty | Answer |
@@ -37,6 +43,6 @@ The next turn `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME` is limited to se
 | Consolidation under CLEAN_UP_POLICY | Inventory completed; CB39 compile source/package record remains live required TB41 authority; prior RA-157 and TB40 decisions carry distinct operative facts. No eligible per-turn record retired in this Review. |
 | Successor frozen | `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME`, RA-155.3 B / RA-157.4, with falsifiers above. |
 | Turn boundary held | Independent static analysis only; no product, test, fixture, selector, build-source changes, compile, benchmark or Directional runtime. |
-| review_check.py boundary | Not executable authoritatively on downloaded snapshot: source archive has no Git history or baseline commit; independent byte-scope inspection performed instead. Must be run in a proper Git checkout before formal final compliance is asserted. |
-| `STATUS` lifecycle maintained | Entry beacon published; final beacon requires independent write after durable closeout. |
-| Pushed to origin, branch in sync | Pending documented patch transport and postflight; not claimed by this source snapshot. |
+| review_check.py boundary | Executed on source-only snapshot, exit 1 because Git history/rewrite baseline `8b7299b43` is absent; no authoritative PASS claimed. GitHub's exact changed-path audit independently verifies the no-code/no-selector boundary; full script compliance remains unverified without a proper-history checkout. |
+| `STATUS` lifecycle maintained | Entry and resume beacons written on working branch; terminal closeout beacon is a separate final repository action. |
+| Pushed to origin, branch in sync | Verified Drive-apply run `40259353864` pushed commit `72fffb7` and its six-path changed-file set. No local `git status -sb` proof is claimed from the Git-history-free snapshot. |
