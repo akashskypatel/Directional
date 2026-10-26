@@ -1,1 +1,0 @@
-Snapshot trigger for M6-CP3-CB43-RP01-SELECTOR190-LEGACY-INGRESS-REHOME; source ref is triggering event SHA. Do not treat this marker as semantic source.
