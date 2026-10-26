@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-26 · TB43-REV independently accepted focused selector190 A3/A4 ingress evidence ([decision](Architecture_M6_CP3_TB43_Selector190_Rehome_Independent_Review_Decision_20261026.md)); previously CB43-REV accepted static test-only selector190 re-home ([decision](Architecture_M6_CP3_CB43_Selector190_Legacy_Ingress_Rehome_Independent_Review_Decision_20261026.md)), 28/28 immutable GMP compile evidence and frozen four-case TB43 manifest; TB43 4/4 focused runtime independently verified (not CP3 acceptance). CP2 491/491 accepted, selector497 frozen/unpromoted, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-26 · [RA-161](Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md) confirmed TB43-REV (selector190 re-home 4/4 focused candidate) and root-caused accepted-prefix RED selector405 to a fixed-plan test helper that omits the producer-owned A2b rail provenance production always supplies. O4 demoted behind the nine remaining REDs. Candidate only: CP2 491/491 accepted, TB38 490/504 candidate, selector497 frozen/unpromoted, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,11 +104,11 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` (O4; design-only) → REV, then selector242 DEFN. No CP3/selector497 promotion.
+**Immediate:** `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE` (test-only, compile only; RA-161.4) → REV → TB44 → REV, then the 242 DEFN. No CP3/selector497 promotion.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Re-home the vacuous selector190 (A3 negative + A4 no-atlas ingress pin) and verify it, then O4 reachability and the 242 seam consumer, one DEFN each; classify the 249 off-gate producer tests (O5) and state the nonrectangular-disk scope (O6) before the RP-01 Review. O2 retirement is post-RP-01. | `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` per [TB43-REV](Architecture_M6_CP3_TB43_Selector190_Rehome_Independent_Review_Decision_20261026.md), [CB43-REV](Architecture_M6_CP3_CB43_Selector190_Legacy_Ingress_Rehome_Independent_Review_Decision_20261026.md) and [RA-160](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md) |
+| **1** | Clear the nine remaining REDs one owner per turn: 405 (fixture rail provenance), 242 (DEFN), 174/201, `focused30:12`, `cp3entry:4`, `selector:442`, DEFN-T1 (`cp3entry:1/2`); then O4/O5 DEFNs and the census; RP-01 Review states O6 scope. O2 retirement is post-RP-01. | `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE` per [RA-161](Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

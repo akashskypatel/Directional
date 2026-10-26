@@ -1,3 +1,13 @@
+## RA-161 — TB43-REV audited: selector405 fixture provenance; O4 demoted (2026-10-26)
+
+Authority: `Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md`.
+
+- **RA-161.1** TB43 re-verified (12/12 hashes, 4/4 log joins, manifest frozen before dispatch, no source drift).
+- **RA-161.2** T2 190 (d) locus pin is blind to identity fallback; T3 O4 closes no RED.
+- **RA-161.3** 405 = helper omits A2b contacts/chains (`Phase10Tests:7099–7132` vs `RemeshPipeline.cpp:12775–12782`). P1 off-gate negatives `:7414/:8219`.
+- **RA-161.4** CB44: 405 body only; provenance from `hard_rail_source_provenance_from_rails`.
+- **RA-161.5** Frozen IDs: `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE` → REV; `M6-CP3-TB44-RP01-SELECTOR405-FIXED-PLAN-VERIFY` → REV.
+
 ## RA-160 — legacy-path DEFN reviewed: 190 re-home amended; O2 post-RP-01 (2026-10-26)
 
 Authority: `Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md`.

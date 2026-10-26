@@ -1,3 +1,7 @@
+**RA-161 TB43-REV audit (2026-10-26, candidate/non-stable):**
+- TB43-REV confirmed (4/4 focused). selector405 RED root-caused: fixed-plan test helper omits producer-owned A2b rail provenance after the RA-43.2/46.5 fail-closed tightening — stale-fixture class, not an A4 defect. P1: two off-gate negatives share the empty default.
+- No stable event; 66/17/49, debt 1. [RA-161](Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md).
+
 **RA-160 legacy-path DEFN Review (2026-10-26, candidate/non-stable):**
 - DEFN accepted in part; 190 re-home amended (A3 negative + A4 no-atlas `atlas-binding` pin); O2 production CB withdrawn to post-RP-01 (no-atlas NotApplicable ingress publishes legacy-decided seed-fallback outputs).
 - No stable event; 66/17/49, debt 1. [RA-160](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md).

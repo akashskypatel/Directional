@@ -1,3 +1,8 @@
+## 2026-10-26 — RA-161 TB43-REV audit: selector405 root-caused; O4 demoted
+
+- [RA-161](.agents/Directional/Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md) confirmed TB43-REV (12/12 hashes, 4/4 log joins). 190 half (d) pins the `atlas-binding` locus but cannot detect a silent identity fallback (carried to the O2 DEFN).
+- Accepted-prefix RED selector405: the fixed-plan helper omits the A2b terminal contacts/chains production always supplies (TB38 `missing-terminal-or-closed-rail-provenance`); stale fixture, not an A4 defect. Next `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE`. O4 moved behind the REDs. No source, selector, acceptance or regression total changed.
+
 ## 2026-10-26 — TB43 independent focused Review accepted; O4 DEFN next
 
 - [TB43-REV decision](.agents/Directional/Architecture_M6_CP3_TB43_Selector190_Rehome_Independent_Review_Decision_20261026.md) independently reverified 5917/5917 source hashes, CB43 28/28 immutable package members, TB43 12/12 result members, four raw GTest row joins, A3 missing/restored and A4 no-atlas exact-site assertions, and 47/47 selector files unchanged.
