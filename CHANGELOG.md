@@ -1,3 +1,9 @@
+## 2026-10-26 — CB42-REV independently approved polygonal-disk locus test authority (static only)
+
+- [CB42-REV decision](Architecture_M6_CP3_CB42_Polygonal_Disk_Locus_Pin_Independent_Review_Decision_20261026.md) independently verified 12 locus assertions across 251/252/`:2936` including reversed face order. All five same-reason production rejection sites discriminated: only the intended polygonal-disk initial rejection has `cell=-1, side=-1`; original typed reason and no-product checks retained.
+- Exact compiled source `8dc8cdeae6f6ac05c28aaa4504ca2c42c3177ded`, [compile 40285233031](https://github.com/akashskypatel/Directional/actions/runs/40285233031), artifact `12634151125`; 28/28 hashes; eight GMP/GMPXX targets; `runtimeExecution=false`. Frozen source 5902/5902 hashes. Authentic full-history [run 40292894222](https://github.com/akashskypatel/Directional/actions/runs/40292894222) passed authority/boundary/ledgers. No source, runtime, selector or CP3 promotion.
+- Exactly one successor: `M6-CP3-TB41-RP01-REHOMED-ORACLE-VERIFY` for immutable artifact-only runtime of 189/191/192/204/247/250/251/252 and TB40 guards. Stable 66/17/49, debt 1; CP2 491/491 accepted, TB38 490/504 candidate; selector497 unpromoted, RP-01 open.
+
 ## 2026-10-26 — CB42 polygonal-disk rejection locus compiled (test-only; no runtime)
 
 - RA-156 J3/O3: selector251/252 and off-selector `:2936` now require actual `InvalidBoundedDiskFrontPairing` rejection plus `cell=-1,side=-1` in all three tests, including reversed face ordering; 12 assertion lines in `tests/SurfaceCellsPhase10Tests.cpp`, no producer/selector/fixture/benchmark/workflow edits.
