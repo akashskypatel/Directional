@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb40-closeout-retry-20261025t2237z",
+  "request_id": "m6-cp3-tb40-rev-drive-apply-20261026t0039z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb40-closeout-retry",
-  "file_id": "15Gdj5xeaUIkk84CfvSaacY57XF-ENTcg",
-  "patch_sha256": "c4a44381b9197e314fa02993625b4d5b49363191c6efae0e3a497db5da9b49d8",
-  "base_sha": "1dc2ff9ebb69905f30946d02a3e16f23f6f85dbf",
+  "mailbox_key": "m6-cp3-tb40-rev-apply",
+  "file_id": "14FzTT7bMAQ8airZ0pq2gbIGGy5F4Vlot",
+  "patch_sha256": "c25a4482383cf16e95c06961867c9d46077bcf693c0f6aba46d433f13129ebb9",
+  "base_sha": "b0da4496750d3f418de899205b677dfb5a869cf0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record immutable TB40 selector250 positive verification",
+  "commit_message": "docs: independently review TB40 selector250 focused discharge",
   "retention_days": 14
 }
