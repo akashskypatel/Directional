@@ -1,0 +1,1 @@
+TB41 closeout exact source snapshot after entry/resume beacon; source authority frozen by push SHA.
