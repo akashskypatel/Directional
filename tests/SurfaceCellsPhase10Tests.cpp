@@ -5013,14 +5013,70 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
       equivalentField, fixture.expectedRoute[1].currentTopology);
   ASSERT_NE(nullptr, first);
   ASSERT_NE(nullptr, second);
+  const int originalFirst = first->matching;
+  const int originalSecond = second->matching;
   first->matching += 4;
   second->matching -= 4;
+  ASSERT_EQ(originalFirst + 4, first->matching);
+  ASSERT_EQ(originalSecond - 4, second->matching);
+  ASSERT_EQ(fixture_quarter_turn(originalFirst),
+            fixture_quarter_turn(first->matching));
+  ASSERT_EQ(fixture_quarter_turn(originalSecond),
+            fixture_quarter_turn(second->matching));
+
+  // Each candidate must pass A3 with its own raw matching lifts. Building
+  // both checked A4 subjects from baselineField's atlas makes this oracle
+  // vacuous even when the equivalent raw lifts differ by four.
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  const auto source = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(fixture.mesh.F, options);
+  ASSERT_TRUE(source.has_value());
+  const auto baselineAtlas = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *source, options.hardFeatureEdges, baselineField);
+  const auto equivalentAtlas = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *source, options.hardFeatureEdges, equivalentField);
+  ASSERT_TRUE(baselineAtlas.has_value());
+  ASSERT_TRUE(equivalentAtlas.has_value());
+
+  for (const auto &step : {fixture.expectedRoute[0],
+                           fixture.expectedRoute[1]}) {
+    const auto from = directional::authority::SourceFaceId::from_index(
+        static_cast<std::size_t>(step.sourceFace),
+        static_cast<std::size_t>(fixture.mesh.F.rows()));
+    const auto to = directional::authority::SourceFaceId::from_index(
+        static_cast<std::size_t>(step.targetFace),
+        static_cast<std::size_t>(fixture.mesh.F.rows()));
+    ASSERT_TRUE(from.has_value());
+    ASSERT_TRUE(to.has_value());
+    const auto original = baselineAtlas->transition_value(
+        step.currentTopology, *from, *to);
+    const auto relabeled = equivalentAtlas->transition_value(
+        step.currentTopology, *from, *to);
+    ASSERT_TRUE(original.has_value());
+    ASSERT_TRUE(relabeled.has_value());
+    const auto *baselineTransition =
+        transition_for_edge(baselineField, step.currentTopology);
+    const auto *equivalentTransition =
+        transition_for_edge(equivalentField, step.currentTopology);
+    ASSERT_NE(nullptr, baselineTransition);
+    ASSERT_NE(nullptr, equivalentTransition);
+    EXPECT_EQ(directed_matching(*equivalentTransition, step.sourceFace,
+                                step.targetFace) -
+                  directed_matching(*baselineTransition, step.sourceFace,
+                                    step.targetFace),
+              relabeled->signedLift - original->signedLift);
+    EXPECT_EQ(4, std::abs(relabeled->signedLift - original->signedLift));
+    EXPECT_EQ(original->transport, relabeled->transport);
+  }
 
   const auto baseline = build_periodic_route_network_with_source_atlas(
-          fixture, baselineField, baselineField);
-  const auto equivalent =
-      build_periodic_route_network_with_source_atlas(
-          fixture, equivalentField, baselineField);
+      fixture, baselineField, baselineField);
+  const auto equivalent = build_periodic_route_network_with_source_atlas(
+      fixture, equivalentField, equivalentField);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             baseline.phaseFront.disposition());
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
