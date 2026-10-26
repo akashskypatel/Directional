@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb43-rev-docs-20261026-a",
+  "request_id": "m6-cp3-tb43-rev-docs-20261026-b",
   "operation": "drive_apply",
   "mailbox_key": "m6-cp3-tb43-rev-docs",
-  "file_id": "17CRM2RapYm0rOlQQama_uADPKKGCNCmK",
-  "patch_sha256": "d4cc6e461387b88c5e4e54771d75095442d9e23a374a2ad22118c6811692270a",
+  "file_id": "1kri8t5kp6-UA9Gdzwzw7KehhmCLuPxGI",
+  "patch_sha256": "054d7b07793d5bfab74f9d180da61029805ab2710922083a717558fc69c7b47e",
   "base_sha": "e198930455aa8ef7be223cc22556f10ad1f4667c",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "docs: independently review TB43 selector190 focused evidence",
