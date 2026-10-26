@@ -1,3 +1,13 @@
+## RA-162 — TB44-REV audited: P1-a torn input; RA-162 C1; selector242 DEFN scope (2026-10-26)
+
+[Decision](Architecture_M6_CP3_TB44_REV_Audit_P1_Torn_Input_Selector242_Scope_Decision_20261026.md).
+
+- **RA-162.1** TB44 re-verified (11/11, 4/4 log joins, manifest frozen before dispatch, no source drift); 405 invariance is by construction.
+- **RA-162.2** F1 8219 remedy unsound (production `hardFeatureEdges` = rail edges); F2 → C1 open-rail cover gap; F3 P1-b confirmed; F4 242 mutation never consumed by atlas-bound A4, A3 reciprocity structural.
+- **RA-162.3** P1-a re-scoped to a production-reachable witness; P1-b unchanged; C1 to O5.
+- **RA-162.4** 242 DEFN: D1 owner/site, D2 A3 representability, D3 branch A/B re-home, D4 SEAM-NZ/O2 relation.
+- **RA-162.5** Frozen IDs: DEFN-242 → REV → `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME` → REV → `M6-CP3-TB45-RP01-SELECTOR242-SEAM-REHOME-VERIFY` → REV.
+
 ## RA-161 — TB43-REV audited: selector405 fixture provenance; O4 demoted (2026-10-26)
 
 Authority: `Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md`.

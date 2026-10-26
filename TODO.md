@@ -1,35 +1,39 @@
-## CURRENT — TB44-REV adjudicated 3/4; selector242 DEFN next (2026-10-26)
+## CURRENT — RA-162 TB44-REV audit; selector242 DEFN next (2026-10-26)
 
-- [x] **RA-161 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md)):
-  - TB43-REV confirmed: ZIP `fbe75000…26804`, 12/12 hashes, 4/4 log joins, manifest `812b843b…ffc676` frozen before dispatch; no source drift since CB43 `d354d6ae9`.
-  - T2: 190 half (d) pins the `atlas-binding` locus but cannot detect a silent identity fallback (balanced gauge field) — carried into the post-RP-01 O2 DEFN.
-  - T3: O4 closes no RED; nine TB38 REDs remain (174, 201, 242, 405, 442 accepted-prefix; focused30:12; cp3entry:1/2/4). O4 demoted beside O5.
-  - 405 root cause: fixed-plan helper (`Phase10Tests:7099–7132`) omits A2b terminal contacts/closed/open chains that production always sets (`RemeshPipeline.cpp:12775–12782`); TB38 log shows `a2bProbeFailure=missing-terminal-or-closed-rail-provenance`. Stale fixture, not an A4 defect.
-  - P1: off-gate negatives `:7414`, `:8219` use the same empty default; disposition at TB44-REV.
-- [x] **COMPLETE `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE`** — [CB44 record](.agents/Directional/Architecture_M6_CP3_CB44_Selector405_Fixed_Plan_Rail_Provenance_Code_Build_Record_20261026.md): test-only 405 body forwards producer-derived A2b contacts/closed chains at scales 0.5/2.0. Source `c256671115c92f7dd55fea5d680feeac3cbb5190`; compile [40373930737](https://github.com/akashskypatel/Directional/actions/runs/40373930737) artifact `12674401457`, 28/28 hashes, eight GMP/GMPXX targets, `runtimeExecution=false`. No tests executed or selector/CP3 promotion.
-- [x] **CB44 independent Review accepted** — [Architecture_M6_CP3_CB44_Selector405_Rail_Provenance_Independent_Review_Decision_20261026.md](.agents/Directional/Architecture_M6_CP3_CB44_Selector405_Rail_Provenance_Independent_Review_Decision_20261026.md), exact source+28/28 compile verified, no runtime; four-case TB44 manifest frozen.
-- [x] **TB44 artifact-only verified** — [report](.agents/Directional/Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Verification_Report_20261026.md): [run 40387240269](https://github.com/akashskypatel/Directional/actions/runs/40387240269), immutable CB44 source/package, 10/10 result hashes, four exact tests **405 PASS / 7614 PASS / 7414 PASS / 8219 RED**, zero skips/duplicates, valid postflight, no compile. 8219 expected `missing-terminal-A3-path` but observed `missing-terminal-or-closed-rail-provenance`; candidate fixture ownership, no promotion.
-- [x] **TB44 independent Review** — [TB44-REV](Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Independent_Review_Decision_20261026.md): valid 3/4 raw gate; 8219 fails before intended A3 probe because producer rail provenance is absent; 7414 positive reaches A4 boundary consumer, but forged-key negative also fails with no network binding. No promotion.
-- [ ] **RA-161 P1 (O5 owner, before RP-01 census)** — test-only future CB/TB/REV to supply authentic terminal/closed/open provenance for 8219, preserve intended first A3 negative; and make 7414 negative differential against absent/present A2a network. Falsify if early provenance failure persists or if negative rejects identically without network. No test edits in this Review.
-- [ ] **NEXT `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER`** → independent Review; coordinate DEFN-SEAM-NZ.
-
-- [ ] Then 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`).
-- [ ] Then O4 and O5 DEFNs → REV each → census → RP-01 Review (with O6 scope statement).
+- [x] **RA-162 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB44_REV_Audit_P1_Torn_Input_Selector242_Scope_Decision_20261026.md)):
+  - TB44-REV confirmed: ZIP `f1b30006…6b986`, **11/11** members (records said 10/10), 4/4 log joins, manifest `f410b550…a6a8a` frozen at `2d0a23005` before dispatch; no source drift since CB44 `c25667111`. 405 PASS is invariance by construction (target dead under accepted conformity) — valid regression guard.
+  - F1: TB44-REV P1-a remedy rejected — 8219 adds a non-rail spoke to `hardFeatureEdges`, which production derives from rails (`RemeshPipeline.cpp:12645, 12783`); supplying provenance would certify a torn input. Re-home to a production-reachable witness.
+  - F2 → **RA-162 C1**: checked factory enforces hard-edge cover only for closed-only rail sets (`SurfaceCellTracing.cpp:8712`); open-rail sets accept orphan hard edges. O5 owner.
+  - F3: P1-b confirmed (`SurfaceCellTracing.cpp:6160–6168`); pre-register the differential as a pair of first-sites.
+  - F4: 242 mutates `crossField.edgeTransitions` after the atlas is built from `sourceField`; atlas-bound A4 never reads it (`SurfaceCellTracing.cpp:21181–21184`); A3 reciprocity is structural (`FieldTransportAtlas.cpp:2033–2036`). DEFN scoped in RA-162.4.
+- [ ] **NEXT `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER`** (design only, RA-162.4 D1–D4) → `…-REV`.
+- [ ] `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME` (test-only, compile only) → `…-REV` (issues TB45 manifest).
+- [ ] `M6-CP3-TB45-RP01-SELECTOR242-SEAM-REHOME-VERIFY` (242 POSITIVE; GUARD `Phase10Tests:3270`) → `…-REV`.
+- [ ] Then 174 → 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`).
+- [ ] Then O4 DEFN and O5 DEFN (O5 + P1-a re-scoped + P1-b + RA-162 C1; separate test-only CB/TB/REV for P1) → REV each → census → RP-01 Review (O6 scope).
 - [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS-RETIREMENT` (RA-160.4 + RA-161 T2).
-- [ ] Carried separately: O1, O2 (post-RP-01), O4, O5, O6, P1, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002.
+- [ ] Carried separately: O1, O2 (post-RP-01), O4, O5, O6, P1, C1, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
   - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
-  - Done: RA-160 → CB43 → REV → TB43 → REV → audit (RA-161).
-  - **CB44 compiled → REV static accepted → TB44 3/4 → TB44-REV independently adjudicated; next DEFN 242.**
-  - DEFN 242 → REV → its CB/TB.
-  - 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1.
-  - DEFN O4, DEFN O5 → census → RP-01 Review (O6 scope). Post-RP-01: O2 DEFN.
+  - Done: RA-161 → CB44 → REV → TB44 → REV → audit (RA-162).
+  - **Next: DEFN 242 → REV → CB45 → REV → TB45 → REV.**
+  - 174 → 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1.
+  - DEFN O4, DEFN O5 (+P1, C1) → census → RP-01 Review (O6 scope). Post-RP-01: O2 DEFN.
   - `DIAG-RETAIN` carried.
-- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 and TB38 490/504 candidate; TB41 18/18, TB42 1/1 and TB43 4/4 focused candidate; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 and TB38 490/504 candidate; TB41 18/18, TB42 1/1, TB43 4/4, TB44 405 PASS (guards 3/4) focused candidate; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+
+---
+
+## HISTORY — RA-161; CB44; CB44-REV; TB44; TB44-REV (2026-10-26)
+
+- [x] RA-161 audit: TB43-REV confirmed; 405 root-caused to fixed-plan helper omitting A2b provenance; O4 demoted behind REDs.
+- [x] CB44 (`c25667111`): 405 body forwards producer-derived contacts/closed chains; compile [40373930737](https://github.com/akashskypatel/Directional/actions/runs/40373930737), artifact `12674401457`, 28/28, `runtimeExecution=false`. CB44-REV accepted; four-row TB44 manifest frozen.
+- [x] TB44 ([report](.agents/Directional/Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Verification_Report_20261026.md), [run 40387240269](https://github.com/akashskypatel/Directional/actions/runs/40387240269)): 405 PASS, 7614 PASS, 7414 PASS, 8219 RED (`missing-terminal-or-closed-rail-provenance` before intended `missing-terminal-A3-path`). No promotion.
+- [x] TB44-REV ([decision](.agents/Directional/Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Independent_Review_Decision_20261026.md)): 3/4 valid; P1-a stale fixture, P1-b not network-discriminating; P1 to O5 (remedy 1 superseded by RA-162 F1).
 
 ---
 

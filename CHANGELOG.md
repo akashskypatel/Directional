@@ -1,3 +1,7 @@
+## 2026-10-26 — RA-162 TB44-REV audit: P1-a remedy corrected; selector242 DEFN scoped
+
+- [RA-162](.agents/Directional/Architecture_M6_CP3_TB44_REV_Audit_P1_Torn_Input_Selector242_Scope_Decision_20261026.md): TB44-REV confirmed (ZIP `f1b30006…6b986`, 11/11, 4/4 log joins). 8219 remedy rejected (torn `hardFeatureEdges` input; production derives it from rails). New RA-162 C1: open-rail hard-edge cover gap at the checked factory (O5). 242 mutation is invisible to atlas-bound A4; DEFN D1–D4 scope frozen; CB45/TB45 IDs frozen. No code, build or runtime.
+
 ## 2026-10-26 — TB44 artifact-only verification: selector405 PASS, guard8219 RED
 
 - **2026-10-26 — `M6-CP3-TB44-RP01-SELECTOR405-FIXED-PLAN-VERIFY-REV`:** Independently verified TB44 exact package/result/log and 3/4 frozen tests. 8219 is an invalid missing-rail-provenance negative; 7414 proves rail-boundary consumer reached, not network-specific dependency. RA-161 P1 carries to O5 with falsifiers; 405 remains focused candidate; no CP3 promotion, source/test edits or runtime. [Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Independent_Review_Decision_20261026.md](.agents/Directional/Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Independent_Review_Decision_20261026.md).
