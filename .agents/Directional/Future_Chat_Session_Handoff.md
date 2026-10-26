@@ -34,28 +34,26 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-26, after [RA-158](Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md) (TB41-REV confirmed; O3 owner assigned; DEFN split). |
+| Currency | 2026-10-26, after TB42 focused runtime (1/1 PASS), pending TB42-REV; [RA-158](Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md) (TB41-REV confirmed; O3 owner assigned; DEFN split). |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
 | Latest candidate or rejected evidence | TB41 focused **18/18 PASS**, candidate only: CB42 source `8dc8cdeae6f6ac05c28aaa4504ca2c42c3177ded`, package `12634151125` (ZIP `d7f7b830…8b87`, **expires 2026-11-02T07:22:41Z**), [run 40296007299](https://github.com/akashskypatel/Directional/actions/runs/40296007299), result `12638251384` (ZIP `1817f829…d854`); [report](Architecture_M6_CP3_TB41_Rehomed_Oracle_Verification_Report_20261026.md), [TB41-REV](Architecture_M6_CP3_TB41_Rehomed_Oracle_Independent_Review_Decision_20261026.md). TB32 481/500 and TB38 490/504 candidate; selector497 frozen, unpromoted. |
 | Regression accounting and debt | Stable **66/17/49**, debt 1 ([tracker](Regression_Root_Cause_Tracker.md)). No new stable event. |
-| Active boundary | RP-01 open, RP-02 unreached. O3 third locus test (`Phase10Tests:2940`) unexecuted → TB42. O5: 249 producer-binary tests are in no frozen gate (RA-158 L5). Carried: DIAG-RETAIN, O1, O2, O4, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002. |
+| Active boundary | RP-01 open, RP-02 unreached. O3 third locus test (`Phase10Tests:2940`) ran 1/1 PASS as candidate → TB42-REV. O5: 249 producer-binary tests are in no frozen gate (RA-158 L5). Carried: DIAG-RETAIN, O1, O2, O4, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002. |
 
-## Mandatory next turn — `M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY-REV` — EXACT NEXT
 
-- **Authority:** [RA-158.4](Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md). Artifact-only Test + Benchmark; no compile.
-- **Package:** CB42 artifact `12634151125`, ZIP SHA-256 `d7f7b8302966b14acd919eeef4465d518a6179f1823fbb86ad0e5b1b43488b87`, source `8dc8cdeae6f6ac05c28aaa4504ca2c42c3177ded`, 28/28. Run before **2026-11-02T07:22Z**.
-- **Harness:** unchanged `tools/m6_cp3_targeted_artifact_harness.sh` (SHA-256 `436f5fff…3c9a`).
-- **Manifest:** freeze and commit before dispatch; exactly one row: `POSITIVE`, `o3:polygonal-partial-phase`, `SurfaceCellsPhase10.PolygonalCurvedDiskRejectsWithoutPublishingPartialPhase`, `directional_surface_cell_producer_tests`, `PASS`.
-- **STOP → Review:** package expired or hash mismatch (no recompile); harness rejects a one-row manifest (no harness edit). A RED is recorded with its first failure line and not fixed in this turn.
-- **On PASS:** O3 runtime discharged as focused candidate (3/3). Successor `M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY-REV`.
+- **Authority:** RA-158.4; independent Review of completed artifact-only TB42 focused candidate.
+- **Evidence:** [TB42 report](Architecture_M6_CP3_TB42_O3_Off_Selector_Locus_Verification_Report_20261026.md); run `40310754811`, result artifact `12644936205` (ZIP SHA-256 `2d0c6cf7ab7e1eb7321f1adf0720e5ea2fd585c6762e9458de03c4f260d9b1b6`); raw log one RUN/one OK, 1/1 PASS, postflight true.
+- **Review:** independently verify exact source/package/manifest/harness and result hashes, raw single-test selection, first-locus assertions and non-vacuity; assess O3 3/3 focused candidate without promoting selector497 or CP3.
+- **Next after Review:** follow RA-158 split DEFN ordering; do not start DEFN work in TB42 or its Review without separate authority.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
 | done | CB39 → CB40 → CB41 → CB42 (each → REV) → TB41 → TB41-REV → audit ([RA-158](Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md)) | RA-155.3 A/B/C and 250 focused candidate; O3 2/3 run. |
-| 1 — next | `M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY` → `…-REV` | One POSITIVE row on package `12634151125` before it expires. |
+| 1 — next | `M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY-REV` | Independently review 1/1 O3 PASS; source/package unchanged; no selector/CP3 promotion. |
 | 2 | `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION` → `…-REV` | 190 + O2; accepted-prefix accounting rule; design only. |
 | 3 | `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` → `…-REV` | O4 (`SurfaceCellTracing.cpp:12656/12698/12707`); design only. |
 | 4 | `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` → `…-REV` | 242; coordinate DEFN-SEAM-NZ; design only. |
@@ -68,7 +66,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY** — artifact-only, one POSITIVE row per [RA-158.4](Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md). Load the TB41 [manifest](Architecture_M6_CP3_TB41_Rehomed_Oracle_Verification_Case_Manifest.tsv) as the format model, the unchanged targeted harness, CB42 package `12634151125` and `tests/SurfaceCellsPhase10Tests.cpp:2940–2958`. No compile, source, harness or selector change.
+`load_next`: **M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY-REV** — independently review one POSITIVE row from TB42 per [RA-158.4](Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md). Use [TB42 report](Architecture_M6_CP3_TB42_O3_Off_Selector_Locus_Verification_Report_20261026.md), frozen TB42 manifest, result artifact `12644936205`, unchanged targeted harness and `tests/SurfaceCellsPhase10Tests.cpp:2940–2958`; re-derive raw evidence and non-vacuity without compile or source changes.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

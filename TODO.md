@@ -1,4 +1,4 @@
-## CURRENT — RA-158 TB41-REV audit; O3 owner (TB42) first; DEFN split by mechanism (2026-10-26)
+## CURRENT — TB42 O3 focused candidate passed; independent Review next (2026-10-26)
 
 - [x] **RA-158 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md)):
   - TB41-REV confirmed: ZIP `1817f829…d854`, 39/39 hashes, 18/18 log joins, manifest `659c52f0…2959`; no source change since CB42 `8dc8cdeae`. Focused candidate only.
@@ -8,7 +8,8 @@
   - L4: 247 keeps orphaned transition-lookup setup (`:5345–5375`); not scheduled.
   - L5/O5: 249 of 598 producer-binary tests are in no frozen gate (42 `SurfaceCellsPhase10`, 14 `M6CP3`); disposition DEFN before the census.
   - L6: handoff authority table realigned to the template; stale TODO items closed.
-- [ ] **NEXT `M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY`** — artifact-only; one POSITIVE row (`SurfaceCellsPhase10.PolygonalCurvedDiskRejectsWithoutPublishingPartialPhase`) on CB42 package `12634151125` with the unchanged targeted harness; run before 2026-11-02T07:22Z. STOP → Review on expiry, hash mismatch or a harness that rejects one row. Then `…-REV`.
+- [x] **TB42 artifact-only:** one O3 POSITIVE row on CB42 package `12634151125` using unchanged targeted harness; [run 40310754811](https://github.com/akashskypatel/Directional/actions/runs/40310754811), result `12644936205`, 5/5 checksum and 1/1 PASS, postflight=true; candidate, not gate promotion. [Report](.agents/Directional/Architecture_M6_CP3_TB42_O3_Off_Selector_Locus_Verification_Report_20261026.md).
+- [ ] **NEXT `M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY-REV`** — independently inspect immutable TB42 result, original package, O3 first-locus assertions and non-vacuity, 3/3 focused candidate boundary; no selector497 or CP3 promotion.
 - [ ] Then `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION` (190 + O2; accepted-prefix accounting rule) → REV.
 - [ ] Then `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` (O4) → REV.
 - [ ] Then `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` (242; DEFN-SEAM-NZ) → REV.
@@ -22,7 +23,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: RA-157 → CB39 → CB40 → CB41 → CB42 (each → REV) → TB41 → TB41-REV → audit (RA-158).
-  - **TB42 → REV** (O3, before 2026-11-02T07:22Z).
+  - **TB42 completed → REV next** (O3; 1/1 PASS, focused candidate only).
   - DEFN legacy-matching path (190, O2) → REV; DEFN A4 provenance-guard reachability (O4) → REV; DEFN 242 cross-region seam consumer → REV.
   - Authorized Code/TB turns → 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1.
   - DEFN off-selector coverage (O5) → REV → census → RP-01 Review.

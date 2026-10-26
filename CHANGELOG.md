@@ -1,3 +1,7 @@
+## 2026-10-26 — TB42 O3 off-selector locus verification
+
+- Artifact-only [TB42](.agents/Directional/Architecture_M6_CP3_TB42_O3_Off_Selector_Locus_Verification_Report_20261026.md) on immutable CB42 package `12634151125`: [run 40310754811](https://github.com/akashskypatel/Directional/actions/runs/40310754811), result `12644936205`, 5/5 artifact hashes verified, one exact POSITIVE GTest 1/1 PASS, postflight=true, no compile/relink/configure/benchmark. Third O3 locus test now joins TB41 two tests as **3/3 focused runtime candidate** pending independent TB42-REV. Accepted CP2 491/491, selector497 frozen, stable 66/17/49 debt1, RP-01 open unchanged.
+
 ## 2026-10-26 — RA-158 TB41-REV audit: O3 owner assigned; DEFN split by mechanism
 
 - [RA-158](.agents/Directional/Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md) confirmed TB41-REV (39/39, 18/18). The unexecuted third O3 locus test gets TB42 before CB42 package `12634151125` expires (2026-11-02T07:22Z).
