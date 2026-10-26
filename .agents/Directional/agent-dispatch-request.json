@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb44-rev-docs-20261026-r1",
+  "request_id": "m6-cp3-defn-selector242-docs-20261026-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb44-rev-docs",
-  "file_id": "1tItGQqoGTVY70nSrdBKc-QHvtSX6cKmY",
-  "patch_sha256": "49992052041157c4f34a0c95722a434683023e8a6cdab86ef336d8892eaff71e",
-  "base_sha": "be03bfaa23827aeaed42ce7755434da81d4afdb0",
+  "mailbox_key": "m6-cp3-defn-selector242-docs",
+  "file_id": "1MYteHYfxS_5qqpPBsUxiLk2BRpZlD7QA",
+  "patch_sha256": "e6f583a7d8209933347d5a0e05d23b99f1831ffc91e786b87ac3b06698ff231a",
+  "base_sha": "9ab1563ee8ca8ceb3c3d3b909a69e04f422afe63",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): independent TB44 review and RA-161 P1 disposition",
+  "commit_message": "docs(directional): specify selector242 seam-consumer rehome and CB45 contract",
   "retention_days": 14
 }
