@@ -1,3 +1,8 @@
+## 2026-10-26 — TB43 independent focused Review accepted; O4 DEFN next
+
+- [TB43-REV decision](.agents/Directional/Architecture_M6_CP3_TB43_Selector190_Rehome_Independent_Review_Decision_20261026.md) independently reverified 5917/5917 source hashes, CB43 28/28 immutable package members, TB43 12/12 result members, four raw GTest row joins, A3 missing/restored and A4 no-atlas exact-site assertions, and 47/47 selector files unchanged.
+- TB43 4/4 focused candidate only; CP2 491/491 and stable 66/17/49 debt1 unchanged, selector497 not promoted, RP-01 open. Next O4 A4 provenance-guard reachability DEFN.
+
 ## 2026-10-26 — TB43 artifact-only four-case PASS; independent Review next
 
 - [TB43 report](.agents/Directional/Architecture_M6_CP3_TB43_Selector190_Rehome_Verification_Report_20261026.md): frozen CB43 package 12657932087, [run 40353956056](https://github.com/akashskypatel/Directional/actions/runs/40353956056), result 12664712967 ZIP `fbe75000…b26804`, 12/12 result checksums; selector190 plus guards 28/179/233 4/4 PASS, postflight true, no compile/repair. Focused candidate only; CP2 491/491, stable 66/17/49 debt1 unchanged; next TB43-REV.

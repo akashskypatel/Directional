@@ -34,18 +34,18 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-26, after TB43 four-case [focused PASS report](Architecture_M6_CP3_TB43_Selector190_Rehome_Verification_Report_20261026.md); independent TB43-REV pending, no CP3 promotion. |
+| Currency | 2026-10-26, after TB43 four-case focused PASS and [independent TB43-REV decision](Architecture_M6_CP3_TB43_Selector190_Rehome_Independent_Review_Decision_20261026.md); O4 reachability DEFN next, no CP3 promotion. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted 2026-10-06 (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
 | Latest candidate or rejected evidence | Focused candidates on CB42 source `8dc8cdeae`, package `12634151125` (expires 2026-11-02T07:22:41Z): TB41 **18/18** (result `12638251384`, [TB41-REV](Architecture_M6_CP3_TB41_Rehomed_Oracle_Independent_Review_Decision_20261026.md)); TB42 **1/1** ([run 40310754811](https://github.com/akashskypatel/Directional/actions/runs/40310754811), result `12644936205`, ZIP `2d0c6cf7…b1b6`, [TB42-REV](Architecture_M6_CP3_TB42_O3_Off_Selector_Locus_Independent_Review_Decision_20261026.md)); TB43 **4/4** focused PASS ([run 40353956056](https://github.com/akashskypatel/Directional/actions/runs/40353956056), result `12664712967`, [report](Architecture_M6_CP3_TB43_Selector190_Rehome_Verification_Report_20261026.md)); O3 3/3. TB32 481/500 and TB38 490/504 candidate; selector497 frozen, unpromoted. |
 | Regression accounting and debt | Stable **66/17/49**, debt 1 ([tracker](Regression_Root_Cause_Tracker.md)). No new stable event. |
-| Active boundary | RP-01 open, RP-02 unreached. selector190 re-home independently reviewed and TB43 four-case runtime 4/4 focused PASS, awaiting independent Review; historical vacuity since `7ccdcd527` is not retroactively cured. No-atlas ingress still publishes legacy-decided seed-fallback outputs on NotApplicable inputs (RA-160 D2; test-only ingress). O5: 249 producer tests in no frozen gate. O6: nonrectangular bounded disks rejected by design, no owner. Carried: DIAG-RETAIN, O1, O2 (post-RP-01), O4, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002. |
+| Active boundary | RP-01 open, RP-02 unreached. selector190 re-home independently reviewed and TB43 four-case runtime 4/4 focused PASS, focused Review accepted; historical vacuity since `7ccdcd527` is not retroactively cured. No-atlas ingress still publishes legacy-decided seed-fallback outputs on NotApplicable inputs (RA-160 D2; test-only ingress). O5: 249 producer tests in no frozen gate. O6: nonrectangular bounded disks rejected by design, no owner. Carried: DIAG-RETAIN, O1, O2 (post-RP-01), O4, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002. |
 
-## Mandatory next turn — `M6-CP3-TB43-RP01-SELECTOR190-REHOME-VERIFY-REV` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` — EXACT NEXT
 
-- **Type / owner:** Independent Review of TB43 artifact-only evidence, no source/tests/compile/runtime change.
-- **Frozen evidence:** [TB43 report](Architecture_M6_CP3_TB43_Selector190_Rehome_Verification_Report_20261026.md), source `d354d6ae95afc73df968fc5cc4ee69fe5b7de451`, package `12657932087`, case manifest SHA256 `812b843b…ffc676`, [run 40353956056](https://github.com/akashskypatel/Directional/actions/runs/40353956056), result `12664712967` ZIP `fbe75000…b26804` (12/12 checksums), exact four raw logs.
-- **Review obligations:** independently rederive selector190's A3 negative, restored-transition and A4 no-atlas `atlas-binding` non-vacuity, check all guards (28/179/233), package source identity, accepted-prefix preservation, and disposition of carried RA-160 issues. No automatic CP3 acceptance or next DEFN execution.
+- **Type / owner:** Definition-only O4 reachability; investigate A4 `MissingTransitionProvenance` at `SurfaceCellTracing.cpp:12656/12698/12707`; no source/tests/compile/runtime changes.
+- **Frozen focused evidence (already independently reviewed):** [TB43 report](Architecture_M6_CP3_TB43_Selector190_Rehome_Verification_Report_20261026.md), source `d354d6ae95afc73df968fc5cc4ee69fe5b7de451`, package `12657932087`, case manifest SHA256 `812b843b…ffc676`, [run 40353956056](https://github.com/akashskypatel/Directional/actions/runs/40353956056), result `12664712967` ZIP `fbe75000…b26804` (12/12 checksums), exact four raw logs.
+- **Definition obligations:** establish or disprove a genuinely reachable O4 A4 guard stimulus under valid A3 authority; identify exact source/consumer/witness owner and propose falsifiable acceptance criteria; stop if only an earlier rejection is reached. Do not blend O2 or selector242. Preserve accepted selector and CP3 accounting.
 
 
 ## Turn Sequence
@@ -57,8 +57,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | done | `M6-CP3-CB43-RP01-SELECTOR190-LEGACY-INGRESS-REHOME` | Test-only hunk compiled, no runtime; exact record above. |
 | done | `M6-CP3-CB43-RP01-SELECTOR190-LEGACY-INGRESS-REHOME-REV` | Static source/package review accepted; TB43 frozen. |
 | done | `M6-CP3-TB43-RP01-SELECTOR190-REHOME-VERIFY` | Four frozen processes 4/4 PASS; focused candidate only. |
-| 1 — next | `M6-CP3-TB43-RP01-SELECTOR190-REHOME-VERIFY-REV` | Independent artifact/log/oracle Review; no automatic promotion. |
-| 3 | `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` → `…-REV` | O4 (`SurfaceCellTracing.cpp:12656/12698/12707`); design only. |
+| done | `M6-CP3-TB43-RP01-SELECTOR190-REHOME-VERIFY-REV` | Independent focused Review accepted; no CP3 promotion. |
+| 1 — next | `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` | Design-only O4, then independent REV. |
 | 4 | `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` → `…-REV` | 242; coordinate DEFN-SEAM-NZ; design only. |
 | 5 | Code/TB turns authorized by steps 3–4 | Their Reviews assign canonical IDs; one CB per mechanism. |
 | 6 | 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) | One owner per turn; Review assigns IDs. |
@@ -70,7 +70,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-TB43-RP01-SELECTOR190-REHOME-VERIFY-REV** — verify [TB43 report](Architecture_M6_CP3_TB43_Selector190_Rehome_Verification_Report_20261026.md), immutable manifest, source/package/run/artifact SHA joins and all four raw logs; independently assess A3/A4 witness non-vacuity and guards. CP2 491/491, stable 66/17/49 debt1, selector497 frozen, RP-01 open; Review owns next plan.
+`load_next`: **M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY** — use [TB43-REV](Architecture_M6_CP3_TB43_Selector190_Rehome_Independent_Review_Decision_20261026.md) focused acceptance, identify missing A4 provenance-guard witness, preserving [TB43 report](Architecture_M6_CP3_TB43_Selector190_Rehome_Verification_Report_20261026.md), immutable manifest, source/package/run/artifact SHA joins and all four raw logs; independently assess A3/A4 witness non-vacuity and guards. CP2 491/491, stable 66/17/49 debt1, selector497 frozen, RP-01 open; Review owns next plan.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

@@ -1,4 +1,4 @@
-## CURRENT — TB43 4/4 PASS candidate; independent TB43 Review next (2026-10-26)
+## CURRENT — TB43 focused candidate independently reviewed; O4 reachability DEFN next (2026-10-26)
 
 - [x] **RA-160 DEFN Review** ([decision](.agents/Directional/Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md)) — accepted in part:
   - Q1 accepted and strengthened: the atlas-present wrapper nulls all legacy containers (`SurfaceCellTracing.cpp:21182–21185`); `legacyField` is fully inert. Corrects RA-159 N2 (it does not select the provenance lookup).
@@ -10,8 +10,9 @@
 - [x] **CB43 `M6-CP3-CB43-RP01-SELECTOR190-LEGACY-INGRESS-REHOME`** — [compile record](.agents/Directional/Architecture_M6_CP3_CB43_Selector190_Legacy_Ingress_Rehome_Code_Build_Record_20261026.md), test-only, compiled (not executed); halves (a) positive, (b) A3 `MissingAdjacency` + independent min interior key, (c) restored-transitions anti-vacuity, (d) no-atlas A4 `PublishedProductRejected`/`InvalidSourceAuthority`/`AtlasSourceMismatch`/`"atlas-binding"`, empty outputs (RA-160.3).
 - [x] **CB43-REV** independent source/compile Review accepted; [decision](.agents/Directional/Architecture_M6_CP3_CB43_Selector190_Legacy_Ingress_Rehome_Independent_Review_Decision_20261026.md) and [TB43 four-case manifest](.agents/Directional/Architecture_M6_CP3_TB43_Selector190_Rehome_Verification_Case_Manifest.tsv) frozen; no runtime credit.
 - [x] **TB43 `M6-CP3-TB43-RP01-SELECTOR190-REHOME-VERIFY`**: 4/4 PASS (190 POSITIVE; 28/179/233 GUARD), zero skips/duplicates, [report](.agents/Directional/Architecture_M6_CP3_TB43_Selector190_Rehome_Verification_Report_20261026.md), run 40353956056, result 12664712967; focused candidate only.
-- [ ] **NEXT `M6-CP3-TB43-RP01-SELECTOR190-REHOME-VERIFY-REV`**: independent result/raw-log and oracle non-vacuity Review.
-- [ ] Then `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` (O4) → REV; `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` → REV; their CB/TB turns.
+- [x] **TB43-REV** independently verified 12/12 result and 28/28 package checksums, four exact raw-log joins, A3/A4 anti-vacuity, and unchanged selector449/focused12; focused candidate only. [Decision](.agents/Directional/Architecture_M6_CP3_TB43_Selector190_Rehome_Independent_Review_Decision_20261026.md).
+- [ ] **NEXT `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY`** (O4): definition only; identify a producer-reachable non-vacuous A4 guard stimulus, no combined O2/242 scope.
+- [ ] Then O4 independent REV; `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` → REV; their CB/TB turns.
 - [ ] Then 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`).
 - [ ] Then `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` (O5) → REV → census → RP-01 Review (with O6 scope statement).
 - [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS-RETIREMENT` (RA-160.4).
@@ -23,7 +24,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: RA-159 → legacy-path DEFN → REV (RA-160).
-  - **CB43 compile and independent Review complete → TB43 4/4 PASS focused candidate → TB43-REV next.**
+  - **CB43 compile/Review → TB43 4/4 PASS → TB43-REV focused acceptance complete; O4 DEFN next.**
   - DEFN O4 → REV; DEFN 242 → REV; authorized CB/TB.
   - 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1.
   - DEFN O5 → REV → census → RP-01 Review (O6 scope). Post-RP-01: O2 DEFN.
