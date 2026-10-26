@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb40-rev-final-docs-20261026-r1",
+  "request_id": "m6-cp3-cb41-equivalent-a3-apply-20261026-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb40-rev-final-docs",
-  "file_id": "1PMPn6GuViVmteHkaR8Qq8s3Btteey2a8",
-  "patch_sha256": "590b27140a8c221daa20d24ab7e8b084bf1b89310b10a8491ab7119b52047cf4",
-  "base_sha": "14cae5bab5701198c35478cd287f28678e964d56",
+  "mailbox_key": "m6-cp3-cb41-equivalent-a3-apply",
+  "file_id": "12WIM9a2ZPEqFsaVAy9F0sBbeRxFKYyyG",
+  "patch_sha256": "40c2b0020844309357f10625eadd4dda0dbbbcf4ea2ed7abd0833b673336aa81",
+  "base_sha": "4c693aaa2106c8c980ea60321d2d506e422af54e",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB40 independent review and authorize CB41",
+  "commit_message": "test(surface-cells): rehome equivalent quarter-turn A3 ingress oracle",
   "retention_days": 14
 }
