@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb40-rev-drive-apply-r2-20261026",
+  "request_id": "m6-cp3-cb39-a3-rehome-drive-apply-20261026",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb40-rev-apply-r2",
-  "file_id": "1ju0v3AXt1Sl5HgOT6xJ-gmmbj7-9tf9y",
-  "patch_sha256": "359fce2a5fe39da18b37ea4ff8a995cf0a398f56c3a5e2820b5e364b82449b46",
-  "base_sha": "b0da4496750d3f418de899205b677dfb5a869cf0",
+  "mailbox_key": "m6-cp3-cb39-a3-rehome-apply",
+  "file_id": "1AZmd4sPL8m-Mkcls19CaW0BU0sS0lCsO",
+  "patch_sha256": "736651745f27c7a91a85546c11122a59d7a5dbc5ac094daaa66d97efcbe5dc68",
+  "base_sha": "0b9f6cdadb0f0ebbf0d06a0000cd7d2a2b265106",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: independently review TB40 selector250 focused discharge",
+  "commit_message": "test: rehome A3 source-edge tamper oracles for 191 and 204",
   "retention_days": 14
 }
