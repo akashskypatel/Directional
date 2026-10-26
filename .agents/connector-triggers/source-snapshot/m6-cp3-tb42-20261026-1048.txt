@@ -1,0 +1,2 @@
+M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY
+Request exact source snapshot for artifact-only verification; no runtime execution.
