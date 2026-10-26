@@ -1,2 +1,0 @@
-# CB41-REV final hygiene. Temporary workflow and trigger already deleted in required workflow-first order.
-# No remaining repository temporary paths require deletion.
