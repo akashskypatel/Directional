@@ -1,3 +1,7 @@
+## 2026-10-26 — CB44 independent static review accepted; TB44 four-case manifest frozen
+
+- [Architecture_M6_CP3_CB44_Selector405_Rail_Provenance_Independent_Review_Decision_20261026.md](.agents/Directional/Architecture_M6_CP3_CB44_Selector405_Rail_Provenance_Independent_Review_Decision_20261026.md) independently verified exact CB44 test-only commit `c256671`, producer/helper A2b rail provenance, unchanged positive expectations, 28/28 compile artifact checksums, GMP/GMPXX and runtime-free boundary. [TB44 manifest](.agents/Directional/Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Verification_Case_Manifest.tsv) contains selector405 POSITIVE plus three off-gate negative guards. No test executed, selector promoted or stable accounting changed; accepted CP2 491/491, stable 66/17/49 debt 1. Next `M6-CP3-TB44-RP01-SELECTOR405-FIXED-PLAN-VERIFY` then independent TB44-REV for P1.
+
 ## 2026-10-26 — CB44 selector405 A2b rail-provenance fixture correction compiled (no runtime)
 
 - [Code+Build record](.agents/Directional/Architecture_M6_CP3_CB44_Selector405_Fixed_Plan_Rail_Provenance_Code_Build_Record_20261026.md) documents the authorized one-test-body correction: the 0.5/2.0 fixed-plan calls now forward authoritative hard-rail terminal contacts and closed chains; the original assertions and other code remain unchanged.
