@@ -3357,37 +3357,105 @@ TEST(SurfaceCellsPhase10,
   mesh.set_mesh(vertices, faces);
   const auto sourceField = directional::pipeline::finalize_surface_cell_raw_cross_field(
       mesh, raw);
-  auto crossField = sourceField;
-  auto transition = std::find_if(
-      crossField.edgeTransitions.begin(), crossField.edgeTransitions.end(),
-      [](const auto &candidate) {
-        return candidate.firstFace >= 0 && candidate.secondFace >= 0;
-      });
-  ASSERT_NE(crossField.edgeTransitions.end(), transition);
-  transition->matching += 1;
   directional::geometry::SurfaceCellTracingOptions options;
   options.sourceFaceComponents = {0, 0};
   options.sourceFaceSheets = {0, 1};
   const Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(4, 0.5);
+  const auto network = build_phase10_with_source_atlas(
+      mesh, sourceField, targetSize, options);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition());
+  const auto &product = network.phaseFront.product();
+  ASSERT_EQ(1U, product.isolationSeamTransportCertificates().size());
+  const auto &certificate = product.isolationSeamTransportCertificates().front();
+
+  const auto wrongReverse = directional::authority::QuarterTurn::from_integer(
+      static_cast<int>(certificate.reverse().value()) + 1);
+  const auto reverseResult =
+      directional::geometry::SurfaceIsolationSeamTransportCertificate::make(
+          product.sourceTopologyRegions(), certificate.region(),
+          certificate.seam(), certificate.transition(), certificate.firstFace(),
+          certificate.secondFace(), certificate.firstSheet(),
+          certificate.secondSheet(), certificate.forward(), wrongReverse);
+  const auto *reverseError = std::get_if<
+      directional::geometry::SurfaceIsolationSeamTransportCertificateError>(
+          &reverseResult);
+  ASSERT_NE(nullptr, reverseError);
+  EXPECT_EQ(directional::geometry::
+                SurfaceIsolationSeamTransportCertificateErrorCode::
+                    NonReciprocalTransport,
+            reverseError->code);
+  EXPECT_EQ(certificate.seam(), reverseError->seam);
+  EXPECT_EQ(certificate.region(), reverseError->region);
+
+  const auto wrongForward = directional::authority::QuarterTurn::from_integer(
+      static_cast<int>(certificate.forward().value()) + 1);
+  const auto forwardResult =
+      directional::geometry::SurfaceIsolationSeamTransportCertificate::make(
+          product.sourceTopologyRegions(), certificate.region(),
+          certificate.seam(), certificate.transition(), certificate.firstFace(),
+          certificate.secondFace(), certificate.firstSheet(),
+          certificate.secondSheet(), wrongForward, certificate.reverse());
+  const auto *forwardError = std::get_if<
+      directional::geometry::SurfaceIsolationSeamTransportCertificateError>(
+          &forwardResult);
+  ASSERT_NE(nullptr, forwardError);
+  EXPECT_EQ(directional::geometry::
+                SurfaceIsolationSeamTransportCertificateErrorCode::
+                    NonReciprocalTransport,
+            forwardError->code);
+  EXPECT_EQ(certificate.seam(), forwardError->seam);
+  EXPECT_EQ(certificate.region(), forwardError->region);
+
+  const auto controlResult =
+      directional::geometry::SurfaceIsolationSeamTransportCertificate::make(
+          product.sourceTopologyRegions(), certificate.region(),
+          certificate.seam(), certificate.transition(), certificate.firstFace(),
+          certificate.secondFace(), certificate.firstSheet(),
+          certificate.secondSheet(), certificate.forward(),
+          certificate.reverse());
+  const auto *controlCertificate = std::get_if<
+      directional::geometry::SurfaceIsolationSeamTransportCertificate>(
+          &controlResult);
+  ASSERT_NE(nullptr, controlCertificate);
+  EXPECT_EQ(directional::geometry::surface_cell_tracing_detail::
+                isolation_seam_transport_certificate_hash(certificate),
+            directional::geometry::surface_cell_tracing_detail::
+                isolation_seam_transport_certificate_hash(*controlCertificate));
+
+  auto mutatedField = sourceField;
+  auto transition = std::find_if(
+      mutatedField.edgeTransitions.begin(), mutatedField.edgeTransitions.end(),
+      [](const auto &candidate) {
+        return candidate.firstFace >= 0 && candidate.secondFace >= 0;
+      });
+  ASSERT_NE(mutatedField.edgeTransitions.end(), transition);
+  transition->matching += 1;
   const auto sourceAuthority =
       directional::geometry::surface_cell_tracing_detail::
           build_source_topology_regions(mesh.F, options);
   ASSERT_TRUE(sourceAuthority.has_value());
-  auto sourceAtlas = directional::authority::FieldTransportAtlas::make(
+  const auto sourceAtlas = directional::authority::FieldTransportAtlas::make(
       mesh, *sourceAuthority, options.hardFeatureEdges, sourceField);
   ASSERT_TRUE(sourceAtlas.has_value());
-  options.fieldTransportAtlas = &sourceAtlas.value();
-
-  const auto network = directional::geometry::build_surface_cell_network(
-      vertices, faces, crossField, targetSize, options);
-  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
-            network.phaseFront.disposition());
-  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
-                InvalidTopologyRegionTransport,
-            network.phaseFront.rejection_reason())
-      << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.rejection_reason());
-  EXPECT_EQ(nullptr, network.phaseFront.produced_product());
+  const auto mutatedAtlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, options.hardFeatureEdges, mutatedField);
+  ASSERT_TRUE(mutatedAtlas.has_value());
+  const auto fromFace = sourceAuthority->row_for_topology(certificate.firstFace());
+  const auto toFace = sourceAuthority->row_for_topology(certificate.secondFace());
+  ASSERT_TRUE(fromFace.has_value());
+  ASSERT_TRUE(toFace.has_value());
+  const auto originalForward = sourceAtlas.value().transition_value(
+      certificate.seam(), fromFace.value(), toFace.value());
+  const auto changedForward = mutatedAtlas.value().transition_value(
+      certificate.seam(), fromFace.value(), toFace.value());
+  const auto changedReverse = mutatedAtlas.value().transition_value(
+      certificate.seam(), toFace.value(), fromFace.value());
+  ASSERT_TRUE(originalForward.has_value());
+  ASSERT_TRUE(changedForward.has_value());
+  ASSERT_TRUE(changedReverse.has_value());
+  EXPECT_EQ(changedForward->transport.inverse(), changedReverse->transport);
+  EXPECT_NE(originalForward->transport, changedForward->transport);
 }
 
 TEST(SurfaceCellsPhase10, CurvedBoundedDiskPhaseFrontIsStructurallyApplicable) {
