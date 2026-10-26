@@ -1,7 +1,7 @@
 # CB41 independent review — selector189 equivalent signed-lift A3 ingress (2026-10-26)
 
 **Canonical turn:** `M6-CP3-CB41-RP01-EQUIVALENT-LIFT-A3-INGRESS-REHOME-REV`
-**Static disposition:** APPROVED for downstream CB42, **not runtime acceptance**. This review derives the assertions from the independently retrieved immutable compile package and byte-matched full source snapshot. No Directional binary, test, benchmark, compilation or source repair was run by this Review.
+**Static disposition:** source/test review supports CB42 conditionally; formal closeout awaits the mandatory authentic-Git `review_check.py boundary` proof. **Not runtime acceptance.** This review derives the assertions from the independently retrieved immutable compile package and byte-matched full source snapshot. No Directional binary, test, benchmark, compilation or source repair was run by this Review.
 
 ## Evidence and source authority
 
@@ -46,6 +46,6 @@ The first documentation apply (run 40279714936) failed the workflow whitespace g
 | Consolidation under CLEAN_UP_POLICY | CP3 census: no safely superseded documents; zero folded; pending TB41 still needs historic compile/review files. |
 | Successor frozen | `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN`; O3 `cell=-1,side=-1` and failure-stop contract above. |
 | Turn boundary held | Static source/artifact review; no runtime or product/test/fixture/selector/build changes. |
-| review_check.py boundary | Not established on authentic Git history by snapshot (archive omits `.git`). Exact source/snapshot byte hashes and GitHub compare are separate supporting evidence; do not claim full-history boundary PASS. |
-| `STATUS` lifecycle maintained | Entry beacon published; final beacon to be published only after documentation application/verification. |
-| Pushed to origin, branch in sync | Remote Drive apply required; pending until applied and verified. Gitless snapshot cannot establish authentic `git status -sb`. |
+| review_check.py boundary | **PENDING**: not run against authentic Git history; exact source/snapshot hashes and GitHub changed-file inventory are supporting but not substitute evidence. Do not claim a boundary PASS or formal review closure. |
+| `STATUS` lifecycle maintained | Entry/resume beacons published. Retain same-turn IN_PROGRESS until authentic-Git boundary proof and final COMPLETE beacon. |
+| Pushed to origin, branch in sync | Corrected patch applied by workflow 40280230101 at commit `9870215dedb4dfe820b97ce784f84495e021d075`; exact six document paths independently verified via GitHub commit inventory. Authentic `git status -sb` not established. |
