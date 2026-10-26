@@ -1,10 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb45-selector242-seam-rehome-compile-20261026-r1",
+  "request_id": "m6-cp3-cb45-selector242-seam-rehome-compile-20261026-r2",
   "operation": "compile",
   "mailbox_key": "m6-cp3-cb45-selector242-seam-rehome-compile",
   "source_sha": "dfeb0751b1a42a0805aecf4ef4ffb6917f619c83",
-  "targets": "directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks",
-  "artifact_prefix": "m6-cp3-cb45-selector242-compile",
-  "retention_days": 14
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb45-selector242-compile"
 }
