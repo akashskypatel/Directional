@@ -1,3 +1,8 @@
+## 2026-10-26 — RA-160 legacy-path DEFN Review: 190 re-home amended; O2 production CB withdrawn
+
+- [RA-160](.agents/Directional/Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md) accepted the DEFN in part. Q1 holds and is stronger than RA-159 N2: `legacyField` is fully inert. Q2 amended: A3 `MissingAdjacency` duplicates `selector:28`, so CB43 also pins the unpinned no-atlas A4 ingress locus (`atlas-binding`).
+- Q4 incomplete: NotApplicable no-atlas inputs publish legacy-decided seed-fallback outputs; crossField `trace_surface_field` always forwards legacy containers; periodic step defaults to identity transport. O2 production CB withdrawn to post-RP-01. Next `M6-CP3-CB43-RP01-SELECTOR190-LEGACY-INGRESS-REHOME`. No source, selector, acceptance or regression total changed.
+
 ## 2026-10-26 — legacy matching-path disposition defined; independent Review next
 
 - [DEFN](.agents/Directional/Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_20261026.md) answers RA-159 Q1–Q6: selector190 is vacuous because A3 bypasses modified legacy containers; proposed A3 `MissingAdjacency` re-home preserves selector identity and historical CP2 accounting. O2 distinguishes no-atlas rejection-only ingress from accepted and off-gate detail fallback consumers; avoids blanket deletion. One later test-only CB and one production CB, each separately reviewed, proposed. No source, tests, selector, runtime, acceptance or regression totals changed. Next `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION-REV`.

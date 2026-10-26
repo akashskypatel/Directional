@@ -34,38 +34,41 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-26, after [legacy-path DEFN](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_20261026.md) (Q1–Q6 drafted; independent Review required; no selector/acceptance promotion). |
+| Currency | 2026-10-26, after [RA-160](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md) (legacy-path DEFN accepted in part; 190 re-home amended; O2 production CB withdrawn to post-RP-01). |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted 2026-10-06 (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
 | Latest candidate or rejected evidence | Focused candidates on CB42 source `8dc8cdeae`, package `12634151125` (expires 2026-11-02T07:22:41Z): TB41 **18/18** (result `12638251384`, [TB41-REV](Architecture_M6_CP3_TB41_Rehomed_Oracle_Independent_Review_Decision_20261026.md)); TB42 **1/1** ([run 40310754811](https://github.com/akashskypatel/Directional/actions/runs/40310754811), result `12644936205`, ZIP `2d0c6cf7…b1b6`, [TB42-REV](Architecture_M6_CP3_TB42_O3_Off_Selector_Locus_Independent_Review_Decision_20261026.md)); O3 3/3. TB32 481/500 and TB38 490/504 candidate; selector497 frozen, unpromoted. |
 | Regression accounting and debt | Stable **66/17/49**, debt 1 ([tracker](Regression_Root_Cause_Tracker.md)). No new stable event. |
-| Active boundary | RP-01 open, RP-02 unreached. selector190 vacuous since `7ccdcd527`; DEFN re-homes as A3 MissingAdjacency oracle (pending independent Review), and leaves accepted-prefix legacy detail fallback intact. O5: 249 producer tests in no frozen gate. O6: nonrectangular bounded disks rejected by design, no owner. Carried: DIAG-RETAIN, O1, O2, O4, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002. |
+| Active boundary | RP-01 open, RP-02 unreached. selector190 vacuous since `7ccdcd527`; re-home bound by RA-160.3 (A3 negative + A4 no-atlas ingress pin). No-atlas ingress still publishes legacy-decided seed-fallback outputs on NotApplicable inputs (RA-160 D2; test-only ingress). O5: 249 producer tests in no frozen gate. O6: nonrectangular bounded disks rejected by design, no owner. Carried: DIAG-RETAIN, O1, O2 (post-RP-01), O4, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002. |
 
-## Mandatory next turn — `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION-REV` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB43-RP01-SELECTOR190-LEGACY-INGRESS-REHOME` — EXACT NEXT
 
-- **Authority:** [legacy matching-path DEFN](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_20261026.md), RA-159.3. Independent Review of Q1–Q6; this turn is design-only, not an implementation or test action. Do not promote selector497/CP3 or change source, tests, selectors or workflow files.
-- **Verify:** selector190 legacy matching/effort is bypassed by A3-backed helper; A3 negative `MissingAdjacency` at first canonical interior edge can be independently discriminated; CP2 491/491 is historical, not new legacy-path evidence; no-atlas detail consumers (including accepted-prefix `LegacyMatchingFallbackRemainsUnchangedWhenTransitionMetadataAbsent`) and rejection-first locus remain protected.
-- **Decide:** explicit one-test CB/one-production CB authorization or correction, exact stop/falsifiers, and whether any detail-only retirement requires a separate Review-owned decision. Freeze successor only by independent Review.
-- **STOP:** a no-atlas production caller publishes, a different A3 code/key occurs, a published path consumes legacy matching, an accepted identity would be broken, or frozen selector497 bytes must change without authorization.
+- **Authority:** [RA-160.3](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md). Test-only Code+Build, compile only; edit only the body of `LegacyMatchingPathUsesSameTypedAlgebra` (`tests/SurfaceCellsPhase10Tests.cpp:5171–5195`), same identity.
+- **Halves:** (a) keep authoritative positive; (b) `make(fixture.mesh, A2, {}, legacyField)` → `MissingAdjacency`, `sourceEdge` = independently enumerated minimum interior key (assert non-empty); (c) `edgeTransitions` restored → A3 succeeds; (d) crossField overload, no atlas, no `sourceAuthority` → `Rejected`, `PublishedProductRejected`, `InvalidSourceAuthority`, `AtlasSourceMismatch`, site `"atlas-binding"`, no product, empty seeds/traces/proposals; stream reason/error/detail/site.
+- **Evidence:** 8 GMP/GMPXX targets, `runtimeExecution=false`, record ≤30 lines with the exact hunk.
+- **STOP → Review:** accessor/enum not visible; production edit needed; selector bytes would change. A runtime (d) mismatch is a TB43 finding, not a CB fix.
+- **On success:** `M6-CP3-CB43-RP01-SELECTOR190-LEGACY-INGRESS-REHOME-REV` (static; issues TB43 manifest).
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| done | TB42 → TB42-REV → audit ([RA-159](Architecture_M6_CP3_TB42_REV_Audit_Selector190_Vacuity_And_DEFN_Spec_Decision_20261026.md)) | O3 3/3 focused candidate; 190 vacuity found. |
-| 1 — next | `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION-REV` | Independently review [190 + O2 DEFN](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_20261026.md); no code/runtime. |
-| 2 | `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` → `…-REV` | O4 (`SurfaceCellTracing.cpp:12656/12698/12707`); design only. |
-| 3 | `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` → `…-REV` | 242; coordinate DEFN-SEAM-NZ; design only. |
-| 4 | Code/TB turns authorized by steps 1–3 | Their Reviews assign canonical IDs; one CB per mechanism. |
-| 5 | 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) | One owner per turn; Review assigns IDs. |
-| 6 | `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` → `…-REV` | O5: classify 249 off-gate producer tests. |
-| 7 | Census → RP-01 Review | Review-owned manifest; must state O6 CP3 scope and owner. |
+| done | Legacy-path DEFN → REV ([RA-160](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md)) | Q1–Q3 accepted (Q2 amended); Q4–Q5 incomplete; O2 production CB withdrawn. |
+| 1 — next | `M6-CP3-CB43-RP01-SELECTOR190-LEGACY-INGRESS-REHOME` → `…-REV` | Test-only, one test body; REV issues TB43 manifest. |
+| 2 | `M6-CP3-TB43-RP01-SELECTOR190-REHOME-VERIFY` → `…-REV` | Artifact-only, CB43 package: 190 POSITIVE; GUARD `selector:28/179/233`. |
+| 3 | `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` → `…-REV` | O4 (`SurfaceCellTracing.cpp:12656/12698/12707`); design only. |
+| 4 | `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` → `…-REV` | 242; coordinate DEFN-SEAM-NZ; design only. |
+| 5 | Code/TB turns authorized by steps 3–4 | Their Reviews assign canonical IDs; one CB per mechanism. |
+| 6 | 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) | One owner per turn; Review assigns IDs. |
+| 7 | `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` → `…-REV` | O5: classify 249 off-gate producer tests. |
+| 8 | Census → RP-01 Review | Review-owned manifest; must state O6 CP3 scope and owner. |
+| post-RP-01 | `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS-RETIREMENT` | RA-160.4: NotApplicable seed fallback, crossField overloads, detail consumers (179, 233, `Phase10Tests:489–611, 5716`), entry-gate vs factory locus. |
 | carried | `DIAG-RETAIN` (full scope in TODO CURRENT) | Review places it clear of RP-01 corrective turns; edits `RemeshPipeline.cpp`. |
-| carried | O1, O2 (step 1), O4 (step 2), O5 (step 6), O6 (step 7), RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002 | Separate gates. |
+| carried | O1, O4 (step 3), O5 (step 7), O6 (step 8), RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002 | Separate gates. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION-REV** — independent design review of [legacy path disposition](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_20261026.md) and [RA-159](Architecture_M6_CP3_TB42_REV_Audit_Selector190_Vacuity_And_DEFN_Spec_Decision_20261026.md). Read `tests/SurfaceCellsPhase10Tests.cpp:4490–4516,4561–4599,5171–5195,589–611,5716–5735`, `src/geometry/SurfaceCellTracing.cpp:6688–6819,8459–8470,14926–14979,21175–21192`, and `src/authority/FieldTransportAtlas.cpp:1981–2018`. Recompute Q1–Q6 non-vacuity, provenance, acceptance history and full detail-test impacts. No compile/runtime.
+`load_next`: **M6-CP3-CB43-RP01-SELECTOR190-LEGACY-INGRESS-REHOME** — test-only per [RA-160.3](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md). Load `tests/SurfaceCellsPhase10Tests.cpp:4490–4516` (A2/A3 helper), `4561–4599` (legacy field), `5171–5195` (190), `include/directional/geometry/SurfaceCellTracing.h:1866–1885, 2147–2170` (failure fields/accessors), `src/authority/FieldTransportAtlas.cpp:1981–2018`, `src/geometry/SurfaceCellTracing.cpp:8459–8470, 13185–13200, 21175–21192`. Compile only; no production, selector, harness or workflow change.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

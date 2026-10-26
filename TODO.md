@@ -1,5 +1,36 @@
-## CURRENT — legacy matching-path DEFN drafted; independent Review next (2026-10-26)
+## CURRENT — RA-160 legacy-path DEFN Review; CB43 190 re-home next (2026-10-26)
 
+- [x] **RA-160 DEFN Review** ([decision](.agents/Directional/Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md)) — accepted in part:
+  - Q1 accepted and strengthened: the atlas-present wrapper nulls all legacy containers (`SurfaceCellTracing.cpp:21182–21185`); `legacyField` is fully inert. Corrects RA-159 N2 (it does not select the provenance lookup).
+  - Q2/Q3 accepted; Q2 amended — A3 `MissingAdjacency` alone duplicates accepted `selector:28`; add the A4 no-atlas ingress pin (no test pins `"atlas-binding"`).
+  - D2: Q4 false on NotApplicable inputs — the seed fallback (`:20661–21160`) publishes legacy-decided seeds/traces/proposals/separatrices on no-atlas ingress.
+  - D3/D4: crossField `trace_surface_field` (`:11527`) always passes legacy containers (FlowRep production caller has atlas); planar/bounded/isolation and selector233 inventory deferred.
+  - D5: periodic step defaults to identity transport with no source (`:14937–14979`, no `else` rejection).
+  - O2 production CB withdrawn; O2 moves to post-RP-01 DEFN.
+- [ ] **NEXT `M6-CP3-CB43-RP01-SELECTOR190-LEGACY-INGRESS-REHOME`** — test-only, compile only; halves (a) positive, (b) A3 `MissingAdjacency` + independent min interior key, (c) restored-transitions anti-vacuity, (d) no-atlas A4 `PublishedProductRejected`/`InvalidSourceAuthority`/`AtlasSourceMismatch`/`"atlas-binding"`, empty outputs (RA-160.3).
+- [ ] Then `M6-CP3-CB43-…-REV` (static; issues TB43 manifest) → `M6-CP3-TB43-RP01-SELECTOR190-REHOME-VERIFY` (190 POSITIVE; GUARD `selector:28/179/233`) → `…-REV`.
+- [ ] Then `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` (O4) → REV; `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` → REV; their CB/TB turns.
+- [ ] Then 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`).
+- [ ] Then `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` (O5) → REV → census → RP-01 Review (with O6 scope statement).
+- [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS-RETIREMENT` (RA-160.4).
+- [ ] Carried separately: O1, O2 (post-RP-01), O4, O5, O6, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002.
+- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
+  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
+  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
+  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
+  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- **Turn sequence:**
+  - Done: RA-159 → legacy-path DEFN → REV (RA-160).
+  - **CB43 190 re-home → REV → TB43 → REV.**
+  - DEFN O4 → REV; DEFN 242 → REV; authorized CB/TB.
+  - 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1.
+  - DEFN O5 → REV → census → RP-01 Review (O6 scope). Post-RP-01: O2 DEFN.
+  - `DIAG-RETAIN` carried.
+- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 and TB38 490/504 candidate; TB41 18/18 and TB42 1/1 focused candidate; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+
+---
+
+## HISTORY — RA-159; legacy-path DEFN; DEFN-REV (2026-10-26)
 - [x] **RA-159 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB42_REV_Audit_Selector190_Vacuity_And_DEFN_Spec_Decision_20261026.md)):
   - TB42-REV confirmed: ZIP `2d0c6cf7…b1b6`, 5/5 hashes, 1/1 log join, manifest `b266c056…8885` frozen before dispatch. O3 3/3 focused candidate.
   - N1/O6: the O3 tests pin a limitation — every nonrectangular bounded disk (incl. the L-shaped fixture) is rejected by design (`SurfaceCellTracing.cpp:17182–17192`); no requirement or owner exists. RP-01 Review must state CP3 scope and owner.
@@ -8,25 +39,8 @@
   - N4: O2 has a live detail-level consumer, `LegacyMatchingPathUsesSameTypedRouteComposition` (`Phase10Tests:5716`, off-gate).
   - N5: duplicate DEFN item in TODO and missing TB42 result in the handoff fixed.
 - [x] **DEFN legacy matching path** — [decision](.agents/Directional/Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_20261026.md): Q1–Q6 answered; re-home 190 as a discriminating A3 MissingAdjacency oracle, preserve legacy detail-only consumers and accepted-prefix credit as historical only. Design only, no selector or runtime change.
-- [ ] **NEXT `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION-REV`** — independently adjudicate six answers, error/key feasibility, detail-consumer protection, stop rules, and later-turn ownership; no code/compile/runtime.
-- [ ] Then `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` (O4) → REV.
-- [ ] Then `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` (242; DEFN-SEAM-NZ) → REV.
-- [ ] Then the Code/TB turns those DEFNs authorize; then 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`).
-- [ ] Then `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` (O5) → REV → census → RP-01 Review (with O6 scope statement).
-- [ ] Carried separately: O1, O2 (next DEFN), O4, O5, O6, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002.
-- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
-  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
-  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
-  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
-  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Turn sequence:**
-  - Done: RA-158 → TB42 → TB42-REV → audit (RA-159).
-  - **DEFN legacy-matching path (190, O2) drafted → REV next.**
-  - DEFN A4 provenance-guard reachability (O4) → REV; DEFN 242 cross-region seam consumer → REV.
-  - Authorized Code/TB turns → 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1.
-  - DEFN off-selector coverage (O5) → REV → census → RP-01 Review (O6 scope statement).
-  - `DIAG-RETAIN` carried.
-- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 and TB38 490/504 candidate; TB41 18/18 and TB42 1/1 focused candidate; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+- [x] **COMPLETE `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION-REV`** — Review Agent (RA-160); accepted in part, production CB withdrawn.
+- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; selector497 frozen; RP-01 open.
 
 ---
 

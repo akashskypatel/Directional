@@ -1,3 +1,7 @@
+**RA-160 legacy-path DEFN Review (2026-10-26, candidate/non-stable):**
+- DEFN accepted in part; 190 re-home amended (A3 negative + A4 no-atlas `atlas-binding` pin); O2 production CB withdrawn to post-RP-01 (no-atlas NotApplicable ingress publishes legacy-decided seed-fallback outputs).
+- No stable event; 66/17/49, debt 1. [RA-160](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md).
+
 **Legacy-path DEFN disposition (2026-10-26, candidate/non-stable):** [Definition](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_20261026.md) proves selector190’s A3-backed fixture does not consume altered legacy matching/effort; proposed test-only re-home asserts `MissingAdjacency` at the first sorted source edge. An accepted-prefix detail-test consumer still exercises compact fallback; no blanket production/helper deletion is authorized. Historical 190 CP2 credit stays frozen, not current-path evidence. Pending independent `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION-REV`; stable 66/17/49, debt 1, CP2 491/491, selector497 unchanged.
 
 **RA-159 TB42-REV audit (2026-10-26, candidate/non-stable):**

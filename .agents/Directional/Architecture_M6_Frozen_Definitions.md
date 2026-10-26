@@ -1,3 +1,13 @@
+## RA-160 — legacy-path DEFN reviewed: 190 re-home amended; O2 post-RP-01 (2026-10-26)
+
+Authority: `Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md`.
+
+- **RA-160.1** Q1 verified and strengthened (wrapper nulls all legacy containers, `SurfaceCellTracing.cpp:21182–21185`); corrects RA-159 N2. Q2 feasible; Q3 accepted.
+- **RA-160.2** D1 A3-only re-home duplicates `selector:28`; no-atlas A4 locus unpinned. D2 NotApplicable no-atlas seed fallback publishes legacy-decided outputs. D3 crossField trace API forwards legacy containers. D4 inventory deferred. D5 periodic identity default.
+- **RA-160.3** CB43 halves (a)–(d) in 190's body; same identity; no selector byte change.
+- **RA-160.4** O2 production CB withdrawn; `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS-RETIREMENT` after RP-01.
+- **RA-160.5** Frozen IDs: `M6-CP3-CB43-RP01-SELECTOR190-LEGACY-INGRESS-REHOME` → REV; `M6-CP3-TB43-RP01-SELECTOR190-REHOME-VERIFY` → REV.
+
 ## RA-159 — TB42-REV audited: selector190 vacuity; legacy-path DEFN bound; O6 (2026-10-26)
 
 Authority: `Architecture_M6_CP3_TB42_REV_Audit_Selector190_Vacuity_And_DEFN_Spec_Decision_20261026.md`.
