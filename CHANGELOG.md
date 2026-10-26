@@ -1,3 +1,7 @@
+## 2026-10-26 — TB42-REV independently accepts third O3 rejection locus (focused candidate only)
+
+- [TB42-REV](.agents/Directional/Architecture_M6_CP3_TB42_O3_Off_Selector_Locus_Independent_Review_Decision_20261026.md) independently rehashed CB42 package ZIP/28 members, TB42 result ZIP/5 members, one raw GTest execution and the exact manifest/harness; compiled-source first-locus inspection distinguishes polygonal-chart fail-closed from the four other same-reason sites. Third O3 runtime 1/1; O3 now 3/3 focused candidate with TB41's 251/252. No selector497/CP3 promotion or stable accounting changes; CP2 491/491 accepted, stable 66/17/49 debt1, RP-01 open. Next `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION` (Definition only).
+
 ## 2026-10-26 — TB42 O3 off-selector locus verification
 
 - Artifact-only [TB42](.agents/Directional/Architecture_M6_CP3_TB42_O3_Off_Selector_Locus_Verification_Report_20261026.md) on immutable CB42 package `12634151125`: [run 40310754811](https://github.com/akashskypatel/Directional/actions/runs/40310754811), result `12644936205`, 5/5 artifact hashes verified, one exact POSITIVE GTest 1/1 PASS, postflight=true, no compile/relink/configure/benchmark. Third O3 locus test now joins TB41 two tests as **3/3 focused runtime candidate** pending independent TB42-REV. Accepted CP2 491/491, selector497 frozen, stable 66/17/49 debt1, RP-01 open unchanged.

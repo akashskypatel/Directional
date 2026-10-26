@@ -1,6 +1,6 @@
 **RA-158 TB41-REV audit (2026-10-26, candidate/non-stable):**
-- TB41-REV confirmed: 18/18 focused candidate; O3 2/3 executed.
-- **Owner:** `M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY` for `SurfaceCellsPhase10.PolygonalCurvedDiskRejectsWithoutPublishingPartialPhase`; package `12634151125` expires 2026-11-02T07:22Z.
+- TB41-REV confirmed: 18/18 focused candidate; [TB42-REV](Architecture_M6_CP3_TB42_O3_Off_Selector_Locus_Independent_Review_Decision_20261026.md) independently accepted off-selector third row 1/1; O3 3/3 focused candidate, not selector or CP3 promotion.
+- **Owner (discharged):** TB42 / TB42-REV for `SurfaceCellsPhase10.PolygonalCurvedDiskRejectsWithoutPublishingPartialPhase`; package `12634151125` expires 2026-11-02T07:22Z.
 - **New observation O5:** 249 of 598 `directional_surface_cell_producer_tests` identities are in no frozen gate; never measured, so no regression claimed. Owner: `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` before the census.
 - **Falsifiers:** the O3 test reports a reason other than `InvalidBoundedDiskFrontPairing` or a non-−1 `cell`/`side`.
 - No stable event; 66/17/49, debt 1. [RA-158](Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md).

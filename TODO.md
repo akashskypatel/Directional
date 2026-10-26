@@ -1,4 +1,4 @@
-## CURRENT — TB42 O3 focused candidate passed; independent Review next (2026-10-26)
+## CURRENT — TB42-REV accepted focused O3 candidate; legacy-matching DEFN next (2026-10-26)
 
 - [x] **RA-158 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md)):
   - TB41-REV confirmed: ZIP `1817f829…d854`, 39/39 hashes, 18/18 log joins, manifest `659c52f0…2959`; no source change since CB42 `8dc8cdeae`. Focused candidate only.
@@ -9,13 +9,14 @@
   - L5/O5: 249 of 598 producer-binary tests are in no frozen gate (42 `SurfaceCellsPhase10`, 14 `M6CP3`); disposition DEFN before the census.
   - L6: handoff authority table realigned to the template; stale TODO items closed.
 - [x] **TB42 artifact-only:** one O3 POSITIVE row on CB42 package `12634151125` using unchanged targeted harness; [run 40310754811](https://github.com/akashskypatel/Directional/actions/runs/40310754811), result `12644936205`, 5/5 checksum and 1/1 PASS, postflight=true; candidate, not gate promotion. [Report](.agents/Directional/Architecture_M6_CP3_TB42_O3_Off_Selector_Locus_Verification_Report_20261026.md).
-- [ ] **NEXT `M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY-REV`** — independently inspect immutable TB42 result, original package, O3 first-locus assertions and non-vacuity, 3/3 focused candidate boundary; no selector497 or CP3 promotion.
+- [x] **COMPLETE `M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY-REV`** — independent 28/28 CB42, 5/5 TB42 result hashes, one raw GTest join, typed locus non-vacuity; O3 now 3/3 focused candidate; [decision](.agents/Directional/Architecture_M6_CP3_TB42_O3_Off_Selector_Locus_Independent_Review_Decision_20261026.md). No selector497/CP3 promotion.
+- [ ] **NEXT `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION`** — design-only disposition of 190/O2 unreachable legacy matching path; accepted-prefix accounting and independent falsifier; no code/runtime.
 - [ ] Then `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION` (190 + O2; accepted-prefix accounting rule) → REV.
 - [ ] Then `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` (O4) → REV.
 - [ ] Then `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` (242; DEFN-SEAM-NZ) → REV.
 - [ ] Then the Code/TB turns those DEFNs authorize; then 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`).
 - [ ] Then `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` (O5) → REV → census → RP-01 Review.
-- [ ] Carried separately: O1, O2 (DEFN step 2), O3 (TB42), O4 (DEFN step 3), O5, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002.
+- [ ] Carried separately: O1, O2 (next DEFN), O4 (later DEFN), O5, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
   - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
@@ -23,7 +24,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: RA-157 → CB39 → CB40 → CB41 → CB42 (each → REV) → TB41 → TB41-REV → audit (RA-158).
-  - **TB42 completed → REV next** (O3; 1/1 PASS, focused candidate only).
+  - **TB42 and TB42-REV completed** (O3 3/3 focused candidate). Next legacy-matching DEFN.
   - DEFN legacy-matching path (190, O2) → REV; DEFN A4 provenance-guard reachability (O4) → REV; DEFN 242 cross-region seam consumer → REV.
   - Authorized Code/TB turns → 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1.
   - DEFN off-selector coverage (O5) → REV → census → RP-01 Review.
