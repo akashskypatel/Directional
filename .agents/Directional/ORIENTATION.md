@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-26 · CB44 selector405 fixture correction independently [statically reviewed](Architecture_M6_CP3_CB44_Selector405_Rail_Provenance_Independent_Review_Decision_20261026.md); source `c256671115c92f7dd55fea5d680feeac3cbb5190`, 28/28 immutable package checks, eight GMP/GMPXX targets, runtime-free. Next artifact-only `M6-CP3-TB44-RP01-SELECTOR405-FIXED-PLAN-VERIFY` (405 positive + three off-gate guards); no runtime credit. CP2 491/491 last accepted, selector497 unpromoted, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-26 · [TB44 focused runtime](Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Verification_Report_20261026.md) 3/4: selector405 positive PASS, off-gate 7614/7414 PASS, guard8219 RED (`missing-terminal-or-closed-rail-provenance` rather than expected `missing-terminal-A3-path`). Run 40387240269 immutable CB44 artifact, postflight valid, no compile. Independent TB44-REV next for RA-161 P1; no selector497 or CP3 promotion, accepted CP2 491/491, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 

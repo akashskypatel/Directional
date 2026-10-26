@@ -34,19 +34,19 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-26: [CB44-REV](Architecture_M6_CP3_CB44_Selector405_Rail_Provenance_Independent_Review_Decision_20261026.md) independently accepted the test-only fixture correction and immutable 28/28 GMP compile (source `c256671`, package `12674401457`) for **static scope only**. Frozen [four-row TB44 manifest](Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Verification_Case_Manifest.tsv); TB44 is next. No runtime evidence, selector promotion or stable-accounting change. |
+| Currency | 2026-10-26: [TB44](Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Verification_Report_20261026.md) immutable artifact-only runtime **3 PASS / 1 RED**: positive selector405 PASS, guards 7614 and 7414 PASS, 8219 RED (expected `missing-terminal-A3-path`, actual `missing-terminal-or-closed-rail-provenance`). Valid 10/10 result hashes/postflight, no rebuild. Independent TB44-REV next; no selector/CP3 promotion. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted 2026-10-06 (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
-| Latest candidate or rejected evidence | TB43 **4/4** on CB43 source `d354d6ae9`, package `12657932087` ([run 40353956056](https://github.com/akashskypatel/Directional/actions/runs/40353956056), result `12664712967`, ZIP `fbe75000…26804`, [TB43-REV](Architecture_M6_CP3_TB43_Selector190_Rehome_Independent_Review_Decision_20261026.md)). Earlier focused: TB41 18/18, TB42 1/1 (O3 3/3). TB32 481/500 and TB38 490/504 candidate; selector497 frozen, unpromoted. |
+| Latest candidate or rejected evidence | TB44 **3/4**, positive 405 PASS, guard 8219 RED; [run 40387240269](https://github.com/akashskypatel/Directional/actions/runs/40387240269), result `12680557878` (SHA-256 `f1b30006…3376b986`), [report](Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Verification_Report_20261026.md). Earlier TB43 4/4, TB41 18/18, TB42 1/1; TB32 481/500, TB38 490/504 candidate; selector497 unpromoted. |
 | Regression accounting and debt | Stable **66/17/49**, debt 1 ([tracker](Regression_Root_Cause_Tracker.md)). No new stable event. |
 | Active boundary | RP-01 open, RP-02 unreached. Nine TB38 REDs remain: `selector:174, 201, 242, 405, 442` (accepted-prefix regressions), `focused30:12`, `cp3entry:1, 2, 4`. 405 = fixture omits A2b rail provenance (RA-161.3). P1: two off-gate negatives use the same empty default. O5: 249 off-gate producer tests. O6: nonrectangular disks unowned. Carried: DIAG-RETAIN, O1, O2 (post-RP-01, + RA-161 T2), O4, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002. |
 
-## Mandatory next turn — `M6-CP3-TB44-RP01-SELECTOR405-FIXED-PLAN-VERIFY` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB44-RP01-SELECTOR405-FIXED-PLAN-VERIFY-REV` — EXACT NEXT
 
-- **Type / authority:** artifact-only TB44 under [RA-161.5](Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md) and accepted [CB44-REV](Architecture_M6_CP3_CB44_Selector405_Rail_Provenance_Independent_Review_Decision_20261026.md); freeze exact [four-row manifest](Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Verification_Case_Manifest.tsv).
-- **Immutable inputs:** semantic source `c256671115c92f7dd55fea5d680feeac3cbb5190`, compile run `40373930737`, artifact `12674401457`, ZIP SHA-256 `38d88bbda3b6b768f1d243b9b121db6233a740d3b296ccd35a58a9d1e5932bd3`, 28/28; GMP/GMPXX, `runtimeExecution=false`.
-- **Selection:** one POSITIVE `selector:405` plus three off-gate GUARD tests `Phase10Tests:7614/7414/8219`, each exactly once with independent raw log and no skipping; no selector edits or promotions. Use immutable packaged binaries without executable-mode repairs, compile/relink/configure, or benchmarks. Record new failure cause if 405 remains RED, rather than repairing inside TB. TB44-REV independently disposes P1.
-- **Falsifiers / stop:** missing package/source identity, selector drift, zero/duplicate tests, unexpected skip, absent raw-log join, missing postflight or orchestration failure => invalid run (do not claim semantic PASS/RED). Unexpected semantic RED => independent Review; no automatic CB.
+- **Type / authority:** independent **Review only**, following [TB44 focused report](Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Verification_Report_20261026.md); never re-execute binaries or modify source/test/benchmark/selector in this Review.
+- **Immutable inputs:** source `c256671115c92f7dd55fea5d680feeac3cbb5190`; compile artifact `12674401457` ZIP `38d88bbda3b6b768f1d243b9b121db6233a740d3b296ccd35a58a9d1e5932bd3`; [TB44 run](https://github.com/akashskypatel/Directional/actions/runs/40387240269), result `12680557878` ZIP SHA-256 `f1b300067c4020f0fd156b772785ee7a54b1e5deecdfcda91fb16afe3376b986`, diagnostic log `12680372908`. Four-row manifest SHA-256 `f410b55091cd8cc4fec743e141d4277662165f4feb6aa82de0590d716e5a6a8a`.
+- **Independent duties:** verify package/result/checksums and four raw-log/ledger joins, source identity, exact-one test/process counts, postflight and immutable runtime boundary; determine the actual 8219 **first** rejection and whether missing provenance is an invalid fixture rather than production error. Inspect 7414's actual assertions/provenance to decide whether it discriminates or passes vacuously. Resolve RA-161 P1 with an actionable, correctly scoped follow-up and falsifier. Keep 405 focused candidate; do not infer 497-selector or CP3 promotion.
+- **Preserve:** stable 66/17/49 debt1; CP2 accepted 491/491; RP-01 open, RP-02 unreached; no changes to frozen accepted selector, production, legacy recovery or tests in Review. Subsequent 242 DEFN and other queued owners begin only after completed Review authority.
 
 ## Turn Sequence
 
@@ -54,7 +54,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 |---|---|---|
 | done | CB43 → REV → TB43 → REV → audit ([RA-161](Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md)); CB44 compiled | 190 re-home 4/4 focused candidate; 405 fixture correction compiled, no runtime. |
 | done | `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE-REV` | Static review accepted, four-row manifest frozen; no runtime. |
-| 1 — next | `M6-CP3-TB44-RP01-SELECTOR405-FIXED-PLAN-VERIFY` → `…-REV` | Artifact-only, CB44 package: 405 POSITIVE; GUARD `Phase10Tests:7614/7414/8219` companions (off-gate). REV disposes P1. |
+| done | `M6-CP3-TB44-RP01-SELECTOR405-FIXED-PLAN-VERIFY` | Valid artifact-only 3/4, 8219 guard RED; 405 positive PASS, no promotion. |
+| 1 — next | `M6-CP3-TB44-RP01-SELECTOR405-FIXED-PLAN-VERIFY-REV` | Independent semantic/root-cause review of 8219 and 7414 P1; no runtime or edits. |
 | 3 | `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` → `…-REV` | RED 242; coordinate DEFN-SEAM-NZ; design only. |
 | 4 | 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) | One owner per turn; Review assigns IDs. |
 | 5 | `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` (O4); `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` (O5) → REV each | No RED identity; before census. |
