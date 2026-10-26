@@ -1,2 +1,0 @@
-CB41-REV authentic Git history static boundary check, request 1.
-Run existing review_check.py boundary and authority against original source; no binaries or runtime.
