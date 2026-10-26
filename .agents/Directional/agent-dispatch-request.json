@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb41-rev-closeout-docs-20261026-r1",
+  "request_id": "m6-cp3-tb41-rev-currency-20261026-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb41-rev-closeout",
-  "file_id": "1vcqkp2W5jsqDrXPAGXLzTPMeRp-lF8s9",
-  "patch_sha256": "f9071f00faa5d02ace4ecd867a685f3860aa65427995b75558b9b64608ecac05",
-  "base_sha": "2d1b54544f199c747e84087e9a2c822892df81ea",
+  "mailbox_key": "m6-cp3-tb41-rev-currency",
+  "file_id": "1l5pNVAou6m3-4_F41EwarUr5Y7-hS9KU",
+  "patch_sha256": "929cffe80303c9d2c4c15f25bbf2f554dc0032712034e71d65aef5f1d758ccf6",
+  "base_sha": "be46963fd41fe88728265ca45257479ea6a05389",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): independently adjudicate TB41 evidence and correct O3 scope",
+  "commit_message": "docs(directional): correct review closeout currency and record published evidence",
   "retention_days": 14
 }
