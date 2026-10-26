@@ -1,1 +1,0 @@
-CB41 independent static review: source snapshot only; no runtime or compilation.
