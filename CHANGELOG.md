@@ -1,3 +1,7 @@
+## 2026-10-26 — legacy matching-path disposition defined; independent Review next
+
+- [DEFN](.agents/Directional/Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_20261026.md) answers RA-159 Q1–Q6: selector190 is vacuous because A3 bypasses modified legacy containers; proposed A3 `MissingAdjacency` re-home preserves selector identity and historical CP2 accounting. O2 distinguishes no-atlas rejection-only ingress from accepted and off-gate detail fallback consumers; avoids blanket deletion. One later test-only CB and one production CB, each separately reviewed, proposed. No source, tests, selector, runtime, acceptance or regression totals changed. Next `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION-REV`.
+
 ## 2026-10-26 — RA-159 TB42-REV audit: selector190 vacuity; legacy-path DEFN bound
 
 - [RA-159](.agents/Directional/Architecture_M6_CP3_TB42_REV_Audit_Selector190_Vacuity_And_DEFN_Spec_Decision_20261026.md) confirmed TB42-REV (5/5, 1/1); O3 3/3 focused candidate.

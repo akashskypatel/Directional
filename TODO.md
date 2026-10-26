@@ -1,4 +1,4 @@
-## CURRENT — RA-159 TB42-REV audit; selector190 vacuous; legacy-path DEFN bound (2026-10-26)
+## CURRENT — legacy matching-path DEFN drafted; independent Review next (2026-10-26)
 
 - [x] **RA-159 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB42_REV_Audit_Selector190_Vacuity_And_DEFN_Spec_Decision_20261026.md)):
   - TB42-REV confirmed: ZIP `2d0c6cf7…b1b6`, 5/5 hashes, 1/1 log join, manifest `b266c056…8885` frozen before dispatch. O3 3/3 focused candidate.
@@ -7,7 +7,8 @@
   - N3: CP2's 190 credit (2026-10-06) was for a legacy-only-publishes oracle now void under D1; TB38/TB41 190 PASS rows are not legacy-path evidence.
   - N4: O2 has a live detail-level consumer, `LegacyMatchingPathUsesSameTypedRouteComposition` (`Phase10Tests:5716`, off-gate).
   - N5: duplicate DEFN item in TODO and missing TB42 result in the handoff fixed.
-- [ ] **NEXT `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION`** — design only; answer RA-159.3 Q1–Q6 (190 vacuity; re-home vs retire; accepted-prefix accounting rule; O2 branch inventory with reachability class and consuming tests; removal scope; at most one test-only CB and one production CB). STOP rules in RA-159.3. Then `…-REV`.
+- [x] **DEFN legacy matching path** — [decision](.agents/Directional/Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_20261026.md): Q1–Q6 answered; re-home 190 as a discriminating A3 MissingAdjacency oracle, preserve legacy detail-only consumers and accepted-prefix credit as historical only. Design only, no selector or runtime change.
+- [ ] **NEXT `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION-REV`** — independently adjudicate six answers, error/key feasibility, detail-consumer protection, stop rules, and later-turn ownership; no code/compile/runtime.
 - [ ] Then `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` (O4) → REV.
 - [ ] Then `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` (242; DEFN-SEAM-NZ) → REV.
 - [ ] Then the Code/TB turns those DEFNs authorize; then 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`).
@@ -20,7 +21,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: RA-158 → TB42 → TB42-REV → audit (RA-159).
-  - **DEFN legacy-matching path (190, O2) → REV.**
+  - **DEFN legacy-matching path (190, O2) drafted → REV next.**
   - DEFN A4 provenance-guard reachability (O4) → REV; DEFN 242 cross-region seam consumer → REV.
   - Authorized Code/TB turns → 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1.
   - DEFN off-selector coverage (O5) → REV → census → RP-01 Review (O6 scope statement).
