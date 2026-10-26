@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb43-selector190-docs-apply-20261026-d2",
+  "request_id": "m6-cp3-cb43-rev-selector190-docs-20261026-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb43-selector190-docs-v2",
-  "file_id": "1-PBP-qdVHZLxYnO-bJLEBTA9ZPUbSqGn",
-  "patch_sha256": "0df3b4b26291181869ce7b3e87511e8dc3f1589c9c7ab12e9c1dbe42381c8985",
-  "base_sha": "30cdd46071d314b944afb7c2e5ec7175de347833",
+  "mailbox_key": "m6-cp3-cb43-rev-selector190-docs",
+  "file_id": "1pOU9-tIuGxLB9jUuOcxAyvnlffQ02L7H",
+  "patch_sha256": "c7c16b89bc91af15729330d9e68d854d74121c1b732f07870fb0be16fe0a3e16",
+  "base_sha": "8fa4e27a13287d653406ee4d668825f63b1994aa",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB43 compile and hand off static review",
+  "commit_message": "docs(directional): accept CB43 independent review and freeze TB43",
   "retention_days": 14
 }
