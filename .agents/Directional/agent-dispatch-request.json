@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb43-rev-docs-20261026-c",
+  "request_id": "m6-cp3-cb44-selector405-apply-20261026-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb43-rev-docs",
-  "file_id": "135E8C_TD1EGIxEbcyn7uUUXQAGgtovYF",
-  "patch_sha256": "e7e1371c689839d202a8b838046b48619361d2e8508553ce78c1e5639df7ec0e",
-  "base_sha": "e198930455aa8ef7be223cc22556f10ad1f4667c",
+  "mailbox_key": "m6-cp3-cb44-apply",
+  "file_id": "1Iu80Ctwmo5KY3SIST6brXlQQcDmmU-bK",
+  "patch_sha256": "ec12d3adbbb45cbbff48bc2af459fe1cbd8ebbe1a1c045e38c90acd1145c6939",
+  "base_sha": "a9c99c1752b387108653d8cade2a1369a9d35532",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: independently review TB43 selector190 focused evidence",
+  "commit_message": "test(surface-cells): supply fixed-plan rail provenance for selector405",
   "retention_days": 14
 }
