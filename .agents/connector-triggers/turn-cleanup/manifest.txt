@@ -1,2 +1,0 @@
-# CB40 turn temporary-state cleanup
-.agents/connector-triggers/source-snapshot/cb40-20261026.txt
