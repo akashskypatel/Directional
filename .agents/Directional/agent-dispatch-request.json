@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb40-rev-partial-docs-20261026-r2",
+  "request_id": "m6-cp3-cb40-rev-final-docs-20261026-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb40-rev-partial-docs-r2",
-  "file_id": "1wQKzSMSFHo9L8cBYnnzKZwhfbtaWaV5W",
-  "patch_sha256": "8fed4dd6d8344eea6db30badf31cf75b41ad0b97cdaa5d06fcab1cc33554a296",
-  "base_sha": "08bb7921dfe3e059066923ddc1d0a1dcdfc983e8",
+  "mailbox_key": "m6-cp3-cb40-rev-final-docs",
+  "file_id": "1PMPn6GuViVmteHkaR8Qq8s3Btteey2a8",
+  "patch_sha256": "590b27140a8c221daa20d24ab7e8b084bf1b89310b10a8491ab7119b52047cf4",
+  "base_sha": "14cae5bab5701198c35478cd287f28678e964d56",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): preserve CB40-REV incomplete historical closeout",
+  "commit_message": "docs(directional): close CB40 independent review and authorize CB41",
   "retention_days": 14
 }
