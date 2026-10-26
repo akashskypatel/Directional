@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb41-a3-own-lift-compile-20261026-r2",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb41-own-lift-compile-r2",
-  "source_sha": "53830149ea16473d0321e53da2587695916fd9cb",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-cb41-own-lift-gmp-compile"
+  "request_id": "m6-cp3-cb41-equivalent-a3-closeout-docs-20261026-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb41-a3-closeout-docs",
+  "file_id": "1tENH6PIYFmYArmAnb1r7hKGafEzSQmV9",
+  "patch_sha256": "e5c69c0c4efd0c89896cb3954d1e5928b95b634ff91862c44d61587e1eb4aeaa",
+  "base_sha": "53830149ea16473d0321e53da2587695916fd9cb",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB41 compiled A3 equivalent lift and authorize independent review",
+  "retention_days": 14
 }
