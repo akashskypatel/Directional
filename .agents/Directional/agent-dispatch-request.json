@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-selector242-docs-20261026-r1",
+  "request_id": "m6-cp3-defn-selector242-docs-20261026-r2",
   "operation": "drive_apply",
   "mailbox_key": "m6-cp3-defn-selector242-docs",
-  "file_id": "1MYteHYfxS_5qqpPBsUxiLk2BRpZlD7QA",
-  "patch_sha256": "e6f583a7d8209933347d5a0e05d23b99f1831ffc91e786b87ac3b06698ff231a",
+  "file_id": "1mZ61FkCw5qvhKCMKhi0z7FJEzkIUUlHK",
+  "patch_sha256": "af0c3e12a4e784e54d1b5493b33228741a5df609fce5fc6bd5d7db099493f1f1",
   "base_sha": "9ab1563ee8ca8ceb3c3d3b909a69e04f422afe63",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "docs(directional): specify selector242 seam-consumer rehome and CB45 contract",
