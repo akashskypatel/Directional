@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb39-closeout-docs-apply-corrected-20261026",
+  "request_id": "m6-cp3-cb39-rev-closeout-resume-20261026-1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb39-closeout-docs-corrected",
-  "file_id": "1g51ctKiX8TZl7lcbdmAI1rrnGK1LrwsS",
-  "patch_sha256": "6b4599625fdf8137d95ad09c8ea1117d6f28aa0be30f0fbefb8d046642caac75",
-  "base_sha": "0b9f6cdadb0f0ebbf0d06a0000cd7d2a2b265106",
+  "mailbox_key": "m6-cp3-cb39-rev-closeout-resume",
+  "file_id": "10Leq401yeruPqFnA7z3pTBFrhVrxhXl8",
+  "patch_sha256": "e92df86644080c6cc328ff67d0167e52bbe5d10a6f8a0fc93467a8f6da91ab44",
+  "base_sha": "d54146a52361200a3634f6e212f7f96a943ed0ac",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close out CB39 A3 source-edge oracle compile evidence",
+  "commit_message": "docs: accept CB39 A3 source-edge tamper independent review",
   "retention_days": 14
 }
