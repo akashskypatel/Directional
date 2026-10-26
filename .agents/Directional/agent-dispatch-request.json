@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb41-closeout-docs-20261026",
+  "request_id": "m6-cp3-tb41-rev-closeout-docs-20261026-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb41-closeout-docs",
-  "file_id": "1eUiXec1tDYeRB8eTdgsmEgvifJ2gK1Si",
-  "patch_sha256": "9eeca254cec3dfe78052222675fb10f637b86f6d274439d26a0c8cf2c1482beb",
-  "base_sha": "44136e1f9478a003c17095feae7358f100c11bdf",
+  "mailbox_key": "m6-cp3-tb41-rev-closeout",
+  "file_id": "1vcqkp2W5jsqDrXPAGXLzTPMeRp-lF8s9",
+  "patch_sha256": "f9071f00faa5d02ace4ecd867a685f3860aa65427995b75558b9b64608ecac05",
+  "base_sha": "2d1b54544f199c747e84087e9a2c822892df81ea",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB41 artifact-only verification and hand off independent review",
+  "commit_message": "docs(directional): independently adjudicate TB41 evidence and correct O3 scope",
   "retention_days": 14
 }
