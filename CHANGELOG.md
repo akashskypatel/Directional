@@ -1,3 +1,8 @@
+## 2026-10-26 — CB43 selector190 test-only ingress re-home compiled (runtime unmeasured)
+
+- [Code+Build record](.agents/Directional/Architecture_M6_CP3_CB43_Selector190_Legacy_Ingress_Rehome_Code_Build_Record_20261026.md): RA-160.3 A3 missing-adjacency/minimal interior-key negative, restored-transition positive, and A4 no-atlas `atlas-binding` rejection pin added solely within `LegacyMatchingPathUsesSameTypedAlgebra`; original periodic positive preserved, selector identity unchanged.
+- Source `d354d6ae95afc73df968fc5cc4ee69fe5b7de451`; [compile 40338106985](https://github.com/akashskypatel/Directional/actions/runs/40338106985), artifact `12657932087`, ZIP SHA256 `4a65d5004e2afc08ab68361493a517c462cab68da6dd8019b94732cd3f860a26`, 28/28 hashes, 8 GMP/GMPXX targets, `runtimeExecution=false`; no runtime tests or benchmarks. Accepted CP2 491/491 and stable 66/17/49 debt1 unchanged; selector497 unpromoted, RP-01 open. Next independent CB43-REV.
+
 ## 2026-10-26 — RA-160 legacy-path DEFN Review: 190 re-home amended; O2 production CB withdrawn
 
 - [RA-160](.agents/Directional/Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md) accepted the DEFN in part. Q1 holds and is stronger than RA-159 N2: `legacyField` is fully inert. Q2 amended: A3 `MissingAdjacency` duplicates `selector:28`, so CB43 also pins the unpinned no-atlas A4 ingress locus (`atlas-binding`).
