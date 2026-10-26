@@ -1,3 +1,10 @@
+**RA-159 TB42-REV audit (2026-10-26, candidate/non-stable):**
+- TB42-REV confirmed: O3 3/3 focused candidate.
+- **Vacuity:** selector190 `LegacyMatchingPathUsesSameTypedAlgebra` passes vacuously since `7ccdcd527` (2026-10-11): A3/A4 use the authoritative atlas, so `legacyField` decides no transport. Its CP2 credit (2026-10-06) was for a legacy-only-publishes oracle now void under D1. Owner: `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION`.
+- **New observation O6:** every nonrectangular bounded disk is rejected by design (`SurfaceCellTracing.cpp:17182–17192`); no requirement or owner. Owner: RP-01 Review scope statement.
+- **Falsifiers:** `legacyField` decides a transport or published value; `make(legacyField)` returns other than `MissingAdjacency`.
+- No stable event; 66/17/49, debt 1. [RA-159](Architecture_M6_CP3_TB42_REV_Audit_Selector190_Vacuity_And_DEFN_Spec_Decision_20261026.md).
+
 **RA-158 TB41-REV audit (2026-10-26, candidate/non-stable):**
 - TB41-REV confirmed: 18/18 focused candidate; [TB42-REV](Architecture_M6_CP3_TB42_O3_Off_Selector_Locus_Independent_Review_Decision_20261026.md) independently accepted off-selector third row 1/1; O3 3/3 focused candidate, not selector or CP3 promotion.
 - **Owner (discharged):** TB42 / TB42-REV for `SurfaceCellsPhase10.PolygonalCurvedDiskRejectsWithoutPublishingPartialPhase`; package `12634151125` expires 2026-11-02T07:22Z.

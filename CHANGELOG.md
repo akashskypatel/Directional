@@ -1,3 +1,9 @@
+## 2026-10-26 — RA-159 TB42-REV audit: selector190 vacuity; legacy-path DEFN bound
+
+- [RA-159](.agents/Directional/Architecture_M6_CP3_TB42_REV_Audit_Selector190_Vacuity_And_DEFN_Spec_Decision_20261026.md) confirmed TB42-REV (5/5, 1/1); O3 3/3 focused candidate.
+- selector190 has passed vacuously since `7ccdcd527`; its CP2 credit was for an oracle now void under D1. The legacy-path DEFN now has six bound questions and STOP rules. New O6: nonrectangular bounded disks are rejected by design with no owner.
+- Stable 66/17/49 debt 1; CP2 491/491 accepted; selector497 frozen; RP-01 open.
+
 ## 2026-10-26 — TB42-REV independently accepts third O3 rejection locus (focused candidate only)
 
 - [TB42-REV](.agents/Directional/Architecture_M6_CP3_TB42_O3_Off_Selector_Locus_Independent_Review_Decision_20261026.md) independently rehashed CB42 package ZIP/28 members, TB42 result ZIP/5 members, one raw GTest execution and the exact manifest/harness; compiled-source first-locus inspection distinguishes polygonal-chart fail-closed from the four other same-reason sites. Third O3 runtime 1/1; O3 now 3/3 focused candidate with TB41's 251/252. No selector497/CP3 promotion or stable accounting changes; CP2 491/491 accepted, stable 66/17/49 debt1, RP-01 open. Next `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION` (Definition only).

@@ -1,3 +1,12 @@
+## RA-159 — TB42-REV audited: selector190 vacuity; legacy-path DEFN bound; O6 (2026-10-26)
+
+Authority: `Architecture_M6_CP3_TB42_REV_Audit_Selector190_Vacuity_And_DEFN_Spec_Decision_20261026.md`.
+
+- **RA-159.1** TB42 re-verified (5/5 hashes, 1/1 log join, manifest `b266c056…8885` frozen before dispatch). O3 3/3 focused candidate.
+- **RA-159.2** N1/O6 nonrectangular bounded disks rejected by design, unowned. N2 selector190 vacuous since `7ccdcd527`. N3 CP2 190 credit is for an oracle void under D1. N4 O2 detail-level consumer `Phase10Tests:5716`.
+- **RA-159.3** DEFN `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION` must answer Q1–Q6 (vacuity; re-home vs retire; accounting rule; O2 inventory; removal scope; ≤1 test-only CB + ≤1 production CB).
+- **RA-159.4** Sequence: DEFN legacy → O4 DEFN → 242 DEFN → authorized CB/TB → 405 … DEFN-T1 → O5 DEFN → census → RP-01 Review (O6 scope).
+
 ## RA-158 — TB41-REV audited: O3 owner, DEFN split, off-selector coverage gap (2026-10-26)
 
 Authority: `Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md`.

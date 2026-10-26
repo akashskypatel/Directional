@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-26 · [TB42-REV](Architecture_M6_CP3_TB42_O3_Off_Selector_Locus_Independent_Review_Decision_20261026.md) independently accepted the third O3 polygonal rejection-locus test (TB42 1/1, O3 3/3 focused candidate); next legacy-matching-path Definition (190/O2), then separate O4 and 242 Definitions. CP2 491/491 accepted; selector497 frozen/unpromoted, TB38 490/504 candidate, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-26 · [RA-159](Architecture_M6_CP3_TB42_REV_Audit_Selector190_Vacuity_And_DEFN_Spec_Decision_20261026.md) confirmed TB42-REV (O3 3/3 focused candidate); selector190 has passed vacuously since `7ccdcd527` and the legacy-path DEFN is bound to six questions; O6 records that nonrectangular bounded disks are rejected by design with no owner. Candidate only: CP2 491/491 accepted, TB38 490/504 candidate, selector497 frozen/unpromoted, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,11 +104,11 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION` (Definition-only 190+O2) followed by separate O4 and 242 Definitions. O3 3/3 focused candidate discharged by TB42-REV; no CP3/selector497 promotion.
+**Immediate:** `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION` (design only; RA-159.3 Q1–Q6), then the O4 and 242 DEFNs. No CP3/selector497 promotion.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Define dispositions for the legacy-matching path (190, O2), A4 provenance-guard reachability (O4) and the 242 cross-region seam consumer, one DEFN each; classify the 249 off-gate producer tests (O5) before the census. | `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION` → further DEFNs per [RA-158](Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md) |
+| **1** | Dispose of the vacuous selector190 and the unreachable legacy-matching branches (O2), then O4 reachability and the 242 seam consumer, one DEFN each; classify the 249 off-gate producer tests (O5) and state the nonrectangular-disk scope (O6) before the RP-01 Review. | `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION` per [RA-159](Architecture_M6_CP3_TB42_REV_Audit_Selector190_Vacuity_And_DEFN_Spec_Decision_20261026.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
