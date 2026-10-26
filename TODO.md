@@ -1,4 +1,4 @@
-## CURRENT — TB41 immutable 18/18 focused PASS; independent TB41-REV next (2026-10-26)
+## CURRENT — TB41-REV accepted 18/18 focused candidate; O3 off-selector still unexecuted; legacy-path DEFN next (2026-10-26)
 
 - [x] **RA-157 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md)):
   - TB40-REV accepted: 29/29 hashes and 13/13 rows; the CB37→CB38 diff is the test hunk only. 250 is a focused candidate (no promotion).
@@ -26,7 +26,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: RA-156 → CB38 → CB38-REV → TB40 → TB40-REV → audit (RA-157).
-  - **CB39 → CB39-REV → CB40 → CB40-REV → CB41 → CB41-REV → CB42 → CB42-REV statically complete; TB41 executed 18/18 PASS** → TB41-REV (next, independent evidence review).
+  - **CB39 → CB39-REV → CB40 → CB40-REV → CB41 → CB41-REV → CB42 → CB42-REV statically complete; TB41 executed 18/18 PASS** → TB41-REV (independently accepted focused 18/18; third off-selector O3 still needs runtime).
   - DEFN legacy-path and seam oracles (adds O4) → REV.
   - 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review.
   - `DIAG-RETAIN` carried.

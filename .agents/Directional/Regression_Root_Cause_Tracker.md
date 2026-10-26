@@ -14,7 +14,7 @@
 **RA-156 TB39-REV audit (2026-10-25, candidate/non-stable):**
 - TB39 is re-verified. 250's owner is refined: test 250 copies the disk mesh but discards `authoritativeRails` and all three provenance maps that `make_curved_disk_fixture` builds through the production rail functions. The tracing seeds are therefore missing as well, not only the factory provenance.
 - **Owner:** `M6-CP3-CB38-RP01-SELECTOR250-RAIL-AUTHORITY` (test-only), then TB40.
-- **New observation O3:** the polygonal-disk rejection oracles (251, 252, `:2936`) are reason-only, and that reason is set at 5 sites. Owner: CB42-O3, which pins `cell=-1, side=-1`.
+- **New observation O3:** the polygonal-disk rejection oracles (251, 252, `:2936`) are reason-only, and that reason is set at 5 sites. Owner: CB42-O3 pinned `cell=-1, side=-1`; TB41-REV independently verified selector251/252 runtime PASS, but the separate `PolygonalCurvedDiskRejectsWithoutPublishingPartialPhase` was not selected and still needs a distinct authorized runtime execution.
 - **Falsifiers:**
   - with all four fields supplied through the production functions, 250 still reports `hard-rail-contact-missing`;
   - pinning the locus fails for 251 or 252.

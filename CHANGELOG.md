@@ -1,3 +1,8 @@
+## 2026-10-26 — TB41-REV independently accepts 18-case focused candidate; off-selector O3 remains open
+
+- [Review](.agents/Directional/Architecture_M6_CP3_TB41_Rehomed_Oracle_Independent_Review_Decision_20261026.md) independently verified source snapshot 5905/5905, CB42 compile 28/28, TB41 result 39/39, 18/18 unique raw-log joins and typed rejection-locus source sites. Eight focused oracles and ten guards passed with immutable postflight; no runtime/build/selector edits in Review.
+- **Scope correction:** TB41 manifest ran 251/252 but not the third CB42 pinned off-selector test `PolygonalCurvedDiskRejectsWithoutPublishingPartialPhase`; O3 retains that runtime obligation. Stable 66/17/49 debt1, CP2 491/491 accepted, TB38 candidate 490/504, selector497 frozen, RP-01 open; no promotion. Next M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES (Definition only).
+
 ## 2026-10-26 — TB41 immutable re-homed oracles verified (18/18 focused PASS; Review pending)
 
 - [TB41 report](.agents/Directional/Architecture_M6_CP3_TB41_Rehomed_Oracle_Verification_Report_20261026.md) / [run 40296007299](https://github.com/akashskypatel/Directional/actions/runs/40296007299): exact CB42 source `8dc8cdeae6f6ac05c28aaa4504ca2c42c3177ded`, immutable compile artifact `12634151125`; 18/18 distinct case processes PASS (eight re-homed oracles plus ten TB40 guards), zero RED/missing/skipped/duplicates/control failures, 39/39 result hashes, `postflight=true`, no rebuild/relink/test/selector edits. Result `12638251384` SHA256 `1817f8295709a88bb3a561734b345cc50e81da056684501d714aac08fb7dd854`.
