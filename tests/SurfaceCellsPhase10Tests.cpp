@@ -2951,6 +2951,9 @@ TEST(SurfaceCellsPhase10,
             network.phaseFront.rejection_reason())
       << directional::geometry::surface_phase_front_failure_reason_name(
              network.phaseFront.rejection_reason());
+  ASSERT_NE(nullptr, network.phaseFront.rejection());
+  EXPECT_EQ(-1, network.phaseFront.rejection()->cell);
+  EXPECT_EQ(-1, network.phaseFront.rejection()->side);
   EXPECT_EQ(nullptr, network.phaseFront.produced_product())
       << "rejected producer outcomes must not expose partial phase authority";
 }
@@ -2992,6 +2995,12 @@ TEST(SurfaceCellsPhase10,
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
                 InvalidBoundedDiskFrontPairing,
             forwardNetwork.phaseFront.rejection_reason());
+  ASSERT_NE(nullptr, forwardNetwork.phaseFront.rejection());
+  EXPECT_EQ(-1, forwardNetwork.phaseFront.rejection()->cell);
+  EXPECT_EQ(-1, forwardNetwork.phaseFront.rejection()->side);
+  ASSERT_NE(nullptr, reversedNetwork.phaseFront.rejection());
+  EXPECT_EQ(-1, reversedNetwork.phaseFront.rejection()->cell);
+  EXPECT_EQ(-1, reversedNetwork.phaseFront.rejection()->side);
   EXPECT_EQ(nullptr, forwardNetwork.phaseFront.produced_product());
   EXPECT_EQ(nullptr, reversedNetwork.phaseFront.produced_product());
 }
@@ -3822,6 +3831,9 @@ TEST(SurfaceCellsPhase10,
             network.phaseFront.rejection_reason())
       << directional::geometry::surface_phase_front_failure_reason_name(
              network.phaseFront.rejection_reason());
+  ASSERT_NE(nullptr, network.phaseFront.rejection());
+  EXPECT_EQ(-1, network.phaseFront.rejection()->cell);
+  EXPECT_EQ(-1, network.phaseFront.rejection()->side);
   EXPECT_EQ(nullptr, network.phaseFront.produced_product())
       << "rejected producer outcomes must not expose partial authority";
 
