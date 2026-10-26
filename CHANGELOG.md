@@ -1,3 +1,7 @@
+## 2026-10-26 — CB45 selector242 seam-factory oracle re-home compiled (no runtime)
+
+- [CB45 code/build record](.agents/Directional/Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Code_Build_Record_20261026.md) verifies RA-163.3 one-body test change on `dfeb0751b1a42a0805aecf4ef4ffb6917f619c83`, certificate-factory two-sided typed rejections and controls, A3 reciprocal seam mutation consumed. Verified eight GMP/GMPXX compile targets, `runtimeExecution=false`; no tests or benchmarks executed. Independent CB45-REV next, selector242 and selector497 remain unpromoted; stable 66/17/49, debt1, CP2 491/491 retained.
+
 ## 2026-10-26 — RA-163 selector242 DEFN Review: owner corrected, A3 branch decided, CB45 respecified
 
 - [RA-163](.agents/Directional/Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md): DEFN partially accepted. D1 missed `SurfaceIsolationSeamTransportCertificate::make` → `NonReciprocalTransport` (accepted selector185). D2 decided statically: the disk's only inner edge cancels out of the dual-cycle basis, so the mutation is a gauge relabel and A3 accepts it. Branch B rejected. 242 re-homed under the same identity; CB45 draft superseded by RA-163.3. No code, build or runtime.

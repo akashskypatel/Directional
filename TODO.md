@@ -1,4 +1,4 @@
-## CURRENT — RA-163 selector242 DEFN Review; CB45 next (2026-10-26)
+## CURRENT — CB45 selector242 test re-home compiled; independent Review next (2026-10-26)
 
 - [x] **RA-163 DEFN Review** ([decision](.agents/Directional/Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md)): partially accepted.
   - R1: D1 missed the typed owner — `SurfaceIsolationSeamTransportCertificate::make` → `NonReciprocalTransport` (`SurfaceCellTracing.cpp:8146–8150`), already pinned by accepted `selector:185`.
@@ -6,7 +6,8 @@
   - R3: old A4 `InvalidTopologyRegionTransport` expectation unreachable on every path.
   - R4: Branch B rejected (swaps reciprocity for cycle holonomy; speculative fixture). CB45 draft superseded by RA-163.3.
   - 242 meaning re-homed, same identity (RA-163.2). SEAM-NZ hint recorded (RA-163.4).
-- [ ] **NEXT `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME`** (test-only, compile only, RA-163.3) → `…-REV` (issues TB45 manifest).
+- [x] **COMPLETED `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME`** — [compile-only record](.agents/Directional/Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Code_Build_Record_20261026.md): one test body re-homed, exact source `dfeb0751b1a42a0805aecf4ef4ffb6917f619c83`, GMP/GMPXX package, no runtime or selector promotion.
+- [ ] **NEXT `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME-REV`** — independently review RA-163.3 implementation and freeze TB45 manifest only if accepted.
 - [ ] `M6-CP3-TB45-RP01-SELECTOR242-SEAM-REHOME-VERIFY` (242 POSITIVE; GUARD `selector:239`, `selector:185`) → `…-REV`.
 - [ ] Then 174 → 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`).
 - [ ] Then O4 DEFN and O5 DEFN (O5 + P1-a re-scoped + P1-b + RA-162 C1; separate test-only CB/TB/REV for P1) → REV each → census → RP-01 Review (O6 scope).
@@ -19,7 +20,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: RA-162 → DEFN 242 → REV (RA-163).
-  - **Next: CB45 → REV → TB45 → REV.**
+  - **Next: CB45-REV → TB45 → TB45-REV, subject to independent acceptance.**
   - 174 → 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1.
   - DEFN O4, DEFN O5 (+P1, C1) → census → RP-01 Review (O6 scope). Post-RP-01: O2 DEFN.
   - `DIAG-RETAIN` carried.
