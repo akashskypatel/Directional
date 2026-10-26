@@ -5176,23 +5176,111 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
       make_legacy_periodic_route_field(fixture, authoritativeField);
   ASSERT_TRUE(legacyField.edgeTransitions.empty());
 
+  // Positive: the source-owned A3 atlas admits one periodic holonomy.
   const auto authoritative =
       build_periodic_route_network_with_source_atlas(
           fixture, authoritativeField, authoritativeField);
-  const auto legacy = build_periodic_route_network_with_source_atlas(
-          fixture, legacyField, authoritativeField);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            authoritative.phaseFront.disposition());
-  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            legacy.phaseFront.disposition())
+            authoritative.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             legacy.phaseFront.rejection_reason());
+             authoritative.phaseFront.rejection_reason());
   ASSERT_EQ(1U, authoritative.phaseFront.product().periodicHolonomies().size());
-  ASSERT_EQ(1U, legacy.phaseFront.product().periodicHolonomies().size());
-  EXPECT_EQ(periodic_holonomy_snapshot(
-                authoritative.phaseFront.product().periodicHolonomies().front()),
-            periodic_holonomy_snapshot(
-                legacy.phaseFront.product().periodicHolonomies().front()));
+
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  const auto sourceAuthority =
+      directional::geometry::surface_cell_tracing_detail::
+          build_source_topology_regions(fixture.mesh.F, options);
+  ASSERT_TRUE(sourceAuthority.has_value());
+
+  // Independently count source-triangle incidences, not atlas adjacency rows.
+  std::map<directional::authority::SourceEdgeTopologyKey, int> incidence;
+  for (int face = 0; face < fixture.mesh.F.rows(); ++face) {
+    for (int corner = 0; corner < 3; ++corner) {
+      ++incidence[test_source_edge_topology(
+          fixture.mesh.F(face, corner),
+          fixture.mesh.F(face, (corner + 1) % 3))];
+    }
+  }
+  std::optional<directional::authority::SourceEdgeTopologyKey> firstInterior;
+  for (const auto &[edge, count] : incidence) {
+    if (count == 2) {
+      firstInterior = edge;
+      break;
+    }
+  }
+  ASSERT_TRUE(firstInterior.has_value())
+      << "the witness needs at least one interior source edge";
+
+  // Negative A3 ingress: legacy compact matching has no edge transitions.
+  const auto missingAdjacency =
+      directional::authority::FieldTransportAtlas::make(
+          fixture.mesh, *sourceAuthority, options.hardFeatureEdges, legacyField);
+  ASSERT_FALSE(missingAdjacency.has_value());
+  EXPECT_EQ(directional::authority::FieldAtlasBuildErrorCode::MissingAdjacency,
+            missingAdjacency.error().code)
+      << describe_field_atlas_build_error(missingAdjacency.error());
+  EXPECT_EQ(firstInterior, missingAdjacency.error().sourceEdge);
+
+  // Anti-vacuity: restoring only the authoritative edge transitions admits A3.
+  auto restoredField = legacyField;
+  restoredField.edgeTransitions = authoritativeField.edgeTransitions;
+  const auto restoredAtlas = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *sourceAuthority, options.hardFeatureEdges, restoredField);
+  ASSERT_TRUE(restoredAtlas.has_value())
+      << (restoredAtlas ? "" : describe_field_atlas_build_error(
+                                    restoredAtlas.error()));
+
+  // The explicit legacy CrossFieldResult overload has no A3/source binding.
+  options.fieldTransportAtlas = nullptr;
+  options.sourceAuthority = nullptr;
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 0.25);
+  const auto rejected = directional::geometry::build_surface_cell_network(
+      fixture.mesh.V, fixture.mesh.F, legacyField, targetSize, options);
+  const auto *failure = rejected.phaseFront.rejection();
+  std::ostringstream detail;
+  detail << directional::geometry::surface_phase_front_failure_reason_name(
+      rejected.phaseFront.rejection_reason());
+  if (failure != nullptr) {
+    detail << ";error=";
+    if (failure->publishedProductError) {
+      detail << static_cast<int>(*failure->publishedProductError);
+    } else {
+      detail << "none";
+    }
+    detail << ";detail=";
+    if (failure->publishedProductSourceAuthorityDetail) {
+      detail << static_cast<int>(
+          *failure->publishedProductSourceAuthorityDetail);
+    } else {
+      detail << "none";
+    }
+    detail << ";site=" << failure->publishedProductSourceAuthoritySite;
+  }
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            rejected.phaseFront.disposition()) << detail.str();
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                PublishedProductRejected,
+            rejected.phaseFront.rejection_reason()) << detail.str();
+  ASSERT_NE(nullptr, failure) << detail.str();
+  EXPECT_EQ(std::make_optional(
+                directional::geometry::SurfacePhaseFrontProductErrorCode::
+                    InvalidSourceAuthority),
+            failure->publishedProductError) << detail.str();
+  EXPECT_EQ(std::make_optional(
+                directional::geometry::SurfacePhaseFrontSourceAuthorityDetail::
+                    AtlasSourceMismatch),
+            failure->publishedProductSourceAuthorityDetail) << detail.str();
+  EXPECT_EQ("atlas-binding", failure->publishedProductSourceAuthoritySite)
+      << detail.str();
+  EXPECT_EQ(nullptr, rejected.phaseFront.produced_product()) << detail.str();
+  EXPECT_TRUE(rejected.seeds.empty()) << detail.str();
+  EXPECT_TRUE(rejected.traces.empty()) << detail.str();
+  EXPECT_TRUE(rejected.proposals.empty()) << detail.str();
 }
 
 TEST(SurfaceCellsPhase10,
