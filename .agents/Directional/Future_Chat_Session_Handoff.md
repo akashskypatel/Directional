@@ -34,26 +34,25 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-26, after [RA-162](Architecture_M6_CP3_TB44_REV_Audit_P1_Torn_Input_Selector242_Scope_Decision_20261026.md) (TB44-REV confirmed; its P1-a remedy rejected as a torn-input witness; 242 DEFN scoped). |
+| Currency | 2026-10-26, after [selector242 DEFN](Architecture_M6_CP3_DEFN_Selector242_Cross_Region_Seam_Consumer_Decision_20261026.md) (A3 reciprocal-by-construction; A4 certificate is the consumption owner; A3 mutated-field result not executed; independent DEFN Review required). |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted 2026-10-06 (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
 | Latest candidate or rejected evidence | TB44 **3/4** on CB44 source `c25667111` ([run 40387240269](https://github.com/akashskypatel/Directional/actions/runs/40387240269), result `12680557878` SHA-256 `f1b30006…6b986`, 11/11 members, [report](Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Verification_Report_20261026.md), [TB44-REV](Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Independent_Review_Decision_20261026.md)): 405 PASS, guards 7614/7414 PASS, 8219 RED. Earlier focused: TB43 4/4, TB41 18/18, TB42 1/1. TB32 481/500, TB38 490/504 candidate; selector497 frozen, unpromoted. |
 | Regression accounting and debt | Stable **66/17/49**, debt 1 ([tracker](Regression_Root_Cause_Tracker.md)). No new stable event. |
 | Active boundary | RP-01 open, RP-02 unreached. Nine TB38 REDs stay counted until a complete gate: `selector:174, 201, 242, 405` (focused PASS), `442`, `focused30:12`, `cp3entry:1, 2, 4`. 242 = mutation never consumed by atlas-bound A4 (RA-162 F4). O5 carries P1-a (re-scoped: production-reachable witness), P1-b, RA-162 C1 (hard-edge/rail cover asymmetry). O6 unowned nonrectangular disks. Carried: DIAG-RETAIN, O1, O2 (post-RP-01, + RA-161 T2), O4, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002. |
 
-## Mandatory next turn — `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER-REV` — EXACT NEXT
 
-- **Authority:** [RA-162.4](Architecture_M6_CP3_TB44_REV_Audit_P1_Torn_Input_Selector242_Scope_Decision_20261026.md). Definition only: one decision doc ≤80 lines plus a CB45 spec. No code, build, test, selector or runtime change.
-- **Decide:** D1 owner and observable site of isolation-seam reciprocity (positive control `Phase10Tests:3270`); D2 whether `FieldTransportAtlas::make` rejects the mutated field (`FieldTransportAtlas.cpp:2091–2160`), else pre-register both outcomes for TB45; D3 branch-A (A3 rejection) or branch-B (unrepresentable via `matching`; production-reachable replacement, same identity) re-home; D4 DEFN-SEAM-NZ and O2 relation.
-- **Falsifiers / STOP → Review:** the negative mutates a container atlas-bound A4 never reads; site not separately observable; branch chosen without line evidence; reciprocity owner unidentifiable; fix needs production change.
-- **On success:** `…-REV`, then CB45.
+- **Authority:** [RA-162.4](Architecture_M6_CP3_TB44_REV_Audit_P1_Torn_Input_Selector242_Scope_Decision_20261026.md) and [completed definition](Architecture_M6_CP3_DEFN_Selector242_Cross_Region_Seam_Consumer_Decision_20261026.md), with [CB45 specification](Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Specification_20261026.md). Independent static Review only: no code, build, runtime or selector changes.
+- **Review decision:** confirm static D1/A3 versus A4 owner; D2 A3 runtime not observed, branch A only on independently proven typed seam/cycle edge and branch B only on production-derived fixture; decide semantic reachability or STOP without fake positive.
+- **On acceptance:** CB45 test-only compile-only; keep TB45 242 POSITIVE, sibling `Phase10Tests:3270` GUARD; independent CB45/TB45 Reviews required.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
 | done | CB44 → REV → TB44 → REV → audit ([RA-162](Architecture_M6_CP3_TB44_REV_Audit_P1_Torn_Input_Selector242_Scope_Decision_20261026.md)) | 405 focused PASS; 8219 RED is a stale torn-input fixture; P1 to O5. |
-| 1 — next | `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` → `…-REV` | Design only, RA-162.4 scope. |
+| 1 — next | `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER-REV` | Independent review of D1–D4 decision, branch reachability and CB45 spec before test changes. |
 | 2 | `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME` → `…-REV` | Test-only, compile only, per DEFN; REV issues TB45 manifest. |
 | 3 | `M6-CP3-TB45-RP01-SELECTOR242-SEAM-REHOME-VERIFY` → `…-REV` | Artifact-only: 242 POSITIVE; GUARD `Phase10Tests:3270`. |
 | 4 | 174 → 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) | One owner per turn; Review assigns IDs. |
@@ -65,7 +64,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER** — Definition only per [RA-162.4](Architecture_M6_CP3_TB44_REV_Audit_P1_Torn_Input_Selector242_Scope_Decision_20261026.md). Load `tests/SurfaceCellsPhase10Tests.cpp:3270–3391` (positive sibling + 242), `src/geometry/SurfaceCellTracing.cpp:21174–21192` (atlas-bound ingress), `src/authority/FieldTransportAtlas.cpp:1963–2045, 2091–2160`, the RA-160 decision (190 precedent) and DEFN-SEAM-NZ owner text. No code, build or runtime.
+`load_next`: **M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER-REV** — independently review [242 decision](Architecture_M6_CP3_DEFN_Selector242_Cross_Region_Seam_Consumer_Decision_20261026.md) and [CB45 spec](Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Specification_20261026.md) against RA-162.4, `FieldTransportAtlas.cpp:1981–2045,2479–2518,2581–2589`, `SurfaceCellTracing.cpp:18052–18214,19215–19230,21174–21192`, and `Phase10Tests.cpp:3270–3391`. Review/authorization only; no source mutation, build or runtime.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

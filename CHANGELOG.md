@@ -1,3 +1,7 @@
+## 2026-10-26 — selector242 cross-region seam-consumer definition (no runtime)
+
+- [D1–D4 decision](.agents/Directional/Architecture_M6_CP3_DEFN_Selector242_Cross_Region_Seam_Consumer_Decision_20261026.md) and [CB45 specification](.agents/Directional/Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Specification_20261026.md): A3 manufactures inverse transport; A4 consumes A3 seam certificates. The original selector242 changes only a legacy container hidden by an unmodified bound atlas. Static evidence cannot establish the independently mutated A3 outcome/edge; both branches registered, with production-reachability falsifiers and independent Review before CB45. Exact snapshot `9ab1563e`, run 40407525042, 5926/5926 checksums. No test/build/selector/runtime or accepted-accounting change; CP2 491/491, stable 66/17/49 debt1, selector497 frozen, RP-01 open. Next `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER-REV`.
+
 ## 2026-10-26 — RA-162 TB44-REV audit: P1-a remedy corrected; selector242 DEFN scoped
 
 - [RA-162](.agents/Directional/Architecture_M6_CP3_TB44_REV_Audit_P1_Torn_Input_Selector242_Scope_Decision_20261026.md): TB44-REV confirmed (ZIP `f1b30006…6b986`, 11/11, 4/4 log joins). 8219 remedy rejected (torn `hardFeatureEdges` input; production derives it from rails). New RA-162 C1: open-rail hard-edge cover gap at the checked factory (O5). 242 mutation is invisible to atlas-bound A4; DEFN D1–D4 scope frozen; CB45/TB45 IDs frozen. No code, build or runtime.

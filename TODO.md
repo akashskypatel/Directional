@@ -1,4 +1,4 @@
-## CURRENT — RA-162 TB44-REV audit; selector242 DEFN next (2026-10-26)
+## CURRENT — selector242 DEFN completed; independent DEFN Review next (2026-10-26)
 
 - [x] **RA-162 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB44_REV_Audit_P1_Torn_Input_Selector242_Scope_Decision_20261026.md)):
   - TB44-REV confirmed: ZIP `f1b30006…6b986`, **11/11** members (records said 10/10), 4/4 log joins, manifest `f410b550…a6a8a` frozen at `2d0a23005` before dispatch; no source drift since CB44 `c25667111`. 405 PASS is invariance by construction (target dead under accepted conformity) — valid regression guard.
@@ -6,7 +6,8 @@
   - F2 → **RA-162 C1**: checked factory enforces hard-edge cover only for closed-only rail sets (`SurfaceCellTracing.cpp:8712`); open-rail sets accept orphan hard edges. O5 owner.
   - F3: P1-b confirmed (`SurfaceCellTracing.cpp:6160–6168`); pre-register the differential as a pair of first-sites.
   - F4: 242 mutates `crossField.edgeTransitions` after the atlas is built from `sourceField`; atlas-bound A4 never reads it (`SurfaceCellTracing.cpp:21181–21184`); A3 reciprocity is structural (`FieldTransportAtlas.cpp:2033–2036`). DEFN scoped in RA-162.4.
-- [ ] **NEXT `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER`** (design only, RA-162.4 D1–D4) → `…-REV`.
+- [x] **`M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER`** — [decision](.agents/Directional/Architecture_M6_CP3_DEFN_Selector242_Cross_Region_Seam_Consumer_Decision_20261026.md) and [CB45 spec](.agents/Directional/Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Specification_20261026.md); A3 matching inverse is structural; A4 certificate owner; independent A3 outcome not run, B production reachability conditional. No code/tests/selector/build/runtime.
+- [ ] **NEXT `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER-REV`** — approve/reject D1–D4 conditional re-home and selector semantic disposition before CB45.
 - [ ] `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME` (test-only, compile only) → `…-REV` (issues TB45 manifest).
 - [ ] `M6-CP3-TB45-RP01-SELECTOR242-SEAM-REHOME-VERIFY` (242 POSITIVE; GUARD `Phase10Tests:3270`) → `…-REV`.
 - [ ] Then 174 → 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`).
@@ -20,7 +21,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: RA-161 → CB44 → REV → TB44 → REV → audit (RA-162).
-  - **Next: DEFN 242 → REV → CB45 → REV → TB45 → REV.**
+  - **Next: DEFN 242 REV → CB45 → REV → TB45 → REV.**
   - 174 → 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1.
   - DEFN O4, DEFN O5 (+P1, C1) → census → RP-01 Review (O6 scope). Post-RP-01: O2 DEFN.
   - `DIAG-RETAIN` carried.
