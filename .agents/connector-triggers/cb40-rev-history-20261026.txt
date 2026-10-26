@@ -1,1 +1,0 @@
-CB40 independent review: execute read-only full-history checks; first attempt.
