@@ -5052,10 +5052,10 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
         static_cast<std::size_t>(fixture.mesh.F.rows()));
     ASSERT_TRUE(from.has_value());
     ASSERT_TRUE(to.has_value());
-    const auto original = baselineAtlas->transition_value(
-        step.currentTopology, *from, *to);
-    const auto relabeled = equivalentAtlas->transition_value(
-        step.currentTopology, *from, *to);
+    const auto original = baselineAtlas.value().transition_value(
+        step.currentTopology, from.value(), to.value());
+    const auto relabeled = equivalentAtlas.value().transition_value(
+        step.currentTopology, from.value(), to.value());
     ASSERT_TRUE(original.has_value());
     ASSERT_TRUE(relabeled.has_value());
     const auto *baselineTransition =
