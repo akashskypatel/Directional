@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workflow_key": "m6-cp3-cb41-rev-authentic-history",
+  "workflow": "Agent CB41 Review Authentic History (temporary)",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/agent-cb41-review-history-temporary.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "5e6baaf563acb7bac1f5e2835c0afb0979728092",
+  "source_sha": "5e6baaf563acb7bac1f5e2835c0afb0979728092",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 40282179241,
+  "run_attempt": 1,
+  "run_number": 1,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/40282179241",
+  "result": "success",
+  "summary": "CB41 independent review authentic Git-history boundary and source-authority verification",
+  "reported_at": "2026-10-26T06:51:04Z",
+  "mailbox_branch": "workflow-mailbox",
+  "artifacts": [
+    {
+      "id": 12632641600,
+      "name": "agent-workflow-schema-validation-40282179241",
+      "size_in_bytes": 449,
+      "digest": "sha256:0675cde2b934e2b23c42d72aff5d2a65c2a39e270fea913c1066468e6b3c9758",
+      "expired": false,
+      "created_at": "2026-10-26T06:50:34Z",
+      "expires_at": "2026-11-02T06:50:33Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/40282179241/artifacts/12632641600",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/12632641600/zip"
+    },
+    {
+      "id": 12632576554,
+      "name": "agent-workflow-schema-validator-log-40282179241",
+      "size_in_bytes": 513,
+      "digest": "sha256:1590a415552ab1c923b9dc56127d51f9783f6157f3cff55fc5c3f95c2fa4278b",
+      "expired": false,
+      "created_at": "2026-10-26T06:50:35Z",
+      "expires_at": "2026-11-02T06:50:34Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/40282179241/artifacts/12632576554",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/12632576554/zip"
+    },
+    {
+      "id": 12632546593,
+      "name": "workflow-mailbox-publisher-log-40282179241-attempt-1",
+      "size_in_bytes": 400,
+      "digest": "sha256:4304d4e0155f82a13ce48a9e63fb4c4065d8c278c657762b40ba88068bf5981a",
+      "expired": false,
+      "created_at": "2026-10-26T06:51:03Z",
+      "expires_at": "2026-11-09T06:51:03Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/40282179241/artifacts/12632546593",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/12632546593/zip"
+    },
+    {
+      "id": 12632486829,
+      "name": "cb41-review-history-40282179241",
+      "size_in_bytes": 1492,
+      "digest": "sha256:cd7512c8907f86b74d36fba35806dd4708f2c0d7983c10cd9e243543454293c8",
+      "expired": false,
+      "created_at": "2026-10-26T06:50:49Z",
+      "expires_at": "2026-11-09T06:50:49Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/40282179241/artifacts/12632486829",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/12632486829/zip"
+    }
+  ]
+}
