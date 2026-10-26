@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb44-verified-docs-20261026-r1",
+  "request_id": "m6-cp3-tb44-rev-docs-20261026-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb44-verified-docs",
-  "file_id": "1FOGMUSn5Pds1qy-zbTuKS_YDkpCmmmFG",
-  "patch_sha256": "a18aa555aa40f6796241f12bf67ca19a8799ce7c5ef6685becf8d536f4f3a884",
-  "base_sha": "e901e67fe2147bb71a096741550b85f327af1088",
+  "mailbox_key": "m6-cp3-tb44-rev-docs",
+  "file_id": "1tItGQqoGTVY70nSrdBKc-QHvtSX6cKmY",
+  "patch_sha256": "49992052041157c4f34a0c95722a434683023e8a6cdab86ef336d8892eaff71e",
+  "base_sha": "be03bfaa23827aeaed42ce7755434da81d4afdb0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): publish TB44 verification and review handoff",
+  "commit_message": "docs(directional): independent TB44 review and RA-161 P1 disposition",
   "retention_days": 14
 }
