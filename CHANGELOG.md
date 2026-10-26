@@ -1,3 +1,9 @@
+- **2026-10-25 — RA-157 TB40-REV audit: 250 focused discharge confirmed; CB39 oracle re-bound.**
+  - TB40 independently re-verified; the CB37→CB38 diff is the test hunk only.
+  - CB39 now requires an untampered-A3 baseline and `code`+`sourceEdge` assertions, and removes the unsatisfiable A4 negatives.
+  - O4 recorded: A4 `MissingTransitionProvenance` loses its only witness.
+  - Duplicate tracker entry merged.
+  - [Decision](.agents/Directional/Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md).
 ## 2026-10-25 — TB40-REV accepted focused selector250 candidate (no CP3 promotion)
 
 - [Independent static review](.agents/Directional/Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Independent_Review_20261025.md) rederived TB40 result ZIP SHA256 `84d63107…e7a320`, 29/29 packaged checksums, 13/13 raw logs and 13/13 PASS (selector250 one preregistered `unexpected_pass`, 12 guards). TB39 predecessor separately rehashed 17/17 and 7/7 with `hard-rail-contact-missing` RED. CB38 only test +50/−0; original `Produced` and sheet/holonomy assertions remain discriminating. RA-156 250 fixture owner discharged as **focused candidate only**; stable 66/17/49 debt1, CP2 491/491, TB38 490/504 candidate, selector497 and CP3 unaccepted. Exact successor `M6-CP3-CB39-RP01-A3-SOURCE-EDGE-TAMPER-REHOME` (test-only/compile-only, no runtime).

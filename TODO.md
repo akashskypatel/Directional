@@ -1,5 +1,43 @@
-## CURRENT — TB40-REV accepted focused 250 candidate; CB39 A3 tamper re-home next (2026-10-25)
+## CURRENT — RA-157 TB40-REV audit; CB39 A3 oracle re-bound (2026-10-25)
 
+- [x] **RA-157 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md)):
+  - TB40-REV accepted: 29/29 hashes and 13/13 rows; the CB37→CB38 diff is the test hunk only. 250 is a focused candidate (no promotion).
+  - K1: the CB39 spec was too vague to review; re-bound to an untampered-A3 baseline plus `code`+`sourceEdge` assertions, with the A4 negatives (unsatisfiable under D1) removed.
+  - K2/O4: A4 `MissingTransitionProvenance` (`SurfaceCellTracing.cpp:12656/12698/12707`) loses its only witness; its reachability goes into the DEFN turn.
+  - K3: 250 does not check that disk cells respect the rail (236 covers that); not scheduled.
+  - K4: duplicate tracker entry, multi-turn "EXACT NEXT" and the sequence-numbering gap all fixed.
+- [ ] **EXACT NEXT `M6-CP3-CB39-RP01-A3-SOURCE-EDGE-TAMPER-REHOME`** (test-only, compile only; RA-157.3). Edit tests 204 (`:1615`) and 191 (`:5053`) only:
+  - build A2 inline;
+  - `ASSERT_TRUE` the untampered `make`;
+  - keep the `sourceEdge=-1` tamper;
+  - assert the tampered `make` gives `NonReciprocalAdjacency` with `sourceEdge == key`;
+  - remove the A4 call on the tampered field; 204 keeps its A4 baseline.
+  - Record of 30 lines or fewer.
+- [ ] Then CB39-REV, which freezes the TB41 rows for 191 and 204.
+- [ ] Then, each test-only and followed by its `-REV`:
+  - `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME` (192 k=1, 247 k=2);
+  - `M6-CP3-CB41-RP01-EQUIVALENT-LIFT-A3-INGRESS-REHOME` (189);
+  - `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN` (O3: 251, 252, `:2936`).
+- [ ] Then `M6-CP3-TB41-RP01-REHOMED-ORACLE-VERIFY` (189, 191, 192, 204, 247, 250, 251, 252 + TB40 guards) → REV.
+- [ ] Then `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES` (design only: 190, 242, O2, O4; inventory `CurvedBoundedDiskInvalidReciprocalTransportFailsClosed`) → REV.
+- [ ] Then 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) → census → RP-01 Review.
+- [ ] Carried separately: O1, O2, O3 (until CB42), O4 (until DEFN), RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002.
+- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
+  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
+  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
+  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
+  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- **Turn sequence:**
+  - Done: RA-156 → CB38 → CB38-REV → TB40 → TB40-REV → audit (RA-157).
+  - **CB39 → REV** → CB40 → REV → CB41 → REV → CB42 → REV → TB41 → REV.
+  - DEFN legacy-path and seam oracles (adds O4) → REV.
+  - 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review.
+  - `DIAG-RETAIN` carried.
+- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 and TB38 490/504 candidate; 250 focused candidate; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+
+---
+
+## HISTORY — RA-156; CB38; CB38-REV; TB40; TB40-REV (2026-10-25)
 - [x] **RA-156 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md)):
   - TB39-REV accepted: 17/17 hashes and 7 log hashes verified; 250 site `hard-rail-contact-missing` (code 0, detail 6) is owned by the fixture, not O1.
   - J1: test 250 discards all four rail-authority fields that `make_curved_disk_fixture` builds (`:2582–2626`). Without `authoritativeRails`, tracing also gets no disk rail seeds. Derive all four through the production rail functions.
@@ -19,27 +57,7 @@
   - Attribute the 250 PASS to CB38: the only CB37→CB38 source change is `tests/SurfaceCellsPhase10Tests.cpp` +50/−0, and TB39 on CB37 was `hard-rail-contact-missing`.
   - Confirm the 250 assertions are unchanged and were reached.
   - RA-156 250 owner discharged as focused candidate; CP3/selector497 unpromoted, stable 66/17/49 debt1; CB39 frozen.
-- [ ] **EXACT NEXT:** the re-homes, each test-only and followed by its `-REV`:
-  - `M6-CP3-CB39-RP01-A3-SOURCE-EDGE-TAMPER-REHOME` (191+204 → A3 `NonReciprocalAdjacency`);
-  - `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME` (192 k=1, 247 k=2);
-  - `M6-CP3-CB41-RP01-EQUIVALENT-LIFT-A3-INGRESS-REHOME` (189);
-  - `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN` (O3: 251, 252, `:2936`).
-- [ ] Then `M6-CP3-TB41-RP01-REHOMED-ORACLE-VERIFY` (189, 191, 192, 204, 247, 251, 252, 250 + TB40 guards) → REV.
-- [ ] Then `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES` (design only: 190, 242, O2; inventory `CurvedBoundedDiskInvalidReciprocalTransportFailsClosed`) → REV.
-- [ ] Then 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) → census → RP-01 Review.
-- [ ] Carried separately: O1, O2, O3 (until CB42), RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002.
-- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
-  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
-  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
-  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
-  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Turn sequence:**
-  - Done: RA-155 → CB37 → CB37-REV → TB39 → TB39-REV → audit (RA-156) → CB38 → CB38-REV → TB40.
-  - **TB40-REV done** → CB39 → REV → CB40 → REV → CB41 → REV → CB42 → REV → TB41 → REV.
-  - DEFN legacy-path and seam oracles → REV.
-  - 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review.
-  - `DIAG-RETAIN` carried.
-- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 and TB38 490/504 candidate; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+- **Frozen accounting:** stable **66/17/49**, debt 1; CP2 **491/491 accepted**; TB38 490/504 candidate; 250 focused candidate; selector497 frozen; RP-01 open, RP-02 unreached.
 
 ---
 

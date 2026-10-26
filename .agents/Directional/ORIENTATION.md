@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-25 · TB40-REV independently verified 13/13 immutable tests and discharged selector250 as a focused candidate. CB39 A3 tamper re-home is next. CP3 and selector497 unaccepted; CP2 491/491 accepted; stable 66/17/49 debt1; RP-01 open.
+**Currency:** 2026-10-25 · RA-157 audited TB40-REV. 250 is a focused candidate discharge (no census, selector497 or CP3 promotion). Next is CB39, which re-homes the 191/204 tamper oracles to A3 `NonReciprocalAdjacency` with an untampered baseline. CP2 491/491 accepted; stable 66/17/49, debt 1; RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,11 +104,11 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** TB40-REV independently accepted selector250 as a focused rail-authority fixture candidate (13/13 PASS). The A3 source-edge tamper re-home (191, 204) is next; turning-field and equivalent-lift re-homes plus O3 locus pin follow. Do not promote CP3 or selector497 from this targeted result.
+**Immediate:** CB39 (RA-157.3) re-homes 191/204 to A3. Then CB40 (192/247), CB41 (189), CB42 (polygonal locus), TB41, and the legacy-path DEFN turn (190, 242, O2, O4).
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Re-home tamper oracles A/B/C and pin the O3 locus; selector250 composite is now a reviewed focused positive only. | `M6-CP3-CB39-RP01-A3-SOURCE-EDGE-TAMPER-REHOME`; [RA-156](Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md) |
+| **1** | Re-home the tamper oracles that cannot be satisfied under D1 (191/204 → A3; 192/247; 189) and pin the O3 locus. 250 is now a focused candidate. | `M6-CP3-CB39-RP01-A3-SOURCE-EDGE-TAMPER-REHOME`; [RA-157](Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

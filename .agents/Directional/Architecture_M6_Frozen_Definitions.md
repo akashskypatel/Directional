@@ -1,3 +1,15 @@
+## RA-157 — TB40-REV audited: 250 discharge confirmed; CB39 spec re-bound (2026-10-25)
+
+Authority: `Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md`.
+
+- **RA-157.1** TB40 re-verified (29/29 hashes, 13/13 rows). The CB37→CB38 semantic diff is the test hunk only.
+- **RA-157.2**
+  - K1: the CB39 oracle is an untampered-A3 baseline, plus `error().code == NonReciprocalAdjacency` and `error().sourceEdge == key`. The A4 negatives in 191 and 204 are removed.
+  - K2/O4: A4 `MissingTransitionProvenance` loses its only witness; its reachability goes into the legacy-path DEFN turn.
+  - K3: 250 does not check that disk cells respect the rail (236 covers that); not scheduled.
+- **RA-157.3** CB39 spec (tests 204 and 191 only).
+- **RA-157.4** Sequence: CB39 → CB40 → CB41 → CB42 → TB41 → DEFN (adds O4) → owners → census.
+
 ## RA-156 — TB39-REV audited: 250 rail authority bound and moved first (2026-10-25)
 
 Authority: `Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md`.
