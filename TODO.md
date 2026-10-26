@@ -1,4 +1,4 @@
-## CURRENT — CB39-REV static review accepted; CB40 test-only next (2026-10-26)
+## CURRENT — CB40 test-only compiled; independent CB40-REV next (2026-10-26)
 
 - [x] **RA-157 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md)):
   - TB40-REV accepted: 29/29 hashes and 13/13 rows; the CB37→CB38 diff is the test hunk only. 250 is a focused candidate (no promotion).
@@ -8,9 +8,10 @@
   - K4: duplicate tracker entry, multi-turn "EXACT NEXT" and the sequence-numbering gap all fixed.
 - [x] **CB39 `A3-SOURCE-EDGE-TAMPER-REHOME` compiled** ([record](.agents/Directional/Architecture_M6_CP3_CB39_A3_Source_Edge_Tamper_Rehome_Code_Build_Record_20261026.md)); RA-157.3, only tests 191/204, untampered A3 success and tampered A3 exact code/key, two A4 negative blocks removed. Exact source `c6cc82aa0aa8e5e46dc58cfc887050bf46a65963`; [compile 40254362620](https://github.com/akashskypatel/Directional/actions/runs/40254362620), `12621099926`; no runtime, selector or acceptance promotion.
 - [x] **CB39-REV** — independent static acceptance of selector191/204 test hunks, exact A2/A3 ingress, 28/28 package hashes, eight GMP/GMPXX targets and compile-only boundary; TB41 rows 191/204 frozen for later execution, not runtime PASS. [Decision](.agents/Directional/Architecture_M6_CP3_CB39_A3_Source_Edge_Tamper_Independent_Review_Decision_20261026.md).
-- [ ] **EXACT NEXT `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME`** — RA-155.3 B / RA-157.4; test-only, 192 k=1 and 247 k=2 turning-field monodromy re-home; preserve original A4 assertions, compile-only, then independent Review.
+- [x] **CB40 turning-field monodromy re-home compiled** — [record](.agents/Directional/Architecture_M6_CP3_CB40_Turning_Field_Monodromy_Rehome_Code_Build_Record_20261026.md); exact source `0d227875d8f031a467e661be2da4dd901846797c`, [compile 40264202131](https://github.com/akashskypatel/Directional/actions/runs/40264202131), artifact `12625069994`, verified eight GMP/GMPXX targets and `runtimeExecution=false`; 192 k=1 and 247 k=2 require A3 acceptance; original A4 assertions retained. No runtime or selector promotion.
+- [ ] **EXACT NEXT `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME-REV`** — independent static review of two CB40 test hunks and immutable compile evidence; CB41 remains separate.
 - [ ] Then, each test-only and followed by its `-REV`:
-  - `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME` (192 k=1, 247 k=2);
+  - `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME-REV` (192 k=1, 247 k=2; compile-only Review);
   - `M6-CP3-CB41-RP01-EQUIVALENT-LIFT-A3-INGRESS-REHOME` (189);
   - `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN` (O3: 251, 252, `:2936`).
 - [ ] Then `M6-CP3-TB41-RP01-REHOMED-ORACLE-VERIFY` (189, 191, 192, 204, 247, 250, 251, 252 + TB40 guards) → REV.
@@ -24,7 +25,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: RA-156 → CB38 → CB38-REV → TB40 → TB40-REV → audit (RA-157).
-  - **CB39 → CB39-REV COMPLETE → CB40 exact next** → REV → CB41 → REV → CB42 → REV → TB41 → REV.
+  - **CB39 → CB39-REV → CB40 COMPLETE → CB40-REV exact next** → CB41 → REV → CB42 → REV → TB41 → REV.
   - DEFN legacy-path and seam oracles (adds O4) → REV.
   - 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review.
   - `DIAG-RETAIN` carried.

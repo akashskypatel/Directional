@@ -34,24 +34,24 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-26: CB39 A3 test-only re-home independently accepted by CB39-REV as static/compile evidence; TB41 runtime pending. The 191/204 A3 oracles now bind source-edge -1 to exact `NonReciprocalAdjacency`/edge key. No runtime, selector497 or CP3 promotion. Stable 66/17/49, debt 1. |
-| Source/package | CB39-REV verified test-only `c6cc82aa0aa8e5e46dc58cfc887050bf46a65963`; [compile 40254362620](https://github.com/akashskypatel/Directional/actions/runs/40254362620), artifact `12621099926`, ZIP SHA256 `0d2ad13c768a830d3f7a9954ee50effc72481706b89e1544684fd003f018089b`; eight GMP/GMPXX targets and `runtimeExecution=false`. [CB39 record](Architecture_M6_CP3_CB39_A3_Source_Edge_Tamper_Rehome_Code_Build_Record_20261026.md), [review decision](Architecture_M6_CP3_CB39_A3_Source_Edge_Tamper_Independent_Review_Decision_20261026.md). CB38 source/package and reviewed evidence preserved in its separate record. |
+| Currency | 2026-10-26: CB40 test-only turning-field monodromy re-home compiled; 192 k=1 and 247 k=2 now assert independent A3 acceptance and retain A4 rejection oracles. CB40-REV independent static review next; no runtime, selector497 or CP3 promotion. Stable 66/17/49, debt 1. |
+| Source/package | CB40 test-only `0d227875d8f031a467e661be2da4dd901846797c`; [compile 40264202131](https://github.com/akashskypatel/Directional/actions/runs/40264202131), artifact `12625069994`, ZIP SHA256 `0f5e554b975bd1306df587f7bb0031707136f2a629fb550beab61e02301e3d41`; eight GMP/GMPXX targets, `runtimeExecution=false`. [CB40 record](Architecture_M6_CP3_CB40_Turning_Field_Monodromy_Rehome_Code_Build_Record_20261026.md); independent CB40-REV pending. Prior CB39 source/package and Review remain preserved in their separate record and decision. |
 | Reviewed decision | [RA-157](Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md): TB40 re-verified (29/29 hashes, 13/13 rows; the CB37→CB38 diff is the test hunk only). K1: CB39 needs an untampered-A3 baseline, `code`+`sourceEdge` assertions, and removal of the unsatisfiable A4 negatives. K2/O4: A4 `MissingTransitionProvenance` loses its only witness. K4: doc drift fixed. |
 | Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500**; TB37 focused **14/16 reviewed**; TB38 independently reviewed **candidate 490/504** (497 prefix 483/14), unpromoted; selector497 frozen and unpromoted; stable **66/17/49**, debt 1; RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME` — CODE + BUILD
+## Mandatory next turn — `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME-REV` — INDEPENDENT REVIEW
 
-- **Authority:** RA-155.3 B, RA-157.4 and [CB39-REV decision](Architecture_M6_CP3_CB39_A3_Source_Edge_Tamper_Independent_Review_Decision_20261026.md).
-- **Scope:** re-home the negative turning-field monodromy stimuli in selector192 (k=1) and selector247 (k=2); test-only and compile-only. Preserve the original A4 assertions and independent positive A3 prerequisites.
-- **Acceptance / falsifiers:** each tamper must reach the intended A4 owner with its expected rotation; reject any A3-invalid baseline, vacuous equivalent stimuli, unmet original assertion, or unrelated mutation. No selector acceptance promotion, runtime or benchmarks. Eight GMP/GMPXX targets and `runtimeExecution=false` required.
-- **On success:** independent `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME-REV` in a separate turn; on failure issue an exact corrective review plan without starting CB41.
+- **Authority:** RA-155.3 B / RA-157.4 and [CB40 Code + Build record](Architecture_M6_CP3_CB40_Turning_Field_Monodromy_Rehome_Code_Build_Record_20261026.md); exactly compiled source `0d227875d8f031a467e661be2da4dd901846797c`, [run 40264202131](https://github.com/akashskypatel/Directional/actions/runs/40264202131), artifact `12625069994`.
+- **Scope:** independently review only the selectors 192 and 247 test hunks, A3 turning-field inputs/rotation prerequisites, original A4 assertions and source/package evidence. Re-verify eight-target GMP/GMPXX compile-only boundary, manifest and exact source; **no runtime** in this Review.
+- **Acceptance / falsifiers:** reject an A3-invalid baseline, nondiscriminating or vacuous turning-field stimulus, unmet A4 assertion preservation, source drift or insufficient package evidence. No selector/CP3 promotion, runtime test or benchmark.
+- **On successful Review:** separately authorize the existing CB41 successor per RA-155; do not combine turns.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
 | done | CB38 → CB38-REV → TB40 → TB40-REV → audit ([RA-157](Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md)) | 250 focused candidate discharge; CB39 spec re-bound. |
-| 1 — next | `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME` → `…-REV` | RA-155.3 B: selector192 k=1, selector247 k=2; test-only compile, then Review. |
+| 1 — next | `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME-REV` | Independent static Review of completed CB40 selector192/247 test-only compile; no runtime. |
 | 2 | `M6-CP3-CB41-RP01-EQUIVALENT-LIFT-A3-INGRESS-REHOME` → `…-REV` | RA-155.3 C: 189, with each A3 built from its own ±4 field; test-only. |
 | 3 | `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN` → `…-REV` | RA-156 J3/O3: `cell=-1,side=-1` in 251, 252, `:2936`; test-only. |
 | 4 | `M6-CP3-TB41-RP01-REHOMED-ORACLE-VERIFY` → `…-REV` | Artifact-only: 189, 191, 192, 204, 247, 250, 251, 252 + TB40 guards. |
@@ -63,7 +63,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME** — test-only Code + Build of turning-field monodromy selector192/247 (k=1/2), per [RA-155.3 B](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md), [RA-157.4](Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md) and [CB39-REV](Architecture_M6_CP3_CB39_A3_Source_Edge_Tamper_Independent_Review_Decision_20261026.md). Preserve original A4 assertions; eight GMP/GMPXX compile targets; no runtime.
+`load_next`: **M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME-REV** — independent source and immutable-package review of CB40 selector192/247 turning-field A4 monodromy oracle re-home; [CB40 record](Architecture_M6_CP3_CB40_Turning_Field_Monodromy_Rehome_Code_Build_Record_20261026.md), exact source `0d227875d8f031a467e661be2da4dd901846797c`, [compile 40264202131](https://github.com/akashskypatel/Directional/actions/runs/40264202131), artifact `12625069994`. No runtime, promotion or next implementation until Review closes.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
