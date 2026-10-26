@@ -4898,18 +4898,29 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
              valid.phaseFront.rejection_reason());
   ASSERT_EQ(1U, valid.phaseFront.product().periodicHolonomies().size());
 
-  auto nonzeroField = balancedField;
-  ASSERT_TRUE(
-      assign_directed_matching(nonzeroField, fixture.expectedRoute[0], 2));
+  // The negative has true winding on the committed cylinder, not a
+  // one-edge matching change that A3 rejects before reaching A4.
+  const auto nonzeroField = turning_periodic_route_field(fixture, 1);
+  ASSERT_TRUE(nonzeroField.singularIndices.empty());
   const auto nonzeroRotation = periodic_route_rotation(fixture, nonzeroField);
   ASSERT_TRUE(nonzeroRotation.has_value());
-  ASSERT_EQ(directional::authority::QuarterTurn::from_integer(1),
-            nonzeroRotation.value());
-
-  // The deliberate nonzero tracing mutation must not rewrite source A3.
-  // Preserve the periodic-holonomy negative oracle and its first reason.
+  const auto quarterTurn = directional::authority::QuarterTurn::from_integer(1);
+  ASSERT_TRUE(*nonzeroRotation == quarterTurn ||
+              *nonzeroRotation == quarterTurn.inverse());
+  directional::geometry::SurfaceCellTracingOptions nonzeroOptions;
+  nonzeroOptions.sourceFaceComponents.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  nonzeroOptions.sourceFaceSheets.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  const auto nonzeroSource = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(fixture.mesh.F, nonzeroOptions);
+  ASSERT_TRUE(nonzeroSource.has_value());
+  const auto nonzeroAtlas = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *nonzeroSource, nonzeroOptions.hardFeatureEdges,
+      nonzeroField);
+  ASSERT_TRUE(nonzeroAtlas.has_value());
   const auto rejected = build_periodic_route_network_with_source_atlas(
-      fixture, nonzeroField, balancedField);
+      fixture, nonzeroField, nonzeroField);
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
             rejected.phaseFront.disposition());
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
@@ -5294,10 +5305,24 @@ TEST(SurfaceCellsPhase10,
       (mesh.EF(transition->sourceEdge, 0) == incident->second[1] &&
        mesh.EF(transition->sourceEdge, 1) == incident->second[0]);
   ASSERT_TRUE(reciprocalEfFaces);
-  transition->matching += 1;
-
+  // Do not alter one isolated matching: A3 rejects that local-cycle
+  // inconsistency before A4 can inspect periodic holonomy. Use the same
+  // committed cylinder with a coherent half-turn field instead.
+  const auto fixture = make_periodic_holonomy_route_fixture();
+  ASSERT_TRUE((mesh.V.array() == fixture.mesh.V.array()).all());
+  ASSERT_TRUE((mesh.F.array() == fixture.mesh.F.array()).all());
+  ASSERT_TRUE((rawField.array() == fixture.rawField.array()).all());
+  const auto nonzeroField = turning_periodic_route_field(fixture, 2);
+  ASSERT_TRUE(nonzeroField.singularIndices.empty());
+  const auto rotation = periodic_route_rotation(fixture, nonzeroField);
+  ASSERT_TRUE(rotation.has_value());
+  ASSERT_EQ(directional::authority::QuarterTurn::from_integer(2), *rotation);
+  const auto nonzeroAtlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, options.hardFeatureEdges, nonzeroField);
+  ASSERT_TRUE(nonzeroAtlas.has_value());
+  options.fieldTransportAtlas = &nonzeroAtlas.value();
   const auto malformed = directional::geometry::build_surface_cell_network(
-      mesh.V, mesh.F, crossField, targetSize, options);
+      mesh.V, mesh.F, nonzeroField, targetSize, options);
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
             malformed.phaseFront.disposition());
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
