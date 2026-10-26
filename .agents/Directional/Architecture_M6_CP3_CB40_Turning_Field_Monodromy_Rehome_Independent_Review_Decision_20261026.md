@@ -20,18 +20,18 @@
 
 ## Required historical boundary — unresolved
 
-`python3 .agents/Directional/tools/review_check.py boundary` was **actually invoked and returned exit 1** on the verified GitHub-generated source snapshot. The snapshot intentionally contains no `.git` directory, so the checker cannot resolve the protected rewrite baseline or historical committed blobs; its apparent selector-untracked lines are **not** accepted historical checks. No successful authentic-history `boundary` or `ledgers` run is claimed. Complete them in a Git-aware authorized environment, then complete consolidation, drift audit, durable document updates and final STATUS before marking this REVIEW complete. Source/package static approval does not waive these duties.
+`python3 .agents/Directional/tools/review_check.py boundary` was **actually invoked and returned exit 1** on the verified GitHub-generated source snapshot. The snapshot intentionally contains no `.git` directory, so the checker cannot resolve the protected rewrite baseline or historical committed blobs; its apparent selector-untracked lines are **not** accepted historical checks. `python3 .agents/Directional/tools/review_check.py ledgers --base f262f153e8acc87c6c76e0e34d08841792ab5735` was also actually invoked and returned exit 1: missing rewrite-baseline Git history and both ledger baselines. No successful authentic-history `boundary` or `ledgers` run is claimed. Complete them in a Git-aware authorized environment, then complete consolidation, drift audit, durable document updates and final STATUS before marking this REVIEW complete. Source/package static approval does not waive these duties.
 
 ## Review closeout
 
 | Duty | Answer |
 |---|---|
-| Accepted selector prefix re-hashed | Pending authentic-Git ledgers; no selector was changed |
+| Accepted selector prefix re-hashed | Authentic-Git check pending; no selector was changed |
 | Decisive claims independently re-derived | Verified exact test hunks, raw-field/atlas/A4 dependency and 28/28 package + 5898/5898 snapshot hashes |
 | Non-vacuity checked | k=1 and k=2 monodromy, atlas success, specific A4 rejection; runtime reachability not measured |
 | Prior obligations discharged/carried | RA-155.3 B, RA-157.4 statically addressed; TB41, O1–O4 and listed carried owners remain |
 | Stable accounting | 66/17/49 debt 1; CP2 491/491; TB38 candidate 490/504; selector497 unpromoted |
-| New candidates/obligations recorded | No new semantic candidate; outstanding authentic-Git boundary and ledgers |
+| New candidates/obligations recorded | No new semantic candidate; outstanding authentic-Git boundary and ledgers (both exit 1 in no-.git snapshot) |
 | ORIENTATION currency line | Pending review closeout; do not advance next turn before complete |
 | ORIENTATION §3 / §4 / §7 / §8 | Pending review closeout; no witness status change demonstrated |
 | CHANGELOG | Pending review closeout |
