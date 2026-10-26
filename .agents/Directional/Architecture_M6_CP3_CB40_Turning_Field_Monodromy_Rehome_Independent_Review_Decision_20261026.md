@@ -1,7 +1,7 @@
 # CB40 independent review — selector 192/247 turning-field monodromy (2026-10-26)
 
 **Canonical turn:** `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME-REV`  
-**Disposition:** Source/test-oracle and compile-package evidence support **static approval**, conditional on the required genuine-Git boundary and ledger closeout. **Formal REVIEW closeout remains IN PROGRESS**; this record is not runtime acceptance or authorization to start CB41.
+**Disposition:** APPROVED — independent static Review of CB40 selectors192/247 and immutable compile source, with genuine Git history checks PASS. No runtime acceptance.
 
 ## Authority independently inspected
 
@@ -25,31 +25,31 @@
 - Restored the frozen local source snapshot after an unintended **local hardlink-overlay** modification during audit-tree creation, directly from its verified source tar; verified `5898/5898` source-manifest hashes afterward. No remote source mutation occurred.
 - `document_drift_audit.py` on the prepared living-document overlay reported zero errors and warnings **when the known remotely committed review decision path was represented in the local mirror**. The first source-only audit had reported three broken links solely because its frozen snapshot predates that review decision. This check does not establish Git-history boundary, human document-drift approval, consolidation, or the currency of the separate `ROADMAP.md` next-turn prose, which still needs correction at formal closeout.
 
-## Required historical boundary — unresolved
+## Authentic history checks — PASS
 
-`python3 .agents/Directional/tools/review_check.py boundary` was **actually invoked and returned exit 1** on the verified GitHub-generated source snapshot. The snapshot intentionally contains no `.git` directory, so the checker cannot resolve the protected rewrite baseline or historical committed blobs; its apparent selector-untracked lines are **not** accepted historical checks. `python3 .agents/Directional/tools/review_check.py ledgers --base f262f153e8acc87c6c76e0e34d08841792ab5735` was also actually invoked and returned exit 1: missing rewrite-baseline Git history and both ledger baselines. No successful authentic-history `boundary` or `ledgers` run is claimed. Complete them in a Git-aware authorized environment, then complete consolidation, drift audit, durable document updates and final STATUS before marking this REVIEW complete. Source/package static approval does not waive these duties.
+[Run 40271541658](https://github.com/akashskypatel/Directional/actions/runs/40271541658) source `14cae5bab5701198c35478cd287f28678e964d56`, evidence artifact 12627973672, verified ZIP SHA256 `3c11103bcf2bc0ded9a2d46e8dc92ac4e693fa6eb7990e47575035a969587b6e`: `review_check.py authority`, `boundary`, and `ledgers` each PASS (exit 0), full Git checkout, 39 selector hash matches, no product drift, protected headings intact, historical ledger shrink absent, clean `git status -sb`. No runtime. Earlier Gitless-snapshot failures were inconclusive, not accepted.
+
+[Documentation apply 40272031076](https://github.com/akashskypatel/Directional/actions/runs/40272031076), verified commit `3d97667c29842e0a007303ddbb38ee8951664043` changed only Handoff, ORIENTATION, ROADMAP, TODO and CHANGELOG. Staging Drive file deleted; source/fixture/selector untouched. Local complete-doc-overlay drift audit 0 errors, 0 warnings. Temporary history caller and trigger deleted and absence verified; mailbox retained. CP3 consolidation census: no safely superseded document in CB40-REV selector192/247 scope; CB39/CB40 compile and review evidence still required by TB41; zero documents folded, no unsafe deletion.
 
 ## Review closeout
 
 | Duty | Answer |
 |---|---|
-| Accepted selector prefix re-hashed | Authentic-Git check pending; no selector was changed |
+| Accepted selector prefix re-hashed | n/a — no selector added; 39 tracked selector hashes match HEAD in authentic boundary PASS |
 | Decisive claims independently re-derived | Verified exact test hunks, raw-field/atlas/A4 dependency and 28/28 package + 5898/5898 snapshot hashes |
 | Non-vacuity checked | k=1 and k=2 monodromy, atlas success, specific A4 rejection; runtime reachability not measured |
 | Prior obligations discharged/carried | RA-155.3 B, RA-157.4 statically addressed; TB41, O1–O4 and listed carried owners remain |
 | Stable accounting | 66/17/49 debt 1; CP2 491/491; TB38 candidate 490/504; selector497 unpromoted |
-| New candidates/obligations recorded | No new semantic candidate; outstanding authentic-Git boundary and ledgers (both exit 1 in no-.git snapshot) |
-| ORIENTATION currency line | Updated in semantic docs commit aaf48a9 (same CB40-REV turn; pending formal closeout) |
-| ORIENTATION §3 and §7 | Updated §3 / §7 for CB40-REV; §4 unchanged (no witness change), §8 unchanged (no new recurring defect) |
-| CHANGELOG | Pending review closeout |
-| ROADMAP | No checkpoint movement; stale CB40-next prose needs correction before formal review closeout |
+| New candidates/obligations recorded | None new; existing O1–O4 and TB41 carried unchanged |
+| ORIENTATION currency line | Updated to CB40-REV accepted, CB41 next (2026-10-26) |
+| ORIENTATION §3 and §7 | §3/§7 updated; §4 n/a no witness change; §8 n/a no recurring semantic defect |
+| CHANGELOG | CB40-REV entry added in docs push 40272031076 |
+| ROADMAP | Stale CB40-next corrected to CB41; CP3 unchanged |
 | Selector manifest | Not modified; no selector accepted or appended |
 | LESSONS | Existing non-vacuity / build evidence principles; no new generalizable lesson |
-| Consolidation under CLEAN_UP_POLICY | Pending review closeout |
+| Consolidation under CLEAN_UP_POLICY | CP3 live-authority census: no safe superseded document; zero folded, no deletion |
 | Successor frozen | CB41 test-only, RA-155.3 C; prohibited until this review formally closes |
 | Turn boundary held | Yes; static review only, no runtime/product/selector/test change |
-| review_check.py boundary | **FAIL exit 1 due absent Git history**; not a passing check |
-| STATUS lifecycle maintained | Entry beacon published, final closeout pending; same turn retained |
-| Pushed to origin, branch in sync | Docs patch successfully pushed by workflow; authentic `git status -sb` branch-sync check pending |
-
-**Resume the same CB40-REV turn**, finish the required historical checks and documentation/consolidation, and only then publish a COMPLETE beacon with the separately authorized CB41 successor.
+| review_check.py boundary | PASS exit 0 in authentic Git run 40271541658; authority and ledgers also PASS |
+| STATUS lifecycle maintained | Resumed beacon maintained; final direct COMPLETE beacon will close turn |
+| Pushed to origin, branch in sync | Clean git status -sb at history run; later docs push succeeded and exact commit verified on target branch |
