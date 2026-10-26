@@ -1,3 +1,0 @@
-turn=M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN-REV
-initial_source=81d6212d893fafe35a91a17f08776eb749c8edaa
-purpose=exact-source independent review snapshot
