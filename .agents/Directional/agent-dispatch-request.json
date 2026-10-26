@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb43-selector190-apply-20261026-a1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb43-selector190-apply",
-  "file_id": "1VP0olrH3XQ0LvUsTzdJgX26XrcB3zS9x",
-  "patch_sha256": "9b9f6aa9a414d36891143b0953e440e6bdc4b1d32ae5a6f89d3dbbf1de8d3a2a",
-  "base_sha": "30cdd46071d314b944afb7c2e5ec7175de347833",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): pin selector190 legacy A3 and A4 ingress",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb43-selector190-compile-20261026-c1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb43-selector190-compile",
+  "source_sha": "d354d6ae95afc73df968fc5cc4ee69fe5b7de451",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb43-selector190-code-build"
 }
