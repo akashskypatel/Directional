@@ -1,4 +1,4 @@
-## CURRENT — TB40 focused 13/13 PASS candidate; canonical IDs frozen; TB40-REV next (2026-10-25)
+## CURRENT — TB40-REV accepted focused 250 candidate; CB39 A3 tamper re-home next (2026-10-25)
 
 - [x] **RA-156 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md)):
   - TB39-REV accepted: 17/17 hashes and 7 log hashes verified; 250 site `hard-rail-contact-missing` (code 0, detail 6) is owned by the fixture, not O1.
@@ -14,12 +14,12 @@
   - Assertions unchanged. [CB38 record](.agents/Directional/Architecture_M6_CP3_CB38_Selector250_Rail_Authority_Code_Build_Record_20261025.md) verifies one hunk, eight GMP/GMPXX targets, 28/28 checksums, no runtime.
 - [x] **COMPLETED `M6-CP3-CB38-RP01-SELECTOR250-RAIL-AUTHORITY-REV`** — exact one-hunk test correction and immutable compile accepted, no runtime; [decision](.agents/Directional/Architecture_M6_CP3_CB38_Selector250_Rail_Authority_Independent_Review_Decision_20261025.md). TB40 13-case manifest SHA256 `5dd7d9499918b04a277b907835993beb7829e6d9f52c4cc345faf5e3cd2158e4` frozen.
 - [x] **COMPLETED `M6-CP3-TB40-RP01-SELECTOR250-RAIL-AUTHORITY-VERIFY`** — [run 40240164913](https://github.com/akashskypatel/Directional/actions/runs/40240164913), 13/13 PASS, 12/12 guards, selector250 unexpected PASS, clean immutable postflight; candidate only. [Report](.agents/Directional/Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Verification_Report_20261025.md).
-- [ ] **EXACT NEXT `M6-CP3-TB40-RP01-SELECTOR250-RAIL-AUTHORITY-VERIFY-REV`** (static review; spec in the handoff):
+- [x] **COMPLETED `M6-CP3-TB40-RP01-SELECTOR250-RAIL-AUTHORITY-VERIFY-REV`** ([independent review](.agents/Directional/Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Independent_Review_20261025.md)):
   - Re-verify the TB40 result `12616556389`: ZIP `84d63107…e7a320`, 29/29 `SHA256SUMS`, 13 ledger↔log joins, boundary state.
   - Attribute the 250 PASS to CB38: the only CB37→CB38 source change is `tests/SurfaceCellsPhase10Tests.cpp` +50/−0, and TB39 on CB37 was `hard-rail-contact-missing`.
   - Confirm the 250 assertions are unchanged and were reached.
-  - Close the RA-156 250 owner as a focused candidate (no census, selector497 or CP3 promotion), and freeze CB39.
-- [ ] Then the re-homes, each test-only and followed by its `-REV`:
+  - RA-156 250 owner discharged as focused candidate; CP3/selector497 unpromoted, stable 66/17/49 debt1; CB39 frozen.
+- [ ] **EXACT NEXT:** the re-homes, each test-only and followed by its `-REV`:
   - `M6-CP3-CB39-RP01-A3-SOURCE-EDGE-TAMPER-REHOME` (191+204 → A3 `NonReciprocalAdjacency`);
   - `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME` (192 k=1, 247 k=2);
   - `M6-CP3-CB41-RP01-EQUIVALENT-LIFT-A3-INGRESS-REHOME` (189);
@@ -35,7 +35,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: RA-155 → CB37 → CB37-REV → TB39 → TB39-REV → audit (RA-156) → CB38 → CB38-REV → TB40.
-  - **TB40-REV next** → CB39 → REV → CB40 → REV → CB41 → REV → CB42 → REV → TB41 → REV.
+  - **TB40-REV done** → CB39 → REV → CB40 → REV → CB41 → REV → CB42 → REV → TB41 → REV.
   - DEFN legacy-path and seam oracles → REV.
   - 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review.
   - `DIAG-RETAIN` carried.

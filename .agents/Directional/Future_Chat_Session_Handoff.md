@@ -34,32 +34,17 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-25: TB40 ran 13/13 PASS on the immutable CB38 package. Selector250 passed as an `unexpected_pass`; the 12 guards passed. This is a focused candidate only, awaiting TB40-REV (canonical ID now frozen). The only CB37→CB38 source change is the 50-line test hunk. CP3 and selector497 stay unpromoted. |
+| Currency | 2026-10-25: independent TB40-REV reverified the 29/29 immutable checksums and 13/13 raw joins; selector250 is a reviewed focused candidate discharge of RA-156, not census/CP3/497 promotion. CB39 A3 tamper re-home is the next separate test-only Code + Build; stable 66/17/49 debt1. |
 | Source/package | CB38 test-only `41f39ba920eace2dad7b36d2b26c8073ce740239`; [compile 40232132945](https://github.com/akashskypatel/Directional/actions/runs/40232132945), artifact `12613073521`, ZIP SHA256 `ca7358b7de3ff7ce5bc234f69c2b06036a7a5681f96d9a2d6c9e7cd298797ab3`; 28/28 hashes, eight GMP/GMPXX targets, clean, `runtimeExecution=false`. [CB38 record](Architecture_M6_CP3_CB38_Selector250_Rail_Authority_Code_Build_Record_20261025.md). CB37 predecessor preserved in its separate record. |
 | Reviewed decision | [RA-156](Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md): TB39 re-verified (17/17 hashes, 7 log hashes, 6 PASS / 1 RED). J1: derive `authoritativeRails` plus the three provenance maps through the production functions. J2: the 250 owner moves first. J3/O3: the polygonal-disk rejection oracles are vacuous on the reason alone. J4: guard set. J5: sequence numbering fixed. RA-155 homes A/B/C and the narrowed DEFN still stand. |
 | Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500**; TB37 focused **14/16 reviewed**; TB38 independently reviewed **candidate 490/504** (497 prefix 483/14), unpromoted; selector497 frozen and unpromoted; stable **66/17/49**, debt 1; RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-TB40-RP01-SELECTOR250-RAIL-AUTHORITY-VERIFY-REV` — independent REVIEW (static)
+## Mandatory next turn — `M6-CP3-CB39-RP01-A3-SOURCE-EDGE-TAMPER-REHOME` — test-only Code + Build, compile-only
 
-- **Inputs:**
-  - [TB40 report](Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Verification_Report_20261025.md);
-  - result artifact `12616556389` (ZIP `84d63107…e7a320`, run `40240164913`);
-  - [manifest](Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Verification_Case_Manifest.tsv) `5dd7d949…58e4`;
-  - CB38 package `12613073521` (`ca7358b7…7ab3`), source `41f39ba9`.
-- **Verify independently:**
-  - the ZIP digest, all 29 `SHA256SUMS` entries, the 13 ledger↔raw-log joins and `execution-boundary.json` (13/13 executed; `unexpected_pass=1` on 250 only; postflight true; no compile, relink or configure);
-  - `raw/1.log` contains exactly one test, `[ OK ]`.
-- **Attribute the result:**
-  - `git diff c9d7c80f6 41f39ba92 -- src include tests cmake benchmarks tools` must be only `tests/SurfaceCellsPhase10Tests.cpp` (+50/−0).
-  - TB39 on CB37 showed `hard-rail-contact-missing`, so the PASS is attributable to the RA-156.3 rail authority.
-- **Check non-vacuity:** test 250's `Produced` assertion and all later assertions are unchanged and were reached. Those are 3 source sheets with cells, each count above 0, and exactly 1 periodic holonomy on sheet 1.
-- **Decide:**
-  - close the RA-156 250 owner as a **focused candidate discharge**, with no census, selector497 or CP3 promotion;
-  - TB38 stays 490/504 until the next census; stable 66/17/49, debt 1;
-  - step-9 "TB40-REV owner" = none;
-  - freeze the successor `M6-CP3-CB39-RP01-A3-SOURCE-EDGE-TAMPER-REHOME`.
-- **STOP (not accepted):** any hash, join or boundary mismatch; a semantic diff beyond the hunk; or changed 250 assertions.
-- **Boundary:** static only; no build, runtime, or test/selector/source edits.
+- **Authority:** [TB40 independent Review](Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Independent_Review_20261025.md) approves only the focused 250 fixture result, from immutable CB38 source `41f39ba920eace2dad7b36d2b26c8073ce740239`, TB40 13/13 PASS and predecessor TB39 source-rail first failure. Retain its frozen proof; no acceptance of selector497 or CP3. [RA-155 A](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md) remains the binding corrective definition.
+- **Narrow edit:** only tests for 191 and 204; make tampered source-edge field the actual A3 ingress and require `NonReciprocalAdjacency` at the tampered key, with independent non-vacuous source support. Preserve existing selector ordinals, source production, validators, invariants and original other assertions.
+- **Boundary:** Code + Build may change authorized test source and compile/package under mandatory GMP/GMPXX workflow, but **no runtime/tests/benchmarks in this turn**. Next independent CB39-REV must inspect the result before any TB.
+- **Stop:** A3 not reached, expected A3 reason/locus not discriminated, unrelated semantic or selector changes, weakened validator/assertion, missing exact immutable compile evidence.
 
 ## Turn Sequence
 
@@ -68,8 +53,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | done | CB37 → REV → TB39 → TB39-REV → audit ([RA-156](Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md)) | 250 site `hard-rail-contact-missing`; fixture rail authority; 250 owner first. |
 | done | `M6-CP3-CB38-RP01-SELECTOR250-RAIL-AUTHORITY` → `…-REV` | Test-only +50/−0; 28/28 package; TB40 manifest frozen. |
 | done | `M6-CP3-TB40-RP01-SELECTOR250-RAIL-AUTHORITY-VERIFY` | 13/13 PASS; 250 `unexpected_pass` (candidate). |
-| 1 — next | `M6-CP3-TB40-RP01-SELECTOR250-RAIL-AUTHORITY-VERIFY-REV` | Static review; closes the 250 owner as a focused candidate; freezes step 2. |
-| 2 | `M6-CP3-CB39-RP01-A3-SOURCE-EDGE-TAMPER-REHOME` → `…-REV` | RA-155.3 A: 191+204 → A3 `NonReciprocalAdjacency` at the tampered key; test-only. |
+| done | `M6-CP3-TB40-RP01-SELECTOR250-RAIL-AUTHORITY-VERIFY-REV` | Independent 29/29 and 13/13 verification; focused 250 owner discharged, no promotion. |
+| 1 — next | `M6-CP3-CB39-RP01-A3-SOURCE-EDGE-TAMPER-REHOME` → `…-REV` | RA-155.3 A: 191+204 → A3 `NonReciprocalAdjacency` at the tampered key; test-only. |
 | 3 | `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME` → `…-REV` | RA-155.3 B: 192 k=1, 247 k=2; original A4 assertions kept; test-only. |
 | 4 | `M6-CP3-CB41-RP01-EQUIVALENT-LIFT-A3-INGRESS-REHOME` → `…-REV` | RA-155.3 C: 189, with each A3 built from its own ±4 field; test-only. |
 | 5 | `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN` → `…-REV` | RA-156 J3/O3: `cell=-1,side=-1` in 251, 252, `:2936`; test-only. |
@@ -82,7 +67,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-TB40-RP01-SELECTOR250-RAIL-AUTHORITY-VERIFY-REV** — [TB40 report](Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Verification_Report_20261025.md), [manifest](Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Verification_Case_Manifest.tsv), result artifact `12616556389`, CB38 package `12613073521` / source `41f39ba9`, [CB38-REV](Architecture_M6_CP3_CB38_Selector250_Rail_Authority_Independent_Review_Decision_20261025.md), TB39 raw evidence for attribution. Static review only.
+`load_next`: **M6-CP3-CB39-RP01-A3-SOURCE-EDGE-TAMPER-REHOME** — [TB40-REV](Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Independent_Review_20261025.md), [RA-155 A](Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md), CB38 source `41f39ba9`, tests 191/204, exact A3 tamper ingress. Test-only edits and compile-only; independent CB39-REV follows.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

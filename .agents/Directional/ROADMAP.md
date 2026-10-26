@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Updated:** 2026-10-24 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
+**Updated:** 2026-10-25 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
 
 This roadmap answers **what is done, what comes next, and what each milestone delivers**. It is not a turn log, task queue, test ledger, definition spec, or implementation handoff. The product and acceptance contract is [DESIGN.md](DESIGN.md) (especially §§2 and 14); status, detailed plans, unresolved findings, and exact next-turn authorization live in [ORIENTATION.md](ORIENTATION.md), [Future_Chat_Session_Handoff.md](Future_Chat_Session_Handoff.md), [TODO.md](../../TODO.md), and [Regression_Root_Cause_Tracker.md](Regression_Root_Cause_Tracker.md).
 
@@ -47,7 +47,7 @@ Each completed milestone's [closure record](M3_Closure_Record.md) retains detail
 | **M6-CP2** | Independent `SurfaceProductVerifier`: recompute permitted invariants; reject malformed authority without repair. | **Closed** · [closure](M6_CP2_Closure_Record.md) |
 | **M6-CP3** | End-to-end direct-production and invariant re-proof, including the remaining closed-complex candidate-extraction witness and discriminating tamper. | **Active / blocked on evidence; not accepted** |
 
-**Current CP3 boundary (2026-10-25):** TB39-REV independently verified seven immutable logs and 17/17 result checksums (six GUARD PASS, selector250 expected RED). Checked factory code=0/detail=6/site=`hard-rail-contact-missing` is the combined positive fixture lacking authentic source-rail open-contact/closed-chain authority, not a 56–66 periodic action. Next `CB38-A` (191/204 A3 tamper re-home), then remaining RA-155 re-homes and narrowed DEFN; later 250-owner correction must re-prove the complete positive path. No CP3 or selector497 promotion; CP2 491/491 accepted, TB38 candidate 490/504, stable 66/17/49 debt1, RP-01 unresolved; M7 remains gated on M6. [Review](Architecture_M6_CP3_TB39_Selector250_Factory_Site_Independent_Review_20261025.md).
+**Current CP3 boundary (2026-10-25):** [TB40-REV](Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Independent_Review_20261025.md) independently verified the immutable 13/13 PASS focused gate (selector250 candidate discharge; 12 guards PASS). This demonstrates authentic combined fixture rail provenance, not CP3 direct-production acceptance. Exact next is test-only CB39 A3 source-edge tamper re-home (191/204), then independent Review. No CP3 or selector497 promotion; CP2 491/491 accepted, TB38 candidate 490/504, stable 66/17/49 debt1; RP-01 remains open, RP-02 unreached.
 
 **Outstanding M6 exit dependency:** The single remaining produced-witness debt, **`G4-B002` closed-complex candidate extraction**, must be proved on real pipeline-produced authority at CP3. The active CP3 source/transport issue (`RP-01`) remains unresolved; the relevant downstream consumer (`RP-02`) has not been reached. Milestone M6 remains open until its specified direct-production and invariant evidence is independently accepted. Detailed fault classification belongs in the regression tracker, not here.
 

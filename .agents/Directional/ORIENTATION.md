@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-25 · CB38-REV statically accepted test-only correction and eight-target GMP/GMPXX compile; 13-case TB40 manifest frozen. Selector250 runtime remains open. CP3 unaccepted; CP2 491/491 accepted; stable 66/17/49 debt1; RP-01 open.
+**Currency:** 2026-10-25 · TB40-REV independently verified 13/13 immutable tests and discharged selector250 as a focused candidate. CB39 A3 tamper re-home is next. CP3 and selector497 unaccepted; CP2 491/491 accepted; stable 66/17/49 debt1; RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current test authority:** TB38-REV accepts the immutable 504-case census as **reviewed candidate** (490 PASS / 14 RED; original 497 selector 483/14), not CP3 acceptance. Five expected former RED now PASS; four appended guards PASS; no accepted-green loss. 191/192 reach the intended negative assertions but remain Produced/None, and 250 remains `PublishedProductRejected(68)` with now-measured code 0/detail6 hard-rail-contact-missing; independent TB39-REV assigns missing source-rail fixture authority. RA-156 binds the next bounded step: CB38 supplies the rail authority for test 250 (test-only), and TB40 measures it; the A/B/C re-homes follow; stable 66/17/49 debt1, CP2 491/491, frozen selector497. [TB38-REV decision](Architecture_M6_CP3_TB38_Periodic_Route_Atlas_Census_Independent_Review_Decision_20261025.md).
+**Current test authority:** [TB40-REV](Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Independent_Review_20261025.md) independently rechecked 29/29 artifact hashes and 13/13 raw joins: selector250 now PASS with authentic closed Hard rail and production provenance; 12/12 guards PASS. This discharges only the focused RA-156 fixture owner, not the selector497 or CP3 gate. TB38 remains reviewed candidate 490/504; CP2 491/491 accepted; stable 66/17/49, debt 1. A/B/C tamper re-homes, polygonal-disk locus pin and RP-01 remain open. Exact next: CB39 A3 re-home for 191 and 204.
 
 **Prior TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 
@@ -104,18 +104,18 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** CB38-REV accepted the test-only rail-authority correction on static evidence. Run frozen TB40 (selector250 and twelve PASS guards), then TB40-REV. RA-156 A/B/C re-homes and O3 remain subsequent independent turns; no new runtime PASS inferred.
+**Immediate:** TB40-REV independently accepted selector250 as a focused rail-authority fixture candidate (13/13 PASS). The A3 source-edge tamper re-home (191, 204) is next; turning-field and equivalent-lift re-homes plus O3 locus pin follow. Do not promote CP3 or selector497 from this targeted result.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Restore the only positive periodic-plus-disk composition (250) with authentic rail authority, then re-home the tamper oracles A/B/C and pin the O3 locus. | `M6-CP3-TB40-RP01-SELECTOR250-RAIL-AUTHORITY-VERIFY`; [RA-156](Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md) |
+| **1** | Re-home tamper oracles A/B/C and pin the O3 locus; selector250 composite is now a reviewed focused positive only. | `M6-CP3-CB39-RP01-A3-SOURCE-EDGE-TAMPER-REHOME`; [RA-156](Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
 
-- **Positive fixture missing independently published source-rail provenance (TB39-REV):** adding hard-feature edge keys does not publish their source-owned open contacts or closed chains. Checked A4 rejects this under `InvalidSourceAuthority(0)` / `MissingRailTerminalContact(6)` even when its upstream A2/A3 atlas was built. Correct the fixture authority at its originating producer; do not relax the validator or interpret its wrapper as an A4 periodic-action mismatch. [Review](Architecture_M6_CP3_TB39_Selector250_Factory_Site_Independent_Review_20261025.md). RA-156: a composed fixture must carry the component fixture's full rail authority (`authoritativeRails` plus provenance), not only the hard-edge keys. [RA-156](Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md).
+- **Positive fixture missing independently published source-rail provenance (TB39-REV; focused 250 owner discharged by TB40-REV):** adding hard-feature edge keys does not publish their source-owned open contacts or closed chains. Checked A4 rejects this under `InvalidSourceAuthority(0)` / `MissingRailTerminalContact(6)` even when its upstream A2/A3 atlas was built. Correct the fixture authority at its originating producer; do not relax the validator or interpret its wrapper as an A4 periodic-action mismatch. [Review](Architecture_M6_CP3_TB39_Selector250_Factory_Site_Independent_Review_20261025.md). RA-156: a composed fixture must carry the component fixture's full rail authority (`authoritativeRails` plus provenance), not only the hard-edge keys. [RA-156](Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md).
 
 - **Producer step authority omitted under atlas ingress (RA-152 F1; TB36-REV):** branch propagation reads `FieldTransportAtlas` but A4 periodic observed-step publication historically used null legacy containers and inserted zero rotations; CB36-REV accepted its atlas-first correction and TB37-REV now confirms three focused runtime witnesses; full 497-row census remains unmeasured. A checked factory rejection after A4 is not an A4 guard success; preserve its underlying site before assigning the secondary factory cause.
 
