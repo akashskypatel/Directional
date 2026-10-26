@@ -18,6 +18,13 @@
 4. **Compile-only assertion correction:** `Eigen::VectorXi.empty()` did not compile; the final change uses `ASSERT_EQ(0, singularIndices.size())` in two places. This retains the same zero-index requirement; initial failed compile is not erased or presented as a pass.
 5. **Scope:** No product implementation/selector/fixture/benchmark code change; no selector497 or CP3 promotion. Accepted CP2 remains 491/491, reviewed TB38 candidate 490/504, stable 66/17/49, debt one, RP-01 open. Carry O1–O4, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002 and TB41 execution ownership.
 
+## Continuation evidence (same review turn; 2026-10-26)
+
+- Prepared and preserved a three-path documentation patch at base `08bb7921dfe3e059066923ddc1d0a1dcdfc983e8`. First Drive apply run `40270071077` failed *after verified patch application to the runner checkout* but **before commit**: the `intended_paths` patch-header metadata used commas while the reusable parses semicolons. No semantic or documentation commit was produced by that failed run.
+- Corrected only the patch header; body SHA-256 remained `994c36552ed9bfca7902db18b3c21a25d6f24fba115cccca9b233a72f61c671a`. Corrected full patch SHA-256 `8fed4dd6d8344eea6db30badf31cf75b41ad0b97cdaa5d06fcab1cc33554a296`; successful Drive apply [run 40270355447](https://github.com/akashskypatel/Directional/actions/runs/40270355447) result artifact `12627009986`, output commit [`aaf48a9bd49acbb35ea176a095e90a709b599175`](https://github.com/akashskypatel/Directional/commit/aaf48a9bd49acbb35ea176a095e90a709b599175). Exactly `Future_Chat_Session_Handoff.md`, `ORIENTATION.md`, and `TODO.md` changed. Both staged Drive files were retired by the owner connector.
+- Restored the frozen local source snapshot after an unintended **local hardlink-overlay** modification during audit-tree creation, directly from its verified source tar; verified `5898/5898` source-manifest hashes afterward. No remote source mutation occurred.
+- `document_drift_audit.py` on the prepared living-document overlay reported zero errors and warnings **when the known remotely committed review decision path was represented in the local mirror**. The first source-only audit had reported three broken links solely because its frozen snapshot predates that review decision. This check does not establish Git-history boundary, human document-drift approval, consolidation, or the currency of the separate `ROADMAP.md` next-turn prose, which still needs correction at formal closeout.
+
 ## Required historical boundary — unresolved
 
 `python3 .agents/Directional/tools/review_check.py boundary` was **actually invoked and returned exit 1** on the verified GitHub-generated source snapshot. The snapshot intentionally contains no `.git` directory, so the checker cannot resolve the protected rewrite baseline or historical committed blobs; its apparent selector-untracked lines are **not** accepted historical checks. `python3 .agents/Directional/tools/review_check.py ledgers --base f262f153e8acc87c6c76e0e34d08841792ab5735` was also actually invoked and returned exit 1: missing rewrite-baseline Git history and both ledger baselines. No successful authentic-history `boundary` or `ledgers` run is claimed. Complete them in a Git-aware authorized environment, then complete consolidation, drift audit, durable document updates and final STATUS before marking this REVIEW complete. Source/package static approval does not waive these duties.
@@ -32,10 +39,10 @@
 | Prior obligations discharged/carried | RA-155.3 B, RA-157.4 statically addressed; TB41, O1–O4 and listed carried owners remain |
 | Stable accounting | 66/17/49 debt 1; CP2 491/491; TB38 candidate 490/504; selector497 unpromoted |
 | New candidates/obligations recorded | No new semantic candidate; outstanding authentic-Git boundary and ledgers (both exit 1 in no-.git snapshot) |
-| ORIENTATION currency line | Pending review closeout; do not advance next turn before complete |
-| ORIENTATION §3 / §4 / §7 / §8 | Pending review closeout; no witness status change demonstrated |
+| ORIENTATION currency line | Updated in semantic docs commit aaf48a9 (same CB40-REV turn; pending formal closeout) |
+| ORIENTATION §3 and §7 | Updated §3 / §7 for CB40-REV; §4 unchanged (no witness change), §8 unchanged (no new recurring defect) |
 | CHANGELOG | Pending review closeout |
-| ROADMAP | No checkpoint movement; currency check pending |
+| ROADMAP | No checkpoint movement; stale CB40-next prose needs correction before formal review closeout |
 | Selector manifest | Not modified; no selector accepted or appended |
 | LESSONS | Existing non-vacuity / build evidence principles; no new generalizable lesson |
 | Consolidation under CLEAN_UP_POLICY | Pending review closeout |
@@ -43,6 +50,6 @@
 | Turn boundary held | Yes; static review only, no runtime/product/selector/test change |
 | review_check.py boundary | **FAIL exit 1 due absent Git history**; not a passing check |
 | STATUS lifecycle maintained | Entry beacon published, final closeout pending; same turn retained |
-| Pushed to origin, branch in sync | This record is committed by GitHub connector; authentic `git status -sb` check pending |
+| Pushed to origin, branch in sync | Docs patch successfully pushed by workflow; authentic `git status -sb` branch-sync check pending |
 
 **Resume the same CB40-REV turn**, finish the required historical checks and documentation/consolidation, and only then publish a COMPLETE beacon with the separately authorized CB41 successor.
