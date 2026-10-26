@@ -1,3 +1,5 @@
+- **2026-10-26 — CB39 test-only A3 source-edge tamper oracle re-home compiled (no runtime).** RA-157.3: 191/204 retain independent untampered A3 success, interior-edge assertion, exact tampered `NonReciprocalAdjacency`/source-edge key; invalid A4 negatives removed, 204's A4 baseline preserved. Source `c6cc82aa0aa8e5e46dc58cfc887050bf46a65963`; [compile 40254362620](https://github.com/akashskypatel/Directional/actions/runs/40254362620), artifact `12621099926` ZIP SHA256 `0d2ad13c768a830d3f7a9954ee50effc72481706b89e1544684fd003f018089b`; eight GMP/GMPXX targets, `runtimeExecution=false`. [Record](.agents/Directional/Architecture_M6_CP3_CB39_A3_Source_Edge_Tamper_Rehome_Code_Build_Record_20261026.md). Stable/selector/CP3 authority unchanged; next `M6-CP3-CB39-RP01-A3-SOURCE-EDGE-TAMPER-REHOME-REV` independent Review.
+
 - **2026-10-25 — RA-157 TB40-REV audit: 250 focused discharge confirmed; CB39 oracle re-bound.**
   - TB40 independently re-verified; the CB37→CB38 diff is the test hunk only.
   - CB39 now requires an untampered-A3 baseline and `code`+`sourceEdge` assertions, and removes the unsatisfiable A4 negatives.
