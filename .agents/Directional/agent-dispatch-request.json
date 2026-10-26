@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb39-a3-rehome-drive-apply-20261026",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb39-a3-rehome-apply",
-  "file_id": "1AZmd4sPL8m-Mkcls19CaW0BU0sS0lCsO",
-  "patch_sha256": "736651745f27c7a91a85546c11122a59d7a5dbc5ac094daaa66d97efcbe5dc68",
-  "base_sha": "0b9f6cdadb0f0ebbf0d06a0000cd7d2a2b265106",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: rehome A3 source-edge tamper oracles for 191 and 204",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb39-a3-rehome-compile-20261026",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb39-a3-rehome-compile",
+  "source_sha": "c6cc82aa0aa8e5e46dc58cfc887050bf46a65963",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "cb39-a3-source-edge-compile"
 }
