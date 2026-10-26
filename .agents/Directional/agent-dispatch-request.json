@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb39-a3-rehome-compile-20261026",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb39-a3-rehome-compile",
-  "source_sha": "c6cc82aa0aa8e5e46dc58cfc887050bf46a65963",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "cb39-a3-source-edge-compile"
+  "request_id": "m6-cp3-cb39-closeout-docs-drive-apply-20261026",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb39-closeout-docs-apply",
+  "file_id": "1P7LQrNa3jg8Iv9RMt-FCaJ5_k9Kx9pGh",
+  "patch_sha256": "99ef9a81017a87923cfb5594e96d5f7838415e6e3b9403d0ca2c9a1c2809119e",
+  "base_sha": "0b9f6cdadb0f0ebbf0d06a0000cd7d2a2b265106",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close out CB39 A3 source-edge oracle compile evidence",
+  "retention_days": 14
 }
