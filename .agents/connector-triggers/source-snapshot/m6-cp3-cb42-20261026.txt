@@ -1,0 +1,3 @@
+Snapshot trigger for M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN
+Source identity: exact event commit
+No runtime execution or test authorization.
