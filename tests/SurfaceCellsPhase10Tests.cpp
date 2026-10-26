@@ -1623,31 +1623,35 @@ TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
                                       fixture.forwardRoute)
                    .empty());
 
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  const auto sourceAuthority =
+      directional::geometry::surface_cell_tracing_detail::
+          build_source_topology_regions(fixture.mesh.F, options);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto untamperedAtlas = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *sourceAuthority, options.hardFeatureEdges,
+      fixture.authoritativeField);
+  ASSERT_TRUE(untamperedAtlas.has_value());
+
+  const auto tamperedKey = fixture.forwardRoute.sourceTopology[1];
+  ASSERT_TRUE(interior_source_edges(fixture.mesh).contains(tamperedKey));
   auto malformed = fixture.authoritativeField;
-  auto *transition =
-      transition_for_edge(malformed, fixture.forwardRoute.sourceTopology[1]);
+  auto *transition = transition_for_edge(malformed, tamperedKey);
   ASSERT_NE(nullptr, transition);
   ASSERT_GE(transition->sourceEdge, 0);
   transition->sourceEdge = -1;
 
-  const auto rejected = build_segment_route_network(fixture, malformed);
-  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
-            rejected.phaseFront.disposition());
-  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
-                MissingTransitionProvenance,
-            rejected.phaseFront.rejection_reason());
-  EXPECT_GE(phase_front_rejection(rejected.phaseFront).cell, 0);
-  EXPECT_GE(phase_front_rejection(rejected.phaseFront).side, 0);
-  EXPECT_EQ(7, phase_front_rejection(rejected.phaseFront).sourceVertex);
-  EXPECT_TRUE((phase_front_rejection(rejected.phaseFront).face == 3 &&
-               phase_front_rejection(rejected.phaseFront).targetFace == 10) ||
-              (phase_front_rejection(rejected.phaseFront).face == 10 &&
-               phase_front_rejection(rejected.phaseFront).targetFace == 3));
-  EXPECT_FALSE(rejected.phaseFront.is_produced());
-  EXPECT_EQ(nullptr, rejected.phaseFront.produced_product());
-  EXPECT_TRUE(rejected.seeds.empty());
-  EXPECT_TRUE(rejected.traces.empty());
-  EXPECT_TRUE(rejected.proposals.empty());
+  const auto rejectedAtlas = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *sourceAuthority, options.hardFeatureEdges, malformed);
+  ASSERT_FALSE(rejectedAtlas.has_value());
+  EXPECT_EQ(directional::authority::FieldAtlasBuildErrorCode::
+                NonReciprocalAdjacency,
+            rejectedAtlas.error().code);
+  EXPECT_EQ(std::make_optional(tamperedKey), rejectedAtlas.error().sourceEdge);
 }
 
 TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
@@ -5053,32 +5057,36 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
 TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
      MalformedAuthoritativeCrossingProvenanceFailsClosed) {
   const auto fixture = make_periodic_holonomy_route_fixture();
-  auto malformed = balanced_periodic_route_field(fixture);
-  auto *transition = transition_for_edge(
-      malformed, fixture.expectedRoute.front().currentTopology);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  const auto sourceAuthority =
+      directional::geometry::surface_cell_tracing_detail::
+          build_source_topology_regions(fixture.mesh.F, options);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto untamperedField = balanced_periodic_route_field(fixture);
+  const auto untamperedAtlas = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *sourceAuthority, options.hardFeatureEdges,
+      untamperedField);
+  ASSERT_TRUE(untamperedAtlas.has_value());
+
+  const auto tamperedKey = fixture.expectedRoute.front().currentTopology;
+  ASSERT_TRUE(interior_source_edges(fixture.mesh).contains(tamperedKey));
+  auto malformed = untamperedField;
+  auto *transition = transition_for_edge(malformed, tamperedKey);
   ASSERT_NE(nullptr, transition);
   ASSERT_GE(transition->sourceEdge, 0);
   transition->sourceEdge = -1;
 
-  // Preserve the original source-owned A2/A3 authority. Only the tracing
-  // transition's source-edge provenance is corrupted for this negative.
-  const auto sourceField = balanced_periodic_route_field(fixture);
-  const auto rejected = build_periodic_route_network_with_source_atlas(
-      fixture, malformed, sourceField);
-  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
-            rejected.phaseFront.disposition());
-  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
-                PeriodicHolonomyMismatch,
-            rejected.phaseFront.rejection_reason());
-  EXPECT_EQ(fixture.expectedRoute.front().sourceFace,
-            phase_front_rejection(rejected.phaseFront).face);
-  EXPECT_EQ(fixture.expectedRoute.front().targetFace,
-            phase_front_rejection(rejected.phaseFront).targetFace);
-  EXPECT_FALSE(rejected.phaseFront.is_produced());
-  EXPECT_EQ(nullptr, rejected.phaseFront.produced_product());
-  EXPECT_TRUE(rejected.seeds.empty());
-  EXPECT_TRUE(rejected.traces.empty());
-  EXPECT_TRUE(rejected.proposals.empty());
+  const auto rejectedAtlas = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *sourceAuthority, options.hardFeatureEdges, malformed);
+  ASSERT_FALSE(rejectedAtlas.has_value());
+  EXPECT_EQ(directional::authority::FieldAtlasBuildErrorCode::
+                NonReciprocalAdjacency,
+            rejectedAtlas.error().code);
+  EXPECT_EQ(std::make_optional(tamperedKey), rejectedAtlas.error().sourceEdge);
 }
 
 TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
