@@ -70,7 +70,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-\`load_next\`: **M6-CP3-TB43-RP01-SELECTOR190-REHOME-VERIFY-REV** — verify [TB43 report](Architecture_M6_CP3_TB43_Selector190_Rehome_Verification_Report_20261026.md), immutable manifest, source/package/run/artifact SHA joins and all four raw logs; independently assess A3/A4 witness non-vacuity and guards. CP2 491/491, stable 66/17/49 debt1, selector497 frozen, RP-01 open; Review owns next plan.
+`load_next`: **M6-CP3-TB43-RP01-SELECTOR190-REHOME-VERIFY-REV** — verify [TB43 report](Architecture_M6_CP3_TB43_Selector190_Rehome_Verification_Report_20261026.md), immutable manifest, source/package/run/artifact SHA joins and all four raw logs; independently assess A3/A4 witness non-vacuity and guards. CP2 491/491, stable 66/17/49 debt1, selector497 frozen, RP-01 open; Review owns next plan.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
