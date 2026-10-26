@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-legacy-matching-defn-docs-20261026-r1",
+  "request_id": "m6-cp3-legacy-matching-defn-docs-20261026-r2",
   "operation": "drive_apply",
   "mailbox_key": "m6-cp3-legacy-matching-defn-docs",
-  "file_id": "1tWtdn9fKjbID2xzt6fAws-ZizvVhj5CF",
-  "patch_sha256": "10216dd6388ce933b2fdd8a7ed1a3c7e76a2f0d73342cfff865d0c300ad2d06f",
+  "file_id": "1Q60EyE5SkyC81JhWC_KV-XcTlGrvQMm1",
+  "patch_sha256": "fb26c7935e24f7e631c305d1d299366ab3ebf69c2510d6ca52269c9ab1f6bcb1",
   "base_sha": "3c8068da2064d25f852f151aee11b4c23a60cae2",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "docs(directional): synchronize legacy matching path DEFN handoff and trackers",
