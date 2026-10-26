@@ -108,7 +108,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Independently adjudicate TB41 focused 18/18 runtime oracles for 189, 191, 192, 204, 247, 250, 251, 252 and ten TB40 guards; verify reachability, O3 locus, accepted prefix, exact evidence and no promotion. | `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES` (next Definition only; TB41-REV complete); [TB41 report](Architecture_M6_CP3_TB41_Rehomed_Oracle_Verification_Report_20261026.md) |
+| **1** | Define discriminating legacy-path and seam oracles for 190, 242, O2 and O4; preserve the outstanding third off-selector O3 runtime check as a separate future TB obligation. | `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES` (next Definition only); [TB41-REV decision](Architecture_M6_CP3_TB41_Rehomed_Oracle_Independent_Review_Decision_20261026.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

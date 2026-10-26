@@ -47,4 +47,4 @@
 | Turn boundary held | Read-only Review; no binaries compiled/run and no product/test/fixture/selector/build edits. |
 | review_check.py boundary | Authentic prior CB42 check passed in run 40292894222; no authentic-history run newly executed for this Review; local snapshot alone cannot substantiate historical boundary. |
 | `STATUS` lifecycle maintained | Entry initialized 2026-10-26T09:37:07Z; terminal beacon must be written after durable patch/cleanup as final repository mutation. |
-| Pushed to origin, branch in sync | To be filled only after successful remote patch application and head verification; cannot assert local synthetic-Git sync. |
+| Pushed to origin, branch in sync | Review patch pushed as `be46963fd41fe88728265ca45257479ea6a05389` via verified Drive workflow 40304500375; exact eight-file diff matched patch. Local source mirror is synthetic, so no local ahead/behind claim. |
