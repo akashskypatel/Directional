@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb39-rev-closeout-resume-20261026-1",
+  "request_id": "m6-cp3-cb40-monodromy-drive-20261026-1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb39-rev-closeout-resume",
-  "file_id": "10Leq401yeruPqFnA7z3pTBFrhVrxhXl8",
-  "patch_sha256": "e92df86644080c6cc328ff67d0167e52bbe5d10a6f8a0fc93467a8f6da91ab44",
-  "base_sha": "d54146a52361200a3634f6e212f7f96a943ed0ac",
+  "mailbox_key": "m6-cp3-cb40-monodromy-apply",
+  "file_id": "18OGR0Q5K1oEOw66-dggNv3u8otLywz00",
+  "patch_sha256": "ca3f7008bfd1bd108eb729525d6236318ac81416e3ebc619156821d9a61032af",
+  "base_sha": "f262f153e8acc87c6c76e0e34d08841792ab5735",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: accept CB39 A3 source-edge tamper independent review",
+  "commit_message": "test(surface-cells): rehome turning-field monodromy A4 negatives",
   "retention_days": 14
 }
