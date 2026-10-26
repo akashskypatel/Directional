@@ -4901,7 +4901,7 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   // The negative has true winding on the committed cylinder, not a
   // one-edge matching change that A3 rejects before reaching A4.
   const auto nonzeroField = turning_periodic_route_field(fixture, 1);
-  ASSERT_TRUE(nonzeroField.singularIndices.empty());
+  ASSERT_EQ(0, nonzeroField.singularIndices.size());
   const auto nonzeroRotation = periodic_route_rotation(fixture, nonzeroField);
   ASSERT_TRUE(nonzeroRotation.has_value());
   const auto quarterTurn = directional::authority::QuarterTurn::from_integer(1);
@@ -5313,7 +5313,7 @@ TEST(SurfaceCellsPhase10,
   ASSERT_TRUE((mesh.F.array() == fixture.mesh.F.array()).all());
   ASSERT_TRUE((rawField.array() == fixture.rawField.array()).all());
   const auto nonzeroField = turning_periodic_route_field(fixture, 2);
-  ASSERT_TRUE(nonzeroField.singularIndices.empty());
+  ASSERT_EQ(0, nonzeroField.singularIndices.size());
   const auto rotation = periodic_route_rotation(fixture, nonzeroField);
   ASSERT_TRUE(rotation.has_value());
   ASSERT_EQ(directional::authority::QuarterTurn::from_integer(2), *rotation);
