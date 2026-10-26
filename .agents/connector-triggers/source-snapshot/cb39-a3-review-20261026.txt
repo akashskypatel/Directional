@@ -1,2 +1,0 @@
-Independent review source snapshot request for M6-CP3-CB39-RP01-A3-SOURCE-EDGE-TAMPER-REHOME-REV.
-Source authority for review is immutable CB39 c6cc82aa0aa8e5e46dc58cfc887050bf46a65963.
