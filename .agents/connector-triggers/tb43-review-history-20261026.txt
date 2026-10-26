@@ -1,0 +1,3 @@
+TB43 Review authentic history gate — initial invocation
+Call installed tb43-review-history-20261026.yml to run exact review_check.py boundary at event SHA.
+Frozen code source d354d6ae95afc73df968fc5cc4ee69fe5b7de451
