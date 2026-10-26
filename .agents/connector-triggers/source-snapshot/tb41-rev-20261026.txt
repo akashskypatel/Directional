@@ -1,3 +1,0 @@
-source_ref=5f4f95a2c580e19f6307fab822d00ba170d43a1c
-turn=M6-CP3-TB41-RP01-REHOMED-ORACLE-VERIFY-REV
-purpose=independent evidence review
