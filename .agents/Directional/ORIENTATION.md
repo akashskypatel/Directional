@@ -2,8 +2,8 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-26 · [TB44 focused runtime](Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Verification_Report_20261026.md) 3/4: selector405 positive PASS, off-gate 7614/7414 PASS, guard8219 RED (`missing-terminal-or-closed-rail-provenance` rather than expected `missing-terminal-A3-path`). Run 40387240269 immutable CB44 artifact, postflight valid, no compile. Independent TB44-REV next for RA-161 P1; no selector497 or CP3 promotion, accepted CP2 491/491, stable 66/17/49 debt1, RP-01 open.
-**Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
+**Currency:** 2026-10-26 · [TB44-REV](Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Independent_Review_Decision_20261026.md) independently confirms TB44 mechanical 3/4; 8219 invalid negative fixture (missing producer rail provenance), 7414 proves A4 rail boundary reach but not network-specific validation. P1 carried to O5 before census. No selector497/CP3 promotion; accepted CP2 491/491, stable 66/17/49 debt1, RP-01 open.
+**Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
 **Start here →** this page → [ROADMAP.md](ROADMAP.md) (milestones) → [DESIGN.md](DESIGN.md) §§2, 5, 14 (normative architecture) → [Future_Chat_Session_Handoff.md](Future_Chat_Session_Handoff.md) (exact current authority/next turn). Read the relevant frozen definitions and policies before touching implementation.
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current static review:** [CB44-REV](Architecture_M6_CP3_CB44_Selector405_Rail_Provenance_Independent_Review_Decision_20261026.md) accepts only the provenance-fixture hunk and compile package, with no runtime measurement; TB44 is next.
+**Current independent Review:** [TB44-REV](Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Independent_Review_Decision_20261026.md) (no source edits, 3/4 focused, 8219 invalid fixture and 7414 network-discrimination gap). **Prior static review:** [CB44-REV](Architecture_M6_CP3_CB44_Selector405_Rail_Provenance_Independent_Review_Decision_20261026.md) accepts only the provenance-fixture hunk and compile package, with no runtime measurement; TB44 is next.
 
 **Current test authority:** [TB43-REV](Architecture_M6_CP3_TB43_Selector190_Rehome_Independent_Review_Decision_20261026.md) independently checked TB43 4/4 PASS, result 12/12 checksums, immutable compiled package 28/28, 5917/5917 source snapshot, accepted selector449 unchanged and all 47 required-green selectors equal; focused candidate only, no CP3/selector497 promotion. Earlier [TB42-REV](Architecture_M6_CP3_TB42_O3_Off_Selector_Locus_Independent_Review_Decision_20261026.md) independently rechecked the one-test O3 TB42 artifact (5/5 hashes, 1/1 PASS) and the exact first-rejection locus; together with TB41-REV this discharges O3 as 3/3 focused candidate. No selector or CP3 promotion. Prior focused evidence: [TB40-REV](Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Independent_Review_20261025.md) independently rechecked 29/29 artifact hashes and 13/13 raw joins: selector250 now PASS with authentic closed Hard rail and production provenance; 12/12 guards PASS. This discharges only the focused RA-156 fixture owner, not the selector497 or CP3 gate. TB38 remains reviewed candidate 490/504; CP2 491/491 accepted; stable 66/17/49, debt 1. A/B/C tamper re-homes now statically reviewed (189, 191/204, 192/247); polygonal-disk locus pin and RP-01 remain open. CB39-REV statically accepted the 191/204 oracle re-home (no runtime); CB40 selector192/247 k=1/k=2 re-home is independently statically accepted with authentic-Git checks PASS in [full-history run 40271541658](https://github.com/akashskypatel/Directional/actions/runs/40271541658), no runtime. CB41-REV statically accepted selector189 ([decision](Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Independent_Review_Decision_20261026.md)); CB42 test-only locus assertions were independently statically accepted ([CB42-REV decision](Architecture_M6_CP3_CB42_Polygonal_Disk_Locus_Pin_Independent_Review_Decision_20261026.md)), with genuine full-history boundary checks; subsequent TB41 runtime returned 18/18 PASS with immutable postflight ([report](Architecture_M6_CP3_TB41_Rehomed_Oracle_Verification_Report_20261026.md)), TB41-REV independently accepted as focused candidate; off-selector O3 is now executed and independently accepted as a focused candidate.
 
@@ -106,7 +106,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-TB44-RP01-SELECTOR405-FIXED-PLAN-VERIFY` (frozen 405 positive + three off-gate guards; no rebuild) → TB44-REV (P1), then 242 DEFN. No CP3/selector497 promotion.
+**Immediate:** `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` → Review. [TB44-REV](Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Independent_Review_Decision_20261026.md) leaves RA-161 P1 open for O5: repair the 8219 negative fixture precondition and demand a differential network-bound 7414 guard before off-selector credit. No CP3/selector497 promotion.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
@@ -116,6 +116,8 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
+
+- **Masked off-gate negative and nondiscriminating network guard (TB44-REV):** 8219 omits terminal provenance and fails before its intended A3 predicate; 7414 forges a typed source-edge key that is invalid even without A2a network binding. Positive front-side reachability is real but cannot establish network-specific dependency. O5 owns RA-161 P1; see [TB44-REV](Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Independent_Review_Decision_20261026.md).
 
 - **Atlas-versus-atlas vacuity with an unconsumed legacy stimulus (190/O2):** A fixture mutates raw compact matching but builds checked A3 from a separate authoritative field; the atlas-present wrapper nulls every legacy container, so identical A4 outputs prove nothing. A3 `MissingAdjacency` alone duplicates `selector:28`; the discriminating home also pins the no-atlas A4 ingress locus (`"atlas-binding"`). The re-homed selector190 now passes its A3 negative/restored-positive and A4 exact-site assertions in focused TB43 Review; the historical vacuity is not retroactively cured. No-atlas ingress on NotApplicable inputs still publishes legacy-decided seed-fallback outputs. [RA-160](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md).
 

@@ -1,5 +1,7 @@
 ## 2026-10-26 — TB44 artifact-only verification: selector405 PASS, guard8219 RED
 
+- **2026-10-26 — `M6-CP3-TB44-RP01-SELECTOR405-FIXED-PLAN-VERIFY-REV`:** Independently verified TB44 exact package/result/log and 3/4 frozen tests. 8219 is an invalid missing-rail-provenance negative; 7414 proves rail-boundary consumer reached, not network-specific dependency. RA-161 P1 carries to O5 with falsifiers; 405 remains focused candidate; no CP3 promotion, source/test edits or runtime. [Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Independent_Review_Decision_20261026.md](.agents/Directional/Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Independent_Review_Decision_20261026.md).
+
 - [TB44 report](.agents/Directional/Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Verification_Report_20261026.md): immutable CB44 source `c256671` and package `12674401457`; [run 40387240269](https://github.com/akashskypatel/Directional/actions/runs/40387240269), result artifact `12680557878`, ZIP SHA-256 `f1b30006…3376b986`, 10/10 internal hashes; 4/4 unique case executions, 3 PASS / 1 RED, zero skips, postflight true, no rebuild. selector405 passes after producer-derived A2b fixture correction. Off-gate guard8219 fails expected `missing-terminal-A3-path` against actual `missing-terminal-or-closed-rail-provenance`. Independent TB44-REV to disposition P1; no selector/CP3 promotion or stable-accounting change, CP2 491/491 accepted.
 
 ## 2026-10-26 — CB44 independent static review accepted; TB44 four-case manifest frozen
