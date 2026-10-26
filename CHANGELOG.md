@@ -1,3 +1,9 @@
+## 2026-10-26 — RA-158 TB41-REV audit: O3 owner assigned; DEFN split by mechanism
+
+- [RA-158](.agents/Directional/Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md) confirmed TB41-REV (39/39, 18/18). The unexecuted third O3 locus test gets TB42 before CB42 package `12634151125` expires (2026-11-02T07:22Z).
+- The legacy-path/seam DEFN is split into three single-mechanism DEFNs (190+O2; O4; 242) with frozen Review IDs. New O5: 249/598 producer-binary tests are in no frozen gate; disposition DEFN before the census.
+- Stable 66/17/49 debt 1; CP2 491/491 accepted; selector497 frozen; RP-01 open.
+
 ## 2026-10-26 — TB41-REV independently accepts 18-case focused candidate; off-selector O3 remains open
 
 - [Review](.agents/Directional/Architecture_M6_CP3_TB41_Rehomed_Oracle_Independent_Review_Decision_20261026.md) independently verified source snapshot 5905/5905, CB42 compile 28/28, TB41 result 39/39, 18/18 unique raw-log joins and typed rejection-locus source sites. Eight focused oracles and ten guards passed with immutable postflight; no runtime/build/selector edits in Review.

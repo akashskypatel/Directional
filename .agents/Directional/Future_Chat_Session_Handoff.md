@@ -34,37 +34,41 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-26: TB41 immutable artifact-only run [40296007299](https://github.com/akashskypatel/Directional/actions/runs/40296007299) executed **18/18 PASS**, eight re-homed oracles and ten nonduplicated TB40 guards; independent TB41-REV accepted this focused candidate but found the third CB42 off-selector O3 test unexecuted. 39/39 result hashes, `postflight=true`, no rebuild/relink. [TB41 report](Architecture_M6_CP3_TB41_Rehomed_Oracle_Verification_Report_20261026.md) retains exact source/package and raw logs; legacy-path Definition is next. Candidate only; CP2 491/491 accepted, TB38 490/504 candidate, selector497 frozen/unpromoted, stable 66/17/49 debt 1, RP-01 open. |
-| Previous reviewed package | CB40 test-only `0d227875d8f031a467e661be2da4dd901846797c`; [compile 40264202131](https://github.com/akashskypatel/Directional/actions/runs/40264202131), artifact `12625069994`, ZIP SHA256 `0f5e554b975bd1306df587f7bb0031707136f2a629fb550beab61e02301e3d41`; eight GMP/GMPXX targets, `runtimeExecution=false`. [CB40 record](Architecture_M6_CP3_CB40_Turning_Field_Monodromy_Rehome_Code_Build_Record_20261026.md); [CB40-REV independent review decision](Architecture_M6_CP3_CB40_Turning_Field_Monodromy_Rehome_Independent_Review_Decision_20261026.md) and [authentic Git check 40271541658](https://github.com/akashskypatel/Directional/actions/runs/40271541658) PASS. Prior CB39 source/package and Review remain preserved in their separate record and decision. |
-| Latest compile | CB42 test-only `8dc8cdeae6f6ac05c28aaa4504ca2c42c3177ded`; [compile 40285233031](https://github.com/akashskypatel/Directional/actions/runs/40285233031), artifact `12634151125` ZIP SHA256 `d7f7b8302966b14acd919eeef4465d518a6179f1823fbb86ad0e5b1b43488b87`; 28/28 file hashes, eight GMP/GMPXX targets, `runtimeExecution=false`. [CB42 record](Architecture_M6_CP3_CB42_Polygonal_Disk_Locus_Pin_Code_Build_Record_20261026.md). Previous CB41 source/package retained in its record. |
-| Reviewed decision | [CB41-REV](Architecture_M6_CP3_CB41_Equivalent_Lift_A3_Ingress_Rehome_Independent_Review_Decision_20261026.md) statically accepted own-field selector189 A3/A4 oracle and compile package; RA-155.3 C statically satisfied; TB41 focused runtime subsequently reviewed. [RA-157](Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md): TB40 re-verified (29/29 hashes, 13/13 rows; the CB37→CB38 diff is the test hunk only). K1: CB39 needs an untampered-A3 baseline, `code`+`sourceEdge` assertions, and removal of the unsatisfiable A4 negatives. K2/O4: A4 `MissingTransitionProvenance` loses its only witness. K4: doc drift fixed. |
-| Accepted vs candidate | CP2 accepted **491/491**; TB32 candidate **481/500**; TB37 focused **14/16 reviewed**; TB38 independently reviewed **candidate 490/504** (497 prefix 483/14), unpromoted; selector497 frozen and unpromoted; stable **66/17/49**, debt 1; RP-01 open, RP-02 unreached. |
+| Currency | 2026-10-26, after [RA-158](Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md) (TB41-REV confirmed; O3 owner assigned; DEFN split). |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
+| Last accepted semantic runtime | CP2 **491/491** accepted (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
+| Latest candidate or rejected evidence | TB41 focused **18/18 PASS**, candidate only: CB42 source `8dc8cdeae6f6ac05c28aaa4504ca2c42c3177ded`, package `12634151125` (ZIP `d7f7b830…8b87`, **expires 2026-11-02T07:22:41Z**), [run 40296007299](https://github.com/akashskypatel/Directional/actions/runs/40296007299), result `12638251384` (ZIP `1817f829…d854`); [report](Architecture_M6_CP3_TB41_Rehomed_Oracle_Verification_Report_20261026.md), [TB41-REV](Architecture_M6_CP3_TB41_Rehomed_Oracle_Independent_Review_Decision_20261026.md). TB32 481/500 and TB38 490/504 candidate; selector497 frozen, unpromoted. |
+| Regression accounting and debt | Stable **66/17/49**, debt 1 ([tracker](Regression_Root_Cause_Tracker.md)). No new stable event. |
+| Active boundary | RP-01 open, RP-02 unreached. O3 third locus test (`Phase10Tests:2940`) unexecuted → TB42. O5: 249 producer-binary tests are in no frozen gate (RA-158 L5). Carried: DIAG-RETAIN, O1, O2, O4, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002. |
 
-## Mandatory next turn — `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES` — DEFINITION ONLY
+## Mandatory next turn — `M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY` — EXACT NEXT
 
-- **Entry authority:** [TB41-REV independent review](Architecture_M6_CP3_TB41_Rehomed_Oracle_Independent_Review_Decision_20261026.md), RA-157 / RA-155, and the existing RP-01 next-owner plan. Focused TB41 was independently accepted as 18/18 but did not run the off-selector polygonal-disk O3 test; keep that separate runtime obligation open.
-- **Objective:** specify independently falsifiable consumers and rejection/positive witnesses for selector190, selector242, O2 (legacy-path) and O4 (`MissingTransitionProvenance`), including the A2–A4 seam/atlas boundary.
-- **Boundary:** Definition-only, no source/test/selector/build/workflow mutation or runtime. Do not resurrect an unattainable A4 negative or infer consumption from a fixture-field mutation. Include explicit stop/falsifiers and hand off to independent Review. CP3/selector497 not promoted.
-- **Successor after this DEFN:** independent `…-REV` turn; exact canonical ID to be frozen by the Definition record/authority, not invented here.
+- **Authority:** [RA-158.4](Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md). Artifact-only Test + Benchmark; no compile.
+- **Package:** CB42 artifact `12634151125`, ZIP SHA-256 `d7f7b8302966b14acd919eeef4465d518a6179f1823fbb86ad0e5b1b43488b87`, source `8dc8cdeae6f6ac05c28aaa4504ca2c42c3177ded`, 28/28. Run before **2026-11-02T07:22Z**.
+- **Harness:** unchanged `tools/m6_cp3_targeted_artifact_harness.sh` (SHA-256 `436f5fff…3c9a`).
+- **Manifest:** freeze and commit before dispatch; exactly one row: `POSITIVE`, `o3:polygonal-partial-phase`, `SurfaceCellsPhase10.PolygonalCurvedDiskRejectsWithoutPublishingPartialPhase`, `directional_surface_cell_producer_tests`, `PASS`.
+- **STOP → Review:** package expired or hash mismatch (no recompile); harness rejects a one-row manifest (no harness edit). A RED is recorded with its first failure line and not fixed in this turn.
+- **On PASS:** O3 runtime discharged as focused candidate (3/3). Successor `M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY-REV`.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| done | CB38 → CB38-REV → TB40 → TB40-REV → audit ([RA-157](Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md)) | 250 focused candidate discharge; CB39 spec re-bound. |
-| done | `M6-CP3-CB40-RP01-TURNING-FIELD-MONODROMY-REHOME-REV` | Static Review accepted with authentic Git-history PASS; no runtime or promotion. |
-| done | `M6-CP3-CB41-RP01-EQUIVALENT-LIFT-A3-INGRESS-REHOME-REV` | Static accepted; authentic-Git boundary/source authority PASS, run 40282179241. |
-| done | CB42 compiled → CB42-REV | RA-156 J3/O3 locus assertions independently statically accepted; authentic full-history checks PASS; runtime remains separate. |
-| done | TB41 → TB41-REV | 18/18 focused candidate independently accepted; O3 third off-selector locus test unexecuted; no promotion. |
-| 5 — next | `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES` → independent Review (ID to be frozen) | 190, 242, O2, O4; Definition only. |
-| 6 | 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) | One owner per turn; Review assigns the canonical IDs. |
-| 7 | Census → RP-01 Review | Review-owned manifest. |
+| done | CB39 → CB40 → CB41 → CB42 (each → REV) → TB41 → TB41-REV → audit ([RA-158](Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md)) | RA-155.3 A/B/C and 250 focused candidate; O3 2/3 run. |
+| 1 — next | `M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY` → `…-REV` | One POSITIVE row on package `12634151125` before it expires. |
+| 2 | `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION` → `…-REV` | 190 + O2; accepted-prefix accounting rule; design only. |
+| 3 | `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` → `…-REV` | O4 (`SurfaceCellTracing.cpp:12656/12698/12707`); design only. |
+| 4 | `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` → `…-REV` | 242; coordinate DEFN-SEAM-NZ; design only. |
+| 5 | Code/TB turns authorized by steps 2–4 | Their Reviews assign canonical IDs. |
+| 6 | 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) | One owner per turn; Review assigns IDs. |
+| 7 | `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` → `…-REV` | O5: classify the 249 off-gate producer tests; freeze supplemental census rows. |
+| 8 | Census → RP-01 Review | Review-owned manifest. |
 | carried | `DIAG-RETAIN` (full scope in TODO CURRENT) | Review places it clear of RP-01 corrective turns; edits `RemeshPipeline.cpp`. |
-| carried | O1, O2, O3 (251/252 reviewed focused PASS; third off-selector runtime test not executed), O4 (until DEFN), RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002 | Separate gates. |
+| carried | O1, O2 (step 2), O3 (step 1), O4 (step 3), O5 (step 7), RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002 | Separate gates. Superseded: `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES`. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES** — Definition only, after independently accepted focused TB41-REV. Load [TB41-REV independent review](Architecture_M6_CP3_TB41_Rehomed_Oracle_Independent_Review_Decision_20261026.md), RA-157/RA-155 and the legacy-path owner plan; consult [TB41 report](Architecture_M6_CP3_TB41_Rehomed_Oracle_Verification_Report_20261026.md) and [case manifest](Architecture_M6_CP3_TB41_Rehomed_Oracle_Verification_Case_Manifest.tsv), [CB42-REV decision](Architecture_M6_CP3_CB42_Polygonal_Disk_Locus_Pin_Independent_Review_Decision_20261026.md), exact CB42 package `12634151125` and TB41 result `12638251384`. Define 190/242/O2/O4 consumer and oracle ownership with independent falsifiers; off-selector O3 runtime remains carried. No runtime/rebuild or CP3/selector promotion.
+`load_next`: **M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY** — artifact-only, one POSITIVE row per [RA-158.4](Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md). Load the TB41 [manifest](Architecture_M6_CP3_TB41_Rehomed_Oracle_Verification_Case_Manifest.tsv) as the format model, the unchanged targeted harness, CB42 package `12634151125` and `tests/SurfaceCellsPhase10Tests.cpp:2940–2958`. No compile, source, harness or selector change.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

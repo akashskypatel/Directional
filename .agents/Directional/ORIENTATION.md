@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-26 · TB41 focused artifact-only verification [40296007299](https://github.com/akashskypatel/Directional/actions/runs/40296007299) completed 18/18 PASS, 39/39 result hashes and immutable postflight ([TB41 report](Architecture_M6_CP3_TB41_Rehomed_Oracle_Verification_Report_20261026.md)); independent TB41-REV accepted the 18-case focused candidate; third off-selector O3 test unexecuted, legacy-path DEFN next. Candidate only: CP2 491/491 accepted, TB38 490/504 candidate, selector497 frozen/unpromoted, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-26 · [RA-158](Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md) confirmed TB41-REV (18/18 focused candidate); TB42 runs the unexecuted third O3 locus test before CB42 package `12634151125` expires; the legacy-path/seam DEFN is split into three single-mechanism DEFNs; O5 records 249 producer tests outside every frozen gate. Candidate only: CP2 491/491 accepted, TB38 490/504 candidate, selector497 frozen/unpromoted, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,11 +104,11 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** CB39–CB42 A3/A4 and polygonal-disk locus oracles now have TB41 focused 18/18 runtime PASS (candidate only); independent TB41-REV is complete; legacy-path DEFN is next (190, 242, O2, O4). No CP3/selector497 promotion.
+**Immediate:** `M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY` (one POSITIVE row, artifact-only, before 2026-11-02T07:22Z), then three single-mechanism DEFNs: 190+O2, O4, 242. No CP3/selector497 promotion.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Define discriminating legacy-path and seam oracles for 190, 242, O2 and O4; preserve the outstanding third off-selector O3 runtime check as a separate future TB obligation. | `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES` (next Definition only); [TB41-REV decision](Architecture_M6_CP3_TB41_Rehomed_Oracle_Independent_Review_Decision_20261026.md) |
+| **1** | Execute the third O3 locus test, then define dispositions for the legacy-matching path (190, O2), A4 provenance-guard reachability (O4) and the 242 cross-region seam consumer, one DEFN each; classify the 249 off-gate producer tests (O5) before the census. | `M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY` → DEFNs per [RA-158](Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

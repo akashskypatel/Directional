@@ -1,5 +1,37 @@
-## CURRENT — TB41-REV accepted 18/18 focused candidate; O3 off-selector still unexecuted; legacy-path DEFN next (2026-10-26)
+## CURRENT — RA-158 TB41-REV audit; O3 owner (TB42) first; DEFN split by mechanism (2026-10-26)
 
+- [x] **RA-158 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md)):
+  - TB41-REV confirmed: ZIP `1817f829…d854`, 39/39 hashes, 18/18 log joins, manifest `659c52f0…2959`; no source change since CB42 `8dc8cdeae`. Focused candidate only.
+  - L1: the O3 third locus test (`Phase10Tests:2940`) had no owner; RA-157.4 listed TB41 rows by selector number, so it got no row. Package `12634151125` expires 2026-11-02T07:22Z → TB42 next.
+  - L2: the legacy-path/seam DEFN bundled three mechanisms and left its Review ID unfrozen; split into three DEFN turns with frozen IDs.
+  - L3: 192 is now assertion-for-assertion the TB36 quarter-turn guard; no action.
+  - L4: 247 keeps orphaned transition-lookup setup (`:5345–5375`); not scheduled.
+  - L5/O5: 249 of 598 producer-binary tests are in no frozen gate (42 `SurfaceCellsPhase10`, 14 `M6CP3`); disposition DEFN before the census.
+  - L6: handoff authority table realigned to the template; stale TODO items closed.
+- [ ] **NEXT `M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY`** — artifact-only; one POSITIVE row (`SurfaceCellsPhase10.PolygonalCurvedDiskRejectsWithoutPublishingPartialPhase`) on CB42 package `12634151125` with the unchanged targeted harness; run before 2026-11-02T07:22Z. STOP → Review on expiry, hash mismatch or a harness that rejects one row. Then `…-REV`.
+- [ ] Then `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION` (190 + O2; accepted-prefix accounting rule) → REV.
+- [ ] Then `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` (O4) → REV.
+- [ ] Then `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` (242; DEFN-SEAM-NZ) → REV.
+- [ ] Then the Code/TB turns those DEFNs authorize; then 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`).
+- [ ] Then `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` (O5) → REV → census → RP-01 Review.
+- [ ] Carried separately: O1, O2 (DEFN step 2), O3 (TB42), O4 (DEFN step 3), O5, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002.
+- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
+  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
+  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
+  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
+  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- **Turn sequence:**
+  - Done: RA-157 → CB39 → CB40 → CB41 → CB42 (each → REV) → TB41 → TB41-REV → audit (RA-158).
+  - **TB42 → REV** (O3, before 2026-11-02T07:22Z).
+  - DEFN legacy-matching path (190, O2) → REV; DEFN A4 provenance-guard reachability (O4) → REV; DEFN 242 cross-region seam consumer → REV.
+  - Authorized Code/TB turns → 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1.
+  - DEFN off-selector coverage (O5) → REV → census → RP-01 Review.
+  - `DIAG-RETAIN` carried.
+- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 and TB38 490/504 candidate; TB41 18/18 focused candidate; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+
+---
+
+## HISTORY — RA-157; CB39–CB42 with Reviews; TB41; TB41-REV (2026-10-26)
 - [x] **RA-157 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md)):
   - TB40-REV accepted: 29/29 hashes and 13/13 rows; the CB37→CB38 diff is the test hunk only. 250 is a focused candidate (no promotion).
   - K1: the CB39 spec was too vague to review; re-bound to an untampered-A3 baseline plus `code`+`sourceEdge` assertions, with the A4 negatives (unsatisfiable under D1) removed.
@@ -15,21 +47,7 @@
 - [x] **CB42 polygonal-disk locus pin compiled (static only)** — RA-156 J3/O3: 12 rejection-locus assertions in 251, 252 and `:2936`; source `8dc8cdeae6f6ac05c28aaa4504ca2c42c3177ded`, [compile 40285233031](https://github.com/akashskypatel/Directional/actions/runs/40285233031), artifact `12634151125`, 28/28 checksum manifest, eight GMP/GMPXX targets, `runtimeExecution=false`. [Record](.agents/Directional/Architecture_M6_CP3_CB42_Polygonal_Disk_Locus_Pin_Code_Build_Record_20261026.md). No runtime evidence or promotion.
 - [x] **COMPLETE `M6-CP3-CB42-RP01-POLYGONAL-DISK-LOCUS-PIN-REV`** — independent static test/compile review, 12 exact O3 assertions and 28/28 package checksums, 5902/5902 source hashes; authentic Git-history check [run 40292894222](https://github.com/akashskypatel/Directional/actions/runs/40292894222) PASS. [CB42-REV decision](Architecture_M6_CP3_CB42_Polygonal_Disk_Locus_Pin_Independent_Review_Decision_20261026.md). No runtime or promotion.
 - [x] **COMPLETE `M6-CP3-TB41-RP01-REHOMED-ORACLE-VERIFY`** — immutable CB42 artifact `12634151125`, [run 40296007299](https://github.com/akashskypatel/Directional/actions/runs/40296007299) and result `12638251384`: 18/18 PASS, 0 RED, 39/39 checksums, `postflight=true`; all 8 re-homed oracles and 10 nonduplicated TB40 guards. [Owning TB41 report](.agents/Directional/Architecture_M6_CP3_TB41_Rehomed_Oracle_Verification_Report_20261026.md). Candidate only, not CP3/selector497 promotion.
-- [ ] **NEXT `M6-CP3-TB41-RP01-REHOMED-ORACLE-VERIFY-REV`** — independently rehash 18-case manifest, immutable package/result and raw logs; re-derive O3 first-rejection locus, tamper/positive oracle reachability, TB40 guard continuity and authentic accepted-prefix authority. No runtime or source/test changes. Stop on non-vacuity, hash, locus or guard mismatch.
-- [ ] Then `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES` (design only: 190, 242, O2, O4; inventory `CurvedBoundedDiskInvalidReciprocalTransportFailsClosed`) → REV.
-- [ ] Then 405 → 174, 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`) → census → RP-01 Review.
-- [ ] Carried separately: O1, O2, O3 (TB41 focused PASS; pending independent TB41-REV), O4 (until DEFN), RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002.
-- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
-  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
-  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
-  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
-  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Turn sequence:**
-  - Done: RA-156 → CB38 → CB38-REV → TB40 → TB40-REV → audit (RA-157).
-  - **CB39 → CB39-REV → CB40 → CB40-REV → CB41 → CB41-REV → CB42 → CB42-REV statically complete; TB41 executed 18/18 PASS** → TB41-REV (independently accepted focused 18/18; third off-selector O3 still needs runtime).
-  - DEFN legacy-path and seam oracles (adds O4) → REV.
-  - 405 → 174/201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 → census → RP-01 Review.
-  - `DIAG-RETAIN` carried.
+- [x] **COMPLETED `M6-CP3-TB41-RP01-REHOMED-ORACLE-VERIFY-REV`** — [decision](.agents/Directional/Architecture_M6_CP3_TB41_Rehomed_Oracle_Independent_Review_Decision_20261026.md): 18/18 focused candidate accepted; third O3 locus test found unexecuted.
 - Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 and TB38 490/504 candidate; 250 focused candidate; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
 
 ---

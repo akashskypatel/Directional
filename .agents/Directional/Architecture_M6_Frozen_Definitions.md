@@ -1,3 +1,12 @@
+## RA-158 — TB41-REV audited: O3 owner, DEFN split, off-selector coverage gap (2026-10-26)
+
+Authority: `Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md`.
+
+- **RA-158.1** TB41 re-verified (39/39 hashes, 18/18 log joins, manifest `659c52f0…2959`); no source change since CB42 `8dc8cdeae`.
+- **RA-158.2** L1 O3 third test unowned and package `12634151125` expires 2026-11-02T07:22Z → TB42. L2 DEFN split by mechanism with frozen IDs. L3 192 ≡ TB36 quarter guard. L4 247 orphaned setup, not scheduled. L5/O5 249/598 producer tests in no frozen gate.
+- **RA-158.3** Frozen IDs: `M6-CP3-TB42-RP01-O3-OFF-SELECTOR-LOCUS-VERIFY`; `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION` (190, O2); `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-REACHABILITY` (O4); `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER` (242); `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` (O5); each with `…-REV`. Superseded: `M6-CP3-DEFN-RP01-LEGACY-PATH-AND-SEAM-ORACLES`.
+- **RA-158.4** TB42 spec: one POSITIVE row on CB42 package, unchanged harness `436f5fff…`.
+
 ## RA-157 — TB40-REV audited: 250 discharge confirmed; CB39 spec re-bound (2026-10-25)
 
 Authority: `Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md`.
