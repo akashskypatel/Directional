@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb41-rev-docs-20261026-r1",
+  "request_id": "m6-cp3-cb41-rev-docs-20261026-r2-whitespace-corrected",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb41-rev-docs-20261026",
-  "file_id": "1utWOmf0flsNXRbnR69MXjqFOCujLn57S",
-  "patch_sha256": "aa3514e123a4199e580c8a3b45a7f0b0914f9a0c1099c3d5b67d0b04bb15e05e",
+  "mailbox_key": "m6-cp3-cb41-rev-docs-20261026-r2",
+  "file_id": "1IkSDDoxHh3dYkDzY9bt6j69tPA0ZlAgp",
+  "patch_sha256": "cd4cdedd755d01f13d21c2fb835f5583f11cce62959ebcef4be44aa73929e31a",
   "base_sha": "4ecb9742cce63be875d2ca7c1c883ae6e3949b08",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record CB41 independent A3 review and authorize CB42",
+  "commit_message": "docs(directional): record corrected CB41 static review and authorize CB42",
   "retention_days": 14
 }
