@@ -1,4 +1,0 @@
-Exact source snapshot for M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE-REV.
-Purpose: independent runtime-free review against committed code/build and plan authority.
-Requested source: event commit containing this marker.
-Retry: 0
