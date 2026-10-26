@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb41-equivalent-a3-closeout-docs-20261026-r1",
+  "request_id": "m6-cp3-cb41-rev-docs-20261026-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb41-a3-closeout-docs",
-  "file_id": "1tENH6PIYFmYArmAnb1r7hKGafEzSQmV9",
-  "patch_sha256": "e5c69c0c4efd0c89896cb3954d1e5928b95b634ff91862c44d61587e1eb4aeaa",
-  "base_sha": "53830149ea16473d0321e53da2587695916fd9cb",
+  "mailbox_key": "m6-cp3-cb41-rev-docs-20261026",
+  "file_id": "1utWOmf0flsNXRbnR69MXjqFOCujLn57S",
+  "patch_sha256": "aa3514e123a4199e580c8a3b45a7f0b0914f9a0c1099c3d5b67d0b04bb15e05e",
+  "base_sha": "4ecb9742cce63be875d2ca7c1c883ae6e3949b08",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB41 compiled A3 equivalent lift and authorize independent review",
+  "commit_message": "docs(directional): record CB41 independent A3 review and authorize CB42",
   "retention_days": 14
 }
