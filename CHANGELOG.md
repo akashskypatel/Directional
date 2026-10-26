@@ -1,3 +1,7 @@
+## 2026-10-26 — CB43 independent static Review accepted; TB43 manifest frozen
+
+- [CB43-REV](.agents/Directional/Architecture_M6_CP3_CB43_Selector190_Legacy_Ingress_Rehome_Independent_Review_Decision_20261026.md) independently confirmed the one-test CB43 hunk, A3 negative/restored transition and A4 no-atlas typed oracle scope, immutable 28/28 GMP compile evidence, and 47/47 frozen selector-file identity. No runtime claim. Four-case [TB43 manifest](.agents/Directional/Architecture_M6_CP3_TB43_Selector190_Rehome_Verification_Case_Manifest.tsv) now authorizes only selector190 positive plus guards 28/179/233; CP2 491/491 and stable 66/17/49 debt1 unchanged. Next `M6-CP3-TB43-RP01-SELECTOR190-REHOME-VERIFY`.
+
 ## 2026-10-26 — CB43 selector190 test-only ingress re-home compiled (runtime unmeasured)
 
 - [Code+Build record](.agents/Directional/Architecture_M6_CP3_CB43_Selector190_Legacy_Ingress_Rehome_Code_Build_Record_20261026.md): RA-160.3 A3 missing-adjacency/minimal interior-key negative, restored-transition positive, and A4 no-atlas `atlas-binding` rejection pin added solely within `LegacyMatchingPathUsesSameTypedAlgebra`; original periodic positive preserved, selector identity unchanged.

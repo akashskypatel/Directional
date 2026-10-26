@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-26 · [RA-160](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md) reviewed the legacy-path DEFN: accepted in part. selector190 re-home amended to add the A4 no-atlas ingress pin (CB43 next); O2 production CB withdrawn — no-atlas ingress still publishes legacy-decided seed-fallback outputs on NotApplicable inputs, so O2 moves to a post-RP-01 DEFN. Candidate only: CP2 491/491 accepted, TB38 490/504 candidate, selector497 frozen/unpromoted, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-26 · CB43-REV accepted static test-only selector190 re-home ([decision](Architecture_M6_CP3_CB43_Selector190_Legacy_Ingress_Rehome_Independent_Review_Decision_20261026.md)), 28/28 immutable GMP compile evidence and frozen four-case TB43 manifest; no runtime yet. CP2 491/491 accepted, selector497 frozen/unpromoted, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,11 +104,11 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-CB43-RP01-SELECTOR190-LEGACY-INGRESS-REHOME` (test-only, compile only; RA-160.3) → REV → TB43 → REV, then the O4 and 242 DEFNs. No CP3/selector497 promotion.
+**Immediate:** `M6-CP3-TB43-RP01-SELECTOR190-REHOME-VERIFY` (four-case immutable artifact-only gate) → TB43-REV, then O4 and 242 DEFNs. No CP3/selector497 promotion.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Re-home the vacuous selector190 (A3 negative + A4 no-atlas ingress pin) and verify it, then O4 reachability and the 242 seam consumer, one DEFN each; classify the 249 off-gate producer tests (O5) and state the nonrectangular-disk scope (O6) before the RP-01 Review. O2 retirement is post-RP-01. | `M6-CP3-CB43-RP01-SELECTOR190-LEGACY-INGRESS-REHOME` per [RA-160](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md) |
+| **1** | Re-home the vacuous selector190 (A3 negative + A4 no-atlas ingress pin) and verify it, then O4 reachability and the 242 seam consumer, one DEFN each; classify the 249 off-gate producer tests (O5) and state the nonrectangular-disk scope (O6) before the RP-01 Review. O2 retirement is post-RP-01. | `M6-CP3-TB43-RP01-SELECTOR190-REHOME-VERIFY` per [CB43-REV](Architecture_M6_CP3_CB43_Selector190_Legacy_Ingress_Rehome_Independent_Review_Decision_20261026.md) and [RA-160](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
