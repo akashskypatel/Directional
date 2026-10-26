@@ -1,3 +1,0 @@
-Source snapshot for CB43 independent static review.
-Expected source branch: agent/surface_cell_quad/p5-recover-bridge-healing
-Canonical turn: M6-CP3-CB43-RP01-SELECTOR190-LEGACY-INGRESS-REHOME-REV
