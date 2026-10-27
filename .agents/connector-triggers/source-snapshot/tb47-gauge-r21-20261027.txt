@@ -1,0 +1,2 @@
+Exact source snapshot for resumed TB47 gauge cluster independent Review (R21).
+No builds or native runtime tests authorized.
