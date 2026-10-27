@@ -716,7 +716,7 @@ TEST(SurfaceCellPipelinePhase20,
   // This oracle deliberately reconstructs the intrinsic source-edge parameter
   // from the independent input triangles, not from A4's endpoint kind label.
   const auto interior_parameter = [&](const directional::geometry::SurfaceTracePoint &point,
-                                      const Edge &edge) -> std::optional<Rational> {
+                                      const Edge &edge) -> std::optional<double> {
     if (point.face < 0 || point.face >= mesh.faces.rows()) return std::nullopt;
     int first = -1, second = -1, other = -1;
     for (int corner = 0; corner < 3; ++corner) {
@@ -726,14 +726,11 @@ TEST(SurfaceCellPipelinePhase20,
       else other = corner;
     }
     if (first < 0 || second < 0 || other < 0 ||
-        point.barycentric[other] != 0.0) return std::nullopt;
-    const auto a = Rational::from_double_exact(point.barycentric[first]);
-    const auto b = Rational::from_double_exact(point.barycentric[second]);
-    if (!a || !b) return std::nullopt;
-    const auto zero = Rational::from_integer(0);
-    const auto one = Rational::from_integer(1);
-    return *b > zero && *b < one && *a + *b == one
-        ? std::optional<Rational>{*b} : std::nullopt;
+        std::abs(point.barycentric[other]) > 1e-12) return std::nullopt;
+    const double a = point.barycentric[first];
+    const double b = point.barycentric[second];
+    return b > 0.0 && b < 1.0 && std::abs(a + b - 1.0) <= 1e-12
+        ? std::optional<double>{b} : std::nullopt;
   };
   const auto exact_vertex = [&](const directional::geometry::SurfaceTracePoint &point,
                                 const Vertex vertex) {
@@ -751,6 +748,7 @@ TEST(SurfaceCellPipelinePhase20,
   std::size_t authenticatedJunctionSteps = 0U;
   std::size_t interiorEndpoints = 0U;
   std::size_t sourceTerminals = 0U;
+  std::map<std::pair<directional::authority::HardRailId, Vertex>, std::set<Edge>> railVertexCarriers;
   for (const auto &certificate : certificates) {
     ASSERT_GE(certificate.firstFrontEdge, 0);
     ASSERT_GE(certificate.secondFrontEdge, 0);
@@ -792,8 +790,13 @@ TEST(SurfaceCellPipelinePhase20,
         const auto b = interior_parameter(secondPoint, endpoint.terminalCarrier.edge);
         ASSERT_TRUE(a.has_value());
         ASSERT_TRUE(b.has_value());
-        EXPECT_EQ(*a, *b)
+        ASSERT_TRUE(firstPoint.exactEdgePoint.has_value());
+        ASSERT_TRUE(secondPoint.exactEdgePoint.has_value());
+        EXPECT_EQ(firstPoint.exactEdgePoint->edge, endpoint.terminalCarrier.edge);
+        EXPECT_EQ(*firstPoint.exactEdgePoint, *secondPoint.exactEdgePoint)
             << "I endpoints must share an exact source-edge parameter";
+        EXPECT_NEAR(*a, static_cast<double>(firstPoint.exactEdgePoint->parameter.to_double()), 1e-12);
+        EXPECT_NEAR(*b, static_cast<double>(secondPoint.exactEdgePoint->parameter.to_double()), 1e-12);
         if (firstPoint.exactEdgePoint || secondPoint.exactEdgePoint) {
           EXPECT_TRUE(directional::geometry::surface_cell_tracing_detail::
               same_interior_carrier_point(firstPoint, secondPoint, mesh.faces,
@@ -813,6 +816,7 @@ TEST(SurfaceCellPipelinePhase20,
                     vertex == contact->second.endpoints[1])
             << "T must be an A2b-published open-rail terminal";
       } else {
+        railVertexCarriers[{certificate.rail, vertex}].insert(endpoint.terminalCarrier.edge);
         EXPECT_NE(vertex, contact->second.endpoints[0]);
         EXPECT_NE(vertex, contact->second.endpoints[1]);
         const auto chain = openRailChains.find(certificate.rail);
@@ -927,10 +931,11 @@ TEST(SurfaceCellPipelinePhase20,
       << "this fixture must exercise authentic A4 interior-carrier endpoints";
   EXPECT_GT(authenticatedContactSteps, 0U)
       << "the A4 consumer must publish a real non-hard source-star step";
-  EXPECT_GT(authenticatedJunctions, 0U)
-      << "this fixture must reach an actual produced multi-carrier junction";
-  EXPECT_GT(authenticatedJunctionSteps, 0U)
-      << "the produced junction must publish a nonempty non-hard sector walk";
+  EXPECT_FALSE(railVertexCarriers.empty())
+      << "the two-edge midline must meet at an authenticated A4 R rail vertex";
+  for (const auto &[owner, carriers] : railVertexCarriers)
+    EXPECT_EQ(2U, carriers.size())
+        << "an interior rail vertex joins exactly its two incident rail carriers";
 
   // The tested rail producer must publish raw source-edge IDs for the same
   // original source topology as its independently carried vertex chain.
@@ -950,9 +955,12 @@ TEST(SurfaceCellPipelinePhase20,
   }
   std::size_t examinedGermPaths = 0U;
   std::size_t germOwners = 0U;
+  // A4 splits rail sides at interior rail vertices (R endpoints), so the
+  // vertex-transit germ is seeded from the R endpoint's certified star paths.
   for (const auto &certificate : certificates) {
-    for (const auto &junction : certificate.junctions) {
-      for (const auto &sector : junction.sectorPaths) {
+    for (const auto &junction : certificate.endpoints) {
+      if (!junction.railVertex) continue;
+      for (const auto &sector : junction.contactPaths) {
         if (sector.empty()) continue;
         const FaceKey seedFace = sector.front().firstFace;
         const auto *frame = branchTopology.find_frame(seedFace);
@@ -964,12 +972,12 @@ TEST(SurfaceCellPipelinePhase20,
           if (!outward.is_barycentric()) continue;
           for (auto &coordinate : outward.barycentric) coordinate = -coordinate;
           if (!directional::authority::direction_in_closed_vertex_wedge(
-                  sourceMesh, *faceRow, junction.junction, outward)) continue;
+                  sourceMesh, *faceRow, *junction.railVertex, outward)) continue;
           const auto transit = directional::geometry::surface_cell_tracing_detail::
               resolve_field_vertex_transit(
                   sourceMesh, branchTopology, frame->sourceComponent,
                   frame->topologyRegion, seedFace, pairing.branch,
-                  junction.junction,
+                  *junction.railVertex,
                   directional::geometry::FieldVertexArrivalMode::FaceInterior,
                   std::nullopt, std::nullopt, &sourceBarriers);
           if (std::holds_alternative<directional::geometry::

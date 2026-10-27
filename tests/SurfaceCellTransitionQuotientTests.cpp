@@ -4001,7 +4001,9 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) 
                 InvalidSourceAuthority);
   EXPECT_EQ(missingRailError->sourceAuthoritySite, "open-rail-chain");
 
-  const auto &square = square_fixture();
+  // D5 needs ordinary sides that cross a typed interior source transition;
+  // the two-face square has none, so use the transition-domain fixture.
+  const auto &square = transition_domain_fixture();
   const auto &squareFront = square.network.phaseFront.product();
   directional::geometry::SourceChartTransitionGraph squareGraph(
       square.mesh.F, squareFront.sourceTopologyRegions(),
@@ -4035,15 +4037,30 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) 
     const auto &edge = marked.edges[static_cast<std::size_t>(relation.firstFrontEdge)];
     const auto &reciprocal =
         marked.edges[static_cast<std::size_t>(relation.secondFrontEdge)];
+    // A4/A5 contract: an OrdinaryInterior side has an empty boundary route;
+    // its source crossings are the owner cell's boundary-path entry routes.
     if (edge.boundaryKind != SurfaceFrontBoundaryKind::OrdinaryInterior ||
         reciprocal.boundaryKind != SurfaceFrontBoundaryKind::OrdinaryInterior ||
         edge.oppositeEdge != relation.secondFrontEdge ||
         reciprocal.oppositeEdge != relation.firstFrontEdge ||
-        edge.route.empty() || reciprocal.route != edge.route.reversed()) {
+        !edge.route.empty() || !reciprocal.route.empty()) {
       continue;
     }
-    for (const auto &step : edge.route.steps()) {
-      const auto carrier = step.topology();
+    const auto sideCrossings =
+        [&](const directional::geometry::SurfaceFrontEdge &side) {
+          std::multiset<directional::authority::SourceEdgeTopologyKey> keys;
+          for (const auto &cell : marked.cells) {
+            if (cell.id != side.filledCell) continue;
+            for (const auto &segment :
+                 cell.boundaryPaths[static_cast<std::size_t>(side.filledSide)])
+              for (const auto &step : segment.entryRoute.oriented_steps())
+                keys.insert(step.topology());
+          }
+          return keys;
+        };
+    const auto crossings = sideCrossings(edge);
+    if (crossings.empty() || crossings != sideCrossings(reciprocal)) continue;
+    for (const auto &carrier : crossings) {
       if (marked.hardFeatureEdges.contains(carrier) ||
           !hasTransitionAcross(squareGraph, carrier)) {
         continue;
@@ -4061,8 +4078,9 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) 
     if (ordinaryCarrier.has_value()) break;
   }
   ASSERT_TRUE(ordinaryCarrier.has_value())
-      << "D5 requires a real reciprocal A5 OrdinaryFront with an A4 route, "
-         "eligible interior source transition and unrelated live carrier";
+      << "D5 requires a real reciprocal A5 OrdinaryFront whose A4 boundary "
+         "paths cross an eligible interior source transition, plus an "
+         "unrelated live carrier";
   ASSERT_TRUE(unaffectedCarrier.has_value());
   marked.hardFeatureEdges.insert(*ordinaryCarrier);
   directional::geometry::SourceChartTransitionGraph squareMarkedGraph(
