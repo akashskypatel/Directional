@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r21-20261027-v1",
+  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r22-20261027-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r21-v1",
-  "file_id": "1zl6QMl1amWjpnloZ9EbzepTLKJlOeWJx",
-  "patch_sha256": "e9b7be1882577759c70402093dbf9fe358bff593ec39aea3fd989a1e0c3bb193",
-  "base_sha": "38e4a21005db3dc2ea169d90d629489608ede1aa",
+  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r22-v1",
+  "file_id": "1JluBCGseVEScoOP6lrj2IIDHaJ2v9YEb",
+  "patch_sha256": "dfb711ad1e667b9a3e8b718232434458b7ca3407f75741387cef36cd0630a332",
+  "base_sha": "1384bed4fee48148aa6209a1c37ab47babfa2e7b",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: prove TB47 G2 hard-rail gauge covariance (R21)",
+  "commit_message": "docs: corroborate G3 torus metamorphic chart preflight (R22)",
   "retention_days": 14
 }
