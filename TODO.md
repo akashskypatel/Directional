@@ -1,4 +1,4 @@
-## CURRENT — TB45 three-case verification passed; independent TB45 Review next (2026-10-27)
+## CURRENT — TB45 focused Review accepted; selector174 definition next (2026-10-27)
 
 - [x] **RA-163 DEFN Review** ([decision](.agents/Directional/Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md)): partially accepted.
   - R1: D1 missed the typed owner — `SurfaceIsolationSeamTransportCertificate::make` → `NonReciprocalTransport` (`SurfaceCellTracing.cpp:8146–8150`), already pinned by accepted `selector:185`.
@@ -9,7 +9,8 @@
 - [x] **COMPLETED `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME`** — [compile-only record](.agents/Directional/Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Code_Build_Record_20261026.md): one test body re-homed, exact source `dfeb0751b1a42a0805aecf4ef4ffb6917f619c83`, GMP/GMPXX package, no runtime or selector promotion.
 - [x] **COMPLETED `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME-REV`** — [independent static decision](.agents/Directional/Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md); 28/28 immutable compile members; three-case [TB45 manifest](.agents/Directional/Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Verification_Case_Manifest.tsv); runtime unmeasured.
 - [x] **COMPLETED `M6-CP3-TB45-RP01-SELECTOR242-SEAM-REHOME-VERIFY`** — [three-case report](.agents/Directional/Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Verification_Report_20261027.md), run `40433669771`: 242/239/185 PASS, 3/3 exact fresh-process, zero skips/duplicates/RED, immutable postflight; candidate only.
-- [ ] **NEXT `M6-CP3-TB45-RP01-SELECTOR242-SEAM-REHOME-VERIFY-REV`** — independent evidence/oracle Review; no full selector497 or CP3 promotion.
+- [x] **COMPLETED `M6-CP3-TB45-RP01-SELECTOR242-SEAM-REHOME-VERIFY-REV`** — [independent evidence/semantic review](.agents/Directional/Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md): 28/28 package, 8/8 result, all 3 raw joins, source-level non-vacuity; 242 focused only.
+- [ ] **NEXT `M6-CP3-DEFN-RP01-SELECTOR174-DCEL-EXCEPTION-DISPOSITION`** — define selector174 DCEL exception first-site, fixture-versus-producer owner and typed oracle; no runtime/source changes.
 - [ ] Then 174 → 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`).
 - [ ] Then O4 DEFN and O5 DEFN (O5 + P1-a re-scoped + P1-b + RA-162 C1; separate test-only CB/TB/REV for P1) → REV each → census → RP-01 Review (O6 scope).
 - [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS-RETIREMENT` (RA-160.4 + RA-161 T2).
@@ -21,8 +22,8 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: RA-162 → DEFN 242 → REV (RA-163).
-  - **TB45 3/3 mechanically PASS; next TB45-REV independent adjudication; CB45-REV accepted static scope only.**
-  - 174 → 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1.
+  - **TB45-REV accepted 3/3 focused test evidence, no full-gate promotion; selector174 definition next.**
+  - **174 current** → 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1.
   - DEFN O4, DEFN O5 (+P1, C1) → census → RP-01 Review (O6 scope). Post-RP-01: O2 DEFN.
   - `DIAG-RETAIN` carried.
 - Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 and TB38 490/504 candidate; TB41 18/18, TB42 1/1, TB43 4/4, TB44 405 PASS (guards 3/4) focused candidate; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.

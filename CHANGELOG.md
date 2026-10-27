@@ -1,3 +1,7 @@
+## 2026-10-27 — TB45 selector242 independent focused Review accepted (no CP3 promotion)
+
+- [TB45-REV](.agents/Directional/Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md): independently verified 28/28 CB45 package checksums, 8/8 TB45 members, all three GTest raw-log joins, source/package identity, two typed negative certificates, changed A3 stimulus and guards239/185. Focused 242 accepted, historical full-gate RED retained until census. CP2 491/491 and stable 66/17/49 debt1 unchanged. Next `M6-CP3-DEFN-RP01-SELECTOR174-DCEL-EXCEPTION-DISPOSITION`; no build or runtime in Review.
+
 ## 2026-10-27 — TB45 selector242 re-home verified 3/3, independent Review next
 
 - [TB45 report](.agents/Directional/Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Verification_Report_20261027.md): semantic source `dfeb0751...`, immutable package `12697664329`, [run 40433669771](https://github.com/akashskypatel/Directional/actions/runs/40433669771), result `12702259228` (`7d18b08a...`), logs `12702474055` (`26488c1a...`). 242/239/185 each PASS in independent processes, zero RED/skips/duplicates, postflight preserved. No compile, source/test/selector change, benchmark or promotion. CP2 491/491 remains accepted, stable 66/17/49 debt1. Exact next TB45-REV.
