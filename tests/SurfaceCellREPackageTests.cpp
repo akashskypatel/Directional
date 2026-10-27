@@ -2,6 +2,7 @@
 #include <array>
 #include <map>
 #include <set>
+#include <stdexcept>
 #include <string>
 #include <utility>
 
@@ -442,15 +443,16 @@ TEST(SurfaceCellClosedProductContracts,
       directional::pipeline::build_authoritative_surface_cell_rails(
           manifoldHardSource, twoSidedHard);
   ASSERT_TRUE(twoFaceRail.is_produced());
-  incidenceFaces.conservativeResize(3, 3);
-  incidenceFaces.row(2) << 0, 1, 4;
+  Eigen::MatrixXi nonmanifoldFaces(3, 3);
+  nonmanifoldFaces << 0, 1, 2, 1, 0, 3, 0, 1, 4;
   directional::TriMesh threeFaceSource;
-  threeFaceSource.set_mesh(incidenceVertices, incidenceFaces);
+  EXPECT_THROW(threeFaceSource.set_mesh(incidenceVertices, nonmanifoldFaces),
+               std::runtime_error);
   auto overfullHard = twoSidedHard;
   overfullHard.edges[0].incidentFaces = {0, 1, 2};
   const auto threeFaceRail =
       directional::pipeline::build_authoritative_surface_cell_rails(
-          threeFaceSource, overfullHard);
+          manifoldHardSource, overfullHard);
   ASSERT_TRUE(threeFaceRail.is_rejected());
   EXPECT_EQ(nullptr, threeFaceRail.produced_product());
   ASSERT_NE(nullptr, threeFaceRail.rejection());
@@ -710,7 +712,13 @@ TEST(SurfaceCellPipelinePhase20,
   std::size_t authenticatedJunctionSteps = 0U;
   for (const auto &certificate : certificates) {
     for (const auto &endpoint : certificate.endpoints) {
-      ASSERT_TRUE(endpoint.terminalVertex.has_value());
+      ASSERT_TRUE(endpoint.terminalVertex.has_value())
+          << "endpointKind=" << (endpoint.railVertex ? "R" : "I")
+          << ";certificateCount=" << certificates.size()
+          << ";routeSteps=" << certificate.route.oriented_steps().size()
+          << ";junctions=" << certificate.junctions.size()
+          << ";carrier=(" << endpoint.terminalCarrier.edge.first().index()
+          << "," << endpoint.terminalCarrier.edge.second().index() << ")";
       const auto terminal = *endpoint.terminalVertex;
       EXPECT_EQ(1U, producerHardEdges.count(endpoint.terminalCarrier.edge))
           << "A4 terminal carrier must be a genuine A1 hard edge";

@@ -2915,7 +2915,8 @@ TEST(M6CP3, PeriodicExactA3UnequalFaceGaugeUsesRelationAndOccurrenceAuthority) {
   const int gaugeDelta = (toGauge - fromGauge + 4) % 4;
   ASSERT_TRUE(gaugeDelta == 1 || gaugeDelta == 3)
       << "D1 requires unequal non-self-inverse face gauge authority"
-      << " receipt=" << fixture.selectionReceipt;
+      << " receipt=" << fixture.selectionReceipt
+      << " fromGauge=" << fromGauge << " toGauge=" << toGauge;
 
   // RA-44 relational-pin negative on the *same* accepted torus product:
   // mutate one source face's chart gauge while preserving the source atlas,
@@ -3136,9 +3137,24 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   const auto producedMidline = std::find_if(
       front.hardRailRouteCertificates().begin(),
       front.hardRailRouteCertificates().end(), is_midline_pair);
+  std::ostringstream certificateInventory;
+  for (const auto &certificate : front.hardRailRouteCertificates()) {
+    certificateInventory << " [steps=";
+    for (const auto &step : certificate.route.oriented_steps()) {
+      const auto pair = carrier_vertices(step.topology());
+      certificateInventory << "(" << pair.first << "," << pair.second << ")";
+    }
+    certificateInventory << ";endpoints=";
+    for (const auto &endpoint : certificate.endpoints) {
+      certificateInventory << (endpoint.terminalVertex ? "T" :
+                               endpoint.railVertex ? "R" : "I");
+    }
+    certificateInventory << ";j=" << certificate.junctions.size() << "]";
+  }
   ASSERT_NE(producedMidline, front.hardRailRouteCertificates().end())
       << "D2/RA-38 requires an ACTUAL A4-produced paired two-carrier "
-         "HardRail (1,4)->(4,7); input-only polyline is not proof";
+         "HardRail (1,4)->(4,7); input-only polyline is not proof"
+      << certificateInventory.str();
   ASSERT_EQ(producedMidline->junctions.size(), 1U);
   const auto &midlineJunction = producedMidline->junctions.front();
   ASSERT_EQ(static_cast<int>(midlineJunction.junction.index()), 4);
@@ -3968,30 +3984,22 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) 
   ASSERT_GT(hardRailCarrierCount, 0U)
       << "every produced HardRail carrier must be represented by typed hard-feature authority";
 
+  const auto validRailFrontResult =
+      construct_phase_front_product(phase_front_draft(rail));
+  ASSERT_TRUE(std::holds_alternative<directional::geometry::SurfacePhaseFrontProduct>(
+      validRailFrontResult));
   PhaseFrontDraft missingRailAuthority = phase_front_draft(rail);
   missingRailAuthority.hardFeatureEdges.clear();
   auto missingRailFrontResult =
       construct_phase_front_product(std::move(missingRailAuthority));
-  const auto *missingRailFront =
-      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
-          &missingRailFrontResult);
-  ASSERT_NE(missingRailFront, nullptr)
-      << (std::get_if<directional::geometry::SurfacePhaseFrontProductError>(
-              &missingRailFrontResult)
-              ? describe_phase_front_product_error(
-                    std::get<directional::geometry::SurfacePhaseFrontProductError>(
-                        missingRailFrontResult))
-              : "no factory error");
-  auto missingRailA5 =
-      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
-          rail.mesh.V, rail.mesh.F, *missingRailFront);
   const auto *missingRailError =
-      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
-          &missingRailA5);
+      std::get_if<directional::geometry::SurfacePhaseFrontProductError>(
+          &missingRailFrontResult);
   ASSERT_NE(missingRailError, nullptr);
   EXPECT_EQ(missingRailError->code,
-            directional::pipeline::SurfaceOccurrenceComplexErrorCode::
-                InvalidHardRailAuthority);
+            directional::geometry::SurfacePhaseFrontProductErrorCode::
+                InvalidSourceAuthority);
+  EXPECT_EQ(missingRailError->sourceAuthoritySite, "open-rail-chain");
 
   const auto &square = square_fixture();
   const auto &squareFront = square.network.phaseFront.product();
