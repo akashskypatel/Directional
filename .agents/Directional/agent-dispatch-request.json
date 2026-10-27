@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb46-rp01-full-gate-20261027-r2",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb46-rp01-full-gate-r2",
-  "executor_sha": "5de513d0d6e132ec91fcdce6a01a4a5ce4d60597",
-  "semantic_source_sha": "8f0d4329695de1c7542ea240e30e55761acc3a38",
-  "turn_id": "M6-CP3-TB46-RP01-FULL-GATE",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "37b01215fcc739b86e2f17f97cef3cb1d313124075eab6d5da205cd370b0af72",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "12716018703",
-    "EXPECTED_SOURCE_SHA": "8f0d4329695de1c7542ea240e30e55761acc3a38",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "0053f63fe9f9449e6f5024cbc2df36ca029c22cd58d75e2710fefb906af1a89f",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "5ecde287cc07aa4296ddacdd9cc50b2f1fca8df677f7ac2ede60abf0326afd07",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "a9e953bfc0da08e329c6e6c98da89c02515158f95a2e39819dded272dfb98ad5",
-    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_CP3_TB46_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "717f4f0fb9b520ec9c0281bfa71f11b2edae98b16a1f18ffc17366fb076bb087",
-    "EXPECTED_CASE_COUNT": "504"
-  },
-  "artifact_prefix": "m6-cp3-tb46-rp01-full-gate-r2",
+  "request_id": "m6-cp3-tb46-rp01-closeout-20261027-r3",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb46-rp01-closeout-r3",
+  "file_id": "18wsXNR-ialHKR3E9OHKpUs3DuCAa2NbN",
+  "patch_sha256": "02d808f1bcb8c0797ff4e1b20c2c9cf2c605b03a3b12c2bdeed4ec13a4df383f",
+  "base_sha": "e3faeb402701ee9a109e0b6efdb6b8693e14f741",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close TB46 full gate and hand off endpoint cluster review",
   "retention_days": 14
 }
