@@ -1,32 +1,34 @@
-## CURRENT — TB45 focused Review accepted; selector174 definition next (2026-10-27)
+## CURRENT — RA-164 TB45-REV audit; cadence realigned; CB46 next (2026-10-27)
 
-- [x] **RA-163 DEFN Review** ([decision](.agents/Directional/Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md)): partially accepted.
-  - R1: D1 missed the typed owner — `SurfaceIsolationSeamTransportCertificate::make` → `NonReciprocalTransport` (`SurfaceCellTracing.cpp:8146–8150`), already pinned by accepted `selector:185`.
-  - R2: D2 decided statically — the 242 disk's only inner edge cancels out of the dual-cycle basis (`MeshTopology.cpp:130–133, 281–288, 329`); a one-edge matching change on a tree-dual region is a gauge relabel; mutated A3 accepts. Branch A dead.
-  - R3: old A4 `InvalidTopologyRegionTransport` expectation unreachable on every path.
-  - R4: Branch B rejected (swaps reciprocity for cycle holonomy; speculative fixture). CB45 draft superseded by RA-163.3.
-  - 242 meaning re-homed, same identity (RA-163.2). SEAM-NZ hint recorded (RA-163.4).
-- [x] **COMPLETED `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME`** — [compile-only record](.agents/Directional/Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Code_Build_Record_20261026.md): one test body re-homed, exact source `dfeb0751b1a42a0805aecf4ef4ffb6917f619c83`, GMP/GMPXX package, no runtime or selector promotion.
-- [x] **COMPLETED `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME-REV`** — [independent static decision](.agents/Directional/Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md); 28/28 immutable compile members; three-case [TB45 manifest](.agents/Directional/Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Verification_Case_Manifest.tsv); runtime unmeasured.
-- [x] **COMPLETED `M6-CP3-TB45-RP01-SELECTOR242-SEAM-REHOME-VERIFY`** — [three-case report](.agents/Directional/Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Verification_Report_20261027.md), run `40433669771`: 242/239/185 PASS, 3/3 exact fresh-process, zero skips/duplicates/RED, immutable postflight; candidate only.
-- [x] **COMPLETED `M6-CP3-TB45-RP01-SELECTOR242-SEAM-REHOME-VERIFY-REV`** — [independent evidence/semantic review](.agents/Directional/Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md): 28/28 package, 8/8 result, all 3 raw joins, source-level non-vacuity; 242 focused only.
-- [ ] **NEXT `M6-CP3-DEFN-RP01-SELECTOR174-DCEL-EXCEPTION-DISPOSITION`** — define selector174 DCEL exception first-site, fixture-versus-producer owner and typed oracle; no runtime/source changes.
-- [ ] Then 174 → 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1 (`cp3entry:1/2`).
-- [ ] Then O4 DEFN and O5 DEFN (O5 + P1-a re-scoped + P1-b + RA-162 C1; separate test-only CB/TB/REV for P1) → REV each → census → RP-01 Review (O6 scope).
-- [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS-RETIREMENT` (RA-160.4 + RA-161 T2).
-- [ ] Carried separately: O1, O2 (post-RP-01), O4, O5, O6, P1, C1, RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4, G4-B002.
+- [x] **RA-164 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md)): TB45-REV confirmed (ZIP `7d18b08a…`, 9/9 members, 3/3 joins; CB45 test SHA = HEAD). No production change since TB38 `038ae7fd7`.
+  - H1 `selector:174` decided: fixture face `0,1,4` makes the source nonmanifold; `TriMesh::set_mesh` throws (`TriMesh.h:158–162, 339`) before the rail builder; `RemeshPipeline.cpp:9639` `>2U` is unreachable (kept). Lines after `:459` have not run since 2026-10-14.
+  - H2 `cp3entry:4` decided: TB38 site `open-rail-chain` is the A4 checked factory correctly rejecting a torn draft (`SurfaceCellTracing.cpp:8703–8708`); A5 expectation unreachable.
+  - Cluster E (201, cp3entry:2): 3×3 midline; T/R/I endpoints since `ccc0b00ab` (10-19) vs older all-terminal/junction oracles. Cluster G (442, `focused30:12`, cp3entry:1): face-gauge relabel invariance.
+  - Cadence realigned to `Turn_Cadence.md` (RA-164.3 P1–P6): CB→full-gate TB direct; red TB → Review-owned DEFN; STOP codes S1–S5; no `UNKNOWN` successor on COMPLETE/BLOCKED. `M6-CP3-DEFN-RP01-SELECTOR174-DCEL-EXCEPTION-DISPOSITION` superseded.
+- [ ] **NEXT `M6-CP3-CB46-RP01-RAIL-ORACLE-REHOME-AND-ENDPOINT-DIAGNOSTICS`** (RA-164.4) — test-only compile; H1, H2, D1–D3 only; → TB46 directly on success; STOP codes per RA-164.3 P4.
+- [ ] `M6-CP3-TB46-RP01-FULL-GATE` (RA-164.5) — 504-row [manifest](.agents/Directional/Architecture_M6_CP3_TB46_Full_Gate_Case_Manifest.tsv) `717f4f0f…`; predict 499/5; outcome table names every successor.
+- [ ] `M6-CP3-DEFN-RP01-TB46-ENDPOINT-CLUSTER` (Review) → CB47 → TB47 full gate.
+- [ ] `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` (Review) → CB48 → TB48 full gate.
+- [ ] `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` (Review; O4, O5, P1-a, P1-b, RA-162 C1, H2 A5 reachability) → CB49 → TB49 → green full gate → RP-01 Review (O6 scope).
+- [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS-RETIREMENT` (RA-160.4 + RA-161 T2), then `DIAG-RETAIN`.
+- [ ] Carried separately: O1, O6, RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4, G4-B002.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
   - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
-  - Done: RA-162 → DEFN 242 → REV (RA-163).
-  - **TB45-REV accepted 3/3 focused test evidence, no full-gate promotion; selector174 definition next.**
-  - **174 current** → 201 → `focused30:12` → `cp3entry:4` → `selector:442` → DEFN-T1.
-  - DEFN O4, DEFN O5 (+P1, C1) → census → RP-01 Review (O6 scope). Post-RP-01: O2 DEFN.
-  - `DIAG-RETAIN` carried.
-- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB32 481/500 and TB38 490/504 candidate; TB41 18/18, TB42 1/1, TB43 4/4, TB44 405 PASS (guards 3/4) focused candidate; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+  - Done: TB45 → TB45-REV → RA-164.
+  - **CB46 current** → TB46 → DEFN-E (Review) → CB47 → TB47 → DEFN-G (Review) → CB48 → TB48 → DEFN-O4/O5 (Review) → CB49 → TB49 → RP-01 Review.
+  - Rules: RA-164.3 P1–P6. Post-RP-01: O2 DEFN, then `DIAG-RETAIN`.
+- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB38 490/504 candidate; TB41–TB45 focused candidates pending TB46; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+
+---
+
+## HISTORY — RA-163; CB45; CB45-REV; TB45; TB45-REV (2026-10-27)
+
+- [x] RA-163 DEFN-242 Review: D1 corrected to `NonReciprocalTransport` owner (`selector:185`); D2 decided (mutated A3 accepts, gauge relabel); Branch B rejected; 242 re-homed.
+- [x] CB45 ([record](.agents/Directional/Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Code_Build_Record_20261026.md), source `dfeb0751b`) → CB45-REV ([decision](.agents/Directional/Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md)) → TB45 ([report](.agents/Directional/Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Verification_Report_20261027.md), 242/239/185 3/3) → TB45-REV ([decision](.agents/Directional/Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md), focused only).
 
 ---
 

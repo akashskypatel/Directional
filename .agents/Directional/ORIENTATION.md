@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-27 · [TB45 independent Review](Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md) accepted the 242/239/185 3/3 focused immutable test evidence and non-vacuity; full selector497 remains unpromoted. CP2 491/491 accepted, selector497 frozen/unpromoted, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-27 · [RA-164](Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md) confirmed TB45-REV, decided 174 (nonmanifold fixture) and cp3entry:4 (A4 `open-rail-chain` owner), clustered the remaining REDs and realigned CP3 to `Turn_Cadence.md` (CB→full-gate TB; red TB → Review-owned DEFN). CP2 491/491 accepted, selector497 frozen/unpromoted, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,9 +50,9 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current independent Review:** [TB45-REV](Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md) verifies 3/3 focused cases on exact CB45 package with source-level mutation/oracle non-vacuity. No full-gate runtime credit; selector174 producer-versus-fixture DCEL exception is next definition owner.
+**Current independent Review:** [RA-164](Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md) audits [TB45-REV](Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md) (confirmed, 9/9 members) and freezes CB46 + the 504-row TB46 full gate (predict 499/5).
 
-**Current test authority:** [TB45 report](Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Verification_Report_20261027.md): selector242 and guards239/185 3/3 PASS on immutable CB45 source/package; focused candidate only. Prior TB44: 405 PASS, guards7614/7414 PASS and 8219 RED. Earlier focused gates (TB41–TB43) are recorded in their Review decisions; no CP3/selector497 promotion.
+**Current test authority:** last full gate TB38 490/504 candidate (source `038ae7fd7`; no production change since). Focused TB41–TB45 (incl. TB45 242/239/185 3/3) are candidates until TB46 reconciles them; no CP3/selector497 promotion.
 
 **Prior TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 
@@ -106,11 +106,11 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-DEFN-RP01-SELECTOR174-DCEL-EXCEPTION-DISPOSITION` investigates the selector174 DCEL exception; TB45-REV accepted three-case 242/239/185 focused evidence with no full selector/census promotion. P1 (re-scoped) and C1 wait for the O5 DEFN. No CP3/selector497 promotion.
+**Immediate:** `M6-CP3-CB46-RP01-RAIL-ORACLE-REHOME-AND-ENDPOINT-DIAGNOSTICS` ([RA-164.4](Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md)) → `M6-CP3-TB46-RP01-FULL-GATE` directly. Bounded procedure RA-164.3 P1–P6 (STOP codes, no `UNKNOWN` successor). No CP3/selector497 promotion.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Clear remaining historical full-gate REDs one owner per turn: 242 focused accepted (full-gate pending), **174 current**, 201, `focused30:12`, `cp3entry:4`, `selector:442`, DEFN-T1 (`cp3entry:1/2`); 405 focused PASS awaits the census. Then O4/O5 DEFNs (O5 + P1 + C1) and the census; RP-01 Review states O6 scope. O2 retirement is post-RP-01. | `M6-CP3-DEFN-RP01-SELECTOR174-DCEL-EXCEPTION-DISPOSITION` per [TB45-REV](Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md) |
+| **1** | Close RP-01 by full-gate TBs: CB46 (174, cp3entry:4 re-home; E/G diagnostics) → TB46 → DEFN-E (201, cp3entry:2) → CB47/TB47 → DEFN-G (442, `focused30:12`, cp3entry:1) → CB48/TB48 → DEFN-O4/O5 (+P1, C1) → CB49/TB49 → RP-01 Review (O6 scope). O2 post-RP-01. | `M6-CP3-CB46-RP01-RAIL-ORACLE-REHOME-AND-ENDPOINT-DIAGNOSTICS` per [RA-164](Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

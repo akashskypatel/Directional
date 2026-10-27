@@ -1,3 +1,7 @@
+**RA-164 TB45-REV audit (2026-10-27, candidate/non-stable):**
+
+- 174 RED (TB28–TB38) is a fixture defect, not a product regression: face `0,1,4` makes the TriMesh source nonmanifold and `set_mesh` throws (`TriMesh.h:158–162`) before the rail builder; the `>2U` incidence branch is unreachable through TriMesh. cp3entry:4 RED is an oracle naming the wrong owner (A4 `open-rail-chain` rejects the torn draft). 201 and cp3entry:2 share the 3×3 midline; first 201 RED (TB28) follows `ccc0b00ab` R/I endpoints (10-19) — cause pending TB46 D1/D2 harvest. No stable event; 66/17/49, debt 1.
+
 **RA-163 selector242 DEFN Review (2026-10-26, candidate/non-stable):**
 
 - 242's TB38 RED is a vacuous legacy negative: the single-edge matching mutation is never read by atlas-bound A4 and is a gauge relabel at A3 (no cycle observes the edge). Non-reciprocity is owned by the certificate factory (`NonReciprocalTransport`, selector185). Re-homed under the same identity (RA-163.2). No stable event; 66/17/49, debt 1. [RA-163](Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md).

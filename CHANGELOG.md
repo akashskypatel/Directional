@@ -1,3 +1,7 @@
+## 2026-10-27 — RA-164 TB45-REV audit; 174/cp3entry:4 decided; CP3 cadence realigned
+
+- [RA-164](.agents/Directional/Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md): TB45-REV confirmed (9/9 members). 174: nonmanifold fixture, `TriMesh::set_mesh` throws before the rail builder. cp3entry:4: A4 checked factory correctly rejects the torn draft at `open-rail-chain`. Clusters E (201, cp3entry:2) and G (442, `focused30:12`, cp3entry:1). Cadence realigned to `Turn_Cadence.md`: CB→full-gate TB direct, red TB → Review-owned DEFN, STOP codes, no `UNKNOWN` successor. Frozen TB46 504-row manifest (predict 499/5). Next CB46. No build/runtime; accounting unchanged.
+
 ## 2026-10-27 — TB45 selector242 independent focused Review accepted (no CP3 promotion)
 
 - [TB45-REV](.agents/Directional/Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md): independently verified 28/28 CB45 package checksums, 8/8 TB45 members, all three GTest raw-log joins, source/package identity, two typed negative certificates, changed A3 stimulus and guards239/185. Focused 242 accepted, historical full-gate RED retained until census. CP2 491/491 and stable 66/17/49 debt1 unchanged. Next `M6-CP3-DEFN-RP01-SELECTOR174-DCEL-EXCEPTION-DISPOSITION`; no build or runtime in Review.

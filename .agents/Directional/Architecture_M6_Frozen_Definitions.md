@@ -1,3 +1,11 @@
+## RA-164 — TB45-REV audit; rail oracle re-homes; RED clusters; cadence P1–P6 (2026-10-27)
+
+- [Decision](Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md).
+- **RA-164.2** H1 174 = nonmanifold fixture (TriMesh owns manifoldness); H2 cp3entry:4 owner = A4 checked factory `open-rail-chain`; cluster E = 201, cp3entry:2; cluster G = 442, `focused30:12`, cp3entry:1.
+- **RA-164.3** P1 CB→TB direct with allowlist + manifest + outcome table; P2 full-gate TBs only; P3 red TB → Review-owned DEFN (absorbs REVIEW+PLAN); P4 STOP S1–S5 fixed successors; P5 no `UNKNOWN` on COMPLETE/BLOCKED; P6 REV-AUDIT only on record conflict.
+- **RA-164.4/.5** CB46 hunks H1, H2, D1–D3; TB46 manifest `717f4f0f…6bb087`, predict 499/5.
+- **RA-164.6** CB46 → TB46 → DEFN-E → CB47 → TB47 → DEFN-G → CB48 → TB48 → DEFN-O4/O5 → CB49 → TB49 → RP-01 Review.
+
 ## RA-163 — selector242 DEFN Review: certificate-factory owner; A3 accepts; 242 re-homed (2026-10-26)
 
 [Decision](Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md).
