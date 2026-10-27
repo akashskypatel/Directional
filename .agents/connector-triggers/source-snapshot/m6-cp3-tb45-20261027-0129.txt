@@ -1,0 +1,3 @@
+Turn: M6-CP3-TB45-RP01-SELECTOR242-SEAM-REHOME-VERIFY
+Frozen source authority: dfeb0751b1a42a0805aecf4ef4ffb6917f619c83
+Purpose: source inspection only. No test execution from snapshot.
