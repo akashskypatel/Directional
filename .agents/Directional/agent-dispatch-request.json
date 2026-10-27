@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb47-rp01-ra166-compile-20261027-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb47-rp01-ra166-compile-20261027-v1",
-  "source_sha": "08d41626e3487f3cba2e8fed5fe1f2185da8ac9f",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb47-rp01-ra166-compile"
+  "request_id": "m6-cp3-cb47-rp01-closeout-20261027-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb47-rp01-closeout-20261027-v1",
+  "file_id": "1jIKVizfIco11MNnMDO9RYsq4d0w7jbsP",
+  "patch_sha256": "45ef3b665c7471ffd10e56afdcf5e9b1941a190dc9a18a9fbdfe799650eca5ad",
+  "base_sha": "b822fcae55f1881613617a42d1fc680f21f2bf47",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "Close CB47 with immutable compile evidence and TB47 handoff",
+  "retention_days": 14
 }
