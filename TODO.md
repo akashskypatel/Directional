@@ -1,4 +1,11 @@
-## CURRENT — CB46 compiled; TB46 full gate next (2026-10-27)
+## CURRENT — TB46 executed 504/504; S5 orchestration correction next (2026-10-27)
+
+- [x] **TB46 full gate executed:** [run 40448739180](https://github.com/akashskypatel/Directional/actions/runs/40448739180), result artifact `12711165610` ([report](.agents/Directional/Architecture_M6_CP3_TB46_Full_Gate_Test_Benchmark_Report_20261027.md)): 497 PASS / 7 RED; all 497 guards pass; 5 pinned REDs unchanged; POSITIVE 174 and cp3entry:4 RED. 504/504 fresh GTest receipts, zero skipped/missing/duplicate, 1,014 SHA entries verified, immutable postflight green. Harness exit90 `control_bad=2`; **S5 orchestration/contract stop**, no accepted full gate and no promotion.
+- [ ] **NEXT `M6-CP3-TB46A-ORCH` (Code + Build, control-plane only)** — reconcile RA-164.5 POSITIVE later-fail rules with harness without masking unknown/early failures; independently determine where selector174's uncaught exception originates before allowing a later-predicate classification; preserve evidence, manifest and immutable package. No product/test/fixture edits or runtime in the orchestration correction. If independent review is required for a semantic change, keep it gated.
+- [ ] After successful orchestration correction, rerun **`M6-CP3-TB46-RP01-FULL-GATE`** separately and apply frozen RA-164.5 outcome table; `DEFN-RP01-TB46-ENDPOINT-CLUSTER` is **held** until an authoritative complete gate.
+
+### Prior CB46/TB46 plan (retained as history)
+
 
 - [x] **RA-164 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md)): TB45-REV confirmed (ZIP `7d18b08a…`, 9/9 members, 3/3 joins; CB45 test SHA = HEAD). No production change since TB38 `038ae7fd7`.
   - H1 `selector:174` decided: fixture face `0,1,4` makes the source nonmanifold; `TriMesh::set_mesh` throws (`TriMesh.h:158–162, 339`) before the rail builder; `RemeshPipeline.cpp:9639` `>2U` is unreachable (kept). Lines after `:459` have not run since 2026-10-14.
@@ -6,7 +13,7 @@
   - Cluster E (201, cp3entry:2): 3×3 midline; T/R/I endpoints since `ccc0b00ab` (10-19) vs older all-terminal/junction oracles. Cluster G (442, `focused30:12`, cp3entry:1): face-gauge relabel invariance.
   - Cadence realigned to `Turn_Cadence.md` (RA-164.3 P1–P6): CB→full-gate TB direct; red TB → Review-owned DEFN; STOP codes S1–S5; no `UNKNOWN` successor on COMPLETE/BLOCKED. `M6-CP3-DEFN-RP01-SELECTOR174-DCEL-EXCEPTION-DISPOSITION` superseded.
 - [x] **`M6-CP3-CB46-RP01-RAIL-ORACLE-REHOME-AND-ENDPOINT-DIAGNOSTICS`** (RA-164.4) — test-only H1/H2 and D1–D3 diagnostics; exact commit `c05d52dd7`, [compile record](.agents/Directional/Architecture_M6_CP3_CB46_Rail_Oracle_Rehome_And_Endpoint_Diagnostics_Code_Build_Record_20261027.md). Eight GMP/GMPXX targets compiled, no runtime.
-- [ ] **NEXT `M6-CP3-TB46-RP01-FULL-GATE`** (RA-164.5) — 504-row [manifest](.agents/Directional/Architecture_M6_CP3_TB46_Full_Gate_Case_Manifest.tsv) `717f4f0f…`; predict 499/5; outcome table names every successor.
+- [x] **`M6-CP3-TB46-RP01-FULL-GATE` initial attempt (S5)** (RA-164.5) — 504-row [manifest](.agents/Directional/Architecture_M6_CP3_TB46_Full_Gate_Case_Manifest.tsv) `717f4f0f…`; predict 499/5; outcome table names every successor.
 - [ ] `M6-CP3-DEFN-RP01-TB46-ENDPOINT-CLUSTER` (Review) → CB47 → TB47 full gate.
 - [ ] `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` (Review) → CB48 → TB48 full gate.
 - [ ] `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` (Review; O4, O5, P1-a, P1-b, RA-162 C1, H2 A5 reachability) → CB49 → TB49 → green full gate → RP-01 Review (O6 scope).
