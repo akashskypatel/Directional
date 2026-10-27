@@ -45,3 +45,30 @@ These three defects must **not** be merged into one presumed causal repair merel
 4. Do not advance successor until this Review completes. The canonical root `STATUS` remains IN_PROGRESS. Detailed identical investigation is preserved in ChatGPT Library `/Directional/M6_CP3_TB47_Gauge_Cluster_Working_Review_20261027.md`.
 
 **No exact patch or successor frozen. No CP3 acceptance. The earlier sheet-only candidate is expressly withdrawn; no test must be made green by replacing a nontraversable witness with a traversable one.**
+
+## Independent accepted-prefix recheck (same-turn continuation)
+
+Local recomputation from the verified semantic-source snapshot gives accepted selection lengths 30 + 12 + 449 = **491**. The corresponding source SHA-256 hashes are `1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6`, `2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed`, and `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. A fresh parse of TB47 manifest v2, SHA `488a20b658fc18ddf64addacd9f3150b35b68b067fd37ba7b11346db958d5955`, compared each of the first 491 ordered `test` values to their separately preserved accepted source lists: **491 equal, zero mismatches**, 504 total rows. The artifact ledger has 497 GUARD, 4 RED and 3 POSITIVE rows; its independently checked 1,014 packaged SHA256SUMS match. This is selector identity continuity evidence only, not new accepted CP3 runtime or authenticated Git historical rewrite validation.
+
+## Review closeout (incomplete; rows remain open)
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | 30/12/449 SHA values above; exact 491/491 ordered TB47 prefix |
+| Decisive claims independently re-derived | Eight G1 label/rail cases; 4096 G2 normalized-algebra states (prior continuation), 256 raw-equality counterexamples; raw G3 torus receipt |
+| Non-vacuity checked | G1 original fixture invalid; G2 naive lhs-only patch disproven in 192/256 arithmetic tuples; G3 zero genuinely odd pairs despite nonzero source transitions |
+| Prior obligations discharged/carried | RA-166 F6/F7 still active; O1/O2/O6/O7/O8/O9 and D2/E2 owner unchanged; full historical item-by-item audit PENDING |
+| Stable accounting | 66/17/49; debt 1; accepted CP2 491/491; CP3 not promoted |
+| New candidates/obligations recorded | G1 legal non-hard witness; G2 full frame algebra and native positive/negative; G3 producer-authenticated odd face pair — retained here; tracker synchronization PENDING |
+| ORIENTATION currency line | PENDING before formal closeout |
+| ORIENTATION §3 / §4 / §7 / §8 | PENDING before formal closeout; no production fixture promotion |
+| CHANGELOG | PENDING before formal closeout |
+| ROADMAP | No checkpoint change; still to verify at formal closeout |
+| Selector manifest | n/a: no selector added or accepted |
+| LESSONS | Pending applicability check; prior RA-166 F6/F7 apply |
+| Consolidation under CLEAN_UP_POLICY | PENDING formal Review closeout |
+| Successor frozen | NOT DONE; exact CB48 patch and TB48 manifest forbidden until independent native scratch evidence |
+| Turn boundary held | Yes: analysis and Review documentation only; no compile, runtime, product/test/selector/fixture/build edits |
+| review_check.py boundary | Prior run on history-free snapshot exit 1; authentic-history check PENDING; no PASS claimed |
+| `STATUS` lifecycle maintained | Open canonical turn; started 2026-10-27T13:11:32Z, resumed 2026-10-27T13:59:30Z; no ended timestamp |
+| Pushed to origin, branch in sync | GitHub connector commits were pushed; `git status -sb` with authentic checkout has NOT been checked |
