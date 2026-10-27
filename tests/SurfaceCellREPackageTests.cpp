@@ -707,23 +707,124 @@ TEST(SurfaceCellPipelinePhase20,
         << "hard-rail A3 crossing must originate in A1, not A4";
   }
   EXPECT_EQ(producerHardEdges, verifiedCarriers);
+  const auto &front = context.productSnapshots.traceNetwork.phaseFront.product();
+  const auto &openRailContacts = front.hardRailTerminalContacts();
+  const auto &openRailChains = front.hardRailOpenChains();
+  using Rational = directional::authority::FieldExactRational;
+  using Vertex = directional::authority::SourceVertexId;
+  using Edge = directional::authority::SourceEdgeTopologyKey;
+  // This oracle deliberately reconstructs the intrinsic source-edge parameter
+  // from the independent input triangles, not from A4's endpoint kind label.
+  const auto interior_parameter = [&](const directional::geometry::SurfaceTracePoint &point,
+                                      const Edge &edge) -> std::optional<Rational> {
+    if (point.face < 0 || point.face >= mesh.faces.rows()) return std::nullopt;
+    int first = -1, second = -1, other = -1;
+    for (int corner = 0; corner < 3; ++corner) {
+      const auto vertex = mesh.faces(point.face, corner);
+      if (vertex == static_cast<int>(edge.first().index())) first = corner;
+      else if (vertex == static_cast<int>(edge.second().index())) second = corner;
+      else other = corner;
+    }
+    if (first < 0 || second < 0 || other < 0 ||
+        point.barycentric[other] != 0.0) return std::nullopt;
+    const auto a = Rational::from_double_exact(point.barycentric[first]);
+    const auto b = Rational::from_double_exact(point.barycentric[second]);
+    if (!a || !b) return std::nullopt;
+    const auto zero = Rational::from_integer(0);
+    const auto one = Rational::from_integer(1);
+    return *b > zero && *b < one && *a + *b == one
+        ? std::optional<Rational>{*b} : std::nullopt;
+  };
+  const auto exact_vertex = [&](const directional::geometry::SurfaceTracePoint &point,
+                                const Vertex vertex) {
+    if (point.face < 0 || point.face >= mesh.faces.rows()) return false;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (mesh.faces(point.face, corner) != static_cast<int>(vertex.index())) continue;
+      for (int i = 0; i < 3; ++i)
+        if (point.barycentric[i] != (i == corner ? 1.0 : 0.0)) return false;
+      return true;
+    }
+    return false;
+  };
   std::size_t authenticatedContactSteps = 0U;
   std::size_t authenticatedJunctions = 0U;
   std::size_t authenticatedJunctionSteps = 0U;
+  std::size_t interiorEndpoints = 0U;
+  std::size_t sourceTerminals = 0U;
   for (const auto &certificate : certificates) {
-    for (const auto &endpoint : certificate.endpoints) {
-      ASSERT_TRUE(endpoint.terminalVertex.has_value())
-          << "endpointKind=" << (endpoint.railVertex ? "R" : "I")
-          << ";certificateCount=" << certificates.size()
-          << ";routeSteps=" << certificate.route.oriented_steps().size()
-          << ";junctions=" << certificate.junctions.size()
-          << ";carrier=(" << endpoint.terminalCarrier.edge.first().index()
-          << "," << endpoint.terminalCarrier.edge.second().index() << ")";
-      const auto terminal = *endpoint.terminalVertex;
+    ASSERT_GE(certificate.firstFrontEdge, 0);
+    ASSERT_GE(certificate.secondFrontEdge, 0);
+    ASSERT_LT(static_cast<std::size_t>(certificate.firstFrontEdge), front.edges().size());
+    ASSERT_LT(static_cast<std::size_t>(certificate.secondFrontEdge), front.edges().size());
+    const auto &first = front.edges()[certificate.firstFrontEdge];
+    const auto &second = front.edges()[certificate.secondFrontEdge];
+    for (std::size_t endpointIndex = 0U; endpointIndex < 2U; ++endpointIndex) {
+      const auto &endpoint = certificate.endpoints[endpointIndex];
+      const auto &firstPoint = endpointIndex == 0U ? first.from : first.to;
+      const auto &secondPoint = endpointIndex == 0U ? second.to : second.from;
+      const auto firstRow = regions.row_for_topology(endpoint.firstAttachment);
+      const auto secondRow = regions.row_for_topology(endpoint.secondAttachment);
+      ASSERT_TRUE(firstRow.has_value());
+      ASSERT_TRUE(secondRow.has_value());
+      EXPECT_EQ(firstRow->index(), static_cast<std::size_t>(firstPoint.face));
+      EXPECT_EQ(secondRow->index(), static_cast<std::size_t>(secondPoint.face));
+      EXPECT_EQ(regions.component_for_row(*firstRow),
+                regions.component_for_row(*secondRow))
+          << "A4 cannot join different source components across a carrier";
       EXPECT_EQ(1U, producerHardEdges.count(endpoint.terminalCarrier.edge))
-          << "A4 terminal carrier must be a genuine A1 hard edge";
-      EXPECT_TRUE(endpoint.terminalCarrier.edge.first() == terminal ||
-                  endpoint.terminalCarrier.edge.second() == terminal);
+          << "A4 endpoint carrier must be an independent A1 hard edge";
+      EXPECT_FALSE(endpoint.terminalVertex && endpoint.railVertex)
+          << "T and R source-vertex authority are mutually exclusive";
+      const auto contact = openRailContacts.find(certificate.rail);
+      ASSERT_NE(contact, openRailContacts.end())
+          << "this fixture has an actual open hard rail";
+      const auto terminal = endpoint.terminalVertex;
+      const auto railVertex = endpoint.railVertex;
+      if (!terminal && !railVertex) {
+        // I is a genuine point in the interior of the same hard carrier,
+        // with no invented source-vertex or terminal-star contact paths.
+        ++interiorEndpoints;
+        EXPECT_TRUE(endpoint.contactPaths[0].empty());
+        EXPECT_TRUE(endpoint.contactPaths[1].empty());
+        EXPECT_EQ(endpoint.firstAttachment, endpoint.terminalCarrier.firstFace);
+        EXPECT_EQ(endpoint.secondAttachment, endpoint.terminalCarrier.secondFace);
+        const auto a = interior_parameter(firstPoint, endpoint.terminalCarrier.edge);
+        const auto b = interior_parameter(secondPoint, endpoint.terminalCarrier.edge);
+        ASSERT_TRUE(a.has_value());
+        ASSERT_TRUE(b.has_value());
+        EXPECT_EQ(*a, *b)
+            << "I endpoints must share an exact source-edge parameter";
+        if (firstPoint.exactEdgePoint || secondPoint.exactEdgePoint) {
+          EXPECT_TRUE(directional::geometry::surface_cell_tracing_detail::
+              same_interior_carrier_point(firstPoint, secondPoint, mesh.faces,
+                                          endpoint.terminalCarrier.edge))
+              << "exact provenance must bind to the independently checked carrier";
+        }
+        continue;
+      }
+      const auto vertex = terminal ? *terminal : *railVertex;
+      EXPECT_TRUE(exact_vertex(firstPoint, vertex));
+      EXPECT_TRUE(exact_vertex(secondPoint, vertex));
+      EXPECT_TRUE(endpoint.terminalCarrier.edge.first() == vertex ||
+                  endpoint.terminalCarrier.edge.second() == vertex);
+      if (terminal) {
+        ++sourceTerminals;
+        EXPECT_TRUE(vertex == contact->second.endpoints[0] ||
+                    vertex == contact->second.endpoints[1])
+            << "T must be an A2b-published open-rail terminal";
+      } else {
+        EXPECT_NE(vertex, contact->second.endpoints[0]);
+        EXPECT_NE(vertex, contact->second.endpoints[1]);
+        const auto chain = openRailChains.find(certificate.rail);
+        ASSERT_NE(chain, openRailChains.end());
+        const auto occurrence = std::find(chain->second.vertices.begin(),
+                                          chain->second.vertices.end(), vertex);
+        ASSERT_NE(occurrence, chain->second.vertices.end());
+        EXPECT_NE(occurrence, chain->second.vertices.begin());
+        EXPECT_NE(occurrence + 1, chain->second.vertices.end());
+        EXPECT_EQ(1, std::count(chain->second.vertices.begin(),
+                                chain->second.vertices.end(), vertex));
+      }
       for (std::size_t side = 0U; side < endpoint.contactPaths.size(); ++side) {
         const auto &path = endpoint.contactPaths[side];
         auto at = side == 0U ? endpoint.firstAttachment
@@ -731,19 +832,19 @@ TEST(SurfaceCellPipelinePhase20,
         std::set<directional::authority::SourceFaceTopologyKey> seen{at};
         for (const auto &step : path) {
           EXPECT_EQ(at, step.firstFace)
-              << "terminal A4 contact path must remain face-contiguous";
-          EXPECT_TRUE(step.edge.first() == terminal ||
-                      step.edge.second() == terminal)
-              << "terminal star step must touch the certified source vertex";
+              << "source-vertex A4 contact path must remain face-contiguous";
+          EXPECT_TRUE(step.edge.first() == vertex ||
+                      step.edge.second() == vertex)
+              << "source-star step must touch the independently certified vertex";
           EXPECT_TRUE(seen.insert(step.secondFace).second)
-              << "terminal contact path cannot revisit a source face";
+              << "source-vertex contact path cannot revisit a source face";
           EXPECT_EQ(0U, producerHardEdges.count(step.edge))
-              << "terminal source-star transport crossed an A1 hard carrier";
-          const auto first = regions.row_for_topology(step.firstFace);
-          const auto second = regions.row_for_topology(step.secondFace);
-          ASSERT_TRUE(first.has_value());
-          ASSERT_TRUE(second.has_value());
-          const auto directed = atlas.transition_value(step.edge, *first, *second);
+              << "source-star transport crossed an A1 hard carrier";
+          const auto from = regions.row_for_topology(step.firstFace);
+          const auto to = regions.row_for_topology(step.secondFace);
+          ASSERT_TRUE(from.has_value());
+          ASSERT_TRUE(to.has_value());
+          const auto directed = atlas.transition_value(step.edge, *from, *to);
           ASSERT_TRUE(directed.has_value());
           EXPECT_EQ(step.firstToSecond, directed->transport);
           at = step.secondFace;
@@ -820,6 +921,10 @@ TEST(SurfaceCellPipelinePhase20,
     }
     EXPECT_EQ(previous, certificate.endpoints[1].terminalCarrier);
   }
+  EXPECT_GT(sourceTerminals, 0U)
+      << "authentic open-rail source terminals cannot be replaced by I points";
+  EXPECT_GT(interiorEndpoints, 0U)
+      << "this fixture must exercise authentic A4 interior-carrier endpoints";
   EXPECT_GT(authenticatedContactSteps, 0U)
       << "the A4 consumer must publish a real non-hard source-star step";
   EXPECT_GT(authenticatedJunctions, 0U)
