@@ -1,3 +1,7 @@
+## 2026-10-27 — CB46 rail-oracle test re-home and endpoint diagnostics compiled (no runtime)
+
+- [CB46 code/build record](.agents/Directional/Architecture_M6_CP3_CB46_Rail_Oracle_Rehome_And_Endpoint_Diagnostics_Code_Build_Record_20261027.md): RA-164.4 H1/H2 re-home invalid source/rail expectations to the correct producer and D1–D3 extend assertion messages without changing predicates; exactly two test files changed, semantic source `c05d52dd7`, eight-target GMP/GMPXX compile run 40447038466 (artifact 12708707491), `runtimeExecution=false`. First Drive application failed due patch metadata path separator and made no code commit; retry applied identical diff. TB46 full 504-case artifact-only gate next; no selector497/CP3 promotion; CP2 491/491 and stable 66/17/49 debt1 unchanged.
+
 ## 2026-10-27 — RA-164 TB45-REV audit; 174/cp3entry:4 decided; CP3 cadence realigned
 
 - [RA-164](.agents/Directional/Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md): TB45-REV confirmed (9/9 members). 174: nonmanifold fixture, `TriMesh::set_mesh` throws before the rail builder. cp3entry:4: A4 checked factory correctly rejects the torn draft at `open-rail-chain`. Clusters E (201, cp3entry:2) and G (442, `focused30:12`, cp3entry:1). Cadence realigned to `Turn_Cadence.md`: CB→full-gate TB direct, red TB → Review-owned DEFN, STOP codes, no `UNKNOWN` successor. Frozen TB46 504-row manifest (predict 499/5). Next CB46. No build/runtime; accounting unchanged.
