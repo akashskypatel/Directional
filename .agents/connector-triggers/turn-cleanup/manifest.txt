@@ -1,0 +1,2 @@
+# Remove consumed one-time TB47 R24 source snapshot marker only
+.agents/connector-triggers/source-snapshot/tb47-gauge-r24-20261027.txt
