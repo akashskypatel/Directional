@@ -50,29 +50,6 @@ These three defects must **not** be merged into one presumed causal repair merel
 
 Local recomputation from the verified semantic-source snapshot gives accepted selection lengths 30 + 12 + 449 = **491**. The corresponding source SHA-256 hashes are `1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6`, `2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed`, and `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. A fresh parse of TB47 manifest v2, SHA `488a20b658fc18ddf64addacd9f3150b35b68b067fd37ba7b11346db958d5955`, compared each of the first 491 ordered `test` values to their separately preserved accepted source lists: **491 equal, zero mismatches**, 504 total rows. The artifact ledger has 497 GUARD, 4 RED and 3 POSITIVE rows; its independently checked 1,014 packaged SHA256SUMS match. This is selector identity continuity evidence only, not new accepted CP3 runtime or authenticated Git historical rewrite validation.
 
-## Review closeout (incomplete; rows remain open)
-
-| Duty | Answer |
-|---|---|
-| Accepted selector prefix re-hashed | 30/12/449 SHA values above; exact 491/491 ordered TB47 prefix |
-| Decisive claims independently re-derived | Eight G1 label/rail cases; 4096 G2 normalized-algebra states (prior continuation), 256 raw-equality counterexamples; raw G3 torus receipt |
-| Non-vacuity checked | G1 original fixture invalid; G2 naive lhs-only patch disproven in 192/256 arithmetic tuples; G3 zero genuinely odd pairs despite nonzero source transitions |
-| Prior obligations discharged/carried | RA-166 F6/F7 still active; O1/O2/O6/O7/O8/O9 and D2/E2 owner unchanged; full historical item-by-item audit PENDING |
-| Stable accounting | 66/17/49; debt 1; accepted CP2 491/491; CP3 not promoted |
-| New candidates/obligations recorded | G1 legal non-hard witness; G2 full frame algebra and native positive/negative; G3 producer-authenticated odd face pair — retained here; tracker synchronization PENDING |
-| ORIENTATION currency line | PENDING before formal closeout |
-| ORIENTATION §3 / §4 / §7 / §8 | PENDING before formal closeout; no production fixture promotion |
-| CHANGELOG | PENDING before formal closeout |
-| ROADMAP | No checkpoint change; still to verify at formal closeout |
-| Selector manifest | n/a: no selector added or accepted |
-| LESSONS | Pending applicability check; prior RA-166 F6/F7 apply |
-| Consolidation under CLEAN_UP_POLICY | PENDING formal Review closeout |
-| Successor frozen | NOT DONE; exact CB48 patch and TB48 manifest forbidden until independent native scratch evidence |
-| Turn boundary held | Yes: analysis and Review documentation only; no compile, runtime, product/test/selector/fixture/build edits |
-| review_check.py boundary | Prior run on history-free snapshot exit 1; authentic-history check PENDING; no PASS claimed |
-| `STATUS` lifecycle maintained | Open canonical turn; started 2026-10-27T13:11:32Z, resumed 2026-10-27T13:59:30Z; no ended timestamp |
-| Pushed to origin, branch in sync | GitHub connector commits were pushed; `git status -sb` with authentic checkout has NOT been checked |
-
 ## Third continuation — correction of the G2 production-defect hypothesis (2026-10-27)
 
 **This section supersedes the earlier proposed A5 gauge-stripping remedy above, including the G2 designation as an established production bug. That claim was premature. No A5 code change is presently authorized.**
@@ -128,3 +105,27 @@ For G2, the analogous positive is *not* an A4-only `PhaseFrontDraft` mutation. R
 - `SourceComponentId` is **ingress authority** rather than an identity reconstructed from the raw shared-edge connected components (see accepted RA-29c / `Architecture_M6_Frozen_Definitions.md` §RA-29a withdrawal). Thus the R5 deliberate face-component partition is not automatically invalid merely because the input triangles form one connected mesh. The original two-face test *still* violates the separately explicit original source-boundary-cycle component-consistency rule; the R5/R6 candidate does not.
 
 **Limits/stop:** The independent Python model does **not** replicate native `FieldTransportAtlas::make` branch frame construction, canonical cycle certificate ordering, regional quadrangulability proof, or a source-tracing A4 production. It is an admissible **scratch preflight only**, not native source admission or verified exact replacement hunk. RA-166.6 F6/F7 remain open. Prior G2 revision (source-inconsistent relabel; no authorized A5 change) and G3 lack of odd produced face pair remain unchanged. Do not change RED expectations, immutable selector497, or `cp3entry:2` E2 scope.
+
+## Review closeout — incomplete / pending independent producer authority
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | focused30 `1e815443…`, focused12 `2aa57aac…`, selector449 `d4a0d1b7…`; R3 exact 491/491 TB47 prefix equality and frozen manifest digest `488a20b6…`. |
+| Decisive claims independently re-derived | G1 R5: boundary-cycle consistency, ring/inner disk region χ; R6: 13/13 face-row physical-edge keyed signatures and 14/14 exact gauge dual cycles; G2 one-sided A3-transport/branch algebra counterexample; G3 5 candidates, 0 odd published face-gauge pairs. |
+| Non-vacuity checked | G1 four distinct non-hard edge pairs, copied inverse observable at ±1; matching +1 tamper affects seven closed dual cycles; G2 naive acceptance disproved by counterexample; G3 cannot count A3 transport as A4 odd pair. No native positive claimed. |
+| Prior obligations discharged/carried | RA-166.6 F6/F7 carry until native A3/A4 positives and signed tamper negatives; E2 `cp3entry:2` separate; O1/O2/O6/O7/O8/O9, D2/E2, RA-146.2/4, RA-45.4 and G4-B002 carried with existing owners. Historical owner-by-owner closure still PENDING. |
+| Stable accounting | 66 events / 17 categories / 49 recurrences, debt 1; last accepted CP2 491/491; TB47 500/4 candidate, selector497/CP3 not promoted. |
+| New candidates/obligations recorded | G1 R5/R6 source topology requiring native `FieldTransportAtlas::make` admission/negative; G2 source-consistent A3/A4/rail certificate relabel; G3 produced odd gauge torus; reflected in Regression_Root_Cause_Tracker.md. |
+| ORIENTATION currency line | Updated 2026-10-27 with measured TB47, active DEFN-G and accepted authority. |
+| ORIENTATION §3 / §4 / §7 / §8 | §3 and §7 corrected stale CB47/TB47 pending language; §8 adds source-authority pattern; §4 unchanged because no newly admitted producer witness exists. |
+| CHANGELOG | Added in-progress DEFN-G R5/R6 entry, not a completed-Review claim. |
+| ROADMAP | Checked; CP3 remains in progress, no status transition, so no change. |
+| Selector manifest | n/a: no selector added/accepted/changed. |
+| LESSONS | Existing lessons on test oracle independent non-vacuity and ingress source label authority apply; no distinct reusable lesson frozen. |
+| Consolidation under CLEAN_UP_POLICY | Pending completed Review; no evidential records deleted or test history folded prematurely. |
+| Successor frozen | **NOT DONE**: no exact G1 native positive, G2 producer-consistent relabel, or G3 odd produced face pair; CB48 hunks / TB48 manifest not authorized; do not advance E2. |
+| Turn boundary held | Yes: no runtime, compilation, product/test/fixture/selector/benchmark/workflow mutations during Review. Source-faithful Python scratch only. |
+| review_check.py boundary | Previously attempted on history-free source ZIP, exit 1; authentic Git-history audit pending and not represented as PASS. GitHub compare independently verifies no code drift from verified source snapshot. |
+| `STATUS` lifecycle maintained | In-progress same turn, Started at 2026-10-27T13:11:32Z; latest Resumed at 2026-10-27T15:11:10Z; Ended at empty. Final beacon to be written as last repository mutation. |
+| Pushed to origin, branch in sync | GitHub connector writes push to configured branch; GitHub compare confirms only Review/docs/STATUS changes from snapshot authority. Authentic `git status -sb` sync check NOT executed; cannot claim it. |
+
