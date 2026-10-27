@@ -119,6 +119,10 @@ Standalone source-formula scratch `Directional_M6_CP3_G1_Source_Branch_Transport
 
 **R7 status:** native `FieldTransportAtlas::make` admission and tamper outcomes remain **UNEXECUTED**. This is a source-derived Python algebra/topology scratch, not C++ execution or approval of CB48. G2 remains a source-inconsistent A4-only relabel, G3 remains no produced odd face-gauge pair. The frozen E2 `cp3entry:2` remains separate. No product, test, fixture, selector, benchmark or workflow source changes.
 
+### R7 native scratch candidate — **not compiled or run**
+
+A self-contained C++ `TEST(FieldTransportAtlas, ScratchTenFaceIngressSeamPreservesDirectedA3Value)` is preserved at ChatGPT Library `/Directional/Directional_M6_CP3_G1_Native_Scratch_Candidate_R7_20261027.cpp`, SHA256 `25cd5625ecf07bca6b0d269b55fad373636c334696657b37152c3b0dbe8fd9d8`. It uses the real `make_zero_transport_field`, `gauge_relabel_field`, `build_source_topology_regions`, and `FieldTransportAtlas::make` contracts in the existing `FieldTransportAtlasTests.cpp` translation-unit context. It checks BOTH baseline and shifted producer admission, one genuine original source-boundary cycle, exactly nine traversable adjacencies, all four non-hard `NonTraversable` seam carriers, signed raw values and inverse, and absence of ordinary traversal/adjacency. It is an **unapproved native scratch candidate only**: it has **not** been syntax compiled, executed, inserted in a repo source file, or used to authorize any TB48 prediction. Its first `ASSERT_TRUE` failure must be preserved exactly. Future native scratch compilation/execution must respect the Review's runtime-free boundary and use an independently authorized execution procedure; do not treat this document as permission to mutate test source in this Review.
+
 ## Review closeout — incomplete / pending independent producer authority
 
 | Duty | Answer |
