@@ -21,6 +21,12 @@
 
 These three defects must **not** be merged into one presumed causal repair merely because they share the TB47 G grouping.
 
+## History and mutation boundary check (continuation)
+
+- Independent GitHub compare confirms frozen rewrite baseline `8b7299b43764a6ba3444e5bc774a2f1b65e99731` is an ancestor of the current reviewed branch (`behind_by=0`, `ahead_by=2072` at the comparison head). This proves ancestry **only**, not all history-sensitive file rewrite checks.
+- GitHub compare from the verified source snapshot `7dba3d3b…` through the continuation report commit shows only the Review record, the root `STATUS`, and the now-retired temporary snapshot trigger changed; no production source, tests, fixtures, selector, manifest, or workflow files were changed. The trigger was deleted, not retained as ongoing control state.
+- The local `review_check.py boundary` attempt returned exit 1 in the *history-free extracted source archive*. It marks numerous selectors as “untracked” and cannot resolve the actual prior committed durable-file baselines. Its incidental PASS lines **are not accepted review evidence**. Run the history-sensitive audit with authentic Git history before formal closeout; the connector ancestry comparison does not replace it.
+
 ## Continuation and open obligations
 
 1. G1 sheet-only fix is **falsified** at source-contract level; find a legal, distinct-region non-hard-rail witness or explicitly escalate the impossible fixture contract. Independently probe actual A3 construction and signed-inverse negative. G2 requires native A5 positive/negative proof even though the 4096-case arithmetic and tamper families support the normalization. G3 requires produced odd gauge and reciprocal action. Static analysis and arithmetic are not native scratch C++ results.
