@@ -1,3 +1,7 @@
+## 2026-10-27 — TB45 selector242 re-home verified 3/3, independent Review next
+
+- [TB45 report](.agents/Directional/Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Verification_Report_20261027.md): semantic source `dfeb0751...`, immutable package `12697664329`, [run 40433669771](https://github.com/akashskypatel/Directional/actions/runs/40433669771), result `12702259228` (`7d18b08a...`), logs `12702474055` (`26488c1a...`). 242/239/185 each PASS in independent processes, zero RED/skips/duplicates, postflight preserved. No compile, source/test/selector change, benchmark or promotion. CP2 491/491 remains accepted, stable 66/17/49 debt1. Exact next TB45-REV.
+
 ## 2026-10-27 — CB45 independent static Review accepted; TB45 three-case manifest frozen
 
 - [CB45-REV](.agents/Directional/Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md) independently rechecked exact one-test GitHub hunk, factory nonreciprocal two-sided negatives, positive certificate control, A3 seam transport and non-vacuity, and 28/28 immutable GMP compile checksums; no runtime. Frozen [TB45 three-case manifest](.agents/Directional/Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Verification_Case_Manifest.tsv) requires selector242 POSITIVE, guards 239 and 185 on source `dfeb0751...`, artifact `12697664329`. Next artifact-only TB45; CP2 491/491 accepted, stable 66/17/49 debt1, selector497/CP3 unpromoted.

@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-27 · [CB45 independent Review](Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md) accepted the selector242 seam-certificate and A3 test re-home at static/compile scope only (28/28 immutable GMP package members); three-case TB45 manifest frozen. Runtime unmeasured. CP2 491/491 accepted, selector497 frozen/unpromoted, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-27 · [CB45 independent Review](Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md) accepted the selector242 seam-certificate and A3 test re-home at static/compile scope only (28/28 immutable GMP package members); TB45 three-case 242/239/185 executed 3/3 PASS ([report](Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Verification_Report_20261027.md)); independent TB45 Review pending. CP2 491/491 accepted, selector497 frozen/unpromoted, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
