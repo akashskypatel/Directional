@@ -1,1 +1,0 @@
-.agents/connector-triggers/source-snapshot/tb46-rp01-full-gate-20261027.txt

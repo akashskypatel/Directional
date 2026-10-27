@@ -1,3 +1,0 @@
-turn=M6-CP3-TB46-RP01-FULL-GATE
-source_authority=e6d3fae659e99e6cc0cc42c96b4fab5a6c18b246
-purpose=exact source snapshot for artifact-only TB closeout
