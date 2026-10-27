@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-26 · [RA-163](Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md) reviewed the selector242 DEFN: the typed owner of non-reciprocity is the seam-certificate factory (`NonReciprocalTransport`, already pinned by accepted selector185); the legacy single-edge mutation is a gauge relabel on a tree-dual disk, so A3 accepts it and the old A4 expectation is unreachable. 242 keeps its identity, re-homed to the owner plus an A3 representation pin. Candidate only: CP2 491/491 accepted, selector497 frozen/unpromoted, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-27 · [CB45 independent Review](Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md) accepted the selector242 seam-certificate and A3 test re-home at static/compile scope only (28/28 immutable GMP package members); three-case TB45 manifest frozen. Runtime unmeasured. CP2 491/491 accepted, selector497 frozen/unpromoted, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current independent Review:** [RA-163](Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md) partially accepts the selector242 DEFN (D1 corrected, D2 decided, Branch B rejected) and respecifies CB45.
+**Current independent Review:** [CB45-REV](Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md) statically accepts RA-163.3 test-only CB45 against the exact GMP package; TB45 artifact-only measurement next. No runtime credit.
 
 **Current test authority:** [TB44 report](Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Verification_Report_20261026.md): 405 PASS, guards 7614/7414 PASS, 8219 RED, on CB44 package `12674401457`; focused candidate only. Earlier focused gates (TB41–TB43) are recorded in their Review decisions; no CP3/selector497 promotion.
 
@@ -106,11 +106,11 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME` (test-only, compile only; RA-163.3) → REV → TB45 → REV. P1 (re-scoped) and C1 wait for the O5 DEFN. No CP3/selector497 promotion.
+**Immediate:** `M6-CP3-TB45-RP01-SELECTOR242-SEAM-REHOME-VERIFY` (three-case immutable artifact-only manifest) → REV; CB45 and CB45-REV complete at static/compile scope. P1 (re-scoped) and C1 wait for the O5 DEFN. No CP3/selector497 promotion.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Clear the remaining REDs one owner per turn: 242 (CB45 → TB45), 174, 201, `focused30:12`, `cp3entry:4`, `selector:442`, DEFN-T1 (`cp3entry:1/2`); 405 focused PASS awaits the census. Then O4/O5 DEFNs (O5 + P1 + C1) and the census; RP-01 Review states O6 scope. O2 retirement is post-RP-01. | `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME` per [RA-163](Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md) |
+| **1** | Clear the remaining REDs one owner per turn: 242 (CB45 → TB45), 174, 201, `focused30:12`, `cp3entry:4`, `selector:442`, DEFN-T1 (`cp3entry:1/2`); 405 focused PASS awaits the census. Then O4/O5 DEFNs (O5 + P1 + C1) and the census; RP-01 Review states O6 scope. O2 retirement is post-RP-01. | `M6-CP3-TB45-RP01-SELECTOR242-SEAM-REHOME-VERIFY` per [CB45-REV](Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

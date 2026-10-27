@@ -1,3 +1,7 @@
+## 2026-10-27 — CB45 independent static Review accepted; TB45 three-case manifest frozen
+
+- [CB45-REV](.agents/Directional/Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md) independently rechecked exact one-test GitHub hunk, factory nonreciprocal two-sided negatives, positive certificate control, A3 seam transport and non-vacuity, and 28/28 immutable GMP compile checksums; no runtime. Frozen [TB45 three-case manifest](.agents/Directional/Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Verification_Case_Manifest.tsv) requires selector242 POSITIVE, guards 239 and 185 on source `dfeb0751...`, artifact `12697664329`. Next artifact-only TB45; CP2 491/491 accepted, stable 66/17/49 debt1, selector497/CP3 unpromoted.
+
 ## 2026-10-26 — CB45 selector242 seam-factory oracle re-home compiled (no runtime)
 
 - [CB45 code/build record](.agents/Directional/Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Code_Build_Record_20261026.md) verifies RA-163.3 one-body test change on `dfeb0751b1a42a0805aecf4ef4ffb6917f619c83`, certificate-factory two-sided typed rejections and controls, A3 reciprocal seam mutation consumed. Verified eight GMP/GMPXX compile targets, `runtimeExecution=false`; no tests or benchmarks executed. Independent CB45-REV next, selector242 and selector497 remain unpromoted; stable 66/17/49, debt1, CP2 491/491 retained.
