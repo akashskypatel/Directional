@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r13-20261027-v2",
+  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r14-20261027-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r13-v2",
-  "file_id": "1TPVpEIkJVMoGEh-nMqxEJ8HF-aNBgwH5",
-  "patch_sha256": "07ceb88119693e4e23282db9953b0774bb2f148661f8b85156dba3b17d43875f",
-  "base_sha": "3271e3d87ef4eee6ad7ae69b588efb81c0f4b5b3",
+  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r14-v1",
+  "file_id": "1_LJU36XdNqU0itq-11VzjSXI7vOkQexd",
+  "patch_sha256": "034aa42ddee120ef608cb0c0801a4773981b0ec0042599b019c59ab969c92e78",
+  "base_sha": "9d45c2c6f5742f70a0d5e5201b06bceacac2fc51",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: add finite G3 torus arm-gauge census to TB47 independent review",
+  "commit_message": "docs: add physical-branch gauge equivariance preflight to TB47 review",
   "retention_days": 14
 }
