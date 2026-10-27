@@ -1,2 +1,0 @@
-# TB47 gauge-cluster R21 consumed temporary snapshot trigger
-.agents/connector-triggers/source-snapshot/tb47-gauge-r21-20261027.txt
