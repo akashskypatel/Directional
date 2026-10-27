@@ -39,6 +39,7 @@ HEX64 = re.compile(r'[0-9a-f]{64}\Z')
 HEX40 = re.compile(r'[0-9a-f]{40}\Z')
 TEST = re.compile(r'[A-Za-z_][A-Za-z0-9_]*\.[A-Za-z_][A-Za-z0-9_]*\Z')
 BIN = re.compile(r'[A-Za-z0-9_-]+\Z')
+PIN = re.compile(r'([A-Za-z_][A-Za-z0-9_]*\.cpp):([1-9][0-9]*)\|([^\r\n|]+)\Z')
 
 def require(condition, message):
     if not condition:
@@ -72,6 +73,15 @@ def read_cases(path, count):
         require(bool(BIN.fullmatch(binary)) and binary not in {'.', '..'}, f'row {index}: invalid binary')
         require(expect == ('RED' if kind == 'RED' else 'PASS'), f'row {index}: invalid expectation')
         require(bool(site) and ('\n' not in site and '\r' not in site), f'row {index}: invalid site')
+        if kind == 'RED' or (kind == 'POSITIVE' and identity != 'selector:174' and site != '-'):
+            require(PIN.fullmatch(site) is not None, f'row {index}: malformed or missing asserted-site pin')
+        elif kind == 'POSITIVE' and identity == 'selector:174':
+            # Frozen informational precondition, not a source-located failure.
+            require(site == ('A4-rail-builder InvalidFeatureEdge on forged overfull incidence; '
+                             'TriMesh set_mesh throws on nonmanifold (RA-164 H1)'),
+                    f'row {index}: invalid informational note')
+        else:
+            require(site == '-', f'row {index}: unexpected asserted-site pin')
         require(identity not in identities, f'row {index}: duplicate identity {identity}')
         require(test not in tests, f'row {index}: duplicate test {test}')
         identities.add(identity)
@@ -123,30 +133,8 @@ def first_failure(text):
                  'firstReason=' in line or 'firstStage=' in line or
                  line.startswith('[  FAILED  ] ')), 'failure-line-not-observed')
 
-# A RED may be accepted as an expected unresolved predicate only when its
-# independently registered first failure is still the first failure.  The
-# witness phrase guards against a coincidentally identical source line.
-PINNED_RED_SITES = {
-    'focused30:12': ('SurfaceCellTransitionQuotientTests.cpp', 5563,
-                     'A5:OccurrenceHardRailTransportMismatch'),
-    'selector:201': ('SurfaceCellREPackageTests.cpp', 715,
-                     'endpoint.terminalVertex.has_value()'),
-    'selector:442': ('FieldTransportAtlasTests.cpp', 2856,
-                     'code=SingularityMismatch;sourceEdge=(2,3)'),
-    'cp3entry:1': ('SurfaceCellTransitionQuotientTests.cpp', 2916,
-                   'gaugeDelta == 1 || gaugeDelta == 3'),
-    'cp3entry:2': ('SurfaceCellTransitionQuotientTests.cpp', 3154,
-                   'D2/RA-38 requires an ACTUAL A4-produced paired two-carrier HardRail'),
-}
-
-# RA-164.5 permits later failure of POSITIVE controls, but never early or
-# unattributed failures.  selector:174 is deliberately absent: the original
-# GTest log reports "unknown file" and does not locate the throwing call.
-PROVEN_LATER_POSITIVE_SITES = {
-    'cp3entry:4': ('SurfaceCellTransitionQuotientTests.cpp', 4063,
-                   'D5 requires a real reciprocal A5 OrdinaryFront'),
-}
-
+# Failure locations and decisive witnesses are supplied by the frozen manifest.
+# selector:174 contains an informational precondition, never a failure-site pin.
 def matches_registered_first_failure(text, registered):
     source_file, line, witness = registered
     location = first_failure(text)
@@ -154,20 +142,22 @@ def matches_registered_first_failure(text, registered):
                          ':' + str(line) + r': Failure', location) is not None
             and witness in failure_block(text))
 
-def control_failure(kind, identity, verdict, data):
+def control_failure(kind, identity, verdict, data, site):
     if verdict == 'INVALID':
         return 'invalid-execution'
     if kind == 'RED':
         if verdict == 'PASS':
             return None  # Unexpected improvement is reported, not hidden.
-        registered = PINNED_RED_SITES.get(identity)
-        if registered is None or not matches_registered_first_failure(data, registered):
+        registered = PIN.fullmatch(site)
+        if registered is None or not matches_registered_first_failure(data,
+                (registered.group(1), int(registered.group(2)), registered.group(3))):
             return 'unregistered-red-first-site'
         return None
     if verdict == 'PASS':
         return None
-    if (kind == 'POSITIVE' and identity in PROVEN_LATER_POSITIVE_SITES and
-            matches_registered_first_failure(data, PROVEN_LATER_POSITIVE_SITES[identity])):
+    registered = PIN.fullmatch(site) if kind == 'POSITIVE' else None
+    if (registered is not None and matches_registered_first_failure(data,
+            (registered.group(1), int(registered.group(2)), registered.group(3)))):
         return None  # Keep verdict RED and raw evidence unchanged.
     return 'unexpected-control-failure'
 
@@ -360,7 +350,7 @@ try:
         state['skipped'] += skipped
         state['missing'] += int(verdict == 'INVALID')
         state['duplicate'] += int(run > 1)
-        violation = control_failure(kind, identity, verdict, data)
+        violation = control_failure(kind, identity, verdict, data, site)
         state['control_bad'] += int(violation is not None)
         state['red_site_bad'] += int(violation == 'unregistered-red-first-site')
         state['later_positive_red'] += int(kind == 'POSITIVE' and verdict == 'RED' and

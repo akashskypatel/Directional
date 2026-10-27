@@ -1,3 +1,7 @@
+## 2026-10-27 — CB47A harness site/witness pins migrated, 504-case offline replay
+
+- [CB47A tool-only record](.agents/Directional/Architecture_M6_CP3_CB47A_Harness_Manifest_Pins_Code_Record_20261027.md): pinned failure locations and witnesses are now read from frozen TB47 `asserted_site` instead of hardcoded harness tables. Offline comparison against 504 immutable TB46 logs matched all 504 ledger/verdict rows (498 PASS / 6 RED, zero control failures); 12 pin mutations rejected, malformed pins rejected. No compile, product runtime, selector/fixture/manifest edit, or CP3 promotion. Next `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES`.
+
 ## 2026-10-27 — DEFN-E independent TB46 endpoint cluster adjudication; TB47 manifest frozen
 
 - [Decision](.agents/Directional/Architecture_M6_CP3_DEFN_TB46_Endpoint_Cluster_Review_Decision_20261027.md) rederived valid TB46 504/504, 498 PASS / 6 registered RED from immutable evidence. Separates 201 stale T/R/I terminal assertion, cp3entry:2 missing produced two-carrier A4 junction with unresolved causal writer, cp3entry:4 missing valid A5 OrdinaryFront positive. Frozen new [TB47 manifest](.agents/Directional/Architecture_M6_CP3_TB47_Full_Gate_Case_Manifest.tsv) 504 rows and six site/witness pins. No code/test/selector/harness/benchmark/build/runtime change. Immediate next `M6-CP3-CB47A-HARNESS-MANIFEST-PINS` migrates harness pins with falsifying offline replay; CB47 E corrections and TB47 follow. Stable 66/17/49 debt1, CP2 491/491 accepted, CP3 unpromoted.
