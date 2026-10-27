@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r20-retry-v2-20261027",
+  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r21-20261027-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r20-retry-v2",
-  "file_id": "1N3gL6dfa5NlKHNMm7b5snWSeOC_QVAFD",
-  "patch_sha256": "122bdd699f12589cb83e7f2a2e0c7ebc8c6c3fa196f280e5c7df87e1f7b41d53",
-  "base_sha": "b0a42b9fc667857e99866c5a6d8844723da8d899",
+  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r21-v1",
+  "file_id": "1zl6QMl1amWjpnloZ9EbzepTLKJlOeWJx",
+  "patch_sha256": "e9b7be1882577759c70402093dbf9fe358bff593ec39aea3fd989a1e0c3bb193",
+  "base_sha": "38e4a21005db3dc2ea169d90d629489608ede1aa",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: rehome unreachable TB47 G1 non-hard positive (R20)",
+  "commit_message": "docs: prove TB47 G2 hard-rail gauge covariance (R21)",
   "retention_days": 14
 }
