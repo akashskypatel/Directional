@@ -1,0 +1,2 @@
+# Temporary state created for M6-CP3-DEFN-RP01-TB46-ENDPOINT-CLUSTER
+.agents/connector-triggers/source-snapshot/m6-cp3-defn-tb46-endpoint-cluster-20261027T0851Z.txt
