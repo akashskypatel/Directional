@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r15-20261027-v1",
+  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r16-20261027-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r15-v1",
-  "file_id": "1t5Q2-e_bGrkd5MtzpbWhx40NdqAkyQsh",
-  "patch_sha256": "6cde7f2214d33d438ddd335dea7ab41849c2204c085e1496c1bda6817c3e8458",
-  "base_sha": "8ec34485300a7f50b9ee98ffca61572b235dadb7",
+  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r16-v1",
+  "file_id": "12E5CRweOUTIWFbvIaACAuZrIMHS12v7K",
+  "patch_sha256": "ec6ee6a9ca7dac110ea1e55519364e232c44543ed222a403e22c222ae6b074b9",
+  "base_sha": "15f521791be5f00c02b42b16287e9daf3077fac5",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: validate TB47 G3 torus boundary and A4 gauge transport proxy",
+  "commit_message": "docs: independently verify TB47 torus hard-carrier holonomy invariance (R16)",
   "retention_days": 14
 }
