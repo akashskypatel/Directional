@@ -1,0 +1,4 @@
+Current canonical turn: M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER
+Purpose: resume read-only source inspection of current canonical turn.
+Snapshot ref: triggering commit SHA (no runtime execution).
+Cleanup: remove after verified artifact download.
