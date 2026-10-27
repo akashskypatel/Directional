@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb46-rp01-closeout-20261027-r4",
+  "request_id": "m6-cp3-defn-e-review-20261027-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb46-rp01-closeout-r4",
-  "file_id": "1Xq0tFPTLJQ-zag4cgtzsyzmGDA8JWIKV",
-  "patch_sha256": "7c902562b16c99ef62665b1033a8ec0ac2b0a406cf9bb05ab385aa6267b66bf9",
-  "base_sha": "e3faeb402701ee9a109e0b6efdb6b8693e14f741",
+  "mailbox_key": "m6-cp3-defn-e-review-r1",
+  "file_id": "1xtSrmAX4w8KUe3J6LYiqKJbCTtGO3PkD",
+  "patch_sha256": "999cfda5ea232058018ce1655e20a1520e1dec1c8aaf7f9c0af1764ecd731cb6",
+  "base_sha": "e4fb9befc944438a6d0c66b709f44dc1b8c931ad",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB46 full gate and hand off endpoint cluster review",
+  "commit_message": "docs(directional): adjudicate TB46 endpoint witnesses and freeze TB47 pins",
   "retention_days": 14
 }
