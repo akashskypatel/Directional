@@ -1,25 +1,53 @@
-## CURRENT — CB47A manifest-pin tool proof complete; CB47 endpoint witnesses next (2026-10-27)
+## CURRENT — RA-166 CB47-REV: D5/D2 witnesses re-homed; exact CB47 patch; TB47 v2 (2026-10-27)
 
-- [x] **RA-165** ([decision](.agents/Directional/Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md)): Scratch probes (diagnostic only) found two invalid fixtures in 174: isolated vertex 4 at `REPackageTests:439`, and all-boundary isolated triangles at `:569`, which have thrown since `b43fa8e95` (10-14). P0 reproduces TB46; P2 (both fixes) passes the whole body. RA-164 H1 corrected; TB46A diagnosis was incomplete. TB46A harness `5e6de03fa` accepted. Findings F1–F5; O7 oracle-target compile break registered.
-- [x] **CB46B fixture correction** ([record](.agents/Directional/Architecture_M6_CP3_CB46B_Selector174_Manifold_Fixture_Code_Build_Record_20261027.md)) — source `8f0d4329695d`; exactly `12 12` test-source edits; 8 GMP/GMPXX compile targets, [run 40466255947](https://github.com/akashskypatel/Directional/actions/runs/40466255947), package `12716018703`; no runtime.
-- [x] **`M6-CP3-TB46-RP01-FULL-GATE`** artifact-only re-run ([report](.agents/Directional/Architecture_M6_CP3_TB46_RP01_Full_Gate_Rerun_Report_20261027.md)) — [run 40468913755](https://github.com/akashskypatel/Directional/actions/runs/40468913755), result `12719412600`, 504/504, **498 PASS / 6 registered RED** (174 PASS; cp3entry:4 D5 later RED at `:4063`), exit 0, no control violations; expected RA-165.4 disposition, no CP3 acceptance.
-- [x] **`M6-CP3-DEFN-RP01-TB46-ENDPOINT-CLUSTER`** — [E decision](.agents/Directional/Architecture_M6_CP3_DEFN_TB46_Endpoint_Cluster_Review_Decision_20261027.md) independently classified 201 stale T/R/I assertion, cp3entry:2 missing actual junction, cp3entry:4 missing source-valid A5 OrdinaryFront; TB47 504-row manifest/pins frozen.
-- [x] **`M6-CP3-CB47A-HARNESS-MANIFEST-PINS`** — [tool-only record](.agents/Directional/Architecture_M6_CP3_CB47A_Harness_Manifest_Pins_Code_Record_20261027.md): frozen manifest pin parsing, 504/504 immutable TB46 offline replay, 12/12 pin mutations rejected; no compile/runtime.
-- [ ] **NEXT `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES`** — after CB47A closeout; E1/E2/E3 bounded corrections, GMP compile-only → `M6-CP3-TB47-RP01-FULL-GATE` immutable 504-row run.
-- [ ] `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` (Review) → CB48 → TB48 full gate.
-- [ ] `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` (Review; O4, O5, P1-a, P1-b, RA-162 C1, H2 A5 reachability) → CB49 → TB49 → green full gate → RP-01 Review (O6 scope, O7 owner).
+- [x] **RA-166** ([decision](.agents/Directional/Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md)), probe-backed:
+  - E3 conflict confirmed: A5 forbids a route on `OrdinaryInterior` sides, and A4 never writes one.
+  - D5 is re-homed to boundary-path `entryRoute` crossings on `transition_domain_fixture()`. It is the only one of 8 fixtures with qualifying pairs.
+  - D2 junction is re-homed to rail-vertex R-adjacency: R-split is canonical, shown by a 7-ratio × 2-position sweep with 0 multi-step certificates.
+  - E1 `dabb0970e` is defective (`:793` double-exact comparison, junction counts, germ seed); corrected.
+- [ ] **NEXT `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES` (resume)** (RA-166.4): `git apply` exactly [patch](.agents/Directional/Architecture_M6_CP3_RA166_CB47_Exact_Test_Patch_20261027.patch) `2de51be6…24c1`. Numstat must be `26 18` (REPackage) and `24 6` (TQ). Eight GMP/GMPXX targets, no runtime → TB47.
+- [ ] `M6-CP3-TB47-RP01-FULL-GATE` (RA-166.5), [manifest v2](.agents/Directional/Architecture_M6_CP3_TB47_Full_Gate_Case_Manifest.tsv) `488a20b6…5955`; predict **500/4**.
+  - Exit 0 → DEFN-G.
+  - `control_violation` → TB47-REV.
+  - Infra failure → TB47A-ORCH.
+- [ ] `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` (Review, probe-backed; G: 442, `focused30:12`, cp3entry:1) → exact hunks + TB48 manifest.
+- [ ] `M6-CP3-DEFN-RP01-E2-RAIL-VERTEX-ADJACENCY-PATCH` (Review, probe-backed): exact cp3entry:2 rewrite to RA-166.3 D2; junction tamper sections disposed per O9.
+- [ ] `M6-CP3-CB48-…` (G) → `M6-CP3-CB48E-RP01-E2-RAIL-VERTEX-ADJACENCY` → `M6-CP3-TB48-RP01-FULL-GATE`.
+- [ ] `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` (Review; O4, O5, P1-a, P1-b, RA-162 C1, H2 A5 reachability) → CB49 → TB49 → green full gate → RP-01 Review (O6 scope; O7/O8/O9 owners).
 - [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS-RETIREMENT` (RA-160.4 + RA-161 T2), then `DIAG-RETAIN`.
-- [ ] Carried separately: O1, O6, **O7** (`directional_surface_cell_oracle_tests` non-compiling since ≤10-04; not in any gate), RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4, G4-B002.
+- [ ] Carried separately:
+  - O1 and O6.
+  - O7: `directional_surface_cell_oracle_tests` does not compile.
+  - **O8:** the producer raises `InvalidFrontBoundaryAuthority` on the 3×3 midline at `lengthRatio=0.29`.
+  - **O9:** the A4 junction-certificate path is unwitnessed and has no consumer.
+  - RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4 and G4-B002.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
   - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
-  - Done: RA-164 → CB46 → TB46 (S5) → TB46A-ORCH → RA-165 → CB46B → **TB46 re-run 498/6 (valid, not green)**.
-  - **TB46 completed** → **DEFN-E complete** → **CB47A complete** → CB47 → TB47 → DEFN-G (Review) → CB48 → TB48 → DEFN-O4/O5 (Review) → CB49 → TB49 → RP-01 Review.
-  - Rules: RA-164.3 P1–P6 + RA-165.2 F1 (probe every `set_mesh` in a fixture decision) / F2 (every outcome row maps to a harness branch); line-neutral edits above pinned lines until CB47A. Post-RP-01: O2 DEFN, then `DIAG-RETAIN`.
-- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB38 490/504 candidate; TB46 original attempt invalid (S5), TB46 rerun 498/6 valid RED; TB41–TB45 focused candidates remain unpromoted; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+  - Done: TB46 re-run 498/6 → DEFN-E → CB47A → CB47 (BLOCKED, E3) → RA-166.
+  - **CB47 resume current** → TB47 → DEFN-G (Review) → E2-PATCH (Review) → CB48 (G) → CB48E (E2) → TB48 → DEFN-O4/O5 (Review) → CB49 → TB49 → RP-01 Review.
+  - Rules:
+    - RA-164.3 P1–P6.
+    - RA-165.2 F1/F2.
+    - RA-166.6 F6: a Review scratch-probes every oracle it authorizes, and CBs apply exact patches.
+    - RA-166.6 F7: witness definitions are checked against producer and consumer invariants.
+  - Post-RP-01: O2 DEFN, then `DIAG-RETAIN`.
+- Frozen:
+  - Stable 66/17/49, debt 1; CP2 491/491 accepted.
+  - TB38 490/504 candidate; TB46 re-run 498/6 valid expected-RED.
+  - Selector497 frozen; RP-01 open, RP-02 unreached; Gate C suspended.
+
+---
+
+## HISTORY — RA-165; CB46B; TB46 re-run; DEFN-E; CB47A; CB47 E1 (2026-10-27)
+
+- [x] RA-165: 174 two invalid fixtures. CB46B `8f0d4329695d` → TB46 re-run 498/6 ([report](.agents/Directional/Architecture_M6_CP3_TB46_RP01_Full_Gate_Rerun_Report_20261027.md)).
+- [x] DEFN-E ([decision](.agents/Directional/Architecture_M6_CP3_DEFN_TB46_Endpoint_Cluster_Review_Decision_20261027.md)). Its E3 and E2 witness specifications are superseded by RA-166.
+- [x] CB47A ([record](.agents/Directional/Architecture_M6_CP3_CB47A_Harness_Manifest_Pins_Code_Record_20261027.md)): harness reads pins from the manifest.
+- [x] CB47 E1 `dabb0970e` compiled (run `40489392387`; [interim](.agents/Directional/Architecture_M6_CP3_CB47_Endpoint_Witnesses_Interim_Investigation_20261027.md)). It is defective; RA-166 corrects it.
 
 ---
 

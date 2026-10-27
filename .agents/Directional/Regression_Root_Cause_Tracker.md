@@ -1,3 +1,14 @@
+**RA-166 CB47-REV (2026-10-27, candidate/non-stable):**
+
+- cp3entry:4's D5 and cp3entry:2's D2 REDs come from witness definitions that contradict A4/A5 invariants; they are not producer regressions.
+  - D5's A5 ordinary-route rule dates from 10-04, earlier than RA-33.5 (10-07).
+  - A4 has used the R-split since `ccc0b00ab` (10-19).
+- The E1 commit `dabb0970e` has an unexecuted-oracle defect: it compares double barycentrics for exact equality.
+- New candidate findings:
+  - **O8:** the producer raises `InvalidFrontBoundaryAuthority` on the 3×3 midline at `lengthRatio=0.29`.
+  - **O9:** the A4 junction-certificate path has no produced witness and no consumer.
+- No stable event; 66/17/49, debt 1. [RA-166](Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md).
+
 **DEFN-E endpoint cluster independent review (2026-10-27, non-stable):** [decision](Architecture_M6_CP3_DEFN_TB46_Endpoint_Cluster_Review_Decision_20261027.md). TB46 rerun remains 498/6 valid candidate. E1 `selector:201` blanket `terminalVertex` is outdated relative to source-attested T/R/I (201 test owner; retain real terminal and junction obligations). E2 `cp3entry:2` has 10 one-carrier A4 certificates and no produced `(1,4)->(4,7)` junction (A4/front or positive-fixture owner conditional on normative front continuity proof; do not manufacture route or weaken oracle). E3 `cp3entry:4` D5 no real reciprocal OrdinaryFront/A4 route with eligible interior transition and independent second carrier (source-valid A5 positive-fixture owner first; product owner only if absence independently proven). G three REDs carried untouched. CB47A migrates pinned lines into [TB47 manifest](Architecture_M6_CP3_TB47_Full_Gate_Case_Manifest.tsv); no new stable events. **66/17/49 debt1, CP2 491/491, selector497 frozen/unpromoted.**
 
 **TB46 RP-01 full-gate rerun (2026-10-27, valid candidate/non-stable; no promotion):**

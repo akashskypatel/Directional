@@ -1,3 +1,19 @@
+## RA-166 — CB47-REV: D5/D2 witness re-home; rules F6/F7 (2026-10-27)
+
+- **RA-166.3 D1 (amends RA-33.5, DEFN-E E3):**
+  - The D5 carrier is the filled cell's `boundaryPaths[filledSide]` `entryRoute` steps.
+  - The reciprocal side must have an equal multiset of crossed topologies, and `edge.route` must be empty.
+  - Fixture: `transition_domain_fixture()`.
+  - The extra A5 negatives are withdrawn.
+- **D2 (amends RA-38, RA-59.8–.12):** R-split is canonical. For an interior rail vertex v, require:
+  - exactly two certificates of the same rail with R at v, on its two incident carriers;
+  - commutation `compose(B.cross,s0)==compose(s1,A.cross)` over independent A3 sectors in the non-hard star of v;
+  - that a quarter-turn mutation breaks it;
+  - that it holds under face-row reversal.
+- **D3:** the E1 correction.
+- **RA-166.6 F6:** a Review scratch-probes every oracle it authorizes, and CBs apply exact patches.
+- **F7:** a witness definition must be checked against the producer and consumer invariants of the field it reads.
+
 ## RA-165 — TB46A-REV: selector174 fixtures; review rules F1/F2 (2026-10-27)
 
 - **RA-165.2 F1:** a fixture-validity decision that relies on a TriMesh/DCEL precondition must check every `set_mesh` in the body and attach a probe when that decides a disposition.

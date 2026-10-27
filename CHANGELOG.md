@@ -1,3 +1,12 @@
+## 2026-10-27 — RA-166 CB47-REV: endpoint witness definitions re-homed; exact CB47 patch
+
+- [RA-166](.agents/Directional/Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md), backed by scratch probes:
+  - **D5:** RA-33.5 required a route on `OrdinaryInterior` sides. A5 forbids that (`RP:3643–3650`) and A4 never writes one, so D5 is re-homed to boundary-path `entryRoute` crossings on `transition_domain_fixture()`.
+  - **D2:** the intra-certificate junction is unreachable because A4 always splits rail sides at R endpoints. It is re-homed to rail-vertex R-adjacency with commuting A3 sectors.
+  - **E1:** commit `dabb0970e` is defective.
+  - **Next:** the exact patch `2de51be6…` is applied in CB47; TB47 manifest v2 `488a20b6…` predicts 500/4.
+  - Rules F6 and F7 added; O8 and O9 registered.
+
 ## 2026-10-27 — CB47A harness site/witness pins migrated, 504-case offline replay
 
 - [CB47A tool-only record](.agents/Directional/Architecture_M6_CP3_CB47A_Harness_Manifest_Pins_Code_Record_20261027.md): pinned failure locations and witnesses are now read from frozen TB47 `asserted_site` instead of hardcoded harness tables. Offline comparison against 504 immutable TB46 logs matched all 504 ledger/verdict rows (498 PASS / 6 RED, zero control failures); 12 pin mutations rejected, malformed pins rejected. No compile, product runtime, selector/fixture/manifest edit, or CP3 promotion. Next `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES`.

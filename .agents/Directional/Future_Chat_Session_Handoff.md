@@ -34,31 +34,41 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-27, CB47A [tool-only record](Architecture_M6_CP3_CB47A_Harness_Manifest_Pins_Code_Record_20261027.md): 504/504 offline ledger/log replay matched 498 PASS / 6 RED, six manifest pins plus 12 falsifiers, no compile/runtime. Previous TB46 rerun [report](Architecture_M6_CP3_TB46_RP01_Full_Gate_Rerun_Report_20261027.md): immutable CB46B package `12716018703` (source `8f0d4329695d`), [run 40468913755](https://github.com/akashskypatel/Directional/actions/runs/40468913755) verified 504/504, **498 PASS / 6 registered RED**, all 497 guards and selector174 positive pass, zero control violations, harness exit0. [DEFN-E Review](Architecture_M6_CP3_DEFN_TB46_Endpoint_Cluster_Review_Decision_20261027.md) classified E1/E2/E3; TB47 manifest frozen; CB47A complete, CB47 next. |
+| Currency | 2026-10-27, after [RA-166](Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md) (CB47-REV). The CB47 E3 conflict is confirmed and resolved: RA-33.5 and the DEFN-E E3 witness demanded a nonempty `route` on `OrdinaryInterior` sides, which A5 forbids (`RP:3643–3650`) and A4 never writes. D5 is re-homed to boundary-path `entryRoute` crossings on `transition_domain_fixture()`. The D2 junction is re-homed to rail-vertex R-adjacency, because R-split is the canonical A4 representation (scratch sweep). The compiled E1 commit `dabb0970e` is defective; the exact probe-verified patch [Architecture_M6_CP3_RA166_CB47_Exact_Test_Patch_20261027.patch](Architecture_M6_CP3_RA166_CB47_Exact_Test_Patch_20261027.patch) (`2de51be6…24c1`) replaces it. RA-164.3 P1–P6, RA-165.2 F1/F2 and RA-166.6 F6/F7 bind. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted 2026-10-06 (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
-| Latest candidate or rejected evidence | [TB46 rerun report](Architecture_M6_CP3_TB46_RP01_Full_Gate_Rerun_Report_20261027.md), result artifact `12719412600`, SHA256 `2a33427b…5fd37`; logs `12719912170`, wrapper `12719462521`; 1,014/1,014 checked members, 504/504 raw process joins, postflight true. Expected E failures: 201, cp3entry:2, cp3entry:4 D5 (`:4063`); expected G: 442, focused30:12, cp3entry:1. Original run `40448739180` remains S5 invalid attempt. Last previously valid full gate TB38 490/504 candidate; no production change since. Selector497 frozen/unpromoted. |
+| Latest candidate or rejected evidence | TB46 re-run **498/6** valid expected-RED ([report](Architecture_M6_CP3_TB46_RP01_Full_Gate_Rerun_Report_20261027.md), result `12719412600`). [CB47A](Architecture_M6_CP3_CB47A_Harness_Manifest_Pins_Code_Record_20261027.md): manifest-driven pins, offline replay 504/504. CB47 E1 compile run `40489392387` (artifact `12728075441`) is superseded for gating ([interim](Architecture_M6_CP3_CB47_Endpoint_Witnesses_Interim_Investigation_20261027.md)). Selector497 frozen, unpromoted. |
 | Regression accounting and debt | Stable **66/17/49**, debt 1 ([tracker](Regression_Root_Cause_Tracker.md)). No new stable event. |
-| Active boundary | RP-01 open, RP-02 unreached; DEFN-E reviewed E1 stale terminal assertion, E2 missing A4 2-carrier junction, E3 missing source-valid A5 OrdinaryFront fixture; [TB47 manifest](Architecture_M6_CP3_TB47_Full_Gate_Case_Manifest.tsv) site/witness pins frozen and harness migration verified offline; next CB47. G (`selector:442`, `focused30:12`, `cp3entry:1`) later. Source-line pins now derive from frozen TB47 manifest; any movement requires a matching manifest/authority update. Carried O1, O2 (post-RP-01), O6, O7, DIAG-RETAIN, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002. |
+| Active boundary | RP-01 open, RP-02 unreached. [TB47 manifest](Architecture_M6_CP3_TB47_Full_Gate_Case_Manifest.tsv) **v2** `488a20b6…5955`, predicting **500/4**: RED `focused30:12` `:5581`, `selector:442`, cp3entry:1 `:2916`, cp3entry:2 `:3154`; 201 and cp3entry:4 POSITIVE. cp3entry:2's rewrite goes to Review-owned exact-patch turn E2-PATCH. Carried: O1, O2 (post-RP-01, + RA-161 T2), O6, O7, **O8** (producer `InvalidFrontBoundaryAuthority` at `lengthRatio=0.29`), **O9** (A4 junction path unwitnessed, no consumer), DIAG-RETAIN, RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4, G4-B002. |
 
-## Mandatory next turn — `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES` (resume) — EXACT NEXT
 
-- **Authority:** [DEFN-E decision](Architecture_M6_CP3_DEFN_TB46_Endpoint_Cluster_Review_Decision_20261027.md), [RA-165](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md), frozen TB47 504-row manifest SHA-256 `6f9b3582900951eef5f94309b7f7053412148faca4935a619e504bad9b73a09b`. CB47A tool-only migration is verified in its [record](Architecture_M6_CP3_CB47A_Harness_Manifest_Pins_Code_Record_20261027.md); no runtime gate was run for that turn.
-- **Scope:** E1 `selector:201` outdated blanket T/R/I terminal assertion (preserve authentic open-rail and source-carrier obligations); E2 `cp3entry:2` real produced paired two-carrier A4 witness or independently justified source-valid stimulus; E3 `cp3entry:4` real reciprocal A5 OrdinaryFront positive and discriminating negatives. Correct earliest proven producer or oracle source, never synthetic output. Respect RA-165 F1/F2, exact hunk/path audits, and immutable selector/manifest. Compile-only through mandatory GMP/GMPXX reusable workflow; no runtime.
-- **Successor only after CB47 complete:** `M6-CP3-TB47-RP01-FULL-GATE` (immutable 504-case artifact-only Test + Benchmark), then Review-owned G-cluster disposition. CP2 491/491 accepted; selector497 and CP3 unpromoted; stable 66/17/49 debt1, RP-01 open.
+- **Authority:** [RA-166.4](Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md). This supersedes the DEFN-E E2/E3 CB scope. Test-only Code + Build, compile only.
+- **Action:** `git apply` exactly [Architecture_M6_CP3_RA166_CB47_Exact_Test_Patch_20261027.patch](Architecture_M6_CP3_RA166_CB47_Exact_Test_Patch_20261027.patch) (SHA-256 `2de51be649141f992871e48e93364e1ae6f7a91899dfa669f886b5151e4624c1`) on HEAD `764fa4e5d` lineage. Expected numstat: `26 18 tests/SurfaceCellREPackageTests.cpp`, `24 6 tests/SurfaceCellTransitionQuotientTests.cpp`. No other byte may change and no hand edits are allowed.
+- **Evidence:** the established eight GMP/GMPXX targets, `runtimeExecution=false`, a record of at most 25 lines.
+- **Outcome table:**
+  - compile OK + exact numstat → `M6-CP3-TB47-RP01-FULL-GATE` (manifest v2, predict 500/4, table RA-166.5);
+  - patch does not apply → S3; C2 compile error → S2 (no in-hunk edits). Both → `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES-REV`;
+  - orchestration failure → Turn_Cadence rule 5.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — complete | `M6-CP3-CB47A-HARNESS-MANIFEST-PINS` | Tool-only pin migration verified against 504 saved logs; no compile/runtime |
-| 2 — next | `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES` | CB47A verified;  implement E1–E3 at proven owner, compile-only GMP/GMPXX |
-| 3 — conditional | `M6-CP3-TB47-RP01-FULL-GATE` | Immutable 504-case artifact-only run; route G-cluster after evidence |
-| rule | RA-164.3 P1–P6; RA-165.2 F1/F2 | Until CB47A, test edits above pinned source lines MUST be line-neutral; never weaken accepted selector or validators |
+| done | TB46 re-run → DEFN-E → CB47A → CB47 (BLOCKED on E3) → RA-166 | E3/D2 witness definitions re-homed; E1 defect fixed by exact patch. |
+| 1 — next | `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES` (resume) | Exact RA-166 patch; 8 targets; → step 2 directly. |
+| 2 | `M6-CP3-TB47-RP01-FULL-GATE` | Manifest v2 `488a20b6…`; predict 500/4; exit 0 → step 3; `control_violation` → TB47-REV; infra → `M6-CP3-TB47A-ORCH`. |
+| 3 | `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` (Review, probe-backed) | Absorbs TB47; decides G (442, `focused30:12`, cp3entry:1); emits exact hunks + TB48 manifest. |
+| 4 | `M6-CP3-DEFN-RP01-E2-RAIL-VERTEX-ADJACENCY-PATCH` (Review, probe-backed) | Exact cp3entry:2 rewrite to RA-166.3 D2; junction tamper sections disposed per O9. |
+| 5 | `M6-CP3-CB48-…` (G) → `M6-CP3-CB48E-RP01-E2-RAIL-VERTEX-ADJACENCY` → `M6-CP3-TB48-RP01-FULL-GATE` | Exact patches only. |
+| 6 | `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` (Review) → CB49 → TB49 | O4, O5, P1-a/P1-b, RA-162 C1, H2 A5 reachability. |
+| 7 | Green full gate → RP-01 Review | O6 scope; O7/O8/O9 owners. |
+| post-RP-01 | `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS-RETIREMENT`, then `DIAG-RETAIN` | RA-160.4 + RA-161 T2. |
+| rule | RA-164.3 P1–P6; RA-165.2 F1/F2; RA-166.6 F6/F7 | A Review scratch-probes every oracle it authorizes and hands CBs exact patches; witness definitions are checked against the producer and consumer invariants. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB47-RP01-ENDPOINT-WITNESSES** — read [DEFN-E](Architecture_M6_CP3_DEFN_TB46_Endpoint_Cluster_Review_Decision_20261027.md), [RA-165](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md), [CB47A record](Architecture_M6_CP3_CB47A_Harness_Manifest_Pins_Code_Record_20261027.md), frozen [TB47 manifest](Architecture_M6_CP3_TB47_Full_Gate_Case_Manifest.tsv), and selectors 201, cp3entry:2, cp3entry:4 plus A4/A5 producers. Implement independently validated E1/E2/E3 corrections only; eight-target GMP/GMPXX compile-only, no product runtime. Separate TB47 gate follows the completed CB47 turn.
+`load_next`: **M6-CP3-CB47-RP01-ENDPOINT-WITNESSES** (resume) — read [RA-166.4](Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md) and [Architecture_M6_CP3_RA166_CB47_Exact_Test_Patch_20261027.patch](Architecture_M6_CP3_RA166_CB47_Exact_Test_Patch_20261027.patch); compile caller as in run `40489392387` (eight targets). No hand edits, runtime, harness, manifest or production changes.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
