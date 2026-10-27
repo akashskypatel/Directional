@@ -1,2 +1,0 @@
-# TB47 Review R23 consumed one-time source-snapshot trigger
-.agents/connector-triggers/source-snapshot/tb47-gauge-r23-20261027.txt
