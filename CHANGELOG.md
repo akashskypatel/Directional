@@ -1,3 +1,7 @@
+## 2026-10-27 — TB47 immutable full gate: 500 PASS / 4 registered RED; DEFN-G next
+
+- [TB47 report](.agents/Directional/Architecture_M6_CP3_TB47_RP01_Full_Gate_Test_Benchmark_Report_20261027.md): source `08d41626e`, CB47 package `12732383172`, [run 40504055818](https://github.com/akashskypatel/Directional/actions/runs/40504055818), result artifact `12734719880` ZIP `f03efe3c…6b04d`, 1,014/1,014 checksums, 504/504 independently logged case identities. 500 PASS, four registered RED at `focused30:12` `:5581`, `selector:442` `:2856`, `cp3entry:1` `:2916`, `cp3entry:2` `:3154`; no control violations, harness exit0, postflight true. Artifact-only execution; no build/repair/benchmark or selector mutation. Stable 66/17/49 debt1, CP2 491/491 last accepted, selector497 and CP3 unpromoted; next `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` independent Review.
+
 ## 2026-10-27 — CB47 resumed: RA-166 patch applied; compile/package GREEN (runtime-free)
 
 - [CB47 code/build record](.agents/Directional/Architecture_M6_CP3_CB47_RP01_Endpoint_Witnesses_Code_Build_Record_20261027.md): exact RA-166.8 test-only diff committed as `08d41626e3487f3cba2e8fed5fe1f2185da8ac9f` (two changed test files). Compile-only run `40501143033`, package `12732383172`, eight GMP/GMPXX targets and 28/28 checksums, `runtimeExecution=false`. TB47 remains unexecuted and is exact next. No selector or manifest mutation, CP2 491/491 remains accepted; CP3 is candidate.

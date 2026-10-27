@@ -1,3 +1,5 @@
+**TB47 immutable 504-case full gate (2026-10-27; valid candidate/non-stable):** [report](Architecture_M6_CP3_TB47_RP01_Full_Gate_Test_Benchmark_Report_20261027.md). Source `08d41626e`, package `12732383172`, run `40504055818`, artifact `12734719880` (`f03efe3c…6b04d`); 1,014/1,014 checksums and 504/504 raw GTest/ledger/manifest matches. **500 PASS / 4 registered RED**, zero missing/skipped/duplicate/control violations/unregistered first sites, immutable postflight and harness exit 0. G: focused30:12 `TQ:5581`, selector442 `Atlas:2856`, cp3entry:1 `TQ:2916`; E2: cp3entry:2 `TQ:3154`. All 497 selector guards and other candidate positives passed. These four are previously known candidate/witness obligations rather than newly demonstrated stable product regressions. No stable event or recurrence; **66/17/49 debt1**, CP2 **491/491 accepted**, selector497/CP3 unpromoted. Next independent DEFN-G Review per RA-166.5.
+
 **RA-166 CB47-REV (2026-10-27, candidate/non-stable):**
 
 - cp3entry:4's D5 and cp3entry:2's D2 REDs come from witness definitions that contradict A4/A5 invariants; they are not producer regressions.

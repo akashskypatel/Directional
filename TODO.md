@@ -1,4 +1,4 @@
-## CURRENT — CB47 COMPILE GREEN; TB47 immutable 504-case gate next (2026-10-27)
+## CURRENT — TB47 VERIFIED 500/4; DEFN-G independent Review next (2026-10-27)
 
 - [x] **RA-166** ([decision](.agents/Directional/Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md)), probe-backed:
   - E3 conflict confirmed: A5 forbids a route on `OrdinaryInterior` sides, and A4 never writes one.
@@ -6,11 +6,8 @@
   - D2 junction is re-homed to rail-vertex R-adjacency: R-split is canonical, shown by a 7-ratio × 2-position sweep with 0 multi-step certificates.
   - E1 `dabb0970e` is defective (`:793` double-exact comparison, junction counts, germ seed); corrected.
 - [x] **`M6-CP3-CB47-RP01-ENDPOINT-WITNESSES`** ([record](.agents/Directional/Architecture_M6_CP3_CB47_RP01_Endpoint_Witnesses_Code_Build_Record_20261027.md)): RA-166.8 exact patch `2de51be6…24c1` applied at `08d41626e3487f3cba2e8fed5fe1f2185da8ac9f`. Two-file numstat `26/18`, `24/6`; eight GMP/GMPXX targets compiled, run `40501143033`, package `12732383172`, manifest 28/28, no runtime.
-- [ ] **NEXT `M6-CP3-TB47-RP01-FULL-GATE`** (RA-166.5), [manifest v2](.agents/Directional/Architecture_M6_CP3_TB47_Full_Gate_Case_Manifest.tsv) `488a20b6…5955`; predict **500/4**.
-  - Exit 0 → DEFN-G.
-  - `control_violation` → TB47-REV.
-  - Infra failure → TB47A-ORCH.
-- [ ] `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` (Review, probe-backed; G: 442, `focused30:12`, cp3entry:1) → exact hunks + TB48 manifest.
+- [x] **`M6-CP3-TB47-RP01-FULL-GATE`** ([report](.agents/Directional/Architecture_M6_CP3_TB47_RP01_Full_Gate_Test_Benchmark_Report_20261027.md)): exact immutable 504/504, 500 PASS / 4 registered RED at frozen pins, 1,014/1,014 checksums, postflight true and exit0; candidate, not promotion.
+- [ ] **NEXT `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER`** (Review, probe-backed; G: 442, `focused30:12`, cp3entry:1) → exact hunks + TB48 manifest.
 - [ ] `M6-CP3-DEFN-RP01-E2-RAIL-VERTEX-ADJACENCY-PATCH` (Review, probe-backed): exact cp3entry:2 rewrite to RA-166.3 D2; junction tamper sections disposed per O9.
 - [ ] `M6-CP3-CB48-…` (G) → `M6-CP3-CB48E-RP01-E2-RAIL-VERTEX-ADJACENCY` → `M6-CP3-TB48-RP01-FULL-GATE`.
 - [ ] `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` (Review; O4, O5, P1-a, P1-b, RA-162 C1, H2 A5 reachability) → CB49 → TB49 → green full gate → RP-01 Review (O6 scope; O7/O8/O9 owners).
@@ -28,7 +25,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: TB46 re-run 498/6 → DEFN-E → CB47A → CB47 (BLOCKED, E3) → RA-166.
-  - **CB47 COMPLETE, TB47 next** → DEFN-G (Review) → E2-PATCH (Review) → CB48 (G) → CB48E (E2) → TB48 → DEFN-O4/O5 (Review) → CB49 → TB49 → RP-01 Review.
+  - **CB47 and TB47 COMPLETE; DEFN-G next** → DEFN-G (Review) → E2-PATCH (Review) → CB48 (G) → CB48E (E2) → TB48 → DEFN-O4/O5 (Review) → CB49 → TB49 → RP-01 Review.
   - Rules:
     - RA-164.3 P1–P6.
     - RA-165.2 F1/F2.
@@ -37,7 +34,7 @@
   - Post-RP-01: O2 DEFN, then `DIAG-RETAIN`.
 - Frozen:
   - Stable 66/17/49, debt 1; CP2 491/491 accepted.
-  - TB38 490/504 candidate; TB46 re-run 498/6 valid expected-RED.
+  - TB38 490/504 candidate; TB46 re-run 498/6 and TB47 500/4 valid expected-RED.
   - Selector497 frozen; RP-01 open, RP-02 unreached; Gate C suspended.
 
 ---
