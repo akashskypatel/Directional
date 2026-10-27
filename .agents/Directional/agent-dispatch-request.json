@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-closeout-20261027-v1",
+  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r10-20261027-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-closeout-20261027-v1",
-  "file_id": "1NkneTogEpwQ02tnLnK-d3ie2Eb96OXwP",
-  "patch_sha256": "abf24aa4155d40115ee9bb927bc9be40b0208705575a6e338f2a589b41be0df6",
-  "base_sha": "dce53d08d2576232b42a89d73192919dbef733c5",
+  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r10-v1",
+  "file_id": "1JURLtlXGCxtl1c6YDEr3gPiMMKUWq9aF",
+  "patch_sha256": "71ceffebc240763b91a989a1049fe54798f20275510d923d4c77a944ab9683c0",
+  "base_sha": "d585d5bc6e6e05fb5327bf08f13e57bfd9ef7fe3",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Close TB47 with verified immutable full-gate evidence and DEFN-G handoff",
+  "commit_message": "docs: preserve R10 independent G2 gauge-equivariance Review evidence",
   "retention_days": 14
 }
