@@ -1,3 +1,0 @@
-Independent review source snapshot, fixed event source.
-Turn: M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME-REV
-Review only: no compile or runtime execution.
