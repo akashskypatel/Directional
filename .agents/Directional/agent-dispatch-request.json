@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb46-rail-oracle-apply-20261027-r2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb46-rail-oracle-apply-r2",
-  "file_id": "1y-AuyolkD20YIwODIRRod8tjbAM8G-ut",
-  "patch_sha256": "313fa9150283b214c1925cdba04c1660761936684d61ea171f724c1a7dded712",
-  "base_sha": "3ad483b977a5ef18d3fd466f14015fce303dd710",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surface-cells): rehome rail oracles and expose endpoint diagnostics",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb46-gmp-compile-20261027-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb46-gmp-compile",
+  "source_sha": "c05d52dd7c710d1ca32922f6cfe1f6b61a29db99",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb46-gmp"
 }
