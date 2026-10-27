@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb45-rev-docs-apply-20261027-r2-metadata",
+  "request_id": "m6-cp3-cb46-rail-oracle-apply-20261027-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb45-rev-docs-apply-r2",
-  "file_id": "1UCoBpWrGkSt1uDSJ9yPOrOamBaALAUj6",
-  "patch_sha256": "c5dc73be0bb75a678dcfb9f2547238c6aab163b61938dfb9d86b7400f88d857a",
-  "base_sha": "f077b66d171b8495513a535855f63bf2524a346e",
+  "mailbox_key": "m6-cp3-cb46-rail-oracle-apply",
+  "file_id": "1a3jo0s0psvZCOzv94fEpVfG19_G4SJCY",
+  "patch_sha256": "78557be5f29ab08e18ca42d547c6ebea21ab847c2baf5ed7d1f20c579d53803c",
+  "base_sha": "3ad483b977a5ef18d3fd466f14015fce303dd710",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(direction): record independent TB45 review and next definition turn",
+  "commit_message": "test(surface-cells): rehome rail oracles and expose endpoint diagnostics",
   "retention_days": 14
 }
