@@ -5,7 +5,7 @@
   - D5 is re-homed to boundary-path `entryRoute` crossings on `transition_domain_fixture()`. It is the only one of 8 fixtures with qualifying pairs.
   - D2 junction is re-homed to rail-vertex R-adjacency: R-split is canonical, shown by a 7-ratio × 2-position sweep with 0 multi-step certificates.
   - E1 `dabb0970e` is defective (`:793` double-exact comparison, junction counts, germ seed); corrected.
-- [ ] **NEXT `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES` (resume)** (RA-166.4): `git apply` exactly [patch](.agents/Directional/Architecture_M6_CP3_RA166_CB47_Exact_Test_Patch_20261027.patch) `2de51be6…24c1`. Numstat must be `26 18` (REPackage) and `24 6` (TQ). Eight GMP/GMPXX targets, no runtime → TB47.
+- [ ] **NEXT `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES` (resume)** (RA-166.4): `git apply` exactly [RA-166.8 embedded patch](.agents/Directional/Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md#ra-1668-exact-cb47-patch-authoritative-bytes) `2de51be6…24c1`. Numstat must be `26 18` (REPackage) and `24 6` (TQ). Eight GMP/GMPXX targets, no runtime → TB47.
 - [ ] `M6-CP3-TB47-RP01-FULL-GATE` (RA-166.5), [manifest v2](.agents/Directional/Architecture_M6_CP3_TB47_Full_Gate_Case_Manifest.tsv) `488a20b6…5955`; predict **500/4**.
   - Exit 0 → DEFN-G.
   - `control_violation` → TB47-REV.

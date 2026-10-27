@@ -71,7 +71,7 @@
 
 ## RA-166.4 CB47 resume — `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES`
 
-- **Apply exactly** `Architecture_M6_CP3_RA166_CB47_Exact_Test_Patch_20261027.patch` (SHA-256 `2de51be6…24c1`) on HEAD.
+- **Apply exactly** the RA-166.8 embedded patch (SHA-256 `2de51be6…24c1`) on HEAD.
   - `git apply --check` passes at `764fa4e5d`.
   - Expected numstat: `26 18 tests/SurfaceCellREPackageTests.cpp` and `24 6 tests/SurfaceCellTransitionQuotientTests.cpp`.
   - No other byte may change.
@@ -125,3 +125,135 @@
 **Accounting unchanged:**
 - Stable 66/17/49, debt 1. CP2 491/491 accepted.
 - TB46 re-run 498/6 candidate. Selector497 frozen. RP-01 open.
+
+## RA-166.8 Exact CB47 patch (authoritative bytes)
+
+Extract the lines strictly between the `~~~diff` and `~~~` fences, write them with a trailing newline to a `.patch` file, check that its SHA-256 is `2de51be649141f992871e48e93364e1ae6f7a91899dfa669f886b5151e4624c1`, then run `git apply`.
+
+~~~diff
+diff --git a/tests/SurfaceCellREPackageTests.cpp b/tests/SurfaceCellREPackageTests.cpp
+index 3084c105d..cc08c3924 100644
+--- a/tests/SurfaceCellREPackageTests.cpp
++++ b/tests/SurfaceCellREPackageTests.cpp
+@@ -718,3 +718,3 @@ TEST(SurfaceCellPipelinePhase20,
+   const auto interior_parameter = [&](const directional::geometry::SurfaceTracePoint &point,
+-                                      const Edge &edge) -> std::optional<Rational> {
++                                      const Edge &edge) -> std::optional<double> {
+     if (point.face < 0 || point.face >= mesh.faces.rows()) return std::nullopt;
+@@ -728,10 +728,7 @@ TEST(SurfaceCellPipelinePhase20,
+     if (first < 0 || second < 0 || other < 0 ||
+-        point.barycentric[other] != 0.0) return std::nullopt;
+-    const auto a = Rational::from_double_exact(point.barycentric[first]);
+-    const auto b = Rational::from_double_exact(point.barycentric[second]);
+-    if (!a || !b) return std::nullopt;
+-    const auto zero = Rational::from_integer(0);
+-    const auto one = Rational::from_integer(1);
+-    return *b > zero && *b < one && *a + *b == one
+-        ? std::optional<Rational>{*b} : std::nullopt;
++        std::abs(point.barycentric[other]) > 1e-12) return std::nullopt;
++    const double a = point.barycentric[first];
++    const double b = point.barycentric[second];
++    return b > 0.0 && b < 1.0 && std::abs(a + b - 1.0) <= 1e-12
++        ? std::optional<double>{b} : std::nullopt;
+   };
+@@ -753,2 +750,3 @@ TEST(SurfaceCellPipelinePhase20,
+   std::size_t sourceTerminals = 0U;
++  std::map<std::pair<directional::authority::HardRailId, Vertex>, std::set<Edge>> railVertexCarriers;
+   for (const auto &certificate : certificates) {
+@@ -794,4 +792,9 @@ TEST(SurfaceCellPipelinePhase20,
+         ASSERT_TRUE(b.has_value());
+-        EXPECT_EQ(*a, *b)
++        ASSERT_TRUE(firstPoint.exactEdgePoint.has_value());
++        ASSERT_TRUE(secondPoint.exactEdgePoint.has_value());
++        EXPECT_EQ(firstPoint.exactEdgePoint->edge, endpoint.terminalCarrier.edge);
++        EXPECT_EQ(*firstPoint.exactEdgePoint, *secondPoint.exactEdgePoint)
+             << "I endpoints must share an exact source-edge parameter";
++        EXPECT_NEAR(*a, static_cast<double>(firstPoint.exactEdgePoint->parameter.to_double()), 1e-12);
++        EXPECT_NEAR(*b, static_cast<double>(secondPoint.exactEdgePoint->parameter.to_double()), 1e-12);
+         if (firstPoint.exactEdgePoint || secondPoint.exactEdgePoint) {
+@@ -815,2 +818,3 @@ TEST(SurfaceCellPipelinePhase20,
+       } else {
++        railVertexCarriers[{certificate.rail, vertex}].insert(endpoint.terminalCarrier.edge);
+         EXPECT_NE(vertex, contact->second.endpoints[0]);
+@@ -929,6 +933,7 @@ TEST(SurfaceCellPipelinePhase20,
+       << "the A4 consumer must publish a real non-hard source-star step";
+-  EXPECT_GT(authenticatedJunctions, 0U)
+-      << "this fixture must reach an actual produced multi-carrier junction";
+-  EXPECT_GT(authenticatedJunctionSteps, 0U)
+-      << "the produced junction must publish a nonempty non-hard sector walk";
++  EXPECT_FALSE(railVertexCarriers.empty())
++      << "the two-edge midline must meet at an authenticated A4 R rail vertex";
++  for (const auto &[owner, carriers] : railVertexCarriers)
++    EXPECT_EQ(2U, carriers.size())
++        << "an interior rail vertex joins exactly its two incident rail carriers";
+ 
+@@ -952,5 +957,8 @@ TEST(SurfaceCellPipelinePhase20,
+   std::size_t germOwners = 0U;
++  // A4 splits rail sides at interior rail vertices (R endpoints), so the
++  // vertex-transit germ is seeded from the R endpoint's certified star paths.
+   for (const auto &certificate : certificates) {
+-    for (const auto &junction : certificate.junctions) {
+-      for (const auto &sector : junction.sectorPaths) {
++    for (const auto &junction : certificate.endpoints) {
++      if (!junction.railVertex) continue;
++      for (const auto &sector : junction.contactPaths) {
+         if (sector.empty()) continue;
+@@ -966,3 +974,3 @@ TEST(SurfaceCellPipelinePhase20,
+           if (!directional::authority::direction_in_closed_vertex_wedge(
+-                  sourceMesh, *faceRow, junction.junction, outward)) continue;
++                  sourceMesh, *faceRow, *junction.railVertex, outward)) continue;
+           const auto transit = directional::geometry::surface_cell_tracing_detail::
+@@ -971,3 +979,3 @@ TEST(SurfaceCellPipelinePhase20,
+                   frame->topologyRegion, seedFace, pairing.branch,
+-                  junction.junction,
++                  *junction.railVertex,
+                   directional::geometry::FieldVertexArrivalMode::FaceInterior,
+diff --git a/tests/SurfaceCellTransitionQuotientTests.cpp b/tests/SurfaceCellTransitionQuotientTests.cpp
+index 7f6fab21d..379ba44c0 100644
+--- a/tests/SurfaceCellTransitionQuotientTests.cpp
++++ b/tests/SurfaceCellTransitionQuotientTests.cpp
+@@ -4003,3 +4003,5 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds)
+ 
+-  const auto &square = square_fixture();
++  // D5 needs ordinary sides that cross a typed interior source transition;
++  // the two-face square has none, so use the transition-domain fixture.
++  const auto &square = transition_domain_fixture();
+   const auto &squareFront = square.network.phaseFront.product();
+@@ -4037,2 +4039,4 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds)
+         marked.edges[static_cast<std::size_t>(relation.secondFrontEdge)];
++    // A4/A5 contract: an OrdinaryInterior side has an empty boundary route;
++    // its source crossings are the owner cell's boundary-path entry routes.
+     if (edge.boundaryKind != SurfaceFrontBoundaryKind::OrdinaryInterior ||
+@@ -4041,7 +4045,20 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds)
+         reciprocal.oppositeEdge != relation.firstFrontEdge ||
+-        edge.route.empty() || reciprocal.route != edge.route.reversed()) {
++        !edge.route.empty() || !reciprocal.route.empty()) {
+       continue;
+     }
+-    for (const auto &step : edge.route.steps()) {
+-      const auto carrier = step.topology();
++    const auto sideCrossings =
++        [&](const directional::geometry::SurfaceFrontEdge &side) {
++          std::multiset<directional::authority::SourceEdgeTopologyKey> keys;
++          for (const auto &cell : marked.cells) {
++            if (cell.id != side.filledCell) continue;
++            for (const auto &segment :
++                 cell.boundaryPaths[static_cast<std::size_t>(side.filledSide)])
++              for (const auto &step : segment.entryRoute.oriented_steps())
++                keys.insert(step.topology());
++          }
++          return keys;
++        };
++    const auto crossings = sideCrossings(edge);
++    if (crossings.empty() || crossings != sideCrossings(reciprocal)) continue;
++    for (const auto &carrier : crossings) {
+       if (marked.hardFeatureEdges.contains(carrier) ||
+@@ -4063,4 +4080,5 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds)
+   ASSERT_TRUE(ordinaryCarrier.has_value())
+-      << "D5 requires a real reciprocal A5 OrdinaryFront with an A4 route, "
+-         "eligible interior source transition and unrelated live carrier";
++      << "D5 requires a real reciprocal A5 OrdinaryFront whose A4 boundary "
++         "paths cross an eligible interior source transition, plus an "
++         "unrelated live carrier";
+   ASSERT_TRUE(unaffectedCarrier.has_value());
+~~~
