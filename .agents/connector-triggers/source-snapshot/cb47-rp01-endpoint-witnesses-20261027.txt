@@ -1,3 +1,0 @@
-Source snapshot request for M6-CP3-CB47-RP01-ENDPOINT-WITNESSES
-Requested at: 2026-10-27T10:04:20Z
-Semantic source prior to marker: f64b87299f5583ac9ac17ba32076b3e1f0b463a3
