@@ -1,2 +1,0 @@
-Snapshot resumed M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER R20 review.
-Freeze exact source as this event SHA; no compilation or test execution.
