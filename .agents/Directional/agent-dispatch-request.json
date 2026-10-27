@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb46a-compile-20261027-r2",
+  "request_id": "m6-cp3-tb46a-compile-20261027-r3",
   "operation": "compile",
-  "mailbox_key": "m6-cp3-tb46a-compile-r2",
+  "mailbox_key": "m6-cp3-tb46a-compile-r3",
   "source_sha": "5e6de03fadd88cc4f9bbe749b32ea012264fe73e",
   "targets": [
-    "directional_surface_cell_authority_kernel_tests",
+    "directional_core",
     "directional_pipeline",
-    "directional_benchmarks",
-    "directional_compiled_api_tests",
+    "directional_surface_cell_authority_kernel_tests",
     "directional_surface_cell_producer_tests",
-    "directional_surface_cell_oracle_tests",
     "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests"
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
   ],
-  "artifact_prefix": "m6-cp3-tb46a-compile-r2"
+  "artifact_prefix": "m6-cp3-tb46a-compile-r3"
 }
