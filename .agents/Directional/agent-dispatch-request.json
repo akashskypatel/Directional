@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb47a-pin-apply-20261027-r2",
+  "request_id": "m6-cp3-cb47-rp01-e1-apply-20261027-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb47a-apply-20261027-r2",
-  "file_id": "1OItHDNN6DoGzIlXM49J7Y1q6C_Qa6i0W",
-  "patch_sha256": "22b011639ebe901a83c1a274274600b3db628d45c14af41ee214c7080840a27e",
-  "base_sha": "04cf34ffd012c1d391bb3e6e643d456c867f99a1",
+  "mailbox_key": "m6-cp3-cb47-rp01-e1-apply-20261027-v1",
+  "file_id": "1LaCM-ekMccLwslAHj3MUt9TA87REkwEp",
+  "patch_sha256": "58096ec60b261ab12639e112cce3998f76f8208ada048ab207310d289782a6c4",
+  "base_sha": "9a7695fae6a4fd9c301603b58859d6d271b495e3",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "tools(directional): migrate harness failure pins to frozen manifest",
+  "commit_message": "test(directional): validate typed A4 hard-rail endpoint witnesses",
   "retention_days": 14
 }
