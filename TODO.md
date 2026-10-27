@@ -1,12 +1,12 @@
-## CURRENT — RA-166 CB47-REV: D5/D2 witnesses re-homed; exact CB47 patch; TB47 v2 (2026-10-27)
+## CURRENT — CB47 COMPILE GREEN; TB47 immutable 504-case gate next (2026-10-27)
 
 - [x] **RA-166** ([decision](.agents/Directional/Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md)), probe-backed:
   - E3 conflict confirmed: A5 forbids a route on `OrdinaryInterior` sides, and A4 never writes one.
   - D5 is re-homed to boundary-path `entryRoute` crossings on `transition_domain_fixture()`. It is the only one of 8 fixtures with qualifying pairs.
   - D2 junction is re-homed to rail-vertex R-adjacency: R-split is canonical, shown by a 7-ratio × 2-position sweep with 0 multi-step certificates.
   - E1 `dabb0970e` is defective (`:793` double-exact comparison, junction counts, germ seed); corrected.
-- [ ] **NEXT `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES` (resume)** (RA-166.4): `git apply` exactly [RA-166.8 embedded patch](.agents/Directional/Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md#ra-1668-exact-cb47-patch-authoritative-bytes) `2de51be6…24c1`. Numstat must be `26 18` (REPackage) and `24 6` (TQ). Eight GMP/GMPXX targets, no runtime → TB47.
-- [ ] `M6-CP3-TB47-RP01-FULL-GATE` (RA-166.5), [manifest v2](.agents/Directional/Architecture_M6_CP3_TB47_Full_Gate_Case_Manifest.tsv) `488a20b6…5955`; predict **500/4**.
+- [x] **`M6-CP3-CB47-RP01-ENDPOINT-WITNESSES`** ([record](.agents/Directional/Architecture_M6_CP3_CB47_RP01_Endpoint_Witnesses_Code_Build_Record_20261027.md)): RA-166.8 exact patch `2de51be6…24c1` applied at `08d41626e3487f3cba2e8fed5fe1f2185da8ac9f`. Two-file numstat `26/18`, `24/6`; eight GMP/GMPXX targets compiled, run `40501143033`, package `12732383172`, manifest 28/28, no runtime.
+- [ ] **NEXT `M6-CP3-TB47-RP01-FULL-GATE`** (RA-166.5), [manifest v2](.agents/Directional/Architecture_M6_CP3_TB47_Full_Gate_Case_Manifest.tsv) `488a20b6…5955`; predict **500/4**.
   - Exit 0 → DEFN-G.
   - `control_violation` → TB47-REV.
   - Infra failure → TB47A-ORCH.
@@ -28,7 +28,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: TB46 re-run 498/6 → DEFN-E → CB47A → CB47 (BLOCKED, E3) → RA-166.
-  - **CB47 resume current** → TB47 → DEFN-G (Review) → E2-PATCH (Review) → CB48 (G) → CB48E (E2) → TB48 → DEFN-O4/O5 (Review) → CB49 → TB49 → RP-01 Review.
+  - **CB47 COMPLETE, TB47 next** → DEFN-G (Review) → E2-PATCH (Review) → CB48 (G) → CB48E (E2) → TB48 → DEFN-O4/O5 (Review) → CB49 → TB49 → RP-01 Review.
   - Rules:
     - RA-164.3 P1–P6.
     - RA-165.2 F1/F2.

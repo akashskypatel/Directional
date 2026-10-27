@@ -1,3 +1,7 @@
+## 2026-10-27 — CB47 resumed: RA-166 patch applied; compile/package GREEN (runtime-free)
+
+- [CB47 code/build record](.agents/Directional/Architecture_M6_CP3_CB47_RP01_Endpoint_Witnesses_Code_Build_Record_20261027.md): exact RA-166.8 test-only diff committed as `08d41626e3487f3cba2e8fed5fe1f2185da8ac9f` (two changed test files). Compile-only run `40501143033`, package `12732383172`, eight GMP/GMPXX targets and 28/28 checksums, `runtimeExecution=false`. TB47 remains unexecuted and is exact next. No selector or manifest mutation, CP2 491/491 remains accepted; CP3 is candidate.
+
 ## 2026-10-27 — RA-166 CB47-REV: endpoint witness definitions re-homed; exact CB47 patch
 
 - [RA-166](.agents/Directional/Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md), backed by scratch probes:
