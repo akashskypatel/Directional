@@ -1,0 +1,2 @@
+# Current TB47 gauge-cluster R20 Review cleanup
+.agents/connector-triggers/source-snapshot/tb47-gauge-cont-20261027-r20.txt
