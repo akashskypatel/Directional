@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb46a-harness-apply-20261027-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb46a-harness-apply",
-  "file_id": "1tQNEtiV7y2Zm2nHeCopaylWTZe6BBAS9",
-  "patch_sha256": "2c446818cd4dd2338bb9f5e31c845830850bc325ddc4d84c1c28065965e0ee2f",
-  "base_sha": "e5b0a69664f1d0f382ce902a89c3e5aef62dd61b",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(directional): fail closed on unresolved TB46 control outcomes",
-  "retention_days": 14
+  "request_id": "m6-cp3-tb46a-compile-20261027-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-tb46a-compile",
+  "source_sha": "5e6de03fadd88cc4f9bbe749b32ea012264fe73e",
+  "targets": [
+    "directional_cli",
+    "directional_benchmarks",
+    "directional_compiled_api_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_oracle_tests",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests"
+  ],
+  "artifact_prefix": "m6-cp3-tb46a-compile"
 }
