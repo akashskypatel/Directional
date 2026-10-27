@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-27 · [RA-166](Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md) resolved the CB47 E3 block. The D5 and D2 witness definitions contradicted A4/A5 invariants (no route on ordinary sides; R-split rail sides) and are re-homed by probe evidence. The compiled E1 commit was defective, and an exact probe-verified patch replaces it. TB47 manifest v2 predicts 500/4. CP2 491/491 accepted, selector497 frozen and unpromoted, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-27 · [TB47](Architecture_M6_CP3_TB47_RP01_Full_Gate_Test_Benchmark_Report_20261027.md) measured **500 PASS / 4 registered RED** on 504 immutable cases (candidate, not accepted). The active [DEFN-G independent Review](Architecture_M6_CP3_DEFN_TB47_Gauge_Cluster_Independent_Review_20261027.md) rechecked 491 accepted-prefix identities, found the original selector442 source-boundary component split invalid, ruled out a sheet-only substitute, and derived a 10-face inner-disk/outer-ring seam candidate with 13 row-order and 14 dual-cycle scratch checks; **native A3 admission remains unproved**. Focused30:12 does not establish an A5 product defect (A3 certificates were not consistently regenerated). cp3entry:1 still lacks a produced odd-gauge witness. CP2 491/491 remains accepted; selector497 is frozen/unpromoted, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,9 +50,9 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current independent Review:** [RA-166](Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md) supersedes DEFN-E's E2/E3 CB scope. It adds F6 (a Review scratch-probes every oracle it authorizes, and CBs apply exact patches) and F7 (witness definitions are checked against producer/consumer invariants), and registers O8 and O9.
+**Current independent Review:** [DEFN-G](Architecture_M6_CP3_DEFN_TB47_Gauge_Cluster_Independent_Review_20261027.md) is **in progress**, not a frozen CB48 authorization. The prior [RA-166](Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md) F6/F7 scratch-oracle and source-authority requirements remain binding; G1 has a source-level candidate awaiting native A3 proof, G2 needs consistent producer-authenticated transformation, G3 needs a produced odd face-gauge witness. E2 cp3entry:2 remains separately owned.
 
-**Current test authority:** TB46 re-run on source `8f0d4329695d`, valid 504/504, 498 PASS / 6 registered RED, all 497 guards green. No CP3 or selector497 promotion. TB47 (manifest v2 `488a20b6…`) is pending CB47.
+**Current test authority:** TB47 manifest v2 (`488a20b6…5955`), exact immutable artifact-only 504/504, **500 PASS / 4 registered RED**, 1,014/1,014 checksums, all 497 selector guards PASS. [TB47 report](Architecture_M6_CP3_TB47_RP01_Full_Gate_Test_Benchmark_Report_20261027.md). This candidate supersedes TB46 498/6 for current diagnosis, **not** accepted CP2 491/491; CP3 and selector497 remain unpromoted.
 
 **Prior TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 
@@ -106,16 +106,18 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES` resume ([RA-166](Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md).4, exact patch `2de51be6…`) → `M6-CP3-TB47-RP01-FULL-GATE` (predict 500/4). Bounded procedure: RA-164.3 P1–P6, RA-165.2 F1/F2, RA-166.6 F6/F7.
+**Immediate:** Continue **`M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER`** (source-authenticated G1/G2/G3 Review) after measured TB47 500/4. Do not enter E2-PATCH, CB48 or TB48 until the Review freezes exact probe-backed G hunks and the TB48 manifest. RA-166.6 F6/F7 remain binding.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Close RP-01 by full-gate TBs: CB47 (exact E1-fix + E3) → TB47 → DEFN-G (probe-backed) → E2-PATCH (probe-backed; cp3entry:2 to R-adjacency) → CB48 (G) → CB48E (E2) → TB48 → DEFN-O4/O5 → CB49/TB49 → RP-01 Review (O6 scope; O7/O8/O9 owners). O2 post-RP-01. | `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES` per [RA-166](Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md) |
+| **1** | **DEFN-G currently open**: G1 legal A3 non-hard source seam with signed-inverse positive/negative, G2 source-consistent hard-rail relabel, G3 producer-authenticated torus odd-gauge pair. Then separately E2-PATCH (cp3entry:2 R-adjacency) → exact CB48/CB48E → TB48 → O4/O5 Review/CB49/TB49 → RP-01 Review. No missing producer witness may be replaced with synthetic assertions. | [DEFN-G Review](Architecture_M6_CP3_DEFN_TB47_Gauge_Cluster_Independent_Review_20261027.md), [RA-166](Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
+
+- **Gauge-cluster test authority versus source producer:** TB47 G1's two-face seam labels contradict the original boundary-cycle component invariant; a sheet-only replacement is traversable, not a substitute. R5/R6 independently derive a legal-topology candidate ring/disk seam but do not certify native A3 admission. G2's one-region A4-only relabel keeps its A3 rail transport unchanged; never weaken A5's transport check on that synthetic basis. G3 requires an actual A4-produced odd face-gauge pair. [Active Review](Architecture_M6_CP3_DEFN_TB47_Gauge_Cluster_Independent_Review_20261027.md). No stable count changed.
 
 - **Witness definition contradicts producer/consumer invariants ([RA-166](Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md)):** RA-33.5 demanded a route on `OrdinaryInterior` sides, which A5 forbids, and D2 demanded an intra-certificate junction, which A4's R-split never produces. Check a witness definition against the invariants of the field it reads, and probe its existence before freezing it. Interior-rail-vertex continuity is witnessed by R-adjacency (two same-rail certificates with R at v, and commuting A3 sectors).
 
