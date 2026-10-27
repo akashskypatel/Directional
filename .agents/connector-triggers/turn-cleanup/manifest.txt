@@ -1,0 +1,2 @@
+# CB46 snapshot trigger cleanup; durable files excluded
+.agents/connector-triggers/source-snapshot/cb46-202610270348.txt
