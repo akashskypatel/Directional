@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-e-review-20261027-r2",
+  "request_id": "m6-cp3-defn-e-review-closeout-20261027-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-e-review-r2",
-  "file_id": "1u0YuKW5DBAx55iglqOGZvNxA8YZSTWEx",
-  "patch_sha256": "04dd6fa87d9234b281d26774c987658108bf5d7ca712d86ca6cbc35dc36289c9",
-  "base_sha": "e4fb9befc944438a6d0c66b709f44dc1b8c931ad",
+  "mailbox_key": "m6-cp3-defn-e-closeout-20261027-r1",
+  "file_id": "1JcSbi7Vl9Oqh3eO3tfvJ3D5KffmombHc",
+  "patch_sha256": "28b00245162783faf1b119e4da03d4ba5dd9ece69e5bc0b2ed41c397d2916f61",
+  "base_sha": "14f9f0f31137e85fd167195c3aa6a5bf7034eba3",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): adjudicate TB46 endpoint witnesses and freeze TB47 pins",
+  "commit_message": "docs(directional): record independently verified DEFN-E review closeout",
   "retention_days": 14
 }
