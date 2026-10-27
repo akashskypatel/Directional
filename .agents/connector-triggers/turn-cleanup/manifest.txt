@@ -1,2 +1,0 @@
-# Remove only this response's consumed R22 snapshot trigger
-.agents/connector-triggers/source-snapshot/tb47-gauge-r22-20261027.txt
