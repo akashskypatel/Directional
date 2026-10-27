@@ -41,5 +41,5 @@
 | Successor frozen | `M6-CP3-DEFN-RP01-SELECTOR174-DCEL-EXCEPTION-DISPOSITION`; first-site, alternate causes and falsifiers specified above. |
 | Turn boundary held | Review analyzed existing source and artifacts only; no tests, benchmarks, compile, source, fixtures or selectors changed. |
 | review_check.py boundary | Executed on synthetic snapshot: exit 1. Historical durable rewrite base `8b7299b43` is absent; four rewrite-history assertions fail. This is NOT a boundary PASS; actual Git history is not available in the synthetic tree. Source selectors are independently unchanged, but historical ledger validation remains unverified. |
-| `STATUS` lifecycle maintained | Entry beacon committed; final beacon action still required after durable documents and cleanup. |
-| Pushed to origin, branch in sync | Repository push/branch-in-sync confirmation must be obtained from verified Drive apply result and fresh GitHub ref after application. Local Git mirror is synthetic; no authentic `git status -sb` claim. |
+| `STATUS` lifecycle maintained | Entry and resume beacons committed; final COMPLETE beacon reserved as last repository write. |
+| Pushed to origin, branch in sync | Run 40440034347 pushed `63774ae5`; GitHub compare `ed101e4..63774ae5` confirms exactly six intended documentation paths. No authentic local `git status -sb` (synthetic mirror). |
