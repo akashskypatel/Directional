@@ -1,3 +1,8 @@
+**TB46 RP-01 full-gate rerun (2026-10-27, valid candidate/non-stable; no promotion):**
+
+- [Rerun report](Architecture_M6_CP3_TB46_RP01_Full_Gate_Rerun_Report_20261027.md), immutable CB46B `8f0d4329695d`, package `12716018703`, [run 40468913755](https://github.com/akashskypatel/Directional/actions/runs/40468913755), result `12719412600` (`2a33427b…5fd37`). 504/504 independent GTest processes and exact manifest joins: **498 PASS / 6 registered RED**, zero missing/skipped/duplicate; 1,014/1,014 member checksums, postflight true, harness exit 0, no control violations or unregistered first sites. All 497 guards PASS; POSITIVE 174 PASS; POSITIVE cp3entry:4 expected later D5 `:4063` RED.
+- Six already-registered candidate/non-stable failures: E = `selector:201` (`REPackageTests:715`), `cp3entry:2` (`TQTests:3154`), `cp3entry:4` (`TQTests:4063`); G = `selector:442` (`FieldTransportAtlasTests:2856`), `focused30:12` (`TQTests:5563`), `cp3entry:1` (`TQTests:2916`). Source sites and witnesses match raw logs. No newly observed stable regression or recurrence, no production-semantic change since TB38; the 174 issue was an invalid fixture, not a product defect. Original TB46 S5 attempt remains invalid historical evidence. **Stable 66/17/49, debt 1, CP2 491/491** unchanged; selector497/CP3 unpromoted. Next authorized Review `M6-CP3-DEFN-RP01-TB46-ENDPOINT-CLUSTER` decides E; G deferred.
+
 **RA-165 TB46A-REV (2026-10-27, candidate/non-stable):**
 
 - Selector174's RED since 10-14 is caused by two invalid test fixtures, not a product regression: `:569` has two isolated triangles (DCEL rejects all-boundary faces; present since `b43fa8e95`), and `:439` has an isolated vertex 4 (since `18357617a`).
