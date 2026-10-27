@@ -1,0 +1,2 @@
+Turn: M6-CP3-CB46-RP01-RAIL-ORACLE-REHOME-AND-ENDPOINT-DIAGNOSTICS
+Purpose: one exact source snapshot for authorized code/build work
