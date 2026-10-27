@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb45-selector242-verify-20261027-a1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb45-selector242-verify",
-  "executor_sha": "e48028e9eeed7b6b4c5c874400d75256fb61ada9",
-  "semantic_source_sha": "dfeb0751b1a42a0805aecf4ef4ffb6917f619c83",
-  "turn_id": "M6-CP3-TB45-RP01-SELECTOR242-SEAM-REHOME-VERIFY",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "436f5fff9c3bec97457f4bc6b7c2b6182cb3f47707eb14a66af3b6a3f3dc3c9a",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "12697664329",
-    "EXPECTED_SOURCE_SHA": "dfeb0751b1a42a0805aecf4ef4ffb6917f619c83",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "ad30d61b82e0de541d703073dbdefb5a7b9ed3d250cbc1b726e8cbd8c8aa21fd",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "c726aa9b40dd9b86fc5b1bd496459d5b6ff314695ccc1cb9b2d3f50a77ea7424",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "c677159e0779aa664f4b7341ec34ba926a755e1a8f7690276a9991788c23031e",
-    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Verification_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "1b0186095f9d10d10c05084954a30ffa82ffd9b3bbcd0dcddde130c3810ece17",
-    "EXPECTED_CASE_COUNT": "3"
-  },
-  "artifact_prefix": "m6-cp3-tb45-selector242-verify",
+  "request_id": "m6-cp3-tb45-report-apply-20261027-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb45-report-apply",
+  "file_id": "1F-8zIDqut1CQj7TiMGjD_VynH9bcEqcH",
+  "patch_sha256": "653d046dc29ab53ffc3384acfb9db8d602f98d07329e91b629674b05bbed4213",
+  "base_sha": "e48028e9eeed7b6b4c5c874400d75256fb61ada9",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record immutable TB45 verification and hand off to review",
   "retention_days": 14
 }
