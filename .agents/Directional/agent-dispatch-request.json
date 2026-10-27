@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r22-20261027-v1",
+  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r23-20261027-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r22-v1",
-  "file_id": "1JluBCGseVEScoOP6lrj2IIDHaJ2v9YEb",
-  "patch_sha256": "dfb711ad1e667b9a3e8b718232434458b7ca3407f75741387cef36cd0630a332",
-  "base_sha": "1384bed4fee48148aa6209a1c37ab47babfa2e7b",
+  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r23-v1",
+  "file_id": "1VrzYXkyGVtjiSad8rgL5lfyh7nAeg7qp",
+  "patch_sha256": "7e1dbb02f3512f7cdf4ea4688ab62d462bc49965651807fa270b3aa9c36d9739",
+  "base_sha": "6ac5de7209aee78fdf1036a5ff96fc3637551651",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: corroborate G3 torus metamorphic chart preflight (R22)",
+  "commit_message": "docs: withdraw vacuous R22 torus closure preflight (R23)",
   "retention_days": 14
 }
