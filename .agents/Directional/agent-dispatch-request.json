@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb45-report-apply-20261027-r1",
+  "request_id": "m6-cp3-tb45-rev-docs-apply-20261027-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb45-report-apply",
-  "file_id": "1F-8zIDqut1CQj7TiMGjD_VynH9bcEqcH",
-  "patch_sha256": "653d046dc29ab53ffc3384acfb9db8d602f98d07329e91b629674b05bbed4213",
-  "base_sha": "e48028e9eeed7b6b4c5c874400d75256fb61ada9",
+  "mailbox_key": "m6-cp3-tb45-rev-docs-apply",
+  "file_id": "12WK-85prjo3f__t9to82534TNgtliXBs",
+  "patch_sha256": "fda0771a6c557bb0c7f5de6c1662034ee3d7c69fc15650e0f7a15435d6ea2d57",
+  "base_sha": "f077b66d171b8495513a535855f63bf2524a346e",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record immutable TB45 verification and hand off to review",
+  "commit_message": "docs(direction): record independent TB45 review and next definition turn",
   "retention_days": 14
 }
