@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-e-review-closeout-20261027-r1",
+  "request_id": "m6-cp3-cb47a-pin-apply-20261027-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-e-closeout-20261027-r1",
-  "file_id": "1JcSbi7Vl9Oqh3eO3tfvJ3D5KffmombHc",
-  "patch_sha256": "28b00245162783faf1b119e4da03d4ba5dd9ece69e5bc0b2ed41c397d2916f61",
-  "base_sha": "14f9f0f31137e85fd167195c3aa6a5bf7034eba3",
+  "mailbox_key": "m6-cp3-cb47a-apply-20261027-r1",
+  "file_id": "1IBlruTx5IojEvAiuKzLRwBM1smuAnDjF",
+  "patch_sha256": "b0f80398ade1f5adfe62eef12701cb183b92cfab837dd7d0521c2074905a40b8",
+  "base_sha": "04cf34ffd012c1d391bb3e6e643d456c867f99a1",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record independently verified DEFN-E review closeout",
+  "commit_message": "tools(directional): migrate harness failure pins to frozen manifest",
   "retention_days": 14
 }
