@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r13-20261027-v1",
+  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r13-20261027-v2",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r13-v1",
-  "file_id": "1E7JKWErp2C4vsMJ8IE4yWZbRgFtaYDGg",
-  "patch_sha256": "5b813ed69329528559114f3a8b3aad9a9be0d73e308beb182c5bc4881ac2f22e",
+  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r13-v2",
+  "file_id": "1TPVpEIkJVMoGEh-nMqxEJ8HF-aNBgwH5",
+  "patch_sha256": "07ceb88119693e4e23282db9953b0774bb2f148661f8b85156dba3b17d43875f",
   "base_sha": "3271e3d87ef4eee6ad7ae69b588efb81c0f4b5b3",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: add independent finite torus arm-relabel carrier census to TB47 review",
+  "commit_message": "docs: add finite G3 torus arm-gauge census to TB47 independent review",
   "retention_days": 14
 }
