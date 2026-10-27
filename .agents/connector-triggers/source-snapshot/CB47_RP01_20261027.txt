@@ -1,3 +1,0 @@
-Snapshot request for canonical turn M6-CP3-CB47-RP01-ENDPOINT-WITNESSES.
-Source authority immediately before trigger: db7c5cc5b614dddc15d2a5790f0f5bc3a80ea307.
-Event commit becomes exact snapshot source; no runtime execution.
