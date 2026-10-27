@@ -1,3 +1,7 @@
+## 2026-10-27 — CB46B selector174 fixtures line-neutral; compiled, no runtime
+
+- [CB46B Code + Build record](.agents/Directional/Architecture_M6_CP3_CB46B_Selector174_Manifold_Fixture_Code_Build_Record_20261027.md): commit `8f0d4329695d`, one test source `12 12` numstat, GMP/GMPXX eight-target [compile run 40466255947](https://github.com/akashskypatel/Directional/actions/runs/40466255947), package `12716018703`; `runtimeExecution=false`. RA-165.3 met; TB46 full-gate rerun next. No CP3 or selector497 acceptance; CP2 491/491; stable 66/17/49 debt 1.
+
 ## 2026-10-27 — RA-165 TB46A-REV: selector174 fixtures; CB46B authorized
 
 - [RA-165](.agents/Directional/Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md):

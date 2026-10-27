@@ -34,38 +34,30 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-27, after [RA-165](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md) (TB46A-REV): selector174 has **two** invalid TriMesh fixtures: isolated vertex 4 at `REPackageTests:439`, and all-boundary isolated triangles at `:569` (thrown since `b43fa8e95`, 10-14). Scratch probes: P0 reproduces TB46 row216 exactly; the TB46A fix alone (P1) still throws; both fixes (P2) pass the whole body. RA-164 H1 throw site corrected. TB46A harness `5e6de03fa` accepted. Line-neutral fixture CB46B authorized. RA-164.3 P1–P6 + RA-165.2 F1/F2 bind. |
+| Currency | 2026-10-27, CB46B test-fixture correction compiled under [RA-165](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md); two historically invalid selector174 `TriMesh` fixtures corrected line-neutrally. [CB46B record](Architecture_M6_CP3_CB46B_Selector174_Manifold_Fixture_Code_Build_Record_20261027.md): source `8f0d4329695d`, package `12716018703`, GMP/GMPXX, no runtime; TB46 full gate is next. RA-164.3 P1–P6 and RA-165.2 F1/F2 bind. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted 2026-10-06 (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
-| Latest candidate or rejected evidence | TB46 run `40448739180` on CB46 package `12708707491`: 504/504 processes, 497 PASS / 7 RED, **invalid attempt (S5)** ([report](Architecture_M6_CP3_TB46_Full_Gate_Test_Benchmark_Report_20261027.md)); 497 GUARD green, 5 pinned REDs at pins, 174 uncaught DCEL exception, cp3entry:4 later `TQTests:4063`. TB46A harness compile run `40457083585` ([record](Architecture_M6_CP3_TB46A_Orchestration_Correction_Compile_Record_20261027.md)). Last valid full gate TB38 **490/504** candidate (`038ae7fd7`); no production change since. Selector497 frozen, unpromoted. |
+| Latest candidate or rejected evidence | CB46B [compile-only run 40466255947](https://github.com/akashskypatel/Directional/actions/runs/40466255947) GREEN; eight targets, package `12716018703`, no runtime. Earlier: TB46 run `40448739180` on CB46 package `12708707491`: 504/504 processes, 497 PASS / 7 RED, **invalid attempt (S5)** ([report](Architecture_M6_CP3_TB46_Full_Gate_Test_Benchmark_Report_20261027.md)); 497 GUARD green, 5 pinned REDs at pins, 174 uncaught DCEL exception, cp3entry:4 later `TQTests:4063`. TB46A harness compile run `40457083585` ([record](Architecture_M6_CP3_TB46A_Orchestration_Correction_Compile_Record_20261027.md)). Last valid full gate TB38 **490/504** candidate (`038ae7fd7`); no production change since. Selector497 frozen, unpromoted. |
 | Regression accounting and debt | Stable **66/17/49**, debt 1 ([tracker](Regression_Root_Cause_Tracker.md)). No new stable event. |
 | Active boundary | RP-01 open, RP-02 unreached. TB46 re-run predicted **498/6**: RED `selector:201`, `selector:442`, `focused30:12`, `cp3entry:1`, `cp3entry:2` at pins; cp3entry:4 RED at registered `:4063` (cluster E, D5); 174 PASS. Harness pins are hard-coded `file:line` until CB47A → edits above pinned lines must be line-neutral. Carried: O1, O2 (post-RP-01, + RA-161 T2), O6, **O7** (oracle-tests target non-compiling, RP-01 decides owner), DIAG-RETAIN, RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4, G4-B002. |
 
-## Mandatory next turn — `M6-CP3-CB46B-RP01-SELECTOR174-MANIFOLD-FIXTURE` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB46-RP01-FULL-GATE` — EXACT NEXT
 
-- **Authority:** [RA-165.3](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md). Test-only Code + Build, compile only, **line-neutral** (`git diff --numstat` equal +/− for `tests/SurfaceCellREPackageTests.cpp`; no other file).
-- **Allowlist:** exact text in RA-165.3. F174-a `REPackageTests:439`, 1→1 line: `ASSERT_NO_THROW(manifoldHardSource.set_mesh(incidenceVertices.topRows(4), incidenceFaces));`. F174-b `:430–432`, comment 3→3 lines. F174-c `:564–569`, 6→6 lines: an 8-vertex, 4-face two-component source (adds faces `1,6,2` and `4,7,5`) and `ASSERT_NO_THROW` on `set_mesh`. F174-d `:561–562`, comment 2→2 lines. Expected numstat `12 12`. No assertion, helper, harness, manifest, workflow or production change.
-- **Evidence:** established eight GMP/GMPXX targets (as run `40457083585`), `runtimeExecution=false`, record ≤25 lines with numstat and package ID.
-- **Outcome table:** compile OK + allowlist + line-neutral → `M6-CP3-TB46-RP01-FULL-GATE` (re-run on CB46B package, harness `37b01215…`, manifest `717f4f0f…`, predict 498/6, table RA-165.4); C2 → in-hunk fix ≤2 attempts; S1/S2/S3/non-neutral → `M6-CP3-CB46B-RP01-SELECTOR174-MANIFOLD-FIXTURE-REV`; orchestration → Turn_Cadence rule 5.
+- **Authority:** [RA-165.4](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md), artifact-only full-gate 504-case test/benchmark re-run on CB46B immutable package `12716018703` (source `8f0d4329695de1c7542ea240e30e55761acc3a38`). Do not rebuild, modify test source, selectors, harness, manifest, or repair package bytes.
+- **Frozen:** harness `5e6de03fa` (SHA256 `37b01215…b0af72`) and case manifest (SHA256 `717f4f0f…6bb087`); expected 498 PASS / 6 RED, not acceptance. CP2 491/491 and 66/17/49 debt1 unchanged.
+- **Outcomes:** harness exit 0 with expected behavior → `M6-CP3-DEFN-RP01-TB46-ENDPOINT-CLUSTER` (Review); any unregistered failure / guard failure / 174 red → `M6-CP3-TB46-RP01-FULL-GATE-REV`; orchestration / package failure → `M6-CP3-TB46B-ORCH`, per RA-165.4 and cadence rule 5.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| done | RA-164 → CB46 → TB46 (S5) → TB46A-ORCH → RA-165 | TB46 invalid attempt; harness fail-closed correction accepted; 174 fixture authorized. |
-| 1 — next | `M6-CP3-CB46B-RP01-SELECTOR174-MANIFOLD-FIXTURE` | Line-neutral F174-a–d (`:439`, `:564–569`, and the two comments); 8 targets; → step 2 directly. |
-| 2 | `M6-CP3-TB46-RP01-FULL-GATE` (re-run) | CB46B package; predict 498/6; exit 0 → step 3; `control_violation` → TB46-REV; infra → `M6-CP3-TB46B-ORCH`. |
-| 3 | `M6-CP3-DEFN-RP01-TB46-ENDPOINT-CLUSTER` (Review) | Decides E: 201, cp3entry:2, cp3entry:4 D5 (`:4063`) from D1/D2 harvest; freezes TB47 manifest with `asserted_site` = `file:line\|witness`. |
-| 4 | `M6-CP3-CB47A-HARNESS-MANIFEST-PINS` ∥ CB47 → `M6-CP3-TB47-RP01-FULL-GATE` | CB47A tool-only: pins from manifest; offline replay of step-2 logs reproduces verdicts; pin mutation fails closed. |
-| 5 | `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` (Review) → CB48 → `M6-CP3-TB48-RP01-FULL-GATE` | G: 442, `focused30:12`, cp3entry:1; RA-163 R2. |
-| 6 | `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` (Review) → CB49 → TB49 | O4, O5, P1-a/P1-b, RA-162 C1, H2 A5 reachability. |
-| 7 | Green full gate → RP-01 Review | States O6 CP3 scope and O7 owner. |
-| post-RP-01 | `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS-RETIREMENT`, then `DIAG-RETAIN` | RA-160.4 + RA-161 T2. |
-| rule | RA-164.3 P1–P6; RA-165.2 F1/F2 | CB→TB direct; full-gate TBs; red TB → Review DEFN; STOP codes; outcome rows must map to harness branches; line-neutral above pins until CB47A. |
+| 1 — next | `M6-CP3-TB46-RP01-FULL-GATE` | Artifact-only on CB46B package `12716018703`; apply RA-165.4 outcome table. |
+| 2 — conditional | `M6-CP3-DEFN-RP01-TB46-ENDPOINT-CLUSTER` | On permitted TB46 exit-0 outcomes; otherwise TB46-REV or TB46B-ORCH as RA-165.4 specifies. |
+| rule | RA-164.3 P1–P6; RA-165.2 F1/F2 | No new source edits above harness pins until CB47A; subsequent schedule retained in `TODO.md`. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB46B-RP01-SELECTOR174-MANIFOLD-FIXTURE** — read [RA-165.3](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md), `tests/SurfaceCellREPackageTests.cpp:425–460, 556–570`, `include/directional/core/TriMesh.h:155–162, 331–340`, `include/directional/core/DCEL.h:50–57, 1255–1265`; compile caller as in run `40457083585` (eight targets). No runtime, harness, manifest or production edits.
+`load_next`: **M6-CP3-TB46-RP01-FULL-GATE** — read [RA-165.4](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md), [CB46B record](Architecture_M6_CP3_CB46B_Selector174_Manifold_Fixture_Code_Build_Record_20261027.md), frozen TB46 504-row manifest and harness. Exact package `12716018703` from source `8f0d4329695de1c7542ea240e30e55761acc3a38`; immutable artifact-only execution, no compile/relink/repair.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
