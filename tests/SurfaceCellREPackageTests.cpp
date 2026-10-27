@@ -427,16 +427,16 @@ TEST(SurfaceCellClosedProductContracts,
             interiorAsBoundary.rejection()->kind);
   EXPECT_EQ(0, interiorAsBoundary.rejection()->failedEdgeIndex);
 
-  // A two-sided hard rail is legitimate. When a third source triangle
-  // shares the same edge, the interval's two-side record cannot describe
-  // its incidence, even if feature-map incidence metadata is truthful.
+  // A two-sided hard rail is legitimate. TriMesh rejects a third triangle on
+  // the same edge, so an overfull claim on a manifold source fails as a
+  // claim/support mismatch; the >2-face rail guard is defence in depth.
   directional::TriMesh manifoldHardSource;
   Eigen::MatrixXd incidenceVertices(5, 3);
   incidenceVertices << 0., 0., 0., 1., 0., 0., 0., 1., 0.,
                        0., -1., 0., 0., 0., 1.;
   Eigen::MatrixXi incidenceFaces(2, 3);
   incidenceFaces << 0, 1, 2, 1, 0, 3;
-  manifoldHardSource.set_mesh(incidenceVertices, incidenceFaces);
+  ASSERT_NO_THROW(manifoldHardSource.set_mesh(incidenceVertices.topRows(4), incidenceFaces));
   auto twoSidedHard = validMap;
   twoSidedHard.edges[0].incidentFaces = {0, 1};
   const auto twoFaceRail =
@@ -558,15 +558,15 @@ TEST(SurfaceCellClosedProductContracts,
   EXPECT_EQ(0, foreignCurve.rejection()->failedEdgeIndex);
 
   // Both published owners can agree with each other and still be foreign to
-  // the real source component. Use two disconnected source triangles so the
-  // replacement component is a real, independently supported source owner.
+  // the real source component. Use two disconnected two-triangle patches
+  // (TriMesh rejects all-boundary faces) as real, independent source owners.
   directional::TriMesh twoComponentSource;
-  Eigen::MatrixXd vertices(6, 3);
-  vertices << 0., 0., 0., 1., 0., 0., 0., 1., 0.,
-              3., 0., 0., 4., 0., 0., 3., 1., 0.;
-  Eigen::MatrixXi faces(2, 3);
-  faces << 0, 1, 2, 3, 4, 5;
-  twoComponentSource.set_mesh(vertices, faces);
+  Eigen::MatrixXd vertices(8, 3);
+  vertices << 0., 0., 0., 1., 0., 0., 0., 1., 0., 3., 0., 0.,
+              4., 0., 0., 3., 1., 0., 1., 1., 0., 4., 1., 0.;
+  Eigen::MatrixXi faces(4, 3);
+  faces << 0, 1, 2, 3, 4, 5, 1, 6, 2, 4, 7, 5;
+  ASSERT_NO_THROW(twoComponentSource.set_mesh(vertices, faces));
   auto sourcedMap = validMap;
   const auto actual = directional::pipeline::build_authoritative_surface_cell_rails(
       twoComponentSource, sourcedMap);
