@@ -1,3 +1,0 @@
-Snapshot source for M6-CP3-CB47A-HARNESS-MANIFEST-PINS
-Frozen parent: b3b2dc567b9968fb37a95b938f52f24c50adf993
-Triggered: 2026-10-27T09:39:18Z
