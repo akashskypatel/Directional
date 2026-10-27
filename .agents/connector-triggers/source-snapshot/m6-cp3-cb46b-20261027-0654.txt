@@ -1,3 +1,0 @@
-turn=M6-CP3-CB46B-RP01-SELECTOR174-MANIFOLD-FIXTURE
-requested_source_sha=229ab9e601a4acbb97de1731d43f41688484c22e
-purpose=exact-source-snapshot-for-line-neutral-test-fixture
