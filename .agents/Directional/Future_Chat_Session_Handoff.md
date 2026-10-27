@@ -34,30 +34,31 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-27, TB46 rerun [report](Architecture_M6_CP3_TB46_RP01_Full_Gate_Rerun_Report_20261027.md): immutable CB46B package `12716018703` (source `8f0d4329695d`), [run 40468913755](https://github.com/akashskypatel/Directional/actions/runs/40468913755) verified 504/504, **498 PASS / 6 registered RED**, all 497 guards and selector174 positive pass, zero control violations, harness exit0. Valid red outcome under RA-165.4; DEFN-E Review next. |
+| Currency | 2026-10-27, TB46 rerun [report](Architecture_M6_CP3_TB46_RP01_Full_Gate_Rerun_Report_20261027.md): immutable CB46B package `12716018703` (source `8f0d4329695d`), [run 40468913755](https://github.com/akashskypatel/Directional/actions/runs/40468913755) verified 504/504, **498 PASS / 6 registered RED**, all 497 guards and selector174 positive pass, zero control violations, harness exit0. [DEFN-E Review](Architecture_M6_CP3_DEFN_TB46_Endpoint_Cluster_Review_Decision_20261027.md) classified E1/E2/E3; TB47 manifest frozen; CB47A next. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted 2026-10-06 (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
 | Latest candidate or rejected evidence | [TB46 rerun report](Architecture_M6_CP3_TB46_RP01_Full_Gate_Rerun_Report_20261027.md), result artifact `12719412600`, SHA256 `2a33427b…5fd37`; logs `12719912170`, wrapper `12719462521`; 1,014/1,014 checked members, 504/504 raw process joins, postflight true. Expected E failures: 201, cp3entry:2, cp3entry:4 D5 (`:4063`); expected G: 442, focused30:12, cp3entry:1. Original run `40448739180` remains S5 invalid attempt. Last previously valid full gate TB38 490/504 candidate; no production change since. Selector497 frozen/unpromoted. |
 | Regression accounting and debt | Stable **66/17/49**, debt 1 ([tracker](Regression_Root_Cause_Tracker.md)). No new stable event. |
-| Active boundary | RP-01 open, RP-02 unreached; next Review decides E (`selector:201`, `cp3entry:2`, `cp3entry:4` D5) and freezes TB47 `asserted_site` pins. G (`selector:442`, `focused30:12`, `cp3entry:1`) later. Hard-coded source-line pins remain until CB47A: prior edits must be line-neutral. Carried O1, O2 (post-RP-01), O6, O7, DIAG-RETAIN, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002. |
+| Active boundary | RP-01 open, RP-02 unreached; DEFN-E reviewed E1 stale terminal assertion, E2 missing A4 2-carrier junction, E3 missing source-valid A5 OrdinaryFront fixture; [TB47 manifest](Architecture_M6_CP3_TB47_Full_Gate_Case_Manifest.tsv) site/witness pins frozen; next CB47A. G (`selector:442`, `focused30:12`, `cp3entry:1`) later. Hard-coded source-line pins remain until CB47A: prior edits must be line-neutral. Carried O1, O2 (post-RP-01), O6, O7, DIAG-RETAIN, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002. |
 
-## Mandatory next turn — `M6-CP3-DEFN-RP01-TB46-ENDPOINT-CLUSTER` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB47A-HARNESS-MANIFEST-PINS` — EXACT NEXT
 
-- **Authority:** RA-165.4/165.5; [valid TB46 rerun](Architecture_M6_CP3_TB46_RP01_Full_Gate_Rerun_Report_20261027.md), immutable result `12719412600` and 504-row frozen manifest. This is **Review + Plan**; do not edit source, tests, selector/harness or execute builds/runtime in this turn.
-- **Decision scope:** E cluster: `selector:201` at `REPackageTests:715`, `cp3entry:2` at `TQTests:3154`, `cp3entry:4` later D5 at `TQTests:4063`. Reopen raw evidence, separate product defects from invalid fixtures, define corrective owner/falsifiers and freeze TB47 manifest with `asserted_site=file:line|witness` for every pinned RED/later-POSITIVE. Respect RA-164.3 P1–P6 and RA-165.2 F1/F2.
-- **After Review:** CB47A harness pin migration and named CB47 corrections (as Review authorizes), then TB47; the G cluster follows separately. Stable 66/17/49 debt1, CP2 491/491, RP-01 open, selector497 unpromoted.
+- **Authority:** [DEFN-E Review](Architecture_M6_CP3_DEFN_TB46_Endpoint_Cluster_Review_Decision_20261027.md), [TB47 frozen manifest](Architecture_M6_CP3_TB47_Full_Gate_Case_Manifest.tsv) SHA-256 `6f9b3582900951eef5f94309b7f7053412148faca4935a619e504bad9b73a09b`; [RA-165 §5](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md) and RA-164 P1–P6. This is a **tool-only Code + Build turn, no compile/runtime**; strictly pin parser/migration and independent offline replay against existing immutable TB46 raw logs.
+- **Scope:** replace hardcoded harness `PINNED_RED_SITES` / `PROVEN_LATER_POSITIVE_SITES` with exact `asserted_site=file:line|witness` column. Parse 504 exact rows; validate both site and witness in same exact raw log; reject bad or missing pins, malformed CSV/TSV, changed selector/manifest identity and unregistered failure. Replay 504 TB46 logs, demand identical verdict/control totals and fail-closed one-row pin mutation. Do not alter test names, tested semantics, or source/test line positions until migrated.
+- **Successor only after CB47A complete:** `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES`, then immutable full-gate `M6-CP3-TB47-RP01-FULL-GATE`; G-cluster DEFN after TB47. E1/E2/E3 owners and falsifiers are explicitly frozen in [DEFN-E](Architecture_M6_CP3_DEFN_TB46_Endpoint_Cluster_Review_Decision_20261027.md). No selector497/CP3 promotion, stable 66/17/49 debt1, CP2 491/491 accepted.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-DEFN-RP01-TB46-ENDPOINT-CLUSTER` | Review E using verified TB46 rerun raw evidence; freeze TB47 manifest site/witness pins. |
-| 2 — conditional | `M6-CP3-CB47A-HARNESS-MANIFEST-PINS` and named `M6-CP3-CB47-…` | Only after Review decisions; TB47 requires both CB47A and CB47. |
-| rule | RA-164.3 P1–P6; RA-165.2 F1/F2 | Preserve immutable CP2 authority and line-neutral edits until CB47A. |
+| 1 — next | `M6-CP3-CB47A-HARNESS-MANIFEST-PINS` | Tool-only pin migration + strict offline replay and one-row mutation falsifier; no compile/runtime |
+| 2 — conditional | `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES` | Only after CB47A closeout; implement E1–E3 at proven owner, compile-only GMP/GMPXX |
+| 3 — conditional | `M6-CP3-TB47-RP01-FULL-GATE` | Immutable 504-case artifact-only run; route G-cluster after evidence |
+| rule | RA-164.3 P1–P6; RA-165.2 F1/F2 | Until CB47A, test edits above pinned source lines MUST be line-neutral; never weaken accepted selector or validators |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-DEFN-RP01-TB46-ENDPOINT-CLUSTER** — reread [RA-165](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md), [valid rerun report](Architecture_M6_CP3_TB46_RP01_Full_Gate_Rerun_Report_20261027.md), frozen TB46 manifest, six raw first-site logs from result artifact `12719412600`, and cluster E owner/decision history. Decide E and freeze TB47 `asserted_site` pins; runtime-free Review. No further TB46 rerun.
+`load_next`: **M6-CP3-CB47A-HARNESS-MANIFEST-PINS** — read [DEFN-E](Architecture_M6_CP3_DEFN_TB46_Endpoint_Cluster_Review_Decision_20261027.md), [RA-165](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md), [TB47 manifest](Architecture_M6_CP3_TB47_Full_Gate_Case_Manifest.tsv), harness `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh`, exact TB46 evidence artifact `12719412600` (1,014 SHA256SUMS; 504 logs). Verify source & frozen pin format, implement tool-only parser + offline differential replay and pin mutation fail-closed. **Do not compile or run product tests** in CB47A. CB47 E witnesses only in next turn after its formal closeout.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

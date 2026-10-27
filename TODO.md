@@ -1,10 +1,11 @@
-## CURRENT — TB46 full gate verified 498/6; DEFN-E Review next (2026-10-27)
+## CURRENT — DEFN-E decisions frozen; CB47A harness-pin migration next (2026-10-27)
 
 - [x] **RA-165** ([decision](.agents/Directional/Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md)): Scratch probes (diagnostic only) found two invalid fixtures in 174: isolated vertex 4 at `REPackageTests:439`, and all-boundary isolated triangles at `:569`, which have thrown since `b43fa8e95` (10-14). P0 reproduces TB46; P2 (both fixes) passes the whole body. RA-164 H1 corrected; TB46A diagnosis was incomplete. TB46A harness `5e6de03fa` accepted. Findings F1–F5; O7 oracle-target compile break registered.
 - [x] **CB46B fixture correction** ([record](.agents/Directional/Architecture_M6_CP3_CB46B_Selector174_Manifold_Fixture_Code_Build_Record_20261027.md)) — source `8f0d4329695d`; exactly `12 12` test-source edits; 8 GMP/GMPXX compile targets, [run 40466255947](https://github.com/akashskypatel/Directional/actions/runs/40466255947), package `12716018703`; no runtime.
 - [x] **`M6-CP3-TB46-RP01-FULL-GATE`** artifact-only re-run ([report](.agents/Directional/Architecture_M6_CP3_TB46_RP01_Full_Gate_Rerun_Report_20261027.md)) — [run 40468913755](https://github.com/akashskypatel/Directional/actions/runs/40468913755), result `12719412600`, 504/504, **498 PASS / 6 registered RED** (174 PASS; cp3entry:4 D5 later RED at `:4063`), exit 0, no control violations; expected RA-165.4 disposition, no CP3 acceptance.
-- [ ] **NEXT `M6-CP3-DEFN-RP01-TB46-ENDPOINT-CLUSTER`** (Review; E: 201, cp3entry:2, cp3entry:4 D5) → freezes TB47 manifest with `asserted_site` pins.
-- [ ] `M6-CP3-CB47A-HARNESS-MANIFEST-PINS` (tool-only; offline replay of TB46 re-run logs must reproduce verdicts; pin mutation fails closed) ∥ CB47 → `M6-CP3-TB47-RP01-FULL-GATE`.
+- [x] **`M6-CP3-DEFN-RP01-TB46-ENDPOINT-CLUSTER`** — [E decision](.agents/Directional/Architecture_M6_CP3_DEFN_TB46_Endpoint_Cluster_Review_Decision_20261027.md) independently classified 201 stale T/R/I assertion, cp3entry:2 missing actual junction, cp3entry:4 missing source-valid A5 OrdinaryFront; TB47 504-row manifest/pins frozen.
+- [ ] **NEXT `M6-CP3-CB47A-HARNESS-MANIFEST-PINS`** — tool-only manifest parser + exact offline TB46 replay + falsifying pin-mutation; no compile.
+- [ ] `M6-CP3-CB47-RP01-ENDPOINT-WITNESSES` — only after CB47A closeout; E1/E2/E3 bounded corrections, GMP compile-only → `M6-CP3-TB47-RP01-FULL-GATE` immutable 504-row run.
 - [ ] `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` (Review) → CB48 → TB48 full gate.
 - [ ] `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` (Review; O4, O5, P1-a, P1-b, RA-162 C1, H2 A5 reachability) → CB49 → TB49 → green full gate → RP-01 Review (O6 scope, O7 owner).
 - [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS-RETIREMENT` (RA-160.4 + RA-161 T2), then `DIAG-RETAIN`.
@@ -16,7 +17,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: RA-164 → CB46 → TB46 (S5) → TB46A-ORCH → RA-165 → CB46B → **TB46 re-run 498/6 (valid, not green)**.
-  - **TB46 completed** → **DEFN-E next (Review)** → CB47A ∥ CB47 → TB47 → DEFN-G (Review) → CB48 → TB48 → DEFN-O4/O5 (Review) → CB49 → TB49 → RP-01 Review.
+  - **TB46 completed** → **DEFN-E complete** → CB47A → CB47 → TB47 → DEFN-G (Review) → CB48 → TB48 → DEFN-O4/O5 (Review) → CB49 → TB49 → RP-01 Review.
   - Rules: RA-164.3 P1–P6 + RA-165.2 F1 (probe every `set_mesh` in a fixture decision) / F2 (every outcome row maps to a harness branch); line-neutral edits above pinned lines until CB47A. Post-RP-01: O2 DEFN, then `DIAG-RETAIN`.
 - Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB38 490/504 candidate; TB46 original attempt invalid (S5), TB46 rerun 498/6 valid RED; TB41–TB45 focused candidates remain unpromoted; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
 

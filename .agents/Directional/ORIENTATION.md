@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-27 · [RA-165](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md) (TB46A-REV): the TB46 attempt was S5-invalid (497/7). Selector174 has two invalid TriMesh fixtures (`:439` isolated vertex, `:569` all-boundary triangles), confirmed by scratch probes; a line-neutral fix (CB46B) is authorized, then the TB46 re-run. The TB46A fail-closed harness is accepted. RA-164 cadence P1–P6 stands. CP2 491/491 accepted, selector497 frozen and unpromoted, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-27 · [DEFN-E](Architecture_M6_CP3_DEFN_TB46_Endpoint_Cluster_Review_Decision_20261027.md) independently confirmed TB46 498 PASS / 6 registered RED, then separated selector201 stale terminal-only assertion, cp3entry:2 missing produced two-carrier junction, and cp3entry:4 missing qualifying A5 OrdinaryFront fixture. TB47 504-row manifest/pins frozen; CB47A migration next. CP2 491/491 accepted; selector497 frozen/unpromoted; stable 66/17/49 debt1; RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,9 +50,9 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current independent Review:** [RA-165](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md) adjudicates the TB46A review prerequisite. It corrects RA-164 H1, records F1 (probe every `set_mesh` before deciding a fixture) and F2 (each outcome row must map to a harness branch), and registers O7 (the non-compiling oracle-tests target).
+**Current independent Review:** [DEFN-E](Architecture_M6_CP3_DEFN_TB46_Endpoint_Cluster_Review_Decision_20261027.md) assigns E1 stale endpoint assertion, E2 authentic two-carrier produced-witness obligation, E3 A5 OrdinaryFront source-valid positive, and freezes TB47 site/witness pins. RA-165 F1/F2 and O7 remain binding.
 
-**Current test authority:** last valid full gate TB38 490/504 candidate (source `038ae7fd7`; no production change since). The TB46 attempt is invalid (S5); its raw 497 GUARD rows are green. Focused TB41–TB45 stay candidates until the TB46 re-run. No CP3 or selector497 promotion.
+**Current test authority:** TB46 rerun source `8f0d4329695d`, valid 504/504 with 498 PASS / 6 registered RED, no control violations; original TB46 attempt S5-invalid. All 497 guards pass; selector174 positive passes; cp3entry:4 fails at D5 later. No CP3 or selector497 promotion.
 
 **Prior TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 
@@ -106,16 +106,18 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-CB46B-RP01-SELECTOR174-MANIFOLD-FIXTURE` ([RA-165.3](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md), line-neutral) → `M6-CP3-TB46-RP01-FULL-GATE` re-run (predict 498/6). Bounded procedure: RA-164.3 P1–P6 and RA-165.2 F1/F2. No CP3 or selector497 promotion.
+**Immediate:** `M6-CP3-CB47A-HARNESS-MANIFEST-PINS` ([DEFN-E](Architecture_M6_CP3_DEFN_TB46_Endpoint_Cluster_Review_Decision_20261027.md)) migrates six exact site/witness pins from hardcoded harness logic to frozen [TB47 manifest](Architecture_M6_CP3_TB47_Full_Gate_Case_Manifest.tsv), offline replay must match 504 prior verdicts and reject one-row pin mutation. Then CB47 E corrections → TB47 full gate; G later. No CP3/selector promotion.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Close RP-01 by full-gate TBs: CB46B (174 fixtures) → TB46 re-run → DEFN-E (201, cp3entry:2, cp3entry:4 D5) → CB47A harness pins ∥ CB47 → TB47 → DEFN-G (442, `focused30:12`, cp3entry:1) → CB48/TB48 → DEFN-O4/O5 (+P1, C1) → CB49/TB49 → RP-01 Review (O6 scope, O7 owner). O2 post-RP-01. | `M6-CP3-CB46B-RP01-SELECTOR174-MANIFOLD-FIXTURE` per [RA-165](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md) |
+| **1** | Close RP-01 by full-gate TBs: DEFN-E (E1/E2/E3 decided) → CB47A harness pins → CB47 E witnesses → TB47 → DEFN-G (442, `focused30:12`, cp3entry:1) → CB48/TB48 → DEFN-O4/O5 (+P1, C1) → CB49/TB49 → RP-01 Review (O6 scope, O7 owner). O2 post-RP-01. | `M6-CP3-CB47A-HARNESS-MANIFEST-PINS` per [DEFN-E](Architecture_M6_CP3_DEFN_TB46_Endpoint_Cluster_Review_Decision_20261027.md)(Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
+
+- **Measured endpoints do not prove a whole-rail junction (DEFN-E):** one-step `(1,4)` and `(4,7)` produced certificates may each be correct yet cannot witness a single two-carrier junction. Preserve T/R/I source-attested endpoint types and the authentic terminal requirement; a handwritten two-edge rail or a present A5 product without an eligible reciprocal OrdinaryFront is not a positive. See [DEFN-E](Architecture_M6_CP3_DEFN_TB46_Endpoint_Cluster_Review_Decision_20261027.md).
 
 - **Masked off-gate negative and nondiscriminating network guard (TB44-REV):** 8219 omits terminal provenance and fails before its intended A3 predicate; 7414 forges a typed source-edge key that is invalid even without A2a network binding. Positive front-side reachability is real but cannot establish network-specific dependency. O5 owns RA-161 P1; see [TB44-REV](Architecture_M6_CP3_TB44_Selector405_Fixed_Plan_Independent_Review_Decision_20261026.md). RA-162: supplying provenance alone would make 8219 pass on a torn input (non-rail spoke in `hardFeatureEdges`); a negative must be production-reachable.
 
