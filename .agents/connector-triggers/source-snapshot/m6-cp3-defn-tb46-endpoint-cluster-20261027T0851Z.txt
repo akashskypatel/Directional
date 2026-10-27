@@ -1,0 +1,2 @@
+Source snapshot trigger for M6-CP3-DEFN-RP01-TB46-ENDPOINT-CLUSTER.
+Trigger SHA is the frozen source authority for this turn.
