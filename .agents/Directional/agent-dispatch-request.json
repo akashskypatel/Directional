@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r12-20261027-v1",
+  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r13-20261027-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r12-v1",
-  "file_id": "1B7DpdjUIuXYTT4SV4vcdunBoVHfpKbla",
-  "patch_sha256": "1f2aec9e7fa890881f9437247b539177f7cae7996c48c640f5715116a208ed6a",
-  "base_sha": "99a65ae3a6110376dec2f70b0eaf4630daab08a5",
+  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r13-v1",
+  "file_id": "1E7JKWErp2C4vsMJ8IE4yWZbRgFtaYDGg",
+  "patch_sha256": "5b813ed69329528559114f3a8b3aad9a9be0d73e308beb182c5bc4881ac2f22e",
+  "base_sha": "3271e3d87ef4eee6ad7ae69b588efb81c0f4b5b3",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: correct TB47 torus gauge candidate preserving nonzero source carrier",
+  "commit_message": "docs: add independent finite torus arm-relabel carrier census to TB47 review",
   "retention_days": 14
 }
