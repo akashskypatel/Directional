@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r19-20261027-v1",
+  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r20-20261027-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r19-v1",
-  "file_id": "1VrPcUk65vXAAVk_83JMEBjW8Ym5o9aS8",
-  "patch_sha256": "126f02d8e1db436b2d3b45684c6616b08e8e883573d98cc4615223e206a3171b",
-  "base_sha": "69b3d63c735f68a43ef090092499ad708fa584de",
+  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r20-v1",
+  "file_id": "1jh2yEz23W9aDzUE_Fouwyss7lgcUqjD8",
+  "patch_sha256": "e9b6a63481799df358b2f2fac1771097fb2c7ce3016421e6a9d37e45117b41aa",
+  "base_sha": "b0a42b9fc667857e99866c5a6d8844723da8d899",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: bound TB47 G3 source matching under frozen torus oracle (R19)",
+  "commit_message": "docs: rehome unreachable TB47 G1 non-hard positive (R20)",
   "retention_days": 14
 }
