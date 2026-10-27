@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r18-20261027-v1",
+  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r19-20261027-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r18-v1",
-  "file_id": "1NZR3OLXfKzskHvne9zqhXOQ_Yyua72t8",
-  "patch_sha256": "30d8a47b839f49d56ca6d7d6f59b98c3250a5333fd6b3e5368258b4238e0e07d",
-  "base_sha": "49e281a1450a84e9fc6372da6b8df764bfffef64",
+  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r19-v1",
+  "file_id": "1VrPcUk65vXAAVk_83JMEBjW8Ym5o9aS8",
+  "patch_sha256": "126f02d8e1db436b2d3b45684c6616b08e8e883573d98cc4615223e206a3171b",
+  "base_sha": "69b3d63c735f68a43ef090092499ad708fa584de",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: independently falsify TB47 G3 cyclic-arm oracle admission (R18)",
+  "commit_message": "docs: bound TB47 G3 source matching under frozen torus oracle (R19)",
   "retention_days": 14
 }
