@@ -1,2 +1,0 @@
-# TB45-REV temporary source snapshot trigger cleanup
-.agents/connector-triggers/source-snapshot/m6-cp3-tb45-rev-20261027.txt
