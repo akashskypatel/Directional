@@ -1,3 +1,9 @@
+**RA-165 TB46A-REV (2026-10-27, candidate/non-stable):**
+
+- Selector174's RED since 10-14 is caused by two invalid test fixtures, not a product regression: `:569` has two isolated triangles (DCEL rejects all-boundary faces; present since `b43fa8e95`), and `:439` has an isolated vertex 4 (since `18357617a`).
+- RA-164 named the wrong throw site; TB46A found only `:439`. Scratch probes P0, P1 and P2 settle it, and the corrected body passes in full.
+- cp3entry:4's later failure at `TQTests:4063` (D5) moves to cluster E. No stable event; 66/17/49, debt 1. [RA-165](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md).
+
 **TB46A control-plane correction/compile (2026-10-27; no stable event):** [Record](Architecture_M6_CP3_TB46A_Orchestration_Correction_Compile_Record_20261027.md). Harness source `5e6de03f` fail-closed registers exact five RED first sites and independently located later POSITIVE `cp3entry:4`; `selector:174` is not allowed because its `unknown file` exception is not source located. Correct eight-target GMP/GMPXX compile-only run `40457083585`, package `12712389032`, succeeds; earlier malformed caller/extra oracle target attempts failed, no semantic execution. Static new evidence: 174's two-face `manifoldHardSource` contains an isolated fifth vertex, plausibly causing earlier DCEL exception before H1; **Review prerequisite** for fixture change. No independently executed new TB or accepted product evidence; stable **66 / 17 / 49**, debt **1**, CP2 **491/491** unchanged. Frozen 504-row TB46 rerun held.
 
 **TB46 full-gate candidate/invalid-attempt classification (2026-10-27; no stable event):**

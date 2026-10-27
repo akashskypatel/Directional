@@ -1,34 +1,32 @@
-## CURRENT — TB46A harness correction compiled; selector174 fixture Review prerequisite (2026-10-27)
+## CURRENT — RA-165 TB46A-REV: 174 manifold fixture authorized; CB46B next (2026-10-27)
 
-- [x] `M6-CP3-TB46A-ORCH` harness-only correction committed as `5e6de03f`; exact five RED first sites and independently source-located later POSITIVE failure admitted as RED, GUARD/early/unknown remain fail-closed. [Compile record](.agents/Directional/Architecture_M6_CP3_TB46A_Orchestration_Correction_Compile_Record_20261027.md): 8 GMP/GMPXX targets, run `40457083585`, package `12712389032`, 28/28 checksums, `runtimeExecution=false`.
-- [ ] **REVIEW PREREQUISITE before TB46**: independently adjudicate selector174's invalid manifold fixture (isolated fifth vertex causes DCEL consistency exception before intended H1 assertion); issue a separately authorized, scoped fixture correction/compile step if proven. Do not change the harness, 504-row selector/manifest, or test assertions to hide it. Source-only independent diagnosis in the TB46A compile record; no new runtime credit.
-- [ ] Conditional `M6-CP3-TB46-RP01-FULL-GATE` still frozen but **held** pending prerequisite; original attempt 504/504, 497 PASS/7 RED, 2 POSITIVE failures, S5 invalid acceptance. Stable 66/17/49, debt1; CP2 491/491 accepted; CP3/selector497 unpromoted.
-
-### Prior CB46/TB46 plan (retained as history)
-
-
-- [x] **RA-164 audit** ([decision](.agents/Directional/Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md)): TB45-REV confirmed (ZIP `7d18b08a…`, 9/9 members, 3/3 joins; CB45 test SHA = HEAD). No production change since TB38 `038ae7fd7`.
-  - H1 `selector:174` decided: fixture face `0,1,4` makes the source nonmanifold; `TriMesh::set_mesh` throws (`TriMesh.h:158–162, 339`) before the rail builder; `RemeshPipeline.cpp:9639` `>2U` is unreachable (kept). Lines after `:459` have not run since 2026-10-14.
-  - H2 `cp3entry:4` decided: TB38 site `open-rail-chain` is the A4 checked factory correctly rejecting a torn draft (`SurfaceCellTracing.cpp:8703–8708`); A5 expectation unreachable.
-  - Cluster E (201, cp3entry:2): 3×3 midline; T/R/I endpoints since `ccc0b00ab` (10-19) vs older all-terminal/junction oracles. Cluster G (442, `focused30:12`, cp3entry:1): face-gauge relabel invariance.
-  - Cadence realigned to `Turn_Cadence.md` (RA-164.3 P1–P6): CB→full-gate TB direct; red TB → Review-owned DEFN; STOP codes S1–S5; no `UNKNOWN` successor on COMPLETE/BLOCKED. `M6-CP3-DEFN-RP01-SELECTOR174-DCEL-EXCEPTION-DISPOSITION` superseded.
-- [x] **`M6-CP3-CB46-RP01-RAIL-ORACLE-REHOME-AND-ENDPOINT-DIAGNOSTICS`** (RA-164.4) — test-only H1/H2 and D1–D3 diagnostics; exact commit `c05d52dd7`, [compile record](.agents/Directional/Architecture_M6_CP3_CB46_Rail_Oracle_Rehome_And_Endpoint_Diagnostics_Code_Build_Record_20261027.md). Eight GMP/GMPXX targets compiled, no runtime.
-- [x] **`M6-CP3-TB46-RP01-FULL-GATE` initial attempt (S5)** (RA-164.5) — 504-row [manifest](.agents/Directional/Architecture_M6_CP3_TB46_Full_Gate_Case_Manifest.tsv) `717f4f0f…`; predict 499/5; outcome table names every successor.
-- [ ] `M6-CP3-DEFN-RP01-TB46-ENDPOINT-CLUSTER` (Review) → CB47 → TB47 full gate.
+- [x] **RA-165** ([decision](.agents/Directional/Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md)): Scratch probes (diagnostic only) found two invalid fixtures in 174: isolated vertex 4 at `REPackageTests:439`, and all-boundary isolated triangles at `:569`, which have thrown since `b43fa8e95` (10-14). P0 reproduces TB46; P2 (both fixes) passes the whole body. RA-164 H1 corrected; TB46A diagnosis was incomplete. TB46A harness `5e6de03fa` accepted. Findings F1–F5; O7 oracle-target compile break registered.
+- [ ] **NEXT `M6-CP3-CB46B-RP01-SELECTOR174-MANIFOLD-FIXTURE`** (RA-165.3) — test-only, **line-neutral** (numstat `12 12`): F174-a `:439` → `ASSERT_NO_THROW(manifoldHardSource.set_mesh(incidenceVertices.topRows(4), incidenceFaces));`; F174-c `:564–569` → an 8-vertex, 4-face two-component source with `ASSERT_NO_THROW`; F174-b and F174-d comments. 8 GMP/GMPXX targets, no runtime → TB46 re-run on success.
+- [ ] `M6-CP3-TB46-RP01-FULL-GATE` re-run (RA-165.4) — CB46B package, harness `37b01215…`, manifest `717f4f0f…`; predict **498/6** (cp3entry:4 RED at registered `:4063`); exit 0 → DEFN-E; `control_violation` → TB46-REV; infra → TB46B-ORCH.
+- [ ] `M6-CP3-DEFN-RP01-TB46-ENDPOINT-CLUSTER` (Review; E: 201, cp3entry:2, cp3entry:4 D5) → freezes TB47 manifest with `asserted_site` pins.
+- [ ] `M6-CP3-CB47A-HARNESS-MANIFEST-PINS` (tool-only; offline replay of TB46 re-run logs must reproduce verdicts; pin mutation fails closed) ∥ CB47 → `M6-CP3-TB47-RP01-FULL-GATE`.
 - [ ] `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` (Review) → CB48 → TB48 full gate.
-- [ ] `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` (Review; O4, O5, P1-a, P1-b, RA-162 C1, H2 A5 reachability) → CB49 → TB49 → green full gate → RP-01 Review (O6 scope).
+- [ ] `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` (Review; O4, O5, P1-a, P1-b, RA-162 C1, H2 A5 reachability) → CB49 → TB49 → green full gate → RP-01 Review (O6 scope, O7 owner).
 - [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS-RETIREMENT` (RA-160.4 + RA-161 T2), then `DIAG-RETAIN`.
-- [ ] Carried separately: O1, O6, RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4, G4-B002.
+- [ ] Carried separately: O1, O6, **O7** (`directional_surface_cell_oracle_tests` non-compiling since ≤10-04; not in any gate), RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4, G4-B002.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
   - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
-  - Done: TB45 → TB45-REV → RA-164.
-  - **CB46 current** → TB46 → DEFN-E (Review) → CB47 → TB47 → DEFN-G (Review) → CB48 → TB48 → DEFN-O4/O5 (Review) → CB49 → TB49 → RP-01 Review.
-  - Rules: RA-164.3 P1–P6. Post-RP-01: O2 DEFN, then `DIAG-RETAIN`.
-- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB38 490/504 candidate; TB41–TB45 focused candidates pending TB46; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+  - Done: RA-164 → CB46 → TB46 (S5) → TB46A-ORCH → RA-165.
+  - **CB46B current** → TB46 re-run → DEFN-E (Review) → CB47A ∥ CB47 → TB47 → DEFN-G (Review) → CB48 → TB48 → DEFN-O4/O5 (Review) → CB49 → TB49 → RP-01 Review.
+  - Rules: RA-164.3 P1–P6 + RA-165.2 F1 (probe every `set_mesh` in a fixture decision) / F2 (every outcome row maps to a harness branch); line-neutral edits above pinned lines until CB47A. Post-RP-01: O2 DEFN, then `DIAG-RETAIN`.
+- Frozen: stable 66/17/49, debt 1; CP2 491/491 accepted; TB38 490/504 candidate; TB46 attempt invalid (S5); TB41–TB45 focused candidates pending TB46 re-run; selector497 frozen; RP-01 open, RP-02 unreached, Gate C suspended.
+
+---
+
+## HISTORY — RA-164; CB46; TB46 (S5); TB46A-ORCH (2026-10-27)
+
+- [x] RA-164 TB45-REV audit: 174/cp3entry:4 decided statically (174 throw site later corrected by RA-165); clusters E/G; cadence realigned (P1–P6).
+- [x] CB46 `c05d52dd7` (H1/H2/D1–D3, [record](.agents/Directional/Architecture_M6_CP3_CB46_Rail_Oracle_Rehome_And_Endpoint_Diagnostics_Code_Build_Record_20261027.md)) → TB46 run `40448739180` 497/7, S5 ([report](.agents/Directional/Architecture_M6_CP3_TB46_Full_Gate_Test_Benchmark_Report_20261027.md)): 174 uncaught DCEL exception, cp3entry:4 later `:4063`.
+- [x] TB46A-ORCH harness `5e6de03fa` ([record](.agents/Directional/Architecture_M6_CP3_TB46A_Orchestration_Correction_Compile_Record_20261027.md)), compile run `40457083585`, package `12712389032`; review prerequisite resolved by RA-165.
 
 ---
 

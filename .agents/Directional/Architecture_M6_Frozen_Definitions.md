@@ -1,3 +1,11 @@
+## RA-165 — TB46A-REV: selector174 fixtures; review rules F1/F2 (2026-10-27)
+
+- **RA-165.2 F1:** a fixture-validity decision that relies on a TriMesh/DCEL precondition must check every `set_mesh` in the body and attach a probe when that decides a disposition.
+- **F2:** every outcome-table row must map to a branch of the pinned harness classifier, or the freezing CB must change the harness.
+- **F3:** until `CB47A` moves the harness pins into the manifest `asserted_site`, any edit above a pinned `file:line` must be line-neutral.
+- **RA-165.3:** CB46B allowlist F174-a–d, numstat `12 12`.
+- **RA-165.4:** the TB46 re-run predicts 498/6.
+
 ## RA-164 — TB45-REV audit; rail oracle re-homes; RED clusters; cadence P1–P6 (2026-10-27)
 
 - [Decision](Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md).

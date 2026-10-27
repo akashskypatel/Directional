@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-27 · [RA-164](Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md) confirmed TB45-REV, decided 174 (nonmanifold fixture) and cp3entry:4 (A4 `open-rail-chain` owner), clustered the remaining REDs and realigned CP3 to `Turn_Cadence.md` (CB→full-gate TB; red TB → Review-owned DEFN). CP2 491/491 accepted, selector497 frozen/unpromoted, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-27 · [RA-165](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md) (TB46A-REV): the TB46 attempt was S5-invalid (497/7). Selector174 has two invalid TriMesh fixtures (`:439` isolated vertex, `:569` all-boundary triangles), confirmed by scratch probes; a line-neutral fix (CB46B) is authorized, then the TB46 re-run. The TB46A fail-closed harness is accepted. RA-164 cadence P1–P6 stands. CP2 491/491 accepted, selector497 frozen and unpromoted, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,9 +50,9 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current independent Review:** [RA-164](Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md) audits [TB45-REV](Architecture_M6_CP3_TB45_Selector242_Seam_Rehome_Independent_Review_Decision_20261027.md) (confirmed, 9/9 members) and freezes CB46 + the 504-row TB46 full gate (predict 499/5).
+**Current independent Review:** [RA-165](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md) adjudicates the TB46A review prerequisite. It corrects RA-164 H1, records F1 (probe every `set_mesh` before deciding a fixture) and F2 (each outcome row must map to a harness branch), and registers O7 (the non-compiling oracle-tests target).
 
-**Current test authority:** last full gate TB38 490/504 candidate (source `038ae7fd7`; no production change since). Focused TB41–TB45 (incl. TB45 242/239/185 3/3) are candidates until TB46 reconciles them; no CP3/selector497 promotion.
+**Current test authority:** last valid full gate TB38 490/504 candidate (source `038ae7fd7`; no production change since). The TB46 attempt is invalid (S5); its raw 497 GUARD rows are green. Focused TB41–TB45 stay candidates until the TB46 re-run. No CP3 or selector497 promotion.
 
 **Prior TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 
@@ -106,11 +106,11 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-CB46-RP01-RAIL-ORACLE-REHOME-AND-ENDPOINT-DIAGNOSTICS` ([RA-164.4](Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md)) → `M6-CP3-TB46-RP01-FULL-GATE` directly. Bounded procedure RA-164.3 P1–P6 (STOP codes, no `UNKNOWN` successor). No CP3/selector497 promotion.
+**Immediate:** `M6-CP3-CB46B-RP01-SELECTOR174-MANIFOLD-FIXTURE` ([RA-165.3](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md), line-neutral) → `M6-CP3-TB46-RP01-FULL-GATE` re-run (predict 498/6). Bounded procedure: RA-164.3 P1–P6 and RA-165.2 F1/F2. No CP3 or selector497 promotion.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Close RP-01 by full-gate TBs: CB46 (174, cp3entry:4 re-home; E/G diagnostics) → TB46 → DEFN-E (201, cp3entry:2) → CB47/TB47 → DEFN-G (442, `focused30:12`, cp3entry:1) → CB48/TB48 → DEFN-O4/O5 (+P1, C1) → CB49/TB49 → RP-01 Review (O6 scope). O2 post-RP-01. | `M6-CP3-CB46-RP01-RAIL-ORACLE-REHOME-AND-ENDPOINT-DIAGNOSTICS` per [RA-164](Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md) |
+| **1** | Close RP-01 by full-gate TBs: CB46B (174 fixtures) → TB46 re-run → DEFN-E (201, cp3entry:2, cp3entry:4 D5) → CB47A harness pins ∥ CB47 → TB47 → DEFN-G (442, `focused30:12`, cp3entry:1) → CB48/TB48 → DEFN-O4/O5 (+P1, C1) → CB49/TB49 → RP-01 Review (O6 scope, O7 owner). O2 post-RP-01. | `M6-CP3-CB46B-RP01-SELECTOR174-MANIFOLD-FIXTURE` per [RA-165](Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

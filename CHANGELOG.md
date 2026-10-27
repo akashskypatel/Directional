@@ -1,3 +1,12 @@
+## 2026-10-27 — RA-165 TB46A-REV: selector174 fixtures; CB46B authorized
+
+- [RA-165](.agents/Directional/Architecture_M6_CP3_TB46A_REV_Selector174_Manifold_Fixture_Authorization_Decision_20261027.md):
+  - Selector174 has two invalid TriMesh fixtures: an isolated vertex at `REPackageTests:439`, and all-boundary isolated triangles at `:569` (present since `b43fa8e95`, 10-14).
+  - Scratch probes, diagnostic only: P0 reproduces TB46 row216; the TB46A fix alone still throws; the RA-165.3 hunks pass the whole body.
+  - The RA-164 H1 throw site is corrected. The TB46A harness `5e6de03fa` is accepted.
+  - Findings F1–F5; O7 (oracle-tests target non-compiling) registered.
+  - Next: line-neutral `M6-CP3-CB46B-RP01-SELECTOR174-MANIFOLD-FIXTURE` → TB46 re-run (predict 498/6) → DEFN-E → CB47A ∥ CB47 → TB47.
+
 ## 2026-10-27 — TB46A harness correction compiled; 174 fixture Review prerequisite
 
 - [TB46A code/build record](.agents/Directional/Architecture_M6_CP3_TB46A_Orchestration_Correction_Compile_Record_20261027.md): harness-only source `5e6de03f`, five RED first-site checks, source-attributed later POSITIVE case preserved RED, unknown/early fail closed; [eight-target GMP/GMPXX compile run 40457083585](https://github.com/akashskypatel/Directional/actions/runs/40457083585), package `12712389032`, 28/28 checksums, no runtime. Two earlier compile requests failed due incorrect target selection, not corrected with test changes. `selector:174` likely fails earlier at isolated-vertex `set_mesh`; independent fixture Review required before TB46 rerun. Stable 66/17/49 debt1, CP2 491/491 accepted; no TB/CP3 promotion.
