@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r11-20261027-v2",
+  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r12-20261027-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r11-v2",
-  "file_id": "15VnWMOKETMgBEygE9Dn4q06c2jKtvRDZ",
-  "patch_sha256": "843a0eb2e113452e42f1ebe3ffc4e12b182ba043df9ef71eb66cb300b34da174",
-  "base_sha": "50415fbe3a8f88d3698b0fc8c699c3529e759ccf",
+  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r12-v1",
+  "file_id": "1B7DpdjUIuXYTT4SV4vcdunBoVHfpKbla",
+  "patch_sha256": "1f2aec9e7fa890881f9437247b539177f7cae7996c48c640f5715116a208ed6a",
+  "base_sha": "99a65ae3a6110376dec2f70b0eaf4630daab08a5",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve R11 torus gauge raw-arm metamorphic review evidence",
+  "commit_message": "docs: correct TB47 torus gauge candidate preserving nonzero source carrier",
   "retention_days": 14
 }
