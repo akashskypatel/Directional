@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb46a-docs-closeout-r2-20261027-r2",
+  "request_id": "m6-cp3-cb46b-fixture-apply-20261027-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb46a-docs-closeout-r2",
-  "file_id": "11I0xnJ6UwZCJf-799J4p22A443Nwj8OA",
-  "patch_sha256": "99db8d372f33a64a571514a4352e7c5e41594b681c7d70a74bf8935294e0ce63",
-  "base_sha": "e5b0a69664f1d0f382ce902a89c3e5aef62dd61b",
+  "mailbox_key": "m6-cp3-cb46b-fixture-apply",
+  "file_id": "1Wogavvwl22a840pJJPP2yvWBKJzirYXc",
+  "patch_sha256": "daf94dbc051c30c45bd5a48537a13ac0ed5c94687a3dfbf21825ff429ba669a2",
+  "base_sha": "93c79d98b0791deb3855f6b60ed1418c80e5259f",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): retain TB46A compile evidence and review prerequisite",
+  "commit_message": "test(surfacecells): correct selector174 manifold source fixtures",
   "retention_days": 14
 }
