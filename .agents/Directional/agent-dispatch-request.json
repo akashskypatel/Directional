@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r23-20261027-v1",
+  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r24-20261027-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r23-v1",
-  "file_id": "1VrzYXkyGVtjiSad8rgL5lfyh7nAeg7qp",
-  "patch_sha256": "7e1dbb02f3512f7cdf4ea4688ab62d462bc49965651807fa270b3aa9c36d9739",
-  "base_sha": "6ac5de7209aee78fdf1036a5ff96fc3637551651",
+  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r24-v1",
+  "file_id": "1bFd87AkdFWDc090IIfnpwYYiLRjZ3DQL",
+  "patch_sha256": "8bd39e357e22983e1f5178dc80dd11c257878200db92cc8c29a99c976c6213ec",
+  "base_sha": "934944303487657620bc3cca5fe892ff418bd236",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: withdraw vacuous R22 torus closure preflight (R23)",
+  "commit_message": "docs: re-home G3 chart closure oracle to native A4 rectangular contract (R24)",
   "retention_days": 14
 }
