@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r16-20261027-v1",
+  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r17-20261027-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r16-v1",
-  "file_id": "12E5CRweOUTIWFbvIaACAuZrIMHS12v7K",
-  "patch_sha256": "ec6ee6a9ca7dac110ea1e55519364e232c44543ed222a403e22c222ae6b074b9",
-  "base_sha": "15f521791be5f00c02b42b16287e9daf3077fac5",
+  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r17-v1",
+  "file_id": "1opLS1h_3txoqkr17xhzRfvRASV9rf4lD",
+  "patch_sha256": "79f9c9386ddf4d1fe70f0b24cf24a7a6bae6ce995f1b92a0f02b760ea7b3785c",
+  "base_sha": "af1359fa7b26bba4b7c9555a9b35d4c1de2b0003",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: independently verify TB47 torus hard-carrier holonomy invariance (R16)",
+  "commit_message": "docs: independently audit TB47 G3 oriented principal matching reciprocity (R17)",
   "retention_days": 14
 }
