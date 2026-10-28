@@ -1,2 +1,0 @@
-Snapshot trigger for canonical M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER continuation.
-Pre-trigger head: aafa1898453319328062016905561dbf6bcae5a2
