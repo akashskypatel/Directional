@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r39-a7-gauge-owner-20261028-v1",
+  "request_id": "m6-cp3-tb47-r40-masked-periodic-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r39-a7-owner-v1",
-  "file_id": "1KKtD2GwVjjkrGTClrDJ6bRBAnRoD1h6S",
-  "patch_sha256": "fd8bb70e2e49c877085dcfedda2a6ee14b08d6386ddc57fb38e679a0e2e0c14d",
-  "base_sha": "3ca62b5f30f822fc6d296bd21efa2f6ed43045dc",
+  "mailbox_key": "m6-cp3-tb47-r40-masked-periodic-v1",
+  "file_id": "1WxGS2zfK-g5YMOxsvTPGRThXfX4BbEao",
+  "patch_sha256": "a58f6d7a188c01db9c908e2dd30fd97ebba048aaf777cec7060fb2beb51fb1d5",
+  "base_sha": "ffea2a9b2f3977b4fac09f409d029ecec4adf73d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): distinguish A7 gauge presence from A5 signed transport (R39)",
+  "commit_message": "docs(directional): record masked periodic tail in failing G2 test (R40)",
   "retention_days": 14
 }
