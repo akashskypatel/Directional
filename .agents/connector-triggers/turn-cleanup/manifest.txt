@@ -1,0 +1,2 @@
+# CB48 temporary repository paths
+.agents/connector-triggers/source-snapshot/20261028-cb48-1632.txt
