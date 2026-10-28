@@ -1,3 +1,8 @@
+## 2026-10-28 — TB49 independent selected-gate evidence verified (canonical Review closeout pending)
+
+- [Review evidence](.agents/Directional/Architecture_M6_CP3_TB49_RP01_Full_Gate_Independent_Review_Decision_20261028.md): 504/504 distinct native PASS and exact log/ledger joins; result 1,014/1,014 checksum entries, CB49E package 28/28; accepted 491 prefix unchanged. No native runtime, build, test source or selector mutation by Review.
+- No stable-regression/CP3 milestone/selector promotion. Authentic history-boundary verification, documentation drift and final review closeout remain pending; active turn is still `M6-CP3-TB49-RP01-FULL-GATE-REV`.
+
 ## 2026-10-28 — TB49 immutable full gate executed: 504 PASS / 0 RED (independent Review next)
 
 - [TB49 report](.agents/Directional/Architecture_M6_CP3_TB49_RP01_Full_Gate_Test_Benchmark_Report_20261028.md): [run 40776332136](https://github.com/akashskypatel/Directional/actions/runs/40776332136), artifact `12857282498`, ZIP `3113383ccc64bda5747e9f115e95cafa60e67f569f84b40b22ed6c69cea692db`; 504/504 manifest/ledger/raw-log verification; no controls or immutability failures, no rebuild or repairs.

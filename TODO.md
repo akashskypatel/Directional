@@ -1,4 +1,4 @@
-## CURRENT — TB49 504 PASS / 0 RED executed; independent Review next (2026-10-28)
+## CURRENT — TB49 504/0 independently reverified; Review closeout pending (2026-10-28)
 
 - [x] **RA-168** ([decision](.agents/Directional/Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md)) audits `M6-CP3-TB48-RP01-FULL-GATE-REV` and completes `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` and `M6-CP3-DEFN-RP01-E2-RAIL-VERTEX-ADJACENCY-PATCH` (DEFN, probe-backed).
   - TB48 evidence confirmed: 502/2, 1014/1014, pins `TQ:3027`/`TQ:3183`.
@@ -8,7 +8,7 @@
 - [x] **`M6-CP3-CB49-RP01-G3-A5-PERIODIC-PLACEMENT-GAUGE`** (CB; RA-168.4): exact P1 `5897798d…`, numstat `8 2` RemeshPipeline.cpp + `13 2` TQ; eight GMP targets compiled at `9c84ba9cc8e4` ([record](.agents/Directional/Architecture_M6_CP3_CB49_RP01_G3_A5_Periodic_Placement_Gauge_Code_Build_Record_20261028.md)); no runtime.
 - [x] `M6-CP3-CB49E-RP01-E2-RAIL-VERTEX-ADJACENCY` (CB; RA-168.5): exact P2 `9ebef3cc…`, numstat `215 255` TQ; 8 GMP targets compiled at `092b52eba881` ([record](.agents/Directional/Architecture_M6_CP3_CB49E_RP01_E2_Rail_Vertex_Adjacency_Code_Build_Record_20261028.md)), no runtime.
 - [x] `M6-CP3-TB49-RP01-FULL-GATE-EXEC` (TB-EXEC; RA-168.6): **504 PASS / 0 RED** observed ([report](.agents/Directional/Architecture_M6_CP3_TB49_RP01_Full_Gate_Test_Benchmark_Report_20261028.md), run 40776332136); immutable artifact 12857282498.
-- [ ] **NEXT** `M6-CP3-TB49-RP01-FULL-GATE-REV` (TB-REV): independently adjudicate TB49, CP3 full-gate admission and stable accounting; no TB-execution turn promotion.
+- [ ] **ACTIVE** `M6-CP3-TB49-RP01-FULL-GATE-REV` (TB-REV): 504 native logs and accepted prefix independently reverified; authentic history/boundary and durable closeout pending. No CP3 milestone promotion. [Review evidence](.agents/Directional/Architecture_M6_CP3_TB49_RP01_Full_Gate_Independent_Review_Decision_20261028.md).
 - [ ] `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-CB50-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-TB50-RP01-FULL-GATE-EXEC` → `…-REV` → `M6-CP3-PLAN-RP01-CLOSURE` (O6 scope; O7–O12 owners; O9 junction-path retirement).
 - [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`, then `M6-DEFN-DIAG-RETAIN-A5-A7`.
 - [ ] Carried separately:

@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-28 · [RA-168](Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md) audited TB48-REV and completed the G3/E2 DEFNs by probe: P-G3 is an **A5** periodic placement-gauge defect (not A4); E2 is a stale oracle (A4 already publishes the D2 R-split). Next: exact-patch CB49 → CB49E → TB49 (predict 504/0). CP2 491/491 accepted, selector497/CP3 unpromoted, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-28 · TB49 independent evidence review: 504/504 source-authenticated native PASS and frozen 491-case accepted prefix reverified; authentic history/boundary and durable closeout remain pending. Next canonical turn stays `M6-CP3-TB49-RP01-FULL-GATE-REV`. CP2 491/491 accepted, selector497/CP3 unpromoted, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -47,12 +47,12 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
+| **M6-CP3 — active** | TB49 selected full gate **504/504** independently rechecked, but formal Review/CP3 closure and direct-production matrix **not accepted**. Frozen 497-entry selector; historical R3 403/94. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current independent Review:** [RA-168](Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md) corrects TB48-REV's P-G3 owner (A4 → A5) and its E2 falsifier (it demanded junctions, which D2 forbids). Implementation agents get only exact patches and frozen manifests; probe-requiring DEFN/TB-REV turns stay on the Review track. O10–O12 are registered.
+**Prior Review authority:** [RA-168](Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md) corrects TB48-REV's P-G3 owner (A4 → A5) and its E2 falsifier (it demanded junctions, which D2 forbids). Implementation agents get only exact patches and frozen manifests; probe-requiring DEFN/TB-REV turns stay on the Review track. O10–O12 are registered.
 
-**Current test authority:** TB48 502 PASS / 2 registered RED (CB48 `4c611941…`, result `12836819707`), valid expected-RED candidate. TB49 manifest `a0e39fa25d70…` predicts 504/0 after CB49 + CB49E (RA-168 local probe: 502/504, 2 macOS-only fails). No CP3 or selector497 promotion.
+**Current test authority:** TB49 immutable candidate **504 PASS / 0 RED** (run 40776332136, result 12857282498), independently checked against all 504 logs and frozen 491 prefix; Review closeout remains pending authentic history checks. This does not establish representative D0 production, CP3 milestone closure or selector497 promotion. Earlier TB48 502/2 remains historical expected-RED evidence.
 
 **Prior TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 
@@ -106,7 +106,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-CB49-RP01-G3-A5-PERIODIC-PLACEMENT-GAUGE` (CB; [RA-168](Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md).4, exact patch `5897798d…`) → `M6-CP3-CB49E-RP01-E2-RAIL-VERTEX-ADJACENCY` (CB; .5, exact patch `9ebef3cc…`) → TB49-EXEC (predict 504/0) → TB49-REV.
+**Immediate (historical completed):** `M6-CP3-CB49-RP01-G3-A5-PERIODIC-PLACEMENT-GAUGE` (CB; [RA-168](Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md).4, exact patch `5897798d…`) → `M6-CP3-CB49E-RP01-E2-RAIL-VERTEX-ADJACENCY` (CB; .5, exact patch `9ebef3cc…`) → TB49-EXEC (predict 504/0) → TB49-REV.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
