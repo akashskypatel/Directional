@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb48-rev-docs-20261028-v1",
+  "request_id": "m6-cp3-cb49-g3-a5-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb48-rev-docs-20261028-v1",
-  "file_id": "1LT2BaBlViBJrNzdKWAjub__O84pNukWq",
-  "patch_sha256": "a23afc33c8180706d5f2ca0675fd07a4a724131a913f4bee562789109999d4ac",
-  "base_sha": "c44789fc539034d5753100567724944ddb56bb41",
+  "mailbox_key": "m6-cp3-cb49-g3-a5-20261028-v1",
+  "file_id": "11449bXx_1903_xd6MouVxyg9SuNPHVxq",
+  "patch_sha256": "5cf54295695e0e39e704dcce503b27adbabc3f1a43e9fd99c0f8c86f8d61fd24",
+  "base_sha": "5e5b4be1f5ca8226ffbfe6ee5db584381ea491bd",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): adjudicate TB48 full-gate independent review",
+  "commit_message": "fix(surfacecells): normalize A5 periodic placement gauge (CB49)",
   "retention_days": 14
 }
