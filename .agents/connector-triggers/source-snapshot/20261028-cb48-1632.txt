@@ -1,3 +1,0 @@
-turn=M6-CP3-CB48-RP01-GAUGE-CLUSTER-TESTS
-beacon_commit=9516c2de96e28a77d847c60e5024c8b3caa86029
-purpose=bounded source snapshot for Code+Build inspection
