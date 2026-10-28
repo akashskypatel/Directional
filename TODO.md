@@ -1,4 +1,4 @@
-## CURRENT — CB49E exact P2 compiled; TB49-EXEC next (2026-10-28)
+## CURRENT — TB49 504 PASS / 0 RED executed; independent Review next (2026-10-28)
 
 - [x] **RA-168** ([decision](.agents/Directional/Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md)) audits `M6-CP3-TB48-RP01-FULL-GATE-REV` and completes `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` and `M6-CP3-DEFN-RP01-E2-RAIL-VERTEX-ADJACENCY-PATCH` (DEFN, probe-backed).
   - TB48 evidence confirmed: 502/2, 1014/1014, pins `TQ:3027`/`TQ:3183`.
@@ -7,7 +7,8 @@
   - Probes: TQ 140 pass, only the five O11 failures; local 504-case TB49 run 502/504, with 492/493 passing; 283/445 are macOS-only baselines (also fail unpatched; pass on CI).
 - [x] **`M6-CP3-CB49-RP01-G3-A5-PERIODIC-PLACEMENT-GAUGE`** (CB; RA-168.4): exact P1 `5897798d…`, numstat `8 2` RemeshPipeline.cpp + `13 2` TQ; eight GMP targets compiled at `9c84ba9cc8e4` ([record](.agents/Directional/Architecture_M6_CP3_CB49_RP01_G3_A5_Periodic_Placement_Gauge_Code_Build_Record_20261028.md)); no runtime.
 - [x] `M6-CP3-CB49E-RP01-E2-RAIL-VERTEX-ADJACENCY` (CB; RA-168.5): exact P2 `9ebef3cc…`, numstat `215 255` TQ; 8 GMP targets compiled at `092b52eba881` ([record](.agents/Directional/Architecture_M6_CP3_CB49E_RP01_E2_Rail_Vertex_Adjacency_Code_Build_Record_20261028.md)), no runtime.
-- [ ] **NEXT** `M6-CP3-TB49-RP01-FULL-GATE-EXEC` (TB-EXEC; RA-168.6): manifest `a0e39fa25d70…`, predict **504/0** → `M6-CP3-TB49-RP01-FULL-GATE-REV`.
+- [x] `M6-CP3-TB49-RP01-FULL-GATE-EXEC` (TB-EXEC; RA-168.6): **504 PASS / 0 RED** observed ([report](.agents/Directional/Architecture_M6_CP3_TB49_RP01_Full_Gate_Test_Benchmark_Report_20261028.md), run 40776332136); immutable artifact 12857282498.
+- [ ] **NEXT** `M6-CP3-TB49-RP01-FULL-GATE-REV` (TB-REV): independently adjudicate TB49, CP3 full-gate admission and stable accounting; no TB-execution turn promotion.
 - [ ] `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-CB50-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-TB50-RP01-FULL-GATE-EXEC` → `…-REV` → `M6-CP3-PLAN-RP01-CLOSURE` (O6 scope; O7–O12 owners; O9 junction-path retirement).
 - [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`, then `M6-DEFN-DIAG-RETAIN-A5-A7`.
 - [ ] Carried separately:
@@ -24,7 +25,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: TB48 502/2 → TB48-REV → RA-168 (audit + G3 DEFN + E2 DEFN).
-  - **CB49 (compiled)** → **CB49E (compiled)** → **TB49-EXEC (next)** (504/0) → TB49-REV → DEFN O4/O5 → CB50 → TB50-EXEC → TB50-REV → PLAN-RP01-CLOSURE.
+  - **CB49 (compiled)** → **CB49E (compiled)** → **TB49-EXEC (504 PASS / 0 RED observed)** → TB49-REV → DEFN O4/O5 → CB50 → TB50-EXEC → TB50-REV → PLAN-RP01-CLOSURE.
   - One CB per exact patch; implementation agents get only exact patches and frozen manifests; probe-requiring DEFN/TB-REV turns stay on the Review track.
   - **Naming (RA-167.6):** types CB, TB-EXEC, TB-REV, DEFN, PLAN per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier; STOP S1–S3 → `PLAN-RP01-<topic>-STOP`, S4 → `TB<n>-…-REV`, S5 → `CB<n>A-RP01-ORCH` → `TB<n>-…-EXEC-R<k>`; no R1…Rn same-turn loops.
   - Rules: RA-164.3 P1–P6, RA-165.2 F1/F2, RA-166.6 F6/F7, RA-168 oracle rule (gauge oracles check gauge-free observables).

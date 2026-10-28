@@ -1,3 +1,8 @@
+## 2026-10-28 — TB49 immutable full gate executed: 504 PASS / 0 RED (independent Review next)
+
+- [TB49 report](.agents/Directional/Architecture_M6_CP3_TB49_RP01_Full_Gate_Test_Benchmark_Report_20261028.md): [run 40776332136](https://github.com/akashskypatel/Directional/actions/runs/40776332136), artifact `12857282498`, ZIP `3113383ccc64bda5747e9f115e95cafa60e67f569f84b40b22ed6c69cea692db`; 504/504 manifest/ledger/raw-log verification; no controls or immutability failures, no rebuild or repairs.
+- No stable-regression promotion, selector promotion, or CP3 acceptance; CP2 491/491 accepted, stable 66/17/49 debt1 retained. Next `M6-CP3-TB49-RP01-FULL-GATE-REV`.
+
 ## 2026-10-28 — CB49E exact E2 rail-vertex oracle correction compiled (no runtime)
 
 - [CB49E record](.agents/Directional/Architecture_M6_CP3_CB49E_RP01_E2_Rail_Vertex_Adjacency_Code_Build_Record_20261028.md): RA-168.10 P2 byte-exact SHA-256 `9ebef3cc…` applied to `tests/SurfaceCellTransitionQuotientTests.cpp` only (+215/−255), source `092b52eba881e3bafbff4fa263f84f96cf648838`.
