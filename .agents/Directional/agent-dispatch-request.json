@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r46-one-sided-gauge-nogo-20261028-v1",
+  "request_id": "m6-cp3-tb47-r47-a5-negative-reuse-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r46-one-sided-gauge-nogo-v1",
-  "file_id": "1q5n5WaVbWoEr7AjRvf0IhFdDnC2AgdFW",
-  "patch_sha256": "ae0161b19b6dbc5d2275f2917be849982dc0524fe7fce3dd68e818f875747d5b",
-  "base_sha": "91a1e50591818ee61691e3d3d1ab2bf60b3d9e04",
+  "mailbox_key": "m6-cp3-tb47-r47-a5-negative-reuse-v1",
+  "file_id": "1VC0NvDJIEPdQGc3-buOKv-va48zC9OmE",
+  "patch_sha256": "856e0eaa88c6434a04cd865c2f7f5b9f12a9f402708f6d43fe701b8bcaad1d45",
+  "base_sha": "a3b8d4d27f19f46504414cabb5b8558820f43fab",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): prove unilateral G2 relabel invalid against unchanged A4 (R46)",
+  "commit_message": "docs(directional): reuse existing A5 negative and require exact first-owner locus (R47)",
   "retention_days": 14
 }
