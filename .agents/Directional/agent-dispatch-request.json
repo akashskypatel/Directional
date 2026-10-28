@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r25-metadata-v2",
+  "request_id": "m6-cp3-tb47-r26-gauge-pin-review-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r25-metadata-v2",
-  "file_id": "1xmhQJjYHOAwTJZlDSr9TJenV2NeNksLW",
-  "patch_sha256": "9ea8926a5b7a5a9338159be49bf25568e9280e48c66a7a67fe5162f159e2884c",
-  "base_sha": "111de8234c3cdf938dbdbf055e1edfe95d7d7720",
+  "mailbox_key": "m6-cp3-tb47-r26-gauge-pin-v1",
+  "file_id": "18JKJ4y7j_U6D67EQDz3acT5N4m1YxvXw",
+  "patch_sha256": "117b5618133f77773e116e691f8f96e957832023d0c22d9d9b4c208ef22aff61",
+  "base_sha": "fd89d008866fa5040b7b46c5f3ec669c7c699efc",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: correct G3 torus witness isolation (R25)",
+  "commit_message": "docs: classify TB47 D1 single-face gauge tamper as early A3 pin guard (R26)",
   "retention_days": 14
 }
