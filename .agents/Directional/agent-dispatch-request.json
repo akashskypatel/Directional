@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r62-handoff-format-correction-20261028-v1",
+  "request_id": "m6-cp3-cb48-gauge-cluster-tests-drive-apply-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r62-handoff-format-v1",
-  "file_id": "1QhQSBocqQ0HzupUjUJ4ieNZxsgtMPQAL",
-  "patch_sha256": "c866654072e8b68973240b3d29efb3be68a84e61e86e2c2b55c1ac35c7112db0",
-  "base_sha": "4d0f304d35b2056d4e60b70127c0af0bc279bc38",
+  "mailbox_key": "m6-cp3-cb48-gauge-cluster-apply-v1",
+  "file_id": "1S1emEdhkAuungoPVbYrpS9Yzbz1pUBE_",
+  "patch_sha256": "9fc80f893a95813cdd5b82ce9026d6331eefcf987bbba8b74a5fabf52c2edff3",
+  "base_sha": "5e95c2b238e0b9863b9157aabdedc24e3a41af05",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): restore mandatory handoff template heading",
+  "commit_message": "test(directional): apply RA-167 gauge-cluster witness corrections",
   "retention_days": 14
 }
