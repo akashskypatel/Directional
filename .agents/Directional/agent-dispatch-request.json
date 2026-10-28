@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r44-a5-guard-site-20261028-v1",
+  "request_id": "m6-cp3-tb47-r45-branch-invariance-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r44-a5-guard-site-v1",
-  "file_id": "1pjUeycgmIKN70pmsRDYdu0TQPEk6Hgah",
-  "patch_sha256": "b7e82b6a77bcc2658d981c0c654c763eb49e7458a10f15667d1f4aa814d2fd24",
-  "base_sha": "ce0eab96dddf6c472f0fc8e625ecfd0f77fe347e",
+  "mailbox_key": "m6-cp3-tb47-r45-branch-invariance-v1",
+  "file_id": "1XPIronpD0UMl0d3kx_tWVJKjKbqOCR0R",
+  "patch_sha256": "116d9923b009a4e770b3de8f8e14afc9161873743e5a05005a42de3c051a346c",
+  "base_sha": "87ba2f5af9a421eb09f47f0a6f4cf1f1c22b61e9",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): distinguish TB47 A5 guard sites in R44",
+  "commit_message": "docs(directional): narrow TB47 A5 guard attribution conditionally (R45)",
   "retention_days": 14
 }
