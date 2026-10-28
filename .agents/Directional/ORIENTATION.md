@@ -106,7 +106,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** Continue **`M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER`** (source-authenticated G1/G2/G3 Review) after measured TB47 500/4. Do not enter E2-PATCH, CB48 or TB48 until the Review freezes exact probe-backed G hunks and the TB48 manifest. R30 identifies an existing physically identical, raw-arm-reindexed 3×3 hard-rail factory pair. R34 recovers immutable native shifted-fixture A4–A7 admission (`cp3entry:6` PASS) but not *paired* gauge-covariance acceptance; use actual A4 single-carrier records rather than the E2-invalid combined rail. RA-166.6 F6/F7 remain binding.
+**Immediate:** Continue **`M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER`** (source-authenticated G1/G2/G3 Review) after measured TB47 500/4. Do not enter E2-PATCH, CB48 or TB48 until the Review freezes exact probe-backed G hunks and the TB48 manifest. R30 identifies an existing physically identical, raw-arm-reindexed 3×3 hard-rail factory pair. R37 independently confirms **both** the constant-field (`focused30:14` and supporting 15/17/18) and reindexed (`cp3entry:6`) hard-rail inputs separately reach A5/A6/A7 with native PASS; their **paired** gauge-covariance, signed A3/A4 correspondence and first-owner negative remain unproved. Use actual A4 single-carrier records, not E2-invalid combined rail. RA-166.6 F6/F7 remain binding.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
