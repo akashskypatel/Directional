@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r30-raw-pair-preflight-20261028-v2",
+  "request_id": "m6-cp3-tb47-r31-hard-carrier-locality-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r30-raw-pair-v2",
-  "file_id": "19PqrF-Xnlw1aIoXZOKzdz9wEJwTJnAQj",
-  "patch_sha256": "268177e3e98b0aa8bb34c3337012b2d5d6152650b3784c84f83aeb174ad23c5c",
-  "base_sha": "5be555006696b29c04fc9dd99d1c499a8afc7805",
+  "mailbox_key": "m6-cp3-tb47-r31-hard-carriers-v1",
+  "file_id": "1PzLAohSiTtMJXVJLtiK23SlWrFFQhJAk",
+  "patch_sha256": "54761694a8e6950318357692f14e0b68cca12cd302aa297000ec4fda8fdcb98a",
+  "base_sha": "65d8c3c29ce3cac4ddfe2412f03a10d603426751",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): register existing G2 raw-source fixture-pair preflight (R30)",
+  "commit_message": "docs(directional): localize G2 source gauge changes to hard carriers (R31)",
   "retention_days": 14
 }
