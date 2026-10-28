@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r41-existing-periodic-control-20261028-v1",
+  "request_id": "m6-cp3-tb47-r42-a5-verifier-owner-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r41-periodic-owner-v1",
-  "file_id": "1nkhh7bJMq4BC7T7od8r_8n6NaA7A9O43",
-  "patch_sha256": "73e1a9d1b24c0506f398d021c78a1c6bc01f84b4a5c9d32f20d707b1250d6d76",
-  "base_sha": "2e6640a005be3bb914c01db989ff2ac39c2e326d",
+  "mailbox_key": "m6-cp3-tb47-r42-verifier-owner-v1",
+  "file_id": "1nxeA1wya-EyyarO2zwBglcjDZQAcwhnA",
+  "patch_sha256": "e0bc2b894a6e16ab089551b745d4c3692d18dd14dc330198473c3ce78d517ab8",
+  "base_sha": "34e589e20115a4e459982382840ae422e4430ae5",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): audit existing native torus periodic owner overlap (R41)",
+  "commit_message": "docs(directional): distinguish M6CP2 A5 verifier from producer guard (R42)",
   "retention_days": 14
 }
