@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r29-g1-separation-preview-20261028-v1",
+  "request_id": "m6-cp3-tb47-r30-raw-pair-preflight-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r29-g1-separation-preview-v1",
-  "file_id": "1Vl9iMiR9pjAtsxfHWuorgyi3-wasuYic",
-  "patch_sha256": "37058ff8752843c24eb1e3faa8d1b7389a76fd3d64bc7d76ce1c11556d027e54",
-  "base_sha": "67bc008717d2f947da7f4fda5662014efab2ff32",
+  "mailbox_key": "m6-cp3-tb47-r30-raw-pair-v1",
+  "file_id": "1zLMyGCQROr4sP5Xal57rBk5iCUXJv5ew",
+  "patch_sha256": "91b0696b12447eee5da949e728c6a4666fd3badecb92ea3f4c7221928a938ac3",
+  "base_sha": "5be555006696b29c04fc9dd99d1c499a8afc7805",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve TB47 G1 exact negative/positive separation preview (R29)",
+  "commit_message": "docs(directional): record existing G2 raw-source metamorphic fixture pair (R30)",
   "retention_days": 14
 }
