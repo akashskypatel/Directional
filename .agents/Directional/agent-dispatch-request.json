@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r40-masked-periodic-20261028-v1",
+  "request_id": "m6-cp3-tb47-r41-existing-periodic-control-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r40-masked-periodic-v1",
-  "file_id": "1WxGS2zfK-g5YMOxsvTPGRThXfX4BbEao",
-  "patch_sha256": "a58f6d7a188c01db9c908e2dd30fd97ebba048aaf777cec7060fb2beb51fb1d5",
-  "base_sha": "ffea2a9b2f3977b4fac09f409d029ecec4adf73d",
+  "mailbox_key": "m6-cp3-tb47-r41-periodic-owner-v1",
+  "file_id": "1nkhh7bJMq4BC7T7od8r_8n6NaA7A9O43",
+  "patch_sha256": "73e1a9d1b24c0506f398d021c78a1c6bc01f84b4a5c9d32f20d707b1250d6d76",
+  "base_sha": "2e6640a005be3bb914c01db989ff2ac39c2e326d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record masked periodic tail in failing G2 test (R40)",
+  "commit_message": "docs(directional): audit existing native torus periodic owner overlap (R41)",
   "retention_days": 14
 }
