@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r48-split-hardrail-owners-20261028-v1",
+  "request_id": "m6-cp3-tb47-r49-g3-face-incidence-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r48-split-hardrail-owners-v1",
-  "file_id": "1Re8aixX68cUfFILZPhuw0mRHb8rBlEn5",
-  "patch_sha256": "8ff8437645b575ec8f38e9081d6477e748c53d2def13471f7ca642a5ac307b6e",
-  "base_sha": "31ca5e642e83c86a3f99880bf11ecfaafdd6408f",
+  "mailbox_key": "m6-cp3-tb47-r49-g3-face-incidence-v1",
+  "file_id": "1qVBKSJOqP1WwtH1b5VddfLHVgTfd5_nQ",
+  "patch_sha256": "5805c7a328f7c680b491486f610f8941986d541e233cd651599acc5b319995d1",
+  "base_sha": "f0e2eae1efc8c5d551642c6888b4956a7ddfe54b",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): distinguish A4 and A5 hard-rail negative owners (R48)",
+  "commit_message": "docs(directional): localize exact native G3 odd gauge witness candidates (R49)",
   "retention_days": 14
 }
