@@ -3156,143 +3156,191 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   const auto &fixture = nonconstant_hard_rail_fixture();
   const auto &front = fixture.network.phaseFront.product();
   ASSERT_FALSE(front.hardRailRouteCertificates().empty())
-      << "D2 requires at least one A4-produced, paired route certificate";
-  // The 3x3 hard-rail input alone is not evidence of a two-carrier
-  // certificate. Only the immutable A4-produced route qualifies, and the
-  // future TB must fail (not silently skip) when none is produced.
-  const auto carrier_vertices = [](const auto &edge) {
-    const int a = static_cast<int>(edge.first().index());
-    const int b = static_cast<int>(edge.second().index());
-    return std::pair<int, int>{std::min(a, b), std::max(a, b)};
+      << "D2 requires A4-produced paired route certificates";
+  // RA-166 D2 / RA-168 E2: A4 ends each rail side at an interior rail
+  // vertex, so the canonical midline representation at source vertex 4 is
+  // the R-split: two single-carrier certificates of one rail on its two
+  // incident carriers (1,4) and (4,7), each with an R endpoint at 4. A
+  // stitched two-carrier route is forbidden; junctions stay unwitnessed (O9).
+  namespace A = directional::authority;
+  using RouteCertificate = directional::geometry::SurfaceHardRailRouteCertificate;
+  using RouteEndpoint =
+      directional::geometry::SurfaceHardRailRouteEndpointCertificate;
+  using RailTransition = directional::geometry::SurfaceHardRailFieldTransition;
+  struct RailVertexSplit {
+    std::size_t railVertexEndpoints = 0U;
+    std::size_t missingSpokeTransitions = 0U;
+    const RouteCertificate *a = nullptr;
+    const RouteEndpoint *ea = nullptr;
+    const RouteCertificate *b = nullptr;
+    const RouteEndpoint *eb = nullptr;
+    std::optional<RailTransition> bCross;
+    std::optional<A::QuarterTurn> s0;
+    std::optional<A::QuarterTurn> s1;
+    bool sectorsSeparated = false;
   };
-  const auto is_midline_pair = [&](const auto &certificate) {
-    const auto steps = certificate.route.oriented_steps();
-    if (steps.size() != 2U) return false;
-    const std::set<std::pair<int, int>> observed{
-        carrier_vertices(steps[0].topology()),
-        carrier_vertices(steps[1].topology())};
-    return observed ==
-           std::set<std::pair<int, int>>{{1, 4}, {4, 7}};
-  };
-  const auto producedMidline = std::find_if(
-      front.hardRailRouteCertificates().begin(),
-      front.hardRailRouteCertificates().end(), is_midline_pair);
-  std::ostringstream certificateInventory;
-  for (const auto &certificate : front.hardRailRouteCertificates()) {
-    certificateInventory << " [steps=";
-    for (const auto &step : certificate.route.oriented_steps()) {
-      const auto pair = carrier_vertices(step.topology());
-      certificateInventory << "(" << pair.first << "," << pair.second << ")";
-    }
-    certificateInventory << ";endpoints=";
-    for (const auto &endpoint : certificate.endpoints) {
-      certificateInventory << (endpoint.terminalVertex ? "T" :
-                               endpoint.railVertex ? "R" : "I");
-    }
-    certificateInventory << ";j=" << certificate.junctions.size() << "]";
-  }
-  ASSERT_NE(producedMidline, front.hardRailRouteCertificates().end())
-      << "D2/RA-38 requires an ACTUAL A4-produced paired two-carrier "
-         "HardRail (1,4)->(4,7); input-only polyline is not proof"
-      << certificateInventory.str();
-  ASSERT_EQ(producedMidline->junctions.size(), 1U);
-  const auto &midlineJunction = producedMidline->junctions.front();
-  ASSERT_EQ(static_cast<int>(midlineJunction.junction.index()), 4);
-  std::array<std::vector<int>, 2> radialRows;
-  std::array<directional::authority::QuarterTurn, 2> sideTransport{
-      directional::authority::QuarterTurn::from_integer(0),
-      directional::authority::QuarterTurn::from_integer(0)};
-  const auto &sourceFaces = front.sourceTopologyRegions();
-  for (std::size_t side = 0U; side < 2U; ++side) {
-    auto face = side == 0U ? producedMidline->endpoints[0].firstAttachment
-                           : producedMidline->endpoints[0].secondAttachment;
-    const auto start = sourceFaces.row_for_topology(face);
-    ASSERT_TRUE(start.has_value());
-    radialRows[side].push_back(static_cast<int>(start->index()));
-    for (const auto &step : midlineJunction.sectorPaths[side]) {
-      EXPECT_EQ(step.firstFace, face);
-      EXPECT_FALSE(front.hardFeatureEdges().contains(step.edge));
-      EXPECT_TRUE(step.edge.first() == midlineJunction.junction ||
-                  step.edge.second() == midlineJunction.junction);
-      sideTransport[side] = compose(step.firstToSecond, sideTransport[side]);
-      face = step.secondFace;
-      const auto row = sourceFaces.row_for_topology(face);
-      ASSERT_TRUE(row.has_value());
-      radialRows[side].push_back(static_cast<int>(row->index()));
-    }
-    EXPECT_EQ(face, side == 0U
-                        ? producedMidline->endpoints[1].firstAttachment
-                        : producedMidline->endpoints[1].secondAttachment);
-    if (radialRows[side].front() > radialRows[side].back()) {
-      std::reverse(radialRows[side].begin(), radialRows[side].end());
-    }
-  }
-  std::sort(radialRows.begin(), radialRows.end());
-  EXPECT_EQ(radialRows[0], (std::vector<int>{0, 1, 4}));
-  EXPECT_EQ(radialRows[1], (std::vector<int>{3, 6, 7}));
-  EXPECT_EQ(compose(producedMidline->endpoints[1].terminalCarrier.firstToSecond,
-                    sideTransport[0]),
-            compose(sideTransport[1],
-                    producedMidline->endpoints[0].terminalCarrier.firstToSecond))
-      << "A3 sector paths must commute with both LOCAL rail crossings";
-
-  // RA-38: face-row order is not a source-topology identity. Produce a
-  // second A4 product from the same 3x3 hard rail with the eight input face
-  // rows reversed. Do not compare numeric row IDs or synthesize a route:
-  // the selected certificate must independently be A4-published.
-  const auto permutedFixture = make_nonconstant_hard_rail_fixture(true);
-  const auto &permutedFront = permutedFixture.network.phaseFront.product();
-  const auto permutedMidline = std::find_if(
-      permutedFront.hardRailRouteCertificates().begin(),
-      permutedFront.hardRailRouteCertificates().end(), is_midline_pair);
-  ASSERT_NE(permutedMidline,
-            permutedFront.hardRailRouteCertificates().end())
-      << "D2 source-face-row permutation must preserve an A4-produced "
-         "two-carrier HardRail, not merely input hard edges";
-  ASSERT_EQ(permutedMidline->junctions.size(), 1U);
-  EXPECT_EQ(permutedMidline->junctions.front().junction,
-            midlineJunction.junction);
-
-  // An internally commuting square is insufficient proof of A3 provenance:
-  // shifting one step on each side by the same Z4 turn preserves that square.
-  // Compare BOTH produced certificates with the original pipeline-owned A3
-  // atlas snapshots, not a second copy of the mutable certificate fields.
-  const auto require_atlas_attested_junction = [](const PhaseFrontFixture &source,
-                                                 const auto &route) {
-    ASSERT_TRUE(source.fieldTransportAtlas.has_value())
-        << "D2 requires an independently retained production A3 atlas";
+  // The sector transports s0/s1 come from the independently retained A3
+  // atlas over the non-hard spokes of vertex 4, never from A4 certificates.
+  const auto rail_vertex_split = [](const PhaseFrontFixture &source) {
+    RailVertexSplit split;
     const auto &front = source.network.phaseFront.product();
-    const auto &sourceFaces = front.sourceTopologyRegions();
-    const auto &atlas = *source.fieldTransportAtlas;
-    ASSERT_TRUE(atlas.matches_source_faces(
-        source.mesh.F, sourceFaces,
-        static_cast<std::size_t>(source.mesh.V.rows())))
-        << "A3 atlas must bind to the same typed source-face topology";
-    for (const auto &junction : route.junctions) {
-      for (const auto &side : junction.sectorPaths) {
-        for (const auto &step : side) {
-          const auto firstRow = sourceFaces.row_for_topology(step.firstFace);
-          const auto secondRow = sourceFaces.row_for_topology(step.secondFace);
-          ASSERT_TRUE(firstRow.has_value());
-          ASSERT_TRUE(secondRow.has_value());
-          const auto forward = atlas.transition_value(
-              step.edge, firstRow.value(), secondRow.value());
-          const auto reverse = atlas.transition_value(
-              step.edge, secondRow.value(), firstRow.value());
-          ASSERT_TRUE(forward.has_value())
-              << "Missing independently attested A3 nonrail step";
-          ASSERT_TRUE(reverse.has_value())
-              << "Missing reverse A3 nonrail step";
-          EXPECT_EQ(forward->transport, step.firstToSecond)
-              << "A4 nonrail certificate differs from independent A3 atlas";
-          EXPECT_EQ(reverse->transport, forward->transport.inverse())
-              << "A3 source-edge transport must be reciprocal";
+    const auto &regions = front.sourceTopologyRegions();
+    const auto &F = source.mesh.F;
+    const auto vertexCount = static_cast<std::size_t>(source.mesh.V.rows());
+    const auto edge_key = [&](const int first, const int second) {
+      return A::SourceEdgeTopologyKey::make(
+                 A::SourceVertexId::from_index(first, vertexCount).value(),
+                 A::SourceVertexId::from_index(second, vertexCount).value())
+          .value();
+    };
+    const auto face_id = [&](const int row) {
+      return A::SourceFaceId::from_index(row, static_cast<std::size_t>(F.rows()))
+          .value();
+    };
+    constexpr int railVertex = 4;
+    for (const auto &certificate : front.hardRailRouteCertificates()) {
+      for (const auto &endpoint : certificate.endpoints) {
+        if (!endpoint.railVertex.has_value() ||
+            static_cast<int>(endpoint.railVertex->index()) != railVertex) {
+          continue;
+        }
+        ++split.railVertexEndpoints;
+        if (endpoint.terminalCarrier.edge == edge_key(1, 4)) {
+          split.a = &certificate;
+          split.ea = &endpoint;
+        } else if (endpoint.terminalCarrier.edge == edge_key(4, 7)) {
+          split.b = &certificate;
+          split.eb = &endpoint;
         }
       }
     }
+    if (split.ea == nullptr || split.eb == nullptr ||
+        !source.fieldTransportAtlas.has_value()) {
+      return split;
+    }
+    const auto &atlas = *source.fieldTransportAtlas;
+    std::map<A::SourceFaceTopologyKey,
+             std::vector<std::pair<A::SourceFaceTopologyKey, A::QuarterTurn>>>
+        star;
+    std::vector<int> around;
+    for (int row = 0; row < F.rows(); ++row) {
+      if (F(row, 0) == railVertex || F(row, 1) == railVertex ||
+          F(row, 2) == railVertex) {
+        around.push_back(row);
+      }
+    }
+    for (const int i : around) {
+      for (const int j : around) {
+        if (i == j) continue;
+        std::vector<int> shared;
+        for (int c = 0; c < 3; ++c)
+          for (int d = 0; d < 3; ++d)
+            if (F(i, c) == F(j, d)) shared.push_back(F(i, c));
+        if (shared.size() != 2U) continue;
+        const auto spoke = edge_key(shared[0], shared[1]);
+        if (front.hardFeatureEdges().contains(spoke)) continue;
+        const auto transition =
+            atlas.transition_value(spoke, face_id(i), face_id(j));
+        if (!transition.has_value()) {
+          ++split.missingSpokeTransitions;
+          continue;
+        }
+        star[regions.topology_for_row(face_id(i))].push_back(
+            {regions.topology_for_row(face_id(j)), transition->transport});
+      }
+    }
+    const auto sector = [&](const A::SourceFaceTopologyKey &from,
+                            const A::SourceFaceTopologyKey &to)
+        -> std::optional<A::QuarterTurn> {
+      std::map<A::SourceFaceTopologyKey, A::QuarterTurn> seen{
+          {from, A::QuarterTurn::from_integer(0)}};
+      std::vector<A::SourceFaceTopologyKey> pending{from};
+      while (!pending.empty()) {
+        const auto at = pending.back();
+        pending.pop_back();
+        for (const auto &[next, transport] : star[at]) {
+          if (seen.contains(next)) continue;
+          seen[next] = compose(transport, seen[at]);
+          pending.push_back(next);
+        }
+      }
+      const auto found = seen.find(to);
+      if (found == seen.end()) return std::nullopt;
+      return found->second;
+    };
+    RailTransition bCross = split.eb->terminalCarrier;
+    auto s0 = sector(split.ea->terminalCarrier.firstFace, bCross.firstFace);
+    if (!s0.has_value()) {
+      bCross = RailTransition{bCross.edge, bCross.secondFace, bCross.firstFace,
+                              bCross.firstToSecond.inverse()};
+      s0 = sector(split.ea->terminalCarrier.firstFace, bCross.firstFace);
+    }
+    split.bCross = bCross;
+    split.s0 = s0;
+    split.s1 = sector(split.ea->terminalCarrier.secondFace, bCross.secondFace);
+    split.sectorsSeparated =
+        !sector(split.ea->terminalCarrier.firstFace, bCross.secondFace)
+             .has_value();
+    return split;
   };
-  require_atlas_attested_junction(fixture, *producedMidline);
-  require_atlas_attested_junction(permutedFixture, *permutedMidline);
+  const auto require_rail_vertex_split = [](const RailVertexSplit &split) {
+    EXPECT_EQ(2U, split.railVertexEndpoints)
+        << "an interior rail vertex has exactly two R endpoints";
+    ASSERT_NE(split.ea, nullptr)
+        << "A4 must publish an R endpoint at 4 on carrier (1,4)";
+    ASSERT_NE(split.eb, nullptr)
+        << "A4 must publish an R endpoint at 4 on carrier (4,7)";
+    EXPECT_NE(split.a, split.b);
+    EXPECT_EQ(split.a->rail, split.b->rail)
+        << "both R endpoints belong to the same open rail";
+    for (const auto *certificate : {split.a, split.b}) {
+      EXPECT_EQ(1U, certificate->route.steps().size())
+          << "R-split certificates never stitch two carriers";
+      EXPECT_TRUE(certificate->junctions.empty())
+          << "junction certificates remain unwitnessed (O9)";
+    }
+    EXPECT_EQ(0U, split.missingSpokeTransitions)
+        << "every non-hard spoke of 4 needs an independent A3 transition";
+    ASSERT_TRUE(split.s0.has_value());
+    ASSERT_TRUE(split.s1.has_value());
+    EXPECT_TRUE(split.sectorsSeparated)
+        << "the rail must separate the two A3 sectors of vertex 4";
+    const auto aCross = split.ea->terminalCarrier.firstToSecond;
+    EXPECT_EQ(compose(split.bCross->firstToSecond, *split.s0),
+              compose(*split.s1, aCross))
+        << "A3 sector paths must commute with both LOCAL rail crossings";
+    EXPECT_NE(compose(compose(A::QuarterTurn::from_integer(1),
+                              split.bCross->firstToSecond),
+                      *split.s0),
+              compose(*split.s1, aCross))
+        << "a quarter-turn carrier mutation must break the square";
+  };
+  const auto midline = rail_vertex_split(fixture);
+  require_rail_vertex_split(midline);
+  if (HasFatalFailure()) return;
+
+  // RA-38: face-row order is not a source-topology identity. Produce a
+  // second A4 product from the same 3x3 hard rail with the eight input face
+  // rows reversed; the R-split must be independently A4-published again.
+  const auto permutedFixture = make_nonconstant_hard_rail_fixture(true);
+  const auto &permutedFront = permutedFixture.network.phaseFront.product();
+  const auto permutedMidline = rail_vertex_split(permutedFixture);
+  require_rail_vertex_split(permutedMidline);
+  if (HasFatalFailure()) return;
+  const auto typed_crossing = [](const RailTransition &transition) {
+    const bool reversed = transition.secondFace < transition.firstFace;
+    return std::make_tuple(
+        transition.edge,
+        reversed ? transition.secondFace : transition.firstFace,
+        reversed ? transition.firstFace : transition.secondFace,
+        reversed ? transition.firstToSecond.inverse()
+                 : transition.firstToSecond);
+  };
+  EXPECT_EQ(typed_crossing(permutedMidline.ea->terminalCarrier),
+            typed_crossing(midline.ea->terminalCarrier));
+  EXPECT_EQ(typed_crossing(permutedMidline.eb->terminalCarrier),
+            typed_crossing(midline.eb->terminalCarrier))
+      << "source-face-row permutation must preserve the typed R-split";
 
   // Terminal A2b paths are independently A3-authenticated source-star
   // transports, just like the interior radial paths. Canonicalize their
@@ -3315,16 +3363,20 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
         static_cast<std::size_t>(source.mesh.V.rows())));
     for (const auto &route : front.hardRailRouteCertificates()) {
       for (const auto &endpoint : route.endpoints) {
-        ASSERT_TRUE(endpoint.terminalVertex.has_value())
-            << "A2b path must retain its producer-owned source vertex";
+        // I endpoints own no source-star path. T (A2b terminal) and R
+        // (interior rail vertex) star paths are both A3-attested (RA-168 E2).
+        const auto starVertex = endpoint.terminalVertex.has_value()
+                                    ? endpoint.terminalVertex
+                                    : endpoint.railVertex;
+        if (!starVertex.has_value()) continue;
         for (std::size_t side = 0U; side < 2U; ++side) {
           auto face = side == 0U ? endpoint.firstAttachment
                                  : endpoint.secondAttachment;
           for (const auto &step : endpoint.contactPaths[side]) {
             ASSERT_EQ(step.firstFace, face);
             ASSERT_FALSE(front.hardFeatureEdges().contains(step.edge));
-            ASSERT_TRUE(step.edge.first() == *endpoint.terminalVertex ||
-                        step.edge.second() == *endpoint.terminalVertex);
+            ASSERT_TRUE(step.edge.first() == *starVertex ||
+                        step.edge.second() == *starVertex);
             const auto first = sourceFaces.row_for_topology(step.firstFace);
             const auto second = sourceFaces.row_for_topology(step.secondFace);
             ASSERT_TRUE(first.has_value());
@@ -3340,7 +3392,7 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
             EXPECT_EQ(forward->transport, step.firstToSecond);
             EXPECT_EQ(reverse->transport, forward->transport.inverse());
             const bool inverted = step.secondFace < step.firstFace;
-            steps.emplace(*endpoint.terminalVertex, step.edge,
+            steps.emplace(*starVertex, step.edge,
                           inverted ? step.secondFace : step.firstFace,
                           inverted ? step.firstFace : step.secondFace,
                           inverted ? step.firstToSecond.inverse()
@@ -3362,50 +3414,9 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   EXPECT_EQ(terminalSteps, permutedTerminalSteps)
       << "source-row permutations must preserve typed A2b/A3 terminal steps";
 
-  // Falsify a self-consistency-only oracle without requesting a public
-  // factory trust-contract decision: equal +1 Z4 mutations on the two
-  // nonrail side paths preserve the commuting square, but both must differ
-  // from the independently retained A3 atlas. This copied candidate is
-  // diagnostic-only; it must never be published as A4 owner authority.
-  auto balancedMutation = *producedMidline;
-  ASSERT_EQ(balancedMutation.junctions.size(), 1U);
-  for (auto &side : balancedMutation.junctions.front().sectorPaths) {
-    ASSERT_FALSE(side.empty());
-    side.front().firstToSecond = compose(
-        directional::authority::QuarterTurn::from_integer(1),
-        side.front().firstToSecond);
-  }
-  const auto compose_radial = [](const auto &path) {
-    auto total = directional::authority::QuarterTurn::from_integer(0);
-    for (const auto &step : path)
-      total = compose(step.firstToSecond, total);
-    return total;
-  };
-  const auto &mutantPaths = balancedMutation.junctions.front().sectorPaths;
-  EXPECT_EQ(compose(balancedMutation.endpoints[1].terminalCarrier.firstToSecond,
-                    compose_radial(mutantPaths[0])),
-            compose(compose_radial(mutantPaths[1]),
-                    balancedMutation.endpoints[0].terminalCarrier.firstToSecond))
-      << "Equal changes on both sides must leave the square commuting";
-  ASSERT_TRUE(fixture.fieldTransportAtlas.has_value());
-  const auto &independentAtlas = *fixture.fieldTransportAtlas;
-  for (const auto &side : mutantPaths) {
-    const auto &firstStep = side.front();
-    const auto from = sourceFaces.row_for_topology(firstStep.firstFace);
-    const auto to = sourceFaces.row_for_topology(firstStep.secondFace);
-    ASSERT_TRUE(from.has_value());
-    ASSERT_TRUE(to.has_value());
-    const auto sourceTransition = independentAtlas.transition_value(
-        firstStep.edge, from.value(), to.value());
-    ASSERT_TRUE(sourceTransition.has_value());
-    EXPECT_NE(firstStep.firstToSecond, sourceTransition->transport)
-        << "Balanced certificate tamper must be detected by independent A3";
-  }
-
   // Reconstruct with the complete A4 terminal-contact / closed-chain
   // authority. Omitting these optional arguments would silently exercise the
   // legacy attachment==carrier validation instead of the produced A2b germs.
-  // The balanced mutation commutes, but no longer matches genuine A3.
   ASSERT_FALSE(front.hardRailTerminalContacts().empty());
   const auto checkedFactory = [&](const auto &transitions,
                                   const auto &certificates,
@@ -3425,11 +3436,22 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   EXPECT_NE(nullptr, std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
                          &accepted))
       << "A4 genuinely produced certificate must survive checked A3 factory";
+  // A quarter-turn on the published (4,7) R crossing is a source-authority
+  // forgery: the checked factory authenticates it against unchanged A3.
   auto tamperedCertificates = front.hardRailRouteCertificates();
-  const auto tamperedMidline = std::find_if(
-      tamperedCertificates.begin(), tamperedCertificates.end(), is_midline_pair);
-  ASSERT_NE(tamperedCertificates.end(), tamperedMidline);
-  *tamperedMidline = balancedMutation;
+  std::size_t tamperedCrossings = 0U;
+  for (auto &certificate : tamperedCertificates) {
+    for (auto &endpoint : certificate.endpoints) {
+      if (!endpoint.railVertex.has_value() ||
+          endpoint.terminalCarrier.edge != midline.eb->terminalCarrier.edge) {
+        continue;
+      }
+      endpoint.terminalCarrier.firstToSecond = compose(
+          A::QuarterTurn::from_integer(1), endpoint.terminalCarrier.firstToSecond);
+      ++tamperedCrossings;
+    }
+  }
+  ASSERT_EQ(1U, tamperedCrossings);
   expect_phase_front_product_error(
       checkedFactory(front.hardRailFieldTransitions(), tamperedCertificates,
                      &sourceAtlas),
@@ -3454,35 +3476,10 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
                      &sourceAtlas),
       directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
 
-  // Compare immutable SOURCE-FACE TOPOLOGY, not the rows used to index it.
-  // The canonical pair may exchange sector orientation; normalize the two
-  // unordered sector face sets before comparing.
-  const auto sector_topology = [](const auto &certificate) {
-    using Face = directional::authority::SourceFaceTopologyKey;
-    std::array<std::set<Face>, 2> sectors;
-    for (std::size_t side = 0; side < 2U; ++side) {
-      sectors[side].insert(side == 0U
-          ? certificate.endpoints[0].firstAttachment
-          : certificate.endpoints[0].secondAttachment);
-      sectors[side].insert(side == 0U
-          ? certificate.endpoints[1].firstAttachment
-          : certificate.endpoints[1].secondAttachment);
-      for (const auto &junction : certificate.junctions) {
-        for (const auto &step : junction.sectorPaths[side]) {
-          sectors[side].insert(step.firstFace);
-          sectors[side].insert(step.secondFace);
-        }
-      }
-    }
-    if (sectors[1] < sectors[0]) std::swap(sectors[0], sectors[1]);
-    return sectors;
-  };
-  EXPECT_EQ(sector_topology(*permutedMidline),
-            sector_topology(*producedMidline));
-  // The same physical source topology must retain exact A3 radial transport
-  // and owner HardRail chi, not merely the two sector face sets. Canonicalize
-  // each directed transition by its typed source-face topology to avoid a
-  // spurious discrepancy when the opposite route orientation is published.
+  // The same physical source topology must retain exact owner HardRail chi.
+  // Canonicalize each directed transition by its typed source-face topology
+  // to avoid a spurious discrepancy when the opposite route orientation is
+  // published.
   const auto typed_transport = [](const auto &transition) {
     const bool reversed = transition.secondFace < transition.firstFace;
     return std::make_tuple(
@@ -3500,41 +3497,9 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
       result.emplace(transition.edge, typed_transport(transition));
     return result;
   };
-  const auto radial_transport = [&](const auto &certificate) {
-    using Edge = directional::authority::SourceEdgeTopologyKey;
-    using Face = directional::authority::SourceFaceTopologyKey;
-    using Turn = directional::authority::QuarterTurn;
-    std::map<Edge, std::tuple<Face, Face, Turn>> result;
-    for (const auto &junction : certificate.junctions) {
-      for (const auto &side : junction.sectorPaths) {
-        for (const auto &transition : side) {
-          result.emplace(transition.edge, typed_transport(transition));
-        }
-      }
-    }
-    return result;
-  };
   EXPECT_EQ(rail_transport(permutedFront), rail_transport(front))
       << "source-face-row permutation must not alter typed owner-rail chi";
-  EXPECT_EQ(radial_transport(*permutedMidline),
-            radial_transport(*producedMidline))
-      << "source-face-row permutation must not alter nonrail A3 phi";
 
-  // A certificate with one tampered nonrail A3 step must fail at the
-  // independent product validator; it must not obtain a fresh A5 gauge.
-  PhaseFrontDraft wrongRadial = phase_front_draft(fixture);
-  const auto wrong = std::find_if(wrongRadial.hardRailRouteCertificates.begin(),
-                                  wrongRadial.hardRailRouteCertificates.end(),
-                                  is_midline_pair);
-  ASSERT_NE(wrong, wrongRadial.hardRailRouteCertificates.end());
-  ASSERT_FALSE(wrong->junctions.front().sectorPaths[0].empty());
-  auto &badStep = wrong->junctions.front().sectorPaths[0].front();
-  badStep.firstToSecond = compose(
-      directional::authority::QuarterTurn::from_integer(1),
-      badStep.firstToSecond);
-  expect_phase_front_product_error(
-      construct_phase_front_product(std::move(wrongRadial)),
-      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
   std::size_t attestedTerminalSteps = 0U;
   for (const auto &route : front.hardRailRouteCertificates()) {
     ASSERT_FALSE(route.route.empty());
@@ -3552,29 +3517,24 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
         auto at = side == 0U ? endpoint.firstAttachment
                              : endpoint.secondAttachment;
         for (const auto &step : endpoint.contactPaths[side]) {
-          ++attestedTerminalSteps;
           EXPECT_EQ(at, step.firstFace);
           EXPECT_FALSE(front.hardFeatureEdges().contains(step.edge));
-          ASSERT_TRUE(endpoint.terminalVertex.has_value());
-          EXPECT_TRUE(step.edge.first() == *endpoint.terminalVertex ||
-                      step.edge.second() == *endpoint.terminalVertex);
+          const auto vertex = endpoint.terminalVertex.has_value()
+                                  ? endpoint.terminalVertex
+                                  : endpoint.railVertex;
+          ASSERT_TRUE(vertex.has_value())
+              << "only T and R endpoints own source-star contact steps";
+          if (endpoint.terminalVertex.has_value()) ++attestedTerminalSteps;
+          EXPECT_TRUE(step.edge.first() == *vertex ||
+                      step.edge.second() == *vertex);
           at = step.secondFace;
         }
         EXPECT_EQ(at, side == 0U ? endpoint.terminalCarrier.firstFace
                                 : endpoint.terminalCarrier.secondFace);
       }
     }
-    for (const auto &junction : route.junctions) {
-      // Both sectors carry only non-rail A3 transitions and never
-      // compose distinct HardRail crossings end to end.
-      for (const auto &path : junction.sectorPaths) {
-        for (const auto &step : path) {
-          EXPECT_FALSE(front.hardFeatureEdges().contains(step.edge));
-          EXPECT_TRUE(step.edge.first() == junction.junction ||
-                      step.edge.second() == junction.junction);
-        }
-      }
-    }
+    EXPECT_TRUE(route.junctions.empty())
+        << "junction certificates remain unwitnessed (O9)";
   }
   EXPECT_GT(attestedTerminalSteps, 0U)
       << "D2 must certify a produced non-direct A2b terminal attachment";
