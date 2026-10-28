@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r45-branch-invariance-20261028-v1",
+  "request_id": "m6-cp3-tb47-r46-one-sided-gauge-nogo-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r45-branch-invariance-v1",
-  "file_id": "1XPIronpD0UMl0d3kx_tWVJKjKbqOCR0R",
-  "patch_sha256": "116d9923b009a4e770b3de8f8e14afc9161873743e5a05005a42de3c051a346c",
-  "base_sha": "87ba2f5af9a421eb09f47f0a6f4cf1f1c22b61e9",
+  "mailbox_key": "m6-cp3-tb47-r46-one-sided-gauge-nogo-v1",
+  "file_id": "1q5n5WaVbWoEr7AjRvf0IhFdDnC2AgdFW",
+  "patch_sha256": "ae0161b19b6dbc5d2275f2917be849982dc0524fe7fce3dd68e818f875747d5b",
+  "base_sha": "91a1e50591818ee61691e3d3d1ab2bf60b3d9e04",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): narrow TB47 A5 guard attribution conditionally (R45)",
+  "commit_message": "docs(directional): prove unilateral G2 relabel invalid against unchanged A4 (R46)",
   "retention_days": 14
 }
