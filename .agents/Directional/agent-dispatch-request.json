@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r33-probe-digest-correction-20261028-v1",
+  "request_id": "m6-cp3-tb47-r34-native-positive-ledger-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r33-probe-correction-v1",
-  "file_id": "1NQFqT9fEFBmUnPQ7X1iHKpvHlzxjwoMF",
-  "patch_sha256": "69f47e728f2ccfe00aa8627f16f0d7b75ae9a085dd8caf34568fa6ef86d92cfc",
-  "base_sha": "d4c753b788f7a00242cce3b37e0945319c8ec21d",
+  "mailbox_key": "m6-cp3-tb47-r34-native-positive-v1",
+  "file_id": "1GUP3tOZp0DbFwrfMvoJIBfAZBau0Pm35",
+  "patch_sha256": "d52f31abf2c86b7e483147b650bab66f97a373070f410ba16e9cc8232b631434",
+  "base_sha": "75d784e67fb66e3f5db2caeede04e0c293ee3c92",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): correct R33 Z4 probe digest and offset coverage",
+  "commit_message": "docs(directional): credit immutable shifted G2 native acceptance, retain paired gate (R34)",
   "retention_days": 14
 }
