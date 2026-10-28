@@ -1687,14 +1687,33 @@ std::vector<ProducedTorusSourceWitness> enumerate_torus_source_witnesses(
   return candidates;
 }
 
-ProducedTorusWitnessFixture make_nonzero_z4_torus_witness_fixture() {
+ProducedTorusWitnessFixture make_nonzero_z4_torus_witness_fixture(
+    const bool oddFaceGaugeRelabel = false) {
   PhaseFrontFixture fixture;
   const auto meshPath = directional::tests::benchmark_fixture_path(
       "milestone-g/torus.obj");
   if (!directional::readOBJ(meshPath.string(), fixture.mesh)) {
     throw std::runtime_error("Failed to read committed torus fixture.");
   }
-  const Eigen::MatrixXd raw = torus_nonzero_z4_raw_field(fixture.mesh);
+  const Eigen::MatrixXd frameRaw = torus_nonzero_z4_raw_field(fixture.mesh);
+  // D1 odd face gauge (RA-167 G3): the same physical field with the arms of
+  // the half torus at major angle [0, pi) relabelled one quarter turn. A3 and
+  // A4 regenerate every transport and face gauge from this source input.
+  Eigen::MatrixXd raw = frameRaw;
+  if (oddFaceGaugeRelabel) {
+    for (int face = 0; face < fixture.mesh.F.rows(); ++face) {
+      Eigen::Vector3d centroid = Eigen::Vector3d::Zero();
+      for (int corner = 0; corner < 3; ++corner) {
+        centroid += fixture.mesh.V.row(fixture.mesh.F(face, corner)).transpose();
+      }
+      double majorAngle = std::atan2(centroid.y(), centroid.x());
+      if (majorAngle < 0.0) majorAngle += 2.0 * std::numbers::pi;
+      if (majorAngle >= std::numbers::pi) continue;
+      const Eigen::RowVectorXd arms = frameRaw.row(face);
+      raw.row(face) << arms.segment(3, 3), arms.segment(6, 3),
+          arms.segment(9, 3), arms.segment(0, 3);
+    }
+  }
   const auto sourceCrossField =
       directional::pipeline::finalize_surface_cell_raw_cross_field(fixture.mesh,
                                                                     raw);
@@ -1715,7 +1734,10 @@ ProducedTorusWitnessFixture make_nonzero_z4_torus_witness_fixture() {
   }
   const TorusChartAdmissibilityOracle chartOracle =
       validate_nonzero_z4_torus_chart_subject(
-          fixture.mesh, raw, sourceCrossField, hardEdges);
+          fixture.mesh, frameRaw,
+          directional::pipeline::finalize_surface_cell_raw_cross_field(
+              fixture.mesh, frameRaw),
+          hardEdges);
   (void)chartOracle;
 
   directional::pipeline::RemeshOptions options;
@@ -1878,6 +1900,12 @@ ProducedTorusWitnessFixture make_nonzero_z4_torus_witness_fixture() {
         "Pipeline source transition diverged from the pre-finalized witness.");
   }
   return {std::move(fixture), witness, selectionReceipt};
+}
+
+const ProducedTorusWitnessFixture &odd_gauge_torus_witness_fixture() {
+  static const ProducedTorusWitnessFixture fixture =
+      make_nonzero_z4_torus_witness_fixture(true);
+  return fixture;
 }
 
 const ProducedTorusWitnessFixture &nonzero_z4_torus_witness_fixture() {
@@ -2900,7 +2928,7 @@ std::unique_ptr<PhaseFrontFixture> m6cp3_produced_seam_fixture(
 } // namespace
 
 TEST(M6CP3, PeriodicExactA3UnequalFaceGaugeUsesRelationAndOccurrenceAuthority) {
-  const auto &fixture = nonzero_z4_torus_witness_fixture();
+  const auto &fixture = odd_gauge_torus_witness_fixture();
   const auto semantic = produced_semantic_relation_for_witness(fixture);
   ASSERT_TRUE(semantic.has_value());
   ASSERT_NE(semantic->forwardEdge, nullptr);
@@ -2993,9 +3021,10 @@ TEST(M6CP3, PeriodicExactA3UnequalFaceGaugeUsesRelationAndOccurrenceAuthority) {
   ASSERT_TRUE(gammaToOther.has_value());
   const auto expected = compose(
       gammaTo->inverse(), compose(semantic->semanticAction, *gammaFrom));
-  EXPECT_EQ(expected, compose(gammaToOther->inverse(),
-                              compose(semantic->semanticAction,
-                                      *gammaFromOther)));
+  const auto otherPairAction = compose(
+      gammaToOther->inverse(),
+      compose(semantic->semanticAction, *gammaFromOther));
+  EXPECT_EQ(expected, otherPairAction) << "G3 periodic endpoint pairs disagree";
   const auto wrongDirection =
       compose(*gammaTo, compose(semantic->semanticAction,
                                 gammaFrom->inverse()));
@@ -5578,10 +5607,48 @@ TEST(M6CP1, RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant) {
   const auto *relabelledA5 =
       std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
           &relabelledA5Construction);
-  ASSERT_NE(relabelledA5, nullptr)
-      << a5_rejection_message(relabelledA5Construction);
+  // An unpaired relabel (branches and face gauges shifted in one region while
+  // A3 and the A4 rail certificates keep their transport) is not a gauge
+  // change of the source field; A5 must reject it at the HardRail endpoint
+  // equation (RA-36).
+  ASSERT_EQ(relabelledA5, nullptr);
+  const auto *relabelledA5Error =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+          &relabelledA5Construction);
+  ASSERT_NE(relabelledA5Error, nullptr);
+  EXPECT_EQ(relabelledA5Error->code,
+            directional::pipeline::SurfaceOccurrenceComplexErrorCode::
+                HardRailTransportMismatch);
+
+  // A source-produced relabel: the same mesh and rail with the right-half raw
+  // cross-field arms shifted one quarter turn, so A3 and A4 regenerate every
+  // transport. HardRail relation transports and A6 classes must not change.
+  const auto &sourceRelabelled = nonconstant_hard_rail_fixture();
+  bool railTransportChanged = false;
+  for (const auto &original :
+       hardRailFixture.network.phaseFront.product().hardRailRouteCertificates()) {
+    for (const auto &shifted : sourceRelabelled.network.phaseFront.product()
+                                   .hardRailRouteCertificates()) {
+      if (original.route == shifted.route &&
+          original.endpoints[0].terminalCarrier.firstFace ==
+              shifted.endpoints[0].terminalCarrier.firstFace &&
+          original.endpoints[0].terminalCarrier.firstToSecond !=
+              shifted.endpoints[0].terminalCarrier.firstToSecond) {
+        railTransportChanged = true;
+      }
+    }
+  }
+  EXPECT_TRUE(railTransportChanged)
+      << "the source relabel must change the A3 transport across the rail";
+  auto sourceRelabelledA5Construction = produceA5(
+      sourceRelabelled, sourceRelabelled.network.phaseFront.product());
+  const auto *relabelledSourceA5 =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &sourceRelabelledA5Construction);
+  ASSERT_NE(relabelledSourceA5, nullptr)
+      << a5_rejection_message(sourceRelabelledA5Construction);
   std::size_t relabelledHardRailCount = 0U;
-  for (const auto &relation : relabelledA5->owned_relations()) {
+  for (const auto &relation : relabelledSourceA5->owned_relations()) {
     if (relation.id.kind !=
         directional::pipeline::SurfaceOccurrenceRelationKind::HardRail) {
       continue;
@@ -5594,7 +5661,7 @@ TEST(M6CP1, RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant) {
   }
   EXPECT_EQ(relabelledHardRailCount, hardRailRelationCount);
   auto relabelledQuotientConstruction =
-      directional::pipeline::SurfaceQuotientProducer::produce(*relabelledA5);
+      directional::pipeline::SurfaceQuotientProducer::produce(*relabelledSourceA5);
   const auto *relabelledQuotient =
       std::get_if<directional::pipeline::SurfaceQuotientProduct>(
           &relabelledQuotientConstruction);

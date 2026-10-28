@@ -2840,9 +2840,10 @@ TEST(FieldTransportAtlas,
   EXPECT_FALSE(relabeled.value().transport(sourceEdge, first, second));
   EXPECT_FALSE(relabeled.value().transport(sourceEdge, second, first));
 
-  // A component/region seam is not a rail. It must remain nontraversable
-  // for ordinary branch adjacency while still carrying the two directed A3
-  // values needed by the source-vertex terminal-star consumer and validator.
+  // A component/region seam on a connected manifold edge is not producible:
+  // source components are edge-connected and regions only split at hard
+  // features (RA-167 G1). A forged component split must fail closed at A3
+  // instead of publishing a non-hard NonTraversable barrier.
   SurfaceCellTracingOptions seamOptions;
   seamOptions.sourceFaceComponents = {0, 1};
   seamOptions.sourceFaceSheets = {0, 0};
@@ -2853,29 +2854,9 @@ TEST(FieldTransportAtlas,
   const std::set<SourceEdgeTopologyKey> noHardEdges;
   const auto seamBuilt = FieldTransportAtlas::make(
       mesh, *seamAuthority, noHardEdges, relabeledField);
-  ASSERT_TRUE(seamBuilt)
-      << describe_field_atlas_build_error(seamBuilt.error());
-  const auto &seamAtlas = seamBuilt.value();
-  const auto seamBarrier = std::find_if(
-      seamAtlas.nontraversable_edges().begin(),
-      seamAtlas.nontraversable_edges().end(),
-      [&](const FieldNonTraversableEdge &candidate) {
-        return candidate.sourceEdge == sourceEdge;
-      });
-  ASSERT_NE(seamAtlas.nontraversable_edges().end(), seamBarrier);
-  EXPECT_EQ(FieldTransportBarrierKind::NonTraversable, seamBarrier->kind);
-  const auto seamForward = seamAtlas.transition_value(sourceEdge, first, second);
-  const auto seamReverse = seamAtlas.transition_value(sourceEdge, second, first);
-  ASSERT_TRUE(seamForward.has_value());
-  ASSERT_TRUE(seamReverse.has_value());
-  EXPECT_EQ(QuarterTurn::from_integer(relabeledLift), seamForward->transport);
-  EXPECT_EQ(relabeledLift, seamForward->signedLift);
-  EXPECT_EQ(seamForward->transport.inverse(), seamReverse->transport);
-  EXPECT_NE(seamForward->transport, seamReverse->transport);
-  EXPECT_EQ(-seamForward->signedLift, seamReverse->signedLift);
-  EXPECT_FALSE(seamAtlas.transport(sourceEdge, first, second));
-  EXPECT_FALSE(seamAtlas.transport(sourceEdge, second, first));
-  EXPECT_EQ(nullptr, seamAtlas.find_adjacency(sourceEdge));
+  ASSERT_FALSE(seamBuilt);
+  EXPECT_EQ(FieldAtlasBuildErrorCode::SingularityMismatch,
+            seamBuilt.error().code);
 
   // Reordering source-face rows must not change the value attached to a
   // source-topological edge. Preserve the per-face gauge and compare the same
@@ -2915,18 +2896,9 @@ TEST(FieldTransportAtlas,
   ASSERT_TRUE(reorderedSeamAuthority.has_value());
   const auto reorderedSeam = FieldTransportAtlas::make(
       reorderedMesh, *reorderedSeamAuthority, noHardEdges, reorderedField);
-  ASSERT_TRUE(reorderedSeam)
-      << describe_field_atlas_build_error(reorderedSeam.error());
-  const auto originalSeamValue = seamAtlas.transition_value(
-      sourceEdge, originalFrom, originalTo);
-  const auto reorderedSeamValue = reorderedSeam.value().transition_value(
-      sourceEdge, reorderedFrom, reorderedTo);
-  ASSERT_TRUE(originalSeamValue.has_value());
-  ASSERT_TRUE(reorderedSeamValue.has_value());
-  EXPECT_EQ(originalSeamValue->transport, reorderedSeamValue->transport);
-  EXPECT_EQ(originalSeamValue->signedLift, reorderedSeamValue->signedLift);
-  EXPECT_FALSE(reorderedSeam.value().transport(
-      sourceEdge, reorderedFrom, reorderedTo));
+  ASSERT_FALSE(reorderedSeam);
+  EXPECT_EQ(FieldAtlasBuildErrorCode::SingularityMismatch,
+            reorderedSeam.error().code);
 }
 
 TEST(FieldTransportAtlas,
