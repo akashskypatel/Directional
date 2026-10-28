@@ -1,3 +1,0 @@
-Purpose: CB49 periodic placement gauge source snapshot
-Base authority: b07d78d8326d14af4d4f8c075ea2dc357cc26202
-Source semantics unchanged; snapshot exact event SHA

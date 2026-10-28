@@ -1,2 +1,0 @@
-# CB49 temporary state cleanup
-.agents/connector-triggers/source-snapshot/cb49-periodic-placement-gauge-20261028.txt
