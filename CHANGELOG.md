@@ -1,3 +1,7 @@
+## 2026-10-28 — CB48 exact gauge-cluster test patch compiled; TB48 immutable full gate next
+
+- [CB48 record](.agents/Directional/Architecture_M6_CP3_CB48_RP01_Gauge_Cluster_Tests_Code_Build_Record_20261028.md): RA-167.8 exact two-test-file patch `b32d6381…` applied at `4c611941…`; eight GMP/GMPXX targets compiled on run 40727946150, artifact `12834041300`; `runtimeExecution=false`. No new semantic runtime acceptance; TB48 manifest `a3187d55…` remains next (502/2 prediction).
+
 ## 2026-10-28 — RA-167 TB47-REV: gauge cluster decided; P-G3; canonical turn sequence
 
 - [RA-167](.agents/Directional/Architecture_M6_CP3_TB47_REV_Gauge_Cluster_Decision_And_Canonical_Turn_Sequence_20261028.md), `M6-CP3-TB47-RP01-FULL-GATE-REV`. It closes the stalled `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` (R1–R62), whose ID the canonical classifier labels TB-EXEC. Decisions, from scratch probes:
