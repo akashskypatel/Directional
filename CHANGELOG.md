@@ -20,6 +20,7 @@
 
 ## 2026-10-27 — DEFN-G gauge-cluster independent Review in progress (R5/R6, NOT closed)
 
+- **R32 review-only G2 hard-rail canonical-transport normalization (2026-10-28):** independent exact 3×3 source-input model proves `raw matching + rawGauge(from) - rawGauge(to)` agrees with constant-field baseline across all eight interior edges while two hard crossings have signed odd raw matching; three falsifiers each distinguish two carriers. A3 hard-edge values are not ordinary branch-adjacencies and A4 consumes them separately. No native A3/A4/A5/A6 acceptance; G1/G3 and successor boundaries unchanged.
 - **R31 review-only G2 rail-locality correction (2026-10-28):** existing raw-source right-half cross reindex changes physical branch matching only on the two hard-feature interior carriers (six non-hard interior edges unchanged). Independently modeled 8/8 interior adjacencies, row-invariant signed matching and three falsifiers; native A3/A4/A5/A6 witness still missing and no successor authorization.
 - **R30 review-only G2 source-pair discovery (2026-10-28):** existing 3×3 constant-field and right-half cyclic raw-arm-reindexed hard-rail fixtures share the physical 4-RoSy field; independent eight-face static probe verifies 4/4 shifted faces, row-order covariance and two falsifiers. This is a native witness candidate only: no new C++ execution, test source, selector, or acceptance; G1/G2/G3 Review remains open.
 
