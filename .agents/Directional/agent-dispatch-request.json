@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r47-a5-negative-reuse-20261028-v1",
+  "request_id": "m6-cp3-tb47-r48-split-hardrail-owners-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r47-a5-negative-reuse-v1",
-  "file_id": "1VC0NvDJIEPdQGc3-buOKv-va48zC9OmE",
-  "patch_sha256": "856e0eaa88c6434a04cd865c2f7f5b9f12a9f402708f6d43fe701b8bcaad1d45",
-  "base_sha": "a3b8d4d27f19f46504414cabb5b8558820f43fab",
+  "mailbox_key": "m6-cp3-tb47-r48-split-hardrail-owners-v1",
+  "file_id": "1Re8aixX68cUfFILZPhuw0mRHb8rBlEn5",
+  "patch_sha256": "8ff8437645b575ec8f38e9081d6477e748c53d2def13471f7ca642a5ac307b6e",
+  "base_sha": "31ca5e642e83c86a3f99880bf11ecfaafdd6408f",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): reuse existing A5 negative and require exact first-owner locus (R47)",
+  "commit_message": "docs(directional): distinguish A4 and A5 hard-rail negative owners (R48)",
   "retention_days": 14
 }
