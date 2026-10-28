@@ -1,31 +1,28 @@
-## CURRENT — TB47 VERIFIED 500/4; DEFN-G independent Review IN PROGRESS (2026-10-28)
+## CURRENT — RA-167 TB47-REV: gauge cluster decided; P-G3 production defect; canonical turn IDs (2026-10-28)
 
-- [x] **RA-166** ([decision](.agents/Directional/Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md)), probe-backed:
-  - E3 conflict confirmed: A5 forbids a route on `OrdinaryInterior` sides, and A4 never writes one.
-  - D5 is re-homed to boundary-path `entryRoute` crossings on `transition_domain_fixture()`. It is the only one of 8 fixtures with qualifying pairs.
-  - D2 junction is re-homed to rail-vertex R-adjacency: R-split is canonical, shown by a 7-ratio × 2-position sweep with 0 multi-step certificates.
-  - E1 `dabb0970e` is defective (`:793` double-exact comparison, junction counts, germ seed); corrected.
-- [x] **`M6-CP3-CB47-RP01-ENDPOINT-WITNESSES`** ([record](.agents/Directional/Architecture_M6_CP3_CB47_RP01_Endpoint_Witnesses_Code_Build_Record_20261027.md)): RA-166.8 exact patch `2de51be6…24c1` applied at `08d41626e3487f3cba2e8fed5fe1f2185da8ac9f`. Two-file numstat `26/18`, `24/6`; eight GMP/GMPXX targets compiled, run `40501143033`, package `12732383172`, manifest 28/28, no runtime.
-- [x] **`M6-CP3-TB47-RP01-FULL-GATE`** ([report](.agents/Directional/Architecture_M6_CP3_TB47_RP01_Full_Gate_Test_Benchmark_Report_20261027.md)): exact immutable 504/504, 500 PASS / 4 registered RED at frozen pins, 1,014/1,014 checksums, postflight true and exit0; candidate, not promotion.
-- [ ] **ACTIVE `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER`** (Review, probe-backed; G: 442, `focused30:12`, cp3entry:1) → exact hunks + TB48 manifest. R20 proves a direct-producer non-hard `NonTraversable` interior edge cannot exist with current source-component/region writers; re-home G1 to a real source-produced positive and separately decide malformed-authority negative before any exact hunk. R21 independently derives full G2 A3 contact/carrier + A4 endpoint gauge covariance; do not strip only A5 or count the model as native admission. R22 adds an independent physical-metamorphic G3 torus source-model preflight (face1 +1, canonical `[0,1,2,3]` runs, +4 turns and same five nonzero hard carriers), NOT native A3/A4 admission. **R23 correction:** the frozen torus test/model closure is tautological from two duplicated run lengths, not an independent geometry admission. **R24 correction:** native A4 measures four separate runs and constructs its rectangle using opposite-side averages; `L0 != L2` or `L1 != L3` is not alone a native rejection condition, so do not replace the vacuous test with an unauthorized equal-opposite-length requirement. The test-oracle +4 is implied after its strict `[0,1,2,3]` check; native A4 computes its +4 before rectangular selection. Author a separate frame oracle without weakening the original strict frame; independently witness producer-published odd gauge/periodic/occurrence transports and real first-consumer signed tamper negatives. **R25 correction:** A4 root is geometric (full torus row 133, not the raw model row 0), and accepted cuts come from published topology/conformity. The frozen strict torus singleton is used by seven tests; any D1 face1 cyclic field witness must use an isolated new metamorphic factory/oracle rather than change the shared fixture or its strict baseline check. **R26 source-only correction:** the D1 one-face +1 `checkedGauge()` tamper is intercepted by the checked A4 product's prior A3 `gauge-pin-consistency` (same-region non-hard neighbor), not an independently exercised Periodic/A5 first-consumer negative. Preserve it as a gauge-pin guard; a new source-produced odd-gauge D1 positive needs a *separate* periodic owner/endpoint/transport wrong-sign tamper with unchanged A3/gauge inputs and a typed/site-specific first rejecting predicate.
-  - **R27 G2 independent finding:** A5 hard-rail comparison requires both selected source faces to match A4 certificate attachments at an earlier guard. This discharges the R21 face-identity assumption only for a reached A5 comparison; native raw/A3/A4 relabel and signed negative remain open. No CB48/TB48 authority.
-  - **R28 G1 independent log audit:** `selector:442` stops at fatal `seamBuilt` (2856) and masks 26 later assertions, including all 7 hard-rail row-order checks. Preserve native reached HardFeature signed/inverse checks but do not credit unexecuted permutation; propose independently selected HardFeature positive plus strictly typed invalid-component-boundary negative, with remaining NonTraversable obligation explicit. Review-only evidence, no authorized CB48 hunk/manifest.
-  - **R29 bounded G1 patch preview (unapplied):** preserved exact test-only candidate SHA256 `9916b743…` separates previously masked hard-rail row-permutation from invalid component-boundary-cycle negative; source `git apply --check` passed but native compile/run and independent real NonTraversable positive are NOT established. No CB48 test patch/manifest authority; G2/G3 still unresolved.
-  - **R30 G2 raw-source pairing preflight:** Two already existing 3×3 hard-rail fixtures use the same source mesh, explicit rails, and direct producer; the `nonconstant` variant cyclically reindexes the four raw arms on exactly four right-half faces. A static source/geometry probe confirms physical 4-RoSy identity and topology-keyed row permutation with two falsifiers. It is not native paired A3/A4/A5/A6 evidence; G2 signed negatives, G3 native odd gauge, G1 native preview verification and true NonTraversable producer coverage remain open. No CB48 hunks/TB48 manifest.
-  - **R31 G2 input-edge locality:** exact eight-interior-edge source-input probe of the R30 3×3 pair puts all nonzero relative arm matching on hard carriers `(1,4)` and `(4,7)` (2 hard, 6 non-hard zero). Row-order canonicalization and three falsifiers pass; independently compare native typed A3 directed rail transports and A4/A5/A6 gauge/route/action, allowing a rotated per-region planar chart frame. This is not native acceptance or CB48 authorization.
-  - **R32 G2 independent signed-normalization oracle:** physically identical 3×3 raw reindex has per-face gauges baseline `[0,1,0,1,0,1,0,1]` vs reindexed `[0,1,3,0,0,1,3,0]`; two hard edge raw matchings are odd, but raw+gauge correction is unchanged on all eight interior edges. A3 hard transitions are excluded from ordinary branch-adjacencies but retained in typed raw transition values consumed by A4. Offline three falsifiers each fail on both hard edges. Native paired A3/A4/A5/A6 acceptance/tamper still required; no CB48/TB48 authority.
-  - **R33 G2 two-channel/first-owner correction:** A3 hard `transition_value` remains **raw** (`0` baseline, expected `3` shifted on both hard crossings; inverse `1`), while external raw+gauge corrected physical proxy stays `3`. Checked A4 rejects forged hard carrier as `rail-transition-a3`; A5 requires selected source-face identity before signed branch comparison, with geometric guards even earlier. Conditional endpoint `chi′=chi−1` finite 256-case controls catch wrong sign, dropped carrier and one-end branch corruption, but **no native** source-paired A3/A4/A5/A6 or first-site execution. Reuse existing cell-only A5 tamper pattern, verify actual first guard and restored positive; do not authorize CB48/TB48 or count native G2.
-  - **R34 native G2 partial-positive recovered:** Immutable TB47 `cp3entry:6` (row 497) PASS directly exercises the right-half-cyclic `nonconstant_hard_rail_fixture()` through A4/A5/A6/A7 with a selected cross-region HardRail. This corrects zero-native-admission phrasing but does NOT establish native constant-versus-shifted paired transport covariance or signed first-guard negative. `cp3entry:2` RED row493 at line3154 aborts on nonexistent two-step certificate before source-row reversal; E2 alone owns that repair. R34 JSON+script prove ledger/log identity and source guard order; no new runtime or CB48/TB48 authorization.
-  - **R52–R61 review consolidation (completed as documentation only, no gate admission):** [R52–R61 disposition](.agents/Directional/Architecture_M6_CP3_DEFN_TB47_Gauge_Cluster_Independent_Review_20261027.md#r52r61-same-turn-evidence-consolidation-2026-10-28-adjudication-remains-open). Keep exact G1 HardFeature valid + invalid-source negative, G2 two-source A3/A4/A5 first-owner signed proof, G3 real A4 odd reciprocal gauge, masked A5 periodic two-owned-relation proof, E2 independent owner, full-history ledger/selector/manifest authority and accepted-prefix audit open. R60 checker patch is **unapplied review-only**, R61 reports selector collisions/deletion and audit-control false-greens; future checker repair needs separate authorized CB with authentic-history falsifiers. Never claim synthetic Git outcomes are real regression/tamper or turn completion.
-- [ ] `M6-CP3-DEFN-RP01-E2-RAIL-VERTEX-ADJACENCY-PATCH` (Review, probe-backed): exact cp3entry:2 rewrite to RA-166.3 D2; junction tamper sections disposed per O9.
-- [ ] `M6-CP3-CB48-…` (G) → `M6-CP3-CB48E-RP01-E2-RAIL-VERTEX-ADJACENCY` → `M6-CP3-TB48-RP01-FULL-GATE`.
-- [ ] `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` (Review; O4, O5, P1-a, P1-b, RA-162 C1, H2 A5 reachability) → CB49 → TB49 → green full gate → RP-01 Review (O6 scope; O7/O8/O9 owners).
-- [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS-RETIREMENT` (RA-160.4 + RA-161 T2), then `DIAG-RETAIN`.
+- [x] **RA-167** ([decision](.agents/Directional/Architecture_M6_CP3_TB47_REV_Gauge_Cluster_Decision_And_Canonical_Turn_Sequence_20261028.md)), `M6-CP3-TB47-RP01-FULL-GATE-REV` (TB-REV), probe-backed. It closes the stalled `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` (R1–R62; the canonical classifier labels it TB-EXEC).
+  - **G1** (442): forged component seam is unreachable → fail-closed A3 negative. FTA file passes 20/20.
+  - **G2** (`focused30:12`): unpaired relabel → A5 negative; source relabel `nonconstant_hard_rail_fixture` → invariance positive (20/20 transports, 121 A6 classes equal). The whole test passes.
+  - **G3** (cp3entry:1): source odd-gauge torus witness (6/6 odd). It exposes **P-G3**: A4 periodic endpoint states are not gauge-covariant, and A5 rejects legal input with `OccurrencePeriodicTransportMismatch`.
+- [ ] **NEXT `M6-CP3-CB48-RP01-GAUGE-CLUSTER-TESTS`** (CB, implementation; RA-167.4).
+  - Apply exactly the RA-167.8 embedded patch, `b32d6381…`.
+  - Numstat must be `10 38` (FTA) and `78 11` (TQ).
+  - Eight GMP/GMPXX targets, no runtime → TB48-EXEC.
+- [ ] `M6-CP3-TB48-RP01-FULL-GATE-EXEC` (TB-EXEC, implementation; RA-167.5).
+  - [Manifest](.agents/Directional/Architecture_M6_CP3_TB48_Full_Gate_Case_Manifest.tsv) `a3187d55…`.
+  - Predict **502/2**: cp3entry:1 at `TQ:3027`, cp3entry:2 at `TQ:3183`.
+  - Routes to `M6-CP3-TB48-RP01-FULL-GATE-REV`.
+- [ ] ∥ `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` (DEFN, probe-capable Review): root-cause P-G3 (`SCT:19088–19123`, `:8194–8218`) and produce an exact probe-verified production patch.
+- [ ] ∥ `M6-CP3-DEFN-RP01-E2-RAIL-VERTEX-ADJACENCY-PATCH` (DEFN, probe-capable Review): exact cp3entry:2 rewrite to RA-166 D2.
+- [ ] `M6-CP3-TB48-RP01-FULL-GATE-REV` (TB-REV) → `M6-CP3-CB49-RP01-G3-PERIODIC-ENDPOINT-STATE` → `M6-CP3-CB49E-RP01-E2-RAIL-VERTEX-ADJACENCY` → `M6-CP3-TB49-RP01-FULL-GATE-EXEC` (predict 504/0) → `M6-CP3-TB49-RP01-FULL-GATE-REV`.
+- [ ] `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-CB50-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-TB50-RP01-FULL-GATE-EXEC` → `…-REV` → `M6-CP3-PLAN-RP01-CLOSURE` (O6 scope; O7–O12 owners).
+- [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`, then `M6-DEFN-DIAG-RETAIN-A5-A7`.
 - [ ] Carried separately:
-  - O1 and O6.
-  - O7: `directional_surface_cell_oracle_tests` does not compile.
-  - **O8:** the producer raises `InvalidFrontBoundaryAuthority` on the 3×3 midline at `lengthRatio=0.29`.
-  - **O9:** the A4 junction-certificate path is unwitnessed and has no consumer.
+  - O1, O6 and O7 (oracle-tests target does not compile).
+  - O8 (`lengthRatio=0.29`) and O9 (A4 junction path unwitnessed).
+  - **O10:** non-hard isolation-barrier producer.
+  - **O11:** 5 off-gate TQ tests failing at HEAD.
+  - **O12:** R61 `review_check.py` selector collision.
   - RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4 and G4-B002.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
@@ -33,18 +30,25 @@
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
-  - Done: TB46 re-run 498/6 → DEFN-E → CB47A → CB47 (BLOCKED, E3) → RA-166.
-  - **CB47 and TB47 COMPLETE; DEFN-G ACTIVE and INCOMPLETE** → DEFN-G (Review) → E2-PATCH (Review) → CB48 (G) → CB48E (E2) → TB48 → DEFN-O4/O5 (Review) → CB49 → TB49 → RP-01 Review.
-  - Rules:
-    - RA-164.3 P1–P6.
-    - RA-165.2 F1/F2.
-    - RA-166.6 F6: a Review scratch-probes every oracle it authorizes, and CBs apply exact patches.
-    - RA-166.6 F7: witness definitions are checked against producer and consumer invariants.
-  - Post-RP-01: O2 DEFN, then `DIAG-RETAIN`.
+  - Done: TB47 500/4 → DEFN-G stalled (R1–R62) → RA-167 TB47-REV.
+  - **CB48 current** → TB48-EXEC ∥ (DEFN G3 and DEFN E2, on the probe-capable Review track) → TB48-REV → CB49 → CB49E → TB49-EXEC → TB49-REV → DEFN O4/O5 → CB50 → TB50-EXEC → TB50-REV → PLAN-RP01-CLOSURE.
+  - **Naming (RA-167.6):**
+    - Types are CB, TB-EXEC, TB-REV, DEFN and PLAN, as `turn_type_from_turn` classifies them.
+    - DEFN and PLAN IDs carry no `-CB<n>` or `-TB<n>` segment and no final R+letters qualifier.
+    - STOP S1–S3 → `PLAN-RP01-<topic>-STOP`; S4 → `TB<n>-…-REV`; S5 → `CB<n>A-RP01-ORCH` → `TB<n>-…-EXEC-R<k>`.
+    - No R1…Rn same-turn loops: a turn that cannot finish closes BLOCKED with a named successor.
+  - Rules: RA-164.3 P1–P6, RA-165.2 F1/F2, RA-166.6 F6/F7. Implementation agents get only exact patches and frozen manifests.
 - Frozen:
   - Stable 66/17/49, debt 1; CP2 491/491 accepted.
-  - TB38 490/504 candidate; TB46 re-run 498/6 and TB47 500/4 valid expected-RED.
+  - TB47 500/4 valid expected-RED.
   - Selector497 frozen; RP-01 open, RP-02 unreached; Gate C suspended.
+
+---
+
+## HISTORY — RA-166; CB47; TB47; DEFN-G R1–R62 (2026-10-27/28)
+
+- [x] RA-166 re-homed D5 and D2 → CB47 `08d41626e` ([record](.agents/Directional/Architecture_M6_CP3_CB47_RP01_Endpoint_Witnesses_Code_Build_Record_20261027.md)) → TB47 500/4 ([report](.agents/Directional/Architecture_M6_CP3_TB47_RP01_Full_Gate_Test_Benchmark_Report_20261027.md)).
+- [x] DEFN-G R1–R62, static only ([index](.agents/Directional/Architecture_M6_CP3_DEFN_TB47_Gauge_Cluster_Independent_Review_20261027.md)), superseded by RA-167. Its R30/R34/R37 identification of the G2 source-relabel fixture is confirmed by probe.
 
 ---
 

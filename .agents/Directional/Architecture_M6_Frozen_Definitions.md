@@ -1,3 +1,14 @@
+## RA-167 — TB47-REV: gauge cluster; canonical turn types (2026-10-28)
+
+- **RA-167.3 G1:** a non-hard `NonTraversable` positive is producer-unreachable; a forged component split must fail closed at A3. The positive belongs to O10.
+- **G2:** RA-163 R2 relabel invariance applies to **source-produced** relabels, meaning raw field → A3 → A4 regenerated. An unpaired A4-draft relabel is an A5 negative.
+- **G3:** the odd-gauge witness is the frozen torus field with a half-torus [0, π) arm relabel, with the frame oracle run on the unrelabelled field. P-G3 is owned by the A4 periodic endpoint-state publication.
+- **RA-167.6:** turn IDs must classify under `turn_type_from_turn` as CB, TB-EXEC, TB-REV, DEFN or PLAN.
+  - DEFN and PLAN IDs carry no `-CB<n>` or `-TB<n>` segment and no final R+letters qualifier.
+  - STOP S1–S3 → PLAN `…-STOP`; S4 → TB-REV; S5 → `CB<n>A-RP01-ORCH` → `TB-EXEC-R<k>`.
+  - No R1…Rn same-turn loops.
+  - Probe-requiring turns belong to the probe-capable Review track; implementation agents get only exact patches and frozen manifests.
+
 ## RA-166 — CB47-REV: D5/D2 witness re-home; rules F6/F7 (2026-10-27)
 
 - **RA-166.3 D1 (amends RA-33.5, DEFN-E E3):**

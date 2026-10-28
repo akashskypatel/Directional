@@ -1,3 +1,13 @@
+## 2026-10-28 — RA-167 TB47-REV: gauge cluster decided; P-G3; canonical turn sequence
+
+- [RA-167](.agents/Directional/Architecture_M6_CP3_TB47_REV_Gauge_Cluster_Decision_And_Canonical_Turn_Sequence_20261028.md), `M6-CP3-TB47-RP01-FULL-GATE-REV`. It closes the stalled `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` (R1–R62), whose ID the canonical classifier labels TB-EXEC. Decisions, from scratch probes:
+  - **G1** (442): forged-component seam → A3 fail-closed negative.
+  - **G2** (`focused30:12`): unpaired relabel → A5 negative; source relabel → invariance positive (20/20 transports, 121 A6 classes equal).
+  - **G3** (cp3entry:1): source odd-gauge torus witness (6/6 odd) → production defect **P-G3**. A5 rejects legal input with `OccurrencePeriodicTransportMismatch`, because A4 endpoint states are not gauge-covariant.
+  - Exact CB48 patch `b32d6381…`; TB48 manifest `a3187d55…` (predict 502/2).
+  - Canonical turn sequence (CB/TB-EXEC/TB-REV/DEFN/PLAN).
+  - O10–O12 registered.
+
 **2026-10-28 — TB47 DEFN-G R52–R61 review evidence consolidated, no acceptance:** [active Review](.agents/Directional/Architecture_M6_CP3_DEFN_TB47_Gauge_Cluster_Independent_Review_20261027.md#r52r61-same-turn-evidence-consolidation-2026-10-28-adjudication-remains-open) now indexes source-backed R52 compiled-but-unselected ownership tests, R53–R59 G1/G2/G3 corrective decisions, R60 unapplied checker preview and R61 selector/audit-control false-positive Git probes. R61 found 45 selector files collapsed into 39 numeric suffix keys, enabling committed selector drift to be unobserved by the current checker; the synthetic evidence does not assert real tampering. Accepted CP2 **491/491**, TB47 **500 PASS / 4 RED** unpromoted, stable **66/17/49**, debt one. Same canonical Review remains incomplete; no product/source/test/selector/manifest/workflow edits, no new native execution, no successor authorization.
 
 **2026-10-28 — TB47 DEFN-G R51 frozen case-manifest checker false-green:** Exact-source `review_check.py` in a synthetic Git repo returns `ALL CHECKS PASSED` on authority, boundary and ledgers both after flipping selected frozen `cp3entry:1` `RED`→`PASS` and after deleting that manifest row (504→503 cases). A C++ drift control is rejected. The actual frozen TSV (`488a20b6…5955`) remains unchanged; this is a checker coverage defect, not historical actual drift or native success. Require exact case manifest SHA/identity/verdict/selection binding and negative controls. Review still IN_PROGRESS; CP2 491/491 accepted, TB47 500/4 candidate, no selector promotion, product/test/fixture/workflow change, or successor authorization. [Review](.agents/Directional/Architecture_M6_CP3_DEFN_TB47_Gauge_Cluster_Independent_Review_20261027.md).
