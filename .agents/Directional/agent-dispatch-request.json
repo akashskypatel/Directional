@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb49-closeout-docs-20261028-v1",
+  "request_id": "m6-cp3-cb49e-p2-source-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb49-closeout-docs-20261028-v1",
-  "file_id": "1TPvwwcd7-grDyxF8D6O3aFZeLX5SZ10Z",
-  "patch_sha256": "5d5d8b6b1a19ab3ec6923e6c5a1b2c63034ca1866058a52b1bda0bcb10e75189",
-  "base_sha": "9c84ba9cc8e44acf556d17e2357b1e9458337cca",
+  "mailbox_key": "m6-cp3-cb49e-p2-apply-20261028-v1",
+  "file_id": "1nGtL2DTxeUcl9gc5TgdOlSJkCS91EWzG",
+  "patch_sha256": "2c9faf7209d2037de229cc484d051c15aeaeea258ecfc3a9ec2b653b808b3d99",
+  "base_sha": "966fc1df87a03f3f9a9949dab62389f8e1a210fd",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): close CB49 exact gauge compile and hand off CB49E",
+  "commit_message": "test(surface-cells): correct E2 rail-vertex adjacency oracle from RA-168 P2",
   "retention_days": 14
 }
