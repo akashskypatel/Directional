@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r33-g2-two-channel-guard-20261028-v1",
+  "request_id": "m6-cp3-tb47-r33-probe-digest-correction-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r33-g2-two-channel-v1",
-  "file_id": "1gNOrbrziBG4YhLKTA7uJakvch3ZtMy-v",
-  "patch_sha256": "0fcde1ab4e658c380e02802f29deac6d3962877215c295b61f80b04f33846744",
-  "base_sha": "741f25b25ec3abb2a6ab05615545a6db2c9effe2",
+  "mailbox_key": "m6-cp3-tb47-r33-probe-correction-v1",
+  "file_id": "1NQFqT9fEFBmUnPQ7X1iHKpvHlzxjwoMF",
+  "patch_sha256": "69f47e728f2ccfe00aa8627f16f0d7b75ae9a085dd8caf34568fa6ef86d92cfc",
+  "base_sha": "d4c753b788f7a00242cce3b37e0945319c8ec21d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): distinguish G2 raw carrier and A5 first-guard checks (R33)",
+  "commit_message": "docs(directional): correct R33 Z4 probe digest and offset coverage",
   "retention_days": 14
 }
