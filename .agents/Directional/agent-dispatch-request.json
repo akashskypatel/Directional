@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r26-gauge-pin-review-20261028-v1",
+  "request_id": "m6-cp3-tb47-r27-a5-attachment-guard-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r26-gauge-pin-v1",
-  "file_id": "18JKJ4y7j_U6D67EQDz3acT5N4m1YxvXw",
-  "patch_sha256": "117b5618133f77773e116e691f8f96e957832023d0c22d9d9b4c208ef22aff61",
-  "base_sha": "fd89d008866fa5040b7b46c5f3ec669c7c699efc",
+  "mailbox_key": "m6-cp3-tb47-r27-a5-attachment-guard-v1",
+  "file_id": "1-8sNK4Rzaodi7OQ3vN853XRUC1Q1epjl",
+  "patch_sha256": "05751ebaf852124a94d067c08f4a7c360137d8eba6589e9bb1a04da2c25912b6",
+  "base_sha": "06b5930cb26fc05efe0d79a00168dd7c59666742",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: classify TB47 D1 single-face gauge tamper as early A3 pin guard (R26)",
+  "commit_message": "docs: independently verify A5 hard-rail endpoint attachment guard (R27)",
   "retention_days": 14
 }
