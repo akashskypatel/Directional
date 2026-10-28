@@ -41,7 +41,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Regression accounting and debt | Stable **66/17/49**, debt 1 ([tracker](Regression_Root_Cause_Tracker.md)). No new stable event. |
 | Active boundary | RP-01 open, RP-02 unreached. [TB47 manifest](Architecture_M6_CP3_TB47_Full_Gate_Case_Manifest.tsv) **v2** `488a20b6…5955`, **measured 500/4**: RED `focused30:12` `:5581`, `selector:442`, cp3entry:1 `:2916`, cp3entry:2 `:3154`; 201 and cp3entry:4 POSITIVE. cp3entry:2's rewrite goes to Review-owned exact-patch turn E2-PATCH. Carried: O1, O2 (post-RP-01, + RA-161 T2), O6, O7, **O8** (producer `InvalidFrontBoundaryAuthority` at `lengthRatio=0.29`), **O9** (A4 junction path unwitnessed, no consumer), DIAG-RETAIN, RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4, G4-B002. |
 
-## Current canonical turn — `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` — RESUME SAME TURN
+## Mandatory next turn — `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` — EXACT NEXT
 
 - **Authority:** valid immutable [TB47 report](Architecture_M6_CP3_TB47_RP01_Full_Gate_Test_Benchmark_Report_20261027.md), [RA-166.5](Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md), existing CB47 artifact and frozen manifest v2.
 - **R27 current finding:** The A5 hard-rail consumer checks both selected-face identities against its published A4 route attachments before its branch-transport equation. This narrows R21’s conditional, but does not establish a source-produced G2 reindex or authorize CB48/TB48. R26 remains the separate A4 gauge-pin guard finding.
