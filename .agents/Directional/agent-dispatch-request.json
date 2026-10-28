@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r50-ledger-merge-history-falsifier-20261028-v1",
+  "request_id": "m6-cp3-tb47-r51-frozen-manifest-guard-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r50-ledger-merge-history-v1",
-  "file_id": "16D6OlNtFodh-J6cW3fm0iOsSa_aztIUm",
-  "patch_sha256": "e5e589d923e2ec2b2f3197307175d62de3527e37b1213ac1993d5e3f97892866",
-  "base_sha": "f65ea7f8ec3d04074f73f4e792b0a505120fc3f0",
+  "mailbox_key": "m6-cp3-tb47-r51-frozen-manifest-guard-v1",
+  "file_id": "1SZh9RYjMzf6BkjNEIrdYKJACbkd7_nLc",
+  "patch_sha256": "f5e7e8bfe679013dd02c944ab1bfba7724390ac1512ec366b4fa4fbe7031a756",
+  "base_sha": "8d610a3ed3c550a2be6579f5f96ec953aeb393f1",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): expose historical ledger checker merge-pruning false pass (R50)",
+  "commit_message": "docs(directional): audit frozen TB47 manifest checker omission (R51)",
   "retention_days": 14
 }
