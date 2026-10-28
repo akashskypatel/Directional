@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r32-canonical-hard-transport-20261028-v1",
+  "request_id": "m6-cp3-tb47-r33-g2-two-channel-guard-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r32-canonical-hard-v1",
-  "file_id": "1NI3wq-74PawcTLm5_hP33OzaDQqpNIS5",
-  "patch_sha256": "f4f82ef171e250ac82f7e7abe2499c33329750409f3ce35592c1eab6bb9564d9",
-  "base_sha": "42060e8620760c32a7288f0067775864d144e6d0",
+  "mailbox_key": "m6-cp3-tb47-r33-g2-two-channel-v1",
+  "file_id": "1gNOrbrziBG4YhLKTA7uJakvch3ZtMy-v",
+  "patch_sha256": "0fcde1ab4e658c380e02802f29deac6d3962877215c295b61f80b04f33846744",
+  "base_sha": "741f25b25ec3abb2a6ab05615545a6db2c9effe2",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): derive G2 hard-rail canonical transport normalization (R32)",
+  "commit_message": "docs(directional): distinguish G2 raw carrier and A5 first-guard checks (R33)",
   "retention_days": 14
 }
