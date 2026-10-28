@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r37-dual-native-admission-20261028-v1",
+  "request_id": "m6-cp3-tb47-r38-guard-falsifier-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r37-dual-native-v1",
-  "file_id": "1zmoDy7ikc6Ht7uVZtL7RRL5YjK-0miQc",
-  "patch_sha256": "7429c160a55f3672af40be570e658c3d465a4043a438020738f2925fc968a61a",
-  "base_sha": "6e1402e5cb65694a896bbe768e11bad49604d2da",
+  "mailbox_key": "m6-cp3-tb47-r38-review-guard-v1",
+  "file_id": "1QVZ6MGqoNERXhDhPRhdbyo0e_9XP5-43",
+  "patch_sha256": "3d11f7435b301aba20b8af08ad0774d70bf3bfcf3115cc6e9c793681a61af3d9",
+  "base_sha": "086d0e81ed20ced607e637a70c3b88032c8a90f2",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record separately produced native G2 A7 admissions (R37)",
+  "commit_message": "docs(directional): document history-check false-green controls (R38)",
   "retention_days": 14
 }
