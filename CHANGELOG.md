@@ -1,3 +1,9 @@
+## 2026-10-28 — CB49 G3 A5 exact periodic-placement gauge correction compiled (no runtime)
+
+- [CB49 record](.agents/Directional/Architecture_M6_CP3_CB49_RP01_G3_A5_Periodic_Placement_Gauge_Code_Build_Record_20261028.md): applied RA-168.9 P1 byte-exact SHA-256 `5897798d…` (+8/−2 production, +13/−2 TQ test oracle), source `9c84ba9cc8e44acf556d17e2357b1e9458337cca`.
+- Eight GMP/GMPXX targets compiled ([run 40766433076](https://github.com/akashskypatel/Directional/actions/runs/40766433076), artifact `12850662095`, ZIP `f1c22308f3d70018012e44e6c27cc4bc5c6c12d6ce31bbc220dcfc30c607902d`); `runtimeExecution=false`. No test or benchmark evidence, selector/CP3 promotion, or stable regression change.
+- Next formal turn: `M6-CP3-CB49E-RP01-E2-RAIL-VERTEX-ADJACENCY`; CB49E is a separate patch/compile turn.
+
 ## 2026-10-28 — RA-168: TB48-REV audited; P-G3 is an A5 defect; E2 re-homed to D2; exact CB49/CB49E patches
 
 - [RA-168](.agents/Directional/Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md) completes `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` and `M6-CP3-DEFN-RP01-E2-RAIL-VERTEX-ADJACENCY-PATCH` (DEFN, probe-backed) and corrects TB48-REV:
