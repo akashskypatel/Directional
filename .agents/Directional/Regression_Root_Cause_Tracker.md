@@ -1,3 +1,10 @@
+**TB48 artifact-only execution (2026-10-28, verified candidate; independent Review pending):**
+
+- [Run 40731722985](https://github.com/akashskypatel/Directional/actions/runs/40731722985), immutable CB48 source `4c611941f0bee7dc2515755fbd159402463879e2`, package `12834041300`, result `12836819707` (`3aa8b6bc597abef4b4eb3e8168243e7854e09aea95f3e73fc4d531a92dc20131`); 1014/1014 hashes, 504/504 manifest↔ledger↔raw-log joins. **502 PASS / 2 expected RED**, controls and immutable postflight intact, no rebuild.
+- **P-G3 CI reproduced (candidate production):** `cp3entry:1` RED at `SurfaceCellTransitionQuotientTests.cpp:3027`, the source-relabel odd-gauge torus first asserts conflicting gauge-stripped endpoint actions. RA-167 assigned A4 periodic endpoint state owner (`SCT:19088–19123`, `:8194–8218`). This is not a regression introduced by CB48 (test-only). Independent TB48-REV must adjudicate stable ledger category/identity; do not pre-assign a new stable number or claim fix.
+- **E2 inherited:** `cp3entry:2` RED at `SurfaceCellTransitionQuotientTests.cpp:3183`, no ACTUAL A4-produced paired two-carrier HardRail. Separate RA-166 D2 test-authority/producer-reachability decision remains open.
+- No unregistered first site or PASS→RED. **Stable 66/17/49, debt 1 unchanged pending Review**; last accepted CP2 491/491, selector497 and CP3 unpromoted. [TB48 report](Architecture_M6_CP3_TB48_RP01_Full_Gate_Test_Benchmark_Report_20261028.md).
+
 **RA-167 TB47-REV (2026-10-28, candidate/non-stable):**
 
 - `selector:442` and `focused30:12` REDs are test-authority errors (a forged component seam, and an unpaired relabel); they are not production regressions.

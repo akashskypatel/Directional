@@ -1,3 +1,7 @@
+## 2026-10-28 — TB48 immutable full gate executed: 502 PASS / 2 expected RED (Review pending)
+
+- [TB48 report](.agents/Directional/Architecture_M6_CP3_TB48_RP01_Full_Gate_Test_Benchmark_Report_20261028.md): run 40731722985, result `12836819707` ZIP `3aa8b6bc597abef4b4eb3e8168243e7854e09aea95f3e73fc4d531a92dc20131`; 504/504 selection and raw logs, zero control violations, immutable postflight true, no build/repair. P-G3 reproduces on CI at TQ:3027; E2 remains at TQ:3183. Last accepted CP2 491/491, stable 66/17/49 debt1 unchanged pending independent TB48-REV; selector497 unpromoted.
+
 ## 2026-10-28 — CB48 exact gauge-cluster test patch compiled; TB48 immutable full gate next
 
 - [CB48 record](.agents/Directional/Architecture_M6_CP3_CB48_RP01_Gauge_Cluster_Tests_Code_Build_Record_20261028.md): RA-167.8 exact two-test-file patch `b32d6381…` applied at `4c611941…`; eight GMP/GMPXX targets compiled on run 40727946150, artifact `12834041300`; `runtimeExecution=false`. No new semantic runtime acceptance; TB48 manifest `a3187d55…` remains next (502/2 prediction).
