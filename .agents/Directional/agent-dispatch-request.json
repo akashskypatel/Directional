@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb49e-e2-compile-20261028-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb49e-e2-compile-20261028-v1",
-  "source_sha": "092b52eba881e3bafbff4fa263f84f96cf648838",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb49e-e2"
+  "request_id": "m6-cp3-cb49e-docs-closeout-20261028-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb49e-docs-20261028-v1",
+  "file_id": "1NC9jV8XD0TCKAvOFWiPL_LqbQDLFEo85",
+  "patch_sha256": "a97cafbae825d95f9ae4b9378e0e53f33a2e8367de6080fbd785549a1919cecf",
+  "base_sha": "92e8c9c7c685a4b356df4659600e07522162c849",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close out CB49E compile and hand off TB49",
+  "retention_days": 14
 }
