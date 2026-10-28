@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r35-existing-oracle-coverage-20261028-v2",
+  "request_id": "m6-cp3-tb47-r36-protected-history-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r35-coverage-v2",
-  "file_id": "181gahiXeJrqfoIfFLastN19UBQoMuLCx",
-  "patch_sha256": "2dd6d8102dae913965af5d41ed8adfc4ea047b51289fb27a339639fa86ddada6",
-  "base_sha": "c08de57f6c76d53e6de856c6ca9228a7ff4db507",
+  "mailbox_key": "m6-cp3-tb47-r36-history-v1",
+  "file_id": "1zp8btKHYvkTwZf4U3_M3iqIGdKzUlBdy",
+  "patch_sha256": "4921e611537e7a2852c1d01ad8e1f5575f7a434ed1573be72d2c5ecc11f97dfd",
+  "base_sha": "e672b5606e49f9c85116a3e877e6cfa9ca02416d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): audit existing G2/G3 oracles against frozen TB47 (R35)",
+  "commit_message": "docs(directional): independently verify durable rewrite preservation (R36)",
   "retention_days": 14
 }
