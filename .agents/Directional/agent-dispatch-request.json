@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb48-gauge-cluster-compile-20261028-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb48-gauge-cluster-compile-v1",
-  "source_sha": "4c611941f0bee7dc2515755fbd159402463879e2",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb48-gauge-cluster"
+  "request_id": "m6-cp3-cb48-closeout-docs-20261028-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb48-closeout-docs-v1",
+  "file_id": "1L9tQkNadq2zcuI1_mpLsWRU7IZKmj7Gh",
+  "patch_sha256": "ea4a03d391f1aefd42fcc5e5447a61db0edad5a66d059d41f3e677424ad87dc5",
+  "base_sha": "4c611941f0bee7dc2515755fbd159402463879e2",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record CB48 compile and authorize TB48",
+  "retention_days": 14
 }
