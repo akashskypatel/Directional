@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb49-docs-20261028-v1",
+  "request_id": "m6-cp3-tb49-review-docs-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb49-docs-20261028-v1",
-  "file_id": "1r670_Yl7IEADfTBCTqJZbXCXLw7C6J72",
-  "patch_sha256": "ee2587752df48dec5affc43f02e6ef8dd62ffb4d481555ecc5f775f2ddc0ae59",
-  "base_sha": "a3991ce602118e93538eb4e4ff5b07df6b92c919",
+  "mailbox_key": "m6-cp3-tb49-review-docs-20261028",
+  "file_id": "14LDJInXvaxXR-g_pmDqz4dmSEif8vunc",
+  "patch_sha256": "6fd791f5c970140c537a241cbfd2434b9a4020356dc62a03bd06db0b1c688d84",
+  "base_sha": "88dd13c7b3566e3c575faea824a1451041403b60",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB49 verified full-gate execution and hand off Review",
+  "commit_message": "docs(directional): preserve TB49 full-gate independent review evidence",
   "retention_days": 14
 }
