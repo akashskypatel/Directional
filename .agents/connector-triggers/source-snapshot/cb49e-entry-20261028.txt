@@ -1,0 +1,3 @@
+CB49E exact source snapshot for compile-only E2 patch turn.
+Source branch: agent/surface_cell_quad/p5-recover-bridge-healing
+Purpose: obtain one verified source archive for local exact-patch application.
