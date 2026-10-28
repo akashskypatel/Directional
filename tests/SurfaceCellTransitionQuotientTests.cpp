@@ -2984,9 +2984,12 @@ TEST(M6CP3, PeriodicExactA3UnequalFaceGaugeUsesRelationAndOccurrenceAuthority) {
     if (!relationState.has_value() || relationState.value() != published) {
       return std::nullopt;
     }
-    const auto placementBranch =
+    // Lattice coordinates are gauge-free; only the branch label carries the
+    // local source-face gauge, which must be stripped (RA-168 G3).
+    const auto placementBranch = compose(
+        published.branchAuthority.localFaceBranchRotation.inverse(),
         directional::authority::QuarterTurn::from_integer(
-            placement.branchRotation);
+            placement.branchRotation));
     const auto rotation =
         compose(relationState->branchRotation, placementBranch.inverse());
     return directional::authority::GridAutomorphism{
@@ -3030,6 +3033,14 @@ TEST(M6CP3, PeriodicExactA3UnequalFaceGaugeUsesRelationAndOccurrenceAuthority) {
                                 gammaFrom->inverse()));
   EXPECT_NE(expected, wrongDirection)
       << "non-self-inverse gauges must kill the wrong Gamma direction";
+  // Gauge-free oracle: the placement transport must carry both forward
+  // regional-chart lattice coordinates onto their reverse partners.
+  EXPECT_EQ(expected.apply(forward->fromLattice.latticeCoordinate),
+            reverse->toLattice.latticeCoordinate)
+      << "G3 placement transport must map the first endpoint pair";
+  EXPECT_EQ(expected.apply(forward->toLattice.latticeCoordinate),
+            reverse->fromLattice.latticeCoordinate)
+      << "G3 placement transport must map the second endpoint pair";
 
   auto a5Result = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
       fixture.fixture.mesh.V, fixture.fixture.mesh.F, front);

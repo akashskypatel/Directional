@@ -4801,17 +4801,23 @@ SurfaceOccurrenceComplexProducer::produce(
     if (!relationState.has_value() || relationState.value() != published) {
       return std::nullopt;
     }
+    // Placement lattice coordinates live in the gauge-free regional chart;
+    // only the branch label carries the local source-face gauge. Strip that
+    // gauge so the coordinate gauge is the relation turn alone (G3, RA-168).
     const authority::QuarterTurn placementBranch =
         authority::QuarterTurn::from_integer(placement.branchRotation);
+    const authority::QuarterTurn cutPlacementBranch = compose(
+        published.branchAuthority.localFaceBranchRotation.inverse(),
+        placementBranch);
     const authority::QuarterTurn gaugeRotation =
-        compose(relationState->branchRotation, placementBranch.inverse());
+        compose(relationState->branchRotation, cutPlacementBranch.inverse());
     const authority::GridAutomorphism gauge{
         gaugeRotation,
         relationState->latticeCoordinate -
             authority::rotate(gaugeRotation, placement.latticeCoordinate)};
     if (gauge.apply(placement.latticeCoordinate) !=
             relationState->latticeCoordinate ||
-        compose(gauge.rotation, placementBranch) !=
+        compose(gauge.rotation, cutPlacementBranch) !=
             relationState->branchRotation ||
         placement.scaleLevel != relationState->scaleLevel) {
       return std::nullopt;
