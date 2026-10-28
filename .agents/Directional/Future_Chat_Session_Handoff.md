@@ -44,6 +44,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 ## Mandatory next turn — `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` — EXACT NEXT
 
 - **Authority:** valid immutable [TB47 report](Architecture_M6_CP3_TB47_RP01_Full_Gate_Test_Benchmark_Report_20261027.md), [RA-166.5](Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md), existing CB47 artifact and frozen manifest v2.
+- **R27 current finding:** The A5 hard-rail consumer checks both selected-face identities against its published A4 route attachments before its branch-transport equation. This narrows R21’s conditional, but does not establish a source-produced G2 reindex or authorize CB48/TB48. R26 remains the separate A4 gauge-pin guard finding.
 - **Review scope:** Independently decide gauge cluster G (`selector:442`, `focused30:12`, `cp3entry:1`) against source-authoritative A3/A5 producer and consumer invariants; perform scratch probes before authorizing any new test oracle (RA-166.6 F6/F7). Emit exact approved hunks and the TB48 manifest; preserve cp3entry:2 E2 for separately authorized independent Review. No premature CP3/selector497 promotion.
 - **Frozen result:** TB47 504/504, 500 PASS / four precisely pinned RED; run `40504055818`, result `12734719880`, ZIP SHA256 `f03efe3c2f75b113ac9e05329799955e4306d611feb4d83c38a2cd672be6b04d`.
 
