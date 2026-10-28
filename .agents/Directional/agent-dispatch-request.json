@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r27-a5-attachment-guard-20261028-v1",
+  "request_id": "m6-cp3-tb47-r27-receipt-source-sha-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r27-a5-attachment-guard-v1",
-  "file_id": "1-8sNK4Rzaodi7OQ3vN853XRUC1Q1epjl",
-  "patch_sha256": "05751ebaf852124a94d067c08f4a7c360137d8eba6589e9bb1a04da2c25912b6",
-  "base_sha": "06b5930cb26fc05efe0d79a00168dd7c59666742",
+  "mailbox_key": "m6-cp3-tb47-r27-receipt-correction-v1",
+  "file_id": "1cj5GkPHMkfp8ImGixG0MKkkwF6qwRcjY",
+  "patch_sha256": "4c3f750a0359e4cab92976290ff929712b5aa255baef13151e9b9b6dfd138950",
+  "base_sha": "393892b68d5130c0751e043c3fbd10e96f1f0317",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: independently verify A5 hard-rail endpoint attachment guard (R27)",
+  "commit_message": "docs: correct R27 source-snapshot receipt provenance hash",
   "retention_days": 14
 }
