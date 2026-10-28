@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb49-full-gate-20261028-v1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb49-rp01-full-gate-20261028-v1",
-  "executor_sha": "a3991ce602118e93538eb4e4ff5b07df6b92c919",
-  "semantic_source_sha": "092b52eba881e3bafbff4fa263f84f96cf648838",
-  "turn_id": "M6-CP3-TB49-RP01-FULL-GATE-EXEC",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "142321061c57d130a9c73548ce93f52147ebeaeb4c45d3d1c48830e72e2ef93d",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "12852132570",
-    "EXPECTED_SOURCE_SHA": "092b52eba881e3bafbff4fa263f84f96cf648838",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "24a0beb14cc0766a7f77ba5c5ccdffc76b5bbfbe798c11170d6db2ba1c94d022",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "848ae31b727279049af62ae67cdf2d1be5a61ce2ebdb664cdd8dae8b6a16425e",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "957f912b999b6602bb0e87a64fd57024a907234223e7b2375fa23bc012639a17",
-    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_CP3_TB49_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "a0e39fa25d707bfc8eabb25ac9e8c494cff8ebf032e2040718b90366d0250ef0",
-    "EXPECTED_CASE_COUNT": "504"
-  },
-  "artifact_prefix": "m6-cp3-tb49-rp01-full-gate",
+  "request_id": "m6-cp3-tb49-docs-20261028-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb49-docs-20261028-v1",
+  "file_id": "1r670_Yl7IEADfTBCTqJZbXCXLw7C6J72",
+  "patch_sha256": "ee2587752df48dec5affc43f02e6ef8dd62ffb4d481555ecc5f775f2ddc0ae59",
+  "base_sha": "a3991ce602118e93538eb4e4ff5b07df6b92c919",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close TB49 verified full-gate execution and hand off Review",
   "retention_days": 14
 }
