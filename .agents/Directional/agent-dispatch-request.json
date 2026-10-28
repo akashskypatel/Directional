@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r24-20261027-v1",
+  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r25-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r24-v1",
-  "file_id": "1bFd87AkdFWDc090IIfnpwYYiLRjZ3DQL",
-  "patch_sha256": "8bd39e357e22983e1f5178dc80dd11c257878200db92cc8c29a99c976c6213ec",
-  "base_sha": "934944303487657620bc3cca5fe892ff418bd236",
+  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r25-v1",
+  "file_id": "1PHbI6NnLwktxLYankfkzddzG_Dw2wYCP",
+  "patch_sha256": "a19f687d1262d5656263900497497d24adc36471d65eec592df0f6174126e2b4",
+  "base_sha": "111de8234c3cdf938dbdbf055e1edfe95d7d7720",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: re-home G3 chart closure oracle to native A4 rectangular contract (R24)",
+  "commit_message": "docs: isolate TB47 G3 metamorphic torus witness and native cut authority (R25)",
   "retention_days": 14
 }
