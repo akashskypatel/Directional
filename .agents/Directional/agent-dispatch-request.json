@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb49-g3-a5-20261028-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb49-g3-a5-20261028-v1",
-  "file_id": "11449bXx_1903_xd6MouVxyg9SuNPHVxq",
-  "patch_sha256": "5cf54295695e0e39e704dcce503b27adbabc3f1a43e9fd99c0f8c86f8d61fd24",
-  "base_sha": "5e5b4be1f5ca8226ffbfe6ee5db584381ea491bd",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): normalize A5 periodic placement gauge (CB49)",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb49-g3-a5-compile-20261028-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb49-g3-a5-compile-20261028-v1",
+  "source_sha": "9c84ba9cc8e44acf556d17e2357b1e9458337cca",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb49-g3-a5"
 }
