@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r51-frozen-manifest-guard-20261028-v1",
+  "request_id": "m6-cp3-tb47-r62-review-consolidation-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r51-frozen-manifest-guard-v1",
-  "file_id": "1SZh9RYjMzf6BkjNEIrdYKJACbkd7_nLc",
-  "patch_sha256": "f5e7e8bfe679013dd02c944ab1bfba7724390ac1512ec366b4fa4fbe7031a756",
-  "base_sha": "8d610a3ed3c550a2be6579f5f96ec953aeb393f1",
+  "mailbox_key": "m6-cp3-tb47-r62-review-consolidation-v1",
+  "file_id": "1hWXUOUIl4V5Rj2y8GySUoZmg1Gr4Tefl",
+  "patch_sha256": "25d9f5e21389cf2f16af3fd7d814388557172420532fd3f39d88e89c2a4f1bad",
+  "base_sha": "b3a1a3d2691e23924454eb5e6e544bee1d705c6a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): audit frozen TB47 manifest checker omission (R51)",
+  "commit_message": "docs(directional): consolidate TB47 R52-R61 review evidence and open gates",
   "retention_days": 14
 }
