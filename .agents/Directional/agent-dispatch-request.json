@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb48-gauge-cluster-tests-drive-apply-20261028-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb48-gauge-cluster-apply-v1",
-  "file_id": "1S1emEdhkAuungoPVbYrpS9Yzbz1pUBE_",
-  "patch_sha256": "9fc80f893a95813cdd5b82ce9026d6331eefcf987bbba8b74a5fabf52c2edff3",
-  "base_sha": "5e95c2b238e0b9863b9157aabdedc24e3a41af05",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): apply RA-167 gauge-cluster witness corrections",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb48-gauge-cluster-compile-20261028-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb48-gauge-cluster-compile-v1",
+  "source_sha": "4c611941f0bee7dc2515755fbd159402463879e2",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb48-gauge-cluster"
 }
