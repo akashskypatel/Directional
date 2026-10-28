@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r38-guard-falsifier-20261028-v1",
+  "request_id": "m6-cp3-tb47-r39-a7-gauge-owner-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r38-review-guard-v1",
-  "file_id": "1QVZ6MGqoNERXhDhPRhdbyo0e_9XP5-43",
-  "patch_sha256": "3d11f7435b301aba20b8af08ad0774d70bf3bfcf3115cc6e9c793681a61af3d9",
-  "base_sha": "086d0e81ed20ced607e637a70c3b88032c8a90f2",
+  "mailbox_key": "m6-cp3-tb47-r39-a7-owner-v1",
+  "file_id": "1KKtD2GwVjjkrGTClrDJ6bRBAnRoD1h6S",
+  "patch_sha256": "fd8bb70e2e49c877085dcfedda2a6ee14b08d6386ddc57fb38e679a0e2e0c14d",
+  "base_sha": "3ca62b5f30f822fc6d296bd21efa2f6ed43045dc",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): document history-check false-green controls (R38)",
+  "commit_message": "docs(directional): distinguish A7 gauge presence from A5 signed transport (R39)",
   "retention_days": 14
 }
