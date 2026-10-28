@@ -34,18 +34,19 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-28, after TB48 independent Review of immutable gate 502/2 ([report](Architecture_M6_CP3_TB48_RP01_Full_Gate_Test_Benchmark_Report_20261028.md)) and CB48 exact-test compile ([record](Architecture_M6_CP3_CB48_RP01_Gauge_Cluster_Tests_Code_Build_Record_20261028.md)) and [RA-167](Architecture_M6_CP3_TB47_REV_Gauge_Cluster_Decision_And_Canonical_Turn_Sequence_20261028.md) (`M6-CP3-TB47-RP01-FULL-GATE-REV`, type TB-REV). It closes the stalled `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` (R1–R62 kept as provenance), which the canonical classifier labels TB-EXEC. Probe-backed gauge-cluster decisions: G1 and G2 test-authority errors re-homed (both pass); G3 re-homed to a source odd-gauge witness that exposes production defect **P-G3** (A4 periodic endpoint states not gauge-covariant). Turn IDs follow `turn_type_from_turn` (RA-167.6). |
+| Currency | 2026-10-28, after [RA-168](Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md): audit of `M6-CP3-TB48-RP01-FULL-GATE-REV` plus completion of both Review-track DEFNs (`M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE`, `M6-CP3-DEFN-RP01-E2-RAIL-VERTEX-ADJACENCY-PATCH`). TB48 evidence verified (502/2). Corrections: P-G3 is an **A5** defect (`periodic_endpoint_gauge`, `RemeshPipeline.cpp:4793–4820`), not A4; E2 is a stale junction-era oracle, since A4 already publishes the RA-166 D2 R-split. Exact probe-verified patches P1 (`5897798d…`) and P2 (`9ebef3cc…`). Turn IDs follow `turn_type_from_turn` (RA-167.6). |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted 2026-10-06 (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
 | Latest candidate or rejected evidence | TB48 **502/2** independently reviewed candidate, run `40731722985`, result `12836819707`; CB48 compile-only package **12834041300** / source `4c611941…` unpromoted; TB47 **500/4** valid expected-RED ([report](Architecture_M6_CP3_TB47_RP01_Full_Gate_Test_Benchmark_Report_20261027.md); CB47 source `08d41626e`, package `12732383172`, result `12734719880`). Selector497 frozen, unpromoted. |
-| Regression accounting and debt | Stable **66/17/49**, debt 1 ([tracker](Regression_Root_Cause_Tracker.md)); TB48-REV classifies P-G3 as a real **non-stable** defect on unpromoted evidence, E2 as a witness obligation. |
-| Active boundary | RP-01 open, RP-02 unreached. Conditional TB49 manifest `a0e39fa25d70…`; [TB48 manifest](Architecture_M6_CP3_TB48_Full_Gate_Case_Manifest.tsv) `a3187d55…00bb` observed **502/2**: cp3entry:1 RED `TQ:3027` (P-G3), cp3entry:2 RED `TQ:3183` (E2). Carried: O1, O2, O6, O7, O8, O9, **O10** (non-hard isolation-barrier producer), **O11** (5 off-gate TQ tests failing at HEAD), **O12** (R61 `review_check.py` selector collision), RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002. |
+| Regression accounting and debt | Stable **66/17/49**, debt 1 ([tracker](Regression_Root_Cause_Tracker.md)); P-G3 non-stable (unpromoted evidence), owner re-assigned to A5 by RA-168; E2 is test-authority, not a producer defect. |
+| Active boundary | RP-01 open, RP-02 unreached. [TB49 manifest](Architecture_M6_CP3_TB49_Full_Gate_Case_Manifest.tsv) `a0e39fa25d70…` (kept by RA-168.1) predicts 504/0 after CB49 + CB49E; RA-168 local probe of all 504 cases: 502/504, with rows 492/493 passing; rows 283/445 fail on macOS with unpatched production too and pass on CI. Carried: O1, O2, O6, O7, O8, O9 (now test-locked: no junctions), O10, O11 (5 off-gate TQ tests), O12, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002. |
 
-## Mandatory next turn — `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` (type DEFN) — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB49-RP01-G3-A5-PERIODIC-PLACEMENT-GAUGE` (type CB) — EXACT NEXT
 
-- **Authority:** [TB48 independent Review](Architecture_M6_CP3_TB48_RP01_Full_Gate_Independent_Review_Decision_20261028.md) confirms 502/2 candidate (run 40731722985/result 12836819707) and non-stable P-G3 plus E2. Frozen conditional [TB49 manifest](Architecture_M6_CP3_TB49_Full_Gate_Case_Manifest.tsv) `a0e39fa25d707bfc8eabb25ac9e8c494cff8ebf032e2040718b90366d0250ef0` (504 identities; 504/0 is **not** yet measured).
-- **Action:** derive a probe-backed exact production A4 periodic endpoint-state correction for P-G3 from source-level odd-gauge torus and both paired endpoint actions; preserve inverse/holonomy/wrong-sign guards. Produce an exact patch/spec for later CB49; do not edit production or execute TB in this DEFN.
-- **Stop:** If non-vacuous native proof cannot be established, end as a named review/plan stop per RA-167; do not greenwash a test or begin CB49. E2 DEFN is a separate required dependency before CB49E. Preserve CP2 491/491 accepted, selector497 frozen, RP-01 open.
+- **Authority:** [RA-168](Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md).4. Supersedes `M6-CP3-CB49-RP01-G3-PERIODIC-ENDPOINT-STATE` (A4 is correct).
+- **Action:** extract the RA-168.9 `~~~diff` block verbatim (trailing newline) → SHA-256 `5897798df599195ba74bc8811a69a7ce113e253040d5be4e02300a32337c47f6` → `git apply`, no hand edits. Numstat exactly `8 2 src/pipeline/RemeshPipeline.cpp`, `13 2 tests/SurfaceCellTransitionQuotientTests.cpp`. Compile the established eight GMP/GMPXX targets, `runtimeExecution=false`, record ≤25 lines.
+- **Outcome:** compile OK + exact numstat → `M6-CP3-CB49E-RP01-E2-RAIL-VERTEX-ADJACENCY` (RA-168.5, patch `9ebef3cc…`, numstat `215 255` TQ); patch/compile failure → `M6-CP3-PLAN-RP01-G3-A5-GAUGE-STOP`; orchestration failure → `M6-CP3-CB49A-RP01-ORCH`.
+- **Do not:** run tests, edit other production, harness or manifests, or combine CB49 with CB49E.
 
 ## Turn Sequence
 
@@ -53,22 +54,19 @@ Canonical types: CB, TB-EXEC, TB-REV, DEFN, PLAN (`turn_type_from_turn`). **I** 
 
 | Step | Canonical turn | Type / track | Condition / boundary |
 |---|---|---|---|
-| done | TB47 (500/4) → stalled DEFN-G (R1–R62) → RA-167 `M6-CP3-TB47-RP01-FULL-GATE-REV` | TB-REV / R | G1/G2 re-homed; G3 witness → P-G3. |
-| 1 — complete | `M6-CP3-CB48-RP01-GAUGE-CLUSTER-TESTS` | CB / I | Exact patch `b32d6381…`; 8 targets compiled. |
-| 2 — complete (502/2) | `M6-CP3-TB48-RP01-FULL-GATE-EXEC` | TB-EXEC / I | Predict 502/2 → step 3. |
-| 1∥ | `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` | DEFN / R | Root-cause and probe-verified production patch for P-G3 (`SCT:19088–19123`, `:8194–8218`). |
-| 2∥ | `M6-CP3-DEFN-RP01-E2-RAIL-VERTEX-ADJACENCY-PATCH` | DEFN / R | Exact cp3entry:2 rewrite to RA-166 D2. |
-| 3 — complete | `M6-CP3-TB48-RP01-FULL-GATE-REV` | TB-REV / R | Verified 502/2, non-stable P-G3 and E2; TB49 conditional manifest frozen. |
-| 4 | `M6-CP3-CB49-RP01-G3-PERIODIC-ENDPOINT-STATE` → `M6-CP3-CB49E-RP01-E2-RAIL-VERTEX-ADJACENCY` | CB / I | Exact patches. |
-| 5 | `M6-CP3-TB49-RP01-FULL-GATE-EXEC` → `M6-CP3-TB49-RP01-FULL-GATE-REV` | TB-EXEC / I → TB-REV / R | Predict 504/0, a green full gate. |
-| 6 | `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-CB50-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-TB50-RP01-FULL-GATE-EXEC` → `…-REV` | DEFN → CB → TB | O4, O5, P1-a/P1-b, RA-162 C1. |
-| 7 | `M6-CP3-PLAN-RP01-CLOSURE` | PLAN / R | RP-01 Review: O6 scope; O7–O12 owners. |
+| done | TB48 (502/2) → `M6-CP3-TB48-RP01-FULL-GATE-REV` → RA-168 audit + `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` + `M6-CP3-DEFN-RP01-E2-RAIL-VERTEX-ADJACENCY-PATCH` | TB-REV; DEFN / R | P-G3 → A5; E2 → D2; P1/P2 probed. |
+| 1 — next | `M6-CP3-CB49-RP01-G3-A5-PERIODIC-PLACEMENT-GAUGE` | CB / I | Exact P1 `5897798d…`; 8 targets. |
+| 2 | `M6-CP3-CB49E-RP01-E2-RAIL-VERTEX-ADJACENCY` | CB / I | Exact P2 `9ebef3cc…` on CB49; 8 targets. |
+| 3 | `M6-CP3-TB49-RP01-FULL-GATE-EXEC` | TB-EXEC / I | Manifest `a0e39fa25d70…`; predict 504/0. |
+| 4 | `M6-CP3-TB49-RP01-FULL-GATE-REV` | TB-REV / R | First green full gate; CP3 admission decision; S4 diagnosis on any RED. |
+| 5 | `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-CB50-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-TB50-RP01-FULL-GATE-EXEC` → `…-REV` | DEFN → CB → TB | O4, O5, P1-a/P1-b, RA-162 C1. |
+| 6 | `M6-CP3-PLAN-RP01-CLOSURE` | PLAN / R | RP-01 Review: O6 scope; O7–O12 owners; O9 junction-path retirement. |
 | post-RP-01 | `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`, then `M6-DEFN-DIAG-RETAIN-A5-A7` | DEFN / R | RA-160.4 + RA-161 T2. |
-| rule | RA-167.6 naming; RA-164.3 P1–P6; RA-165.2 F1/F2; RA-166.6 F6/F7 | — | DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier. A DEFN or PLAN that cannot finish closes BLOCKED with a named successor; no R1…Rn same-turn loops. STOP codes S1–S3 → `PLAN-RP01-<topic>-STOP`; S4 → `TB<n>-…-REV`; S5 → `CB<n>A-RP01-ORCH` → `TB<n>-…-EXEC-R<k>`. |
+| rule | RA-167.6 naming; RA-164.3 P1–P6; RA-165.2 F1/F2; RA-166.6 F6/F7; RA-168 oracle rule | — | DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier. No R1…Rn same-turn loops. STOP S1–S3 → `PLAN-RP01-<topic>-STOP`; S4 → `TB<n>-…-REV`; S5 → `CB<n>A-RP01-ORCH` → `TB<n>-…-EXEC-R<k>`. One CB per patch. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE** (DEFN) — read [M6-CP3-TB48-RP01-FULL-GATE-REV](Architecture_M6_CP3_TB48_RP01_Full_Gate_Independent_Review_Decision_20261028.md); prove per-endpoint A4 gauge covariant correction using legal odd source-relabel, A3/A4/A5/A6 reciprocal and tamper falsifiers; emit independently reviewed exact production patch for CB49. No production change in DEFN; E2 separately required.
+`load_next`: **M6-CP3-CB49-RP01-G3-A5-PERIODIC-PLACEMENT-GAUGE** (CB) — read [RA-168](Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md) §.4 and §.9 only; apply the exact P1 block, compile eight targets, record, hand off to CB49E.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

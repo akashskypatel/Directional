@@ -1,3 +1,9 @@
+## RA-168 — TB48-REV audit: A5 periodic placement gauge; E2 D2 oracle (2026-10-28)
+
+- **RA-168.3 G3-A5 (amends RA-167 G3 owner):** placement lattice coordinates are gauge-free regional-chart coordinates; only the branch label carries the local face gauge. A5's per-endpoint coordinate gauge strips `branchAuthority.localFaceBranchRotation`, so the gauge is the relation turn alone (identity for Forward, Q for Reverse). A4 periodic endpoint-state publication is correct and unchanged.
+- **E2 (applies RA-166 D2):** cp3entry:2's oracle is the R-split at vertex 4: two single-step certificates of one rail with R at 4 on (1,4) and (4,7), no junctions, A3 sector commutation with +1 mutation failure, face-row-reversal invariance, and a checked-factory negative on the R crossing. T and R star contact steps are A3-attested.
+- **Oracle rule:** a gauge oracle must check a gauge-free observable or be derived independently of the producer formula.
+
 ## RA-167 — TB47-REV: gauge cluster; canonical turn types (2026-10-28)
 
 - **RA-167.3 G1:** a non-hard `NonTraversable` positive is producer-unreachable; a forged component split must fail closed at A3. The positive belongs to O10.

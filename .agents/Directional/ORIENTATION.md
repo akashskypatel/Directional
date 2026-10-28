@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-28 · [M6-CP3-TB48-RP01-FULL-GATE-REV](Architecture_M6_CP3_TB48_RP01_Full_Gate_Independent_Review_Decision_20261028.md) independently verified TB48 immutable 504-case gate (502 PASS/2 registered RED). G3 is a real source-relabel A4 periodic gauge-covariance defect, but non-stable without accepted-green loss; E2 never produces the required paired rail certificate. TB49 manifest `a0e39fa25d70…` is conditional. Next `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` (DEFN), then separate E2 DEFN; no CB49 until exact corrections. CP2 491/491 accepted, selector497/CP3 unpromoted, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-28 · [RA-168](Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md) audited TB48-REV and completed the G3/E2 DEFNs by probe: P-G3 is an **A5** periodic placement-gauge defect (not A4); E2 is a stale oracle (A4 already publishes the D2 R-split). Next: exact-patch CB49 → CB49E → TB49 (predict 504/0). CP2 491/491 accepted, selector497/CP3 unpromoted, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,9 +50,9 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current independent Review:** [TB48-REV](Architecture_M6_CP3_TB48_RP01_Full_Gate_Independent_Review_Decision_20261028.md) confirms RA-167 on immutable CI evidence. Implementation agents receive only exact patches and frozen manifests; probe-requiring DEFN/TB-REV turns belong to the probe-capable Review track. O10–O12 are registered.
+**Current independent Review:** [RA-168](Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md) corrects TB48-REV's P-G3 owner (A4 → A5) and its E2 falsifier (it demanded junctions, which D2 forbids). Implementation agents get only exact patches and frozen manifests; probe-requiring DEFN/TB-REV turns stay on the Review track. O10–O12 are registered.
 
-**Current test authority:** TB48 502 PASS / 2 registered RED (CB48 `4c611941…`, result `12836819707`), valid expected-RED candidate. Frozen conditional TB49 manifest predicts 504/0 only after two corrections. No CP3 or selector497 promotion.
+**Current test authority:** TB48 502 PASS / 2 registered RED (CB48 `4c611941…`, result `12836819707`), valid expected-RED candidate. TB49 manifest `a0e39fa25d70…` predicts 504/0 after CB49 + CB49E (RA-168 local probe: 502/504, 2 macOS-only fails). No CP3 or selector497 promotion.
 
 **Prior TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 
@@ -106,18 +106,19 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` (probe-backed G3 correction specification), then separate E2 DEFN; do not begin CB49/CB49E without independently approved exact patches. TB48-REV is complete; TB49 expected 504/0 remains conditional.
+**Immediate:** `M6-CP3-CB49-RP01-G3-A5-PERIODIC-PLACEMENT-GAUGE` (CB; [RA-168](Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md).4, exact patch `5897798d…`) → `M6-CP3-CB49E-RP01-E2-RAIL-VERTEX-ADJACENCY` (CB; .5, exact patch `9ebef3cc…`) → TB49-EXEC (predict 504/0) → TB49-REV.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Close RP-01 by full-gate TBs: CB48 → TB48-EXEC (502/2) → TB48-REV complete → DEFN-G3 / DEFN-E2 → CB49 (P-G3 production fix) → CB49E (E2) → TB49-EXEC (predict 504/0) → TB49-REV → DEFN-O4/O5 → CB50 → TB50 → PLAN-RP01-CLOSURE (O6 scope; O7–O12 owners). O2 post-RP-01. | `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` per [TB48-REV](Architecture_M6_CP3_TB48_RP01_Full_Gate_Independent_Review_Decision_20261028.md) and [RA-167](Architecture_M6_CP3_TB47_REV_Gauge_Cluster_Decision_And_Canonical_Turn_Sequence_20261028.md) |
+| **1** | Close RP-01 by full-gate TBs: CB49 (A5 periodic placement gauge) → CB49E (cp3entry:2 to D2) → TB49-EXEC (predict 504/0) → TB49-REV → DEFN-O4/O5 → CB50 → TB50 → PLAN-RP01-CLOSURE (O6 scope; O7–O12 owners). O2 post-RP-01. | `M6-CP3-CB49-RP01-G3-A5-PERIODIC-PLACEMENT-GAUGE` per [RA-168](Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
 
-- **Unpaired relabel or forged label is not a gauge witness ([RA-167](Architecture_M6_CP3_TB47_REV_Gauge_Cluster_Decision_And_Canonical_Turn_Sequence_20261028.md)):** Relabel invariance is proved only by a *source-produced* relabel: raw field → A3 → A4 regenerated, then compare A5/A6 invariants. A test-side shift of A4 branches or face gauges, or of component labels, is a negative. Run the statically debated witness as a scratch probe before arguing further; DEFN-G spent 62 static revisions on questions that three probes settled.
+- **Oracle copies the producer formula ([RA-168](Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md)):** RA-167's G3 oracle re-implemented A5's gauge formula, so both shared one defect, blamed on A4. Check a gauge-free observable, and probe each stage's product under the relabel before naming an owner.
+- **Unpaired relabel or forged label is not a gauge witness ([RA-167](Architecture_M6_CP3_TB47_REV_Gauge_Cluster_Decision_And_Canonical_Turn_Sequence_20261028.md)):** Relabel invariance is proved only by a *source-produced* relabel: raw field → A3 → A4 regenerated, then compare A5/A6 invariants. A test-side shift of A4 branches or face gauges, or of component labels, is a negative. Probe a debated witness before arguing statically (DEFN-G: 62 revisions vs three probes).
 
 - **Witness definition contradicts producer/consumer invariants ([RA-166](Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md)):** RA-33.5 demanded a route on `OrdinaryInterior` sides, which A5 forbids, and D2 demanded an intra-certificate junction, which A4's R-split never produces. Check a witness definition against the invariants of the field it reads, and probe its existence before freezing it. Interior-rail-vertex continuity is witnessed by R-adjacency (two same-rail certificates with R at v, and commuting A3 sectors).
 

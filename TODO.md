@@ -1,25 +1,20 @@
-## CURRENT — TB48 independent Review complete; G3 DEFN next (2026-10-28)
+## CURRENT — RA-168: TB48-REV audited; G3 and E2 DEFNs complete; CB49 next (2026-10-28)
 
-- [x] **RA-167** ([decision](.agents/Directional/Architecture_M6_CP3_TB47_REV_Gauge_Cluster_Decision_And_Canonical_Turn_Sequence_20261028.md)), `M6-CP3-TB47-RP01-FULL-GATE-REV` (TB-REV), probe-backed. It closes the stalled `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` (R1–R62; the canonical classifier labels it TB-EXEC).
-  - **G1** (442): forged component seam is unreachable → fail-closed A3 negative. FTA file passes 20/20.
-  - **G2** (`focused30:12`): unpaired relabel → A5 negative; source relabel `nonconstant_hard_rail_fixture` → invariance positive (20/20 transports, 121 A6 classes equal). The whole test passes.
-  - **G3** (cp3entry:1): source odd-gauge torus witness (6/6 odd). It exposes **P-G3**: A4 periodic endpoint states are not gauge-covariant, and A5 rejects legal input with `OccurrencePeriodicTransportMismatch`.
-- [x] **`M6-CP3-CB48-RP01-GAUGE-CLUSTER-TESTS`** (CB; RA-167.4) — [record](.agents/Directional/Architecture_M6_CP3_CB48_RP01_Gauge_Cluster_Tests_Code_Build_Record_20261028.md); exact patch `b32d6381…`, verified +10/-38 FTA and +78/-11 TQ; eight GMP targets compiled, runtime-free, source `4c611941…`.
-- [x] **`M6-CP3-TB48-RP01-FULL-GATE-EXEC`** (TB-EXEC, implementation; RA-167.5).
-  - [Manifest](.agents/Directional/Architecture_M6_CP3_TB48_Full_Gate_Case_Manifest.tsv) `a3187d55…`.
-  - **Observed 502/2**: cp3entry:1 at `TQ:3027` (P-G3) and cp3entry:2 at `TQ:3183` (E2). [Report](.agents/Directional/Architecture_M6_CP3_TB48_RP01_Full_Gate_Test_Benchmark_Report_20261028.md).
-  - **Reviewed** in [TB48-REV](.agents/Directional/Architecture_M6_CP3_TB48_RP01_Full_Gate_Independent_Review_Decision_20261028.md): valid 502/2 candidate, P-G3 non-stable (no accepted-green loss), E2 unwitnessed; frozen TB49 case manifest `a0e39fa25d707bfc8eabb25ac9e8c494cff8ebf032e2040718b90366d0250ef0` conditional 504/0.
-- [ ] ∥ `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` (DEFN, probe-capable Review): root-cause P-G3 (`SCT:19088–19123`, `:8194–8218`) and produce an exact probe-verified production patch.
-- [ ] ∥ `M6-CP3-DEFN-RP01-E2-RAIL-VERTEX-ADJACENCY-PATCH` (DEFN, probe-capable Review): exact cp3entry:2 rewrite to RA-166 D2.
-- [x] `M6-CP3-TB48-RP01-FULL-GATE-REV` (TB-REV; [TB48-REV](.agents/Directional/Architecture_M6_CP3_TB48_RP01_Full_Gate_Independent_Review_Decision_20261028.md)); stable 66/17/49, debt 1 unchanged.
-- [ ] **NEXT `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE`** (DEFN; probe-capable Review), then E2 DEFN → `M6-CP3-CB49-RP01-G3-PERIODIC-ENDPOINT-STATE` → `M6-CP3-CB49E-RP01-E2-RAIL-VERTEX-ADJACENCY` → `M6-CP3-TB49-RP01-FULL-GATE-EXEC` (predict 504/0) → `M6-CP3-TB49-RP01-FULL-GATE-REV`.
-- [ ] `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-CB50-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-TB50-RP01-FULL-GATE-EXEC` → `…-REV` → `M6-CP3-PLAN-RP01-CLOSURE` (O6 scope; O7–O12 owners).
+- [x] **RA-168** ([decision](.agents/Directional/Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md)) audits `M6-CP3-TB48-RP01-FULL-GATE-REV` and completes `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` and `M6-CP3-DEFN-RP01-E2-RAIL-VERTEX-ADJACENCY-PATCH` (DEFN, probe-backed).
+  - TB48 evidence confirmed: 502/2, 1014/1014, pins `TQ:3027`/`TQ:3183`.
+  - **P-G3 re-owned A4 → A5.** A4 periodic relation states are identical under the odd relabel. A5 `periodic_endpoint_gauge` rotated gauge-free lattice coordinates by the local face gauge. P1 strips the gauge and fixes RA-167's copied oracle, adding gauge-free coordinate checks.
+  - **E2 re-homed to D2.** A4 already publishes the R-split at vertex 4. TB48-REV's junction falsifier contradicted RA-166 D2. P2 rewrites cp3entry:2 (test-only).
+  - Probes: TQ 140 pass, only the five O11 failures; local 504-case TB49 run 502/504, with 492/493 passing; 283/445 are macOS-only baselines (also fail unpatched; pass on CI).
+- [ ] **NEXT `M6-CP3-CB49-RP01-G3-A5-PERIODIC-PLACEMENT-GAUGE`** (CB; RA-168.4): exact P1 `5897798d…`, numstat `8 2` RemeshPipeline.cpp + `13 2` TQ; eight GMP targets.
+- [ ] `M6-CP3-CB49E-RP01-E2-RAIL-VERTEX-ADJACENCY` (CB; RA-168.5): exact P2 `9ebef3cc…` on CB49, numstat `215 255` TQ.
+- [ ] `M6-CP3-TB49-RP01-FULL-GATE-EXEC` (TB-EXEC; RA-168.6): manifest `a0e39fa25d70…`, predict **504/0** → `M6-CP3-TB49-RP01-FULL-GATE-REV`.
+- [ ] `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-CB50-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-TB50-RP01-FULL-GATE-EXEC` → `…-REV` → `M6-CP3-PLAN-RP01-CLOSURE` (O6 scope; O7–O12 owners; O9 junction-path retirement).
 - [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`, then `M6-DEFN-DIAG-RETAIN-A5-A7`.
 - [ ] Carried separately:
   - O1, O6 and O7 (oracle-tests target does not compile).
-  - O8 (`lengthRatio=0.29`) and O9 (A4 junction path unwitnessed).
+  - O8 (`lengthRatio=0.29`) and O9 (A4 junction path unwitnessed; cp3entry:2 now asserts no junctions).
   - **O10:** non-hard isolation-barrier producer.
-  - **O11:** 5 off-gate TQ tests failing at HEAD.
+  - **O11:** 5 off-gate TQ tests failing at HEAD (unchanged by P1/P2).
   - **O12:** R61 `review_check.py` selector collision.
   - RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4 and G4-B002.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
@@ -28,18 +23,22 @@
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
-  - Done: TB47 500/4 → DEFN-G stalled (R1–R62) → RA-167 TB47-REV.
-  - **CB48 complete** → TB48-EXEC complete (502/2) ∥ (DEFN G3 and DEFN E2, on the probe-capable Review track) → TB48-REV complete → G3 DEFN → E2 DEFN → CB49 → CB49E → TB49-EXEC → TB49-REV → DEFN O4/O5 → CB50 → TB50-EXEC → TB50-REV → PLAN-RP01-CLOSURE.
-  - **Naming (RA-167.6):**
-    - Types are CB, TB-EXEC, TB-REV, DEFN and PLAN, as `turn_type_from_turn` classifies them.
-    - DEFN and PLAN IDs carry no `-CB<n>` or `-TB<n>` segment and no final R+letters qualifier.
-    - STOP S1–S3 → `PLAN-RP01-<topic>-STOP`; S4 → `TB<n>-…-REV`; S5 → `CB<n>A-RP01-ORCH` → `TB<n>-…-EXEC-R<k>`.
-    - No R1…Rn same-turn loops: a turn that cannot finish closes BLOCKED with a named successor.
-  - Rules: RA-164.3 P1–P6, RA-165.2 F1/F2, RA-166.6 F6/F7. Implementation agents get only exact patches and frozen manifests.
+  - Done: TB48 502/2 → TB48-REV → RA-168 (audit + G3 DEFN + E2 DEFN).
+  - **CB49 (next)** → CB49E → TB49-EXEC (504/0) → TB49-REV → DEFN O4/O5 → CB50 → TB50-EXEC → TB50-REV → PLAN-RP01-CLOSURE.
+  - One CB per exact patch; implementation agents get only exact patches and frozen manifests; probe-requiring DEFN/TB-REV turns stay on the Review track.
+  - **Naming (RA-167.6):** types CB, TB-EXEC, TB-REV, DEFN, PLAN per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier; STOP S1–S3 → `PLAN-RP01-<topic>-STOP`, S4 → `TB<n>-…-REV`, S5 → `CB<n>A-RP01-ORCH` → `TB<n>-…-EXEC-R<k>`; no R1…Rn same-turn loops.
+  - Rules: RA-164.3 P1–P6, RA-165.2 F1/F2, RA-166.6 F6/F7, RA-168 oracle rule (gauge oracles check gauge-free observables).
 - Frozen:
   - Stable 66/17/49, debt 1; CP2 491/491 accepted.
-  - TB47 500/4 valid expected-RED.
+  - TB48 502/2 valid expected-RED candidate.
   - Selector497 frozen; RP-01 open, RP-02 unreached; Gate C suspended.
+
+---
+
+## HISTORY — RA-167; CB48; TB48; TB48-REV (2026-10-28)
+
+- [x] RA-167 ([decision](.agents/Directional/Architecture_M6_CP3_TB47_REV_Gauge_Cluster_Decision_And_Canonical_Turn_Sequence_20261028.md)): G1/G2 re-homed; G3 odd-gauge witness; canonical turn types. Its P-G3 owner (A4) is superseded by RA-168.
+- [x] CB48 `4c611941…` ([record](.agents/Directional/Architecture_M6_CP3_CB48_RP01_Gauge_Cluster_Tests_Code_Build_Record_20261028.md)) → TB48 502/2 ([report](.agents/Directional/Architecture_M6_CP3_TB48_RP01_Full_Gate_Test_Benchmark_Report_20261028.md)) → TB48-REV ([decision](.agents/Directional/Architecture_M6_CP3_TB48_RP01_Full_Gate_Independent_Review_Decision_20261028.md); P-G3 owner and E2 falsifier corrected by RA-168).
 
 ---
 

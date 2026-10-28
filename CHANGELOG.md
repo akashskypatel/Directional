@@ -1,3 +1,11 @@
+## 2026-10-28 — RA-168: TB48-REV audited; P-G3 is an A5 defect; E2 re-homed to D2; exact CB49/CB49E patches
+
+- [RA-168](.agents/Directional/Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md) completes `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` and `M6-CP3-DEFN-RP01-E2-RAIL-VERTEX-ADJACENCY-PATCH` (DEFN, probe-backed) and corrects TB48-REV:
+  - **P-G3:** A4 periodic endpoint states are identical under the odd relabel. A5 `periodic_endpoint_gauge` wrongly rotated gauge-free lattice coordinates by the face gauge. P1 strips the gauge (8/2 lines) and fixes RA-167's oracle, which copied the formula, adding gauge-free coordinate checks.
+  - **E2:** A4 publishes the RA-166 D2 R-split at vertex 4. TB48-REV's two-carrier/junction falsifier contradicted D2. P2 rewrites cp3entry:2 to D2 (test-only).
+  - Probes: TQ 140 pass with only the five O11 failures; local 504-case TB49 run 502/504, with 492/493 passing; 283/445 are macOS-only baselines that also fail unpatched and pass on CI.
+- Next: CB49 → CB49E → TB49 (manifest `a0e39fa2…`, predict 504/0). Stable 66/17/49, debt 1; CP2 491/491 accepted.
+
 ## 2026-10-28 — TB48 independent Review: valid 502/2 candidate, no stable regression promotion
 
 - [TB48-REV decision](.agents/Directional/Architecture_M6_CP3_TB48_RP01_Full_Gate_Independent_Review_Decision_20261028.md): independently verified CB48 28/28, TB48 1014/1014, 504 ordered case/log joins. P-G3 confirmed as a producer gauge-covariance defect but remains **non-stable** without accepted-green loss; E2 requires an actual A4 two-carrier witness. Stable 66/17/49 debt1, CP2 491/491 remain; selector497/CP3 unpromoted. Future TB49 conditional case manifest `a0e39fa25d707bfc8eabb25ac9e8c494cff8ebf032e2040718b90366d0250ef0` predicts 504/0 only after G3 and E2 corrections. Next G3 DEFN.
