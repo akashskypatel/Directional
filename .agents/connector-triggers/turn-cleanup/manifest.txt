@@ -1,2 +1,0 @@
-# TB47 R25 consumed source snapshot trigger
-.agents/connector-triggers/source-snapshot/tb47-gauge-r25-20261028.txt
