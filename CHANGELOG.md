@@ -1,3 +1,9 @@
+## 2026-10-28 — CB49E exact E2 rail-vertex oracle correction compiled (no runtime)
+
+- [CB49E record](.agents/Directional/Architecture_M6_CP3_CB49E_RP01_E2_Rail_Vertex_Adjacency_Code_Build_Record_20261028.md): RA-168.10 P2 byte-exact SHA-256 `9ebef3cc…` applied to `tests/SurfaceCellTransitionQuotientTests.cpp` only (+215/−255), source `092b52eba881e3bafbff4fa263f84f96cf648838`.
+- Eight GMP/GMPXX targets compile/link passed ([run 40770409537](https://github.com/akashskypatel/Directional/actions/runs/40770409537), package `12852132570`, ZIP SHA-256 `24a0beb14cc0766a7f77ba5c5ccdffc76b5bbfbe798c11170d6db2ba1c94d022`); 28/28 package members verified, `runtimeExecution=false`. No tests/benchmarks executed or selector/CP3 promotion.
+- Next turn: `M6-CP3-TB49-RP01-FULL-GATE-EXEC`, immutable manifest `a0e39fa25d70…` (504/0 forecast, unverified). Stable 66/17/49, debt 1, CP2 491/491 accepted.
+
 ## 2026-10-28 — CB49 G3 A5 exact periodic-placement gauge correction compiled (no runtime)
 
 - [CB49 record](.agents/Directional/Architecture_M6_CP3_CB49_RP01_G3_A5_Periodic_Placement_Gauge_Code_Build_Record_20261028.md): applied RA-168.9 P1 byte-exact SHA-256 `5897798d…` (+8/−2 production, +13/−2 TQ test oracle), source `9c84ba9cc8e44acf556d17e2357b1e9458337cca`.
