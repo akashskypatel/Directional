@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r31-hard-carrier-locality-20261028-v1",
+  "request_id": "m6-cp3-tb47-r32-canonical-hard-transport-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r31-hard-carriers-v1",
-  "file_id": "1PzLAohSiTtMJXVJLtiK23SlWrFFQhJAk",
-  "patch_sha256": "54761694a8e6950318357692f14e0b68cca12cd302aa297000ec4fda8fdcb98a",
-  "base_sha": "65d8c3c29ce3cac4ddfe2412f03a10d603426751",
+  "mailbox_key": "m6-cp3-tb47-r32-canonical-hard-v1",
+  "file_id": "1NI3wq-74PawcTLm5_hP33OzaDQqpNIS5",
+  "patch_sha256": "f4f82ef171e250ac82f7e7abe2499c33329750409f3ce35592c1eab6bb9564d9",
+  "base_sha": "42060e8620760c32a7288f0067775864d144e6d0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): localize G2 source gauge changes to hard carriers (R31)",
+  "commit_message": "docs(directional): derive G2 hard-rail canonical transport normalization (R32)",
   "retention_days": 14
 }
