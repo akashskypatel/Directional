@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb48-rp01-docs-20261028-v1",
+  "request_id": "m6-cp3-tb48-rev-docs-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb48-rp01-docs-20261028-v1",
-  "file_id": "162AEiLascxTQELGt4NSQFMq7nnc9ZqXy",
-  "patch_sha256": "c1dd15e84ce1c0c19675a98ec485deb1a8b13fbb794f3bcb7f3664a928505baa",
-  "base_sha": "7eb1f814c90a02081c6d03d7bdd03f2b1551d3c9",
+  "mailbox_key": "m6-cp3-tb48-rev-docs-20261028-v1",
+  "file_id": "1LT2BaBlViBJrNzdKWAjub__O84pNukWq",
+  "patch_sha256": "a23afc33c8180706d5f2ca0675fd07a4a724131a913f4bee562789109999d4ac",
+  "base_sha": "c44789fc539034d5753100567724944ddb56bb41",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record verified TB48 502-pass two-red full gate",
+  "commit_message": "docs(directional): adjudicate TB48 full-gate independent review",
   "retention_days": 14
 }
