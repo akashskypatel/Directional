@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-tb47-gauge-cluster-r25-20261028-v1",
+  "request_id": "m6-cp3-r25-metadata-v2",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-tb47-gauge-cluster-r25-v1",
-  "file_id": "1PHbI6NnLwktxLYankfkzddzG_Dw2wYCP",
-  "patch_sha256": "a19f687d1262d5656263900497497d24adc36471d65eec592df0f6174126e2b4",
+  "mailbox_key": "m6-cp3-r25-metadata-v2",
+  "file_id": "1xmhQJjYHOAwTJZlDSr9TJenV2NeNksLW",
+  "patch_sha256": "9ea8926a5b7a5a9338159be49bf25568e9280e48c66a7a67fe5162f159e2884c",
   "base_sha": "111de8234c3cdf938dbdbf055e1edfe95d7d7720",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: isolate TB47 G3 metamorphic torus witness and native cut authority (R25)",
+  "commit_message": "docs: correct G3 torus witness isolation (R25)",
   "retention_days": 14
 }
