@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r28-g1-masked-controls-20261028-v2",
+  "request_id": "m6-cp3-tb47-r29-g1-separation-preview-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r28-g1-masked-controls-v2",
-  "file_id": "1YFDR870jSMdL9stC8YKqH1RRxSqON0w8",
-  "patch_sha256": "1da314a7baf4cb91bbc59f52701295d1f079d639b3bce4e09b04f1b3872cf399",
-  "base_sha": "cba97f70a90b2b67327fc00071b2f0f244b95303",
+  "mailbox_key": "m6-cp3-tb47-r29-g1-separation-preview-v1",
+  "file_id": "1Vl9iMiR9pjAtsxfHWuorgyi3-wasuYic",
+  "patch_sha256": "37058ff8752843c24eb1e3faa8d1b7389a76fd3d64bc7d76ce1c11556d027e54",
+  "base_sha": "67bc008717d2f947da7f4fda5662014efab2ff32",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: identify TB47 G1 fatal test coverage mask (R28)",
+  "commit_message": "docs: preserve TB47 G1 exact negative/positive separation preview (R29)",
   "retention_days": 14
 }
