@@ -1,3 +1,0 @@
-Canonical: M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER
-Purpose: reconcile R26 review document with latest repository source.
-Frozen previous authority: 9bd4ee31eb7a6c9c383672c35fc330bf1f6726a7
