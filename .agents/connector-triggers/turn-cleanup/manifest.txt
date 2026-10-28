@@ -1,0 +1,2 @@
+# Remove consumed TB47 R26 source snapshot marker
+.agents/connector-triggers/source-snapshot/tb47-gauge-r26-20261028.txt
