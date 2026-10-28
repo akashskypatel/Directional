@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r62-review-consolidation-20261028-v1",
+  "request_id": "m6-cp3-tb47-r62-handoff-format-correction-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r62-review-consolidation-v1",
-  "file_id": "1hWXUOUIl4V5Rj2y8GySUoZmg1Gr4Tefl",
-  "patch_sha256": "25d9f5e21389cf2f16af3fd7d814388557172420532fd3f39d88e89c2a4f1bad",
-  "base_sha": "b3a1a3d2691e23924454eb5e6e544bee1d705c6a",
+  "mailbox_key": "m6-cp3-tb47-r62-handoff-format-v1",
+  "file_id": "1QhQSBocqQ0HzupUjUJ4ieNZxsgtMPQAL",
+  "patch_sha256": "c866654072e8b68973240b3d29efb3be68a84e61e86e2c2b55c1ac35c7112db0",
+  "base_sha": "4d0f304d35b2056d4e60b70127c0af0bc279bc38",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): consolidate TB47 R52-R61 review evidence and open gates",
+  "commit_message": "docs(directional): restore mandatory handoff template heading",
   "retention_days": 14
 }
