@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r36-protected-history-20261028-v1",
+  "request_id": "m6-cp3-tb47-r37-dual-native-admission-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r36-history-v1",
-  "file_id": "1zp8btKHYvkTwZf4U3_M3iqIGdKzUlBdy",
-  "patch_sha256": "4921e611537e7a2852c1d01ad8e1f5575f7a434ed1573be72d2c5ecc11f97dfd",
-  "base_sha": "e672b5606e49f9c85116a3e877e6cfa9ca02416d",
+  "mailbox_key": "m6-cp3-tb47-r37-dual-native-v1",
+  "file_id": "1zmoDy7ikc6Ht7uVZtL7RRL5YjK-0miQc",
+  "patch_sha256": "7429c160a55f3672af40be570e658c3d465a4043a438020738f2925fc968a61a",
+  "base_sha": "6e1402e5cb65694a896bbe768e11bad49604d2da",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): independently verify durable rewrite preservation (R36)",
+  "commit_message": "docs(directional): record separately produced native G2 A7 admissions (R37)",
   "retention_days": 14
 }
