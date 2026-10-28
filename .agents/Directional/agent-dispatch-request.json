@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb47-r42-a5-verifier-owner-20261028-v1",
+  "request_id": "m6-cp3-tb47-r43-g1-selection-20261028-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb47-r42-verifier-owner-v1",
-  "file_id": "1nxeA1wya-EyyarO2zwBglcjDZQAcwhnA",
-  "patch_sha256": "e0bc2b894a6e16ab089551b745d4c3692d18dd14dc330198473c3ce78d517ab8",
-  "base_sha": "34e589e20115a4e459982382840ae422e4430ae5",
+  "mailbox_key": "m6-cp3-tb47-r43-g1-selection-v1",
+  "file_id": "16iynKzFjXBmjp_ywUQ92gn7EGMW1d6mx",
+  "patch_sha256": "bb803bf3d3b4a6279dabac00593740c64bdf041defdc6aad0e1c382a782b1d59",
+  "base_sha": "91f19faabb51de25523a4a795fc845b51d90f2a0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): distinguish M6CP2 A5 verifier from producer guard (R42)",
+  "commit_message": "docs(directional): review G1 native signed prefix and R29 selector custody (R43)",
   "retention_days": 14
 }
