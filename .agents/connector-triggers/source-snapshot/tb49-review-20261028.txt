@@ -1,3 +1,0 @@
-Source snapshot for independent M6-CP3-TB49-RP01-FULL-GATE-REV.
-Frozen semantic source before trigger: fe534bf3fc2bc6977e01d9eaac213956e86b42b0
-Snapshot this trigger commit as exact source authority. No runtime/test mutation.
