@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-28 · [RA-167](Architecture_M6_CP3_TB47_REV_Gauge_Cluster_Decision_And_Canonical_Turn_Sequence_20261028.md) (`M6-CP3-TB47-RP01-FULL-GATE-REV`) closed the stalled DEFN-G (R1–R62) with probe-backed decisions. G1 and G2 were test-authority errors and are re-homed (both pass). G3's source odd-gauge witness exposes production defect P-G3 (A4 periodic endpoint states are not gauge-covariant). The next steps are an exact-patch CB48 and TB48 (predict 502/2). Turn IDs follow the canonical `turn_type_from_turn` types. CP2 491/491 accepted, selector497 frozen and unpromoted, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-28 · [M6-CP3-TB48-RP01-FULL-GATE-REV](Architecture_M6_CP3_TB48_RP01_Full_Gate_Independent_Review_Decision_20261028.md) independently verified TB48 immutable 504-case gate (502 PASS/2 registered RED). G3 is a real source-relabel A4 periodic gauge-covariance defect, but non-stable without accepted-green loss; E2 never produces the required paired rail certificate. TB49 manifest `a0e39fa25d70…` is conditional. Next `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` (DEFN), then separate E2 DEFN; no CB49 until exact corrections. CP2 491/491 accepted, selector497/CP3 unpromoted, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,9 +50,9 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current independent Review:** [RA-167](Architecture_M6_CP3_TB47_REV_Gauge_Cluster_Decision_And_Canonical_Turn_Sequence_20261028.md). Implementation agents receive only exact patches and frozen manifests; probe-requiring DEFN/TB-REV turns belong to the probe-capable Review track. O10–O12 are registered.
+**Current independent Review:** [TB48-REV](Architecture_M6_CP3_TB48_RP01_Full_Gate_Independent_Review_Decision_20261028.md) confirms RA-167 on immutable CI evidence. Implementation agents receive only exact patches and frozen manifests; probe-requiring DEFN/TB-REV turns belong to the probe-capable Review track. O10–O12 are registered.
 
-**Current test authority:** TB47 500 PASS / 4 RED (CB47 `08d41626e`, result `12734719880`), valid expected-RED. TB48 manifest `a3187d55…` predicts 502/2. No CP3 or selector497 promotion.
+**Current test authority:** TB48 502 PASS / 2 registered RED (CB48 `4c611941…`, result `12836819707`), valid expected-RED candidate. Frozen conditional TB49 manifest predicts 504/0 only after two corrections. No CP3 or selector497 promotion.
 
 **Prior TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 
@@ -106,11 +106,11 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-CB48-RP01-GAUGE-CLUSTER-TESTS` (CB; [RA-167](Architecture_M6_CP3_TB47_REV_Gauge_Cluster_Decision_And_Canonical_Turn_Sequence_20261028.md).4, exact patch `b32d6381…`) → `M6-CP3-TB48-RP01-FULL-GATE-EXEC` (predict 502/2). In parallel, on the Review track: DEFN G3 periodic gauge covariance, and DEFN E2 patch.
+**Immediate:** `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` (probe-backed G3 correction specification), then separate E2 DEFN; do not begin CB49/CB49E without independently approved exact patches. TB48-REV is complete; TB49 expected 504/0 remains conditional.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Close RP-01 by full-gate TBs: CB48 → TB48-EXEC ∥ DEFN-G3 / DEFN-E2 → TB48-REV → CB49 (P-G3 production fix) → CB49E (E2) → TB49-EXEC (predict 504/0) → TB49-REV → DEFN-O4/O5 → CB50 → TB50 → PLAN-RP01-CLOSURE (O6 scope; O7–O12 owners). O2 post-RP-01. | `M6-CP3-CB48-RP01-GAUGE-CLUSTER-TESTS` per [RA-167](Architecture_M6_CP3_TB47_REV_Gauge_Cluster_Decision_And_Canonical_Turn_Sequence_20261028.md) |
+| **1** | Close RP-01 by full-gate TBs: CB48 → TB48-EXEC (502/2) → TB48-REV complete → DEFN-G3 / DEFN-E2 → CB49 (P-G3 production fix) → CB49E (E2) → TB49-EXEC (predict 504/0) → TB49-REV → DEFN-O4/O5 → CB50 → TB50 → PLAN-RP01-CLOSURE (O6 scope; O7–O12 owners). O2 post-RP-01. | `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` per [TB48-REV](Architecture_M6_CP3_TB48_RP01_Full_Gate_Independent_Review_Decision_20261028.md) and [RA-167](Architecture_M6_CP3_TB47_REV_Gauge_Cluster_Decision_And_Canonical_Turn_Sequence_20261028.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

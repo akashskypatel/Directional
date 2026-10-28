@@ -1,4 +1,4 @@
-## CURRENT — TB48 full gate verified 502/2; independent TB48 Review next (2026-10-28)
+## CURRENT — TB48 independent Review complete; G3 DEFN next (2026-10-28)
 
 - [x] **RA-167** ([decision](.agents/Directional/Architecture_M6_CP3_TB47_REV_Gauge_Cluster_Decision_And_Canonical_Turn_Sequence_20261028.md)), `M6-CP3-TB47-RP01-FULL-GATE-REV` (TB-REV), probe-backed. It closes the stalled `M6-CP3-DEFN-RP01-TB47-GAUGE-CLUSTER` (R1–R62; the canonical classifier labels it TB-EXEC).
   - **G1** (442): forged component seam is unreachable → fail-closed A3 negative. FTA file passes 20/20.
@@ -8,10 +8,11 @@
 - [x] **`M6-CP3-TB48-RP01-FULL-GATE-EXEC`** (TB-EXEC, implementation; RA-167.5).
   - [Manifest](.agents/Directional/Architecture_M6_CP3_TB48_Full_Gate_Case_Manifest.tsv) `a3187d55…`.
   - **Observed 502/2**: cp3entry:1 at `TQ:3027` (P-G3) and cp3entry:2 at `TQ:3183` (E2). [Report](.agents/Directional/Architecture_M6_CP3_TB48_RP01_Full_Gate_Test_Benchmark_Report_20261028.md).
-  - **NEXT** `M6-CP3-TB48-RP01-FULL-GATE-REV` (TB-REV, independent Review); decide stable regression classification and freeze TB49 manifest.
+  - **Reviewed** in [TB48-REV](.agents/Directional/Architecture_M6_CP3_TB48_RP01_Full_Gate_Independent_Review_Decision_20261028.md): valid 502/2 candidate, P-G3 non-stable (no accepted-green loss), E2 unwitnessed; frozen TB49 case manifest `a0e39fa25d707bfc8eabb25ac9e8c494cff8ebf032e2040718b90366d0250ef0` conditional 504/0.
 - [ ] ∥ `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` (DEFN, probe-capable Review): root-cause P-G3 (`SCT:19088–19123`, `:8194–8218`) and produce an exact probe-verified production patch.
 - [ ] ∥ `M6-CP3-DEFN-RP01-E2-RAIL-VERTEX-ADJACENCY-PATCH` (DEFN, probe-capable Review): exact cp3entry:2 rewrite to RA-166 D2.
-- [ ] `M6-CP3-TB48-RP01-FULL-GATE-REV` (TB-REV) → `M6-CP3-CB49-RP01-G3-PERIODIC-ENDPOINT-STATE` → `M6-CP3-CB49E-RP01-E2-RAIL-VERTEX-ADJACENCY` → `M6-CP3-TB49-RP01-FULL-GATE-EXEC` (predict 504/0) → `M6-CP3-TB49-RP01-FULL-GATE-REV`.
+- [x] `M6-CP3-TB48-RP01-FULL-GATE-REV` (TB-REV; [TB48-REV](.agents/Directional/Architecture_M6_CP3_TB48_RP01_Full_Gate_Independent_Review_Decision_20261028.md)); stable 66/17/49, debt 1 unchanged.
+- [ ] **NEXT `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE`** (DEFN; probe-capable Review), then E2 DEFN → `M6-CP3-CB49-RP01-G3-PERIODIC-ENDPOINT-STATE` → `M6-CP3-CB49E-RP01-E2-RAIL-VERTEX-ADJACENCY` → `M6-CP3-TB49-RP01-FULL-GATE-EXEC` (predict 504/0) → `M6-CP3-TB49-RP01-FULL-GATE-REV`.
 - [ ] `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-CB50-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-TB50-RP01-FULL-GATE-EXEC` → `…-REV` → `M6-CP3-PLAN-RP01-CLOSURE` (O6 scope; O7–O12 owners).
 - [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`, then `M6-DEFN-DIAG-RETAIN-A5-A7`.
 - [ ] Carried separately:
@@ -28,7 +29,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: TB47 500/4 → DEFN-G stalled (R1–R62) → RA-167 TB47-REV.
-  - **CB48 complete** → TB48-EXEC complete (502/2) ∥ (DEFN G3 and DEFN E2, on the probe-capable Review track) → TB48-REV → CB49 → CB49E → TB49-EXEC → TB49-REV → DEFN O4/O5 → CB50 → TB50-EXEC → TB50-REV → PLAN-RP01-CLOSURE.
+  - **CB48 complete** → TB48-EXEC complete (502/2) ∥ (DEFN G3 and DEFN E2, on the probe-capable Review track) → TB48-REV complete → G3 DEFN → E2 DEFN → CB49 → CB49E → TB49-EXEC → TB49-REV → DEFN O4/O5 → CB50 → TB50-EXEC → TB50-REV → PLAN-RP01-CLOSURE.
   - **Naming (RA-167.6):**
     - Types are CB, TB-EXEC, TB-REV, DEFN and PLAN, as `turn_type_from_turn` classifies them.
     - DEFN and PLAN IDs carry no `-CB<n>` or `-TB<n>` segment and no final R+letters qualifier.

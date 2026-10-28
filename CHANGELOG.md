@@ -1,3 +1,7 @@
+## 2026-10-28 — TB48 independent Review: valid 502/2 candidate, no stable regression promotion
+
+- [TB48-REV decision](.agents/Directional/Architecture_M6_CP3_TB48_RP01_Full_Gate_Independent_Review_Decision_20261028.md): independently verified CB48 28/28, TB48 1014/1014, 504 ordered case/log joins. P-G3 confirmed as a producer gauge-covariance defect but remains **non-stable** without accepted-green loss; E2 requires an actual A4 two-carrier witness. Stable 66/17/49 debt1, CP2 491/491 remain; selector497/CP3 unpromoted. Future TB49 conditional case manifest `a0e39fa25d707bfc8eabb25ac9e8c494cff8ebf032e2040718b90366d0250ef0` predicts 504/0 only after G3 and E2 corrections. Next G3 DEFN.
+
 ## 2026-10-28 — TB48 immutable full gate executed: 502 PASS / 2 expected RED (Review pending)
 
 - [TB48 report](.agents/Directional/Architecture_M6_CP3_TB48_RP01_Full_Gate_Test_Benchmark_Report_20261028.md): run 40731722985, result `12836819707` ZIP `3aa8b6bc597abef4b4eb3e8168243e7854e09aea95f3e73fc4d531a92dc20131`; 504/504 selection and raw logs, zero control violations, immutable postflight true, no build/repair. P-G3 reproduces on CI at TQ:3027; E2 remains at TQ:3183. Last accepted CP2 491/491, stable 66/17/49 debt1 unchanged pending independent TB48-REV; selector497 unpromoted.
