@@ -1,2 +1,0 @@
-# CB49E temporary state cleanup — completed exact source snapshot and package evidence retained
-.agents/connector-triggers/source-snapshot/cb49e-entry-20261028.txt
