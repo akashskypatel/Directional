@@ -1,3 +1,0 @@
-# TB49 full-gate temporary state cleanup
-# Retain durable dispatcher request, workflows, source evidence and workflow-mailbox branch.
-.agents/connector-triggers/source-snapshot/m6-cp3-tb49-20261028.txt

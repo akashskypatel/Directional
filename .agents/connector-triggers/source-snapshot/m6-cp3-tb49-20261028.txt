@@ -1,2 +1,0 @@
-M6-CP3-TB49-RP01-FULL-GATE-EXEC
-Capture exact source at trigger event SHA for authoritative artifact-only TB49 instructions and harness.
