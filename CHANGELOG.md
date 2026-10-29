@@ -3,6 +3,12 @@
 - [Review evidence](.agents/Directional/Architecture_M6_CP3_TB49_RP01_Full_Gate_Independent_Review_Decision_20261028.md): 504/504 distinct native PASS and exact log/ledger joins; result 1,014/1,014 checksum entries, CB49E package 28/28; accepted 491 prefix unchanged. No native runtime, build, test source or selector mutation by Review.
 - No stable-regression/CP3 milestone/selector promotion. Authentic history-boundary verification, documentation drift and final review closeout remain pending; active turn is still `M6-CP3-TB49-RP01-FULL-GATE-REV`.
 
+## 2026-10-28 — RA-169: TB49-REV closed on authentic history; C1 rail-cover DEFN; exact CB50/CB50F patches
+
+- [RA-169](.agents/Directional/Architecture_M6_CP3_TB49_REV_Closeout_C1_Rail_Cover_DEFN_Patches_20261028.md): `review_check.py boundary` and `ledgers` PASS on the synced branch; HEAD source/test blobs equal RA-168 P1+P2. `M6-CP3-TB49-RP01-FULL-GATE-REV` COMPLETE; TB49 504/0 stays a candidate (no CP3 promotion).
+- RA-162 C1 confirmed by probe: the checked factory accepted an orphan hard edge with open rails (masked on 3×3 fixtures by `gauge-pin-span`), and the A4 consumer ran on unchecked rail authority. P3 adds an ingress check (`orphan-hard-feature-edge`); P4 adds exact factory cover (`open-rail-cover`). Both new tests fail at HEAD.
+- TB50 manifest `6d5b7886…` frozen (508 rows). The bundled O4/O5 DEFN is split into P1-a, P1-b and O4 DEFNs; O5 coverage folds into RP-01 closure. Next: `M6-CP3-CB50-RP01-C1-INGRESS-ORPHAN-HARD-EDGE`.
+
 ## 2026-10-28 — TB49 immutable full gate executed: 504 PASS / 0 RED (independent Review next)
 
 - [TB49 report](.agents/Directional/Architecture_M6_CP3_TB49_RP01_Full_Gate_Test_Benchmark_Report_20261028.md): [run 40776332136](https://github.com/akashskypatel/Directional/actions/runs/40776332136), artifact `12857282498`, ZIP `3113383ccc64bda5747e9f115e95cafa60e67f569f84b40b22ed6c69cea692db`; 504/504 manifest/ledger/raw-log verification; no controls or immutability failures, no rebuild or repairs.

@@ -1,4 +1,36 @@
-## CURRENT — TB49 504/0 independently reverified; Review closeout pending (2026-10-28)
+## CURRENT — RA-169: TB49-REV closed; C1 rail-cover patches; O4/O5 split (2026-10-28)
+
+- [x] **`M6-CP3-TB49-RP01-FULL-GATE-REV`** (TB-REV) COMPLETE per [RA-169](.agents/Directional/Architecture_M6_CP3_TB49_REV_Closeout_C1_Rail_Cover_DEFN_Patches_20261028.md).1: authentic-history `review_check.py boundary` and `ledgers --base 1399da715` PASS; HEAD blobs equal RA-168 P1+P2 applied to `1399da715`; only those two files changed. TB49 504/0 accepted as a reviewed candidate; no CP3 promotion. TB49-REV's bundled successor was rejected as monolithic.
+- [x] **`M6-CP3-DEFN-RP01-C1-ORPHAN-HARD-EDGE-COVER`** (DEFN, probe-backed): RA-162 C1 confirmed. The checked factory accepts an orphan hard edge when open rails exist (`SurfaceCellTracing.cpp:8712`); 3×3 fixtures masked it via `gauge-pin-span` (`:8595`). The builder runs A4 consumers on unchecked rail authority. D1 ingress check, D2 exact factory cover, D3 no orphan-barrier licence. Falsifiers: both new tests fail at HEAD.
+- [ ] **NEXT** `M6-CP3-CB50-RP01-C1-INGRESS-ORPHAN-HARD-EDGE` (CB; RA-169.5): exact P3 `9874d126…`, numstat `37 0` SCT + `47 0` Phase10; compile only.
+- [ ] `M6-CP3-CB50F-RP01-C1-FACTORY-RAIL-COVER` (CB; RA-169.6): exact P4 `c8af43a2…` on CB50, numstat `13 4` SCT + `52 0` TQ; compile only.
+- [ ] `M6-CP3-TB50-RP01-FULL-GATE-EXEC` (manifest `6d5b788671487fa2…`, 508 rows; predict 508/0) → `M6-CP3-TB50-RP01-FULL-GATE-REV`.
+- [ ] Review track, parallel to CB50–TB50 (RA-169.8), one mechanism each: `M6-CP3-DEFN-RP01-P1A-TERMINAL-A3-PATH-WITNESS` (8219) → `M6-CP3-DEFN-RP01-P1B-NETWORK-OWNERSHIP-DIFFERENTIAL` (7414) → `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-WITNESS` (O4) → one CB per patch → TB51-EXEC → TB51-REV.
+- [ ] `M6-CP3-PLAN-RP01-CLOSURE` (O5 off-selector coverage, O6 scope, O7–O12 owners, O9 junction path). Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`, then `M6-DEFN-DIAG-RETAIN-A5-A7`.
+- [ ] Carried separately:
+  - O1, O6 and O7 (oracle-tests target does not compile).
+  - O8 (`lengthRatio=0.29`) and O9 (A4 junction path unwitnessed; cp3entry:2 asserts no junctions).
+  - **O10:** non-hard isolation-barrier producer. **O11:** 5 off-gate TQ tests failing at HEAD. **O12:** R61 `review_check.py` selector collision.
+  - **O13 (RA-169.4):** off-gate `ProducedHardCarriersAreAtlasBarriersNotSourceBoundaryTransit` fails at HEAD (12× `Phase10:7631/7633`, transport 3 vs 0); owner: O5 coverage disposition.
+  - RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4 and G4-B002.
+- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
+  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
+  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
+  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
+  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- **Turn sequence:**
+  - Done: CB49 → CB49E → TB49-EXEC (504/0) → TB49-REV + C1 DEFN (RA-169).
+  - **CB50 (P3)** → CB50F (P4) → TB50-EXEC (508, predict 508/0) → TB50-REV; ∥ DEFN P1-a → DEFN P1-b → DEFN O4 → CB51+ → TB51-EXEC → TB51-REV → PLAN-RP01-CLOSURE.
+  - One CB per exact patch; implementation agents get only exact patches and frozen manifests; probe-requiring DEFN/TB-REV turns stay on the Review track.
+  - **Naming (RA-167.6):** types per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier (RA-158.3 `…-REACHABILITY` renamed `…-WITNESS`). STOP S1–S3 → `M6-CP3-PLAN-RP01-C1-COVER-STOP`; S5 → `M6-CP3-CB50A-RP01-ORCH` → `M6-CP3-TB50-RP01-FULL-GATE-EXEC-R2`.
+  - Rules: RA-164.3 P1–P6, RA-165.2 F1/F2, RA-166.6 F6/F7, RA-168 oracle rule, RA-169 masking rule (witness an invariant where it is the only predicate that can fire).
+- Frozen:
+  - Stable 66/17/49, debt 1; CP2 491/491 accepted.
+  - TB49 504/0 reviewed candidate; selector497 frozen; RP-01 open, RP-02 unreached; Gate C suspended.
+
+---
+
+## HISTORY — RA-168; CB49; CB49E; TB49-EXEC (2026-10-28)
 
 - [x] **RA-168** ([decision](.agents/Directional/Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md)) audits `M6-CP3-TB48-RP01-FULL-GATE-REV` and completes `M6-CP3-DEFN-RP01-G3-PERIODIC-GAUGE-COVARIANCE` and `M6-CP3-DEFN-RP01-E2-RAIL-VERTEX-ADJACENCY-PATCH` (DEFN, probe-backed).
   - TB48 evidence confirmed: 502/2, 1014/1014, pins `TQ:3027`/`TQ:3183`.
@@ -8,31 +40,6 @@
 - [x] **`M6-CP3-CB49-RP01-G3-A5-PERIODIC-PLACEMENT-GAUGE`** (CB; RA-168.4): exact P1 `5897798d…`, numstat `8 2` RemeshPipeline.cpp + `13 2` TQ; eight GMP targets compiled at `9c84ba9cc8e4` ([record](.agents/Directional/Architecture_M6_CP3_CB49_RP01_G3_A5_Periodic_Placement_Gauge_Code_Build_Record_20261028.md)); no runtime.
 - [x] `M6-CP3-CB49E-RP01-E2-RAIL-VERTEX-ADJACENCY` (CB; RA-168.5): exact P2 `9ebef3cc…`, numstat `215 255` TQ; 8 GMP targets compiled at `092b52eba881` ([record](.agents/Directional/Architecture_M6_CP3_CB49E_RP01_E2_Rail_Vertex_Adjacency_Code_Build_Record_20261028.md)), no runtime.
 - [x] `M6-CP3-TB49-RP01-FULL-GATE-EXEC` (TB-EXEC; RA-168.6): **504 PASS / 0 RED** observed ([report](.agents/Directional/Architecture_M6_CP3_TB49_RP01_Full_Gate_Test_Benchmark_Report_20261028.md), run 40776332136); immutable artifact 12857282498.
-- [ ] **ACTIVE** `M6-CP3-TB49-RP01-FULL-GATE-REV` (TB-REV): 504 native logs and accepted prefix independently reverified; authentic history/boundary and durable closeout pending. No CP3 milestone promotion. [Review evidence](.agents/Directional/Architecture_M6_CP3_TB49_RP01_Full_Gate_Independent_Review_Decision_20261028.md).
-- [ ] `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-CB50-RP01-O4-O5-RAIL-PROVENANCE` → `M6-CP3-TB50-RP01-FULL-GATE-EXEC` → `…-REV` → `M6-CP3-PLAN-RP01-CLOSURE` (O6 scope; O7–O12 owners; O9 junction-path retirement).
-- [ ] Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`, then `M6-DEFN-DIAG-RETAIN-A5-A7`.
-- [ ] Carried separately:
-  - O1, O6 and O7 (oracle-tests target does not compile).
-  - O8 (`lengthRatio=0.29`) and O9 (A4 junction path unwitnessed; cp3entry:2 now asserts no junctions).
-  - **O10:** non-hard isolation-barrier producer.
-  - **O11:** 5 off-gate TQ tests failing at HEAD (unchanged by P1/P2).
-  - **O12:** R61 `review_check.py` selector collision.
-  - RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4 and G4-B002.
-- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
-  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
-  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
-  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
-  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Turn sequence:**
-  - Done: TB48 502/2 → TB48-REV → RA-168 (audit + G3 DEFN + E2 DEFN).
-  - **CB49 (compiled)** → **CB49E (compiled)** → **TB49-EXEC (504 PASS / 0 RED observed)** → TB49-REV → DEFN O4/O5 → CB50 → TB50-EXEC → TB50-REV → PLAN-RP01-CLOSURE.
-  - One CB per exact patch; implementation agents get only exact patches and frozen manifests; probe-requiring DEFN/TB-REV turns stay on the Review track.
-  - **Naming (RA-167.6):** types CB, TB-EXEC, TB-REV, DEFN, PLAN per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier; STOP S1–S3 → `PLAN-RP01-<topic>-STOP`, S4 → `TB<n>-…-REV`, S5 → `CB<n>A-RP01-ORCH` → `TB<n>-…-EXEC-R<k>`; no R1…Rn same-turn loops.
-  - Rules: RA-164.3 P1–P6, RA-165.2 F1/F2, RA-166.6 F6/F7, RA-168 oracle rule (gauge oracles check gauge-free observables).
-- Frozen:
-  - Stable 66/17/49, debt 1; CP2 491/491 accepted.
-  - TB48 502/2 valid expected-RED candidate.
-  - Selector497 frozen; RP-01 open, RP-02 unreached; Gate C suspended.
 
 ---
 

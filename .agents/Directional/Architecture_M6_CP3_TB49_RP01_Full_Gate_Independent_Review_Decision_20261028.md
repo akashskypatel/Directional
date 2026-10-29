@@ -54,3 +54,10 @@
 | review_check.py boundary | Exit 1 on history-free snapshot; authentic-history verification PENDING, not PASS |
 | `STATUS` lifecycle maintained | Entry/resume beacon published; final same-turn IN_PROGRESS pending closeout |
 | Pushed to origin, branch in sync | Patch applied by the durable Drive dispatcher; seven exact intended paths confirmed by GitHub compare, applied commit d0174a69f94136a2592c632815cb264d4ce40816. An authentic `git status -sb` confirmation remains unperformed |
+
+## Authentic-history closeout (Review agent with full Git history, 2026-10-28)
+
+- `review_check.py boundary` on the synced branch printed **ALL CHECKS PASSED**: selector hashes, rewrite baseline `8b7299b43` as ancestor, and durable sections 4/4, 1/1 and 0/0.
+- `review_check.py ledgers --base 1399da715` printed **ALL CHECKS PASSED**.
+- HEAD source/test blobs equal RA-168 P1+P2 applied to `1399da715`.
+- The REVIEW_BLOCKER is discharged, and this Review is **COMPLETE**. Successor and correction: see [RA-169](Architecture_M6_CP3_TB49_REV_Closeout_C1_Rail_Cover_DEFN_Patches_20261028.md). The conditional `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` is superseded by the per-mechanism split.

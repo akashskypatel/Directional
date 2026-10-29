@@ -1,3 +1,10 @@
+## RA-169 — TB49-REV closeout; C1 rail cover; O4/O5 split (2026-10-28)
+
+- **RA-169.3 C1-D1 (ingress):** once any open or closed rail chain is published, every `hardFeatureEdges` key must lie on a chain; otherwise `build_surface_cell_network` rejects `InvalidFrontBoundaryAuthority` with `firstPredicate=orphan-hard-feature-edge;edge=a,b` before any A4 consumer. Chain-free sets keep their existing sites.
+- **C1-D2 (factory):** closed ∪ open chain edges == `hardFeatureEdges`; site `closed-rail-cover` without terminal contacts, `open-rail-cover` with them. **C1-D3:** an orphan hard edge is never a legitimate non-rail barrier.
+- **Masking rule:** an invariant's witness must use a fixture where that predicate is the only one that can fire.
+- **RA-169.8:** the O4/O5 DEFN is split: `M6-CP3-DEFN-RP01-P1A-TERMINAL-A3-PATH-WITNESS`, `M6-CP3-DEFN-RP01-P1B-NETWORK-OWNERSHIP-DIFFERENTIAL`, `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-WITNESS` (replaces RA-158.3 `…-REACHABILITY`, which fails `turn_type_from_turn`); O5 coverage → `M6-CP3-PLAN-RP01-CLOSURE`.
+
 ## RA-168 — TB48-REV audit: A5 periodic placement gauge; E2 D2 oracle (2026-10-28)
 
 - **RA-168.3 G3-A5 (amends RA-167 G3 owner):** placement lattice coordinates are gauge-free regional-chart coordinates; only the branch label carries the local face gauge. A5's per-endpoint coordinate gauge strips `branchAuthority.localFaceBranchRotation`, so the gauge is the relation turn alone (identity for Forward, Q for Reverse). A4 periodic endpoint-state publication is correct and unchanged.
