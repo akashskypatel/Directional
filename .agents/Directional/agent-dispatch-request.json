@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb51-docs-closeout-retry2-20261029",
+  "request_id": "m6-cp3-cb52-p6-apply-20261029-01",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb51-docs-closeout-retry2",
-  "file_id": "1KXEhYGAJhi7ZAPJK1QjlBiuSSU2kNGto",
-  "patch_sha256": "7e8fd760dea1c754c444eec8279bfd46345a8020d9812ae0251c0439331fbbc4",
-  "base_sha": "092db30d0dceeb1e54862fd71b9ea6d70f67d001",
+  "mailbox_key": "m6-cp3-cb52-p6-apply",
+  "file_id": "1nfgF3gjM6OFrCZmriDxCqbOKMtzTuTrJ",
+  "patch_sha256": "d0c5e8cd95ccb0c6f8c1346417cc0e5f5477fa09bfcc14a38f35c52e5a4c2fb6",
+  "base_sha": "09404a62aacf597ff9c58b20c81e07dd708f3906",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): finalize CB51 compile evidence and handoff to CB52",
+  "commit_message": "test(surface-cells): pin E2 factory rejection sites",
   "retention_days": 14
 }
