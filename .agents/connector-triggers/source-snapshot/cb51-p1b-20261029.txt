@@ -1,0 +1,2 @@
+CB51 P1B network owner witness — exact source snapshot for scoped code/build turn.
+No runtime or compile in snapshot.
