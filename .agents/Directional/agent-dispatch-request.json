@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb50-rp01-full-gate-20261029-preflight-v1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb50-rp01-full-gate-20261029-v1",
-  "executor_sha": "2ecbe067bd4dec7c3be288683557479da7a2a33f",
-  "semantic_source_sha": "7cf0857b4818186638ce77e4859adacbeebd288f",
-  "turn_id": "M6-CP3-TB50-RP01-FULL-GATE-EXEC",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "142321061c57d130a9c73548ce93f52147ebeaeb4c45d3d1c48830e72e2ef93d",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "12918290481",
-    "EXPECTED_SOURCE_SHA": "7cf0857b4818186638ce77e4859adacbeebd288f",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "89449f4f9c014c1d8c3235056c3dca2d2239ba136e09dd88e3e02710b253b5c1",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "6ae4eb5bf9552912fe068d9a9d3a90d76e2e27b9bd99896f83c216fd27fbc21f",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "c02a0be4b25d64eca2c10e5681cd8721a465a848a3d17044275370eac132553b",
-    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_CP3_TB50_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "6d5b788671487fa298ff3a3e9656dfda1729612f02c976206d3960a413121149",
-    "EXPECTED_CASE_COUNT": "508"
-  },
-  "artifact_prefix": "m6-cp3-tb50-rp01-full-gate",
+  "request_id": "m6-cp3-tb50-s5-docs-closeout-20261029-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb50-s5-docs-20261029-v1",
+  "file_id": "1aZl4Xuwc30toceUDoGKoFHxJz-ZMtZ2V",
+  "patch_sha256": "fc0fa605c6b34866cb0bc8cf6eb28fa1db5bb0c144d9ddc23cf1ac43a4b16a0f",
+  "base_sha": "2ecbe067bd4dec7c3be288683557479da7a2a33f",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record TB50 S5 preflight and CB50A handoff",
   "retention_days": 14
 }
