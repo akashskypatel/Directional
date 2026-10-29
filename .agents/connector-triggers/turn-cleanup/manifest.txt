@@ -1,0 +1,2 @@
+# CB50 temporary source-snapshot trigger only; durable dispatcher/request and orphan workflow-mailbox are retained.
+.agents/connector-triggers/source-snapshot/m6-cp3-cb50-20261029-1422.txt
