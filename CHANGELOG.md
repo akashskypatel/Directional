@@ -3,6 +3,12 @@
 - [Review evidence](.agents/Directional/Architecture_M6_CP3_TB49_RP01_Full_Gate_Independent_Review_Decision_20261028.md): 504/504 distinct native PASS and exact log/ledger joins; result 1,014/1,014 checksum entries, CB49E package 28/28; accepted 491 prefix unchanged. No native runtime, build, test source or selector mutation by Review.
 - No stable-regression/CP3 milestone/selector promotion. Authentic history-boundary verification, documentation drift and final review closeout remain pending; active turn is still `M6-CP3-TB49-RP01-FULL-GATE-REV`.
 
+## 2026-10-28 — RA-170: TB49 re-derived; P1-a/P1-b/O4 DEFNs; E2 site pins; off-gate census
+
+- [RA-170](.agents/Directional/Architecture_M6_CP3_TB49_REV_Reaudit_P1_O4_DEFNs_E2_Site_Pins_OffGate_Census_20261028.md): TB49 artifact 12857282498 re-verified (1014/1014; 504 manifest–ledger–log joins; package 12852132570 source `092b52eba881`). RA-169 C1 shows no gate or off-gate regression.
+- P1-a and O4 accepted-defensive; P1-b re-specified (network-absent A4 never produces) as a rail-ID swap witness (P5); cp3entry:2 factory negatives pinned to sites (P6). Exact P5 `a610f39b…`, P6 `9f538bc2…`.
+- 101/408 ungated tests in the gate binaries fail locally at HEAD; TB50C census manifest `800e7f26…` (408 rows) frozen for CI. Next: `M6-CP3-CB50-RP01-C1-INGRESS-ORPHAN-HARD-EDGE`.
+
 ## 2026-10-28 — RA-169: TB49-REV closed on authentic history; C1 rail-cover DEFN; exact CB50/CB50F patches
 
 - [RA-169](.agents/Directional/Architecture_M6_CP3_TB49_REV_Closeout_C1_Rail_Cover_DEFN_Patches_20261028.md): `review_check.py boundary` and `ledgers` PASS on the synced branch; HEAD source/test blobs equal RA-168 P1+P2. `M6-CP3-TB49-RP01-FULL-GATE-REV` COMPLETE; TB49 504/0 stays a candidate (no CP3 promotion).

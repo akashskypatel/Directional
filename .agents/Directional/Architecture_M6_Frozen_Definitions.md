@@ -1,3 +1,10 @@
+## RA-170 — P1-a/P1-b/O4 dispositions; factory site pins; off-gate census (2026-10-28)
+
+- **RA-170.3 P1-a:** `missing-terminal-A3-path` is accepted-defensive under C1 (no produced input reaches it); owner O9. **O4:** the `MissingTransitionProvenance` returns are same-call consistency guards, accepted-defensive; no production fault-injection seams for witnesses.
+- **P1-b:** a network-absent A4 is not a producing configuration; network dependence is witnessed by a typed-consistent rail-ID swap that `rail_interval_refs` accepts without the A2a network and rejects with it, plus an A4 rejection at a real cell.
+- **Negative-test rule:** a checked-factory negative asserts its `sourceAuthoritySite`, not only the shared error code.
+- **RA-170.5:** RP-01 closure requires a CI census of every ungated test in the gate binaries and a disposition DEFN (stale oracle / regression / O2 legacy / retire) before PLAN-RP01-CLOSURE.
+
 ## RA-169 — TB49-REV closeout; C1 rail cover; O4/O5 split (2026-10-28)
 
 - **RA-169.3 C1-D1 (ingress):** once any open or closed rail chain is published, every `hardFeatureEdges` key must lie on a chain; otherwise `build_surface_cell_network` rejects `InvalidFrontBoundaryAuthority` with `firstPredicate=orphan-hard-feature-edge;edge=a,b` before any A4 consumer. Chain-free sets keep their existing sites.

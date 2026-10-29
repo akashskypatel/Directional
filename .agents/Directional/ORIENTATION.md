@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-28 · [RA-169](Architecture_M6_CP3_TB49_REV_Closeout_C1_Rail_Cover_DEFN_Patches_20261028.md) closes `M6-CP3-TB49-RP01-FULL-GATE-REV` on authentic Git history (boundary + ledgers PASS) and completes the C1 rail-cover DEFN. Next: `M6-CP3-CB50-RP01-C1-INGRESS-ORPHAN-HARD-EDGE` (exact P3). CP2 491/491 accepted, selector497/CP3 unpromoted, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-28 · [RA-170](Architecture_M6_CP3_TB49_REV_Reaudit_P1_O4_DEFNs_E2_Site_Pins_OffGate_Census_20261028.md) re-derives TB49 504/0, closes the P1-a, P1-b and O4 DEFNs, and finds 101/408 off-gate tests RED locally at HEAD. Next: `M6-CP3-CB50-RP01-C1-INGRESS-ORPHAN-HARD-EDGE` (P3), then CB50F/CB51/CB52, TB50 + TB50C census. CP2 491/491 accepted, selector497/CP3 unpromoted, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,9 +50,9 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | TB49 selected full gate **504/0** independently reviewed (candidate); CP3 closure and direct-production matrix **not accepted**. Frozen 497-entry selector; historical R3 403/94. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Prior Review authority:** [RA-169](Architecture_M6_CP3_TB49_REV_Closeout_C1_Rail_Cover_DEFN_Patches_20261028.md) splits the bundled O4/O5 DEFN into one DEFN per mechanism and fixes RA-162 C1 at A4 ingress and in the checked factory (exact P3/P4). [RA-168](Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md) re-owned P-G3 to A5. Implementation agents get only exact patches and frozen manifests.
+**Prior Review authority:** [RA-170](Architecture_M6_CP3_TB49_REV_Reaudit_P1_O4_DEFNs_E2_Site_Pins_OffGate_Census_20261028.md) re-specifies P1-b (network-absent A4 never produces, so the witness is a rail-ID swap at `rail_interval_refs`), classifies P1-a and O4 accepted-defensive, pins cp3entry:2 factory sites, and schedules the off-gate census. [RA-169](Architecture_M6_CP3_TB49_REV_Closeout_C1_Rail_Cover_DEFN_Patches_20261028.md) fixed C1 (P3/P4). Implementers get only exact patches and manifests.
 
-**Current test authority:** TB49 **504 PASS / 0 RED** (run 40776332136, result 12857282498), Review COMPLETE (RA-169.1); candidate only — not D0 production, CP3 closure or selector497 promotion. TB50 manifest `6d5b7886…` (508 rows) is frozen for C1.
+**Current test authority:** TB49 **504 PASS / 0 RED** (run 40776332136, result 12857282498), independently re-derived; candidate only. The gate covers 504 of the four binaries' tests: the other 408 are ungated, and 101 of them fail locally (CI census TB50C pending). Not D0 production, CP3 closure or selector497 promotion.
 
 **Prior TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 
@@ -106,24 +106,24 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-CB50-RP01-C1-INGRESS-ORPHAN-HARD-EDGE` (P3) → `M6-CP3-CB50F-RP01-C1-FACTORY-RAIL-COVER` (P4) → TB50-EXEC (predict 508/0) → TB50-REV; Review DEFNs P1-a, P1-b, O4 in parallel ([RA-169](Architecture_M6_CP3_TB49_REV_Closeout_C1_Rail_Cover_DEFN_Patches_20261028.md).8).
+**Immediate:** CB50 (P3) → CB50F (P4) → CB51 (P5) → CB52 (P6) → TB50-EXEC (508, predict 508/0) → TB50C-EXEC (408 census) → TB50-REV → O5 disposition DEFN ([RA-170](Architecture_M6_CP3_TB49_REV_Reaudit_P1_O4_DEFNs_E2_Site_Pins_OffGate_Census_20261028.md).6).
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Close RP-01 by full-gate TBs: CB50 → CB50F → TB50 → TB50-REV; P1-a / P1-b / O4 DEFNs → CB51+ → TB51; then PLAN-RP01-CLOSURE (O5 coverage, O6 scope, O7–O12 owners). O2 post-RP-01. | `M6-CP3-CB50-RP01-C1-INGRESS-ORPHAN-HARD-EDGE` per [RA-169](Architecture_M6_CP3_TB49_REV_Closeout_C1_Rail_Cover_DEFN_Patches_20261028.md) |
+| **1** | Close RP-01: CB50–CB52 → TB50 + TB50C → TB50-REV → O5 off-gate disposition → CB53… → TB51 → PLAN-RP01-CLOSURE (O6 scope, O7–O12 owners). O2 post-RP-01. | `M6-CP3-CB50-RP01-C1-INGRESS-ORPHAN-HARD-EDGE` per [RA-170](Architecture_M6_CP3_TB49_REV_Reaudit_P1_O4_DEFNs_E2_Site_Pins_OffGate_Census_20261028.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
 
-- **A stronger downstream guard masks a missing invariant ([RA-169](Architecture_M6_CP3_TB49_REV_Closeout_C1_Rail_Cover_DEFN_Patches_20261028.md)):** C1 cover was absent from the checked factory, but `gauge-pin-span` rejected every orphan edge on 3×3 fixtures whose regions are dual trees. Witness an invariant on a fixture where it is the only predicate that can fire (produced torus), and check that the consumer cannot run on authority the factory will later reject.
+- **A green gate is not a green binary ([RA-170](Architecture_M6_CP3_TB49_REV_Reaudit_P1_O4_DEFNs_E2_Site_Pins_OffGate_Census_20261028.md)):** TB49 was 504/0 while 101 of 408 ungated tests in the same binaries failed locally. Census ungated tests before closing a checkpoint; pin negatives to sites.
+- **A stronger downstream guard masks a missing invariant ([RA-169](Architecture_M6_CP3_TB49_REV_Closeout_C1_Rail_Cover_DEFN_Patches_20261028.md)):** `gauge-pin-span` hid the missing C1 cover on 3×3 fixtures. Witness an invariant where it is the only predicate that can fire, and never let a consumer read authority the factory later rejects.
 - **Oracle copies the producer formula ([RA-168](Architecture_M6_CP3_TB48_REV_Audit_G3_A5_Gauge_And_E2_Rail_Vertex_Patches_20261028.md)):** RA-167's G3 oracle re-implemented A5's gauge formula, so both shared one defect, blamed on A4. Check a gauge-free observable, and probe each stage's product under the relabel before naming an owner.
-- **Unpaired relabel or forged label is not a gauge witness ([RA-167](Architecture_M6_CP3_TB47_REV_Gauge_Cluster_Decision_And_Canonical_Turn_Sequence_20261028.md)):** Relabel invariance is proved only by a *source-produced* relabel: raw field → A3 → A4 regenerated, then compare A5/A6 invariants. A test-side shift of A4 branches or face gauges, or of component labels, is a negative. Probe a debated witness before arguing statically.
+- **Unpaired relabel or forged label is not a gauge witness ([RA-167](Architecture_M6_CP3_TB47_REV_Gauge_Cluster_Decision_And_Canonical_Turn_Sequence_20261028.md)):** Relabel invariance is proved only by a *source-produced* relabel: raw field → A3 → A4 regenerated, then compare A5/A6 invariants. A test-side shift of A4 branches, face gauges or component labels is a negative.
 
 - **Witness definition contradicts producer/consumer invariants ([RA-166](Architecture_M6_CP3_CB47_REV_Endpoint_Witness_Contract_Rehome_Decision_20261027.md)):** RA-33.5 demanded a route on `OrdinaryInterior` sides, which A5 forbids, and D2 demanded an intra-certificate junction, which A4's R-split never produces. Check a witness definition against the invariants of the field it reads, and probe its existence before freezing it. Interior-rail-vertex continuity is witnessed by R-adjacency (two same-rail certificates with R at v, and commuting A3 sectors).
 
-- **Masked off-gate negative and nondiscriminating network guard (TB44-REV):** 8219 fails before its intended A3 predicate; 7414 forges a key invalid even without the network. A negative must be production-reachable (RA-162); RA-169.8 owns both.
 
 - **Atlas-versus-atlas vacuity with an unconsumed legacy stimulus (190/O2):** A fixture mutates raw compact matching but builds checked A3 from a separate authoritative field; the atlas-present wrapper nulls every legacy container, so identical A4 outputs prove nothing. A3 `MissingAdjacency` alone duplicates `selector:28`; the discriminating home also pins the no-atlas A4 ingress locus (`"atlas-binding"`). The re-homed selector190 now passes its A3 negative/restored-positive and A4 exact-site assertions in focused TB43 Review; the historical vacuity is not retroactively cured. No-atlas ingress on NotApplicable inputs still publishes legacy-decided seed-fallback outputs. [RA-160](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md).
 
