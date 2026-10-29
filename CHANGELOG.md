@@ -1,3 +1,8 @@
+## 2026-10-29 — TB50-R2 corrected immutable full gate native 508/0 (candidate)
+
+- Completed `M6-CP3-TB50-RP01-FULL-GATE-EXEC-R2` using CB52 GMP source `7cf0857b4818186638ce77e4859adacbeebd288f`, package `12918290481`, corrected frozen 508-case manifest `eef8855e27df9401…`. [Report](.agents/Directional/Architecture_M6_CP3_TB50_RP01_Full_Gate_R2_Test_Benchmark_Report_20261029.md), [run 40941114716](https://github.com/akashskypatel/Directional/actions/runs/40941114716), result `12929917136`, log `12930316247`.
+- Native **508 PASS / 0 RED** (499 guards, 9 positives), 508/508 manifest/ledger/log joins, 1,022/1,022 checksum members, postflight clean; no source/test/fixture edits, compile, relink, configure or benchmark. No stable regression increment, selector497 promotion or CP3 acceptance; CP2 491/491 remains accepted. Next separate 408-case TB50C off-gate census, then independent TB50-REV; RA-170 101/408 local off-gate failures remain unclassified.
+
 ## 2026-10-29 — CB50A strict TB50 harness/manifest site-pinning correction (no native execution)
 
 - Reclassified four PASS-case `asserted_site` values (rows 505–508) as *native in-test rejection reasons*, not registered GoogleTest first-failure locations; reset only those manifest fields to `-` while preserving the four independent native assertions and all registered source-locus pins. Strict 508-row harness self-check and 12/12 harness-only self-test PASS; no native runtime or compilation. [Record](.agents/Directional/Architecture_M6_CP3_CB50A_RP01_Orchestration_Correction_Record_20261029.md).
