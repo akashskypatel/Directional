@@ -1,3 +1,9 @@
+## 2026-10-29 — CB50F P4 checked factory rail cover compiled (no runtime)
+
+- Exact RA-169.11 P4 SHA-256 `c8af43a28a7aa694d8cb2c43d461773061b34f2ba811649509d3def95127a426` applied with no hand edits; `SurfaceCellTracing.cpp` +13/−4, TQ tests +52/−0, nothing else. Semantic source `b8c07a6f24664e0de70026951c9ab3dd408d8f80`.
+- Eight GMP/GMPXX targets compile-only, `runtimeExecution=false`; [CB50F record](.agents/Directional/Architecture_M6_CP3_CB50F_RP01_C1_Factory_Rail_Cover_Code_Build_Record_20261029.md), [workflow 40903589111](https://github.com/akashskypatel/Directional/actions/runs/40903589111), package artifact `12910262428`.
+- No runtime/tests/benchmarks and no acceptance promotion. CP2 491/491 accepted; TB49 504/0 reviewed candidate; selector497 unpromoted; stable 66/17/49, debt1. Next CB51 P5, not started here.
+
 ## 2026-10-29 — CB50 P3 hard-edge ingress guard (compile-only)
 
 - Exact RA-169.10 P3 SHA-256 `9874d1269b052aa975b4a42bf085ea48acfba1773246c973b05f76d492a1c1fb` applied without hand edits. Diff: `src/geometry/SurfaceCellTracing.cpp` +37/−0; `tests/SurfaceCellsPhase10Tests.cpp` +47/−0, nothing else. Semantic commit `88249ebbb27b997a6cbc7b3cf71bb57e4a77e53f`.

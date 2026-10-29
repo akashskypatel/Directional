@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-28 · [RA-170](Architecture_M6_CP3_TB49_REV_Reaudit_P1_O4_DEFNs_E2_Site_Pins_OffGate_Census_20261028.md) re-derives TB49 504/0, closes the P1-a, P1-b and O4 DEFNs, and finds 101/408 off-gate tests RED locally at HEAD. Next: `M6-CP3-CB50-RP01-C1-INGRESS-ORPHAN-HARD-EDGE` (P3), then CB50F/CB51/CB52, TB50 + TB50C census. CP2 491/491 accepted, selector497/CP3 unpromoted, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-29 · CB50 and CB50F exact P3/P4 compile-only complete ([CB50F](Architecture_M6_CP3_CB50F_RP01_C1_Factory_Rail_Cover_Code_Build_Record_20261029.md)), next `M6-CP3-CB51-RP01-P1B-NETWORK-OWNER-WITNESS` (P5), then CB52 P6 and TB50/TB50C. TB49 504/0 reviewed candidate; CP2 491/491 accepted, selector497/CP3 unpromoted, 101/408 off-gate RED locally pending CI census, stable 66/17/49 debt1, RP-01 open.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 

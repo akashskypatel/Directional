@@ -6,8 +6,8 @@
 - [x] `M6-CP3-DEFN-RP01-P1B-NETWORK-OWNERSHIP-DIFFERENTIAL`: network-absent A4 rejects even unmodified rails, so TB44-REV's differential is unsatisfiable; P5 swaps two same-component rail IDs (`rail_interval_refs` Valid without network, `TypedAuthorityMismatch` with it; A4 rejects at a real cell). Falsifier: removing the rail/kind ownership check fails P5.
 - [x] `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-WITNESS`: the four `MissingTransitionProvenance` returns guard same-call derived maps — accepted-defensive; legacy-path divergence → O2.
 - [x] `M6-CP3-CB50-RP01-C1-INGRESS-ORPHAN-HARD-EDGE` (CB; RA-169.5): exact P3 `9874d126…`, numstat `37 0` SCT + `47 0` Phase10, source `88249ebbb27b`; eight GMP targets compile-only (record linked below), no runtime.
-- [ ] **NEXT** `M6-CP3-CB50F-RP01-C1-FACTORY-RAIL-COVER` (CB; RA-169.6): P4 `c8af43a2…`, `13 4` SCT + `52 0` TQ.
-- [ ] `M6-CP3-CB51-RP01-P1B-NETWORK-OWNER-WITNESS` (CB; RA-170.7): P5 `a610f39b…`, `40 19` Phase10; test-only.
+- [x] `M6-CP3-CB50F-RP01-C1-FACTORY-RAIL-COVER` (CB; RA-169.6): P4 `c8af43a2…`, `13 4` SCT + `52 0` TQ, source `b8c07a6f24664e0de70026951c9ab3dd408d8f80`; GMP compile-only ([record](.agents/Directional/Architecture_M6_CP3_CB50F_RP01_C1_Factory_Rail_Cover_Code_Build_Record_20261029.md)), no runtime.
+- [ ] **NEXT** `M6-CP3-CB51-RP01-P1B-NETWORK-OWNER-WITNESS` (CB; RA-170.7): P5 `a610f39b…`, `40 19` Phase10; test-only.
 - [ ] `M6-CP3-CB52-RP01-E2-FACTORY-SITE-PINS` (CB; RA-170.8): P6 `9f538bc2…`, `16 6` TQ; test-only.
 - [ ] `M6-CP3-TB50-RP01-FULL-GATE-EXEC` (manifest `6d5b7886…`, 508; predict 508/0) and `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC` (manifest `800e7f26…`, 408; observe) on the CB52 package → `M6-CP3-TB50-RP01-FULL-GATE-REV`.
 - [ ] `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` (Review): classify every CI off-gate RED (stale oracle / regression / O2 legacy / retire), exact patches, freeze TB51 manifest → CB53… → TB51-EXEC → TB51-REV → `M6-CP3-PLAN-RP01-CLOSURE`. Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`, then `M6-DEFN-DIAG-RETAIN-A5-A7`.
@@ -23,7 +23,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: CB49 → CB49E → TB49-EXEC (504/0) → TB49-REV (RA-169; re-derived RA-170) + DEFNs C1, P1-a, P1-b, O4.
-  - **CB50 (P3) COMPLETE** → **CB50F (P4) NEXT** → CB51 (P5) → CB52 (P6) → TB50-EXEC (508, predict 508/0) → TB50C-EXEC (408 census) → TB50-REV → DEFN O5 disposition → CB53… → TB51-EXEC → TB51-REV → PLAN-RP01-CLOSURE.
+  - **CB50 (P3) COMPLETE** → **CB50F (P4) COMPLETE** → **CB51 (P5) NEXT** → CB52 (P6) → TB50-EXEC (508, predict 508/0) → TB50C-EXEC (408 census) → TB50-REV → DEFN O5 disposition → CB53… → TB51-EXEC → TB51-REV → PLAN-RP01-CLOSURE.
   - One CB per exact patch; implementation agents get only exact patches and frozen manifests; probe-requiring DEFN/TB-REV turns stay on the Review track.
   - **Naming (RA-167.6):** types per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier. STOP S1–S3 → `M6-CP3-PLAN-RP01-C1-COVER-STOP`; S5 → `M6-CP3-CB50A-RP01-ORCH` → `…-EXEC-R2`.
   - Rules: RA-164.3 P1–P6, RA-165.2 F1/F2, RA-166.6 F6/F7, RA-168 oracle rule, RA-169 masking rule, RA-170 (factory negatives pin a site, not just a code; a gate pass says nothing about off-gate tests in the same binaries).
