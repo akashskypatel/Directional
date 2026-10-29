@@ -1,3 +1,0 @@
-turn=M6-CP3-CB50A-RP01-ORCH
-purpose=exact source snapshot for bounded site-pin orchestration correction
-baseline_pr_head=b1cdf0c3c7fd04effca9bfb74d1a8a0f2f5f9428
