@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb50c-p7-drive-apply-20261029-v1",
+  "request_id": "m6-cp3-cb50c-closeout-drive-apply-20261029-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb50c-p7-drive-apply-20261029-v1",
-  "file_id": "1bSdKoew7Au1ivzkqVFak2jrnrvXkecV7",
-  "patch_sha256": "47eb9d5d2ceaa6ed0202b451dfc06dbecbabdcbcefdfad4faec53427ac315a99",
+  "mailbox_key": "m6-cp3-cb50c-closeout-drive-apply-20261029-v1",
+  "file_id": "1zciVGx2vfSdmliuxucT6jRuIgD_evB79",
+  "patch_sha256": "87d42c5006ccce8dc613bc4ae086186faa12b5e85432dadda0e5ddb1679b8fb0",
   "base_sha": "44a5acd838da5f3b4c308d973e51cb3c01254984",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix: support observe-only off-gate census harness",
+  "commit_message": "docs: close out CB50C harness orchestration",
   "retention_days": 14
 }
