@@ -19378,6 +19378,43 @@ SurfaceCellNetwork build_surface_cell_network(
   authoritativeOptions.sourceFaceComponents.clear();
   authoritativeOptions.sourceFaceSheets.clear();
   authoritativeOptions.sourceAuthority = &*network.sourceTopologyRegions;
+  // Once rail chains are published, every hard-feature edge must belong to
+  // one of them; reject a torn hard-edge set before any A4 consumer reads
+  // it (RA-162 C1).
+  if (!authoritativeOptions.hardRailOpenChains.empty() ||
+      !authoritativeOptions.hardRailClosedChains.empty()) {
+    std::set<authority::SourceEdgeTopologyKey> railEdges;
+    const auto addChain = [&](const auto &vertices, const bool closed) {
+      const std::size_t count = closed ? vertices.size() : vertices.size() - 1U;
+      for (std::size_t i = 0U; vertices.size() >= 2U && i < count; ++i) {
+        const auto edge = authority::SourceEdgeTopologyKey::make(
+            vertices[i], vertices[(i + 1U) % vertices.size()]);
+        if (edge) railEdges.insert(edge.value());
+      }
+    };
+    for (const auto &[rail, chain] : authoritativeOptions.hardRailOpenChains) {
+      (void)rail;
+      addChain(chain.vertices, false);
+    }
+    for (const auto &[rail, chain] : authoritativeOptions.hardRailClosedChains) {
+      (void)rail;
+      addChain(chain.vertices, true);
+    }
+    for (const authority::SourceEdgeTopologyKey &edge :
+         authoritativeOptions.hardFeatureEdges) {
+      if (railEdges.contains(edge)) continue;
+      SurfacePhaseFrontFailure failure;
+      failure.reason =
+          SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      std::ostringstream detail;
+      detail << "firstPredicate=orphan-hard-feature-edge"
+             << ";edge=" << edge.first().index() << ','
+             << edge.second().index();
+      failure.hardRailRouteDiagnostic = detail.str();
+      network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
+      return network;
+    }
+  }
   auto phaseFrontState =
       surface_cell_tracing_detail::build_uniform_phase_front_state(
           vertices, faces, faceAxisX, faceAxisY, targetSize,

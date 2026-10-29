@@ -8310,6 +8310,53 @@ TEST(SurfaceCellAuthorityContractCutover,
                 "a2bProbeFailure=no-exact-terminal-corner"));
 }
 
+// RA-169 C1: a hard-feature edge outside every published rail chain is a
+// torn A2b set. Network ingress rejects it before any A4 consumer reads it;
+// the same full provenance without the orphan still produces.
+TEST(SurfaceCellAuthorityContractCutover,
+     OrphanHardFeatureEdgeRejectsBeforeA4Consumer) {
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition())
+      << hard_rail_first_failure_detail(fixture.network);
+  const auto &front = fixture.network.phaseFront.product();
+  ASSERT_FALSE(front.hardRailOpenChains().empty());
+  std::optional<directional::authority::SourceEdgeTopologyKey> orphan;
+  for (const auto &route : front.hardRailRouteCertificates()) {
+    for (const auto &endpoint : route.endpoints) {
+      for (const auto &path : endpoint.contactPaths) {
+        if (!path.empty() && !orphan.has_value()) orphan = path.front().edge;
+      }
+    }
+  }
+  ASSERT_TRUE(orphan.has_value())
+      << "the witness requires a produced non-hard terminal A3 step";
+  auto torn = fixture.hardFeatureEdges;
+  ASSERT_TRUE(torn.insert(*orphan).second)
+      << "the selected source-star step must originally be non-hard";
+  auto contacts = front.hardRailTerminalContacts();
+
+  const auto accepted =
+      build_fixed_plan_rectangular_hard_rail_network(fixture, 1.0, &contacts);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            accepted.phaseFront.disposition())
+      << hard_rail_first_failure_detail(accepted);
+
+  const auto rejected = build_fixed_plan_rectangular_hard_rail_network(
+      fixture, 1.0, &contacts, &torn);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            rejected.phaseFront.disposition());
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                InvalidFrontBoundaryAuthority,
+            rejected.phaseFront.rejection_reason());
+  const auto *failure = rejected.phaseFront.rejection();
+  ASSERT_NE(failure, nullptr);
+  std::ostringstream expected;
+  expected << "firstPredicate=orphan-hard-feature-edge;edge="
+           << orphan->first().index() << ',' << orphan->second().index();
+  EXPECT_EQ(expected.str(), failure->hardRailRouteDiagnostic);
+}
+
 TEST(SurfaceCellAuthorityContractCutover,
      ExactSharedBoundaryIntervalRejectsMissingOrTamperedIdentityWithoutFallback) {
   const auto fixture = build_rectangular_hard_rail_phase_front();
