@@ -1,3 +1,8 @@
+## 2026-10-29 — CB52 P6 E2 factory-site pins compiled (no runtime)
+
+- RA-170.8 exact P6 `9f538bc2be2c6b42de796ed87a83f35e5e881fcbfd160796fcbd1a8b48976c91`, test-only TQ `+16/−6`, source `7cf0857b4818186638ce77e4859adacbeebd288f`; [record](.agents/Directional/Architecture_M6_CP3_CB52_RP01_E2_Factory_Site_Pins_Code_Build_Record_20261029.md).
+- Eight GMP/GMPXX targets compiled without runtime ([run 40919618039](https://github.com/akashskypatel/Directional/actions/runs/40919618039), package `12918290481`, ZIP `89449f4f9c014c1d8c3235056c3dca2d2239ba136e09dd88e3e02710b253b5c1`). No tests or benchmarks; CP2 491/491 accepted, TB49 504/0 reviewed candidate, selector497 frozen, stable 66/17/49 debt1. Next TB50-EXEC.
+
 ## 2026-10-29 — CB51 P5 network-owner witness compiled (no runtime)
 
 - RA-170.7 exact P5 `a610f39b93970da7bd50a463427957d2b1e6eaa5455a4b0511d9770b55efd43c`, one test-only file `SurfaceCellsPhase10Tests.cpp` +40/−19, source `699837c68583f4039dc7971d3b4e0da57135d933`; [record](.agents/Directional/Architecture_M6_CP3_CB51_RP01_P1B_Network_Owner_Witness_Code_Build_Record_20261029.md).
