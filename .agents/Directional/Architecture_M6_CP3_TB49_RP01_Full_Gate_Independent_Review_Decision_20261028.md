@@ -23,6 +23,14 @@
 
 **Conditional next canonical turn, only after Review closeout:** `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` (Review track). Its work must independently define source-produced hard-rail P1-a/P1-b/A2a authority and network-dependent negative reachability (RA-162 C1), with explicit falsifiers before CB50; no direct CB50, test execution, selector promotion, RP-01 closure or CP3 milestone closure is authorized by the current partial Review.
 
+## Continued document and remote-authority audit (2026-10-29 UTC)
+
+- Independently re-fetched PR #8: still open, draft, unmerged. GitHub compare from frozen verified source `88dd13c7b3566e3c575faea824a1451041403b60` to the resumed entry beacon `b37f65d965cb784000848ed7e008714e14f1f84c` was ahead 8 / behind 0; only the review record, six other durable documentation paths, durable dispatcher request and root `STATUS` differed. No product, test, fixture, selector, benchmark or workflow source diff.
+- Re-fetched all seven published review-document paths from GitHub. Six local verified postimage blobs matched GitHub content Git-blob IDs exactly (CHANGELOG, TODO, handoff, ORIENTATION, ROADMAP, regression tracker). The review decision was separately re-fetched at its corrected remote blob `e07adda43f94ae7e3f1b90a341eedec6f573237c`; its separate remote correction is not present in the previous local patch mirror.
+- Reconstructed the current audited tree by overlaying the six remote-matching document postimages on the previously SHA-verified source snapshot and using the active root beacon. `document_drift_audit.py --root . --json` returned exit 0: **zero errors, one warning** (`ORIENTATION.md` 24,095 bytes versus its 24,000-byte heuristic). The same warning exists in the original frozen source snapshot and is not new drift. No authorization to trim its protected content is inferred.
+- Independently retrieved all three protected-document blobs at authentic approved rewrite-base ref `8b7299b43`. Their **five** protected `DURABLE/DO NOT DELETE` section headings are present in the corresponding current remote-matching postimages (handoff four, ORIENTATION one, tracker none). This is limited durable-heading preservation evidence, **not** a complete per-parent/full-DAG Git-history ledger scan.
+- **Still pending:** execute `review_check.py boundary` and the historically meaningful ledger check on an actual synced repository containing authentic Git ancestry, verify branch `git status -sb` after final push and adjudicate the known checker false-green limitations. Existing approved workflow requests provide snapshot, compile, artifact-only native test and Drive transport, not an authenticated full-DAG review-check command. Do not fabricate a synthetic checkout PASS or alter Review/runtime boundaries to force closure. Canonical turn remains unfinished.
+
 ## Review closeout
 
 | Duty | Answer |
@@ -35,7 +43,7 @@
 | New candidates/obligations recorded | No RED; pending authentic boundary/history check retained; tracker updated in the published seven-file review patch |
 | ORIENTATION currency line | Updated and pushed in the verified review documentation patch |
 | ORIENTATION §3 / §4 / §7 / §8 | §3 accepted accounting and §7 priority updated; §4 unchanged because no new fixture; §8 existing oracle-vacuity lesson referenced |
-| CHANGELOG | Awaiting remote documentation publication |
+| CHANGELOG | TB49 independent-review entry is published on the working branch and was verified against its remote Git blob |
 | ROADMAP | M6-CP3 remains active; current full-gate candidate summary updated and pushed |
 | Selector manifest | n/a: no selector accepted or created |
 | LESSONS | Existing lesson: producer-copy oracle vacuity (RA-168); no new pattern added |
