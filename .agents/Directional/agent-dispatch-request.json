@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb51-docs-closeout-retry1-20261029",
+  "request_id": "m6-cp3-cb51-docs-closeout-retry2-20261029",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb51-docs-closeout-retry1",
-  "file_id": "12aQs0Lnlxx7GYn7razkxVFReVP8Tvk2u",
-  "patch_sha256": "29257fa8022d54f07548ff8eb608de7344612146e53d9066a451506d617117c8",
+  "mailbox_key": "m6-cp3-cb51-docs-closeout-retry2",
+  "file_id": "1KXEhYGAJhi7ZAPJK1QjlBiuSSU2kNGto",
+  "patch_sha256": "7e8fd760dea1c754c444eec8279bfd46345a8020d9812ae0251c0439331fbbc4",
   "base_sha": "092db30d0dceeb1e54862fd71b9ea6d70f67d001",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB51 verified GMP build and advance handoff",
+  "commit_message": "docs(directional): finalize CB51 compile evidence and handoff to CB52",
   "retention_days": 14
 }
