@@ -1,3 +1,9 @@
+## 2026-10-29 — CB51 P5 network-owner witness compiled (no runtime)
+
+- RA-170.7 exact P5 `a610f39b93970da7bd50a463427957d2b1e6eaa5455a4b0511d9770b55efd43c`, one test-only file `SurfaceCellsPhase10Tests.cpp` +40/−19, source `699837c68583f4039dc7971d3b4e0da57135d933`; [record](.agents/Directional/Architecture_M6_CP3_CB51_RP01_P1B_Network_Owner_Witness_Code_Build_Record_20261029.md).
+- Eight GMP/GMPXX targets compiled without Directional runtime ([run 40912598472](https://github.com/akashskypatel/Directional/actions/runs/40912598472), package `12914112895`, ZIP `108458c737f980b8c6cf19810df151419213281e2573d92fac17e8d3895f41f5`); verified checksum manifest, `runtimeExecution=false`.
+- CP2 491/491 accepted; TB49 504/0 candidate; selector497 unpromoted, stable 66/17/49 debt1. Next CB52 P6, no successor work started.
+
 ## 2026-10-29 — CB50F P4 checked factory rail cover compiled (no runtime)
 
 - Exact RA-169.11 P4 SHA-256 `c8af43a28a7aa694d8cb2c43d461773061b34f2ba811649509d3def95127a426` applied with no hand edits; `SurfaceCellTracing.cpp` +13/−4, TQ tests +52/−0, nothing else. Semantic source `b8c07a6f24664e0de70026951c9ab3dd408d8f80`.

@@ -34,20 +34,20 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-29, after exact CB50F P4 source `b8c07a6f24664e0de70026951c9ab3dd408d8f80` and compile-only [CB50F](Architecture_M6_CP3_CB50F_RP01_C1_Factory_Rail_Cover_Code_Build_Record_20261029.md); no new runtime. TB49 504/0 remains independently reviewed candidate; CP2 491/491 accepted; 101/408 locally RED off-gate cases await TB50C census; selector497 unpromoted, stable 66/17/49 debt1, RP-01 open. |
+| Currency | 2026-10-29, after exact CB51 P5 test-only source `699837c68583f4039dc7971d3b4e0da57135d933` and compile-only [CB51](Architecture_M6_CP3_CB51_RP01_P1B_Network_Owner_Witness_Code_Build_Record_20261029.md); no new runtime. TB49 504/0 remains reviewed candidate; CP2 491/491 accepted; 101/408 locally RED off-gate cases await TB50C census; selector497 unpromoted, stable 66/17/49 debt1, RP-01 open. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted 2026-10-06 (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
-| Latest candidate or rejected evidence | CB50F exact P4 source `b8c07a6f24664e0de70026951c9ab3dd408d8f80` / [compile-only record](Architecture_M6_CP3_CB50F_RP01_C1_Factory_Rail_Cover_Code_Build_Record_20261029.md), no runtime; CB50 exact P3 source `88249ebbb27b997a6cbc7b3cf71bb57e4a77e53f`; TB49 **504 PASS / 0 RED** artifact-only ([report](Architecture_M6_CP3_TB49_RP01_Full_Gate_Test_Benchmark_Report_20261028.md), [run 40776332136](https://github.com/akashskypatel/Directional/actions/runs/40776332136), result 12857282498); CB49E compile-only `092b52eba881e3bafbff4fa263f84f96cf648838` ([record](Architecture_M6_CP3_CB49E_RP01_E2_Rail_Vertex_Adjacency_Code_Build_Record_20261028.md), run 40770409537, artifact 12852132570, 28/28 package members); CB49 compile-only `9c84ba9cc8e44acf556d17e2357b1e9458337cca` ([record](Architecture_M6_CP3_CB49_RP01_G3_A5_Periodic_Placement_Gauge_Code_Build_Record_20261028.md), run 40766433076, artifact 12850662095); TB48 **502/2** independently reviewed candidate, run `40731722985`, result `12836819707`; CB48 compile-only package **12834041300** / source `4c611941…` unpromoted; TB47 **500/4** valid expected-RED ([report](Architecture_M6_CP3_TB47_RP01_Full_Gate_Test_Benchmark_Report_20261027.md); CB47 source `08d41626e`, package `12732383172`, result `12734719880`). Selector497 frozen, unpromoted. |
+| Latest candidate or rejected evidence | CB51 exact P5 source `699837c68583f4039dc7971d3b4e0da57135d933` / [compile-only record](Architecture_M6_CP3_CB51_RP01_P1B_Network_Owner_Witness_Code_Build_Record_20261029.md), [run 40912598472](https://github.com/akashskypatel/Directional/actions/runs/40912598472), package `12914112895`, no runtime; CB50F exact P4 source `b8c07a6f24664e0de70026951c9ab3dd408d8f80` / [compile-only record](Architecture_M6_CP3_CB50F_RP01_C1_Factory_Rail_Cover_Code_Build_Record_20261029.md), no runtime; CB50 exact P3 source `88249ebbb27b997a6cbc7b3cf71bb57e4a77e53f`; TB49 **504 PASS / 0 RED** artifact-only ([report](Architecture_M6_CP3_TB49_RP01_Full_Gate_Test_Benchmark_Report_20261028.md), [run 40776332136](https://github.com/akashskypatel/Directional/actions/runs/40776332136), result 12857282498); CB49E compile-only `092b52eba881e3bafbff4fa263f84f96cf648838` ([record](Architecture_M6_CP3_CB49E_RP01_E2_Rail_Vertex_Adjacency_Code_Build_Record_20261028.md), run 40770409537, artifact 12852132570, 28/28 package members); CB49 compile-only `9c84ba9cc8e44acf556d17e2357b1e9458337cca` ([record](Architecture_M6_CP3_CB49_RP01_G3_A5_Periodic_Placement_Gauge_Code_Build_Record_20261028.md), run 40766433076, artifact 12850662095); TB48 **502/2** independently reviewed candidate, run `40731722985`, result `12836819707`; CB48 compile-only package **12834041300** / source `4c611941…` unpromoted; TB47 **500/4** valid expected-RED ([report](Architecture_M6_CP3_TB47_RP01_Full_Gate_Test_Benchmark_Report_20261027.md); CB47 source `08d41626e`, package `12732383172`, result `12734719880`). Selector497 frozen, unpromoted. |
 | Regression accounting and debt | Stable **66/17/49**, debt 1 ([tracker](Regression_Root_Cause_Tracker.md)); no new stable event. Off-gate REDs are unclassified census data (local macOS 101/408; CI pending via TB50C) — not yet counted as regressions or as platform. |
 | Active boundary | RP-01 open, RP-02 unreached. [TB50 manifest](Architecture_M6_CP3_TB50_Full_Gate_Case_Manifest.tsv) `6d5b788671487fa2…` (508; predict 508/0 after CB50–CB52); [TB50C census manifest](Architecture_M6_CP3_TB50C_Off_Gate_Census_Case_Manifest.tsv) `800e7f26d7ef8935…` (408 off-gate rows, observe only). Carried: O1, O2, O6–O12, O13, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002; 8219 and all off-gate REDs go to `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION`. |
 
-## Mandatory next turn — `M6-CP3-CB51-RP01-P1B-NETWORK-OWNER-WITNESS` (type CB) — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB52-RP01-E2-FACTORY-SITE-PINS` (type CB) — EXACT NEXT
 
-- **Authority:** [RA-170](Architecture_M6_CP3_TB49_REV_Reaudit_P1_O4_DEFNs_E2_Site_Pins_OffGate_Census_20261028.md).4 and .7, on CB50F semantic source `b8c07a6f24664e0de70026951c9ab3dd408d8f80`. Extract the RA-170.7 `~~~diff` block verbatim (+ trailing newline); SHA-256 must be `a610f39b93970da7bd50a463427957d2b1e6eaa5455a4b0511d9770b55efd43c`; `git apply` without hand edits.
-- **Scope:** test-only exact numstat `40 19 tests/SurfaceCellsPhase10Tests.cpp`. No production/fixture/selector changes.
-- **Evidence:** eight GMP/GMPXX targets, `runtimeExecution=false`, record ≤25 lines. Do not execute tests or benchmarks and do not combine with CB52.
-- **Outcome:** compile OK + exact numstat → `M6-CP3-CB52-RP01-E2-FACTORY-SITE-PINS` (P6), then TB50-EXEC and TB50C-EXEC as separate turns. Patch or compile failure → `M6-CP3-PLAN-RP01-C1-COVER-STOP`; orchestration failure → `M6-CP3-CB50A-RP01-ORCH` per RA-170.
-- **Frozen:** CP2 491/491 accepted, TB49 504/0 reviewed candidate; selector497 unpromoted, RP-01 open, stable 66/17/49, debt 1.
+- **Authority:** [RA-170.4/.8](Architecture_M6_CP3_TB49_REV_Reaudit_P1_O4_DEFNs_E2_Site_Pins_OffGate_Census_20261028.md) on CB51 source `699837c68583f4039dc7971d3b4e0da57135d933`. Extract the RA-170.8 `~~~diff` block verbatim (+ trailing newline), expected SHA-256 `9f538bc2be2c6b42de796ed87a83f35e5e881fcbfd160796fcbd1a8b48976c91`; apply without hand edits.
+- **Scope:** test-only `16 6 tests/SurfaceCellTransitionQuotientTests.cpp`. No production/fixture/selector changes.
+- **Evidence:** eight GMP/GMPXX targets, `runtimeExecution=false`; ≤25-line compile record. No tests or benchmarks.
+- **Outcome:** successful compile + exact numstat → `M6-CP3-TB50-RP01-FULL-GATE-EXEC` (separate turn); patch/compile failure → `M6-CP3-PLAN-RP01-C1-COVER-STOP`; orchestration failure → `M6-CP3-CB50A-RP01-ORCH`, per RA-170.
+- **Frozen:** CP2 491/491 accepted; TB49 504/0 reviewed candidate; selector497 unpromoted; RP-01 open, stable 66/17/49 and debt1.
 
 ## Turn Sequence
 
@@ -58,8 +58,8 @@ Canonical types: CB, TB-EXEC, TB-REV, DEFN, PLAN (`turn_type_from_turn`). **I** 
 | done | CB49 → CB49E → TB49-EXEC (504/0) → `M6-CP3-TB49-RP01-FULL-GATE-REV` (RA-169, re-derived RA-170.1); DEFNs C1, P1-a, P1-b, O4 | CB, TB / I; TB-REV, DEFN / R | RA-169/170 probes; P3–P6 round-trip exact. |
 | done | `M6-CP3-CB50-RP01-C1-INGRESS-ORPHAN-HARD-EDGE` | CB / I | Exact P3 (RA-169.10), source `88249ebbb27b`, eight GMP targets compile-only; no runtime. |
 | done | `M6-CP3-CB50F-RP01-C1-FACTORY-RAIL-COVER` | CB / I | Exact P4 on CB50; source `b8c07a6f24664e0de70026951c9ab3dd408d8f80`, eight GMP targets compile-only. |
-| 3 — next | `M6-CP3-CB51-RP01-P1B-NETWORK-OWNER-WITNESS` | CB / I | P5 (RA-170.7) on CB50F; test-only. |
-| 4 | `M6-CP3-CB52-RP01-E2-FACTORY-SITE-PINS` | CB / I | P6 (RA-170.8) on CB51; test-only. |
+| done | `M6-CP3-CB51-RP01-P1B-NETWORK-OWNER-WITNESS` | CB / I | P5 (RA-170.7) applied exactly, eight GMP targets compile-only; no runtime. |
+| 4 — next | `M6-CP3-CB52-RP01-E2-FACTORY-SITE-PINS` | CB / I | P6 (RA-170.8) on CB51; test-only. |
 | 5 | `M6-CP3-TB50-RP01-FULL-GATE-EXEC` | TB-EXEC / I | CB52 package; manifest `6d5b7886…` (508); predict 508/0. |
 | 6 | `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC` | TB-EXEC / I | Same package; manifest `800e7f26…` (408); observe, no prediction. |
 | 7 | `M6-CP3-TB50-RP01-FULL-GATE-REV` | TB-REV / R | Adjudicates TB50 and TB50C. |
@@ -71,7 +71,7 @@ Canonical types: CB, TB-EXEC, TB-REV, DEFN, PLAN (`turn_type_from_turn`). **I** 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB51-RP01-P1B-NETWORK-OWNER-WITNESS** (CB) — load [RA-170](Architecture_M6_CP3_TB49_REV_Reaudit_P1_O4_DEFNs_E2_Site_Pins_OffGate_Census_20261028.md) §§.4/.7; apply exact P5 on CB50F, compile eight GMP targets, no runtime.
+`load_next`: **M6-CP3-CB52-RP01-E2-FACTORY-SITE-PINS** (CB) — load [RA-170](Architecture_M6_CP3_TB49_REV_Reaudit_P1_O4_DEFNs_E2_Site_Pins_OffGate_Census_20261028.md) §§.4/.8; apply exact P6 on CB51, compile eight GMP targets, no runtime.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
