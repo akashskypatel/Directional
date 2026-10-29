@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb50f-docs-closeout-20261029-1544",
+  "request_id": "m6-cp3-cb51-p5-code-20261029-1626",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb50f-docs-closeout-20261029",
-  "file_id": "133u3jGrgvL5B8wPREfDyNWvbjN-ZeSDy",
-  "patch_sha256": "27ee0c751add7840ccde058d3c1d17be990bb4fecf53de2531243679796df9ff",
-  "base_sha": "b8c07a6f24664e0de70026951c9ab3dd408d8f80",
+  "mailbox_key": "m6-cp3-cb51-p5-apply",
+  "file_id": "1ykJe5EScGhrIqTgmNjaBzE6a6-ljiDHm",
+  "patch_sha256": "8f520837143abb86cd7338a6ab5b4b4444abc730a22908b4b2b2943f188e68cc",
+  "base_sha": "15cfb9de7a88c05f00a7c4823ef788bd2ae74101",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB50F GMP compile and handoff to CB51",
+  "commit_message": "test(directional): add P1-b network owner witness (CB51)",
   "retention_days": 14
 }
