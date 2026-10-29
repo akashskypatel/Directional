@@ -1,6 +1,6 @@
 # TB49 RP-01 — independent full-gate review (2026-10-28)
 
-**Canonical turn:** `M6-CP3-TB49-RP01-FULL-GATE-REV` (TB-REV). **Independent byte/evidence adjudication complete; final canonical closeout pending authentic Git-history boundary verification and durable publication.** No successor is yet entered. This is not M6-CP3 milestone closure or D0 production acceptance.
+**Canonical turn:** `M6-CP3-TB49-RP01-FULL-GATE-REV` (TB-REV). **Independent byte/evidence adjudication complete; final canonical closeout pending authentic Git-history boundary verification.** No successor is yet entered. This is not M6-CP3 milestone closure or D0 production acceptance.
 
 ## Independent authority and checks
 
@@ -19,7 +19,7 @@
 
 ## Remaining closeout and successor boundary
 
-`review_check.py boundary` was invoked on the verified source snapshot and exited **1** solely for missing authentic `.git` ancestry (rewrite baseline and three durable baseline blob checks). It is *not an authentic Git-history failure or pass*. The snapshot contains no `.git`. Independent GitHub compares prove no semantic source drift but do not replace the mandated full-DAG boundary/history checks. The checker has known historical false-green gaps (R38/R50/R51/R60/R61); do not use a synthetic Git baseline to manufacture acceptance. Verify against authentic branch history via an authorized workflow/local agent, then complete document-drift and final commit verification before marking this canonical Review COMPLETE. This unfinished verification is **not** an observed product regression.
+`review_check.py boundary` was invoked on the verified source snapshot and exited **1** solely for missing authentic `.git` ancestry (rewrite baseline and three durable baseline blob checks). It is *not an authentic Git-history failure or pass*. The snapshot contains no `.git`. Independent GitHub compares prove no semantic source drift but do not replace the mandated full-DAG boundary/history checks. The checker has known historical false-green gaps (R38/R50/R51/R60/R61); do not use a synthetic Git baseline to manufacture acceptance. Verify against authentic branch history via an authorized workflow/local agent, then complete the final lifecycle and authentic-history verification before marking this canonical Review COMPLETE. This unfinished verification is **not** an observed product regression.
 
 **Conditional next canonical turn, only after Review closeout:** `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE` (Review track). Its work must independently define source-produced hard-rail P1-a/P1-b/A2a authority and network-dependent negative reachability (RA-162 C1), with explicit falsifiers before CB50; no direct CB50, test execution, selector promotion, RP-01 closure or CP3 milestone closure is authorized by the current partial Review.
 
@@ -32,11 +32,11 @@
 | Non-vacuity checked | Odd-gauge source producer and two gauge-free endpoint equations; E2 R-split A3 transport and tamper negatives; remaining generality unclaimed |
 | Prior obligations discharged/carried | G3 selected positive and E2 R-adjacency witness discharged for TB49; O1/O2/O6–O12, G4-B002 and additional named obligations carried |
 | Stable accounting | 66 / 17 / 49, debt 1; CP2 491/491 accepted; CP3 frozen selector497 unpromoted |
-| New candidates/obligations recorded | No RED; pending authentic boundary/history check retained; tracker to be updated |
-| ORIENTATION currency line | Awaiting remote documentation publication |
-| ORIENTATION §3 / §4 / §7 / §8 | Awaiting remote documentation publication; §4 unchanged if no new fixture |
+| New candidates/obligations recorded | No RED; pending authentic boundary/history check retained; tracker updated in the published seven-file review patch |
+| ORIENTATION currency line | Updated and pushed in the verified review documentation patch |
+| ORIENTATION §3 / §4 / §7 / §8 | §3 accepted accounting and §7 priority updated; §4 unchanged because no new fixture; §8 existing oracle-vacuity lesson referenced |
 | CHANGELOG | Awaiting remote documentation publication |
-| ROADMAP | M6-CP3 remains active; update current-gate summary on publication |
+| ROADMAP | M6-CP3 remains active; current full-gate candidate summary updated and pushed |
 | Selector manifest | n/a: no selector accepted or created |
 | LESSONS | Existing lesson: producer-copy oracle vacuity (RA-168); no new pattern added |
 | Consolidation under CLEAN_UP_POLICY | Inspected: do not delete current report or RA-168 authority; no safe historic folding without a complete indexed retention census |
@@ -44,4 +44,4 @@
 | Turn boundary held | Read-only source and native-artifact validation; no product/test/selector/build changes or native executions |
 | review_check.py boundary | Exit 1 on history-free snapshot; authentic-history verification PENDING, not PASS |
 | `STATUS` lifecycle maintained | Entry/resume beacon published; final same-turn IN_PROGRESS pending closeout |
-| Pushed to origin, branch in sync | Pending durable document transport and remote verification; cannot claim sync |
+| Pushed to origin, branch in sync | Patch applied by the durable Drive dispatcher; seven exact intended paths confirmed by GitHub compare, applied commit d0174a69f94136a2592c632815cb264d4ce40816. An authentic `git status -sb` confirmation remains unperformed |
