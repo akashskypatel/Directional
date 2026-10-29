@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb50a-orch-20261029-v1",
+  "request_id": "m6-cp3-cb50a-orch-handoff-fix-20261029-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb50a-orch-20261029-v1",
-  "file_id": "1QhyADkCtqhpxGwOVxSE8QPsSQkyLqrN1",
-  "patch_sha256": "99c2d9db478162f06a06342915347623fcec8a743ab3471f0bb869eb4dcd1f52",
-  "base_sha": "fcc8fdac35679c98a0ffa1d96749a8003bf35614",
+  "mailbox_key": "m6-cp3-cb50a-handoff-fix-20261029-v1",
+  "file_id": "1nW411JtGjpfX9ymhy7ZVqFMNbY3a-vLg",
+  "patch_sha256": "d0841b56246de9f674522a6445593d05352f2c8fdb19f5120d3246241960139a",
+  "base_sha": "0e85071b2442339104b637c4a2e71188ca050ab8",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(directional): reconcile TB50 harness manifest site assertions",
+  "commit_message": "docs(directional): correct current TB50 manifest hash in handoff",
   "retention_days": 14
 }
