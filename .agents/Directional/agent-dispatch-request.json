@@ -1,12 +1,23 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb50c-closeout-drive-apply-20261029-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb50c-closeout-drive-apply-20261029-v1",
-  "file_id": "1zciVGx2vfSdmliuxucT6jRuIgD_evB79",
-  "patch_sha256": "87d42c5006ccce8dc613bc4ae086186faa12b5e85432dadda0e5ddb1679b8fb0",
-  "base_sha": "44a5acd838da5f3b4c308d973e51cb3c01254984",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close out CB50C harness orchestration",
-  "retention_days": 14
+  "request_id": "m6-cp3-tb50c-r2-census-20261029-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb50c-r2-census-20261029-v1",
+  "executor_sha": "4a8d27487a28e466d965a5e6e5856bf3c7468be4",
+  "semantic_source_sha": "7cf0857b4818186638ce77e4859adacbeebd288f",
+  "turn_id": "M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC-R2",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "600c6455203519e79736e501288e4777921390bf365a9d3ee5e0141aa49275f8",
+  "artifact_prefix": "m6-cp3-tb50c-r2-20261029",
+  "retention_days": 14,
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "12918290481",
+    "EXPECTED_SOURCE_SHA": "7cf0857b4818186638ce77e4859adacbeebd288f",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "89449f4f9c014c1d8c3235056c3dca2d2239ba136e09dd88e3e02710b253b5c1",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "6ae4eb5bf9552912fe068d9a9d3a90d76e2e27b9bd99896f83c216fd27fbc21f",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "c02a0be4b25d64eca2c10e5681cd8721a465a848a3d17044275370eac132553b",
+    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_CP3_TB50C_Off_Gate_Census_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "918239009ddee28ebc5c212ef3db0babf2b9f2b8a2755f4321242b7a1ea2ac86",
+    "EXPECTED_CASE_COUNT": "408"
+  }
 }
