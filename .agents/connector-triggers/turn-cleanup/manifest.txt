@@ -1,2 +1,0 @@
-# CB51 temporary source snapshot trigger; one-time cleanup
-.agents/connector-triggers/source-snapshot/cb51-p1b-20261029.txt
