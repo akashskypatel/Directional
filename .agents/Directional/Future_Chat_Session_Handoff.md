@@ -34,19 +34,26 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-29 **TB50-R2 artifact-only native full gate 508/508 PASS** ([report](Architecture_M6_CP3_TB50_RP01_Full_Gate_R2_Test_Benchmark_Report_20261029.md), [run 40941114716](https://github.com/akashskypatel/Directional/actions/runs/40941114716), result `12929917136` SHA-256 `663fa4e1…`, 1,022/1,022 digest verification); CB52 immutable package `12918290481`, source `7cf0857b4818186638ce77e4859adacbeebd288f`, corrected manifest `eef8855e27df9401…`. NEXT separate **TB50C** off-gate 408-case census; CP2 491/491 still accepted, TB49 504/0 candidate, selector497 unpromoted, stable 66/17/49 debt1, RP-01 open. |
+| Currency | 2026-10-29 **[RA-171](Architecture_M6_CP3_TB50_REV_Gate_Closeout_Census_Observe_Harness_20261029.md) = TB50-REV COMPLETE.** TB50-R2 508/0 independently verified; CB50–CB52 byte-identical to P3–P6. TB50C S5 ([run 40952631880](https://github.com/akashskypatel/Directional/actions/runs/40952631880), 0/408) was a Review census-freeze defect: parameterized names and GUARD semantics. P7 adds an `OBSERVE` census kind; manifest re-frozen `91823900…`. NEXT CB50C. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted 2026-10-06 (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
-| Latest candidate or rejected evidence | **TB50-R2 508/0 candidate** ([report](Architecture_M6_CP3_TB50_RP01_Full_Gate_R2_Test_Benchmark_Report_20261029.md), [run 40941114716](https://github.com/akashskypatel/Directional/actions/runs/40941114716), result `12929917136`, log `12930316247`, 508/508 per-case joins and 1,022/1,022 checksums). Frozen CB52 source `7cf0857b4818186638ce77e4859adacbeebd288f` / package `12918290481`; no recompilation. TB50 first attempt S5 0/508 was orchestration-only and was fixed by CB50A. Earlier TB49 504/0 reviewed candidate; TB48 502/2, TB47 500/4 prior candidates. No CP3 acceptance or selector497 promotion. |
-| Regression accounting and debt | Stable **66/17/49**, debt 1 ([tracker](Regression_Root_Cause_Tracker.md)); no new stable event. Off-gate REDs are unclassified census data (local macOS 101/408; CI pending via TB50C) — not yet counted as regressions or as platform. |
-| Active boundary | **TB50-R2 full gate native GREEN on corrected 508-case frozen manifest**, no semantic RED/selection/immutability violations; [report](Architecture_M6_CP3_TB50_RP01_Full_Gate_R2_Test_Benchmark_Report_20261029.md). **NEXT** independent, separate `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC` on same CB52 package `12918290481`, with frozen 408-case census manifest `Architecture_M6_CP3_TB50C_Off_Gate_Census_Case_Manifest.tsv` (`800e7f26…`); observe, do not predict. 101/408 local macOS off-gate failures remain unclassified; TB50-REV later adjudicates both. Carried O1/O2/O6–O13, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002, 8219. RP-01 open, RP-02 unreached. |
+| Latest candidate or rejected evidence | **TB50-R2 508/0 reviewed candidate** (RA-171.2; [report](Architecture_M6_CP3_TB50_RP01_Full_Gate_R2_Test_Benchmark_Report_20261029.md), [run 40941114716](https://github.com/akashskypatel/Directional/actions/runs/40941114716), result `12929917136`, log `12930316247`, 508/508 per-case joins and 1,022/1,022 checksums). Frozen CB52 source `7cf0857b4818186638ce77e4859adacbeebd288f` / package `12918290481`; no recompilation. TB50 first attempt S5 0/508 was orchestration-only and was fixed by CB50A. Earlier TB49 504/0 reviewed candidate; TB48 502/2, TB47 500/4 prior candidates. No CP3 acceptance or selector497 promotion. |
+| Regression accounting and debt | Stable **66/17/49**, debt 1 ([tracker](Regression_Root_Cause_Tracker.md)); no new stable event. Off-gate REDs are unclassified census data (local macOS 101/408; CI pending) — not counted as regressions or as platform. |
+| Active boundary | Selected gate closed (TB50-R2 508/0 reviewed). Census blocked only on harness contract: P7 (RA-171.7) → CB50C → TB50C-EXEC-R2 on the same CB52 package, manifest `91823900…`, observe only. Disposition DEFN then classifies every non-PASS row; TB51 gates every surviving test in the four binaries (RA-171.5). Carried O1/O2/O6–O13, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002, 8219. RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC` (type TB-EXEC) — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB50C-RP01-CENSUS-HARNESS-ORCH` (type CB) — EXACT NEXT
 
-- **Authority:** completed TB50-R2 [native 508/0 report](Architecture_M6_CP3_TB50_RP01_Full_Gate_R2_Test_Benchmark_Report_20261029.md) and RA-170 off-selector census freeze. Separate artifact-only **408-case off-gate census**; no source/test/harness/manifest modification or compilation.
-- **Inputs:** immutable CB52 source `7cf0857b4818186638ce77e4859adacbeebd288f`, package `12918290481` ZIP SHA-256 `89449f4f9c014c1d8c3235056c3dca2d2239ba136e09dd88e3e02710b253b5c1`, root manifest `6ae4eb5bf9552912fe068d9a9d3a90d76e2e27b9bd99896f83c216fd27fbc21f`, source archive `c02a0be4b25d64eca2c10e5681cd8721a465a848a3d17044275370eac132553b`. Frozen census `Architecture_M6_CP3_TB50C_Off_Gate_Census_Case_Manifest.tsv` SHA-256 `800e7f26d7ef8935…` (**verify complete digest against source**, 408 distinct cases). Use the authorized artifact-only dispatcher and the appropriate census harness under its frozen definition.
-- **Execution:** record each native result, first failure and log digest. Observe all off-gate positives and REDs without predicting or repairing their verdicts, or folding them into stable regression counts without classification. Do not run a full suite or recompile inside TB.
-- **Successor:** `M6-CP3-TB50-RP01-FULL-GATE-REV` independently adjudicates the selected full gate and off-gate census. CP2 491/491 accepted, selector497 unpromoted, stable 66/17/49 debt1 and RP-01 open until Review authority changes them.
+- **Authority:** [RA-171](Architecture_M6_CP3_TB50_REV_Gate_Closeout_Census_Observe_Harness_20261029.md).4/.6. Harness-only; no source, test, manifest or workflow edit, and no native execution.
+- **Action:** extract the RA-171.7 `~~~diff` block verbatim (with trailing newline). Its SHA-256 must be `9c30f6b622a43c0d487bb2d62097aad9105e8c5991e3ca9895e7c49f032004f0`; `git apply` it. Numstat must be exactly `71 8 .agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh`, and the harness SHA-256 must then be `600c6455203519e79736e501288e4777921390bf365a9d3ee5e0141aa49275f8`.
+- **Evidence:**
+  - `bash -n` passes.
+  - `--self-test` prints `SELF_TEST_PASS cases=21`.
+  - `--self-check` prints `SELF_CHECK_PASS cases=<n>` for TB49 (504), TB50 (508) and TB50C (408). Verify the TB50C manifest SHA `918239009ddee28ebc5c212ef3db0babf2b9f2b8a2755f4321242b7a1ea2ac86` first.
+  - Record ≤ 25 lines.
+- **Outcome:**
+  - All exact → `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC-R2`.
+  - Patch, SHA or self-test mismatch → `M6-CP3-PLAN-RP01-CENSUS-HARNESS-STOP` (PLAN, R).
+  - Orchestration failure → `M6-CP3-CB50CA-RP01-ORCH` → retry CB50C.
 
 ## Turn Sequence
 
@@ -62,17 +69,19 @@ Canonical types: CB, TB-EXEC, TB-REV, DEFN, PLAN (`turn_type_from_turn`). **I** 
 | done — S5 | `M6-CP3-TB50-RP01-FULL-GATE-EXEC` | TB-EXEC / I | Orchestration preflight rejected site pin row 505, 0/508 executed; [report](Architecture_M6_CP3_TB50_RP01_Full_Gate_Orchestration_Failure_Report_20261029.md). |
 | done | `M6-CP3-CB50A-RP01-ORCH` | CB / I | Repair site-pin harness/manifest contract under RA-170 S5; no native runtime. |
 | done | `M6-CP3-TB50-RP01-FULL-GATE-EXEC-R2` | TB-EXEC / I | [Run 40941114716](https://github.com/akashskypatel/Directional/actions/runs/40941114716) **508/0** exact native selected gate; [report](Architecture_M6_CP3_TB50_RP01_Full_Gate_R2_Test_Benchmark_Report_20261029.md); no CP3 acceptance. |
-| 6 — NEXT | `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC` | TB-EXEC / I | Same immutable package; manifest `800e7f26…` (408); observe, no prediction. |
-| 7 | `M6-CP3-TB50-RP01-FULL-GATE-REV` | TB-REV / R | Adjudicates TB50 and TB50C. |
-| 8 | `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` | DEFN / R | Classify each CI RED (stale oracle / regression / O2 legacy / retire); exact patches; freeze TB51 manifest. |
-| 9 | CB53… (one per disposition patch) → `M6-CP3-TB51-RP01-FULL-GATE-EXEC` → `M6-CP3-TB51-RP01-FULL-GATE-REV` | CB, TB / I, R | — |
-| 10 | `M6-CP3-PLAN-RP01-CLOSURE` | PLAN / R | O6 scope; O7–O12 owners; O9 junction path. |
+| done — S5 | `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC` | TB-EXEC / I | [Run 40952631880](https://github.com/akashskypatel/Directional/actions/runs/40952631880) preflight `row 360: invalid gtest name`, 0/408; [report](Architecture_M6_CP3_TB50C_Off_Gate_Census_Orchestration_Failure_Report_20261029.md). |
+| done | `M6-CP3-TB50-RP01-FULL-GATE-REV` | TB-REV / R | [RA-171](Architecture_M6_CP3_TB50_REV_Gate_Closeout_Census_Observe_Harness_20261029.md): TB50-R2 verified; census contract P7; manifest re-frozen `91823900…`. |
+| 1 — NEXT | `M6-CP3-CB50C-RP01-CENSUS-HARNESS-ORCH` | CB / I | Exact P7 `9c30f6b6…`; self-test 21 + three self-checks; no native run. |
+| 2 | `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC-R2` | TB-EXEC / I | CB52 package; harness `600c6455…`; manifest `91823900…` (408); observe, no prediction. |
+| 3 | `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` | DEFN / R | Classify each non-PASS row (stale oracle / regression / O2 legacy / platform / retire), grouped by first failure; exact patches; freeze TB51 manifest. |
+| 4 | CB53… (one per cause group) → `M6-CP3-TB51-RP01-FULL-GATE-EXEC` → `M6-CP3-TB51-RP01-FULL-GATE-REV` | CB, TB-EXEC / I; TB-REV / R | TB51 = 508 + (408 − retired) (RA-171.5). |
+| 5 | `M6-CP3-PLAN-RP01-CLOSURE` | PLAN / R | O6 scope; O7–O12 owners; O9 junction path. |
 | post-RP-01 | `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`, then `M6-DEFN-DIAG-RETAIN-A5-A7` | DEFN / R | RA-160.4 + RA-161 T2; O4 legacy-path reachability folds into O2. |
-| rule | RA-167.6 naming; one CB per patch; no R1…Rn loops | — | STOP S1–S3 → `M6-CP3-PLAN-RP01-C1-COVER-STOP`; S5 → `M6-CP3-CB50A-RP01-ORCH` → `…-EXEC-R2`. Superseded: `M6-CP3-DEFN-RP01-O4-O5-RAIL-PROVENANCE`, RA-169.8 placeholder CB51/CB52. |
+| rule | RA-167.6 naming; one CB per patch; no R1…Rn loops | — | CB50C stop → `M6-CP3-PLAN-RP01-CENSUS-HARNESS-STOP`; CB50C orchestration → `M6-CP3-CB50CA-RP01-ORCH`; TB50C-R2 without a complete ledger → the same PLAN stop. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC** (TB-EXEC) — frozen 408-case off-gate observe-only census (manifest `800e7f26…`) against CB52 GMP package `12918290481`; preceding TB50-R2 [508/0 native gate report](Architecture_M6_CP3_TB50_RP01_Full_Gate_R2_Test_Benchmark_Report_20261029.md). Do not claim off-gate verdicts before the native census; no compilation or source/test edits in TB. CP2 still accepted; TB50-REV owns adjudication.
+`load_next`: **M6-CP3-CB50C-RP01-CENSUS-HARNESS-ORCH** (CB): apply exact P7 from [RA-171](Architecture_M6_CP3_TB50_REV_Gate_Closeout_Census_Observe_Harness_20261029.md).7 to the harness and run its offline self-test and self-checks only. Then TB50C-EXEC-R2 (408 OBSERVE rows, CB52 package `12918290481`). CP2 still accepted; TB50-R2 508/0 is a reviewed candidate.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

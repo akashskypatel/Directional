@@ -1,19 +1,14 @@
-## CURRENT — RA-170: TB49 re-derived; P1-a/P1-b/O4 DEFNs closed; off-gate census (2026-10-28)
+## CURRENT — RA-171: TB50-REV closed; census observe contract (2026-10-29)
 
-- [x] [RA-170](.agents/Directional/Architecture_M6_CP3_TB49_REV_Reaudit_P1_O4_DEFNs_E2_Site_Pins_OffGate_Census_20261028.md).1: TB49 504/0 independently re-derived (artifact 12857282498 1014/1014, 504 manifest–ledger–log joins; package 12852132570 28/28, source `092b52eba881`). TB49-REV gap: cp3entry:2 factory negatives asserted code only; probed sites pinned by P6.
-- [x] RA-170.2: RA-169 C1 (P3+P4) has no off-gate regression — the same 101/408 off-gate tests fail at HEAD and patched, same first-failure lines.
-- [x] `M6-CP3-DEFN-RP01-P1A-TERMINAL-A3-PATH-WITNESS`: accepted-defensive (O9). Produced T-contact `{3,4}` produces; diagonals fail earlier (`InvalidBoundedDiskBoundaryPhase`). 8219 → O5 disposition.
-- [x] `M6-CP3-DEFN-RP01-P1B-NETWORK-OWNERSHIP-DIFFERENTIAL`: network-absent A4 rejects even unmodified rails, so TB44-REV's differential is unsatisfiable; P5 swaps two same-component rail IDs (`rail_interval_refs` Valid without network, `TypedAuthorityMismatch` with it; A4 rejects at a real cell). Falsifier: removing the rail/kind ownership check fails P5.
-- [x] `M6-CP3-DEFN-RP01-A4-PROVENANCE-GUARD-WITNESS`: the four `MissingTransitionProvenance` returns guard same-call derived maps — accepted-defensive; legacy-path divergence → O2.
-- [x] `M6-CP3-CB50-RP01-C1-INGRESS-ORPHAN-HARD-EDGE` (CB; RA-169.5): exact P3 `9874d126…`, numstat `37 0` SCT + `47 0` Phase10, source `88249ebbb27b`; eight GMP targets compile-only (record linked below), no runtime.
-- [x] `M6-CP3-CB50F-RP01-C1-FACTORY-RAIL-COVER` (CB; RA-169.6): P4 `c8af43a2…`, `13 4` SCT + `52 0` TQ, source `b8c07a6f24664e0de70026951c9ab3dd408d8f80`; GMP compile-only ([record](.agents/Directional/Architecture_M6_CP3_CB50F_RP01_C1_Factory_Rail_Cover_Code_Build_Record_20261029.md)), no runtime.
-- [x] `M6-CP3-CB51-RP01-P1B-NETWORK-OWNER-WITNESS` (CB; RA-170.7): P5 `a610f39b…`, `40 19` Phase10; test-only, GMP compile-only ([record](.agents/Directional/Architecture_M6_CP3_CB51_RP01_P1B_Network_Owner_Witness_Code_Build_Record_20261029.md)), no runtime.
-- [x] `M6-CP3-CB52-RP01-E2-FACTORY-SITE-PINS` (CB; RA-170.8): exact P6 `9f538bc2…`, `16 6` TQ, source `7cf0857b4818`, [compile record](.agents/Directional/Architecture_M6_CP3_CB52_RP01_E2_Factory_Site_Pins_Code_Build_Record_20261029.md); no runtime.
-- [x] `M6-CP3-TB50-RP01-FULL-GATE-EXEC` TB-EXEC: **S5 orchestration preflight failure, 0/508 executed**; CI [run 40934197625](https://github.com/akashskypatel/Directional/actions/runs/40934197625) exited 90 (`row 505: unexpected asserted-site pin`) before native tests. Exactly four incompatible frozen site cells, rows 505–508; [report](.agents/Directional/Architecture_M6_CP3_TB50_RP01_Full_Gate_Orchestration_Failure_Report_20261029.md). No semantic result, selector promotion, or stable regression increment.
-- [x] `M6-CP3-CB50A-RP01-ORCH` (CB, RA-170.5 S5): four typed native-rejection labels removed from the *GoogleTest failure-site pin* TSV field only; native test assertions retained, 508/508 schema self-check, no runtime. [Record](.agents/Directional/Architecture_M6_CP3_CB50A_RP01_Orchestration_Correction_Record_20261029.md); corrected manifest `eef8855e27df9401…`.
-- [x] `M6-CP3-TB50-RP01-FULL-GATE-EXEC-R2` (TB-EXEC): artifact-only 508-case native gate **508 PASS / 0 RED** on immutable CB52 package `12918290481`; [report](.agents/Directional/Architecture_M6_CP3_TB50_RP01_Full_Gate_R2_Test_Benchmark_Report_20261029.md), [run 40941114716](https://github.com/akashskypatel/Directional/actions/runs/40941114716), 1,022/1,022 result hashes, 508/508 log joins, full postflight. Selected gate green, CP3 unpromoted.
-- [ ] **NEXT** `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC` (manifest `800e7f26…`, 408 observe-only) on immutable CB52 package `12918290481` → independent `M6-CP3-TB50-RP01-FULL-GATE-REV`; selected TB50-R2 gate already native green, off-gate result NOT yet known.
-- [ ] `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` (Review): classify every CI off-gate RED (stale oracle / regression / O2 legacy / retire), exact patches, freeze TB51 manifest → CB53… → TB51-EXEC → TB51-REV → `M6-CP3-PLAN-RP01-CLOSURE`. Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`, then `M6-DEFN-DIAG-RETAIN-A5-A7`.
+- [x] **`M6-CP3-TB50-RP01-FULL-GATE-REV`** (TB-REV) COMPLETE per [RA-171](.agents/Directional/Architecture_M6_CP3_TB50_REV_Gate_Closeout_Census_Observe_Harness_20261029.md).1–.2.
+  - CB50–CB52 are byte-identical to P3–P6 applied to RA-170.
+  - TB50-R2 independently verified: artifact `12929917136`, 1022/1022 checksums, 508/508 manifest–ledger–log joins, source = HEAD.
+  - 508/0 is the reviewed candidate gate. CB50A's `-` site cells are sound, since the sites stay asserted in-test.
+- [x] `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC`: S5, 0/408 ([report](.agents/Directional/Architecture_M6_CP3_TB50C_Off_Gate_Census_Orchestration_Failure_Report_20261029.md)). RA-171.3 root cause is a Review freeze defect: the name regex rejected `Prefix/Suite.Test/Param`, and GUARD semantics would have failed on any census RED.
+- [x] RA-171.4: P7 adds the `OBSERVE` kind (PASS/RED/ABNORMAL as evidence; INVALID still fails; no mixing with gate rows), parameterized names, and `GetParam()` FAILED-line normalization. Probed: self-test 21/21, self-checks 504/508/408, real gtest logs. Census re-frozen `918239009ddee28e…` (kind/expect only).
+- [ ] **NEXT** `M6-CP3-CB50C-RP01-CENSUS-HARNESS-ORCH` (CB, I): exact P7 `9c30f6b6…`, numstat `71 8`, harness → `600c6455…`, offline self-test/self-checks only.
+- [ ] `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC-R2` (TB-EXEC, I): CB52 package `12918290481`, manifest `91823900…`, 408 OBSERVE. Report counts and non-PASS first failures; no classification.
+- [ ] `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` (DEFN, R): classify every non-PASS row by first-failure group; exact patches; freeze the TB51 manifest = 508 + (408 − retired). Then CB53… → TB51-EXEC → TB51-REV → `M6-CP3-PLAN-RP01-CLOSURE`. Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`, then `M6-DEFN-DIAG-RETAIN-A5-A7`.
 - [ ] Carried separately:
   - O1, O6 and O7 (oracle-tests target does not compile).
   - O8 (`lengthRatio=0.29`) and O9 (A4 junction path unwitnessed; owns P1-a's `missing-terminal-A3-path`).
@@ -25,14 +20,22 @@
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
-  - Done: CB49 → CB49E → TB49-EXEC (504/0) → TB49-REV (RA-169; re-derived RA-170) + DEFNs C1, P1-a, P1-b, O4.
-  - **CB50 (P3) COMPLETE** → **CB50F (P4) COMPLETE** → **CB51 (P5) COMPLETE** → **CB52 (P6) COMPLETE** → TB50-EXEC S5 (0/508 executed) → CB50A-ORCH COMPLETE → TB50-EXEC-R2 COMPLETE (508/0) → TB50C-EXEC NEXT (408 census) → TB50-REV → DEFN O5 disposition → CB53… → TB51-EXEC → TB51-REV → PLAN-RP01-CLOSURE.
+  - Done: CB50 (P3) → CB50F (P4) → CB51 (P5) → CB52 (P6) → TB50-EXEC S5 → CB50A-ORCH → TB50-EXEC-R2 (508/0) → TB50C-EXEC S5 → TB50-REV (RA-171).
+  - **CB50C-ORCH NEXT** (P7) → TB50C-EXEC-R2 (408 census) → DEFN off-selector disposition → CB53… → TB51-EXEC → TB51-REV → PLAN-RP01-CLOSURE.
   - One CB per exact patch; implementation agents get only exact patches and frozen manifests; probe-requiring DEFN/TB-REV turns stay on the Review track.
-  - **Naming (RA-167.6):** types per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier. STOP S1–S3 → `M6-CP3-PLAN-RP01-C1-COVER-STOP`; S5 → `M6-CP3-CB50A-RP01-ORCH` → `…-EXEC-R2`.
-  - Rules: RA-164.3 P1–P6, RA-165.2 F1/F2, RA-166.6 F6/F7, RA-168 oracle rule, RA-169 masking rule, RA-170 (factory negatives pin a site, not just a code; a gate pass says nothing about off-gate tests in the same binaries).
+  - **Naming (RA-167.6):** types per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier. CB50C stop → `M6-CP3-PLAN-RP01-CENSUS-HARNESS-STOP`; CB50C orchestration → `M6-CP3-CB50CA-RP01-ORCH`; TB50C-R2 without a complete ledger → the same PLAN stop.
+  - Rules: RA-164.3 P1–P6, RA-165.2 F1/F2, RA-166.6 F6/F7, RA-168 oracle rule, RA-169 masking rule, RA-170 (factory negatives pin a site; a gate pass says nothing about off-gate tests), RA-171 (Review self-checks every manifest against its harness before freezing; census rows are OBSERVE, never GUARD).
 - Frozen:
   - Stable 66/17/49, debt 1; CP2 491/491 accepted.
-  - TB49 504/0 reviewed candidate; selector497 frozen; RP-01 open, RP-02 unreached; Gate C suspended.
+  - TB50-R2 508/0 reviewed candidate; selector497 frozen; RP-01 open, RP-02 unreached; Gate C suspended.
+
+---
+
+## HISTORY — RA-170; CB50–CB52; TB50 S5; CB50A; TB50-R2 (2026-10-28/29)
+
+- [x] [RA-170](.agents/Directional/Architecture_M6_CP3_TB49_REV_Reaudit_P1_O4_DEFNs_E2_Site_Pins_OffGate_Census_20261028.md): TB49 504/0 re-derived. P1-a accepted-defensive (O9); P1-b re-specified as P5; O4 accepted-defensive (→ O2); P6 factory site pins. C1 adds no off-gate regression (the same 101/408 local REDs at HEAD and patched).
+- [x] CB50 (P3), CB50F (P4), CB51 (P5) and CB52 (P6) applied exactly; eight GMP targets compile-only ([CB50F](.agents/Directional/Architecture_M6_CP3_CB50F_RP01_C1_Factory_Rail_Cover_Code_Build_Record_20261029.md), [CB51](.agents/Directional/Architecture_M6_CP3_CB51_RP01_P1B_Network_Owner_Witness_Code_Build_Record_20261029.md), [CB52](.agents/Directional/Architecture_M6_CP3_CB52_RP01_E2_Factory_Site_Pins_Code_Build_Record_20261029.md)).
+- [x] TB50-EXEC S5, 0/508 (site-pin schema; [report](.agents/Directional/Architecture_M6_CP3_TB50_RP01_Full_Gate_Orchestration_Failure_Report_20261029.md)) → CB50A-ORCH ([record](.agents/Directional/Architecture_M6_CP3_CB50A_RP01_Orchestration_Correction_Record_20261029.md), manifest `eef8855e…`) → TB50-EXEC-R2 **508/0** ([report](.agents/Directional/Architecture_M6_CP3_TB50_RP01_Full_Gate_R2_Test_Benchmark_Report_20261029.md), run 40941114716).
 
 ---
 

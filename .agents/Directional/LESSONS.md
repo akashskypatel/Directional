@@ -379,5 +379,9 @@ This document records **reusable failure-derived engineering lessons**, not an e
   local inspections, structured summaries over repeated log greps, and an explicit bounded retry only
   for a diagnosed orchestration failure. Do not replay unchanged deterministic failures, perform broad
   searches to justify a specific known action, or optimize call count at the expense of exactness.
+- **A frozen manifest is code for its harness.** Before freezing, run the harness's own schema
+  check on it, and give observation runs (censuses) a kind whose REDs are evidence rather than
+  control failures. RA-169/170 froze site text and parameterized names the harness rejected, and
+  GUARD rows that would fail on any census RED; each cost a zero-execution CI turn (RA-171).
 - **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
   still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).

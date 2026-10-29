@@ -1,3 +1,9 @@
+## RA-171 — census observe contract; RP-01 coverage target (2026-10-29)
+
+- **RA-171.4 `OBSERVE`:** a census manifest is all-`OBSERVE` (`expect=OBSERVE`, site `-`) and never mixes with gate kinds. PASS, RED and ABNORMAL (the selected test ran once, unskipped, without a terminal verdict) are evidence; INVALID selection still fails the run. Value-parameterized names `Prefix/Suite.Test/Param` are valid in every manifest kind.
+- **RA-171.5:** TB51 gates every test in the four gate binaries that the disposition DEFN does not retire with a stated reason.
+- **Manifest rule:** the Review runs the harness `--self-check` on every manifest (and `--self-test` on any harness patch) before freezing it.
+
 ## RA-170 — P1-a/P1-b/O4 dispositions; factory site pins; off-gate census (2026-10-28)
 
 - **RA-170.3 P1-a:** `missing-terminal-A3-path` is accepted-defensive under C1 (no produced input reaches it); owner O9. **O4:** the `MissingTransitionProvenance` returns are same-call consistency guards, accepted-defensive; no production fault-injection seams for witnesses.

@@ -1,3 +1,8 @@
+## 2026-10-29 — RA-171 TB50-REV: TB50-R2 verified; census observe contract (P7)
+
+- Completed `M6-CP3-TB50-RP01-FULL-GATE-REV` ([RA-171](.agents/Directional/Architecture_M6_CP3_TB50_REV_Gate_Closeout_Census_Observe_Harness_20261029.md)). CB50–CB52 are byte-identical to P3–P6. TB50-R2 508/0 was independently re-derived (1022/1022 checksums, 508/508 joins, source = HEAD) and is now the reviewed candidate gate; no CP3 acceptance.
+- TB50C S5 (run 40952631880, 0/408) is a Review census-freeze defect: the harness rejected parameterized names, and GUARD semantics would fail on any census RED. Authorized exact harness patch P7 (`9c30f6b6…`, `71 8`), which adds the `OBSERVE` kind, an ABNORMAL verdict and `GetParam()` FAILED-line normalization. Re-froze the census manifest `918239009ddee28e…` (kind/expect only). Next: `M6-CP3-CB50C-RP01-CENSUS-HARNESS-ORCH`.
+
 ## 2026-10-29 — TB50-R2 corrected immutable full gate native 508/0 (candidate)
 
 - Completed `M6-CP3-TB50-RP01-FULL-GATE-EXEC-R2` using CB52 GMP source `7cf0857b4818186638ce77e4859adacbeebd288f`, package `12918290481`, corrected frozen 508-case manifest `eef8855e27df9401…`. [Report](.agents/Directional/Architecture_M6_CP3_TB50_RP01_Full_Gate_R2_Test_Benchmark_Report_20261029.md), [run 40941114716](https://github.com/akashskypatel/Directional/actions/runs/40941114716), result `12929917136`, log `12930316247`.
