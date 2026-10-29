@@ -1,3 +1,8 @@
+## 2026-10-29 — TB50 orchestration preflight S5 (0/508 executed)
+
+- Frozen 508-case harness/manifest mismatch: first failure `ValueError: row 505: unexpected asserted-site pin`, CI [run 40934197625](https://github.com/akashskypatel/Directional/actions/runs/40934197625); four invalid site cells at rows 505–508. [Report](.agents/Directional/Architecture_M6_CP3_TB50_RP01_Full_Gate_Orchestration_Failure_Report_20261029.md).
+- No native Directional execution, no compilation or source/test/manifest mutation, no semantic regression inference. CB52 package 28/28 intact. Stable 66/17/49 debt1, CP2 491/491 accepted, TB49 504/0 candidate. RA-170 S5 authorized successor `M6-CP3-CB50A-RP01-ORCH`, then TB50-EXEC-R2.
+
 ## 2026-10-29 — CB52 P6 E2 factory-site pins compiled (no runtime)
 
 - RA-170.8 exact P6 `9f538bc2be2c6b42de796ed87a83f35e5e881fcbfd160796fcbd1a8b48976c91`, test-only TQ `+16/−6`, source `7cf0857b4818186638ce77e4859adacbeebd288f`; [record](.agents/Directional/Architecture_M6_CP3_CB52_RP01_E2_Factory_Site_Pins_Code_Build_Record_20261029.md).
