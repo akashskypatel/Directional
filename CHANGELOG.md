@@ -1,3 +1,8 @@
+## 2026-10-29 — CB50A strict TB50 harness/manifest site-pinning correction (no native execution)
+
+- Reclassified four PASS-case `asserted_site` values (rows 505–508) as *native in-test rejection reasons*, not registered GoogleTest first-failure locations; reset only those manifest fields to `-` while preserving the four independent native assertions and all registered source-locus pins. Strict 508-row harness self-check and 12/12 harness-only self-test PASS; no native runtime or compilation. [Record](.agents/Directional/Architecture_M6_CP3_CB50A_RP01_Orchestration_Correction_Record_20261029.md).
+- Frozen corrected manifest SHA-256 `eef8855e27df9401545a62afab7aea6c9a882bb4a15c58545f2cb49d62fc7caa`; unchanged harness `142321061c57d130a9c73548ce93f52147ebeaeb4c45d3d1c48830e72e2ef93d`. CB52 GMP package `12918290481` remains candidate. Separate successor `M6-CP3-TB50-RP01-FULL-GATE-EXEC-R2` required before any claim of 508/0 or promotion; stable 66/17/49 debt1, CP2 491/491 accepted.
+
 ## 2026-10-29 — TB50 orchestration preflight S5 (0/508 executed)
 
 - Frozen 508-case harness/manifest mismatch: first failure `ValueError: row 505: unexpected asserted-site pin`, CI [run 40934197625](https://github.com/akashskypatel/Directional/actions/runs/40934197625); four invalid site cells at rows 505–508. [Report](.agents/Directional/Architecture_M6_CP3_TB50_RP01_Full_Gate_Orchestration_Failure_Report_20261029.md).
