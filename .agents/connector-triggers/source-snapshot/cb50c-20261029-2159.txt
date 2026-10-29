@@ -1,1 +1,0 @@
-CB50C exact source snapshot for harness-only RA-171 P7.
