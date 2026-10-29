@@ -2016,7 +2016,8 @@ construct_phase_front_product(PhaseFrontDraft draft) {
 void expect_phase_front_product_error(
     const directional::geometry::SurfacePhaseFrontProduct::ConstructionResult
         &construction,
-    const directional::geometry::SurfacePhaseFrontProductErrorCode expected) {
+    const directional::geometry::SurfacePhaseFrontProductErrorCode expected,
+    const std::optional<std::string> &expectedSite = std::nullopt) {
   const auto *error =
       std::get_if<directional::geometry::SurfacePhaseFrontProductError>(
           &construction);
@@ -2024,6 +2025,10 @@ void expect_phase_front_product_error(
   if (error != nullptr) {
     EXPECT_EQ(expected, error->code)
         << describe_phase_front_product_error(*error);
+    if (expectedSite.has_value()) {
+      EXPECT_EQ(*expectedSite, error->sourceAuthoritySite)
+          << describe_phase_front_product_error(*error);
+    }
   }
 }
 
@@ -3455,17 +3460,20 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   expect_phase_front_product_error(
       checkedFactory(front.hardRailFieldTransitions(), tamperedCertificates,
                      &sourceAtlas),
-      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
+      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority,
+      "endpoint-carrier;certificate=5;rail=2;endpoint=0;kind=R");
   expect_phase_front_product_error(
       checkedFactory(front.hardRailFieldTransitions(),
                      front.hardRailRouteCertificates(), nullptr),
-      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
+      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority,
+      "atlas-binding");
   ASSERT_TRUE(permutedFixture.fieldTransportAtlas.has_value());
   expect_phase_front_product_error(
       checkedFactory(front.hardRailFieldTransitions(),
                      front.hardRailRouteCertificates(),
                      &*permutedFixture.fieldTransportAtlas),
-      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
+      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority,
+      "atlas-binding");
   auto tamperedCarriers = front.hardRailFieldTransitions();
   ASSERT_FALSE(tamperedCarriers.empty());
   tamperedCarriers.front().firstToSecond = compose(
@@ -3474,7 +3482,8 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   expect_phase_front_product_error(
       checkedFactory(tamperedCarriers, front.hardRailRouteCertificates(),
                      &sourceAtlas),
-      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
+      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority,
+      "rail-transition-a3");
 
   // The same physical source topology must retain exact owner HardRail chi.
   // Canonicalize each directed transition by its typed source-face topology
@@ -3706,7 +3715,8 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   // witness instead of bypassing this factory gate.
   expect_phase_front_product_error(
       construct_phase_front_product(std::move(tampered)),
-      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
+      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority,
+      "rail-transition-a3");
 
 }
 
