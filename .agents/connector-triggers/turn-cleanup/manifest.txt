@@ -1,0 +1,2 @@
+# CB50C temporary source-snapshot trigger; durable dispatcher and mailbox are retained.
+.agents/connector-triggers/source-snapshot/cb50c-20261029-2159.txt
