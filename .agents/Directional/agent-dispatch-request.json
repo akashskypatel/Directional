@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb50f-p4-20261029-1536",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb50f-p4-20261029",
-  "file_id": "1jtWtuYi3-_fTxhGi-lBDq_gU0to5nBAK",
-  "patch_sha256": "ec9ea9119bb781b9ac80063060fa3fa2fe2266a0b95348872584d7beaaae5904",
-  "base_sha": "8c6a94cb908f99a45a6b06928dabce409edc6a78",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): require complete hard rail cover at checked phase-front factory",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb50f-compile-20261029-1538",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb50f-compile-20261029",
+  "source_sha": "b8c07a6f24664e0de70026951c9ab3dd408d8f80",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb50f-gmp-compile"
 }
