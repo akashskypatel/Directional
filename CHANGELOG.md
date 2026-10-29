@@ -1,3 +1,8 @@
+## 2026-10-29 — CB50C exact P7 census harness correction (no native runtime)
+
+- Applied RA-171.7 exact patch P7 (`9c30f6b6…`, +71/−8), new harness SHA-256 `600c6455203519e79736e501288e4777921390bf365a9d3ee5e0141aa49275f8` ([commit](https://github.com/akashskypatel/Directional/commit/9355721b67398a2e874f77eecfd61477d8bf9a76), [run 40962940548](https://github.com/akashskypatel/Directional/actions/runs/40962940548), [record](.agents/Directional/Architecture_M6_CP3_CB50C_RP01_Census_Harness_Orchestration_Record_20261029.md)). Shell syntax, 21/21 harness self-test and TB49/TB50/TB50C 504/508/408 manifest self-checks passed; unchanged frozen 408 OBSERVE manifest `91823900…`.
+- Patch application verified and staged transport retired; no native tests, benchmarks, rebuild, selector promotion, or CP3 acceptance. Next `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC-R2` using unchanged CB52 package `12918290481`; stable 66/17/49 debt1, CP2 491/491 accepted.
+
 ## 2026-10-29 — RA-171 TB50-REV: TB50-R2 verified; census observe contract (P7)
 
 - Completed `M6-CP3-TB50-RP01-FULL-GATE-REV` ([RA-171](.agents/Directional/Architecture_M6_CP3_TB50_REV_Gate_Closeout_Census_Observe_Harness_20261029.md)). CB50–CB52 are byte-identical to P3–P6. TB50-R2 508/0 was independently re-derived (1022/1022 checksums, 508/508 joins, source = HEAD) and is now the reviewed candidate gate; no CP3 acceptance.
