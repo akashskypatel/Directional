@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb49-review-docs-20261028-v2",
+  "request_id": "m6-cp3-cb50-p3-apply-20261029-1427",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb49-review-docs-20261028-v2",
-  "file_id": "1ZgLBokbpETvAWYTnXv8cUM8uNVvp8Zcw",
-  "patch_sha256": "9b487887fb80f4e9809bb478fda96a846918802f6dd947751d656bb80d35a988",
-  "base_sha": "88dd13c7b3566e3c575faea824a1451041403b60",
+  "mailbox_key": "m6-cp3-cb50-p3-apply-20261029",
+  "file_id": "1l_TRIfqb9YWoe27hUdUYJZdSCgKzJL4M",
+  "patch_sha256": "3a9e2a28589ec24607ec06b5e0f29b93002d924a1bc586ad39689c86a67dc60f",
+  "base_sha": "8de6391b71a4821fb9e92110d8311c14dbf85ea0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): preserve TB49 full-gate independent review evidence",
+  "commit_message": "fix(surface-cells): guard orphan hard edges at rail ingress",
   "retention_days": 14
 }
