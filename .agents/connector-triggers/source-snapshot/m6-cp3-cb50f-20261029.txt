@@ -1,0 +1,3 @@
+Purpose: exact source snapshot for M6-CP3-CB50F-RP01-C1-FACTORY-RAIL-COVER
+Entry beacon commit: 739083036bfc3947d8d9d2f6782415bd9c38ae4d
+Attempt: 1
