@@ -1,3 +1,9 @@
+## 2026-10-29 — CB50 P3 hard-edge ingress guard (compile-only)
+
+- Exact RA-169.10 P3 SHA-256 `9874d1269b052aa975b4a42bf085ea48acfba1773246c973b05f76d492a1c1fb` applied without hand edits. Diff: `src/geometry/SurfaceCellTracing.cpp` +37/−0; `tests/SurfaceCellsPhase10Tests.cpp` +47/−0, nothing else. Semantic commit `88249ebbb27b997a6cbc7b3cf71bb57e4a77e53f`.
+- Eight GMP/GMPXX targets compile-only; no Directional runtime, tests or benchmark execution. Evidence: [CB50 record](.agents/Directional/Architecture_M6_CP3_CB50_RP01_C1_Ingress_Orphan_Hard_Edge_Code_Build_Record_20261029.md).
+- TB49 504/0 remains a reviewed candidate, CP2 491/491 remains accepted; selector497 unpromoted, stable 66/17/49 and debt1 unchanged. Next: CB50F P4, not executed in this turn.
+
 ## 2026-10-28 — TB49 independent selected-gate evidence verified (canonical Review closeout pending)
 
 - [Review evidence](.agents/Directional/Architecture_M6_CP3_TB49_RP01_Full_Gate_Independent_Review_Decision_20261028.md): 504/504 distinct native PASS and exact log/ledger joins; result 1,014/1,014 checksum entries, CB49E package 28/28; accepted 491 prefix unchanged. No native runtime, build, test source or selector mutation by Review.
