@@ -31,13 +31,16 @@ import shutil
 import subprocess
 import sys
 import tarfile
+import tempfile
 
 MODE, MANIFEST_ARG, COUNT_ARG = sys.argv[1:]
 HEADER = ['row', 'kind', 'identity', 'test', 'binary', 'expect', 'asserted_site']
-KINDS = {'NEGATIVE', 'POSITIVE', 'GUARD', 'RED'}
+KINDS = {'NEGATIVE', 'POSITIVE', 'GUARD', 'RED', 'OBSERVE'}
 HEX64 = re.compile(r'[0-9a-f]{64}\Z')
 HEX40 = re.compile(r'[0-9a-f]{40}\Z')
-TEST = re.compile(r'[A-Za-z_][A-Za-z0-9_]*\.[A-Za-z_][A-Za-z0-9_]*\Z')
+# Plain Suite.Test, or value-parameterized Prefix/Suite.Test/Param.
+NAME = r'[A-Za-z_][A-Za-z0-9_]*'
+TEST = re.compile(rf'(?:{NAME}\.{NAME}|{NAME}/{NAME}\.{NAME}/[A-Za-z0-9_]+)\Z')
 BIN = re.compile(r'[A-Za-z0-9_-]+\Z')
 PIN = re.compile(r'([A-Za-z_][A-Za-z0-9_]*\.cpp):([1-9][0-9]*)\|([^\r\n|]+)\Z')
 
@@ -71,7 +74,7 @@ def read_cases(path, count):
         require(bool(identity.strip()) and identity == identity.strip(), f'row {index}: invalid identity')
         require(bool(TEST.fullmatch(test)), f'row {index}: invalid gtest name')
         require(bool(BIN.fullmatch(binary)) and binary not in {'.', '..'}, f'row {index}: invalid binary')
-        require(expect == ('RED' if kind == 'RED' else 'PASS'), f'row {index}: invalid expectation')
+        require(expect == (kind if kind in {'RED', 'OBSERVE'} else 'PASS'), f'row {index}: invalid expectation')
         require(bool(site) and ('\n' not in site and '\r' not in site), f'row {index}: invalid site')
         if kind == 'RED' or (kind == 'POSITIVE' and identity != 'selector:174' and site != '-'):
             require(PIN.fullmatch(site) is not None, f'row {index}: malformed or missing asserted-site pin')
@@ -86,6 +89,8 @@ def read_cases(path, count):
         require(test not in tests, f'row {index}: duplicate test {test}')
         identities.add(identity)
         tests.add(test)
+    # A census observes; it must never dilute a gate's PASS/RED controls.
+    require(len({case[1] == 'OBSERVE' for case in cases}) == 1, 'OBSERVE rows mixed with gate rows')
     return cases
 
 # Preserve all completed execution evidence even when a later gate fails.
@@ -145,6 +150,8 @@ def matches_registered_first_failure(text, registered):
 def control_failure(kind, identity, verdict, data, site):
     if verdict == 'INVALID':
         return 'invalid-execution'
+    if kind == 'OBSERVE':
+        return None  # PASS, RED and ABNORMAL are all census evidence.
     if kind == 'RED':
         if verdict == 'PASS':
             return None  # Unexpected improvement is reported, not hidden.
@@ -161,14 +168,18 @@ def control_failure(kind, identity, verdict, data, site):
         return None  # Keep verdict RED and raw evidence unchanged.
     return 'unexpected-control-failure'
 
-def classify_case(text, test, code):
+def classify_case(text, test, code, observe=False):
     run_names = re.findall(r'(?m)^\[ RUN      \] ([^\r\n]+)', text)
     ok_names = re.findall(r'(?m)^\[       OK \] ([^\r\n]+)', text)
     skipped = len(re.findall(r'(?m)^\[  SKIPPED \] ', text))
     failed_lines = re.findall(r'(?m)^\[  FAILED  \] ([^\r\n]+)', text)
     # Only exact, unadorned per-test lines are terminal verdicts; ignore
     # GoogleTest's summary counts and decorated per-test timing lines.
-    terminal_tests = [value for value in failed_lines if TEST.fullmatch(value)]
+    # Value-parameterized failures append ", where GetParam() = <value>".
+    terminal_tests = [name for name in (value.split(', where GetParam() = ', 1)[0]
+                                        for value in failed_lines
+                                        if not re.search(r' \([0-9]+ ms\)\Z', value))
+                      if TEST.fullmatch(name)]
     run = len(run_names)
     passed = len(ok_names)
     if (code == 0 and run_names == [test] and passed == 1 and
@@ -178,6 +189,10 @@ def classify_case(text, test, code):
     elif (code == 1 and run_names == [test] and not ok_names and
           skipped == 0 and terminal_tests == [test]):
         verdict = 'RED'
+    elif observe and run_names == [test] and skipped == 0:
+        # A census keeps crashes, timeouts and verdict-less exits of the
+        # selected test as evidence; selection failures stay INVALID.
+        verdict = 'ABNORMAL'
     else:
         verdict = 'INVALID'
     return verdict, run, passed, skipped
@@ -208,6 +223,8 @@ def self_test():
          1, 'RED', 'code=17;sourceAuthoritySite=valid'),
         ('no-typed', run + header + 'assertion failed without typed data\n' + fail,
          1, 'RED', 'reason-not-observed'),
+        ('red-timed', run + header + '[  FAILED  ] Suite.Case (0 ms)\n'
+         '[  FAILED  ] 1 test, listed below:\n' + fail, 1, 'RED', 'reason-not-observed'),
     ]
     for name, data, code, expected_verdict, expected_reason in examples:
         verdict, _, _, _ = classify_case(data, test, code)
@@ -216,7 +233,52 @@ def self_test():
         require(reason == expected_reason, f'{name}: reason {reason}, expected {expected_reason}')
     require('site=early' not in failure_block(examples[10][1]), 'failure block leaks preamble')
     require(first_failure(examples[10][1]) == 'file.cpp:12: Failure', 'first failure leaks preamble')
-    print(f'SELF_TEST_PASS cases={len(examples)}')
+
+    param = 'P/Suite.Case/Param'
+    where = ', where GetParam() = 16-byte object <BE-06 8A-02>'
+    prun = f'[ RUN      ] {param}\n'
+    ptimed = f'[  FAILED  ] {param}{where} (0 ms)\n'
+    param_examples = [
+        ('param-pass', prun + f'[       OK ] {param} (0 ms)\n', 0, 'PASS'),
+        ('param-red', prun + header + ptimed + '[  FAILED  ] 1 test, listed below:\n' +
+         f'[  FAILED  ] {param}{where}\n', 1, 'RED'),
+        ('param-timed-only', prun + header + ptimed, 1, 'INVALID'),
+    ]
+    for name, data, code, expected_verdict in param_examples:
+        verdict, _, _, _ = classify_case(data, param, code)
+        require(verdict == expected_verdict, f'{name}: verdict {verdict}, expected {expected_verdict}')
+    for name in ('Suite.Case', param):
+        require(TEST.fullmatch(name) is not None, f'valid name rejected: {name}')
+    for name in ('P/Suite.Case', 'Suite.Case/Param', 'A/P/Suite.Case/Param', 'Suite.*',
+                 'Suite.Case:Other', 'P/Suite.Case/Pa-ram'):
+        require(TEST.fullmatch(name) is None, f'invalid name accepted: {name}')
+
+    observed = [('observe-red', examples[1], 'RED'), ('observe-crash', examples[2], 'ABNORMAL'),
+                ('observe-timeout', examples[3], 'ABNORMAL'), ('observe-skip', examples[4], 'INVALID'),
+                ('observe-zero-run', examples[5], 'INVALID')]
+    for name, (_, data, code, _, _), expected_verdict in observed:
+        verdict, _, _, _ = classify_case(data, test, code, observe=True)
+        require(verdict == expected_verdict, f'{name}: verdict {verdict}, expected {expected_verdict}')
+        expected_violation = 'invalid-execution' if verdict == 'INVALID' else None
+        require(control_failure('OBSERVE', 'census', verdict, data, '-') == expected_violation,
+                f'{name}: wrong census control result')
+    require(control_failure('GUARD', 'gate', 'RED', examples[1][1], '-') ==
+            'unexpected-control-failure', 'gate RED no longer fails its control')
+
+    with tempfile.TemporaryDirectory() as scratch:
+        path = Path(scratch) / 'cases.tsv'
+        rows = [HEADER, ['1', 'OBSERVE', 'census:1', param, 'bin', 'OBSERVE', '-'],
+                ['2', 'GUARD', 'gate:2', test, 'bin', 'PASS', '-']]
+        path.write_text(''.join('\t'.join(row) + '\n' for row in rows))
+        try:
+            read_cases(path, 2)
+        except ValueError as error:
+            require('mixed' in str(error), f'mixed manifest: unexpected error {error}')
+        else:
+            raise ValueError('mixed OBSERVE/gate manifest accepted')
+        path.write_text(''.join('\t'.join(row) + '\n' for row in rows[:2]))
+        require(len(read_cases(path, 1)) == 1, 'OBSERVE-only manifest rejected')
+    print(f'SELF_TEST_PASS cases={len(examples) + len(param_examples) + len(observed)}')
 
 if MODE == 'self-test':
     try:
@@ -239,7 +301,7 @@ OUT = Path(str(ROOT) + '-result')
 (OUT / 'raw').mkdir(parents=True, exist_ok=True)
 (OUT / 'resources').mkdir(parents=True, exist_ok=True)
 ROOT.mkdir(parents=True, exist_ok=True)
-state = dict(planned=0, executed=0, passed=0, red=0, missing=0,
+state = dict(planned=0, executed=0, passed=0, red=0, abnormal=0, missing=0,
              skipped=0, duplicate=0, control_bad=0, unexpected_pass=0,
              later_positive_red=0, red_site_bad=0, postflight=False)
 rows = []
@@ -343,10 +405,11 @@ try:
                 stream.flush()
                 code = 124
         data = log.read_text(errors='replace')
-        verdict, run, passed, skipped = classify_case(data, test, code)
+        verdict, run, passed, skipped = classify_case(data, test, code, kind == 'OBSERVE')
         state['executed'] += int(run == 1 and skipped == 0)
         state['passed'] += int(verdict == 'PASS')
         state['red'] += int(verdict == 'RED')
+        state['abnormal'] += int(verdict == 'ABNORMAL')
         state['skipped'] += skipped
         state['missing'] += int(verdict == 'INVALID')
         state['duplicate'] += int(run > 1)
