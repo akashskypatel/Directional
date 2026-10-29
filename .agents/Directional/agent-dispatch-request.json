@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb51-p5-compile-retry1-20261029",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb51-p5-compile-retry1",
-  "source_sha": "699837c68583f4039dc7971d3b4e0da57135d933",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb51-p5-gmp-compile"
+  "request_id": "m6-cp3-cb51-docs-closeout-20261029-1637",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb51-docs-closeout",
+  "file_id": "1lP1Jou5k-Ww7V8e4oufS8lHbRwXY8Lho",
+  "patch_sha256": "e86633bdb1041c267c29875a09d4310bb95cc0e245bd007d50c71cda3c5c8837",
+  "base_sha": "092db30d0dceeb1e54862fd71b9ea6d70f67d001",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB51 GMP compile and handoff to CB52",
+  "retention_days": 14
 }
