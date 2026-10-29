@@ -1,2 +1,0 @@
-# TB50-R2: remove only this turn's ephemeral source-snapshot marker
-.agents/connector-triggers/source-snapshot/tb50-r2-20261029.txt
