@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP3-TB50-RP01-FULL-GATE-EXEC
-Status: IN_PROGRESS
-Successor: UNKNOWN
+Status: COMPLETE
+Successor: M6-CP3-CB50A-RP01-ORCH
 Started at: 2026-10-29T18:42:02Z
 Resumed at: 
-Ended at: 
+Ended at: 2026-10-29T18:57:37Z
 ---END_TURN_STATUS---
