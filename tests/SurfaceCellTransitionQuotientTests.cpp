@@ -6669,6 +6669,58 @@ TEST(M6CP1, ThinAdapterOutputIsPureProjectionOfStageProducts) {
 }
 
 
+// RA-169 C1: with open rails published, the checked factory requires the
+// rail chains to cover every hard-feature edge. An interior non-hard edge
+// away from every rail splits no gauge-pin region, so only cover can fire.
+TEST(M6CP3, ProducedTorusOrphanHardFeatureEdgeRejectsAtCheckedFactoryCover) {
+  const auto &torus = torus_fixture();
+  const auto &front = torus.network.phaseFront.product();
+  ASSERT_FALSE(front.hardRailTerminalContacts().empty());
+  ASSERT_FALSE(front.hardRailOpenChains().empty());
+  ASSERT_TRUE(std::holds_alternative<directional::geometry::SurfacePhaseFrontProduct>(
+      construct_phase_front_product(phase_front_draft(torus))));
+  std::set<directional::authority::SourceVertexId> railVertices;
+  for (const auto &[rail, chain] : front.hardRailOpenChains()) {
+    (void)rail;
+    railVertices.insert(chain.vertices.begin(), chain.vertices.end());
+  }
+  for (const auto &[rail, chain] : front.hardRailClosedChains()) {
+    (void)rail;
+    railVertices.insert(chain.vertices.begin(), chain.vertices.end());
+  }
+  const auto vertexCount = static_cast<std::size_t>(torus.mesh.V.rows());
+  std::map<directional::authority::SourceEdgeTopologyKey, int> incidence;
+  for (int row = 0; row < torus.mesh.F.rows(); ++row) {
+    for (int corner = 0; corner < 3; ++corner) {
+      ++incidence[test_source_edge_topology(
+          torus.mesh.F(row, corner), torus.mesh.F(row, (corner + 1) % 3),
+          vertexCount)];
+    }
+  }
+  std::optional<directional::authority::SourceEdgeTopologyKey> orphan;
+  for (const auto &[edge, count] : incidence) {
+    if (count == 2 && !front.hardFeatureEdges().contains(edge) &&
+        !railVertices.contains(edge.first()) &&
+        !railVertices.contains(edge.second())) {
+      orphan = edge;
+      break;
+    }
+  }
+  ASSERT_TRUE(orphan.has_value())
+      << "the witness requires an interior edge away from every rail";
+
+  PhaseFrontDraft torn = phase_front_draft(torus);
+  ASSERT_TRUE(torn.hardFeatureEdges.insert(*orphan).second);
+  auto result = construct_phase_front_product(std::move(torn));
+  const auto *error =
+      std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&result);
+  ASSERT_NE(error, nullptr) << "the checked factory must reject an orphan hard edge";
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontProductErrorCode::
+                InvalidSourceAuthority,
+            error->code);
+  EXPECT_EQ("open-rail-cover", error->sourceAuthoritySite);
+}
+
 TEST(M6CP1, A6ClosedComplexBoundaryIsCombinatoriallyEquivalentOnProducedTorus) {
   const auto &fixture = torus_fixture();
   const auto hardEdges = torus_row408_hard_edges(fixture.mesh);

@@ -8707,11 +8707,20 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     error.sourceAuthoritySite = "open-rail-chain";
     return error;
   }
-  // A closed-only rail set must cover every hard-feature edge, not merely
-  // supply a convenient nonempty closed-chain token.
-  if (hardRailTerminalContacts.empty() && coveredClosedEdges != hardFeatureEdges) {
+  // Published rail chains must cover every hard-feature edge, not merely
+  // supply a convenient nonempty chain token. An orphan hard edge is not a
+  // source-owned rail barrier (RA-162 C1).
+  std::set<authority::SourceEdgeTopologyKey> coveredRailEdges = coveredClosedEdges;
+  for (const auto &[rail, chain] : hardRailOpenChains) {
+    (void)rail;
+    for (std::size_t i = 1U; i < chain.vertices.size(); ++i)
+      coveredRailEdges.insert(authority::SourceEdgeTopologyKey::make(
+          chain.vertices[i - 1U], chain.vertices[i]).value());
+  }
+  if (coveredRailEdges != hardFeatureEdges) {
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
-    error.sourceAuthoritySite = "closed-rail-cover";
+    error.sourceAuthoritySite = hardRailTerminalContacts.empty()
+        ? "closed-rail-cover" : "open-rail-cover";
     return error;
   }
   for (const auto &[rail, contact] : hardRailTerminalContacts) {
