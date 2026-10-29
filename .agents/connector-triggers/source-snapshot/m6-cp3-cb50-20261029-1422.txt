@@ -1,2 +1,0 @@
-M6-CP3-CB50-RP01-C1-INGRESS-ORPHAN-HARD-EDGE
-Source snapshot trigger. No runtime tests.
