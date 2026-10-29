@@ -1,3 +1,8 @@
+# 2026-10-29 — TB50C-R2 off-gate native census
+
+- [Run 40965775275](https://github.com/akashskypatel/Directional/actions/runs/40965775275) against frozen CB52 `12918290481`, 408/408 OBSERVE executed; 323 PASS, 83 RED, 2 ABNORMAL, 0 INVALID. Postflight true, 822/822 checksums, all 408 case and log joins. [Full per-suite and per-row report](.agents/Directional/Architecture_M6_CP3_TB50C_RP01_Off_Gate_Census_R2_Test_Benchmark_Report_20261029.md).
+- Observations unclassified; no source edits, rebuild, stable regression increment, CP3 acceptance, or selector497 promotion. Next `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION`.
+
 ## 2026-10-29 — CB50C exact P7 census harness correction (no native runtime)
 
 - Applied RA-171.7 exact patch P7 (`9c30f6b6…`, +71/−8), new harness SHA-256 `600c6455203519e79736e501288e4777921390bf365a9d3ee5e0141aa49275f8` ([commit](https://github.com/akashskypatel/Directional/commit/9355721b67398a2e874f77eecfd61477d8bf9a76), [run 40962940548](https://github.com/akashskypatel/Directional/actions/runs/40962940548), [record](.agents/Directional/Architecture_M6_CP3_CB50C_RP01_Census_Harness_Orchestration_Record_20261029.md)). Shell syntax, 21/21 harness self-test and TB49/TB50/TB50C 504/508/408 manifest self-checks passed; unchanged frozen 408 OBSERVE manifest `91823900…`.

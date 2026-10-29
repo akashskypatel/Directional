@@ -41,12 +41,11 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Regression accounting and debt | Stable **66/17/49**, debt 1 ([tracker](Regression_Root_Cause_Tracker.md)); no new stable event. Off-gate REDs are unclassified census data (local macOS 101/408; CI pending) — not counted as regressions or as platform. |
 | Active boundary | Selected gate closed (TB50-R2 508/0 reviewed). Harness P7 applied and offline-verified as CB50C: `600c6455…` on commit `9355721b6739…`; NEXT TB50C-EXEC-R2 on unchanged CB52 package `12918290481`, manifest `91823900…`, 408 OBSERVE rows. Disposition DEFN then classifies every non-PASS row; TB51 gates every surviving test in the four binaries (RA-171.5). Carried O1/O2/O6–O13, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002, 8219. RP-01 open, RP-02 unreached. |
 
-## Mandatory next turn — `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC-R2` (type TB-EXEC) — EXACT NEXT
+## Mandatory next turn — `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` (type DEFN, Review track) — EXACT NEXT
 
-- **Authority:** [RA-171](Architecture_M6_CP3_TB50_REV_Gate_Closeout_Census_Observe_Harness_20261029.md).4/.6 and [CB50C record](Architecture_M6_CP3_CB50C_RP01_Census_Harness_Orchestration_Record_20261029.md). Immutable CB52 GMP package `12918290481` (source `7cf0857b4818186638ce77e4859adacbeebd288f`).
-- **Action:** artifact-only run of 408 OBSERVE rows with harness SHA-256 `600c6455203519e79736e501288e4777921390bf365a9d3ee5e0141aa49275f8` and manifest SHA-256 `918239009ddee28ebc5c212ef3db0babf2b9f2b8a2755f4321242b7a1ea2ac86`. Use the frozen package/environment in RA-171.6 and the durable dispatcher. No rebuild, source, test, fixture, or selector edits.
-- **Report:** count PASS/RED/ABNORMAL/INVALID by binary and suite, retain each non-PASS first failure and typed reason, preserve postflight/ledger and source/hash evidence. No preemptive classification, repair, or CP3 promotion.
-- **Successor:** complete ledger → `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION`; missing artifact, preflight error or cancelled job → `M6-CP3-PLAN-RP01-CENSUS-HARNESS-STOP`. Do not repeat an identical failing dispatch.
+- **Authority:** RA-171.5/.6 and [TB50C-R2 native census report](Architecture_M6_CP3_TB50C_RP01_Off_Gate_Census_R2_Test_Benchmark_Report_20261029.md). The 408-case OBSERVE census completed under [run 40965775275](https://github.com/akashskypatel/Directional/actions/runs/40965775275): 323 PASS, 83 RED, 2 ABNORMAL, 0 INVALID; postflight true; 822/822 checksums; all 408 joins. Native package/source unchanged.
+- **Action:** classify every one of 85 non-PASS records by exact first-failure/typed-reason group (stale oracle / regression / O2 legacy / platform / retire), without prematurely adding stable regressions. Produce exact corrective patch proposals by causal group, with one CB per group; decide retirement reason for each removed off-gate case; freeze TB51 gate = 508 + (408 - retired).
+- **Boundary:** planning/review only; no implementation, fixture edits, source changes, compile or runtime. CP2 491/491 accepted, TB50-R2 508/508 reviewed candidate, stable 66/17/49 debt1 until adjudication, no CP3 or selector497 promotion.
 
 ## Turn Sequence
 
@@ -65,8 +64,8 @@ Canonical types: CB, TB-EXEC, TB-REV, DEFN, PLAN (`turn_type_from_turn`). **I** 
 | done — S5 | `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC` | TB-EXEC / I | [Run 40952631880](https://github.com/akashskypatel/Directional/actions/runs/40952631880) preflight `row 360: invalid gtest name`, 0/408; [report](Architecture_M6_CP3_TB50C_Off_Gate_Census_Orchestration_Failure_Report_20261029.md). |
 | done | `M6-CP3-TB50-RP01-FULL-GATE-REV` | TB-REV / R | [RA-171](Architecture_M6_CP3_TB50_REV_Gate_Closeout_Census_Observe_Harness_20261029.md): TB50-R2 verified; census contract P7; manifest re-frozen `91823900…`. |
 | done | `M6-CP3-CB50C-RP01-CENSUS-HARNESS-ORCH` | CB / I | P7 exact, SHA-256 `600c6455…`; offline 21/21 and 504/508/408 checks; [run 40962940548](https://github.com/akashskypatel/Directional/actions/runs/40962940548), commit `9355721b6739…`; no native run. |
-| 1 — NEXT | `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC-R2` | TB-EXEC / I | CB52 package; harness `600c6455…`; manifest `91823900…` (408); observe, no prediction. |
-| 2 | `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` | DEFN / R | Classify each non-PASS row (stale oracle / regression / O2 legacy / platform / retire), grouped by first failure; exact patches; freeze TB51 manifest. |
+| done | `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC-R2` | TB-EXEC / I | [Run 40965775275](https://github.com/akashskypatel/Directional/actions/runs/40965775275): 408/408, 323 PASS, 83 RED, 2 ABNORMAL, 0 INVALID. Postflight true; no classification. |
+| 1 — NEXT | `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` | DEFN / R | Classify each non-PASS row (stale oracle / regression / O2 legacy / platform / retire), grouped by first failure; exact patches; freeze TB51 manifest. |
 | 3 | CB53… (one per cause group) → `M6-CP3-TB51-RP01-FULL-GATE-EXEC` → `M6-CP3-TB51-RP01-FULL-GATE-REV` | CB, TB-EXEC / I; TB-REV / R | TB51 = 508 + (408 − retired) (RA-171.5). |
 | 4 | `M6-CP3-PLAN-RP01-CLOSURE` | PLAN / R | O6 scope; O7–O12 owners; O9 junction path. |
 | post-RP-01 | `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`, then `M6-DEFN-DIAG-RETAIN-A5-A7` | DEFN / R | RA-160.4 + RA-161 T2; O4 legacy-path reachability folds into O2. |
@@ -74,7 +73,7 @@ Canonical types: CB, TB-EXEC, TB-REV, DEFN, PLAN (`turn_type_from_turn`). **I** 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC-R2** (TB-EXEC): use the unchanged CB52 package `12918290481`, exact 408-row OBSERVE manifest `91823900…`, and P7 harness `600c6455…`. Record independent per-row census outcomes; do not classify, repair or rebuild. After complete ledger, DEFN disposition. CP2 remains accepted; TB50-R2 508/0 remains a reviewed candidate.
+`load_next`: **M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION** (DEFN, Review): read the complete 85-row non-PASS evidence and per-suite counts in the TB50C-R2 report; group first failures, classify observations, and define exact patches/retirements before freezing TB51 manifest. Do not implement or run native work in DEFN. CP2 accepted, TB50-R2 508/0 reviewed candidate, regression 66/17/49 debt1 unchanged.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
