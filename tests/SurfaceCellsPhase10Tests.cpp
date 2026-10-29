@@ -7461,26 +7461,47 @@ TEST(SurfaceCellAuthorityContractCutover,
   ASSERT_NE(consumedRail, nullptr)
       << "the network-bound boundary consumer must publish an actual rail side";
 
-  // Keep the authentic A2a network, source charts, phase-front plan, samples,
-  // endpoint vertices and rail identity. Forge only one otherwise well-typed
-  // published edge key of a rail that the positive consumer actually used.
-  // This enters A4's open-front consumer, not FieldAlignedCurveNetwork::make.
-  auto forgedRails = fixture.rails;
-  auto forged = std::find_if(
-      forgedRails.begin(), forgedRails.end(), [&](const auto &rail) {
-        return rail.id == consumedRail->id;
-      });
-  ASSERT_NE(forged, forgedRails.end());
-  ASSERT_FALSE(forged->sourceEdges.empty());
-  const auto originalKey = forged->sourceEdges.front();
-  const auto foreignKey = std::find_if(
-      fixture.hardFeatureEdges.begin(), fixture.hardFeatureEdges.end(),
-      [&](const auto &key) { return key != originalKey; });
-  ASSERT_NE(foreignKey, fixture.hardFeatureEdges.end());
-  forged->sourceEdges.front() = *foreignKey;
-  ASSERT_EQ(forged->sourceVertices.size(), forged->sourceEdges.size() + 1U);
+  // RA-170 P1-b: swap the IDs of two produced rails of one component.
+  // Every typed interval predicate (vertices, edge keys, samples, component)
+  // still holds, so only A2a mandatory-edge ownership can tell them apart.
+  // A network-absent A4 is not a producing configuration, so the
+  // differential is taken at rail_interval_refs, and A4 must reject.
+  auto swappedRails = fixture.rails;
+  std::optional<std::pair<std::size_t, std::size_t>> sameComponent;
+  for (std::size_t i = 0U; i < swappedRails.size() && !sameComponent; ++i) {
+    if (swappedRails[i].id != consumedRail->id) continue;
+    for (std::size_t j = 0U; j < swappedRails.size(); ++j) {
+      if (j != i && swappedRails[j].component == swappedRails[i].component) {
+        sameComponent = std::make_pair(i, j);
+        break;
+      }
+    }
+  }
+  ASSERT_TRUE(sameComponent.has_value())
+      << "the witness requires a second rail in the consumed rail's component";
+  std::swap(swappedRails[sameComponent->first].id,
+            swappedRails[sameComponent->second].id);
+
+  using directional::geometry::surface_cell_tracing_detail::RailBuildStatus;
+  using directional::geometry::surface_cell_tracing_detail::rail_interval_refs;
+  const auto edgeFaces =
+      directional::geometry::surface_cell_tracing_detail::edge_faces(
+          fixture.mesh.F);
+  const auto typedOnly = rail_interval_refs(
+      swappedRails, fixture.mesh.V, fixture.mesh.F, edgeFaces);
+  EXPECT_EQ(RailBuildStatus::Valid, typedOnly.status)
+      << "an ID swap must satisfy every typed interval predicate";
+  const auto networkBound = rail_interval_refs(
+      swappedRails, fixture.mesh.V, fixture.mesh.F, edgeFaces,
+      &*fixture.fieldNetwork);
+  EXPECT_EQ(RailBuildStatus::TypedAuthorityMismatch, networkBound.status);
+  ASSERT_TRUE(networkBound.railId.has_value());
+  EXPECT_TRUE(*networkBound.railId == swappedRails[sameComponent->first].id ||
+              *networkBound.railId == swappedRails[sameComponent->second].id);
+  EXPECT_EQ(0, networkBound.intervalIndex);
+
   const auto rejected = build_fixed_plan_rectangular_hard_rail_network(
-      fixture, 1.0, nullptr, nullptr, nullptr, &forgedRails);
+      fixture, 1.0, nullptr, nullptr, nullptr, &swappedRails);
   ASSERT_EQ(SurfaceCellProducerDisposition::Rejected,
             rejected.phaseFront.disposition());
   EXPECT_EQ(SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority,
