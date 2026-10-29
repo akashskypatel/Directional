@@ -1,12 +1,9 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb51-p5-code-20261029-1626",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb51-p5-apply",
-  "file_id": "1ykJe5EScGhrIqTgmNjaBzE6a6-ljiDHm",
-  "patch_sha256": "8f520837143abb86cd7338a6ab5b4b4444abc730a22908b4b2b2943f188e68cc",
-  "base_sha": "15cfb9de7a88c05f00a7c4823ef788bd2ae74101",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): add P1-b network owner witness (CB51)",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb51-p5-compile-20261029-1628",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb51-p5-compile",
+  "source_sha": "699837c68583f4039dc7971d3b4e0da57135d933",
+  "targets": "directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks",
+  "artifact_prefix": "m6-cp3-cb51-p5-gmp-compile"
 }
