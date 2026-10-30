@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p07-p11-20261030-v1",
+  "request_id": "m6-cp3-defn-p11-isolation-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p07-p11-20261030-v1",
-  "file_id": "1WopO3tGxBzqJNnBiZWPKcFf9BNHo7R0k",
-  "patch_sha256": "66bb4645fb35c00644f710d468684f024d5d7f4ed62798af678c7b603babc2b7",
-  "base_sha": "64126146db29bd5dc1fd7e7cd05a50787941b9d8",
+  "mailbox_key": "m6-cp3-defn-p11-isolation-20261030-v1",
+  "file_id": "1Im038Go1A0UI9jOZSkpMJz3RkZia8KdJ",
+  "patch_sha256": "e8003d3c366c7c2e8259b83bc70db543a21c1e2f8e3f771eef82fe79caaae8f7",
+  "base_sha": "65c4e6cec6dfc5c56cf5e43e43e25c131003538e",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): distinguish gauge-canonical A3 oracle and multi-scope completion provenance",
+  "commit_message": "docs(agent): replace route-only isolation lineage oracle with typed seam witness definition",
   "retention_days": 14
 }
