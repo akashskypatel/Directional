@@ -1,3 +1,12 @@
+## 2026-10-30 continued DEFN source audit — three corrected cases
+
+- Reused independently verified `9fe12a26...` exact semantic source snapshot (run 40986100897, artifact 12946688157; SHA-256 3cc27449cc5b272aaf87231504837a361d04bbf02dc8f2ea751fd43103812a65), with TB50C-R2 raw logs. Local current inventory and continuation blobs were independently matched to branch via Git blob SHAs `3645a9eea6f67b6655d4668472edf4a12398c449` and `5794b19b00fd4962bd1de2c1dbf2bd9e9b09c0f2`. No production code, test, fixture, selector or native execution changed.
+- **Case 279:** source confirms the curved-disk fixture pre-binds A3, so `build_surface_cell_network` ignores the mutated raw `edgeTransitions`; earlier phase-front acceptance is not evidence that the authoritative invalid-reciprocal-transport guard was exercised. Requires a consumed-authority negative plus ignored-ingress positive.
+- **Case 261:** mutating `hardFeatureEdges` without republishing terminal-contact/closed-rail provenance fails earlier at typed A2b/terminal ownership; raw diagnostic explicitly says `missing-terminal-or-closed-rail-provenance`, not missing A3 path. Requires a valid A2b witness with only A3 transport removed.
+- **Case 314:** one 169.358 µs validator measurement against one tiny remesh's 124.8421 µs 5%-budget is not a controlled performance regression; retain requirement pending repeatable performance protocol and independent correctness oracle.
+- All three remain non-PASS; total 85 unchanged, zero retirements. P11 grouping now four unresolved producer candidates, one early A2b fixture and one stale reason; P12 grouping four unresolved candidates, three stale ignored/untyped ingress oracles, one uncalibrated performance benchmark.
+- Continue the same DEFN; assess remaining groups with source+log evidence, decide genuine retirements/coverage, specify falsifiable CB boundaries and freeze TB51 only after mandatory Review closure.
+
 # DEFN off-selector review continuation — exact WIP preservation
 
 ## 2026-10-30 further P09/P10 source-audit continuation (runtime-free)
