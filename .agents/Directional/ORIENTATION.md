@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-30 · **RA-174 RP-01 closure PLAN** ([record](Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md)). TB51 831/0 is the reviewed candidate; selector497 497/497 and the G4-B002 exit row is green inside it. 85 rows are deferred, and the packaged API binary (23 tests) is not yet governed. CP2 491/491 is the last accepted; selector497/CP3 unpromoted; stable 66/17/49, debt 1. Next `M6-CP3-CB53-RP01-GATE-MEMBERSHIP-PREFLIGHT`.
+**Currency:** 2026-10-30 · **CB53 P8 membership preflight complete** ([record](Architecture_M6_CP3_CB53_RP01_Gate_Membership_Preflight_Code_Build_Record_20261030.md)). Gate-membership harness `78b8002c…` now requires the package listing to equal gate ∪ ledger; 23 packaged API tests remain uncensused. TB51 831/0 is the reviewed candidate; selector497 497/497 and G4-B002 are green inside it. 85 deferred; CP2 491/491 last accepted; selector497/CP3 unpromoted; stable 66/17/49 debt 1. Next `M6-CP3-TB52C-RP01-API-BINARY-CENSUS-EXEC`.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -52,7 +52,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 **Prior Review authority:** [RA-170](Architecture_M6_CP3_TB49_REV_Reaudit_P1_O4_DEFNs_E2_Site_Pins_OffGate_Census_20261028.md) re-specifies P1-b (network-absent A4 never produces, so the witness is a rail-ID swap at `rail_interval_refs`), classifies P1-a and O4 accepted-defensive, pins cp3entry:2 factory sites, and schedules the off-gate census. [RA-169](Architecture_M6_CP3_TB49_REV_Closeout_C1_Rail_Cover_DEFN_Patches_20261028.md) fixed C1 (P3/P4). Implementers get only exact patches and manifests.
 
-**Current test authority:** TB49 **504 PASS / 0 RED** (run 40776332136, result 12857282498), independently re-derived; candidate only. The gate covers 504 of the four binaries' tests: the other 408 are ungated, and 101 of them fail locally (CI census TB50C pending). Not D0 production, CP3 closure or selector497 promotion.
+**Test authority:** TB51 **831 PASS / 0 RED** (run 41021857497, result 12963899691), independently reviewed under RA-173/RA-174; candidate only. 85 deferred (49 FIXTURE / 7 PRODUCT / 24 OPEN / 5 RETIRE). A fifth packaged test binary has 23 ungoverned tests; its TB52C census is next. Not D0 production, CP3 closure or selector497 promotion.
 
 **Prior TB35 independent Review:** CB34 three-edge gauge remains statically/compile accepted. TB35 mechanically verifies 11 PASS / 2 RED; 191/192 retain valid original negative expectations but their mutations do not reach atlas-owned A4 ingress. The passing 189/190 legacy-path claims are not independently discriminating in the presence of an unchanged atlas. [TB35-REV decision](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) authorizes only a separate Definition of ingress and negative-oracle ownership; no product or selector promotion.
 

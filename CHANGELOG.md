@@ -1,3 +1,9 @@
+# 2026-10-30 — CB53 P8 exact gate-membership preflight applied (offline-only)
+
+- [CB53 record](.agents/Directional/Architecture_M6_CP3_CB53_RP01_Gate_Membership_Preflight_Code_Build_Record_20261030.md): exact RA-174.7 P8 (`80ee9e42…`, `+136/−13`) on targeted harness only; [commit `a9a1f16`](https://github.com/akashskypatel/Directional/commit/a9a1f16e779c6b648379d580ef7286442af33af7) applied via [run `41059135746`](https://github.com/akashskypatel/Directional/actions/runs/41059135746), result artifact `12977624427`. Harness SHA-256 `78b8002c…` verified remotely and in follow-up `5991/5991` source snapshot.
+- Offline syntax and 30-case self-test PASS; TB49/TB50/TB50C/TB51/TB52C 504/508/408/831/23 self-checks PASS; TB51 + deferred ledger 85 PASS, census + ledger intentionally rejected. The initial apply failed on patch-wrapper path metadata; corrected retry preserved identical code diff. Both Drive staging files retired.
+- No native runtime/tests, benchmark or compilation; no source/test/fixture/manifest/selector changes and no acceptance promotion. CP2 491/491 accepted, TB51 831/0 reviewed candidate, 85 deferred, stable 66/17/49 debt1. Next `M6-CP3-TB52C-RP01-API-BINARY-CENSUS-EXEC` (23 `OBSERVE` cases, no membership ledger).
+
 # 2026-10-30 — RA-174 RP-01 closure PLAN; TB51-REV audit; P8 membership harness
 
 - [RA-174](.agents/Directional/Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md): TB51 831/0 re-verified, and selector497 497/497 is green inside it. RP-01 blockers narrowed to rows 223, 225 and 261 plus O9 (corrects RA-172.5). CP3-exit conditions frozen.
