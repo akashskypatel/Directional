@@ -1,1 +1,0 @@
-.agents/connector-triggers/source-snapshot/tb52c-review-20261030.txt
