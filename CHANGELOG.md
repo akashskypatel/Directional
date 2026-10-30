@@ -1,3 +1,8 @@
+# 2026-10-30 — RA-179 TB53 review: RP-01 closed; O15 attribution
+
+- [RA-179](.agents/Directional/Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md) (local; reduced independence, offset by subagent traces and audits plus attribution builds). Compiling only `FieldTransportAtlas.cpp` without FMA clears all 18 vertex-35 reds (O15). An FMA-free build passes 854/855. Row 283 is a pre-existing macOS legacy failure (O2).
+- **RP-01 closed**; a Linux confirmation run is carried as its falsifier. O15's row list is corrected from 18 to 21 rows (471 removed; 637, 638, 652 and 656 added). RA-178.2's FMA-off check was ineffective (ninja 1.13 rebuilt the object) and is re-verified. Local-mode convention: `-ffp-contract=off` packages, with row 283 pre-registered. Stable 66/17/49, debt 1. Next `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES`.
+
 # 2026-10-30 — TB53 local five-binary gate on CB54 (836 PASS / 19 RED, macOS)
 
 - [TB53 report](.agents/Directional/Architecture_M6_CP3_TB53_RP01_Full_Gate_Local_Test_Report_20261030.md): run with the local driver on package `21b7cf2d…`. 855 executed, **836 PASS / 19 RED**, membership **938**, postflight true, exit 90 (GUARD controls). The RP-01 rows 854 (223) and 855 (225) PASS. 18 of the 19 reds reference `mechanical_feature` vertex 35 (14 are on RA-176's O15 list); 283 is the legacy arrangement. All 19 pass in TB52 on Linux. Result `5722887a…`; an independent subagent audit passes. Next `M6-CP3-TB53-RP01-FULL-GATE-REV`.

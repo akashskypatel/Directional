@@ -1,3 +1,9 @@
+**RA-179 / TB53 review, RP-01 closed (2026-10-30; no new event):** [record](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md). The 19 macOS reds in the local TB53 are platform failures, not regressions:
+- 18 rows clear when only `FieldTransportAtlas.cpp` is built without FMA (O15; the list is corrected to 21 rows).
+- Row 283 fails identically in every build: a pre-existing macOS legacy `segment_arrangement` failure, owned by O2.
+
+An FMA-free build passes 854/855. RA-178.2's FMA-off claim was ineffective and is re-verified. Stable 66/17/49, debt 1, unchanged.
+
 **TB53 local gate (2026-10-30; candidate/non-stable, unreviewed, no new event):** [report](Architecture_M6_CP3_TB53_RP01_Full_Gate_Local_Test_Report_20261030.md). Package `21b7cf2d…` (macOS arm64) gives 836 PASS / 19 RED, membership 938; RP-01 rows 854/855 PASS. The 19 reds are rows that pass on Linux in TB52. 18 reference `mechanical_feature` vertex 35 (14 on RA-176's O15 list); 283 is the legacy arrangement. TB53-REV classifies them. Stable 66/17/49, debt 1, unchanged.
 
 **RA-178 / RP-01 terminal-path DEFN + audit of TB52-REV (2026-10-30; no new event):** [record](Architecture_M6_CP3_DEFN_RP01_Terminal_Path_Witnesses_TB52_REV_Audit_20261030.md). Rows 223 and 225 are FIXTURE oracles: 225 predates the RA-84 T/R/I endpoint classes, and 223's barrier stimulus is rejected at `gauge-pin-span` before the path guard. Both are repaired by CB54 without weakening. Row 261 (OPEN) is retired: its target predicate is accepted-defensive, and its stimulus is gated row 507. O9 is ruled: every produced route is single-step. TB53: 855 + ledger v3 83, membership 938. Stable 66/17/49, debt 1, unchanged.

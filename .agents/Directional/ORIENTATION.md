@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-30 · M6-CP3-TB53-RP01-FULL-GATE-EXEC (run locally at the user's direction) — CB54 applied the exact RA-178.7 patch (source `2a49b873…`, macOS package `21b7cf2d…`). The [TB53 local gate](Architecture_M6_CP3_TB53_RP01_Full_Gate_Local_Test_Report_20261030.md) gives 836 PASS / 19 RED, membership 938; RP-01 rows 854/855 PASS. The reds pass on Linux in TB52: 18 at `mechanical_feature` vertex 35 (O15) and 283 (legacy). TB52 853/0 remains the reviewed candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CP3-TB53-RP01-FULL-GATE-REV`.
+**Currency:** 2026-10-30 · M6-CP3-TB53-RP01-FULL-GATE-REV — [RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md) **closed RP-01**. The local macOS TB53 gave 836/19. Attribution builds show that FMA in `FieldTransportAtlas.cpp` alone causes the 18 vertex-35 reds (O15; the list is corrected to 21 rows). Row 283 is a pre-existing macOS legacy failure (O2); an FMA-free build passes 854/855. TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES`.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -52,7 +52,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 **Prior Review authority:** [RA-178](Architecture_M6_CP3_DEFN_RP01_Terminal_Path_Witnesses_TB52_REV_Audit_20261030.md) (RP-01 terminal-path dispositions, O9 ruling, CB54 patch, TB53 inputs), [RA-177](Architecture_M6_CP3_TB52_REV_Independent_Five_Binary_Gate_Review_20261030.md) (TB52 candidate review), [RA-176](Architecture_M6_CP3_PLAN_A3_Atlas_Exactness_TB52C_REV_Audit_20261030.md) (A3 exactness O15; TB52C-REV audit) and [RA-174](Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md) (RP-01 closure scope, CP3-exit conditions, P8). Implementers get only exact patches and manifests.
 
-**Test authority:** TB52 **853 PASS / 0 RED** (run 41100261157, result 13004891149), independently verified in RA-177; new reviewed candidate, superseding TB51 831/0 candidate. TB52C: 22 PASS and one `FIXTURE` RED caused by A3 floating point (RA-176). TB52 P8 dynamically verified the full package membership of 939 = 853 gated and 86 deferred (50 FIXTURE / 7 PRODUCT / 24 OPEN / 5 RETIRE). Not D0 production, CP3 closure or selector497 promotion.
+**Test authority:** Linux: TB52 **853/0** (run 41100261157), reviewed in RA-177, with membership 939. Local macOS: TB53 **836/19** on CB54 (855 gated / 83 deferred, membership 938), reviewed in RA-179. All 19 reds are platform failures (18 O15, 1 O2), and an FMA-free build passes 854/855. Not D0 production, CP3 closure or selector497 promotion.
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md) and [regression tracker](Regression_Root_Cause_Tracker.md).
 
@@ -104,12 +104,12 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-TB53-RP01-FULL-GATE-REV` (Review, preferably a fresh session). Classify the 19 macOS-only reds against O15 and O2, and decide RP-01 closure from rows 854/855 and membership 938, or require a Linux rerun. Review track in parallel: `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` (O15). Local build and test is the mode while the implementation agent is unavailable (`tools/m6_cp3_local_gate_driver.py`).
+**Immediate:** `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` (O15, Review): an exact A3 sector and gauge patch, the oracle test, red-first evidence on the default macOS build, and the row 935 witness; then CB55 and CB56. Local mode (RA-179.4): build packages with `-ffp-contract=off`, run gates with `tools/m6_cp3_local_gate_driver.py`, and pre-register row 283.
 
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Close RP-01: gate the repaired rows 223 and 225 (261 retired, O9 ruled; RA-178.3); govern every packaged test via P8. Make A3 topology decisions exact (O15, RA-176.3). | CB54 → TB53 → TB53-REV (I, I, R); `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` (R∥) |
+| **1** | Make A3 topology decisions exact (O15, RA-176.3; 21 rows per RA-179). RP-01 is closed (RA-179); its Linux confirmation is carried. | `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` (R) → CB55 → CB56 |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

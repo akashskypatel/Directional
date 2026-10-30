@@ -233,7 +233,7 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - **A platform split is a determinism defect.** `mechanical_feature` passed the A3 atlas on Linux and
   failed it on arm64 from identical source. `atan2` plus a tolerance decided exact ties (branches lying
   exactly on star edges), and FMA contraction moved the outcome. RA-175 read the split as a stale
-  fixture. Compute the exact answer first; neither platform is the oracle (RA-176).
+  fixture. Compute the exact answer first; neither platform is the oracle (RA-176). Attribute a split by changing one file's flags through the build system and confirming the change in the built object (ninja ≥1.13 silently rebuilds a hand-replaced object). List the affected rows by tracing fixture accessors, not by literal grep (RA-179).
 
 ## Diagnostics, classifiers, and causal investigation
 

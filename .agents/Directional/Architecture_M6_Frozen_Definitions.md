@@ -1,3 +1,10 @@
+## RA-179 — RP-01 closed; O15 row list; row 283; local mode (2026-10-30)
+
+- **RP-01 closed** on the local TB53 (rows 223 and 225 pass with FMA on, atlas-only off and global off; membership 938). Falsifier: the first Linux CI gate fails row 854 or 855.
+- **O15 rows (replaces RA-176's 18):** 86, 396, 397, 445, 637, 638, 649, 650, 652, 653, 656, 658, 660, 662, 665, 669, 687, 784, 786, 787, 788. FMA in `FieldTransportAtlas.cpp` alone flips 18 of them on macOS.
+- **Row 283 → O2:** a macOS legacy `segment_arrangement` failure that is not FMA; the cause is unresolved.
+- **Local mode:** local CB packages are built with `-ffp-contract=off` (C and C++), and local TB outcome tables pre-register row 283. The default build is O15's red-first witness until O15 is discharged.
+
 ## RA-178 — RP-01 terminal-path dispositions and O9 ruling (2026-10-30)
 
 - **RP-01 (amends RA-174.3):** it closes at a reviewed gate that passes the CB54-repaired rows 223 and 225 with `membership=938`. Row 261 is retired: its target, the A4 producer predicate `missing-terminal-A3-path`, is accepted-defensive, and its stimulus is gated row 507.
