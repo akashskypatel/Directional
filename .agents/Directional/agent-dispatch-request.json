@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p10b-seed-20261030-v1",
+  "request_id": "m6-cp3-defn-p01-probes-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p10b-seed-20261030-v1",
-  "file_id": "1McWHVMgr1Ej9IsUys7X7hFHkIX5d0XXI",
-  "patch_sha256": "116e7cfa9633c0e472a361a387649d7109321f4d8b45ec8c982448afa428c4a8",
-  "base_sha": "f738cbc4ce870c5ae14a2f160921845b7e94b346",
+  "mailbox_key": "m6-cp3-defn-p01-probes-20261030-v1",
+  "file_id": "1VcJ_0qoCJNfokfxGuNWJTvXY5OpejDsu",
+  "patch_sha256": "37cce68cb63585ce56eaf2aaa9ebb357320253c68b499305f4458f3cdfdd0e42",
+  "base_sha": "a3bbe619cdde291a70caabc16d02f9d4e993b57c",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): prove invalid source arrival seed in P10b case 243",
+  "commit_message": "docs(directional): specify nonvacuous replacements for four P01 probes",
   "retention_days": 14
 }
