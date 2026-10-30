@@ -1,0 +1,2 @@
+# M6-CP3-DEFN P09/P10 review source snapshot trigger cleanup
+.agents/connector-triggers/source-snapshot/20261030-defn-offselector-review-2.txt
