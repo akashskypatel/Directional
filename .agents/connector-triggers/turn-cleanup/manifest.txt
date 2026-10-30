@@ -1,2 +1,0 @@
-# Remove only the temporary DEFN source-snapshot marker.
-.agents/connector-triggers/source-snapshot/20261030-defn-p12-p14-audit.txt
