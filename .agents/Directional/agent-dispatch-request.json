@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p01-probes-20261030-v1",
+  "request_id": "m6-cp3-defn-p10a-cycle-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p01-probes-20261030-v1",
-  "file_id": "1VcJ_0qoCJNfokfxGuNWJTvXY5OpejDsu",
-  "patch_sha256": "37cce68cb63585ce56eaf2aaa9ebb357320253c68b499305f4458f3cdfdd0e42",
-  "base_sha": "a3bbe619cdde291a70caabc16d02f9d4e993b57c",
+  "mailbox_key": "m6-cp3-defn-p10a-cycle-20261030-v1",
+  "file_id": "15FX45ZZkL9WqyJ-BYEoEEca4Wb8Kat6y",
+  "patch_sha256": "b78e4ee15f040b58c2f158878e9f20873361d29dfd69223b75730fdc554c40bb",
+  "base_sha": "eefdbfdf9b061c7429f95d8f843430dd36fd7c87",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): specify nonvacuous replacements for four P01 probes",
+  "commit_message": "docs(directional): audit four P10a cone field/transport contradictions",
   "retention_days": 14
 }
