@@ -228,6 +228,11 @@ This document records **reusable failure-derived engineering lessons**, not an e
   bit proves consistency, not identity, because many exact values share one double. Identity comes
   from comparing the exact values (RA-97).
 
+- **A platform split is a determinism defect.** `mechanical_feature` passed the A3 atlas on Linux and
+  failed it on arm64 from identical source. `atan2` plus a tolerance decided exact ties (branches lying
+  exactly on star edges), and FMA contraction moved the outcome. RA-175 read the split as a stale
+  fixture. Compute the exact answer first; neither platform is the oracle (RA-176).
+
 ## Diagnostics, classifiers, and causal investigation
 
 - **Publish typed, lossless failures from the stage that owns them.** One error label emitted from many

@@ -1,16 +1,17 @@
-## CURRENT — TB52C API census independently dispositioned; TB52 full gate next (2026-10-30)
+## CURRENT — TB52C-REV audited (RA-176, A3 exactness O15); TB52 full gate next (2026-10-30)
 
 - [x] **`M6-CP3-PLAN-RP01-CLOSURE`** (PLAN, R) together with an audit of TB51-REV: [RA-174](.agents/Directional/Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md).
-  - TB51 re-verified independently: 1,668/1,668 checksums; 831/831 joins and single-test logs; the 323 promoted rows passed twice.
-  - **F1:** the packaged `directional_compiled_api_tests` binary (23 tests) was never gated or censused. The oracle binary (29 tests, O7) does not compile. Within the four gate binaries, the source declarations equal gate ∪ ledger (606/39/187/84).
-  - **F2:** selector497 497/497 and the G4-B002 exit row (one of `focused30:25–28`) pass inside TB51.
-  - **F3 (Review defect):** RA-172.5 was mis-scoped. RP-01 blockers are now rows 223, 225 and 261 plus the O9 ruling. P13, P12b and every other deferred row block CP3 exit instead.
-  - **CP3-exit conditions:** RP-01 closed; zero ledger rows; design-acceptance matrix gated at 6/6 (Cylinder is required); O14 enforced; O7 resolved; CP3-REV decides selector497.
-  - **P8 (O14):** gate runs need `MEMBERSHIP_LEDGER`, and every packaged `*_tests` binary's `--gtest_list_tests` must equal gate ∪ ledger. Patch `80ee9e42…` (`136 13`) → harness `78b8002c…`. Self-test 30; seven mutations caught. TB52C census manifest `81395065…` (23 rows).
+  - Findings: the API binary was ungoverned (F1, closed by TB52C); selector497 and G4-B002 are green in TB51 (F2); RP-01 blockers are rows 223/225/261 plus O9 (F3). P8 (O14) patch `80ee9e42…` → harness `78b8002c…`.
+  - **CP3-exit conditions:** RP-01 closed; zero ledger rows; design-acceptance matrix gated at 6/6 (Cylinder is required); O14 enforced; O7 resolved; **O15 discharged (RA-176.3)**; CP3-REV decides selector497 promotion.
 - [x] **`M6-CP3-CB53-RP01-GATE-MEMBERSHIP-PREFLIGHT`** (CB, I): RA-174.7 exact P8 applied at [`a9a1f16`](https://github.com/akashskypatel/Directional/commit/a9a1f16e779c6b648379d580ef7286442af33af7); harness `78b8002c…`. Offline syntax/self-test 30, five self-checks (504/508/408/831/23), ledger=85 PASS, census-with-ledger expected FAIL. No native runtime or compile. [Record](.agents/Directional/Architecture_M6_CP3_CB53_RP01_Gate_Membership_Preflight_Code_Build_Record_20261030.md).
 - [x] **`M6-CP3-TB52C-RP01-API-BINARY-CENSUS-EXEC`** (TB-EXEC, I): [TB52C report](Architecture_M6_CP3_TB52C_RP01_API_Binary_Census_Artifact_Only_Report_20261030.md), [run 41064596683](https://github.com/akashskypatel/Directional/actions/runs/41064596683), artifact `12981972265` — 23/23, 22 PASS / 1 RED (`apicensus:19`, first failure `SurfaceCellTracingDisplayTests.cpp:107`), 0 abnormal, postflight true, 49/49 hashes. No classification, no rebuild.
 - [x] **`M6-CP3-TB52C-RP01-API-BINARY-CENSUS-REV`** (TB-REV, R): [RA-175](.agents/Directional/Architecture_M6_CP3_TB52C_REV_API_Binary_Census_Independent_Disposition_20261030.md) independently verified 23/23 logs and 49/49 hashes; 22 PASS, one API-DISPLAY/FIXTURE row19; frozen 853 gate `95a7af662fd94306c92145050eff18fa0cc57de4eed19d1e4704938fc5532211` + 86 deferred `77c1d33b25f65837aa24c446b99657bfc1932fb8ab7636cc9c3ded598c38c78d` with byte-identical 831 prefix. No selector/CP3 acceptance.
-- [ ] **NEXT `M6-CP3-TB52-RP01-FULL-GATE-EXEC`** (TB-EXEC, I): immutable CB52 package, 853 gate + 86 deferred `MEMBERSHIP_LEDGER` P8 preflight across five binaries; only candidate if all 853 PASS and postflight true. No build or test-source changes.
+- [x] **`M6-CP3-PLAN-A3-ATLAS-EXACTNESS`** (PLAN, R) together with an audit of TB52C-REV: [RA-176](.agents/Directional/Architecture_M6_CP3_PLAN_A3_Atlas_Exactness_TB52C_REV_Audit_20261030.md).
+  - RA-175 evidence and the TB52 inputs re-verified: 49/49 hashes; 831 and 85 prefixes byte-identical; self-check 853 with deferred=86; boundary check passes.
+  - **F1:** row 19 is not a stale witness and no producer changed. On arm64 the same source passes it (API 23/23). Rebuilding only `FieldTransportAtlas.cpp` with `-ffp-contract=off` reproduces the Linux CI result line for line.
+  - **F2 (O15):** A3 picks the face gauge and corner-sector membership with `atan2` and a 1e-10 tolerance at exact ties (`FieldTransportAtlas.cpp:118–124`, `:276–296`, `:517–521`), which violates DESIGN Amendment 18. The exact half-open count is 3 at vertices 10/35/47/71, so the exact answer is to accept, which matches Linux. Eighteen gated `mechanical_feature` rows are green only for x86-64 rounding.
+  - **F3:** row 935 stays FIXTURE, because its expectation contradicts the exact answer; it is repaired after O15. Ledger v2 and the TB52 manifest are unchanged. **F4:** the RA-175 ORIENTATION lesson was replaced.
+- [ ] **NEXT `M6-CP3-TB52-RP01-FULL-GATE-EXEC`** (TB-EXEC, I): immutable CB52 package, 853 gate + 86 deferred `MEMBERSHIP_LEDGER` P8 preflight across five binaries; only candidate if all 853 PASS, postflight true and `membership=939`. Outcomes per RA-176.4. No build or test-source changes.
 - [ ] Carried separately (owners per RA-174.3):
   - O1; O2 (legacy no-atlas ingress, post-RP-01).
   - O6 (bounded disks that are not rectangular are rejected by design) → P13 probe DEFN.
@@ -19,6 +20,7 @@
   - O9 (A4 junction path has no produced witness) → RP-01 slice.
   - O12 (R61 `review_check.py` selector collision) → Review tooling.
   - O14 → P8.
+  - **O15** (A3 atlas topology decisions must be exact; RA-176.3) → `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES`. It is a CP3-exit condition, not an RP-01 blocker.
   - RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4. G4-B002 exit row is gated; the discharge decision belongs to CP3-REV.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
@@ -27,12 +29,13 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: TB50C-EXEC-R2 → DEFN (RA-172) → TB51-EXEC 831/0 → TB51-REV (RA-173) → **PLAN-RP01-CLOSURE (RA-174)**.
-  - **I:** CB53 (P8) **DONE** → TB52C-EXEC **DONE** (23/23, 22 PASS / 1 RED) → TB52C-REV **NEXT** (R; freeze the TB52 gate and ledger v2) → TB52-EXEC → TB52-REV (first run with membership).
-  - **R∥:** `M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES` (223/225/261, O9) → CB54 → TB53 → TB53-REV = RP-01 closure.
-  - **Then:** P13 probe DEFN (Cylinder first; O6) → retire CB → FIXTURE slices (each DEFN first confirms the production pipeline reaches its stage, otherwise → O2) → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV. Post-RP-01: O2 DEFN, then DIAG-RETAIN.
+  - **I:** CB53 (P8) **DONE** → TB52C-EXEC **DONE** (22 PASS / 1 RED) → TB52C-REV **DONE** (RA-175) → PLAN-A3-ATLAS-EXACTNESS **DONE** (RA-176) → **TB52-EXEC NEXT** → TB52-REV (R; first run with membership).
+  - **R∥ 1:** `M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES` (223/225/261, O9) → CB54 → TB53 → TB53-REV = RP-01 closure.
+  - **R∥ 2:** `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` (O15) → CB55 (exact predicates + red-first test that fails on Linux CI) → CB56 (exact witness for row 935) → TB54 → TB54-REV.
+  - **Then:** P13 probe DEFN (Cylinder first; O6; first check matrix fixtures against the exact atlas rule) → retire CB → FIXTURE slices (each DEFN first confirms the production pipeline reaches its stage, otherwise → O2) → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV. Post-RP-01: O2 DEFN, then DIAG-RETAIN.
   - One CB per exact patch; implementation agents get only exact patches and frozen manifests. Probe-requiring DEFN and TB-REV turns stay on the Review track.
   - **Naming (RA-167.6):** types per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier.
-  - Rules: RA-170 (a gate pass says nothing about off-gate tests), RA-171 (self-check every manifest; census rows are OBSERVE), RA-172 (a DEFN needs a reachable exit), RA-174 (verify completeness against the package, not against the gate's own scope).
+  - Rules: RA-170 (a gate pass says nothing about off-gate tests), RA-171 (self-check every manifest; census rows are OBSERVE), RA-172 (a DEFN needs a reachable exit), RA-174 (verify completeness against the package, not against the gate's own scope), RA-176 (a result that differs by platform is a determinism defect; compute the exact answer before classifying).
 - **Frozen:** stable 66/17/49, debt 1; CP2 491/491 last accepted; TB51 831/0 reviewed candidate; selector497 frozen and unpromoted; Gate C suspended; PR #8 draft and unmerged.
 
 ---

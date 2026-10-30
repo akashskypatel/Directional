@@ -1,3 +1,8 @@
+## RA-176 — A3 atlas exactness obligation O15 (2026-10-30)
+
+- **O15 (CP3 exit; not an RP-01 blocker):** every topological decision in the A3 field-transport atlas (face gauge, corner-sector membership, and any other `kBranchTopologyTolerance`/`atan2` decision) uses exact predicates on the stored doubles, or a certified filter that defers to exact. Ties follow a recorded deterministic rule (half-open sectors `[start, end)`). `mechanical_feature` must give the same atlas outcome with `-ffp-contract=on` and `off`.
+- **Row 935** (`apicensus:19`) stays FIXTURE. Its replacement atlas-rejection witness must be rejected under the exact rule, and it lands after the O15 CB.
+
 ## RA-174 — RP-01 closure scope; CP3-exit conditions; gate membership (2026-10-30)
 
 - **RP-01 (amends RA-172.5):** the blockers are deferred rows 223, 225 and 261 (the terminal/rail endpoint contract) plus the O9 ruling. RP-01 closes at a reviewed gate that passes them without weakening.

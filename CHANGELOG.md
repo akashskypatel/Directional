@@ -1,3 +1,8 @@
+# 2026-10-30 — RA-176 audit of TB52C-REV: A3 atlas exactness (O15)
+
+- [RA-176](.agents/Directional/Architecture_M6_CP3_PLAN_A3_Atlas_Exactness_TB52C_REV_Audit_20261030.md): RA-175 evidence and the TB52 inputs re-verified (49/49; prefixes byte-identical; self-check 853 with deferred=86). Row 19 is red because of FMA-dependent A3 decisions at exact ties, not a producer change. An arm64 build passes it; `-ffp-contract=off` on `FieldTransportAtlas.cpp` reproduces the Linux CI result.
+- Added **O15** to the CP3-exit conditions: A3 topology decisions must be exact, with a deterministic tie rule. Owner: `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` (Review track, after the RP-01 terminal-path DEFN). The TB52 manifest and ledger v2 are unchanged; next is `M6-CP3-TB52-RP01-FULL-GATE-EXEC`.
+
 # 2026-10-30 — RA-175 independent TB52C API-binary census Review
 
 - [RA-175](.agents/Directional/Architecture_M6_CP3_TB52C_REV_API_Binary_Census_Independent_Disposition_20261030.md): independently verified immutable TB52C 23/23 native logs, 49/49 checksum entries, 22 PASS/1 RED; row19's expected atlas source-vertex fixture stops in tracing instead. Defer row19 without altering its assertion or calling it stable.
