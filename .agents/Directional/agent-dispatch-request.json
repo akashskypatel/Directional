@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p12-first-locus-20261030-v1",
+  "request_id": "m6-cp3-defn-p12-chart276-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p12-first-locus-20261030-v1",
-  "file_id": "1kQ2ZWUITn0j79OYCqcJsXV1zNJ59yUur",
-  "patch_sha256": "1872498e927190f35d2d468b7ea4bea20388137ec1d863b08e10114478c7b4c9",
-  "base_sha": "8bfdebe5a867aa75b8a82df019130306ea9a5c64",
+  "mailbox_key": "m6-cp3-defn-p12-chart276-20261030-v1",
+  "file_id": "1AGAdLQ8Msacx5XdmDL6d-HV2tTOb2BO9",
+  "patch_sha256": "390a54ea44d28744916743ca50551f73521f65d421a80f6aad2316458e11f7ea",
+  "base_sha": "82fd71e1284cbec8406c71c288350998d7301835",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): pin P12 missing two-carrier, torus-turn and hard-rail first failures",
+  "commit_message": "docs(directional): adjudicate stale source-chart identity oracle in P12 row276",
   "retention_days": 14
 }
