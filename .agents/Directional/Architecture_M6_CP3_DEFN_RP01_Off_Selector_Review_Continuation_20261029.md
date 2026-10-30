@@ -1,3 +1,10 @@
+## 2026-10-30 P07 fixture-selection and failed-variant test audit (runtime-free)
+
+- Independently compared immutable `raw/54.log` and `raw/61.log` to `tests/PatchDescriptorMilestoneETests.cpp` on semantic source `b890c77e...`.
+- Case 54 creates a deliberately invalid two-component complex but erroneously invokes completion with untouched `fixture.complex/V/F`, making the claimed invalid-complex negative control vacuous; require a future CB to call the complete `invalid` tuple and retain typed fail-closed, no-partial-output checks plus positive control.
+- Case 61 fails `is_produced()` and then dereferences `completion.product()` after a soft `EXPECT_TRUE`, throwing an avoidable `std::get` exception. Require typed rejection diagnostics and a hard guard, retaining all original successful-product postconditions. Underlying completion rejection cause still unknown.
+- These source-grounded test defects do not authorize suppressing any red, retiring tests, or weakening production. P07 rows stay 11/11, off-gate non-PASS 85/85, accepted CP2 491/491; TB50 508/508 reviewed only, TB51 916-row draft not executable.
+
 ## 2026-10-30 P05/P06 and size-gradient diagnostic continuation (runtime-free)
 
 - Frozen source snapshot `b890c77efe368b97bba6239a8a23cbd6a0cfbe7a` (Actions run `40995272805`, source artifact `12950654284`; outer SHA-256 `608c77782d300fe92ad02bb2b5a5eb8a73350720439f4a40d69691031cac1df4`) checked against embedded metadata and tarball hash. Reused immutable TB50C-R2 `raw/8,15,16,17,35,48,390.log` rather than rerunning tests.
