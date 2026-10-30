@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p07-registry-20261030-v1",
+  "request_id": "m6-cp3-defn-p12-first-locus-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p07-registry-20261030-v1",
-  "file_id": "1d0WKt56b0KdHP8AgLzKlR7i8CmXGuBpI",
-  "patch_sha256": "d780bce94e1ab053a57fa4dfae2fe6d026586d9e43c5abd062014adf01fb0901",
-  "base_sha": "d80249a9ae10c866d3cc446fa73b0a128d57c2b9",
+  "mailbox_key": "m6-cp3-defn-p12-first-locus-20261030-v1",
+  "file_id": "1kQ2ZWUITn0j79OYCqcJsXV1zNJ59yUur",
+  "patch_sha256": "1872498e927190f35d2d468b7ea4bea20388137ec1d863b08e10114478c7b4c9",
+  "base_sha": "8bfdebe5a867aa75b8a82df019130306ea9a5c64",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): identify missing exact ownership-registry fixture prerequisites in off-gate P07",
+  "commit_message": "docs(directional): pin P12 missing two-carrier, torus-turn and hard-rail first failures",
   "retention_days": 14
 }
