@@ -1,3 +1,9 @@
+## 2026-10-30 P03 repeated-mesh boundary-cache source audit (same DEFN; no native execution)
+
+- Reused verified semantic source snapshot `050fef8181633e0bc3a9dea329a07035fe6e19eb` (no code/test drift through applied P14 review commit `4071936ece52e8e7d1c4088eb3d1f709f3d632c9`) and immutable TB50C-R2 `raw/157.log`, `raw/163.log`, `raw/313.log`.
+- Independently identified a **real source-state defect**: `TriMesh::compute_edge_quantities` does not clear `boundaryLoops` before repeatedly appending; `TriMesh::set_mesh` invokes this every time, and non-SurfaceCells preconditioning repeats `set_mesh` on the same mesh. A1 source-boundary publication rejects duplicate canonical loops by design, matching the reported exception *when* this path is reached. Source-defined `numGenerators` also consumes stale boundary counts. Preserve the A1 duplicate guard; future CB repair must reset stale cache and add exact repeated-init positive/negative controls.
+- This does **not** establish that any particular P03 immutable log reached the repeated-init branch. Row 157 contains a disabled call before the enabled call; row 313 uses a different 2-triangle fixture. Their logs do not report a first guard or line of origin. All three remain RED, no source/test change or accepted-green regression claimed. Zero retired; 85 off-gate failures unchanged; 916-case TB51 draft not executable, same DEFN continues.
+
 ## 2026-10-30 P14 two independent positive-validation fixture prerequisites (same DEFN; no runtime)
 
 - Source authority reused: immutable snapshot `050fef8181633e0bc3a9dea329a07035fe6e19eb` from run `40997745341`, verified 5986/5986 archived hashes; GitHub compare through entry `6c8dc11e60478f73aaf2735ee1b88cc261f3ac15` changed only two review documents and STATUS/dispatcher control, with no C++ or test drift. Original TB50C-R2 `raw/373.log`/`raw/401.log` report only `accepted=false`, not typed first cause.
