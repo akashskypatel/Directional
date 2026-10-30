@@ -1,2 +1,0 @@
-# DEFN continuation temporary-state cleanup
-.agents/connector-triggers/source-snapshot/20261029-defn-off-selector-coverage.txt
