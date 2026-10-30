@@ -1,3 +1,10 @@
+## 2026-10-30 P10b case243 exact seed/oracle correction (same DEFN, no runtime)
+
+- Independently checked `raw/243.log`, source test `FieldAlignedCurveNetworkTests.cpp:88–101,172–194,11582–11636`, A3 branch-frame sort/gauge `FieldTransportAtlas.cpp:233–313,1950–1961`, and A4 seed guard `SurfaceCellTracing.cpp:1451–1506` against verified archive `050fef8181633e0bc3a9dea329a07035fe6e19eb`.
+- Corrects an earlier erroneous assertion: test `ASSERT_FALSE(error.vertexTransitStates.empty())` passed; the error has **no `Evaluated` state**, but diagnostic vector is **nonempty**.
+- Static first-frame/first-branch +X transport gives reversed arrival -X, outside the first triangular wedge at center4 (`y<0`). Production `SeedDirectionOutsideClosedWedge` fail-close preflight precedes evaluation. Exact native diagnostic subtype remains unprinted, and a successful valid-seed vertex transit is not proved.
+- Future CB: source-inward positive plus original/outside-wedge negative and missing-frame negative, typed first-guard checks, retained real star/transport oracle; preserve all five P10 cases, 85 total non-PASS, zero retirements. TB51 916 draft non-authoritative. No source/test/selector/native changes or successor work.
+
 ## 2026-10-30 P05b/P06 five-case shared invalid input region labels (same DEFN; source audit only)
 
 - `FlowRepStrandsPhase15Tests.cpp` rows 15/16/17/35/48 all construct one triangle with genuine A2 authority component 3 and sheet 5; the builder's sole topology region has ID **0**. Shared `endpoint_completion_arc` incorrectly copies its `sourceComponent` parameter into a **TopologyRegionId(3)** on every retained input arc; row 15 also expects generated region 3. The two distinct typed IDs are not interchangeable. This input-authority defect is independently proved across all five, separately from case 8's arrangement-stage rejection.
