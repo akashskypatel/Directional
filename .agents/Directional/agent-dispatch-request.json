@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-P08-preflight-20261030-v1",
+  "request_id": "m6-cp3-defn-P09-P10-source-audit-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-P08-preflight-20261030-v1",
-  "file_id": "1Ho5lLRa3mXVco5ahLgj11ieIgQ5WVekI",
-  "patch_sha256": "7a1717b38545f49d55be5530af7336d17545469d9b43f8078e51ec81c3f8328a",
-  "base_sha": "b2d2aec016d344c1f63db3ee260da1e958d43ca0",
+  "mailbox_key": "m6-cp3-defn-P09-P10-source-audit-20261030-v1",
+  "file_id": "1V4r2trPEz3BRt41ecM1DOHnO0rJ7fIsi",
+  "patch_sha256": "125404bad9ddf7aebb456b74b0cd60834650fedb49fb9b287558e2add13b0d3c",
+  "base_sha": "9fe12a26133a1fa90b135b499e83b92b8bf120ad",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): prove missing source authority in 13 simplification fixtures",
+  "commit_message": "docs(agent): independently classify P09 diagnostic projection and P10 atlas stages",
   "retention_days": 14
 }
