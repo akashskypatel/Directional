@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p03-boundary-cache-20261030-v1",
+  "request_id": "m6-cp3-defn-p02a-incidence-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p03-boundary-cache-20261030-v1",
-  "file_id": "1qw5qzXMTQq4_D6IDfksx_W-j0n2DEy6_",
-  "patch_sha256": "bb804ce1fdb310b9f95b140a13833e5db6fb31e63968a98d0fc313ef0b9eb303",
-  "base_sha": "4071936ece52e8e7d1c4088eb3d1f709f3d632c9",
+  "mailbox_key": "m6-cp3-defn-p02a-incidence-20261030-v1",
+  "file_id": "1qImmeRtj0KutfZEhfZkP5S2OUvgzifZC",
+  "patch_sha256": "40214d6428d5186a319e4a5f67dfb05ec94dbd53bb756340667063306b3dbcfd",
+  "base_sha": "dba608e044c11fbdaaa7f70eb76674130b40d2ef",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): prove repeated TriMesh initialization stale boundary loops",
+  "commit_message": "docs(directional): localize P02a port count mismatch to missing outgoing incidence",
   "retention_days": 14
 }
