@@ -1,5 +1,13 @@
 # DEFN off-selector review continuation — exact WIP preservation
 
+## 2026-10-30 further P09/P10 source-audit continuation (runtime-free)
+
+- Frozen exact source snapshot `9fe12a26133a1fa90b135b499e83b92b8bf120ad` from run 40986100897, artifact `12946688157`, verified archive digest `3cc27449cc5b272aaf87231504837a361d04bbf02dc8f2ea751fd43103812a65`. Reused immutable 408-case TB50C-R2 logs; no native execution.
+- **P09 row 175 proved:** `SurfaceCutGraphError.singularity` is provided and `SurfaceCellFailureLocusDiagnostics` supports it, but production `project_surface_cut_graph_failure_locus` never copies it. Raw result misses exactly `singularity=0` of 17 expected tokens. Minimal production diagnostic projection correction plus present/absent falsifiers defined in the working inventory. Other P09 rows 192,344,350 remain separate unresolved topology/ownership observations.
+- **P10 partition:** 235/236/237/241 reject at `FieldTransportAtlas::make` with no logged typed A3 failure code, before intended vertex-transit checks; row 243 gets past atlas construction but rejects at vertex-transit seed. Do not merge causal work or weaken typed authority.
+- 85 original identities unchanged; CP2 491/491, TB50 508/508 candidate, stable 66/17/49 debt 1 unchanged. Zero retirements. Proposed TB51 916-case plan not frozen; DEFN same turn continues. This record is **not** review closeout.
+
+
 ## 2026-10-30 resumed review progress (source and artifact verified)
 
 - Continued the same unfinished DEFN; preserved initial start time. No native execution or Code + Build work.
