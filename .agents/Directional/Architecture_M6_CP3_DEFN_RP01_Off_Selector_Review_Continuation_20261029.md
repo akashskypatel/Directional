@@ -1,3 +1,8 @@
+## 2026-10-30 P10a four folded-cone A3 atlas contradictions (same DEFN; static source, no native work)
+
+- Verified frozen source archive `050fef8181633e0bc3a9dea329a07035fe6e19eb` and original `raw/235,236,237,241.log`. All four tests use the same three-right-angle cone, zero-effort hand-authored field and radial matching 2,2,0. Local center curvature is +pi/2, so A3's `(signed effort + 4*curvature)/(2*pi)` yields integer turning lift +1; radial matching composes to 0 modulo 4 (2+2+0), independent of traversal signs. Source A3 explicitly requires composition equal lift modulo 4; these fixtures necessarily contradict that check if it is reached. The helper also omits nonzero singularity metadata, requiring separate validation. This is source proof of a defective positive-source fixture, NOT evidence the first native error was `CycleTransportMismatch`: raw logs print only `atlasBuild=false`.
+- Future CB: instrument exact typed first A3 error, construct independently certified valid source field/transport/singularity with unchanged folded cone and original vertex-transit oracles, retain contradictory original as typed negative plus wrong-singularity and face-order controls. Preserve strict A3 validation; no source/fixture/test edits now. All four remain RED, no retirements, TB51 916 is a non-executable proposal, no successor.
+
 ## 2026-10-30 P01 forced-FAIL probes independently split by observed stage (same DEFN)
 
 - `raw/182` and `raw/196` duplicate a prescribed-sphere source cut-graph failure (`NoCarrierMatch`, trace 2/event 30) after 24 traces/56 events; the two tests have distinct report/precondition contracts but unconditional `FAIL()` gives no product-regression evidence.
