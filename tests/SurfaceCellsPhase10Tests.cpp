@@ -8285,52 +8285,6 @@ TEST(SurfaceCellAuthorityContractCutover,
                 "a2bProbeFailure=ambiguous-terminal-contact"));
 }
 
-// RA-46.5: sever one actual non-hard source-star step that a produced
-// terminal certificate needs. The A4 consumer must reject before the later
-// checked-factory MissingTerminalA3Path check can run. Execution is deferred.
-TEST(SurfaceCellAuthorityContractCutover,
-     MissingTerminalA3PathRejectsAtFirstA4ConsumerPredicate) {
-  const auto fixture = build_rectangular_hard_rail_phase_front();
-  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            fixture.network.phaseFront.disposition())
-      << hard_rail_first_failure_detail(fixture.network);
-  const auto &front = fixture.network.phaseFront.product();
-  std::optional<directional::authority::SourceEdgeTopologyKey> neededSpoke;
-  for (const auto &route : front.hardRailRouteCertificates()) {
-    for (const auto &endpoint : route.endpoints) {
-      for (const auto &path : endpoint.contactPaths) {
-        if (!path.empty() && !neededSpoke.has_value())
-          neededSpoke = path.front().edge;
-      }
-    }
-  }
-  ASSERT_TRUE(neededSpoke.has_value())
-      << "the consumer oracle requires a produced non-hard terminal A3 step";
-  auto blocked = fixture.hardFeatureEdges;
-  ASSERT_TRUE(blocked.insert(*neededSpoke).second)
-      << "the selected source-star step must originally be non-hard";
-
-  const auto rejected = build_fixed_plan_rectangular_hard_rail_network(
-      fixture, 1.0, nullptr, &blocked);
-  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
-            rejected.phaseFront.disposition());
-  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
-                InvalidHardRailRouteCertificate,
-            rejected.phaseFront.rejection_reason());
-  const auto *failure = rejected.phaseFront.rejection();
-  ASSERT_NE(failure, nullptr);
-  EXPECT_EQ(directional::geometry::SurfaceHardRailRouteFailureLocus::
-                EndpointAttachment,
-            failure->hardRailRouteLocus);
-  EXPECT_NE(std::string::npos,
-            failure->hardRailRouteDiagnostic.find(
-                "a2bProbeFailure=missing-terminal-A3-path"))
-      << failure->hardRailRouteDiagnostic;
-  EXPECT_EQ(std::string::npos,
-            failure->hardRailRouteDiagnostic.find(
-                "a2bProbeFailure=no-exact-terminal-corner"));
-}
-
 // RA-169 C1: a hard-feature edge outside every published rail chain is a
 // torn A2b set. Network ingress rejects it before any A4 consumer reads it;
 // the same full provenance without the orphan still produces.

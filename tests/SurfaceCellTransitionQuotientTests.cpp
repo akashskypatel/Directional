@@ -9922,21 +9922,46 @@ TEST(M6CP3, TerminalRailContactPathsUseTypedSourceStarA3) {
   ASSERT_TRUE(fixture.fieldTransportAtlas.has_value());
   const auto &atlas = *fixture.fieldTransportAtlas;
   const auto &topology = front.sourceTopologyRegions();
-  int attestedContacts = 0;
-  int nonemptySidePaths = 0;
+  // RA-84 endpoint classes: T is a chain terminal, R a strict interior chain
+  // vertex, I an interior carrier point. T and R own an A2b source-star germ
+  // around their vertex; I owns none.
+  int terminalPaths = 0;
+  int railVertexPaths = 0;
+  int interiorEndpoints = 0;
   for (const auto &route : front.hardRailRouteCertificates()) {
     const auto found = front.hardRailTerminalContacts().find(route.rail);
     if (found == front.hardRailTerminalContacts().end()) continue;
+    const auto chain = front.hardRailOpenChains().find(route.rail);
+    ASSERT_NE(chain, front.hardRailOpenChains().end());
     ASSERT_EQ(route.junctions.size() + 1U, route.route.oriented_steps().size());
     for (const auto &endpoint : route.endpoints) {
-      ASSERT_TRUE(endpoint.terminalVertex.has_value());
-      const auto vertex = *endpoint.terminalVertex;
-      EXPECT_TRUE(vertex == found->second.endpoints[0] ||
-                  vertex == found->second.endpoints[1]);
+      ASSERT_FALSE(endpoint.terminalVertex && endpoint.railVertex);
+      if (!endpoint.terminalVertex && !endpoint.railVertex) {
+        EXPECT_TRUE(endpoint.contactPaths[0].empty());
+        EXPECT_TRUE(endpoint.contactPaths[1].empty());
+        EXPECT_EQ(endpoint.terminalCarrier.firstFace, endpoint.firstAttachment);
+        EXPECT_EQ(endpoint.terminalCarrier.secondFace, endpoint.secondAttachment);
+        ++interiorEndpoints;
+        continue;
+      }
+      const auto vertex = endpoint.terminalVertex ? *endpoint.terminalVertex
+                                                  : *endpoint.railVertex;
+      EXPECT_EQ(endpoint.terminalVertex.has_value(),
+                vertex == found->second.endpoints[0] ||
+                    vertex == found->second.endpoints[1]);
+      if (endpoint.railVertex) {
+        const auto &vertices = chain->second.vertices;
+        const auto position = std::find(vertices.begin(), vertices.end(), vertex);
+        EXPECT_TRUE(position != vertices.end() && position != vertices.begin() &&
+                    position + 1 != vertices.end());
+      }
+      EXPECT_TRUE(endpoint.terminalCarrier.edge.first() == vertex ||
+                  endpoint.terminalCarrier.edge.second() == vertex);
       for (std::size_t side = 0U; side < 2U; ++side) {
         auto at = side == 0U ? endpoint.firstAttachment : endpoint.secondAttachment;
         const auto &steps = endpoint.contactPaths[side];
-        if (!steps.empty()) ++nonemptySidePaths;
+        if (!steps.empty())
+          ++(endpoint.terminalVertex ? terminalPaths : railVertexPaths);
         for (const auto &step : steps) {
           EXPECT_EQ(at, step.firstFace);
           EXPECT_TRUE(step.edge.first() == vertex || step.edge.second() == vertex);
@@ -9954,11 +9979,11 @@ TEST(M6CP3, TerminalRailContactPathsUseTypedSourceStarA3) {
         EXPECT_EQ(at, side == 0U ? endpoint.terminalCarrier.firstFace
                                   : endpoint.terminalCarrier.secondFace);
       }
-      ++attestedContacts;
     }
   }
-  EXPECT_GT(attestedContacts, 0) << "A2b terminal ownership must be produced";
-  EXPECT_GT(nonemptySidePaths, 0) << "A2b must actually transport a nonrail terminal germ";
+  EXPECT_GT(terminalPaths, 0) << "A2b must transport a nonrail germ at a T endpoint";
+  EXPECT_GT(railVertexPaths, 0) << "A2b must transport a nonrail germ at an R endpoint";
+  EXPECT_GT(interiorEndpoints, 0) << "the fixture must produce an I endpoint";
 }
 
 TEST(M6CP3, CheckedFactoryReconstructsProducedTerminalA2bStarUniqueness) {
@@ -10330,23 +10355,71 @@ TEST(M6CP3, CheckedFactoryRejectsForgedTerminalA2bSideGerm) {
   expect_phase_front_product_error(
       checked_with_routes_and_contacts(original, foreignContact, front.hardFeatureEdges()), expected);
 
-  // Remove exactly one independently produced non-hard A3 terminal spoke
-  // from admissible star transport by marking it as a barrier. Unlike
-  // modifying the certificate attachment, this preserves the source-owned
-  // front-face equality checks and reaches the actual missing-path guard.
-  // RA-46 establishes uniqueness, so severing a genuine required step
-  // leaves no alternate non-hard A3 route to the hard carrier.
+  // A required non-hard spoke promoted to a barrier is not a C1-valid
+  // stimulus. On this 3x3 source each region's non-hard dual graph is a tree,
+  // so the checked factory rejects the torn gauge span before any source-star
+  // path check (RA-178).
   const auto blockedSpoke =
       original[route].endpoints[endpoint].contactPaths[side].front().edge;
   auto blockedHardEdges = front.hardFeatureEdges();
   ASSERT_FALSE(blockedHardEdges.contains(blockedSpoke));
   blockedHardEdges.insert(blockedSpoke);
-  const auto unreachableResult = checked_with_routes_and_contacts(
+  const auto tornResult = checked_with_routes_and_contacts(
       original, front.hardRailTerminalContacts(), blockedHardEdges);
+  const auto *tornError = std::get_if<
+      directional::geometry::SurfacePhaseFrontProductError>(&tornResult);
+  ASSERT_NE(nullptr, tornError);
+  EXPECT_EQ(expected, tornError->code);
+  EXPECT_FALSE(tornError->sourceAuthorityDetail.has_value());
+  EXPECT_EQ(0U, tornError->sourceAuthoritySite.rfind("gauge-pin-span;", 0))
+      << describe_phase_front_product_error(*tornError);
+
+  // Keep every hard edge, chain and contact intact; move one T-endpoint trace
+  // attachment to the source face across the hard carrier at the same exact
+  // terminal vertex. Only the A2b sector is wrong, and the non-hard star has
+  // no path back to that side's carrier face.
+  const auto &terminal = original[route].endpoints[endpoint];
+  ASSERT_TRUE(terminal.terminalVertex.has_value())
+      << "the wrong-sector oracle requires a produced T endpoint";
+  const auto across = side == 0U ? terminal.terminalCarrier.secondFace
+                                 : terminal.terminalCarrier.firstFace;
+  const auto acrossRow = front.sourceTopologyRegions().row_for_topology(across);
+  ASSERT_TRUE(acrossRow.has_value());
+  const int acrossFace = static_cast<int>(acrossRow->index());
+  int corner = -1;
+  for (int i = 0; i < 3; ++i)
+    if (fixture.mesh.F(acrossFace, i) ==
+        static_cast<int>(terminal.terminalVertex->index()))
+      corner = i;
+  ASSERT_GE(corner, 0);
+  auto wrongSectorEdges = front.edges();
+  auto &traceEdge = wrongSectorEdges[static_cast<std::size_t>(
+      side == 0U ? original[route].firstFrontEdge
+                 : original[route].secondFrontEdge)];
+  auto &attachment = endpoint == side ? traceEdge.from : traceEdge.to;
+  attachment.face = acrossFace;
+  attachment.barycentric = Eigen::RowVector3d::Zero();
+  attachment.barycentric[corner] = 1.0;
+  auto wrongSector = original;
+  auto &moved = wrongSector[route].endpoints[endpoint];
+  (side == 0U ? moved.firstAttachment : moved.secondAttachment) = across;
+  const auto unreachableResult =
+      directional::geometry::SurfacePhaseFrontProduct::make(
+          front.gridU(), front.gridV(), front.sourceTopologyRegions(),
+          fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+          &*fixture.fieldTransportAtlas,
+          front.isolationSeamTransportCertificates(), front.periodicHolonomies(),
+          front.boundedDiskBoundaryPhases(), wrongSectorEdges, front.events(),
+          front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
+          front.sourceFaceBranchRotations(), front.hardRailFieldTransitions(),
+          wrongSector, front.hardRailTerminalContacts(),
+          front.hardRailClosedChains(), front.hardRailOpenChains());
   const auto *unreachableError = std::get_if<
       directional::geometry::SurfacePhaseFrontProductError>(&unreachableResult);
   ASSERT_NE(nullptr, unreachableError);
   EXPECT_EQ(expected, unreachableError->code);
+  EXPECT_EQ(0U, unreachableError->sourceAuthoritySite.rfind("endpoint-a3-path;", 0))
+      << describe_phase_front_product_error(*unreachableError);
   ASSERT_TRUE(unreachableError->sourceAuthorityDetail.has_value());
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontSourceAuthorityDetail::
                 MissingTerminalA3Path,
