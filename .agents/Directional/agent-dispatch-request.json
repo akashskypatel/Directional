@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-typed-registry-evidence-20261030-v1",
+  "request_id": "m6-cp3-defn-P08-preflight-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-typed-registry-evidence-20261030-v1",
-  "file_id": "1IWl056bBT0ckiUn4N5wvCJZvNeMH0p_f",
-  "patch_sha256": "b7ae53df735b217367a398a7f852c12d20f5823cbf7c7c7d5606839e6518310b",
-  "base_sha": "8522436e10c153502f89e1a595eed31823f65ff7",
+  "mailbox_key": "m6-cp3-defn-P08-preflight-20261030-v1",
+  "file_id": "1Ho5lLRa3mXVco5ahLgj11ieIgQ5WVekI",
+  "patch_sha256": "7a1717b38545f49d55be5530af7336d17545469d9b43f8078e51ec81c3f8328a",
+  "base_sha": "b2d2aec016d344c1f63db3ee260da1e958d43ca0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): adjudicate generic chart and registry preflight census failures",
+  "commit_message": "docs(agent): prove missing source authority in 13 simplification fixtures",
   "retention_days": 14
 }
