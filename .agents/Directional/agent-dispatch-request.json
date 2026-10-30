@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-P09-P10-source-audit-20261030-v1",
+  "request_id": "m6-cp3-defn-p11-p12-authority-audit-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-P09-P10-source-audit-20261030-v1",
-  "file_id": "1V4r2trPEz3BRt41ecM1DOHnO0rJ7fIsi",
-  "patch_sha256": "125404bad9ddf7aebb456b74b0cd60834650fedb49fb9b287558e2add13b0d3c",
-  "base_sha": "9fe12a26133a1fa90b135b499e83b92b8bf120ad",
+  "mailbox_key": "m6-cp3-defn-p11-p12-authority-audit-20261030-v1",
+  "file_id": "1VZ1_uWQvIXTtLKSggubqTAHk6oH04Fqs",
+  "patch_sha256": "5cbae1c5b0c8e810b62fbdf1b9578178613c127e5f8d076eb668fc40256c5c76",
+  "base_sha": "9967d7d0052bdadc67428cbc23ecd63a0232887a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): independently classify P09 diagnostic projection and P10 atlas stages",
+  "commit_message": "docs(agent): distinguish P11 terminal ownership and P12 ignored atlas ingress",
   "retention_days": 14
 }
