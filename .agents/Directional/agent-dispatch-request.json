@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p05-region-correction-20261030-v1",
+  "request_id": "m6-cp3-defn-p05b-p06-region-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p05-region-correction-20261030-v1",
-  "file_id": "1rIksFwmr77H4UF-Mru7_hxb1lBiqQw99",
-  "patch_sha256": "37d74abceccc4aedba9bf089995959d7d352300ea00c53681bb0b4e97116ac2e",
-  "base_sha": "6cbe7f1d5d3bd4bc454355dcacfa6d7a213848d4",
+  "mailbox_key": "m6-cp3-defn-p05b-p06-region-20261030-v1",
+  "file_id": "1xrAAiye2Yw1zsBXab94S48fjHrbJtpZS",
+  "patch_sha256": "4f1bf04d79cb263987d3d840d02d280a25776832c63934be753f03270e8d97fd",
+  "base_sha": "b3c01adcc0a238b4a9d629dcbfd2194fa09f46ef",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): prove case 8 component versus region fixture mismatch",
+  "commit_message": "docs(directional): identify source-region mismatch in five FlowRep fixtures",
   "retention_days": 14
 }
