@@ -1,0 +1,2 @@
+# Clean up one consumed source snapshot trigger for DEFN P09/P13 review
+.agents/connector-triggers/source-snapshot/20261030-defn-p09-p13-coverage.txt
