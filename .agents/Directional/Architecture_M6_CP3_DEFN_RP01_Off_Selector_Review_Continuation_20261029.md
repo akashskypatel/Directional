@@ -1,3 +1,8 @@
+## 2026-10-30 P14 row399 split numeric geometry from typed rejection (same DEFN; no runtime)
+
+- Exact `raw/399.log`: `std::isinf(quadToSourceMax)` FALSE, while the reverse-max-infinite and `!accepted` test assertions have no failures. Source's numeric 3x3 sampling (`SurfaceMeshOptimizer.cpp:2507-2555`) falls back from missing compatible chart to *unscoped* nearest-source geometry; the fixture omitted `vertexChartAuthority` and intentionally alternated corner sheet IDs. It can therefore report finite geometric distance while the separate strict source-authoritative validator rejects (`:2782-2852`). Exact strict issue subtype was not logged.
+- Preserve normative choice for a dedicated CB: is numeric `quadToSourceMax` authority-scoped (then forbid unscoped fallback with explicit sentinel), or merely geometric diagnostic (then use independent typed reject oracle, retain finite-geometric control)? No acceptance relaxation or test retirement; P14 still 9 RED, P12 8 RED; whole census 85 non-PASS. No native run, all-retained TB51 916-case draft still non-executable; current DEFN not released.
+
 ## 2026-10-30 P12 typed source-chart versus field-gauge oracle (same DEFN; no native run)
 
 - `raw/276.log` emits 0 for source faces 3 and 10 and the test expects 1/2 in both boundary segments and lattice typed chart occurrence. The source code proves the fixture only rotates raw field branch labels, while A2 places all 24 connected faces in one component/sheet, no hard barriers. Canonical source-chart graph derives exactly one chart ID 0 from topology, independently of raw field branch rotations (`SourceChartTransitions.h:179-194,595-750`). Therefore case 276 is an **invalid test expectation**, not a measured accepted-prefix regression.
