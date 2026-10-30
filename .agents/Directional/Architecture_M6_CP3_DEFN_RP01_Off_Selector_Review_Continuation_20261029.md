@@ -1,3 +1,10 @@
+## 2026-10-30 P11 terminal/contact witness audit (runtime-free; same DEFN)
+
+- Verified one exact immutable source snapshot from source event `050fef8181633e0bc3a9dea329a07035fe6e19eb` (run `40997745341`, artifact `12952540027`, outer SHA-256 `1eeed5ab92e126c164bfe2bdd0877d1b0eebeea838b4e47912db7d11b8569e9f`), verified 5986/5986 source hashes; reused `raw/223.log`, `raw/225.log` from the 822/822-verified TB50C-R2 archive. No native work.
+- **Row 223:** test adds a genuine A2b spoke as an additional `hardFeatureEdges` barrier, leaving original open/closed rail-chain coverage and terminal receipt unchanged. Factory checks those earlier cover obligations before the claimed `MissingTerminalA3Path`, so a missing `sourceAuthorityDetail` with `InvalidSourceAuthority` cannot prove the A3 path check was exercised. Exact first guard (`open-rail-chain` versus `open-rail-cover`) is unobserved. Separate valid-cover A3-negative and invented-barrier cover-negative controls.
+- **Row 225:** test universally asserts `endpoint.terminalVertex`, but typed source contract and producer support `railVertex` or neither vertex field for legitimate carrier-interior endpoint, with checked factory validation. The raw log does not say which nonterminal class was hit. Require independently classified endpoint subtypes, real terminal path coverage, and proper nonterminal validations instead of relaxing factory checks.
+- P11 now two witness/oracle defects, one missing A2b provenance preflight, one stale typed reason, and two unresolved candidates (265/331). All 85 original non-PASS records remain; zero retirement; 508/508 TB50 candidate and CP2 491/491 accepted unchanged. TB51 916-case file remains NON-AUTHORITATIVE; continue this exact DEFN, no successor CB/TB.
+
 ## 2026-10-30 P07 fixture-selection and failed-variant test audit (runtime-free)
 
 - Independently compared immutable `raw/54.log` and `raw/61.log` to `tests/PatchDescriptorMilestoneETests.cpp` on semantic source `b890c77e...`.
