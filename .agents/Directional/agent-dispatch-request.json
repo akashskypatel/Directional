@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p11-isolation-20261030-v1",
+  "request_id": "m6-cp3-defn-p07-registry-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p11-isolation-20261030-v1",
-  "file_id": "1Im038Go1A0UI9jOZSkpMJz3RkZia8KdJ",
-  "patch_sha256": "e8003d3c366c7c2e8259b83bc70db543a21c1e2f8e3f771eef82fe79caaae8f7",
-  "base_sha": "65c4e6cec6dfc5c56cf5e43e43e25c131003538e",
+  "mailbox_key": "m6-cp3-defn-p07-registry-20261030-v1",
+  "file_id": "1d0WKt56b0KdHP8AgLzKlR7i8CmXGuBpI",
+  "patch_sha256": "d780bce94e1ab053a57fa4dfae2fe6d026586d9e43c5abd062014adf01fb0901",
+  "base_sha": "d80249a9ae10c866d3cc446fa73b0a128d57c2b9",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): replace route-only isolation lineage oracle with typed seam witness definition",
+  "commit_message": "docs(directional): identify missing exact ownership-registry fixture prerequisites in off-gate P07",
   "retention_days": 14
 }
