@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb51-rp01-evidence-docs-20261030-v1",
+  "request_id": "tb51-independent-review-documentation-20261030-a1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb51-rp01-evidence-docs-20261030-v1",
-  "file_id": "1fjhDc7DJtDPUQ2S5W6_2bWsptpYylNLY",
-  "patch_sha256": "31326c229cd142428e4b2de2a75291bb961e7c31ff798366254cfd7bdc60e6e3",
-  "base_sha": "4812d228a4e7f494ac56b0347d4058bbc065d42e",
+  "mailbox_key": "tb51-independent-review-documentation-20261030",
+  "file_id": "1HvmFcHWU38vybeNM_oTTTcW8bY82mVL2",
+  "patch_sha256": "7dcad36441f81c46dce2c13f4fe47486ae6fe665c1af36422125251c171378b9",
+  "base_sha": "3722673f3295c8687e78b920774b722bc61046d2",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record TB51 immutable full-gate evidence",
+  "commit_message": "docs(directional): independently review TB51 full gate and deferred inventory",
   "retention_days": 14
 }
