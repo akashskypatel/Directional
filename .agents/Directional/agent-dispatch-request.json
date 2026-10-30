@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p14-metric399-20261030-v1",
+  "request_id": "m6-cp3-defn-p14-boundary373-401-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p14-metric399-20261030-v1",
-  "file_id": "1xG_vzziJMDyVvqm7ZgMlOcbPmGFMezSk",
-  "patch_sha256": "7539901fbf15dd6daa8ceb118582a41b8b07ebfd4d9a599d6e20b0c3bdf6a966",
-  "base_sha": "e8141c0b39fc06ecd3886a3aad476425430625f2",
+  "mailbox_key": "m6-cp3-defn-p14-boundary373-401-20261030-v1",
+  "file_id": "17KCk5N_6E3W-lH-vnPfmfqv_ghlmoqbR",
+  "patch_sha256": "907b2835d977834fa50e5372e92642d26aa5e3bb25624ba1f479b985baf6b0e1",
+  "base_sha": "6c8dc11e60478f73aaf2735ee1b88cc261f3ac15",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): pin P14 numeric projection fallback versus typed sheet rejection",
+  "commit_message": "docs(directional): prove P14 strict boundary-authority fixture prerequisites",
   "retention_days": 14
 }
