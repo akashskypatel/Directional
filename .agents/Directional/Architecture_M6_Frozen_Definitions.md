@@ -1,3 +1,9 @@
+## RA-178 — RP-01 terminal-path dispositions and O9 ruling (2026-10-30)
+
+- **RP-01 (amends RA-174.3):** it closes at a reviewed gate that passes the CB54-repaired rows 223 and 225 with `membership=938`. Row 261 is retired: its target, the A4 producer predicate `missing-terminal-A3-path`, is accepted-defensive, and its stimulus is gated row 507.
+- **`MissingTerminalA3Path`:** the checked-factory guard is witnessed by a C1-valid wrong-sector attachment (223). The producer predicate has no produced input and no fault seam (O4).
+- **O9:** the A4 junction-certificate path has no produced input; produced open-rail routes are single-carrier (D2). The code is kept as accepted-defensive. Falsifier: any produced route with more than one oriented step. Owner: the P13 probe DEFN.
+
 ## RA-176 — A3 atlas exactness obligation O15 (2026-10-30)
 
 - **O15 (CP3 exit; not an RP-01 blocker):** every topological decision in the A3 field-transport atlas (face gauge, corner-sector membership, and any other `kBranchTopologyTolerance`/`atan2` decision) uses exact predicates on the stored doubles, or a certified filter that defers to exact. Ties follow a recorded deterministic rule (half-open sectors `[start, end)`). `mechanical_feature` must give the same atlas outcome with `-ffp-contract=on` and `off`.

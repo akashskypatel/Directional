@@ -1,3 +1,9 @@
+# 2026-10-30 — RA-178 RP-01 terminal-path witness DEFN and audit of TB52-REV
+
+- [RA-178](.agents/Directional/Architecture_M6_CP3_DEFN_RP01_Terminal_Path_Witnesses_TB52_REV_Audit_20261030.md) confirms RA-177's TB52 853/0 candidate. **F1:** RA-174.3 and RA-177 asked for row 261 to be repaired, but its target predicate is accepted-defensive (RA-170.3 P1-a). **F2:** 223 is rejected at `gauge-pin-span`, not at `open-rail-cover`.
+- Local probes reproduce all three CI failures. 225's oracle predates the RA-84 T/R/I classes. 223's barrier stimulus cannot reach `MissingTerminalA3Path` on 3×3, but a C1-valid wrong-sector attachment does. 261 publishes no contacts; with contacts it duplicates gated row 507 → retired. O9: every produced route is single-step, so it is removed from RP-01 and P13 owns the falsifier.
+- CB54 exact test patch `16a64128…` (`90 17` / `0 46`) is probe-verified with FMA on and off. TB53 frozen: gate 855 `5239f81a…`, ledger v3 83 `32b43fc5…`, self-check PASS, simulated membership 938. Stable 66/17/49, debt 1. Next `M6-CP3-CB54-RP01-TERMINAL-PATH-WITNESSES`.
+
 # 2026-10-30 — RA-177 independent review of TB52 full five-binary gate
 
 - [RA-177](.agents/Directional/Architecture_M6_CP3_TB52_REV_Independent_Five_Binary_Gate_Review_20261030.md) independently reopened immutable TB52 artifact `13004891149` and CB52 package `12918290481`: 853/853 native PASS, 1,714/1,714 result hashes, 28/28 package hashes, exact 939-package-membership preflight, 831-row TB51 manifest prefix and 85-row deferred prefix. TB52 supersedes TB51 as reviewed candidate but **not** CP2 accepted authority, selector497 promotion, RP-01 closure or CP3 acceptance. 86 deferred rows and O15 remain, stable 66/17/49 debt 1. Next `M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES`.

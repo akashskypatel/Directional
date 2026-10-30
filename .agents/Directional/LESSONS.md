@@ -78,7 +78,9 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - **A negative must reach the intended guard on a valid baseline.** First prove a legitimate witness
   passes; mutate one admissible dimension; verify the intended seam/rejection, not merely that an
   earlier guard rejects. If guard order changes, the original negative may become unreachable. A later
-  assertion hidden behind a fatal assertion or early return has not executed.
+  assertion hidden behind a fatal assertion or early return has not executed. A guard ruled
+  accepted-defensive has no producer-side repair target: witness it at its checked factory with a valid
+  stimulus, or retire the test (RA-178).
 - **Independence is derivation over the same semantic object.** Recomputing the producer's formula from
   its own output, choosing expected signs until equal, or verifying one internally consistent *proxy*
   complex does not establish correctness. Independently obtain topology/inputs or derive another theorem
