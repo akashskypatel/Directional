@@ -9,6 +9,15 @@
 
 # DEFN off-selector review continuation — exact WIP preservation
 
+## 2026-10-30 P09/P13 continuation (new verified source and raw-log check)
+
+- Source snapshot: run `40990572294`, artifact `12948752544`, SHA-256 `ffa53ceed6a74487fc9a1a151954fa89e295b7de15d601411578fc98d0a3eb0c`, source SHA `7907098a319f2020250f35d785386d1a29e009bb`. No product/source/test/selector changes or native runtime work.
+- **P09 192/344:** same prescribed-sphere pipeline; row 192 reports trace 2, event 30 `TraceEventPositionInvalid` with missing source-edge carrier; row 344 confirms the same high-level cut-graph rejection on the same exact fixture and default options, without per-event detail. Production vs fixture root cause still requires independent event-provenance adjudication.
+- **P09 350:** actual cut graph exists and selected crossed-edge candidate exists, but `saturationUsed=true` contradicts ordinary-only test expectation. Need proposal/certification/saturation iteration evidence; no policy or test change yet.
+- **P13 360:** `CutTransportDomainIdentityMismatch` from atlas before any output, measured cut chi=-3 versus identity-required chi=-5 (2-7+0); split barrier/vertex/boundary-arc diagnostics before repair. Cylinder/vase are still unattributed 600-second timeouts.
+- Exact updated evidence and minimal falsifiers are in the working inventory. Original 85 identities and prior accepted baselines unchanged; retirement 0, TB51 proposed 916 non-executable, turn remains same DEFN and is not ready for CB53/TB51.
+
+
 ## 2026-10-30 further P09/P10 source-audit continuation (runtime-free)
 
 - Frozen exact source snapshot `9fe12a26133a1fa90b135b499e83b92b8bf120ad` from run 40986100897, artifact `12946688157`, verified archive digest `3cc27449cc5b272aaf87231504837a361d04bbf02dc8f2ea751fd43103812a65`. Reused immutable 408-case TB50C-R2 logs; no native execution.
