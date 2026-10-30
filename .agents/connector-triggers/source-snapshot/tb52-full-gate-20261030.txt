@@ -1,1 +1,0 @@
-Directional TB52 full-gate source inspection snapshot. Exact event commit is authority; no runtime.

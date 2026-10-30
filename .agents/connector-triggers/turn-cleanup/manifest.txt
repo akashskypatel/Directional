@@ -1,2 +1,0 @@
-# TB52 full-gate turn temporary state to remove after evidence and docs are durable
-.agents/connector-triggers/source-snapshot/tb52-full-gate-20261030.txt
