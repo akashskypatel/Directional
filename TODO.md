@@ -1,4 +1,4 @@
-## CURRENT — TB52C-REV audited (RA-176, A3 exactness O15); TB52 full gate next (2026-10-30)
+## CURRENT — TB52 853/853 green candidate; independent TB52-REV next (2026-10-30)
 
 - [x] **`M6-CP3-PLAN-RP01-CLOSURE`** (PLAN, R) together with an audit of TB51-REV: [RA-174](.agents/Directional/Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md).
   - Findings: the API binary was ungoverned (F1, closed by TB52C); selector497 and G4-B002 are green in TB51 (F2); RP-01 blockers are rows 223/225/261 plus O9 (F3). P8 (O14) patch `80ee9e42…` → harness `78b8002c…`.
@@ -11,7 +11,8 @@
   - **F1:** row 19 is not a stale witness and no producer changed. On arm64 the same source passes it (API 23/23). Rebuilding only `FieldTransportAtlas.cpp` with `-ffp-contract=off` reproduces the Linux CI result line for line.
   - **F2 (O15):** A3 picks the face gauge and corner-sector membership with `atan2` and a 1e-10 tolerance at exact ties (`FieldTransportAtlas.cpp:118–124`, `:276–296`, `:517–521`), which violates DESIGN Amendment 18. The exact half-open count is 3 at vertices 10/35/47/71, so the exact answer is to accept, which matches Linux. Eighteen gated `mechanical_feature` rows are green only for x86-64 rounding.
   - **F3:** row 935 stays FIXTURE, because its expectation contradicts the exact answer; it is repaired after O15. Ledger v2 and the TB52 manifest are unchanged. **F4:** the RA-175 ORIENTATION lesson was replaced.
-- [ ] **NEXT `M6-CP3-TB52-RP01-FULL-GATE-EXEC`** (TB-EXEC, I): immutable CB52 package, 853 gate + 86 deferred `MEMBERSHIP_LEDGER` P8 preflight across five binaries; only candidate if all 853 PASS, postflight true and `membership=939`. Outcomes per RA-176.4. No build or test-source changes.
+- [x] **`M6-CP3-TB52-RP01-FULL-GATE-EXEC`** (TB-EXEC, I): [report](.agents/Directional/Architecture_M6_CP3_TB52_RP01_Full_Gate_Artifact_Only_Test_Benchmark_Report_20261030.md); [run 41100261157](https://github.com/akashskypatel/Directional/actions/runs/41100261157); immutable package, **853/853 PASS**, postflight true, exact P8 membership **939** = 853 gated + 86 deferred, 1,714/1,714 integrity checks. No repair/rebuild, no acceptance promotion.
+- [ ] **NEXT `M6-CP3-TB52-RP01-FULL-GATE-REV`** (TB-REV, R): independently reopen and review TB52 native evidence, 86 deferred rows, O15, regression status and acceptance boundary. Do not start inside TB52-EXEC.
 - [ ] Carried separately (owners per RA-174.3):
   - O1; O2 (legacy no-atlas ingress, post-RP-01).
   - O6 (bounded disks that are not rectangular are rejected by design) → P13 probe DEFN.

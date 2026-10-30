@@ -1,3 +1,8 @@
+# 2026-10-30 — TB52 full five-binary artifact-only gate, 853/853 PASS (candidate)
+
+- [TB52 report](.agents/Directional/Architecture_M6_CP3_TB52_RP01_Full_Gate_Artifact_Only_Test_Benchmark_Report_20261030.md) / [run 41100261157](https://github.com/akashskypatel/Directional/actions/runs/41100261157): immutable package `12918290481` / semantic source `7cf0857b…`; result `13004891149` (ZIP SHA-256 `ba18016515e810f8cecdd4da500a6026eefe973a11f9afe55879fd1ae948f684`). Independently verified 853/853 native PASS, 853 native log joins, 1,714/1,714 checksums, `postflight=true`, P8 census 939 = 853 gated + 86 deferred. Zero RED/ABNORMAL/other gate-control defects. No rebuild, code/test/fixture or workflow changes.
+- No new selected-gate regression; stable **66/17/49**, debt **1**, unchanged. CP2 491/491 last accepted. All 86 deferred cases and O15 remain; TB52 is only an unreviewed candidate. Next `M6-CP3-TB52-RP01-FULL-GATE-REV`.
+
 # 2026-10-30 — RA-176 audit of TB52C-REV: A3 atlas exactness (O15)
 
 - [RA-176](.agents/Directional/Architecture_M6_CP3_PLAN_A3_Atlas_Exactness_TB52C_REV_Audit_20261030.md): RA-175 evidence and the TB52 inputs re-verified (49/49; prefixes byte-identical; self-check 853 with deferred=86). Row 19 is red because of FMA-dependent A3 decisions at exact ties, not a producer change. An arm64 build passes it; `-ffp-contract=off` on `FieldTransportAtlas.cpp` reproduces the Linux CI result.
