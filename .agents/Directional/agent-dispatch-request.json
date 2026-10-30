@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p11-p12-authority-audit-20261030-v1",
+  "request_id": "m6-cp3-defn-p09-p13-reachability-audit-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p11-p12-authority-audit-20261030-v1",
-  "file_id": "1VZ1_uWQvIXTtLKSggubqTAHk6oH04Fqs",
-  "patch_sha256": "5cbae1c5b0c8e810b62fbdf1b9578178613c127e5f8d076eb668fc40256c5c76",
-  "base_sha": "9967d7d0052bdadc67428cbc23ecd63a0232887a",
+  "mailbox_key": "m6-cp3-defn-p09-p13-reachability-audit-20261030-v1",
+  "file_id": "1zJ8aeqli_9666F1W5OibT9Dn5jzkjOug",
+  "patch_sha256": "e08a303a4362620662c54358dba5e6fde52f794aa16ed856def36730cd3d1e1d",
+  "base_sha": "7907098a319f2020250f35d785386d1a29e009bb",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): distinguish P11 terminal ownership and P12 ignored atlas ingress",
+  "commit_message": "docs(agent): adjudicate sphere trace-event, saturation, and bunny cut identity",
   "retention_days": 14
 }
