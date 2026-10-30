@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p11-witness-20261030-v1",
+  "request_id": "m6-cp3-defn-p07-p11-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p11-witness-20261030-v1",
-  "file_id": "1Y2ZKkdYu7sEdniMB6GaMQ9huVSmPV3aQ",
-  "patch_sha256": "8ff474f03d0a3db34816d1221c934ae66e6941a8694a7166a40e35b5133c7263",
-  "base_sha": "050fef8181633e0bc3a9dea329a07035fe6e19eb",
+  "mailbox_key": "m6-cp3-defn-p07-p11-20261030-v1",
+  "file_id": "1WopO3tGxBzqJNnBiZWPKcFf9BNHo7R0k",
+  "patch_sha256": "66bb4645fb35c00644f710d468684f024d5d7f4ed62798af678c7b603babc2b7",
+  "base_sha": "64126146db29bd5dc1fd7e7cd05a50787941b9d8",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): adjudicate off-selector terminal A2b witness and endpoint oracles",
+  "commit_message": "docs(agent): distinguish gauge-canonical A3 oracle and multi-scope completion provenance",
   "retention_days": 14
 }
