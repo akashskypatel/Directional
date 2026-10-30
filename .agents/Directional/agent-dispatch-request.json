@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p09b-ak4-authority-20261030-v1",
+  "request_id": "m6-cp3-defn-p14-size-projection-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p09b-ak4-authority-20261030-v1",
-  "file_id": "10yq6nAHFmVpmu5J0Sv4lArZ3T3HfvJWA",
-  "patch_sha256": "e5ce1ea9349067db7c0fe98b458eff82c328d12a9fd588e6d1a9dd737cbc11cf",
-  "base_sha": "d073e45334c5f57ec2ffdce0481f31a03aff9409",
+  "mailbox_key": "m6-cp3-defn-p14-size-projection-20261030-v1",
+  "file_id": "1JnwmkYznu91-KJTHVoKAnqakUhZJtyXm",
+  "patch_sha256": "336dca1f2381ba1fc5d0726998a2f25da5d980434a1af69258f31ed744b5d924",
+  "base_sha": "7164b1e09c803adcbc80b5c3b5527db4981247af",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): retain frozen AK4 ordinary trace-crossed cut requirement",
+  "commit_message": "docs(directional): document source projection Jacobian in size gradient",
   "retention_days": 14
 }
