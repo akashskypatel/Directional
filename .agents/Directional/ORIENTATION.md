@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-30 · M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES — [RA-180](Architecture_M6_CP3_DEFN_A3_Exact_Branch_Topology_Predicates_20261030.md) makes the A3 face gauge, branch derivatives and port order exact on the stored doubles. With the patch, FMA and FMA-free builds both pass 854/855 with identical atlas partitions, and the new edge-parallel test fails before the patch even without FMA. RP-01 is closed (RA-179). TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CP3-CB55-A3-EXACT-BRANCH-TOPOLOGY`.
+**Currency:** 2026-10-30 · M6-CP3-CB55-A3-EXACT-BRANCH-TOPOLOGY — the exact RA-180 patch is built locally (source `04027167…`, package `69104b95…`, default arithmetic). [RA-180](Architecture_M6_CP3_DEFN_A3_Exact_Branch_Topology_Predicates_20261030.md) probes showed identical 854/855 gates with and without FMA. RP-01 is closed (RA-179). TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CP3-TB54-O15-FULL-GATE-EXEC`.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,7 +104,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** CB55 (the exact RA-180.7 patch, local, default arithmetic) → TB54 (857, membership 940, row 283 the only expected red) → TB54-REV (O15 discharged). Then `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` → CB56 (row 935). Local mode uses `tools/m6_cp3_local_gate_driver.py`.
+**Immediate:** TB54-EXEC (local; 857 rows, membership 940, row 283 the only expected red) → TB54-REV (O15 discharged). Then `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` → CB56 (row 935). Local mode uses `tools/m6_cp3_local_gate_driver.py`.
 
 
 | Priority | Missing outcome | Owner |

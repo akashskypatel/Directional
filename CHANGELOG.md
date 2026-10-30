@@ -1,3 +1,7 @@
+# 2026-10-30 — CB55 exact A3 branch topology built locally
+
+- [CB55 record](.agents/Directional/Architecture_M6_CP3_CB55_A3_Exact_Branch_Topology_Code_Build_Record_20261030.md): the RA-180.7 patch applied exactly (`824e64cc…`, `119 81` / `14 0` / `51 0`, atlas `43d156a3…`) at source `04027167…`. Eight targets were built at default arithmetic, and the package `69104b95…` (18 entries) was staged by a Haiku subagent and re-verified. No native tests. Next `M6-CP3-TB54-O15-FULL-GATE-EXEC`.
+
 # 2026-10-30 — RA-180 O15 exact A3 branch-topology predicates defined
 
 - [RA-180](.agents/Directional/Architecture_M6_CP3_DEFN_A3_Exact_Branch_Topology_Predicates_20261030.md) (local, probe-backed; a subagent produced the inventory). The three float-decided ties in A3 — face gauge, branch barycentric derivatives and port order — become exact on the stored doubles. Conditioning guards are accepted-defensive; the fields-stage matching tie is carried as O15b.
