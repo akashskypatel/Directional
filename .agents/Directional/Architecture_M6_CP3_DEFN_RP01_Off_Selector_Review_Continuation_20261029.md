@@ -1,3 +1,10 @@
+## 2026-10-30 P01 forced-FAIL probes independently split by observed stage (same DEFN)
+
+- `raw/182` and `raw/196` duplicate a prescribed-sphere source cut-graph failure (`NoCarrierMatch`, trace 2/event 30) after 24 traces/56 events; the two tests have distinct report/precondition contracts but unconditional `FAIL()` gives no product-regression evidence.
+- `raw/191` mechanical reaches a six-region typed global topology plan; `raw/197` torus reaches a four-region plan. Both fail *later at tracing*, regardless of their always-FAIL test bodies. No successful full pipeline is proved.
+- Proposed four separate nonvacuous replacement tests: typed positive source/atlas/network and genuine global-plan certificates where produced, explicit end-to-end completeness obligations, carrier/event negative falsifiers for sphere and deliberately malformed/missing-stage negatives for mechanical/torus. Do not silently retire duplicate sphere coverage or relabel forced RED as new stable regression.
+- Same source snapshot, no native runs or source/test/selector changes; 85 original non-PASS, 0 retirements, TB51 916 draft non-authoritative.
+
 ## 2026-10-30 P10b case243 exact seed/oracle correction (same DEFN, no runtime)
 
 - Independently checked `raw/243.log`, source test `FieldAlignedCurveNetworkTests.cpp:88–101,172–194,11582–11636`, A3 branch-frame sort/gauge `FieldTransportAtlas.cpp:233–313,1950–1961`, and A4 seed guard `SurfaceCellTracing.cpp:1451–1506` against verified archive `050fef8181633e0bc3a9dea329a07035fe6e19eb`.
