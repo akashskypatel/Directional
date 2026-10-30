@@ -10989,6 +10989,20 @@ TEST(FieldTransportAtlas, NonSeparatingBarrierEdgeIsAbsentFromLocalCycleBasis) {
   std::cout << "m3Cp4c3AM1AM6" << report.str() << '\n';
 }
 
+// O15 (RA-176/RA-180): branches of mechanical_feature lie exactly on star
+// edges at its index-one singularities. The exact half-open sector rule gives
+// three port classes at each of vertices 10, 35, 47 and 71 on every platform.
+TEST(FieldTransportAtlas, MechanicalFeatureSingularPortsFollowExactHalfOpenSectors) {
+  const auto &fixture = cp4c_mechanical_atlas_fixture();
+  ASSERT_TRUE(fixture.atlas.has_value());
+  std::map<std::size_t, int> ports;
+  for (const auto &attachment :
+       fixture.atlas->branch_topology().singularity_port_attachments())
+    ++ports[attachment.sourceVertex.index()];
+  for (const std::size_t vertex : {10U, 35U, 47U, 71U})
+    EXPECT_EQ(3, ports[vertex]) << "source vertex " << vertex;
+}
+
 TEST(FieldTransportAtlas, CutTransportDomainSatisfiesTheEulerCutIdentity) {
   const auto &fixture = cp4c_mechanical_atlas_fixture();
   ASSERT_TRUE(fixture.atlas.has_value());

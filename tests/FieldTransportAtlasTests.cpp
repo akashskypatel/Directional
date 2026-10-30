@@ -391,6 +391,57 @@ TEST(M4CP4, ZeroTransportFieldPreconditionDistinguishesFlatSuccessFromNonFlatRej
             nonFlatAtlas.error().code);
 }
 
+// O15 (RA-180): a branch exactly parallel to a source edge has an exactly
+// zero barycentric derivative at the opposite vertex, so that edge's flow is
+// Tangent on every platform. The non-dyadic parallelogram makes a
+// double-evaluated derivative nonzero with or without FMA contraction.
+TEST(FieldTransportAtlas, EdgeParallelBranchPublishesExactTangentFlow) {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0,
+              0.3, 0.1, 0.0,
+              0.2, 0.7, 0.0,
+              -0.1, 0.6, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2,
+           0, 2, 3;
+  TriMesh mesh;
+  mesh.set_mesh(vertices, faces);
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  CrossFieldResult field = make_zero_transport_field(mesh);
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    field.primaryDirections.row(face) << 0.3, 0.1, 0.0;
+    field.secondaryDirections.row(face) << -0.1, 0.3, 0.0;
+  }
+  const auto built = FieldTransportAtlas::make(mesh, *sourceAuthority, {}, field);
+  ASSERT_TRUE(built) << describe_field_atlas_build_error(built.error());
+
+  const auto zero = directional::authority::FieldExactRational::from_integer(0);
+  int edgeParallel = 0;
+  for (const auto &frame : built.value().branch_topology().frames()) {
+    const auto &corners = frame.sourceFace.vertices();
+    const auto opposite = std::find_if(
+        corners.begin(), corners.end(),
+        [](const auto &vertex) { return vertex.index() == 2U; });
+    if (opposite == corners.end() ||
+        std::none_of(corners.begin(), corners.end(),
+                     [](const auto &vertex) { return vertex.index() == 1U; })) {
+      continue;
+    }
+    const auto at = static_cast<std::size_t>(opposite - corners.begin());
+    for (const FieldBranchBoundaryPairing &pairing : frame.branches) {
+      if (pairing.direction[at] != zero) continue;
+      ++edgeParallel;
+      for (const auto &interval : pairing.intervals) {
+        const bool alongEdge = interval.sourceEdge.first().index() == 0U &&
+                               interval.sourceEdge.second().index() == 1U;
+        EXPECT_EQ(alongEdge, interval.flow == FieldBoundaryFlow::Tangent);
+      }
+    }
+  }
+  EXPECT_EQ(2, edgeParallel) << "the primary branch and its opposite lie on edge (0,1)";
+}
+
 CrossFieldEdgeTransition *find_transition(CrossFieldResult &field,
                                           const SourceEdgeTopologyKey &key,
                                           const std::size_t vertexExtent) {

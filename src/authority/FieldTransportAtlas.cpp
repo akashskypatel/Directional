@@ -12,7 +12,6 @@
 #include <cmath>
 #include <exception>
 #include <iostream>
-#include <limits>
 #include <map>
 #include <numbers>
 #include <numeric>
@@ -42,7 +41,6 @@ int normalized_quarter_turn(const int value) {
 }
 
 constexpr double kBranchTopologyTolerance = 1.0e-10;
-constexpr double kTwoPi = 2.0 * std::numbers::pi;
 
 std::optional<SourceFaceId> row_for_topology(
     const std::vector<SourceFaceTopologyKey> &rowTopology,
@@ -115,13 +113,33 @@ std::optional<Eigen::Vector3d> normalized_projected(
   return tangent;
 }
 
-double positive_oriented_angle(const Eigen::Vector3d &from,
-                               const Eigen::Vector3d &to,
-                               const Eigen::Vector3d &normal) {
-  double angle = std::atan2(normal.dot(from.cross(to)), from.dot(to));
-  if (angle < 0.0) angle += kTwoPi;
-  if (angle >= kTwoPi) angle -= kTwoPi;
-  return angle;
+// Branch topology is decided exactly on the stored doubles (DESIGN Amendment
+// 18): a branch lying exactly on a source edge is a tie that only an exact
+// predicate resolves the same way on every platform.
+using ExactVector = std::array<FieldExactRational, 3>;
+
+std::optional<ExactVector> exact_vector(const Eigen::Vector3d &value) {
+  ExactVector result;
+  for (std::size_t axis = 0; axis < 3U; ++axis) {
+    const auto coordinate =
+        FieldExactRational::from_double_exact(value[static_cast<int>(axis)]);
+    if (!coordinate.has_value()) return std::nullopt;
+    result[axis] = *coordinate;
+  }
+  return result;
+}
+
+ExactVector exact_difference(const ExactVector &a, const ExactVector &b) {
+  return {a[0] - b[0], a[1] - b[1], a[2] - b[2]};
+}
+
+FieldExactRational exact_dot(const ExactVector &a, const ExactVector &b) {
+  return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+}
+
+ExactVector exact_cross(const ExactVector &a, const ExactVector &b) {
+  return {a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2],
+          a[0] * b[1] - a[1] * b[0]};
 }
 
 struct BuiltFaceBranchFrame {
@@ -133,7 +151,7 @@ struct BuiltFaceBranchFrame {
 std::optional<FieldBranchBoundaryPairing> build_boundary_pairing(
     const TriMesh &sourceMesh, const SourceFaceId sourceFace,
     const SourceFaceTopologyKey &topology, const TopologyRegionId region,
-    const FieldBranch branch, const Eigen::Vector3d &direction,
+    const FieldBranch branch, const ExactVector &direction,
     FieldAtlasBuildError &error) {
   const auto &vertices = topology.vertices();
   const Eigen::Vector3d p0 = sourceMesh.V.row(
@@ -154,28 +172,35 @@ std::optional<FieldBranchBoundaryPairing> build_boundary_pairing(
         sourceFace, std::nullopt, region};
     return std::nullopt;
   }
-  const double r1 = e1.dot(direction);
-  const double r2 = e2.dot(direction);
-  const double u = (r1 * c - r2 * b) / det;
-  const double v = (r2 * a - r1 * b) / det;
-  const std::array<double, 3> dbary{-u - v, u, v};
-  if (!std::isfinite(dbary[0]) || !std::isfinite(dbary[1]) ||
-      !std::isfinite(dbary[2])) {
+  // Barycentric derivatives of the raw branch's in-plane component, exact on
+  // the stored doubles: a branch along an edge has an exactly zero component.
+  const auto x0 = exact_vector(p0);
+  const auto x1 = exact_vector(p1);
+  const auto x2 = exact_vector(p2);
+  if (!x0.has_value() || !x1.has_value() || !x2.has_value()) {
     error = FieldAtlasBuildError{
         FieldAtlasBuildErrorCode::InvalidBranchBoundaryDerivative,
         std::nullopt, sourceFace, std::nullopt, region};
     return std::nullopt;
   }
-  const auto exactU = FieldExactRational::from_double_exact(u);
-  const auto exactV = FieldExactRational::from_double_exact(v);
-  if (!exactU.has_value() || !exactV.has_value()) {
+  const ExactVector f1 = exact_difference(*x1, *x0);
+  const ExactVector f2 = exact_difference(*x2, *x0);
+  const FieldExactRational ea = exact_dot(f1, f1);
+  const FieldExactRational eb = exact_dot(f1, f2);
+  const FieldExactRational ec = exact_dot(f2, f2);
+  const FieldExactRational exactDet = ea * ec - eb * eb;
+  if (exactDet <= FieldExactRational::from_integer(0)) {
     error = FieldAtlasBuildError{
-        FieldAtlasBuildErrorCode::InvalidBranchBoundaryDerivative,
-        std::nullopt, sourceFace, std::nullopt, region};
+        FieldAtlasBuildErrorCode::InvalidBranchBoundaryBasis, std::nullopt,
+        sourceFace, std::nullopt, region};
     return std::nullopt;
   }
+  const FieldExactRational s1 = exact_dot(f1, direction);
+  const FieldExactRational s2 = exact_dot(f2, direction);
+  const FieldExactRational exactU = (s1 * ec - s2 * eb) / exactDet;
+  const FieldExactRational exactV = (s2 * ea - s1 * eb) / exactDet;
   const FieldBranchDirection exactDirection{
-      std::array<FieldExactRational, 3>{-*exactU - *exactV, *exactU, *exactV}};
+      std::array<FieldExactRational, 3>{-exactU - exactV, exactU, exactV}};
   if (!exactDirection.is_barycentric()) {
     error = FieldAtlasBuildError{
         FieldAtlasBuildErrorCode::BranchDirectionNotBarycentric,
@@ -274,21 +299,54 @@ std::optional<BuiltFaceBranchFrame> build_face_branch_frame(
   }
   const std::array<Eigen::Vector3d, 4> rawDirections{
       *primary, *secondary, -*primary, -*secondary};
-  std::array<double, 4> angles{};
+  const auto x0 = exact_vector(p0);
+  const auto x1 = exact_vector(p1);
+  const auto x2 = exact_vector(p2);
+  const auto exactPrimary = exact_vector(
+      crossField.primaryDirections.row(static_cast<int>(row.index())).transpose());
+  const auto exactSecondary = exact_vector(
+      crossField.secondaryDirections.row(static_cast<int>(row.index())).transpose());
+  if (!x0.has_value() || !x1.has_value() || !x2.has_value() ||
+      !exactPrimary.has_value() || !exactSecondary.has_value()) {
+    error = FieldAtlasBuildError{
+        FieldAtlasBuildErrorCode::InvalidBranchTopology, std::nullopt, row,
+        std::nullopt, region};
+    return std::nullopt;
+  }
+  const auto negated = [](const ExactVector &value) {
+    return ExactVector{-value[0], -value[1], -value[2]};
+  };
+  const std::array<ExactVector, 4> exactRawDirections{
+      *exactPrimary, *exactSecondary, negated(*exactPrimary),
+      negated(*exactSecondary)};
+  // Gauge: the raw branch at the least counter-clockwise angle in [0, 2pi)
+  // from p0->p1, angle zero included. Orientation signs use the unnormalized
+  // face normal; the normal component of a raw branch does not affect them.
+  const ExactVector edge = exact_difference(*x1, *x0);
+  const ExactVector faceNormal =
+      exact_cross(edge, exact_difference(*x2, *x0));
+  const FieldExactRational zero = FieldExactRational::from_integer(0);
+  const auto lower_half = [&](const ExactVector &direction) {
+    const FieldExactRational sine =
+        exact_dot(faceNormal, exact_cross(edge, direction));
+    return sine < zero || (sine == zero && exact_dot(edge, direction) < zero);
+  };
+  const auto precedes = [&](const ExactVector &first, const ExactVector &second) {
+    const bool firstLower = lower_half(first);
+    if (firstLower != lower_half(second)) return !firstLower;
+    return exact_dot(faceNormal, exact_cross(first, second)) > zero;
+  };
   int gauge = 0;
-  double best = std::numeric_limits<double>::infinity();
-  for (int raw = 0; raw < 4; ++raw) {
-    angles[static_cast<std::size_t>(raw)] = positive_oriented_angle(
-        *reference, rawDirections[static_cast<std::size_t>(raw)], normal);
-    if (angles[static_cast<std::size_t>(raw)] < best) {
-      best = angles[static_cast<std::size_t>(raw)];
+  for (int raw = 1; raw < 4; ++raw) {
+    if (precedes(exactRawDirections[static_cast<std::size_t>(raw)],
+                 exactRawDirections[static_cast<std::size_t>(gauge)])) {
       gauge = raw;
     }
   }
   for (int raw = 0; raw < 4; ++raw) {
     if (raw != gauge &&
-        std::abs(angles[static_cast<std::size_t>(raw)] - best) <=
-            kBranchTopologyTolerance) {
+        !precedes(exactRawDirections[static_cast<std::size_t>(gauge)],
+                  exactRawDirections[static_cast<std::size_t>(raw)])) {
       error = FieldAtlasBuildError{
           FieldAtlasBuildErrorCode::AmbiguousBranchTopology, std::nullopt, row,
           std::nullopt, region};
@@ -305,7 +363,7 @@ std::optional<BuiltFaceBranchFrame> build_face_branch_frame(
         rawDirections[static_cast<std::size_t>(raw)];
     const auto pairing = build_boundary_pairing(
         sourceMesh, row, topology, region, FieldBranch::from_integer(semantic),
-        built.canonicalDirections[static_cast<std::size_t>(semantic)], error);
+        exactRawDirections[static_cast<std::size_t>(raw)], error);
     if (!pairing.has_value()) {
       return std::nullopt;
     }
@@ -486,42 +544,6 @@ bool direction_in_closed_incident_vertex_wedge(
   const FieldExactRational &previous = direction[*previousIndex];
   return next >= zero && previous >= zero &&
          !(next == zero && previous == zero);
-}
-
-std::optional<double> counter_clockwise_sector_angle(
-    const TriMesh &sourceMesh, const IncidentFanFace &face,
-    const SourceVertexId vertex, const Eigen::Vector3d &direction) {
-  const Eigen::Vector3d origin =
-      sourceMesh.V.row(static_cast<int>(vertex.index())).transpose();
-  Eigen::Vector3d start =
-      sourceMesh.V.row(static_cast<int>(face.nextVertex.index())).transpose() -
-      origin;
-  Eigen::Vector3d end =
-      sourceMesh.V.row(static_cast<int>(face.previousVertex.index())).transpose() -
-      origin;
-  Eigen::Vector3d normal = start.cross(end);
-  const double normalNorm = normal.norm();
-  const double startNorm = start.norm();
-  const double endNorm = end.norm();
-  if (!std::isfinite(normalNorm) || !std::isfinite(startNorm) ||
-      !std::isfinite(endNorm) || normalNorm <= kBranchTopologyTolerance ||
-      startNorm <= kBranchTopologyTolerance ||
-      endNorm <= kBranchTopologyTolerance) {
-    return std::nullopt;
-  }
-  normal /= normalNorm;
-  start /= startNorm;
-  end /= endNorm;
-  const auto tangent = normalized_projected(direction, normal);
-  if (!tangent.has_value()) return std::nullopt;
-  const double sector = positive_oriented_angle(start, end, normal);
-  const double angle = positive_oriented_angle(start, *tangent, normal);
-  if (!std::isfinite(sector) || !std::isfinite(angle) ||
-      sector <= kBranchTopologyTolerance ||
-      angle > sector + kBranchTopologyTolerance) {
-    return std::nullopt;
-  }
-  return angle;
 }
 
 const FieldBranchBoundaryPairing *find_pairing(
@@ -788,10 +810,19 @@ build_singularity_attachments(
       representatives.push_back(incidences[classIndices.front()]);
     }
 
+    // Within one corner the counter-clockwise angle from the next-vertex ray
+    // grows with the exact ratio towardPrevious / towardNext (towardNext > 0
+    // for a sector member), so slots compare by cross-multiplication.
     struct OrderedRepresentative {
       FieldSingularityPortAttachment attachment;
       std::size_t counterClockwiseFanSlot = 0U;
-      double sectorAngle = 0.0;
+      FieldExactRational towardNext;
+      FieldExactRational towardPrevious;
+    };
+    const auto angle_compare = [](const OrderedRepresentative &first,
+                                  const OrderedRepresentative &second) {
+      return first.towardPrevious * second.towardNext <=>
+             second.towardPrevious * first.towardNext;
     };
     std::vector<OrderedRepresentative> orderedRepresentatives;
     orderedRepresentatives.reserve(representatives.size());
@@ -815,35 +846,42 @@ build_singularity_attachments(
           static_cast<std::size_t>(std::distance(fan->begin(), fanIt));
       const std::size_t counterClockwiseFanSlot =
           clockwiseFanSlot == 0U ? 0U : fan->size() - clockwiseFanSlot;
-      const auto angle = counter_clockwise_sector_angle(
-          sourceMesh, *fanIt, singularity.sourceVertex,
-          builtFramesByRow[fanIt->row.index()]
-              .canonicalDirections[representative.branch.value()]);
-      if (!angle.has_value()) {
+      const FieldBranchBoundaryPairing *pairing = find_pairing(
+          builtFramesByRow[fanIt->row.index()].published, representative.branch);
+      const auto &faceVertices = fanIt->topology.vertices();
+      const auto nextAt = std::find(faceVertices.begin(), faceVertices.end(),
+                                    fanIt->nextVertex);
+      const auto previousAt = std::find(faceVertices.begin(), faceVertices.end(),
+                                        fanIt->previousVertex);
+      if (pairing == nullptr || nextAt == faceVertices.end() ||
+          previousAt == faceVertices.end()) {
         error = FieldAtlasBuildError{
             FieldAtlasBuildErrorCode::AmbiguousBranchTopology, std::nullopt,
             fanIt->row, singularity.sourceVertex, singularity.topologyRegion};
         return std::nullopt;
       }
       orderedRepresentatives.push_back(OrderedRepresentative{
-          representative, counterClockwiseFanSlot, *angle});
+          representative, counterClockwiseFanSlot,
+          pairing->direction[static_cast<std::size_t>(
+              std::distance(faceVertices.begin(), nextAt))],
+          pairing->direction[static_cast<std::size_t>(
+              std::distance(faceVertices.begin(), previousAt))]});
     }
     std::sort(orderedRepresentatives.begin(), orderedRepresentatives.end(),
-              [](const OrderedRepresentative &first,
-                 const OrderedRepresentative &second) {
+              [&](const OrderedRepresentative &first,
+                  const OrderedRepresentative &second) {
                 if (first.counterClockwiseFanSlot !=
                     second.counterClockwiseFanSlot) {
                   return first.counterClockwiseFanSlot <
                          second.counterClockwiseFanSlot;
                 }
-                return first.sectorAngle < second.sectorAngle;
+                return angle_compare(first, second) < 0;
               });
     for (std::size_t index = 1U; index < orderedRepresentatives.size(); ++index) {
       const auto &previous = orderedRepresentatives[index - 1U];
       const auto &current = orderedRepresentatives[index];
       if (previous.counterClockwiseFanSlot == current.counterClockwiseFanSlot &&
-          std::abs(previous.sectorAngle - current.sectorAngle) <=
-              kBranchTopologyTolerance) {
+          angle_compare(previous, current) == 0) {
         const auto sourceFace =
             row_for_topology(rowTopology, current.attachment.startFace);
         error = FieldAtlasBuildError{
