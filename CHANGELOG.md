@@ -1,3 +1,7 @@
+# 2026-10-30 — CB54 RP-01 terminal-path witnesses built locally
+
+- [CB54 record](.agents/Directional/Architecture_M6_CP3_CB54_RP01_Terminal_Path_Witnesses_Code_Build_Record_20261030.md): the implementation agent was unavailable, so the user directed local builds and tests. The RA-178.7 patch applied exactly (`16a64128…`, `90 17` / `0 46`, both resulting file SHAs) at source `2a49b873…`. A fresh configure with the CI flags built 8/8 targets (static, GMP). The macOS arm64 package `21b7cf2d…` (18 entries) is stored at the gitignored `build/local-evidence/CB54/`. New `tools/m6_cp3_local_gate_driver.py` runs a gate locally with the frozen harness logic; it replays TB52's 853 CI verdicts exactly. No native tests. Next `M6-CP3-TB53-RP01-FULL-GATE-EXEC`.
+
 # 2026-10-30 — RA-178 RP-01 terminal-path witness DEFN and audit of TB52-REV
 
 - [RA-178](.agents/Directional/Architecture_M6_CP3_DEFN_RP01_Terminal_Path_Witnesses_TB52_REV_Audit_20261030.md) confirms RA-177's TB52 853/0 candidate. **F1:** RA-174.3 and RA-177 asked for row 261 to be repaired, but its target predicate is accepted-defensive (RA-170.3 P1-a). **F2:** 223 is rejected at `gauge-pin-span`, not at `open-rail-cover`.

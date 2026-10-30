@@ -1,0 +1,22 @@
+# CB54 RP-01 — terminal-path witnesses (2026-10-30)
+
+- **Turn:** `M6-CP3-CB54-RP01-TERMINAL-PATH-WITNESSES`; Code + Build, compile-only. It was run locally by the Review agent at the user's direction, because the implementation agent was unavailable and GitHub workflows were not to be used.
+- **Authority:** [RA-178](Architecture_M6_CP3_DEFN_RP01_Terminal_Path_Witnesses_TB52_REV_Audit_20261030.md) §.4 and §.7.
+- **Patch:** extracted from the committed RA-178.7 block.
+  - SHA-256 `16a64128ff3ab2279620686af60d0278e4620e463dfebd132f4a4f535fb8a75d`; `git apply --check` passed before apply.
+  - Numstat `90 17` (TQ) and `0 46` (Phase10).
+  - Resulting SHA-256: TQ `895ef38db563168542666d369659fb53b0518c5cfcb90823497d39c4e9703768`; Phase10 `de0dd49a4adafe4ff71303fd1cec190c1c2e0be48781cfda0b481cb8027b2645`. All exact.
+- **Source:** commit `2a49b8738c293fac012cde52c9caee477d205aaa`. Only the two test files changed.
+- **Build:** a fresh out-of-tree configure of a clean worktree at that commit, with the CI flags: Release, static, tests and benchmarks ON, GMP ON (`GMP_ROOT=/opt/homebrew`), PARDISO, SuiteSparse and cuDSS OFF, and `PRE_TEST` discovery.
+  - The configure log contains `GMP found for Directional core`.
+  - Eight approved targets built at `-j2`, 151/151 steps, exit 0, from 20:56:33Z to 21:02:35Z.
+  - Toolchain: macOS 26.6.2 arm64, Apple clang 21.0.0. CI uses Linux GCC 13.3.
+- **Package:** laid out like the CI package (`bin/`, `lib/`, `metadata/`, `source/source-<sha>.tar.gz`, `SHA256SUMS`). It is stored at the gitignored `build/local-evidence/CB54/pkg.zip`.
+  - ZIP SHA-256 `21b7cf2d0432322bfd02c76ed2c84ced938e06cd7462c693b49c6fc9a089fa7d`; root `SHA256SUMS` `262878fd5acf5d59ff4bd7b8fc76f88eeaa6556bef3222b058189305cdf32d5d` (18 entries, all verified).
+  - Source archive `9d0cf0a71959c1424c3aec50c8c5f81df4eb493a23d3cafc3e69b7243ee8cd3c`.
+  - `command-boundary.txt` records `runtimeExecution=false`, `exactArithmeticBackend=GMP` and `buildLocation=local-out-of-tree`. GMP and GMPXX are linked dynamically (`otool -L`).
+  - Binary SHA-256 prefixes: producer `e33ba611…`, authority kernel `1b685101…`, completion `82d00b07…`, validation `d92f7db8…`, API `45d5ff37…`, benchmarks `cb5c08fb…`.
+  - A subagent staged the package; the Review agent re-verified the ZIP, the checksum list, the metadata and byte equality with the build outputs.
+- **No native tests, benchmarks or Directional runtime were executed in CB54.** Build success is not semantic acceptance.
+- **Platform caveat:** this package is macOS arm64, so its gate is not equivalent to Linux CI evidence. Rows that depend on A3 floating point (O15, RA-176) may differ; TB53-REV classifies any such row.
+- **Next:** `M6-CP3-TB53-RP01-FULL-GATE-EXEC` with this package, run by [`tools/m6_cp3_local_gate_driver.py`](tools/m6_cp3_local_gate_driver.py). The driver loads the frozen harness `78b8002c…` definitions unchanged, and replaying TB52's 853 CI logs through them reproduces every recorded verdict, run count and first failure.
