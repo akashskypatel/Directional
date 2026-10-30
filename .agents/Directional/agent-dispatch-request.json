@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb53-rp01-membership-p8-20261030-v2",
+  "request_id": "m6-cp3-cb53-rp01-doc-closeout-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb53-rp01-membership-p8-20261030-v2",
-  "file_id": "1w8jHOxAoucaAulwZt8meapiytNj-PHEJ",
-  "patch_sha256": "e4f1deeac4520663517e0099b10927d4ce2762355b76ac413a09d58aeda077d4",
-  "base_sha": "d5c7ea7dd740fbc6619c0431a2e4304894b2002d",
+  "mailbox_key": "m6-cp3-cb53-rp01-doc-closeout-20261030-v1",
+  "file_id": "1VNifX6zDGX6fLjVT_S5TBSpW8C6AZmA9",
+  "patch_sha256": "fd828bcb7c08a91ad08138088eb9674dc7f33ab4b4e91f0881997bb5e06bbeee",
+  "base_sha": "e8a135d34941edbcd79278fe408609541447552c",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(directional): apply exact P8 gate-membership harness preflight",
+  "commit_message": "docs(directional): complete CB53 membership preflight handoff",
   "retention_days": 14
 }
