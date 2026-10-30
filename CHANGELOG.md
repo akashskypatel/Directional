@@ -1,3 +1,9 @@
+# 2026-10-30 — RA-174 RP-01 closure PLAN; TB51-REV audit; P8 membership harness
+
+- [RA-174](.agents/Directional/Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md): TB51 831/0 re-verified, and selector497 497/497 is green inside it. RP-01 blockers narrowed to rows 223, 225 and 261 plus O9 (corrects RA-172.5). CP3-exit conditions frozen.
+- Found that `directional_compiled_api_tests` (23 tests, packaged) was never gated. P8 (`80ee9e42…` → harness `78b8002c…`) makes every gate run check `--gtest_list_tests` against gate ∪ ledger. TB52C census manifest `81395065…` frozen.
+- Next `M6-CP3-CB53-RP01-GATE-MEMBERSHIP-PREFLIGHT`.
+
 ## 2026-10-30 — RA-173 independent TB51 review (candidate only)
 
 - [RA-173](.agents/Directional/Architecture_M6_CP3_TB51_REV_Independent_Full_Gate_Review_20261030.md): from immutable run `41021857497`, package `12918290481` (`7cf0857b…`), independently verified **831/831 PASS**, zero RED/ABNORMAL, 1,668/1,668 checks, 831 exact native logs, frozen `d6961b59…` manifest and `600c6455…` harness, accepted selector449 byte-preserved. The 85 disjoint deferred cases produce a 916-identity inventory, remain unresolved (49 FIXTURE, 7 PRODUCT, 24 OPEN, 5 RETIRE). No CP3 closure or selector497 promotion; CP2 491/491 last accepted, stable 66/17/49, debt 1. Only next authorized Review turn: `M6-CP3-PLAN-RP01-CLOSURE`.

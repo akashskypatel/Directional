@@ -1,3 +1,10 @@
+## RA-174 — RP-01 closure scope; CP3-exit conditions; gate membership (2026-10-30)
+
+- **RP-01 (amends RA-172.5):** the blockers are deferred rows 223, 225 and 261 (the terminal/rail endpoint contract) plus the O9 ruling. RP-01 closes at a reviewed gate that passes them without weakening.
+- **CP3 exit:** RP-01 closed; zero deferred-ledger rows; the design-acceptance matrix gated at 6/6; O14 enforced; O7 resolved; G4-B002 exit row gated; CP3-REV decides selector497.
+- **O14 / P8:** every non-`OBSERVE` run needs `MEMBERSHIP_LEDGER` + SHA. Every packaged `bin/*_tests` `--gtest_list_tests` set must equal manifest ∪ ledger for that binary, and the packaged test-binary set must equal the binaries governed. A census must not take a ledger. Harness `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`.
+- **FIXTURE-slice precondition:** the production pipeline must reach the stage under test; otherwise the group routes to O2 legacy retirement.
+
 ## RA-172 — off-gate disposition contract; TB51 gate (2026-10-30)
 
 - **RA-172.3 (amends RA-171.5):** each test in the four gate binaries is GATED (in the TB51 manifest; must PASS), DEFERRED (in the frozen deferred ledger with group and class FIXTURE/PRODUCT/OPEN/RETIRE; re-enters only through its group's repair slice) or RETIRED (deleted by a CB for a stated reason). Gate ∪ ledger equals the binaries' full test list, with no overlap.

@@ -34,18 +34,26 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-30 **RA-173 TB51-REV verified 831/0 reviewed candidate** ([TB51 report](Architecture_M6_CP3_TB51_RP01_Full_Gate_Artifact_Only_Test_Benchmark_Report_20261030.md)); run `41021857497`, result `12963899691`, postflight true and 1,668/1,668 result checksums. RA-172 deferred 85-row ledger remains separate. Next RP-01 closure PLAN; not CP3 acceptance. |
+| Currency | 2026-10-30 **RA-174: TB51-REV audited; `M6-CP3-PLAN-RP01-CLOSURE` complete** ([record](Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md)). TB51 831/0 re-verified; selector497 497/497 and the G4-B002 exit row is green inside it. Gap F1: packaged `directional_compiled_api_tests` (23 tests) was never gated or censused. P8 gate-membership harness patch frozen (`80ee9e42…` → harness `78b8002c…`). Not CP3 acceptance. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted 2026-10-06 (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
 | Latest candidate or rejected evidence | **TB51 831/0 reviewed candidate**, [run 41021857497](https://github.com/akashskypatel/Directional/actions/runs/41021857497), result `12963899691` (`e6339e12…`), log `12964417597`; 831/831 native joins, no non-PASS, postflight true. Prior TB50-R2 **508/0** was superseded as the reviewed candidate; CB52 source `7cf0857b…`, package `12918290481`. Last accepted CP2 491/491. |
-| Regression accounting and debt | Stable **66/17/49**, debt **1**, unchanged. Frozen 85 DEFERRED: 49 FIXTURE, 7 PRODUCT, 24 OPEN, 5 RETIRE; none executed or classified by TB51. [Tracker](Regression_Root_Cause_Tracker.md), [deferred ledger](Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger.tsv). |
-| Active boundary | **TB51-REV COMPLETE; NEXT `M6-CP3-PLAN-RP01-CLOSURE`** (PLAN, R) to apply RA-172.5 RP-01 blocker rule/O14/slice order on 85 deferred rows. [RA-173](Architecture_M6_CP3_TB51_REV_Independent_Full_Gate_Review_20261030.md) independently verified 831/0 and 916 inventory. RP-01 open, RP-02 unreached; selector497 unpromoted. Carried O1/O2/O6–O10/O12/O14, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, G4-B002. |
+| Regression accounting and debt | Stable **66/17/49**, debt **1**, unchanged. 85 DEFERRED ([ledger](Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger.tsv)): FIXTURE 49, PRODUCT 7, OPEN 24, RETIRE 5. RP-01 blockers are rows 223, 225 and 261 plus the O9 ruling (RA-174.3). Every other deferred row blocks CP3 exit, not RP-01. The 23 API-binary tests are uncensused. |
+| Active boundary | PLAN complete (RA-174). **NEXT `M6-CP3-CB53-RP01-GATE-MEMBERSHIP-PREFLIGHT`** (CB, I): exact P8, offline checks only. Then TB52C (23-row API census), TB52C-REV (R), TB52 with membership. R∥: `M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES` (223/225/261, O9) → RP-01 closure. CP3 critical path after that: P13 (Cylinder first). Carried O1/O2/O6–O10/O12, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4, 8219. RP-02 unreached; selector497 unpromoted. |
 
-## Mandatory next turn — `M6-CP3-PLAN-RP01-CLOSURE` (PLAN, Review track) — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB53-RP01-GATE-MEMBERSHIP-PREFLIGHT` (type CB, implementation track) — EXACT NEXT
 
-- **Input:** [RA-173](Architecture_M6_CP3_TB51_REV_Independent_Full_Gate_Review_20261030.md) independent TB51 831/0 review and [RA-172](Architecture_M6_CP3_DEFN_RP01_Off_Selector_Coverage_Disposition_20261030.md) §§5–7; immutable 85-row deferred ledger, reviewed 831-row gate.
-- **Bounded decision:** RP-01 blocker ownership (P13/P12b by default; rule on P02a/P02b/P03/P09b/P11b); O6 scope, O14 `--gtest_list_tests` manifest∪deferred completeness, O7–O10/O12/O14 owners and finite repair-slice order. Predeclare falsifiers and stop rules for each slice.
-- **Stop boundary:** no code/fixture repair, TB, CP3 acceptance, 497 selector promotion or inference that any deferred row passed. The next repair slice requires its own separately authorized turn.
+- **Authority:** [RA-174](Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md).4/.6/.7.
+- **Action:** extract the RA-174.7 `~~~diff` block verbatim, adding a trailing newline. Its SHA-256 must be `80ee9e4275f4a1276cddabaa948782e886fe5cd76330c3fc801b67258d578fe8`. Apply it with `git apply` and no hand edits. Numstat must be exactly `136 13 .agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh`, and the harness SHA-256 must then be `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`.
+- **Evidence:**
+  - `bash -n` passes; `--self-test` → `SELF_TEST_PASS cases=30`.
+  - `--self-check` passes for TB49 504, TB50 508, TB50C 408, TB51 831 and TB52C 23 (manifest `81395065…`).
+  - TB51 831 with the deferred ledger → `SELF_CHECK_PASS cases=831 deferred=85`. TB50C 408 with the ledger → `SELF_CHECK_FAIL a census takes no deferred ledger`.
+- **Outcomes:**
+  - All exact → `M6-CP3-TB52C-RP01-API-BINARY-CENSUS-EXEC`.
+  - Mismatch → `M6-CP3-PLAN-RP01-MEMBERSHIP-STOP` (PLAN, R).
+  - Dispatcher or apply failure → `M6-CP3-CB53A-RP01-ORCH`, then retry.
+- **Boundary:** harness only. No native run, and no source, test, manifest, ledger or workflow edits. Do not combine with TB52C.
 
 ## Turn Sequence
 
@@ -56,17 +64,20 @@ Canonical types: CB, TB-EXEC, TB-REV, DEFN, PLAN (`turn_type_from_turn`). **I** 
 | done | CB49 → CB49E → TB49-EXEC (504/0) → `M6-CP3-TB49-RP01-FULL-GATE-REV` (RA-169, re-derived RA-170.1); DEFNs C1, P1-a, P1-b, O4 | CB, TB / I; TB-REV, DEFN / R | RA-169/170 probes; P3–P6 round-trip exact. |
 | done | CB50 (P3) → CB50F (P4) → CB51 (P5) → CB52 (P6) → TB50-EXEC S5 → CB50A-ORCH → TB50-EXEC-R2 **508/0** → TB50C-EXEC S5 | CB, TB-EXEC / I | Source `7cf0857b…`, package `12918290481`; [TB50-R2 report](Architecture_M6_CP3_TB50_RP01_Full_Gate_R2_Test_Benchmark_Report_20261029.md); S5 runs were orchestration-only. |
 | done | `M6-CP3-TB50-RP01-FULL-GATE-REV` → CB50C-ORCH (P7 `OBSERVE`, harness `600c6455…`) → TB50C-EXEC-R2 **323/83/2/0** | TB-REV / R; CB, TB-EXEC / I | [RA-171](Architecture_M6_CP3_TB50_REV_Gate_Closeout_Census_Observe_Harness_20261029.md); [census report](Architecture_M6_CP3_TB50C_RP01_Off_Gate_Census_R2_Test_Benchmark_Report_20261029.md), run 40965775275. |
-| done | `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` | DEFN / R | [RA-172](Architecture_M6_CP3_DEFN_RP01_Off_Selector_Coverage_Disposition_20261030.md): 85 rows classified FIXTURE 49 / PRODUCT 7 / OPEN 24 / RETIRE 5 into a [deferred ledger](Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger.tsv); TB51 = 508 + 323 = 831 frozen `d6961b59…`. |
-| done | `M6-CP3-TB51-RP01-FULL-GATE-EXEC` | TB-EXEC / I | [TB51 report](Architecture_M6_CP3_TB51_RP01_Full_Gate_Artifact_Only_Test_Benchmark_Report_20261030.md), [run 41021857497](https://github.com/akashskypatel/Directional/actions/runs/41021857497): 831/0, postflight true; no recompilation or changes; candidate only. |
-| done | `M6-CP3-TB51-RP01-FULL-GATE-REV` | TB-REV / R | [RA-173](Architecture_M6_CP3_TB51_REV_Independent_Full_Gate_Review_20261030.md): 831/0 reviewed candidate; 916 disjoint gate∪deferred inventory, no CP3/selector promotion. |
-| 1 — NEXT | `M6-CP3-PLAN-RP01-CLOSURE` | PLAN / R | RA-172.5 RP-01 blocker rule (P13, P12b by default); O14 gate completeness; O6 scope; owners for O7–O10, O12, O14; repair-slice order. |
-| 3+ | Repair slices, one per RA-172.4 group | per slice | Retire CB first. FIXTURE/PRODUCT: exact patch (R) → CB (I) → TB (I) → REV (R). OPEN: probe DEFN (R) first. Each slice moves its rows from the ledger to the gate. |
+| done | DEFN off-selector disposition → TB51-EXEC **831/0** → `M6-CP3-TB51-RP01-FULL-GATE-REV` | DEFN / R; TB-EXEC / I; TB-REV | [RA-172](Architecture_M6_CP3_DEFN_RP01_Off_Selector_Coverage_Disposition_20261030.md) ledger of 85 + gate `d6961b59…`; [TB51 report](Architecture_M6_CP3_TB51_RP01_Full_Gate_Artifact_Only_Test_Benchmark_Report_20261030.md), run 41021857497; [RA-173](Architecture_M6_CP3_TB51_REV_Independent_Full_Gate_Review_20261030.md) review. |
+| done | `M6-CP3-PLAN-RP01-CLOSURE` (+ TB51-REV audit) | PLAN / R | [RA-174](Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md): RP-01 blockers 223/225/261 + O9; CP3-exit conditions; F1 gap in the API binary; P8 frozen; TB52C census manifest `81395065…`. |
+| 1 — NEXT | `M6-CP3-CB53-RP01-GATE-MEMBERSHIP-PREFLIGHT` | CB / I | Exact P8 → harness `78b8002c…`; offline self-test 30 and self-checks only. |
+| 2 | `M6-CP3-TB52C-RP01-API-BINARY-CENSUS-EXEC` | TB-EXEC / I | CB52 package, harness `78b8002c…`, manifest `81395065…`, 23 OBSERVE rows, no `MEMBERSHIP_LEDGER`; report only. |
+| 3 | `M6-CP3-TB52C-RP01-API-BINARY-CENSUS-REV` | TB-REV / R | Disposition of the 23; freeze the TB52 gate (831 + PASS rows) and ledger v2. |
+| 4 | `M6-CP3-TB52-RP01-FULL-GATE-EXEC` → `M6-CP3-TB52-RP01-FULL-GATE-REV` | TB-EXEC / I; TB-REV / R | First gate run with `MEMBERSHIP_LEDGER` over all five packaged test binaries. |
+| R∥ | `M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES` → CB54 → TB53 → TB53-REV | DEFN / R; CB, TB / I; TB-REV / R | Probe and repair 223, 225 and 261 without weakening; rule on O9. RP-01 closes at TB53-REV. |
+| then | P13 probe DEFN (Cylinder first; O6) → retire CB → FIXTURE slices → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV | per slice | RA-174.3 CP3-exit conditions; each slice moves its rows from the ledger to the gate. A FIXTURE DEFN first confirms the production pipeline reaches the stage under test. |
 | post-RP-01 | `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`, then `M6-DEFN-DIAG-RETAIN-A5-A7` | DEFN / R | RA-160.4 + RA-161 T2; O4 legacy-path reachability folds into O2. |
-| rule | RA-167.6 naming; one CB per patch; no R1…Rn loops | — | TB51 preflight/manifest error → `M6-CP3-PLAN-RP01-GATE-STOP`; dispatcher/runner failure before harness start → `M6-CP3-CB53-RP01-GATE-ORCH`, then one retry. A DEFN must have a reachable exit (RA-172.1). |
+| rule | RA-167.6 naming; one CB per patch; no R1…Rn loops | — | CB53/TB52C mismatch or preflight error → `M6-CP3-PLAN-RP01-MEMBERSHIP-STOP`; dispatcher failure → `M6-CP3-CB53A-RP01-ORCH`, then one retry. After CB53 every gate run needs `MEMBERSHIP_LEDGER`, so TB51 cannot be re-run. A DEFN must have a reachable exit (RA-172.1). |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-PLAN-RP01-CLOSURE** (PLAN, Review): use [RA-173](Architecture_M6_CP3_TB51_REV_Independent_Full_Gate_Review_20261030.md) and RA-172.5, determine RP-01 blockers P13/P12b, other causal groups, O14 live gate-membership preflight and bounded slice owners/order. TB51 **831/0 reviewed candidate**; 85 DEFERRED unchanged; CP2 491/491 last accepted, stable 66/17/49 debt 1, selector497 frozen. Do not run repair/compile/test or accept CP3 in PLAN.
+`load_next`: **M6-CP3-CB53-RP01-GATE-MEMBERSHIP-PREFLIGHT** (CB, implementation): read RA-174.4/.6 and extract the RA-174.7 diff exactly. Apply it, then run the offline checks listed in the mandatory-next section. No native run. CP2 is accepted; TB51 831/0 is the reviewed candidate; 85 rows are deferred.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-30 · **RA-173 TB51 independent review verified 831/831 native PASS** ([review](Architecture_M6_CP3_TB51_REV_Independent_Full_Gate_Review_20261030.md)), 85 deferred unchanged, 916-case disjoint inventory. CP2 491/491 last accepted; selector497/CP3 unpromoted, stable 66/17/49, debt 1; next `M6-CP3-PLAN-RP01-CLOSURE` (Review PLAN).
+**Currency:** 2026-10-30 · **RA-174 RP-01 closure PLAN** ([record](Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md)). TB51 831/0 is the reviewed candidate; selector497 497/497 and the G4-B002 exit row is green inside it. 85 rows are deferred, and the packaged API binary (23 tests) is not yet governed. CP2 491/491 is the last accepted; selector497/CP3 unpromoted; stable 66/17/49, debt 1. Next `M6-CP3-CB53-RP01-GATE-MEMBERSHIP-PREFLIGHT`.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -106,12 +106,12 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-PLAN-RP01-CLOSURE` rules on the RA-172.5 RP-01 blockers, O14 full-binary membership, O6 and repair-slice ownership. TB51 831/0 is a reviewed candidate, not CP3 closure; 85 rows remain deferred.
+**Immediate:** CB53 applies P8 (gate membership, O14), then the TB52C API-binary census and TB52 with membership. In parallel on the Review track, `M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES` repairs RP-01's last blockers (rows 223, 225 and 261, plus O9).
 
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Decide RP-01 blockers from 85 RA-172 deferred rows, O14 live gate completeness, and exact repair-slice order; P13/P12b block by default. No CP3/selector promotion. | `M6-CP3-PLAN-RP01-CLOSURE` — Review PLAN |
+| **1** | Close RP-01: repair rows 223, 225 and 261 without weakening and rule on O9; govern every packaged test via P8 (RA-174.3). | CB53 → TB52C → TB52 (I); `M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES` (R) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

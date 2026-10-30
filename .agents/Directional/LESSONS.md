@@ -352,6 +352,10 @@ This document records **reusable failure-derived engineering lessons**, not an e
   with no state for a known failure. The implementation agent could not probe and audited for 7 h without
   closing. Split classification (bounded) from repair (one slice per cause group), and give known
   failures a tracked DEFERRED state, so the coverage gain lands first (RA-172.1).
+- **Check completeness against what is built, not against the gate's own scope.** RA-172 and RA-173
+  called 916 tests "the complete inventory" because they matched the four gate binaries. The same
+  package shipped a fifth test binary (23 tests) that no gate or census had ever run. A membership
+  claim must be executed against the package's real test listing (P8), not asserted by Review (RA-174.2).
 
 ## Build, artifact, workflow, and tool mechanics
 

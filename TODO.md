@@ -1,17 +1,46 @@
-## CURRENT — TB51-REV independently reviewed 831/0; RP-01 closure PLAN next (2026-10-30)
+## CURRENT — RA-174 RP-01 closure PLAN complete; CB53 (P8 membership) next (2026-10-30)
 
-- [x] **`M6-CP3-TB51-RP01-FULL-GATE-EXEC`** (TB-EXEC, I): [run 41021857497](https://github.com/akashskypatel/Directional/actions/runs/41021857497), result `12963899691` (outer SHA-256 `e6339e12…`), log `12964417597`. On frozen CB52 package `12918290481`, frozen 831-case manifest `d6961b59…`, harness `600c6455…`: **831/831 PASS; 0 RED/ABNORMAL/INVALID; 0 missing/skipped/duplicates/control_bad; postflight true; 1,668/1,668 result checksums and 831/831 exact native joins**; no compile, relink, configure, benchmark, source/fixture/test/manifest/harness edits or rerun. [TB51 report](.agents/Directional/Architecture_M6_CP3_TB51_RP01_Full_Gate_Artifact_Only_Test_Benchmark_Report_20261030.md). This is a **reviewed candidate** per [RA-173](.agents/Directional/Architecture_M6_CP3_TB51_REV_Independent_Full_Gate_Review_20261030.md), not CP3 acceptance.
-- [x] **RA-173** `M6-CP3-TB51-RP01-FULL-GATE-REV`: independently rehashed CB52 package, TB51 result/native logs, selector/manifest/harness and all 85 deferred rows; exact disjoint union 916. No CP3 or selector497 acceptance. [Review](.agents/Directional/Architecture_M6_CP3_TB51_REV_Independent_Full_Gate_Review_20261030.md).
-- [ ] **NEXT ONLY** `M6-CP3-PLAN-RP01-CLOSURE` (PLAN, R): decide RA-172.5 RP-01 blockers, O14 live completeness, O6 scope and all repair-slice owners, before separate CB/TB/REV slices.
-- [ ] The 85 excluded rows remain **DEFERRED** (FIXTURE 49, PRODUCT 7, OPEN 24, RETIRE 5), not observed PASS and not new stable regressions. Prior [RA-172](.agents/Directional/Architecture_M6_CP3_DEFN_RP01_Off_Selector_Coverage_Disposition_20261030.md) and [deferred ledger](.agents/Directional/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger.tsv) stay authoritative.
-- [ ] Carried: RP-01 open, RP-02 UNREACHED, O1/O2/O6–O10/O12/O14, RA-152.5, DEFN-SEAM-NZ, RA-146.2/4, RA-45.4 and G4-B002. O11/O13 subsumed by P11a/P11b. DIAG-RETAIN follows RP-01 and a separate DEFN; do not implement it in TB51-EXEC.
+- [x] **`M6-CP3-PLAN-RP01-CLOSURE`** (PLAN, R) together with an audit of TB51-REV: [RA-174](.agents/Directional/Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md).
+  - TB51 re-verified independently: 1,668/1,668 checksums; 831/831 joins and single-test logs; the 323 promoted rows passed twice.
+  - **F1:** the packaged `directional_compiled_api_tests` binary (23 tests) was never gated or censused. The oracle binary (29 tests, O7) does not compile. Within the four gate binaries, the source declarations equal gate ∪ ledger (606/39/187/84).
+  - **F2:** selector497 497/497 and the G4-B002 exit row (one of `focused30:25–28`) pass inside TB51.
+  - **F3 (Review defect):** RA-172.5 was mis-scoped. RP-01 blockers are now rows 223, 225 and 261 plus the O9 ruling. P13, P12b and every other deferred row block CP3 exit instead.
+  - **CP3-exit conditions:** RP-01 closed; zero ledger rows; design-acceptance matrix gated at 6/6 (Cylinder is required); O14 enforced; O7 resolved; CP3-REV decides selector497.
+  - **P8 (O14):** gate runs need `MEMBERSHIP_LEDGER`, and every packaged `*_tests` binary's `--gtest_list_tests` must equal gate ∪ ledger. Patch `80ee9e42…` (`136 13`) → harness `78b8002c…`. Self-test 30; seven mutations caught. TB52C census manifest `81395065…` (23 rows).
+- [ ] **NEXT** `M6-CP3-CB53-RP01-GATE-MEMBERSHIP-PREFLIGHT` (CB, I): apply the exact RA-174.7 diff. Verify `bash -n`, self-test 30, and self-checks TB49 504 / TB50 508 / TB50C 408 / TB51 831 / TB52C 23. TB51 with the ledger → `deferred=85`; TB50C with the ledger → FAIL.
+  - All exact → TB52C-EXEC.
+  - Mismatch → `M6-CP3-PLAN-RP01-MEMBERSHIP-STOP`.
+  - Dispatcher failure → `M6-CP3-CB53A-RP01-ORCH`.
+- [ ] Carried separately (owners per RA-174.3):
+  - O1; O2 (legacy no-atlas ingress, post-RP-01).
+  - O6 (bounded disks that are not rectangular are rejected by design) → P13 probe DEFN.
+  - O7 (oracle-tests target does not compile) → its own probe DEFN.
+  - O8 (`InvalidFrontBoundaryAuthority` on the 3×3 midline at `lengthRatio=0.29`) and O10 (non-hard isolation-barrier producer) → CP3-exit probe DEFNs after P13.
+  - O9 (A4 junction path has no produced witness) → RP-01 slice.
+  - O12 (R61 `review_check.py` selector collision) → Review tooling.
+  - O14 → P8.
+  - RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4. G4-B002 exit row is gated; the discharge decision belongs to CP3-REV.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
   - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Frozen:** stable 66/17/49, debt 1; CP2 491/491 last accepted, TB50-R2 508/0 reviewed candidate, TB51 831/0 reviewed candidate; selector497 frozen/unpromoted, Gate C suspended, PR #8 draft/unmerged.
-- **Future sequence:** `M6-CP3-PLAN-RP01-CLOSURE` (R; RA-172.5 blocker rule, O14 completeness and repair ordering) → one separately authorized repair slice per deferred group. RETIRE CB first, FIXTURE/PRODUCT exact patch per group, OPEN probe DEFN first. Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS` then `M6-DEFN-DIAG-RETAIN-A5-A7`. No successor work is authorized inside TB51-EXEC.
+- **Turn sequence:**
+  - Done: TB50C-EXEC-R2 → DEFN (RA-172) → TB51-EXEC 831/0 → TB51-REV (RA-173) → **PLAN-RP01-CLOSURE (RA-174)**.
+  - **I:** 1 CB53 (P8) **NEXT** → 2 TB52C-EXEC (23-row API census, harness `78b8002c…`, no ledger) → 3 TB52C-REV (R; freeze the TB52 gate and ledger v2) → 4 TB52-EXEC → TB52-REV (first run with membership).
+  - **R∥:** `M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES` (223/225/261, O9) → CB54 → TB53 → TB53-REV = RP-01 closure.
+  - **Then:** P13 probe DEFN (Cylinder first; O6) → retire CB → FIXTURE slices (each DEFN first confirms the production pipeline reaches its stage, otherwise → O2) → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV. Post-RP-01: O2 DEFN, then DIAG-RETAIN.
+  - One CB per exact patch; implementation agents get only exact patches and frozen manifests. Probe-requiring DEFN and TB-REV turns stay on the Review track.
+  - **Naming (RA-167.6):** types per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier.
+  - Rules: RA-170 (a gate pass says nothing about off-gate tests), RA-171 (self-check every manifest; census rows are OBSERVE), RA-172 (a DEFN needs a reachable exit), RA-174 (verify completeness against the package, not against the gate's own scope).
+- **Frozen:** stable 66/17/49, debt 1; CP2 491/491 last accepted; TB51 831/0 reviewed candidate; selector497 frozen and unpromoted; Gate C suspended; PR #8 draft and unmerged.
+
+---
+
+## HISTORY — RA-172; TB51-EXEC; RA-173 (2026-10-30)
+
+- [x] [RA-172](.agents/Directional/Architecture_M6_CP3_DEFN_RP01_Off_Selector_Coverage_Disposition_20261030.md): 85 census non-PASS rows → [deferred ledger](.agents/Directional/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger.tsv) (FIXTURE 49 / PRODUCT 7 / OPEN 24 / RETIRE 5); TB51 gate 831 `d6961b59…`.
+- [x] TB51-EXEC [run 41021857497](https://github.com/akashskypatel/Directional/actions/runs/41021857497) **831/0** ([report](.agents/Directional/Architecture_M6_CP3_TB51_RP01_Full_Gate_Artifact_Only_Test_Benchmark_Report_20261030.md)). [RA-173](.agents/Directional/Architecture_M6_CP3_TB51_REV_Independent_Full_Gate_Review_20261030.md) made it the reviewed candidate.
 
 ---
 
