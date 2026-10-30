@@ -1,3 +1,7 @@
+# 2026-10-30 — TB52C API binary observational census, 22 PASS / 1 RED
+
+- [TB52C report](.agents/Directional/Architecture_M6_CP3_TB52C_RP01_API_Binary_Census_Artifact_Only_Report_20261030.md): [run 41064596683](https://github.com/akashskypatel/Directional/actions/runs/41064596683), 23/23 on unchanged CB52 package `12918290481`; 22 PASS, 1 RED at `SurfaceCellTracingDisplayTests.cpp:107` (`apicensus:19`); no abnormal, postflight true. Result `12981972265` verified 49/49 member checksums. No rebuild or semantic mutation. Independent TB52C-REV is next; no regression classification or selector/CP3 promotion.
+
 # 2026-10-30 — CB53 P8 exact gate-membership preflight applied (offline-only)
 
 - [CB53 record](.agents/Directional/Architecture_M6_CP3_CB53_RP01_Gate_Membership_Preflight_Code_Build_Record_20261030.md): exact RA-174.7 P8 (`80ee9e42…`, `+136/−13`) on targeted harness only; [commit `a9a1f16`](https://github.com/akashskypatel/Directional/commit/a9a1f16e779c6b648379d580ef7286442af33af7) applied via [run `41059135746`](https://github.com/akashskypatel/Directional/actions/runs/41059135746), result artifact `12977624427`. Harness SHA-256 `78b8002c…` verified remotely and in follow-up `5991/5991` source snapshot.

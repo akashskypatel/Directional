@@ -1,4 +1,4 @@
-## CURRENT — CB53 P8 membership preflight complete; TB52C API census next (2026-10-30)
+## CURRENT — TB52C API census executed; independent Review next (2026-10-30)
 
 - [x] **`M6-CP3-PLAN-RP01-CLOSURE`** (PLAN, R) together with an audit of TB51-REV: [RA-174](.agents/Directional/Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md).
   - TB51 re-verified independently: 1,668/1,668 checksums; 831/831 joins and single-test logs; the 323 promoted rows passed twice.
@@ -8,7 +8,8 @@
   - **CP3-exit conditions:** RP-01 closed; zero ledger rows; design-acceptance matrix gated at 6/6 (Cylinder is required); O14 enforced; O7 resolved; CP3-REV decides selector497.
   - **P8 (O14):** gate runs need `MEMBERSHIP_LEDGER`, and every packaged `*_tests` binary's `--gtest_list_tests` must equal gate ∪ ledger. Patch `80ee9e42…` (`136 13`) → harness `78b8002c…`. Self-test 30; seven mutations caught. TB52C census manifest `81395065…` (23 rows).
 - [x] **`M6-CP3-CB53-RP01-GATE-MEMBERSHIP-PREFLIGHT`** (CB, I): RA-174.7 exact P8 applied at [`a9a1f16`](https://github.com/akashskypatel/Directional/commit/a9a1f16e779c6b648379d580ef7286442af33af7); harness `78b8002c…`. Offline syntax/self-test 30, five self-checks (504/508/408/831/23), ledger=85 PASS, census-with-ledger expected FAIL. No native runtime or compile. [Record](.agents/Directional/Architecture_M6_CP3_CB53_RP01_Gate_Membership_Preflight_Code_Build_Record_20261030.md).
-- [ ] **NEXT `M6-CP3-TB52C-RP01-API-BINARY-CENSUS-EXEC`** (TB-EXEC, I): immutable CB52 package `12918290481`, P8 harness `78b8002c…`, frozen 23-row `OBSERVE` API-binary manifest `81395065…`; no `MEMBERSHIP_LEDGER`. Report all outcomes and exact failure sites without classification. Postflight with 23 rows → TB52C-REV; preflight defect → PLAN-MEMBERSHIP-STOP; dispatcher failure → CB53A-ORCH.
+- [x] **`M6-CP3-TB52C-RP01-API-BINARY-CENSUS-EXEC`** (TB-EXEC, I): [TB52C report](Architecture_M6_CP3_TB52C_RP01_API_Binary_Census_Artifact_Only_Report_20261030.md), [run 41064596683](https://github.com/akashskypatel/Directional/actions/runs/41064596683), artifact `12981972265` — 23/23, 22 PASS / 1 RED (`apicensus:19`, first failure `SurfaceCellTracingDisplayTests.cpp:107`), 0 abnormal, postflight true, 49/49 hashes. No classification, no rebuild.
+- [ ] **NEXT `M6-CP3-TB52C-RP01-API-BINARY-CENSUS-REV`** (TB-REV, R): independently verify 23-row evidence, classify `apicensus:19`, freeze the five-binary gate and deferred ledger v2; no successor work in TB52C-EXEC.
 - [ ] Carried separately (owners per RA-174.3):
   - O1; O2 (legacy no-atlas ingress, post-RP-01).
   - O6 (bounded disks that are not rectangular are rejected by design) → P13 probe DEFN.
@@ -25,7 +26,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: TB50C-EXEC-R2 → DEFN (RA-172) → TB51-EXEC 831/0 → TB51-REV (RA-173) → **PLAN-RP01-CLOSURE (RA-174)**.
-  - **I:** CB53 (P8) **DONE** → TB52C-EXEC (23-row API census, harness `78b8002c…`, no ledger) **NEXT** → TB52C-REV (R; freeze the TB52 gate and ledger v2) → TB52-EXEC → TB52-REV (first run with membership).
+  - **I:** CB53 (P8) **DONE** → TB52C-EXEC **DONE** (23/23, 22 PASS / 1 RED) → TB52C-REV **NEXT** (R; freeze the TB52 gate and ledger v2) → TB52-EXEC → TB52-REV (first run with membership).
   - **R∥:** `M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES` (223/225/261, O9) → CB54 → TB53 → TB53-REV = RP-01 closure.
   - **Then:** P13 probe DEFN (Cylinder first; O6) → retire CB → FIXTURE slices (each DEFN first confirms the production pipeline reaches its stage, otherwise → O2) → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV. Post-RP-01: O2 DEFN, then DIAG-RETAIN.
   - One CB per exact patch; implementation agents get only exact patches and frozen manifests. Probe-requiring DEFN and TB-REV turns stay on the Review track.
