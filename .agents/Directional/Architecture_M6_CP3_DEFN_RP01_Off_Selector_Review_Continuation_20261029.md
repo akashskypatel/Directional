@@ -1,3 +1,9 @@
+## 2026-10-30 multi-rail chart fixture source-audit continuation (runtime-free)
+
+- Exact source snapshot `4e75b334d26fe591abad244196bdc6d71a48332c` via source-snapshot run `40992879403`, artifact `12949962249`, checked outer SHA-256 `e5ddca0d7938556796e04cca0ce42665f0068832d2e905f3f4c4b26c3923c483` and inner `source.tar.gz` SHA-256 `f341a16d0b8b8b7348462aa4f974b5c0e7ddd4836efcfd85f11c795a569458b6`; original immutable TB50C-R2 per-case logs reused. No native execution.
+- **P14 406/407/408 first-stage cause proven:** shared `make_multi_rail_validation_fixture()` publishes `SourceProjectionChart` identities before inserting final hard edge `(0,1)`. Re-derived connected chart partition changes from 3 to 4; stored `FieldChartId` is no longer bound to final graph, and `SourcePointLabelSupport::resolve_compatible_chart` rejects that exact mismatch before downstream assertions. Fix fixture construction order with independent 4-component/identity and negative tests; do not weaken product guards or treat target invariants as now verified.
+- P14 split is now 2 projection label defects, 3 fixture-order defects, 1 fail-closed metric dispute, and 3 other unresolved. All 85 non-passing identities, the CP2 491/491 acceptance, reviewed TB50 508/508 candidate, stable 66/17/49 debt 1, and zero retirements remain unchanged. 916-case TB51 draft still non-authoritative. Continue the same DEFN; no CB/TB successor released.
+
 ## 2026-10-30 continued DEFN source audit — three corrected cases
 
 - Reused independently verified `9fe12a26...` exact semantic source snapshot (run 40986100897, artifact 12946688157; SHA-256 3cc27449cc5b272aaf87231504837a361d04bbf02dc8f2ea751fd43103812a65), with TB50C-R2 raw logs. Local current inventory and continuation blobs were independently matched to branch via Git blob SHAs `3645a9eea6f67b6655d4668472edf4a12398c449` and `5794b19b00fd4962bd1de2c1dbf2bd9e9b09c0f2`. No production code, test, fixture, selector or native execution changed.
