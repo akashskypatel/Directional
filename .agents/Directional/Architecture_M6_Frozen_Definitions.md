@@ -1,3 +1,9 @@
+## RA-172 — off-gate disposition contract; TB51 gate (2026-10-30)
+
+- **RA-172.3 (amends RA-171.5):** each test in the four gate binaries is GATED (in the TB51 manifest; must PASS), DEFERRED (in the frozen deferred ledger with group and class FIXTURE/PRODUCT/OPEN/RETIRE; re-enters only through its group's repair slice) or RETIRED (deleted by a CB for a stated reason). Gate ∪ ledger equals the binaries' full test list, with no overlap.
+- **TB51:** 831 rows = TB50 508 (byte-identical) + 323 census PASS rows (`GUARD`/`PASS`/`-`, identity `offgate:<row>`); SHA-256 `d6961b598a450dd17b818f316249ecacd0fdc73a91d8a1e4e7dca2fa537eb7b4`. Deferred ledger: 85 rows, SHA-256 `6f7eb9137afda0fc8066883d73058d6e843158751e7356e1dd468bc891be6df5`.
+- **RP-01 blocker rule (RA-172.5):** a deferred group blocks RP-01 if and only if its first failure lies in A1–A3 source or transport authority on a pipeline-produced fixture. **O14:** gate completeness check (binary test list ⊆ manifest ∪ ledger).
+
 ## RA-171 — census observe contract; RP-01 coverage target (2026-10-29)
 
 - **RA-171.4 `OBSERVE`:** a census manifest is all-`OBSERVE` (`expect=OBSERVE`, site `-`) and never mixes with gate kinds. PASS, RED and ABNORMAL (the selected test ran once, unskipped, without a terminal verdict) are evidence; INVALID selection still fails the run. Value-parameterized names `Prefix/Suite.Test/Param` are valid in every manifest kind.

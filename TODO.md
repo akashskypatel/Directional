@@ -1,18 +1,19 @@
-## CURRENT — TB50C-R2 census complete; off-selector DEFN next (2026-10-29)
+## CURRENT — RA-172 off-selector disposition complete; TB51 next (2026-10-30)
 
-- [x] **`M6-CP3-TB50-RP01-FULL-GATE-REV`** (TB-REV) COMPLETE per [RA-171](.agents/Directional/Architecture_M6_CP3_TB50_REV_Gate_Closeout_Census_Observe_Harness_20261029.md).1–.2.
-  - CB50–CB52 are byte-identical to P3–P6 applied to RA-170.
-  - TB50-R2 independently verified: artifact `12929917136`, 1022/1022 checksums, 508/508 manifest–ledger–log joins, source = HEAD.
-  - 508/0 is the reviewed candidate gate. CB50A's `-` site cells are sound, since the sites stay asserted in-test.
-- [x] `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC`: S5, 0/408 ([report](.agents/Directional/Architecture_M6_CP3_TB50C_Off_Gate_Census_Orchestration_Failure_Report_20261029.md)). RA-171.3 root cause is a Review freeze defect: the name regex rejected `Prefix/Suite.Test/Param`, and GUARD semantics would have failed on any census RED.
-- [x] RA-171.4: P7 adds the `OBSERVE` kind (PASS/RED/ABNORMAL as evidence; INVALID still fails; no mixing with gate rows), parameterized names, and `GetParam()` FAILED-line normalization. Probed: self-test 21/21, self-checks 504/508/408, real gtest logs. Census re-frozen `918239009ddee28e…` (kind/expect only).
-- [x] `M6-CP3-CB50C-RP01-CENSUS-HARNESS-ORCH` (CB, I): exact P7 `9c30f6b6…`, numstat `71 8`, harness `600c6455…`, offline self-test 21/21 and self-checks 504/508/408. Applied in commit `9355721b67398a2e874f77eecfd61477d8bf9a76`, run 40962940548, no native runtime; [record](.agents/Directional/Architecture_M6_CP3_CB50C_RP01_Census_Harness_Orchestration_Record_20261029.md).
-- [x] `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC-R2` (TB-EXEC, I): [run 40965775275](https://github.com/akashskypatel/Directional/actions/runs/40965775275), 408/408 OBSERVE, 323 PASS / 83 RED / 2 ABNORMAL / 0 INVALID; 822/822 artifact hashes; [detailed report](.agents/Directional/Architecture_M6_CP3_TB50C_RP01_Off_Gate_Census_R2_Test_Benchmark_Report_20261029.md). No classification.
-- [ ] **NEXT** `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION` (DEFN, R): classify every non-PASS row by first-failure group; exact patches; freeze the TB51 manifest = 508 + (408 − retired). Then CB53… → TB51-EXEC → TB51-REV → `M6-CP3-PLAN-RP01-CLOSURE`. Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`, then `M6-DEFN-DIAG-RETAIN-A5-A7`.
+- [x] **`M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION`** (DEFN, R), taken over from the implementation agent: [RA-172](.agents/Directional/Architecture_M6_CP3_DEFN_RP01_Off_Selector_Coverage_Disposition_20261030.md).
+  - RA-172.1 (Review defect): RA-171.5 tied TB51 to a causal proof and exact patch for all 85 rows, with no state for a known failure. That left the DEFN with no reachable exit.
+  - TB50C-R2 re-verified (ZIP `a18758bd…`, 822/822, 408 joins). Five inventory claims confirmed from source: P01, P03, P04a, P08, P12c.
+  - Contract: each test is GATED, DEFERRED (frozen ledger, group and class) or RETIRED. 85 rows → FIXTURE 49 / PRODUCT 7 / OPEN 24 / RETIRE 5 ([ledger](.agents/Directional/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger.tsv) `6f7eb913…`).
+  - TB51 = 508 + 323 = **831** ([manifest](.agents/Directional/Architecture_M6_CP3_TB51_Full_Gate_Case_Manifest.tsv) `d6961b59…`). Prefix byte-identical to TB50; self-test 21; self-check 831 passes.
+  - The continuation WIP log and the 916-row proposal were folded into the `M6_Consolidated_Record.md` index; the working inventory is kept as evidence.
+- [ ] **NEXT** `M6-CP3-TB51-RP01-FULL-GATE-EXEC` (TB-EXEC, I): CB52 package `12918290481`, harness `600c6455…`, manifest `d6961b59…`, 831 cases. Report counts and non-PASS first failures only.
+  - Complete ledger → TB51-REV.
+  - Preflight or manifest error → `M6-CP3-PLAN-RP01-GATE-STOP`.
+  - Dispatcher failure before the harness starts → `M6-CP3-CB53-RP01-GATE-ORCH`, then one retry.
 - [ ] Carried separately:
   - O1, O6 and O7 (oracle-tests target does not compile).
   - O8 (`lengthRatio=0.29`) and O9 (A4 junction path unwitnessed; owns P1-a's `missing-terminal-A3-path`).
-  - **O10:** non-hard isolation-barrier producer. **O11:** 5 off-gate TQ tests failing at HEAD. **O12:** R61 `review_check.py` selector collision. **O13:** `ProducedHardCarriersAreAtlasBarriers…` off-gate RED (all now inside the O5 census).
+  - **O10:** non-hard isolation-barrier producer. **O12:** R61 `review_check.py` selector collision. **O14 (RA-172.5):** gate completeness, i.e. a harness preflight that fails when `--gtest_list_tests` ⊄ manifest ∪ deferred ledger. O11 and O13 are subsumed by deferred groups P11a/P11b.
   - RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4 and G4-B002.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
@@ -20,14 +21,22 @@
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
-  - Done: CB50 (P3) → CB50F (P4) → CB51 (P5) → CB52 (P6) → TB50-EXEC S5 → CB50A-ORCH → TB50-EXEC-R2 (508/0) → TB50C-EXEC S5 → TB50-REV (RA-171) → CB50C-ORCH (P7).
-  - **TB50C-EXEC-R2 COMPLETE** (408 census) → **DEFN NEXT** off-selector disposition → CB53… → TB51-EXEC → TB51-REV → PLAN-RP01-CLOSURE.
-  - One CB per exact patch; implementation agents get only exact patches and frozen manifests; probe-requiring DEFN/TB-REV turns stay on the Review track.
-  - **Naming (RA-167.6):** types per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier. CB50C stop → `M6-CP3-PLAN-RP01-CENSUS-HARNESS-STOP`; CB50C orchestration → `M6-CP3-CB50CA-RP01-ORCH`; TB50C-R2 without a complete ledger → the same PLAN stop.
-  - Rules: RA-164.3 P1–P6, RA-165.2 F1/F2, RA-166.6 F6/F7, RA-168 oracle rule, RA-169 masking rule, RA-170 (factory negatives pin a site; a gate pass says nothing about off-gate tests), RA-171 (Review self-checks every manifest against its harness before freezing; census rows are OBSERVE, never GUARD).
+  - Done: CB50–CB52 → TB50-EXEC-R2 (508/0) → TB50-REV (RA-171) → CB50C (P7) → TB50C-EXEC-R2 (323/83/2/0) → **DEFN (RA-172)**.
+  - **1 TB51-EXEC NEXT** (I) → 2 TB51-REV (R) → 3 `M6-CP3-PLAN-RP01-CLOSURE` (R; RA-172.5 blocker rule, O14, slice order) → 4+ repair slices, one per RA-172.4 group (retire CB first; OPEN groups start with a probe DEFN).
+  - Post-RP-01: `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`, then `M6-DEFN-DIAG-RETAIN-A5-A7`.
+  - One CB per exact patch. Implementation agents get only exact patches and frozen manifests; probe-requiring DEFN/TB-REV turns stay on the Review track.
+  - **Naming (RA-167.6):** types per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier.
+  - Rules: RA-164.3 P1–P6, RA-165.2 F1/F2, RA-166.6 F6/F7, RA-168 oracle rule, RA-169 masking rule, RA-170 (a gate pass says nothing about off-gate tests), RA-171 (self-check every manifest; census rows are OBSERVE), RA-172 (a DEFN needs a reachable exit; split disposition from repair).
 - Frozen:
   - Stable 66/17/49, debt 1; CP2 491/491 accepted.
   - TB50-R2 508/0 reviewed candidate; selector497 frozen; RP-01 open, RP-02 unreached; Gate C suspended.
+
+---
+
+## HISTORY — RA-171; CB50C; TB50C S5/R2 (2026-10-29)
+
+- [x] [RA-171](.agents/Directional/Architecture_M6_CP3_TB50_REV_Gate_Closeout_Census_Observe_Harness_20261029.md): TB50-R2 508/0 verified as the reviewed candidate. The TB50C S5 root cause was a Review freeze defect (parameterized names; GUARD census rows). P7 adds `OBSERVE`; census re-frozen `91823900…`.
+- [x] CB50C applied P7 exactly (harness `600c6455…`, commit `9355721b…`) → TB50C-EXEC-R2 [run 40965775275](https://github.com/akashskypatel/Directional/actions/runs/40965775275): 408/408 OBSERVE, 323 PASS / 83 RED / 2 ABNORMAL / 0 INVALID ([report](.agents/Directional/Architecture_M6_CP3_TB50C_RP01_Off_Gate_Census_R2_Test_Benchmark_Report_20261029.md)).
 
 ---
 

@@ -1,3 +1,9 @@
+# 2026-10-30 — RA-172 off-selector coverage disposition (Review DEFN)
+
+- Review took over `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION`: [RA-172](.agents/Directional/Architecture_M6_CP3_DEFN_RP01_Off_Selector_Coverage_Disposition_20261030.md). Root cause of the stall: RA-171.5 tied TB51 to a full causal proof of 85 failures.
+- Each test is now GATED, DEFERRED or RETIRED. 85 rows → FIXTURE 49 / PRODUCT 7 / OPEN 24 / RETIRE 5 ([ledger](.agents/Directional/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger.tsv)). TB51 manifest frozen at 831 rows (`d6961b59…`, self-checked).
+- Folded the continuation WIP log and the 916-row proposal. Next `M6-CP3-TB51-RP01-FULL-GATE-EXEC`.
+
 # 2026-10-29 — TB50C-R2 off-gate native census
 
 - [Run 40965775275](https://github.com/akashskypatel/Directional/actions/runs/40965775275) against frozen CB52 `12918290481`, 408/408 OBSERVE executed; 323 PASS, 83 RED, 2 ABNORMAL, 0 INVALID. Postflight true, 822/822 checksums, all 408 case and log joins. [Full per-suite and per-row report](.agents/Directional/Architecture_M6_CP3_TB50C_RP01_Off_Gate_Census_R2_Test_Benchmark_Report_20261029.md).

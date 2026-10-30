@@ -347,6 +347,11 @@ This document records **reusable failure-derived engineering lessons**, not an e
   across a 21k-line file, and to design five more items in the same turn, stopped with nothing written.
   Review then traced from the logged hexfloats and found the single rounding site (RA-95.1, RA-95.3).
   Name the suspected site and the evidence that locates it before asking for a design.
+- **Give every DEFN a reachable exit.** RA-171 asked one disposition DEFN to prove the cause of 85 census
+  failures and specify their repairs before TB51 could be frozen. It also allowed only "gated" or "retired",
+  with no state for a known failure. The implementation agent could not probe and audited for 7 h without
+  closing. Split classification (bounded) from repair (one slice per cause group), and give known
+  failures a tracked DEFERRED state, so the coverage gain lands first (RA-172.1).
 
 ## Build, artifact, workflow, and tool mechanics
 
