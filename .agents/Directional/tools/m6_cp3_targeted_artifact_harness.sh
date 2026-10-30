@@ -1,25 +1,28 @@
 #!/usr/bin/env bash
 set -euo pipefail
-if [[ "${1:-}" == "--self-check" && "$#" -eq 3 ]]; then
+if [[ "${1:-}" == "--self-check" && ( "$#" -eq 3 || "$#" -eq 4 ) ]]; then
   mode=self-check
   manifest_arg=$2
   count_arg=$3
+  ledger_arg=${4:-}
 elif [[ "${1:-}" == "--self-test" && "$#" -eq 1 ]]; then
   mode=self-test
   manifest_arg=''
   count_arg=''
+  ledger_arg=''
 elif [[ "${1:-}" == "--execute" && "$#" -eq 1 ]]; then
   mode=execute
   manifest_arg=''
   count_arg=''
+  ledger_arg=''
   : "${RUNNER_TEMP:?}"
   : "${TURN_ID:?}"
   exec > >(tee "$RUNNER_TEMP/$TURN_ID.log") 2>&1
 else
-  echo 'usage: harness --self-check <case-manifest.tsv> <expected-count> | --self-test | --execute' >&2
+  echo 'usage: harness --self-check <case-manifest.tsv> <expected-count> [<deferred-ledger.tsv>] | --self-test | --execute' >&2
   exit 64
 fi
-python3 - "$mode" "$manifest_arg" "$count_arg" <<'PY'
+python3 - "$mode" "$manifest_arg" "$count_arg" "$ledger_arg" <<'PY'
 import csv
 import hashlib
 import json
@@ -33,9 +36,12 @@ import sys
 import tarfile
 import tempfile
 
-MODE, MANIFEST_ARG, COUNT_ARG = sys.argv[1:]
+MODE, MANIFEST_ARG, COUNT_ARG, LEDGER_ARG = sys.argv[1:]
 HEADER = ['row', 'kind', 'identity', 'test', 'binary', 'expect', 'asserted_site']
 KINDS = {'NEGATIVE', 'POSITIVE', 'GUARD', 'RED', 'OBSERVE'}
+LEDGER_HEADER = ['census_row', 'identity', 'test', 'binary', 'verdict', 'exit', 'group', 'class',
+                 'first_failure']
+CLASSES = {'FIXTURE', 'PRODUCT', 'OPEN', 'RETIRE'}
 HEX64 = re.compile(r'[0-9a-f]{64}\Z')
 HEX40 = re.compile(r'[0-9a-f]{40}\Z')
 # Plain Suite.Test, or value-parameterized Prefix/Suite.Test/Param.
@@ -92,6 +98,61 @@ def read_cases(path, count):
     # A census observes; it must never dilute a gate's PASS/RED controls.
     require(len({case[1] == 'OBSERVE' for case in cases}) == 1, 'OBSERVE rows mixed with gate rows')
     return cases
+
+# O14: every test a packaged *_tests binary lists is gated or deferred, never both.
+def read_ledger(path, cases):
+    require(cases[0][1] != 'OBSERVE', 'a census takes no deferred ledger')
+    with Path(path).open(newline='', encoding='utf-8') as stream:
+        reader = csv.reader(stream, delimiter='\t', strict=True)
+        require(next(reader, None) == LEDGER_HEADER, 'wrong deferred ledger header')
+        rows = list(reader)
+    gated = {case[3] for case in cases}
+    tests, entries = set(), []
+    for index, row in enumerate(rows, 1):
+        require(len(row) == len(LEDGER_HEADER), f'ledger row {index}: wrong column count')
+        test, binary, disposition = row[2], row[3], row[7]
+        require(bool(TEST.fullmatch(test)), f'ledger row {index}: invalid gtest name')
+        require(bool(BIN.fullmatch(binary)) and binary not in {'.', '..'}, f'ledger row {index}: invalid binary')
+        require(disposition in CLASSES, f'ledger row {index}: unknown class {disposition!r}')
+        require(test not in tests, f'ledger row {index}: duplicate test {test}')
+        require(test not in gated, f'ledger row {index}: also gated: {test}')
+        tests.add(test)
+        entries.append((test, binary))
+    return entries
+
+def list_tests(text):
+    names, suite = [], None
+    for line in text.splitlines():
+        if not line.strip() or (suite is None and line.startswith('Running main() from ')):
+            continue
+        head = line.split('  # ', 1)[0].rstrip()  # drop GetParam()/TypeParam notes
+        if not line.startswith(' '):
+            require(head.endswith('.') and len(head) > 1, f'unparsable listing line: {line!r}')
+            suite = head[:-1]
+            continue
+        require(suite is not None, 'listed test before its suite')
+        name = f'{suite}.{head.strip()}'
+        require(TEST.fullmatch(name) is not None, f'unsupported listed test: {name}')
+        names.append(name)
+    require(len(names) == len(set(names)), 'duplicate listed test')
+    return set(names)
+
+def membership(cases, ledger, listings):
+    governed = {}
+    for test, binary in [(case[3], case[4]) for case in cases] + ledger:
+        governed.setdefault(binary, set()).add(test)
+    require(set(listings) == set(governed),
+            f'ungoverned or unpackaged test binaries: {sorted(set(listings) ^ set(governed))}')
+    gated = {case[3] for case in cases}
+    members = []
+    for binary in sorted(listings):
+        listed = list_tests(listings[binary])
+        ungoverned = sorted(listed - governed[binary])
+        stale = sorted(governed[binary] - listed)
+        require(not ungoverned and not stale, f'{binary}: {len(ungoverned)} ungoverned '
+                f'{ungoverned[:3]}, {len(stale)} stale {stale[:3]}')
+        members += [[binary, test, 'GATED' if test in gated else 'DEFERRED'] for test in sorted(listed)]
+    return members
 
 # Preserve all completed execution evidence even when a later gate fails.
 def sha_manifest(path):
@@ -278,7 +339,45 @@ def self_test():
             raise ValueError('mixed OBSERVE/gate manifest accepted')
         path.write_text(''.join('\t'.join(row) + '\n' for row in rows[:2]))
         require(len(read_cases(path, 1)) == 1, 'OBSERVE-only manifest rejected')
-    print(f'SELF_TEST_PASS cases={len(examples) + len(param_examples) + len(observed)}')
+
+    # Real --gtest_list_tests output (gtest_main, named TEST_P instances, DISABLED_).
+    listing = ('Running main() from src/gtest_main.cc\nPlain.\n  First\n  DISABLED_Off\nFix.\n  Third\n'
+               'U/Accept.\n  Out/Plane  # GetParam() = 16-byte object <D3-8D>\n'
+               '  Out/Seam  # GetParam() = 16-byte object <D9-8D>\n')
+    listed = {'Plain.First', 'Plain.DISABLED_Off', 'Fix.Third', 'U/Accept.Out/Plane', 'U/Accept.Out/Seam'}
+    require(list_tests(listing) == listed, 'gtest listing misparsed')
+    gate = [['1', 'GUARD', 'g:1', 'Plain.First', 'bin_tests', 'PASS', '-'],
+            ['2', 'GUARD', 'g:2', 'U/Accept.Out/Plane', 'bin_tests', 'PASS', '-']]
+    ledger = [('Plain.DISABLED_Off', 'bin_tests'), ('Fix.Third', 'bin_tests'), ('U/Accept.Out/Seam', 'bin_tests')]
+    states = {row[1]: row[2] for row in membership(gate, ledger, {'bin_tests': listing})}
+    require(states == {'Plain.First': 'GATED', 'U/Accept.Out/Plane': 'GATED', 'Plain.DISABLED_Off': 'DEFERRED',
+                       'Fix.Third': 'DEFERRED', 'U/Accept.Out/Seam': 'DEFERRED'}, 'membership states wrong')
+    rejected = [('ungoverned', gate, ledger[:2], {'bin_tests': listing}),
+                ('stale', gate, ledger + [('Fix.Gone', 'bin_tests')], {'bin_tests': listing}),
+                ('unpackaged', gate, ledger + [('Other.Case', 'other_tests')], {'bin_tests': listing}),
+                ('ungoverned-binary', gate, ledger, {'bin_tests': listing, 'new_tests': 'New.\n  Case\n'}),
+                ('typed-suite', gate, ledger, {'bin_tests': listing + 'T/0.  # TypeParam = int\n  Case\n'})]
+    for name, gate_rows, ledger_rows, listings in rejected:
+        try:
+            membership(gate_rows, ledger_rows, listings)
+        except ValueError:
+            pass
+        else:
+            raise ValueError(f'membership {name} accepted')
+    with tempfile.TemporaryDirectory() as scratch:
+        path = Path(scratch) / 'ledger.tsv'
+        entry = ['85', 'offgate:85', 'Fix.Third', 'bin_tests', 'RED', '1', 'P01', 'FIXTURE', '-']
+        path.write_text('\t'.join(LEDGER_HEADER) + '\n' + '\t'.join(entry) + '\n')
+        require(read_ledger(path, gate) == [('Fix.Third', 'bin_tests')], 'valid ledger rejected')
+        for name, bad_cases in (('overlap', gate + [['3', 'GUARD', 'g:3', 'Fix.Third', 'bin_tests', 'PASS', '-']]),
+                                ('census', [['1', 'OBSERVE', 'c:1', 'Plain.First', 'bin_tests', 'OBSERVE', '-']])):
+            try:
+                read_ledger(path, bad_cases)
+            except ValueError:
+                pass
+            else:
+                raise ValueError(f'ledger {name} accepted')
+    print(f'SELF_TEST_PASS cases={len(examples) + len(param_examples) + len(observed) + 1 + len(rejected) + 3}')
 
 if MODE == 'self-test':
     try:
@@ -290,7 +389,8 @@ if MODE == 'self-test':
 if MODE == 'self-check':
     try:
         cases = read_cases(MANIFEST_ARG, expected_count(COUNT_ARG))
-        print(f'SELF_CHECK_PASS cases={len(cases)}')
+        deferred = f' deferred={len(read_ledger(LEDGER_ARG, cases))}' if LEDGER_ARG else ''
+        print(f'SELF_CHECK_PASS cases={len(cases)}{deferred}')
     except Exception as error:
         print(f'SELF_CHECK_FAIL {error}', file=sys.stderr)
         sys.exit(1)
@@ -303,7 +403,7 @@ OUT = Path(str(ROOT) + '-result')
 ROOT.mkdir(parents=True, exist_ok=True)
 state = dict(planned=0, executed=0, passed=0, red=0, abnormal=0, missing=0,
              skipped=0, duplicate=0, control_bad=0, unexpected_pass=0,
-             later_positive_red=0, red_site_bad=0, postflight=False)
+             later_positive_red=0, red_site_bad=0, membership=0, postflight=False)
 rows = []
 exit_code = 90
 source_sha = ''
@@ -326,14 +426,24 @@ try:
     require(re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repo) is not None, 'invalid repository')
     token = os.environ['GH_TOKEN']
     workspace = Path(os.environ['GITHUB_WORKSPACE']).resolve()
-    relative_manifest = Path(values['CASE_MANIFEST'])
-    require(not relative_manifest.is_absolute() and '..' not in relative_manifest.parts, 'manifest must be repo relative')
-    case_path = (workspace / relative_manifest).resolve()
-    require(workspace in case_path.parents and case_path.is_file() and not case_path.is_symlink(), 'manifest missing/unsafe')
-    require(digest(case_path) == values['CASE_MANIFEST_SHA256'], 'case manifest checksum mismatch')
+
+    def repo_file(relative, sha256, label):
+        relative = Path(relative)
+        require(not relative.is_absolute() and '..' not in relative.parts, f'{label} must be repo relative')
+        path = (workspace / relative).resolve()
+        require(workspace in path.parents and path.is_file() and not path.is_symlink(), f'{label} missing/unsafe')
+        require(HEX64.fullmatch(sha256) is not None and digest(path) == sha256, f'{label} checksum mismatch')
+        return path
+
+    case_path = repo_file(values['CASE_MANIFEST'], values['CASE_MANIFEST_SHA256'], 'case manifest')
     cases = read_cases(case_path, expected_count(values['EXPECTED_CASE_COUNT']))
+    # A gate run must account for every packaged test (O14); a census never takes a ledger.
+    gate = cases[0][1] != 'OBSERVE'
+    require(gate == ('MEMBERSHIP_LEDGER' in os.environ), 'gate runs require MEMBERSHIP_LEDGER; censuses forbid it')
+    ledger = read_ledger(repo_file(os.environ['MEMBERSHIP_LEDGER'], os.environ.get('MEMBERSHIP_LEDGER_SHA256', ''),
+                                   'deferred ledger'), cases) if gate else []
     state['planned'] = len(cases)
-    print(f'PREFLIGHT cases={len(cases)} source={source_sha} artifact={artifact_id}', flush=True)
+    print(f'PREFLIGHT cases={len(cases)} deferred={len(ledger)} source={source_sha} artifact={artifact_id}', flush=True)
 
     api = f'https://api.github.com/repos/{repo}/actions/artifacts/{artifact_id}'
     curl = ['curl', '-fsSL', '-H', 'Authorization: Bearer ' + token]
@@ -379,6 +489,19 @@ try:
         deps_text = deps.stdout + deps.stderr
         require('not found' not in deps_text and 'libgmp' in deps_text, f'GMP dependency missing for {binary}')
         (OUT / f'dependencies-{binary}.txt').write_text(deps_text)
+    if gate:
+        listings = {}
+        for entry in sorted(view_bin.iterdir()):
+            if entry.is_file() and entry.name.endswith('_tests'):
+                listing = subprocess.run(['env', 'GTEST_COLOR=no', str(entry), '--gtest_list_tests'],
+                                         cwd=ROOT, capture_output=True, text=True, timeout=120)
+                require(listing.returncode == 0, f'test listing failed: {entry.name}')
+                listings[entry.name] = listing.stdout
+        members = membership(cases, ledger, listings)
+        with (OUT / 'membership.tsv').open('w', newline='', encoding='utf-8') as stream:
+            csv.writer(stream, delimiter='\t').writerows([['binary', 'test', 'state']] + members)
+        state['membership'] = len(members)
+        print(f'MEMBERSHIP binaries={len(listings)} tests={len(members)}', flush=True)
 
     for case in cases:
         row, kind, identity, test, binary, expect, site = case
