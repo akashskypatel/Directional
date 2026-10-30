@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p14-multirail-fixture-audit-20261030-v1",
+  "request_id": "m6-cp3-defn-p05-p06-p14-typed-audit-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p14-multirail-fixture-audit-20261030-v1",
-  "file_id": "1zIAnnvkTyE_iGZpYEpAX63wAgJQUWGou",
-  "patch_sha256": "a01aea6c869edb782fd8389d9890a5fec4021e8865b2ec7c30878dfef674b7de",
-  "base_sha": "4e75b334d26fe591abad244196bdc6d71a48332c",
+  "mailbox_key": "m6-cp3-defn-p05-p06-p14-typed-audit-20261030-v1",
+  "file_id": "1kUgv2TKIhXFXTObAkItDV2Xps4093POS",
+  "patch_sha256": "438bbbee28428a78e8aa546da9d23a9ce6fff5fd2471bdf34cb171587f5fcb92",
+  "base_sha": "b890c77efe368b97bba6239a8a23cbd6a0cfbe7a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): classify multi-rail stale chart fixture authority in P14",
+  "commit_message": "docs(agent): isolate FlowRep typed-rejection cases and optimizer projection derivative risk",
   "retention_days": 14
 }
