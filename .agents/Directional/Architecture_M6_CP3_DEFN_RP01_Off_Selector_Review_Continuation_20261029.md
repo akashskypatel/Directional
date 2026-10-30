@@ -1,3 +1,10 @@
+## 2026-10-30 P07/P11 representation/ownership contracts (runtime-free; same DEFN)
+
+- Independently re-opened immutable TB50C-R2 `raw/52.log` and `raw/265.log` against the checked source snapshot (semantic tests/source unchanged since CB52 by GitHub compare). No native build/test run.
+- **P07 row 52:** the test genuinely injects region-9 alternate provenance into a region-2 boundary; subdivision copies *all* provenance through the split and selects primary scope without purging alternate lineage. RED has an exact causal mechanism, but whether to reject mixed input or preserve foreign lineage under a typed separate contract is Review-owned. No silent provenance relabel or test weakening. One P07 contract conflict replaces a broad candidate; five P07 candidates remain.
+- **P11 row 265:** the oracle directly equates raw atlas A3 transition to topology-key-canonical, gauge-compensated branch transport. Production definitions explicitly apply `rawGauge[first] - rawGauge[second]` modulo four. Repeated raw-0 versus canonical-1/3 failures demonstrate that the test omitted this transformation; a separate independent gauge-covariant oracle is required. Only row 331 remains a broad P11 candidate. This classification does not establish that the branch producer's canonical value is correct.
+- No new stable regression, no retirement, no promoted CP3/selector497. All 85 non-PASS identities remain; TB51 508 + 408 = 916 remains a **non-executable proposal** until whole-census disposition and independent coverage decision. No successor CB/TB started.
+
 ## 2026-10-30 P11 terminal/contact witness audit (runtime-free; same DEFN)
 
 - Verified one exact immutable source snapshot from source event `050fef8181633e0bc3a9dea329a07035fe6e19eb` (run `40997745341`, artifact `12952540027`, outer SHA-256 `1eeed5ab92e126c164bfe2bdd0877d1b0eebeea838b4e47912db7d11b8569e9f`), verified 5986/5986 source hashes; reused `raw/223.log`, `raw/225.log` from the 822/822-verified TB50C-R2 archive. No native work.
