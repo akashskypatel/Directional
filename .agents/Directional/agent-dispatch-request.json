@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p02a-incidence-20261030-v1",
+  "request_id": "m6-cp3-defn-p05-region-correction-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p02a-incidence-20261030-v1",
-  "file_id": "1qImmeRtj0KutfZEhfZkP5S2OUvgzifZC",
-  "patch_sha256": "40214d6428d5186a319e4a5f67dfb05ec94dbd53bb756340667063306b3dbcfd",
-  "base_sha": "dba608e044c11fbdaaa7f70eb76674130b40d2ef",
+  "mailbox_key": "m6-cp3-defn-p05-region-correction-20261030-v1",
+  "file_id": "1rIksFwmr77H4UF-Mru7_hxb1lBiqQw99",
+  "patch_sha256": "37d74abceccc4aedba9bf089995959d7d352300ea00c53681bb0b4e97116ac2e",
+  "base_sha": "6cbe7f1d5d3bd4bc454355dcacfa6d7a213848d4",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): localize P02a port count mismatch to missing outgoing incidence",
+  "commit_message": "docs(directional): prove case 8 component versus region fixture mismatch",
   "retention_days": 14
 }
