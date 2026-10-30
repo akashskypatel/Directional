@@ -1,3 +1,8 @@
+# 2026-10-30 — TB51 full-gate immutable execution (candidate, not reviewed)
+
+- `M6-CP3-TB51-RP01-FULL-GATE-EXEC` completed the frozen 831-row gate via [run 41021857497](https://github.com/akashskypatel/Directional/actions/runs/41021857497) on unchanged CB52 package `12918290481` and source `7cf0857b…`: **831/831 PASS**, 0 RED/ABNORMAL/INVALID, postflight true, 831 exact native row/log joins, 1,668/1,668 SHA256SUMS. Result `12963899691` outer ZIP SHA-256 `e6339e127fd923c9785ef9be5d07402af94bbe2dcc535c29ff4a45ef3d2cf1c7`; log `12964417597`. [Report](.agents/Directional/Architecture_M6_CP3_TB51_RP01_Full_Gate_Artifact_Only_Test_Benchmark_Report_20261030.md).
+- Execution boundary forbids and reports no compilation, configure, relink, benchmark, or test/source/fixture repairs. 85 deferred census rows remain outside the gate (49 FIXTURE, 7 PRODUCT, 24 OPEN, 5 RETIRE). Stable 66/17/49, debt 1 and CP2 491/491 accepted unchanged; selector497 remains frozen. TB51 is an **unreviewed candidate**; independent successor `M6-CP3-TB51-RP01-FULL-GATE-REV`, no CP3 promotion.
+
 # 2026-10-30 — RA-172 off-selector coverage disposition (Review DEFN)
 
 - Review took over `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION`: [RA-172](.agents/Directional/Architecture_M6_CP3_DEFN_RP01_Off_Selector_Coverage_Disposition_20261030.md). Root cause of the stall: RA-171.5 tied TB51 to a full causal proof of 85 failures.
