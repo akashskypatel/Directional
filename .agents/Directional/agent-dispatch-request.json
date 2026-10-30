@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb52c-rev-apply-20261030-v3",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb52c-rev-apply-20261030-v3",
-  "file_id": "1TnYOAyGdNGgnKrxgFBPfIP-litAvg_SR",
-  "patch_sha256": "6aa92a9f33776ecd68f7abba4f69bf40a07aaeaac5fcdcb44a851f4839aa7f8a",
-  "base_sha": "eda58c9a0130781f5d5cface9efc22a89129d914",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): independently dispose TB52C API binary census and freeze TB52 gate",
+  "request_id": "m6-cp3-tb52-rp01-full-gate-20261030-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb52-rp01-full-gate-20261030-v1",
+  "executor_sha": "02cd62d0972430769ddedda61a6137f48235fe82",
+  "semantic_source_sha": "7cf0857b4818186638ce77e4859adacbeebd288f",
+  "turn_id": "M6-CP3-TB52-RP01-FULL-GATE-EXEC",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "12918290481",
+    "EXPECTED_SOURCE_SHA": "7cf0857b4818186638ce77e4859adacbeebd288f",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "89449f4f9c014c1d8c3235056c3dca2d2239ba136e09dd88e3e02710b253b5c1",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "6ae4eb5bf9552912fe068d9a9d3a90d76e2e27b9bd99896f83c216fd27fbc21f",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "c02a0be4b25d64eca2c10e5681cd8721a465a848a3d17044275370eac132553b",
+    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_CP3_TB52_RP01_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "95a7af662fd94306c92145050eff18fa0cc57de4eed19d1e4704938fc5532211",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v2.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "77c1d33b25f65837aa24c446b99657bfc1932fb8ab7636cc9c3ded598c38c78d",
+    "EXPECTED_CASE_COUNT": "853"
+  },
+  "artifact_prefix": "m6-cp3-tb52-full-gate",
   "retention_days": 14
 }
