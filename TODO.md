@@ -1,4 +1,4 @@
-## CURRENT — TB52C API census executed; independent Review next (2026-10-30)
+## CURRENT — TB52C API census independently dispositioned; TB52 full gate next (2026-10-30)
 
 - [x] **`M6-CP3-PLAN-RP01-CLOSURE`** (PLAN, R) together with an audit of TB51-REV: [RA-174](.agents/Directional/Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md).
   - TB51 re-verified independently: 1,668/1,668 checksums; 831/831 joins and single-test logs; the 323 promoted rows passed twice.
@@ -9,7 +9,8 @@
   - **P8 (O14):** gate runs need `MEMBERSHIP_LEDGER`, and every packaged `*_tests` binary's `--gtest_list_tests` must equal gate ∪ ledger. Patch `80ee9e42…` (`136 13`) → harness `78b8002c…`. Self-test 30; seven mutations caught. TB52C census manifest `81395065…` (23 rows).
 - [x] **`M6-CP3-CB53-RP01-GATE-MEMBERSHIP-PREFLIGHT`** (CB, I): RA-174.7 exact P8 applied at [`a9a1f16`](https://github.com/akashskypatel/Directional/commit/a9a1f16e779c6b648379d580ef7286442af33af7); harness `78b8002c…`. Offline syntax/self-test 30, five self-checks (504/508/408/831/23), ledger=85 PASS, census-with-ledger expected FAIL. No native runtime or compile. [Record](.agents/Directional/Architecture_M6_CP3_CB53_RP01_Gate_Membership_Preflight_Code_Build_Record_20261030.md).
 - [x] **`M6-CP3-TB52C-RP01-API-BINARY-CENSUS-EXEC`** (TB-EXEC, I): [TB52C report](Architecture_M6_CP3_TB52C_RP01_API_Binary_Census_Artifact_Only_Report_20261030.md), [run 41064596683](https://github.com/akashskypatel/Directional/actions/runs/41064596683), artifact `12981972265` — 23/23, 22 PASS / 1 RED (`apicensus:19`, first failure `SurfaceCellTracingDisplayTests.cpp:107`), 0 abnormal, postflight true, 49/49 hashes. No classification, no rebuild.
-- [ ] **NEXT `M6-CP3-TB52C-RP01-API-BINARY-CENSUS-REV`** (TB-REV, R): independently verify 23-row evidence, classify `apicensus:19`, freeze the five-binary gate and deferred ledger v2; no successor work in TB52C-EXEC.
+- [x] **`M6-CP3-TB52C-RP01-API-BINARY-CENSUS-REV`** (TB-REV, R): [RA-175](.agents/Directional/Architecture_M6_CP3_TB52C_REV_API_Binary_Census_Independent_Disposition_20261030.md) independently verified 23/23 logs and 49/49 hashes; 22 PASS, one API-DISPLAY/FIXTURE row19; frozen 853 gate `95a7af662fd94306c92145050eff18fa0cc57de4eed19d1e4704938fc5532211` + 86 deferred `77c1d33b25f65837aa24c446b99657bfc1932fb8ab7636cc9c3ded598c38c78d` with byte-identical 831 prefix. No selector/CP3 acceptance.
+- [ ] **NEXT `M6-CP3-TB52-RP01-FULL-GATE-EXEC`** (TB-EXEC, I): immutable CB52 package, 853 gate + 86 deferred `MEMBERSHIP_LEDGER` P8 preflight across five binaries; only candidate if all 853 PASS and postflight true. No build or test-source changes.
 - [ ] Carried separately (owners per RA-174.3):
   - O1; O2 (legacy no-atlas ingress, post-RP-01).
   - O6 (bounded disks that are not rectangular are rejected by design) → P13 probe DEFN.

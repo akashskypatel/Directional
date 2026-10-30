@@ -1,3 +1,8 @@
+# 2026-10-30 — RA-175 independent TB52C API-binary census Review
+
+- [RA-175](.agents/Directional/Architecture_M6_CP3_TB52C_REV_API_Binary_Census_Independent_Disposition_20261030.md): independently verified immutable TB52C 23/23 native logs, 49/49 checksum entries, 22 PASS/1 RED; row19's expected atlas source-vertex fixture stops in tracing instead. Defer row19 without altering its assertion or calling it stable.
+- Froze TB52 full five-binary candidate gate **853** (TB51 831 exact-byte prefix + 22 API PASS) SHA-256 `95a7af662fd94306c92145050eff18fa0cc57de4eed19d1e4704938fc5532211`, deferred ledger v2 **86** (50 FIXTURE / 7 PRODUCT / 24 OPEN / 5 RETIRE) SHA-256 `77c1d33b25f65837aa24c446b99657bfc1932fb8ab7636cc9c3ded598c38c78d`. Dynamic P8 listing and all native gates remain for successor `M6-CP3-TB52-RP01-FULL-GATE-EXEC`. CP2 491/491 and stable 66/17/49 debt1 unchanged; no product/test/selector mutation.
+
 # 2026-10-30 — TB52C API binary observational census, 22 PASS / 1 RED
 
 - [TB52C report](.agents/Directional/Architecture_M6_CP3_TB52C_RP01_API_Binary_Census_Artifact_Only_Report_20261030.md): [run 41064596683](https://github.com/akashskypatel/Directional/actions/runs/41064596683), 23/23 on unchanged CB52 package `12918290481`; 22 PASS, 1 RED at `SurfaceCellTracingDisplayTests.cpp:107` (`apicensus:19`); no abnormal, postflight true. Result `12981972265` verified 49/49 member checksums. No rebuild or semantic mutation. Independent TB52C-REV is next; no regression classification or selector/CP3 promotion.
