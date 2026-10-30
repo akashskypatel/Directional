@@ -28,6 +28,10 @@ Stable **66 events / 17 categories / 49 recurrences**, debt **1**, unchanged: ro
 
 Exactly one next turn: **`M6-CP3-TB52-RP01-FULL-GATE-EXEC`** (TB-EXEC, implementation track): run the frozen 853-row gate against unchanged immutable CB52 artifact `12918290481`, using executor P8 with `MEMBERSHIP_LEDGER=.agents/Directional/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v2.tsv` and exact `MEMBERSHIP_LEDGER_SHA256=77c1d33b25f65837aa24c446b99657bfc1932fb8ab7636cc9c3ded598c38c78d` and gate manifest `.agents/Directional/Architecture_M6_CP3_TB52_RP01_Full_Gate_Case_Manifest.tsv` SHA-256 `95a7af662fd94306c92145050eff18fa0cc57de4eed19d1e4704938fc5532211`. No build/relink/reconfigure/fixture repair, no observations masked as PASS, no selector/CP3 promotion. The following separate Review is `M6-CP3-TB52-RP01-FULL-GATE-REV` conditional on a valid TB result.
 
+## Transport verification
+
+Initial apply run `41093137786` rejected comma-delimited intended paths; corrected semicolon-delimited header retained the identical diff body and succeeded in run `41093583465`. Both consumed Google Drive staging files were owner-deleted. No test, code or runtime was changed.
+
 ## Review closeout
 
 | Duty | Answer |
@@ -48,5 +52,5 @@ Exactly one next turn: **`M6-CP3-TB52-RP01-FULL-GATE-EXEC`** (TB-EXEC, implement
 | Successor frozen | `M6-CP3-TB52-RP01-FULL-GATE-EXEC` with listed P8, native, prefix and postflight falsifiers. |
 | Turn boundary held | Review-only; no executable test/benchmark, rebuild, production/test/selector mutation. New case-manifest/ledger are scheduling metadata, not code or runtime results. |
 | review_check.py boundary | Static tool executed on synthetic snapshot Git baseline: failed durable-rewrite ancestor/source checks because the authentic remote commit ancestry is absent; not a verified boundary PASS. Scope verified by exact changed-path inventory and unchanged production/test/selector files. |
-| `STATUS` lifecycle maintained | Started at 2026-10-30T16:21:59Z; final beacon to match review completion. |
-| Pushed to origin, branch in sync | Not verified at patch-preparation stage. Remote application/sync is a remaining closeout prerequisite; no claim until connector confirms. |
+| `STATUS` lifecycle maintained | Started at 2026-10-30T16:21:59Z, resumed at 2026-10-30T16:43:37Z; final root beacon follows closeout. |
+| Pushed to origin, branch in sync | Patch pushed at `254b0c72`; subsequent cleanup `997a6089` removed only two temporary files; remote compare verified. `git status -sb` cannot verify the connector-only workspace; not claimed. |
