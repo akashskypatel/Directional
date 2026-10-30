@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-off-selector-causes-20261030-v1",
+  "request_id": "m6-cp3-defn-offselector-projection-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-off-selector-causes-20261030-v1",
-  "file_id": "1wzzT9jorugeTE-g4juUSiBPOz_xEn77i",
-  "patch_sha256": "8c717c0ee78aaab18388afc3742e51f57005541ec88cfb752661891728178d28",
-  "base_sha": "25ebbd99f2b44f553ebb39fd42ac82e8a8e26fbb",
+  "mailbox_key": "m6-cp3-defn-offselector-projection-20261030-v1",
+  "file_id": "1GlnJEy8b-mSFViitP9qQsnVQ5TiBu3gB",
+  "patch_sha256": "f9ab75e5a704033e4a22fda4754786c6a1dd5e3805549a7a123997960e657da8",
+  "base_sha": "aa52a0d0c084374027e4c2b56652cc08b60cdaa7",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): distinguish A1/A3 failures and adjudicate negative-source oracles",
+  "commit_message": "docs(agent): identify missing source-sheet labels in optimizer projection",
   "retention_days": 14
 }
