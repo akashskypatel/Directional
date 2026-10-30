@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-rp01-wip-preserve-20261030-v1",
+  "request_id": "m6-cp3-defn-rp01-source-audit-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-rp01-wip-preserve-20261030-v1",
-  "file_id": "1Ivezmva0ws9atTa_icb0mklwVbcVHcfL",
-  "patch_sha256": "8c50e47f2663951ad307b868a7f41acf85085f344c3ab18c04ed7230b9893872",
-  "base_sha": "76c2aacf4c5bd3f8018831ddc12f77c8df71d52a",
+  "mailbox_key": "m6-cp3-defn-rp01-source-audit-20261030-v1",
+  "file_id": "14t4XkXKtJoUr1HS0eo-_7L0BDoMKq8DC",
+  "patch_sha256": "1b074ef040131dff9bc03c4e72c333260e17050d7aa66dee1e1a660fb2332c63",
+  "base_sha": "040f89616da0115558fa991021547b28a2944f03",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): preserve provisional off-selector census classification and TB51 candidate",
+  "commit_message": "docs(agent): source-audit off-selector fixture and non-vacuity failures",
   "retention_days": 14
 }
