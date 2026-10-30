@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "tb51-independent-review-documentation-20261030-a1",
+  "request_id": "m6-cp3-cb53-rp01-membership-p8-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "tb51-independent-review-documentation-20261030",
-  "file_id": "1HvmFcHWU38vybeNM_oTTTcW8bY82mVL2",
-  "patch_sha256": "7dcad36441f81c46dce2c13f4fe47486ae6fe665c1af36422125251c171378b9",
-  "base_sha": "3722673f3295c8687e78b920774b722bc61046d2",
+  "mailbox_key": "m6-cp3-cb53-rp01-membership-p8-20261030-v1",
+  "file_id": "1jeTPGkq59bW2xeZRtWbyCn561XeDHN97",
+  "patch_sha256": "f036ea2628357ef51d662a406ead246f9e2e281c29f6cbb76d36a6ff260901d3",
+  "base_sha": "d5c7ea7dd740fbc6619c0431a2e4304894b2002d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): independently review TB51 full gate and deferred inventory",
+  "commit_message": "fix(directional): apply exact P8 gate-membership harness preflight",
   "retention_days": 14
 }
