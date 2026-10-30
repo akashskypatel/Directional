@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p02b-winding-20261030-v1",
+  "request_id": "m6-cp3-defn-p09b-ordinary-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p02b-winding-20261030-v1",
-  "file_id": "10SCMlbqjeVmvNNINwuaVcA5MFAZstblD",
-  "patch_sha256": "f59fa4ea2ffd83aa104a1a9a86088344da238ff2770ac18f3766b879d74ca77a",
-  "base_sha": "97f3cc8e8835c3c691f8371cb987b72135b47e81",
+  "mailbox_key": "m6-cp3-defn-p09b-ordinary-20261030-v1",
+  "file_id": "1FDuG_ZmQRHVg30RNs37IgFn5shYegvhd",
+  "patch_sha256": "6bcc8c859ca1ebc3c7a68477f3ccccbb1fb1cc03d5e3707c49674b6e4687f03c",
+  "base_sha": "615810f59f3905750a97ac698a56d04b3d725b1d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): prove P02b unsupported-sheet reverse-case noncoverage",
+  "commit_message": "docs(directional): identify structurally excluded ordinary trace-crossed cuts",
   "retention_days": 14
 }
