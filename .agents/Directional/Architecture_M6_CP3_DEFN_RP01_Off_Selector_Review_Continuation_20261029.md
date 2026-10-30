@@ -1,3 +1,9 @@
+## 2026-10-30 P12 typed source-chart versus field-gauge oracle (same DEFN; no native run)
+
+- `raw/276.log` emits 0 for source faces 3 and 10 and the test expects 1/2 in both boundary segments and lattice typed chart occurrence. The source code proves the fixture only rotates raw field branch labels, while A2 places all 24 connected faces in one component/sheet, no hard barriers. Canonical source-chart graph derives exactly one chart ID 0 from topology, independently of raw field branch rotations (`SourceChartTransitions.h:179-194,595-750`). Therefore case 276 is an **invalid test expectation**, not a measured accepted-prefix regression.
+- Dedicated CB must preserve two independent non-vacuous responsibilities: authentic chart 0 on connected/barrier-free source with correct A3/A4 transport, and authentic multi-chart partition from valid topology/hard-feature provenance with independently derived IDs, plus a consumed-authority negative. Cannot create source chart IDs by raw branch relabel or bypass A2b hard-rail coverage.
+- P12 accounting: four oracle defects (276/279/296/317); three first-failure producer candidates (277/283/286) and one uncalibrated performance assertion (314). All eight remain non-PASS, no retirements; entire off-gate census still 85 non-PASS. Reviewed TB50 508/508 is not accepted CP3; last accepted CP2 491/491, stable 66/17/49 debt 1. TB51 916-row manifest remains draft/unexecutable. Continue exact DEFN, no successor.
+
 ## 2026-10-30 P12 producer-witness first-locus audit (same DEFN; runtime-free)
 
 - TB50C-R2 row 277 reaches the deliberate stage-6 checkpoint but fails its first A4 two-carrier certificate lookup (`route == routes.end()`); neither a missing A1 odd transition nor an A5 failure has been proved. Preserve the exact `(1,4),(4,7)` joint route with source-produced terminal/junction receipts and paired negative controls.
