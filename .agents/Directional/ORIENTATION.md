@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-29 · CB50 and CB50F exact P3/P4 compile-only complete ([CB50F](Architecture_M6_CP3_CB50F_RP01_C1_Factory_Rail_Cover_Code_Build_Record_20261029.md)), next `M6-CP3-CB51-RP01-P1B-NETWORK-OWNER-WITNESS` (P5), then CB52 P6 and TB50/TB50C. TB49 504/0 reviewed candidate; CP2 491/491 accepted, selector497/CP3 unpromoted, 101/408 off-gate RED locally pending CI census, stable 66/17/49 debt1, RP-01 open.
+**Currency:** 2026-10-30 · **RA-173 TB51 independent review verified 831/831 native PASS** ([review](Architecture_M6_CP3_TB51_REV_Independent_Full_Gate_Review_20261030.md)), 85 deferred unchanged, 916-case disjoint inventory. CP2 491/491 last accepted; selector497/CP3 unpromoted, stable 66/17/49, debt 1; next `M6-CP3-PLAN-RP01-CLOSURE` (Review PLAN).
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -47,7 +47,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB49 selected full gate **504/0** independently reviewed (candidate); CP3 closure and direct-production matrix **not accepted**. Frozen 497-entry selector; historical R3 403/94. |
+| **M6-CP3 — active** | TB51 selected full gate **831/0** independently reviewed (candidate), 85 deferred; CP3 closure and direct-production matrix **not accepted**. Frozen 497-entry selector; historical R3 403/94. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 **Prior Review authority:** [RA-170](Architecture_M6_CP3_TB49_REV_Reaudit_P1_O4_DEFNs_E2_Site_Pins_OffGate_Census_20261028.md) re-specifies P1-b (network-absent A4 never produces, so the witness is a rail-ID swap at `rail_interval_refs`), classifies P1-a and O4 accepted-defensive, pins cp3entry:2 factory sites, and schedules the off-gate census. [RA-169](Architecture_M6_CP3_TB49_REV_Closeout_C1_Rail_Cover_DEFN_Patches_20261028.md) fixed C1 (P3/P4). Implementers get only exact patches and manifests.
@@ -106,11 +106,12 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** CB50 (P3) → CB50F (P4) → CB51 (P5) → CB52 (P6) → TB50-EXEC (508, predict 508/0) → TB50C-EXEC (408 census) → TB50-REV → O5 disposition DEFN ([RA-170](Architecture_M6_CP3_TB49_REV_Reaudit_P1_O4_DEFNs_E2_Site_Pins_OffGate_Census_20261028.md).6).
+**Immediate:** `M6-CP3-PLAN-RP01-CLOSURE` rules on the RA-172.5 RP-01 blockers, O14 full-binary membership, O6 and repair-slice ownership. TB51 831/0 is a reviewed candidate, not CP3 closure; 85 rows remain deferred.
+
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Close RP-01: CB50–CB52 → TB50 + TB50C → TB50-REV → O5 off-gate disposition → CB53… → TB51 → PLAN-RP01-CLOSURE (O6 scope, O7–O12 owners). O2 post-RP-01. | `M6-CP3-CB50-RP01-C1-INGRESS-ORPHAN-HARD-EDGE` per [RA-170](Architecture_M6_CP3_TB49_REV_Reaudit_P1_O4_DEFNs_E2_Site_Pins_OffGate_Census_20261028.md) |
+| **1** | Decide RP-01 blockers from 85 RA-172 deferred rows, O14 live gate completeness, and exact repair-slice order; P13/P12b block by default. No CP3/selector promotion. | `M6-CP3-PLAN-RP01-CLOSURE` — Review PLAN |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
