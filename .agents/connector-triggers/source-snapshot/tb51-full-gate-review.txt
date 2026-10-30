@@ -1,0 +1,3 @@
+Snapshot trigger for independent TB51 full-gate review.
+Frozen preceding authority: e67b29a8299240f17db61e6c809586619a0a5e55
+No implementation or runtime execution requested.
