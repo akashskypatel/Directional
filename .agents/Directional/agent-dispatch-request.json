@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p09-p13-reachability-audit-20261030-v1",
+  "request_id": "m6-cp3-defn-p09-group-label-reconcile-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p09-p13-reachability-audit-20261030-v1",
-  "file_id": "1zJ8aeqli_9666F1W5OibT9Dn5jzkjOug",
-  "patch_sha256": "e08a303a4362620662c54358dba5e6fde52f794aa16ed856def36730cd3d1e1d",
-  "base_sha": "7907098a319f2020250f35d785386d1a29e009bb",
+  "mailbox_key": "m6-cp3-defn-p09-group-label-reconcile-20261030-v1",
+  "file_id": "11R30wtyqQ5Th2eKXoaIyN9EQBqfy7ZYq",
+  "patch_sha256": "c90458770ed87ab9b849a8e178578914ffc9c8bc8d6e2cb313549816588b645f",
+  "base_sha": "d058ddaf6d8e494cd06fe9b6da0f97995f3cd041",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): adjudicate sphere trace-event, saturation, and bunny cut identity",
+  "commit_message": "docs(agent): reconcile P09 sphere versus saturation cause-group identities",
   "retention_days": 14
 }
