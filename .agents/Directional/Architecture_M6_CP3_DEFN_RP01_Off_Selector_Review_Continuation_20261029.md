@@ -1,3 +1,9 @@
+## 2026-10-30 P11 typed isolation equivalence review (runtime-free; same DEFN)
+
+- Rechecked immutable `raw/331.log` and the split-isolation fixture/materializer. The sole reported failure is an existential test flag that checks only `equivalence.route`; `CornerWedgeIsolation` is a distinct typed equivalence with `isolationTransitions`/`isolationSeams` and an intentionally unassigned route. Other isolated-seam tests already use typed evidence. Positive seam lineage details are not printed in this raw log, so correctness remains unverified.
+- P11 six of six observations now carry first-stage witness/oracle/preflight classifications, **not** retrospective green status. A future CB must exercise real nonempty typed isolation transitions against the independent source seam certificate, including tampered and row-permuted negatives; retain the original lineage/sorting assertions.
+- No retirement, compile, native test, selector promotion or CP3 acceptance. 85 non-PASS retained; proposed TB51 916 remains non-executable; same DEFN continues.
+
 ## 2026-10-30 P07/P11 representation/ownership contracts (runtime-free; same DEFN)
 
 - Independently re-opened immutable TB50C-R2 `raw/52.log` and `raw/265.log` against the checked source snapshot (semantic tests/source unchanged since CB52 by GitHub compare). No native build/test run.
