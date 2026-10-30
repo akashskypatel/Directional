@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb52-closeout-20261030-v1",
+  "request_id": "m6-cp3-tb52-review-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb52-closeout-20261030-v1",
-  "file_id": "1D6S_AJu01eHx0N4DWjACM7weMCwN2dvo",
-  "patch_sha256": "042d3cccbcdb7af86e6115f59b09c0389aa3f49841173484a4fd7861a6bf411a",
-  "base_sha": "02cd62d0972430769ddedda61a6137f48235fe82",
+  "mailbox_key": "m6-cp3-tb52-review-20261030-v1",
+  "file_id": "14MlZmwqC2PggDwcSxJSoG277mkgz-gzk",
+  "patch_sha256": "a45bffa56a603491c408ba2ad83fe696bcba17448333f3a4a6ed1249e79a5045",
+  "base_sha": "0052dedf535a330ec0ae1c00c9e1cb6905eee6e9",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB52 immutable full-gate execution with verified evidence",
+  "commit_message": "docs(directional): independently review TB52 immutable full gate",
   "retention_days": 14
 }
