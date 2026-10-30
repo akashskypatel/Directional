@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p05b-p06-region-20261030-v1",
+  "request_id": "m6-cp3-defn-p10b-seed-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p05b-p06-region-20261030-v1",
-  "file_id": "1xrAAiye2Yw1zsBXab94S48fjHrbJtpZS",
-  "patch_sha256": "4f1bf04d79cb263987d3d840d02d280a25776832c63934be753f03270e8d97fd",
-  "base_sha": "b3c01adcc0a238b4a9d629dcbfd2194fa09f46ef",
+  "mailbox_key": "m6-cp3-defn-p10b-seed-20261030-v1",
+  "file_id": "1McWHVMgr1Ej9IsUys7X7hFHkIX5d0XXI",
+  "patch_sha256": "116e7cfa9633c0e472a361a387649d7109321f4d8b45ec8c982448afa428c4a8",
+  "base_sha": "f738cbc4ce870c5ae14a2f160921845b7e94b346",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): identify source-region mismatch in five FlowRep fixtures",
+  "commit_message": "docs(directional): prove invalid source arrival seed in P10b case 243",
   "retention_days": 14
 }
