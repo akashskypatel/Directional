@@ -1,2 +1,0 @@
-M6-CP3-TB51-RP01-FULL-GATE-EXEC
-Snapshot trigger; source authority is this event commit.
