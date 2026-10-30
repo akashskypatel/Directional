@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p10a-cycle-20261030-v1",
+  "request_id": "m6-cp3-defn-p02b-winding-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p10a-cycle-20261030-v1",
-  "file_id": "15FX45ZZkL9WqyJ-BYEoEEca4Wb8Kat6y",
-  "patch_sha256": "b78e4ee15f040b58c2f158878e9f20873361d29dfd69223b75730fdc554c40bb",
-  "base_sha": "eefdbfdf9b061c7429f95d8f843430dd36fd7c87",
+  "mailbox_key": "m6-cp3-defn-p02b-winding-20261030-v1",
+  "file_id": "10SCMlbqjeVmvNNINwuaVcA5MFAZstblD",
+  "patch_sha256": "f59fa4ea2ffd83aa104a1a9a86088344da238ff2770ac18f3766b879d74ca77a",
+  "base_sha": "97f3cc8e8835c3c691f8371cb987b72135b47e81",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): audit four P10a cone field/transport contradictions",
+  "commit_message": "docs(directional): prove P02b unsupported-sheet reverse-case noncoverage",
   "retention_days": 14
 }
