@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-offselector-projection-20261030-v1",
+  "request_id": "m6-cp3-defn-typed-registry-evidence-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-offselector-projection-20261030-v1",
-  "file_id": "1GlnJEy8b-mSFViitP9qQsnVQ5TiBu3gB",
-  "patch_sha256": "f9ab75e5a704033e4a22fda4754786c6a1dd5e3805549a7a123997960e657da8",
-  "base_sha": "aa52a0d0c084374027e4c2b56652cc08b60cdaa7",
+  "mailbox_key": "m6-cp3-defn-typed-registry-evidence-20261030-v1",
+  "file_id": "1IWl056bBT0ckiUn4N5wvCJZvNeMH0p_f",
+  "patch_sha256": "b7ae53df735b217367a398a7f852c12d20f5823cbf7c7c7d5606839e6518310b",
+  "base_sha": "8522436e10c153502f89e1a595eed31823f65ff7",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): identify missing source-sheet labels in optimizer projection",
+  "commit_message": "docs(agent): adjudicate generic chart and registry preflight census failures",
   "retention_days": 14
 }
