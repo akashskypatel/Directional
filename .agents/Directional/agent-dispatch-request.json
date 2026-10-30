@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p14-boundary373-401-20261030-v1",
+  "request_id": "m6-cp3-defn-p03-boundary-cache-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p14-boundary373-401-20261030-v1",
-  "file_id": "17KCk5N_6E3W-lH-vnPfmfqv_ghlmoqbR",
-  "patch_sha256": "907b2835d977834fa50e5372e92642d26aa5e3bb25624ba1f479b985baf6b0e1",
-  "base_sha": "6c8dc11e60478f73aaf2735ee1b88cc261f3ac15",
+  "mailbox_key": "m6-cp3-defn-p03-boundary-cache-20261030-v1",
+  "file_id": "1qw5qzXMTQq4_D6IDfksx_W-j0n2DEy6_",
+  "patch_sha256": "bb804ce1fdb310b9f95b140a13833e5db6fb31e63968a98d0fc313ef0b9eb303",
+  "base_sha": "4071936ece52e8e7d1c4088eb3d1f709f3d632c9",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): prove P14 strict boundary-authority fixture prerequisites",
+  "commit_message": "docs(directional): prove repeated TriMesh initialization stale boundary loops",
   "retention_days": 14
 }
