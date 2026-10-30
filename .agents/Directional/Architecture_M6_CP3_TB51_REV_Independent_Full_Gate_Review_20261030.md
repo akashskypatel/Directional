@@ -42,6 +42,6 @@ This REVIEW is evidence-only. No package, semantic source, test, fixture, select
 | Consolidation under CLEAN_UP_POLICY | n/a — current TB51 report, RA-172 ledger/disposition and current review are load-bearing; no additional superseded evidence removed without a safe resolver. |
 | Successor frozen | `M6-CP3-PLAN-RP01-CLOSURE` exclusively, with RA-172.5 and this record's falsifier/stop boundary. |
 | Turn boundary held | REVIEW-only; no product/test/fixture/selector/build/benchmark edit or native runtime. |
-| review_check.py boundary | Run separately where authentic Git history is available; snapshot has no `.git`, so local script cannot certify ancestry. Exact changed-path review is recorded separately and must not be claimed as historical `review_check` PASS. |
+| review_check.py boundary | Attempted on verified source snapshot: EXIT 1 because snapshot omits `.git` (rewrite ancestor and baseline blobs unavailable); no authentic-history PASS is claimed. Independently confirmed the applied commit changed exactly seven documentation paths and no code/test/selector/build source. |
 | `STATUS` lifecycle maintained | Initial review IN_PROGRESS beacon committed; final beacon must be committed only after durable record application and verification. |
 | Pushed to origin, branch in sync | Verify applied documentation commit via durable workflow and remote branch head; local snapshot does not contain an authenticated tracked checkout, so `git status -sb` cannot independently establish remote synchrony. |
