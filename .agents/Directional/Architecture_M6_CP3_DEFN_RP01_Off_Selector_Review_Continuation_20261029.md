@@ -1,3 +1,9 @@
+## 2026-10-30 P12 producer-witness first-locus audit (same DEFN; runtime-free)
+
+- TB50C-R2 row 277 reaches the deliberate stage-6 checkpoint but fails its first A4 two-carrier certificate lookup (`route == routes.end()`); neither a missing A1 odd transition nor an A5 failure has been proved. Preserve the exact `(1,4),(4,7)` joint route with source-produced terminal/junction receipts and paired negative controls.
+- Row 283 direct torus stops at typed `InvalidBoundedDiskBoundaryTurn`; source selects this when adjacent bounded-disk boundary runs have a branch jump not equal to ±1 modulo 4. The raw log does not identify the pair or prove an internal isolation seam was assigned to a disk boundary. Future producer proof must discriminate genuine source exterior vs internal isolation and preserve torus no-boundary/Euler invariants.
+- Row 286 stops at `InvalidFrontBoundaryAuthority` before reciprocal internal hard-rail copies are observable. The generic reason arises from many guards; measure the actual front/region/edge subtype before selecting fixture or producer repair. None of these three is a completed or accepted producer root-cause disposition. All 85 cases remain, 0 retired, no TB51 freeze or CB authorization.
+
 ## 2026-10-30 P07 ownership-registry fixture audit (runtime-free; same DEFN)
 
 - Reused the 050f-verified immutable 5986-file source snapshot and archived TB50C-R2 row logs. Source/test/fixture semantics unchanged through entry d80249a9; no native tests or builds.
