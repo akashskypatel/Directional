@@ -1,5 +1,16 @@
 # DEFN off-selector review continuation — exact WIP preservation
 
+## 2026-10-30 resumed review progress (source and artifact verified)
+
+- Continued the same unfinished DEFN; preserved initial start time. No native execution or Code + Build work.
+- Previous WIP committed as 040f89616da0115558fa991021547b28a2944f03 by successful run 40979032395; runtimeExecution=false.
+- Source audit corrected P04's grouping (seven single-triangle FlowRep preflight failures and a separate one-face incidence control), P01's four unconditional FAIL() probes, and identified P14's size gradient mismatch and P12's invalid negative/timing tests. Committed as 470e06a0f52f324ff7d712e6883d957a5db0b3ec by successful run 40979545056; runtimeExecution=false.
+- P12 row 317 is a stale negative oracle: the test modifies raw field transition metadata ignored when the authoritative A3 atlas is supplied (src/geometry/SurfaceCellTracing.cpp:21221-21237). The correction was committed as 1a017d9db0c6ee85b64017f87c90ea2740ced8a4 by successful run 40979826954; runtimeExecution=false.
+- All three consumed patch files were permanently deleted through owner-authorized Google Drive connector after successful workflow push.
+- No retirement, no 85-case full-cause adjudication, and no TB51 gate freeze. Proposed all-retained 916 rows remain non-authoritative. CP2 491/491 last accepted; TB50-R2 508/508 reviewed candidate; stable 66/17/49, debt1; no CP3 or selector497 promotion.
+- Next action in this same DEFN: complete individually evidenced classification of the remaining non-PASS cases, causal patch/falsifier design, and justified retirement/coverage decisions; freeze TB51 only afterward. Do not start CB53 or TB51.
+
+
 This is a **working record, not a completed DEFN disposition**. Resume `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION`; do not start CB53/TB51. `STATUS` entry start time is `2026-10-29T23:56:55Z` and must be preserved on continuation.
 
 ## Authority and independently checked evidence
