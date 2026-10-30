@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p09-group-label-reconcile-20261030-v1",
+  "request_id": "m6-cp3-defn-p14-multirail-fixture-audit-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p09-group-label-reconcile-20261030-v1",
-  "file_id": "11R30wtyqQ5Th2eKXoaIyN9EQBqfy7ZYq",
-  "patch_sha256": "c90458770ed87ab9b849a8e178578914ffc9c8bc8d6e2cb313549816588b645f",
-  "base_sha": "d058ddaf6d8e494cd06fe9b6da0f97995f3cd041",
+  "mailbox_key": "m6-cp3-defn-p14-multirail-fixture-audit-20261030-v1",
+  "file_id": "1zIAnnvkTyE_iGZpYEpAX63wAgJQUWGou",
+  "patch_sha256": "a01aea6c869edb782fd8389d9890a5fec4021e8865b2ec7c30878dfef674b7de",
+  "base_sha": "4e75b334d26fe591abad244196bdc6d71a48332c",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): reconcile P09 sphere versus saturation cause-group identities",
+  "commit_message": "docs(agent): classify multi-rail stale chart fixture authority in P14",
   "retention_days": 14
 }
