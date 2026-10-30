@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb50c-r2-closeout-20261029-v1",
+  "request_id": "m6-cp3-defn-rp01-wip-preserve-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb50c-r2-closeout-20261029-v1",
-  "file_id": "1rmEYgsH0-oO2w0Za35zHoD4Ceu-Or1tR",
-  "patch_sha256": "b629e6ead03089a6423649742166514abe57823d38b50c2e193f7da772fabd3b",
-  "base_sha": "29eb42942334bbc672e97dc14e8249dfb191f263",
+  "mailbox_key": "m6-cp3-defn-rp01-wip-preserve-20261030-v1",
+  "file_id": "1Ivezmva0ws9atTa_icb0mklwVbcVHcfL",
+  "patch_sha256": "8c50e47f2663951ad307b868a7f41acf85085f344c3ab18c04ed7230b9893872",
+  "base_sha": "76c2aacf4c5bd3f8018831ddc12f77c8df71d52a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): close TB50C-R2 408-case OBSERVE census and handoff DEFN",
+  "commit_message": "docs(agent): preserve provisional off-selector census classification and TB51 candidate",
   "retention_days": 14
 }
