@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p05-p06-p14-typed-audit-20261030-v1",
+  "request_id": "m6-cp3-defn-p07-invalid-fixture-variant-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p05-p06-p14-typed-audit-20261030-v1",
-  "file_id": "1kUgv2TKIhXFXTObAkItDV2Xps4093POS",
-  "patch_sha256": "438bbbee28428a78e8aa546da9d23a9ce6fff5fd2471bdf34cb171587f5fcb92",
-  "base_sha": "b890c77efe368b97bba6239a8a23cbd6a0cfbe7a",
+  "mailbox_key": "m6-cp3-defn-p07-invalid-fixture-variant-20261030-v1",
+  "file_id": "1nqDOLpFXk1NFIyU0ge-b3EwlMcecRCCD",
+  "patch_sha256": "e7f5ce9bdc8824f0625716ff987b99934da27ec5d30d5e8b3ed6e71a19b94770",
+  "base_sha": "9ccbc8bfed39821fc56a4830112aa9e13a95712a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): isolate FlowRep typed-rejection cases and optimizer projection derivative risk",
+  "commit_message": "docs(agent): distinguish P07 invalid fixture call and rejected variant dereference",
   "retention_days": 14
 }
