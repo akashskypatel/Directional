@@ -1,3 +1,0 @@
-Canonical turn: M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION
-Snapshot semantic source pre-trigger: ac9e1d708673363e00a1fc881640bee33d433ec2
-No native build or runtime authorized.
