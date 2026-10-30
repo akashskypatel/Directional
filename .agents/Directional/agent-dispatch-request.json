@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p07-invalid-fixture-variant-20261030-v1",
+  "request_id": "m6-cp3-defn-p11-witness-20261030-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p07-invalid-fixture-variant-20261030-v1",
-  "file_id": "1nqDOLpFXk1NFIyU0ge-b3EwlMcecRCCD",
-  "patch_sha256": "e7f5ce9bdc8824f0625716ff987b99934da27ec5d30d5e8b3ed6e71a19b94770",
-  "base_sha": "9ccbc8bfed39821fc56a4830112aa9e13a95712a",
+  "mailbox_key": "m6-cp3-defn-p11-witness-20261030-v1",
+  "file_id": "1Y2ZKkdYu7sEdniMB6GaMQ9huVSmPV3aQ",
+  "patch_sha256": "8ff474f03d0a3db34816d1221c934ae66e6941a8694a7166a40e35b5133c7263",
+  "base_sha": "050fef8181633e0bc3a9dea329a07035fe6e19eb",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): distinguish P07 invalid fixture call and rejected variant dereference",
+  "commit_message": "docs(agent): adjudicate off-selector terminal A2b witness and endpoint oracles",
   "retention_days": 14
 }
