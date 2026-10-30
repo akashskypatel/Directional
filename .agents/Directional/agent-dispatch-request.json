@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb52c-doccloseout-20261030-r1",
+  "request_id": "m6-cp3-tb52c-rev-apply-20261030-v2",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb52c-doccloseout-20261030-r1",
-  "file_id": "1F-10MQY9TU8vcnmhuIAUGBphaDwvMeRz",
-  "patch_sha256": "cf72a9b9d8e2695a5c0c00656ff667ac09a6f9b8484f4acf60f7c2a59f0ac3ce",
-  "base_sha": "f9625d7d1cd1f1a072ffc02e126f266696736895",
+  "mailbox_key": "m6-cp3-tb52c-rev-apply-20261030-v2",
+  "file_id": "1YsHveNpV-wD0RTa2ogNhKDrmFB5L6pXJ",
+  "patch_sha256": "963cd3835cfae40e0b28e6872430e00c5fb4daa863c301024ba49413d9a10642",
+  "base_sha": "eda58c9a0130781f5d5cface9efc22a89129d914",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record TB52C API binary census evidence",
+  "commit_message": "docs(directional): independently dispose TB52C API binary census and freeze TB52 gate",
   "retention_days": 14
 }
