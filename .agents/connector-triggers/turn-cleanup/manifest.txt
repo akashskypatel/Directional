@@ -1,2 +1,0 @@
-# Retire consumed DEFN exact source snapshot marker after review evidence is committed.
-.agents/connector-triggers/source-snapshot/20261030-defn-offselector-causes-r8.txt
