@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-30 · M6-CP3-TB53-RP01-FULL-GATE-REV — [RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md) **closed RP-01**. The local macOS TB53 gave 836/19. Attribution builds show that FMA in `FieldTransportAtlas.cpp` alone causes the 18 vertex-35 reds (O15; the list is corrected to 21 rows). Row 283 is a pre-existing macOS legacy failure (O2); an FMA-free build passes 854/855. TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES`.
+**Currency:** 2026-10-30 · M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES — [RA-180](Architecture_M6_CP3_DEFN_A3_Exact_Branch_Topology_Predicates_20261030.md) makes the A3 face gauge, branch derivatives and port order exact on the stored doubles. With the patch, FMA and FMA-free builds both pass 854/855 with identical atlas partitions, and the new edge-parallel test fails before the patch even without FMA. RP-01 is closed (RA-179). TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CP3-CB55-A3-EXACT-BRANCH-TOPOLOGY`.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,12 +104,12 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` (O15, Review): an exact A3 sector and gauge patch, the oracle test, red-first evidence on the default macOS build, and the row 935 witness; then CB55 and CB56. Local mode (RA-179.4): build packages with `-ffp-contract=off`, run gates with `tools/m6_cp3_local_gate_driver.py`, and pre-register row 283.
+**Immediate:** CB55 (the exact RA-180.7 patch, local, default arithmetic) → TB54 (857, membership 940, row 283 the only expected red) → TB54-REV (O15 discharged). Then `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` → CB56 (row 935). Local mode uses `tools/m6_cp3_local_gate_driver.py`.
 
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Make A3 topology decisions exact (O15, RA-176.3; 21 rows per RA-179). RP-01 is closed (RA-179); its Linux confirmation is carried. | `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` (R) → CB55 → CB56 |
+| **1** | Discharge O15: exact A3 branch topology (RA-180), the 21 rows per RA-179, and the row 935 witness. RP-01 is closed (RA-179); its Linux confirmation is carried. | CB55 → TB54 → TB54-REV; then the row 935 DEFN → CB56 |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

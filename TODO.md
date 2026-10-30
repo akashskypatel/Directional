@@ -1,4 +1,4 @@
-## CURRENT — RP-01 closed (RA-179); O15 exact-atlas DEFN next (2026-10-30)
+## CURRENT — O15 exact A3 predicates defined (RA-180); CB55 next (2026-10-30)
 
 - [x] Done 2026-10-30: PLAN-RP01-CLOSURE (RA-174) → CB53 → TB52C → TB52C-REV (RA-175) → PLAN-A3-ATLAS-EXACTNESS (RA-176, O15) → TB52 853/0 → TB52-REV (RA-177) → DEFN-RP01-TERMINAL-PATH-WITNESSES ([RA-178](.agents/Directional/Architecture_M6_CP3_DEFN_RP01_Terminal_Path_Witnesses_TB52_REV_Audit_20261030.md)) → CB54 ([record](.agents/Directional/Architecture_M6_CP3_CB54_RP01_Terminal_Path_Witnesses_Code_Build_Record_20261030.md), local) → TB53 836/19 ([report](.agents/Directional/Architecture_M6_CP3_TB53_RP01_Full_Gate_Local_Test_Report_20261030.md), local).
   - **CP3-exit conditions:** RP-01 closed (done); zero ledger rows; design-acceptance matrix gated at 6/6 (Cylinder is required); O14 enforced; O7 resolved; **O15 discharged (RA-176.3)**; CP3-REV decides selector497 promotion.
@@ -9,7 +9,16 @@
     - row 283 fails identically in every build: a pre-existing macOS legacy `segment_arrangement` failure (→ **O2**).
   - Rows 223 and 225 pass in every build. O15's row list is corrected to 21 (471 removed; 637, 638, 652 and 656 added). RA-178.2's FMA-off check was ineffective (ninja 1.13) and is re-verified.
   - Falsifier: the first Linux CI gate fails row 854 or 855; a Linux confirmation run is carried. Local-mode convention: `-ffp-contract=off` packages, with row 283 pre-registered.
-- [ ] **NEXT `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES`** (DEFN, R): O15 inventory, exact probe-verified patch with a tie rule, oracle test (3 incidences at 10/35/47/71), red-first evidence (the 18 rows fail on the default macOS build before the patch and pass after), and the row 935 witness. Split into CB55 (predicates + oracle) and CB56 (row 935).
+- [x] **`M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES`** (DEFN, R, local): [RA-180](.agents/Directional/Architecture_M6_CP3_DEFN_A3_Exact_Branch_Topology_Predicates_20261030.md).
+  - **Inventory:** three ties are decided in floating point — the face gauge (0/2π wrap), the branch barycentric derivatives (exact 0 vs ±1e-16) and the port order. Conditioning guards stay as accepted-defensive. The fields-stage matching tie is carried as **O15b**.
+  - **Probes:**
+    - with the exact patch, the FMA and FMA-free builds both pass 854/855 (only 283), with byte-identical verdicts and atlas partition records;
+    - the 83 deferred rows are unchanged;
+    - the new edge-parallel test fails before the patch even without FMA, and the `mechanical_feature` oracle gives 3/3/3/3 ports.
+  - CB55 patch `824e64cc…` (`119 81` / `14 0` / `51 0`). TB54 gate 857 `53683907…`, membership 940 (real listing check).
+  - Row 935: no `milestone-g` fixture stops at a vertex under exact A3, so its witness is split to a DEFN.
+- [ ] **NEXT `M6-CP3-CB55-A3-EXACT-BRANCH-TOPOLOGY`** (CB, local) → `M6-CP3-TB54-O15-FULL-GATE-EXEC` (expected 856/857, with only 283 red) → `M6-CP3-TB54-O15-FULL-GATE-REV` (R; rules O15 discharged).
+- [ ] `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` (DEFN, R) → CB56 (row 935) → TB55 → TB55-REV (ledger v4, 82).
 - [ ] Carried separately (owners per RA-174.3):
   - O1; O2 (legacy no-atlas ingress, post-RP-01; also owns row 283's macOS legacy `segment_arrangement` failure, RA-179 F3).
   - O6 (bounded disks that are not rectangular are rejected by design) → P13 probe DEFN.
@@ -18,7 +27,7 @@
   - O9 ruled (RA-178.3): the junction path has no produced input under D2, so it is removed from RP-01 and the code is kept as accepted-defensive. Falsifier (a produced route with more than one step) → P13 probe DEFN.
   - O12 (R61 `review_check.py` selector collision) → Review tooling.
   - O14 → P8.
-  - **O15** (A3 atlas topology decisions must be exact; RA-176.3; 21-row list per RA-179 F2) → `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` (NEXT).
+  - **O15** (A3 atlas topology decisions must be exact; RA-176.3; 21 rows per RA-179) → defined by RA-180, discharged by CB55 + TB54-REV. **O15b** (fields-stage `principal_matching` argmin tie; degenerate input only) → carried to CP3-REV.
   - RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4. G4-B002 exit row is gated; the discharge decision belongs to CP3-REV.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
@@ -27,7 +36,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: … → TB52-REV (RA-177) → DEFN-RP01 (RA-178) → CB54 → TB53 → **TB53-REV (RA-179): RP-01 closed**.
-  - **NEXT (R):** `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` (O15) → CB55 (exact predicates + oracle; red-first on the default macOS build) → TB54 → CB56 (row 935 witness) → TB55 → TB-REV (ledger v4, 82).
+  - **NEXT (local):** CB55 (exact A3 predicates, RA-180) → TB54 → TB54-REV (R) → `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` (R) → CB56 (row 935) → TB55 → TB55-REV (ledger v4, 82).
   - **Then:** `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS` (+ row 283) → DIAG-RETAIN; P13 probe DEFN (Cylinder first; O6; exact-atlas and route-step (O9) checks) → retire CB → FIXTURE slices (each DEFN first confirms the production pipeline reaches its stage, otherwise → O2) → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV.
   - **Local mode** (implementation agent unavailable): CB and TB run locally with `tools/m6_cp3_local_gate_driver.py`; packages are built with `-ffp-contract=off` and row 283 is pre-registered (RA-179.4). Carried: a Linux confirmation run of TB53.
   - One CB per exact patch; implementation agents get only exact patches and frozen manifests. Probe-requiring DEFN and TB-REV turns stay on the Review track.

@@ -1,3 +1,9 @@
+# 2026-10-30 — RA-180 O15 exact A3 branch-topology predicates defined
+
+- [RA-180](.agents/Directional/Architecture_M6_CP3_DEFN_A3_Exact_Branch_Topology_Predicates_20261030.md) (local, probe-backed; a subagent produced the inventory). The three float-decided ties in A3 — face gauge, branch barycentric derivatives and port order — become exact on the stored doubles. Conditioning guards are accepted-defensive; the fields-stage matching tie is carried as O15b.
+- With the patch, the FMA and FMA-free builds both pass 854/855 (only 283), with byte-identical verdicts and atlas partitions; the 83 deferred rows are unchanged. The new edge-parallel test fails before the patch on Linux-like arithmetic, and the `mechanical_feature` oracle gives 3/3/3/3.
+- Frozen: CB55 patch `824e64cc…`; TB54 gate 857 `53683907…` (self-check PASS, real membership 940). Row 935's witness is split to `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS`. Next `M6-CP3-CB55-A3-EXACT-BRANCH-TOPOLOGY`.
+
 # 2026-10-30 — RA-179 TB53 review: RP-01 closed; O15 attribution
 
 - [RA-179](.agents/Directional/Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md) (local; reduced independence, offset by subagent traces and audits plus attribution builds). Compiling only `FieldTransportAtlas.cpp` without FMA clears all 18 vertex-35 reds (O15). An FMA-free build passes 854/855. Row 283 is a pre-existing macOS legacy failure (O2).

@@ -1,3 +1,14 @@
+## RA-180 — O15 exact rule (2026-10-30)
+
+- **A3 branch topology is exact on the stored doubles** (GMP `FieldExactRational`):
+  - barycentric derivatives come from the raw cross-field vector;
+  - the face gauge is the least counter-clockwise angle in [0, 2π) from p0→p1, with zero included;
+  - port order uses the cross-multiplied previous/next derivative ratio;
+  - an exact tie is `AmbiguousBranchTopology`.
+- **Accepted-defensive:** the tolerance conditioning guards (degenerate triangle or projection, near-parallel field) and the 1e-6 integer check on cycle lifts.
+- **O15b (carried to CP3-REV):** the tie in the fields-stage `principal_matching` argmin, which arises only from an exact ±π/4 rotation.
+- **Row 935:** its replacement witness must stop at a stage with a source-vertex locus on a constructed input; no committed `milestone-g` fixture does so under exact A3.
+
 ## RA-179 — RP-01 closed; O15 row list; row 283; local mode (2026-10-30)
 
 - **RP-01 closed** on the local TB53 (rows 223 and 225 pass with FMA on, atlas-only off and global off; membership 938). Falsifier: the first Linux CI gate fails row 854 or 855.
