@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-30 · M6-CP3-PLAN-A3-ATLAS-EXACTNESS — [RA-176](Architecture_M6_CP3_PLAN_A3_Atlas_Exactness_TB52C_REV_Audit_20261030.md) audited TB52C-REV. TB52 inputs re-verified unchanged (853 gated / 86 deferred). Row 19 is red because the A3 atlas makes floating-point decisions at exact ties; this is new CP3-exit obligation **O15**. CP2 491/491 accepted; TB51 831/0 reviewed candidate; selector497/CP3 unpromoted; stable 66/17/49 debt 1. Next `M6-CP3-TB52-RP01-FULL-GATE-EXEC`.
+**Currency:** 2026-10-30 · M6-CP3-TB52-RP01-FULL-GATE-REV — [RA-177](Architecture_M6_CP3_TB52_REV_Independent_Five_Binary_Gate_Review_20261030.md) independently verified TB52 853/853 PASS across all five packaged binaries, 1,714/1,714 hashes and 939 membership (853 gated / 86 deferred). TB52 is the new reviewed candidate, not CP3 acceptance. O15 and RP-01 223/225/261/O9 remain. CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES`.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -47,12 +47,12 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB51 selected full gate **831/0** independently reviewed (candidate), 86 deferred after the API display witness census; CP3 closure and direct-production matrix **not accepted**. Frozen 497-entry selector; historical R3 403/94. |
+| **M6-CP3 — active** | TB52 selected five-binary full gate **853/0** independently reviewed (candidate), 86 deferred after the API display witness census; CP3 closure and direct-production matrix **not accepted**. Frozen 497-entry selector; historical R3 403/94. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Prior Review authority:** [RA-176](Architecture_M6_CP3_PLAN_A3_Atlas_Exactness_TB52C_REV_Audit_20261030.md) (A3 exactness O15; TB52C-REV audit) and [RA-174](Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md) (RP-01 closure scope, CP3-exit conditions, P8). Implementers get only exact patches and manifests.
+**Prior Review authority:** [RA-177](Architecture_M6_CP3_TB52_REV_Independent_Five_Binary_Gate_Review_20261030.md) (TB52 independent five-binary candidate review), [RA-176](Architecture_M6_CP3_PLAN_A3_Atlas_Exactness_TB52C_REV_Audit_20261030.md) (A3 exactness O15; TB52C-REV audit) and [RA-174](Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md) (RP-01 closure scope, CP3-exit conditions, P8). Implementers get only exact patches and manifests.
 
-**Test authority:** TB51 **831 PASS / 0 RED** (run 41021857497, result 12963899691), independently reviewed under RA-173/RA-174; candidate only. TB52C: 22 PASS and one `FIXTURE` RED, caused by A3 floating point (RA-176). 853 cases are frozen for TB52 with 86 deferred (50 FIXTURE / 7 PRODUCT / 24 OPEN / 5 RETIRE); dynamic membership is unproven until TB52. Not D0 production, CP3 closure or selector497 promotion.
+**Test authority:** TB52 **853 PASS / 0 RED** (run 41100261157, result 13004891149), independently verified in RA-177; new reviewed candidate, superseding TB51 831/0 candidate. TB52C: 22 PASS and one `FIXTURE` RED caused by A3 floating point (RA-176). TB52 P8 dynamically verified the full package membership of 939 = 853 gated and 86 deferred (50 FIXTURE / 7 PRODUCT / 24 OPEN / 5 RETIRE). Not D0 production, CP3 closure or selector497 promotion.
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md) and [regression tracker](Regression_Root_Cause_Tracker.md).
 
@@ -104,12 +104,12 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** TB52 executes the frozen 853-row five-binary gate with the 86-row membership ledger (`membership=939`). On the Review track, `M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES` (rows 223, 225 and 261, plus O9) comes first, then `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` (O15).
+**Immediate:** TB52 853/853 candidate and full-package membership=939 are independently reviewed (RA-177), but RP-01 and CP3 remain open. On the Review track, `M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES` (rows 223, 225 and 261, plus O9) comes first, then `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` (O15).
 
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Close RP-01: repair rows 223, 225 and 261 without weakening and rule on O9; govern every packaged test via P8 (RA-174.3). Make A3 topology decisions exact (O15, RA-176.3). | TB52 → TB52-REV (I/R); `M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES`, then `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` (R) |
+| **1** | Close RP-01: repair rows 223, 225 and 261 without weakening and rule on O9; govern every packaged test via P8 (RA-174.3). Make A3 topology decisions exact (O15, RA-176.3). | TB52-REV complete (RA-177); `M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES`, then `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` (R) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

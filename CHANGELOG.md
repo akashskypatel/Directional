@@ -1,3 +1,7 @@
+# 2026-10-30 — RA-177 independent review of TB52 full five-binary gate
+
+- [RA-177](.agents/Directional/Architecture_M6_CP3_TB52_REV_Independent_Five_Binary_Gate_Review_20261030.md) independently reopened immutable TB52 artifact `13004891149` and CB52 package `12918290481`: 853/853 native PASS, 1,714/1,714 result hashes, 28/28 package hashes, exact 939-package-membership preflight, 831-row TB51 manifest prefix and 85-row deferred prefix. TB52 supersedes TB51 as reviewed candidate but **not** CP2 accepted authority, selector497 promotion, RP-01 closure or CP3 acceptance. 86 deferred rows and O15 remain, stable 66/17/49 debt 1. Next `M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES`.
+
 # 2026-10-30 — TB52 full five-binary artifact-only gate, 853/853 PASS (candidate)
 
 - [TB52 report](.agents/Directional/Architecture_M6_CP3_TB52_RP01_Full_Gate_Artifact_Only_Test_Benchmark_Report_20261030.md) / [run 41100261157](https://github.com/akashskypatel/Directional/actions/runs/41100261157): immutable package `12918290481` / semantic source `7cf0857b…`; result `13004891149` (ZIP SHA-256 `ba18016515e810f8cecdd4da500a6026eefe973a11f9afe55879fd1ae948f684`). Independently verified 853/853 native PASS, 853 native log joins, 1,714/1,714 checksums, `postflight=true`, P8 census 939 = 853 gated + 86 deferred. Zero RED/ABNORMAL/other gate-control defects. No rebuild, code/test/fixture or workflow changes.

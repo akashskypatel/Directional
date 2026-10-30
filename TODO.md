@@ -1,4 +1,4 @@
-## CURRENT — TB52 853/853 green candidate; independent TB52-REV next (2026-10-30)
+## CURRENT — TB52 853/853 independently reviewed candidate; RP-01 terminal witnesses next (2026-10-30)
 
 - [x] **`M6-CP3-PLAN-RP01-CLOSURE`** (PLAN, R) together with an audit of TB51-REV: [RA-174](.agents/Directional/Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md).
   - Findings: the API binary was ungoverned (F1, closed by TB52C); selector497 and G4-B002 are green in TB51 (F2); RP-01 blockers are rows 223/225/261 plus O9 (F3). P8 (O14) patch `80ee9e42…` → harness `78b8002c…`.
@@ -12,7 +12,8 @@
   - **F2 (O15):** A3 picks the face gauge and corner-sector membership with `atan2` and a 1e-10 tolerance at exact ties (`FieldTransportAtlas.cpp:118–124`, `:276–296`, `:517–521`), which violates DESIGN Amendment 18. The exact half-open count is 3 at vertices 10/35/47/71, so the exact answer is to accept, which matches Linux. Eighteen gated `mechanical_feature` rows are green only for x86-64 rounding.
   - **F3:** row 935 stays FIXTURE, because its expectation contradicts the exact answer; it is repaired after O15. Ledger v2 and the TB52 manifest are unchanged. **F4:** the RA-175 ORIENTATION lesson was replaced.
 - [x] **`M6-CP3-TB52-RP01-FULL-GATE-EXEC`** (TB-EXEC, I): [report](.agents/Directional/Architecture_M6_CP3_TB52_RP01_Full_Gate_Artifact_Only_Test_Benchmark_Report_20261030.md); [run 41100261157](https://github.com/akashskypatel/Directional/actions/runs/41100261157); immutable package, **853/853 PASS**, postflight true, exact P8 membership **939** = 853 gated + 86 deferred, 1,714/1,714 integrity checks. No repair/rebuild, no acceptance promotion.
-- [ ] **NEXT `M6-CP3-TB52-RP01-FULL-GATE-REV`** (TB-REV, R): independently reopen and review TB52 native evidence, 86 deferred rows, O15, regression status and acceptance boundary. Do not start inside TB52-EXEC.
+- [x] **`M6-CP3-TB52-RP01-FULL-GATE-REV`** (TB-REV, R): [RA-177](.agents/Directional/Architecture_M6_CP3_TB52_REV_Independent_Five_Binary_Gate_Review_20261030.md) independently verified 853/853 PASS, 1,714/1,714 checksums, full 939-case P8 inventory and exact 86 deferred categories; reviewed candidate only, no CP3/selector promotion.
+- [ ] **NEXT `M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES`** (DEFN, R): bounded probe-backed stage-reachability and remediation definition for RP-01 rows 223/225/261 and O9. Carry O15 as independent CP3-exit obligation.
 - [ ] Carried separately (owners per RA-174.3):
   - O1; O2 (legacy no-atlas ingress, post-RP-01).
   - O6 (bounded disks that are not rectangular are rejected by design) → P13 probe DEFN.
@@ -30,7 +31,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: TB50C-EXEC-R2 → DEFN (RA-172) → TB51-EXEC 831/0 → TB51-REV (RA-173) → **PLAN-RP01-CLOSURE (RA-174)**.
-  - **I:** CB53 (P8) **DONE** → TB52C-EXEC **DONE** (22 PASS / 1 RED) → TB52C-REV **DONE** (RA-175) → PLAN-A3-ATLAS-EXACTNESS **DONE** (RA-176) → **TB52-EXEC NEXT** → TB52-REV (R; first run with membership).
+  - **I:** CB53 (P8) **DONE** → TB52C-EXEC **DONE** (22 PASS / 1 RED) → TB52C-REV **DONE** (RA-175) → PLAN-A3-ATLAS-EXACTNESS **DONE** (RA-176) → TB52-EXEC **DONE** → TB52-REV **DONE** (RA-177).
   - **R∥ 1:** `M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES` (223/225/261, O9) → CB54 → TB53 → TB53-REV = RP-01 closure.
   - **R∥ 2:** `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` (O15) → CB55 (exact predicates + red-first test that fails on Linux CI) → CB56 (exact witness for row 935) → TB54 → TB54-REV.
   - **Then:** P13 probe DEFN (Cylinder first; O6; first check matrix fixtures against the exact atlas rule) → retire CB → FIXTURE slices (each DEFN first confirms the production pipeline reaches its stage, otherwise → O2) → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV. Post-RP-01: O2 DEFN, then DIAG-RETAIN.
