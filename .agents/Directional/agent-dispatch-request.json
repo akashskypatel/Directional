@@ -1,12 +1,23 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p14-size-projection-20261030-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p14-size-projection-20261030-v1",
-  "file_id": "1JnwmkYznu91-KJTHVoKAnqakUhZJtyXm",
-  "patch_sha256": "336dca1f2381ba1fc5d0726998a2f25da5d980434a1af69258f31ed744b5d924",
-  "base_sha": "7164b1e09c803adcbc80b5c3b5527db4981247af",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): document source projection Jacobian in size gradient",
+  "request_id": "m6-cp3-tb51-rp01-full-gate-20261030-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb51-rp01-full-gate-20261030-v1",
+  "executor_sha": "4812d228a4e7f494ac56b0347d4058bbc065d42e",
+  "semantic_source_sha": "7cf0857b4818186638ce77e4859adacbeebd288f",
+  "turn_id": "M6-CP3-TB51-RP01-FULL-GATE-EXEC",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "600c6455203519e79736e501288e4777921390bf365a9d3ee5e0141aa49275f8",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "12918290481",
+    "EXPECTED_SOURCE_SHA": "7cf0857b4818186638ce77e4859adacbeebd288f",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "89449f4f9c014c1d8c3235056c3dca2d2239ba136e09dd88e3e02710b253b5c1",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "6ae4eb5bf9552912fe068d9a9d3a90d76e2e27b9bd99896f83c216fd27fbc21f",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "c02a0be4b25d64eca2c10e5681cd8721a465a848a3d17044275370eac132553b",
+    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_CP3_TB51_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "d6961b598a450dd17b818f316249ecacd0fdc73a91d8a1e4e7dca2fa537eb7b4",
+    "EXPECTED_CASE_COUNT": "831"
+  },
+  "artifact_prefix": "m6-cp3-tb51-full-gate",
   "retention_days": 14
 }
