@@ -13,6 +13,14 @@
 
 This is a **working record, not a completed DEFN disposition**. Resume `M6-CP3-DEFN-RP01-OFF-SELECTOR-COVERAGE-DISPOSITION`; do not start CB53/TB51. `STATUS` entry start time is `2026-10-29T23:56:55Z` and must be preserved on continuation.
 
+## 2026-10-30 additional source-audit continuation (no runtime)
+
+- Same unfinished DEFN, original start preserved. Reviewed the verified semantic source snapshot and TB50C-R2 raw logs; only the working 85-case review inventory changed, not runtime, test, fixture, product, selector or gate authority.
+- **Cases 296,57,58,66:** 296 is a stale generic-validator cross-chart negative: raw component/sheet labels cannot substitute for typed source-chart authority. 57 omits the copied ownership registry and hits InvalidDomainIdentity before the duplicate-domain guard. 58 and 66 report post-preparation ownership-registry mismatch with causal owner not yet proved. Patch SHA `b7ae53df735b217367a398a7f852c12d20f5823cbf7c7c7d5606839e6518310b`, run `40984363898` success, commit `b2d2aec016d344c1f63db3ee260da1e958d43ca0`, runtimeExecution=false. Staging file deleted after verification.
+- **P08 all 13:** rows 95,96,97,100,101,103,106,107,109,112,114,118,119 each use `build_surface_cell_complex` with missing `sourceAuthority` directly or through shared fixture helpers. The producer fails closed before creating any halfedges; all observed missing simplifier candidates and topology defects are **invalid fixture preflight**, not proved simplifier regressions or green passes. Patch SHA `7a1717b38545f49d55be5530af7336d17545469d9b43f8078e51ec81c3f8328a`, run `40984733933` success, commit `603af4fb73a820ec147d36a6f91b4043e69525aa`, runtimeExecution=false. Staging file deleted after verification.
+- Independently checked 508-row TB50 candidate prefix is identical in the 916-row **proposed** manifest, appended 408 identities are disjoint and all remain GUARD/PASS *targets*, not proven green. Zero retirements authorized. Accepted CP2 491/491, reviewed TB50 508/508, stable 66/17/49 debt 1 unchanged.
+- Next: finish unadjudicated P05/P06/P07/P09/P10/P11/P12/P13/P14 causes; specify minimal CB/falsifier workstreams and any justified retirements, freeze actual TB51 only after full review, complete all mandatory closeout and boundary duties, then release exactly one successor. Do not initiate CB53/TB51 from this unfinished turn.
+
 ## Authority and independently checked evidence
 
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`, snapshot source `76c2aacf4c5bd3f8018831ddc12f77c8df71d52a` (only entry STATUS and source-snapshot trigger committed before this snapshot). Source snapshot Actions run `40976584569`, artifact `12942827622` checked against `a95f3def88e34758a6069900ddfd03d2732d500bd4aff7553171f32034893980`.
