@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-30 · M6-CP3-DEFN-RP01-TERMINAL-PATH-WITNESSES — [RA-178](Architecture_M6_CP3_DEFN_RP01_Terminal_Path_Witnesses_TB52_REV_Audit_20261030.md) confirms RA-177's TB52 853/0 reviewed candidate (939 membership). Probe-backed dispositions: 223 and 225 are repaired by the exact CB54 patch, 261 is retired and O9 is ruled. TB53 is frozen at 855 + 83 with membership 938. O15 remains. CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CP3-CB54-RP01-TERMINAL-PATH-WITNESSES`.
+**Currency:** 2026-10-30 · M6-CP3-TB53-RP01-FULL-GATE-EXEC (run locally at the user's direction) — CB54 applied the exact RA-178.7 patch (source `2a49b873…`, macOS package `21b7cf2d…`). The [TB53 local gate](Architecture_M6_CP3_TB53_RP01_Full_Gate_Local_Test_Report_20261030.md) gives 836 PASS / 19 RED, membership 938; RP-01 rows 854/855 PASS. The reds pass on Linux in TB52: 18 at `mechanical_feature` vertex 35 (O15) and 283 (legacy). TB52 853/0 remains the reviewed candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CP3-TB53-RP01-FULL-GATE-REV`.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,7 +104,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** implementation `M6-CP3-CB54-RP01-TERMINAL-PATH-WITNESSES` (exact RA-178.7 test patch, compile-only) → TB53-EXEC (855, ledger v3 83, membership 938) → TB53-REV, which closes RP-01. Review track in parallel: `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` (O15).
+**Immediate:** `M6-CP3-TB53-RP01-FULL-GATE-REV` (Review, preferably a fresh session). Classify the 19 macOS-only reds against O15 and O2, and decide RP-01 closure from rows 854/855 and membership 938, or require a Linux rerun. Review track in parallel: `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` (O15). Local build and test is the mode while the implementation agent is unavailable (`tools/m6_cp3_local_gate_driver.py`).
 
 
 | Priority | Missing outcome | Owner |

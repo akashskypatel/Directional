@@ -1,3 +1,7 @@
+# 2026-10-30 — TB53 local five-binary gate on CB54 (836 PASS / 19 RED, macOS)
+
+- [TB53 report](.agents/Directional/Architecture_M6_CP3_TB53_RP01_Full_Gate_Local_Test_Report_20261030.md): run with the local driver on package `21b7cf2d…`. 855 executed, **836 PASS / 19 RED**, membership **938**, postflight true, exit 90 (GUARD controls). The RP-01 rows 854 (223) and 855 (225) PASS. 18 of the 19 reds reference `mechanical_feature` vertex 35 (14 are on RA-176's O15 list); 283 is the legacy arrangement. All 19 pass in TB52 on Linux. Result `5722887a…`; an independent subagent audit passes. Next `M6-CP3-TB53-RP01-FULL-GATE-REV`.
+
 # 2026-10-30 — CB54 RP-01 terminal-path witnesses built locally
 
 - [CB54 record](.agents/Directional/Architecture_M6_CP3_CB54_RP01_Terminal_Path_Witnesses_Code_Build_Record_20261030.md): the implementation agent was unavailable, so the user directed local builds and tests. The RA-178.7 patch applied exactly (`16a64128…`, `90 17` / `0 46`, both resulting file SHAs) at source `2a49b873…`. A fresh configure with the CI flags built 8/8 targets (static, GMP). The macOS arm64 package `21b7cf2d…` (18 entries) is stored at the gitignored `build/local-evidence/CB54/`. New `tools/m6_cp3_local_gate_driver.py` runs a gate locally with the frozen harness logic; it replays TB52's 853 CI verdicts exactly. No native tests. Next `M6-CP3-TB53-RP01-FULL-GATE-EXEC`.
