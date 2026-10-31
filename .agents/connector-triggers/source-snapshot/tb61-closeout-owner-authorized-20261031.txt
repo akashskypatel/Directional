@@ -1,2 +1,0 @@
-Owner-authorized TB61 review closeout source snapshot.
-Purpose: verify review ancestry and prepare durable documentation correction.
