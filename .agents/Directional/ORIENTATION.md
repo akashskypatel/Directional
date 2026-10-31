@@ -2,7 +2,12 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-31 · `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE` review: independent Linux CB63 10-target GMP/GMPXX source/package audit (30/30), TB62 immutable full gate **863/863** (945 membership), CLI 11/11 report-supported, GUI linkage not appearance; macOS O16 remains separately open. Three design-acceptance rows remain deferred: Cylinder, BunnyRandom and Vase. Review policy requires P13 runtime probes to be executed in a distinct CB→TB sequence; first successor `M6-CP3-CB64-P13-ARTIFACT-PROBE-REGISTRATION`. CP2 491/491 last accepted; CP3/selector497 unpromoted, stable 66/17/49 debt1. [Decision](Architecture_M6_CP3_DEFN_P13_Design_Acceptance_Decision_20261031.md).
+**Currency:** 2026-10-31 · `M6-CP3-DEFN-P13-PROBE-ADJUDICATION` ([RA-188](Architecture_M6_CP3_DEFN_P13_Probe_Adjudication_20261031.md)). TB62 Linux **863/863** (membership 945) is the latest gate; macOS O16 is separate. Probes at current source split the three deferred rows by cause:
+- Cylinder: PASS, but slow because of O(F) per-query source re-validation. CB64 makes it 7.8 s.
+- Vase: O15c fires, with the A4 exact width growing about 200 bits per step.
+- BunnyRandom: an Amendment 15 gap for tip–tip single-edge slits.
+
+**Next:** `M6-CP3-CB64-P13-CHART-BINDING-CACHE` → `M6-CP3-TB63-P13-CENSUS-FULL-GATE-EXEC`. Standing state: CP2 491/491 last accepted; CP3 and selector497 unpromoted; stable 66/17/49, debt 1.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,11 +109,16 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** Linux CB63/TB62 ten-target compile and full gate are verified; P13 still has Cylinder (historical 600s timeout), BunnyRandom (A3 cut Euler mismatch) and Vase (historical 600s timeout). By mandatory runtime-free Review/Definition policy, the P13 decision first registers a separate 300s Cylinder-first artifact-only diagnostic through CB64 then TB63 without changing the full gate; macOS O16 stays separate.
+**Immediate:** RA-188 splits P13 into three independent slices.
+- **P13-a, Cylinder:** a performance defect, fixed by CB64 and confirmed by TB63's census.
+- **P13-b, Vase:** O15c. Exact A4 continuation width grows linearly with trace length, so a fixed bound admits about 20 faces per trace. This is architectural and goes to a Review DEFN.
+- **P13-c, BunnyRandom:** DESIGN Amendment 15.3 cannot slit a tip–tip single-edge barrier arc. It goes to a Review DEFN.
+
+macOS O16 stays separate.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | P13 bounded Cylinder-first diagnostics and direct-production proof: keep 863-case gate and 82 deferred membership frozen; measure Cylinder, BunnyRandom and Vase independently, with O6/exact atlas/O9/O15c falsifiers. Linux CLI/GUI compile and gate are done. | M6-CP3, `M6-CP3-CB64-P13-ARTIFACT-PROBE-REGISTRATION` next |
+| **1** | P13 matrix 6/6. Order: CB64 → TB63 (gate plus census); then bounded A4 continuation (P13-b) and the Amendment 15 slit rule (P13-c), each with its own CB→TB; then a re-census, O6/O9 where reached, and Cylinder promoted. | M6-CP3, `M6-CP3-CB64-P13-CHART-BINDING-CACHE` next |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

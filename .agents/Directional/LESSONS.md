@@ -363,6 +363,11 @@ This document records **reusable failure-derived engineering lessons**, not an e
   called 916 tests "the complete inventory" because they matched the four gate binaries. The same
   package shipped a fifth test binary (23 tests) that no gate or census had ever run. A membership
   claim must be executed against the package's real test listing (P8), not asserted by Review (RA-174.2).
+- **Re-observe a deferred row at current source before planning around it.** The P13 decision built a
+  timeout-registration CB and TB on dispositions taken before CB55. When re-run, the three rows failed for
+  three different reasons, and none was the planned one: a 23× performance defect, an O15c width overflow
+  and a DESIGN slit gap. A one-fixture-per-process scratch probe with stack sampling found all three in
+  minutes, and Review scratch probes are a duty, not a breach of "runtime-free" (RA-166.6 F6, RA-188.1).
 
 ## Build, artifact, workflow, and tool mechanics
 

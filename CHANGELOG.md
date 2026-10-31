@@ -1,3 +1,15 @@
+# 2026-10-31 — RA-188 P13 probe adjudication; CB64 chart-binding cache next
+
+- [RA-188](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Probe_Adjudication_20261031.md) (`M6-CP3-DEFN-P13-PROBE-ADJUDICATION`, Review, scratch probes on current source) reviews the P13 decision.
+  - It upholds the decision's audit. The decision's matrix, however, was stale pre-CB55 evidence; it skipped the Review probes; and its 300 s harness CB and TB were withdrawn as vacuous.
+  - **Cylinder:** PASS in 182 s. 96% of samples fall in `SourceChartTransitionGraph::available()` O(F) re-validation; the fix brings it to 7.8 s with byte-identical output.
+  - **Vase:** A4 O15c overflow. The width grows about 200 bits per step and fails at step 21.
+  - **BunnyRandom:** an A3 Amendment 15 gap. Two tip–tip single-edge barrier arcs cannot be slit.
+  - The patch probe gate gives 862/863 (only O16).
+- New census manifest `Architecture_M6_TB63_P13_Census_Case_Manifest.tsv` (`3af1dc0d…`, `SELF_CHECK_PASS`).
+- **Next:** `M6-CP3-CB64-P13-CHART-BINDING-CACHE` → `M6-CP3-TB63-P13-CENSUS-FULL-GATE-EXEC`. On the Review track: the O15c continuation-width DEFN and the single-edge barrier slit DEFN.
+- New: O17, unconditional stderr diagnostics → M8-CP2. LESSONS adds "re-observe a deferred row before planning around it".
+
 **2026-10-31 — M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE (Review/Definition):** independently verified frozen CB63 Linux 10-target package 30/30 and TB62 863/863, membership 945; carried macOS O16, deferred Cylinder/BunnyRandom/Vase and O6/exact atlas/O9/O15c. Resolved the handoff's 'probe-capable' conflict in favor of the durable runtime-free Review boundary; defined exact next `M6-CP3-CB64-P13-ARTIFACT-PROBE-REGISTRATION` and conditional artifact-only TB63 full-gate + separate 300s OBSERVE census. No source/test/selector edits, Directional runtime or CP3 acceptance. [P13 decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Design_Acceptance_Decision_20261031.md).
 
 # 2026-10-31 — TB62 Linux CLI/GUI full gate verified, review/definition P13 next

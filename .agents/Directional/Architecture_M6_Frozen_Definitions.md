@@ -1,3 +1,12 @@
+## RA-188 — P13 probe adjudication (2026-10-31)
+
+- [RA-188](Architecture_M6_CP3_DEFN_P13_Probe_Adjudication_20261031.md) re-observed the three deferred design rows at current source.
+  - **P13-a, Cylinder:** PASS. Its 600 s CI timeout comes from `SourceChartTransitionGraph::available()` re-running O(F) `matches_source_faces` on every query. CB64 caches the build-time binding: 182 s → 7.8 s, output byte-identical.
+  - **P13-b, Vase:** O15c fires. The exact A4 continuation width grows about 200 bits per step and fails at step 21. A bounded continuation policy is required, and topological predicates stay exact.
+  - **P13-c, BunnyRandom:** Amendment 15.3 cannot slit a tip–tip single-edge barrier arc. DESIGN must be amended.
+- Review DEFNs may scratch-probe (RA-166.6 F6). What "runtime-free" excludes is gate runtime and acceptance.
+- The P13 decision's CB64-REGISTRATION and TB63-CYLINDER-FIRST are withdrawn. O17 (unconditional stderr diagnostics) → M8-CP2.
+
 ## RA-187 — DIAG-RETAIN GUI layers (2026-10-31)
 
 - The GUI draws the A5–A7 snapshots as three read-only layers over the CB59 adapter (CB61). Every TB runs the full current gate, including after a CLI- or GUI-only CB; CB61 builds the gate targets with the CLI and GUI so TB60 covers CB60 and CB61.
