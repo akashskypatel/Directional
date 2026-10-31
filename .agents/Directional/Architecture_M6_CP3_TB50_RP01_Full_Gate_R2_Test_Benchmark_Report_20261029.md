@@ -1,0 +1,23 @@
+# M6-CP3-TB50-RP01-FULL-GATE-EXEC-R2 — native full-gate report (2026-10-29)
+
+**Disposition: TB-EXEC COMPLETE; frozen 508-case gate GREEN, pending independent TB50-REV; CP3 NOT accepted/promoted.** Exact successor: `M6-CP3-TB50C-RP01-OFF-GATE-CENSUS-EXEC`, separate artifact-only turn on the same immutable CB52 package. No TB50C work began here.
+
+## Authorities and immutable execution
+
+- GitHub [run 40941114716](https://github.com/akashskypatel/Directional/actions/runs/40941114716), attempt 1, dispatcher push/event `616f787f981878dc0892b483491e8f827dd8fc03`, `test_benchmark / runtime` job `123684613426` SUCCESS; validation, parse, mailbox publication SUCCESS; compile, drive_apply, noop SKIPPED. Terminal mailbox: orphan ref `workflow-mailbox`, key `m6-cp3-tb50-rp01-full-gate-r2-20261029-v1`, run/result `40941114716/success`, `source_sha=7cf0857b4818186638ce77e4859adacbeebd288f`, `event_sha=616f787f981878dc0892b483491e8f827dd8fc03`.
+- CB52 immutable GMP package `12918290481`, semantic source `7cf0857b4818186638ce77e4859adacbeebd288f`, outer ZIP SHA-256 `89449f4f9c014c1d8c3235056c3dca2d2239ba136e09dd88e3e02710b253b5c1`; package manifest `6ae4eb5bf9552912fe068d9a9d3a90d76e2e27b9bd99896f83c216fd27fbc21f`, source archive `c02a0be4b25d64eca2c10e5681cd8721a465a848a3d17044275370eac132553b`. These were verified by the executing harness preflight and postflight. No package repair or recompilation was authorized.
+- Frozen 508-row case manifest `Architecture_M6_CP3_TB50_Full_Gate_Case_Manifest.tsv` SHA-256 `eef8855e27df9401545a62afab7aea6c9a882bb4a15c58545f2cb49d62fc7caa`, unchanged harness SHA-256 `142321061c57d130a9c73548ce93f52147ebeaeb4c45d3d1c48830e72e2ef93d`.
+- Result artifact `12929917136` ZIP SHA-256 `663fa4e133cd440613ed7efbdfa439a61e14805b7868dc0294980aca4f4fb411` and log artifact `12930316247` ZIP SHA-256 `f60fbf63ab8d0524b70ba91d3bb0260bc35c2b3a1217a21c98c7f5be0d45d6f5`, provider and downloaded bytes matched. Both retained under workflow run. Artifact expiration currently scheduled 2026-11-12.
+
+## Independently reconciled native evidence
+
+- `execution-boundary.json`: planned 508, executed 508, passed 508, RED 0, missing 0, skipped 0, duplicate 0, control_bad 0, unexpected_pass 0, later_positive_red 0, red_site_bad 0; `postflight=true`, `exit=0`, empty error. `compile=false`, `relink=false`, `configure=false`, `benchmark=false`.
+- Result `SHA256SUMS`: **1,022/1,022 exact file digests** verified, with no unlisted or absent files. Case manifest ↔ `ledger.tsv`: **508/508** sequential, unique, matched kind/identity/test/binary/expected verdict. 508 distinct `raw/<row>.log` and 508 `resources/<row>.time.txt` files, all digest-linked; every raw log selects precisely its specified GoogleTest case and reports exactly one RUN, OK and PASS, with no FAILED/SKIPPED. 499 GUARD + 9 POSITIVE, all PASS. All `first_failure` values are `failure-line-not-observed` because no native case was RED. `selector:174` has the frozen *informational* `asserted_site` note and is not a source-located PASS failure pin (harness special case).
+- Selected outcome witnesses include previously TB47/TB49-red `focused30:12` (row 12), `selector:442` (row 484), `cp3entry:1` (row 492), `cp3entry:2` (row 493): all native PASS under CB52. Newly included `phase10:7414`/`phase10:7614` and RA-169 C1 ingress/factory rows 505–508: all PASS with native assertions present. No timeout, selection shortfall or postflight mutation in the retained result.
+- Independent check reproduced frozen-manifest digest, all result hashes, exact row/log/test joins, per-case counts, resource completeness and execution boundary. No local Directional binaries were executed in this verification.
+
+## Regression and acceptance boundary
+
+**No observed selected-gate regression in this 508-case run**; therefore no new stable regression ID or count is warranted. Stable **66 events / 17 categories / 49 recurrences**, debt **1** unchanged. The **101/408** locally observed off-gate REDs from RA-170 have not been classified or retested by this selected gate; TB50C 408-case CI census remains mandatory before independent TB50-REV and off-selector disposition. Do not infer those REDs are fixed, platform-specific, stale or accepted. CP2 **491/491** remains the last accepted semantic baseline, TB49 **504/0** stays independently reviewed candidate, selector497 remains frozen/unpromoted, RP-01 open, RP-02 unreached, Gate C suspended.
+
+The successful native gate and the pending off-gate census are separate scopes. Success here closes **only** this TB-EXEC turn; acceptance, cumulative selector advancement, and any regression-classification decision belong to the authorized later Review/disposition turns.

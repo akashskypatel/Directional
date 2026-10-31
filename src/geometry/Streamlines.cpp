@@ -225,9 +225,9 @@ void streamlines_init(const directional::CartesianField &field,
   } else {
     data.sampleFaces = seedFaces;
     Eigen::MatrixXd BC_sample;
-    Eigen::VectorXi one(1);
-    one(0) = 1;
-    directional::matrix_slice(data.slMesh->barycenters, data.sampleFaces, one,
+    // Seed at the face barycenters: all three coordinates, not column 1 only.
+    const Eigen::VectorXi xyz = Eigen::VectorXi::LinSpaced(3, 0, 2);
+    directional::matrix_slice(data.slMesh->barycenters, data.sampleFaces, xyz,
                               data.samplePoints);
   }
   // nsamples = data.nsample = data.sampleFaces.size();

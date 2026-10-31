@@ -1,0 +1,13 @@
+# CB27 — A7 certified seam negative oracles: Code + Build (2026-10-22)
+
+- Turn: `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES`; RA-132.6, RA-133 and RA-134.4. Test-only compile boundary; no runtime.
+- Exact source SHA: `175c70e44d2c162d72812c842149f30c53c1fa25`; test file only: `tests/SurfaceCellTransitionQuotientTests.cpp`. No producer/header/fixture/selector/workflow changes.
+- New negative test names: `CertifiedSeamRejectsConnectingEvidenceOnUnrelatedSeam`, `CertifiedSeamRejectsMissingCertificate`, `CertifiedSeamSharedNodeRequiresSameLatticeCoordinate`, `CertifiedSeamRejectsSpanBindingOutsideEndpointWedge`.
+- The conditional same-side test was not added: existing A5 certificate/side validation guards make the proposed same-side tamper fail earlier; the outside-wedge negative covers the reachable distinct A7 direction guard. Independent Review must adjudicate this omission.
+- D7-produced positive A5/A6/A7 baseline and original A6 forest reused by each negative; tampered A5 republished and independently checked for A6 disposition and exact A7 failure code/site. Three RA-134.4 preconditions asserted.
+- First compile [run 39804806719](https://github.com/akashskypatel/Directional/actions/runs/39804806719) failed at three invalid Eigen-style expressions on the non-Eigen `LatticeTranslation` test struct. Only the three test expressions were corrected, preserving comparison/mutation strength.
+- Source snapshot [run 39814159116](https://github.com/akashskypatel/Directional/actions/runs/39814159116), artifact `12440998284`, ZIP SHA-256 `a7c53cfd1c525222d6813628b8fb9737d5d4aeacda158febdd716414d2f85576`; all 5786 files verified.
+- Test-only fix patch SHA-256 `a0e40882c69894d3eeb2de63bbb4dd74cd5f1c3df98fcdccfe3805d18b0a9780`, diff-body checked; applied in [run 39814860268](https://github.com/akashskypatel/Directional/actions/runs/39814860268) at commit `175c70e44d2c162d72812c842149f30c53c1fa25`. Drive patch retired by owner.
+- GMP/GMPXX compile [run 39815137854](https://github.com/akashskypatel/Directional/actions/runs/39815137854): all eight prescribed targets compile. Exact package artifact `12443015113`, ZIP SHA-256 `b1e7cfedc8546c8559592bb8aa6c902c00a47a488d441510ebfd89403172b0de`. Compile-only; `runtimeExecution=false`; no tests or benchmarks executed. Full test/semantic validation reserved for a later authorized TB turn.
+- Stable accounting unchanged: 66/17/49, witness debt 1, accepted CP2 491/491, frozen CP3 selector 497, TB28 candidate 462/497 unpromoted; RP-01 remains open.
+- Successor: `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES-REV`, an independent static Review of negative-oracle reachability/preconditions, compile evidence, and conditional same-side omission. CB28 remains unstarted.

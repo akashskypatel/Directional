@@ -1,0 +1,12 @@
+# DEFN-M1 — certificate-pair binding validation precedence (2026-10-23)
+
+> **Amended by RA-142 (`Architecture_M6_CP3_TB29_Review_Audit_Decision_20261023.md`):** the scope is the **ten** RA-105.3 rows. Six are measured at `certificate-pair-binding`; `selector:211, 219, 227, 230` are proven statically to reach the same clause first (SCT:8833–8837), and they carry the frozen `InvalidOppositeEdge`/`InvalidHardRailAuthority` expectations. RA-142.4 deliverables apply; where this plan conflicts, RA-142 governs.
+
+
+**Authorized only after RA-141 Review closeout:** `M6-CP3-DEFN-M1-RP01-CERTIFICATE-PAIR-BINDING-PRECEDENCE` — Definition/documentation only. No code, tests, fixtures, selector edits, compile, benchmark or runtime. Source semantic authority remains `4473e41e94a35f1bf189fa046e86bac92c7391fb`; TB29 artifact `12481556884` immutable; CP2 491/491 accepted.
+
+Scope exactly the six typed R2 `certificate-pair-binding` first failures: `focused30:3,22,23`, `selector:139,140,142`. Source clause in `SurfaceCellTracing.cpp` at certificate pair route/rail/region validation. Determine which stage owns each failure and how to preserve the frozen RA-15/RA-19 precedence while retaining fail-closed enforcement. Do not combine unrelated failures under one repair.
+
+Excluded: typed factory `selector:220,221,296,302,304,439` (`face-gauge-missing`), `cp3entry:4` (`open-rail-chain`), A3 189–195 and 442, A5 `focused30:12`, and 13 untyped rows including the four earlier RA-105 M1 neighbors `selector:211,219,227,230`. Their reason/site evidence is insufficient or different. Preserve unresolved witness conditions `cp3entry:1/2`, stable 66/17/49 and debt 1. No automatic CP3 promotion.
+
+Definition deliverables: exact producer-to-consumer validation order; error-code/ownership matrix for all six; unchanged certificate and A5 protections; alternative contracts and their falsifiers; distinct follow-up owners for all exclusions; normative consistency with RA-105.3 and RA-141; one precise separately reviewed CB proposal only after independent DEFN-REV. **Stop** if six cases cannot be reconciled without inventing an unstated witness, changing test meaning, disabling a guard or weakening source authority. Further implementation cannot proceed without DEFN independent Review.

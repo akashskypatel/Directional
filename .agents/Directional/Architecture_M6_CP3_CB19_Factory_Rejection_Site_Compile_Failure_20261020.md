@@ -1,0 +1,14 @@
+# CB19 — Factory rejection-site diagnostic: compile failure (2026-10-20)
+
+- **Canonical turn:** `M6-CP3-CB19-RP01-FACTORY-REJECTION-SITE`; source/test changes landed but Code + Build did not complete.
+- **Authority:** RA-105.5; no runtime, Test + Benchmark, or selector changes authorized.
+- **Original snapshot:** `5c287615785c9562fbb8bcf23eaf9c3207205157`, workflow `39385504966`, artifact `12247187712`, 5,698/5,698 packaged source hashes verified in prior session.
+- **Preserved patch:** SHA-256 `0670408146d932c427724bea9cb83feec0733bea3b9cefa5627df4188b110b60`; diff-body SHA-256 `3aeda74419a263236b6cc806bc44b27412b229ff82db5a700e228298ac02cf19`; 32,642 bytes.
+- **Transport:** direct Drive upload succeeded after File-Library `source_file_unavailable`; staged File ID `1PDZSdJR3vIpMPkoBI85omL-4jHZoS9TZ`. Workflow [39428169220](https://github.com/akashskypatel/Directional/actions/runs/39428169220) applied it successfully.
+- **Semantic commit:** `1f73d0abd1a4f83a85570decd79dfa40c6e2508a`; exactly three intended paths: tracing header +2, tracing implementation +49/-0, transition quotient tests +59/-1. Factory `make` additions only; 47 planned site labels.
+- **Compile request:** `6f49dc9610f316dccf5544160343c13099cdc6cf`; eight GMP/GMPXX targets requested, no runtime.
+- **Failed compile:** [39428435345](https://github.com/akashskypatel/Directional/actions/runs/39428435345); immutable activity-log artifact `12265949093`; exact source confirmed by workflow mailbox, result `failure`. CMake configuration succeeded, but `directional_core` preflight exited 1. Full target compile was skipped; package artifact was not produced.
+- **Root cause:** new `error.sourceAuthoritySite` assignments in `src/geometry/SurfaceCellTracing.cpp` use literal concatenation such as `"certificate-route-length" + ";certificate=" + std::to_string(...)`, which attempts `const char[] + const char[]`. Compiler diagnostics at lines 8823, 8840, 8855 and additional certificate/endpoint/junction labels show the same invalid operands.
+- **Corrective measure for authorized Review:** make the leftmost operand a `std::string` before concatenation, in the newly inserted diagnostic assignments only; preserve every preexisting factory line, validation order, predicate, and test oracle. Review whether all diagnostic labels have the same defect and authorize a separate corrected Code + Build turn.
+- **Stop decision:** RA-105.5 explicitly requires STOP and return to Review on build failure. No repair, retry, or TB19 execution in this turn. No compile/package success and no regression-count or acceptance change is claimed.
+- **Outstanding closeout:** TODO/handoff/changelog reconciliation and any staged-Drive cleanup must be completed under review/next authorized continuation; no declaration of CB19 completion or TB19 eligibility.

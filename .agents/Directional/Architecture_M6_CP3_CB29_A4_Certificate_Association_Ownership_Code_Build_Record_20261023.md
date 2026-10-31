@@ -1,0 +1,21 @@
+# CB29 — A4 certificate association ownership (Code + Build; COMPLETE)
+
+- Turn: `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP`; authority RA-143.3.
+- Snapshot source `b592ab719b8f2c284921929296033836840264fd`; run `39930016168`, artifact `12491187495`, 5812/5812 file hashes.
+- Source edit: `src/geometry/SurfaceCellTracing.cpp`, certificate-pair clause near SCT:8831 only.
+- Removed both opposite-edge, both rail-ID, both route comparisons and the source-region equality rejection.
+- Retained both HardRail checks, certificate-pair-binding site, A4 certificate authenticity and opposite-edge reciprocity.
+- Added RA-15/RA-16 §5/RA-143 comment; A5 retains edge-to-certificate association under frozen precedence.
+- Verified patch confined to one source file; `git diff --check` and `git apply --check` passed.
+- Applied patch SHA-256 `cd7401cbc7f966f6bc70139bef9199f7beb616301145408e5d826aeecd773467`, 1592 bytes.
+- Patch applied in run `39931295425`; source commit `2602e7398cdc6f1281abe11a758de35166b6590c`.
+- Eight-target compile [run `39932638282`](https://github.com/akashskypatel/Directional/actions/runs/39932638282), source identity verified.
+- Result artifact `12492950387`, outer ZIP SHA-256 `9e2da1f4b5cf95ac45364e8c428f0bd9116dcfe96772de18d02a5a7bfb167319`.
+- Package `SHA256SUMS` verified 28/28; six executable artifacts and two static libraries present.
+- GMP policy: `DIRECTIONAL_ENABLE_GMP=ON`; `GMP_ROOT=/usr`; authoritative link contains `libgmpxx.so` and `libgmp.so`.
+- Preflight/build exit 0/0; `exactArithmeticBackend=GMP`; `runtimeExecution=false`.
+- No tests or benchmarks executed; compile is not semantic/runtime acceptance.
+- No other source, tests, selectors, workflows or A5 changes; no regression-count or acceptance promotion.
+- Frozen stable 66/17/49, debt 1, CP2 491/491 accepted; TB28 462/497 candidate only; Gate C suspended.
+- Documentation handoff application [run `39933754540`](https://github.com/akashskypatel/Directional/actions/runs/39933754540), commit `346dbaa435cfffa58a0d20935a2722779f630418`.
+- Next: `M6-CP3-CB29-RP01-A4-CERTIFICATE-ASSOCIATION-OWNERSHIP-REV` (mandatory independent static review and TB30 manifest decision).

@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "request_id": "m6-cp3-tb63-doc-closeout-apply-20261031-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb63-doc-closeout-apply-20261031-v1",
+  "file_id": "1XrMCcXMS6OPWHvWFashl6JTe9nSmu9G9",
+  "patch_sha256": "6dbaf8e173f0e0d536f121eadb0af8d91794c8d2e69503a93d0ec0360e4905a0",
+  "base_sha": "f5b3aa8232327f296917409e88ad84cbcf76504a",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close TB63 full gate and hand off P13 review",
+  "retention_days": 14
+}

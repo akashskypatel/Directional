@@ -9,6 +9,8 @@
 #include <stdexcept>
 #include <vector>
 
+#include <directional/fields/CrossField.h>
+
 namespace directional::bench {
 namespace {
 
@@ -512,6 +514,27 @@ BenchmarkField load_benchmark_field(const BenchmarkCase &benchmarkCase,
 
 BenchmarkField generate_benchmark_field(const BenchmarkCase &benchmarkCase,
                                         const BenchmarkMesh &mesh) {
+  if (benchmarkCase.generatedField == "smooth") {
+    fields::CrossFieldOptions options;
+    options.normalizeDirections = true;
+    options.combDirections = true;
+    options.computeMatching = true;
+    const fields::CrossFieldResult extracted =
+        fields::extract_cross_field(mesh.vertices, mesh.faces, options);
+    if (extracted.degree != 4 ||
+        extracted.rawField.rows() != mesh.faces.rows() ||
+        extracted.rawField.cols() != 12 ||
+        !extracted.rawField.allFinite()) {
+      throw std::runtime_error(
+          "Smooth benchmark cross-field extraction returned invalid data.");
+    }
+    BenchmarkField field;
+    field.available = true;
+    field.degree = extracted.degree;
+    field.raw = extracted.rawField;
+    return field;
+  }
+
   if (benchmarkCase.generatedField != "face_edges" &&
       benchmarkCase.generatedField != "constant_xy") {
     return {};

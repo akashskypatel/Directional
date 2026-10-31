@@ -1,0 +1,14 @@
+# M6 CP3 CB20 — gauge-pin domain Code + Build STOP (2026-10-20)
+
+> **Reviewed by RA-112 (2026-10-20):** the stop is verified and the S patch is accepted statically. The accessor correction is authorized as CB20A (`Architecture_M6_CP3_CB20_Gauge_Pin_Domain_Compile_Stop_Review_Decision.md`).
+
+- Canonical turn: `M6-CP3-CB20-RP01-GAUGE-PIN-DOMAIN`; authority RA-111.4/RA-111.6. **Compile RED; mandatory STOP and independent Review.**
+- Source code/test semantic commit: `7dc9b89ecd13753173057577d1da320db9515ebb`, applied by Drive workflow `39505814372`; patch SHA-256 `40cd730e9859d677d6e5510b6c7bb97b8a8924920e606eeec93e9849743e3c95` against `9c6bb760576407be6d488ccaf5b5f7f17037298a`.
+- Scoped S diff: +37/-5, within RA-45 pin block plus immediate span guard. TQ diff: +82/-2, exact edge site and two RA-111 tests. No header, producer, pipeline or selector edits.
+- Static audit on snapshot `5769e4397b374a0680feeabdcd2375f4866cad77`: 5,711/5,711 source hashes verified; 48/48 distinct factory error labels; new site `gauge-pin-span;region=` at S:8595; no >100-column lines in the edited ranges. This is static evidence, not runtime acceptance.
+- Compile dispatcher `5624421ebf6e21ee8d4b23adde298bc528c0dc05`, exact source `7dc9b89ecd13753173057577d1da320db9515ebb`, eight approved GMP/GMPXX targets; workflow [39512680019](https://github.com/akashskypatel/Directional/actions/runs/39512680019), compile job `118937410213` **failure**. Log artifact `12306507832`, ZIP SHA-256 `d28cd21a2fde92a3d1d615c7ff054380a58d80c0279dd29104b6958da7c8b915`.
+- Preflight `directional_core` compiled (`preflight_exit=0`); overall `build_exit=1`. First distinct compiler diagnostic: `no match for 'operator*'` on `DomainResult<SourceFaceId>` at `tests/SurfaceCellTransitionQuotientTests.cpp:1941`; same type error at lines **1947, 1972, 1978, 1979**. Five instances, one root cause. Compiler expects the typed result's `.value()` accessor rather than unary `*`; proposed correction is for Review to authorize, not applied in this turn.
+- No successful compile package, no 28/28 package claim, no test/runtime/benchmark executed (`runtimeExecution=false`), no changes to frozen selector 497 or 66/17/49, debt 1, CP2 491/491, R3 403/497, TB18 candidate 448/497. `RP-01` open, `RP-02` UNREACHED.
+- **STOP:** RA-111.6 forbids a second repair in CB20. Required action: independent CB20 Review of compiler failure and source/test correction authority before retrying Code + Build. Do not proceed to TB20 or claim CB20 complete.
+- Source patch transport reported owner cleanup required, but the exact Drive patch File ID `1411tvMZY1nCoGELU1Pf4rhXaKeEvHSbR` returned 404 to the authorized Google Drive metadata call. No further deletion attempted.
+- Workflow policy pre-read sequencing miss: initial remote documents preceded an explicit snapshot-mode declaration. It was corrected to a verified exact-source snapshot before code inspection; no direct piecemeal source reads followed.

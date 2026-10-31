@@ -1,0 +1,20 @@
+# M6-CP3-CB1-ENTRY-R4 — FlowRep singularity-support source/DCEL fixture correction (Code + Build)
+
+**Turn authority:** `M6-CP3-CB1-ENTRY-R4` IN_PROGRESS, successor UNKNOWN, PR #8 draft; no runtime Test + Benchmark authorized in this turn. This is a supplemental neighboring fixture correction, **not** an accepted recovery among the frozen seven R3 DCEL RED identities.
+
+## Cause and bounded change
+
+In `tests/FlowRepStrandsPhase15Tests.cpp`, `FlowRepStrandsPhase15.RailTruncatedSingularitySupportDoesNotInheritLaterTerminalAnchor` still passed a **one-face** synthetic source to `attach_source_authority()`. That helper constructs a real `TriMesh`, independently builds A2 source topology and the A3 atlas, and republishes an A4 product. Its paired generic-support test had already been migrated to a consistently oriented two-face source because one-triangle DCEL fixtures can fail `compute_edge_quantities()` before exercising the intended support-anchor contract.
+
+The existing singularity-support fixture now uses the same two-face disk `(0,1,2)` / `(0,2,3)` with the fourth vertex `(-1,0,0)` and duplicates identical original source component/sheet labels `(3, 3)` / `(5, 5)`. Original face-0 barycentric trace/rail geometry, singularity index, intended support-anchor negative, existing test identity and all assertions are unchanged. No production/API/selector, source-corner acceptance, or A3 factory rule changed. Only `tests/FlowRepStrandsPhase15Tests.cpp` changed (12 additions, 5 deletions). This removes an avoidable one-face DCEL fixture weakness; it does not prove the expected anchor assertions run or pass.
+
+## Exact immutable evidence
+
+- Source snapshot: workflow `38149577586`, job `114500059611`, event `81918317d8d20bdb7465f007415a7d4c647f8422`, result artifact `11706162483` ZIP SHA-256 `c70ae6b1d0b99830f40178d1a9da93ff5a7dcb5d503b7004be07b39caf81650b`; source.tar.gz SHA-256 `31689d4c759a9a06df745b5b154662b55f2cc3b661b68bb5bb43dabe42a57ca1`; **6,183/6,183** SHA256SUMS verified, `runtimeExecution=false`.
+- Source patch base `8379b155063efff30a8fa39a8ee4c3a7ceb7ecd8`, exact patch SHA-256 `f6284ee3326220bf78cae677cb035d5c9b4ec047f1e0c3c64e6bebdb5afb37d0`, diff-body SHA-256 `c27a056d023966ce7dd05a46c2d03258bae604a8a3ec2e6ac7c699156ac68ed9`, one intended path, local `git diff --check` and `git apply --cached --check` pass. Patch preserved in ChatGPT Library `/Directional/Evidence/`.
+- Drive apply workflow `38150151923`, job `114501807002`, result artifact `11705692717` ZIP SHA-256 `71e40d43b93ef9d0157eb586131a4529f6de38216ecacbfa0b1290c9ac924e66`, diagnostic artifact `11705533106` ZIP SHA-256 `7990184f8153315807be9e05ab3192e668bfb29205fd218fe524c57160578a43`; exact committed source `245ef12a10dca2f258d53dcf997f43e2a7567de4`; logged push succeeded, no runtime execution. Owner permanently deleted the consumed staging Drive file.
+- **Mandatory GMP/GMPXX compile GREEN:** workflow `38150289951`, job `114502218749`, exact source `245ef12a10dca2f258d53dcf997f43e2a7567de4`, eight requested targets compiled, preflight/build exit 0/0, `DIRECTIONAL_ENABLE_GMP=ON`, generated link command includes both `libgmpxx` and `libgmp`, `exactArithmeticBackend=GMP`, clean final source, **28/28** package SHA256SUMS verified; `runtimeExecution=false`. Result artifact `11706318595` ZIP SHA-256 `7f0db84857a847378b07b998d02cf592cab47f8c2bdae72d8dfab819669e6be2`; separate diagnostic log `11706588040` ZIP SHA-256 `c9933e7976cdc2062514d1d536c25fc04e8f1122d9d732d6c8d5cc31c2471c9b`. No generated binary, test, discovery, or benchmark executed.
+
+## Continuing work
+
+This supplemental source-validity repair **does not** restore any historical accepted CP2 identity or count among the seven frozen DCEL R3 cases. R4 still owes actual 39 endpoint, 34 Phase10, seven DCEL, 88 CP2 accepted losses, six CP3 gates, authentic multi-carrier/odd-τ producer witnesses, and independent design adjudication of a purported two-path A2b source-star witness. The frozen 497-case Test + Benchmark is not authorized within Code + Build. Keep same R4 turn IN_PROGRESS until its genuine gates are discharged.

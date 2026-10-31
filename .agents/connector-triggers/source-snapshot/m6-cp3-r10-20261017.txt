@@ -1,0 +1,3 @@
+Purpose: exact-authority source snapshot for M6-CP3-DEFN-R10-RAIL-INTERIOR-VERTEX-ENDPOINT-SPEC
+Frozen source SHA: f38bd2dda59c18db8b0d851124de6e10edfec5b3
+Attempt: 1
