@@ -9,7 +9,9 @@
 
 #include <algorithm>
 #include <array>
+#include <cmath>
 #include <fstream>
+#include <numbers>
 #include <stdexcept>
 #include <string>
 
@@ -48,6 +50,38 @@ FixtureRun run_fixture(const std::string &name) {
   Eigen::MatrixXd raw(faces, 12);
   for (int face = 0; face < faces; ++face) {
     for (int column = 0; column < 12; ++column) stream >> raw(face, column);
+  }
+  run.result = directional::pipeline::remesh_from_raw_cross_field(
+      run.mesh.V, run.mesh.F, raw, surface_cell_options(-1));
+  return run;
+}
+
+// An eight-triangle fan whose cross turns by half a turn around vertex 0: a
+// +1/2 singularity, outside the index range that A3 singularity ports cover.
+FixtureRun run_half_index_singularity_fan() {
+  constexpr int ring = 8;
+  FixtureRun run;
+  Eigen::MatrixXd vertices(ring + 1, 3);
+  vertices.row(0) << 0.0, 0.0, 0.0;
+  for (int i = 0; i < ring; ++i) {
+    const double angle = 2.0 * std::numbers::pi * i / ring;
+    vertices.row(i + 1) << std::cos(angle), std::sin(angle), 0.0;
+  }
+  Eigen::MatrixXi faces(ring, 3);
+  for (int i = 0; i < ring; ++i) faces.row(i) << 0, 1 + i, 1 + (i + 1) % ring;
+  run.mesh.set_mesh(vertices, faces);
+  Eigen::MatrixXd raw(ring, 12);
+  for (int face = 0; face < ring; ++face) {
+    const Eigen::RowVector3d center =
+        (vertices.row(faces(face, 0)) + vertices.row(faces(face, 1)) +
+         vertices.row(faces(face, 2))) / 3.0;
+    const double turn = 0.5 * std::atan2(center[1], center[0]);
+    for (int branch = 0; branch < 4; ++branch) {
+      const double angle = turn + branch * std::numbers::pi / 2.0;
+      raw(face, 3 * branch) = std::cos(angle);
+      raw(face, 3 * branch + 1) = std::sin(angle);
+      raw(face, 3 * branch + 2) = 0.0;
+    }
   }
   run.result = directional::pipeline::remesh_from_raw_cross_field(
       run.mesh.V, run.mesh.F, raw, surface_cell_options(-1));
@@ -101,14 +135,18 @@ TEST(SurfaceCellTracingDisplay, StopLocationShowsWhatEachStageReported) {
                             return note.find(reason) != std::string::npos;
                           }));
 
-  // The field-transport atlas rejects mechanical_feature at a vertex.
-  const FixtureRun mechanical = run_fixture("mechanical_feature");
-  const auto &vertexLocus = mechanical.result.diagnostics.terminalFailureLocus;
+  // The field-transport atlas rejects a +1/2 singularity at its source vertex.
+  // (mechanical_feature passes the atlas once A3 decides exact ties exactly.)
+  const FixtureRun singular = run_half_index_singularity_fan();
+  const auto &vertexLocus = singular.result.diagnostics.terminalFailureLocus;
   ASSERT_TRUE(vertexLocus.sourceVertex.has_value())
-      << mechanical.result.diagnostics.terminalFailureStage;
-  const auto mechanicalDisplay = display_of(mechanical);
-  EXPECT_TRUE(has_vertex(mechanicalDisplay,
-                         mechanical.mesh.V.row(static_cast<Eigen::Index>(
+      << singular.result.diagnostics.terminalFailureStage;
+  EXPECT_EQ(0U, *vertexLocus.sourceVertex);
+  EXPECT_EQ("InvalidSingularityMetadata",
+            singular.result.diagnostics.terminalFailureDetailCode);
+  const auto singularDisplay = display_of(singular);
+  EXPECT_TRUE(has_vertex(singularDisplay,
+                         singular.mesh.V.row(static_cast<Eigen::Index>(
                              *vertexLocus.sourceVertex))));
 
   // The cut graph rejects sphere_prescribed at a face given by its corners.
@@ -129,7 +167,7 @@ TEST(SurfaceCellTracingDisplay, StopLocationShowsWhatEachStageReported) {
   ASSERT_GE(row, 0);
   const auto sphereDisplay = display_of(sphere);
   EXPECT_TRUE(has_face(sphereDisplay, sphere.mesh.V, sphere.mesh.F, row));
-  for (const auto *display : {&genusDisplay, &mechanicalDisplay, &sphereDisplay}) {
+  for (const auto *display : {&genusDisplay, &singularDisplay, &sphereDisplay}) {
     EXPECT_TRUE(display->has_stop_location());
     EXPECT_EQ(0U, display->cellCount);
   }
