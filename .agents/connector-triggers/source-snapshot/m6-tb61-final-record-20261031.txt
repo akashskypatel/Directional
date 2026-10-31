@@ -1,2 +1,0 @@
-Exact repository snapshot for M6-TB61 runtime evidence closeout.
-Trigger-only; temporary; must be retired after evidence is preserved.
