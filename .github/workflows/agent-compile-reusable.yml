@@ -67,6 +67,10 @@ jobs:
           test "$(git rev-parse HEAD)" = "${{ inputs.source_sha }}"
           dpkg -s libgmp-dev >/dev/null 2>&1 || { sudo apt-get update; sudo apt-get install -y libgmp-dev; }
           dpkg-query -W -f='libgmp-dev=${Version}\n' libgmp-dev
+          if [[ " ${{ inputs.targets }} " == *" directional_gui "* ]]; then
+            sudo apt-get update
+            sudo apt-get install -y libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev
+          fi
           ccache_tool_root="$RUNNER_TEMP/directional-ccache-tool"
           ccache_tool_dir="$ccache_tool_root/bin"
           ccache_tool_lib_dir="$ccache_tool_root/lib"
