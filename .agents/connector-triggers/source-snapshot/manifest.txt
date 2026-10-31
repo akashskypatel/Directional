@@ -1,0 +1,2 @@
+turn=M6-CB63-DIAG-RETAIN-LINUX-CLI-GUI-COMPILE
+purpose=read-only source snapshot for Linux CLI GUI compile workflow correction
