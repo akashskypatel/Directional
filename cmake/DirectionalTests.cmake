@@ -62,6 +62,7 @@ add_executable(
   tests/CutGraphDisplayTests.cpp
   tests/FieldAlignedNetworkPolylinesTests.cpp
   tests/FieldStreamlinesTests.cpp
+  tests/MaterializationDiagnosticsDisplayTests.cpp
   tests/SourceRegionDisplayTests.cpp
   tests/SurfaceCellTracingDisplayTests.cpp
   tests/TargetSizeDisplayTests.cpp)

@@ -267,6 +267,7 @@ add_library(
   src/visualization/CutGraphDisplay.cpp
   src/visualization/FieldAlignedNetworkPolylines.cpp
   src/visualization/FieldStreamlines.cpp
+  src/visualization/MaterializationDiagnosticsDisplay.cpp
   src/visualization/SourceRegionDisplay.cpp
   src/visualization/SurfaceCellTracingDisplay.cpp
   src/visualization/TargetSizeDisplay.cpp)
