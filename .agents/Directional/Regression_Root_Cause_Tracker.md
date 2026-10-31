@@ -1,3 +1,5 @@
+**RA-186 / DIAG-RETAIN CLI sidecar DEFN (2026-10-31; no new event):** [record](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md). DR4 is a pre-existing CLI defect (the SurfaceCells product has no cut mesh, so the `--diagnostics-prefix` cut sidecars throw), not a regression: probe run B reproduces it without CB60. No gate binary changes. Stable 66/17/49, debt 1.
+
 **TB58 local gate (2026-10-31; candidate, pre-registered outcome met, no new event):** [report](Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Local_Test_Report_20261031.md). CB59: 862/863, with row 283 (O16) the only red; rows 862–863 (display adapter guards) pass; membership 945. Stable 66/17/49, debt 1.
 
 **RA-185 / DIAG-RETAIN display DEFN (2026-10-31; no new event):** [record](Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md). Additive adapter only; the API binary gives 25/25 with the two new tests; membership 945. Stable 66/17/49, debt 1.

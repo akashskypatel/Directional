@@ -1,3 +1,7 @@
+## RA-186 — DIAG-RETAIN CLI sidecar (2026-10-31)
+
+- With `--diagnostics-prefix <p>` and retained snapshots, the CLI writes `<p>.materialization.txt` (the CB59 dump) **before** the produced-result check, so a rejected run keeps it (CB60). The GUI layers are a separate DEFN. **DR4** (the existing `--diagnostics-prefix` cut-mesh sidecars throw on every SurfaceCells product) is pre-existing and owned by M8-CP2.
+
 ## RA-185 — DIAG-RETAIN materialization display (2026-10-31)
 
 - The A5–A7 snapshots are presented only through a polyscope-free adapter in `directional_pipeline` (`materialization_diagnostics_display`, `write_materialization_diagnostics`) that takes them by const reference; nothing in the pipeline calls it (CB59). CLI and GUI wiring is a separate DEFN with CLI-ON/GUI-ON compile checks. **DR2** (multi-component drop of all stage snapshots) is re-owned to M8-CP2.

@@ -1,3 +1,7 @@
+# 2026-10-31 — RA-186 DIAG-RETAIN CLI sidecar defined
+
+- [RA-186](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) (local). The CLI throws before any diagnostics when a result is not produced, so CB60 writes `<prefix>.materialization.txt` from the CB59 dump right after the remesh call, when the snapshots are retained. A CLI-ON probe on the plane pins three runs (dump present only with retention and a prefix: 64 cells, 256 occurrences, 224 relations, 81 classes and vertices). New DR4: the existing cut-mesh sidecars throw on every SurfaceCells product (pre-existing; M8-CP2). GUI layers → `M6-DEFN-DIAG-RETAIN-GUI-LAYERS`. CB60 `d14aaeff…`. Next `M6-CB60-DIAG-RETAIN-CLI-SIDECAR`.
+
 # 2026-10-31 — TB58 local gate on CB59: 862/863, display adapter landed
 
 - [TB58 report](.agents/Directional/Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Local_Test_Report_20261031.md): CB59 package `1bd8c0ba…` (default arithmetic). 863 executed, **862 PASS**, row 283 the only red (pre-registered O16), membership 945, postflight true. Rows 862–863 (`ra185:materialization-display-*`) pass. Result `647bd326…`; the Haiku audit is clean. No separate REV. Next `M6-DEFN-DIAG-RETAIN-CLI-GUI-WIRING`.
