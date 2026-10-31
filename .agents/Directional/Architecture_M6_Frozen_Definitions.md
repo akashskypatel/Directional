@@ -1,3 +1,7 @@
+## RA-185 — DIAG-RETAIN materialization display (2026-10-31)
+
+- The A5–A7 snapshots are presented only through a polyscope-free adapter in `directional_pipeline` (`materialization_diagnostics_display`, `write_materialization_diagnostics`) that takes them by const reference; nothing in the pipeline calls it (CB59). CLI and GUI wiring is a separate DEFN with CLI-ON/GUI-ON compile checks. **DR2** (multi-component drop of all stage snapshots) is re-owned to M8-CP2.
+
 ## RA-184 — DIAG-RETAIN A5–A7 snapshots (2026-10-31)
 
 - A5/A6/A7 products are diagnostic `shared_ptr<const>` snapshots, copied right after each stage succeeds and retained only under intermediate-geometry retention. They are never read back. `build_authoritative_phase_front_mesh` keeps its pinned signature; `build_authoritative_phase_front_mesh_with_diagnostics` exposes the copies.
