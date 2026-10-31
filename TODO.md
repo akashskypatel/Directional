@@ -1,4 +1,4 @@
-## CURRENT — TB55 857/858 locally (row 935 gated); O2 DEFN next (2026-10-31)
+## CURRENT — O2 entry gate defined (RA-183); CB57 next (2026-10-31)
 
 - [x] Done 2026-10-30: PLAN-RP01-CLOSURE (RA-174) → CB53 → TB52C → TB52C-REV (RA-175) → PLAN-A3-ATLAS-EXACTNESS (RA-176, O15) → TB52 853/0 → TB52-REV (RA-177) → DEFN-RP01-TERMINAL-PATH-WITNESSES ([RA-178](.agents/Directional/Architecture_M6_CP3_DEFN_RP01_Terminal_Path_Witnesses_TB52_REV_Audit_20261030.md)) → CB54 ([record](.agents/Directional/Architecture_M6_CP3_CB54_RP01_Terminal_Path_Witnesses_Code_Build_Record_20261030.md), local) → TB53 836/19 ([report](.agents/Directional/Architecture_M6_CP3_TB53_RP01_Full_Gate_Local_Test_Report_20261030.md), local).
   - **CP3-exit conditions:** RP-01 closed (done); zero ledger rows; design-acceptance matrix gated at 6/6 (Cylinder is required); O14 enforced; O7 resolved; **O15 discharged (RA-176.3)**; CP3-REV decides selector497 promotion.
@@ -23,9 +23,10 @@
 - [x] **`M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS`** (DEFN, R, local): [RA-182](.agents/Directional/Architecture_M6_CP3_DEFN_API_Display_Vertex_Stop_Witness_20261031.md). A Sonnet trace found the stages that report a vertex locus. Probes: a +½-singularity 8-fan → A3 `InvalidSingularityMetadata` at vertex 0, shown by the display; API binary 23/23 on both builds. CB56 patch `ffb723f4…` (`46 8`). TB55 858 `eb508378…`; ledger v4 82 `36241caa…`; membership 940.
 - [x] **`M6-CP3-CB56-API-DISPLAY-VERTEX-STOP-WITNESS`** (CB, local): [record](.agents/Directional/Architecture_M6_CP3_CB56_API_Display_Vertex_Stop_Witness_Code_Build_Record_20261031.md). Patch `ffb723f4…` exact; source `567d1828…`; package `26d88d20…` (staged by Haiku, re-verified).
 - [x] **`M6-CP3-TB55-API-DISPLAY-FULL-GATE-EXEC`** (TB-EXEC, local): [report](.agents/Directional/Architecture_M6_CP3_TB55_API_Display_Full_Gate_Local_Test_Report_20261031.md). **857/858**, only 283 red; membership 940; row 935 now gated; the Haiku audit is clean; result `d1d89f0d…`.
-- [ ] **NEXT `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`** (DEFN, R): RA-160.4 D2/D3/D5 and the no-atlas consumers, plus row 283 (retire it or find its cause).
+- [x] **`M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`** (DEFN, R, local): [RA-183](.agents/Directional/Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md). The Sonnet inventory confirms production always has an atlas. Closed feature-free inputs reach the legacy seed fallback when there is no atlas (D2). An entry gate rejects them at `atlas-binding` (CB57 `35eb2fbc…`, `13 0` / `63 0`). The failing-first test fails before and passes after; the Haiku comparison shows gate and deferred verdicts unchanged. D3 and the legacy detail branches → **O2b**; row 283 → **O16** (LegacyInteger backend). TB56 859 `c8437d61…`, membership 941.
+- [ ] **NEXT `M6-CP3-CB57-O2-NO-ATLAS-ENTRY-GATE`** (CB, local) → `M6-CP3-TB56-O2-FULL-GATE-EXEC` (expected 858/859, with only 283 red).
 - [ ] Carried separately (owners per RA-174.3):
-  - O1; O2 (legacy no-atlas ingress, post-RP-01; also owns row 283's macOS legacy `segment_arrangement` failure, RA-179 F3).
+  - O1. O2 (no-atlas ingress) → entry gate CB57 (RA-183). **O2b** (retire the public no-atlas APIs, the legacy detail branches, their 12 gated unit tests and the historical suite) → a retirement DEFN after P13. **O16** (row 283, LegacyInteger NFunctionMesher macOS failure, not FMA) → a legacy-backend probe DEFN; not CP3-blocking.
   - O6 (bounded disks that are not rectangular are rejected by design) → P13 probe DEFN.
   - O7 (oracle-tests target does not compile) → its own probe DEFN.
   - O8 (`InvalidFrontBoundaryAuthority` on the 3×3 midline at `lengthRatio=0.29`) and O10 (non-hard isolation-barrier producer) → CP3-exit probe DEFNs after P13.

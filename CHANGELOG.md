@@ -1,3 +1,7 @@
+# 2026-10-31 — RA-183 O2 no-atlas entry gate defined
+
+- [RA-183](.agents/Directional/Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) (local; Sonnet inventory, Haiku comparison). Production always supplies an atlas. Without one, closed feature-free inputs went NotApplicable and the seed fallback published legacy-matching outputs (D2; probes: tetrahedron, octahedron, cube). CB57 (`35eb2fbc…`) rejects that case at `atlas-binding`. The new test fails before and passes after; the 858-row gate and 82 deferred verdicts are unchanged. D3 and the legacy detail branches → O2b; row 283 → O16 (LegacyInteger backend). TB56 859 `c8437d61…`, membership 941. Next `M6-CP3-CB57-O2-NO-ATLAS-ENTRY-GATE`.
+
 # 2026-10-31 — TB55 local gate on CB56: 857/858, row 935 gated
 
 - [TB55 report](.agents/Directional/Architecture_M6_CP3_TB55_API_Display_Full_Gate_Local_Test_Report_20261031.md): CB56 package `26d88d20…` (default arithmetic). 858 executed, **857 PASS**, row 283 the only red (pre-registered O2), membership 940, postflight true. Row 858 (`apicensus:19`) passes. Result `d1d89f0d…`; the Haiku audit is clean. The pre-registered outcome was met, so there is no separate REV. Next `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`.

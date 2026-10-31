@@ -1,3 +1,9 @@
+## RA-183 — O2 no-atlas ingress (2026-10-31)
+
+- **No-atlas A4 ingress is rejected at one locus** (`atlas-binding`, `InvalidSourceAuthority` / `AtlasSourceMismatch`), including NotApplicable inputs (CB57). Legacy matching never decides a published A4 output.
+- **O2b:** the public no-atlas tracing APIs and the legacy detail branches, with their 12 gated unit tests, are retired later; not CP3-blocking.
+- **O16:** row 283 (the LegacyInteger NFunctionMesher `segment_arrangement` failure on macOS) is outside SurfaceCells; not CP3-blocking; pre-registered in local outcome tables.
+
 ## RA-182 — Row 935 witness (2026-10-31)
 
 - **Row 935** (`apicensus:19`) is repaired by CB56. Its vertex section uses an 8-triangle fan with a +½ singularity, which A3 legitimately rejects with `InvalidSingularityMetadata` at vertex 0 (A3 ports cover valences 3–6 only). TB55 gates it; **ledger v4** has 82 rows.
