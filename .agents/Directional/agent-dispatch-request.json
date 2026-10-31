@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cb64-chart-binding-apply-20261031-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cb64-chart-binding-apply-20261031-v1",
-  "file_id": "1IN1fSfj9ovc31R398SXtwBusBmkXkCMc",
-  "patch_sha256": "3e7f1cf1884eba033452505faa74af3bf6a54dc1824ad1b0e28570d09105c2a0",
-  "base_sha": "28d97499d12d7664034eae2e60c5f8c599596819",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): cache source chart binding after build validation",
-  "retention_days": 14
+  "request_id": "m6-cb64-chart-binding-compile-20261031-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cb64-chart-binding-compile-20261031-v1",
+  "source_sha": "d56d990580163f4fd0ceda4137f7ecd16ceb6027",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cb64-chart-binding-linux-package"
 }
