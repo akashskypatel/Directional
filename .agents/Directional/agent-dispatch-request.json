@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cb63-doc-closeout-drive-apply-20261031-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cb63-doc-closeout-drive-apply-20261031-v1",
-  "file_id": "1E3HjWnF_C2P10Lqv6nB2pDEruTgdPQtz",
-  "patch_sha256": "ace616b35c2ce68795270b95be8d79f00e90dc05538f2bacef6a981c5b52590f",
-  "base_sha": "e4a184dcb125b81b9c1a764147100fc7333a0447",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB63 Linux CLI GUI compile and freeze TB62",
+  "request_id": "m6-tb62-linux-cli-gui-full-gate-20261031-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-tb62-linux-cli-gui-full-gate-20261031-v1",
+  "executor_sha": "d34ed7b33754e5138db2310b248c6b2e449e422a",
+  "semantic_source_sha": "f6113c4eb0fbf6a02350eee2d37e7e4dab821429",
+  "turn_id": "M6-TB62-DIAG-RETAIN-LINUX-CLI-GUI-FULL-GATE-EXEC",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "13043004468",
+    "EXPECTED_SOURCE_SHA": "f6113c4eb0fbf6a02350eee2d37e7e4dab821429",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "14b7589aba85ed1fa0fdf62d233007293150491d559820dc2b24b8e83df27462",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "c0fa97c19db39061be02ad88c5134caa5bc46d0a37cdbd24a1aa1652c92a984f",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "297dad5d6f90401318b36c7aa786a98d4c62af368ff91d16c17e0ebf80d8ea2c",
+    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "31c1360ab5738cab682e628304914af4a3f7ad4dd077a8f688e79536bf371341",
+    "EXPECTED_CASE_COUNT": "863",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v4.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "36241caa61d3d27aa062fee05cf3af12a62a81a5a11a42e3ea75e46b0590139d"
+  },
+  "artifact_prefix": "m6-tb62-linux-cli-gui-full-gate-v1",
   "retention_days": 14
 }
