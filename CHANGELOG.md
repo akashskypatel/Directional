@@ -1,3 +1,7 @@
+# 2026-10-31 — RA-187 DIAG-RETAIN GUI layers defined; full-gate correction
+
+- [RA-187](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md) (local). CB61 adds three read-only GUI layers over the CB59 adapter (occurrence cell sides, occurrences coloured by A6 class, A7 quads); the probe compiles and links `directional-ui` GUI-ON. Correction: TB59 ran only the CLI cases, but `Turn_Cadence.md` §2 requires the full gate, so CB61 builds the gate targets with the CLI and GUI, and TB60 runs the 863-row gate plus the CLI cases. CB61 `afab7d5d…`. Next `M6-CB61-DIAG-RETAIN-GUI-LAYERS`.
+
 # 2026-10-31 — TB59 CLI check runs on CB60: all three registered cases match
 
 - [TB59 report](.agents/Directional/Architecture_M6_TB59_Diag_Retain_CLI_Sidecar_Local_Test_Report_20261031.md): the staged CB60 `bin/directional` was run on the plane three ways. With retention and a prefix, the sidecar is written (645 lines: 64 cells, 256 occurrences, 224 relations, 81 classes and vertices; byte-identical to the probe), and the run then exits 1 on DR4 as registered. Without retention, no sidecar; without a prefix, exit 0. The gate binaries are unchanged. Next `M6-DEFN-DIAG-RETAIN-GUI-LAYERS`.

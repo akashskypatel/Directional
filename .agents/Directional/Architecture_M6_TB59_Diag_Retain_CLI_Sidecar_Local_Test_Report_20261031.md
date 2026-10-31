@@ -2,6 +2,8 @@
 
 **Scope:** TB-EXEC, run locally at the user's direction. It runs the three registered CLI cases of RA-186.3 and §.5 against the staged CB60 binary. The five-binary gate is not re-run, because no gate binary changes (TB58 862/863 stands).
 
+> **Correction ([RA-187](Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md) §.1):** `Turn_Cadence.md` §2 requires every TB to run the full current gate, so this run alone does not satisfy the cadence for CB60. TB60 runs the full gate on a package built from CB61 source, which includes CB60.
+
 ## Frozen inputs
 
 - **Package:** CB60 `build/local-evidence/CB60/pkg.zip` (gitignored), ZIP `c867573b…`, root `SHA256SUMS` `c6de6427…` (11 entries, re-verified after extraction), source `a31f2d39f38b01b855c7c17193d124f9b7af2b14`, `bin/directional` `380131ab…`. [CB60 record](Architecture_M6_CB60_Diag_Retain_CLI_Sidecar_Code_Build_Record_20261031.md).

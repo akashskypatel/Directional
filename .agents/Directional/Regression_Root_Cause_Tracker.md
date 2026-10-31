@@ -1,3 +1,5 @@
+**RA-187 / DIAG-RETAIN GUI layers DEFN (2026-10-31; no new event):** [record](Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md). GUI-only change; TB59's missing full-gate run is corrected by TB60. Stable 66/17/49, debt 1.
+
 **TB59 CLI check runs (2026-10-31; registered outcome met, no new event):** [report](Architecture_M6_TB59_Diag_Retain_CLI_Sidecar_Local_Test_Report_20261031.md). CB60's three CLI runs match; DR4 reproduces as registered (pre-existing). No gate binary changed; TB58 862/863 stands. Stable 66/17/49, debt 1.
 
 **RA-186 / DIAG-RETAIN CLI sidecar DEFN (2026-10-31; no new event):** [record](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md). DR4 is a pre-existing CLI defect (the SurfaceCells product has no cut mesh, so the `--diagnostics-prefix` cut sidecars throw), not a regression: probe run B reproduces it without CB60. No gate binary changes. Stable 66/17/49, debt 1.

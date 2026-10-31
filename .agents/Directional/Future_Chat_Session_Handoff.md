@@ -34,23 +34,22 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-31 **CB60 + TB59 local** ([CB60 record](Architecture_M6_CB60_Diag_Retain_CLI_Sidecar_Code_Build_Record_20261031.md), [TB59 report](Architecture_M6_TB59_Diag_Retain_CLI_Sidecar_Local_Test_Report_20261031.md)). The exact RA-186.7 patch is built CLI-ON (source `a31f2d39…`, package `c867573b…`), and all three registered CLI runs match: the materialization sidecar is written only with retention and a prefix (64 cells, 256 occurrences, 224 relations, 81 classes and vertices). DR4 (pre-existing cut-sidecar failure) reproduces as registered. |
+| Currency | 2026-10-31 **RA-187 GUI layers DEFN** ([record](Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md); local). CB61 adds three read-only GUI layers over the CB59 adapter; it compiles and links GUI-ON. Correction: TB59 ran only the CLI cases, but every TB must run the full gate, so CB61 builds the gate targets with the CLI and GUI, and TB60 runs the 863-row gate plus the CLI cases. CB61 `afab7d5d…`. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted 2026-10-06 (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
 | Latest candidate or rejected evidence | **TB58 862/1 local candidate** (CB59 `39a77d2e…`, 863 gated; [report](Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Local_Test_Report_20261031.md)). The prior reviewed local candidate is TB54 856/1 (RA-181). **TB52 853/0** is the latest reviewed Linux candidate (RA-177). Last accepted CP2 491/491. |
 | Regression accounting and debt | Stable **66/17/49**, debt **1**, unchanged. 82 DEFERRED ([ledger v4](Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v4.tsv)): FIXTURE 47, PRODUCT 7, OPEN 23, RETIRE 5. RP-01 closed (RA-179); O15 discharged (RA-181); O15c is owned by P13. Linux CI confirmation of rows 854–859 is carried. Local mode: row 283 (O16) is pre-registered. |
-| Active boundary | **NEXT `M6-DEFN-DIAG-RETAIN-GUI-LAYERS`** (DEFN, R, local): GUI display layers over the CB59 adapter, probed in a GUI-ON build. CP2 491/491 last accepted; CP3 not accepted. |
+| Active boundary | **NEXT `M6-CB61-DIAG-RETAIN-GUI-LAYERS`** (CB, local): the exact RA-187.7 patch, built CLI-ON and GUI-ON (eight gate targets plus `directional_cli` and `directional_gui`). Then TB60-EXEC: the 863-row gate, the three CLI cases and a GUI link check. CP2 491/491 last accepted; CP3 not accepted. |
 
-## Mandatory next turn — `M6-DEFN-DIAG-RETAIN-GUI-LAYERS` (type DEFN; Review track, run locally) — EXACT NEXT
+## Mandatory next turn — `M6-CB61-DIAG-RETAIN-GUI-LAYERS` (type CB; run locally) — EXACT NEXT
 
-- **Authority:** [RA-186](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) §.2 and §.6; [RA-185](Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md) §.2.
-- **Scope:**
-  - Add an optional `MaterializationDiagnosticsDisplay` to `SurfaceCellDiagnosticsData` (`src/gui/GuiBackend.h`), fill it in `run_surface_cell_diagnostics` (`src/gui/GuiRemesh.cpp`) and draw layers in `src/gui/Main.cpp`: occurrence points coloured by A6 class, cell sides, relations and the A7 quads. Follow the A2a network layer (commit `bf518b003`).
-  - Probe in a GUI-ON configure (`-DDIRECTIONAL_BUILD_GUI=ON`; it builds polyscope). A GUI-ON build of the probe tree was started at the end of the CB60/TB59 session; check `scratchpad/gui61/status.txt` if it is still there, otherwise rebuild.
-  - The gate binaries do not change. Define the CB's GUI-ON build and its check (at least a clean compile and link of `directional_gui`).
+- **Authority:** [RA-187](Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md) §.4 and §.7.
+- **Patch:** the RA-187.7 block, extracted verbatim with a trailing newline. Its SHA-256 must be `afab7d5dc08ec1976b0ef36b22c34757b295f6b010753edf2b26fa7565983e4e`. Apply it with `git apply`; the numstat must be exactly `5 0` (`src/gui/GuiBackend.h`), `5 0` (`src/gui/GuiRemesh.cpp`) and `52 8` (`src/gui/Main.cpp`). The resulting SHA-256 values are in RA-187.4.
+- **Build:** commit; a clean worktree with the CI flags **plus `-DDIRECTIONAL_BUILD_CLI=ON -DDIRECTIONAL_BUILD_GUI=ON`**; build the eight gate targets, `directional_cli` and `directional_gui`; stage `pkg.zip` (standard eight-target layout) and `tools.zip` (`bin/directional`, `bin/directional-ui`) under `build/local-evidence/CB61/`. Haiku may stage them; verify the result. No native runs.
 - **Outcomes:**
-  - A frozen GUI CB → that CB, then its check.
-  - Not expressible as a read-only layer → `M6-PLAN-DIAG-RETAIN-GUI-STOP`.
+  - All exact → `M6-TB60-DIAG-RETAIN-GUI-FULL-GATE-EXEC` (gate `31c1360a…` 863, ledger v4 82, membership 945, row 283 the only pre-registered red; CLI checks with `build/local-evidence/TB59/tb59_check.sh`; GUI link check; a registered pass closes DIAG-RETAIN and leads to the P13 probe DEFN with no REV).
+  - Mismatch → `M6-PLAN-DIAG-RETAIN-GUI-STOP`.
+  - Infrastructure failure → `M6-CB61A-DIAG-RETAIN-GUI-ORCH`.
 
 ## Turn Sequence
 
@@ -58,15 +57,15 @@ Canonical types: CB, TB-EXEC, TB-REV, DEFN, PLAN (`turn_type_from_turn`). **I** 
 
 | Step | Canonical turn | Type / track | Condition / boundary |
 |---|---|---|---|
-| done | RP-01 closure (RA-174…RA-179) → O15 (RA-180/RA-181) → row 935 (RA-182, TB55) → O2 entry gate (RA-183, TB56) → DIAG-RETAIN snapshots (RA-184, CB58, TB57) → display adapter (RA-185, CB59, TB58) → CLI sidecar (RA-186, CB60, TB59) | — | History is in `CHANGELOG.md` and the records. Local baseline TB58 862/863: 863 gated, [ledger v4](Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v4.tsv) 82, membership 945. |
-| 1 — NEXT | `M6-DEFN-DIAG-RETAIN-GUI-LAYERS` → its GUI CB and check | DEFN / R; CB, TB-EXEC / local | GUI-ON build; the five-binary gate is unchanged (TB58). This closes DIAG-RETAIN. |
+| done | RP-01 closure (RA-174…RA-179) → O15 (RA-180/RA-181) → row 935 (RA-182, TB55) → O2 entry gate (RA-183, TB56) → DIAG-RETAIN snapshots (RA-184, CB58, TB57) → display adapter (RA-185, CB59, TB58) → CLI sidecar (RA-186, CB60, TB59; full-gate TB pending in TB60) → GUI layers DEFN (RA-187) | — | History is in `CHANGELOG.md` and the records. Local baseline TB58 862/863: 863 gated, [ledger v4](Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v4.tsv) 82, membership 945. |
+| 1 — NEXT | `M6-CB61-DIAG-RETAIN-GUI-LAYERS` → `M6-TB60-DIAG-RETAIN-GUI-FULL-GATE-EXEC` | CB, TB-EXEC / local | One CLI+GUI-ON build; TB60 = 863-row gate (862/863 expected) + CLI 11/11 + GUI link. Closes DIAG-RETAIN. |
 | 2 | P13 probe DEFN (Cylinder first, which passes locally in 179 s; O6; exact-atlas, route-step (O9) and continuation-width (O15c) checks) → retire CB → FIXTURE slices → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV | per slice | RA-174.3 CP3-exit conditions; each slice moves its rows from the ledger to the gate. |
 | carried | Linux CI confirmation (rows 854–859); DR1 (needs an A6/A7 rejection stimulus), DR3, DR2 and DR4 (→ M8-CP2); O2b (no-atlas API and legacy-branch retirement); O16 (row 283, LegacyInteger macOS); O15b; O15c | — | RA-179.4, RA-181.2, RA-183.2. |
 | rule | RA-167.6 naming; one CB per patch; no R1…Rn loops | — | Every gate run needs `MEMBERSHIP_LEDGER`. A DEFN must have a reachable exit (RA-172.1). Local mode: `tools/m6_cp3_local_gate_driver.py`; packages at default arithmetic (RA-180.5); row 283 (O16) is pre-registered. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-DEFN-DIAG-RETAIN-GUI-LAYERS** (DEFN, Review track, run locally). Read [RA-185](Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md) §.2, [RA-186](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) §.2 and the GUI files named in the mandatory next turn. Probe the layers in a GUI-ON build, then freeze one exact GUI CB with its build and check. Local gate baseline TB58 862/863 (membership 945). CP2 491/491 last accepted; stable 66/17/49, debt 1.
+`load_next`: **M6-CB61-DIAG-RETAIN-GUI-LAYERS** (CB, run locally). Read [RA-187](Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md) §.4, §.5 and §.7. Extract and verify the patch (`afab7d5d…`, numstats `5 0` / `5 0` / `52 8` and the three file SHAs), apply and commit it, build CLI-ON and GUI-ON (eight gate targets plus CLI and GUI), and stage `pkg.zip` and `tools.zip`. Next is TB60-EXEC (gate 863 `31c1360a…`, membership 945, row 283 the only expected red; CLI 11/11; GUI link). CP2 491/491 last accepted; stable 66/17/49, debt 1.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

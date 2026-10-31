@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-31 · M6-TB59-DIAG-RETAIN-CLI-EXEC — CB60 lands the [RA-186](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) CLI materialization sidecar; the [TB59 check runs](Architecture_M6_TB59_Diag_Retain_CLI_Sidecar_Local_Test_Report_20261031.md) match all three registered cases. The local gate baseline is TB58 862/863 (no gate binary changed). TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-DEFN-DIAG-RETAIN-GUI-LAYERS`.
+**Currency:** 2026-10-31 · M6-DEFN-DIAG-RETAIN-GUI-LAYERS — [RA-187](Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md) freezes CB61 (three read-only GUI layers over the CB59 adapter) and corrects the cadence: TB59 ran only CLI cases, so TB60 runs the full 863-row gate plus the CLI cases on one CLI+GUI-ON build. The local gate baseline is TB58 862/863. TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CB61-DIAG-RETAIN-GUI-LAYERS`.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Local gate TB58 **862/863** on CB59 (863 gated, 82 deferred, membership 945); row 283 (O16) is the only red. RP-01 is closed (RA-179), O15 discharged (RA-181), row 935 gated (RA-182), the O2 entry gate landed (RA-183) the A5–A7 diagnostic snapshots landed (RA-184) and their display adapter landed (RA-185). Linux reviewed candidate TB52 853/0. CP3 closure and the direct-production matrix are **not accepted**. selector497 frozen. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Prior Review authority:** [RA-186](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) (CLI sidecar; DR4), [RA-185](Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md) (DIAG-RETAIN display; DR2 → M8-CP2), [RA-184](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) (DIAG-RETAIN), [RA-183](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) (O2 gate; O2b, O16), [RA-181](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md) (O15 discharged; O15c) and [RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md) (RP-01 closed; local-mode rules). Implementers get only exact patches and manifests.
+**Prior Review authority:** [RA-187](Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md) (GUI layers; full-gate TB rule), [RA-186](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) (CLI sidecar; DR4), [RA-185](Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md) (DIAG-RETAIN display; DR2 → M8-CP2), [RA-184](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) (DIAG-RETAIN), [RA-183](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) (O2 gate; O2b, O16), [RA-181](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md) (O15 discharged; O15c) and [RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md) (RP-01 closed; local-mode rules). Implementers get only exact patches and manifests.
 
 **Test authority:** Local macOS: [TB58](Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Local_Test_Report_20261031.md) **862/863** on CB59 (membership 945), a pre-registered outcome. Linux: TB52 **853/0** (run 41100261157, RA-177). A Linux CI confirmation of rows 854–859 is carried. Not D0 production, CP3 closure or selector497 promotion.
 
@@ -104,7 +104,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-DEFN-DIAG-RETAIN-GUI-LAYERS` (GUI-ON build probe) → its GUI CB. Then the P13 probe DEFN (Cylinder; O6, O9, O15c checks).
+**Immediate:** CB61 (CLI+GUI-ON) → TB60 (863-row gate, CLI cases, GUI link) closes DIAG-RETAIN. Then the P13 probe DEFN (Cylinder; O6, O9, O15c checks).
 
 
 | Priority | Missing outcome | Owner |

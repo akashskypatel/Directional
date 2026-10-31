@@ -1,3 +1,7 @@
+## RA-187 — DIAG-RETAIN GUI layers (2026-10-31)
+
+- The GUI draws the A5–A7 snapshots as three read-only layers over the CB59 adapter (CB61). Every TB runs the full current gate, including after a CLI- or GUI-only CB; CB61 builds the gate targets with the CLI and GUI so TB60 covers CB60 and CB61.
+
 ## RA-186 — DIAG-RETAIN CLI sidecar (2026-10-31)
 
 - With `--diagnostics-prefix <p>` and retained snapshots, the CLI writes `<p>.materialization.txt` (the CB59 dump) **before** the produced-result check, so a rejected run keeps it (CB60). The GUI layers are a separate DEFN. **DR4** (the existing `--diagnostics-prefix` cut-mesh sidecars throw on every SurfaceCells product) is pre-existing and owned by M8-CP2.

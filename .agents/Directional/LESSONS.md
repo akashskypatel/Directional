@@ -401,3 +401,6 @@ This document records **reusable failure-derived engineering lessons**, not an e
   GUARD rows that would fail on any census RED; each cost a zero-execution CI turn (RA-171).
 - **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
   still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).
+- **A TB runs the full current gate even when its CB touches no gate binary.** A CLI- or GUI-only CB
+  still needs the gate run (`Turn_Cadence.md` §2). Build the gate targets in the same tree as the extra
+  targets and stage them as the standard package, so one TB covers both (RA-187).
