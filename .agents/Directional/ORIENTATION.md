@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-31 · M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS — [RA-183](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md): an entry gate rejects no-atlas NotApplicable inputs at `atlas-binding`, so legacy matching can no longer publish seed outputs (CB57 frozen). O2b and O16 (row 283) are carried. RP-01 closed, O15 discharged, row 935 gated. TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CP3-CB57-O2-NO-ATLAS-ENTRY-GATE`.
+**Currency:** 2026-10-31 · M6-CP3-TB56-O2-FULL-GATE-EXEC — the [TB56 local gate](Architecture_M6_CP3_TB56_O2_Full_Gate_Local_Test_Report_20261031.md) on CB57 gives **858/859**, with row 283 (O16) the only red; the O2 entry gate is landed; membership 941. RP-01, O15 and row 935 are closed. TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-DEFN-DIAG-RETAIN-A5-A7`.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,12 +104,12 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** CB57 (the exact RA-183.7 patch, local) → TB56-EXEC (859, membership 941, row 283 the only expected red). Then `M6-DEFN-DIAG-RETAIN-A5-A7` and the P13 probe DEFN (Cylinder; O6, O9, O15c checks). Local mode uses `tools/m6_cp3_local_gate_driver.py`.
+**Immediate:** `M6-DEFN-DIAG-RETAIN-A5-A7` (user-directed A5–A7 diagnostic snapshots; one-way, no read-back) → narrow CB+TB per product → CLI dump → GUI. Then the P13 probe DEFN (Cylinder; O6, O9, O15c checks). Local mode uses `tools/m6_cp3_local_gate_driver.py`.
 
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Land the O2 entry gate (CB57 → TB56); then DIAG-RETAIN and P13. RP-01, O15 and row 935 are closed; their Linux CI confirmation is carried. | CB57 → TB56 → DIAG-RETAIN DEFN |
+| **1** | DIAG-RETAIN (user-directed A5–A7 snapshots), then the P13 design-acceptance matrix. RP-01, O15, row 935 and O2 are done; their Linux CI confirmation is carried. | `M6-DEFN-DIAG-RETAIN-A5-A7` (R) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

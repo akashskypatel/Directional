@@ -1,3 +1,7 @@
+# 2026-10-31 — TB56 local gate on CB57: 858/859, O2 entry gate landed
+
+- [TB56 report](.agents/Directional/Architecture_M6_CP3_TB56_O2_Full_Gate_Local_Test_Report_20261031.md): CB57 package `2401b5d3…` (default arithmetic). 859 executed, **858 PASS**, row 283 the only red (pre-registered O16), membership 941, postflight true. Row 859 (`ra183:o2-no-atlas-not-applicable`) passes. Result `9e138c01…`; the Haiku audit is clean. The pre-registered outcome was met, so there is no separate REV. Next `M6-DEFN-DIAG-RETAIN-A5-A7`.
+
 # 2026-10-31 — CB57 O2 no-atlas entry gate built locally
 
 - [CB57 record](.agents/Directional/Architecture_M6_CP3_CB57_O2_No_Atlas_Entry_Gate_Code_Build_Record_20261031.md): the RA-183.7 patch applied exactly (`35eb2fbc…`, `13 0` / `63 0`) at source `fb4f637b…`. Eight targets were built at default arithmetic; the package `2401b5d3…` (18 entries) was staged by Haiku and re-verified. No native tests. Next `M6-CP3-TB56-O2-FULL-GATE-EXEC`.
