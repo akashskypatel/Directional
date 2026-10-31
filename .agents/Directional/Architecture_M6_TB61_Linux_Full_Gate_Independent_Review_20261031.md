@@ -19,6 +19,10 @@
 
 Stable **66 events / 17 categories / 49 recurrences; debt 1**, unchanged. Latest accepted **CP2 491/491**. Latest candidate **TB61 Linux 863/863**, now independently verified as an eight-target gate, but **not CP3 accepted**. Deferred ledger 82; no selector497 promotion; PR #8 remains draft. DR1/DR3 remain open, DR2/DR4 remain M8-CP2; O16 remains macOS-specific. No product, source, test, fixture, benchmark, build or selector mutations and no runtime executions were made in this Review. Exact source snapshot control-trigger cleanup remains a separate operational requirement.
 
+### Remote-history boundary corroboration (2026-10-31)
+
+GitHub compared the real rewrite baseline `8b7299b43764a6ba3444e5bc774a2f1b65e99731` to this branch: the baseline is the merge base and an ancestor (2,824 commits ahead, zero behind at the checked head). The protected section headings are preserved exactly in the handoff (4/4), ORIENTATION (1/1), and regression tracker (0/0). Comparing snapshot `b9428d75e6a9587986a6d83281606741ed9c283a` to the checked head shows only documentation, STATUS, dispatcher request and snapshot-trigger removal; no source, test, benchmark, build, or selector changes. These are independent remote-history checks, **not** a claim that `review_check.py boundary` was executed in a full-history checkout. Its worktree-local checks remain unexecuted.
+
 ## Review closeout
 
 | Duty | Answer |
@@ -38,6 +42,6 @@ Stable **66 events / 17 categories / 49 recurrences; debt 1**, unchanged. Latest
 | Consolidation under CLEAN_UP_POLICY | n/a — current report retained as active evidence, no historical documents deleted |
 | Successor frozen | **Pending authority:** Linux CLI/GUI compile-and-verification before P13 is required but the handoff supplies no exact authorized ID. Do not begin P13 |
 | Turn boundary held | Yes: only offline analysis, artifact hash verification and documentation preparation; no Directional runtime |
-| review_check.py boundary | **FAIL in synthetic Git baseline**: historical durable rewrite baseline `8b7299b43` is absent, so three durable-origin ancestry checks cannot be proved locally. All selector hashes passed. This is not a product failure and must be rechecked against real Git history by authorized CI/Review |
+| review_check.py boundary | **Not rerun in a full-history Git checkout**: synthetic snapshot lacked the rewrite baseline; real GitHub history now establishes ancestry and preservation of all rewrite-baseline protected headings. No source/test/selector paths changed since the reviewed source snapshot. Worktree-local checks remain unexecuted; no full script PASS is claimed |
 | `STATUS` lifecycle maintained | Entry published; final beacon to be reconciled after patch application/closeout |
 | Pushed to origin, branch in sync | Exact five-path documentation patch pushed at `44ce85854f851346626e126494ec0d50c57de20d` and verified by GitHub compare; no local real-history `git status -sb` synchronization claim |
