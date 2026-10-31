@@ -1,3 +1,7 @@
+# 2026-10-31 — CB56 row 935 display witness built locally
+
+- [CB56 record](.agents/Directional/Architecture_M6_CP3_CB56_API_Display_Vertex_Stop_Witness_Code_Build_Record_20261031.md): the RA-182.7 patch applied exactly (`ffb723f4…`, `46 8`, file `f3254015…`) at source `567d1828…`. Eight targets were built at default arithmetic; the package `26d88d20…` (18 entries) was staged by Haiku and re-verified. No native tests. Next `M6-CP3-TB55-API-DISPLAY-FULL-GATE-EXEC`.
+
 # 2026-10-31 — RA-182 row 935 display witness defined
 
 - [RA-182](.agents/Directional/Architecture_M6_CP3_DEFN_API_Display_Vertex_Stop_Witness_20261031.md) (local, bounded probes; a Sonnet subagent traced the locus paths). An 8-triangle fan with a +½ singularity is rejected by A3 with `InvalidSingularityMetadata` at source vertex 0, and the display shows it. With the CB56 change, row 935 passes and the API binary passes 23/23 on the default and FMA-free builds. Frozen: CB56 `ffb723f4…` (`46 8`); TB55 858 `eb508378…`; ledger v4 82 `36241caa…`; membership 940. Next `M6-CP3-CB56-API-DISPLAY-VERTEX-STOP-WITNESS`.
