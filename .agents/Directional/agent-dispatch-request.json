@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-p13-review-docs-apply-20261031-v1",
+  "request_id": "m6-cb64-chart-binding-apply-20261031-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-p13-review-docs-apply-20261031-v1",
-  "file_id": "1JflNg_9v3i0ohDDje93V-TFnuYUwITKQ",
-  "patch_sha256": "b34fa5d17bc7321a778e645deb9188fd1f94e4fc9ec3735cf490c6214f7f9e67",
-  "base_sha": "62306f050dd3b7decb25dfaddbbd2ae1a286dfac",
+  "mailbox_key": "m6-cb64-chart-binding-apply-20261031-v1",
+  "file_id": "1IN1fSfj9ovc31R398SXtwBusBmkXkCMc",
+  "patch_sha256": "3e7f1cf1884eba033452505faa74af3bf6a54dc1824ad1b0e28570d09105c2a0",
+  "base_sha": "28d97499d12d7664034eae2e60c5f8c599596819",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): freeze P13 design review and bounded probe handoff",
+  "commit_message": "fix(surface-cells): cache source chart binding after build validation",
   "retention_days": 14
 }
