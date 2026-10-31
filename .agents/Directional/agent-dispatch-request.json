@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-tb62-doc-closeout-drive-apply-20261031-v2",
+  "request_id": "m6-p13-review-docs-apply-20261031-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-tb62-doc-closeout-drive-apply-20261031-v2",
-  "file_id": "1T9qo4PGTp_5V7kd4U5LSQA58d2y7RtMp",
-  "patch_sha256": "bd06b03c71f3a74b437311919e6b8b0751ccb872aec375a5c6145360612b881c",
-  "base_sha": "f99ba50f2e0e91c46a752dd95559c16c460f3b76",
+  "mailbox_key": "m6-p13-review-docs-apply-20261031-v1",
+  "file_id": "1JflNg_9v3i0ohDDje93V-TFnuYUwITKQ",
+  "patch_sha256": "b34fa5d17bc7321a778e645deb9188fd1f94e4fc9ec3735cf490c6214f7f9e67",
+  "base_sha": "62306f050dd3b7decb25dfaddbbd2ae1a286dfac",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): verify TB62 Linux full gate and hand off P13",
+  "commit_message": "docs(directional): freeze P13 design review and bounded probe handoff",
   "retention_days": 14
 }
