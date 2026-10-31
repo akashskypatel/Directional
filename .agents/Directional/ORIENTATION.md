@@ -2,12 +2,8 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-31 · `M6-CP3-DEFN-P13-PROBE-ADJUDICATION` ([RA-188](Architecture_M6_CP3_DEFN_P13_Probe_Adjudication_20261031.md)). TB62 Linux **863/863** (membership 945) is the latest gate; macOS O16 is separate. Probes at current source split the three deferred rows by cause:
-- Cylinder: PASS, but slow because of O(F) per-query source re-validation. CB64 makes it 7.8 s.
-- Vase: O15c fires, with the A4 exact width growing about 200 bits per step.
-- BunnyRandom: an Amendment 15 gap for tip–tip single-edge slits.
-
-**Next:** `M6-CP3-CB64-P13-CHART-BINDING-CACHE` → `M6-CP3-TB63-P13-CENSUS-FULL-GATE-EXEC`. Standing state: CP2 491/491 last accepted; CP3 and selector497 unpromoted; stable 66/17/49, debt 1.
+**Currency:** 2026-10-31 · `M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH` ([RA-189](Architecture_M6_CP3_DEFN_P13_O15C_Continuation_Width_Review_20261031.md)). TB63 Linux immutable gate **863/863**, 82 deferred; separate P13 census Cylinder PASS, Vase exact A4 magnitude RED, BunnyRandom barrier-slit A3 RED. **Prospective** next gate 864/81 (Cylinder appended); no executed 864 gate.
+**Next:** `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT` (Code + Build only). Standing state: CP2 491/491 last accepted; CP3 and selector497 not promoted; stable 66/17/49, debt 1.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -52,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB62 Linux **863/863** independently checked on ten targets (863 gated, 82 deferred, membership 945); CB63 CLI and GUI GMP links verified, GUI not launched; TB60 macOS O16 row 283 carried. RP-01 is closed (RA-179), O15 discharged (RA-181), row 935 gated (RA-182), the O2 entry gate landed (RA-183) and DIAG-RETAIN is closed (RA-184…RA-187: snapshots, display adapter, CLI sidecar, GUI layers). Linux reviewed candidate TB62 863/863 (CLI 11/11 report-supported, GUI linkage-only). CP3 closure and the direct-production matrix are **not accepted**. selector497 frozen. |
+| **M6-CP3 — active** | TB63 Linux eight-target **863/863** independently checked (863 gated, 82 deferred, membership 945), P13 Cylinder PASS; candidate next gate 864/81 not executed; CB63 CLI and GUI GMP links verified, GUI not launched; TB60 macOS O16 row 283 carried. RP-01 is closed (RA-179), O15 discharged (RA-181), row 935 gated (RA-182), the O2 entry gate landed (RA-183) and DIAG-RETAIN is closed (RA-184…RA-187: snapshots, display adapter, CLI sidecar, GUI layers). Linux reviewed candidate TB62 863/863 (CLI 11/11 report-supported, GUI linkage-only). CP3 closure and the direct-production matrix are **not accepted**. selector497 frozen. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 **Prior Review authority:** [RA-187](Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md) (GUI layers; full-gate TB rule), [RA-186](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) (CLI sidecar; DR4), [RA-185](Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md) (DIAG-RETAIN display; DR2 → M8-CP2), [RA-184](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) (DIAG-RETAIN), [RA-183](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) (O2 gate; O2b, O16), [RA-181](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md) (O15 discharged; O15c) and [RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md) (RP-01 closed; local-mode rules). Implementers get only exact patches and manifests.
@@ -109,21 +105,23 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** RA-188 splits P13 into three independent slices.
-- **P13-a, Cylinder:** a performance defect, fixed by CB64 and confirmed by TB63's census.
-- **P13-b, Vase:** O15c. Exact A4 continuation width grows linearly with trace length, so a fixed bound admits about 20 faces per trace. This is architectural and goes to a Review DEFN.
+**Immediate:** RA-188 splits P13 into three independent slices; RA-189 freezes the bounded A2a candidate and Cylinder promotion for CB65/TB64.
+- **P13-a, Cylinder:** a performance defect, fixed by CB64 and confirmed by TB63's census; prospectively promoted as gate row 864.
+- **P13-b, Vase:** O15c. Exact A4 width grows with face count; RA-189 defines a bounded, versioned dyadic *new output* rather than claiming equivalence to the exact integral curve. CB65 must prove safety; no Vase direct success yet.
 - **P13-c, BunnyRandom:** DESIGN Amendment 15.3 cannot slit a tip–tip single-edge barrier arc. It goes to a Review DEFN.
 
 macOS O16 stays separate.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | P13 matrix 6/6. Order: CB64 → TB63 (gate plus census); then bounded A4 continuation (P13-b) and the Amendment 15 slit rule (P13-c), each with its own CB→TB; then a re-census, O6/O9 where reached, and Cylinder promoted. | M6-CP3, `M6-CP3-CB64-P13-CHART-BINDING-CACHE` next |
+| **1** | P13 matrix 6/6. Order: CB64 → TB63 (done); next CB65 → TB64 bounded dyadic A4 continuation (P13-b) and the Amendment 15 slit rule (P13-c), each with its own CB→TB; then a re-census, O6/O9 where reached, and Cylinder promoted. | M6-CP3, `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT` next |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
+
+- **Exact local arithmetic versus unbounded carried rational width:** a finite bit cap alone cannot bound face-count growth; RA-189 defines a new canonical dyadic trace-exit geometry with exact predicate checks. It is not an exact reconstruction of the original integral curve, and no direct Vase success is claimed.
 
 - **Platform split:** a result that differs between builds is a determinism defect; compute the exact answer before classifying, and change per-file flags only through the build system (RA-176, RA-179).
 - **Masked or unconsumed stimulus:** a stronger earlier guard, or a mutation of data that the checked path never reads, makes a negative vacuous; confirm that the intended guard actually fires (RA-169, RA-178, TB35-REV).
