@@ -34,32 +34,32 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-31 **TB62 Linux ten-target CLI/GUI full gate 863/863 independently reconciled; P13 review-first DEFN next**. [TB62 report](Architecture_M6_TB62_Linux_CLI_GUI_Full_Gate_Execution_Report_20261031.md). No CP3 acceptance. |
+| Currency | 2026-10-31 **TB62 Linux ten-target 863/863 independently reconciled; P13 review completed at planning scope; CB64 probe-registration next**. [TB62 report](Architecture_M6_TB62_Linux_CLI_GUI_Full_Gate_Execution_Report_20261031.md). No CP3 acceptance. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06, unchanged. TB62 is a verified Linux candidate, not selector497/CP3 acceptance. |
 | Latest candidate | **TB62 Linux ten-target 863/863** [run 41205693716](https://github.com/akashskypatel/Directional/actions/runs/41205693716), result `13046191343` ZIP SHA-256 `95a1b5f87b711e4a9587210fce9ff474623f078726e4c416f47ce2f4d0c5c303`; exact CB63 package `13043004468` source `f6113c4e…`; 11/11 CLI, GUI binary/link checked (no GUI launch). TB61 prior eight-target 863/863; macOS TB60 862/863 with separately carried O16 row283. |
 | Regression accounting and debt | Stable **66/17/49**, debt **1**, unchanged; deferred ledger v4 82 (47 FIXTURE, 7 PRODUCT, 23 OPEN, 5 RETIRE), membership 945; zero new Linux RED. Selector497 not promoted. DR1/DR3 open, DR2/DR4 → M8-CP2, macOS O16 remains. |
-| Active boundary | **TB62 completed at its planned scope; NEXT `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE`** (Review/Definition). First independently adjudicate TB62 Linux platform coverage limits and carried O16, then bounded Cylinder-first P13 probes only under RA-174.3. No GUI appearance claim, no CP3 acceptance, no selector promotion. |
+| Active boundary | **TB62 independently audited; P13 DEFN separates runtime probes under mandatory turn policy. NEXT `M6-CP3-CB64-P13-ARTIFACT-PROBE-REGISTRATION`.** No GUI appearance claim, no CP3 acceptance, no selector promotion. |
 
-## Mandatory next turn — `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB64-P13-ARTIFACT-PROBE-REGISTRATION` — EXACT NEXT
 
-- **Type / owner:** DEFN / Review (probe-capable), already authorized by the conditional handoff after TB62, now that exact ten-target Linux compilation and full gate were independently verified.
-- **Objective:** review the scope and limitations of TB62 evidence first (including Linux-only CLI/GUI linkage, known expected DR4 CLI failure and separately carried macOS O16); then adjudicate the P13 design-acceptance matrix, starting with Cylinder and covering deferred rows 360 BunnyRandom, 362 Cylinder, 365 Vase, O6, exact atlas, O9 and O15c.
-- **Read before work:** [TB62 execution report](Architecture_M6_TB62_Linux_CLI_GUI_Full_Gate_Execution_Report_20261031.md), [TB61 independent review](Architecture_M6_TB61_Linux_Full_Gate_Independent_Review_20261031.md), [TB62 frozen plan](Architecture_M6_TB62_Linux_CLI_GUI_Full_Gate_Execution_Plan_20261031.md), RA-174.3 and v4 deferred ledger, `REVIEW_TURN_POLICY.md`, `Turn_Cadence.md`, `ORIENTATION.md`, `ROADMAP.md`, `TODO.md`.
-- **In scope:** independently derived evidence and bounded (300-second per-fixture) P13 review probes; decisions with explicit falsifiers and each deferred identity's disposition. **Out of scope:** implementation/CB changes, test/fixture/selector changes, GUI appearance acceptance without on-screen evidence, macOS O16 closure from Linux runs, selector497 or CP3 promotion.
-- **Success evidence:** Review/Definition record deriving true P13 reachability and ownership, non-vacuity, exact matrix entries and correction plan; explicit carrying of unresolved prerequisites, correct full Review closeout.
-- **On success:** `UNKNOWN` until the review freezes its authorized next exact CB/DEFN turn. **On failure:** `UNKNOWN`; retain evidence and stop rather than speculate.
+- **Type:** Code + Build, no Directional runtime. [P13 decision](Architecture_M6_CP3_DEFN_P13_Design_Acceptance_Decision_20261031.md), [P13 immutable audit](Architecture_M6_CP3_DEFN_P13_Design_Acceptance_Review_Working_Evidence_20261031.md).
+- **Objective:** register independently observable, 300-second-max P13 diagnostic identities Cylinder `offgate:362`, BunnyRandom `offgate:360`, Vase `offgate:365` in a separate `OBSERVE` manifest, preserving the existing 863-case manifest and v4 ledger 82 byte-for-byte. Adapt the artifact-only diagnostic harness minimally for the bounded timeout, without changing existing 600-second gate execution, source semantic behavior, or result classification. Verify fixed identity/order, non-vacuity, resource/timeout evidence and immutable package/environment. Observe-only result never promotes deferred tests. Carry O6, RA-176 exact atlas, O9 (>1 produced open-rail route) and O15c (>2048 exact-direction bits) falsifiers explicitly.
+- **Compilation:** if Code+Build compiles, it must use the durable GMP/GMPXX reusable compile and emit exact metadata; execute no Directional binaries, GTest or benchmark. Reuse CB63 immutable package `13043004468` only where the independent TB executor can prove exact source compatibility.
+- **Successor after successful Code+Build:** `M6-CP3-TB63-P13-CYLINDER-FIRST-DIAGNOSTIC-EXEC` — separate artifact-only turn must execute the **full 863-case frozen gate** with v4 membership 945, and the P13 three-row `OBSERVE` census separately. Stop at any missing gate, wrong hash/identity, stale expected output, 300s timeout classified as complete PASS, or unauthorized runtime repair. Any semantic RED routes through independent Review + Plan.
+- **Out of scope:** semantic producer change, tests/fixtures/accepted selector edits without separate authority; GUI visual acceptance, macOS O16 closure, selector497 or CP3 promotion.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — NEXT | `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE` | Review-first platform evidence adjudication; bounded Cylinder-first P13 probes, no product mutation |
-| 2 — conditional | `UNKNOWN` | Next source/fixture/CB work only after DEFN adjudicates exact rows and freezes falsifiers |
+| 1 — NEXT | `M6-CP3-CB64-P13-ARTIFACT-PROBE-REGISTRATION` | Compile-only registration of bounded observation harness; immutable gate unchanged |
+| 2 — conditional | `M6-CP3-TB63-P13-CYLINDER-FIRST-DIAGNOSTIC-EXEC` | Full frozen gate plus distinct P13 observations; no rebuild, no promotion |
+| 3 — conditional | `UNKNOWN` | Independent result review decides corrective producer plan; no speculative CB |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE** (Review/Definition; do not default to Code + Build). Read `ORIENTATION.md`, `ROADMAP.md`, this handoff, TB62 report, TB61 independent review, RA-174.3, P13 v4 deferred ledger, `Regression_Root_Cause_Tracker.md`, and `TODO.md` after mandatory policies. Fixed evidence: CB63 ten-target package `13043004468` source `f6113c4eb0fbf6a02350eee2d37e7e4dab821429` SHA-256 `14b7589aba85ed1fa0fdf62d233007293150491d559820dc2b24b8e83df27462`; TB62 run 41205693716 result artifact 13046191343 SHA-256 `95a1b5f87b711e4a9587210fce9ff474623f078726e4c416f47ce2f4d0c5c303`; frozen 863-case manifest SHA-256 `31c1360ab5738cab682e628304914af4a3f7ad4dd077a8f688e79536bf371341`, ledger v4 82 SHA-256 `36241caa61d3d27aa062fee05cf3af12a62a81a5a11a42e3ea75e46b0590139d`. 863/863 gated PASS, membership945, postflight true, Linux CLI 11/11, GUI Linux GMP links checked but no GUI launch, macOS O16 remains. Accepted CP2 491/491, stable 66/17/49 debt1, selector497 unpromoted. The TB62 test/benchmark gate does not itself perform P13 review probes.
+`load_next`: **M6-CP3-CB64-P13-ARTIFACT-PROBE-REGISTRATION** (Code + Build; no runtime). Read P13 decision and immutable audit, current `ORIENTATION.md`, `ROADMAP.md`, `TODO.md`, `Architecture_M6_Frozen_Definitions.md` RA-174/176/178/181, `REVIEW_TURN_POLICY.md`, `Turn_Cadence.md`, `GitHub_Workflow_Policy.md`, `GMP_COMPILE_POLICY.md`, and the frozen TB62 manifest/ledger. Fixed immutable CB63 package `13043004468` source `f6113c4eb0fbf6a02350eee2d37e7e4dab821429` and SHA-256 `14b7589aba85ed1fa0fdf62d233007293150491d559820dc2b24b8e83df27462`; TB62 result `13046191343` SHA-256 `95a1b5f87b711e4a9587210fce9ff474623f078726e4c416f47ce2f4d0c5c303`; 863 manifest `31c1360ab5738cab682e628304914af4a3f7ad4dd077a8f688e79536bf371341`, 82 deferred v4 `36241caa61d3d27aa062fee05cf3af12a62a81a5a11a42e3ea75e46b0590139d`. P13 not runtime-proved; CP2 491/491 accepted; stable 66/17/49 debt1, selector497 unpromoted. O16 macOS, DR1/DR3, DR2/DR4 remain carried.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-31 · M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-REV — independent review verifies the Linux eight-target TB61 gate **863/863 PASS**, membership 945, with rows 854–863 all green; row 283 is Linux PASS but remains macOS O16 RED. **Linux CLI/GUI compilation is not verified** because CB62 built with both target switches OFF. The reviewed gate is not CP3 acceptance: CP2 491/491 remains last accepted; stable 66/17/49, debt 1. Owner-authorized next `M6-CB63-DIAG-RETAIN-LINUX-CLI-GUI-COMPILE` compiles both Linux CLI/GUI; TB62 full-gate verification follows before P13. [Review](Architecture_M6_TB61_Linux_Full_Gate_Independent_Review_20261031.md).
+**Currency:** 2026-10-31 · `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE` review: independent Linux CB63 10-target GMP/GMPXX source/package audit (30/30), TB62 immutable full gate **863/863** (945 membership), CLI 11/11 report-supported, GUI linkage not appearance; macOS O16 remains separately open. Three design-acceptance rows remain deferred: Cylinder, BunnyRandom and Vase. Review policy requires P13 runtime probes to be executed in a distinct CB→TB sequence; first successor `M6-CP3-CB64-P13-ARTIFACT-PROBE-REGISTRATION`. CP2 491/491 last accepted; CP3/selector497 unpromoted, stable 66/17/49 debt1. [Decision](Architecture_M6_CP3_DEFN_P13_Design_Acceptance_Decision_20261031.md).
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -47,12 +47,12 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB61 Linux **863/863** independently checked on eight targets (863 gated, 82 deferred, membership 945); TB60 macOS 862/863 differs only at row 283 (O16). RP-01 is closed (RA-179), O15 discharged (RA-181), row 935 gated (RA-182), the O2 entry gate landed (RA-183) and DIAG-RETAIN is closed (RA-184…RA-187: snapshots, display adapter, CLI sidecar, GUI layers). Linux reviewed candidate TB61 863/863 (eight targets only; Linux CLI/GUI compile outstanding). CP3 closure and the direct-production matrix are **not accepted**. selector497 frozen. |
+| **M6-CP3 — active** | TB62 Linux **863/863** independently checked on ten targets (863 gated, 82 deferred, membership 945); CB63 CLI and GUI GMP links verified, GUI not launched; TB60 macOS O16 row 283 carried. RP-01 is closed (RA-179), O15 discharged (RA-181), row 935 gated (RA-182), the O2 entry gate landed (RA-183) and DIAG-RETAIN is closed (RA-184…RA-187: snapshots, display adapter, CLI sidecar, GUI layers). Linux reviewed candidate TB62 863/863 (CLI 11/11 report-supported, GUI linkage-only). CP3 closure and the direct-production matrix are **not accepted**. selector497 frozen. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 **Prior Review authority:** [RA-187](Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md) (GUI layers; full-gate TB rule), [RA-186](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) (CLI sidecar; DR4), [RA-185](Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md) (DIAG-RETAIN display; DR2 → M8-CP2), [RA-184](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) (DIAG-RETAIN), [RA-183](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) (O2 gate; O2b, O16), [RA-181](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md) (O15 discharged; O15c) and [RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md) (RP-01 closed; local-mode rules). Implementers get only exact patches and manifests.
 
-**Test authority:** Local macOS: [TB60](Architecture_M6_TB60_Diag_Retain_GUI_Full_Gate_Local_Test_Report_20261031.md) **862/863** on CB61 (membership 945), a pre-registered outcome. Linux: TB61 **863/863** independently verified on eight targets (run 41182654107); Linux CLI/GUI compilation remains unverified. Not D0 production, CP3 closure or selector497 promotion.
+**Test authority:** Local macOS: [TB60](Architecture_M6_TB60_Diag_Retain_GUI_Full_Gate_Local_Test_Report_20261031.md) **862/863** on CB61 (membership 945), a pre-registered outcome. Linux: TB62 **863/863** independently verified on ten targets (run 41205693716); CLI/GUI GMP compilation/linkage verified; on-screen GUI not tested. Not D0 production, CP3 closure or selector497 promotion.
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md) and [regression tracker](Regression_Root_Cause_Tracker.md).
 
@@ -104,12 +104,11 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** The CB62/TB61 Linux eight-target gate is independently verified 863/863. Linux CLI and GUI were not built (`DIRECTIONAL_BUILD_CLI=OFF`, `DIRECTIONAL_BUILD_GUI=OFF`); execute the authorized `M6-CB63-DIAG-RETAIN-LINUX-CLI-GUI-COMPILE` Linux compile/link and then `M6-TB62-DIAG-RETAIN-LINUX-CLI-GUI-FULL-GATE-EXEC` verification before `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE`. Carry macOS O16 row 283 unchanged.
-
+**Immediate:** Linux CB63/TB62 ten-target compile and full gate are verified; P13 still has Cylinder (historical 600s timeout), BunnyRandom (A3 cut Euler mismatch) and Vase (historical 600s timeout). By mandatory runtime-free Review/Definition policy, the P13 decision first registers a separate 300s Cylinder-first artifact-only diagnostic through CB64 then TB63 without changing the full gate; macOS O16 stays separate.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Complete the Linux CLI/GUI compile/link coverage absent from CB62 and corresponding full-gate verification; then the P13 design-acceptance probe. DIAG-RETAIN features are landed and Linux eight-target gate is verified. | M6-CP3, `M6-CB63-DIAG-RETAIN-LINUX-CLI-GUI-COMPILE` authorized |
+| **1** | P13 bounded Cylinder-first diagnostics and direct-production proof: keep 863-case gate and 82 deferred membership frozen; measure Cylinder, BunnyRandom and Vase independently, with O6/exact atlas/O9/O15c falsifiers. Linux CLI/GUI compile and gate are done. | M6-CP3, `M6-CP3-CB64-P13-ARTIFACT-PROBE-REGISTRATION` next |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
