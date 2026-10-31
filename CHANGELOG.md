@@ -1,3 +1,11 @@
+# 2026-10-31 — TB58 local gate on CB59: 862/863, display adapter landed
+
+- [TB58 report](.agents/Directional/Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Local_Test_Report_20261031.md): CB59 package `1bd8c0ba…` (default arithmetic). 863 executed, **862 PASS**, row 283 the only red (pre-registered O16), membership 945, postflight true. Rows 862–863 (`ra185:materialization-display-*`) pass. Result `647bd326…`; the Haiku audit is clean. No separate REV. Next `M6-DEFN-DIAG-RETAIN-CLI-GUI-WIRING`.
+
+# 2026-10-31 — CB59 materialization display adapter built locally
+
+- [CB59 record](.agents/Directional/Architecture_M6_CB59_Diag_Retain_Materialization_Display_Code_Build_Record_20261031.md): the RA-185.7 patch applied exactly (`78108421…`; `1 0` / `1 0` / `65 0` / `167 0` / `188 0`) at source `39a77d2e…`. Eight targets were built at default arithmetic; the package `1bd8c0ba…` (18 entries) was staged by Haiku and re-verified. No native tests. Next `M6-TB58-DIAG-RETAIN-DISPLAY-FULL-GATE-EXEC`.
+
 # 2026-10-31 — RA-185 DIAG-RETAIN display adapter defined
 
 - [RA-185](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md) (local; Sonnet trace). The CLI never reads the snapshots and neither the CLI nor the GUI builds under the gate's flags, so CB59 adds one polyscope-free adapter in `directional_pipeline`: display arrays (A5 occurrences, sides and relations; A6 class per occurrence; A7 vertices and quads) and a line-oriented text dump, both by const reference. Two new tests in the API binary (25/25); membership 945. CB59 `78108421…`; TB58 863 `31c1360a…`. CLI/GUI wiring → `M6-DEFN-DIAG-RETAIN-CLI-GUI-WIRING`; DR2 → M8-CP2. Next `M6-CB59-DIAG-RETAIN-MATERIALIZATION-DISPLAY`.

@@ -1,3 +1,5 @@
+**TB58 local gate (2026-10-31; candidate, pre-registered outcome met, no new event):** [report](Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Local_Test_Report_20261031.md). CB59: 862/863, with row 283 (O16) the only red; rows 862–863 (display adapter guards) pass; membership 945. Stable 66/17/49, debt 1.
+
 **RA-185 / DIAG-RETAIN display DEFN (2026-10-31; no new event):** [record](Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md). Additive adapter only; the API binary gives 25/25 with the two new tests; membership 945. Stable 66/17/49, debt 1.
 
 **TB57 local gate (2026-10-31; candidate, pre-registered outcome met, no new event):** [report](Architecture_M6_TB57_Diag_Retain_Full_Gate_Local_Test_Report_20261031.md). CB58: 860/861, with row 283 (O16) the only red; rows 860–861 (A5–A7 snapshot guards) pass; membership 943. Stable 66/17/49, debt 1.
