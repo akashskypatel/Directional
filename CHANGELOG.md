@@ -1,3 +1,7 @@
+# 2026-10-31 — CB57 O2 no-atlas entry gate built locally
+
+- [CB57 record](.agents/Directional/Architecture_M6_CP3_CB57_O2_No_Atlas_Entry_Gate_Code_Build_Record_20261031.md): the RA-183.7 patch applied exactly (`35eb2fbc…`, `13 0` / `63 0`) at source `fb4f637b…`. Eight targets were built at default arithmetic; the package `2401b5d3…` (18 entries) was staged by Haiku and re-verified. No native tests. Next `M6-CP3-TB56-O2-FULL-GATE-EXEC`.
+
 # 2026-10-31 — RA-183 O2 no-atlas entry gate defined
 
 - [RA-183](.agents/Directional/Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) (local; Sonnet inventory, Haiku comparison). Production always supplies an atlas. Without one, closed feature-free inputs went NotApplicable and the seed fallback published legacy-matching outputs (D2; probes: tetrahedron, octahedron, cube). CB57 (`35eb2fbc…`) rejects that case at `atlas-binding`. The new test fails before and passes after; the 858-row gate and 82 deferred verdicts are unchanged. D3 and the legacy detail branches → O2b; row 283 → O16 (LegacyInteger backend). TB56 859 `c8437d61…`, membership 941. Next `M6-CP3-CB57-O2-NO-ATLAS-ENTRY-GATE`.

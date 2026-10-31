@@ -34,22 +34,22 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-31 **RA-183 O2 DEFN** ([record](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md); local). Production always supplies an atlas. Without one, a closed feature-free input (tetrahedron, octahedron, cube) goes NotApplicable, and the seed fallback publishes outputs decided by legacy matching (D2). Ruling: one entry gate rejects that case at `atlas-binding` (CB57 `35eb2fbc…`). Its failing-first test fails before and passes after; the gate and deferred verdicts are unchanged. D3 and the legacy detail branches → **O2b**; row 283 → **O16** (LegacyInteger backend, not O2). TB56 is frozen: 859 rows, membership 941. |
+| Currency | 2026-10-31 **CB57 built locally** ([record](Architecture_M6_CP3_CB57_O2_No_Atlas_Entry_Gate_Code_Build_Record_20261031.md)): the exact RA-183.7 entry-gate patch at source `fb4f637b…`, package `2401b5d3…`. Prior: RA-183 (O2 entry gate; O2b and O16 carried); RA-182/TB55 (row 935 gated); RA-181 (O15 discharged); RA-179 (RP-01 closed). |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted 2026-10-06 (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
 | Latest candidate or rejected evidence | **TB55 857/1 local candidate** (CB56 `567d1828…`, 858 gated, pre-registered outcome met; [report](Architecture_M6_CP3_TB55_API_Display_Full_Gate_Local_Test_Report_20261031.md)). The prior reviewed local candidate is TB54 856/1 (RA-181). **TB52 853/0** is the latest reviewed Linux candidate (RA-177). Last accepted CP2 491/491. |
 | Regression accounting and debt | Stable **66/17/49**, debt **1**, unchanged. 82 DEFERRED ([ledger v4](Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v4.tsv)): FIXTURE 47, PRODUCT 7, OPEN 23, RETIRE 5. RP-01 closed (RA-179); O15 discharged (RA-181); O15c is owned by P13. Linux CI confirmation of rows 854–858 is carried. Local mode: row 283 (O2) is pre-registered. |
-| Active boundary | **NEXT `M6-CP3-CB57-O2-NO-ATLAS-ENTRY-GATE`** (CB, local): the exact RA-183.7 patch, built at default arithmetic. Then TB56-EXEC (859, ledger v4 82, membership 941, row 283 the only expected red). CP2 491/491 last accepted; CP3 not accepted. |
+| Active boundary | **NEXT `M6-CP3-TB56-O2-FULL-GATE-EXEC`** (TB-EXEC, local): the CB57 package with gate 859 and ledger v4 82; expected 858/859, with row 283 the only red. CP2 491/491 last accepted. |
 
-## Mandatory next turn — `M6-CP3-CB57-O2-NO-ATLAS-ENTRY-GATE` (type CB; run locally) — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB56-O2-FULL-GATE-EXEC` (type TB-EXEC; run locally) — EXACT NEXT
 
-- **Authority:** [RA-183](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) §.4 and §.7.
-- **Patch:** the RA-183.7 block, extracted verbatim with a trailing newline. Its SHA-256 must be `35eb2fbcb2196b8af934b9a57a7dd5d60d28e2a3d900a315626e9d52ab9644d6`. Apply it with `git apply`; the numstat must be exactly `13 0` (`src/geometry/SurfaceCellTracing.cpp`) and `63 0` (`tests/SurfaceCellsPhase10Tests.cpp`). The resulting SHA-256 must be `c0b753ae…` and `12e42b5a…` (the full values are in RA-183.4).
-- **Build:** commit; a clean worktree with the CI flags at default arithmetic, eight targets; stage the package under `build/local-evidence/CB57/`. Haiku may stage it; verify the result. No native tests.
-- **Outcomes:**
-  - All exact → `M6-CP3-TB56-O2-FULL-GATE-EXEC` (gate `c8437d61…` 859, ledger v4 82, membership 941; row 283 the only pre-registered red; a pre-registered pass needs no REV).
-  - Mismatch → `M6-CP3-PLAN-O2-ENTRY-GATE-STOP`.
-  - Infrastructure failure → `M6-CP3-CB57A-O2-ORCH`.
+- **Authority:** [RA-183.5](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) and the [CB57 record](Architecture_M6_CP3_CB57_O2_No_Atlas_Entry_Gate_Code_Build_Record_20261031.md).
+- **Command** (from the repository root):
+  `python3 -I .agents/Directional/tools/m6_cp3_local_gate_driver.py --harness .agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh --harness-sha 78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94 --package-zip build/local-evidence/CB57/pkg.zip --package-zip-sha 2401b5d38823c6da780d184d14d6833e3e833ee1d5f151984a6c21820fe7d426 --root-manifest-sha f2eaf73178bdaebc587fd1d2e2f5cdddcb75beb984ebaa66514cb3a19dbb508e --source-sha fb4f637bcdd9bd3ae4d8a7e4e97cdf2023d3e4c7 --source-archive-sha 07435e5cc2911b6a471815fbd220b089b2d4d32feba32908de1581e69905bc0c --manifest .agents/Directional/Architecture_M6_CP3_TB56_O2_Full_Gate_Case_Manifest.tsv --manifest-sha c8437d61e5b9a12d37bcd9d026dc859ee7954e56eaf904f193d8b2a549a2097f --count 859 --ledger .agents/Directional/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v4.tsv --ledger-sha 36241caa61d3d27aa062fee05cf3af12a62a81a5a11a42e3ea75e46b0590139d --work build/local-evidence/TB56/run --jobs 3`
+- **Outcomes (RA-183.5):**
+  - 858/859 PASS, with row 283 the only RED, postflight true and membership 941 → `M6-DEFN-DIAG-RETAIN-A5-A7` (no separate REV).
+  - Any other non-PASS → `M6-CP3-TB56-O2-FULL-GATE-REV`.
+  - A membership error → `M6-CP3-PLAN-O2-MEMBERSHIP-STOP`.
 
 ## Turn Sequence
 
@@ -64,7 +64,7 @@ Canonical types: CB, TB-EXEC, TB-REV, DEFN, PLAN (`turn_type_from_turn`). **I** 
 | done | `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` ([RA-182](Architecture_M6_CP3_DEFN_API_Display_Vertex_Stop_Witness_20261031.md)) | DEFN / R | +½-singularity fan witness; CB56 patch `ffb723f4…`; TB55 858 / ledger v4 82. |
 | done | CB56 → TB55 857/858 ([report](Architecture_M6_CP3_TB55_API_Display_Full_Gate_Local_Test_Report_20261031.md)) | CB, TB-EXEC / local | Expected 857/858, with only 283 red; any other non-PASS → `M6-CP3-TB55-API-DISPLAY-FULL-GATE-REV`. |
 | done | `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS` ([RA-183](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md)) | DEFN / R | D2/D5 fixed by the entry gate; T2 discharged; O2b and O16 carried. |
-| 1 — NEXT | `M6-CP3-CB57-O2-NO-ATLAS-ENTRY-GATE` → `M6-CP3-TB56-O2-FULL-GATE-EXEC` | CB, TB-EXEC / local | Expected 858/859, with only 283 red. |
+| 1 — NEXT | CB57 **done** ([record](Architecture_M6_CP3_CB57_O2_No_Atlas_Entry_Gate_Code_Build_Record_20261031.md), package `2401b5d3…`) → **`M6-CP3-TB56-O2-FULL-GATE-EXEC`** | CB, TB-EXEC / local | Expected 858/859, with only 283 red. |
 | 2 | `M6-DEFN-DIAG-RETAIN-A5-A7` | DEFN / R | User-directed A5–A7 diagnostic retention. |
 | 4 | P13 probe DEFN (Cylinder first, which passes locally in 179 s; O6; exact-atlas, route-step (O9) and continuation-width (O15c) checks) → retire CB → FIXTURE slices → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV | per slice | RA-174.3 CP3-exit conditions; each slice moves its rows from the ledger to the gate. |
 | carried | Linux CI confirmation (rows 854–859); O2b (no-atlas API and legacy-branch retirement); O16 (row 283, LegacyInteger macOS); O15b; O15c | — | RA-179.4, RA-181.2, RA-183.2. |
@@ -72,7 +72,7 @@ Canonical types: CB, TB-EXEC, TB-REV, DEFN, PLAN (`turn_type_from_turn`). **I** 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB57-O2-NO-ATLAS-ENTRY-GATE** (CB, run locally). Read [RA-183](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) §.4 and §.7. Extract and verify the patch (`35eb2fbc…`, numstat `13 0` / `63 0`, files `c0b753ae…` / `12e42b5a…`), apply and commit it, build at default arithmetic and stage the package. Next is TB56-EXEC (gate 859 `c8437d61…`, ledger v4 82, membership 941, row 283 the only expected red). RP-01 closed, O15 discharged, row 935 gated; CP2 491/491 last accepted; stable 66/17/49, debt 1.
+`load_next`: **M6-CP3-TB56-O2-FULL-GATE-EXEC** (TB-EXEC, run locally). Run the exact command in the mandatory-next section: CB57 package `2401b5d3…`, gate 859 `c8437d61…`, ledger v4 82, membership 941, row 283 the only expected red. If the result is as registered, the next turn is `M6-DEFN-DIAG-RETAIN-A5-A7`. RP-01 closed, O15 discharged, row 935 gated; CP2 491/491 last accepted; stable 66/17/49, debt 1.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
