@@ -1,3 +1,7 @@
+# 2026-10-31 — CB62 Linux GMP eight-target immutable package
+
+- [CB62 record](.agents/Directional/Architecture_M6_CB62_Diag_Retain_Linux_Package_Code_Build_Record_20261031.md): source `e7c27b0a5f53788569109c85a028e3be44035aaf` is unchanged from CB61 `e1fd0e4b…` in code/test/benchmark/build paths. Linux dispatcher [run 41181199445](https://github.com/akashskypatel/Directional/actions/runs/41181199445) built eight standard targets with static Release and GMP/GMPXX; package `13034987618` ZIP `81c66418420b64c466e4b6c89d79129ef8ba4adbe6981469624d781644d91de5`, root `SHA256SUMS` `48d4bf626737980e2deb4f37c4b1bfee47a1644a06a034186198be70454d4870` (28 entries), source archive `88653f43f67cd413c38b63cbebed376dca78405de2c0c22dc21d4a0143a72fce`. No native runtime, unchanged CP2 accepted 491/491 and 66/17/49 debt 1. Next `M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-EXEC` (863-row immutable gate + deferred ledger).
+
 # 2026-10-31 — Linux confirmation turns inserted before the P13 DEFN (user-directed)
 
 - The implementation agent resumes CB and TB on the Linux workflow runner. Before `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE`, three turns confirm CB58–CB61 on Linux: `M6-CB62-DIAG-RETAIN-LINUX-PACKAGE` (Linux package of source `e1fd0e4b…`, no patch), `M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-EXEC` (TB58 manifest 863, ledger v4 82, membership 945; 863/863 pre-registered, row 283 included) and `M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-REV` (review against TB60; decide on a Linux CLI/GUI compile).
