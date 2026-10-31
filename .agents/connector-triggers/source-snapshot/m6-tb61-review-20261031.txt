@@ -1,0 +1,3 @@
+M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-REV
+Source snapshot for independent TB61 review, 2026-10-31.
+No runtime, build, or source semantic mutation.
