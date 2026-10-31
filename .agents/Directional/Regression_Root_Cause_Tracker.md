@@ -1,3 +1,5 @@
+**TB54 local gate (2026-10-31; candidate, unreviewed, no new event):** [report](Architecture_M6_CP3_TB54_O15_Full_Gate_Local_Test_Report_20261031.md). CB55 package at default arithmetic: 856/857, with row 283 (O2) the only red; the 18 former O15 reds now pass. Stable 66/17/49, debt 1, unchanged.
+
 **RA-180 / O15 DEFN (2026-10-30; no new event):** [record](Architecture_M6_CP3_DEFN_A3_Exact_Branch_Topology_Predicates_20261030.md). The exact A3 predicates remove the FMA dependence: the patched FMA and FMA-free builds give identical gate verdicts (854/855, only 283) and identical atlas partitions, and the deferred rows are unchanged. The new edge-parallel witness fails before the patch on Linux-like arithmetic. CB55 is frozen. Stable 66/17/49, debt 1.
 
 **RA-179 / TB53 review, RP-01 closed (2026-10-30; no new event):** [record](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md). The 19 macOS reds in the local TB53 are platform failures, not regressions:

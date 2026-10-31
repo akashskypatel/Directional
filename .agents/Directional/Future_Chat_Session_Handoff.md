@@ -34,23 +34,28 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-30 **CB55 built locally** ([record](Architecture_M6_CP3_CB55_A3_Exact_Branch_Topology_Code_Build_Record_20261030.md)): the exact RA-180.7 patch at source `04027167…`, default arithmetic, package `69104b95…`. Prior: **RA-180 O15 DEFN** (exact A3 gauge, derivatives and port order; FMA and FMA-free builds give identical 854/855 and identical atlas partitions). RA-179 closed RP-01. |
+| Currency | 2026-10-31 **TB54 run locally** ([report](Architecture_M6_CP3_TB54_O15_Full_Gate_Local_Test_Report_20261031.md)) on the CB55 package at default arithmetic: **856/857 PASS**, row 283 (pre-classified O2) the only red, membership 940, postflight true. All 21 O15 rows and the two new O15 tests pass; the vertex-10/35/47/71 ports are 3/3/3/3. The Haiku audit is clean; result `706f4ce7…`. Prior: CB55 (`04027167…`, package `69104b95…`); RA-180 (O15 exact rule); RA-179 (RP-01 closed). |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted 2026-10-06 (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
 | Latest candidate or rejected evidence | **TB53 836/19 reviewed local candidate** (macOS arm64, source `2a49b873…`, [RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md)): every red is classified as a platform failure (O15 or O2); variant B (FMA-free) gives 854/855. **TB52 853/0** is the latest reviewed Linux candidate ([RA-177](Architecture_M6_CP3_TB52_REV_Independent_Five_Binary_Gate_Review_20261030.md), run 41100261157). CB52 Linux package `12918290481`. Last accepted CP2 491/491. |
 | Regression accounting and debt | Stable **66/17/49**, debt **1**, unchanged. 83 DEFERRED ([ledger v3](Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v3.tsv)): FIXTURE 48, PRODUCT 7, OPEN 23, RETIRE 5. **RP-01 closed** (RA-179.4). Falsifier: the first Linux CI gate fails row 854 or 855; a Linux confirmation run is carried. **O15 (RA-176, list corrected by RA-179):** 21 gated `mechanical_feature` rows depend on A3 rounding; on macOS with FMA, 18 of them fail. **Local-mode convention:** build local packages with `-ffp-contract=off` and pre-register row 283 (O2). |
-| Active boundary | **NEXT `M6-CP3-TB54-O15-FULL-GATE-EXEC`** (TB-EXEC, local): the CB55 package `build/local-evidence/CB55/pkg.zip` with gate 857 and ledger v3 83, through `tools/m6_cp3_local_gate_driver.py`. Expected 856/857, with row 283 the only red; then TB54-REV. CP2 491/491 last accepted. |
+| Active boundary | **NEXT `M6-CP3-TB54-O15-FULL-GATE-REV`** (TB-REV, Review): rule on O15 discharge from TB54 (856/857, only the pre-classified 283) and the RA-180 FMA-equivalence evidence. Note reduced independence (same session). CP2 491/491 last accepted. |
 
-## Mandatory next turn — `M6-CP3-TB54-O15-FULL-GATE-EXEC` (type TB-EXEC; run locally) — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB54-O15-FULL-GATE-REV` (type TB-REV, Review track) — EXACT NEXT
 
-- **Authority:** [RA-180.6](Architecture_M6_CP3_DEFN_A3_Exact_Branch_Topology_Predicates_20261030.md) and the [CB55 record](Architecture_M6_CP3_CB55_A3_Exact_Branch_Topology_Code_Build_Record_20261030.md).
-- **Command** (from the repository root):
-  `python3 -I .agents/Directional/tools/m6_cp3_local_gate_driver.py --harness .agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh --harness-sha 78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94 --package-zip build/local-evidence/CB55/pkg.zip --package-zip-sha 69104b95a433104e91ca698e61f73dd865eea610a06170283163dc3be6aebb51 --root-manifest-sha 3479136027cbc61fd69fbf33446957cb5a4bc6b188b5e0b6d605a92bbee4bebc --source-sha 0402716703e26cb640f6bc8a423389c31987107f --source-archive-sha 6066039e58c5a4c0a009e6a52828c532f8f1825360d64c398cd6ce08945eb946 --manifest .agents/Directional/Architecture_M6_CP3_TB54_O15_Full_Gate_Case_Manifest.tsv --manifest-sha 53683907397327faf1147c7e7ced73c1a839701db47241933134c9a20b0bec3c --count 857 --ledger .agents/Directional/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v3.tsv --ledger-sha 32b43fc5415c6811a8de1e8934b0e0361a84ab689ed76dc1cfa9b84d4663be78 --work build/local-evidence/TB54/run --jobs 3`
-- **Outcomes (RA-180.6):**
-  - 856/857 PASS, with row 283 the only RED, postflight true and membership 940 → TB54-REV.
-  - Any other non-PASS → TB54-REV classifies it, with no retry.
-  - A membership error → `M6-CP3-PLAN-O15-MEMBERSHIP-STOP`.
-- **Report** counts and first failures only; do not classify.
+- **Authority:** the [TB54 report](Architecture_M6_CP3_TB54_O15_Full_Gate_Local_Test_Report_20261031.md), result `build/local-evidence/TB54/result.zip` (`706f4ce759651a505cdc393e9ddaf18bdc8c3f2a5f286c0f01152cf7f1d9f3ea`, gitignored), [RA-180](Architecture_M6_CP3_DEFN_A3_Exact_Branch_Topology_Predicates_20261030.md) and [RA-176.3](Architecture_M6_CP3_PLAN_A3_Atlas_Exactness_TB52C_REV_Audit_20261030.md).
+- **Decide:**
+  1. Whether O15 is discharged. RA-176.3 requires:
+     - exact A3 topology decisions with a tie rule;
+     - `mechanical_feature` identical with FMA on and off;
+     - a failing-first witness that fails on Linux-like arithmetic;
+     - the exact oracle at vertices 10/35/47/71;
+     - an outcome table.
+     Re-verify the FMA-free equivalence on this package's source if needed.
+  2. That row 283 remains O2 (identical signature).
+  3. Stable accounting (66/17/49, debt 1).
+- **Independence:** the same session defined, built and ran this. Prefer a fresh session; otherwise record the limitation. Subagents may do read-only audits.
+- **No** selector497 or CP3 promotion, and no source, test or manifest edits.
 
 ## Turn Sequence
 
@@ -61,7 +66,7 @@ Canonical types: CB, TB-EXEC, TB-REV, DEFN, PLAN (`turn_type_from_turn`). **I** 
 | done | CB49 → TB49 504/0 → … → TB51 831/0 → TB51-REV (RA-173) → PLAN-RP01-CLOSURE ([RA-174](Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md)) → CB53 (P8) → TB52C 22/1 → TB52C-REV (RA-175) → PLAN-A3-ATLAS-EXACTNESS ([RA-176](Architecture_M6_CP3_PLAN_A3_Atlas_Exactness_TB52C_REV_Audit_20261030.md), O15) | CB, TB / I; REV, DEFN, PLAN / R | P8 harness `78b8002c…`; Linux package `12918290481`. |
 | done | TB52 853/0 → TB52-REV ([RA-177](Architecture_M6_CP3_TB52_REV_Independent_Five_Binary_Gate_Review_20261030.md)) → DEFN-RP01-TERMINAL-PATH-WITNESSES ([RA-178](Architecture_M6_CP3_DEFN_RP01_Terminal_Path_Witnesses_TB52_REV_Audit_20261030.md)) → CB54 ([record](Architecture_M6_CP3_CB54_RP01_Terminal_Path_Witnesses_Code_Build_Record_20261030.md), local) → TB53 836/19 ([report](Architecture_M6_CP3_TB53_RP01_Full_Gate_Local_Test_Report_20261030.md), local) → TB53-REV ([RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md)) | TB / I; REV, DEFN / R; CB, TB local | **RP-01 closed.** Gate 855 `5239f81a…`, ledger v3 83 `32b43fc5…`, membership 938. |
 | done | `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` ([RA-180](Architecture_M6_CP3_DEFN_A3_Exact_Branch_Topology_Predicates_20261030.md)) | DEFN / R | T1–T3 exact; CB55 patch `824e64cc…`; TB54 gate 857 `53683907…`; O15b (fields-stage matching tie) carried. |
-| 1 — NEXT | CB55 **done** ([record](Architecture_M6_CP3_CB55_A3_Exact_Branch_Topology_Code_Build_Record_20261030.md), package `69104b95…`) → **`M6-CP3-TB54-O15-FULL-GATE-EXEC`** → `M6-CP3-TB54-O15-FULL-GATE-REV` | CB, TB-EXEC / local; TB-REV / R | Expected result 856/857, with row 283 (O2) the only red; TB54-REV rules O15 discharged. |
+| 1 — NEXT | CB55 **done** ([record](Architecture_M6_CP3_CB55_A3_Exact_Branch_Topology_Code_Build_Record_20261030.md)) → TB54 **done** ([report](Architecture_M6_CP3_TB54_O15_Full_Gate_Local_Test_Report_20261031.md), 856/857) → **`M6-CP3-TB54-O15-FULL-GATE-REV`** | CB, TB-EXEC / local; TB-REV / R | Expected result 856/857, with row 283 (O2) the only red; TB54-REV rules O15 discharged. |
 | 2 | `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` → CB56 (row 935 witness) → TB55 → TB55-REV | DEFN / R; CB, TB / local | No `milestone-g` fixture stops with a vertex locus under exact A3 (RA-180.4); construct one. Row 935 then moves to the gate (ledger v4, 82). |
 | 3 | `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS` (now including row 283), then `M6-DEFN-DIAG-RETAIN-A5-A7` | DEFN / R | RA-160.4 + RA-161 T2; O4 folds into O2. |
 | 4 | P13 probe DEFN (Cylinder first; O6; exact-atlas and route-step (O9) checks) → retire CB → FIXTURE slices → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV | per slice | RA-174.3 CP3-exit conditions; each slice moves its rows from the ledger to the gate. |
@@ -70,7 +75,7 @@ Canonical types: CB, TB-EXEC, TB-REV, DEFN, PLAN (`turn_type_from_turn`). **I** 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-TB54-O15-FULL-GATE-EXEC** (TB-EXEC, run locally). Run the exact command in the mandatory-next section: CB55 package `69104b95…`, gate 857 `53683907…`, ledger v3 83, expected membership 940, and row 283 the only expected red. Report counts and first failures only. Next is TB54-REV (R), which rules on O15 discharge. RP-01 closed; CP2 491/491 last accepted; stable 66/17/49, debt 1.
+`load_next`: **M6-CP3-TB54-O15-FULL-GATE-REV** (TB-REV, Review; preferably a fresh session). Read the [TB54 report](Architecture_M6_CP3_TB54_O15_Full_Gate_Local_Test_Report_20261031.md), RA-180 and RA-176.3. The result is `706f4ce7…` under the gitignored `build/local-evidence/TB54/`. Rule on O15 discharge against RA-176.3's conditions and confirm row 283 stays O2. Then `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` (R) for row 935. RP-01 closed; CP2 491/491 last accepted; stable 66/17/49, debt 1.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

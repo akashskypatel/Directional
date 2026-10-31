@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-30 · M6-CP3-CB55-A3-EXACT-BRANCH-TOPOLOGY — the exact RA-180 patch is built locally (source `04027167…`, package `69104b95…`, default arithmetic). [RA-180](Architecture_M6_CP3_DEFN_A3_Exact_Branch_Topology_Predicates_20261030.md) probes showed identical 854/855 gates with and without FMA. RP-01 is closed (RA-179). TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CP3-TB54-O15-FULL-GATE-EXEC`.
+**Currency:** 2026-10-31 · M6-CP3-TB54-O15-FULL-GATE-EXEC — the [TB54 local gate](Architecture_M6_CP3_TB54_O15_Full_Gate_Local_Test_Report_20261031.md) on the CB55 exact-A3 package at default arithmetic gives **856/857**. Row 283 (O2) is the only red; all 21 O15 rows and both RA-180 tests pass; membership 940. RP-01 is closed (RA-179). TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CP3-TB54-O15-FULL-GATE-REV`.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,7 +104,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** TB54-EXEC (local; 857 rows, membership 940, row 283 the only expected red) → TB54-REV (O15 discharged). Then `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` → CB56 (row 935). Local mode uses `tools/m6_cp3_local_gate_driver.py`.
+**Immediate:** TB54-REV (Review) rules on O15 discharge (RA-176.3 conditions; TB54 856/857). Then `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` → CB56 (row 935). Local mode uses `tools/m6_cp3_local_gate_driver.py`.
 
 
 | Priority | Missing outcome | Owner |
