@@ -1,12 +1,20 @@
 {
   "schema_version": 1,
-  "request_id": "m6-tb61-review-owner-closeout-20261031-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-tb61-review-owner-closeout-20261031-v1",
-  "file_id": "164FcpmUyWeE8cKWxVm2eEs6FY06LMiu8",
-  "patch_sha256": "1a1d414a3f837907f091f40c15ccea2990aae219ee7348eb989d2de3c5c46967",
-  "base_sha": "d318290518b55cfd8b320297e10f90214ce4c06b",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB61 review and authorize Linux CLI GUI verification",
-  "retention_days": 14
+  "request_id": "m6-cb63-linux-cli-gui-compile-20261031-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cb63-linux-cli-gui-compile-20261031-v1",
+  "source_sha": "1be60fa771352a04117ec45933cb61f0c9e014e2",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks",
+    "directional_cli",
+    "directional_gui"
+  ],
+  "artifact_prefix": "m6-cb63-linux-cli-gui-compile"
 }
