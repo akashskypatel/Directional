@@ -1,0 +1,43 @@
+# TB61 — Independent Linux full-gate review (2026-10-31)
+
+**Turn:** `M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-REV` (TB-REV, independent Review). **Verdict:** the Linux eight-target *gate execution* is independently confirmed **863/863 PASS**. This does not prove Linux CLI or GUI compilation, does not repair the macOS O16 defect, and does not promote CP3. **Review closeout is conditional:** an exact authorized Linux CLI/GUI compile-and-verification successor has not been specified in the current handoff; P13 must not begin while the platform compile obligation is open.
+
+## Immutable authority and independent calculation
+
+- Frozen CB62 semantic source `e7c27b0a5f53788569109c85a028e3be44035aaf`; Linux package artifact `13034987618`, ZIP SHA-256 `81c66418420b64c466e4b6c89d79129ef8ba4adbe6981469624d781644d91de5`. Re-downloaded, full ZIP digest and all **28/28** package entries independently verified. Source commit, GMP/GMPXX link command, `runtimeExecution=false`, zero build/preflight exit codes verified in package metadata.
+- TB61 [run 41182654107](https://github.com/akashskypatel/Directional/actions/runs/41182654107), result artifact `13037097822`, ZIP SHA-256 `5e62807c270d9124688dd280a0af718900f5bbabd4ec678107745ca1a648acc8`. Re-downloaded; **1,734/1,734** result checksums verified. Harness log artifact `13037416966` (`ac72010d7d1499e2f2259718e553fd5d142d9e72f37aac5a7e269639f603c135`) and wrapper log `13037536687` (`8a94bcac79bd0455e99406542b951fb791fa7d6046f5ee41700c8b6a08dd333d`) independently verified against recorded ZIP digests. Wrapper and harness record source SHA, harness SHA and exit 0; execution boundary records `compile=false`, `relink=false`, `configure=false`, `benchmark=false`.
+- Independent 2026-10-31 source snapshot `b9428d75e6a9587986a6d83281606741ed9c283a`, run `41189323783`, artifact `13038535389`: ZIP SHA-256 `8432356cbfed3bfb4bbf4d34d24030e698871d826ce5883ea657e0971eff672f`; source tar and **6,039/6,039** file hashes verified. This snapshot differs from semantic CB62 authority only by later control/document history; it was used for reading current policies and frozen manifests, not to assert semantic build identity.
+- Manifest `Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv`: SHA-256 `31c1360ab5738cab682e628304914af4a3f7ad4dd077a8f688e79536bf371341`, 863 unique ordered cases. Deferred ledger v4 SHA-256 `36241caa61d3d27aa062fee05cf3af12a62a81a5a11a42e3ea75e46b0590139d`, 82 entries. All 863 result ledger rows match frozen `(row, kind, identity, test, binary)` in order, `expect=verdict=PASS`, and have exactly one process invocation with one passed test and no skip. All 863 recorded log SHA-256 values and `PASSED 1 test` receipts independently verified; no failed-test receipts. Membership exactly 945, comprising 863 unique GATED pairs equal to the manifest and 82 distinct DEFERRED pairs; no duplicates. Outcome: 854 GUARD + 9 POSITIVE, zero RED/abnormal/missing/skipped/duplicates, postflight true.
+
+## Platform and case adjudication
+
+- **Rows 854–863:** each has an independently verified PASS process/log receipt: 854–855 RP-01 checked-factory/typed A3 paths; 856–857 O15 exact transport; 858 row 935 API stop-locus; 859 no-atlas entry; 860–861 A5–A7 retention/copy and opt-in semantics; 862–863 retained/absent display projections. The display tests assert nonempty source products, exact counts/indices and the presence/absence contract; the retention tests cover both opt-in conditions and a rejected strict hard-rail transport case. These are meaningful *contract* checks, not proof of a successful direct production mesh or visible GUI rendering.
+- **Row 283 / O16:** Linux PASS (`SurfaceCellsPhase10.LegacySyntheticOutputHashIsStableAcrossTenRuns`, 17 ms, fresh-process PASS). TB60 macOS report records the same case RED with `segment_arrangement(): surviving twin has invalid next`. TB60 reports 862/863 and row 283 as the sole failure. The raw macOS artifact is local-only and was not available for byte-level re-derivation here; the platform comparison is independently supported on the Linux side and **report-supported, not byte-reverified**, on the macOS side. RA-176 demands this difference remain explicit. O16 is carried to its existing legacy-backend owner; do not claim the defect fixed, do not silently merge macOS and Linux evidence, do not alter stable regression counts.
+- **Linux CLI/GUI coverage gap:** the CB62 eight-target package `metadata/compiled-targets.txt` lists only core/pipeline, five test binaries and benchmarks. Its exact `CMakeCache.txt` has `DIRECTIONAL_BUILD_CLI:BOOL=OFF` and `DIRECTIONAL_BUILD_GUI:BOOL=OFF`. Neither `bin/directional` nor `bin/directional-ui` is packaged. CB61's macOS build/test evidence includes both targets and CLI 11/11 with GUI GMP link checks, but cannot establish their Linux compilation or runtime. A fresh Linux compile/link for both targets with the eight targets and GMP/GMPXX is **owed before P13** if the user-directed Linux-runner confirmation is to cover all CB58–CB61 changes. Follow with a full immutable gate TB under `Turn_Cadence.md`; any required CLI checks and GUI link checks must be registered as separate evidence, without claiming on-screen appearance. The next turn identifier must be authorized from repository authority; none is frozen here.
+
+## Accounting and protected boundary
+
+Stable **66 events / 17 categories / 49 recurrences; debt 1**, unchanged. Latest accepted **CP2 491/491**. Latest candidate **TB61 Linux 863/863**, now independently verified as an eight-target gate, but **not CP3 accepted**. Deferred ledger 82; no selector497 promotion; PR #8 remains draft. DR1/DR3 remain open, DR2/DR4 remain M8-CP2; O16 remains macOS-specific. No product, source, test, fixture, benchmark, build or selector mutations and no runtime executions were made in this Review. Exact source snapshot control-trigger cleanup remains a separate operational requirement.
+
+## Review closeout
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | n/a — no selector was appended/modified; independent frozen 863-row manifest and 82-row ledger hashes stated above; accepted CP2 491/491 retained |
+| Decisive claims independently re-derived | CB62 28/28, TB61 1,734/1,734, 863 individual logs/manifest, membership 945, source snapshot 6,039/6,039 |
+| Non-vacuity checked | Explicit positive and tamper/reject assertions in tests 860–863 and raw PASS receipts; scope is contract-level, not a full product-output acceptance |
+| Prior obligations discharged/carried | TB61 Linux full gate confirmed; row 283 O16 carried; CLI/GUI Linux compile outstanding; DR1/DR3 and DR2/DR4 carried to documented owners |
+| Stable accounting | 66/17/49, debt 1; accepted CP2 491/491; selector497 unpromoted |
+| New candidates/obligations recorded | Linux CLI/GUI compile/link plus follow-up full gate needed; no new semantic regression, no new stable ID |
+| ORIENTATION currency line | Pending patch application; update reflects reviewed gate and open compile debt |
+| ORIENTATION §3 / §4 / §7 / §8 | §3 requires candidate update; §4 witness unchanged; §7 requires compile debt; §8 n/a, no new defect pattern |
+| CHANGELOG | Pending patch application; add evidence review/compile debt entry |
+| ROADMAP | No milestone or checkpoint state changes; current CP3 gate detail may be updated without acceptance promotion |
+| Selector manifest | n/a — no selector mutations |
+| LESSONS | Existing lessons on platform-specific evidence, gate scope and non-vacuity; no new universal rule established |
+| Consolidation under CLEAN_UP_POLICY | n/a — current report retained as active evidence, no historical documents deleted |
+| Successor frozen | **Pending authority:** Linux CLI/GUI compile-and-verification before P13 is required but the handoff supplies no exact authorized ID. Do not begin P13 |
+| Turn boundary held | Yes: only offline analysis, artifact hash verification and documentation preparation; no Directional runtime |
+| review_check.py boundary | **FAIL in synthetic Git baseline**: historical durable rewrite baseline `8b7299b43` is absent, so three durable-origin ancestry checks cannot be proved locally. All selector hashes passed. This is not a product failure and must be rechecked against real Git history by authorized CI/Review |
+| `STATUS` lifecycle maintained | Entry published; final beacon to be reconciled after patch application/closeout |
+| Pushed to origin, branch in sync | Pending verified Drive patch application; no claim of a remote push or actual Git-history synchronization |
