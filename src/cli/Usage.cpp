@@ -120,6 +120,8 @@ void print_usage(std::ostream &stream) {
       << "  --curvature-sharp-angle <degrees>\n"
       << "  --smooth-curvature-across-features\n"
       << "  --diagnostics-prefix <p>        Write pipeline result arrays as sidecars.\n"
+      << "                                  With --surface-cell-preserve-debug-artifacts, also\n"
+      << "                                  writes retained A5-A7 products to <p>.materialization.txt.\n"
       << "  --verbose                       Print pipeline timing details.\n";
 }
 

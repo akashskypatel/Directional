@@ -9,6 +9,7 @@
 
 #include <cmath>
 #include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <optional>
 #include <stdexcept>
@@ -16,6 +17,7 @@
 
 #include <directional/fields/RegularizedCurvatureCrossField.h>
 #include <directional/pipeline/RemeshPipeline.h>
+#include <directional/visualization/MaterializationDiagnosticsDisplay.h>
 
 namespace directional::cli {
 namespace {
@@ -402,6 +404,16 @@ int run_remesh(const int argc, char **argv) {
         mesh.vertices, mesh.faces, crossField.field.rawField, pipelineOptions);
   } else {
     result = pipeline::remesh_from_mesh(mesh.vertices, mesh.faces, options);
+  }
+
+  // A rejected SurfaceCells run is where the retained A5-A7 products matter
+  // most, so their dump is written before the produced-result check.
+  const auto &snapshots = result.surfaceCellContext.productSnapshots;
+  if (diagnosticsPrefix.has_value() &&
+      (snapshots.occurrenceComplex || snapshots.quotientProduct ||
+       snapshots.sourceAttachedGeometry)) {
+    std::ofstream dump(diagnosticsPrefix->string() + ".materialization.txt");
+    visualization::write_materialization_diagnostics(dump, snapshots);
   }
 
   if (!result.is_produced()) {
