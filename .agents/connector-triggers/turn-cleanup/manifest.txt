@@ -1,0 +1,3 @@
+# CB64 closeout temporary trigger inventory; preserve durable dispatcher and mailbox history.
+.agents/connector-triggers/source-snapshot/chart-binding-cache-source-20261031T1636Z.txt
+.agents/connector-triggers/source-snapshot/m6-cb64-closeout-20261031-1659.txt
