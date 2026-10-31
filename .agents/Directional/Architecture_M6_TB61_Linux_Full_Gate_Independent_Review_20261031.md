@@ -29,9 +29,9 @@ Stable **66 events / 17 categories / 49 recurrences; debt 1**, unchanged. Latest
 | Prior obligations discharged/carried | TB61 Linux full gate confirmed; row 283 O16 carried; CLI/GUI Linux compile outstanding; DR1/DR3 and DR2/DR4 carried to documented owners |
 | Stable accounting | 66/17/49, debt 1; accepted CP2 491/491; selector497 unpromoted |
 | New candidates/obligations recorded | Linux CLI/GUI compile/link plus follow-up full gate needed; no new semantic regression, no new stable ID |
-| ORIENTATION currency line | Pending patch application; update reflects reviewed gate and open compile debt |
-| ORIENTATION §3 / §4 / §7 / §8 | §3 requires candidate update; §4 witness unchanged; §7 requires compile debt; §8 n/a, no new defect pattern |
-| CHANGELOG | Pending patch application; add evidence review/compile debt entry |
+| ORIENTATION currency line | Updated in the same verified documentation patch; current review and Linux CLI/GUI compile debt recorded |
+| ORIENTATION §3 / §4 / §7 / §8 | §3 candidate and §7 compile debt updated; §4 witness unchanged; §8 n/a (no new recurring defect pattern) |
+| CHANGELOG | Independent TB61 review and Linux CLI/GUI compile obligation entry added |
 | ROADMAP | No milestone or checkpoint state changes; current CP3 gate detail may be updated without acceptance promotion |
 | Selector manifest | n/a — no selector mutations |
 | LESSONS | Existing lessons on platform-specific evidence, gate scope and non-vacuity; no new universal rule established |
@@ -40,4 +40,4 @@ Stable **66 events / 17 categories / 49 recurrences; debt 1**, unchanged. Latest
 | Turn boundary held | Yes: only offline analysis, artifact hash verification and documentation preparation; no Directional runtime |
 | review_check.py boundary | **FAIL in synthetic Git baseline**: historical durable rewrite baseline `8b7299b43` is absent, so three durable-origin ancestry checks cannot be proved locally. All selector hashes passed. This is not a product failure and must be rechecked against real Git history by authorized CI/Review |
 | `STATUS` lifecycle maintained | Entry published; final beacon to be reconciled after patch application/closeout |
-| Pushed to origin, branch in sync | Pending verified Drive patch application; no claim of a remote push or actual Git-history synchronization |
+| Pushed to origin, branch in sync | Exact five-path documentation patch pushed at `44ce85854f851346626e126494ec0d50c57de20d` and verified by GitHub compare; no local real-history `git status -sb` synchronization claim |
