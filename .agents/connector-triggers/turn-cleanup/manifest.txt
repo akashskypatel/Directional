@@ -1,0 +1,2 @@
+# M6-CB63 temporary source snapshot trigger
+.agents/connector-triggers/source-snapshot/manifest.txt
