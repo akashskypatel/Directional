@@ -1,3 +1,7 @@
+## RA-184 — DIAG-RETAIN A5–A7 snapshots (2026-10-31)
+
+- A5/A6/A7 products are diagnostic `shared_ptr<const>` snapshots, copied right after each stage succeeds and retained only under intermediate-geometry retention. They are never read back. `build_authoritative_phase_front_mesh` keeps its pinned signature; `build_authoritative_phase_front_mesh_with_diagnostics` exposes the copies.
+
 ## RA-183 — O2 no-atlas ingress (2026-10-31)
 
 - **No-atlas A4 ingress is rejected at one locus** (`atlas-binding`, `InvalidSourceAuthority` / `AtlasSourceMismatch`), including NotApplicable inputs (CB57). Legacy matching never decides a published A4 output.

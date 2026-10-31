@@ -1,3 +1,5 @@
+**RA-184 / DIAG-RETAIN DEFN (2026-10-31; no new event):** [record](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md). The CB58 probe gives 860/861 (only 283); TB56 rows and deferred rows are unchanged. Stable 66/17/49, debt 1.
+
 **TB56 local gate (2026-10-31; candidate, pre-registered outcome met, no new event):** [report](Architecture_M6_CP3_TB56_O2_Full_Gate_Local_Test_Report_20261031.md). CB57: 858/859, with row 283 (O16) the only red; the O2 entry gate is landed. Stable 66/17/49, debt 1.
 
 **RA-183 / O2 DEFN (2026-10-31; no new event):** [record](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md). Without an atlas, closed feature-free inputs reached the legacy seed fallback (D2); CB57's entry gate rejects them at `atlas-binding`. Gate and deferred verdicts are unchanged. Row 283 is re-owned to O16 (LegacyInteger backend). Stable 66/17/49, debt 1.

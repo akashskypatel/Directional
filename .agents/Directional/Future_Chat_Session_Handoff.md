@@ -34,30 +34,22 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-31 **TB56 run locally** ([report](Architecture_M6_CP3_TB56_O2_Full_Gate_Local_Test_Report_20261031.md)) on the CB57 package: **858/859**, row 283 (O16) the only red, membership 941; the Haiku audit is clean; result `9e138c01…`. **The O2 entry gate is landed** (pre-registered outcome met, no separate REV). Prior: RA-183 (O2), RA-182 (row 935), RA-181 (O15), RA-179 (RP-01). |
+| Currency | 2026-10-31 **RA-184 DIAG-RETAIN DEFN** ([record](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md); local). A5/A6/A7 products are copied as immutable snapshots right after each stage succeeds, and retained only when intermediate geometry is requested. A separately named materializer entry point keeps the pinned signature. Probes: gate 860/861 (only 283), deferred unchanged. CB58 `c72e47cc…`; TB57 861 `f898c9b6…`; membership 943. Open: DR1 (no in-helper A6/A7 rejection witness), DR2 (multi-component), DR3 (pre-existing unconditional snapshot fields). |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted 2026-10-06 (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
 | Latest candidate or rejected evidence | **TB56 858/1 local candidate** (CB57 `fb4f637b…`, 859 gated; [report](Architecture_M6_CP3_TB56_O2_Full_Gate_Local_Test_Report_20261031.md)). The prior reviewed local candidate is TB54 856/1 (RA-181). **TB52 853/0** is the latest reviewed Linux candidate (RA-177). Last accepted CP2 491/491. |
 | Regression accounting and debt | Stable **66/17/49**, debt **1**, unchanged. 82 DEFERRED ([ledger v4](Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v4.tsv)): FIXTURE 47, PRODUCT 7, OPEN 23, RETIRE 5. RP-01 closed (RA-179); O15 discharged (RA-181); O15c is owned by P13. Linux CI confirmation of rows 854–858 is carried. Local mode: row 283 (O2) is pre-registered. |
-| Active boundary | **NEXT `M6-DEFN-DIAG-RETAIN-A5-A7`** (DEFN, R): the user-directed A5–A7 diagnostic snapshot retention (see TODO). The local baseline is TB56: 859 gated, ledger v4 82, membership 941. CP2 491/491 last accepted; CP3 not accepted. |
+| Active boundary | **NEXT `M6-CB58-DIAG-RETAIN-A5-A7-SNAPSHOTS`** (CB, local): the exact RA-184.7 patch, built at default arithmetic. Then TB57-EXEC (861, ledger v4 82, membership 943, row 283 the only expected red). CP2 491/491 last accepted; CP3 not accepted. |
 
-## Mandatory next turn — `M6-DEFN-DIAG-RETAIN-A5-A7` (type DEFN, Review track) — EXACT NEXT
+## Mandatory next turn — `M6-CB58-DIAG-RETAIN-A5-A7-SNAPSHOTS` (type CB; run locally) — EXACT NEXT
 
-- **Authority:** the user-directed DIAG-RETAIN item (TODO, 2026-10-21). It is unblocked now that RP-01 is closed (RA-179); RA-183's ordering is O2 → DIAG-RETAIN → P13.
-- **Objective:** whenever `retainIntermediateGeometry` is set, retain these as one-way diagnostic snapshots in `SurfaceCellDiagnosticProductSnapshots`, including every product completed before a rejection:
-  - the A5 corner occurrences (support, placement, wedge bindings);
-  - the A5 occurrence relations (kind, endpoints, evidence);
-  - the A6 merged quotient classes;
-  - the A7 final vertex geometry.
-
-  Then make them reachable from a CLI diagnostics dump and from GUI display layers.
-- **Constraints:**
-  - snapshots are never read back as stage authority;
-  - no admission, return-value or ordering change;
-  - bounded memory;
-  - nothing is retained when retention is off.
-- **The DEFN must deliver** snapshot types, the retention point for each stage, behaviour on rejection, and a memory bound. Then one narrow CB+TB per product, each with a no-read-back test: A5 occurrences and relations, A6 classes, A7 geometry. Then the CLI dump, then the GUI layers. Each step gets an exact patch, a frozen manifest (the TB56 baseline plus new rows) and an outcome table.
-- **Local mode:** delegate read-only traces to Sonnet and mechanical staging and audits to Haiku. Row 283 (O16) stays pre-registered.
+- **Authority:** [RA-184](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) §.5 and §.7.
+- **Patch:** the RA-184.7 block, extracted verbatim with a trailing newline. Its SHA-256 must be `c72e47cc54c407af5921bf80aaeec043bd3add928b24046dfc879f56e9041b0e`. Apply it with `git apply`; the numstat must be exactly `27 0` (`RemeshPipeline.h`), `39 3` (`RemeshPipeline.cpp`), `47 0` (TQ tests) and `50 0` (Phase10 tests). The four resulting SHA-256 values are in RA-184.5.
+- **Build:** commit; a clean worktree with the CI flags at default arithmetic, eight targets; stage the package under `build/local-evidence/CB58/`. Haiku may stage it; verify the result. No native tests.
+- **Outcomes:**
+  - All exact → `M6-TB57-DIAG-RETAIN-FULL-GATE-EXEC` (gate `f898c9b6…` 861, ledger v4 82, membership 943; row 283 the only pre-registered red; a pre-registered pass leads to `M6-DEFN-DIAG-RETAIN-CLI-GUI` with no REV).
+  - Mismatch → `M6-PLAN-DIAG-RETAIN-STOP`.
+  - Infrastructure failure → `M6-CB58A-DIAG-RETAIN-ORCH`.
 
 ## Turn Sequence
 
@@ -73,14 +65,15 @@ Canonical types: CB, TB-EXEC, TB-REV, DEFN, PLAN (`turn_type_from_turn`). **I** 
 | done | CB56 → TB55 857/858 ([report](Architecture_M6_CP3_TB55_API_Display_Full_Gate_Local_Test_Report_20261031.md)) | CB, TB-EXEC / local | Expected 857/858, with only 283 red; any other non-PASS → `M6-CP3-TB55-API-DISPLAY-FULL-GATE-REV`. |
 | done | `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS` ([RA-183](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md)) | DEFN / R | D2/D5 fixed by the entry gate; T2 discharged; O2b and O16 carried. |
 | done | CB57 → TB56 858/859 ([report](Architecture_M6_CP3_TB56_O2_Full_Gate_Local_Test_Report_20261031.md)) | CB, TB-EXEC / local | Expected 858/859, with only 283 red. |
-| 1 — NEXT | `M6-DEFN-DIAG-RETAIN-A5-A7` → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry) → CLI dump → GUI layers | DEFN / R; CB, TB local | Snapshots are one-way; no-read-back tests. |
+| done | `M6-DEFN-DIAG-RETAIN-A5-A7` ([RA-184](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md)) | DEFN / R | Snapshot design; CB58 and TB57 frozen; DR1–DR3 open. |
+| 1 — NEXT | `M6-CB58-DIAG-RETAIN-A5-A7-SNAPSHOTS` → `M6-TB57-DIAG-RETAIN-FULL-GATE-EXEC` → `M6-DEFN-DIAG-RETAIN-CLI-GUI` | CB, TB-EXEC / local; DEFN / R | 860/861 expected; then the CLI dump and GUI layers (and DR2). |
 | 4 | P13 probe DEFN (Cylinder first, which passes locally in 179 s; O6; exact-atlas, route-step (O9) and continuation-width (O15c) checks) → retire CB → FIXTURE slices → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV | per slice | RA-174.3 CP3-exit conditions; each slice moves its rows from the ledger to the gate. |
 | carried | Linux CI confirmation (rows 854–859); O2b (no-atlas API and legacy-branch retirement); O16 (row 283, LegacyInteger macOS); O15b; O15c | — | RA-179.4, RA-181.2, RA-183.2. |
 | rule | RA-167.6 naming; one CB per patch; no R1…Rn loops | — | Every gate run needs `MEMBERSHIP_LEDGER`. A DEFN must have a reachable exit (RA-172.1). Local mode: `tools/m6_cp3_local_gate_driver.py`; row 283 is pre-registered. Packages are built FMA-free until CB55 (RA-179.4) and at default arithmetic from CB55 on (RA-180.5). |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-DEFN-DIAG-RETAIN-A5-A7** (DEFN, Review, local). Read the TODO's DIAG-RETAIN item and the existing `SurfaceCellDiagnosticProductSnapshots` contract. Freeze the snapshot types, the retention points, behaviour on rejection, a memory bound, and exact narrow CB patches with no-read-back tests. The local baseline is TB56 (859, ledger v4 82, membership 941, row 283 the only red). RP-01, O15, row 935 and O2 are done; CP2 491/491 last accepted; stable 66/17/49, debt 1.
+`load_next`: **M6-CB58-DIAG-RETAIN-A5-A7-SNAPSHOTS** (CB, run locally). Read [RA-184](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) §.5 and §.7. Extract and verify the patch (`c72e47cc…` and the four numstats and file SHAs), apply and commit it, build at default arithmetic and stage the package. Next is TB57-EXEC (gate 861 `f898c9b6…`, ledger v4 82, membership 943, row 283 the only expected red). CP2 491/491 last accepted; stable 66/17/49, debt 1.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

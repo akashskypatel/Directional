@@ -1,3 +1,7 @@
+# 2026-10-31 — RA-184 DIAG-RETAIN A5–A7 snapshots defined
+
+- [RA-184](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) (local; Sonnet trace). A5–A7 run inside one materialization helper whose products died on return. CB58 copies each one as an immutable snapshot right after its stage succeeds, retained only on request, with a separately named entry point because the materializer signature is pinned. Two new tests; the probe gate gives 860/861 (only 283) and deferred rows are unchanged. CB58 `c72e47cc…`; TB57 861 `f898c9b6…`; membership 943. Open: DR1–DR3. Next `M6-CB58-DIAG-RETAIN-A5-A7-SNAPSHOTS`.
+
 # 2026-10-31 — TB56 local gate on CB57: 858/859, O2 entry gate landed
 
 - [TB56 report](.agents/Directional/Architecture_M6_CP3_TB56_O2_Full_Gate_Local_Test_Report_20261031.md): CB57 package `2401b5d3…` (default arithmetic). 859 executed, **858 PASS**, row 283 the only red (pre-registered O16), membership 941, postflight true. Row 859 (`ra183:o2-no-atlas-not-applicable`) passes. Result `9e138c01…`; the Haiku audit is clean. The pre-registered outcome was met, so there is no separate REV. Next `M6-DEFN-DIAG-RETAIN-A5-A7`.
