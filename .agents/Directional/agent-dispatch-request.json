@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cb62-docs-apply-20261031-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cb62-docs-apply-20261031-v1",
-  "file_id": "1R28rccuIlujfv1Z8CYanWveVdFMDZslU",
-  "patch_sha256": "2284e24b5d107680c000b363a93764127df210842f0ec139a6fd76b7f520d969",
-  "base_sha": "e7c27b0a5f53788569109c85a028e3be44035aaf",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record CB62 Linux package and TB61 handoff",
+  "request_id": "m6-tb61-diag-retain-linux-full-gate-20261031-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-tb61-diag-retain-linux-full-gate-20261031-v1",
+  "executor_sha": "e7c27b0a5f53788569109c85a028e3be44035aaf",
+  "semantic_source_sha": "e7c27b0a5f53788569109c85a028e3be44035aaf",
+  "turn_id": "M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-EXEC",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "artifact_prefix": "m6-tb61-diag-retain-linux-full-gate",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "13034987618",
+    "EXPECTED_SOURCE_SHA": "e7c27b0a5f53788569109c85a028e3be44035aaf",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "81c66418420b64c466e4b6c89d79129ef8ba4adbe6981469624d781644d91de5",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "48d4bf626737980e2deb4f37c4b1bfee47a1644a06a034186198be70454d4870",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "88653f43f67cd413c38b63cbebed376dca78405de2c0c22dc21d4a0143a72fce",
+    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "31c1360ab5738cab682e628304914af4a3f7ad4dd077a8f688e79536bf371341",
+    "EXPECTED_CASE_COUNT": "863",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v4.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "36241caa61d3d27aa062fee05cf3af12a62a81a5a11a42e3ea75e46b0590139d"
+  },
   "retention_days": 14
 }
