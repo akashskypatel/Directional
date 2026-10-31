@@ -1,5 +1,7 @@
 # 2026-10-31 — TB61 Linux gate independently verified; CLI/GUI Linux compile gap
 
+- **2026-10-31 — TB61 independent review closeout, owner-authorized CLI/GUI successor.** Full-history GitHub run `41200958419` executed `review_check.py boundary` and `ledgers` (both PASS, unshallow); artifact `13043180024` SHA-256 `a7c823b7de43c09f84826b4a0cec7e398159cf72331587128895f674de31dedd`. Owner authorized `M6-CB63-DIAG-RETAIN-LINUX-CLI-GUI-COMPILE` followed by `M6-TB62-DIAG-RETAIN-LINUX-CLI-GUI-FULL-GATE-EXEC`; eight-target Linux TB61 863/863 remains distinct from missing Linux CLI/GUI compile evidence and macOS O16. No CP3 promotion, accepted CP2 491/491, stable 66/17/49 debt 1.
+
 - [Independent TB61 review](.agents/Directional/Architecture_M6_TB61_Linux_Full_Gate_Independent_Review_20261031.md): revalidated CB62 package 28/28, TB61 result 1,734/1,734, all 863 manifest/case/log receipts, exact 863 GATED + 82 DEFERRED membership. Linux 863/863 is verified on **eight gate targets**, but CB62's Linux CMakeCache has `DIRECTIONAL_BUILD_CLI=OFF` and `DIRECTIONAL_BUILD_GUI=OFF`; macOS CB61/TB60 CLI/GUI evidence does not prove Linux compilation. Row 283 remains macOS O16 RED despite Linux PASS. P13 withheld pending authorized bounded Linux CLI/GUI compile/verification. Stable 66/17/49, debt 1, CP2 491/491 accepted; no selector promotion or product mutation.
 
 # 2026-10-31 — TB61 Linux full gate 863/863 PASS (review pending)

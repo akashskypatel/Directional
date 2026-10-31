@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-31 · M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-REV — independent review verifies the Linux eight-target TB61 gate **863/863 PASS**, membership 945, with rows 854–863 all green; row 283 is Linux PASS but remains macOS O16 RED. **Linux CLI/GUI compilation is not verified** because CB62 built with both target switches OFF. The reviewed gate is not CP3 acceptance: CP2 491/491 remains last accepted; stable 66/17/49, debt 1. Next authorization must cover Linux CLI/GUI compile/verification before P13; no exact successor ID is yet frozen. [Review](Architecture_M6_TB61_Linux_Full_Gate_Independent_Review_20261031.md).
+**Currency:** 2026-10-31 · M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-REV — independent review verifies the Linux eight-target TB61 gate **863/863 PASS**, membership 945, with rows 854–863 all green; row 283 is Linux PASS but remains macOS O16 RED. **Linux CLI/GUI compilation is not verified** because CB62 built with both target switches OFF. The reviewed gate is not CP3 acceptance: CP2 491/491 remains last accepted; stable 66/17/49, debt 1. Owner-authorized next `M6-CB63-DIAG-RETAIN-LINUX-CLI-GUI-COMPILE` compiles both Linux CLI/GUI; TB62 full-gate verification follows before P13. [Review](Architecture_M6_TB61_Linux_Full_Gate_Independent_Review_20261031.md).
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,12 +104,12 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** The CB62/TB61 Linux eight-target gate is independently verified 863/863. Linux CLI and GUI were not built (`DIRECTIONAL_BUILD_CLI=OFF`, `DIRECTIONAL_BUILD_GUI=OFF`); obtain exact authorized Linux compile/link and full-gate verification authority before `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE`. Carry macOS O16 row 283 unchanged.
+**Immediate:** The CB62/TB61 Linux eight-target gate is independently verified 863/863. Linux CLI and GUI were not built (`DIRECTIONAL_BUILD_CLI=OFF`, `DIRECTIONAL_BUILD_GUI=OFF`); execute the authorized `M6-CB63-DIAG-RETAIN-LINUX-CLI-GUI-COMPILE` Linux compile/link and then `M6-TB62-DIAG-RETAIN-LINUX-CLI-GUI-FULL-GATE-EXEC` verification before `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE`. Carry macOS O16 row 283 unchanged.
 
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Complete the Linux CLI/GUI compile/link coverage absent from CB62 and corresponding full-gate verification; then the P13 design-acceptance probe. DIAG-RETAIN features are landed and Linux eight-target gate is verified. | M6-CP3, exact next turn pending authorization |
+| **1** | Complete the Linux CLI/GUI compile/link coverage absent from CB62 and corresponding full-gate verification; then the P13 design-acceptance probe. DIAG-RETAIN features are landed and Linux eight-target gate is verified. | M6-CP3, `M6-CB63-DIAG-RETAIN-LINUX-CLI-GUI-COMPILE` authorized |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
