@@ -195,12 +195,18 @@ jobs:
           git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-before-configure.txt"
           test ! -s "$RUNNER_TEMP/source-status-before-configure.txt"
           rm -rf "$BUILD_DIR"
+          requested_targets=" ${{ inputs.targets }} "
+          build_cli=OFF
+          build_gui=OFF
+          if [[ "$requested_targets" == *" directional_cli "* ]]; then build_cli=ON; fi
+          if [[ "$requested_targets" == *" directional_gui "* ]]; then build_gui=ON; fi
+          echo "requested_build_cli=$build_cli requested_build_gui=$build_gui"
           cmake -S . -B "$BUILD_DIR" -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -DBUILD_SHARED_LIBS=OFF \
-            -DDIRECTIONAL_BUILD_CLI=OFF \
-            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_BUILD_CLI="$build_cli" \
+            -DDIRECTIONAL_BUILD_GUI="$build_gui" \
             -DDIRECTIONAL_BUILD_TESTS=ON \
             -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
             -DDIRECTIONAL_BUILD_HISTORICAL_TESTS=OFF \
@@ -214,6 +220,11 @@ jobs:
             -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST \
             2>&1 | tee "$RUNNER_TEMP/configure.log"
           grep -q '^DIRECTIONAL_ENABLE_GMP:BOOL=ON$' "$BUILD_DIR/CMakeCache.txt"
+          grep -q "^DIRECTIONAL_BUILD_CLI:BOOL=${build_cli}$" "$BUILD_DIR/CMakeCache.txt"
+          grep -q "^DIRECTIONAL_BUILD_GUI:BOOL=${build_gui}$" "$BUILD_DIR/CMakeCache.txt"
+          ninja -C "$BUILD_DIR" -t targets all > "$RUNNER_TEMP/available-targets.txt"
+          if [[ "$build_cli" == ON ]]; then grep -q '^directional_cli:' "$RUNNER_TEMP/available-targets.txt"; fi
+          if [[ "$build_gui" == ON ]]; then grep -q '^directional_gui:' "$RUNNER_TEMP/available-targets.txt"; fi
           grep -q 'GMP found for Directional core' "$RUNNER_TEMP/configure.log"
           {
             grep -E '^(GMP_ROOT|GMP_INCLUDE_DIRS|GMP_LIBRARIES|GMPXX_LIBRARIES):' "$BUILD_DIR/CMakeCache.txt"
@@ -363,6 +374,18 @@ jobs:
             'manifestExcludesSelf=true' \
             'buildLocation=runner-temp-out-of-tree' > "$OUT/metadata/command-boundary.txt"
           echo "${{ inputs.targets }}" | tr ' ' '\n' > "$OUT/metadata/compiled-targets.txt"
+          for target in directional_cli directional_gui; do
+            if grep -qx "$target" "$OUT/metadata/compiled-targets.txt"; then
+              case "$target" in
+                directional_cli) binary=directional ;;
+                directional_gui) binary=directional-ui ;;
+              esac
+              test -f "$BUILD_DIR/$binary"
+              ninja -C "$BUILD_DIR" -t commands "$target" | grep -E 'gmpxx.*gmp|gmp.*gmpxx' | tail -n 1 >> "$OUT/metadata/gmp-evidence.txt"
+              echo "verified_target=$target binary=$binary" >> "$OUT/metadata/command-boundary.txt"
+              cp "$BUILD_DIR/$binary" "$OUT/bin/"
+            fi
+          done
           copy_if_exists() { test ! -f "$1" || cp "$1" "$2/"; }
           copy_if_exists "$BUILD_DIR/directional_surface_cell_authority_kernel_tests" "$OUT/bin"
           copy_if_exists "$BUILD_DIR/directional_surface_cell_producer_tests" "$OUT/bin"
