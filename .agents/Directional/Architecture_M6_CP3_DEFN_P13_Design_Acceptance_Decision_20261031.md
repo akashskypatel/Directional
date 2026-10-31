@@ -40,6 +40,8 @@ Source: `tests/SurfaceCellDesignAcceptanceTests.cpp`. It invokes direct `remesh_
 
 **Stop rules:** Any gate RED, immutability violation, changed observed test membership, wrong SHA, missing GMP, absent required full gate, 300s timeout, invalid selection, unproven direct output, mixed OBSERVE/gate rows, or a source-sheet/feature provenance mismatch prevents P13 promotion. Preserve diagnostic RED/timeout even when the harness command itself terminates successfully.
 
+**Closeout verification (2026-10-31):** Exact current source snapshot `ccc14a339d7107e6ad2a3f6aadf888f38e03cd0f`, artifact `13048311518`, ZIP SHA-256 `7af9befa73847de4199923139d45290571e1b372757bd415e9dde8fa7b55de06`, verified `6048/6048` packaged file hashes. `document_drift_audit.py --root . --json` on that verified full snapshot: **0 errors, 0 warnings**. Authentic history audit [run 41216727842](https://github.com/akashskypatel/Directional/actions/runs/41216727842): non-shallow checkout, both `review_check.py boundary` and `ledgers` exit 0, all selector byte checks pass. These results are bounded to their recorded commits; the final STATUS write is separate lifecycle metadata. No new P13 product runtime or compilation was executed during this Review.
+
 ## Review closeout
 
 | Duty | Answer |
@@ -53,12 +55,12 @@ Source: `tests/SurfaceCellDesignAcceptanceTests.cpp`. It invokes direct `remesh_
 | ORIENTATION currency line | Updated to P13 review/CB64 boundary in same documentation patch |
 | ORIENTATION §3 / §4 / §7 / §8 | §3 and §7 refreshed; §4 witness matrix retained, §8 n/a no newly confirmed defect pattern |
 | CHANGELOG | P13 adjudication and future bounded execution boundary recorded |
-| ROADMAP | M6-CP3 still unaccepted; P13 3 deferred; updated current platform note |
+| ROADMAP | M6-CP3 still unaccepted; P13 3 deferred; corrected stale O15 exit reference in `c6195937…`: RA-181 discharged O15; O15c is a separate P13 width observation |
 | Selector manifest | n/a no selector edit or promotion |
 | LESSONS | Existing evidence and runtime-boundary lessons applied; no new universal rule |
 | Consolidation under CLEAN_UP_POLICY | No eligible P13 historical file to fold: retained working audit is primary evidence and this is current decision; no deletions |
 | Successor frozen | `M6-CP3-CB64-P13-ARTIFACT-PROBE-REGISTRATION`; bounds/falsifiers above; conditional artifact-only TB63 follows |
 | Turn boundary held | Review-only static sources, immutable byte audits and docs, no Directional runtime or implementation edits |
-| `review_check.py boundary` | **Not yet independently run against full real history in this response**; no unverified PASS claimed |
-| `STATUS` lifecycle maintained | Resume entry beacon; final COMPLETE only after durable docs, checks and cleanup |
-| Pushed to origin, branch in sync | **Pending** verification of exact documentation patch application and remote HEAD; do not mark complete prematurely |
+| `review_check.py boundary` | **PASS**, authentic full-history run [41216727842](https://github.com/akashskypatel/Directional/actions/runs/41216727842), event `729f36f30751c7355005ac8e05eb587dc7b76685`, non-shallow; 39 selector hashes matched. `ledgers --base b55f41686d2fba4149990de9be8cf2545f227136` **PASS**. Independent ZIP SHA-256 `94dd6797cfcdd8f7469736cd68931b9e3895230a7e80f12a9b96ef4970d43e85`. These checker PASSes do not erase known checker completeness limits (R38) |
+| `STATUS` lifecycle maintained | Original start preserved (`2026-10-31T14:59:08Z`); current resume `2026-10-31T15:44:45Z`; final direct-write COMPLETE beacon follows only after temporary workflow/marker cleanup |
+| Pushed to origin, branch in sync | Six-document P13 patch applied at `86aa385597779928827632144ce491da8466c3d6` (workflow verified); ROADMAP O15 stale-exit correction committed at `c6195937315493037c7cdd8f675ca4e4190aa80f`. Authentic GitHub Actions checkout was clean at frozen event SHA; final branch/ref checked at closeout. ChatGPT Web cannot independently show local branch `git status -sb`; no local tracking-checkout claim is made |
