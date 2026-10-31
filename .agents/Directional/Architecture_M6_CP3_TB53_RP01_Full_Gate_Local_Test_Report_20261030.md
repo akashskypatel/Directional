@@ -6,7 +6,7 @@
 
 - **Package:** CB54 (`build/local-evidence/CB54/pkg.zip`, gitignored), ZIP SHA-256 `21b7cf2d0432322bfd02c76ed2c84ced938e06cd7462c693b49c6fc9a089fa7d`, root `SHA256SUMS` `262878fd…`, source `2a49b8738c293fac012cde52c9caee477d205aaa`, source archive `9d0cf0a7…`. macOS 26.6.2 arm64, Apple clang 21.0.0, static, GMP. [CB54 record](Architecture_M6_CP3_CB54_RP01_Terminal_Path_Witnesses_Code_Build_Record_20261030.md).
 - **Gate:** [`Architecture_M6_CP3_TB53_RP01_Full_Gate_Case_Manifest.tsv`](Architecture_M6_CP3_TB53_RP01_Full_Gate_Case_Manifest.tsv), 855 rows, `5239f81a…`. **Ledger v3:** [`Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v3.tsv`](Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v3.tsv), 83 rows, `32b43fc5…`.
-- **Runner:** [`tools/m6_cp3_local_gate_driver.py`](tools/m6_cp3_local_gate_driver.py), with harness `78b8002c…` loaded unchanged and three workers, each case in its own process and working directory. Run from 21:05:23Z to 21:14:55Z; the exact command is in the handoff.
+- **Runner:** [`tools/m6_cp3_local_gate_driver.py`](tools/m6_cp3_local_gate_driver.py), with harness `78b8002c…` loaded unchanged and three workers, each case in its own process and working directory. Run from 21:05:23Z to 21:14:55Z; the command has the form given in the [TB57 report](Architecture_M6_TB57_Diag_Retain_Full_Gate_Local_Test_Report_20261031.md), with the frozen inputs above.
 
 ## Result
 

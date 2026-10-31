@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-31 · M6-DEFN-DIAG-RETAIN-A5-A7 — [RA-184](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) defines immutable A5–A7 diagnostic snapshots (CB58 frozen; probes 860/861, deferred unchanged). The local baseline is TB56 858/859. RP-01, O15, row 935 and O2 are done. TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CB58-DIAG-RETAIN-A5-A7-SNAPSHOTS`.
+**Currency:** 2026-10-31 · M6-TB57-DIAG-RETAIN-FULL-GATE-EXEC — CB58 lands the [RA-184](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) A5–A7 diagnostic snapshots; the [TB57 local gate](Architecture_M6_TB57_Diag_Retain_Full_Gate_Local_Test_Report_20261031.md) gives the pre-registered 860/861 (only row 283, O16), membership 943. RP-01, O15, row 935 and O2 are done. TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-DEFN-DIAG-RETAIN-CLI-GUI`.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -47,12 +47,12 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | Local gate TB56 **858/859** on CB57 (859 gated, 82 deferred, membership 941); row 283 (O16) is the only red. RP-01 is closed (RA-179), O15 discharged (RA-181), row 935 gated (RA-182), and the O2 entry gate landed (RA-183). Linux reviewed candidate TB52 853/0. CP3 closure and the direct-production matrix are **not accepted**. selector497 frozen. |
+| **M6-CP3 — active** | Local gate TB57 **860/861** on CB58 (861 gated, 82 deferred, membership 943); row 283 (O16) is the only red. RP-01 is closed (RA-179), O15 discharged (RA-181), row 935 gated (RA-182), the O2 entry gate landed (RA-183) and the A5–A7 diagnostic snapshots landed (RA-184). Linux reviewed candidate TB52 853/0. CP3 closure and the direct-production matrix are **not accepted**. selector497 frozen. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 **Prior Review authority:** [RA-184](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) (DIAG-RETAIN), [RA-183](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) (O2 gate; O2b, O16), [RA-181](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md) (O15 discharged; O15c) and [RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md) (RP-01 closed; local-mode rules). Implementers get only exact patches and manifests.
 
-**Test authority:** Local macOS: TB56 **858/859** on CB57 (membership 941), a pre-registered outcome. Linux: TB52 **853/0** (run 41100261157, RA-177). A Linux CI confirmation of rows 854–859 is carried. Not D0 production, CP3 closure or selector497 promotion.
+**Test authority:** Local macOS: [TB57](Architecture_M6_TB57_Diag_Retain_Full_Gate_Local_Test_Report_20261031.md) **860/861** on CB58 (membership 943), a pre-registered outcome. Linux: TB52 **853/0** (run 41100261157, RA-177). A Linux CI confirmation of rows 854–859 is carried. Not D0 production, CP3 closure or selector497 promotion.
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md) and [regression tracker](Regression_Root_Cause_Tracker.md).
 
@@ -104,7 +104,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** CB58 → TB57 (861, membership 943) → `M6-DEFN-DIAG-RETAIN-CLI-GUI`. Then the P13 probe DEFN (Cylinder; O6, O9, O15c checks).
+**Immediate:** `M6-DEFN-DIAG-RETAIN-CLI-GUI` (CLI dump and GUI layers over the CB58 snapshots; DR2) → its CB/TB pairs. Then the P13 probe DEFN (Cylinder; O6, O9, O15c checks).
 
 
 | Priority | Missing outcome | Owner |

@@ -1,3 +1,15 @@
+# 2026-10-31 — TB57 local gate on CB58: 860/861, A5–A7 diagnostic snapshots landed
+
+- [TB57 report](.agents/Directional/Architecture_M6_TB57_Diag_Retain_Full_Gate_Local_Test_Report_20261031.md): CB58 package `241aeebd…` (default arithmetic). 861 executed, **860 PASS**, row 283 the only red (pre-registered O16), membership 943, postflight true. Rows 860–861 (`ra184:diag-retain-*`) pass. Result `d0b9fa38…`; the Haiku audit is clean. The pre-registered outcome was met, so there is no separate REV. Next `M6-DEFN-DIAG-RETAIN-CLI-GUI`.
+
+# 2026-10-31 — CB58 DIAG-RETAIN A5–A7 snapshots built locally
+
+- [CB58 record](.agents/Directional/Architecture_M6_CB58_Diag_Retain_A5_A7_Snapshots_Code_Build_Record_20261031.md): the RA-184.7 patch applied exactly (`c72e47cc…`, `27 0` / `39 3` / `47 0` / `50 0`) at source `58ddfef0…`. Eight targets were built at default arithmetic; the package `241aeebd…` (18 entries) was staged by Haiku and re-verified. No native tests. Next `M6-TB57-DIAG-RETAIN-FULL-GATE-EXEC`.
+
+# 2026-10-31 — Durable handoff docs pruned (user-directed)
+
+- `TODO.md` 3,970 → about 95 lines: the per-turn HISTORY sections and the stale CURRENT stops were removed after a coverage check (every cited turn is in this changelog or its record) and a live-item audit. Three live items moved to a new "Recorded observations" section; the stale 55/16/39 trailer was dropped. The regression tracker kept its entries; only outdated status labels were corrected (reviewed-by references, row 283 → O16, the RP-01 "CURRENT CANDIDATE" heading). Earlier the same day: the handoff, `ORIENTATION.md` §3/§4/§8 and `ROADMAP.md` (`4a5578fad`).
+
 # 2026-10-31 — RA-184 DIAG-RETAIN A5–A7 snapshots defined
 
 - [RA-184](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) (local; Sonnet trace). A5–A7 run inside one materialization helper whose products died on return. CB58 copies each one as an immutable snapshot right after its stage succeeds, retained only on request, with a separately named entry point because the materializer signature is pinned. Two new tests; the probe gate gives 860/861 (only 283) and deferred rows are unchanged. CB58 `c72e47cc…`; TB57 861 `f898c9b6…`; membership 943. Open: DR1–DR3. Next `M6-CB58-DIAG-RETAIN-A5-A7-SNAPSHOTS`.

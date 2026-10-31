@@ -7,7 +7,7 @@
 - **Package:** CB56 `build/local-evidence/CB56/pkg.zip` (gitignored), ZIP `26d88d20…`, root `SHA256SUMS` `ddf68443…`, source `567d1828301f74a6e3c50bfcdfc4f7e6819d1ad3`, archive `07c5c167…`. macOS arm64, default arithmetic. [CB56 record](Architecture_M6_CP3_CB56_API_Display_Vertex_Stop_Witness_Code_Build_Record_20261031.md).
 - **Gate:** [`Architecture_M6_CP3_TB55_API_Display_Full_Gate_Case_Manifest.tsv`](Architecture_M6_CP3_TB55_API_Display_Full_Gate_Case_Manifest.tsv), 858 rows, `eb508378…`.
 - **Ledger v4:** [`Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v4.tsv`](Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v4.tsv), 82 rows, `36241caa…`.
-- **Runner:** `tools/m6_cp3_local_gate_driver.py` with harness `78b8002c…`, three workers, from 00:53:07Z to 01:03:28Z. The exact command is in the handoff.
+- **Runner:** `tools/m6_cp3_local_gate_driver.py` with harness `78b8002c…`, three workers, from 00:53:07Z to 01:03:28Z. The command has the form given in the [TB57 report](Architecture_M6_TB57_Diag_Retain_Full_Gate_Local_Test_Report_20261031.md), with the frozen inputs above.
 
 ## Result
 

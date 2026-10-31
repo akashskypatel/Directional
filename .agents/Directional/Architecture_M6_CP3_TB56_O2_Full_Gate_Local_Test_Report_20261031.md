@@ -6,7 +6,7 @@
 
 - **Package:** CB57 `build/local-evidence/CB57/pkg.zip` (gitignored), ZIP `2401b5d3…`, root `SHA256SUMS` `f2eaf731…`, source `fb4f637bcdd9bd3ae4d8a7e4e97cdf2023d3e4c7`, archive `07435e5c…`. macOS arm64, default arithmetic. [CB57 record](Architecture_M6_CP3_CB57_O2_No_Atlas_Entry_Gate_Code_Build_Record_20261031.md).
 - **Gate:** [`Architecture_M6_CP3_TB56_O2_Full_Gate_Case_Manifest.tsv`](Architecture_M6_CP3_TB56_O2_Full_Gate_Case_Manifest.tsv), 859 rows, `c8437d61…`. **Ledger v4:** 82 rows, `36241caa…`.
-- **Runner:** `tools/m6_cp3_local_gate_driver.py` with harness `78b8002c…`, three workers, from 02:07:29Z to 02:17:49Z. The exact command is in the handoff.
+- **Runner:** `tools/m6_cp3_local_gate_driver.py` with harness `78b8002c…`, three workers, from 02:07:29Z to 02:17:49Z. The command has the form given in the [TB57 report](Architecture_M6_TB57_Diag_Retain_Full_Gate_Local_Test_Report_20261031.md), with the frozen inputs above.
 
 ## Result
 
