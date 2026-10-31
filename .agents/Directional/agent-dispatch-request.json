@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-p13-o15c-defn-review-apply-20261031-v2",
+  "request_id": "m6-cb65-p13-canonical-dyadic-drive-apply-20261031-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-p13-o15c-defn-review-apply-20261031-v2",
-  "file_id": "1GZy1K1ovR6p7t6fOqRasJfNkOwY-xCDw",
-  "patch_sha256": "0c465d1cbd3db79f762445f8d1a7c14e1763265c28491bee9abeb5d143792545",
-  "base_sha": "e1e139622cef2590d40ac33cbc82516fa3b3239e",
+  "mailbox_key": "m6-cb65-p13-canonical-dyadic-drive-apply-20261031-v1",
+  "file_id": "1QdbO-g_hseqYaGc9GMZ98zrkRoH71tN0",
+  "patch_sha256": "065c9bb029f4041f4e6881bbf032e9fd3133b7fb9490bba4735cac1b0cf85a2a",
+  "base_sha": "d56d990580163f4fd0ceda4137f7ecd16ceb6027",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): adjudicate P13 O15c dyadic continuation and Cylinder gate",
+  "commit_message": "fix(surface-cells): canonical dyadic A2a trace exit",
   "retention_days": 14
 }
