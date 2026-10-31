@@ -39,32 +39,33 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06, unchanged. TB62 is a verified Linux candidate, not selector497/CP3 acceptance. |
 | Latest candidate | **TB63 Linux eight-target 863/863** [run 41224438897](https://github.com/akashskypatel/Directional/actions/runs/41224438897), result `13051413577` ZIP SHA-256 `b0ca28687f9b1c13e0ae65682d8815c59e69a76f500acef81ee3c6609513f12e`; CB64 package `13050072901` source `d56d9905…`. P13 census 1 PASS / 2 expected RED, result `13051470763`. TB62 Linux ten-target 863/863 remains separate CLI/GUI evidence; macOS O16 remains. |
 | Regression accounting and debt | Stable **66/17/49**, debt **1**, unchanged; deferred ledger v4 82 (47 FIXTURE, 7 PRODUCT, 23 OPEN, 5 RETIRE), membership 945; zero new Linux RED. Selector497 not promoted. DR1/DR3 open, DR2/DR4 → M8-CP2, macOS O16 remains. |
-| Active boundary | **TB63 verified:** Cylinder PASS; Vase O15c exact-width and BunnyRandom tip–tip slit remain expected RED at their distinct earliest producers. **NEXT `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT`** (Code + Build only). RA-189 approves only prospective Cylinder gate promotion; no 864-case gate executed. No CP3 acceptance or selector497 promotion. |
+| Active boundary | **TB63 verified:** Cylinder PASS; Vase O15c exact-width and BunnyRandom tip–tip slit remain expected RED at their distinct earliest producers. **CURRENT Review still IN_PROGRESS** (`M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH`); CB65 is a frozen *conditional* successor. RA-189 approves only prospective Cylinder gate promotion; no 864-case gate executed. No CP3 acceptance or selector497 promotion. |
 
-## Mandatory next turn — `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT` — EXACT NEXT
+## Current unfinished turn — `M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH` — RESUME
 
-- **Type / owner:** Code + Build. Normative [DESIGN.md Amendment 24](DESIGN.md); [RA-189](Architecture_M6_CP3_DEFN_P13_O15C_Continuation_Width_Review_20261031.md) §4 is the frozen exact scope, expected checks, stop conditions and falsifiers. TB63 [report](Architecture_M6_CP3_TB63_P13_Census_Full_Gate_Execution_Report_20261031.md) is immutable evidence, not to rerun as CB65.
+- **After Review closeout:** CB65 Code + Build. Normative [DESIGN.md Amendment 24](DESIGN.md); [RA-189](Architecture_M6_CP3_DEFN_P13_O15C_Continuation_Width_Review_20261031.md) §4 is the frozen exact scope, expected checks, stop conditions and falsifiers. TB63 [report](Architecture_M6_CP3_TB63_P13_Census_Full_Gate_Execution_Report_20261031.md) is immutable evidence, not to rerun as CB65.
 - **Objective:** versioned, exact-rational-proposed and canonical dyadic-published A2a exit construction with bounded continuation state, exact source-edge orientation and exact predicate validation **on published geometry**; preserve input/source/A0/A1 authority, fail-closed guards and all independent validators. This geometry is not promised equivalent to the unmodified exact integral curve. Implement typed collision, endpoint, separation and direction-width rejection and non-vacuous receipts.
 - **Scope:** only related production code, valid falsifiable regression source and compile-only GitHub Actions eight-target Release/static GMP+GMPXX package. **No executable/test/benchmark runs in CB65.** No default-on approximate topology, no selector promotion, no CP3 acceptance, no BunnyRandom slit repair.
-- **Future Test + Benchmark:** only after valid package, `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC` artifact-only; use frozen 864-row manifest `b50463eaefcc61df28a259fd31a223d75d86628c0df1f21cf1d1420f42bcdfab` and 81-row v5 ledger `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`; separately measure three P13 census rows. The existing 863 tests and selector497 remain unchanged.
-- **On successful CB65 closeout:** exact TB64 successor as above, not a presumed successful Vase outcome. Stop at any missing exactness, receipt or source/manifest fidelity proof.
+- **Future TB64:** after CB65 package, artifact-only P8 on 864-row manifest/81-row v5 ledger (hashes in Inputs), plus three independent P13 census processes. Selector497 unchanged.
+- **After CB65:** TB64 only after exactness, receipt and source/manifest fidelity checks; Vase success is not presumed.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — NEXT | `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT` | Code + Build, dyadic A2a producer, compile/package only |
-| 2 — CONDITIONAL | `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC` | Only after exact CB65 source/package/compile evidence |
+| 1 — CURRENT | `M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH` | Review closeout: unmodified `review_check.py boundary` against authentic Git ancestry; do not start CB65 |
+| 2 — CONDITIONAL | `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT` | Only after current Review is COMPLETE; Code + Build only |
+| 3 — CONDITIONAL | `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC` | Only after exact CB65 source/package/compile evidence |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT** (Code + Build).
+`load_next`: **M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH** (Review closeout).
 
 Read first:
 - [RA-189](Architecture_M6_CP3_DEFN_P13_O15C_Continuation_Width_Review_20261031.md): §4 freezes CB65 source scope, dyadic policy and stop conditions; DESIGN Amendment 24 owns geometry semantics.
 - [RA-188](Architecture_M6_CP3_DEFN_P13_Probe_Adjudication_20261031.md): §§3–5 defined the historical O15c alternatives and Review gate.
 - [TB63 report](Architecture_M6_CP3_TB63_P13_Census_Full_Gate_Execution_Report_20261031.md) for immutable full-gate and P13 census evidence.
-- `GitHub_Workflow_Policy.md`, `Turn_Cadence.md`, GMP compile policy, code/build turn checklist; review P8 harness only when planning TB64.
+- `Review_Turn_Policy.md`, `review_check.py boundary`; authentic Git history is unavailable in the source snapshot (script exit 1). GitHub independently confirms baseline ancestry and 5/5 protected headings, but no script PASS is claimed.
 
 Inputs:
 
