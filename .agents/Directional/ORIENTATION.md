@@ -2,8 +2,8 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-31 · `M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH` ([RA-189](Architecture_M6_CP3_DEFN_P13_O15C_Continuation_Width_Review_20261031.md)). TB63 Linux immutable gate **863/863**, 82 deferred; separate P13 census Cylinder PASS, Vase exact A4 magnitude RED, BunnyRandom barrier-slit A3 RED. **Prospective** next gate 864/81 (Cylinder appended); no executed 864 gate.
-**Next:** `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT` (Code + Build only). Standing state: CP2 491/491 last accepted; CP3 and selector497 not promoted; stable 66/17/49, debt 1.
+**Currency:** 2026-10-31 · `M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH` closed by [RA-190](Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md), which probe-adjudicates RA-189. The A2a dyadic exit (Amendment 24) leaves the 864-row candidate gate unchanged on macOS (only O16) and gets **Vase past A4**; Vase now fails at completion (`SideSubdivisionRepair:InvalidInputIncidence`, P13-d). TB63 Linux **863/863** is the latest executed gate.
+**Next:** `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT` (exact patch) → `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC` (gate 866, membership 947). Standing state: CP2 491/491 last accepted; CP3 and selector497 not promoted; stable 66/17/49, debt 1.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -105,23 +105,24 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** RA-188 splits P13 into three independent slices; RA-189 freezes the bounded A2a candidate and Cylinder promotion for CB65/TB64.
+**Immediate:** RA-188 split P13 into three slices. RA-189/RA-190 settle P13-b with the A2a dyadic exit, and Vase's next frontier is P13-d.
 - **P13-a, Cylinder:** a performance defect, fixed by CB64 and confirmed by TB63's census; prospectively promoted as gate row 864.
-- **P13-b, Vase:** O15c. Exact A4 width grows with face count; RA-189 defines a bounded, versioned dyadic *new output* rather than claiming equivalence to the exact integral curve. CB65 must prove safety; no Vase direct success yet.
+- **P13-b, Vase:** O15c. Exact A4 width grows with face count. Amendment 24 publishes interior exits on the open grid `n/2^52`, at one site in the resolver. Probes: gate unchanged, and Vase passes A4. CB65 → TB64.
+- **P13-d, Vase:** A7 completion side-subdivision repair rejects its input incidence. This happens with exact arithmetic too, so it is independent of the rounding. It goes to a Review DEFN after TB64.
 - **P13-c, BunnyRandom:** DESIGN Amendment 15.3 cannot slit a tip–tip single-edge barrier arc. It goes to a Review DEFN.
 
 macOS O16 stays separate.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | P13 matrix 6/6. Order: CB64 → TB63 (done); next CB65 → TB64 bounded dyadic A4 continuation (P13-b) and the Amendment 15 slit rule (P13-c), each with its own CB→TB; then a re-census, O6/O9 where reached, and Cylinder promoted. | M6-CP3, `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT` next |
+| **1** | P13 matrix 6/6. Order: CB64 → TB63 (done) → CB65 → TB64 (dyadic exit, Cylinder promoted, gate 866). The Amendment 15 slit rule (P13-c) and Vase completion (P13-d) each get a DEFN → CB → TB. Then a re-census, with O6/O9 where reached. | M6-CP3, `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT` next |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
 
-- **Exact local arithmetic versus unbounded carried rational width:** a finite bit cap alone cannot bound face-count growth; RA-189 defines a new canonical dyadic trace-exit geometry with exact predicate checks. It is not an exact reconstruction of the original integral curve, and no direct Vase success is claimed.
+- **Exact local arithmetic versus unbounded carried rational width:** a finite bit cap cannot bound growth with face count. Amendment 24 rounds each interior exit inside the one producer that every consumer replays, so the trace is its published geometry (RA-190). A representation change made outside that producer would split one trace into two geometries.
 
 - **Platform split:** a result that differs between builds is a determinism defect; compute the exact answer before classifying, and change per-file flags only through the build system (RA-176, RA-179).
 - **Masked or unconsumed stimulus:** a stronger earlier guard, or a mutation of data that the checked path never reads, makes a negative vacuous; confirm that the intended guard actually fires (RA-169, RA-178, TB35-REV).

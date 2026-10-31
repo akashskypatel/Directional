@@ -1,3 +1,12 @@
+## RA-190 — O15c dyadic A2a exit, probe adjudication of RA-189 (2026-10-31)
+
+- [RA-190](Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md) keeps RA-189's dyadic exit (`n/2^52`, ties to even, integer arithmetic) and its Cylinder promotion. **DESIGN Amendment 24 is rewritten:**
+  - It rounds at one site, the `EdgeExit` construction in `resolve_field_branch_continuation`, which every consumer replays.
+  - It uses the open grid `1 ≤ n ≤ 2^52 − 1`, so an interior exit stays interior and there is no new failure.
+  - There are no certificates or receipts. The trace is defined by its published geometry.
+- Probes (macOS): the 864-row gate is unchanged (only O16), and 81/81 deferred verdicts are unchanged. **Vase passes A4** and fails at completion `SideSubdivisionRepair:InvalidInputIncidence`, as it also does with uncapped exact arithmetic (P13-d).
+- CB65 is an exact patch (`ed125319…`). TB64 runs the 866-row manifest `289d887c…` with ledger v5, membership 947. New: P13-d and O18 (the completion rejection publishes no detail). O15c is discharged for A2a once TB64 matches.
+
 ## RA-188 — P13 probe adjudication (2026-10-31)
 
 - [RA-188](Architecture_M6_CP3_DEFN_P13_Probe_Adjudication_20261031.md) re-observed the three deferred design rows at current source.

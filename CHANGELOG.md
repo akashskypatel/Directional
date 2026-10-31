@@ -1,3 +1,17 @@
+# 2026-10-31 — RA-190 O15c dyadic A2a exit adjudicated; CB65 exact patch next
+
+- [RA-190](.agents/Directional/Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md) closes `M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH` (Review, scratch probes).
+  - The unmodified `review_check.py boundary` passes on an authentic Git checkout.
+  - It upholds RA-189's dyadic exit and Cylinder promotion, and rules its defects R1–R7: rounding site, endpoint failure, vacuous orientation, undefined certificates, no probe, monolithic CB, membership.
+- **Probes (macOS):**
+  - 864-row candidate gate with the dyadic exit: 863/864 (only O16); 74 rounding rows pass.
+  - Deferred rows: 81/81 verdicts unchanged between HEAD and dyadic mode.
+  - Vase passes A4 and fails at completion `SideSubdivisionRepair:InvalidInputIncidence`, as it also does with uncapped exact arithmetic (9,131 bits).
+- DESIGN Amendment 24 is rewritten.
+- New 866-row TB64 manifest (`289d887c…`, `SELF_CHECK_PASS`, membership 947).
+- New: P13-d (Vase completion DEFN) and O18.
+- **Next:** `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT` (exact patch `ed125319…`) → `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC`.
+
 # 2026-10-31 — RA-189 P13 O15c bounded A2a definition and Cylinder gate membership
 
 - `M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH` (Review): [RA-189](.agents/Directional/Architecture_M6_CP3_DEFN_P13_O15C_Continuation_Width_Review_20261031.md) independently re-verified TB63 863/863 Linux gate and three-case census; selected versioned canonical dyadic A2a exit construction with exact predicates (DESIGN Amendment 24), explicitly **not** the original exact integral trace. Rejected finite-cap inflation and direction-only rounding as non-solutions to accumulated rational width. No source/test/build changes or production Vase success.

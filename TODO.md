@@ -1,4 +1,4 @@
-## CURRENT — RA-189 O15c definition complete; CB65 bounded A2a exit next (2026-10-31)
+## CURRENT — RA-190 O15c dyadic exit adjudicated; CB65 exact patch next (2026-10-31)
 
 - [x] Done (records in `.agents/Directional/`, history in `CHANGELOG.md`): RP-01 closure (RA-174…[RA-179](.agents/Directional/Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md)) → O15 (RA-180, CB55, TB54, [RA-181](.agents/Directional/Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md)) → row 935 (RA-182, CB56, TB55) → O2 entry gate ([RA-183](.agents/Directional/Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md), CB57, TB56) → **DIAG-RETAIN** ([RA-184](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md), [RA-185](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md), [RA-186](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md), [RA-187](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md); CB58–CB61, last source `e1fd0e4b…`). TB57–TB60 ran on macOS arm64 only; the latest, TB60, gave **862/863** on the TB58 manifest (863 rows; only row 283, O16), membership 945. TB59 ran only CLI cases; TB60 is the full-gate TB for both CB60 and CB61 (RA-187.1).
 - [x] **Independent Linux TB61 full-gate review of CB58–CB61; owner authorized exact Linux CLI/GUI successor** (user direction, 2026-10-31; handoff step 1):
@@ -22,10 +22,30 @@
   - CB64 immutable artifact `13050072901`, source `d56d9905…`; full [gate run 41224438897](https://github.com/akashskypatel/Directional/actions/runs/41224438897), result `13051413577`, **863/863 PASS** (854 GUARD / 9 POSITIVE), 82 DEFERRED and exact membership 945, 1734/1734 result checksums, 863 per-process logs, postflight true; no rebuild.
   - [Census run 41224395380](https://github.com/akashskypatel/Directional/actions/runs/41224395380), result `13051470763`, **1 PASS / 2 expected RED**: Cylinder PASS, BunnyRandom `CutTransportDomainIdentityMismatch` / `cutChi=-3`, Vase `detail=BranchContinuationExactMagnitudeExceeded`; no new regression. Stable 66/17/49, debt 1 and CP2 491/491 unchanged; selector497/CP3 not promoted.
 - [x] **`M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH`** (Review) — [RA-189](.agents/Directional/Architecture_M6_CP3_DEFN_P13_O15C_Continuation_Width_Review_20261031.md) elects versioned exact-predicate dyadic A2a output, not original exact curve equivalence; approves prospective Cylinder 864/81 gate membership only. TB63 remains 863/863 and Vase RED.
-- [ ] **NEXT `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT`** (Code + Build) — implement only RA-189/Amendment 24 A2a canonical dyadic new-output contract, typed refusal, independent receipts, compile-only; conditional TB64 after package validation. No existing validator weakening, no TB execution in CB65.
-- [ ] **Review track** (probe DEFNs; may run during CB64/TB63):
-  - **`M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH`** (Vase). Choose a bounded continuation policy: a revised bound, a rounded direction, or a canonical dyadic exit parameter with exact predicates on the rounded values (RA-188.3). RA-189 prospectively promotes Cylinder to the next gate (manifest 864, ledger v5 81) → CB65 → TB64; not yet executed.
-  - **`M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT`** (BunnyRandom). Amend DESIGN Amendment 15 for tip–tip arcs, either by changing the representation or by a typed rail policy → CB66 → TB65.
+- [x] **[RA-190](.agents/Directional/Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md) closes `M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH`** (Review, scratch probes on current source).
+  - The block was procedural. The unmodified `review_check.py boundary` passes on an authentic checkout.
+  - RA-189's dyadic choice and Cylinder promotion stand. Its design defects R1–R7 are ruled:
+    - Rounding must happen inside the resolver, because four consumers replay it.
+    - The endpoint-collapse failure is replaced by the open grid, since exact HEAD arithmetic already makes 12 near-vertex exits on the prescribed sphere.
+    - The certificate and receipt obligations are withdrawn.
+    - The monolithic CB is replaced by an exact patch.
+    - Membership becomes 947.
+  - Probes (macOS):
+    - 864-row gate: 863/864 (only O16); 74 rounding rows pass.
+    - Deferred rows: 81/81 verdicts unchanged.
+    - **Vase passes A4**, then fails at completion `SideSubdivisionRepair:InvalidInputIncidence`; uncapped exact arithmetic gives the same result.
+  - DESIGN Amendment 24 is rewritten.
+- [ ] **NEXT `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT`** (CB; implementation agent; Linux).
+  - RA-190.8 exact patch, SHA `ed125319…`, numstat `26 1` / `26 2` / `79 0` / `2 1`, on base `d56d9905…`.
+  - Eight-target compile, no runtime.
+  - Mismatch → `M6-CP3-PLAN-P13-DYADIC-EXIT-STOP`; infrastructure → `M6-CP3-CB65A-P13-DYADIC-EXIT-ORCH`.
+- [ ] **Then `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC`** (TB-EXEC; Linux).
+  - Gate: 866-row manifest `289d887c…` plus ledger v5 `fd433f54…`, pre-registered 866/866, membership 947.
+  - Census `3af1dc0d…`: Cylinder PASS; BunnyRandom `CutTransportDomainIdentityMismatch` `cutChi=-3`; Vase `NotProductionReady:completion` with `completion=SideSubdivisionRepair:InvalidInputIncidence`.
+  - Mismatch → `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-REV`.
+- [ ] **Review track** (probe DEFNs):
+  - **`M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT`** (BunnyRandom, P13-c). Amend DESIGN Amendment 15 for tip–tip arcs, either by changing the representation or by a typed rail policy → CB66 → TB65. It may run in parallel with CB65/TB64.
+  - **`M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE`** (P13-d, after TB64). A7 side-subdivision repair rejects its input incidence (`SurfaceCellFeasibilityRepair.cpp:2123`). Find the producing stage and fix it at its owner. This turn also owns O18.
   - Then re-census P13, take O6/O9 where they are reached, and aim for matrix 6/6.
 - [x] **DIAG-RETAIN (user-directed, 2026-10-21): closed** by CB58–CB61 (snapshots, display adapter and dump, CLI sidecar, GUI layers). Open: DR1 (no in-helper A6/A7 rejection witness; waits for a stimulus), DR3 (pre-existing snapshot fields written when retention is off). DR2 (multi-component snapshot drop) and DR4 (`--diagnostics-prefix` cut sidecars throw on SurfaceCells products, `src/cli/RemeshOutput.cpp:388–392`) → M8-CP2. The GUI layers' appearance is a manual check.
 - [ ] **Then:** retire CB → FIXTURE slices (each DEFN first confirms the production pipeline reaches its stage) → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV.
@@ -33,16 +53,17 @@
 - [ ] Carried separately (owners per RA-174.3):
   - **O2b** (retire the public no-atlas APIs, the legacy detail branches, their 12 gated unit tests and the historical suite) → a retirement DEFN after P13. **O16** (row 283, LegacyInteger NFunctionMesher macOS failure, not FMA) → a legacy-backend probe DEFN; not CP3-blocking.
   - O6 (bounded disks that are not rectangular are rejected by design). No P13 fixture reaches it at current source (RA-188.2) → P13 re-census.
+  - **O18** (the completion rejection at `RemeshPipeline.cpp:14352–14357` publishes no detail code or first-invalid stage; the terminal reads `detail=None`) → `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE`.
   - **O17** (production code writes diagnostics to stderr unconditionally: `GlobalTopologyPlan.cpp:2634`, `FieldTransportAtlas.cpp:746`) → M8-CP2.
   - O7 (oracle-tests target does not compile) → its own probe DEFN.
   - O8 (`InvalidFrontBoundaryAuthority` on the 3×3 midline at `lengthRatio=0.29`) and O10 (non-hard isolation-barrier producer) → CP3-exit probe DEFNs after P13.
   - O9 ruled (RA-178.3): kept as accepted-defensive. Falsifier (a produced route with more than one step) → P13 re-census, once Vase or BunnyRandom reaches A4 routes.
   - O12 (R61 `review_check.py` selector collision) → Review tooling.
   - O14 → P8.
-  - **O15c** has fired on Vase (RA-188.2) → `M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH`. **O15b** (fields-stage `principal_matching` argmin tie; degenerate input only) → CP3-REV.
+  - **O15c** → RA-190 dyadic exit (Amendment 24); discharged for A2a when TB64 matches. The 4,096-bit guard stays as the backstop. **O15b** (fields-stage `principal_matching` argmin tie; degenerate input only) → CP3-REV.
   - RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4. G4-B002 exit row is gated; the discharge decision belongs to CP3-REV.
 - **Rules:**
-  - CB and TB run on the Linux workflow runner. A TB always runs the full current gate, even after a CLI- or GUI-only CB (RA-187); the current gate is the TB58 manifest (863 rows) with ledger v4 (82).
+  - CB and TB run on the Linux workflow runner. A TB always runs the full current gate, even after a CLI- or GUI-only CB (RA-187); the last executed gate is the TB58 manifest (863 rows) with ledger v4 (82); from TB64 the gate is the 866-row manifest with ledger v5 (81).
   - One CB per exact patch; implementation agents get only exact patches and frozen manifests. Probe-requiring DEFN and TB-REV turns stay on the Review track. Every gate run needs `MEMBERSHIP_LEDGER`.
   - **Naming (RA-167.6):** types per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier.
   - RA-170 (a gate pass says nothing about off-gate tests), RA-171 (self-check every manifest; census rows are OBSERVE), RA-172 (a DEFN needs a reachable exit), RA-174 (verify completeness against the package, not against the gate's own scope), RA-176 (a result that differs by platform is a determinism defect; compute the exact answer before classifying), RA-178 (a test that targets an accepted-defensive guard has no repair exit; witness the guard at its checked factory or retire the test), RA-179 (trace fixture use through helper accessors, not literal grep; confirm per-file flag changes in the built object).

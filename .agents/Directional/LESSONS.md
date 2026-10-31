@@ -175,6 +175,12 @@ This document records **reusable failure-derived engineering lessons**, not an e
   must "agree exactly" at every merge also meets legitimate merges: a shared rail vertex is p = 1 on one
   edge and p = 0 on the next. Run the rule over every merge the data passes through, including tolerance
   dedups and junctions, before you specify rejection (RA-96.2 A2).
+- **Change a representation inside the producer that every consumer replays.** RA-189 placed the A2a
+  dyadic rounding at the call sites that store a trace's next entry. But four consumers re-derive a
+  segment's exit by calling the continuation resolver on the stored entry, so the replayed exit would no
+  longer equal the next entry. Before specifying where a value is changed, list every caller of its
+  producer. Before adding a typed failure for a boundary case, measure how often the unchanged code
+  already reaches that case: exact arithmetic made 12 near-vertex exits on the prescribed sphere (RA-190).
 
 ## Geometry, topology, and mathematical obligations
 
