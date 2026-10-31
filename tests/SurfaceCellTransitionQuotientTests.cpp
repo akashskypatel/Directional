@@ -9805,6 +9805,53 @@ TEST(SurfaceCellTransitionQuotient,
             released.surfaceCellContext.productSnapshots.traceNetwork.phaseFront.produced_product());
 }
 
+// DIAG-RETAIN (RA-184): the A5-A7 materialization products are retained as
+// one-way snapshots iff intermediate geometry is requested, without changing
+// the outcome.
+TEST(SurfaceCellTransitionQuotient,
+     MaterializationProductsAreRetainedIfAndOnlyIfRequested) {
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/plane.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/plane.rawfield");
+  directional::TriMesh mesh;
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
+  const Eigen::MatrixXd raw = read_rawfield(fieldPath, mesh.F.rows());
+  const auto run = [&](const bool retain) {
+    directional::pipeline::RemeshOptions options;
+    options.lengthRatio = 0.2;
+    options.integralSeamless = false;
+    options.roundSeams = false;
+    options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+    options.surfaceCells.enabled = true;
+    options.surfaceCells.fallbackPolicy =
+        directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+    options.surfaceCells.allowSourceGridRecovery = false;
+    options.surfaceCells.retainIntermediateGeometry = retain;
+    options.surfaceCells.injectFailureAfterStage = 3;
+    return directional::pipeline::remesh_from_raw_cross_field(
+        mesh.V, mesh.F, raw, options);
+  };
+  const auto retained = run(true);
+  const auto released = run(false);
+  EXPECT_EQ(retained.diagnostics.terminalFailureCode,
+            released.diagnostics.terminalFailureCode);
+  EXPECT_EQ(retained.diagnostics.terminalFailureStage,
+            released.diagnostics.terminalFailureStage);
+  const auto &kept = retained.surfaceCellContext.productSnapshots;
+  const auto &dropped = released.surfaceCellContext.productSnapshots;
+  ASSERT_NE(nullptr, kept.occurrenceComplex);
+  ASSERT_NE(nullptr, kept.quotientProduct);
+  ASSERT_NE(nullptr, kept.sourceAttachedGeometry);
+  EXPECT_EQ(kept.occurrenceComplex->cells().size(),
+            kept.quotientProduct->classed_cells().size());
+  EXPECT_EQ(kept.quotientProduct->classes().size(),
+            kept.sourceAttachedGeometry->vertices().size());
+  EXPECT_EQ(nullptr, dropped.occurrenceComplex);
+  EXPECT_EQ(nullptr, dropped.quotientProduct);
+  EXPECT_EQ(nullptr, dropped.sourceAttachedGeometry);
+}
+
 TEST(SurfaceCellTransitionQuotient,
      SemanticDigestIsInvariantToVertexFaceAndComponentRowPermutation) {
   const auto baseline = semantic_two_component_result();

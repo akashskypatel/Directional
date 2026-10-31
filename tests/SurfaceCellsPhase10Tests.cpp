@@ -9084,6 +9084,56 @@ TEST(SurfaceCellAuthorityContractCutover,
   EXPECT_EQ("InvalidHardRailTransport", rejected.failure);
 }
 
+// DIAG-RETAIN (RA-184): each A5-A7 product is copied as soon as it is
+// produced, the copies never change the materialization result, and a stage
+// that rejects leaves no copy of its own or any later product.
+TEST(SurfaceCellAuthorityContractCutover,
+     MaterializationDiagnosticsAreCopiesAndStopAtTheFailingStage) {
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition())
+      << hard_rail_first_failure_detail(fixture.network);
+  const auto &product = fixture.network.phaseFront.product();
+
+  directional::pipeline::AuthoritativePhaseFrontDiagnostics accepted;
+  const auto materialized =
+      directional::pipeline::build_authoritative_phase_front_mesh_with_diagnostics(
+          fixture.mesh.V, fixture.mesh.F, product, accepted);
+  const auto plain = directional::pipeline::build_authoritative_phase_front_mesh(
+      fixture.mesh.V, fixture.mesh.F, product);
+  ASSERT_TRUE(materialized.success) << materialized.failure;
+  EXPECT_EQ(plain.mesh.quads, materialized.mesh.quads);
+  EXPECT_TRUE(plain.mesh.vertexPositions == materialized.mesh.vertexPositions);
+  ASSERT_NE(nullptr, accepted.occurrenceComplex);
+  ASSERT_NE(nullptr, accepted.quotientProduct);
+  ASSERT_NE(nullptr, accepted.sourceAttachedGeometry);
+  EXPECT_EQ(materialized.mesh.quads.size(), accepted.occurrenceComplex->cells().size());
+  EXPECT_EQ(materialized.mesh.quads.size(), accepted.quotientProduct->classed_cells().size());
+  EXPECT_EQ(accepted.quotientProduct->classes().size(),
+            accepted.sourceAttachedGeometry->vertices().size());
+
+  // The strict hard-rail transport negative is rejected by A5 itself.
+  const auto pairs = hard_rail_phase_front_pairs(product);
+  ASSERT_FALSE(pairs.empty());
+  auto edges = product.edges();
+  auto &first = edges[static_cast<std::size_t>(pairs.front().first)];
+  auto &second = edges[static_cast<std::size_t>(pairs.front().second)];
+  second.route = first.route;
+  const auto tampered = rebuild_phase_front_with_edges(product, std::move(edges), fixture);
+  directional::pipeline::AuthoritativePhaseFrontDiagnostics rejectedDiagnostics;
+  const auto rejected =
+      directional::pipeline::build_authoritative_phase_front_mesh_with_diagnostics(
+          fixture.mesh.V, fixture.mesh.F, tampered, rejectedDiagnostics);
+  const auto plainRejected = directional::pipeline::build_authoritative_phase_front_mesh(
+      fixture.mesh.V, fixture.mesh.F, tampered);
+  EXPECT_FALSE(rejected.success);
+  EXPECT_EQ("InvalidHardRailTransport", rejected.failure);
+  EXPECT_EQ(plainRejected.failure, rejected.failure);
+  EXPECT_EQ(nullptr, rejectedDiagnostics.occurrenceComplex);
+  EXPECT_EQ(nullptr, rejectedDiagnostics.quotientProduct);
+  EXPECT_EQ(nullptr, rejectedDiagnostics.sourceAttachedGeometry);
+}
+
 TEST(SurfaceCellAuthorityContractCutover,
      HardRailPairChangedRouteContentRejectsStrictTransport) {
   const auto fixture = build_rectangular_hard_rail_phase_front();

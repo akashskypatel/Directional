@@ -9224,7 +9224,8 @@ build_authoritative_phase_front_mesh_with_hard_features(
     const Eigen::MatrixXd &sourceVertices,
     const Eigen::MatrixXi &sourceFaces,
     const geometry::SurfacePhaseFrontProduct &phaseFront,
-    const std::set<authority::SourceEdgeTopologyKey> *hardFeatureRailEdges) {
+    const std::set<authority::SourceEdgeTopologyKey> *hardFeatureRailEdges,
+    AuthoritativePhaseFrontDiagnostics *diagnostics) {
   AuthoritativePhaseFrontMeshResult result;
 
   result.mesh.sourcePatch = 0;
@@ -9259,6 +9260,10 @@ build_authoritative_phase_front_mesh_with_hard_features(
       result.invalidEdge = occurrenceError->frontEdge.value();
     }
     return result;
+  }
+  if (diagnostics != nullptr) {
+    diagnostics->occurrenceComplex =
+        std::make_shared<const SurfaceOccurrenceComplex>(*occurrenceComplex);
   }
 
   auto quotientConstruction =
@@ -9313,6 +9318,10 @@ build_authoritative_phase_front_mesh_with_hard_features(
     }
     return result;
   }
+  if (diagnostics != nullptr) {
+    diagnostics->quotientProduct =
+        std::make_shared<const SurfaceQuotientProduct>(*quotientProduct);
+  }
 
   auto geometryConstruction = SourceAttachedGeometryProducer::produce(
       sourceVertices, sourceFaces, *occurrenceComplex, *quotientProduct);
@@ -9356,6 +9365,10 @@ build_authoritative_phase_front_mesh_with_hard_features(
       if (legacy != legacyFailureBySite.end()) result.failure = legacy->second;
     }
     return result;
+  }
+  if (diagnostics != nullptr) {
+    diagnostics->sourceAttachedGeometry =
+        std::make_shared<const SourceAttachedGeometryProduct>(*geometryProduct);
   }
 
   static const std::set<authority::SourceEdgeTopologyKey> kNoHardFeatureEdges;
@@ -9409,7 +9422,16 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     const Eigen::MatrixXi &sourceFaces,
     const geometry::SurfacePhaseFrontProduct &phaseFront) {
   return build_authoritative_phase_front_mesh_with_hard_features(
-      sourceVertices, sourceFaces, phaseFront, nullptr);
+      sourceVertices, sourceFaces, phaseFront, nullptr, nullptr);
+}
+
+AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh_with_diagnostics(
+    const Eigen::MatrixXd &sourceVertices,
+    const Eigen::MatrixXi &sourceFaces,
+    const geometry::SurfacePhaseFrontProduct &phaseFront,
+    AuthoritativePhaseFrontDiagnostics &diagnostics) {
+  return build_authoritative_phase_front_mesh_with_hard_features(
+      sourceVertices, sourceFaces, phaseFront, nullptr, &diagnostics);
 }
 
 } // namespace directional::pipeline
@@ -12380,6 +12402,9 @@ remesh_from_raw_cross_field_impl_with_stage_products(
       result.surfaceCellContext.hasEmbeddedArrangementArcs = false;
       result.surfaceCellContext.productSnapshots.arrangement = geometry::SurfaceCellComplex{};
       result.surfaceCellContext.hasArrangement = false;
+      result.surfaceCellContext.productSnapshots.occurrenceComplex.reset();
+      result.surfaceCellContext.productSnapshots.quotientProduct.reset();
+      result.surfaceCellContext.productSnapshots.sourceAttachedGeometry.reset();
 
       result.surfaceCellContext.tracingCurrentOwnedBytes = 0U;
       result.surfaceCellContext.flowRepCurrentOwnedBytes = 0U;
@@ -13337,10 +13362,21 @@ remesh_from_raw_cross_field_impl_with_stage_products(
     const bool useAuthoritativePhaseFront = phaseFrontProduct != nullptr;
     AuthoritativePhaseFrontMeshResult authoritativePhaseFrontMesh;
     if (useAuthoritativePhaseFront) {
+      AuthoritativePhaseFrontDiagnostics materializationDiagnostics;
       authoritativePhaseFrontMesh =
           build_authoritative_phase_front_mesh_with_hard_features(
               meshWhole.V, meshWhole.F, *phaseFrontProduct,
-              &hardFeatureRailEdges);
+              &hardFeatureRailEdges,
+              retainForExecution ? &materializationDiagnostics : nullptr);
+      if (retainForExecution) {
+        auto &snapshots = result.surfaceCellContext.productSnapshots;
+        snapshots.occurrenceComplex =
+            std::move(materializationDiagnostics.occurrenceComplex);
+        snapshots.quotientProduct =
+            std::move(materializationDiagnostics.quotientProduct);
+        snapshots.sourceAttachedGeometry =
+            std::move(materializationDiagnostics.sourceAttachedGeometry);
+      }
       if (!authoritativePhaseFrontMesh.success) {
         result.diagnostics.surfaceCellFirstInvalidProducerStage =
             "tracing/phase-front-materialization";

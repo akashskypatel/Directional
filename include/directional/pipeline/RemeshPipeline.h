@@ -22,6 +22,7 @@
 #include <iostream>
 #include <limits>
 #include <map>
+#include <memory>
 #include <numeric>
 #include <optional>
 #include <set>
@@ -289,6 +290,10 @@ struct RemeshOptions {
   std::function<void(const MesherData &)> mesherDataCallback;
 };
 
+class SurfaceOccurrenceComplex;
+class SurfaceQuotientProduct;
+class SourceAttachedGeometryProduct;
+
 struct SurfaceCellContextProductDebug {
   std::string name;
   std::string type;
@@ -341,6 +346,13 @@ struct SurfaceCellDiagnosticProductSnapshots {
   bool hasOptimizationResult = false;
   geometry::SurfaceFinalValidationReport validationResult;
   bool hasValidationResult = false;
+
+  // A5-A7 products of the phase-front materialization, including those
+  // completed before a later stage rejected. Retained only when intermediate
+  // geometry is retained; immutable copies, never read back.
+  std::shared_ptr<const SurfaceOccurrenceComplex> occurrenceComplex;
+  std::shared_ptr<const SurfaceQuotientProduct> quotientProduct;
+  std::shared_ptr<const SourceAttachedGeometryProduct> sourceAttachedGeometry;
 };
 
 /**
@@ -1560,6 +1572,13 @@ struct AuthoritativePhaseFrontMeshResult {
   std::optional<VerificationReport> verificationReport;
 };
 
+/// Diagnostic copies of each A5-A7 product as soon as it is produced.
+struct AuthoritativePhaseFrontDiagnostics {
+  std::shared_ptr<const SurfaceOccurrenceComplex> occurrenceComplex;
+  std::shared_ptr<const SurfaceQuotientProduct> quotientProduct;
+  std::shared_ptr<const SourceAttachedGeometryProduct> sourceAttachedGeometry;
+};
+
 std::string verification_failure_message(const VerificationReport &report);
 
 class SurfaceProductVerifier;
@@ -1633,6 +1652,14 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     const Eigen::MatrixXd &sourceVertices,
     const Eigen::MatrixXi &sourceFaces,
     const geometry::SurfacePhaseFrontProduct &phaseFront);
+
+/// The same materialization, also copying each A5-A7 product into
+/// `diagnostics` as soon as it is produced (one-way observation only).
+AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh_with_diagnostics(
+    const Eigen::MatrixXd &sourceVertices,
+    const Eigen::MatrixXi &sourceFaces,
+    const geometry::SurfacePhaseFrontProduct &phaseFront,
+    AuthoritativePhaseFrontDiagnostics &diagnostics);
 
 using RemeshPipelineClock = std::chrono::steady_clock;
 
