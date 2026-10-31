@@ -5351,6 +5351,69 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   EXPECT_TRUE(rejected.proposals.empty()) << detail.str();
 }
 
+// O2 (RA-183): a closed feature-free input leaves every region NotApplicable.
+// Without an A3 atlas the seed fallback would publish seeds, traces and
+// proposals decided by legacy matching; A4 must reject at the same
+// atlas-binding locus as a produced phase front without an atlas.
+TEST(SurfaceCellAuthorityContractCutover,
+     NoAtlasNotApplicableInputRejectsBeforeLegacySeedFallback) {
+  Eigen::MatrixXd vertices(8, 3);
+  vertices << 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
+              0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1;
+  Eigen::MatrixXi faces(12, 3);
+  faces << 0, 2, 1, 0, 3, 2, 4, 5, 6, 4, 6, 7, 0, 1, 5, 0, 5, 4,
+           1, 2, 6, 1, 6, 5, 2, 3, 7, 2, 7, 6, 3, 0, 4, 3, 4, 7;
+  directional::fields::CrossFieldResult field;
+  field.degree = directional::fields::kCrossFieldDegree;
+  field.primaryDirections.resize(faces.rows(), 3);
+  field.secondaryDirections.resize(faces.rows(), 3);
+  for (int face = 0; face < faces.rows(); ++face) {
+    field.primaryDirections.row(face) = Eigen::RowVector3d::UnitX();
+    field.secondaryDirections.row(face) = Eigen::RowVector3d::UnitY();
+  }
+  std::map<directional::authority::SourceEdgeTopologyKey, int> incidence;
+  for (int face = 0; face < faces.rows(); ++face)
+    for (int corner = 0; corner < 3; ++corner)
+      ++incidence[test_source_edge_topology(faces(face, corner),
+                                            faces(face, (corner + 1) % 3))];
+  const auto interior = static_cast<int>(std::count_if(
+      incidence.begin(), incidence.end(),
+      [](const auto &entry) { return entry.second == 2; }));
+  field.matching = Eigen::VectorXi::Zero(interior);
+  field.effort = Eigen::VectorXd::Zero(interior);
+  field.matchingComputed = true;
+  field.singularitiesComputed = true;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(static_cast<std::size_t>(faces.rows()), 0);
+  options.sourceFaceSheets.assign(static_cast<std::size_t>(faces.rows()), 0);
+  options.fieldTransportAtlas = nullptr;
+  options.sourceAuthority = nullptr;
+  const Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(vertices.rows(), 0.25);
+
+  const auto rejected = directional::geometry::build_surface_cell_network(
+      vertices, faces, field, targetSize, options);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            rejected.phaseFront.disposition());
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                PublishedProductRejected,
+            rejected.phaseFront.rejection_reason());
+  const auto *failure = rejected.phaseFront.rejection();
+  ASSERT_NE(nullptr, failure);
+  EXPECT_EQ(std::make_optional(
+                directional::geometry::SurfacePhaseFrontProductErrorCode::
+                    InvalidSourceAuthority),
+            failure->publishedProductError);
+  EXPECT_EQ(std::make_optional(
+                directional::geometry::SurfacePhaseFrontSourceAuthorityDetail::
+                    AtlasSourceMismatch),
+            failure->publishedProductSourceAuthorityDetail);
+  EXPECT_EQ("atlas-binding", failure->publishedProductSourceAuthoritySite);
+  EXPECT_EQ(nullptr, rejected.phaseFront.produced_product());
+  EXPECT_TRUE(rejected.seeds.empty());
+  EXPECT_TRUE(rejected.traces.empty());
+  EXPECT_TRUE(rejected.proposals.empty());
+}
+
 TEST(SurfaceCellsPhase10,
      ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary) {
   const auto meshPath = directional::tests::benchmark_fixture_path(

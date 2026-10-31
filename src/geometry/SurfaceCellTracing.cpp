@@ -13165,6 +13165,19 @@ SurfacePhaseFrontResult publish_phase_front_result(
     const SurfaceHardRailClosedChains &hardRailClosedChains,
     const SurfaceHardRailOpenChains &hardRailOpenChains) {
   if (state.disposition == SurfaceCellProducerDisposition::NotApplicable) {
+    // Without an A3 atlas the seed fallback would publish outputs decided by
+    // legacy matching (RA-160 D2). Reject at the checked factory's binding
+    // locus instead, as a produced phase front without an atlas is (RA-183).
+    if (fieldTransportAtlas == nullptr) {
+      state.failure.reason =
+          SurfacePhaseFrontFailureReason::PublishedProductRejected;
+      state.failure.publishedProductError =
+          SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      state.failure.publishedProductSourceAuthorityDetail =
+          SurfacePhaseFrontSourceAuthorityDetail::AtlasSourceMismatch;
+      state.failure.publishedProductSourceAuthoritySite = "atlas-binding";
+      return SurfacePhaseFrontResult::rejected(std::move(state.failure));
+    }
     return SurfacePhaseFrontResult::not_applicable();
   }
   if (state.disposition == SurfaceCellProducerDisposition::Rejected) {
