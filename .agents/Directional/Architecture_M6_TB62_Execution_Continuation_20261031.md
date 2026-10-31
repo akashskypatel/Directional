@@ -1,6 +1,6 @@
 # M6 TB62 immutable Linux CLI/GUI full gate — execution continuation (2026-10-31)
 
-**Canonical turn:** `M6-TB62-DIAG-RETAIN-LINUX-CLI-GUI-FULL-GATE-EXEC` — **IN_PROGRESS**. Entry `Started at: 2026-10-31T13:24:00Z`; leave `Resumed at` empty until a later session. Remain on this turn; **do not start P13 or declare gate acceptance** until a terminal, authenticated, independently reconciled full-gate result is available.
+**Canonical turn:** `M6-TB62-DIAG-RETAIN-LINUX-CLI-GUI-FULL-GATE-EXEC` — **IN_PROGRESS**. Entry `Started at: 2026-10-31T13:24:00Z`; latest `Resumed at: 2026-10-31T14:10:16Z` (preserve the original entry time on future resumptions). Remain on this turn; **do not start P13 or declare gate acceptance** until a terminal, authenticated, independently reconciled full-gate result is available.
 
 ## Verified immutable authority
 - Working branch `agent/surface_cell_quad/p5-recover-bridge-healing`; PR #8 open draft, unmerged.
@@ -13,7 +13,7 @@
 - GitHub Actions run **41205693716**: https://github.com/akashskypatel/Directional/actions/runs/41205693716. Verified both reusable workflow schema jobs and request parse **SUCCESS**; runtime test/benchmark job **IN_PROGRESS** as of 2026-10-31T13:35Z; compile/drive_apply/noop **SKIPPED**. **No 863-case test pass/fail count or semantic acceptance can yet be claimed.**
 - Final mailbox to read after completion: `.workflow-mailbox/m6-tb62-linux-cli-gui-full-gate-20261031-v1/latest.json` on ref **`workflow-mailbox` only**. Earlier read during active execution returned 404 (not published yet); do not duplicate-dispatch or treat it as a failure.
 
-## Supplementary Linux CLI runtime — independently executed without rebuild
+- **Additional continuation check at 2026-10-31T14:11Z:** run 41205693716 remains `in_progress` with the same `Execute immutable artifact-only gate` step active, and the final mailbox remains unpublished. This is still the same un-retried dispatch; no execution verdict or postflight is available. The prior comparable TB61 Linux full gate ran for approximately 71 minutes, so this duration alone is not a diagnosed orchestration failure. This update adds no semantic result or new regression. The exact current-session resume checklist is also emitted as a user-downloadable Markdown file.\n\n## Supplementary Linux CLI runtime — independently executed without rebuild
 - Existing registered three scenarios were executed directly in the local Linux container against the exact packaged `bin/directional`, separate from the 863-case remote gate:
   - A retention plus diagnostics prefix: exit 1 with *pre-existing DR4* triangle OBJ shape error; produced `out.obj`, `plane.degrees.dmat`, `plane.materialization.txt`.
   - B diagnostics prefix only: same known exit 1/DR4; `out.obj`, `plane.degrees.dmat`, no materialization file.
