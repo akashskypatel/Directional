@@ -1,4 +1,4 @@
-## CURRENT — RA-188 splits P13 into three causes; CB64 chart-binding cache next (2026-10-31)
+## CURRENT — CB64 Linux compile/package verified; TB63 full gate and P13 census next (2026-10-31)
 
 - [x] Done (records in `.agents/Directional/`, history in `CHANGELOG.md`): RP-01 closure (RA-174…[RA-179](.agents/Directional/Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md)) → O15 (RA-180, CB55, TB54, [RA-181](.agents/Directional/Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md)) → row 935 (RA-182, CB56, TB55) → O2 entry gate ([RA-183](.agents/Directional/Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md), CB57, TB56) → **DIAG-RETAIN** ([RA-184](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md), [RA-185](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md), [RA-186](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md), [RA-187](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md); CB58–CB61, last source `e1fd0e4b…`). TB57–TB60 ran on macOS arm64 only; the latest, TB60, gave **862/863** on the TB58 manifest (863 rows; only row 283, O16), membership 945. TB59 ran only CLI cases; TB60 is the full-gate TB for both CB60 and CB61 (RA-187.1).
 - [x] **Independent Linux TB61 full-gate review of CB58–CB61; owner authorized exact Linux CLI/GUI successor** (user direction, 2026-10-31; handoff step 1):
@@ -15,11 +15,10 @@
   - **P13-b, Vase:** A4 `BranchContinuationExactMagnitudeExceeded`. The exact width grows about 200 bits per step and fails at step 21. This is the O15c trigger, and it is architectural.
   - **P13-c, BunnyRandom:** A3 `CutTransportDomainIdentityMismatch`. Two tip–tip single-edge barrier arcs cannot be slit under DESIGN Amendment 15.3.
   - The patch probe gate gives 862/863 (only O16 row 283).
-- [ ] **NEXT `M6-CP3-CB64-P13-CHART-BINDING-CACHE`** (CB; implementation agent; Linux).
+- [x] **`M6-CP3-CB64-P13-CHART-BINDING-CACHE`** (CB; implementation agent; Linux).
   - The RA-188.8 exact patch: SHA `fad8986c…`, numstat `7 4` and `2 2`. It caches the build-time source binding in `available()` and adds `detail=` to the design-acceptance `failure_context`.
-  - Build the eight-target CI package.
-  - Outcomes: exact → TB63; mismatch → `M6-CP3-PLAN-P13-CHART-BINDING-STOP`; infrastructure → `M6-CP3-CB64A-P13-CHART-BINDING-ORCH`.
-- [ ] **Then `M6-CP3-TB63-P13-CENSUS-FULL-GATE-EXEC`** (TB-EXEC; implementation agent; Linux).
+  - Exact two-file patch committed as `d56d990580163f4fd0ceda4137f7ecd16ceb6027`; Linux eight-target compile [run 41221202501](https://github.com/akashskypatel/Directional/actions/runs/41221202501), artifact `13050072901`, 28/28 checksums, GMP/GMPXX, no runtime. [CB64 report](.agents/Directional/Architecture_M6_CB64_Chart_Binding_Code_Build_Continuation_20261031.md).
+- [ ] **NEXT `M6-CP3-TB63-P13-CENSUS-FULL-GATE-EXEC`** (TB-EXEC; implementation agent; Linux).
   - The gate: TB58 manifest 863 with ledger v4 82, pre-registered 863/863, membership 945.
   - The census: `Architecture_M6_TB63_P13_Census_Case_Manifest.tsv` (`3af1dc0d…`, three OBSERVE rows, no ledger). Pre-registered: Cylinder PASS; BunnyRandom RED `CutTransportDomainIdentityMismatch` `cutChi=-3`; Vase RED `detail=BranchContinuationExactMagnitudeExceeded`.
   - If both match → the P13-b DEFN, with no TB-REV. Anything else → `M6-CP3-TB63-P13-CENSUS-FULL-GATE-REV`.

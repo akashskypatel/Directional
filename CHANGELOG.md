@@ -1,3 +1,9 @@
+# 2026-10-31 — CB64 chart-binding cache Code + Build, Linux eight-target package
+
+- `M6-CP3-CB64-P13-CHART-BINDING-CACHE` COMPLETE: RA-188.8 two-file exact patch committed `d56d990580163f4fd0ceda4137f7ecd16ceb6027`. [Compile run 41221202501](https://github.com/akashskypatel/Directional/actions/runs/41221202501) succeeded; artifact `13050072901` ZIP SHA-256 `5ef36429396d3d21e9c7b184cd10cd3ef6bdcfc3333d55415a0440631aebad00`; root manifest 28/28, GMP/GMPXX, `runtimeExecution=false`, build/preflight exits 0. No Directional binary executed; no TB or CP3 acceptance claimed. [Report](.agents/Directional/Architecture_M6_CB64_Chart_Binding_Code_Build_Continuation_20261031.md). Exact successor `M6-CP3-TB63-P13-CENSUS-FULL-GATE-EXEC` (artifact-only 863-row gate plus 3 OBSERVE rows). Stable 66/17/49, debt 1, accepted CP2 491/491 unchanged.
+
+---
+
 # 2026-10-31 — RA-188 P13 probe adjudication; CB64 chart-binding cache next
 
 - [RA-188](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Probe_Adjudication_20261031.md) (`M6-CP3-DEFN-P13-PROBE-ADJUDICATION`, Review, scratch probes on current source) reviews the P13 decision.
