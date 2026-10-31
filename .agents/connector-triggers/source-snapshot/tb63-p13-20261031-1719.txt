@@ -1,3 +1,0 @@
-Purpose: exact source snapshot for M6-CP3-TB63-P13-CENSUS-FULL-GATE-EXEC
-Baseline branch authority: 4ca5d9bed446337da6d7e40cfa663039f6a5c118
-Workload: source only; no compile or runtime
