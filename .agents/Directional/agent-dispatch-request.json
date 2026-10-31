@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb52-review-20261030-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb52-review-20261030-v1",
-  "file_id": "14MlZmwqC2PggDwcSxJSoG277mkgz-gzk",
-  "patch_sha256": "a45bffa56a603491c408ba2ad83fe696bcba17448333f3a4a6ed1249e79a5045",
-  "base_sha": "0052dedf535a330ec0ae1c00c9e1cb6905eee6e9",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): independently review TB52 immutable full gate",
-  "retention_days": 14
+  "request_id": "m6-cb62-diag-retain-linux-package-20261031-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cb62-diag-retain-linux-package-20261031-v1",
+  "source_sha": "e7c27b0a5f53788569109c85a028e3be44035aaf",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cb62-linux-package"
 }
