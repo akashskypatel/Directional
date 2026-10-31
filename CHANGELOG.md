@@ -1,3 +1,7 @@
+# 2026-10-31 — TB55 local gate on CB56: 857/858, row 935 gated
+
+- [TB55 report](.agents/Directional/Architecture_M6_CP3_TB55_API_Display_Full_Gate_Local_Test_Report_20261031.md): CB56 package `26d88d20…` (default arithmetic). 858 executed, **857 PASS**, row 283 the only red (pre-registered O2), membership 940, postflight true. Row 858 (`apicensus:19`) passes. Result `d1d89f0d…`; the Haiku audit is clean. The pre-registered outcome was met, so there is no separate REV. Next `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS`.
+
 # 2026-10-31 — CB56 row 935 display witness built locally
 
 - [CB56 record](.agents/Directional/Architecture_M6_CP3_CB56_API_Display_Vertex_Stop_Witness_Code_Build_Record_20261031.md): the RA-182.7 patch applied exactly (`ffb723f4…`, `46 8`, file `f3254015…`) at source `567d1828…`. Eight targets were built at default arithmetic; the package `26d88d20…` (18 entries) was staged by Haiku and re-verified. No native tests. Next `M6-CP3-TB55-API-DISPLAY-FULL-GATE-EXEC`.
