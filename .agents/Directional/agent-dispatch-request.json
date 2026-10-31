@@ -1,25 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb63-p13-gate-20261031-v1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb63-p13-gate-20261031-v1",
-  "executor_sha": "f5b3aa8232327f296917409e88ad84cbcf76504a",
-  "semantic_source_sha": "d56d990580163f4fd0ceda4137f7ecd16ceb6027",
-  "turn_id": "M6-CP3-TB63-P13-CENSUS-FULL-GATE-EXEC",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "13050072901",
-    "EXPECTED_SOURCE_SHA": "d56d990580163f4fd0ceda4137f7ecd16ceb6027",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "5ef36429396d3d21e9c7b184cd10cd3ef6bdcfc3333d55415a0440631aebad00",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "2bb9aec67ae9b08aad0692f1c4bd691df71a731c2370f7411a2a8ac0860d1394",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "79a084ec7ee6c930f9284027a3b33f937767fdd32b3447d5bb1275643e8726cf",
-    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "31c1360ab5738cab682e628304914af4a3f7ad4dd077a8f688e79536bf371341",
-    "EXPECTED_CASE_COUNT": "863",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v4.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "36241caa61d3d27aa062fee05cf3af12a62a81a5a11a42e3ea75e46b0590139d"
-  },
-  "artifact_prefix": "m6-cp3-tb63-p13-gate-v1",
+  "request_id": "m6-cp3-tb63-doc-closeout-apply-20261031-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb63-doc-closeout-apply-20261031-v1",
+  "file_id": "1XrMCcXMS6OPWHvWFashl6JTe9nSmu9G9",
+  "patch_sha256": "6dbaf8e173f0e0d536f121eadb0af8d91794c8d2e69503a93d0ec0360e4905a0",
+  "base_sha": "f5b3aa8232327f296917409e88ad84cbcf76504a",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close TB63 full gate and hand off P13 review",
   "retention_days": 14
 }
