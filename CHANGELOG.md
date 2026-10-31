@@ -1,3 +1,11 @@
+# 2026-10-31 — TB60 on CB61: 862/863, CLI 11/11, GUI linked; DIAG-RETAIN closed
+
+- [TB60 report](.agents/Directional/Architecture_M6_TB60_Diag_Retain_GUI_Full_Gate_Local_Test_Report_20261031.md): one CLI+GUI-ON build of CB61 source. The 863-row gate gives **862/863** (only row 283, pre-registered O16), membership 945; result `2b098fb4…`; Haiku audit clean. The CLI cases pass 11/11 and `directional-ui` links the same GMP. This is also CB60's full-gate TB. DIAG-RETAIN (CB58–CB61) is closed. Next `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE`.
+
+# 2026-10-31 — CB61 DIAG-RETAIN GUI layers built locally
+
+- [CB61 record](.agents/Directional/Architecture_M6_CB61_Diag_Retain_GUI_Layers_Code_Build_Record_20261031.md): the RA-187.7 patch applied exactly (`afab7d5d…`; `5 0` / `5 0` / `52 8`) at source `e1fd0e4b…`. Ten targets built CLI-ON and GUI-ON (311/311); `pkg.zip` `f39152f7…` (18 entries) and `tools.zip` `c324950f…` (8 entries) staged by Haiku and re-verified. No native runs. Next `M6-TB60-DIAG-RETAIN-GUI-FULL-GATE-EXEC`.
+
 # 2026-10-31 — RA-187 DIAG-RETAIN GUI layers defined; full-gate correction
 
 - [RA-187](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md) (local). CB61 adds three read-only GUI layers over the CB59 adapter (occurrence cell sides, occurrences coloured by A6 class, A7 quads); the probe compiles and links `directional-ui` GUI-ON. Correction: TB59 ran only the CLI cases, but `Turn_Cadence.md` §2 requires the full gate, so CB61 builds the gate targets with the CLI and GUI, and TB60 runs the 863-row gate plus the CLI cases. CB61 `afab7d5d…`. Next `M6-CB61-DIAG-RETAIN-GUI-LAYERS`.

@@ -1,3 +1,5 @@
+**TB60 local gate (2026-10-31; candidate, pre-registered outcome met, no new event):** [report](Architecture_M6_TB60_Diag_Retain_GUI_Full_Gate_Local_Test_Report_20261031.md). CB61: 862/863, with row 283 (O16) the only red; membership 945; CLI 11/11; GUI link true. DIAG-RETAIN closed. Stable 66/17/49, debt 1.
+
 **RA-187 / DIAG-RETAIN GUI layers DEFN (2026-10-31; no new event):** [record](Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md). GUI-only change; TB59's missing full-gate run is corrected by TB60. Stable 66/17/49, debt 1.
 
 **TB59 CLI check runs (2026-10-31; registered outcome met, no new event):** [report](Architecture_M6_TB59_Diag_Retain_CLI_Sidecar_Local_Test_Report_20261031.md). CB60's three CLI runs match; DR4 reproduces as registered (pre-existing). No gate binary changed; TB58 862/863 stands. Stable 66/17/49, debt 1.
