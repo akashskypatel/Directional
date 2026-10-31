@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-tb61-exec-record-apply-20261031-v1",
+  "request_id": "m6-tb61-independent-review-docs-20261031-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-tb61-exec-record-apply-20261031-v1",
-  "file_id": "1s_1YjZ2x1y0CYQDHpjiF1Plg7o0AqhKi",
-  "patch_sha256": "fa3b7bf5c98f9c651539942b3c870364f9a5bc4b2bb495f002dbd502c8c38399",
-  "base_sha": "04412e011b2c97d984c70434f298f182b15d7962",
+  "mailbox_key": "m6-tb61-independent-review-docs-20261031-v1",
+  "file_id": "16SYuILXzQ0T66UmwlKuXEVV2c4S-oQL0",
+  "patch_sha256": "cee25e7d4915702d2871fac5d907524a25ac4d9e3304acf8e3cf93848121117f",
+  "base_sha": "b9428d75e6a9587986a6d83281606741ed9c283a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record TB61 verified Linux gate and hand off review",
+  "commit_message": "docs(directional): independently review TB61 Linux full gate and CLI GUI coverage",
   "retention_days": 14
 }
