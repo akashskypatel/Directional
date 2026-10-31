@@ -1,4 +1,4 @@
-## CURRENT — TB54 856/857 locally (O15 exact A3); TB54-REV next (2026-10-31)
+## CURRENT — O15 discharged (RA-181); row 935 witness DEFN next (2026-10-31)
 
 - [x] Done 2026-10-30: PLAN-RP01-CLOSURE (RA-174) → CB53 → TB52C → TB52C-REV (RA-175) → PLAN-A3-ATLAS-EXACTNESS (RA-176, O15) → TB52 853/0 → TB52-REV (RA-177) → DEFN-RP01-TERMINAL-PATH-WITNESSES ([RA-178](.agents/Directional/Architecture_M6_CP3_DEFN_RP01_Terminal_Path_Witnesses_TB52_REV_Audit_20261030.md)) → CB54 ([record](.agents/Directional/Architecture_M6_CP3_CB54_RP01_Terminal_Path_Witnesses_Code_Build_Record_20261030.md), local) → TB53 836/19 ([report](.agents/Directional/Architecture_M6_CP3_TB53_RP01_Full_Gate_Local_Test_Report_20261030.md), local).
   - **CP3-exit conditions:** RP-01 closed (done); zero ledger rows; design-acceptance matrix gated at 6/6 (Cylinder is required); O14 enforced; O7 resolved; **O15 discharged (RA-176.3)**; CP3-REV decides selector497 promotion.
@@ -19,8 +19,8 @@
   - Row 935: no `milestone-g` fixture stops at a vertex under exact A3, so its witness is split to a DEFN.
 - [x] **`M6-CP3-CB55-A3-EXACT-BRANCH-TOPOLOGY`** (CB, local): [record](.agents/Directional/Architecture_M6_CP3_CB55_A3_Exact_Branch_Topology_Code_Build_Record_20261030.md). Patch `824e64cc…` exact, source `04027167…`, 8/8 targets, package `69104b95…` (staged by a Haiku subagent and re-verified).
 - [x] **`M6-CP3-TB54-O15-FULL-GATE-EXEC`** (TB-EXEC, local): [report](.agents/Directional/Architecture_M6_CP3_TB54_O15_Full_Gate_Local_Test_Report_20261031.md). **856/857**, only 283 (O2) red; membership 940; all 21 O15 rows and both new tests PASS. The Haiku audit is clean; result `706f4ce7…`.
-- [ ] **NEXT `M6-CP3-TB54-O15-FULL-GATE-REV`** (TB-REV, R): rule O15 discharged per RA-176.3; row 283 stays O2.
-- [ ] `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` (DEFN, R) → CB56 (row 935) → TB55 → TB55-REV (ledger v4, 82).
+- [x] **`M6-CP3-TB54-O15-FULL-GATE-REV`** (TB-REV, R; same session): [RA-181](.agents/Directional/Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md). **O15 DISCHARGED.** The FMA-free build of CB55's source gives identical verdicts and atlas partitions to TB54, and the Sonnet source review finds T1–T3 correct. New **O15c**: trace-parameter width grew (sphere_prescribed 429→1,531 of 4,096 bits; fail-closed) → owned by P13. Row 283 stays O2.
+- [ ] **NEXT `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS`** (DEFN, R) → CB56 (row 935) → TB55 → TB55-REV (ledger v4, 82).
 - [ ] Carried separately (owners per RA-174.3):
   - O1; O2 (legacy no-atlas ingress, post-RP-01; also owns row 283's macOS legacy `segment_arrangement` failure, RA-179 F3).
   - O6 (bounded disks that are not rectangular are rejected by design) → P13 probe DEFN.
@@ -29,7 +29,7 @@
   - O9 ruled (RA-178.3): the junction path has no produced input under D2, so it is removed from RP-01 and the code is kept as accepted-defensive. Falsifier (a produced route with more than one step) → P13 probe DEFN.
   - O12 (R61 `review_check.py` selector collision) → Review tooling.
   - O14 → P8.
-  - **O15** (A3 atlas topology decisions must be exact; RA-176.3; 21 rows per RA-179) → defined by RA-180, discharged by CB55 + TB54-REV. **O15b** (fields-stage `principal_matching` argmin tie; degenerate input only) → carried to CP3-REV.
+  - **O15 discharged** (RA-181; Linux CI confirmation carried). **O15c** (exact-direction continuation width; fail-closed at 4,096 bits) → P13 probe DEFN. **O15b** (fields-stage `principal_matching` argmin tie; degenerate input only) → carried to CP3-REV.
   - RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4. G4-B002 exit row is gated; the discharge decision belongs to CP3-REV.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
@@ -38,7 +38,7 @@
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:**
   - Done: … → TB52-REV (RA-177) → DEFN-RP01 (RA-178) → CB54 → TB53 → **TB53-REV (RA-179): RP-01 closed**.
-  - **NEXT:** CB55 **DONE** → TB54 **DONE** (856/857) → **TB54-REV NEXT** (R) → `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` (R) → CB56 (row 935) → TB55 → TB55-REV (ledger v4, 82).
+  - **NEXT:** CB55 → TB54 → TB54-REV (RA-181, O15 discharged) **DONE** → → `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` (R) → CB56 (row 935) → TB55 → TB55-REV (ledger v4, 82).
   - **Then:** `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS` (+ row 283) → DIAG-RETAIN; P13 probe DEFN (Cylinder first; O6; exact-atlas and route-step (O9) checks) → retire CB → FIXTURE slices (each DEFN first confirms the production pipeline reaches its stage, otherwise → O2) → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV.
   - **Local mode** (implementation agent unavailable): CB and TB run locally with `tools/m6_cp3_local_gate_driver.py`; packages are built with `-ffp-contract=off` and row 283 is pre-registered (RA-179.4). Carried: a Linux confirmation run of TB53.
   - One CB per exact patch; implementation agents get only exact patches and frozen manifests. Probe-requiring DEFN and TB-REV turns stay on the Review track.

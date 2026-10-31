@@ -1,3 +1,8 @@
+## RA-181 — O15 discharged; O15c (2026-10-31)
+
+- **O15 is discharged** (RA-176.3 conditions met on local evidence). Falsifier: the first Linux CI gate fails row 856 or 857.
+- **O15c:** exact directions widen A4 trace parameters. The bound stays 4,096 bits, and exceeding it is fail-closed. P13 records the widths. If a design-matrix fixture exceeds the bound or uses more than 50% of it, a DEFN chooses between a revised bound and a deterministic correctly-rounded direction.
+
 ## RA-180 — O15 exact rule (2026-10-30)
 
 - **A3 branch topology is exact on the stored doubles** (GMP `FieldExactRational`):

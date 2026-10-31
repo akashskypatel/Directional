@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-31 · M6-CP3-TB54-O15-FULL-GATE-EXEC — the [TB54 local gate](Architecture_M6_CP3_TB54_O15_Full_Gate_Local_Test_Report_20261031.md) on the CB55 exact-A3 package at default arithmetic gives **856/857**. Row 283 (O2) is the only red; all 21 O15 rows and both RA-180 tests pass; membership 940. RP-01 is closed (RA-179). TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CP3-TB54-O15-FULL-GATE-REV`.
+**Currency:** 2026-10-31 · M6-CP3-TB54-O15-FULL-GATE-REV — [RA-181](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md) **discharged O15**. TB54 gives 856/857 at default arithmetic, and the FMA-free build gives identical verdicts and atlas partitions. New O15c: wider exact trace parameters, fail-closed, owned by P13. RP-01 closed (RA-179). TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS`.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,12 +104,12 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** TB54-REV (Review) rules on O15 discharge (RA-176.3 conditions; TB54 856/857). Then `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` → CB56 (row 935). Local mode uses `tools/m6_cp3_local_gate_driver.py`.
+**Immediate:** `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` (Review): a constructed input with a legitimate source-vertex stop for row 935 → CB56 → TB55. Then the O2 DEFN (+ row 283) and the P13 probe DEFN (Cylinder; exact-atlas, route-step and continuation-width checks).
 
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Discharge O15: exact A3 branch topology (RA-180), the 21 rows per RA-179, and the row 935 witness. RP-01 is closed (RA-179); its Linux confirmation is carried. | CB55 → TB54 → TB54-REV; then the row 935 DEFN → CB56 |
+| **1** | Row 935 witness (O15 is discharged, RA-181; RP-01 is closed, RA-179). Linux CI confirmation of rows 854–857 is carried. | `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` (R) → CB56 → TB55 |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

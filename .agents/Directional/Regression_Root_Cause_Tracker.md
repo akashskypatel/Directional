@@ -1,3 +1,5 @@
+**RA-181 / TB54 review, O15 discharged (2026-10-31; no new event):** [record](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md). TB54 856/857 is the reviewed local candidate: the FMA-free build gives identical verdicts and atlas partitions, and row 283 stays O2. O15c (continuation width growth, fail-closed) goes to P13. Stable 66/17/49, debt 1.
+
 **TB54 local gate (2026-10-31; candidate, unreviewed, no new event):** [report](Architecture_M6_CP3_TB54_O15_Full_Gate_Local_Test_Report_20261031.md). CB55 package at default arithmetic: 856/857, with row 283 (O2) the only red; the 18 former O15 reds now pass. Stable 66/17/49, debt 1, unchanged.
 
 **RA-180 / O15 DEFN (2026-10-30; no new event):** [record](Architecture_M6_CP3_DEFN_A3_Exact_Branch_Topology_Predicates_20261030.md). The exact A3 predicates remove the FMA dependence: the patched FMA and FMA-free builds give identical gate verdicts (854/855, only 283) and identical atlas partitions, and the deferred rows are unchanged. The new edge-parallel witness fails before the patch on Linux-like arithmetic. CB55 is frozen. Stable 66/17/49, debt 1.

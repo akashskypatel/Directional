@@ -1,3 +1,7 @@
+# 2026-10-31 — RA-181 TB54 review: O15 discharged
+
+- [RA-181](.agents/Directional/Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md) (local; reduced independence, offset by a Sonnet source review, Haiku audits and an FMA-free rebuild). All five RA-176.3 conditions are met: the FMA-free build of CB55's source gives verdicts identical to TB54 (856/857) and byte-identical atlas partitions; rows 856 and 857 pass. **O15 discharged**; a Linux CI confirmation is carried. New **O15c**: exact directions widen trace parameters (genus_two 107→217, sphere_prescribed 429→1,531 of 4,096 bits; fail-closed) → P13. Row 283 stays O2. Stable 66/17/49, debt 1. Next `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS`.
+
 # 2026-10-31 — TB54 local gate on CB55: 856/857 (O15 rows green at default arithmetic)
 
 - [TB54 report](.agents/Directional/Architecture_M6_CP3_TB54_O15_Full_Gate_Local_Test_Report_20261031.md): CB55 package `69104b95…` (macOS, default arithmetic). 857 executed, **856 PASS**, row 283 the only red (pre-classified O2), membership 940, postflight true, exit 90 (control). All 21 O15 rows and both RA-180 tests pass; vertices 10/35/47/71 have 3/3/3/3 ports. Result `706f4ce7…`; the Haiku subagent audit is clean. Next `M6-CP3-TB54-O15-FULL-GATE-REV`.
