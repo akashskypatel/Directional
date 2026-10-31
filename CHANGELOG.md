@@ -1,3 +1,7 @@
+# 2026-10-31 — RA-182 row 935 display witness defined
+
+- [RA-182](.agents/Directional/Architecture_M6_CP3_DEFN_API_Display_Vertex_Stop_Witness_20261031.md) (local, bounded probes; a Sonnet subagent traced the locus paths). An 8-triangle fan with a +½ singularity is rejected by A3 with `InvalidSingularityMetadata` at source vertex 0, and the display shows it. With the CB56 change, row 935 passes and the API binary passes 23/23 on the default and FMA-free builds. Frozen: CB56 `ffb723f4…` (`46 8`); TB55 858 `eb508378…`; ledger v4 82 `36241caa…`; membership 940. Next `M6-CP3-CB56-API-DISPLAY-VERTEX-STOP-WITNESS`.
+
 # 2026-10-31 — RA-181 TB54 review: O15 discharged
 
 - [RA-181](.agents/Directional/Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md) (local; reduced independence, offset by a Sonnet source review, Haiku audits and an FMA-free rebuild). All five RA-176.3 conditions are met: the FMA-free build of CB55's source gives verdicts identical to TB54 (856/857) and byte-identical atlas partitions; rows 856 and 857 pass. **O15 discharged**; a Linux CI confirmation is carried. New **O15c**: exact directions widen trace parameters (genus_two 107→217, sphere_prescribed 429→1,531 of 4,096 bits; fail-closed) → P13. Row 283 stays O2. Stable 66/17/49, debt 1. Next `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS`.

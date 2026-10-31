@@ -1,4 +1,4 @@
-## CURRENT — O15 discharged (RA-181); row 935 witness DEFN next (2026-10-31)
+## CURRENT — row 935 witness defined (RA-182); CB56 next (2026-10-31)
 
 - [x] Done 2026-10-30: PLAN-RP01-CLOSURE (RA-174) → CB53 → TB52C → TB52C-REV (RA-175) → PLAN-A3-ATLAS-EXACTNESS (RA-176, O15) → TB52 853/0 → TB52-REV (RA-177) → DEFN-RP01-TERMINAL-PATH-WITNESSES ([RA-178](.agents/Directional/Architecture_M6_CP3_DEFN_RP01_Terminal_Path_Witnesses_TB52_REV_Audit_20261030.md)) → CB54 ([record](.agents/Directional/Architecture_M6_CP3_CB54_RP01_Terminal_Path_Witnesses_Code_Build_Record_20261030.md), local) → TB53 836/19 ([report](.agents/Directional/Architecture_M6_CP3_TB53_RP01_Full_Gate_Local_Test_Report_20261030.md), local).
   - **CP3-exit conditions:** RP-01 closed (done); zero ledger rows; design-acceptance matrix gated at 6/6 (Cylinder is required); O14 enforced; O7 resolved; **O15 discharged (RA-176.3)**; CP3-REV decides selector497 promotion.
@@ -20,7 +20,8 @@
 - [x] **`M6-CP3-CB55-A3-EXACT-BRANCH-TOPOLOGY`** (CB, local): [record](.agents/Directional/Architecture_M6_CP3_CB55_A3_Exact_Branch_Topology_Code_Build_Record_20261030.md). Patch `824e64cc…` exact, source `04027167…`, 8/8 targets, package `69104b95…` (staged by a Haiku subagent and re-verified).
 - [x] **`M6-CP3-TB54-O15-FULL-GATE-EXEC`** (TB-EXEC, local): [report](.agents/Directional/Architecture_M6_CP3_TB54_O15_Full_Gate_Local_Test_Report_20261031.md). **856/857**, only 283 (O2) red; membership 940; all 21 O15 rows and both new tests PASS. The Haiku audit is clean; result `706f4ce7…`.
 - [x] **`M6-CP3-TB54-O15-FULL-GATE-REV`** (TB-REV, R; same session): [RA-181](.agents/Directional/Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md). **O15 DISCHARGED.** The FMA-free build of CB55's source gives identical verdicts and atlas partitions to TB54, and the Sonnet source review finds T1–T3 correct. New **O15c**: trace-parameter width grew (sphere_prescribed 429→1,531 of 4,096 bits; fail-closed) → owned by P13. Row 283 stays O2.
-- [ ] **NEXT `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS`** (DEFN, R) → CB56 (row 935) → TB55 → TB55-REV (ledger v4, 82).
+- [x] **`M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS`** (DEFN, R, local): [RA-182](.agents/Directional/Architecture_M6_CP3_DEFN_API_Display_Vertex_Stop_Witness_20261031.md). A Sonnet trace found the stages that report a vertex locus. Probes: a +½-singularity 8-fan → A3 `InvalidSingularityMetadata` at vertex 0, shown by the display; API binary 23/23 on both builds. CB56 patch `ffb723f4…` (`46 8`). TB55 858 `eb508378…`; ledger v4 82 `36241caa…`; membership 940.
+- [ ] **NEXT `M6-CP3-CB56-API-DISPLAY-VERTEX-STOP-WITNESS`** (CB, local) → `M6-CP3-TB55-API-DISPLAY-FULL-GATE-EXEC` (expected 857/858, with only 283 red).
 - [ ] Carried separately (owners per RA-174.3):
   - O1; O2 (legacy no-atlas ingress, post-RP-01; also owns row 283's macOS legacy `segment_arrangement` failure, RA-179 F3).
   - O6 (bounded disks that are not rectangular are rejected by design) → P13 probe DEFN.

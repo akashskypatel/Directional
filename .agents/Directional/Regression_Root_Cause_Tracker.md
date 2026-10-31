@@ -1,3 +1,5 @@
+**RA-182 / row 935 witness DEFN (2026-10-31; no new event):** [record](Architecture_M6_CP3_DEFN_API_Display_Vertex_Stop_Witness_20261031.md). Row 935's vertex section now uses a constructed, legitimately rejected +½-singularity input (A3 `InvalidSingularityMetadata` at vertex 0). FIXTURE → gate via CB56/TB55; ledger v4 82. Stable 66/17/49, debt 1.
+
 **RA-181 / TB54 review, O15 discharged (2026-10-31; no new event):** [record](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md). TB54 856/857 is the reviewed local candidate: the FMA-free build gives identical verdicts and atlas partitions, and row 283 stays O2. O15c (continuation width growth, fail-closed) goes to P13. Stable 66/17/49, debt 1.
 
 **TB54 local gate (2026-10-31; candidate, unreviewed, no new event):** [report](Architecture_M6_CP3_TB54_O15_Full_Gate_Local_Test_Report_20261031.md). CB55 package at default arithmetic: 856/857, with row 283 (O2) the only red; the 18 former O15 reds now pass. Stable 66/17/49, debt 1, unchanged.

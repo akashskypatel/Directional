@@ -34,18 +34,22 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-31 **RA-181 TB54 review — O15 DISCHARGED** ([record](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md); local, reduced independence). TB54 856/857, with only row 283 (O2) red. An FMA-free build of CB55's exact source gives identical verdicts and byte-identical atlas partitions. The Sonnet source review finds T1–T3 correct. New **O15c**: exact directions widen trace parameters (sphere_prescribed 429→1,531 of 4,096 bits); fail-closed; owned by P13. RA-179 closed RP-01. |
+| Currency | 2026-10-31 **RA-182 row 935 witness DEFN** ([record](Architecture_M6_CP3_DEFN_API_Display_Vertex_Stop_Witness_20261031.md); local). A +½ singularity on an 8-triangle fan is a legitimate A3 rejection (`InvalidSingularityMetadata`, valence 2 outside 3–6) at source vertex 0, and the display shows it. With the CB56 change the API binary passes 23/23 on the default and FMA-free builds. CB56 patch `ffb723f4…`; TB55 gate 858 `eb508378…`; ledger v4 82 `36241caa…`; membership 940. Prior: RA-181 discharged O15; RA-179 closed RP-01. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
 | Last accepted semantic runtime | CP2 **491/491** accepted 2026-10-06 (selector449 `d4a0d1b7…d6414`, focused12 `2aa57aac…c67374ed`). Nothing newer is accepted. |
 | Latest candidate or rejected evidence | **TB54 856/1 reviewed local candidate** (CB55 `04027167…`, [RA-181](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md)). TB53 836/19 was the prior local candidate (RA-179). **TB52 853/0** is the latest reviewed Linux candidate (RA-177). Last accepted CP2 491/491. |
-| Regression accounting and debt | Stable **66/17/49**, debt **1**, unchanged. 83 DEFERRED ([ledger v3](Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v3.tsv)): FIXTURE 48, PRODUCT 7, OPEN 23, RETIRE 5. **RP-01 closed** (RA-179.4). Falsifier: the first Linux CI gate fails row 854 or 855; a Linux confirmation run is carried. **O15 (RA-176, list corrected by RA-179):** 21 gated `mechanical_feature` rows depend on A3 rounding; on macOS with FMA, 18 of them fail. **Local-mode convention:** build local packages with `-ffp-contract=off` and pre-register row 283 (O2). |
-| Active boundary | **NEXT `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS`** (DEFN, R): construct a pipeline input that a stage legitimately rejects with a source-vertex locus, for the row 935 display witness (RA-180.4), and freeze CB56. CP2 491/491 last accepted; CP3 not accepted. |
+| Regression accounting and debt | Stable **66/17/49**, debt **1**, unchanged. Ledger v3: 83 DEFERRED; **ledger v4 (82)** is frozen for TB55, with row 935 moved to the gate (FIXTURE 47, PRODUCT 7, OPEN 23, RETIRE 5). RP-01 closed (RA-179); O15 discharged (RA-181); O15c is owned by P13. Falsifier: a Linux CI gate fails rows 854–858. Local mode: row 283 (O2) is pre-registered. |
+| Active boundary | **NEXT `M6-CP3-CB56-API-DISPLAY-VERTEX-STOP-WITNESS`** (CB, local): the exact RA-182.7 test patch, built at default arithmetic. Then TB55-EXEC (858, ledger v4, membership 940, row 283 the only expected red). CP2 491/491 last accepted; CP3 not accepted. |
 
-## Mandatory next turn — `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` (type DEFN, Review track) — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB56-API-DISPLAY-VERTEX-STOP-WITNESS` (type CB; run locally) — EXACT NEXT
 
-- **Authority:** [RA-180.4](Architecture_M6_CP3_DEFN_A3_Exact_Branch_Topology_Predicates_20261030.md) and [RA-181](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md). Row 935 (`apicensus:19`, `SurfaceCellTracingDisplay.StopLocationShowsWhatEachStageReported`) stays FIXTURE in ledger v3.
-- **Objective:** the test's mechanical_feature section expects a stop with `terminalFailureLocus.sourceVertex`. Under exact A3 no committed `milestone-g` fixture produces one (census: four stop in tracing with no locus, sphere_prescribed has a face locus, four exceed 300 s). Find a constructed in-memory input (mesh + raw field) that a stage legitimately rejects at a source vertex. For example, a cross field with a +½-index singularity gives `InvalidSingularityMetadata` with a vertex. Confirm with bounded probes that the vertex is genuine and the display shows it.
-- **Deliver:** an exact probe-verified CB56 test patch that changes only that section; a TB55 manifest (TB54 + row 935 → 858) and ledger v4 (82); outcome tables. Keep the genus_two and sphere_prescribed sections unchanged. Bound every probe run with a per-run timeout.
+- **Authority:** [RA-182](Architecture_M6_CP3_DEFN_API_Display_Vertex_Stop_Witness_20261031.md) §.4 and §.7.
+- **Patch:** the RA-182.7 block, extracted verbatim with a trailing newline. Its SHA-256 must be `ffb723f4f664a6517d18620aa7de42a9ecda081e5941f00f04993fbbe0121224`. Apply it with `git apply`; the numstat must be exactly `46 8` (`tests/SurfaceCellTracingDisplayTests.cpp`), and the resulting file SHA-256 must be `f32540153871bd6d6c2f453f5e3784f9f392ab4fdafcb274f496f3a3ee199974`.
+- **Build:** commit; a clean worktree with the CI flags at default arithmetic, eight targets; stage the package under `build/local-evidence/CB56/`. Haiku may stage it; verify the result. No native tests.
+- **Outcomes:**
+  - All exact → `M6-CP3-TB55-API-DISPLAY-FULL-GATE-EXEC` (gate `eb508378…` 858, ledger v4 `36241caa…` 82, membership 940; row 283 the only pre-registered red; a pre-registered pass needs no separate REV).
+  - Mismatch → `M6-CP3-PLAN-API-DISPLAY-WITNESS-STOP`.
+  - Infrastructure failure → `M6-CP3-CB56A-API-DISPLAY-ORCH`.
 
 ## Turn Sequence
 
@@ -57,7 +61,8 @@ Canonical types: CB, TB-EXEC, TB-REV, DEFN, PLAN (`turn_type_from_turn`). **I** 
 | done | TB52 853/0 → TB52-REV ([RA-177](Architecture_M6_CP3_TB52_REV_Independent_Five_Binary_Gate_Review_20261030.md)) → DEFN-RP01-TERMINAL-PATH-WITNESSES ([RA-178](Architecture_M6_CP3_DEFN_RP01_Terminal_Path_Witnesses_TB52_REV_Audit_20261030.md)) → CB54 ([record](Architecture_M6_CP3_CB54_RP01_Terminal_Path_Witnesses_Code_Build_Record_20261030.md), local) → TB53 836/19 ([report](Architecture_M6_CP3_TB53_RP01_Full_Gate_Local_Test_Report_20261030.md), local) → TB53-REV ([RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md)) | TB / I; REV, DEFN / R; CB, TB local | **RP-01 closed.** Gate 855 `5239f81a…`, ledger v3 83 `32b43fc5…`, membership 938. |
 | done | `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES` ([RA-180](Architecture_M6_CP3_DEFN_A3_Exact_Branch_Topology_Predicates_20261030.md)) | DEFN / R | T1–T3 exact; CB55 patch `824e64cc…`; TB54 gate 857 `53683907…`; O15b (fields-stage matching tie) carried. |
 | done | CB55 → TB54 856/857 → TB54-REV ([RA-181](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md)) | CB, TB local; TB-REV / R | **O15 discharged**; O15c (continuation width) owned by P13; O15b carried. |
-| 1 — NEXT | `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` → CB56 (row 935 witness) → TB55 → TB55-REV | DEFN / R; CB, TB local; TB-REV / R | Constructed vertex-locus input; row 935 moves to the gate (ledger v4, 82). |
+| done | `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS` ([RA-182](Architecture_M6_CP3_DEFN_API_Display_Vertex_Stop_Witness_20261031.md)) | DEFN / R | +½-singularity fan witness; CB56 patch `ffb723f4…`; TB55 858 / ledger v4 82. |
+| 1 — NEXT | `M6-CP3-CB56-API-DISPLAY-VERTEX-STOP-WITNESS` → `M6-CP3-TB55-API-DISPLAY-FULL-GATE-EXEC` | CB, TB-EXEC / local | Expected 857/858, with only 283 red; any other non-PASS → `M6-CP3-TB55-API-DISPLAY-FULL-GATE-REV`. |
 | 3 | `M6-CP3-DEFN-POSTRP01-O2-NO-ATLAS-INGRESS` (now including row 283), then `M6-DEFN-DIAG-RETAIN-A5-A7` | DEFN / R | RA-160.4 + RA-161 T2; O4 folds into O2. |
 | 4 | P13 probe DEFN (Cylinder first, which passes locally in 179 s; O6; exact-atlas, route-step (O9) and continuation-width (O15c) checks) → retire CB → FIXTURE slices → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV | per slice | RA-174.3 CP3-exit conditions; each slice moves its rows from the ledger to the gate. |
 | carried | Linux CI confirmation of TB53/TB54 (rows 854–857) | TB-EXEC / I | RP-01 and O15 falsifiers (RA-179.4, RA-181.2). |
@@ -65,7 +70,7 @@ Canonical types: CB, TB-EXEC, TB-REV, DEFN, PLAN (`turn_type_from_turn`). **I** 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS** (DEFN, Review). Read RA-180.4 and RA-181, and `tests/SurfaceCellTracingDisplayTests.cpp`. Construct a bounded in-memory input that a stage legitimately rejects with a source-vertex locus, and freeze the CB56 patch, the TB55 manifest (858) and ledger v4 (82). O15 is discharged and RP-01 closed; CP2 491/491 last accepted; stable 66/17/49, debt 1.
+`load_next`: **M6-CP3-CB56-API-DISPLAY-VERTEX-STOP-WITNESS** (CB, run locally). Read [RA-182](Architecture_M6_CP3_DEFN_API_Display_Vertex_Stop_Witness_20261031.md) §.4 and §.7. Extract and verify the patch (`ffb723f4…`, numstat `46 8`, file `f3254015…`), apply and commit it, build the eight targets at default arithmetic and stage the package. Next is TB55-EXEC (gate 858 `eb508378…`, ledger v4 82 `36241caa…`, membership 940, row 283 the only expected red). RP-01 closed and O15 discharged; CP2 491/491 last accepted; stable 66/17/49, debt 1.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

@@ -1,3 +1,7 @@
+## RA-182 — Row 935 witness (2026-10-31)
+
+- **Row 935** (`apicensus:19`) is repaired by CB56. Its vertex section uses an 8-triangle fan with a +½ singularity, which A3 legitimately rejects with `InvalidSingularityMetadata` at vertex 0 (A3 ports cover valences 3–6 only). TB55 gates it; **ledger v4** has 82 rows.
+
 ## RA-181 — O15 discharged; O15c (2026-10-31)
 
 - **O15 is discharged** (RA-176.3 conditions met on local evidence). Falsifier: the first Linux CI gate fails row 856 or 857.
