@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-31 · M6-TB60-DIAG-RETAIN-GUI-FULL-GATE-EXEC — the [TB60 local gate](Architecture_M6_TB60_Diag_Retain_GUI_Full_Gate_Local_Test_Report_20261031.md) on CB61 gives the pre-registered 862/863 (only row 283, O16), membership 945, with the CLI cases 11/11 and the GUI link check true. **DIAG-RETAIN is closed** (CB58–CB61, RA-184…RA-187). RP-01, O15, row 935 and O2 are done. TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE`.
+**Currency:** 2026-10-31 · M6-TB60-DIAG-RETAIN-GUI-FULL-GATE-EXEC — the [TB60 local gate](Architecture_M6_TB60_Diag_Retain_GUI_Full_Gate_Local_Test_Report_20261031.md) on CB61 gives the pre-registered 862/863 (only row 283, O16), membership 945, with the CLI cases 11/11 and the GUI link check true. **DIAG-RETAIN is closed** (CB58–CB61, RA-184…RA-187). RP-01, O15, row 935 and O2 are done. TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CB62-DIAG-RETAIN-LINUX-PACKAGE` → `M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-EXEC` → `M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-REV` (Linux confirmation of CB58–CB61), then `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE`.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,7 +104,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE` (Cylinder first; O6, exact-atlas, O9 and O15c checks; bounded per-fixture probes).
+**Immediate:** Linux confirmation of CB58–CB61: `M6-CB62-DIAG-RETAIN-LINUX-PACKAGE` → `M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-EXEC` (863/863 expected) → `M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-REV`. Then `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE` (Cylinder first; O6, exact-atlas, O9 and O15c checks; bounded per-fixture probes).
 
 
 | Priority | Missing outcome | Owner |

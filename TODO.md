@@ -1,7 +1,11 @@
-## CURRENT — DIAG-RETAIN closed (TB60 862/863 on macOS); P13 probe DEFN next (2026-10-31)
+## CURRENT — DIAG-RETAIN closed (TB60 862/863 on macOS); Linux confirmation next, then the P13 probe DEFN (2026-10-31)
 
 - [x] Done (records in `.agents/Directional/`, history in `CHANGELOG.md`): RP-01 closure (RA-174…[RA-179](.agents/Directional/Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md)) → O15 (RA-180, CB55, TB54, [RA-181](.agents/Directional/Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md)) → row 935 (RA-182, CB56, TB55) → O2 entry gate ([RA-183](.agents/Directional/Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md), CB57, TB56) → **DIAG-RETAIN** ([RA-184](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md), [RA-185](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md), [RA-186](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md), [RA-187](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md); CB58–CB61, last source `e1fd0e4b…`). TB57–TB60 ran on macOS arm64 only; the latest, TB60, gave **862/863** on the TB58 manifest (863 rows; only row 283, O16), membership 945. TB59 ran only CLI cases; TB60 is the full-gate TB for both CB60 and CB61 (RA-187.1).
-- [ ] **NEXT `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE`** (DEFN, R): the P13 design-acceptance rows 360 (BunnyRandom), 362 (Cylinder), 365 (Vase); Cylinder first, bounded per-fixture probes; check O6, the exact atlas, O9 and O15c.
+- [ ] **NEXT: Linux confirmation of CB58–CB61** (user direction, 2026-10-31; handoff step 1):
+  - `M6-CB62-DIAG-RETAIN-LINUX-PACKAGE` (CB, implementation agent, Linux workflow runner): no patch; HEAD's source must equal CB61 `e1fd0e4b…`; the standard compile workflow builds the eight-target package.
+  - `M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-EXEC` (TB-EXEC, implementation agent, Linux workflow runner): P8 harness on the CB62 package over the TB58 manifest (863 rows, `31c1360a…`) with ledger v4 (82); pre-registered 863/863 PASS (row 283 included), membership 945.
+  - `M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-REV` (TB-REV, R): review rows 854–863 and every verdict against TB60 (only row 283 may differ); decide whether a Linux CLI/GUI compile is owed; a Linux-only red → `M6-PLAN-DIAG-RETAIN-LINUX-SPLIT-STOP`.
+- [ ] **Then `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE`** (DEFN, R): the P13 design-acceptance rows 360 (BunnyRandom), 362 (Cylinder), 365 (Vase); Cylinder first, bounded per-fixture probes; check O6, the exact atlas, O9 and O15c.
 - [x] **DIAG-RETAIN (user-directed, 2026-10-21): closed** by CB58–CB61 (snapshots, display adapter and dump, CLI sidecar, GUI layers). Open: DR1 (no in-helper A6/A7 rejection witness; waits for a stimulus), DR3 (pre-existing snapshot fields written when retention is off). DR2 (multi-component snapshot drop) and DR4 (`--diagnostics-prefix` cut sidecars throw on SurfaceCells products, `src/cli/RemeshOutput.cpp:388–392`) → M8-CP2. The GUI layers' appearance is a manual check.
 - [ ] **Then:** retire CB → FIXTURE slices (each DEFN first confirms the production pipeline reaches its stage) → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV.
   - **CP3-exit conditions (RA-174.3):** RP-01 closed (done); zero ledger rows; design-acceptance matrix gated at 6/6 (Cylinder is required); O14 enforced; O7 resolved; O15 discharged (done); CP3-REV decides selector497 promotion.
@@ -14,7 +18,6 @@
   - O12 (R61 `review_check.py` selector collision) → Review tooling.
   - O14 → P8.
   - **O15c** (exact-direction continuation width; fail-closed at 4,096 bits) → P13 probe DEFN. **O15b** (fields-stage `principal_matching` argmin tie; degenerate input only) → CP3-REV.
-  - A Linux CI full gate of current source (TB58 manifest, 863 rows): rows 854–863 have not run on Linux yet, and row 283 is expected to PASS there (it fails only on macOS, O16).
   - RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4. G4-B002 exit row is gated; the discharge decision belongs to CP3-REV.
 - **Rules:**
   - CB and TB run on the Linux workflow runner. A TB always runs the full current gate, even after a CLI- or GUI-only CB (RA-187); the current gate is the TB58 manifest (863 rows) with ledger v4 (82).

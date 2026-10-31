@@ -1,3 +1,7 @@
+# 2026-10-31 — Linux confirmation turns inserted before the P13 DEFN (user-directed)
+
+- The implementation agent resumes CB and TB on the Linux workflow runner. Before `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE`, three turns confirm CB58–CB61 on Linux: `M6-CB62-DIAG-RETAIN-LINUX-PACKAGE` (Linux package of source `e1fd0e4b…`, no patch), `M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-EXEC` (TB58 manifest 863, ledger v4 82, membership 945; 863/863 pre-registered, row 283 included) and `M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-REV` (review against TB60; decide on a Linux CLI/GUI compile).
+
 # 2026-10-31 — TB60 on CB61: 862/863, CLI 11/11, GUI linked; DIAG-RETAIN closed
 
 - [TB60 report](.agents/Directional/Architecture_M6_TB60_Diag_Retain_GUI_Full_Gate_Local_Test_Report_20261031.md): one CLI+GUI-ON build of CB61 source. The 863-row gate gives **862/863** (only row 283, pre-registered O16), membership 945; result `2b098fb4…`; Haiku audit clean. The CLI cases pass 11/11 and `directional-ui` links the same GMP. This is also CB60's full-gate TB. DIAG-RETAIN (CB58–CB61) is closed. Next `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE`.
