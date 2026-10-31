@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cb63-linux-cli-gui-compile-20261031-v1",
+  "request_id": "m6-cb63-linux-cli-gui-compile-20261031-v2",
   "operation": "compile",
-  "mailbox_key": "m6-cb63-linux-cli-gui-compile-20261031-v1",
-  "source_sha": "1be60fa771352a04117ec45933cb61f0c9e014e2",
+  "mailbox_key": "m6-cb63-linux-cli-gui-compile-20261031-v2",
+  "source_sha": "f6113c4eb0fbf6a02350eee2d37e7e4dab821429",
   "targets": [
     "directional_core",
     "directional_pipeline",
@@ -16,5 +16,5 @@
     "directional_cli",
     "directional_gui"
   ],
-  "artifact_prefix": "m6-cb63-linux-cli-gui-compile"
+  "artifact_prefix": "m6-cb63-linux-cli-gui-compile-v2"
 }
