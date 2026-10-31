@@ -16018,6 +16018,85 @@ TEST(ResolvedBranchCorrection,
   EXPECT_EQ(boundary_point(outgoing, 1, 4), decision->exitPoint);
 }
 
+TEST(ResolvedBranchCorrection,
+     DyadicInteriorExitIsNearestOpenGridPointTiesToEven) {
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  constexpr std::int64_t kGrid = std::int64_t{1} << 52;
+  ASSERT_EQ(52U, kFieldDyadicExitFractionBits);
+
+  // A grid value is published unchanged; 1/3 goes to the nearest grid point.
+  EXPECT_EQ(exact_ratio(3, 8),
+            field_dyadic_interior_exit_parameter(exact_ratio(3, 8)));
+  EXPECT_EQ(exact_ratio(1501199875790165, kGrid),
+            field_dyadic_interior_exit_parameter(exact_ratio(1, 3)));
+  EXPECT_LE(field_dyadic_interior_exit_parameter(exact_ratio(1, 3))
+                .magnitude_bits(),
+            53U);
+
+  // Exact halfway points go to the even neighbour: 5.5 -> 6 and 6.5 -> 6.
+  EXPECT_EQ(exact_ratio(6, kGrid), field_dyadic_interior_exit_parameter(
+                                       exact_ratio(11, kGrid * 2)));
+  EXPECT_EQ(exact_ratio(6, kGrid), field_dyadic_interior_exit_parameter(
+                                       exact_ratio(13, kGrid * 2)));
+
+  // An interior value nearer an endpoint than half a grid step stays interior.
+  constexpr std::int64_t kFine = std::int64_t{1} << 60;
+  EXPECT_EQ(exact_ratio(1, kGrid),
+            field_dyadic_interior_exit_parameter(exact_ratio(1, kFine)));
+  EXPECT_EQ(exact_ratio(kGrid - 1, kGrid),
+            field_dyadic_interior_exit_parameter(exact_ratio(kFine - 1, kFine)));
+}
+
+TEST(ResolvedBranchCorrection, EdgeExitPublishesBoundedDyadicInteriorParameter) {
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  const SourceFaceTopologyKey face = topology_face(0, 1, 2);
+  const SourceEdgeTopologyKey incoming = topology_edge(0, 1);
+  const SourceEdgeTopologyKey outgoing = topology_edge(1, 2);
+  // Entry parameter p on (0,1) exits (1,2) exactly at (1 - p) / 2.
+  const auto pairing = continuation_pairing({-2, 1, 1}, {outgoing, incoming});
+  const auto exit_for = [&](const directional::authority::FieldExactRational &p)
+      -> std::optional<FieldBranchContinuationDecision> {
+    const auto resolved = resolve_field_branch_continuation(
+        face, pairing,
+        directional::authority::FieldBoundaryPoint{
+            incoming, directional::authority::ExactUnitParameter{p}});
+    const auto *decision =
+        std::get_if<FieldBranchContinuationDecision>(&resolved);
+    return decision == nullptr
+               ? std::nullopt
+               : std::optional<FieldBranchContinuationDecision>{*decision};
+  };
+
+  // The exact exit 1/3 is published as its grid point, not as 1/3.
+  const auto third = exit_for(exact_ratio(1, 3));
+  ASSERT_TRUE(third.has_value());
+  EXPECT_EQ(FieldBranchContinuationKind::EdgeExit, third->kind);
+  EXPECT_EQ(outgoing, third->exitPoint.edge);
+  EXPECT_EQ(field_dyadic_interior_exit_parameter(exact_ratio(1, 3)),
+            third->exitPoint.parameter.value);
+  EXPECT_NE(exact_ratio(1, 3), third->exitPoint.parameter.value);
+
+  // A wide entry under the magnitude policy (3^-2048, about 3,250 bits) has
+  // an exact exit just as wide; the published exit is the grid point 1/2.
+  auto wide = exact_ratio(1, 3);
+  for (int squaring = 0; squaring < 11; ++squaring) wide = wide * wide;
+  ASSERT_GT(wide.magnitude_bits(), 3000U);
+  ASSERT_LE(wide.magnitude_bits(), kFieldExactContinuationMagnitudeBits);
+  const auto narrowed = exit_for(wide);
+  ASSERT_TRUE(narrowed.has_value());
+  EXPECT_EQ(FieldBranchContinuationKind::EdgeExit, narrowed->kind);
+  EXPECT_EQ(exact_ratio(1, 2), narrowed->exitPoint.parameter.value);
+
+  // An exit 2^-61 from vertex 1 is still an edge exit, never a vertex hit.
+  constexpr std::int64_t kFine = std::int64_t{1} << 60;
+  const auto nearVertex = exit_for(exact_ratio(kFine - 1, kFine));
+  ASSERT_TRUE(nearVertex.has_value());
+  EXPECT_EQ(FieldBranchContinuationKind::EdgeExit, nearVertex->kind);
+  EXPECT_FALSE(nearVertex->sourceVertex.has_value());
+  EXPECT_EQ(exact_ratio(1, std::int64_t{1} << 52),
+            nearVertex->exitPoint.parameter.value);
+}
+
 TEST(M4CPScaleS1,
      ExactTraceParameterScaleCensusIsDeterministicAndDecisionNeutral) {
   using namespace directional::geometry::surface_cell_tracing_detail;

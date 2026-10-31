@@ -1126,9 +1126,34 @@ publish_field_aligned_trace_traversal_state(
  *
  * Exceeding it is a typed rejection, never a fallback to inexact arithmetic: the
  * producer declines to answer rather than answering approximately, so no
- * topological outcome is ever decided by a magnitude.
+ * topological outcome is ever decided by a magnitude. Since DESIGN.md
+ * Amendment 24 an entry published by A2a is at most 53 bits wide, so the policy
+ * binds only on an entry constructed outside A2a.
  */
 inline constexpr std::size_t kFieldExactContinuationMagnitudeBits = 4096U;
+
+/**
+ * @brief Fractional bits of the grid on which A2a publishes an interior exit.
+ *
+ * An exact exit composed face after face widens by the width of each face's
+ * direction (RA-188: about 200 bits per face on the vase), so a long trace
+ * outgrows any fixed magnitude policy. DESIGN.md Amendment 24 publishes each
+ * interior edge exit as n / 2^52 instead, which bounds the next entry at 53
+ * bits however many faces the trace has crossed.
+ */
+inline constexpr unsigned kFieldDyadicExitFractionBits = 52U;
+
+/**
+ * @brief The interior exit parameter A2a publishes for an exact interior exit.
+ *
+ * Returns n / 2^52 for the integer n nearest to 2^52 * parameter, ties to even,
+ * restricted to 0 < n < 2^52. The open grid keeps an interior exit interior:
+ * a vertex hit is decided exactly before this point and is never created or
+ * removed here. Integer arithmetic only. Requires 0 < parameter < 1.
+ */
+[[nodiscard]] authority::FieldExactRational
+field_dyadic_interior_exit_parameter(
+    const authority::FieldExactRational &parameter);
 
 [[nodiscard]] FieldBranchExitTimeOrdering compare_field_branch_exit_times(
     const authority::FieldExactRational &firstPosition,

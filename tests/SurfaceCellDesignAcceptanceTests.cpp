@@ -43,7 +43,8 @@ std::string failure_context(const directional::pipeline::RemeshResult &result) {
          " arrangementCells=" +
          std::to_string(result.diagnostics.surfaceCellArrangementCellCount) +
          " completedQuads=" +
-         std::to_string(result.diagnostics.surfaceCellCompletedQuadCount);
+         std::to_string(result.diagnostics.surfaceCellCompletedQuadCount) +
+         " completion=" + result.surfaceCellContext.completionFailure;
 }
 
 

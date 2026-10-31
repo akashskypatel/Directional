@@ -530,6 +530,24 @@ FieldBranchExitTimeOrdering compare_field_branch_exit_times(
   return FieldBranchExitTimeOrdering::Equal;
 }
 
+authority::FieldExactRational field_dyadic_interior_exit_parameter(
+    const authority::FieldExactRational &parameter) {
+  const EInt scale = authority::FieldExactRational::from_integer(
+                         std::int64_t{1} << kFieldDyadicExitFractionBits)
+                         .exact_numerator();
+  const EInt scaled = parameter.exact_numerator() * scale;
+  const EInt denominator = parameter.exact_denominator();
+  EInt nearest = scaled / denominator;
+  const EInt twiceRemainder = (scaled - nearest * denominator) * EInt(2);
+  const bool odd = nearest - (nearest / EInt(2)) * EInt(2) == EInt(1);
+  if (twiceRemainder > denominator || (twiceRemainder == denominator && odd)) {
+    nearest = nearest + EInt(1);
+  }
+  if (nearest < EInt(1)) nearest = EInt(1);
+  if (nearest > scale - EInt(1)) nearest = scale - EInt(1);
+  return *authority::FieldExactRational::from_exact_fraction(nearest, scale);
+}
+
 FieldBranchContinuationResult resolve_field_branch_continuation(
     const authority::SourceFaceTopologyKey &sourceFace,
     const authority::FieldBranchBoundaryPairing &pairing,
@@ -676,9 +694,15 @@ FieldBranchContinuationResult resolve_field_branch_continuation(
             vertexSupport->vertex};
       }
     }
+    // Amendment 24: publish the interior exit on the dyadic grid, so the next
+    // face's entry width does not grow with the length of the trace.
     return FieldBranchContinuationDecision{
-        FieldBranchContinuationKind::EdgeExit, *exitPoint, outgoing,
-        std::nullopt};
+        FieldBranchContinuationKind::EdgeExit,
+        authority::FieldBoundaryPoint{
+            outgoing, authority::ExactUnitParameter{
+                          field_dyadic_interior_exit_parameter(
+                              exitPoint->parameter.value)}},
+        outgoing, std::nullopt};
   }
 
   std::sort(minimizingEdges.begin(), minimizingEdges.end());
