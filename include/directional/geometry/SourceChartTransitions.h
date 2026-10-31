@@ -208,10 +208,11 @@ public:
                                    hardFeatureEdges, barycentricTolerance) {}
 
   [[nodiscard]] bool available() const {
-    return faces_ != nullptr && faces_->cols() == 3 && authority_ != nullptr &&
-           authority_->matches_source_faces(*faces_) &&
-           consistent_ && faceChartComponent_.size() ==
-                              static_cast<std::size_t>(faces_->rows());
+    // build() checks the exact source binding once; the graph borrows
+    // immutable stage products, so queries do not re-validate every row.
+    return sourceBound_ && faces_->cols() == 3 && consistent_ &&
+           faceChartComponent_.size() ==
+               static_cast<std::size_t>(faces_->rows());
   }
 
   [[nodiscard]] std::optional<SourceProjectionChart>
@@ -597,6 +598,7 @@ private:
         !authority_->matches_source_faces(*faces_)) {
       return;
     }
+    sourceBound_ = true;
 
     const int faceCount = faces_->rows();
     int maximumVertex = -1;
@@ -929,6 +931,7 @@ private:
       vertexFan_;
   std::vector<SourceChartTransition> transitions_;
   bool consistent_ = true;
+  bool sourceBound_ = false;
 };
 
 } // namespace directional::geometry

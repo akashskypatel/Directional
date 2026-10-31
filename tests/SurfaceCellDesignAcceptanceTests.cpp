@@ -37,8 +37,8 @@ const directional::bench::BenchmarkCase &find_benchmark_case(
 
 std::string failure_context(const directional::pipeline::RemeshResult &result) {
   return "terminal=" + result.diagnostics.terminalFailureCode + ":" +
-         result.diagnostics.terminalFailureStage +
-         " traceSegments=" +
+         result.diagnostics.terminalFailureStage + " detail=" +
+         result.diagnostics.terminalFailureDetailCode + " traceSegments=" +
          std::to_string(result.diagnostics.surfaceCellTraceSegmentCount) +
          " arrangementCells=" +
          std::to_string(result.diagnostics.surfaceCellArrangementCellCount) +
