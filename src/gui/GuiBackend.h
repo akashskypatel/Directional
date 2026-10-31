@@ -12,6 +12,7 @@
 #include <directional/fields/CompareCrossFields.h>
 #include <directional/visualization/CutGraphDisplay.h>
 #include <directional/visualization/FieldAlignedNetworkPolylines.h>
+#include <directional/visualization/MaterializationDiagnosticsDisplay.h>
 #include <directional/visualization/SourceRegionDisplay.h>
 #include <directional/visualization/SurfaceCellTracingDisplay.h>
 #include <directional/visualization/TargetSizeDisplay.h>
@@ -133,6 +134,10 @@ struct SurfaceCellDiagnosticsData {
   std::optional<visualization::FieldAlignedNetworkPolylines> network;
   /// The A2a' cut graph and A2b disc regions, when either was published.
   std::optional<visualization::CutGraphDisplay> cutGraph;
+  /// The A5-A7 occurrences, quotient classes and source-attached geometry,
+  /// when the run completed them.
+  std::optional<visualization::MaterializationDiagnosticsDisplay>
+      materialization;
   /// Where the run stopped and, when quad tracing produced them, its cells.
   visualization::SurfaceCellTracingDisplay tracing;
   bool pipelineProduced = false;

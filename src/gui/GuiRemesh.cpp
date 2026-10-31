@@ -89,6 +89,11 @@ SurfaceCellDiagnosticsData run_surface_cell_diagnostics(
         snapshots.surfaceCutGraph ? &*snapshots.surfaceCutGraph : nullptr,
         snapshots.globalTopologyPlan ? &*snapshots.globalTopologyPlan : nullptr);
   }
+  if (snapshots.occurrenceComplex || snapshots.quotientProduct ||
+      snapshots.sourceAttachedGeometry) {
+    result.materialization =
+        visualization::materialization_diagnostics_display(snapshots);
+  }
   const auto &context = remesh.surfaceCellContext;
   result.tracing = visualization::surface_cell_tracing_display(
       mesh.vertices, mesh.faces, remesh.diagnostics,

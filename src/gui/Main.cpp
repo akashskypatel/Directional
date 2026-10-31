@@ -57,6 +57,10 @@ constexpr const char *kStopEdgesName = "SurfaceCells stop edges";
 constexpr const char *kStopVerticesName = "SurfaceCells stop vertices";
 constexpr const char *kTracedCellsName = "A4 traced cells";
 constexpr const char *kTracedCornersName = "A4 cell corners";
+constexpr const char *kOccurrenceSidesName = "A5 occurrence cell sides";
+constexpr const char *kOccurrencesName = "A5 corner occurrences";
+constexpr const char *kQuotientClassQuantity = "A6 quotient class";
+constexpr const char *kGeometryQuadsName = "A7 source-attached geometry";
 constexpr const char *kCutEdgesName = "A2a' cut edges";
 constexpr const char *kGraphArcsName = "A2b graph arcs";
 constexpr const char *kFaceDiscRegionQuantity = "A2b disc region";
@@ -418,19 +422,22 @@ private:
   void remove_surface_cell_layers() {
     for (const char *name : {kNetworkTracesName, kNetworkMandatoryName,
                              kRegionSeamsName, kRegionBoundariesName,
-                             kStopEdgesName, kTracedCellsName}) {
+                             kStopEdgesName, kTracedCellsName,
+                             kOccurrenceSidesName}) {
       if (polyscope::hasCurveNetwork(name)) {
         polyscope::removeCurveNetwork(name);
       }
     }
     for (const char *name : {kNetworkSingularitiesName, kStopVerticesName,
-                             kTracedCornersName}) {
+                             kTracedCornersName, kOccurrencesName}) {
       if (polyscope::hasPointCloud(name)) {
         polyscope::removePointCloud(name);
       }
     }
-    if (polyscope::hasSurfaceMesh(kStopFacesName)) {
-      polyscope::removeSurfaceMesh(kStopFacesName);
+    for (const char *name : {kStopFacesName, kGeometryQuadsName}) {
+      if (polyscope::hasSurfaceMesh(name)) {
+        polyscope::removeSurfaceMesh(name);
+      }
     }
     if (polyscope::hasSurfaceMesh(kInputMeshName)) {
       auto *inputMesh = polyscope::getSurfaceMesh(kInputMeshName);
@@ -836,19 +843,22 @@ private:
                              kRegionSeamsName, kRegionBoundariesName,
                              kStreamlinesName, kStopEdgesName,
                              kTracedCellsName, kCutEdgesName,
-                             kGraphArcsName, kFeatureEdgesName}) {
+                             kGraphArcsName, kFeatureEdgesName,
+                             kOccurrenceSidesName}) {
       if (polyscope::hasCurveNetwork(name)) {
         sync(polyscope::getCurveNetwork(name));
       }
     }
     for (const char *name : {kNetworkSingularitiesName, kStopVerticesName,
-                             kTracedCornersName}) {
+                             kTracedCornersName, kOccurrencesName}) {
       if (polyscope::hasPointCloud(name)) {
         sync(polyscope::getPointCloud(name));
       }
     }
-    if (polyscope::hasSurfaceMesh(kStopFacesName)) {
-      sync(polyscope::getSurfaceMesh(kStopFacesName));
+    for (const char *name : {kStopFacesName, kGeometryQuadsName}) {
+      if (polyscope::hasSurfaceMesh(name)) {
+        sync(polyscope::getSurfaceMesh(name));
+      }
     }
   }
 
@@ -967,6 +977,37 @@ private:
     }
   }
 
+  void visualize_materialization(
+      const directional::visualization::MaterializationDiagnosticsDisplay
+          &products) {
+    if (products.occurrenceSides.rows() > 0) {
+      auto *sides = polyscope::registerCurveNetwork(
+          kOccurrenceSidesName, products.occurrencePoints,
+          products.occurrenceSides);
+      sides->setColor({0.85F, 0.45F, 0.10F});
+      sides->setRadius(0.0012F);
+    }
+    if (products.occurrencePoints.rows() > 0) {
+      auto *occurrences = polyscope::registerPointCloud(
+          kOccurrencesName, products.occurrencePoints);
+      occurrences->setPointRadius(0.003F);
+      // -1 marks an occurrence that no retained A6 class lists.
+      if (products.hasQuotientProduct) {
+        occurrences
+            ->addScalarQuantity(kQuotientClassQuantity,
+                                products.occurrenceClass,
+                                polyscope::DataType::CATEGORICAL)
+            ->setEnabled(true);
+      }
+    }
+    if (products.geometryQuads.rows() > 0) {
+      auto *geometry = polyscope::registerSurfaceMesh(
+          kGeometryQuadsName, products.geometryPoints, products.geometryQuads);
+      geometry->setEdgeWidth(1.0);
+      geometry->setEnabled(false);
+    }
+  }
+
   void apply_streamline_style() {
     if (!streamlines_.has_value() || !polyscope::hasCurveNetwork(kStreamlinesName)) {
       return;
@@ -1011,6 +1052,9 @@ private:
     }
     if (surfaceCellDiagnostics_->network.has_value()) {
       visualize_field_network(*surfaceCellDiagnostics_->network);
+    }
+    if (surfaceCellDiagnostics_->materialization.has_value()) {
+      visualize_materialization(*surfaceCellDiagnostics_->materialization);
     }
     visualize_quad_tracing(surfaceCellDiagnostics_->tracing);
     sync_overlay_transforms();
