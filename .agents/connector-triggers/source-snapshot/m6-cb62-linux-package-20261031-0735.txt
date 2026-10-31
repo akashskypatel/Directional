@@ -1,0 +1,3 @@
+M6-CB62-DIAG-RETAIN-LINUX-PACKAGE
+Frozen source predecessor: 796deb73b4554221f978f203777dffd5aacf19b7
+Snapshot only; no compile or runtime execution.
