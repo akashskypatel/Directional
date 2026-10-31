@@ -1,20 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cb63-linux-cli-gui-compile-20261031-v2",
-  "operation": "compile",
-  "mailbox_key": "m6-cb63-linux-cli-gui-compile-20261031-v2",
-  "source_sha": "f6113c4eb0fbf6a02350eee2d37e7e4dab821429",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks",
-    "directional_cli",
-    "directional_gui"
-  ],
-  "artifact_prefix": "m6-cb63-linux-cli-gui-compile-v2"
+  "request_id": "m6-cb63-doc-closeout-drive-apply-20261031-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cb63-doc-closeout-drive-apply-20261031-v1",
+  "file_id": "1E3HjWnF_C2P10Lqv6nB2pDEruTgdPQtz",
+  "patch_sha256": "ace616b35c2ce68795270b95be8d79f00e90dc05538f2bacef6a981c5b52590f",
+  "base_sha": "e4a184dcb125b81b9c1a764147100fc7333a0447",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB63 Linux CLI GUI compile and freeze TB62",
+  "retention_days": 14
 }
