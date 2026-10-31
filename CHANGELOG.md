@@ -1,3 +1,11 @@
+# 2026-10-31 — TB59 CLI check runs on CB60: all three registered cases match
+
+- [TB59 report](.agents/Directional/Architecture_M6_TB59_Diag_Retain_CLI_Sidecar_Local_Test_Report_20261031.md): the staged CB60 `bin/directional` was run on the plane three ways. With retention and a prefix, the sidecar is written (645 lines: 64 cells, 256 occurrences, 224 relations, 81 classes and vertices; byte-identical to the probe), and the run then exits 1 on DR4 as registered. Without retention, no sidecar; without a prefix, exit 0. The gate binaries are unchanged. Next `M6-DEFN-DIAG-RETAIN-GUI-LAYERS`.
+
+# 2026-10-31 — CB60 CLI materialization sidecar built locally
+
+- [CB60 record](.agents/Directional/Architecture_M6_CB60_Diag_Retain_CLI_Sidecar_Code_Build_Record_20261031.md): the RA-186.7 patch applied exactly (`d14aaeff…`, `12 0` / `2 0`) at source `a31f2d39…`. `directional_cli` was built CLI-ON at default arithmetic (119/119); the package `c867573b…` (11 entries) was staged by Haiku and re-verified. No native runs. Next `M6-TB59-DIAG-RETAIN-CLI-EXEC`.
+
 # 2026-10-31 — RA-186 DIAG-RETAIN CLI sidecar defined
 
 - [RA-186](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) (local). The CLI throws before any diagnostics when a result is not produced, so CB60 writes `<prefix>.materialization.txt` from the CB59 dump right after the remesh call, when the snapshots are retained. A CLI-ON probe on the plane pins three runs (dump present only with retention and a prefix: 64 cells, 256 occurrences, 224 relations, 81 classes and vertices). New DR4: the existing cut-mesh sidecars throw on every SurfaceCells product (pre-existing; M8-CP2). GUI layers → `M6-DEFN-DIAG-RETAIN-GUI-LAYERS`. CB60 `d14aaeff…`. Next `M6-CB60-DIAG-RETAIN-CLI-SIDECAR`.

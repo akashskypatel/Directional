@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-31 · M6-DEFN-DIAG-RETAIN-CLI-GUI-WIRING — [RA-186](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) freezes CB60: the CLI writes the CB59 materialization dump as a `--diagnostics-prefix` sidecar before its produced-result check; GUI layers get their own DEFN; DR4 (pre-existing SurfaceCells cut-sidecar failure) → M8-CP2. The local gate baseline is TB58 862/863. TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-CB60-DIAG-RETAIN-CLI-SIDECAR`.
+**Currency:** 2026-10-31 · M6-TB59-DIAG-RETAIN-CLI-EXEC — CB60 lands the [RA-186](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) CLI materialization sidecar; the [TB59 check runs](Architecture_M6_TB59_Diag_Retain_CLI_Sidecar_Local_Test_Report_20261031.md) match all three registered cases. The local gate baseline is TB58 862/863 (no gate binary changed). TB52 853/0 is the latest reviewed Linux candidate; CP2 491/491 last accepted; stable 66/17/49 debt 1. Next `M6-DEFN-DIAG-RETAIN-GUI-LAYERS`.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -104,7 +104,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** CB60 (CLI-ON) → TB59 (three CLI runs) → `M6-DEFN-DIAG-RETAIN-GUI-LAYERS`. Then the P13 probe DEFN (Cylinder; O6, O9, O15c checks).
+**Immediate:** `M6-DEFN-DIAG-RETAIN-GUI-LAYERS` (GUI-ON build probe) → its GUI CB. Then the P13 probe DEFN (Cylinder; O6, O9, O15c checks).
 
 
 | Priority | Missing outcome | Owner |
