@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cb65-p13-canonical-dyadic-closeout-20261101-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cb65-p13-canonical-dyadic-closeout-20261101-v1",
-  "file_id": "1MhZV-Fj4t0Txk36ogS3Ruv8MhtiCaLat",
-  "patch_sha256": "15b8a908d3e9f1578d784341651dd33b781778cd515f969710dd236234c21dd3",
-  "base_sha": "8478482f78ee783037516eba77ef58fe7692b214",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close out CB65 compile and authorize immutable TB64",
+  "request_id": "m6-cp3-tb64-p13-gate-20261101-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb64-p13-gate-20261101-v1",
+  "executor_sha": "dbc38661efabdfa051f48f8f71ee3c604841842c",
+  "semantic_source_sha": "dbc38661efabdfa051f48f8f71ee3c604841842c",
+  "turn_id": "M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "13062413347",
+    "EXPECTED_SOURCE_SHA": "dbc38661efabdfa051f48f8f71ee3c604841842c",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "1a2ab39d43742cfa5d3b7b2c09242482ef63712b2efbaf9644a54b83e2b0948b",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "0c69aaea7a2eea6d1a9fe1fcd78724a0c3a320f757357de0b07aece738286ff5",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "c30b58f0aa85375480ed7d794c543faa59f5c613480dba1aaa3df0647cbd3ba5",
+    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_TB64_P13_Dyadic_Exit_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "289d887c7d1eedcdfdc42c5869055915abf5aec8a0436a62e67acf566a99dbce",
+    "EXPECTED_CASE_COUNT": "866",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  },
+  "artifact_prefix": "m6-cp3-tb64-p13-gate-v1",
   "retention_days": 14
 }
