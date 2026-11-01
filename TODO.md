@@ -1,4 +1,4 @@
-## CURRENT — RA-192 slit adapter adjudicated; CB66 exact patch next (2026-11-01)
+## CURRENT — CB66 compiled; TB65 artifact-only gate next (2026-11-01)
 
 - [x] Done (records in `.agents/Directional/`, history in `CHANGELOG.md`): RP-01 closure (RA-174…[RA-179](.agents/Directional/Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md)) → O15 (RA-180, CB55, TB54, [RA-181](.agents/Directional/Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md)) → row 935 (RA-182, CB56, TB55) → O2 entry gate ([RA-183](.agents/Directional/Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md), CB57, TB56) → **DIAG-RETAIN** ([RA-184](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md), [RA-185](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md), [RA-186](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md), [RA-187](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md); CB58–CB61, last source `e1fd0e4b…`). TB57–TB60 ran on macOS arm64 only; the latest, TB60, gave **862/863** on the TB58 manifest (863 rows; only row 283, O16), membership 945. TB59 ran only CLI cases; TB60 is the full-gate TB for both CB60 and CB61 (RA-187.1).
 - [x] **Independent Linux TB61 full-gate review of CB58–CB61; owner authorized exact Linux CLI/GUI successor** (user direction, 2026-10-31; handoff step 1):
@@ -48,12 +48,11 @@
   - [RA-191](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Single_Edge_Barrier_Slit_Review_Decision_20261101.md) diagnosed the slit.
   - [RA-192](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md) probe-adjudicated it. It proves the interior tip–tip edge is the only configuration the face array glues, and replaces RA-191's incidence product and open-ended CB66 with an A1 slit adapter (Amendment 25, rewritten) and an exact patch.
   - Probes: 869-row candidate gate 868/869 (only O16); ledger 81/81 RED in both modes; BunnyRandom reaches P13-e; mutants M1–M3 each caught.
-- [ ] **NEXT `M6-CP3-CB66-P13-SLIT-CYCLE-BASIS`** (CB; implementation agent; Linux workflow runner):
+- [x] **`M6-CP3-CB66-P13-SLIT-CYCLE-BASIS`** (CB; implementation agent; Linux workflow runner):
   - Precheck `git diff --quiet dbc38661… HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
   - Apply the RA-192.8 block, SHA-256 `c83fefa2298e8fb5fc1b6ef14a8fe47f46ce5cf92d0acc89f4fd6d7da0c4377c`. Numstat `1 0` / `173 33` / `182 0`; result SHA-256s per RA-192.5.
-  - Compile only, eight targets.
-  - Mismatch → `M6-CP3-PLAN-P13-SLIT-STOP`; infrastructure → `M6-CP3-CB66A-P13-SLIT-ORCH`.
-- [ ] **Then `M6-CP3-TB65-P13-SLIT-FULL-GATE-EXEC`** (TB-EXEC; Linux; verified CB66 package only):
+  - **Completed:** exact 3-path source patch at `911840c195b52ce1800b3ac7ff3ea7380137ad9c`; [eight-target compile run 41265565212](https://github.com/akashskypatel/Directional/actions/runs/41265565212), artifact `13067780359`, 28/28 hashes, GMP/GMPXX, no runtime. [Report](.agents/Directional/Architecture_M6_CP3_CB66_P13_Slit_Cycle_Basis_Code_Build_Report_20261101.md).
+- [ ] **NEXT `M6-CP3-TB65-P13-SLIT-FULL-GATE-EXEC`** (TB-EXEC; Linux; verified CB66 package only):
   - Gate: 869-row manifest `baaef9e7…` plus ledger v5 `fd433f54…`, pre-registered 869/869, membership 950.
   - Census `3af1dc0d…`: Cylinder PASS; BunnyRandom `terminal=InvalidFieldTransportAtlas:field-transport-atlas/SingularityPortClassCountMismatch;sourceVertex=49` with `cutChi=-5`, `cutBoundaryLoops=7`, no `CutTransportDomainIdentityMismatch`; Vase `NotProductionReady:completion` with `completion=SideSubdivisionRepair:InvalidInputIncidence`.
   - Mismatch → `M6-CP3-TB65-P13-SLIT-FULL-GATE-REV`; infrastructure → `M6-CP3-TB65A-P13-SLIT-ORCH`.

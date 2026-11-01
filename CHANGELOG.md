@@ -1,3 +1,9 @@
+# 2026-11-01 — CB66 P13 slit-cycle-basis exact patch and Linux compile
+
+- `M6-CP3-CB66-P13-SLIT-CYCLE-BASIS` applied RA-192.8 verbatim to three prescribed files at `911840c195b52ce1800b3ac7ff3ea7380137ad9c`. Corrected a transport-header intended-path delimiter in the Drive apply retry; no source change outside approved scope.
+- [Linux eight-target compile run 41265565212](https://github.com/akashskypatel/Directional/actions/runs/41265565212), artifact `13067780359` (ZIP SHA-256 `b84539426a337c84396b74774a9cecefa7f97059fb4aa8499b45e9b1a2e8ac77`), root 28/28 hashes, GMP/GMPXX and `runtimeExecution=false`, zero tests or benchmarks executed. [CB66 report](.agents/Directional/Architecture_M6_CP3_CB66_P13_Slit_Cycle_Basis_Code_Build_Report_20261101.md).
+- Next: `M6-CP3-TB65-P13-SLIT-FULL-GATE-EXEC` artifact-only, frozen 869 gate + 81 deferred + 3-case independent census, membership 950. No TB65 acceptance claimed. CP2 491/491 remains last accepted; stable 66/17/49, debt 1; selector497/CP3 unpromoted.
+
 # 2026-11-01 — RA-192 P13-c slit adapter adjudicated; CB66 exact patch next
 
 - [RA-192](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md) probe-adjudicates RA-191 and closes `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT`. RA-191's diagnosis stands. Its general edge-side incidence product, its consumer-wide scope, its open-ended CB66 and its unexecutable falsifiers are replaced. **DESIGN Amendment 25 is rewritten:**
