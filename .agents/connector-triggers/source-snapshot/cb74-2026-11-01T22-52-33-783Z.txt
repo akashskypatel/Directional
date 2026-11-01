@@ -1,0 +1,1 @@
+CB74 source snapshot trigger; source authority includes the entry STATUS beacon. 
