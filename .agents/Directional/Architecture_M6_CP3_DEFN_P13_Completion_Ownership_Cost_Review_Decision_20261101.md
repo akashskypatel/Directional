@@ -1,5 +1,7 @@
 # P13-f completion source-chart ownership-cost Review / Definition — 2026-11-01
 
+> **Probe-adjudicated by [RA-195](Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Probe_Adjudication_20261101.md) (2026-11-01).** The site attribution stands. The frozen successor plan, the binding prohibition and the TB obligations are superseded (RA-195.1 F1–F7). The exact successors are CB71 → CB72 → TB68.
+
 **Canonical turn:** `M6-CP3-DEFN-P13-COMPLETION-OWNERSHIP-COST`. **Decision:** approved with a narrowed, bounded and falsifiable Code + Build successor; direct Vase acceptance remains unproved.
 
 ## Primary evidence and independent attribution

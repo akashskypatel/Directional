@@ -315,6 +315,13 @@ This document records **reusable failure-derived engineering lessons**, not an e
   and called `arrangementCells=0` unproven, while the arrangement already published `incidenceValid=false`
   and `RepeatedNodeCycle` and the count was its `cells.size()`. One run printing that audit found the
   producer; a wedge census and an independent rotation-order oracle then found both defects (RA-193).
+- **For a cost defect, measure the cost and remove it in a probe before writing the plan.** A timeout
+  hides the next failure. The P13-f decision read the hot sites correctly but stayed static, so it could
+  not say whether removing them was enough or what failed next, and it froze an open-ended CB. One stack
+  sample gave each site's share (graph rebuilds 93.5 %), and an env-switched probe with two modes
+  (per-vertex, per-vertex + per-pass) gave both remaining costs and the next failure (P13-g) in two runs.
+  When reuse of an immutable helper needs a binding proof, check the helper's own contract first: here
+  the graph already borrowed its inputs and recorded its binding at build (RA-195).
 
 ## Contracts, planning, reviews, and durable records
 

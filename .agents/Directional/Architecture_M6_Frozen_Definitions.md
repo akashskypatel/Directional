@@ -1,3 +1,16 @@
+## RA-195 — P13-f completion ownership cost: probe adjudication; exact CB71/CB72, TB68 (2026-11-01)
+
+- [RA-195](Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Probe_Adjudication_20261101.md) supersedes the static decision's open-ended CB71 plan. **DESIGN Amendment 27:**
+  - A stage builds one `SourceChartTransitionGraph` per invocation (per completion pass, per materialized mesh) and lends it to its per-patch and per-vertex checks.
+  - A callee reuses a lent graph only if the graph borrows exactly its inputs: the face-matrix, authority and hard-edge-set objects and the tolerance. The graph's build-time `source_bound()` then stands for `matches_source_faces`.
+  - Any other graph is ignored, and the callee builds its own. A lent graph is never trusted and never a new failure; checks, codes and order are unchanged.
+- Turn IDs:
+  - CB71 `M6-CP3-CB71-P13-COMPLETION-CHART-GRAPH-REUSE` (`8512400f…`, gate row 872).
+  - CB72 `M6-CP3-CB72-P13-COMPLETION-PASS-GRAPH` (`514c6d87…`, gate row 873).
+  - TB68 `M6-CP3-TB68-P13-COMPLETION-GRAPH-FULL-GATE-EXEC` (manifest 873 `3b6b9f42…`, membership 954).
+  - P13-g DEFN `M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING`.
+  - O20: residual per-call O(F), non-blocking.
+
 ## RA-194 — P13-d Vase: landed diagnostics CB67 reverted; RA-193's patches renumbered (2026-11-01)
 
 - [RA-194](Architecture_M6_CP3_DEFN_P13_Vase_Landed_Incidence_Probe_Revert_20261101.md) reviews `829a47b2d`, the withdrawn diagnostics CB67 that landed uncompiled. It does not meet Amendment 26 (the run still ends at `completion`), it reports the downstream symptom as the first clause, and its test cannot compile or run. Revert it exactly.

@@ -1,5 +1,7 @@
 # CB71 — Completion source-chart reuse, compile-only plan
 
+> **Superseded by [RA-195](Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Probe_Adjudication_20261101.md) (2026-11-01).** This plan is not an authority for CB71. CB71 applies the exact patch RA-195.8, and CB72 applies RA-195.9. The binding rule is DESIGN Amendment 27. TB68 follows RA-195.6.
+
 **Turn:** `M6-CP3-CB71-P13-COMPLETION-CHART-GRAPH-REUSE`. Authority: [Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Review_Decision_20261101.md](Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Review_Decision_20261101.md), immutable TB67 evidence, CB70 semantic source `9754500b2058229b7f0a6268838953650690b031`. Before applying source changes, verify source/build/test differences from this semantic base and refresh the exact branch snapshot under the repository policy. **This is a plan, not authorization to start CB71 within the current Review.**
 
 1. **One source-bound graph per completion batch:** in `src/geometry/PatchDescriptor.cpp` construct the immutable `SourceChartTransitionGraph` once for the exact `F`, source topology authority and barrier set used by all descriptors; prove consistent source binding before sharing. Thread an optional borrowed, `const` graph reference through `PureQuadCompletionOptions` and the internal ownership validator. Its lifetime must cover every generated, retried and cache-reused patch, with no cross-input persistence. If no prevalidated graph is supplied, a standalone public call constructs and validates one local graph for that call.
