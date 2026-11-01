@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cb65-p13-canonical-dyadic-compile-20261031-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cb65-p13-canonical-dyadic-compile-20261031-v1",
-  "source_sha": "dbc38661efabdfa051f48f8f71ee3c604841842c",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cb65-canonical-dyadic"
+  "request_id": "m6-cb65-p13-canonical-dyadic-closeout-20261101-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cb65-p13-canonical-dyadic-closeout-20261101-v1",
+  "file_id": "1MhZV-Fj4t0Txk36ogS3Ruv8MhtiCaLat",
+  "patch_sha256": "15b8a908d3e9f1578d784341651dd33b781778cd515f969710dd236234c21dd3",
+  "base_sha": "8478482f78ee783037516eba77ef58fe7692b214",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close out CB65 compile and authorize immutable TB64",
+  "retention_days": 14
 }
