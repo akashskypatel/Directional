@@ -1,3 +1,7 @@
+# 2026-11-01 — CB71 completion source-chart graph reuse, exact patch + compile-only success
+
+- `M6-CP3-CB71-P13-COMPLETION-CHART-GRAPH-REUSE`: RA-195.8 (`8512400f…`) matched four intended file hashes and path numstat; applied as [`042979f7`](https://github.com/akashskypatel/Directional/commit/042979f7a264dff21de4e3b1af25a1a27fe27c95). [Compile run 41329208274](https://github.com/akashskypatel/Directional/actions/runs/41329208274) generated eight GMP/GMPXX targets, artifact `13092069619` (`729a5ff0…`), 28/28 verified checksums, `runtimeExecution=false`, clean source. [CB71 record](.agents/Directional/Architecture_M6_CP3_CB71_Completion_Chart_Graph_Reuse_Code_Build_Record_20261101.md). No runtime verification or selector/CP3 promotion; CP2 491/491 accepted, TB67 candidate 871/871 membership952, stable 66/17/49 debt1. Next **CB72 exact RA-195.9**, separate compile-only turn; TB68 after CB72.
+
 # 2026-11-01 — RA-195 P13-f completion ownership cost: probe adjudication, exact CB71/CB72
 
 - [RA-195](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Probe_Adjudication_20261101.md) adjudicates the static P13-f decision (`55b8e18b6`) with probes on CB70 source.
