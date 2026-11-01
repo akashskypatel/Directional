@@ -34,18 +34,18 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-01 **TB66 immutable gate verified and closed** ([TB66 report](Architecture_M6_CP3_TB66_P13_Arrangement_Terminal_Full_Gate_Execution_Report_20261101.md)); RA-193.6 predicted both gate and census exactly. CB69's O18 terminal-stage attribution is independently observed; R1/R2 arrangement rotation repair remains for CB70. No CP3 promotion. |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`; verify fresh before CB70. Exact CB69 semantic source [`5b08abe42f91`](https://github.com/akashskypatel/Directional/commit/5b08abe42f91f88fd6d09e225c7cf32d0aeb1ef3), immutable package `13084749209`; no code/tests/build/selector mutations in TB66. |
+| Currency | 2026-11-01 **CB70 exact patch compiled; TB67 immutable gate next** ([TB66 report](Architecture_M6_CP3_TB66_P13_Arrangement_Terminal_Full_Gate_Execution_Report_20261101.md)); RA-193.6 predicted both gate and census exactly. CB69 O18 terminal attribution is observed; CB70 applied and compiled the R1/R2 arrangement rotation fix without runtime execution. No CP3 promotion. |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`; CB70 source [`9754500b2058`](https://github.com/akashskypatel/Directional/commit/9754500b2058229b7f0a6268838953650690b031), compile package `13087332886`; preceding CB69 semantic source [`5b08abe42f91`](https://github.com/akashskypatel/Directional/commit/5b08abe42f91f88fd6d09e225c7cf32d0aeb1ef3), immutable package `13084749209`; no code/tests/build/selector mutations in TB66. |
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06; unchanged, TB66 candidate only. |
 | Latest candidate | **TB66 Linux gate 869/869 PASS, membership 950**, [run 41312768151](https://github.com/akashskypatel/Directional/actions/runs/41312768151), result artifact `13086562028`, ZIP `c13447dcb20567fde1f818da761cacf4bbc124908b79bf51375f11fcd8bae733`, 1746/1746 hashes; independent **census 1 PASS / 2 expected RED**, [run 41312834931](https://github.com/akashskypatel/Directional/actions/runs/41312834931), result `13086079391`, ZIP `8fdd9dd3c117df6510de9791e6df62e35a1ca8c1e6c42f3673522c523f9b2cd6`, 9/9 hashes; both postflight true, no rebuild. |
 | Regression accounting and debt | Stable **66/17/49**, debt **1**; v5 deferred 81 (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE), membership 950, unchanged; selector497 unpromoted. DR1/DR3 open, DR2/DR4 → M8-CP2. |
-| Active boundary | **Cylinder PASS**; **BunnyRandom P13-e** `SingularityPortClassCountMismatch` at source vertex 49, no produced quads; **Vase P13-d** typed `NotProductionReady:arrangement`, `RepeatedNodeCycle`, 192482 trace segments, zero cells / completion. CB70 owns R1/R2 shared wedges and edge rotation; its RA-193 probe predicts completion-stage P13-f >600 s after valid arrangement. O18 attribution discharged; O16/O17/O19/O6/O9 carried. |
+| Active boundary | **Cylinder PASS**; **BunnyRandom P13-e** `SingularityPortClassCountMismatch` at source vertex 49, no produced quads; **Vase P13-d** typed `NotProductionReady:arrangement`, `RepeatedNodeCycle`, 192482 trace segments, zero cells / completion. CB70 applied R1/R2 shared wedges and edge rotation; runtime not executed. RA-193 probe predicts completion-stage P13-f >600 s after valid arrangement. O18 attribution discharged; O16/O17/O19/O6/O9 carried. |
 
-## Mandatory next turn — `M6-CP3-CB70-P13-ARRANGEMENT-WEDGE-ROTATION` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB67-P13-ARRANGEMENT-WEDGE-FULL-GATE-EXEC` — EXACT NEXT
 
-- **Type / owner:** Code + Build, implementation agent, Linux workflow runner. Authority: [RA-193](Architecture_M6_CP3_DEFN_P13_Vase_Arrangement_Rotation_Probe_Adjudication_20261101.md) §7 and §11 as renumbered by RA-194. The TB66 results met RA-193.6 and authorize the CB70 successor only in the next turn.
-- **Scope:** exact RA-193.11 patch `e93f5d8c…`, numstat `37 30` / `95 0` over its two authorized paths; correct source-entity shared directed wedges and mirrored edge rotation; compile-only, no test/benchmark execution. Precheck and exact SHA/paths in RA-193.7/11, not paraphrased here.
-- **Next gate (separate turn):** TB67 immutable 871-row manifest `434e6d37…`, membership 952; pre-registered Vase completion timeout per RA-193.8. Mismatch → `M6-CP3-PLAN-P13-ARRANGEMENT-WEDGE-STOP`; infrastructure → `M6-CP3-CB70A-P13-ARRANGEMENT-WEDGE-ORCH`.
+- **Completed prior turn:** CB70 Code + Build; verified source and immutable GMP/GMPXX package in [CB70 record](Architecture_M6_CP3_CB70_Arrangement_Wedge_Rotation_Code_Build_Record_20261101.md). Authority: [RA-193](Architecture_M6_CP3_DEFN_P13_Vase_Arrangement_Rotation_Probe_Adjudication_20261101.md) §7 and §11 as renumbered by RA-194. The TB66 results authorized CB70; CB70 compile-only evidence now authorizes the separate TB67 immutable-artifact gate.
+- **Scope:** TB67 Test + Benchmark executes exactly RA-193.8 frozen 871 identities plus registered census against the immutable CB70 package; no source edits or rebuild. Existing full-gate and census predicates remain authoritative.
+- **Test authority:** TB67 immutable 871-row manifest `434e6d37…`, membership 952; pre-registered Vase completion timeout per RA-193.8. Mismatch → `M6-CP3-PLAN-P13-ARRANGEMENT-WEDGE-STOP`; infrastructure → `M6-CP3-CB70A-P13-ARRANGEMENT-WEDGE-ORCH`.
 - **Carried:** accepted CP2 491/491, selector497 frozen, stable 66/17/49 debt1; P13-e and P13-f Review DEFNs, O16/O17/O19/O6/O9 and DR1/DR3/DR2/DR4.
 
 ## Turn Sequence
@@ -57,17 +57,18 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | 3 — COMPLETE | `M6-CP3-CB68-P13-REVERT-INCIDENCE-BOUNDARY-PROBE` | Implementation agent, Linux; exact revert (RA-194.6), source equality with `911840c1…`, no build |
 | 4 — COMPLETE | `M6-CP3-CB69-P13-ARRANGEMENT-INCIDENCE-TERMINAL` | Implementation agent, Linux; RA-193.10 (`35727214…`, `29 1`), spec RA-193.5, compile only. Mismatch → `M6-CP3-PLAN-P13-ARRANGEMENT-TERMINAL-STOP`; infrastructure → `M6-CP3-CB69A-P13-ARRANGEMENT-TERMINAL-ORCH` |
 | 5 — COMPLETE | `M6-CP3-TB66-P13-ARRANGEMENT-TERMINAL-FULL-GATE-EXEC` | Implementation agent, Linux; gate 869/869, membership 950, census per RA-193.6 (Vase `arrangement` / `RepeatedNodeCycle`). Mismatch → `M6-CP3-TB66-P13-ARRANGEMENT-TERMINAL-FULL-GATE-REV`; infrastructure → `M6-CP3-TB66A-P13-ARRANGEMENT-TERMINAL-ORCH` |
-| 6 — NEXT | `M6-CP3-CB70-P13-ARRANGEMENT-WEDGE-ROTATION` | Implementation agent, Linux; RA-193.11 (`e93f5d8c…`, `37 30` / `95 0`), spec RA-193.7, compile only. Mismatch → `M6-CP3-PLAN-P13-ARRANGEMENT-WEDGE-STOP`; infrastructure → `M6-CP3-CB70A-P13-ARRANGEMENT-WEDGE-ORCH` |
-| 7 | `M6-CP3-TB67-P13-ARRANGEMENT-WEDGE-FULL-GATE-EXEC` | Implementation agent, Linux; gate 871/871, membership 952, census per RA-193.8 (Vase ABNORMAL 600 s timeout). Mismatch → `M6-CP3-TB67-P13-ARRANGEMENT-WEDGE-FULL-GATE-REV`; infrastructure → `M6-CP3-TB67A-P13-ARRANGEMENT-WEDGE-ORCH` |
+| 6 — COMPLETE | `M6-CP3-CB70-P13-ARRANGEMENT-WEDGE-ROTATION` | Implementation agent, Linux; RA-193.11 (`e93f5d8c…`, `37 30` / `95 0`), spec RA-193.7, compile only. Mismatch → `M6-CP3-PLAN-P13-ARRANGEMENT-WEDGE-STOP`; infrastructure → `M6-CP3-CB70A-P13-ARRANGEMENT-WEDGE-ORCH` |
+| 7 — NEXT | `M6-CP3-TB67-P13-ARRANGEMENT-WEDGE-FULL-GATE-EXEC` | Implementation agent, Linux; gate 871/871, membership 952, census per RA-193.8 (Vase ABNORMAL 600 s timeout). Mismatch → `M6-CP3-TB67-P13-ARRANGEMENT-WEDGE-FULL-GATE-REV`; infrastructure → `M6-CP3-TB67A-P13-ARRANGEMENT-WEDGE-ORCH` |
 | 8 (Review, parallel with 3–7) | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49) → CB → TB | Probe DEFN, then exact patch |
 | 9 (Review, after 7) | `M6-CP3-DEFN-P13-COMPLETION-OWNERSHIP-COST` (P13-f) → CB → TB | Probe DEFN; must name Vase's next failure, or a PASS, within 600 s |
 | 10 | P13 re-census → O6/O9 where reached → matrix 6/6 → retire/FIXTURE/PRODUCT/OPEN slices → CP3-REV | One slice at a time |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB70-P13-ARRANGEMENT-WEDGE-ROTATION** (Code + Build, RA-193.7/11 exact source patch; compile-only; TB66 immutable gate met).
+`load_next`: **M6-CP3-TB67-P13-ARRANGEMENT-WEDGE-FULL-GATE-EXEC** (Test + Benchmark, RA-193.8 frozen 871-row artifact-only gate and independent 3-case census; immutable CB70 source/package).
 
 Read first:
+- [CB70 report](Architecture_M6_CP3_CB70_Arrangement_Wedge_Rotation_Code_Build_Record_20261101.md): exact patch, GitHub apply and eight-target GMP/GMPXX compile-only package.
 - [TB66 report](Architecture_M6_CP3_TB66_P13_Arrangement_Terminal_Full_Gate_Execution_Report_20261101.md): independently verified 869/869 and registered census; CB70 authorized.
 - [RA-194](Architecture_M6_CP3_DEFN_P13_Vase_Landed_Incidence_Probe_Revert_20261101.md): §3 CB69/CB70 renumbering, §4 CB68 exact revert (complete), §5 turn order.
 - [RA-193](Architecture_M6_CP3_DEFN_P13_Vase_Arrangement_Rotation_Probe_Adjudication_20261101.md): §5 CB69 spec, §10 exact patch; §6 TB66 gate; §7–§8 and §11 later CB70/TB67. DESIGN.md Amendment 26 governs semantics.
