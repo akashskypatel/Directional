@@ -1,4 +1,4 @@
-## CURRENT — CB73 compiled; next CB74 → CB75 → TB69 (2026-11-01)
+## CURRENT — CB74 compiled; next CB75 → TB69 (2026-11-01)
 
 - [x] Done (records in `.agents/Directional/`, history in `CHANGELOG.md`): RP-01 closure (RA-174…[RA-179](.agents/Directional/Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md)) → O15 (RA-180, CB55, TB54, [RA-181](.agents/Directional/Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md)) → row 935 (RA-182, CB56, TB55) → O2 entry gate ([RA-183](.agents/Directional/Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md), CB57, TB56) → **DIAG-RETAIN** ([RA-184](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md), [RA-185](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md), [RA-186](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md), [RA-187](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md); CB58–CB61, last source `e1fd0e4b…`). TB57–TB60 ran on macOS arm64 only; the latest, TB60, gave **862/863** on the TB58 manifest (863 rows; only row 283, O16), membership 945. TB59 ran only CLI cases; TB60 is the full-gate TB for both CB60 and CB61 (RA-187.1).
 - [x] **Independent Linux TB61 full-gate review of CB58–CB61; owner authorized exact Linux CLI/GUI successor** (user direction, 2026-10-31; handoff step 1):
@@ -108,12 +108,13 @@
      - Content: the Amendment 28 source-orientation predicate (`quad_embedding_failure`, `SourceOrientationMismatch`) in the completion validator. Gate rows 874–875.
      - Mismatch → `M6-CP3-PLAN-P13-COMPLETION-EMBEDDING-STOP`; infrastructure → `M6-CP3-CB73A-P13-COMPLETION-EMBEDDING-ORCH`.
      - **Observed:** exact patch applied as `57c24325f539`, [GMP compile](https://github.com/akashskypatel/Directional/actions/runs/41357670136) immutable artifact `13104267023`; see [CB73 record](.agents/Directional/Architecture_M6_CP3_CB73_P13_Completion_Embedding_Code_Build_Record_20261101.md). No tests or runtime executed.
-  10. [ ] **NEXT `M6-CP3-CB74-P13-COMPLETION-QUADRANGULATION-SEARCH`** (CB, compile only; RA-196.5):
+  10. [x] **COMPLETE `M6-CP3-CB74-P13-COMPLETION-QUADRANGULATION-SEARCH`** (CB, compile only; RA-196.5):
      - Precheck: the source differs from `7b85b450…` in exactly CB73's three paths, each at its RA-196.4 result SHA-256.
      - Apply the RA-196.10 block, keeping its 5 single-space context lines. SHA-256 `b2c6a251c915371845d93c05d753cbf7ad5ed92936cf0fa66879d0dd307c7b4b`. Numstat `3 0` / `146 7` / `131 0`.
      - Content: exhaustive forward-rotation search for an embedded boundary-only quadrangulation, plus the typed `NoEmbeddedQuadrangulation`. Gate rows 876–877.
      - Mismatch → `M6-CP3-PLAN-P13-COMPLETION-QUADRANGULATION-STOP`; infrastructure → `M6-CP3-CB74A-P13-COMPLETION-QUADRANGULATION-ORCH`.
-  11. [ ] **`M6-CP3-CB75-P13-COMPLETION-TERMINAL-DETAIL`** (CB, compile only; RA-196.6):
+     - **Observed:** exact RA-196.10 applied at `4d4ae3ecaa7f`; [GMP/GMPXX eight-target compile](https://github.com/akashskypatel/Directional/actions/runs/41359781910), package `13105515249`, 28/28 checksums; runtimeExecution=false, focused tests compiled, no execution. See [CB74 record](.agents/Directional/Architecture_M6_CP3_CB74_P13_Completion_Quadrangulation_Search_Code_Build_Record_20261101.md).
+  11. [ ] **NEXT `M6-CP3-CB75-P13-COMPLETION-TERMINAL-DETAIL`** (CB, compile only; RA-196.6):
      - Precheck: the source differs from `7b85b450…` in exactly the CB73/CB74 paths, each at its RA-196.5 result SHA-256.
      - Apply the RA-196.11 block, keeping its 1 single-space context line. SHA-256 `d1f5652a979c414e53f11f8b62a71f9d528a79428c0067f2b4946ad71844d933`. Numstat `23 0` PatchDescriptor.h / `6 2` RemeshPipeline.cpp / `22 0` PatchDescriptorMilestoneETests.cpp.
      - Content: the completion terminal's detail becomes the typed completion failure kind. Gate row 878.
