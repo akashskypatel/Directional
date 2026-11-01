@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb73-ra196-orientation-compile-20261101-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb73-ra196-orientation-compile-20261101-v1",
-  "source_sha": "57c24325f53932a195d0c335c0d6609cad90a565",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb73-orientation"
+  "request_id": "m6-cp3-cb73-ra196-doc-closeout-20261101-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb73-ra196-doc-closeout-20261101-v1",
+  "file_id": "1959RUejXcCXF4LXVU71ceXt5Xgwt-a8U",
+  "patch_sha256": "b7d57490b14dbd4d8a4a64e3a6c36ff3e98f0b37acfbb1a0bf094c9e73cec81d",
+  "base_sha": "ad516aa204c13c60f954e99ab490ecd3a71bc4da",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close CB73 compile-only and hand off exact CB74"
 }
