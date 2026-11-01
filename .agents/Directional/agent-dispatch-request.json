@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-ra191-cut-side-defn-20261101-v1",
+  "request_id": "m6-cp3-ra191-closeout-correction-20261101-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-ra191-cut-side-defn-20261101-v1",
-  "file_id": "1VSjYTiQ3StHkBIM1I9b-ryAFhMKbZGHt",
-  "patch_sha256": "924536a12af7ceaa73c1d1a575f89efbc65ad4b9560568d5e1f84c46cd0a41d9",
-  "base_sha": "41fde362bd45707f37c0488decb6848fc6e697c0",
+  "mailbox_key": "m6-cp3-ra191-closeout-correction-20261101-v1",
+  "file_id": "1_s26_5EZ_rWXAq7y-jDnjnUS0vU6yP5A",
+  "patch_sha256": "f51636e547005075641cdc88cfb8b87189defd9437ab8b864f9fec7dc03f5095",
+  "base_sha": "e7765e5b0eca7dcd6c14c4c3d3c0930ea6da8a71",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): define cut-side incidence for single-edge barrier slits",
+  "commit_message": "docs(directional): verify RA-191 review closeout receipts",
   "retention_days": 14
 }
