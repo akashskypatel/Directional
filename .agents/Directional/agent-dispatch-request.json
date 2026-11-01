@@ -7,8 +7,8 @@
   "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
   "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
   "retention_days": 14,
-  "request_id": "m6-cp3-tb68-completion-census-20261101-v1",
-  "mailbox_key": "m6-cp3-tb68-completion-census-20261101-v1",
+  "request_id": "m6-cp3-tb68-completion-census-20261101-v2",
+  "mailbox_key": "m6-cp3-tb68-completion-census-20261101-v2",
   "artifact_prefix": "m6-cp3-tb68-completion-census",
   "environment": {
     "CANDIDATE_ARTIFACT_ID": "13093439789",
@@ -16,7 +16,7 @@
     "EXPECTED_CANDIDATE_ZIP_SHA256": "9b9482fd92af01bc4de0e72964459765c70bca3acb4583a12df0ac5ccb7c7e20",
     "EXPECTED_ROOT_MANIFEST_SHA256": "8d1073f376f5e686db0c370f2189ee9a8391f88ab54c4f998eee00eb7bb8ec6b",
     "EXPECTED_SOURCE_ARCHIVE_SHA256": "8f705870ccdc12da743169af5729ec4057f91906ae9a484733dab92c20f8100f",
-    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_CP3_TB63_P13_Census_Case_Manifest.tsv",
+    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
     "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
     "EXPECTED_CASE_COUNT": "3"
   }
