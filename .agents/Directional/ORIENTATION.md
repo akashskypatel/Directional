@@ -2,8 +2,8 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-11-01 · [RA-195](Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Probe_Adjudication_20261101.md) probe-adjudicated `M6-CP3-DEFN-P13-COMPLETION-OWNERSHIP-COST`. Per-vertex and per-patch `SourceChartTransitionGraph` rebuilds take 93.5 % of Vase's completion CPU. With one graph per mesh and one per pass (DESIGN Amendment 27), Vase ends in 138 s at `completion` with `InvalidCompletionQuadEmbedding` (P13-g, bounded-combinatorial bow-tie), the same failure HEAD reaches uncapped after 1,732 s. TB67 871/871 (membership 952) is the latest candidate. Accepted CP2 491/491, stable 66/17/49 debt 1; selector497 unpromoted.
-**Next:** `M6-CP3-CB71-P13-COMPLETION-CHART-GRAPH-REUSE`, the exact patch RA-195.8 (compile only); then CB72 (RA-195.9) and TB68 (873 rows, membership 954). The decision's open-ended CB71 plan is superseded. P13-g and P13-e DEFNs are on the Review track.
+**Currency:** 2026-11-01 · TB68 verified Linux 873/873 (81 deferred, membership954) on immutable CB72 source with independent census Cylinder PASS / BunnyRandom P13-e RED / Vase P13-g RED. [P13-g Review](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) locates the first invalid quad at bounded-combinatorial patch1200/variant15/localQuad2; boundary validity versus separator choice remains to be discriminated, and `detail=None` is diagnostic propagation debt. Accepted CP2 491/491, stable 66/17/49 debt1, selector497 unpromoted.
+**Next:** `M6-CP3-CB73-P13-COMPLETION-EMBEDDING` (compile only), conditional boundary-first/geometry-valid completion correction and typed terminal detail; then a separate immutable TB69. BunnyRandom P13-e is a separate Review track.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -48,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB67 Linux full gate **871/871** PASS, 81 deferred, membership **952**, immutable CB70 source/package; independent census Cylinder PASS, BunnyRandom P13-e RED at source vertex 49, Vase ABNORMAL 600-second timeout. RA-195 probes: the timeout is P13-f (93.5 % graph rebuilds); exact CB71 + CB72 bring Vase to a typed P13-g RED at `completion` in 138 s on macOS; TB68 pre-registered 873/873, membership 954. No direct Vase success or selector promotion. CP2 accepted **491/491**, stable **66/17/49** debt 1; O16 macOS remains separate. |
+| **M6-CP3 — active** | TB68 immutable Linux gate **873/873** PASS, 81 deferred, membership **954**; independent census Cylinder PASS, BunnyRandom P13-e RED at vertex49, Vase P13-g `InvalidCompletionQuadEmbedding` at completion patch1200/variant15 in 213.553 s (no quads). [P13-g Review](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) freezes boundary-geometry discrimination and CB73; no direct Vase success or selector promotion. CP2 accepted **491/491**, stable **66/17/49** debt 1; O16 macOS remains separate. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 **Prior Review authority:** [RA-187](Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md) (GUI layers; full-gate TB rule), [RA-186](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) (CLI sidecar; DR4), [RA-185](Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md) (DIAG-RETAIN display; DR2 → M8-CP2), [RA-184](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) (DIAG-RETAIN), [RA-183](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) (O2 gate; O2b, O16), [RA-181](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md) (O15 discharged; O15c) and [RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md) (RP-01 closed; local-mode rules). Implementers get only exact patches and manifests.
@@ -105,9 +105,9 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** CB71 → CB72 → TB68 (RA-195.7). TB67 completed 871/952 with registered outcomes: Cylinder PASS, BunnyRandom P13-e RED, Vase timeout. RA-195's probes attribute the timeout and name the next failure.
+**Immediate:** CB71 → CB72 → TB68 completed; TB68 gate 873/873 with membership 954, independent Cylinder PASS, BunnyRandom P13-e RED, Vase P13-g invalid quad RED. P13-g DEFN freezes CB73 and subsequent TB69; P13-e is separate.
 - **P13-f, Vase:** one source-chart graph per mesh (CB71) and per completion pass (CB72), lent only to callees whose inputs it borrows exactly (Amendment 27). macOS probe: Vase reaches a typed RED at `completion` in 138 s. [RA-195](Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Probe_Adjudication_20261101.md).
-- **P13-g, Vase (new):** patch 1200, completed by the bounded-combinatorial fallback at ownership variant 15, embeds local quad 2 as a bow-tie (`InvalidCompletionQuadEmbedding`), so the pass publishes no quads; the terminal reads `detail=None`. Owner `M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING` (Review, probes), which can start now.
+- **P13-g, Vase (new):** patch 1200, completed by the bounded-combinatorial fallback at ownership variant 15, embeds local quad 2 as a bow-tie (`InvalidCompletionQuadEmbedding`), so the pass publishes no quads; the terminal reads `detail=None`. Owner [P13-g DEFN](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) determined bounded completion before ownership repair; canonical boundary versus template fault remains an explicit first-correction gate. CB73 then independent TB69.
 - **P13-e, BunnyRandom:** index −1 vertex 49 still has 4/5 expected port incidences; separate DEFN → CB → TB, do not combine.
 - **P13-d/O18:** CB69 typed arrangement termination and CB70 wedge guards proved in TB67; post-CB70 Vase completion output remains unproved.
 - **P13-a/P13-b:** Cylinder PASS and dyadic A2a width issue discharged; earlier evidence retained.
@@ -116,7 +116,7 @@ macOS O16 stays separate.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | P13 matrix 6/6. CB64–CB70 and TB63–TB67 complete; P13-f probe-adjudicated (RA-195), with exact CB71 → CB72 → TB68 next. P13-g (Vase quad embedding) and P13-e (BunnyRandom ports) are separate probe DEFNs. Then P13 re-census, with O6/O9 only where reached. O19 (slit handle generator) is genus > 0 only and not blocking. | M6-CP3, `M6-CP3-CB71-P13-COMPLETION-CHART-GRAPH-REUSE` next |
+| **1** | P13 direct matrix 6/6 unresolved. CB71/CB72/TB68 complete; [P13-g Review](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) freezes CB73 → TB69 (Vase boundary versus separator geometry and terminal detail). P13-e BunnyRandom ports is separate. Then P13 re-census with O6/O9 only where reached; O19 genus > 0 nonblocking. | M6-CP3, `M6-CP3-CB73-P13-COMPLETION-EMBEDDING` next |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
