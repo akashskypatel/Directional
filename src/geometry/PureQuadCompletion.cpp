@@ -2120,6 +2120,130 @@ bool append_balanced_boundary_quadrangulation(
          append_balanced_boundary_quadrangulation(second, mesh);
 }
 
+bool append_embedded_boundary_quadrangulation(
+    const PureQuadPatch &patch, const std::vector<int> &boundary,
+    const int completionVariant, const Eigen::MatrixXd *sourceVertices,
+    const Eigen::MatrixXi *sourceFaces, PureQuadMesh &mesh, bool &exhausted) {
+  // The balanced split is kept whenever every one of its quads embeds.
+  // Otherwise every quadrangulation of the same cycle by diagonals is
+  // searched: split(i, j) records the first quad (i, a, b, j) in (a, b) order
+  // whose three sub-polygons also split, so the result is deterministic. The
+  // search is exhaustive, so `exhausted` proves that no forward rotation of
+  // this cycle has an embedded quadrangulation either.
+  const int n = static_cast<int>(boundary.size());
+  if (n < 4 || n % 2 != 0) {
+    return false;
+  }
+  // A reversed variant winds every quad against the patch boundary. It keeps
+  // the balanced split, which the validator then rejects; only the forward
+  // rotations, which all share one set of quadrangulations, are searched.
+  if (normalized_completion_variant(completionVariant, 2 * n) >= n) {
+    return append_balanced_boundary_quadrangulation(boundary, mesh);
+  }
+  std::map<int, std::size_t> indexByVertex;
+  for (std::size_t index = 0; index < patch.boundaryVertices.size(); ++index) {
+    indexByVertex.emplace(patch.boundaryVertices[index], index);
+  }
+  std::vector<const SurfacePoint *> corners;
+  corners.reserve(boundary.size());
+  for (const int vertex : boundary) {
+    const auto found = indexByVertex.find(vertex);
+    if (found == indexByVertex.end() ||
+        found->second >= patch.boundaryProvenance.size()) {
+      return false;
+    }
+    corners.push_back(&patch.boundaryProvenance[found->second]);
+  }
+  const bool oriented = sourceVertices != nullptr && sourceFaces != nullptr;
+  const auto embedded = [&](const int i, const int a, const int b,
+                            const int j) {
+    const std::array<int, 4> rows{{i, a, b, j}};
+    std::array<Eigen::Vector3d, 4> p;
+    std::array<int, 4> faces{};
+    for (std::size_t corner = 0; corner < 4; ++corner) {
+      const SurfacePoint &point =
+          *corners[static_cast<std::size_t>(rows[corner])];
+      p[corner] = point.position;
+      faces[corner] = point.face;
+    }
+    Eigen::Vector3d sourceNormal = Eigen::Vector3d::Zero();
+    if (oriented) {
+      sourceNormal =
+          source_orientation_normal(*sourceVertices, *sourceFaces, faces);
+    }
+    return quad_embedding_failure(p, oriented ? &sourceNormal : nullptr) ==
+           PureQuadEmbeddingFailureKind::None;
+  };
+
+  const std::size_t firstQuad = mesh.quads.size();
+  if (append_balanced_boundary_quadrangulation(boundary, mesh)) {
+    std::map<int, int> rowByVertex;
+    for (int row = 0; row < n; ++row) {
+      rowByVertex.emplace(boundary[static_cast<std::size_t>(row)], row);
+    }
+    const bool balancedEmbeds = std::all_of(
+        mesh.quads.begin() + static_cast<std::ptrdiff_t>(firstQuad),
+        mesh.quads.end(), [&](const std::vector<int> &quad) {
+          return quad.size() == 4U &&
+                 embedded(rowByVertex.at(quad[0]), rowByVertex.at(quad[1]),
+                          rowByVertex.at(quad[2]), rowByVertex.at(quad[3]));
+        });
+    if (balancedEmbeds) {
+      return true;
+    }
+  }
+  mesh.quads.resize(firstQuad);
+
+  constexpr int unknown = -2;
+  constexpr int infeasible = -1;
+  std::vector<int> split(static_cast<std::size_t>(n) * n, unknown);
+  const auto splits = [&](const auto &self, const int i, const int j) -> bool {
+    if (j - i == 1) {
+      return true;
+    }
+    int &memo = split[static_cast<std::size_t>(i) * n + j];
+    if (memo != unknown) {
+      return memo != infeasible;
+    }
+    memo = infeasible;
+    for (int a = i + 1; a < j; a += 2) {
+      if (!self(self, i, a)) {
+        continue;
+      }
+      for (int b = a + 1; b < j; b += 2) {
+        if (self(self, a, b) && self(self, b, j) && embedded(i, a, b, j)) {
+          memo = a * n + b;
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+  if (!splits(splits, 0, n - 1)) {
+    exhausted = true;
+    return false;
+  }
+  std::vector<std::pair<int, int>> pending{{0, n - 1}};
+  while (!pending.empty()) {
+    const auto [i, j] = pending.back();
+    pending.pop_back();
+    if (j - i == 1) {
+      continue;
+    }
+    const int choice = split[static_cast<std::size_t>(i) * n + j];
+    const int a = choice / n;
+    const int b = choice % n;
+    mesh.quads.push_back({boundary[static_cast<std::size_t>(i)],
+                          boundary[static_cast<std::size_t>(a)],
+                          boundary[static_cast<std::size_t>(b)],
+                          boundary[static_cast<std::size_t>(j)]});
+    pending.emplace_back(b, j);
+    pending.emplace_back(a, b);
+    pending.emplace_back(i, a);
+  }
+  return true;
+}
+
 } // namespace directional::geometry::pure_quad_detail
 
 namespace directional::geometry::pure_quad_detail {
@@ -2166,12 +2290,16 @@ bool complete_singularity_pole(
 namespace directional::geometry::pure_quad_detail {
 
 bool complete_pattern(const PureQuadPatch &patch, PureQuadMesh &mesh,
-                      const int completionVariant) {
+                      const int completionVariant,
+                      const Eigen::MatrixXd *sourceVertices,
+                      const Eigen::MatrixXi *sourceFaces, bool &exhausted) {
   if (patch.boundaryVertices.size() < 4 ||
       patch.boundaryVertices.size() % 2 != 0) return false;
   const std::vector<int> boundary =
       rotated_cycle(patch.boundaryVertices, completionVariant);
-  if (!append_balanced_boundary_quadrangulation(boundary, mesh)) {
+  if (!append_embedded_boundary_quadrangulation(
+          patch, boundary, completionVariant, sourceVertices, sourceFaces,
+          mesh, exhausted)) {
     return false;
   }
   mesh.backend = PureQuadCompletionBackend::Pattern;
@@ -2183,12 +2311,16 @@ bool complete_pattern(const PureQuadPatch &patch, PureQuadMesh &mesh,
 namespace directional::geometry::pure_quad_detail {
 
 bool complete_bounded(const PureQuadPatch &patch, PureQuadMesh &mesh,
-                      int &explored, const int completionVariant) {
+                      int &explored, const int completionVariant,
+                      const Eigen::MatrixXd *sourceVertices,
+                      const Eigen::MatrixXi *sourceFaces, bool &exhausted) {
   PureQuadMesh trial = mesh;
   ++explored;
   const std::vector<int> boundary =
       rotated_cycle(patch.boundaryVertices, completionVariant);
-  if (!append_balanced_boundary_quadrangulation(boundary, trial) ||
+  if (!append_embedded_boundary_quadrangulation(
+          patch, boundary, completionVariant, sourceVertices, sourceFaces,
+          trial, exhausted) ||
       !pure_quad_topology_is_disk(trial)) {
     return false;
   }
@@ -2305,6 +2437,7 @@ PureQuadCompletionResult complete_pure_quad_patch(
   const std::vector<unsigned char> *allowedFacePtr =
       allowedFaces.empty() ? nullptr : &allowedFaces;
   bool completed = false;
+  bool quadrangulationExhausted = false;
   if (!boundedFallbackAdmissible && patch.singularityCount != 0) {
     completed = pure_quad_detail::complete_singularity_pole(
         patch, mesh, projection.get(), allowedFacePtr,
@@ -2326,14 +2459,20 @@ PureQuadCompletionResult complete_pure_quad_patch(
   }
   if (!completed && !boundedFallbackAdmissible && patch.simple) {
     completed = pure_quad_detail::complete_pattern(
-        patch, mesh, options.completionVariant);
+        patch, mesh, options.completionVariant, options.sourceVertices,
+        options.sourceFaces, quadrangulationExhausted);
   }
   if (!completed && options.allowBoundedCombinatorialFallback) {
     completed = pure_quad_detail::complete_bounded(
-        patch, mesh, result.exploredPatterns, options.completionVariant);
+        patch, mesh, result.exploredPatterns, options.completionVariant,
+        options.sourceVertices, options.sourceFaces,
+        quadrangulationExhausted);
   }
   if (!completed) {
-    result.failureReason = PureQuadPatchRejectReason::SearchLimitExceeded;
+    result.failureReason =
+        quadrangulationExhausted
+            ? PureQuadPatchRejectReason::NoEmbeddedQuadrangulation
+            : PureQuadPatchRejectReason::SearchLimitExceeded;
     return close_pure_quad_completion(std::move(result));
   }
   if (!pure_quad_detail::fill_positions(mesh)) {

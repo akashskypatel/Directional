@@ -2684,3 +2684,134 @@ TEST(PureQuadCompletionPhase18,
                 "InvalidCompletionQuadEmbedding", 0),
             0U);
 }
+
+namespace {
+
+CompletionFixture single_face_patch(const std::vector<Eigen::Vector2d> &boundary,
+                                    std::vector<int> sides) {
+  CompletionFixture fixture;
+  fixture.vertices.resize(3, 3);
+  fixture.vertices << 0.0, 0.0, 0.0,
+                      2000.0, 0.0, 0.0,
+                      0.0, 2000.0, 0.0;
+  fixture.faces.resize(1, 3);
+  fixture.faces << 0, 1, 2;
+  fixture.patch.sideEdgeCounts = std::move(sides);
+  fixture.patch.turns.assign(fixture.patch.sideEdgeCounts.size(), 1);
+  fixture.patch.sourceFaces = {0};
+  for (int index = 0; index < static_cast<int>(boundary.size()); ++index) {
+    const Eigen::Vector2d &corner = boundary[static_cast<std::size_t>(index)];
+    fixture.patch.boundaryVertices.push_back(index);
+    fixture.patch.boundaryProvenance.push_back(
+        directional::geometry::project_to_surface(
+            fixture.vertices, fixture.faces,
+            Eigen::Vector3d(corner.x(), corner.y(), 0.0)));
+  }
+  const auto authority = test_source_authority(fixture.faces, {0}, {0});
+  assign_patch_boundary_authority(
+      fixture.patch, fixture.faces, authority,
+      std::vector<int>(fixture.patch.boundaryVertices.size(), 0));
+  return fixture;
+}
+
+} // namespace
+
+TEST(PureQuadCompletionPhase18,
+     BoundedCompletionFindsAnEmbeddedQuadrangulationOfAConcaveBoundary) {
+  // Vase patch 1200 in its source face's barycentric chart, scaled to
+  // integers: reflex corners 2 and 4, straight corner 5. No rotation or
+  // reversal of the balanced split embeds; three of the twelve
+  // quadrangulations by diagonals do.
+  const std::vector<Eigen::Vector2d> boundary = {
+      {250.0, 582.0}, {442.0, 466.0}, {384.0, 666.0}, {618.0, 526.0},
+      {556.0, 740.0}, {492.0, 963.0}, {428.0, 1186.0}, {2.0, 1444.0}};
+  const CompletionFixture fixture =
+      single_face_patch(boundary, {1, 1, 1, 3, 1, 1});
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 1200;
+  options.sourceVertices = &fixture.vertices;
+  options.sourceFaces = &fixture.faces;
+  const auto sourceAuthority = test_source_authority(fixture.faces, {0}, {0});
+  options.sourceAuthority = &sourceAuthority;
+  const auto cross = [](const Eigen::Vector2d &a, const Eigen::Vector2d &b,
+                        const Eigen::Vector2d &c) {
+    return (b.x() - a.x()) * (c.y() - a.y()) -
+           (b.y() - a.y()) * (c.x() - a.x());
+  };
+  const auto properlyCross = [&](const Eigen::Vector2d &a,
+                                 const Eigen::Vector2d &b,
+                                 const Eigen::Vector2d &c,
+                                 const Eigen::Vector2d &d) {
+    return cross(a, b, c) * cross(a, b, d) < 0.0 &&
+           cross(c, d, a) * cross(c, d, b) < 0.0;
+  };
+  // Variants 8-15 reverse the cycle, so every quad winds against the
+  // counter-clockwise boundary and the source face; none is emitted.
+  for (int variant = 8; variant < 16; ++variant) {
+    options.completionVariant = variant;
+    const auto reversed =
+        directional::geometry::complete_pure_quad_patch(fixture.patch, options);
+    ASSERT_TRUE(reversed.is_rejected()) << "variant " << variant;
+    EXPECT_TRUE(reversed.rejection()->embeddingFailure.active)
+        << "variant " << variant;
+    EXPECT_EQ(reversed.rejection()->detail.rfind(
+                  "InvalidCompletionQuadEmbedding", 0),
+              0U)
+        << "variant " << variant;
+  }
+  for (int variant = 0; variant < 8; ++variant) {
+    options.completionVariant = variant;
+    const auto completion =
+        directional::geometry::complete_pure_quad_patch(fixture.patch, options);
+    ASSERT_TRUE(completion.is_produced()) << "variant " << variant;
+    const auto &mesh = completion.product();
+    EXPECT_EQ(directional::geometry::PureQuadCompletionBackend::
+                  BoundedCombinatorial,
+              mesh.backend);
+    ASSERT_EQ(3U, mesh.quads.size()) << "variant " << variant;
+    EXPECT_TRUE(directional::geometry::pure_quad_topology_is_disk(mesh));
+    // Independent exact oracle on the fixture's integer corners: every quad
+    // is simple and counter-clockwise, like the source face.
+    for (const auto &quad : mesh.quads) {
+      std::array<Eigen::Vector2d, 4> q;
+      for (std::size_t corner = 0; corner < 4; ++corner) {
+        q[corner] = boundary[static_cast<std::size_t>(quad[corner])];
+      }
+      double area2 = 0.0;
+      for (std::size_t corner = 0; corner < 4; ++corner) {
+        const Eigen::Vector2d &a = q[corner];
+        const Eigen::Vector2d &b = q[(corner + 1) % 4];
+        area2 += a.x() * b.y() - a.y() * b.x();
+      }
+      EXPECT_GT(area2, 0.0) << "variant " << variant;
+      EXPECT_FALSE(properlyCross(q[0], q[1], q[2], q[3]));
+      EXPECT_FALSE(properlyCross(q[1], q[2], q[3], q[0]));
+    }
+  }
+}
+
+TEST(PureQuadCompletionPhase18,
+     BoundedCompletionReportsABoundaryWithNoEmbeddedQuadrangulation) {
+  // Every one of the three quadrangulations of this hexagon contains a
+  // bow-tie, so no forward rotation can succeed and the failure is typed.
+  const std::vector<Eigen::Vector2d> boundary = {
+      {100.0, 500.0}, {200.0, 200.0}, {700.0, 500.0},
+      {500.0, 400.0}, {300.0, 500.0}, {400.0, 400.0}};
+  const CompletionFixture fixture = single_face_patch(boundary, {1, 1, 1, 3});
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 6;
+  options.sourceVertices = &fixture.vertices;
+  options.sourceFaces = &fixture.faces;
+  const auto sourceAuthority = test_source_authority(fixture.faces, {0}, {0});
+  options.sourceAuthority = &sourceAuthority;
+  for (int variant = 0; variant < 6; ++variant) {
+    options.completionVariant = variant;
+    const auto completion =
+        directional::geometry::complete_pure_quad_patch(fixture.patch, options);
+    ASSERT_TRUE(completion.is_rejected()) << "variant " << variant;
+    EXPECT_EQ(directional::geometry::PureQuadPatchRejectReason::
+                  NoEmbeddedQuadrangulation,
+              completion.rejection()->reason)
+        << "variant " << variant;
+  }
+}

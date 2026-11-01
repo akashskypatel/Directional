@@ -58,6 +58,7 @@ enum class PureQuadPatchRejectReason : int {
   RewritePreconditionFailed = 14,
   RewriteFeatureViolation = 15,
   RewriteValenceMismatch = 16,
+  NoEmbeddedQuadrangulation = 17,
 };
 
 inline const char *pure_quad_patch_reject_reason_name(
@@ -97,6 +98,8 @@ inline const char *pure_quad_patch_reject_reason_name(
     return "rewrite-feature-violation";
   case PureQuadPatchRejectReason::RewriteValenceMismatch:
     return "rewrite-valence-mismatch";
+  case PureQuadPatchRejectReason::NoEmbeddedQuadrangulation:
+    return "no-embedded-quadrangulation";
   }
   return "unknown";
 }
