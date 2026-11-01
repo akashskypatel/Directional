@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb65-slit-closeout-20261101-v1",
+  "request_id": "m6-cp3-p13-vase-defn-incidence-20261101-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb65-slit-closeout-20261101-v1",
-  "file_id": "1ndFO91hQrc9Bz3pqL4y2MfntfzGDg7DE",
-  "patch_sha256": "3c100878fe8afe9b1dd979d7ce84ca36e2625f23e67b7bdb7fdd50b6ac3fac2d",
-  "base_sha": "e1e06284d7dad29f4d1299492f5d849592f91174",
+  "mailbox_key": "m6-cp3-p13-vase-defn-incidence-20261101-v1",
+  "file_id": "16VrqAcmlOdueUrP8VemBkgYLDe6s7Y7p",
+  "patch_sha256": "0e64726c85ef3b204e0616ca7e34ebbfd2a7863a0a11a56e68cf82dd32d486c2",
+  "base_sha": "d321762fdc7e4b756911690e7c18b8ab8b772b9d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close out TB65 slit full gate and census",
+  "commit_message": "docs(directional): define Vase incidence producer-boundary probe",
   "retention_days": 14
 }
