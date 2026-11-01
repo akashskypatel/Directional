@@ -1,2 +1,0 @@
-# M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE temporary-file cleanup
-.agents/connector-triggers/vase-review-history-20261101.txt
