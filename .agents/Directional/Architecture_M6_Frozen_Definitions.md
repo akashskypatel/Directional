@@ -1,3 +1,8 @@
+## RA-194 — P13-d Vase: landed diagnostics CB67 reverted; RA-193's patches renumbered (2026-11-01)
+
+- [RA-194](Architecture_M6_CP3_DEFN_P13_Vase_Landed_Incidence_Probe_Revert_20261101.md) reviews `829a47b2d`, the withdrawn diagnostics CB67 that landed uncompiled. It does not meet Amendment 26 (the run still ends at `completion`), it reports the downstream symptom as the first clause, and its test cannot compile or run. Revert it exactly.
+- Turn IDs: CB68 `M6-CP3-CB68-P13-REVERT-INCIDENCE-BOUNDARY-PROBE` (exact revert `a6b8cf62…`, postcheck equality with `911840c1…`, no build); CB69 `M6-CP3-CB69-P13-ARRANGEMENT-INCIDENCE-TERMINAL` (RA-193.10); CB70 `M6-CP3-CB70-P13-ARRANGEMENT-WEDGE-ROTATION` (RA-193.11). TB66 and TB67 are unchanged.
+
 ## RA-193 — P13-d Vase arrangement rotation system, probe adjudication of the Vase decision (2026-11-01)
 
 - [RA-193](Architecture_M6_CP3_DEFN_P13_Vase_Arrangement_Rotation_Probe_Adjudication_20261101.md) applies the Vase decision's F1 rule with probes: the generic arrangement is the first invalid producer (0 cells). **DESIGN Amendment 26:**

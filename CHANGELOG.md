@@ -1,3 +1,8 @@
+# 2026-11-01 — RA-194 review of the landed Vase diagnostics CB67; exact revert, renumbering
+
+- The withdrawn diagnostics CB67 (`M6-CP3-CB67-P13-VASE-INCIDENCE-BOUNDARY-PROBE`) landed on top of RA-193 as `829a47b2d` (dispatcher apply, no compile). [RA-194](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Landed_Incidence_Probe_Revert_20261101.md) reviewed it. It compiles and keeps verdicts, but it still ends Vase at `completion`, records the symptom `HalfedgeCellOutOfRange` rather than the arrangement's `RepeatedNodeCycle`, adds an unused public comparator, and puts its only test in the unbuilt historical target, in a file that no longer compiles.
+- Ruled: revert exactly. CB68 `M6-CP3-CB68-P13-REVERT-INCIDENCE-BOUNDARY-PROBE` (`a6b8cf62…`) restores `911840c1…` byte for byte, so it needs no build. RA-193's exact patches follow unchanged as CB69 (O18 terminal) and CB70 (rotation system); TB66 and TB67 are unchanged. The chain revert → CB69 → CB70 was verified to apply in scratch with the frozen result SHAs.
+
 # 2026-11-01 — RA-193 Vase arrangement rotation system: probe adjudication, exact CB67/CB68
 
 - [RA-193](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Arrangement_Rotation_Probe_Adjudication_20261101.md) reopened `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE` with scratch probes. Vase's arrangement publishes zero cells (`RepeatedNodeCycle`, node 33). Its directed wedges are keyed by a per-face chart, so every trace crossing a source edge or vertex U-turns (R1). Its edge angles are counter-clockwise on only one face, so 72 of 167 multi-ray edge rotations are mirrored (R2). The pipeline records the stage as succeeded anyway (R3, O18). DESIGN Amendment 26 added.

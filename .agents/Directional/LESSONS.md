@@ -122,6 +122,10 @@ This document records **reusable failure-derived engineering lessons**, not an e
   "Perturb by one ULP" is not a corruption when the rule accepts more than one rounding. RA-97.4 left
   the slot and direction open, and the chosen step landed exactly on the other orientation's valid image
   of 1/5 (RA-98.2).
+- **A test counts only if its target is built and its file compiles.** Before accepting a test as
+  evidence, check its file's CMake target, the CI configure flags, and that the file compiles at HEAD. The
+  landed Vase diagnostics put its only falsifier in `MilestoneDClosureTests.cpp`: historical target only,
+  configured OFF in CI, and uncompilable since the M1 field cutover (RA-194).
 
 ## Semantic ownership, identity, and dataflow
 
