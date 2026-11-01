@@ -1,0 +1,2 @@
+# CB74 temporary source snapshot marker only; durable dispatcher and workflow mailbox are excluded
+.agents/connector-triggers/source-snapshot/cb74-2026-11-01T22-52-33-783Z.txt
