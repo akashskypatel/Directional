@@ -1,23 +1,11 @@
 {
   "schema_version": 1,
-  "operation": "test_benchmark",
-  "executor_sha": "70a796738914652209737a8a5719fa10f3d9c914",
-  "semantic_source_sha": "9754500b2058229b7f0a6268838953650690b031",
-  "turn_id": "M6-CP3-TB67-P13-ARRANGEMENT-WEDGE-FULL-GATE-EXEC",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "retention_days": 14,
-  "request_id": "m6-cp3-tb67-wedge-census-20261101-v1",
-  "mailbox_key": "m6-cp3-tb67-wedge-census-20261101-v1",
-  "artifact_prefix": "m6-cp3-tb67-wedge-census",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "13087332886",
-    "EXPECTED_SOURCE_SHA": "9754500b2058229b7f0a6268838953650690b031",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "7dcbcf7ee3a3e8929580e15f3eaae31cdbd31f6e52ad2889ee3089d4176e57c6",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "69f3164f799a905bf464ab7da0f6157c9594d2ae7aeb4f094daea129e47495a6",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "b773d410b3d70e0bdd6b23b0882757b55f421d733ae7ccadbfe52cbb7b8c91f4",
-    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
-    "EXPECTED_CASE_COUNT": "3"
-  }
+  "request_id": "m6-cp3-tb67-docs-apply-20261101-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb67-docs-apply-20261101-v1",
+  "file_id": "19-j_BdRuRd_i5bnTqJAmMwiuXQrLs5T7",
+  "patch_sha256": "23da24ae63e578f3c80e715b2cda4279b4b000f2a4ac86fcc8f4e24ba49bd4da",
+  "base_sha": "ca2de7da39a88183d2079f3086205cd2415f15b3",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close TB67 immutable wedge gate and route P13-f review"
 }
