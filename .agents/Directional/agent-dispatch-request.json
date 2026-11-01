@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb70-wedge-compile-20261101-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb70-wedge-compile-20261101-v1",
-  "source_sha": "9754500b2058229b7f0a6268838953650690b031",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb70-wedge"
+  "request_id": "m6-cp3-cb70-docs-apply-20261101-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb70-docs-apply-20261101-v1",
+  "file_id": "1FaIcc2ppmpYYICkBLKN0IOLCoivomJp5",
+  "patch_sha256": "db2ce7a50b32c7f13e7fae471a2c6bd40d80fda1ae0a1be03551deca9f7e7d51",
+  "base_sha": "9754500b2058229b7f0a6268838953650690b031",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record verified CB70 build and hand off immutable TB67 gate"
 }
