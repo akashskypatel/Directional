@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb68-doc-closeout-20261101-v1",
+  "request_id": "m6-cp3-cb68-orientation-20261101-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb68-doc-closeout-apply-20261101-v1",
-  "file_id": "1U3YiJEXYJ3x03UqAL1aTWEmD8AUH1RFm",
-  "patch_sha256": "6b00797e83cc71a9881d9ef89c9be9743f599a760c49342a98b4cc49d23cf49f",
-  "base_sha": "90fa3a155930c2683ed0789ef88e9f8f52775437",
+  "mailbox_key": "m6-cp3-cb68-orientation-apply-20261101-v1",
+  "file_id": "1K4UZ597jr2whHRx5DArYtTTOuKFynvIZ",
+  "patch_sha256": "d18d5e29ee42a77026cf1762c0c194686c78930a64fc8440e26faaf7cc04e9c6",
+  "base_sha": "7374080fd40983b1dfd9e781d4f403a63975ba9a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close CB68 exact revert and hand off CB69",
+  "commit_message": "docs: align orientation and roadmap after CB68 revert",
   "retention_days": 14
 }
