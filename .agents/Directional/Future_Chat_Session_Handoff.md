@@ -34,53 +34,40 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-31 **[RA-190](Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md) closed `M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH`.** It keeps RA-189's dyadic exit and Cylinder promotion, corrects the design (one site in the resolver, open grid, no certificates or receipts), and freezes the exact CB65 patch and the TB64 866-row gate. The boundary checker passes on an authentic checkout. |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation. |
+| Currency | 2026-10-31 **CB65 exact patch and Linux compile COMPLETE.** [CB65 report](Architecture_M6_CP3_CB65_P13_Canonical_Dyadic_Trace_Exit_Code_Build_Report_20261031.md). RA-190's accepted dyadic exit and frozen TB64 gate remain normative; next is immutable TB64 execution. |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation; immutable semantic source `dbc38661efabdfa051f48f8f71ee3c604841842c`. |
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06, unchanged. TB63 is a verified Linux candidate, not selector497/CP3 acceptance. |
-| Latest candidate | **TB63 Linux eight-target 863/863** [run 41224438897](https://github.com/akashskypatel/Directional/actions/runs/41224438897), result `13051413577`; CB64 package `13050072901`, source `d56d9905…`. P13 census 1 PASS / 2 expected RED, result `13051470763`. macOS O16 remains. |
-| Regression accounting and debt | Stable **66/17/49**, debt **1**, unchanged. Ledger v5: 81 rows (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE). Membership becomes 947 after CB65 (two new tests). Selector497 not promoted. DR1/DR3 open; DR2/DR4 → M8-CP2. |
-| Active boundary | RA-190 probes, macOS, diagnostic only. With the dyadic exit, the 864-row candidate gives 863/864 (only O16), and all 74 rounding rows pass. 81/81 deferred rows have unchanged verdicts. **Vase passes A4** and fails later at completion, `SideSubdivisionRepair:InvalidInputIncidence` (P13-d). Uncapped exact arithmetic fails at the same place. BunnyRandom's slit (P13-c) is unchanged. No CP3 acceptance. |
+| Latest candidate | **CB65 compile-only eight-target Linux** [run 41253674256](https://github.com/akashskypatel/Directional/actions/runs/41253674256), artifact `13062413347`, source `dbc38661efabdfa051f48f8f71ee3c604841842c`. Latest runtime remains TB63 863/863 (run 41224438897, result 13051413577), plus P13 census 1 PASS / 2 expected RED. macOS O16 remains. |
+| Regression accounting and debt | Stable **66/17/49**, debt **1**, unchanged. Ledger v5 81 rows (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE). TB64 gate membership 947. Selector497 not promoted. DR1/DR3 open; DR2/DR4 → M8-CP2. |
+| Active boundary | **CB65 runtime untested.** RA-190 probe evidence: 864 candidate 863/864 (O16), 74 rounding cases PASS, 81/81 deferred verdicts unchanged. Vase passes A4, then fails at `SideSubdivisionRepair:InvalidInputIncidence` (P13-d); BunnyRandom A3 single-edge slit (P13-c) remains. No CP3 acceptance. |
 
-## Mandatory next turn — `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC` — EXACT NEXT
 
-- **Type / owner:** CB, implementation agent, Linux workflow runner. Exact patch only; no design latitude.
-- **Authority:** [RA-190.5 / RA-190.8](Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md). RA-190 supersedes RA-189 §4's scope. DESIGN.md Amendment 24 is normative.
-- **Precheck:** `git diff --quiet d56d990580163f4fd0ceda4137f7ecd16ceb6027 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
-- **Patch:** the RA-190.8 block, verbatim plus a trailing newline, SHA-256 `ed125319bb38f9ed5352c8b18b3513a53dc5e994d3e7f964d27f82341ac6f91b`.
-  - Run `git apply --check`, then apply.
-  - Numstat: `26 1` `SurfaceCellTracing.h`, `26 2` `SurfaceCellTracing.cpp`, `79 0` `FieldAlignedCurveNetworkTests.cpp`, `2 1` `SurfaceCellDesignAcceptanceTests.cpp`.
-  - Result SHA-256 values are in RA-190.5.
-- **Build:** `agent-compile-reusable.yml` with CI flags (Release, static, GMP/GMPXX, tests and benchmarks ON, CLI/GUI OFF), eight targets.
-  - Record the artifact ID, the ZIP and root `SHA256SUMS` SHA-256, and the source-archive SHA-256.
-  - No native runs.
-- **Outcomes:**
-  - Exact → `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC`.
-  - Patch, numstat or compile mismatch → `M6-CP3-PLAN-P13-DYADIC-EXIT-STOP` (Review).
-  - Infrastructure → `M6-CP3-CB65A-P13-DYADIC-EXIT-ORCH` (one retry).
-- **Then TB64** (TB-EXEC; implementation agent; Linux), on the immutable CB65 package.
-  - **Gate:** manifest `Architecture_M6_TB64_P13_Dyadic_Exit_Full_Gate_Case_Manifest.tsv` (866 rows, `289d887c7d1eedcdfdc42c5869055915abf5aec8a0436a62e67acf566a99dbce`) with `MEMBERSHIP_LEDGER` v5 (81 rows, `fd433f54…`). Pre-registered **866/866**, membership **947**.
-  - **Census:** the TB63 census manifest `3af1dc0d…`, no ledger, pre-registered as:
-    - Cylinder PASS.
-    - BunnyRandom RED `CutTransportDomainIdentityMismatch` `cutChi=-3`.
-    - Vase RED `terminal=NotProductionReady:completion` with `completion=SideSubdivisionRepair:InvalidInputIncidence` and no `BranchContinuationExactMagnitudeExceeded`.
-  - **Mismatch** → `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-REV`. **Infrastructure** → `M6-CP3-TB64A-P13-CANONICAL-DYADIC-ORCH`.
+- **Type / owner:** TB-EXEC, implementation agent, Linux workflow runner. Artifact-only immutable execution; **no rebuild, implementation repair, tests source edits or benchmark source edits**.
+- **Authority:** [RA-190 §6](Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md), [CB65 compile record](Architecture_M6_CP3_CB65_P13_Canonical_Dyadic_Trace_Exit_Code_Build_Report_20261031.md), Turn Cadence, frozen gate and deferred ledger.
+- **Immutable source/package:** `dbc38661efabdfa051f48f8f71ee3c604841842c`, artifact `13062413347`, ZIP SHA-256 `1a2ab39d43742cfa5d3b7b2c09242482ef63712b2efbaf9644a54b83e2b0948b`, root manifest SHA-256 `0c69aaea7a2eea6d1a9fe1fcd78724a0c3a320f757357de0b07aece738286ff5`, source archive SHA-256 `c30b58f0aa85375480ed7d794c543faa59f5c613480dba1aaa3df0647cbd3ba5`. Verify all before executing.
+- **Gate:** `Architecture_M6_TB64_P13_Dyadic_Exit_Full_Gate_Case_Manifest.tsv` 866 rows (`289d887c7d1eedcdfdc42c5869055915abf5aec8a0436a62e67acf566a99dbce`); deferred `MEMBERSHIP_LEDGER` v5, 81 rows (`fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`). Expected **866/866**, membership **947**.
+- **Independent census:** TB63 three-case P13 manifest (`3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`), no ledger:
+  - Cylinder PASS.
+  - BunnyRandom RED `CutTransportDomainIdentityMismatch`, `cutChi=-3`.
+  - Vase RED `terminal=NotProductionReady:completion`, `completion=SideSubdivisionRepair:InvalidInputIncidence`, no `BranchContinuationExactMagnitudeExceeded`.
+- **Outcomes:** Matching → advance according to RA-190 authority; mismatch → `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-REV` (Review); infrastructure → `M6-CP3-TB64A-P13-CANONICAL-DYADIC-ORCH`.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Track / condition |
 |---|---|---|
-| 1 — NEXT | `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT` | CB; implementation agent; Linux; RA-190.8 exact patch |
-| 2 | `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC` | TB-EXEC; implementation agent; Linux; gate 866 + census 3 (RA-190.6); no REV if everything matches |
+| 1 — NEXT | `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC` | TB-EXEC; implementation agent; Linux; immutable CB65 artifact; gate 866 + census 3 (RA-190.6) |
 | 3 (Review, parallel with 1–2) | `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT` (BunnyRandom, P13-c) → CB66 → TB65 | DEFN with probes on the Review track; then exact patch |
 | 4 (Review, after 2) | `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE` (P13-d plus O18) → CB → TB | DEFN with probes on the Review track; then exact patch |
 | 5 | P13 re-census → O6/O9 where reached → matrix 6/6 → retire/FIXTURE/PRODUCT/OPEN slices → CP3-REV | One slice at a time |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT** (CB, exact patch).
+`load_next`: **M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC** (TB-EXEC, immutable CB65 artifact).
 
 Read first:
-- [RA-190](Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md): §5 is the CB65 spec, §6 the TB64 inputs and outcomes, §8 the exact patch.
+- [RA-190](Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md): §6 is the TB64 gate/census and outcomes; §5/§8 are fulfilled CB65 patch history. Read the CB65 compile report for immutable package hashes.
 - DESIGN.md Amendment 24 for the semantics. [RA-189](Architecture_M6_CP3_DEFN_P13_O15C_Continuation_Width_Review_20261031.md) is history: its §3 Cylinder promotion stands, and its §2 obligations and §4 scope are superseded.
 - [TB63 report](Architecture_M6_CP3_TB63_P13_Census_Full_Gate_Execution_Report_20261031.md) for the prior immutable evidence.
 

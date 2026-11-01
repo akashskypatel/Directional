@@ -1,4 +1,4 @@
-## CURRENT — RA-190 O15c dyadic exit adjudicated; CB65 exact patch next (2026-10-31)
+## CURRENT — CB65 compiled; TB64 immutable gate next (2026-10-31)
 
 - [x] Done (records in `.agents/Directional/`, history in `CHANGELOG.md`): RP-01 closure (RA-174…[RA-179](.agents/Directional/Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md)) → O15 (RA-180, CB55, TB54, [RA-181](.agents/Directional/Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md)) → row 935 (RA-182, CB56, TB55) → O2 entry gate ([RA-183](.agents/Directional/Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md), CB57, TB56) → **DIAG-RETAIN** ([RA-184](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md), [RA-185](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md), [RA-186](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md), [RA-187](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md); CB58–CB61, last source `e1fd0e4b…`). TB57–TB60 ran on macOS arm64 only; the latest, TB60, gave **862/863** on the TB58 manifest (863 rows; only row 283, O16), membership 945. TB59 ran only CLI cases; TB60 is the full-gate TB for both CB60 and CB61 (RA-187.1).
 - [x] **Independent Linux TB61 full-gate review of CB58–CB61; owner authorized exact Linux CLI/GUI successor** (user direction, 2026-10-31; handoff step 1):
@@ -35,11 +35,11 @@
     - Deferred rows: 81/81 verdicts unchanged.
     - **Vase passes A4**, then fails at completion `SideSubdivisionRepair:InvalidInputIncidence`; uncapped exact arithmetic gives the same result.
   - DESIGN Amendment 24 is rewritten.
-- [ ] **NEXT `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT`** (CB; implementation agent; Linux).
+- [x] **`M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT`** (CB; implementation agent; Linux).
   - RA-190.8 exact patch, SHA `ed125319…`, numstat `26 1` / `26 2` / `79 0` / `2 1`, on base `d56d9905…`.
-  - Eight-target compile, no runtime.
+  - Linux eight-target compile [run 41253674256](https://github.com/akashskypatel/Directional/actions/runs/41253674256), artifact `13062413347`, source `dbc38661efabdfa051f48f8f71ee3c604841842c`, ZIP `1a2ab39d43742cfa5d3b7b2c09242482ef63712b2efbaf9644a54b83e2b0948b`; no runtime. [CB65 record](.agents/Directional/Architecture_M6_CP3_CB65_P13_Canonical_Dyadic_Trace_Exit_Code_Build_Report_20261031.md).
   - Mismatch → `M6-CP3-PLAN-P13-DYADIC-EXIT-STOP`; infrastructure → `M6-CP3-CB65A-P13-DYADIC-EXIT-ORCH`.
-- [ ] **Then `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC`** (TB-EXEC; Linux).
+- [ ] **NEXT `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC`** (TB-EXEC; Linux).
   - Gate: 866-row manifest `289d887c…` plus ledger v5 `fd433f54…`, pre-registered 866/866, membership 947.
   - Census `3af1dc0d…`: Cylinder PASS; BunnyRandom `CutTransportDomainIdentityMismatch` `cutChi=-3`; Vase `NotProductionReady:completion` with `completion=SideSubdivisionRepair:InvalidInputIncidence`.
   - Mismatch → `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-REV`.

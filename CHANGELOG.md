@@ -1,3 +1,9 @@
+# 2026-10-31 — CB65 canonical dyadic trace exit exact patch and Linux compile
+
+- `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT` completed as the RA-190.8 exact four-file patch, committed at `dbc38661efabdfa051f48f8f71ee3c604841842c`. Diff SHA `ed125319…`, all four output hashes/numstat matched; no additional semantic scope.
+- [Linux eight-target compile run 41253674256](https://github.com/akashskypatel/Directional/actions/runs/41253674256) success; artifact `13062413347`, ZIP SHA-256 `1a2ab39d43742cfa5d3b7b2c09242482ef63712b2efbaf9644a54b83e2b0948b`, manifest `0c69aaea7a2eea6d1a9fe1fcd78724a0c3a320f757357de0b07aece738286ff5`, source archive `c30b58f0aa85375480ed7d794c543faa59f5c613480dba1aaa3df0647cbd3ba5`. GMP/GMPXX, Release/static, CLI/GUI OFF, `runtimeExecution=false`. No binary test or benchmark ran. [CB65 record](.agents/Directional/Architecture_M6_CP3_CB65_P13_Canonical_Dyadic_Trace_Exit_Code_Build_Report_20261031.md).
+- Next `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC` (immutable package, 866 gate + 3-case census). No CP3 acceptance; stable 66/17/49, debt 1, CP2 491/491, selector497 unpromoted.
+
 # 2026-10-31 — RA-190 O15c dyadic A2a exit adjudicated; CB65 exact patch next
 
 - [RA-190](.agents/Directional/Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md) closes `M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH` (Review, scratch probes).
