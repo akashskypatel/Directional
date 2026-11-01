@@ -1,3 +1,0 @@
-Source snapshot request for M6-CP3-CB73-P13-COMPLETION-EMBEDDING.
-Source authority before trigger: 60bc9ac84a615366221292e5135953c471cca1fb
-Snapshot exact event SHA is this trigger's resulting commit.
