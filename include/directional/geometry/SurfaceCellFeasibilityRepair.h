@@ -22,27 +22,6 @@
 
 namespace directional::geometry {
 
-// Exact clause and source-supported site of the first failed incidence check.
-// This is diagnostic evidence only; it never authorizes a topology mutation.
-struct SurfaceCellIncidenceIssue {
-  std::string clause;
-  int node = -1;
-  int halfedge = -1;
-  int twin = -1;
-  int next = -1;
-  int cell = -1;
-  int sourceFace = -1;
-
-  [[nodiscard]] bool valid() const noexcept { return clause.empty(); }
-};
-
-[[nodiscard]] SurfaceCellIncidenceIssue audit_surface_cell_incidence(
-    const SurfaceCellComplex &complex);
-
-// Equality is determined over exact structural identities, not a hash.
-[[nodiscard]] bool same_surface_cell_incidence_structure(
-    const SurfaceCellComplex &first, const SurfaceCellComplex &second);
-
 struct SurfaceCellReplacementScopeFailure {
   bool active = false;
   int originalCell = -1;
@@ -459,7 +438,6 @@ enum class SurfaceCellSideRepairPreparationReason : int {
 };
 
 struct SurfaceCellSideRepairProduct {
-  SurfaceCellIncidenceIssue canonicalInputIncidence;
   SurfaceCellSideRepairProductKind kind = SurfaceCellSideRepairProductKind::Repaired;
   SurfaceCellSideRepairPreparationReason preparationReason =
       SurfaceCellSideRepairPreparationReason::None;
@@ -482,7 +460,6 @@ struct SurfaceCellSideRepairProduct {
 };
 
 struct SurfaceCellSideRepairFailure {
-  SurfaceCellIncidenceIssue canonicalInputIncidence;
   SurfaceCellSideRepairFailureKind kind = SurfaceCellSideRepairFailureKind::None;
   std::string detail;
   bool rollbackEquivalent = false;

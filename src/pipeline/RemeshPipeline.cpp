@@ -13763,23 +13763,6 @@ remesh_from_raw_cross_field_impl_with_stage_products(
         arrangementCurrentOwnedBytes;
     result.diagnostics.surfaceCellArrangementPeakOwnedBytes =
         result.surfaceCellContext.arrangementPeakOwnedBytes;
-    const auto arrangementIncidence =
-        geometry::audit_surface_cell_incidence(arrangementComplex);
-    const auto recordFirstIncidence =
-        [&](const std::string &stage,
-            const geometry::SurfaceCellIncidenceIssue &issue) {
-      if (issue.valid() ||
-          !result.diagnostics.surfaceCellFirstInvalidProducerStage.empty())
-        return;
-      result.diagnostics.surfaceCellFirstInvalidProducerStage = stage;
-      result.diagnostics.surfaceCellFirstInvalidProducerReason = issue.clause;
-      result.diagnostics.surfaceCellFirstInvalidProducerNode = issue.node;
-      result.diagnostics.surfaceCellFirstInvalidProducerHalfedge = issue.halfedge;
-      result.diagnostics.surfaceCellFirstInvalidProducerTwin = issue.twin;
-      result.diagnostics.surfaceCellFirstInvalidProducerCell = issue.cell;
-      result.diagnostics.surfaceCellFirstInvalidProducerFace = issue.sourceFace;
-    };
-    recordFirstIncidence("arrangement/output", arrangementIncidence);
     const std::uint64_t arrangementHash = hash_surface_complex(arrangementComplex);
     if (retainForExecution) {
       // Retain a debug copy; simplification consumes the local stage product.
@@ -13916,9 +13899,6 @@ remesh_from_raw_cross_field_impl_with_stage_products(
     result.diagnostics.surfaceCellSimplifiedCountAvailable = true;
     const geometry::SurfaceCellComplex &simplifiedComplexForHash =
         simplified.hasComplexOutput ? simplified.complex : arrangementComplex;
-    recordFirstIncidence("simplification/output-or-arrangement-fallback",
-                         geometry::audit_surface_cell_incidence(
-                             simplifiedComplexForHash));
     const std::uint64_t simplificationHash =
         hash_surface_complex(simplifiedComplexForHash);
     const SurfaceCellObjectIdentity simplificationIdentity = make_identity(
@@ -14164,11 +14144,6 @@ remesh_from_raw_cross_field_impl_with_stage_products(
         completionResult.firstCompletionOwnershipRejection;
     result.surfaceCellContext.firstCompletionEmbeddingFailure =
         completionResult.firstCompletionEmbeddingFailure;
-    // The exact same oracle is used at arrangement, simplification,
-    // parity and side-repair boundaries. An earlier invalid site takes
-    // precedence over a downstream rejection; no repair is performed here.
-    for (const auto &probe : completionResult.incidenceBoundaryProbes)
-      recordFirstIncidence(probe.stage, probe.issue);
     const auto *closedCompletionFailure = completionResult.rejection();
     result.surfaceCellContext.completionFailure =
         closedCompletionFailure == nullptr ? std::string{}
@@ -14373,30 +14348,6 @@ remesh_from_raw_cross_field_impl_with_stage_products(
       result.surfaceCellContext.hasSimplifiedComplex = true;
     }
     if (completionResult.is_rejected()) {
-      if (completionResult.rejection() != nullptr &&
-          completionResult.rejection()->detail ==
-              "SideSubdivisionRepair:InvalidInputIncidence" &&
-          !result.diagnostics.surfaceCellFirstInvalidProducerStage.empty()) {
-        const auto &d = result.diagnostics;
-        std::ostringstream locus;
-        locus << "SideSubdivisionRepair:InvalidInputIncidence"
-              << ";firstIncidenceStage=" << d.surfaceCellFirstInvalidProducerStage
-              << ";clause=" << d.surfaceCellFirstInvalidProducerReason
-              << ";cell=" << d.surfaceCellFirstInvalidProducerCell
-              << ";halfedge=" << d.surfaceCellFirstInvalidProducerHalfedge
-              << ";twin=" << d.surfaceCellFirstInvalidProducerTwin
-              << ";node=" << d.surfaceCellFirstInvalidProducerNode
-              << ";sourceFace=" << d.surfaceCellFirstInvalidProducerFace
-              << ";incidenceBoundaryProof=arrangement/output:"
-              << (arrangementIncidence.valid() ? "PASS" : arrangementIncidence.clause);
-        for (const auto &probe : completionResult.incidenceBoundaryProbes)
-          locus << ',' << probe.stage << ':'
-                << (probe.issue.valid() ? "PASS" : probe.issue.clause)
-                << "@" << probe.issue.halfedge << '/' << probe.issue.cell
-                << '/' << probe.issue.sourceFace;
-        return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
-                                  "completion", locus.str());
-      }
       return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
                                 "completion");
     }

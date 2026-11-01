@@ -298,15 +298,7 @@ enum class SurfaceCellComplexCompletionFailureKind : int {
   AssemblyRejected = 7,
 };
 
-struct SurfaceCellIncidenceBoundaryProbe {
-  std::string stage;
-  SurfaceCellIncidenceIssue issue;
-  int oddCellsBefore = -1;
-};
-
 struct SurfaceCellComplexCompletionEvidence {
-  // Ordered, read-only incidence oracles across the preparation boundary.
-  std::vector<SurfaceCellIncidenceBoundaryProbe> incidenceBoundaryProbes;
   int parityOddCellsBefore = 0;
   int parityOddCellsAfter = 0;
   int paritySplitEdges = 0;

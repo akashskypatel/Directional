@@ -423,92 +423,67 @@ int odd_bounded_cell_count(const SurfaceCellComplex &complex) {
       }));
 }
 
-SurfaceCellIncidenceIssue audit_incidence_allowing_nondisk(
-    const SurfaceCellComplex &complex) {
-  const auto fail = [&](const char *clause, const int node = -1,
-                        const int halfedge = -1, const int cell = -1) {
-    SurfaceCellIncidenceIssue issue;
-    issue.clause = clause;
-    issue.node = node;
-    issue.halfedge = halfedge;
-    issue.cell = cell;
-    if (halfedge >= 0 &&
-        halfedge < static_cast<int>(complex.halfedges.size())) {
-      const auto &edge = complex.halfedges[static_cast<std::size_t>(halfedge)];
-      issue.twin = edge.twin;
-      issue.next = edge.next;
-      issue.sourceFace = edge.sourceFace;
-      if (issue.node < 0) issue.node = edge.from;
-    } else if (node >= 0 && node < static_cast<int>(complex.nodes.size())) {
-      issue.sourceFace = complex.nodes[static_cast<std::size_t>(node)].sourceFace;
-    } else if (cell >= 0 && cell < static_cast<int>(complex.cells.size())) {
-      issue.sourceFace = complex.cells[static_cast<std::size_t>(cell)].sourceFace;
-    }
-    return issue;
-  };
+bool validate_incidence_allowing_nondisk(const SurfaceCellComplex &complex) {
   for (int node = 0; node < static_cast<int>(complex.nodes.size()); ++node) {
-    if (complex.nodes[static_cast<std::size_t>(node)].id != node)
-      return fail("NodeIdMismatch", node);
+    if (complex.nodes[static_cast<std::size_t>(node)].id != node) {
+      return false;
+    }
   }
   std::vector<int> useCount(complex.halfedges.size(), 0);
   for (int id = 0; id < static_cast<int>(complex.halfedges.size()); ++id) {
     const SurfaceArrangementHalfedge &edge =
         complex.halfedges[static_cast<std::size_t>(id)];
-    if (edge.id != id) return fail("HalfedgeIdMismatch", -1, id);
-    if (edge.twin < 0 || edge.twin >= static_cast<int>(complex.halfedges.size()))
-      return fail("TwinOutOfRange", -1, id);
-    if (edge.next < 0 || edge.next >= static_cast<int>(complex.halfedges.size()))
-      return fail("SuccessorOutOfRange", -1, id);
-    if (edge.from < 0 || edge.from >= static_cast<int>(complex.nodes.size()))
-      return fail("FromNodeOutOfRange", -1, id);
-    if (edge.to < 0 || edge.to >= static_cast<int>(complex.nodes.size()))
-      return fail("ToNodeOutOfRange", -1, id);
-    if (edge.from == edge.to) return fail("DegenerateHalfedge", -1, id);
-    if (edge.cell < 0 || edge.cell >= static_cast<int>(complex.cells.size()))
-      return fail("HalfedgeCellOutOfRange", -1, id);
-    const auto &twin = complex.halfedges[static_cast<std::size_t>(edge.twin)];
-    if (twin.twin != id) return fail("NonReciprocalTwin", -1, id);
-    if (twin.from != edge.to || twin.to != edge.from)
-      return fail("TwinEndpointMismatch", -1, id);
+    if (edge.id != id || edge.twin < 0 ||
+        edge.twin >= static_cast<int>(complex.halfedges.size()) ||
+        edge.next < 0 ||
+        edge.next >= static_cast<int>(complex.halfedges.size()) ||
+        edge.from < 0 || edge.from >= static_cast<int>(complex.nodes.size()) ||
+        edge.to < 0 || edge.to >= static_cast<int>(complex.nodes.size()) ||
+        edge.from == edge.to || edge.cell < 0 ||
+        edge.cell >= static_cast<int>(complex.cells.size())) {
+      return false;
+    }
+    const SurfaceArrangementHalfedge &twin =
+        complex.halfedges[static_cast<std::size_t>(edge.twin)];
+    if (twin.twin != id || twin.from != edge.to || twin.to != edge.from) {
+      return false;
+    }
   }
   for (int id = 0; id < static_cast<int>(complex.cells.size()); ++id) {
-    const auto &cell = complex.cells[static_cast<std::size_t>(id)];
-    if (cell.id != id) return fail("CellIdMismatch", -1, -1, id);
-    if (!cell.closed) return fail("OpenCell", -1, -1, id);
-    if (cell.halfedges.size() < 2U) return fail("ShortCellBoundary", -1, -1, id);
-    if (cell.sideFamilies.size() != cell.sideEdgeCounts.size())
-      return fail("SideMetadataSizeMismatch", -1, -1, id);
+    const SurfaceArrangementCell &cell =
+        complex.cells[static_cast<std::size_t>(id)];
+    if (cell.id != id || !cell.closed || cell.halfedges.size() < 2U ||
+        cell.sideFamilies.size() != cell.sideEdgeCounts.size()) {
+      return false;
+    }
     std::vector<std::pair<std::size_t, std::size_t>> boundaryRanges;
-    if (!surface_arrangement_boundary_cycle_ranges(cell, boundaryRanges))
-      return fail("BoundaryCycleRangesInvalid", -1, -1, id);
+    if (!surface_arrangement_boundary_cycle_ranges(cell, boundaryRanges)) {
+      return false;
+    }
     std::set<int> seenHalfedges;
     for (const auto &[begin, end] : boundaryRanges) {
       for (std::size_t index = begin; index < end; ++index) {
         const int edgeId = cell.halfedges[index];
-        if (edgeId < 0 || edgeId >= static_cast<int>(complex.halfedges.size()))
-          return fail("BoundaryHalfedgeOutOfRange", -1, edgeId, id);
-        if (!seenHalfedges.insert(edgeId).second)
-          return fail("RepeatedBoundaryHalfedge", -1, edgeId, id);
-        const auto &edge = complex.halfedges[static_cast<std::size_t>(edgeId)];
-        const int nextId = cell.halfedges[index + 1U < end ? index + 1U : begin];
-        if (nextId < 0 || nextId >= static_cast<int>(complex.halfedges.size()))
-          return fail("BoundarySuccessorOutOfRange", -1, edgeId, id);
-        if (edge.cell != id) return fail("BoundaryCellMismatch", -1, edgeId, id);
-        if (edge.next != nextId) return fail("BoundarySuccessorMismatch", -1, edgeId, id);
-        if (edge.to != complex.halfedges[static_cast<std::size_t>(nextId)].from)
-          return fail("BoundaryEndpointMismatch", -1, edgeId, id);
+        if (edgeId < 0 ||
+            edgeId >= static_cast<int>(complex.halfedges.size()) ||
+            !seenHalfedges.insert(edgeId).second) {
+          return false;
+        }
+        const SurfaceArrangementHalfedge &edge =
+            complex.halfedges[static_cast<std::size_t>(edgeId)];
+        const int nextId =
+            cell.halfedges[index + 1U < end ? index + 1U : begin];
+        if (edge.cell != id || edge.next != nextId ||
+            edge.to !=
+                complex.halfedges[static_cast<std::size_t>(nextId)].from) {
+          return false;
+        }
         ++useCount[static_cast<std::size_t>(edgeId)];
       }
     }
   }
-  for (std::size_t id = 0; id < useCount.size(); ++id)
-    if (useCount[id] != 1)
-      return fail("DirectedHalfedgeUseMultiplicity", -1, static_cast<int>(id));
-  return {};
-}
-
-bool validate_incidence_allowing_nondisk(const SurfaceCellComplex &complex) {
-  return audit_incidence_allowing_nondisk(complex).valid();
+  return std::all_of(useCount.begin(), useCount.end(),
+                     [](const int count) { return count == 1; });
 }
 
 SurfaceCellDomainIdentityAudit audit_simple_cell_boundary(
@@ -872,19 +847,6 @@ int total_side_equation_defect(const SurfaceCellComplex &complex,
 
 namespace directional::geometry {
 
-SurfaceCellIncidenceIssue audit_surface_cell_incidence(
-    const SurfaceCellComplex &complex) {
-  return surface_cell_feasibility_detail::audit_incidence_allowing_nondisk(complex);
-}
-
-bool same_surface_cell_incidence_structure(
-    const SurfaceCellComplex &first, const SurfaceCellComplex &second) {
-  // Exact rollback identities include source scopes, halfedge incidence,
-  // ordered cell boundaries, logical sides and provenance. No hash shortcut.
-  return surface_cell_feasibility_detail::exact_rollback_identity(first) ==
-         surface_cell_feasibility_detail::exact_rollback_identity(second);
-}
-
 namespace {
 
 SurfaceCellSubdivisionFailure subdivision_failure_from_product(
@@ -938,7 +900,6 @@ SurfaceCellSideRepairFailure side_failure_from_product(
         std::nullopt) {
   SurfaceCellSideRepairFailure failure;
   failure.kind = kind;
-  failure.canonicalInputIncidence = std::move(product.canonicalInputIncidence);
   failure.detail = std::move(detail);
   failure.rollbackEquivalent = product.rollbackEquivalent;
   failure.rollbackIdentityHashBefore = product.rollbackIdentityHashBefore;
@@ -2111,7 +2072,6 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
       surface_cell_feasibility_detail::exact_rollback_identity(canonicalInput);
   surface_cell_feasibility_detail::canonicalize_logical_sides(
       canonicalInput, sourceVertices, sourceFaces);
-  result.canonicalInputIncidence = audit_surface_cell_incidence(canonicalInput);
   result.rollbackIdentityHashBefore =
       surface_cell_feasibility_detail::rollback_identity_hash(
           rollbackIdentity);
@@ -2160,7 +2120,8 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
       options.maxPropagationPasses <= 0 || options.maxStagnantPasses <= 0) {
     return returnRollback(SurfaceCellSideRepairFailureKind::InvalidSideRepairOptions, "InvalidSideRepairOptions");
   }
-  if (!result.canonicalInputIncidence.valid()) {
+  if (!surface_cell_feasibility_detail::
+          validate_incidence_allowing_nondisk(canonicalInput)) {
     return returnRollback(SurfaceCellSideRepairFailureKind::InvalidInputIncidence, "InvalidInputIncidence");
   }
   std::map<int, int> insertions;
