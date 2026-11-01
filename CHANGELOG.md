@@ -1,3 +1,8 @@
+# 2026-11-01 — TB64 immutable dyadic full gate and independent P13 census
+
+- `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC` on unchanged CB65 source `dbc38661efabdfa051f48f8f71ee3c604841842c` and artifact `13062413347`: [866-case Linux run 41256874416](https://github.com/akashskypatel/Directional/actions/runs/41256874416), result `13063712419`, **866/866 PASS**, membership **947**, 1740 verified checksums; [three-case census 41256885685](https://github.com/akashskypatel/Directional/actions/runs/41256885685), result `13064115441`, **Cylinder PASS, BunnyRandom and Vase expected RED**, nine verified checksums. Zero rebuild, postflight true. [TB64 evidence report](.agents/Directional/Architecture_M6_CP3_TB64_P13_Canonical_Dyadic_Full_Gate_Execution_Report_20261101.md).
+- RA-190.6 outcomes met. O15c A2a magnitude stop discharged; BunnyRandom P13-c and Vase P13-d/O18 remain. No new accepted-green loss; stable 66/17/49, debt 1; CP2 491/491 unchanged and selector497/CP3 unpromoted. Next Review `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT` (RA-190.7), no TB64-REV.
+
 # 2026-10-31 — CB65 canonical dyadic trace exit exact patch and Linux compile
 
 - `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT` completed as the RA-190.8 exact four-file patch, committed at `dbc38661efabdfa051f48f8f71ee3c604841842c`. Diff SHA `ed125319…`, all four output hashes/numstat matched; no additional semantic scope.
