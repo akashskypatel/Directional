@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb72-compile-20261101-1745-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb72-compile-20261101-1745-v1",
-  "source_sha": "7b85b450bc98abfb65db511fdcd524eb11f537f8",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb72-p13-completion-pass-graph"
+  "request_id": "m6-cp3-cb72-docs-close-20261101-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb72-docs-close-20261101-v1",
+  "file_id": "1UqDSm0h3mPKEB1R8vRjzeB9Sps-DbtnH",
+  "patch_sha256": "155e6480ffd01184572b0297fe2b50e414de61ee2fe9152d21915cfc3b7ad211",
+  "base_sha": "0e8043036c959ef7ba7de0d074dc281c447a55c1",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close CB72 verified compile and authorize TB68"
 }
