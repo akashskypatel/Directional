@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb67-docs-apply-20261101-v1",
+  "request_id": "m6-cp3-tb67-docs-apply-20261101-v2",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb67-docs-apply-20261101-v1",
-  "file_id": "19-j_BdRuRd_i5bnTqJAmMwiuXQrLs5T7",
-  "patch_sha256": "23da24ae63e578f3c80e715b2cda4279b4b000f2a4ac86fcc8f4e24ba49bd4da",
+  "mailbox_key": "m6-cp3-tb67-docs-apply-20261101-v2",
+  "file_id": "1ai1rR_9O61qfrjQ4lNuG8L5F4RIaHt9m",
+  "patch_sha256": "eb33a8cb80b97eafe3aaef35d907f1a2e083d118f66f0018d68a6622d6f78462",
   "base_sha": "ca2de7da39a88183d2079f3086205cd2415f15b3",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "docs: close TB67 immutable wedge gate and route P13-f review"
