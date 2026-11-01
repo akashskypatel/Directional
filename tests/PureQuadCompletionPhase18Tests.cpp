@@ -2611,3 +2611,76 @@ TEST(PureQuadCompletionPhase18, StitchingIsPatchOrderInvariant) {
   EXPECT_EQ(forward.eulerCharacteristic, reverse.eulerCharacteristic);
   EXPECT_EQ(forward.boundaryLoopCount, reverse.boundaryLoopCount);
 }
+
+TEST(PureQuadCompletionPhase18,
+     QuadEmbeddingRejectsFoldedAndEdgeOnQuadsAgainstTheSourceNormal) {
+  using directional::geometry::PureQuadEmbeddingFailureKind;
+  using directional::geometry::pure_quad_detail::quad_embedding_failure;
+  // A unit square turned about the x axis, so that its vector area makes
+  // `degrees` with +z.
+  const auto turned = [](const double degrees) {
+    const double angle = degrees * std::numbers::pi / 180.0;
+    const Eigen::Vector3d u(1.0, 0.0, 0.0);
+    const Eigen::Vector3d v(0.0, std::cos(angle), std::sin(angle));
+    return std::array<Eigen::Vector3d, 4>{
+        {Eigen::Vector3d::Zero(), u, u + v, v}};
+  };
+  // Two unit source normals summed, as for corners on two faces.
+  const Eigen::Vector3d source(0.0, 0.0, 2.0);
+  EXPECT_EQ(PureQuadEmbeddingFailureKind::None,
+            quad_embedding_failure(turned(0.0), &source));
+  EXPECT_EQ(PureQuadEmbeddingFailureKind::None,
+            quad_embedding_failure(turned(55.0), &source));
+  EXPECT_EQ(PureQuadEmbeddingFailureKind::SourceOrientationMismatch,
+            quad_embedding_failure(turned(65.0), &source));
+  EXPECT_EQ(PureQuadEmbeddingFailureKind::SourceOrientationMismatch,
+            quad_embedding_failure(turned(90.0), &source));
+  EXPECT_EQ(PureQuadEmbeddingFailureKind::SourceOrientationMismatch,
+            quad_embedding_failure(turned(180.0), &source));
+  // Without a source surface only the quad's own simplicity is checked.
+  EXPECT_EQ(PureQuadEmbeddingFailureKind::None,
+            quad_embedding_failure(turned(180.0), nullptr));
+  // A bow-tie keeps its own classification ahead of orientation.
+  const std::array<Eigen::Vector3d, 4> bowTie{
+      {Eigen::Vector3d(0.0, 0.0, 0.0), Eigen::Vector3d(3.0, 1.0, 0.0),
+       Eigen::Vector3d(3.0, 0.0, 0.0), Eigen::Vector3d(0.0, 2.0, 0.0)}};
+  EXPECT_EQ(PureQuadEmbeddingFailureKind::BowTieIntersection,
+            quad_embedding_failure(bowTie, &source));
+}
+
+TEST(PureQuadCompletionPhase18,
+     CompletionRejectsQuadsFoldedAgainstTheSourceSurface) {
+  CompletionFixture fixture = generated_plane_patch();
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 17;
+  options.sourceVertices = &fixture.vertices;
+  options.sourceFaces = &fixture.faces;
+  const auto sourceAuthority = test_source_authority(
+      fixture.faces, {0, 0, 1}, {0, 0, 1});
+  options.sourceAuthority = &sourceAuthority;
+  ASSERT_TRUE(directional::geometry::complete_pure_quad_patch(
+                  fixture.patch, options)
+                  .is_produced());
+
+  // The same square traversed clockwise about the +z source normal: every
+  // generated quad now faces away from the source surface.
+  auto &patch = fixture.patch;
+  std::reverse(patch.boundaryVertices.begin() + 1,
+               patch.boundaryVertices.end());
+  std::reverse(patch.boundaryProvenance.begin() + 1,
+               patch.boundaryProvenance.end());
+  std::reverse(patch.boundaryTopologyRegions.begin() + 1,
+               patch.boundaryTopologyRegions.end());
+  std::reverse(patch.boundaryCharts.begin() + 1, patch.boundaryCharts.end());
+  std::reverse(patch.boundaryNodeIdentities.begin() + 1,
+               patch.boundaryNodeIdentities.end());
+  const auto folded =
+      directional::geometry::complete_pure_quad_patch(patch, options);
+  ASSERT_TRUE(folded.is_rejected());
+  EXPECT_EQ(directional::geometry::PureQuadEmbeddingFailureKind::
+                SourceOrientationMismatch,
+            folded.rejection()->embeddingFailure.kind);
+  EXPECT_EQ(folded.rejection()->detail.rfind(
+                "InvalidCompletionQuadEmbedding", 0),
+            0U);
+}

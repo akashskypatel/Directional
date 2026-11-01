@@ -472,9 +472,117 @@ std::pair<int, int> diagnostic_source_scope(const PureQuadMesh &mesh) {
   return {-1, -1};
 }
 
+Eigen::Vector3d source_orientation_normal(
+    const Eigen::MatrixXd &sourceVertices, const Eigen::MatrixXi &sourceFaces,
+    const std::array<int, 4> &faces) {
+  // Sum of the unit normals of the source faces carrying a quad's corners:
+  // the local source-surface orientation the quad must agree with.
+  Eigen::Vector3d sum = Eigen::Vector3d::Zero();
+  for (const int face : faces) {
+    if (face < 0 || face >= sourceFaces.rows()) {
+      continue;
+    }
+    const Eigen::Vector3d a =
+        sourceVertices.row(sourceFaces(face, 0)).transpose();
+    const Eigen::Vector3d b =
+        sourceVertices.row(sourceFaces(face, 1)).transpose();
+    const Eigen::Vector3d c =
+        sourceVertices.row(sourceFaces(face, 2)).transpose();
+    const Eigen::Vector3d normal = (b - a).cross(c - a);
+    const double length = normal.norm();
+    if (std::isfinite(length) && length > 0.0) {
+      sum += normal / length;
+    }
+  }
+  return sum;
+}
+
+PureQuadEmbeddingFailureKind quad_embedding_failure(
+    const std::array<Eigen::Vector3d, 4> &p,
+    const Eigen::Vector3d *sourceNormal) {
+  for (const Eigen::Vector3d &corner : p) {
+    if (!corner.allFinite()) {
+      return PureQuadEmbeddingFailureKind::NonFinitePosition;
+    }
+  }
+  const auto orient2 = [](const Eigen::Vector2d &a,
+                          const Eigen::Vector2d &b,
+                          const Eigen::Vector2d &c) {
+    return (b.x() - a.x()) * (c.y() - a.y()) -
+           (b.y() - a.y()) * (c.x() - a.x());
+  };
+  const auto oppositeEdgesIntersect = [&](const Eigen::Vector2d &a,
+                                          const Eigen::Vector2d &b,
+                                          const Eigen::Vector2d &c,
+                                          const Eigen::Vector2d &d) {
+    constexpr double eps = 1.0e-13;
+    const double o1 = orient2(a, b, c);
+    const double o2 = orient2(a, b, d);
+    const double o3 = orient2(c, d, a);
+    const double o4 = orient2(c, d, b);
+    return ((o1 > eps && o2 < -eps) || (o1 < -eps && o2 > eps)) &&
+           ((o3 > eps && o4 < -eps) || (o3 < -eps && o4 > eps));
+  };
+  Eigen::Vector3d normal = Eigen::Vector3d::Zero();
+  for (int corner = 0; corner < 4; ++corner) {
+    const Eigen::Vector3d &current = p[static_cast<std::size_t>(corner)];
+    const Eigen::Vector3d &next =
+        p[static_cast<std::size_t>((corner + 1) % 4)];
+    normal.x() += (current.y() - next.y()) * (current.z() + next.z());
+    normal.y() += (current.z() - next.z()) * (current.x() + next.x());
+    normal.z() += (current.x() - next.x()) * (current.y() + next.y());
+  }
+  if (!normal.allFinite() || normal.squaredNorm() <= 1.0e-24) {
+    return PureQuadEmbeddingFailureKind::DegenerateNormal;
+  }
+  Eigen::Index dropAxis = 0;
+  normal.cwiseAbs().maxCoeff(&dropAxis);
+  std::array<Eigen::Vector2d, 4> projected;
+  for (int corner = 0; corner < 4; ++corner) {
+    const Eigen::Vector3d &value = p[static_cast<std::size_t>(corner)];
+    if (dropAxis == 0) {
+      projected[static_cast<std::size_t>(corner)] =
+          Eigen::Vector2d(value.y(), value.z());
+    } else if (dropAxis == 1) {
+      projected[static_cast<std::size_t>(corner)] =
+          Eigen::Vector2d(value.x(), value.z());
+    } else {
+      projected[static_cast<std::size_t>(corner)] =
+          Eigen::Vector2d(value.x(), value.y());
+    }
+  }
+  double signedArea2 = 0.0;
+  for (int corner = 0; corner < 4; ++corner) {
+    const Eigen::Vector2d &a = projected[static_cast<std::size_t>(corner)];
+    const Eigen::Vector2d &b =
+        projected[static_cast<std::size_t>((corner + 1) % 4)];
+    signedArea2 += a.x() * b.y() - a.y() * b.x();
+  }
+  if (!std::isfinite(signedArea2) || std::abs(signedArea2) <= 1.0e-14) {
+    return PureQuadEmbeddingFailureKind::ZeroProjectedArea;
+  }
+  if (oppositeEdgesIntersect(projected[0], projected[1], projected[2],
+                             projected[3]) ||
+      oppositeEdgesIntersect(projected[1], projected[2], projected[3],
+                             projected[0])) {
+    return PureQuadEmbeddingFailureKind::BowTieIntersection;
+  }
+  // A quad agrees with the source surface only if its vector area lies
+  // within 60 degrees of the local source normal. This rejects folded quads
+  // and edge-on slivers, whose orientation sign is numerical noise.
+  if (sourceNormal != nullptr &&
+      !(normal.dot(*sourceNormal) >
+        0.5 * normal.norm() * sourceNormal->norm())) {
+    return PureQuadEmbeddingFailureKind::SourceOrientationMismatch;
+  }
+  return PureQuadEmbeddingFailureKind::None;
+}
+
 bool completed_quads_have_simple_embedding(
     const PureQuadMesh &mesh, const int completionVariant,
-    PureQuadEmbeddingFailure &failure) {
+    PureQuadEmbeddingFailure &failure,
+    const Eigen::MatrixXd *sourceVertices,
+    const Eigen::MatrixXi *sourceFaces) {
   failure = {};
   failure.sourcePatch = mesh.sourcePatch;
   failure.backend = mesh.backend;
@@ -520,24 +628,6 @@ bool completed_quads_have_simple_embedding(
       return reject(PureQuadEmbeddingFailureKind::DuplicateMeshVertex, 0);
     }
   }
-  const auto orient2 = [](const Eigen::Vector2d &a,
-                          const Eigen::Vector2d &b,
-                          const Eigen::Vector2d &c) {
-    return (b.x() - a.x()) * (c.y() - a.y()) -
-           (b.y() - a.y()) * (c.x() - a.x());
-  };
-  const auto oppositeEdgesIntersect = [&](const Eigen::Vector2d &a,
-                                          const Eigen::Vector2d &b,
-                                          const Eigen::Vector2d &c,
-                                          const Eigen::Vector2d &d) {
-    constexpr double eps = 1.0e-13;
-    const double o1 = orient2(a, b, c);
-    const double o2 = orient2(a, b, d);
-    const double o3 = orient2(c, d, a);
-    const double o4 = orient2(c, d, b);
-    return ((o1 > eps && o2 < -eps) || (o1 < -eps && o2 > eps)) &&
-           ((o3 > eps && o4 < -eps) || (o3 < -eps && o4 > eps));
-  };
 
   for (int quadIndex = 0; quadIndex < static_cast<int>(mesh.quads.size());
        ++quadIndex) {
@@ -552,6 +642,7 @@ bool completed_quads_have_simple_embedding(
                     quadIndex);
     }
     std::array<Eigen::Vector3d, 4> p;
+    std::array<int, 4> faces{{-1, -1, -1, -1}};
     for (int corner = 0; corner < 4; ++corner) {
       const auto row = rowByVertex.find(quad[static_cast<std::size_t>(corner)]);
       if (row == rowByVertex.end() || row->second < 0 ||
@@ -565,52 +656,21 @@ bool completed_quads_have_simple_embedding(
         return reject(PureQuadEmbeddingFailureKind::NonFinitePosition,
                       quadIndex);
       }
-    }
-    Eigen::Vector3d normal = Eigen::Vector3d::Zero();
-    for (int corner = 0; corner < 4; ++corner) {
-      const Eigen::Vector3d &current = p[static_cast<std::size_t>(corner)];
-      const Eigen::Vector3d &next =
-          p[static_cast<std::size_t>((corner + 1) % 4)];
-      normal.x() += (current.y() - next.y()) * (current.z() + next.z());
-      normal.y() += (current.z() - next.z()) * (current.x() + next.x());
-      normal.z() += (current.x() - next.x()) * (current.y() + next.y());
-    }
-    if (!normal.allFinite() || normal.squaredNorm() <= 1.0e-24) {
-      return reject(PureQuadEmbeddingFailureKind::DegenerateNormal, quadIndex);
-    }
-    Eigen::Index dropAxis = 0;
-    normal.cwiseAbs().maxCoeff(&dropAxis);
-    std::array<Eigen::Vector2d, 4> projected;
-    for (int corner = 0; corner < 4; ++corner) {
-      const Eigen::Vector3d &value = p[static_cast<std::size_t>(corner)];
-      if (dropAxis == 0) {
-        projected[static_cast<std::size_t>(corner)] =
-            Eigen::Vector2d(value.y(), value.z());
-      } else if (dropAxis == 1) {
-        projected[static_cast<std::size_t>(corner)] =
-            Eigen::Vector2d(value.x(), value.z());
-      } else {
-        projected[static_cast<std::size_t>(corner)] =
-            Eigen::Vector2d(value.x(), value.y());
+      if (row->second < static_cast<int>(mesh.vertexProvenance.size())) {
+        faces[static_cast<std::size_t>(corner)] =
+            mesh.vertexProvenance[static_cast<std::size_t>(row->second)].face;
       }
     }
-    double signedArea2 = 0.0;
-    for (int corner = 0; corner < 4; ++corner) {
-      const Eigen::Vector2d &a = projected[static_cast<std::size_t>(corner)];
-      const Eigen::Vector2d &b =
-          projected[static_cast<std::size_t>((corner + 1) % 4)];
-      signedArea2 += a.x() * b.y() - a.y() * b.x();
+    Eigen::Vector3d sourceNormal = Eigen::Vector3d::Zero();
+    const bool oriented = sourceVertices != nullptr && sourceFaces != nullptr;
+    if (oriented) {
+      sourceNormal =
+          source_orientation_normal(*sourceVertices, *sourceFaces, faces);
     }
-    if (!std::isfinite(signedArea2) || std::abs(signedArea2) <= 1.0e-14) {
-      return reject(PureQuadEmbeddingFailureKind::ZeroProjectedArea,
-                    quadIndex);
-    }
-    if (oppositeEdgesIntersect(projected[0], projected[1], projected[2],
-                               projected[3]) ||
-        oppositeEdgesIntersect(projected[1], projected[2], projected[3],
-                               projected[0])) {
-      return reject(PureQuadEmbeddingFailureKind::BowTieIntersection,
-                    quadIndex);
+    const PureQuadEmbeddingFailureKind kind =
+        quad_embedding_failure(p, oriented ? &sourceNormal : nullptr);
+    if (kind != PureQuadEmbeddingFailureKind::None) {
+      return reject(kind, quadIndex);
     }
   }
   return true;
@@ -2295,7 +2355,8 @@ PureQuadCompletionResult complete_pure_quad_patch(
     return close_pure_quad_completion(std::move(result));
   }
   if (!pure_quad_detail::completed_quads_have_simple_embedding(
-          mesh, options.completionVariant, result.embeddingFailure)) {
+          mesh, options.completionVariant, result.embeddingFailure,
+          options.sourceVertices, options.sourceFaces)) {
     result.failureReason = PureQuadPatchRejectReason::TopologyValidationFailed;
     const PureQuadEmbeddingFailure &failure = result.embeddingFailure;
     std::ostringstream stream;

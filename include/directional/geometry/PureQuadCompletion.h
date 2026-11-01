@@ -139,6 +139,7 @@ enum class PureQuadEmbeddingFailureKind : int {
   DegenerateNormal = 6,
   ZeroProjectedArea = 7,
   BowTieIntersection = 8,
+  SourceOrientationMismatch = 9,
 };
 
 inline const char *pure_quad_embedding_failure_name(
@@ -162,6 +163,8 @@ inline const char *pure_quad_embedding_failure_name(
     return "zero-projected-area";
   case PureQuadEmbeddingFailureKind::BowTieIntersection:
     return "bow-tie-intersection";
+  case PureQuadEmbeddingFailureKind::SourceOrientationMismatch:
+    return "source-orientation-mismatch";
   }
   return "unknown";
 }
@@ -786,6 +789,13 @@ bool complete_pattern(const PureQuadPatch &patch, PureQuadMesh &mesh);
 
 bool complete_bounded(const PureQuadPatch &patch, PureQuadMesh &mesh,
                              int &explored);
+
+// One completed quad: simple in its own Newell plane and, given the summed
+// unit normals of the source faces under its corners, oriented within 60
+// degrees of that source normal.
+PureQuadEmbeddingFailureKind quad_embedding_failure(
+    const std::array<Eigen::Vector3d, 4> &corners,
+    const Eigen::Vector3d *sourceNormal);
 
 } // namespace pure_quad_detail
 
