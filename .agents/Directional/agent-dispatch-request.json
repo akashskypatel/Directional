@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb73-ra196-orientation-apply-20261101-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb73-ra196-orientation-apply-20261101-v1",
-  "file_id": "1UGg2W-Tm3gREW7qimRPwPH1f1-KU2Bxv",
-  "patch_sha256": "1f4eab7f7aa5f8c74d98d8e13acb0f2a1a3f9c710460f4b19f954b2d05eca7ad",
-  "base_sha": "ad516aa204c13c60f954e99ab490ecd3a71bc4da",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): validate quad embedding against source orientation (CB73)"
+  "request_id": "m6-cp3-cb73-ra196-orientation-compile-20261101-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb73-ra196-orientation-compile-20261101-v1",
+  "source_sha": "57c24325f53932a195d0c335c0d6609cad90a565",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb73-orientation"
 }
