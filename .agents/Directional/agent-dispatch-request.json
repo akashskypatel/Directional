@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb64-closeout-20261101-v1",
+  "request_id": "m6-cp3-ra191-cut-side-defn-20261101-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb64-closeout-20261101-v1",
-  "file_id": "1XiktzRfdlq5Oxcvlz66BRV6gWTDavNwL",
-  "patch_sha256": "4b372ba4b6c13edbf8124772dfbb29b8caf1ea570b64f4c7c13db9db418fddde",
-  "base_sha": "2464efa4a385cb1badf93be0186531aea5e1c74f",
+  "mailbox_key": "m6-cp3-ra191-cut-side-defn-20261101-v1",
+  "file_id": "1VSjYTiQ3StHkBIM1I9b-ryAFhMKbZGHt",
+  "patch_sha256": "924536a12af7ceaa73c1d1a575f89efbc65ad4b9560568d5e1f84c46cd0a41d9",
+  "base_sha": "41fde362bd45707f37c0488decb6848fc6e697c0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB64 immutable dyadic gate and hand off P13 slit review",
+  "commit_message": "docs(directional): define cut-side incidence for single-edge barrier slits",
   "retention_days": 14
 }
