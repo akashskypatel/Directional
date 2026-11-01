@@ -43,7 +43,7 @@ jobs:
             b=$?
             echo "boundary_exit=${b}"
             echo '--- ledgers ---'
-            python3 .agents/Directional/tools/review_check.py ledgers
+            python3 .agents/Directional/tools/review_check.py ledgers --base 8b7299b43
             l=$?
             echo "ledgers_exit=${l}"
             echo '--- branch sync (runner detached HEAD expected) ---'
