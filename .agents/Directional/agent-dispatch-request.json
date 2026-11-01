@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb73-ra196-doc-closeout-20261101-v1",
+  "request_id": "m6-cp3-cb74-ra19610-apply-20261101-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb73-ra196-doc-closeout-20261101-v1",
-  "file_id": "1959RUejXcCXF4LXVU71ceXt5Xgwt-a8U",
-  "patch_sha256": "b7d57490b14dbd4d8a4a64e3a6c36ff3e98f0b37acfbb1a0bf094c9e73cec81d",
-  "base_sha": "ad516aa204c13c60f954e99ab490ecd3a71bc4da",
+  "mailbox_key": "m6-cp3-cb74-ra19610-apply-20261101-v1",
+  "file_id": "1KrNFfCpKH5ykjB48cI0H2rJVWtPUmybW",
+  "patch_sha256": "c4bbed8a465f26599ce55e2f2e118653cdd529da9ed656180c43269117dc6768",
+  "base_sha": "49d29add18fec9e200169f9d1a244cbbb371351d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close CB73 compile-only and hand off exact CB74"
+  "commit_message": "feat(surface-cells): add embedded boundary quadrangulation search"
 }
