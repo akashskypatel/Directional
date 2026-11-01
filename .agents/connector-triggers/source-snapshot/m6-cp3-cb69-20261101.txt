@@ -1,0 +1,4 @@
+Source snapshot trigger for M6-CP3-CB69-P13-ARRANGEMENT-INCIDENCE-TERMINAL
+Branch: agent/surface_cell_quad/p5-recover-bridge-healing
+Source: triggering commit (GitHub Actions event SHA)
+Purpose: verified source review before compile-only implementation
