@@ -1,0 +1,1 @@
+TB64 immutable evidence closeout snapshot. Source branch frozen by trigger commit. No build or runtime execution. 2026-11-01.
