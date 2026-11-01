@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-p13g-defn-docs-20261101-v1",
+  "request_id": "m6-cp3-cb73-p13g-wip-apply-20261101-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-p13g-defn-docs-20261101-v1",
-  "file_id": "1zPx4Aem6cwMP7zLgDUdLv77lVNgoGvPc",
-  "patch_sha256": "ff42c155e7681f07d9a7502c0d49a322722f2016cad2a86a4b054ad0812d2e76",
-  "base_sha": "aa95233a19139a87d05a3165f2f249bc931279cf",
+  "mailbox_key": "m6-cp3-cb73-p13g-wip-apply-20261101-v1",
+  "file_id": "1JLcz9Y_oh3J7Tismx5gG0-ccK5WYFegN",
+  "patch_sha256": "fe921e72929db3df38d421c6ef742c383df43126250572f00b636a20c02fa452",
+  "base_sha": "ff29b70c681877c299c7c55d4e6a297bb30f3b21",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: review P13-g completion embedding and freeze CB73 scope"
+  "commit_message": "wip: preserve P13-g completion boundary witness and terminal detail"
 }
