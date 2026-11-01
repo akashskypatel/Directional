@@ -1,0 +1,2 @@
+Turn: M6-CP3-CB67-P13-VASE-INCIDENCE-BOUNDARY-PROBE
+Purpose: exact source snapshot for code-only diagnostic turn
