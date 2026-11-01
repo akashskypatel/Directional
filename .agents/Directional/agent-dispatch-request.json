@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb66-slit-compile-20261101-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb66-slit-compile-20261101-v1",
-  "source_sha": "911840c195b52ce1800b3ac7ff3ea7380137ad9c",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb66-slit-compile"
+  "request_id": "m6-cp3-cb66-slit-doc-closeout-20261101-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb66-slit-doc-closeout-20261101-v1",
+  "file_id": "1uOPhQZF4LDvcJ_5m3rhBQIiSIjtYUr9h",
+  "patch_sha256": "0b490defd418f286e4c149723f76889563f1e3a64275ca375d36ab3e39fbb965",
+  "base_sha": "911840c195b52ce1800b3ac7ff3ea7380137ad9c",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(surface-cells): close CB66 compile and hand off TB65",
+  "retention_days": 14
 }
