@@ -446,6 +446,6 @@ index 1342f2da9..e4b6bbb5c 100644
 | Consolidation under CLEAN_UP_POLICY | n/a: the Vase decision stays as history; RA-193.1 rules it |
 | Successor frozen | CB67 (RA-193.5), TB66 (RA-193.6), CB68 (RA-193.7), TB67 (RA-193.8) |
 | Turn boundary held | No product, test, fixture or selector change in the repository; probes ran only in scratch builds |
-| `review_check.py boundary` | Recorded after the push |
-| `STATUS` lifecycle maintained | COMPLETE, Successor CB67 |
-| Pushed to origin, branch in sync | Confirmed after the push |
+| `review_check.py boundary` | ALL CHECKS PASSED on the full-history checkout; `ledgers --base 8b7299b43` PASSED |
+| `STATUS` lifecycle maintained | COMPLETE, Successor CB67. It supersedes the implementation agent's in-progress `M6-CP3-CB67-P13-VASE-INCIDENCE-BOUNDARY-PROBE` beacon (entered 10:53:33Z; a snapshot trigger only, no source change) |
+| Pushed to origin, branch in sync | Yes: `cdfbdc48f`, rebased onto `6bc6efcb7` without force |
