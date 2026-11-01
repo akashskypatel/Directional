@@ -1,4 +1,0 @@
-TB67 source snapshot request
-source_branch=agent/surface_cell_quad/p5-recover-bridge-healing
-entry_beacon_commit=1944faf15b4a08637fec97e889c9652133d33d9f
-reason=single exact read-mode snapshot

@@ -1,2 +1,0 @@
-# TB67 temporary source-snapshot trigger; durable dispatcher and workflow mailbox excluded
-.agents/connector-triggers/source-snapshot/tb67-20261101-1455.txt
