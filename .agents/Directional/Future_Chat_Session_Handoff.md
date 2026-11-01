@@ -34,53 +34,40 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-01 **CB66 slit-cycle-basis exact patch compiled; TB65 artifact-only gate next.** [CB66 report](Architecture_M6_CP3_CB66_P13_Slit_Cycle_Basis_Code_Build_Report_20261101.md). RA-192 remains the implementation and gate authority; no CB66 runtime evidence. |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation; immutable compiled semantic source `911840c195b52ce1800b3ac7ff3ea7380137ad9c`. |
-| Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06, unchanged. TB63 is a verified Linux candidate, not selector497/CP3 acceptance. |
-| Latest candidate | **CB66 compile-only eight-target Linux** [run 41265565212](https://github.com/akashskypatel/Directional/actions/runs/41265565212), artifact `13067780359`, source `911840c195b52ce1800b3ac7ff3ea7380137ad9c`, 28/28 checksums and GMP/GMPXX. Latest executed runtime remains TB64 866/866 (run 41256874416) and its separate census; no TB65 yet. macOS O16 remains. |
-| Regression accounting and debt | Stable **66/17/49**, debt **1**, unchanged. Ledger v5 81 rows (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE). TB64 gate membership 947. Selector497 not promoted. DR1/DR3 open; DR2/DR4 → M8-CP2. |
-| Active boundary | **CB66 exact source is compiled but not runtime-gated.** TB65 must execute independently on artifact `13067780359`. O15c discharged for A2a. BunnyRandom P13-e singularity-port count at vertex 49 and Vase P13-d/O18 completion incidence remain probe findings awaiting TB65 Linux observation. O19 remains open, not CP3-blocking. No CP3 acceptance. |
+| Currency | 2026-11-01 **TB65 immutable artifact-only Linux full gate and census verified against RA-192.6.** [TB65 report](Architecture_M6_CP3_TB65_P13_Slit_Full_Gate_Execution_Report_20261101.md). No new accepted regression or CP3 promotion. |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh at next turn; immutable compiled semantic source `911840c195b52ce1800b3ac7ff3ea7380137ad9c`. |
+| Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06, unchanged; TB65 is candidate-only. |
+| Latest candidate | **TB65 Linux gate 869/869 PASS, membership 950**, [run 41275216693](https://github.com/akashskypatel/Directional/actions/runs/41275216693), artifact `13071357793`, ZIP `b9064cfa9172d3e2b30b6da401dec287e5ef40f63a55857d5619174d3ad638df`, 1746/1746 checksums; **census 1 PASS, 2 registered RED**, [run 41275273919](https://github.com/akashskypatel/Directional/actions/runs/41275273919), artifact `13071376917`, ZIP `f8d6ed26819454ac313ccf687238d3e28304c776a04fe43526d49dedf602eebd`, 9/9 checksums. Both no rebuild. |
+| Regression accounting and debt | Stable **66/17/49**, debt **1**, unchanged. Deferred ledger v5 **81** rows (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE), membership 950. Selector497 not promoted. DR1/DR3 open; DR2/DR4 → M8-CP2. |
+| Active boundary | Slit-cycle basis guards 867–869 all PASS; Cylinder produces direct valid output; **BunnyRandom P13-e** A1 singularity-port count mismatch at vertex 49 (`cutChi=-5`, seven cut loops) and **Vase P13-d/O18** completion `SideSubdivisionRepair:InvalidInputIncidence` remain expected OBSERVE RED. O19 genus>0 carried. No CP3 acceptance. |
 
-## Mandatory next turn — `M6-CP3-TB65-P13-SLIT-FULL-GATE-EXEC` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE` — EXACT NEXT
 
-- **Type / owner:** artifact-only Test + Benchmark execution agent, Linux workflow runner. [RA-192](Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md) §6 and [CB66 report](Architecture_M6_CP3_CB66_P13_Slit_Cycle_Basis_Code_Build_Report_20261101.md) are authoritative.
-- **Immutable input:** compiled source `911840c195b52ce1800b3ac7ff3ea7380137ad9c`, artifact `13067780359`, ZIP SHA-256 `b84539426a337c84396b74774a9cecefa7f97059fb4aa8499b45e9b1a2e8ac77`; 28/28 checksums verified, GMP/GMPXX, `runtimeExecution=false`.
-- **Execute:** existing full 869-row gate `baaef9e70081dc147fb9a7d91326038c1a4a9708ab1f46fcbfa141a0bf030466`, deferred ledger v5 81 rows `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`, membership 950, and independent 3-row census `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`. No compile, relink, repair, source/test/fixture edits, or selector promotion.
-- **Verify:** full immutable process/log evidence, checksum manifests and no-rebuild proof. Expected 869/869 and pre-registered Census Cylinder PASS; BunnyRandom P13-e A1 mismatch at vertex 49; Vase P13-d completion incidence. Report actual evidence, not expectations as achieved.
-- **Routes:** matching gate → separate next authorized Review/Definition per RA-192 §7; mismatch → `M6-CP3-TB65-P13-SLIT-FULL-GATE-REV`; infrastructure → `M6-CP3-TB65A-P13-SLIT-ORCH`. Do not invent a successor beyond the reviewed outcome.
-- **Carried:** O16, P13-d/O18, P13-e, O19, DR1/DR3, stable 66/17/49, debt 1; CP2 491/491; selector497/CP3 not promoted.
+- **Type / owner:** Review/Definition (P13-d plus O18), as identified in [RA-192 §7](Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md), after TB65's exact registered outcomes were observed. This is a separate turn, **not** part of TB65.
+- **Objective:** diagnose the authoritative source of the Vase completion incidence rejection, obtain probe evidence for its producer boundary, and adjudicate O18 missing detail without changing an acceptance oracle to match today's defect.
+- **Read before work:** [TB65 report](Architecture_M6_CP3_TB65_P13_Slit_Full_Gate_Execution_Report_20261101.md), RA-192 §§4/7 and DESIGN.md Amendment 25, current tracker, and the Review/Definition policies.
+- **In scope:** Review/Definition evidence and bounded source probes authorized by the Review process; freeze an exact implementation decision and independent falsifiers if the cause is established.
+- **Out of scope:** no TB65 re-run, no CP3/selector497 promotion, no unreviewed C++ fix, no bunny P13-e repair and no successor CB/TB execution in this turn.
+- **Success evidence:** complete, source-grounded causal classification and a separately authorized exact next turn if warranted; preserve stable totals unless independent evidence justifies an addition.
+- **On success:** `UNKNOWN` until this separate Review/Definition freezes an exact successor; do not infer a CB identifier.
+- **On failure/blocker:** `UNKNOWN`; follow Review blocker procedure and do not start speculative work.
+- **Carried:** `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49), O16, O17, O19, O6/O9, DR1/DR3, DR2/DR4; stable 66/17/49 and debt 1; CP2 491/491 accepted, CP3/selector497 not promoted.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Track / condition |
 |---|---|---|
-| 1 — COMPLETE | `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC` | Linux 866/866, membership 947, Cylinder PASS, BunnyRandom/Vase expected RED |
-| 2 — COMPLETE | `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT` | RA-191 diagnosis, then RA-192 probe adjudication: slit adapter, exact patch, 869 manifest frozen |
-| 3 — COMPLETE | `M6-CP3-CB66-P13-SLIT-CYCLE-BASIS` | Source `911840c1…`; compile-only 28/28, artifact `13067780359`; no runtime |
-| 4 — NEXT | `M6-CP3-TB65-P13-SLIT-FULL-GATE-EXEC` | Artifact-only Linux gate 869 cases, membership 950 and independent 3-row census; results not yet observed. Mismatch → `M6-CP3-TB65-P13-SLIT-FULL-GATE-REV`; infrastructure → `M6-CP3-TB65A-P13-SLIT-ORCH` |
-| 5 (Review, parallel with 3–4) | `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE` (P13-d with O18) → CB → TB | Probe DEFN, then exact patch |
-| 6 (Review, after 4) | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49) → CB → TB | Probe DEFN, then exact patch |
-| 7 | P13 re-census → O6/O9 where reached → matrix 6/6 → retire/FIXTURE/PRODUCT/OPEN slices → CP3-REV | One slice at a time |
+| 1 — NEXT | `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE` | Separate Review/Definition of Vase P13-d and O18. |
+| 2 — parallel but separate | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` | Separately authorized Review/Definition after TB65 confirms BunnyRandom P13-e on Linux. No automatic successor or C++ fix. |
+| 3 — conditional | `UNKNOWN` | Subsequent CB/TB, re-census and matrix acceptance require the Review decisions and normal cadence. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-TB65-P13-SLIT-FULL-GATE-EXEC** (artifact-only Test + Benchmark, no rebuild).
+`load_next`: **M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE** (Review/Definition, source probes; not Code + Build or TB).
 
-Read first:
-- [RA-192](Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md): §6 TB65 inputs/outcomes and §7 turn order. [CB66 report](Architecture_M6_CP3_CB66_P13_Slit_Cycle_Basis_Code_Build_Report_20261101.md) for exact binary artifact. DESIGN.md Amendment 25 for semantics.
-- [RA-191](Architecture_M6_CP3_DEFN_P13_Single_Edge_Barrier_Slit_Review_Decision_20261101.md) is history: its diagnosis stands; its incidence product, CB66 scope and falsifiers are superseded (RA-192.1).
-- [TB64 report](Architecture_M6_CP3_TB64_P13_Canonical_Dyadic_Full_Gate_Execution_Report_20261101.md) for the last executed gate; do not re-run TB64.
+Read first: [TB65 immutable execution report](Architecture_M6_CP3_TB65_P13_Slit_Full_Gate_Execution_Report_20261101.md), [RA-192](Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md), DESIGN.md §5 and Amendment 25, `REORIENTATION_PLAN.md`, `ORIENTATION.md`, and the tracker. Preserve the separate P13-e Review/Definition after TB65, without treating its 4/5 port count as proof of a fix. The latest exact immutable source is `911840c195b52ce1800b3ac7ff3ea7380137ad9c`, package `13067780359`; gate manifest 869 SHA `baaef9e70081dc147fb9a7d91326038c1a4a9708ab1f46fcbfa141a0bf030466`, ledger v5 81 SHA `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`, census SHA `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`. Do not re-execute TB65.
 
-Inputs:
-
-| Input | Value |
-|---|---|
-| TB65 binary | Source `911840c195b52ce1800b3ac7ff3ea7380137ad9c`, artifact `13067780359`, root 28/28 verified |
-| TB65 gate | Manifest 869 `Architecture_M6_TB65_P13_Slit_Cycle_Basis_Full_Gate_Case_Manifest.tsv` `baaef9e70081dc147fb9a7d91326038c1a4a9708ab1f46fcbfa141a0bf030466` (TB64 866 `289d887c…` byte-identical prefix plus rows 867–869); ledger v5 81 `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`; membership 950 |
-| TB65 census | `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793` |
-| Harness | P8 `78b8002c…`, unchanged |
-
-Standing state: CP2 491/491 accepted; stable 66/17/49, debt 1; selector497 unpromoted. O16 (macOS), O17, O18, O19, P13-d, P13-e, DR1/DR3 and DR2/DR4 are carried.
+Standing state: CP2 491/491 accepted, stable 66/17/49 debt1, selector497 unpromoted. MacOS O16 remains separate. O17, O18, O19, P13-d, P13-e, DR1/DR3, DR2/DR4 and O6/O9 remain carried.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

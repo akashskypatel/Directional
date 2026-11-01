@@ -1,3 +1,8 @@
+# 2026-11-01 — TB65 immutable slit full gate and independent census
+
+- `M6-CP3-TB65-P13-SLIT-FULL-GATE-EXEC` verified artifact-only exact CB66 source `911840c195b52ce1800b3ac7ff3ea7380137ad9c`, package `13067780359`; [Linux full-gate run 41275216693](https://github.com/akashskypatel/Directional/actions/runs/41275216693), result `13071357793`, **869/869 PASS**, membership **950**, 1746/1746 checksums; [census run 41275273919](https://github.com/akashskypatel/Directional/actions/runs/41275273919), result `13071376917`, Cylinder PASS / BunnyRandom expected P13-e RED at vertex 49 / Vase expected P13-d/O18 RED, nine verified checksums. Both postflight true; no rebuild, relink, tests/fixtures/source edits, selector promotion, or new stable regression. [TB65 report](.agents/Directional/Architecture_M6_CP3_TB65_P13_Slit_Full_Gate_Execution_Report_20261101.md).
+- Next separate Review/Definition: `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE`; P13-e singularity-port-count Review follows separately. CP2 491/491 last accepted, stable 66/17/49 debt 1, CP3/selector497 unpromoted. No TB65-REV or infrastructure retry.
+
 # 2026-11-01 — CB66 P13 slit-cycle-basis exact patch and Linux compile
 
 - `M6-CP3-CB66-P13-SLIT-CYCLE-BASIS` applied RA-192.8 verbatim to three prescribed files at `911840c195b52ce1800b3ac7ff3ea7380137ad9c`. Corrected a transport-header intended-path delimiter in the Drive apply retry; no source change outside approved scope.

@@ -2,8 +2,8 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-11-01 · `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT` closed by [RA-192](Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md), which probe-adjudicates RA-191. The A1 slit adapter (Amendment 25, rewritten) leaves the 869-row candidate gate unchanged on macOS (only O16) and gets **BunnyRandom past the cut identity**. BunnyRandom now fails at A1 singularity ports (`SingularityPortClassCountMismatch`, vertex 49, P13-e). TB64 Linux **866/866**, membership **947**, is the latest executed gate.
-**Next:** `M6-CP3-CB66-P13-SLIT-CYCLE-BASIS` (exact patch, compile only) → `M6-CP3-TB65-P13-SLIT-FULL-GATE-EXEC` (gate 869, membership 950). CP2 491/491 last accepted; CP3/selector497 not promoted; stable 66/17/49, debt 1.
+**Currency:** 2026-11-01 · TB65 Linux artifact-only gate **869/869 PASS**, membership **950**, and independent census Cylinder PASS, BunnyRandom P13-e `SingularityPortClassCountMismatch` at vertex 49, Vase P13-d/O18 `SideSubdivisionRepair:InvalidInputIncidence` RED at registered signatures. [TB65 report](Architecture_M6_CP3_TB65_P13_Slit_Full_Gate_Execution_Report_20261101.md). CP2 491/491 remains last accepted; stable 66/17/49, debt 1; no CP3/selector497 promotion.
+**Next:** separate Review/Definition `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE` (P13-d/O18); then separately `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e). Do not start either in TB65.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -48,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB64 Linux eight-target **866/866** independently checked (866 gated, 81 deferred, membership 947); P13 census Cylinder PASS, BunnyRandom A3 and Vase A7 expected RED; CB65 GMP/GMPXX compilation verified, GUI not launched; TB60 macOS O16 row 283 carried. RP-01 is closed (RA-179), O15 discharged (RA-181), row 935 gated (RA-182), the O2 entry gate landed (RA-183) and DIAG-RETAIN is closed (RA-184…RA-187: snapshots, display adapter, CLI sidecar, GUI layers). Linux reviewed candidate TB62 863/863 (CLI 11/11 report-supported, GUI linkage-only). CP3 closure and the direct-production matrix are **not accepted**. selector497 frozen. |
+| **M6-CP3 — active** | TB65 Linux eight-target **869/869** independently checked (869 gated, 81 deferred, membership 950); P13 census Cylinder PASS, BunnyRandom A3 and Vase A7 expected RED; CB65 GMP/GMPXX compilation verified, GUI not launched; TB60 macOS O16 row 283 carried. RP-01 is closed (RA-179), O15 discharged (RA-181), row 935 gated (RA-182), the O2 entry gate landed (RA-183) and DIAG-RETAIN is closed (RA-184…RA-187: snapshots, display adapter, CLI sidecar, GUI layers). Linux reviewed candidate TB62 863/863 (CLI 11/11 report-supported, GUI linkage-only). CP3 closure and the direct-production matrix are **not accepted**. selector497 frozen. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 **Prior Review authority:** [RA-187](Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md) (GUI layers; full-gate TB rule), [RA-186](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) (CLI sidecar; DR4), [RA-185](Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md) (DIAG-RETAIN display; DR2 → M8-CP2), [RA-184](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) (DIAG-RETAIN), [RA-183](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) (O2 gate; O2b, O16), [RA-181](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md) (O15 discharged; O15c) and [RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md) (RP-01 closed; local-mode rules). Implementers get only exact patches and manifests.
@@ -105,8 +105,8 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** TB64 completed the 866/947 Linux gate. RA-192 proves an interior tip–tip barrier edge is the only configuration Amendment 15.3's face array glues, and slits it exactly in A1's cut accounting and `dual_cycles` basis.
-- **P13-c, BunnyRandom (current):** CB66 (exact patch) → TB65. Probes: BunnyRandom passes the identity (χ −5, 7 loops) and reaches **P13-e**: index −1 vertex 49 has 4 of 5 port incidences, on both builds. P13-e gets its own DEFN after TB65.
+**Immediate:** TB65 completed the 869/950 Linux gate; three new slit-cycle-basis guards passed. RA-192 proves an interior tip–tip barrier edge is the only configuration Amendment 15.3's face array glues, and slits it exactly in A1's cut accounting and `dual_cycles` basis.
+- **P13-e, BunnyRandom (current):** CB66/TB65 completed; separate Review/Definition next. Probes: BunnyRandom passes the identity (χ −5, 7 loops) and reaches **P13-e**: index −1 vertex 49 has 4 of 5 port incidences, on both builds. P13-e gets its own DEFN after TB65.
 - **P13-d, Vase (Review, parallel):** A7 completion rejects `SideSubdivisionRepair:InvalidInputIncidence` after A4 succeeds; Vase has no slit. O18 (missing detail) is carried with it.
 - **P13-a / P13-b:** Cylinder PASS and A2a dyadic width failure discharged; earlier gate and arithmetic evidence retained in TB64 and RA-190.
 
@@ -114,7 +114,7 @@ macOS O16 stays separate.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | P13 matrix 6/6. Order: CB64 → TB63 → CB65 → TB64 (all done) → CB66 → TB65 (P13-c slit). P13-d Vase completion and P13-e BunnyRandom ports each get a DEFN → CB → TB. Then a re-census, with O6/O9 where reached. O19 (slit handle generator) is genus > 0 only and not blocking. | M6-CP3, `M6-CP3-CB66-P13-SLIT-CYCLE-BASIS` next |
+| **1** | P13 matrix 6/6. Order: CB64 → TB63 → CB65 → TB64 → CB66 → TB65 (all done; P13-c slit). P13-d Vase completion and P13-e BunnyRandom ports each get a DEFN → CB → TB. Then a re-census, with O6/O9 where reached. O19 (slit handle generator) is genus > 0 only and not blocking. | M6-CP3, `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE` next |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
