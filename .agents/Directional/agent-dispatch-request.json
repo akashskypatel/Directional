@@ -1,11 +1,25 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb70-docs-apply-20261101-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb70-docs-apply-20261101-v1",
-  "file_id": "1FaIcc2ppmpYYICkBLKN0IOLCoivomJp5",
-  "patch_sha256": "db2ce7a50b32c7f13e7fae471a2c6bd40d80fda1ae0a1be03551deca9f7e7d51",
-  "base_sha": "9754500b2058229b7f0a6268838953650690b031",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record verified CB70 build and hand off immutable TB67 gate"
+  "operation": "test_benchmark",
+  "executor_sha": "70a796738914652209737a8a5719fa10f3d9c914",
+  "semantic_source_sha": "9754500b2058229b7f0a6268838953650690b031",
+  "turn_id": "M6-CP3-TB67-P13-ARRANGEMENT-WEDGE-FULL-GATE-EXEC",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "retention_days": 14,
+  "request_id": "m6-cp3-tb67-wedge-gate-20261101-v1",
+  "mailbox_key": "m6-cp3-tb67-wedge-gate-20261101-v1",
+  "artifact_prefix": "m6-cp3-tb67-wedge-gate",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "13087332886",
+    "EXPECTED_SOURCE_SHA": "9754500b2058229b7f0a6268838953650690b031",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "7dcbcf7ee3a3e8929580e15f3eaae31cdbd31f6e52ad2889ee3089d4176e57c6",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "69f3164f799a905bf464ab7da0f6157c9594d2ae7aeb4f094daea129e47495a6",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "b773d410b3d70e0bdd6b23b0882757b55f421d733ae7ccadbfe52cbb7b8c91f4",
+    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_TB67_P13_Arrangement_Wedge_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "434e6d373c327d909f6b458fb9b10bd8cdac5d3c073dfefe11fbb30ee34a385b",
+    "EXPECTED_CASE_COUNT": "871",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  }
 }
