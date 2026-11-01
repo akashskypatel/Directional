@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb71-documentation-closeout-20261101-v1",
+  "request_id": "m6-cp3-cb72-apply-20261101-1743-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb71-documentation-closeout-20261101-v1",
-  "file_id": "1bSSl2C-9JnB6UHhQsY16QoF4O-mZy1iE",
-  "patch_sha256": "23e79fd937577942933c9e0a813a3aeff92db6171ca817ceb0de687b8b80c9a8",
-  "base_sha": "535c384a25ec8c30b5043d1a54e8dc1c57bec8b3",
+  "mailbox_key": "m6-cp3-cb72-apply-20261101-1743-v1",
+  "file_id": "1sIDpNI3y_-i-nDpv-uL5hfc0VCqqu696",
+  "patch_sha256": "3dad894e881ca646a492c12cb8d5aa7bb9b3fb60eb3629502d2093f37d545bfe",
+  "base_sha": "01521ec8a973af220fc21dd3dddbf18606047038",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close CB71 compile evidence and hand off exact CB72"
+  "commit_message": "feat: reuse one source-chart graph per completion pass (CB72)"
 }
