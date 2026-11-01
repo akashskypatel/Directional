@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb66-closeout-docs-20261101-v1",
+  "request_id": "m6-cp3-cb70-wedge-apply-20261101-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb66-closeout-docs-20261101-v1",
-  "file_id": "1mAsFrP1Oz-EfsnydwjC9fvbMbzH9VIxB",
-  "patch_sha256": "5a5b43932a0bf4d20c2ae3d4bd0d425e4577f617ff15c89d6336e30c14adefeb",
-  "base_sha": "1d32b9c5526ac7adfb5994e2494213af7f7cf0af",
+  "mailbox_key": "m6-cp3-cb70-wedge-apply-20261101-v1",
+  "file_id": "1Ob3jtcpkdfybmV_ls_3SWxeBLVnlcNDL",
+  "patch_sha256": "b65b976192a4c569adbb6eb05a7ca97671569aa3175dfabb67bb47c0916eceb3",
+  "base_sha": "b04287933d05748d28e49ca0b33b70670284db71",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close TB66 verified immutable full gate and advance CB70"
+  "commit_message": "fix: use canonical directed wedges and oriented source-edge rotations"
 }
