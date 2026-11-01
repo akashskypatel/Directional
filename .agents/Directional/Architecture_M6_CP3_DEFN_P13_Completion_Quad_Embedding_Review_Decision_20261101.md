@@ -1,3 +1,5 @@
+> **Superseded (2026-11-01) by [RA-196](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md).** Probes show the boundary is simple (branch A is false), the validator accepts folds, and patch 1200 is the first of 150 failed descriptors. This CB73 scope (witness, A/B branch, stop rule) is replaced by exact CB73/CB74/CB75 and TB69. Kept as history; not an authority.
+
 # P13-g — bounded completion quad embedding: independent definition and corrective boundary (2026-11-01)
 
 **Canonical turn:** `M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING` (Review/Definition). **Verdict:** the first invalid output is produced by bounded-combinatorial completion's choice of boundary-only quad connectivity, or by an invalid boundary supplied to it; the existing record does not distinguish those two hypotheses. It is **not** attributable to generated-vertex projection inside that backend, and ownership-conflict reconciliation has not been reached. Remedy must be determined by an independent real-geometry witness rather than a topology-only PASS. This is a bounded decision; not an assertion of Vase PASS. No binary was executed in this DEFN.

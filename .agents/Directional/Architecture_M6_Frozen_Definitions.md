@@ -1,3 +1,18 @@
+## RA-196 — P13-g completion quad embedding: probe adjudication; exact CB73/CB74/CB75, TB69 (2026-11-01)
+
+- [RA-196](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) supersedes the static decision's CB73 scope. **DESIGN Amendment 28:**
+  - A completion quad embeds only if it is simple in its own Newell plane and its vector area lies within 60° of the summed unit normals of the source faces under its corners. One predicate, `quad_embedding_failure`, serves both the validator and the producers.
+  - The pattern and bounded backends keep the balanced split if it embeds. Otherwise they search every quadrangulation of the forward cycle (DP, first admissible split). Reversed variants keep the split and are rejected. If nothing embeds, the patch fails with the typed `NoEmbeddedQuadrangulation`.
+  - The completion terminal detail is the typed `SurfaceCellComplexCompletionFailureKind`.
+- Turn IDs:
+  - CB73 `M6-CP3-CB73-P13-COMPLETION-EMBEDDING` (`4020fad1…`, rows 874–875).
+  - CB74 `M6-CP3-CB74-P13-COMPLETION-QUADRANGULATION-SEARCH` (`b2c6a251…`, rows 876–877).
+  - CB75 `M6-CP3-CB75-P13-COMPLETION-TERMINAL-DETAIL` (`d1f5652a…`, row 878).
+  - TB69 `M6-CP3-TB69-P13-COMPLETION-EMBEDDING-FULL-GATE-EXEC` (manifest 878 `aaaba077…`, membership 959).
+  - P13-h DEFN `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING` (P13-i classified there).
+  - O21: quality, first not best quadrangulation, straight corners.
+  - O22: reversed variants, cleanup.
+
 ## RA-195 — P13-f completion ownership cost: probe adjudication; exact CB71/CB72, TB68 (2026-11-01)
 
 - [RA-195](Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Probe_Adjudication_20261101.md) supersedes the static decision's open-ended CB71 plan. **DESIGN Amendment 27:**

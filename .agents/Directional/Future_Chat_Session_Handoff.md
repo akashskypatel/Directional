@@ -34,19 +34,37 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-01 **P13-g DEFN complete; bounded first-producer review frozen** ([report](Architecture_M6_CP3_TB68_P13_Completion_Graph_Full_Gate_Execution_Report_20261101.md)), RA-195.6 matches. P13-f graph-rebuild cost gate cleared; P13-g [review](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) complete; CB73 is exact next Code + Build, no CP3 promotion. |
+| Currency | 2026-11-01 **[RA-196](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) probe adjudication of P13-g**: the static [decision](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) (no probe, open A/B CB73) is superseded. DESIGN Amendment 28; exact CB73 → CB74 → CB75, then TB69 (manifest 878). TB68 remains the latest Linux candidate; no CP3 promotion. |
 | Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing`; **CB72 source [`7b85b450bc98`](https://github.com/akashskypatel/Directional/commit/7b85b450bc98abfb65db511fdcd524eb11f537f8)**, [compile run 41333097065](https://github.com/akashskypatel/Directional/actions/runs/41333097065), immutable GMP/GMPXX eight-target package `13093439789` (ZIP SHA-256 `9b9482fd92af01bc4de0e72964459765c70bca3acb4583a12df0ac5ccb7c7e20`, 28/28 hashes, no runtime); CB71 compiled source `042979f7a264`/package `13092069619` is its predecessor. |
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06; unchanged, TB68 remains candidate only. |
 | Latest candidate | **TB68 Linux gate 873/873 PASS, membership 954**, [run 41336974483](https://github.com/akashskypatel/Directional/actions/runs/41336974483), result `13095822424`, ZIP `b533880b6b912a333d800badbddcd3f7265220f0d9f69bd44f0b7469dca33af6`, 1754/1754 hashes; independent **census Cylinder PASS, BunnyRandom inherited P13-e RED, Vase P13-g expected RED**, [run 41337227653](https://github.com/akashskypatel/Directional/actions/runs/41337227653), result `13096066113`, ZIP `d61dde3e23c99d6319fd6781e16c6b2d0b39070b332ca7b8a0e6949f827e9f5c`, 9/9 hashes. Both postflight true, no rebuild. |
 | Regression accounting and debt | Stable **66/17/49**, debt **1**; v5 deferred 81 (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE), membership 954, unchanged; selector497 unpromoted. DR1/DR3 open, DR2/DR4 → M8-CP2. |
-| Active boundary | **Cylinder PASS**. **BunnyRandom P13-e** `SingularityPortClassCountMismatch` at source vertex49, no produced quads. **Vase P13-g** TB68 ends at `completion/InvalidCompletionQuadEmbedding`, patch1200, bounded-combinatorial variant15, localQuad2, bow-tie, 213.553 s; no produced quads. O18 discharged; O20 residual O(F) nonblocking; O16/O17/O19/O6/O9 carried. |
+| Active boundary | **Cylinder PASS**. **BunnyRandom P13-e** `SingularityPortClassCountMismatch` at source vertex49, no produced quads. **Vase P13-g** (TB68: `completion/InvalidCompletionQuadEmbedding`, patch1200, bounded-combinatorial variant15, bow-tie, 213.553 s) is the first of **150** failed descriptors of one completion pass (RA-196.2): 72 boundary-only, 73 closed-form, 5 `side-count-unsupported`. The completion validator accepts folded quads (2,552 of 12,452 accepted boundary-only completions disagree with the source normal). After CB73–CB74, on macOS: 229 failures, none boundary-only; Vase stops at patch 4 `closed-form` bow-tie (P13-h). O18 discharged; O20 residual O(F) nonblocking; O16/O17/O19/O6/O9 carried. |
 
 ## Mandatory next turn — `M6-CP3-CB73-P13-COMPLETION-EMBEDDING` — EXACT NEXT
 
-- **TB68 complete:** [TB68 report](Architecture_M6_CP3_TB68_P13_Completion_Graph_Full_Gate_Execution_Report_20261101.md). Frozen CB72 artifact `13093439789` / source `7b85b450bc98…`: Linux 873/873 gate PASS (membership954), independent census Cylinder PASS, BunnyRandom expected P13-e RED, Vase expected P13-g RED in 213.553 s. No rebuild or unregistered failures; accepted CP2 491/491 and stable 66/17/49 debt1 unchanged, selector497 unpromoted.
-- **P13-g Review completed:** [independent decision](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) reverified TB68 Vase raw 9/9 checksums and source control flow. Bounded-combinatorial uses only existing boundary vertices and recursively selects diagonals. Per-quad embedding rejects a bow-tie *before* subsequent ownership repair; generated-vertex projection in this backend cannot be responsible. Actual patch1200 source boundary validity is not published and must first be established, not guessed. `detail=None` is failure forwarding debt; preserve `completion=InvalidCompletionQuadEmbedding` authority.
-- **EXACT CB73 scope, compile-only:** prove authoritative source-chart boundary simplicity/winding/corner identity and record deterministic patch1200 geometry. If the boundary is malformed, typed reject and return to Review; if valid, produce a bounded canonical geometry-valid, topology-distinct separator alternative with full local guards. Pass existing earliest typed completion failure into terminal reporting without weakening guard. Compile the independent counterexamples/negative oracles in existing targets; do not run tests/benchmark or change full-gate 873 selector/81 deferred ledger. No P13-e. Then separate `M6-CP3-TB69-P13-COMPLETION-EMBEDDING-FULL-GATE-EXEC` only after compile authority. Exact falsifiers and stop rules live in decision.
-- **Carried:** independent `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` P13-e BunnyRandom vertex49 review; O16/O17/O19/O20/O6/O9, DR1/DR3, DR2/DR4. CP3 production acceptance not promoted.
+- **Authority:** [RA-196](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) §4 (spec) and §9 (exact patch); DESIGN Amendment 28. The static decision's CB73 scope (boundary witness, A/B branch, stop rule) is **superseded** and is not an authority.
+- **Restart:** the CB73 attempt that began at 2026-11-01T21:39:52Z (`60bc9ac84` … `b7eb717b4`, resumed 22:02:58Z) followed the superseded scope and changed only `STATUS`. It is discarded. CB73 restarts from RA-196.9; its precheck still holds at `b7eb717b4`.
+- **Precheck:** `git diff --quiet 7b85b450bc98abfb65db511fdcd524eb11f537f8 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+- **Patch:** apply the RA-196.9 block verbatim plus a trailing newline, keeping its 5 single-space context lines. Its SHA-256 is `4020fad1d3a16c536504d0a3d58e11522dfd99688111bdc09e77b3a6885fabf1`. Run `git apply --check`, then apply.
+- **Expected result:**
+
+  | Path | Numstat | Result SHA-256 |
+  |---|---|---|
+  | `PureQuadCompletion.h` | `10 0` | `38ef15f3…` |
+  | `PureQuadCompletion.cpp` | `124 63` | `33de77c3…` |
+  | `tests/PureQuadCompletionPhase18Tests.cpp` | `73 0` | `5ccbd88f…` |
+
+- **Build:** one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`, no binary runs.
+- **Then:**
+  - CB74 (RA-196.10, `b2c6a251…`): the exhaustive forward search and `NoEmbeddedQuadrangulation`.
+  - CB75 (RA-196.11, `d1f5652a…`): the terminal detail.
+  - TB69 (RA-196.7).
+  - Mismatch → `M6-CP3-PLAN-P13-COMPLETION-EMBEDDING-STOP`; infrastructure → `M6-CP3-CB73A-P13-COMPLETION-EMBEDDING-ORCH` (one retry).
+- **Carried:**
+  - New Review DEFNs: P13-h (`M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING`; 224 closed-form descriptors, with the 5 `side-count-unsupported` descriptors, P13-i, classified there) and P13-e (`M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT`).
+  - Obligations: O16/O17/O19/O20/O21/O22/O6/O9, DR1/DR3, DR2/DR4.
+  - CP3 production acceptance is not promoted.
 
 ## Turn Sequence
 
@@ -63,16 +81,21 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | 9 — COMPLETE | `M6-CP3-CB71-P13-COMPLETION-CHART-GRAPH-REUSE` | Implementation agent, Linux; RA-195.8 (`8512400f…`), spec RA-195.4, compile only. Mismatch → `M6-CP3-PLAN-P13-COMPLETION-GRAPH-STOP`; infrastructure → `M6-CP3-CB71A-P13-COMPLETION-GRAPH-ORCH` |
 | 10 — COMPLETE | `M6-CP3-CB72-P13-COMPLETION-PASS-GRAPH` | Implementation agent, Linux; RA-195.9 (`514c6d87…`), spec RA-195.5, compile only. Mismatch → `M6-CP3-PLAN-P13-COMPLETION-PASS-GRAPH-STOP`; infrastructure → `M6-CP3-CB72A-P13-COMPLETION-PASS-GRAPH-ORCH` |
 | 11 — COMPLETE | `M6-CP3-TB68-P13-COMPLETION-GRAPH-FULL-GATE-EXEC` | Implementation agent, Linux; manifest 873 `3b6b9f42…` + ledger v5, 873/873, membership 954; census per RA-195.6. Mismatch → `M6-CP3-TB68-P13-COMPLETION-GRAPH-FULL-GATE-REV`; infrastructure → `M6-CP3-TB68A-P13-COMPLETION-GRAPH-ORCH` |
-| 12 — Review COMPLETE | `M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING` | Source/evidence independent analysis: bounded completion vs boundary input unresolved; local quad2 bow-tie; terminal forwarding debt; [decision](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) |
-| 13 — NEXT (CB) | `M6-CP3-CB73-P13-COMPLETION-EMBEDDING` → separate TB69 | Boundary-first stop gate, then embedded topology-distinct completion, typed diagnostic; compile only |
-| 14 (Review, separate) | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49) → CB → TB | Probe DEFN, then exact patch |
-| 15 | P13 re-census → O6/O9 where reached → matrix 6/6 → retire/FIXTURE/PRODUCT/OPEN slices → CP3-REV | One slice at a time |
+| 12 — Review COMPLETE | `M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING` (P13-g) | Static decision (no probe, open A/B CB73), then [RA-196](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) probe adjudication: Amendment 28, exact CB73/CB74/CB75, TB69 manifest 878 |
+| 13 — NEXT | `M6-CP3-CB73-P13-COMPLETION-EMBEDDING` | Implementation agent, Linux; RA-196.9 (`4020fad1…`), spec RA-196.4, compile only. Mismatch → `M6-CP3-PLAN-P13-COMPLETION-EMBEDDING-STOP`; infrastructure → `M6-CP3-CB73A-P13-COMPLETION-EMBEDDING-ORCH` |
+| 14 | `M6-CP3-CB74-P13-COMPLETION-QUADRANGULATION-SEARCH` | Implementation agent, Linux; RA-196.10 (`b2c6a251…`), spec RA-196.5, compile only. Mismatch → `M6-CP3-PLAN-P13-COMPLETION-QUADRANGULATION-STOP`; infrastructure → `M6-CP3-CB74A-P13-COMPLETION-QUADRANGULATION-ORCH` |
+| 15 | `M6-CP3-CB75-P13-COMPLETION-TERMINAL-DETAIL` | Implementation agent, Linux; RA-196.11 (`d1f5652a…`), spec RA-196.6, compile only. Mismatch → `M6-CP3-PLAN-P13-COMPLETION-TERMINAL-STOP`; infrastructure → `M6-CP3-CB75A-P13-COMPLETION-TERMINAL-ORCH` |
+| 16 | `M6-CP3-TB69-P13-COMPLETION-EMBEDDING-FULL-GATE-EXEC` | Implementation agent, Linux; manifest 878 `aaaba077…` + ledger v5, 878/878, membership 959; census per RA-196.7 (Vase RED `completion` / `PatchCompletionRejected` / `closed-form`). Mismatch → `M6-CP3-TB69-P13-COMPLETION-EMBEDDING-FULL-GATE-REV`; infrastructure → `M6-CP3-TB69A-P13-COMPLETION-EMBEDDING-ORCH` |
+| 17 (Review, can start now) | `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING` (P13-h; P13-i classified there) → CB → TB | Probe DEFN on the RA-196 scratch build: 224 closed-form descriptors (53 bow-tie, 171 folded) and 5 `side-count-unsupported`; name the owner, then exact patches |
+| 18 (Review, parallel) | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49) → CB → TB | Probe DEFN, then exact patch |
+| 19 | P13 re-census → O6/O9 where reached → matrix 6/6 → retire/FIXTURE/PRODUCT/OPEN slices → CP3-REV | One slice at a time |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB73-P13-COMPLETION-EMBEDDING** (P13-g Code + Build, compile-only; exact completed [TB68 report](Architecture_M6_CP3_TB68_P13_Completion_Graph_Full_Gate_Execution_Report_20261101.md) plus [P13-g review](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md); follow boundary-first CB scope, then separate TB).
+`load_next`: **M6-CP3-CB73-P13-COMPLETION-EMBEDDING** (P13-g Code + Build, compile only; the exact [RA-196](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md).9 patch per §4; then CB74 → CB75 → TB69).
 
 Read first:
+- [RA-196](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md): §1 findings on the static decision; §2 probes (first-pass failure census); §4–§7 CB73, CB74, CB75, TB69 specs; §8 sequence; §9–§11 exact patches; DESIGN Amendment 28.
 - [TB68 full gate and production census report](Architecture_M6_CP3_TB68_P13_Completion_Graph_Full_Gate_Execution_Report_20261101.md): exact immutable source, gate, census and P13-g failure locus.
 - [CB72 Code + Build record](Architecture_M6_CP3_CB72_Completion_Pass_Graph_Code_Build_Record_20261101.md): exact source, immutable compile artifact, 28 checks and no-runtime boundary.
 - [CB71 Code + Build record](Architecture_M6_CP3_CB71_Completion_Chart_Graph_Reuse_Code_Build_Record_20261101.md): frozen exact source/patch, successful compile artifacts and no-runtime boundary.
@@ -81,7 +104,7 @@ Read first:
 - [RA-193](Architecture_M6_CP3_DEFN_P13_Vase_Arrangement_Rotation_Probe_Adjudication_20261101.md): §8 registered timeout, §9 P13-f Review successor and earlier O(F) probe attribution; use current renumbering from [RA-194](Architecture_M6_CP3_DEFN_P13_Vase_Landed_Incidence_Probe_Revert_20261101.md).
 - [CB70 report](Architecture_M6_CP3_CB70_Arrangement_Wedge_Rotation_Code_Build_Record_20261101.md): immutable source/package boundary, not runtime acceptance.
 - [TB66 report](Architecture_M6_CP3_TB66_P13_Arrangement_Terminal_Full_Gate_Execution_Report_20261101.md): predecessor baseline and P13-e signature.
-- Relevant `DESIGN.md` Amendments 26–27, `LESSONS.md` §§1, 2, 3, 5, 6, 7 and `Regression_Root_Cause_Tracker.md` P13-f candidate.
+- Relevant `DESIGN.md` Amendments 26–28, `LESSONS.md` §§1, 2, 3, 5, 6, 7 and `Regression_Root_Cause_Tracker.md` P13-f candidate.
 
 Inputs:
 
@@ -95,10 +118,11 @@ Inputs:
 | TB66 gate | TB65 manifest 869 `baaef9e70081dc147fb9a7d91326038c1a4a9708ab1f46fcbfa141a0bf030466`, unchanged; ledger v5 81 `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`; membership 950 |
 | TB67 gate | Manifest 871 `Architecture_M6_TB67_P13_Arrangement_Wedge_Full_Gate_Case_Manifest.tsv` `434e6d373c327d909f6b458fb9b10bd8cdac5d3c073dfefe11fbb30ee34a385b` (TB65 869 byte-identical prefix plus rows 870–871); same ledger; membership 952 |
 | TB68 gate | Manifest 873 `Architecture_M6_TB68_P13_Completion_Graph_Reuse_Full_Gate_Case_Manifest.tsv` `3b6b9f425d4061885b393ccd2d530cbcd3d4f39916859e0db197ce1e6029ea60` (TB67 871 byte-identical prefix plus rows 872–873); same ledger; membership 954; `SELF_CHECK_PASS cases=873 deferred=81` |
+| TB69 gate | Manifest 878 `Architecture_M6_TB69_P13_Completion_Embedding_Full_Gate_Case_Manifest.tsv` `aaaba077a067853a00310683946f82394c60247bd42717fd283b4d7cde423c82` (TB68 873 byte-identical prefix plus GUARD rows 874–878); same ledger; membership 959; `SELF_CHECK_PASS cases=878 deferred=81` |
 | Census | `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793` |
 | Harness | P8 `78b8002c…`, unchanged |
 
-Standing state: CP2 491/491 accepted; stable 66/17/49, debt 1; selector497 unpromoted. O16 (macOS), O17, O19, O20, P13-e, P13-g (CB73), DR1/DR3, DR2/DR4 and O6/O9 are carried.
+Standing state: CP2 491/491 accepted; stable 66/17/49, debt 1; selector497 unpromoted. O16 (macOS), O17, O19, O20, O21, O22, P13-e, P13-g (CB73–CB75, TB69), P13-h, P13-i, DR1/DR3, DR2/DR4 and O6/O9 are carried.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

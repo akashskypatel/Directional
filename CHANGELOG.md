@@ -1,3 +1,23 @@
+# 2026-11-01 — RA-196 P13-g probe adjudication; exact CB73/CB74/CB75, TB69
+
+- [RA-196](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) reopens `M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING` and supersedes the static decision's CB73. That CB73 had an open A/B branch, a witness product and a stop rule.
+- **Findings:**
+  - Patch 1200's boundary is simple (branch A is false).
+  - The fixed balanced split reaches 4 of an octagon's 12 quadrangulations, and the only 2 embedded ones are fans.
+  - The completion validator projects each quad on its own plane, so it accepts folds: 2,552 of 12,452 accepted boundary-only completions in Vase's first pass disagree with the source normal.
+  - Patch 1200 is only the first of 150 failed descriptors.
+- **DESIGN Amendment 28:**
+  - A source-orientation predicate (60°).
+  - An exhaustive forward-rotation search for an embedded boundary-only quadrangulation, with the typed `NoEmbeddedQuadrangulation`.
+  - The typed completion failure kind as the terminal detail.
+- **Exact patches:** CB73 (`4020fad1…`), CB74 (`b2c6a251…`) and CB75 (`d1f5652a…`). TB69 uses manifest 878 `aaaba077…`, membership 959.
+- **Probes on macOS:**
+  - First-pass failures go from 150 to 229, and none are boundary-only any more. The count rises because 151 folded closed-form grids that CB72 accepted are now rejected.
+  - Vase moves to P13-h (patch 4, closed-form bow-tie) in 147 s.
+  - Gate 877/878; only row 283 (O16) fails, and no shared row changed.
+- **New items:** P13-h/P13-i go to `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING`. O21 (quality) and O22 (reversed variants) are new.
+- **Unchanged:** stable 66/17/49, debt 1; CP2 491/491; no promotion.
+
 # 2026-11-01 — P13-g bounded completion embedding independent definition
 
 - `M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING` independently verified the immutable TB68 Vase RED and exact boundary-only bounded-combinatorial source path. [Decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) finds first failure at a quad-level self-intersection before ownership reconciliation; generated-vertex projection is not the candidate owner, but malformed upstream boundary versus inadmissible recursive separator remains a falsifiable branch to distinguish. `detail=None` comes from terminal diagnostic forwarding, not another producer. **Exact next** CB73 boundary-first correction, compile-only, followed by separate TB69 artifact-only full gate/census. No product/test/selector change, native execution or acceptance; CP2 491/491, candidate TB68 873/873, stable 66/17/49 debt1 unchanged.
