@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb68-docs-close-20261101-v1",
+  "request_id": "m6-cp3-p13g-defn-docs-20261101-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb68-docs-close-20261101-v1",
-  "file_id": "1DpF6nJ2NLKzau3xZwct3MDFfJZe44NM5",
-  "patch_sha256": "b1476abf27c573e7b345958d7a7a73cad4174d6f6b947d4aaf50ad552683350d",
-  "base_sha": "179bafb7d638140ddcd5bcbb1613e1bc55650076",
+  "mailbox_key": "m6-cp3-p13g-defn-docs-20261101-v1",
+  "file_id": "1zPx4Aem6cwMP7zLgDUdLv77lVNgoGvPc",
+  "patch_sha256": "ff42c155e7681f07d9a7502c0d49a322722f2016cad2a86a4b054ad0812d2e76",
+  "base_sha": "aa95233a19139a87d05a3165f2f249bc931279cf",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close TB68 verified completion graph full gate"
+  "commit_message": "docs: review P13-g completion embedding and freeze CB73 scope"
 }
