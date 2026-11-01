@@ -1,0 +1,1 @@
+CB66 bounded source snapshot trigger. Exact source authority is this push event SHA; no build or test requested.
