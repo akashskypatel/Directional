@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "workflow_key": "m6-cp3-cb70-wedge-compile-20261101-v1",
+  "workflow": "Agent Durable Operation Dispatcher",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/agent-operation-dispatcher.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "324c1a49a6f3e24cd25a85dfcb1e761b2fda3ecf",
+  "source_sha": "9754500b2058229b7f0a6268838953650690b031",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 41316990078,
+  "run_attempt": 1,
+  "run_number": 1146,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/41316990078",
+  "result": "success",
+  "summary": "durable-dispatch request_id=m6-cp3-cb70-wedge-compile-20261101-v1 operation=compile request_sha256=e83fa9d2e5ff012815616dd8ce7793c283b9f2f35a283648ed49b31c05df8402",
+  "reported_at": "2026-11-01T14:37:49Z",
+  "mailbox_branch": "workflow-mailbox",
+  "artifacts": [
+    {
+      "id": 13088095316,
+      "name": "agent-workflow-schema-validator-log-41316990078",
+      "size_in_bytes": 497,
+      "digest": "sha256:c8fa167e44e1c5692d9317ecf34c920625253a593d1176649f77fd0fddb7dbec",
+      "expired": false,
+      "created_at": "2026-11-01T14:36:04Z",
+      "expires_at": "2026-11-08T14:36:03Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/41316990078/artifacts/13088095316",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13088095316/zip"
+    },
+    {
+      "id": 13088020599,
+      "name": "agent-workflow-schema-validation-41316990078",
+      "size_in_bytes": 445,
+      "digest": "sha256:d182efc924a3d7472798a1ebd6a1f74f09a70e3d5376502fe885940f672b31b1",
+      "expired": false,
+      "created_at": "2026-11-01T14:36:03Z",
+      "expires_at": "2026-11-08T14:36:02Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/41316990078/artifacts/13088020599",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13088020599/zip"
+    },
+    {
+      "id": 13087512590,
+      "name": "workflow-mailbox-publisher-log-41316990078-attempt-1",
+      "size_in_bytes": 387,
+      "digest": "sha256:e2c92990a13b0a97022987f37132f467bacabfcedbd3829f06c161fba465ef80",
+      "expired": false,
+      "created_at": "2026-11-01T14:37:49Z",
+      "expires_at": "2026-11-15T14:37:48Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/41316990078/artifacts/13087512590",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13087512590/zip"
+    },
+    {
+      "id": 13087493893,
+      "name": "agent-workflow-schema-validation-41316990078",
+      "size_in_bytes": 442,
+      "digest": "sha256:99ac895c3721b6ed0cbf6e6f279a4caa21fd65d4a7cd8058216264308dd7796e",
+      "expired": false,
+      "created_at": "2026-11-01T14:36:02Z",
+      "expires_at": "2026-11-08T14:36:01Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/41316990078/artifacts/13087493893",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13087493893/zip"
+    },
+    {
+      "id": 13087332886,
+      "name": "m6-cp3-cb70-wedge-result-41316990078",
+      "size_in_bytes": 41138480,
+      "digest": "sha256:7dcbcf7ee3a3e8929580e15f3eaae31cdbd31f6e52ad2889ee3089d4176e57c6",
+      "expired": false,
+      "created_at": "2026-11-01T14:37:31Z",
+      "expires_at": "2026-11-08T14:37:28Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/41316990078/artifacts/13087332886",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13087332886/zip"
+    },
+    {
+      "id": 13087224544,
+      "name": "agent-operation-dispatcher-log-41316990078",
+      "size_in_bytes": 506,
+      "digest": "sha256:e7898fb2bdc85d0c1ef3dc0af46aaac1a477e55ef710dc72d87ed406c2633a24",
+      "expired": false,
+      "created_at": "2026-11-01T14:36:12Z",
+      "expires_at": "2026-11-15T14:36:11Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/41316990078/artifacts/13087224544",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13087224544/zip"
+    },
+    {
+      "id": 13087134674,
+      "name": "agent-workflow-schema-validator-log-41316990078",
+      "size_in_bytes": 489,
+      "digest": "sha256:e37fee36d3b8ce2276ac729519f57c33e81e283296d98712e3f0505d41094788",
+      "expired": false,
+      "created_at": "2026-11-01T14:36:03Z",
+      "expires_at": "2026-11-08T14:36:02Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/41316990078/artifacts/13087134674",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13087134674/zip"
+    },
+    {
+      "id": 13087108364,
+      "name": "m6-cp3-cb70-wedge-log-41316990078",
+      "size_in_bytes": 4183,
+      "digest": "sha256:52d113ae05b5fd6f489f72b93755d18ee66b6e229da369a1a7aefabfb1ea722f",
+      "expired": false,
+      "created_at": "2026-11-01T14:37:32Z",
+      "expires_at": "2026-11-08T14:37:32Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/41316990078/artifacts/13087108364",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13087108364/zip"
+    }
+  ]
+}
