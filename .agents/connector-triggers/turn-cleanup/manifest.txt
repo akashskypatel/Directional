@@ -1,0 +1,2 @@
+# TB64 temporary state only; preserve dispatcher and orphan mailbox
+.agents/connector-triggers/source-snapshot/tb64-closeout-20261101.txt
