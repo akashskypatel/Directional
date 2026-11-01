@@ -982,6 +982,10 @@ struct LocalRegionMesh {
   std::vector<int> globalVertexByLocal;
   std::set<int> barrierVertices;
   std::map<int, std::size_t> transportStarComponentCountByGlobalVertex;
+  // Rows of mesh.EV that are slits (Amendment 25): barrier edges whose two
+  // endpoints are interior barrier tips, so the face array keeps both sides
+  // glued. Sorted by source edge.
+  std::vector<int> slitEdges;
   FieldTransportRegionDiagnostics diagnostics;
   bool uncutAuthorityMatches = false;
   bool cutIdentityValid = false;
@@ -1263,10 +1267,36 @@ std::optional<LocalRegionMesh> make_local_region_mesh(
   } catch (const std::exception &) {
     return std::nullopt;
   }
+
+  // Amendment 25: a tip has one vertex copy, so a barrier edge whose two
+  // endpoints are interior tips stays an inner edge of the face array. Each
+  // such slit adds one edge and one two-edge boundary loop to the cut.
+  std::map<SourceEdgeTopologyKey, int> slitEdgeByKey;
+  for (int edge = 0; edge < result.mesh.EV.rows(); ++edge) {
+    if (result.mesh.EF(edge, 1) < 0) continue;
+    const int first = result.globalVertexByLocal[static_cast<std::size_t>(
+        result.mesh.EV(edge, 0))];
+    const int second = result.globalVertexByLocal[static_cast<std::size_t>(
+        result.mesh.EV(edge, 1))];
+    const auto key = SourceEdgeTopologyKey::from_indices(
+        first, second, static_cast<std::size_t>(sourceMesh.V.rows()));
+    if (!key || barrierEdges.count(key.value()) == 0U) continue;
+    if (barrierAdjacency[first].size() == 1U &&
+        barrierAdjacency[second].size() == 1U &&
+        uncutBoundaryGlobalVertices.count(first) == 0U &&
+        uncutBoundaryGlobalVertices.count(second) == 0U) {
+      slitEdgeByKey.emplace(key.value(), edge);
+    }
+  }
+  for (const auto &[key, edge] : slitEdgeByKey) {
+    result.slitEdges.push_back(edge);
+  }
+  const int slitCount = static_cast<int>(result.slitEdges.size());
   result.diagnostics.cutEulerCharacteristic = static_cast<int>(
-      result.mesh.V.rows() - result.mesh.EV.rows() + result.mesh.F.rows());
+      result.mesh.V.rows() - result.mesh.EV.rows() + result.mesh.F.rows()) -
+      slitCount;
   result.diagnostics.cutBoundaryLoopCount =
-      static_cast<int>(result.mesh.boundaryLoops.size());
+      static_cast<int>(result.mesh.boundaryLoops.size()) + slitCount;
   result.diagnostics.newSlitBoundaryLoopCount =
       result.diagnostics.cutBoundaryLoopCount -
       result.diagnostics.uncutBoundaryLoopCount;
@@ -1282,6 +1312,9 @@ std::optional<LocalRegionMesh> make_local_region_mesh(
         first, second, static_cast<std::size_t>(sourceMesh.V.rows()));
     if (!key) return std::nullopt;
     ++cutBoundaryMultiplicity[key.value()];
+  }
+  for (const auto &[key, edge] : slitEdgeByKey) {
+    cutBoundaryMultiplicity[key] += 2U;
   }
   bool boundaryRealizationValid = true;
   for (const auto &[edge, count] : cutBoundaryMultiplicity) {
@@ -1315,6 +1348,108 @@ std::optional<LocalRegionMesh> make_local_region_mesh(
   return result;
 }
 
+// Cycle basis of a region's cut transport domain: dual_cycles of the face
+// array with each slit applied exactly (Amendment 25). A slit's two tip rows
+// become one boundary-loop row, in which the slit column cancels, and the slit
+// column is removed. The loop's curvature is 2*pi minus the angle sums at both
+// tips, which is dual_cycles' boundary formula. Rows are interior vertices,
+// face-array boundary loops, slit loops, then handle generators.
+struct LocalCutCycleBasis {
+  Eigen::SparseMatrix<double> cycles;
+  Eigen::VectorXd cycleCurvatures;
+  Eigen::VectorXi innerAdjacencies;
+  std::vector<int> interiorVertices;
+  std::vector<std::vector<int>> boundaryLoops;
+  // A handle generator that crosses a slit would need transport across a
+  // barrier; it is reported, not rewritten.
+  std::optional<int> generatorSlitEdge;
+};
+
+// Throws whatever PCFaceTangentBundle::init throws.
+LocalCutCycleBasis cut_cycle_basis(const LocalRegionMesh &local) {
+  PCFaceTangentBundle bundle;
+  bundle.init(local.mesh);
+  LocalCutCycleBasis basis;
+  basis.boundaryLoops = local.mesh.boundaryLoops;
+  std::map<int, int> slitByTip;
+  std::set<int> slitEdges(local.slitEdges.begin(), local.slitEdges.end());
+  for (std::size_t slit = 0; slit < local.slitEdges.size(); ++slit) {
+    const int edge = local.slitEdges[slit];
+    slitByTip.emplace(local.mesh.EV(edge, 0), static_cast<int>(slit));
+    slitByTip.emplace(local.mesh.EV(edge, 1), static_cast<int>(slit));
+    basis.boundaryLoops.push_back(
+        {local.mesh.EV(edge, 0), local.mesh.EV(edge, 1)});
+  }
+
+  std::vector<int> meshInterior;
+  for (int vertex = 0; vertex < local.mesh.V.rows(); ++vertex) {
+    if (local.mesh.isBoundaryVertex(vertex) == 0) meshInterior.push_back(vertex);
+  }
+  // dual_cycles rows are the face array's interior vertices, its boundary
+  // loops, then handle generators; each slit merges two rows into one.
+  const int interiorRows = static_cast<int>(meshInterior.size());
+  const int generatorRowBegin =
+      interiorRows + static_cast<int>(local.mesh.boundaryLoops.size());
+  const int slitCount = static_cast<int>(local.slitEdges.size());
+  const int slitRowBegin = generatorRowBegin - 2 * slitCount;
+  const int rowCount = static_cast<int>(bundle.cycles.rows()) - slitCount;
+  std::vector<int> rowMap(static_cast<std::size_t>(bundle.cycles.rows()));
+  int nextRow = 0;
+  for (int row = 0; row < bundle.cycles.rows(); ++row) {
+    if (row == generatorRowBegin) nextRow += slitCount;
+    if (row < interiorRows) {
+      const int vertex = meshInterior[static_cast<std::size_t>(row)];
+      const auto slit = slitByTip.find(vertex);
+      if (slit != slitByTip.end()) {
+        rowMap[static_cast<std::size_t>(row)] = slitRowBegin + slit->second;
+        continue;
+      }
+      basis.interiorVertices.push_back(vertex);
+    }
+    rowMap[static_cast<std::size_t>(row)] = nextRow++;
+  }
+
+  std::vector<int> columnMap(
+      static_cast<std::size_t>(bundle.innerAdjacencies.size()), -1);
+  std::vector<int> innerAdjacencies;
+  for (int column = 0; column < bundle.innerAdjacencies.size(); ++column) {
+    if (slitEdges.count(bundle.innerAdjacencies(column)) != 0U) continue;
+    columnMap[static_cast<std::size_t>(column)] =
+        static_cast<int>(innerAdjacencies.size());
+    innerAdjacencies.push_back(bundle.innerAdjacencies(column));
+  }
+
+  std::vector<Eigen::Triplet<double>> triplets;
+  for (int column = 0; column < bundle.cycles.outerSize(); ++column) {
+    for (Eigen::SparseMatrix<double>::InnerIterator it(bundle.cycles, column);
+         it; ++it) {
+      const int mappedColumn = columnMap[static_cast<std::size_t>(it.col())];
+      if (mappedColumn < 0) {
+        if (it.row() >= generatorRowBegin) {
+          basis.generatorSlitEdge = bundle.innerAdjacencies(it.col());
+        }
+        continue;
+      }
+      triplets.emplace_back(rowMap[static_cast<std::size_t>(it.row())],
+                            mappedColumn, it.value());
+    }
+  }
+  basis.cycles.resize(rowCount, static_cast<int>(innerAdjacencies.size()));
+  basis.cycles.setFromTriplets(triplets.begin(), triplets.end());
+  basis.innerAdjacencies = Eigen::Map<const Eigen::VectorXi>(
+      innerAdjacencies.data(), static_cast<int>(innerAdjacencies.size()));
+
+  basis.cycleCurvatures = Eigen::VectorXd::Zero(rowCount);
+  for (int slit = 0; slit < slitCount; ++slit) {
+    basis.cycleCurvatures(slitRowBegin + slit) = -2.0 * std::numbers::pi;
+  }
+  for (int row = 0; row < bundle.cycles.rows(); ++row) {
+    basis.cycleCurvatures(rowMap[static_cast<std::size_t>(row)]) +=
+        bundle.cycleCurvatures(row);
+  }
+  return basis;
+}
+
 std::vector<FieldAtlasRegionCycleBasisDiagnostics>
 collect_cycle_basis_diagnostics(
     const TriMesh &sourceMesh,
@@ -1332,11 +1467,11 @@ collect_cycle_basis_diagnostics(
 
     row.localMeshAvailable = true;
     row.vertexCount = static_cast<std::size_t>(local->mesh.V.rows());
-    row.edgeCount = static_cast<std::size_t>(local->mesh.EV.rows());
+    row.edgeCount = static_cast<std::size_t>(local->mesh.EV.rows()) +
+                    local->slitEdges.size();
     row.faceCount = static_cast<std::size_t>(local->mesh.F.rows());
-    row.eulerCharacteristic = static_cast<int>(
-        local->mesh.V.rows() - local->mesh.EV.rows() + local->mesh.F.rows());
-    row.boundaryLoopCount = static_cast<int>(local->mesh.boundaryLoops.size());
+    row.eulerCharacteristic = local->diagnostics.cutEulerCharacteristic;
+    row.boundaryLoopCount = local->diagnostics.cutBoundaryLoopCount;
     const int genusNumerator =
         2 - row.boundaryLoopCount - row.eulerCharacteristic;
     if (genusNumerator >= 0 && genusNumerator % 2 == 0) {
@@ -1347,20 +1482,20 @@ collect_cycle_basis_diagnostics(
         ++row.interiorLocalVertexCount;
       }
     }
+    row.interiorLocalVertexCount -= 2U * local->slitEdges.size();
     if (row.genus >= 0) {
       row.expectedCycleCount =
           static_cast<int>(row.interiorLocalVertexCount) +
           row.boundaryLoopCount + 2 * row.genus;
     }
 
-    PCFaceTangentBundle bundle;
     try {
-      bundle.init(local->mesh);
+      const LocalCutCycleBasis basis = cut_cycle_basis(*local);
       row.bundleInitialized = true;
-      row.cycleRowCount = static_cast<std::size_t>(bundle.cycles.rows());
-      row.cycleCurvatureCount = bundle.cycleCurvatures.size();
+      row.cycleRowCount = static_cast<std::size_t>(basis.cycles.rows());
+      row.cycleCurvatureCount = basis.cycleCurvatures.size();
       row.innerAdjacencyCount =
-          static_cast<std::size_t>(bundle.innerAdjacencies.size());
+          static_cast<std::size_t>(basis.innerAdjacencies.size());
     } catch (const std::exception &) {
       row.bundleInitialized = false;
     }
@@ -2486,37 +2621,39 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
     }
     const int genus = genusNumerator / 2;
 
-    PCFaceTangentBundle bundle;
+    LocalCutCycleBasis basis;
     try {
-      bundle.init(local->mesh);
+      basis = cut_cycle_basis(*local);
     } catch (const std::exception &) {
       return incomplete_cycle_basis_failure(
           sourceMesh, sourceAuthority,
           IncompleteCycleBasisReason::LocalTangentBundleInitializationFailed,
           std::nullopt, region.id(), hardFeatureEdges);
     }
-    std::vector<int> interiorLocalVertices;
-    for (int vertex = 0; vertex < local->mesh.V.rows(); ++vertex) {
-      if (local->mesh.isBoundaryVertex(vertex) == 0) {
-        interiorLocalVertices.push_back(vertex);
-      }
+    if (basis.generatorSlitEdge.has_value()) {
+      return incomplete_cycle_basis_failure(
+          sourceMesh, sourceAuthority,
+          IncompleteCycleBasisReason::HandleGeneratorCrossesSlit,
+          global_edge_key(*local, *basis.generatorSlitEdge, vertexExtent),
+          region.id(), hardFeatureEdges);
     }
+    const std::vector<int> &interiorLocalVertices = basis.interiorVertices;
     const int expectedHandleCount = 2 * genus;
     const int expectedCycleCount =
         static_cast<int>(interiorLocalVertices.size()) + boundaryLoopCount +
         expectedHandleCount;
-    if (bundle.cycles.rows() != expectedCycleCount ||
-        bundle.cycleCurvatures.size() != expectedCycleCount ||
-        bundle.cycles.cols() != bundle.innerAdjacencies.size()) {
+    if (basis.cycles.rows() != expectedCycleCount ||
+        basis.cycleCurvatures.size() != expectedCycleCount ||
+        basis.cycles.cols() != basis.innerAdjacencies.size()) {
       return incomplete_cycle_basis_failure(
           sourceMesh, sourceAuthority,
           IncompleteCycleBasisReason::CycleDimensionCountMismatch, std::nullopt,
           region.id(), hardFeatureEdges);
     }
 
-    Eigen::VectorXd effort(bundle.innerAdjacencies.size());
-    for (int column = 0; column < bundle.innerAdjacencies.size(); ++column) {
-      const int localEdge = bundle.innerAdjacencies(column);
+    Eigen::VectorXd effort(basis.innerAdjacencies.size());
+    for (int column = 0; column < basis.innerAdjacencies.size(); ++column) {
+      const int localEdge = basis.innerAdjacencies(column);
       const SourceEdgeTopologyKey edge =
           global_edge_key(*local, localEdge, vertexExtent);
       const auto transition = transitionByEdge.find(edge);
@@ -2540,12 +2677,12 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
       }
     }
     const Eigen::VectorXd exactLifts =
-        ((bundle.cycles * effort +
+        ((basis.cycles * effort +
           static_cast<double>(fields::kCrossFieldDegree) *
-              bundle.cycleCurvatures)
+              basis.cycleCurvatures)
              .array() /
          (2.0 * std::numbers::pi));
-    Eigen::SparseMatrix<double, Eigen::RowMajor> rowCycles = bundle.cycles;
+    Eigen::SparseMatrix<double, Eigen::RowMajor> rowCycles = basis.cycles;
 
     const std::size_t componentCycleBegin = cycles.size();
     std::vector<std::size_t> localCycleIndices;
@@ -2569,13 +2706,13 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
         // zeros. They are representation storage, not semantic cycle support.
         if (std::abs(coefficient) < kIntegerTolerance) continue;
         if (std::abs(std::abs(coefficient) - 1.0) >= kIntegerTolerance ||
-            it.col() < 0 || it.col() >= bundle.innerAdjacencies.size()) {
+            it.col() < 0 || it.col() >= basis.innerAdjacencies.size()) {
           return incomplete_cycle_basis_failure(
               sourceMesh, sourceAuthority,
               IncompleteCycleBasisReason::CycleCoefficientInvalid, std::nullopt,
               region.id(), hardFeatureEdges);
         }
-        const int localEdge = bundle.innerAdjacencies(it.col());
+        const int localEdge = basis.innerAdjacencies(it.col());
         const SourceEdgeTopologyKey edge =
             global_edge_key(*local, localEdge, vertexExtent);
         const FieldTransportAdjacency *adjacency =
@@ -2745,18 +2882,18 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
       }
       witness.indexSum = requiredIndexSum;
     }
-    if (boundaryCycleIndices.size() != local->mesh.boundaryLoops.size()) {
+    if (boundaryCycleIndices.size() != basis.boundaryLoops.size()) {
       return incomplete_cycle_basis_failure(
           sourceMesh, sourceAuthority,
           IncompleteCycleBasisReason::BoundaryCycleCountMismatch, std::nullopt,
           region.id(), hardFeatureEdges);
     }
     for (std::size_t loopIndex = 0;
-         loopIndex < local->mesh.boundaryLoops.size(); ++loopIndex) {
+         loopIndex < basis.boundaryLoops.size(); ++loopIndex) {
       const FieldCycleId boundaryCycle =
           cycles[boundaryCycleIndices[loopIndex]].id;
       const std::vector<int> &localBoundaryLoop =
-          local->mesh.boundaryLoops[loopIndex];
+          basis.boundaryLoops[loopIndex];
       std::vector<SourceEdgeTopologyKey> sourceBoundarySupport;
       sourceBoundarySupport.reserve(localBoundaryLoop.size());
       for (std::size_t edgeIndex = 0; edgeIndex < localBoundaryLoop.size();
@@ -2836,7 +2973,8 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
         region.id(), region.component(), eulerCharacteristic,
         boundaryLoopCount, genus,
         static_cast<std::size_t>(local->mesh.V.rows()),
-        static_cast<std::size_t>(local->mesh.EV.rows()),
+        static_cast<std::size_t>(local->mesh.EV.rows()) +
+            local->slitEdges.size(),
         static_cast<std::size_t>(local->mesh.F.rows()),
         localCycleIndices.size(), handleCycleIndices.size()});
     FieldTransportRegionDiagnostics regionDiagnostics = local->diagnostics;
@@ -3252,6 +3390,8 @@ const char *incomplete_cycle_basis_reason_name(
     return "CycleKindPartitionMismatch";
   case IncompleteCycleBasisReason::BoundaryCycleCountMismatch:
     return "BoundaryCycleCountMismatch";
+  case IncompleteCycleBasisReason::HandleGeneratorCrossesSlit:
+    return "HandleGeneratorCrossesSlit";
   }
   return "Unknown";
 }

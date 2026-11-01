@@ -108,6 +108,7 @@ enum class IncompleteCycleBasisReason : std::uint8_t {
   CycleOrderingFailed = 5,
   CycleKindPartitionMismatch = 6,
   BoundaryCycleCountMismatch = 7,
+  HandleGeneratorCrossesSlit = 8,
 };
 
 struct FieldAtlasRegionCycleBasisDiagnostics {

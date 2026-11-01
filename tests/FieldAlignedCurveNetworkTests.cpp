@@ -18018,3 +18018,185 @@ TEST(TestFixturePaths, MissingPackageFailsClosedInsteadOfReturningMissingPath) {
   EXPECT_THROW((void)directional::tests::require_test_data_root(missing),
                std::runtime_error);
 }
+
+namespace {
+
+// Planar n-by-n vertex grid; every interior vertex has six incident faces.
+TriMesh make_planar_grid_mesh(const int side) {
+  Eigen::MatrixXd vertices(side * side, 3);
+  for (int row = 0; row < side; ++row) {
+    for (int column = 0; column < side; ++column) {
+      vertices.row(row * side + column) << column, row, 0.0;
+    }
+  }
+  Eigen::MatrixXi faces(2 * (side - 1) * (side - 1), 3);
+  int face = 0;
+  for (int row = 0; row + 1 < side; ++row) {
+    for (int column = 0; column + 1 < side; ++column) {
+      const int corner = row * side + column;
+      faces.row(face++) << corner, corner + 1, corner + side + 1;
+      faces.row(face++) << corner, corner + side + 1, corner + side;
+    }
+  }
+  TriMesh mesh;
+  mesh.set_mesh(vertices, faces);
+  return mesh;
+}
+
+bool cycle_steps_all_touch(const directional::authority::FieldCycleWitness &cycle,
+                        const std::set<std::size_t> &vertices) {
+  return std::all_of(cycle.steps.begin(), cycle.steps.end(),
+                     [&](const auto &step) {
+                       return vertices.count(step.sourceEdge.first().index()) !=
+                                  0U ||
+                              vertices.count(step.sourceEdge.second().index()) !=
+                                  0U;
+                     });
+}
+
+} // namespace
+
+// Amendment 25: an interior hard-feature edge whose endpoints are both
+// interior barrier tips is a slit. The face array keeps its two sides glued,
+// so A1 cuts it in the cycle basis: one more edge, one two-edge boundary loop,
+// no vertex cycle at either tip and no cycle step across the slit.
+TEST(FieldTransportAtlas, IsolatedInteriorBarrierEdgeIsATwoSidedSlit) {
+  const TriMesh mesh = make_planar_grid_mesh(5);
+  const auto slit = topology_edge(6, 7, 25U);
+  const std::set<SourceEdgeTopologyKey> hardEdges{slit};
+  const auto sourceAuthority = make_source_authority(mesh, hardEdges);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, hardEdges, make_zero_transport_field(mesh));
+  std::ostringstream report;
+  if (!atlasBuild) append_atlas_error(report, atlasBuild.error());
+  ASSERT_TRUE(atlasBuild) << report.str();
+  const auto &atlas = atlasBuild.value();
+  append_transport_region_diagnostics(report, atlas);
+
+  ASSERT_EQ(1U, atlas.component_topology().size());
+  const auto &topology = atlas.component_topology().front();
+  EXPECT_EQ(0, topology.eulerCharacteristic) << report.str();
+  EXPECT_EQ(2, topology.boundaryLoopCount) << report.str();
+  EXPECT_EQ(0, topology.genus) << report.str();
+  EXPECT_EQ(25U, topology.vertexCount) << report.str();
+  EXPECT_EQ(57U, topology.edgeCount) << report.str();
+  EXPECT_EQ(32U, topology.faceCount) << report.str();
+  EXPECT_EQ(7U, topology.localCycleCount) << report.str();
+  ASSERT_EQ(1U, atlas.region_transport_diagnostics().size());
+  const auto &region = atlas.region_transport_diagnostics().front();
+  EXPECT_EQ(1, region.uncutEulerCharacteristic) << report.str();
+  EXPECT_EQ(0, region.cutEulerCharacteristic) << report.str();
+  EXPECT_EQ(2, region.cutBoundaryLoopCount) << report.str();
+  EXPECT_EQ(1, region.newSlitBoundaryLoopCount) << report.str();
+
+  std::vector<int> boundaryLifts;
+  for (const auto &cycle : atlas.cycles()) {
+    for (const auto &step : cycle.steps) {
+      EXPECT_NE(slit, step.sourceEdge) << report.str();
+    }
+    if (cycle.kind == directional::authority::FieldCycleKind::LocalVertex) {
+      ASSERT_TRUE(cycle.localVertex.has_value());
+      EXPECT_NE(6U, cycle.localVertex->index()) << report.str();
+      EXPECT_NE(7U, cycle.localVertex->index()) << report.str();
+    }
+    if (cycle.kind != directional::authority::FieldCycleKind::BoundaryLoop) {
+      continue;
+    }
+    boundaryLifts.push_back(cycle.turningLift);
+    if (cycle_steps_all_touch(cycle, {6U, 7U})) {
+      // Ten radial edges around the two degree-six tips, minus the slit.
+      EXPECT_EQ(10U, cycle.steps.size()) << report.str();
+      EXPECT_EQ(-4, cycle.turningLift) << report.str();
+    }
+  }
+  EXPECT_EQ((std::vector<int>{4, -4}), boundaryLifts) << report.str();
+}
+
+// Two slits and a two-edge barrier arc in one region: the face array cuts the
+// arc (its middle vertex gets two copies) and the cycle basis cuts the slits.
+TEST(FieldTransportAtlas, SlitsAndABarrierArcShareOneCutTransportDomain) {
+  const TriMesh mesh = make_planar_grid_mesh(6);
+  const std::set<SourceEdgeTopologyKey> hardEdges{
+      topology_edge(7, 8, 36U), topology_edge(27, 28, 36U),
+      topology_edge(14, 15, 36U), topology_edge(15, 16, 36U)};
+  const auto sourceAuthority = make_source_authority(mesh, hardEdges);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, hardEdges, make_zero_transport_field(mesh));
+  std::ostringstream report;
+  if (!atlasBuild) append_atlas_error(report, atlasBuild.error());
+  ASSERT_TRUE(atlasBuild) << report.str();
+  const auto &atlas = atlasBuild.value();
+  append_transport_region_diagnostics(report, atlas);
+
+  ASSERT_EQ(1U, atlas.component_topology().size());
+  const auto &topology = atlas.component_topology().front();
+  EXPECT_EQ(-2, topology.eulerCharacteristic) << report.str();
+  EXPECT_EQ(4, topology.boundaryLoopCount) << report.str();
+  EXPECT_EQ(0, topology.genus) << report.str();
+  EXPECT_EQ(37U, topology.vertexCount) << report.str();
+  EXPECT_EQ(89U, topology.edgeCount) << report.str();
+  EXPECT_EQ(9U, topology.localCycleCount) << report.str();
+  std::vector<int> boundaryLifts;
+  for (const auto &cycle : atlas.cycles()) {
+    for (const auto &step : cycle.steps) {
+      EXPECT_EQ(0U, hardEdges.count(step.sourceEdge)) << report.str();
+    }
+    if (cycle.kind == directional::authority::FieldCycleKind::BoundaryLoop) {
+      boundaryLifts.push_back(cycle.turningLift);
+    }
+  }
+  std::sort(boundaryLifts.begin(), boundaryLifts.end());
+  EXPECT_EQ((std::vector<int>{-4, -4, -4, 4}), boundaryLifts) << report.str();
+}
+
+// On the genus-one torus fixture a slit keeps both handle generators when
+// dual_cycles' generators avoid it. A generator that crosses it would need
+// transport across the barrier, so A1 fails closed with the slit as locus
+// (O19).
+TEST(FieldTransportAtlas, TorusSlitKeepsBothHandlesOrFailsClosedAtTheSlit) {
+  TriMesh mesh;
+  ASSERT_TRUE(directional::readOBJ(
+      directional::tests::benchmark_fixture_path("milestone-g/torus.obj")
+          .string(),
+      mesh));
+  const Eigen::MatrixXd raw = read_cp4c_rawfield(
+      directional::tests::benchmark_fixture_path("milestone-g/torus.rawfield"),
+      mesh.F.rows());
+  const CrossFieldResult field =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(mesh, raw);
+  const auto build = [&](const SourceEdgeTopologyKey &slit) {
+    const std::set<SourceEdgeTopologyKey> hardEdges{slit};
+    const auto sourceAuthority = make_source_authority(mesh, hardEdges);
+    EXPECT_TRUE(sourceAuthority.has_value());
+    return directional::authority::FieldTransportAtlas::make(
+        mesh, *sourceAuthority, hardEdges, field);
+  };
+  const std::size_t extent = static_cast<std::size_t>(mesh.V.rows());
+
+  const auto kept = topology_edge(0, 1, extent);
+  const auto keptBuild = build(kept);
+  std::ostringstream report;
+  if (!keptBuild) append_atlas_error(report, keptBuild.error());
+  ASSERT_TRUE(keptBuild) << report.str();
+  ASSERT_EQ(1U, keptBuild.value().component_topology().size());
+  const auto &topology = keptBuild.value().component_topology().front();
+  EXPECT_EQ(-1, topology.eulerCharacteristic);
+  EXPECT_EQ(1, topology.boundaryLoopCount);
+  EXPECT_EQ(1, topology.genus);
+  EXPECT_EQ(2U, topology.handleGeneratorCount);
+  for (const auto &cycle : keptBuild.value().cycles()) {
+    for (const auto &step : cycle.steps) EXPECT_NE(kept, step.sourceEdge);
+  }
+
+  const auto crossed = topology_edge(12, 14, extent);
+  const auto crossedBuild = build(crossed);
+  ASSERT_FALSE(crossedBuild);
+  EXPECT_EQ(directional::authority::FieldAtlasBuildErrorCode::IncompleteCycleBasis,
+            crossedBuild.error().code);
+  EXPECT_EQ(directional::authority::IncompleteCycleBasisReason::
+                HandleGeneratorCrossesSlit,
+            crossedBuild.error().incompleteCycleBasisReason);
+  EXPECT_EQ(crossed, crossedBuild.error().sourceEdge);
+}
