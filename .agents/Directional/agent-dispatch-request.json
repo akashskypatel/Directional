@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb71-p13-chart-graph-20261101-v2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb71-p13-chart-graph-20261101-v2",
-  "file_id": "1lq1ePkldP-RmJn0nsAxJtEDi5GrJjTRH",
-  "patch_sha256": "5a4015ba351eda225625f66d5368595f98760f91fda3ca7dcf160ff62ee3023e",
-  "base_sha": "550fbb6c51f1a280f8479da9cbd2edcc2989f39f",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): reuse source-chart graph in completion ownership"
+  "request_id": "m6-cp3-cb71-chart-graph-compile-20261101-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb71-chart-graph-compile-20261101-v1",
+  "source_sha": "042979f7a264dff21de4e3b1af25a1a27fe27c95",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb71-completion-chart-graph"
 }
