@@ -1,3 +1,7 @@
+# 2026-11-01 — CB68 P13 incidence-boundary diagnostic revert complete
+
+- `M6-CP3-CB68-P13-REVERT-INCIDENCE-BOUNDARY-PROBE`: RA-194.6 exact six-file revert (21,427-byte diff SHA-256 `a6b8cf62c8f9543bfa35766782906dc28c9d6cbe7263d5db0d1cabc1d4174c21`), applied as [`90fa3a15`](https://github.com/akashskypatel/Directional/commit/90fa3a155930c2683ed0789ef88e9f8f52775437) by [run 41306617232](https://github.com/akashskypatel/Directional/actions/runs/41306617232), result `13083453751`. Pushed postcheck source/build/test paths show no differences against compiled CB66 `911840c1…`; no build, binary execution or semantic gate acceptance performed. Staged patch `1C0l4EjLTCmvCcyRSfOt-c4rGLlhn5GlX` retired by owner control plane. CB69 is the exact next turn under RA-193.5/10 (RA-194 renumbering). Stable 66/17/49, debt 1, accepted CP2 491/491, candidate TB65 869/869, selector497/CP3 unpromoted.
+
 # 2026-11-01 — RA-194 review of the landed Vase diagnostics CB67; exact revert, renumbering
 
 - The withdrawn diagnostics CB67 (`M6-CP3-CB67-P13-VASE-INCIDENCE-BOUNDARY-PROBE`) landed on top of RA-193 as `829a47b2d` (dispatcher apply, no compile). [RA-194](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Landed_Incidence_Probe_Revert_20261101.md) reviewed it. It compiles and keeps verdicts, but it still ends Vase at `completion`, records the symptom `HalfedgeCellOutOfRange` rather than the arrangement's `RepeatedNodeCycle`, adds an unused public comparator, and puts its only test in the unbuilt historical target, in a file that no longer compiles.

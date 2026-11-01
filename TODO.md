@@ -1,4 +1,4 @@
-## CURRENT — RA-194 revert of the landed Vase diagnostics; CB68 exact revert next (2026-11-01)
+## CURRENT — CB68 exact revert complete; CB69 arrangement terminal patch next (2026-11-01)
 
 - [x] Done (records in `.agents/Directional/`, history in `CHANGELOG.md`): RP-01 closure (RA-174…[RA-179](.agents/Directional/Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md)) → O15 (RA-180, CB55, TB54, [RA-181](.agents/Directional/Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md)) → row 935 (RA-182, CB56, TB55) → O2 entry gate ([RA-183](.agents/Directional/Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md), CB57, TB56) → **DIAG-RETAIN** ([RA-184](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md), [RA-185](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md), [RA-186](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md), [RA-187](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md); CB58–CB61, last source `e1fd0e4b…`). TB57–TB60 ran on macOS arm64 only; the latest, TB60, gave **862/863** on the TB58 manifest (863 rows; only row 283, O16), membership 945. TB59 ran only CLI cases; TB60 is the full-gate TB for both CB60 and CB61 (RA-187.1).
 - [x] **Independent Linux TB61 full-gate review of CB58–CB61; owner authorized exact Linux CLI/GUI successor** (user direction, 2026-10-31; handoff step 1):
@@ -62,12 +62,12 @@
   - Probes: gate 868/869 in both patched states and 870/871 on the clean RA-193 build (only O16); ledger 0/81 PASS in both modes, only Vase changes; with both fixes Vase's arrangement is valid (26,827 cells) and completion exceeds 600 s (P13-f).
   - [RA-194](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Landed_Incidence_Probe_Revert_20261101.md): the withdrawn diagnostics CB67 landed anyway as `829a47b2d` (uncompiled). It compiles and keeps verdicts, but it still ends Vase at `completion`, records the symptom `HalfedgeCellOutOfRange` instead of the arrangement's `RepeatedNodeCycle`, and its only test is in the unbuilt historical target, in a file that no longer compiles. Ruled: revert exactly; RA-193's patches are renumbered CB69 and CB70.
 - [ ] **Turn sequence (implementation agent, Linux workflow runner, one exact patch per turn):**
-  1. [ ] **NEXT `M6-CP3-CB68-P13-REVERT-INCIDENCE-BOUNDARY-PROBE`** (Code; exact revert, no build):
+  1. [x] **COMPLETE `M6-CP3-CB68-P13-REVERT-INCIDENCE-BOUNDARY-PROBE`** (Code; exact revert, no build):
      - Precheck `git diff --quiet 829a47b2d96eb7313e64402c3de666266725ba7e HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
      - Apply the RA-194.6 block, SHA-256 `a6b8cf62c8f9543bfa35766782906dc28c9d6cbe7263d5db0d1cabc1d4174c21`, numstat per RA-194.4.
-     - Postcheck `git diff --quiet 911840c195b52ce1800b3ac7ff3ea7380137ad9c HEAD -- src include tests benchmarks CMakeLists.txt cmake` (CB66 package `13067780359` and TB65 then apply).
+     - Postcheck verified against exact applied commit [`90fa3a15`](https://github.com/akashskypatel/Directional/commit/90fa3a155930c2683ed0789ef88e9f8f52775437): no source/build/test path differences from CB66 `911840c1…`, package `13067780359`, TB65 869/869. Drive apply [run 41306617232](https://github.com/akashskypatel/Directional/actions/runs/41306617232), no build/runtime; Drive patch retired.
      - Mismatch → `M6-CP3-PLAN-P13-INCIDENCE-PROBE-REVERT-STOP`; infrastructure → `M6-CP3-CB68A-P13-INCIDENCE-PROBE-REVERT-ORCH`.
-  2. [ ] **`M6-CP3-CB69-P13-ARRANGEMENT-INCIDENCE-TERMINAL`** (CB, compile only; RA-193's "CB67"):
+  2. [ ] **NEXT `M6-CP3-CB69-P13-ARRANGEMENT-INCIDENCE-TERMINAL`** (CB, compile only; RA-193's "CB67"):
      - Precheck `git diff --quiet 911840c195b52ce1800b3ac7ff3ea7380137ad9c HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
      - Apply the RA-193.10 block, SHA-256 `35727214ac067ac3337ce640ec78fd23a8e92f7f14c444d953053feef7209822`. Numstat `29 1`; result SHA-256 `d478a64c…` (RA-193.5).
      - Mismatch → `M6-CP3-PLAN-P13-ARRANGEMENT-TERMINAL-STOP`; infrastructure → `M6-CP3-CB69A-P13-ARRANGEMENT-TERMINAL-ORCH`.
