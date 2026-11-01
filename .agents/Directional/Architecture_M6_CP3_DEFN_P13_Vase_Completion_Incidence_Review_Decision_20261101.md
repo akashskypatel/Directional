@@ -57,6 +57,6 @@ Only after a subsequent independent evidence Review establishes the *first* viol
 | Consolidation under CLEAN_UP_POLICY | n/a: prior evidence authoritative/historical; no obsolete duplicate document identified. |
 | Successor frozen | `M6-CP3-CB67-P13-VASE-INCIDENCE-BOUNDARY-PROBE` — diagnostics-only CB, exact F1–F5 before build; independent TB then Review. |
 | Turn boundary held | Review only; no local compile, native tests, benchmark, product/test/selector/fixture mutation. |
-| review_check.py boundary | Pending authentic Git-history CI; must not count synthetic snapshot checks as historical verification. |
-| `STATUS` lifecycle maintained | Entry beacon published; final beacon required after durable patch application, with original started timestamp retained. |
-| Pushed to origin, branch in sync | Pending verified durable patch application and remote sync check. |
+| review_check.py boundary | PASS, authentic unshallow GitHub Actions checkout at `47dc2d60c02692ae8726ac2ca159c719c2f7c2a7`: run `41293165133`, `boundary_exit=0`. All committed numbered selectors matched HEAD; rewrite baseline `8b7299b43` was an ancestor; protected headings were preserved. The independent `ledgers --base 8b7299b43` scan also PASS (`ledgers_exit=0`): no CHANGELOG/LESSONS shrink. |
+| `STATUS` lifecycle maintained | Initial beacon and same-turn resume beacon published; original Started at `2026-11-01T09:00:35Z` preserved. Formal COMPLETE beacon is the final repository write, after closeout verification and temporary-caller cleanup. |
+| Pushed to origin, branch in sync | Seven intended review documents applied on origin as commit `0d3f6a67fdd35d96ab5c4c1350e6b8de90a16725` (exact commit file inventory confirmed). Authentic full-history runner at `47dc2d60c02692ae8726ac2ca159c719c2f7c2a7` recorded `git status -sb` tracking the same origin branch without ahead/behind; no product-surface drift. |
