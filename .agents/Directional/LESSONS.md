@@ -181,6 +181,13 @@ This document records **reusable failure-derived engineering lessons**, not an e
   longer equal the next entry. Before specifying where a value is changed, list every caller of its
   producer. Before adding a typed failure for a boundary case, measure how often the unchanged code
   already reaches that case: exact arithmetic made 12 near-vertex exits on the prescribed sphere (RA-190).
+- **Before replacing a representation that fails, find exactly where it fails and what reads it.** RA-191
+  saw the face-array cut lose a slit and prescribed a new edge-side incidence product for every A1
+  consumer. Two checks shrank that to one adapter. A proof showed the face array fails only when both
+  endpoints are interior tips. A read of the consumers showed that transport adjacency was already keyed
+  by source edge, so only the cut accounting and the `dual_cycles` basis were wrong. Also check that each
+  falsifier can run through the real entry point: RA-191's tetrahedron cannot carry an admissible field
+  (RA-192).
 
 ## Geometry, topology, and mathematical obligations
 

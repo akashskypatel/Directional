@@ -2,8 +2,8 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-11-01 · `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT` adjudicated by [RA-191](Architecture_M6_CP3_DEFN_P13_Single_Edge_Barrier_Slit_Review_Decision_20261101.md). TB64 Linux **866/866**, membership **947** is the latest verified execution. BunnyRandom P13-c `CutTransportDomainIdentityMismatch` requires distinct cut-side incidences; Vase P13-d remains an independent completion failure.
-**Next:** `M6-CP3-CB66-P13-CUT-SIDE-INCIDENCE` (compile only), then TB65 on immutable package. CP2 491/491 last accepted; CP3/selector497 not promoted; stable 66/17/49, debt 1.
+**Currency:** 2026-11-01 · `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT` closed by [RA-192](Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md), which probe-adjudicates RA-191. The A1 slit adapter (Amendment 25, rewritten) leaves the 869-row candidate gate unchanged on macOS (only O16) and gets **BunnyRandom past the cut identity**. BunnyRandom now fails at A1 singularity ports (`SingularityPortClassCountMismatch`, vertex 49, P13-e). TB64 Linux **866/866**, membership **947**, is the latest executed gate.
+**Next:** `M6-CP3-CB66-P13-SLIT-CYCLE-BASIS` (exact patch, compile only) → `M6-CP3-TB65-P13-SLIT-FULL-GATE-EXEC` (gate 869, membership 950). CP2 491/491 last accepted; CP3/selector497 not promoted; stable 66/17/49, debt 1.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -105,23 +105,23 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** TB64 completed the 866/947 Linux gate. RA-191 corrects Amendment 15's false assumption that an isolated tip–tip edge can be slit in a simple face-array mesh.
-- **P13-c, BunnyRandom (current):** A1 requires a cut-side multigraph with two boundary-edge occurrences per interior hard barrier. CB66 → TB65 must prove this at the producer, not repair a downstream Euler counter.
-- **P13-d, Vase (separate next Review):** A7 completion rejects `SideSubdivisionRepair:InvalidInputIncidence` after A4 succeeds; O18 missing-detail diagnostic is carried.
+**Immediate:** TB64 completed the 866/947 Linux gate. RA-192 proves an interior tip–tip barrier edge is the only configuration Amendment 15.3's face array glues, and slits it exactly in A1's cut accounting and `dual_cycles` basis.
+- **P13-c, BunnyRandom (current):** CB66 (exact patch) → TB65. Probes: BunnyRandom passes the identity (χ −5, 7 loops) and reaches **P13-e**: index −1 vertex 49 has 4 of 5 port incidences, on both builds. P13-e gets its own DEFN after TB65.
+- **P13-d, Vase (Review, parallel):** A7 completion rejects `SideSubdivisionRepair:InvalidInputIncidence` after A4 succeeds; Vase has no slit. O18 (missing detail) is carried with it.
 - **P13-a / P13-b:** Cylinder PASS and A2a dyadic width failure discharged; earlier gate and arithmetic evidence retained in TB64 and RA-190.
 
 macOS O16 stays separate.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | P13 matrix 6/6. Order: CB64 → TB63 → CB65 → TB64 (all done). P13-c RA-191 now defines CB66 → TB65 cut-side incidence; P13-d Vase completion gets a separate DEFN → CB → TB. Then a re-census, with O6/O9 where reached. | M6-CP3, `M6-CP3-CB66-P13-CUT-SIDE-INCIDENCE` next |
+| **1** | P13 matrix 6/6. Order: CB64 → TB63 → CB65 → TB64 (all done) → CB66 → TB65 (P13-c slit). P13-d Vase completion and P13-e BunnyRandom ports each get a DEFN → CB → TB. Then a re-census, with O6/O9 where reached. O19 (slit handle generator) is genus > 0 only and not blocking. | M6-CP3, `M6-CP3-CB66-P13-SLIT-CYCLE-BASIS` next |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
 
-- **Simple-edge identity loses a slit:** source-edge endpoint identity is not an edge-*occurrence* identity after cutting. Parallel boundary sides with identical tips need separate halfedge provenance and a cycle basis that can represent them (RA-191).
+- **Simple-edge identity loses a slit:** a vertex-indexed face array cannot hold two edges with the same endpoints, so an interior barrier edge with two interior tips stays glued. That is the only configuration that does (RA-192.1 D2). A1 applies it in the cycle basis instead of building a new incidence product, because transport adjacency is already keyed by source edge (RA-191, RA-192).
 
 - **Exact local arithmetic versus unbounded carried rational width:** a finite bit cap cannot bound growth with face count. Amendment 24 rounds each interior exit inside the one producer that every consumer replays, so the trace is its published geometry (RA-190). A representation change made outside that producer would split one trace into two geometries.
 

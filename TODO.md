@@ -1,4 +1,4 @@
-## CURRENT — RA-191 cut-side incidence DEFN; CB66 compile-only next (2026-11-01)
+## CURRENT — RA-192 slit adapter adjudicated; CB66 exact patch next (2026-11-01)
 
 - [x] Done (records in `.agents/Directional/`, history in `CHANGELOG.md`): RP-01 closure (RA-174…[RA-179](.agents/Directional/Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md)) → O15 (RA-180, CB55, TB54, [RA-181](.agents/Directional/Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md)) → row 935 (RA-182, CB56, TB55) → O2 entry gate ([RA-183](.agents/Directional/Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md), CB57, TB56) → **DIAG-RETAIN** ([RA-184](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md), [RA-185](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md), [RA-186](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md), [RA-187](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md); CB58–CB61, last source `e1fd0e4b…`). TB57–TB60 ran on macOS arm64 only; the latest, TB60, gave **862/863** on the TB58 manifest (863 rows; only row 283, O16), membership 945. TB59 ran only CLI cases; TB60 is the full-gate TB for both CB60 and CB61 (RA-187.1).
 - [x] **Independent Linux TB61 full-gate review of CB58–CB61; owner authorized exact Linux CLI/GUI successor** (user direction, 2026-10-31; handoff step 1):
@@ -44,11 +44,22 @@
   - Census `3af1dc0d…`: Cylinder PASS; BunnyRandom `CutTransportDomainIdentityMismatch` `cutChi=-3`; Vase `NotProductionReady:completion` with `completion=SideSubdivisionRepair:InvalidInputIncidence`.
   - Mismatch → `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-REV`.
   - Observed: **866/866 PASS**, **947** membership, **1740/1740** checksums; independent census Cylinder PASS, BunnyRandom P13-c RED, Vase P13-d RED at registered signatures, 9/9 checksums; no rebuild, zero unexpected regression. O15c discharged for A2a, stable 66/17/49 unchanged.
-- [x] **[RA-191](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Single_Edge_Barrier_Slit_Review_Decision_20261101.md) `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT`**: normative Amendment 25 elects exact cut-side incidence for tip–tip barriers; no tests/product/runtime changed in DEFN.
-- [ ] **NEXT `M6-CP3-CB66-P13-CUT-SIDE-INCIDENCE`**: implement A1 cut-side incidence plus transport/cycle-consumer adapter, compile-only Linux GMP/GMPXX. RA-191 fixes independent positive/negative tests, stop route and subsequent immutable TB65. No selector or Vase changes.
+- [x] **`M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT`**:
+  - [RA-191](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Single_Edge_Barrier_Slit_Review_Decision_20261101.md) diagnosed the slit.
+  - [RA-192](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md) probe-adjudicated it. It proves the interior tip–tip edge is the only configuration the face array glues, and replaces RA-191's incidence product and open-ended CB66 with an A1 slit adapter (Amendment 25, rewritten) and an exact patch.
+  - Probes: 869-row candidate gate 868/869 (only O16); ledger 81/81 RED in both modes; BunnyRandom reaches P13-e; mutants M1–M3 each caught.
+- [ ] **NEXT `M6-CP3-CB66-P13-SLIT-CYCLE-BASIS`** (CB; implementation agent; Linux workflow runner):
+  - Precheck `git diff --quiet dbc38661… HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+  - Apply the RA-192.8 block, SHA-256 `c83fefa2298e8fb5fc1b6ef14a8fe47f46ce5cf92d0acc89f4fd6d7da0c4377c`. Numstat `1 0` / `173 33` / `182 0`; result SHA-256s per RA-192.5.
+  - Compile only, eight targets.
+  - Mismatch → `M6-CP3-PLAN-P13-SLIT-STOP`; infrastructure → `M6-CP3-CB66A-P13-SLIT-ORCH`.
+- [ ] **Then `M6-CP3-TB65-P13-SLIT-FULL-GATE-EXEC`** (TB-EXEC; Linux; verified CB66 package only):
+  - Gate: 869-row manifest `baaef9e7…` plus ledger v5 `fd433f54…`, pre-registered 869/869, membership 950.
+  - Census `3af1dc0d…`: Cylinder PASS; BunnyRandom `terminal=InvalidFieldTransportAtlas:field-transport-atlas/SingularityPortClassCountMismatch;sourceVertex=49` with `cutChi=-5`, `cutBoundaryLoops=7`, no `CutTransportDomainIdentityMismatch`; Vase `NotProductionReady:completion` with `completion=SideSubdivisionRepair:InvalidInputIncidence`.
+  - Mismatch → `M6-CP3-TB65-P13-SLIT-FULL-GATE-REV`; infrastructure → `M6-CP3-TB65A-P13-SLIT-ORCH`.
 - [ ] **Review track** (probe DEFNs):
-  - **P13-c / RA-191:** completed Review; next implementation `M6-CP3-CB66-P13-CUT-SIDE-INCIDENCE` → `M6-CP3-TB65-P13-CUT-SIDE-FULL-GATE-EXEC`. Do not start TB65 on a compile-only result.
-  - **`M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE`** (P13-d, after TB64). A7 side-subdivision repair rejects its input incidence (`SurfaceCellFeasibilityRepair.cpp:2123`). Find the producing stage and fix it at its owner. This turn also owns O18.
+  - **`M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE`** (P13-d; may run in parallel with CB66/TB65). A7 side-subdivision repair rejects its input incidence (`SurfaceCellFeasibilityRepair.cpp:2123`). Find the producing stage and fix it at its owner. This turn also owns O18.
+  - **`M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT`** (P13-e, after TB65 confirms it on Linux). A1 requires `4 − index` port classes. BunnyRandom's index −1 vertex 49 has 4 sector incidences in an 8-face fan, on macOS and FMA-off. Decide whether A1's sector rule or the field owns this.
   - Then re-census P13, take O6/O9 where they are reached, and aim for matrix 6/6.
 - [x] **DIAG-RETAIN (user-directed, 2026-10-21): closed** by CB58–CB61 (snapshots, display adapter and dump, CLI sidecar, GUI layers). Open: DR1 (no in-helper A6/A7 rejection witness; waits for a stimulus), DR3 (pre-existing snapshot fields written when retention is off). DR2 (multi-component snapshot drop) and DR4 (`--diagnostics-prefix` cut sidecars throw on SurfaceCells products, `src/cli/RemeshOutput.cpp:388–392`) → M8-CP2. The GUI layers' appearance is a manual check.
 - [ ] **Then:** retire CB → FIXTURE slices (each DEFN first confirms the production pipeline reaches its stage) → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV.
@@ -56,6 +67,7 @@
 - [ ] Carried separately (owners per RA-174.3):
   - **O2b** (retire the public no-atlas APIs, the legacy detail branches, their 12 gated unit tests and the historical suite) → a retirement DEFN after P13. **O16** (row 283, LegacyInteger NFunctionMesher macOS failure, not FMA) → a legacy-backend probe DEFN; not CP3-blocking.
   - O6 (bounded disks that are not rectangular are rejected by design). No P13 fixture reaches it at current source (RA-188.2) → P13 re-census.
+  - **O19** (RA-192): a genus > 0 region whose `dual_cycles` handle generator crosses a slit fails closed (`HandleGeneratorCrossesSlit`). Torus sweep: 35 of 216 edges. Not CP3-blocking, because all six matrix fixtures are genus 0 → a later DEFN when a fixture needs it.
   - **O18** (the completion rejection at `RemeshPipeline.cpp:14352–14357` publishes no detail code or first-invalid stage; the terminal reads `detail=None`) → `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE`.
   - **O17** (production code writes diagnostics to stderr unconditionally: `GlobalTopologyPlan.cpp:2634`, `FieldTransportAtlas.cpp:746`) → M8-CP2.
   - O7 (oracle-tests target does not compile) → its own probe DEFN.
@@ -66,7 +78,7 @@
   - **O15c** → RA-190 dyadic exit (Amendment 24); discharged for A2a when TB64 matches. The 4,096-bit guard stays as the backstop. **O15b** (fields-stage `principal_matching` argmin tie; degenerate input only) → CP3-REV.
   - RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4. G4-B002 exit row is gated; the discharge decision belongs to CP3-REV.
 - **Rules:**
-  - CB and TB run on the Linux workflow runner. A TB always runs the full current gate, even after a CLI- or GUI-only CB (RA-187); the last executed gate is the TB58 manifest (863 rows) with ledger v4 (82); from TB64 the gate is the 866-row manifest with ledger v5 (81).
+  - CB and TB run on the Linux workflow runner. A TB always runs the full current gate, even after a CLI- or GUI-only CB (RA-187); the last executed gate is the TB58 manifest (863 rows) with ledger v4 (82); from TB64 the gate is the 866-row manifest with ledger v5 (81), and from TB65 the 869-row manifest with ledger v5.
   - One CB per exact patch; implementation agents get only exact patches and frozen manifests. Probe-requiring DEFN and TB-REV turns stay on the Review track. Every gate run needs `MEMBERSHIP_LEDGER`.
   - **Naming (RA-167.6):** types per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier.
   - RA-170 (a gate pass says nothing about off-gate tests), RA-171 (self-check every manifest; census rows are OBSERVE), RA-172 (a DEFN needs a reachable exit), RA-174 (verify completeness against the package, not against the gate's own scope), RA-176 (a result that differs by platform is a determinism defect; compute the exact answer before classifying), RA-178 (a test that targets an accepted-defensive guard has no repair exit; witness the guard at its checked factory or retire the test), RA-179 (trace fixture use through helper accessors, not literal grep; confirm per-file flag changes in the built object).

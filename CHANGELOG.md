@@ -1,3 +1,12 @@
+# 2026-11-01 — RA-192 P13-c slit adapter adjudicated; CB66 exact patch next
+
+- [RA-192](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md) probe-adjudicates RA-191 and closes `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT`. RA-191's diagnosis stands. Its general edge-side incidence product, its consumer-wide scope, its open-ended CB66 and its unexecutable falsifiers are replaced. **DESIGN Amendment 25 is rewritten:**
+  - The face array glues a barrier edge only when both endpoints are interior tips.
+  - A1 applies each such slit exactly: one more edge and loop, the tip rows merged into one boundary row, the slit column dropped, and curvature `2π − Σθ(u) − Σθ(v)`.
+  - A handle generator that crosses a slit fails closed (`HandleGeneratorCrossesSlit`, O19).
+- Probes (macOS): the 869-row candidate gate gives 868/869 (only O16); the 81 deferred rows stay RED in both modes. **BunnyRandom passes the cut identity** and fails at A1 singularity ports, vertex 49, on macOS and FMA-off (P13-e).
+- CB66 `M6-CP3-CB66-P13-SLIT-CYCLE-BASIS` is an exact patch (`c83fefa2…`). TB65 runs the 869-row manifest `baaef9e7…` with ledger v5, membership 950. New: P13-e and O19. No product, test or selector change in this Review.
+
 # 2026-11-01 — RA-191 P13-c single-edge barrier slit definition
 
 - [RA-191](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Single_Edge_Barrier_Slit_Review_Decision_20261101.md) adjudicates `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT`: source-level cut-edge identity loss under `TriMesh`, independent exact CW counts, and Amendment 25's required cut-side incidence (two boundary occurrences may share both tips). No runtime or product/test/selector edits; no new accepted-green loss. The exact next turn is `M6-CP3-CB66-P13-CUT-SIDE-INCIDENCE` compile-only, followed conditionally by TB65. Vase P13-d/O18 remains independent. Stable 66/17/49, debt1; CP2 491/491 accepted, TB64 866/947 candidate, selector497/CP3 unpromoted.

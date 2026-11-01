@@ -1,3 +1,14 @@
+## RA-192 — P13-c slit adapter, probe adjudication of RA-191 (2026-11-01)
+
+- [RA-192](Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md) keeps RA-191's diagnosis and its rejection of a rail exemption and of midpoint insertion. **DESIGN Amendment 25 is rewritten:**
+  - The face array glues a barrier edge exactly when both endpoints are interior tips, and realises every other configuration (proved).
+  - A1 applies each slit in its cut accounting and its `dual_cycles` basis: two tip rows become one boundary row, the slit column is removed, and the curvature is `2π − Σθ(u) − Σθ(v)`.
+  - A region without a slit is bit-identical to before.
+  - A handle generator that crosses a slit fails closed as `IncompleteCycleBasis/HandleGeneratorCrossesSlit` (O19).
+  - RA-191's general incidence product and consumer-wide adoption are withdrawn: transport adjacency already excludes hard-feature edges.
+- Probes (macOS): the 869-row gate is unchanged (only O16), and the 81 deferred rows stay RED. **BunnyRandom passes the cut identity** and fails at `SingularityPortClassCountMismatch`, vertex 49, on macOS and FMA-off (P13-e).
+- CB66 `M6-CP3-CB66-P13-SLIT-CYCLE-BASIS` is an exact patch (`c83fefa2…`). TB65 runs the 869-row manifest `baaef9e7…` with ledger v5, membership 950. New: P13-e and O19. P13-c is discharged once TB65 matches.
+
 ## RA-190 — O15c dyadic A2a exit, probe adjudication of RA-189 (2026-10-31)
 
 - [RA-190](Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md) keeps RA-189's dyadic exit (`n/2^52`, ties to even, integer arithmetic) and its Cylinder promotion. **DESIGN Amendment 24 is rewritten:**
