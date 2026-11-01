@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-p13f-review-docs-apply-20261101-v1",
+  "request_id": "m6-cp3-p13f-review-docs-apply-20261101-v2",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-p13f-review-docs-apply-20261101-v1",
-  "file_id": "1l1sXu9xKBHo6mdOU0m6MiUkpV2mBNPrP",
-  "patch_sha256": "26c5d7430a6199e3b6021db30d57138f0bb8c58061a4f995ddd82bce90124887",
+  "mailbox_key": "m6-cp3-p13f-review-docs-apply-20261101-v2",
+  "file_id": "1IOAA7DcRod8MtPuKIClN8RztZDVziuOA",
+  "patch_sha256": "cb9ba7c8a7a7306d24caf4ea890c9e816f8d2c10cb323937285ac04d4627511d",
   "base_sha": "8d557342594f6d08a64e1f9c9a519f3baad17cf7",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "docs: review P13-f completion source-chart cost and freeze CB71"
