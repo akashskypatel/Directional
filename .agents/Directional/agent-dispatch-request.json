@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb66-arrangement-gate-20261101-v1",
+  "request_id": "m6-cp3-tb66-arrangement-census-20261101-v1",
   "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb66-arrangement-gate-20261101-v1",
+  "mailbox_key": "m6-cp3-tb66-arrangement-census-20261101-v1",
   "executor_sha": "1d32b9c5526ac7adfb5994e2494213af7f7cf0af",
   "semantic_source_sha": "5b08abe42f91f88fd6d09e225c7cf32d0aeb1ef3",
   "turn_id": "M6-CP3-TB66-P13-ARRANGEMENT-TERMINAL-FULL-GATE-EXEC",
@@ -14,11 +14,9 @@
     "EXPECTED_CANDIDATE_ZIP_SHA256": "dd00aa3590b584a72523aef8483faa928d806d816187c6bb6a91f5b19f9e648e",
     "EXPECTED_ROOT_MANIFEST_SHA256": "93c21dcf1ad25aa7b6d560831d7fac9c7d69ecb9df3a0825dc79a7f78c22d123",
     "EXPECTED_SOURCE_ARCHIVE_SHA256": "432bcc5a5b843c4ed1f21fe28467ee2ebefbded1fc4d4edb484c1eddc3714ed0",
-    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_TB65_P13_Slit_Cycle_Basis_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "baaef9e70081dc147fb9a7d91326038c1a4a9708ab1f46fcbfa141a0bf030466",
-    "EXPECTED_CASE_COUNT": "869",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
+    "EXPECTED_CASE_COUNT": "3"
   },
-  "artifact_prefix": "m6-cp3-tb66-arrangement-gate"
+  "artifact_prefix": "m6-cp3-tb66-arrangement-census"
 }
