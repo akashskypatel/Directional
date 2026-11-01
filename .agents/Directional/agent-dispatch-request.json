@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb74-ra19610-apply-20261101-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb74-ra19610-apply-20261101-v1",
-  "file_id": "1KrNFfCpKH5ykjB48cI0H2rJVWtPUmybW",
-  "patch_sha256": "c4bbed8a465f26599ce55e2f2e118653cdd529da9ed656180c43269117dc6768",
-  "base_sha": "49d29add18fec9e200169f9d1a244cbbb371351d",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(surface-cells): add embedded boundary quadrangulation search"
+  "request_id": "m6-cp3-cb74-ra19610-compile-20261101-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb74-ra19610-compile-20261101-v1",
+  "source_sha": "4d4ae3ecaa7f1d171393a64324cfdcea55a6a1d3",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-cb74-compile"
 }
