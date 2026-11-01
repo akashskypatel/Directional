@@ -1,0 +1,2 @@
+# M6-CP3-CB69 temporary trigger cleanup
+.agents/connector-triggers/source-snapshot/m6-cp3-cb69-20261101.txt
