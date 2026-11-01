@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb71-chart-graph-compile-20261101-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb71-chart-graph-compile-20261101-v1",
-  "source_sha": "042979f7a264dff21de4e3b1af25a1a27fe27c95",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb71-completion-chart-graph"
+  "request_id": "m6-cp3-cb71-documentation-closeout-20261101-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb71-documentation-closeout-20261101-v1",
+  "file_id": "1bSSl2C-9JnB6UHhQsY16QoF4O-mZy1iE",
+  "patch_sha256": "23e79fd937577942933c9e0a813a3aeff92db6171ca817ceb0de687b8b80c9a8",
+  "base_sha": "535c384a25ec8c30b5043d1a54e8dc1c57bec8b3",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close CB71 compile evidence and hand off exact CB72"
 }
