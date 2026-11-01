@@ -1,3 +1,0 @@
-TB66 source snapshot request
-canonical_turn=M6-CP3-TB66-P13-ARRANGEMENT-TERMINAL-FULL-GATE-EXEC
-entry_beacon_commit=b83c4567bbd58ead6b93c59cde3b1e5860c8c6c9
