@@ -34,7 +34,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-01 **RA-191 cut-side barrier-slit Review adjudicated; CB66 code/build next.** [CB65 report](Architecture_M6_CP3_CB65_P13_Canonical_Dyadic_Trace_Exit_Code_Build_Report_20261031.md). RA-190's accepted dyadic exit and frozen TB64 gate remain normative; next is immutable TB64 execution. |
+| Currency | 2026-11-01 **RA-191 cut-side barrier-slit Review adjudicated; CB66 code/build next.** [CB65 report](Architecture_M6_CP3_CB65_P13_Canonical_Dyadic_Trace_Exit_Code_Build_Report_20261031.md). RA-190's dyadic exit and TB64 gate are verified; RA-191 now defines the next CB66 cut-side implementation contract. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation; immutable semantic source `dbc38661efabdfa051f48f8f71ee3c604841842c`. |
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06, unchanged. TB63 is a verified Linux candidate, not selector497/CP3 acceptance. |
 | Latest candidate | **CB65 compile-only eight-target Linux** [run 41253674256](https://github.com/akashskypatel/Directional/actions/runs/41253674256), artifact `13062413347`, source `dbc38661efabdfa051f48f8f71ee3c604841842c`. Latest runtime TB64 866/866 (run 41256874416, result 13063712419), plus census 1 PASS / 2 pre-registered RED (run 41256885685, result 13064115441). macOS O16 remains. |
