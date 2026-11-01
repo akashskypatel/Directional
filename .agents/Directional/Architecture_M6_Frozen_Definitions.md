@@ -1,3 +1,12 @@
+## RA-193 — P13-d Vase arrangement rotation system, probe adjudication of the Vase decision (2026-11-01)
+
+- [RA-193](Architecture_M6_CP3_DEFN_P13_Vase_Arrangement_Rotation_Probe_Adjudication_20261101.md) applies the Vase decision's F1 rule with probes: the generic arrangement is the first invalid producer (0 cells). **DESIGN Amendment 26:**
+  - A directed wedge at a source edge or vertex is one rotation shared by every incident face chart, keyed by the canonical `SourceEntityIdentity`.
+  - Edge angles are counter-clockwise in the source orientation: `θ` on the face that traverses low→high, `2π − θ` on the other.
+  - An arrangement with invalid incidence ends the run at the `arrangement` stage with its own typed failure and the failure node's source face as locus (Amendment 19).
+- The decision's open-ended `M6-CP3-CB67-P13-VASE-INCIDENCE-BOUNDARY-PROBE` is withdrawn. CB67 `M6-CP3-CB67-P13-ARRANGEMENT-INCIDENCE-TERMINAL` (`35727214…`) and CB68 `M6-CP3-CB68-P13-ARRANGEMENT-WEDGE-ROTATION` (`e93f5d8c…`) are exact patches. TB66 reuses the 869 manifest (membership 950); TB67 uses the 871 manifest `434e6d37…` (membership 952).
+- New: P13-f (completion ownership rebuilds an O(F) `SourceChartTransitionGraph` per output vertex and per patch) → `M6-CP3-DEFN-P13-COMPLETION-OWNERSHIP-COST` after TB67. O18 is discharged once TB66 matches; P13-d's arrangement defect once TB67 matches.
+
 ## RA-192 — P13-c slit adapter, probe adjudication of RA-191 (2026-11-01)
 
 - [RA-192](Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md) keeps RA-191's diagnosis and its rejection of a rail exemption and of midpoint insertion. **DESIGN Amendment 25 is rewritten:**

@@ -306,6 +306,11 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - **Before designing around a relation predicate, ask whether its operands can differ under the producer's
   data model.** A check over two occurrences of one shared node is either tautological or unsatisfiable
   (RA-124.3: the A5 seam face clauses could never hold; a ladder of site diagnostics measured one instance).
+- **Read the producer's own published audit before instrumenting its consumers.** A downstream rejection
+  names where a fault was caught, not where it arose. The Vase decision planned probes at four boundaries
+  and called `arrangementCells=0` unproven, while the arrangement already published `incidenceValid=false`
+  and `RepeatedNodeCycle` and the count was its `cells.size()`. One run printing that audit found the
+  producer; a wedge census and an independent rotation-order oracle then found both defects (RA-193).
 
 ## Contracts, planning, reviews, and durable records
 

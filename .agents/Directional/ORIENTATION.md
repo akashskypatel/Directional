@@ -2,8 +2,8 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-11-01 · `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE` static source/immutable census review: parity zero-odd bypasses incidence validation, side repair detects an unknown earlier clause; producer not yet attributed; exact bounded CB probe frozen. TB65 Linux artifact-only gate **869/869 PASS**, membership **950**, and independent census Cylinder PASS, BunnyRandom P13-e `SingularityPortClassCountMismatch` at vertex 49, Vase P13-d/O18 `SideSubdivisionRepair:InvalidInputIncidence` RED at registered signatures. [TB65 report](Architecture_M6_CP3_TB65_P13_Slit_Full_Gate_Execution_Report_20261101.md). CP2 491/491 remains last accepted; stable 66/17/49, debt 1; no CP3/selector497 promotion.
-**Next:** `M6-CP3-CB67-P13-VASE-INCIDENCE-BOUNDARY-PROBE` (bounded P13-d/O18 producer-incidence diagnostics only, compile-only), after the Vase Review/Definition; BunnyRandom P13-e is still a separate subsequent Review.
+**Currency:** 2026-11-01 · [RA-193](Architecture_M6_CP3_DEFN_P13_Vase_Arrangement_Rotation_Probe_Adjudication_20261101.md) probe-adjudicated `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE`. Vase's arrangement publishes zero cells: its directed wedges split per face chart and half its edge rotations are mirrored, and the pipeline ignores the arrangement's typed failure. Exact CB67 (O18) and CB68 (rotation system) are frozen, plus the TB67 871-row manifest. TB65 Linux artifact-only gate **869/869 PASS**, membership **950**, and independent census Cylinder PASS, BunnyRandom P13-e `SingularityPortClassCountMismatch` at vertex 49, Vase P13-d/O18 `SideSubdivisionRepair:InvalidInputIncidence` RED at registered signatures. [TB65 report](Architecture_M6_CP3_TB65_P13_Slit_Full_Gate_Execution_Report_20261101.md). CP2 491/491 remains last accepted; stable 66/17/49, debt 1; no CP3/selector497 promotion.
+**Next:** `M6-CP3-CB67-P13-ARRANGEMENT-INCIDENCE-TERMINAL` (exact patch, compile only) → TB66 → `M6-CP3-CB68-P13-ARRANGEMENT-WEDGE-ROTATION` → TB67. On the Review track, P13-e (BunnyRandom) can run now; P13-f (completion ownership cost) follows TB67.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -105,23 +105,25 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** TB65 completed the 869/950 Linux gate; three new slit-cycle-basis guards passed. RA-192 proves an interior tip–tip barrier edge is the only configuration Amendment 15.3's face array glues, and slits it exactly in A1's cut accounting and `dual_cycles` basis.
-- **P13-e, BunnyRandom (current):** CB66/TB65 completed; separate Review/Definition next. Probes: BunnyRandom passes the identity (χ −5, 7 loops) and reaches **P13-e**: index −1 vertex 49 has 4 of 5 port incidences, on both builds. P13-e gets its own DEFN after TB65.
-- **P13-d, Vase (Review-defined producer probe next):** A7 rejects `SideSubdivisionRepair:InvalidInputIncidence`. Zero-odd parity fast path does not validate, side repair rejects; upstream first invalid complex/predicate remains unproved. O18 missing exact locus retained. See [Architecture_M6_CP3_DEFN_P13_Vase_Completion_Incidence_Review_Decision_20261101.md](Architecture_M6_CP3_DEFN_P13_Vase_Completion_Incidence_Review_Decision_20261101.md).
+**Immediate:** TB65 completed the 869/950 Linux gate; three new slit-cycle-basis guards passed. RA-192 proves an interior tip–tip barrier edge is the only configuration Amendment 15.3's face array glues, and slits it exactly in A1's cut accounting and `dual_cycles` basis. RA-193 finds Vase's first invalid producer, the generic arrangement's rotation system, and freezes two exact patches.
+- **P13-e, BunnyRandom (Review DEFN, can run now):** BunnyRandom passes the identity (χ −5, 7 loops) and reaches **P13-e**: index −1 vertex 49 has 4 of 5 port incidences, on macOS, FMA-off and Linux.
+- **P13-d, Vase (exact CB67 → TB66 → CB68 → TB67):** the arrangement has 0 cells (`RepeatedNodeCycle`, node 33). Its wedges split per face chart (46,585 single-ray wedges) and 72 of 167 multi-ray edge rotations are mirrored. Fixed, it is valid with 26,827 cells; CB67 also ends the run typed at the arrangement (O18). [RA-193](Architecture_M6_CP3_DEFN_P13_Vase_Arrangement_Rotation_Probe_Adjudication_20261101.md).
+- **P13-f, Vase completion (Review DEFN after TB67):** completion ownership rebuilds an O(F) `SourceChartTransitionGraph` per output vertex, then per patch; Vase exceeds 600 s.
 - **P13-a / P13-b:** Cylinder PASS and A2a dyadic width failure discharged; earlier gate and arithmetic evidence retained in TB64 and RA-190.
 
 macOS O16 stays separate.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | P13 matrix 6/6. Order: CB64 → TB63 → CB65 → TB64 → CB66 → TB65 (all done; P13-c slit). P13-d Vase completion and P13-e BunnyRandom ports each get a DEFN → CB → TB. Then a re-census, with O6/O9 where reached. O19 (slit handle generator) is genus > 0 only and not blocking. | M6-CP3, `M6-CP3-CB67-P13-VASE-INCIDENCE-BOUNDARY-PROBE` next |
+| **1** | P13 matrix 6/6. Order: CB64 → TB63 → CB65 → TB64 → CB66 → TB65 (all done; P13-c slit) → CB67 → TB66 → CB68 → TB67 (P13-d arrangement, RA-193). P13-e BunnyRandom ports and P13-f Vase completion cost each get a DEFN → CB → TB. Then a re-census, with O6/O9 where reached. O19 (slit handle generator) is genus > 0 only and not blocking. | M6-CP3, `M6-CP3-CB67-P13-ARRANGEMENT-INCIDENCE-TERMINAL` next |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
 
-- **Rejection location is not producer identity:** a no-op parity fast path can return unvalidated incidence; side repair later rejects it. Inspect structural incidence at arrangement/simplification/parity boundaries before attributing or repairing (P13-d Review, 2026-11-01).
+- **Rejection location is not producer identity:** side repair rejected an arrangement that had already failed. Read the producer's own published audit first (`SurfaceArrangementDiagnostics::incidenceFailure`), then probe incidence at each boundary before attributing or repairing (RA-193, 2026-11-01).
+- **Identity keys that carry a witness's chart split shared entities:** a wedge, fan or edge key must use the canonical `SourceEntityIdentity`, not `ResolvedSourceEntity`'s per-face chart; and an angle measured from a canonical edge direction is counter-clockwise on only one of its two faces (RA-193).
 
 - **Simple-edge identity loses a slit:** a vertex-indexed face array cannot hold two edges with the same endpoints, so an interior barrier edge with two interior tips stays glued. That is the only configuration that does (RA-192.1 D2). A1 applies it in the cycle basis instead of building a new incidence product, because transport adjacency is already keyed by source edge (RA-191, RA-192).
 
