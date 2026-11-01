@@ -1,7 +1,7 @@
 ---TURN_STATUS---
 Turn: M6-CP3-TB65-P13-SLIT-FULL-GATE-EXEC
 Status: IN_PROGRESS
-Successor: UNKNOWN
+Successor: M6-CP3-TB65-P13-SLIT-FULL-GATE-EXEC
 Started at: 2026-11-01T04:56:26Z
 Resumed at: 
 Ended at: 
