@@ -409,6 +409,10 @@ struct PureQuadCompletionOptions {
   const SurfacePointSourceSupportResolver *sourceSupportResolver = nullptr;
   const SourceTopologyRegions *sourceAuthority = nullptr;
   const std::set<authority::SourceEdgeTopologyKey> *sourceHardFeatureEdges = nullptr;
+  // Optional source-chart graph shared by every patch of one completion pass.
+  // Used only when it borrows exactly the source inputs above; otherwise
+  // ownership validation builds its own graph for the patch.
+  const SourceChartTransitionGraph *sourceTransitions = nullptr;
 };
 
 struct PureQuadCompletionEvidence {
@@ -543,7 +547,8 @@ bool validate_completion_domain_ownership(
     const Eigen::MatrixXi *sourceFaces,
     const SourceTopologyRegions *sourceAuthority, std::string &failure,
     PureQuadCompletionOwnershipRejection *ownershipRejection,
-    const std::set<authority::SourceEdgeTopologyKey> *sourceHardFeatureEdges);
+    const std::set<authority::SourceEdgeTopologyKey> *sourceHardFeatureEdges,
+    const SourceChartTransitionGraph *sourceTransitions = nullptr);
 
 } // namespace pure_quad_detail
 

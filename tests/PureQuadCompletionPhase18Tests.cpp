@@ -1289,6 +1289,64 @@ TEST(PureQuadCompletionPhase18,
 }
 
 TEST(PureQuadCompletionPhase18,
+     PatchOwnershipReusesOnlyASharedGraphBorrowingItsExactInputs) {
+  const CompletionFixture fixture = source_support_alias_patch();
+  const auto sourceAuthority =
+      test_source_authority(fixture.faces, {0, 0}, {0, 1});
+  const auto &hard = no_hard_feature_edges();
+  const std::set<directional::authority::SourceEdgeTopologyKey> diagonal{
+      directional::authority::SourceEdgeTopologyKey::from_indices(0, 2, 4U)
+          .value()};
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 28;
+  options.sourceVertices = &fixture.vertices;
+  options.sourceFaces = &fixture.faces;
+  options.sourceAuthority = &sourceAuthority;
+  options.sourceHardFeatureEdges = &hard;
+  const auto local = directional::geometry::complete_pure_quad_patch(
+      fixture.patch, options);
+  ASSERT_TRUE(local.is_produced());
+
+  const directional::geometry::SourceChartTransitionGraph borrowed(
+      &fixture.faces, &sourceAuthority, hard);
+  const directional::geometry::SourceChartTransitionGraph splitByDiagonal(
+      &fixture.faces, &sourceAuthority, diagonal);
+  ASSERT_TRUE(borrowed.borrows(&fixture.faces, &sourceAuthority, hard));
+  ASSERT_FALSE(splitByDiagonal.borrows(&fixture.faces, &sourceAuthority, hard));
+  for (const auto *graph : {&borrowed, &splitByDiagonal}) {
+    options.sourceTransitions = graph;
+    const auto shared = directional::geometry::complete_pure_quad_patch(
+        fixture.patch, options);
+    ASSERT_TRUE(shared.is_produced())
+        << (shared.rejection() != nullptr ? shared.rejection()->detail : "");
+    ASSERT_EQ(local.product().vertexLineage.size(),
+              shared.product().vertexLineage.size());
+    for (std::size_t row = 0; row < local.product().vertexLineage.size();
+         ++row) {
+      EXPECT_EQ(local.product().vertexProvenance[row].face,
+                shared.product().vertexProvenance[row].face);
+      EXPECT_EQ(local.product().vertexLineage[row].sourceCharts,
+                shared.product().vertexLineage[row].sourceCharts);
+      EXPECT_EQ(local.product().vertexLineage[row].sourceSupport,
+                shared.product().vertexLineage[row].sourceSupport);
+    }
+  }
+
+  // The ignored graph is discriminating: with the diagonal really hard, the
+  // vertex alias cannot rebind to the patch face, shared graph or not.
+  options.sourceHardFeatureEdges = &diagonal;
+  options.sourceTransitions = nullptr;
+  const auto splitLocal = directional::geometry::complete_pure_quad_patch(
+      fixture.patch, options);
+  options.sourceTransitions = &splitByDiagonal;
+  const auto splitShared = directional::geometry::complete_pure_quad_patch(
+      fixture.patch, options);
+  ASSERT_TRUE(splitLocal.is_rejected());
+  ASSERT_TRUE(splitShared.is_rejected());
+  EXPECT_EQ(splitLocal.rejection()->detail, splitShared.rejection()->detail);
+}
+
+TEST(PureQuadCompletionPhase18,
      CompletionRejectsFaceInteriorOutsidePatchSupport) {
   CompletionFixture fixture = source_support_alias_patch();
   auto &outside = fixture.patch.boundaryProvenance[0];

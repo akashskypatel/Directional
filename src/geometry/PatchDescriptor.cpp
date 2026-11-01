@@ -2480,6 +2480,13 @@ SurfaceCellComplexCompletionDraft complete_surface_cell_complex_pass(
     ReusableCompletionProducts *reusableProducts = nullptr) {
   SurfaceCellComplexCompletionDraft result;
   const SurfacePointSourceSupportResolver sourceSupportResolver(F);
+  // One source-chart graph for every patch of this pass; ownership validation
+  // reuses it instead of rebuilding it from F for each patch.
+  const SourceChartTransitionGraph sourceTransitions(
+      &F, options.sourceAuthority,
+      options.sourceHardFeatureEdges != nullptr
+          ? *options.sourceHardFeatureEdges
+          : empty_hard_feature_edges());
   SurfaceCellParityRepairResult parityRepair =
       repair_surface_cell_boundary_parity(std::move(complex));
   std::optional<SurfaceCellParityRepairProduct> parityProduct;
@@ -2729,6 +2736,7 @@ SurfaceCellComplexCompletionDraft complete_surface_cell_complex_pass(
     completionOptions.sourceAuthority = options.sourceAuthority;
     completionOptions.sourceHardFeatureEdges =
         options.sourceHardFeatureEdges;
+    completionOptions.sourceTransitions = &sourceTransitions;
     return complete_pure_quad_patch(descriptor.patch, completionOptions);
   };
 
@@ -2843,7 +2851,8 @@ SurfaceCellComplexCompletionDraft complete_surface_cell_complex_pass(
                 descriptor.patch, reused, completionVariant,
                 &sourceSupportResolver, &F, options.sourceAuthority,
                 ownershipFailure,
-                &ownershipRejection, options.sourceHardFeatureEdges);
+                &ownershipRejection, options.sourceHardFeatureEdges,
+                &sourceTransitions);
         const bool topologyValid =
             ownershipValid && pure_quad_topology_is_disk(reused) &&
             !reused.quads.empty();

@@ -1335,7 +1335,8 @@ bool validate_completion_domain_ownership(
     const Eigen::MatrixXi *sourceFaceMatrix,
     const SourceTopologyRegions *sourceAuthority, std::string &failure,
     PureQuadCompletionOwnershipRejection *ownershipRejection,
-    const std::set<authority::SourceEdgeTopologyKey> *sourceHardFeatureEdges) {
+    const std::set<authority::SourceEdgeTopologyKey> *sourceHardFeatureEdges,
+    const SourceChartTransitionGraph *sourceTransitions) {
   if (mesh.vertices.size() != mesh.vertexProvenance.size() ||
       mesh.vertices.size() != mesh.vertexLineage.size()) {
     failure = "CompletionOwnershipIncompleteVertexLineage";
@@ -1359,10 +1360,19 @@ bool validate_completion_domain_ownership(
       patchSourceFaces.end());
   const std::set<int> sourceFaces(patchSourceFaces.begin(),
                                   patchSourceFaces.end());
-  const SourceChartTransitionGraph transitionGraph(
-      sourceFaceMatrix, sourceAuthority, sourceHardFeatureEdges != nullptr
-          ? *sourceHardFeatureEdges
-          : empty_hard_feature_edges());
+  const std::set<authority::SourceEdgeTopologyKey> &hardFeatureEdges =
+      sourceHardFeatureEdges != nullptr ? *sourceHardFeatureEdges
+                                        : empty_hard_feature_edges();
+  const bool reuseGraph =
+      sourceTransitions != nullptr &&
+      sourceTransitions->borrows(sourceFaceMatrix, sourceAuthority,
+                                 hardFeatureEdges);
+  std::optional<SourceChartTransitionGraph> localGraph;
+  if (!reuseGraph) {
+    localGraph.emplace(sourceFaceMatrix, sourceAuthority, hardFeatureEdges);
+  }
+  const SourceChartTransitionGraph &transitionGraph =
+      reuseGraph ? *sourceTransitions : localGraph.value();
   const bool transitionAuthorityAvailable = transitionGraph.available();
   std::size_t sourceVertexExtent = 0U;
   if (sourceFaceMatrix != nullptr && sourceFaceMatrix->cols() == 3) {
@@ -2274,7 +2284,8 @@ PureQuadCompletionResult complete_pure_quad_patch(
   if (!pure_quad_detail::validate_completion_domain_ownership(
           patch, mesh, options.completionVariant, sourceSupportResolver,
           options.sourceFaces, options.sourceAuthority, ownershipFailure,
-          &result.ownershipRejection, options.sourceHardFeatureEdges)) {
+          &result.ownershipRejection, options.sourceHardFeatureEdges,
+          options.sourceTransitions)) {
     result.failureReason = PureQuadPatchRejectReason::TopologyValidationFailed;
     result.failure = ownershipFailure;
     return close_pure_quad_completion(std::move(result));
