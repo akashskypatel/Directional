@@ -13774,9 +13774,37 @@ remesh_from_raw_cross_field_impl_with_stage_products(
         result.diagnostics.surfaceCellArrangementCellCount);
     mark_stage_consumed("embedding", retainedNetworkIdentity,
                         SurfaceCellConsumptionKind::Full);
+    const geometry::SurfaceArrangementDiagnostics &arrangementIncidence =
+        arrangementComplex.diagnostics;
     record_surface_cell_stage("arrangement", retainedNetworkIdentity,
-                              arrangementIdentity, true,
+                              arrangementIdentity,
+                              arrangementIncidence.incidenceValid,
                               result.diagnostics.surfaceCellArrangementSeconds);
+    if (!arrangementIncidence.incidenceValid) {
+      // Without valid incidence the arrangement publishes no cells to simplify
+      // or complete; its own typed failure is the first invalid producer.
+      SurfaceCellFailureLocusDiagnostics locus;
+      if (arrangementIncidence.incidenceFailureNode >= 0 &&
+          arrangementIncidence.incidenceFailureNode <
+              static_cast<int>(arrangementComplex.nodes.size())) {
+        const int face =
+            arrangementComplex
+                .nodes[static_cast<std::size_t>(
+                    arrangementIncidence.incidenceFailureNode)]
+                .sourceFace;
+        if (face >= 0 && face < meshWhole.F.rows()) {
+          locus.sourceFace = std::array<std::size_t, 3>{
+              static_cast<std::size_t>(meshWhole.F(face, 0)),
+              static_cast<std::size_t>(meshWhole.F(face, 1)),
+              static_cast<std::size_t>(meshWhole.F(face, 2))};
+        }
+      }
+      return fail_surface_cells(
+          SurfaceCellFailureCode::NotProductionReady, "arrangement",
+          geometry::surface_arrangement_incidence_failure_name(
+              arrangementIncidence.incidenceFailure),
+          locus);
+    }
     completedSurfaceCellStages.push_back("arrangement");
     if (options.surfaceCells.injectFailureAfterStage == 6) {
       return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
