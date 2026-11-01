@@ -1,12 +1,19 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb69-arrangement-terminal-20261101-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb69-arrangement-terminal-apply-20261101-v1",
-  "file_id": "1zb64Anrq0JyDZKL3hGYlLnV4HjJIIc7Q",
-  "patch_sha256": "2bec3083bc57e6498d57b0553c8ad7ac991f7645de9d9ea2e38268a6e3be4afc",
-  "base_sha": "b6d185e060b5805b30a9582317d18b3be9024215",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix: propagate invalid arrangement incidence at producer boundary",
+  "request_id": "m6-cp3-cb69-compile-20261101-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb69-compile-20261101-v1",
+  "source_sha": "5b08abe42f91f88fd6d09e225c7cf32d0aeb1ef3",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-cb69-compile",
   "retention_days": 14
 }
