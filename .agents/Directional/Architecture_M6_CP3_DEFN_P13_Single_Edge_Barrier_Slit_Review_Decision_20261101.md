@@ -55,9 +55,9 @@ The subsequent **separate** Review `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE` r
 | ROADMAP | CP3 boundary refreshed; checkpoint status remains active/not accepted |
 | Selector manifest | n/a: Review has no authorization to mutate frozen selector/manifest |
 | LESSONS | Existing semantic ownership and independent-oracle lessons apply; no separate lesson needed |
-| Consolidation under CLEAN_UP_POLICY | No superseded unique evidence deleted: RA-188 and RA-190 own distinct executed proof; RA-191 supplies normative new decision and links to them; historical reports retained |
+| Consolidation under CLEAN_UP_POLICY | No superseded unique evidence deleted: RA-188 and RA-190 own distinct executed proof; RA-191 supplies normative new decision and links to them; historical reports retained. Turn snapshot-trigger file was deleted by the standard cleanup workflow |
 | Successor frozen | `M6-CP3-CB66-P13-CUT-SIDE-INCIDENCE` with exact falsifiers and stop routes above |
 | Turn boundary held | Review remained runtime-free; no implementation, test, fixture, selector, benchmark or build source edited |
 | review_check.py boundary | Executed against the exact snapshot in a **synthetic Git worktree**: code/selector checks PASS; 4 historical rewrite-baseline checks could not pass because `8b7299b43` is absent from the snapshot-derived local Git history. Full authentic-history boundary verification remains unresolved; this is not represented as a green boundary run |
-| `STATUS` lifecycle maintained | Entry beacon written as `IN_PROGRESS`; COMPLETE publication only after docs are durably applied and verified |
-| Pushed to origin, branch in sync | Pending dispatcher transport and authoritative remote readback; local synthetic Git history is not evidence of an origin push |
+| `STATUS` lifecycle maintained | Entry beacon written as `IN_PROGRESS`; final COMPLETE beacon must be the last repository mutation after this record is applied |
+| Pushed to origin, branch in sync | GitHub dispatcher applied the exact eight-path patch successfully (run 41260934999); verified applied commit in the job result, successful temporary-state cleanup (run 41261109756) and remote PR #8 head readback after cleanup. This is remote evidence; no local synthetic `git status -sb` is represented as origin synchronization |
