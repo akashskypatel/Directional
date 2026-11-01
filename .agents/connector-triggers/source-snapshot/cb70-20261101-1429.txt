@@ -1,0 +1,2 @@
+Source snapshot request for M6-CP3-CB70-P13-ARRANGEMENT-WEDGE-ROTATION.
+Freeze at this event commit. No compile or tests.
