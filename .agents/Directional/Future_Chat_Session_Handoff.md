@@ -34,19 +34,19 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-01 **TB67 immutable wedge gate and census completed as registered; P13-f Review next** ([TB67 report](Architecture_M6_CP3_TB67_P13_Arrangement_Wedge_Full_Gate_Execution_Report_20261101.md)); RA-193.8's registered outcomes matched. CB69 O18 terminal attribution is observed; CB70 R1/R2 wedge rotation guards 870–871 PASS at TB67; no CP3 promotion. |
+| Currency | 2026-11-01 **P13-f Review completed; CB71 compile-only next (no production acceptance)** ([TB67 report](Architecture_M6_CP3_TB67_P13_Arrangement_Wedge_Full_Gate_Execution_Report_20261101.md)); RA-193.8's registered outcomes matched. CB69 O18 terminal attribution is observed; CB70 R1/R2 wedge rotation guards 870–871 PASS at TB67; no CP3 promotion. |
 | Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing`; CB70 source [`9754500b2058`](https://github.com/akashskypatel/Directional/commit/9754500b2058229b7f0a6268838953650690b031), compile package `13087332886`; preceding CB69 semantic source [`5b08abe42f91`](https://github.com/akashskypatel/Directional/commit/5b08abe42f91f88fd6d09e225c7cf32d0aeb1ef3), immutable package `13084749209`; no code/tests/build/selector mutations in TB66. |
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06; unchanged, TB67 candidate only. |
 | Latest candidate | **TB67 Linux gate 871/871 PASS, membership 952**, [run 41318594024](https://github.com/akashskypatel/Directional/actions/runs/41318594024), result `13089225030`, ZIP `cc3dd211d243081c8fc9861923fd1a01c332c9b8182692e8f1f7dad693642dce`, 1750/1750 hashes; independent **census Cylinder PASS, BunnyRandom expected RED, Vase expected ABNORMAL 600 s timeout**, [run 41318624551](https://github.com/akashskypatel/Directional/actions/runs/41318624551), result `13089595542`, ZIP `fb80af756d9a740d1393c7f12b66bcf4f8f399544056b467c4207fe89487621e`, 9/9 hashes; both postflight true, no rebuild. |
 | Regression accounting and debt | Stable **66/17/49**, debt **1**; v5 deferred 81 (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE), membership 952, unchanged; selector497 unpromoted. DR1/DR3 open, DR2/DR4 → M8-CP2. |
 | Active boundary | **Cylinder PASS**; **BunnyRandom P13-e** `SingularityPortClassCountMismatch` at source vertex 49, no produced quads; **Vase P13-f** reached 600-second harness timeout without terminal verdict or output; pre-existing RA-193 completion-cost hypothesis requires Review and independently proven stage entry. CB70 R1/R2 guards pass, while direct Vase completion remains unproved. O18 attribution discharged; O16/O17/O19/O6/O9 carried. |
 
-## Mandatory next turn — `M6-CP3-DEFN-P13-COMPLETION-OWNERSHIP-COST` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB71-P13-COMPLETION-CHART-GRAPH-REUSE` — EXACT NEXT
 
-- **Completed prior turn:** TB67 artifact-only Test + Benchmark ([TB67 report](Architecture_M6_CP3_TB67_P13_Arrangement_Wedge_Full_Gate_Execution_Report_20261101.md)). Gate 871/871 PASS (membership 952) and pre-registered census Cylinder PASS, BunnyRandom P13-e RED, Vase ABNORMAL after 600 seconds. No rebuild, selector promotion or new stable regression.
-- **Review scope:** Independently locate the first unbounded Vase completion operation, measure `SourceChartTransitionGraph` rebuilds and per-output-vertex matching from authoritative primary source/evidence, prove a bounded source-authority-preserving reuse strategy or alternative, and freeze a falsifiable exact CB patch/test plan. Do not infer a completed arrangement stage solely from the timed-out TB67 raw log; use the prior RA-193 probes and fresh permitted Review evidence.
-- **Owner:** P13-f Review / Definition under [RA-193](Architecture_M6_CP3_DEFN_P13_Vase_Arrangement_Rotation_Probe_Adjudication_20261101.md) §9 (renumbered RA-194). Separate P13-e singularity-port-count Review remains independently authorized, not silently combined.
-- **Carried:** accepted CP2 491/491; selector497 frozen, stable 66/17/49 debt1; O16/O17/O19/O6/O9, DR1/DR3 and DR2/DR4.
+- **Completed predecessor:** `M6-CP3-DEFN-P13-COMPLETION-OWNERSHIP-COST` [independent Review](Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Review_Decision_20261101.md) found repeated per-vertex/per-patch full-source `SourceChartTransitionGraph` construction. Separate RA-193 scratch stacks support this hypothesis; TB67 Vase timeout alone proves no terminal stage. No source/test/runtime mutations and no CP3 promotion.
+- **Code + Build authority:** [Architecture_M6_CP3_CB71_P13_Completion_Chart_Graph_Reuse_Code_Build_Plan_20261101.md](Architecture_M6_CP3_CB71_P13_Completion_Chart_Graph_Reuse_Code_Build_Plan_20261101.md). Reuse a once-validated source-chart graph per completion batch, preserve exact authority/barrier/sheet predicates and standalone validation, add non-vacuous valid/invalid control tests. Compile GMP/GMPXX eight targets only; **do not run tests/benchmarks** in CB.
+- **Conditional following TB:** later artifact-only 871 gated / 81 deferred, Cylinder/Bunny invariant and a fresh Vase bounded at 600 seconds; first actual terminal verdict and graph-build count determine next Review. Never pre-credit Vase success.
+- **Carried:** P13-e BunnyRandom singularity-port-count Review independently authorized; O16/O17/O19/O6/O9, DR1/DR3, DR2/DR4; stable 66/17/49 debt1, CP2 accepted 491/491, selector497 frozen.
 
 ## Turn Sequence
 
@@ -60,12 +60,12 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | 6 — COMPLETE | `M6-CP3-CB70-P13-ARRANGEMENT-WEDGE-ROTATION` | Implementation agent, Linux; RA-193.11 (`e93f5d8c…`, `37 30` / `95 0`), spec RA-193.7, compile only. Mismatch → `M6-CP3-PLAN-P13-ARRANGEMENT-WEDGE-STOP`; infrastructure → `M6-CP3-CB70A-P13-ARRANGEMENT-WEDGE-ORCH` |
 | 7 — COMPLETE | `M6-CP3-TB67-P13-ARRANGEMENT-WEDGE-FULL-GATE-EXEC` | Implementation agent, Linux; gate 871/871, membership 952, census per RA-193.8 (Vase ABNORMAL 600 s timeout). Mismatch → `M6-CP3-TB67-P13-ARRANGEMENT-WEDGE-FULL-GATE-REV`; infrastructure → `M6-CP3-TB67A-P13-ARRANGEMENT-WEDGE-ORCH` |
 | 8 (Review, parallel with 3–7) | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49) → CB → TB | Probe DEFN, then exact patch |
-| 9 — NEXT (Review, after 7) | `M6-CP3-DEFN-P13-COMPLETION-OWNERSHIP-COST` (P13-f) → CB → TB | Probe DEFN; must name Vase's next failure, or a PASS, within 600 s |
+| 9 — Review COMPLETE | `M6-CP3-DEFN-P13-COMPLETION-OWNERSHIP-COST` (P13-f) | Source graph rebuild evidence, CB71 exact plan; Vase terminal still unknown |
 | 10 | P13 re-census → O6/O9 where reached → matrix 6/6 → retire/FIXTURE/PRODUCT/OPEN slices → CP3-REV | One slice at a time |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-DEFN-P13-COMPLETION-OWNERSHIP-COST** (Review / Definition; investigate bounded O(F) repeated source-chart graph and ownership work, establish causal evidence and exact corrective authority before CB; immutable TB67 result is the entry evidence).
+`load_next`: **M6-CP3-CB71-P13-COMPLETION-CHART-GRAPH-REUSE** (Code + Build / compile only; frozen [Architecture_M6_CP3_CB71_P13_Completion_Chart_Graph_Reuse_Code_Build_Plan_20261101.md](Architecture_M6_CP3_CB71_P13_Completion_Chart_Graph_Reuse_Code_Build_Plan_20261101.md); immutable TB67 census plus primary source graph reuse evidence; no runtime).
 
 Read first:
 - [TB67 report](Architecture_M6_CP3_TB67_P13_Arrangement_Wedge_Full_Gate_Execution_Report_20261101.md): immutable 871/871 gate, exact result artifacts, independent census, timeout limits and no acceptance promotion.
