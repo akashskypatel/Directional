@@ -1,3 +1,7 @@
+# 2026-11-01 — CB73 source orientation guard, exact patch and compile-only evidence
+
+- [CB73 record](.agents/Directional/Architecture_M6_CP3_CB73_P13_Completion_Embedding_Code_Build_Record_20261101.md): RA-196.9 patch `4020fad1…` applied to three authorized code/test paths as [`57c24325f539`](https://github.com/akashskypatel/Directional/commit/57c24325f53932a195d0c335c0d6609cad90a565). The completion validator now checks source-normal orientation (including folded quads); two tests compiled but not run. [GMP/GMPXX eight-target compile](https://github.com/akashskypatel/Directional/actions/runs/41357670136), package `13104267023` (ZIP SHA `4915825fe795ef64a7e6e2bbb14405fe56be6b13a692e1258701ffd353cdc67a`), 28/28 hashes; no runtime, no accepted-prefix or production promotion. Next CB74 separately per RA-196.10.
+
 # 2026-11-01 — RA-196 P13-g probe adjudication; exact CB73/CB74/CB75, TB69
 
 - [RA-196](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) reopens `M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING` and supersedes the static decision's CB73. That CB73 had an open A/B branch, a witness product and a stop rule.
