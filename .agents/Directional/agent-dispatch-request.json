@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb68-orientation-20261101-v1",
+  "request_id": "m6-cp3-cb69-arrangement-terminal-20261101-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb68-orientation-apply-20261101-v1",
-  "file_id": "1K4UZ597jr2whHRx5DArYtTTOuKFynvIZ",
-  "patch_sha256": "d18d5e29ee42a77026cf1762c0c194686c78930a64fc8440e26faaf7cc04e9c6",
-  "base_sha": "7374080fd40983b1dfd9e781d4f403a63975ba9a",
+  "mailbox_key": "m6-cp3-cb69-arrangement-terminal-apply-20261101-v1",
+  "file_id": "1zb64Anrq0JyDZKL3hGYlLnV4HjJIIc7Q",
+  "patch_sha256": "2bec3083bc57e6498d57b0553c8ad7ac991f7645de9d9ea2e38268a6e3be4afc",
+  "base_sha": "b6d185e060b5805b30a9582317d18b3be9024215",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: align orientation and roadmap after CB68 revert",
+  "commit_message": "fix: propagate invalid arrangement incidence at producer boundary",
   "retention_days": 14
 }
