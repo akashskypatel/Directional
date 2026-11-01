@@ -2,8 +2,8 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-31 · `M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH` closed by [RA-190](Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md), which probe-adjudicates RA-189. The A2a dyadic exit (Amendment 24) leaves the 864-row candidate gate unchanged on macOS (only O16) and gets **Vase past A4**; Vase now fails at completion (`SideSubdivisionRepair:InvalidInputIncidence`, P13-d). TB63 Linux **863/863** is the latest executed gate.
-**Next:** `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT` (exact patch) → `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC` (gate 866, membership 947). Standing state: CP2 491/491 last accepted; CP3 and selector497 not promoted; stable 66/17/49, debt 1.
+**Currency:** 2026-11-01 · `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT` adjudicated by [RA-191](Architecture_M6_CP3_DEFN_P13_Single_Edge_Barrier_Slit_Review_Decision_20261101.md). TB64 Linux **866/866**, membership **947** is the latest verified execution. BunnyRandom P13-c `CutTransportDomainIdentityMismatch` requires distinct cut-side incidences; Vase P13-d remains an independent completion failure.
+**Next:** `M6-CP3-CB66-P13-CUT-SIDE-INCIDENCE` (compile only), then TB65 on immutable package. CP2 491/491 last accepted; CP3/selector497 not promoted; stable 66/17/49, debt 1.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -48,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB63 Linux eight-target **863/863** independently checked (863 gated, 82 deferred, membership 945), P13 Cylinder PASS; candidate next gate 864/81 not executed; CB63 CLI and GUI GMP links verified, GUI not launched; TB60 macOS O16 row 283 carried. RP-01 is closed (RA-179), O15 discharged (RA-181), row 935 gated (RA-182), the O2 entry gate landed (RA-183) and DIAG-RETAIN is closed (RA-184…RA-187: snapshots, display adapter, CLI sidecar, GUI layers). Linux reviewed candidate TB62 863/863 (CLI 11/11 report-supported, GUI linkage-only). CP3 closure and the direct-production matrix are **not accepted**. selector497 frozen. |
+| **M6-CP3 — active** | TB64 Linux eight-target **866/866** independently checked (866 gated, 81 deferred, membership 947); P13 census Cylinder PASS, BunnyRandom A3 and Vase A7 expected RED; CB65 GMP/GMPXX compilation verified, GUI not launched; TB60 macOS O16 row 283 carried. RP-01 is closed (RA-179), O15 discharged (RA-181), row 935 gated (RA-182), the O2 entry gate landed (RA-183) and DIAG-RETAIN is closed (RA-184…RA-187: snapshots, display adapter, CLI sidecar, GUI layers). Linux reviewed candidate TB62 863/863 (CLI 11/11 report-supported, GUI linkage-only). CP3 closure and the direct-production matrix are **not accepted**. selector497 frozen. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 **Prior Review authority:** [RA-187](Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md) (GUI layers; full-gate TB rule), [RA-186](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) (CLI sidecar; DR4), [RA-185](Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md) (DIAG-RETAIN display; DR2 → M8-CP2), [RA-184](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) (DIAG-RETAIN), [RA-183](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) (O2 gate; O2b, O16), [RA-181](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md) (O15 discharged; O15c) and [RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md) (RP-01 closed; local-mode rules). Implementers get only exact patches and manifests.
@@ -105,22 +105,23 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** RA-188 split P13 into three slices. RA-189/RA-190 settle P13-b with the A2a dyadic exit, and Vase's next frontier is P13-d.
-- **P13-a, Cylinder:** a performance defect, fixed by CB64 and confirmed by TB63's census; prospectively promoted as gate row 864.
-- **P13-b, Vase:** O15c. Exact A4 width grows with face count. Amendment 24 publishes interior exits on the open grid `n/2^52`, at one site in the resolver. Probes: gate unchanged, and Vase passes A4. CB65 → TB64.
-- **P13-d, Vase:** A7 completion side-subdivision repair rejects its input incidence. This happens with exact arithmetic too, so it is independent of the rounding. It goes to a Review DEFN after TB64.
-- **P13-c, BunnyRandom:** DESIGN Amendment 15.3 cannot slit a tip–tip single-edge barrier arc. It goes to a Review DEFN.
+**Immediate:** TB64 completed the 866/947 Linux gate. RA-191 corrects Amendment 15's false assumption that an isolated tip–tip edge can be slit in a simple face-array mesh.
+- **P13-c, BunnyRandom (current):** A1 requires a cut-side multigraph with two boundary-edge occurrences per interior hard barrier. CB66 → TB65 must prove this at the producer, not repair a downstream Euler counter.
+- **P13-d, Vase (separate next Review):** A7 completion rejects `SideSubdivisionRepair:InvalidInputIncidence` after A4 succeeds; O18 missing-detail diagnostic is carried.
+- **P13-a / P13-b:** Cylinder PASS and A2a dyadic width failure discharged; earlier gate and arithmetic evidence retained in TB64 and RA-190.
 
 macOS O16 stays separate.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | P13 matrix 6/6. Order: CB64 → TB63 (done) → CB65 → TB64 (dyadic exit, Cylinder promoted, gate 866). The Amendment 15 slit rule (P13-c) and Vase completion (P13-d) each get a DEFN → CB → TB. Then a re-census, with O6/O9 where reached. | M6-CP3, `M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT` next |
+| **1** | P13 matrix 6/6. Order: CB64 → TB63 → CB65 → TB64 (all done). P13-c RA-191 now defines CB66 → TB65 cut-side incidence; P13-d Vase completion gets a separate DEFN → CB → TB. Then a re-census, with O6/O9 where reached. | M6-CP3, `M6-CP3-CB66-P13-CUT-SIDE-INCIDENCE` next |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
+
+- **Simple-edge identity loses a slit:** source-edge endpoint identity is not an edge-*occurrence* identity after cutting. Parallel boundary sides with identical tips need separate halfedge provenance and a cycle basis that can represent them (RA-191).
 
 - **Exact local arithmetic versus unbounded carried rational width:** a finite bit cap cannot bound growth with face count. Amendment 24 rounds each interior exit inside the one producer that every consumer replays, so the trace is its published geometry (RA-190). A representation change made outside that producer would split one trace into two geometries.
 

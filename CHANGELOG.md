@@ -1,3 +1,7 @@
+# 2026-11-01 — RA-191 P13-c single-edge barrier slit definition
+
+- [RA-191](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Single_Edge_Barrier_Slit_Review_Decision_20261101.md) adjudicates `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT`: source-level cut-edge identity loss under `TriMesh`, independent exact CW counts, and Amendment 25's required cut-side incidence (two boundary occurrences may share both tips). No runtime or product/test/selector edits; no new accepted-green loss. The exact next turn is `M6-CP3-CB66-P13-CUT-SIDE-INCIDENCE` compile-only, followed conditionally by TB65. Vase P13-d/O18 remains independent. Stable 66/17/49, debt1; CP2 491/491 accepted, TB64 866/947 candidate, selector497/CP3 unpromoted.
+
 # 2026-11-01 — TB64 immutable dyadic full gate and independent P13 census
 
 - `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC` on unchanged CB65 source `dbc38661efabdfa051f48f8f71ee3c604841842c` and artifact `13062413347`: [866-case Linux run 41256874416](https://github.com/akashskypatel/Directional/actions/runs/41256874416), result `13063712419`, **866/866 PASS**, membership **947**, 1740 verified checksums; [three-case census 41256885685](https://github.com/akashskypatel/Directional/actions/runs/41256885685), result `13064115441`, **Cylinder PASS, BunnyRandom and Vase expected RED**, nine verified checksums. Zero rebuild, postflight true. [TB64 evidence report](.agents/Directional/Architecture_M6_CP3_TB64_P13_Canonical_Dyadic_Full_Gate_Execution_Report_20261101.md).

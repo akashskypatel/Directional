@@ -34,35 +34,37 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-01 **TB64 immutable 866-case Linux gate and P13 census COMPLETE.** [CB65 report](Architecture_M6_CP3_CB65_P13_Canonical_Dyadic_Trace_Exit_Code_Build_Report_20261031.md). RA-190's accepted dyadic exit and frozen TB64 gate remain normative; next is immutable TB64 execution. |
+| Currency | 2026-11-01 **RA-191 cut-side barrier-slit Review adjudicated; CB66 code/build next.** [CB65 report](Architecture_M6_CP3_CB65_P13_Canonical_Dyadic_Trace_Exit_Code_Build_Report_20261031.md). RA-190's accepted dyadic exit and frozen TB64 gate remain normative; next is immutable TB64 execution. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` / verify fresh before mutation; immutable semantic source `dbc38661efabdfa051f48f8f71ee3c604841842c`. |
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06, unchanged. TB63 is a verified Linux candidate, not selector497/CP3 acceptance. |
 | Latest candidate | **CB65 compile-only eight-target Linux** [run 41253674256](https://github.com/akashskypatel/Directional/actions/runs/41253674256), artifact `13062413347`, source `dbc38661efabdfa051f48f8f71ee3c604841842c`. Latest runtime TB64 866/866 (run 41256874416, result 13063712419), plus census 1 PASS / 2 pre-registered RED (run 41256885685, result 13064115441). macOS O16 remains. |
 | Regression accounting and debt | Stable **66/17/49**, debt **1**, unchanged. Ledger v5 81 rows (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE). TB64 gate membership 947. Selector497 not promoted. DR1/DR3 open; DR2/DR4 → M8-CP2. |
-| Active boundary | **CB65 runtime now verified by TB64:** 866/866 Linux and membership 947, with two expected OBSERVE REDs. O15c A2a magnitude stop discharged. Vase A7 completion `SideSubdivisionRepair:InvalidInputIncidence` (P13-d/O18); BunnyRandom A3 single-edge slit (P13-c) remains. No CP3 acceptance. |
+| Active boundary | **CB65 runtime verified by TB64; RA-191 P13-c design decision:** 866/866 Linux and membership 947, with two expected OBSERVE REDs. O15c A2a magnitude stop discharged. Vase A7 completion `SideSubdivisionRepair:InvalidInputIncidence` (P13-d/O18); BunnyRandom A3 single-edge slit (P13-c) now has RA-191 cut-side incidence contract but no implementation/proof. No CP3 acceptance. |
 
-## Mandatory next turn — `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB66-P13-CUT-SIDE-INCIDENCE` — EXACT NEXT
 
-- **Type / owner:** Review/Definition (P13-c), Review track. Probe-capable only within Review rules; no production implementation, test/benchmark source edit, compiled artifact promotion or selector mutation. Read [RA-190 §7](Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md) and [TB64 execution report](Architecture_M6_CP3_TB64_P13_Canonical_Dyadic_Full_Gate_Execution_Report_20261101.md).
-- **Task:** BunnyRandom hard-feature tip–tip single-edge barrier arcs cannot be slit under DESIGN Amendment 15.3; adjudicate a canonical representation or typed rail policy using source-authoritative probes and produce the exact future CB66 contract, acceptance/falsifier tests, and TB65 gate. No tolerance relaxation, topology fabricated from diagnostics, or test weakening.
-- **Known evidence:** CB65 source `dbc38661efabdfa051f48f8f71ee3c604841842c`; TB64 866/866 Linux PASS, 947 membership, census Cylinder PASS; BunnyRandom `CutTransportDomainIdentityMismatch`, `cutChi=-3`; Vase `SideSubdivisionRepair:InvalidInputIncidence` after A4 succeeds. Stable 66/17/49, debt 1, accepted CP2 491/491; selector497/CP3 not promoted. O15c A2a discharged under Amendment 24.
-- **Separate following Review:** `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE` (P13-d with O18), only after current next turn closes or repository authority explicitly reorders. Do not conflate the two source producers.
+- **Type / owner:** Code + Build, implementation track. [RA-191](Architecture_M6_CP3_DEFN_P13_Single_Edge_Barrier_Slit_Review_Decision_20261101.md) is the complete normative decision and falsifier contract; DESIGN Amendment 25 governs A1 side-incidence semantics. Build Linux eight GMP/GMPXX targets using durable compile dispatcher only; no runtime and no selector promotion.
+- **Task:** make source-face-side cut-edge occurrences first class for interior hard barriers, including tip–tip single edges with identical endpoint IDs, and adapt A1 cycle/index/transport consumers. Retain the immutable source and strict typed failures; no A2a/A7/Vase, fixture-specific or tolerance workaround. CB66 success authorizes immutable `M6-CP3-TB65-P13-CUT-SIDE-FULL-GATE-EXEC`, which must independently test all RA-191 falsifiers.
+- **Stop:** if a compatible cut-side transport/tangent-bundle adapter cannot be established within that scope, route to `M6-CP3-PLAN-P13-CUT-INCIDENCE-ADAPTER-STOP` (Review); never silently claim arithmetic-only repair. Preserve exact source and compile evidence. No CB66 tests or binaries have run in this DEFN.
+- **Carried:** Vase P13-d + O18 remains a separate subsequent Review; O6/O9 re-census follows. TB64 866/866, membership 947, Cylinder PASS; Bunny A3 RED, Vase A7 RED. Stable 66/17/49, debt1, CP2 491/491 accepted; selector497/CP3 not promoted.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Track / condition |
 |---|---|---|
-| 1 — COMPLETE | `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC` | Linux immutable execution; 866/866, membership 947, expected 1 PASS / 2 RED census |
-| 2 — NEXT (Review) | `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT` (BunnyRandom, P13-c) → CB66 → TB65 | DEFN with probes; resolve tip–tip single-edge barrier slit then exact future patch |
-| 3 (Review, after 2) | `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE` (P13-d plus O18) → CB → TB | DEFN with probes on the Review track; then exact patch |
-| 4 | P13 re-census → O6/O9 where reached → matrix 6/6 → retire/FIXTURE/PRODUCT/OPEN slices → CP3-REV | One slice at a time |
+| 1 — COMPLETE | `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC` | Linux immutable 866/866, membership947, Cylinder PASS, Bunny/Vase expected RED |
+| 2 — COMPLETE | `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT` | RA-191 Review, cut-side incidence elected (DESIGN Amendment 25) |
+| 3 — NEXT | `M6-CP3-CB66-P13-CUT-SIDE-INCIDENCE` | Implementation and Linux compile-only; TB65 if source/compile exact |
+| 4 | `M6-CP3-TB65-P13-CUT-SIDE-FULL-GATE-EXEC` | Frozen added tests and independent immutable full gate + 3-case census |
+| 5 (Review) | `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE` | Separate P13-d/O18 design and review |
+| 6 | P13 re-census → O6/O9 where reached → matrix 6/6 → CP3-REV | One slice at a time |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT** (Review, tip–tip single-edge barrier slit).
+`load_next`: **M6-CP3-CB66-P13-CUT-SIDE-INCIDENCE** (Code + Build; source-side cut topology).
 
 Read first:
-- [TB64 report](Architecture_M6_CP3_TB64_P13_Canonical_Dyadic_Full_Gate_Execution_Report_20261101.md): latest immutable runtime source, gate, census, and carried BunnyRandom/Vase obligations. [RA-190](Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md) §7 gives the Review-order authority; §6 is verified TB64 history.
+- [RA-191](Architecture_M6_CP3_DEFN_P13_Single_Edge_Barrier_Slit_Review_Decision_20261101.md): exact A1 cut-side incidence, negative oracles, next CB66 contract, TB65 gate, stop route. [TB64 report](Architecture_M6_CP3_TB64_P13_Canonical_Dyadic_Full_Gate_Execution_Report_20261101.md): immutable 866/947 gate and P13 census. [RA-190](Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md) §7 supplied Review-order authority.
 - DESIGN.md Amendment 24 for the semantics. [RA-189](Architecture_M6_CP3_DEFN_P13_O15C_Continuation_Width_Review_20261031.md) is history: its §3 Cylinder promotion stands, and its §2 obligations and §4 scope are superseded.
 - [TB63 report](Architecture_M6_CP3_TB63_P13_Census_Full_Gate_Execution_Report_20261031.md) and [RA-188](Architecture_M6_CP3_DEFN_P13_Probe_Adjudication_20261031.md) for historic BunnyRandom A3/slit evidence; do not re-run TB64.
 
