@@ -215,6 +215,24 @@ public:
                static_cast<std::size_t>(faces_->rows());
   }
 
+  /**
+   * True when this graph borrows exactly these inputs. Borrowed stage
+   * products are immutable, so such a graph answers every query exactly as a
+   * graph freshly built from the same inputs.
+   */
+  [[nodiscard]] bool borrows(
+      const Eigen::MatrixXi *sourceFaces,
+      const SourceTopologyRegions *sourceAuthority,
+      const std::set<authority::SourceEdgeTopologyKey> &hardFeatureEdges,
+      const double barycentricTolerance = 1.0e-8) const {
+    return faces_ == sourceFaces && authority_ == sourceAuthority &&
+           hardFeatureEdges_ == &hardFeatureEdges &&
+           barycentricTolerance_ == std::max(0.0, barycentricTolerance);
+  }
+
+  /** build()'s SourceTopologyRegions::matches_source_faces() result. */
+  [[nodiscard]] bool source_bound() const { return sourceBound_; }
+
   [[nodiscard]] std::optional<SourceProjectionChart>
   chart(const int sourceFace) const {
     if (!available() || sourceFace < 0 || sourceFace >= faces_->rows() ||

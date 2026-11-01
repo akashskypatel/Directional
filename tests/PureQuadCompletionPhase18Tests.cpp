@@ -1410,6 +1410,92 @@ TEST(PureQuadCompletionPhase18,
 }
 
 TEST(PureQuadCompletionPhase18,
+     LineageClosureReusesOnlyAGraphBorrowingItsExactInputs) {
+  const CompletionFixture fixture = generated_plane_patch();
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 38;
+  options.sourceVertices = &fixture.vertices;
+  options.sourceFaces = &fixture.faces;
+  const auto sourceAuthority = test_source_authority(
+      fixture.faces, {0, 0, 1}, {0, 0, 1});
+  options.sourceAuthority = &sourceAuthority;
+  const auto completion = directional::geometry::complete_pure_quad_patch(
+      fixture.patch, options);
+  ASSERT_TRUE(completion.is_produced());
+
+  const auto &hard = no_hard_feature_edges();
+  const directional::geometry::SourceChartTransitionGraph borrowed(
+      &fixture.faces, &sourceAuthority, hard);
+  ASSERT_TRUE(borrowed.borrows(&fixture.faces, &sourceAuthority, hard));
+  ASSERT_TRUE(borrowed.source_bound());
+  const Eigen::MatrixXi copiedFaces = fixture.faces;
+  const directional::geometry::SourceChartTransitionGraph copied(
+      &copiedFaces, &sourceAuthority, hard);
+  EXPECT_FALSE(copied.borrows(&fixture.faces, &sourceAuthority, hard));
+  Eigen::MatrixXi foreignFaces(3, 3);
+  foreignFaces << 0, 1, 3,
+                  1, 2, 3,
+                  4, 5, 6;
+  const auto foreignAuthority =
+      test_source_authority(foreignFaces, {0, 0, 1}, {0, 0, 1});
+  const directional::geometry::SourceChartTransitionGraph unbound(
+      &fixture.faces, &foreignAuthority, hard);
+  ASSERT_FALSE(unbound.source_bound());
+  ASSERT_FALSE(unbound.available());
+
+  const directional::geometry::SurfacePointSourceSupportResolver resolver(
+      fixture.faces);
+  int closedRows = 0;
+  for (std::size_t row = 0; row < completion.product().vertexLineage.size();
+       ++row) {
+    const auto support =
+        resolver.resolve(completion.product().vertexProvenance[row]);
+    auto expected = completion.product().vertexLineage[row];
+    std::string expectedFailure;
+    const bool expectedClosed = directional::geometry::pure_quad_detail::
+        close_completion_lineage_source_authority(
+            expected, support, &fixture.faces, &sourceAuthority, &hard,
+            expectedFailure);
+    closedRows += expectedClosed ? 1 : 0;
+    for (const auto *graph : {&borrowed, &copied, &unbound}) {
+      auto actual = completion.product().vertexLineage[row];
+      std::string failure;
+      EXPECT_EQ(expectedClosed,
+                directional::geometry::pure_quad_detail::
+                    close_completion_lineage_source_authority(
+                        actual, support, &fixture.faces, &sourceAuthority,
+                        &hard, *graph, failure))
+          << "row " << row << ": " << failure;
+      EXPECT_EQ(expectedFailure, failure) << "row " << row;
+      EXPECT_EQ(expected.sourceCharts, actual.sourceCharts) << "row " << row;
+      EXPECT_EQ(expected.sourceTopologyRegions, actual.sourceTopologyRegions)
+          << "row " << row;
+      EXPECT_EQ(expected.sourceIsolationSheets, actual.sourceIsolationSheets)
+          << "row " << row;
+    }
+
+    // Inputs that fail the source binding fail identically with a graph
+    // that borrows those same inputs.
+    auto unboundExpected = completion.product().vertexLineage[row];
+    auto unboundActual = unboundExpected;
+    std::string unboundExpectedFailure;
+    std::string unboundFailure;
+    EXPECT_FALSE(directional::geometry::pure_quad_detail::
+                     close_completion_lineage_source_authority(
+                         unboundExpected, support, &fixture.faces,
+                         &foreignAuthority, &hard, unboundExpectedFailure));
+    EXPECT_FALSE(directional::geometry::pure_quad_detail::
+                     close_completion_lineage_source_authority(
+                         unboundActual, support, &fixture.faces,
+                         &foreignAuthority, &hard, unbound, unboundFailure));
+    EXPECT_EQ("CompletionOwnershipInvalidSourceAuthorityClosure",
+              unboundExpectedFailure);
+    EXPECT_EQ(unboundExpectedFailure, unboundFailure);
+  }
+  EXPECT_GT(closedRows, 0);
+}
+
+TEST(PureQuadCompletionPhase18,
      CompletionRejectsComponentSheetMismatchAtSharedSourceEntity) {
   CompletionFixture fixture = source_support_alias_patch();
   fixture.patch.boundaryTopologyRegions[0] = test_topology_region_id(7);

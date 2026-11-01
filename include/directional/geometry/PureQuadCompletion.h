@@ -511,6 +511,20 @@ bool close_completion_lineage_source_authority(
     std::string &failure);
 
 /**
+ * The same closure against a caller-built source-chart graph, so a validator
+ * builds one graph per mesh rather than one per vertex. A graph that does not
+ * borrow exactly these inputs is not used; a local graph is built instead.
+ */
+bool close_completion_lineage_source_authority(
+    PureQuadVertexLineage &lineage,
+    const SurfacePointSourceSupport &support,
+    const Eigen::MatrixXi *sourceFaces,
+    const SourceTopologyRegions *sourceAuthority,
+    const std::set<authority::SourceEdgeTopologyKey> *sourceHardFeatureEdges,
+    const SourceChartTransitionGraph &sourceTransitions,
+    std::string &failure);
+
+/**
  * Validate and close a materialized authoritative phase-front mesh before it
  * may be published as a successful completion result. This adapter performs
  * only mesh/support checks and delegates chart closure to

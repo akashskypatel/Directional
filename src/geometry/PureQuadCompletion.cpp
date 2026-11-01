@@ -847,15 +847,24 @@ std::optional<std::pair<int, int>> completion_certified_hard_rail_components(
   return components;
 }
 
-bool close_completion_lineage_source_authority(
+bool close_lineage_source_authority_with_graph(
     PureQuadVertexLineage &lineage,
     const SurfacePointSourceSupport &support,
     const Eigen::MatrixXi *sourceFaceMatrix,
     const SourceTopologyRegions *sourceAuthority,
     const std::set<authority::SourceEdgeTopologyKey> *sourceHardFeatureEdges,
-    std::string &failure) {
+    const SourceChartTransitionGraph *callerGraph, std::string &failure) {
+  const std::set<authority::SourceEdgeTopologyKey> &hardFeatureEdges =
+      sourceHardFeatureEdges != nullptr ? *sourceHardFeatureEdges
+                                        : empty_hard_feature_edges();
+  // A borrowing graph recorded matches_source_faces() for these immutable
+  // inputs when it was built; any other graph is ignored.
+  const bool reuseGraph =
+      callerGraph != nullptr &&
+      callerGraph->borrows(sourceFaceMatrix, sourceAuthority, hardFeatureEdges);
   if (sourceFaceMatrix == nullptr || sourceAuthority == nullptr ||
-      !sourceAuthority->matches_source_faces(*sourceFaceMatrix) ||
+      !(reuseGraph ? callerGraph->source_bound()
+                   : sourceAuthority->matches_source_faces(*sourceFaceMatrix)) ||
       !lineage.sourcePoint.valid() || !support.valid()) {
     failure = "CompletionOwnershipInvalidSourceAuthorityClosure";
     return false;
@@ -866,10 +875,12 @@ bool close_completion_lineage_source_authority(
     return false;
   }
 
-  const SourceChartTransitionGraph transitionGraph(
-      sourceFaceMatrix, sourceAuthority, sourceHardFeatureEdges != nullptr
-          ? *sourceHardFeatureEdges
-          : empty_hard_feature_edges());
+  std::optional<SourceChartTransitionGraph> localGraph;
+  if (!reuseGraph) {
+    localGraph.emplace(sourceFaceMatrix, sourceAuthority, hardFeatureEdges);
+  }
+  const SourceChartTransitionGraph &transitionGraph =
+      reuseGraph ? *callerGraph : localGraph.value();
   if (!transitionGraph.available()) {
     failure = "CompletionOwnershipMissingPublishedSourceChart";
     return false;
@@ -1237,6 +1248,31 @@ bool close_completion_lineage_source_authority(
   return true;
 }
 
+bool close_completion_lineage_source_authority(
+    PureQuadVertexLineage &lineage,
+    const SurfacePointSourceSupport &support,
+    const Eigen::MatrixXi *sourceFaceMatrix,
+    const SourceTopologyRegions *sourceAuthority,
+    const std::set<authority::SourceEdgeTopologyKey> *sourceHardFeatureEdges,
+    std::string &failure) {
+  return close_lineage_source_authority_with_graph(
+      lineage, support, sourceFaceMatrix, sourceAuthority,
+      sourceHardFeatureEdges, nullptr, failure);
+}
+
+bool close_completion_lineage_source_authority(
+    PureQuadVertexLineage &lineage,
+    const SurfacePointSourceSupport &support,
+    const Eigen::MatrixXi *sourceFaceMatrix,
+    const SourceTopologyRegions *sourceAuthority,
+    const std::set<authority::SourceEdgeTopologyKey> *sourceHardFeatureEdges,
+    const SourceChartTransitionGraph &sourceTransitions,
+    std::string &failure) {
+  return close_lineage_source_authority_with_graph(
+      lineage, support, sourceFaceMatrix, sourceAuthority,
+      sourceHardFeatureEdges, &sourceTransitions, failure);
+}
+
 bool validate_materialized_completion_domain_ownership(
     PureQuadMesh &mesh, const Eigen::MatrixXi &sourceFaces,
     const SourceTopologyRegions *sourceAuthority,
@@ -1255,6 +1291,10 @@ bool validate_materialized_completion_domain_ownership(
     failure = "CompletionOwnershipInvalidSourceSupport";
     return false;
   }
+  const SourceChartTransitionGraph transitionGraph(
+      &sourceFaces, sourceAuthority, sourceHardFeatureEdges != nullptr
+          ? *sourceHardFeatureEdges
+          : empty_hard_feature_edges());
   std::set<int> outputVertices;
   for (std::size_t row = 0; row < mesh.vertices.size(); ++row) {
     const int outputVertex = mesh.vertices[row];
@@ -1281,7 +1321,7 @@ bool validate_materialized_completion_domain_ownership(
     }
     if (!close_completion_lineage_source_authority(
             lineage, support, &sourceFaces, sourceAuthority,
-            sourceHardFeatureEdges, failure)) {
+            sourceHardFeatureEdges, transitionGraph, failure)) {
       return false;
     }
   }
@@ -1581,7 +1621,7 @@ bool validate_completion_domain_ownership(
       lineage.sourceSupport = support.identity;
       if (!close_completion_lineage_source_authority(
               lineage, support, sourceFaceMatrix, sourceAuthority,
-              sourceHardFeatureEdges, failure)) {
+              sourceHardFeatureEdges, transitionGraph, failure)) {
         return false;
       }
     }
