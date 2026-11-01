@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-p13-vase-defn-incidence-20261101-v1",
+  "request_id": "m6-cp3-cb67-vase-incidence-20261101-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-p13-vase-defn-incidence-20261101-v1",
-  "file_id": "16VrqAcmlOdueUrP8VemBkgYLDe6s7Y7p",
-  "patch_sha256": "0e64726c85ef3b204e0616ca7e34ebbfd2a7863a0a11a56e68cf82dd32d486c2",
-  "base_sha": "d321762fdc7e4b756911690e7c18b8ab8b772b9d",
+  "mailbox_key": "m6-cp3-cb67-vase-incidence-apply-20261101-v1",
+  "file_id": "1gXe-DZOLpLsHXoC_6FG5AilSGQtFjpze",
+  "patch_sha256": "31fc990d8434527016ef7c442dd1dfa95e72b6a28ff5ca2d1e3d05123bce5019",
+  "base_sha": "6bc6efcb72c202da63046f762d3ba73c4221d8a3",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): define Vase incidence producer-boundary probe",
+  "commit_message": "diagnostics: capture exact Vase incidence boundary evidence",
   "retention_days": 14
 }
