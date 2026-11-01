@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb68-revert-incidence-20261101-v1",
+  "request_id": "m6-cp3-cb68-doc-closeout-20261101-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb68-revert-incidence-apply-20261101-v1",
-  "file_id": "1C0l4EjLTCmvCcyRSfOt-c4rGLlhn5GlX",
-  "patch_sha256": "1d0f9e551e9591d3f36060bcf742658fd6274e87240f33fb8f33109ba27cba10",
-  "base_sha": "2b6d213e24cdb5e6bf420101fee78af079a7d644",
+  "mailbox_key": "m6-cp3-cb68-doc-closeout-apply-20261101-v1",
+  "file_id": "1U3YiJEXYJ3x03UqAL1aTWEmD8AUH1RFm",
+  "patch_sha256": "6b00797e83cc71a9881d9ef89c9be9743f599a760c49342a98b4cc49d23cf49f",
+  "base_sha": "90fa3a155930c2683ed0789ef88e9f8f52775437",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "revert: withdraw uncompiled CB67 incidence boundary diagnostics",
+  "commit_message": "docs: close CB68 exact revert and hand off CB69",
   "retention_days": 14
 }
