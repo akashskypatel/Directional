@@ -2650,6 +2650,19 @@ SurfaceCellComplex build_surface_cell_complex(
           }
           y = std::max(0.0, y);
           parameter = std::atan2(y, direction.dot(edgeDirection));
+          // The angle runs from the canonical low->high direction into this
+          // face. It is counterclockwise only on the face that traverses
+          // low->high; the opposite face measures its clockwise complement.
+          const int chartFace = chart_source_face(chart);
+          bool lowToHigh = false;
+          for (int corner = 0; corner < 3; ++corner) {
+            lowToHigh = lowToHigh ||
+                        (faces(chartFace, corner) == lowVertex &&
+                         faces(chartFace, (corner + 1) % 3) == highVertex);
+          }
+          if (!lowToHigh && parameter > 0.0) {
+            parameter = 6.283185307179586476925286766559 - parameter;
+          }
           return std::isfinite(parameter);
         }
         if (entity.kind() == SourceEntityKind::FaceInterior) {
@@ -2812,9 +2825,19 @@ SurfaceCellComplex build_surface_cell_complex(
       }
     }
   } else {
+  // A directed wedge is one rotation about its source entity. Key it by the
+  // canonical identity so that the incident face charts of one source edge or
+  // vertex fan share it.
+  struct DirectedWedgeKeyLess {
+    bool operator()(const ResolvedSourceEntity &lhs,
+                    const ResolvedSourceEntity &rhs) const {
+      return lhs.identity < rhs.identity;
+    }
+  };
   using DirectedWedgeMap =
       std::map<ResolvedSourceEntity,
-               std::map<int, std::vector<DirectedWedgeWitness>>>;
+               std::map<int, std::vector<DirectedWedgeWitness>>,
+               DirectedWedgeKeyLess>;
   std::vector<DirectedWedgeMap> wedgeWitnesses(complex.nodes.size());
   std::vector<std::vector<int>> outgoing(complex.nodes.size());
   for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
@@ -2864,7 +2887,8 @@ SurfaceCellComplex build_surface_cell_complex(
     }
   }
 
-  std::vector<std::map<ResolvedSourceEntity, std::vector<DirectedWedgeRay>>>
+  std::vector<std::map<ResolvedSourceEntity, std::vector<DirectedWedgeRay>,
+                       DirectedWedgeKeyLess>>
       orderedWedges(complex.nodes.size());
   std::vector<std::vector<ResolvedSourceEntity>>
       halfedgeWedges(complex.halfedges.size());
@@ -2894,13 +2918,8 @@ SurfaceCellComplex build_surface_cell_complex(
           }
         }
       }
-      std::vector<int> wedgeFaces(sourceFaceSet.begin(), sourceFaceSet.end());
-      std::sort(wedgeFaces.begin(), wedgeFaces.end(), [&](const int lhs,
-                                                           const int rhs) {
-        return std::make_tuple(face_signature(lhs), lhs) <
-               std::make_tuple(face_signature(rhs), rhs);
-      });
-      if (wedgeKind == SourceEntityKind::SourceEdge && wedgeFaces.size() > 2U) {
+      if (wedgeKind == SourceEntityKind::SourceEdge &&
+          sourceFaceSet.size() > 2U) {
         ++complex.diagnostics.successorAmbiguityCount;
         record_incidence_failure(
             SurfaceArrangementIncidenceFailure::AmbiguousWedge, nodeId, -1,
@@ -2913,24 +2932,7 @@ SurfaceCellComplex build_surface_cell_complex(
         std::vector<double> parameters;
         parameters.reserve(witnesses.size());
         for (const DirectedWedgeWitness &witness : witnesses) {
-          double mapped = witness.localParameter;
-          if (wedgeKind == SourceEntityKind::SourceEdge &&
-              wedgeFaces.size() == 2U) {
-            const auto found = std::find(wedgeFaces.begin(), wedgeFaces.end(),
-                                         witness.chart.sourceFace);
-            if (found == wedgeFaces.end()) {
-              continue;
-            }
-            const int side =
-                static_cast<int>(std::distance(wedgeFaces.begin(), found));
-            if (side == 1) {
-              mapped = twoPi - mapped;
-            }
-            if (std::abs(mapped - twoPi) <= parameterTolerance) {
-              mapped = 0.0;
-            }
-          }
-          parameters.push_back(mapped);
+          parameters.push_back(witness.localParameter);
         }
         if (parameters.empty()) {
           ++complex.diagnostics.successorMissingCount;
@@ -2990,8 +2992,12 @@ SurfaceCellComplex build_surface_cell_complex(
     }
   }
   for (auto &memberships : halfedgeWedges) {
-    std::sort(memberships.begin(), memberships.end());
-    memberships.erase(std::unique(memberships.begin(), memberships.end()),
+    std::sort(memberships.begin(), memberships.end(), DirectedWedgeKeyLess{});
+    memberships.erase(std::unique(memberships.begin(), memberships.end(),
+                                  [](const ResolvedSourceEntity &lhs,
+                                     const ResolvedSourceEntity &rhs) {
+                                    return lhs.identity == rhs.identity;
+                                  }),
                       memberships.end());
   }
 
@@ -3612,7 +3618,8 @@ SurfaceCellComplex build_surface_cell_complex(
                 localOutgoing[index])];
             std::set_intersection(commonWedges.begin(), commonWedges.end(),
                                   memberships.begin(), memberships.end(),
-                                  std::back_inserter(intersection));
+                                  std::back_inserter(intersection),
+                                  DirectedWedgeKeyLess{});
             commonWedges = std::move(intersection);
           }
 

@@ -2,6 +2,7 @@
 #include <directional/geometry/SurfaceArrangement.h>
 #include <directional/geometry/SurfaceCellTracing.h>
 
+#include <algorithm>
 #include <memory>
 #include <stdexcept>
 #include <vector>
@@ -116,6 +117,100 @@ TEST(SurfaceArrangementPhase16,
   ASSERT_TRUE(distinctIdentity.valid);
   EXPECT_NE(firstEntity.support, distinctEntity.support);
   EXPECT_NE(firstIdentity, distinctIdentity);
+}
+
+// A directed wedge is one rotation about a source edge or vertex fan.
+// A trace crossing a shared source edge or vertex must continue into the next
+// face; keying the wedge by the witnessing face chart splits it and turns the
+// face walk back along the trace.
+directional::geometry::SurfaceArrangementArc wedge_test_arc(
+    const int id, const int face, const Eigen::RowVector3d &start,
+    const Eigen::RowVector3d &end) {
+  directional::geometry::SurfaceArrangementArc arc;
+  arc.id = id;
+  arc.sourceFace = face;
+  arc.startBarycentric = start;
+  arc.endBarycentric = end;
+  arc.family = 0;
+  arc.strand = 0;
+  arc.provenance = id;
+  return arc;
+}
+
+void expect_trace_continues_through_shared_node(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::vector<directional::geometry::SurfaceArrangementArc> &arcs,
+    const Eigen::RowVector3d &sharedPoint) {
+  const std::vector<int> components(static_cast<std::size_t>(faces.rows()), 0);
+  const std::vector<int> sheets(static_cast<std::size_t>(faces.rows()), 0);
+  directional::geometry::SurfaceArrangementOptions options;
+  options.sourceAuthority =
+      row_identity_source_authority(faces, components, sheets);
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      vertices, faces, arcs, options);
+
+  ASSERT_TRUE(complex.diagnostics.incidenceValid)
+      << directional::geometry::surface_arrangement_incidence_failure_name(
+             complex.diagnostics.incidenceFailure);
+  EXPECT_EQ(2, std::count_if(complex.cells.begin(), complex.cells.end(),
+                             [](const auto &cell) { return !cell.boundaryCycle; }));
+  int sharedNode = -1;
+  for (const auto &node : complex.nodes) {
+    Eigen::RowVector3d position = Eigen::RowVector3d::Zero();
+    for (int corner = 0; corner < 3; ++corner) {
+      position += node.barycentric(corner) *
+                  vertices.row(faces(node.sourceFace, corner));
+    }
+    if ((position - sharedPoint).norm() < 1.0e-12) {
+      ASSERT_EQ(-1, sharedNode);
+      sharedNode = node.id;
+    }
+  }
+  ASSERT_GE(sharedNode, 0);
+  int incoming = 0;
+  for (const auto &halfedge : complex.halfedges) {
+    if (halfedge.to != sharedNode) {
+      continue;
+    }
+    ++incoming;
+    EXPECT_NE(halfedge.twin, halfedge.next) << "halfedge " << halfedge.id;
+  }
+  EXPECT_EQ(2, incoming);
+}
+
+TEST(SurfaceArrangementPhase16,
+     TraceCrossingInteriorSourceEdgeSharesOneDirectedEdgeWedge) {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2,
+           1, 3, 2;
+  const std::vector<directional::geometry::SurfaceArrangementArc> arcs = {
+      wedge_test_arc(0, 0, Eigen::RowVector3d(0.5, 0.0, 0.5),
+                     Eigen::RowVector3d(0.0, 0.5, 0.5)),
+      wedge_test_arc(1, 1, Eigen::RowVector3d(0.5, 0.0, 0.5),
+                     Eigen::RowVector3d(0.5, 0.5, 0.0))};
+  expect_trace_continues_through_shared_node(
+      vertices, faces, arcs, Eigen::RowVector3d(0.5, 0.5, 0.0));
+}
+
+TEST(SurfaceArrangementPhase16,
+     TraceThroughInteriorSourceVertexSharesOneDirectedFanWedge) {
+  Eigen::MatrixXd vertices(5, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+      0.5, 0.5, 0.0;
+  Eigen::MatrixXi faces(4, 3);
+  faces << 0, 1, 4,
+           1, 2, 4,
+           2, 3, 4,
+           3, 0, 4;
+  const std::vector<directional::geometry::SurfaceArrangementArc> arcs = {
+      wedge_test_arc(0, 3, Eigen::RowVector3d(0.5, 0.5, 0.0),
+                     Eigen::RowVector3d(0.0, 0.0, 1.0)),
+      wedge_test_arc(1, 1, Eigen::RowVector3d(0.0, 0.0, 1.0),
+                     Eigen::RowVector3d(0.5, 0.5, 0.0))};
+  expect_trace_continues_through_shared_node(
+      vertices, faces, arcs, Eigen::RowVector3d(0.5, 0.5, 0.0));
 }
 
 } // namespace
