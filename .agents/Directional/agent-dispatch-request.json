@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb69-compile-20261101-v2",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb69-compile-20261101-v2",
-  "source_sha": "5b08abe42f91f88fd6d09e225c7cf32d0aeb1ef3",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-cb69-compile"
+  "request_id": "m6-cp3-cb69-docs-closeout-20261101-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb69-docs-closeout-20261101-v1",
+  "file_id": "1-G7wPCwe6K-4M-3pM7zzIWhRtxhJ7m38",
+  "patch_sha256": "0c774abdd71ed2b6f80bfc0166b77e1fb21faf70ae3c1878720a3db5533d0345",
+  "base_sha": "b6d185e060b5805b30a9582317d18b3be9024215",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close CB69 compile and hand off immutable TB66 gate",
+  "retention_days": 14
 }
