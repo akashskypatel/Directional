@@ -439,6 +439,40 @@ std::vector<SurfaceArrangementArc> cylinder_grid_arcs(
 
 } // namespace
 
+TEST(MilestoneDClosure, IncidenceOracleReportsExactIndependentFailureSites) {
+  using directional::geometry::audit_surface_cell_incidence;
+  const SurfaceCellComplex control = two_interface_complex(unit_triangle());
+  const auto healthy = audit_surface_cell_incidence(control);
+  ASSERT_TRUE(healthy.valid()) << healthy.clause;
+
+  SurfaceCellComplex brokenTwin = control;
+  brokenTwin.halfedges[0].twin = -1;
+  const auto twin = audit_surface_cell_incidence(brokenTwin);
+  EXPECT_EQ(twin.clause, "TwinOutOfRange");
+  EXPECT_EQ(twin.halfedge, 0);
+  EXPECT_EQ(twin.sourceFace, 0);
+
+  SurfaceCellComplex missingSuccessor = control;
+  missingSuccessor.halfedges[0].next = -1;
+  const auto successor = audit_surface_cell_incidence(missingSuccessor);
+  EXPECT_EQ(successor.clause, "SuccessorOutOfRange");
+  EXPECT_EQ(successor.halfedge, 0);
+  EXPECT_EQ(successor.sourceFace, 0);
+
+  SurfaceCellComplex repeatedCycle = control;
+  const auto cycle = repeatedCycle.cells[0].halfedges;
+  repeatedCycle.cells[0].halfedges.insert(
+      repeatedCycle.cells[0].halfedges.end(), cycle.begin(), cycle.end());
+  const auto repeated = audit_surface_cell_incidence(repeatedCycle);
+  EXPECT_EQ(repeated.clause, "RepeatedBoundaryHalfedge");
+  EXPECT_EQ(repeated.cell, 0);
+  EXPECT_GE(repeated.halfedge, 0);
+  EXPECT_FALSE(directional::geometry::same_surface_cell_incidence_structure(
+      control, repeatedCycle));
+  EXPECT_TRUE(directional::geometry::same_surface_cell_incidence_structure(
+      control, control));
+}
+
 TEST(MilestoneDClosure, CurvedStitchedCellUsesGlobalEmbeddingAndSourceFaces) {
   const MeshFixture mesh = curved_square();
   const SurfaceCellComplex complex =

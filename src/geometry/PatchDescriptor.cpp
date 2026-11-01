@@ -2480,6 +2480,8 @@ SurfaceCellComplexCompletionDraft complete_surface_cell_complex_pass(
     ReusableCompletionProducts *reusableProducts = nullptr) {
   SurfaceCellComplexCompletionDraft result;
   const SurfacePointSourceSupportResolver sourceSupportResolver(F);
+  result.incidenceBoundaryProbes.push_back(
+      {"parity/input", audit_surface_cell_incidence(complex), -1});
   SurfaceCellParityRepairResult parityRepair =
       repair_surface_cell_boundary_parity(std::move(complex));
   std::optional<SurfaceCellParityRepairProduct> parityProduct;
@@ -2538,6 +2540,12 @@ SurfaceCellComplexCompletionDraft complete_surface_cell_complex_pass(
     return result;
   }
   recordParityDiagnostics(parityProduct.value());
+  result.incidenceBoundaryProbes.push_back(
+      {"parity/output", audit_surface_cell_incidence(parityProduct->complex),
+       parityProduct->oddCellsBefore});
+  result.incidenceBoundaryProbes.push_back(
+      {"side-repair/input", audit_surface_cell_incidence(parityProduct->complex),
+       parityProduct->oddCellsBefore});
 
   SurfaceCellSideRepairResult sideRepair =
       repair_surface_cell_side_subdivisions(
@@ -2584,6 +2592,9 @@ SurfaceCellComplexCompletionDraft complete_surface_cell_complex_pass(
     return result;
   }
   if (sideFailure.has_value()) {
+    result.incidenceBoundaryProbes.push_back(
+        {"side-repair/canonicalized-input", sideFailure->canonicalInputIncidence,
+         result.parityOddCellsBefore});
     recordSideDiagnostics(sideFailure.value());
     result.failureKind = SurfaceCellComplexCompletionFailureKind::PreparationRejected;
     result.failure = "SideSubdivisionRepair:" + sideFailure->detail;
@@ -2596,6 +2607,9 @@ SurfaceCellComplexCompletionDraft complete_surface_cell_complex_pass(
     result.assembly.failure = result.failure;
     return result;
   }
+  result.incidenceBoundaryProbes.push_back(
+      {"side-repair/canonicalized-input", sideProduct->canonicalInputIncidence,
+       result.parityOddCellsBefore});
   recordSideDiagnostics(sideProduct.value());
   if (sideProduct->kind ==
       SurfaceCellSideRepairProductKind::GeneralFallbackPreparation) {
