@@ -19,7 +19,7 @@
 
 - One fresh local process launched at **2026-11-02T06:12:35Z** from that exact packaged binary with source-archive fixtures supplied adjacent to the executable, environment `DIRECTIONAL_P13_SLIVER_PROBE=1`, gtest filter `UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Vase`. This fixture explicitly requests `SurfaceCells`, `fallbackPolicy=Fail`, `allowSourceGridRecovery=false` and `retainIntermediateGeometry=false`. **It is an authorized Review scratch diagnostic, not a formal TB gate.**
 - The process is bounded by `timeout -k 10s 390s`; raw stdout/stderr and exit-status files live under `/mnt/data/p13_review_0601/`. No result/ownership claim should be made until terminal evidence and all nine receipts are independently checked.
-- Receipt checker `p13_sliver_receipt.py` SHA-256 `2405a11451ac21c3a2b11b9f15145388d8e4a5a8d767fd5b84eb7dd4254ec114`. Optional geometric observational processor `p13_sliver_geometry.py` SHA-256 `34b62fecc2c3875302eca0d34439a51a1a2fcd01da6720dceb03deaa98c62452`, syntax checked, no output yet. Euclidean minima and chords are **not** intrinsic distances or field matching certificates.
+- Receipt checker `p13_sliver_receipt.py` SHA-256 `2405a11451ac21c3a2b11b9f15145388d8e4a5a8d767fd5b84eb7dd4254ec114`. Optional geometric observational processor `p13_sliver_geometry.py` SHA-256 `7764b0b17165da3fde6722725142c441489d88b73544afbe935141a1eb54d831`, syntax checked, no output yet. Euclidean minima and chords are **not** intrinsic distances or field matching certificates.
 
 ## Required Review completion
 
