@@ -1,3 +1,18 @@
+# 2026-11-02 — RA-198 P13-h2/P13-i probe adjudication; exact CB77, TB71; selection DEFN
+
+- [RA-198](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS`. ChatGPT had set it BLOCKED because Review policy forbids runtime probes. RA-197 had placed this probe DEFN on the Review track's scratch build, and RA-198 ran the probes there.
+- **Findings:**
+  - P13-h2: the four needle grids complete under the existing Amendment 28 pattern search over the same boundary. The closed-form dispatch never offered it to them.
+  - P13-i: the five lenses are optional rim support traces. The cross field leaves the rim at 0.1°–88°, so no tangent rule separates them.
+  - FlowRep selection accepts 0 of 4,057 removals on Vase: same-face coverage blocks 104 support flowlines, and exact junction degrees block 11.
+  - Dropping the five lens traces exposes three more two-sided cells.
+- **DESIGN Amendment 30:** a closed-form grid with generated vertices that fails the embedding predicate gives way to the pattern search over the same boundary, when that search succeeds.
+- Turn IDs:
+  - CB77 `M6-CP3-CB77-P13-NEEDLE-GRID-BOUNDARY-SEARCH` (`673010d4…`, row 881).
+  - TB71 `M6-CP3-TB71-P13-NEEDLE-GRID-FULL-GATE-EXEC` (manifest 881 `f2503dca…`, membership 962).
+  - Review DEFN `M6-CP3-DEFN-P13-FLOWREP-SELECTION` (P13-i).
+- O24 new (rim-field alignment, quality, M7). Stable 66/17/49, debt 1, CP2 491/491 unchanged.
+
 # 2026-11-02 — TB70 full gate and independent direct-production census
 
 - [TB70 execution report](.agents/Directional/Architecture_M6_CP3_TB70_P13_Patch_Side_Start_Full_Gate_Execution_Report_20261102.md): immutable CB76 source `f59f92f889fc`, artifact `13115678045`; [gate 41388843062](https://github.com/akashskypatel/Directional/actions/runs/41388843062) **880/880 PASS**, 961 membership, 81 deferred, 1768/1768 hashes; [census 41388863937](https://github.com/akashskypatel/Directional/actions/runs/41388863937) 9/9 hashes and registered Cylinder PASS / BunnyRandom P13-e RED / Vase P13-h2 generated-vertex closed-form RED. No rebuilding or acceptance promotion; stable **66/17/49**, debt 1, CP2 491/491 preserved. Exact successor separate Review: `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS`.

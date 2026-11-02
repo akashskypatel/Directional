@@ -1,5 +1,7 @@
 # P13 arrangement sliver cells — canonical Review WIP (2026-11-02)
 
+> **Superseded (2026-11-02):** [RA-198](Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md) ran this DEFN's probes on the Review track's scratch build and closed it: P13-h2 → Amendment 30, CB77, TB71; P13-i → `M6-CP3-DEFN-P13-FLOWREP-SELECTION`. This file is kept as history.
+
 **Turn:** `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS` (Review/Definition), **unfinished**. Preserve original start `2026-11-02T05:14:30Z`. No Code + Build successor has been frozen; do not open one. This consolidation supersedes the earlier unexecuted-probe instructions in this file; the historical instrumentation, failures, controls and raw receipts are retained in the linked separate Review records and user Library evidence.
 
 ## Immutable authority and verification boundary

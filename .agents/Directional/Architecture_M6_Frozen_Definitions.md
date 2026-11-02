@@ -1,3 +1,13 @@
+## RA-198 — P13-h2 needle grids and P13-i rail lenses: probe adjudication; exact CB77, TB71; selection DEFN (2026-11-02)
+
+- [RA-198](Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS` and supersedes its review WIP. **DESIGN Amendment 30:** a closed-form grid that generated vertices and fails the Amendment 28 predicate gives way to the pattern search over the same boundary when that search finds an embedded quadrangulation (backend `Pattern`). Otherwise the grid stands and the validator reports its failure. 1×1 cells and strips are unchanged.
+- P13-i owner: A2a network selection, which removes no optional trace on Vase. The completion admissibility rejection of two-sided cells stands.
+- Turn IDs:
+  - CB77 `M6-CP3-CB77-P13-NEEDLE-GRID-BOUNDARY-SEARCH` (`673010d4…`, row 881).
+  - TB71 `M6-CP3-TB71-P13-NEEDLE-GRID-FULL-GATE-EXEC` (manifest 881 `f2503dca…`, membership 962).
+  - Selection DEFN `M6-CP3-DEFN-P13-FLOWREP-SELECTION` (Review track, probe).
+- O24 (rim-field alignment quality) → M7 unless the selection DEFN finds it blocking.
+
 ## RA-197 — P13-h/P13-i closed-form grids and side-count descriptors: probe adjudication; exact CB76, TB70 (2026-11-02)
 
 - [RA-197](Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING` and supersedes its review WIP. **DESIGN Amendment 29:** `PureQuadPatch::sideEdgeCounts` partitions `boundaryVertices` in order from index 0. `derive_patch_descriptor` rotates its boundary traversal to side 0's first halfedge; the domain identity is rotation-invariant.

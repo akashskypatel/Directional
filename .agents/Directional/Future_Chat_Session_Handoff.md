@@ -34,20 +34,21 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-02 **TB70 artifact-only gate and census MATCH** ([report](Architecture_M6_CP3_TB70_P13_Patch_Side_Start_Full_Gate_Execution_Report_20261102.md)); 880/880 Linux PASS, membership 961; direct Cylinder PASS, BunnyRandom P13-e RED, Vase P13-h2 needle-grid generated-vertex RED. [RA-197](Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md) and Amendment 29 established CB76 side-zero registration. Next separate Review: sliver-cell DEFN; no CP3 promotion. |
+| Currency | 2026-11-02 **[RA-198](Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md) probe adjudication** of the sliver DEFN (resumed from ChatGPT's BLOCKED WIP; the block was procedural): P13-h2 owner completion → DESIGN Amendment 30, exact CB77, TB71 manifest 881; P13-i owner A2a network selection (removes 0 of 4,057 candidates on Vase) → Review DEFN `M6-CP3-DEFN-P13-FLOWREP-SELECTION`. Latest verified gate: [TB70](Architecture_M6_CP3_TB70_P13_Patch_Side_Start_Full_Gate_Execution_Report_20261102.md) 880/880. No CP3 promotion. |
 | Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing`; **CB76 source [`f59f92f889fc`](https://github.com/akashskypatel/Directional/commit/f59f92f889fc6fe22d689fd7559c024cd09c6c72)**, [compile run 41387260857](https://github.com/akashskypatel/Directional/actions/runs/41387260857), GMP/GMPXX eight-target immutable package `13115678045` (ZIP SHA-256 `8b2f9f112a29b8ef7b30e70ebf61c87dc4ac19da9a2f523e6371aa94a8c09194`, 28/28 hashes, `runtimeExecution=false`); CB75 source `8656c4fed507` / package `13107147891`; CB74 source `4d4ae3ecaa7f` / package `13105515249`; CB73 source `57c24325f539` / package `13104267023`; CB72 source `7b85b450bc98` / package `13093439789` predecessors. |
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06; unchanged. TB70 remains unpromoted candidate only. |
 | Latest candidate | **TB70 Linux gate 880/880 PASS, membership 961**, [run 41388843062](https://github.com/akashskypatel/Directional/actions/runs/41388843062), result `13115769273` (ZIP SHA-256 `1720e3e6cae085f1c10971a0bb74a3995f79f6dff73921d527d06629e61b1747`, 1768/1768 hashes); [independent census 41388863937](https://github.com/akashskypatel/Directional/actions/runs/41388863937), result `13117365194` (ZIP SHA-256 `b4d643b08d0de5eb20dbe805f6a607e53572ec969c28028dc6b23e7cdced7266`, 9/9 hashes), Cylinder PASS, BunnyRandom P13-e RED, Vase P13-h2 closed-form generated-vertex RED. [TB70 report](Architecture_M6_CP3_TB70_P13_Patch_Side_Start_Full_Gate_Execution_Report_20261102.md). No rebuild/promotion. |
 | Regression accounting and debt | Stable **66/17/49**, debt **1**; v5 deferred 81 (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE), membership 961, unchanged deferred count; selector497 unpromoted. DR1/DR3 open, DR2/DR4 → M8-CP2. |
-| Active boundary | **Cylinder direct PASS**. **BunnyRandom P13-e** `SingularityPortClassCountMismatch` vertex49, no quads. **Vase P13-h2** (TB70): `NotProductionReady:completion detail=PatchCompletionRejected`, `InvalidCompletionQuadEmbedding`, closed-form patch6095, generated vertex `-1`, no quads, 258.988 s. The 220 prior boundary-only strip failures were addressed by CB76; P13-h2 four needle grids and P13-i five two-sided rail lenses remain for `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS`. O16/O17/O19/O20/O21/O22/O23/O6/O9 carried. |
+| Active boundary | **Cylinder direct PASS**. **BunnyRandom P13-e** `SingularityPortClassCountMismatch` vertex49, no quads. **Vase P13-h2** (TB70): `InvalidCompletionQuadEmbedding`, closed-form patch6095, generated vertex `-1`. With CB77 (RA-198 scratch build) Vase moves to **P13-i**: `IncompleteSurfaceCellComplex;descriptor=23933;cell=26735;reason=side-count-unsupported;…;failed=5;total=26826`, five two-sided rim lenses bounded by optional support traces 1037/878/20/422/612 that selection cannot remove. O16/O17/O19/O20/O21/O22/O23/O24/O6/O9 carried. |
 
-## Mandatory next turn — `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS` — EXACT NEXT (Review/Definition)
+## Mandatory next turn — `M6-CP3-CB77-P13-NEEDLE-GRID-BOUNDARY-SEARCH` — EXACT NEXT (Code + Build, implementation agent)
 
-- **Authority:** [TB70 report](Architecture_M6_CP3_TB70_P13_Patch_Side_Start_Full_Gate_Execution_Report_20261102.md) confirms registered TB70 gate and census MATCH; [RA-197](Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md) §3 and §6 require a separate probe Review/Definition of P13-h2 needle 2D grids and P13-i rail-grazing two-side lenses. Review is runtime/compile/source-mutation-free except authorized scratch diagnostic probes; do not start successor code/build.
-- **Frozen source/evidence:** semantic CB76 source `f59f92f889fc6fe22d689fd7559c024cd09c6c72`, package `13115678045` (GMP/GMPXX, 28/28 SHA-256), TB70 gate 41388843062 / artifact 13115769273 / 880/880, census 41388863937 / artifact 13117365194 / 1 PASS and 2 registered RED (9/9 hashes). No rebuild or selector promotion.
-- **Task:** independently identify the originating strands, proposed cells, source rails, side separations and field-vs-rail tangent angles for P13-h2 and P13-i. Distinguish an arrangement construction defect from completion embedding failure; name exactly one producer owner and freeze falsifiable exact patches/verification cases. Do not relax source authority, admissibility or embed tolerance, change interpolants globally, enable source-grid recovery, or infer success from a typed failure.
-- **Review outcomes:** freeze the exact bounded Code + Build successor and independent TB evidence under Review policy, or maintain the current Review if evidence/ownership is unresolved. BunnyRandom P13-e has a separate parallel Review; no CP3 acceptance until matrix and deferred gate are satisfied.
-- **Carried invariants:** stable 66/17/49, debt 1, CP2 491/491, v5 deferred 81, selector497 unpromoted; P13-e/P13-h2/P13-i and O16/O17/O19/O20/O21/O22/O23/O6/O9 remain open.
+- **Authority:** [RA-198](Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md) §4 (spec) and §8 (exact patch); DESIGN Amendment 30.
+- **Precheck:** `git diff --quiet f59f92f889fc6fe22d689fd7559c024cd09c6c72 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+- **Patch:** RA-198.8 verbatim plus a trailing newline (no single-space context lines), SHA-256 `673010d4a76f611bc3f7fbedd40306022ac3fa136ee1acea414a45cb415727db`; `git apply --check`, then apply. Numstat `23 0` `src/geometry/PureQuadCompletion.cpp` (result `9eb46a71…`) and `27 0` `tests/PatchDescriptorMilestoneETests.cpp` (result `e6f8b3cc…`).
+- **Build:** one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`, no binary runs.
+- **Outcomes:** precheck, apply, numstat or result-hash mismatch → `M6-CP3-PLAN-P13-NEEDLE-GRID-STOP`; infrastructure → `M6-CP3-CB77A-P13-NEEDLE-GRID-ORCH` (one retry). Success → TB71.
+- **Carried invariants:** stable 66/17/49, debt 1, CP2 491/491, v5 deferred 81, selector497 unpromoted; P13-e/P13-i and O16/O17/O19/O20/O21/O22/O23/O24/O6/O9 remain open.
 
 ## Turn Sequence
 
@@ -72,15 +73,21 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | 17 — Review COMPLETE | `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING` (P13-h; P13-i classified) | ChatGPT review WIP (blocked: "no trace"), then [RA-197](Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md) probe adjudication: Amendment 29, exact CB76, TB70 manifest 880 |
 | 18 — COMPLETE | `M6-CP3-CB76-P13-PATCH-BOUNDARY-SIDE-START` | Implementation agent, Linux; RA-197.7 (`5c7918fb…`), spec RA-197.4, compile only. Mismatch → `M6-CP3-PLAN-P13-PATCH-SIDE-START-STOP`; infrastructure → `M6-CP3-CB76A-P13-PATCH-SIDE-START-ORCH` |
 | 19 — COMPLETE | `M6-CP3-TB70-P13-PATCH-SIDE-START-FULL-GATE-EXEC` | [Report](Architecture_M6_CP3_TB70_P13_Patch_Side_Start_Full_Gate_Execution_Report_20261102.md): 880/880 PASS, membership 961, census Cylinder PASS / BunnyRandom P13-e RED / Vase generated-vertex P13-h2 RED, registered outcomes MATCH; no mismatch or infrastructure route |
-| 20 — NEXT Review | `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS` (P13-h2 needle grids, P13-i rail-grazing lenses) → CB → TB | Probe DEFN on the scratch build: what bounds each needle and lens, side separation, field against rail tangent at the tips; one owner, then exact patches |
-| 21 (Review, parallel) | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49) → CB → TB | Probe DEFN, then exact patch |
-| 22 | P13 re-census → O6/O9 where reached → matrix 6/6 → retire/FIXTURE/PRODUCT/OPEN slices → CP3-REV | One slice at a time |
+| 20 — Review COMPLETE | `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS` (P13-h2, P13-i) | ChatGPT review WIP (BLOCKED: "Review policy prohibits runtime probes"), then [RA-198](Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md) probe adjudication: Amendment 30, exact CB77, TB71 manifest 881; P13-i → selection DEFN |
+| 21 — NEXT | `M6-CP3-CB77-P13-NEEDLE-GRID-BOUNDARY-SEARCH` | Implementation agent, Linux; RA-198.8 (`673010d4…`), spec RA-198.4, compile only. Mismatch → `M6-CP3-PLAN-P13-NEEDLE-GRID-STOP`; infrastructure → `M6-CP3-CB77A-P13-NEEDLE-GRID-ORCH` |
+| 22 | `M6-CP3-TB71-P13-NEEDLE-GRID-FULL-GATE-EXEC` | Implementation agent, Linux; manifest 881 `f2503dca…` + ledger v5, 881/881, membership 962; census per RA-198.5 (Vase RED `completion` / `PatchCompletionRejected` / `IncompleteSurfaceCellComplex` `side-count-unsupported`). Mismatch → `M6-CP3-TB71-P13-NEEDLE-GRID-FULL-GATE-REV`; infrastructure → `M6-CP3-TB71A-P13-NEEDLE-GRID-ORCH` |
+| 23 (Review, can start now) | `M6-CP3-DEFN-P13-FLOWREP-SELECTION` (P13-i; selection removes nothing) → CB → TB | Probe DEFN on the scratch build (Claude): coverage across source faces, which incidences selection preserves, removals on every census fixture, gate and ledger, Vase's next failure; then exact patches |
+| 24 (Review, parallel) | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49) → CB → TB | Probe DEFN, then exact patch |
+| 25 | P13 re-census → O6/O9 where reached → matrix 6/6 → retire/FIXTURE/PRODUCT/OPEN slices → CP3-REV | One slice at a time |
+
+The implementation agent takes rows 21–22 only. Rows 23–24 are probe DEFNs on the Review track (Claude, scratch build); a turn that cannot run a scratch probe must not start them (RA-172, RA-198).
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS** (Review/Definition; P13-h2 needle 2D grids and P13-i rail-grazing lenses; RA-197.3, TB70 verified). Separate P13-e Review remains parallel.
+`load_next`: **M6-CP3-CB77-P13-NEEDLE-GRID-BOUNDARY-SEARCH** (Code + Build, exact RA-198.8), then TB71. Review track in parallel: `M6-CP3-DEFN-P13-FLOWREP-SELECTION` (P13-i) and the P13-e Review.
 
 Read first:
+- [RA-198](Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md): §1 findings (P13-h2 owner completion; P13-i owner selection, which removes 0 of 4,057 candidates); §2 probes; §4 CB77 and §5 TB71 specs; §6 sequence; §8 exact patch; DESIGN Amendment 30.
 - [TB70 report](Architecture_M6_CP3_TB70_P13_Patch_Side_Start_Full_Gate_Execution_Report_20261102.md): exact Linux immutable gate/census evidence and new post-CB76 Vase failure.
 - [RA-197](Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md): §1 findings (owner: side-0 registration); §2 probes (first-pass census, rotation, interpolants, P13-i lenses); §4 CB76 and §5 TB70 specs; §6 sequence; §7 exact patch; DESIGN Amendment 29.
 - [TB69 report](Architecture_M6_CP3_TB69_P13_Completion_Embedding_Full_Gate_Execution_Report_20261102.md): immutable CB75 gate 878/878 and census (Vase P13-h at patch 4).
@@ -93,7 +100,7 @@ Read first:
 - [RA-193](Architecture_M6_CP3_DEFN_P13_Vase_Arrangement_Rotation_Probe_Adjudication_20261101.md): §8 registered timeout, §9 P13-f Review successor and earlier O(F) probe attribution; use current renumbering from [RA-194](Architecture_M6_CP3_DEFN_P13_Vase_Landed_Incidence_Probe_Revert_20261101.md).
 - [CB70 report](Architecture_M6_CP3_CB70_Arrangement_Wedge_Rotation_Code_Build_Record_20261101.md): immutable source/package boundary, not runtime acceptance.
 - [TB66 report](Architecture_M6_CP3_TB66_P13_Arrangement_Terminal_Full_Gate_Execution_Report_20261101.md): predecessor baseline and P13-e signature.
-- Relevant `DESIGN.md` Amendments 26–29, `LESSONS.md` §§1, 2, 3, 5, 6, 7 and `Regression_Root_Cause_Tracker.md` P13-f candidate.
+- Relevant `DESIGN.md` Amendments 26–30, `LESSONS.md` §§1, 2, 3, 5, 6, 7 and `Regression_Root_Cause_Tracker.md` P13-f candidate.
 
 Inputs:
 
@@ -110,10 +117,11 @@ Inputs:
 | CB75 package | Source `8656c4fed5070a467da491b60ead5c8ab1d99dbd`, [compile 41365067300](https://github.com/akashskypatel/Directional/actions/runs/41365067300), artifact `13107147891`, ZIP SHA-256 `a689c5b3254682a6345f2e17e43e3a8e571401c1ed6a224d13a4a5f84c8bc7d2`, 28/28 internal hashes; GMP/GMPXX, no runtime. |
 | TB69 gate | Manifest 878 `Architecture_M6_TB69_P13_Completion_Embedding_Full_Gate_Case_Manifest.tsv` `aaaba077a067853a00310683946f82394c60247bd42717fd283b4d7cde423c82` (TB68 873 byte-identical prefix plus GUARD rows 874–878); same ledger; membership 959; `SELF_CHECK_PASS cases=878 deferred=81` |
 | TB70 gate | Manifest 880 `Architecture_M6_TB70_P13_Patch_Side_Start_Full_Gate_Case_Manifest.tsv` `a9f964c843a5620f281bf2ca2f07e7df9b8d11a7769218a635a5b707aaf2b03b` (TB69 878 byte-identical prefix plus GUARD rows 879–880); same ledger; membership 961; `SELF_CHECK_PASS cases=880 deferred=81` |
+| TB71 gate | Manifest 881 `Architecture_M6_TB71_P13_Needle_Grid_Full_Gate_Case_Manifest.tsv` `f2503dcaf91b13c4a221d52fe7a18899327ab6f96862c3688a67f8f8d14c78a6` (TB70 880 byte-identical prefix plus GUARD row 881); same ledger; membership 962; `SELF_CHECK_PASS cases=881 deferred=81` |
 | Census | `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793` |
 | Harness | P8 `78b8002c…`, unchanged |
 
-Standing state: CP2 491/491 accepted; stable 66/17/49, debt 1; selector497 unpromoted. O16 (macOS), O17, O19, O20, O21, O22, O23, P13-e, P13-g gated by CB73–CB75/TB69, P13-h CB76/TB70 verified; P13-h2 and P13-i → sliver-cell DEFN, DR1/DR3, DR2/DR4 and O6/O9 are carried.
+Standing state: CP2 491/491 accepted; stable 66/17/49, debt 1; selector497 unpromoted. O16 (macOS), O17, O19, O20, O21, O22, O23, P13-e, P13-g gated by CB73–CB75/TB69, P13-h CB76/TB70 verified; P13-h2 → CB77/TB71; P13-i → selection DEFN; O24 new; DR1/DR3, DR2/DR4 and O6/O9 are carried.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
