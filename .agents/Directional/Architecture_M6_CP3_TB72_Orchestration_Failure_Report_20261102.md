@@ -36,3 +36,9 @@
 - Source snapshot run `41533125112`, artifact `13181184921` verified. Temporary source snapshot trigger cleanup run `41533828130` succeeded, preserving mailbox and durable dispatcher slot.
 - A conservation-policy read-mode violation occurred: initial direct multi-document fetches preceded mandatory snapshot selection. Subsequently switched to and verified the required exact source snapshot. This miss must not be treated as verified checklist completion.
 - No local build or runtime, test-source modification, or product mutation was performed.
+
+## Supplementary independent census — verified after initial report
+
+- [Census run 41533460744](https://github.com/akashskypatel/Directional/actions/runs/41533460744), event `9cfd1f56c28227016d4bb0f7ad01d5aff0554e86`, result artifact **13182948577**, ZIP SHA-256 `97493d88a93e7a6f7895f4cdebd3a84ad2799f7a56c3826671a45150f329e6ae`. All **9/9 embedded checksums** verified.
+- Exactly **3/3 census processes completed** with registered outcomes: Cylinder **PASS** (16.50 s), BunnyRandom **RED** at `SingularityPortClassCountMismatch;sourceVertex=49` (0.96 s), Vase **RED** at `terminal=NotProductionReady:completion detail=AssemblyRejected` and `completion=NonManifoldStitchedVertex` (277.58 s, less than 600 s; 26,817 arrangement cells, 0 completed quads). Ledger states PASS=1, RED=2, abnormal=0, skipped=0, `postflight=true`.
+- Census verified only; the full 883-case gate remains invalid because **zero gate tests ran**. No cumulative acceptance or promotion, and no new semantic defect classification is authorized by the invalid full-gate attempt.
