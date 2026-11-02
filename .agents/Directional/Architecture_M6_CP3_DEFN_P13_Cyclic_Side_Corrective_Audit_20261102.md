@@ -32,6 +32,8 @@ All nine directed cell boundaries are linked to retained source arcs, not fabric
 
 The missing causal discriminator is **complete incident outgoing-ray/wedge identity and expected left-cell successor** at the lens tips versus the actual `SurfaceArrangement.cpp` directed successor. For needles, compare source-authoritative candidate layout/proposal ownership and same-sheet intrinsic separation against the emitted cells. A claim of a single producer owner is premature without this comparison. Do not tune a `Sliver` area epsilon, redefine two-sided lenses as quad-ready, weaken the completion embedding check, or promote CP3.
 
+**Exact future tip-node probe set:** five lens transition-node pairs in the raw scratch arrangement are `26735: (56813,56385)`, `26764: (16998,47581)`, `26781: (9928,56412)`, `26802: (57415,53651)`, `26812: (57661,23821)`. These were independently extracted as family-change vertices from the directed halfedge cycles. A future scratch-only diagnostic should record every outgoing halfedge from each of these ten nodes, complete source-entity wedge/ray ordering, chosen next and alternative candidates, plus upstream trace/rail admission evidence. Ten node IDs are **not** by themselves a proof that any successor is wrong.
+
 ## Reproduction and boundary
 
 - Independently reverified the existing source snapshot ZIP SHA-256 `418579f76225ace51e940afbddcef2be12313058a971660421f1da0dfc2e7062` and **6,092/6,092** file hashes. Frozen semantic CB76 `f59f92f889fc6fe22d689fd7559c024cd09c6c72` remains unchanged by later work.
