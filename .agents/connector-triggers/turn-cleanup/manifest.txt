@@ -1,0 +1,2 @@
+# CB78: remove only the source-snapshot request marker
+.agents/connector-triggers/source-snapshot/cb78-20261102-2137.txt
