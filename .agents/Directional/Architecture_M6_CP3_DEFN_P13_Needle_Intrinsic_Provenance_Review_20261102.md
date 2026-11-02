@@ -35,7 +35,7 @@ All four cells admit such independently verified source-face chords:
 | 20968 | 0 / 2 | 2244 | `0.000207652829757` | 164.05 |
 | 22350 | 0 / 2 | 174 | `0.000881265487687` | 36.39 |
 
-The global ambient minimum and best valid same-face path length matched to the displayed numerical precision in **4/4** cases (0.0 numerical gap at double precision). The result certifies shortest *source-surface set-to-set separation*, **not** a geodesic constrained to the cell interior, source-chart transported field matching, a required target-size clearance, or whether any particular narrow quad is semantically prohibited. The aspect measure is a **boundary-length ratio**, not a ratio to target size or acceptance threshold. In particular, an admissible-but-poorly-conditioned source patch could share these measurements.
+The global ambient minimum and best valid same-face path length matched to the displayed numerical precision in **4/4** cases (0.0 numerical gap at double precision). The same four source-face witnesses were **independently cross-checked with Shapely in local 2D triangle coordinates**, not the constrained 3D solver: the largest absolute disagreement was **4.77e-17** (`p13_needle_independent_planar_check.py` / `.json`). The result certifies shortest *source-surface set-to-set separation*, **not** a geodesic constrained to the cell interior, source-chart transported field matching, a required target-size clearance, or whether any particular narrow quad is semantically prohibited. The aspect measure is a **boundary-length ratio**, not a ratio to target size or acceptance threshold. In particular, an admissible-but-poorly-conditioned source patch could share these measurements.
 
 ## Correct corrective owner boundary and falsifiers
 
