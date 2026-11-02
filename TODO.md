@@ -152,13 +152,14 @@
      - Mismatch: `InvalidCompletionQuadEmbedding` (a needle grid still fails), any other completion code or reason, `detail=None` or a timeout.
      - **Verified:** [TB71 report](.agents/Directional/Architecture_M6_CP3_TB71_P13_Needle_Grid_Full_Gate_Execution_Report_20261102.md); gate 881/881 PASS (871 GUARD + 10 POSITIVE), 962 membership; registered census 1 PASS / 2 RED; no mismatch or infrastructure route. Neither conditional successor activated.
      - Mismatch → `M6-CP3-TB71-P13-NEEDLE-GRID-FULL-GATE-REV`; infrastructure → `M6-CP3-TB71A-P13-NEEDLE-GRID-ORCH`.
-  17. [ ] **NEXT `M6-CP3-CB78-P13-SUPPORT-CHORD-ADMISSION`** (CB, compile only; [RA-199](.agents/Directional/Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Adjudication_20261102.md) §4, exact §8; Amendment 31):
+  17. [x] **COMPLETE `M6-CP3-CB78-P13-SUPPORT-CHORD-ADMISSION`** (CB, compile only; [RA-199](.agents/Directional/Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Adjudication_20261102.md) §4, exact §8; Amendment 31):
      - Precheck `git diff --quiet 25713a0c0eb0979155c6954f86f8fb13417d5463 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
      - Apply the RA-199.8 block verbatim (**keep its 3 single-space context lines**), SHA-256 `1d8b80e7f5a07c41643967a140b8290cbd563068abf000ae44775bed8159150d`. Numstat `119 0` `src/geometry/FlowRepStrands.cpp` (result `0b15f6da…`) and `153 0` `tests/FlowRepStrandsPhase15Tests.cpp` (result `c7138a47…`).
      - Content: `deactivate_unmet_support_chords` leaves inactive every support trace that returns to the rail it left and meets no other non-rail arc; called once in `build_flow_rep_selection_input` before coverage samples. GUARD tests (rows 882–883) `UnmetSupportChordIsNotAdmittedToSelection` and `CrossingSupportChordsRemainAdmitted`.
      - One eight-target Linux GMP/GMPXX package, `runtimeExecution=false`.
-     - Mismatch → `M6-CP3-PLAN-P13-SUPPORT-CHORD-STOP`; infrastructure → `M6-CP3-CB78A-P13-SUPPORT-CHORD-ORCH`.
-  18. [ ] **`M6-CP3-TB72-P13-SUPPORT-CHORD-FULL-GATE-EXEC`** (TB-EXEC; RA-199.5):
+     - **CB78 verified:** [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB78_P13_Support_Chord_Admission_Code_Build_Record_20261102.md), source `afd72107d3213a396ed7f35b53f67dceeea7e7ca`, run `41531251636`, artifact `13181887585`, 28/28 hashes, no runtime.
+      - Mismatch → `M6-CP3-PLAN-P13-SUPPORT-CHORD-STOP`; infrastructure → `M6-CP3-CB78A-P13-SUPPORT-CHORD-ORCH`.
+  18. [ ] **NEXT `M6-CP3-TB72-P13-SUPPORT-CHORD-FULL-GATE-EXEC`** (TB-EXEC; RA-199.5):
      - Gate: manifest 883 `e9eabb06…` (TB71's 881 rows plus rows 882–883) plus ledger v5 `fd433f54…`, pre-registered 883/883, membership 964.
      - Census `3af1dc0d…`: Cylinder PASS; BunnyRandom P13-e unchanged; **Vase RED within 600 s** at `NotProductionReady:completion detail=AssemblyRejected` with `completion=NonManifoldStitchedVertex`. The macOS counts (26,817 cells, 0 quads) are recorded, not registered.
      - Mismatch: `PatchCompletionRejected`/`IncompleteSurfaceCellComplex` (a two-sided cell remains), any other assembly or completion code, `detail=None` or a timeout.
