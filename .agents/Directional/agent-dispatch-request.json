@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb76-patch-side-start-20261102-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb76-patch-side-start-20261102-v1",
-  "file_id": "170fapWc7tIrBoTZjlnTBsawsdGsTt-TC",
-  "patch_sha256": "e543f371986258280a6fddb9264d00e01425aff65dc096ad088a942a15abe8fe",
-  "base_sha": "2328c389fb55dd85afe094119604b5c8ae5d549a",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): align patch boundary start with first side"
+  "request_id": "m6-cp3-cb76-compile-20261102-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb76-compile-20261102-v1",
+  "source_sha": "f59f92f889fc6fe22d689fd7559c024cd09c6c72",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb76-patch-side-start"
 }
