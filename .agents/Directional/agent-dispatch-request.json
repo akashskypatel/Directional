@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb71-currency-docs-20261102-v1",
+  "request_id": "m6-cp3-cb78-apply-20261102-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb71-currency-docs-20261102-v1",
-  "file_id": "1XAHgyMpJZA-1oddwktifVzG9RigSspVa",
-  "patch_sha256": "3be76f3379b1c7a91d1bcc264ca48ac42e64c51db211290218dc5cd71fcf2f23",
-  "base_sha": "051535daba9c815d8a27a48914d41469df98b2fb",
+  "mailbox_key": "m6-cp3-cb78-apply-20261102-v1",
+  "file_id": "1WEznPxLi5DMOOugvsSa_RCoN9cZ9x2om",
+  "patch_sha256": "e6cfd3ece7754f4542f45ced04f5cf1b4316fb28bf0569267066dc7cd3c637ca",
+  "base_sha": "4a8150b355876e33f7e7eca35a6b22867bf36b3e",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: correct TB71 current-state pointers"
+  "commit_message": "fix(surface-cells): exclude unmet FlowRep support chords"
 }
