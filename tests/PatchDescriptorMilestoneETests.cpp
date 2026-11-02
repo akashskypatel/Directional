@@ -1991,3 +1991,30 @@ TEST(PatchDescriptorMilestoneE, ClosedFormStripRungsJoinOppositeSideVertices) {
   EXPECT_EQ(mesh.quads, (std::vector<std::vector<int>>{
                             {0, 1, 6, 7}, {1, 2, 5, 6}, {2, 3, 4, 5}}));
 }
+
+TEST(PatchDescriptorMilestoneE, BentNeedleGridCompletesByTheBoundarySearch) {
+  // A 2x2 strip 0.02 thick whose long sides dip by 0.03, more than its
+  // thickness. The bilinear vertex at (0.5, 0.01) lies outside the strip and
+  // projects onto side 2, where the grid's last quad turns clockwise; the
+  // boundary itself has an embedded quadrangulation.
+  Fixture fixture = make_authoritative_patch({2, 2, 2, 2});
+  fixture.V << 0.72, -0.0134, 0.0,
+               0.0, 0.0, 0.0,
+               0.5, -0.03, 0.0,
+               1.0, 0.0, 0.0,
+               1.0, 0.01, 0.0,
+               1.0, 0.02, 0.0,
+               0.7, -0.01, 0.0,
+               0.0, 0.02, 0.0,
+               0.0, 0.01, 0.0;
+  const auto completion = complete_fixture_with_source_authority(
+      fixture.complex, fixture.V, fixture.F);
+
+  ASSERT_TRUE(completion.is_produced());
+  ASSERT_EQ(1U, completion.product().completedPatches.size());
+  const auto &mesh = completion.product().completedPatches.front();
+  EXPECT_EQ(directional::geometry::PureQuadCompletionBackend::Pattern,
+            mesh.backend);
+  EXPECT_EQ(3U, mesh.quads.size());
+  EXPECT_EQ(8U, mesh.vertices.size());
+}

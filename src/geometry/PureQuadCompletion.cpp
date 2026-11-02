@@ -2449,9 +2449,32 @@ PureQuadCompletionResult complete_pure_quad_patch(
     }
   }
   if (!completed && !boundedFallbackAdmissible) {
+    const PureQuadMesh boundaryOnly = mesh;
     completed = pure_quad_detail::complete_rectangular_grid(
         patch, mesh, projection.get(), allowedFacePtr,
         options.sourceAuthority);
+    // The grid places its generated vertices by the corners alone, which can
+    // fold a quad of a thin, bent patch whose boundary still has an embedded
+    // quadrangulation. Such a grid gives way to the pattern search over the
+    // same boundary when that search finds one; otherwise the grid stands and
+    // the validator reports its failure.
+    if (completed && patch.simple &&
+        mesh.vertices.size() > patch.boundaryVertices.size()) {
+      PureQuadMesh positioned = mesh;
+      PureQuadEmbeddingFailure gridFailure;
+      if (!pure_quad_detail::fill_positions(positioned) ||
+          !pure_quad_detail::completed_quads_have_simple_embedding(
+              positioned, options.completionVariant, gridFailure,
+              options.sourceVertices, options.sourceFaces)) {
+        PureQuadMesh search = boundaryOnly;
+        bool exhausted = false;
+        if (pure_quad_detail::complete_pattern(
+                patch, search, options.completionVariant,
+                options.sourceVertices, options.sourceFaces, exhausted)) {
+          mesh = std::move(search);
+        }
+      }
+    }
   }
   if (!completed && !boundedFallbackAdmissible && boundaryCount == 6) {
     completed = pure_quad_detail::complete_six_vertex_transition(
