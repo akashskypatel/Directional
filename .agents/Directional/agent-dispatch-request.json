@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb75-terminal-compile-20261102-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb75-terminal-compile-20261102-v1",
-  "source_sha": "8656c4fed5070a467da491b60ead5c8ab1d99dbd",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb75-completion-terminal-gmp"
+  "request_id": "m6-cp3-cb75-docs-closeout-20261102-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb75-docs-closeout-20261102-v1",
+  "file_id": "1bDWEaphogUYQpt55D94hlzw1vDeuyEZk",
+  "patch_sha256": "bdb2aded301c8f5e70e9e98ce90b160c0364f4c87f1bd8d2f78322afe2a04511",
+  "base_sha": "125af1b4399f5a8a32fe0c60bb1ba7d737499d47",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB75 compile-only and hand off TB69"
 }
