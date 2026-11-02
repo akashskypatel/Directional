@@ -49,7 +49,7 @@ The previous scratch probes, raw nine-cell receipt, ten-node wedges, cyclic audi
 
 | Duty | Current disposition |
 |---|---|
-| Accepted selector prefix re-hashed | Not independently rehashed this continuation; no manifest or selector edit; accepted CP2 491/491, TB70 880/880 candidate remains unpromoted |
+| Accepted selector prefix re-hashed | Independently verified TB70 (880) byte-identical first 878 case rows against TB69 (878), with TB69 SHA-256 `aaaba077a067853a00310683946f82394c60247bd42717fd283b4d7cde423c82` and TB70 `a9f964c843a5620f281bf2ca2f07e7df9b8d11a7769218a635a5b707aaf2b03b`; **CP2 accepted 491-row aggregate not independently rehashed this continuation**, so formal accepted-prefix duty pending; no selector modification or promotion |
 | Decisive claims independently re-derived | Independently verified one immutable 6092-file source snapshot, semantic diff, tracing/FlowRep producer and transaction boundaries; earlier raw nine-cell and width findings are cited prior reviews, not newly reexecuted |
 | Non-vacuity checked | Existing older audits include negative controls; no new executable or acceptance test this continuation, so no new behavioral acceptance claimed |
 | Prior obligations discharged/carried | Source path and selector granularity clarified; P13-h2 and P13-i ownership/admissibility still open, P13-e and O23 unchanged |
