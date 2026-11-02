@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-p13-lens-wedge-scratch-compile-20261102-v2",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-p13-lens-wedge-scratch-compile-20261102-v2",
-  "source_sha": "d38acf9058c67d0775557634db9b55311626b831",
-  "targets": [
-    "directional_surface_cell_producer_tests"
-  ],
-  "artifact_prefix": "p13-lens-wedge-scratch"
+  "request_id": "m6-cp3-cb77-p13-needle-grid-drive-apply-20261102-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb77-p13-needle-grid-drive-apply-20261102-v1",
+  "file_id": "1VB5da4aSPIa8nyuhddMSKbFkK9seXhDT",
+  "patch_sha256": "7b3dfdb0fc68b9dcff34ffe811ca896d614d4ebd9dccfccaf6642bceccb8d50a",
+  "base_sha": "40348edbf9fbff39de3a69f07fea41817155be10",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(surface-cells): fall back from folded needle grid to boundary search"
 }
