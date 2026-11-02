@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-p13-sliver-review-scratch-compile-20261102-v1",
+  "request_id": "m6-cp3-p13-lens-wedge-scratch-compile-20261102-v2",
   "operation": "compile",
-  "mailbox_key": "m6-cp3-p13-sliver-review-scratch-compile-20261102-v1",
-  "source_sha": "95684f2e18c3c573dcbf11d35deaad696d0316d3",
+  "mailbox_key": "m6-cp3-p13-lens-wedge-scratch-compile-20261102-v2",
+  "source_sha": "d38acf9058c67d0775557634db9b55311626b831",
   "targets": [
     "directional_surface_cell_producer_tests"
   ],
-  "artifact_prefix": "p13-sliver-review-scratch"
+  "artifact_prefix": "p13-lens-wedge-scratch"
 }
