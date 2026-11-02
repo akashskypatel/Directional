@@ -40,6 +40,10 @@
 2. For needles 6095/20533/20968/22350, independently distinguish intrinsic quality from injective completion existence. Check the fixed boundary and all required source-chart/sheet/rail owners; the three previously tried interpolants do not close the existence question. A valid close-parallel corridor is a required positive control.
 3. Preserve frozen mandatory rail 0, accepted selector prefix, singularity ports, protected-degree/cycle/coverage checks, exact source identity and terminal stage attribution. If new behavioral evidence is necessary, it belongs to a separately authorized Code + Build / Test + Benchmark split, not this runtime-free Review. **No demonstrated single corrective owner or authorized CB successor yet.**
 
+## Read-only non-vacuity receipt for the discriminator (2026-11-02 13:37Z)
+
+Fresh offline literal-source audit of the verified 6,104-file snapshot checked **8/8** control-flow/retention invariants, and rejected **4/4** deliberately tampered *in-memory source copies* (removed state recording, replaced no-exit terminal, corrupted state equality, removed failure-retention guard). Script `p13_trace_subtype_source_audit.py` SHA-256 `c8bba3a3d40efad50e87ebf2a550020cf9d8d1be1c98b62a83eba5247589b69e`; receipt `P13_Trace_Subtype_Source_Audit_20261102.json` SHA-256 `563a62e0fec98cd01189857c4b1c4332874bd44ab3b86f5b42b9f3e05d3de510` (downloadable continuation evidence). These checks cover exact string-path assumptions only; they are **not product tests, proof of lens trace subtype, or an accepted runtime gate**. This branch's product/test/selector sources were not changed.
+
 ## Review closeout — interim only
 
 | Duty | Disposition |
