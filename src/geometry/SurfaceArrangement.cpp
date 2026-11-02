@@ -2,6 +2,8 @@
 #include <directional/geometry/SourceChartTransitions.h>
 
 #include <functional>
+#include <cstdio>
+#include <cstdlib>
 
 namespace directional::geometry::surface_arrangement_detail {
 
@@ -3116,6 +3118,63 @@ SurfaceCellComplex build_surface_cell_complex(
     candidateNext[static_cast<std::size_t>(halfedge.id)] = next;
     successorWedge[static_cast<std::size_t>(halfedge.id)] =
         diagnostic_source_entity_identity(*selectedWedge);
+  }
+
+  // SCRATCH ONLY: emit all source-entity rays and assigned predecessors at
+  // the ten known lens junctions, without changing topology or retaining data.
+  if (std::getenv("DIRECTIONAL_P13_WEDGE_PROBE") != nullptr) {
+    const int targetNodes[] = {56813, 56385, 16998, 47581, 9928,
+                               56412, 57415, 53651, 57661, 23821};
+    for (int nodeId : targetNodes) {
+      if (nodeId < 0 || nodeId >= static_cast<int>(complex.nodes.size())) {
+        std::fprintf(stderr, "P13W_NODE_MISSING node=%d\n", nodeId);
+        continue;
+      }
+      const auto &groups = orderedWedges[static_cast<std::size_t>(nodeId)];
+      std::fprintf(stderr, "P13W_NODE node=%d groups=%zu outgoing=%zu\n",
+                   nodeId, groups.size(),
+                   outgoing[static_cast<std::size_t>(nodeId)].size());
+      int groupIndex=0;
+      for (const auto &[entity,rays]:groups) {
+        auto key=diagnostic_source_entity_identity(entity);
+        std::fprintf(stderr,"P13W_GROUP node=%d group=%d kind=%d rays=%zu",
+                     nodeId,groupIndex,static_cast<int>(entity.kind()),rays.size());
+        for(auto value:key.values)
+          std::fprintf(stderr," key=%lld",static_cast<long long>(value));
+        std::fprintf(stderr,"\n");
+        for(std::size_t rank=0;rank<rays.size();++rank) {
+          const auto &ray=rays[rank];
+          const auto &h=complex.halfedges[static_cast<std::size_t>(ray.halfedge)];
+          std::fprintf(stderr,"P13W_RAY node=%d group=%d rank=%zu halfedge=%d from=%d to=%d twin=%d param=%.17g hard=%d strand=%d proposal=%d rail=%lld witnesses=%zu\n",
+                       nodeId,groupIndex,rank,h.id,h.from,h.to,h.twin,
+                       ray.parameter,static_cast<int>(h.hardFeature),h.strand,
+                       h.proposalId,h.railId?static_cast<long long>(h.railId->index()):-1LL,
+                       ray.witnesses.size());
+          for(const auto &w:ray.witnesses)
+            std::fprintf(stderr,"P13W_WITNESS node=%d group=%d halfedge=%d face=%d chart=%lld param=%.17g left=%.17g\n",
+                         nodeId,groupIndex,ray.halfedge,w.chart.sourceFace,
+                         w.chart.chart?static_cast<long long>(w.chart.chart->chart.index()):-1LL,
+                         w.localParameter,w.leftScore);
+        }
+        ++groupIndex;
+      }
+      for(const auto &h:complex.halfedges) {
+        if(h.to!=nodeId)continue;
+        std::fprintf(stderr,"P13W_NEXT node=%d incoming=%d from=%d twin=%d chosen=%d candidates=%zu\n",
+                     nodeId,h.id,h.from,h.twin,candidateNext[static_cast<std::size_t>(h.id)],
+                     h.twin>=0&&h.twin<static_cast<int>(halfedgeWedges.size())?
+                       halfedgeWedges[static_cast<std::size_t>(h.twin)].size():0U);
+        if(h.twin<0||h.twin>=static_cast<int>(halfedgeWedges.size()))continue;
+        for(const auto &entity:halfedgeWedges[static_cast<std::size_t>(h.twin)]) {
+          auto key=diagnostic_source_entity_identity(entity);
+          std::fprintf(stderr,"P13W_CANDIDATE node=%d incoming=%d",nodeId,h.id);
+          for(auto value:key.values)
+            std::fprintf(stderr," key=%lld",static_cast<long long>(value));
+          std::fprintf(stderr,"\n");
+        }
+      }
+      std::fprintf(stderr,"P13W_END node=%d\n",nodeId);
+    }
   }
 
   // Source-boundary exterior continuation is authoritative source topology,
