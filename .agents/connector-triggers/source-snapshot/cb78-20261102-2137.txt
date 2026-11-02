@@ -1,2 +1,0 @@
-Turn M6-CP3-CB78-P13-SUPPORT-CHORD-ADMISSION
-Source snapshot requested for authoritative RA-199.8 patch transport.
