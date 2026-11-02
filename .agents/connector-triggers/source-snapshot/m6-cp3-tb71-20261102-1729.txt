@@ -1,0 +1,3 @@
+Purpose: exact source snapshot for M6-CP3-TB71-P13-NEEDLE-GRID-FULL-GATE-EXEC
+Entry STATUS SHA: 61ba67f0918da4be5e5fe542f4e0cd529f291c7e
+Snapshot authority: this exact marker-trigger commit SHA; no rebuild or runtime in source snapshot.
