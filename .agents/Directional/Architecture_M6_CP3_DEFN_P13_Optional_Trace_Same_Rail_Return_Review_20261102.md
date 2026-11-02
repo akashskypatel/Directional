@@ -19,6 +19,21 @@ Each lens has exactly five directed cyclic halfedges partitioning into a continu
 | 26802 | 422 | 105 / 2 | 57415; 2364 | 53651; 2385 |
 | 26812 | 612 | 153 / 0 | 57661; 2401 | 23821; 2400 |
 
+### Source-face-local field-to-rail direction audit
+
+Using the raw twelve-component cross-field frame (`P13_FIELD`) at each contact, the explicitly selected support family (`P13_HALFEDGE family`) and the same-source-face rail segment chord from the original `P13_NODE xyz` records, a separate **offline** calculation independently measured the unsigned family-to-rail direction angle. Both field/support segment agreement and field/rail angle were checked; the field-to-support chord angle is at most `0.000001°` within recorded precision. The field-to-rail angles below are source-face-local, not cross-face transported and not certificates of permissible trace admission.
+
+| Cell | Rail-edge contact field/rail angle | Rail-vertex contact field/rail angle |
+|---|---:|---:|
+| 26735 | 9.959657° | 0.606843° |
+| 26764 | 1.272584° | 0.249013° |
+| 26781 | 20.599508° | 3.316825° |
+| 26802 | 15.138432° | 11.073036° |
+| 26812 | 26.937285° | 1.686827° |
+
+Absolute minimum `0.249013°` (cell 26764, source-vertex tip); maximum `26.937285°` (cell 26812, source-edge tip). **Three** of the ten source-face-local contacts fall below `1.3°`. A global near-rail angle threshold would not follow from these data and is prohibited without independent validity and coverage controls. The standalone script/result are included in the evidence archive.
+
+
 **Independent 5/5 and 10/10 validation:** `p13_rail_return_audit.py` and `p13_rail_return_audit.json` in the evidence archive reparse the frozen logs, rederive the entire five-edge cycle, distinct source-arc family, original support trace ID, all transitions, same source-face contacts, all three outgoing rays, unique chosen successor IDs, and matching expected tip-node sets. It rejected four separately tampered *copies* of its input: missing hard-rail identity, support-trace strand mismatch, missing tip wedge, and broken boundary cycle. None of these is a formal product test.
 
 ## Source-path ownership and safeguards
