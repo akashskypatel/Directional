@@ -2,13 +2,13 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Updated:** 2026-11-01 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
+**Updated:** 2026-11-02 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
 
 This roadmap answers **what is done, what comes next, and what each milestone delivers**. It is not a turn log, task queue, test ledger, definition spec, or implementation handoff. The product and acceptance contract is [DESIGN.md](DESIGN.md) (especially §§2 and 14); status, detailed plans, unresolved findings, and exact next-turn authorization live in [ORIENTATION.md](ORIENTATION.md), [Future_Chat_Session_Handoff.md](Future_Chat_Session_Handoff.md), [TODO.md](../../TODO.md), and [Regression_Root_Cause_Tracker.md](Regression_Root_Cause_Tracker.md).
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB69 878/878; P13-h side-0 registration → compiled CB76 → TB70 per RA-197, Vase then ends at P13-h2; no direct Vase acceptance) · **Next:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB70 880/880; CB76 side-0 registration verified, Vase P13-h2 and BunnyRandom P13-e still fail direct production; no CP3 acceptance) · **Next:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
@@ -47,7 +47,7 @@ Each completed milestone's [closure record](M3_Closure_Record.md) retains detail
 | **M6-CP2** | Independent `SurfaceProductVerifier`: recompute permitted invariants; reject malformed authority without repair. | **Closed** · [closure](M6_CP2_Closure_Record.md) |
 | **M6-CP3** | End-to-end direct-production and invariant re-proof, including the remaining closed-complex candidate-extraction witness and discriminating tamper. | **Active / blocked on evidence; not accepted** |
 
-**Current CP3 boundary (2026-11-02):** TB69 Linux 878/878, membership 959, is the latest immutable gate. Its census: Cylinder PASS, BunnyRandom P13-e RED, Vase P13-h RED at `completion` (patch 4, closed-form). [RA-197](Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md) attributes P13-h to side-0 misregistration in the patch descriptor (Amendment 29): exact CB76, then TB70 (880 rows, membership 961). After it, Vase stops at P13-h2 (needle grids) and then P13-i (rail-grazing lenses), both owned by the sliver-cell DEFN. Accepted CP2 491/491; selector497 unpromoted.
+**Current CP3 boundary (2026-11-02):** [TB70](Architecture_M6_CP3_TB70_P13_Patch_Side_Start_Full_Gate_Execution_Report_20261102.md) Linux gate 880/880 PASS, membership 961 (81 deferred), verified CB76 patch side-zero registration with two new focused guards. Direct census: Cylinder PASS, BunnyRandom P13-e RED at vertex49, Vase P13-h2 generated-vertex closed-form RED at patch6095. P13-i rail-grazing lenses remain. Next separate Review/Definition addresses sliver-cell production, not further completion tolerance changes. Accepted CP2 491/491; selector497 unpromoted; no CP3 acceptance.
 
 None of this is CP3 acceptance. Previously TB52 853/0 was an independently reviewed candidate gate ([RA-177](Architecture_M6_CP3_TB52_REV_Independent_Five_Binary_Gate_Review_20261030.md)), with 939 packaged tests enumerated (853 GATED / 86 DEFERRED); TB51 831/0 is the prior reviewed candidate. selector497 (497/497) and the G4-B002 exit row passes inside it ([RA-174](Architecture_M6_CP3_PLAN_RP01_Closure_TB51_REV_Audit_Membership_Harness_20261030.md)). **RP-01 is closed** ([RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md); local macOS TB53 836/19, with every red attributed to O15 or O2, and 854/855 FMA-free; a Linux confirmation is carried). CP3 exit additionally needs: zero deferred rows; the design-acceptance matrix at 6/6 (Cylinder, Vase and Bunny are open in P13); every packaged test governed (P8, O14); O7 resolved. Exact A3 atlas topology decisions were discharged under RA-181; **O15c exact continuation-width monitoring** remains a separate P13 probe obligation, not a reopened O15 topology defect.
 

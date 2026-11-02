@@ -2,8 +2,8 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-11-02 · [RA-197](Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md) probe-adjudicated P13-h. 220 of Vase's 224 closed-form failures are strips whose corners the descriptor misregisters: the boundary starts at the smallest halfedge id, not at side 0. 2,055 more closed-form completions were accepted twisted. DESIGN Amendment 29; exact CB76 → TB70 (manifest 880). TB69 Linux 878/878 is the latest candidate. Accepted CP2 491/491, stable 66/17/49 debt1, selector497 unpromoted.
-**Next:** `M6-CP3-CB76-P13-PATCH-BOUNDARY-SIDE-START` (exact RA-197.7, compile only), then TB70. Review track: `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS` (P13-h2 needle grids, P13-i rail-grazing lenses; can start now) and P13-e.
+**Currency:** 2026-11-02 · [TB70](Architecture_M6_CP3_TB70_P13_Patch_Side_Start_Full_Gate_Execution_Report_20261102.md) verified immutable CB76 880/880 Linux gate (membership 961) and registered independent census: Cylinder direct PASS, BunnyRandom P13-e RED, Vase P13-h2 closed-form generated-vertex RED. No CP3 promotion. Accepted CP2 491/491, stable 66/17/49, debt 1; selector497 unpromoted.
+**Next:** `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS` (independent Review/Definition of P13-h2 needle grids and P13-i rail-grazing lenses). BunnyRandom P13-e Review is parallel.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -48,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB69 immutable Linux gate **878/878** PASS, 81 deferred, membership **959**; census Cylinder PASS, BunnyRandom P13-e RED at vertex49, Vase P13-h RED at completion (patch 4, closed-form). [RA-197](Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md): side-0 misregistration → exact CB76 → TB70 (880, membership 961). Then the sliver DEFN (P13-h2, P13-i). CP2 491/491 accepted; stable 66/17/49; selector497 unpromoted. |
+| **M6-CP3 — active** | [TB70](Architecture_M6_CP3_TB70_P13_Patch_Side_Start_Full_Gate_Execution_Report_20261102.md) immutable Linux 880/880 PASS, membership 961 (81 deferred); registered census Cylinder PASS, BunnyRandom P13-e RED, Vase P13-h2 generated-vertex closed-form RED. Side-0 registration (CB76) verified; sliver-cell DEFN next. CP2 491/491 accepted, stable 66/17/49; selector497 unpromoted. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 **Prior Review authority:** [RA-187](Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md) (GUI layers; full-gate TB rule), [RA-186](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) (CLI sidecar; DR4), [RA-185](Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md) (DIAG-RETAIN display; DR2 → M8-CP2), [RA-184](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) (DIAG-RETAIN), [RA-183](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) (O2 gate; O2b, O16), [RA-181](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md) (O15 discharged; O15c) and [RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md) (RP-01 closed; local-mode rules). Implementers get only exact patches and manifests.
@@ -105,7 +105,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** exact CB76 → TB70 ([RA-197](Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md)). Review track: the sliver-cell DEFN (P13-h2, P13-i) and P13-e.
+**Immediate:** [TB70](Architecture_M6_CP3_TB70_P13_Patch_Side_Start_Full_Gate_Execution_Report_20261102.md) verified; exact next `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS` (P13-h2/P13-i), separate P13-e Review.
 - **P13-f, Vase:** one source-chart graph per mesh (CB71) and per completion pass (CB72), lent only to callees whose inputs it borrows exactly (Amendment 27). macOS probe: Vase reaches a typed RED at `completion` in 138 s. [RA-195](Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Probe_Adjudication_20261101.md).
 - **P13-g, Vase:** patch 1200 (bounded-combinatorial, variant 15, bow-tie) is a simple concave octagon whose only embedded quadrangulations are fans that the fixed split never reaches. The validator projects each quad on its own plane and accepts folds. Fix: Amendment 28 (source-orientation predicate, exhaustive forward search, typed `NoEmbeddedQuadrangulation`, typed terminal detail), exact CB73/CB74/CB75 → TB69 ([RA-196](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md)).
 - **P13-h, Vase:** the closed-form grid reads corners by index from `boundaryVertices[0]`, but the descriptor starts the boundary at the smallest halfedge id, often mid-side. 220 strips fail as twisted ladders (patch 4 first) and 2,055 more are accepted twisted. Fix: Amendment 29, the descriptor rotates to side 0 (exact CB76 → TB70). **P13-h2:** 4 needle 2D grids still fail after CB76, and no interpolant embeds them all. **P13-i:** 5 rail-grazing lenses (two sides, tips 0.2°–27°), correctly rejected `side-count-unsupported`. Both → `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS` ([RA-197](Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md)).
@@ -117,7 +117,7 @@ macOS O16 stays separate.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | P13 direct matrix 6/6 unresolved. [RA-197](Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md): exact CB76 → TB70 for P13-h; then the sliver DEFN (P13-h2 needle grids, P13-i lenses) and P13-e BunnyRandom ports. Then P13 re-census with O6/O9 only where reached; O19 genus > 0 nonblocking. | M6-CP3, `M6-CP3-CB76-P13-PATCH-BOUNDARY-SIDE-START` next |
+| **1** | P13 direct matrix 6/6 unresolved. TB70 verified CB76 side-0 registration; Vase stops at P13-h2 needle grids with a generated vertex; P13-i rail-grazing lenses remain. Sliver-cell DEFN is next; P13-e BunnyRandom port-count Review parallel. O6/O9 only where reached; O19 genus > 0 nonblocking. | M6-CP3, `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS` next |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
