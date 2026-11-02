@@ -1,3 +1,7 @@
+# 2026-11-02 — CB77 folded needle-grid boundary-search patch and immutable compile
+
+- [CB77 record](.agents/Directional/Architecture_M6_CP3_CB77_P13_Needle_Grid_Boundary_Search_Code_Build_Record_20261102.md): RA-198.8 exact two-file patch at [`25713a0c0eb0`](https://github.com/akashskypatel/Directional/commit/25713a0c0eb0979155c6954f86f8fb13417d5463), +23/+27 additions; [GMP/GMPXX eight-target Linux compile 41485148422](https://github.com/akashskypatel/Directional/actions/runs/41485148422) SUCCESS, package `13160673891`, ZIP `ba0f4f3a…`, 28/28 hashes, `runtimeExecution=false`. No tests/benchmarks executed, no production gate/CP3 promotion. Next TB71, immutable 881-row gate and membership 962.
+
 # 2026-11-02 — RA-198 P13-h2/P13-i probe adjudication; exact CB77, TB71; selection DEFN
 
 - [RA-198](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS`. ChatGPT had set it BLOCKED because Review policy forbids runtime probes. RA-197 had placed this probe DEFN on the Review track's scratch build, and RA-198 ran the probes there.
