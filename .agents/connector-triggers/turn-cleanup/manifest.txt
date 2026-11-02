@@ -1,2 +1,0 @@
-# CB76 temporary source snapshot marker
-.agents/connector-triggers/source-snapshot/cb76-20261102-0406.txt
