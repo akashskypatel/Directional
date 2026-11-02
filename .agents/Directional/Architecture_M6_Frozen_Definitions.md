@@ -1,3 +1,12 @@
+## RA-199 — P13-i FlowRep selection: unmet support chords; exact CB78, TB72; next failure P13-j (2026-11-02)
+
+- [RA-199](Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-FLOWREP-SELECTION` and supersedes its probe preflight and static review. **DESIGN Amendment 31:** a layout-support trace that returns to the rail it left, crossed or touched by no other non-rail arc, is not admitted to selection. It stays inactive: no coverage samples, no cycle. One pass is the fixed point.
+- P13-i owner: what A2a selection admits (`build_flow_rep_selection_input`). Not owners: the coverage tolerance, cross-face coverage and the exact degree rule (O25, quality). Proposals remain one required cycle each.
+- Turn IDs:
+  - CB78 `M6-CP3-CB78-P13-SUPPORT-CHORD-ADMISSION` (`1d8b80e7…`, `119 0` / `153 0`, rows 882–883).
+  - TB72 `M6-CP3-TB72-P13-SUPPORT-CHORD-FULL-GATE-EXEC` (manifest 883 `e9eabb06…`, membership 964; Vase RED `AssemblyRejected`/`NonManifoldStitchedVertex`).
+  - Review DEFN `M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX` (P13-j, probe).
+
 ## RA-198 — P13-h2 needle grids and P13-i rail lenses: probe adjudication; exact CB77, TB71; selection DEFN (2026-11-02)
 
 - [RA-198](Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS` and supersedes its review WIP. **DESIGN Amendment 30:** a closed-form grid that generated vertices and fails the Amendment 28 predicate gives way to the pattern search over the same boundary when that search finds an embedded quadrangulation (backend `Pattern`). Otherwise the grid stands and the validator reports its failure. 1×1 cells and strips are unchanged.

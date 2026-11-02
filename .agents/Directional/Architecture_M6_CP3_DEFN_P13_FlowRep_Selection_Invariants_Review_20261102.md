@@ -1,5 +1,7 @@
 # P13 FlowRep selected-network invariants — independent static Review (2026-11-02)
 
+> **Superseded (2026-11-02):** [RA-199](Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Adjudication_20261102.md) ran this DEFN's probes on the Review track's scratch build and closed it: the lenses are unmet support chords (Amendment 31, exact CB78, TB72); cross-face coverage and the degree rule are not the P13-i owner (O25); Vase's next failure is P13-j at assembly → `M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX`. This file is kept as history.
+
 **Canonical owner:** `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS`, same Review/Definition turn. **Not a production patch, compile checkpoint, benchmark, or acceptance decision.** Source: verified full snapshot from event `6c95f68120a20c55ddc09fd155de83f633e49549` (run 41393896396, artifact 13118905233, ZIP SHA-256 `701182750fbd98aa589f1792c4490224ed295ec2821d754bca8e02563550a27a`); `source.tar.gz` and **6092/6092** contained file hashes validated this continuation. CB76 semantic code `f59f92f889fc6fe22d689fd7559c024cd09c6c72` has no source/fixture/test/compile changes through the entry beacon, per GitHub comparison already established in the preceding continuation. Archive-only `review_check.py boundary` is **not** a pass because history is unavailable.
 
 ## Source-verified observations

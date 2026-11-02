@@ -1,5 +1,7 @@
 # P13 FlowRep selection — source-verified probe preflight (2026-11-02)
 
+> **Superseded (2026-11-02):** [RA-199](Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Adjudication_20261102.md) ran this DEFN's probes on the Review track's scratch build and closed it: the lenses are unmet support chords (Amendment 31, exact CB78, TB72); cross-face coverage and the degree rule are not the P13-i owner (O25); Vase's next failure is P13-j at assembly → `M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX`. This file is kept as history.
+
 **Current turn:** `M6-CP3-DEFN-P13-FLOWREP-SELECTION` (Review/Definition, P13-i).
 **Disposition:** diagnostic scratch-probe requirement remains unresolved; **this is not an adjudication, code patch, compile result, benchmark, or promotion**.
 **Authority:** RA-198 §§1–2, 6, prior `Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Invariants_Review_20261102.md`, `REVIEW_TURN_POLICY.md`, `DESIGN.md`, and post-TB71 handoff.

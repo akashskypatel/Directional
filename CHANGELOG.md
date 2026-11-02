@@ -1,3 +1,22 @@
+# 2026-11-02 — RA-199 P13-i FlowRep selection probe adjudication; exact CB78, TB72; P13-j assembly DEFN
+
+- [RA-199](.agents/Directional/Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-FLOWREP-SELECTION`. ChatGPT had set it BLOCKED because its session cannot run scratch probes; RA-198.6 had put this probe DEFN on the Review track, so the probes ran there.
+- **Findings:**
+  - Selection cannot see whether a support trace meets the layout. Seed traces never end on another trace, so each of Vase's 115 supports is one flowline touching only its rail.
+  - Exactly 10 supports return to the rail they left and meet no other trace; all five lenses are among them. Not admitting them clears every two-sided cell, and one pass is the fixed point.
+  - Coverage is not the criterion: three lenses lie 2–6 % of target size from the rail (tolerance 2 %). Cross-face coverage plus relaxed degrees removes 13 supports and still leaves 3 lenses.
+  - Vase's next failure is P13-j: assembly `NonManifoldStitchedVertex` after every cell completes.
+- **DESIGN Amendment 31:** `build_flow_rep_selection_input` does not admit an unmet support chord.
+- Scratch verification of the exact patch:
+  - gate 882/883 (only O16 row 283) and ledger 0/81, both unchanged;
+  - Cylinder PASS, BunnyRandom unchanged;
+  - mutants M1–M3 each fail a GUARD row.
+- Turn IDs:
+  - CB78 `M6-CP3-CB78-P13-SUPPORT-CHORD-ADMISSION` (`1d8b80e7…`, rows 882–883).
+  - TB72 `M6-CP3-TB72-P13-SUPPORT-CHORD-FULL-GATE-EXEC` (manifest 883 `e9eabb06…`, membership 964).
+  - Review DEFN `M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX` (P13-j).
+- O25 (inert support selection: same-face coverage, exact rail-node degrees) → M7 with O23. The preflight and the static review keep superseded notes.
+
 # 2026-11-02 — TB71 needle-grid full gate and direct-production census
 
 - [TB71 execution report](.agents/Directional/Architecture_M6_CP3_TB71_P13_Needle_Grid_Full_Gate_Execution_Report_20261102.md): CB77 immutable source `25713a0c…`/artifact `13160673891`. [Gate 41492237758](https://github.com/akashskypatel/Directional/actions/runs/41492237758) **881/881 PASS** (871 GUARD, 10 POSITIVE), membership 962, 81 deferred, 1770/1770 hashes. [Census 41492364954](https://github.com/akashskypatel/Directional/actions/runs/41492364954) 9/9 hashes, Cylinder PASS, BunnyRandom P13-e RED vertex49, Vase P13-i RED `side-count-unsupported` in 288.680 s. Registered outcomes matched, no rebuild, no selector/CP3 promotion, stable 66/17/49 debt 1 and CP2 491/491 preserved. Independent Review-track next: `M6-CP3-DEFN-P13-FLOWREP-SELECTION` (P13-i), P13-e parallel.
