@@ -1,0 +1,42 @@
+# P13 Review — trace termination versus embedded endpoint authority (2026-11-02)
+
+**Canonical Review owner:** `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS`; same-turn continuation, **not closed**. This document adds source-level causal falsifiers; it does not authorize product changes, tests, runtime execution, a successor or CP3 promotion.
+
+## Source and evidence boundary
+
+- Reused immutable source snapshot at `6c95f68120a20c55ddc09fd155de83f633e49549`, run 41393896396, ZIP SHA-256 `701182750fbd98aa589f1792c4490224ed295ec2821d754bca8e02563550a27a`. Independently verified ZIP digest and **6,092/6,092** internal SHA-256 source files this attempt. Prior full current-head comparison found zero semantic source/test/fixture/build changes.
+- Independently examined production `src/geometry/SurfaceCellTracing.cpp`, `src/geometry/FlowRepStrands.cpp`, `src/geometry/PureQuadCompletion.cpp`, normative `DESIGN.md`, `Architecture_M6_Frozen_Definitions.md`, and RA-197. Companion offline source check `flowrep_anchor_source_audit.py` passed, and **three mutated *copies*** were rejected: removing the repeated-state anchor label, removing the no-exit repeated-state outcome, and bypassing the anchored-tip exclusion. Source check and negative controls prove the examined syntax/control-flow relationship, **not** Vase branch reachability or behavioral acceptance; no Directional executable was run.
+- The previous accepted CP2 selector remains 491/491 and unpromoted TB70 candidate 880/880 with 961 membership, 81 deferred. Stable bookkeeping stays 66 events / 17 categories / 49 recurrences, debt 1. None was modified or re-accepted here.
+
+## Narrow source-derived finding — one termination label, two causes
+
+1. `SurfaceCellTracing.cpp:11183–11185` emits `TraceTerminationReason::RepeatedState` when the exact directed state is visited again. That case may represent a genuine recurrent path.
+2. **Separately**, `SurfaceCellTracing.cpp:11219–11226` emits the **same** `RepeatedState` when the tracer has already advanced, finds **no finite positive next face exit**, and the current point lies on any face edge. That branch does **not** require a repeated prior state, captured network arc, mandatory rail or certified singularity. It is a distinct termination cause concealed by the same enum value.
+3. `FlowRepStrands.cpp:647–650` admits `RepeatedState` as an `embedded_anchor` terminal reason for generic seed traces; `:662–717` only checks the seed's Boundary/Feature/Singularity provenance, nonempty path, terminal enum and no first rail suffix. When the entire trace prefix is retained, its last arc receives `endEmbeddedAnchor=true`. `:439–461` classifies the flag as `NetworkJunction`; `:3107–3127` excludes that flagged endpoint from degree-one endpoint completion. Neither source site independently proves the **particular repeated-state endpoint** touches another retained embedded arc.
+4. **Potential missing authority, not a confirmed P13 defect:** an edge/no-exit `RepeatedState` on a generic anchored support can therefore be treated as an embedded junction without a collision/contact certificate. Exact per-trace terminal reason, the no-exit/revisited-state subcause, original endpoint key, retained incidence degree and source region/sheet must be observed before attributing any Vase cell to this path. Valid closed/recurrent paths must not be rejected merely because their terminal enum is `RepeatedState`.
+5. **Existing narrow precedent is not a general fix.** `FlowRepStrands.cpp:932–1195` has a separately guarded singular-separatrix micro-loop remedy: it requires a specific singular source vertex and intrinsic transition ring, tests which ring crossing or pre-ring return occurred, and conditionally substitutes a canonical radial spoke. The five observed hard-rail lens supports derive from **generic seed branches** (trace IDs 1037, 878, 20, 422, 612), not that singular transition-ring owner. This mechanism proves why a legitimate replacement needs independent topology authority; it cannot be copied over by distance/angle tuning.
+
+## Geometric validity versus quality — corrective scope
+
+- `Architecture_M6_Frozen_Definitions.md:8` explicitly sends **O23 needle-cell quality to M7 unless these cells are removed by a valid correction**. `DESIGN.md` §2.2 reserves `QualityRelaxed` D1 for a complete pure-quad mesh missing calibrated quality gates; §4.9 separates injectivity from distortion. The four P13-h2 failures are instead **M6 structural embedding failures with generated quad vertices**, while all five P13-i lenses have **two logical sides**, correctly rejected by `PureQuadCompletion.cpp:1875–1891`. A narrow accepted cell is not automatically a source-admission contract violation.
+- RA-197 tried corner-bilinear, Coons and Tutte interior placements; each leaves failures, but this **does not prove that no valid interpolant or embedded quadrangulation exists** for the four fixed patches. Its phrase “No interpolant embeds them all” must be read as limited to those tested candidates. Exhaustive impossibility or an explicit counterexample construction is still outstanding.
+- Two independent boundary questions remain: (i) do the needle boundaries possess a source-attached embedded conforming completion under the existing fixed boundary/schedule, or must their **valid** upstream layout change? (ii) are the five hard-rail return supports permitted or necessary under exact tracing, topology, singularity coverage and protected endpoint degrees? No universal width cutoff, tolerance, dropped rail or blanket optional-support deletion follows.
+
+## Falsifiable next Review investigation and stop rules
+
+1. For each of five lens support trace IDs `1037/878/20/422/612`, and needle support IDs `815/487`, obtain the **actual** original trace terminal enum and repeated-state subtype **from already archived evidence if available**. If absent, document that no Review-runtime probe is authorized. Compare original terminal key to the retained network's exact intrinsic endpoint key and degree. A positive valid recurrence control and negative no-exit-without-contact control must diverge; if they do not, no generic correction is justified.
+2. For needles 6095/20533/20968/22350, independently distinguish intrinsic quality from injective completion existence. Check the fixed boundary and all required source-chart/sheet/rail owners; the three previously tried interpolants do not close the existence question. A valid close-parallel corridor is a required positive control.
+3. Preserve frozen mandatory rail 0, accepted selector prefix, singularity ports, protected-degree/cycle/coverage checks, exact source identity and terminal stage attribution. If new behavioral evidence is necessary, it belongs to a separately authorized Code + Build / Test + Benchmark split, not this runtime-free Review. **No demonstrated single corrective owner or authorized CB successor yet.**
+
+## Review closeout — interim only
+
+| Duty | Disposition |
+|---|---|
+| Decisive claims / non-vacuity | Fresh static source-path audit; three mutated copies rejected; no binary run or new production oracle |
+| Prior obligations | P13 lens terminal-subtype and layout ownership **carried**, needle injective-completion existence and global compatibility **carried**; P13-e and O23 separate |
+| Accepted prefix / stable authority | Earlier independent 491-row rehash and 880/961 manifest audit retained, no new selector edit; 66/17/49, debt 1 |
+| Durable documents / next turn | Canonical WIP remains active; no new accepted disposition; no new successor frozen |
+| Review boundary | `python3 .agents/Directional/tools/review_check.py boundary` in a Git-history-free source archive returned **exit 1**, four ancestry diagnostics. Authentic-history ancestry facts were independently checked in an earlier continuation; no script PASS claimed |
+| Runtime and product mutation | No Directional binary, compile, test, fixture, selector, source or workflow-permission modification |
+| STATUS / sync | Same canonical turn remains open; final direct GitHub beacon and PR state to be verified at closeout |
+
