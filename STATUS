@@ -5,4 +5,6 @@ Successor: UNKNOWN
 Started at: 2026-11-02T18:16:23Z
 Resumed at: 
 Ended at: 
+Blocker Type: REVIEW_BLOCKER
+Blocker Details: RA-198.6 requires scratch-build FlowRep selection probes; run cross-face coverage and protected-incidence checks, measure removals across census fixtures and gate/ledger, and identify Vase's next failure before freezing exact patches.
 ---END_TURN_STATUS---
