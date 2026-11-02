@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb75-terminal-apply-20261102-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb75-terminal-apply-20261102-v1",
-  "file_id": "1i675pk0_NpHSr5TY3cC0YSJvrLgz-Ddp",
-  "patch_sha256": "ad4c32b9f31ce60b4218e746507db9c31ffc5d8b37437794972e4b7d2a869967",
-  "base_sha": "06ab492a71bbf3848e2764752599a8939dd77e0f",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(directional): expose typed completion terminal failure detail"
+  "request_id": "m6-cp3-cb75-terminal-compile-20261102-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb75-terminal-compile-20261102-v1",
+  "source_sha": "8656c4fed5070a467da491b60ead5c8ab1d99dbd",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb75-completion-terminal-gmp"
 }
