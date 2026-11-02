@@ -39,7 +39,7 @@ Continue **this same Review**, runtime-free, in two independently falsifiable li
 
 Existing source and archived review documents permit further **offline static** analysis. If the decisive evidence inherently requires a new executable probe, request a properly authorized Code + Build/Test + Benchmark split or an explicit policy exception; do **not** repeat prior unauthorized runtime in Review. Do not invent a single Code + Build successor, relax completion/selection guards, tune a `Sliver` area tolerance, delete mandatory rails, merge sheets by proximity, rewrite frozen selectors or promote CP3.
 
-The previous scratch probes, raw nine-cell receipt, ten-node wedges, cyclic audit, traced-network provenance, and prior continuation evidence are retained in their dedicated `Architecture_M6_CP3_DEFN_P13_*.md` records and Library archives. Prior `review_check.py boundary` on a source snapshot exited nonzero on Git-ancestor-dependent checks; it **cannot** be claimed passing without real repository Git history. This archive-only limitation is unresolved, not proof of a product defect. Full formal Review closeout has not occurred.
+The previous scratch probes, raw nine-cell receipt, ten-node wedges, cyclic audit, traced-network provenance, and prior continuation evidence are retained in their dedicated `Architecture_M6_CP3_DEFN_P13_*.md` records and Library archives. The current continuation reran `python3 .agents/Directional/tools/review_check.py boundary` against the verified but Git-history-free source archive: exit **1**, with exactly four ancestry failures (durable rewrite baseline, handoff rewrite source, ORIENTATION rewrite source, regression-tracker rewrite source). Its selector `untracked, new this turn` PASS lines are not credible Git-history evidence. It **cannot** be claimed passing without an authentic repository history. This archive-only limitation is unresolved, not proof of a product defect. Full formal Review closeout has not occurred.
 
 ## Review closeout — interim, not a completed turn
 
@@ -60,6 +60,6 @@ The previous scratch probes, raw nine-cell receipt, ten-node wedges, cyclic audi
 | Consolidation under CLEAN_UP_POLICY | Replaced obsolete scratch-probe instructions here with current source/evidence summary; older distinct evidence retained in dedicated reports |
 | Successor frozen | **No** — no single corrective owner justified; remain on identical canonical Review turn |
 | Turn boundary held | This continuation: runtime-free, no product, test, fixture, selector, workflow-permission or build source mutation |
-| review_check.py boundary | **Unverified** in authentic Git history; old archive-only invocation failed ancestry checks and is not accepted as PASS |
+| review_check.py boundary | **FAIL, exit 1** in this continuation's extracted source archive (four Git-history/ancestry failures); actual repository-history boundary remains unverified, no false PASS |
 | STATUS lifecycle maintained | Entry/resume beacon direct-written, original start preserved; final direct write required at response closeout |
 | Pushed to origin, branch in sync | Repository document writes use GitHub connector directly; verify final PR head and exact changed paths at closeout; no local git clone so cannot claim `git status -sb` |
