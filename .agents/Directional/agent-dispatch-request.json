@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb72-docs-authority-correction-v1",
+  "request_id": "m6-cp3-tb72-docs-handoff-section-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb72-docs-authority-correction-v1",
-  "file_id": "1VPaiUf-K09jtTJtx27V5-u5uovbU_IsF",
-  "patch_sha256": "19d2ce251dbad33d09cc6437003d0eefe6643a1b65597c4a0f219860d4f087a8",
-  "base_sha": "64b418184f5b9681a4f7aec2a15749c42ae6a852",
+  "mailbox_key": "m6-cp3-tb72-docs-handoff-section-v1",
+  "file_id": "1lLGfCBsweD9eCS4huPTCbM4Un1_tirPb",
+  "patch_sha256": "9b52c8013cd4a0c7ea3eb142d66640ae95e0c111bedfb365b60de03dced1312b",
+  "base_sha": "6582b2e5bfad6658529988e7c565edfbaa3cd064",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: reconcile TB72A successor and closeout references",
+  "commit_message": "docs: restore mandatory TB72A handoff section",
   "retention_days": 14
 }
