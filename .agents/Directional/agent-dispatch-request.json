@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb71-closeout-docs-20261102-v1",
+  "request_id": "m6-cp3-tb71-currency-docs-20261102-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb71-closeout-docs-20261102-v1",
-  "file_id": "1kdNiNsvTum_tiXlCyvebB1iQRUcw6H-u",
-  "patch_sha256": "2f1cb808d44558a4974f7d3197268fa9f4a404c6f6642ec3f461d81bbe4b59d0",
-  "base_sha": "90c0f28abc174627639f36553934b45d1f4f56ca",
+  "mailbox_key": "m6-cp3-tb71-currency-docs-20261102-v1",
+  "file_id": "1XAHgyMpJZA-1oddwktifVzG9RigSspVa",
+  "patch_sha256": "3be76f3379b1c7a91d1bcc264ca48ac42e64c51db211290218dc5cd71fcf2f23",
+  "base_sha": "051535daba9c815d8a27a48914d41469df98b2fb",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close TB71 immutable gate and census evidence"
+  "commit_message": "docs: correct TB71 current-state pointers"
 }
