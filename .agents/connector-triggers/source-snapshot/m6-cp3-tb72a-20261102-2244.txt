@@ -1,0 +1,4 @@
+Purpose: exact source snapshot for M6-CP3-TB72A-P13-SUPPORT-CHORD-ORCH
+Pre-trigger authority: 421daf3b7b39d95b7410eb01b873703ad64b9845
+Snapshot authority: push event SHA (this marker commit)
+Workflow: agent-source-snapshot.yml
