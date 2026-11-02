@@ -1,2 +1,0 @@
-# TB71 source-snapshot trigger only; preserve durable dispatcher and workflows
-.agents/connector-triggers/source-snapshot/m6-cp3-tb71-20261102-1729.txt
