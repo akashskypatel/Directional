@@ -2,8 +2,8 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-11-02 · [RA-198](Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md) adjudicated the sliver DEFN by scratch probes: P13-h2 → completion (Amendment 30, exact CB77, TB71 manifest 881); P13-i → FlowRep selection, which removes 0 of 4,057 candidates on Vase. Latest verified gate: [TB70](Architecture_M6_CP3_TB70_P13_Patch_Side_Start_Full_Gate_Execution_Report_20261102.md) 880/880, membership 961. No CP3 promotion. Accepted CP2 491/491, stable 66/17/49, debt 1; selector497 unpromoted.
-**Next:** `M6-CP3-CB77-P13-NEEDLE-GRID-BOUNDARY-SEARCH` (exact RA-198.8) → `M6-CP3-TB71-P13-NEEDLE-GRID-FULL-GATE-EXEC`. Review track in parallel: `M6-CP3-DEFN-P13-FLOWREP-SELECTION` (P13-i) and the P13-e Review.
+**Currency:** 2026-11-02 · [RA-198](Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md) adjudicated the sliver DEFN by scratch probes: P13-h2 → completion (Amendment 30, exact CB77, TB71 manifest 881); P13-i → FlowRep selection, which removes 0 of 4,057 candidates on Vase. Latest verified gate: [TB71](Architecture_M6_CP3_TB71_P13_Needle_Grid_Full_Gate_Execution_Report_20261102.md) 881/881, membership 962; registered census matches (Cylinder PASS, BunnyRandom and Vase RED). No CP3 promotion. Accepted CP2 491/491, stable 66/17/49, debt 1; selector497 unpromoted.
+**Next:** independent Review `M6-CP3-DEFN-P13-FLOWREP-SELECTION` (P13-i, scratch probe); P13-e Review parallel. CB77 → TB71 complete; no implementation successor or CP3 promotion without new authority.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 

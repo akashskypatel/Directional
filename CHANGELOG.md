@@ -1,3 +1,7 @@
+# 2026-11-02 — TB71 needle-grid full gate and direct-production census
+
+- [TB71 execution report](.agents/Directional/Architecture_M6_CP3_TB71_P13_Needle_Grid_Full_Gate_Execution_Report_20261102.md): CB77 immutable source `25713a0c…`/artifact `13160673891`. [Gate 41492237758](https://github.com/akashskypatel/Directional/actions/runs/41492237758) **881/881 PASS** (871 GUARD, 10 POSITIVE), membership 962, 81 deferred, 1770/1770 hashes. [Census 41492364954](https://github.com/akashskypatel/Directional/actions/runs/41492364954) 9/9 hashes, Cylinder PASS, BunnyRandom P13-e RED vertex49, Vase P13-i RED `side-count-unsupported` in 288.680 s. Registered outcomes matched, no rebuild, no selector/CP3 promotion, stable 66/17/49 debt 1 and CP2 491/491 preserved. Independent Review-track next: `M6-CP3-DEFN-P13-FLOWREP-SELECTION` (P13-i), P13-e parallel.
+
 # 2026-11-02 — CB77 folded needle-grid boundary-search patch and immutable compile
 
 - [CB77 record](.agents/Directional/Architecture_M6_CP3_CB77_P13_Needle_Grid_Boundary_Search_Code_Build_Record_20261102.md): RA-198.8 exact two-file patch at [`25713a0c0eb0`](https://github.com/akashskypatel/Directional/commit/25713a0c0eb0979155c6954f86f8fb13417d5463), +23/+27 additions; [GMP/GMPXX eight-target Linux compile 41485148422](https://github.com/akashskypatel/Directional/actions/runs/41485148422) SUCCESS, package `13160673891`, ZIP `ba0f4f3a…`, 28/28 hashes, `runtimeExecution=false`. No tests/benchmarks executed, no production gate/CP3 promotion. Next TB71, immutable 881-row gate and membership 962.
