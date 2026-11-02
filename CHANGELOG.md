@@ -1,3 +1,7 @@
+## 2026-11-02 — TB72 full gate orchestration failure
+
+- TB72 immutable CB78 gate request `ce3e4feedcd94781d489b574b6d38820d9e94087` (run 41533361438) failed before test execution because the dispatcher selected an old TB71 executor that lacks the 883-case TB72 manifest. Harness returned `ValueError: case manifest missing/unsafe`, exit 90, planned/executed 0/0, no rebuild. The failure is orchestration, not semantic RED. [Primary report](Architecture_M6_CP3_TB72_Orchestration_Failure_Report_20261102.md). TB72A is the authorized correction route. Stable 66/17/49, debt 1, CP2 491/491, TB71 881/881 unchanged.
+
 # 2026-11-02 — RA-199 P13-i FlowRep selection probe adjudication; exact CB78, TB72; P13-j assembly DEFN
 
 - [RA-199](.agents/Directional/Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-FLOWREP-SELECTION`. ChatGPT had set it BLOCKED because its session cannot run scratch probes; RA-198.6 had put this probe DEFN on the Review track, so the probes ran there.

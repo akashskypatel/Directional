@@ -1,3 +1,7 @@
+## TB72 artifact-only attempt: no new semantic evidence (2026-11-02)
+
+- Invalid orchestration [run 41533361438](https://github.com/akashskypatel/Directional/actions/runs/41533361438): old executor SHA `90c0f28a…` cannot see the TB72 883-case manifest, and the harness aborted with exit 90 before running tests (planned/executed 0/0). Evidence: [TB72 failure report](Architecture_M6_CP3_TB72_Orchestration_Failure_Report_20261102.md). **No new defect category, recurrence, witness, accepted gate or debt.** 66/17/49, debt 1 unchanged; CP2 491/491 remains last accepted, TB71 881/881 prior unpromoted candidate. Route to TB72A orchestration correction, preserving immutable CB78 package; the separately dispatched census run `41533460744` matched registered outcomes (1 PASS / 2 RED) but is supplementary only.
+
 **RA-199 P13-i probe adjudication (2026-11-02; owner confirmed by probe, no stable event):** [RA-199](Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Adjudication_20261102.md).
 - **P13-i owner:** what A2a selection admits. Vase's lenses are support traces that return to their own rail and meet no other trace (10 of 115). The selector's guards could not express this: no seed trace ends on another, so every support is one flowline touching only its rail. Amendment 31 → exact CB78 → TB72.
 - **RA-198's inert-selector candidate:** confirmed (0 of 4,057), but not the P13-i owner → O25, quality.
