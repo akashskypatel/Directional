@@ -2,7 +2,7 @@
 
 **Owning turn:** `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS`. **This document is Review evidence, not a Code + Build or Test + Benchmark acceptance record.**
 
-**Evidence erratum (2026-11-02T06:37Z):** The archived `p13_geometry_observations.json` and its per-side lengths/opposite-side distances are **superseded for seven cells** because the scratch probe incorrectly assumed cyclic `sideEdgeCounts` starts at `cell.halfedges[0]`. The independently reconstructed `Architecture_M6_CP3_DEFN_P13_Cyclic_Side_Corrective_Audit_20261102.md` fixes 24 misclassified halfedges, and its corrected measurements control. The 9/9 arc/provenance/node receipt and raw stderr remain valid within their checked scope; the face-local field/rail chord angles did not depend on the bad side labels. No production defect is inferred from this scratch error.
+**Evidence erratum (2026-11-02T06:37Z):** The archived `p13_geometry_observations.json` and its per-side lengths/opposite-side distances are **superseded for seven cells** because the scratch probe incorrectly assumed cyclic `sideEdgeCounts` starts at `cell.halfedges[0]`. The independently reconstructed `Architecture_M6_CP3_DEFN_P13_Cyclic_Side_Corrective_Audit_20261102.md` fixes 29 incorrectly side-labeled halfedges (24 also have mismatched recorded families), and its corrected measurements control. The 9/9 arc/provenance/node receipt and raw stderr remain valid within their checked scope; the face-local field/rail chord angles did not depend on the bad side labels. No production defect is inferred from this scratch error.
 
 ## Frozen immutable source and scratch exception
 
