@@ -1,3 +1,9 @@
+## 2026-11-02 — TB72A corrected dispatch; full support-chord gate verified
+
+- After TB72's zero-execution invalid attempt, the TB72A orchestration turn selected manifest-bearing executor `df586285…` (snapshot run 41539714172, 6115/6115 source hashes) and reused immutable CB78 package `13181887585`/source `afd72107…`, without code/build/selector modification.
+- [Full-gate run 41540264758](https://github.com/akashskypatel/Directional/actions/runs/41540264758), event `d03e350f5b0413a8e8702b833907dc98990525d5`, result artifact `13186997448` (ZIP SHA-256 `5b0d73f2293896afdff831c5902f579843b23ee42e2bef8f8d08177049b213fb`): **883/883 PASS**, 81 deferred, membership 964, no missing/skipped/abnormal/duplicates, 1774/1774 hashes, postflight true; no configure/compile/relink/benchmark. Earlier independent census [41533460744](https://github.com/akashskypatel/Directional/actions/runs/41533460744) matched all three registered outcomes (Cylinder PASS; BunnyRandom P13-e RED; Vase P13-j RED).
+- Preserved invalid prior TB72 attempt and cleanup hygiene. Stable 66/17/49, debt1; accepted CP2 491/491 and selector497 unchanged, no CP3 promotion. Next separate Review/Definition: `M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX` (RA-199.3/6). [Record](.agents/Directional/Architecture_M6_CP3_TB72A_Orchestration_Record_20261102.md).
+
 ## 2026-11-02 — TB72 full gate orchestration failure
 
 - TB72 immutable CB78 gate request `ce3e4feedcd94781d489b574b6d38820d9e94087` (run 41533361438) failed before test execution because the dispatcher selected an old TB71 executor that lacks the 883-case TB72 manifest. Harness returned `ValueError: case manifest missing/unsafe`, exit 90, planned/executed 0/0, no rebuild. The failure is orchestration, not semantic RED. [Primary report](.agents/Directional/Architecture_M6_CP3_TB72_Orchestration_Failure_Report_20261102.md). TB72A is the authorized correction route. Stable 66/17/49, debt 1, CP2 491/491, TB71 881/881 unchanged.
