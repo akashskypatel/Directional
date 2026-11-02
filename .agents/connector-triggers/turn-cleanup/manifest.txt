@@ -1,0 +1,2 @@
+# TB72 temporary source snapshot trigger only
+.agents/connector-triggers/source-snapshot/tb72-20261102.txt
