@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb77-p13-needle-grid-compile-20261102-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb77-p13-needle-grid-compile-20261102-v1",
-  "source_sha": "25713a0c0eb0979155c6954f86f8fb13417d5463",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb77-needle-grid"
+  "request_id": "m6-cp3-cb77-closeout-docs-20261102-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb77-closeout-docs-20261102-v1",
+  "file_id": "1mNdCkyyGjnN48l_64rFcorLKC-I2K0l1",
+  "patch_sha256": "e69419692cc6a9b0dc3f92c65a127b2fd1abbf2d05f79d51b22f997043c7f2e4",
+  "base_sha": "edd566871f0f56ca2a49df10ddf23211edadffd3",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close CB77 compile and hand off immutable TB71"
 }
