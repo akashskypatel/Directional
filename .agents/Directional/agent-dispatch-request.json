@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb72-docs-20261102-resume-v1",
+  "request_id": "m6-cp3-tb72-docs-authority-correction-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb72-docs-20261102-resume-v1",
-  "file_id": "1KlhziQWHIQvs-Q6Em3efoq45TQBcirl_",
-  "patch_sha256": "11117d7f79112e8854185a4ddf40861481f64f1cb584b69a7bdd0c26ab14dfb1",
-  "base_sha": "87266d4735ef6a108370c68b5cd95d2f12c62c6c",
+  "mailbox_key": "m6-cp3-tb72-docs-authority-correction-v1",
+  "file_id": "1VPaiUf-K09jtTJtx27V5-u5uovbU_IsF",
+  "patch_sha256": "19d2ce251dbad33d09cc6437003d0eefe6643a1b65597c4a0f219860d4f087a8",
+  "base_sha": "64b418184f5b9681a4f7aec2a15749c42ae6a852",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close TB72 invalid gate evidence and route orchestration correction",
+  "commit_message": "docs: reconcile TB72A successor and closeout references",
   "retention_days": 14
 }
