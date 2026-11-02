@@ -1,0 +1,3 @@
+TB69 exact source snapshot after entry STATUS beacon
+source authority: current push commit
+no compile or test in snapshot
