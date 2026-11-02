@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb69-docs-closeout-20261102-v1",
+  "request_id": "m6-cp3-cb76-patch-side-start-20261102-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb69-docs-closeout-20261102-v1",
-  "file_id": "1DiT5a2WgcqjPhFrdvsT9SAOhRG4E0BE_",
-  "patch_sha256": "16e632b19b36cd4f7ffb88f6add1524a55690a870cd330483df596e38db98303",
-  "base_sha": "416a8db8a59c77b2105b5eec202676d05be5b423",
+  "mailbox_key": "m6-cp3-cb76-patch-side-start-20261102-v1",
+  "file_id": "170fapWc7tIrBoTZjlnTBsawsdGsTt-TC",
+  "patch_sha256": "e543f371986258280a6fddb9264d00e01425aff65dc096ad088a942a15abe8fe",
+  "base_sha": "2328c389fb55dd85afe094119604b5c8ae5d549a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record verified TB69 gate and production census"
+  "commit_message": "fix(surface-cells): align patch boundary start with first side"
 }
