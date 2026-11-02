@@ -807,6 +807,124 @@ std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
 
 namespace directional::geometry {
 
+namespace {
+
+// A layout-support trace connects the rail its seed lies on to the
+// surrounding layout. One that returns to that rail without meeting any other
+// trace connects nothing: with the rail it only bounds a cell whose two
+// corners are its own ends. Such a chord is not admitted to selection.
+// Meeting is symmetric and an unmet chord meets no other trace, so
+// deactivating one cannot change whether another is met.
+void deactivate_unmet_support_chords(std::vector<FlowRepArc> &arcs,
+                                     const Eigen::MatrixXi &faces) {
+  using surface_arrangement_detail::NodeKey;
+  const auto node_at = [&](const FlowRepArc &arc, const bool start) {
+    return surface_arrangement_detail::make_node_key(
+        faces, arc.sourceFace,
+        surface_arrangement_detail::bary_to_uv(
+            start ? arc.startBarycentric : arc.endBarycentric));
+  };
+  const auto vertex_pair = [](const int a, const int b) {
+    return std::make_pair(std::min(a, b), std::max(a, b));
+  };
+  const auto edge_of = [&](const NodeKey &key) {
+    return vertex_pair(static_cast<int>(key.edge->first().index()),
+                       static_cast<int>(key.edge->second().index()));
+  };
+
+  std::map<int, std::set<int>> railsAtVertex;
+  std::map<std::pair<int, int>, std::set<int>> railsAlongEdge;
+  std::map<int, std::vector<int>> nonRailArcsByFace;
+  std::map<int, std::vector<int>> supportArcsByTrace;
+  for (const FlowRepArc &arc : arcs) {
+    if (!arc.initiallyActive || arc.sourceFace < 0 ||
+        arc.sourceFace >= faces.rows()) {
+      continue;
+    }
+    if (arc.railId.has_value()) {
+      const int rail = static_cast<int>(arc.railId->index());
+      const NodeKey from = node_at(arc, true);
+      const NodeKey to = node_at(arc, false);
+      for (const NodeKey *key : {&from, &to}) {
+        if (key->kind == 0) {
+          railsAtVertex[key->vertex].insert(rail);
+        } else if (key->kind == 1) {
+          railsAlongEdge[edge_of(*key)].insert(rail);
+        }
+      }
+      if (from.kind == 0 && to.kind == 0) {
+        railsAlongEdge[vertex_pair(from.vertex, to.vertex)].insert(rail);
+      }
+      continue;
+    }
+    nonRailArcsByFace[arc.sourceFace].push_back(arc.id);
+    if (arc.layoutSupport && !arc.singularitySupport && !arc.mandatoryRail) {
+      supportArcsByTrace[arc.supportTraceId].push_back(arc.id);
+    }
+  }
+  const auto rails_at = [&](const NodeKey &key) {
+    if (key.kind == 0) {
+      const auto found = railsAtVertex.find(key.vertex);
+      if (found != railsAtVertex.end()) {
+        return found->second;
+      }
+    } else if (key.kind == 1) {
+      const auto found = railsAlongEdge.find(edge_of(key));
+      if (found != railsAlongEdge.end()) {
+        return found->second;
+      }
+    }
+    return std::set<int>{};
+  };
+
+  std::vector<int> unmetChordArcs;
+  for (const auto &[traceId, arcIds] : supportArcsByTrace) {
+    const FlowRepArc &first = arcs[static_cast<std::size_t>(arcIds.front())];
+    const FlowRepArc &last = arcs[static_cast<std::size_t>(arcIds.back())];
+    const std::set<int> endRails = rails_at(node_at(last, false));
+    bool returnsToRail = false;
+    for (const int rail : rails_at(node_at(first, true))) {
+      returnsToRail = returnsToRail || endRails.count(rail) != 0U;
+    }
+    if (!returnsToRail) {
+      continue;
+    }
+    const std::set<std::uint64_t> ends{
+        flow_rep_detail::embedded_endpoint_key(first, true),
+        flow_rep_detail::embedded_endpoint_key(last, false)};
+    bool met = false;
+    for (const int arcId : arcIds) {
+      const FlowRepArc &arc = arcs[static_cast<std::size_t>(arcId)];
+      for (const int otherId : nonRailArcsByFace[arc.sourceFace]) {
+        const FlowRepArc &other = arcs[static_cast<std::size_t>(otherId)];
+        if (other.layoutSupport && other.supportTraceId == traceId) {
+          continue;
+        }
+        met = met || flow_rep_detail::segments_cross_2d(arc, other);
+        for (const bool start : {true, false}) {
+          met = met ||
+                (ends.count(flow_rep_detail::embedded_endpoint_key(
+                     other, start)) == 0U &&
+                 flow_rep_detail::point_on_segment_2d(
+                     start ? flow_rep_detail::predicate_start(other)
+                           : flow_rep_detail::predicate_end(other),
+                     flow_rep_detail::predicate_start(arc),
+                     flow_rep_detail::predicate_end(arc)));
+        }
+      }
+    }
+    if (!met) {
+      unmetChordArcs.insert(unmetChordArcs.end(), arcIds.begin(),
+                            arcIds.end());
+    }
+  }
+  for (const int arcId : unmetChordArcs) {
+    arcs[static_cast<std::size_t>(arcId)].initiallyActive = false;
+  }
+}
+
+} // namespace
+
 FlowRepSelectionInput build_flow_rep_selection_input(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::VectorXd &targetSize, const SurfaceCellNetwork &network,
@@ -1196,6 +1314,7 @@ FlowRepSelectionInput build_flow_rep_selection_input(
     flow_rep_detail::assign_intrinsic_endpoint_keys(spoke, faces);
     input.arcs.push_back(std::move(spoke));
   }
+  deactivate_unmet_support_chords(input.arcs, faces);
 
   const auto target_size_at_barycentric = [&](const int face,
                                                const Eigen::RowVector3d &bary) {

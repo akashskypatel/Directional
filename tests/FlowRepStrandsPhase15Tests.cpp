@@ -2975,3 +2975,156 @@ TEST(FlowRepStrandsPhase15, TenRunSparseNetworkHashIsIdentical) {
     EXPECT_EQ(sparse_hash(repeated), hash);
   }
 }
+
+namespace {
+
+// Two triangles over (0,0)-(2,0)-(1,1). Boundary rail 1 runs along the
+// bottom (0-1-2) and rail 2 along the two upper sides (2-3-0).
+struct SupportChordFixture {
+  Eigen::MatrixXd vertices = Eigen::MatrixXd(4, 3);
+  Eigen::MatrixXi faces = Eigen::MatrixXi(2, 3);
+  directional::geometry::SurfaceCellNetwork network;
+  Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(4, 0.5);
+
+  SupportChordFixture() {
+    vertices << 0.0, 0.0, 0.0,
+                1.0, 0.0, 0.0,
+                2.0, 0.0, 0.0,
+                1.0, 1.0, 0.0;
+    faces << 0, 1, 3,
+             1, 2, 3;
+    attach_source_authority(network, vertices, faces, {0, 0}, {0, 0});
+    add_rail(1, {{0, {1.0, 0.0, 0.0}}, {0, {0.0, 1.0, 0.0}},
+                 {1, {1.0, 0.0, 0.0}}, {1, {0.0, 1.0, 0.0}}});
+    add_rail(2, {{1, {0.0, 1.0, 0.0}}, {1, {0.0, 0.0, 1.0}},
+                 {0, {0.0, 0.0, 1.0}}, {0, {1.0, 0.0, 0.0}}});
+  }
+
+  void add_rail(const int id,
+                const std::vector<std::pair<int, Eigen::RowVector3d>> &points) {
+    directional::geometry::SurfaceCellRail rail(
+        directional::tests::test_hard_rail_id(id));
+    rail.kind = directional::geometry::SurfaceCellRailKind::Boundary;
+    rail.curveId = id;
+    for (int index = 0; index < static_cast<int>(points.size()); ++index) {
+      directional::geometry::SurfaceCellRailSample sample;
+      sample.sourceFace = points[static_cast<std::size_t>(index)].first;
+      sample.barycentric = points[static_cast<std::size_t>(index)].second;
+      sample.railParameter = static_cast<double>(index);
+      sample.position = Eigen::RowVector3d::Zero();
+      for (int corner = 0; corner < 3; ++corner) {
+        sample.position += sample.barycentric[corner] *
+                           vertices.row(faces(sample.sourceFace, corner));
+      }
+      rail.samples.push_back(sample);
+    }
+    network.authoritativeRails.push_back(rail);
+  }
+
+  // A boundary seed on `rail` at `point`; branch 0 traces `segments`.
+  void add_support(const int rail,
+                   const directional::geometry::SurfaceTracePoint &point,
+                   const std::vector<std::tuple<int, Eigen::RowVector3d,
+                                                Eigen::RowVector3d>> &segments) {
+    directional::geometry::SurfaceTraceSeed seed;
+    seed.id = static_cast<int>(network.seeds.size());
+    seed.hardRailId = directional::tests::test_hard_rail_id(rail);
+    seed.provenance = directional::geometry::SurfaceSeedProvenance::Boundary;
+    seed.point = point;
+    network.seeds.push_back(seed);
+    network.traces.resize(4U * network.seeds.size());
+    directional::geometry::SurfaceTraceResult &trace =
+        network.traces[4U * static_cast<std::size_t>(seed.id)];
+    trace.termination = directional::geometry::TraceTerminationReason::Boundary;
+    for (const auto &[face, from, to] : segments) {
+      directional::geometry::SurfaceTraceSegment segment;
+      segment.face = face;
+      segment.startBarycentric = from;
+      segment.endBarycentric = to;
+      segment.family = 0;
+      segment.sign = 1;
+      trace.segments.push_back(segment);
+    }
+  }
+
+  // From vertex 0 across edge 1-3 near vertex 1 back to rail 1 at (1.5, 0).
+  void add_bottom_chord() {
+    add_support(1, {0, Eigen::RowVector3d(1.0, 0.0, 0.0)},
+                {{0, Eigen::RowVector3d(1.0, 0.0, 0.0),
+                  Eigen::RowVector3d(0.0, 0.9, 0.1)},
+                 {1, Eigen::RowVector3d(0.9, 0.0, 0.1),
+                  Eigen::RowVector3d(0.5, 0.5, 0.0)}});
+  }
+};
+
+std::vector<const FlowRepArc *> support_arcs(
+    const directional::geometry::FlowRepSelectionInput &input,
+    const int traceId) {
+  std::vector<const FlowRepArc *> result;
+  for (const FlowRepArc &arc : input.arcs) {
+    if (arc.layoutSupport && arc.supportTraceId == traceId) {
+      result.push_back(&arc);
+    }
+  }
+  return result;
+}
+
+} // namespace
+
+TEST(FlowRepStrandsPhase15, UnmetSupportChordIsNotAdmittedToSelection) {
+  SupportChordFixture fixture;
+  fixture.add_bottom_chord();
+  // From vertex 3 on rail 2 down to rail 1 at (1.75, 0): it meets nothing
+  // either, but it joins two rails.
+  fixture.add_support(2, {1, Eigen::RowVector3d(0.0, 0.0, 1.0)},
+                      {{1, Eigen::RowVector3d(0.0, 0.0, 1.0),
+                        Eigen::RowVector3d(0.25, 0.75, 0.0)}});
+
+  const auto input = directional::geometry::build_flow_rep_selection_input(
+      fixture.vertices, fixture.faces, fixture.targetSize, fixture.network,
+      0.5);
+
+  const auto chord = support_arcs(input, 0);
+  const auto connector = support_arcs(input, 4);
+  ASSERT_EQ(chord.size(), 2U);
+  ASSERT_EQ(connector.size(), 1U);
+  EXPECT_FALSE(chord[0]->initiallyActive);
+  EXPECT_FALSE(chord[1]->initiallyActive);
+  EXPECT_TRUE(connector[0]->initiallyActive);
+  int activeRails = 0;
+  for (const FlowRepArc &arc : input.arcs) {
+    activeRails += arc.boundaryRail && arc.initiallyActive ? 1 : 0;
+  }
+  EXPECT_EQ(activeRails, 4);
+  for (const auto &sample : input.coverageSamples) {
+    EXPECT_NE(sample.sourceArcId, chord[0]->id);
+    EXPECT_NE(sample.sourceArcId, chord[1]->id);
+  }
+}
+
+TEST(FlowRepStrandsPhase15, CrossingSupportChordsRemainAdmitted) {
+  SupportChordFixture fixture;
+  fixture.add_bottom_chord();
+  // From vertex 2 through the midpoint of edge 1-3 back to rail 1 at
+  // (0.5, 0); it crosses the first chord in face 0.
+  fixture.add_support(1, {1, Eigen::RowVector3d(0.0, 1.0, 0.0)},
+                      {{1, Eigen::RowVector3d(0.0, 1.0, 0.0),
+                        Eigen::RowVector3d(0.5, 0.0, 0.5)},
+                       {0, Eigen::RowVector3d(0.0, 0.5, 0.5),
+                        Eigen::RowVector3d(0.5, 0.5, 0.0)}});
+
+  const auto input = directional::geometry::build_flow_rep_selection_input(
+      fixture.vertices, fixture.faces, fixture.targetSize, fixture.network,
+      0.5);
+
+  const auto first = support_arcs(input, 0);
+  const auto second = support_arcs(input, 4);
+  ASSERT_EQ(first.size(), 2U);
+  ASSERT_EQ(second.size(), 2U);
+  for (const FlowRepArc *arc : first) {
+    EXPECT_TRUE(arc->initiallyActive);
+  }
+  for (const FlowRepArc *arc : second) {
+    EXPECT_TRUE(arc->initiallyActive);
+  }
+}
