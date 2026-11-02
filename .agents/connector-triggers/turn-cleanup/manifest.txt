@@ -1,2 +1,0 @@
-# P13 FlowRep review: remove verified source-snapshot trigger
-.agents/connector-triggers/source-snapshot/m6-cp3-defn-p13-flowrep-selection-20261102.txt
