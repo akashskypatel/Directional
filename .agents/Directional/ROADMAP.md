@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB69 878/878; P13-h side-0 registration → exact CB76 → TB70 per RA-197, Vase then ends at P13-h2; no direct Vase acceptance) · **Next:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB69 878/878; P13-h side-0 registration → compiled CB76 → TB70 per RA-197, Vase then ends at P13-h2; no direct Vase acceptance) · **Next:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

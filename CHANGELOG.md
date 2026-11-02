@@ -1,3 +1,7 @@
+# 2026-11-02 — CB76 exact patch side-zero registration, compile-only
+
+- [CB76 record](.agents/Directional/Architecture_M6_CP3_CB76_P13_Patch_Boundary_Side_Start_Code_Build_Record_20261102.md): RA-197.7 body SHA `5c7918fb…` applied to two exact implementation/test paths at [`f59f92f889fc`](https://github.com/akashskypatel/Directional/commit/f59f92f889fc6fe22d689fd7559c024cd09c6c72), 10/0 and 61/0, post-image hashes matched. [Linux eight-target GMP/GMPXX compile 41387260857](https://github.com/akashskypatel/Directional/actions/runs/41387260857) SUCCESS, immutable package `13115678045`, ZIP `8b2f9f112a29b8ef7b30e70ebf61c87dc4ac19da9a2f523e6371aa94a8c09194`, 28/28 hashes, `runtimeExecution=false`. Focused guards compiled but not executed. No selector, ledger, CP3 or production acceptance promoted; next separate TB70, 880-row gate and membership 961.
+
 # 2026-11-02 — RA-197 P13-h/P13-i probe adjudication; exact CB76, TB70
 
 - [RA-197](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING`, which ChatGPT had set BLOCKED for "missing Vase descriptor evidence". The evidence was a Review-track probe on the scratch build, and RA-197 ran it.
