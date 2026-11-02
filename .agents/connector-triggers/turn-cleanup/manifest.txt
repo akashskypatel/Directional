@@ -1,0 +1,2 @@
+# TB72A source snapshot has been verified; retire its temporary trigger.
+.agents/connector-triggers/source-snapshot/m6-cp3-tb72a-20261102-2244.txt
