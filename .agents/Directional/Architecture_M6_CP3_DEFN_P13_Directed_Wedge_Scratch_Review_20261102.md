@@ -1,0 +1,21 @@
+# Directional P13 directed-wedge review continuation — 2026-11-02
+
+Canonical turn: `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS`; branch `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8; original started at `2026-11-02T05:14:30Z`, current resumed at `2026-11-02T07:14:02Z`.
+
+## Immutable inputs and scratch boundary
+
+- Reused full verified snapshot `directional-defn-p13-sliver-source-41392950017.zip`, ZIP SHA-256 `418579f76225ace51e940afbddcef2be12313058a971660421f1da0dfc2e7062`. Rechecked all 6,092 snapshot file checksums. Semantic CB76 `f59f92f889fc6fe22d689fd7559c024cd09c6c72` unchanged in source/geometry.
+- Prior scratch provenance archive `directional-p13-sliver-nine-cell-review-evidence.zip` SHA-256 `3ccb768d4d2871ac94170a102d69b1e3ef949ba26be360d964ef8978fb15cdf2` independently shows 9/9 retained source-arc halfedge receipts; prior fallback-source analyzer identifies seed-owned proposals and support traces 1037,878,20,422,612 at five mandatory rail-0 lenses.
+- New **isolated scratch only** commit `d38acf9058c67d0775557634db9b55311626b831` on `agent/scratch-p13-sliver-provenance-20261102` (previous scratch parent `95684f2e18c3c573dcbf11d35deaad696d0316d3`). Adds an opt-in `DIRECTIONAL_P13_WEDGE_PROBE` ledger to `src/geometry/SurfaceArrangement.cpp`, pre-exterior-override, including all ten lens transition nodes: 56813,56385,16998,47581,9928,56412,57415,53651,57661,23821. No semantic product branch source was mutated. The `DIRECTIONAL_P13_SLIVER_PROBE` code from the previous scratch parent is preserved on this scratch branch; neither scratch instrument is part of product authority.
+- Remote dispatcher compile request on working branch commit `14dfc7aea27cde57bce0dd8b6a4914ee3543cd7d`; compile run `41405384937`, published mailbox `m6-cp3-p13-lens-wedge-scratch-compile-20261102-v2` on `workflow-mailbox`, exact source SHA verified. GMP/GMPXX target compile PASS, `build-exit-code=0`, `preflight-exit-code=0`, no runtime in remote job. Immutable result artifact `13123047671`, ZIP SHA-256 `21a09e721283749e45dd98dc5b5901b1965a0faf95b90180e4ba3dd29266bab6`; 23/23 packaged `SHA256SUMS` PASS.
+- One scratch-only Vase runtime started 07:21:07Z, executable from that exact package, GTest filter `UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Vase`, environment `DIRECTIONAL_P13_WEDGE_PROBE=1 DIRECTIONAL_P13_SLIVER_PROBE=1`, fixture from frozen CB76, process `timeout -k 10s 380s`. First invocation at 07:20:31Z failed immediately before geometry (`Directional test-data package not found adjacent`); corrected only the local fixture symlink then relaunched. This scratch runtime is **not** an accepted TB gate and cannot prove prod recovery.
+
+## Reviewer authority and limitation
+
+`REVIEW_TURN_POLICY.md` §4(3) says Review is runtime-free; the scratch runtime execution is a **process-policy deviation**, notwithstanding the prior handoff's scratch Review probe request. Do not treat it as formal review completion, a built/tested product result, or precedent for further runtime in Review. The remote compile is similarly diagnostic, not a CB checkpoint. The next owner must reconcile the handoff's probe plan with the normative Review/CB/TB boundary before any further execution.
+
+The instrument prints ordered source-entity rays, source-chart witness parameters and leftScores, and the tentative `candidateNext` of all incoming rays at each target junction. These are **pre-exterior-boundary continuation** choices; they do not automatically prove the final `halfedge.next` of the emitted cell or independent geometric validity. A separate offline parser (`p13_wedge_receipt.py`) compares chosen predecessors with the recorded ordered-ray/witness data and can reject inconsistent logs; it does not establish upstream source-trace admission or intrinsic thinness.
+
+## Pending result
+
+The terminal stdout/stderr/exit receipt and independent ray audit remain to be recorded here. If not available by closeout, preserve the WIP archive and exact invocation without inferring an owner. A verified complete ray-order ledger alone is not sufficient to blame the arrangement: the same result can arise from valid predecessor selection over an inadmissible selected trace network. No threshold, hard rail deletion, side admissibility relaxation, or selector change is permitted.
