@@ -780,6 +780,27 @@ Fixture make_valid_parallel_route_same_corner_complex() {
   return fixture;
 }
 
+// Renumbers the boundary halfedges of the fixture's first cell so that the
+// smallest id is the `offset`-th halfedge of side 0. Twin and next links
+// follow the renumbering.
+void start_boundary_inside_first_side(Fixture &fixture, const int offset) {
+  auto &halfedges = fixture.complex.halfedges;
+  const int count =
+      static_cast<int>(fixture.complex.cells.front().halfedges.size());
+  const auto moved = [&](const int id) {
+    return id >= 0 && id < count ? (id - offset + count) % count : id;
+  };
+  auto renumbered = halfedges;
+  for (int id = 0; id < static_cast<int>(halfedges.size()); ++id) {
+    auto edge = halfedges[static_cast<std::size_t>(id)];
+    edge.id = moved(edge.id);
+    edge.next = moved(edge.next);
+    edge.twin = moved(edge.twin);
+    renumbered[static_cast<std::size_t>(moved(id))] = edge;
+  }
+  halfedges = std::move(renumbered);
+}
+
 } // namespace
 
 TEST(PatchDescriptorMilestoneE, DerivesOrderedSidesSubdivisionsAndFeatures) {
@@ -1929,4 +1950,44 @@ TEST(PatchDescriptorMilestoneE, CompletionFailureKindsNameTheTerminalDetail) {
                surface_cell_complex_completion_failure_name(
                    SurfaceCellComplexCompletionFailureKind::
                        PatchCompletionRejected));
+}
+
+TEST(PatchDescriptorMilestoneE, PatchBoundaryStartsAtTheFirstVertexOfSideZero) {
+  // The smallest halfedge id is the second halfedge of side 0, so the
+  // boundary traversal starts inside side 0 and closes it across the wrap.
+  Fixture fixture = make_patch({3, 1, 3, 1});
+  start_boundary_inside_first_side(fixture, 1);
+  const auto descriptor = directional::geometry::derive_patch_descriptor(
+      fixture.complex, fixture.complex.cells.front(), fixture.V, fixture.F);
+
+  ASSERT_TRUE(descriptor.boundaryCycleValid);
+  ASSERT_EQ(descriptor.sides.size(), 4U);
+  EXPECT_EQ(descriptor.patch.sideEdgeCounts, (std::vector<int>{3, 1, 3, 1}));
+  std::vector<int> sideVertices;
+  for (const auto &side : descriptor.sides) {
+    sideVertices.insert(sideVertices.end(), side.boundaryVertices.begin(),
+                        side.boundaryVertices.end());
+  }
+  EXPECT_EQ(descriptor.patch.boundaryVertices, sideVertices);
+  EXPECT_EQ(descriptor.patch.boundaryVertices,
+            (std::vector<int>{0, 1, 2, 3, 4, 5, 6, 7}));
+  EXPECT_TRUE(descriptor.feasibility.admissible);
+}
+
+TEST(PatchDescriptorMilestoneE, ClosedFormStripRungsJoinOppositeSideVertices) {
+  Fixture fixture = make_authoritative_patch({3, 1, 3, 1});
+  start_boundary_inside_first_side(fixture, 1);
+  const auto completion = complete_fixture_with_source_authority(
+      fixture.complex, fixture.V, fixture.F);
+
+  ASSERT_TRUE(completion.is_produced());
+  ASSERT_EQ(1U, completion.product().completedPatches.size());
+  const auto &mesh = completion.product().completedPatches.front();
+  EXPECT_EQ(directional::geometry::PureQuadCompletionBackend::ClosedForm,
+            mesh.backend);
+  // Side 0 runs 0-1-2-3 and side 2 runs 4-5-6-7 back, so each rung joins a
+  // side 0 vertex to the opposite side 2 vertex and the corners 0, 3, 4 and
+  // 7 each lie in exactly one quad.
+  EXPECT_EQ(mesh.quads, (std::vector<std::vector<int>>{
+                            {0, 1, 6, 7}, {1, 2, 5, 6}, {2, 3, 4, 5}}));
 }

@@ -1698,6 +1698,16 @@ PatchDescriptor derive_patch_descriptor(
 
   descriptor.sides =
       patch_descriptor_detail::extract_sides(complex, cell, boundary, V, F);
+  // The traversal starts at the smallest halfedge id, which can lie inside a
+  // side that extract_sides then closes across the wrap. Start the patch
+  // boundary at side 0's first halfedge instead, so the side counts partition
+  // it in order from its first vertex, as the completion templates assume.
+  if (!descriptor.sides.empty()) {
+    std::rotate(boundary.begin(),
+                std::find(boundary.begin(), boundary.end(),
+                          descriptor.sides.front().halfedges.front()),
+                boundary.end());
+  }
   patch.sideEdgeCounts.reserve(descriptor.sides.size());
   patch.turns.reserve(descriptor.sides.size());
   for (const PatchSideDescriptor &side : descriptor.sides) {
