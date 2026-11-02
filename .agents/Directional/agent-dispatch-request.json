@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb70-docs-closeout-20261102-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb70-docs-closeout-20261102-v1",
-  "file_id": "1wrlYShJpmljzFMQEArMxUNlzLuFBb8jb",
-  "patch_sha256": "72a08e9d1cbdf77d11cec7a16a0cf3c726590b098efbf05193e56f0416fc61e0",
-  "base_sha": "8ff7ceba5ee96905535d5cb33e9908dfe3c22636",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): verify TB70 and hand off P13 sliver review"
+  "request_id": "m6-cp3-p13-sliver-review-scratch-compile-20261102-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-p13-sliver-review-scratch-compile-20261102-v1",
+  "source_sha": "95684f2e18c3c573dcbf11d35deaad696d0316d3",
+  "targets": [
+    "directional_surface_cell_producer_tests"
+  ],
+  "artifact_prefix": "p13-sliver-review-scratch"
 }
