@@ -30,6 +30,8 @@
 
 The previous cyclic-side indexing correction remains binding: **29 wrong side labels, of which 24 also differed in family**. Its geometries are Euclidean observations, not chart-transported intrinsic certificates.
 
+**Independent non-vacuity controls:** The read-only provenance analyzer passed on the unmodified 9-cell stderr. Three separate mutated *copies* of that log were rejected with nonzero exit statuses: (a) replace proposal 300's positive seed with `-1` → missing seed-owned proposal; (b) replace support trace 1037's strand encoding → lens origin groups inconsistent; (c) erase mandatory rail-0 identity → lens origin groups inconsistent. No product code, test source, fixture or accepted evidence was changed. The analyzer does **not** validate wedge ordering or the source tracer's geometrical admission, so these controls cannot establish those stronger claims.
+
 ## What this proves — and what it does not
 
 **Proved:** This Vase execution used seed-owned fallback proposals and the directed-wedge successor branch. It retained five individually identifiable anchored support traces adjacent to mandatory rail 0, and two needles mixed those support traces with seed-owned proposals. No downstream quad completer invented the bounding arcs. The previous plan must not try to instrument **authoritative proposal-cycle successor ordering** as the active Vase path.
