@@ -4,6 +4,8 @@
 #include <directional/geometry/SourceChartTransitions.h>
 
 #include <iterator>
+#include <cstdio>
+#include <cstdlib>
 
 namespace directional::pipeline {
 
@@ -13720,6 +13722,153 @@ remesh_from_raw_cross_field_impl_with_stage_products(
         geometry::build_surface_cell_complex(meshWhole.V, meshWhole.F,
                                              arrangementInputArcs,
                                              arrangementOptions);
+    // SCRATCH-ONLY P13 provenance probe. Never commit to product authority.
+    // Reads the live arrangement and its retained arc input before either
+    // object is released. No retained geometry, selection or topology changes.
+    if (std::getenv("DIRECTIONAL_P13_SLIVER_PROBE") != nullptr) {
+      const int probeCells[] = {6095, 20533, 20968, 22350,
+                                26735, 26764, 26781, 26802, 26812};
+      for (const auto &cell : arrangementComplex.cells) {
+        if (std::find(std::begin(probeCells), std::end(probeCells),
+                      cell.id) == std::end(probeCells)) continue;
+        std::fprintf(stderr,
+                     "P13_CELL id=%d edges=%zu sides=%zu area=%.17g "
+                     "disk=%d sourceFace=%d\n",
+                     cell.id, cell.halfedges.size(),
+                     cell.sideEdgeCounts.size(), cell.area,
+                     static_cast<int>(cell.disk), cell.sourceFace);
+        for (std::size_t s = 0; s < cell.sideEdgeCounts.size(); ++s) {
+          std::fprintf(stderr, "P13_SIDE cell=%d side=%zu family=%d count=%d\n",
+                       cell.id, s,
+                       s < cell.sideFamilies.size() ? cell.sideFamilies[s] : -999,
+                       cell.sideEdgeCounts[s]);
+        }
+        for (std::size_t i = 0; i < cell.sourceFaces.size(); ++i)
+          std::fprintf(stderr,"P13_FACE cell=%d offset=%zu face=%d\n",
+                       cell.id,i,cell.sourceFaces[i]);
+        for (std::size_t i = 0; i < cell.boundaryCycleOffsets.size(); ++i)
+          std::fprintf(stderr,"P13_CYCLE cell=%d cycle=%zu offset=%d\n",
+                       cell.id,i,cell.boundaryCycleOffsets[i]);
+        std::size_t side = 0, sideEnd = cell.sideEdgeCounts.empty()
+            ? cell.halfedges.size()
+            : static_cast<std::size_t>(cell.sideEdgeCounts[0]);
+        for (std::size_t i = 0; i < cell.halfedges.size(); ++i) {
+          while (i >= sideEnd && side + 1 < cell.sideEdgeCounts.size()) {
+            ++side;
+            sideEnd += static_cast<std::size_t>(cell.sideEdgeCounts[side]);
+          }
+          const int hid = cell.halfedges[i];
+          if (hid < 0 || hid >= static_cast<int>(arrangementComplex.halfedges.size())) {
+            std::fprintf(stderr,"P13_INVALID_HALFEDGE cell=%d offset=%zu id=%d\n",
+                         cell.id,i,hid);
+            continue;
+          }
+          const auto &h = arrangementComplex.halfedges[static_cast<std::size_t>(hid)];
+          const auto rid = [](const auto &v) -> long long {
+            return v ? static_cast<long long>(v->index()) : -1LL;
+          };
+          std::fprintf(stderr,
+              "P13_HALFEDGE cell=%d offset=%zu side=%zu id=%d twin=%d next=%d "
+              "from=%d to=%d sourceArc=%d family=%d strand=%d feature=%d "
+              "sourceFace=%d chartRoot=%d chart=%lld region=%lld "
+              "hard=%d layout=%d singularity=%d "
+              "rail=%lld curve=%d proposal=%d seed=%d proposalSide=%d "
+              "proposalSegment=%d sourceT0=%.17g sourceT1=%.17g "
+              "railT0=%.17g railT1=%.17g provenanceCount=%zu\n",
+              cell.id,i,side,h.id,h.twin,h.next,h.from,h.to,h.sourceArc,
+              h.family,h.strand,h.featureClass,h.sourceFace,
+              h.authoritativeChartRoot,
+              h.sourceChart ? static_cast<long long>(h.sourceChart->chart.index()) : -1LL,
+              rid(h.sourceTopologyRegion), static_cast<int>(h.hardFeature),
+              static_cast<int>(h.layoutSupport),static_cast<int>(h.singularitySupport),
+              rid(h.railId),h.curveId,h.proposalId,h.proposalSeedId,
+              h.proposalSide,h.proposalBoundarySegment,h.sourceT0,h.sourceT1,
+              h.railT0,h.railT1,h.provenance.size());
+          if (h.sourceArc >= 0 && h.sourceArc < static_cast<int>(arrangementArcs.size())) {
+            const auto &a = arrangementArcs[static_cast<std::size_t>(h.sourceArc)];
+            std::fprintf(stderr,
+                "P13_ARC cell=%d halfedge=%d arc=%d flowrep=%d sourceFace=%d "
+                "family=%d strand=%d rail=%lld curve=%d hard=%d "
+                "proposal=%d seed=%d proposalSide=%d proposalSegment=%d "
+                "startBary=%.17g,%.17g,%.17g endBary=%.17g,%.17g,%.17g "
+                "railT0=%.17g railT1=%.17g\n",
+                cell.id,h.id,a.id,a.provenance,a.sourceFace,a.family,a.strand,
+                rid(a.railId),a.curveId,static_cast<int>(a.hardFeature),
+                a.proposalId,a.proposalSeedId,a.proposalSide,a.proposalBoundarySegment,
+                a.startBarycentric[0],a.startBarycentric[1],a.startBarycentric[2],
+                a.endBarycentric[0],a.endBarycentric[1],a.endBarycentric[2],
+                a.railT0,a.railT1);
+          } else {
+            std::fprintf(stderr,"P13_ARC_MISSING cell=%d halfedge=%d sourceArc=%d\n",
+                         cell.id,h.id,h.sourceArc);
+          }
+          for (std::size_t j = 0; j < h.provenance.size(); ++j) {
+            const auto &p = h.provenance[j];
+            std::fprintf(stderr,
+                "P13_PROVENANCE cell=%d halfedge=%d ordinal=%zu "
+                "sourceArc=%d flowrep=%d sourceFace=%d family=%d strand=%d "
+                "hard=%d rail=%lld curve=%d proposal=%d seed=%d "
+                "proposalSide=%d proposalSegment=%d sourceT0=%.17g "
+                "sourceT1=%.17g railT0=%.17g railT1=%.17g\n",
+                cell.id,h.id,j,p.sourceArc,p.provenance,p.sourceFace,p.family,
+                p.strand,static_cast<int>(p.hardFeature),rid(p.railId),
+                p.curveId,p.proposalId,p.proposalSeedId,p.proposalSide,
+                p.proposalBoundarySegment,p.sourceT0,p.sourceT1,p.railT0,p.railT1);
+          }
+          for (const int nid : {h.from,h.to}) {
+            if (nid < 0 || nid >= static_cast<int>(arrangementComplex.nodes.size())) {
+              std::fprintf(stderr,"P13_NODE_MISSING cell=%d halfedge=%d node=%d\n",
+                           cell.id,h.id,nid);
+              continue;
+            }
+            const auto &node = arrangementComplex.nodes[static_cast<std::size_t>(nid)];
+            for (std::size_t j = 0; j < node.occurrences.size(); ++j) {
+              const auto &o = node.occurrences[j];
+              Eigen::RowVector3d xyz = Eigen::RowVector3d::Zero();
+              if (o.sourceFace >= 0 && o.sourceFace < meshWhole.F.rows()) {
+                xyz = o.barycentric[0] * meshWhole.V.row(meshWhole.F(o.sourceFace,0))
+                    + o.barycentric[1] * meshWhole.V.row(meshWhole.F(o.sourceFace,1))
+                    + o.barycentric[2] * meshWhole.V.row(meshWhole.F(o.sourceFace,2));
+              }
+              std::fprintf(stderr,
+                  "P13_NODE cell=%d halfedge=%d node=%d occurrence=%zu "
+                  "face=%d chart=%lld region=%lld sourceArc=%d flowrep=%d "
+                  "bary=%.17g,%.17g,%.17g xyz=%.17g,%.17g,%.17g "
+                  "rail=%lld curve=%d sourceT0=%.17g sourceT1=%.17g\n",
+                  cell.id,h.id,nid,j,o.sourceFace,
+                  o.sourceChart ? static_cast<long long>(o.sourceChart->chart.index()) : -1LL,
+                  rid(o.sourceTopologyRegion),o.sourceArc,o.provenance,
+                  o.barycentric[0],o.barycentric[1],o.barycentric[2],
+                  xyz[0],xyz[1],xyz[2],
+                  rid(o.railId),o.curveId,o.sourceT0,o.sourceT1);
+              if (o.sourceFace >= 0 &&
+                  o.sourceFace < crossFieldProduct.rawField.rows() &&
+                  crossFieldProduct.rawField.cols() == 12) {
+                std::fprintf(stderr,
+                    "P13_FIELD cell=%d node=%d occurrence=%zu face=%d "
+                    "raw=%.17g,%.17g,%.17g,%.17g,%.17g,%.17g,"
+                    "%.17g,%.17g,%.17g,%.17g,%.17g,%.17g\n",
+                    cell.id,nid,j,o.sourceFace,
+                    crossFieldProduct.rawField(o.sourceFace,0),
+                    crossFieldProduct.rawField(o.sourceFace,1),
+                    crossFieldProduct.rawField(o.sourceFace,2),
+                    crossFieldProduct.rawField(o.sourceFace,3),
+                    crossFieldProduct.rawField(o.sourceFace,4),
+                    crossFieldProduct.rawField(o.sourceFace,5),
+                    crossFieldProduct.rawField(o.sourceFace,6),
+                    crossFieldProduct.rawField(o.sourceFace,7),
+                    crossFieldProduct.rawField(o.sourceFace,8),
+                    crossFieldProduct.rawField(o.sourceFace,9),
+                    crossFieldProduct.rawField(o.sourceFace,10),
+                    crossFieldProduct.rawField(o.sourceFace,11));
+              }
+            }
+          }
+        }
+        std::fprintf(stderr,"P13_END_CELL id=%d\n",cell.id);
+      }
+      std::fflush(stderr);
+    }
     if (!retainForExecution) {
       std::vector<geometry::SurfaceArrangementArc>().swap(arrangementArcs);
       result.surfaceCellContext
