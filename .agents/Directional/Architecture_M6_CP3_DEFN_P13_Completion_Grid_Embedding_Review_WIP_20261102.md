@@ -20,6 +20,10 @@ The downloadable `p13_grid_smooth_side_probe.py` (SHA-256 `21fb0d3b733da0294c12b
 
 `PatchDescriptor::extract_sides` groups edges through `same_logical_side` and merges compatible wraparound runs. The resulting side count is copied to `patch.sideEdgeCounts`. Thus P13-i's count under 3 may reflect segmentation; actual descriptor inventories remain required.
 
+## Independent boundary-only topology witness
+
+`p13_boundary_strip_alternative_probe.py` (SHA-256 `3f7a509d9db8982e2d25308bdb94283e7955aface66ac6cfe7733a3edb46b9b0`) proves a 2×1 **simple CCW six-vertex planar** boundary with both long sides meeting the source's <45° continuation condition. The ordinary closed-form grid first quad `[0,1,4,5]` self-crosses; a different all-boundary pair `[2,3,4,5]`, `[2,5,0,1]` has positive exact areas and a nonoverlapping union identical to the boundary disk. This proves some strip failures admit a topology-distinct repair **without changing boundary or adding interior vertices**. It is **not** Vase patch-4-specific proof; source support, rail preservation, field constraints, and topology validators still apply. Consider reusing existing `append_embedded_boundary_quadrangulation`, subject to all validators.
+
 ## P13-i classification
 
 `check_pure_quad_patch_admissibility` unconditionally returns `SideCountUnsupported` when `sideEdgeCounts.size() < 3`; those counts are copied from the descriptor's ordered sides in `PatchDescriptor.cpp`. This proves **current implementation non-support**, not that the five produced source patches are topologically invalid. A two-sided disk can have an admissible strip decomposition depending on ordered boundary subdivisions and source-chart geometry. One-sided degeneracies require separate proof. The five affected descriptor identities, ordered boundary graphs, and reason for the side-count collapse were not present in the inspected TB69 terminal record; classify these as **unresolved P13-i**, not as fixtures to discard or a reason to weaken admissibility. It may require its own DEFN.
