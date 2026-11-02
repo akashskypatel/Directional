@@ -298,6 +298,29 @@ enum class SurfaceCellComplexCompletionFailureKind : int {
   AssemblyRejected = 7,
 };
 
+inline const char *surface_cell_complex_completion_failure_name(
+    const SurfaceCellComplexCompletionFailureKind kind) {
+  switch (kind) {
+  case SurfaceCellComplexCompletionFailureKind::None:
+    return "None";
+  case SurfaceCellComplexCompletionFailureKind::PreparationRejected:
+    return "PreparationRejected";
+  case SurfaceCellComplexCompletionFailureKind::InvalidDomainIdentity:
+    return "InvalidDomainIdentity";
+  case SurfaceCellComplexCompletionFailureKind::UnresolvedSingularityOwnership:
+    return "UnresolvedSingularityOwnership";
+  case SurfaceCellComplexCompletionFailureKind::PatchCompletionRejected:
+    return "PatchCompletionRejected";
+  case SurfaceCellComplexCompletionFailureKind::CompletionOwnershipRejected:
+    return "CompletionOwnershipRejected";
+  case SurfaceCellComplexCompletionFailureKind::StructuralRepairExhausted:
+    return "StructuralRepairExhausted";
+  case SurfaceCellComplexCompletionFailureKind::AssemblyRejected:
+    return "AssemblyRejected";
+  }
+  return "Unknown";
+}
+
 struct SurfaceCellComplexCompletionEvidence {
   int parityOddCellsBefore = 0;
   int parityOddCellsAfter = 0;

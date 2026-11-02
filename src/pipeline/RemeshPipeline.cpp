@@ -14376,8 +14376,12 @@ remesh_from_raw_cross_field_impl_with_stage_products(
       result.surfaceCellContext.hasSimplifiedComplex = true;
     }
     if (completionResult.is_rejected()) {
-      return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
-                                "completion");
+      // The typed completion failure is the terminal detail; the per-patch
+      // reason stays in surfaceCellContext.completionFailure.
+      return fail_surface_cells(
+          SurfaceCellFailureCode::NotProductionReady, "completion",
+          geometry::surface_cell_complex_completion_failure_name(
+              closedCompletionFailure->kind));
     }
     if (!completionResult.is_produced()) {
       return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,

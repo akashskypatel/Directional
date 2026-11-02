@@ -1908,3 +1908,25 @@ TEST(PatchDescriptorMilestoneE,
   EXPECT_EQ(0, completion.completionOwnershipRouteCandidateCount);
   EXPECT_TRUE(completion.ownershipRepairAttempts.empty());
 }
+
+TEST(PatchDescriptorMilestoneE, CompletionFailureKindsNameTheTerminalDetail) {
+  using directional::geometry::SurfaceCellComplexCompletionFailureKind;
+  using directional::geometry::surface_cell_complex_completion_failure_name;
+  // The completion terminal reports this name instead of "None"; every
+  // rejection kind has its own.
+  std::vector<std::string> names;
+  for (int value = 1; value <= 7; ++value) {
+    const std::string name = surface_cell_complex_completion_failure_name(
+        static_cast<SurfaceCellComplexCompletionFailureKind>(value));
+    EXPECT_NE("None", name);
+    EXPECT_NE("Unknown", name);
+    for (const std::string &previous : names) {
+      EXPECT_NE(previous, name);
+    }
+    names.push_back(name);
+  }
+  EXPECT_STREQ("PatchCompletionRejected",
+               surface_cell_complex_completion_failure_name(
+                   SurfaceCellComplexCompletionFailureKind::
+                       PatchCompletionRejected));
+}
