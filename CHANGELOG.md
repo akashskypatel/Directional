@@ -1,3 +1,16 @@
+# 2026-11-02 — RA-197 P13-h/P13-i probe adjudication; exact CB76, TB70
+
+- [RA-197](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING`, which ChatGPT had set BLOCKED for "missing Vase descriptor evidence". The evidence was a Review-track probe on the scratch build, and RA-197 ran it.
+- **Findings:**
+  - 220 of the 224 closed-form failures are boundary-only strips.
+  - `ordered_boundary` starts each cell at its smallest halfedge id, and `extract_sides` closes side 0 across that start. So `boundaryVertices[0]` is often mid-side, and the closed-form grid builds a twisted ladder.
+  - For 220/220 strips, the ladder from the geometric corners embeds.
+  - 5,868 of the 23,329 four-sided descriptors are offset at HEAD: 222 fail, and 2,055 more closed-form completions are accepted with misplaced corners.
+- **DESIGN Amendment 29:** a patch boundary starts at the first vertex of side 0, and `derive_patch_descriptor` rotates to it.
+- **Exact patch:** CB76 (`5c7918fb…`, rows 879–880). TB70 uses manifest 880 `a9f964c8…`, membership 961.
+- **Next Review:** `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS`, for P13-h2 (4 needle 2D grids that no interpolant embeds) and P13-i (5 rail-grazing lenses). O23 (needle-cell quality) is new.
+- The review WIP is superseded. RA-196's P13-h statements ("none boundary-only"; the bilinear target or projection as owner) are corrected.
+
 # 2026-11-02 — TB69 immutable completion embedding full gate and census
 
 - [TB69 execution report](.agents/Directional/Architecture_M6_CP3_TB69_P13_Completion_Embedding_Full_Gate_Execution_Report_20261102.md): CB75 source `8656c4fed507…`, immutable package `13107147891`; [gate 41367521935](https://github.com/akashskypatel/Directional/actions/runs/41367521935) **878/878 PASS**, 959 membership, 81 deferred, 1764/1764 result hashes; [census 41367552244](https://github.com/akashskypatel/Directional/actions/runs/41367552244) 9/9 hashes, Cylinder PASS, BunnyRandom inherited P13-e RED vertex49, Vase expected P13-h `closed-form` completion RED in 256.96 s. RA-196.7 registered outcome met; no rebuild, no new stable event, no CP3/selector497 promotion; CP2 491/491, 66/17/49 and debt1 preserved. Separate next Review `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING`.

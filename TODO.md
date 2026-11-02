@@ -1,4 +1,4 @@
-## CURRENT — TB69 full gate/census verified; next P13-h/P13-i Review (2026-11-02)
+## CURRENT — RA-197 P13-h adjudicated; next exact CB76 → TB70 (2026-11-02)
 
 - [x] Done (records in `.agents/Directional/`, history in `CHANGELOG.md`): RP-01 closure (RA-174…[RA-179](.agents/Directional/Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md)) → O15 (RA-180, CB55, TB54, [RA-181](.agents/Directional/Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md)) → row 935 (RA-182, CB56, TB55) → O2 entry gate ([RA-183](.agents/Directional/Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md), CB57, TB56) → **DIAG-RETAIN** ([RA-184](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md), [RA-185](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md), [RA-186](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md), [RA-187](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md); CB58–CB61, last source `e1fd0e4b…`). TB57–TB60 ran on macOS arm64 only; the latest, TB60, gave **862/863** on the TB58 manifest (863 rows; only row 283, O16), membership 945. TB59 ran only CLI cases; TB60 is the full-gate TB for both CB60 and CB61 (RA-187.1).
 - [x] **Independent Linux TB61 full-gate review of CB58–CB61; owner authorized exact Linux CLI/GUI successor** (user direction, 2026-10-31; handoff step 1):
@@ -126,6 +126,17 @@
      - A `bounded-combinatorial`/`pattern` backend, `detail=None` or a timeout is a mismatch.
      - Mismatch → `M6-CP3-TB69-P13-COMPLETION-EMBEDDING-FULL-GATE-REV`; infrastructure → `M6-CP3-TB69A-P13-COMPLETION-EMBEDDING-ORCH`. Neither occurred.
      - **Verified:** [TB69 report](.agents/Directional/Architecture_M6_CP3_TB69_P13_Completion_Embedding_Full_Gate_Execution_Report_20261102.md); gate [41367521935](https://github.com/akashskypatel/Directional/actions/runs/41367521935) 878/878 PASS, membership 959, 81 deferred; independent census [41367552244](https://github.com/akashskypatel/Directional/actions/runs/41367552244) Cylinder PASS, BunnyRandom expected P13-e RED, Vase expected P13-h closed-form RED in 256.96 s. No rebuild or CP3 promotion. **Exact next separate Review:** `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING` (P13-h/P13-i).
+  13. [ ] **NEXT `M6-CP3-CB76-P13-PATCH-BOUNDARY-SIDE-START`** (CB, compile only; [RA-197](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md) §4, exact §7; Amendment 29):
+     - Precheck `git diff --quiet 8656c4fed5070a467da491b60ead5c8ab1d99dbd HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Apply the RA-197.7 block verbatim (keep its 3 single-space context lines), SHA-256 `5c7918fbd6dea765848ce3bd0272aba336c22952fde398acf5beb4d3ccc6af19`. Numstat `10 0` `src/geometry/PatchDescriptor.cpp` (result `108e5481…`) and `61 0` `tests/PatchDescriptorMilestoneETests.cpp` (result `e1eda480…`).
+     - Content: `derive_patch_descriptor` rotates its boundary to side 0's first halfedge; GUARD tests (rows 879–880) `PatchBoundaryStartsAtTheFirstVertexOfSideZero` and `ClosedFormStripRungsJoinOppositeSideVertices`.
+     - One eight-target Linux GMP/GMPXX package, `runtimeExecution=false`.
+     - Mismatch → `M6-CP3-PLAN-P13-PATCH-SIDE-START-STOP`; infrastructure → `M6-CP3-CB76A-P13-PATCH-SIDE-START-ORCH`.
+  14. [ ] **`M6-CP3-TB70-P13-PATCH-SIDE-START-FULL-GATE-EXEC`** (TB-EXEC; RA-197.5):
+     - Gate: manifest 880 `a9f964c8…` (TB69's 878 rows plus 879–880) plus ledger v5 `fd433f54…`, pre-registered 880/880, membership 961.
+     - Census `3af1dc0d…`: Cylinder PASS; BunnyRandom P13-e unchanged; **Vase RED within 600 s** at `NotProductionReady:completion detail=PatchCompletionRejected` with `completion=InvalidCompletionQuadEmbedding;…;backend=closed-form;…` and a negative (generated) id in `vertices=`. The macOS locus (patch 6095) is recorded, not registered.
+     - Mismatch: all-non-negative `vertices=` (a strip still fails), `bounded-combinatorial`/`pattern`, `IncompleteSurfaceCellComplex`, `detail=None` or a timeout.
+     - Mismatch → `M6-CP3-TB70-P13-PATCH-SIDE-START-FULL-GATE-REV`; infrastructure → `M6-CP3-TB70A-P13-PATCH-SIDE-START-ORCH`.
 - [ ] **Review track** (probe DEFNs):
   - [x] **`M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING`** (P13-g): the static [decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) ran no probe and froze an open A/B CB73. [RA-196](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) probes settle it:
     - Patch 1200's boundary is simple (branch A is false).
@@ -133,10 +144,16 @@
     - The validator accepts folds: 2,552 of 12,452 accepted boundary-only completions disagree with the source normal.
     - Patch 1200 is only the first of 150 failed descriptors in one pass.
     - Outcome: Amendment 28 → exact CB73/CB74/CB75 → TB69.
-  - [ ] **`M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING`** (P13-h; Review, probe DEFN, can start now on the RA-196 scratch build):
-    - After CB73–CB74, Vase's first completion pass fails 229 descriptors on macOS, none of them boundary-only: 171 closed-form grids folded against the source normal (`source-orientation-mismatch`), 53 closed-form bow-ties (73 of the 224 already fail at CB72), and 5 descriptors rejected `side-count-unsupported` (P13-i).
-    - Name the owner (the bilinear target of `complete_rectangular_grid`, or its projection), classify P13-i, and freeze exact patches.
-    - It must name Vase's next failure, or a PASS, within 600 s.
+  - [x] **`M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING`** (P13-h/P13-i): ChatGPT's [review WIP](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Review_WIP_20261102.md) blocked on "no trace". [RA-197](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md) ran the probe:
+    - 220 of the 224 closed-form failures are strips. `ordered_boundary` starts at the smallest halfedge id and `extract_sides` closes side 0 across it, so `boundaryVertices[0]` is often mid-side and the grid's ladder is twisted.
+    - 5,868 of 23,329 four-sided descriptors are offset at HEAD; 222 fail and 2,055 more are accepted twisted.
+    - With the boundary rotated to side 0, 0 strips fail. Bilinear, Coons and Tutte interiors each break some needle grid.
+    - Outcome: Amendment 29 → exact CB76 → TB70.
+  - [ ] **`M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS`** (P13-h2 + P13-i; Review, probe DEFN, can start now on the scratch build):
+    - **P13-h2:** after CB76, 4 needle 2D grids fail (6095, 20533, 20968, 22350; about 10⁻⁵ thick, 10⁻² long), at a quad with a generated vertex. No interpolant embeds them all.
+    - **P13-i:** 5 lenses (cells 26735, 26764, 26781, 26802, 26812) bounded by one field trace and one hard rail, with tips of 0.2°–27°; `side-count-unsupported` is right to reject them.
+    - Find what bounds each needle and lens (strands, proposals, rails), the separation of its long sides, and the field direction against the rail tangent at the tips. Then name one owner (arrangement or completion) and freeze exact patches. Do not relax admissibility or add fallbacks.
+    - With both resolved, the probe's Vase terminal moves to `IncompleteSurfaceCellComplex` (P13-i) and then past completion.
   - **`M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT`** (P13-e; can run now, in parallel). A1 requires `4 − index` port classes. BunnyRandom's index −1 vertex 49 has 4 sector incidences in an 8-face fan, on macOS, FMA-off and Linux (TB65). Decide whether A1's sector rule or the field owns this.
   - Then re-census P13, take O6/O9 where they are reached, and aim for matrix 6/6.
 - [x] **DIAG-RETAIN (user-directed, 2026-10-21): closed** by CB58–CB61 (snapshots, display adapter and dump, CLI sidecar, GUI layers). Open: DR1 (no in-helper A6/A7 rejection witness; waits for a stimulus), DR3 (pre-existing snapshot fields written when retention is off). DR2 (multi-component snapshot drop) and DR4 (`--diagnostics-prefix` cut sidecars throw on SurfaceCells products, `src/cli/RemeshOutput.cpp:388–392`) → M8-CP2. The GUI layers' appearance is a manual check.
@@ -148,6 +165,7 @@
   - **O19** (RA-192): a genus > 0 region whose `dual_cycles` handle generator crosses a slit fails closed (`HandleGeneratorCrossesSlit`). Torus sweep: 35 of 216 edges. Not CP3-blocking, because all six matrix fixtures are genus 0 → a later DEFN when a fixture needs it.
   - **O18** (the pipeline recorded the arrangement stage as succeeded even when the arrangement reported invalid incidence) → CB69; discharged by TB66.
   - **O21** (RA-196, quality, non-blocking): the boundary-only search takes the first embedded quadrangulation, not the best, and quads with a straight (180°) corner are accepted (332 in Vase's exact single-face subset). A §2.1 item 10 quality criterion, owned by the M7 quality gates.
+  - **O23** (RA-197, quality, non-blocking): needle cells (thickness/length down to 6·10⁻⁴) from near-parallel traces give needle quads even when they embed. Owned by M7 quality unless the sliver DEFN removes them.
   - **O22** (RA-196, cleanup, non-blocking): reversed completion variants (pattern/bounded `n…2n−1`, transition 3–5) can never embed under Amendment 28. Drop them from `completion_variant_count`.
   - **O20** (RA-195, residual per-call O(F) source work, non-blocking):
     - the per-patch `SurfaceProjectionBvh` in `complete_pure_quad_patch` (1.0 % of HEAD completion CPU, about 0.5 ms per patch);
@@ -164,7 +182,7 @@
   - **O15c** → RA-190 dyadic exit (Amendment 24); discharged for A2a when TB64 matches. The 4,096-bit guard stays as the backstop. **O15b** (fields-stage `principal_matching` argmin tie; degenerate input only) → CP3-REV.
   - RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4. G4-B002 exit row is gated; the discharge decision belongs to CP3-REV.
 - **Rules:**
-  - CB and TB run on the Linux workflow runner. A TB always runs the full current gate, even after a CLI- or GUI-only CB (RA-187); the latest verified Linux gate is TB69 (878-row manifest `aaaba077…`, ledger v5 81, membership 959); TB68 used 873 rows (`3b6b9f42…`, membership 954); TB67 used the 871-row manifest `434e6d37…` (membership 952). Earlier TB65 was 869 rows, TB64 866 rows and TB58 863 rows.
+  - CB and TB run on the Linux workflow runner. A TB always runs the full current gate, even after a CLI- or GUI-only CB (RA-187); the latest verified Linux gate is TB69 (878-row manifest `aaaba077…`, ledger v5 81, membership 959), and TB70 will run the 880-row manifest `a9f964c8…` (membership 961); TB68 used 873 rows (`3b6b9f42…`, membership 954); TB67 used the 871-row manifest `434e6d37…` (membership 952). Earlier TB65 was 869 rows, TB64 866 rows and TB58 863 rows.
   - One CB per exact patch; implementation agents get only exact patches and frozen manifests. Probe-requiring DEFN and TB-REV turns stay on the Review track. Every gate run needs `MEMBERSHIP_LEDGER`.
   - **Naming (RA-167.6):** types per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier.
   - RA-170 (a gate pass says nothing about off-gate tests), RA-171 (self-check every manifest; census rows are OBSERVE), RA-172 (a DEFN needs a reachable exit), RA-174 (verify completeness against the package, not against the gate's own scope), RA-176 (a result that differs by platform is a determinism defect; compute the exact answer before classifying), RA-178 (a test that targets an accepted-defensive guard has no repair exit; witness the guard at its checked factory or retire the test), RA-179 (trace fixture use through helper accessors, not literal grep; confirm per-file flag changes in the built object).

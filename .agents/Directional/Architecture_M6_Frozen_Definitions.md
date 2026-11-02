@@ -1,3 +1,12 @@
+## RA-197 — P13-h/P13-i closed-form grids and side-count descriptors: probe adjudication; exact CB76, TB70 (2026-11-02)
+
+- [RA-197](Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING` and supersedes its review WIP. **DESIGN Amendment 29:** `PureQuadPatch::sideEdgeCounts` partitions `boundaryVertices` in order from index 0. `derive_patch_descriptor` rotates its boundary traversal to side 0's first halfedge; the domain identity is rotation-invariant.
+- Turn IDs:
+  - CB76 `M6-CP3-CB76-P13-PATCH-BOUNDARY-SIDE-START` (`5c7918fb…`, rows 879–880).
+  - TB70 `M6-CP3-TB70-P13-PATCH-SIDE-START-FULL-GATE-EXEC` (manifest 880 `a9f964c8…`, membership 961).
+  - Sliver DEFN `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS` (P13-h2 needle grids, P13-i rail-grazing lenses).
+- O23 (needle-cell quality) → M7 unless the sliver DEFN removes the cells.
+
 ## RA-196 — P13-g completion quad embedding: probe adjudication; exact CB73/CB74/CB75, TB69 (2026-11-01)
 
 - [RA-196](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) supersedes the static decision's CB73 scope. **DESIGN Amendment 28:**

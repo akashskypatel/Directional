@@ -1,3 +1,5 @@
+> **Superseded (2026-11-02) by [RA-197](Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md).** The "no trace" block was procedural: RA-197 ran the per-descriptor probe on the RA-196 scratch build. 220 of the 224 closed-form failures are strips whose corners the descriptor misregisters (the boundary starts at the smallest halfedge id, not at side 0). The fix is exact CB76 and TB70. The bilinear, Coons and strip-DP leads here do not reach the owner. P13-i is classified as rail-grazing lenses. Kept as history; not an authority.
+
 # P13-h / P13-i grid-embedding definition — in-progress independent review (2026-11-02)
 
 **Canonical turn:** `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING` (Review/Definition only). **State:** causal isolation and successor patch specification remain open. No code, fixture, selector, build, or benchmark changes are authorized here.
