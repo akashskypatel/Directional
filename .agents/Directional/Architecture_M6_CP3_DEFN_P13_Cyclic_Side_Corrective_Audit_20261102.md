@@ -24,6 +24,8 @@ An independent Python audit matched each recorded cyclic family/count sequence a
 
 Corrected rail lens sides are respectively a 3-edge field trace plus a 2-edge protected rail, or its cyclic reverse, at **the raw arrangement stage**. RA-197's later **descriptors** with 6 boundary vertices and 3+3 splits are downstream-stage statements, so this does not, by itself, falsify those descriptor observations. The earlier mixed-side lengths reported for lenses, e.g. 26735 approximately 0.005 versus 0.074, are **retracted**.
 
+**Absolute-area sanity check:** Independently parsed all nine `P13_CELL area=` receipts. The smallest is cell `20533`, `7.292183487273476e-08`; even that exceeds the current `SurfaceArrangement.cpp` `Sliver` threshold `1e-14` by **7,292,183×**. No cell can be classified as a sliver by that present predicate. Increasing the threshold until these cells reject would be an unjustified global behavior change, not causal recovery.
+
 ## Ownership finding and exact remaining discriminator
 
 All nine directed cell boundaries are linked to retained source arcs, not fabricated by pure-quad completion. Needle four-sided cells span distinct layout/proposal strands; rail lenses contain a field-trace side and a mandatory hard rail. Existing source `DESIGN.md` §4.5 defines **exact shared-edge grazing transit**; it does not authorize proximity thresholds that delete near-parallel traces or mandatory hard rails. The observed near-parallelism is not proof of an invalid upstream trace.
