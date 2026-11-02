@@ -44,6 +44,20 @@ Absolute minimum `0.249013°` (cell 26764, source-vertex tip); maximum `26.93728
 4. `.agents/Directional/DESIGN.md` §4.5 requires exact source-edge grazing transits and continuity at tangency; this does **not** grant a numeric near-parallel suppression heuristic. The earlier lens polygon angles are not chart-transported field–rail tangents. Do not drop hard rail 0, snap near traces based on a world distance, increase `Sliver` area thresholds, accept two-sided patches as pure quads, or weaken the embedding fail-closed check.
 5. The four needle cells remain separate: positive seed-owned proposal arcs dominate, some with optional support trace 815/487. Source-authoritative proposal ownership, source-sheet compatibility, and intrinsic corridor width remain unchecked. **No single repair for all nine cells is established.**
 
+## Candidate sparse-selection retention lock (new, not yet proven active)
+
+The **original** FlowRep arc endpoints, not merely the arrangement-split halfedges, were independently matched to the same barycentrically exact source vertex at all five lens rail contacts:
+
+| Lens | Vertex node | Original optional FlowRep arc | Original rail-0 FlowRep arc |
+|---|---:|---:|---:|
+| 26735 | 56385 | 2644 | 130 |
+| 26764 | 47581 | 2514 | 109 |
+| 26781 | 56412 | 156 | 2 |
+| 26802 | 53651 | 981 | 53 |
+| 26812 | 23821 | 1857 | 77 |
+
+The independent `p13_original_arc_vertex_contact_audit.py` and JSON establish this identity using both `P13_NODE` source-face barycentrics and the unsplit original `P13_ARC` endpoint coordinates, with a strict one-hot source-vertex and 1e-10 endpoint match. This **strengthens** the source-selection hypothesis: `include/directional/geometry/FlowRepStrands.h:105` starts every arc active; `src/geometry/FlowRepStrands.cpp:2124–2172` calculates `protected_endpoint_degrees` from the initially active set, including optional support arcs, protects all hard-rail endpoints and degree≥3 junctions, then rejects a trial that changes **any** protected endpoint degree. `:2559–2625` attempts optional-flowline removals but calls `preserves_protected_endpoint_degrees`, reverting failed removals. Therefore deleting an optional support at its source-vertex rail junction **without compensating endpoint incidence** would fail the degree guard even if the support was not mandatory. This is a concrete *candidate retention-lock mechanism*, not proof that all five particular trial transactions were attempted and rejected: the archive lacks the per-flowline trial/evidence/rejection ledger and complete preselection incidence. The exact active selector and any legitimate replacement must not weaken protected mandatory rail/singularity incidence. A future correctly authorized build/probe should identify original trace IDs, trial flowline IDs, initial/proposed protected degrees, coverage and cycle guards, and first rejection reason for those five traces. A negative control must demonstrate a genuinely optional removable rail-contact trace, and a positive control must demonstrate a required branch being protected.
+
 ## Required next authorized Review action
 
 Check the exact **tracing terminal reasons**, intrinsic start/end point keys, same-sheet rail intervals, transported field/rail tangent at each of the ten contacts, and whether a legitimate required separatrix/coverage/cycle obligation mandates retaining each return. Obtain that evidence without another Review runtime execution (normative `REVIEW_TURN_POLICY.md` §4 requires a runtime-free Review); any new probe must first be authorized under the correct CB/TB or policy exception. If all five are proven optional and nonessential, define a *bounded and falsifiable* source-owned candidate in the support-trace selection path; require a positive valid rail-return control, negative invalid control, reversed/permuted rail control, source-chart/sheet check, unchanged mandatory rails and accepted prefix, and no new singularity or coverage loss. Do not infer that arbitrarily deleting these exact five traces is correct.
