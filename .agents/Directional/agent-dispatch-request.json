@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb78-apply-20261102-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb78-apply-20261102-v1",
-  "file_id": "1WEznPxLi5DMOOugvsSa_RCoN9cZ9x2om",
-  "patch_sha256": "e6cfd3ece7754f4542f45ced04f5cf1b4316fb28bf0569267066dc7cd3c637ca",
-  "base_sha": "4a8150b355876e33f7e7eca35a6b22867bf36b3e",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): exclude unmet FlowRep support chords"
+  "request_id": "m6-cp3-cb78-compile-20261102-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb78-compile-20261102-v1",
+  "source_sha": "afd72107d3213a396ed7f35b53f67dceeea7e7ca",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb78-p13-support-chord"
 }
