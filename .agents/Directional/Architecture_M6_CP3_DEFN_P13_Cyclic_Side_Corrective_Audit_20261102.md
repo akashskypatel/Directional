@@ -34,6 +34,20 @@ The missing causal discriminator is **complete incident outgoing-ray/wedge ident
 
 **Exact future tip-node probe set:** five lens transition-node pairs in the raw scratch arrangement are `26735: (56813,56385)`, `26764: (16998,47581)`, `26781: (9928,56412)`, `26802: (57415,53651)`, `26812: (57661,23821)`. These were independently extracted as family-change vertices from the directed halfedge cycles. A future scratch-only diagnostic should record every outgoing halfedge from each of these ten nodes, complete source-entity wedge/ray ordering, chosen next and alternative candidates, plus upstream trace/rail admission evidence. Ten node IDs are **not** by themselves a proof that any successor is wrong.
 
+## Additional completion-stage gate audit (same Review, 2026-11-02 13:10Z)
+
+Independently checked the verified source snapshot at `4f48f09562740bcdff78cacb6a9159b0299238a8` (archive SHA-256 `cdbd72e5294c8659e16cb71bde42cdabb8f84765cd750efc2d3e38b2053266b8`, 6,104/6,104 source hashes); semantic CB76 unchanged. These are conditional source-routing proofs, **not** evidence that changing the gates is valid for Vase.
+
+For the five prepared two-logical-side, six-boundary-vertex (3+3) lenses, source contains **three distinct barriers** to reaching the existing dynamic-programming completion:
+
+1. `PureQuadCompletion.cpp:1887–1890`: `check_pure_quad_patch_admissibility` rejects `sides<3` with `SideCountUnsupported` (the observed P13-i class).
+2. `PureQuadCompletion.cpp:44–50,1910–1923`: with only that guard hypothetically deleted, `side_inequalities_hold` still returns false for `n<3`, producing `SideInequality`. A one-line side-count change is not a functional fix.
+3. `PureQuadCompletion.cpp:2453–2471,2055–2074`: if both guards were altered under a separately established contract, the rectangular grid rejects two sides, but `complete_six_vertex_transition` unconditionally creates two quads for any six-vertex boundary and returns true. That construction result skips `complete_pattern` behind `!completed`; subsequent source-ownership, topology or orientation rejection does not retry DP. The DP is therefore not automatically reached by simply relaxing admission.
+
+The existing abstract hexagon (two sides of three subdivisions) proves only topological possibility. `PatchDescriptor.cpp:1712–1718` supplies two `+1` family turns, not a source-chart transported `Z4` holonomy or field-index certificate. `DESIGN.md` §§4.1, 4.5 and 7.5 retain those obligations. Even boundary parity and simple geometry alone cannot authorize an actual Vase lens.
+
+**Required discriminator:** recover each original support trace terminal and rail interval, chart/sheet identity, protected endpoint/cycle obligations, transported field family and index; independently establish whether any embedded two-side completion preserves mandatory rails and globally valid quad topology. If yes, separately adjudicate a bounded completion capability with all three dispatch barriers and unchanged validators. If not, identify and correct a specific earlier trace/selection admission defect. Positive required-rail-contact and negative invalid-return cases must separate the hypotheses. Neither path is authorized for implementation by this unfinished Review.
+
 ## Reproduction and boundary
 
 - Independently reverified the existing source snapshot ZIP SHA-256 `418579f76225ace51e940afbddcef2be12313058a971660421f1da0dfc2e7062` and **6,092/6,092** file hashes. Frozen semantic CB76 `f59f92f889fc6fe22d689fd7559c024cd09c6c72` remains unchanged by later work.
