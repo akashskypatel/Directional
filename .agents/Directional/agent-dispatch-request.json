@@ -1,23 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb71-census-20261102-v1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb71-census-20261102-v1",
-  "executor_sha": "90c0f28abc174627639f36553934b45d1f4f56ca",
-  "semantic_source_sha": "25713a0c0eb0979155c6954f86f8fb13417d5463",
-  "turn_id": "M6-CP3-TB71-P13-NEEDLE-GRID-CENSUS",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "13160673891",
-    "EXPECTED_SOURCE_SHA": "25713a0c0eb0979155c6954f86f8fb13417d5463",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "ba0f4f3a751b0a83437547202beccacea5c85f2444a9084707150ec12d988e56",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "67586c918bb70499228b3748dde49ddbdf3d15d1ff3e28d8df284c87a557cb5c",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "d1b03b731836e59353c4166b8b1fc1681471abc6996ed2ff35614533371b67bb",
-    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
-    "EXPECTED_CASE_COUNT": "3"
-  },
-  "artifact_prefix": "m6-cp3-tb71-census",
-  "retention_days": 7
+  "request_id": "m6-cp3-tb71-closeout-docs-20261102-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb71-closeout-docs-20261102-v1",
+  "file_id": "1kdNiNsvTum_tiXlCyvebB1iQRUcw6H-u",
+  "patch_sha256": "2f1cb808d44558a4974f7d3197268fa9f4a404c6f6642ec3f461d81bbe4b59d0",
+  "base_sha": "90c0f28abc174627639f36553934b45d1f4f56ca",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close TB71 immutable gate and census evidence"
 }
