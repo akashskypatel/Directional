@@ -1,1 +1,0 @@
-.agents/connector-triggers/source-snapshot/m6-cp3-tb69-20261102-0027.txt
