@@ -1,3 +1,20 @@
+# 2026-11-03 — RA-200 P13-j stitched-vertex probe adjudication; exact CB79, TB73; P13-k optimizer DEFN
+
+- [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md) closes `M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX`. The ChatGPT same-turn Review had set a `REVIEW_BLOCKER` because the completed lineage at nodes 5351/5356/5357/5359/5355 could not be measured without C++; the probes ran on the macOS scratch build.
+- **Findings:**
+  - The stitcher's lineage certificates are identical on both sides of each split node.
+  - `derive_patch_descriptor` keys a boundary corner by the source scope of the halfedge leaving it. That splits 23,221 of 66,783 Vase nodes, and the HEAD assembly has Euler −19,442.
+  - Gate row 97 was passing on a two-component assembly → O26.
+  - Cylinder never calls the patch stitcher.
+- **DESIGN Amendment 32:** a completed patch's boundary corner is keyed by its arrangement node (all occurrences, each in its own scope).
+- **Exact CB79** `89f37001…` (`25 2` / `95 0`, GUARD rows 884–886); **TB73** manifest 886 `5d09fa33…`, membership 967; Vase registered ABNORMAL (600 s) after assembly.
+- **Scratch verification:**
+  - gate 885/886 (only O16 row 283); ledger 0/81 unchanged (row 365, the Vase census, now times out past assembly);
+  - Cylinder PASS; BunnyRandom unchanged;
+  - mutants M1 and M3 each fail a GUARD row.
+- **Next failure P13-k:** after assembly, the surface-optimizer stage rebuilds immutable source structures per query: per-call `matches_source_faces` in `source_face_scope`, a per-call projection BVH, and a per-quad chart graph in final validation. → Review DEFN `M6-CP3-DEFN-P13-OPTIMIZER-SOURCE-QUERY-COST`.
+- No product, test, fixture, selector or build change in the repository; stable 66/17/49, debt 1, CP2 491/491, selector497 unpromoted.
+
 ## 2026-11-03 — P13-j stitched-vertex Review/Definition in progress (not closed)
 
 - Independently carried the CB78 Vase three-fan stitched-vertex witness and four-cell prepared-node5355 reciprocal ring into [ring non-vacuity](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Ring_Nonvacuity_20261103.md) and [owner/cache preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Owner_Cache_Preflight_20261103.md). Documented the conditional producer-side reciprocal-incidence correction, exact unique-corner owner requirement, and completion-cache membership guard. No C++ fix or Code + Build successor accepted.

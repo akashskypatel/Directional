@@ -1,5 +1,7 @@
 # P13-j stitched-vertex Review/Definition — same-turn preflight (2026-11-02)
 
+> **Superseded (2026-11-03) by [RA-200](Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md),** which closes this turn by scratch probes. The decision table's answer is "completion-boundary sharing owner": the corner key was scoped to the outgoing halfedge (Amendment 32, exact CB79 → TB73). The measured facts below stand.
+
 **Canonical turn:** `M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX` — **INCOMPLETE**. This record preserves source-verified static findings, an exact diagnostic plan, and the unresolved decision. It is *not* an adjudication or an authorization for a Code + Build turn.
 
 ## Immutable authority and boundaries

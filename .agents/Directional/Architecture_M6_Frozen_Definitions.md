@@ -1,3 +1,12 @@
+## RA-200 — P13-j stitched vertex: node-keyed boundary corners; exact CB79, TB73; next failure P13-k (2026-11-03)
+
+- [RA-200](Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md) closes `M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX` and supersedes, as open work, its 13 same-turn Review records (their measured facts stand). **DESIGN Amendment 32:** a completed patch's boundary-node stitch key is the arrangement node's identity over its primary point and every occurrence, each in its own source scope. It is not the subset in the scope of the halfedge leaving the node. The assembler's checks are unchanged.
+- P13-j owner: the completion-boundary key producer (`derive_patch_descriptor`). Not owners: the assembler (it correctly fails closed), the arrangement (node 5355 is a reciprocal four-cell ring), typed authority (identical on both sides), the completion cache (initial pass, unwitnessed). V2 and the reciprocal-DSU candidates are withdrawn.
+- Turn IDs:
+  - CB79 `M6-CP3-CB79-P13-NODE-STITCH-KEY` (`89f37001…`, `25 2` / `95 0`, rows 884–886).
+  - TB73 `M6-CP3-TB73-P13-NODE-STITCH-KEY-FULL-GATE-EXEC` (manifest 886 `5d09fa33…`, membership 967; Vase ABNORMAL 600 s after assembly).
+  - Review DEFN `M6-CP3-DEFN-P13-OPTIMIZER-SOURCE-QUERY-COST` (P13-k, probe).
+
 ## RA-199 — P13-i FlowRep selection: unmet support chords; exact CB78, TB72; next failure P13-j (2026-11-02)
 
 - [RA-199](Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-FLOWREP-SELECTION` and supersedes its probe preflight and static review. **DESIGN Amendment 31:** a layout-support trace that returns to the rail it left, crossed or touched by no other non-rail arc, is not admitted to selection. It stays inactive: no coverage samples, no cycle. One pass is the fixed point.

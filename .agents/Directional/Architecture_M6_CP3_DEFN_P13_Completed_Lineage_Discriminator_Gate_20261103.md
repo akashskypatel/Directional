@@ -1,5 +1,7 @@
 # P13-j — completed-boundary ownership discriminator (same Review, 2026-11-03)
 
+> **Resolved (2026-11-03) by [RA-200](Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md) §1 item 1:** the measurement below was taken on the scratch build. Branch (A) holds: the certificates on both sides are identical at 5351/5355/5356/5357/5359, and only the descriptor key differs. The fix is Amendment 32, exact CB79 → TB73.
+
 **Canonical turn:** `M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX`. This is a source-and-retained-evidence decision gate, **not** a completed Review, corrective patch, runtime test, or Code + Build authorization.
 
 ## Immutable authority and independent recheck

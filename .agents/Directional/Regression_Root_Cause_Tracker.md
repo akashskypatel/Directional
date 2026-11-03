@@ -1,3 +1,9 @@
+**RA-200 P13-j probe adjudication (2026-11-03; owner confirmed by probe, no stable event):** [RA-200](Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md). It closes the WIP below.
+- **P13-j owner:** the completion-boundary key producer. `derive_patch_descriptor` keys a corner by the source scope of the halfedge leaving it, so 23,221 of 66,783 Vase nodes get two keys. Typed certificates are identical on both sides (measured at 5351/5355/5356/5357/5359). Amendment 32 → exact CB79 → TB73.
+- **Latent defect, same owner:** gate row 97 assembled two disjoint quads and passed (it asserts `quads not empty`) → O26. Not a stable event: no accepted output changes, and the production `SourceAuthoritativeMeshValidator` would reject such a topology.
+- **P13-k (new locus, Vase):** with CB79, Vase assembles and then rebuilds immutable source structures per query in the surface-optimizer stage (Amendment 27 class, O20) → `M6-CP3-DEFN-P13-OPTIMIZER-SOURCE-QUERY-COST`.
+- **66/17/49**, debt **1**, CP2 **491/491** unchanged.
+
 ## 2026-11-03 — P13-j stitched-vertex Review WIP (unaccepted candidate; no stable event)
 
 - **Observed:** CB78 Vase first output rejection `AssemblyRejected/NonManifoldStitchedVertex`; stitched row3 has three disconnected two-quad fans. Prepared node5355 has one connected four-cell reciprocal halfedge ring, with mismatched boundary-node compact identities at interfaces 5356/5357/5359 and matching 5351 control. [Measured witness](Architecture_M6_CP3_DEFN_P13_Assembly_Ring_Nonvacuity_20261103.md).
