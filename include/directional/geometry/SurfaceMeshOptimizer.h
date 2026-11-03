@@ -304,6 +304,9 @@ struct SurfaceOptimizationOverlay {
   Eigen::VectorXi valenceError;
 };
 
+bool source_optimization_has_complete_authority(
+    const SurfaceOptimizationConstraints &constraints);
+
 namespace surface_optimizer_detail {
 
 bool contains(const std::vector<int> &values, const int value);
@@ -378,7 +381,8 @@ bound_source_face_scope(const SourceTopologyRegions &sourceAuthority,
 struct SourceProjectionCache {
   explicit SourceProjectionCache(
       const SurfaceOptimizationConstraints &constraints)
-      : constraints(&constraints) {
+      : constraints(&constraints),
+        sourceComplete(source_optimization_has_complete_authority(constraints)) {
     if (constraints.sourceVertices.rows() > 0 &&
         constraints.sourceFaces.rows() > 0 &&
         constraints.sourceVertices.cols() == 3 &&
@@ -470,6 +474,8 @@ struct SourceProjectionCache {
   }
 
   const SurfaceOptimizationConstraints *constraints = nullptr;
+  // The source authority check, made once when the cache is built.
+  bool sourceComplete = false;
   std::optional<SurfaceProjectionBvh> bvh;
   std::map<SourceProjectionScope, std::vector<unsigned char>> allowedFaceMasks;
   std::map<std::vector<int>, std::vector<unsigned char>> exactAllowedFaceMasks;

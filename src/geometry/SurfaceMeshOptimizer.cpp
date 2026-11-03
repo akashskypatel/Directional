@@ -123,19 +123,37 @@ Eigen::RowVector3d source_point_position(
 
 namespace directional::geometry::surface_optimizer_detail {
 
+namespace {
+
+// A lent projection cache answers only for the constraints it was built from.
+// The fallback cache, and its source BVH, is built only when none fits.
+SourceProjectionCache &lent_or_local_projection_cache(
+    const SurfaceOptimizationConstraints &constraints,
+    SourceProjectionCache *lent, std::optional<SourceProjectionCache> &local) {
+  if (lent != nullptr && lent->constraints == &constraints) {
+    return *lent;
+  }
+  return local.emplace(constraints);
+}
+
+} // namespace
+
 SurfacePoint nearest_source_point(
     const Eigen::RowVector3d &p, const SurfaceOptimizationConstraints &constraints,
     const std::optional<SourceProjectionScope> &requiredScope,
     SourceProjectionCache *projectionCache) {
-  if (!source_optimization_has_complete_authority(constraints) ||
-      constraints.sourceVertices.rows() <= 0 ||
-      constraints.sourceFaces.rows() <= 0 || constraints.sourceFaces.cols() != 3) {
+  // A cache built for these constraints checked their source authority once,
+  // when it was built. Otherwise check it here, before building a cache.
+  const bool lent =
+      projectionCache != nullptr && projectionCache->constraints == &constraints;
+  if (!(lent ? projectionCache->sourceComplete
+             : source_optimization_has_complete_authority(constraints))) {
     return {};
   }
-  SourceProjectionCache localCache(constraints);
-  SourceProjectionCache *cache =
-      projectionCache != nullptr ? projectionCache : &localCache;
-  return cache->project(p, requiredScope);
+  std::optional<SourceProjectionCache> localCache;
+  SourceProjectionCache &cache =
+      lent ? *projectionCache : localCache.emplace(constraints);
+  return cache.project(p, requiredScope);
 }
 
 } // namespace directional::geometry::surface_optimizer_detail
@@ -773,9 +791,9 @@ Eigen::MatrixXd project_vertices(
   bool componentOk = true;
   bool sheetOk = true;
   bool provenanceComplete = true;
-  SourceProjectionCache localCache(constraints);
+  std::optional<SourceProjectionCache> localCache;
   SourceProjectionCache *cache =
-      projectionCache != nullptr ? projectionCache : &localCache;
+      &lent_or_local_projection_cache(constraints, projectionCache, localCache);
   std::vector<SurfacePoint> projectedProvenance(
       static_cast<std::size_t>(vertices.rows()));
   for (int i = 0; i < vertices.rows(); ++i) {
@@ -1115,9 +1133,9 @@ SurfacePoint quad_reference_surface_point(
                 &constraints.vertexChartAuthority)
           : validation::source_authoritative_detail::SourceChartCompatibility{};
   const std::vector<int> &chartFaces = resolution.chartFaces;
-  SourceProjectionCache localCache(constraints);
+  std::optional<SourceProjectionCache> localCache;
   SourceProjectionCache *cache =
-      projectionCache != nullptr ? projectionCache : &localCache;
+      &lent_or_local_projection_cache(constraints, projectionCache, localCache);
   SurfacePoint point;
   if (face >= 0 &&
       face < static_cast<int>(constraints.outputQuadSourceFaces.size())) {

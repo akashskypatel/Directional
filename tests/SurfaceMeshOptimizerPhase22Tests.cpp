@@ -1732,3 +1732,61 @@ TEST(SurfaceOptimizationRailAuthorityMigration,
   EXPECT_EQ(constraints.featureVertices.size(), static_cast<std::size_t>(count));
   EXPECT_LT(seconds, 2.0);
 }
+
+TEST(SurfaceMeshOptimizerPhase22,
+     LentProjectionCacheAnswersOnlyForItsOwnConstraints) {
+  const Eigen::MatrixXd source = square_vertices();
+  const Eigen::MatrixXi triangles = square_triangles();
+  const std::vector<int> labels(2, 0);
+  const auto provenance =
+      provenance_for(source, source, triangles, labels, labels);
+  const SurfaceOptimizationConstraints lower =
+      make_final_constraints(source, triangles, provenance);
+  SurfaceOptimizationConstraints upper = lower;
+  upper.sourceVertices.col(2).array() += 5.0;
+  const Eigen::RowVector3d query(0.25, 0.75, 4.0);
+
+  const SurfacePoint own = directional::geometry::surface_optimizer_detail::
+      nearest_source_point(query, upper);
+  ASSERT_TRUE(own.valid());
+  ASSERT_NEAR(own.position.z(), 5.0, 1.0e-12);
+
+  // A cache built for other constraints is ignored, not trusted.
+  directional::geometry::surface_optimizer_detail::SourceProjectionCache
+      lowerCache(lower);
+  const SurfacePoint ignored = directional::geometry::surface_optimizer_detail::
+      nearest_source_point(query, upper, std::nullopt, &lowerCache);
+  EXPECT_EQ(lowerCache.queryCount, 0U);
+  EXPECT_EQ(ignored.face, own.face);
+  EXPECT_TRUE(ignored.position.isApprox(own.position));
+
+  // A cache built for these constraints answers the query itself.
+  directional::geometry::surface_optimizer_detail::SourceProjectionCache
+      upperCache(upper);
+  const SurfacePoint lent = directional::geometry::surface_optimizer_detail::
+      nearest_source_point(query, upper, std::nullopt, &upperCache);
+  EXPECT_EQ(upperCache.queryCount, 1U);
+  EXPECT_EQ(lent.face, own.face);
+  EXPECT_TRUE(lent.position.isApprox(own.position));
+}
+
+TEST(SurfaceMeshOptimizerPhase22, LentProjectionCacheBuildsNoSourceBvhPerQuery) {
+  // 20,000 source faces and 10,000 queries: a source authority check and BVH
+  // per query take tens of seconds; the lent cache answers them all.
+  const SurfaceOptimizationConstraints constraints =
+      make_source_grid_constraints(100);
+  directional::geometry::surface_optimizer_detail::SourceProjectionCache cache(
+      constraints);
+  constexpr int queries = 10000;
+  const auto start = std::chrono::steady_clock::now();
+  for (int query = 0; query < queries; ++query) {
+    const Eigen::RowVector3d point((query + 0.5) / queries, 0.37, 0.25);
+    ASSERT_TRUE(directional::geometry::surface_optimizer_detail::
+                    nearest_source_point(point, constraints, std::nullopt,
+                                         &cache)
+                        .valid());
+  }
+  const double seconds = seconds_since(start);
+  EXPECT_EQ(cache.queryCount, static_cast<std::size_t>(queries));
+  EXPECT_LT(seconds, 2.0);
+}
