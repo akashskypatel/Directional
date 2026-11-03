@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-p13j-scratch-compile-20261103-0256-v1",
+  "request_id": "m6-cp3-p13j-arrangement-compare-20261103-0320-v1",
   "operation": "compile",
-  "mailbox_key": "m6-cp3-p13j-scratch-compile-20261103-v1",
-  "source_sha": "42126c14ff530c4ccfd3768f93e4b95c2ae3bfc7",
+  "mailbox_key": "m6-cp3-p13j-arrangement-compare-20261103-v1",
+  "source_sha": "41b87026a479d0a67b5f5fdf10fd159e0d3962cf",
   "targets": [
     "directional_benchmarks"
   ],
-  "artifact_prefix": "p13j-stitch-witness-scratch-20261103"
+  "artifact_prefix": "p13j-arrangement-compare-20261103"
 }
