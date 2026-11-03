@@ -1,11 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "p13j-compatible-occurrences-v2-compile-20261103-0504-retry",
-  "operation": "compile",
-  "mailbox_key": "p13j-compatible-occurrences-v2-compile-20261103-retry",
-  "source_sha": "36fb5349aebb96a0b5b0d30d5c5265a110c5df8c",
-  "targets": [
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "p13j-v2-compatible-occurrences-retry-20261103"
+  "request_id": "cb79-node-stitch-apply-20261103-1805",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb79-node-stitch-apply-20261103",
+  "file_id": "187gZ0neZHRcGXqo-LiGwgdUVc8-o_pHM",
+  "patch_sha256": "0421881f576850cca879c57e15208f2d6d46990aa4f41a4746c515c627d4aacb",
+  "base_sha": "4c52ef9221a93ab22cb83aeecef51488d0ddbed7",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "M6 CP3 CB79: canonical arrangement-node stitch key",
+  "retention_days": 14
 }
