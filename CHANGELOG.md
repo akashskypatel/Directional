@@ -1,3 +1,9 @@
+## 2026-11-03 — P13-j stitched-vertex Review/Definition in progress (not closed)
+
+- Independently carried the CB78 Vase three-fan stitched-vertex witness and four-cell prepared-node5355 reciprocal ring into [ring non-vacuity](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Ring_Nonvacuity_20261103.md) and [owner/cache preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Owner_Cache_Preflight_20261103.md). Documented the conditional producer-side reciprocal-incidence correction, exact unique-corner owner requirement, and completion-cache membership guard. No C++ fix or Code + Build successor accepted.
+- Updated live ORIENTATION, handoff and TODO to corrected TB72A **883/883**, 81 deferred, membership **964**, and the still-open P13-j Review. Review §5, true Git-history-backed `review_check.py boundary`, and independent descriptor-to-assembler falsifiers remain pending.
+- No source/test/fixture/benchmark/build/selector changes or production execution; CP2 491/491 accepted, stable 66/17/49 debt1, selector497/CP3 unpromoted. V2 remains unaccepted.
+
 ## 2026-11-02 — TB72A corrected dispatch; full support-chord gate verified
 
 - After TB72's zero-execution invalid attempt, the TB72A orchestration turn selected manifest-bearing executor `df586285…` (snapshot run 41539714172, 6115/6115 source hashes) and reused immutable CB78 package `13181887585`/source `afd72107…`, without code/build/selector modification.
