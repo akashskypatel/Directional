@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-p13j-dual-boundary-keys-20261103-0349-v2",
+  "request_id": "p13j-typed-chart-rebind-20261103-0412-v1",
   "operation": "compile",
-  "mailbox_key": "m6-cp3-p13j-dual-boundary-keys-20261103-v2",
-  "source_sha": "6db6b8a5535db97da923982c6c6694ba3932c56b",
+  "mailbox_key": "p13j-typed-chart-rebind-20261103-v1",
+  "source_sha": "7461cba7e9a72699f3aba839ec83b9c79b8451ce",
   "targets": [
     "directional_benchmarks"
   ],
-  "artifact_prefix": "p13j-boundary-scope-keys-v2-20261103"
+  "artifact_prefix": "p13j-typed-chart-rebind-20261103"
 }
