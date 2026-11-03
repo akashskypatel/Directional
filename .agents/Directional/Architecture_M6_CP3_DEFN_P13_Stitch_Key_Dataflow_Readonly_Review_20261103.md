@@ -32,3 +32,16 @@ The source-level fresh-completion chart closure predicts overlap when provenance
 During session bootstrap, repository document reads preceded the conservation-policy read-mode gate; this was a procedural miss. Source inspection subsequently switched to the mandatory verified snapshot rather than continuing piecemeal connector reads. The 20-minute response closeout and exact current canonical turn remain binding.
 
 No product/source/test/fixture/selector/benchmark/build was changed, no Directional runtime was executed, and accepted CP2 **491/491**, stable **66/17/49**, debt **1**, unpromoted TB72A **883/883** / selector497 are unchanged. This Review remains unfinished; mandatory Review §5 closeout and authenticated boundary proof are pending.
+
+## Existing C++ regression coverage audit (same turn)
+
+Read-only audit of six existing C++ test bodies and CB78 descriptor/cache/assembler source: script SHA-256 `6c45d772c84af2910f45e105a7ad2abb3bd92f2f9d55919d9a9e0c88962ce43a`; JSON SHA-256 `2b0c5b919b9a12bf31fba70904b8bb5b22129bc6cc653852facd3200f258d3a1`. **These are static checks, not executed C++ test results.**
+
+- `PatchDescriptorMilestoneETests.cpp:1404+` **already checks boundaryNodeIdentities equality** under a source-face-row permutation; it tests one patch, not *two reciprocal patches* selecting different outgoing source-chart scopes at the same prepared node.
+- `PatchDescriptorMilestoneETests.cpp:1481+` and `:1605+` explicitly require nonzero reused patch completions **after structural repair**. Blanket disabling cross-repair cache reuse would violate these existing positives; preserve valid unchanged-owner reuse while rejecting a same-dependency changed-owner product.
+- `PureQuadCompletionPhase18Tests.cpp:2003+,2429+,2474+` verify successful compatible typed stitch and incompatible-sheet/support rejection. They do not prove the descriptor generates matching keys across Vase's three fractured reciprocal interfaces.
+- `PatchDescriptor.cpp:2205+` does not include exact `boundaryNodeIdentities` member equivalence in cache dependency fields. A hypothetical same-dependency changed-owner reuse still needs a real negative; this risk is **not** the proven cause of the initial Vase conflict.
+
+**Non-vacuous future gate (not authorized yet):** separately assert matching descriptor/completed-lineage/assembler keys at Vase 5351,5356,5357,5359; retain disconnected same-support/no-twin, hard-rail, fan/sheet, near-coincident, row/corner/patch-order, and repair-generated twin-reversal negatives; retain valid cache-reuse positive alongside changed-owner same-rank rejection and actual fail-closed manifold/typed checks. An aggregate four-cell connectedness assertion alone is insufficient. Capture *actual completed* sourceCharts/support/region/sheet/occurrence/relation-path vectors and resolved keys on both sides in an authorized scratch probe, not by inference from chart-component IDs.
+
+No source/test/build/selector changed, no Directional binary executed; owner-class injectivity, typed sector policy, cache proof and Review closeout remain open. No Code + Build successor is frozen.
