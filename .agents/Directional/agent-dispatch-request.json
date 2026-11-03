@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "request_id": "tb73-node-stitch-gate-20261103-v1",
+  "request_id": "tb73-node-stitch-census-20261103-v1",
   "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb73-node-stitch-gate",
+  "mailbox_key": "m6-cp3-tb73-node-stitch-census",
   "executor_sha": "856339d5bac787ae6b3b91c0130eb4257abf7c01",
   "semantic_source_sha": "3feb2a4182a5a12c2a9f306272756f8333a44b59",
   "turn_id": "M6-CP3-TB73-P13-NODE-STITCH-KEY-FULL-GATE-EXEC",
@@ -14,12 +14,10 @@
     "EXPECTED_CANDIDATE_ZIP_SHA256": "eb926a8f2577b12128c5e9c0a668eb48157c2c53df8316389e49c6a1e5d52ede",
     "EXPECTED_ROOT_MANIFEST_SHA256": "359526cc87b30ac4c0634059ee7e77c22c333537bc317a096f92af111865d667",
     "EXPECTED_SOURCE_ARCHIVE_SHA256": "5a2ddc7e64636c34ae05155e9b97337e036d980c64049c1c9c7f28e577905473",
-    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_TB73_P13_Node_Stitch_Key_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "5d09fa337b42adc8629f4bded8ea35b2181e468fb9dd91f7db5414fa534cfc4a",
-    "EXPECTED_CASE_COUNT": "886",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
+    "EXPECTED_CASE_COUNT": "3"
   },
-  "artifact_prefix": "m6-cp3-tb73-node-gate",
+  "artifact_prefix": "m6-cp3-tb73-node-census",
   "retention_days": 14
 }
