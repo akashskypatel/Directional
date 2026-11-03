@@ -45,3 +45,13 @@ Read-only audit of six existing C++ test bodies and CB78 descriptor/cache/assemb
 **Non-vacuous future gate (not authorized yet):** separately assert matching descriptor/completed-lineage/assembler keys at Vase 5351,5356,5357,5359; retain disconnected same-support/no-twin, hard-rail, fan/sheet, near-coincident, row/corner/patch-order, and repair-generated twin-reversal negatives; retain valid cache-reuse positive alongside changed-owner same-rank rejection and actual fail-closed manifold/typed checks. An aggregate four-cell connectedness assertion alone is insufficient. Capture *actual completed* sourceCharts/support/region/sheet/occurrence/relation-path vectors and resolved keys on both sides in an authorized scratch probe, not by inference from chart-component IDs.
 
 No source/test/build/selector changed, no Directional binary executed; owner-class injectivity, typed sector policy, cache proof and Review closeout remain open. No Code + Build successor is frozen.
+
+## Four-way certificate non-vacuity (same Review)
+
+`PureQuadCompletion.cpp:3426-3505` intersects source support, region, sheet and **literal source charts cumulatively across all patches** sharing one stitch key. `:3624-3712` separately requires one resolved source entity and **one common source face to which all contributors can rebind**. Pairwise-valid seams do not prove either global condition.
+
+Synthetic, not actual Vase lineage: chart sets `abc,abd,acd,bcd` pass all six pairwise intersections yet have an empty four-way intersection; the read-only model rejects all 24 patch orders. Adding a common chart passes only the modeled chart predicate. Pairwise rebind-destination intersections can likewise conceal an empty global intersection.
+
+Future non-vacuity: measure actual completed owner certificates/provenance across the 5355 ring and every 5351/5356/5357/5359 interface; assert global chart/support/region/sheet compatibility and a common rebinding face, plus each reciprocal key individually. Add an all-pairs-compatible/global-incompatible four-patch negative, keep original fail-closed validators.
+
+Script SHA256 `0d9a4195363eb35252be863191c03e4816f70356729e6f1659324c208caa0cc1`; JSON `12051d5aa927597d1c748c26b7cf949fe6f3ccf0d4f7b9ac34e12ee4b4cc09a9`; ZIP `7496471302c374a0604f19b519267a62ac5c5a431cc3d8fae3dd00096a012c6b`. Synthetic/static only, no C++ execution, no CB authorization.
