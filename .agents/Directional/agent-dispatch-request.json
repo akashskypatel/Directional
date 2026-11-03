@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb80-rail-binding-compile-20261103-v2",
+  "request_id": "m6-cp3-cb80-rail-binding-compile-20261103-v3",
   "operation": "compile",
-  "mailbox_key": "m6-cp3-cb80-rail-binding-compile-v2",
+  "mailbox_key": "m6-cp3-cb80-rail-binding-compile-v3",
   "source_sha": "c6420b1f9a84c423f60a5b96b90d59abb8df80e4",
   "targets": [
     "directional_core",
@@ -14,6 +14,5 @@
     "directional_compiled_api_tests",
     "directional_benchmarks"
   ],
-  "artifact_prefix": "m6-cp3-cb80-rail-binding",
-  "retention_days": 14
+  "artifact_prefix": "m6-cp3-cb80-rail-binding"
 }
