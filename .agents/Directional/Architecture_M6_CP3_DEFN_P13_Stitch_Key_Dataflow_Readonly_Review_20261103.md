@@ -7,7 +7,7 @@
 - Working-branch snapshot run [41645502073](https://github.com/akashskypatel/Directional/actions/runs/41645502073), source `5bf12419f1cb185aef2e297b3ad17b2e470a916f`, source artifact `13233879616`. Internal archive hash verified; **6,128/6,128** file hashes passed, zero errors, `runtimeExecution=false`.
 - GitHub compare `afd72107d3213a396ed7f35b53f67dceeea7e7ca...5bf12419f1cb185aef2e297b3ad17b2e470a916f`: 176 commits ahead, zero behind; changed paths are review/documentation, `STATUS`, dispatcher/control, or snapshot markers, **no C++/test/build/workflow/selector semantic changes**. The immutable CB78 source remains the semantic baseline.
 - Independently checked exact local source SHA-256: `PatchDescriptor.cpp=108e5481fe85ecafa566d4a14f089afbf00956f8e543fbbc8b0c5f176f31f491`; `PureQuadCompletion.cpp=9eb46a71b4f8af85b7b9ccda703606fe39dd4d7eb61a67d10e00ff5998f45476`.
-- Read-only audit checked 14 source/witness assertions, including all four recorded neighboring keys and all eight subsets of three fractured seam matches. Audit JSON SHA-256 `05feefbc54ec95aa666d88c06cfb44495e145db8662e8a0cff3e894b1f9b4279`. **Not Directional C++ tests**.
+- Read-only audit passed 16 distinct source/witness assert statements (one is executed for three separate broken neighbors), including the four recorded neighbor keys and all eight subsets of the three fractured seam matches. Audit script SHA-256 `d1bd82e34c43ae85759992cf40c9e6d81095d5712a423805f2e234e2f67903fe`; JSON SHA-256 `74442212f83fc3a198db518f4acdf65e378c7ccbaa22b67792bcf20bf1116112`. **Not Directional C++ tests**. The earlier count of 14 was incorrect and is corrected here.
 
 ## Precisely located responsibility
 
