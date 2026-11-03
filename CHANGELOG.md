@@ -1,3 +1,18 @@
+# 2026-11-03 — RA-201 P13-k optimizer source-query cost probe adjudication (Review; documentation only)
+
+- [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md) closes `M6-CP3-DEFN-P13-OPTIMIZER-SOURCE-QUERY-COST` by scratch probes on CB79. The ChatGPT static preflight's `REVIEW_BLOCKER` was procedural.
+- Findings:
+  - P13-k is one class at five instances: the rail fill's binding check per (vertex, interval); `source_face_scope` per chart face; the authority check and BVH per `nearest_source_point` call; a label support per quad; and `SourcePointLabelSupport::available()` per query.
+  - Vase reaches its verdict in about 250 s (sites 1–2 only: 1,521 s), with the verdict unchanged.
+  - The verdict is P13-l: the completed mesh fails its pre-optimization validation. Topology passes; `FlippedFace` 27,966 in edge form and 7,681 in face form; `SelfIntersectingFace` 250.
+- DESIGN **Amendment 33**. Four exact patches committed beside RA-201: CB80 (`d4dda97e…`), CB81 (`ffa4b554…`), CB82 (`b963ea3d…`), CB83 (`3741697e…`). TB74/TB75/TB76 manifests 888/890/893 (`bb4e771f…`/`a134d941…`/`3b727161…`), membership 969/971/974.
+- Scratch verification on the final state:
+  - gate 892/893 (only O16 row 283);
+  - ledger 0/81, unchanged except row 365, the Vase census, which is now RED in time;
+  - census Cylinder PASS, BunnyRandom P13-e, Vase `detail=SelfIntersectingFace`;
+  - every mutant is killed by its row.
+- Next: the implementation agent runs CB80 → TB74 → CB81 → TB75 → CB82 → CB83 → TB76. Review: `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l).
+
 # 2026-11-03 — TB73 immutable CB79 full gate and independent production census
 
 - [TB73 execution report](.agents/Directional/Architecture_M6_CP3_TB73_P13_Node_Stitch_Key_Full_Gate_Execution_Report_20261103.md): CB79 source `3feb2a4182a5a12c2a9f306272756f8333a44b59`, immutable package `13261460152`; [gate 41702614233](https://github.com/akashskypatel/Directional/actions/runs/41702614233) **886/886 PASS**, 81 deferred, membership **967**, 1780/1780 checksums, no rebuild/relink. New rows 884–886 all PASS.

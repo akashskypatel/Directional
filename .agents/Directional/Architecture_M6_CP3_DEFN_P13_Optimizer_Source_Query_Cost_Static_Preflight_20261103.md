@@ -1,5 +1,7 @@
 # P13-k optimizer source-query cost — static preflight (INCOMPLETE)
 
+> **Resolved (2026-11-03) by [RA-201](Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md):** the scratch execution below was run on CB79. All three sites were measured, plus the same binding check one level down (per chart face and per label-support query). Vase keeps its verdict and reaches it in about 250 s. The rejecting check is named (P13-l; terminal detail by CB83), and the guarded patches are frozen as CB80–CB83 → TB74–TB76.
+
 **Canonical turn:** `M6-CP3-DEFN-P13-OPTIMIZER-SOURCE-QUERY-COST` (Review/Definition, P13-k).  
 **Status:** Static source preflight only. **This is not RA-201, a completed DEFN, an approved CB patch, or a runtime verdict.**  
 **Source inspected:** Verified immutable source snapshot 41702924049 / artifact 13264691897 / SHA `9d5ab4333e94c527a8d56b11d1ac689632e96eba`; source/test tree was unchanged through the inspected STATUS head `3c100ab78a22ce67ece25658f6af692dc52fe59c`. CB79 semantic source is `3feb2a4182a5a12c2a9f306272756f8333a44b59`.  

@@ -1,10 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP3-DEFN-P13-OPTIMIZER-SOURCE-QUERY-COST
-Status: BLOCKED
-Successor: UNKNOWN
+Status: COMPLETE
+Successor: M6-CP3-CB80-P13-RAIL-BINDING-ONCE
 Started at: 2026-11-03T20:20:27Z
 Resumed at: 2026-11-03T21:26:18Z
-Ended at: 
-Blocker Type: REVIEW_BLOCKER
-Blocker Details: P13-k requires a CB79 scratch probe proving all three source-query cost fixes, preserving Vase behavior, naming the first terminal rejecting check, and freezing separate exact guarded patches. RA-200 measures only the first two fixes; the combined three-site evidence is still absent, and this ChatGPT Web DEFN must remain runtime-free.
+Ended at: 2026-11-03T22:20:00Z
 ---END_TURN_STATUS---

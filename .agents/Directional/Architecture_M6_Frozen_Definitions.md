@@ -1,3 +1,11 @@
+## RA-201 — P13-k optimizer source-query cost: one binding check per stage, lent structures; exact CB80–CB83, TB74–TB76; next failure P13-l (2026-11-03)
+
+- [RA-201](Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md) closes `M6-CP3-DEFN-P13-OPTIMIZER-SOURCE-QUERY-COST` and supersedes, as open work, the [static preflight](Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md). The preflight's requirements stand and are met.
+- **DESIGN Amendment 33:** the surface-optimizer stage checks the source binding once. It lends a `SourceProjectionCache` only for the same constraints object, carrying its build-time authority check. It lends a `SourcePointLabelSupport` only when the support borrows exactly the constraints' faces, authority and hard-edge set. Inner queries read row labels through `bound_source_face_scope`. A structure that does not fit is ignored, and checks, failure codes and their order are unchanged.
+- Frozen: CB80 `d4dda97e…`, CB81 `ffa4b554…`, CB82 `b963ea3d…` and CB83 `3741697e…` as `.diff` files, applied in that order on `3feb2a41…`. TB74 888 `bb4e771f…` (membership 969), TB75 890 `a134d941…` (971) and TB76 893 `3b727161…` (974). Census `3af1dc0d…` unchanged.
+- Registered: TB74 and TB75 Vase ABNORMAL 600 s; TB76 Vase RED `NotProductionReady:completion detail=SelfIntersectingFace`; Cylinder PASS and BunnyRandom P13-e throughout.
+- P13-l (completed-mesh orientation) → Review DEFN `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`. O20 gains the optimizer-stage residuals.
+
 ## RA-200 — P13-j stitched vertex: node-keyed boundary corners; exact CB79, TB73; next failure P13-k (2026-11-03)
 
 - [RA-200](Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md) closes `M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX` and supersedes, as open work, its 13 same-turn Review records (their measured facts stand). **DESIGN Amendment 32:** a completed patch's boundary-node stitch key is the arrangement node's identity over its primary point and every occurrence, each in its own source scope. It is not the subset in the scope of the halfedge leaving the node. The assembler's checks are unchanged.
