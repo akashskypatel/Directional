@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "cb79-node-stitch-gmp-compile-20261103-1824",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb79-node-stitch-compile-20261103",
-  "source_sha": "3feb2a4182a5a12c2a9f306272756f8333a44b59",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb79-node-stitch"
+  "request_id": "cb79-node-stitch-docs-apply-20261103-1848",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb79-node-stitch-docs-20261103",
+  "file_id": "1x5-5hFIByjnUBcZ9iiOcYnRIyYgxv1mW",
+  "patch_sha256": "701c2693c828385b9990f645e765fe480e3a68d4ac922f71c400354bcf004e16",
+  "base_sha": "4c52ef9221a93ab22cb83aeecef51488d0ddbed7",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "M6 CP3 CB79: record verified GMP compile and hand off TB73",
+  "retention_days": 14
 }
