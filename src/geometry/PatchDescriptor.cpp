@@ -1,5 +1,7 @@
 #include <directional/geometry/PatchDescriptor.h>
 
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <iterator>
 #include <type_traits>
@@ -3043,6 +3045,94 @@ SurfaceCellComplexCompletionDraft complete_surface_cell_complex_pass(
     return components;
   };
 
+  // P13-k scratch diagnostic: compare the authoritative prepared arrangement
+  // and completed patch boundary around the first failing stitched node.
+  // No mutation to arrangement, patches or the fail-closed stitch validator.
+  if (std::getenv("DIRECTIONAL_P13J_SCRATCH_WITNESS") != nullptr) {
+    constexpr int soughtNode = 5355;
+    constexpr int soughtCells[] = {26569, 3, 26570, 0};
+    const auto wantedCell = [&](int id) {
+      return std::find(std::begin(soughtCells), std::end(soughtCells), id)
+          != std::end(soughtCells);
+    };
+    std::fprintf(stderr, "P13K_BEGIN node=%d preparedNodes=%zu preparedEdges=%zu preparedCells=%zu completed=%zu\n",
+                 soughtNode, prepared.nodes.size(), prepared.halfedges.size(),
+                 prepared.cells.size(), result.completedPatches.size());
+    const auto *node = find_node(prepared, soughtNode);
+    if (node != nullptr) {
+      std::fprintf(stderr, "P13K_NODE id=%d face=%d bary=%.17g,%.17g,%.17g sourceEdge=%d edgeT=%.17g occurrenceCount=%zu\n",
+                   node->id, node->sourceFace, node->barycentric[0],
+                   node->barycentric[1], node->barycentric[2],
+                   node->sourceEdge, node->sourceEdgeParameter,
+                   node->occurrences.size());
+      for (const auto &occ : node->occurrences) {
+        std::fprintf(stderr, "P13K_OCC face=%d arc=%d provenance=%d region=%d chart=%d rail=%d curve=%d sourceT=%.17g,%.17g\n",
+                     occ.sourceFace, occ.sourceArc, occ.provenance,
+                     occ.sourceTopologyRegion.has_value() ? occ.sourceTopologyRegion->index() : -1,
+                     occ.sourceChart.has_value() ? occ.sourceChart->chart.index() : -1,
+                     occ.railId.has_value() ? occ.railId->index() : -1,
+                     occ.curveId, occ.sourceT0, occ.sourceT1);
+      }
+    } else {
+      std::fprintf(stderr, "P13K_NODE_MISSING\n");
+    }
+    for (const auto &edge : prepared.halfedges) {
+      if (edge.from != soughtNode && edge.to != soughtNode) continue;
+      int twinCell = -1, twinFrom = -1, twinTo = -1;
+      if (edge.twin >= 0 && edge.twin < static_cast<int>(prepared.halfedges.size())) {
+        const auto &twin = prepared.halfedges[static_cast<std::size_t>(edge.twin)];
+        twinCell = twin.cell; twinFrom = twin.from; twinTo = twin.to;
+      }
+      std::fprintf(stderr,
+                   "P13K_EDGE id=%d from=%d to=%d cell=%d twin=%d twinCell=%d twinFrom=%d twinTo=%d next=%d arc=%d family=%d strand=%d face=%d root=%d region=%d chart=%d rail=%d hard=%d layout=%d\n",
+                   edge.id,edge.from,edge.to,edge.cell,edge.twin,twinCell,twinFrom,twinTo,
+                   edge.next,edge.sourceArc,edge.family,edge.strand,edge.sourceFace,
+                   edge.authoritativeChartRoot,
+                   edge.sourceTopologyRegion.has_value() ? edge.sourceTopologyRegion->index() : -1,
+                   edge.sourceChart.has_value() ? edge.sourceChart->chart.index() : -1,
+                   edge.railId.has_value() ? edge.railId->index() : -1,
+                   static_cast<int>(edge.hardFeature),static_cast<int>(edge.layoutSupport));
+    }
+    for (const auto &cell : prepared.cells) {
+      if (!wantedCell(cell.id)) continue;
+      std::fprintf(stderr, "P13K_CELL id=%d class=%d disk=%d closed=%d boundaryHalfedges=%zu boundaryCycles=%zu sideCounts=",
+                   cell.id,static_cast<int>(cell.cellClass),
+                   static_cast<int>(cell.disk),static_cast<int>(cell.closed),
+                   cell.halfedges.size(),cell.boundaryCycleOffsets.size());
+      for (int n : cell.sideEdgeCounts) std::fprintf(stderr,"%d,",n);
+      std::fprintf(stderr," faces=");
+      for (int n : cell.sourceFaces) std::fprintf(stderr,"%d,",n);
+      std::fprintf(stderr,"\n");
+      for (std::size_t i=0;i<cell.halfedges.size();++i) {
+        const int id = cell.halfedges[i];
+        if (id<0||id>=static_cast<int>(prepared.halfedges.size())) continue;
+        const auto &edge=prepared.halfedges[static_cast<std::size_t>(id)];
+        if (edge.from==soughtNode || edge.to==soughtNode)
+          std::fprintf(stderr,"P13K_CELL_EDGE cell=%d offset=%zu id=%d from=%d to=%d twin=%d next=%d\n",
+                       cell.id,i,id,edge.from,edge.to,edge.twin,edge.next);
+      }
+    }
+    for (std::size_t p=0;p<result.completedPatches.size();++p) {
+      const auto &patch=result.completedPatches[p];
+      if (!wantedCell(patch.sourcePatch)) continue;
+      std::fprintf(stderr,"P13K_PATCH index=%zu cell=%d boundarySize=%zu quadCount=%zu sideCounts=",
+                   p,patch.sourcePatch,patch.boundaryVertices.size(),patch.quads.size());
+      for(int n:patch.sourceSideEdgeCounts) std::fprintf(stderr,"%d,",n);
+      std::fprintf(stderr,"\n");
+      for(std::size_t i=0;i<patch.boundaryVertices.size();++i) {
+        if(patch.boundaryVertices[i]!=soughtNode)continue;
+        const auto previous=patch.boundaryVertices[(i+patch.boundaryVertices.size()-1)%patch.boundaryVertices.size()];
+        const auto next=patch.boundaryVertices[(i+1)%patch.boundaryVertices.size()];
+        const auto identityHash=i<patch.boundaryNodeIdentities.size()
+            ? patch.boundaryNodeIdentities[i].hash() : 0ULL;
+        std::fprintf(stderr,"P13K_PATCH_CORNER index=%zu cell=%d offset=%zu previous=%d node=%d next=%d nodeHash=%llu\n",
+                     p,patch.sourcePatch,i,previous,soughtNode,next,
+                     static_cast<unsigned long long>(identityHash));
+      }
+    }
+    std::fprintf(stderr,"P13K_END\n");
+    std::fflush(stderr);
+  }
   result.assembly = stitch_pure_quad_patches(
       result.completedPatches, 1.0e-9, &F, options.sourceAuthority,
       options.sourceHardFeatureEdges);
