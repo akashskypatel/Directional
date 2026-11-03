@@ -22,7 +22,7 @@ Disposition unchanged: V2 **UNACCEPTED**; no compiled test, no Vase acceptance, 
 
 ## Same-turn reciprocal-boundary ownership adjudication (2026-11-03)
 
-Source snapshot `6334ccfed7bcc582db8edd781df290e6e753739d` (6,125/6,125 hashes verified). Independent read-only source and recorded-Vase ring audit: **14/14 assertions PASS**; script SHA-256 `ca2e75410c2eb151acac6d87e328f9b35a33ab793117d70b331d63330796af87`, JSON SHA-256 `d3366cf972cc150ecbdef4900d4949ee7d6d0ac3f2ff6a068235a0f1e1127516`. Static evidence only; no compiled fixture, benchmark or production acceptance.
+Source snapshot `6334ccfed7bcc582db8edd781df290e6e753739d` (6,125/6,125 hashes verified). Independent read-only source and recorded-Vase ring audit: **15/15 assertions PASS**; script SHA-256 `4b3bcb0a9841ecfc2c162fbfd67ac67d2b824c495939e69520dc1fcca5f9bac5`, JSON SHA-256 `2027905b18db3d557f8359208502d47f1bb54347a329766783e864bbbb2751ad`. Static evidence only; no compiled fixture, benchmark or production acceptance.
 
 **Correction:** `SurfaceArrangement.cpp::canonical_node_authority_scope` intentionally uses `monostate` on an edge-interior `NodeKey`, permitting a geometrically common source-edge point to be interned across sheet/chart occurrences; `SurfaceArrangementNodeOccurrence` documents this. In contrast, `SourceChartTransitionGraph::rebind` rejects edge rebinding when field charts differ: that is **transport compatibility**, not by itself a rule forbidding *physical mesh stitching*. Hence neither the original `ScopedNodeKey` alone nor mandatory bidirectional `rebind` alone proves correct completed-mesh ownership. Earlier review wording demanding rebind for **every** stitched edge was too strong absent an explicit rail/seam contract.
 
