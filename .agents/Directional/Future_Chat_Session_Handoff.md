@@ -41,7 +41,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Regression accounting and debt | Accepted CP2 **491/491**; stable **66/17/49**, debt **1**; ledger v5 81 deferred (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE), current membership **964**; selector497 and CP3 unpromoted. DR1/DR3 open, DR2/DR4 to M8-CP2. |
 | Active boundary | **Cylinder direct PASS** (it never calls the patch stitcher). **BunnyRandom P13-e** `SingularityPortClassCountMismatch;sourceVertex=49`, separate. **Vase P13-j** on CB78: `AssemblyRejected/NonManifoldStitchedVertex` at row 3 = node 5355, owner the completion-boundary key producer (RA-200). With CB79 on the scratch build, Vase passes assembly and is then **P13-k**: `fill_surface_optimization_rail_constraints` revalidates the source authority over all 2,404 faces per (vertex × rail interval), and `nearest_source_point` builds a source BVH per call. O26 new (assembly-topology test oracle). V2 and the reciprocal-DSU candidates are withdrawn. |
 
-## CB79 compiled — mandatory successor `M6-CP3-TB73-P13-NODE-STITCH-KEY-FULL-GATE-EXEC`
+## Mandatory next turn — `M6-CP3-TB73-P13-NODE-STITCH-KEY-FULL-GATE-EXEC` (CB79 compiled)
 
 - **[RA-200](Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** closes `M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX` by scratch probes.
   - **Findings:**
