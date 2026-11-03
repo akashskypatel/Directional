@@ -1,2 +1,0 @@
-# TB74 temporary source snapshot trigger only; preserve durable dispatcher request and mailbox.
-.agents/connector-triggers/source-snapshot/tb74-doc-closeout-20261103.txt
