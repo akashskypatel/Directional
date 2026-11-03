@@ -1,0 +1,2 @@
+Turn: M6-CP3-CB80-P13-RAIL-BINDING-ONCE
+Snapshot request from initial STATUS commit 207f795f3081bb50e9f3feece6e3e544de5eac04.
