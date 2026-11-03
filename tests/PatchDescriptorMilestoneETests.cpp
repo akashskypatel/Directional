@@ -2018,3 +2018,98 @@ TEST(PatchDescriptorMilestoneE, BentNeedleGridCompletesByTheBoundarySearch) {
   EXPECT_EQ(3U, mesh.quads.size());
   EXPECT_EQ(8U, mesh.vertices.size());
 }
+
+TEST(PatchDescriptorMilestoneE,
+     SharedNodeCornersPublishOneStitchKeyAcrossSourceCharts) {
+  const Fixture fixture = make_two_odd_cells_with_shared_interface();
+  const auto first = directional::geometry::derive_patch_descriptor(
+      fixture.complex, fixture.complex.cells[0], fixture.V, fixture.F);
+  const auto second = directional::geometry::derive_patch_descriptor(
+      fixture.complex, fixture.complex.cells[1], fixture.V, fixture.F);
+  const auto corner = [](const auto &patch, const int node) {
+    return static_cast<std::size_t>(std::distance(
+        patch.boundaryVertices.begin(),
+        std::find(patch.boundaryVertices.begin(), patch.boundaryVertices.end(),
+                  node)));
+  };
+  // Nodes 0 and 2 are source vertices of both source faces. Cell 0 leaves
+  // them through face-0 halfedges and cell 1 through face-1 halfedges; both
+  // cells still publish the node's one stitch key.
+  for (const int node : {0, 2}) {
+    const std::size_t a = corner(first.patch, node);
+    const std::size_t b = corner(second.patch, node);
+    ASSERT_LT(a, first.patch.boundaryNodeIdentities.size()) << "node=" << node;
+    ASSERT_LT(b, second.patch.boundaryNodeIdentities.size()) << "node=" << node;
+    ASSERT_NE(first.patch.boundaryCharts[a], second.patch.boundaryCharts[b])
+        << "node=" << node;
+    ASSERT_TRUE(first.patch.boundaryNodeIdentities[a].valid) << "node=" << node;
+    EXPECT_EQ(first.patch.boundaryNodeIdentities[a],
+              second.patch.boundaryNodeIdentities[b])
+        << "node=" << node;
+  }
+  EXPECT_NE(first.patch.boundaryNodeIdentities[corner(first.patch, 0)],
+            first.patch.boundaryNodeIdentities[corner(first.patch, 2)]);
+}
+
+TEST(PatchDescriptorMilestoneE, SharedInterfaceCompletesAsOneConnectedDisk) {
+  const Fixture fixture = make_two_odd_cells_with_shared_interface();
+  directional::geometry::SurfaceCellTracingOptions sourceAuthorityOptions;
+  sourceAuthorityOptions.sourceFaceComponents = {0, 0};
+  sourceAuthorityOptions.sourceFaceSheets = {0, 0};
+  const auto sourceAuthority =
+      directional::geometry::surface_cell_tracing_detail::
+          build_source_topology_regions(fixture.F, sourceAuthorityOptions);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  directional::geometry::SurfaceCellComplexCompletionOptions completionOptions;
+  completionOptions.sourceAuthority = &sourceAuthority.value();
+  const auto completion = directional::geometry::complete_surface_cell_complex(
+      fixture.complex, fixture.V, fixture.F, completionOptions);
+  ASSERT_TRUE(completion.is_produced());
+  // The two cells share the source diagonal, so the assembly is the source
+  // disk, not two quads that only touch geometrically.
+  const auto &assembly = completion.product().assembly;
+  EXPECT_EQ(2U, assembly.mesh.quads.size());
+  EXPECT_EQ(6U, assembly.mesh.vertices.size());
+  EXPECT_EQ(1, assembly.connectedComponents);
+  EXPECT_EQ(1, assembly.boundaryLoopCount);
+  EXPECT_EQ(1, assembly.eulerCharacteristic);
+}
+
+TEST(PatchDescriptorMilestoneE,
+     CoincidentNodesInDistinctRegionsKeepDistinctStitchKeys) {
+  Fixture first = make_authoritative_patch({1, 1, 1, 1});
+  Fixture second = first;
+  const auto region = test_topology_region_id(3);
+  for (auto &node : second.complex.nodes) {
+    node.sourceTopologyRegion = region;
+    for (auto &occurrence : node.occurrences) {
+      occurrence.sourceTopologyRegion = region;
+    }
+  }
+  for (auto &edge : second.complex.halfedges) {
+    edge.sourceTopologyRegion = region;
+  }
+  for (auto &cell : second.complex.cells) {
+    cell.sourceTopologyRegion = region;
+  }
+  bind_patch_charts_to_source_topology(first.F, first.complex);
+  bind_patch_charts_to_source_topology(second.F, second.complex);
+  const auto a = directional::geometry::derive_patch_descriptor(
+      first.complex, first.complex.cells.front(), first.V, first.F);
+  const auto b = directional::geometry::derive_patch_descriptor(
+      second.complex, second.complex.cells.front(), second.V, second.F);
+  ASSERT_EQ(a.patch.boundaryVertices, b.patch.boundaryVertices);
+  ASSERT_EQ(4U, a.patch.boundaryNodeIdentities.size());
+  ASSERT_EQ(4U, b.patch.boundaryNodeIdentities.size());
+  for (std::size_t index = 0; index < 4U; ++index) {
+    ASSERT_TRUE(a.patch.boundaryNodeIdentities[index].valid);
+    ASSERT_TRUE(b.patch.boundaryNodeIdentities[index].valid);
+    EXPECT_EQ(a.patch.boundaryProvenance[index].face,
+              b.patch.boundaryProvenance[index].face);
+    EXPECT_EQ(a.patch.boundaryProvenance[index].barycentric,
+              b.patch.boundaryProvenance[index].barycentric);
+    EXPECT_NE(a.patch.boundaryNodeIdentities[index],
+              b.patch.boundaryNodeIdentities[index])
+        << "corner=" << index;
+  }
+}

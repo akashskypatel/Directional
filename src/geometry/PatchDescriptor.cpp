@@ -437,6 +437,30 @@ SurfaceCellCanonicalIdentity arrangement_node_identity(
   return result;
 }
 
+// A completed patch's boundary corner is stitched by the arrangement node it
+// lies on, so every cell around that node must publish the same key. The key
+// is the node's occurrences in all of its source scopes; the scope of the
+// halfedge leaving the node in one cell selects only that cell's view.
+SurfaceCellCanonicalIdentity arrangement_node_stitch_identity(
+    const SurfaceArrangementNode &node, const Eigen::MatrixXi &F) {
+  std::vector<SurfaceCellCanonicalIdentity> occurrences;
+  occurrences.push_back(source_point_identity(F, node.sourceFace, node.barycentric, source_scope(node)));
+  for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
+    occurrences.push_back(source_point_identity(F, occurrence.sourceFace, occurrence.barycentric, source_scope(occurrence)));
+  }
+  occurrences.erase(std::remove_if(occurrences.begin(), occurrences.end(),
+                     [](const SurfaceCellCanonicalIdentity &identity) { return !identity.valid; }),
+                     occurrences.end());
+  std::sort(occurrences.begin(), occurrences.end());
+  occurrences.erase(std::unique(occurrences.begin(), occurrences.end()), occurrences.end());
+  SurfaceCellCanonicalIdentity result;
+  if (occurrences.empty()) return result;
+  result.valid = true;
+  result.values.push_back(static_cast<std::int64_t>(occurrences.size()));
+  for (const SurfaceCellCanonicalIdentity &occurrence : occurrences) append_identity(result, occurrence);
+  return result;
+}
+
 SurfaceCellCanonicalIdentity provenance_semantics(const SurfaceArrangementProvenance &provenance) {
   SurfaceCellCanonicalIdentity result;
   result.valid = true;
@@ -1756,8 +1780,7 @@ PatchDescriptor derive_patch_descriptor(
     patch.boundaryTopologyRegions.push_back(edge.sourceTopologyRegion.value());
     patch.boundaryCharts.push_back(edge.sourceChart.value());
     patch.boundaryNodeIdentities.push_back(
-        patch_descriptor_detail::arrangement_node_identity(
-            *node, F, patch_descriptor_detail::source_scope(edge)));
+        patch_descriptor_detail::arrangement_node_stitch_identity(*node, F));
     patch.boundaryProvenance.push_back(
         patch_descriptor_detail::node_surface_point(*node, V, F, edge));
     patch.hardFeatureCrossing =
