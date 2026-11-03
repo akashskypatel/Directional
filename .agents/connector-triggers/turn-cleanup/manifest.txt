@@ -1,0 +1,2 @@
+# Resumed P13 stitched-vertex Review snapshot trigger, retain all durable records
+.agents/connector-triggers/source-snapshot/m6-cp3-defn-p13-assembly-stitched-vertex-20261103-v1.txt
