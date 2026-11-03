@@ -6,5 +6,5 @@ Started at: 2026-11-03T20:20:27Z
 Resumed at: 2026-11-03T21:26:18Z
 Ended at: 
 Blocker Type: REVIEW_BLOCKER
-Blocker Details: P13-k requires scratch execution on CB79 to measure all three source-query corrections, preserve the Vase verdict, identify the terminal rejecting check and freeze guarded patches; this ChatGPT Web DEFN must remain runtime-free and the required scratch evidence does not yet exist.
+Blocker Details: P13-k requires a CB79 scratch probe proving all three source-query cost fixes, preserving Vase behavior, naming the first terminal rejecting check, and freezing separate exact guarded patches. RA-200 measures only the first two fixes; the combined three-site evidence is still absent, and this ChatGPT Web DEFN must remain runtime-free.
 ---END_TURN_STATUS---
