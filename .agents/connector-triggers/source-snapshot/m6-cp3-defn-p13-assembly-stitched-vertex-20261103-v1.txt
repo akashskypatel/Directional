@@ -1,0 +1,2 @@
+Purpose: source snapshot for resumed M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX definition turn.
+Read-only source inspection. Snapshot exact push event SHA; no build/test execution.
