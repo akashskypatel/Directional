@@ -20,7 +20,7 @@ Measured twins `13338/13339` (5351â€“5355, cells 3/26569), `13352/13353` (5355â€
 
 - Positive: completed-boundary identities at all four Vase neighbor nodes 5351/5356/5357/5359 agree on both sides, each reciprocal seam's subdivision and typed certificates agree; node 5355 remains a single ring.
 - Negative: equal positions/source support with no reciprocal admissible path must remain distinct; two distinct prepared source vertex fans or sheets remain separate; hard-rail chart discontinuity is adjudicated by physical edge policy, not automatic merge or automatic split; no cross-region merge.
-- Invariance: source-face row/corner order, patch/cell/halfedge renumbering, completion-order permutation; repair-generated split nodes; close-but-distinct source support around the prior V2 tolerance; missing or conflicting typed source authority.
+- Invariance: source-face row/corner order, patch/cell/halfedge renumbering, completion-order permutation; repair-generated split nodes; **distinct prepared nodes** at very near source parameters straddling a 1e-10 interning bucket; missing or conflicting typed source authority. First assert that both prepared node IDs survive interning. A pair already collapsed by `ScopedNodeKey` is NOT a valid distinct-owner stitcher negative.
 - Cache: one unchanged-owner reuse positive, one rebuilt graph with **same compact ordinal but different member class** negative, and a changed-owner result with deterministic cache invalidation; check that cache validation is reached and reject if the new protection is removed.
 - Assembly: retain `NonManifoldStitchedVertex`, duplicate-face, nonmanifold-edge and provenance rejection on real failures. The native graph tests do not prove any descriptor-to-assembler behavior. Preserve accepted CP2 491/491 and unchanged stable 66/17/49, debt1. TB72A 883/883 and selector497 remain unpromoted.
 
@@ -35,3 +35,9 @@ A smaller possible **stitch-key** representation is `min(class's corner signatur
 
 
 **Assembler gate:** [typed intersection adjudication](Architecture_M6_CP3_DEFN_P13_Assembler_Typed_Intersection_Adjudication_20261103.md); chart-component equality is insufficient.
+
+### Quantization-aware negative-fixture correction (same Review, 2026-11-03)
+
+`SurfaceArrangement.cpp::make_node_key` quantizes edge-interior `edgeT=llround(t*1e10)`; `node_id` interns by `ScopedNodeKey=(NodeKey,TopologyRegionId,NodeAuthorityScope)`. For edges the authority scope is `monostate`, even when one physical node carries multiple sheet/chart occurrences. Hence `t=.25` versus `.25000000004` both encode `2500000000` and may become **one prepared node** if the other scope fields match. A stitcher negative that assumes two resulting nodes would be vacuous/wrong. In contrast `.25000000004` versus `.25000000006` encode `2500000000` and `2500000001`: only ~2e-11 apart, but separate prepared `NodeKey`s. Verify two distinct prepared IDs and no admissible reciprocal twin before asserting the completed mesh keeps them separate. A second independent negative must start from *one edge-interior prepared node with multiple typed sectors* and demonstrate sector-appropriate separation where a hard rail/sheet/fan contract forbids union; it must not infer sector equivalence from the shared node ID. These are **requirements for future real fixtures**, not executed C++ observations.
+
+Read-only source and arithmetic audit script SHA256 `715662eac504af87f7d05272ca5cb2c3b8d3b86078d53a19bdf514b36242d35f`, JSON SHA256 `cc579440b375cd43b764566b27647dd4c6b57bf07d7f43b7eddaa4960bcab6da`. Source snapshot `5bf12419f1cb185aef2e297b3ad17b2e470a916f` reverified **6128/6128**. No production source/test changes, runtime, acceptance, or successor authorization.
