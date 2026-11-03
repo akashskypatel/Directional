@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb81-lent-projection-cache-20261103-v2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb81-lent-projection-cache-apply-v2",
-  "file_id": "1vEt4LfcAB6VYg-q-Mb-78sLKSvwNKC-k",
-  "patch_sha256": "51c96a18a7536601c973df30e18292258e2c9b19c87b62ed259487fad3807b05",
-  "base_sha": "5f7b99aca5fcb699c124b0ff7af27d338f39fe34",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat: lend constraint-owned source projection cache",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb81-compile-20261103-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb81-lent-projection-cache-compile",
+  "source_sha": "39845219f9560b1bf04288b0c308ece196982d4e",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb81-lent-projection-cache"
 }
