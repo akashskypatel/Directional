@@ -1,11 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "p13j-typed-chart-rebind-20261103-0412-v1",
+  "request_id": "p13j-compatible-occurrences-v2-compile-20261103-0501",
   "operation": "compile",
-  "mailbox_key": "p13j-typed-chart-rebind-20261103-v1",
-  "source_sha": "7461cba7e9a72699f3aba839ec83b9c79b8451ce",
+  "mailbox_key": "p13j-compatible-occurrences-v2-compile-20261103",
+  "source_sha": "36fb5349aebb96a0b5b0d30d5c5265a110c5df8c",
   "targets": [
-    "directional_benchmarks"
+    "directional_benchmarks",
+    "directional_tests"
   ],
-  "artifact_prefix": "p13j-typed-chart-rebind-20261103"
+  "artifact_prefix": "p13j-v2-compatible-occurrences-20261103"
 }
