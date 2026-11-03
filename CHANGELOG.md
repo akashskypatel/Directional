@@ -1,3 +1,9 @@
+# 2026-11-03 — TB73 immutable CB79 full gate and independent production census
+
+- [TB73 execution report](.agents/Directional/Architecture_M6_CP3_TB73_P13_Node_Stitch_Key_Full_Gate_Execution_Report_20261103.md): CB79 source `3feb2a4182a5a12c2a9f306272756f8333a44b59`, immutable package `13261460152`; [gate 41702614233](https://github.com/akashskypatel/Directional/actions/runs/41702614233) **886/886 PASS**, 81 deferred, membership **967**, 1780/1780 checksums, no rebuild/relink. New rows 884–886 all PASS.
+- [Census 41702722579](https://github.com/akashskypatel/Directional/actions/runs/41702722579) 9/9 hashes: Cylinder PASS; BunnyRandom P13-e RED vertex49; Vase ABNORMAL at 600 s/exit124 without `AssemblyRejected`. Matches RA-200.5 registration. Earlier RA-200 scratch probes identify P13-k optimizer source-query cost; the census raw log itself has no post-assembly stage marker.
+- No stable regression change, accepted CP2 491/491, stable 66/17/49 debt1, selector497/CP3 unpromoted. Next separate Review DEFN: `M6-CP3-DEFN-P13-OPTIMIZER-SOURCE-QUERY-COST` (P13-k); P13-e parallel.
+
 # 2026-11-03 — CB79 canonical arrangement-node stitch key, Linux compile-only
 
 - The exact RA-200.8 two-file implementation/test patch was applied at source commit `3feb2a4182a5a12c2a9f306272756f8333a44b59` by [Drive apply run 41692965488](https://github.com/akashskypatel/Directional/actions/runs/41692965488). Initial run 41690486136 failed before commit from a comma-versus-semicolon `intended_paths` header delimiter; the corrected request retained identical semantic diff bytes.
