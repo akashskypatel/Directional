@@ -57,7 +57,8 @@ This was run on CB79 with `PROBE_K`. The probe validates the source authority on
 | Assembly reached | ~205 s | ~205 s |
 | `fill_surface_optimization_rail_constraints` (68,038 vertices × 142 rail intervals) | ~3 min, 100 % of samples in `matches_source_faces` | **0.1 s** |
 | Optimizer energy / projection | BVH built per `nearest_source_point` call | passes in under 2 min |
-| `validate_final_surface_mesh` | not reached by 875 s | ≥ 3.5 min and still running at the last sample (8:30 elapsed). Samples: `consistent_source_scope` → `SourcePointLabelSupport` → `SourceChartTransitionGraph::build`, **one graph per output quad** (67,829) |
+| `validate_final_surface_mesh` | not reached by 875 s | about 20 min. All samples through 14:47 are in `OutputProjectionCache` → `consistent_source_scope` → `SourcePointLabelSupport` → `SourceChartTransitionGraph::build`, **one graph per output quad** (67,829) |
+| Verdict | none within 875 s | **1,521 s:** `terminal=NotProductionReady:completion detail=None … completedQuads=67829 completion=` (empty completion code) |
 
 The third site, `consistent_source_scope` (and the quad-label projection in `SurfaceMeshOptimizer.cpp`, which builds the same label support), is the Amendment 27 per-call graph build that RA-195 removed from completion. So P13-k is one cost class at three sites, all in the surface-optimizer and final-validation stage:
 
@@ -65,7 +66,14 @@ The third site, `consistent_source_scope` (and the quad-label projection in `Sur
 2. `nearest_source_point`, `project_vertices` and the quad-label projection construct a `SourceProjectionCache`, and so a full source BVH, even when a cache is lent.
 3. `consistent_source_scope` and the quad-label projection construct a `SourcePointLabelSupport`, and so a `SourceChartTransitionGraph`, per quad.
 
-Vase's verdict after all three is not yet measured. The P13-k DEFN measures it with all three removed, then freezes exact patches (one CB per site, each with a cost GUARD in the RA-195 style).
+**Beyond P13-k (P13-l):** with sites 1–2 removed and site 3 left to run, Vase ends at 1,521 s. The stage is completion, the detail is `None` and the completion code is empty: final validation rejects the assembled mesh without a typed reason. Linux cannot reach this verdict in 600 s without the P13-k fixes, so TB73's registration (ABNORMAL 600 s) stands.
+
+The P13-k DEFN:
+- removes all three sites and confirms the same verdict, faster;
+- names the rejecting check (the terminal must carry a detail and a completion code, as CB75 required for completion rejections);
+- freezes exact patches, one CB per site, each with a cost GUARD in the RA-195 style.
+
+The owner of the rejection itself (P13-l) is decided only after the reason is visible.
 
 ### CB79 verification (scratch build, clean CB79 state)
 
