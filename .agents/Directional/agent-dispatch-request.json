@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb73-docs-closeout-20261103-v1",
+  "request_id": "m6-cp3-cb80-rail-binding-apply-20261103-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb73-docs-closeout",
-  "file_id": "1lVBVTZ7xv0cx4KSMG-15QSJmaaU-sz95",
-  "patch_sha256": "9bf962336ffe7e6411fef334b0a3a5252957c0a776b6b9854596c25fdf0b75e6",
-  "base_sha": "856339d5bac787ae6b3b91c0130eb4257abf7c01",
+  "mailbox_key": "m6-cp3-cb80-rail-binding-apply",
+  "file_id": "1McUeO8fYb032VmLHFNaJOoqrMDt_ByL0",
+  "patch_sha256": "68283397491ddfbe52efe6db06efaf3047420ec4383b1f37fd0a5a1f5fae89da",
+  "base_sha": "219b096898981fe1d2a6ba970000e996d5cd1b40",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "M6 CP3 TB73: close verified gate and census documentation",
+  "commit_message": "M6 CP3 CB80: check rail source binding once",
   "retention_days": 14
 }
