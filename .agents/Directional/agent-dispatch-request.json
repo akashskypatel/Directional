@@ -1,12 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "p13j-compatible-occurrences-v2-compile-20261103-0501",
+  "request_id": "p13j-compatible-occurrences-v2-compile-20261103-0504-retry",
   "operation": "compile",
-  "mailbox_key": "p13j-compatible-occurrences-v2-compile-20261103",
+  "mailbox_key": "p13j-compatible-occurrences-v2-compile-20261103-retry",
   "source_sha": "36fb5349aebb96a0b5b0d30d5c5265a110c5df8c",
   "targets": [
-    "directional_benchmarks",
-    "directional_tests"
+    "directional_benchmarks"
   ],
-  "artifact_prefix": "p13j-v2-compatible-occurrences-20261103"
+  "artifact_prefix": "p13j-v2-compatible-occurrences-retry-20261103"
 }
