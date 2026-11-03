@@ -23,3 +23,18 @@ Reproducible read-only source/OFF check: `p13j_provenance_row_relabel_audit.py`,
 **Required later discriminators (no tests executed here):** (1) two compatible selected source faces whose row numbers exchange, with required key *equivalence* and no accidental source support change; (2) one-compatible-face control (no false difference); (3) two disconnected corners at identical source point (must differ); (4) source-edge points separated near 1e-10 quantization and unsupported hard-rail/fan/sheet cases (must not merge); (5) Vase 5351/5356/5357/5359 each matching at descriptor and assembler; (6) full unchanged/changed owner cache-membership controls.
 
 **Disposition:** the reciprocal-DSU and V2 proposals remain **UNACCEPTED**. Prior completed-patch typed-chart closure evidence predicts overlap under its certified conditions but actual emitted lineage vectors remain unmeasured. No frozen Code + Build successor, runtime acceptance or CP3 promotion. Review §5 closeout and true Git-history-backed `review_check.py boundary` remain incomplete.
+
+## Additional independent review-boundary checks (incomplete Review)
+
+The verified local source-snapshot selector files were independently LF-normalized and SHA-256 hashed:
+
+| Selector | LF SHA-256 | Count |
+|---|---|---:|
+| 365 | `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` | 365 |
+| 430 | `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6` | 430 |
+| 448 | `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789` | 448 |
+| 449 | `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414` | 449 |
+
+All four match the retained selector manifest. The first **448 LF rows** of selector449 are byte-identical to the complete selector448, recomputed prefix SHA-256 `70ff0860…75789`. Authenticated GitHub compare from the immutable source snapshot to this Review checkpoint lists **only documents, the removed temporary snapshot trigger, and root STATUS**; no selector/product/test/fixture/build/workflow surfaces changed.
+
+An additional GitHub ancestry check from authorized durable rewrite base `8b7299b43` found that it is an ancestor of this branch (ahead 3,536 / behind 0 at inspection). Comparing baseline protected headings by literal `DURABLE|DO NOT DELETE` regex to the current branch gave handoff **4/4**, ORIENTATION **1/1**, tracker **0/0** missing none. **These are independent partial checks, not a successful execution of the mandated `python3 .agents/Directional/tools/review_check.py boundary`**, which requires genuine Git history absent in the extracted source snapshot. Do not record it as PASS; complete the actual command on a history-bearing checkout and finish Review §5 only after the identity/caching/design proof. No checkpoint or selector promotion.
