@@ -1,3 +1,9 @@
+# 2026-11-03 — CB79 canonical arrangement-node stitch key, Linux compile-only
+
+- The exact RA-200.8 two-file implementation/test patch was applied at source commit `3feb2a4182a5a12c2a9f306272756f8333a44b59` by [Drive apply run 41692965488](https://github.com/akashskypatel/Directional/actions/runs/41692965488). Initial run 41690486136 failed before commit from a comma-versus-semicolon `intended_paths` header delimiter; the corrected request retained identical semantic diff bytes.
+- [GMP/GMPXX eight-target compile-only run 41693542399](https://github.com/akashskypatel/Directional/actions/runs/41693542399) succeeded; package `13261460152`, SHA-256 `eb926a8f2577b12128c5e9c0a668eb48157c2c53df8316389e49c6a1e5d52ede`, **28/28** package SHA256SUMS verified, `runtimeExecution=false`. [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB79_P13_Node_Stitch_Key_Code_Build_Record_20261103.md).
+- Three RA-200 GUARD tests compiled but were not executed. Accepted CP2 491/491; stable 66/17/49, debt 1, selector497 unpromoted. TB73 (manifest 886, membership 967) is a separate pending Test + Benchmark turn; no TB work began in CB79.
+
 # 2026-11-03 — RA-200 P13-j stitched-vertex probe adjudication; exact CB79, TB73; P13-k optimizer DEFN
 
 - [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md) closes `M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX`. The ChatGPT same-turn Review had set a `REVIEW_BLOCKER` because the completed lineage at nodes 5351/5356/5357/5359/5355 could not be measured without C++; the probes ran on the macOS scratch build.
