@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "cb79-node-stitch-apply-20261103-1819-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb79-node-stitch-apply-20261103-r1",
-  "file_id": "1wGwsKCK9e8iDAoXGfo8tEvGb-_ddpgTd",
-  "patch_sha256": "6add7091ea9c8111fa83e95f6ea35bdbc8dd6b8c93bd72e5be0b53ac48648e51",
-  "base_sha": "4c52ef9221a93ab22cb83aeecef51488d0ddbed7",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "M6 CP3 CB79: canonical arrangement-node stitch key",
-  "retention_days": 14
+  "request_id": "cb79-node-stitch-gmp-compile-20261103-1824",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb79-node-stitch-compile-20261103",
+  "source_sha": "3feb2a4182a5a12c2a9f306272756f8333a44b59",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb79-node-stitch"
 }
