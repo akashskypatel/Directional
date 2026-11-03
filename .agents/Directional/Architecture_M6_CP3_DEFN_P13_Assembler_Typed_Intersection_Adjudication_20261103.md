@@ -18,6 +18,8 @@ With the same resolved stitch key, same typed source edge (0,1248), same region 
 
 These are **synthetic certificates**, not actual Vase lineage measurements. The previously measured Vase record proves region=0, sheet=0, chart-component=0, and successful native rebind for affected neighbors, but **does not prove literal intersection of the emitted `vertexLineage.sourceCharts` vectors**. The Review must not substitute chart-component equality or a bare DSU pass for this unmeasured condition.
 
+**Measured face identity nuance:** `SourceProjectionChart` compares both `FieldChartId` and canonical `SourceFaceTopologyKey` (`SurfaceCellOwnership.h:122–135`). The recorded outgoing scopes all use field-chart ID 0, yet Vase faces 155/547 (node5356), 155/1381 (node5357), and 248/155 (node5359) have distinct canonical triangle vertex triples, hence distinct `SourceProjectionChart` elements. This does **not** establish whether the *completed lineage* chart sets overlap: that vector was not logged. It makes the demanded per-corner lineage probe non-vacuous.
+
 Read-only source-plus-model audit `typed_authority_stitch_gate_audit.py`, SHA-256 `f180cb6da5251e96ce21ad107b857b43d23a5dda6aec682f50478d3736397e2f`; result JSON SHA-256 `f9c4fc075a0c11509e11ce2421d5a81aa337babe06c2fb843e995df42b32f451`; **17/17 static/synthetic assertions PASS**, no Directional C++ compile/runtime or true-Vase case.
 
 ## Corrective scope and required falsifiers (not yet executed)
