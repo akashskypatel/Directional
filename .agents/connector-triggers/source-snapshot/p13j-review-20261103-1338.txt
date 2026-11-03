@@ -1,3 +1,0 @@
-P13-j read-only review snapshot request.
-Semantic source frozen at 71f677b5e085da2d038929b9e186529119c7adca.
-Temporary trigger; remove after verifying snapshot evidence.
