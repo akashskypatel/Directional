@@ -1,1 +1,0 @@
-Snapshot source authority for same-turn P13-k review-blocker diagnosis. No code or runtime execution.
