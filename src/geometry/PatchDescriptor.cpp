@@ -3143,14 +3143,14 @@ SurfaceCellComplexCompletionDraft complete_surface_cell_complex_pass(
       if (!target) { std::fprintf(stderr,"P13L_NODE_MISSING node=%d\n",nodeId); continue; }
       std::fprintf(stderr,"P13L_NODE id=%d face=%d bary=%.17g,%.17g,%.17g sourceRegion=%d sourceChart=%d occurrences=%zu\n",
                    nodeId,target->sourceFace,target->barycentric[0],target->barycentric[1],target->barycentric[2],
-                   target->sourceTopologyRegion ? target->sourceTopologyRegion->index() : -1,
-                   target->sourceChart ? target->sourceChart->chart.index() : -1,
+                   target->sourceTopologyRegion ? static_cast<int>(target->sourceTopologyRegion->index()) : -1,
+                   target->sourceChart ? static_cast<int>(target->sourceChart->chart.index()) : -1,
                    target->occurrences.size());
       for (const auto &o : target->occurrences)
         std::fprintf(stderr,"P13L_OCC node=%d face=%d arc=%d region=%d chart=%d bary=%.17g,%.17g,%.17g\n",
                      nodeId,o.sourceFace,o.sourceArc,
-                     o.sourceTopologyRegion ? o.sourceTopologyRegion->index() : -1,
-                     o.sourceChart ? o.sourceChart->chart.index() : -1,
+                     o.sourceTopologyRegion ? static_cast<int>(o.sourceTopologyRegion->index()) : -1,
+                     o.sourceChart ? static_cast<int>(o.sourceChart->chart.index()) : -1,
                      o.barycentric[0],o.barycentric[1],o.barycentric[2]);
     }
     for (const auto &edge : prepared.halfedges) {
@@ -3158,11 +3158,11 @@ SurfaceCellComplexCompletionDraft complete_surface_cell_complex_pass(
       std::fprintf(stderr,
                    "P13L_EDGE cell=%d edge=%d from=%d to=%d twin=%d face=%d region=%d chart=%d chartFace=",
                    edge.cell,edge.id,edge.from,edge.to,edge.twin,edge.sourceFace,
-                   edge.sourceTopologyRegion ? edge.sourceTopologyRegion->index() : -1,
-                   edge.sourceChart ? edge.sourceChart->chart.index() : -1);
+                   edge.sourceTopologyRegion ? static_cast<int>(edge.sourceTopologyRegion->index()) : -1,
+                   edge.sourceChart ? static_cast<int>(edge.sourceChart->chart.index()) : -1);
       if (edge.sourceChart)
         for (auto id : edge.sourceChart->face.vertices())
-          std::fprintf(stderr,"%d,",id.index());
+          std::fprintf(stderr,"%zu,",id.index());
       std::fprintf(stderr,"\n");
     }
     for (std::size_t p=0;p<result.completedPatches.size();++p) {
@@ -3177,29 +3177,27 @@ SurfaceCellComplexCompletionDraft complete_surface_cell_complex_pass(
                      p,patch.sourcePatch,i,nodeId,
                      patch.boundaryVertices[(i+patch.boundaryVertices.size()-1)%patch.boundaryVertices.size()],
                      patch.boundaryVertices[(i+1)%patch.boundaryVertices.size()],
-                     int(key.valid),static_cast<unsigned long long>(key.hash()),
-                     i<patch.boundaryCharts.size() ? patch.boundaryCharts[i].chart.index() : -1,
-                     i<patch.boundaryTopologyRegions.size() ? patch.boundaryTopologyRegions[i].index() : -1);
+                     int(key.valid),static_cast<unsigned long long>(key.hash()));
         for (auto x:key.values) std::fprintf(stderr,"%lld,",static_cast<long long>(x));
         std::fprintf(stderr," regions=");
-        for (auto x:key.topologyRegions) std::fprintf(stderr,"%d,",x.index());
+        for (auto x:key.topologyRegions) std::fprintf(stderr,"%zu,",x.index());
         std::fprintf(stderr," sheets=");
-        for (auto x:key.isolationSheets) std::fprintf(stderr,"%d,",x.index());
+        for (auto x:key.isolationSheets) std::fprintf(stderr,"%zu,",x.index());
         std::fprintf(stderr," sourceCharts=");
         for (const auto &ch:key.sourceCharts) {
-          std::fprintf(stderr,"[%d:",ch.chart.index());
-          for (auto v:ch.face.vertices()) std::fprintf(stderr,"%d,",v.index());
+          std::fprintf(stderr,"[%zu:",ch.chart.index());
+          for (auto v:ch.face.vertices()) std::fprintf(stderr,"%zu,",v.index());
           std::fprintf(stderr,"]");
         }
         std::fprintf(stderr," supportVertices=");
-        for (auto x:key.supportVertices) std::fprintf(stderr,"%d,",x.index());
+        for (auto x:key.supportVertices) std::fprintf(stderr,"%zu,",x.index());
         std::fprintf(stderr," supportEdges=");
         for (const auto &e:key.supportEdges)
-          std::fprintf(stderr,"(%d,%d),",e.first().index(),e.second().index());
+          std::fprintf(stderr,"(%zu,%zu),",e.first().index(),e.second().index());
         std::fprintf(stderr," supportFaces=");
         for (const auto &face:key.supportFaces) {
           std::fprintf(stderr,"[");
-          for (auto v:face.vertices()) std::fprintf(stderr,"%d,",v.index());
+          for (auto v:face.vertices()) std::fprintf(stderr,"%zu,",v.index());
           std::fprintf(stderr,"]");
         }
         std::fprintf(stderr,"\n");
