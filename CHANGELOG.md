@@ -1,3 +1,8 @@
+# 2026-11-03 — TB74 CB80 artifact-only full gate and production census verified
+
+- [TB74 report](.agents/Directional/Architecture_M6_CP3_TB74_P13_Rail_Binding_Once_Full_Gate_Execution_Report_20261103.md): exact CB80 compiled source `c6420b1f9a84c423f60a5b96b90d59abb8df80e4`, immutable package `13278380590`; full gate [41736473382](https://github.com/akashskypatel/Directional/actions/runs/41736473382) **888/888 PASS**, 81 deferred, membership **969**, 1784/1784 result checksums, GUARD rows 887–888 PASS. Census [41736517063](https://github.com/akashskypatel/Directional/actions/runs/41736517063) registered Cylinder PASS, BunnyRandom P13-e RED vertex49, Vase ABNORMAL 600 s timeout, 9/9 checksums. Both artifact-only, no configure/compile/relink/benchmark.
+- No new stable event, no acceptance promotion: CP2 **491/491**, stable **66/17/49**, debt **1**, selector497/CP3 unpromoted. Next separate CB81 lent projection cache (RA-201.6); P13-l orientation and P13-e remain independent Review work.
+
 # 2026-11-03 — CB80 rail source binding once, Linux compile-only
 
 - RA-201.4 exact three-file patch applied at [`c6420b1f`](https://github.com/akashskypatel/Directional/commit/c6420b1f9a84c423f60a5b96b90d59abb8df80e4); no unrelated semantic paths. New GUARD rows 887–888 compile but were not executed.
