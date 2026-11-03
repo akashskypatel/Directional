@@ -34,6 +34,8 @@ struct PatchDescriptorOptions {
   Eigen::VectorXi singularCycles;
   Eigen::VectorXi singularIndices;
   double barycentricTolerance = 1.0e-10;
+  // Borrowed immutable chart authority for scoped boundary stitching only.
+  const SourceChartTransitionGraph *boundarySourceTransitions = nullptr;
   bool enforceGlobalSingularityOwnership = false;
   std::set<int> embeddedSingularVertices;
   std::map<int, int> interiorSingularityOwner;
