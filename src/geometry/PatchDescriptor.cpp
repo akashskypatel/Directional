@@ -3204,6 +3204,64 @@ SurfaceCellComplexCompletionDraft complete_surface_cell_complex_pass(
       }
     }
     std::fprintf(stderr,"P13L_END\n");
+
+    // Scratch-only: authoritative chart rebinding for both boundary claims.
+    // Deliberately no coordinate-only, raw-node-ID, or hash-based merging.
+    std::map<int, std::vector<std::pair<int, SurfacePoint>>> claims;
+    for (const auto &descriptor : result.descriptors.descriptors) {
+      if (!wantedCell(descriptor.cellId)) continue;
+      const auto &patch = descriptor.patch;
+      for (std::size_t index=0; index<patch.boundaryVertices.size(); ++index) {
+        const int id=patch.boundaryVertices[index];
+        if ((id==5351 || id==5356 || id==5357 || id==5359) &&
+            index<patch.boundaryProvenance.size())
+          claims[id].emplace_back(descriptor.cellId,patch.boundaryProvenance[index]);
+      }
+    }
+    std::fprintf(stderr,"P13M_BEGIN graphAvailable=%d\n",int(sourceTransitions.available()));
+    for (const auto &[id, rows] : claims) {
+      for (std::size_t i=0; i<rows.size(); ++i) {
+        const auto &a=rows[i].second;
+        const auto first=sourceTransitions.resolve_entity(a);
+        const auto chart=sourceTransitions.chart(a.face);
+        const auto sheet=chart ? sourceTransitions.isolation_sheet(*chart) : std::nullopt;
+        const auto region=chart ? sourceTransitions.topology_region(*chart) : std::nullopt;
+        std::fprintf(stderr,
+          "P13M_CLAIM node=%d cell=%d face=%d resolved=%d chartComponent=%d sheet=%d region=%d kind=%d fan=%d support=",
+          id,rows[i].first,a.face,int(first.has_value()),
+          sourceTransitions.chart_component(a.face),
+          sheet?int(sheet->index()):-1,region?int(region->index()):-1,
+          first?int(first->kind()):-1,
+          first&&first->vertexFan?int(first->vertexFan->index()):-1);
+        if (first) {
+          if (const auto *v=std::get_if<authority::SourceVertexSupport>(&first->support))
+            std::fprintf(stderr,"v%zu",v->vertex.index());
+          else if (const auto *e=std::get_if<authority::SourceEdgeSupport>(&first->support))
+            std::fprintf(stderr,"e%zu,%zu",e->edge.first().index(),e->edge.second().index());
+          else std::fprintf(stderr,"face");
+        }
+        std::fprintf(stderr,"\n");
+        for (std::size_t j=i+1; j<rows.size(); ++j) {
+          const auto &b=rows[j].second;
+          SurfacePoint reboundA,reboundB;
+          const bool aToB=sourceTransitions.rebind(a,b.face,reboundA);
+          const bool bToA=sourceTransitions.rebind(b,a.face,reboundB);
+          const auto second=sourceTransitions.resolve_entity(b);
+          const int compatible=sourceTransitions.compatible_chart_component(
+              std::vector<const SurfacePoint *>{&a,&b});
+          const bool sameEntity=first&&second&&first->identity==second->identity;
+          std::fprintf(stderr,
+            "P13M_PAIR node=%d firstCell=%d secondCell=%d firstFace=%d secondFace=%d firstResolved=%d secondResolved=%d sameEntity=%d sameSupport=%d rebindForward=%d rebindReverse=%d compatibleComponent=%d baryForwardDelta=%.17g baryReverseDelta=%.17g\n",
+            id,rows[i].first,rows[j].first,a.face,b.face,
+            int(first.has_value()),int(second.has_value()),int(sameEntity),
+            int(first&&second&&first->support==second->support),
+            int(aToB),int(bToA),compatible,
+            aToB?(reboundA.barycentric-b.barycentric).norm():-1.0,
+            bToA?(reboundB.barycentric-a.barycentric).norm():-1.0);
+        }
+      }
+    }
+    std::fprintf(stderr,"P13M_END\n");
     std::fprintf(stderr,"P13K_END\n");
     std::fflush(stderr);
   }
