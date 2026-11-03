@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "tb74-rail-binding-census-20261103-v1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb74-rail-binding-census",
-  "executor_sha": "c6420b1f9a84c423f60a5b96b90d59abb8df80e4",
-  "semantic_source_sha": "c6420b1f9a84c423f60a5b96b90d59abb8df80e4",
-  "turn_id": "M6-CP3-TB74-P13-RAIL-BINDING-ONCE-FULL-GATE-EXEC",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "13278380590",
-    "EXPECTED_SOURCE_SHA": "c6420b1f9a84c423f60a5b96b90d59abb8df80e4",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "64bdcdbe0c6d06e424e66de816db97f99f60910f1b3eae3642702b94dd077ec5",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "f5b55ad1c6a2b2cbd5426152eb70711daf1c951ee18d55c507c86c86b185cc62",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "ea615055a36f9695d1bdd71bd66f847011d55230b919f0e3e48193ef32d3035a",
-    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
-    "EXPECTED_CASE_COUNT": "3"
-  },
-  "artifact_prefix": "m6-cp3-tb74-rail-census",
+  "request_id": "tb74-doc-closeout-20261103-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb74-doc-closeout",
+  "file_id": "1eyqe4GkoJjcxeTvK0PKc6RB6P-OKYdoe",
+  "patch_sha256": "03311f63c713d492805b8215d2796aad77d75b1429c1549d673ea7938d9484d3",
+  "base_sha": "8ad0679388c86726298404622b3d2d8f34a28aeb",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close TB74 tracker, changelog, TODO and CB81 handoff",
   "retention_days": 14
 }
