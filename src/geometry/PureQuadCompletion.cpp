@@ -1,6 +1,8 @@
 #include <directional/geometry/PureQuadCompletion.h>
 #include <directional/geometry/SourceChartTransitions.h>
 
+#include <cstdio>
+#include <cstdlib>
 #include <sstream>
 #include <type_traits>
 #include <unordered_map>
@@ -3849,6 +3851,147 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
       }
     }
     if (reached.size() != incidentSet.size()) {
+      // P13-j scratch only. Diagnostic emission leaves rejection unchanged.
+      if (std::getenv("DIRECTIONAL_P13J_SCRATCH_WITNESS") != nullptr) {
+        std::ostringstream w;
+        w << "P13J_BEGIN vertex=" << vertex
+          << " incident=" << incidentSet.size()
+          << " reached=" << reached.size() << '\n';
+        const auto &pending = pendingVertices[static_cast<std::size_t>(vertex)];
+        const auto printKey = [&](const char *label,
+                                  const PureQuadStitchIdentity &key) {
+          w << "P13J_KEY " << label << " kind=" << static_cast<int>(key.kind)
+            << " valid=" << key.valid() << " hash=" << key.hash() << " values=";
+          for (auto v : key.canonical.values) w << v << ',';
+          w << " vertices=";
+          for (auto id : key.canonical.supportVertices) w << id.index() << ',';
+          w << " edges=";
+          for (const auto &edge : key.canonical.supportEdges)
+            w << '(' << edge.first().index() << ',' << edge.second().index() << "),";
+          w << " faces=";
+          for (const auto &face : key.canonical.supportFaces) {
+            w << '(';
+            for (auto id : face.vertices()) w << id.index() << ',';
+            w << "),";
+          }
+          w << " regions=";
+          for (auto id : key.canonical.topologyRegions) w << id.index() << ',';
+          w << " sheets=";
+          for (auto id : key.canonical.isolationSheets) w << id.index() << ',';
+          w << " classes=";
+          for (auto id : key.canonical.ownershipClasses) w << id.index() << ',';
+          w << " charts=";
+          for (const auto &chart : key.canonical.sourceCharts) {
+            w << '(' << chart.chart.index() << ':';
+            for (auto id : chart.face.vertices()) w << id.index() << ',';
+            w << "),";
+          }
+          w << '\n';
+        };
+        printKey("stitch", pending.stitchIdentity);
+        printKey("authority", globalAuthoritativeIdentities[
+            static_cast<std::size_t>(vertex)]);
+        const auto &canonicalPoint =
+            result.mesh.vertexProvenance[static_cast<std::size_t>(vertex)];
+        const auto canonicalSupport = sourceSupport.resolve(canonicalPoint);
+        w << "P13J_POINT face=" << canonicalPoint.face
+          << " component=" << canonicalPoint.component
+          << " sheet=" << canonicalPoint.sheet << " bary="
+          << canonicalPoint.barycentric.transpose() << " supportFaces=";
+        for (auto id : canonicalSupport.incidentFaces) w << id.index() << ',';
+        w << '\n';
+        for (const auto &[patchIndex, localRow] : pending.provenanceCandidates) {
+          const auto &patch = patches[static_cast<std::size_t>(patchIndex)];
+          const auto &point =
+              patch.vertexProvenance[static_cast<std::size_t>(localRow)];
+          const auto &lineage =
+              patch.vertexLineage[static_cast<std::size_t>(localRow)];
+          w << "P13J_OWNER patch=" << patchIndex
+            << " sourcePatch=" << patch.sourcePatch
+            << " domainHash=" << patch.domainIdentity.hash()
+            << " localRow=" << localRow
+            << " vertex=" << patch.vertices[static_cast<std::size_t>(localRow)]
+            << " face=" << point.face << " component=" << point.component
+            << " sheet=" << point.sheet
+            << " bary=" << point.barycentric.transpose()
+            << " boundary="
+            << (std::find(patch.boundaryVertices.begin(),
+                          patch.boundaryVertices.end(),
+                          patch.vertices[static_cast<std::size_t>(localRow)])
+                != patch.boundaryVertices.end()) << '\n';
+          printKey("ownerStitch", lineage.stitchIdentity);
+          printKey("ownerAuthority", lineage.authoritativeIdentity);
+          w << "P13J_OWNER_CHARTS patch=" << patchIndex << " localRow=" << localRow;
+          for (const auto &chart : lineage.sourceCharts) {
+            w << " chart=" << chart.chart.index() << ':';
+            for (auto id : chart.face.vertices()) w << id.index() << ',';
+          }
+          w << " sideEdgeCounts=";
+          for (auto n : patch.sourceSideEdgeCounts) w << n << ',';
+          w << '\n';
+        }
+        for (const int face : incidentSet) {
+          const auto &quad = result.mesh.quads[static_cast<std::size_t>(face)];
+          const auto &owner = uniqueFaceOwners[static_cast<std::size_t>(face)];
+          const auto &patch = patches[static_cast<std::size_t>(owner.patchIndex)];
+          w << "P13J_FACE face=" << face
+            << " reached=" << reached.count(face)
+            << " patch=" << owner.patchIndex
+            << " sourcePatch=" << patch.sourcePatch
+            << " localQuad=" << owner.localQuad
+            << " domainHash=" << patch.domainIdentity.hash()
+            << " vertices=";
+          for (int v : quad) w << v << ',';
+          w << " localVertices=";
+          for (int v : owner.localVertices) w << v << ',';
+          w << " linkNeighbors=";
+          for (int i = 0; i < 4; ++i) {
+            if (quad[static_cast<std::size_t>(i)] != vertex) continue;
+            for (int adjacentVertex : {
+                     quad[static_cast<std::size_t>((i + 3) % 4)],
+                     quad[static_cast<std::size_t>((i + 1) % 4)]}) {
+              auto found = edgeFaces.find(
+                  pure_quad_detail::canonical_edge(vertex, adjacentVertex));
+              w << " edge(" << vertex << ',' << adjacentVertex << ")=";
+              if (found != edgeFaces.end())
+                for (int adjacentFace : found->second) w << adjacentFace << ',';
+            }
+          }
+          w << '\n';
+        }
+        std::set<int> allSeen;
+        int component = 0;
+        for (int seed : incidentSet) {
+          if (!allSeen.insert(seed).second) continue;
+          std::vector<int> todo{seed};
+          w << "P13J_COMPONENT index=" << component++ << " faces=";
+          while (!todo.empty()) {
+            const int face = todo.back();
+            todo.pop_back();
+            w << face << ',';
+            const auto &quad = result.mesh.quads[static_cast<std::size_t>(face)];
+            for (int i = 0; i < 4; ++i) {
+              if (quad[static_cast<std::size_t>(i)] != vertex) continue;
+              for (int adjacentVertex : {
+                       quad[static_cast<std::size_t>((i + 3) % 4)],
+                       quad[static_cast<std::size_t>((i + 1) % 4)]}) {
+                const auto found = edgeFaces.find(
+                    pure_quad_detail::canonical_edge(vertex, adjacentVertex));
+                if (found == edgeFaces.end()) continue;
+                for (int adjacentFace : found->second)
+                  if (incidentSet.count(adjacentFace) &&
+                      allSeen.insert(adjacentFace).second)
+                    todo.push_back(adjacentFace);
+              }
+            }
+          }
+          w << '\n';
+        }
+        w << "P13J_END\n";
+        const std::string report = w.str();
+        std::fwrite(report.data(), 1, report.size(), stderr);
+        std::fflush(stderr);
+      }
       result.failure = "NonManifoldStitchedVertex";
       return result;
     }
