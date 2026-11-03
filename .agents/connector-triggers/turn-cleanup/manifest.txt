@@ -1,0 +1,2 @@
+# P13-j same-Review response cleanup: consumed source snapshot trigger.
+.agents/connector-triggers/source-snapshot/m6-cp3-p13-stitch-20261103-0549.txt
