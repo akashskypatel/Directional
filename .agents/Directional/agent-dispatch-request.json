@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "cb79-node-stitch-docs-apply-20261103-1848",
+  "request_id": "cb79-node-stitch-handoff-heading-20261103-1851",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb79-node-stitch-docs-20261103",
-  "file_id": "1x5-5hFIByjnUBcZ9iiOcYnRIyYgxv1mW",
-  "patch_sha256": "701c2693c828385b9990f645e765fe480e3a68d4ac922f71c400354bcf004e16",
-  "base_sha": "4c52ef9221a93ab22cb83aeecef51488d0ddbed7",
+  "mailbox_key": "m6-cp3-cb79-heading-20261103",
+  "file_id": "1yknVhcfHGlvxyCzajXIEGKzHPaXn43Mg",
+  "patch_sha256": "946de275837e90e1c7fe3322f378734d0a8e113902c4d9656beea1ede26cd254",
+  "base_sha": "ced8bcac42b9ecbae813c43bde568e07e461c139",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "M6 CP3 CB79: record verified GMP compile and hand off TB73",
+  "commit_message": "M6 CP3 CB79: restore mandatory next-turn handoff heading",
   "retention_days": 14
 }
