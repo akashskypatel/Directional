@@ -1,0 +1,2 @@
+# CB80 completed temporary source-snapshot trigger
+.agents/connector-triggers/source-snapshot/M6-CP3-CB80-P13-RAIL-BINDING-ONCE-20261103.txt
