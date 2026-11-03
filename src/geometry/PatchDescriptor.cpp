@@ -3173,7 +3173,7 @@ SurfaceCellComplexCompletionDraft complete_surface_cell_complex_pass(
         if (!wantedNode(nodeId)) continue;
         const auto &key=patch.boundaryNodeIdentities[i];
         std::fprintf(stderr,
-                     "P13L_KEY patch=%zu cell=%d offset=%zu node=%d prev=%d next=%d valid=%d hash=%llu chart=%d region=%d values=",
+                     "P13L_KEY patch=%zu cell=%d offset=%zu node=%d prev=%d next=%d valid=%d hash=%llu values=",
                      p,patch.sourcePatch,i,nodeId,
                      patch.boundaryVertices[(i+patch.boundaryVertices.size()-1)%patch.boundaryVertices.size()],
                      patch.boundaryVertices[(i+1)%patch.boundaryVertices.size()],
