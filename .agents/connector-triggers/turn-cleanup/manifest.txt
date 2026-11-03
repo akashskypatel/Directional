@@ -1,2 +1,0 @@
-# CB79 own temporary source snapshot trigger
-.agents/connector-triggers/source-snapshot/m6-cp3-cb79-20261103T175711385Z.txt
