@@ -411,6 +411,47 @@ SurfaceCellCanonicalIdentity source_point_identity(
   return result;
 }
 
+// Preserve a node's own source-occurrence identity while admitting exactly
+// the charts that the source transition authority permits for this corner.
+// Separate vertex fans and hard-rail chart components remain separate keys.
+SurfaceCellCanonicalIdentity compatible_boundary_node_identity(
+    const SurfaceArrangementNode &node, const Eigen::MatrixXi &F,
+    const SurfacePoint &point, const SourceChartTransitionGraph &transitions) {
+  if (!transitions.available()) return {};
+  const auto entity = transitions.resolve_entity(point);
+  if (!entity) return {};
+  std::vector<SurfaceCellCanonicalIdentity> occurrences;
+  const auto collect = [&](int face, const Eigen::RowVector3d &bary,
+                           const SourceScope &scope) {
+    if (!scope.valid() || face < 0 || face >= F.rows()) return;
+    const auto chart = transitions.chart(face);
+    if (!chart || *chart != *scope.chart ||
+        transitions.topology_region(*chart) != scope.region) return;
+    SurfacePoint rebound;
+    if (!transitions.rebind(point, face, rebound)) return;
+    const auto reboundEntity = transitions.resolve_entity(rebound);
+    if (!reboundEntity || reboundEntity->identity != entity->identity ||
+        (rebound.barycentric - bary.transpose()).norm() > 1.0e-8) return;
+    SurfaceCellCanonicalIdentity candidate =
+        source_point_identity(F, face, bary, scope);
+    if (candidate.valid) occurrences.push_back(std::move(candidate));
+  };
+  collect(node.sourceFace, node.barycentric, source_scope(node));
+  for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences)
+    collect(occurrence.sourceFace, occurrence.barycentric,
+            source_scope(occurrence));
+  std::sort(occurrences.begin(), occurrences.end());
+  occurrences.erase(std::unique(occurrences.begin(), occurrences.end()),
+                    occurrences.end());
+  if (occurrences.empty()) return {};
+  SurfaceCellCanonicalIdentity result;
+  result.valid = true;
+  result.values.push_back(static_cast<std::int64_t>(occurrences.size()));
+  for (const auto &occurrence : occurrences)
+    append_identity(result, occurrence);
+  return result;
+}
+
 SurfaceCellCanonicalIdentity arrangement_node_identity(
     const SurfaceArrangementNode &node, const Eigen::MatrixXi &F,
     const SourceScope &scope) {
@@ -1755,11 +1796,15 @@ PatchDescriptor derive_patch_descriptor(
     }
     patch.boundaryTopologyRegions.push_back(edge.sourceTopologyRegion.value());
     patch.boundaryCharts.push_back(edge.sourceChart.value());
+    const SurfacePoint boundaryPoint =
+        patch_descriptor_detail::node_surface_point(*node, V, F, edge);
     patch.boundaryNodeIdentities.push_back(
-        patch_descriptor_detail::arrangement_node_identity(
-            *node, F, patch_descriptor_detail::source_scope(edge)));
-    patch.boundaryProvenance.push_back(
-        patch_descriptor_detail::node_surface_point(*node, V, F, edge));
+        options.boundarySourceTransitions != nullptr
+            ? patch_descriptor_detail::compatible_boundary_node_identity(
+                  *node, F, boundaryPoint, *options.boundarySourceTransitions)
+            : patch_descriptor_detail::arrangement_node_identity(
+                  *node, F, patch_descriptor_detail::source_scope(edge)));
+    patch.boundaryProvenance.push_back(boundaryPoint);
     patch.hardFeatureCrossing =
         patch.hardFeatureCrossing || node->hardBarrierCrossing;
     const int sourceVertex = patch_descriptor_detail::source_vertex_at_node(
@@ -2660,8 +2705,10 @@ SurfaceCellComplexCompletionDraft complete_surface_cell_complex_pass(
     result.assembly.failure = result.failure;
     return result;
   }
+  PatchDescriptorOptions descriptorOptions = options.descriptorOptions;
+  descriptorOptions.boundarySourceTransitions = &sourceTransitions;
   result.descriptors = derive_patch_descriptors(
-      prepared, V, F, options.descriptorOptions);
+      prepared, V, F, descriptorOptions);
   result.firstInvalidDomain = result.descriptors.firstInvalidDomain;
   if (result.descriptors.descriptors.empty()) {
     result.failureKind = SurfaceCellComplexCompletionFailureKind::PreparationRejected;
