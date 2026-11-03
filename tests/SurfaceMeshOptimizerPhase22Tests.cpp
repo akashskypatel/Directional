@@ -4,6 +4,7 @@
 #include <directional/validation/SourceAuthoritativeMeshValidator.h>
 
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <cstdint>
 #include <memory>
@@ -1604,3 +1605,130 @@ TEST(SurfaceOptimizationRailAuthorityMigration,
                     tamperedPoint, tamperedInterval, constraints));
 }
 
+namespace {
+
+// A planar n x n grid of 2 n^2 source triangles on [0, 1]^2 with one
+// component and one sheet. Sized so that one source binding check, BVH or
+// chart graph per output vertex, rail interval or quad costs seconds, while
+// one per stage costs milliseconds (RA-201).
+SurfaceOptimizationConstraints make_source_grid_constraints(const int n) {
+  SurfaceOptimizationConstraints constraints;
+  constraints.sourceVertices.resize((n + 1) * (n + 1), 3);
+  for (int j = 0; j <= n; ++j) {
+    for (int i = 0; i <= n; ++i) {
+      constraints.sourceVertices.row(j * (n + 1) + i)
+          << static_cast<double>(i) / n,
+          static_cast<double>(j) / n, 0.0;
+    }
+  }
+  constraints.sourceFaces.resize(2 * n * n, 3);
+  for (int j = 0; j < n; ++j) {
+    for (int i = 0; i < n; ++i) {
+      const int v = j * (n + 1) + i;
+      constraints.sourceFaces.row(2 * (j * n + i)) << v, v + 1, v + n + 2;
+      constraints.sourceFaces.row(2 * (j * n + i) + 1) << v, v + n + 2,
+          v + n + 1;
+    }
+  }
+  const int faces = static_cast<int>(constraints.sourceFaces.rows());
+  constraints.sourceNormals = Eigen::MatrixXd::Zero(faces, 3);
+  constraints.sourceFieldX = Eigen::MatrixXd::Zero(faces, 3);
+  constraints.sourceFieldY = Eigen::MatrixXd::Zero(faces, 3);
+  constraints.sourceNormals.col(2).setOnes();
+  constraints.sourceFieldX.col(0).setOnes();
+  constraints.sourceFieldY.col(1).setOnes();
+  const std::vector<int> zeros(static_cast<std::size_t>(faces), 0);
+  constraints.sourceAuthority =
+      test_source_authority(constraints.sourceFaces, zeros, zeros);
+  constraints.localTargetSize =
+      Eigen::VectorXd::Ones(constraints.sourceVertices.rows());
+  return constraints;
+}
+
+double seconds_since(const std::chrono::steady_clock::time_point start) {
+  return std::chrono::duration<double>(std::chrono::steady_clock::now() - start)
+      .count();
+}
+
+} // namespace
+
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     RailFillAssignsNoVertexWithoutBoundSourceAuthority) {
+  // The authority carries the same labels but was built for another face
+  // matrix of the same size, so only the source binding check rejects it.
+  auto constraints = make_m1b_sheet_constraints();
+  Eigen::MatrixXi otherFaces(3, 3);
+  otherFaces << 0, 1, 3,
+      0, 2, 3,
+      4, 5, 6;
+  constraints.sourceAuthority =
+      test_source_authority(otherFaces, {7, 7, 7}, {0, 0, 1});
+  ASSERT_FALSE(constraints.sourceAuthority->matches_source_faces(
+      constraints.sourceFaces,
+      static_cast<std::size_t>(constraints.sourceVertices.rows())));
+
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(5));
+  rail.curveId = 9;
+  rail.component = 7;
+  rail.samples.resize(2);
+  rail.samples[0].sourceFace = 0;
+  rail.samples[0].railParameter = 0.0;
+  rail.samples[0].position << 0.0, 0.0, 0.0;
+  rail.samples[1].sourceFace = 0;
+  rail.samples[1].railParameter = 1.0;
+  rail.samples[1].position << 1.0, 0.0, 0.0;
+
+  Eigen::MatrixXd output(1, 3);
+  output << 0.5, 0.0, 0.0;
+  auto provenance = m1b_provenance(Eigen::Vector3d(0.5, 0.5, 0.0));
+  provenance.sheet = 0;
+
+  directional::geometry::fill_surface_optimization_rail_constraints(
+      {rail}, output, {provenance}, constraints);
+
+  EXPECT_TRUE(constraints.featureVertices.empty());
+  ASSERT_EQ(constraints.featureCurveIds.size(), 1);
+  EXPECT_EQ(constraints.featureCurveIds(0), -1);
+}
+
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     RailFillChecksSourceBindingOncePerFill) {
+  // 20,000 source faces, 600 rail intervals and 600 output vertices: a
+  // binding check per (vertex, interval) pair reads every source face 720,000
+  // times.
+  auto constraints = make_source_grid_constraints(100);
+  constexpr int intervals = 600;
+  constexpr int count = 600;
+  directional::geometry::SurfaceCellRail rail(
+      directional::tests::test_hard_rail_id(1));
+  rail.curveId = 1;
+  rail.component = 0;
+  for (int k = 0; k < intervals; ++k) {
+    for (const int end : {k, k + 1}) {
+      directional::geometry::SurfaceCellRailSample sample;
+      sample.sourceFace = 0;
+      sample.railParameter = static_cast<double>(end);
+      sample.position << static_cast<double>(end) / intervals, 0.0, 0.0;
+      rail.samples.push_back(sample);
+    }
+  }
+  Eigen::MatrixXd output(count, 3);
+  std::vector<SurfacePoint> provenance;
+  for (int vertex = 0; vertex < count; ++vertex) {
+    output.row(vertex) << (vertex + 0.5) / count, 0.0, 0.0;
+    SurfacePoint point;
+    point.face = 0;
+    point.component = 0;
+    point.sheet = 0;
+    point.barycentric = Eigen::Vector3d::Constant(1.0 / 3.0);
+    point.squaredDistance = 0.0;
+    provenance.push_back(point);
+  }
+
+  const auto start = std::chrono::steady_clock::now();
+  directional::geometry::fill_surface_optimization_rail_constraints(
+      {rail}, output, provenance, constraints);
+  const double seconds = seconds_since(start);
+  EXPECT_EQ(constraints.featureVertices.size(), static_cast<std::size_t>(count));
+  EXPECT_LT(seconds, 2.0);
+}

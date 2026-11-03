@@ -341,6 +341,20 @@ struct SourceProjectionScope {
   auto operator<=>(const SourceProjectionScope &) const = default;
 };
 
+// The scope of a source face for a caller that has already checked the
+// source binding (matches_source_faces) once: its authority row labels.
+[[nodiscard]] inline std::optional<SourceProjectionScope>
+bound_source_face_scope(const SourceTopologyRegions &sourceAuthority,
+                        const int face) {
+  const auto row =
+      authority::SourceFaceId::from_index(face, sourceAuthority.face_count());
+  if (!row) {
+    return std::nullopt;
+  }
+  return SourceProjectionScope{sourceAuthority.component_for_row(row.value()),
+                               sourceAuthority.sheet_for_row(row.value())};
+}
+
 [[nodiscard]] inline std::optional<SourceProjectionScope> source_face_scope(
     const SurfaceOptimizationConstraints &constraints, const int face) {
   if (constraints.sourceAuthority == nullptr || face < 0 ||
@@ -350,14 +364,7 @@ struct SourceProjectionScope {
           static_cast<std::size_t>(constraints.sourceVertices.rows()))) {
     return std::nullopt;
   }
-  const auto row = authority::SourceFaceId::from_index(
-      face, constraints.sourceAuthority->face_count());
-  if (!row) {
-    return std::nullopt;
-  }
-  return SourceProjectionScope{
-      constraints.sourceAuthority->component_for_row(row.value()),
-      constraints.sourceAuthority->sheet_for_row(row.value())};
+  return bound_source_face_scope(*constraints.sourceAuthority, face);
 }
 
 [[nodiscard]] inline bool source_scope_matches(

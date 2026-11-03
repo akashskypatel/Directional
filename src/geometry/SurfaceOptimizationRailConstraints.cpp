@@ -4,23 +4,11 @@ namespace directional::geometry::surface_optimization_rail_detail {
 
 namespace {
 
-std::optional<surface_optimizer_detail::SourceProjectionScope> source_face_scope(
-    const SurfaceOptimizationConstraints &constraints, const int face) {
-  if (constraints.sourceAuthority == nullptr || face < 0 ||
-      face >= constraints.sourceFaces.rows() ||
-      !constraints.sourceAuthority->matches_source_faces(
-          constraints.sourceFaces,
-          static_cast<std::size_t>(constraints.sourceVertices.rows()))) {
-    return std::nullopt;
-  }
-  const auto row = authority::SourceFaceId::from_index(
-      face, constraints.sourceAuthority->face_count());
-  if (!row) return std::nullopt;
-  const auto component =
-      constraints.sourceAuthority->component_for_row(row.value());
-  const auto sheet =
-      constraints.sourceAuthority->sheet_for_row(row.value());
-  return surface_optimizer_detail::SourceProjectionScope{component, sheet};
+bool source_bound(const SurfaceOptimizationConstraints &constraints) {
+  return constraints.sourceAuthority != nullptr &&
+         constraints.sourceAuthority->matches_source_faces(
+             constraints.sourceFaces,
+             static_cast<std::size_t>(constraints.sourceVertices.rows()));
 }
 
 } // namespace
@@ -48,7 +36,10 @@ bool source_face_contains_vertex(
 
 namespace directional::geometry::surface_optimization_rail_detail {
 
-bool provenance_supports_interval_sheet(
+namespace {
+
+// The caller has checked source_bound() once.
+bool provenance_supports_bound_interval_sheet(
     const SurfacePoint &provenance,
     const SurfaceFeatureCurveInterval &interval,
     const SurfaceOptimizationConstraints &constraints) {
@@ -63,8 +54,10 @@ bool provenance_supports_interval_sheet(
       !provenance.barycentric.allFinite()) {
     return false;
   }
-  const auto provenanceScope = source_face_scope(constraints, provenance.face);
-  const auto intervalScope = source_face_scope(constraints, interval.sourceFace);
+  const auto provenanceScope = surface_optimizer_detail::bound_source_face_scope(
+      *constraints.sourceAuthority, provenance.face);
+  const auto intervalScope = surface_optimizer_detail::bound_source_face_scope(
+      *constraints.sourceAuthority, interval.sourceFace);
   if (!provenanceScope.has_value() || !intervalScope.has_value() ||
       provenanceScope->component != intervalScope->component) {
     return false;
@@ -119,6 +112,17 @@ bool provenance_supports_interval_sheet(
   }
 
   return true;
+}
+
+} // namespace
+
+bool provenance_supports_interval_sheet(
+    const SurfacePoint &provenance,
+    const SurfaceFeatureCurveInterval &interval,
+    const SurfaceOptimizationConstraints &constraints) {
+  return source_bound(constraints) &&
+         provenance_supports_bound_interval_sheet(provenance, interval,
+                                                  constraints);
 }
 
 } // namespace directional::geometry::surface_optimization_rail_detail
@@ -200,6 +204,9 @@ void fill_surface_optimization_rail_constraints(
   // still chooses one primary curve coordinate per vertex, but validation
   // must retain the same endpoint in every incident hard rail.
   std::vector<FeatureAssignment> authorityAssignments;
+  // The source binding is checked once per fill, not per (vertex, interval).
+  const bool sourceBound =
+      surface_optimization_rail_detail::source_bound(constraints);
   for (int vertex = 0; vertex < outputVertices.rows(); ++vertex) {
     const SurfacePoint provenance =
         vertex < static_cast<int>(outputProvenance.size())
@@ -216,9 +223,10 @@ void fill_surface_optimization_rail_constraints(
     std::vector<IncidentInterval> incidentIntervals;
     for (const SurfaceFeatureCurveInterval &interval :
          constraints.featureCurveIntervals) {
-      if (!surface_optimization_rail_detail::
-              provenance_supports_interval_sheet(provenance, interval,
-                                                  constraints)) {
+      if (!sourceBound ||
+          !surface_optimization_rail_detail::
+              provenance_supports_bound_interval_sheet(provenance, interval,
+                                                       constraints)) {
         continue;
       }
       double localParameter = 0.0;
