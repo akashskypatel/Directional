@@ -1,3 +1,9 @@
+# 2026-11-03 — CB80 rail source binding once, Linux compile-only
+
+- RA-201.4 exact three-file patch applied at [`c6420b1f`](https://github.com/akashskypatel/Directional/commit/c6420b1f9a84c423f60a5b96b90d59abb8df80e4); no unrelated semantic paths. New GUARD rows 887–888 compile but were not executed.
+- Linux eight-target Release/static GMP/GMPXX compile-only [41732653110](https://github.com/akashskypatel/Directional/actions/runs/41732653110) PASS, `runtimeExecution=false`; immutable package `13278380590`, ZIP SHA-256 `64bdcdbe0c6d06e424e66de816db97f99f60910f1b3eae3642702b94dd077ec5`. [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB80_P13_Rail_Binding_Once_Code_Build_Record_20261103.md).
+- Initial transport metadata and dispatcher request schema failures were corrected without altering the source patch. Next: TB74 immutable 888-case artifact-only gate; CP2 491/491 acceptance unchanged.
+
 # 2026-11-03 — RA-201 P13-k optimizer source-query cost probe adjudication (Review; documentation only)
 
 - [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md) closes `M6-CP3-DEFN-P13-OPTIMIZER-SOURCE-QUERY-COST` by scratch probes on CB79. The ChatGPT static preflight's `REVIEW_BLOCKER` was procedural.
