@@ -1,12 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb72a-docs-apply-20261102-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb72a-docs-apply-20261102-v1",
-  "file_id": "1rD3Jk65Vmcuyi_YwbsQJOHFWRNYgYLnN",
-  "patch_sha256": "8c2d943083e793d5ac3a34d97aa2f83868170795dbce81795f4179793aa93b32",
-  "base_sha": "df5862858b5e2ef0d167856f0f0f8aecf3fc6a57",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close out verified TB72A support-chord gate",
-  "retention_days": 14
+  "request_id": "m6-cp3-p13j-scratch-compile-20261103-0256-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-p13j-scratch-compile-20261103-v1",
+  "source_sha": "42126c14ff530c4ccfd3768f93e4b95c2ae3bfc7",
+  "targets": [
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "p13j-stitch-witness-scratch-20261103"
 }
