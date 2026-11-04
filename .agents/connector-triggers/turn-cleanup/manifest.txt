@@ -1,2 +1,0 @@
-# CB89 cleanup — exact source snapshot trigger only
-.agents/connector-triggers/source-snapshot/cb89-census-platform-digest-2026-11-04T23-08-10-707Z.txt
