@@ -1,3 +1,7 @@
+## 2026-11-04 — TB76 independent review: Linux Vase timed-out cost locus unproved
+
+- [Review](.agents/Directional/Architecture_M6_CP3_TB76_P13_Linux_Vase_Independent_Review_Decision_20261104.md) rehashed TB76 893-case exact gate, 890-case precursor, 1794/1794 gate and 9/9 census evidence; adjudicated valid execution with unfulfilled Vase registered RED (600s ABNORMAL). No acceptance promotion, no stable event; next M6-CP3-CB84-P13-LINUX-VASE-DIAGNOSTIC-TIMING diagnostic-only compile. P13-l/P13-e separate.
+
 ## 2026-11-04 — TB76 full gate green, Vase census mismatch
 
 - [TB76 report](.agents/Directional/Architecture_M6_CP3_TB76_P13_Optimizer_Source_Query_Full_Gate_Execution_Report_20261104.md): immutable CB83 package `13289188434`, source `2278b8b649b4262fb70a522371ed282655383af5`. [Full gate 41762112729](https://github.com/akashskypatel/Directional/actions/runs/41762112729) 893/893 PASS, membership 974 with 81 deferred, 1794/1794 hashes; no rebuild. [Census 41762169855](https://github.com/akashskypatel/Directional/actions/runs/41762169855) 9/9 hashes: Cylinder PASS, BunnyRandom P13-e RED vertex49, **Vase ABNORMAL timeout 600s** rather than registered `SelfIntersectingFace` RED within 600s. Execution valid; semantic mismatch routes to `M6-CP3-TB76-P13-OPTIMIZER-SOURCE-QUERY-FULL-GATE-REV`. No CP3 promotion; accepted CP2 491/491, stable 66/17/49, debt 1 unchanged.
