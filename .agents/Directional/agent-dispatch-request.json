@@ -1,12 +1,1 @@
-{
-  "schema_version": 1,
-  "request_id": "m6-cp3-cb85-arrangement-tjunction-apply-20261104-v2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb85-arrangement-tjunction-apply",
-  "file_id": "1KmGQ8rnP6l3YZAd57QQ8L5S_Uhrqe4q6",
-  "patch_sha256": "5143ff170f7cd74d3097790f9d3a2ad7d82b6a2b55c0da2aa544ef121922f123",
-  "base_sha": "2da3e99d698ac02631228c3beb994568fdea5f9d",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "perf(surface-cells): index T-junction scan halfedges by source face",
-  "retention_days": 14
-}
+{"schema_version":1,"request_id":"m6-cp3-cb85-arrangement-tjunction-compile-20261104-v1","operation":"compile","mailbox_key":"m6-cp3-cb85-arrangement-tjunction-compile","source_sha":"a405b59057045b5aaa302abd9553daba3d8b2934","targets":["directional_core","directional_pipeline","directional_surface_cell_authority_kernel_tests","directional_surface_cell_producer_tests","directional_surface_cell_completion_tests","directional_surface_cell_validation_tests","directional_compiled_api_tests","directional_benchmarks"],"artifact_prefix":"m6-cp3-cb85-arrangement-tjunction"}
