@@ -2623,8 +2623,10 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
                                            &constraints);
     const std::vector<Eigen::Vector3d> barycentrics =
         triangle_sample_barycentrics();
+    // The binding was checked on entry; read row labels only (Amendment 33).
     for (int face = 0; face < constraints.sourceFaces.rows(); ++face) {
-      const auto sourceScope = source_face_scope(constraints, face);
+      const auto sourceScope =
+          bound_source_face_scope(*constraints.sourceAuthority, face);
       for (const Eigen::Vector3d &barycentric : barycentrics) {
         SurfacePoint sourcePoint;
         sourcePoint.face = face;
@@ -2727,7 +2729,8 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
           constraints, firstPoint, secondPoint, firstVertex, secondVertex,
           edge.norm(), options.targetSize);
       sizeRatios.push_back(edge.norm() / std::max(1.0e-12, target));
-      const auto sourceScope = source_face_scope(constraints, firstPoint.face);
+      const auto sourceScope = bound_source_face_scope(
+          *constraints.sourceAuthority, firstPoint.face);
       const SurfacePoint edgeSource = nearest_source_point(
           0.5 * (first + second), constraints, sourceScope, &sourceProjection);
       const double alignment = best_source_field_alignment(

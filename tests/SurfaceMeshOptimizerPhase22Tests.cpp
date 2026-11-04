@@ -1912,3 +1912,43 @@ TEST(SurfaceMeshOptimizerPhase22,
   EXPECT_EQ(supported, static_cast<std::size_t>(queries));
   EXPECT_LT(seconds, 2.0);
 }
+
+TEST(SurfaceMeshOptimizerPhase22,
+     FinalValidationReadsSourceRowLabelsAfterOneBindingCheck) {
+  // 28,800 source faces and 400 output quads: re-checking the source binding
+  // for each source face and each quad edge reads every source face 30,400
+  // times (RA-202).
+  const SurfaceOptimizationConstraints constraints =
+      make_source_grid_constraints(120);
+  constexpr int m = 20;
+  Eigen::MatrixXd vertices((m + 1) * (m + 1), 3);
+  for (int j = 0; j <= m; ++j) {
+    for (int i = 0; i <= m; ++i) {
+      vertices.row(j * (m + 1) + i) << static_cast<double>(i) / m,
+          static_cast<double>(j) / m, 0.0;
+    }
+  }
+  Eigen::MatrixXi quads(m * m, 4);
+  for (int j = 0; j < m; ++j) {
+    for (int i = 0; i < m; ++i) {
+      const int v = j * (m + 1) + i;
+      quads.row(j * m + i) << v, v + 1, v + m + 2, v + m + 1;
+    }
+  }
+  const std::vector<int> zeros(
+      static_cast<std::size_t>(constraints.sourceFaces.rows()), 0);
+  directional::geometry::SurfaceOptimizationResult optimization;
+  optimization.vertices = vertices;
+  optimization.quads = quads;
+  optimization.vertexProvenance = provenance_for(
+      vertices, constraints.sourceVertices, constraints.sourceFaces, zeros,
+      zeros);
+
+  const auto start = std::chrono::steady_clock::now();
+  const auto report = directional::geometry::validate_final_surface_mesh(
+      vertices, quads, constraints, optimization);
+  const double seconds = seconds_since(start);
+
+  EXPECT_TRUE(report.sourceAuthoritativeValidationUsed);
+  EXPECT_LT(seconds, 2.0);
+}
