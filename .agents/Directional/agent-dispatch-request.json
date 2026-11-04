@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb76-independent-review-20261104-v1",
+  "request_id": "m6-cp3-cb85-arrangement-tjunction-apply-20261104-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb76-independent-review",
-  "file_id": "1i10GeBiHzbKlbJkt1Kmo8ds0vzyv2mw3",
-  "patch_sha256": "aea8d0cf451c4aec74d575156d1f132cce3b52e39a7b3edddaddacdbf36cc531",
-  "base_sha": "d0552e7bfd0233baae28a4d62040edb2bfa24cce",
+  "mailbox_key": "m6-cp3-cb85-arrangement-tjunction-apply",
+  "file_id": "1xw4hwjMbydEtNrMfx0uf_aeoSlU4r-jD",
+  "patch_sha256": "06bd2594a6cd54138fb0859e850f30740836b5e0c1fe76de6d023c23fc76a4c0",
+  "base_sha": "2da3e99d698ac02631228c3beb994568fdea5f9d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: independently review TB76 Linux Vase timeout and freeze diagnostic successor",
+  "commit_message": "perf(surface-cells): index T-junction scan halfedges by source face",
   "retention_days": 14
 }
