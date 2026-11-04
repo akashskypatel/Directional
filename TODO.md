@@ -5,7 +5,7 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — CB87 bow-tie vertex-edge compile verified; CB88 next (2026-11-04)
+## CURRENT — CB88 final-validation row labels compile verified; TB78 next (2026-11-04)
 
 - [x] **TB76 independent Review adjudicated:** [decision](.agents/Directional/Architecture_M6_CP3_TB76_P13_Linux_Vase_Independent_Review_Decision_20261104.md) verified TB76 893/893 ledger/raw hashes, 1794/1794 package hashes, TB75 prefix SHA, census 1 PASS/1 RED/1 ABNORMAL (9/9 hashes). Its successor (diagnostic CB84) is superseded by RA-202.
 - [x] **TB76 Review re-adjudicated by [RA-202](.agents/Directional/Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md)** (scratch probes):
@@ -21,6 +21,7 @@
 - [x] **`M6-CP3-CB85-P13-ARRANGEMENT-TJUNCTION-FACE-SCAN`** compile-only: source `a405b59057045b5aaa302abd9553daba3d8b2934`, package `13338458053`. [Record](.agents/Directional/Architecture_M6_CP3_CB85_P13_Arrangement_TJunction_Face_Scan_Code_Build_Record_20261104.md).
 - [x] **`M6-CP3-CB86-P13-SELECTION-ENDPOINT-NET-CHANGE`** compile-only: source `0f4c78c433211b0ece549e35cfb0bc975ca02258`, package `13347299644`, eight GMP/GMPXX targets. [Record](.agents/Directional/Architecture_M6_CP3_CB86_P13_Selection_Endpoint_Net_Change_Code_Build_Record_20261104.md).
 - [x] **`M6-CP3-TB77-P13-PRE-ASSEMBLY-COST-FULL-GATE-EXEC` COMPLETE** — [report](.agents/Directional/Architecture_M6_CP3_TB77_P13_Pre_Assembly_Cost_Full_Gate_Execution_Report_20261104.md), gate 896/896 PASS, membership 977 and 81 deferred (1,800/1,800 hashes); census Cylinder PASS, BunnyRandom RED, Vase ABNORMAL; MATCH.
+- [x] **`M6-CP3-CB88-P13-FINAL-VALIDATION-ROW-LABELS` COMPLETE** — [record](.agents/Directional/Architecture_M6_CP3_CB88_P13_Final_Validation_Row_Labels_Code_Build_Record_20261104.md), exact source [`6cc50f87`](https://github.com/akashskypatel/Directional/commit/6cc50f878ef829711e16262759afb3367bec2aff), eight-target GMP/GMPXX compile [41902419082](https://github.com/akashskypatel/Directional/actions/runs/41902419082) PASS, package `13358062295` (28/28 hashes), runtimeExecution=false. Next separate turn TB78.
 - [x] **`M6-CP3-CB87-P13-BOW-TIE-VERTEX-EDGES` COMPLETE** — [record](.agents/Directional/Architecture_M6_CP3_CB87_P13_Bow_Tie_Vertex_Edges_Code_Build_Record_20261104.md), exact source [`d02fa6ce7467`](https://github.com/akashskypatel/Directional/commit/d02fa6ce74670ade8fecbcc2b7fd9a1d793b59b2), Linux eight-target GMP/GMPXX compile [run 41897641171](https://github.com/akashskypatel/Directional/actions/runs/41897641171) PASS, artifact `13356343883`; runtimeExecution=false, GUARD rows 897–898 compiled, not executed. Next separate turn `M6-CP3-CB88-P13-FINAL-VALIDATION-ROW-LABELS`.
 
 - [x] **CB80 rail binding once Code + Build:** exact three-file RA-201.4 source commit [`c6420b1f`](https://github.com/akashskypatel/Directional/commit/c6420b1f9a84c423f60a5b96b90d59abb8df80e4); Linux eight-target GMP/GMPXX compile-only [41732653110](https://github.com/akashskypatel/Directional/actions/runs/41732653110) PASS, package artifact `13278380590` (ZIP SHA-256 `64bdcdbe0c6d06e424e66de816db97f99f60910f1b3eae3642702b94dd077ec5`), runtimeExecution=false. [Record](.agents/Directional/Architecture_M6_CP3_CB80_P13_Rail_Binding_Once_Code_Build_Record_20261103.md). New GUARD rows 887–888 compiled and **passed at TB74**.
@@ -258,11 +259,11 @@
      - Patch `…CB87_P13_Bow_Tie_Vertex_Edges.diff`: `eeef1a51…`, 134 lines; keep its 1 single-space context line. Numstat `15 7` MeshValidator.h / `81 0` tests.
      - GUARD rows 897–898 compiled but not executed; source `d02fa6ce74670ade8fecbcc2b7fd9a1d793b59b2`, compile [run 41897641171](https://github.com/akashskypatel/Directional/actions/runs/41897641171) PASS, package `13356343883`, 28/28 hashes. [Record](.agents/Directional/Architecture_M6_CP3_CB87_P13_Bow_Tie_Vertex_Edges_Code_Build_Record_20261104.md).
      - Mismatch → `M6-CP3-PLAN-P13-BOW-TIE-STOP`; infrastructure → `M6-CP3-CB87A-P13-BOW-TIE-ORCH`.
-  33. [ ] **NEXT `M6-CP3-CB88-P13-FINAL-VALIDATION-ROW-LABELS`** (CB; RA-202.8):
+  33. [x] **COMPLETE `M6-CP3-CB88-P13-FINAL-VALIDATION-ROW-LABELS`** (CB; RA-202.8):
      - Patch `…CB88_P13_Final_Validation_Row_Labels.diff`: `ee12a33f…`, 72 lines, 0 single-space context lines. Numstat `5 2` SurfaceMeshOptimizer.cpp / `40 0` tests.
-     - GUARD row 899.
+     - GUARD row 899 compiled, not executed; semantic source `6cc50f878ef829711e16262759afb3367bec2aff`, compile [41902419082](https://github.com/akashskypatel/Directional/actions/runs/41902419082) PASS, artifact `13358062295` (28/28 hashes), GMP/GMPXX, runtimeExecution=false. [Record](.agents/Directional/Architecture_M6_CP3_CB88_P13_Final_Validation_Row_Labels_Code_Build_Record_20261104.md).
      - Mismatch → `M6-CP3-PLAN-P13-FINAL-VALIDATION-LABELS-STOP`; infrastructure → `M6-CP3-CB88A-P13-FINAL-VALIDATION-LABELS-ORCH`.
-  34. [ ] **`M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-EXEC`** (TB-EXEC; RA-202.9):
+  34. [ ] **NEXT `M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-EXEC`** (TB-EXEC; RA-202.9):
      - Gate: manifest 899 `9d2c1ec5…`; 899/899, membership 980.
      - Census: Cylinder PASS; BunnyRandom P13-e unchanged.
      - **Vase RED within 600 s, `detail=SelfIntersectingFace`, 67,829 quads** (macOS 108.5 s).

@@ -1,3 +1,9 @@
+## 2026-11-04 — CB88 final-validation row labels, compile-only
+
+- Exact RA-202.8 patch applied at [`6cc50f878ef8`](https://github.com/akashskypatel/Directional/commit/6cc50f878ef829711e16262759afb3367bec2aff); two source row-label reads reuse the validated binding. GUARD row 899 compiled, not executed.
+- Linux eight-target GMP/GMPXX compile-only [41902419082](https://github.com/akashskypatel/Directional/actions/runs/41902419082) PASS, artifact `13358062295`, 28/28 packaged checksums, `runtimeExecution=false`; [record](.agents/Directional/Architecture_M6_CP3_CB88_P13_Final_Validation_Row_Labels_Code_Build_Record_20261104.md).
+- No runtime/selector promotion. Next `M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-EXEC`, separate artifact-only turn.
+
 ## 2026-11-04 — CB87 bow-tie vertex-edge indexing, compile-only
 
 - Applied frozen RA-202.7 patch at [`d02fa6ce7467`](https://github.com/akashskypatel/Directional/commit/d02fa6ce74670ade8fecbcc2b7fd9a1d793b59b2); each vertex reads incident edge face lists exactly once, regardless of endpoint order. GUARD rows 897–898 compiled but not executed.
