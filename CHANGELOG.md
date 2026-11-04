@@ -1,3 +1,9 @@
+## 2026-11-04 — CB82 lent label support, Linux compile-only
+
+- RA-201.8 frozen four-file semantic patch committed at [efa418bd](https://github.com/akashskypatel/Directional/commit/efa418bd88f8bc8f6f67bf8fd65fdea56afa78a3). Initial Drive transport failed on a delimiter, corrected apply succeeded; no semantic change to the frozen patch. GUARD rows 891–893 compiled, not executed.
+- Linux eight-target GMP/GMPXX compile-only [41755097989](https://github.com/akashskypatel/Directional/actions/runs/41755097989) PASS, `runtimeExecution=false`; immutable package `13288766498`, ZIP SHA-256 `3dadbea969532e12fc19640865ffee2c8939b8bfde76c33fc8958498de600008`, internal manifest 28/28 verified. [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB82_P13_Lent_Label_Support_Code_Build_Record_20261104.md).
+- CP2 491/491 acceptance unchanged; stable 66/17/49, debt 1, selector497/CP3 unpromoted. Next separate CB83 exact output-validation terminal detail, then TB76 artifact-only gate.
+
 ## 2026-11-04 — TB75 immutable CB81 full gate and census
 
 - Full gate [41748769190](https://github.com/akashskypatel/Directional/actions/runs/41748769190): **890/890 PASS**, 81 deferred, 971 membership, 1788/1788 internal hashes, immutable package `13282539328`; no rebuild.
