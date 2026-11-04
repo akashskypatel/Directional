@@ -1,8 +1,10 @@
 ---TURN_STATUS---
 Turn: M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV
-Status: IN_PROGRESS
+Status: BLOCKED
 Successor: M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV
 Started at: 2026-11-04T21:08:48Z
 Resumed at: 2026-11-04T21:57:55Z
 Ended at: 
+Blocker Type: REVIEW_BLOCKER
+Blocker Details: RA-202.9 requires a runtime cross-platform probe during Review, but REVIEW_TURN_POLICY.md section 4 prohibits product runtime; the RA-202.12 scratch scripts are absent. Separately authorize execution or amend the review boundary before attribution and closure.
 ---END_TURN_STATUS---
