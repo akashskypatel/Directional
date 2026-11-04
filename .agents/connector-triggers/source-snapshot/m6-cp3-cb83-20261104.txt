@@ -1,3 +1,0 @@
-turn=M6-CP3-CB83-P13-OUTPUT-VALIDATION-TERMINAL-DETAIL
-purpose=exact source snapshot for code+build work
-entry_status_commit=a5f1d5774e5f01363797c6b9ba622437b4aceb49
