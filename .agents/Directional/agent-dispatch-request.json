@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb76-semantic-mismatch-docs-20261104-v1",
+  "request_id": "m6-cp3-tb76-handoff-currency-correction-20261104-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb76-semantic-mismatch-docs",
-  "file_id": "1sihJd0DPyE19mKyQOT8e59hHOKek3CJt",
-  "patch_sha256": "33e16a500e6fbd64f7106a8b25ff026173b8dba3155460e9f7f37cc9f3f25d85",
-  "base_sha": "29dc0e46d5ab9adb9267232391710e0d69e78c78",
+  "mailbox_key": "m6-cp3-tb76-handoff-currency-correction",
+  "file_id": "1yEHcNw54xU6iscMTqHSq2n-TzA95sjst",
+  "patch_sha256": "ef442750d3a68be5e093cb7d120387250234091f0414f03a5fddc5915d25daa5",
+  "base_sha": "5286ceb23ff04750a945ce97a805345548970fa7",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record TB76 semantic census mismatch and route review",
+  "commit_message": "docs: align TB76 handoff currency and mandatory review instructions",
   "retention_days": 14
 }
