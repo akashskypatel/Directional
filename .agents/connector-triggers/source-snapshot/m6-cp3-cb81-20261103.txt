@@ -1,4 +1,0 @@
-M6-CP3-CB81-P13-LENT-PROJECTION-CACHE
-Snapshot purpose: exact source for RA-201.6 CB81 patch verification, no runtime execution.
-Authoritative semantic base: c6420b1f9a84c423f60a5b96b90d59abb8df80e4
-Prior head: 2e231abc273ae6efeefb289b3caa64a1892e2123
