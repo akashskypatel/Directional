@@ -1,3 +1,9 @@
+## 2026-11-04 — CB87 bow-tie vertex-edge indexing, compile-only
+
+- Applied frozen RA-202.7 patch at [`d02fa6ce7467`](https://github.com/akashskypatel/Directional/commit/d02fa6ce74670ade8fecbcc2b7fd9a1d793b59b2); each vertex reads incident edge face lists exactly once, regardless of endpoint order. GUARD rows 897–898 compiled but not executed.
+- Linux eight-target GMP/GMPXX compile-only [run 41897641171](https://github.com/akashskypatel/Directional/actions/runs/41897641171) PASS; immutable package `13356343883`, ZIP SHA-256 `994f615f98cc74ddf5ac37c4bcf93a6dd52ffa37964384afe0b3e0cbe388ec03`, 28/28 hashes, `runtimeExecution=false`. [Record](.agents/Directional/Architecture_M6_CP3_CB87_P13_Bow_Tie_Vertex_Edges_Code_Build_Record_20261104.md).
+- No TB78 execution or runtime acceptance. CP2 491/491, stable 66/17/49, debt 1; selector497/CP3 unpromoted. Next separate turn `M6-CP3-CB88-P13-FINAL-VALIDATION-ROW-LABELS`.
+
 ## 2026-11-04 — TB77 CB86 immutable 896-case full gate and production census
 
 - [TB77 execution report](.agents/Directional/Architecture_M6_CP3_TB77_P13_Pre_Assembly_Cost_Full_Gate_Execution_Report_20261104.md) verifies [gate 41886202087](https://github.com/akashskypatel/Directional/actions/runs/41886202087) **896/896 PASS**, membership 977, 81 deferred, 1,800/1,800 packaged checksums; GUARD rows 894–896 passed. No compilation, relinking, configuration or benchmark execution.
