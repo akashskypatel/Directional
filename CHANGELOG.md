@@ -1,3 +1,9 @@
+## 2026-11-04 — TB78 immutable 899-case gate GREEN; Vase census count MISMATCH
+
+- [TB78 execution report](.agents/Directional/Architecture_M6_CP3_TB78_P13_Census_Path_Cost_Full_Gate_Execution_Report_20261104.md) independently verifies CB88 immutable artifact `13358062295`, source `6cc50f878ef829711e16262759afb3367bec2aff`. [Gate 41906228679](https://github.com/akashskypatel/Directional/actions/runs/41906228679): **899/899 PASS**, membership 980, 81 deferred, 1,806/1,806 hashes, GUARD rows 897–899 PASS, postflight true, no build/relink/configure or benchmark.
+- [Census 41906541304](https://github.com/akashskypatel/Directional/actions/runs/41906541304): 3/3 processes, 1 PASS/2 RED, 9/9 hashes; Cylinder PASS, BunnyRandom P13-e RED at sourceVertex49, Vase typed `SelfIntersectingFace` RED in 268.93 s, 67,784 completed quads. RA-202.9 froze 67,829; **mismatch −45** despite within-600s terminal. Do not interpret as registered MATCH.
+- No stable new event, accepted selector/CP3 promotion, implementation or test source changes. CP2 491/491, 66/17/49, debt 1 unchanged. **Exact separate Review:** `M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV` (re-run RA-202 probes before retry or patch).
+
 ## 2026-11-04 — CB88 final-validation row labels, compile-only
 
 - Exact RA-202.8 patch applied at [`6cc50f878ef8`](https://github.com/akashskypatel/Directional/commit/6cc50f878ef829711e16262759afb3367bec2aff); two source row-label reads reuse the validated binding. GUARD row 899 compiled, not executed.
