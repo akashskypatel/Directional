@@ -1790,3 +1790,125 @@ TEST(SurfaceMeshOptimizerPhase22, LentProjectionCacheBuildsNoSourceBvhPerQuery) 
   EXPECT_EQ(cache.queryCount, static_cast<std::size_t>(queries));
   EXPECT_LT(seconds, 2.0);
 }
+
+TEST(SurfaceMeshOptimizerPhase22,
+     LentLabelSupportIsUsedOnlyWhenItBorrowsTheConstraintSources) {
+  const HardRailValidationFixture fixture =
+      make_hard_rail_validation_fixture();
+  const SurfaceOptimizationConstraints constraints =
+      hard_rail_constraints(fixture);
+  using directional::validation::source_authoritative_detail::
+      SourcePointLabelSupport;
+  namespace detail = directional::geometry::surface_optimizer_detail;
+  // Built over the same faces and authority but without the hard rail, so it
+  // does not borrow the constraints' hard-edge set and must be ignored.
+  const SourcePointLabelSupport railBlind(
+      &constraints.sourceFaces, constraints.sourceAuthority, nullptr);
+  const SourcePointLabelSupport borrowed(
+      &constraints.sourceFaces, constraints.sourceAuthority,
+      &constraints.sourceHardFeatureEdges);
+  ASSERT_FALSE(railBlind.transitionGraph.borrows(
+      &constraints.sourceFaces, constraints.sourceAuthority,
+      constraints.sourceHardFeatureEdges));
+  ASSERT_TRUE(borrowed.transitionGraph.borrows(
+      &constraints.sourceFaces, constraints.sourceAuthority,
+      constraints.sourceHardFeatureEdges));
+
+  for (int face = 0; face < fixture.quads.rows(); ++face) {
+    const auto own = detail::consistent_source_scope(
+        fixture.quads, face, fixture.provenance, &constraints);
+    ASSERT_TRUE(own.has_value());
+    EXPECT_EQ(detail::consistent_source_scope(fixture.quads, face,
+                                              fixture.provenance, &constraints,
+                                              &railBlind),
+              own);
+    EXPECT_EQ(detail::consistent_source_scope(fixture.quads, face,
+                                              fixture.provenance, &constraints,
+                                              &borrowed),
+              own);
+
+    const SurfacePoint reference = detail::quad_reference_surface_point(
+        fixture.vertices, fixture.quads, face, constraints, fixture.provenance);
+    ASSERT_TRUE(reference.valid());
+    for (const SourcePointLabelSupport *lent : {&railBlind, &borrowed}) {
+      const SurfacePoint shared = detail::quad_reference_surface_point(
+          fixture.vertices, fixture.quads, face, constraints,
+          fixture.provenance, nullptr, lent);
+      EXPECT_EQ(shared.face, reference.face);
+      EXPECT_TRUE(shared.position.isApprox(reference.position));
+    }
+  }
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     OutputProjectionLendsOneLabelSupportToEveryQuad) {
+  // 20,000 source faces and 1,600 output quads: a label support (and its
+  // chart graph) per quad, or a binding check per chart face, costs seconds.
+  const SurfaceOptimizationConstraints constraints =
+      make_source_grid_constraints(100);
+  constexpr int m = 40;
+  Eigen::MatrixXd vertices((m + 1) * (m + 1), 3);
+  for (int j = 0; j <= m; ++j) {
+    for (int i = 0; i <= m; ++i) {
+      vertices.row(j * (m + 1) + i) << static_cast<double>(i) / m,
+          static_cast<double>(j) / m, 0.0;
+    }
+  }
+  Eigen::MatrixXi quads(m * m, 4);
+  for (int j = 0; j < m; ++j) {
+    for (int i = 0; i < m; ++i) {
+      const int v = j * (m + 1) + i;
+      quads.row(j * m + i) << v, v + 1, v + m + 2, v + m + 1;
+    }
+  }
+  const std::vector<int> zeros(
+      static_cast<std::size_t>(constraints.sourceFaces.rows()), 0);
+  const auto provenance = provenance_for(
+      vertices, constraints.sourceVertices, constraints.sourceFaces, zeros,
+      zeros);
+
+  const auto start = std::chrono::steady_clock::now();
+  const directional::geometry::surface_optimizer_detail::OutputProjectionCache
+      projection(vertices, quads, provenance, &constraints);
+  const double seconds = seconds_since(start);
+  for (int face = 0; face < quads.rows(); ++face) {
+    EXPECT_EQ(projection.faceScopes[static_cast<std::size_t>(2 * face)].size(),
+              1U);
+  }
+  EXPECT_LT(seconds, 2.0);
+
+  directional::geometry::surface_optimizer_detail::SourceProjectionCache cache(
+      constraints);
+  const auto orientationStart = std::chrono::steady_clock::now();
+  EXPECT_TRUE(directional::geometry::local_orientation_valid(
+      vertices, quads, &constraints, &provenance, &cache));
+  EXPECT_LT(seconds_since(orientationStart), 2.0);
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     LabelSupportQueriesDoNotRecheckTheSourceBinding) {
+  // 20,000 source faces and 100,000 point queries: re-checking the source
+  // binding on each query reads every source face 100,000 times.
+  const SurfaceOptimizationConstraints constraints =
+      make_source_grid_constraints(100);
+  const directional::validation::source_authoritative_detail::
+      SourcePointLabelSupport support(&constraints.sourceFaces,
+                                      constraints.sourceAuthority,
+                                      &constraints.sourceHardFeatureEdges);
+  ASSERT_TRUE(support.available());
+  SurfacePoint point;
+  point.face = 0;
+  point.component = 0;
+  point.sheet = 0;
+  point.barycentric = Eigen::Vector3d::Constant(1.0 / 3.0);
+  point.squaredDistance = 0.0;
+  constexpr int queries = 100000;
+  std::size_t supported = 0;
+  const auto start = std::chrono::steady_clock::now();
+  for (int query = 0; query < queries; ++query) {
+    supported += support.supported_faces(point).size();
+  }
+  const double seconds = seconds_since(start);
+  EXPECT_EQ(supported, static_cast<std::size_t>(queries));
+  EXPECT_LT(seconds, 2.0);
+}

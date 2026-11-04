@@ -391,10 +391,11 @@ struct SourcePointLabelSupport {
     }
   }
 
+  // The chart graph checked the source binding once at build, on these same
+  // faces and authority (Amendment 27), so queries do not re-check it.
   [[nodiscard]] bool available() const {
     return sourceSupport.available() && transitionGraph.available() &&
-           authority != nullptr && sourceFaces != nullptr &&
-           authority->matches_source_faces(*sourceFaces);
+           authority != nullptr && sourceFaces != nullptr;
   }
 
   [[nodiscard]] std::vector<authority::SourceFaceId>

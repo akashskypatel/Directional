@@ -612,16 +612,23 @@ FaceChartAuthorityView quad_chart_authority(
     const SurfaceOptimizationConstraints &constraints,
     const std::size_t provenanceCount);
 
+// A caller that checks many quads after its stage's source binding check
+// lends one label support (Amendment 27). It is used only when it borrows
+// exactly these constraints' faces, authority and hard-edge set.
 std::optional<SourceProjectionScope> consistent_source_scope(
     const Eigen::MatrixXi &quads, const int face,
     const std::vector<SurfacePoint> &provenance,
-    const SurfaceOptimizationConstraints *constraints = nullptr);
+    const SurfaceOptimizationConstraints *constraints = nullptr,
+    const validation::source_authoritative_detail::SourcePointLabelSupport
+        *labelSupport = nullptr);
 
 SurfacePoint quad_reference_surface_point(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const int face, const SurfaceOptimizationConstraints &constraints,
     const std::vector<SurfacePoint> &provenance,
-    SourceProjectionCache *projectionCache = nullptr);
+    SourceProjectionCache *projectionCache = nullptr,
+    const validation::source_authoritative_detail::SourcePointLabelSupport
+        *labelSupport = nullptr);
 
 Eigen::RowVector3d quad_bilinear_sample(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
@@ -648,13 +655,19 @@ struct OutputProjectionCache {
             constraints != nullptr ? constraints->sourceAuthority : nullptr,
             constraints != nullptr ? &constraints->sourceHardFeatureEdges
                                    : nullptr);
+    const bool sourceBound =
+        constraints != nullptr && constraints->sourceAuthority != nullptr &&
+        constraints->sourceAuthority->matches_source_faces(
+            constraints->sourceFaces,
+            static_cast<std::size_t>(constraints->sourceVertices.rows()));
     for (int face = 0; face < quads.rows(); ++face) {
       triangles.row(2 * face) << quads(face, 0), quads(face, 1), quads(face, 2);
       triangles.row(2 * face + 1) << quads(face, 0), quads(face, 2), quads(face, 3);
       const auto fallbackScope =
-          consistent_source_scope(quads, face, provenance, constraints);
+          consistent_source_scope(quads, face, provenance, constraints,
+                                  sourceBound ? &labelSupport : nullptr);
       std::set<SourceProjectionScope> scopes;
-      if (constraints != nullptr && labelSupport.available()) {
+      if (sourceBound && labelSupport.available()) {
         std::vector<const SurfacePoint *> points;
         points.reserve(4);
         for (int corner = 0; corner < 4; ++corner) {
@@ -673,7 +686,8 @@ struct OutputProjectionCache {
               points, authority.vertices, &provenance,
               &constraints->vertexChartAuthority);
           for (const int sourceFace : chartFaces) {
-            const auto scope = source_face_scope(*constraints, sourceFace);
+            const auto scope = bound_source_face_scope(
+                *constraints->sourceAuthority, sourceFace);
             if (scope.has_value()) {
               scopes.insert(*scope);
             }

@@ -136,6 +136,16 @@ SourceProjectionCache &lent_or_local_projection_cache(
   return local.emplace(constraints);
 }
 
+bool borrows_constraint_sources(
+    const validation::source_authoritative_detail::SourcePointLabelSupport *support,
+    const SurfaceOptimizationConstraints &constraints) {
+  return support != nullptr && support->sourceFaces == &constraints.sourceFaces &&
+         support->authority == constraints.sourceAuthority &&
+         support->transitionGraph.borrows(&constraints.sourceFaces,
+                                          constraints.sourceAuthority,
+                                          constraints.sourceHardFeatureEdges);
+}
+
 } // namespace
 
 SurfacePoint nearest_source_point(
@@ -1036,13 +1046,26 @@ namespace directional::geometry::surface_optimizer_detail {
 std::optional<SourceProjectionScope> consistent_source_scope(
     const Eigen::MatrixXi &quads, const int face,
     const std::vector<SurfacePoint> &provenance,
-    const SurfaceOptimizationConstraints *constraints) {
+    const SurfaceOptimizationConstraints *constraints,
+    const validation::source_authoritative_detail::SourcePointLabelSupport *lentSupport) {
   if (constraints == nullptr) {
     return std::nullopt;
   }
-  const validation::source_authoritative_detail::SourcePointLabelSupport
-      labelSupport(&constraints->sourceFaces, constraints->sourceAuthority,
-                   &constraints->sourceHardFeatureEdges);
+  // A lent support stands for the caller's source binding check. A
+  // standalone call checks the binding once and builds its own support.
+  std::optional<validation::source_authoritative_detail::SourcePointLabelSupport> localSupport;
+  if (!borrows_constraint_sources(lentSupport, *constraints)) {
+    if (constraints->sourceAuthority == nullptr ||
+        !constraints->sourceAuthority->matches_source_faces(
+            constraints->sourceFaces,
+            static_cast<std::size_t>(constraints->sourceVertices.rows()))) {
+      return std::nullopt;
+    }
+    lentSupport = &localSupport.emplace(&constraints->sourceFaces,
+                                        constraints->sourceAuthority,
+                                        &constraints->sourceHardFeatureEdges);
+  }
+  const auto &labelSupport = *lentSupport;
   if (!labelSupport.available()) {
     return std::nullopt;
   }
@@ -1075,7 +1098,8 @@ std::optional<SourceProjectionScope> consistent_source_scope(
 
   std::set<SourceProjectionScope> scopes;
   for (const int sourceFace : resolution.chartFaces) {
-    const auto scope = source_face_scope(*constraints, sourceFace);
+    const auto scope =
+        bound_source_face_scope(*constraints->sourceAuthority, sourceFace);
     if (!scope.has_value()) {
       return std::nullopt;
     }
@@ -1106,14 +1130,19 @@ SurfacePoint quad_reference_surface_point(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const int face, const SurfaceOptimizationConstraints &constraints,
     const std::vector<SurfacePoint> &provenance,
-    SourceProjectionCache *projectionCache) {
+    SourceProjectionCache *projectionCache,
+    const validation::source_authoritative_detail::SourcePointLabelSupport *lentSupport) {
   Eigen::RowVector3d centroid = Eigen::RowVector3d::Zero();
   for (int corner = 0; corner < 4; ++corner) {
     centroid += 0.25 * vertices.row(quads(face, corner));
   }
-  const validation::source_authoritative_detail::SourcePointLabelSupport
-      labelSupport(&constraints.sourceFaces, constraints.sourceAuthority,
-                   &constraints.sourceHardFeatureEdges);
+  std::optional<validation::source_authoritative_detail::SourcePointLabelSupport> localSupport;
+  if (!borrows_constraint_sources(lentSupport, constraints)) {
+    lentSupport = &localSupport.emplace(&constraints.sourceFaces,
+                                        constraints.sourceAuthority,
+                                        &constraints.sourceHardFeatureEdges);
+  }
+  const auto &labelSupport = *lentSupport;
   std::vector<const SurfacePoint *> points;
   points.reserve(4);
   for (int corner = 0; corner < 4; ++corner) {
@@ -1765,6 +1794,11 @@ bool local_orientation_valid(
       vertexProvenance != nullptr
           ? vertexProvenance
           : (constraints != nullptr ? &constraints->vertexProvenance : nullptr);
+  std::optional<validation::source_authoritative_detail::SourcePointLabelSupport> labelSupport;
+  if (constraints != nullptr) {
+    labelSupport.emplace(&constraints->sourceFaces, constraints->sourceAuthority,
+                         &constraints->sourceHardFeatureEdges);
+  }
   for (int f = 0; f < quads.rows(); ++f) {
     Eigen::RowVector3d normal(0.0, 0.0, 1.0);
     if (constraints != nullptr) {
@@ -1772,7 +1806,8 @@ bool local_orientation_valid(
           authoritativeProvenance != nullptr
               ? surface_optimizer_detail::quad_reference_surface_point(
                     vertices, quads, f, *constraints,
-                    *authoritativeProvenance, projectionCache)
+                    *authoritativeProvenance, projectionCache,
+                    &*labelSupport)
               : SurfacePoint{};
       normal = surface_optimizer_detail::local_source_normal(
           *constraints, reference, f);
@@ -2549,7 +2584,8 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
                                                         &constraints.vertexChartAuthority)
             : std::vector<int>{};
     const auto sourceScope =
-        consistent_source_scope(quads, face, provenance, &constraints);
+        consistent_source_scope(quads, face, provenance, &constraints,
+                                &sourceLabelSupport);
     for (const double u : quadSamples) {
       for (const double v : quadSamples) {
         const Eigen::RowVector3d sample =
@@ -2656,7 +2692,8 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
 
   for (int face = 0; face < quads.rows(); ++face) {
     const SurfacePoint faceSource = quad_reference_surface_point(
-        vertices, quads, face, constraints, provenance, &sourceProjection);
+        vertices, quads, face, constraints, provenance, &sourceProjection,
+        &sourceLabelSupport);
     const Eigen::RowVector3d sourceNormal =
         local_source_normal(constraints, faceSource, face);
     normalErrors.push_back(
@@ -2954,9 +2991,13 @@ SurfaceOptimizationOverlay make_surface_optimization_overlay(
     }
   }
 
+  const validation::source_authoritative_detail::SourcePointLabelSupport
+      sourceLabelSupport(&constraints.sourceFaces, constraints.sourceAuthority,
+                         &constraints.sourceHardFeatureEdges);
   for (int face = 0; face < quads.rows(); ++face) {
     const SurfacePoint faceSource = quad_reference_surface_point(
-        vertices, quads, face, constraints, provenance, &sourceProjection);
+        vertices, quads, face, constraints, provenance, &sourceProjection,
+        &sourceLabelSupport);
     overlay.normalError(face) = angle_degrees(
         face_normal(vertices, quads, face),
         local_source_normal(constraints, faceSource, face));
