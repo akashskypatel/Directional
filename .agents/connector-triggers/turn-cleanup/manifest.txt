@@ -1,2 +1,0 @@
-# TB78 temporary repository markers; no durable request or mailbox paths
-.agents/connector-triggers/source-snapshot/tb78-20261104-2017.txt
