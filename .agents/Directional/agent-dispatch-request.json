@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb75-closeout-drive-20261104-v2",
+  "request_id": "m6-cp3-cb82-label-support-drive-20261104-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb75-closeout-drive-apply-v2",
-  "file_id": "1J8sLz_cXLNuJXueUiiFDHuiGEyaZKrvy",
-  "patch_sha256": "e6a7fac2308028ecb4fb78741ba0833c1a5c5d542c753ff4694411fc245b5b16",
-  "base_sha": "5f776663936b8fa7a27c8f9b3f97a642e77f4a3d",
+  "mailbox_key": "m6-cp3-cb82-label-support-drive-apply",
+  "file_id": "1iaKvs2O9zQqFoFJ6yc0sl3yN_UMz-mL9",
+  "patch_sha256": "1f26f38197f1f766e33edb6ac98a2c3776d05a415e8ce76d319315587a23f010",
+  "base_sha": "49d48e604f37eb3fc22c6143ca1c8008bcea0e51",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB75 immutable gate and production census",
+  "commit_message": "feat(directional): lend exact label support across surface optimizer",
   "retention_days": 14
 }
