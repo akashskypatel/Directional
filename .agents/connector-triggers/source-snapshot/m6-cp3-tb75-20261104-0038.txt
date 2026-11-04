@@ -1,0 +1,2 @@
+Purpose: immutable source snapshot for M6-CP3-TB75-P13-LENT-PROJECTION-CACHE-FULL-GATE-EXEC.
+Event SHA is exact snapshot source authority. No compile or runtime in this workflow.
