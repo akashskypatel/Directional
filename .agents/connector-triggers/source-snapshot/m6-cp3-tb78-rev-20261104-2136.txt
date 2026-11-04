@@ -1,3 +1,0 @@
-turn=M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV
-purpose=read-only review source snapshot
-semantic_base=2a1cd31b33c9f9cee033faa7e086a90e12de6463
