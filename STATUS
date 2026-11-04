@@ -1,10 +1,8 @@
-Superseded: M6-CP3-CB84-P13-LINUX-VASE-DIAGNOSTIC-TIMING is WITHDRAWN by RA-202 (never applied or compiled; do not apply its preserved patch). Next: exact CB85 (RA-202.4).
-
 ---TURN_STATUS---
 Turn: M6-CP3-TB76-P13-OPTIMIZER-SOURCE-QUERY-FULL-GATE-REV
 Status: COMPLETE
 Successor: M6-CP3-CB85-P13-ARRANGEMENT-TJUNCTION-FACE-SCAN
-Started at: 2026-11-04T03:40:00Z
-Resumed at:
-Ended at: 2026-11-04T05:05:00Z
+Started at: 2026-11-04T03:20:13Z
+Resumed at: 2026-11-04T15:04:30Z
+Ended at: 2026-11-04T15:05:49Z
 ---END_TURN_STATUS---
