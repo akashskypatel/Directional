@@ -1,0 +1,3 @@
+Turn: M6-CP3-CB89-P13-CENSUS-PLATFORM-DIGEST
+Purpose: exact source snapshot for code and build turn.
+Entry STATUS commit: 008fca55fe768125dc92406374a315b3aa405184
