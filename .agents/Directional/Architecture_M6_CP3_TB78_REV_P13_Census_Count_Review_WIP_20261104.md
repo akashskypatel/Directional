@@ -29,15 +29,15 @@
 
 ## Narrower existing probe surface (static audit 2026-11-04)
 
-- Reverified immutable census ZIP `13361996286` (outer digest and internal 9/9). Vase `raw/3.log` shows 67,784 quads, **no stage hashes**.
+- Census ZIP `13361996286` reverified (outer digest, 9/9 entries). Vase raw log: 67,784 quads; no stage hashes. Census `ledger.tsv` reports `reason-not-observed` for both REDs, so typed/count verification requires **manual raw-log review**, not trusting summary ledger.
 - `src/bench/DirectionalBenchmark.cpp:791-797` computes `record.fieldHash`, but its JSON writer at 3234–3256 **omits it for generated smooth fields**. Existing stage/context hashes are serialized on failure (benchmark 1322–1372), but **pipeline floating hashes quantize to 1e-9** (`RemeshPipeline.cpp:1673-1675`), so equal stage hashes do not prove bitwise field equality. Prefer the existing bit-exact `record.fieldHash` before new instrumentation.
-- Existing `directional_benchmarks` supports single-case `--warmup 0 --runs 1 --disable-surface-cell-source-grid-recovery --output`. It is not automatically equivalent to GTest: GTest forces debug artifacts/retained geometry off and paired-boundary rejection on, while the benchmark inherits manifest settings. Compare only with exact options parity and separate fresh processes.
+- `directional_benchmarks` supports `--warmup 0 --runs 1 --disable-surface-cell-source-grid-recovery --output`; verify option parity with GTest (debug/retained-geometry and paired-boundary flags). Use fresh processes; main returns zero after writing JSON even on rejected runs, so inspect `runs[*].success` and terminal diagnostics.
 - Compare exact mesh/options → raw generated field → composite cross-field → traces/selection → arrangement → completion. Matching **counts** or quantized structural hashes do not prove bitwise field identity.
 - **Authority conflict:** Review policy §4.3 forbids runtime, but RA-202.9 asks this Review to re-run missing RA-202.12 scratch probes. No product execution belongs in Review; separately authorize diagnostic execution before adjudicating the count.
 
 ## Required continuation — Review only
 
-1. Independently reproduce the RA-202.12 scratch probe on fixed source and identical fixture/options, recording complete mesh and raw-field hashes on each platform; do not treat old prose as its own oracle. Scratch scripts `scratchpad/tb76r/` were explicitly uncommitted and are not present in this snapshot; reconstruct and verify the minimal recipe first.
+1. RA-202.12 independent probe needs same source/mesh/options and raw-field hashes on macOS/Linux. Its scratch scripts were uncommitted/absent. Reconstruct the recipe in a separately authorized runtime turn; do not treat its prose as an oracle.
 2. Repeat the Vase census on each platform with unchanged source and process isolation, retaining per-run stage hashes, failure code, counts, wall/RSS and deterministic seeds; distinguish within-platform nondeterminism from cross-platform variation.
 3. Locate the **first** diverging stage (generated cross-field → transport/traces → selection → arrangement → completed-patch/assembly) via canonical source-ID/patch-ID hashes, not aggregate counts alone. When the first divergent stage is found, compare its exact producer decisions and inputs.
 4. Adjudicate the registered count: semantic delta versus fixture field initialization/numerical dependence versus invalid preregistration. Preserve RA-202.9 as frozen until evidence justifies a correction; do not weaken tests, replace registration, retry TB78 unreviewed, or promote CP3/selector497.
