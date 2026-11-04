@@ -30,9 +30,9 @@
 ## Narrower existing probe surface (static audit 2026-11-04)
 
 - Reverified immutable census ZIP `13361996286` (outer digest and internal 9/9). Vase `raw/3.log` shows 67,784 quads, **no stage hashes**.
-- `src/bench/DirectionalBenchmark.cpp:791-797` computes `record.fieldHash`, but its JSON writer at 3234–3256 **omits it for generated smooth fields**. Existing pipeline source/cross-field identities (`RemeshPipeline.cpp:12583-12629`) and serialized failed-run stage/context hashes (benchmark 1322–1372) should be reused before new instrumentation.
+- `src/bench/DirectionalBenchmark.cpp:791-797` computes `record.fieldHash`, but its JSON writer at 3234–3256 **omits it for generated smooth fields**. Existing stage/context hashes are serialized on failure (benchmark 1322–1372), but **pipeline floating hashes quantize to 1e-9** (`RemeshPipeline.cpp:1673-1675`), so equal stage hashes do not prove bitwise field equality. Prefer the existing bit-exact `record.fieldHash` before new instrumentation.
 - Existing `directional_benchmarks` supports single-case `--warmup 0 --runs 1 --disable-surface-cell-source-grid-recovery --output`. It is not automatically equivalent to GTest: GTest forces debug artifacts/retained geometry off and paired-boundary rejection on, while the benchmark inherits manifest settings. Compare only with exact options parity and separate fresh processes.
-- Compare exact mesh/options → raw generated field → composite cross-field → traces/selection → arrangement → completion. Matching **counts** do not prove matching topology or field.
+- Compare exact mesh/options → raw generated field → composite cross-field → traces/selection → arrangement → completion. Matching **counts** or quantized structural hashes do not prove bitwise field identity.
 - **Authority conflict:** Review policy §4.3 forbids runtime, but RA-202.9 asks this Review to re-run missing RA-202.12 scratch probes. No product execution belongs in Review; separately authorize diagnostic execution before adjudicating the count.
 
 ## Required continuation — Review only
