@@ -1,0 +1,2 @@
+source_snapshot_turn=M6-CP3-TB77-P13-PRE-ASSEMBLY-COST-FULL-GATE-EXEC
+previous_authority_sha=05f59c3dc8271a0945f4c553c7c54c9ae5d9cfc6
