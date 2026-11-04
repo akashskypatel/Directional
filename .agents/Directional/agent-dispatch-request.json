@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb85-arrangement-tjunction-apply-20261104-v1",
+  "request_id": "m6-cp3-cb85-arrangement-tjunction-apply-20261104-v2",
   "operation": "drive_apply",
   "mailbox_key": "m6-cp3-cb85-arrangement-tjunction-apply",
-  "file_id": "1xw4hwjMbydEtNrMfx0uf_aeoSlU4r-jD",
-  "patch_sha256": "06bd2594a6cd54138fb0859e850f30740836b5e0c1fe76de6d023c23fc76a4c0",
+  "file_id": "1KmGQ8rnP6l3YZAd57QQ8L5S_Uhrqe4q6",
+  "patch_sha256": "5143ff170f7cd74d3097790f9d3a2ad7d82b6a2b55c0da2aa544ef121922f123",
   "base_sha": "2da3e99d698ac02631228c3beb994568fdea5f9d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "perf(surface-cells): index T-junction scan halfedges by source face",
