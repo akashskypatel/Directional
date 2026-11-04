@@ -37,6 +37,8 @@
 
 **Standing state:** CP2 accepted 491/491; stable 66 events / 17 categories / 49 recurrences; debt 1; 81 deferred; selector497/CP3 unpromoted; P13-l/P13-e and O27–O29 carried. No product, test, fixture, selector or build code was edited and no Directional runtime/build was executed in this Review attempt.
 
+**Current snapshot-only audit limitations:** `review_check.py boundary` ran from the verified source archive but exited 1 because the archive has no `.git` ancestor/history; its `durable rewrite baseline` and `durable rewrite source` failures cannot be read as a branch-boundary violation. Pure-read `document_drift_audit.py --root .` also exited 1: existing handoff 43,478 B versus 16,000 B budget (ERROR), orientation 29,008 B versus 24,000 B budget (WARNING). These are documentation maintenance findings, not the Vase-count root cause. An authentic branch-history boundary check and authorized preservation/consolidation remain outstanding before Review closure.
+
 ## Process / policy verification notes
 
 - **Conservation-policy deviation:** this Web turn began direct document fetches before formally choosing the required snapshot read mode even though the mandatory checklist made the snapshot threshold evident. It subsequently obtained, independently hash-verified and used an exact workflow snapshot; no further piecemeal source inspection was relied on. This ordering miss is not treated as compliant.
