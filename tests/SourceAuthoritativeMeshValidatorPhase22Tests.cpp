@@ -2,6 +2,7 @@
 #include <directional/geometry/SurfaceCellTracing.h>
 
 #include <algorithm>
+#include <chrono>
 #include <cstdint>
 #include <set>
 #include <vector>
@@ -343,4 +344,84 @@ TEST(SourceAuthoritativeMeshValidatorPhase22,
                                       &no_hard_feature_edges());
   const std::vector<const SurfacePoint *> points = {&first, &opposite};
   EXPECT_TRUE(support.have_compatible_chart(points));
+}
+
+namespace {
+
+bool has_bow_tie(const directional::validation::MeshValidationResult &result,
+                 const int vertex) {
+  return std::any_of(result.issues.begin(), result.issues.end(),
+                     [&](const auto &issue) {
+                       return issue.code ==
+                                  MeshValidationFailureCode::BowTieVertex &&
+                              issue.vertex == vertex;
+                     });
+}
+
+} // namespace
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
+     BowTieVertexReadsEdgesNamingItFirstOrSecond) {
+  // Vertex 2 is the centre of a closed four-triangle fan. Its edges to
+  // vertices 0 and 1 name it second and its edges to 3 and 4 name it first,
+  // so a vertex that reads only one end of its edges sees a split fan
+  // (RA-202).
+  Eigen::MatrixXd vertices(5, 3);
+  vertices << -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+      0.0, 1.0, 0.0;
+  Eigen::MatrixXi fan(4, 3);
+  fan << 2, 0, 1,
+         2, 1, 3,
+         2, 3, 4,
+         2, 4, 0;
+  directional::validation::MeshValidatorOptions options;
+  options.topologyOnly = true;
+  const auto fanResult =
+      directional::validation::MeshValidator::validate_surface_mesh(
+          vertices, fan, options);
+  EXPECT_FALSE(has_bow_tie(fanResult, 2));
+
+  // Two triangles that share only vertex 2.
+  Eigen::MatrixXi bowTie(2, 3);
+  bowTie << 2, 0, 1,
+            2, 3, 4;
+  const auto bowTieResult =
+      directional::validation::MeshValidator::validate_surface_mesh(
+          vertices, bowTie, options);
+  EXPECT_TRUE(has_bow_tie(bowTieResult, 2));
+}
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
+     BowTieCheckReadsOnlyTheEdgesOfEachVertex) {
+  // A 150 x 150 quad grid: 22,801 vertices and 45,300 edges. Reading every
+  // edge for every vertex visits about 10^9 map entries; reading each
+  // vertex's own edges visits about 10^5 (RA-202).
+  constexpr int n = 150;
+  Eigen::MatrixXd vertices((n + 1) * (n + 1), 3);
+  for (int j = 0; j <= n; ++j) {
+    for (int i = 0; i <= n; ++i) {
+      vertices.row(j * (n + 1) + i) << static_cast<double>(i) / n,
+          static_cast<double>(j) / n, 0.0;
+    }
+  }
+  Eigen::MatrixXi quads(n * n, 4);
+  for (int j = 0; j < n; ++j) {
+    for (int i = 0; i < n; ++i) {
+      const int v = j * (n + 1) + i;
+      quads.row(j * n + i) << v, v + 1, v + n + 2, v + n + 1;
+    }
+  }
+  directional::validation::MeshValidatorOptions options;
+  options.topologyOnly = true;
+
+  const auto start = std::chrono::steady_clock::now();
+  const auto result =
+      directional::validation::MeshValidator::validate_surface_mesh(
+          vertices, quads, options);
+  const double seconds =
+      std::chrono::duration<double>(std::chrono::steady_clock::now() - start)
+          .count();
+
+  EXPECT_TRUE(result.accepted);
+  EXPECT_LT(seconds, 2.0);
 }

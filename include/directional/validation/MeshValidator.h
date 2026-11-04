@@ -547,6 +547,18 @@ private:
       const std::vector<std::set<int>> &vertexFaceNeighbors,
       const std::map<std::pair<int, int>, std::vector<int>> &edgeIncidence,
       MeshValidationResult &result) {
+    // Each vertex reads only the face lists of its own edges (Amendment 34).
+    std::vector<std::vector<const std::vector<int> *>> incidentEdgeFaces(
+        vertexFaceNeighbors.size());
+    for (const auto &[edge, faces] : edgeIncidence) {
+      for (const int vertex : {edge.first, edge.second}) {
+        if (vertex >= 0 &&
+            static_cast<std::size_t>(vertex) < incidentEdgeFaces.size()) {
+          incidentEdgeFaces[static_cast<std::size_t>(vertex)].push_back(
+              &faces);
+        }
+      }
+    }
     for (std::size_t vertex = 0; vertex < vertexFaceNeighbors.size();
          ++vertex) {
       const std::set<int> &incidentFaces = vertexFaceNeighbors[vertex];
@@ -557,13 +569,9 @@ private:
       for (const int face : incidentFaces) {
         adjacency[face];
       }
-      for (const auto &[edge, faces] : edgeIncidence) {
-        if (edge.first != static_cast<int>(vertex) &&
-            edge.second != static_cast<int>(vertex)) {
-          continue;
-        }
-        for (const int a : faces) {
-          for (const int b : faces) {
+      for (const std::vector<int> *faces : incidentEdgeFaces[vertex]) {
+        for (const int a : *faces) {
+          for (const int b : *faces) {
             if (a != b && incidentFaces.count(a) && incidentFaces.count(b)) {
               adjacency[a].insert(b);
             }
