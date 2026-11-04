@@ -5,7 +5,7 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — RA-203: TB78 Review closed; Vase platform split O30; exact CB89 next (2026-11-04)
+## CURRENT — CB89 compiled; next TB79 platform digest immutable full gate (2026-11-04)
 
 - [x] **TB78 Review closed by [RA-203](.agents/Directional/Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md)** (scratch probes on the CB88 tree):
   - **The block.** ChatGPT's [WIP](.agents/Directional/Architecture_M6_CP3_TB78_REV_P13_Census_Count_Review_WIP_20261104.md) saw a conflict between `REVIEW_TURN_POLICY.md` §4.3 and RA-202.9's "re-run the probe recipe". The fault is RA-202.9's route, which named no track and asked one platform to explain a split between two. Review scratch probes are a duty (RA-166.6 F6, RA-188.1). Linux runtime is a TB. No policy change.
@@ -282,7 +282,7 @@
      - **Observed:** gate 899/899 PASS, census 1 PASS/2 RED, Vase typed RED within 600s but `completedQuads=67784` instead of registered `67829`. **Semantic MISMATCH** (45 quads); [TB78 report](.agents/Directional/Architecture_M6_CP3_TB78_P13_Census_Path_Cost_Full_Gate_Execution_Report_20261104.md). Adjudicated by RA-203: the registered count was macOS-only (RA-203.2), so TB78 is COMPLETE and the split is O30.
   - **RA-203 sequence:** steps 35–37, one turn each, in order. The implementation agent takes 36 and 37, and starts 37 only after 36 is verified. The CB applies its committed `.diff` file byte for byte (SHA-256 checked).
   35. [x] **`M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV`** (Review): ChatGPT's WIP (BLOCKED), then [RA-203](.agents/Directional/Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md).
-  36. [ ] **NEXT `M6-CP3-CB89-P13-CENSUS-PLATFORM-DIGEST`** (CB, compile only, test-only; RA-203.5):
+  36. [x] **COMPLETE `M6-CP3-CB89-P13-CENSUS-PLATFORM-DIGEST`** (CB, compile only, test-only; RA-203.5):
      - Precheck: `git diff --quiet 6cc50f878ef829711e16262759afb3367bec2aff HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
      - Patch `.agents/Directional/Architecture_M6_CP3_CB89_P13_Census_Platform_Digest.diff`:
        - SHA-256 `64af5c71ad57a662724b077761f71c1c38893be6ed32516fc568166e85c23f71`, 68 lines; keep its 3 single-space context lines;
@@ -291,7 +291,8 @@
      - Content: after the remesh call, `ProducesDirectSourceAuthoritativePureQuadOutput` prints one `platform-digest` line. The line holds bit-exact vertex, face and field digests, then each `debugProducts` stage hash and count. There is no new test and no changed assertion, so membership stays 980.
      - Build: one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`.
      - Mismatch → `M6-CP3-PLAN-P13-CENSUS-PLATFORM-DIGEST-STOP`; infrastructure → `M6-CP3-CB89A-P13-CENSUS-PLATFORM-DIGEST-ORCH`.
-  37. [ ] **`M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-EXEC`** (TB-EXEC; RA-203.6):
+     - **Verified:** [CB89 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB89_P13_Census_Platform_Digest_Code_Build_Record_20261104.md), source `9c961669…`, [compile run 41932156223](https://github.com/akashskypatel/Directional/actions/runs/41932156223), artifact `13370954424`, 28/28 hashes, GMP/GMPXX eight targets, no runtime.
+  37. [ ] **NEXT `M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-EXEC`** (TB-EXEC; RA-203.6):
      - Gate: the TB78 manifest 899 `9d2c1ec5…`, reused unchanged; ledger v5; 899/899, membership 980. The raw logs of rows 795, 796, 797 and 864 each contain exactly one `platform-digest` line.
      - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; **Vase RED `SelfIntersectingFace` within 600 s, 192,482 / 26,817 / 67,784**. Each census log contains exactly one `platform-digest` line.
      - Record the seven digest lines verbatim. They are not a match criterion, and TB79 makes no comparison claim.

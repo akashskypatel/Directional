@@ -2,15 +2,15 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-11-04 · `M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV`. [RA-203](Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md) closes the TB78 Review by scratch probes. Accepted CP2 491/491, stable 66/17/49, debt 1; selector497/CP3 unpromoted.
+**Currency:** 2026-11-04 · `M6-CP3-CB89-P13-CENSUS-PLATFORM-DIGEST` compile-only COMPLETE; next TB79. [RA-203](Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md) closes the TB78 Review by scratch probes. Accepted CP2 491/491, stable 66/17/49, debt 1; selector497/CP3 unpromoted.
 - **Before it:** P13-m, fixed by [RA-202](Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md). The fix is Amendment 34 and exact CB85–CB88, removing three memory-bound census-path scans plus two Amendment 33 sites.
 - **The block.** The ChatGPT Review saw a conflict between "runtime-free" and a probe re-run. The fault is RA-202.9's route: it named no track and asked one platform to explain a split between two. Review scratch probes are a duty (RA-166.6 F6, RA-188.1), Linux runtime is a TB, and no policy changes.
 - **TB78** (CB85–CB88) matches on gate 899/899 and on every census line except the count. Vase reaches RED `SelfIntersectingFace` in 268.93 s on Linux, so P13-m's Linux objective is met.
 - **The count is O30.** Vase completes 67,784 quads on Linux and 67,829 on macOS. RA-202.9 had pinned the macOS-only value. Upstream topology agrees on both platforms, and CB85–CB88 cannot round or reorder.
 
 **Next:**
-- The implementation agent runs `M6-CP3-CB89-P13-CENSUS-PLATFORM-DIGEST`. It is a test-only exact patch that prints bit-exact input digests and per-stage hashes.
-- Then `M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-EXEC`.
+- `M6-CP3-CB89-P13-CENSUS-PLATFORM-DIGEST` is complete: exact test-only patch, [compile run 41932156223](https://github.com/akashskypatel/Directional/actions/runs/41932156223) eight targets PASS, artifact `13370954424` (28/28 hashes), GMP/GMPXX, runtime not executed; [CB89 record](Architecture_M6_CP3_CB89_P13_Census_Platform_Digest_Code_Build_Record_20261104.md).
+- **Next:** `M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-EXEC`, independent immutable artifact-only runtime gate.
 - Review track (Claude, scratch build):
   - `M6-CP3-DEFN-P13-PLATFORM-SPLIT` (O30, after TB79);
   - `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l);

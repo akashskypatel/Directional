@@ -34,33 +34,21 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-04 · [RA-203](Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md) closes the TB78 Review. The review-boundary block is RA-202.9's route, not the policy: Review scratch probes are a duty (RA-166.6 F6, RA-188.1), and Linux runtime is a TB. TB78 matches everywhere except the count line. Vase completes in 268.93 s with 67,784 quads on Linux against 67,829 on macOS. RA-202.9 pinned a macOS-only value, and the split is **O30**. Next: exact CB89 (test-only platform digests) → TB79. |
-| Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing` · **CB88 source `6cc50f878ef829711e16262759afb3367bec2aff`, artifact `13358062295`**, [record](Architecture_M6_CP3_CB87_P13_Bow_Tie_Vertex_Edges_Code_Build_Record_20261104.md), [Linux compile 41897641171](https://github.com/akashskypatel/Directional/actions/runs/41897641171), eight GMP/GMPXX targets PASS, `runtimeExecution=false` (28/28 package hashes). CB86 predecessor `0f4c78c4…`, artifact `13347299644`. No runtime acceptance promotion. |
+| Currency | 2026-11-04 · [RA-203](Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md) closes the TB78 Review. The review-boundary block is RA-202.9's route, not the policy: Review scratch probes are a duty (RA-166.6 F6, RA-188.1), and Linux runtime is a TB. TB78 matches everywhere except the count line. Vase completes in 268.93 s with 67,784 quads on Linux against 67,829 on macOS. RA-202.9 pinned a macOS-only value, and the split is **O30**. CB89 compiled without runtime; next TB79 immutable test/benchmark. |
+| Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing` · **CB89 source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, artifact `13370954424`**, [record](Architecture_M6_CP3_CB89_P13_Census_Platform_Digest_Code_Build_Record_20261104.md), [compile run 41932156223](https://github.com/akashskypatel/Directional/actions/runs/41932156223), eight Linux GMP/GMPXX targets PASS, 28/28 checksums, `runtimeExecution=false`. TB79 not yet run. |
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06; unchanged. TB71 remains unpromoted candidate only. |
 | Latest candidate | **TB78** CB88 immutable gate **899/899 PASS**, membership 980, 81 deferred, 1,806/1,806 checksums; census Cylinder PASS, BunnyRandom P13-e, Vase typed RED in 268.93 s. The quad count (67,784 against macOS 67,829) is O30, a platform split, not a CB85–CB88 defect (RA-203.3). Unpromoted. [TB78 report](Architecture_M6_CP3_TB78_P13_Census_Path_Cost_Full_Gate_Execution_Report_20261104.md). |
 | Regression accounting and debt | Accepted CP2 **491/491**; stable **66/17/49**, debt **1**; ledger v5 81 deferred (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE), current membership **977**; selector497 and CP3 unpromoted. DR1/DR3 open, DR2/DR4 to M8-CP2. |
-| Active boundary | TB78 Review COMPLETE (RA-203). Next: the implementation agent's `M6-CP3-CB89-P13-CENSUS-PLATFORM-DIGEST` (compile only), then TB79. No acceptance or selector promotion, and no new stable event. Carried: O30, P13-l, P13-e and O27–O29. |
+| Active boundary | CB89 Code + Build COMPLETE (verified source, test-only patch, eight-target compile only). Next: `M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-EXEC`, separate immutable-artifact execution turn. No acceptance or selector promotion, and no new stable event. Carried: O30, P13-l, P13-e and O27–O29. |
 
-## Mandatory next turn — `M6-CP3-CB89-P13-CENSUS-PLATFORM-DIGEST` (Code + Build, compile only)
+## Mandatory next turn — `M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-EXEC` (Test + Benchmark, no rebuild)
 
-- **Authority:** [RA-203](Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md) §5.
-- **Why:** the Vase quad count splits by platform (O30): 67,784 on Linux against 67,829 on macOS. Upstream topology agrees, and CB85–CB88 cannot round or reorder. The census test will print one `platform-digest` line per case. That line holds bit-exact mesh and field digests, then each stage product's structural hash and count. Comparing it with the frozen [macOS reference](Architecture_M6_CP3_CB89_P13_Platform_Digest_macOS_Reference.tsv) names the first divergent stage.
-- **Steps:**
-  1. Precheck `git diff --quiet 6cc50f878ef829711e16262759afb3367bec2aff HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
-  2. Copy [`Architecture_M6_CP3_CB89_P13_Census_Platform_Digest.diff`](Architecture_M6_CP3_CB89_P13_Census_Platform_Digest.diff) byte for byte: 68 lines, keep its 3 single-space context lines, SHA-256 `64af5c71ad57a662724b077761f71c1c38893be6ed32516fc568166e85c23f71`.
-  3. Run `git apply --check`, then `git apply`.
-  4. Check numstat `45 0` `tests/SurfaceCellDesignAcceptanceTests.cpp`, result SHA-256 `ba60c6905db983b53c35a2b5e909a04152eaa557cac8382c84457c5d0f5b1941`.
-  5. Build one eight-target Linux Release/static GMP/GMPXX package, with `runtimeExecution=false`.
-- **Test-only:** no product source, no new test, no changed assertion. Gate membership stays 980, and the TB78 manifest is reused by TB79.
-- **Outcomes:**
-  - success → `M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-EXEC` (RA-203.6);
-  - mismatch → `M6-CP3-PLAN-P13-CENSUS-PLATFORM-DIGEST-STOP`;
-  - infrastructure → `M6-CP3-CB89A-P13-CENSUS-PLATFORM-DIGEST-ORCH`.
-- **Then TB79:**
-  - the TB78 manifest 899 `9d2c1ec5…`, 899/899, membership 980;
-  - census Cylinder PASS, BunnyRandom P13-e, Vase RED `SelfIntersectingFace` within 600 s with **67,784** quads (the Linux repeat);
-  - seven `platform-digest` lines recorded verbatim (gate rows 795–797 and 864, plus the three census cases).
-- **Unchanged authority:** accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred, selector497/CP3 unpromoted.
+- **Authority:** [RA-203](Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md) §6; [CB89 compile report](Architecture_M6_CP3_CB89_P13_Census_Platform_Digest_Code_Build_Record_20261104.md).
+- **Immutable package:** `13370954424` built from source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, compile [41932156223](https://github.com/akashskypatel/Directional/actions/runs/41932156223), ZIP SHA256 `abe4814d0c480d68b5026004761c347e1fdb7c284f364eab0e31a3d402599551`, 28/28 hashes, `runtimeExecution=false`.
+- **Execute artifact-only:** reuse exactly the TB78 manifest (899 cases; digest `9d2c1ec5…`) and ledger v5 (81 deferred), membership 980. Four gated rows 795–797 and 864 and three census processes must print exactly one `platform-digest` line each, preserved verbatim in evidence. Do not configure, compile, relink, repair packages or modify test source.
+- **Registered census:** Cylinder PASS; BunnyRandom P13-e RED sourceVertex49; Vase `SelfIntersectingFace` RED within 600 seconds, Linux completed quads 67,784 and counts 192,482 / 26,817 / 67,784. Require full 899/899 test gate. Digest lines are observation, not match criteria.
+- **Dispositions:** match → the authorized O30 Review/Definition `M6-CP3-DEFN-P13-PLATFORM-SPLIT` after proper TB79 closeout/review boundary; mismatch → `M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-REV` (Review, Claude, scratch build); orchestration → `M6-CP3-TB79A-P13-PLATFORM-DIGEST-ORCH`.
+- **Preserve:** CP2 491/491, stable 66/17/49, debt 1, selector497/CP3 unpromoted. CB89 did not execute any tests, and O30 is open.
 
 ### Earlier: TB78 and its Review
 
@@ -137,8 +125,8 @@ Facts are in the records, `TODO.md` steps and Review track, `CHANGELOG.md` and t
 | 41 — COMPLETE | `M6-CP3-CB88-P13-FINAL-VALIDATION-ROW-LABELS` | Implementation agent; RA-202.8: `ee12a33f…` (72 lines, 0 single-space context lines), numstat `5 2` / `40 0`, compile only. Mismatch → `M6-CP3-PLAN-P13-FINAL-VALIDATION-LABELS-STOP`; infrastructure → `M6-CP3-CB88A-P13-FINAL-VALIDATION-LABELS-ORCH` |
 | 42 — COMPLETE | `M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-EXEC` | Implementation agent; manifest 899 `9d2c1ec5…`, 899/899, membership 980; census Cylinder PASS, BunnyRandom P13-e, Vase RED `SelfIntersectingFace` in 268.93 s. The registered 67,829 quads was a macOS-only value; Linux has 67,784 (RA-203.2/.3, O30) |
 | 42A — Review COMPLETE | `M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV` | ChatGPT [WIP](Architecture_M6_CP3_TB78_REV_P13_Census_Count_Review_WIP_20261104.md) (BLOCKED on the review boundary), then [RA-203](Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md): the block is RA-202.9's route; TB78 is COMPLETE; O30 opened; exact CB89 → TB79 |
-| 42B — NEXT | `M6-CP3-CB89-P13-CENSUS-PLATFORM-DIGEST` | Implementation agent, Linux; RA-203.5: `64af5c71…` (68 lines, keep its 3 single-space context lines), numstat `45 0` tests only, compile only. Mismatch → `M6-CP3-PLAN-P13-CENSUS-PLATFORM-DIGEST-STOP`; infrastructure → `M6-CP3-CB89A-P13-CENSUS-PLATFORM-DIGEST-ORCH` |
-| 42C | `M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-EXEC` | Implementation agent; RA-203.6: TB78 manifest 899 reused, 899/899, membership 980; census Cylinder PASS, BunnyRandom P13-e, Vase RED `SelfIntersectingFace` within 600 s with **67,784** quads; seven `platform-digest` lines recorded verbatim. Mismatch → `M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB79A-P13-PLATFORM-DIGEST-ORCH` |
+| 42B — COMPLETE | `M6-CP3-CB89-P13-CENSUS-PLATFORM-DIGEST` | Implementation agent, Linux; RA-203.5: `64af5c71…` (68 lines, keep its 3 single-space context lines), numstat `45 0` tests only, compile only. Mismatch → `M6-CP3-PLAN-P13-CENSUS-PLATFORM-DIGEST-STOP`; infrastructure → `M6-CP3-CB89A-P13-CENSUS-PLATFORM-DIGEST-ORCH` |
+| 42C — NEXT | `M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-EXEC` | Implementation agent; RA-203.6: TB78 manifest 899 reused, 899/899, membership 980; census Cylinder PASS, BunnyRandom P13-e, Vase RED `SelfIntersectingFace` within 600 s with **67,784** quads; seven `platform-digest` lines recorded verbatim. Mismatch → `M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB79A-P13-PLATFORM-DIGEST-ORCH` |
 | 42D (Review, after TB79) | `M6-CP3-DEFN-P13-PLATFORM-SPLIT` (O30, Vase) | Claude, scratch build. Compare TB79's digests with the [macOS reference](Architecture_M6_CP3_CB89_P13_Platform_Digest_macOS_Reference.tsv) through the RA-203.4 decision table → exact fix, or the GCC/libstdc++ discriminator |
 | 43 (Review, can start now) | `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l, Vase) → CB → TB | Claude, scratch build (RA-202 state = CB88). First measurement: same-direction interior edges right after assembly and after `orient_quads_to_source_normals`, by patch. Then decide whether the pre-optimization gate applies final quality thresholds (DESIGN §4.9). Time O27 once orientation passes. Its TB pins only typed verdicts and counts already observed on Linux (RA-203.2) |
 | 44 (Review, parallel) | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49) → CB → TB | Claude, scratch build; probe DEFN, then exact patch |
@@ -148,9 +136,9 @@ The implementation agent takes rows 42B and 42C, in order, one turn each, and st
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB89-P13-CENSUS-PLATFORM-DIGEST**.
-- It is test-only: the exact RA-203.5 patch on CB88 source `6cc50f878ef829711e16262759afb3367bec2aff`, compile only.
-- Then `M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-EXEC` (RA-203.6).
+`load_next`: **M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-EXEC**.
+- CB89 compiled source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, immutable package artifact `13370954424`, 28/28 hashes, eight GMP/GMPXX targets; no test execution.
+- Next is separate TB79 artifact-only gate (RA-203.6), no rebuild.
 - Do not resume or apply `M6-CP3-CB84-P13-LINUX-VASE-DIAGNOSTIC-TIMING` (withdrawn).
 - Review track, only with scratch-build execution:
   - `M6-CP3-DEFN-P13-PLATFORM-SPLIT` (O30, after TB79);

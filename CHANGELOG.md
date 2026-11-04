@@ -1,3 +1,15 @@
+## 2026-11-04 — CB89 census platform digest test-only compile verified
+
+- **Canonical turn:** `M6-CP3-CB89-P13-CENSUS-PLATFORM-DIGEST`, RA-203 §5.
+- **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`; PR #8 remains draft.
+- **Exact source snapshot:** `21ebaf00d62191a1ac1a61c5ee78006605cd7f96`; [snapshot run 41931250114](https://github.com/akashskypatel/Directional/actions/runs/41931250114), artifact `13372490294`; ZIP SHA-256 `8bbb53537312878278ccac484bb3f5dea9b55de250167f362dd4d7b64a5bcf70`; 6170/6170 source file checksums matched. No local build.
+- **Precheck:** no `src`, `include`, `tests`, `benchmarks`, CMakeLists or `cmake` changes between CB88 source `6cc50f878ef829711e16262759afb3367bec2aff` and snapshot source.
+- **Exact patch:** `.agents/Directional/Architecture_M6_CP3_CB89_P13_Census_Platform_Digest.diff` SHA-256 `64af5c71ad57a662724b077761f71c1c38893be6ed32516fc568166e85c23f71` (68 lines), applied byte-for-byte; one changed path `tests/SurfaceCellDesignAcceptanceTests.cpp`, numstat `45 0`, resulting file SHA-256 `ba60c6905db983b53c35a2b5e909a04152eaa557cac8382c84457c5d0f5b1941`; `git apply --check` and `git diff --check` passed. No assertion, membership, or product-source change.
+- **Source apply:** [dispatcher 41931858328](https://github.com/akashskypatel/Directional/actions/runs/41931858328) PASS, result artifact `13371114388`; applied commit `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`; compared exact changed paths. Google Drive patch transport retired by owner after success.
+- **Compile-only:** [dispatcher 41932156223](https://github.com/akashskypatel/Directional/actions/runs/41932156223) PASS, immutable package artifact `13370954424`, ZIP SHA-256 `abe4814d0c480d68b5026004761c347e1fdb7c284f364eab0e31a3d402599551`; 28/28 checksums pass, eight Linux Release/static targets, GMP and GMPXX linked, build exit 0, source clean, `runtimeExecution=false`.
+- **Interpretation:** compilation is verified; no CB89 runtime tests, benchmarks, seven digest lines, or selector acceptance are claimed. Accepted CP2 491/491, stable 66/17/49, debt 1, TB78 899/899 membership 980, 81 deferred unchanged. O30 platform split remains open.
+- **Authorized successor (separate turn):** `M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-EXEC` under RA-203 §6: immutable CB89 artifact `13370954424`, reuse TB78 899-case manifest and v5 81-row deferred ledger, collect four gated and three census `platform-digest` lines verbatim; no rebuild, no acceptance promotion without independent review.
+
 ## 2026-11-04 — RA-203: TB78 Review closed; Vase completion platform split O30; exact CB89 → TB79
 
 - **Turn:** `M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV`, resumed by the Claude Review from the ChatGPT Review's BLOCKED checkpoint. [RA-203](.agents/Directional/Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md).
