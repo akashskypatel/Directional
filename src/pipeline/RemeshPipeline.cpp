@@ -15064,8 +15064,11 @@ remesh_from_raw_cross_field_impl_with_stage_products(
           result.diagnostics.surfaceCellFirstInvalidProducerReason =
               "AggregateCompletionValidationFailure";
         }
+        // The rejecting check is the terminal detail, as for a rejected
+        // completion (CB75).
         return fail_surface_cells(
-            SurfaceCellFailureCode::NotProductionReady, "completion");
+            SurfaceCellFailureCode::NotProductionReady, "completion",
+            result.diagnostics.surfaceCellFirstInvalidProducerReason);
       }
 
       geometry::SurfaceOptimizationResult optimization =
