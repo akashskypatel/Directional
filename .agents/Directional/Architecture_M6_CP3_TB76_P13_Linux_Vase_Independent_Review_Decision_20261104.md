@@ -43,4 +43,4 @@
 | Turn boundary held | Static artifact review only; no program/bench/build execution. |
 | review_check.py boundary | Local snapshot has no `.git` history; cannot run authoritative boundary/ancestry subcommand here; intended-path diff and patch checks are separate verification, not a substitute. |
 | `STATUS` lifecycle maintained | Initial review beacon written; final status follows only after durable commit. |
-| Pushed to origin, branch in sync | Pending durable Drive patch application and readback; do not claim until verified. |
+| Pushed to origin, branch in sync | Drive apply run 41767922738 succeeded and pushed `9673883e9c01e665395660e85c316aa036897862`; six-file report/handoff/TODO readback verified. Drive patch was deleted by its owner. |
