@@ -3,6 +3,8 @@
 #include <directional/geometry/SurfaceCellTracing.h>
 
 #include <algorithm>
+#include <cstdint>
+#include <map>
 #include <memory>
 #include <stdexcept>
 #include <vector>
@@ -211,6 +213,100 @@ TEST(SurfaceArrangementPhase16,
                      Eigen::RowVector3d(0.5, 0.5, 0.0))};
   expect_trace_continues_through_shared_node(
       vertices, faces, arcs, Eigen::RowVector3d(0.5, 0.5, 0.0));
+}
+
+// A planar n x n grid of 2 n^2 source triangles crossed by k horizontal and
+// k vertical lines; each line is one arc per triangle it crosses, edge to
+// edge (RA-202).
+struct GridLineFixture {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  std::vector<directional::geometry::SurfaceArrangementArc> arcs;
+};
+
+GridLineFixture grid_line_fixture(const int n, const int k) {
+  GridLineFixture fixture;
+  fixture.vertices.resize((n + 1) * (n + 1), 3);
+  for (int j = 0; j <= n; ++j) {
+    for (int i = 0; i <= n; ++i) {
+      fixture.vertices.row(j * (n + 1) + i) << static_cast<double>(i) / n,
+          static_cast<double>(j) / n, 0.0;
+    }
+  }
+  fixture.faces.resize(2 * n * n, 3);
+  for (int j = 0; j < n; ++j) {
+    for (int i = 0; i < n; ++i) {
+      const int v = j * (n + 1) + i;
+      fixture.faces.row(2 * (j * n + i)) << v, v + 1, v + n + 2;
+      fixture.faces.row(2 * (j * n + i) + 1) << v, v + n + 2, v + n + 1;
+    }
+  }
+  // The offsets keep every line off the grid vertices and every crossing off
+  // the cell diagonals.
+  for (int axis = 0; axis < 2; ++axis) {
+    for (int line = 0; line < k; ++line) {
+      const double value = (line + (axis == 0 ? 0.37 : 0.61)) / k;
+      for (int face = 0; face < fixture.faces.rows(); ++face) {
+        std::vector<Eigen::RowVector3d> hits;
+        for (int corner = 0; corner < 3; ++corner) {
+          const int next = (corner + 1) % 3;
+          const double a = fixture.vertices(fixture.faces(face, corner), axis);
+          const double b = fixture.vertices(fixture.faces(face, next), axis);
+          if ((a - value) * (b - value) >= 0.0) {
+            continue;
+          }
+          const double t = (value - a) / (b - a);
+          Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
+          barycentric(corner) = 1.0 - t;
+          barycentric(next) = t;
+          hits.push_back(barycentric);
+        }
+        if (hits.size() != 2U) {
+          continue;
+        }
+        auto arc = wedge_test_arc(static_cast<int>(fixture.arcs.size()), face,
+                                  hits[0], hits[1]);
+        arc.family = axis;
+        arc.strand = axis * k + line;
+        fixture.arcs.push_back(arc);
+      }
+    }
+  }
+  return fixture;
+}
+
+TEST(SurfaceArrangementPhase16,
+     GeometricTJunctionScanVisitsOnlyHalfedgesOfTheOccurrenceFace) {
+  // 1,800 source faces and 3,600 arcs: scanning every halfedge for each node
+  // occurrence visits about 10^8 halfedges; the face-local scan visits only
+  // the halfedges on each occurrence's source face.
+  const GridLineFixture fixture = grid_line_fixture(30, 30);
+  const std::vector<int> zeros(static_cast<std::size_t>(fixture.faces.rows()),
+                               0);
+  directional::geometry::SurfaceArrangementOptions options;
+  options.sourceAuthority =
+      row_identity_source_authority(fixture.faces, zeros, zeros);
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, fixture.arcs, options);
+
+  ASSERT_TRUE(complex.diagnostics.incidenceValid)
+      << directional::geometry::surface_arrangement_incidence_failure_name(
+             complex.diagnostics.incidenceFailure);
+  EXPECT_EQ(0, complex.diagnostics.geometricTJunctions);
+  std::map<int, std::uint64_t> halfedgesOnFace;
+  for (const auto &halfedge : complex.halfedges) {
+    ++halfedgesOnFace[halfedge.sourceFace];
+  }
+  std::uint64_t faceLocalVisits = 0;
+  for (const auto &node : complex.nodes) {
+    for (const auto &occurrence : node.occurrences) {
+      faceLocalVisits += halfedgesOnFace[occurrence.sourceFace];
+    }
+  }
+  EXPECT_EQ(faceLocalVisits,
+            complex.diagnostics.geometricTJunctionHalfedgeVisits);
+  EXPECT_GT(faceLocalVisits, 0U);
 }
 
 } // namespace

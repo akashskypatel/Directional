@@ -7305,25 +7305,39 @@ SurfaceCellComplex build_surface_cell_complex(
       }
     }
   }
+  // A node occurrence is tested only against the halfedges of its own source
+  // face, in halfedge order, and its authority scope is made once: neither
+  // depends on the halfedge (Amendment 34).
+  std::map<int, std::vector<std::size_t>> halfedgesBySourceFace;
+  for (std::size_t index = 0; index < complex.halfedges.size(); ++index) {
+    halfedgesBySourceFace[complex.halfedges[index].sourceFace].push_back(
+        index);
+  }
   for (const SurfaceArrangementNode &node : complex.nodes) {
     bool foundTJunction = false;
     for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
+      const auto faceHalfedges =
+          halfedgesBySourceFace.find(occurrence.sourceFace);
+      if (faceHalfedges == halfedgesBySourceFace.end()) {
+        continue;
+      }
       const Eigen::Vector2d point = bary_to_uv(occurrence.barycentric);
-      for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
-        if (halfedge.sourceFace != occurrence.sourceFace ||
-            halfedge.from == node.id || halfedge.to == node.id) {
+      std::optional<NodeAuthorityScope> pointScope;
+      for (const std::size_t index : faceHalfedges->second) {
+        const SurfaceArrangementHalfedge &halfedge = complex.halfedges[index];
+        ++complex.diagnostics.geometricTJunctionHalfedgeVisits;
+        if (halfedge.from == node.id || halfedge.to == node.id) {
           continue;
         }
-        Segment2 scopeSegment;
-        scopeSegment.sourceFace = occurrence.sourceFace;
-        scopeSegment.sourceTopologyRegion = halfedge.sourceTopologyRegion;
-        scopeSegment.sourceChart = halfedge.sourceChart;
-        const ScopedNodeKey candidateScope = make_scoped_node_key(
-            faces, scopeSegment, point, vertexFanScopes, resolvedOptions);
+        if (!pointScope) {
+          pointScope = canonical_node_authority_scope(
+              make_node_key(faces, occurrence.sourceFace, point),
+              occurrence.sourceFace, vertexFanScopes, resolvedOptions);
+        }
         const auto &expectedScope =
             nodeScopes[static_cast<std::size_t>(node.id)];
-        if (std::get<1>(candidateScope) != expectedScope.first ||
-            std::get<2>(candidateScope) != expectedScope.second) {
+        if (halfedge.sourceTopologyRegion.value() != expectedScope.first ||
+            *pointScope != expectedScope.second) {
           continue;
         }
         const Eigen::RowVector3d startBarycentric = node_barycentric_on_face(

@@ -457,6 +457,9 @@ struct SurfaceArrangementDiagnostics {
   int uniqueIntersections = 0;
   int unsplitCrossings = 0;
   int geometricTJunctions = 0;
+  // Halfedges the geometric T-junction scan visits: those on the source
+  // face of each node occurrence (Amendment 34).
+  std::uint64_t geometricTJunctionHalfedgeVisits = 0;
   int incompleteArcChains = 0;
   int hardBarrierCrossings = 0;
   int eulerCharacteristic = 0;
