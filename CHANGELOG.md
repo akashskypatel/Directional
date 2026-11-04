@@ -1,3 +1,9 @@
+## 2026-11-04 — CB83 output-validation terminal detail, Linux compile-only
+
+- RA-201.9 frozen one-file `+4/-1` change applied at [2278b8b6](https://github.com/akashskypatel/Directional/commit/2278b8b649b4262fb70a522371ed282655383af5); `surfaceCellFirstInvalidProducerReason` now flows to the completed-mesh validation terminal detail, with validators unchanged.
+- Linux eight-target GMP/GMPXX compile-only [run 41759757801](https://github.com/akashskypatel/Directional/actions/runs/41759757801) PASS, `runtimeExecution=false`; immutable package `13289188434`, ZIP SHA-256 `c4ca145a987cffef1035c95e0febedbc8b8b387c72678ec41bc59139230288b9`, 28/28 checksums. [Record](.agents/Directional/Architecture_M6_CP3_CB83_P13_Output_Validation_Terminal_Detail_Code_Build_Record_20261104.md). No runtime tests or benchmark executed.
+- CP2 491/491 accepted unchanged, stable 66/17/49 debt 1, selector497/CP3 unpromoted. Next separate TB76 artifact-only 893-case full gate plus production census.
+
 ## 2026-11-04 — CB82 lent label support, Linux compile-only
 
 - RA-201.8 frozen four-file semantic patch committed at [efa418bd](https://github.com/akashskypatel/Directional/commit/efa418bd88f8bc8f6f67bf8fd65fdea56afa78a3). Initial Drive transport failed on a delimiter, corrected apply succeeded; no semantic change to the frozen patch. GUARD rows 891–893 compiled, not executed.
