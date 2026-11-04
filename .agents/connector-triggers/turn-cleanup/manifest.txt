@@ -1,2 +1,0 @@
-# TB76 source-snapshot control-plane cleanup
-.agents/connector-triggers/source-snapshot/tb76-20261104-0233.txt
