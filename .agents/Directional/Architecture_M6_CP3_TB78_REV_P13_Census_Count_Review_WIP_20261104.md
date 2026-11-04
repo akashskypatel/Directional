@@ -27,6 +27,14 @@
 - `src/pipeline/RemeshPipeline.cpp:14407-14482` confirms the reported completed-quad count is the size of the assembled `PureQuadMesh::quads` (or the alternate phase-front/recovery product if enabled), captured **before** output validation. Hence a different `SelfIntersectingFace` location cannot by itself change the reported completed count. Equal trace/arrangement counts alone cannot prove equal earlier topology.
 - **First-falsifier order:** verify exact source/fixture/options and raw-field bytes per run; repeat Linux and macOS independently without changing inputs; compare canonical hash by stage in order of field → transport/traces → selection → arrangement cells → completed patch/assembly. Record raw field as face-major, 12 binary64 values per face with explicit byte order, alongside mesh vertex/face arrays; retain first divergent source IDs/patch IDs, timing/RSS and process exit. If raw-field bytes differ, investigate numerical field generation before blaming completion; if they match, proceed stage by stage. If outputs vary between same-platform runs, classify nondeterminism separately. No one of these outcomes is yet observed.
 
+## Narrower existing probe surface (static audit 2026-11-04)
+
+- Reverified immutable census ZIP `13361996286` (outer digest and internal 9/9). Vase `raw/3.log` shows 67,784 quads, **no stage hashes**.
+- `src/bench/DirectionalBenchmark.cpp:791-797` computes `record.fieldHash`, but its JSON writer at 3234–3256 **omits it for generated smooth fields**. Existing pipeline source/cross-field identities (`RemeshPipeline.cpp:12583-12629`) and serialized failed-run stage/context hashes (benchmark 1322–1372) should be reused before new instrumentation.
+- Existing `directional_benchmarks` supports single-case `--warmup 0 --runs 1 --disable-surface-cell-source-grid-recovery --output`. It is not automatically equivalent to GTest: GTest forces debug artifacts/retained geometry off and paired-boundary rejection on, while the benchmark inherits manifest settings. Compare only with exact options parity and separate fresh processes.
+- Compare exact mesh/options → raw generated field → composite cross-field → traces/selection → arrangement → completion. Matching **counts** do not prove matching topology or field.
+- **Authority conflict:** Review policy §4.3 forbids runtime, but RA-202.9 asks this Review to re-run missing RA-202.12 scratch probes. No product execution belongs in Review; separately authorize diagnostic execution before adjudicating the count.
+
 ## Required continuation — Review only
 
 1. Independently reproduce the RA-202.12 scratch probe on fixed source and identical fixture/options, recording complete mesh and raw-field hashes on each platform; do not treat old prose as its own oracle. Scratch scripts `scratchpad/tb76r/` were explicitly uncommitted and are not present in this snapshot; reconstruct and verify the minimal recipe first.
@@ -37,10 +45,8 @@
 
 **Standing state:** CP2 accepted 491/491; stable 66 events / 17 categories / 49 recurrences; debt 1; 81 deferred; selector497/CP3 unpromoted; P13-l/P13-e and O27–O29 carried. No product, test, fixture, selector or build code was edited and no Directional runtime/build was executed in this Review attempt.
 
-**Current snapshot-only audit limitations:** `review_check.py boundary` ran from the verified source archive but exited 1 because the archive has no `.git` ancestor/history; its `durable rewrite baseline` and `durable rewrite source` failures cannot be read as a branch-boundary violation. Pure-read `document_drift_audit.py --root .` also exited 1: existing handoff 43,478 B versus 16,000 B budget (ERROR), orientation 29,008 B versus 24,000 B budget (WARNING). These are documentation maintenance findings, not the Vase-count root cause. An authentic branch-history boundary check and authorized preservation/consolidation remain outstanding before Review closure.
+**Audits pending:** snapshot-only `review_check.py boundary` cannot verify Git ancestry (exit 1); `document_drift_audit.py`: handoff 43,478 B > 16,000 B ERROR; orientation 29,008 B > 24,000 B WARNING. Historic boundary and consolidation remain outstanding.
 
 ## Process / policy verification notes
 
-- **Conservation-policy deviation:** this Web turn began direct document fetches before formally choosing the required snapshot read mode even though the mandatory checklist made the snapshot threshold evident. It subsequently obtained, independently hash-verified and used an exact workflow snapshot; no further piecemeal source inspection was relied on. This ordering miss is not treated as compliant.
-- No exact-authority RA-202 macOS/Linux scratch probe was reproduced in this attempt; the referenced uncommitted scratchpad recipe is absent from the snapshot. The cause of the 45-quad mismatch remains unresolved, and platform variation is only a hypothesis.
-- The repository-wide `review_check.py boundary` and full review closeout checklist have not been executed or discharged. The Review must remain `IN_PROGRESS` and may not promote TB78.
+Prior direct-read-before-snapshot policy miss is recorded. This continuation used a verified source snapshot. No runtime probe or historic Git-boundary check completed. Root cause unresolved; no CP3 promotion.
