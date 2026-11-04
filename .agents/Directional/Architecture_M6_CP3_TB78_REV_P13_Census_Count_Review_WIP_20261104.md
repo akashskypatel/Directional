@@ -28,3 +28,9 @@
 5. Finish the full `REVIEW_TURN_POLICY.md` closeout including `ORIENTATION.md`, tracker, changelog, roadmap, consolidation, `review_check.py boundary`, and exactly one bounded successor with predeclared falsifiers. This WIP does not discharge those duties.
 
 **Standing state:** CP2 accepted 491/491; stable 66 events / 17 categories / 49 recurrences; debt 1; 81 deferred; selector497/CP3 unpromoted; P13-l/P13-e and O27–O29 carried. No product, test, fixture, selector or build code was edited and no Directional runtime/build was executed in this Review attempt.
+
+## Process / policy verification notes
+
+- **Conservation-policy deviation:** this Web turn began direct document fetches before formally choosing the required snapshot read mode even though the mandatory checklist made the snapshot threshold evident. It subsequently obtained, independently hash-verified and used an exact workflow snapshot; no further piecemeal source inspection was relied on. This ordering miss is not treated as compliant.
+- No exact-authority RA-202 macOS/Linux scratch probe was reproduced in this attempt; the referenced uncommitted scratchpad recipe is absent from the snapshot. The cause of the 45-quad mismatch remains unresolved, and platform variation is only a hypothesis.
+- The repository-wide `review_check.py boundary` and full review closeout checklist have not been executed or discharged. The Review must remain `IN_PROGRESS` and may not promote TB78.
