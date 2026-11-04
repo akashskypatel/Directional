@@ -1,12 +1,1 @@
-{
-  "schema_version": 1,
-  "request_id": "m6-cp3-cb82-label-support-drive-20261104-v2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb82-label-support-drive-apply-v2",
-  "file_id": "1ONEx7-YNmtw5GxdL8AOfLwJUs_vRU8tN",
-  "patch_sha256": "486a6e5ed8453045102e2b1f4d13a9771c594dfdf039103051b823a2bc5c61f6",
-  "base_sha": "49d48e604f37eb3fc22c6143ca1c8008bcea0e51",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(directional): lend exact label support across surface optimizer",
-  "retention_days": 14
-}
+{"schema_version":1,"request_id":"m6-cp3-cb82-compile-20261104-v1","operation":"compile","mailbox_key":"m6-cp3-cb82-label-support-compile","source_sha":"efa418bd88f8bc8f6f67bf8fd65fdea56afa78a3","targets":["directional_core","directional_pipeline","directional_surface_cell_authority_kernel_tests","directional_surface_cell_producer_tests","directional_surface_cell_completion_tests","directional_surface_cell_validation_tests","directional_compiled_api_tests","directional_benchmarks"],"artifact_prefix":"m6-cp3-cb82-label-support"}
