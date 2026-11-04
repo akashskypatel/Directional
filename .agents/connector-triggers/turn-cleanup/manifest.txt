@@ -1,0 +1,2 @@
+# TB79 temporary files; no durable request or mailbox paths
+.agents/connector-triggers/source-snapshot/m6-cp3-tb79-20261104.txt
