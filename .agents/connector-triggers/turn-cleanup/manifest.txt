@@ -1,0 +1,2 @@
+# TB77 temporary state only
+.agents/connector-triggers/source-snapshot/M6-CP3-TB77-20261104-181600.txt
