@@ -1,3 +1,9 @@
+## 2026-11-04 — TB75 immutable CB81 full gate and census
+
+- Full gate [41748769190](https://github.com/akashskypatel/Directional/actions/runs/41748769190): **890/890 PASS**, 81 deferred, 971 membership, 1788/1788 internal hashes, immutable package `13282539328`; no rebuild.
+- Census [41748824556](https://github.com/akashskypatel/Directional/actions/runs/41748824556): Cylinder PASS exit 0; BunnyRandom RED exit 1, `InvalidFieldTransportAtlas:field-transport-atlas/SingularityPortClassCountMismatch;sourceVertex=49` (P13-e); Vase ABNORMAL exit 124, `HARNESS_TIMEOUT 600s`, without a completed post-assembly verdict; registered outcomes MATCH, 9/9 internal hashes.
+- [Execution report](.agents/Directional/Architecture_M6_CP3_TB75_P13_Lent_Projection_Cache_Full_Gate_Execution_Report_20261104.md). No acceptance promotion, CP2 491/491, stable 66/17/49, debt 1. Next `M6-CP3-CB82-P13-LENT-LABEL-SUPPORT`.
+
 # 2026-11-04 — CB81 lent projection cache, Linux compile-only
 
 - RA-201.6 exact three-file source patch committed at [39845219](https://github.com/akashskypatel/Directional/commit/39845219f9560b1bf04288b0c308ece196982d4e); GUARD rows 889–890 compiled but not executed.
