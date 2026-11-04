@@ -1,3 +1,9 @@
+# 2026-11-04 — CB81 lent projection cache, Linux compile-only
+
+- RA-201.6 exact three-file source patch committed at [39845219](https://github.com/akashskypatel/Directional/commit/39845219f9560b1bf04288b0c308ece196982d4e); GUARD rows 889–890 compiled but not executed.
+- Linux eight-target GMP/GMPXX compile-only [41743413915](https://github.com/akashskypatel/Directional/actions/runs/41743413915) PASS, `runtimeExecution=false`; immutable package `13282539328`, SHA-256 `45c90014c416793ba46ffd92ba9af28c8e124b653ed1b2cb2b128b293203e592`; 28/28 self-manifest verified. [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB81_P13_Lent_Projection_Cache_Code_Build_Record_20261104.md).
+- Next separate TB75 890-case artifact-only full gate; CP2 accepted 491/491 unchanged, selector497/CP3 unpromoted.
+
 # 2026-11-03 — TB74 CB80 artifact-only full gate and production census verified
 
 - [TB74 report](.agents/Directional/Architecture_M6_CP3_TB74_P13_Rail_Binding_Once_Full_Gate_Execution_Report_20261103.md): exact CB80 compiled source `c6420b1f9a84c423f60a5b96b90d59abb8df80e4`, immutable package `13278380590`; full gate [41736473382](https://github.com/akashskypatel/Directional/actions/runs/41736473382) **888/888 PASS**, 81 deferred, membership **969**, 1784/1784 result checksums, GUARD rows 887–888 PASS. Census [41736517063](https://github.com/akashskypatel/Directional/actions/runs/41736517063) registered Cylinder PASS, BunnyRandom P13-e RED vertex49, Vase ABNORMAL 600 s timeout, 9/9 checksums. Both artifact-only, no configure/compile/relink/benchmark.
