@@ -1,1 +1,0 @@
-Snapshot the exact current TB76 review source authority; source is the push commit SHA. No runtime execution.
