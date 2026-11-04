@@ -1,10 +1,10 @@
-Continuation: CB84 diagnostic-timing patch preserved in Architecture_M6_CP3_CB84_P13_Linux_Vase_Diagnostic_Timing_Work_Preservation_20261104.md; source patch not applied or compiled due Google Drive transfer failure.
+Superseded: M6-CP3-CB84-P13-LINUX-VASE-DIAGNOSTIC-TIMING is WITHDRAWN by RA-202 (never applied or compiled; do not apply its preserved patch). Next: exact CB85 (RA-202.4).
 
 ---TURN_STATUS---
-Turn: M6-CP3-CB84-P13-LINUX-VASE-DIAGNOSTIC-TIMING
-Status: IN_PROGRESS
-Successor: M6-CP3-CB84-P13-LINUX-VASE-DIAGNOSTIC-TIMING
-Started at: 2026-11-04T04:06:13Z
-Resumed at: 
-Ended at: 
+Turn: M6-CP3-TB76-P13-OPTIMIZER-SOURCE-QUERY-FULL-GATE-REV
+Status: COMPLETE
+Successor: M6-CP3-CB85-P13-ARRANGEMENT-TJUNCTION-FACE-SCAN
+Started at: 2026-11-04T03:40:00Z
+Resumed at:
+Ended at: 2026-11-04T05:05:00Z
 ---END_TURN_STATUS---

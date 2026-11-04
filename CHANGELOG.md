@@ -1,3 +1,25 @@
+## 2026-11-04 — RA-202: TB76 Review re-adjudicated; P13-m census-path cost → Amendment 34, exact CB85–CB88
+
+- [RA-202](.agents/Directional/Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md) re-adjudicated the TB76 Review by scratch probes on the CB83 source. These are Review-track documents; no product source changed.
+- **Owner: P13-m.** Three memory-bound scans outside RA-201's stage, plus two Amendment 33 sites. On macOS at HEAD:
+  - the arrangement T-junction scan took 94.5 s (every halfedge per node occurrence);
+  - selection took 24 s (whole-network endpoint degrees per transaction);
+  - the bow-tie check took 19.7 s (every edge per vertex);
+  - the per-query binding in `validate_final_surface_mesh` took ≈2 s.
+- FMA is ruled out (FMA-off logs identical). TB76's gate rows ran at macOS speed on Linux (median 0.96); only Vase is slower.
+- Corrected, Vase reaches the same verdict in 108.5 s instead of ≈250 s. The probe cross-checks found 0 mismatches over 16,543 lines.
+- **DESIGN Amendment 34.**
+- **Exact patches:** CB85 (`5b6d35a4…`), CB86 (`c2a0c308…`), CB87 (`eeef1a51…`), CB88 (`ee12a33f…`).
+- **Manifests:** TB77 896 `48ef4743…` and TB78 899 `9d2c1ec5…`, both `SELF_CHECK_PASS`.
+- **Scratch verification:**
+  - gate 898/899 (O16 only);
+  - ledger 0/81 unchanged;
+  - census Cylinder PASS, BunnyRandom P13-e, Vase RED `SelfIntersectingFace`;
+  - mutants M1–M4 each fail only their own rows.
+- `M6-CP3-CB84-P13-LINUX-VASE-DIAGNOSTIC-TIMING` withdrawn (never applied or compiled).
+- O27, O28, O29 new; LESSONS lesson "Time the whole run…".
+- Stable 66/17/49, debt 1, CP2 491/491 unchanged.
+
 ## 2026-11-04 — TB76 independent review: Linux Vase timed-out cost locus unproved
 
 - [Review](.agents/Directional/Architecture_M6_CP3_TB76_P13_Linux_Vase_Independent_Review_Decision_20261104.md) rehashed TB76 893-case exact gate, 890-case precursor, 1794/1794 gate and 9/9 census evidence; adjudicated valid execution with unfulfilled Vase registered RED (600s ABNORMAL). No acceptance promotion, no stable event; next M6-CP3-CB84-P13-LINUX-VASE-DIAGNOSTIC-TIMING diagnostic-only compile. P13-l/P13-e separate.
