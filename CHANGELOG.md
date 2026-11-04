@@ -1,3 +1,24 @@
+## 2026-11-04 — RA-203: TB78 Review closed; Vase completion platform split O30; exact CB89 → TB79
+
+- **Turn:** `M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV`, resumed by the Claude Review from the ChatGPT Review's BLOCKED checkpoint. [RA-203](.agents/Directional/Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md).
+- **The block** was RA-202.9's mismatch route, not `REVIEW_TURN_POLICY.md` §4.3. The route named no track, and it asked a macOS recipe to explain a Linux/macOS split. Review scratch probes are a duty (RA-166.6 F6, RA-188.1), and Linux runtime is a TB. No policy file is changed.
+- **RA-202.9's error, owned.** It pinned 67,829 completed Vase quads, a macOS-only value, for Linux.
+- **TB78 is COMPLETE.** Gate 899/899, membership 980, and every census line match except the count. Vase reaches RED `SelfIntersectingFace` in 268.93 s, so P13-m's Linux objective is met.
+- **O30:** Linux 67,784 against macOS 67,829. It is not CB85–CB88:
+  - their 78 product lines have no floating-point arithmetic, hashing, sorting or unordered container;
+  - the macOS cross-checks show 0 mismatches;
+  - Linux and macOS topology agreed through the arrangement in TB71, TB72 and TB78.
+- **Exact CB89**, `Architecture_M6_CP3_CB89_P13_Census_Platform_Digest.diff`:
+  - `64af5c71…`, 68 lines, numstat `45 0`, tests only.
+  - It prints one `platform-digest` line per census case: bit-exact vertex, face and field digests, then each stage's structural hash and count.
+  - It adds no new test, so TB79 reuses the TB78 manifest (899, membership 980).
+- **macOS reference:** `Architecture_M6_CP3_CB89_P13_Platform_Digest_macOS_Reference.tsv`, 129 rows. Two Vase runs were byte-identical (98.8 s, 1.22 GB).
+- **Scratch checks:** CB89 applies on HEAD with the stated numstat and hash; the test listing is unchanged (614); GCC 16 `-Wall -Wextra` accepts the file.
+- **Consolidation:** the handoff's older "Earlier" sections are folded to record links, and the ChatGPT WIP is retained with a closure line.
+- **Docs:** ORIENTATION, TODO (steps 35–37 and Review track), tracker, LESSONS (the RA-202 lesson extended to counts) and handoff are updated. STATUS is restored to the canonical block.
+- **Unchanged:** stable 66/17/49, debt 1, CP2 491/491; selector497 and CP3 unpromoted.
+- **Next:** `M6-CP3-CB89-P13-CENSUS-PLATFORM-DIGEST` → `M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-EXEC` → Review `M6-CP3-DEFN-P13-PLATFORM-SPLIT`.
+
 ## 2026-11-04 — TB78 immutable 899-case gate GREEN; Vase census count MISMATCH
 
 - [TB78 execution report](.agents/Directional/Architecture_M6_CP3_TB78_P13_Census_Path_Cost_Full_Gate_Execution_Report_20261104.md) independently verifies CB88 immutable artifact `13358062295`, source `6cc50f878ef829711e16262759afb3367bec2aff`. [Gate 41906228679](https://github.com/akashskypatel/Directional/actions/runs/41906228679): **899/899 PASS**, membership 980, 81 deferred, 1,806/1,806 hashes, GUARD rows 897–899 PASS, postflight true, no build/relink/configure or benchmark.

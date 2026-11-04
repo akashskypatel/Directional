@@ -1,0 +1,68 @@
+diff --git a/tests/SurfaceCellDesignAcceptanceTests.cpp b/tests/SurfaceCellDesignAcceptanceTests.cpp
+--- a/tests/SurfaceCellDesignAcceptanceTests.cpp
++++ b/tests/SurfaceCellDesignAcceptanceTests.cpp
+@@ -1,5 +1,9 @@
+ #include <algorithm>
++#include <bit>
+ #include <cmath>
++#include <cstdint>
++#include <cstdio>
++#include <iostream>
+ #include <map>
+ #include <queue>
+ #include <set>
+@@ -47,6 +51,46 @@ std::string failure_context(const directional::pipeline::RemeshResult &result) {
+          " completion=" + result.surfaceCellContext.completionFailure;
+ }
+ 
++std::string hex64(const std::uint64_t value) {
++  char text[17];
++  std::snprintf(text, sizeof(text), "%016llx",
++                static_cast<unsigned long long>(value));
++  return text;
++}
++
++// FNV-1a over the exact 64-bit pattern of every coefficient, row-major and
++// low byte first, so equal digests mean bit-identical matrices on any host.
++std::string bit_digest(const Eigen::MatrixXd &matrix) {
++  std::uint64_t digest = 14695981039346656037ULL;
++  for (Eigen::Index row = 0; row < matrix.rows(); ++row) {
++    for (Eigen::Index col = 0; col < matrix.cols(); ++col) {
++      const std::uint64_t bits = std::bit_cast<std::uint64_t>(matrix(row, col));
++      for (int byte = 0; byte < 8; ++byte) {
++        digest ^= (bits >> (8 * byte)) & 0xffU;
++        digest *= 1099511628211ULL;
++      }
++    }
++  }
++  return hex64(digest);
++}
++
++// One line per case: bit-exact input digests, then each context product's
++// structural hash (coordinates quantized to 1e-9) and element count.
++void print_platform_digest(const char *testName,
++                           const directional::bench::BenchmarkMesh &mesh,
++                           const Eigen::MatrixXd &rawField,
++                           const directional::pipeline::RemeshResult &result) {
++  std::cout << "platform-digest case=" << testName
++            << " vertexBits=" << bit_digest(mesh.vertices)
++            << " faceBits=" << bit_digest(mesh.faces.cast<double>())
++            << " fieldBits=" << bit_digest(rawField);
++  for (const auto &product : result.surfaceCellContext.debugProducts) {
++    std::cout << ' ' << product.name << '=' << hex64(product.structuralHash)
++              << '/' << product.elementCount;
++  }
++  std::cout << std::endl;
++}
++
+ 
+ struct FixtureTopologyStats {
+   int boundaryEdges = 0;
+@@ -191,6 +235,7 @@ TEST_P(SurfaceCellDesignAcceptance,
+   const directional::pipeline::RemeshResult result =
+       directional::pipeline::remesh_from_raw_cross_field(
+           mesh.vertices, mesh.faces, field.raw, options);
++  print_platform_digest(GetParam().testName, mesh, field.raw, result);
+ 
+   const auto independentOracle =
+       directional::tests::surface_cell_oracle::inspect_surface_cell_product(

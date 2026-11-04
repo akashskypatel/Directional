@@ -334,6 +334,8 @@ This document records **reusable failure-derived engineering lessons**, not an e
 
   A cost specific to one large fixture and memory-bound is the explanation that fits both. Four stack samples of one scratch run then named three memory-bound scans outside the stage RA-201 fixed (RA-202). Before registering a timed outcome on another platform, profile the whole production run, and apply that fixture's measured platform ratio. Answer "where is the time" with a scratch stack sample, not with product instrumentation.
 
+  The same applies to counts. RA-202.9 then pinned macOS's 67,829 completed Vase quads for Linux, where no run had ever produced a count, and Linux gave 67,784 (O30). Pin only typed verdicts, topological counts and values the executing platform has already produced; record the rest. When a mismatch needs a probe, name the track that can run it ("Review, Claude, scratch build"), or the Review that inherits it will block. Rows 17–29 of the turn table show that five times (RA-203).
+
 ## Contracts, planning, reviews, and durable records
 
 - **Plan from the current normative contract and reachable implementation.** Before freezing an

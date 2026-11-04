@@ -1,5 +1,7 @@
 # TB78 census-count discrepancy — independent Review work in progress (2026-11-04)
 
+> **Closed by [RA-203](Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md)** (2026-11-04). Its rehashes and static narrowing are retained as evidence. Its blocker was RA-202.9's route, not the policy, and RA-203.1 resolves it. The count is the platform split O30. The successor is CB89, then TB79.
+
 **Current turn:** `M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV`. **NOT CLOSED / NO SUCCESSOR AUTHORIZED.** This record preserves independently checked evidence for same-turn continuation; it is not a final adjudication or an acceptance decision.
 
 ## Frozen authority

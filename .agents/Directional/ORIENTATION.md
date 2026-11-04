@@ -2,8 +2,19 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-11-04 · [RA-202](Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md) re-adjudicates the TB76 Review by scratch probes. The Linux Vase timeout is **P13-m**: three memory-bound census-path scans outside RA-201's stage. They are the arrangement T-junction scan (94.5 s on macOS), the selection endpoint-degree recount (24 s) and the bow-tie check (19.7 s). Two Amendment 33 sites remain in `validate_final_surface_mesh` (≈2 s). TB76's gate rows run at macOS speed on Linux (median 0.96); only Vase is slower; FMA is ruled out. → DESIGN Amendment 34, exact CB85–CB88 → TB77/TB78 (manifests 896/899, membership 977/980). With all four, Vase reaches its unchanged verdict in 108.5 s instead of ≈250 s. The diagnostic CB84 is withdrawn. Accepted CP2 491/491, stable 66/17/49, debt 1; selector497/CP3 unpromoted.
-**Next:** CB85 and CB86 compiled; implementation agent takes `M6-CP3-TB77-P13-PRE-ASSEMBLY-COST-FULL-GATE-EXEC` next, then CB87 → CB88 → TB78 (one separate turn each; RA-202.10). Review track (Claude, scratch build): `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l) and `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e).
+**Currency:** 2026-11-04 · `M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV`. [RA-203](Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md) closes the TB78 Review by scratch probes. Accepted CP2 491/491, stable 66/17/49, debt 1; selector497/CP3 unpromoted.
+- **Before it:** P13-m, fixed by [RA-202](Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md). The fix is Amendment 34 and exact CB85–CB88, removing three memory-bound census-path scans plus two Amendment 33 sites.
+- **The block.** The ChatGPT Review saw a conflict between "runtime-free" and a probe re-run. The fault is RA-202.9's route: it named no track and asked one platform to explain a split between two. Review scratch probes are a duty (RA-166.6 F6, RA-188.1), Linux runtime is a TB, and no policy changes.
+- **TB78** (CB85–CB88) matches on gate 899/899 and on every census line except the count. Vase reaches RED `SelfIntersectingFace` in 268.93 s on Linux, so P13-m's Linux objective is met.
+- **The count is O30.** Vase completes 67,784 quads on Linux and 67,829 on macOS. RA-202.9 had pinned the macOS-only value. Upstream topology agrees on both platforms, and CB85–CB88 cannot round or reorder.
+
+**Next:**
+- The implementation agent runs `M6-CP3-CB89-P13-CENSUS-PLATFORM-DIGEST`. It is a test-only exact patch that prints bit-exact input digests and per-stage hashes.
+- Then `M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-EXEC`.
+- Review track (Claude, scratch build):
+  - `M6-CP3-DEFN-P13-PLATFORM-SPLIT` (O30, after TB79);
+  - `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l);
+  - `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e).
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -48,7 +59,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB76 immutable CB83 gate **893/893 PASS**, membership **974**, 81 deferred; census Cylinder PASS, BunnyRandom P13-e RED, Vase on Linux ABNORMAL 600 s. [RA-202](Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md): the owner is P13-m (memory-bound census-path scans) → Amendment 34, exact CB85–CB88 → TB77/TB78. The next Vase verdict is P13-l (completed-mesh orientation). CP2 **491/491** accepted, stable **66/17/49**, debt **1**, selector497 unpromoted. |
+| **M6-CP3 — active** | TB78 immutable CB88 gate **899/899 PASS**, membership **980**, 81 deferred; census Cylinder PASS, BunnyRandom P13-e RED, Vase RED `SelfIntersectingFace` on Linux in 268.93 s (P13-m fixed by Amendment 34, CB85–CB88). [RA-203](Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md): the Vase quad count differs by platform (O30) → exact CB89 → TB79 → O30 DEFN. The next Vase verdict is P13-l (completed-mesh orientation). CP2 **491/491** accepted, stable **66/17/49**, debt **1**, selector497 unpromoted. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 **Prior Review authority:** [RA-187](Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md) (GUI layers; full-gate TB rule), [RA-186](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) (CLI sidecar; DR4), [RA-185](Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md) (DIAG-RETAIN display; DR2 → M8-CP2), [RA-184](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) (DIAG-RETAIN), [RA-183](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) (O2 gate; O2b, O16), [RA-181](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md) (O15 discharged; O15c) and [RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md) (RP-01 closed; local-mode rules). Implementers get only exact patches and manifests.
@@ -105,7 +116,16 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** TB77 → CB87 → CB88 → TB78 (implementation agent, one turn each; CB85–CB86 compiled and diagnostic CB84 withdrawn). In parallel on the Review track: the P13-l completed-mesh orientation DEFN (Vase; also time O27) and the P13-e BunnyRandom DEFN.
+**Immediate:**
+- The implementation agent runs CB89 → TB79, one turn each. CB89 is test-only platform digests, and TB79 reuses the TB78 manifest.
+- On the Review track, in parallel: the O30 platform-split DEFN after TB79; the P13-l completed-mesh orientation DEFN (Vase; also time O27); and the P13-e BunnyRandom DEFN.
+- **O30, Vase:** completion splits by platform, 67,784 quads on Linux against 67,829 on macOS. Topology agrees through the arrangement (TB71, TB72, TB78), and macOS repeats byte for byte. Candidates, none asserted:
+  - (a) libm ULP differences;
+  - (b) `std::sort` ties or unordered iteration (seven unordered containers in `PureQuadCompletion` assembly);
+  - (c) x86-64 `long double`;
+  - (d) other codegen.
+  
+  CB89's digest line names the first divergent stage, and RA-203.4 freezes the decision table.
 - **P13-f, Vase:** one source-chart graph per mesh (CB71) and per completion pass (CB72), lent only to callees whose inputs it borrows exactly (Amendment 27). macOS probe: Vase reaches a typed RED at `completion` in 138 s. [RA-195](Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Probe_Adjudication_20261101.md).
 - **P13-g, Vase:** patch 1200 (bounded-combinatorial, variant 15, bow-tie) is a simple concave octagon whose only embedded quadrangulations are fans that the fixed split never reaches. The validator projects each quad on its own plane and accepts folds. Fix: Amendment 28 (source-orientation predicate, exhaustive forward search, typed `NoEmbeddedQuadrangulation`, typed terminal detail), exact CB73/CB74/CB75 → TB69 ([RA-196](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md)).
 - **P13-h, Vase:** the closed-form grid reads corners by index from `boundaryVertices[0]`, but the descriptor starts the boundary at the smallest halfedge id, often mid-side. 220 strips fail as twisted ladders (patch 4 first) and 2,055 more are accepted twisted. Fix: Amendment 29, the descriptor rotates to side 0 (exact CB76 → TB70). **P13-h2:** 4 needle 2D grids still fail after CB76, and no interpolant embeds them all. **P13-i:** 5 rail-grazing lenses (two sides, tips 0.2°–27°), correctly rejected `side-count-unsupported`. Both → `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS` ([RA-197](Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md)).
@@ -118,7 +138,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
   - FlowRep selection, which recounted the endpoint degrees of the whole network for each of 4,047 transactions;
   - `MeshValidator`'s bow-tie check (68,038 vertices × all edges).
 
-  They are memory-bound, which explains why only Vase is slower on Linux. Two Amendment 33 sites remained in `validate_final_surface_mesh`. Fix: Amendment 34, exact CB85–CB88 → TB77/TB78, cross-checked exact. Carried: O27 (the O(Q²) face-intersection scan, which runs in full once P13-l passes), O28 (nine optimizer-stage `source_face_scope` sites), O29 (`source_vertex_extent` per edge key; tracing ≈60 s).
+  They are memory-bound, which explains why only Vase is slower on Linux. Two Amendment 33 sites remained in `validate_final_surface_mesh`. Fix: Amendment 34, exact CB85–CB88 → TB77/TB78, cross-checked exact. **Verified on Linux by TB78:** Vase RED in 268.93 s, against ABNORMAL at 600 s in TB76/TB77 (RA-203). Carried: O27 (the O(Q²) face-intersection scan, which runs in full once P13-l passes), O28 (nine optimizer-stage `source_face_scope` sites), O29 (`source_vertex_extent` per edge key; tracing ≈60 s).
 - **P13-e, BunnyRandom:** index −1 vertex 49 still has 4/5 expected port incidences; separate DEFN → CB → TB, do not combine.
 - **P13-d/O18:** CB69 typed arrangement termination and CB70 wedge guards proved in TB67; post-CB70 Vase completion output remains unproved.
 - **P13-a/P13-b:** Cylinder PASS and dyadic A2a width issue discharged; earlier evidence retained.
@@ -127,7 +147,7 @@ macOS O16 stays separate.
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | P13 direct matrix 6/6 unresolved. TB76 gate 893/893, membership 974; no CP3 promotion. The Linux Vase timeout is P13-m (RA-202), fixed by exact CB85–CB88 → TB77/TB78. Vase next: P13-l completed-mesh orientation. BunnyRandom P13-e remains an independent Review; O6/O9 only where reached, O19 genus >0 nonblocking; O27–O29 carried. | M6-CP3; TB77 → CB87 → CB88 → TB78; Review `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` |
+| **1** | P13 direct matrix 6/6 unresolved. TB78 gate 899/899, membership 980; no CP3 promotion. P13-m is fixed on Linux (TB78). The Vase completion count splits by platform (O30, RA-203). Vase next: P13-l completed-mesh orientation. BunnyRandom P13-e remains an independent Review; O6/O9 only where reached, O19 genus >0 nonblocking; O27–O29 carried. | M6-CP3; CB89 → TB79 → O30 DEFN; Review `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
@@ -151,7 +171,9 @@ macOS O16 stays separate.
 
 - **Exact local arithmetic versus unbounded carried rational width:** a finite bit cap cannot bound growth with face count. Amendment 24 rounds each interior exit inside the one producer that every consumer replays, so the trace is its published geometry (RA-190). A representation change made outside that producer would split one trace into two geometries.
 
-- **Platform split:** a result that differs between builds is a determinism defect; compute the exact answer before classifying, and change per-file flags only through the build system (RA-176, RA-179).
+- **Platform split:** a result that differs between builds is a determinism defect. Compute the exact answer before classifying, and change per-file flags only through the build system (RA-176, RA-179).
+  - A count seen on one platform is not a prediction for another: RA-202.9 pinned macOS's 67,829 and Linux gave 67,784 (O30). A cross-platform registration pins typed verdicts, topological counts and values the executing platform has already produced. Anything else is recorded, not pinned.
+  - To localize a split, print bit-exact input digests and per-stage hashes on both platforms rather than reasoning from one (RA-203).
 - **Masked or unconsumed stimulus:** a stronger earlier guard, or a mutation of data that the checked path never reads, makes a negative vacuous; confirm that the intended guard actually fires (RA-169, RA-178, TB35-REV).
 - **Oracle copies the producer:** an oracle that re-implements the producer's formula proves nothing; derive it independently (RA-168).
 - **Vacuous witness:** RA-146/148 and CB31-REV (corrected statically in CB32-REV): equal-gauge row permutations cannot distinguish stale mapping; unpaired front records do not reach reciprocal periodic action guards. A path that is never reached, or a relation whose operands share an object (RA-124), cannot independently prove its advertised contract. Require separately sourced positive/negative oracles and actual prerequisite reachability.
