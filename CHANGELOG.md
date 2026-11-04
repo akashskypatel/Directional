@@ -1,3 +1,9 @@
+## 2026-11-04 — TB77 CB86 immutable 896-case full gate and production census
+
+- [TB77 execution report](.agents/Directional/Architecture_M6_CP3_TB77_P13_Pre_Assembly_Cost_Full_Gate_Execution_Report_20261104.md) verifies [gate 41886202087](https://github.com/akashskypatel/Directional/actions/runs/41886202087) **896/896 PASS**, membership 977, 81 deferred, 1,800/1,800 packaged checksums; GUARD rows 894–896 passed. No compilation, relinking, configuration or benchmark execution.
+- [Production census 41886240724](https://github.com/akashskypatel/Directional/actions/runs/41886240724) result 13351834589 (9/9 hashes): Cylinder PASS, BunnyRandom P13-e RED sourceVertex49, Vase ABNORMAL (exit 124, HARNESS_TIMEOUT 600s, no completed terminal or completedQuads count, empty resource-time record). Registered verdicts MATCH.
+- Accepted CP2 stays 491/491; stable 66/17/49, debt 1; selector497/CP3 unpromoted. No stable new event. Exact separate successor `M6-CP3-CB87-P13-BOW-TIE-VERTEX-EDGES`. No implementation/test/build changes during TB77.
+
 ## 2026-11-04 — CB86 FlowRep selection endpoint net-change, compile-only
 
 - RA-202.5 exact three-file patch applied at [`0f4c78c433211b0ece549e35cfb0bc975ca02258`](https://github.com/akashskypatel/Directional/commit/0f4c78c433211b0ece549e35cfb0bc975ca02258); endpoint-degree validation now uses the removed/added arc net change, without rebuilding global degree maps. Frozen patch `c2a0c308…`; GUARD rows 895–896 added but not executed.
