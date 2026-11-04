@@ -1,3 +1,9 @@
+## 2026-11-04 — CB85 arrangement geometric T-junction face scan, compile-only
+
+- RA-202.4 exact three-file patch committed at [`a405b59057045b5aaa302abd9553daba3d8b2934`](https://github.com/akashskypatel/Directional/commit/a405b59057045b5aaa302abd9553daba3d8b2934); source-face indexed halfedge scan and exact visit-count GUARD row 894 added (not executed).
+- Linux eight-target GMP/GMPXX compile-only [run 41856637027](https://github.com/akashskypatel/Directional/actions/runs/41856637027) PASS, package `13338458053`, ZIP SHA-256 `a820389f1387b05d1d0b879db00ef085768c680d0093be2b5adc5607d9ee3f55`; `runtimeExecution=false`. [Record](.agents/Directional/Architecture_M6_CP3_CB85_P13_Arrangement_TJunction_Face_Scan_Code_Build_Record_20261104.md).
+- CP2 491/491 and stable 66/17/49, debt 1 unchanged; CB86 exact successor under RA-202.5. No runtime acceptance claimed.
+
 ## 2026-11-04 — RA-202: TB76 Review re-adjudicated; P13-m census-path cost → Amendment 34, exact CB85–CB88
 
 - [RA-202](.agents/Directional/Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md) re-adjudicated the TB76 Review by scratch probes on the CB83 source. These are Review-track documents; no product source changed.
