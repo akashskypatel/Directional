@@ -1,2 +1,0 @@
-Purpose: exact-source snapshot for M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV.
-Read-only source capture; no build or runtime execution.

@@ -1,2 +1,0 @@
-# Temporary files created for TB78 Review source snapshot
-.agents/connector-triggers/source-snapshot/tb78-review-20261104-2109.txt
