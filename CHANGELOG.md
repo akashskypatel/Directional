@@ -1,3 +1,9 @@
+## 2026-11-04 — CB86 FlowRep selection endpoint net-change, compile-only
+
+- RA-202.5 exact three-file patch applied at [`0f4c78c433211b0ece549e35cfb0bc975ca02258`](https://github.com/akashskypatel/Directional/commit/0f4c78c433211b0ece549e35cfb0bc975ca02258); endpoint-degree validation now uses the removed/added arc net change, without rebuilding global degree maps. Frozen patch `c2a0c308…`; GUARD rows 895–896 added but not executed.
+- Linux Release/static GMP/GMPXX eight-target [compile 41879102285](https://github.com/akashskypatel/Directional/actions/runs/41879102285) PASS, immutable package `13347299644`, ZIP SHA-256 `cf8c1a9b9786c369c664eed22ba583c798ff6384fc048f62fd410f206d0a40aa`, 28/28 checksums, `runtimeExecution=false`. [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB86_P13_Selection_Endpoint_Net_Change_Code_Build_Record_20261104.md).
+- No runtime evidence or acceptance promotion. Accepted CP2 491/491, stable 66/17/49, debt 1, selector497 and CP3 remain unchanged. Next separate TB77, manifest 896/membership 977, with Vase RED-or-ABNORMAL pre-registration.
+
 ## 2026-11-04 — CB85 arrangement geometric T-junction face scan, compile-only
 
 - RA-202.4 exact three-file patch committed at [`a405b59057045b5aaa302abd9553daba3d8b2934`](https://github.com/akashskypatel/Directional/commit/a405b59057045b5aaa302abd9553daba3d8b2934); source-face indexed halfedge scan and exact visit-count GUARD row 894 added (not executed).

@@ -5,7 +5,7 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — RA-202: P13-m census-path cost; CB85 compiled; exact CB86 next (2026-11-04)
+## CURRENT — RA-202: P13-m census-path cost; CB85–CB86 compiled; TB77 next (2026-11-04)
 
 - [x] **TB76 independent Review adjudicated:** [decision](.agents/Directional/Architecture_M6_CP3_TB76_P13_Linux_Vase_Independent_Review_Decision_20261104.md) verified TB76 893/893 ledger/raw hashes, 1794/1794 package hashes, TB75 prefix SHA, census 1 PASS/1 RED/1 ABNORMAL (9/9 hashes). Its successor (diagnostic CB84) is superseded by RA-202.
 - [x] **TB76 Review re-adjudicated by [RA-202](.agents/Directional/Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md)** (scratch probes):
@@ -19,7 +19,8 @@
   - Outcome: DESIGN Amendment 34 → exact CB85–CB88 → TB77/TB78 (steps 28–34); O27, O28, O29.
 - [x] **WITHDRAWN `M6-CP3-CB84-P13-LINUX-VASE-DIAGNOSTIC-TIMING`:** never applied or compiled. Do not apply the patch kept in its [preservation record](.agents/Directional/Architecture_M6_CP3_CB84_P13_Linux_Vase_Diagnostic_Timing_Work_Preservation_20261104.md).
 - [x] **`M6-CP3-CB85-P13-ARRANGEMENT-TJUNCTION-FACE-SCAN`** compile-only: source `a405b59057045b5aaa302abd9553daba3d8b2934`, package `13338458053`. [Record](.agents/Directional/Architecture_M6_CP3_CB85_P13_Arrangement_TJunction_Face_Scan_Code_Build_Record_20261104.md).
-- [ ] **NEXT `M6-CP3-CB86-P13-SELECTION-ENDPOINT-NET-CHANGE`** (implementation agent, compile only; step 30).
+- [x] **`M6-CP3-CB86-P13-SELECTION-ENDPOINT-NET-CHANGE`** compile-only: source `0f4c78c433211b0ece549e35cfb0bc975ca02258`, package `13347299644`, eight GMP/GMPXX targets. [Record](.agents/Directional/Architecture_M6_CP3_CB86_P13_Selection_Endpoint_Net_Change_Code_Build_Record_20261104.md).
+- [ ] **NEXT `M6-CP3-TB77-P13-PRE-ASSEMBLY-COST-FULL-GATE-EXEC`** (artifact-only full gate and census; step 31).
 
 - [x] **CB80 rail binding once Code + Build:** exact three-file RA-201.4 source commit [`c6420b1f`](https://github.com/akashskypatel/Directional/commit/c6420b1f9a84c423f60a5b96b90d59abb8df80e4); Linux eight-target GMP/GMPXX compile-only [41732653110](https://github.com/akashskypatel/Directional/actions/runs/41732653110) PASS, package artifact `13278380590` (ZIP SHA-256 `64bdcdbe0c6d06e424e66de816db97f99f60910f1b3eae3642702b94dd077ec5`), runtimeExecution=false. [Record](.agents/Directional/Architecture_M6_CP3_CB80_P13_Rail_Binding_Once_Code_Build_Record_20261103.md). New GUARD rows 887–888 compiled and **passed at TB74**.
 - [x] **TB74 full gate and census independently verified:** immutable CB80 package `13278380590`, [gate 41736473382](https://github.com/akashskypatel/Directional/actions/runs/41736473382) **888/888 PASS**, membership 969 (81 deferred), 1784/1784 checksums; [census 41736517063](https://github.com/akashskypatel/Directional/actions/runs/41736517063) Cylinder PASS, BunnyRandom P13-e RED, Vase ABNORMAL timeout 600 s (9/9 hashes), registered outcomes. [Report](.agents/Directional/Architecture_M6_CP3_TB74_P13_Rail_Binding_Once_Full_Gate_Execution_Report_20261103.md). No new stable event; CP2 491/491, 66/17/49, debt 1 unchanged.
@@ -242,11 +243,11 @@
      - Content: the T-junction scan reads the halfedges of the occurrence's source face, and makes the occurrence's authority scope once. The new counter `geometricTJunctionHalfedgeVisits` backs GUARD row 894.
      - Mismatch → `M6-CP3-PLAN-P13-ARRANGEMENT-TJUNCTION-STOP`; infrastructure → `M6-CP3-CB85A-P13-ARRANGEMENT-TJUNCTION-ORCH`.
      - **CB85 complete:** exact source `a405b59057045b5aaa302abd9553daba3d8b2934`; Linux eight-target GMP/GMPXX compile-only [run 41856637027](https://github.com/akashskypatel/Directional/actions/runs/41856637027) PASS; package `13338458053`, `runtimeExecution=false`, no runtime evidence. [Record](.agents/Directional/Architecture_M6_CP3_CB85_P13_Arrangement_TJunction_Face_Scan_Code_Build_Record_20261104.md).
-  30. [ ] **NEXT `M6-CP3-CB86-P13-SELECTION-ENDPOINT-NET-CHANGE`** (CB; RA-202.5):
+  30. [x] **`M6-CP3-CB86-P13-SELECTION-ENDPOINT-NET-CHANGE`** (CB; RA-202.5):
      - Patch `…CB86_P13_Selection_Endpoint_Net_Change.diff`: `c2a0c308…`, 167 lines; keep its 7 single-space context lines. Numstat `7 3` / `23 14` / `61 0`.
      - Content: `transaction_keeps_protected_endpoint_degrees` checks the transaction's net change. GUARD rows 895–896.
-     - Mismatch → `M6-CP3-PLAN-P13-SELECTION-ENDPOINT-STOP`; infrastructure → `M6-CP3-CB86A-P13-SELECTION-ENDPOINT-ORCH`.
-  31. [ ] **`M6-CP3-TB77-P13-PRE-ASSEMBLY-COST-FULL-GATE-EXEC`** (TB-EXEC; RA-202.6):
+     - Complete: source `0f4c78c4…`; Linux eight-target compile [41879102285](https://github.com/akashskypatel/Directional/actions/runs/41879102285), artifact `13347299644` (28/28 hashes), GMP/GMPXX, runtimeExecution=false; no tests run. [Record](.agents/Directional/Architecture_M6_CP3_CB86_P13_Selection_Endpoint_Net_Change_Code_Build_Record_20261104.md).
+  31. [ ] **NEXT `M6-CP3-TB77-P13-PRE-ASSEMBLY-COST-FULL-GATE-EXEC`** (TB-EXEC; RA-202.6):
      - Gate: manifest 896 `48ef4743…`, ledger v5; 896/896, membership 977.
      - Census: Cylinder PASS; BunnyRandom P13-e unchanged.
      - **Vase: RED `SelfIntersectingFace` with 67,829 quads, or ABNORMAL 600 s.** Both are registered; record the Linux wall time.
