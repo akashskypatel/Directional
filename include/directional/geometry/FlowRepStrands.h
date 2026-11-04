@@ -553,10 +553,14 @@ std::map<std::uint64_t, int> protected_endpoint_degrees(
     const std::vector<FlowRepArc> &arcs,
     const std::vector<int> &activeArcIds);
 
-bool preserves_protected_endpoint_degrees(
+// Whether removing removedArcIds and adding addedArcIds leaves every
+// protected endpoint degree unchanged: the net endpoint change at each
+// protected endpoint is zero.
+bool transaction_keeps_protected_endpoint_degrees(
     const std::vector<FlowRepArc> &arcs,
-    const std::vector<int> &activeArcIds,
-    const std::map<std::uint64_t, int> &requiredDegrees);
+    const std::vector<int> &removedArcIds,
+    const std::vector<int> &addedArcIds,
+    const std::map<std::uint64_t, int> &protectedDegrees);
 
 int count_closed_boundary_cycles(
     const std::vector<FlowRepArc> &arcs,

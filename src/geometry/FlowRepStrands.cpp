@@ -2277,19 +2277,24 @@ std::map<std::uint64_t, int> protected_endpoint_degrees(
 
 namespace directional::geometry::flow_rep_detail {
 
-bool preserves_protected_endpoint_degrees(
+bool transaction_keeps_protected_endpoint_degrees(
     const std::vector<FlowRepArc> &arcs,
-    const std::vector<int> &activeArcIds,
-    const std::map<std::uint64_t, int> &requiredDegrees) {
-  std::map<std::uint64_t, int> trial;
-  for (const int arcId : activeArcIds) {
+    const std::vector<int> &removedArcIds,
+    const std::vector<int> &addedArcIds,
+    const std::map<std::uint64_t, int> &protectedDegrees) {
+  std::map<std::uint64_t, int> change;
+  for (const int arcId : removedArcIds) {
     const FlowRepArc &arc = arcs[static_cast<std::size_t>(arcId)];
-    ++trial[embedded_endpoint_key(arc, true)];
-    ++trial[embedded_endpoint_key(arc, false)];
+    --change[embedded_endpoint_key(arc, true)];
+    --change[embedded_endpoint_key(arc, false)];
   }
-  for (const auto &[key, degree] : requiredDegrees) {
-    const auto found = trial.find(key);
-    if (found == trial.end() || found->second != degree) {
+  for (const int arcId : addedArcIds) {
+    const FlowRepArc &arc = arcs[static_cast<std::size_t>(arcId)];
+    ++change[embedded_endpoint_key(arc, true)];
+    ++change[embedded_endpoint_key(arc, false)];
+  }
+  for (const auto &[key, delta] : change) {
+    if (delta != 0 && protectedDegrees.count(key) != 0U) {
       return false;
     }
   }
@@ -2676,6 +2681,10 @@ FlowRepSparseNetwork select_sparse_flow_rep_network(
 
   const std::vector<FlowRepFlowline> denseFlowlines =
       flow_rep_detail::extract_transactional_flowlines(arcs, denseArcIds);
+  // The active network starts as the dense network and accepts only
+  // transactions that keep these degrees, so it always has them: a
+  // transaction keeps them iff its net change at each protected endpoint is
+  // zero (Amendment 34).
   const std::map<std::uint64_t, int> protectedEndpointDegrees =
       flow_rep_detail::protected_endpoint_degrees(arcs, denseArcIds);
 
@@ -2734,8 +2743,8 @@ FlowRepSparseNetwork select_sparse_flow_rep_network(
         transaction_is_valid(trial, trialCycles);
     (void)trialCoverage;
     const bool endpointsAccepted =
-        flow_rep_detail::preserves_protected_endpoint_degrees(
-            arcs, trial, protectedEndpointDegrees);
+        flow_rep_detail::transaction_keeps_protected_endpoint_degrees(
+            arcs, flowline.arcIds, {}, protectedEndpointDegrees);
     if (!evidenceAccepted || !endpointsAccepted) {
       for (const int arcId : flowline.arcIds) {
         active[static_cast<std::size_t>(arcId)] = static_cast<unsigned char>(1);
@@ -2825,8 +2834,8 @@ FlowRepSparseNetwork select_sparse_flow_rep_network(
         transaction_is_valid(trial, trialCycles);
     (void)trialCoverage;
     const bool endpointsAccepted =
-        flow_rep_detail::preserves_protected_endpoint_degrees(
-            arcs, trial, protectedEndpointDegrees);
+        flow_rep_detail::transaction_keeps_protected_endpoint_degrees(
+            arcs, flowline.arcIds, substitutes, protectedEndpointDegrees);
     if (!evidenceAccepted || !endpointsAccepted) {
       for (const int arcId : flowline.arcIds) {
         active[static_cast<std::size_t>(arcId)] = static_cast<unsigned char>(1);

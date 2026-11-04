@@ -3,6 +3,7 @@
 #include <directional/pipeline/RemeshPipeline.h>
 
 #include <algorithm>
+#include <chrono>
 #include <cstdint>
 #include <map>
 #include <queue>
@@ -3127,4 +3128,64 @@ TEST(FlowRepStrandsPhase15, CrossingSupportChordsRemainAdmitted) {
   for (const FlowRepArc *arc : second) {
     EXPECT_TRUE(arc->initiallyActive);
   }
+}
+
+TEST(FlowRepStrandsPhase15,
+     TransactionKeepsProtectedEndpointDegreesByNetChange) {
+  // Three arcs meet at the origin, a protected endpoint of degree 3. Arc 3
+  // is detached; arc 4 has the same ends as arc 0 (RA-202).
+  const std::vector<FlowRepArc> arcs = {
+      arc(0, 0.0, 0.0, 1.0, 0.0), arc(1, 0.0, 0.0, 0.0, 1.0),
+      arc(2, 0.0, 0.0, -1.0, 0.0), arc(3, 2.0, 2.0, 3.0, 2.0),
+      arc(4, 0.0, 0.0, 1.0, 0.0)};
+  const auto protectedDegrees =
+      directional::geometry::flow_rep_detail::protected_endpoint_degrees(
+          arcs, {0, 1, 2, 3});
+  ASSERT_EQ(1U, protectedDegrees.size());
+  using directional::geometry::flow_rep_detail::
+      transaction_keeps_protected_endpoint_degrees;
+  EXPECT_FALSE(transaction_keeps_protected_endpoint_degrees(
+      arcs, {0}, {}, protectedDegrees));
+  EXPECT_TRUE(transaction_keeps_protected_endpoint_degrees(
+      arcs, {3}, {}, protectedDegrees));
+  EXPECT_TRUE(transaction_keeps_protected_endpoint_degrees(
+      arcs, {0}, {4}, protectedDegrees));
+  EXPECT_FALSE(transaction_keeps_protected_endpoint_degrees(
+      arcs, {}, {4}, protectedDegrees));
+  EXPECT_FALSE(transaction_keeps_protected_endpoint_degrees(
+      arcs, {3}, {4}, protectedDegrees));
+}
+
+TEST(FlowRepStrandsPhase15,
+     SelectionChecksEndpointDegreesOfTheTransactionOnly) {
+  // 2,000 three-arm stars and 2,000 detached arcs: 8,000 transactions.
+  // Recounting the endpoint degrees of the whole active network for each
+  // transaction reads about 10^8 endpoints; the net change of a transaction
+  // reads two (RA-202).
+  constexpr int stars = 2000;
+  std::vector<FlowRepArc> arcs;
+  for (int star = 0; star < stars; ++star) {
+    const double x = 10.0 * star;
+    arcs.push_back(arc(static_cast<int>(arcs.size()), x, 0.0, x + 1.0, 0.0));
+    arcs.push_back(arc(static_cast<int>(arcs.size()), x, 0.0, x, 1.0));
+    arcs.push_back(arc(static_cast<int>(arcs.size()), x, 0.0, x - 1.0, 0.0));
+    arcs.push_back(
+        arc(static_cast<int>(arcs.size()), x + 3.0, 5.0, x + 4.0, 5.0));
+  }
+  FlowRepSparseOptions options;
+  options.requireCoverageEvidence = false;
+  options.requireCycleEvidence = false;
+  options.requireCompleteProvenance = false;
+
+  const auto start = std::chrono::steady_clock::now();
+  const FlowRepSparseNetwork network =
+      directional::geometry::select_sparse_flow_rep_network(arcs, {}, {},
+                                                            options);
+  const double seconds =
+      std::chrono::duration<double>(std::chrono::steady_clock::now() - start)
+          .count();
+
+  EXPECT_EQ(4 * stars, network.attemptedStrandTransactions);
+  EXPECT_EQ(3 * stars, network.rejectedStrandTransactions);
+  EXPECT_LT(seconds, 2.0);
 }
