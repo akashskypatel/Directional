@@ -1,0 +1,2 @@
+# P13-l Review temporary source snapshot trigger
+.agents/connector-triggers/source-snapshot/orientation-review-20261105-1642.txt
