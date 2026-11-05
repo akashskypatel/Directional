@@ -1,4 +1,4 @@
-> **Current canonical next:** finish `M6-CP3-CB93-P13-ORIENTATION-WHOLE-QUAD-NORMAL` (in progress, applied at `e96e98806`). Then apply [RA-209](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_Single_Writer_Own_Plane_20261105.md) §3 exactly: CB94 (`a19dd0cd…`), CB95 (`8207716b…`), CB96 (`a7e81da5…`), then TB83 (§4). Steps 44–48.
+> **Current canonical next:** `M6-CP3-CB95-P13-QUAD-SELF-INTERSECTION-OWN-PLANE` (exact [RA-209](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_Single_Writer_Own_Plane_20261105.md) §3 frozen patch `8207716b…`, compile only). CB93 and CB94 are complete; CB94 source `223d965a…`, immutable GMP package `13452156380` verified. Then separate CB96 and TB83. Steps 44–48.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -432,16 +432,16 @@
      - **Pinned:** gate rows 795/796/797/864 and census Cylinder and BunnyRandom digest lines byte-identical to TB81; Vase's line identical to TB81 through `global-conformity-baseline`.
      - Mismatch → `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB82A-P13-SOURCE-VERTEX-FAN-SEED-ORCH`.
   - **RA-208/RA-209 sequence:** steps 44–48, one turn each, in order. The implementation agent takes all five, and starts each only after the previous one is verified.
-  44. [ ] **IN PROGRESS `M6-CP3-CB93-P13-ORIENTATION-WHOLE-QUAD-NORMAL`** (CB, compile only; RA-208.3). Source applied at `e96e98806` (result hashes `5bb0277c…` / `48bd9850…` / `3e8604cd…` verified). Finish the compile.
-  45. [ ] **NEXT `M6-CP3-CB94-P13-ORIENTATION-SINGLE-WRITER`** (CB, compile only; RA-209.3):
+  44. [x] **COMPLETE `M6-CP3-CB93-P13-ORIENTATION-WHOLE-QUAD-NORMAL`** (CB, compile only; RA-208.3). Source applied at `e96e98806` (result hashes `5bb0277c…` / `48bd9850…` / `3e8604cd…` verified); previous-turn completion authority recorded.
+  45. [x] **COMPLETE / COMPILE GREEN `M6-CP3-CB94-P13-ORIENTATION-SINGLE-WRITER`** (CB, compile only; RA-209.3):
      - Precheck: `git diff --quiet e96e98806cf5fd055df3dd45c629f124c77c5dd5 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
      - Patch `.agents/Directional/Architecture_M6_CP3_CB94_P13_Orientation_Single_Writer.diff`:
        - SHA-256 `a19dd0cde27d1a95f24f4c40ec89d9264fdb44f5aae59da75af5abb1465e52b7`, 183 lines; keep its 5 single-space context lines;
        - `0 7` `include/directional/pipeline/RemeshPipeline.h` → `112a024ca7d01f81a24aa4f9b98b13480052da190452f2c9b531a567c106d980`;
        - `3 104` `src/pipeline/RemeshPipeline.cpp` → `18043141fe7720915f46d7d400ff86146c8a39a8346222ea80a4986df8040629`;
        - `0 31` `tests/SurfaceCellsPhase10Tests.cpp` → `913b97e7a3731aff9899f108cb81d9499517f55071a87376355ddd8e6da27bac`.
-     - Mismatch → `M6-CP3-PLAN-P13-ORIENTATION-SINGLE-WRITER-STOP`; infrastructure → `M6-CP3-CB94A-P13-ORIENTATION-SINGLE-WRITER-ORCH`.
-  46. [ ] **`M6-CP3-CB95-P13-QUAD-SELF-INTERSECTION-OWN-PLANE`** (CB, compile only; RA-209.3; precheck the CB94 results):
+     - Applied as `223d965a79b0e6fd294436233dd8e4c05be1781a`. [Run 42104344087](https://github.com/akashskypatel/Directional/actions/runs/42104344087) passed eight-target Linux Release GMP/GMPXX compile, `runtimeExecution=false`; artifact `13452156380` SHA-256 `03b1818aa971441b314f059261135bd2accac75d82fdd0ece5ceb13a500a1f50`, 28/28 manifest. [Owning record](.agents/Directional/Architecture_M6_CP3_CB94_P13_Orientation_Single_Writer_Code_Build_Record_20261105.md). No TB executed.
+  46. [ ] **NEXT `M6-CP3-CB95-P13-QUAD-SELF-INTERSECTION-OWN-PLANE`** (CB, compile only; RA-209.3; precheck the CB94 results):
      - Patch `.agents/Directional/Architecture_M6_CP3_CB95_P13_Quad_Self_Intersection_Own_Plane.diff`:
        - SHA-256 `8207716b9993a9d1e290ff4fe9eb4794ff505dfb601708bcd965c68cf4d0c014`, 158 lines; keep its 4 single-space context lines;
        - `40 35` `include/directional/validation/MeshValidator.h` → `15b813d3b1d312d2a7f6c742c951c002b7b633f3cee00ae317f1872d83a08f3e`;

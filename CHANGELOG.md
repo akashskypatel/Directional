@@ -1,3 +1,9 @@
+## 2026-11-05 — CB94 single-writer orientation Code + Build COMPLETE / Linux GMP compile GREEN
+
+- **Turn:** `M6-CP3-CB94-P13-ORIENTATION-SINGLE-WRITER` under RA-209.3. Exact frozen patch `a19dd0cde27d1a95f24f4c40ec89d9264fdb44f5aae59da75af5abb1465e52b7` removed the second orientation writer and its obsolete test, changing exactly three prescribed source paths. Source commit [`223d965a79b0e6fd294436233dd8e4c05be1781a`](https://github.com/akashskypatel/Directional/commit/223d965a79b0e6fd294436233dd8e4c05be1781a), all prescribed postimage SHA-256 hashes confirmed.
+- **Compile-only:** [run 42104344087](https://github.com/akashskypatel/Directional/actions/runs/42104344087), all eight standard Linux Release targets PASS with mandatory GMP/GMPXX linkage; preflight/build exit `0/0`, clean source statuses, `runtimeExecution=false`; no tests or benchmarks executed. Immutable result artifact `13452156380`, ZIP SHA-256 `03b1818aa971441b314f059261135bd2accac75d82fdd0ece5ceb13a500a1f50`, internal package SHA256SUMS 28/28. Source archive SHA-256 `45e51451fb6411bf868d3c0a25e2653fec01a54fd3a36b9047610d3a803826cd`. [CB94 record](.agents/Directional/Architecture_M6_CP3_CB94_P13_Orientation_Single_Writer_Code_Build_Record_20261105.md).
+- **Authority unchanged:** CP2 accepted 491/491, stable 66/17/49, debt 1, selector497 and CP3 unpromoted. Exact successor `M6-CP3-CB95-P13-QUAD-SELF-INTERSECTION-OWN-PLANE` (separate turn); no CB95 work began.
+
 ## 2026-11-05 — RA-209: review of RA-208; orientation pass removed; own-plane embedding predicates; exact CB94 → CB95 → CB96 → TB83
 
 - **Turn:** adversarial review of `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` ([RA-208](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md)). [RA-209](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_Single_Writer_Own_Plane_20261105.md).
