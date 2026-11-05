@@ -1,6 +1,8 @@
-# TB82 — immutable source-vertex fan-seed full gate: in-flight execution (2026-11-05)
+# TB82 — immutable full-gate execution launch record (historical; closed 2026-11-05)
 
-**Current canonical turn:** `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC` (Test + Benchmark, artifact-only Linux). This is an **in-progress transport/execution record, not a runtime result, acceptance or closeout**.
+**Closed by:** [final TB82 report](Architecture_M6_CP3_TB82_P13_Source_Vertex_Fan_Seed_Full_Gate_Execution_Report_20261105.md). **COMPLETE / MATCH** with 901/901 gate, census MATCH. This record retains the original launch/recovery authority for historical provenance.
+
+**Original canonical turn:** `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC` (Test + Benchmark, artifact-only Linux). This is an **in-progress transport/execution record, not a runtime result, acceptance or closeout**.
 
 ## Frozen authority and independently verified package preflight
 

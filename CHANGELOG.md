@@ -1,3 +1,8 @@
+## 2026-11-05 — TB82 immutable CB92 gate/census COMPLETE / MATCH; P13-l Review next
+
+- [Final TB82 report](.agents/Directional/Architecture_M6_CP3_TB82_P13_Source_Vertex_Fan_Seed_Full_Gate_Execution_Report_20261105.md) verifies [gate 42057136562](https://github.com/akashskypatel/Directional/actions/runs/42057136562) **901/901**, membership 982 (81 deferred), 1810/1810 checksum entries and rows 900–901 PASS; [census 42057191097](https://github.com/akashskypatel/Directional/actions/runs/42057191097) MATCH (Cylinder PASS, BunnyRandom P13-e RED, Vase `SelfIntersectingFace` RED under 600 s, informational 67,750 quads), 9/9 checksums. Six full digest lines equal TB81; Vase equal through global conformity, changed only thereafter. No build/relink/source mutation.
+- O32a source-vertex fan seeding passes the registered controls; downstream O32b–e and adaptive tie remain. Stable 66/17/49, debt 1 and accepted CP2 491/491 unchanged; selector497/CP3 unpromoted. Next separate Review `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (RA-207.6).
+
 ## 2026-11-05 — CB92 exact fan-seed source compiled, artifact-only TB82 next
 
 - **Code + Build:** RA-207 §3's exact 285-line fan-seed patch applied unchanged; source [`d9921cdd5a174bbb00b68387082cf08df80f97c5`](https://github.com/akashskypatel/Directional/commit/d9921cdd5a174bbb00b68387082cf08df80f97c5). Tracing source and focused tests only; no runtime execution.

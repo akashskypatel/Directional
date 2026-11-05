@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC` (RA-207.5). CB92 exact RA-207.3 patch compiled successfully from `d9921cdd5a174bbb00b68387082cf08df80f97c5` as immutable artifact `13427203329` ([run 42052009404](https://github.com/akashskypatel/Directional/actions/runs/42052009404)); no project runtime has been executed. Next is full 901-row artifact-only gate and census.
+> **Current canonical next:** `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l Review under RA-207 §6), after **TB82 MATCH** on the immutable CB92 package. Do not start another Code + Build or Test + Benchmark without the Review decision.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -7,7 +7,9 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — CB92 exact source/compile complete; TB82 immutable 901-row gate next; O32b–e, O33 open (2026-11-05)
+## CURRENT — TB82 901/901 MATCH; next P13-l completed-mesh-orientation Review (2026-11-05)
+
+- [x] **TB82 artifact-only full gate and census COMPLETE / MATCH:** [report](.agents/Directional/Architecture_M6_CP3_TB82_P13_Source_Vertex_Fan_Seed_Full_Gate_Execution_Report_20261105.md); immutable CB92 source `d9921cdd` / artifact `13427203329`. [Gate 42057136562](https://github.com/akashskypatel/Directional/actions/runs/42057136562): 901/901 PASS, membership 982, 1,810/1,810 SHA256SUMS; new GUARD 900–901 PASS. [Census 42057191097](https://github.com/akashskypatel/Directional/actions/runs/42057191097): Cylinder PASS, BunnyRandom expected P13-e RED, Vase expected `SelfIntersectingFace` RED in 204.77 s (189,462 traces, 30,989 strands, 26,817 cells, 67,750 informational quads); 9/9 hashes. Six pinned Linux digests equal TB81; Vase unchanged to `global-conformity-baseline`. No promotion, new stable event or accepted CP2 regression. **Next independent P13-l Review**; O32b–e, O33, O30b, O31, P13-e and adaptive tie residual carried.
 
 - [x] **The O32a seed Review was reviewed by [RA-207](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md)** (re-entry; scratch build):
   - **Stands:** vertex seeds were placed by lowest face row and de-duplicated by (face row, barycentrics), so the rail collision depended on row order. Typed-fan placement gives 1,416 seeds (identical digest) and identical trace (189,462) and strand (30,989) counts in four orders. Quads still vary (O32e).
