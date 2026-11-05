@@ -1,2 +1,0 @@
-Review/Definition source snapshot for M6-CP3-DEFN-P13-PLATFORM-SPLIT.
-Triggered after STATUS entry; inspect exact event SHA.
