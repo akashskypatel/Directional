@@ -1,4 +1,4 @@
-## 2026-11-05 — O32a Review: row-dependent seed suppression located; valid rail authority distinguished (WIP)
+## 2026-11-05 — O32a Review COMPLETE: source-row seed suppression located, valid rails distinguished, CB92 frozen
 - **Independent fan admissibility audit (continuation 8):** source fixture `vase.off` SHA-256 `5f7bedc1783486589a8721a7b9be881064f361e4a07fd8c5278d8b8f55b2c868` has 1,274/1,274 intrinsic vertex fans singleton, consistent with zero explicit hard edges. Existing `FieldAlignedSingularityPort` provides region/component but no fan and relief inputs are vertex-scoped. The protected-edge synthetic fan test proves topology identity, **not** permission to duplicate raw relief obligations into both fans. CB92 revised to unique-fan admission with typed fail-closed result if ambiguous; no implementation or successor start. Evidence `fan_admissibility_audit.md` SHA-256 `a8eb822d71c1706793c8225489c09806ef0c45b4f2b7d32b8c2b88db75ac18ad`.
 
 
