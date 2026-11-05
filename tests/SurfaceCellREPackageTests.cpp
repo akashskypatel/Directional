@@ -1,13 +1,16 @@
 #include <algorithm>
 #include <array>
+#include <cmath>
 #include <map>
 #include <set>
 #include <stdexcept>
 #include <string>
+#include <tuple>
 #include <utility>
 
 #include <gtest/gtest.h>
 
+#include <directional/geometry/SourceChartTransitions.h>
 #include <directional/geometry/SurfaceCellTracing.h>
 #include <directional/pipeline/RemeshPipeline.h>
 
@@ -1542,6 +1545,144 @@ TEST(SurfaceCellTracingPhase14,
   }
   EXPECT_EQ((std::set<std::pair<int, int>>{{0, 0}, {0, 1}, {3, 0}, {3, 1}}),
             endpointCharts);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     VertexSeedsFollowSourceVertexFansNotFaceRows) {
+  // A boundary rail sample sits on vertex 1 in face (1, 5, 4). In the
+  // original row order vertex 1's first face is (0, 1, 4), in the reversed
+  // order it is the rail's face, so a seed keyed by face row collides with
+  // the rail seed in one order only. Seeds must not depend on row order
+  // (DESIGN 10.1, RA-207): the rail already holds vertex 1's fan, and
+  // vertex 4 gets exactly one relief seed.
+  using namespace directional::geometry;
+  using Key = std::tuple<long long, long long, int, int>;
+  std::map<int, std::multiset<Key>> seedsByOrder;
+  for (int reversed = 0; reversed < 2; ++reversed) {
+    REPkgMesh mesh = make_grid(2);
+    const int faceCount = static_cast<int>(mesh.faces.rows());
+    const int railFace = reversed ? faceCount - 1 - 3 : 3;
+    if (reversed) {
+      mesh.faces = mesh.faces.colwise().reverse().eval();
+    }
+    SurfaceCellTracingOptions options;
+    options.defaultTargetSize = 10.0;
+    options.coverageRadiusFactor = 100.0;
+    options.sourceFaceComponents.assign(static_cast<std::size_t>(faceCount), 0);
+    options.sourceFaceSheets.assign(static_cast<std::size_t>(faceCount), 0);
+    Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
+    for (int corner = 0; corner < 3; ++corner) {
+      if (mesh.faces(railFace, corner) == 1) {
+        barycentric[corner] = 1.0;
+      }
+    }
+    ASSERT_DOUBLE_EQ(1.0, barycentric.sum());
+    SurfaceCellRail rail(directional::tests::test_hard_rail_id(23));
+    rail.kind = SurfaceCellRailKind::Boundary;
+    rail.samples = {
+        rail_sample(mesh, railFace, -1, 0.0, 0.0, barycentric, 1)};
+    options.authoritativeRails.push_back(rail);
+    options.reliefCriticalVertices = {1, 4};
+    const auto authority =
+        surface_cell_tracing_detail::build_source_topology_regions(
+            mesh.faces, options);
+    ASSERT_TRUE(authority.has_value());
+    options.sourceAuthority = &*authority;
+    const auto seeds = generate_deterministic_surface_seeds(
+        mesh.vertices, mesh.faces,
+        Eigen::VectorXd::Constant(mesh.vertices.rows(), 10.0), options);
+    std::map<int, int> reliefSeedsByVertex;
+    for (const SurfaceTraceSeed &seed : seeds) {
+      Eigen::RowVector3d position = Eigen::RowVector3d::Zero();
+      for (int corner = 0; corner < 3; ++corner) {
+        position += seed.point.barycentric[corner] *
+                    mesh.vertices.row(mesh.faces(seed.point.face, corner));
+      }
+      seedsByOrder[reversed].insert(
+          {std::llround(position.x() * 1.0e9),
+           std::llround(position.y() * 1.0e9),
+           static_cast<int>(seed.provenance), seed.sourceId});
+      if (seed.provenance == SurfaceSeedProvenance::ReliefCritical) {
+        ++reliefSeedsByVertex[seed.sourceId];
+      }
+    }
+    EXPECT_EQ(0, reliefSeedsByVertex[1]) << "reversed=" << reversed;
+    EXPECT_EQ(1, reliefSeedsByVertex[4]) << "reversed=" << reversed;
+  }
+  EXPECT_EQ(seedsByOrder[0], seedsByOrder[1]);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     VertexSeedsCoverEachHardBarrierFanInBothRowOrders) {
+  // Vertex 0 of the two-triangle grid is one fan, or two when the interior
+  // edge (0, 3) is a hard barrier. A relief seed on vertex 0 lands once per
+  // fan, like a hard-rail seed on both sides, with the same typed fans in
+  // both source-face row orders (RA-207).
+  using namespace directional::geometry;
+  for (int split = 0; split < 2; ++split) {
+    std::set<SourceVertexEntityIdentity> firstOrderFans;
+    for (int reversed = 0; reversed < 2; ++reversed) {
+      REPkgMesh mesh = make_grid(1);
+      SurfaceCellTracingOptions options;
+      options.defaultTargetSize = 10.0;
+      options.coverageRadiusFactor = 100.0;
+      options.sourceFaceComponents = {0, 0};
+      options.sourceFaceSheets = {0, 0};
+      if (split) {
+        options.hardFeatureEdges.insert(
+            directional::authority::SourceEdgeTopologyKey::from_indices(
+                0, 3, static_cast<std::size_t>(mesh.vertices.rows()))
+                .value());
+      }
+      const int railFace = reversed ? 1 : 0;
+      if (reversed) {
+        mesh.faces.row(0).swap(mesh.faces.row(1));
+      }
+      SurfaceCellRail rail(directional::tests::test_hard_rail_id(19));
+      rail.kind = SurfaceCellRailKind::Boundary;
+      rail.samples = {rail_sample(mesh, railFace, -1, 0.0, 0.0,
+                                  Eigen::RowVector3d(0.0, 1.0, 0.0), 1)};
+      options.authoritativeRails.push_back(rail);
+      options.reliefCriticalVertices = {0};
+      const auto authority =
+          surface_cell_tracing_detail::build_source_topology_regions(
+              mesh.faces, options);
+      ASSERT_TRUE(authority.has_value());
+      options.sourceAuthority = &*authority;
+      const auto seeds = generate_deterministic_surface_seeds(
+          mesh.vertices, mesh.faces,
+          Eigen::VectorXd::Constant(mesh.vertices.rows(), 10.0), options);
+      const SourceChartTransitionGraph transitionGraph(
+          mesh.faces, *authority, options.hardFeatureEdges);
+      ASSERT_TRUE(transitionGraph.available());
+      std::size_t reliefSeeds = 0;
+      std::set<SourceVertexEntityIdentity> fans;
+      for (const SurfaceTraceSeed &seed : seeds) {
+        if (seed.provenance != SurfaceSeedProvenance::ReliefCritical ||
+            seed.sourceId != 0) {
+          continue;
+        }
+        ++reliefSeeds;
+        SurfacePoint point;
+        point.face = seed.point.face;
+        point.barycentric = seed.point.barycentric.transpose();
+        const auto resolved = transitionGraph.resolve_entity(point);
+        ASSERT_TRUE(resolved.has_value());
+        const auto *fan =
+            std::get_if<SourceVertexEntityIdentity>(&resolved->identity);
+        ASSERT_NE(nullptr, fan);
+        fans.insert(*fan);
+      }
+      EXPECT_EQ(split ? 2U : 1U, reliefSeeds)
+          << "split=" << split << ";reversed=" << reversed;
+      EXPECT_EQ(reliefSeeds, fans.size());
+      if (reversed == 0) {
+        firstOrderFans = fans;
+      } else {
+        EXPECT_EQ(firstOrderFans, fans);
+      }
+    }
+  }
 }
 
 }  // namespace
