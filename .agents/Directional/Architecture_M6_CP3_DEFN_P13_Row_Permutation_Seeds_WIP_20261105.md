@@ -23,6 +23,24 @@ A separate Python reconstruction of **only those source-level branches** used th
 
 Sorted `(position,provenance)` SHA-256 digests differ: the one-seed case is `e110b05e3cd83cbf914aefe47f73797679b629d8c7806929d373a2f6400816cf`, the two-seed cases `3cea4a069406ce78193b7adf76966e48955c7b6b771a51b7fe9b60fbd688b6fc`. The proposed *scratch-only* change to choose the incident source face by the semantic sorted triangle-vertex tuple instead of face row selects A under all four permutations and removes this particular discrepancy. This is a logical reconstruction, **not compiled Directional proof**, and does not establish a sufficient production fix.
 
+## Continuation probe: actual Vase boundary incidence (2026-11-05, scratch only)
+
+A separate, directly executable Python scratch probe (`vase_boundary_seed_probe.py` + JSON report) parsed the immutable `benchmarks/fixtures/milestone-g/vase.off` from the verified source snapshot: **1,274 vertices, 2,404 triangles, 142 boundary edges, 142 distinct boundary vertices**. It reconstructed only the existing `initialize_seed` key, an endpoint sample on each boundary edge, and the `vertex_point`/anchor insertion. This synthetic choice of anchor set (all boundary vertices) is **not the actual production relief-root/anchor set**; the full Vase-generated field, authoritative rails, graph-distance and adaptive seeding were not executed. The seed counts below are *not* the RA-205 production numbers.
+
+| Consistent source-face row order | Rail-endpoint seeds | Additional boundary-vertex anchors (existing first-row chart) | Total | Candidate using lowest semantic triangle face | Candidate content digest |
+|---|---:|---:|---:|---:|---|
+| Base | 284 | 40 | 324 | 286 | `b8f01d28b128c0b92d6c6914338dfd8d2feea69c453f2146e06fd0b5036d6778` |
+| Permutation 1 | 284 | 53 | 337 | 286 | same |
+| Permutation 2 | 284 | 41 | 325 | 286 | same |
+| Permutation 3 | 284 | 39 | 323 | 286 | same |
+| Permutation 4 | 284 | 50 | 334 | 286 | same |
+
+The original form produced **five distinct** semantic `(sourceVertex, seedProvenance)` SHA-256 digests. The candidate form produced one digest, and scratch assertions verify both discrimination and invariance. This is direct evidence that the observed algorithm can change **before adaptive coverage** on the real Vase topology, not proof that it does so with production options. It is a stricter, real-mesh corroboration of the earlier three-triangle counterexample, and it identifies `vertex_point` plus face-local dedup as a plausible shared first owner. It does not localize the *actual* RA-205 1,456→1,461 count change.
+
+**Safety caveat:** the modeled 284 boundary-endpoint seeds project to only 142 distinct source vertices; a world-position/source-vertex-only dedup would erase chart/rail representations, not repair them. `initialize_seed` also discards the second `HardRailId` if two distinct authoritative rail samples share one face/barycentric key. Neither a universal position dedup nor global lexical-face replacement is authorized without independently proving the correct component, local-sheet, and protected rail-side scope. A candidate may choose a source-row-independent representative *within* its authoritative fan/side class, and must preserve both sides of hard features.
+
+**Next decisive controlled experiment:** instrument the actual scratch Vase producer to emit per-phase row-invariant content digests and seed count (authoritative rail samples; singularity/relief roots; optional anchors/separatrices; coverage) across base and ≥3 consistent face-row permutations. Include canonical source-entity/rail-side key and logged reason for insertion or suppression. If the first difference occurs before coverage, test a semantic fan-aware representative there. If the prefix is identical and coverage diverges, test Dijkstra/face-corner equivalence and centroid placement, not rail dedup. Then repeat actual tracing and strand counts. No C++ scratch build or product runtime has been performed in this continuation.
+
 ## Hypothesis and checks before freezing a Code + Build successor
 
 1. Reproduce the RA-205 Vase base + at least three source-face row permutations on a **separate scratch artifact**, keeping field/rails/geometry/target size fixed and remapping all face-indexed inputs. Count and digest the produced seeds after each insertion phase, not just at exit.
@@ -35,4 +53,4 @@ This does not change the RA-205 measured 1,456 vs 1,461 Vase observation, 66/17/
 
 ## Continuation / closeout pending
 
-The mandated scratch production-equivalent evidence, full formal Review closeout table, review boundary check on a Git-backed working tree, document consolidation, durable `ORIENTATION.md`/`CHANGELOG.md`/tracker refresh, and formal successor freeze are **not completed**. Keep this canonical turn active; do not start its successor. The source snapshot can be reused locally for the unchanged source phase.
+The mandated *actual producer* scratch production-equivalent evidence, full formal Review closeout table, review boundary check on a Git-backed working tree, document consolidation, durable `ORIENTATION.md`/`CHANGELOG.md`/tracker refresh, and formal successor freeze are **not completed**. Keep this canonical turn active; do not start its successor. The source snapshot can be reused locally for the unchanged source phase.
