@@ -1,0 +1,4 @@
+scope=isolated
+artifact_run=42007963779
+source_sha=59f605752369908cdc0fb0388485892742caf462
+permutations=base,1,2,3
