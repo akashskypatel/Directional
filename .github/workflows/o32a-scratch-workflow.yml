@@ -75,6 +75,11 @@ jobs:
           sha256sum -c SHA256SUMS
           test "$(cat metadata/source-commit.txt)" = "$GITHUB_SHA"
           test -s bin/directional_surface_cell_producer_tests
+          # The immutable compile package owns the exact fixture archive.
+          test -s "source/source-$GITHUB_SHA.tar.gz"
+          mkdir -p test-data
+          tar -xzf "source/source-$GITHUB_SHA.tar.gz" -C test-data benchmarks/fixtures
+          test -s test-data/benchmarks/fixtures/milestone-g/vase.off
           chmod +x bin/directional_surface_cell_producer_tests
           mkdir -p "$RUNNER_TEMP/o32a-results"
           for seed in base 1 2 3; do
@@ -87,9 +92,14 @@ jobs:
             rc=$?
             set -e
             echo "$seed exit=$rc" | tee -a "$RUNNER_TEMP/o32a-results/exits.txt"
-            grep -q 'O32A_PHASE coverage size=' "$RUNNER_TEMP/o32a-results/$seed.log"
-            grep -q 'O32A_SCRATCH_CAPTURE_COMPLETE' "$RUNNER_TEMP/o32a-results/$seed.log"
-            grep -q 'O32A_SEED coverage' "$RUNNER_TEMP/o32a-results/$seed.log"
+            if [ "$rc" -eq 124 ]; then
+              echo "STATUS=ERROR permutation=$seed reason=timeout"
+              exit 1
+            fi
+            for phase in rails relief_roots relief_regions separatrices coverage; do
+              grep -q "^O32A_PHASE $phase size=" "$RUNNER_TEMP/o32a-results/$seed.log"
+            done
+            grep -q '^O32A_SEED coverage' "$RUNNER_TEMP/o32a-results/$seed.log"
           done
           (cd "$RUNNER_TEMP/o32a-results" && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
           (cd "$RUNNER_TEMP/o32a-results" && sha256sum -c SHA256SUMS)
