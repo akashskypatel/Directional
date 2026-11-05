@@ -1,0 +1,2 @@
+# CB91 temporary source snapshot trigger (semantic snapshot was already verified)
+.agents/connector-triggers/source-snapshot/cb91-20261105-0556.txt
