@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-11-05 · `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY` re-entered: [RA-205](Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md) reviews [RA-204](Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md). CB90 → TB80 stand. **O32 (new, CP3-exit):** production is not invariant under source-face row permutation (DESIGN §10.1). The first owner is the seed set. Accepted CP2 491/491, stable 66/17/49, debt 1; selector497/CP3 unpromoted.
+**Currency:** 2026-11-05 · `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY` re-entered: [RA-205](Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md) reviews [RA-204](Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md). CB90 compile-only verified; TB80 is the next separate turn. **O32 (new, CP3-exit):** production is not invariant under source-face row permutation (DESIGN §10.1). The first owner is the seed set. Accepted CP2 491/491, stable 66/17/49, debt 1; selector497/CP3 unpromoted.
 - **Before it:** P13-m, fixed by [RA-202](Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md). The fix is Amendment 34 and exact CB85–CB88, removing three memory-bound census-path scans plus two Amendment 33 sites.
 - **The block.** The ChatGPT Review saw a conflict between "runtime-free" and a probe re-run. The fault is RA-202.9's route: it named no track and asked one platform to explain a split between two. Review scratch probes are a duty (RA-166.6 F6, RA-188.1), Linux runtime is a TB, and no policy changes.
 - **TB78** (CB85–CB88) matches on gate 899/899 and on every census line except the count. Vase reaches RED `SelfIntersectingFace` in 268.93 s on Linux, so P13-m's Linux objective is met.
@@ -17,7 +17,7 @@
   - **The cause:** `SurfaceArrangement.cpp:6762` assigns cell ids in a non-injective key order. With randomized `std::sort` ties, one build gives Vase 67,753 to 67,827 quads.
   - **The fix:** CB90 adds a halfedge tie-break. After it, Vase gives 67,746 under every order, and the local gate is 898/899 (only O16).
 - **RA-205:** RA-204's mechanism and CB90 stand. Completed counts that change with the cell schedule violate DESIGN §10.1. A Vase source-face row permutation changes seeds (1,456 → 1,461), traces, strands and quads (67,746 → 67,771–67,784). That is O32.
-- **NEXT `M6-CP3-CB90-P13-ARRANGEMENT-CELL-ORDER-TIEBREAK`** (exact patch, compile only), then `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-EXEC`. TB80 records the RA-204.9 comparison.
+- **CB90 complete (compile only):** [record](Architecture_M6_CP3_CB90_P13_Arrangement_Cell_Order_Tiebreak_Code_Build_Record_20261105.md), [compile 41960980473](https://github.com/akashskypatel/Directional/actions/runs/41960980473), immutable artifact `13385965448`, 28/28 checksums, GMP/GMPXX; **NEXT `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-EXEC`**. TB80 records the RA-204.9 comparison; no CB90 runtime is claimed.
 - Review track (Claude, scratch build):
   - `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (O32a, next);
   - `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l, after O32a; opens with the RA-204.9 O30 decision after TB80);

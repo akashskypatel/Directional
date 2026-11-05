@@ -1,3 +1,10 @@
+## 2026-11-05 — CB90 exact tie-break applied; compile-only package verified
+
+- **Turn:** `M6-CP3-CB90-P13-ARRANGEMENT-CELL-ORDER-TIEBREAK`; [record](.agents/Directional/Architecture_M6_CP3_CB90_P13_Arrangement_Cell_Order_Tiebreak_Code_Build_Record_20261105.md); RA-204.7 and RA-205 unchanged.
+- **Implementation:** exact 36-line patch SHA-256 `0931939d…` applied to `SurfaceArrangement.cpp` and one existing test comment. Source [`e00ef91`](https://github.com/akashskypatel/Directional/commit/e00ef91a8a5dff8b125c9abfe388952cec20cbe1), both expected content hashes matched. Transport staged Drive patch retired after success.
+- **Compile:** [run 41960980473](https://github.com/akashskypatel/Directional/actions/runs/41960980473) PASS; artifact `13385965448`, SHA-256 `f8b9f6b8…`, 28/28 package checksums; eight Linux Release/static GMP/GMPXX targets, clean source, `runtimeExecution=false`. Initial malformed dispatcher request failed before compilation, then corrected without changing source.
+- **No runtime claim:** accepted CP2 491/491; candidate TB79 899/899 membership 980, 81 deferred; stable 66/17/49, debt 1 unchanged. O30b/O31/O32 stay open. **Successor:** `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-EXEC`, artifact-only, separate turn.
+
 ## 2026-11-05 — RA-205: RA-204 reviewed; O32 source-row permutation opened; CB90 → TB80 stand
 
 - **Turn:** re-entry of `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`; [RA-205](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md), using scratch probes.

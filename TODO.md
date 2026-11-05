@@ -5,7 +5,7 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — RA-205: CB90 → TB80 stand; O32 source-row permutation opened; Review O32a seeds next (2026-11-05)
+## CURRENT — CB90 compiled; TB80 next; O32 source-row permutation still open (2026-11-05)
 
 - [x] **RA-204 reviewed by [RA-205](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md)** (re-entry of `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`; scratch probes):
   - **Stands:** the cross-library cell-order mechanism and CB90. Completion's 7 hash containers are order-safe (sum, or sort then de-duplicate), which RA-204 had not checked.
@@ -326,7 +326,7 @@
      - Record the seven digest lines verbatim. They are not a match criterion, and TB79 makes no comparison claim.
      - **Verified:** [TB79 report](.agents/Directional/Architecture_M6_CP3_TB79_P13_Platform_Digest_Full_Gate_Execution_Report_20261105.md); [gate 41938188019](https://github.com/akashskypatel/Directional/actions/runs/41938188019) 899/899, membership 980; [census 41938418260](https://github.com/akashskypatel/Directional/actions/runs/41938418260) MATCH, seven digest lines; successor `M6-CP3-DEFN-P13-PLATFORM-SPLIT`. No promotion. Mismatch route is TB79-REV; infrastructure route TB79A.
   - **RA-204 sequence:** steps 38–39, one turn each, in order. The implementation agent takes both, and starts 39 only after 38 is verified. The CB applies its committed `.diff` byte for byte (SHA-256 checked).
-  38. [ ] **NEXT `M6-CP3-CB90-P13-ARRANGEMENT-CELL-ORDER-TIEBREAK`** (CB, compile only; RA-204.7):
+  38. [x] **COMPLETE `M6-CP3-CB90-P13-ARRANGEMENT-CELL-ORDER-TIEBREAK`** (CB, compile only; RA-204.7):
      - Precheck: `git diff --quiet 9c9616695ecdc8c6ec219eb7486cbe85f3915c95 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
      - Patch `.agents/Directional/Architecture_M6_CP3_CB90_P13_Arrangement_Cell_Order_Tiebreak.diff`:
        - SHA-256 `0931939d461ad2d19a6e45e9d39fb5ba130c9846a0bd286b7a9dda0d0228ab24`, 36 lines; keep its 1 single-space context line;
@@ -338,7 +338,8 @@
        - No new test, so membership stays 980.
      - Build: one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`.
      - Mismatch → `M6-CP3-PLAN-P13-ARRANGEMENT-CELL-ORDER-STOP`; infrastructure → `M6-CP3-CB90A-P13-ARRANGEMENT-CELL-ORDER-ORCH`.
-  39. [ ] **`M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-EXEC`** (TB-EXEC; RA-204.8):
+      - **Verified:** [CB90 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB90_P13_Arrangement_Cell_Order_Tiebreak_Code_Build_Record_20261105.md); source `e00ef91a8a5dff8b125c9abfe388952cec20cbe1`; [compile run 41960980473](https://github.com/akashskypatel/Directional/actions/runs/41960980473) PASS, artifact `13385965448`, 28/28 hashes, eight targets, GMP/GMPXX, no runtime; Drive stage retired. An invalid initial request was corrected before compile.
+  39. [ ] **NEXT `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-EXEC`** (TB-EXEC; RA-204.8):
      - Gate: the TB78 manifest 899 `9d2c1ec5…`, unchanged; ledger v5; 899/899, membership 980; rows 795, 796, 797 and 864 each log exactly one `platform-digest` line.
      - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; **Vase RED `SelfIntersectingFace` within 600 s with 192,482 / 26,817**. Record `completedQuads`; do not pin it.
      - Record the seven digest lines verbatim, and the RA-204.9 comparison against the [post-CB90 macOS FMA-off reference](.agents/Directional/Architecture_M6_CP3_CB90_P13_Platform_Digest_macOS_FMAoff_Reference.tsv) as observations.

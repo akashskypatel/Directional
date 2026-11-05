@@ -35,31 +35,21 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Field | Exact value / evidence owner |
 |---|---|
 | Currency | 2026-11-05 · [RA-205](Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md) reviews [RA-204](Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md). The cross-library root cause stands: arrangement cell ids followed unspecified `std::sort` ties, and exact CB90 fixes that. RA-204's "no longer a determinism defect" was wrong under DESIGN §10.1. **O32 (new, CP3-exit):** a source-face row permutation changes Vase's seed set (1,456 → 1,461), traces (192,482 → 192,770–193,624), strands and quads (67,746 → 67,771–67,784). Counts through `global-conformity-baseline` and the verdict are invariant. CB90 → TB80 stand; the Review track does O32a (seeds) before P13-l. |
-| Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing` · **CB89 source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, artifact `13370954424`**, [record](Architecture_M6_CP3_CB89_P13_Census_Platform_Digest_Code_Build_Record_20261104.md), [compile run 41932156223](https://github.com/akashskypatel/Directional/actions/runs/41932156223), eight Linux GMP/GMPXX targets PASS, 28/28 checksums, `runtimeExecution=false`. TB79 execution verified: 899/899 gate, membership 980; census MATCH. |
+| Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing` · **CB90 source `e00ef91a8a5dff8b125c9abfe388952cec20cbe1`, artifact `13385965448`**, [record](Architecture_M6_CP3_CB90_P13_Arrangement_Cell_Order_Tiebreak_Code_Build_Record_20261105.md), [compile run 41960980473](https://github.com/akashskypatel/Directional/actions/runs/41960980473), eight Linux GMP/GMPXX targets PASS, 28/28 checksums, `runtimeExecution=false`. TB79 execution verified: 899/899 gate, membership 980; census MATCH. |
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06; unchanged. TB71 remains unpromoted candidate only. |
 | Latest candidate | **TB79** CB89 immutable gate **899/899 PASS**, membership 980, 81 deferred, 1,806/1,806 hashes; census Cylinder PASS, BunnyRandom P13-e RED, Vase RED 67,784 quads; registered outcome **MATCH**, seven Linux digests retained verbatim. Unpromoted. [TB79 report](Architecture_M6_CP3_TB79_P13_Platform_Digest_Full_Gate_Execution_Report_20261105.md). |
 | Regression accounting and debt | Accepted CP2 **491/491**; stable **66/17/49**, debt **1**; ledger v5 81 deferred (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE), current membership **980**; selector497 and CP3 unpromoted. DR1/DR3 open, DR2/DR4 to M8-CP2. |
-| Active boundary | RA-204, reviewed by RA-205, COMPLETE. Next is the exact CB90 (compile only), then TB80: gate 899/899, census, seven digest lines, and the RA-204.9 comparison recorded. No acceptance or promotion. Carried: O30b, O31, O32a–e, P13-l, P13-e and O27–O29. |
+| Active boundary | CB90 compile-only complete. Next TB80 (separate artifact-only execution): gate 899/899, census, seven digest lines, and the RA-204.9 comparison recorded. No acceptance or promotion. Carried: O30b, O31, O32a–e, P13-l, P13-e and O27–O29. |
 
-## Mandatory next turn — `M6-CP3-CB90-P13-ARRANGEMENT-CELL-ORDER-TIEBREAK` (Code + Build, compile only, Linux)
+## Mandatory next turn — `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-EXEC` (Test + Benchmark; artifact only, Linux)
 
-- **Authority:** [RA-204](Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md) §7.
-- **Precheck:** `git diff --quiet 9c9616695ecdc8c6ec219eb7486cbe85f3915c95 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
-- **Patch:** [`Architecture_M6_CP3_CB90_P13_Arrangement_Cell_Order_Tiebreak.diff`](Architecture_M6_CP3_CB90_P13_Arrangement_Cell_Order_Tiebreak.diff), applied byte for byte.
-  - SHA-256 `0931939d461ad2d19a6e45e9d39fb5ba130c9846a0bd286b7a9dda0d0228ab24`; 36 lines; keep its 1 single-space context line.
-  - Numstat `9 1` `src/geometry/SurfaceArrangement.cpp` → `94d4b4e9ba3372f87f9c5854f9735efa0ecf06853a9a4a0f6cd6bcc3f6179ad9`.
-  - Numstat `3 1` `tests/SurfaceCellDesignAcceptanceTests.cpp` → `2216e82e8d2da2e20c60f5063d7aec184daaece5900573866b58005c31945c35`.
-- **Build:** one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`; run no binary.
-- **Routes:**
-  - success → `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-EXEC` (RA-204.8);
-  - mismatch → `M6-CP3-PLAN-P13-ARRANGEMENT-CELL-ORDER-STOP`;
-  - infrastructure → `M6-CP3-CB90A-P13-ARRANGEMENT-CELL-ORDER-ORCH`.
-- **Then TB80 (separate turn):**
-  - TB78 manifest 899 `9d2c1ec5…` unchanged, 899/899, membership 980;
-  - census Cylinder PASS; BunnyRandom P13-e; Vase RED `SelfIntersectingFace` within 600 s with 192,482 / 26,817; `completedQuads` recorded, not pinned;
-  - seven digest lines verbatim, and the RA-204.9 comparison table as observations.
-- **Preserve:** CP2 491/491, stable 66/17/49, debt 1, selector497 and CP3 unpromoted.
-- **RA-205 leaves CB90 and TB80 unchanged.** Pin only permutation-invariant values (RA-205.5); TB80 already records `completedQuads` without pinning it.
+- **Authority:** [RA-204](Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md) §§8–9 and [RA-205](Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md). CB90 compile-only [record](Architecture_M6_CP3_CB90_P13_Arrangement_Cell_Order_Tiebreak_Code_Build_Record_20261105.md) is closed; do not rebuild or modify implementation as part of TB80.
+- **Immutable artifact:** `13385965448` from [run 41960980473](https://github.com/akashskypatel/Directional/actions/runs/41960980473); exact source `e00ef91a8a5dff8b125c9abfe388952cec20cbe1`; ZIP SHA-256 `f8b9f6b83d1aea589284569bfc42ca2b1b68288d76ebf4202e0a62150c185b18`; 28/28 packaged checksums and eight Linux Release/static GMP/GMPXX targets verified, `runtimeExecution=false`.
+- **Gate:** unchanged TB78 899-case manifest SHA prefix `9d2c1ec5…`, 899/899 expected, selector membership 980, ledger v5 81 deferred; rows 795, 796, 797 and 864 each contain exactly one `platform-digest` line.
+- **Production census:** Cylinder PASS; BunnyRandom P13-e typed RED at source vertex 49; Vase RED `SelfIntersectingFace` within 600 s, tracing 192,482 and 26,817 arrangement cells. Record `completedQuads` but **do not pin it** under O32.
+- **Evidence:** retain seven digest lines verbatim and the RA-204 §9 comparison with [post-CB90 macOS FMA-off reference](Architecture_M6_CP3_CB90_P13_Platform_Digest_macOS_FMAoff_Reference.tsv) as *observations*, not match pins. No acceptance/promotion in this step.
+- **Routes:** match → Review P13-l DEFN, opening with the RA-204.9 O30 decision and RA-205 O32a context; mismatch → `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV` (Review); infrastructure → `M6-CP3-TB80A-P13-ARRANGEMENT-CELL-ORDER-ORCH`.
+- **Preserve:** CP2 491/491, stable 66/17/49, debt 1, selector497/CP3 unpromoted. Carry O30b, O31, O32a–e, P13-l/e and O27–O29. Review O32a may be planned in parallel but is not started by this turn.
 
 ### Earlier: the O30 Reviews and TB79
 
