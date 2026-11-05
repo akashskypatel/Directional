@@ -18,6 +18,9 @@
 #include <optional>
 #include <queue>
 #include <sstream>
+#include <cstdlib>
+#include <iomanip>
+#include <iostream>
 
 namespace directional::geometry::surface_cell_tracing_detail {
 
@@ -10314,6 +10317,47 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
       surface_cell_tracing_detail::incident_faces_by_vertex(vertexCount, faces);
   std::vector<SurfaceTraceSeed> seeds;
   std::set<std::tuple<int, std::int64_t, std::int64_t, std::int64_t>> seen;
+  const bool o32a = std::getenv("DIRECTIONAL_O32A_SCRATCH") != nullptr;
+  auto o32a_dump = [&](const char* phase) {
+    if (!o32a) return;
+    std::cerr << "O32A_PHASE " << phase << " size=" << seeds.size() << "\n";
+    for (const auto& seed : seeds) {
+      const int f = seed.point.face;
+      if (f < 0 || f >= faces.rows()) { std::cerr << "O32A_INVALID_FACE\n"; continue; }
+      std::array<std::pair<int,double>,3> sample{};
+      for (int k=0;k<3;++k) sample[k]={faces(f,k),seed.point.barycentric[k]};
+      std::sort(sample.begin(),sample.end(),[](const auto&a,const auto&b){return a.first<b.first;});
+      std::cerr << "O32A_SEED " << phase << " origin=" << static_cast<int>(seed.provenance)
+                << " source=" << seed.sourceId << " face=" << f;
+      for (const auto& kv:sample) std::cerr << " v=" << kv.first << ":" << std::setprecision(17) << kv.second;
+      const auto pos = surface_cell_tracing_detail::point_position(vertices,faces,seed.point);
+      std::cerr << " pos=" << std::setprecision(17) << pos[0] << "," << pos[1] << "," << pos[2] << "\n";
+    }
+  };
+  if (o32a) {
+    std::cerr << "O32A_INPUT roots=" << options.reliefRootVertices.size()
+              << " rails=" << options.authoritativeRails.size() << " labels=" << options.reliefRegionLabels.size() << "\n";
+    for (int f=0;f<faces.rows();++f) {
+      std::array<int,3> fv{faces(f,0),faces(f,1),faces(f,2)};
+      std::sort(fv.begin(),fv.end());
+      const int component = options.sourceFaceComponents.size()==static_cast<std::size_t>(faces.rows()) ? options.sourceFaceComponents[static_cast<std::size_t>(f)] : -1;
+      const int sheet = options.sourceFaceSheets.size()==static_cast<std::size_t>(faces.rows()) ? options.sourceFaceSheets[static_cast<std::size_t>(f)] : -1;
+      std::cerr << "O32A_FACE " << fv[0] << "," << fv[1] << "," << fv[2] << " component=" << component << " sheet=" << sheet << "\n";
+    }
+    for (const auto& edge: options.hardFeatureEdges)
+      std::cerr << "O32A_HARD_EDGE " << edge.first().index() << "," << edge.second().index() << "\n";
+    for (int v : options.reliefRootVertices) std::cerr << "O32A_ROOT " << v << "\n";
+    for (int i=0;i<targetSize.size();++i) std::cerr << "O32A_TARGET " << i << " " << std::setprecision(17) << targetSize[i] << "\n";
+    for (int i=0;i<options.reliefRegionLabels.size();++i) std::cerr << "O32A_LABEL " << i << " " << options.reliefRegionLabels[i] << "\n";
+    for (const auto& rail:options.authoritativeRails) for (const auto& s:rail.samples) {
+      std::array<std::pair<int,double>,3> sample{};
+      for (int k=0;k<3;++k) sample[k]={faces(s.sourceFace,k),s.barycentric[k]};
+      std::sort(sample.begin(),sample.end(),[](const auto&a,const auto&b){return a.first<b.first;});
+      std::cerr << "O32A_RAIL kind=" << static_cast<int>(rail.kind);
+      for (const auto& kv:sample) std::cerr << " v=" << kv.first << ":" << std::setprecision(17) << kv.second;
+      std::cerr << "\n";
+    }
+  }
 
   if (!options.authoritativeRails.empty()) {
     for (const SurfaceCellRail &rail : options.authoritativeRails) {
@@ -10396,6 +10440,7 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
     }
   }
 
+  o32a_dump("rails");
   const auto add_vertices = [&](const std::vector<int> &verticesToAdd,
                                 const SurfaceSeedProvenance provenance) {
     std::vector<int> sorted = verticesToAdd;
@@ -10425,6 +10470,7 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
   add_vertices(options.reliefCriticalVertices,
                SurfaceSeedProvenance::ReliefCritical);
   add_vertices(options.reliefRootVertices, SurfaceSeedProvenance::ReliefCritical);
+  o32a_dump("relief_roots");
 
   if (options.reliefRegionLabels.size() == vertexCount) {
     std::map<int, int> representativeByRegion;
@@ -10458,7 +10504,9 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
     }
   }
   add_vertices(options.separatrixVertices, SurfaceSeedProvenance::Separatrix);
+  o32a_dump("relief_regions");
   add_vertices(options.anchors, SurfaceSeedProvenance::Anchor);
+  o32a_dump("separatrices");
 
   const surface_cell_tracing_detail::IntrinsicSurfaceGraph intrinsicGraph =
       surface_cell_tracing_detail::build_intrinsic_surface_graph(
@@ -10546,9 +10594,11 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
     update_nearest();
   }
 
+  o32a_dump("coverage");
   for (int index = 0; index < static_cast<int>(seeds.size()); ++index) {
     seeds[static_cast<std::size_t>(index)].id = index;
   }
+  if (o32a) throw std::runtime_error("O32A_SCRATCH_CAPTURE_COMPLETE");
   return seeds;
 }
 

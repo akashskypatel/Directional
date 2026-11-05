@@ -10,6 +10,9 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <random>
+#include <cstdlib>
+#include <numeric>
 
 #include <gtest/gtest.h>
 
@@ -234,9 +237,22 @@ TEST_P(SurfaceCellDesignAcceptance,
   options.surfaceCells.retainIntermediateGeometry = false;
   options.surfaceCells.useSkeletonHints = false;
 
+  Eigen::MatrixXi o32aFaces = mesh.faces;
+  Eigen::MatrixXd o32aField = field.raw;
+  if (const char* var = std::getenv("DIRECTIONAL_O32A_PERMUTATION")) {
+    const unsigned int seed = static_cast<unsigned int>(std::stoul(var));
+    std::vector<int> permutation(static_cast<std::size_t>(mesh.faces.rows()));
+    std::iota(permutation.begin(), permutation.end(), 0);
+    std::mt19937 rng(seed);
+    std::shuffle(permutation.begin(), permutation.end(), rng);
+    for (int row=0;row<mesh.faces.rows();++row) {
+      o32aFaces.row(row) = mesh.faces.row(permutation[static_cast<std::size_t>(row)]);
+      o32aField.row(row) = field.raw.row(permutation[static_cast<std::size_t>(row)]);
+    }
+  }
   const directional::pipeline::RemeshResult result =
       directional::pipeline::remesh_from_raw_cross_field(
-          mesh.vertices, mesh.faces, field.raw, options);
+          mesh.vertices, o32aFaces, o32aField, options);
   print_platform_digest(GetParam().testName, mesh, field.raw, result);
 
   const auto independentOracle =
