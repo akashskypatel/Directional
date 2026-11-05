@@ -1,3 +1,9 @@
+## 2026-11-05 — CB96 completion embedding own-plane Code + Build COMPLETE / GMP compile GREEN
+
+- **Turn:** `M6-CP3-CB96-P13-COMPLETION-EMBEDDING-OWN-PLANE`; exact RA-209.3 frozen diff `a7e81da57d5d1bf37847ccf0b5ee3abeca5230c0605d35056e6a12d40b54f469` applied unchanged to completion and Phase18 tests at [source `11c8172ad467c6dc865f2f3352e75b78f5469a2b`](https://github.com/akashskypatel/Directional/commit/11c8172ad467c6dc865f2f3352e75b78f5469a2b), prescribed postimage hashes verified. [CB96 record](.agents/Directional/Architecture_M6_CP3_CB96_P13_Completion_Embedding_Own_Plane_Code_Build_Record_20261105.md).
+- **Compile-only:** first dispatcher schema request failed before running; corrected to eight-target array at `611f7e2…`. [Run 42124939141](https://github.com/akashskypatel/Directional/actions/runs/42124939141) GREEN, immutable package `13460725846`, ZIP SHA-256 `3e4d356b1f7b25b388faa661db5ed67d28b23adbbda526cbbcbd2e0c0ef5cfdf`, 28/28 internal hashes, GMP/GMPXX, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; no tests/benchmarks.
+- **Acceptance unchanged:** CP2 491/491, stable 66/17/49, debt 1; selector497 and CP3 unpromoted. Next *separate* artifact-only `M6-CP3-TB83-P13-EMBEDDING-PREDICATE-FULL-GATE-EXEC`.
+
 ## 2026-11-05 — CB95 own-plane quad self-intersection validator Code + Build COMPLETE / Linux GMP compile GREEN
 
 - **Turn:** `M6-CP3-CB95-P13-QUAD-SELF-INTERSECTION-OWN-PLANE` under RA-209.3; exact frozen diff SHA-256 `8207716b9993a9d1e290ff4fe9eb4794ff505dfb601708bcd965c68cf4d0c014` applied unchanged to `MeshValidator.h` and `SurfaceCellsPhase10Tests.cpp` as [source `1c048ebeecbd94999048d242a8c0f08257b1057a`](https://github.com/akashskypatel/Directional/commit/1c048ebeecbd94999048d242a8c0f08257b1057a); prescribed postimage hashes verified.

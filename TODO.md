@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-CB96-P13-COMPLETION-EMBEDDING-OWN-PLANE` (RA-209 §3 frozen patch `a7e81da5…`, compile only). CB95 exact source `1c048ebe…` and immutable eight-target GMP/GMPXX package complete; CB93 and CB94 already complete. Then separate artifact-only TB83. Steps 44–48.
+> **Current canonical next:** `M6-CP3-TB83-P13-EMBEDDING-PREDICATE-FULL-GATE-EXEC` (RA-209 §4, immutable artifact-only). CB96 exact source `11c8172ad467c6dc865f2f3352e75b78f5469a2b` and eight-target GMP/GMPXX package `13460725846` compiled [GREEN](https://github.com/akashskypatel/Directional/actions/runs/42124939141), 28/28 hashes, no runtime; CB93–CB95 complete. Step 48.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -447,13 +447,14 @@
        - `40 35` `include/directional/validation/MeshValidator.h` → `15b813d3b1d312d2a7f6c742c951c002b7b633f3cee00ae317f1872d83a08f3e`;
        - `49 0` `tests/SurfaceCellsPhase10Tests.cpp` → `4cd349c3b7b6bdfa61032d38042018e013cad722c9f01d17b005907d43ae1e3a`.
      - Applied exactly at source `1c048ebeecbd94999048d242a8c0f08257b1057a`; [Linux compile 42117890862](https://github.com/akashskypatel/Directional/actions/runs/42117890862) GREEN for eight Release/static GMP/GMPXX targets; artifact `13456259325` SHA-256 `dd9e698ffa6b2fa029a35af00d65c917ac7cfb11beaa1cde289dac69b33b0392`, 28/28 verified, `runtimeExecution=false`. [CB95 record](.agents/Directional/Architecture_M6_CP3_CB95_P13_Quad_Self_Intersection_Own_Plane_Code_Build_Record_20261105.md). No runtime executed.
-  47. [ ] **NEXT `M6-CP3-CB96-P13-COMPLETION-EMBEDDING-OWN-PLANE`** (CB, compile only; RA-209.3; precheck the CB95 results):
+  47. [x] **COMPLETE / COMPILE GREEN `M6-CP3-CB96-P13-COMPLETION-EMBEDDING-OWN-PLANE`** (CB, compile only; RA-209.3; precheck the CB95 results):
      - Patch `.agents/Directional/Architecture_M6_CP3_CB96_P13_Completion_Embedding_Own_Plane.diff`:
        - SHA-256 `a7e81da57d5d1bf37847ccf0b5ee3abeca5230c0605d35056e6a12d40b54f469`, 74 lines; 0 single-space context lines;
        - `9 12` `src/geometry/PureQuadCompletion.cpp` → `b756c3f29481112f10d382f479caad17861927e56e97ab4f574b6c6c87c200b8`;
        - `31 0` `tests/PureQuadCompletionPhase18Tests.cpp` → `6ca86f6e721589fae1dcf150cd88e88d152ec559b9fb4cf18a91a0874e88355d`.
-     - Mismatch → `M6-CP3-PLAN-P13-COMPLETION-EMBEDDING-OWN-PLANE-STOP`.
-  48. [ ] **`M6-CP3-TB83-P13-EMBEDDING-PREDICATE-FULL-GATE-EXEC`** (TB-EXEC; RA-209.4):
+     - Applied exactly as source `11c8172ad467c6dc865f2f3352e75b78f5469a2b`; [compile 42124939141](https://github.com/akashskypatel/Directional/actions/runs/42124939141) eight targets GREEN, `runtimeExecution=false`, GMP/GMPXX; immutable artifact `13460725846`, 28/28 package hashes, [CB96 record](.agents/Directional/Architecture_M6_CP3_CB96_P13_Completion_Embedding_Own_Plane_Code_Build_Record_20261105.md). No tests/benchmarks.
+     - Mismatch stop (`M6-CP3-PLAN-P13-COMPLETION-EMBEDDING-OWN-PLANE-STOP`) not reached.
+  48. [ ] **NEXT `M6-CP3-TB83-P13-EMBEDDING-PREDICATE-FULL-GATE-EXEC`** (TB-EXEC; RA-209.4):
      - Gate: [903-row manifest](.agents/Directional/Architecture_M6_TB83_P13_Embedding_Predicate_Full_Gate_Case_Manifest.tsv) `61e9edbedee3731b04d7b6279b79a0fd0e0b651686638e9b832773f7aa0a36aa`; ledger v5; **903/903**, membership 984.
      - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; Vase RED within 600 s.
      - **Pinned:** gate rows 795/796/797/864 and census Cylinder byte-identical to TB82 plus ` validationIssues=0`; BunnyRandom byte-identical; Vase byte-identical through `simplification`, with a suffix containing **no FlippedFace** (counts recorded; macOS 4).
