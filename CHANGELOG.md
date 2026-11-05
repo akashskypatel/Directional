@@ -1,3 +1,22 @@
+## 2026-11-05 — RA-204: O30 is an arrangement cell-order defect; exact CB90 → TB80
+
+- **Turn:** `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`, realigned. [RA-204](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md) reviews the ChatGPT O30 Review, using scratch builds: FMA off, a GCC/libstdc++ field generator, and libc++ randomized ties.
+- **Review findings:**
+  - The digest comparison stands.
+  - The atlas digest hashes exact `effort` bits, so it and five later hashes are noise carriers. Measured: ±1-ULP field perturbations change them without changing the output.
+  - The Review's field branch and its 2,404×12 replay successor are withdrawn.
+  - It missed CloseSheets' Linux-only arrangement on equal embedding, and left CloseSheets' 40/38 relief branches without an owner.
+- **Owned:**
+  - RA-203.4's "first differing stage" row needed the noise-carrier qualification;
+  - the CB89 comment said all hashes quantize to 1e-9.
+- **Root cause (O30a):** `SurfaceArrangement.cpp:6762` sorts cells by a non-injective `cell_cycle_key` and assigns ids in sorted order. There are 10,891 tied pairs among Vase's 26,817 cells.
+  - With randomized ties, one build gives Vase 67,753 / 67,806 / 67,827 / 67,809.
+  - With a halfedge tie-break, it gives 67,746 in every order, and CloseSheets' arrangement is constant.
+  - Local gate with the fix: 898/899 (only O16 row 283).
+- **Exact CB90:** `0931939d…`, 36 lines, numstat `9 1` / `3 1`. TB80 follows with the RA-204.9 comparison recorded.
+- **New:** O30b (Linux-only Vase embedding, decided by TB80's count); O31 (relief critical points decided by rounding noise); an O20 addendum (the cell sort costs 8.2 s per Vase run).
+- No accepted green lost: stable 66/17/49, debt 1, CP2 491/491, selector497/CP3 unpromoted.
+
 ## 2026-11-05 — O30 platform digest Review: generated smooth input differs before remesh
 
 - **Turn:** `M6-CP3-DEFN-P13-PLATFORM-SPLIT`; [independent Review](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Platform_Split_Digest_Adjudication_20261105.md). Frozen 129-row macOS reference compared item-by-item with all seven Linux TB79 lines. Vase source mesh bits match, raw `fieldBits` differ; first differing stage product is the field-transport atlas, not completion. Cylinder/Plane/CloseSheets differ at relief despite identical raw field bits; MultiFaceSeam matches completely.

@@ -5,7 +5,18 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — TB79 immutable gate and census MATCH; next separate `M6-CP3-DEFN-P13-PLATFORM-SPLIT` (2026-11-05)
+## CURRENT — RA-204: O30 is an arrangement cell-order defect; exact CB90 → TB80 next (2026-11-05)
+
+- [x] **O30 Review completed by [RA-204](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md)** (Claude, scratch builds: FMA off, GCC/libstdc++ field, libc++ randomized ties):
+  - **The ChatGPT [O30 Review](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Platform_Split_Digest_Adjudication_20261105.md)** compared the digests correctly. It read the atlas hash as semantic, but the atlas digest hashes exact `effort` bits. It missed CloseSheets' Linux-only arrangement on equal embedding, and froze a 2,404×12 field replay that could not find the cause. Its field branch is withdrawn.
+  - **Noise carriers (measured):** under ±1-ULP field perturbations with unchanged output, these hashes change: `field-transport-atlas`, `field-aligned-network`, `surface-cut-graph`, `global-topology-plan`, `global-conformity-baseline`, `tracing`, and `strands` under FMA. RA-203.4's "first differing stage" now means the first that is not a noise carrier. That was my error.
+  - **The field is not the cause:** five distinct Vase fields give the same macOS embedding, arrangement and 67,829.
+  - **O30a root cause:** `SurfaceArrangement.cpp:6762` sorts cells by a non-injective `cell_cycle_key` and assigns ids in that order. There are 10,891 tied pairs among Vase's 26,817 cells.
+    - With randomized ties, one build gives Vase 67,753 / 67,806 / 67,827 / 67,809.
+    - With a halfedge tie-break, it gives 67,746 every time, and CloseSheets' arrangement is constant.
+    - Local gate with the fix: 898/899 (only O16 row 283).
+  - **Open:** O30b (Linux-only Vase embedding `f2fc0cca…`, RA-204.5); **O31** (relief critical points decided by rounding noise, RA-204.6).
+  - **Outcome:** exact CB90 → TB80 (steps 38–39). P13-l starts on the post-CB90 state.
 
 - [x] **TB78 Review closed by [RA-203](.agents/Directional/Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md)** (scratch probes on the CB88 tree):
   - **The block.** ChatGPT's [WIP](.agents/Directional/Architecture_M6_CP3_TB78_REV_P13_Census_Count_Review_WIP_20261104.md) saw a conflict between `REVIEW_TURN_POLICY.md` §4.3 and RA-202.9's "re-run the probe recipe". The fault is RA-202.9's route, which named no track and asked one platform to explain a split between two. Review scratch probes are a duty (RA-166.6 F6, RA-188.1). Linux runtime is a TB. No policy change.
@@ -297,6 +308,24 @@
      - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; **Vase RED `SelfIntersectingFace` within 600 s, 192,482 / 26,817 / 67,784**. Each census log contains exactly one `platform-digest` line.
      - Record the seven digest lines verbatim. They are not a match criterion, and TB79 makes no comparison claim.
      - **Verified:** [TB79 report](.agents/Directional/Architecture_M6_CP3_TB79_P13_Platform_Digest_Full_Gate_Execution_Report_20261105.md); [gate 41938188019](https://github.com/akashskypatel/Directional/actions/runs/41938188019) 899/899, membership 980; [census 41938418260](https://github.com/akashskypatel/Directional/actions/runs/41938418260) MATCH, seven digest lines; successor `M6-CP3-DEFN-P13-PLATFORM-SPLIT`. No promotion. Mismatch route is TB79-REV; infrastructure route TB79A.
+  - **RA-204 sequence:** steps 38–39, one turn each, in order. The implementation agent takes both, and starts 39 only after 38 is verified. The CB applies its committed `.diff` byte for byte (SHA-256 checked).
+  38. [ ] **NEXT `M6-CP3-CB90-P13-ARRANGEMENT-CELL-ORDER-TIEBREAK`** (CB, compile only; RA-204.7):
+     - Precheck: `git diff --quiet 9c9616695ecdc8c6ec219eb7486cbe85f3915c95 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB90_P13_Arrangement_Cell_Order_Tiebreak.diff`:
+       - SHA-256 `0931939d461ad2d19a6e45e9d39fb5ba130c9846a0bd286b7a9dda0d0228ab24`, 36 lines; keep its 1 single-space context line;
+       - numstat `9 1` `src/geometry/SurfaceArrangement.cpp` → `94d4b4e9ba3372f87f9c5854f9735efa0ecf06853a9a4a0f6cd6bcc3f6179ad9`;
+       - numstat `3 1` `tests/SurfaceCellDesignAcceptanceTests.cpp` → `2216e82e8d2da2e20c60f5063d7aec184daaece5900573866b58005c31945c35`.
+     - Content:
+       - the `pendingCells` comparator in `build_surface_cell_complex` breaks `cell_cycle_key` ties by `halfedges`;
+       - the CB89 digest comment is corrected.
+       - No new test, so membership stays 980.
+     - Build: one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`.
+     - Mismatch → `M6-CP3-PLAN-P13-ARRANGEMENT-CELL-ORDER-STOP`; infrastructure → `M6-CP3-CB90A-P13-ARRANGEMENT-CELL-ORDER-ORCH`.
+  39. [ ] **`M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-EXEC`** (TB-EXEC; RA-204.8):
+     - Gate: the TB78 manifest 899 `9d2c1ec5…`, unchanged; ledger v5; 899/899, membership 980; rows 795, 796, 797 and 864 each log exactly one `platform-digest` line.
+     - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; **Vase RED `SelfIntersectingFace` within 600 s with 192,482 / 26,817**. Record `completedQuads`; do not pin it.
+     - Record the seven digest lines verbatim, and the RA-204.9 comparison against the [post-CB90 macOS FMA-off reference](.agents/Directional/Architecture_M6_CP3_CB90_P13_Platform_Digest_macOS_FMAoff_Reference.tsv) as observations.
+     - Match → the P13-l DEFN (Review), which opens with the RA-204.9 O30 decision. Mismatch → `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV` (Review, Claude, scratch build). Infrastructure → `M6-CP3-TB80A-P13-ARRANGEMENT-CELL-ORDER-ORCH`.
 - [ ] **Review track** (probe DEFNs):
   - [x] **`M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING`** (P13-g): the static [decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) ran no probe and froze an open A/B CB73. [RA-196](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) probes settle it:
     - Patch 1200's boundary is simple (branch A is false).
@@ -344,14 +373,19 @@
     - first differing stage S → probe S;
     - only `completion` differs → `PureQuadCompletion`.
     
-    Result: Vase raw `fieldBits` differ, first differing downstream product is field-transport atlas; no completion-only attribution. [Review](Architecture_M6_CP3_DEFN_P13_Platform_Split_Digest_Adjudication_20261105.md).
-  - [ ] **NEXT `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`** (O30 field generator portability): exact binary64 2,404×12 field replay on both platforms without replacing the smooth generator case; inspect staged `extract_cross_field` power solve, roots, matching and combing; choose a fix only after the fixed-input causal test. If fixed-input count still differs, investigate first remaining downstream stage. Preserve P13-l and P13-e separate.
-  - [ ] **NEXT (Review, can start now) `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`** (P13-l; probe DEFN on the RA-202 scratch state (= CB88), Claude; also time O27 once orientation passes; its TB pins only typed verdicts and counts already observed on Linux, RA-203.2):
+    Result: Vase raw `fieldBits` differ, first differing downstream product is field-transport atlas; no completion-only attribution. [Review](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Platform_Split_Digest_Adjudication_20261105.md). **Reviewed by RA-204:** the atlas is a noise carrier, and the field branch is withdrawn.
+  - [x] **`M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`** (O30), realigned and closed by [RA-204](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md):
+    - the fixed-field replay is withdrawn;
+    - O30a's root cause is arrangement cell ids that follow unspecified `std::sort` ties, with exact fix CB90 (steps 38–39);
+    - generator non-portability is recorded, not owned (four builds give four BunnyRandom fields), because output is robust to it.
+    - Open: O30b (Linux-only Vase embedding; decided by TB80's Vase count, RA-204.9) and O31.
+  - [ ] **NEXT (Review, can start now) `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`** (P13-l; probe DEFN on the post-CB90 scratch state, where macOS Vase gives 67,746, Claude; after TB80 it opens with the RA-204.9 O30 decision; also time O27 once orientation passes; its TB pins only typed verdicts and counts already observed on Linux, RA-203.2):
     - The completed Vase mesh (67,829 quads) has the source topology but is not consistently oriented: 27,966 interior edges are traversed the same way by both quads.
     - Leads, not conclusions: `orient_quads_to_source_normals` (`RemeshPipeline.cpp` 10949) flips each quad on its own by its (0,1,2) triangle normal and ignores lineage; or completed patches carry mixed winding before it.
     - First measurement: same-direction edges right after assembly and after the orientation pass, binned by patch. Then name the owner.
     - Also decide whether the pre-optimization gate applies the final quality thresholds to an un-optimized mesh. DESIGN §4.9 separates injectivity from quality; normal P95 179.9° and Jacobian −1 follow from the orientation.
   - **`M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT`** (P13-e; can run now, in parallel). A1 requires `4 − index` port classes. BunnyRandom's index −1 vertex 49 has 4 sector incidences in an 8-face fan, on macOS, FMA-off and Linux (TB65). Decide whether A1's sector rule or the field owns this.
+  - **`M6-CP3-DEFN-P13-RELIEF-NOISE-TIES`** (O31; after P13-l; Claude, scratch build). With bit-identical input, relief branches are CloseSheets 40/38/40 and Cylinder 44/44/48 (Linux / macOS / macOS FMA off). The cause is a contractible weighted sum followed by exact critical-point comparisons on near-constant relief. Its falsifier is a fixture whose completed topology changes across FMA on and off.
   - Then re-census P13, take O6/O9 where they are reached, and aim for matrix 6/6.
 - [x] **DIAG-RETAIN (user-directed, 2026-10-21): closed** by CB58–CB61 (snapshots, display adapter and dump, CLI sidecar, GUI layers). Open: DR1 (no in-helper A6/A7 rejection witness; waits for a stimulus), DR3 (pre-existing snapshot fields written when retention is off). DR2 (multi-component snapshot drop) and DR4 (`--diagnostics-prefix` cut sidecars throw on SurfaceCells products, `src/cli/RemeshOutput.cpp:388–392`) → M8-CP2. The GUI layers' appearance is a manual check.
 - [ ] **Then:** retire CB → FIXTURE slices (each DEFN first confirms the production pipeline reaches its stage) → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV.
@@ -372,6 +406,7 @@
     - assembly's per-certificate `matches_source_faces` in `owner_validated_typed_authority_certificate`;
     - the per-lineage graph in `rebuild_aggregate_output_identity_caches`, which is multi-component aggregation only.
     - RA-201 adds the optimizer stage's residuals: `source_face_scope` per vertex in `project_vertices` and in the gradient loops, and the validator's own `validate_bow_tie_vertices` and `validate_source_authoritative_surface_mesh` costs. The optimizer stage is not yet reached on Vase, so these are unmeasured there.
+    - RA-204 adds the arrangement cell sort, which rebuilds `cell_cycle_key` on every comparison: 962,136 key builds, 8.2 s per Vase run on macOS. A decorate-sort would need 26,817.
     - Owner: a performance slice, or the first fixture whose census times out in one of these.
   - The historical arrangement suite (`SurfaceArrangementPhase16Tests.cpp`, not built) is stale: none of its tests passes `sourceAuthority` (RA-193.2) → O2b's retirement DEFN.
   - **O17** (production code writes diagnostics to stderr unconditionally: `GlobalTopologyPlan.cpp:2634`, `FieldTransportAtlas.cpp:746`) → M8-CP2.
@@ -386,6 +421,7 @@
   - CB and TB run on the Linux workflow runner. A TB always runs the full current gate, even after a CLI- or GUI-only CB (RA-187); the latest verified Linux gate is TB78 (899-row manifest `9d2c1ec5…`, ledger v5 81, membership 980); TB79 reused that manifest unchanged and verified 899/899 (membership 980); earlier TB77 (896 `48ef4743…`, 977), TB76 (893 `3b727161…`, 974), TB74 (888 `bb4e771f…`, 969), TB75 (890 `a134d941…`, 971) and TB73 (886 `5d09fa33…`, 967); preceding TB72A used 883 rows and membership 964; TB71 used 881 rows (`f2503dca…`, membership 962); prior TB70 used 880 rows (`a9f964c8…`, membership 961); TB69 used 878 rows (`aaaba077…`, membership 959); TB68 used 873 rows (`3b6b9f42…`, membership 954); TB67 used the 871-row manifest `434e6d37…` (membership 952). Earlier TB65 was 869 rows, TB64 866 rows and TB58 863 rows.
   - One CB per exact patch; implementation agents get only exact patches and frozen manifests. Probe-requiring DEFN and TB-REV turns stay on the Review track. Every gate run needs `MEMBERSHIP_LEDGER`.
   - A mismatch route that needs a probe names `Review (Claude, scratch build)`, and one that needs Linux runtime names its TB (RA-203.1). A registration pins only typed verdicts, topological counts and values already observed on the executing platform (RA-203.2).
+  - A platform split is localized at the first differing stage that is not a noise carrier (RA-204.2). Before attributing one to numerics, run the census under libc++ `_LIBCPP_DEBUG_RANDOMIZE_UNSPECIFIED_STABILITY` (RA-204.4).
   - **Naming (RA-167.6):** types per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier.
   - RA-170 (a gate pass says nothing about off-gate tests), RA-171 (self-check every manifest; census rows are OBSERVE), RA-172 (a DEFN needs a reachable exit), RA-174 (verify completeness against the package, not against the gate's own scope), RA-176 (a result that differs by platform is a determinism defect; compute the exact answer before classifying), RA-178 (a test that targets an accepted-defensive guard has no repair exit; witness the guard at its checked factory or retire the test), RA-179 (trace fixture use through helper accessors, not literal grep; confirm per-file flag changes in the built object).
 - **Frozen:** stable 66/17/49, debt 1; CP2 491/491 last accepted; TB52 853/0 reviewed Linux candidate; TB60 862/863 latest macOS candidate; TB62 863/863 latest independently reconciled Linux full-gate candidate (ten-target scope); TB61 prior eight-target candidate (TB54 856/857 reviewed macOS, RA-181); RP-01 closed; selector497 frozen and unpromoted; Gate C suspended; PR #8 draft and unmerged.

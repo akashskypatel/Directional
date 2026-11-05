@@ -1,0 +1,36 @@
+diff --git a/src/geometry/SurfaceArrangement.cpp b/src/geometry/SurfaceArrangement.cpp
+index b9ac5b386..078e59840 100644
+--- a/src/geometry/SurfaceArrangement.cpp
++++ b/src/geometry/SurfaceArrangement.cpp
+@@ -6762,7 +6762,15 @@ SurfaceCellComplex build_surface_cell_complex(
+   std::sort(pendingCells.begin(), pendingCells.end(),
+             [&](const SurfaceArrangementCell &lhs,
+                 const SurfaceArrangementCell &rhs) {
+-              return cell_cycle_key(lhs) < cell_cycle_key(rhs);
++              // Distinct cells can share a cycle key. Their halfedge ids
++              // break the tie, so cell ids never depend on std::sort's
++              // unspecified order for equal keys (O30).
++              const auto lhsKey = cell_cycle_key(lhs);
++              const auto rhsKey = cell_cycle_key(rhs);
++              if (lhsKey != rhsKey) {
++                return lhsKey < rhsKey;
++              }
++              return lhs.halfedges < rhs.halfedges;
+             });
+   complex.cells.clear();
+   complex.cells.reserve(pendingCells.size());
+diff --git a/tests/SurfaceCellDesignAcceptanceTests.cpp b/tests/SurfaceCellDesignAcceptanceTests.cpp
+index 1da82b785..5f4d39315 100644
+--- a/tests/SurfaceCellDesignAcceptanceTests.cpp
++++ b/tests/SurfaceCellDesignAcceptanceTests.cpp
+@@ -75,7 +75,9 @@ std::string bit_digest(const Eigen::MatrixXd &matrix) {
+ }
+ 
+ // One line per case: bit-exact input digests, then each context product's
+-// structural hash (coordinates quantized to 1e-9) and element count.
++// structural hash and element count. Most hashes quantize doubles to 1e-9,
++// but the atlas digest hashes exact effort bits and several later hashes
++// embed it, so those differ with any last-bit change in the field.
+ void print_platform_digest(const char *testName,
+                            const directional::bench::BenchmarkMesh &mesh,
+                            const Eigen::MatrixXd &rawField,

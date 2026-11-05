@@ -336,6 +336,15 @@ This document records **reusable failure-derived engineering lessons**, not an e
 
   The same applies to counts. RA-202.9 then pinned macOS's 67,829 completed Vase quads for Linux, where no run had ever produced a count, and Linux gave 67,784 (O30). Pin only typed verdicts, topological counts and values the executing platform has already produced; record the rest. When a mismatch needs a probe, name the track that can run it ("Review, Claude, scratch build"), or the Review that inherits it will block. Rows 17–29 of the turn table show that five times (RA-203).
 
+- **Randomize unspecified order before you attribute a platform split to numerics.** O30 cost two implementation turns and two Reviews:
+  - RA-203 sent it to Linux digests;
+  - the ChatGPT Review read the first differing hash, the atlas, as the cause and planned a field replay.
+
+  The atlas digest hashes exact double bits, so it and five later hashes change with any last-bit noise. One macOS build with libc++ `-D_LIBCPP_DEBUG_RANDOMIZE_UNSPECIFIED_STABILITY` instead varied Vase between 67,753 and 67,827 quads, and a 44-site sort probe found the non-injective cell key (RA-204). The method:
+  - when two standard libraries disagree, first check whether the result depends on tie order;
+  - measure which stage hashes carry noise (perturb the input by 1 ULP) before reading "first differing stage";
+  - a key used to assign ids must be injective, or end in a unique tie-break.
+
 ## Contracts, planning, reviews, and durable records
 
 - **Plan from the current normative contract and reachable implementation.** Before freezing an

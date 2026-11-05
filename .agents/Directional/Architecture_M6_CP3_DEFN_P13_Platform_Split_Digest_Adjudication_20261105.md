@@ -1,5 +1,10 @@
 # O30 Review/Definition — first cross-platform divergence adjudication (2026-11-05)
 
+> **Reviewed by [RA-204](Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md).** The digest comparison stands. The field branch and the fixed-field replay successor are withdrawn:
+> - the atlas digest hashes exact `effort` bits, so it and five later hashes are noise carriers;
+> - macOS output does not change across five distinct Vase fields;
+> - the split is arrangement cell ids that follow `std::sort`'s unspecified tie order (exact fix CB90).
+
 **Turn:** `M6-CP3-DEFN-P13-PLATFORM-SPLIT`. **Disposition:** the frozen RA-203.4 `fieldBits` branch is selected. This review does **not** establish that the bitwise field difference causes the 45-quad count difference; a controlled fixed-field replay is still necessary. No product/test/fixture/selector/build mutation or runtime execution occurs in this turn.
 
 ## Authority and independent method
