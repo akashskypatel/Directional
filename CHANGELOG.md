@@ -1,3 +1,10 @@
+## 2026-11-05 — TB80 valid immutable RED; required Review route
+
+- **Turn:** `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-EXEC`; [report](.agents/Directional/Architecture_M6_CP3_TB80_P13_Arrangement_Cell_Order_Full_Gate_Execution_Report_20261105.md). CB90 artifact `13385965448` / source `e00ef91a8a5dff8b125c9abfe388952cec20cbe1` unchanged; no rebuild, fixture/test/selector mutation.
+- **Gate [41967375039](https://github.com/akashskypatel/Directional/actions/runs/41967375039):** **898/899**, row 899 performance guard `FinalValidationReadsSourceRowLabelsAfterOneBindingCheck` 2.37405297 s against strict `<2.0 s`; 1,806/1,806 result checksums, membership 980, complete postflight. Valid RED, not infrastructure. TB79's prior 899/899 is not silently carried forward.
+- **Census [41967458556](https://github.com/akashskypatel/Directional/actions/runs/41967458556):** MATCH, Cylinder PASS / BunnyRandom P13-e RED vertex49 / Vase `SelfIntersectingFace` RED (192482 traces, 26817 cells, 67746 quads, 268.87 s); 9/9 result hashes. Seven digest records and RA-204.9 comparison preserved: CloseSheets and analytic arrangement equal across libraries, Vase embedding differs; O30b/O32 open.
+- **Route:** `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV`; no retry, no threshold edit or candidate acceptance. CP2 491/491, stable 66/17/49, debt1, selector497/CP3 unpromoted.
+
 ## 2026-11-05 — CB90 exact tie-break applied; compile-only package verified
 
 - **Turn:** `M6-CP3-CB90-P13-ARRANGEMENT-CELL-ORDER-TIEBREAK`; [record](.agents/Directional/Architecture_M6_CP3_CB90_P13_Arrangement_Cell_Order_Tiebreak_Code_Build_Record_20261105.md); RA-204.7 and RA-205 unchanged.

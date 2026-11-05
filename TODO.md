@@ -1,3 +1,5 @@
+> **Current canonical next:** `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV` (Review, TB80 required performance guard RED). Do not start O32a or P13-l before this Review routes them. [TB80 evidence](.agents/Directional/Architecture_M6_CP3_TB80_P13_Arrangement_Cell_Order_Full_Gate_Execution_Report_20261105.md).
+
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
 - [x] **TB72 invalid gate documentation closeout:** [run 41533361438](https://github.com/akashskypatel/Directional/actions/runs/41533361438) used stale TB71 executor (no TB72 manifest). Preflight exit 90, planned/executed 0/0; no semantic verdict. [Failure report](.agents/Directional/Architecture_M6_CP3_TB72_Orchestration_Failure_Report_20261102.md). Census run `41533460744` was independently verified at 1 PASS and 2 registered RED, within 600 s for Vase; supplementary only. No changes to accepted CP2 or TB71.
@@ -5,7 +7,7 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — CB90 compiled; TB80 next; O32 source-row permutation still open (2026-11-05)
+## CURRENT — TB80 valid RED 898/899; Review next; O32 source-row permutation open (2026-11-05)
 
 - [x] **RA-204 reviewed by [RA-205](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md)** (re-entry of `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`; scratch probes):
   - **Stands:** the cross-library cell-order mechanism and CB90. Completion's 7 hash containers are order-safe (sum, or sort then de-duplicate), which RA-204 had not checked.
@@ -339,11 +341,12 @@
      - Build: one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`.
      - Mismatch → `M6-CP3-PLAN-P13-ARRANGEMENT-CELL-ORDER-STOP`; infrastructure → `M6-CP3-CB90A-P13-ARRANGEMENT-CELL-ORDER-ORCH`.
       - **Verified:** [CB90 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB90_P13_Arrangement_Cell_Order_Tiebreak_Code_Build_Record_20261105.md); source `e00ef91a8a5dff8b125c9abfe388952cec20cbe1`; [compile run 41960980473](https://github.com/akashskypatel/Directional/actions/runs/41960980473) PASS, artifact `13385965448`, 28/28 hashes, eight targets, GMP/GMPXX, no runtime; Drive stage retired. An invalid initial request was corrected before compile.
-  39. [ ] **NEXT `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-EXEC`** (TB-EXEC; RA-204.8):
+  39. [x] **COMPLETE / VALID RED `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-EXEC`** (TB-EXEC; RA-204.8):
      - Gate: the TB78 manifest 899 `9d2c1ec5…`, unchanged; ledger v5; 899/899, membership 980; rows 795, 796, 797 and 864 each log exactly one `platform-digest` line.
      - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; **Vase RED `SelfIntersectingFace` within 600 s with 192,482 / 26,817**. Record `completedQuads`; do not pin it.
      - Record the seven digest lines verbatim, and the RA-204.9 comparison against the [post-CB90 macOS FMA-off reference](.agents/Directional/Architecture_M6_CP3_CB90_P13_Platform_Digest_macOS_FMAoff_Reference.tsv) as observations.
      - Match → the P13-l DEFN (Review), which opens with the RA-204.9 O30 decision. Mismatch → `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV` (Review, Claude, scratch build). Infrastructure → `M6-CP3-TB80A-P13-ARRANGEMENT-CELL-ORDER-ORCH`.
+     - **Verified TB80:** [report](.agents/Directional/Architecture_M6_CP3_TB80_P13_Arrangement_Cell_Order_Full_Gate_Execution_Report_20261105.md) — [gate 41967375039](https://github.com/akashskypatel/Directional/actions/runs/41967375039) 898/899 (row 899 2.37405297 s against <2.0 s), membership 980, 1806/1806 checksums; [census 41967458556](https://github.com/akashskypatel/Directional/actions/runs/41967458556) matches 1 PASS / 2 registered RED, Vase 67,746 quads. Seven digests and RA-204.9 comparison recorded; **MISMATCH → NEXT `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV`**, no replay/repair in this TB. O30b/O32 open; accepted CP2 and stable ledger unchanged.
 - [ ] **Review track** (probe DEFNs):
   - [x] **`M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING`** (P13-g): the static [decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) ran no probe and froze an open A/B CB73. [RA-196](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) probes settle it:
     - Patch 1200's boundary is simple (branch A is false).
