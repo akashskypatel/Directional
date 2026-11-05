@@ -1559,8 +1559,14 @@ TEST(O32aScratchFanSafety, SplitAndCoalescedVertexFansSurviveRowOrder) {
       options.defaultTargetSize = 10.0;
       options.coverageRadiusFactor = 100.0;
       options.sourceFaceComponents = {0, 0};
-      options.sourceFaceSheets = split ? std::vector<int>{0, 1}
-                                       : std::vector<int>{0, 0};
+      options.sourceFaceSheets = {0, 0};
+      if (split) {
+        const auto barrier =
+            directional::authority::SourceEdgeTopologyKey::from_indices(
+                0, 3, static_cast<std::size_t>(mesh.vertices.rows()));
+        ASSERT_TRUE(barrier.has_value());
+        options.hardFeatureEdges.insert(barrier.value());
+      }
       const int railFace = reversed ? 1 : 0;
       if (reversed) {
         mesh.faces.row(0).swap(mesh.faces.row(1));
