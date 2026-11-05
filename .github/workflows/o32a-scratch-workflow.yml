@@ -29,11 +29,11 @@ jobs:
       id-token: write
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1kucBxUvhEqvOVJUg4Ia04jDa1XKCU8Uo
-      patch_sha256: 9a19f8386d3acb6a904e264f86fff4496f3dc4662bbd0da82e676a9e411427fe
-      base_sha: 4e151e5c139d09ecabca663ea1125d0544c32abb
+      file_id: 1BVhNoWAQ0ZUjwIjyhFUBmexY71txpB_q
+      patch_sha256: 3bc5865d8191713cb143b99b5e6bb8146f606b1f3b2161dc83a899a601fcf4c1
+      base_sha: 37b2b1c5888d13f71ab82e4c8bdc35470f1c9059
       target_branch: scratch/p13-o32a-seed-review-20261105
-      commit_message: 'scratch: apply O32a seed producer instrumentation'
+      commit_message: 'scratch: trial canonical fan-aware optional seed admission'
     secrets: inherit
   compile:
     needs: validate
