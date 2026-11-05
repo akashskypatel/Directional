@@ -1,2 +1,4 @@
-operation=compile-and-capture
-source=4499643bc5535d95abd962070dfd58b3f7022895
+operation=fan-aware-trial-apply
+base_sha=37b2b1c5888d13f71ab82e4c8bdc35470f1c9059
+file_id=1BVhNoWAQ0ZUjwIjyhFUBmexY71txpB_q
+scope=disposable-review-scratch
