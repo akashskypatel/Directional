@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "workflow_key": "o32a-scratch-control-compile",
+  "workflow": "O32a Scratch Review Compile",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/o32a-review-scratch-compile.yml@refs/heads/scratch/p13-o32a-seed-review-20261105",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "63af8e9bd31435531825dca6658f1cef384d9c18",
+  "source_sha": "63af8e9bd31435531825dca6658f1cef384d9c18",
+  "source_ref": "refs/heads/scratch/p13-o32a-seed-review-20261105",
+  "ref": "refs/heads/scratch/p13-o32a-seed-review-20261105",
+  "ref_name": "scratch/p13-o32a-seed-review-20261105",
+  "run_id": 42028082868,
+  "run_attempt": 1,
+  "run_number": 3,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/42028082868",
+  "result": "success",
+  "summary": "Temporary O32a scratch-control compile.",
+  "reported_at": "2026-11-05T12:34:30Z",
+  "mailbox_branch": "workflow-mailbox",
+  "artifacts": [
+    {
+      "id": 13414747930,
+      "name": "workflow-mailbox-publisher-log-42028082868-attempt-1",
+      "size_in_bytes": 373,
+      "digest": "sha256:72d189ce382142cc4dbc217c19aaa13beb8fc65638ebe486ea3cce18cc9507f1",
+      "expired": false,
+      "created_at": "2026-11-05T12:34:27Z",
+      "expires_at": "2026-11-19T12:34:27Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42028082868/artifacts/13414747930",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13414747930/zip"
+    },
+    {
+      "id": 13414398560,
+      "name": "o32a-scratch-control-compile-log-42028082868",
+      "size_in_bytes": 3872,
+      "digest": "sha256:37d7b6a4c1e203376f3285be0436205fcd332d9fefb8a1e1093c6022a692da17",
+      "expired": false,
+      "created_at": "2026-11-05T12:34:10Z",
+      "expires_at": "2026-11-12T12:34:09Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42028082868/artifacts/13414398560",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13414398560/zip"
+    },
+    {
+      "id": 13414318778,
+      "name": "o32a-scratch-control-compile-result-42028082868",
+      "size_in_bytes": 22731506,
+      "digest": "sha256:477d67b168942eb8c2f0c646572ddbda97f6a0992a352235708b645030f3448b",
+      "expired": false,
+      "created_at": "2026-11-05T12:34:09Z",
+      "expires_at": "2026-11-12T12:34:07Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42028082868/artifacts/13414318778",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13414318778/zip"
+    }
+  ]
+}
