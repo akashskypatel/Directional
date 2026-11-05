@@ -30,3 +30,13 @@
 - Required scratch-only negative/positive C++ controls remain: (a) with a valid `SourceTopologyRegions` binding and a protected edge separating two fans at one vertex, verify each optional seed is admitted only in its **authorized** fan and remains distinct on the other independently authorized fan; (b) remove that barrier and require the two fans to coalesce; (c) vary local-sheet/component labels and verify no cross-sheet dedup; (d) place distinct mandatory rail IDs/sides at the same embedded vertex and prove every required occurrence survives; (e) reorder source-face rows in each control while holding semantic source identity fixed. Verify by typed fan and rail IDs, not by world position alone. A mutant removing the barrier and a mutant dropping a required rail ID must each fail the check.
 - After those controls, permit the scratch run to continue beyond the deliberate `O32A_SCRATCH_CAPTURE_COMPLETE` exception, capture tracing, strands, and quad outcomes on original plus three permutations, and distinguish newly revealed downstream ordering defects from the corrected seed producer. Do not infer such downstream equality from four equal seed digests.
 - **Disposition:** O32a remains unfinished, this is not a product fix, not a TB gate, and no successor was authorized. The corrected 1,416-seed Vase result remains an unpromoted candidate; accepted CP2 and selector/CP3 boundaries are unchanged. No product, test, fixture, or workflow source was changed on the working branch in this continuation.
+
+
+### Independent raw capture re-derivation (same resumed Review)
+
+Downloaded artifact `13409544451` and verified its outer ZIP SHA-256 `ea939e9519059493a028077cac52a9af0d1b13c9eef1e67b881fb54a149efe91` plus all five internal `SHA256SUMS`. Reparsed **each** of the four original logs, not the previous analyzer's summary, using a sorted `origin|sourceId|exact printed 3D position` record per phase (this is a newly defined comparison digest, **not** the older analyzer's digest).
+
+- All four: `rails=284`, semantic digest `102dbb5e42e32d8e44cce699489c653c79f072d7bb1738841f031c69e2510a7f`.
+- All four: `relief_roots=relief_regions=separatrices=coverage=1416`, semantic digest `7f299f1f1a1b2c99a5f170e316a828357545cb9da96154c3c5e9e46b4725042c`.
+- Sorted upstream source-face (2,404), rail (284), relief-root (369), target-size (1,274) and relief-label (1,274) records are each exactly equal under all four row orders. **Zero** explicit `O32A_HARD_EDGE` records were emitted; Vase cannot prove a protected-edge case.
+- Each run intentionally exits 1 following `O32A_SCRATCH_CAPTURE_COMPLETE`, so this is a completed **scratch capture**, not a passing product test. No tracing/strand evidence can follow from these early-exit logs.
