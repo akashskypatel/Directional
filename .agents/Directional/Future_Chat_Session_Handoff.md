@@ -34,19 +34,19 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-05 · [RA-203](Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md) closes the TB78 Review. The review-boundary block is RA-202.9's route, not the policy: Review scratch probes are a duty (RA-166.6 F6, RA-188.1), and Linux runtime is a TB. TB78 matches everywhere except the count line. Vase completes in 268.93 s with 67,784 quads on Linux against 67,829 on macOS. RA-202.9 pinned a macOS-only value, and the split is **O30**. CB89 compiled without runtime; TB79 immutable gate and census executed (MATCH); seven Linux digests retained in the TB79 report. |
+| Currency | 2026-11-05 · [O30 digest Review](Architecture_M6_CP3_DEFN_P13_Platform_Split_Digest_Adjudication_20261105.md) selects RA-203.4 generated-field branch; [RA-203](Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md) closes the TB78 Review. The review-boundary block is RA-202.9's route, not the policy: Review scratch probes are a duty (RA-166.6 F6, RA-188.1), and Linux runtime is a TB. TB78 matches everywhere except the count line. Vase completes in 268.93 s with 67,784 quads on Linux against 67,829 on macOS. RA-202.9 pinned a macOS-only value, and the split is **O30**. CB89 compiled without runtime; TB79 immutable gate and census executed (MATCH); seven Linux digests retained in the TB79 report. |
 | Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing` · **CB89 source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, artifact `13370954424`**, [record](Architecture_M6_CP3_CB89_P13_Census_Platform_Digest_Code_Build_Record_20261104.md), [compile run 41932156223](https://github.com/akashskypatel/Directional/actions/runs/41932156223), eight Linux GMP/GMPXX targets PASS, 28/28 checksums, `runtimeExecution=false`. TB79 execution verified: 899/899 gate, membership 980; census MATCH. |
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06; unchanged. TB71 remains unpromoted candidate only. |
 | Latest candidate | **TB79** CB89 immutable gate **899/899 PASS**, membership 980, 81 deferred, 1,806/1,806 hashes; census Cylinder PASS, BunnyRandom P13-e RED, Vase RED 67,784 quads; registered outcome **MATCH**, seven Linux digests retained verbatim. Unpromoted. [TB79 report](Architecture_M6_CP3_TB79_P13_Platform_Digest_Full_Gate_Execution_Report_20261105.md). |
 | Regression accounting and debt | Accepted CP2 **491/491**; stable **66/17/49**, debt **1**; ledger v5 81 deferred (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE), current membership **980**; selector497 and CP3 unpromoted. DR1/DR3 open, DR2/DR4 to M8-CP2. |
-| Active boundary | TB79 Test + Benchmark COMPLETE; gate 899/899, census MATCH, seven digests captured without macOS comparison. Next separate turn `M6-CP3-DEFN-P13-PLATFORM-SPLIT` under RA-203.6; no acceptance or promotion. Carried O30, P13-l, P13-e and O27–O29. |
+| Active boundary | TB79 Test + Benchmark COMPLETE; gate 899/899, census MATCH, seven digests captured without macOS comparison. First O30 digest Review completed; next `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY` to discriminate generated field and subsequent atlas. No acceptance or promotion. Carried O30, P13-l, P13-e and O27–O29. |
 
-## Mandatory next turn — `M6-CP3-DEFN-P13-PLATFORM-SPLIT` (separate Review/Definition)
+## Mandatory next turn — `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY` (separate Review/Definition)
 
-- **Authority:** [RA-203](Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md) §6 and the completed [TB79 execution report](Architecture_M6_CP3_TB79_P13_Platform_Digest_Full_Gate_Execution_Report_20261105.md).
-- **TB79 evidence:** [gate 41938188019](https://github.com/akashskypatel/Directional/actions/runs/41938188019) 899/899, membership 980, 1,806/1,806 checksums; [census 41938418260](https://github.com/akashskypatel/Directional/actions/runs/41938418260) MATCH, 9/9 checksums, seven single digest lines in total.
-- **Next work:** O30 independent Review/Definition with scratch-build authority: independently compare seven Linux digests to the frozen macOS reference using RA-203.4, then choose its prescribed discriminator/fix. No work in TB79 performed on O30.
-- **Preserve:** CP2 491/491, stable 66/17/49, debt 1, selector497/CP3 unpromoted. No new stable regression event claimed.
+- **Authority:** [O30 cross-platform comparison](Architecture_M6_CP3_DEFN_P13_Platform_Split_Digest_Adjudication_20261105.md), RA-203.4, frozen macOS 129-row reference and TB79 seven-line Linux digest evidence.
+- **Resolved discriminator:** Vase input `fieldBits` differs before remesh (`5c9a34a47d717fdc` Linux vs `afdad15a6d246ed2` macOS); mesh bits and quantized `cross-field` agree, but `field-transport-atlas` and downstream products differ. Do not infer completion is the root. Plane/CloseSheets/Cylinder separately diverge at `relief` despite matching field bits.
+- **Next work:** isolated generated-smooth-field producer Review/Definition. Obtain authoritative 2,404×12 frozen IEEE-754 field input and design an unchanged-path Linux/macOS replay plus staged `extract_cross_field` measurement. The causality gate is identical input bits across platforms before downstream comparison. If the count still splits, pursue earliest remaining stage; no acceptance weakening, no silent substitution of the generated-field fixture.
+- **Preserve:** TB79 gate 899/899, membership 980, stable 66/17/49 and debt 1, CP2 491/491 accepted, selector497/CP3 unpromoted. P13-l, P13-e, O27–O29 remain independently open.
 
 ### Earlier: TB78 and its Review
 
@@ -134,9 +134,9 @@ The implementation agent takes rows 42B and 42C, in order, one turn each, and st
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-DEFN-P13-PLATFORM-SPLIT**.
+`load_next`: **M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY**.
 - CB89 compiled source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, immutable package artifact `13370954424`, 28/28 hashes, eight GMP/GMPXX targets; no test execution.
-- TB79 artifact-only gate (RA-203.6) finished: 899/899, census MATCH. Continue only the separate authorized successor.
+- TB79 artifact-only gate (RA-203.6) finished: 899/899, census MATCH. O30 digest comparison is adjudicated; continue only the separate fixed-input generated-field Review/Definition successor.
 - Do not resume or apply `M6-CP3-CB84-P13-LINUX-VASE-DIAGNOSTIC-TIMING` (withdrawn).
 - Review track, only with scratch-build execution:
   - `M6-CP3-DEFN-P13-PLATFORM-SPLIT` (O30, after TB79);

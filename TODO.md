@@ -338,13 +338,14 @@
     - O28: nine per-query `source_face_scope` sites in the optimizer;
     - O29: `source_vertex_extent` recomputed per edge key, plus the tracing proposal cost.
   - [x] **`M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV`** (P13-m closure, O30): ChatGPT's WIP blocked on the review boundary. [RA-203](.agents/Directional/Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md) resolved it from existing authority and owned RA-202.9's macOS-only count. It opened O30 and froze exact CB89 → TB79 with a macOS digest reference (two runs, byte-identical).
-  - [ ] **`M6-CP3-DEFN-P13-PLATFORM-SPLIT`** (O30, Vase; after TB79; Claude, scratch build). Compare TB79's seven digest lines with the [macOS reference](.agents/Directional/Architecture_M6_CP3_CB89_P13_Platform_Digest_macOS_Reference.tsv), using the RA-203.4 table:
+  - [x] **`M6-CP3-DEFN-P13-PLATFORM-SPLIT`** (O30 first discriminator, 2026-11-05). Compared all seven Linux lines to the [macOS reference](.agents/Directional/Architecture_M6_CP3_CB89_P13_Platform_Digest_macOS_Reference.tsv), using the RA-203.4 table:
     - mesh bits differ → fixture DEFN;
     - field bits differ → `extract_cross_field`, with the design fork "invariant generator or frozen field bytes";
     - first differing stage S → probe S;
     - only `completion` differs → `PureQuadCompletion`.
     
-    If libm and library order are still both open, build GCC + libstdc++ with `-ffp-contract=off` on macOS. Outcome: exact patch. Neither platform's count is "right" until it is computed.
+    Result: Vase raw `fieldBits` differ, first differing downstream product is field-transport atlas; no completion-only attribution. [Review](Architecture_M6_CP3_DEFN_P13_Platform_Split_Digest_Adjudication_20261105.md).
+  - [ ] **NEXT `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`** (O30 field generator portability): exact binary64 2,404×12 field replay on both platforms without replacing the smooth generator case; inspect staged `extract_cross_field` power solve, roots, matching and combing; choose a fix only after the fixed-input causal test. If fixed-input count still differs, investigate first remaining downstream stage. Preserve P13-l and P13-e separate.
   - [ ] **NEXT (Review, can start now) `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`** (P13-l; probe DEFN on the RA-202 scratch state (= CB88), Claude; also time O27 once orientation passes; its TB pins only typed verdicts and counts already observed on Linux, RA-203.2):
     - The completed Vase mesh (67,829 quads) has the source topology but is not consistently oriented: 27,966 interior edges are traversed the same way by both quads.
     - Leads, not conclusions: `orient_quads_to_source_normals` (`RemeshPipeline.cpp` 10949) flips each quad on its own by its (0,1,2) triangle normal and ignores lineage; or completed patches carry mixed winding before it.

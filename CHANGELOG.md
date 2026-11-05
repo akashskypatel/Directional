@@ -1,3 +1,8 @@
+## 2026-11-05 — O30 platform digest Review: generated smooth input differs before remesh
+
+- **Turn:** `M6-CP3-DEFN-P13-PLATFORM-SPLIT`; [independent Review](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Platform_Split_Digest_Adjudication_20261105.md). Frozen 129-row macOS reference compared item-by-item with all seven Linux TB79 lines. Vase source mesh bits match, raw `fieldBits` differ; first differing stage product is the field-transport atlas, not completion. Cylinder/Plane/CloseSheets differ at relief despite identical raw field bits; MultiFaceSeam matches completely.
+- **Disposition:** RA-203.4 generated-field branch selected, causal contribution to 45-quad completion difference unproven until fixed-field replay. Next separate `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY` for controlled same-field replay and generator-stage attribution. No code/test/fixture/selector changes, runtime, new accepted result, stable event or promotion. TB79 899/899; CP2 491/491; stable 66/17/49, debt 1 unchanged.
+
 ## 2026-11-05 — TB79 immutable full gate and platform-digest census (MATCH)
 
 - **Turn:** `M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-EXEC`; [report](.agents/Directional/Architecture_M6_CP3_TB79_P13_Platform_Digest_Full_Gate_Execution_Report_20261105.md).
