@@ -61,3 +61,4 @@ jobs:
       source_ref: ${{ github.ref }}
       result: ${{ needs.boundary.result }}
       summary: Read-only O32a working-branch Review boundary check.
+# continuation8 audit: final post-fan-scope revision read-only boundary
