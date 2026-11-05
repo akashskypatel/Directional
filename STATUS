@@ -3,7 +3,7 @@ Turn: M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION
 Status: BLOCKED
 Successor: M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION
 Started at: 2026-11-05T16:42:29Z
-Resumed at: 2026-11-05T18:18:07Z
+Resumed at: 2026-11-05T19:09:27Z
 Ended at: 
 Blocker Type: REVIEW_BLOCKER
 Blocker Details: Exact CB92 Vase pre/post-orientation mesh snapshots are absent from TB82 artifacts; collecting them requires a new Directional runtime, prohibited in this Review without an authorized diagnostic CB/TB boundary.
