@@ -1671,3 +1671,85 @@ TEST(O32aScratchRailSafety, DistinctMandatoryRailsAtSharedSourceVertexRetainIds)
   EXPECT_TRUE(observed.contains(feature.id));
   EXPECT_TRUE(observed.contains(boundary.id));
 }
+
+
+// SCRATCH REVIEW: distinguish typed rail-interval authority from seed metadata.
+// The earlier single-sample-per-rail two-ID test violates the strict ingress
+// contract (each one-edge rail must publish two endpoint samples).
+TEST(O32aScratchRailAuthority, ValidSharedVertexRailsPreserveDistinctTypedIntervals) {
+  using namespace directional::geometry;
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  const REPkgMesh mesh = make_grid(1);
+  const auto featureEdge =
+      directional::authority::SourceEdgeTopologyKey::from_indices(
+          0, 3, static_cast<std::size_t>(mesh.vertices.rows()));
+  const auto boundaryEdge =
+      directional::authority::SourceEdgeTopologyKey::from_indices(
+          0, 1, static_cast<std::size_t>(mesh.vertices.rows()));
+  ASSERT_TRUE(featureEdge.has_value());
+  ASSERT_TRUE(boundaryEdge.has_value());
+  SurfaceCellRail feature(directional::tests::test_hard_rail_id(19));
+  feature.kind = SurfaceCellRailKind::HardFeature;
+  feature.curveId = 7;
+  feature.sourceVertices = {0, 3};
+  feature.sourceEdges = {featureEdge.value()};
+  feature.samples = {
+      rail_sample(mesh, 0, 1, 0.0, 0.0, Eigen::RowVector3d(1, 0, 0), 0),
+      rail_sample(mesh, 0, 1, 1.0, 1.0, Eigen::RowVector3d(0, 0, 1), 3)};
+  SurfaceCellRail boundary(directional::tests::test_hard_rail_id(20));
+  boundary.kind = SurfaceCellRailKind::Boundary;
+  boundary.curveId = 8;
+  boundary.sourceVertices = {0, 1};
+  boundary.sourceEdges = {boundaryEdge.value()};
+  boundary.samples = {
+      rail_sample(mesh, 0, 2, 0.0, 0.0, Eigen::RowVector3d(1, 0, 0), 0),
+      rail_sample(mesh, 0, 2, 1.0, 1.0, Eigen::RowVector3d(0, 1, 0), 1)};
+  const std::vector<SurfaceCellRail> rails{feature, boundary};
+  const auto edgeFaces = edge_faces(mesh.faces);
+  const auto actual = rail_interval_refs(rails, mesh.vertices, mesh.faces,
+                                        edgeFaces, nullptr);
+  ASSERT_EQ(RailBuildStatus::Valid, actual.status);
+  ASSERT_EQ(2U, actual.intervals.size());
+  std::map<directional::authority::HardRailId,
+           directional::authority::SourceEdgeTopologyKey> ownerEdges;
+  for (const auto &interval : actual.intervals) {
+    ASSERT_TRUE(interval.edgeKey.has_value());
+    EXPECT_TRUE(ownerEdges.emplace(interval.railId,
+                                   interval.edgeKey.value()).second);
+  }
+  ASSERT_EQ(2U, ownerEdges.size());
+  EXPECT_EQ(featureEdge.value(), ownerEdges.at(feature.id));
+  EXPECT_EQ(boundaryEdge.value(), ownerEdges.at(boundary.id));
+  // Deliberate authority tamper: omitting a typed source edge cannot pass
+  // strict ingress, and is not equivalent to losing a duplicate seed label.
+  auto damaged = rails;
+  damaged[1].sourceEdges.clear();
+  EXPECT_EQ(RailBuildStatus::TypedAuthorityMismatch,
+            rail_interval_refs(damaged, mesh.vertices, mesh.faces, edgeFaces,
+                               nullptr).status);
+  damaged = rails;
+  damaged[1].id = feature.id;
+  EXPECT_EQ(RailBuildStatus::DuplicateRailId,
+            rail_interval_refs(damaged, mesh.vertices, mesh.faces, edgeFaces,
+                               nullptr).status);
+  SurfaceCellTracingOptions options;
+  options.defaultTargetSize = 10.0;
+  options.sourceFaceComponents = {0, 0};
+  options.sourceFaceSheets = {0, 0};
+  options.hardFeatureEdges.insert(featureEdge.value());
+  options.authoritativeRails = rails;
+  const auto authority = build_source_topology_regions(mesh.faces, options);
+  ASSERT_TRUE(authority.has_value());
+  options.sourceAuthority = &authority.value();
+  const Eigen::VectorXd h =
+      Eigen::VectorXd::Constant(mesh.vertices.rows(), 10.0);
+  const auto seeds =
+      generate_deterministic_surface_seeds(mesh.vertices, mesh.faces, h, options);
+  std::set<directional::authority::HardRailId> seedOwnerIds;
+  for (const auto &seed : seeds) {
+    if (seed.hardRailId) seedOwnerIds.insert(seed.hardRailId.value());
+  }
+  EXPECT_TRUE(seedOwnerIds.contains(feature.id));
+  EXPECT_TRUE(seedOwnerIds.contains(boundary.id));
+  EXPECT_EQ(2U, seedOwnerIds.size());
+}
