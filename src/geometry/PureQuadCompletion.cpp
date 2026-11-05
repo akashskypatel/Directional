@@ -535,21 +535,18 @@ PureQuadEmbeddingFailureKind quad_embedding_failure(
   if (!normal.allFinite() || normal.squaredNorm() <= 1.0e-24) {
     return PureQuadEmbeddingFailureKind::DegenerateNormal;
   }
-  Eigen::Index dropAxis = 0;
-  normal.cwiseAbs().maxCoeff(&dropAxis);
+  // Project orthogonally onto the quad's own plane. Dropping the coordinate
+  // nearest the normal can be 55 degrees off it and hides the crossing of a
+  // strongly twisted quad; the output validator uses the same definition
+  // (RA-209).
+  const Eigen::Vector3d unit = normal.normalized();
+  const Eigen::Vector3d u = unit.unitOrthogonal();
+  const Eigen::Vector3d w = unit.cross(u);
   std::array<Eigen::Vector2d, 4> projected;
   for (int corner = 0; corner < 4; ++corner) {
     const Eigen::Vector3d &value = p[static_cast<std::size_t>(corner)];
-    if (dropAxis == 0) {
-      projected[static_cast<std::size_t>(corner)] =
-          Eigen::Vector2d(value.y(), value.z());
-    } else if (dropAxis == 1) {
-      projected[static_cast<std::size_t>(corner)] =
-          Eigen::Vector2d(value.x(), value.z());
-    } else {
-      projected[static_cast<std::size_t>(corner)] =
-          Eigen::Vector2d(value.x(), value.y());
-    }
+    projected[static_cast<std::size_t>(corner)] =
+        Eigen::Vector2d(value.dot(u), value.dot(w));
   }
   double signedArea2 = 0.0;
   for (int corner = 0; corner < 4; ++corner) {

@@ -2815,3 +2815,34 @@ TEST(PureQuadCompletionPhase18,
         << "variant " << variant;
   }
 }
+
+TEST(PureQuadCompletionPhase18,
+     QuadEmbeddingFindsTheCrossingOfATwistedQuadInItsOwnPlane) {
+  using directional::geometry::PureQuadEmbeddingFailureKind;
+  using directional::geometry::pure_quad_detail::quad_embedding_failure;
+  // A twisted quad from the CB92 Vase completed mesh. Its opposite edges cross
+  // in its own plane, but not along the coordinate axis nearest its normal,
+  // which completion projected along before; the output validator then
+  // passed it while it overlapped itself on the surface (RA-209).
+  const std::array<Eigen::Vector3d, 4> twisted{
+      {Eigen::Vector3d(-0.17542684861736774, 1.1803095815696305,
+                       -0.11279117483668762),
+       Eigen::Vector3d(-0.1778677436400376, 1.1785769999861855,
+                       -0.11315809959938455),
+       Eigen::Vector3d(-0.16560114040051754, 1.1940129948811948,
+                       -0.10997860050669725),
+       Eigen::Vector3d(-0.16554393196104053, 1.1956754839538677,
+                       -0.10957741066081621)}};
+  for (int start = 0; start < 4; ++start) {
+    for (const int step : {1, 3}) {
+      std::array<Eigen::Vector3d, 4> cycle;
+      for (int corner = 0; corner < 4; ++corner) {
+        cycle[static_cast<std::size_t>(corner)] =
+            twisted[static_cast<std::size_t>((start + step * corner) % 4)];
+      }
+      EXPECT_EQ(PureQuadEmbeddingFailureKind::BowTieIntersection,
+                quad_embedding_failure(cycle, nullptr))
+          << "start " << start << " step " << step;
+    }
+  }
+}
