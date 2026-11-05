@@ -1948,13 +1948,6 @@ void copy_surface_cell_stage_diagnostics(
     const directional::RemeshDiagnostics &source,
     directional::RemeshDiagnostics &target);
 
-void orient_quads_to_source_normals(
-    const Eigen::MatrixXd &outputVertices,
-    const Eigen::MatrixXd &sourceVertices,
-    const Eigen::MatrixXi &sourceFaces,
-    const std::vector<geometry::SurfacePoint> &outputProvenance,
-    Eigen::MatrixXi &quads,
-    const std::vector<geometry::PureQuadFaceLineage> *quadLineage = nullptr);
 std::vector<geometry::SurfaceArrangementArc>
 surface_arrangement_arcs_from_flow_rep(
     const std::vector<geometry::FlowRepArc> &arcs,

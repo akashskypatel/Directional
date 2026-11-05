@@ -10946,107 +10946,6 @@ void copy_surface_cell_stage_diagnostics(
 
 namespace directional::pipeline {
 
-void orient_quads_to_source_normals(
-    const Eigen::MatrixXd &outputVertices,
-    const Eigen::MatrixXd &sourceVertices,
-    const Eigen::MatrixXi &sourceFaces,
-    const std::vector<geometry::SurfacePoint> &outputProvenance,
-    Eigen::MatrixXi &quads,
-    const std::vector<geometry::PureQuadFaceLineage> *quadLineage) {
-  (void)quadLineage;
-  if (outputVertices.cols() != 3 || sourceVertices.cols() != 3 ||
-      sourceFaces.cols() != 3 || quads.cols() != 4) {
-    return;
-  }
-  const geometry::SurfaceProjectionBvh projection(sourceVertices, sourceFaces);
-  for (int row = 0; row < quads.rows(); ++row) {
-    Eigen::RowVector3d centroid = Eigen::RowVector3d::Zero();
-    Eigen::RowVector3d sourceNormal = Eigen::RowVector3d::Zero();
-    bool valid = true;
-    for (int col = 0; col < 4; ++col) {
-      const int vertex = quads(row, col);
-      if (vertex < 0 || vertex >= outputVertices.rows()) {
-        valid = false;
-        break;
-      }
-      centroid += 0.25 * outputVertices.row(vertex);
-    }
-    if (!valid) {
-      continue;
-    }
-    // PureQuadFaceLineage::sourcePatch identifies the arrangement patch that
-    // produced the quad.  It is not a source-triangle row and therefore must
-    // never be used to index sourceFaces.  Prefer an exact common source chart
-    // carried by the output-vertex provenance; otherwise use geometric
-    // projection as the orientation fallback.
-    int authoritativeFace = -1;
-    bool commonFace = true;
-    for (int col = 0; col < 4; ++col) {
-      const int vertex = quads(row, col);
-      if (vertex < 0 ||
-          vertex >= static_cast<int>(outputProvenance.size()) ||
-          !outputProvenance[static_cast<std::size_t>(vertex)].valid()) {
-        commonFace = false;
-        break;
-      }
-      const int face =
-          outputProvenance[static_cast<std::size_t>(vertex)].face;
-      if (authoritativeFace < 0) {
-        authoritativeFace = face;
-      } else if (authoritativeFace != face) {
-        commonFace = false;
-        break;
-      }
-    }
-    if (commonFace && authoritativeFace >= 0 &&
-        authoritativeFace < sourceFaces.rows()) {
-      const Eigen::RowVector3d sa =
-          sourceVertices.row(sourceFaces(authoritativeFace, 0));
-      const Eigen::RowVector3d sb =
-          sourceVertices.row(sourceFaces(authoritativeFace, 1));
-      const Eigen::RowVector3d sc =
-          sourceVertices.row(sourceFaces(authoritativeFace, 2));
-      sourceNormal = (sb - sa).cross(sc - sa);
-    }
-    if (!(sourceNormal.norm() > 0.0)) {
-      const geometry::SurfacePoint source =
-          projection.project(centroid.transpose());
-      if (!source.valid() || source.face < 0 ||
-          source.face >= sourceFaces.rows()) {
-        continue;
-      }
-      const Eigen::RowVector3d sa =
-          sourceVertices.row(sourceFaces(source.face, 0));
-      const Eigen::RowVector3d sb =
-          sourceVertices.row(sourceFaces(source.face, 1));
-      const Eigen::RowVector3d sc =
-          sourceVertices.row(sourceFaces(source.face, 2));
-      sourceNormal = (sb - sa).cross(sc - sa);
-    }
-    // The whole-polygon (Newell) vector area, as completion's embedding test
-    // uses: the first triangle's normal can point away from the source on a
-    // valid non-convex or non-planar quad, and flipping on it breaks the
-    // shared-edge winding of correctly oriented neighbours (RA-208).
-    Eigen::RowVector3d quadNormal = Eigen::RowVector3d::Zero();
-    for (int col = 0; col < 4; ++col) {
-      const Eigen::RowVector3d current = outputVertices.row(quads(row, col));
-      const Eigen::RowVector3d next =
-          outputVertices.row(quads(row, (col + 1) % 4));
-      quadNormal.x() += (current.y() - next.y()) * (current.z() + next.z());
-      quadNormal.y() += (current.z() - next.z()) * (current.x() + next.x());
-      quadNormal.z() += (current.x() - next.x()) * (current.y() + next.y());
-    }
-    if (quadNormal.norm() > 0.0 && sourceNormal.norm() > 0.0 &&
-        quadNormal.dot(sourceNormal) < 0.0) {
-      std::swap(quads(row, 1), quads(row, 3));
-    }
-  }
-}
-
-} // namespace directional::pipeline
-
-namespace directional::pipeline {
-
 std::vector<geometry::SurfaceArrangementArc>
 surface_arrangement_arcs_from_flow_rep(
     const std::vector<geometry::FlowRepArc> &arcs,
@@ -14853,9 +14752,9 @@ remesh_from_raw_cross_field_impl_with_stage_products(
 
     const auto optimizationStart = Clock::now();
     if (completedVertices.rows() > 0 && completedQuads.rows() > 0) {
-      orient_quads_to_source_normals(
-          completedVertices, meshWhole.V, meshWhole.F, completedProvenance,
-          completedQuads, &completedQuadLineage);
+      // Completion is the single writer of quad orientation: its embedding
+      // test rejects any quad facing away from the source. Later stages
+      // validate that orientation and never rewrite it (DESIGN 3, RA-209).
       geometry::SurfaceOptimizationConstraints constraints;
       constraints.sourceVertices = meshWhole.V;
       constraints.sourceFaces = meshWhole.F;
