@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb83-gate-20261105-v1",
+  "request_id": "m6-cp3-tb83-census-20261105-v1",
   "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb83-gate-20261105-v1",
+  "mailbox_key": "m6-cp3-tb83-census-20261105-v1",
   "executor_sha": "7bbefa88926dd329f38b7470c242f9c7c9514091",
   "semantic_source_sha": "11c8172ad467c6dc865f2f3352e75b78f5469a2b",
   "turn_id": "M6-CP3-TB83-P13-EMBEDDING-PREDICATE-FULL-GATE-EXEC",
@@ -14,12 +14,10 @@
     "EXPECTED_CANDIDATE_ZIP_SHA256": "3e4d356b1f7b25b388faa661db5ed67d28b23adbbda526cbbcbd2e0c0ef5cfdf",
     "EXPECTED_ROOT_MANIFEST_SHA256": "a3ee1c064ada979a01c725bc2d2f8655b5fdb0ef9b7ddcf4c193305877790d61",
     "EXPECTED_SOURCE_ARCHIVE_SHA256": "6905e76eac60b9bfdeaf46cfd76ee5564847e7b1bde6d4efe49def8093713cd9",
-    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_TB83_P13_Embedding_Predicate_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "61e9edbedee3731b04d7b6279b79a0fd0e0b651686638e9b832773f7aa0a36aa",
-    "EXPECTED_CASE_COUNT": "903",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
+    "EXPECTED_CASE_COUNT": "3"
   },
-  "artifact_prefix": "m6-cp3-tb83-gate",
+  "artifact_prefix": "m6-cp3-tb83-census",
   "retention_days": 14
 }
