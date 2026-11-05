@@ -366,6 +366,12 @@ This document records **reusable failure-derived engineering lessons**, not an e
 
   Both were found by diffing the stitched mesh against its post-processed copy from a rejected result in one scratch run. Before attributing a failure to a producer, census the output before and after every post-processing step. Give producer and validator one shared geometric definition, implemented independently (RA-208).
 
+- **A downstream fix-up is removed, not repaired, and a predicate must use the polygon's own plane.** RA-208 replaced the orientation pass's first-triangle normal with the Newell normal. The pass then flipped 0 pipeline quads, because completion already rejects quads facing away from the source. It was a dead second writer of an earlier stage's product, which DESIGN §3 forbids.
+
+  RA-208 also gave the validator completion's axis projection. That drops the coordinate nearest the normal, which can be 55° off it, and so accepted 17 Vase quads that cross in their own plane. RA-208's "35,416 → 4" relied on that shared blind spot.
+
+  Before repairing a post-processing step, count how often it fires on correct producer output. Check a candidate predicate against the measured witnesses it is supposed to catch, in the projection it actually uses (RA-209).
+
 ## Contracts, planning, reviews, and durable records
 
 - **Plan from the current normative contract and reachable implementation.** Before freezing an

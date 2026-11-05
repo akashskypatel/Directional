@@ -1,3 +1,19 @@
+## 2026-11-05 — RA-209: review of RA-208; orientation pass removed; own-plane embedding predicates; exact CB94 → CB95 → CB96 → TB83
+
+- **Turn:** adversarial review of `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` ([RA-208](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md)). [RA-209](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_Single_Writer_Own_Plane_20261105.md).
+- **Stands:** the census and CB93, which the implementation agent applied at `e96e98806` with verified result hashes; its compile is in progress.
+- **Corrected:**
+  - the orientation pass is a second writer of completion's product and flips 0 pipeline quads once CB93 is applied, so it is removed (CB94);
+  - the axis projection accepts 17 genuinely twisted Vase quads, so the validator (CB95) and completion (CB96) project onto the quad's own plane;
+  - RA-208's "35,416 → 4" relied on the shared blind spot. The 4 now hold honestly.
+- **Superseded, never applied:** RA-208's CB94 diff and TB83 manifest are removed. The new TB83 manifest has 903 rows, `61e9edbe…`.
+- **Scratch verification:**
+  - the chain applies cleanly and reproduces the tree byte for byte;
+  - gate 902/903 (only O16); gate digests unchanged;
+  - both new tests fail on legacy;
+  - GCC 16 syntax check is clean.
+- **No product or test source changed in the repository;** the patches are committed `.diff` files. STATUS is not written: CB93 is IN_PROGRESS.
+
 ## 2026-11-05 — RA-208: P13-l block resolved; owners measured; exact CB93 → CB94 → TB83
 
 - **Turn:** `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`, resumed from the ChatGPT BLOCKED WIP. [RA-208](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md).

@@ -1,3 +1,8 @@
+**RA-209 (2026-11-05; review of RA-208, NOT stable):** [RA-209](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_Single_Writer_Own_Plane_20261105.md).
+- **P13-l1, revised.** `orient_quads_to_source_normals` is a downstream second writer (DESIGN §3), and with CB93's predicate it flips 0 pipeline quads, so CB94 removes it. The axis projection in completion's `quad_embedding_failure`, and in RA-208's CB94, accepts 17 Vase quads that cross in their own Newell plane (12 bow-ties in both planes).
+- **Fixes:** CB95 (validator) and CB96 (completion) project orthogonally onto the quad's own plane. Scratch: gate 902/903 (only O16); gate digests unchanged; Vase completion still 67,750 quads, 4 genuine issues (P13-l2).
+- **Verification:** exact CB94 → CB95 → CB96 → TB83.
+
 **RA-208 (2026-11-05; P13-l owners, NOT stable):** [RA-208](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md).
 - **P13-l1:**
   - `orient_quads_to_source_normals` uses the first triangle's normal and reverses 7,630 correctly oriented Vase quads (27,597 introduced conflicts);

@@ -1,5 +1,12 @@
 # RA-208 — P13-l resolved: the block, the measured owners, and exact CB93/CB94 (2026-11-05)
 
+> **Reviewed by [RA-209](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_Single_Writer_Own_Plane_20261105.md).** The census and CB93 stand; CB93 is applied at `e96e98806`. The rest is superseded:
+> - the orientation pass must be removed (single writer; 0 flips in production);
+> - both embedding predicates must project orthogonally onto the quad's own plane, because the axis projection accepts 17 genuinely twisted Vase quads;
+> - "35,416 → 4" relied on that blind spot.
+>
+> CB94 to CB96 and TB83 are replaced, and the RA-208 CB94 diff and TB83 manifest are removed (never applied).
+
 **Turn:** `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`, resumed from the ChatGPT Review's BLOCKED checkpoint. See its [WIP](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_WIP_20261105.md).
 
 **Source:** HEAD at CB92's semantic source `d9921cdd5`. `git diff --quiet d9921cdd5 HEAD -- src include tests benchmarks CMakeLists.txt cmake` passes.

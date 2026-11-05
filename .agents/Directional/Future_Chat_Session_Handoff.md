@@ -34,33 +34,33 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-05 · [RA-208](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md) resolves the P13-l Review block. Review scratch probes are a Review duty, so no diagnostic CB/TB is needed. It measured CB92 Vase from the existing rejected-result snapshots:
-  - completion's output has **0** same-direction edges and **0** quads inverted against the source;
-  - `orient_quads_to_source_normals` reverses 7,630 correct quads on their first triangle, introducing 27,597 conflicts (35,164 FlippedFace);
-  - the validator's first-triangle projection flags 447 / 248 local crossings, where completion's whole-polygon test finds 0.
+| Currency | 2026-11-05 · [RA-209](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_Single_Writer_Own_Plane_20261105.md) reviews [RA-208](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md).
+  - **The orientation pass must go:** `orient_quads_to_source_normals` rewrites completion's product (DESIGN §3, item 4, M2) and flips 0 pipeline quads across the gate and census once CB93 is applied.
+  - **Both embedding predicates must project onto the quad's own plane:** the axis projection accepts 17 genuinely twisted Vase quads (12 are bow-ties in both planes).
 
-  **Exact CB93** (whole-quad orientation normal, plus an issue histogram on the census line) and **CB94** (corner-order-invariant self-intersection predicate) cut Vase from 35,416 issues to **4**: 1 overlap and 3 T-junctions, now P13-l2. Local 903-row gate 902/903 (only O16). TB82 MATCH (901/901). |
+  CB93 (RA-208) is applied at `e96e98806` and compiling. **Then exact CB94** (remove the pass), **CB95** (validator, own plane) and **CB96** (completion, own plane), then TB83. Scratch: gate 902/903 (only O16); Vase 4 genuine issues (1 overlap, 3 T-junctions); gate digests unchanged. |
 | Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing` · exact **CB92 `d9921cdd5a174bbb00b68387082cf08df80f97c5`**, immutable GMP/GMPXX package `13427203329`, [compile 42052009404](https://github.com/akashskypatel/Directional/actions/runs/42052009404) eight targets PASS; package 28/28 verified. TB82 used this exact package with `configure=false`, `compile=false`, `relink=false` and postflight true. |
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06; unchanged. TB71 remains unpromoted candidate only. |
 | Latest candidate | **TB82 MATCH** (CB92): 901/901 gate, membership 982, 1,810/1,810 hashes; new GUARD rows 900–901 PASS; census Cylinder PASS, BunnyRandom P13-e RED, Vase `SelfIntersectingFace` RED in 204.77 s (189,462 traces, 30,989 strands, 26,817 cells, 67,750 informational quads), 9/9 hashes. Six pinned full digests identical to TB81, Vase prefix unchanged; [report](Architecture_M6_CP3_TB82_P13_Source_Vertex_Fan_Seed_Full_Gate_Execution_Report_20261105.md). Still unpromoted. |
 | Regression accounting and debt | Accepted CP2 **491/491**; stable **66/17/49**, debt **1**; ledger v5 81 deferred (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE), current membership **982**; selector497 and CP3 unpromoted. O32a source-vertex fan seeding verified, adaptive tie residual and O32b–e open; DR1/DR3 open, DR2/DR4 to M8-CP2. |
-| Active boundary | P13-l Review COMPLETE (RA-208). Next: exact CB93, then CB94 (compile only, one turn each), then TB83 on the 903-row manifest. No acceptance or promotion. Carried: P13-l2, P13-e, O30b, O31, O32b–e, O33, O27–O29. |
+| Active boundary | `M6-CP3-CB93-P13-ORIENTATION-WHOLE-QUAD-NORMAL` IN_PROGRESS (implementation agent). After it: exact CB94 → CB95 → CB96 → TB83 (RA-209). No acceptance or promotion. Carried: P13-l2, P13-e, O30b, O31, O32b–e, O33, O27–O29. |
 
-## Mandatory next turn — `M6-CP3-CB93-P13-ORIENTATION-WHOLE-QUAD-NORMAL` (Code + Build, compile only, Linux)
+## Mandatory next turns — finish CB93, then `M6-CP3-CB94-P13-ORIENTATION-SINGLE-WRITER` (Code + Build, compile only, Linux)
 
-- **Authority:** [RA-208](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md) §3.
-- **Precheck:** `git diff --quiet d9921cdd5a174bbb00b68387082cf08df80f97c5 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
-- **Patch:** [`Architecture_M6_CP3_CB93_P13_Orientation_Whole_Quad_Normal.diff`](Architecture_M6_CP3_CB93_P13_Orientation_Whole_Quad_Normal.diff), applied byte for byte.
-  - SHA-256 `2510e2ddefa717eb71cf50174c29b461713caa5588e61382aab926ef48deebfe`; 94 lines; **keep its 2 single-space context lines**.
+- **CB93 (in progress):** finish RA-208.3 as frozen. The source is applied at `e96e98806`.
+- **Authority for what follows:** [RA-209](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_Single_Writer_Own_Plane_20261105.md) §3. It replaces RA-208's CB94 and TB83 (removed, never applied). **Do not write your own patch.**
+- **CB94 precheck:** `git diff --quiet e96e98806cf5fd055df3dd45c629f124c77c5dd5 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+- **CB94 patch:** [`Architecture_M6_CP3_CB94_P13_Orientation_Single_Writer.diff`](Architecture_M6_CP3_CB94_P13_Orientation_Single_Writer.diff), applied byte for byte.
+  - SHA-256 `a19dd0cde27d1a95f24f4c40ec89d9264fdb44f5aae59da75af5abb1465e52b7`; 183 lines; **keep its 5 single-space context lines**.
   - Numstat and result SHA-256:
-    - `13 4` `src/pipeline/RemeshPipeline.cpp` → `5bb0277c…`;
-    - `15 0` `tests/SurfaceCellDesignAcceptanceTests.cpp` → `48bd9850…`;
-    - `31 0` `tests/SurfaceCellsPhase10Tests.cpp` → `3e8604cd…`.
+    - `0 7` `include/directional/pipeline/RemeshPipeline.h` → `112a024c…`;
+    - `3 104` `src/pipeline/RemeshPipeline.cpp` → `18043141…`;
+    - `0 31` `tests/SurfaceCellsPhase10Tests.cpp` → `913b97e7…`.
 - **Build:** one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`.
 - **Routes:**
-  - success → **CB94** `M6-CP3-CB94-P13-QUAD-SELF-INTERSECTION-CORNER-ORDER` (RA-208.4), then TB83 (RA-208.5);
-  - mismatch → `M6-CP3-PLAN-P13-ORIENTATION-WHOLE-QUAD-STOP`;
-  - infrastructure → `M6-CP3-CB93A-P13-ORIENTATION-WHOLE-QUAD-ORCH`.
+  - success → CB95 (RA-209.3) → CB96 → TB83 (RA-209.4);
+  - mismatch → `M6-CP3-PLAN-P13-ORIENTATION-SINGLE-WRITER-STOP`;
+  - infrastructure → `M6-CP3-CB94A-P13-ORIENTATION-SINGLE-WRITER-ORCH`.
 - **Preserve:** CP2 491/491, stable 66/17/49, debt 1, selector497 and CP3 unpromoted.
 
 ### Earlier: TB82 and the P13-l Review block
@@ -178,9 +178,11 @@ Facts are in the records, `TODO.md` steps and Review track, `CHANGELOG.md` and t
 | 43A — COMPLETE | `M6-CP3-CB92-P13-SOURCE-VERTEX-FAN-SEED-IDENTITY` | Implementation agent, Linux; RA-207.3: `c377b206…` (285 lines, keep its 5 single-space context lines), numstat `77 15` / `141 0`, compile only. Mismatch → `M6-CP3-PLAN-P13-SOURCE-VERTEX-FAN-SEED-STOP`; infrastructure → `M6-CP3-CB92A-P13-SOURCE-VERTEX-FAN-SEED-ORCH` |
 | 43C — COMPLETE (MATCH) | `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC` | 901/901, membership 982; pinned digests matched |
 | 43B — Review COMPLETE | `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l) | ChatGPT [WIP](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_WIP_20261105.md) (BLOCKED on runtime), then [RA-208](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md): helper reverses 7,630 correct quads; validator predicate depends on corner order; exact CB93/CB94 |
-| 43D — NEXT | `M6-CP3-CB93-P13-ORIENTATION-WHOLE-QUAD-NORMAL` | Implementation agent, Linux; RA-208.3: `2510e2dd…` (94 lines, keep its 2 single-space context lines), numstat `13 4` / `15 0` / `31 0`, compile only. Mismatch → `M6-CP3-PLAN-P13-ORIENTATION-WHOLE-QUAD-STOP`; infrastructure → `M6-CP3-CB93A-P13-ORIENTATION-WHOLE-QUAD-ORCH` |
-| 43E | `M6-CP3-CB94-P13-QUAD-SELF-INTERSECTION-CORNER-ORDER` | Implementation agent, Linux; RA-208.4: on CB93; `a15632d1…` (88 lines, keep its 2 single-space context lines), numstat `19 1` / `41 0`, compile only. Mismatch → `M6-CP3-PLAN-P13-QUAD-SELF-INTERSECTION-STOP`; infrastructure → `M6-CP3-CB94A-P13-QUAD-SELF-INTERSECTION-ORCH` |
-| 43F | `M6-CP3-TB83-P13-ORIENTATION-PREDICATE-FULL-GATE-EXEC` | Implementation agent; RA-208.5: manifest 903 `20dc101d…`, 903/903, membership 984; census typed verdicts; pinned digests plus `validationIssues` (no FlippedFace on Vase). Mismatch → `M6-CP3-TB83-P13-ORIENTATION-PREDICATE-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB83A-P13-ORIENTATION-PREDICATE-ORCH` |
+| 43D — IN PROGRESS | `M6-CP3-CB93-P13-ORIENTATION-WHOLE-QUAD-NORMAL` | Implementation agent; RA-208.3 applied at `e96e98806` (result hashes verified); finish the compile |
+| 43E — NEXT after 43D | `M6-CP3-CB94-P13-ORIENTATION-SINGLE-WRITER` | Implementation agent; RA-209.3: `a19dd0cd…` (183 lines, keep its 5 single-space context lines), numstat `0 7` / `3 104` / `0 31`. Removes the orientation pass and its test. Mismatch → `M6-CP3-PLAN-P13-ORIENTATION-SINGLE-WRITER-STOP`; infrastructure → `M6-CP3-CB94A-P13-ORIENTATION-SINGLE-WRITER-ORCH` |
+| 43H | `M6-CP3-CB95-P13-QUAD-SELF-INTERSECTION-OWN-PLANE` | Implementation agent; RA-209.3: `8207716b…` (158 lines, keep its 4 single-space context lines), numstat `40 35` / `49 0`. Validator projects onto the quad's own plane. Mismatch → `M6-CP3-PLAN-P13-QUAD-SELF-INTERSECTION-OWN-PLANE-STOP` |
+| 43I | `M6-CP3-CB96-P13-COMPLETION-EMBEDDING-OWN-PLANE` | Implementation agent; RA-209.3: `a7e81da5…` (74 lines, 0 single-space context lines), numstat `9 12` / `31 0`. Completion uses the same definition. Mismatch → `M6-CP3-PLAN-P13-COMPLETION-EMBEDDING-OWN-PLANE-STOP` |
+| 43F | `M6-CP3-TB83-P13-EMBEDDING-PREDICATE-FULL-GATE-EXEC` | Implementation agent; RA-209.4: manifest 903 `61e9edbe…`, 903/903, membership 984; census typed verdicts; pinned digests plus `validationIssues` (Vase: no FlippedFace). Mismatch → `M6-CP3-TB83-P13-EMBEDDING-PREDICATE-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB83A-P13-EMBEDDING-PREDICATE-ORCH` |
 | 43G (Review, after TB83) | `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP` (P13-l2) | Claude, scratch build. 1 overlap (patches 118 / 54 over source face 1263) and 3 T-junctions: 2 unmerged near-coincident vertices and 1 midpoint side mismatch (patches 4955 / 4957) |
 | 44 (Review, parallel) | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49) → CB → TB | Claude, scratch build; probe DEFN, then exact patch |
 | 44A (Review, after P13-l) | `M6-CP3-DEFN-P13-RELIEF-NOISE-TIES` (O31) | Claude, scratch build; relief critical points decided by rounding noise (RA-204.6) |
@@ -188,11 +190,11 @@ Facts are in the records, `TODO.md` steps and Review track, `CHANGELOG.md` and t
 | 44C (Review) | `M6-CP3-DEFN-P13-CHART-FACE-PER-QUAD-COST` (O33) | Claude, scratch build; one chart-level cache for the five per-quad chart-face sites (RA-206.5); before Vase reaches optimization |
 | 45 | P13 re-census → metamorphic census rows (O32) → O6/O9 where reached → matrix 6/6 → retire/FIXTURE/PRODUCT/OPEN slices → CP3-REV | One slice at a time |
 
-Rows 42J and 42K completed in separate turns; 42K matched. Rows 43A and 43C are complete. The implementation agent takes rows 43D, 43E and 43F, in order, one turn each, and starts each only after the previous one is verified. Rows 43G, 44, 44A, 44B and 44C are probe turns on the Review track (Claude, scratch build). A turn that cannot run a scratch probe must not start them; it records BLOCKED at entry (RA-172, RA-198 to RA-203).
+Rows 42J and 42K completed in separate turns; 42K matched. Rows 43A and 43C are complete. The implementation agent takes rows 43D (in progress), 43E, 43H, 43I and 43F, in order, one turn each, and starts each only after the previous one is verified. Rows 43G, 44, 44A, 44B and 44C are probe turns on the Review track (Claude, scratch build). A turn that cannot run a scratch probe must not start them; it records BLOCKED at entry (RA-172, RA-198 to RA-203).
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB93-P13-ORIENTATION-WHOLE-QUAD-NORMAL** (apply RA-208.3 exactly; then CB94, then TB83).
+`load_next`: finish **M6-CP3-CB93-P13-ORIENTATION-WHOLE-QUAD-NORMAL**, then **M6-CP3-CB94-P13-ORIENTATION-SINGLE-WRITER** (RA-209.3 exactly), CB95, CB96, TB83.
 - CB89 compiled source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, immutable package artifact `13370954424`, 28/28 hashes, eight GMP/GMPXX targets; no test execution.
 - TB79 artifact-only gate (RA-203.6) finished: 899/899, census MATCH.
 - RA-204 completed the O30 Review; CB90 and TB80 are done. The fixed-field replay is withdrawn: do not build a field fixture.
@@ -207,6 +209,7 @@ Rows 42J and 42K completed in separate turns; 42K matched. Rows 43A and 43C are 
 - CB85–CB88, TB77–TB78 and the TB78 Review are complete; do not replay them.
 
 Read first:
+- [RA-209](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_Single_Writer_Own_Plane_20261105.md): §2, RA-208's defects (single writer, the axis projection's blind spot); §3, CB94–CB96; §4, TB83; §5, the sequence.
 - [RA-208](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md): §1, the block; §2, measurements (pre/post census, predicates, residue); §3–§4, CB93 and CB94; §5, TB83; §6, the sequence.
 - [RA-207](Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md): §1, what held; §2, defects (prose plan, fail-closed capability loss, gate impact unmeasured); §3, the exact CB92; §4, measurements; §5, TB82; §6, the sequence.
 - [RA-206](Architecture_M6_CP3_TB80_REV_Review_Final_Validation_Binding_Per_Vertex_20261105.md): §1, the verdict on the TB80 Review; §2, measurements (O(F×Q), per-vertex binding check); §3, the exact CB91; §4, TB81; §5, O33; §6, the wall-clock rule; §7, the sequence.
@@ -287,8 +290,10 @@ Inputs:
 | CB92 patch | `Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity.diff` `c377b206c195613b045b0f5a431df5dc31e553035343b567cdeb2ba0751834fa`, 285 lines, keep its 5 single-space context lines. Precheck base CB91 `96ee281a4092…`; numstat `77 15` `src/geometry/SurfaceCellTracing.cpp` → `9e9b979f…`; `141 0` `tests/SurfaceCellREPackageTests.cpp` → `a169667c…` |
 | TB82 gate and census | Manifest `Architecture_M6_TB82_P13_Vertex_Fan_Seeds_Full_Gate_Case_Manifest.tsv` 901 rows `9fbf329167cbe84698d5a08eda6e5374200c7729a5f0f1e4292836227902f878` (TB78 899 prefix byte-identical plus GUARD rows 900–901), ledger v5, membership 982; census manifest `3af1dc0d…`; pinned digests per RA-207.5 |
 | CB93 patch | `Architecture_M6_CP3_CB93_P13_Orientation_Whole_Quad_Normal.diff` `2510e2ddefa717eb71cf50174c29b461713caa5588e61382aab926ef48deebfe`, 94 lines, keep its 2 single-space context lines. Precheck CB92 `d9921cdd5a17…`; results `5bb0277c…` / `48bd9850…` / `3e8604cd…` |
-| CB94 patch | `Architecture_M6_CP3_CB94_P13_Quad_Self_Intersection_Corner_Order.diff` `a15632d1ba9149c7fbb47bba6fae71db56c34de999debd2977cc797d51a7ef91`, 88 lines, keep its 2 single-space context lines. Precheck: the CB93 results; results `892f0019…` (`MeshValidator.h`) / `dc7a6f11…` (`SurfaceCellsPhase10Tests.cpp`) |
-| TB83 gate and census | Manifest `Architecture_M6_TB83_P13_Orientation_Predicate_Full_Gate_Case_Manifest.tsv` 903 rows `20dc101d78889dc98adf4a048fb253ec66c4fda640e76247a0d5d9f4a92d57fb` (TB82 901 prefix plus GUARD rows 902–903), ledger v5, membership 984; census `3af1dc0d…`; pins per RA-208.5 |
+| CB94 patch (RA-209) | `Architecture_M6_CP3_CB94_P13_Orientation_Single_Writer.diff` `a19dd0cde27d1a95f24f4c40ec89d9264fdb44f5aae59da75af5abb1465e52b7`, 183 lines, 5 single-space context lines. Precheck CB93 `e96e98806cf5…`; results `112a024c…` / `18043141…` / `913b97e7…` |
+| CB95 patch | `Architecture_M6_CP3_CB95_P13_Quad_Self_Intersection_Own_Plane.diff` `8207716b9993a9d1e290ff4fe9eb4794ff505dfb601708bcd965c68cf4d0c014`, 158 lines, 4 single-space context lines; results `15b813d3…` (`MeshValidator.h`) / `4cd349c3…` (Phase10 tests) |
+| CB96 patch | `Architecture_M6_CP3_CB96_P13_Completion_Embedding_Own_Plane.diff` `a7e81da57d5d1bf37847ccf0b5ee3abeca5230c0605d35056e6a12d40b54f469`, 74 lines, 0 single-space context lines; results `b756c3f2…` (`PureQuadCompletion.cpp`) / `6ca86f6e…` (Phase18 tests) |
+| TB83 gate and census | Manifest `Architecture_M6_TB83_P13_Embedding_Predicate_Full_Gate_Case_Manifest.tsv` 903 rows `61e9edbedee3731b04d7b6279b79a0fd0e0b651686638e9b832773f7aa0a36aa` (TB82 901 prefix, plus row 902 the CB95 test and row 903 the CB96 test), ledger v5, membership 984; pins per RA-209.4 |
 | Census | `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793` |
 | Harness | P8 `78b8002c…`, unchanged |
 
