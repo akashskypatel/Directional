@@ -11,6 +11,7 @@
 #include <directional/validation/ValidationVisualizer.h>
 
 #include <algorithm>
+#include <array>
 #include <bit>
 #include <cmath>
 #include <chrono>
@@ -10440,6 +10441,54 @@ TEST(SurfaceCellAuthorityContractCutover,
       *forward, reverseWithoutWitness, faces, edge));
   EXPECT_TRUE(same_interior_carrier_point(
       *reverse, reverseWithoutWitness, faces, edge));
+}
+
+TEST(SurfaceCellsPhase10, QuadSelfIntersectionDoesNotDependOnCornerOrder) {
+  // Corners 0-3: a non-planar quad whose crossing, seen along its first
+  // triangle's normal, appeared for the reversed cycle only. Corners 4-7: a
+  // twisted quad from the CB92 Vase completed mesh whose opposite edges cross
+  // in its own plane but not along the coordinate axis nearest its normal.
+  // Corners 8-11: a symmetric planar bow-tie with zero vector area. A
+  // validity verdict must not depend on where a cycle starts or which way it
+  // runs, and both crossing quads fail in every order (RA-208, RA-209).
+  Eigen::MatrixXd vertices(12, 3);
+  vertices << 0.0, 0.0, 0.0, 3.0, 1.0, 0.0, 2.0, 2.0, 1.0, -4.0, -3.0, -3.0,
+      -0.17542684861736774, 1.1803095815696305, -0.11279117483668762,
+      -0.1778677436400376, 1.1785769999861855, -0.11315809959938455,
+      -0.16560114040051754, 1.1940129948811948, -0.10997860050669725,
+      -0.16554393196104053, 1.1956754839538677, -0.10957741066081621,
+      10.0, 0.0, 0.0, 11.0, 1.0, 0.0, 11.0, 0.0, 0.0, 10.0, 1.0, 0.0;
+  const auto self_intersects = [&](const std::array<int, 4> &cycle) {
+    Eigen::MatrixXi face(1, 4);
+    face << cycle[0], cycle[1], cycle[2], cycle[3];
+    return has_code(
+        directional::validation::MeshValidator::validate_surface_mesh(vertices,
+                                                                      face),
+        MeshValidationFailureCode::SelfIntersectingFace);
+  };
+  const auto orders = [](const std::array<int, 4> &cycle) {
+    std::vector<std::array<int, 4>> result;
+    for (int start = 0; start < 4; ++start) {
+      result.push_back({cycle[start], cycle[(start + 1) % 4],
+                        cycle[(start + 2) % 4], cycle[(start + 3) % 4]});
+      result.push_back({cycle[start], cycle[(start + 3) % 4],
+                        cycle[(start + 2) % 4], cycle[(start + 1) % 4]});
+    }
+    return result;
+  };
+
+  const bool skew = self_intersects({0, 1, 2, 3});
+  for (const auto &cycle : orders({0, 1, 2, 3})) {
+    EXPECT_EQ(skew, self_intersects(cycle))
+        << cycle[0] << ' ' << cycle[1] << ' ' << cycle[2] << ' ' << cycle[3];
+  }
+  for (const std::array<int, 4> &crossing :
+       {std::array<int, 4>{4, 5, 6, 7}, std::array<int, 4>{8, 9, 10, 11}}) {
+    for (const auto &cycle : orders(crossing)) {
+      EXPECT_TRUE(self_intersects(cycle))
+          << cycle[0] << ' ' << cycle[1] << ' ' << cycle[2] << ' ' << cycle[3];
+    }
+  }
 }
 
 } // namespace

@@ -260,29 +260,6 @@ private:
     return area;
   }
 
-  [[nodiscard]] static int dominant_axis(const Eigen::Vector3d &normal) {
-    Eigen::Vector3d absNormal = normal.cwiseAbs();
-    int axis = 0;
-    if (absNormal(1) > absNormal(axis)) {
-      axis = 1;
-    }
-    if (absNormal(2) > absNormal(axis)) {
-      axis = 2;
-    }
-    return axis;
-  }
-
-  [[nodiscard]] static Eigen::Vector2d project2(const Eigen::Vector3d &point,
-                                                const int dropAxis) {
-    if (dropAxis == 0) {
-      return {point.y(), point.z()};
-    }
-    if (dropAxis == 1) {
-      return {point.x(), point.z()};
-    }
-    return {point.x(), point.y()};
-  }
-
   [[nodiscard]] static double orient2(const Eigen::Vector2d &a,
                                       const Eigen::Vector2d &b,
                                       const Eigen::Vector2d &c) {
@@ -310,18 +287,46 @@ private:
     if (face.size() != 4) {
       return false;
     }
-    const Eigen::Vector3d p0 = vertices.row(face[0]).transpose();
-    const Eigen::Vector3d p1 = vertices.row(face[1]).transpose();
-    const Eigen::Vector3d p2 = vertices.row(face[2]).transpose();
-    const Eigen::Vector3d p3 = vertices.row(face[3]).transpose();
-    const Eigen::Vector3d normal = (p1 - p0).cross(p2 - p0);
-    const int axis = dominant_axis(normal);
-    return segments_intersect_strict(project2(p0, axis), project2(p1, axis),
-                                     project2(p2, axis), project2(p3, axis),
-                                     tolerance) ||
-           segments_intersect_strict(project2(p1, axis), project2(p2, axis),
-                                     project2(p3, axis), project2(p0, axis),
-                                     tolerance);
+    std::array<Eigen::Vector3d, 4> corners;
+    for (int corner = 0; corner < 4; ++corner) {
+      corners[static_cast<std::size_t>(corner)] =
+          vertices.row(face[static_cast<std::size_t>(corner)]).transpose();
+    }
+    // The whole-polygon (Newell) normal does not depend on which corner the
+    // cycle starts at or on its direction, so neither does the verdict; the
+    // first triangle's normal did both (RA-208).
+    Eigen::Vector3d normal = Eigen::Vector3d::Zero();
+    double longestEdge = 0.0;
+    for (int corner = 0; corner < 4; ++corner) {
+      const Eigen::Vector3d &current = corners[static_cast<std::size_t>(corner)];
+      const Eigen::Vector3d &next =
+          corners[static_cast<std::size_t>((corner + 1) % 4)];
+      normal.x() += (current.y() - next.y()) * (current.z() + next.z());
+      normal.y() += (current.z() - next.z()) * (current.x() + next.x());
+      normal.z() += (current.x() - next.x()) * (current.y() + next.y());
+      longestEdge = std::max(longestEdge, (next - current).norm());
+    }
+    // A quad whose vector area vanishes, such as a symmetric bow-tie, has no
+    // embedding.
+    if (normal.norm() <= tolerance * longestEdge * longestEdge) {
+      return true;
+    }
+    // Project orthogonally onto the quad's own plane. Dropping the coordinate
+    // nearest the normal can be 55 degrees off it and hides the crossing of a
+    // strongly twisted quad (RA-209).
+    const Eigen::Vector3d unit = normal.normalized();
+    const Eigen::Vector3d u = unit.unitOrthogonal();
+    const Eigen::Vector3d w = unit.cross(u);
+    std::array<Eigen::Vector2d, 4> projected;
+    for (int corner = 0; corner < 4; ++corner) {
+      const Eigen::Vector3d &point = corners[static_cast<std::size_t>(corner)];
+      projected[static_cast<std::size_t>(corner)] =
+          Eigen::Vector2d(point.dot(u), point.dot(w));
+    }
+    return segments_intersect_strict(projected[0], projected[1], projected[2],
+                                     projected[3], tolerance) ||
+           segments_intersect_strict(projected[1], projected[2], projected[3],
+                                     projected[0], tolerance);
   }
 
   [[nodiscard]] static bool point_in_triangle3(
