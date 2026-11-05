@@ -1,0 +1,3 @@
+CB96 code+build authoritative snapshot.
+Requested after entry STATUS ff5560a6d6dbdaf53cd401dbe9b9a0d4017cef29.
+Snapshot source: push-event exact SHA, not branch floating head.
