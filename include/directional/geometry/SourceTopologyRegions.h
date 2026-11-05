@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <cstdint>
 #include <optional>
 #include <set>
 #include <utility>
@@ -125,6 +126,14 @@ private:
  * region/component/sheet identity is obtained from the row-independent member
  * authority stored by SurfaceTopologyRegion.
  */
+/// Full source-binding checks (`matches_source_faces`) made on this thread.
+/// Diagnostic only: tests take a before/after difference to prove that a
+/// stage checks the binding a fixed number of times, not once per element.
+[[nodiscard]] inline std::uint64_t &source_binding_check_count() noexcept {
+  thread_local std::uint64_t count = 0;
+  return count;
+}
+
 class SourceTopologyRegions {
 public:
   [[nodiscard]] static std::optional<SourceTopologyRegions>
@@ -151,6 +160,7 @@ public:
   [[nodiscard]] bool matches_source_faces(
       const Eigen::MatrixXi &sourceFaces,
       std::size_t sourceVertexCount = 0U) const noexcept {
+    ++source_binding_check_count();
     if (sourceFaces.cols() != 3 || sourceFaces.rows() <= 0 ||
         !complete_for_face_count(
             static_cast<std::size_t>(sourceFaces.rows()))) {

@@ -1146,6 +1146,12 @@ validate_source_authoritative_surface_mesh(
       options.vertexChartAuthority == nullptr ||
       options.vertexChartAuthority->size() ==
           static_cast<std::size_t>(vertices.rows());
+  // The source binding is loop-invariant: check it once, not once per vertex.
+  const bool sourceBound =
+      options.sourceAuthority != nullptr &&
+      options.sourceAuthority->matches_source_faces(
+          *options.sourceFaces,
+          static_cast<std::size_t>(options.sourceVertices->rows()));
 
   for (int vertex = 0; vertex < vertices.rows(); ++vertex) {
     if (static_cast<std::size_t>(vertex) >= provenance.size()) {
@@ -1182,10 +1188,7 @@ validate_source_authoritative_surface_mesh(
       result.provenanceCoverageComplete = false;
       result.fail({MeshValidationFailureCode::SourcePositionMismatch, vertex});
     }
-    if (options.sourceAuthority != nullptr &&
-        options.sourceAuthority->matches_source_faces(
-            *options.sourceFaces,
-            static_cast<std::size_t>(options.sourceVertices->rows()))) {
+    if (sourceBound) {
       const auto sourceFaceId = authority::SourceFaceId::from_index(
           point.face, options.sourceAuthority->face_count());
       if (!sourceFaceId) {
@@ -1196,11 +1199,7 @@ validate_source_authoritative_surface_mesh(
 
   result.localSheetCompatibilityPassed = true;
   if (options.requireLocalSheetCompatibility &&
-      (options.sourceAuthority == nullptr ||
-       !options.sourceAuthority->matches_source_faces(
-           *options.sourceFaces,
-           static_cast<std::size_t>(options.sourceVertices->rows())) ||
-       !chartAuthorityCardinalityValid)) {
+      (!sourceBound || !chartAuthorityCardinalityValid)) {
     result.localSheetCompatibilityPassed = false;
     if (!chartAuthorityCardinalityValid) {
       result.fail({MeshValidationFailureCode::LocalSheetMismatch});
