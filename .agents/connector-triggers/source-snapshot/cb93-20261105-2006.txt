@@ -1,3 +1,0 @@
-CB93 source snapshot request
-entry_head=b734d1cd3244e56e713c1934b20780281a6aa1a1
-turn=M6-CP3-CB93-P13-ORIENTATION-WHOLE-QUAD-NORMAL
