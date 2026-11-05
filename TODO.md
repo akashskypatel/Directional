@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV` (Review, TB80 required performance guard RED). Do not start O32a or P13-l before this Review routes them. [TB80 evidence](.agents/Directional/Architecture_M6_CP3_TB80_P13_Arrangement_Cell_Order_Full_Gate_Execution_Report_20261105.md).
+> **Current canonical next:** `M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE` (Code + Build, deterministic row899 binding-cost evidence; [TB80 Review](.agents/Directional/Architecture_M6_CP3_TB80_REV_Final_Validation_Cost_Gate_Adjudication_20261105.md)). No O32a/P13-l, runtime or threshold weakening in CB91. [TB80 evidence](.agents/Directional/Architecture_M6_CP3_TB80_P13_Arrangement_Cell_Order_Full_Gate_Execution_Report_20261105.md).
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -7,7 +7,7 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — TB80 valid RED 898/899; Review next; O32 source-row permutation open (2026-11-05)
+## CURRENT — TB80 independently reviewed, valid RED 898/899; CB91 binding-cost evidence next; O32 open (2026-11-05)
 
 - [x] **RA-204 reviewed by [RA-205](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md)** (re-entry of `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`; scratch probes):
   - **Stands:** the cross-library cell-order mechanism and CB90. Completion's 7 hash containers are order-safe (sum, or sort then de-duplicate), which RA-204 had not checked.

@@ -1,3 +1,8 @@
+## 2026-11-05 — TB80 independent Review: valid 898/899 RED; CB91 measurement gate
+
+- [Independent Review](.agents/Directional/Architecture_M6_CP3_TB80_REV_Final_Validation_Cost_Gate_Adjudication_20261105.md) re-verified TB80 raw row899 and TB79 predecessor, immutable hashes, registered census and platform digests. TB80 is a real **timing-control RED**, not evidence of incorrect geometry or reproducible product-cost regression; the 2-second check stays unchanged.
+- Do not promote CB90/selector497 or route directly to O32a/P13-l. Next one scoped Code + Build turn `M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE` to establish falsifiable shared binding-cost evidence; compile-only GMP/GMPXX. Carry O30b/O31/O32/P13-e/P13-l and O27–O29. CP2 491/491, stable 66/17/49 and debt1 unchanged.
+
 ## 2026-11-05 — TB80 valid immutable RED; required Review route
 
 - **Turn:** `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-EXEC`; [report](.agents/Directional/Architecture_M6_CP3_TB80_P13_Arrangement_Cell_Order_Full_Gate_Execution_Report_20261105.md). CB90 artifact `13385965448` / source `e00ef91a8a5dff8b125c9abfe388952cec20cbe1` unchanged; no rebuild, fixture/test/selector mutation.
