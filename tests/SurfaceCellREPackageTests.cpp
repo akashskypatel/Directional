@@ -1545,3 +1545,96 @@ TEST(SurfaceCellTracingPhase14,
 }
 
 }  // namespace
+
+
+// SCRATCH REVIEW ONLY — O32a typed-authority falsifiers.
+// Not part of the accepted product/test branch or immutable TB gate.
+TEST(O32aScratchFanSafety, SplitAndCoalescedVertexFansSurviveRowOrder) {
+  using namespace directional::geometry;
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  for (int split = 0; split < 2; ++split) {
+    for (int reversed = 0; reversed < 2; ++reversed) {
+      REPkgMesh mesh = make_grid(1);
+      SurfaceCellTracingOptions options;
+      options.defaultTargetSize = 10.0;
+      options.coverageRadiusFactor = 100.0;
+      options.sourceFaceComponents = {0, 0};
+      options.sourceFaceSheets = split ? std::vector<int>{0, 1}
+                                       : std::vector<int>{0, 0};
+      const int railFace = reversed ? 1 : 0;
+      if (reversed) {
+        mesh.faces.row(0).swap(mesh.faces.row(1));
+        std::swap(options.sourceFaceSheets[0], options.sourceFaceSheets[1]);
+      }
+      SurfaceCellRail rail(directional::tests::test_hard_rail_id(19));
+      rail.kind = SurfaceCellRailKind::Boundary;
+      rail.samples = {rail_sample(mesh, railFace, -1, 0.0, 0.0,
+                                  Eigen::RowVector3d(0.0, 1.0, 0.0), 1)};
+      options.authoritativeRails.push_back(rail);
+      options.reliefCriticalVertices = {0};
+      const auto authority = build_source_topology_regions(mesh.faces, options);
+      ASSERT_TRUE(authority.has_value());
+      options.sourceAuthority = &*authority;
+      const Eigen::VectorXd h =
+          Eigen::VectorXd::Constant(mesh.vertices.rows(), 10.0);
+      const auto seeds = generate_deterministic_surface_seeds(
+          mesh.vertices, mesh.faces, h, options);
+      std::size_t reliefAtZero = 0;
+      for (const auto &seed : seeds) {
+        if (seed.provenance == SurfaceSeedProvenance::ReliefCritical &&
+            seed.sourceId == 0) {
+          ++reliefAtZero;
+        }
+      }
+      EXPECT_EQ(split ? 2U : 1U, reliefAtZero)
+          << "split=" << split << ";reversed=" << reversed;
+    }
+  }
+}
+
+TEST(O32aScratchRailSafety, DistinctMandatoryRailsAtSharedSourceVertexRetainIds) {
+  using namespace directional::geometry;
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  const REPkgMesh mesh = make_grid(1);
+  SurfaceCellTracingOptions options;
+  options.defaultTargetSize = 10.0;
+  options.coverageRadiusFactor = 100.0;
+  options.sourceFaceComponents = {0, 0};
+  options.sourceFaceSheets = {0, 0};
+  auto featureEdge = directional::authority::SourceEdgeTopologyKey::from_indices(
+      0, 3, static_cast<std::size_t>(mesh.vertices.rows()));
+  auto boundaryEdge = directional::authority::SourceEdgeTopologyKey::from_indices(
+      0, 1, static_cast<std::size_t>(mesh.vertices.rows()));
+  ASSERT_TRUE(featureEdge.has_value());
+  ASSERT_TRUE(boundaryEdge.has_value());
+  options.hardFeatureEdges.insert(*featureEdge);
+  SurfaceCellRail feature(directional::tests::test_hard_rail_id(19));
+  feature.kind = SurfaceCellRailKind::HardFeature;
+  feature.sourceEdges = {*featureEdge};
+  feature.sourceVertices = {0, 3};
+  feature.samples = {rail_sample(mesh, 0, 1, 0.0, 0.0,
+                                Eigen::RowVector3d(1.0, 0.0, 0.0), 0)};
+  options.authoritativeRails.push_back(feature);
+  SurfaceCellRail boundary(directional::tests::test_hard_rail_id(20));
+  boundary.kind = SurfaceCellRailKind::Boundary;
+  boundary.sourceEdges = {*boundaryEdge};
+  boundary.sourceVertices = {0, 1};
+  boundary.samples = {rail_sample(mesh, 0, 2, 0.0, 0.0,
+                                 Eigen::RowVector3d(1.0, 0.0, 0.0), 0)};
+  options.authoritativeRails.push_back(boundary);
+  const auto authority = build_source_topology_regions(mesh.faces, options);
+  ASSERT_TRUE(authority.has_value());
+  options.sourceAuthority = &*authority;
+  const Eigen::VectorXd h =
+      Eigen::VectorXd::Constant(mesh.vertices.rows(), 10.0);
+  const auto seeds = generate_deterministic_surface_seeds(
+      mesh.vertices, mesh.faces, h, options);
+  std::set<directional::authority::HardRailId> observed;
+  for (const auto &seed : seeds) {
+    if (seed.hardRailId.has_value()) observed.insert(*seed.hardRailId);
+  }
+  EXPECT_EQ(2U, observed.size())
+      << "two typed mandatory rail identities sharing an endpoint must survive";
+  EXPECT_TRUE(observed.contains(feature.id));
+  EXPECT_TRUE(observed.contains(boundary.id));
+}
