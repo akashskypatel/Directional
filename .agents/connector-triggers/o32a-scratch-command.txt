@@ -1,4 +1,4 @@
-operation=fan-aware-trial-apply
-base_sha=37b2b1c5888d13f71ab82e4c8bdc35470f1c9059
-file_id=1BVhNoWAQ0ZUjwIjyhFUBmexY71txpB_q
-scope=disposable-review-scratch
+operation=compile-capture-fan-aware-trial
+applied_source_commit=df3eba0aaa21f5d062e7ba5c64b99b99187d768b
+permutations=base,1,2,3
+compiled_target=directional_surface_cell_producer_tests
