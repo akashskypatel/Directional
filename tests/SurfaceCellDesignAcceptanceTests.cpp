@@ -90,6 +90,21 @@ void print_platform_digest(const char *testName,
     std::cout << ' ' << product.name << '=' << hex64(product.structuralHash)
               << '/' << product.elementCount;
   }
+  // The final validator's issue counts by code, so a census run shows which
+  // checks a RED output fails, not only the first one (RA-208).
+  const auto &snapshots = result.surfaceCellContext.productSnapshots;
+  if (snapshots.hasValidationResult) {
+    std::map<std::string, int> issueCounts;
+    for (const auto &issue : snapshots.validationResult.strictValidationIssues) {
+      ++issueCounts[std::string(
+          directional::validation::mesh_validation_failure_name(issue.code))];
+    }
+    std::cout << " validationIssues="
+              << snapshots.validationResult.strictValidationIssues.size();
+    for (const auto &[name, count] : issueCounts) {
+      std::cout << ' ' << name << '=' << count;
+    }
+  }
   std::cout << std::endl;
 }
 

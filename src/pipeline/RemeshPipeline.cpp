@@ -11023,10 +11023,19 @@ void orient_quads_to_source_normals(
           sourceVertices.row(sourceFaces(source.face, 2));
       sourceNormal = (sb - sa).cross(sc - sa);
     }
-    const Eigen::RowVector3d a = outputVertices.row(quads(row, 0));
-    const Eigen::RowVector3d b = outputVertices.row(quads(row, 1));
-    const Eigen::RowVector3d c = outputVertices.row(quads(row, 2));
-    const Eigen::RowVector3d quadNormal = (b - a).cross(c - a);
+    // The whole-polygon (Newell) vector area, as completion's embedding test
+    // uses: the first triangle's normal can point away from the source on a
+    // valid non-convex or non-planar quad, and flipping on it breaks the
+    // shared-edge winding of correctly oriented neighbours (RA-208).
+    Eigen::RowVector3d quadNormal = Eigen::RowVector3d::Zero();
+    for (int col = 0; col < 4; ++col) {
+      const Eigen::RowVector3d current = outputVertices.row(quads(row, col));
+      const Eigen::RowVector3d next =
+          outputVertices.row(quads(row, (col + 1) % 4));
+      quadNormal.x() += (current.y() - next.y()) * (current.z() + next.z());
+      quadNormal.y() += (current.z() - next.z()) * (current.x() + next.x());
+      quadNormal.z() += (current.x() - next.x()) * (current.y() + next.y());
+    }
     if (quadNormal.norm() > 0.0 && sourceNormal.norm() > 0.0 &&
         quadNormal.dot(sourceNormal) < 0.0) {
       std::swap(quads(row, 1), quads(row, 3));

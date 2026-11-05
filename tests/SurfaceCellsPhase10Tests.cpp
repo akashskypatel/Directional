@@ -10442,4 +10442,35 @@ TEST(SurfaceCellAuthorityContractCutover,
       *reverse, reverseWithoutWitness, faces, edge));
 }
 
+TEST(SurfaceCellsPhase10,
+     SourceOrientationKeepsAWholeQuadThatAgreesWithTheSource) {
+  // Q0's first triangle (0, 1, 2) turns clockwise, but the whole quad is
+  // counter-clockwise (signed double area +19), like its neighbour Q1, and the
+  // two traverse their shared edge (0, 1) in opposite directions. Orienting by
+  // the first triangle flipped Q0 and made both run 1 -> 0; on Vase it
+  // reversed 7,630 correctly oriented quads (RA-208). Q2 is clockwise as a
+  // whole and must still be reversed.
+  Eigen::MatrixXd vertices(10, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 2.0, -1.0, 0.0, 0.0, 10.0, 0.0,
+      0.0, -2.0, 0.0, 1.0, -2.0, 0.0, 10.0, 0.0, 0.0, 11.0, 0.0, 0.0,
+      11.0, 1.0, 0.0, 10.0, 1.0, 0.0;
+  Eigen::MatrixXi quads(3, 4);
+  quads << 0, 1, 2, 3, 1, 0, 4, 5, 6, 9, 8, 7;
+  Eigen::MatrixXd sourceVertices(4, 3);
+  sourceVertices << -20.0, -20.0, 0.0, 20.0, -20.0, 0.0, 20.0, 20.0, 0.0,
+      -20.0, 20.0, 0.0;
+  Eigen::MatrixXi sourceFaces(2, 3);
+  sourceFaces << 0, 1, 2, 0, 2, 3;
+
+  Eigen::MatrixXi oriented = quads;
+  directional::pipeline::orient_quads_to_source_normals(
+      vertices, sourceVertices, sourceFaces, {}, oriented);
+
+  EXPECT_TRUE((oriented.row(0).array() == quads.row(0).array()).all());
+  EXPECT_TRUE((oriented.row(1).array() == quads.row(1).array()).all());
+  Eigen::RowVector4i reversed;
+  reversed << 6, 7, 8, 9;
+  EXPECT_TRUE((oriented.row(2).array() == reversed.array()).all());
+}
+
 } // namespace
