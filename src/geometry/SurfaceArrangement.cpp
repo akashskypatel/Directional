@@ -6762,7 +6762,15 @@ SurfaceCellComplex build_surface_cell_complex(
   std::sort(pendingCells.begin(), pendingCells.end(),
             [&](const SurfaceArrangementCell &lhs,
                 const SurfaceArrangementCell &rhs) {
-              return cell_cycle_key(lhs) < cell_cycle_key(rhs);
+              // Distinct cells can share a cycle key. Their halfedge ids
+              // break the tie, so cell ids never depend on std::sort's
+              // unspecified order for equal keys (O30).
+              const auto lhsKey = cell_cycle_key(lhs);
+              const auto rhsKey = cell_cycle_key(rhs);
+              if (lhsKey != rhsKey) {
+                return lhsKey < rhsKey;
+              }
+              return lhs.halfedges < rhs.halfedges;
             });
   complex.cells.clear();
   complex.cells.reserve(pendingCells.size());

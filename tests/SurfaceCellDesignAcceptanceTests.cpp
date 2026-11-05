@@ -75,7 +75,9 @@ std::string bit_digest(const Eigen::MatrixXd &matrix) {
 }
 
 // One line per case: bit-exact input digests, then each context product's
-// structural hash (coordinates quantized to 1e-9) and element count.
+// structural hash and element count. Most hashes quantize doubles to 1e-9,
+// but the atlas digest hashes exact effort bits and several later hashes
+// embed it, so those differ with any last-bit change in the field.
 void print_platform_digest(const char *testName,
                            const directional::bench::BenchmarkMesh &mesh,
                            const Eigen::MatrixXd &rawField,
