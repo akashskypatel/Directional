@@ -1607,17 +1607,17 @@ TEST(O32aScratchRailSafety, DistinctMandatoryRailsAtSharedSourceVertexRetainIds)
       0, 1, static_cast<std::size_t>(mesh.vertices.rows()));
   ASSERT_TRUE(featureEdge.has_value());
   ASSERT_TRUE(boundaryEdge.has_value());
-  options.hardFeatureEdges.insert(*featureEdge);
+  options.hardFeatureEdges.insert(featureEdge.value());
   SurfaceCellRail feature(directional::tests::test_hard_rail_id(19));
   feature.kind = SurfaceCellRailKind::HardFeature;
-  feature.sourceEdges = {*featureEdge};
+  feature.sourceEdges = {featureEdge.value()};
   feature.sourceVertices = {0, 3};
   feature.samples = {rail_sample(mesh, 0, 1, 0.0, 0.0,
                                 Eigen::RowVector3d(1.0, 0.0, 0.0), 0)};
   options.authoritativeRails.push_back(feature);
   SurfaceCellRail boundary(directional::tests::test_hard_rail_id(20));
   boundary.kind = SurfaceCellRailKind::Boundary;
-  boundary.sourceEdges = {*boundaryEdge};
+  boundary.sourceEdges = {boundaryEdge.value()};
   boundary.sourceVertices = {0, 1};
   boundary.samples = {rail_sample(mesh, 0, 2, 0.0, 0.0,
                                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0)};
