@@ -1,2 +1,0 @@
-# TB81 verified source snapshot temporary marker only
-.agents/connector-triggers/source-snapshot/m6-cp3-tb81-20261105-0709.txt
