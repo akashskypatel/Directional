@@ -1553,6 +1553,7 @@ TEST(O32aScratchFanSafety, SplitAndCoalescedVertexFansSurviveRowOrder) {
   using namespace directional::geometry;
   using namespace directional::geometry::surface_cell_tracing_detail;
   for (int split = 0; split < 2; ++split) {
+    std::set<SourceVertexEntityIdentity> firstOrderFans;
     for (int reversed = 0; reversed < 2; ++reversed) {
       REPkgMesh mesh = make_grid(1);
       SurfaceCellTracingOptions options;
@@ -1594,6 +1595,32 @@ TEST(O32aScratchFanSafety, SplitAndCoalescedVertexFansSurviveRowOrder) {
       }
       EXPECT_EQ(split ? 2U : 1U, reliefAtZero)
           << "split=" << split << ";reversed=" << reversed;
+      SourceChartTransitionGraph transitionGraph(
+          mesh.faces, *authority, options.hardFeatureEdges);
+      ASSERT_TRUE(transitionGraph.available());
+      std::set<SourceVertexEntityIdentity> observedFans;
+      for (const auto &seed : seeds) {
+        if (seed.provenance != SurfaceSeedProvenance::ReliefCritical ||
+            seed.sourceId != 0) continue;
+        SurfacePoint point;
+        point.face = seed.point.face;
+        point.barycentric = seed.point.barycentric.transpose();
+        const auto identity = transitionGraph.resolve_entity(point);
+        ASSERT_TRUE(identity.has_value());
+        const auto *vertexIdentity =
+            std::get_if<SourceVertexEntityIdentity>(&identity->identity);
+        ASSERT_NE(nullptr, vertexIdentity);
+        observedFans.insert(*vertexIdentity);
+      }
+      EXPECT_EQ(reliefAtZero, observedFans.size())
+          << "distinct seeds must have distinct typed vertex fans";
+      EXPECT_EQ(split ? 2U : 1U, observedFans.size());
+      if (reversed == 0) {
+        firstOrderFans = observedFans;
+      } else {
+        EXPECT_EQ(firstOrderFans, observedFans)
+            << "typed fan ownership must be source-row invariant";
+      }
     }
   }
 }
