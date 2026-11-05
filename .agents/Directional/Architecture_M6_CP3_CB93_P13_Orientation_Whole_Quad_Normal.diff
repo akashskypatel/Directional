@@ -1,0 +1,94 @@
+diff --git a/src/pipeline/RemeshPipeline.cpp b/src/pipeline/RemeshPipeline.cpp
+index aa5798bdd..ac113d208 100644
+--- a/src/pipeline/RemeshPipeline.cpp
++++ b/src/pipeline/RemeshPipeline.cpp
+@@ -11023,10 +11023,19 @@ void orient_quads_to_source_normals(
+           sourceVertices.row(sourceFaces(source.face, 2));
+       sourceNormal = (sb - sa).cross(sc - sa);
+     }
+-    const Eigen::RowVector3d a = outputVertices.row(quads(row, 0));
+-    const Eigen::RowVector3d b = outputVertices.row(quads(row, 1));
+-    const Eigen::RowVector3d c = outputVertices.row(quads(row, 2));
+-    const Eigen::RowVector3d quadNormal = (b - a).cross(c - a);
++    // The whole-polygon (Newell) vector area, as completion's embedding test
++    // uses: the first triangle's normal can point away from the source on a
++    // valid non-convex or non-planar quad, and flipping on it breaks the
++    // shared-edge winding of correctly oriented neighbours (RA-208).
++    Eigen::RowVector3d quadNormal = Eigen::RowVector3d::Zero();
++    for (int col = 0; col < 4; ++col) {
++      const Eigen::RowVector3d current = outputVertices.row(quads(row, col));
++      const Eigen::RowVector3d next =
++          outputVertices.row(quads(row, (col + 1) % 4));
++      quadNormal.x() += (current.y() - next.y()) * (current.z() + next.z());
++      quadNormal.y() += (current.z() - next.z()) * (current.x() + next.x());
++      quadNormal.z() += (current.x() - next.x()) * (current.y() + next.y());
++    }
+     if (quadNormal.norm() > 0.0 && sourceNormal.norm() > 0.0 &&
+         quadNormal.dot(sourceNormal) < 0.0) {
+       std::swap(quads(row, 1), quads(row, 3));
+diff --git a/tests/SurfaceCellDesignAcceptanceTests.cpp b/tests/SurfaceCellDesignAcceptanceTests.cpp
+index 5f4d39315..aef30c6a2 100644
+--- a/tests/SurfaceCellDesignAcceptanceTests.cpp
++++ b/tests/SurfaceCellDesignAcceptanceTests.cpp
+@@ -90,6 +90,21 @@ void print_platform_digest(const char *testName,
+     std::cout << ' ' << product.name << '=' << hex64(product.structuralHash)
+               << '/' << product.elementCount;
+   }
++  // The final validator's issue counts by code, so a census run shows which
++  // checks a RED output fails, not only the first one (RA-208).
++  const auto &snapshots = result.surfaceCellContext.productSnapshots;
++  if (snapshots.hasValidationResult) {
++    std::map<std::string, int> issueCounts;
++    for (const auto &issue : snapshots.validationResult.strictValidationIssues) {
++      ++issueCounts[std::string(
++          directional::validation::mesh_validation_failure_name(issue.code))];
++    }
++    std::cout << " validationIssues="
++              << snapshots.validationResult.strictValidationIssues.size();
++    for (const auto &[name, count] : issueCounts) {
++      std::cout << ' ' << name << '=' << count;
++    }
++  }
+   std::cout << std::endl;
+ }
+ 
+diff --git a/tests/SurfaceCellsPhase10Tests.cpp b/tests/SurfaceCellsPhase10Tests.cpp
+index 0694b23e7..f0192342c 100644
+--- a/tests/SurfaceCellsPhase10Tests.cpp
++++ b/tests/SurfaceCellsPhase10Tests.cpp
+@@ -10442,4 +10442,35 @@ TEST(SurfaceCellAuthorityContractCutover,
+       *reverse, reverseWithoutWitness, faces, edge));
+ }
+ 
++TEST(SurfaceCellsPhase10,
++     SourceOrientationKeepsAWholeQuadThatAgreesWithTheSource) {
++  // Q0's first triangle (0, 1, 2) turns clockwise, but the whole quad is
++  // counter-clockwise (signed double area +19), like its neighbour Q1, and the
++  // two traverse their shared edge (0, 1) in opposite directions. Orienting by
++  // the first triangle flipped Q0 and made both run 1 -> 0; on Vase it
++  // reversed 7,630 correctly oriented quads (RA-208). Q2 is clockwise as a
++  // whole and must still be reversed.
++  Eigen::MatrixXd vertices(10, 3);
++  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 2.0, -1.0, 0.0, 0.0, 10.0, 0.0,
++      0.0, -2.0, 0.0, 1.0, -2.0, 0.0, 10.0, 0.0, 0.0, 11.0, 0.0, 0.0,
++      11.0, 1.0, 0.0, 10.0, 1.0, 0.0;
++  Eigen::MatrixXi quads(3, 4);
++  quads << 0, 1, 2, 3, 1, 0, 4, 5, 6, 9, 8, 7;
++  Eigen::MatrixXd sourceVertices(4, 3);
++  sourceVertices << -20.0, -20.0, 0.0, 20.0, -20.0, 0.0, 20.0, 20.0, 0.0,
++      -20.0, 20.0, 0.0;
++  Eigen::MatrixXi sourceFaces(2, 3);
++  sourceFaces << 0, 1, 2, 0, 2, 3;
++
++  Eigen::MatrixXi oriented = quads;
++  directional::pipeline::orient_quads_to_source_normals(
++      vertices, sourceVertices, sourceFaces, {}, oriented);
++
++  EXPECT_TRUE((oriented.row(0).array() == quads.row(0).array()).all());
++  EXPECT_TRUE((oriented.row(1).array() == quads.row(1).array()).all());
++  Eigen::RowVector4i reversed;
++  reversed << 6, 7, 8, 9;
++  EXPECT_TRUE((oriented.row(2).array() == reversed.array()).all());
++}
++
+ } // namespace

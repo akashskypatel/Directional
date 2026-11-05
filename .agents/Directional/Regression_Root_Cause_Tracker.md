@@ -1,3 +1,11 @@
+**RA-208 (2026-11-05; P13-l owners, NOT stable):** [RA-208](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md).
+- **P13-l1:**
+  - `orient_quads_to_source_normals` uses the first triangle's normal and reverses 7,630 correctly oriented Vase quads (27,597 introduced conflicts);
+  - `MeshValidator::quad_self_intersects` projects along the first triangle's normal, so its verdict depends on corner order (447 / 248 false crossings).
+  - Owners: exact CB93 and CB94, then TB83.
+- **P13-l2:** 1 overlap and 3 T-junctions remain, owned by the Review DEFN.
+- No accepted green lost: 66/17/49, debt 1.
+
 **TB82 COMPLETE / MATCH (2026-11-05; no new stable regression):** [final report](Architecture_M6_CP3_TB82_P13_Source_Vertex_Fan_Seed_Full_Gate_Execution_Report_20261105.md). Exact CB92 artifact `13427203329` on source `d9921cdd5a174bbb00b68387082cf08df80f97c5`; [gate 42057136562](https://github.com/akashskypatel/Directional/actions/runs/42057136562) **901/901 PASS**, membership **982** (81 deferred), **1810/1810** checksums; new fan-seed GUARD rows 900–901 PASS. [Census 42057191097](https://github.com/akashskypatel/Directional/actions/runs/42057191097) **1 PASS / 2 expected RED**, **9/9** checksums: Cylinder PASS; BunnyRandom unchanged P13-e `sourceVertex=49` RED; Vase `NotProductionReady:completion detail=SelfIntersectingFace` RED at 204.77 s, 189462 traces / 30989 strands / 26817 cells / 67750 informational quads. Six pinned full Linux digest lines equal TB81; Vase equal through `global-conformity-baseline` and allowed change from tracing onward. **Root-cause disposition:** CB92 fixes the documented source-vertex fan-seed cause O32a under the registered focused falsifiers; O32a adaptive distance tie residual, O32b/c semantic content, O32d cell identity, O32e completion tie/budget and P13-l/P13-e remain open. No novel accepted-green loss and no new stable event/recurrence; existing typed REDs are known candidates, not promotions. **Stable 66/17/49, debt 1, CP2 491/491; selector497/CP3 unpromoted.** Next separate Review `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` per RA-207.6.
 
 **RA-207 (2026-11-05; O32a owner, NOT stable):** [RA-207](Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md).

@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-11-05 · `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` re-entered: [RA-207](Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md) confirms the O32a seed mechanism. Its prose CB92 is replaced by an exact per-fan patch. **Next: CB92, then TB82** (901-row manifest). CB91/TB81 COMPLETE (899/899). Accepted CP2 491/491, stable 66/17/49, debt 1; selector497/CP3 unpromoted.
+**Currency:** 2026-11-05 · [RA-208](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md) resolves the P13-l Review block on the Claude scratch track and measures the owners. **Next: exact CB93, then CB94, then TB83.** TB82 MATCH (901/901). Accepted CP2 491/491, stable 66/17/49, debt 1; selector497/CP3 unpromoted.
 - **Before it:** P13-m, fixed by [RA-202](Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md). The fix is Amendment 34 and exact CB85–CB88, removing three memory-bound census-path scans plus two Amendment 33 sites.
 - **The block.** The ChatGPT Review saw a conflict between "runtime-free" and a probe re-run. The fault is RA-202.9's route: it named no track and asked one platform to explain a split between two. Review scratch probes are a duty (RA-166.6 F6, RA-188.1), Linux runtime is a TB, and no policy changes.
 - **TB78** (CB85–CB88) matches on gate 899/899 and on every census line except the count. Vase reaches RED `SelfIntersectingFace` in 268.93 s on Linux, so P13-m's Linux objective is met.
@@ -20,7 +20,7 @@
 - **CB91 and TB81:** [CB91 record](Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Code_Build_Record_20261105.md) on source `96ee281a…`; [TB81](Architecture_M6_CP3_TB81_P13_Final_Validation_Binding_Full_Gate_Execution_Report_20261105.md) 899/899 and seven TB80 digest lines identical. Predecessor TB80 remains a reviewed historical 898/899 timing-control RED; O32a is next, not another TB81 replay.
 - Review track (Claude, scratch build):
   - `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (O32a, next);
-  - `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l, after O32a; opens with the RA-204.9 O30 decision after TB80);
+  - `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP` (P13-l2, after TB83; RA-208.6);
   - `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e);
   - `M6-CP3-DEFN-P13-RELIEF-NOISE-TIES` (O31, after P13-l).
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
@@ -154,7 +154,13 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 - **P13-h2, Vase:** the closed-form dispatch never offers a folded grid to the Amendment 28 pattern search, which embeds all 4 needles. Fix: Amendment 30, scoped to grids with generated vertices (exact CB77 → TB71). **P13-i:** the lenses are optional rim support traces; FlowRep selection cannot remove any optional trace (same-face coverage, exact junction degrees), and removing the 5 named traces exposes 3 more ([RA-198](Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md)). RA-199: all 8 are unmet support chords (10 on Vase); selection cannot see meeting because seed traces never end on another trace. Fix: Amendment 31 (exact CB78 → TB72). Coverage across faces and the degree rule → O25 (quality).
 - **P13-j, Vase:** with CB78, assembly rejects at node 5355 (three two-quad fans). RA-200: the stitcher's typed certificates match on both sides of every split node; `derive_patch_descriptor` keys a corner by the source scope of the halfedge leaving it, so 23,221 of 66,783 Vase nodes get two keys and the HEAD assembly has Euler −19,442. Fix: Amendment 32, a node key over all occurrences (exact CB79 → TB73). Row 97 passed on a two-component assembly → O26.
 - **P13-k, Vase:** with CB79, Vase assembles (Euler 1, one boundary loop) and then spends its time rebuilding immutable source structures per query: `source_face_scope` revalidates the authority over all faces per (vertex × rail interval), `nearest_source_point` builds a source BVH per call, and final validation builds a chart graph per quad (RA-200.1 item 7, RA-200.2a). Same class as Amendment 27 / O20 RA-201 measured five instances (the binding check also ran per chart face and per label-support query) → Amendment 33, exact CB80–CB83.
-- **P13-l, Vase:** with CB80–CB83 (scratch), the completed mesh fails its pre-optimization validation. Topology passes, but 27,966 interior edges are traversed the same way by both quads, 7,681 quads oppose the source normal, 250 self-intersect and 3 are T-junctions. Leads: the per-quad `orient_quads_to_source_normals`, or mixed patch winding → Review DEFN `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (RA-201.3 item 5).
+- **P13-l, Vase (RA-208, measured on CB92):**
+  - **Completion's output is correct:** 0 same-direction edges and 0 quads inverted against the source.
+  - **P13-l1, the orientation helper and the validator:**
+    - `orient_quads_to_source_normals` reverses 7,630 correct quads on their first-triangle normal (27,597 introduced conflicts, 35,164 FlippedFace);
+    - the validator's local self-intersection projects along the first triangle, so its verdict depends on corner order (447 / 248 flags, where completion's whole-polygon test finds 0).
+    - Exact CB93/CB94 use the whole-quad Newell normal in both. Vase falls to 4 issues.
+  - **P13-l2:** 1 overlap (patches 118 / 54) and 3 T-junctions (2 unmerged near-coincident vertices, 1 midpoint side mismatch). Review DEFN after TB83.
 - **P13-m, Vase (Linux timeout):** RA-202. Three passes rescanned a whole mesh-sized collection per element, outside the optimizer stage RA-201 fixed:
   - the arrangement's geometric T-junction scan (57,636 nodes × 168,902 halfedges);
   - FlowRep selection, which recounted the endpoint degrees of the whole network for each of 4,047 transactions;
@@ -197,6 +203,7 @@ macOS O16 stays separate.
   - A count seen on one platform is not a prediction for another: RA-202.9 pinned macOS's 67,829 and Linux gave 67,784 (O30). A cross-platform registration pins typed verdicts, topological counts and values the executing platform has already produced. Anything else is recorded, not pinned.
   - To localize a split, print bit-exact input digests and per-stage hashes on both platforms rather than reasoning from one (RA-203).
   - **Noise carriers.** A stage hash that includes exact double bits, or an upstream digest, changes with any last-bit noise. The atlas, network, cut graph, topology plan, conformity baseline and tracing hashes are noise carriers. Localize at the first differing stage that is **not** one (RA-204.2).
+  - **Order-invariant geometric predicates.** A validity test of a polygon must not depend on which corner starts its cycle or which way it runs. Use the whole-polygon (Newell) vector area, and give the producer and the validator one shared definition, implemented independently. Fixing the orientation of correct output on its first triangle reversed 7,630 Vase quads (RA-208).
   - **Both sides of a barrier.** A seed or sample named by a source entity that a hard barrier splits goes on each typed fan, never on a row-chosen one and never as a new failure mode. That is the hard-rail rule, and DESIGN §10.1 canonical identity (RA-207).
   - **Wall-clock guards.** A gated time bound is a cross-platform measurement. Set it from the Linux runner's ratio for that code, or better, count the invariant the test claims (`source_binding_check_count`), and keep time only as a coarse backstop (RA-206.6).
   - **Representation order.** Cross-library agreement is not determinism. DESIGN §10.1 also requires source-face row, output row and scheduling permutations to preserve the semantic output. A tie-break on row-derived ids (CB90) fixes the first and not the second. Run a row permutation before calling an order-dependent result deterministic (RA-205).

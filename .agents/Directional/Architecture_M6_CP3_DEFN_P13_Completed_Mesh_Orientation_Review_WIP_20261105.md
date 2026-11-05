@@ -1,5 +1,7 @@
 # P13-l: completed-mesh orientation — independent Review WIP
 
+> **Resolved by [RA-208](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md).** The runtime block is lifted on the Claude scratch track. The snapshots were collected through the return channel this WIP identified. Mechanisms B and E/F are measured as dominant on Vase, A is excluded, and D is the residue (1 overlap, 3 T-junctions). Exact CB93/CB94 follow.
+
 **Turn:** `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`  
 **State:** IN_PROGRESS — verified static defect, but Vase-specific earliest producer is not yet proven.  
 **Authority:** Branch `agent/surface_cell_quad/p5-recover-bridge-healing`; post-CB92 semantic source `d9921cdd5a174bbb00b68387082cf08df80f97c5`. Read-only exact snapshot `f17334313c26019bdfbc449cc2947df024410d64` adds only turn-control `STATUS` and snapshot trigger; no later semantic change established. Snapshot run `42067478005`, artifact `13435090935`. TB82 result source/package `d9921cdd…` / `13427203329`, census artifact `13430164928`.

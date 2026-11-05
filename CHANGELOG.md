@@ -1,3 +1,17 @@
+## 2026-11-05 — RA-208: P13-l block resolved; owners measured; exact CB93 → CB94 → TB83
+
+- **Turn:** `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`, resumed from the ChatGPT BLOCKED WIP. [RA-208](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md).
+- **The block:** runtime for a Review. No policy change: Review scratch probes are a duty (RA-203.1), and a diagnostic CB/TB is unnecessary. The WIP's static proofs and the rejected-result snapshot channel were used.
+- **Measured on CB92 Vase:**
+  - the stitched completion has 0 same-direction edges and 0 quads inverted against the source;
+  - the orientation helper reverses 7,630 correct quads on their first triangle (27,597 conflicts, 35,164 FlippedFace);
+  - the validator's first-triangle projection flags 447 / 248 local crossings, where completion's whole-polygon predicate finds 0.
+- **Exact CB93** `2510e2dd…`: whole-quad Newell orientation, a census issue histogram, a two-quad test.
+- **Exact CB94** `a15632d1…`: Newell-projected self-intersection, a degenerate-area rule, an 8-order test.
+- **Verified in scratch:** Vase falls from 35,416 issues to 4 (1 overlap, 3 T-junctions = P13-l2); 903-row gate 902/903 (only O16); digests unchanged; both tests fail on legacy.
+- **New** 903-row TB83 manifest `20dc101d…`.
+- Stable 66/17/49, debt 1, CP2 491/491.
+
 ## 2026-11-05 — TB82 immutable CB92 gate/census COMPLETE / MATCH; P13-l Review next
 
 - [Final TB82 report](.agents/Directional/Architecture_M6_CP3_TB82_P13_Source_Vertex_Fan_Seed_Full_Gate_Execution_Report_20261105.md) verifies [gate 42057136562](https://github.com/akashskypatel/Directional/actions/runs/42057136562) **901/901**, membership 982 (81 deferred), 1810/1810 checksum entries and rows 900–901 PASS; [census 42057191097](https://github.com/akashskypatel/Directional/actions/runs/42057191097) MATCH (Cylinder PASS, BunnyRandom P13-e RED, Vase `SelfIntersectingFace` RED under 600 s, informational 67,750 quads), 9/9 checksums. Six full digest lines equal TB81; Vase equal through global conformity, changed only thereafter. No build/relink/source mutation.

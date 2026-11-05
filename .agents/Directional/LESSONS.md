@@ -360,6 +360,12 @@ This document records **reusable failure-derived engineering lessons**, not an e
 
   A determinism fix replaces a representation-dependent choice with a canonical one. It does not turn the choice into a failure.
 
+- **A polygon predicate must not depend on corner order, and a post-hoc fix-up must be measured against the producer's own output.** Two helpers took a quad's first triangle as its normal:
+  - the orientation pass, which reversed 7,630 correctly oriented Vase quads and created 27,597 same-direction edges;
+  - the validator's self-intersection projection, whose verdict changed with corner order (447 vs 0 under completion's whole-polygon test).
+
+  Both were found by diffing the stitched mesh against its post-processed copy from a rejected result in one scratch run. Before attributing a failure to a producer, census the output before and after every post-processing step. Give producer and validator one shared geometric definition, implemented independently (RA-208).
+
 ## Contracts, planning, reviews, and durable records
 
 - **Plan from the current normative contract and reachable implementation.** Before freezing an

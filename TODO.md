@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l Review under RA-207 §6), after **TB82 MATCH** on the immutable CB92 package. Do not start another Code + Build or Test + Benchmark without the Review decision.
+> **Current canonical next:** `M6-CP3-CB93-P13-ORIENTATION-WHOLE-QUAD-NORMAL`. Apply [RA-208](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md) §3 exactly (`2510e2dd…`), then CB94 (§4, `a15632d1…`), then TB83 (§5). Steps 44–46.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -7,7 +7,17 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — TB82 901/901 MATCH; next P13-l completed-mesh-orientation Review (2026-11-05)
+## CURRENT — RA-208: P13-l owners measured; exact CB93 → CB94 → TB83 next; P13-l2 residue to Review (2026-11-05)
+
+- [x] **P13-l Review block resolved and the Review completed by [RA-208](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md)** (Claude scratch track). The ChatGPT [WIP](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_WIP_20261105.md) had blocked on runtime; Review scratch probes are a duty (RA-203.1), so no policy change.
+  - **Measured on CB92 Vase**, using the existing rejected-result snapshots:
+    - completion's stitched output has **0** same-direction edges and **0** quads inverted against the source;
+    - `orient_quads_to_source_normals` reverses **7,630 correct quads** on their first-triangle normal, giving 27,597 introduced conflicts and 35,164 FlippedFace;
+    - the validator's first-triangle projection flags 447 / 248 local crossings, where completion's whole-polygon test finds **0**.
+  - **Exact CB93:** the helper uses the whole-quad Newell normal; the census line gets an issue histogram; a two-quad test.
+  - **Exact CB94:** the self-intersection projection uses the Newell normal (invariant to corner order); a degenerate vector area counts as self-intersecting; an 8-order test.
+  - **Verified in scratch:** Vase falls from 35,416 issues to **4** (1 global overlap, 3 T-junctions; terminal still `SelfIntersectingFace`). 903-row gate 902/903 (only O16). Gate-fixture digests unchanged. Both tests fail on legacy.
+  - **P13-l2** (the 4 residual issues) goes to the Review.
 
 - [x] **TB82 artifact-only full gate and census COMPLETE / MATCH:** [report](.agents/Directional/Architecture_M6_CP3_TB82_P13_Source_Vertex_Fan_Seed_Full_Gate_Execution_Report_20261105.md); immutable CB92 source `d9921cdd` / artifact `13427203329`. [Gate 42057136562](https://github.com/akashskypatel/Directional/actions/runs/42057136562): 901/901 PASS, membership 982, 1,810/1,810 SHA256SUMS; new GUARD 900–901 PASS. [Census 42057191097](https://github.com/akashskypatel/Directional/actions/runs/42057191097): Cylinder PASS, BunnyRandom expected P13-e RED, Vase expected `SelfIntersectingFace` RED in 204.77 s (189,462 traces, 30,989 strands, 26,817 cells, 67,750 informational quads); 9/9 hashes. Six pinned Linux digests equal TB81; Vase unchanged to `global-conformity-baseline`. No promotion, new stable event or accepted CP2 regression. **Next independent P13-l Review**; O32b–e, O33, O30b, O31, P13-e and adaptive tie residual carried.
 
@@ -404,11 +414,34 @@
        - `141 0` `tests/SurfaceCellREPackageTests.cpp` → `a169667c6c6705be547b257295e6d9eb5ea2d1f933f6958370c7e806cbb28e90`.
      - Build: one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`.
      - Mismatch → `M6-CP3-PLAN-P13-SOURCE-VERTEX-FAN-SEED-STOP`; infrastructure → `M6-CP3-CB92A-P13-SOURCE-VERTEX-FAN-SEED-ORCH`.
-  43. [ ] **NEXT `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC`** (TB-EXEC; RA-207.5):
+  43. [x] **COMPLETE / MATCH `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC`** (TB-EXEC; RA-207.5): 901/901, membership 982, pinned digests matched; [report](.agents/Directional/Architecture_M6_CP3_TB82_P13_Source_Vertex_Fan_Seed_Full_Gate_Execution_Report_20261105.md).
      - Gate: [901-row manifest](.agents/Directional/Architecture_M6_TB82_P13_Vertex_Fan_Seeds_Full_Gate_Case_Manifest.tsv) `9fbf329167cbe84698d5a08eda6e5374200c7729a5f0f1e4292836227902f878` (TB78 899 prefix byte-identical plus GUARD rows 900–901); ledger v5; **901/901**, membership 982.
      - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; Vase RED `SelfIntersectingFace` within 600 s. Trace, cell and quad counts recorded, not pinned.
      - **Pinned:** gate rows 795/796/797/864 and census Cylinder and BunnyRandom digest lines byte-identical to TB81; Vase's line identical to TB81 through `global-conformity-baseline`.
      - Mismatch → `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB82A-P13-SOURCE-VERTEX-FAN-SEED-ORCH`.
+  - **RA-208 sequence:** steps 44–46, one turn each, in order. The implementation agent takes all three, and starts each only after the previous one is verified.
+  44. [ ] **NEXT `M6-CP3-CB93-P13-ORIENTATION-WHOLE-QUAD-NORMAL`** (CB, compile only; RA-208.3):
+     - Precheck: `git diff --quiet d9921cdd5a174bbb00b68387082cf08df80f97c5 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB93_P13_Orientation_Whole_Quad_Normal.diff`:
+       - SHA-256 `2510e2ddefa717eb71cf50174c29b461713caa5588e61382aab926ef48deebfe`, 94 lines; keep its 2 single-space context lines;
+       - `13 4` `src/pipeline/RemeshPipeline.cpp` → `5bb0277ca708e5a34f3ed5416c5d69039526b06806c8dd73de0f40f1dd7a3a31`;
+       - `15 0` `tests/SurfaceCellDesignAcceptanceTests.cpp` → `48bd985008a3803b6cdcadaa90ecf244f980ad4c5e20d76c56da2e0419935a1e`;
+       - `31 0` `tests/SurfaceCellsPhase10Tests.cpp` → `3e8604cd3c0d0229bcb7ceac2331d6888094d987bf1220253a7d8434f5ac0fe8`.
+     - Build: one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`.
+     - Mismatch → `M6-CP3-PLAN-P13-ORIENTATION-WHOLE-QUAD-STOP`; infrastructure → `M6-CP3-CB93A-P13-ORIENTATION-WHOLE-QUAD-ORCH`.
+  45. [ ] **`M6-CP3-CB94-P13-QUAD-SELF-INTERSECTION-CORNER-ORDER`** (CB, compile only; RA-208.4; applied on CB93):
+     - Precheck: the three CB93 result SHA-256 values above.
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB94_P13_Quad_Self_Intersection_Corner_Order.diff`:
+       - SHA-256 `a15632d1ba9149c7fbb47bba6fae71db56c34de999debd2977cc797d51a7ef91`, 88 lines; keep its 2 single-space context lines;
+       - `19 1` `include/directional/validation/MeshValidator.h` → `892f00196bc57aa6fb739a9c5e8049693d20d580ff5490c954578c830c4b715f`;
+       - `41 0` `tests/SurfaceCellsPhase10Tests.cpp` → `dc7a6f1169413201d0a2047a787ec76e15b74ea80d1af99d700d845c1c8a9116`.
+     - Build: one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`.
+     - Mismatch → `M6-CP3-PLAN-P13-QUAD-SELF-INTERSECTION-STOP`; infrastructure → `M6-CP3-CB94A-P13-QUAD-SELF-INTERSECTION-ORCH`.
+  46. [ ] **`M6-CP3-TB83-P13-ORIENTATION-PREDICATE-FULL-GATE-EXEC`** (TB-EXEC; RA-208.5):
+     - Gate: [903-row manifest](.agents/Directional/Architecture_M6_TB83_P13_Orientation_Predicate_Full_Gate_Case_Manifest.tsv) `20dc101d78889dc98adf4a048fb253ec66c4fda640e76247a0d5d9f4a92d57fb` (TB82 901 prefix plus GUARD rows 902–903); ledger v5; **903/903**, membership 984.
+     - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; Vase RED within 600 s, `detail=SelfIntersectingFace`.
+     - **Pinned:** gate rows 795/796/797/864 and census Cylinder byte-identical to TB82 plus ` validationIssues=0`; BunnyRandom byte-identical to TB82; Vase byte-identical to TB82 through its last product item, with a ` validationIssues=` suffix containing **no FlippedFace** (counts recorded; macOS 4).
+     - Mismatch → `M6-CP3-TB83-P13-ORIENTATION-PREDICATE-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB83A-P13-ORIENTATION-PREDICATE-ORCH`.
 - [ ] **Review track** (probe DEFNs):
   - [x] **`M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING`** (P13-g): the static [decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) ran no probe and froze an open A/B CB73. [RA-196](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) probes settle it:
     - Patch 1200's boundary is simple (branch A is false).
@@ -470,7 +503,12 @@
     - **Continuation 6 (scratch Review evidence, 2026-11-05):** corrected producer emits **1,416** semantic-identical seeds under base + 3 consistent source-row permutations; typed protected-edge fan identities pass under two row orders (remote GMP compile 42030842612). Full Vase runs yield identical 189,462 trace segments / 30,989 strands / 26,817 arrangement cells, but completion counts **67,750 / 67,782 / 67,766 / 67,778** before the same typed `SelfIntersectingFace` RED. Trace/strand content hashes differ and remain semantic-oracle candidates O32b/c, not yet proved stage defects. Earlier one-sample-per-rail negative was invalid under strict rail interval ingress; a new complete two-rail test preserves both typed source-edge interval owners and rejects missing-edge / duplicate-ID tampering (remote GMP run 42034591362, artifact 13418271529). Coincident per-seed metadata alone is not authoritative interval ownership.
     - **Before Review closeout:** rail-edge vs seed annotation and fan-scope admissibility are independently adjudicated; all 1,274 actual Vase source vertices have one intrinsic fan (independent OFF topology audit, no hard-feature edge). Unscoped multi-fan vertex requests are not authorized to duplicate seeds: CB92 must emit a typed terminal rejection unless producer-owned scope narrows to one fan, or STOP for an explicit failure-contract Review. Bounded CB92 plan is revised; remaining work is final Review reconciliation/boundary checker/Drive cleanup and exact handoff/STATUS closeout. Earlier evidence and later downstream stages are unchanged.  bounded [CB92 source-fan seed plan](.agents/Directional/Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity_Plan_20261105.md) is written with falsifiers but not started. Perform Review checklist/boundary checker and consolidation, then authorize the successor in STATUS. [Owning evidence](.agents/Directional/Architecture_M6_CP3_DEFN_P13_O32a_Vase_Producer_Scratch_Result_20261105.md). No successor or CP3 promotion yet.
     - Outcome: an exact CB → TB that pins only permutation-invariant values.
-  - [ ] **NEXT (Review, after CB92) `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`** (P13-l; probe DEFN on the post-CB92 scratch state, where macOS Vase gives 67,750 with 189,462 traces; Claude; after TB80 it opens with the RA-204.9 O30 decision; also time O27 once orientation passes; its TB pins only typed verdicts and counts already observed on Linux, RA-203.2):
+  - [ ] **NEXT (Review, after TB83) `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP`** (P13-l2; Claude, scratch build; RA-208.6). Vase's residual 4 issues after CB93/CB94:
+    - 1 global overlap: faces 55 (patch 118) and 15372 (patch 54) over source face 1263;
+    - 3 T-junctions: vertices 35161 (t = 0.0007) and 53049 (t = 0.0000) are unmerged near-coincident vertices (stitch identity); vertex 35160 at t = 0.5003 of edge (4618, 35159) is a side-subdivision mismatch between patches 4955 and 4957.
+
+    Start from `scratchpad/p13l` (snapshot dump probe and census tools). Name each producer, then give an exact patch per owner.
+  - [x] **`M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`** (P13-l; probe DEFN on the post-CB92 scratch state, where macOS Vase gives 67,750 with 189,462 traces; Claude; after TB80 it opens with the RA-204.9 O30 decision; also time O27 once orientation passes; its TB pins only typed verdicts and counts already observed on Linux, RA-203.2):
     - The completed Vase mesh (67,829 quads) has the source topology but is not consistently oriented: 27,966 interior edges are traversed the same way by both quads.
     - Leads, not conclusions: `orient_quads_to_source_normals` (`RemeshPipeline.cpp` 10949) flips each quad on its own by its (0,1,2) triangle normal and ignores lineage; or completed patches carry mixed winding before it.
     - First measurement: same-direction edges right after assembly and after the orientation pass, binned by patch. Then name the owner.
