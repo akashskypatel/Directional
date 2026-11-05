@@ -1,3 +1,9 @@
+## 2026-11-05 — CB92 exact fan-seed source compiled, artifact-only TB82 next
+
+- **Code + Build:** RA-207 §3's exact 285-line fan-seed patch applied unchanged; source [`d9921cdd5a174bbb00b68387082cf08df80f97c5`](https://github.com/akashskypatel/Directional/commit/d9921cdd5a174bbb00b68387082cf08df80f97c5). Tracing source and focused tests only; no runtime execution.
+- **Immutable compile:** [run 42052009404](https://github.com/akashskypatel/Directional/actions/runs/42052009404), package `13427203329`, ZIP SHA-256 `fb547adcc5bede25d3df2a79f6656ec83cf142907ce77cb5a5a4a3f287a5c2ca`; Linux GCC 13.3 Release/static, eight targets PASS, GMP/GMPXX linkage, 28/28 hashes, source clean, `runtimeExecution=false`. [Evidence record](.agents/Directional/Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Identity_WIP_20261105.md).
+- **No runtime acceptance:** CP2 accepted 491/491, stable 66/17/49, debt 1; CP3 and selector497 unpromoted, TB81 last 899/899 candidate. Next `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC` (901 rows, membership 982; artifact-only TB, no rebuild).
+
 ## 2026-11-05 — RA-207: O32a seed Review reviewed; exact CB92 (per-fan seeding) → TB82
 
 - **Reviewed turn:** `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (re-entry). [RA-207](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md), using a scratch build.

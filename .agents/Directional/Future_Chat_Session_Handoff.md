@@ -34,32 +34,26 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-05 · [RA-207](Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md) reviews the O32a seed Review. Its mechanism and scratch remedy stand: vertex seeds were placed by lowest face row and de-duplicated by (face row, barycentrics); typed-fan placement gives 1,416 seeds and identical trace and strand counts in four orders. Its CB92 plan is withdrawn: prose, not a patch, with a fail-closed multi-fan policy that drops capability and contradicts the both-sides rail rule. **Exact CB92** seeds each unseeded typed fan at its minimum canonical chart. 901-row local gate 900/901 (only O16); gate fixtures unchanged; 0 multi-fan requests in the gate; both new tests fail on legacy. CB91/TB81 COMPLETE (899/899, digests pinned). |
-| Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing` · **CB91 source `96ee281a40920f21eb911880a3b2c458ef4f0563`, artifact `13394321724`**, [record](Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Code_Build_Record_20261105.md), [compile run 41980448558](https://github.com/akashskypatel/Directional/actions/runs/41980448558), eight Linux GMP/GMPXX targets PASS, 28/28 checksums, `runtimeExecution=false`. TB80 prior row899 RED was independently reviewed; TB81 now restores 899/899 and verifies behaviour-neutrality without new acceptance. |
+| Currency | 2026-11-05 · CB92 Code + Build COMPLETE on RA-207 §3 exact fan-seed patch; [compile run 42052009404](https://github.com/akashskypatel/Directional/actions/runs/42052009404) and [record](Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Identity_WIP_20261105.md). The separate TB82 901-row immutable runtime gate is next. CB91/TB81 899/899 remains last validated candidate; CP2 491/491 remains accepted. |
+| Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing` · **CB92 source `d9921cdd5a174bbb00b68387082cf08df80f97c5`, package `13427203329`**, [record](Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Identity_WIP_20261105.md), [compile run 42052009404](https://github.com/akashskypatel/Directional/actions/runs/42052009404); eight Linux GCC 13.3 Release/static GMP/GMPXX targets compiled; 28/28 package hashes, source clean; `runtimeExecution=false`. Do not treat this as TB82 runtime acceptance. |
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06; unchanged. TB71 remains unpromoted candidate only. |
 | Latest candidate | **TB81 MATCH** on CB91: [gate 41985957797](https://github.com/akashskypatel/Directional/actions/runs/41985957797) 899/899, membership 980, 1,806/1,806 hashes; [census 41985991943](https://github.com/akashskypatel/Directional/actions/runs/41985991943) registered 1 PASS / 2 RED, Vase 67,746 quads informational, seven digests equal TB80; [report](Architecture_M6_CP3_TB81_P13_Final_Validation_Binding_Full_Gate_Execution_Report_20261105.md). Unpromoted candidate, no stable event. |
 | Regression accounting and debt | Accepted CP2 **491/491**; stable **66/17/49**, debt **1**; ledger v5 81 deferred (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE), current membership **980**; selector497 and CP3 unpromoted. DR1/DR3 open, DR2/DR4 to M8-CP2. |
-| Active boundary | O32a Review, reviewed by RA-207, COMPLETE. Next is the exact CB92 (compile only), then TB82 on the new 901-row manifest. No acceptance or promotion. Carried: O32b–e, O33, O30b, O31, P13-l, P13-e, O27–O29. |
+| Active boundary | CB92 Code + Build complete. **Next TB82** on frozen source and immutable artifact, 901-row manifest and census. No acceptance or promotion. Carried: O32b–e, O33, O30b, O31, P13-l, P13-e, O27–O29. |
 
-## Mandatory next turn — `M6-CP3-CB92-P13-SOURCE-VERTEX-FAN-SEED-IDENTITY` (Code + Build, compile only, Linux)
+## Mandatory next turn — `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC` (Test + Benchmark, artifact-only, Linux)
 
-- **Authority:** [RA-207](Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md) §3. The [prose CB92 plan](Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity_Plan_20261105.md) is superseded. **Do not write your own patch.**
-- **Precheck:** `git diff --quiet 96ee281a40920f21eb911880a3b2c458ef4f0563 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
-- **Patch:** [`Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity.diff`](Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity.diff), applied byte for byte.
-  - SHA-256 `c377b206c195613b045b0f5a431df5dc31e553035343b567cdeb2ba0751834fa`; 285 lines; **keep its 5 single-space context lines**.
-  - Numstat and result SHA-256:
-    - `77 15` `src/geometry/SurfaceCellTracing.cpp` → `9e9b979f…`;
-    - `141 0` `tests/SurfaceCellREPackageTests.cpp` → `a169667c…`.
-- **Build:** one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`; run no binary.
-- **Routes:**
-  - success → `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC` (RA-207.5);
-  - mismatch → `M6-CP3-PLAN-P13-SOURCE-VERTEX-FAN-SEED-STOP`;
-  - infrastructure → `M6-CP3-CB92A-P13-SOURCE-VERTEX-FAN-SEED-ORCH`.
-- **Then TB82 (separate turn):**
-  - gate on the 901-row manifest `9fbf3291…`: 901/901, membership 982;
-  - census Cylinder PASS; BunnyRandom P13-e; Vase RED `SelfIntersectingFace` < 600 s, with its counts recorded;
-  - pinned: gate rows 795/796/797/864 and census Cylinder and BunnyRandom digest lines byte-identical to TB81, and Vase's line identical through `global-conformity-baseline`.
-- **Preserve:** CP2 491/491, stable 66/17/49, debt 1, selector497 and CP3 unpromoted.
+- **Authority:** [RA-207](Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md) §5; CB92 [code/build record](Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Identity_WIP_20261105.md). Use CB92 immutable compiled source `d9921cdd5a174bbb00b68387082cf08df80f97c5` and package artifact `13427203329` from [run 42052009404](https://github.com/akashskypatel/Directional/actions/runs/42052009404).
+- **Preflight:** verify the package's full ZIP digest `fb547adcc5bede25d3df2a79f6656ec83cf142907ce77cb5a5a4a3f287a5c2ca`, all 28/28 packaged checksums, exact source commit, runtime executable modes and GMP/GMPXX runtime. Extract using a mode-preserving tool. No configure, rebuild, relink or modifications to source, tests, manifests, selector or fixtures.
+- **Full gate:** [901-row TB82 manifest](Architecture_M6_TB82_P13_Vertex_Fan_Seeds_Full_Gate_Case_Manifest.tsv), SHA-256 `9fbf329167cbe84698d5a08eda6e5374200c7729a5f0f1e4292836227902f878` (TB78 899-row prefix unchanged plus GUARD 900 and 901). Run 901/901, membership 982; retain all independent per-process evidence. Do not promote the candidate from compile-only evidence.
+- **Census:** Cylinder PASS, BunnyRandom P13-e typed RED, Vase `SelfIntersectingFace` RED within 600 s with quad/trace/strand counts recorded; pin gate rows 795/796/797/864 and Cylinder/BunnyRandom digest lines byte-identical to TB81, Vase digest through `global-conformity-baseline` identical to TB81.
+- **Routes:** MATCH → apply RA-207.5 result/handoff/track authority; semantic mismatch → `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-REV`; infrastructure → `M6-CP3-TB82A-P13-SOURCE-VERTEX-FAN-SEED-ORCH`. Do not invent a next Review or implementation turn.
+- **Preserve:** accepted CP2 491/491, stable 66/17/49, debt 1, selector497 and CP3 unpromoted.
+
+### Earlier: CB92 exact source and compile
+
+- Exact RA-207 §3 patch `c377b206…` applied as source `d9921cdd5a174bbb00b68387082cf08df80f97c5`, only tracing and tests changed; no runtime executed.
+- Immutable [compile run 42052009404](https://github.com/akashskypatel/Directional/actions/runs/42052009404) artifact `13427203329` passed eight GMP/GMPXX targets, 28/28 source/package hashes, no runtime; TB82 remains independent.
 
 ### Earlier: CB91, TB81 and the O32a Review
 
@@ -162,8 +156,8 @@ Facts are in the records, `TODO.md` steps and Review track, `CHANGELOG.md` and t
 | 42J — COMPLETE | `M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE` | [CB91 record](Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Code_Build_Record_20261105.md), RA-206.3 exact `c323ae01…`, source `96ee281a…`, compile [41980448558](https://github.com/akashskypatel/Directional/actions/runs/41980448558) PASS, package `13394321724`, GMP/GMPXX, 28/28 hashes, no runtime |
 | 42K — COMPLETE / MATCH | `M6-CP3-TB81-P13-FINAL-VALIDATION-BINDING-FULL-GATE-EXEC` | Implementation agent; RA-206.4: manifest 899 `9d2c1ec5…`, 899/899, membership 980; census Cylinder PASS, BunnyRandom P13-e, Vase RED `SelfIntersectingFace` < 600 s (192,482 / 26,817; quads recorded); **seven digest lines byte-identical to TB80's**. Mismatch → `M6-CP3-TB81-P13-FINAL-VALIDATION-BINDING-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB81A-P13-FINAL-VALIDATION-BINDING-ORCH` |
 | 43 — Review COMPLETE (re-entered) | `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (O32a) | ChatGPT [scratch result](Architecture_M6_CP3_DEFN_P13_O32a_Vase_Producer_Scratch_Result_20261105.md), reviewed by [RA-207](Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md): mechanism confirmed; prose CB92 replaced by an exact patch; per-fan seeding, not fail-closed |
-| 43A — NEXT | `M6-CP3-CB92-P13-SOURCE-VERTEX-FAN-SEED-IDENTITY` | Implementation agent, Linux; RA-207.3: `c377b206…` (285 lines, keep its 5 single-space context lines), numstat `77 15` / `141 0`, compile only. Mismatch → `M6-CP3-PLAN-P13-SOURCE-VERTEX-FAN-SEED-STOP`; infrastructure → `M6-CP3-CB92A-P13-SOURCE-VERTEX-FAN-SEED-ORCH` |
-| 43C | `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC` | Implementation agent; RA-207.5: manifest 901 `9fbf3291…`, 901/901, membership 982; census typed verdicts; pinned digests per RA-207.5. Mismatch → `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB82A-P13-SOURCE-VERTEX-FAN-SEED-ORCH` |
+| 43A — COMPLETE | `M6-CP3-CB92-P13-SOURCE-VERTEX-FAN-SEED-IDENTITY` | Implementation agent, Linux; RA-207.3: `c377b206…` (285 lines, keep its 5 single-space context lines), numstat `77 15` / `141 0`, compile only. Mismatch → `M6-CP3-PLAN-P13-SOURCE-VERTEX-FAN-SEED-STOP`; infrastructure → `M6-CP3-CB92A-P13-SOURCE-VERTEX-FAN-SEED-ORCH` |
+| 43C — NEXT | `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC` | Implementation agent; RA-207.5: manifest 901 `9fbf3291…`, 901/901, membership 982; census typed verdicts; pinned digests per RA-207.5. Mismatch → `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB82A-P13-SOURCE-VERTEX-FAN-SEED-ORCH` |
 | 43B (Review, after 43) | `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l, Vase) → CB → TB | Claude, scratch build on the post-CB90, post-O32a state. After TB80 it opens with the RA-204.9 O30 decision. First measurement: same-direction interior edges right after assembly and after `orient_quads_to_source_normals`, by patch. Then decide whether the pre-optimization gate applies final quality thresholds (DESIGN §4.9). Time O27 once orientation passes. Its TB pins only typed verdicts and counts already observed on Linux (RA-203.2) |
 | 44 (Review, parallel) | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49) → CB → TB | Claude, scratch build; probe DEFN, then exact patch |
 | 44A (Review, after P13-l) | `M6-CP3-DEFN-P13-RELIEF-NOISE-TIES` (O31) | Claude, scratch build; relief critical points decided by rounding noise (RA-204.6) |
@@ -175,11 +169,11 @@ Rows 42J and 42K completed in separate turns; 42K matched. The implementation ag
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB92-P13-SOURCE-VERTEX-FAN-SEED-IDENTITY** (apply RA-207.3 exactly).
+`load_next`: **M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC** (artifact-only immutable 901-row gate; RA-207.5).
 - CB89 compiled source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, immutable package artifact `13370954424`, 28/28 hashes, eight GMP/GMPXX targets; no test execution.
 - TB79 artifact-only gate (RA-203.6) finished: 899/899, census MATCH.
 - RA-204 completed the O30 Review; CB90 and TB80 are done. The fixed-field replay is withdrawn: do not build a field fixture.
-- RA-206 exact CB91 and immutable TB81 are complete; [TB81](Architecture_M6_CP3_TB81_P13_Final_Validation_Binding_Full_Gate_Execution_Report_20261105.md) passed 899/899, expected census and seven pinned Linux digests. O32a Review independently adjudicated; CB92 next.
+- RA-206 exact CB91 and immutable TB81 are complete; [TB81](Architecture_M6_CP3_TB81_P13_Final_Validation_Binding_Full_Gate_Execution_Report_20261105.md) passed 899/899, expected census and seven pinned Linux digests. O32a Review independently adjudicated; CB92 compiled; TB82 next.
 - Do not resume or apply `M6-CP3-CB84-P13-LINUX-VASE-DIAGNOSTIC-TIMING` (withdrawn).
 - Review track, only with scratch-build execution:
   - `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (O32a, Review complete; CB92 next; RA-205.4);

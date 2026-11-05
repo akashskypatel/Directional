@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-CB92-P13-SOURCE-VERTEX-FAN-SEED-IDENTITY`. **Apply [RA-207](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md) §3's exact patch** (`c377b206…`). The prose [CB92 plan](.agents/Directional/Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity_Plan_20261105.md) is superseded. Then TB82 (step 43).
+> **Current canonical next:** `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC` (RA-207.5). CB92 exact RA-207.3 patch compiled successfully from `d9921cdd5a174bbb00b68387082cf08df80f97c5` as immutable artifact `13427203329` ([run 42052009404](https://github.com/akashskypatel/Directional/actions/runs/42052009404)); no project runtime has been executed. Next is full 901-row artifact-only gate and census.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -7,7 +7,7 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — RA-207: O32a seed mechanism confirmed; exact CB92 (per-fan seeding) → TB82 next; O32b–e, O33 open (2026-11-05)
+## CURRENT — CB92 exact source/compile complete; TB82 immutable 901-row gate next; O32b–e, O33 open (2026-11-05)
 
 - [x] **The O32a seed Review was reviewed by [RA-207](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md)** (re-entry; scratch build):
   - **Stands:** vertex seeds were placed by lowest face row and de-duplicated by (face row, barycentrics), so the rail collision depended on row order. Typed-fan placement gives 1,416 seeds (identical digest) and identical trace (189,462) and strand (30,989) counts in four orders. Quads still vary (O32e).
@@ -394,7 +394,7 @@
      - **Pinned:** the seven `platform-digest` lines byte-identical to TB80's.
      - **Verified:** [TB81 report](.agents/Directional/Architecture_M6_CP3_TB81_P13_Final_Validation_Binding_Full_Gate_Execution_Report_20261105.md) — [gate 41985957797](https://github.com/akashskypatel/Directional/actions/runs/41985957797) 899/899 PASS, 1,806/1,806 checksums; [census 41985991943](https://github.com/akashskypatel/Directional/actions/runs/41985991943) expected 1 PASS/2 RED, 9/9 hashes; seven digests byte-identical to TB80; no package/source mutation; no new stable event. **Next separate Review:** `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` under RA-206.7 / RA-205.4.
   - **RA-207 sequence:** steps 42–43, one turn each, in order. The implementation agent takes both, and starts 43 only after 42 is verified.
-  42. [ ] **NEXT `M6-CP3-CB92-P13-SOURCE-VERTEX-FAN-SEED-IDENTITY`** (CB, compile only; RA-207.3):
+  42. [x] **COMPLETE `M6-CP3-CB92-P13-SOURCE-VERTEX-FAN-SEED-IDENTITY`** (CB, compile only; RA-207.3):
      - Precheck: `git diff --quiet 96ee281a40920f21eb911880a3b2c458ef4f0563 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
      - Patch `.agents/Directional/Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity.diff`:
        - SHA-256 `c377b206c195613b045b0f5a431df5dc31e553035343b567cdeb2ba0751834fa`, 285 lines; keep its 5 single-space context lines;
@@ -402,7 +402,7 @@
        - `141 0` `tests/SurfaceCellREPackageTests.cpp` → `a169667c6c6705be547b257295e6d9eb5ea2d1f933f6958370c7e806cbb28e90`.
      - Build: one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`.
      - Mismatch → `M6-CP3-PLAN-P13-SOURCE-VERTEX-FAN-SEED-STOP`; infrastructure → `M6-CP3-CB92A-P13-SOURCE-VERTEX-FAN-SEED-ORCH`.
-  43. [ ] **`M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC`** (TB-EXEC; RA-207.5):
+  43. [ ] **NEXT `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC`** (TB-EXEC; RA-207.5):
      - Gate: [901-row manifest](.agents/Directional/Architecture_M6_TB82_P13_Vertex_Fan_Seeds_Full_Gate_Case_Manifest.tsv) `9fbf329167cbe84698d5a08eda6e5374200c7729a5f0f1e4292836227902f878` (TB78 899 prefix byte-identical plus GUARD rows 900–901); ledger v5; **901/901**, membership 982.
      - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; Vase RED `SelfIntersectingFace` within 600 s. Trace, cell and quad counts recorded, not pinned.
      - **Pinned:** gate rows 795/796/797/864 and census Cylinder and BunnyRandom digest lines byte-identical to TB81; Vase's line identical to TB81 through `global-conformity-baseline`.
