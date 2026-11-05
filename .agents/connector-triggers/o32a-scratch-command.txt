@@ -1,3 +1,2 @@
-operation=apply
-base_sha=4e151e5c139d09ecabca663ea1125d0544c32abb
-scope=disposable_review_scratch
+operation=compile-and-capture
+source=4499643bc5535d95abd962070dfd58b3f7022895
