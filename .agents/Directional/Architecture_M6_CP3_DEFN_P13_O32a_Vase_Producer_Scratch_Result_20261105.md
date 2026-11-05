@@ -1,0 +1,22 @@
+# O32a actual Vase producer scratch result — WIP (2026-11-05)
+
+**Canonical turn:** `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS`. This is a Review scratch experiment, not product acceptance or a successor freeze. It supplements the existing O32a WIP documents; formally consolidate them before closeout.
+
+**Verified execution:** isolated GMP compile [42007963779](https://github.com/akashskypatel/Directional/actions/runs/42007963779), source SHA `59f605752369908cdc0fb0388485892742caf462`, compile ZIP artifact `13405864387` SHA256 `f4bea9a30dc50184c3d4c8105c871f810b58d0d4932eca546eb04af2c2d5c2dd`. Its original capture attempt failed before producer execution due to missing adjacent `test-data/benchmarks/fixtures`. Follow-up scratch-only [42010784348](https://github.com/akashskypatel/Directional/actions/runs/42010784348) reused the *same* binary and source archive, verified package `SHA256SUMS`, extracted packaged fixture data, ran base + three consistent face/field permutations, and preserved all four `coverage` inventories. Capture artifact `13405669805` SHA256 `a8841ded5d453e2d2bde2002d24904b5ef7d665c5f4d03c2c9331996ad2f9b7e`; capture log artifact `13405624699` SHA256 `f423fecd66ffc33f46c9f297fed62c4cf1d0257dcd0cf47c6e955dd4b165f572`. All internal capture hashes verified. GTest exits 1 intentionally from `O32A_SCRATCH_CAPTURE_COMPLETE`; this is not a passing product test.
+
+| Source-face order | Rail seeds | Coverage / final seeds | Admitted ReliefCritical seeds | Suppressed from observed candidate union |
+|---|---:|---:|---:|---:|
+| Original | 284 | 1456 | 1171 | 65 |
+| Permutation 1 | 284 | 1460 | 1175 | 61 |
+| Permutation 2 | 284 | 1458 | 1173 | 63 |
+| Permutation 3 | 284 | 1455 | 1170 | 66 |
+
+**Measured first divergence:** `relief_roots`, before adaptive coverage; zero extra adaptive seeds here. The logged canonical face multiset (2404 triangles), rail semantic digest and rail seed digest, 369 relief roots, 1274 target values, 1274 relief labels and admitted singularity (source vertex 357) are identical. The record does not independently inventory all input `reliefCriticalVertices` or all field-network authority.
+
+**Independent causal reconstruction:** `vertex_point` chooses `incident[vertex].front()`, where the incident list is sorted by *face row*. `initialize_seed` deduplicates on (face row, rounded barycentric triple). Parse the complete emitted ordered `O32A_FACE` records and existing rail seed (face, endpoint vertex) keys; then predict admission of each relief-critical source vertex iff its first incident face/vertex is not already in the rail chart set. This correctly predicts **every actual admitted vertex** among the union of 1236 observed candidates in **all four** logs; suppressed totals are exactly 65/61/63/66, every suppressed candidate is a boundary rail endpoint, and non-rail candidate admission is invariant. This demonstrates the observed source-row collision mechanism, rather than an adaptive seed tie. A canonical-minimum semantic-face surrogate predicts the same 1132 admitted source vertices under all four permutations, but it is *not* compiled, fan-/sheet-safe, or necessarily a correct production policy.
+
+**Correction of previous WIP:** prior Continuation 3 incorrectly claimed the production path does not fill `reliefCriticalVertices`. In fact `src/pipeline/RemeshPipeline.cpp` pushes each retained `reliefTopology.criticalPoints` vertex into `tracingOptions.reliefCriticalVertices`; `SurfaceCellTracing.cpp` admits both `reliefCriticalVertices` and `reliefRootVertices` as `ReliefCritical`. The earlier root-only synthetic experiment cannot represent the complete producer path. This correction supersedes that claim.
+
+**Evidence backup:** `Directional_O32a_Vase_Four_Captures_20261105.zip` SHA256 `c7c7bc293b80f610dcc69a8414ae0355735c8d2a656a5cf109c60f3a3a8b19c2` (four raw Vase logs, independent collision checker and JSON proof, corrected general analyzer output, SHA256SUMS). The proof program executed with `STATUS=COMPLETE`.
+
+**Still pending:** source-fan/hard-rail-side-safe correction and C++ scratch falsification; downstream trace/strand changes, formal Review closeout, documentation reconciliation, and exactly one bounded Code + Build successor. The main working branch has no source/test/fixture/selector/workflow changes. The temporary scratch branch and Drive staging patch must be retired after the evidence is secured. **Keep this canonical Review IN_PROGRESS.**
