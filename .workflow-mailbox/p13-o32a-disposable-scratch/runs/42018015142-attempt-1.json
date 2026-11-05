@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workflow_key": "p13-o32a-disposable-scratch",
+  "workflow": "O32a isolated scratch producer probe",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/o32a-scratch-workflow.yml@refs/heads/scratch/p13-o32a-seed-review-20261105",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "1d53cb7f5dde6661a9c33483e44f72cb75292558",
+  "source_sha": "1d53cb7f5dde6661a9c33483e44f72cb75292558",
+  "source_ref": "refs/heads/scratch/p13-o32a-seed-review-20261105",
+  "ref": "refs/heads/scratch/p13-o32a-seed-review-20261105",
+  "ref_name": "scratch/p13-o32a-seed-review-20261105",
+  "run_id": 42018015142,
+  "run_attempt": 1,
+  "run_number": 3,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/42018015142",
+  "result": "success",
+  "summary": "Disposable O32a scratch probe; never production-gating evidence.",
+  "reported_at": "2026-11-05T11:20:10Z",
+  "mailbox_branch": "workflow-mailbox",
+  "artifacts": [
+    {
+      "id": 13410725676,
+      "name": "agent-workflow-schema-validation-42018015142",
+      "size_in_bytes": 437,
+      "digest": "sha256:15d63e585d04b91f1747ef4c722e641c4e764ad3a27f36b1e6070fdec4cc6609",
+      "expired": false,
+      "created_at": "2026-11-05T11:19:23Z",
+      "expires_at": "2026-11-12T11:19:22Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42018015142/artifacts/13410725676",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13410725676/zip"
+    },
+    {
+      "id": 13410446348,
+      "name": "agent-workflow-schema-validator-log-42018015142",
+      "size_in_bytes": 488,
+      "digest": "sha256:d1e837c3a4e51e5228b7cf7fe58f04d8b38881ca516c5e39515044280205919b",
+      "expired": false,
+      "created_at": "2026-11-05T11:19:24Z",
+      "expires_at": "2026-11-12T11:19:23Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42018015142/artifacts/13410446348",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13410446348/zip"
+    },
+    {
+      "id": 13409628190,
+      "name": "workflow-mailbox-publisher-log-42018015142-attempt-1",
+      "size_in_bytes": 377,
+      "digest": "sha256:b0f545d6a2129d525b0e6860476271514908b8dbdc7eadbc606f1a700ec25948",
+      "expired": false,
+      "created_at": "2026-11-05T11:20:07Z",
+      "expires_at": "2026-11-19T11:20:06Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42018015142/artifacts/13409628190",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13409628190/zip"
+    },
+    {
+      "id": 13409213996,
+      "name": "agent-google-drive-patch-log-42018015142",
+      "size_in_bytes": 940,
+      "digest": "sha256:062411d97c152e96ffd7ecebe20ebba145fdf0d6cdd87998938ff051e8a3aa3c",
+      "expired": false,
+      "created_at": "2026-11-05T11:19:48Z",
+      "expires_at": "2026-11-19T11:19:47Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42018015142/artifacts/13409213996",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13409213996/zip"
+    },
+    {
+      "id": 13409149254,
+      "name": "agent-google-drive-patch-result-42018015142",
+      "size_in_bytes": 455,
+      "digest": "sha256:0799adf8cfd49e39138055bc43b1389887fef621a3a88654f2a57198e198bd5f",
+      "expired": false,
+      "created_at": "2026-11-05T11:19:47Z",
+      "expires_at": "2026-11-19T11:19:46Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42018015142/artifacts/13409149254",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13409149254/zip"
+    }
+  ]
+}
