@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-CB95-P13-QUAD-SELF-INTERSECTION-OWN-PLANE` (exact [RA-209](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_Single_Writer_Own_Plane_20261105.md) §3 frozen patch `8207716b…`, compile only). CB93 and CB94 are complete; CB94 source `223d965a…`, immutable GMP package `13452156380` verified. Then separate CB96 and TB83. Steps 44–48.
+> **Current canonical next:** `M6-CP3-CB96-P13-COMPLETION-EMBEDDING-OWN-PLANE` (RA-209 §3 frozen patch `a7e81da5…`, compile only). CB95 exact source `1c048ebe…` and immutable eight-target GMP/GMPXX package complete; CB93 and CB94 already complete. Then separate artifact-only TB83. Steps 44–48.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -441,13 +441,13 @@
        - `3 104` `src/pipeline/RemeshPipeline.cpp` → `18043141fe7720915f46d7d400ff86146c8a39a8346222ea80a4986df8040629`;
        - `0 31` `tests/SurfaceCellsPhase10Tests.cpp` → `913b97e7a3731aff9899f108cb81d9499517f55071a87376355ddd8e6da27bac`.
      - Applied as `223d965a79b0e6fd294436233dd8e4c05be1781a`. [Run 42104344087](https://github.com/akashskypatel/Directional/actions/runs/42104344087) passed eight-target Linux Release GMP/GMPXX compile, `runtimeExecution=false`; artifact `13452156380` SHA-256 `03b1818aa971441b314f059261135bd2accac75d82fdd0ece5ceb13a500a1f50`, 28/28 manifest. [Owning record](.agents/Directional/Architecture_M6_CP3_CB94_P13_Orientation_Single_Writer_Code_Build_Record_20261105.md). No TB executed.
-  46. [ ] **NEXT `M6-CP3-CB95-P13-QUAD-SELF-INTERSECTION-OWN-PLANE`** (CB, compile only; RA-209.3; precheck the CB94 results):
+  46. [x] **COMPLETE `M6-CP3-CB95-P13-QUAD-SELF-INTERSECTION-OWN-PLANE`** (CB, compile only; RA-209.3; precheck the CB94 results):
      - Patch `.agents/Directional/Architecture_M6_CP3_CB95_P13_Quad_Self_Intersection_Own_Plane.diff`:
        - SHA-256 `8207716b9993a9d1e290ff4fe9eb4794ff505dfb601708bcd965c68cf4d0c014`, 158 lines; keep its 4 single-space context lines;
        - `40 35` `include/directional/validation/MeshValidator.h` → `15b813d3b1d312d2a7f6c742c951c002b7b633f3cee00ae317f1872d83a08f3e`;
        - `49 0` `tests/SurfaceCellsPhase10Tests.cpp` → `4cd349c3b7b6bdfa61032d38042018e013cad722c9f01d17b005907d43ae1e3a`.
-     - Mismatch → `M6-CP3-PLAN-P13-QUAD-SELF-INTERSECTION-OWN-PLANE-STOP`.
-  47. [ ] **`M6-CP3-CB96-P13-COMPLETION-EMBEDDING-OWN-PLANE`** (CB, compile only; RA-209.3; precheck the CB95 results):
+     - Applied exactly at source `1c048ebeecbd94999048d242a8c0f08257b1057a`; [Linux compile 42117890862](https://github.com/akashskypatel/Directional/actions/runs/42117890862) GREEN for eight Release/static GMP/GMPXX targets; artifact `13456259325` SHA-256 `dd9e698ffa6b2fa029a35af00d65c917ac7cfb11beaa1cde289dac69b33b0392`, 28/28 verified, `runtimeExecution=false`. [CB95 record](.agents/Directional/Architecture_M6_CP3_CB95_P13_Quad_Self_Intersection_Own_Plane_Code_Build_Record_20261105.md). No runtime executed.
+  47. [ ] **NEXT `M6-CP3-CB96-P13-COMPLETION-EMBEDDING-OWN-PLANE`** (CB, compile only; RA-209.3; precheck the CB95 results):
      - Patch `.agents/Directional/Architecture_M6_CP3_CB96_P13_Completion_Embedding_Own_Plane.diff`:
        - SHA-256 `a7e81da57d5d1bf37847ccf0b5ee3abeca5230c0605d35056e6a12d40b54f469`, 74 lines; 0 single-space context lines;
        - `9 12` `src/geometry/PureQuadCompletion.cpp` → `b756c3f29481112f10d382f479caad17861927e56e97ab4f574b6c6c87c200b8`;

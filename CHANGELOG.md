@@ -1,3 +1,9 @@
+## 2026-11-05 — CB95 own-plane quad self-intersection validator Code + Build COMPLETE / Linux GMP compile GREEN
+
+- **Turn:** `M6-CP3-CB95-P13-QUAD-SELF-INTERSECTION-OWN-PLANE` under RA-209.3; exact frozen diff SHA-256 `8207716b9993a9d1e290ff4fe9eb4794ff505dfb601708bcd965c68cf4d0c014` applied unchanged to `MeshValidator.h` and `SurfaceCellsPhase10Tests.cpp` as [source `1c048ebeecbd94999048d242a8c0f08257b1057a`](https://github.com/akashskypatel/Directional/commit/1c048ebeecbd94999048d242a8c0f08257b1057a); prescribed postimage hashes verified.
+- **Compile-only:** [run 42117890862](https://github.com/akashskypatel/Directional/actions/runs/42117890862); eight Linux Release/static targets passed with GMP/GMPXX authoritative linkage, exact source/package identity and `runtimeExecution=false`. Immutable package `13456259325`, GitHub ZIP SHA-256 `dd9e698ffa6b2fa029a35af00d65c917ac7cfb11beaa1cde289dac69b33b0392`, internal SHA256SUMS 28/28; archived source SHA-256 `256e768b8f330a5ddf071e37f6e6ce593f9dac958644c86cd58527cbb4b159c9`. [Owning CB95 record](.agents/Directional/Architecture_M6_CP3_CB95_P13_Quad_Self_Intersection_Own_Plane_Code_Build_Record_20261105.md). No tests or benchmarks executed.
+- **Standing acceptance unchanged:** CP2 491/491, stable 66/17/49, debt 1; selector497 and CP3 unpromoted. Next separate turn `M6-CP3-CB96-P13-COMPLETION-EMBEDDING-OWN-PLANE`; TB83 later.
+
 ## 2026-11-05 — CB94 single-writer orientation Code + Build COMPLETE / Linux GMP compile GREEN
 
 - **Turn:** `M6-CP3-CB94-P13-ORIENTATION-SINGLE-WRITER` under RA-209.3. Exact frozen patch `a19dd0cde27d1a95f24f4c40ec89d9264fdb44f5aae59da75af5abb1465e52b7` removed the second orientation writer and its obsolete test, changing exactly three prescribed source paths. Source commit [`223d965a79b0e6fd294436233dd8e4c05be1781a`](https://github.com/akashskypatel/Directional/commit/223d965a79b0e6fd294436233dd8e4c05be1781a), all prescribed postimage SHA-256 hashes confirmed.
