@@ -1,3 +1,0 @@
-Turn: M6-CP3-CB95-P13-QUAD-SELF-INTERSECTION-OWN-PLANE
-Request: exact source snapshot for patch verification
-Parent: 4e0686f614f6b6e5d54306211f1ae539914478d1

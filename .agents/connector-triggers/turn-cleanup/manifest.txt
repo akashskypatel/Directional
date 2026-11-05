@@ -1,2 +1,0 @@
-# CB95 temporary-source-snapshot marker
-.agents/connector-triggers/source-snapshot/cb95-20261105213747822.txt
