@@ -7,7 +7,7 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — TB81 COMPLETE / MATCH; next O32a source-row permutation seed Review; O33 open (2026-11-05)
+## CURRENT — O32a Review COMPLETE; next CB92 source-vertex fan seed identity (compile only); O33 open (2026-11-05)
 
 - [x] **The TB80 Review was reviewed by [RA-206](.agents/Directional/Architecture_M6_CP3_TB80_REV_Review_Final_Validation_Binding_Per_Vertex_20261105.md)** (scratch probes; the TB80 raw artifacts were read):
   - **Stands:** the evidence verification, census MATCH, and the RA-204.9 comparison (CloseSheets equal, so O30a holds in fixed order; O30b open).
