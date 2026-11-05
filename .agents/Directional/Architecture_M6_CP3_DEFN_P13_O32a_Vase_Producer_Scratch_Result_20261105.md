@@ -40,3 +40,12 @@ Downloaded artifact `13409544451` and verified its outer ZIP SHA-256 `ea939e9519
 - All four: `relief_roots=relief_regions=separatrices=coverage=1416`, semantic digest `7f299f1f1a1b2c99a5f170e316a828357545cb9da96154c3c5e9e46b4725042c`.
 - Sorted upstream source-face (2,404), rail (284), relief-root (369), target-size (1,274) and relief-label (1,274) records are each exactly equal under all four row orders. **Zero** explicit `O32A_HARD_EDGE` records were emitted; Vase cannot prove a protected-edge case.
 - Each run intentionally exits 1 following `O32A_SCRATCH_CAPTURE_COMPLETE`, so this is a completed **scratch capture**, not a passing product test. No tracing/strand evidence can follow from these early-exit logs.
+
+
+## Continuation 4 — independent downstream attempt and scratch controls (2026-11-05)
+
+The unchanged GMP-linked compiled scratch package `13410127667` (source `53c381db960eb2fa632f46719528374e2c9eb926`) was executed locally, without rebuilding. With `DIRECTIONAL_O32A_PERMUTATION=1` and the deliberate seed-capture abort disabled, Vase completed in 246,365 ms with typed RED `NotProductionReady:completion / SelfIntersectingFace`: 189,462 trace segments, 30,989 strands, 26,817 arrangement cells, 67,782 completed quads. This is a single scratch observation, not acceptance. A simultaneously running unpermuted control was killed with exit -9 by container memory limits before its digest: **no valid downstream baseline or cross-permutation comparison exists**. Plane and BunnyRandom failed to exercise the seed generator (phase-front path and earlier field-transport failure respectively).
+
+On isolated scratch branch `scratch/p13-o32a-seed-review-20261105`, commit `91aff2b78c2454b5f72452ca685d05f8194c5f01` added two C++ review-only falsifiers: typed source-authority split/coalesced vertex fans under two source-row orders; and two distinct mandatory rail IDs sharing a source vertex. Commit `ae9c92881692a6b417bccfc82bea48cb94c0ac09` added temporary compile workflow `o32a-review-scratch-compile.yml`. **Compile and test results are unverified**; do not claim green. Validate fixture admissibility, compile remotely and execute controls/mutants, then collect sequential full Vase base plus ≥3 permutations and measure downstream traces/strands. Remove the temporary scratch workflow after securing evidence.
+
+This canonical O32a Review is still unfinished. No working-branch product, test, fixture, selector, or workflow source was modified; no successor or CP3 promotion is authorized by this evidence.
