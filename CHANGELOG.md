@@ -1,3 +1,14 @@
+## 2026-11-05 — RA-205: RA-204 reviewed; O32 source-row permutation opened; CB90 → TB80 stand
+
+- **Turn:** re-entry of `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`; [RA-205](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md), using scratch probes.
+- **Stands:** RA-204's cross-library cell-order mechanism and CB90. Completion's hash containers are order-safe.
+- **Corrections to RA-204:**
+  - a completed count that depends on the cell schedule violates DESIGN §10.1 (completion's ownership repair: patch-id tie, bounded budget);
+  - CB90's tie-break is a row-derived order, so it is interim;
+  - "two draws" overclaimed while O30b is open.
+- **O32 (CP3-exit):** a consistent source-face row permutation changes Vase's seeds (1,456 → 1,461), traces (192,482 → 192,770–193,624), strands and quads (67,746 → 67,771–67,784). Counts through `global-conformity-baseline` and the verdict are invariant. The first owner is `generate_deterministic_surface_seeds`; the seed-candidate tie is refuted.
+- **Sequence:** CB90 → TB80 (implementation agent), then the Review's O32a (seeds), then P13-l. Pin only permutation-invariant values. Stable 66/17/49, debt 1, CP2 491/491.
+
 ## 2026-11-05 — RA-204: O30 is an arrangement cell-order defect; exact CB90 → TB80
 
 - **Turn:** `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`, realigned. [RA-204](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md) reviews the ChatGPT O30 Review, using scratch builds: FMA off, a GCC/libstdc++ field generator, and libc++ randomized ties.

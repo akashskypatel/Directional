@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-11-05 · `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY` closed by [RA-204](Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md). O30 is an arrangement cell-order defect, not the field. Exact CB90 → TB80 next. The ChatGPT [O30 Review](Architecture_M6_CP3_DEFN_P13_Platform_Split_Digest_Adjudication_20261105.md) compared the digests correctly, but its field branch is withdrawn. Accepted CP2 491/491, stable 66/17/49, debt 1; selector497/CP3 unpromoted.
+**Currency:** 2026-11-05 · `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY` re-entered: [RA-205](Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md) reviews [RA-204](Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md). CB90 → TB80 stand. **O32 (new, CP3-exit):** production is not invariant under source-face row permutation (DESIGN §10.1). The first owner is the seed set. Accepted CP2 491/491, stable 66/17/49, debt 1; selector497/CP3 unpromoted.
 - **Before it:** P13-m, fixed by [RA-202](Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md). The fix is Amendment 34 and exact CB85–CB88, removing three memory-bound census-path scans plus two Amendment 33 sites.
 - **The block.** The ChatGPT Review saw a conflict between "runtime-free" and a probe re-run. The fault is RA-202.9's route: it named no track and asked one platform to explain a split between two. Review scratch probes are a duty (RA-166.6 F6, RA-188.1), Linux runtime is a TB, and no policy changes.
 - **TB78** (CB85–CB88) matches on gate 899/899 and on every census line except the count. Vase reaches RED `SelfIntersectingFace` in 268.93 s on Linux, so P13-m's Linux objective is met.
@@ -16,9 +16,11 @@
   - **The field is not the cause:** five distinct Vase fields give the same macOS output.
   - **The cause:** `SurfaceArrangement.cpp:6762` assigns cell ids in a non-injective key order. With randomized `std::sort` ties, one build gives Vase 67,753 to 67,827 quads.
   - **The fix:** CB90 adds a halfedge tie-break. After it, Vase gives 67,746 under every order, and the local gate is 898/899 (only O16).
+- **RA-205:** RA-204's mechanism and CB90 stand. Completed counts that change with the cell schedule violate DESIGN §10.1. A Vase source-face row permutation changes seeds (1,456 → 1,461), traces, strands and quads (67,746 → 67,771–67,784). That is O32.
 - **NEXT `M6-CP3-CB90-P13-ARRANGEMENT-CELL-ORDER-TIEBREAK`** (exact patch, compile only), then `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-EXEC`. TB80 records the RA-204.9 comparison.
 - Review track (Claude, scratch build):
-  - `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l, post-CB90; opens with the RA-204.9 O30 decision after TB80);
+  - `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (O32a, next);
+  - `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l, after O32a; opens with the RA-204.9 O30 decision after TB80);
   - `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e);
   - `M6-CP3-DEFN-P13-RELIEF-NOISE-TIES` (O31, after P13-l).
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).
@@ -130,6 +132,16 @@ The separation is deliberate: accepted selector continuity and frozen invariants
     - Exact fix CB90 (halfedge tie-break) gives 67,746 deterministically.
     - TB80's CloseSheets arrangement (`5612032b…`, equal embedding on both platforms) is the cross-platform falsifier.
   - **O30b.** Linux's Vase embedding differs (`f2fc0cca…` against `909330af…`). Sort ties, FMA and ±1-ULP field noise are excluded. Open: libm, the x86 `long double` grid key, or a single 1e-9 hash flip. TB80's Vase count decides (RA-204.9).
+- **O32, source-row permutation (DESIGN §10.1; M3/M6 exit; CP3-exit condition):** with mesh and field unchanged and only face rows reordered, Vase gives:
+  - seeds 1,456 / 1,461;
+  - trace segments 192,482 / 192,770–193,624;
+  - strands 30,989 / 30,998–31,008;
+  - quads 67,746 / 67,771–67,784.
+
+  Counts through `global-conformity-baseline`, the arrangement cells and the verdict are invariant.
+  - Owners, upstream first: a, `generate_deterministic_surface_seeds`; b, tracing; c, strand selection; d, the canonical cell key (CB90 is interim); e, completion ownership repair (patch-id tie, budget).
+  - Refuted lead: the seed candidate face-row tie.
+  - [RA-205](Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md).
 - **O31, relief noise:** with bit-identical input, relief branches differ by build (CloseSheets 40/38/40, Cylinder 44/44/48). Exact critical-point comparisons on a contractible weighted sum decide near-constant relief by rounding. Completed topology is unaffected today. Review after P13-l.
 - **P13-f, Vase:** one source-chart graph per mesh (CB71) and per completion pass (CB72), lent only to callees whose inputs it borrows exactly (Amendment 27). macOS probe: Vase reaches a typed RED at `completion` in 138 s. [RA-195](Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Probe_Adjudication_20261101.md).
 - **P13-g, Vase:** patch 1200 (bounded-combinatorial, variant 15, bow-tie) is a simple concave octagon whose only embedded quadrangulations are fans that the fixed split never reaches. The validator projects each quad on its own plane and accepts folds. Fix: Amendment 28 (source-orientation predicate, exhaustive forward search, typed `NoEmbeddedQuadrangulation`, typed terminal detail), exact CB73/CB74/CB75 → TB69 ([RA-196](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md)).
@@ -180,6 +192,7 @@ macOS O16 stays separate.
   - A count seen on one platform is not a prediction for another: RA-202.9 pinned macOS's 67,829 and Linux gave 67,784 (O30). A cross-platform registration pins typed verdicts, topological counts and values the executing platform has already produced. Anything else is recorded, not pinned.
   - To localize a split, print bit-exact input digests and per-stage hashes on both platforms rather than reasoning from one (RA-203).
   - **Noise carriers.** A stage hash that includes exact double bits, or an upstream digest, changes with any last-bit noise. The atlas, network, cut graph, topology plan, conformity baseline and tracing hashes are noise carriers. Localize at the first differing stage that is **not** one (RA-204.2).
+  - **Representation order.** Cross-library agreement is not determinism. DESIGN §10.1 also requires source-face row, output row and scheduling permutations to preserve the semantic output. A tie-break on row-derived ids (CB90) fixes the first and not the second. Run a row permutation before calling an order-dependent result deterministic (RA-205).
   - **Unspecified order.** Different standard libraries break `std::sort`, heap and hash-table ties differently. Run the census once under libc++ `-D_LIBCPP_DEBUG_RANDOMIZE_UNSPECIFIED_STABILITY`: if outcomes vary between processes, the split is an order defect, and a total comparator fixes it (O30a, RA-204.4).
 - **Masked or unconsumed stimulus:** a stronger earlier guard, or a mutation of data that the checked path never reads, makes a negative vacuous; confirm that the intended guard actually fires (RA-169, RA-178, TB35-REV).
 - **Oracle copies the producer:** an oracle that re-implements the producer's formula proves nothing; derive it independently (RA-168).

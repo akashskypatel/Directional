@@ -34,12 +34,12 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-05 · [RA-204](Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md) reviews the ChatGPT [O30 digest Review](Architecture_M6_CP3_DEFN_P13_Platform_Split_Digest_Adjudication_20261105.md) and withdraws its generated-field branch. The atlas digest hashes exact `effort` bits, so it and five later hashes are noise carriers. macOS output is unchanged across five distinct Vase fields. With randomized `std::sort` ties, one macOS build gives Vase 67,753 / 67,806 / 67,827 / 67,809. **O30a root cause:** `SurfaceArrangement.cpp:6762` assigns cell ids in `cell_cycle_key` order, and that key is not injective (10,891 tied pairs among 26,817 cells). Exact fix CB90 adds a halfedge tie-break, after which Vase gives 67,746 under every order. O30b (Linux-only Vase embedding) and O31 (relief noise) are open. |
+| Currency | 2026-11-05 · [RA-205](Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md) reviews [RA-204](Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md). The cross-library root cause stands: arrangement cell ids followed unspecified `std::sort` ties, and exact CB90 fixes that. RA-204's "no longer a determinism defect" was wrong under DESIGN §10.1. **O32 (new, CP3-exit):** a source-face row permutation changes Vase's seed set (1,456 → 1,461), traces (192,482 → 192,770–193,624), strands and quads (67,746 → 67,771–67,784). Counts through `global-conformity-baseline` and the verdict are invariant. CB90 → TB80 stand; the Review track does O32a (seeds) before P13-l. |
 | Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing` · **CB89 source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, artifact `13370954424`**, [record](Architecture_M6_CP3_CB89_P13_Census_Platform_Digest_Code_Build_Record_20261104.md), [compile run 41932156223](https://github.com/akashskypatel/Directional/actions/runs/41932156223), eight Linux GMP/GMPXX targets PASS, 28/28 checksums, `runtimeExecution=false`. TB79 execution verified: 899/899 gate, membership 980; census MATCH. |
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06; unchanged. TB71 remains unpromoted candidate only. |
 | Latest candidate | **TB79** CB89 immutable gate **899/899 PASS**, membership 980, 81 deferred, 1,806/1,806 hashes; census Cylinder PASS, BunnyRandom P13-e RED, Vase RED 67,784 quads; registered outcome **MATCH**, seven Linux digests retained verbatim. Unpromoted. [TB79 report](Architecture_M6_CP3_TB79_P13_Platform_Digest_Full_Gate_Execution_Report_20261105.md). |
 | Regression accounting and debt | Accepted CP2 **491/491**; stable **66/17/49**, debt **1**; ledger v5 81 deferred (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE), current membership **980**; selector497 and CP3 unpromoted. DR1/DR3 open, DR2/DR4 to M8-CP2. |
-| Active boundary | RA-204 Review COMPLETE. Next is the exact CB90 (compile only), then TB80: gate 899/899, census, seven digest lines, and the RA-204.9 comparison recorded. No acceptance or promotion. Carried: O30b, O31, P13-l, P13-e and O27–O29. |
+| Active boundary | RA-204, reviewed by RA-205, COMPLETE. Next is the exact CB90 (compile only), then TB80: gate 899/899, census, seven digest lines, and the RA-204.9 comparison recorded. No acceptance or promotion. Carried: O30b, O31, O32a–e, P13-l, P13-e and O27–O29. |
 
 ## Mandatory next turn — `M6-CP3-CB90-P13-ARRANGEMENT-CELL-ORDER-TIEBREAK` (Code + Build, compile only, Linux)
 
@@ -59,6 +59,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
   - census Cylinder PASS; BunnyRandom P13-e; Vase RED `SelfIntersectingFace` within 600 s with 192,482 / 26,817; `completedQuads` recorded, not pinned;
   - seven digest lines verbatim, and the RA-204.9 comparison table as observations.
 - **Preserve:** CP2 491/491, stable 66/17/49, debt 1, selector497 and CP3 unpromoted.
+- **RA-205 leaves CB90 and TB80 unchanged.** Pin only permutation-invariant values (RA-205.5); TB80 already records `completedQuads` without pinning it.
 
 ### Earlier: the O30 Reviews and TB79
 
@@ -142,12 +143,15 @@ Facts are in the records, `TODO.md` steps and Review track, `CHANGELOG.md` and t
 | 42E — Review COMPLETE | `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY` (O30) | [RA-204](Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md): noise carriers measured; O30a = arrangement cell ids follow unspecified sort ties; exact CB90; O30b, O31 opened |
 | 42F — NEXT | `M6-CP3-CB90-P13-ARRANGEMENT-CELL-ORDER-TIEBREAK` | Implementation agent, Linux; RA-204.7: `0931939d…` (36 lines, keep its 1 single-space context line), numstat `9 1` / `3 1`, compile only. Mismatch → `M6-CP3-PLAN-P13-ARRANGEMENT-CELL-ORDER-STOP`; infrastructure → `M6-CP3-CB90A-P13-ARRANGEMENT-CELL-ORDER-ORCH` |
 | 42G | `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-EXEC` | Implementation agent; RA-204.8: manifest 899 `9d2c1ec5…`, 899/899, membership 980; census Cylinder PASS, BunnyRandom P13-e, Vase RED `SelfIntersectingFace` < 600 s (192,482 / 26,817; quads recorded); seven digest lines; RA-204.9 table recorded. Mismatch → `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB80A-P13-ARRANGEMENT-CELL-ORDER-ORCH` |
-| 43 (Review, can start now) | `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l, Vase) → CB → TB | Claude, scratch build on the post-CB90 state (macOS 67,746). After TB80 it opens with the RA-204.9 O30 decision. First measurement: same-direction interior edges right after assembly and after `orient_quads_to_source_normals`, by patch. Then decide whether the pre-optimization gate applies final quality thresholds (DESIGN §4.9). Time O27 once orientation passes. Its TB pins only typed verdicts and counts already observed on Linux (RA-203.2) |
+| 42H — Review COMPLETE (re-entry) | `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY` | [RA-205](Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md): RA-204 reviewed; CB90/TB80 unchanged; O32 (§10.1 source-row permutation) opened, first owner the seed set |
+| 43 (Review, next) | `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (O32a) → CB → TB | Claude, scratch build. Make `generate_deterministic_surface_seeds` row-invariant: seed count and sorted-position digest equal under ≥3 permutations. Then re-measure tracing and strands and name O32b/c. The candidate tie (`AdaptiveSeedCandidate`) is refuted as owner |
+| 43B (Review, after 43) | `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l, Vase) → CB → TB | Claude, scratch build on the post-CB90, post-O32a state. After TB80 it opens with the RA-204.9 O30 decision. First measurement: same-direction interior edges right after assembly and after `orient_quads_to_source_normals`, by patch. Then decide whether the pre-optimization gate applies final quality thresholds (DESIGN §4.9). Time O27 once orientation passes. Its TB pins only typed verdicts and counts already observed on Linux (RA-203.2) |
 | 44 (Review, parallel) | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49) → CB → TB | Claude, scratch build; probe DEFN, then exact patch |
 | 44A (Review, after P13-l) | `M6-CP3-DEFN-P13-RELIEF-NOISE-TIES` (O31) | Claude, scratch build; relief critical points decided by rounding noise (RA-204.6) |
-| 45 | P13 re-census → O6/O9 where reached → matrix 6/6 → retire/FIXTURE/PRODUCT/OPEN slices → CP3-REV | One slice at a time |
+| 44B (Review) | O32b–e DEFNs (tracing, strand selection, canonical cell key, completion ownership-repair tie and budget), one stage each, upstream first | Claude, scratch build; each falsified by counts plus a row-invariant digest under ≥3 permutations (RA-205.5) |
+| 45 | P13 re-census → metamorphic census rows (O32) → O6/O9 where reached → matrix 6/6 → retire/FIXTURE/PRODUCT/OPEN slices → CP3-REV | One slice at a time |
 
-The implementation agent takes rows 42F and 42G, in order, one turn each, and starts 42G only after 42F is verified. Rows 43, 44 and 44A are probe turns on the Review track (Claude, scratch build). A turn that cannot run a scratch probe must not start them; it records BLOCKED at entry (RA-172, RA-198 to RA-203).
+The implementation agent takes rows 42F and 42G, in order, one turn each, and starts 42G only after 42F is verified. Rows 43, 43B, 44, 44A and 44B are probe turns on the Review track (Claude, scratch build). A turn that cannot run a scratch probe must not start them; it records BLOCKED at entry (RA-172, RA-198 to RA-203).
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
@@ -157,12 +161,14 @@ The implementation agent takes rows 42F and 42G, in order, one turn each, and st
 - RA-204 completes the O30 Review. Next is the exact CB90, then TB80. The fixed-field replay is withdrawn: do not build a field fixture.
 - Do not resume or apply `M6-CP3-CB84-P13-LINUX-VASE-DIAGNOSTIC-TIMING` (withdrawn).
 - Review track, only with scratch-build execution:
-  - `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l, post-CB90; opens with the RA-204.9 O30 decision after TB80);
+  - `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (O32a, next; RA-205.4);
+  - `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l, after O32a; opens with the RA-204.9 O30 decision after TB80);
   - the P13-e DEFN;
   - `M6-CP3-DEFN-P13-RELIEF-NOISE-TIES` (O31, after P13-l).
 - CB85–CB88, TB77–TB78 and the TB78 Review are complete; do not replay them.
 
 Read first:
+- [RA-205](Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md): §2, the RA-204 corrections; §3, the permutation measurements; §4, the seed-set localization; §5, the realignment; §6, the sequence.
 - [RA-204](Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md):
   - §1, the verdict on the ChatGPT O30 Review;
   - §2, the noise carriers;

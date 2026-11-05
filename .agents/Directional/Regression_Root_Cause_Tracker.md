@@ -1,3 +1,9 @@
+**RA-205 (2026-11-05; O32 opened, NOT stable):** [RA-205](Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md) reviews RA-204.
+- CB90 stands as the cross-library fix. It is interim for DESIGN §10.1.
+- **O32:** a Vase source-face row permutation changes seeds, traces, strands and completed quads, with the verdict invariant. First owner: the seed generator.
+- Completion's dependence on the cell schedule is a §10.1 defect, item O32e.
+- No accepted green lost: 66/17/49, debt 1.
+
 **RA-204 (2026-11-05; O30a root cause, NOT stable):** [RA-204](Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md) reviews the first-digest Review below.
 - **The field branch is withdrawn.**
   - Noise carriers: the atlas digest hashes exact `effort` bits, and the network, cut-graph, topology-plan, conformity and tracing hashes change with it.

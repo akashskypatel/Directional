@@ -5,7 +5,24 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — RA-204: O30 is an arrangement cell-order defect; exact CB90 → TB80 next (2026-11-05)
+## CURRENT — RA-205: CB90 → TB80 stand; O32 source-row permutation opened; Review O32a seeds next (2026-11-05)
+
+- [x] **RA-204 reviewed by [RA-205](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md)** (re-entry of `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`; scratch probes):
+  - **Stands:** the cross-library cell-order mechanism and CB90. Completion's 7 hash containers are order-safe (sum, or sort then de-duplicate), which RA-204 had not checked.
+  - **Corrections to RA-204:**
+    - Under DESIGN §10.1, a completed count that changes with the cell schedule *is* a determinism defect. The owner is completion's ownership repair: patch-id tie and bounded budget (`PatchDescriptor.cpp` 3120–3150).
+    - CB90's halfedge tie-break is a source-row-derived order, so it is interim for §10.1.
+    - "Two draws" overclaims while O30b is open.
+  - **O32 (new, CP3-exit):** a consistent source-face row permutation of Vase changes:
+    - seeds 1,456 → 1,461;
+    - trace segments 192,482 → 192,770 to 193,624;
+    - strands 30,989 → 30,998 / 31,008;
+    - quads 67,746 → 67,771 to 67,784.
+
+    Counts through `global-conformity-baseline`, the 26,817 arrangement cells and the verdict are invariant. CloseSheets keeps 200 and PASS.
+    - First owner: `generate_deterministic_surface_seeds`.
+    - Refuted: the `AdaptiveSeedCandidate` face-row tie.
+  - **Outcome:** CB90 → TB80 unchanged (steps 38–39). The Review does O32a before P13-l. Pin only permutation-invariant values.
 
 - [x] **O30 Review completed by [RA-204](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md)** (Claude, scratch builds: FMA off, GCC/libstdc++ field, libc++ randomized ties):
   - **The ChatGPT [O30 Review](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Platform_Split_Digest_Adjudication_20261105.md)** compared the digests correctly. It read the atlas hash as semantic, but the atlas digest hashes exact `effort` bits. It missed CloseSheets' Linux-only arrangement on equal embedding, and froze a 2,404×12 field replay that could not find the cause. Its field branch is withdrawn.
@@ -379,17 +396,30 @@
     - O30a's root cause is arrangement cell ids that follow unspecified `std::sort` ties, with exact fix CB90 (steps 38–39);
     - generator non-portability is recorded, not owned (four builds give four BunnyRandom fields), because output is robust to it.
     - Open: O30b (Linux-only Vase embedding; decided by TB80's Vase count, RA-204.9) and O31.
-  - [ ] **NEXT (Review, can start now) `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`** (P13-l; probe DEFN on the post-CB90 scratch state, where macOS Vase gives 67,746, Claude; after TB80 it opens with the RA-204.9 O30 decision; also time O27 once orientation passes; its TB pins only typed verdicts and counts already observed on Linux, RA-203.2):
+  - [x] **Re-entry of `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`: [RA-205](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md)** reviews RA-204 and opens O32.
+  - [ ] **NEXT (Review) `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS`** (O32a; Claude, scratch build; RA-205.4):
+    - Make the seed set from `generate_deterministic_surface_seeds` (`SurfaceCellTracing.cpp` 10297) invariant under source-face row permutation. Use the probe's `PROBE_PERMUTE_FACES`. The measure is the seed count plus a sorted 3D-position digest, under at least three seeds.
+    - Discriminate the leads: rail-sample seeding and the `seen` de-duplication key; the face-corner node layout of `intrinsicGraph` and its `nearest` distances; seed placement toward the chosen face's centroid.
+    - Then re-measure tracing and strand counts and name O32b/c.
+    - Outcome: an exact CB → TB that pins only permutation-invariant values.
+  - [ ] **(Review, after O32a) `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`** (P13-l; probe DEFN on the post-CB90, post-O32a scratch state; macOS Vase gave 67,746 before O32a; Claude; after TB80 it opens with the RA-204.9 O30 decision; also time O27 once orientation passes; its TB pins only typed verdicts and counts already observed on Linux, RA-203.2):
     - The completed Vase mesh (67,829 quads) has the source topology but is not consistently oriented: 27,966 interior edges are traversed the same way by both quads.
     - Leads, not conclusions: `orient_quads_to_source_normals` (`RemeshPipeline.cpp` 10949) flips each quad on its own by its (0,1,2) triangle normal and ignores lineage; or completed patches carry mixed winding before it.
     - First measurement: same-direction edges right after assembly and after the orientation pass, binned by patch. Then name the owner.
     - Also decide whether the pre-optimization gate applies the final quality thresholds to an un-optimized mesh. DESIGN §4.9 separates injectivity from quality; normal P95 179.9° and Jacobian −1 follow from the orientation.
   - **`M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT`** (P13-e; can run now, in parallel). A1 requires `4 − index` port classes. BunnyRandom's index −1 vertex 49 has 4 sector incidences in an 8-face fan, on macOS, FMA-off and Linux (TB65). Decide whether A1's sector rule or the field owns this.
   - **`M6-CP3-DEFN-P13-RELIEF-NOISE-TIES`** (O31; after P13-l; Claude, scratch build). With bit-identical input, relief branches are CloseSheets 40/38/40 and Cylinder 44/44/48 (Linux / macOS / macOS FMA off). The cause is a contractible weighted sum followed by exact critical-point comparisons on near-constant relief. Its falsifier is a fixture whose completed topology changes across FMA on and off.
+  - **O32b–e** (Review, one stage each, upstream first; RA-205.5):
+    - b, tracing proper;
+    - c, strand selection;
+    - d, an injective canonical arrangement cell key: node source identity plus exact barycentrics. It makes CB90's tie-break unreachable;
+    - e, completion ownership repair: a canonical tie, and a budget that does not depend on order.
+
+    Each is falsified by counts plus a row-invariant digest under ≥3 permutations. The last O32 CB adds metamorphic census gate rows.
   - Then re-census P13, take O6/O9 where they are reached, and aim for matrix 6/6.
 - [x] **DIAG-RETAIN (user-directed, 2026-10-21): closed** by CB58–CB61 (snapshots, display adapter and dump, CLI sidecar, GUI layers). Open: DR1 (no in-helper A6/A7 rejection witness; waits for a stimulus), DR3 (pre-existing snapshot fields written when retention is off). DR2 (multi-component snapshot drop) and DR4 (`--diagnostics-prefix` cut sidecars throw on SurfaceCells products, `src/cli/RemeshOutput.cpp:388–392`) → M8-CP2. The GUI layers' appearance is a manual check.
 - [ ] **Then:** retire CB → FIXTURE slices (each DEFN first confirms the production pipeline reaches its stage) → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV.
-  - **CP3-exit conditions (RA-174.3):** RP-01 closed (done); zero ledger rows; design-acceptance matrix gated at 6/6 (Cylinder is required); O14 enforced; O7 resolved; O15 discharged (done); CP3-REV decides selector497 promotion.
+  - **CP3-exit conditions (RA-174.3):** RP-01 closed (done); zero ledger rows; design-acceptance matrix gated at 6/6 (Cylinder is required); O14 enforced; O7 resolved; O15 discharged (done); **O32 closed: DESIGN §10.1 source-row permutation invariance on the matrix fixtures, as gated metamorphic census rows (RA-205)**; CP3-REV decides selector497 promotion.
 - [ ] Carried separately (owners per RA-174.3):
   - **O2b** (retire the public no-atlas APIs, the legacy detail branches, their 12 gated unit tests and the historical suite) → a retirement DEFN after P13. **O16** (row 283, LegacyInteger NFunctionMesher macOS failure, not FMA) → a legacy-backend probe DEFN; not CP3-blocking.
   - O6 (bounded disks that are not rectangular are rejected by design). No P13 fixture reaches it at current source (RA-188.2) → P13 re-census.
@@ -421,6 +451,7 @@
   - CB and TB run on the Linux workflow runner. A TB always runs the full current gate, even after a CLI- or GUI-only CB (RA-187); the latest verified Linux gate is TB78 (899-row manifest `9d2c1ec5…`, ledger v5 81, membership 980); TB79 reused that manifest unchanged and verified 899/899 (membership 980); earlier TB77 (896 `48ef4743…`, 977), TB76 (893 `3b727161…`, 974), TB74 (888 `bb4e771f…`, 969), TB75 (890 `a134d941…`, 971) and TB73 (886 `5d09fa33…`, 967); preceding TB72A used 883 rows and membership 964; TB71 used 881 rows (`f2503dca…`, membership 962); prior TB70 used 880 rows (`a9f964c8…`, membership 961); TB69 used 878 rows (`aaaba077…`, membership 959); TB68 used 873 rows (`3b6b9f42…`, membership 954); TB67 used the 871-row manifest `434e6d37…` (membership 952). Earlier TB65 was 869 rows, TB64 866 rows and TB58 863 rows.
   - One CB per exact patch; implementation agents get only exact patches and frozen manifests. Probe-requiring DEFN and TB-REV turns stay on the Review track. Every gate run needs `MEMBERSHIP_LEDGER`.
   - A mismatch route that needs a probe names `Review (Claude, scratch build)`, and one that needs Linux runtime names its TB (RA-203.1). A registration pins only typed verdicts, topological counts and values already observed on the executing platform (RA-203.2).
+  - Before calling an order-dependent result deterministic, run the DESIGN §10.1 metamorphic invariants: source-face row permutation at least. Until O32 closes, P13 registrations pin only typed verdicts and counts shown permutation-invariant: through `global-conformity-baseline`, plus `arrangement` (RA-205).
   - A platform split is localized at the first differing stage that is not a noise carrier (RA-204.2). Before attributing one to numerics, run the census under libc++ `_LIBCPP_DEBUG_RANDOMIZE_UNSPECIFIED_STABILITY` (RA-204.4).
   - **Naming (RA-167.6):** types per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier.
   - RA-170 (a gate pass says nothing about off-gate tests), RA-171 (self-check every manifest; census rows are OBSERVE), RA-172 (a DEFN needs a reachable exit), RA-174 (verify completeness against the package, not against the gate's own scope), RA-176 (a result that differs by platform is a determinism defect; compute the exact answer before classifying), RA-178 (a test that targets an accepted-defensive guard has no repair exit; witness the guard at its checked factory or retire the test), RA-179 (trace fixture use through helper accessors, not literal grep; confirm per-file flag changes in the built object).

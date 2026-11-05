@@ -1,5 +1,12 @@
 # RA-204 — O30 Review: the platform split is an arrangement cell-order defect, not the field (2026-11-05)
 
+> **Reviewed by [RA-205](Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md).** The cross-library mechanism and CB90 stand. Corrections:
+> - RA-204.4 item 5 is wrong: under DESIGN §10.1, a completed count that depends on the cell schedule *is* a determinism defect;
+> - CB90's halfedge tie-break is a source-row-derived order, so it is interim with respect to §10.1;
+> - "two draws" overclaims while O30b is open.
+>
+> A source-face row permutation changes Vase's seed set, traces, strands and quads (O32).
+
 **Turn:** `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`, the successor frozen by the ChatGPT O30 Review ([digest adjudication](Architecture_M6_CP3_DEFN_P13_Platform_Split_Digest_Adjudication_20261105.md), `92e2e9ce8`). The user asked for an adversarial review of `M6-CP3-DEFN-P13-PLATFORM-SPLIT`. This turn reviews it, withdraws its generated-field branch and closes the turn with an exact fix.
 
 **Source:** HEAD `6be82f33c`. `git diff --quiet 9c9616695 HEAD -- src include tests benchmarks CMakeLists.txt cmake` passes, so the source is CB89's, and its product source is CB88's.

@@ -345,6 +345,8 @@ This document records **reusable failure-derived engineering lessons**, not an e
   - measure which stage hashes carry noise (perturb the input by 1 ULP) before reading "first differing stage";
   - a key used to assign ids must be injective, or end in a unique tie-break.
 
+- **Cross-library agreement is not determinism.** RA-204 made Linux and macOS agree by breaking cell-sort ties on halfedge ids, then called the remaining dependence of completion on cell order "not a determinism defect". DESIGN §10.1 says otherwise: canonical order uses semantic source identities, and source-face row and scheduling permutations must preserve the semantic output. A two-minute source-face row permutation of Vase then changed seeds, traces, strands and quads (O32, RA-205). Before calling an order-dependent result deterministic, run the design's metamorphic invariants: row permutation at least. A tie-break on row-derived ids is interim, never canonical.
+
 ## Contracts, planning, reviews, and durable records
 
 - **Plan from the current normative contract and reachable implementation.** Before freezing an
