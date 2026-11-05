@@ -56,6 +56,6 @@ The exact necessary next experiment is: (1) capture one complete, finite, normal
 | Consolidation under CLEAN_UP_POLICY | Inventory of current RA-203, CB89 and TB79 authorities performed; all are live source/selector/review evidence, no safely superseded per-turn document identified for folding; historical deletion census unavailable in source-only snapshot |
 | Successor frozen | `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY` with fixed-input falsifiers above |
 | Turn boundary held | Review-only docs and external Python digest comparison; no product/test/fixture/selector mutation or build/runtime execution |
-| review_check.py boundary | Pending: requires authoritative Git history and rewrite baseline absent from exported source snapshot; cannot claim a green result from an ad hoc local Git baseline |
-| STATUS lifecycle maintained | Entry published; final closeout beacon required after committed documentation |
-| Pushed to origin, branch in sync | Pending remote patch-application evidence; cannot claim a push from a local snapshot |
+| review_check.py boundary | **PASS** exit 0 on genuine full-history checkout `513ae242d597214353e41b73758e9f3d5aa8c103`, [run 41947031233](https://github.com/akashskypatel/Directional/actions/runs/41947031233), artifact `13379501036`: frozen selectors hash-match, rewrite baseline ancestor, durable headings preserved 4/4, 1/1, 0/0, clean checkout; no source/test/selector/build mutation |
+| STATUS lifecycle maintained | Entry and resume beacons published; terminal COMPLETE beacon will be the final repository mutation, outside this immutable document |
+| Pushed to origin, branch in sync | Review documentation committed as `92e2e9ce81f29fe6f39c02b87494b8666b4c7509`; full-history CI checkout clean and descendant of that commit. Final status beacon is separately maintained as the last repository write |
