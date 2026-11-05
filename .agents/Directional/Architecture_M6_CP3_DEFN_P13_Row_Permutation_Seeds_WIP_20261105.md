@@ -6,6 +6,8 @@
 
 - Verified source snapshot: GitHub Actions run `41990654900`, artifact `13397722388`, source/event SHA `4e151e5c139d09ecabca663ea1125d0544c32abb`. Artifact ZIP SHA-256 `a1abc5d44ad7a0aa53bb6b45b7c754b1ae1301438423e091e65831e046e2abeb`; extracted `source.tar.gz` and all internal `SHA256SUMS` PASS. Snapshot derived from the current branch after STATUS bootstrap and a snapshot-only trigger.
 - Immediate predecessor: TB81 COMPLETE/MATCH, immutable CB91 gate 899/899 as reported in the authoritative handoff. No new gate was run in this Review.
+- Continuation process correction: after the entry STATUS write, the already-verified prior-turn snapshot was locally inspected before the mandatory new-turn full policy read and explicit `READ_MODE=snapshot` selection. This is a start-order violation; further source inspection was from the reused exact snapshot, not piecemeal connector reads. No test/build source or product files were written.
+- Exact turn-local tool invocation accounting was not maintained from the first invocation, so the ledger remains partial/unknown; no precise total is claimed.
 - No repository product/test/fixture/selector/build edits. No local compilation or Directional runtime execution. This Review remains unfinished because the prescribed independently controlled Vase experiment is not yet reproduced.
 
 ## Source-level mechanism — concrete counterexample
