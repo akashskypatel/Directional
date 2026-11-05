@@ -1,3 +1,25 @@
+## 2026-11-05 — RA-206: TB80 Review reviewed; row 899 is a per-vertex O(F) binding check; exact CB91 → TB81
+
+- **Reviewed turn:** `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV`. [RA-206](.agents/Directional/Architecture_M6_CP3_TB80_REV_Review_Final_Validation_Binding_Per_Vertex_20261105.md), using scratch probes and the TB80 raw artifacts.
+- **The TB80 Review's evidence verification stands.** Its defects:
+  - CB90 was not excluded, though its diff cannot reach row 899;
+  - its hypothesis (a per-quad bind at the optimizer boundary) was wrong;
+  - its CB91 was investigative and conditional;
+  - it kept a 2.0 s bound that cannot hold on Linux.
+- **Measured:**
+  - row 899's validation is O(F×Q): 1.14 ms per quad at 28,800 faces;
+  - the validator re-checks the binding once per output vertex (130 / 450 / 1,690 checks for 121 / 441 / 1,681 vertices);
+  - Linux runs this section 3.5× macOS;
+  - RA-202.8's 2 s bound came from macOS (owned).
+- **Exact CB91** (turn ID kept): `c323ae01…`.
+  - Hoists the binding check out of the vertex loop.
+  - Adds a thread-local `source_binding_check_count()`.
+  - Row 899 asserts ≤ 16 checks, equal across output sizes, with a 5 s backstop.
+  - Local gate 898/899 (only O16); census 129/129 digests unchanged; the M1 and M4 mutants are killed.
+- **TB81** pins TB80's seven Linux digest lines.
+- **O33 (new):** per-quad O(F) chart-face work at five sites.
+- Stable 66/17/49, debt 1, CP2 491/491.
+
 ## 2026-11-05 — TB80 independent Review: valid 898/899 RED; CB91 measurement gate
 
 - [Independent Review](.agents/Directional/Architecture_M6_CP3_TB80_REV_Final_Validation_Cost_Gate_Adjudication_20261105.md) re-verified TB80 raw row899 and TB79 predecessor, immutable hashes, registered census and platform digests. TB80 is a real **timing-control RED**, not evidence of incorrect geometry or reproducible product-cost regression; the 2-second check stays unchanged.

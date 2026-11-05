@@ -1,5 +1,10 @@
 # TB80 independent Review — final validation cost gate (2026-11-05)
 
+> **Reviewed by [RA-206](Architecture_M6_CP3_TB80_REV_Review_Final_Validation_Binding_Per_Vertex_20261105.md).** The evidence verification stands. The CB91 spec below is replaced by RA-206.3's exact patch (same turn ID):
+> - the binding is re-checked once **per output vertex** inside the validator (`SourceAuthoritativeMeshValidator.cpp:1186`; 450 checks for 441 vertices);
+> - row 899 is O(F×Q);
+> - the 2.0 s bound was calibrated on macOS (RA-202.8), while Linux runs this section 3.5× slower.
+
 **Turn:** `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV`. **Disposition:** independently verified **VALID RED 898/899; no promotion**. **One successor:** `M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE`. The Review performed no compilation, runtime execution, benchmark, product/test/fixture/selector edit, or threshold adjustment. Review used the verified source snapshot of `26ad5ff48b64913c9c816735a8312870826bc76a` and separately downloaded exact TB79/TB80 artifacts. Snapshot was checked against 6,179 file checksums. The snapshot includes a control-plane trigger/status update after semantic CB90; source of the immutable runtime package remains `e00ef91a8a5dff8b125c9abfe388952cec20cbe1`.
 
 ## Independently re-derived evidence

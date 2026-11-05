@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE` (Code + Build, deterministic row899 binding-cost evidence; [TB80 Review](.agents/Directional/Architecture_M6_CP3_TB80_REV_Final_Validation_Cost_Gate_Adjudication_20261105.md)). No O32a/P13-l, runtime or threshold weakening in CB91. [TB80 evidence](.agents/Directional/Architecture_M6_CP3_TB80_P13_Arrangement_Cell_Order_Full_Gate_Execution_Report_20261105.md).
+> **Current canonical next:** `M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE` (already opened). **Apply [RA-206](.agents/Directional/Architecture_M6_CP3_TB80_REV_Review_Final_Validation_Binding_Per_Vertex_20261105.md) §3's exact patch** (`c323ae01…`); do not write your own. Then TB81 (step 41).
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -7,7 +7,23 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — TB80 independently reviewed, valid RED 898/899; CB91 binding-cost evidence next; O32 open (2026-11-05)
+## CURRENT — RA-206: row 899 is a real per-vertex O(F) binding check; exact CB91 → TB81 next; O32, O33 open (2026-11-05)
+
+- [x] **The TB80 Review was reviewed by [RA-206](.agents/Directional/Architecture_M6_CP3_TB80_REV_Review_Final_Validation_Binding_Per_Vertex_20261105.md)** (scratch probes; the TB80 raw artifacts were read):
+  - **Stands:** the evidence verification, census MATCH, and the RA-204.9 comparison (CloseSheets equal, so O30a holds in fixed order; O30b open).
+  - **Defects in the TB80 Review:**
+    - it did not exclude CB90, whose diff cannot reach row 899;
+    - its hypothesis, a per-quad bind at the optimizer boundary, was wrong;
+    - its CB91 was investigative and conditional, for the implementation agent;
+    - it kept a 2.0 s bound that cannot hold on Linux.
+  - **Measured:**
+    - Row 899's validation is **O(F×Q)**: 1.14 ms per quad at 28,800 faces, 0.30 at 7,200.
+    - The validator re-checks the full binding **once per output vertex** (`SourceAuthoritativeMeshValidator.cpp:1186`): 130 / 450 / 1,690 checks for 121 / 441 / 1,681 vertices.
+    - Linux runs this section 3.5× macOS. The 2 s bound came from macOS's 0.7 s (RA-202.8, my error).
+  - **Exact CB91:** check the binding once; add a thread-local `source_binding_check_count()`; re-specify row 899 as checks ≤ 16 and equal across output sizes, plus a 5 s backstop.
+    - Local gate 898/899 (only O16); census 129/129 digests unchanged.
+    - The M1 (per-vertex) and M4 (CB88 revert) mutants are killed.
+  - **O33 (new):** per-quad O(F) chart-face work at five sites (0.56 ms per quad remaining). It goes to the Review track.
 
 - [x] **RA-204 reviewed by [RA-205](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md)** (re-entry of `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`; scratch probes):
   - **Stands:** the cross-library cell-order mechanism and CB90. Completion's 7 hash containers are order-safe (sum, or sort then de-duplicate), which RA-204 had not checked.
@@ -347,6 +363,22 @@
      - Record the seven digest lines verbatim, and the RA-204.9 comparison against the [post-CB90 macOS FMA-off reference](.agents/Directional/Architecture_M6_CP3_CB90_P13_Platform_Digest_macOS_FMAoff_Reference.tsv) as observations.
      - Match → the P13-l DEFN (Review), which opens with the RA-204.9 O30 decision. Mismatch → `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV` (Review, Claude, scratch build). Infrastructure → `M6-CP3-TB80A-P13-ARRANGEMENT-CELL-ORDER-ORCH`.
      - **Verified TB80:** [report](.agents/Directional/Architecture_M6_CP3_TB80_P13_Arrangement_Cell_Order_Full_Gate_Execution_Report_20261105.md) — [gate 41967375039](https://github.com/akashskypatel/Directional/actions/runs/41967375039) 898/899 (row 899 2.37405297 s against <2.0 s), membership 980, 1806/1806 checksums; [census 41967458556](https://github.com/akashskypatel/Directional/actions/runs/41967458556) matches 1 PASS / 2 registered RED, Vase 67,746 quads. Seven digests and RA-204.9 comparison recorded; **MISMATCH → NEXT `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV`**, no replay/repair in this TB. O30b/O32 open; accepted CP2 and stable ledger unchanged.
+  - [x] **`M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV`** (ChatGPT [adjudication](.agents/Directional/Architecture_M6_CP3_TB80_REV_Final_Validation_Cost_Gate_Adjudication_20261105.md)), reviewed by RA-206.
+  - **RA-206 sequence:** steps 40–41, one turn each, in order. The implementation agent takes both, and starts 41 only after 40 is verified.
+  40. [ ] **NEXT (opened 05:56Z) `M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE`** (CB, compile only; RA-206.3):
+     - Precheck: `git diff --quiet e00ef91a8a5dff8b125c9abfe388952cec20cbe1 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Once.diff`:
+       - SHA-256 `c323ae01e44a96998c07c2e0e0fd30b70d3d867201e49d97480003198d1c4a43`, 177 lines; keep its 5 single-space context lines;
+       - numstat `10 0` `include/directional/geometry/SourceTopologyRegions.h` → `fe154e30cda51b11530caee121a3e45602d8e99489f08d769d56f768c08027e5`;
+       - `8 9` `src/validation/SourceAuthoritativeMeshValidator.cpp` → `3ea9ff27940d6bfb7c8914066a4905c0a4dbaae9cbd1002019070fa15024e766`;
+       - `55 31` `tests/SurfaceMeshOptimizerPhase22Tests.cpp` → `ec5c94e6adff1253bdb806c85de20a32f3b5011b2444978a28256b037eb121b8`.
+     - Build: one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`. Test names are unchanged, so membership stays 980.
+     - Mismatch → `M6-CP3-PLAN-P13-FINAL-VALIDATION-BINDING-STOP`; infrastructure → `M6-CP3-CB91A-P13-FINAL-VALIDATION-BINDING-ORCH`.
+  41. [ ] **`M6-CP3-TB81-P13-FINAL-VALIDATION-BINDING-FULL-GATE-EXEC`** (TB-EXEC; RA-206.4):
+     - Gate: TB78 manifest 899 `9d2c1ec5…`, unchanged; ledger v5; **899/899**, membership 980.
+     - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; Vase RED `SelfIntersectingFace` within 600 s with 192,482 / 26,817. `completedQuads` recorded, not pinned.
+     - **Pinned:** the seven `platform-digest` lines byte-identical to TB80's.
+     - Mismatch (any RED, digest difference, missing or duplicate line) → `M6-CP3-TB81-P13-FINAL-VALIDATION-BINDING-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB81A-P13-FINAL-VALIDATION-BINDING-ORCH`.
 - [ ] **Review track** (probe DEFNs):
   - [x] **`M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING`** (P13-g): the static [decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) ran no probe and froze an open A/B CB73. [RA-196](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) probes settle it:
     - Patch 1200's boundary is simple (branch A is false).
@@ -420,6 +452,14 @@
     - e, completion ownership repair: a canonical tie, and a budget that does not depend on order.
 
     Each is falsified by counts plus a row-invariant digest under ≥3 permutations. The last O32 CB adds metamorphic census gate rows.
+  - **`M6-CP3-DEFN-P13-CHART-FACE-PER-QUAD-COST`** (O33; Claude, scratch build; RA-206.5). One chart-level cache covering the five per-quad chart-face sites:
+    - `OutputProjectionCache` scope scan;
+    - per-sample `allowed_faces` keying (prototype: chart-keyed mask, −28%);
+    - `resolve_compatible_chart` copies;
+    - `consistent_source_scope`;
+    - the validator's chart work.
+
+    Its witness is a count of chart-face-list materializations, constant in quad count. It runs before Vase reaches optimization.
   - Then re-census P13, take O6/O9 where they are reached, and aim for matrix 6/6.
 - [x] **DIAG-RETAIN (user-directed, 2026-10-21): closed** by CB58–CB61 (snapshots, display adapter and dump, CLI sidecar, GUI layers). Open: DR1 (no in-helper A6/A7 rejection witness; waits for a stimulus), DR3 (pre-existing snapshot fields written when retention is off). DR2 (multi-component snapshot drop) and DR4 (`--diagnostics-prefix` cut sidecars throw on SurfaceCells products, `src/cli/RemeshOutput.cpp:388–392`) → M8-CP2. The GUI layers' appearance is a manual check.
 - [ ] **Then:** retire CB → FIXTURE slices (each DEFN first confirms the production pipeline reaches its stage) → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV.
@@ -456,6 +496,7 @@
   - One CB per exact patch; implementation agents get only exact patches and frozen manifests. Probe-requiring DEFN and TB-REV turns stay on the Review track. Every gate run needs `MEMBERSHIP_LEDGER`.
   - A mismatch route that needs a probe names `Review (Claude, scratch build)`, and one that needs Linux runtime names its TB (RA-203.1). A registration pins only typed verdicts, topological counts and values already observed on the executing platform (RA-203.2).
   - Before calling an order-dependent result deterministic, run the DESIGN §10.1 metamorphic invariants: source-face row permutation at least. Until O32 closes, P13 registrations pin only typed verdicts and counts shown permutation-invariant: through `global-conformity-baseline`, plus `arrangement` (RA-205).
+  - A gated wall-clock bound is set from the Linux runner's ratio for that code (memory-bound sections reach 3.5× macOS), never from a macOS run. Prefer a deterministic counter that kills the regression's mutant, with time as a coarse backstop (RA-206.6).
   - A platform split is localized at the first differing stage that is not a noise carrier (RA-204.2). Before attributing one to numerics, run the census under libc++ `_LIBCPP_DEBUG_RANDOMIZE_UNSPECIFIED_STABILITY` (RA-204.4).
   - **Naming (RA-167.6):** types per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier.
   - RA-170 (a gate pass says nothing about off-gate tests), RA-171 (self-check every manifest; census rows are OBSERVE), RA-172 (a DEFN needs a reachable exit), RA-174 (verify completeness against the package, not against the gate's own scope), RA-176 (a result that differs by platform is a determinism defect; compute the exact answer before classifying), RA-178 (a test that targets an accepted-defensive guard has no repair exit; witness the guard at its checked factory or retire the test), RA-179 (trace fixture use through helper accessors, not literal grep; confirm per-file flag changes in the built object).

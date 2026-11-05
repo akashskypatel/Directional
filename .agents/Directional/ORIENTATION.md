@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-11-05 · TB80 independently reviewed **VALID RED 898/899**, candidate row899 validation-time control needs deterministic non-vacuous binder-cost evidence. **Next `M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE`**, compile only. O32 source-face row invariance still open. CP2 491/491 accepted, stable 66/17/49, debt1; selector497/CP3 unpromoted.
+**Currency:** 2026-11-05 · [RA-206](Architecture_M6_CP3_TB80_REV_Review_Final_Validation_Binding_Per_Vertex_20261105.md) reviews the TB80 Review. Row 899's RED is a real per-output-vertex O(F) binding check in the validator, under a wall clock calibrated on macOS. **Next: the exact CB91** (already opened; apply RA-206.3), then TB81. O32 and O33 are open. Accepted CP2 491/491, stable 66/17/49, debt 1; selector497/CP3 unpromoted.
 - **Before it:** P13-m, fixed by [RA-202](Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md). The fix is Amendment 34 and exact CB85–CB88, removing three memory-bound census-path scans plus two Amendment 33 sites.
 - **The block.** The ChatGPT Review saw a conflict between "runtime-free" and a probe re-run. The fault is RA-202.9's route: it named no track and asked one platform to explain a split between two. Review scratch probes are a duty (RA-166.6 F6, RA-188.1), Linux runtime is a TB, and no policy changes.
 - **TB78** (CB85–CB88) matches on gate 899/899 and on every census line except the count. Vase reaches RED `SelfIntersectingFace` in 268.93 s on Linux, so P13-m's Linux objective is met.
@@ -125,7 +125,10 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 ## 7. Open problems — priority, not a task ledger
 
 **Immediate:**
-- CB90 and TB80 are complete; TB80 Review confirms valid 898/899 RED and freezes `M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE` with measured binder-cost evidence; no field-replay fixture (withdrawn), guard relaxation or runtime in CB. Review [record](Architecture_M6_CP3_TB80_REV_Final_Validation_Cost_Gate_Adjudication_20261105.md).
+- CB90 and TB80 are complete (898/899; row 899 RED).
+  - RA-206: the independent validator re-checks the full source binding once per output vertex (`SourceAuthoritativeMeshValidator.cpp:1186`), so row 899's validation is O(F×Q). Its 2 s bound came from a macOS run, and Linux runs this section 3.5× slower.
+  - **Next is the exact CB91:** check the binding once; add a binding-check counter; row 899 asserts ≤ 16 checks, equal across output sizes, with a 5 s backstop. Then TB81, which pins TB80's Linux digests.
+- **O33, per-quad chart-face cost (RA-206.5):** final validation and the optimizer materialize or scan the whole chart face list per quad or sample, at five sites. That is about 0.56 ms per quad at F = 28,800 after CB91. Review DEFN `M6-CP3-DEFN-P13-CHART-FACE-PER-QUAD-COST`, before Vase reaches optimization.
 - On the Review track, in parallel: the P13-l completed-mesh orientation DEFN (Vase, post-CB90; also time O27) and the P13-e BunnyRandom DEFN. O31 follows P13-l.
 - **O30, Vase** ([RA-204](Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md)):
   - **O30a.** Arrangement cell ids follow `std::sort`'s unspecified order for equal `cell_cycle_key`s. There are 10,891 tied pairs among 26,817 cells. Linux (libstdc++) gives 67,784 and macOS (libc++) 67,829; randomized ties on one build give 67,753 to 67,827.
@@ -192,6 +195,7 @@ macOS O16 stays separate.
   - A count seen on one platform is not a prediction for another: RA-202.9 pinned macOS's 67,829 and Linux gave 67,784 (O30). A cross-platform registration pins typed verdicts, topological counts and values the executing platform has already produced. Anything else is recorded, not pinned.
   - To localize a split, print bit-exact input digests and per-stage hashes on both platforms rather than reasoning from one (RA-203).
   - **Noise carriers.** A stage hash that includes exact double bits, or an upstream digest, changes with any last-bit noise. The atlas, network, cut graph, topology plan, conformity baseline and tracing hashes are noise carriers. Localize at the first differing stage that is **not** one (RA-204.2).
+  - **Wall-clock guards.** A gated time bound is a cross-platform measurement. Set it from the Linux runner's ratio for that code, or better, count the invariant the test claims (`source_binding_check_count`), and keep time only as a coarse backstop (RA-206.6).
   - **Representation order.** Cross-library agreement is not determinism. DESIGN §10.1 also requires source-face row, output row and scheduling permutations to preserve the semantic output. A tie-break on row-derived ids (CB90) fixes the first and not the second. Run a row permutation before calling an order-dependent result deterministic (RA-205).
   - **Unspecified order.** Different standard libraries break `std::sort`, heap and hash-table ties differently. Run the census once under libc++ `-D_LIBCPP_DEBUG_RANDOMIZE_UNSPECIFIED_STABILITY`: if outcomes vary between processes, the split is an order defect, and a total comparator fixes it (O30a, RA-204.4).
 - **Masked or unconsumed stimulus:** a stronger earlier guard, or a mutation of data that the checked path never reads, makes a negative vacuous; confirm that the intended guard actually fires (RA-169, RA-178, TB35-REV).

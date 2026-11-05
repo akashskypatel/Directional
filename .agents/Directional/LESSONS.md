@@ -347,6 +347,13 @@ This document records **reusable failure-derived engineering lessons**, not an e
 
 - **Cross-library agreement is not determinism.** RA-204 made Linux and macOS agree by breaking cell-sort ties on halfedge ids, then called the remaining dependence of completion on cell order "not a determinism defect". DESIGN §10.1 says otherwise: canonical order uses semantic source identities, and source-face row and scheduling permutations must preserve the semantic output. A two-minute source-face row permutation of Vase then changed seeds, traces, strands and quads (O32, RA-205). Before calling an order-dependent result deterministic, run the design's metamorphic invariants: row permutation at least. A tie-break on row-derived ids is interim, never canonical.
 
+- **A wall-clock guard is a cross-platform measurement; count the invariant the test claims.** RA-202.8 guarded "final validation reads row labels after one binding check" with `seconds < 2.0`, set from macOS's 0.7 s. Nothing counted binding checks, and the validation made 450 of them, one per output vertex (O(F×V)).
+  - The guard passed on macOS and twice on Linux, then failed at 2.37 s on TB80's runner, which runs this section 3.5× macOS.
+  - The TB80 Review then planned to look at the wrong boundary.
+  - A thread-local count of `matches_source_faces` found the site in one probe run, and now asserts ≤ 16 checks, constant in output size.
+
+  Before freezing a performance test, count the operation it claims to bound, and kill the regression's mutant with that count. A time bound is only a coarse backstop, set from the slowest platform (RA-206).
+
 ## Contracts, planning, reviews, and durable records
 
 - **Plan from the current normative contract and reachable implementation.** Before freezing an
