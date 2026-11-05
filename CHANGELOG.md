@@ -1,3 +1,9 @@
+## 2026-11-05 — CB91 exact binding-once patch, Linux GMP/GMPXX compile verified
+
+- **Turn:** `M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE`; [CB91 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Code_Build_Record_20261105.md). Applied RA-206's exact `c323ae01…` three-file patch without alternate semantics; source [`96ee281a`](https://github.com/akashskypatel/Directional/commit/96ee281a40920f21eb911880a3b2c458ef4f0563).
+- [Compile 41980448558](https://github.com/akashskypatel/Directional/actions/runs/41980448558) SUCCESS: artifact `13394321724`, ZIP SHA-256 `777935dccac64fefaf80a0e78f387e0ee9a0c9caf94ae0b66aff099271a4cfd2`, 28/28 package checksums, eight targets, Linux Release/static, GMP and GMPXX linked, clean source, `runtimeExecution=false`. [Apply 41980227133](https://github.com/akashskypatel/Directional/actions/runs/41980227133) and [cleanup 41980724210](https://github.com/akashskypatel/Directional/actions/runs/41980724210) successful; consumed Drive staging retired.
+- **No runtime acceptance:** TB80 remains 898/899 RED until TB81's separate immutable gate/census. CP2 491/491, stable 66/17/49, debt 1, selector497/CP3 unpromoted. **Successor:** `M6-CP3-TB81-P13-FINAL-VALIDATION-BINDING-FULL-GATE-EXEC`, RA-206 §4.
+
 ## 2026-11-05 — RA-206: TB80 Review reviewed; row 899 is a per-vertex O(F) binding check; exact CB91 → TB81
 
 - **Reviewed turn:** `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV`. [RA-206](.agents/Directional/Architecture_M6_CP3_TB80_REV_Review_Final_Validation_Binding_Per_Vertex_20261105.md), using scratch probes and the TB80 raw artifacts.

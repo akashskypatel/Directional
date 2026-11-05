@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE` (already opened). **Apply [RA-206](.agents/Directional/Architecture_M6_CP3_TB80_REV_Review_Final_Validation_Binding_Per_Vertex_20261105.md) §3's exact patch** (`c323ae01…`); do not write your own. Then TB81 (step 41).
+> **Current canonical next:** `M6-CP3-TB81-P13-FINAL-VALIDATION-BINDING-FULL-GATE-EXEC` (RA-206 §4). CB91 source `96ee281a…` compile/package verified in [CB91 record](.agents/Directional/Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Code_Build_Record_20261105.md); execute immutable artifact `13394321724` only in the separate Test + Benchmark turn.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -365,7 +365,7 @@
      - **Verified TB80:** [report](.agents/Directional/Architecture_M6_CP3_TB80_P13_Arrangement_Cell_Order_Full_Gate_Execution_Report_20261105.md) — [gate 41967375039](https://github.com/akashskypatel/Directional/actions/runs/41967375039) 898/899 (row 899 2.37405297 s against <2.0 s), membership 980, 1806/1806 checksums; [census 41967458556](https://github.com/akashskypatel/Directional/actions/runs/41967458556) matches 1 PASS / 2 registered RED, Vase 67,746 quads. Seven digests and RA-204.9 comparison recorded; **MISMATCH → NEXT `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV`**, no replay/repair in this TB. O30b/O32 open; accepted CP2 and stable ledger unchanged.
   - [x] **`M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV`** (ChatGPT [adjudication](.agents/Directional/Architecture_M6_CP3_TB80_REV_Final_Validation_Cost_Gate_Adjudication_20261105.md)), reviewed by RA-206.
   - **RA-206 sequence:** steps 40–41, one turn each, in order. The implementation agent takes both, and starts 41 only after 40 is verified.
-  40. [ ] **NEXT (opened 05:56Z) `M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE`** (CB, compile only; RA-206.3):
+  40. [x] **COMPLETE `M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE`** (CB, compile only; RA-206.3):
      - Precheck: `git diff --quiet e00ef91a8a5dff8b125c9abfe388952cec20cbe1 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
      - Patch `.agents/Directional/Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Once.diff`:
        - SHA-256 `c323ae01e44a96998c07c2e0e0fd30b70d3d867201e49d97480003198d1c4a43`, 177 lines; keep its 5 single-space context lines;
@@ -374,7 +374,8 @@
        - `55 31` `tests/SurfaceMeshOptimizerPhase22Tests.cpp` → `ec5c94e6adff1253bdb806c85de20a32f3b5011b2444978a28256b037eb121b8`.
      - Build: one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`. Test names are unchanged, so membership stays 980.
      - Mismatch → `M6-CP3-PLAN-P13-FINAL-VALIDATION-BINDING-STOP`; infrastructure → `M6-CP3-CB91A-P13-FINAL-VALIDATION-BINDING-ORCH`.
-  41. [ ] **`M6-CP3-TB81-P13-FINAL-VALIDATION-BINDING-FULL-GATE-EXEC`** (TB-EXEC; RA-206.4):
+     - **Verified CB91:** [record](.agents/Directional/Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Code_Build_Record_20261105.md); exact code source `96ee281a…`; [compile 41980448558](https://github.com/akashskypatel/Directional/actions/runs/41980448558) SUCCESS, artifact `13394321724`, 28/28 checksums, eight Linux GMP/GMPXX targets, `runtimeExecution=false`, source clean. No TB execution or selector promotion.
+  41. [ ] **NEXT `M6-CP3-TB81-P13-FINAL-VALIDATION-BINDING-FULL-GATE-EXEC`** (TB-EXEC; RA-206.4):
      - Gate: TB78 manifest 899 `9d2c1ec5…`, unchanged; ledger v5; **899/899**, membership 980.
      - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; Vase RED `SelfIntersectingFace` within 600 s with 192,482 / 26,817. `completedQuads` recorded, not pinned.
      - **Pinned:** the seven `platform-digest` lines byte-identical to TB80's.
