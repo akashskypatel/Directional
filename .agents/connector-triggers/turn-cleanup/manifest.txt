@@ -1,2 +1,0 @@
-# CB92 temporary snapshot-trigger cleanup
-.agents/connector-triggers/source-snapshot/cb92-source-20261105-1448.txt
