@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-TB81-P13-FINAL-VALIDATION-BINDING-FULL-GATE-EXEC` (RA-206 §4). CB91 source `96ee281a…` compile/package verified in [CB91 record](.agents/Directional/Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Code_Build_Record_20261105.md); execute immutable artifact `13394321724` only in the separate Test + Benchmark turn.
+> **Current canonical next:** `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (Review, RA-206.7 / RA-205.4), after TB81 **COMPLETE / MATCH**. [TB81 report](.agents/Directional/Architecture_M6_CP3_TB81_P13_Final_Validation_Binding_Full_Gate_Execution_Report_20261105.md): immutable CB91 gate 899/899; census and seven Linux digests match. No CP3/selector497 promotion.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -7,7 +7,7 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — RA-206: row 899 is a real per-vertex O(F) binding check; exact CB91 → TB81 next; O32, O33 open (2026-11-05)
+## CURRENT — TB81 COMPLETE / MATCH; next O32a source-row permutation seed Review; O33 open (2026-11-05)
 
 - [x] **The TB80 Review was reviewed by [RA-206](.agents/Directional/Architecture_M6_CP3_TB80_REV_Review_Final_Validation_Binding_Per_Vertex_20261105.md)** (scratch probes; the TB80 raw artifacts were read):
   - **Stands:** the evidence verification, census MATCH, and the RA-204.9 comparison (CloseSheets equal, so O30a holds in fixed order; O30b open).
@@ -375,11 +375,11 @@
      - Build: one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`. Test names are unchanged, so membership stays 980.
      - Mismatch → `M6-CP3-PLAN-P13-FINAL-VALIDATION-BINDING-STOP`; infrastructure → `M6-CP3-CB91A-P13-FINAL-VALIDATION-BINDING-ORCH`.
      - **Verified CB91:** [record](.agents/Directional/Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Code_Build_Record_20261105.md); exact code source `96ee281a…`; [compile 41980448558](https://github.com/akashskypatel/Directional/actions/runs/41980448558) SUCCESS, artifact `13394321724`, 28/28 checksums, eight Linux GMP/GMPXX targets, `runtimeExecution=false`, source clean. No TB execution or selector promotion.
-  41. [ ] **NEXT `M6-CP3-TB81-P13-FINAL-VALIDATION-BINDING-FULL-GATE-EXEC`** (TB-EXEC; RA-206.4):
+  41. [x] **COMPLETE / MATCH `M6-CP3-TB81-P13-FINAL-VALIDATION-BINDING-FULL-GATE-EXEC`** (TB-EXEC; RA-206.4):
      - Gate: TB78 manifest 899 `9d2c1ec5…`, unchanged; ledger v5; **899/899**, membership 980.
      - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; Vase RED `SelfIntersectingFace` within 600 s with 192,482 / 26,817. `completedQuads` recorded, not pinned.
      - **Pinned:** the seven `platform-digest` lines byte-identical to TB80's.
-     - Mismatch (any RED, digest difference, missing or duplicate line) → `M6-CP3-TB81-P13-FINAL-VALIDATION-BINDING-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB81A-P13-FINAL-VALIDATION-BINDING-ORCH`.
+     - **Verified:** [TB81 report](.agents/Directional/Architecture_M6_CP3_TB81_P13_Final_Validation_Binding_Full_Gate_Execution_Report_20261105.md) — [gate 41985957797](https://github.com/akashskypatel/Directional/actions/runs/41985957797) 899/899 PASS, 1,806/1,806 checksums; [census 41985991943](https://github.com/akashskypatel/Directional/actions/runs/41985991943) expected 1 PASS/2 RED, 9/9 hashes; seven digests byte-identical to TB80; no package/source mutation; no new stable event. **Next separate Review:** `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` under RA-206.7 / RA-205.4.
 - [ ] **Review track** (probe DEFNs):
   - [x] **`M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING`** (P13-g): the static [decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) ran no probe and froze an open A/B CB73. [RA-196](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) probes settle it:
     - Patch 1200's boundary is simple (branch A is false).

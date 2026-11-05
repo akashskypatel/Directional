@@ -1,3 +1,9 @@
+## 2026-11-05 — TB81 immutable gate/census MATCH; O32a Review next
+
+- [TB81 report](.agents/Directional/Architecture_M6_CP3_TB81_P13_Final_Validation_Binding_Full_Gate_Execution_Report_20261105.md): frozen CB91 package `13394321724`, source `96ee281a…`; [gate 41985957797](https://github.com/akashskypatel/Directional/actions/runs/41985957797) **899/899 PASS**, membership 980, 1,806/1,806 SHA256SUMS; [census 41985991943](https://github.com/akashskypatel/Directional/actions/runs/41985991943) expected Cylinder PASS, BunnyRandom P13-e vertex49 RED, Vase `SelfIntersectingFace` completion RED (192,482 traces / 26,817 cells / 67,746 quads) in 257.08 s, 9/9 SHA256SUMS.
+- Seven Linux platform-digest lines byte-identical to TB80, exact one per registered log, postflight true; both dispatcher runs passed with configure/compile/relink/benchmark false. Row899 PASS on deterministic positive and size-invariant binding-count checks; prior TB80 wall-clock RED corrected. **MATCH, not CP3 acceptance**; no stable regression. CP2 491/491; stable 66/17/49, debt1, selector497/CP3 unpromoted.
+- Next separate Review `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (O32a; RA-206.7 / RA-205.4); P13-l follows, O30b/O31/O33/P13-e remain open. Source-snapshot cleanup completed in [41986198930](https://github.com/akashskypatel/Directional/actions/runs/41986198930).
+
 ## 2026-11-05 — CB91 exact binding-once patch, Linux GMP/GMPXX compile verified
 
 - **Turn:** `M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE`; [CB91 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Code_Build_Record_20261105.md). Applied RA-206's exact `c323ae01…` three-file patch without alternate semantics; source [`96ee281a`](https://github.com/akashskypatel/Directional/commit/96ee281a40920f21eb911880a3b2c458ef4f0563).
