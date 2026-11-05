@@ -10441,27 +10441,87 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
   }
 
   o32a_dump("rails");
+  // SCRATCH ONLY: optional source-vertex seeds must share intrinsic fan
+  // ownership with rail endpoint seeds, never raw source-face row ownership.
+  std::optional<SourceChartTransitionGraph> sourceCharts;
+  if (options.sourceAuthority != nullptr) {
+    sourceCharts.emplace(faces, *options.sourceAuthority, barrierEdges);
+    if (!sourceCharts->available()) {
+      throw std::runtime_error("O32A_SCRATCH_SOURCE_CHARTS_UNAVAILABLE");
+    }
+  }
+  const auto resolve_vertex_identity = [&](const SurfaceTracePoint &point)
+      -> std::optional<ResolvedSourceEntity> {
+    if (!sourceCharts.has_value() || point.face < 0) return std::nullopt;
+    SurfacePoint sourcePoint;
+    sourcePoint.face = point.face;
+    sourcePoint.barycentric = point.barycentric.transpose();
+    return sourceCharts->resolve_entity(sourcePoint);
+  };
+  std::set<SourceVertexEntityIdentity> occupiedVertexFans;
+  if (sourceCharts.has_value()) {
+    for (const SurfaceTraceSeed &seed : seeds) {
+      const auto resolved = resolve_vertex_identity(seed.point);
+      if (!resolved.has_value()) continue;
+      if (const auto *identity =
+              std::get_if<SourceVertexEntityIdentity>(&resolved->identity)) {
+        occupiedVertexFans.insert(*identity);
+      }
+    }
+  }
+  const auto add_vertex = [&](const int vertex,
+                              const SurfaceSeedProvenance provenance) {
+    if (vertex < 0 || vertex >= vertexCount) return;
+    if (!sourceCharts.has_value()) {
+      surface_cell_tracing_detail::append_seed(
+          seeds, seen,
+          surface_cell_tracing_detail::vertex_point(vertex, incident, faces),
+          provenance, vertex);
+      return;
+    }
+    std::map<SourceVertexEntityIdentity,
+             std::pair<SourceProjectionChart, SurfaceTracePoint>> perFan;
+    for (const int face : incident[static_cast<std::size_t>(vertex)]) {
+      const SurfaceTracePoint point =
+          surface_cell_tracing_detail::vertex_point_in_face(faces, face, vertex);
+      const auto resolved = resolve_vertex_identity(point);
+      if (!resolved.has_value()) {
+        throw std::runtime_error("O32A_SCRATCH_VERTEX_RESOLUTION_FAILED");
+      }
+      const auto *identity =
+          std::get_if<SourceVertexEntityIdentity>(&resolved->identity);
+      if (identity == nullptr) {
+        throw std::runtime_error("O32A_SCRATCH_VERTEX_IDENTITY_MISSING");
+      }
+      const auto found = perFan.find(*identity);
+      if (found == perFan.end() || resolved->chart < found->second.first) {
+        perFan.insert_or_assign(*identity,
+                                std::make_pair(resolved->chart, point));
+      }
+    }
+    for (const auto &[fan, representative] : perFan) {
+      if (occupiedVertexFans.count(fan) != 0U) continue;
+      const std::size_t before = seeds.size();
+      surface_cell_tracing_detail::append_seed(
+          seeds, seen, representative.second, provenance, vertex);
+      if (seeds.size() == before) {
+        throw std::runtime_error("O32A_SCRATCH_VERTEX_COLLISION_UNRESOLVED");
+      }
+      occupiedVertexFans.insert(fan);
+    }
+  };
   const auto add_vertices = [&](const std::vector<int> &verticesToAdd,
                                 const SurfaceSeedProvenance provenance) {
     std::vector<int> sorted = verticesToAdd;
     std::sort(sorted.begin(), sorted.end());
     sorted.erase(std::unique(sorted.begin(), sorted.end()), sorted.end());
-    for (const int vertex : sorted) {
-      surface_cell_tracing_detail::append_seed(
-          seeds, seen,
-          surface_cell_tracing_detail::vertex_point(vertex, incident, faces),
-          provenance, vertex);
-    }
+    for (const int vertex : sorted) add_vertex(vertex, provenance);
   };
   if (options.fieldAlignedNetwork != nullptr) {
     for (const authority::SourceVertexId vertex :
          options.fieldAlignedNetwork->singularity_vertices()) {
-      surface_cell_tracing_detail::append_seed(
-          seeds, seen,
-          surface_cell_tracing_detail::vertex_point(
-              static_cast<int>(vertex.index()), incident, faces),
-          SurfaceSeedProvenance::Singularity,
-          static_cast<int>(vertex.index()));
+      add_vertex(static_cast<int>(vertex.index()),
+                 SurfaceSeedProvenance::Singularity);
     }
   } else {
     add_vertices(options.singularityVertices,
@@ -10495,11 +10555,7 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
     }
     for (const auto &[region, representative] : representativeByRegion) {
       if (seededRegions.count(region) == 0) {
-        surface_cell_tracing_detail::append_seed(
-            seeds, seen,
-            surface_cell_tracing_detail::vertex_point(representative, incident,
-                                                      faces),
-            SurfaceSeedProvenance::ReliefCritical, representative);
+        add_vertex(representative, SurfaceSeedProvenance::ReliefCritical);
       }
     }
   }
