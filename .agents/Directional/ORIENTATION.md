@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-11-05 · [TB81](Architecture_M6_CP3_TB81_P13_Final_Validation_Binding_Full_Gate_Execution_Report_20261105.md) **COMPLETE / MATCH** after CB91: Linux artifact-only 899/899 PASS, membership 980, 1,806/1,806 hashes, registered census and seven identical TB80 Linux digests. **O32a Review COMPLETE:** `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` localized source-row seed suppression, proved actual Vase has one fan per vertex, and froze [CB92](Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity_Plan_20261105.md) as the next compile-only Code + Build turn (not started; RA-206.7 / RA-205.4). CP2 491/491 accepted; 66/17/49, debt1; selector497/CP3 unpromoted. O30b/O31/O32/O33/P13-l/e remain open.
+**Currency:** 2026-11-05 · `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` re-entered: [RA-207](Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md) confirms the O32a seed mechanism. Its prose CB92 is replaced by an exact per-fan patch. **Next: CB92, then TB82** (901-row manifest). CB91/TB81 COMPLETE (899/899). Accepted CP2 491/491, stable 66/17/49, debt 1; selector497/CP3 unpromoted.
 - **Before it:** P13-m, fixed by [RA-202](Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md). The fix is Amendment 34 and exact CB85–CB88, removing three memory-bound census-path scans plus two Amendment 33 sites.
 - **The block.** The ChatGPT Review saw a conflict between "runtime-free" and a probe re-run. The fault is RA-202.9's route: it named no track and asked one platform to explain a split between two. Review scratch probes are a duty (RA-166.6 F6, RA-188.1), Linux runtime is a TB, and no policy changes.
 - **TB78** (CB85–CB88) matches on gate 899/899 and on every census line except the count. Vase reaches RED `SelfIntersectingFace` in 268.93 s on Linux, so P13-m's Linux objective is met.
@@ -135,6 +135,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
     - Exact fix CB90 (halfedge tie-break) gives 67,746 deterministically.
     - TB80's CloseSheets arrangement (`5612032b…`, equal embedding on both platforms) is the cross-platform falsifier.
   - **O30b.** Linux's Vase embedding differs (`f2fc0cca…` against `909330af…`). Sort ties, FMA and ±1-ULP field noise are excluded. Open: libm, the x86 `long double` grid key, or a single 1e-9 hash flip. TB80's Vase count decides (RA-204.9).
+- **O32a (RA-207):** vertex-origin seeds were placed by lowest face row. Exact CB92 places them by typed source-vertex fan, one per unseeded fan, as for hard rails. After it, seeds (1,416), traces (189,462) and strands (30,989) are row-invariant on Vase; quads still vary (O32e, next on the Review track).
 - **O32, source-row permutation (DESIGN §10.1; M3/M6 exit; CP3-exit condition):** with mesh and field unchanged and only face rows reordered, Vase gives:
   - seeds 1,456 / 1,461;
   - trace segments 192,482 / 192,770–193,624;
@@ -196,6 +197,7 @@ macOS O16 stays separate.
   - A count seen on one platform is not a prediction for another: RA-202.9 pinned macOS's 67,829 and Linux gave 67,784 (O30). A cross-platform registration pins typed verdicts, topological counts and values the executing platform has already produced. Anything else is recorded, not pinned.
   - To localize a split, print bit-exact input digests and per-stage hashes on both platforms rather than reasoning from one (RA-203).
   - **Noise carriers.** A stage hash that includes exact double bits, or an upstream digest, changes with any last-bit noise. The atlas, network, cut graph, topology plan, conformity baseline and tracing hashes are noise carriers. Localize at the first differing stage that is **not** one (RA-204.2).
+  - **Both sides of a barrier.** A seed or sample named by a source entity that a hard barrier splits goes on each typed fan, never on a row-chosen one and never as a new failure mode. That is the hard-rail rule, and DESIGN §10.1 canonical identity (RA-207).
   - **Wall-clock guards.** A gated time bound is a cross-platform measurement. Set it from the Linux runner's ratio for that code, or better, count the invariant the test claims (`source_binding_check_count`), and keep time only as a coarse backstop (RA-206.6).
   - **Representation order.** Cross-library agreement is not determinism. DESIGN §10.1 also requires source-face row, output row and scheduling permutations to preserve the semantic output. A tie-break on row-derived ids (CB90) fixes the first and not the second. Run a row permutation before calling an order-dependent result deterministic (RA-205).
   - **Unspecified order.** Different standard libraries break `std::sort`, heap and hash-table ties differently. Run the census once under libc++ `-D_LIBCPP_DEBUG_RANDOMIZE_UNSPECIFIED_STABILITY`: if outcomes vary between processes, the split is an order defect, and a total comparator fixes it (O30a, RA-204.4).

@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (Review, RA-206.7 / RA-205.4), after TB81 **COMPLETE / MATCH**. [TB81 report](.agents/Directional/Architecture_M6_CP3_TB81_P13_Final_Validation_Binding_Full_Gate_Execution_Report_20261105.md): immutable CB91 gate 899/899; census and seven Linux digests match. No CP3/selector497 promotion.
+> **Current canonical next:** `M6-CP3-CB92-P13-SOURCE-VERTEX-FAN-SEED-IDENTITY`. **Apply [RA-207](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md) §3's exact patch** (`c377b206…`). The prose [CB92 plan](.agents/Directional/Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity_Plan_20261105.md) is superseded. Then TB82 (step 43).
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -7,7 +7,20 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — O32a Review COMPLETE; next CB92 source-vertex fan seed identity (compile only); O33 open (2026-11-05)
+## CURRENT — RA-207: O32a seed mechanism confirmed; exact CB92 (per-fan seeding) → TB82 next; O32b–e, O33 open (2026-11-05)
+
+- [x] **The O32a seed Review was reviewed by [RA-207](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md)** (re-entry; scratch build):
+  - **Stands:** vertex seeds were placed by lowest face row and de-duplicated by (face row, barycentrics), so the rail collision depended on row order. Typed-fan placement gives 1,416 seeds (identical digest) and identical trace (189,462) and strand (30,989) counts in four orders. Quads still vary (O32e).
+  - **Defects in the O32a Review:**
+    - its CB92 was prose, not a patch, and its own spec could STOP;
+    - fail-closed on multi-fan vertices drops capability and contradicts the both-sides rail rule;
+    - the gate impact was never measured;
+    - a four-Vase product test cannot be gated.
+  - **Measured:**
+    - 0 multi-fan vertex-origin requests in the whole gate (positive control logs 2);
+    - 901-row local gate 900/901 (only O16);
+    - census for Plane, MultiFaceSeam, CloseSheets, Cylinder and BunnyRandom unchanged; Vase changes from `tracing` on.
+  - **Exact CB92:** each unseeded typed fan of a source vertex gets one seed at its minimum canonical chart. Two new GUARD tests, rows 900–901, both fail on legacy. New 901-row manifest, self-check PASS.
 
 - [x] **The TB80 Review was reviewed by [RA-206](.agents/Directional/Architecture_M6_CP3_TB80_REV_Review_Final_Validation_Binding_Per_Vertex_20261105.md)** (scratch probes; the TB80 raw artifacts were read):
   - **Stands:** the evidence verification, census MATCH, and the RA-204.9 comparison (CloseSheets equal, so O30a holds in fixed order; O30b open).
@@ -380,6 +393,20 @@
      - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; Vase RED `SelfIntersectingFace` within 600 s with 192,482 / 26,817. `completedQuads` recorded, not pinned.
      - **Pinned:** the seven `platform-digest` lines byte-identical to TB80's.
      - **Verified:** [TB81 report](.agents/Directional/Architecture_M6_CP3_TB81_P13_Final_Validation_Binding_Full_Gate_Execution_Report_20261105.md) — [gate 41985957797](https://github.com/akashskypatel/Directional/actions/runs/41985957797) 899/899 PASS, 1,806/1,806 checksums; [census 41985991943](https://github.com/akashskypatel/Directional/actions/runs/41985991943) expected 1 PASS/2 RED, 9/9 hashes; seven digests byte-identical to TB80; no package/source mutation; no new stable event. **Next separate Review:** `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` under RA-206.7 / RA-205.4.
+  - **RA-207 sequence:** steps 42–43, one turn each, in order. The implementation agent takes both, and starts 43 only after 42 is verified.
+  42. [ ] **NEXT `M6-CP3-CB92-P13-SOURCE-VERTEX-FAN-SEED-IDENTITY`** (CB, compile only; RA-207.3):
+     - Precheck: `git diff --quiet 96ee281a40920f21eb911880a3b2c458ef4f0563 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity.diff`:
+       - SHA-256 `c377b206c195613b045b0f5a431df5dc31e553035343b567cdeb2ba0751834fa`, 285 lines; keep its 5 single-space context lines;
+       - numstat `77 15` `src/geometry/SurfaceCellTracing.cpp` → `9e9b979f0976f3c1714e1dbcddd4d973b21f3268e443cff7518bbd4a987a4c7b`;
+       - `141 0` `tests/SurfaceCellREPackageTests.cpp` → `a169667c6c6705be547b257295e6d9eb5ea2d1f933f6958370c7e806cbb28e90`.
+     - Build: one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`.
+     - Mismatch → `M6-CP3-PLAN-P13-SOURCE-VERTEX-FAN-SEED-STOP`; infrastructure → `M6-CP3-CB92A-P13-SOURCE-VERTEX-FAN-SEED-ORCH`.
+  43. [ ] **`M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC`** (TB-EXEC; RA-207.5):
+     - Gate: [901-row manifest](.agents/Directional/Architecture_M6_TB82_P13_Vertex_Fan_Seeds_Full_Gate_Case_Manifest.tsv) `9fbf329167cbe84698d5a08eda6e5374200c7729a5f0f1e4292836227902f878` (TB78 899 prefix byte-identical plus GUARD rows 900–901); ledger v5; **901/901**, membership 982.
+     - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; Vase RED `SelfIntersectingFace` within 600 s. Trace, cell and quad counts recorded, not pinned.
+     - **Pinned:** gate rows 795/796/797/864 and census Cylinder and BunnyRandom digest lines byte-identical to TB81; Vase's line identical to TB81 through `global-conformity-baseline`.
+     - Mismatch → `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB82A-P13-SOURCE-VERTEX-FAN-SEED-ORCH`.
 - [ ] **Review track** (probe DEFNs):
   - [x] **`M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING`** (P13-g): the static [decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) ran no probe and froze an open A/B CB73. [RA-196](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) probes settle it:
     - Patch 1200's boundary is simple (branch A is false).
@@ -434,21 +461,21 @@
     - generator non-portability is recorded, not owned (four builds give four BunnyRandom fields), because output is robust to it.
     - Open: O30b (Linux-only Vase embedding; decided by TB80's Vase count, RA-204.9) and O31.
   - [x] **Re-entry of `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`: [RA-205](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md)** reviews RA-204 and opens O32.
-  - [ ] **NEXT (Review) `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS`** (O32a; Claude, scratch build; RA-205.4):
+  - [x] **`M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS`** (O32a), COMPLETE; reviewed by [RA-207](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md) (prose CB92 replaced by an exact patch; per-fan seeding, not fail-closed). Residual: the `AdaptiveSeedCandidate` face-row tie, to fix when touched. Original scope:
     - Make the seed set from `generate_deterministic_surface_seeds` (`SurfaceCellTracing.cpp` 10297) invariant under source-face row permutation. Use the probe's `PROBE_PERMUTE_FACES`. The measure is the seed count plus a sorted 3D-position digest, under at least three seeds.
     - Discriminate the leads: rail-sample seeding and the `seen` de-duplication key; the face-corner node layout of `intrinsicGraph` and its `nearest` distances; seed placement toward the chosen face's centroid.
     - Then re-measure tracing and strand counts and name O32b/c.
     - **Continuation 6 (scratch Review evidence, 2026-11-05):** corrected producer emits **1,416** semantic-identical seeds under base + 3 consistent source-row permutations; typed protected-edge fan identities pass under two row orders (remote GMP compile 42030842612). Full Vase runs yield identical 189,462 trace segments / 30,989 strands / 26,817 arrangement cells, but completion counts **67,750 / 67,782 / 67,766 / 67,778** before the same typed `SelfIntersectingFace` RED. Trace/strand content hashes differ and remain semantic-oracle candidates O32b/c, not yet proved stage defects. Earlier one-sample-per-rail negative was invalid under strict rail interval ingress; a new complete two-rail test preserves both typed source-edge interval owners and rejects missing-edge / duplicate-ID tampering (remote GMP run 42034591362, artifact 13418271529). Coincident per-seed metadata alone is not authoritative interval ownership.
     - **Before Review closeout:** rail-edge vs seed annotation and fan-scope admissibility are independently adjudicated; all 1,274 actual Vase source vertices have one intrinsic fan (independent OFF topology audit, no hard-feature edge). Unscoped multi-fan vertex requests are not authorized to duplicate seeds: CB92 must emit a typed terminal rejection unless producer-owned scope narrows to one fan, or STOP for an explicit failure-contract Review. Bounded CB92 plan is revised; remaining work is final Review reconciliation/boundary checker/Drive cleanup and exact handoff/STATUS closeout. Earlier evidence and later downstream stages are unchanged.  bounded [CB92 source-fan seed plan](.agents/Directional/Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity_Plan_20261105.md) is written with falsifiers but not started. Perform Review checklist/boundary checker and consolidation, then authorize the successor in STATUS. [Owning evidence](.agents/Directional/Architecture_M6_CP3_DEFN_P13_O32a_Vase_Producer_Scratch_Result_20261105.md). No successor or CP3 promotion yet.
     - Outcome: an exact CB → TB that pins only permutation-invariant values.
-  - [ ] **(Review, after O32a) `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`** (P13-l; probe DEFN on the post-CB90, post-O32a scratch state; macOS Vase gave 67,746 before O32a; Claude; after TB80 it opens with the RA-204.9 O30 decision; also time O27 once orientation passes; its TB pins only typed verdicts and counts already observed on Linux, RA-203.2):
+  - [ ] **NEXT (Review, after CB92) `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`** (P13-l; probe DEFN on the post-CB92 scratch state, where macOS Vase gives 67,750 with 189,462 traces; Claude; after TB80 it opens with the RA-204.9 O30 decision; also time O27 once orientation passes; its TB pins only typed verdicts and counts already observed on Linux, RA-203.2):
     - The completed Vase mesh (67,829 quads) has the source topology but is not consistently oriented: 27,966 interior edges are traversed the same way by both quads.
     - Leads, not conclusions: `orient_quads_to_source_normals` (`RemeshPipeline.cpp` 10949) flips each quad on its own by its (0,1,2) triangle normal and ignores lineage; or completed patches carry mixed winding before it.
     - First measurement: same-direction edges right after assembly and after the orientation pass, binned by patch. Then name the owner.
     - Also decide whether the pre-optimization gate applies the final quality thresholds to an un-optimized mesh. DESIGN §4.9 separates injectivity from quality; normal P95 179.9° and Jacobian −1 follow from the orientation.
   - **`M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT`** (P13-e; can run now, in parallel). A1 requires `4 − index` port classes. BunnyRandom's index −1 vertex 49 has 4 sector incidences in an 8-face fan, on macOS, FMA-off and Linux (TB65). Decide whether A1's sector rule or the field owns this.
   - **`M6-CP3-DEFN-P13-RELIEF-NOISE-TIES`** (O31; after P13-l; Claude, scratch build). With bit-identical input, relief branches are CloseSheets 40/38/40 and Cylinder 44/44/48 (Linux / macOS / macOS FMA off). The cause is a contractible weighted sum followed by exact critical-point comparisons on near-constant relief. Its falsifier is a fixture whose completed topology changes across FMA on and off.
-  - **O32b–e** (Review, one stage each, upstream first; RA-205.5):
+  - **O32b–e** (Review, one stage each; RA-205.5). After CB92, trace and strand **counts** are row-invariant, so **O32e goes first**: the remaining count-level dependence, 67,750–67,786 quads, from completion ownership repair (RA-207.6):
     - b, tracing proper;
     - c, strand selection;
     - d, an injective canonical arrangement cell key: node source identity plus exact barycentrics. It makes CB90's tie-break unreachable;

@@ -354,6 +354,12 @@ This document records **reusable failure-derived engineering lessons**, not an e
 
   Before freezing a performance test, count the operation it claims to bound, and kill the regression's mutant with that count. A time bound is only a coarse backstop, set from the slowest platform (RA-206).
 
+- **Measure what a policy changes before freezing it, and prefer the codebase's existing symmetric rule to a new failure mode.** The O32a Review froze "fail closed when a vertex seed request has several typed fans". It never measured how often that happens, and it ignored that hard-rail samples are already seeded on both sides of a barrier.
+  - A one-line census over the whole gate found 0 such requests, so the policy's only effect would have been an untested capability loss on future feature-bearing inputs.
+  - Seeding each unseeded fan is row-invariant, coverage-complete and the same rule rails use (RA-207).
+
+  A determinism fix replaces a representation-dependent choice with a canonical one. It does not turn the choice into a failure.
+
 ## Contracts, planning, reviews, and durable records
 
 - **Plan from the current normative contract and reachable implementation.** Before freezing an

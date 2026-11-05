@@ -1,5 +1,7 @@
 # CB92 — Canonical source-vertex fan seed identity (frozen implementation plan, 2026-11-05)
 
+> **Superseded by [RA-207](Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md) §3.** The implementation applies the exact patch `Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity.diff`: per-fan seeding (the both-sides rail rule), not fail-closed. The mechanism and evidence below stand. The multi-fan fail-closed policy and the four-Vase product test are withdrawn (RA-207.2).
+
 **Predecessor:** `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (O32a Review). **Only authorized implementation successor once the Review is formally closed:** `M6-CP3-CB92-P13-SOURCE-VERTEX-FAN-SEED-IDENTITY`. This plan is metadata, not a code naming rule. Do not begin this work while predecessor STATUS remains IN_PROGRESS.
 
 ## Independent evidence and mechanism

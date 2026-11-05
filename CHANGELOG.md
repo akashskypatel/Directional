@@ -1,3 +1,17 @@
+## 2026-11-05 — RA-207: O32a seed Review reviewed; exact CB92 (per-fan seeding) → TB82
+
+- **Reviewed turn:** `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (re-entry). [RA-207](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md), using a scratch build.
+- **Stands:** the mechanism (lowest-face-row vertex seeds; row-keyed de-duplication) and the scratch remedy. Re-derived: 1,416 seeds with an identical digest, 189,462 traces and 30,989 strands in four orders.
+- **Withdrawn:**
+  - the prose CB92 plan (not a patch; conditional STOP);
+  - its fail-closed multi-fan policy (drops capability, contradicts the both-sides rail rule);
+  - its four-Vase product test (cannot be gated).
+
+  The O32a Review also never measured gate impact.
+- **Measured:** 0 multi-fan vertex-origin requests in the gate (positive control 2); 901-row local gate 900/901 (only O16); gate-fixture census digests unchanged; Vase changes from `tracing` on (189,462 traces, 67,750 quads, same verdict).
+- **Exact CB92** `c377b206…`: one seed per unseeded typed fan at its minimum canonical chart. GUARD rows 900–901 both fail on legacy. New 901-row TB82 manifest `9fbf3291…`.
+- Stable 66/17/49, debt 1, CP2 491/491.
+
 ## 2026-11-05 — O32a Review COMPLETE: source-row seed suppression located, valid rails distinguished, CB92 frozen
 - **Independent fan admissibility audit (continuation 8):** source fixture `vase.off` SHA-256 `5f7bedc1783486589a8721a7b9be881064f361e4a07fd8c5278d8b8f55b2c868` has 1,274/1,274 intrinsic vertex fans singleton, consistent with zero explicit hard edges. Existing `FieldAlignedSingularityPort` provides region/component but no fan and relief inputs are vertex-scoped. The protected-edge synthetic fan test proves topology identity, **not** permission to duplicate raw relief obligations into both fans. CB92 revised to unique-fan admission with typed fail-closed result if ambiguous; no implementation or successor start. Evidence `fan_admissibility_audit.md` SHA-256 `a8eb822d71c1706793c8225489c09806ef0c45b4f2b7d32b8c2b88db75ac18ad`.
 
