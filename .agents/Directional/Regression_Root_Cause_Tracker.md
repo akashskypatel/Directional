@@ -1,3 +1,5 @@
+*
+**TB79 immutable candidate (2026-11-05; no new stable event):** CB89 artifact `13370954424`, [gate 41938188019](https://github.com/akashskypatel/Directional/actions/runs/41938188019) 899/899 PASS, membership 980; [census 41938418260](https://github.com/akashskypatel/Directional/actions/runs/41938418260) MATCH, Cylinder PASS, BunnyRandom P13-e RED vertex49, Vase RED SelfIntersectingFace (67,784 quads), all seven platform-digest lines recorded. Root owner O30 remains unresolved; falsifier is Linux count/verdict/digest multiplicity drift, not a macOS digest comparison made here. Preserve CP2 491/491, stable 66/17/49 and debt 1, selector497/CP3 unpromoted. [Evidence](Architecture_M6_CP3_TB79_P13_Platform_Digest_Full_Gate_Execution_Report_20261105.md).
 **RA-203 (2026-11-04; O30 opened, NOT stable):** [RA-203](Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md) closes the TB78 Review.
 - TB78 is COMPLETE: gate 899/899, membership 980. Vase reaches its typed RED in 268.93 s on Linux, so P13-m is fixed on Linux.
 - The census count mismatch is a Review registration error: RA-202.9 pinned macOS's 67,829.

@@ -1,3 +1,11 @@
+## 2026-11-05 — TB79 immutable full gate and platform-digest census (MATCH)
+
+- **Turn:** `M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-EXEC`; [report](.agents/Directional/Architecture_M6_CP3_TB79_P13_Platform_Digest_Full_Gate_Execution_Report_20261105.md).
+- **Source/package:** CB89 `9c9616695ecd…`, artifact `13370954424` (28/28 verified, no rebuild).
+- **Gate:** [run 41938188019](https://github.com/akashskypatel/Directional/actions/runs/41938188019), result `13375815401`: **899/899 PASS**, membership 980, 1,806/1,806 hashes, postflight PASS.
+- **Census:** [run 41938418260](https://github.com/akashskypatel/Directional/actions/runs/41938418260): Cylinder PASS, BunnyRandom P13-e RED, Vase RED SelfIntersectingFace with **67,784** quads, registered **MATCH**; four gate plus three census `platform-digest` lines recorded verbatim, **not** compared to macOS.
+- **Next separate turn:** `M6-CP3-DEFN-P13-PLATFORM-SPLIT` (RA-203.6). No source/test/fixture changes in TB79, no new stable event, no accepted CP2/selector/CP3 promotion; CP2 491/491 and stable 66/17/49 debt1 intact.
+
 ## 2026-11-04 — CB89 census platform digest test-only compile verified
 
 - **Canonical turn:** `M6-CP3-CB89-P13-CENSUS-PLATFORM-DIGEST`, RA-203 §5.
