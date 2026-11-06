@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workflow_key": "p13l2-typed-identity",
+  "workflow": "P13l2 typed identity witness",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/p13l2-typed-identity-20261106.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "93eabedb3f0c41f49f1c93be614c9ab9b038fd96",
+  "source_sha": "11c8172ad467c6dc865f2f3352e75b78f5469a2b",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 42154686503,
+  "run_attempt": 1,
+  "run_number": 1,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/42154686503",
+  "result": "success",
+  "summary": "No-build GDB typed canonical stitch identity capture on frozen CB96.",
+  "reported_at": "2026-11-06T03:13:30Z",
+  "mailbox_branch": "workflow-mailbox",
+  "artifacts": [
+    {
+      "id": 13473858727,
+      "name": "agent-workflow-schema-validator-log-42154686503",
+      "size_in_bytes": 491,
+      "digest": "sha256:90b94db681dea137a7334de86d9a3b7d6b98e0d580623164b74646122be2547c",
+      "expired": false,
+      "created_at": "2026-11-06T03:08:40Z",
+      "expires_at": "2026-11-13T03:08:39Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42154686503/artifacts/13473858727",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13473858727/zip"
+    },
+    {
+      "id": 13473544486,
+      "name": "agent-workflow-schema-validation-42154686503",
+      "size_in_bytes": 446,
+      "digest": "sha256:220f69eceeb70f69018f26c3b3813a3460e7bb5b7add85d8060f26ac6e7002b5",
+      "expired": false,
+      "created_at": "2026-11-06T03:08:38Z",
+      "expires_at": "2026-11-13T03:08:37Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42154686503/artifacts/13473544486",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13473544486/zip"
+    },
+    {
+      "id": 13473423975,
+      "name": "p13l2-typed-identity-log-42154686503",
+      "size_in_bytes": 1540,
+      "digest": "sha256:ca05433a34bde6ed2b63dfa6622759f9fea6710249ef4760379f0a779e14edef",
+      "expired": false,
+      "created_at": "2026-11-06T03:13:16Z",
+      "expires_at": "2027-02-04T03:08:28Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42154686503/artifacts/13473423975",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13473423975/zip"
+    },
+    {
+      "id": 13473009845,
+      "name": "p13l2-typed-identity-data-42154686503",
+      "size_in_bytes": 4294,
+      "digest": "sha256:86a9f642713e91636cf7c4b71f477d5dc4dac000cdfa3eabd3a0c15ebf623484",
+      "expired": false,
+      "created_at": "2026-11-06T03:13:14Z",
+      "expires_at": "2027-02-04T03:08:28Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42154686503/artifacts/13473009845",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13473009845/zip"
+    },
+    {
+      "id": 13472859874,
+      "name": "workflow-mailbox-publisher-log-42154686503-attempt-1",
+      "size_in_bytes": 382,
+      "digest": "sha256:5118625d12fcbed1a46bcab13d9558eb2e8483c7cd988cd3c3c0bcbd5c44b601",
+      "expired": false,
+      "created_at": "2026-11-06T03:13:30Z",
+      "expires_at": "2026-11-20T03:13:29Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42154686503/artifacts/13472859874",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13472859874/zip"
+    }
+  ]
+}
