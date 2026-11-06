@@ -26,3 +26,20 @@ The approximate normalized candidate scan is a **diagnostic**, not a replacement
 3. Trace each confirmed failure to its authoritative producer: geometry-validation predicate, patch embedding/topology, boundary schedule, or exact stitch identity. Freeze separate minimal CB changes **only after** the evidence establishes ownership. No Code+Build or TB execution is authorized in this Review. Preserve CP2 491/491, stable 66 events / 17 categories / 49 recurrences, debt 1, and CP3/selector497 unpromoted.
 
 Scratch SHA/version audit: source snapshot from `agent-source-snapshot-42135608658`, source SHA `3a3eb7bf08e69414e3957d23f141c0679050c446`, 6208-file hash manifest validated in prior continuations. This note does not claim a new run of tests or a new source build.
+
+
+## Post-CB96 T-junction prefilter — independently reproduced (2026-11-06 02:26Z)
+
+A **second, independent read-only scan** of the frozen 67,961 × 3 / 67,750 × 4 Eigen arrays from artifact `13469796788` used the **source-derived** actual position tolerance `6.438212444601785e-8`. It applied the strict validator's geometric rules: all unique output polygon edges, reject degenerate edges, edge AABB neighbourhood via an enclosing midpoint-radius KD query, reject edge endpoints, calculate the orthogonal edge parameter, enforce `endpointTolerance=min(0.25, positionTolerance/edgeLength)`, and require `distance<=positionTolerance`. It deliberately did **not** apply source chart or stitch authority. Recomputing the geometry against the frozen bytes returned **exactly three** candidates, rather than seven under the earlier arbitrary `1e-7` scan:
+
+| Candidate vertex | Edge (canonical) | Parameter | Perpendicular gap | Endpoint exclusion threshold | Edge incident quads | Vertex incident quads |
+|---|---|---:|---:|---:|---|---|
+| 35160 | (4618,35159) | 0.500337309907436 | 3.131196163343484e-8 | 1.6419301024590745e-5 | 21286,21288 | 21286,21290 |
+| 35161 | (4618,35159) | 0.0006746198148661404 | 6.262392326013387e-8 | 1.6419301024590745e-5 | 21286,21288 | 21286,21290,21291 |
+| 53049 | (28576,53051) | 8.14645838537592e-6 | 2.6102576638670442e-8 | 6.120112667847836e-6 | 41746,41747 | 41744,41745,41746 |
+
+**Important search artifact:** the earlier `1e-7` scan excluded vertex 53049 because its parameter `8.146e-6` was below that larger tolerance's *endpoint* exclusion; reducing to the source-correct threshold admits it. This explains the earlier seven-candidate mismatch without implying a source change. Each of the three strict geometric candidates passes the geometric endpoint and distance inequalities, and the count equals the formal **three** T-junction issues. **This is not an independent proof that all three pass source-chart compatibility**, since that requires retained typed chart/support data. Do not infer that matching counts certifies issue identity, or that proximity permits welding.
+
+A dedicated no-build scratch GDB workflow `.github/workflows/p13l2-strict-witness-20261106.yml` and marker `.agents/connector-triggers/p13l2-strict-witness-20261106.txt` were added on the working branch (source `11c8172ad467c6dc865f2f3352e75b78f5469a2b`, immutable compiled artifact `13460725846`). Its purpose is to capture the **actual** `MeshValidationIssue` tuples on function return, plus `SurfacePoint` provenance and chart-authority raw references, without compiling or changing product/test sources. Workflow creation and triggering are not evidence of execution. Retrieve and validate result via mailbox key `p13l2-strict-witness` on orphan branch `workflow-mailbox`. If it fails, inspect its dedicated log and preserve any partial evidence; do not convert this Review into Code+Build. Clean temporary caller and marker after preserving completed workflow artifacts.
+
+The earlier literal validator false-positive finding for faces 55/15372 and fan-spill finding for 4304/4308 are unchanged. Regression acceptance, patch-lineage owners, and next Code+Build remain unapproved until exact issue and chart certificates are adjudicated.
