@@ -1,0 +1,1 @@
+Exact same-turn Review diagnostic only. Immutable semantic source CB96 11c8172ad467c6dc865f2f3352e75b78f5469a2b. Do not rebuild or mutate source. Probe vector ABI without requiring monotonic sourcePatch ordering.
