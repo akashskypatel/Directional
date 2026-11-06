@@ -3,7 +3,7 @@ Turn: M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP
 Status: BLOCKED
 Successor: M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP
 Started at: 2026-11-06T00:15:33Z
-Resumed at: 2026-11-06T05:53:22Z
+Resumed at: 2026-11-06T06:44:57Z
 Ended at: 
 Blocker Type: REVIEW_BLOCKER
 Blocker Details: Run-specific FlowRep and arrangement-halfedge provenance for Vase patch 23301 is absent from immutable artifacts; its runtime observation requires independent authorization under the runtime-free Review policy, or an equivalent pre-existing typed witness.
