@@ -1,4 +1,0 @@
-turn=M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP
-immutable_source=11c8172ad467c6dc865f2f3352e75b78f5469a2b
-compiled_artifact=13460725846
-purpose=read-only stitch-entry boundary node and source side subdivision capture
