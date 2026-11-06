@@ -32,7 +32,7 @@
    - Over all 67,750 Vase quads: **17 cross in their own plane** and 31 in the source-normal plane (36 together).
    - **12 of them are bow-ties in both planes:** two reflex corners against each normal, and diagonal dihedrals up to 178.7°.
    - Completion's axis predicate accepts all 17, and so did RA-208's CB94. The order-invariant and faithful definition is **orthogonal projection onto the Newell plane**, in both producer and validator, each with its own implementation (DESIGN §9).
-3. **The success claim was inflated.** RA-208 reported "Vase 35,416 → 4 issues". The 4 held only because the validator shared completion's blind spot. Under the faithful definition the validator alone reports 21 (17 twisted quads, 1 overlap, 3 T-junctions). Only with the producer also fixed (CB96) does Vase return to 4, and then honestly.
+3. **The success claim was inflated.** RA-208 reported "Vase 35,416 → 4 issues". The 4 held only because the validator shared completion's blind spot. Under the faithful definition the validator alone reports 21 (17 twisted quads, 1 overlap, 3 T-junctions). Only with the producer also fixed (CB96) does Vase return to **4 validator-reported issues**. Their physical causes were not yet independently adjudicated at RA-209; the later [P13-l2 Review](Architecture_M6_CP3_DEFN_P13_PreStitch_Vector_ABI_Probe_Review_20261106.md) proves a false-positive overlap and identifies separate completion and source-support defects. Do not interpret the four reports as four independently certified physical intersections.
 4. **Minor:** CB94's degenerate rule compares the vector area with `tolerance · longestEdge²`. That makes the geometric tolerance act as a dimensionless ratio, inconsistent with its absolute use in `ZeroAreaFace`. The criterion is scale-invariant (area/L² ≤ 1e-9) and has no false positive on any fixture; it is kept, and the comment states it.
 
 ## RA-209.3 Realigned turns (exact; each applies on the previous one's result)
@@ -110,7 +110,7 @@
   | Census digest, Vase | changes only `completion` (`7f9763a9…/67750`; count unchanged) |
   | Vase validation | `validationIssues=4 GeometricVertexOnUnsplitEdge=3 SelfIntersectingFace=1`; 0 FlippedFace; 0 local self-intersections; 0 flips |
   | Effect of CB96 | the patches that produced the 17 twisted quads take other variants; completion still succeeds |
-  | Validator-only state (CB94+CB95) | 21 issues, all genuine: 17 twisted, 1 overlap, 3 T-junctions |
+  | Validator-only state (CB94+CB95) | 21 reported issues: 17 twisted quads are independently proved; the 1 overlap and 3 vertex-on-edge complaints were not yet physically adjudicated, and later P13-l2 Review demonstrates validator false positives |
   | Both new tests on legacy | FAIL |
   | GCC 16 `-Wall -Wextra -fsyntax-only`, all six changed units | clean |
 
