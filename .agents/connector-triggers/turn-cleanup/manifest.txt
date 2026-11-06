@@ -1,0 +1,2 @@
+# P13-l2 review exact temporary-state removal
+.agents/connector-triggers/source-snapshot/p13-l2-review-20261106.txt
