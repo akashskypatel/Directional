@@ -1,1 +1,0 @@
-Immutable scratch-only source authority: CB96 11c8172ad467c6dc865f2f3352e75b78f5469a2b; compiled artifact 13460725846. Review P13-l2, no product edits, no rebuild, no acceptance.
