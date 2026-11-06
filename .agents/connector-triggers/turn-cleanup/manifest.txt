@@ -1,2 +1,0 @@
-# P13 same-turn ChatGPT Web temporary source snapshot marker
-.agents/connector-triggers/source-snapshot/p13-resume-20261106-0736.txt
