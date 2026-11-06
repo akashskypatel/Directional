@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workflow_key": "p13l2-immutable-gdb",
+  "workflow": "P13l2 immutable geometry probe",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/p13l2-immutable-gdb-20261106.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "4975cc24558d0e8b21f3fcc0377585f3fac47f19",
+  "source_sha": "11c8172ad467c6dc865f2f3352e75b78f5469a2b",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 42142847864,
+  "run_attempt": 1,
+  "run_number": 2,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/42142847864",
+  "result": "failure",
+  "summary": "No-build GDB snapshot of immutable CB96 Vase geometry.",
+  "reported_at": "2026-11-06T01:18:28Z",
+  "mailbox_branch": "workflow-mailbox",
+  "artifacts": [
+    {
+      "id": 13468234174,
+      "name": "workflow-mailbox-publisher-log-42142847864-attempt-1",
+      "size_in_bytes": 385,
+      "digest": "sha256:6c817955cdcf40f61b29bfb74d5630bc0b6be9a0565807c50d7f627653413c4a",
+      "expired": false,
+      "created_at": "2026-11-06T01:18:27Z",
+      "expires_at": "2026-11-20T01:18:26Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42142847864/artifacts/13468234174",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13468234174/zip"
+    },
+    {
+      "id": 13467799365,
+      "name": "agent-workflow-schema-validator-log-42142847864",
+      "size_in_bytes": 495,
+      "digest": "sha256:4053bb7ed799b714441454d52d3f1a38f55889cff99f882af94865d31f1a91e4",
+      "expired": false,
+      "created_at": "2026-11-06T01:17:47Z",
+      "expires_at": "2026-11-13T01:17:46Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42142847864/artifacts/13467799365",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13467799365/zip"
+    },
+    {
+      "id": 13467734367,
+      "name": "p13l2-immutable-mesh-42142847864",
+      "size_in_bytes": 1132,
+      "digest": "sha256:143979d672835bf6569d4c17df47aada4a42178451723f5caa31356458b87447",
+      "expired": false,
+      "created_at": "2026-11-06T01:18:11Z",
+      "expires_at": "2027-02-04T01:17:40Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42142847864/artifacts/13467734367",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13467734367/zip"
+    },
+    {
+      "id": 13467149800,
+      "name": "agent-workflow-schema-validation-42142847864",
+      "size_in_bytes": 448,
+      "digest": "sha256:cb062599c7bad667f9a605e2b312347d2070e0d63abcc0f96673c6696ad0c244",
+      "expired": false,
+      "created_at": "2026-11-06T01:17:46Z",
+      "expires_at": "2026-11-13T01:17:45Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42142847864/artifacts/13467149800",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13467149800/zip"
+    },
+    {
+      "id": 13466834928,
+      "name": "p13l2-immutable-gdb-log-42142847864",
+      "size_in_bytes": 1519,
+      "digest": "sha256:bf30270175c5024ea812a4871dc24583123545e1daee33a29ae9fc945b980c34",
+      "expired": false,
+      "created_at": "2026-11-06T01:18:12Z",
+      "expires_at": "2027-02-04T01:17:40Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42142847864/artifacts/13466834928",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13466834928/zip"
+    }
+  ]
+}
