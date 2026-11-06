@@ -1,0 +1,175 @@
+name: P13l2 typed identity witness
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/p13l2-typed-identity-20261106.txt]
+permissions:
+  actions: read
+  contents: write
+concurrency:
+  group: p13l2-typed-identity
+  cancel-in-progress: false
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/p13l2-typed-identity-20261106.yml
+      source_ref: ${{ github.sha }}
+  capture:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Initialize persistent log
+        shell: bash
+        run: |
+          : > "$RUNNER_TEMP/p13l2-gdb.log"
+          echo "event_sha=$GITHUB_SHA semantic_source=11c8172ad467c6dc865f2f3352e75b78f5469a2b" >> "$RUNNER_TEMP/p13l2-gdb.log"
+      - uses: actions/checkout@v4
+        with:
+          ref: 11c8172ad467c6dc865f2f3352e75b78f5469a2b
+          fetch-depth: 1
+          submodules: false
+      - name: Verify and unpack immutable compiled artifact
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/p13l2-gdb.log") 2>&1
+          trap 's=$?; echo "preflight_exit=$s"' EXIT
+          test "$(git rev-parse HEAD)" = 11c8172ad467c6dc865f2f3352e75b78f5469a2b
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq gdb libgmp10 libgmpxx4ldbl
+          mkdir -p "$RUNNER_TEMP/compiled" "$RUNNER_TEMP/geometry"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13460725846/zip" > "$RUNNER_TEMP/cb96.zip"
+          unzip -q "$RUNNER_TEMP/cb96.zip" -d "$RUNNER_TEMP/compiled"
+          (cd "$RUNNER_TEMP/compiled" && sha256sum -c SHA256SUMS)
+          test "$(cat "$RUNNER_TEMP/compiled/metadata/source-commit.txt")" = 11c8172ad467c6dc865f2f3352e75b78f5469a2b
+          mkdir -p "$RUNNER_TEMP/compiled/test-data"
+          ln -s "$GITHUB_WORKSPACE/benchmarks" "$RUNNER_TEMP/compiled/test-data/benchmarks"
+          test -d "$RUNNER_TEMP/compiled/test-data/benchmarks/fixtures"
+          gdb --version | head -1
+      - name: Dump immutable geometry at pre-validation boundary
+        shell: bash
+        run: |
+          set -uo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/p13l2-gdb.log") 2>&1
+          cat > "$RUNNER_TEMP/dump.gdb" <<'GDB'
+          set pagination off
+          set confirm off
+          python
+          import gdb,struct,os,pathlib,json
+          out=pathlib.Path(os.environ['RUNNER_TEMP'])/'geometry'
+          out.mkdir(exist_ok=True)
+          inf=gdb.selected_inferior()
+          ids=[4618,35159,35160,35161,28576,53049,53051]
+          def rd(p,n):return bytes(inf.read_memory(p,n))
+          def v3(p):return struct.unpack('<QQQ',rd(p,24))
+          def payload(ptr,maxsize=32768):
+            a,b,c=v3(ptr);n=b-a
+            if a==b==c==0:return b''
+            if not(a>0x10000 and a<=b<=c and n<=maxsize):raise RuntimeError('bad vector '+repr((hex(ptr),hex(a),hex(b),hex(c))))
+            return rd(a,n)
+          def canonical(ptr):
+            valid=rd(ptr,1)[0]
+            fields=[('values',8),('topologyRegions',8),('isolationSheets',8),('ownershipClasses',8),('sourceCharts',32),('hardRails',8),('supportVertices',8),('supportEdges',16),('supportFaces',24)]
+            obj={'valid':bool(valid)}
+            for j,(name,sz) in enumerate(fields):
+              raw=payload(ptr+8+j*24)
+              if len(raw)%sz:raise RuntimeError(name+' nonintegral size '+str(len(raw)))
+              obj[name]=[list(struct.unpack_from('<'+'q'*(sz//8),raw,k)) for k in range(0,len(raw),sz)]
+            return obj
+          def vertex_record(ptr,v):
+            data=rd(ptr,928)
+            row,kind=struct.unpack_from('<ii',data)
+            if row!=v or kind not in (0,1):raise RuntimeError('wrong row '+repr((v,row,kind)))
+            return {'outputVertex':v,'kind':kind,'stitchKind':struct.unpack_from('<i',data,256)[0],
+                    'stitchIdentity':canonical(ptr+264),'authoritativeKind':struct.unpack_from('<i',data,488)[0],
+                    'authoritativeIdentity':canonical(ptr+496),
+                    'sourcePatch':struct.unpack_from('<i',data,720)[0],
+                    'localVertex':struct.unpack_from('<i',data,724)[0],
+                    'sourceTopologyRegions':[x[0] for x in chunk(payload(ptr+728),8)],
+                    'sourceCharts':[list(struct.unpack('<qqqq',x)) for x in chunk(payload(ptr+752),32)],
+                    'sourceIsolationSheets':[x[0] for x in chunk(payload(ptr+776),8)]}
+          def chunk(raw,sz):
+            if len(raw)%sz:raise RuntimeError('bad chunk')
+            return [raw[k:k+sz] for k in range(0,len(raw),sz)]
+          class Capture(gdb.Breakpoint):
+           def stop(self):
+            try:
+             rsi=int(gdb.parse_and_eval('$rsi'));rdx=int(gdb.parse_and_eval('$rdx'))
+             _,vr,vc=struct.unpack('<Qqq',rd(rsi,24));_,qr,qc=struct.unpack('<Qqq',rd(rdx,24))
+             if (vr,vc,qr,qc)!=(67961,3,67750,4):return False
+             self.enabled=False
+             p=inf.pid
+             stacks=[x for x in pathlib.Path('/proc/'+str(p)+'/maps').read_text().splitlines() if '[stack]' in x]
+             if len(stacks)!=1:raise RuntimeError('stack count '+str(len(stacks)))
+             start,end=(int(x,16) for x in stacks[0].split()[0].split('-'))
+             stack=rd(start,end-start)
+             owners=[]
+             for off in range(0,len(stack)-24,8):
+              a,b,c=struct.unpack_from('<QQQ',stack,off)
+              if not(a>0x10000 and a<=b<=c and b-a==67961*928):continue
+              if struct.unpack('<i',rd(a,4))[0]!=0:continue
+              if struct.unpack('<i',rd(a+35160*928,4))[0]!=35160:continue
+              if struct.unpack('<i',rd(a+53049*928,4))[0]!=53049:continue
+              try:
+               rows={str(v):vertex_record(a+v*928,v) for v in ids}
+               owners.append({'stack_offset':off,'records':rows})
+              except Exception as e:
+               print('P13L2_IDENTITY_REJECT '+repr(e),flush=True)
+             (out/'typed_identity.json').write_text(json.dumps({'source':'11c8172ad467c6dc865f2f3352e75b78f5469a2b','owners':owners},indent=2,sort_keys=True))
+             print('P13L2_TYPED_IDENTITY owners='+str(len(owners)),flush=True)
+            except Exception as e:
+             (out/'capture_error.txt').write_text(repr(e))
+             print('P13L2_IDENTITY_ERROR '+repr(e),flush=True)
+            return False
+          Capture('directional::validation::validate_source_authoritative_surface_mesh')
+          end
+          run
+          GDB
+          set +e
+          timeout 470s gdb -q -batch -x "$RUNNER_TEMP/dump.gdb" --args "$RUNNER_TEMP/compiled/bin/directional_surface_cell_producer_tests" '--gtest_filter=UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Vase' > "$RUNNER_TEMP/test.log" 2>&1
+          rc=$?
+          set -e
+          echo "scratch_runtime_exit=$rc"
+          grep 'P13L2_TYPED_IDENTITY' "$RUNNER_TEMP/test.log" || true
+          tail -15 "$RUNNER_TEMP/test.log"
+          cp "$RUNNER_TEMP/test.log" "$RUNNER_TEMP/geometry/test.log"
+          test -s "$RUNNER_TEMP/geometry/typed_identity.json"
+      - name: Write evidence manifest
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/geometry"
+          echo 'semantic_source=11c8172ad467c6dc865f2f3352e75b78f5469a2b' > "$RUNNER_TEMP/geometry/source.txt"
+          (cd "$RUNNER_TEMP/geometry" && find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p13l2-typed-identity-data-${{ github.run_id }}
+          path: ${{ runner.temp }}/geometry
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p13l2-typed-identity-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/p13l2-gdb.log
+          if-no-files-found: error
+  mailbox:
+    if: ${{ always() }}
+    needs: [capture]
+    permissions:
+      actions: read
+      contents: write
+    uses: ./.github/workflows/workflow-mailbox-publisher.yml
+    with:
+      mailbox_branch: workflow-mailbox
+      workflow_key: p13l2-typed-identity
+      source_sha: 11c8172ad467c6dc865f2f3352e75b78f5469a2b
+      source_ref: refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing
+      result: ${{ needs.capture.result }}
+      summary: No-build GDB typed canonical stitch identity capture on frozen CB96.
