@@ -69,3 +69,27 @@ The previous independent strict-issue replay is authoritative only for its *diag
 Exact source inspection of `src/geometry/PureQuadCompletion.cpp::quad_embedding_failure` confirms finite coordinates, Newell normal threshold `1e-24` squared, own-plane area `1e-14` absolute, bow-tie crossing with fixed orientation epsilon `1e-13`, and source orientation, but **no minimum own-quad nonadjacent-corner/edge clearance**. Because a narrow quad may pass these tests, source-owned clearance/invariant is a *candidate*, not an authorized fix; before changing it, show positive valid thin-quad controls and identify the producing patch/backend. Do not collapse distinct stitch keys by proximity.
 
 To recover missing producer certificates without rebuilding or altering tests, a temporary GDB scratch workflow `.github/workflows/p13l2-lineage-20261106.yml` (created at `05cd1930a94105d24e4126225533e095c391b4d8`) was triggered by marker `.agents/connector-triggers/p13l2-lineage-20261106.txt` at `031939e650ea2d379e7fb702db17a076a9d94ef9`. It checks out the immutable CB96 source and original compiled artifact, searches *live* std::vector headers for 67,750 `PureQuadFaceLineage` rows (40-byte expected layout) and 67,961 `PureQuadVertexLineage` rows (size inferred by explicit count and index sentinels), dumps only implicated lineage records, and publishes mailbox key `p13l2-lineage` on `workflow-mailbox`. Its trigger is **not** a claim of runtime completion. Validate the final artifact and its embedded hashes before interpreting. This source-level record remains IN_PROGRESS until patch owners, typed identities and the geometric-collision contract are independently adjudicated. No product/test/build/fixture/selector changes made.
+
+
+## Frozen CB96 exact producer lineage recovered (2026-11-06 02:55 UTC)
+
+Read-only immutable-compiled-artifact scratch run [42152593724](https://github.com/akashskypatel/Directional/actions/runs/42152593724) succeeded on original CB96 semantic source `11c8172ad467c6dc865f2f3352e75b78f5469a2b` and package `13460725846`; no rebuild or source/test/fixture modification. Result artifact `13473291589`, outer SHA-256 `02036d1c1d394ad27063282c0d57d40fd11896457390120961e033c986de7d5e`, internal **6/6** SHA256SUMS validated; log artifact `13473306688`, outer SHA-256 `a415c05b49013951ef5ca831166dc782deffceadf4bdab0c0b9f3ae60db07faf`. Three independently retained in-process vector owners for `PureQuadFaceLineage` and `PureQuadVertexLineage` were located by verified indexed sentinel fields and sizes (67,750 records × 40 bytes, 67,961 records × 928 bytes). Three face-record tables are byte-identical; decoded semantic vertex fields agree across all three copies (raw vector addresses intentionally differ). These are original CB96 lineage records at validator entry, not geometry-based patch guesses.
+
+| Output quad | Source patch | Backend enum/name | Local quad | Boundary only |
+|---|---:|---|---:|---|
+| 55 | 118 | 2 Pattern | 1 | true |
+| 15372 | 54 | 0 ClosedForm | 1 | true |
+| 21286 | 4955 | 3 BoundedCombinatorial | 0 | true |
+| 21288 | 4955 | 3 BoundedCombinatorial | 2 | true |
+| 21290 | 4957 | 3 BoundedCombinatorial | 1 | true |
+| 21291 | 4957 | 3 BoundedCombinatorial | 2 | true |
+| 41744–41745 | 23302 | 0 ClosedForm | 0–1 | true |
+| 41746–41747 | 23301 | 3 BoundedCombinatorial | 0–1 | true |
+| 4304 | 8788 | 0 ClosedForm | 0 | true |
+| 4308 | 8789 | 2 Pattern | 2 | true |
+
+The prior historical owner pairs **118/54** and **4955/4957** are therefore **confirmed current CB96 patch owners** by independent stored face lineage; retract the old uncertainty that the face IDs could have been remapped. This does **not** turn 118/54 into a real overlap: the independently rederived `collinear_segment_overlap2` dimensional false positive stands. The second T-junction cluster owners are now **23301/23302**; adjacent edge endpoint 28576 is represented from patch 25721.
+
+Retained vertex record summaries (all `kind=SourceTriangle`; `stitchIdentity.kind=authoritativeIdentity.kind=1` = `ArrangementBoundaryNode`, both identity valid flags true): `35160→(representativePatch=4955,localVertex=63360)`, `35161→(4955,35319)`, `35159→(4955,35314)`, `4618→(4977,57362)`, `53049→(23302,9679)`, `53051→(23301,9678)`, `28576→(25721,36055)`. These are deterministic representative lineage owners, **not exclusive contributing patch memberships**. Crucially, all seven are *arrangement-boundary nodes*, not generated patch interiors; the near-degenerate wedge geometry may originate in arrangement-boundary spacing or completion boundary geometry rather than arbitrary generated interiors.
+
+Still missing: actual decoded **canonical typed vector contents** (the captured 928-byte row holds process-address pointers, and vector byte-lengths alone do not prove equality), patch-local/arrangement halfedge and per-side subdivisions, and a producer-correct, negative-on-legacy repair plan. Do **not** use hash equality as typed equality, proximity-weld, skip validator failures, or accept CP3. The two false-positive geometric-collision mechanisms remain separate from boundary ownership. Formal TB83 903/903, CP2 491/491, stable 66/17/49/debt1 remain unchanged.
