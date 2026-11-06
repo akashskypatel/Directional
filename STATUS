@@ -3,7 +3,7 @@ Turn: M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP
 Status: BLOCKED
 Successor: M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP
 Started at: 2026-11-06T00:15:33Z
-Resumed at: 2026-11-06T06:44:57Z
+Resumed at: 2026-11-06T07:32:27Z
 Ended at: 
 Blocker Type: REVIEW_BLOCKER
 Blocker Details: Immutable CB96 Vase V/Q lacks run-specific retained FlowRep arc and incident arrangement-halfedge provenance for patch 23301 nodes 9679/36055; REVIEW_TURN_POLICY prohibits new runtime observation without separate authorization or an existing typed witness.
