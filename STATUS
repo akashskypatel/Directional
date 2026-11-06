@@ -6,5 +6,5 @@ Started at: 2026-11-06T00:15:33Z
 Resumed at: 2026-11-06T09:58:53Z
 Ended at: 
 Blocker Type: REVIEW_BLOCKER
-Blocker Details: Verified CB96 diagnostic artifact 13469796788 contains V/Q and logs but no run-specific FlowRep arc or incident arrangement-halfedge ownership for patch 23301 nodes 9679/36055; runtime-free Review requires separately authorized observation or an existing typed witness.
+Blocker Details: CB96 artifact 13469796788 lacks patch 23301 nodes 9679/36055 run-specific FlowRep arc and post-simplification arrangement-halfedge ownership; runtime-free Review requires separately authorized observation or an existing typed provenance witness.
 ---END_TURN_STATUS---
