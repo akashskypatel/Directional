@@ -1,0 +1,190 @@
+name: P13l2 immutable pre-stitch side layout witness
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/p13l2-side-layout-20261106.txt]
+permissions:
+  actions: read
+  contents: write
+concurrency:
+  group: p13l2-side-layout
+  cancel-in-progress: false
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/p13l2-side-layout-20261106.yml
+      source_ref: ${{ github.sha }}
+  capture:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Initialize persistent log
+        shell: bash
+        run: |
+          : > "$RUNNER_TEMP/p13l2-gdb.log"
+          echo "event_sha=$GITHUB_SHA semantic_source=11c8172ad467c6dc865f2f3352e75b78f5469a2b" >> "$RUNNER_TEMP/p13l2-gdb.log"
+      - uses: actions/checkout@v4
+        with:
+          ref: 11c8172ad467c6dc865f2f3352e75b78f5469a2b
+          fetch-depth: 1
+          submodules: false
+      - name: Verify and unpack immutable compiled artifact
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/p13l2-gdb.log") 2>&1
+          trap 's=$?; echo "preflight_exit=$s"' EXIT
+          test "$(git rev-parse HEAD)" = 11c8172ad467c6dc865f2f3352e75b78f5469a2b
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq gdb libgmp10 libgmpxx4ldbl
+          mkdir -p "$RUNNER_TEMP/compiled" "$RUNNER_TEMP/geometry"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/13460725846/zip" > "$RUNNER_TEMP/cb96.zip"
+          unzip -q "$RUNNER_TEMP/cb96.zip" -d "$RUNNER_TEMP/compiled"
+          (cd "$RUNNER_TEMP/compiled" && sha256sum -c SHA256SUMS)
+          test "$(cat "$RUNNER_TEMP/compiled/metadata/source-commit.txt")" = 11c8172ad467c6dc865f2f3352e75b78f5469a2b
+          mkdir -p "$RUNNER_TEMP/compiled/test-data"
+          ln -s "$GITHUB_WORKSPACE/benchmarks" "$RUNNER_TEMP/compiled/test-data/benchmarks"
+          test -d "$RUNNER_TEMP/compiled/test-data/benchmarks/fixtures"
+          gdb --version | head -1
+      - name: Dump immutable geometry at pre-validation boundary
+        shell: bash
+        run: |
+          set -uo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/p13l2-gdb.log") 2>&1
+          cat > "$RUNNER_TEMP/dump.gdb" <<'GDB'
+          set pagination off
+          set confirm off
+          python
+          import gdb,struct,os,pathlib,json
+          out=pathlib.Path(os.environ['RUNNER_TEMP'])/'geometry'
+          out.mkdir(exist_ok=True)
+          inf=gdb.selected_inferior()
+          target=[54,118,4955,4957,4977,23301,23302,25721]
+          def rd(p,n):return bytes(inf.read_memory(p,n))
+          def vec(p):return struct.unpack('<QQQ',rd(p,24))
+          def vecbytes(p,limit):
+           a,b,c=vec(p);n=b-a
+           if a==b==c==0:return b''
+           if not (a>0x10000 and a<=b<=c and n<=limit):raise ValueError('invalid vector '+repr((hex(p),hex(a),hex(b),hex(c))))
+           return rd(a,n)
+          def ints(raw):
+           if len(raw)%4:raise ValueError('not int vector')
+           return list(struct.unpack('<'+'i'*(len(raw)//4),raw)) if raw else []
+          class Capture(gdb.Breakpoint):
+           def stop(self):
+            try:
+             addr=int(gdb.parse_and_eval('$rsi'))
+             begin,end,cap=vec(addr)
+             size=end-begin
+             if not (begin>0x10000 and begin<=end<=cap and size>200000 and size<160000000):return False
+             blob=rd(begin,size)
+             target_index={}
+             for ix in range(size//1208):
+              sid=struct.unpack_from('<i',blob,ix*1208)[0]
+              if sid in target:
+               if sid in target_index:raise ValueError('duplicate sourcePatch='+str(sid))
+               target_index[sid]=ix
+             if set(target_index)!=set(target):raise ValueError('missing target='+str(set(target)-set(target_index)))
+             try:
+              ty=gdb.lookup_type('directional::geometry::PureQuadMesh')
+              layout={'sizeof':ty.sizeof,'fields':{f.name:{'offset':f.bitpos//8,'sizeof':f.type.sizeof} for f in ty.fields() if f.name and f.bitpos is not None}}
+             except Exception as e:layout={'debug_symbols_unavailable':repr(e)}
+             (out/'type_layout.json').write_text(json.dumps(layout,indent=2,sort_keys=True))
+             data={'source':'11c8172ad467c6dc865f2f3352e75b78f5469a2b','record_stride':1208,'patch_count':size//1208,'verified_indices':target_index,'type_layout':layout,'patches':{}}
+             for sid,ix in sorted(target_index.items()):
+              rec=begin+ix*1208
+              raw=blob[ix*1208:(ix+1)*1208]
+              # Source-defined final three std::vector members, each 24B under x86_64 libstdc++.
+              def header(off):
+               a,b,c=struct.unpack_from('<QQQ',raw,off)
+               if not(a>0x10000 and a<=b<=c and c-a<1000000000):raise ValueError('invalid header '+str((sid,off,hex(a),hex(b),hex(c))))
+               return a,b,c
+              side_a,side_b,side_c=header(1136)
+              lv_a,lv_b,lv_c=header(1160)
+              lq_a,lq_b,lq_c=header(1184)
+              sides=ints(rd(side_a,side_b-side_a))
+              if not(2<=len(sides)<=32 and all(0<v<10000 for v in sides)):raise ValueError('sides invalid for '+str(sid)+':'+repr(sides))
+              expected=sum(sides)
+              if not(4<=expected<=5000):raise ValueError('boundary count suspect '+str((sid,expected)))
+              bc=[]
+              for off in range(8,1120,8):
+               try:
+                a,b,c=struct.unpack_from('<QQQ',raw,off)
+                if not(a>0x10000 and a<=b<=c and b-a==4*expected):continue
+                vals=ints(rd(a,b-a))
+                if len(set(vals))!=len(vals) or any(v<0 or v>100000000 for v in vals):continue
+                ia,ib,ic=struct.unpack_from('<QQQ',raw,off+24)
+                if not(ia>0x10000 and ia<=ib<=ic and ib-ia==224*expected):continue
+                identities=[]
+                for k in range(expected):
+                 ptr=ia+k*224
+                 valid=rd(ptr,1)[0]
+                 if valid not in (0,1):raise ValueError('invalid bool')
+                 va,vb,vc=vec(ptr+8)
+                 if va==vb==vc==0:keys=[]
+                 else:
+                  if not(va>0x10000 and va<=vb<=vc and vb-va<=8*64 and (vb-va)%8==0):raise ValueError('invalid canonical values')
+                  keys=list(struct.unpack('<'+'q'*((vb-va)//8),rd(va,vb-va)))
+                 identities.append({'valid':bool(valid),'numeric':keys})
+                bc.append({'boundary_vertices_offset':off,'boundary_identity_offset':off+24,'boundary_vertices':vals,'canonical_identities':identities})
+               except Exception:continue
+              data['patches'][str(sid)]={'vector_index':ix,'source_side_edge_counts':sides,'expected_boundary_vertices':expected,'vertex_lineage_bytes':lv_b-lv_a,'face_lineage_bytes':lq_b-lq_a,'boundary_candidates':bc}
+             (out/'side_schedule.json').write_text(json.dumps(data,sort_keys=True,indent=2))
+             print('P13L2_SIDE_LAYOUT '+str({k:(v['source_side_edge_counts'],len(v['boundary_candidates'])) for k,v in data['patches'].items()}),flush=True)
+             self.enabled=False
+            except Exception as e:
+             (out/'diagnostic_error.txt').write_text(repr(e))
+             print('P13L2_SIDE_SCHEDULE_ERROR '+repr(e),flush=True)
+            return False
+          Capture('directional::geometry::stitch_pure_quad_patches')
+          end
+          run
+          GDB
+          set +e
+          timeout 470s gdb -q -batch -x "$RUNNER_TEMP/dump.gdb" --args "$RUNNER_TEMP/compiled/bin/directional_surface_cell_producer_tests" '--gtest_filter=UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Vase' > "$RUNNER_TEMP/test.log" 2>&1
+          rc=$?
+          set -e
+          echo "scratch_runtime_exit=$rc"
+          grep 'P13L2_SIDE_SCHEDULE' "$RUNNER_TEMP/test.log" || true
+          tail -15 "$RUNNER_TEMP/test.log"
+          cp "$RUNNER_TEMP/test.log" "$RUNNER_TEMP/geometry/test.log"
+          test -s "$RUNNER_TEMP/geometry/side_schedule.json"
+      - name: Write evidence manifest
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/geometry"
+          echo 'semantic_source=11c8172ad467c6dc865f2f3352e75b78f5469a2b' > "$RUNNER_TEMP/geometry/source.txt"
+          (cd "$RUNNER_TEMP/geometry" && find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p13l2-side-layout-data-${{ github.run_id }}
+          path: ${{ runner.temp }}/geometry
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p13l2-side-layout-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/p13l2-gdb.log
+          if-no-files-found: error
+  mailbox:
+    if: ${{ always() }}
+    needs: [capture]
+    permissions:
+      actions: read
+      contents: write
+    uses: ./.github/workflows/workflow-mailbox-publisher.yml
+    with:
+      mailbox_branch: workflow-mailbox
+      workflow_key: p13l2-side-layout
+      source_sha: 11c8172ad467c6dc865f2f3352e75b78f5469a2b
+      source_ref: refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing
+      result: ${{ needs.capture.result }}
+      summary: No-build original patch side subdivisions and boundary-node identity at stitch entry.
