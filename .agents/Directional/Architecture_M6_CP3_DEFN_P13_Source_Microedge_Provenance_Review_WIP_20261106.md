@@ -1,6 +1,6 @@
 # P13-l2 source microedge classification — supplemental WIP Review
 
-**Owning turn:** `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP`, still IN_PROGRESS. This file is supplemental evidence, **not** a second Review authority or a Code + Build authorization. Consolidate it into the owning completed-mesh-stitch Review before formal closure.
+**Owning turn:** `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP`, currently BLOCKED on the run-specific provenance observation gate. This file is supplemental evidence, **not** a second Review authority or a Code + Build authorization. Consolidate it into the owning completed-mesh-stitch Review before formal closure.
 
 ## Frozen evidence / runtime boundary
 
