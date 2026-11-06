@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workflow_key": "p13l2-side-layout",
+  "workflow": "P13l2 immutable pre-stitch side layout witness",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/p13l2-side-layout-20261106.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "a0dc9834410293ecb0103d2c7dac37c66ddadc9f",
+  "source_sha": "11c8172ad467c6dc865f2f3352e75b78f5469a2b",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 42162122757,
+  "run_attempt": 1,
+  "run_number": 1,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/42162122757",
+  "result": "success",
+  "summary": "No-build original patch side subdivisions and boundary-node identity at stitch entry.",
+  "reported_at": "2026-11-06T04:26:45Z",
+  "mailbox_branch": "workflow-mailbox",
+  "artifacts": [
+    {
+      "id": 13477850008,
+      "name": "p13l2-side-layout-log-42162122757",
+      "size_in_bytes": 1508,
+      "digest": "sha256:c7c7cc004b791e7e9b694dfdf9905c627f3fb5afa97f789ba19440e8ce25930b",
+      "expired": false,
+      "created_at": "2026-11-06T04:26:26Z",
+      "expires_at": "2027-02-04T04:22:31Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42162122757/artifacts/13477850008",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13477850008/zip"
+    },
+    {
+      "id": 13477387224,
+      "name": "workflow-mailbox-publisher-log-42162122757-attempt-1",
+      "size_in_bytes": 394,
+      "digest": "sha256:177ab7b961e829889f63442e6bf4bb87d4f12940c90f54326f17c29ca5ae8340",
+      "expired": false,
+      "created_at": "2026-11-06T04:26:45Z",
+      "expires_at": "2026-11-20T04:26:44Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42162122757/artifacts/13477387224",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13477387224/zip"
+    },
+    {
+      "id": 13477118762,
+      "name": "p13l2-side-layout-data-42162122757",
+      "size_in_bytes": 4169,
+      "digest": "sha256:7549d4232a1bd27f02bbc9667e4d2669bad1adcfe761453a81742de9485ca84e",
+      "expired": false,
+      "created_at": "2026-11-06T04:26:25Z",
+      "expires_at": "2027-02-04T04:22:31Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42162122757/artifacts/13477118762",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13477118762/zip"
+    },
+    {
+      "id": 13476703665,
+      "name": "agent-workflow-schema-validation-42162122757",
+      "size_in_bytes": 443,
+      "digest": "sha256:e149a30cc78667270aa7a8eb16081114191b484b3b4c714e3c3dccdc7ca301fd",
+      "expired": false,
+      "created_at": "2026-11-06T04:22:38Z",
+      "expires_at": "2026-11-13T04:22:37Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42162122757/artifacts/13476703665",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13476703665/zip"
+    },
+    {
+      "id": 13476384368,
+      "name": "agent-workflow-schema-validator-log-42162122757",
+      "size_in_bytes": 504,
+      "digest": "sha256:e4fe114b217a8f19eeda607551d6438f5b7101eda4ec573ebe5020af6316937d",
+      "expired": false,
+      "created_at": "2026-11-06T04:22:39Z",
+      "expires_at": "2026-11-13T04:22:38Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42162122757/artifacts/13476384368",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13476384368/zip"
+    }
+  ]
+}
