@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-TB83-P13-EMBEDDING-PREDICATE-FULL-GATE-EXEC` (RA-209 §4, immutable artifact-only). CB96 exact source `11c8172ad467c6dc865f2f3352e75b78f5469a2b` and eight-target GMP/GMPXX package `13460725846` compiled [GREEN](https://github.com/akashskypatel/Directional/actions/runs/42124939141), 28/28 hashes, no runtime; CB93–CB95 complete. Step 48.
+> **Current canonical next:** `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP` (Review, RA-209.5, after TB83). [TB83](.agents/Directional/Architecture_M6_CP3_TB83_P13_Embedding_Predicate_Full_Gate_Execution_Report_20261106.md) MATCH on immutable CB96 source: 903/903 gate PASS, membership 984; census Cylinder PASS, BunnyRandom P13-e expected RED, Vase P13-l2 expected RED with 4 issues/0 FlippedFace. CP2 491/491 and stable 66/17/49 unchanged; selector497/CP3 unpromoted. Step 48 complete.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -454,11 +454,11 @@
        - `31 0` `tests/PureQuadCompletionPhase18Tests.cpp` → `6ca86f6e721589fae1dcf150cd88e88d152ec559b9fb4cf18a91a0874e88355d`.
      - Applied exactly as source `11c8172ad467c6dc865f2f3352e75b78f5469a2b`; [compile 42124939141](https://github.com/akashskypatel/Directional/actions/runs/42124939141) eight targets GREEN, `runtimeExecution=false`, GMP/GMPXX; immutable artifact `13460725846`, 28/28 package hashes, [CB96 record](.agents/Directional/Architecture_M6_CP3_CB96_P13_Completion_Embedding_Own_Plane_Code_Build_Record_20261105.md). No tests/benchmarks.
      - Mismatch stop (`M6-CP3-PLAN-P13-COMPLETION-EMBEDDING-OWN-PLANE-STOP`) not reached.
-  48. [ ] **NEXT `M6-CP3-TB83-P13-EMBEDDING-PREDICATE-FULL-GATE-EXEC`** (TB-EXEC; RA-209.4):
+  48. [x] **COMPLETE / MATCH `M6-CP3-TB83-P13-EMBEDDING-PREDICATE-FULL-GATE-EXEC`** (TB-EXEC; RA-209.4):
      - Gate: [903-row manifest](.agents/Directional/Architecture_M6_TB83_P13_Embedding_Predicate_Full_Gate_Case_Manifest.tsv) `61e9edbedee3731b04d7b6279b79a0fd0e0b651686638e9b832773f7aa0a36aa`; ledger v5; **903/903**, membership 984.
      - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; Vase RED within 600 s.
      - **Pinned:** gate rows 795/796/797/864 and census Cylinder byte-identical to TB82 plus ` validationIssues=0`; BunnyRandom byte-identical; Vase byte-identical through `simplification`, with a suffix containing **no FlippedFace** (counts recorded; macOS 4).
-     - Mismatch → `M6-CP3-TB83-P13-EMBEDDING-PREDICATE-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB83A-P13-EMBEDDING-PREDICATE-ORCH`.
+     - [TB83 evidence](.agents/Directional/Architecture_M6_CP3_TB83_P13_Embedding_Predicate_Full_Gate_Execution_Report_20261106.md): gate [42131680146](https://github.com/akashskypatel/Directional/actions/runs/42131680146) 903/903 PASS, 984 membership, 1814/1814 hashes; census [42131702661](https://github.com/akashskypatel/Directional/actions/runs/42131702661) 1 PASS / 2 expected RED, 9/9 hashes; all pinned digests MATCH, Vase 4 issues / 0 FlippedFace. Initial census request failed infrastructure preflight (bad archived-source hash) before running cases; corrected v2, no source/test change. No CP3 promotion. NEXT Review `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP`; P13-e and P13-l2 carried.
 - [ ] **Review track** (probe DEFNs):
   - [x] **`M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING`** (P13-g): the static [decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) ran no probe and froze an open A/B CB73. [RA-196](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) probes settle it:
     - Patch 1200's boundary is simple (branch A is false).

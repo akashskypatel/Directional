@@ -1,3 +1,9 @@
+## 2026-11-06 UTC — TB83 immutable own-plane full gate and production census COMPLETE / MATCH
+
+- [Report](.agents/Directional/Architecture_M6_CP3_TB83_P13_Embedding_Predicate_Full_Gate_Execution_Report_20261106.md). Corrected 903-case [gate 42131680146](https://github.com/akashskypatel/Directional/actions/runs/42131680146) **903/903 PASS**, membership **984**, **1,814/1,814** internal hashes, pinned stage digests MATCH; exact CB96 source `11c8172…` / immutable package `13460725846`, no compilation/relinking.
+- [Census 42131702661](https://github.com/akashskypatel/Directional/actions/runs/42131702661) **1 PASS / 2 expected RED**, **9/9** hashes: Cylinder PASS, BunnyRandom P13-e vertex49 RED, Vase P13-l2 RED in 249.99 s with 67,750 informational quads and four issues (3 `GeometricVertexOnUnsplitEdge`, 1 `SelfIntersectingFace`, 0 `FlippedFace`). All RA-209.4 digest requirements MATCH. Prior census request failed preflight 0/3 from one mistyped source archive hash; v2 corrected request only.
+- No accepted CP2 green lost, no new stable regression (66/17/49), debt 1; CP2 491/491, selector497/CP3 unpromoted. Next separate Review `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP`, RA-209.5; no successor work began in TB83.
+
 ## 2026-11-05 — CB96 completion embedding own-plane Code + Build COMPLETE / GMP compile GREEN
 
 - **Turn:** `M6-CP3-CB96-P13-COMPLETION-EMBEDDING-OWN-PLANE`; exact RA-209.3 frozen diff `a7e81da57d5d1bf37847ccf0b5ee3abeca5230c0605d35056e6a12d40b54f469` applied unchanged to completion and Phase18 tests at [source `11c8172ad467c6dc865f2f3352e75b78f5469a2b`](https://github.com/akashskypatel/Directional/commit/11c8172ad467c6dc865f2f3352e75b78f5469a2b), prescribed postimage hashes verified. [CB96 record](.agents/Directional/Architecture_M6_CP3_CB96_P13_Completion_Embedding_Own_Plane_Code_Build_Record_20261105.md).
