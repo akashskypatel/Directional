@@ -1,3 +1,0 @@
-Purpose: exact source snapshot for M6-CP3-TB83-P13-EMBEDDING-PREDICATE-FULL-GATE-EXEC
-Source authority: agent/surface_cell_quad/p5-recover-bridge-healing at post-entry STATUS commit e2c6d73e522ad2037664e18aa5c78baaa65fc862
-Request: one source snapshot; no build or tests; attempt 1.
