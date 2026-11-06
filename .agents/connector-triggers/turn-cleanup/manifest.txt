@@ -1,0 +1,2 @@
+# P13 overlap Review session snapshot trigger; keep durable evidence and mailbox records.
+.agents/connector-triggers/source-snapshot/p13-overlap-resume-20261106-1049.txt
