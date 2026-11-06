@@ -1,2 +1,0 @@
-# Cleanup for M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP snapshot
-.agents/connector-triggers/source-snapshot/m6-cp3-p13-overlap-review-20261106-0647.txt
