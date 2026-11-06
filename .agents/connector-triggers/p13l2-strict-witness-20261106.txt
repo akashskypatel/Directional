@@ -1,0 +1,4 @@
+turn=M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP
+semantic_source=11c8172ad467c6dc865f2f3352e75b78f5469a2b
+immutable_artifact=13460725846
+purpose=read-only GDB strict issue and provenance capture; no build
