@@ -1,0 +1,18 @@
+# P13-l2 pre-stitch vector ABI: same-turn Review evidence (2026-11-06)
+
+This is an **IN_PROGRESS diagnostic addendum** to `Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Stitch_Overlap_Review_WIP_20261106.md`, **not** a new turn or a Code+Build authorization. Canonical turn `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP` remains open. Immutable semantic source is CB96 `11c8172ad467c6dc865f2f3352e75b78f5469a2b`; the frozen compiled artifact is `13460725846`. No product, test, fixture, benchmark, build or frozen selector sources were changed.
+
+## Capture and reproducibility
+
+- Scratch workflow `p13l2-side-abi-20261106.yml`, trigger commit `692fe9c00c9f1e17a3b8733b8e11480cba51d44e`, completed successfully in run [42159929579](https://github.com/akashskypatel/Directional/actions/runs/42159929579); workflow schema, capture, and mailbox jobs all succeeded.
+- Result artifact `13476800994`, outer SHA-256 `5d353651de55dae32e84719410c1b5ab929ed88d296187230e5a6d86bfeab4ab`; inner SHA256SUMS **5/5 PASS**. This is only a diagnostic replay of the immutable Vase product, not an acceptance/TB run.
+- `stitch_pure_quad_patches` entry SysV register `rsi=0x7ffffffc23a0` identifies the original patch vector header. Header `begin=0x7ffff171e010, end=0x7ffff3602a10, capacity=0x7ffff3cde010`, payload 32,393,728 bytes.
+- Recovered exact `std::vector<PureQuadMesh>` stride **1208 bytes**, **26,816 patches**. Prior probe's monotonic patch-ID assumption was incorrect: sampled IDs were `26569,26568,5,26572,26580,38,3125,25108,4290` (not sorted).
+- Eight target record rows (sourcePatch → vector index): `54→10958`, `118→35`, `4955→13158`, `4957→13159`, `4977→1601`, `23301→20876`, `23302→20875`, `25721→10395`. All eight were found by exact unique sourcePatch IDs.
+- The nested matcher produced **zero side-schedule candidates for all eight**. Its guessed `PureQuadVertexLineage` and `PureQuadFaceLineage` sizes (928 and 40), offset window, and identity size (224) have **not** been proven against the compiled ABI. Do not classify schedule absence as evidence of source-patch absence, and do not infer authoritatively equivalent vertices from geometric proximity.
+
+## Next authorized action (within the same Review turn)
+
+Acquire actual `PureQuadMesh` field layout at the original `stitch_pure_quad_patches` boundary, preferably from verified debugger type information (`ptype /o` or field-address expressions) or a bounded, independently discriminating vector-header scan. Read `sourceSideEdgeCounts`, `boundaryVertices`, and `boundaryNodeIdentities` **without** assuming lineage-element sizes. Assert that `sum(sourceSideEdgeCounts)==boundaryVertices.size()`, each canonical identity corresponds to its boundary vertex, and the eight exact patch identities and vector stride remain stable. Recover source-side schedules and contributing patch/vertex memberships, then independently distinguish: (a) arrangement placing two distinct boundary nodes too close on a common side, versus (b) completion producing invalid connectivity from otherwise valid arranged boundaries. Separately preserve the proved validator collinearity-tolerance dimensional defect; use an independent positive/negative geometry oracle rather than copied production formula.
+
+No new implementation turn, new acceptance, correction authorization, or status promotion follows from this capture. Preserve accepted CP2 491/491, TB83 903/903 candidate, stable 66/17/49 debt 1, CP3 unpromoted. Temporary workflow and triggers must be removed through the established cleanup mechanism; the diagnostic mailbox record remains on orphan ref `workflow-mailbox`.
