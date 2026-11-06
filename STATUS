@@ -6,5 +6,5 @@ Started at: 2026-11-06T00:15:33Z
 Resumed at: 2026-11-06T06:44:57Z
 Ended at: 
 Blocker Type: REVIEW_BLOCKER
-Blocker Details: Run-specific FlowRep and arrangement-halfedge provenance for Vase patch 23301 is absent from immutable artifacts; its runtime observation requires independent authorization under the runtime-free Review policy, or an equivalent pre-existing typed witness.
+Blocker Details: Immutable CB96 Vase V/Q lacks run-specific retained FlowRep arc and incident arrangement-halfedge provenance for patch 23301 nodes 9679/36055; REVIEW_TURN_POLICY prohibits new runtime observation without separate authorization or an existing typed witness.
 ---END_TURN_STATUS---
