@@ -21,7 +21,7 @@ The approximate normalized candidate scan is a **diagnostic**, not a replacement
 
 ## Still required before Review completes
 
-1. Capture the **exact three** post-CB96 `GeometricVertexOnUnsplitEdge` issue tuples from the validator, with source chart/region/sheet, canonical stitch keys, boundary ownership and per-patch subdivision counts. Geometry-only KD-tree candidates at an arbitrary tolerance cannot identify which three passed chart authority.
+1. **Exact three validator issue tuples now captured in the 2026-11-06 continuation below**. Still capture typed chart/region/sheet certificates, canonical stitch keys, producing patch/local-quad owner, boundary ownership and per-patch subdivision counts; raw `SurfacePoint` labels are not a replacement for full quotient authority. Geometry-only KD-tree candidates at an arbitrary tolerance cannot identify which three passed chart authority.
 2. Verify whether additional actual global crossings survive dimensionally correct/filtered-exact intersection checks and faithful concave-quad handling; use non-vacuous positive controls, not just passing Vase.
 3. Trace each confirmed failure to its authoritative producer: geometry-validation predicate, patch embedding/topology, boundary schedule, or exact stitch identity. Freeze separate minimal CB changes **only after** the evidence establishes ownership. No Code+Build or TB execution is authorized in this Review. Preserve CP2 491/491, stable 66 events / 17 categories / 49 recurrences, debt 1, and CP3/selector497 unpromoted.
 
@@ -54,3 +54,25 @@ The output `completedQuads` connectivity independently exposes an overlooked dis
 All **three** independent geometric candidates are therefore **self-incident corner-on-nonadjacent-edge cases** of an embedded output quad, not simply evidence of one patch leaving an adjacent patch's boundary unsplit. The strict validator's geometric-vertex-on-edge check does **not** exclude same-face corner/edge pairs. This does **not** license suppressing those issues: near-collapsed slivers remain geometric quality defects even if the adjacent patch tessellation is otherwise conforming. The producer-owner hypothesis shifts toward **per-patch embedding/degenerate corner placement** for those witnesses, pending exact validation tuples and typed patch lineage. An implementation correction must test whether the corner geometry itself violates a completion embedding quality invariant and/or whether a shared boundary schedule generated near-duplicate vertices. Do not treat a proximity merge as a corrective action.
 
 The geometry alone does not prove that these three tuples are the validator's three actual issues, nor which patch produced them. Exact chart-compatible issue capture is still pending.
+
+
+## Immutable exact validator issues — completed scratch capture (2026-11-06 02:30Z)
+
+Workflow [42150099703](https://github.com/akashskypatel/Directional/actions/runs/42150099703) succeeded in no-build GDB capture against semantic CB96 source `11c8172ad467c6dc865f2f3352e75b78f5469a2b`, immutable compiled artifact `13460725846`. Result artifact `13471199160`, outer ZIP SHA-256 `576576231e92aa1d20cd886f40b7bcb07a74f5261c3cc1e02b8c3c819fa63a5c`; independent 6/6 nested file hashes pass. Dedicated log artifact `13471468392`, ZIP SHA-256 `87e9229f44f6302b912bd3f834e13fc8fb05394a79da16816df927d232827a38`. GDB break at the strict validator's entry and return captured the exact returned `MeshValidationIssue` records, not an inferred KD-tree histogram:
+
+| Ordinal | Code | Vertex | Edge first | Edge second | Face |
+|---|---|---:|---:|---:|---:|
+| 0 | SelfIntersectingFace (enum 10) | -1 | 55 | 15372 | 15372 |
+| 1 | GeometricVertexOnUnsplitEdge (enum 5) | 35161 | 4618 | 35159 | -1 |
+| 2 | GeometricVertexOnUnsplitEdge (enum 5) | 35160 | 4618 | 35159 | -1 |
+| 3 | GeometricVertexOnUnsplitEdge (enum 5) | 53049 | 28576 | 53051 | -1 |
+
+Thus all three independent geometric-only candidates in the prefilter above are **identical to the actual strict issue tuples**, including the near-endpoint 53049 that the older arbitrary-radius scan excluded. This **discharges exact issue identification** and establishes the same-face embedding geometry for each tuple. The false-positive face pair 55/15372 is also confirmed as the *actual* first strict crossing reported.
+
+Captured `source_provenance.bin` contains `67,961 × 72 = 4,893,192` bytes of original `geometry::SurfacePoint` rows; each of the three issue vertices and their four distinct endpoints has component 0 / sheet 0, squaredDistance 0 and position identical to the output mesh at bit-level. Per-issue source-face labels: `35160→1173`, `35161→1173`, `4618→2361`, `35159→1173`, `53049→285`, `28576→1199`, `53051→285`. All are valid `SurfacePoint` references, not proof of same exact support identity.
+
+`quad_source_faces.bin` has 67,750 signed integers and is all -1 for inspected quads 55,15372,21286,21288,21290,21291,41744–41747: it does not identify their producing patch. The captured `chart_struct_bytes=0` means the attempted raw chart-vector dump yielded no data; do not infer either that no chart authority exists or that any source-chart equality is proved. The actual validator accepted the three point/edge sets as chart-compatible; independent typed region/sheet/chart/quotient and stitch certificate **remains unverified**.
+
+**Owner-relevant classification:** strict reports are triggered by each point being close to a non-adjacent edge of a quad **containing that point** (quads 21286 and 41746), not by a demonstrated mismatch between two otherwise valid adjacent patch-edge subdivisions. The small face area and near-zero edge length indicate a completion embedding quality/schedule concern. Ownership and exact minimal Code+Build changes require the retained `PureQuadVertexLineage`, `PureQuadFaceLineage`, and per-side subdivision certificates, not a heuristic geometric merge. Global collision predicates likewise need source-approved regression tests; scratch diagnosis is not a production fix.
+
+The scratch run's single selected Vase test remains expected RED, not a formal TB gate. All accepted CP2/TB83 counts, stable 66/17/49, debt 1, and CP3 unpromoted state stand unchanged.
