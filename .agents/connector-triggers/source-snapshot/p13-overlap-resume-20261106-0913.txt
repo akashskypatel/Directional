@@ -1,0 +1,3 @@
+purpose=read-only P13 completed-mesh stitch overlap evidence inspection
+base=14e4651720d92cf985a93d5de786fafcd7f7e731
+retry=0
