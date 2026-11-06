@@ -1,3 +1,0 @@
-# P13-l2 Review scratch workflow cleanup; both temporary callers removed first
-.agents/connector-triggers/p13l2-scratch-20261106.txt
-.agents/connector-triggers/p13l2-immutable-gdb-20261106.txt
