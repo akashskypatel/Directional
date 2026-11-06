@@ -1,2 +1,0 @@
-.agents/connector-triggers/p13l2-side-abi-20261106.txt
-.agents/connector-triggers/source-snapshot/p13-completed-mesh-stitch-overlap-20261106.txt
