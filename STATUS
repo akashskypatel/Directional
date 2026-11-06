@@ -6,5 +6,5 @@ Started at: 2026-11-06T00:15:33Z
 Resumed at: 2026-11-06T08:24:40Z
 Ended at: 
 Blocker Type: REVIEW_BLOCKER
-Blocker Details: Immutable CB96 Vase evidence still lacks run-specific retained FlowRep arc and incident arrangement-halfedge provenance for patch 23301 nodes 9679/36055; REVIEW_TURN_POLICY requires separately authorized runtime observation or an existing typed witness.
+Blocker Details: Frozen CB96 output lacks run-specific retained FlowRep arc and incident arrangement-halfedge provenance for patch 23301 nodes 9679/36055; REVIEW_TURN_POLICY requires an independently authorized runtime-observation boundary or existing typed witness.
 ---END_TURN_STATUS---
