@@ -1,0 +1,1 @@
+Snapshot-only source acquisition for current canonical M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP review; no code/build/test execution.
