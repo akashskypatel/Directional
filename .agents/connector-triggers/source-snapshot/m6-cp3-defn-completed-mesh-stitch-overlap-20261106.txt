@@ -1,0 +1,3 @@
+Turn=M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP
+SourceAuthority=53ac0a4c0486da5da92ff536bd03a3d6a3413c0f
+Purpose=read-only source snapshot
