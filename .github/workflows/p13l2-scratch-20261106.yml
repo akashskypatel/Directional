@@ -1,0 +1,161 @@
+name: P13l2 Temporary Scratch Witness
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/p13l2-scratch-20261106.txt]
+permissions:
+  actions: read
+  contents: write
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/p13l2-scratch-20261106.yml
+      source_ref: ${{ github.sha }}
+  probe:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 13
+    steps:
+      - name: Initialize log
+        run: |
+          : > "${RUNNER_TEMP}/scratch.log"
+          echo "event_sha=${GITHUB_SHA}" >> "${RUNNER_TEMP}/scratch.log"
+      - uses: actions/checkout@v4
+        with:
+          ref: 11c8172ad467c6dc865f2f3352e75b78f5469a2b
+          fetch-depth: 1
+          submodules: false
+      - name: Patch scratch worktree only
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "${RUNNER_TEMP}/scratch.log") 2>&1
+          test "$(git rev-parse HEAD)" = 11c8172ad467c6dc865f2f3352e75b78f5469a2b
+          git submodule sync --recursive
+          if ! git submodule update --init --depth=1 --recursive; then
+            backup="$(git config -f .gitmodules --get submodule.external/eigen.backupUrl)"
+            test -n "$backup"
+            rm -rf external/eigen .git/modules/external/eigen
+            git config submodule.external/eigen.url "$backup"
+            git submodule update --init --depth=1 --recursive
+          fi
+          test "$(git -C external/eigen rev-parse HEAD)" = "$(git ls-tree HEAD external/eigen | awk '{print $3}')"
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('tests/SurfaceCellDesignAcceptanceTests.cpp')
+          s=p.read_text()
+          s=s.replace('#include <iostream>', '#include <iostream>\n#include <fstream>\n#include <cstdlib>\n#include <iomanip>')
+          anchor='  print_platform_digest(GetParam().testName, mesh, field.raw, result);'
+          assert s.count(anchor)==1
+          injection=r'''
+          if (std::getenv("P13L2_CAPTURE")) {
+            const auto &ctx=result.surfaceCellContext;
+            std::ofstream out("p13l2-witness.tsv");
+            if (!out) throw std::runtime_error("scratch output open failure");
+            out << std::setprecision(17);
+            out << "META\t" << ctx.completedVertices.rows() << '\t' << ctx.completedQuads.rows()
+                << '\t' << ctx.completedVertexLineage.size() << '\t' << ctx.completedQuadLineage.size()
+                << '\t' << ctx.productSnapshots.hasValidationResult << '\n';
+            for (const auto &i:ctx.productSnapshots.validationResult.strictValidationIssues) {
+              out << "ISSUE\t" << directional::validation::mesh_validation_failure_name(i.code)
+                  << '\t' << i.vertex << '\t' << i.edgeFirst << '\t' << i.edgeSecond << '\t' << i.face << '\n';
+            }
+            for(int q=0;q<ctx.completedQuads.rows();++q){
+              out << "Q\t" << q;
+              for(int c=0;c<4;++c) out << '\t' << ctx.completedQuads(q,c);
+              if(q<static_cast<int>(ctx.completedQuadLineage.size())){
+                const auto &l=ctx.completedQuadLineage[static_cast<size_t>(q)];
+                out << '\t' << l.sourcePatch << '\t' << l.operationLocalQuad << '\t'
+                    << static_cast<int>(l.operation) << '\t' << l.completionVariant;
+              }
+              out << '\n';
+            }
+            for(int v=0;v<ctx.completedVertices.rows();++v){
+              out << "V\t" << v;
+              for(int c=0;c<3;++c) out << '\t' << ctx.completedVertices(v,c);
+              if(v<static_cast<int>(ctx.completedVertexLineage.size())){
+                const auto &l=ctx.completedVertexLineage[static_cast<size_t>(v)];
+                out << '\t' << l.sourcePatch << '\t' << l.localVertex << '\t'
+                    << static_cast<int>(l.kind) << '\t' << l.sourcePoint.face
+                    << '\t' << l.sourcePoint.component << '\t' << l.sourcePoint.sheet;
+                for(int c=0;c<3;++c) out << '\t' << l.sourcePoint.barycentric(c);
+                out << '\t' << static_cast<int>(l.stitchIdentity.kind)
+                    << '\t' << l.stitchIdentity.hash() << '\t' << l.authoritativeIdentity.hash();
+                out << '\t' << l.stitchIdentity.canonical.values.size();
+                for(auto x:l.stitchIdentity.canonical.values) out << ',' << x;
+                out << '\t' << l.sourceTopologyRegions.size();
+                for(auto x:l.sourceTopologyRegions) out << ',' << x.index();
+                out << '\t' << l.sourceIsolationSheets.size();
+                for(auto x:l.sourceIsolationSheets) out << ',' << x.index();
+              }
+              out << '\n';
+            }
+          }
+          '''
+          s=s.replace(anchor,anchor+'\n'+injection)
+          p.write_text(s)
+          print('scratch_injection=complete')
+          PY
+      - name: Compile scratch producer only
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "${RUNNER_TEMP}/scratch.log") 2>&1
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libgmp-dev ninja-build
+          cmake -S . -B build/scratch -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DDIRECTIONAL_BUILD_CLI=OFF -DDIRECTIONAL_BUILD_GUI=OFF -DDIRECTIONAL_BUILD_TESTS=ON -DDIRECTIONAL_BUILD_BENCHMARKS=ON -DDIRECTIONAL_ENABLE_GMP=ON -DGMP_ROOT=/usr -DDIRECTIONAL_ENABLE_PARDISO=OFF -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF -DDIRECTIONAL_ENABLE_CUDSS=OFF -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST
+          cmake --build build/scratch --target directional_surface_cell_producer_tests -- -j2
+      - name: Capture Vase scratch evidence
+        env:
+          P13L2_CAPTURE: '1'
+        shell: bash
+        run: |
+          set -uo pipefail
+          exec > >(tee -a "${RUNNER_TEMP}/scratch.log") 2>&1
+          binary="$(find build/scratch -type f -name directional_surface_cell_producer_tests | head -n 1)"
+          test -n "$binary"
+          set +e
+          timeout 500s "$binary" --gtest_filter='*Vase*' > "${RUNNER_TEMP}/test.log" 2>&1
+          rc=$?
+          set -e
+          echo "scratch_process_exit=$rc"
+          tail -25 "${RUNNER_TEMP}/test.log"
+          test "$rc" -ne 124
+          test -s p13l2-witness.tsv
+          grep '^ISSUE' p13l2-witness.tsv
+      - name: Package evidence
+        if: always()
+        run: |
+          mkdir -p "${RUNNER_TEMP}/scratch-data"
+          cp p13l2-witness.tsv "${RUNNER_TEMP}/scratch-data/" 2>/dev/null || :
+          cp "${RUNNER_TEMP}/test.log" "${RUNNER_TEMP}/scratch-data/" 2>/dev/null || :
+          echo "semantic_source=11c8172ad467c6dc865f2f3352e75b78f5469a2b" > "${RUNNER_TEMP}/scratch-data/source.txt"
+          (cd "${RUNNER_TEMP}/scratch-data" && sha256sum * > SHA256SUMS)
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p13l2-scratch-data-${{ github.run_id }}
+          path: ${{ runner.temp }}/scratch-data
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p13l2-scratch-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/scratch.log
+          if-no-files-found: error
+  mailbox:
+    if: ${{ always() }}
+    needs: [probe]
+    permissions:
+      actions: read
+      contents: write
+    uses: ./.github/workflows/workflow-mailbox-publisher.yml
+    with:
+      mailbox_branch: workflow-mailbox
+      workflow_key: p13l2-scratch
+      source_sha: 11c8172ad467c6dc865f2f3352e75b78f5469a2b
+      source_ref: refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing
+      result: ${{ needs.probe.result }}
+      summary: Scratch-only post-CB96 Vase witness capture; no semantic repository changes.
