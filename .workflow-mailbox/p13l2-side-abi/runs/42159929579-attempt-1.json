@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workflow_key": "p13l2-side-abi",
+  "workflow": "P13l2 frozen side ABI and subdivision witness",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/p13l2-side-abi-20261106.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "692fe9c00c9f1e17a3b8733b8e11480cba51d44e",
+  "source_sha": "11c8172ad467c6dc865f2f3352e75b78f5469a2b",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 42159929579,
+  "run_attempt": 1,
+  "run_number": 1,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/42159929579",
+  "result": "success",
+  "summary": "No-build original patch side subdivisions and boundary-node identity at stitch entry.",
+  "reported_at": "2026-11-06T04:05:08Z",
+  "mailbox_branch": "workflow-mailbox",
+  "artifacts": [
+    {
+      "id": 13476950273,
+      "name": "agent-workflow-schema-validation-42159929579",
+      "size_in_bytes": 443,
+      "digest": "sha256:c75075aad4bee709a446b9fdd10dd941f1a574f29c402e96cd06016d60add3cb",
+      "expired": false,
+      "created_at": "2026-11-06T04:01:00Z",
+      "expires_at": "2026-11-13T04:00:59Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42159929579/artifacts/13476950273",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13476950273/zip"
+    },
+    {
+      "id": 13476800994,
+      "name": "p13l2-side-abi-data-42159929579",
+      "size_in_bytes": 3573,
+      "digest": "sha256:5d353651de55dae32e84719410c1b5ab929ed88d296187230e5a6d86bfeab4ab",
+      "expired": false,
+      "created_at": "2026-11-06T04:04:45Z",
+      "expires_at": "2027-02-04T04:00:52Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42159929579/artifacts/13476800994",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13476800994/zip"
+    },
+    {
+      "id": 13476351995,
+      "name": "p13l2-side-abi-log-42159929579",
+      "size_in_bytes": 1561,
+      "digest": "sha256:2792dd1d9159ee4e567e43eabae757c9730a057274688aa857272fc0344427e6",
+      "expired": false,
+      "created_at": "2026-11-06T04:04:46Z",
+      "expires_at": "2027-02-04T04:00:52Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42159929579/artifacts/13476351995",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13476351995/zip"
+    },
+    {
+      "id": 13475873846,
+      "name": "agent-workflow-schema-validator-log-42159929579",
+      "size_in_bytes": 508,
+      "digest": "sha256:fbb31b1c18d0b65d0056e42c2b3c71db10666d274c8cb9e01d3795ec2664d592",
+      "expired": false,
+      "created_at": "2026-11-06T04:01:01Z",
+      "expires_at": "2026-11-13T04:01:00Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42159929579/artifacts/13475873846",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13475873846/zip"
+    },
+    {
+      "id": 13475853406,
+      "name": "workflow-mailbox-publisher-log-42159929579-attempt-1",
+      "size_in_bytes": 398,
+      "digest": "sha256:e5a5222c3490868c9a7a997dd1153eeed8868a8ba1e9d1487db12b151c7894ed",
+      "expired": false,
+      "created_at": "2026-11-06T04:05:08Z",
+      "expires_at": "2026-11-20T04:05:07Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42159929579/artifacts/13475853406",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13475853406/zip"
+    }
+  ]
+}
