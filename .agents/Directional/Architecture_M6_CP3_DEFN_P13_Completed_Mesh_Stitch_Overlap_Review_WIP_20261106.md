@@ -39,3 +39,13 @@ Only after those proofs, write the smallest producer-owner correction(s) with a 
 - Source, test, benchmark and build logic: **unchanged**.
 - No stable regression accounting changed and no production acceptance claimed.
 - Next action: resume **this same turn**, perform the required exact post-CB96 witness capture in an authorized review scratch environment, then adjudicate and freeze owner-targeted changes. All other carried obligations remain unchanged.
+
+## Continuation: source-backed scratch capture (2026-11-06)
+
+The 6208-file frozen source snapshot was independently re-extracted and checksum-verified in this attempt. The TB83 census artifact's nine internal checksums were also independently verified. TB82's actual manifest filename is `Architecture_M6_TB82_P13_Vertex_Fan_Seeds_Full_Gate_Case_Manifest.tsv`; its SHA-256 is `9fbf329167cbe84698d5a08eda6e5374200c7729a5f0f1e4292836227902f878`, and its bytes are an exact prefix of TB83 (`61e9edbedee3731b04d7b6279b79a0fd0e0b651686638e9b832773f7aa0a36aa`).
+
+A narrower capture route is source-established: `RemeshPipeline.cpp:14370-14398` retains `completedVertices`, `completedQuads`, `completedVertexLineage`, and `completedQuadLineage` even when optional geometry retention is false. At `:14937-14959`, rejected completion validation retains the validation issues. `SourceAuthoritativeMeshValidator.cpp:1345-1352` encodes a global crossing's two face IDs in `edgeFirst/edgeSecond`, while `:1400-1411` encodes each T-junction's vertex and edge endpoint IDs. The default TB83 census output exposes only aggregated counts, not these witness IDs.
+
+A **temporary scratch-only** remote capture was therefore launched, not a formal acceptance/test gate: workflow `.github/workflows/p13l2-scratch-20261106.yml` (install commit `a29c8790aec940dd78b46404082a40b303a56a59`), trigger `.agents/connector-triggers/p13l2-scratch-20261106.txt` (commit `cf1a339611a36deacb9e36ca15a6ae0e1f3c9140`). It validates its schema, checks out the frozen CB96 source `11c8172ad467c6dc865f2f3352e75b78f5469a2b`, injects a witness dump only in the ephemeral Actions worktree, compiles a scratch producer target with GMP, and runs Vase. No production source, repository tests, benchmark selectors, or accepted artifacts were modified. Retrieve its completed result from orphan-branch mailbox key `p13l2-scratch` and verify the resulting artifact before using it. A request/trigger is **not** execution proof. If it is still running, do not duplicate-trigger; if failed, inspect its dedicated log.
+
+Classification and exact corrective patch remain **unresolved until the post-CB96 issue rows and provenance are inspected**. Preserve CP2 491/491, stable 66/17/49, debt 1, and CP3 unpromoted. The same canonical Review turn remains active.
