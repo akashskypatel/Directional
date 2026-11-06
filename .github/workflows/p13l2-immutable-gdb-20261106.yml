@@ -47,7 +47,9 @@ jobs:
           unzip -q "$RUNNER_TEMP/cb96.zip" -d "$RUNNER_TEMP/compiled"
           (cd "$RUNNER_TEMP/compiled" && sha256sum -c SHA256SUMS)
           test "$(cat "$RUNNER_TEMP/compiled/metadata/source-commit.txt")" = 11c8172ad467c6dc865f2f3352e75b78f5469a2b
-          chmod +x "$RUNNER_TEMP/compiled/bin/directional_surface_cell_producer_tests"
+          mkdir -p "$RUNNER_TEMP/test-data"
+          ln -s "$GITHUB_WORKSPACE/benchmarks" "$RUNNER_TEMP/test-data/benchmarks"
+          test -d "$RUNNER_TEMP/test-data/benchmarks/fixtures"
           gdb --version | head -1
       - name: Dump immutable geometry at pre-validation boundary
         shell: bash
