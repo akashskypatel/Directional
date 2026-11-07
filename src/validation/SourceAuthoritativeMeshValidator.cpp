@@ -124,6 +124,15 @@ double orient2(const Eigen::Vector2d &a, const Eigen::Vector2d &b,
          (b.y() - a.y()) * (c.x() - a.x());
 }
 
+double line_offset2(const Eigen::Vector2d &a, const Eigen::Vector2d &b,
+                    const Eigen::Vector2d &c) {
+  // orient2 is twice a triangle's area. Dividing by the base length gives the
+  // signed distance of c from the line through a and b, which is what the
+  // length tolerance bounds (RA-210).
+  const double length = (b - a).norm();
+  return length > 0.0 ? orient2(a, b, c) / length : 0.0;
+}
+
 } // namespace directional::validation::source_authoritative_detail
 
 namespace directional::validation::source_authoritative_detail {
@@ -164,9 +173,9 @@ bool point_in_triangle2_strict(const Eigen::Vector2d &point,
                                       const Eigen::Vector2d &b,
                                       const Eigen::Vector2d &c,
                                       const double tolerance) {
-  const double o0 = orient2(a, b, point);
-  const double o1 = orient2(b, c, point);
-  const double o2 = orient2(c, a, point);
+  const double o0 = line_offset2(a, b, point);
+  const double o1 = line_offset2(b, c, point);
+  const double o2 = line_offset2(c, a, point);
   const bool positive = o0 > tolerance && o1 > tolerance && o2 > tolerance;
   const bool negative = o0 < -tolerance && o1 < -tolerance && o2 < -tolerance;
   return positive || negative;
@@ -181,10 +190,10 @@ bool proper_segment_intersection2(const Eigen::Vector2d &a,
                                          const Eigen::Vector2d &c,
                                          const Eigen::Vector2d &d,
                                          const double tolerance) {
-  const double o0 = orient2(a, b, c);
-  const double o1 = orient2(a, b, d);
-  const double o2 = orient2(c, d, a);
-  const double o3 = orient2(c, d, b);
+  const double o0 = line_offset2(a, b, c);
+  const double o1 = line_offset2(a, b, d);
+  const double o2 = line_offset2(c, d, a);
+  const double o3 = line_offset2(c, d, b);
   return ((o0 > tolerance && o1 < -tolerance) ||
           (o0 < -tolerance && o1 > tolerance)) &&
          ((o2 > tolerance && o3 < -tolerance) ||
@@ -200,8 +209,8 @@ bool collinear_segment_overlap2(const Eigen::Vector2d &a,
                                        const Eigen::Vector2d &c,
                                        const Eigen::Vector2d &d,
                                        const double tolerance) {
-  if (std::abs(orient2(a, b, c)) > tolerance ||
-      std::abs(orient2(a, b, d)) > tolerance) {
+  if (std::abs(line_offset2(a, b, c)) > tolerance ||
+      std::abs(line_offset2(a, b, d)) > tolerance) {
     return false;
   }
   const Eigen::Vector2d direction = b - a;

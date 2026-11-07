@@ -99,6 +99,36 @@ TEST(SourceAuthoritativeMeshValidatorPhase22,
 }
 
 TEST(SourceAuthoritativeMeshValidatorPhase22,
+     CoplanarContactIsMeasuredInLengthUnits) {
+  using directional::validation::source_authoritative_detail::triangles_intersect;
+  // Two coplanar triangles whose facing edges are 1e-2 long and 5e-6 apart.
+  // The orientation determinant of the gap is 5e-8, below the 6.4e-8
+  // position tolerance, but the gap is 78 times that tolerance: the triangles
+  // do not touch. CB96 Vase output faces 55 and 15372 were rejected the same
+  // way (gap 5.7e-5, determinant 1.6e-8). Moving the second triangle 2e-3
+  // into the first makes them overlap (RA-210).
+  const double tolerance = 6.4e-8;
+  const auto pair = [](const double offset) {
+    Eigen::MatrixXd vertices(6, 3);
+    vertices << 0.0, 0.0, 0.0,
+        1.0e-2, 0.0, 0.0,
+        5.0e-3, -1.0e-2, 0.0,
+        0.0, offset, 0.0,
+        1.0e-2, offset, 0.0,
+        5.0e-3, offset + 1.0e-2, 0.0;
+    return vertices;
+  };
+  const Eigen::MatrixXd apart = pair(5.0e-6);
+  EXPECT_FALSE(triangles_intersect(
+      apart, make_triangle_primitive(apart, 0, 1, 2, 0),
+      make_triangle_primitive(apart, 3, 4, 5, 1), tolerance));
+  const Eigen::MatrixXd overlapping = pair(-2.0e-3);
+  EXPECT_TRUE(triangles_intersect(
+      overlapping, make_triangle_primitive(overlapping, 0, 1, 2, 0),
+      make_triangle_primitive(overlapping, 3, 4, 5, 1), tolerance));
+}
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
      MissingSourceAuthorityRejectsEvenWhenOptionalGatesAreDisabled) {
   Eigen::MatrixXd vertices(4, 3);
   vertices << 0.0, 0.0, 0.0,

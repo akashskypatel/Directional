@@ -230,6 +230,9 @@ private:
 double orient2(const Eigen::Vector2d &a, const Eigen::Vector2d &b,
                       const Eigen::Vector2d &c);
 
+double line_offset2(const Eigen::Vector2d &a, const Eigen::Vector2d &b,
+                    const Eigen::Vector2d &c);
+
 int dominant_axis(const Eigen::Vector3d &normal);
 
 Eigen::Vector2d project2(const Eigen::Vector3d &point,
