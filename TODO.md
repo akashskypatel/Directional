@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-CB98-P13-VALIDATOR-CONCAVE-QUAD-TRIANGLES`. Apply [RA-210](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md) §5 exactly: CB97 (`84b8414f…`), CB98 (`14986e38…`), CB99 (`92c67e63…`), then TB84 (§6). Steps 49–52; then Review P13-n (step 53).
+> **Current canonical next:** `M6-CP3-CB99-P13-COMPLETION-CORNER-ON-OPPOSITE-EDGE`. Apply [RA-210](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md) §5 exactly: CB97 (`84b8414f…`), CB98 (`14986e38…`), CB99 (`92c67e63…`), then TB84 (§6). Steps 49–52; then Review P13-n (step 53).
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -28,12 +28,13 @@
        - `30 0` Phase22 tests → `627eb08676a932ea86c42a2f5ce2e9c2b5b3a7cdc9caad41ddee0b8993d01f8b`.
      - Mismatch → `M6-CP3-PLAN-P13-VALIDATOR-CONTACT-LENGTH-UNITS-STOP`; infrastructure → `M6-CP3-CB97A-P13-VALIDATOR-CONTACT-LENGTH-UNITS-ORCH`.
      - [CB97 record](.agents/Directional/Architecture_M6_CP3_CB97_P13_Validator_Contact_Length_Units_Code_Build_Record_20261107.md): exact code patch applied at `9f38d2190e1ef937eb3ad7760d501ee95bc4be8b`; [compile 42417902802](https://github.com/akashskypatel/Directional/actions/runs/42417902802) PASS (8/8 targets; exit 0), package `13592317057`, `runtimeExecution=false`. No TB executed.
-  50. [ ] **NEXT `M6-CP3-CB98-P13-VALIDATOR-CONCAVE-QUAD-TRIANGLES`** (CB; precheck the CB97 results):
+  50. [x] **COMPLETE `M6-CP3-CB98-P13-VALIDATOR-CONCAVE-QUAD-TRIANGLES`** (CB; precheck the CB97 results):
      - Patch `.agents/Directional/Architecture_M6_CP3_CB98_P13_Validator_Concave_Quad_Triangles.diff`:
        - SHA-256 `14986e38261eb46796262b262801bcf9c5dd255344c918f10867224510b7ce6a`, 113 lines; keep its 4 single-space context lines;
        - results `3b31cb35…` (header), `55360202…` (source), `a02f6a79…` (tests).
      - Mismatch → `M6-CP3-PLAN-P13-VALIDATOR-CONCAVE-QUAD-TRIANGLES-STOP`.
-  51. [ ] **`M6-CP3-CB99-P13-COMPLETION-CORNER-ON-OPPOSITE-EDGE`** (CB; precheck the CB98 results):
+     - [CB98 record](.agents/Directional/Architecture_M6_CP3_CB98_P13_Validator_Concave_Quad_Triangles_Code_Build_Record_20261107.md): exact source `e54d93a5b721c1ba4026629bf0db7a03c7d7a100`, eight-target GMP compile [run 42421455569](https://github.com/akashskypatel/Directional/actions/runs/42421455569), immutable package `13593607294`, `runtimeExecution=false`. No TB executed.
+  51. [ ] **NEXT `M6-CP3-CB99-P13-COMPLETION-CORNER-ON-OPPOSITE-EDGE`** (CB; precheck the CB98 results):
      - Patch `.agents/Directional/Architecture_M6_CP3_CB99_P13_Completion_Corner_On_Opposite_Edge.diff`:
        - SHA-256 `92c67e63bbbeabb7504e349c8f48637c3b26aee39e36423fbeee0a1e2d45dcbe`, 344 lines; keep its 14 single-space context lines;
        - numstat `11 4` / `7 0` / `4 0` / `42 15` / `14 10` / `41 0`; results in RA-210.5.

@@ -1,3 +1,9 @@
+## 2026-11-07 UTC — CB98 concave-quad triangle-fan correction (Code + Build)
+
+- Applied RA-210.5's exact 113-line approved patch `14986e3826…` to the validator header/source and Phase22 regression; source [`e54d93a5b721c1ba4026629bf0db7a03c7d7a100`](https://github.com/akashskypatel/Directional/commit/e54d93a5b721c1ba4026629bf0db7a03c7d7a100). Three prescribed postimage SHA-256s match.
+- [Linux compile 42421455569](https://github.com/akashskypatel/Directional/actions/runs/42421455569): PASS (8/8 targets; exit 0), GMP/GMPXX, immutable package `13593607294`, `runtimeExecution=false`. First schema-only dispatch attempt 42421386640 rejected unsupported `retention_days` before compilation; corrected request reused identical source.
+- [CB98 record](.agents/Directional/Architecture_M6_CP3_CB98_P13_Validator_Concave_Quad_Triangles_Code_Build_Record_20261107.md). No runtime tests or benchmarks executed; TB83 remains latest runtime. Next separate CB99, then TB84. CP2 accepted 491/491, stable 66/17/49, debt 1; selector497 and CP3 remain unpromoted.
+
 ## 2026-11-07 UTC — CB97 validator length-unit correction (Code + Build)
 
 - Applied RA-210.5's exact 114-line approved patch `84b8414f…` to the validator header/source and Phase22 regression, source [`9f38d2190e1ef937eb3ad7760d501ee95bc4be8b](https://github.com/akashskypatel/Directional/commit/9f38d2190e1ef937eb3ad7760d501ee95bc4be8b). Output file SHA-256 values matched all three specified postimages.
