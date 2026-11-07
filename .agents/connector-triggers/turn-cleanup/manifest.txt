@@ -1,0 +1,2 @@
+# CB98 scoped cleanup: remove only the exact consumed source-snapshot trigger
+.agents/connector-triggers/source-snapshot/cb98-20261107-2229.txt
