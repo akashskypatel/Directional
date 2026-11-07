@@ -1,0 +1,21 @@
+# M6-CP3-CB1-ENTRY-R4 — closed feature-curve source-claim guard (2026-10-14 UTC)
+
+Canonical R4 Code + Build remains IN_PROGRESS; PR #8 draft/open; no TB497, runtime tests or successor. Verified frozen source snapshot `51cc161c701a9225aa206115a44ff955aa0d36aa` from [workflow 38568526508](https://github.com/akashskypatel/Directional/actions/runs/38568526508), artifact `11895738665`, outer SHA-256 `43b90f42f232ea28965de8146e8c589830da5717c3f2e9588b67c1bc7aea0ddb`, tar SHA-256 `ec1bce642aab44259e98c1b1638c0a4c955125bf966c9dc95928c009dead4b70`, full source manifest 5920/5920.
+
+## Source finding
+
+`AdaptiveFeatureMapBuilder::finalize_path_curve` marks an explicit curve closed only when the final source vertex equals the first. `build_authoritative_surface_cell_rails` previously accepted `curve.closed=true` with explicit nonmatching terminal vertex if a soft feature edge partitioned the path: the emitted hard run was open, bypassing the later closed-rail validator, and a rail product could be published from a falsely closed parent curve. This is an input-integrity defect; no production runtime occurrence asserted.
+
+Guard in `src/pipeline/RemeshPipeline.cpp` requires exact first/last vertex equality for an explicitly closed feature curve and rejects at the first curve edge as `InvalidFeatureEdge`. The existing mandatory `SurfaceCellClosedProductContracts.RailBuildRejectionCarriesFailureWithoutConsumableRails` test retains the ordinary mixed hard/soft open positive and flips only the closed flag for its exact first-edge rejection and absent product. No selector, ABI, workflow YAML, accepted historical baseline or source class changed.
+
+## Source transport
+
+Exact two-path full-index patch preserved in ChatGPT Library `/Directional/Evidence/Directional_M6_CP3_R4_Closed_Curve_Source_Claim_20261014.patch` and downloadable chat copy. Patch SHA-256 `99788133a72db9b783d59eb7c0464fde2334e6236d7030199f0167f01ab44304`; diff body SHA-256 `399920342990161f8c33723255ac37c52ac8176544f1badbe2bf25f72c580c22`; `git diff --check=0` and reverse `git apply --check=0`. [Drive-apply run 38569569731](https://github.com/akashskypatel/Directional/actions/runs/38569569731) succeeded; result ZIP artifact `11897245806`, digest `ccf8414b99dc7238bc4498ebd2ee829ae0590664b53f99afe4375ea2d2c6bb45`; semantic commit [ad91acb8](https://github.com/akashskypatel/Directional/commit/ad91acb81e762cdb2d9334ef095642030242d70a), independent compare exactly `src/pipeline/RemeshPipeline.cpp` +8 and `tests/SurfaceCellREPackageTests.cpp` +28. Staged Drive File ID `1J9kJISzYDjpvI-rGQnW5mzcdw_8ElxX1` was permanently deleted successfully.
+
+## Compile-only evidence
+
+Exact eight-target GMP/GMPXX compile requested by dispatcher commit `51c426010fa9943c79857a4cd7d04ba7d155a197`, mailbox key `m6-cp3-r4-closed-curve-source-compile`, pinned semantic source `ad91acb81e762cdb2d9334ef095642030242d70a`. **Exact-source compile GREEN; runtime acceptance NOT claimed.** [Compile run 38569906173](https://github.com/akashskypatel/Directional/actions/runs/38569906173), compile job `115872278994` success, mailbox event `51c426010fa9943c79857a4cd7d04ba7d155a197` and semantic source `ad91acb81e762cdb2d9334ef095642030242d70a` matched. Immutable result artifact `11896842043`, ZIP SHA-256 `369de0c8dc7f8cd36eda87837bf75d9b3b6d54b00701bd7fe299f839d4eb4b0c`; independently checked `SHA256SUMS` 28/28, 8/8 approved targets, preflight/build exit 0/0, five source-status records clean, actual gmpxx/gmp linker evidence, `exactArithmeticBackend=GMP`, `runtimeExecution=false`, Test + Benchmark job skipped. Compile validates source buildability, not runtime assertion behavior or restored acceptance.
+
+## Remaining canonical obligations
+
+Independent RA-43.1/RA-43.2 A4-selected/A1-admitted field-branch and oriented filled-side receipt Review remains required before branch-specific implementation. Further RA-43.4 source-consumer coverage, 39 endpoint/34 Phase10/seven DCEL/88 CP2/six CP3 historical restorations, executed RA-47.12 liveness, organic D1/D2/D3/D5/A6/A7 and produced odd-τ multi-carrier witness remain open. They are not dischargeable by this compile-only guard. Frozen 497 selector and historical ledger unchanged; no TB497, binaries, benchmarks or successor work.

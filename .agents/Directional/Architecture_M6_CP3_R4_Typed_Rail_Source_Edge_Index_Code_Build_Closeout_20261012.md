@@ -1,0 +1,29 @@
+# M6-CP3-CB1-ENTRY-R4 — typed producer rail-edge binding / compile-failure continuation (2026-10-12)
+
+Canonical Code + Build R4 **IN_PROGRESS**, successor UNKNOWN. Corrected source now passes mandatory compile-only verification; runtime acceptance is still unverified. Do not promote or run frozen TB497.
+
+## Source and immutable patch evidence
+
+- Exact source snapshot run `38211913173`, source `1ca57abd820e42f5c58d427a083dbd6f394cee78`, artifact `11729641570` ZIP SHA256 `e933ce45e0f9e48a6cf0ed52b191b62dc4eaacc7fbb7df2141202272c6d6cb75`, internal tar SHA256 `ec102beae1a3ce7fa4f240490799076427a0fcd716edd35aceaaf6520f0313a6`, 6393/6393 manifest checks, no runtime.
+- `src/geometry/SurfaceCellTracing.cpp` default producer `canonical_field_aligned_candidate` previously inferred mandatory edge key from `rail.sourceVertices` without cross-checking corresponding raw `rail.sourceEdges[interval]` against `sourceMesh.EV`. Two-file correction adds this check before publishing support and extends existing **default-built** test `FieldAlignedCurveNetwork.RejectsMissingDuplicateOrForeignMandatoryEdges` with a negative that only forges a raw source edge index. No test identity or selector change.
+- First patch `735c610435144709bf867b488617ada5027ca1333304ea18d36d371f73c65667` (base `1ca57abd...`) was rejected pre-commit by Drive apply run `38212392689`: header comma-separated `intended_paths` did not match workflow's semicolon grammar; original stage deleted.
+- Corrected first source patch `89944beec156879a5c581c6a5b3426621fcc59007de8dcf9a32e3367bdde8a6e` had identical diff body SHA256 `fca964e3a3f5279d2151974b58b91132b04dad9faf8c7d4ef9d38175e6e0a3a0` and passed forward/reverse/whitespace checks. Drive apply **GREEN** run `38212591378` job `114689994316`, result artifact `11730306467` ZIP SHA256 `4918bef784539b1a439d12eae3972c6e00d99d2eccca348a0f019fa411954cda`; semantic commit `a92ddb5da31e3d2fd0d5ea1443e5f04734743b17`.
+- Mandatory eight-target GMP/GMPXX compile attempt `38212754554`, job `114690518562`, **FAILED** at `directional_core` preflight. Log artifact `11730161317` ZIP SHA256 `96603e8af2af1f7956b9ed9cf844ec1c8ddb1fb6f6f90cf080b5ec46ddd4c783`. Compiler proved `SourceEdgeTopologyKey::from_indices` returns `DomainResult<SourceEdgeTopologyKey>`, which cannot be directly compared via `!=` nor passed where `std::optional<SourceEdgeTopologyKey>` is required. `full_target_compile=skipped-preflight-failed`, preflight/build exit `1/1`; **do not report GREEN**. No generated binaries executed (`runtimeExecution=false`).
+- Diagnosed one-file correction patch `f084321cb6c8e4308655a4a12cbccd1e585f75679314a8f0433cbb88448b5fee`, base `a92ddb5da31e3d2fd0d5ea1443e5f04734743b17`, uses domain truth test and `.value()` to compare typed keys after exact raw index-range check. Static apply/whitespace verified. Drive apply run `38213040179`, job `114691404957`, **GREEN**; artifact `11729778327` ZIP SHA256 `ede26eee32c02edbc61f39703cd25ba047dfcffaba22313805c4897234caa7b7`; corrected semantic commit `b970e1a113fe00b90e225d917597c649f9e1aa1d`. Both first source patch stages and the correction stage have been owner-deleted from `My Drive/Directional-CI`.
+
+## Verified corrected-source compile (2026-10-12)
+
+- Exact semantic source: `b970e1a113fe00b90e225d917597c649f9e1aa1d`.
+- Durable compile dispatcher event `f0f45ab37f91d55a0067d8ecc6347e8299ee5589`, workflow [38214261145](https://github.com/akashskypatel/Directional/actions/runs/38214261145), compile job `114695273536`: **GREEN**.
+- Eight targets compiled: `directional_core`, `directional_pipeline`, `directional_surface_cell_authority_kernel_tests`, `directional_surface_cell_producer_tests`, `directional_surface_cell_completion_tests`, `directional_surface_cell_validation_tests`, `directional_compiled_api_tests`, and `directional_benchmarks`.
+- Verified package artifact `11732105024`, outer ZIP SHA-256 `f6f5f73de7626bb29402f61dd79b01091c65b712fd74fa1c03725ac1a428511d`: recursive manifest **28/28**, preflight/build exits **0/0**, `DIRECTIONAL_ENABLE_GMP:BOOL=ON`, generated link contains both `libgmpxx.so` and `libgmp.so`; final source-status files empty; `exactArithmeticBackend=GMP` and `runtimeExecution=false`.
+- Diagnostic log artifact `11731010539`, ZIP SHA-256 `43e37208dab181918dc13c876eff807eb33248f9dc3c62e44e4c110178874dee`.
+- Exact verified source snapshot run `38214036515`, source `a5440b5a83da6d94ae2f72457bdee5aef00c3b89`, 6,405/6,405 checksums.
+- No Directional binaries/tests, `ctest`, benchmarks, help/discovery commands, or frozen TB497 were executed. No runtime PASS promotion follows from compilation.
+- The previous response published this corrected-compile evidence record but left handoff/TODO/changelog edits pending because its native-Doc patch export could not preserve exact line endings. Those pending three document updates are reconciled against the verified current source in the present four-path documentation patch; the original recovery patch remains preserved for audit. This is documentation-only and does not change semantic source or runtime acceptance.
+
+## Next same-turn action
+
+The corrected-source eight-target GMP/GMPXX compile has been verified GREEN (see above); do not repeat it. Continue this same R4 turn with remaining producer and regression obligations. Independently resolve overfull-A3 feasibility before altering its unreachable negative; preserve frozen identities and do not begin TB497.
+
+No runtime tests, benchmarks, discovery, CLI or TB497 executed. Independent overfull-A3 feasibility Review, RA-43.4 untyped legacy rail migration, 39 endpoints, 34 Phase10, seven DCEL, 88 accepted CP2 regressions, six CP3 and real odd-τ/multi-carrier remain unresolved. Retain canonical `M6-CP3-CB1-ENTRY-R4` and original start time. Consumed snapshot trigger may be removed during closeout; never delete the mailbox or dispatcher slot.

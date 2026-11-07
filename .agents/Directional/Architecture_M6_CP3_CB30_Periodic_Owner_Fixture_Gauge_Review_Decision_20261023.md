@@ -1,0 +1,41 @@
+# RA-147 — CB30 periodic-owner gauge independent Code + Build Review (2026-10-23)
+
+**Turn:** `M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-REV`. **Verdict: ACCEPT the fixture-only compile checkpoint; authorize exactly one immutable Test + Benchmark successor, `M6-CP3-TB32-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-VERIFY`.** This is static source and compile-evidence acceptance, **not** nine measured PASS results, not A6/produced periodic topology acceptance, and not M6-CP3 gate promotion.
+
+## Independently verified primary evidence
+
+- Exact semantic commit `19267540081a4ff3a99826e3b9a766f1dbbded42` against prior CB29 semantic `2602e7398cdc6f1281abe11a758de35166b6590c`: GitHub comparison is 73 commits ahead, zero behind; the **only executable source changed** is `tests/SurfaceCellTransitionQuotientTests.cpp` (+126/−1 from CB29 source through the final accessor correction). No `src/`, `include/`, benchmark, CMake, selector or existing manifest executable change. The changed test diff inserts a 30-line topology-driven gauge construction and three named tests; the original six owner tests/expectations are untouched.
+- Reviewed the exact `19267540081a4ff3a99826e3b9a766f1dbbded42` source embedded in compiled artifact `12531891913`; outer ZIP SHA-256 `040b7b12e4b36fa78f2c5eae6465ddaadd2a1fbd8ee9bf18ebda6e35e9a3b97b`, **28/28 packaged SHA256SUMS OK**, exact source metadata and clean status; preflight/build exit zero, eight approved targets and GMP/GMPXX linker evidence. [Compile run 40023541183](https://github.com/akashskypatel/Directional/actions/runs/40023541183) job `120654042302` succeeded, `runtimeExecution=false`. A previous compile failed on wrapper dereference syntax, corrected at `19267540081a4ff3a99826e3b9a766f1dbbded42`; this successful package includes that correction. No local or remote Directional executable run in this Review.
+- Verified current whole-source snapshot SHA `e4a03cd282e1ef641809e531ef8870c1e70504b5`, [run 40024794744](https://github.com/akashskypatel/Directional/actions/runs/40024794744), snapshot artifact `12532715587` ZIP SHA-256 `68942dc5e1d3a9a8964d0fcbdae96f69f8dca6f5c6f5e5a6dca4d4482be22bff`, archive SHA-256 `3aefece5409cc61b400735b7754f9f1fcb0549551ee514720a9c1938414e9f14`; source is post-semantic documentation/trigger head. The immutable compiled source, not this later head, owns CB30 behavior.
+
+## Actual static contract adjudication and non-vacuity
+
+1. `direct_periodic_owner_fixture` uses two typed `SourceFaceTopologyKey` instances, resolves independent source rows via `row_for_topology`, constructs exact interior `(0,2)` key and rejects boundary overlap or unequal region, demands A3 adjacency plus reciprocal inverse transport. It creates a two-entry gauge with one representative zero and a second obtained through `compose(forward->transport, firstGauge)`; supplies the optional face-gauge argument to the checked factory. This matches FG01/RA-146.1 and does not weaken admission.
+2. Checked factory in `src/geometry/SurfaceCellTracing.cpp` requires nonempty gauge for periodic consumers, validates vector shape/range, and independently checks same-region/non-hard adjacency against the real A3 transport. The missing-gauge control has a valid baseline and expects `InvalidSourceAuthority / face-gauge-missing`. The one-face +1 control uses a valid baseline and expects `InvalidSourceAuthority / gauge-pin-consistency;edge=0,2`. The uniform +1 control requires a valid baseline, exact returned shifted gauge, two nonempty owners, all owner values preserved by identity, and edge relation IDs preserved. All three are **potentially falsifying**; they have not been executed.
+3. Four direct original owner tests plus reorder and missing-owner tests (six `direct_periodic_owner_fixture()` call sites excluding three controls) retain the exact owner mutation/oracle predicates; no post hoc expected-code adjustment. The representative uses constant planar field, so equal gauges and nonzero/odd transport are **not** independently established. No false claim that this tests row permutation on unequal data.
+4. Synthetic periodic fronts leave reciprocal `oppositeEdge` and produced holonomy paths absent. Reciprocal/action product guards are not reached; acceptance is limited to checked factory owner-map behavior on a two-face disk. FG01 RA-146.2–4 limitations continue intact. This does not prove `G4-B002`, genuine torus validity, A6 produced uniform-shift invariance, or permutation/odd-transport robustness.
+
+**Disposition:** accept CB30 only within its bounded source/compile contract. The next immutable gate is fully specified in [TB32 plan](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Plan_20261023.md) and its [500-row case manifest](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Case_Manifest.tsv) SHA-256 `597741409f06a80877cb8ae6f5fd2f92785de99a629a7d2c6453921858996437`. Expected six recovered 497 identities and three focused controls are **predictions**; stop and refer any mismatch for TB32 independent Review, without test mutation or implicit gate promotion.
+
+## Review closeout
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | No new selector or accepted prefix; retained TB31 497 manifest SHA-256 `b1c135d429f8c659e190f648b8678669cb7c14d393e0db9069568ea3838aa43e` from independent current bytes. CP2 491/491 remains immutable. |
+| Decisive claims independently re-derived | Compared CB29→CB30 executable path inventory and exact test patch, examined source and factory consumer, recomputed all 28 archive checksums and metadata. |
+| Non-vacuity checked | Valid-baseline prerequisite in each control; one-face +1 must alter pin, missing gauge must fail, uniform +1 must retain all two distinct owners and returned gauge. Runtime unknown. |
+| Prior obligations discharged/carried | RA-146.1 fixture-only implementation compiled and accepted for TB; RA-146.2 synthetic limitation, RA-146.3 odd transport/permutation, RA-146.4 produced A6 relation invariance carried with original owners; RA-145 other 19 REDs retained. |
+| Stable accounting | 66 events / 17 categories / 49 recurrences, debt 1; CP2 491/491 accepted; TB31 472/497 candidate; CP3 not accepted. |
+| New candidates/obligations recorded | No new stable product defect; TB32 six owner tests and three factory controls assigned (predictive only), remaining owners unchanged. |
+| ORIENTATION currency line | 2026-10-23 RA-147 CB30 fixture-only static acceptance and TB32 next. |
+| ORIENTATION §3 / §4 / §7 / §8 | §3 and §7 updated; §4 witness evidence unchanged; §8 existing vacuous witness/false production credit category remains current. |
+| CHANGELOG | RA-147 review entry recorded. |
+| ROADMAP | No checkpoint-status transition; CP3 still active and not accepted, so existing line remains current. |
+| Selector manifest | Frozen selector unchanged, no new accepted selector; no update. |
+| LESSONS | Existing **A witness must be capable of falsifying its assertion** and **Compile, runtime, and acceptance are independent evidence** cited; no new general failure pattern. |
+| Consolidation under CLEAN_UP_POLICY | No superseded CB30-family record is eligible: current CB30 immutable authority, prior RA-146 decision and current TB31 evidence remain load-bearing; no fold/delete. |
+| Successor frozen | `M6-CP3-TB32-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-VERIFY`, immutable 500-case manifest, six recovered rows plus three focused controls; falsifiers in the accompanying TB32 plan. |
+| Turn boundary held | Static Review only; no test, source, runtime, benchmark, selector, or build logic changed. |
+| review_check.py boundary | Source snapshot lacks original `.git` ancestor/history, so local script failed on missing rewrite baseline/history. No clean pass claimed; exact GitHub compare and scoped diff serve as bounded review evidence. |
+| `STATUS` lifecycle maintained | Entry written for `M6-CP3-CB30-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-REV` at 2026-10-23T21:09:34Z; final COMPLETE with `M6-CP3-TB32-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-VERIFY` is last repository mutation after documentation publication. |
+| Pushed to origin, branch in sync | Source snapshot has no `.git` checkout; changes published by authorized GitHub-connector/Drive dispatcher and verified by readback; no literal `git status -sb` claim is possible. |

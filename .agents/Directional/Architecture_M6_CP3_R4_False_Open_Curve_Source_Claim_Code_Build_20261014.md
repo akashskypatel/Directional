@@ -1,0 +1,21 @@
+# M6-CP3-CB1-ENTRY-R4 — symmetric source-curve closure authority (2026-10-14)
+
+Canonical turn remains `M6-CP3-CB1-ENTRY-R4` Code + Build IN_PROGRESS, PR #8 draft/open. No TB497, runtime test, benchmark, successor, workflow permission or selector edits.
+
+## Authoritative source and finding
+
+Snapshot [38574850604](https://github.com/akashskypatel/Directional/actions/runs/38574850604) captured source `2ff3201cea2ce997ba8c67cf75210215cb591bbd`, immutable artifact `11899841641` digest `1adc25fe218b2bc042eebf3cc024ea30fb54023f7275a1c39189c913e53c7b8d`, inner source.tar.gz SHA256 `3c6ce8b4cf0c9e25e0f74f6b922306f3db0ba74034174be95ce457339d993d63`, verified 5931/5931 source checksums. `AdaptiveFeatureMapBuilder::finalize_path_curve` infers `closed=true` from a multi-edge source vertex cycle. The first rail producer previously checked only false-closed input, but not false-open input; a mixed-class cycle could be split into open rails and bypass rail-level closure. This is a source-integrity finding, not a confirmed runtime regression.
+
+## Bounded change and transport
+
+`src/pipeline/RemeshPipeline.cpp` now checks both directions of the explicit terminal-vertex closure claim; first failure remains `InvalidFeatureEdge`. Existing `SurfaceCellClosedProductContracts.RailBuildRejectionCarriesFailureWithoutConsumableRails` positive fixture now constructs a source-valid three-edge boundary/hard closed cycle and a negative identical false-open claim. No tests or generated Directional binaries were run.
+
+Exact full-index two-file patch retained in ChatGPT Library `/Directional/Evidence/Directional_M6_CP3_R4_False_Open_Curve_Claim_20261014_v2.patch`; patch SHA256 `1d7990077e464baf497a5dc69956a0963956a9977f1662f02a1e79329cf5da80`, diff-body SHA256 `7e8c5abc1575a50ef72dbe3af64f9f9ab48a500e0fdc0520eceefe7456408074`. Local diff --check and git apply reverse --check succeeded. First apply [38575984132](https://github.com/akashskypatel/Directional/actions/runs/38575984132) failed before source mutation because header intended_paths erroneously used commas instead of semicolons. Only the patch header changed, new request identity used. Corrected apply [38576477307](https://github.com/akashskypatel/Directional/actions/runs/38576477307) succeeded; result artifact `11900446442` outer digest `bf1e7225b44bafcf06137760f4ad05dafbf185e56acc486bbd70ee9e18096037`; applied semantic commit [370d84df](https://github.com/akashskypatel/Directional/commit/370d84df79a1414148798c81c09bfece81e6d48d). GitHub compare confirms only `src/pipeline/RemeshPipeline.cpp` +6/-5 and `tests/SurfaceCellREPackageTests.cpp` +30. Both consumed Google Drive staging files permanently deleted.
+
+## Exact compile request
+
+Mandatory eight-target GMP/GMPXX compile was triggered by dispatcher commit `c1bdcbc8e45f1f0764ceb9738b898e195ccf3cca`, mailbox `m6-cp3-r4-false-open-curve-compile`, pinned to semantic source `370d84df79a1414148798c81c09bfece81e6d48d`. **Exact-source compile GREEN; runtime acceptance NOT claimed.** [Workflow 38576841476](https://github.com/akashskypatel/Directional/actions/runs/38576841476), compile job `115896301159` success, mailbox event `c1bdcbc8e45f1f0764ceb9738b898e195ccf3cca` and source `370d84df79a1414148798c81c09bfece81e6d48d` matched. Immutable result artifact `11902135365` SHA-256 `1322ec0968977cac1b31bd50339d9301432a7c043c94d6234f6109ef4a80f015`. Independent verification: `SHA256SUMS` 28/28 valid; exactly 8/8 approved targets; preflight/build exit 0/0; actual linker includes gmpxx and gmp; five source-status records clean; `exactArithmeticBackend=GMP` and `runtimeExecution=false`; Test + Benchmark job skipped. Source compilation is not a runtime test pass.
+
+## Remaining canonical obligations
+
+Independent RA-43.1/RA-43.2 A4-selected/A1-admitted directed branch and filled-side receipt Review is still required; additional RA-43.4 source consumers, RA-47.12 runtime liveness, 39 endpoint/34 Phase10/seven DCEL/88 CP2/six CP3 restorations and organic D1/D2/D3/D5/A6/A7/odd-τ multi-carrier witnesses remain unverified until authorized artifact-only runtime gate. RA-47 accepted and superseded R4-IDX remains unchanged. Preserve frozen selector and historical ledger. R4 remains IN_PROGRESS.

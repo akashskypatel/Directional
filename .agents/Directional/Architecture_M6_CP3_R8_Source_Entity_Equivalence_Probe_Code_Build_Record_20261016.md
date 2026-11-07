@@ -1,0 +1,13 @@
+# M6 CP3 CB8 — rejection-only boundary source-entity diagnostic
+
+**Turn:** `M6-CP3-CB8-R8-SOURCE-ENTITY-EQUIVALENCE-PROBE` (Code + Build, no runtime).
+
+**Source authority:** snapshot workflow `38876338945`, exact source `59208778b024a46f9f6549f16b52722f39796192`, artifact `12035302774`, ZIP SHA-256 `0577eedd0c31e268eb97469c944fd5941b99040d42e7d7617bec03fb54694e67`; archive and all **5669/5669** file hashes verified.
+
+**Patch:** source-only 66 additions, 3 deletions in `src/geometry/SurfaceCellTracing.cpp`. Immutable backup `directional-cb8-source-entity-probe.patch`, SHA-256 `8cd1d1592db5aebe7f9f98d6d62514340c2063a91ace20e09a3989380e85c028`. `git apply --check`, exact replay, and `git diff --check` passed. Drive apply run `38877023124`, result artifact `12035488476` SHA-256 `2fb730bb1a4bc858cc5426c582f306b51f282074437cf47f8d217ed9039b81b0`, semantic commit `f0d7240455b10237af47de58c035cd4c576d889a`, one changed path verified, staged patch owner-deleted.
+
+**Evidence emitted only on existing endpoint-certificate rejection:** for each bounded-disk grid-boundary lattice node in the involved source topology regions, `a2bProbeBoundarySourceEntities` retains the real `accepted != nullptr` branch, source-face-backed exact one-hot vertex identity or exact-zero edge identity with hexfloat parameter, otherwise face interior identity with the three hexfloat barycentrics. It records both the pre-override chart sample and accepted boundary point (or `none`). Raw source-face rows remain visible to distinguish representations. Captures are recorded at the producer and propagated through the final region build, never read by acceptance, matching, geometry, topology, selectors, or the original first-failure predicate. The pre-existing `a2bProbe*PreSnapCandidates` diagnostic is unchanged.
+
+**Compile:** GMP/GMPXX eight-target **GREEN**, workflow `38877282902`, immutable artifact `12035788036`, outer ZIP SHA-256 `1967771d10b765168102158ae8460a7973319f0bbec452166a1c732a6e7c097d`; exact source `f0d7240455b10237af47de58c035cd4c576d889a`, 28/28 packaged hashes, 8/8 targets, preflight/build 0/0, five empty source-status files, `DIRECTIONAL_ENABLE_GMP=ON`, real link includes GMPXX/GMP, `exactArithmeticBackend=GMP`, `runtimeExecution=false`.
+
+**Boundary:** no tests, binaries, benchmarks, selector 497, or artifact runtime executed. This compile-only turn **does not decide** whether the chart and accepted points represent the same source entity, and **does not authorize a repair**. Only `M6-CP3-TB8-R8-SOURCE-ENTITY-EQUIVALENCE-HARVEST` may measure, interpret, and adjudicate the two branches. Ledger 66/17/49, debt 1, accepted CP2 491/491, rejected R3 403/497, and RP-02 UNREACHED unchanged. PR #8 remains draft/unmerged.

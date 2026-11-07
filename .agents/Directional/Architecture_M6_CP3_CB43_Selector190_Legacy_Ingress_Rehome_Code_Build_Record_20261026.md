@@ -1,0 +1,13 @@
+# M6 CP3 CB43 — selector190 legacy ingress re-home (Code + Build, 2026-10-26)
+
+- **Authority:** RA-160.3; `M6-CP3-CB43-RP01-SELECTOR190-LEGACY-INGRESS-REHOME`. Test-only.
+- **Exact code source:** `d354d6ae95afc73df968fc5cc4ee69fe5b7de451`; parent frozen snapshot `30cdd46071d314b944afb7c2e5ec7175de347833` (5,913/5,913 source hashes).
+- **Changed path:** only `tests/SurfaceCellsPhase10Tests.cpp`, body of `SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration.LegacyMatchingPathUsesSameTypedAlgebra`; selector identity unchanged.
+- **Hunk:** preserve authoritative `Produced`/one-periodic-holonomy positive; construct A2, independently enumerate nonempty interior source edges and assert A3 `MissingAdjacency` at minimal key; restore `edgeTransitions` and assert A3 success; run no-atlas/no-source-authority crossField A4 and assert exact typed rejection (`PublishedProductRejected` / `InvalidSourceAuthority` / `AtlasSourceMismatch`, `atlas-binding`) with null product and empty seeds/traces/proposals, diagnostic stream.
+- **Patch apply:** [workflow 40336149524](https://github.com/akashskypatel/Directional/actions/runs/40336149524), result artifact `12655684432` SHA256 `6a3e0d637a43d8ef7d3a0b9cf66aae5e76340525afff8df3992f508080301b34`; patch SHA256 `9b9f6aa9a414d36891143b0953e440e6bdc4b1d32ae5a6f89d3dbbf1de8d3a2a`. Exactly one source file committed; staged Drive patch owner-deleted.
+- **Compile-only:** [workflow 40338106985](https://github.com/akashskypatel/Directional/actions/runs/40338106985), exact source `d354d6ae95afc73df968fc5cc4ee69fe5b7de451`, artifact `12657932087` ZIP SHA256 `4a65d5004e2afc08ab68361493a517c462cab68da6dd8019b94732cd3f860a26`.
+- **Independent package inspection:** 28/28 `SHA256SUMS` PASS; preflight/build 0/0; all eight required targets packaged; five source-status files empty; compiled test source SHA256 `29e15633c14ec2f4c919bbf24f08c5711cef08b7562d64f062118467fa2b3c87` equals prepared source.
+- **GMP evidence:** `DIRECTIONAL_ENABLE_GMP=ON`, `exactArithmeticBackend=GMP`, authoritative test linker names `/usr/lib/x86_64-linux-gnu/libgmpxx.so` and `libgmp.so`.
+- **Boundary:** `runtimeExecution=false`, `turnBoundary=Code+Build-only`, `semanticContracts=compiled-not-executed`; no binaries, tests, benchmarks or selector updates performed. Runtime hypotheses await TB43, and any mismatch is Review-owned.
+- **Accounting:** stable 66/17/49, debt 1; CP2 491/491 accepted; selector497 frozen; RP-01 open, RP-02 unreached. No acceptance promotion.
+- **Next:** `M6-CP3-CB43-RP01-SELECTOR190-LEGACY-INGRESS-REHOME-REV` — independent static source/compile review, then frozen TB43 manifest.

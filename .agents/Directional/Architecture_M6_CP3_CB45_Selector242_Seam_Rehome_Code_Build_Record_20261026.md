@@ -1,0 +1,10 @@
+# CB45 — selector242 seam-consumer re-home (Code + Build)
+
+- **Turn:** `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME` authorized by RA-163.3; one test body `SurfaceCellsPhase10.NonReciprocalSourceAdjacentIsolationSeamFailsClosed` in `tests/SurfaceCellsPhase10Tests.cpp` only.
+- **Exact source:** `dfeb0751b1a42a0805aecf4ef4ffb6917f619c83` from [patch application](https://github.com/akashskypatel/Directional/actions/runs/40420045937) result `12697202913`, artifact SHA-256 `cddbaba4ccc751b0efd936df2149ec39dfeae1db0c7cd75d5db7b0e28e753bfe`.
+- **Patch:** full SHA-256 `b21cf6410c50d1dfa32d8d198bd7813b90fd765aef30e5dd88bb50060ffa09d3`; diff-body SHA-256 `9de47987a72626b1e63e721c01fc83d4f4607f0fb72c52af12aadb61c3953820`; +88/−20, sole path `tests/SurfaceCellsPhase10Tests.cpp`; `git apply --check`, reverse apply, `git diff --check` locally passed.
+- **Changed hunk:** `3357–3451`: atlas-produced single isolation certificate, reverse+1 and forward+1 factory rejection `NonReciprocalTransport` at exact seam/region, valid-certificate control hash equality, mutated A3 atlas accepted and changed reciprocal seam transport. Removed unreachable A4 `InvalidTopologyRegionTransport` rejection assertion. Mesh/raw/sourceField/options and other test/selector/helper behavior unchanged.
+- **Compile:** [run 40421241608](https://github.com/akashskypatel/Directional/actions/runs/40421241608), exact source above, artifact `12697664329`, outer ZIP SHA-256 `ad30d61b82e0de541d703073dbdefb5a7b9ed3d250cbc1b726e8cbd8c8aa21fd`, package checksums `28`.
+- **GMP evidence:** `DIRECTIONAL_ENABLE_GMP=ON`, `exactArithmeticBackend=GMP`, linker includes `gmpxx` and `gmp`; 8 required targets compiled, preflight/build codes `0/0`, `runtimeExecution=false`, no tests/benchmarks run.
+- **Boundary:** CB-only; no TB45 or selector497/CP3 promotion; accepted CP2 491/491, stable 66/17/49 debt1, RP-01 open.
+- **Successor:** `M6-CP3-CB45-RP01-SELECTOR242-SEAM-REHOME-REV` independent static Review, then TB45 only if accepted. No separate Review or runtime executed in this CB turn.

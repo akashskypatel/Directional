@@ -1,0 +1,23 @@
+# CB19 test-only plan — selector242 atlas authority (RA-104, 2026-10-20)
+
+> **Deferred by RA-105 (2026-10-20):** this is fixture debt after TB19-REV. The `CB19`/`TB19` IDs below are superseded and will be reassigned when the work is scheduled. The step-3 qualifier "if supported by actual field-atlas contract" is struck: the oracle stays as written, or the turn STOPs.
+
+**Turn:** `M6-CP3-CB19-RP01-SELECTOR242-ATLAS-AUTHORITY-TEST`. **Type:** Code + Build only, runtime forbidden. **Successor on successful compile-only package:** `M6-CP3-TB19-RP01-SELECTOR242-ATLAS-AUTHORITY-TEST` (artifact-only). **Owner:** the implementation agent; no change to accepted production or selector bytes.
+
+## Authority and reason
+
+- TB18-REV independently accepted Part A 12/14 and Part B 448/497 as *candidate*, no CP3 promotion. Selector242 `SurfaceCellsPhase10.NonReciprocalSourceAdjacentIsolationSeamFailsClosed` remains RED (RA-92.3 test-authority defect): P10:3286 modifies `crossField.edgeTransitions`, but P10:3295–3298 builds `FieldTransportAtlas` from unchanged `sourceField`, so the authoritative transport is not tampered.
+- This is the first fixture-debt item in RA-96.6's sequence: 242 → 174 → 250 → adjacent-sheet → 191 → 442. Keep #10/#11 `PublishedProductRejected` and universal R factory coverage separately carried; not this CB's scope.
+
+## Prescriptive implementation boundary
+
+1. Obtain exact HEAD/snapshot and run standard history/source/selector checks. Edit **only** the body of the named selector242 test in `tests/SurfaceCellsPhase10Tests.cpp` (and only for the assertions that make that exact test nonvacuous). Do not rename/delete the test or alter any `.agents/Directional/Required_Green_Selector_*.txt`, other tests, helpers, sources/headers, CMake, policies, or fixtures.
+2. Preserve the original square two-face geometry, split source sheets (0,1), target size, source A3 topology-region authority, original observable negative oracle and a **separate immutable positive Produced control** on the original valid `sourceField`/atlas. The positive control must prove the fixture can be produced without corruption; no skipped/early-return or `EXPECT_*`-only unfailing negative test.
+3. For the negative case, mutate the *same* cross-field transition object used to build the atlas (not a disposable `crossField` copy). Prove that the changed matching is on the actual interior face-adjacent source edge, distinguish the unmodified/mutated transition, then call `FieldTransportAtlas::make(mesh, *sourceAuthority, options.hardFeatureEdges, mutatedField)`. Bind that returned atlas to `options.fieldTransportAtlas` for the negative producer call. Require **both** disposition `Rejected` and typed `InvalidTopologyRegionTransport` if supported by actual field-atlas contract; `produced_product()==nullptr`. Do not remove any existing oracle. The producer may receive mutated field data too, but the A3 atlas must come from that exact mutated field.
+4. **STOP / independent Review required** if the mutated atlas builder rejects before production, if an authoritative input cannot be tampered through supported public APIs, if the typed oracle is invalid at the actual boundary, or if success requires altering production code/atlas contracts or changing a second test. Capture the exact compiler/type/error evidence and propose a bounded follow-up rather than guessing an acceptance outcome. Do not patch around the rejection or silently change the expectation.
+5. Compile only, with mandatory GMP/GMPXX linkage and the established eight CB targets through `agent-compile-reusable.yml` and standard dispatcher; no produced binary execution, `ctest`, test discovery, benchmark or runtime. Emit verified exact package/source SHA-256, root manifest, build/target evidence and `runtimeExecution=false`; update owning CB report, TODO, tracker/handoff/changelog without changing stable 66/17/49, debt1, accepted CP2 491/491 or selector497.
+
+## TB19 boundary and falsifiers (NOT executable in CB19)
+
+- `M6-CP3-TB19-RP01-SELECTOR242-ATLAS-AUTHORITY-TEST` is only authorized after the CB19 package compiles; it must use an artifact-only harness, pin the immutable source/package, and run the named selector242 negative plus positive control without any repair or rebuild.
+- **Expected observation:** positive original authority reaches Produced; negative authoritative corruption is nonvacuously present and rejected with the preserved typed transport reason. **Falsifiers:** positive control RED; negative Produced; wrong typed rejection; atlas builder cannot materialize malformed input; or test name/selector changes. Any falsifier stops in independent Review; no census, CP3 acceptance, or further fixture-debt CB authorized by TB19 alone.

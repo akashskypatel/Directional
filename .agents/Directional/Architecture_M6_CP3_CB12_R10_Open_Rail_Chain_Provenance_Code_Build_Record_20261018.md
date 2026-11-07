@@ -1,0 +1,21 @@
+# CB12 — open hard-rail chain provenance, Code + Build
+
+**Turn:** `M6-CP3-CB12-R10-OPEN-RAIL-CHAIN-PROVENANCE` (RA-85.5 U2). **Disposition:** implementation committed; eight-target GMP/GMPXX compile-only package. Separately authorized successor: `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE`. No runtime executed in this turn.
+
+## Semantic scope and source
+
+- Exact compiled semantic source: `b1b02d5bed43898af0708d76dcd70ada96aeecc9`. Initial semantic patch `cdc4755904e6cd45fe6751e05a0f90b587d8bd3c` changed only `include/directional/geometry/SurfaceCellTracing.h`, `include/directional/pipeline/RemeshPipeline.h`, `src/geometry/SurfaceCellTracing.cpp`, `src/pipeline/RemeshPipeline.cpp`, and `tests/SurfaceCellREPackageTests.cpp`. The one-path correction `b1b02d5bed43898af0708d76dcd70ada96aeecc9` changes only the contract test; it fixes explicit type deduction for an empty map and removes `vector::resize(1)` for a non-default-constructible typed vertex ID. No assertions, production admission, or route rule changed.
+- `SurfaceHardRailOpenChain{component, vertices}` and `SurfaceHardRailOpenChains` keyed by `HardRailId` reside next to the existing closed-rail product. The source-rail projection emits complete ordered source vertices for open rails; source authority is threaded through tracing options, publication, product factory, and immutable accessor.
+- The pure factory-entry validator requires matched open-rail terminal contacts, non-overlap with closed chains, component ownership, distinct vertices, terminal endpoint alignment in either order, and consecutive hard-feature source edges inside the correct component; nonempty maps have exactly the contact rail IDs, and absent open-chain maps preserve optional compatibility. Invalid chains fail closed as `InvalidSourceAuthority`.
+- Authoritative source snapshot run `39096476899`, artifact `12124552539`, source `8aae13d804136cb256982b15a625f5b3db3ec046`, verified **5651/5651** packaged source checksums. Source patch applied by run `39097002374`, corrected by run `39097883088`; each exact changed-path set was checked. The temporary Drive patches were permanently retired after successful push.
+
+## Compilation and tests
+
+- Initial compile [39097092114](https://github.com/akashskypatel/Directional/actions/runs/39097092114) failed only compiling the new test: generic-lambda deduction from `{}`, and `std::vector<SourceVertexId>::resize(1)` requiring the deleted default constructor. Both mistakes are documented; **no compile PASS is claimed from this attempt**.
+- Corrected compile [39097975393](https://github.com/akashskypatel/Directional/actions/runs/39097975393), immutable package artifact `12125223513` (outer ZIP SHA-256 `c98ed3a509e9d1ccc1df83eaeb6112b8636bc0e7ee63b73140d789c32f38eeb6`); exact source `b1b02d5bed43898af0708d76dcd70ada96aeecc9`. Mandatory GMP/GMPXX eight-target build; `DIRECTIONAL_ENABLE_GMP=ON`, verified independently by RA-86.2: 28/28 manifest, `source-commit` `b1b02d5be`, build exit 0, `exactArithmeticBackend=GMP`, `runtimeExecution=false`.
+- The compiled regression fixture is built from the real authoritative rail producer with open source chain `[1,4,7]` and source-topology regions, and checks valid projection, missing middle segment, duplicate node, wrong component, missing contact, conflicting closed chain, wrong endpoint, missing hard edge, one vertex, valid two-vertex chain, reversed order, and optional empty-map behavior.
+- **Tests/Directional binaries/benchmarks were NOT run.** These are authored expectations and compile-only evidence, not runtime observations. TB11's three tests are predicted unchanged but were not executed here.
+
+## Stable authority and successor
+
+M6 CP2 accepted **491/491**; R3 **403/497** rejected; stable regression accounting **66/17/49**, debt **1**, selector **497** unchanged; `RP-01` unresolved and `RP-02` UNREACHED. Gate C suspended. The only next turn is `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE`: consume the exact immutable CB12 package artifact, run the authorized CB12 tests and TB11 controls without rebuild or mutation, record all outcomes; a semantic red routes to Review. U3–U5 cannot begin without their reviewed predecessor gates.

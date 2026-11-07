@@ -1,0 +1,21 @@
+# M6-CP3-CB1-ENTRY-R4 — supplemental hard-rail A3 positive-control non-vacuity (Code + Build)
+
+**Boundary:** one supplemental (non-frozen-497) test-only change. The canonical R4 turn is still `IN_PROGRESS`, successor `UNKNOWN`. No Directional-generated binary, test, list/discovery, or benchmark was executed; no PASS restoration is claimed.
+
+## Exact source and test change
+
+- Exact source snapshot: [workflow 38158436653](https://github.com/akashskypatel/Directional/actions/runs/38158436653), event/source `9b88e64b88ac3e6783208e5538c49aeb9606d0dc`, artifact `11709422622`, ZIP SHA-256 `3ab7869a4126d965c784a3aec5b8fc4ba2a42f802e68fce361ef900320cec7bf`; inner archive SHA-256 `7ec4ff17e382e440030559da9aded0828c29b5e9eec23b4478e5ba657588ee8e`; complete `SHA256SUMS` **6212/6212** verified, `runtimeExecution=false`.
+- Supplemental test `SurfacePhaseFrontProductFactoryAuthority.HardRailTransitionNeedsExactlyTwoSourceFaceIncidences` at `tests/SurfaceCellTransitionQuotientTests.cpp` now requires the one- and two-face positive controls to construct an independent source-bound A3. The specifically published two-face transition must actually be present (`transitions.size()==1`) before the checked A4 call. Previously, `if (sourceAtlas && secondFace)` could silently skip publishing the transition, making the purported carrier-positive case a duplicate of its unissued-carrier control.
+- No production acceptance predicate, A2b/A3 guard, source field, route shape, test identity/selector, reuse workflow, PR metadata, or normative definition changed. Exactly one test file, 12 lines added. Patch `Directional_M6_CP3_R4_Incidence_A3_Positive_Control_Nonvacuity.patch` full SHA-256 `eec96a06f4bd2e2d4746dd26e7f74939cd3877c39bac3c615fba5fb0b7901ccc`, diff-body SHA-256 `271d3c7a8109becbe24d4d48bbcb7d6e28b9026a00d3ae334c47e1f57506085d`; local `git diff --check` and `git apply --cached --check` passed. Apply workflow [38158972074](https://github.com/akashskypatel/Directional/actions/runs/38158972074), semantic commit [`e7871efaf56a1ee717cea5b66115e5c50a125d46`](https://github.com/akashskypatel/Directional/commit/e7871efaf56a1ee717cea5b66115e5c50a125d46), result artifact `11709832510`, log artifact `11709413579`; workflow confirms exact base/patch hash, a one-file/12-line change, successful push, `runtimeExecution=false`. Owner-side Drive stage `1EWcqE8gXZqHbuYoFeaOX6TJ9JkTtAp0N` permanently deleted.
+
+## Compile-only verification
+
+Exact GMP/GMPXX eight-target compile GREEN: workflow `38159098983`, job `114528148302`, semantic source `e7871efaf56a1ee717cea5b66115e5c50a125d46`, preflight/build exits `0/0`, real `libgmpxx.so` and `libgmp.so` linked, `DIRECTIONAL_ENABLE_GMP=ON`, source clean, manifest `28/28`, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result artifact `11708843472` ZIP SHA-256 `39fc4fdb3020d6c3f8902264c2297818a9b840d9b1330fc86b7a08dec509786c`, log artifact `11708998433` ZIP SHA-256 `072db2fe296a1d336e572ccfbdc619a79bf30747523c428b8c4d084defd9e670`.
+
+The immutable compile package itself was downloaded and verified once; 28/28 `SHA256SUMS` entries match. The source status metadata is empty/clean and `metadata/command-boundary.txt` explicitly states no runtime execution. No regression PASS is inferred from a compile-only result.
+
+## Known limitation and remaining gates
+
+**This does not solve the three-incident-face negative's A3/manifold feasibility.** The three-face fixture currently constructs a `TriMesh` with three triangles sharing an edge, potentially rejected by DCEL before A3, or by A4's earlier null-A3 gate. An `InvalidSourceAuthority` enum alone cannot attest the later overfull rail-incidence guard; source-validity/Definition review remains necessary. See `Architecture_M6_CP3_R4_Factory_Incidence_Oracle_Source_Validity_Static_Audit_20261011.md`. A separate real runtime run would be needed to verify the strengthened positive fixture; Code + Build prohibits executing generated test binaries.
+
+Remaining R4 39 carried endpoints, 34 Phase10 ingress cases, seven frozen DCEL negatives, 88 CP2 accepted losses, six CP3 gates, real multi-carrier/odd-τ proof and independent dual-admissible-terminal-path review remain **unaccepted**. Historic accepted CP2 `491/491`, rejected R3 `403/497` and all frozen selectors remain unchanged. No TB497 successor authorized.

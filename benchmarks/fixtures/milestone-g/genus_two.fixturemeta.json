@@ -1,0 +1,71 @@
+{
+  "budget": {
+    "rss_bytes": null,
+    "status": "not invented by CB14; runtime budget remains TB authority",
+    "timeout_seconds": null,
+    "work_budget": "owned by M4-CP-SCALE-TB12-R1-EXEC artifact-only harness"
+  },
+  "cross_field": {
+    "boundary_holonomy": "none (closed source)",
+    "degree": 4,
+    "matching_distribution": "runtime-derived; not preclaimed by CB14",
+    "noncontractible_holonomy": "runtime-derived; not preclaimed by CB14",
+    "path": "benchmarks/fixtures/milestone-g/genus_two.rawfield",
+    "sha256": "7bd71837954ded74461a46d65761b953cbc186978639d41567ad4a4aac4af70e",
+    "singularity_count_index": "runtime-derived; not preclaimed by CB14",
+    "source": "deterministic quad-side lattice inherited by triangle stellation",
+    "tangent_variation": "piecewise constant on each source boundary quad"
+  },
+  "deterministic_seed": 0,
+  "generator": "benchmarks/fixtures/generate_milestone_g_fixtures.py",
+  "generator_version": "genus-two-v1",
+  "geometry": {
+    "curvature_class": "piecewise-planar with right-angle creases",
+    "feature_graph": "derived from geometric creases by the production pipeline",
+    "noise_class": "none",
+    "scale": "axis-aligned 5x3x2 unit cubical handlebody",
+    "thinness_class": "unit-thickness tunnel walls"
+  },
+  "intent": {
+    "expected_artifact_labels": [
+      "M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology"
+    ],
+    "expected_outcome": "focused S5 runtime witness candidate; no CB14 semantic credit",
+    "invariants": [
+      "V=120,E=366,F=244",
+      "one connected closed orientable component",
+      "boundary_loops=0",
+      "chi=-2",
+      "genus=2",
+      "raw field has one degree-four row per source face"
+    ],
+    "test_tier": "focused stage-contract plus independent topology/atlas oracle"
+  },
+  "license": "Directional project license",
+  "mesh": {
+    "boundary_loops": 0,
+    "connected_components": 1,
+    "degenerate_faces": 0,
+    "duplicate_faces": 0,
+    "edges": 366,
+    "euler_characteristic": -2,
+    "faces": 244,
+    "genus": 2,
+    "nonmanifold_edges": 0,
+    "orientable": true,
+    "path": "benchmarks/fixtures/milestone-g/genus_two.obj",
+    "self_intersection_status": "not claimed by CB14 static topology census",
+    "sha256": "c6bacd981fb0559dc3e290ee1367b9e369f4657b189ce288ce732461d8caeab3",
+    "source_face_arity": 3,
+    "triangle_soup": false,
+    "validity_class": "valid closed orientable triangle two-manifold",
+    "vertices": 120
+  },
+  "name": "genus_two",
+  "provenance": "Deterministic project-authored boundary of a 5x3x2 cubical handlebody with two separated through-tunnels; 48 deterministic triangle stellations preserve the genus-two topology.",
+  "schema": "directional.fixture-authority.v1",
+  "target_size": {
+    "feasibility_class": "runtime-unadjudicated in CB14",
+    "variation": "owned by the focused S5 production options"
+  }
+}

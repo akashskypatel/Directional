@@ -1,0 +1,11 @@
+artifact_id=11939982141
+source_sha=953f812ff1f431e3ad3af3b68a92284a7831c94a
+executed=4
+red=4
+missing=0
+postflight=true
+compile=false
+relink=false
+benchmarks=false
+selector497=false
+exit=1

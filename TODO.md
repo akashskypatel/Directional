@@ -1,0 +1,703 @@
+> **Current canonical next:** `M6-CP3-CB97-P13-VALIDATOR-CONTACT-LENGTH-UNITS`. Apply [RA-210](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md) §5 exactly: CB97 (`84b8414f…`), CB98 (`14986e38…`), CB99 (`92c67e63…`), then TB84 (§6). Steps 49–52; then Review P13-n (step 53).
+
+## TB72 invalid gate evidence and TB72A correction (2026-11-02)
+
+- [x] **TB72 invalid gate documentation closeout:** [run 41533361438](https://github.com/akashskypatel/Directional/actions/runs/41533361438) used stale TB71 executor (no TB72 manifest). Preflight exit 90, planned/executed 0/0; no semantic verdict. [Failure report](.agents/Directional/Architecture_M6_CP3_TB72_Orchestration_Failure_Report_20261102.md). Census run `41533460744` was independently verified at 1 PASS and 2 registered RED, within 600 s for Vase; supplementary only. No changes to accepted CP2 or TB71.
+- [x] **TB72A orchestration corrected and immutable gate verified:** [run 41540264758](https://github.com/akashskypatel/Directional/actions/runs/41540264758), exact executor `df586285…`, CB78 immutable artifact `13181887585`, **883/883 PASS**, 81 deferred, membership 964, 1,774/1,774 packaged hashes, no rebuild; preserved invalid TB72 attempt. [Record](.agents/Directional/Architecture_M6_CP3_TB72A_Orchestration_Record_20261102.md).
+- [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
+- [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
+
+## CURRENT — RA-210: P13-l2 resolved; Vase residue is three contact predicates; CB97 → CB98 → CB99 → TB84; P13-n next (2026-11-06)
+
+- [x] **P13-l2 REVIEW_BLOCKER resolved by [RA-210](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md)** (Claude scratch track; Review scratch probes are a Review duty):
+  - **Provenance:** the retained-geometry probe has a digest byte-identical to the baseline. Node 9679 is a degree-2 source-edge crossing of layout trace 966; 36055 is the 966×459 crossing 9e-8 away. Both traces are ordinary layout support: no rail, not mandatory, not redundant.
+  - **Owners of the 4 strict issues:**
+    - validator length units (342 false contact pairs; faces 55/15372 are 5.7e-5 apart);
+    - validator concave-quad fan (49);
+    - completion accepting a corner on its own opposite edge (quads 21286 and 41746, the 3 T-junctions).
+    - **RA-208/209's "1 overlap" was a false positive.**
+  - **Scratch verification:** gate 905/906 (only O16); 5 fixtures identical; Vase `validationIssues=0`, failing only calibrated quality gates; all three new tests fail on legacy.
+  - **Trajectory (P13-n):** 26,323 of 67,750 Vase quads (39%) have a >170° corner, and 4,543 vertices have valence 2, at source-edge-crossing side subdivisions, which DESIGN A3 assigns to the conformity plan.
+- **RA-210 sequence:** steps 49–52, one turn each, in order, implementation agent; then Review step 53.
+  49. [ ] **NEXT `M6-CP3-CB97-P13-VALIDATOR-CONTACT-LENGTH-UNITS`** (CB, compile only; RA-210.5):
+     - Precheck: `git diff --quiet 11c8172ad467c6dc865f2f3352e75b78f5469a2b HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB97_P13_Validator_Contact_Length_Units.diff`:
+       - SHA-256 `84b8414fb58df6dfb90b5e425d15c26aac0ccaa73b4ffbf31dbf9dbc38737071`, 114 lines; keep its 5 single-space context lines;
+       - `3 0` validator header → `7f3ae0db30873e88dceeecb82d24f44707d0a549dfea2a8f6dab753d473f425f`;
+       - `18 9` validator source → `c71a205405b20f7cd9a2c80f13b30efaf8ebfc31fed42622b81108ac07090e01`;
+       - `30 0` Phase22 tests → `627eb08676a932ea86c42a2f5ce2e9c2b5b3a7cdc9caad41ddee0b8993d01f8b`.
+     - Mismatch → `M6-CP3-PLAN-P13-VALIDATOR-CONTACT-LENGTH-UNITS-STOP`; infrastructure → `M6-CP3-CB97A-P13-VALIDATOR-CONTACT-LENGTH-UNITS-ORCH`.
+  50. [ ] **`M6-CP3-CB98-P13-VALIDATOR-CONCAVE-QUAD-TRIANGLES`** (CB; precheck the CB97 results):
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB98_P13_Validator_Concave_Quad_Triangles.diff`:
+       - SHA-256 `14986e38261eb46796262b262801bcf9c5dd255344c918f10867224510b7ce6a`, 113 lines; keep its 4 single-space context lines;
+       - results `3b31cb35…` (header), `55360202…` (source), `a02f6a79…` (tests).
+     - Mismatch → `M6-CP3-PLAN-P13-VALIDATOR-CONCAVE-QUAD-TRIANGLES-STOP`.
+  51. [ ] **`M6-CP3-CB99-P13-COMPLETION-CORNER-ON-OPPOSITE-EDGE`** (CB; precheck the CB98 results):
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB99_P13_Completion_Corner_On_Opposite_Edge.diff`:
+       - SHA-256 `92c67e63bbbeabb7504e349c8f48637c3b26aee39e36423fbeee0a1e2d45dcbe`, 344 lines; keep its 14 single-space context lines;
+       - numstat `11 4` / `7 0` / `4 0` / `42 15` / `14 10` / `41 0`; results in RA-210.5.
+     - Mismatch → `M6-CP3-PLAN-P13-COMPLETION-CORNER-ON-OPPOSITE-EDGE-STOP`.
+  52. [ ] **`M6-CP3-TB84-P13-CONTACT-PREDICATES-FULL-GATE-EXEC`** (TB-EXEC; RA-210.6):
+     - Gate: [906-row manifest](.agents/Directional/Architecture_M6_TB84_P13_Contact_Predicates_Full_Gate_Case_Manifest.tsv) `09eff7ed146ef39836706f4d87ae8e9309e35ab16787b6d1e8c3f39314a0b7ff`; ledger v5; **906/906**, membership 987.
+     - **Pinned:** gate rows 795/796/797/864, census Cylinder and BunnyRandom byte-identical to TB83; Vase through `simplification`.
+     - **Registered (macOS-observed):** Vase `validationIssues=0`, terminal `AggregateCompletionValidationFailure`.
+     - Mismatch → `M6-CP3-TB84-P13-CONTACT-PREDICATES-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB84A-P13-CONTACT-PREDICATES-ORCH`.
+  53. [ ] **Review (after TB84) `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`** (P13-n; Claude, scratch build; RA-210.4):
+     - exact per-patch counts of degree-2 source-edge side nodes and flat corners;
+     - check that the warpage, normal and Jacobian metrics handle concave quads;
+     - owner: A3 conformity plan vs completion interior-vertex patterns;
+     - exact patches only after measurement.
+
+## EARLIER — RA-209: remove the orientation pass; own-plane embedding predicate in validator and completion; CB93 → CB94 → CB95 → CB96 → TB83 (2026-11-05)
+
+- [x] **RA-208 reviewed by [RA-209](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_Single_Writer_Own_Plane_20261105.md)** (adversarial re-entry; scratch build):
+  - **Stands:** the pre/post census and CB93's whole-quad predicate (applied at `e96e98806`).
+  - **Defects in RA-208 (mine):**
+    - **It repaired a second writer instead of removing it.** `orient_quads_to_source_normals` rewrites completion's product (DESIGN §3, item 4, M2), and flips 0 pipeline quads across the gate and census once CB93 is applied.
+    - **CB94 adopted completion's axis projection,** which accepts 17 genuinely twisted Vase quads (12 bow-ties in both planes, dihedral up to 178.7°).
+    - **"35,416 → 4" relied on that blind spot.**
+  - **Realigned:**
+    - CB94 removes the pass and its test;
+    - CB95 makes the validator project orthogonally onto the quad's own plane (Vase twisted witness 65858);
+    - CB96 gives completion the same definition. The 17 patches take other variants, and completion still makes 67,750 quads.
+  - **Final scratch:** gate 902/903 (only O16); gate digests unchanged; Vase 4 genuine issues and 0 FlippedFace; both new tests fail on legacy.
+
+- [x] **P13-l Review block resolved and the Review completed by [RA-208](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md)** (Claude scratch track). The ChatGPT [WIP](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_WIP_20261105.md) had blocked on runtime; Review scratch probes are a duty (RA-203.1), so no policy change.
+  - **Measured on CB92 Vase**, using the existing rejected-result snapshots:
+    - completion's stitched output has **0** same-direction edges and **0** quads inverted against the source;
+    - `orient_quads_to_source_normals` reverses **7,630 correct quads** on their first-triangle normal, giving 27,597 introduced conflicts and 35,164 FlippedFace;
+    - the validator's first-triangle projection flags 447 / 248 local crossings, where completion's whole-polygon test finds **0**.
+  - **Exact CB93:** the helper uses the whole-quad Newell normal; the census line gets an issue histogram; a two-quad test.
+  - **Exact CB94:** the self-intersection projection uses the Newell normal (invariant to corner order); a degenerate vector area counts as self-intersecting; an 8-order test.
+  - **Verified in scratch:** Vase falls from 35,416 issues to **4** (1 global overlap, 3 T-junctions; terminal still `SelfIntersectingFace`). 903-row gate 902/903 (only O16). Gate-fixture digests unchanged. Both tests fail on legacy.
+  - **P13-l2** (the 4 residual issues) goes to the Review.
+
+- [x] **TB82 artifact-only full gate and census COMPLETE / MATCH:** [report](.agents/Directional/Architecture_M6_CP3_TB82_P13_Source_Vertex_Fan_Seed_Full_Gate_Execution_Report_20261105.md); immutable CB92 source `d9921cdd` / artifact `13427203329`. [Gate 42057136562](https://github.com/akashskypatel/Directional/actions/runs/42057136562): 901/901 PASS, membership 982, 1,810/1,810 SHA256SUMS; new GUARD 900–901 PASS. [Census 42057191097](https://github.com/akashskypatel/Directional/actions/runs/42057191097): Cylinder PASS, BunnyRandom expected P13-e RED, Vase expected `SelfIntersectingFace` RED in 204.77 s (189,462 traces, 30,989 strands, 26,817 cells, 67,750 informational quads); 9/9 hashes. Six pinned Linux digests equal TB81; Vase unchanged to `global-conformity-baseline`. No promotion, new stable event or accepted CP2 regression. **Next independent P13-l Review**; O32b–e, O33, O30b, O31, P13-e and adaptive tie residual carried.
+
+- [x] **The O32a seed Review was reviewed by [RA-207](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md)** (re-entry; scratch build):
+  - **Stands:** vertex seeds were placed by lowest face row and de-duplicated by (face row, barycentrics), so the rail collision depended on row order. Typed-fan placement gives 1,416 seeds (identical digest) and identical trace (189,462) and strand (30,989) counts in four orders. Quads still vary (O32e).
+  - **Defects in the O32a Review:**
+    - its CB92 was prose, not a patch, and its own spec could STOP;
+    - fail-closed on multi-fan vertices drops capability and contradicts the both-sides rail rule;
+    - the gate impact was never measured;
+    - a four-Vase product test cannot be gated.
+  - **Measured:**
+    - 0 multi-fan vertex-origin requests in the whole gate (positive control logs 2);
+    - 901-row local gate 900/901 (only O16);
+    - census for Plane, MultiFaceSeam, CloseSheets, Cylinder and BunnyRandom unchanged; Vase changes from `tracing` on.
+  - **Exact CB92:** each unseeded typed fan of a source vertex gets one seed at its minimum canonical chart. Two new GUARD tests, rows 900–901, both fail on legacy. New 901-row manifest, self-check PASS.
+
+- [x] **The TB80 Review was reviewed by [RA-206](.agents/Directional/Architecture_M6_CP3_TB80_REV_Review_Final_Validation_Binding_Per_Vertex_20261105.md)** (scratch probes; the TB80 raw artifacts were read):
+  - **Stands:** the evidence verification, census MATCH, and the RA-204.9 comparison (CloseSheets equal, so O30a holds in fixed order; O30b open).
+  - **Defects in the TB80 Review:**
+    - it did not exclude CB90, whose diff cannot reach row 899;
+    - its hypothesis, a per-quad bind at the optimizer boundary, was wrong;
+    - its CB91 was investigative and conditional, for the implementation agent;
+    - it kept a 2.0 s bound that cannot hold on Linux.
+  - **Measured:**
+    - Row 899's validation is **O(F×Q)**: 1.14 ms per quad at 28,800 faces, 0.30 at 7,200.
+    - The validator re-checks the full binding **once per output vertex** (`SourceAuthoritativeMeshValidator.cpp:1186`): 130 / 450 / 1,690 checks for 121 / 441 / 1,681 vertices.
+    - Linux runs this section 3.5× macOS. The 2 s bound came from macOS's 0.7 s (RA-202.8, my error).
+  - **Exact CB91:** check the binding once; add a thread-local `source_binding_check_count()`; re-specify row 899 as checks ≤ 16 and equal across output sizes, plus a 5 s backstop.
+    - Local gate 898/899 (only O16); census 129/129 digests unchanged.
+    - The M1 (per-vertex) and M4 (CB88 revert) mutants are killed.
+  - **O33 (new):** per-quad O(F) chart-face work at five sites (0.56 ms per quad remaining). It goes to the Review track.
+
+- [x] **RA-204 reviewed by [RA-205](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md)** (re-entry of `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`; scratch probes):
+  - **Stands:** the cross-library cell-order mechanism and CB90. Completion's 7 hash containers are order-safe (sum, or sort then de-duplicate), which RA-204 had not checked.
+  - **Corrections to RA-204:**
+    - Under DESIGN §10.1, a completed count that changes with the cell schedule *is* a determinism defect. The owner is completion's ownership repair: patch-id tie and bounded budget (`PatchDescriptor.cpp` 3120–3150).
+    - CB90's halfedge tie-break is a source-row-derived order, so it is interim for §10.1.
+    - "Two draws" overclaims while O30b is open.
+  - **O32 (new, CP3-exit):** a consistent source-face row permutation of Vase changes:
+    - seeds 1,456 → 1,461;
+    - trace segments 192,482 → 192,770 to 193,624;
+    - strands 30,989 → 30,998 / 31,008;
+    - quads 67,746 → 67,771 to 67,784.
+
+    Counts through `global-conformity-baseline`, the 26,817 arrangement cells and the verdict are invariant. CloseSheets keeps 200 and PASS.
+    - First owner: `generate_deterministic_surface_seeds`.
+    - Refuted: the `AdaptiveSeedCandidate` face-row tie.
+  - **Outcome:** CB90 → TB80 unchanged (steps 38–39). The Review does O32a before P13-l. Pin only permutation-invariant values.
+
+- [x] **O30 Review completed by [RA-204](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md)** (Claude, scratch builds: FMA off, GCC/libstdc++ field, libc++ randomized ties):
+  - **The ChatGPT [O30 Review](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Platform_Split_Digest_Adjudication_20261105.md)** compared the digests correctly. It read the atlas hash as semantic, but the atlas digest hashes exact `effort` bits. It missed CloseSheets' Linux-only arrangement on equal embedding, and froze a 2,404×12 field replay that could not find the cause. Its field branch is withdrawn.
+  - **Noise carriers (measured):** under ±1-ULP field perturbations with unchanged output, these hashes change: `field-transport-atlas`, `field-aligned-network`, `surface-cut-graph`, `global-topology-plan`, `global-conformity-baseline`, `tracing`, and `strands` under FMA. RA-203.4's "first differing stage" now means the first that is not a noise carrier. That was my error.
+  - **The field is not the cause:** five distinct Vase fields give the same macOS embedding, arrangement and 67,829.
+  - **O30a root cause:** `SurfaceArrangement.cpp:6762` sorts cells by a non-injective `cell_cycle_key` and assigns ids in that order. There are 10,891 tied pairs among Vase's 26,817 cells.
+    - With randomized ties, one build gives Vase 67,753 / 67,806 / 67,827 / 67,809.
+    - With a halfedge tie-break, it gives 67,746 every time, and CloseSheets' arrangement is constant.
+    - Local gate with the fix: 898/899 (only O16 row 283).
+  - **Open:** O30b (Linux-only Vase embedding `f2fc0cca…`, RA-204.5); **O31** (relief critical points decided by rounding noise, RA-204.6).
+  - **Outcome:** exact CB90 → TB80 (steps 38–39). P13-l starts on the post-CB90 state.
+
+- [x] **TB78 Review closed by [RA-203](.agents/Directional/Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md)** (scratch probes on the CB88 tree):
+  - **The block.** ChatGPT's [WIP](.agents/Directional/Architecture_M6_CP3_TB78_REV_P13_Census_Count_Review_WIP_20261104.md) saw a conflict between `REVIEW_TURN_POLICY.md` §4.3 and RA-202.9's "re-run the probe recipe". The fault is RA-202.9's route, which named no track and asked one platform to explain a split between two. Review scratch probes are a duty (RA-166.6 F6, RA-188.1). Linux runtime is a TB. No policy change.
+  - **RA-202.9's error.** It pinned 67,829, a macOS-only count, as the Linux expectation.
+  - **TB78 matches** on every other line: gate 899/899, membership 980; Cylinder; BunnyRandom P13-e; Vase typed RED; 192,482 traces; 26,817 cells; 268.93 s < 600 s.
+  - **The count is O30**, a platform split, not CB85–CB88:
+    - their product hunks have no floating-point arithmetic, hashing, sorting or unordered container;
+    - the macOS cross-checks show 0 mismatches;
+    - Linux and macOS topology agreed through the arrangement in TB71, TB72 and TB78.
+  - **Outcome:** exact CB89 (test-only `platform-digest` line per census case) → TB79 (steps 36–37), then the O30 DEFN. The macOS reference is frozen.
+
+- [x] **TB76 independent Review adjudicated:** [decision](.agents/Directional/Architecture_M6_CP3_TB76_P13_Linux_Vase_Independent_Review_Decision_20261104.md) verified TB76 893/893 ledger/raw hashes, 1794/1794 package hashes, TB75 prefix SHA, census 1 PASS/1 RED/1 ABNORMAL (9/9 hashes). Its successor (diagnostic CB84) is superseded by RA-202.
+- [x] **TB76 Review re-adjudicated by [RA-202](.agents/Directional/Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md)** (scratch probes):
+  - The Linux Vase timeout owner is **P13-m**: three memory-bound census-path scans plus two Amendment 33 sites. On macOS at HEAD they take:
+    - the arrangement T-junction scan, 94.5 s;
+    - the selection endpoint-degree recount, 24 s;
+    - the bow-tie check, 19.7 s;
+    - the per-query binding in `validate_final_surface_mesh`, ≈2 s.
+  - FMA is ruled out. TB76's gate rows ran at macOS speed on Linux (median 0.96); only Vase was slower (1.55–2.0× in TB68–TB71).
+  - With all four fixes, Vase reaches the same verdict in 108.5 s instead of ≈250 s. Exactness was cross-checked over the gate (16,543 lines, 0 mismatches) and on Vase.
+  - Outcome: DESIGN Amendment 34 → exact CB85–CB88 → TB77/TB78 (steps 28–34); O27, O28, O29.
+- [x] **WITHDRAWN `M6-CP3-CB84-P13-LINUX-VASE-DIAGNOSTIC-TIMING`:** never applied or compiled. Do not apply the patch kept in its [preservation record](.agents/Directional/Architecture_M6_CP3_CB84_P13_Linux_Vase_Diagnostic_Timing_Work_Preservation_20261104.md).
+- [x] **`M6-CP3-CB85-P13-ARRANGEMENT-TJUNCTION-FACE-SCAN`** compile-only: source `a405b59057045b5aaa302abd9553daba3d8b2934`, package `13338458053`. [Record](.agents/Directional/Architecture_M6_CP3_CB85_P13_Arrangement_TJunction_Face_Scan_Code_Build_Record_20261104.md).
+- [x] **`M6-CP3-CB86-P13-SELECTION-ENDPOINT-NET-CHANGE`** compile-only: source `0f4c78c433211b0ece549e35cfb0bc975ca02258`, package `13347299644`, eight GMP/GMPXX targets. [Record](.agents/Directional/Architecture_M6_CP3_CB86_P13_Selection_Endpoint_Net_Change_Code_Build_Record_20261104.md).
+- [x] **`M6-CP3-TB77-P13-PRE-ASSEMBLY-COST-FULL-GATE-EXEC` COMPLETE** — [report](.agents/Directional/Architecture_M6_CP3_TB77_P13_Pre_Assembly_Cost_Full_Gate_Execution_Report_20261104.md), gate 896/896 PASS, membership 977 and 81 deferred (1,800/1,800 hashes); census Cylinder PASS, BunnyRandom RED, Vase ABNORMAL; MATCH.
+- [x] **`M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-EXEC` execution COMPLETE / registered outcome MISMATCH:** [TB78 report](.agents/Directional/Architecture_M6_CP3_TB78_P13_Census_Path_Cost_Full_Gate_Execution_Report_20261104.md); immutable CB88 gate [41906228679](https://github.com/akashskypatel/Directional/actions/runs/41906228679) **899/899 PASS**, 81 deferred, membership 980, 1,806/1,806 hashes; census [41906541304](https://github.com/akashskypatel/Directional/actions/runs/41906541304) 1 PASS/2 RED, 9/9 hashes. Vase `SelfIntersectingFace` in 268.93 s, 67,784 completed quads **versus registered 67,829 (−45)**. Accepted CP2 491/491, stable 66/17/49, debt 1 and selector497 unchanged. The Review is closed by RA-203: TB78 COMPLETE, and the count is O30.
+- [x] **`M6-CP3-CB88-P13-FINAL-VALIDATION-ROW-LABELS` COMPLETE** — [record](.agents/Directional/Architecture_M6_CP3_CB88_P13_Final_Validation_Row_Labels_Code_Build_Record_20261104.md), exact source [`6cc50f87`](https://github.com/akashskypatel/Directional/commit/6cc50f878ef829711e16262759afb3367bec2aff), eight-target GMP/GMPXX compile [41902419082](https://github.com/akashskypatel/Directional/actions/runs/41902419082) PASS, package `13358062295` (28/28 hashes), runtimeExecution=false. Next separate turn TB78.
+- [x] **`M6-CP3-CB87-P13-BOW-TIE-VERTEX-EDGES` COMPLETE** — [record](.agents/Directional/Architecture_M6_CP3_CB87_P13_Bow_Tie_Vertex_Edges_Code_Build_Record_20261104.md), exact source [`d02fa6ce7467`](https://github.com/akashskypatel/Directional/commit/d02fa6ce74670ade8fecbcc2b7fd9a1d793b59b2), Linux eight-target GMP/GMPXX compile [run 41897641171](https://github.com/akashskypatel/Directional/actions/runs/41897641171) PASS, artifact `13356343883`; runtimeExecution=false, GUARD rows 897–898 compiled, not executed. Next separate turn `M6-CP3-CB88-P13-FINAL-VALIDATION-ROW-LABELS`.
+
+- [x] **CB80 rail binding once Code + Build:** exact three-file RA-201.4 source commit [`c6420b1f`](https://github.com/akashskypatel/Directional/commit/c6420b1f9a84c423f60a5b96b90d59abb8df80e4); Linux eight-target GMP/GMPXX compile-only [41732653110](https://github.com/akashskypatel/Directional/actions/runs/41732653110) PASS, package artifact `13278380590` (ZIP SHA-256 `64bdcdbe0c6d06e424e66de816db97f99f60910f1b3eae3642702b94dd077ec5`), runtimeExecution=false. [Record](.agents/Directional/Architecture_M6_CP3_CB80_P13_Rail_Binding_Once_Code_Build_Record_20261103.md). New GUARD rows 887–888 compiled and **passed at TB74**.
+- [x] **TB74 full gate and census independently verified:** immutable CB80 package `13278380590`, [gate 41736473382](https://github.com/akashskypatel/Directional/actions/runs/41736473382) **888/888 PASS**, membership 969 (81 deferred), 1784/1784 checksums; [census 41736517063](https://github.com/akashskypatel/Directional/actions/runs/41736517063) Cylinder PASS, BunnyRandom P13-e RED, Vase ABNORMAL timeout 600 s (9/9 hashes), registered outcomes. [Report](.agents/Directional/Architecture_M6_CP3_TB74_P13_Rail_Binding_Once_Full_Gate_Execution_Report_20261103.md). No new stable event; CP2 491/491, 66/17/49, debt 1 unchanged.
+- [x] **CB81 lent projection cache Code + Build:** exact RA-201.6 patch on CB80 at [`39845219`](https://github.com/akashskypatel/Directional/commit/39845219f9560b1bf04288b0c308ece196982d4e); Linux eight-target GMP/GMPXX compile-only [41743413915](https://github.com/akashskypatel/Directional/actions/runs/41743413915) PASS, immutable artifact `13282539328`, `runtimeExecution=false`. GUARD rows 889–890 compiled, not executed. [Record](.agents/Directional/Architecture_M6_CP3_CB81_P13_Lent_Projection_Cache_Code_Build_Record_20261104.md).
+- [x] **TB75 full gate and census independently verified:** immutable CB81 artifact `13282539328`, [gate 41748769190](https://github.com/akashskypatel/Directional/actions/runs/41748769190) **890/890 PASS**, membership 971 (81 deferred), 1788/1788 checksums; [census 41748824556](https://github.com/akashskypatel/Directional/actions/runs/41748824556) Cylinder PASS exit 0; BunnyRandom RED exit 1, `InvalidFieldTransportAtlas:field-transport-atlas/SingularityPortClassCountMismatch;sourceVertex=49` (P13-e); Vase ABNORMAL exit 124, `HARNESS_TIMEOUT 600s`, without a completed post-assembly verdict (9/9 hashes), registered outcomes. [Report](.agents/Directional/Architecture_M6_CP3_TB75_P13_Lent_Projection_Cache_Full_Gate_Execution_Report_20261104.md). No acceptance promotion; CP2 491/491, 66/17/49, debt 1 unchanged.
+
+- [x] **CB77 Code + Build**: exact RA-198.8 patch at [`25713a0c0eb0`](https://github.com/akashskypatel/Directional/commit/25713a0c0eb0979155c6954f86f8fb13417d5463); [Linux compile 41485148422](https://github.com/akashskypatel/Directional/actions/runs/41485148422) eight GMP/GMPXX Release/static targets PASS, package `13160673891` (28/28 hashes), runtimeExecution=false. [Record](.agents/Directional/Architecture_M6_CP3_CB77_P13_Needle_Grid_Boundary_Search_Code_Build_Record_20261102.md). **TB71 COMPLETE:** [gate 41492237758](https://github.com/akashskypatel/Directional/actions/runs/41492237758) 881/881 PASS, membership 962; [census 41492364954](https://github.com/akashskypatel/Directional/actions/runs/41492364954) Cylinder PASS, BunnyRandom P13-e RED, Vase P13-i RED (registered). [Report](.agents/Directional/Architecture_M6_CP3_TB71_P13_Needle_Grid_Full_Gate_Execution_Report_20261102.md). No selector/CP3 promotion.
+- [x] Done (records in `.agents/Directional/`, history in `CHANGELOG.md`): RP-01 closure (RA-174…[RA-179](.agents/Directional/Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md)) → O15 (RA-180, CB55, TB54, [RA-181](.agents/Directional/Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md)) → row 935 (RA-182, CB56, TB55) → O2 entry gate ([RA-183](.agents/Directional/Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md), CB57, TB56) → **DIAG-RETAIN** ([RA-184](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md), [RA-185](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md), [RA-186](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md), [RA-187](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md); CB58–CB61, last source `e1fd0e4b…`). TB57–TB60 ran on macOS arm64 only; the latest, TB60, gave **862/863** on the TB58 manifest (863 rows; only row 283, O16), membership 945. TB59 ran only CLI cases; TB60 is the full-gate TB for both CB60 and CB61 (RA-187.1).
+- [x] **Independent Linux TB61 full-gate review of CB58–CB61; owner authorized exact Linux CLI/GUI successor** (user direction, 2026-10-31; handoff step 1):
+  - [x] `M6-CB62-DIAG-RETAIN-LINUX-PACKAGE`: no source patch; Linux Release/static GMP/GMPXX eight-target package artifact `13034987618` from `e7c27b0a5f53…` (record: [CB62](.agents/Directional/Architecture_M6_CB62_Diag_Retain_Linux_Package_Code_Build_Record_20261031.md)).
+  - [x] `M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-EXEC`: verified Linux run `41182654107`, CB62 package `13034987618`, source `e7c27b0a…`, TB58 manifest 863, ledger v4 82, **863/863 PASS**, membership 945, row 283 PASS; [TB61 execution report](.agents/Directional/Architecture_M6_TB61_Diag_Retain_Linux_Full_Gate_Execution_Report_20261031.md). No new Linux regression; stable accounting unchanged.
+  - [x] **`M6-TB61-DIAG-RETAIN-LINUX-FULL-GATE-REV` evidence adjudication:** independent artifact/manifest/log/package audit 863/863; Linux CLI/GUI switches both OFF in CB62. [Review report](.agents/Directional/Architecture_M6_TB61_Linux_Full_Gate_Independent_Review_20261031.md).
+  - [x] **Owner authorization 2026-10-31:** exact next `M6-CB63-DIAG-RETAIN-LINUX-CLI-GUI-COMPILE` selected; [compile plan](.agents/Directional/Architecture_M6_CB63_Linux_CLI_GUI_Compile_Plan_20261031.md) governs Linux CLI+GUI GMP/GMPXX compile evidence. Full-history `review_check.py boundary` and `ledgers` passed on unshallow GitHub run 41200958419.
+  - [x] **`M6-CB63-DIAG-RETAIN-LINUX-CLI-GUI-COMPILE`:** Linux Release/static ten-target compile/link, CLI/GUI ON, GMP/GMPXX generated links; source `f6113c4e…`, [run 41202931582](https://github.com/akashskypatel/Directional/actions/runs/41202931582), artifact `13043004468` (30/30 verified); [report](.agents/Directional/Architecture_M6_CB63_Linux_CLI_GUI_Code_Build_Report_20261031.md). No runtime.
+  - [x] **`M6-TB62-DIAG-RETAIN-LINUX-CLI-GUI-FULL-GATE-EXEC`:** immutable CB63 Linux ten-target package `13043004468` (`f6113c4e…`), [run 41205693716](https://github.com/akashskypatel/Directional/actions/runs/41205693716), result `13046191343`: **863/863 PASS**, 82 DEFERRED, membership945, 1,734/1,734 result hashes, postflight true; 11/11 registered Linux CLI checks and GUI link evidence with no GUI launch, zero rebuild. [TB62 report](.agents/Directional/Architecture_M6_TB62_Linux_CLI_GUI_Full_Gate_Execution_Report_20261031.md). No new Linux regression; macOS O16 separate.
+- [x] **`M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE`** (Review/Definition): independently re-audited TB62 863/863 and CB63 30/30; ruled runtime probes cannot execute within a DEFN despite 'probe-capable' handoff; froze separate CB→TB observation without modifying 863-case gate, v4 82 ledger or design acceptance. [P13 decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Design_Acceptance_Decision_20261031.md).
+- [x] **[RA-188](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Probe_Adjudication_20261031.md) `M6-CP3-DEFN-P13-PROBE-ADJUDICATION`** (DEFN, Review, scratch probes on current source):
+  - It upholds the P13 audit, but the decision planned on stale pre-CB55 dispositions and skipped the Review probes (RA-166.6 F6). Its CB64-REGISTRATION (a 300 s harness edit) and TB63-CYLINDER-FIRST are withdrawn.
+  - **P13-a, Cylinder:** PASS in 182 s. 96% of that time is O(F) `matches_source_faces` re-validation inside `SourceChartTransitionGraph::available()`. With the fix it runs in 7.8 s with byte-identical output.
+  - **P13-b, Vase:** A4 `BranchContinuationExactMagnitudeExceeded`. The exact width grows about 200 bits per step and fails at step 21. This is the O15c trigger, and it is architectural.
+  - **P13-c, BunnyRandom:** A3 `CutTransportDomainIdentityMismatch`. Two tip–tip single-edge barrier arcs cannot be slit under DESIGN Amendment 15.3.
+  - The patch probe gate gives 862/863 (only O16 row 283).
+- [x] **`M6-CP3-CB64-P13-CHART-BINDING-CACHE`** (CB; implementation agent; Linux).
+  - The RA-188.8 exact patch: SHA `fad8986c…`, numstat `7 4` and `2 2`. It caches the build-time source binding in `available()` and adds `detail=` to the design-acceptance `failure_context`.
+  - Exact two-file patch committed as `d56d990580163f4fd0ceda4137f7ecd16ceb6027`; Linux eight-target compile [run 41221202501](https://github.com/akashskypatel/Directional/actions/runs/41221202501), artifact `13050072901`, 28/28 checksums, GMP/GMPXX, no runtime. [CB64 report](.agents/Directional/Architecture_M6_CB64_Chart_Binding_Code_Build_Continuation_20261031.md).
+- [x] **`M6-CP3-TB63-P13-CENSUS-FULL-GATE-EXEC`** (TB-EXEC; Linux; [report](.agents/Directional/Architecture_M6_CP3_TB63_P13_Census_Full_Gate_Execution_Report_20261031.md)).
+  - CB64 immutable artifact `13050072901`, source `d56d9905…`; full [gate run 41224438897](https://github.com/akashskypatel/Directional/actions/runs/41224438897), result `13051413577`, **863/863 PASS** (854 GUARD / 9 POSITIVE), 82 DEFERRED and exact membership 945, 1734/1734 result checksums, 863 per-process logs, postflight true; no rebuild.
+  - [Census run 41224395380](https://github.com/akashskypatel/Directional/actions/runs/41224395380), result `13051470763`, **1 PASS / 2 expected RED**: Cylinder PASS, BunnyRandom `CutTransportDomainIdentityMismatch` / `cutChi=-3`, Vase `detail=BranchContinuationExactMagnitudeExceeded`; no new regression. Stable 66/17/49, debt 1 and CP2 491/491 unchanged; selector497/CP3 not promoted.
+- [x] **`M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH`** (Review) — [RA-189](.agents/Directional/Architecture_M6_CP3_DEFN_P13_O15C_Continuation_Width_Review_20261031.md) elects versioned exact-predicate dyadic A2a output, not original exact curve equivalence; approves prospective Cylinder 864/81 gate membership only. TB63 remains 863/863 and Vase RED.
+- [x] **[RA-190](.agents/Directional/Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md) closes `M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH`** (Review, scratch probes on current source).
+  - The block was procedural. The unmodified `review_check.py boundary` passes on an authentic checkout.
+  - RA-189's dyadic choice and Cylinder promotion stand. Its design defects R1–R7 are ruled:
+    - Rounding must happen inside the resolver, because four consumers replay it.
+    - The endpoint-collapse failure is replaced by the open grid, since exact HEAD arithmetic already makes 12 near-vertex exits on the prescribed sphere.
+    - The certificate and receipt obligations are withdrawn.
+    - The monolithic CB is replaced by an exact patch.
+    - Membership becomes 947.
+  - Probes (macOS):
+    - 864-row gate: 863/864 (only O16); 74 rounding rows pass.
+    - Deferred rows: 81/81 verdicts unchanged.
+    - **Vase passes A4**, then fails at completion `SideSubdivisionRepair:InvalidInputIncidence`; uncapped exact arithmetic gives the same result.
+  - DESIGN Amendment 24 is rewritten.
+- [x] **`M6-CP3-CB65-P13-CANONICAL-DYADIC-TRACE-EXIT`** (CB; implementation agent; Linux).
+  - RA-190.8 exact patch, SHA `ed125319…`, numstat `26 1` / `26 2` / `79 0` / `2 1`, on base `d56d9905…`.
+  - Linux eight-target compile [run 41253674256](https://github.com/akashskypatel/Directional/actions/runs/41253674256), artifact `13062413347`, source `dbc38661efabdfa051f48f8f71ee3c604841842c`, ZIP `1a2ab39d43742cfa5d3b7b2c09242482ef63712b2efbaf9644a54b83e2b0948b`; no runtime. [CB65 record](.agents/Directional/Architecture_M6_CP3_CB65_P13_Canonical_Dyadic_Trace_Exit_Code_Build_Report_20261031.md).
+  - Mismatch → `M6-CP3-PLAN-P13-DYADIC-EXIT-STOP`; infrastructure → `M6-CP3-CB65A-P13-DYADIC-EXIT-ORCH`.
+- [x] **`M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-EXEC`** (TB-EXEC; Linux; [report](.agents/Directional/Architecture_M6_CP3_TB64_P13_Canonical_Dyadic_Full_Gate_Execution_Report_20261101.md)).
+  - Gate: 866-row manifest `289d887c…` plus ledger v5 `fd433f54…`, pre-registered 866/866, membership 947.
+  - Census `3af1dc0d…`: Cylinder PASS; BunnyRandom `CutTransportDomainIdentityMismatch` `cutChi=-3`; Vase `NotProductionReady:completion` with `completion=SideSubdivisionRepair:InvalidInputIncidence`.
+  - Mismatch → `M6-CP3-TB64-P13-CANONICAL-DYADIC-FULL-GATE-REV`.
+  - Observed: **866/866 PASS**, **947** membership, **1740/1740** checksums; independent census Cylinder PASS, BunnyRandom P13-c RED, Vase P13-d RED at registered signatures, 9/9 checksums; no rebuild, zero unexpected regression. O15c discharged for A2a, stable 66/17/49 unchanged.
+- [x] **`M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT`**:
+  - [RA-191](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Single_Edge_Barrier_Slit_Review_Decision_20261101.md) diagnosed the slit.
+  - [RA-192](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md) probe-adjudicated it. It proves the interior tip–tip edge is the only configuration the face array glues, and replaces RA-191's incidence product and open-ended CB66 with an A1 slit adapter (Amendment 25, rewritten) and an exact patch.
+  - Probes: 869-row candidate gate 868/869 (only O16); ledger 81/81 RED in both modes; BunnyRandom reaches P13-e; mutants M1–M3 each caught.
+- [x] **`M6-CP3-CB66-P13-SLIT-CYCLE-BASIS`** (CB; implementation agent; Linux workflow runner):
+  - Precheck `git diff --quiet dbc38661… HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+  - Apply the RA-192.8 block, SHA-256 `c83fefa2298e8fb5fc1b6ef14a8fe47f46ce5cf92d0acc89f4fd6d7da0c4377c`. Numstat `1 0` / `173 33` / `182 0`; result SHA-256s per RA-192.5.
+  - **Completed:** exact 3-path source patch at `911840c195b52ce1800b3ac7ff3ea7380137ad9c`; [eight-target compile run 41265565212](https://github.com/akashskypatel/Directional/actions/runs/41265565212), artifact `13067780359`, 28/28 hashes, GMP/GMPXX, no runtime. [Report](.agents/Directional/Architecture_M6_CP3_CB66_P13_Slit_Cycle_Basis_Code_Build_Report_20261101.md).
+- [x] **`M6-CP3-TB65-P13-SLIT-FULL-GATE-EXEC`** (TB-EXEC; Linux; verified CB66 package only):
+  - Gate: 869-row manifest `baaef9e7…` plus ledger v5 `fd433f54…`, pre-registered 869/869, membership 950.
+  - Census `3af1dc0d…`: Cylinder PASS; BunnyRandom `terminal=InvalidFieldTransportAtlas:field-transport-atlas/SingularityPortClassCountMismatch;sourceVertex=49` with `cutChi=-5`, `cutBoundaryLoops=7`, no `CutTransportDomainIdentityMismatch`; Vase `NotProductionReady:completion` with `completion=SideSubdivisionRepair:InvalidInputIncidence`.
+  - **Observed:** Linux 869/869 PASS, membership 950, 1746/1746 result checksums; census Cylinder PASS, BunnyRandom expected P13-e RED, Vase expected P13-d/O18 RED, 9/9 hashes; zero rebuild or unexpected regression. [TB65 report](.agents/Directional/Architecture_M6_CP3_TB65_P13_Slit_Full_Gate_Execution_Report_20261101.md). No TB65-REV/TB65A invoked.
+- [x] **`M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE`** (P13-d/O18, Review/Definition):
+  - The [static decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Completion_Incidence_Review_Decision_20261101.md) left the producer unproved and froze an open-ended diagnostics CB67.
+  - [RA-193](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Arrangement_Rotation_Probe_Adjudication_20261101.md) probe-adjudicated it. The arrangement publishes zero cells (`RepeatedNodeCycle`, node 33) because its directed wedges split per face chart (R1) and 72 of 167 multi-ray edge rotations are mirrored (R2); the pipeline ignores that typed failure (R3, O18). Amendment 26 added. The decision's CB67 is withdrawn.
+  - Probes: gate 868/869 in both patched states and 870/871 on the clean RA-193 build (only O16); ledger 0/81 PASS in both modes, only Vase changes; with both fixes Vase's arrangement is valid (26,827 cells) and completion exceeds 600 s (P13-f).
+  - [RA-194](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Landed_Incidence_Probe_Revert_20261101.md): the withdrawn diagnostics CB67 landed anyway as `829a47b2d` (uncompiled). It compiles and keeps verdicts, but it still ends Vase at `completion`, records the symptom `HalfedgeCellOutOfRange` instead of the arrangement's `RepeatedNodeCycle`, and its only test is in the unbuilt historical target, in a file that no longer compiles. Ruled: revert exactly; RA-193's patches are renumbered CB69 and CB70.
+- [x] **`M6-CP3-DEFN-P13-COMPLETION-OWNERSHIP-COST`** (P13-f, Review/Definition):
+  - The [static decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Review_Decision_20261101.md) named the two validator sites. It ran no probe, left Vase's next failure unnamed, froze an open-ended [CB71 plan](.agents/Directional/Architecture_M6_CP3_CB71_P13_Completion_Chart_Graph_Reuse_Code_Build_Plan_20261101.md) (API, binding and tests left to the agent), and set TB obligations a TB cannot observe.
+  - [RA-195](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Probe_Adjudication_20261101.md) probe-adjudicated it.
+    - Graph construction is 93.5 % of Vase's completion CPU, and the per-vertex closure is 83.2 %.
+    - With one graph per mesh and one per pass, Vase ends in 138 s at `completion` with `InvalidCompletionQuadEmbedding` (P13-g).
+    - Binding is ruled as exact borrowing (Amendment 27), replacing the decision's self-contradictory pointer-identity ban.
+    - The plan is replaced by two exact patches; O20 (residual per-call O(F)) is recorded.
+  - Probes, production build: gate 872/873 on macOS (only O16 row 283); ledger: only Vase (row 365) changes, TIMEOUT → RED; mutants M1 and M2 are each caught by their own new test.
+- [ ] **Turn sequence (implementation agent, Linux workflow runner, one exact patch per turn):**
+  1. [x] **COMPLETE `M6-CP3-CB68-P13-REVERT-INCIDENCE-BOUNDARY-PROBE`** (Code; exact revert, no build):
+     - Precheck `git diff --quiet 829a47b2d96eb7313e64402c3de666266725ba7e HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Apply the RA-194.6 block, SHA-256 `a6b8cf62c8f9543bfa35766782906dc28c9d6cbe7263d5db0d1cabc1d4174c21`, numstat per RA-194.4.
+     - Postcheck verified against exact applied commit [`90fa3a15`](https://github.com/akashskypatel/Directional/commit/90fa3a155930c2683ed0789ef88e9f8f52775437): no source/build/test path differences from CB66 `911840c1…`, package `13067780359`, TB65 869/869. Drive apply [run 41306617232](https://github.com/akashskypatel/Directional/actions/runs/41306617232), no build/runtime; Drive patch retired.
+     - Mismatch → `M6-CP3-PLAN-P13-INCIDENCE-PROBE-REVERT-STOP`; infrastructure → `M6-CP3-CB68A-P13-INCIDENCE-PROBE-REVERT-ORCH`.
+  2. [x] **COMPLETE `M6-CP3-CB69-P13-ARRANGEMENT-INCIDENCE-TERMINAL`** (CB, compile only; RA-193's "CB67"):
+     - Precheck `git diff --quiet 911840c195b52ce1800b3ac7ff3ea7380137ad9c HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Apply the RA-193.10 block, SHA-256 `35727214ac067ac3337ce640ec78fd23a8e92f7f14c444d953053feef7209822`. Numstat `29 1`; result SHA-256 `d478a64c…` (RA-193.5).
+     - [CB69 report](.agents/Directional/Architecture_M6_CP3_CB69_Arrangement_Incidence_Terminal_Code_Build_Record_20261101.md): exact RA-193.10 applied at `5b08abe42f91`, compile [run 41310503404](https://github.com/akashskypatel/Directional/actions/runs/41310503404) artifact `13084749209`; GMP/GMPXX eight-target; runtimeExecution=false. Initial dispatcher schema error corrected in v2; no TB acceptance.
+     - Mismatch → `M6-CP3-PLAN-P13-ARRANGEMENT-TERMINAL-STOP`; infrastructure → `M6-CP3-CB69A-P13-ARRANGEMENT-TERMINAL-ORCH`.
+  3. [x] **COMPLETE `M6-CP3-TB66-P13-ARRANGEMENT-TERMINAL-FULL-GATE-EXEC`** (TB-EXEC): TB65 manifest 869 `baaef9e7…` + ledger v5 `fd433f54…`, pre-registered 869/869, membership 950; census `3af1dc0d…` Cylinder PASS, BunnyRandom unchanged, Vase `terminal=NotProductionReady:arrangement detail=RepeatedNodeCycle`, `arrangementCells=0`, empty `completion=`. Mismatch → `M6-CP3-TB66-P13-ARRANGEMENT-TERMINAL-FULL-GATE-REV`; infrastructure → `M6-CP3-TB66A-P13-ARRANGEMENT-TERMINAL-ORCH`.
+     - **Observed:** [gate run 41312768151](https://github.com/akashskypatel/Directional/actions/runs/41312768151), artifact `13086562028`, 869/869 PASS, membership 950, 1746/1746 hashes; [census 41312834931](https://github.com/akashskypatel/Directional/actions/runs/41312834931), artifact `13086079391`, Cylinder PASS, BunnyRandom expected P13-e RED and Vase expected `arrangement/RepeatedNodeCycle` RED, 9/9 hashes. Both immutable/postflight, no unexpected regression. [Report](.agents/Directional/Architecture_M6_CP3_TB66_P13_Arrangement_Terminal_Full_Gate_Execution_Report_20261101.md).
+  4. [x] **COMPLETE `M6-CP3-CB70-P13-ARRANGEMENT-WEDGE-ROTATION`** (CB, compile only; RA-193's "CB68"): RA-193.11 block, SHA-256 `e93f5d8c5966f520e4650259a4d836bba1fbfa6ac025d08fe98e49a3065e0f82`, numstat `37 30` / `95 0`, result SHA-256s per RA-193.7. Mismatch → `M6-CP3-PLAN-P13-ARRANGEMENT-WEDGE-STOP`; infrastructure → `M6-CP3-CB70A-P13-ARRANGEMENT-WEDGE-ORCH`.
+  5. [x] **COMPLETE `M6-CP3-TB67-P13-ARRANGEMENT-WEDGE-FULL-GATE-EXEC`** (TB-EXEC): manifest 871 `434e6d37…` + ledger v5, pre-registered 871/871, membership 952; census Cylinder PASS, BunnyRandom unchanged, Vase ABNORMAL (600 s harness timeout in completion). Mismatch → `M6-CP3-TB67-P13-ARRANGEMENT-WEDGE-FULL-GATE-REV`; infrastructure → `M6-CP3-TB67A-P13-ARRANGEMENT-WEDGE-ORCH`.
+     - **Observed:** [gate run 41318594024](https://github.com/akashskypatel/Directional/actions/runs/41318594024) **871/871 PASS**, 952 membership, 1750/1750 internal hashes; [census run 41318624551](https://github.com/akashskypatel/Directional/actions/runs/41318624551) Cylinder PASS, BunnyRandom P13-e expected RED, Vase expected ABNORMAL after 600 seconds, 9/9 hashes. Both postflight true, zero rebuild or unexpected regression. [TB67 report](.agents/Directional/Architecture_M6_CP3_TB67_P13_Arrangement_Wedge_Full_Gate_Execution_Report_20261101.md). P13-f Review followed (static decision, then RA-195).
+  6. [x] **COMPLETE `M6-CP3-CB71-P13-COMPLETION-CHART-GRAPH-REUSE`** (CB, compile only; RA-195.4):
+     - Precheck `git diff --quiet 9754500b2058229b7f0a6268838953650690b031 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Apply the RA-195.8 block verbatim plus a trailing newline. Keep its 6 single-space context lines. SHA-256 `8512400fe56c59f35ac3770383890366f35028c47346ba1fdeb04ca5014e5852`.
+     - Numstat `14 0` PureQuadCompletion.h / `18 0` SourceChartTransitions.h / `49 9` PureQuadCompletion.cpp / `86 0` PureQuadCompletionPhase18Tests.cpp. Result SHA-256s per RA-195.4.
+     - **Observed:** RA-195.8 exact patch committed [`042979f7`](https://github.com/akashskypatel/Directional/commit/042979f7a264dff21de4e3b1af25a1a27fe27c95), only four approved paths; [compile run 41329208274](https://github.com/akashskypatel/Directional/actions/runs/41329208274) eight GMP/GMPXX Release/static targets, immutable artifact `13092069619`, 28/28 hashes, source clean, `runtimeExecution=false`; no runtime. [CB71 record](.agents/Directional/Architecture_M6_CP3_CB71_Completion_Chart_Graph_Reuse_Code_Build_Record_20261101.md).
+     - Mismatch → `M6-CP3-PLAN-P13-COMPLETION-GRAPH-STOP`; infrastructure → `M6-CP3-CB71A-P13-COMPLETION-GRAPH-ORCH`.
+  7. [x] **COMPLETE `M6-CP3-CB72-P13-COMPLETION-PASS-GRAPH`** (CB, compile only; RA-195.5):
+     - Precheck: the source differs from `9754500b2…` in exactly CB71's four paths, each at its RA-195.4 result SHA-256.
+     - Apply the RA-195.9 block, SHA-256 `514c6d87b7ad47083262b802e7b59da931a9bbeb71e0f3c14af49a6668ff5d6f`. Numstat `6 1` / `10 1` PatchDescriptor.cpp / `17 6` / `58 0`.
+     - **Observed:** exact RA-195.9 patch committed [`7b85b450`](https://github.com/akashskypatel/Directional/commit/7b85b450bc98abfb65db511fdcd524eb11f537f8) (four approved source/test paths, all resulting SHA-256 hashes matched). [Linux compile run 41333097065](https://github.com/akashskypatel/Directional/actions/runs/41333097065): 8/8 Release/static GMP/GMPXX targets, artifact `13093439789`, 28/28 packaged checksums, `runtimeExecution=false`, clean source. [CB72 record](.agents/Directional/Architecture_M6_CP3_CB72_Completion_Pass_Graph_Code_Build_Record_20261101.md). No runtime/gate acceptance.
+     - Mismatch → `M6-CP3-PLAN-P13-COMPLETION-PASS-GRAPH-STOP`; infrastructure → `M6-CP3-CB72A-P13-COMPLETION-PASS-GRAPH-ORCH`.
+  8. [x] **COMPLETE `M6-CP3-TB68-P13-COMPLETION-GRAPH-FULL-GATE-EXEC`** (TB-EXEC; RA-195.6):
+     - Gate: manifest 873 `3b6b9f42…` plus ledger v5 `fd433f54…`, pre-registered 873/873, membership 954.
+     - Census `3af1dc0d…`: Cylinder PASS; BunnyRandom P13-e unchanged; **Vase RED within 600 s** at `NotProductionReady:completion` with `completion=InvalidCompletionQuadEmbedding;…` (the locus is recorded, not registered). A Vase timeout is a mismatch.
+     - Mismatch → `M6-CP3-TB68-P13-COMPLETION-GRAPH-FULL-GATE-REV`; infrastructure → `M6-CP3-TB68A-P13-COMPLETION-GRAPH-ORCH`.
+     - **Observed:** [gate 41336974483](https://github.com/akashskypatel/Directional/actions/runs/41336974483) 873/873 PASS, membership954, 1754/1754 hashes, 873/873 raw process logs; [census 41337227653](https://github.com/akashskypatel/Directional/actions/runs/41337227653) Cylinder PASS, BunnyRandom P13-e RED, Vase P13-g RED at completion/InvalidCompletionQuadEmbedding in 213.553 s (9/9 hashes); no rebuild or new stable event. [TB68 report](.agents/Directional/Architecture_M6_CP3_TB68_P13_Completion_Graph_Full_Gate_Execution_Report_20261101.md). P13-g Review followed (static decision, then RA-196).
+  9. [x] **`M6-CP3-CB73-P13-COMPLETION-EMBEDDING`** (CB, compile only; [RA-196](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md).4). The static decision's CB73 scope is superseded. The attempt started at 21:39:52Z under that scope changed only `STATUS`; restart from RA-196.9.
+     - Precheck: `git diff --quiet 7b85b450bc98abfb65db511fdcd524eb11f537f8 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Apply the RA-196.9 block verbatim plus a trailing newline, keeping its 5 single-space context lines. SHA-256 `4020fad1d3a16c536504d0a3d58e11522dfd99688111bdc09e77b3a6885fabf1`.
+     - Numstat `10 0` PureQuadCompletion.h / `124 63` PureQuadCompletion.cpp / `73 0` PureQuadCompletionPhase18Tests.cpp. Result SHA-256s per RA-196.4.
+     - Content: the Amendment 28 source-orientation predicate (`quad_embedding_failure`, `SourceOrientationMismatch`) in the completion validator. Gate rows 874–875.
+     - Mismatch → `M6-CP3-PLAN-P13-COMPLETION-EMBEDDING-STOP`; infrastructure → `M6-CP3-CB73A-P13-COMPLETION-EMBEDDING-ORCH`.
+     - **Observed:** exact patch applied as `57c24325f539`, [GMP compile](https://github.com/akashskypatel/Directional/actions/runs/41357670136) immutable artifact `13104267023`; see [CB73 record](.agents/Directional/Architecture_M6_CP3_CB73_P13_Completion_Embedding_Code_Build_Record_20261101.md). No tests or runtime executed.
+  10. [x] **COMPLETE `M6-CP3-CB74-P13-COMPLETION-QUADRANGULATION-SEARCH`** (CB, compile only; RA-196.5):
+     - Precheck: the source differs from `7b85b450…` in exactly CB73's three paths, each at its RA-196.4 result SHA-256.
+     - Apply the RA-196.10 block, keeping its 5 single-space context lines. SHA-256 `b2c6a251c915371845d93c05d753cbf7ad5ed92936cf0fa66879d0dd307c7b4b`. Numstat `3 0` / `146 7` / `131 0`.
+     - Content: exhaustive forward-rotation search for an embedded boundary-only quadrangulation, plus the typed `NoEmbeddedQuadrangulation`. Gate rows 876–877.
+     - Mismatch → `M6-CP3-PLAN-P13-COMPLETION-QUADRANGULATION-STOP`; infrastructure → `M6-CP3-CB74A-P13-COMPLETION-QUADRANGULATION-ORCH`.
+     - **Observed:** exact RA-196.10 applied at `4d4ae3ecaa7f`; [GMP/GMPXX eight-target compile](https://github.com/akashskypatel/Directional/actions/runs/41359781910), package `13105515249`, 28/28 checksums; runtimeExecution=false, focused tests compiled, no execution. See [CB74 record](.agents/Directional/Architecture_M6_CP3_CB74_P13_Completion_Quadrangulation_Search_Code_Build_Record_20261101.md).
+  11. [x] **COMPLETE `M6-CP3-CB75-P13-COMPLETION-TERMINAL-DETAIL`** (CB, compile only; RA-196.6):
+     - Precheck: the source differs from `7b85b450…` in exactly the CB73/CB74 paths, each at its RA-196.5 result SHA-256.
+     - Apply the RA-196.11 block, keeping its 1 single-space context line. SHA-256 `d1f5652a979c414e53f11f8b62a71f9d528a79428c0067f2b4946ad71844d933`. Numstat `23 0` PatchDescriptor.h / `6 2` RemeshPipeline.cpp / `22 0` PatchDescriptorMilestoneETests.cpp.
+     - Content: the completion terminal's detail becomes the typed completion failure kind. Gate row 878.
+     - Mismatch → `M6-CP3-PLAN-P13-COMPLETION-TERMINAL-STOP`; infrastructure → `M6-CP3-CB75A-P13-COMPLETION-TERMINAL-ORCH`.
+     - **Observed:** exact RA-196.11 source patch at `8656c4fed507`, [GMP/GMPXX eight-target compile](https://github.com/akashskypatel/Directional/actions/runs/41365067300), package `13107147891`, 28/28 SHA-256 checks, no binary execution. [CB75 record](.agents/Directional/Architecture_M6_CP3_CB75_P13_Completion_Terminal_Detail_Code_Build_Record_20261102.md); next separate TB69.
+  12. [x] **COMPLETE `M6-CP3-TB69-P13-COMPLETION-EMBEDDING-FULL-GATE-EXEC`** (TB-EXEC; RA-196.7):
+     - Gate: manifest 878 `aaaba077…` plus ledger v5 `fd433f54…`, pre-registered 878/878, membership 959.
+     - Census `3af1dc0d…`: Cylinder PASS; BunnyRandom P13-e unchanged; **Vase RED within 600 s** at `NotProductionReady:completion detail=PatchCompletionRejected` with `completion=InvalidCompletionQuadEmbedding;…;backend=closed-form;…`. The locus is recorded, not registered.
+     - A `bounded-combinatorial`/`pattern` backend, `detail=None` or a timeout is a mismatch.
+     - Mismatch → `M6-CP3-TB69-P13-COMPLETION-EMBEDDING-FULL-GATE-REV`; infrastructure → `M6-CP3-TB69A-P13-COMPLETION-EMBEDDING-ORCH`. Neither occurred.
+     - **Verified:** [TB69 report](.agents/Directional/Architecture_M6_CP3_TB69_P13_Completion_Embedding_Full_Gate_Execution_Report_20261102.md); gate [41367521935](https://github.com/akashskypatel/Directional/actions/runs/41367521935) 878/878 PASS, membership 959, 81 deferred; independent census [41367552244](https://github.com/akashskypatel/Directional/actions/runs/41367552244) Cylinder PASS, BunnyRandom expected P13-e RED, Vase expected P13-h closed-form RED in 256.96 s. No rebuild or CP3 promotion. **Exact next separate Review:** `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING` (P13-h/P13-i).
+  13. [x] **COMPLETE `M6-CP3-CB76-P13-PATCH-BOUNDARY-SIDE-START`** (CB, compile only; [RA-197](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md) §4, exact §7; Amendment 29):
+     - Precheck `git diff --quiet 8656c4fed5070a467da491b60ead5c8ab1d99dbd HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Apply the RA-197.7 block verbatim (keep its 3 single-space context lines), SHA-256 `5c7918fbd6dea765848ce3bd0272aba336c22952fde398acf5beb4d3ccc6af19`. Numstat `10 0` `src/geometry/PatchDescriptor.cpp` (result `108e5481…`) and `61 0` `tests/PatchDescriptorMilestoneETests.cpp` (result `e1eda480…`).
+     - Content: `derive_patch_descriptor` rotates its boundary to side 0's first halfedge; GUARD tests (rows 879–880) `PatchBoundaryStartsAtTheFirstVertexOfSideZero` and `ClosedFormStripRungsJoinOppositeSideVertices`.
+     - One eight-target Linux GMP/GMPXX package, `runtimeExecution=false`.
+     - Mismatch → `M6-CP3-PLAN-P13-PATCH-SIDE-START-STOP`; infrastructure → `M6-CP3-CB76A-P13-PATCH-SIDE-START-ORCH`.
+     - [CB76 build record](.agents/Directional/Architecture_M6_CP3_CB76_P13_Patch_Boundary_Side_Start_Code_Build_Record_20261102.md): source `f59f92f889fc`, compile 41387260857, package 13115678045, 28/28 hashes, GMP/GMPXX, no execution.
+  14. [x] **COMPLETE `M6-CP3-TB70-P13-PATCH-SIDE-START-FULL-GATE-EXEC`** (TB-EXEC; RA-197.5):
+     - Gate: manifest 880 `a9f964c8…` (TB69's 878 rows plus 879–880) plus ledger v5 `fd433f54…`, pre-registered 880/880, membership 961.
+     - Census `3af1dc0d…`: Cylinder PASS; BunnyRandom P13-e unchanged; **Vase RED within 600 s** at `NotProductionReady:completion detail=PatchCompletionRejected` with `completion=InvalidCompletionQuadEmbedding;…;backend=closed-form;…` and a negative (generated) id in `vertices=`. The macOS locus (patch 6095) is recorded, not registered.
+     - Mismatch: all-non-negative `vertices=` (a strip still fails), `bounded-combinatorial`/`pattern`, `IncompleteSurfaceCellComplex`, `detail=None` or a timeout.
+     - Mismatch → `M6-CP3-TB70-P13-PATCH-SIDE-START-FULL-GATE-REV`; infrastructure → `M6-CP3-TB70A-P13-PATCH-SIDE-START-ORCH`. Neither occurred.
+     - **Observed:** [TB70 report](Architecture_M6_CP3_TB70_P13_Patch_Side_Start_Full_Gate_Execution_Report_20261102.md); [gate run 41388843062](https://github.com/akashskypatel/Directional/actions/runs/41388843062) 880/880 PASS, membership 961, 1768/1768 hashes; [census run 41388863937](https://github.com/akashskypatel/Directional/actions/runs/41388863937) 9/9 hashes, Cylinder PASS, BunnyRandom P13-e RED vertex49, Vase P13-h2 `closed-form` generated-vertex RED at patch6095 in 258.988 s. Both registered outcomes matched; no rebuild or CP3 promotion. **Exact next separate Review:** `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS`.
+  15. [x] **`M6-CP3-CB77-P13-NEEDLE-GRID-BOUNDARY-SEARCH`** (CB, compile only; [RA-198](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md) §4, exact §8; Amendment 30):
+     - Precheck `git diff --quiet f59f92f889fc6fe22d689fd7559c024cd09c6c72 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Apply the RA-198.8 block verbatim (no single-space context lines), SHA-256 `673010d4a76f611bc3f7fbedd40306022ac3fa136ee1acea414a45cb415727db`. Numstat `23 0` `src/geometry/PureQuadCompletion.cpp` (result `9eb46a71…`) and `27 0` `tests/PatchDescriptorMilestoneETests.cpp` (result `e6f8b3cc…`).
+     - Content: a closed-form grid with generated vertices whose quads do not all embed gives way to `complete_pattern` over the same boundary when that search succeeds. GUARD test (row 881) `BentNeedleGridCompletesByTheBoundarySearch`.
+     - One eight-target Linux GMP/GMPXX package, `runtimeExecution=false`.
+     - Mismatch → `M6-CP3-PLAN-P13-NEEDLE-GRID-STOP`; infrastructure → `M6-CP3-CB77A-P13-NEEDLE-GRID-ORCH`.
+  16. [x] **`M6-CP3-TB71-P13-NEEDLE-GRID-FULL-GATE-EXEC`** (TB-EXEC; RA-198.5):
+     - Gate: manifest 881 `f2503dca…` (TB70's 880 rows plus row 881) plus ledger v5 `fd433f54…`, pre-registered 881/881, membership 962.
+     - Census `3af1dc0d…`: Cylinder PASS; BunnyRandom P13-e unchanged; **Vase RED within 600 s** at `NotProductionReady:completion detail=PatchCompletionRejected` with `completion=IncompleteSurfaceCellComplex;…;reason=side-count-unsupported;…`. The macOS locus (descriptor 23933, cell 26735, `failed=5`) is recorded, not registered.
+     - Mismatch: `InvalidCompletionQuadEmbedding` (a needle grid still fails), any other completion code or reason, `detail=None` or a timeout.
+     - **Verified:** [TB71 report](.agents/Directional/Architecture_M6_CP3_TB71_P13_Needle_Grid_Full_Gate_Execution_Report_20261102.md); gate 881/881 PASS (871 GUARD + 10 POSITIVE), 962 membership; registered census 1 PASS / 2 RED; no mismatch or infrastructure route. Neither conditional successor activated.
+     - Mismatch → `M6-CP3-TB71-P13-NEEDLE-GRID-FULL-GATE-REV`; infrastructure → `M6-CP3-TB71A-P13-NEEDLE-GRID-ORCH`.
+  17. [x] **COMPLETE `M6-CP3-CB78-P13-SUPPORT-CHORD-ADMISSION`** (CB, compile only; [RA-199](.agents/Directional/Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Adjudication_20261102.md) §4, exact §8; Amendment 31):
+     - Precheck `git diff --quiet 25713a0c0eb0979155c6954f86f8fb13417d5463 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Apply the RA-199.8 block verbatim (**keep its 3 single-space context lines**), SHA-256 `1d8b80e7f5a07c41643967a140b8290cbd563068abf000ae44775bed8159150d`. Numstat `119 0` `src/geometry/FlowRepStrands.cpp` (result `0b15f6da…`) and `153 0` `tests/FlowRepStrandsPhase15Tests.cpp` (result `c7138a47…`).
+     - Content: `deactivate_unmet_support_chords` leaves inactive every support trace that returns to the rail it left and meets no other non-rail arc; called once in `build_flow_rep_selection_input` before coverage samples. GUARD tests (rows 882–883) `UnmetSupportChordIsNotAdmittedToSelection` and `CrossingSupportChordsRemainAdmitted`.
+     - One eight-target Linux GMP/GMPXX package, `runtimeExecution=false`.
+     - **CB78 verified:** [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB78_P13_Support_Chord_Admission_Code_Build_Record_20261102.md), source `afd72107d3213a396ed7f35b53f67dceeea7e7ca`, run `41531251636`, artifact `13181887585`, 28/28 hashes, no runtime.
+      - Mismatch → `M6-CP3-PLAN-P13-SUPPORT-CHORD-STOP`; infrastructure → `M6-CP3-CB78A-P13-SUPPORT-CHORD-ORCH`.
+  18. [x] **INVALID ORCHESTRATION `M6-CP3-TB72-P13-SUPPORT-CHORD-FULL-GATE-EXEC`** (TB-EXEC; RA-199.5):
+     - Gate: manifest 883 `e9eabb06…` (TB71's 881 rows plus rows 882–883) plus ledger v5 `fd433f54…`, pre-registered 883/883, membership 964.
+     - Census `3af1dc0d…`: Cylinder PASS; BunnyRandom P13-e unchanged; **Vase RED within 600 s** at `NotProductionReady:completion detail=AssemblyRejected` with `completion=NonManifoldStitchedVertex`. The macOS counts (26,817 cells, 0 quads) are recorded, not registered.
+     - Mismatch: `PatchCompletionRejected`/`IncompleteSurfaceCellComplex` (a two-sided cell remains), any other assembly or completion code, `detail=None` or a timeout.
+     - Mismatch → `M6-CP3-TB72-P13-SUPPORT-CHORD-FULL-GATE-REV`; infrastructure → `M6-CP3-TB72A-P13-SUPPORT-CHORD-ORCH`.
+     - **Superseded by TB72A (COMPLETE):** corrected executor, run 41540264758, 883/883 PASS, membership 964.
+  19. [x] **COMPLETE `M6-CP3-CB79-P13-NODE-STITCH-KEY`** (CB, compile only; [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md) §4, exact §8; Amendment 32):
+     - Precheck `git diff --quiet afd72107d3213a396ed7f35b53f67dceeea7e7ca HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Apply the RA-200.8 block verbatim (**keep its 1 single-space context line**), SHA-256 `89f37001d6eea167672c32edf73178cbf98d23e0501e28ca8795fb79a0719028`, 146 lines. Numstat `25 2` `src/geometry/PatchDescriptor.cpp` (result `cef48a85…`) and `95 0` `tests/PatchDescriptorMilestoneETests.cpp` (result `068271a6…`).
+     - Content: `arrangement_node_stitch_identity` keys a completed patch's boundary corner by the arrangement node's occurrences in all of its source scopes; `derive_patch_descriptor` publishes it as `boundaryNodeIdentities`. Halfedge/domain identities unchanged. GUARD tests (rows 884–886) `SharedNodeCornersPublishOneStitchKeyAcrossSourceCharts`, `SharedInterfaceCompletesAsOneConnectedDisk`, `CoincidentNodesInDistinctRegionsKeepDistinctStitchKeys`.
+     - One eight-target Linux GMP/GMPXX package, `runtimeExecution=false`.
+     - Verified [CB79 record](.agents/Directional/Architecture_M6_CP3_CB79_P13_Node_Stitch_Key_Code_Build_Record_20261103.md): source `3feb2a4182a5a12c2a9f306272756f8333a44b59`, compile run `41693542399`, artifact `13261460152`; no runtime.
+     - Mismatch → `M6-CP3-PLAN-P13-NODE-STITCH-KEY-STOP`; infrastructure → `M6-CP3-CB79A-P13-NODE-STITCH-KEY-ORCH`.
+  20. [x] **COMPLETE `M6-CP3-TB73-P13-NODE-STITCH-KEY-FULL-GATE-EXEC`** (TB-EXEC; RA-200.5):
+     - Gate: manifest 886 `5d09fa33…` (TB72's 883 rows plus rows 884–886) plus ledger v5 `fd433f54…`, pre-registered 886/886, membership 967.
+     - Census `3af1dc0d…`: Cylinder PASS; BunnyRandom P13-e unchanged; **Vase ABNORMAL**, harness timeout (600 s, exit 124) after assembly, inside the surface-optimizer stage (P13-k).
+     - Mismatch: any Vase verdict before 600 s; in particular `AssemblyRejected` (CB79 did not take).
+     - Mismatch → `M6-CP3-TB73-P13-NODE-STITCH-KEY-FULL-GATE-REV`; infrastructure → `M6-CP3-TB73A-P13-NODE-STITCH-KEY-ORCH`.
+     - **Verified:** gate [41702614233](https://github.com/akashskypatel/Directional/actions/runs/41702614233) 886/886 PASS, membership 967, 81 deferred, 1780/1780 hashes; census [41702722579](https://github.com/akashskypatel/Directional/actions/runs/41702722579) Cylinder PASS, BunnyRandom P13-e RED vertex49, Vase ABNORMAL timeout 600 s/exit124, 9/9 hashes; no rebuild, no accepted-prefix change. [Report](.agents/Directional/Architecture_M6_CP3_TB73_P13_Node_Stitch_Key_Full_Gate_Execution_Report_20261103.md).
+  - **RA-201 sequence:** steps 21–27 are for the implementation agent, in order, one turn each. Each starts only after the previous step is verified. Each CB applies its committed `.diff` file byte for byte (SHA-256 checked) and compiles one eight-target Linux GMP/GMPXX package, `runtimeExecution=false`. Each TB is artifact-only and runs the full gate plus the census.
+  21. [x] **`M6-CP3-CB80-P13-RAIL-BINDING-ONCE`** (CB, compile only; [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md) §4; Amendment 33):
+     - Precheck: `git diff --quiet 3feb2a4182a5a12c2a9f306272756f8333a44b59 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB80_P13_Rail_Binding_Once.diff`: SHA-256 `d4dda97e…`, 281 lines, 11 single-space context lines. Numstat `15 8` SurfaceMeshOptimizer.h / `31 23` SurfaceOptimizationRailConstraints.cpp / `128 0` SurfaceMeshOptimizerPhase22Tests.cpp, each at its RA-201.4 result hash.
+     - Content: the rail fill checks the source binding once per fill; adds `bound_source_face_scope`. GUARD rows 887–888.
+     - Mismatch → `M6-CP3-PLAN-P13-RAIL-BINDING-STOP`; infrastructure → `M6-CP3-CB80A-P13-RAIL-BINDING-ORCH`.
+  22. [x] **`M6-CP3-TB74-P13-RAIL-BINDING-ONCE-FULL-GATE-EXEC`** (TB-EXEC; RA-201.5):
+     - Gate: manifest 888 `bb4e771f…` (TB73's 886 rows plus rows 887–888), ledger v5; pre-registered 888/888, membership 969.
+     - Census `3af1dc0d…`: Cylinder PASS; BunnyRandom P13-e unchanged; **Vase ABNORMAL 600 s** (the per-quad label support remains).
+     - Mismatch → `M6-CP3-TB74-P13-RAIL-BINDING-ONCE-FULL-GATE-REV`; infrastructure → `M6-CP3-TB74A-P13-RAIL-BINDING-ONCE-ORCH`.
+  23. [x] **`M6-CP3-CB81-P13-LENT-PROJECTION-CACHE`** (CB; RA-201.6):
+     - Patch `…CB81_P13_Lent_Projection_Cache.diff`: `ffa4b554…`, 169 lines, 6 single-space context lines. Numstat `7 1` / `29 11` / `58 0`. Rows 889–890.
+     - Content: a lent projection cache is used only when it was built for these constraints and carries its build-time authority check; the fallback BVH is built only when needed.
+     - Mismatch → `M6-CP3-PLAN-P13-LENT-PROJECTION-CACHE-STOP`; infrastructure → `M6-CP3-CB81A-P13-LENT-PROJECTION-CACHE-ORCH`.
+  24. [x] **`M6-CP3-TB75-P13-LENT-PROJECTION-CACHE-FULL-GATE-EXEC`** (RA-201.7): manifest 890 `a134d941…`, 890/890, membership 971; census as TB74 (**Vase ABNORMAL 600 s**). Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB75A-P13-LENT-PROJECTION-CACHE-ORCH`.
+  25. [x] **`M6-CP3-CB82-P13-LENT-LABEL-SUPPORT`** (CB; RA-201.8):
+     - Patch `…CB82_P13_Lent_Label_Support.diff`: `b963ea3d…`, 349 lines, 10 single-space context lines. Numstat `19 5` SurfaceMeshOptimizer.h / `3 2` SourceAuthoritativeMeshValidator.h / `54 13` SurfaceMeshOptimizer.cpp / `122 0` tests. Rows 891–893.
+     - Content: one label support per stage, lent by exact inputs; chart-face scopes read without re-checking the binding; `SourcePointLabelSupport::available()` relies on its graph's build-time check.
+     - Mismatch → `M6-CP3-PLAN-P13-LENT-LABEL-SUPPORT-STOP`; infrastructure → `M6-CP3-CB82A-P13-LENT-LABEL-SUPPORT-ORCH`.
+     - **CB82 complete:** semantic source `efa418bd88f8bc8f6f67bf8fd65fdea56afa78a3`, eight-target GMP/GMPXX compile-only [41755097989](https://github.com/akashskypatel/Directional/actions/runs/41755097989) PASS; artifact `13288766498` (28/28 hashes), `runtimeExecution=false`; GUARD rows 891–893 compiled, not executed. [Record](.agents/Directional/Architecture_M6_CP3_CB82_P13_Lent_Label_Support_Code_Build_Record_20261104.md). No acceptance promotion.
+  26. [x] **`M6-CP3-CB83-P13-OUTPUT-VALIDATION-TERMINAL-DETAIL`** (CB; RA-201.9):
+     - Patch `…CB83_P13_Output_Validation_Terminal_Detail.diff`: `3741697e…`, 16 lines, 1 single-space context line. Numstat `4 1` RemeshPipeline.cpp.
+     - Content: the completed-mesh validation rejection passes its recorded reason as the terminal detail (CB75 precedent).
+     - Mismatch → `M6-CP3-PLAN-P13-OUTPUT-VALIDATION-TERMINAL-STOP`; infrastructure → `M6-CP3-CB83A-P13-OUTPUT-VALIDATION-TERMINAL-ORCH`.
+     - **CB83 COMPLETE:** exact source `2278b8b649b4262fb70a522371ed282655383af5`; eight-target GMP/GMPXX compile-only [run 41759757801](https://github.com/akashskypatel/Directional/actions/runs/41759757801) PASS, package `13289188434` (SHA-256 `c4ca145a987cffef1035c95e0febedbc8b8b387c72678ec41bc59139230288b9`, 28/28 checksums), `runtimeExecution=false`. [Record](.agents/Directional/Architecture_M6_CP3_CB83_P13_Output_Validation_Terminal_Detail_Code_Build_Record_20261104.md). No runtime promotion.
+  27. [x] **`M6-CP3-TB76-P13-OPTIMIZER-SOURCE-QUERY-FULL-GATE-EXEC`** (RA-201.10):
+     - Gate: manifest 893 `3b727161…`, 893/893, membership 974.
+     - Census: Cylinder PASS; BunnyRandom P13-e unchanged; **Vase RED within 600 s: `NotProductionReady:completion detail=SelfIntersectingFace`, completedQuads 67829** (scratch: about 250 s). A timeout means CB82 did not take; `detail=None` means CB83 did not take.
+     - Mismatch → `M6-CP3-TB76-P13-OPTIMIZER-SOURCE-QUERY-FULL-GATE-REV`; infrastructure → `M6-CP3-TB76A-P13-OPTIMIZER-SOURCE-QUERY-ORCH`.
+     - **TB76 COMPLETE / CENSUS MISMATCH:** [report](.agents/Directional/Architecture_M6_CP3_TB76_P13_Optimizer_Source_Query_Full_Gate_Execution_Report_20261104.md). Gate 893/893 PASS (1794/1794 hashes), census Cylinder PASS, BunnyRandom P13-e RED, Vase ABNORMAL `HARNESS_TIMEOUT 600s` (9/9 hashes), not registered `SelfIntersectingFace` RED. Next mandatory independent Review `M6-CP3-TB76-P13-OPTIMIZER-SOURCE-QUERY-FULL-GATE-REV`; no retry or acceptance promotion.
+  - **RA-202 sequence:** steps 28–34, for the implementation agent, in order, one turn each. Each step starts only after the previous one is verified. Each CB applies its committed `.diff` file byte for byte (SHA-256 checked) on the previous CB's result. It compiles one eight-target Linux GMP/GMPXX package with `runtimeExecution=false`. Each TB is artifact-only and runs the full gate plus the census.
+  28. [x] **`M6-CP3-TB76-P13-OPTIMIZER-SOURCE-QUERY-FULL-GATE-REV`** (Review): ChatGPT's Review, then RA-202 probe adjudication. `M6-CP3-CB84-P13-LINUX-VASE-DIAGNOSTIC-TIMING` is withdrawn (never applied or compiled).
+  29. [x] **`M6-CP3-CB85-P13-ARRANGEMENT-TJUNCTION-FACE-SCAN`** (CB, compile only; [RA-202](.agents/Directional/Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md) §4; Amendment 34):
+     - Precheck: `git diff --quiet 2278b8b649b4262fb70a522371ed282655383af5 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB85_P13_Arrangement_TJunction_Face_Scan.diff`: SHA-256 `5b6d35a4…`, 178 lines; keep its 2 single-space context lines. Numstat `3 0` SurfaceArrangement.h / `25 11` SurfaceArrangement.cpp / `96 0` SurfaceArrangementRowIdentityTests.cpp, each at its RA-202.4 result hash.
+     - Content: the T-junction scan reads the halfedges of the occurrence's source face, and makes the occurrence's authority scope once. The new counter `geometricTJunctionHalfedgeVisits` backs GUARD row 894.
+     - Mismatch → `M6-CP3-PLAN-P13-ARRANGEMENT-TJUNCTION-STOP`; infrastructure → `M6-CP3-CB85A-P13-ARRANGEMENT-TJUNCTION-ORCH`.
+     - **CB85 complete:** exact source `a405b59057045b5aaa302abd9553daba3d8b2934`; Linux eight-target GMP/GMPXX compile-only [run 41856637027](https://github.com/akashskypatel/Directional/actions/runs/41856637027) PASS; package `13338458053`, `runtimeExecution=false`, no runtime evidence. [Record](.agents/Directional/Architecture_M6_CP3_CB85_P13_Arrangement_TJunction_Face_Scan_Code_Build_Record_20261104.md).
+  30. [x] **`M6-CP3-CB86-P13-SELECTION-ENDPOINT-NET-CHANGE`** (CB; RA-202.5):
+     - Patch `…CB86_P13_Selection_Endpoint_Net_Change.diff`: `c2a0c308…`, 167 lines; keep its 7 single-space context lines. Numstat `7 3` / `23 14` / `61 0`.
+     - Content: `transaction_keeps_protected_endpoint_degrees` checks the transaction's net change. GUARD rows 895–896.
+     - Complete: source `0f4c78c4…`; Linux eight-target compile [41879102285](https://github.com/akashskypatel/Directional/actions/runs/41879102285), artifact `13347299644` (28/28 hashes), GMP/GMPXX, runtimeExecution=false; no tests run. [Record](.agents/Directional/Architecture_M6_CP3_CB86_P13_Selection_Endpoint_Net_Change_Code_Build_Record_20261104.md).
+  31. [x] **`M6-CP3-TB77-P13-PRE-ASSEMBLY-COST-FULL-GATE-EXEC` COMPLETE** (TB-EXEC; RA-202.6):
+     - Gate: manifest 896 `48ef4743…`, ledger v5; 896/896, membership 977.
+     - Census: Cylinder PASS; BunnyRandom P13-e unchanged.
+     - **Vase: RED `SelfIntersectingFace` with 67,829 quads, or ABNORMAL 600 s.** Both are registered; record the Linux wall time.
+     - Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB77A-P13-PRE-ASSEMBLY-COST-ORCH`.
+     - **Actual:** [TB77 report](.agents/Directional/Architecture_M6_CP3_TB77_P13_Pre_Assembly_Cost_Full_Gate_Execution_Report_20261104.md), gate 896/896 PASS, membership 977, 1,800/1,800 hashes; census Cylinder PASS, BunnyRandom RED sourceVertex49, Vase ABNORMAL (ABNORMAL exit 124, HARNESS_TIMEOUT 600s, no completed terminal or completedQuads count, empty resource-time record). Registered verdicts MATCH; next `M6-CP3-CB87-P13-BOW-TIE-VERTEX-EDGES`.
+  32. [x] **COMPLETE `M6-CP3-CB87-P13-BOW-TIE-VERTEX-EDGES`** (CB; RA-202.7):
+     - Patch `…CB87_P13_Bow_Tie_Vertex_Edges.diff`: `eeef1a51…`, 134 lines; keep its 1 single-space context line. Numstat `15 7` MeshValidator.h / `81 0` tests.
+     - GUARD rows 897–898 compiled but not executed; source `d02fa6ce74670ade8fecbcc2b7fd9a1d793b59b2`, compile [run 41897641171](https://github.com/akashskypatel/Directional/actions/runs/41897641171) PASS, package `13356343883`, 28/28 hashes. [Record](.agents/Directional/Architecture_M6_CP3_CB87_P13_Bow_Tie_Vertex_Edges_Code_Build_Record_20261104.md).
+     - Mismatch → `M6-CP3-PLAN-P13-BOW-TIE-STOP`; infrastructure → `M6-CP3-CB87A-P13-BOW-TIE-ORCH`.
+  33. [x] **COMPLETE `M6-CP3-CB88-P13-FINAL-VALIDATION-ROW-LABELS`** (CB; RA-202.8):
+     - Patch `…CB88_P13_Final_Validation_Row_Labels.diff`: `ee12a33f…`, 72 lines, 0 single-space context lines. Numstat `5 2` SurfaceMeshOptimizer.cpp / `40 0` tests.
+     - GUARD row 899 compiled, not executed; semantic source `6cc50f878ef829711e16262759afb3367bec2aff`, compile [41902419082](https://github.com/akashskypatel/Directional/actions/runs/41902419082) PASS, artifact `13358062295` (28/28 hashes), GMP/GMPXX, runtimeExecution=false. [Record](.agents/Directional/Architecture_M6_CP3_CB88_P13_Final_Validation_Row_Labels_Code_Build_Record_20261104.md).
+     - Mismatch → `M6-CP3-PLAN-P13-FINAL-VALIDATION-LABELS-STOP`; infrastructure → `M6-CP3-CB88A-P13-FINAL-VALIDATION-LABELS-ORCH`.
+  34. [x] **COMPLETE WITH MISMATCH `M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-EXEC`** (TB-EXEC; RA-202.9):
+     - Gate: manifest 899 `9d2c1ec5…`; 899/899, membership 980.
+     - Census: Cylinder PASS; BunnyRandom P13-e unchanged.
+     - **Vase RED within 600 s, `detail=SelfIntersectingFace`, 67,829 quads** (macOS 108.5 s).
+     - Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB78A-P13-CENSUS-PATH-COST-ORCH`.
+     - **Observed:** gate 899/899 PASS, census 1 PASS/2 RED, Vase typed RED within 600s but `completedQuads=67784` instead of registered `67829`. **Semantic MISMATCH** (45 quads); [TB78 report](.agents/Directional/Architecture_M6_CP3_TB78_P13_Census_Path_Cost_Full_Gate_Execution_Report_20261104.md). Adjudicated by RA-203: the registered count was macOS-only (RA-203.2), so TB78 is COMPLETE and the split is O30.
+  - **RA-203 sequence:** steps 35–37, one turn each, in order. The implementation agent takes 36 and 37, and starts 37 only after 36 is verified. The CB applies its committed `.diff` file byte for byte (SHA-256 checked).
+  35. [x] **`M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV`** (Review): ChatGPT's WIP (BLOCKED), then [RA-203](.agents/Directional/Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md).
+  36. [x] **COMPLETE `M6-CP3-CB89-P13-CENSUS-PLATFORM-DIGEST`** (CB, compile only, test-only; RA-203.5):
+     - Precheck: `git diff --quiet 6cc50f878ef829711e16262759afb3367bec2aff HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB89_P13_Census_Platform_Digest.diff`:
+       - SHA-256 `64af5c71ad57a662724b077761f71c1c38893be6ed32516fc568166e85c23f71`, 68 lines; keep its 3 single-space context lines;
+       - numstat `45 0` `tests/SurfaceCellDesignAcceptanceTests.cpp`;
+       - result SHA-256 `ba60c6905db983b53c35a2b5e909a04152eaa557cac8382c84457c5d0f5b1941`.
+     - Content: after the remesh call, `ProducesDirectSourceAuthoritativePureQuadOutput` prints one `platform-digest` line. The line holds bit-exact vertex, face and field digests, then each `debugProducts` stage hash and count. There is no new test and no changed assertion, so membership stays 980.
+     - Build: one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`.
+     - Mismatch → `M6-CP3-PLAN-P13-CENSUS-PLATFORM-DIGEST-STOP`; infrastructure → `M6-CP3-CB89A-P13-CENSUS-PLATFORM-DIGEST-ORCH`.
+     - **Verified:** [CB89 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB89_P13_Census_Platform_Digest_Code_Build_Record_20261104.md), source `9c961669…`, [compile run 41932156223](https://github.com/akashskypatel/Directional/actions/runs/41932156223), artifact `13370954424`, 28/28 hashes, GMP/GMPXX eight targets, no runtime.
+  37. [x] **`M6-CP3-TB79-P13-PLATFORM-DIGEST-FULL-GATE-EXEC`** (TB-EXEC; RA-203.6):
+     - Gate: the TB78 manifest 899 `9d2c1ec5…`, reused unchanged; ledger v5; 899/899, membership 980. The raw logs of rows 795, 796, 797 and 864 each contain exactly one `platform-digest` line.
+     - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; **Vase RED `SelfIntersectingFace` within 600 s, 192,482 / 26,817 / 67,784**. Each census log contains exactly one `platform-digest` line.
+     - Record the seven digest lines verbatim. They are not a match criterion, and TB79 makes no comparison claim.
+     - **Verified:** [TB79 report](.agents/Directional/Architecture_M6_CP3_TB79_P13_Platform_Digest_Full_Gate_Execution_Report_20261105.md); [gate 41938188019](https://github.com/akashskypatel/Directional/actions/runs/41938188019) 899/899, membership 980; [census 41938418260](https://github.com/akashskypatel/Directional/actions/runs/41938418260) MATCH, seven digest lines; successor `M6-CP3-DEFN-P13-PLATFORM-SPLIT`. No promotion. Mismatch route is TB79-REV; infrastructure route TB79A.
+  - **RA-204 sequence:** steps 38–39, one turn each, in order. The implementation agent takes both, and starts 39 only after 38 is verified. The CB applies its committed `.diff` byte for byte (SHA-256 checked).
+  38. [x] **COMPLETE `M6-CP3-CB90-P13-ARRANGEMENT-CELL-ORDER-TIEBREAK`** (CB, compile only; RA-204.7):
+     - Precheck: `git diff --quiet 9c9616695ecdc8c6ec219eb7486cbe85f3915c95 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB90_P13_Arrangement_Cell_Order_Tiebreak.diff`:
+       - SHA-256 `0931939d461ad2d19a6e45e9d39fb5ba130c9846a0bd286b7a9dda0d0228ab24`, 36 lines; keep its 1 single-space context line;
+       - numstat `9 1` `src/geometry/SurfaceArrangement.cpp` → `94d4b4e9ba3372f87f9c5854f9735efa0ecf06853a9a4a0f6cd6bcc3f6179ad9`;
+       - numstat `3 1` `tests/SurfaceCellDesignAcceptanceTests.cpp` → `2216e82e8d2da2e20c60f5063d7aec184daaece5900573866b58005c31945c35`.
+     - Content:
+       - the `pendingCells` comparator in `build_surface_cell_complex` breaks `cell_cycle_key` ties by `halfedges`;
+       - the CB89 digest comment is corrected.
+       - No new test, so membership stays 980.
+     - Build: one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`.
+     - Mismatch → `M6-CP3-PLAN-P13-ARRANGEMENT-CELL-ORDER-STOP`; infrastructure → `M6-CP3-CB90A-P13-ARRANGEMENT-CELL-ORDER-ORCH`.
+      - **Verified:** [CB90 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB90_P13_Arrangement_Cell_Order_Tiebreak_Code_Build_Record_20261105.md); source `e00ef91a8a5dff8b125c9abfe388952cec20cbe1`; [compile run 41960980473](https://github.com/akashskypatel/Directional/actions/runs/41960980473) PASS, artifact `13385965448`, 28/28 hashes, eight targets, GMP/GMPXX, no runtime; Drive stage retired. An invalid initial request was corrected before compile.
+  39. [x] **COMPLETE / VALID RED `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-EXEC`** (TB-EXEC; RA-204.8):
+     - Gate: the TB78 manifest 899 `9d2c1ec5…`, unchanged; ledger v5; 899/899, membership 980; rows 795, 796, 797 and 864 each log exactly one `platform-digest` line.
+     - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; **Vase RED `SelfIntersectingFace` within 600 s with 192,482 / 26,817**. Record `completedQuads`; do not pin it.
+     - Record the seven digest lines verbatim, and the RA-204.9 comparison against the [post-CB90 macOS FMA-off reference](.agents/Directional/Architecture_M6_CP3_CB90_P13_Platform_Digest_macOS_FMAoff_Reference.tsv) as observations.
+     - Match → the P13-l DEFN (Review), which opens with the RA-204.9 O30 decision. Mismatch → `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV` (Review, Claude, scratch build). Infrastructure → `M6-CP3-TB80A-P13-ARRANGEMENT-CELL-ORDER-ORCH`.
+     - **Verified TB80:** [report](.agents/Directional/Architecture_M6_CP3_TB80_P13_Arrangement_Cell_Order_Full_Gate_Execution_Report_20261105.md) — [gate 41967375039](https://github.com/akashskypatel/Directional/actions/runs/41967375039) 898/899 (row 899 2.37405297 s against <2.0 s), membership 980, 1806/1806 checksums; [census 41967458556](https://github.com/akashskypatel/Directional/actions/runs/41967458556) matches 1 PASS / 2 registered RED, Vase 67,746 quads. Seven digests and RA-204.9 comparison recorded; **MISMATCH → NEXT `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV`**, no replay/repair in this TB. O30b/O32 open; accepted CP2 and stable ledger unchanged.
+  - [x] **`M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV`** (ChatGPT [adjudication](.agents/Directional/Architecture_M6_CP3_TB80_REV_Final_Validation_Cost_Gate_Adjudication_20261105.md)), reviewed by RA-206.
+  - **RA-206 sequence:** steps 40–41, one turn each, in order. The implementation agent takes both, and starts 41 only after 40 is verified.
+  40. [x] **COMPLETE `M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE`** (CB, compile only; RA-206.3):
+     - Precheck: `git diff --quiet e00ef91a8a5dff8b125c9abfe388952cec20cbe1 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Once.diff`:
+       - SHA-256 `c323ae01e44a96998c07c2e0e0fd30b70d3d867201e49d97480003198d1c4a43`, 177 lines; keep its 5 single-space context lines;
+       - numstat `10 0` `include/directional/geometry/SourceTopologyRegions.h` → `fe154e30cda51b11530caee121a3e45602d8e99489f08d769d56f768c08027e5`;
+       - `8 9` `src/validation/SourceAuthoritativeMeshValidator.cpp` → `3ea9ff27940d6bfb7c8914066a4905c0a4dbaae9cbd1002019070fa15024e766`;
+       - `55 31` `tests/SurfaceMeshOptimizerPhase22Tests.cpp` → `ec5c94e6adff1253bdb806c85de20a32f3b5011b2444978a28256b037eb121b8`.
+     - Build: one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`. Test names are unchanged, so membership stays 980.
+     - Mismatch → `M6-CP3-PLAN-P13-FINAL-VALIDATION-BINDING-STOP`; infrastructure → `M6-CP3-CB91A-P13-FINAL-VALIDATION-BINDING-ORCH`.
+     - **Verified CB91:** [record](.agents/Directional/Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Code_Build_Record_20261105.md); exact code source `96ee281a…`; [compile 41980448558](https://github.com/akashskypatel/Directional/actions/runs/41980448558) SUCCESS, artifact `13394321724`, 28/28 checksums, eight Linux GMP/GMPXX targets, `runtimeExecution=false`, source clean. No TB execution or selector promotion.
+  41. [x] **COMPLETE / MATCH `M6-CP3-TB81-P13-FINAL-VALIDATION-BINDING-FULL-GATE-EXEC`** (TB-EXEC; RA-206.4):
+     - Gate: TB78 manifest 899 `9d2c1ec5…`, unchanged; ledger v5; **899/899**, membership 980.
+     - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; Vase RED `SelfIntersectingFace` within 600 s with 192,482 / 26,817. `completedQuads` recorded, not pinned.
+     - **Pinned:** the seven `platform-digest` lines byte-identical to TB80's.
+     - **Verified:** [TB81 report](.agents/Directional/Architecture_M6_CP3_TB81_P13_Final_Validation_Binding_Full_Gate_Execution_Report_20261105.md) — [gate 41985957797](https://github.com/akashskypatel/Directional/actions/runs/41985957797) 899/899 PASS, 1,806/1,806 checksums; [census 41985991943](https://github.com/akashskypatel/Directional/actions/runs/41985991943) expected 1 PASS/2 RED, 9/9 hashes; seven digests byte-identical to TB80; no package/source mutation; no new stable event. **Next separate Review:** `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` under RA-206.7 / RA-205.4.
+  - **RA-207 sequence:** steps 42–43, one turn each, in order. The implementation agent takes both, and starts 43 only after 42 is verified.
+  42. [x] **COMPLETE `M6-CP3-CB92-P13-SOURCE-VERTEX-FAN-SEED-IDENTITY`** (CB, compile only; RA-207.3):
+     - Precheck: `git diff --quiet 96ee281a40920f21eb911880a3b2c458ef4f0563 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity.diff`:
+       - SHA-256 `c377b206c195613b045b0f5a431df5dc31e553035343b567cdeb2ba0751834fa`, 285 lines; keep its 5 single-space context lines;
+       - numstat `77 15` `src/geometry/SurfaceCellTracing.cpp` → `9e9b979f0976f3c1714e1dbcddd4d973b21f3268e443cff7518bbd4a987a4c7b`;
+       - `141 0` `tests/SurfaceCellREPackageTests.cpp` → `a169667c6c6705be547b257295e6d9eb5ea2d1f933f6958370c7e806cbb28e90`.
+     - Build: one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`.
+     - Mismatch → `M6-CP3-PLAN-P13-SOURCE-VERTEX-FAN-SEED-STOP`; infrastructure → `M6-CP3-CB92A-P13-SOURCE-VERTEX-FAN-SEED-ORCH`.
+  43. [x] **COMPLETE / MATCH `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC`** (TB-EXEC; RA-207.5): 901/901, membership 982, pinned digests matched; [report](.agents/Directional/Architecture_M6_CP3_TB82_P13_Source_Vertex_Fan_Seed_Full_Gate_Execution_Report_20261105.md).
+     - Gate: [901-row manifest](.agents/Directional/Architecture_M6_TB82_P13_Vertex_Fan_Seeds_Full_Gate_Case_Manifest.tsv) `9fbf329167cbe84698d5a08eda6e5374200c7729a5f0f1e4292836227902f878` (TB78 899 prefix byte-identical plus GUARD rows 900–901); ledger v5; **901/901**, membership 982.
+     - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; Vase RED `SelfIntersectingFace` within 600 s. Trace, cell and quad counts recorded, not pinned.
+     - **Pinned:** gate rows 795/796/797/864 and census Cylinder and BunnyRandom digest lines byte-identical to TB81; Vase's line identical to TB81 through `global-conformity-baseline`.
+     - Mismatch → `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB82A-P13-SOURCE-VERTEX-FAN-SEED-ORCH`.
+  - **RA-208/RA-209 sequence:** steps 44–48, one turn each, in order. The implementation agent takes all five, and starts each only after the previous one is verified.
+  44. [x] **COMPLETE `M6-CP3-CB93-P13-ORIENTATION-WHOLE-QUAD-NORMAL`** (CB, compile only; RA-208.3). Source applied at `e96e98806` (result hashes `5bb0277c…` / `48bd9850…` / `3e8604cd…` verified); previous-turn completion authority recorded.
+  45. [x] **COMPLETE / COMPILE GREEN `M6-CP3-CB94-P13-ORIENTATION-SINGLE-WRITER`** (CB, compile only; RA-209.3):
+     - Precheck: `git diff --quiet e96e98806cf5fd055df3dd45c629f124c77c5dd5 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB94_P13_Orientation_Single_Writer.diff`:
+       - SHA-256 `a19dd0cde27d1a95f24f4c40ec89d9264fdb44f5aae59da75af5abb1465e52b7`, 183 lines; keep its 5 single-space context lines;
+       - `0 7` `include/directional/pipeline/RemeshPipeline.h` → `112a024ca7d01f81a24aa4f9b98b13480052da190452f2c9b531a567c106d980`;
+       - `3 104` `src/pipeline/RemeshPipeline.cpp` → `18043141fe7720915f46d7d400ff86146c8a39a8346222ea80a4986df8040629`;
+       - `0 31` `tests/SurfaceCellsPhase10Tests.cpp` → `913b97e7a3731aff9899f108cb81d9499517f55071a87376355ddd8e6da27bac`.
+     - Applied as `223d965a79b0e6fd294436233dd8e4c05be1781a`. [Run 42104344087](https://github.com/akashskypatel/Directional/actions/runs/42104344087) passed eight-target Linux Release GMP/GMPXX compile, `runtimeExecution=false`; artifact `13452156380` SHA-256 `03b1818aa971441b314f059261135bd2accac75d82fdd0ece5ceb13a500a1f50`, 28/28 manifest. [Owning record](.agents/Directional/Architecture_M6_CP3_CB94_P13_Orientation_Single_Writer_Code_Build_Record_20261105.md). No TB executed.
+  46. [x] **COMPLETE `M6-CP3-CB95-P13-QUAD-SELF-INTERSECTION-OWN-PLANE`** (CB, compile only; RA-209.3; precheck the CB94 results):
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB95_P13_Quad_Self_Intersection_Own_Plane.diff`:
+       - SHA-256 `8207716b9993a9d1e290ff4fe9eb4794ff505dfb601708bcd965c68cf4d0c014`, 158 lines; keep its 4 single-space context lines;
+       - `40 35` `include/directional/validation/MeshValidator.h` → `15b813d3b1d312d2a7f6c742c951c002b7b633f3cee00ae317f1872d83a08f3e`;
+       - `49 0` `tests/SurfaceCellsPhase10Tests.cpp` → `4cd349c3b7b6bdfa61032d38042018e013cad722c9f01d17b005907d43ae1e3a`.
+     - Applied exactly at source `1c048ebeecbd94999048d242a8c0f08257b1057a`; [Linux compile 42117890862](https://github.com/akashskypatel/Directional/actions/runs/42117890862) GREEN for eight Release/static GMP/GMPXX targets; artifact `13456259325` SHA-256 `dd9e698ffa6b2fa029a35af00d65c917ac7cfb11beaa1cde289dac69b33b0392`, 28/28 verified, `runtimeExecution=false`. [CB95 record](.agents/Directional/Architecture_M6_CP3_CB95_P13_Quad_Self_Intersection_Own_Plane_Code_Build_Record_20261105.md). No runtime executed.
+  47. [x] **COMPLETE / COMPILE GREEN `M6-CP3-CB96-P13-COMPLETION-EMBEDDING-OWN-PLANE`** (CB, compile only; RA-209.3; precheck the CB95 results):
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB96_P13_Completion_Embedding_Own_Plane.diff`:
+       - SHA-256 `a7e81da57d5d1bf37847ccf0b5ee3abeca5230c0605d35056e6a12d40b54f469`, 74 lines; 0 single-space context lines;
+       - `9 12` `src/geometry/PureQuadCompletion.cpp` → `b756c3f29481112f10d382f479caad17861927e56e97ab4f574b6c6c87c200b8`;
+       - `31 0` `tests/PureQuadCompletionPhase18Tests.cpp` → `6ca86f6e721589fae1dcf150cd88e88d152ec559b9fb4cf18a91a0874e88355d`.
+     - Applied exactly as source `11c8172ad467c6dc865f2f3352e75b78f5469a2b`; [compile 42124939141](https://github.com/akashskypatel/Directional/actions/runs/42124939141) eight targets GREEN, `runtimeExecution=false`, GMP/GMPXX; immutable artifact `13460725846`, 28/28 package hashes, [CB96 record](.agents/Directional/Architecture_M6_CP3_CB96_P13_Completion_Embedding_Own_Plane_Code_Build_Record_20261105.md). No tests/benchmarks.
+     - Mismatch stop (`M6-CP3-PLAN-P13-COMPLETION-EMBEDDING-OWN-PLANE-STOP`) not reached.
+  48. [x] **COMPLETE / MATCH `M6-CP3-TB83-P13-EMBEDDING-PREDICATE-FULL-GATE-EXEC`** (TB-EXEC; RA-209.4):
+     - Gate: [903-row manifest](.agents/Directional/Architecture_M6_TB83_P13_Embedding_Predicate_Full_Gate_Case_Manifest.tsv) `61e9edbedee3731b04d7b6279b79a0fd0e0b651686638e9b832773f7aa0a36aa`; ledger v5; **903/903**, membership 984.
+     - Census: Cylinder PASS; BunnyRandom P13-e at vertex 49; Vase RED within 600 s.
+     - **Pinned:** gate rows 795/796/797/864 and census Cylinder byte-identical to TB82 plus ` validationIssues=0`; BunnyRandom byte-identical; Vase byte-identical through `simplification`, with a suffix containing **no FlippedFace** (counts recorded; macOS 4).
+     - [TB83 evidence](.agents/Directional/Architecture_M6_CP3_TB83_P13_Embedding_Predicate_Full_Gate_Execution_Report_20261106.md): gate [42131680146](https://github.com/akashskypatel/Directional/actions/runs/42131680146) 903/903 PASS, 984 membership, 1814/1814 hashes; census [42131702661](https://github.com/akashskypatel/Directional/actions/runs/42131702661) 1 PASS / 2 expected RED, 9/9 hashes; all pinned digests MATCH, Vase 4 issues / 0 FlippedFace. Initial census request failed infrastructure preflight (bad archived-source hash) before running cases; corrected v2, no source/test change. No CP3 promotion. NEXT Review `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP`; P13-e and P13-l2 carried.
+- [ ] **Review track** (probe DEFNs):
+  - [x] **`M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING`** (P13-g): the static [decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) ran no probe and froze an open A/B CB73. [RA-196](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) probes settle it:
+    - Patch 1200's boundary is simple (branch A is false).
+    - The fixed balanced split reaches 4 of 12 octagon quadrangulations, and the 2 embedded ones are fans.
+    - The validator accepts folds: 2,552 of 12,452 accepted boundary-only completions disagree with the source normal.
+    - Patch 1200 is only the first of 150 failed descriptors in one pass.
+    - Outcome: Amendment 28 → exact CB73/CB74/CB75 → TB69.
+  - [x] **`M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING`** (P13-h/P13-i): ChatGPT's [review WIP](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Review_WIP_20261102.md) blocked on "no trace". [RA-197](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md) ran the probe:
+    - 220 of the 224 closed-form failures are strips. `ordered_boundary` starts at the smallest halfedge id and `extract_sides` closes side 0 across it, so `boundaryVertices[0]` is often mid-side and the grid's ladder is twisted.
+    - 5,868 of 23,329 four-sided descriptors are offset at HEAD; 222 fail and 2,055 more are accepted twisted.
+    - With the boundary rotated to side 0, 0 strips fail. Bilinear, Coons and Tutte interiors each break some needle grid.
+    - Outcome: Amendment 29 → exact CB76 → TB70.
+  - [x] **`M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS`** (P13-h2 + P13-i): ChatGPT's [review WIP](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Review_WIP_20261102.md) blocked on "Review policy prohibits runtime probes", though RA-197 had put this probe DEFN on the Review track. [RA-198](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md) ran the probes:
+    - P13-h2: the four needle grids complete under the existing Amendment 28 pattern search over the same boundary; the closed-form dispatch never offers it. Scoped to grids with generated vertices (an unscoped fall-through broke gate rows 144, 570, 875).
+    - P13-i: the five lenses are optional rim-seed support traces (1037/878/20/422/612). The field is not aligned with the rim (departures 0.1°–88°), so no tangent rule separates them. FlowRep selection removes 0 of 4,057 candidates: same-face coverage blocks 104 support flowlines and exact junction degrees block 11. Dropping the five named traces exposes three other two-sided cells.
+    - Outcome: Amendment 30 → exact CB77 → TB71; P13-i → `M6-CP3-DEFN-P13-FLOWREP-SELECTION`; O24 new.
+  - [x] **`M6-CP3-DEFN-P13-FLOWREP-SELECTION`** (P13-i): ChatGPT's [probe preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Preflight_20261102.md) blocked on "no scratch execution"; RA-198.6 had put this probe DEFN on the Review track. [RA-199](.agents/Directional/Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Adjudication_20261102.md) ran the probes:
+    - Selection cannot see whether a support meets the layout: seed traces never end on another trace, so each of the 115 supports is one flowline touching only its rail.
+    - Exactly 10 supports return to the rail they left and meet no other trace; all five lenses are among them. Not admitting them clears every two-sided cell (one pass is the fixed point).
+    - Coverage is not the criterion: lenses 20/422/612 lie 2–6 % of target size from the rail (tolerance 2 %); cross-face coverage plus relaxed degrees removes 13 supports and still leaves 3 lenses. → O25.
+    - Outcome: Amendment 31 → exact CB78 → TB72; Vase's next failure P13-j `AssemblyRejected`/`NonManifoldStitchedVertex`.
+  - [x] **`M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX`** (P13-j): ChatGPT's 13 same-turn records located row 3 = node 5355 and the three split neighbour keys, then blocked on "completed lineage unmeasured; Review cannot run C++". [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md) ran the probes:
+    - Typed certificates at 5351/5355/5356/5357/5359 are identical on both sides; only `boundaryNodeIdentities` differs, because it is scoped to the halfedge leaving the node.
+    - Systemic: 23,221 of 66,783 Vase nodes split; HEAD assembly Euler −19,442; row 97 passed on a two-component assembly (→ O26). Cylinder never calls the stitcher.
+    - Node key over all occurrences: 0 split nodes; Vase assembles to the source topology (Euler 1, one boundary loop); no typed-authority rejection anywhere.
+    - Outcome: Amendment 32 → exact CB79 → TB73; Vase's next failure P13-k (surface-optimizer source-query cost).
+  - [x] **`M6-CP3-DEFN-P13-OPTIMIZER-SOURCE-QUERY-COST`** (P13-k): ChatGPT's [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md) blocked on "scratch evidence does not exist". [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md) ran the probes:
+    - One class at five instances:
+      - the rail fill's binding check per (vertex, interval);
+      - `source_face_scope` per chart face;
+      - the complete-authority check and a BVH per `nearest_source_point` call, and a BVH in `project_vertices` and `quad_reference_surface_point` even with a lent cache;
+      - a label support and chart graph per quad;
+      - `SourcePointLabelSupport::available()` re-checking the binding on every query.
+    - Lending the label support alone left the check one level down (46 % of samples). With all fixes, Vase reaches its verdict in about 250 s (sites 1–2 only: 1,521 s), with the verdict and completed counts unchanged.
+    - P13-l named: the pre-optimization validation of the completed mesh. Topology passes; `FlippedFace` 27,966 in edge form and 7,681 in face form; `SelfIntersectingFace` 250; T-junctions 3. The terminal dropped the recorded reason (`detail=None`).
+    - Outcome: Amendment 33 → exact CB80–CB83 → TB74–TB76 (steps 21–27). Scratch gate 892/893 (only O16 row 283); every mutant is killed by its row.
+  - [x] **`M6-CP3-TB76-P13-OPTIMIZER-SOURCE-QUERY-FULL-GATE-REV`** (P13-m): ChatGPT's [Review](.agents/Directional/Architecture_M6_CP3_TB76_P13_Linux_Vase_Independent_Review_Decision_20261104.md) froze product-code stage timing. [RA-202](.agents/Directional/Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md) ran the probes instead and found three memory-bound scans outside RA-201's stage, plus two Amendment 33 sites RA-201 missed. Outcome: Amendment 34 → exact CB85–CB88 → TB77/TB78 (steps 28–34). New obligations:
+    - O27: the O(Q²) face-to-face scan; time it in the P13-l DEFN;
+    - O28: nine per-query `source_face_scope` sites in the optimizer;
+    - O29: `source_vertex_extent` recomputed per edge key, plus the tracing proposal cost.
+  - [x] **`M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV`** (P13-m closure, O30): ChatGPT's WIP blocked on the review boundary. [RA-203](.agents/Directional/Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md) resolved it from existing authority and owned RA-202.9's macOS-only count. It opened O30 and froze exact CB89 → TB79 with a macOS digest reference (two runs, byte-identical).
+  - [x] **`M6-CP3-DEFN-P13-PLATFORM-SPLIT`** (O30 first discriminator, 2026-11-05). Compared all seven Linux lines to the [macOS reference](.agents/Directional/Architecture_M6_CP3_CB89_P13_Platform_Digest_macOS_Reference.tsv), using the RA-203.4 table:
+    - mesh bits differ → fixture DEFN;
+    - field bits differ → `extract_cross_field`, with the design fork "invariant generator or frozen field bytes";
+    - first differing stage S → probe S;
+    - only `completion` differs → `PureQuadCompletion`.
+    
+    Result: Vase raw `fieldBits` differ, first differing downstream product is field-transport atlas; no completion-only attribution. [Review](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Platform_Split_Digest_Adjudication_20261105.md). **Reviewed by RA-204:** the atlas is a noise carrier, and the field branch is withdrawn.
+  - [x] **`M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`** (O30), realigned and closed by [RA-204](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md):
+    - the fixed-field replay is withdrawn;
+    - O30a's root cause is arrangement cell ids that follow unspecified `std::sort` ties, with exact fix CB90 (steps 38–39);
+    - generator non-portability is recorded, not owned (four builds give four BunnyRandom fields), because output is robust to it.
+    - Open: O30b (Linux-only Vase embedding; decided by TB80's Vase count, RA-204.9) and O31.
+  - [x] **Re-entry of `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`: [RA-205](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md)** reviews RA-204 and opens O32.
+  - [x] **`M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS`** (O32a), COMPLETE; reviewed by [RA-207](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md) (prose CB92 replaced by an exact patch; per-fan seeding, not fail-closed). Residual: the `AdaptiveSeedCandidate` face-row tie, to fix when touched. Original scope:
+    - Make the seed set from `generate_deterministic_surface_seeds` (`SurfaceCellTracing.cpp` 10297) invariant under source-face row permutation. Use the probe's `PROBE_PERMUTE_FACES`. The measure is the seed count plus a sorted 3D-position digest, under at least three seeds.
+    - Discriminate the leads: rail-sample seeding and the `seen` de-duplication key; the face-corner node layout of `intrinsicGraph` and its `nearest` distances; seed placement toward the chosen face's centroid.
+    - Then re-measure tracing and strand counts and name O32b/c.
+    - **Continuation 6 (scratch Review evidence, 2026-11-05):** corrected producer emits **1,416** semantic-identical seeds under base + 3 consistent source-row permutations; typed protected-edge fan identities pass under two row orders (remote GMP compile 42030842612). Full Vase runs yield identical 189,462 trace segments / 30,989 strands / 26,817 arrangement cells, but completion counts **67,750 / 67,782 / 67,766 / 67,778** before the same typed `SelfIntersectingFace` RED. Trace/strand content hashes differ and remain semantic-oracle candidates O32b/c, not yet proved stage defects. Earlier one-sample-per-rail negative was invalid under strict rail interval ingress; a new complete two-rail test preserves both typed source-edge interval owners and rejects missing-edge / duplicate-ID tampering (remote GMP run 42034591362, artifact 13418271529). Coincident per-seed metadata alone is not authoritative interval ownership.
+    - **Before Review closeout:** rail-edge vs seed annotation and fan-scope admissibility are independently adjudicated; all 1,274 actual Vase source vertices have one intrinsic fan (independent OFF topology audit, no hard-feature edge). Unscoped multi-fan vertex requests are not authorized to duplicate seeds: CB92 must emit a typed terminal rejection unless producer-owned scope narrows to one fan, or STOP for an explicit failure-contract Review. Bounded CB92 plan is revised; remaining work is final Review reconciliation/boundary checker/Drive cleanup and exact handoff/STATUS closeout. Earlier evidence and later downstream stages are unchanged.  bounded [CB92 source-fan seed plan](.agents/Directional/Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity_Plan_20261105.md) is written with falsifiers but not started. Perform Review checklist/boundary checker and consolidation, then authorize the successor in STATUS. [Owning evidence](.agents/Directional/Architecture_M6_CP3_DEFN_P13_O32a_Vase_Producer_Scratch_Result_20261105.md). No successor or CP3 promotion yet.
+    - Outcome: an exact CB → TB that pins only permutation-invariant values.
+  - [x] **Review `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP`** (P13-l2): ChatGPT WIP blocked on runtime provenance; resolved by [RA-210](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md) on the Claude scratch track. Owners: validator length units, validator concave fan, completion corner-on-opposite-edge → exact CB97–CB99 → TB84 (steps 49–52).
+    - Faces 55/15372 (patches 118/54) are geometrically disjoint in XY: the terminal overlap is a false positive in the validator's determinant-vs-length collinearity predicate. A separate 4304/4308 false-positive arises from triangle-fanning a concave quad. Preserve true intersection positives.
+    - Patches 4955/4957 have **exact matching reversed three-edge shared-side schedules**; BoundedCombinatorial completed quad 21286 improperly uses all four consecutive boundary nodes of **one logical side** as a face. This is completion topology, **not** a missing midpoint subdivision or authorization to weld distinct stitch keys.
+    - Patches 23301/23302 have exact matching reversed two-edge side schedules. Original arrangement-owned edge (output 53049–28576) is only 8.96e-8 long, with distinct source-edge/interior support; all three boundary-only two-quad decompositions retain it (alternative diagonals produce extremely thin faces). The corresponding Vase source edge (773,775) is smooth under default adaptive thresholds; this does **not** establish optionality of the contributing retained FlowRep arcs.
+    - **Independent REVIEW_BLOCKER:** the immutable output omits run-specific retained FlowRep/incident-halfedge provenance, while the mandatory Review policy forbids the scratch runtime needed to observe it. An authorized diagnostic boundary or pre-existing immutable typed capture is required before this Review can authorize the 23301 change. **Still unresolved:** capture exact original `SurfaceArrangementNodeOccurrence` / incident halfedge provenance, including sourceArc/curve/rail, mandatory/layout/singularity/proposal and all patch memberships, before deciding whether an upstream trace may be removed. The immutable final V/Q artifact omits this lifetime-limited provenance; a runtime probe cannot be silently substituted into a runtime-free Review. Calibrate source-aware quad-quality positive/negative cases and freeze an owner-specific Code+Build plan only after the authority decision. Preserve CP2 491/491, TB83 903/903 candidate, stable 66/17/49 debt 1, selector497/CP3 unpromoted.
+
+    Owning same-turn evidence: [pre-stitch/schedule Review](.agents/Directional/Architecture_M6_CP3_DEFN_P13_PreStitch_Vector_ABI_Probe_Review_20261106.md) and [source-microedge provenance Review](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Source_Microedge_Provenance_Review_WIP_20261106.md). No successor implementation has started.
+  - [x] **`M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`** (P13-l; probe DEFN on the post-CB92 scratch state, where macOS Vase gives 67,750 with 189,462 traces; Claude; after TB80 it opens with the RA-204.9 O30 decision; also time O27 once orientation passes; its TB pins only typed verdicts and counts already observed on Linux, RA-203.2):
+    - The completed Vase mesh (67,829 quads) has the source topology but is not consistently oriented: 27,966 interior edges are traversed the same way by both quads.
+    - Leads, not conclusions: `orient_quads_to_source_normals` (`RemeshPipeline.cpp` 10949) flips each quad on its own by its (0,1,2) triangle normal and ignores lineage; or completed patches carry mixed winding before it.
+    - First measurement: same-direction edges right after assembly and after the orientation pass, binned by patch. Then name the owner.
+    - Also decide whether the pre-optimization gate applies the final quality thresholds to an un-optimized mesh. DESIGN §4.9 separates injectivity from quality; normal P95 179.9° and Jacobian −1 follow from the orientation.
+  - **`M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT`** (P13-e; can run now, in parallel). A1 requires `4 − index` port classes. BunnyRandom's index −1 vertex 49 has 4 sector incidences in an 8-face fan, on macOS, FMA-off and Linux (TB65). Decide whether A1's sector rule or the field owns this.
+  - **`M6-CP3-DEFN-P13-RELIEF-NOISE-TIES`** (O31; after P13-l; Claude, scratch build). With bit-identical input, relief branches are CloseSheets 40/38/40 and Cylinder 44/44/48 (Linux / macOS / macOS FMA off). The cause is a contractible weighted sum followed by exact critical-point comparisons on near-constant relief. Its falsifier is a fixture whose completed topology changes across FMA on and off.
+  - **O32b–e** (Review, one stage each; RA-205.5). After CB92, trace and strand **counts** are row-invariant, so **O32e goes first**: the remaining count-level dependence, 67,750–67,786 quads, from completion ownership repair (RA-207.6):
+    - b, tracing proper;
+    - c, strand selection;
+    - d, an injective canonical arrangement cell key: node source identity plus exact barycentrics. It makes CB90's tie-break unreachable;
+    - e, completion ownership repair: a canonical tie, and a budget that does not depend on order.
+
+    Each is falsified by counts plus a row-invariant digest under ≥3 permutations. The last O32 CB adds metamorphic census gate rows.
+  - **`M6-CP3-DEFN-P13-CHART-FACE-PER-QUAD-COST`** (O33; Claude, scratch build; RA-206.5). One chart-level cache covering the five per-quad chart-face sites:
+    - `OutputProjectionCache` scope scan;
+    - per-sample `allowed_faces` keying (prototype: chart-keyed mask, −28%);
+    - `resolve_compatible_chart` copies;
+    - `consistent_source_scope`;
+    - the validator's chart work.
+
+    Its witness is a count of chart-face-list materializations, constant in quad count. It runs before Vase reaches optimization.
+  - Then re-census P13, take O6/O9 where they are reached, and aim for matrix 6/6.
+- [x] **DIAG-RETAIN (user-directed, 2026-10-21): closed** by CB58–CB61 (snapshots, display adapter and dump, CLI sidecar, GUI layers). Open: DR1 (no in-helper A6/A7 rejection witness; waits for a stimulus), DR3 (pre-existing snapshot fields written when retention is off). DR2 (multi-component snapshot drop) and DR4 (`--diagnostics-prefix` cut sidecars throw on SurfaceCells products, `src/cli/RemeshOutput.cpp:388–392`) → M8-CP2. The GUI layers' appearance is a manual check.
+- [ ] **Then:** retire CB → FIXTURE slices (each DEFN first confirms the production pipeline reaches its stage) → PRODUCT CBs → OPEN probe DEFNs (P02a, P02b, P07b, P09b, P12b, P14c, O7, O8, O10) → CP3-REV.
+  - **CP3-exit conditions (RA-174.3):** RP-01 closed (done); zero ledger rows; design-acceptance matrix gated at 6/6 (Cylinder is required); O14 enforced; O7 resolved; O15 discharged (done); **O32 closed: DESIGN §10.1 source-row permutation invariance on the matrix fixtures, as gated metamorphic census rows (RA-205)**; CP3-REV decides selector497 promotion.
+- [ ] Carried separately (owners per RA-174.3):
+  - **O2b** (retire the public no-atlas APIs, the legacy detail branches, their 12 gated unit tests and the historical suite) → a retirement DEFN after P13. **O16** (row 283, LegacyInteger NFunctionMesher macOS failure, not FMA) → a legacy-backend probe DEFN; not CP3-blocking.
+  - O6 (bounded disks that are not rectangular are rejected by design). No P13 fixture reaches it at current source (RA-188.2) → P13 re-census.
+  - **O19** (RA-192): a genus > 0 region whose `dual_cycles` handle generator crosses a slit fails closed (`HandleGeneratorCrossesSlit`). Torus sweep: 35 of 216 edges. Not CP3-blocking, because all six matrix fixtures are genus 0 → a later DEFN when a fixture needs it.
+  - **O18** (the pipeline recorded the arrangement stage as succeeded even when the arrangement reported invalid incidence) → CB69; discharged by TB66.
+  - **O21** (RA-196, quality, non-blocking): the boundary-only search takes the first embedded quadrangulation, not the best, and quads with a straight (180°) corner are accepted (332 in Vase's exact single-face subset). A §2.1 item 10 quality criterion, owned by the M7 quality gates.
+  - **O23** (RA-197, quality, non-blocking): needle cells (thickness/length down to 6·10⁻⁴) from near-parallel traces give needle quads even when they embed. Owned by M7 quality; after CB77 the four Vase needles complete by the boundary search.
+  - **O25** (RA-199, quality, non-blocking): support selection is inert. `build_coverage_index` lets only same-face arcs cover a sample (a sample one edge from a covering arc is uncovered), and `protected_endpoint_degrees` freezes every rail node, so no support is ever removed by coverage. On the census fixtures this decides only which near-duplicate supports survive (needles, O23). Owned by M7 with O23; a change must state a cross-face intrinsic metric and its falsifiers (the RA-199 preflight contract is the reference).
+  - **O26** (RA-200, test oracle, non-blocking): completion-level tests that assemble meshes assert success or counts, not the assembled topology; row 97 passed while its assembly was two disjoint quads. CB79 row 885 is the first assembly-topology assertion. Further strengthening belongs to the CP3 test-quality slice.
+  - **O24** (RA-198, quality, non-blocking): the cross field is not aligned with Vase's boundary rail; rim support traces leave it at 0.1°–88°, so boundary cells have arbitrary corner angles. Owned by M7 quality unless the selection DEFN finds it blocks a valid layout.
+  - **O22** (RA-196, cleanup, non-blocking): reversed completion variants (pattern/bounded `n…2n−1`, transition 3–5) can never embed under Amendment 28. Drop them from `completion_variant_count`.
+  - **O20** (RA-195, residual per-call O(F) source work, non-blocking):
+    - the per-patch `SurfaceProjectionBvh` in `complete_pure_quad_patch` (1.0 % of HEAD completion CPU, about 0.5 ms per patch);
+    - assembly's per-certificate `matches_source_faces` in `owner_validated_typed_authority_certificate`;
+    - the per-lineage graph in `rebuild_aggregate_output_identity_caches`, which is multi-component aggregation only.
+    - RA-201 adds the optimizer stage's residuals: `source_face_scope` per vertex in `project_vertices` and in the gradient loops, and the validator's own `validate_bow_tie_vertices` and `validate_source_authoritative_surface_mesh` costs. The optimizer stage is not yet reached on Vase, so these are unmeasured there.
+    - RA-204 adds the arrangement cell sort, which rebuilds `cell_cycle_key` on every comparison: 962,136 key builds, 8.2 s per Vase run on macOS. A decorate-sort would need 26,817.
+    - Owner: a performance slice, or the first fixture whose census times out in one of these.
+  - The historical arrangement suite (`SurfaceArrangementPhase16Tests.cpp`, not built) is stale: none of its tests passes `sourceAuthority` (RA-193.2) → O2b's retirement DEFN.
+  - **O17** (production code writes diagnostics to stderr unconditionally: `GlobalTopologyPlan.cpp:2634`, `FieldTransportAtlas.cpp:746`) → M8-CP2.
+  - O7 (oracle-tests target does not compile) → its own probe DEFN.
+  - O8 (`InvalidFrontBoundaryAuthority` on the 3×3 midline at `lengthRatio=0.29`) and O10 (non-hard isolation-barrier producer) → CP3-exit probe DEFNs after P13.
+  - O9 ruled (RA-178.3): kept as accepted-defensive. Falsifier (a produced route with more than one step) → P13 re-census, once Vase or BunnyRandom reaches A4 routes.
+  - O12 (R61 `review_check.py` selector collision) → Review tooling.
+  - O14 → P8.
+  - **O15c** → RA-190 dyadic exit (Amendment 24); discharged for A2a when TB64 matches. The 4,096-bit guard stays as the backstop. **O15b** (fields-stage `principal_matching` argmin tie; degenerate input only) → CP3-REV.
+  - RA-152.5, DEFN-SEAM-NZ (+RA-163.4), RA-146.2/4, RA-45.4. G4-B002 exit row is gated; the discharge decision belongs to CP3-REV.
+- **Rules:**
+  - CB and TB run on the Linux workflow runner. A TB always runs the full current gate, even after a CLI- or GUI-only CB (RA-187); the latest verified Linux gate is TB78 (899-row manifest `9d2c1ec5…`, ledger v5 81, membership 980); TB79 reused that manifest unchanged and verified 899/899 (membership 980); earlier TB77 (896 `48ef4743…`, 977), TB76 (893 `3b727161…`, 974), TB74 (888 `bb4e771f…`, 969), TB75 (890 `a134d941…`, 971) and TB73 (886 `5d09fa33…`, 967); preceding TB72A used 883 rows and membership 964; TB71 used 881 rows (`f2503dca…`, membership 962); prior TB70 used 880 rows (`a9f964c8…`, membership 961); TB69 used 878 rows (`aaaba077…`, membership 959); TB68 used 873 rows (`3b6b9f42…`, membership 954); TB67 used the 871-row manifest `434e6d37…` (membership 952). Earlier TB65 was 869 rows, TB64 866 rows and TB58 863 rows.
+  - One CB per exact patch; implementation agents get only exact patches and frozen manifests. Probe-requiring DEFN and TB-REV turns stay on the Review track. Every gate run needs `MEMBERSHIP_LEDGER`.
+  - A mismatch route that needs a probe names `Review (Claude, scratch build)`, and one that needs Linux runtime names its TB (RA-203.1). A registration pins only typed verdicts, topological counts and values already observed on the executing platform (RA-203.2).
+  - Before calling an order-dependent result deterministic, run the DESIGN §10.1 metamorphic invariants: source-face row permutation at least. Until O32 closes, P13 registrations pin only typed verdicts and counts shown permutation-invariant: through `global-conformity-baseline`, plus `arrangement` (RA-205).
+  - A gated wall-clock bound is set from the Linux runner's ratio for that code (memory-bound sections reach 3.5× macOS), never from a macOS run. Prefer a deterministic counter that kills the regression's mutant, with time as a coarse backstop (RA-206.6).
+  - A platform split is localized at the first differing stage that is not a noise carrier (RA-204.2). Before attributing one to numerics, run the census under libc++ `_LIBCPP_DEBUG_RANDOMIZE_UNSPECIFIED_STABILITY` (RA-204.4).
+  - **Naming (RA-167.6):** types per `turn_type_from_turn`; DEFN/PLAN IDs carry no `-CB<n>`/`-TB<n>` segment and no final R+letters qualifier.
+  - RA-170 (a gate pass says nothing about off-gate tests), RA-171 (self-check every manifest; census rows are OBSERVE), RA-172 (a DEFN needs a reachable exit), RA-174 (verify completeness against the package, not against the gate's own scope), RA-176 (a result that differs by platform is a determinism defect; compute the exact answer before classifying), RA-178 (a test that targets an accepted-defensive guard has no repair exit; witness the guard at its checked factory or retire the test), RA-179 (trace fixture use through helper accessors, not literal grep; confirm per-file flag changes in the built object).
+- **Frozen:** stable 66/17/49, debt 1; CP2 491/491 last accepted; TB52 853/0 reviewed Linux candidate; TB60 862/863 latest macOS candidate; TB62 863/863 latest independently reconciled Linux full-gate candidate (ten-target scope); TB61 prior eight-target candidate (TB54 856/857 reviewed macOS, RA-181); RP-01 closed; selector497 frozen and unpromoted; Gate C suspended; PR #8 draft and unmerged.
+- Completed per-turn task history before 2026-10-31 was pruned at the user's direction; it is in `CHANGELOG.md`, the per-turn records and git history (`TODO.md` at `4a5578fad`).
+
+## Recorded observations (carried from pruned history)
+
+- [ ] `M5-CP3-TB1-R16-REV-OBS-02` — **RECORDED / NOT FIRING.** Rows 446/447 pin inverse canonical storage. If it fires, classify it as test-authority drift and keep the pin.
+- [ ] Review guard (`M5-CP3-TB2-REV-OBS-03`): every Review runs `review_check.py ledgers --base <previous-review-commit>` to catch overwritten ledgers (the tracker and CHANGELOG were each overwritten once and restored).
+- [ ] M8-CP2 observations recorded in `Architecture_M6_Frozen_Definitions.md`: `M6-CP1-CB12-REV-OBS-01` (the source-row-order scope of the test-only `make_surface_optimization_overlay`, RA-26) and `M6-CP1-TB12-R1-REV-OBS-02` (the adapter drops A7's cross-sheet site, RA-27b).
+
+---
+
+## Deferred hygiene
+
+- [ ] **Repair `.github/workflows/agent-turn-cleanup.yml` comment handling and trigger safety.** The workflow still deletes **all** PR conversation and inline review comments before its observer step, and creating `.agents/connector-triggers/turn-cleanup/manifest.txt` auto-triggers it. Run `32591251950 / 97075340976` demonstrated 27 conversation-comment deletions. User commit `c359ea925b04471500575a9dcc17bdc6e4bb52d1` explicitly superseded the old prohibition by requiring the manifest/workflow at every turn closeout. Until the workflow is repaired, preserve durable repository evidence before publishing the closeout manifest and treat PR comments as non-durable.
+
+Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion register. None may become required-green evidence before its precondition is independently established.
+
+- [ ] `WU2A-TB-CAND-01`: successful-side-subdivision ownership-registry precondition.
+- [ ] `WU2B-TB-CAND-01`: hard-rail region-copy valid front-boundary-authority precondition.
+- [ ] `WU2B-TB-CAND-02`: side-repair rollback ownership-registry/domain-identity precondition.
+- [ ] `WU2B-TB-CAND-03`: authoritative-cell-scope subdivision source-scope reconciliation.
+- [ ] `WU2B-TB-CAND-04`: five simplification fixtures need independently proven removable/protected/healing preconditions.
+- [ ] `WU2B-TB-CAND-05`: FlowRep mandatory-cycle witness needs `selectionSucceeded=true` before later-cycle evidence is creditable.
+- [ ] `RA-REV-23-F3`: dispatch stitch-kind audit through an explicit classifier field rather than probe-name text; add a negative self-test.
+- [ ] `RA-REV-22-F6`: remove non-falsifiable validation-used assertions or set them where each gate actually executes.
+- [ ] `RA-TB6-H1`: repair repeated `TriMesh::set_mesh` / `DCEL::init` stale halfedge-twin reinitialization outside the R-A fixture path.
+
+## Milestone status
+
+Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
+
+- [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
+- [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
+
+- [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. M4 handed four periodic/relation debts to M5 and one closed-complex debt to M6; R7 Review discharged two M5 debts and R16 Review discharges the remaining two nonzero-Z4 M5 debts. The sole remaining project debt is the M6 closed-complex subject.
+- [x] **M5** certificate-carrying chart/quotient relations — **CLOSED / ACCEPTED at `M5-CP4-TB2-REV`.** Final authority is package/source `10814505512 / e284fea7...` under accepted selector449 **449/449**, SHA `d4a0d1b7...d6414`, owners 32/301/75/41. All §13.1 conjuncts 1-8 are accepted; M6 Definition is frozen and M6-CP1 recovery is now active.
+- [ ] **M6** occurrence, embedding, independent verification.
+- [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
+- [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
+- [ ] **Pipeline A.** Unscheduled until Pipeline B is Certified and evidence shows integration would materially improve quality.
+
+## Active product blockers
+
+- [x] **CP4c-3 protected frontier census evidence:** Part XII was first runtime-proved in TB43: 390/393/406/407 executed the producer-owned census predicates and rejected same-domain corruption. `M3-CP4c3-TB40-EXEC-CAND-02` remains historically CLOSED / RUNTIME-PROVED / NON-STABLE. TB45 historically exposed the stale failure-required precondition; package113/TB48 now re-proves all four receipts non-vacuously through `PlanFrontier`.
+- [x] **CP4c-3 protected Part XII success-path observability — CLOSED / RUNTIME-PROVED:** package111 ordinals 390/393/406/407 all PASS on `PlanFrontier`, execute the real census predicates, reject same-domain corruption and emit non-vacuous receipts.
+- [x] **CP4c-3 ordinal367 independent oracle — CLOSED / RUNTIME-PROVED / NON-STABLE:** TB47/package112 PASSes ordinal367 under the frozen high-side-only rule; package112 is promoted. Accepted ordinal307 remains a separately recorded latent stale equality and is unchanged.
+- [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
+- [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
+
+- [x] **CP4c-3 ordinal370 empty closed network — CLOSED / RUNTIME-PROVED / NON-STABLE:** package113 ordinal370 PASSes under the frozen identity requiring `EmptyNetworkOnClosedSurface = 6` plus a non-empty `sourceFace` locus. TB48-REV promotes package113 and closes `M3-CP4c2-TB-X2-R8-CAND-02` without changing stable accounting.
+- [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
+- [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.
+- [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch` (last measured 0/3 at artifact `9031804178`, pre-M1). **M6-DEFN disposition:** the original hard-rail→sheet root is absent from current source (production passes an empty isolation-barrier set). Carried as a direct-production evidence debt to **`M6-CP3`** (strict torus 3/3 re-proof). Unmeasured since then; do not weaken `LocalSheetMismatch`.
+- [x] `G4-B002` main exact-torus hard-rail pairing blocker — **CLOSED / RECOVERY PROVED at M4-CP3-TB8-REV** on accepted package `10307919492` / selector408 **408/408**. The three produced-witness debts remain open: one closed-complex debt is M6-owned after DEFN-R2 and two periodic debts are M5-owned after DEFN-R1. This checkbox closes the blocker, not those debt items.
+- [x] `G4-B003`: nonzero periodic Z4 production — **DISCHARGED at M5 R16 Review**; both direct-production debts are runtime/review proved.
+- [ ] `G4-B004`: positive multi-isolation quotient witness. **M5 producer half ACCEPTED / DISCHARGED at `M5-CP4-TB2-REV`; M6 representative-consumption half OPEN.** Selector449 final authority proves the same-region producer join. `M6-DEFN` item 7 now owns representative exact-once materialization/consumption, embedding and independent verifier proof without weakening or reconstructing the producer fact.
+- [ ] Bunny/Vase representative production and resource acceptance — later product gates.
+
+## Design and calibration backlog
+
+- [ ] Own the closed-rail cardinality contract once at the rail product boundary rather than re-guarding both closed representations at every consumer.
+- [ ] Calibrate `T5` quality/resource thresholds from measured baselines before any milestone asserts a quality gate.
+- [ ] Correct `DESIGN.md` section 6.7 invariant 2 so D1 `QualityRelaxed` consistently records missed quality gates.
+- [ ] Define the M7 degraded producer algorithm and its fixed-boundary completion proof.
+- [ ] **Audit every remaining `kBranchTopologyTolerance` comparison for dimensional coherence.**
+  `direction_in_incident_vertex_sector` compares a Gram **determinant** — an area-squared quantity — to
+  `1e-10`. After E2/E3 the surviving uses are admissibility guards only, but their scale is arbitrary and
+  mesh-size dependent. Not a CP4c-0 measure; do not fold it into CB2.
+- [ ] **Sweep for other tolerant-selector / exact-consumer seams.** CP4c-0 found the pattern three times
+  in one subsystem (flow classification, vertex sector, cross-edge flow). The same audit is owed wherever
+  an exact authority was introduced downstream of a `double` decision.

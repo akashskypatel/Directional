@@ -1,0 +1,158 @@
+diff --git a/include/directional/validation/MeshValidator.h b/include/directional/validation/MeshValidator.h
+index 2f11f7f24..37208b15d 100644
+--- a/include/directional/validation/MeshValidator.h
++++ b/include/directional/validation/MeshValidator.h
+@@ -260,29 +260,6 @@ private:
+     return area;
+   }
+ 
+-  [[nodiscard]] static int dominant_axis(const Eigen::Vector3d &normal) {
+-    Eigen::Vector3d absNormal = normal.cwiseAbs();
+-    int axis = 0;
+-    if (absNormal(1) > absNormal(axis)) {
+-      axis = 1;
+-    }
+-    if (absNormal(2) > absNormal(axis)) {
+-      axis = 2;
+-    }
+-    return axis;
+-  }
+-
+-  [[nodiscard]] static Eigen::Vector2d project2(const Eigen::Vector3d &point,
+-                                                const int dropAxis) {
+-    if (dropAxis == 0) {
+-      return {point.y(), point.z()};
+-    }
+-    if (dropAxis == 1) {
+-      return {point.x(), point.z()};
+-    }
+-    return {point.x(), point.y()};
+-  }
+-
+   [[nodiscard]] static double orient2(const Eigen::Vector2d &a,
+                                       const Eigen::Vector2d &b,
+                                       const Eigen::Vector2d &c) {
+@@ -310,18 +287,46 @@ private:
+     if (face.size() != 4) {
+       return false;
+     }
+-    const Eigen::Vector3d p0 = vertices.row(face[0]).transpose();
+-    const Eigen::Vector3d p1 = vertices.row(face[1]).transpose();
+-    const Eigen::Vector3d p2 = vertices.row(face[2]).transpose();
+-    const Eigen::Vector3d p3 = vertices.row(face[3]).transpose();
+-    const Eigen::Vector3d normal = (p1 - p0).cross(p2 - p0);
+-    const int axis = dominant_axis(normal);
+-    return segments_intersect_strict(project2(p0, axis), project2(p1, axis),
+-                                     project2(p2, axis), project2(p3, axis),
+-                                     tolerance) ||
+-           segments_intersect_strict(project2(p1, axis), project2(p2, axis),
+-                                     project2(p3, axis), project2(p0, axis),
+-                                     tolerance);
++    std::array<Eigen::Vector3d, 4> corners;
++    for (int corner = 0; corner < 4; ++corner) {
++      corners[static_cast<std::size_t>(corner)] =
++          vertices.row(face[static_cast<std::size_t>(corner)]).transpose();
++    }
++    // The whole-polygon (Newell) normal does not depend on which corner the
++    // cycle starts at or on its direction, so neither does the verdict; the
++    // first triangle's normal did both (RA-208).
++    Eigen::Vector3d normal = Eigen::Vector3d::Zero();
++    double longestEdge = 0.0;
++    for (int corner = 0; corner < 4; ++corner) {
++      const Eigen::Vector3d &current = corners[static_cast<std::size_t>(corner)];
++      const Eigen::Vector3d &next =
++          corners[static_cast<std::size_t>((corner + 1) % 4)];
++      normal.x() += (current.y() - next.y()) * (current.z() + next.z());
++      normal.y() += (current.z() - next.z()) * (current.x() + next.x());
++      normal.z() += (current.x() - next.x()) * (current.y() + next.y());
++      longestEdge = std::max(longestEdge, (next - current).norm());
++    }
++    // A quad whose vector area vanishes, such as a symmetric bow-tie, has no
++    // embedding.
++    if (normal.norm() <= tolerance * longestEdge * longestEdge) {
++      return true;
++    }
++    // Project orthogonally onto the quad's own plane. Dropping the coordinate
++    // nearest the normal can be 55 degrees off it and hides the crossing of a
++    // strongly twisted quad (RA-209).
++    const Eigen::Vector3d unit = normal.normalized();
++    const Eigen::Vector3d u = unit.unitOrthogonal();
++    const Eigen::Vector3d w = unit.cross(u);
++    std::array<Eigen::Vector2d, 4> projected;
++    for (int corner = 0; corner < 4; ++corner) {
++      const Eigen::Vector3d &point = corners[static_cast<std::size_t>(corner)];
++      projected[static_cast<std::size_t>(corner)] =
++          Eigen::Vector2d(point.dot(u), point.dot(w));
++    }
++    return segments_intersect_strict(projected[0], projected[1], projected[2],
++                                     projected[3], tolerance) ||
++           segments_intersect_strict(projected[1], projected[2], projected[3],
++                                     projected[0], tolerance);
+   }
+ 
+   [[nodiscard]] static bool point_in_triangle3(
+diff --git a/tests/SurfaceCellsPhase10Tests.cpp b/tests/SurfaceCellsPhase10Tests.cpp
+index 0694b23e7..14ac2db40 100644
+--- a/tests/SurfaceCellsPhase10Tests.cpp
++++ b/tests/SurfaceCellsPhase10Tests.cpp
+@@ -11,6 +11,7 @@
+ #include <directional/validation/ValidationVisualizer.h>
+ 
+ #include <algorithm>
++#include <array>
+ #include <bit>
+ #include <cmath>
+ #include <chrono>
+@@ -10442,4 +10443,52 @@ TEST(SurfaceCellAuthorityContractCutover,
+       *reverse, reverseWithoutWitness, faces, edge));
+ }
+ 
++TEST(SurfaceCellsPhase10, QuadSelfIntersectionDoesNotDependOnCornerOrder) {
++  // Corners 0-3: a non-planar quad whose crossing, seen along its first
++  // triangle's normal, appeared for the reversed cycle only. Corners 4-7: a
++  // twisted quad from the CB92 Vase completed mesh whose opposite edges cross
++  // in its own plane but not along the coordinate axis nearest its normal.
++  // Corners 8-11: a symmetric planar bow-tie with zero vector area. A
++  // validity verdict must not depend on where a cycle starts or which way it
++  // runs, and both crossing quads fail in every order (RA-208, RA-209).
++  Eigen::MatrixXd vertices(12, 3);
++  vertices << 0.0, 0.0, 0.0, 3.0, 1.0, 0.0, 2.0, 2.0, 1.0, -4.0, -3.0, -3.0,
++      -0.17542684861736774, 1.1803095815696305, -0.11279117483668762,
++      -0.1778677436400376, 1.1785769999861855, -0.11315809959938455,
++      -0.16560114040051754, 1.1940129948811948, -0.10997860050669725,
++      -0.16554393196104053, 1.1956754839538677, -0.10957741066081621,
++      10.0, 0.0, 0.0, 11.0, 1.0, 0.0, 11.0, 0.0, 0.0, 10.0, 1.0, 0.0;
++  const auto self_intersects = [&](const std::array<int, 4> &cycle) {
++    Eigen::MatrixXi face(1, 4);
++    face << cycle[0], cycle[1], cycle[2], cycle[3];
++    return has_code(
++        directional::validation::MeshValidator::validate_surface_mesh(vertices,
++                                                                      face),
++        MeshValidationFailureCode::SelfIntersectingFace);
++  };
++  const auto orders = [](const std::array<int, 4> &cycle) {
++    std::vector<std::array<int, 4>> result;
++    for (int start = 0; start < 4; ++start) {
++      result.push_back({cycle[start], cycle[(start + 1) % 4],
++                        cycle[(start + 2) % 4], cycle[(start + 3) % 4]});
++      result.push_back({cycle[start], cycle[(start + 3) % 4],
++                        cycle[(start + 2) % 4], cycle[(start + 1) % 4]});
++    }
++    return result;
++  };
++
++  const bool skew = self_intersects({0, 1, 2, 3});
++  for (const auto &cycle : orders({0, 1, 2, 3})) {
++    EXPECT_EQ(skew, self_intersects(cycle))
++        << cycle[0] << ' ' << cycle[1] << ' ' << cycle[2] << ' ' << cycle[3];
++  }
++  for (const std::array<int, 4> &crossing :
++       {std::array<int, 4>{4, 5, 6, 7}, std::array<int, 4>{8, 9, 10, 11}}) {
++    for (const auto &cycle : orders(crossing)) {
++      EXPECT_TRUE(self_intersects(cycle))
++          << cycle[0] << ' ' << cycle[1] << ' ' << cycle[2] << ' ' << cycle[3];
++    }
++  }
++}
++
+ } // namespace

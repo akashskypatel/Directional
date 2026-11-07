@@ -1,0 +1,186 @@
+{
+  "schema": "directional.design-aligned-runtime-summary.v27",
+  "updatedUtc": "2026-08-08T17:30:00Z",
+  "directionControl": {
+    "passedGatesBaseline": [
+      "G0 truthful authority",
+      "G1 uniform phase-front plane",
+      "G2 cross-chart/close-sheet isolation",
+      "G3 periodic closure/holonomy"
+    ],
+    "currentCandidateRetainsPassedGates": false,
+    "activeGate": "G4 topology-distinct completion and singularities",
+    "gateState": "artifact 9024549134 regresses genuine source-boundary authority, consumes no torus quotient authority, and lacks complete executable counterfactual closure",
+    "nextTurn": "Mandatory independent Review",
+    "nextPlan": ".agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md",
+    "runtimeReport": ".agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Report.md",
+    "priorReviewReport": ".agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md",
+    "configuredOptionalReviewPolicy": "never",
+    "mandatoryReviewRequired": true,
+    "mandatoryReviewCompletedForCurrentEvidence": false,
+    "ordinaryCodeBuildAuthorized": false
+  },
+  "runtimeAuthority": {
+    "artifactId": 9024549134,
+    "artifactName": "g4-transition-quotient-code-build",
+    "workflowRunId": 31267020112,
+    "workflowJobId": 93126709005,
+    "eventCommit": "fbf95650919865832ca93c60caaee9d001c95ffd",
+    "implementationCommit": "7f486632b154a303789df6c4dd44f602c8c71281",
+    "cleanupCommit": "718b978dcd0fab66da67810e00661468fc11038f",
+    "artifactSha256": "4d58454694668aecd30c394168dcceee9f01d5cb2999f111eefd1a720d2d80dd",
+    "internalChecksumManifestSha256": "d882776c1f92543ff9d2ca8b6acd5d4662419e2f2f4316afc505579db6e29ef5",
+    "internalChecksums": "48/48",
+    "packageFiles": 49,
+    "fixtureFiles": 27,
+    "executables": 5,
+    "projectStaticLibraries": 2,
+    "runtimeExecutionDuringBuild": false,
+    "runtimeOnlyFixtureSymlink": "artifact/bin/test-data -> ../test-data",
+    "localEvidenceArchive": "directional-g4-transition-quotient-artifact-only-evidence.tar.gz",
+    "localEvidenceArchiveSha256": "a3ec6c7acb6133693012733983dcc5ac42264e427aa0ea8c9ca6c95e6cd81e9e"
+  },
+  "focusedAuthority": {
+    "transitionQuotientRetainedAuthority": "3/7",
+    "topologyRegionIsolationSeam": "8/9",
+    "polygonalBoundaryPhase": "3/5",
+    "retainedNonTorusCurvedDisk": "2/5",
+    "nonTorusSheetCoverage": "0/2",
+    "g4PeriodicRelations": "4/5",
+    "validation": "60/60",
+    "compiledApi": "8/8",
+    "commonProducerFailure": "InvalidFrontBoundaryAuthority"
+  },
+  "directAcceptance": {
+    "plane": {
+      "success": false,
+      "deterministic": "3/3",
+      "firstInvalidStage": "tracing/phase-front",
+      "firstInvalidReason": "InvalidFrontBoundaryAuthority",
+      "topologyRegionCount": 1,
+      "fallback": false,
+      "sourceGridRecovery": false,
+      "internalWallSeconds": [0.005798, 0.009275, 0.005919]
+    },
+    "multiFaceSeam": {
+      "success": false,
+      "deterministic": "3/3",
+      "firstInvalidStage": "tracing/phase-front",
+      "firstInvalidReason": "InvalidFrontBoundaryAuthority",
+      "topologyRegionCount": 1,
+      "fallback": false,
+      "sourceGridRecovery": false,
+      "internalWallSeconds": [0.007614, 0.009109, 0.006516]
+    },
+    "closeSheets": {
+      "success": false,
+      "deterministic": "3/3",
+      "firstInvalidStage": "tracing/phase-front",
+      "firstInvalidReason": "InvalidFrontBoundaryAuthority",
+      "topologyRegionCount": 2,
+      "fallback": false,
+      "sourceGridRecovery": false,
+      "internalWallSeconds": [0.008035, 0.018038, 0.009387]
+    },
+    "cylinder": {
+      "success": false,
+      "deterministic": "3/3",
+      "firstInvalidStage": "tracing/phase-front",
+      "firstInvalidReason": "InvalidFrontBoundaryAuthority",
+      "topologyRegionCount": 1,
+      "topologyRegionEulerCharacteristics": [0],
+      "topologyRegionBoundaryLoopCounts": [2],
+      "fallback": false,
+      "sourceGridRecovery": false,
+      "internalWallSeconds": [0.031741, 0.032139, 0.030215]
+    },
+    "acceptedBaselineArtifact": 9022061741,
+    "acceptedBaselineHashes": {
+      "plane": "730caeae49ec872c",
+      "multiFaceSeam": "5bdf34d7802e9fb0",
+      "closeSheets": "aaec5574aa2e52f9",
+      "cylinder": "32135be51d7a0a26"
+    },
+    "acceptedBaselineHashesAreCurrentCandidateResults": false
+  },
+  "g4Observation": {
+    "torus": {
+      "success": false,
+      "phaseFrontDisposition": "Produced",
+      "firstInvalidStage": "tracing/phase-front-materialization",
+      "firstInvalidReason": "UnconsumedAuthoritativeIsolationSeam",
+      "firstInvalidCellDiagnostic": 191,
+      "firstInvalidHalfedge": 762,
+      "topologyRegionCount": 4,
+      "internalIsolationSeamCount": 8,
+      "consumedTopologyRegionCount": 0,
+      "consumedInternalIsolationSeamCount": 0,
+      "periodicHolonomyRelationCount": 4,
+      "consumedPeriodicHolonomyCount": 0,
+      "topologyRegionHashes": [
+        12307695870402777067,
+        774841035876374403,
+        13642361335830849588,
+        10435835582422231161
+      ],
+      "topologyRegionEulerCharacteristics": [0, 0, 0, 0],
+      "topologyRegionBoundaryLoopCounts": [2, 2, 2, 2],
+      "topologyRegionIsolationSheetCounts": [1, 1, 2, 1],
+      "compatibilityPeriodicAuthority": {
+        "rotation": 0,
+        "translation": [24, 0],
+        "routeEdgeCount": 24,
+        "cutEdgeCount": 2
+      },
+      "fallbackAttempted": false,
+      "sourceGridRecoveryUsed": false,
+      "deterministic": "3/3",
+      "internalWallSeconds": [0.031355, 0.031467, 0.036461],
+      "acceptedMaterialProgress": false
+    },
+    "spherePrescribed": {
+      "observedOnCurrentArtifact": false,
+      "deferredUntilTorusDirectStrictValidProduction": true
+    }
+  },
+  "coverageAudit": {
+    "semanticDigestPermutationTestPackaged": false,
+    "semanticDigestMutationTestPackaged": false,
+    "semanticDigestTestsLocation": "tests/MilestoneGP27Tests.cpp",
+    "semanticDigestTargetEnabled": false,
+    "retainTrueEvidence": true,
+    "retainFalseCounterpartPackaged": false,
+    "allReviewMandatedCounterfactualsIndependentlyDiscoverable": false
+  },
+  "regressions": {
+    "genuineSourceBoundaryAuthority": {
+      "classification": "product implementation regression",
+      "behavior": "assign_open_front_boundary_authority requires an edge_matching_indices entry, but that table intentionally excludes one-face genuine source boundaries"
+    },
+    "isolationSeamConsumption": {
+      "classification": "product/contract design blocker",
+      "behavior": "materializer witnesses seam consumption only through cell-boundary transitionSourceEdges and torus witnesses none of eight retained seams"
+    },
+    "executableCoverage": {
+      "classification": "build/test packaging and coverage defect",
+      "behavior": "semantic digest tests are historical-only and several required quotient/retention counterfactuals lack default packaged tests"
+    }
+  },
+  "defaultSuites": {
+    "producer": "99/128",
+    "completionSimplification": "154/164",
+    "validation": "60/60",
+    "compiledApi": "8/8",
+    "aggregate": "321/360"
+  },
+  "gateDecision": {
+    "g4Passed": false,
+    "acceptedMaterialProgress": false,
+    "mandatoryDesignReviewActivated": true,
+    "mandatoryDesignReviewCompletedForCurrentEvidence": false,
+    "ordinaryCodeBuildBlocked": true,
+    "nextTurn": "Mandatory independent Review",
+    "nextPlan": ".agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md",
+    "proposedCodeBuildPlanStatus": "proposed_pending_review"
+  }
+}

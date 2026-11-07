@@ -1,0 +1,2 @@
+row	kind	identity	test	binary	expect	asserted_site
+1	POSITIVE	o3:polygonal-partial-phase	SurfaceCellsPhase10.PolygonalCurvedDiskRejectsWithoutPublishingPartialPhase	directional_surface_cell_producer_tests	PASS	-
