@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-CB97-P13-VALIDATOR-CONTACT-LENGTH-UNITS`. Apply [RA-210](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md) §5 exactly: CB97 (`84b8414f…`), CB98 (`14986e38…`), CB99 (`92c67e63…`), then TB84 (§6). Steps 49–52; then Review P13-n (step 53).
+> **Current canonical next:** `M6-CP3-CB98-P13-VALIDATOR-CONCAVE-QUAD-TRIANGLES`. Apply [RA-210](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md) §5 exactly: CB97 (`84b8414f…`), CB98 (`14986e38…`), CB99 (`92c67e63…`), then TB84 (§6). Steps 49–52; then Review P13-n (step 53).
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -19,7 +19,7 @@
   - **Scratch verification:** gate 905/906 (only O16); 5 fixtures identical; Vase `validationIssues=0`, failing only calibrated quality gates; all three new tests fail on legacy.
   - **Trajectory (P13-n):** 26,323 of 67,750 Vase quads (39%) have a >170° corner, and 4,543 vertices have valence 2, at source-edge-crossing side subdivisions, which DESIGN A3 assigns to the conformity plan.
 - **RA-210 sequence:** steps 49–52, one turn each, in order, implementation agent; then Review step 53.
-  49. [ ] **NEXT `M6-CP3-CB97-P13-VALIDATOR-CONTACT-LENGTH-UNITS`** (CB, compile only; RA-210.5):
+  49. [x] **COMPLETE `M6-CP3-CB97-P13-VALIDATOR-CONTACT-LENGTH-UNITS`** (CB, compile only; RA-210.5):
      - Precheck: `git diff --quiet 11c8172ad467c6dc865f2f3352e75b78f5469a2b HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
      - Patch `.agents/Directional/Architecture_M6_CP3_CB97_P13_Validator_Contact_Length_Units.diff`:
        - SHA-256 `84b8414fb58df6dfb90b5e425d15c26aac0ccaa73b4ffbf31dbf9dbc38737071`, 114 lines; keep its 5 single-space context lines;
@@ -27,7 +27,8 @@
        - `18 9` validator source → `c71a205405b20f7cd9a2c80f13b30efaf8ebfc31fed42622b81108ac07090e01`;
        - `30 0` Phase22 tests → `627eb08676a932ea86c42a2f5ce2e9c2b5b3a7cdc9caad41ddee0b8993d01f8b`.
      - Mismatch → `M6-CP3-PLAN-P13-VALIDATOR-CONTACT-LENGTH-UNITS-STOP`; infrastructure → `M6-CP3-CB97A-P13-VALIDATOR-CONTACT-LENGTH-UNITS-ORCH`.
-  50. [ ] **`M6-CP3-CB98-P13-VALIDATOR-CONCAVE-QUAD-TRIANGLES`** (CB; precheck the CB97 results):
+     - [CB97 record](.agents/Directional/Architecture_M6_CP3_CB97_P13_Validator_Contact_Length_Units_Code_Build_Record_20261107.md): exact code patch applied at `9f38d2190e1ef937eb3ad7760d501ee95bc4be8b`; [compile 42417902802](https://github.com/akashskypatel/Directional/actions/runs/42417902802) PASS (8/8 targets; exit 0), package `13592317057`, `runtimeExecution=false`. No TB executed.
+  50. [ ] **NEXT `M6-CP3-CB98-P13-VALIDATOR-CONCAVE-QUAD-TRIANGLES`** (CB; precheck the CB97 results):
      - Patch `.agents/Directional/Architecture_M6_CP3_CB98_P13_Validator_Concave_Quad_Triangles.diff`:
        - SHA-256 `14986e38261eb46796262b262801bcf9c5dd255344c918f10867224510b7ce6a`, 113 lines; keep its 4 single-space context lines;
        - results `3b31cb35…` (header), `55360202…` (source), `a02f6a79…` (tests).

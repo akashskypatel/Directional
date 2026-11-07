@@ -34,29 +34,27 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-06 · [RA-210](Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md) resolves the P13-l2 REVIEW_BLOCKER on the Claude scratch track. A retained-geometry probe has a byte-identical digest; patch 23301's microedge is a crossing of layout traces 966×459, 9e-8 from 966's degree-2 source-edge crossing. All 4 Vase strict issues are contact predicates: validator length units (342 false contact pairs), validator concave-quad fan (49), and completion accepting a corner on its own opposite edge (3 T-junctions). **Exact CB97 → CB98 → CB99 → TB84.** Scratch: gate 905/906 (only O16); 5 fixtures identical; Vase `validationIssues=0`, now failing only calibrated quality gates. Trajectory: 39% of Vase quads have a >170° corner at source-edge-crossing side subdivisions (P13-n Review after TB84). |
-| Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing` · exact **CB96 `11c8172ad467c6dc865f2f3352e75b78f5469a2b`**, immutable GMP/GMPXX package `13460725846`, [compile 42124939141](https://github.com/akashskypatel/Directional/actions/runs/42124939141) eight targets PASS, 28/28 verified, `runtimeExecution=false`. Last executed TB is **TB83 MATCH** on CB96 source `11c8172…` / package `13460725846` (gate 903/903, membership 984; census 1 PASS/2 registered RED). |
+| Currency | 2026-11-07 · [RA-210](Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md) resolves the P13-l2 REVIEW_BLOCKER on the Claude scratch track. A retained-geometry probe has a byte-identical digest; patch 23301's microedge is a crossing of layout traces 966×459, 9e-8 from 966's degree-2 source-edge crossing. All 4 Vase strict issues are contact predicates: validator length units (342 false contact pairs), validator concave-quad fan (49), and completion accepting a corner on its own opposite edge (3 T-junctions). **CB97 compile and 28/28 hashes verified; CB98 → CB99 → TB84 remain.** Scratch: gate 905/906 (only O16); 5 fixtures identical; Vase `validationIssues=0`, now failing only calibrated quality gates. Trajectory: 39% of Vase quads have a >170° corner at source-edge-crossing side subdivisions (P13-n Review after TB84). |
+| Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing` · **CB97 exact source [`9f38d2190e1ef937eb3ad7760d501ee95bc4be8b`](https://github.com/akashskypatel/Directional/commit/9f38d2190e1ef937eb3ad7760d501ee95bc4be8b)**, [compile 42417902802](https://github.com/akashskypatel/Directional/actions/runs/42417902802), package `13592317057`, eight targets `PASS (8/8 targets; exit 0)`, `runtimeExecution=false`. [CB97 record](Architecture_M6_CP3_CB97_P13_Validator_Contact_Length_Units_Code_Build_Record_20261107.md). Last executed TB remains **TB83 MATCH** on CB96 source `11c8172…` / package `13460725846` (gate 903/903, membership 984; census 1 PASS/2 registered RED). |
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06; unchanged. TB71 remains unpromoted candidate only. |
 | Latest candidate | **TB83 MATCH** (CB96): [report](Architecture_M6_CP3_TB83_P13_Embedding_Predicate_Full_Gate_Execution_Report_20261106.md), [gate 42131680146](https://github.com/akashskypatel/Directional/actions/runs/42131680146) 903/903 PASS, membership 984, 1,814/1,814 hashes; [census 42131702661](https://github.com/akashskypatel/Directional/actions/runs/42131702661) Cylinder PASS, BunnyRandom P13-e RED, Vase P13-l2 RED (249.99 s; four issues, 0 FlippedFace), 9/9 hashes, pinned digests MATCH. Selector497 and CP3 still unpromoted. |
 | Regression accounting and debt | Accepted CP2 **491/491**; stable **66/17/49**, debt **1**; ledger v5 81 deferred (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE), current membership **982**; selector497 and CP3 unpromoted. O32a source-vertex fan seeding verified, adaptive tie residual and O32b–e open; DR1/DR3 open, DR2/DR4 to M8-CP2. |
-| Active boundary | P13-l2 Review COMPLETE (RA-210). Next: exact CB97 → CB98 → CB99 → TB84 (implementation agent), then Review `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY` (P13-n). No acceptance or promotion. Carried: P13-n, P13-e, O30b, O31, O32b–e, O33, O27–O29. |
+| Active boundary | P13-l2 Review COMPLETE (RA-210). Next: exact CB98 → CB99 → TB84 (implementation agent), then Review `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY` (P13-n). No acceptance or promotion. Carried: P13-n, P13-e, O30b, O31, O32b–e, O33, O27–O29. |
 
-## Mandatory next turn — `M6-CP3-CB97-P13-VALIDATOR-CONTACT-LENGTH-UNITS` (Code + Build, compile only, Linux)
+## Mandatory next turn — `M6-CP3-CB98-P13-VALIDATOR-CONCAVE-QUAD-TRIANGLES` (Code + Build, compile only, Linux)
 
-- **Authority:** [RA-210](Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md) §5. **Do not write your own patch.**
-- **Precheck:** `git diff --quiet 11c8172ad467c6dc865f2f3352e75b78f5469a2b HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
-- **Patch:** [`Architecture_M6_CP3_CB97_P13_Validator_Contact_Length_Units.diff`](Architecture_M6_CP3_CB97_P13_Validator_Contact_Length_Units.diff), applied byte for byte.
-  - SHA-256 `84b8414fb58df6dfb90b5e425d15c26aac0ccaa73b4ffbf31dbf9dbc38737071`; 114 lines; **keep its 5 single-space context lines**.
-  - Numstat and result SHA-256:
-    - `3 0` `include/directional/validation/SourceAuthoritativeMeshValidator.h` → `7f3ae0db30873e88dceeecb82d24f44707d0a549dfea2a8f6dab753d473f425f`;
-    - `18 9` `src/validation/SourceAuthoritativeMeshValidator.cpp` → `c71a205405b20f7cd9a2c80f13b30efaf8ebfc31fed42622b81108ac07090e01`;
-    - `30 0` `tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp` → `627eb08676a932ea86c42a2f5ce2e9c2b5b3a7cdc9caad41ddee0b8993d01f8b`.
-- **Build:** one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`.
-- **Routes:**
-  - success → CB98 → CB99 → TB84 (RA-210.5/.6), one turn each;
-  - mismatch → `M6-CP3-PLAN-P13-VALIDATOR-CONTACT-LENGTH-UNITS-STOP`;
-  - infrastructure → `M6-CP3-CB97A-P13-VALIDATOR-CONTACT-LENGTH-UNITS-ORCH`.
-- **Preserve:** CP2 491/491, stable 66/17/49, debt 1, selector497 and CP3 unpromoted.
+- **Authority:** [RA-210](Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md) §5. Do not author an alternative patch.
+- **Precheck:** verify CB97's three result SHA-256 values and no later semantic change to `src`, `include`, `tests`, `benchmarks`, `CMakeLists.txt`, or `cmake`.
+- **Patch:** [`Architecture_M6_CP3_CB98_P13_Validator_Concave_Quad_Triangles.diff`](Architecture_M6_CP3_CB98_P13_Validator_Concave_Quad_Triangles.diff), byte for byte.
+  - SHA-256 `14986e38261eb46796262b262801bcf9c5dd255344c918f10867224510b7ce6a`; 113 lines, keep its 4 single-space context lines.
+  - Result digests in RA-210.5 (header `3b31cb35…`, source `55360202…`, tests `a02f6a79…`).
+- **Build:** one eight-target Linux Release/static GMP/GMPXX package, `runtimeExecution=false`; no runtime test or benchmark execution.
+- **Routes:** success → CB99; mismatch → `M6-CP3-PLAN-P13-VALIDATOR-CONCAVE-QUAD-TRIANGLES-STOP`; infrastructure → `M6-CP3-CB98A-P13-VALIDATOR-CONCAVE-QUAD-TRIANGLES-ORCH`.
+- **Preserve:** CP2 491/491, stable 66/17/49, debt 1, selector497 and CP3 unpromoted. CB97 only compiled; TB83 remains latest runtime.
+
+### CB97 complete (compile only)
+
+- [CB97 code/build record](Architecture_M6_CP3_CB97_P13_Validator_Contact_Length_Units_Code_Build_Record_20261107.md) owns exact patch SHA-256, remote apply commit, package and GMP compile evidence. The source change converts `orient2` determinant tests into signed line distances in length units; the approved regression source is compiled but its test is not executed until TB84.
 
 ### Earlier: CB93–CB96, TB83 and the P13-l2 Review block
 

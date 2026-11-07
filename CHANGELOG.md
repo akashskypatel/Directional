@@ -1,3 +1,9 @@
+## 2026-11-07 UTC — CB97 validator length-unit correction (Code + Build)
+
+- Applied RA-210.5's exact 114-line approved patch `84b8414f…` to the validator header/source and Phase22 regression, source [`9f38d2190e1ef937eb3ad7760d501ee95bc4be8b](https://github.com/akashskypatel/Directional/commit/9f38d2190e1ef937eb3ad7760d501ee95bc4be8b). Output file SHA-256 values matched all three specified postimages.
+- [Linux compile 42417902802](https://github.com/akashskypatel/Directional/actions/runs/42417902802): PASS (8/8 targets; exit 0); package `13592317057`; eight targets, GMP/GMPXX, `runtimeExecution=false`. No runtime test/benchmark was executed; TB83 remains latest runtime evidence.
+- [CB97 record](.agents/Directional/Architecture_M6_CP3_CB97_P13_Validator_Contact_Length_Units_Code_Build_Record_20261107.md). Next CB98 separately, then CB99 and TB84; no selector or CP3 promotion.
+
 ## 2026-11-06 — RA-210: P13-l2 block resolved; three contact predicates; exact CB97 → CB98 → CB99 → TB84
 
 - **Turn:** `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP`, resumed from the ChatGPT BLOCKED Review. [RA-210](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md).
