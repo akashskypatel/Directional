@@ -1,0 +1,2 @@
+M6-CP3-TB84-P13-CONTACT-PREDICATES-FULL-GATE-EXEC
+Snapshot requested for immutable CB99 verification, no build or runtime.
