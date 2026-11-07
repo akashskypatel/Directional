@@ -143,6 +143,7 @@ enum class PureQuadEmbeddingFailureKind : int {
   ZeroProjectedArea = 7,
   BowTieIntersection = 8,
   SourceOrientationMismatch = 9,
+  CornerOnOppositeEdge = 10,
 };
 
 inline const char *pure_quad_embedding_failure_name(
@@ -168,6 +169,8 @@ inline const char *pure_quad_embedding_failure_name(
     return "bow-tie-intersection";
   case PureQuadEmbeddingFailureKind::SourceOrientationMismatch:
     return "source-orientation-mismatch";
+  case PureQuadEmbeddingFailureKind::CornerOnOppositeEdge:
+    return "corner-on-opposite-edge";
   }
   return "unknown";
 }
@@ -419,6 +422,9 @@ struct PureQuadCompletionOptions {
   // Used only when it borrows exactly the source inputs above; otherwise
   // ownership validation builds its own graph for the patch.
   const SourceChartTransitionGraph *sourceTransitions = nullptr;
+  // The output validator's position tolerance (source_position_tolerance).
+  // Zero disables the corner-on-opposite-edge test.
+  double positionTolerance = 0.0;
 };
 
 struct PureQuadCompletionEvidence {
@@ -793,12 +799,13 @@ bool complete_pattern(const PureQuadPatch &patch, PureQuadMesh &mesh);
 bool complete_bounded(const PureQuadPatch &patch, PureQuadMesh &mesh,
                              int &explored);
 
-// One completed quad: simple in its own Newell plane and, given the summed
-// unit normals of the source faces under its corners, oriented within 60
-// degrees of that source normal.
+// One completed quad: simple in its own Newell plane, with no corner within
+// `contactTolerance` of an edge it is not on and, given the summed unit
+// normals of the source faces under its corners, oriented within 60 degrees
+// of that source normal.
 PureQuadEmbeddingFailureKind quad_embedding_failure(
     const std::array<Eigen::Vector3d, 4> &corners,
-    const Eigen::Vector3d *sourceNormal);
+    const Eigen::Vector3d *sourceNormal, double contactTolerance = 0.0);
 
 } // namespace pure_quad_detail
 

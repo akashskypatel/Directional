@@ -499,7 +499,7 @@ Eigen::Vector3d source_orientation_normal(
 
 PureQuadEmbeddingFailureKind quad_embedding_failure(
     const std::array<Eigen::Vector3d, 4> &p,
-    const Eigen::Vector3d *sourceNormal) {
+    const Eigen::Vector3d *sourceNormal, const double contactTolerance) {
   for (const Eigen::Vector3d &corner : p) {
     if (!corner.allFinite()) {
       return PureQuadEmbeddingFailureKind::NonFinitePosition;
@@ -564,6 +564,25 @@ PureQuadEmbeddingFailureKind quad_embedding_failure(
                              projected[0])) {
     return PureQuadEmbeddingFailureKind::BowTieIntersection;
   }
+  // A corner within the output position tolerance of an edge it is not on
+  // pinches the quad shut: the validator reports it as a vertex on an
+  // unsplit edge (RA-210).
+  for (int corner = 0; corner < 4; ++corner) {
+    const Eigen::Vector3d &point = p[static_cast<std::size_t>(corner)];
+    for (const int edge : {(corner + 1) % 4, (corner + 2) % 4}) {
+      const Eigen::Vector3d &start = p[static_cast<std::size_t>(edge)];
+      const Eigen::Vector3d direction =
+          p[static_cast<std::size_t>((edge + 1) % 4)] - start;
+      const double length2 = direction.squaredNorm();
+      const double t =
+          length2 > 0.0
+              ? std::clamp((point - start).dot(direction) / length2, 0.0, 1.0)
+              : 0.0;
+      if ((point - (start + t * direction)).norm() <= contactTolerance) {
+        return PureQuadEmbeddingFailureKind::CornerOnOppositeEdge;
+      }
+    }
+  }
   // A quad agrees with the source surface only if its vector area lies
   // within 60 degrees of the local source normal. This rejects folded quads
   // and edge-on slivers, whose orientation sign is numerical noise.
@@ -579,7 +598,7 @@ bool completed_quads_have_simple_embedding(
     const PureQuadMesh &mesh, const int completionVariant,
     PureQuadEmbeddingFailure &failure,
     const Eigen::MatrixXd *sourceVertices,
-    const Eigen::MatrixXi *sourceFaces) {
+    const Eigen::MatrixXi *sourceFaces, const double contactTolerance) {
   failure = {};
   failure.sourcePatch = mesh.sourcePatch;
   failure.backend = mesh.backend;
@@ -664,8 +683,8 @@ bool completed_quads_have_simple_embedding(
       sourceNormal =
           source_orientation_normal(*sourceVertices, *sourceFaces, faces);
     }
-    const PureQuadEmbeddingFailureKind kind =
-        quad_embedding_failure(p, oriented ? &sourceNormal : nullptr);
+    const PureQuadEmbeddingFailureKind kind = quad_embedding_failure(
+        p, oriented ? &sourceNormal : nullptr, contactTolerance);
     if (kind != PureQuadEmbeddingFailureKind::None) {
       return reject(kind, quadIndex);
     }
@@ -2120,7 +2139,8 @@ bool append_balanced_boundary_quadrangulation(
 bool append_embedded_boundary_quadrangulation(
     const PureQuadPatch &patch, const std::vector<int> &boundary,
     const int completionVariant, const Eigen::MatrixXd *sourceVertices,
-    const Eigen::MatrixXi *sourceFaces, PureQuadMesh &mesh, bool &exhausted) {
+    const Eigen::MatrixXi *sourceFaces, const double contactTolerance,
+    PureQuadMesh &mesh, bool &exhausted) {
   // The balanced split is kept whenever every one of its quads embeds.
   // Otherwise every quadrangulation of the same cycle by diagonals is
   // searched: split(i, j) records the first quad (i, a, b, j) in (a, b) order
@@ -2168,7 +2188,8 @@ bool append_embedded_boundary_quadrangulation(
       sourceNormal =
           source_orientation_normal(*sourceVertices, *sourceFaces, faces);
     }
-    return quad_embedding_failure(p, oriented ? &sourceNormal : nullptr) ==
+    return quad_embedding_failure(p, oriented ? &sourceNormal : nullptr,
+                                  contactTolerance) ==
            PureQuadEmbeddingFailureKind::None;
   };
 
@@ -2289,14 +2310,15 @@ namespace directional::geometry::pure_quad_detail {
 bool complete_pattern(const PureQuadPatch &patch, PureQuadMesh &mesh,
                       const int completionVariant,
                       const Eigen::MatrixXd *sourceVertices,
-                      const Eigen::MatrixXi *sourceFaces, bool &exhausted) {
+                      const Eigen::MatrixXi *sourceFaces,
+                      const double contactTolerance, bool &exhausted) {
   if (patch.boundaryVertices.size() < 4 ||
       patch.boundaryVertices.size() % 2 != 0) return false;
   const std::vector<int> boundary =
       rotated_cycle(patch.boundaryVertices, completionVariant);
   if (!append_embedded_boundary_quadrangulation(
           patch, boundary, completionVariant, sourceVertices, sourceFaces,
-          mesh, exhausted)) {
+          contactTolerance, mesh, exhausted)) {
     return false;
   }
   mesh.backend = PureQuadCompletionBackend::Pattern;
@@ -2310,14 +2332,15 @@ namespace directional::geometry::pure_quad_detail {
 bool complete_bounded(const PureQuadPatch &patch, PureQuadMesh &mesh,
                       int &explored, const int completionVariant,
                       const Eigen::MatrixXd *sourceVertices,
-                      const Eigen::MatrixXi *sourceFaces, bool &exhausted) {
+                      const Eigen::MatrixXi *sourceFaces,
+                      const double contactTolerance, bool &exhausted) {
   PureQuadMesh trial = mesh;
   ++explored;
   const std::vector<int> boundary =
       rotated_cycle(patch.boundaryVertices, completionVariant);
   if (!append_embedded_boundary_quadrangulation(
           patch, boundary, completionVariant, sourceVertices, sourceFaces,
-          trial, exhausted) ||
+          contactTolerance, trial, exhausted) ||
       !pure_quad_topology_is_disk(trial)) {
     return false;
   }
@@ -2462,12 +2485,14 @@ PureQuadCompletionResult complete_pure_quad_patch(
       if (!pure_quad_detail::fill_positions(positioned) ||
           !pure_quad_detail::completed_quads_have_simple_embedding(
               positioned, options.completionVariant, gridFailure,
-              options.sourceVertices, options.sourceFaces)) {
+              options.sourceVertices, options.sourceFaces,
+              options.positionTolerance)) {
         PureQuadMesh search = boundaryOnly;
         bool exhausted = false;
         if (pure_quad_detail::complete_pattern(
                 patch, search, options.completionVariant,
-                options.sourceVertices, options.sourceFaces, exhausted)) {
+                options.sourceVertices, options.sourceFaces,
+                options.positionTolerance, exhausted)) {
           mesh = std::move(search);
         }
       }
@@ -2480,13 +2505,14 @@ PureQuadCompletionResult complete_pure_quad_patch(
   if (!completed && !boundedFallbackAdmissible && patch.simple) {
     completed = pure_quad_detail::complete_pattern(
         patch, mesh, options.completionVariant, options.sourceVertices,
-        options.sourceFaces, quadrangulationExhausted);
+        options.sourceFaces, options.positionTolerance,
+        quadrangulationExhausted);
   }
   if (!completed && options.allowBoundedCombinatorialFallback) {
     completed = pure_quad_detail::complete_bounded(
         patch, mesh, result.exploredPatterns, options.completionVariant,
         options.sourceVertices, options.sourceFaces,
-        quadrangulationExhausted);
+        options.positionTolerance, quadrangulationExhausted);
   }
   if (!completed) {
     result.failureReason =
@@ -2515,7 +2541,8 @@ PureQuadCompletionResult complete_pure_quad_patch(
   }
   if (!pure_quad_detail::completed_quads_have_simple_embedding(
           mesh, options.completionVariant, result.embeddingFailure,
-          options.sourceVertices, options.sourceFaces)) {
+          options.sourceVertices, options.sourceFaces,
+          options.positionTolerance)) {
     result.failureReason = PureQuadPatchRejectReason::TopologyValidationFailed;
     const PureQuadEmbeddingFailure &failure = result.embeddingFailure;
     std::ostringstream stream;

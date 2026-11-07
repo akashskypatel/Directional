@@ -1050,6 +1050,18 @@ MeshTopologySummary summarize_mesh_topology(const Eigen::MatrixXi &faces) {
 
 namespace directional::validation {
 
+double source_position_tolerance(const Eigen::MatrixXd &sourceVertices,
+                                 const double geometricTolerance) {
+  const double sourceScale =
+      sourceVertices.rows() == 0
+          ? 1.0
+          : std::max(std::numeric_limits<double>::epsilon(),
+                     (sourceVertices.colwise().maxCoeff() -
+                      sourceVertices.colwise().minCoeff())
+                         .norm());
+  return std::max(geometricTolerance, 1.0e-12) * sourceScale * 32.0;
+}
+
 SourceAuthoritativeMeshValidationResult
 validate_source_authoritative_surface_mesh(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
@@ -1169,16 +1181,8 @@ validate_source_authoritative_surface_mesh(
   const SourcePointLabelSupport labelSupport(
       options.sourceFaces, options.sourceAuthority,
       &options.sourceHardFeatureEdges);
-  const double sourceScale =
-      options.sourceVertices->rows() == 0
-          ? 1.0
-          : std::max(
-                std::numeric_limits<double>::epsilon(),
-                (options.sourceVertices->colwise().maxCoeff() -
-                 options.sourceVertices->colwise().minCoeff())
-                    .norm());
-  const double positionTolerance =
-      std::max(options.geometricTolerance, 1.0e-12) * sourceScale * 32.0;
+  const double positionTolerance = source_position_tolerance(
+      *options.sourceVertices, options.geometricTolerance);
   result.provenanceCoverageComplete =
       provenance.size() >= static_cast<std::size_t>(vertices.rows());
   if (!result.provenanceCoverageComplete) {

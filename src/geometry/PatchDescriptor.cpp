@@ -1,4 +1,5 @@
 #include <directional/geometry/PatchDescriptor.h>
+#include <directional/validation/SourceAuthoritativeMeshValidator.h>
 
 #include <cstring>
 #include <iterator>
@@ -2753,6 +2754,8 @@ SurfaceCellComplexCompletionDraft complete_surface_cell_complex_pass(
         descriptorIndex);
   }
 
+  const double positionTolerance = validation::source_position_tolerance(
+      V, validation::SourceAuthoritativeMeshValidatorOptions{}.geometricTolerance);
   const auto completeDescriptor = [&](const int descriptorIndex,
                                       const int completionVariant) {
     const PatchDescriptor &descriptor = result.descriptors.descriptors[
@@ -2770,6 +2773,7 @@ SurfaceCellComplexCompletionDraft complete_surface_cell_complex_pass(
     completionOptions.sourceHardFeatureEdges =
         options.sourceHardFeatureEdges;
     completionOptions.sourceTransitions = &sourceTransitions;
+    completionOptions.positionTolerance = positionTolerance;
     return complete_pure_quad_patch(descriptor.patch, completionOptions);
   };
 

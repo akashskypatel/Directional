@@ -2846,3 +2846,44 @@ TEST(PureQuadCompletionPhase18,
     }
   }
 }
+
+TEST(PureQuadCompletionPhase18,
+     QuadEmbeddingRejectsACornerOnTheOppositeEdgeAtThePositionTolerance) {
+  using directional::geometry::PureQuadEmbeddingFailureKind;
+  using directional::geometry::pure_quad_detail::quad_embedding_failure;
+  // CB96 Vase output quad 41746: its third corner lies 2.6e-8 from the edge
+  // joining its fourth and first corners, inside the validator's 6.44e-8
+  // position tolerance for the Vase source, which reported the corner as a
+  // vertex on an unsplit edge. Completion rejects the quad in every corner
+  // order once it is given that tolerance, and still accepts a plain square
+  // (RA-210).
+  const double tolerance = 6.438212444601785e-8;
+  const std::array<Eigen::Vector3d, 4> pinched{
+      {Eigen::Vector3d(-0.12633192133030346, 1.4716559117476511,
+                       -0.010196752014205149),
+       Eigen::Vector3d(-0.12597967017204731, 1.4743444534686703,
+                       -0.008786257993049754),
+       Eigen::Vector3d(-0.11601535070148383, 1.4729326915614649,
+                       -0.0085837490077993236),
+       Eigen::Vector3d(-0.11601526252555591, 1.4729326770842592,
+                       -0.0085837426011863994)}};
+  for (int start = 0; start < 4; ++start) {
+    for (const int step : {1, 3}) {
+      std::array<Eigen::Vector3d, 4> cycle;
+      for (int corner = 0; corner < 4; ++corner) {
+        cycle[static_cast<std::size_t>(corner)] =
+            pinched[static_cast<std::size_t>((start + step * corner) % 4)];
+      }
+      EXPECT_EQ(PureQuadEmbeddingFailureKind::CornerOnOppositeEdge,
+                quad_embedding_failure(cycle, nullptr, tolerance))
+          << "start " << start << " step " << step;
+    }
+  }
+  EXPECT_EQ(PureQuadEmbeddingFailureKind::None,
+            quad_embedding_failure(pinched, nullptr));
+  const std::array<Eigen::Vector3d, 4> square{
+      {Eigen::Vector3d(0.0, 0.0, 0.0), Eigen::Vector3d(1.0e-2, 0.0, 0.0),
+       Eigen::Vector3d(1.0e-2, 1.0e-2, 0.0), Eigen::Vector3d(0.0, 1.0e-2, 0.0)}};
+  EXPECT_EQ(PureQuadEmbeddingFailureKind::None,
+            quad_embedding_failure(square, nullptr, tolerance));
+}

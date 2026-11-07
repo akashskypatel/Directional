@@ -544,6 +544,13 @@ Eigen::Vector3d polygon_normal(const Eigen::MatrixXd &vertices,
 
 MeshTopologySummary summarize_mesh_topology(const Eigen::MatrixXi &faces);
 
+// The length below which the validator does not separate two output
+// positions: 32 geometric tolerances of the source bounding-box diagonal.
+// Completion rejects a quad corner this close to a non-incident edge of its
+// own quad, so it never emits a contact the validator reports (RA-210).
+double source_position_tolerance(const Eigen::MatrixXd &sourceVertices,
+                                 double geometricTolerance);
+
 SourceAuthoritativeMeshValidationResult
 validate_source_authoritative_surface_mesh(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
