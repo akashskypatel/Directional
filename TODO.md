@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-CB99-P13-COMPLETION-CORNER-ON-OPPOSITE-EDGE`. Apply [RA-210](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md) §5 exactly: CB97 (`84b8414f…`), CB98 (`14986e38…`), CB99 (`92c67e63…`), then TB84 (§6). Steps 49–52; then Review P13-n (step 53).
+> **Current canonical next:** `M6-CP3-TB84-P13-CONTACT-PREDICATES-FULL-GATE-EXEC`. CB97–CB99 source and compile-only turns completed; execute TB84 separately. Authority: [RA-210](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md) §5 exactly: CB97 (`84b8414f…`), CB98 (`14986e38…`), CB99 (`92c67e63…`), then TB84 (§6). Steps 49–52; then Review P13-n (step 53).
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -34,12 +34,13 @@
        - results `3b31cb35…` (header), `55360202…` (source), `a02f6a79…` (tests).
      - Mismatch → `M6-CP3-PLAN-P13-VALIDATOR-CONCAVE-QUAD-TRIANGLES-STOP`.
      - [CB98 record](.agents/Directional/Architecture_M6_CP3_CB98_P13_Validator_Concave_Quad_Triangles_Code_Build_Record_20261107.md): exact source `e54d93a5b721c1ba4026629bf0db7a03c7d7a100`, eight-target GMP compile [run 42421455569](https://github.com/akashskypatel/Directional/actions/runs/42421455569), immutable package `13593607294`, `runtimeExecution=false`. No TB executed.
-  51. [ ] **NEXT `M6-CP3-CB99-P13-COMPLETION-CORNER-ON-OPPOSITE-EDGE`** (CB; precheck the CB98 results):
+  51. [x] **COMPLETE `M6-CP3-CB99-P13-COMPLETION-CORNER-ON-OPPOSITE-EDGE`** (CB; precheck the CB98 results):
      - Patch `.agents/Directional/Architecture_M6_CP3_CB99_P13_Completion_Corner_On_Opposite_Edge.diff`:
        - SHA-256 `92c67e63bbbeabb7504e349c8f48637c3b26aee39e36423fbeee0a1e2d45dcbe`, 344 lines; keep its 14 single-space context lines;
        - numstat `11 4` / `7 0` / `4 0` / `42 15` / `14 10` / `41 0`; results in RA-210.5.
      - Mismatch → `M6-CP3-PLAN-P13-COMPLETION-CORNER-ON-OPPOSITE-EDGE-STOP`.
-  52. [ ] **`M6-CP3-TB84-P13-CONTACT-PREDICATES-FULL-GATE-EXEC`** (TB-EXEC; RA-210.6):
+     - [CB99 record](.agents/Directional/Architecture_M6_CP3_CB99_P13_Completion_Corner_On_Opposite_Edge_Code_Build_Record_20261107.md): exact source `553932b04fb433b560e24c59d23751f70f7f2c3e`, GMP compile [run 42425406875](https://github.com/akashskypatel/Directional/actions/runs/42425406875), immutable package `13595960339`, `runtimeExecution=false`; no TB executed.
+  52. [ ] **NEXT `M6-CP3-TB84-P13-CONTACT-PREDICATES-FULL-GATE-EXEC`** (TB-EXEC; RA-210.6):
      - Gate: [906-row manifest](.agents/Directional/Architecture_M6_TB84_P13_Contact_Predicates_Full_Gate_Case_Manifest.tsv) `09eff7ed146ef39836706f4d87ae8e9309e35ab16787b6d1e8c3f39314a0b7ff`; ledger v5; **906/906**, membership 987.
      - **Pinned:** gate rows 795/796/797/864, census Cylinder and BunnyRandom byte-identical to TB83; Vase through `simplification`.
      - **Registered (macOS-observed):** Vase `validationIssues=0`, terminal `AggregateCompletionValidationFailure`.

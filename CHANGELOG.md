@@ -1,3 +1,9 @@
+## 2026-11-07 UTC — CB99 completion corner-on-opposite-edge (Code + Build)
+
+- Exact RA-210.5 344-line patch SHA-256 `92c67e63…2d45dcbe` applied to six prescribed paths at [source `553932b04fb433b560e24c59d23751f70f7f2c3e`](https://github.com/akashskypatel/Directional/commit/553932b04fb433b560e24c59d23751f70f7f2c3e), all six postimages matching. Remote application [42425276322](https://github.com/akashskypatel/Directional/actions/runs/42425276322) succeeded; temporary Drive patch staging retired.
+- [Linux compile 42425406875](https://github.com/akashskypatel/Directional/actions/runs/42425406875): eight Release/static targets PASS with GMP/GMPXX, package `13595960339` (ZIP SHA-256 `54721cbd0c970064c614b64cf4241cbb3afb60ee7a96c482314057b7d9b20f35`), source archive SHA-256 `b1bff0cd58508482fa4c4145d273ebc6c8ed7d4538a162bfad250cb631de33db`, `runtimeExecution=false`. [CB99 record](.agents/Directional/Architecture_M6_CP3_CB99_P13_Completion_Corner_On_Opposite_Edge_Code_Build_Record_20261107.md). New Phase18 regression compiled but not executed; no runtime tests/benchmarks.
+- Next separate immutable TB84. CP2 accepted 491/491, stable 66/17/49, debt 1; selector497 and CP3 unpromoted.
+
 ## 2026-11-07 UTC — CB98 concave-quad triangle-fan correction (Code + Build)
 
 - Applied RA-210.5's exact 113-line approved patch `14986e3826…` to the validator header/source and Phase22 regression; source [`e54d93a5b721c1ba4026629bf0db7a03c7d7a100`](https://github.com/akashskypatel/Directional/commit/e54d93a5b721c1ba4026629bf0db7a03c7d7a100). Three prescribed postimage SHA-256s match.
