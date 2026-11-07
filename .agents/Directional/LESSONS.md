@@ -372,6 +372,8 @@ This document records **reusable failure-derived engineering lessons**, not an e
 
   Before repairing a post-processing step, count how often it fires on correct producer output. Check a candidate predicate against the measured witnesses it is supposed to catch, in the projection it actually uses (RA-209).
 
+- **Census every contact a first-failure validator hides, and check predicate units.** The strict validator stops at its first self-intersection. The all-pairs census showed 342 contacts, all false: a length tolerance compared with an area-unit determinant, and fans across concave quads. Fixing only the reported pair would have exposed the next false one. Before attributing a "global overlap" to a producer, count every contact under each candidate predicate. Then make the producer reject what the validator reports, at the same tolerance (RA-210).
+
 ## Contracts, planning, reviews, and durable records
 
 - **Plan from the current normative contract and reachable implementation.** Before freezing an

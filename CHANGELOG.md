@@ -1,3 +1,24 @@
+## 2026-11-06 — RA-210: P13-l2 block resolved; three contact predicates; exact CB97 → CB98 → CB99 → TB84
+
+- **Turn:** `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP`, resumed from the ChatGPT BLOCKED Review. [RA-210](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md).
+- **Block:** resolved with a retained-geometry scratch probe whose digest is byte-identical to the baseline. Review scratch probes are a Review duty.
+- **Provenance:** the 23301 microedge is a crossing of layout traces 966×459, 9e-8 from 966's degree-2 source-edge crossing. No redundant trace, no identity defect.
+- **Owners:**
+  - validator length units (CB97);
+  - validator concave-quad fan (CB98);
+  - completion corner-on-opposite-edge at the shared position tolerance (CB99).
+
+  RA-208/209's "1 overlap" was a validator false positive.
+- **Scratch verification:**
+  - the chain applies cleanly, byte-identical;
+  - gate 905/906 (only O16); 5 fixtures identical;
+  - Vase `validationIssues=0`;
+  - all three new tests fail on legacy;
+  - no new GCC warnings.
+- **TB84 manifest:** 906 rows, `09eff7ed…`, membership 987.
+- **Next Review, P13-n:** 39% of Vase quads have a >170° corner at source-edge-crossing side subdivisions.
+- No product or test source changed in the repository; the patches are committed `.diff`s.
+
 ## 2026-11-06 UTC — TB83 immutable own-plane full gate and production census COMPLETE / MATCH
 
 - [Report](.agents/Directional/Architecture_M6_CP3_TB83_P13_Embedding_Predicate_Full_Gate_Execution_Report_20261106.md). Corrected 903-case [gate 42131680146](https://github.com/akashskypatel/Directional/actions/runs/42131680146) **903/903 PASS**, membership **984**, **1,814/1,814** internal hashes, pinned stage digests MATCH; exact CB96 source `11c8172…` / immutable package `13460725846`, no compilation/relinking.

@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP` (Review, RA-209.5, after TB83). [TB83](.agents/Directional/Architecture_M6_CP3_TB83_P13_Embedding_Predicate_Full_Gate_Execution_Report_20261106.md) MATCH on immutable CB96 source: 903/903 gate PASS, membership 984; census Cylinder PASS, BunnyRandom P13-e expected RED, Vase P13-l2 expected RED with 4 issues/0 FlippedFace. CP2 491/491 and stable 66/17/49 unchanged; selector497/CP3 unpromoted. Step 48 complete.
+> **Current canonical next:** `M6-CP3-CB97-P13-VALIDATOR-CONTACT-LENGTH-UNITS`. Apply [RA-210](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md) §5 exactly: CB97 (`84b8414f…`), CB98 (`14986e38…`), CB99 (`92c67e63…`), then TB84 (§6). Steps 49–52; then Review P13-n (step 53).
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -7,7 +7,48 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — RA-209: remove the orientation pass; own-plane embedding predicate in validator and completion; CB93 → CB94 → CB95 → CB96 → TB83 (2026-11-05)
+## CURRENT — RA-210: P13-l2 resolved; Vase residue is three contact predicates; CB97 → CB98 → CB99 → TB84; P13-n next (2026-11-06)
+
+- [x] **P13-l2 REVIEW_BLOCKER resolved by [RA-210](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md)** (Claude scratch track; Review scratch probes are a Review duty):
+  - **Provenance:** the retained-geometry probe has a digest byte-identical to the baseline. Node 9679 is a degree-2 source-edge crossing of layout trace 966; 36055 is the 966×459 crossing 9e-8 away. Both traces are ordinary layout support: no rail, not mandatory, not redundant.
+  - **Owners of the 4 strict issues:**
+    - validator length units (342 false contact pairs; faces 55/15372 are 5.7e-5 apart);
+    - validator concave-quad fan (49);
+    - completion accepting a corner on its own opposite edge (quads 21286 and 41746, the 3 T-junctions).
+    - **RA-208/209's "1 overlap" was a false positive.**
+  - **Scratch verification:** gate 905/906 (only O16); 5 fixtures identical; Vase `validationIssues=0`, failing only calibrated quality gates; all three new tests fail on legacy.
+  - **Trajectory (P13-n):** 26,323 of 67,750 Vase quads (39%) have a >170° corner, and 4,543 vertices have valence 2, at source-edge-crossing side subdivisions, which DESIGN A3 assigns to the conformity plan.
+- **RA-210 sequence:** steps 49–52, one turn each, in order, implementation agent; then Review step 53.
+  49. [ ] **NEXT `M6-CP3-CB97-P13-VALIDATOR-CONTACT-LENGTH-UNITS`** (CB, compile only; RA-210.5):
+     - Precheck: `git diff --quiet 11c8172ad467c6dc865f2f3352e75b78f5469a2b HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB97_P13_Validator_Contact_Length_Units.diff`:
+       - SHA-256 `84b8414fb58df6dfb90b5e425d15c26aac0ccaa73b4ffbf31dbf9dbc38737071`, 114 lines; keep its 5 single-space context lines;
+       - `3 0` validator header → `7f3ae0db30873e88dceeecb82d24f44707d0a549dfea2a8f6dab753d473f425f`;
+       - `18 9` validator source → `c71a205405b20f7cd9a2c80f13b30efaf8ebfc31fed42622b81108ac07090e01`;
+       - `30 0` Phase22 tests → `627eb08676a932ea86c42a2f5ce2e9c2b5b3a7cdc9caad41ddee0b8993d01f8b`.
+     - Mismatch → `M6-CP3-PLAN-P13-VALIDATOR-CONTACT-LENGTH-UNITS-STOP`; infrastructure → `M6-CP3-CB97A-P13-VALIDATOR-CONTACT-LENGTH-UNITS-ORCH`.
+  50. [ ] **`M6-CP3-CB98-P13-VALIDATOR-CONCAVE-QUAD-TRIANGLES`** (CB; precheck the CB97 results):
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB98_P13_Validator_Concave_Quad_Triangles.diff`:
+       - SHA-256 `14986e38261eb46796262b262801bcf9c5dd255344c918f10867224510b7ce6a`, 113 lines; keep its 4 single-space context lines;
+       - results `3b31cb35…` (header), `55360202…` (source), `a02f6a79…` (tests).
+     - Mismatch → `M6-CP3-PLAN-P13-VALIDATOR-CONCAVE-QUAD-TRIANGLES-STOP`.
+  51. [ ] **`M6-CP3-CB99-P13-COMPLETION-CORNER-ON-OPPOSITE-EDGE`** (CB; precheck the CB98 results):
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB99_P13_Completion_Corner_On_Opposite_Edge.diff`:
+       - SHA-256 `92c67e63bbbeabb7504e349c8f48637c3b26aee39e36423fbeee0a1e2d45dcbe`, 344 lines; keep its 14 single-space context lines;
+       - numstat `11 4` / `7 0` / `4 0` / `42 15` / `14 10` / `41 0`; results in RA-210.5.
+     - Mismatch → `M6-CP3-PLAN-P13-COMPLETION-CORNER-ON-OPPOSITE-EDGE-STOP`.
+  52. [ ] **`M6-CP3-TB84-P13-CONTACT-PREDICATES-FULL-GATE-EXEC`** (TB-EXEC; RA-210.6):
+     - Gate: [906-row manifest](.agents/Directional/Architecture_M6_TB84_P13_Contact_Predicates_Full_Gate_Case_Manifest.tsv) `09eff7ed146ef39836706f4d87ae8e9309e35ab16787b6d1e8c3f39314a0b7ff`; ledger v5; **906/906**, membership 987.
+     - **Pinned:** gate rows 795/796/797/864, census Cylinder and BunnyRandom byte-identical to TB83; Vase through `simplification`.
+     - **Registered (macOS-observed):** Vase `validationIssues=0`, terminal `AggregateCompletionValidationFailure`.
+     - Mismatch → `M6-CP3-TB84-P13-CONTACT-PREDICATES-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB84A-P13-CONTACT-PREDICATES-ORCH`.
+  53. [ ] **Review (after TB84) `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`** (P13-n; Claude, scratch build; RA-210.4):
+     - exact per-patch counts of degree-2 source-edge side nodes and flat corners;
+     - check that the warpage, normal and Jacobian metrics handle concave quads;
+     - owner: A3 conformity plan vs completion interior-vertex patterns;
+     - exact patches only after measurement.
+
+## EARLIER — RA-209: remove the orientation pass; own-plane embedding predicate in validator and completion; CB93 → CB94 → CB95 → CB96 → TB83 (2026-11-05)
 
 - [x] **RA-208 reviewed by [RA-209](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_Single_Writer_Own_Plane_20261105.md)** (adversarial re-entry; scratch build):
   - **Stands:** the pre/post census and CB93's whole-quad predicate (applied at `e96e98806`).
@@ -520,7 +561,7 @@
     - **Continuation 6 (scratch Review evidence, 2026-11-05):** corrected producer emits **1,416** semantic-identical seeds under base + 3 consistent source-row permutations; typed protected-edge fan identities pass under two row orders (remote GMP compile 42030842612). Full Vase runs yield identical 189,462 trace segments / 30,989 strands / 26,817 arrangement cells, but completion counts **67,750 / 67,782 / 67,766 / 67,778** before the same typed `SelfIntersectingFace` RED. Trace/strand content hashes differ and remain semantic-oracle candidates O32b/c, not yet proved stage defects. Earlier one-sample-per-rail negative was invalid under strict rail interval ingress; a new complete two-rail test preserves both typed source-edge interval owners and rejects missing-edge / duplicate-ID tampering (remote GMP run 42034591362, artifact 13418271529). Coincident per-seed metadata alone is not authoritative interval ownership.
     - **Before Review closeout:** rail-edge vs seed annotation and fan-scope admissibility are independently adjudicated; all 1,274 actual Vase source vertices have one intrinsic fan (independent OFF topology audit, no hard-feature edge). Unscoped multi-fan vertex requests are not authorized to duplicate seeds: CB92 must emit a typed terminal rejection unless producer-owned scope narrows to one fan, or STOP for an explicit failure-contract Review. Bounded CB92 plan is revised; remaining work is final Review reconciliation/boundary checker/Drive cleanup and exact handoff/STATUS closeout. Earlier evidence and later downstream stages are unchanged.  bounded [CB92 source-fan seed plan](.agents/Directional/Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity_Plan_20261105.md) is written with falsifiers but not started. Perform Review checklist/boundary checker and consolidation, then authorize the successor in STATUS. [Owning evidence](.agents/Directional/Architecture_M6_CP3_DEFN_P13_O32a_Vase_Producer_Scratch_Result_20261105.md). No successor or CP3 promotion yet.
     - Outcome: an exact CB → TB that pins only permutation-invariant values.
-  - [ ] **BLOCKED Review `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP`** (P13-l2; RA-209.5; frozen CB96 `11c8172ad467c6dc865f2f3352e75b78f5469a2b`). Post-CB96 strict Vase has 1 reported global overlap and 3 geometric vertex-on-unsplit-edge issues; no CP3 promotion. The original hypotheses below are **discharged by exact counter-evidence**, not pending repair requests:
+  - [x] **Review `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP`** (P13-l2): ChatGPT WIP blocked on runtime provenance; resolved by [RA-210](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md) on the Claude scratch track. Owners: validator length units, validator concave fan, completion corner-on-opposite-edge → exact CB97–CB99 → TB84 (steps 49–52).
     - Faces 55/15372 (patches 118/54) are geometrically disjoint in XY: the terminal overlap is a false positive in the validator's determinant-vs-length collinearity predicate. A separate 4304/4308 false-positive arises from triangle-fanning a concave quad. Preserve true intersection positives.
     - Patches 4955/4957 have **exact matching reversed three-edge shared-side schedules**; BoundedCombinatorial completed quad 21286 improperly uses all four consecutive boundary nodes of **one logical side** as a face. This is completion topology, **not** a missing midpoint subdivision or authorization to weld distinct stitch keys.
     - Patches 23301/23302 have exact matching reversed two-edge side schedules. Original arrangement-owned edge (output 53049–28576) is only 8.96e-8 long, with distinct source-edge/interior support; all three boundary-only two-quad decompositions retain it (alternative diagonals produce extremely thin faces). The corresponding Vase source edge (773,775) is smooth under default adaptive thresholds; this does **not** establish optionality of the contributing retained FlowRep arcs.
