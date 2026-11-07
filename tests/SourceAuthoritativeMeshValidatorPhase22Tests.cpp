@@ -129,6 +129,38 @@ TEST(SourceAuthoritativeMeshValidatorPhase22,
 }
 
 TEST(SourceAuthoritativeMeshValidatorPhase22,
+     ConcaveQuadContactUsesTrianglesInsideTheQuad) {
+  using directional::validation::source_authoritative_detail::TrianglePrimitive;
+  using directional::validation::source_authoritative_detail::triangles_intersect;
+  using directional::validation::source_authoritative_detail::triangulate_faces;
+  // Quad 0 is concave with its reflex corner at index 1, so its fan from
+  // corner 0 covers the notch. A square inside the notch does not touch the
+  // quad; a square inside the quad overlaps it. CB96 Vase faces 4304 and 4308
+  // were rejected through such a fan (RA-210).
+  Eigen::MatrixXd vertices(12, 3);
+  vertices << 4.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 4.0, 0.0, 0.0, 0.0, 0.0,
+      1.6, 1.6, 0.0, 1.9, 1.6, 0.0, 1.9, 1.9, 0.0, 1.6, 1.9, 0.0,
+      0.3, 0.3, 0.0, 0.6, 0.3, 0.0, 0.6, 0.6, 0.0, 0.3, 0.6, 0.0;
+  const auto collide = [&](const int square) {
+    Eigen::MatrixXi faces(2, 4);
+    faces << 0, 1, 2, 3, square, square + 1, square + 2, square + 3;
+    const std::vector<TrianglePrimitive> triangles =
+        triangulate_faces(vertices, faces, 1.0e-9);
+    for (const TrianglePrimitive &first : triangles) {
+      for (const TrianglePrimitive &second : triangles) {
+        if (first.parentFace < second.parentFace &&
+            triangles_intersect(vertices, first, second, 1.0e-9)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+  EXPECT_FALSE(collide(4));
+  EXPECT_TRUE(collide(8));
+}
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
      MissingSourceAuthorityRejectsEvenWhenOptionalGatesAreDisabled) {
   Eigen::MatrixXd vertices(4, 3);
   vertices << 0.0, 0.0, 0.0,

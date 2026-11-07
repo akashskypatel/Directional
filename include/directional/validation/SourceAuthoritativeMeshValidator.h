@@ -285,6 +285,9 @@ bool triangles_intersect(
     const Eigen::MatrixXd &vertices, const TrianglePrimitive &first,
     const TrianglePrimitive &second, const double tolerance);
 
+std::size_t quad_fan_corner(const Eigen::MatrixXd &vertices,
+                            const std::vector<int> &quad);
+
 std::vector<TrianglePrimitive>
 triangulate_faces(const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
                   const double tolerance);

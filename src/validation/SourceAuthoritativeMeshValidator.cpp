@@ -415,6 +415,36 @@ bool triangles_intersect(
 
 namespace directional::validation::source_authoritative_detail {
 
+std::size_t quad_fan_corner(const Eigen::MatrixXd &vertices,
+                            const std::vector<int> &quad) {
+  // A concave quad's fan from corner 0 covers its convex hull when the reflex
+  // corner is 1 or 3, so faces that only reach into the notch were reported
+  // as contacts. A fan from the reflex corner keeps both triangles inside the
+  // polygon (RA-210).
+  if (quad.size() != 4U ||
+      std::any_of(quad.begin(), quad.end(), [&](const int vertex) {
+        return vertex < 0 || vertex >= vertices.rows();
+      })) {
+    return 0U;
+  }
+  std::array<Eigen::Vector3d, 4> p;
+  Eigen::Vector3d normal = Eigen::Vector3d::Zero();
+  for (std::size_t corner = 0; corner < 4U; ++corner) {
+    p[corner] = vertices.row(quad[corner]).transpose();
+  }
+  for (std::size_t corner = 0; corner < 4U; ++corner) {
+    normal += p[corner].cross(p[(corner + 1U) % 4U]);
+  }
+  for (std::size_t corner = 0; corner < 4U; ++corner) {
+    const Eigen::Vector3d incoming = p[corner] - p[(corner + 3U) % 4U];
+    const Eigen::Vector3d outgoing = p[(corner + 1U) % 4U] - p[corner];
+    if (incoming.cross(outgoing).dot(normal) < 0.0) {
+      return corner;
+    }
+  }
+  return 0U;
+}
+
 std::vector<TrianglePrimitive>
 triangulate_faces(const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
                   const double tolerance) {
@@ -424,9 +454,12 @@ triangulate_faces(const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     if (polygon.size() < 3U) {
       continue;
     }
-    for (std::size_t index = 1; index + 1U < polygon.size(); ++index) {
+    const std::size_t count = polygon.size();
+    const std::size_t start = quad_fan_corner(vertices, polygon);
+    for (std::size_t index = 1; index + 1U < count; ++index) {
       TrianglePrimitive triangle;
-      triangle.vertices = {polygon[0], polygon[index], polygon[index + 1U]};
+      triangle.vertices = {polygon[start], polygon[(start + index) % count],
+                           polygon[(start + index + 1U) % count]};
       triangle.parentFace = face;
       bool valid = true;
       for (const int vertex : triangle.vertices) {
