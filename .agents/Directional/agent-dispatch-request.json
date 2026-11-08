@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb106-partition-stable-count-20261108-1917",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb106-partition-stable-count-apply",
-  "file_id": "1oExWPe6adJ7J71WyrQTNDoWaIiisDuj4",
-  "patch_sha256": "402d6130575239050d1a52a6bee2d339b6ea939d9bc8e200ce773ba33b7502c2",
-  "base_sha": "43c4542c14f5a77dc7197844603c394e6b4efe04",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(surface-cells): add exact partition-stable A3 count and guards",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb106-partition-stable-compile-20261108-1920",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb106-partition-stable-count-compile",
+  "source_sha": "9dcba327c006e9807db55d584b0c430878148792",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-cb106-partition-stable-count"
 }
