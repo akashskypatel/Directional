@@ -1,5 +1,7 @@
 # A4 per-A2b-disc review — unfinished source-backed memo (2026-11-08)
 
+> **Superseded (2026-11-08):** [RA-214](Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md) completed this turn runtime-free. This attempt's execution-authority block was valid, and its findings are adjudicated in RA-214 §2. Its provisional slices and "next action" are replaced by RA-214 §5–§6. Kept as provenance.
+
 **Canonical turn:** `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER` (Review/Definition, IN_PROGRESS). **Frozen source:** `c54184c3caab9dfd37eab6653ae923e0a5c733e9` (Actions snapshot 42452191280, artifact 13605344013, 6,234 file checksums verified). CB102 is withdrawn by RA-213. This memo is *not* a completed review/plan and authorizes no successor implementation turn.
 
 ## Re-derived evidence and critical findings

@@ -34,24 +34,37 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-08 · [RA-213](Architecture_M6_CP3_DEFN_P13_Vase_Producer_Path_Adversarial_Review_A2b_Disc_Construction_20261108.md) re-enters the [Vase producer-path Review](Architecture_M6_CP3_DEFN_P13_Vase_Phase_Front_Producer_Path_Review_20261108.md) and **withdraws CB102**. Vase has one source region (χ=1), one +¼ singularity with 3 ports, and 0 hard features. A2b already splits it into **3 certified singularity-free discs**; A3 schedules 187 edges. No A4 producer builds a source region that A2b partitions: the veto is a symptom. No produced census fixture consumes A3 (Plane 32 vs 42 boundary edges). A2b has one Mandatory arc per source boundary edge (164 boundary edges vs about 62 at target). The field turns −270° against the rim, so zero boundary-valence mismatches are unattainable. Next: Review `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER`. |
+| Currency | 2026-11-08 · [RA-214](Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md) resolves the step-58 execution-authority block. Reviews and DEFNs are runtime-free (`REVIEW_TURN_POLICY.md` §4.3), and the "Claude, scratch build" track label is suspended. RA-213 §4, which put a prototype and gate measurements inside a Review, is withdrawn. New static defects:<br>• D7: the A3 count and breakpoints depend on how an arc is split into pieces;<br>• D8: the conformity receipt claims consumption it never checks;<br>• D9: rim and A2b-trace edges cannot record A3 intervals.<br>D6 recommendation: Vase expected D1, **pending the user**. Next: **CB103** (exact patch) → **TB86** (909). |
 | Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing` · CB101 exact source [`23e35798abf0eb3584509c564166ccd97c41cc21`](https://github.com/akashskypatel/Directional/commit/23e35798abf0eb3584509c564166ccd97c41cc21), eight-target GMP [compile 42443381491](https://github.com/akashskypatel/Directional/actions/runs/42443381491), immutable package `13602662424`; **TB85 latest executed**, 908/908 PASS membership989. |
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06; unchanged. TB71 remains unpromoted candidate only. |
 | Latest candidate | **TB85 MATCH** (CB101): [report](Architecture_M6_CP3_TB85_P13_Concave_Quality_Metrics_Full_Gate_Execution_Report_20261108.md); [gate 42444755166](https://github.com/akashskypatel/Directional/actions/runs/42444755166) **908/908 PASS**, membership **989**, 1,824/1,824 hashes, 4/4 pinned TB84 digests; [census 42444788841](https://github.com/akashskypatel/Directional/actions/runs/42444788841) Cylinder PASS, BunnyRandom P13-e RED, Vase aggregate-quality RED, 9/9 hashes and 3/3 pinned digests. **No accepted production promotion.** |
 | Regression accounting and debt | Accepted CP2 **491/491**; stable **66/17/49**, debt **1**; ledger v5 81 deferred (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE); membership **989**. Selector497/CP3 unpromoted. O32a verified; O32b–e, O30b, O31, O33 remain. |
-| Active boundary | TB85 verified MATCH (no promotion). [RA-213](Architecture_M6_CP3_DEFN_P13_Vase_Producer_Path_Adversarial_Review_A2b_Disc_Construction_20261108.md) revises the Vase decision: build A4 **per A2b disc**, consuming A3 on every arc (ports are disc corners), not a "singularity-capable phase front". CB102 WITHDRAWN. Next: Review **`M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER`** (Claude scratch); no implementation turn is authorized until it freezes exact slices. Carried P13-e, O30b, O31 (legacy only), O32b–e, O33, O27–O29. |
+| Active boundary | TB85 verified MATCH (no promotion). RA-213 direction stands: A4 is built **per A2b disc**. [RA-214](Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md) closes step 58 runtime-free and re-slices the work into one CB plus TB per slice. Next: **`M6-CP3-CB103-P13-A3-SPAN-COVERAGE-RECEIPT`** (implementation agent, exact patch `0982bd4a…`) → **TB86** (manifest 909 `3573ffbf…`). Carried: P13-e, O30b, O31 (legacy only), O32b–e, O33, O27–O29. |
 
-## Mandatory next turn — `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER` (Review, Claude scratch)
+## Mandatory next turn — `M6-CP3-CB103-P13-A3-SPAN-COVERAGE-RECEIPT` (implementation agent, compile only)
 
-- **Authority:** [RA-213](Architecture_M6_CP3_DEFN_P13_Vase_Producer_Path_Adversarial_Review_A2b_Disc_Construction_20261108.md) §2–§4, on HEAD product sources (CB101 `23e35798…`); TB85 MATCH retained. CB102 and the reviewed [Vase Review](Architecture_M6_CP3_DEFN_P13_Vase_Phase_Front_Producer_Path_Review_20261108.md) §4 are **withdrawn**. Do not apply them.
-- **Objective, in order:**
-  1. **Vase success criterion** (RA-213 D6): the field forces net +3 irregularity. Choose between (i) field-derived boundary-valence targets, (ii) expected tier D1, and (iii) a boundary-aligned field. Recommend one, and ask the user before any gate changes.
-  2. **A2b Mandatory-arc granularity** (D5): measure A3 with maximal mandatory chains between topological nodes, and amend DESIGN §7.4 if adopted.
-  3. **Scratch prototype** of one per-A2b-disc A4 producer on Vase: A2a′ face-fragment domain, A3 breakpoints with shared trace arcs consumed identically, port corners, interior fill per §4.9. Measure every gate.
-  4. **A4→A3 conformance verification** (D4): set its scope, and the typed state of Plane, MultiFaceSeam, CloseSheets and Cylinder, which do not consume A3.
-  5. **Freeze exact slices**: conformance check, disc domain, boundary breakpoints, fill plus registration. Each is compile-only and goes to a full-gate TB.
-- **Exit:** the frozen slices, or STOP `M6-CP3-PLAN-P13-A4-A2B-DISC-PRODUCER-STOP` with Vase registered at its measured tier.
-- **Boundary:** keep the singularity veto until the per-disc producer exists. No legacy tuning (O31, P13-n1/2/3). No promotion; CP2 491/491, stable 66/17/49, debt 1, 81 deferred.
+- **Authority:** [RA-214](Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md) §6. Base `07d1a2207`; product sources are unchanged since CB101 `23e35798…`.
+- **Patch:** [`Architecture_M6_CP3_CB103_P13_A3_Span_Coverage_Receipt.diff`](Architecture_M6_CP3_CB103_P13_A3_Span_Coverage_Receipt.diff).
+  - Size: 292 lines.
+  - SHA-256: `0982bd4ae02d98c876ee42c53b19b7f9452cc90708db991d9ee415609db531ec`.
+  - Keep its 8 single-space context lines.
+  - Numstat: `8 0` / `36 1` / `71 0` / `22 0` / `11 0` / `63 0`.
+  - Apply exactly, then run the eight-target GMP compile. No runtime.
+- **What it adds:** the pure, report-only `summarize_a3_span_coverage`; six `RemeshDiagnostics` counters; an `a3-coverage case=` census line; the D8 comment fix; and GUARD test `SurfaceCellAuthorityContractCutover.A3SpanCoverageObservesRecordedHardRailIntervalsAndTheirLoss`. Nothing is hashed, and no disposition reads the counters.
+- **Stop rule:** a hash, numstat or compile mismatch stops with `M6-CP3-PLAN-P13-A3-SPAN-COVERAGE-RECEIPT-STOP`. Infrastructure failure routes to `M6-CP3-CB103A-P13-A3-SPAN-COVERAGE-RECEIPT-ORCH`.
+- **Then TB86** `M6-CP3-TB86-P13-A3-SPAN-COVERAGE-FULL-GATE-EXEC` uses [manifest](Architecture_M6_TB86_P13_A3_Span_Coverage_Full_Gate_Case_Manifest.tsv) 909 rows, SHA-256 `3573ffbf6cba47592489c34f2177988c1b66871db4cd983577694dbb9dcabe76` (`SELF_CHECK_PASS cases=909 deferred=81`, membership 990, ledger v5, census manifest unchanged).
+  - **Expected:** 909/909.
+  - **Byte-identical to TB85:** rows 795, 796, 797 and 864, and the Cylinder, BunnyRandom and Vase `platform-digest` lines.
+  - **Every `a3-coverage` line:** `partial=0`, `foreign=0`, and covered + unrecorded = scheduled.
+  - **Vase:** `observed=0`.
+  - **Routes:** mismatch → `M6-CP3-TB86-P13-A3-SPAN-COVERAGE-FULL-GATE-REV` (Review, runtime-free); infrastructure → `M6-CP3-TB86A-P13-A3-SPAN-COVERAGE-ORCH`.
+- **Boundary:** keep the singularity veto. No legacy tuning (O31, P13-n1/2/3). No promotion; CP2 491/491, stable 66/17/49, debt 1, 81 deferred.
+- **User decision pending, not blocking CB103/TB86:** Vase success criterion D6. RA-214 §4 recommends expected D1 `QualityRelaxed`.
+
+### Step 58 complete runtime-free (RA-214)
+
+- The earlier `BLOCKED` attempt (8 WIP records, [index](Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Review_WIP_20261108.md)) was valid on governance. RA-214 adjudicates its findings: F1 is confirmed and widened as D7; the trace-arm pole witness is rejected; the exporter is withdrawn.
+- RA-213 §4 is withdrawn.
 
 ### CB101 complete (compile only)
 
@@ -223,25 +236,32 @@ Facts are in the records, `TODO.md` steps and Review track, `CHANGELOG.md` and t
 | 56 — COMPLETE (MATCH) | `M6-CP3-TB85-P13-CONCAVE-QUALITY-METRICS-FULL-GATE-EXEC` | [TB85 report](Architecture_M6_CP3_TB85_P13_Concave_Quality_Metrics_Full_Gate_Execution_Report_20261108.md): 908/908, membership 989, 1,824/1,824 checksums; seven TB84 digests exact, Vase remains expected RED. No promotion. |
 | 57 — Review COMPLETE (re-entered) | `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH` | [runtime-free review](Architecture_M6_CP3_DEFN_P13_Vase_Phase_Front_Producer_Path_Review_20261108.md) (veto proof stands; direction withdrawn) → [RA-213](Architecture_M6_CP3_DEFN_P13_Vase_Producer_Path_Adversarial_Review_A2b_Disc_Construction_20261108.md): one source region, 3 A2b discs, post-veto curved `Rejected`, A3 unconsumed on produced fixtures, per-edge Mandatory arcs, field −270° against the rim |
 | — WITHDRAWN | `M6-CP3-CB102-P13-PHASE-FRONT-APPLICABILITY-RECEIPTS` | RA-213 D1: evidence already measured by probe; its per-region receipt cannot reach Vase (one region) |
-| 58 — NEXT (Review) | `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER` | Claude, scratch build (RA-213 §4): (1) Vase success criterion (D6); (2) Mandatory-arc granularity (D5); (3) per-disc A4 prototype on Vase; (4) A4→A3 conformance scope (D4); (5) exact compile-only slices → full-gate TB. Exit: slices, or `M6-CP3-PLAN-P13-A4-A2B-DISC-PRODUCER-STOP` |
+| 58 — Review COMPLETE (runtime-free) | `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER` | ChatGPT attempt BLOCKED on `REVIEW_TURN_POLICY.md` §4.3 ([WIP](Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Review_WIP_20261108.md)) → [RA-214](Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md): block valid; RA-213 §4 withdrawn; D7/D8/D9; D6 → D1 recommended (user pending); CB103 and TB86 frozen |
+| 59 — NEXT | `M6-CP3-CB103-P13-A3-SPAN-COVERAGE-RECEIPT` | Implementation agent; RA-214 §6 `0982bd4a…` (292 lines, keep its 8 single-space context lines), numstat `8 0` / `36 1` / `71 0` / `22 0` / `11 0` / `63 0`, compile only. Mismatch → `M6-CP3-PLAN-P13-A3-SPAN-COVERAGE-RECEIPT-STOP`; infrastructure → `M6-CP3-CB103A-P13-A3-SPAN-COVERAGE-RECEIPT-ORCH` |
+| 60 | `M6-CP3-TB86-P13-A3-SPAN-COVERAGE-FULL-GATE-EXEC` | Implementation agent; manifest 909 `3573ffbf…`, membership 990. Pinned TB85 digest lines byte-identical; `a3-coverage` partial=0, foreign=0; Vase observed=0. Mismatch → `M6-CP3-TB86-P13-A3-SPAN-COVERAGE-FULL-GATE-REV`; infrastructure → `M6-CP3-TB86A-P13-A3-SPAN-COVERAGE-ORCH` |
+| 61 (Review, runtime-free; after CB103 lands) | `M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS` | D9. Audit every `sharedBoundaryInterval` consumer, then freeze exact CB104: unit intervals on `GenuineSourceBoundary` edges, recorded by curved-disk on A3-subdivided boundary arcs. Prediction: only curved-disk fixtures change digest |
+| 62–63 | CB104 → TB87 | Implementation agent; per step 61 |
+| 64 (Review, runtime-free) | `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC` | D7, then D5: partition-invariant exact count, arc-length breakpoints, then maximal Mandatory chains; DESIGN §7.4 amendment; exact CB/TB |
+| 65 (Review, runtime-free) | `M6-CP3-DEFN-P13-A4-A2B-DISC-DOMAIN` | A2b plan-trace edge kind plus disc-domain builder (A2a′ fragments, oriented walk, A3 breakpoints); exact CB/TB; its TB first measures Vase's 3 discs |
+| 66+ | per-disc boundary and corners (D6) → fill (§4.9) → aggregator dispatch with honest `Declined` flags (D3) | One DEFN → CB → TB each |
 | — WITHDRAWN | `M6-CP3-DEFN-P13-SEMANTIC-PATCH-BOUNDARY` | RA-211.7; withdrawn by RA-212.3 (measured on a noise-seeded layout 20× denser than target) |
-| 44 (Review, parallel) | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49) → CB → TB | Claude, scratch build; probe DEFN, then exact patch |
+| 44 (Review, parallel) | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49) → CB → TB | Runtime-free DEFN (RA-214 §1; scratch label suspended), then exact patch |
 | 44A (Review; Vase part absorbed by row 57; RA-213: legacy only, not scheduled) | `M6-CP3-DEFN-P13-RELIEF-NOISE-TIES` (O31) | Claude, scratch build; relief critical points decided by rounding noise (RA-204.6). RA-212: on Vase they are 1,131 of 1,416 seeds and drive the 20× density |
 | 44B (Review) | O32e first (completion ownership-repair tie and budget: the remaining count-level dependence, 67,750–67,786 after CB92), then O32d (canonical cell key) and O32b/c (trace and strand content digests) | Claude, scratch build; each falsified by counts plus a row-invariant digest under ≥3 permutations (RA-205.5) |
 | 44C (Review) | `M6-CP3-DEFN-P13-CHART-FACE-PER-QUAD-COST` (O33) | Claude, scratch build; one chart-level cache for the five per-quad chart-face sites (RA-206.5); before Vase reaches optimization |
 | 45 | P13 re-census → metamorphic census rows (O32) → O6/O9 where reached → matrix 6/6 → retire/FIXTURE/PRODUCT/OPEN slices → CP3-REV | One slice at a time |
 
-Rows 49–57 are complete (row 57 re-entered by RA-213). Row 58 and rows 44, 44A, 44B and 44C are Review-track probe DEFNs (Claude, scratch build). The implementation agent has no authorized turn until row 58 freezes exact patches.
+Rows 49–58 are complete (row 58 runtime-free, RA-214). Row 59, CB103, is the implementation agent's next turn. Rows 44, 44A, 44B and 44C keep their scope, but their "Claude, scratch build" label is suspended (RA-214 §1). Each is re-scoped runtime-free when it is opened, unless the user explicitly authorizes a `REVIEW_TURN_POLICY.md` §4.3 amendment.
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER** (Review, Claude scratch; [RA-213](Architecture_M6_CP3_DEFN_P13_Vase_Producer_Path_Adversarial_Review_A2b_Disc_Construction_20261108.md) §4). CB102 is withdrawn.
+`load_next`: **M6-CP3-CB103-P13-A3-SPAN-COVERAGE-RECEIPT** (implementation agent; [RA-214](Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md) §6, exact patch `0982bd4a…`) → **TB86** (manifest 909 `3573ffbf…`).
 - CB89 compiled source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, immutable package artifact `13370954424`, 28/28 hashes, eight GMP/GMPXX targets; no test execution.
 - TB79 artifact-only gate (RA-203.6) finished: 899/899, census MATCH.
 - RA-204 completed the O30 Review; CB90 and TB80 are done. The fixed-field replay is withdrawn: do not build a field fixture.
 - RA-206 exact CB91 and immutable TB81 are complete; [TB81](Architecture_M6_CP3_TB81_P13_Final_Validation_Binding_Full_Gate_Execution_Report_20261105.md) passed 899/899, expected census and seven pinned Linux digests. O32a Review independently adjudicated; CB92 compiled; TB82 next.
 - Do not resume or apply `M6-CP3-CB84-P13-LINUX-VASE-DIAGNOSTIC-TIMING` (withdrawn).
-- Review track, only with scratch-build execution:
+- Review track (historical; RA-214 §1 suspends the scratch-build label, so these are runtime-free unless the user amends §4.3):
   - `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (O32a, Review complete; CB92 next; RA-205.4);
   - `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` (P13-l, after O32a; opens with the RA-204.9 O30 decision after TB80);
   - the P13-e DEFN;
@@ -250,6 +270,7 @@ Rows 49–57 are complete (row 57 re-entered by RA-213). Row 58 and rows 44, 44A
 - CB85–CB88, TB77–TB78 and the TB78 Review are complete; do not replay them.
 
 Read first:
+- [RA-214](Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md): §1, the block and its resolution; §2, adjudication of the blocked attempt; §3, D7–D9; §4, D6 and D5 decisions; §5, the sequence; §6, CB103 and TB86; §7, corrections to RA-213.
 - [RA-213](Architecture_M6_CP3_DEFN_P13_Vase_Producer_Path_Adversarial_Review_A2b_Disc_Construction_20261108.md): §1, what stands; §2, defects D1–D6 (probe-first, A2b disc unit, post-veto `Rejected`, A3 unconsumed, per-edge Mandatory arcs, field-rim turning); §3, gate floors; §4, the sequence; §5, RA-212 corrections.
 - [RA-212](Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_Legacy_Fallback_Density_20261108.md): §1, what stands; §2, RA-211's nine defects (density, relief seeding, legacy fallback, turns, rail writes, normal artifact); §3, the realignment; §4–§5, CB100 (revised) and CB101; §7, TB85; §8, the sequence.
 - [RA-211](Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Census_Adjudication_20261108.md): §1, the block; §2, census; §3, owners P13-n1–n4 and the side-attribution defect; §4, the falsified prototype; §5, CB100; §6, TB85; §7, the next Review; §8, the sequence.

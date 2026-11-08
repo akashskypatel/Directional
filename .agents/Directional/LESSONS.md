@@ -382,6 +382,12 @@ This document records **reusable failure-derived engineering lessons**, not an e
 
 ## Contracts, planning, reviews, and durable records
 
+- **A Review that needs runtime is mis-scoped (RA-214).** Under `REVIEW_TURN_POLICY.md` §4.3 a Review or
+  DEFN is runtime-free. If a decision needs a measurement, find the smallest *product* slice that would
+  publish it, and let that slice's TB measure it. Examples are an oracle, a representation or a producer
+  stage. Do not run a prototype inside the Review. Three agent blockers on this point (RA-200, RA-201,
+  step 58) were called "procedural" when they were governance. A convention written in a handoff is not
+  a policy exception; only the user can amend policy.
 - **Plan from the current normative contract and reachable implementation.** Before freezing an
   obligation, identify the actual producer, owning stage, live branch and witness class; confirm it can
   be expressed at that checkpoint. Do not retroactively require a later milestone's capability or treat

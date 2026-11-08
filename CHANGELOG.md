@@ -1,3 +1,19 @@
+## 2026-11-08 UTC — RA-214: step 58 resolved runtime-free; CB103 and TB86 frozen (no product change)
+
+- [RA-214](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md) resumed the `BLOCKED` `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER`.
+  - The block is valid: `REVIEW_TURN_POLICY.md` §4.3 makes Reviews runtime-free.
+  - RA-213 §4 is withdrawn, and the "Claude, scratch build" track label is suspended.
+  - No policy file was edited.
+- New static findings:
+  - D7: the A3 count and breakpoints depend on how an arc is split into pieces;
+  - D8: the conformity receipt is minted before any producer runs;
+  - D9: rim and plan-trace edges cannot record A3 intervals.
+- D6: expected D1 recommended, pending the user.
+- Frozen: exact [CB103](.agents/Directional/Architecture_M6_CP3_CB103_P13_A3_Span_Coverage_Receipt.diff) (`0982bd4a…`, 292 lines, report-only A3 coverage oracle) and the [TB86 manifest](.agents/Directional/Architecture_M6_TB86_P13_A3_Span_Coverage_Full_Gate_Case_Manifest.tsv) (909 rows, `3573ffbf…`, self-check PASS).
+- The patch was checked with `-fsyntax-only` only: no binary was built and nothing was executed.
+- `review_check.py boundary`: ALL CHECKS PASSED.
+- CP2 491/491, stable 66/17/49, debt 1; selector497/CP3 unpromoted.
+
 ## 2026-11-08 UTC — RA-213: Vase producer-path Review re-entered; CB102 withdrawn (no product change)
 
 - [RA-213](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Producer_Path_Adversarial_Review_A2b_Disc_Construction_20261108.md) re-entered the runtime-free Vase Review on the scratch build. The veto proof stands. The direction is revised to A4 **per A2b disc**: Vase's 3 discs are already certified singularity-free, and ports are disc corners.

@@ -1,3 +1,17 @@
+**RA-214 step 58 resolution (2026-11-08; NOT a new stable regression; static only):** [record](Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md). Product sources = CB101.
+- **D7, A3 metric depends on the piece split.**
+  - Root cause: `GlobalConformityBaselineSupport.cpp:192-239` counts `round(√(m·Σλ²))` ≥ Σλ, and `GlobalConformityBaseline.cpp:739-767` places breakpoints by piece index.
+  - Falsifier: λ=(0.1, 3.9) gives count 6, not 4, with 3 edges in the short piece.
+  - Owner: step 64. Prohibited: chain aggregation (D5) before the fix.
+- **D8, receipt overclaims.**
+  - Root cause: `SurfaceConformityPlanReceipt` is minted at `SurfaceCellTracing.cpp:18375` before producers run, and hashed at `RemeshPipeline.cpp:2091`.
+  - Owner: CB103 (comment fix plus coverage observation). Prohibited: citing the receipt as consumption evidence.
+- **D9, A3 consumption unrecordable on rim and plan-trace edges.**
+  - Root cause: the validator admits intervals only on HardRail and PeriodicCut (`:9386`), and curved-disk records them only for `hardFeature` (`:17557`).
+  - Owner: step 61 → CB104.
+- **Governance:** the "Claude, scratch build" Review label had no policy authority (`REVIEW_TURN_POLICY.md` §4.3). It is suspended. Earlier probe results are non-accepted information.
+- **Carried:** D6 user decision (expected D1 recommended); P13-e, O30b, O31 (legacy only), O32b–e, O33, O27–O29.
+
 **RA-213 Vase producer-path re-entry (2026-11-08; existing P13-n/O31 obligations, NOT a new stable regression):** [record](Architecture_M6_CP3_DEFN_P13_Vase_Producer_Path_Adversarial_Review_A2b_Disc_Construction_20261108.md). Scratch-measured, product sources = CB101:
 - Vase has 1 source region (χ=1), 0 hard features, and 1 singularity (v357, +¼, 3 ports). A2b gives 3 certified singularity-free discs (145 Mandatory + 3 Trace arcs), and A3 schedules 187 edges.
 - With the veto bypassed, curved-disk returns `Rejected InvalidBoundedDiskTransport`. The veto admits the legacy fallback.

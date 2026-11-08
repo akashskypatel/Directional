@@ -2,9 +2,9 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-11-08 · [RA-213](Architecture_M6_CP3_DEFN_P13_Vase_Producer_Path_Adversarial_Review_A2b_Disc_Construction_20261108.md) re-enters the Vase producer-path Review and withdraws CB102. Vase's A2b plan already holds 3 certified singularity-free discs, but every A4 producer builds per source region, so the singularity veto is a symptom. No produced fixture consumes A3. A2b's per-source-edge Mandatory arcs make A3's Vase boundary 2.6× too fine. The field turns −270° against the rim, so zero boundary-valence mismatches are unattainable. TB85 MATCH (908/908); CP2 491/491, stable 66/17/49, debt 1. **Next: Review `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER`.**
+**Currency:** 2026-11-08 · [RA-214](Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md) resolves the step-58 execution-authority block: Reviews and DEFNs are runtime-free, as `REVIEW_TURN_POLICY.md` §4.3 says, and the "Review track (Claude, scratch build)" label is suspended. Facts that need runtime come from the TBs of narrow product slices. New static defects: D7 (the A3 count and breakpoints depend on how an arc is split into pieces), D8 (the conformity receipt claims consumption it never checks) and D9 (no edge kind can record A3 intervals on the rim or on A2b trace seams). D6 recommendation: Vase expected D1, awaiting the user. TB85 MATCH (908/908); CP2 491/491, stable 66/17/49, debt 1. **Next: `M6-CP3-CB103-P13-A3-SPAN-COVERAGE-RECEIPT` (implementation agent, exact patch) → TB86 (909).**
 - **Before it:** P13-m, fixed by [RA-202](Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md). The fix is Amendment 34 and exact CB85–CB88, removing three memory-bound census-path scans plus two Amendment 33 sites.
-- **The block.** The ChatGPT Review saw a conflict between "runtime-free" and a probe re-run. The fault is RA-202.9's route: it named no track and asked one platform to explain a split between two. Review scratch probes are a duty (RA-166.6 F6, RA-188.1), Linux runtime is a TB, and no policy changes.
+- **The block.** The ChatGPT Review saw a conflict between "runtime-free" and a probe re-run. The fault is RA-202.9's route: it named no track and asked one platform to explain a split between two. ~~Review scratch probes are a duty (RA-166.6 F6, RA-188.1)~~ **Superseded by RA-214 §1:** `REVIEW_TURN_POLICY.md` §4.3 makes Reviews runtime-free, and no policy authorizes Review probes. Runtime belongs to TB.
 - **TB78** (CB85–CB88) matches on gate 899/899 and on every census line except the count. Vase reaches RED `SelfIntersectingFace` in 268.93 s on Linux, so P13-m's Linux objective is met.
 - **The count is O30.** Vase completes 67,784 quads on Linux and 67,829 on macOS. RA-202.9 had pinned the macOS-only value. Upstream topology agrees on both platforms, and CB85–CB88 cannot round or reorder.
 
@@ -18,7 +18,7 @@
   - **The fix:** CB90 adds a halfedge tie-break. After it, Vase gives 67,746 under every order, and the local gate is 898/899 (only O16).
 - **RA-205:** RA-204's mechanism and CB90 stand. Completed counts that change with the cell schedule violate DESIGN §10.1. A Vase source-face row permutation changes seeds (1,456 → 1,461), traces, strands and quads (67,746 → 67,771–67,784). That is O32.
 - **CB91 and TB81:** [CB91 record](Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Code_Build_Record_20261105.md) on source `96ee281a…`; [TB81](Architecture_M6_CP3_TB81_P13_Final_Validation_Binding_Full_Gate_Execution_Report_20261105.md) 899/899 and seven TB80 digest lines identical. Predecessor TB80 remains a reviewed historical 898/899 timing-control RED; O32a is next, not another TB81 replay.
-- Review track (Claude, scratch build):
+- Review track (~~Claude, scratch build~~ runtime-free since RA-214 §1; historical list):
   - `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (O32a, next);
   - `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP` (P13-l2, after TB83; RA-208.6, RA-209.5);
   - `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e);
@@ -67,7 +67,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | CB100/CB101 exact GMP compile-only artifacts; TB85 immutable 908/908 PASS, membership 989, Cylinder PASS / BunnyRandom P13-e RED / Vase legacy-fallback P13-n RED. RA-213: Vase needs A4 per A2b disc (3 certified singularity-free discs); CB102 withdrawn; Review `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER` next. Accepted CP2 491/491, stable 66/17/49 debt1; selector497/CP3 unpromoted. |
+| **M6-CP3 — active** | CB100/CB101 exact GMP compile-only artifacts; TB85 immutable 908/908 PASS, membership 989, Cylinder PASS / BunnyRandom P13-e RED / Vase legacy-fallback P13-n RED. RA-213: Vase needs A4 per A2b disc. RA-214: step 58 closed runtime-free; slices CB103 (A3 coverage oracle) → TB86 (909) → step-61 DEFN (recorded boundary intervals) → step-64 DEFN (partition-stable A3 metric, then maximal chains) → step-65 DEFN (disc domain). Accepted CP2 491/491, stable 66/17/49 debt1; selector497/CP3 unpromoted. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 **Prior Review authority:** [RA-187](Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md) (GUI layers; full-gate TB rule), [RA-186](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) (CLI sidecar; DR4), [RA-185](Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md) (DIAG-RETAIN display; DR2 → M8-CP2), [RA-184](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) (DIAG-RETAIN), [RA-183](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) (O2 gate; O2b, O16), [RA-181](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md) (O15 discharged; O15c) and [RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md) (RP-01 closed; local-mode rules). Implementers get only exact patches and manifests.
@@ -124,7 +124,15 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-- **Immediate P13 Vase producer (RA-213):** A4 must construct per **A2b disc**, consuming A3 on every arc; Vase has 3 such discs, already certified singularity-free with ports as corners. No current producer builds a source region that A2b partitions: the uniform and annulus producers ignore A3, and curved-disk reads A2b only when one region covers the whole source region. Open before any producer slice: the Vase success criterion (field-forced +3 irregularity), Mandatory-arc granularity (164 vs about 62 boundary edges), and A4→A3 conformance verification (unverified on all produced fixtures). CB102 withdrawn; legacy tuning not scheduled.
+- **Immediate P13 Vase producer (RA-213, re-sliced by RA-214):** A4 must construct per **A2b disc**, consuming A3 on every arc. Vase has 3 such discs, already certified singularity-free, with ports as corners. No current producer builds a source region that A2b partitions. The work is now a slice sequence, each slice a CB with its own TB:
+  - CB103: the A3 coverage oracle (report-only) → TB86;
+  - recorded rim intervals (D9) → CB104 → TB87;
+  - a partition-stable A3 metric (D7), then maximal Mandatory chains (D5);
+  - the disc domain with a plan-trace edge kind;
+  - per-disc boundary and corners, fill, then dispatch.
+
+  Vase success criterion (D6): RA-214 recommends expected D1 (one rim corner per disc); **user approval pending**. CB102 withdrawn; legacy tuning not scheduled.
+- **Review execution authority (RA-214 §1):** Reviews and DEFNs are runtime-free (`REVIEW_TURN_POLICY.md` §4.3). The "Claude, scratch build" label on steps 44, 44A, 44B and 44C is suspended. Each is re-scoped runtime-free when opened, unless the user explicitly authorizes a §4.3 amendment.
 
 **Immediate:**
 - CB90 and TB80 are complete (898/899; row 899 RED).
@@ -188,6 +196,7 @@ macOS O16 stays separate.
 
 ## 8. Recurring defect patterns
 
+- **A receipt minted before the act it certifies (RA-214 D8):** `SurfaceConformityPlanReceipt` says A4 "consumed" A3, but the aggregator mints it before any producer runs, and it is hashed into digests. A receipt must be produced by the step it attests, or be named for what it actually checks. Observe the act separately (CB103 coverage).
 - **A producer domain that is not DESIGN's region (P13 Vase, RA-213):** A4 producers built per source-topology region, so a cone, which always splits its region by traces into several A2b discs, looked like a singularity-capability gap. A2b already certified the discs. Before extending a producer, compare its domain with the stage table's unit and check whether the upstream plan it should consume is actually read; on every produced fixture it was not.
 
 - **A per-query check that moves down a level (P13-k):** lending the label support removed the per-quad chart graph, but the same O(F) source binding check then ran once per chart face and once per label query. Re-profile after each cost fix, and remove the check at every call depth: check once per stage, then lend structures that carry their build-time check (RA-201).
@@ -214,7 +223,7 @@ macOS O16 stays separate.
   - **Order-invariant geometric predicates.** A validity test of a polygon must not depend on which corner starts its cycle or which way it runs. Use the whole-polygon (Newell) vector area and project **orthogonally onto that plane**, not along the nearest coordinate axis, which can be 55° off and hides strongly twisted crossings (RA-209). Give the producer and the validator one shared definition, implemented independently. Fixing the orientation of correct output on its first triangle reversed 7,630 Vase quads (RA-208).
   - **Contact predicates in length units.** An orientation determinant is twice an area; compare a distance (`orient2/|ab|`) with a length tolerance. Fan a concave polygon from its reflex corner. A producer must reject the contacts its validator reports, at the validator's own tolerance (RA-210).
   - **Representation is not a breakpoint.** A degree-2 node that both incident cells cross on one plain side (a trace crossing a source edge, an arc joint) is an artifact of the per-face embedding; it must not raise a side count, flip parity or become a quad corner (DESIGN §6.2, §7.4). A reflex corner needs completion support; `PureQuadPatch::turns` is not read by any backend (RA-211, RA-212).
-  - **Know which producer a fixture runs.** Four census fixtures come from the A3-consuming phase front, while Vase alone runs the legacy tracing fallback. A fixture that never enters a path cannot falsify a change to it. Before tuning a layout's cells, compare its density with the metric target and count its seeds by provenance (RA-212).
+  - **Know which producer a fixture runs.** Four census fixtures come from the phase front, which records A3 consumption only on hard rails (RA-213 D4, RA-214 D9), while Vase alone runs the legacy tracing fallback. A fixture that never enters a path cannot falsify a change to it. Before tuning a layout's cells, compare its density with the metric target and count its seeds by provenance (RA-212).
   - **Single writer.** A downstream pass that "fixes" an earlier stage's product is a second writer (DESIGN §3, item 4, M2). Count how often it fires on production before repairing it: with a correct predicate it flipped 0 quads, so it is removed, not repaired (RA-209).
   - **Both sides of a barrier.** A seed or sample named by a source entity that a hard barrier splits goes on each typed fan, never on a row-chosen one and never as a new failure mode. That is the hard-rail rule, and DESIGN §10.1 canonical identity (RA-207).
   - **Wall-clock guards.** A gated time bound is a cross-platform measurement. Set it from the Linux runner's ratio for that code, or better, count the invariant the test claims (`source_binding_check_count`), and keep time only as a coarse backstop (RA-206.6).

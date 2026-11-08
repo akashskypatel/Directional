@@ -1,0 +1,292 @@
+diff --git a/include/directional/diagnostics/RemeshDiagnostics.h b/include/directional/diagnostics/RemeshDiagnostics.h
+index aafff3c26..38bd95dfd 100644
+--- a/include/directional/diagnostics/RemeshDiagnostics.h
++++ b/include/directional/diagnostics/RemeshDiagnostics.h
+@@ -624,6 +624,14 @@ struct RemeshDiagnostics {
+   bool surfaceCellUniformPhaseFrontProducerDeclined = false;
+   bool surfaceCellPeriodicPhaseFrontProducerDeclined = false;
+   bool surfaceCellBoundedDiskPhaseFrontProducerDeclined = false;
++  // RA-214 D4: report-only A3 span coverage recorded on the produced A4
++  // product; observed only when A4 produced under an accepted A3 plan.
++  bool surfaceCellA3CoverageObserved = false;
++  std::size_t surfaceCellA3ScheduledSpans = 0U;
++  std::size_t surfaceCellA3CoveredSpans = 0U;
++  std::size_t surfaceCellA3PartialSpans = 0U;
++  std::size_t surfaceCellA3UnrecordedSpans = 0U;
++  std::size_t surfaceCellA3ForeignIntervalEdges = 0U;
+   std::size_t surfaceCellTopologyRegionCount = 0U;
+   std::size_t surfaceCellInternalIsolationSeamCount = 0U;
+   std::size_t surfaceCellConsumedTopologyRegionCount = 0U;
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index 8b0c96ea6..64b3d06e2 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -1497,7 +1497,11 @@ make_periodic_relation_endpoint_state(
+     authority::QuarterTurn relationRotation,
+     const SurfacePeriodicRelationEndpointBranchAuthority &branchAuthority);
+ 
+-/** Immutable receipt proving which accepted A2b/A3 plans A4 consumed. */
++/**
++ * Immutable binding of the accepted A2b/A3 plans supplied to A4. It is minted
++ * before any regional producer runs, so it does not prove consumption; use
++ * summarize_a3_span_coverage for what the product actually recorded (RA-214).
++ */
+ struct SurfaceConformityPlanReceipt {
+   std::uint64_t topologyPlanDigest = 0U;
+   std::uint64_t baselinePlanDigest = 0U;
+@@ -2102,6 +2106,37 @@ private:
+   SurfaceHardRailOpenChains hardRailOpenChains_;
+ };
+ 
++/** Report-only A3 consumption recorded for one scheduled span (RA-214 D4). */
++struct SurfaceA3SpanCoverage {
++  authority::NetworkArcId span;
++  /// A3 region-boundary occurrences of the span: one per side to be tiled.
++  std::size_t incidences = 0U;
++  /// Front edges recording a shared-boundary interval on the span.
++  std::size_t intervalEdges = 0U;
++  /// Unit intervals tile [0, count] exactly once per incidence.
++  bool covered = false;
++};
++
++struct SurfaceA3CoverageSummary {
++  std::size_t scheduledSpans = 0U;
++  std::size_t coveredSpans = 0U;
++  std::size_t partialSpans = 0U;
++  std::size_t unrecordedSpans = 0U;
++  /// Interval edges naming a span absent from the A3 schedule.
++  std::size_t foreignIntervalEdges = 0U;
++  /// One entry per A3 schedule entry, in schedule order.
++  std::vector<SurfaceA3SpanCoverage> spans;
++};
++
++/**
++ * Observe which A3 spans an A4 edge set records as consumed. Pure and
++ * report-only: it neither validates nor rejects, and a span whose breakpoints a
++ * producer used without recording intervals reads as unrecorded.
++ */
++[[nodiscard]] SurfaceA3CoverageSummary summarize_a3_span_coverage(
++    const std::vector<SurfaceFrontEdge> &edges,
++    const GlobalConformityBaselinePlan &baseline);
++
+ struct NotApplicable {};
+ 
+ template <typename T> struct Produced {
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 05deb3311..0b27c9e32 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -9660,6 +9660,77 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
+       std::move(hardRailClosedChains), std::move(hardRailOpenChains));
+ }
+ 
++SurfaceA3CoverageSummary summarize_a3_span_coverage(
++    const std::vector<SurfaceFrontEdge> &edges,
++    const GlobalConformityBaselinePlan &baseline) {
++  using Rational = authority::FieldExactRational;
++  const Rational one = Rational::from_integer(1);
++  std::map<authority::NetworkArcId, std::map<Rational, std::size_t>>
++      lowerOrdinals;
++  std::map<authority::NetworkArcId, std::size_t> intervalEdges;
++  std::set<authority::NetworkArcId> nonUnitSpans;
++  std::size_t totalIntervalEdges = 0U;
++  for (const SurfaceFrontEdge &edge : edges) {
++    if (!edge.sharedBoundaryInterval.has_value()) continue;
++    const SurfaceSharedBoundaryInterval &interval = *edge.sharedBoundaryInterval;
++    const bool decreasing = interval.secondOrdinal < interval.firstOrdinal;
++    const Rational &lower =
++        decreasing ? interval.secondOrdinal : interval.firstOrdinal;
++    const Rational &upper =
++        decreasing ? interval.firstOrdinal : interval.secondOrdinal;
++    if (upper - lower != one) nonUnitSpans.insert(interval.span);
++    ++lowerOrdinals[interval.span][lower];
++    ++intervalEdges[interval.span];
++    ++totalIntervalEdges;
++  }
++  std::map<authority::NetworkArcId, std::size_t> incidences;
++  for (const BaselineConformityIncidence &incidence : baseline.incidences()) {
++    ++incidences[incidence.span.network_arc()];
++  }
++
++  SurfaceA3CoverageSummary summary;
++  summary.scheduledSpans = baseline.schedule().size();
++  summary.spans.reserve(baseline.schedule().size());
++  std::size_t scheduledIntervalEdges = 0U;
++  for (const ConformityScheduleEntry &entry : baseline.schedule()) {
++    SurfaceA3SpanCoverage coverage{entry.span.network_arc()};
++    const auto incidence = incidences.find(coverage.span);
++    coverage.incidences =
++        incidence == incidences.end() ? 0U : incidence->second;
++    const auto recorded = intervalEdges.find(coverage.span);
++    coverage.intervalEdges =
++        recorded == intervalEdges.end() ? 0U : recorded->second;
++    scheduledIntervalEdges += coverage.intervalEdges;
++    if (coverage.intervalEdges == 0U) {
++      ++summary.unrecordedSpans;
++      summary.spans.push_back(coverage);
++      continue;
++    }
++    // Unit intervals tile [0, count] exactly when their lower ordinals are
++    // 0, 1, ..., count - 1, each recorded once per boundary incidence.
++    bool tiles = coverage.incidences > 0U &&
++                 nonUnitSpans.count(coverage.span) == 0U;
++    Rational expected = Rational::from_integer(0);
++    for (const auto &[lower, multiplicity] : lowerOrdinals.at(coverage.span)) {
++      if (!tiles || lower != expected || multiplicity != coverage.incidences) {
++        tiles = false;
++        break;
++      }
++      expected = expected + one;
++    }
++    const auto count = Rational::from_exact_fraction(entry.count, EInt(1));
++    coverage.covered = tiles && count.has_value() && expected == *count;
++    if (coverage.covered) {
++      ++summary.coveredSpans;
++    } else {
++      ++summary.partialSpans;
++    }
++    summary.spans.push_back(coverage);
++  }
++  summary.foreignIntervalEdges = totalIntervalEdges - scheduledIntervalEdges;
++  return summary;
++}
++
+ } // namespace directional::geometry
+ 
+ namespace directional::geometry::surface_cell_tracing_detail {
+diff --git a/src/pipeline/RemeshPipeline.cpp b/src/pipeline/RemeshPipeline.cpp
+index aa31346cd..9e09e1d02 100644
+--- a/src/pipeline/RemeshPipeline.cpp
++++ b/src/pipeline/RemeshPipeline.cpp
+@@ -13268,6 +13268,20 @@ remesh_from_raw_cross_field_impl_with_stage_products(
+                                 "tracing");
+     }
+     const bool useAuthoritativePhaseFront = phaseFrontProduct != nullptr;
++    if (useAuthoritativePhaseFront &&
++        globalConformityBaselineProduct.has_value()) {
++      // RA-214 D4: observation only; no disposition reads these counters.
++      const geometry::SurfaceA3CoverageSummary coverage =
++          geometry::summarize_a3_span_coverage(
++              phaseFrontProduct->edges(), *globalConformityBaselineProduct);
++      result.diagnostics.surfaceCellA3CoverageObserved = true;
++      result.diagnostics.surfaceCellA3ScheduledSpans = coverage.scheduledSpans;
++      result.diagnostics.surfaceCellA3CoveredSpans = coverage.coveredSpans;
++      result.diagnostics.surfaceCellA3PartialSpans = coverage.partialSpans;
++      result.diagnostics.surfaceCellA3UnrecordedSpans = coverage.unrecordedSpans;
++      result.diagnostics.surfaceCellA3ForeignIntervalEdges =
++          coverage.foreignIntervalEdges;
++    }
+     AuthoritativePhaseFrontMeshResult authoritativePhaseFrontMesh;
+     if (useAuthoritativePhaseFront) {
+       AuthoritativePhaseFrontDiagnostics materializationDiagnostics;
+@@ -16879,6 +16893,14 @@ void accumulate_component_diagnostics(
+       source.surfaceCellConsumedInternalIsolationSeamCount;
+   target.surfaceCellConsumedPeriodicHolonomyCount +=
+       source.surfaceCellConsumedPeriodicHolonomyCount;
++  target.surfaceCellA3CoverageObserved =
++      target.surfaceCellA3CoverageObserved || source.surfaceCellA3CoverageObserved;
++  target.surfaceCellA3ScheduledSpans += source.surfaceCellA3ScheduledSpans;
++  target.surfaceCellA3CoveredSpans += source.surfaceCellA3CoveredSpans;
++  target.surfaceCellA3PartialSpans += source.surfaceCellA3PartialSpans;
++  target.surfaceCellA3UnrecordedSpans += source.surfaceCellA3UnrecordedSpans;
++  target.surfaceCellA3ForeignIntervalEdges +=
++      source.surfaceCellA3ForeignIntervalEdges;
+   target.surfaceCellMaterializedConnectedComponentCount +=
+       source.surfaceCellMaterializedConnectedComponentCount;
+   target.surfaceCellMaterializedBoundaryLoopCount +=
+diff --git a/tests/SurfaceCellDesignAcceptanceTests.cpp b/tests/SurfaceCellDesignAcceptanceTests.cpp
+index aef30c6a2..7d355ef6b 100644
+--- a/tests/SurfaceCellDesignAcceptanceTests.cpp
++++ b/tests/SurfaceCellDesignAcceptanceTests.cpp
+@@ -106,6 +106,17 @@ void print_platform_digest(const char *testName,
+     }
+   }
+   std::cout << std::endl;
++  // Report-only A3 consumption recorded by A4 (RA-214 D4), on its own line so
++  // the digest line above stays comparable with earlier runs.
++  const auto &diagnostics = result.diagnostics;
++  std::cout << "a3-coverage case=" << testName
++            << " observed=" << (diagnostics.surfaceCellA3CoverageObserved ? 1 : 0)
++            << " scheduled=" << diagnostics.surfaceCellA3ScheduledSpans
++            << " covered=" << diagnostics.surfaceCellA3CoveredSpans
++            << " partial=" << diagnostics.surfaceCellA3PartialSpans
++            << " unrecorded=" << diagnostics.surfaceCellA3UnrecordedSpans
++            << " foreign=" << diagnostics.surfaceCellA3ForeignIntervalEdges
++            << std::endl;
+ }
+ 
+ 
+diff --git a/tests/SurfaceCellsPhase10Tests.cpp b/tests/SurfaceCellsPhase10Tests.cpp
+index 14ac2db40..90950658e 100644
+--- a/tests/SurfaceCellsPhase10Tests.cpp
++++ b/tests/SurfaceCellsPhase10Tests.cpp
+@@ -7321,6 +7321,69 @@ TEST(SurfaceCellAuthorityContractCutover,
+   }
+ }
+ 
++// RA-214 D4: the receipt binds plan digests only. The coverage summary
++// observes which A3 spans the product records as consumed, and must notice a
++// dropped or stretched interval on an otherwise covered hard-rail span.
++TEST(SurfaceCellAuthorityContractCutover,
++     A3SpanCoverageObservesRecordedHardRailIntervalsAndTheirLoss) {
++  const auto fixture = build_rectangular_hard_rail_phase_front();
++  ASSERT_TRUE(fixture.conformityBaseline.has_value());
++  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
++            fixture.network.phaseFront.disposition())
++      << directional::geometry::surface_phase_front_failure_reason_name(
++             fixture.network.phaseFront.rejection_reason())
++      << hard_rail_first_failure_detail(fixture.network);
++  const auto &product = fixture.network.phaseFront.product();
++  const auto &baseline = *fixture.conformityBaseline;
++  const auto summary =
++      directional::geometry::summarize_a3_span_coverage(product.edges(), baseline);
++  ASSERT_EQ(baseline.schedule().size(), summary.scheduledSpans);
++  ASSERT_EQ(summary.scheduledSpans, summary.spans.size());
++  EXPECT_EQ(summary.scheduledSpans, summary.coveredSpans + summary.partialSpans +
++                                        summary.unrecordedSpans);
++  EXPECT_EQ(0U, summary.partialSpans);
++  EXPECT_EQ(0U, summary.foreignIntervalEdges);
++  std::set<directional::authority::NetworkArcId> railSpans;
++  for (const auto &interval : shared_boundary_intervals(product)) {
++    railSpans.insert(interval.span);
++  }
++  ASSERT_FALSE(railSpans.empty());
++  for (const auto &coverage : summary.spans) {
++    if (railSpans.count(coverage.span) != 0U) {
++      EXPECT_TRUE(coverage.covered) << coverage.span.index();
++    }
++  }
++  EXPECT_GE(summary.coveredSpans, railSpans.size());
++  RecordProperty("a3CoverageScheduled", std::to_string(summary.scheduledSpans));
++  RecordProperty("a3CoverageCovered", std::to_string(summary.coveredSpans));
++  RecordProperty("a3CoverageUnrecorded", std::to_string(summary.unrecordedSpans));
++
++  const auto pairs = hard_rail_phase_front_pairs(product);
++  ASSERT_FALSE(pairs.empty());
++  const auto railEdge = static_cast<std::size_t>(pairs.front().first);
++  ASSERT_TRUE(product.edges()[railEdge].sharedBoundaryInterval.has_value());
++
++  auto droppedEdges = product.edges();
++  droppedEdges[railEdge].sharedBoundaryInterval.reset();
++  const auto dropped =
++      directional::geometry::summarize_a3_span_coverage(droppedEdges, baseline);
++  EXPECT_EQ(summary.coveredSpans - 1U, dropped.coveredSpans);
++  EXPECT_EQ(1U, dropped.partialSpans);
++
++  auto stretchedEdges = product.edges();
++  auto &stretched = *stretchedEdges[railEdge].sharedBoundaryInterval;
++  const auto two = directional::authority::FieldExactRational::from_integer(2);
++  if (stretched.firstOrdinal < stretched.secondOrdinal) {
++    stretched.secondOrdinal = stretched.firstOrdinal + two;
++  } else {
++    stretched.firstOrdinal = stretched.secondOrdinal + two;
++  }
++  const auto stretchedSummary =
++      directional::geometry::summarize_a3_span_coverage(stretchedEdges, baseline);
++  EXPECT_EQ(summary.coveredSpans - 1U, stretchedSummary.coveredSpans);
++  EXPECT_EQ(1U, stretchedSummary.partialSpans);
++}
++
+ // RA-43.4: an explicitly named standalone geometry diagnostic may not
+ // bypass typed source ownership once the real A2a network is supplied.
+ // Exercise the same genuinely produced rail in both modes. Runtime is deferred.
