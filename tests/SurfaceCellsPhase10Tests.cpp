@@ -7384,6 +7384,153 @@ TEST(SurfaceCellAuthorityContractCutover,
   EXPECT_EQ(1U, stretchedSummary.partialSpans);
 }
 
+// RA-215 (D9): every region of this fixture touches a rail, so curved-disk
+// produces all of them and subdivides each physical rim edge by A3. It must
+// record that single-sided interval: on the span that owns the edge, with the
+// route's orientation, tiling every physical-boundary span. The factory checks
+// a present rim interval only; an absent one stays legal (coverage sees it).
+TEST(SurfaceCellAuthorityContractCutover,
+     A3SourceRimIntervalsAreRecordedSingleSidedAndValidated) {
+  using directional::geometry::SurfaceFrontBoundaryKind;
+  using directional::geometry::SurfacePhaseFrontProductErrorCode;
+  for (const bool reverseFaceRows : {false, true}) {
+    SCOPED_TRACE(reverseFaceRows ? "reversed face rows" : "forward face rows");
+    const auto fixture = build_rectangular_hard_rail_phase_front(reverseFaceRows);
+    ASSERT_TRUE(fixture.conformityBaseline.has_value());
+    ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+              fixture.network.phaseFront.disposition())
+        << directional::geometry::surface_phase_front_failure_reason_name(
+               fixture.network.phaseFront.rejection_reason())
+        << hard_rail_first_failure_detail(fixture.network);
+    const auto &product = fixture.network.phaseFront.product();
+    const auto &baseline = *fixture.conformityBaseline;
+
+    std::map<directional::authority::SourceEdgeTopologyKey, int> faceCount;
+    for (int face = 0; face < fixture.mesh.F.rows(); ++face) {
+      for (int corner = 0; corner < 3; ++corner) {
+        ++faceCount[test_source_edge_topology(
+            fixture.mesh.F(face, corner), fixture.mesh.F(face, (corner + 1) % 3))];
+      }
+    }
+    const auto physical_carrier = [&](const auto &schedule)
+        -> const directional::authority::SourceEdgeSupport * {
+      if (schedule.supportPieces.size() != 1U) return nullptr;
+      const auto *carrier = std::get_if<directional::authority::SourceEdgeSupport>(
+          &schedule.supportPieces.front().carrier);
+      if (carrier == nullptr || faceCount[carrier->edge] != 1) return nullptr;
+      return carrier;
+    };
+
+    std::set<directional::authority::NetworkArcId> rimSpans;
+    std::size_t rimEdge = product.edges().size();
+    for (std::size_t index = 0; index < product.edges().size(); ++index) {
+      const auto &edge = product.edges()[index];
+      if (edge.boundaryKind != SurfaceFrontBoundaryKind::GenuineSourceBoundary) {
+        continue;
+      }
+      if (rimEdge == product.edges().size()) rimEdge = index;
+      EXPECT_TRUE(edge.exterior) << index;
+      EXPECT_LT(edge.oppositeEdge, 0) << index;
+      ASSERT_TRUE(edge.sharedBoundaryInterval.has_value()) << index;
+      const auto &interval = *edge.sharedBoundaryInterval;
+      const auto *schedule = baseline.find_schedule(
+          directional::geometry::ConformitySpanId::from_network_arc(interval.span));
+      ASSERT_NE(nullptr, schedule) << index;
+      const auto *carrier = physical_carrier(*schedule);
+      ASSERT_NE(nullptr, carrier) << "rim interval on a non-physical span " << index;
+      ASSERT_EQ(1U, edge.route.steps().size()) << index;
+      const auto &step = edge.route.steps().front();
+      EXPECT_EQ(directional::authority::TransitionStepKind::Boundary, step.kind());
+      EXPECT_EQ(carrier->edge, step.topology()) << index;
+      EXPECT_EQ(step.orientation(), interval.orientation) << index;
+      rimSpans.insert(interval.span);
+    }
+    ASSERT_LT(rimEdge, product.edges().size());
+
+    // Independently of the product, every A3 span on a physical source edge
+    // must be recorded and tile [0, count] once.
+    const auto summary =
+        directional::geometry::summarize_a3_span_coverage(product.edges(), baseline);
+    EXPECT_EQ(0U, summary.partialSpans);
+    EXPECT_EQ(0U, summary.foreignIntervalEdges);
+    std::size_t physicalSpans = 0U;
+    for (const auto &entry : baseline.schedule()) {
+      if (physical_carrier(entry) == nullptr) continue;
+      ++physicalSpans;
+      EXPECT_EQ(1U, rimSpans.count(entry.span.network_arc()))
+          << entry.span.network_arc().index();
+    }
+    EXPECT_EQ(physicalSpans, rimSpans.size());
+    for (const auto &coverage : summary.spans) {
+      if (rimSpans.count(coverage.span) != 0U) {
+        EXPECT_TRUE(coverage.covered) << coverage.span.index();
+      }
+    }
+    if (reverseFaceRows) continue;
+    RecordProperty("a3RimSpans", std::to_string(rimSpans.size()));
+    RecordProperty("a3CoverageCovered", std::to_string(summary.coveredSpans));
+    RecordProperty("a3CoverageUnrecorded", std::to_string(summary.unrecordedSpans));
+
+    const auto remake_error =
+        [&](std::vector<directional::geometry::SurfaceFrontEdge> edges)
+        -> std::optional<directional::geometry::SurfacePhaseFrontProductError> {
+      auto remade = directional::geometry::SurfacePhaseFrontProduct::make(
+          product.gridU(), product.gridV(), product.sourceTopologyRegions(),
+          fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+          fixture.atlas ? &*fixture.atlas : nullptr,
+          product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
+          product.boundedDiskBoundaryPhases(), std::move(edges), product.events(),
+          product.cells(), product.conformityPlanReceipt(),
+          product.hardFeatureEdges(), product.sourceFaceBranchRotations(),
+          product.hardRailFieldTransitions(), product.hardRailRouteCertificates(),
+          product.hardRailTerminalContacts(), product.hardRailClosedChains(),
+          product.hardRailOpenChains());
+      const auto *error =
+          std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&remade);
+      if (error == nullptr) return std::nullopt;
+      return *error;
+    };
+    EXPECT_FALSE(remake_error(product.edges()).has_value());
+
+    auto droppedEdges = product.edges();
+    droppedEdges[rimEdge].sharedBoundaryInterval.reset();
+    const auto dropped =
+        directional::geometry::summarize_a3_span_coverage(droppedEdges, baseline);
+    EXPECT_FALSE(remake_error(std::move(droppedEdges)).has_value())
+        << "an absent rim interval is the producer's to refuse";
+    EXPECT_EQ(summary.coveredSpans - 1U, dropped.coveredSpans);
+    EXPECT_EQ(summary.partialSpans + summary.unrecordedSpans + 1U,
+              dropped.partialSpans + dropped.unrecordedSpans);
+
+    const auto expect_rejected = [&](auto mutate, const char *what) {
+      auto edges = product.edges();
+      mutate(edges[rimEdge]);
+      const auto error = remake_error(std::move(edges));
+      ASSERT_TRUE(error.has_value()) << what;
+      EXPECT_EQ(SurfacePhaseFrontProductErrorCode::InvalidSharedBoundaryInterval,
+                error->code) << what;
+      EXPECT_EQ(static_cast<int>(rimEdge), error->edge) << what;
+    };
+    const auto two = directional::authority::FieldExactRational::from_integer(2);
+    expect_rejected([&](directional::geometry::SurfaceFrontEdge &edge) {
+      auto &interval = *edge.sharedBoundaryInterval;
+      if (interval.firstOrdinal < interval.secondOrdinal) {
+        interval.secondOrdinal = interval.firstOrdinal + two;
+      } else {
+        interval.firstOrdinal = interval.secondOrdinal + two;
+      }
+    }, "stretched");
+    expect_rejected([](directional::geometry::SurfaceFrontEdge &edge) {
+      edge.sharedBoundaryInterval->orientation =
+          directional::authority::reverse_orientation(
+              edge.sharedBoundaryInterval->orientation);
+    }, "orientation against ordinal sign");
+    expect_rejected([](directional::geometry::SurfaceFrontEdge &edge) {
+      edge.exterior = false;
+    }, "interior rim");
+  }
+}
+
 // RA-43.4: an explicitly named standalone geometry diagnostic may not
 // bypass typed source ownership once the real A2a network is supplied.
 // Exercise the same genuinely produced rail in both modes. Runtime is deferred.

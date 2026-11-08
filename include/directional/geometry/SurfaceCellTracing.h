@@ -1648,7 +1648,9 @@ struct SurfaceFrontEdge {
   std::optional<authority::HardRailId> railId;
   /// Exact A3 shared-boundary provenance. Required for production HardRail
   /// pairing and retained when an exact same-region pair is promoted to
-  /// PeriodicCut; periodicRelation remains the quotient owner.
+  /// PeriodicCut; periodicRelation remains the quotient owner. A curved-disk
+  /// GenuineSourceBoundary edge records its single-sided A3 interval too; the
+  /// span's source attachment is the producer's, not checked by the factory.
   std::optional<SurfaceSharedBoundaryInterval> sharedBoundaryInterval;
   /// Relation-owned endpoint states for same-region A3 PeriodicCut pairing.
   /// Ordinary cell placement remains in fromLattice/toLattice unchanged.

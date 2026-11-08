@@ -9386,7 +9386,10 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       const bool increasing = interval.firstOrdinal < interval.secondOrdinal;
       const bool decreasing = interval.secondOrdinal < interval.firstOrdinal;
       if ((edge.boundaryKind != SurfaceFrontBoundaryKind::HardRail &&
-           edge.boundaryKind != SurfaceFrontBoundaryKind::PeriodicCut) ||
+           edge.boundaryKind != SurfaceFrontBoundaryKind::PeriodicCut &&
+           edge.boundaryKind != SurfaceFrontBoundaryKind::GenuineSourceBoundary) ||
+          (edge.boundaryKind == SurfaceFrontBoundaryKind::GenuineSourceBoundary &&
+           (edge.oppositeEdge >= 0 || !edge.exterior)) ||
           (!increasing && !decreasing) ||
           (increasing && interval.orientation != authority::Orientation::Forward) ||
           (decreasing && interval.orientation != authority::Orientation::Reverse) ||
@@ -17625,7 +17628,8 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
           subdivision.uv.push_back(uv);
           return true;
         };
-        const bool shared = run.edgeAuthority[edgeIndex].hardFeature;
+        const bool recordedA3 = run.edgeAuthority[edgeIndex].hardFeature ||
+                                run.edgeAuthority[edgeIndex].sourceBoundary;
 
         const auto append_arc = [&](const ArcSchedule &arcSchedule,
                                     const bool increasing) -> bool {
@@ -17656,7 +17660,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
                 return false;
               }
               std::optional<SurfaceSharedBoundaryInterval> interval;
-              if (shared) {
+              if (recordedA3) {
                 interval = SurfaceSharedBoundaryInterval{
                     arcSchedule.arc->id,
                     authority::FieldExactRational::from_integer(
@@ -17678,7 +17682,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
                 return false;
               }
               std::optional<SurfaceSharedBoundaryInterval> interval;
-              if (shared) {
+              if (recordedA3) {
                 interval = SurfaceSharedBoundaryInterval{
                     arcSchedule.arc->id,
                     authority::FieldExactRational::from_integer(
@@ -18183,7 +18187,8 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
         return result;
       }
       edge.sharedBoundaryInterval = std::move(acceptedInterval);
-      if ((edge.boundaryKind == SurfaceFrontBoundaryKind::HardRail) !=
+      if ((edge.boundaryKind == SurfaceFrontBoundaryKind::HardRail ||
+           edge.boundaryKind == SurfaceFrontBoundaryKind::GenuineSourceBoundary) !=
           edge.sharedBoundaryInterval.has_value()) {
         set_phase_front_failure(
             result.failure,
