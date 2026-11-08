@@ -1,0 +1,2 @@
+Source snapshot for M6-CP3-CB100-P13-EVALUATOR-CONCAVE-QUAD-METRICS.
+Read mode: snapshot; freeze exact event/source SHA; no build or test execution.
