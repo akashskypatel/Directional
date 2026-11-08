@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb90-todo-drift-20261108-2124",
+  "request_id": "m6-cp3-d7b-defn-apply-20261108-2152",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb90-todo-drift",
-  "file_id": "1dduWRgsAwhgk2rin2iAr_AipZJAAwzQn",
-  "patch_sha256": "e3a0c743ae2a22528de7a6c58754d66580d1f2f1e38778108399f45fc3e411ec",
-  "base_sha": "fc0b8491d5181e7eb8c4da085d5a8736174dc286",
+  "mailbox_key": "m6-cp3-d7b-defn-apply",
+  "file_id": "13DMoPjXC8Qvumym5s_K8ZMcUoaLt0HjU",
+  "patch_sha256": "2b72affc70eb073610a96662626cc7d75745d1ccf922ef9e6d1e9a9613c72e78",
+  "base_sha": "e8c56a30c2bbb64c5ec384321c37663c4f49ec72",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(surface-cells): correct stale TB90 TODO pointer",
+  "commit_message": "docs(surface-cells): freeze D7b metric breakpoint placement review",
   "retention_days": 14
 }
