@@ -1,0 +1,3 @@
+request=M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-EXEC
+source_ref=33714cc8b9e31d183427259152038a024cb80912
+purpose=read-only authority snapshot
