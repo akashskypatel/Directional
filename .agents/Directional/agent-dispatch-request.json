@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb106-partition-stable-compile-20261108-1920",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb106-partition-stable-count-compile",
-  "source_sha": "9dcba327c006e9807db55d584b0c430878148792",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-cb106-partition-stable-count"
+  "request_id": "m6-cp3-cb106-doc-closeout-20261108-1925",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb106-doc-closeout-apply",
+  "file_id": "1RCrPeGLYyy0yznEf5leGb4MCbkAAcGiX",
+  "patch_sha256": "a9d8907aafba5538e06eeb6dd8ab056e5335db3d001e1c59ce0d24d6083edd8d",
+  "base_sha": "755beae4eefad87b44c4c56219cde51d016c8cd9",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(agent): close out CB106 exact metric code and build",
+  "retention_days": 14
 }
