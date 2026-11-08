@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-TB85-P13-CONCAVE-QUALITY-METRICS-FULL-GATE-EXEC` (RA-212 §7, 908-row immutable package gate; step 56), then Review `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH` (step 57). [RA-212](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_Legacy_Fallback_Density_20261108.md) re-entered RA-211; TB84 MATCH stands (906/906, membership 987).
+> **Current canonical next:** `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH` (Review, Claude scratch; RA-212 §3, step 57). **TB85 COMPLETE/MATCH**: 908/908 PASS, membership 989; all 7 pinned TB84 digests exact; census 1 PASS / 2 expected RED. [RA-212](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_Legacy_Fallback_Density_20261108.md) re-entered RA-211; TB84 MATCH stands (906/906, membership 987).
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -33,11 +33,12 @@
        - `23 0` `tests/SurfaceMeshOptimizerPhase21Tests.cpp` → `0362e0bd636e89543d403812c39cc96602e0fb05cb642c8c1f7366f333e0dfba`.
      - [CB101 code/build record](.agents/Directional/Architecture_M6_CP3_CB101_P13_Evaluator_Quad_Normal_Own_Plane_Code_Build_Record_20261108.md): verified exact postimages, applied source `23e35798abf0eb3584509c564166ccd97c41cc21`, [GMP compile 42443381491](https://github.com/akashskypatel/Directional/actions/runs/42443381491) and immutable package `13602662424`, `runtimeExecution=false`. New Phase21 test source compiled but not run; no acceptance promotion.
      - Mismatch → `M6-CP3-PLAN-P13-EVALUATOR-QUAD-NORMAL-OWN-PLANE-STOP`; infrastructure → `M6-CP3-CB101A-P13-EVALUATOR-QUAD-NORMAL-OWN-PLANE-ORCH`.
-  56. [ ] **NEXT `M6-CP3-TB85-P13-CONCAVE-QUALITY-METRICS-FULL-GATE-EXEC`** (TB-EXEC; RA-212.7):
+  56. [x] **COMPLETE / MATCH `M6-CP3-TB85-P13-CONCAVE-QUALITY-METRICS-FULL-GATE-EXEC`** (TB-EXEC; RA-212.7; [report](.agents/Directional/Architecture_M6_CP3_TB85_P13_Concave_Quality_Metrics_Full_Gate_Execution_Report_20261108.md)):
      - Gate: [908-row manifest](.agents/Directional/Architecture_M6_TB85_P13_Concave_Quality_Metrics_Full_Gate_Case_Manifest.tsv) `ec088eb1121a5846605a4bb3675657b68477c88513c28795350369c03bb9f999`; ledger v5; **908/908**, membership 989.
      - **Pinned:** gate rows 795/796/797/864 and census Cylinder, BunnyRandom and Vase digests byte-identical to TB84; Vase terminal `AggregateCompletionValidationFailure`.
      - Mismatch → `M6-CP3-TB85-P13-CONCAVE-QUALITY-METRICS-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB85A-P13-CONCAVE-QUALITY-METRICS-ORCH`.
-  57. [ ] **Review (after TB85) `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH`** (Claude, scratch build; RA-212.3):
+     - **Observed:** [gate 42444755166](https://github.com/akashskypatel/Directional/actions/runs/42444755166) 908/908 PASS, membership 989, 1,824/1,824 hashes; 4/4 pinned TB84 gate digests exact. [Census 42444788841](https://github.com/akashskypatel/Directional/actions/runs/42444788841) Cylinder PASS, BunnyRandom P13-e and Vase P13-n expected RED, 9/9 hashes; 3/3 platform digests exact. No runtime remediation or promotion.
+  57. [ ] **NEXT Review `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH`** (Claude, scratch build; RA-212.3; TB85 MATCH prerequisite met):
      - publish why each A4 phase-front producer (uniform, periodic annulus, curved bounded disk) returns NotApplicable for Vase's regions, with a narrow diagnostic CB if the reason is not retained;
      - decide between extending A4 coverage (DESIGN-conformant) and keeping the fallback for P13. If the fallback is kept: fix seeding density first (relief seeds, O31); re-census at target density, where parity repair failing is the first terminal; forbid rail writes by parity repair; then take up n1/n2/n3 only as they recur;
      - attribute every failing Vase gate: field P95 36.4, size, angle, warpage, aspect, SJ, nonConvex, boundary valence 248, singularity valence 1;

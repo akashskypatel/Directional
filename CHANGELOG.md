@@ -1,3 +1,10 @@
+## 2026-11-08 UTC — TB85 concave-quality full gate and production census (Test + Benchmark)
+
+- **COMPLETE / MATCH** under RA-212 §7: [report](.agents/Directional/Architecture_M6_CP3_TB85_P13_Concave_Quality_Metrics_Full_Gate_Execution_Report_20261108.md), immutable CB101 source `23e35798abf0eb3584509c564166ccd97c41cc21`, GMP package `13602662424`; verified 6,231/6,231 source-snapshot hashes.
+- [Full gate 42444755166](https://github.com/akashskypatel/Directional/actions/runs/42444755166), artifact `13603128508` (ZIP `472ad7f8…`): **908/908 PASS**, membership **989**, 1,824/1,824 checksums; GUARD 907/908 PASS, four pinned TB84 digests byte-identical.
+- [Census 42444788841](https://github.com/akashskypatel/Directional/actions/runs/42444788841), artifact `13603685923` (ZIP `4d4feddb…`): **1 PASS / 2 expected RED**, 9/9 checksums; Cylinder PASS, BunnyRandom P13-e RED vertex49, Vase quality RED `AggregateCompletionValidationFailure`, 26,817 cells and 67,750 informational quads. All three pinned TB84 census digests byte-identical. No compilation/relink/configure/benchmark; fail-closed production unchanged.
+- No new stable regression or promotion: **66/17/49**, debt1, CP2 **491/491**, deferred 81 unchanged; selector497 and CP3 unpromoted. Next separate Review `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH` (RA-212 §3).
+
 ## 2026-11-08 UTC — CB101 quad-normal own-plane evaluator (Code + Build)
 
 - RA-212 §5 approved 56-line patch SHA-256 `9b42498d9e3615488c9007499aea590c195d472b66e519c67d5ff124190155f1` applied at [source `23e35798abf0eb3584509c564166ccd97c41cc21`](https://github.com/akashskypatel/Directional/commit/23e35798abf0eb3584509c564166ccd97c41cc21); both exact postimages verified: `ac441cd36be7bec02903f5c35baa85ba0f171022012457b892f99c3707793384` / `0362e0bd636e89543d403812c39cc96602e0fb05cb642c8c1f7366f333e0dfba`.
