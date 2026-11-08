@@ -1,3 +1,9 @@
+## 2026-11-08 UTC — TB87 immutable full-gate mismatch; census MATCH (Test + Benchmark)
+
+- [TB87 report](.agents/Directional/Architecture_M6_CP3_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Execution_Report_20261108.md): CB104 source `b41fbf72…`, package 13619640763, gate [42488019698](https://github.com/akashskypatel/Directional/actions/runs/42488019698) **909/910** (GUARD 910 −1 vs +1 orientation mismatch), membership 991, 1,828/1,828 hashes; no rebuild or test repair.
+- [Census 42488045371](https://github.com/akashskypatel/Directional/actions/runs/42488045371): Cylinder PASS, BunnyRandom/Vase registered RED, 9/9 hashes. All **7/7** pinned platform digests and **7/7** pinned A3-coverage lines byte-identical to TB86; postflight true. No accepted-green promotion, stable 66/17/49 and debt 1 unchanged; CP2 491/491, 81 deferred, CP3/selector497 unpromoted.
+- Next: runtime-free independent Review `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-REV` to adjudicate whether the mismatch is producer, test-convention, or both; step 64 not opened.
+
 ## 2026-11-08 UTC — CB104 exact A3 source-rim intervals (Code + Build; compile-only)
 
 - [CB104 record](.agents/Directional/Architecture_M6_CP3_CB104_P13_A3_Source_Rim_Intervals_Code_Build_Record_20261108.md): applied RA-215 exact 3-path patch `dfacc5cb…` at [`b41fbf72…`](https://github.com/akashskypatel/Directional/commit/b41fbf72a4d4d2255b4b0e94e0148de8378e2364), including GUARD 910. No selector, fixture, or unapproved test edits.

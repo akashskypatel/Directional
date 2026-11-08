@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-EXEC` (step 63, artifact-only Test + Benchmark on verified [CB104 compile-only package](.agents/Directional/Architecture_M6_CP3_CB104_P13_A3_Source_Rim_Intervals_Code_Build_Record_20261108.md), RA-215 §5, 910 rows), after [TB86 COMPLETE / MATCH](.agents/Directional/Architecture_M6_CP3_TB86_P13_A3_Span_Coverage_Full_Gate_Execution_Report_20261108.md): immutable 909/909 PASS, membership 990, seven TB85 digests exact; Cylinder PASS, BunnyRandom/Vase pre-registered RED. Accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred; selector497/CP3 unpromoted.
+> **Current canonical next:** `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-REV` (runtime-free independent Review after [TB87 COMPLETE / MISMATCH](.agents/Directional/Architecture_M6_CP3_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Execution_Report_20261108.md)). Immutable CB104 gate 909/910 (GUARD 910 orientation RED), membership 991; census Cylinder PASS, BunnyRandom/Vase registered RED; 7/7 platform and 7/7 A3 digest lines byte-identical to TB86. Accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred; selector497/CP3 unpromoted.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -19,7 +19,7 @@
   - **F6:** a physical hard edge is now accepted.
   - **F7:** the dropped comment facts are restored.
   - **F8:** D4 is owned by step 64A.
-- The active step list (59–66, NEXT = 62) follows in the next section, realigned by RA-215 §6.
+- The active step list (59–66) follows; TB87 is COMPLETE / MISMATCH and routes to the independent Review before step 64.
 
 ## CURRENT STEP LIST (59–66) — RA-214 slices, realigned by RA-215 (2026-11-08)
 
@@ -49,10 +49,10 @@
      - Numstat: `3 1` / `10 5` / `147 0`. Base: product = CB103 `000752d8…`.
      - Applied exact patch at `b41fbf72…`; [compile run 42484665857](https://github.com/akashskypatel/Directional/actions/runs/42484665857) eight-target GMP/GMPXX PASS, package `13619640763` SHA-256 `0273b89a…`, 28/28 hashes; `runtimeExecution=false`. [CB104 record](.agents/Directional/Architecture_M6_CP3_CB104_P13_A3_Source_Rim_Intervals_Code_Build_Record_20261108.md).
      - Routes: mismatch → `M6-CP3-PLAN-P13-A3-RECORDED-BOUNDARY-INTERVALS-STOP`; infrastructure → `M6-CP3-CB104A-P13-A3-RECORDED-BOUNDARY-INTERVALS-ORCH`.
-  63. [ ] **NEXT TB87** `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-EXEC`.
+  63. [x] **COMPLETE / MISMATCH TB87** `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-EXEC`.
      - Manifest: [manifest](.agents/Directional/Architecture_M6_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Case_Manifest.tsv), 910 rows, `c435519f6304fdcedb794e45187c8c4645e0bb36d32ec567e7979d292fb245bf`, membership 991, ledger v5 81, census `3af1dc0d…`.
      - Expected: 910/910 (GUARD 909 and 910 PASS). Rows 795/796/797/864 and the 3 census `platform-digest` **and** `a3-coverage` lines are byte-identical to TB86.
-     - Routes: mismatch → `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-REV` (Review, runtime-free); infrastructure → `M6-CP3-TB87A-P13-A3-RECORDED-BOUNDARY-INTERVALS-ORCH`. No test repair inside the TB.
+     - [Verified TB87 report](.agents/Directional/Architecture_M6_CP3_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Execution_Report_20261108.md): gate 909/910, GUARD 910 RED at `SurfaceCellsPhase10Tests.cpp:7445` (−1 route step vs +1 interval orientation), 1,828/1,828 checksums; census 1 PASS / 2 expected RED, 9/9 checksums; 7/7 pinned platform and 7/7 A3 lines exact. No repair inside TB. **Activated mismatch route → `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-REV` (Review, runtime-free)**; step 64 is deferred until adjudication.
   64. [ ] Review (runtime-free) `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC`: D7, then D5 maximal Mandatory chains, with a DESIGN §7.4 amendment.
   64A. [ ] Review (runtime-free) `M6-CP3-DEFN-P13-A3-UNIFORM-ANNULUS-CONSUMPTION` (D4, RA-215 F8). The uniform and annulus producers ignore A3 (DESIGN §2.1 item 7). Either they adopt and record A3 breakpoints, or they decline honestly under an A3 plan. After 64; before CP3 promotion.
   65. [ ] Review (runtime-free) `M6-CP3-DEFN-P13-A4-A2B-DISC-DOMAIN`: plan-trace edge kind with reciprocal intervals, D9c span-to-carrier authority, the cross-region falsifier, and the disc domain.
