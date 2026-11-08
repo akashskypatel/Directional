@@ -39,7 +39,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06; unchanged. TB71 remains unpromoted candidate only. |
 | Latest candidate | **TB87 COMPLETE / MISMATCH** [report](Architecture_M6_CP3_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Execution_Report_20261108.md): [gate 42488019698](https://github.com/akashskypatel/Directional/actions/runs/42488019698) 909/910, membership 991, 1,828/1,828 hashes; GUARD 910 `SurfaceCellsPhase10Tests.cpp:7445` route orientation −1 vs interval +1, attribution unresolved. [Census 42488045371](https://github.com/akashskypatel/Directional/actions/runs/42488045371) Cylinder PASS, BunnyRandom P13-e RED, Vase legacy RED, 9/9 hashes. Seven pinned platform digests and seven A3 lines byte-identical to TB86. **CB104 not accepted; no promotion.** |
 | Regression accounting and debt | Accepted CP2 **491/491**; stable **66/17/49**, debt **1**; ledger v5 81 deferred (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE); TB87 candidate membership **991** (TB86 historical membership 990). Selector497/CP3 unpromoted. O32a verified; O32b–e, O30b, O31, O33 remain. |
-| Active boundary | **TB87-REV adjudicated**: GUARD 910 compared canonical storage frame with observed edge traversal. Exact test-only CB105 then separate TB88. Preserve all RA-215 coverage and tamper checks; no direct acceptance or selector promotion. D7/D5 step64, D4 step64A, D9c step65, D6 user decision pending. |
+| Active boundary | **TB87-REV adjudicated**: GUARD 910 compared canonical storage frame with observed edge traversal. Exact test-only CB105 then separate TB88. Preserve all RA-215 coverage and tamper checks; no direct acceptance or selector promotion. D7 metric 64 → D5 chains 64B → D4 uniform/annulus 64C/64D → D9c 65A → trace 65B → A4 disc 65C → D8 65D; D6 user decision pending. |
 
 ### Revised post-TB88 bounded sequence (requested independent re-audit; one change family per turn)
 
@@ -70,8 +70,8 @@ The prior combined 64 (D7+D5), 64A (uniform+annulus), and 65 (D9c+trace+disc) ar
 - The core contract and the reader census stand.
 - F1: the witness rejection was false. The rectangular hard-rail fixture's regions are curved-disk produced under A3.
 - F2: CB104 was not exact.
-- F3–F5: "source attachment" validation does not exist, so it is now a test oracle and D9c owns the factory side. Cross-region rims cannot be built, so that falsifier moves to step 65. Digest expectations are now pinned.
-- F8: the D4 gap (uniform and annulus producers ignore A3) is owned by step 64A.
+- F3–F5: "source attachment" validation does not exist, so it is now a test oracle and D9c owns the factory side. Cross-region physical rims cannot be built, so reciprocal-trace cross-region falsifier belongs to scoped step 65B. Digest expectations remain pinned.
+- F8: D4 uniform and annulus consumption require separate scoped definitions 64C and 64D (old 64A bundle superseded).
 
 ### Step 58 complete runtime-free (RA-214)
 

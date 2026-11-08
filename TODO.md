@@ -35,12 +35,12 @@ The previous combined 64/64A/65 entries below are *historical umbrellas only*; t
   - **Stands:** the producer/factory contract (single-sided rim interval, absent rim interval legal at the factory, HardRail presence unchanged) and the reader census.
   - **F1:** the rectangular hard-rail fixture *is* a curved-disk A3 rim witness. Under A3, the uniform and annulus producers decline regions that touch rails.
   - **F2:** CB104 asked the implementation agent to design a test. It is now an exact patch.
-  - **F3:** no "source attachment" check exists. It becomes a test oracle, and the factory side is D9c (step 65).
-  - **F4:** a cross-region rim cannot be constructed; that falsifier moves to step 65.
+  - **F3:** no "source attachment" check exists. It becomes a test oracle, and the factory side is D9c (scoped step 65A).
+  - **F4:** a cross-region rim cannot be constructed; that falsifier moves to reciprocal-trace step 65B.
   - **F5:** digest expectations are pinned: all 7 lines unchanged.
   - **F6:** a physical hard edge is now accepted.
   - **F7:** the dropped comment facts are restored.
-  - **F8:** D4 is owned by step 64A.
+  - **F8:** D4 is split into 64C uniform and 64D annulus (old 64A bundle superseded).
 - The active step list (59–66) follows; TB87 is COMPLETE / MISMATCH and routes to the independent Review before step 64.
 
 ## CURRENT STEP LIST (59–66) — RA-214 slices, realigned by RA-215 (2026-11-08)
