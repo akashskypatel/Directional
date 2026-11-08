@@ -1,3 +1,0 @@
-D7 review-only history verification
-Apply commit: aa55054543e8a5d1b309cc9d46f0ff543117b05c
-Expected source: docs-only; run boundary and append-only ledger checks with real Git history.
