@@ -1,5 +1,7 @@
 # Vase A4 phase-front producer path — independent Review (2026-11-08)
 
+> **Superseded in part by [RA-213](Architecture_M6_CP3_DEFN_P13_Vase_Producer_Path_Adversarial_Review_A2b_Disc_Construction_20261108.md) (2026-11-08).** §1's veto proof stands. The decision ("singularity-capable regional phase front"), §3's attribution and §4's successor CB102 are **withdrawn**. Vase has one source region, and A2b already gives 3 certified singularity-free discs. The A4 unit is the A2b disc. With the veto bypassed, curved-disk returns `Rejected`, not a silent output. No produced fixture consumes A3. The field turns −270° against the rim. Next: Review `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER`.
+
 **Turn:** `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH` (Review, runtime-free). Source snapshot SHA `ad8011d7008aa44b6c9ed49d7881aa4dd4d65c6f`, snapshot run `42447920167`, artifact `13604256660`, verified `source.tar.gz` SHA-256 and source SHA. Source program semantics are the CB101 compiled code `23e35798abf0eb3584509c564166ccd97c41cc21`; intervening snapshot commits affect documentation/control only. Primary evidence: RA-212 §2–3, TB85 report, DESIGN §§5, 7.4, repository source and the tracked regression inventory. No new executable probe or build has been run in this Review.
 
 ## Decision — extend A4, do not optimize the legacy fallback as the production solution

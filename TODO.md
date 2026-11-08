@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-CB102-P13-PHASE-FRONT-APPLICABILITY-RECEIPTS` (Code + Build, compile only; [Vase Review](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Phase_Front_Producer_Path_Review_20261108.md) §4). Preserve TB85 immutable 908/908 PASS, membership 989, and accepted CP2 491/491; do not promote selector497/CP3.
+> **Current canonical next:** `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER` (Review, Claude scratch; [RA-213](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Producer_Path_Adversarial_Review_A2b_Disc_Construction_20261108.md) §4, step 58). **CB102 is withdrawn**; no implementation turn is authorized until step 58 freezes exact slices. Preserve TB85 immutable 908/908 PASS, membership 989, and accepted CP2 491/491; do not promote selector497/CP3.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -7,7 +7,26 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — RA-212: RA-211 re-entered; Vase is on the legacy fallback, relief-seeded and 20× too dense; CB100 revised + CB101 → TB85 (908) → Review Vase producer path (2026-11-08)
+## CURRENT — RA-213: Vase producer-path Review re-entered; A4 per A2b disc, not a singularity-capable front; CB102 withdrawn; next Review A2B-DISC-PRODUCER (2026-11-08)
+
+- [x] **RA-213** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Producer_Path_Adversarial_Review_A2b_Disc_Construction_20261108.md)) re-entered the runtime-free Vase Review on the Claude scratch build. The veto proof stands; the direction, CB102 and the gate attribution do not.
+  - **D1:** measured by probe instead of CB102 plus a TB. Vase has 1 source region (χ=1), 0 hard features, and one singularity (v357, +¼) with 3 ports. Port→region ownership is already a typed field.
+  - **D2:** A2b already gives **3 certified singularity-free discs** (145 Mandatory + 3 Trace arcs; A3 187 edges, region sums 70/94/46). The producers construct per source region and use A2b only when one A2b region equals the whole source region.
+  - **D3:** with the veto bypassed, curved-disk returns `Rejected InvalidBoundedDiskTransport`, fail-closed, not silent. The veto is what admits the legacy fallback. The `Declined` flags misreport `000`.
+  - **D4:** no produced census fixture consumes A3. Boundary edges, A3 vs output: Plane 42 vs 32, MultiFaceSeam 48 vs 32, CloseSheets 96 vs 80; Cylinder's cut arcs are ignored. Validation checks only `HardRail` intervals.
+  - **D5:** one Mandatory arc per source boundary edge, so Vase's A3 boundary is 164 edges against about 62 at target (2.6×).
+  - **D6:** the field turns −270° against the rim (76 % of rim edges > 15° off). Any pure-quad mesh needs net +3 irregularity, so zero boundary-valence mismatches and singularity-free disc interiors cannot both hold.
+- [x] Step 57 re-entered. **CB102 WITHDRAWN.**
+  58. [ ] **NEXT Review `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER`** (Claude, scratch build), in order:
+     1. Vase success criterion (D6): (i) field-derived boundary-valence targets, (ii) expected tier D1, or (iii) a boundary-aligned field. Recommend one and ask the user before any gate changes.
+     2. A2b Mandatory-arc granularity (D5): measure A3 with maximal chains; amend DESIGN §7.4 if adopted.
+     3. Scratch prototype of one per-disc A4 on Vase: A2a′ fragment domain, A3 breakpoints with shared trace arcs identical on both sides, port corners, §4.9 fill. Measure every gate.
+     4. A4→A3 conformance verification scope (D4), and the typed state of the four produced fixtures.
+     5. Freeze exact compile-only slices: conformance check, disc domain, boundary breakpoints, fill plus registration. Each goes to a full-gate TB.
+     - **Exit:** slices, or `M6-CP3-PLAN-P13-A4-A2B-DISC-PRODUCER-STOP` with Vase registered at its measured tier.
+  - Parallel and unchanged: step 44 (P13-e). O31 and P13-n1/2/3 are legacy-only and not scheduled.
+
+## EARLIER — RA-212: RA-211 re-entered; Vase is on the legacy fallback, relief-seeded and 20× too dense; CB100 revised + CB101 → TB85 (908) → Review Vase producer path (2026-11-08)
 
 - [x] **RA-211 adversarially reviewed by [RA-212](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_Legacy_Fallback_Density_20261108.md)** (Claude scratch track; product sources = CB99):
   - **Stands:** the RA-211 census counts and the `side_halfedges` wrap defect.
@@ -44,7 +63,7 @@
      - attribute every failing Vase gate: field P95 36.4, size, angle, warpage, aspect, SJ, nonConvex, boundary valence 248, singularity valence 1;
      - falsifiers must run on the legacy path (Vase or legacy unit fixtures), not only on phase-front fixtures.
 
-  58. [ ] **NEXT CB102 `M6-CP3-CB102-P13-PHASE-FRONT-APPLICABILITY-RECEIPTS`** (Code + Build, compile-only): publish exact per-region typed singularity-port counts, topology class, and first NotApplicable reason for all three phase-front producers. Preserve all runtime dispositions, zero/failing controls and A3 schedule; add a focused negative/positive diagnostic regression but compile it only. [Frozen review, falsifiers and stop rules](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Phase_Front_Producer_Path_Review_20261108.md). Separate immutable TB must execute before a behavioral A4 extension.
+  58. [—] **WITHDRAWN by RA-213 (D1): CB102 `M6-CP3-CB102-P13-PHASE-FRONT-APPLICABILITY-RECEIPTS`** (Code + Build, compile-only): publish exact per-region typed singularity-port counts, topology class, and first NotApplicable reason for all three phase-front producers. Preserve all runtime dispositions, zero/failing controls and A3 schedule; add a focused negative/positive diagnostic regression but compile it only. [Frozen review, falsifiers and stop rules](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Phase_Front_Producer_Path_Review_20261108.md). Separate immutable TB must execute before a behavioral A4 extension.
 
 ## EARLIER — RA-211 (partly superseded by RA-212): P13-n census; owners n1–n4; the representation fix is falsified as a standalone landing; CB100 → TB85 → Review P13-n1/n2/n3 (2026-11-08)
 

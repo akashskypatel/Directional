@@ -1,3 +1,13 @@
+## 2026-11-08 UTC — RA-213: Vase producer-path Review re-entered; CB102 withdrawn (no product change)
+
+- [RA-213](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Producer_Path_Adversarial_Review_A2b_Disc_Construction_20261108.md) re-entered the runtime-free Vase Review on the scratch build. The veto proof stands. The direction is revised to A4 **per A2b disc**: Vase's 3 discs are already certified singularity-free, and ports are disc corners.
+- Measured:
+  - with the veto bypassed, curved-disk returns `Rejected`, not a silent output;
+  - no produced census fixture consumes A3;
+  - A2b makes one Mandatory arc per source boundary edge (A3 boundary 2.6× the target);
+  - the field turns −270° against the rim, so Vase cannot reach zero boundary-valence mismatches.
+- Next: Review `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER`. No implementation turn is authorized until it freezes exact slices. CP2 491/491, stable 66/17/49, debt 1; selector497/CP3 unpromoted.
+
 ## 2026-11-08 UTC — Vase A4 producer-path Review decision (no runtime/product change)
 
 - [Independent Review](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Phase_Front_Producer_Path_Review_20261108.md) confirms all three A4 phase-front families early-decline on one source-global typed singularity-port guard. Vase's typed singularity seed makes that gate true; per-region topology and post-veto applicability remain unmeasured. DESIGN-aligned decision: extend singularity-capable A4 construction after measured per-region receipts; do not treat the legacy 20×-dense fallback as production success.
