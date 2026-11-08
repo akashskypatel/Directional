@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb104-a3-rim-apply-20261108-1320",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb104-a3-rim-apply",
-  "file_id": "1HkNj1ct25z-v_X9CWy45-WqolPE2MO1u",
-  "patch_sha256": "67f47763a01a69c20613d50e3f7f4951a95a792ca46e64b67443ed49629ec98e",
-  "base_sha": "ee95b7984940afa63e22d182c6d620d57025dfa5",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): record source-rim A3 interval authority",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb104-compile-20261108-1322",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb104-compile",
+  "source_sha": "b41fbf72a4d4d2255b4b0e94e0148de8378e2364",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb104-a3-source-rim"
 }
