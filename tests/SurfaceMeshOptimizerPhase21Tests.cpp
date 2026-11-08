@@ -161,6 +161,45 @@ TEST(SurfaceMeshOptimizerPhase21,
 }
 
 TEST(SurfaceMeshOptimizerPhase21,
+     ConcaveQuadReportsItsReflexAngleAndInteriorDiagonalWarpage) {
+  Eigen::MatrixXd concave(4, 3);
+  concave << 0.0, 0.0, 0.0,
+      2.0, 0.0, 0.0,
+      0.5, 0.5, 0.0,
+      0.0, 2.0, 0.0;
+  const auto quality = directional::geometry::evaluate_surface_quad_quality(
+      concave, one_quad(), 0, Eigen::RowVector3d(0.0, 0.0, 1.0));
+  EXPECT_FALSE(quality.convex);
+  const double reflex = 180.0 + std::atan2(4.0, 3.0) * 180.0 / std::acos(-1.0);
+  EXPECT_NEAR(quality.maximumAngleDegrees, reflex, 1.0e-9);
+  EXPECT_NEAR(quality.minimumAngleDegrees, (360.0 - 90.0 - reflex) / 2.0,
+              1.0e-9);
+  EXPECT_NEAR(quality.warpageDegrees, 0.0, 1.0e-9);
+  EXPECT_NEAR(quality.signedScaledJacobian, -0.8, 1.0e-12);
+
+  // The same quad listed clockwise is inverted against the source normal, but
+  // its interior angles and inside diagonal are its own.
+  Eigen::MatrixXd clockwise = concave;
+  clockwise.row(1) = concave.row(3);
+  clockwise.row(3) = concave.row(1);
+  const auto inverted = directional::geometry::evaluate_surface_quad_quality(
+      clockwise, one_quad(), 0, Eigen::RowVector3d(0.0, 0.0, 1.0));
+  EXPECT_FALSE(inverted.convex);
+  EXPECT_NEAR(inverted.maximumAngleDegrees, reflex, 1.0e-9);
+  EXPECT_NEAR(inverted.minimumAngleDegrees, (360.0 - 90.0 - reflex) / 2.0,
+              1.0e-9);
+  EXPECT_NEAR(inverted.warpageDegrees, 0.0, 1.0e-9);
+
+  Eigen::MatrixXd convex = concave;
+  convex.row(2) << 1.5, 1.5, 0.5;
+  const auto lifted = directional::geometry::evaluate_surface_quad_quality(
+      convex, one_quad(), 0, Eigen::RowVector3d(0.0, 0.0, 1.0));
+  EXPECT_TRUE(lifted.convex);
+  EXPECT_LT(lifted.maximumAngleDegrees, 180.0);
+  EXPECT_GT(lifted.warpageDegrees, 0.0);
+}
+
+TEST(SurfaceMeshOptimizerPhase21,
      BidirectionalSamplingDetectsSourceCoverageHole) {
   Eigen::MatrixXd source(4, 3);
   source << 0.0, 0.0, 0.0,

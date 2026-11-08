@@ -972,6 +972,16 @@ Eigen::RowVector3d face_normal(const Eigen::MatrixXd &v,
   return normalized_or_zero(cross3(b - a, c - a));
 }
 
+// The validator's whole-polygon normal: unlike the first triangle's, it does
+// not flip on a quad whose corner 1 is reflex (RA-208, RA-211).
+Eigen::RowVector3d quad_normal(const Eigen::MatrixXd &v,
+                               const Eigen::MatrixXi &q, const int face) {
+  return normalized_or_zero(
+      validation::source_authoritative_detail::polygon_normal(
+          v, {q(face, 0), q(face, 1), q(face, 2), q(face, 3)})
+          .transpose());
+}
+
 } // namespace directional::geometry::surface_optimizer_detail
 
 namespace directional::geometry::surface_optimizer_detail {
@@ -1737,7 +1747,11 @@ SurfaceQuadQualityMetrics evaluate_surface_quad_quality(
   using namespace surface_optimizer_detail;
   SurfaceQuadQualityMetrics quality;
   const Eigen::RowVector3d normal = normalized_or_zero(sourceNormal);
+  // Convexity and the Jacobian are measured against the source normal. A
+  // corner is reflex in the quad's own plane, the validator's definition.
+  const Eigen::RowVector3d ownNormal = quad_normal(vertices, quads, face);
   std::array<double, 4> lengths{};
+  std::array<bool, 4> positiveCorner{};
   quality.minimumAngleDegrees = std::numeric_limits<double>::infinity();
   quality.maximumAngleDegrees = 0.0;
   for (int corner = 0; corner < 4; ++corner) {
@@ -1751,7 +1765,12 @@ SurfaceQuadQualityMetrics evaluate_surface_quad_quality(
     const double cornerScale = next.norm() * previous.norm();
     quality.convex = quality.convex && cornerScale > 1.0e-15 &&
                      signedCorner / cornerScale > 1.0e-12;
-    const double angle = angle_degrees(previous, next);
+    const double ownCorner = cross3(next, previous).dot(ownNormal);
+    positiveCorner[static_cast<std::size_t>(corner)] = ownCorner > 0.0;
+    // A reflex corner's interior angle exceeds 180.
+    const double unsignedAngle = angle_degrees(previous, next);
+    const double angle =
+        ownCorner < 0.0 ? 360.0 - unsignedAngle : unsignedAngle;
     quality.minimumAngleDegrees =
         std::min(quality.minimumAngleDegrees, angle);
     quality.maximumAngleDegrees =
@@ -1777,7 +1796,15 @@ SurfaceQuadQualityMetrics evaluate_surface_quad_quality(
   const Eigen::RowVector3d n123 = normalized_or_zero(cross3(p2 - p1, p3 - p1));
   const double diagonal02 = angle_degrees(n012, n023);
   const double diagonal13 = angle_degrees(n013, n123);
-  quality.warpageDegrees = std::max(diagonal02, diagonal13);
+  // Only a diagonal inside the quad splits it into its two triangles; the
+  // outside diagonal of a concave quad gives opposed normals even when the
+  // quad is planar. A diagonal is inside when both corners off it are convex.
+  const bool inside02 = positiveCorner[1] && positiveCorner[3];
+  const bool inside13 = positiveCorner[0] && positiveCorner[2];
+  quality.warpageDegrees =
+      inside02 && !inside13   ? diagonal02
+      : inside13 && !inside02 ? diagonal13
+                              : std::max(diagonal02, diagonal13);
   return quality;
 }
 
