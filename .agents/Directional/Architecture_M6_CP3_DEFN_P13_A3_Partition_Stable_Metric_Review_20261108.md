@@ -1,5 +1,7 @@
 # D7 — Partition-stable A3 preferred metric and exact breakpoint contract
 
+> **Partly superseded by [RA-216](Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Adversarial_Review_20261108.md) (2026-11-08).** The diagnosis and density model stand. Items 3 and 5 (exact rounding of a sum of square roots, algebraic inverse breakpoints) and the CB106 successor paragraph and stop rule are replaced by RA-216 §4–§8: run-wise exact integer count, placement as D7b, exact CB106 and CB107.
+
 **Turn:** `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC` · 2026-11-08 · independent source Review/definition; no product implementation, test execution, build, or accepted-prefix promotion.
 
 ## Authority and scope

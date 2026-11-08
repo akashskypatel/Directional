@@ -395,6 +395,14 @@ This document records **reusable failure-derived engineering lessons**, not an e
   freeze the test, or stop itself. Bind every falsifier to the predicate that produces its outcome. A
   tamper that no product predicate rejects (here, span attachment of a single-sided interval) is an
   oracle in the test or a registered gap, never an expected rejection.
+- **An "exact" contract must name the arithmetic that decides it (RA-216).** The D7 decision required
+  the nearest integer of a sum of square roots and an algebraic inverse for breakpoints, then told the CB
+  to stop if that could not be built. The kernel decides one root; the only multi-radical code is
+  exponential in the number of roots. Before freezing an exact rule, write the predicate that decides each
+  output and check the kernel has it at the size production needs. Where DESIGN makes the quantity an
+  objective, a defined exact integer function (here, run-wise integer square roots) is exact enough.
+  Check that a consumer exists before specifying a representation change, and split a
+  production-affecting change from an inert one.
 - **Plan from the current normative contract and reachable implementation.** Before freezing an
   obligation, identify the actual producer, owning stage, live branch and witness class; confirm it can
   be expressed at that checkpoint. Do not retroactively require a later milestone's capability or treat

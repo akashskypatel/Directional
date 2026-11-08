@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC` (runtime-free Review/definition, D7 step 64). [TB88 MATCH](.agents/Directional/Architecture_M6_CP3_TB88_P13_A3_Observed_Route_Orientation_Full_Gate_Execution_Report_20261108.md): 910/910 PASS, membership 991, guards 909/910 PASS, census Cylinder PASS and BunnyRandom/Vase expected RED, 1,828/1,828 gate and 9/9 census hashes; all 7/7 platform and 7/7 A3 digest lines match TB86. Accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred; selector497/CP3 remain unpromoted.
+> **Current canonical next:** `M6-CP3-CB106-P13-A3-PARTITION-STABLE-METRIC` (implementation agent, compile only; exact [diff](.agents/Directional/Architecture_M6_CP3_CB106_P13_A3_Partition_Stable_Count_Exact.diff) `2ee84014…`, authority [RA-216](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Adversarial_Review_20261108.md) §5). Then TB89 (913) → CB107 `c1caefb9…` → TB90 (914) → D7b DEFN 64.5. TB88 910/910 MATCH, membership 991. Accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred; selector497/CP3 remain unpromoted.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -7,7 +7,26 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — TB88 verified; D7 partition-stable metric definition next (2026-11-08)
+## CURRENT — RA-216: step 64 (D7) re-entered; exact CB106 + CB107, TB89 + TB90 frozen; placement split to D7b (2026-11-08)
+
+- [x] **RA-216** ([RA-216](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Adversarial_Review_20261108.md)) re-entered the step-64 [D7 decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Review_20261108.md).
+  - **Stands:** the diagnosis, the ρ = interpolated 1/h density, collinear canonicalization, tie-down and minimum one.
+  - **F1:** exact rounding of a sum of square roots cannot be decided by the kernel. The count is now run-wise ⌊2⁶⁴·metric⌋, rounded once (DESIGN §7.4 corrected).
+  - **F2:** algebraic inverse breakpoints would be irrational. D7b places by metric across runs and by length within a run.
+  - **F3:** placement has no multi-piece consumer yet (curved-disk takes single-piece edge arcs), so the count lands first.
+  - **F4:** the framed CP1/CP2 copies stay frozen.
+  - **F5:** single-piece counts change where h varies; the digest outcome is pre-registered.
+  - **F6:** CB106 is now exact.
+  - **F7/F8:** profile storage goes to D7b; the falsifiers are rebound.
+- **Step 64 re-sliced (each step independently testable):**
+  64.1. [ ] **NEXT** `M6-CP3-CB106-P13-A3-PARTITION-STABLE-METRIC` — count function and 3 GUARD tests, not wired. [Diff](.agents/Directional/Architecture_M6_CP3_CB106_P13_A3_Partition_Stable_Count_Exact.diff) `2ee8401442bed8e1df7f5f92de199acc18477df3e7e10ed36e56b4d715afb777`, 382 lines, 7 single-space context lines, numstat `86 0` / `7 0` / `238 0`. Compile only. Mismatch → `M6-CP3-PLAN-P13-A3-PARTITION-STABLE-METRIC-STOP`; infrastructure → `M6-CP3-CB106A-P13-A3-PARTITION-STABLE-METRIC-ORCH`.
+  64.2. [ ] `M6-CP3-TB89-P13-A3-PARTITION-STABLE-METRIC-FULL-GATE-EXEC` — [manifest](.agents/Directional/Architecture_M6_TB89_P13_A3_Partition_Stable_Count_Full_Gate_Case_Manifest.tsv) 913 rows `8a4a6fef2a8b8b6e3c81ef1aa11de8f71dab883ee2d1d43b653f0ab129811ef8`, membership 994. Expect 913/913, with 7 platform and 7 A3 lines byte-identical to TB88. Mismatch → `M6-CP3-TB89-P13-A3-PARTITION-STABLE-METRIC-FULL-GATE-REV`; infrastructure → `M6-CP3-TB89A-P13-A3-PARTITION-STABLE-METRIC-ORCH`.
+  64.3. [ ] `M6-CP3-CB107-P13-A3-PARTITION-STABLE-COUNT-SWITCH` — after TB89 MATCH; the scheduler's objective becomes the D7 count, plus GUARD 914. [Diff](.agents/Directional/Architecture_M6_CP3_CB107_P13_A3_Partition_Stable_Count_Switch_Exact.diff) `c1caefb973f8157823018dbd6fcb2d4ff2f47bcf79f41d3ef77d0b216ab9aa5f`, 217 lines, 10 single-space context lines, numstat `2 56` / `1 1` / `52 22`, applied on top of CB106. Mismatch → `M6-CP3-PLAN-P13-A3-PARTITION-STABLE-COUNT-SWITCH-STOP`; infrastructure → `M6-CP3-CB107A-P13-A3-PARTITION-STABLE-COUNT-SWITCH-ORCH`.
+  64.4. [ ] `M6-CP3-TB90-P13-A3-PARTITION-STABLE-COUNT-SWITCH-FULL-GATE-EXEC` — [manifest](.agents/Directional/Architecture_M6_TB90_P13_A3_Partition_Stable_Count_Switch_Full_Gate_Case_Manifest.tsv) 914 rows `45dfbb533ed3668f48a0146a3ce6800f57a2221368380c31c8e60a7974c64607`, membership 995. Outcome table in RA-216 §7: 914/914; A3 lines identical; census verdicts unchanged; platform tokens through `global-topology-plan` identical; later tokens change only with a changed baseline hash (uniform/annulus `/count` and `validationIssues` identical). Mismatch → `M6-CP3-TB90-P13-A3-PARTITION-STABLE-COUNT-SWITCH-FULL-GATE-REV`; infrastructure → `M6-CP3-TB90A-P13-A3-PARTITION-STABLE-COUNT-SWITCH-ORCH`.
+  64.5. [ ] Review (runtime-free) `M6-CP3-DEFN-P13-A3-METRIC-BREAKPOINT-PLACEMENT` (D7b) → exact CB108 → TB91. Semantics in RA-216 §8. It decides profile storage (baseline-only, not the shared entry) and width receipts. It must precede 64B.
+- Then 64B D5 (its consumer accepts multi-piece spans) → 64C/64D D4 → 65A–65D → 66+, per the table below.
+
+## EARLIER — TB88 verified; D7 definition (re-entered by RA-216) (2026-11-08)
 
 - [x] **TB88 COMPLETE / MATCH:** [verified report](.agents/Directional/Architecture_M6_CP3_TB88_P13_A3_Observed_Route_Orientation_Full_Gate_Execution_Report_20261108.md); 910/910 gate, membership 991, 1,828/1,828 hashes; GUARD 909/910 PASS. Census 1 PASS / 2 expected RED, 9/9 hashes, 7/7 platform + 7/7 A3 lines identical to TB86. No CP3/selector497 or direct production promotion.
 - [x] **TB87-REV** [decision](.agents/Directional/Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Orientation_Adjudication_20261108.md): observed orientation must use `CanonicalRoute::oriented_steps()`, not canonical storage `steps()`. 32 matching rim indices in both row orders, 64 failures, no producer sign violation shown. Frozen exact test-only [CB105 diff](.agents/Directional/Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Oracle_Exact.diff), [CB105 compile record](.agents/Directional/Architecture_M6_CP3_CB105_P13_A3_Observed_Route_Orientation_Oracle_Code_Build_Record_20261108.md), and separate TB88; no review-time or CB105 runtime. No CP3 promotion.
@@ -18,7 +37,8 @@
 
 | Order | Review-definition owner | Separate proof obligation |
 |---|---|---|
-| 64 D7 | `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC` | Same geometric path across different piece splits → same count and positions |
+| 64 D7 | `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC` (COMPLETE, RA-216) → CB106 → TB89 → CB107 → TB90 | Same geometric path across different piece splits → same count |
+| 64.5 D7b | `M6-CP3-DEFN-P13-A3-METRIC-BREAKPOINT-PLACEMENT` → CB108 → TB91 | Same path → same breakpoint points; single-piece spans unchanged |
 | 64B D5 | `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING` | Chain topology, original-arc lineage, positivity, exact coverage |
 | 64C D4 | `M6-CP3-DEFN-P13-A3-UNIFORM-PLAN-CONSUMPTION` | Uniform A3 coverage or typed decline; omission falsifier |
 | 64D D4 | `M6-CP3-DEFN-P13-A3-ANNULUS-PLAN-CONSUMPTION` | Annulus periodic/cut coverage and orientation falsifier |
@@ -30,7 +50,7 @@
 
 The previous combined 64/64A/65 entries below are *historical umbrellas only*; this table supersedes their bundled implementation scopes. [Decision and falsifiers](.agents/Directional/Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Orientation_Adjudication_20261108.md#requested-substantive-re-audit--independent-static-source-analysis-2026-11-08).
 
-## CURRENT — RA-215: step 61 re-entered; exact CB104 + TB87 frozen; D9c and D4 owned (2026-11-08)
+## EARLIER — RA-215: step 61 re-entered; exact CB104 + TB87 frozen; D9c and D4 owned (2026-11-08)
 
 - [x] **RA-215** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Adversarial_Review_20261108.md)) re-entered the step-61 D9 decision.
   - **Stands:** the producer/factory contract (single-sided rim interval, absent rim interval legal at the factory, HardRail presence unchanged) and the reader census.
@@ -44,7 +64,7 @@ The previous combined 64/64A/65 entries below are *historical umbrellas only*; t
   - **F8:** D4 is split into 64C uniform and 64D annulus (old 64A bundle superseded).
 - The active step list (59–66) follows; TB87 is COMPLETE / MISMATCH and routes to the independent Review before step 64.
 
-## CURRENT STEP LIST (59–66) — RA-214 slices, realigned by RA-215 (2026-11-08)
+## CURRENT STEP LIST (59–66) — RA-214 slices, realigned by RA-215 and RA-216 (2026-11-08)
 
 - [x] **RA-214** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md)) resumed the `BLOCKED` step 58.
   - **Block:** valid. `REVIEW_TURN_POLICY.md` §4.3 makes Reviews and DEFNs runtime-free. RA-213 §4 (a prototype and gate measurement inside a Review) is withdrawn, and the "Claude, scratch build" label is suspended on steps 44, 44A, 44B and 44C.
@@ -76,8 +96,8 @@ The previous combined 64/64A/65 entries below are *historical umbrellas only*; t
      - Manifest: [manifest](.agents/Directional/Architecture_M6_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Case_Manifest.tsv), 910 rows, `c435519f6304fdcedb794e45187c8c4645e0bb36d32ec567e7979d292fb245bf`, membership 991, ledger v5 81, census `3af1dc0d…`.
      - Expected: 910/910 (GUARD 909 and 910 PASS). Rows 795/796/797/864 and the 3 census `platform-digest` **and** `a3-coverage` lines are byte-identical to TB86.
      - [Verified TB87 report](.agents/Directional/Architecture_M6_CP3_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Execution_Report_20261108.md): gate 909/910, GUARD 910 RED at `SurfaceCellsPhase10Tests.cpp:7445` (−1 route step vs +1 interval orientation), 1,828/1,828 checksums; census 1 PASS / 2 expected RED, 9/9 checksums; 7/7 pinned platform and 7/7 A3 lines exact. No repair inside TB. **Activated mismatch route → `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-REV` (Review, runtime-free)**; step 64 is deferred until adjudication.
-  64. [x] **D7 runtime-free Review definition** `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC`: [decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Review_20261108.md) specifies additive source-path target metric, exact cumulative breakpoint semantics, and partition/reversal/variable-target falsifiers; no runtime or production change.
-  64-impl. [ ] **Next, separate Code + Build** `M6-CP3-CB106-P13-A3-PARTITION-STABLE-METRIC`, compile-only; stop for independent Review if algebraic exact breakpoint support cannot be preserved. Immutable TB remains separately required before D7 acceptance.
+  64. [x] **D7 runtime-free Review definition, re-entered by RA-216** `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC`: [decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Review_20261108.md) (diagnosis and density stand) → [RA-216](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Adversarial_Review_20261108.md) (exact run-wise count; placement to D7b).
+  64.1–64.5. [ ] CB106 → TB89 → CB107 → TB90 → D7b DEFN (CB108 → TB91): see the RA-216 section above. The former "64-impl" CB106 with its algebraic stop rule is superseded.
   64A. [ ] **Superseded combined D4 bundle**; separate 64C uniform and 64D annulus, each DEFN/CB/TB, before CP3 promotion.
   65. [ ] **Superseded combined D9c+trace+disc bundle**; separate 65A, 65B and 65C, plus 65D D8, per table above.
   66. [ ] Per-disc boundary and corners (needs D6) → fill (§4.9) → dispatch and honest `Declined` flags (D3). One DEFN → CB → TB each.

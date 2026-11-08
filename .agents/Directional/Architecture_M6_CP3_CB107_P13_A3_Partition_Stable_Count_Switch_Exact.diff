@@ -1,0 +1,217 @@
+diff --git a/src/geometry/GlobalConformityBaselineSupport.cpp b/src/geometry/GlobalConformityBaselineSupport.cpp
+index 6ce4636a8..8232a26ca 100644
+--- a/src/geometry/GlobalConformityBaselineSupport.cpp
++++ b/src/geometry/GlobalConformityBaselineSupport.cpp
+@@ -127,19 +127,6 @@ std::optional<std::array<FieldExactRational, 3>> exact_position(
+   return position;
+ }
+ 
+-std::optional<FieldExactRational> exact_target(const VertexWeights &weights,
+-                                               const Eigen::VectorXd &target) {
+-  FieldExactRational value = exact_integer(0);
+-  for (const auto &[vertex, weight] : weights) {
+-    if (vertex >= static_cast<std::size_t>(target.size())) return std::nullopt;
+-    const auto exact =
+-        FieldExactRational::from_double_exact(target(static_cast<Eigen::Index>(vertex)));
+-    if (!exact || *exact <= exact_integer(0)) return std::nullopt;
+-    value = value + weight * *exact;
+-  }
+-  return value;
+-}
+-
+ // D7 density rho = 1/h, interpolated from exact vertex reciprocals so that it
+ // is affine on every source simplex (RA-216).
+ std::optional<FieldExactRational>
+@@ -212,49 +199,8 @@ std::optional<std::size_t> exact_to_size_checked(const EInt &value) {
+ std::optional<EInt> derive_preferred_count_exact(
+     const ConformitySpanInput &span, const Eigen::MatrixXd &sourceVertices,
+     const Eigen::VectorXd &targetSize) {
+-  if (span.supportPieces.empty()) return std::nullopt;
+-  FieldExactRational energy = exact_integer(0);
+-  std::optional<ConformitySourcePoint> previous;
+-  for (const auto &piece : span.supportPieces) {
+-    if (previous && *previous != piece.first) return std::nullopt;
+-    const auto first =
+-        point_weights(piece.first, static_cast<std::size_t>(sourceVertices.rows()));
+-    const auto second =
+-        point_weights(piece.second, static_cast<std::size_t>(sourceVertices.rows()));
+-    if (!first || !second || piece.first == piece.second ||
+-        !carrier_contains(piece.carrier, *first) ||
+-        !carrier_contains(piece.carrier, *second)) {
+-      return std::nullopt;
+-    }
+-    const auto p0 = exact_position(*first, sourceVertices);
+-    const auto p1 = exact_position(*second, sourceVertices);
+-    const auto h0 = exact_target(*first, targetSize);
+-    const auto h1 = exact_target(*second, targetSize);
+-    if (!p0 || !p1 || !h0 || !h1) return std::nullopt;
+-
+-    FieldExactRational squaredLength = exact_integer(0);
+-    for (std::size_t axis = 0U; axis < 3U; ++axis) {
+-      const auto delta = (*p1)[axis] - (*p0)[axis];
+-      squaredLength = squaredLength + delta * delta;
+-    }
+-    if (squaredLength == exact_integer(0)) return std::nullopt;
+-    const auto midpointTarget =
+-        (*h0 + *h1) * exact_ratio(EInt(1), EInt(2));
+-    energy = energy + squaredLength / (midpointTarget * midpointTarget);
+-    previous = piece.second;
+-  }
+-
+-  energy = energy *
+-           exact_ratio(exact_from_size(span.supportPieces.size()), EInt(1));
+-  if (energy <= exact_integer(0)) return std::nullopt;
+-  const EInt floor = integer_sqrt_floor(
+-      energy.exact_numerator() / energy.exact_denominator());
+-  const EInt odd = EInt(2) * floor + EInt(1);
+-  const bool roundDown = EInt(4) * energy.exact_numerator() <=
+-                         odd * odd * energy.exact_denominator();
+-  EInt nearest = roundDown ? floor : floor + EInt(1);
+-  if (nearest < EInt(1)) nearest = EInt(1);
+-  return nearest;
++  return derive_partition_stable_preferred_count_exact(span, sourceVertices,
++                                                       targetSize);
+ }
+ 
+ std::optional<EInt> derive_partition_stable_preferred_count_exact(
+diff --git a/src/geometry/GlobalConformityBaselineSupport.h b/src/geometry/GlobalConformityBaselineSupport.h
+index 0c99ccd9e..0b37e1a4b 100644
+--- a/src/geometry/GlobalConformityBaselineSupport.h
++++ b/src/geometry/GlobalConformityBaselineSupport.h
+@@ -15,7 +15,7 @@ namespace directional::geometry::global_conformity_baseline_detail {
+ 
+ // D7 preferred count (RA-216): the rounded integral of rho = 1/h along the
+ // span's physical path, independent of how the path is split into pieces.
+-// Not yet the scheduler's objective; derive_preferred_count_exact still is.
++// It is the scheduler's objective: derive_preferred_count_exact delegates here.
+ [[nodiscard]] std::optional<EInt> derive_partition_stable_preferred_count_exact(
+     const ConformitySpanInput &span, const Eigen::MatrixXd &sourceVertices,
+     const Eigen::VectorXd &targetSize);
+diff --git a/tests/GlobalConformityBaselineTests.cpp b/tests/GlobalConformityBaselineTests.cpp
+index 7f0d73373..3f340e309 100644
+--- a/tests/GlobalConformityBaselineTests.cpp
++++ b/tests/GlobalConformityBaselineTests.cpp
+@@ -876,9 +876,9 @@ std::optional<EInt> d7_count(const ConformitySpanInput &span,
+   return derive_partition_stable_preferred_count_exact(span, vertices, target);
+ }
+ 
+-std::optional<EInt> legacy_count(const ConformitySpanInput &span,
+-                                 const Eigen::MatrixXd &vertices,
+-                                 const Eigen::VectorXd &target) {
++std::optional<EInt> objective_count(const ConformitySpanInput &span,
++                                    const Eigen::MatrixXd &vertices,
++                                    const Eigen::VectorXd &target) {
+   return derive_preferred_count_exact(span, vertices, target);
+ }
+ 
+@@ -908,14 +908,14 @@ TEST(GlobalConformityBaseline,
+               d7_count(reversed_span(span), vertices, unit))
+         << "reversed pieces=" << span.supportPieces.size();
+   }
+-  // The legacy formula round(sqrt(m * sum(lambda^2))) is not: lambda =
+-  // (0.1, 3.9) gives 6 and (0.5, 3.5) gives exactly 5.
++  // The scheduler's objective is the D7 count, so the former
++  // round(sqrt(m * sum(lambda^2))) values 6 and 5 are gone.
+   EXPECT_EQ(std::optional<EInt>(EInt(4)),
+-            legacy_count(edge_span_cut_at(edge, {}), vertices, unit));
+-  EXPECT_EQ(std::optional<EInt>(EInt(6)),
+-            legacy_count(edge_span_cut_at(edge, {{1, 40}}), vertices, unit));
+-  EXPECT_EQ(std::optional<EInt>(EInt(5)),
+-            legacy_count(edge_span_cut_at(edge, {{1, 8}}), vertices, unit));
++            objective_count(edge_span_cut_at(edge, {}), vertices, unit));
++  EXPECT_EQ(std::optional<EInt>(EInt(4)),
++            objective_count(edge_span_cut_at(edge, {{1, 40}}), vertices, unit));
++  EXPECT_EQ(std::optional<EInt>(EInt(4)),
++            objective_count(edge_span_cut_at(edge, {{1, 8}}), vertices, unit));
+ 
+   // A face-interior run of irrational length sqrt(1/2) at h = 1/16 has
+   // metric sqrt(128) = 11.31..., whole or cut unevenly at (1/8, 1/8).
+@@ -945,10 +945,10 @@ TEST(GlobalConformityBaseline,
+   EXPECT_EQ(std::optional<EInt>(EInt(11)), d7_count(cut, face, fine));
+   EXPECT_EQ(std::optional<EInt>(EInt(11)),
+             d7_count(reversed_span(cut), face, fine));
+-  EXPECT_EQ(std::optional<EInt>(EInt(11)), legacy_count(whole, face, fine));
+-  EXPECT_EQ(std::optional<EInt>(EInt(13)), legacy_count(cut, face, fine));
+-  std::cout << "D7_PREFERRED_COUNT_RECEIPT case=splits straight=4 legacy0.1=6"
+-            << " legacy0.5=5 faceRun=11 legacyFaceCut=13\n";
++  EXPECT_EQ(std::optional<EInt>(EInt(11)), objective_count(whole, face, fine));
++  EXPECT_EQ(std::optional<EInt>(EInt(11)), objective_count(cut, face, fine));
++  std::cout << "D7_PREFERRED_COUNT_RECEIPT case=splits straight=4 objective0.1=4"
++            << " objective0.5=4 faceRun=11 objectiveFaceCut=11\n";
+ }
+ 
+ TEST(GlobalConformityBaseline,
+@@ -972,13 +972,13 @@ TEST(GlobalConformityBaseline,
+               d7_count(reversed_span(span), vertices, target))
+         << "reversed pieces=" << span.supportPieces.size();
+   }
+-  // Midpoint h is not additive: whole 16 / 0.75^2 rounds to 5, halves to 6.
+-  EXPECT_EQ(std::optional<EInt>(EInt(5)),
+-            legacy_count(edge_span_cut_at(edge, {}), vertices, target));
++  // The objective no longer uses midpoint h, which gave 5 whole and 6 halved.
++  EXPECT_EQ(std::optional<EInt>(EInt(6)),
++            objective_count(edge_span_cut_at(edge, {}), vertices, target));
+   EXPECT_EQ(std::optional<EInt>(EInt(6)),
+-            legacy_count(edge_span_cut_at(edge, {{1, 2}}), vertices, target));
++            objective_count(edge_span_cut_at(edge, {{1, 2}}), vertices, target));
+   std::cout << "D7_PREFERRED_COUNT_RECEIPT case=reciprocal-density d7=6"
+-            << " legacyWhole=5 legacyHalves=6\n";
++            << " objectiveWhole=6 objectiveHalves=6\n";
+ }
+ 
+ TEST(GlobalConformityBaseline,
+@@ -1004,7 +1004,7 @@ TEST(GlobalConformityBaseline,
+   // A positive span shorter than half a target still gets one interval.
+   EXPECT_EQ(std::optional<EInt>(EInt(1)), count_on_x_axis(0.25, 1.0, {}));
+ 
+-  // A bend starts a new run: lengths 1 and 4 give 5 (legacy gives 6).
++  // A bend starts a new run: lengths 1 and 4 give 5 (formerly 6).
+   Eigen::MatrixXd bent(3, 3);
+   bent << 0.0, 0.0, 0.0,
+           1.0, 0.0, 0.0,
+@@ -1021,7 +1021,7 @@ TEST(GlobalConformityBaseline,
+   EXPECT_EQ(std::optional<EInt>(EInt(5)), d7_count(corner, bent, unit));
+   EXPECT_EQ(std::optional<EInt>(EInt(5)),
+             d7_count(reversed_span(corner), bent, unit));
+-  EXPECT_EQ(std::optional<EInt>(EInt(6)), legacy_count(corner, bent, unit));
++  EXPECT_EQ(std::optional<EInt>(EInt(5)), objective_count(corner, bent, unit));
+ 
+   // Turning back along the same line is a new run, not a cancellation:
+   // 0 -> 3 -> 1 on a length-4 edge measures 3 + 2.
+@@ -1064,5 +1064,35 @@ TEST(GlobalConformityBaseline,
+        edge.second()}};
+   EXPECT_FALSE(d7_count(foreign, line, unit).has_value());
+   std::cout << "D7_PREFERRED_COUNT_RECEIPT case=rounding half=4 halfPlus=5"
+-            << " short=1 bend=5 legacyBend=6 foldBack=5 malformed=6\n";
++            << " short=1 bend=5 objectiveBend=5 foldBack=5 malformed=6\n";
++}
++
++TEST(GlobalConformityBaseline,
++     D7PreferredCountIsTheSchedulerObjectiveForEverySplit) {
++  // One A3 span on a unit edge at h = 1/4, whole, cut at 1/8 (formerly
++  // preferred 5) and halved: the built and validated plan prefers 4 each time
++  // and so schedules the same counts.
++  const auto fixture = make_topology_fixture(make_square_mesh());
++  auto whole = make_baseline_input(fixture, 0.25, 1U);
++  auto uneven = whole;
++  uneven.spans.front().supportPieces =
++      edge_span_cut_at(find_edge(fixture.mesh, 0, 1), {{1, 8}}).supportPieces;
++  auto halves = make_baseline_input(fixture, 0.25, 1U, true);
++  ASSERT_EQ(2U, uneven.spans.front().supportPieces.size());
++  ASSERT_EQ(2U, halves.spans.front().supportPieces.size());
++  std::vector<std::vector<int>> counts;
++  for (const GlobalConformityBaselineInput *input : {&whole, &uneven, &halves}) {
++    const auto built = directional::geometry::build_global_conformity_baseline(
++        fixture.topology, *input);
++    ASSERT_TRUE(built);
++    const auto *entry = built.value().find_schedule(input->spans.front().id);
++    ASSERT_NE(nullptr, entry);
++    EXPECT_EQ(EInt(4), entry->preferredCount)
++        << "pieces=" << input->spans.front().supportPieces.size();
++    counts.push_back(exact_counts(built.value()));
++  }
++  EXPECT_EQ(counts[0], counts[1]);
++  EXPECT_EQ(counts[0], counts[2]);
++  std::cout << "D7_PREFERRED_COUNT_RECEIPT case=scheduler-objective whole=4"
++            << " uneven=4 halves=4\n";
+ }
