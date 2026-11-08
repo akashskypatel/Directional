@@ -1,3 +1,8 @@
+## 2026-11-08 UTC — TB89 exact partition-stable metric immutable gate MATCH (Test + Benchmark)
+
+- [TB89 verified report](.agents/Directional/Architecture_M6_CP3_TB89_P13_A3_Partition_Stable_Metric_Full_Gate_Execution_Report_20261108.md): exact CB106 source `9dcba327…`, immutable package 13630299422; gate [42516427414](https://github.com/akashskypatel/Directional/actions/runs/42516427414) **913/913 PASS** (membership 994, 1,834/1,834 checksums, GUARD 911–913 PASS); census [42516476804](https://github.com/akashskypatel/Directional/actions/runs/42516476804) Cylinder PASS and BunnyRandom/Vase registered RED (9/9 hashes). Raw TB88 digests **7/7 platform** and **7/7 A3** unchanged. No compile/relink/configure/benchmark or product/test/fixture/selector modification.
+- Historical stable accounting unchanged **66/17/49**, accepted CP2 **491/491**, debt **1**, 81 deferred; CP3/selector497 unpromoted. Explicit next separate Code + Build turn `M6-CP3-CB107-P13-A3-PARTITION-STABLE-COUNT-SWITCH` (RA-216 exact patch, compile-only), then independent TB90.
+
 ## 2026-11-08 UTC — CB106 exact partition-stable count (Code + Build; compile only)
 
 - [CB106 record](.agents/Directional/Architecture_M6_CP3_CB106_P13_A3_Partition_Stable_Count_Code_Build_Record_20261108.md): exact approved RA-216 `2ee84014…` patch applied at [`9dcba327c006e9807db55d584b0c430878148792`](https://github.com/akashskypatel/Directional/commit/9dcba327c006e9807db55d584b0c430878148792); new count helper and three GUARD tests only, scheduler not switched. [Apply 42514211396](https://github.com/akashskypatel/Directional/actions/runs/42514211396) verified three exact paths; transient Drive transport file retired.
