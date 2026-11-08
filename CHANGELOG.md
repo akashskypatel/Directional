@@ -1,3 +1,19 @@
+## 2026-11-08 — RA-212: RA-211 re-entered; Vase on the legacy fallback, relief-seeded and 20× too dense; CB100 revised + CB101 → TB85 (908); Review Vase producer path next
+
+- **Turn:** `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`, adversarial re-entry of RA-211. [RA-212](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_Legacy_Fallback_Density_20261108.md).
+- **Findings:**
+  - Vase is the only census fixture on the legacy tracing fallback; the phase front returns NotApplicable, reason unpublished. RA-211's fixture-digest falsifiers were vacuous.
+  - 1,131 of 1,416 Vase seeds are relief-critical (O31); the layout is about 20× denser than the metric target. A scratch run without relief seeds gives 1,184 cells instead of 26,817.
+  - Parity repair writes 121 hard-rail breakpoints (DESIGN §7.4).
+  - `turns` has no behavioural consumer.
+  - `normalP95` 121.56° was a first-triangle-normal artifact (true 3.74°).
+- **CB100 revised:** reflex corners and inside diagonals are measured in the quad's own plane, using the validator's `polygon_normal`. It supersedes `d55589c7…`, which was never applied.
+- **CB101 (new):** the report and overlay normal error use the whole-quad normal.
+- **Scratch verification:** six fixture digests identical (Vase included); local 908-row gate 907/908 (only O16); both new tests fail without their fixes; deferred failures unchanged; no warnings.
+- **TB85:** 908 rows, `ec088eb1…`, membership 989.
+- **Withdrawn:** RA-211's `SEMANTIC-PATCH-BOUNDARY` Review. Next Review: `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH`.
+- No product or test source changed in the repository; the patches are committed `.diff`s.
+
 ## 2026-11-08 — RA-211: P13-n census; owners n1–n4; exact CB100 → TB85; Review P13-n1/n2/n3 next
 
 - **Turn:** `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`, resumed from the ChatGPT BLOCKED Review. [RA-211](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Census_Adjudication_20261108.md).

@@ -1,29 +1,51 @@
 diff --git a/src/geometry/SurfaceMeshOptimizer.cpp b/src/geometry/SurfaceMeshOptimizer.cpp
-index 54a44ba0a..62849bf24 100644
+index 54a44ba0a..4caac7b2e 100644
 --- a/src/geometry/SurfaceMeshOptimizer.cpp
 +++ b/src/geometry/SurfaceMeshOptimizer.cpp
-@@ -1738,6 +1738,7 @@ SurfaceQuadQualityMetrics evaluate_surface_quad_quality(
+@@ -972,6 +972,16 @@ Eigen::RowVector3d face_normal(const Eigen::MatrixXd &v,
+   return normalized_or_zero(cross3(b - a, c - a));
+ }
+ 
++// The validator's whole-polygon normal: unlike the first triangle's, it does
++// not flip on a quad whose corner 1 is reflex (RA-208, RA-211).
++Eigen::RowVector3d quad_normal(const Eigen::MatrixXd &v,
++                               const Eigen::MatrixXi &q, const int face) {
++  return normalized_or_zero(
++      validation::source_authoritative_detail::polygon_normal(
++          v, {q(face, 0), q(face, 1), q(face, 2), q(face, 3)})
++          .transpose());
++}
++
+ } // namespace directional::geometry::surface_optimizer_detail
+ 
+ namespace directional::geometry::surface_optimizer_detail {
+@@ -1737,7 +1747,11 @@ SurfaceQuadQualityMetrics evaluate_surface_quad_quality(
+   using namespace surface_optimizer_detail;
    SurfaceQuadQualityMetrics quality;
    const Eigen::RowVector3d normal = normalized_or_zero(sourceNormal);
++  // Convexity and the Jacobian are measured against the source normal. A
++  // corner is reflex in the quad's own plane, the validator's definition.
++  const Eigen::RowVector3d ownNormal = quad_normal(vertices, quads, face);
    std::array<double, 4> lengths{};
 +  std::array<bool, 4> positiveCorner{};
    quality.minimumAngleDegrees = std::numeric_limits<double>::infinity();
    quality.maximumAngleDegrees = 0.0;
    for (int corner = 0; corner < 4; ++corner) {
-@@ -1751,7 +1752,11 @@ SurfaceQuadQualityMetrics evaluate_surface_quad_quality(
+@@ -1751,7 +1765,12 @@ SurfaceQuadQualityMetrics evaluate_surface_quad_quality(
      const double cornerScale = next.norm() * previous.norm();
      quality.convex = quality.convex && cornerScale > 1.0e-15 &&
                       signedCorner / cornerScale > 1.0e-12;
 -    const double angle = angle_degrees(previous, next);
-+    positiveCorner[static_cast<std::size_t>(corner)] = signedCorner > 0.0;
-+    // Interior angle about the source normal: a reflex corner exceeds 180.
++    const double ownCorner = cross3(next, previous).dot(ownNormal);
++    positiveCorner[static_cast<std::size_t>(corner)] = ownCorner > 0.0;
++    // A reflex corner's interior angle exceeds 180.
 +    const double unsignedAngle = angle_degrees(previous, next);
 +    const double angle =
-+        signedCorner < 0.0 ? 360.0 - unsignedAngle : unsignedAngle;
++        ownCorner < 0.0 ? 360.0 - unsignedAngle : unsignedAngle;
      quality.minimumAngleDegrees =
          std::min(quality.minimumAngleDegrees, angle);
      quality.maximumAngleDegrees =
-@@ -1777,7 +1782,15 @@ SurfaceQuadQualityMetrics evaluate_surface_quad_quality(
+@@ -1777,7 +1796,15 @@ SurfaceQuadQualityMetrics evaluate_surface_quad_quality(
    const Eigen::RowVector3d n123 = normalized_or_zero(cross3(p2 - p1, p3 - p1));
    const double diagonal02 = angle_degrees(n012, n023);
    const double diagonal13 = angle_degrees(n013, n123);
@@ -41,10 +63,10 @@ index 54a44ba0a..62849bf24 100644
  }
  
 diff --git a/tests/SurfaceMeshOptimizerPhase21Tests.cpp b/tests/SurfaceMeshOptimizerPhase21Tests.cpp
-index d7c4e1729..05215edde 100644
+index d7c4e1729..a2b2523c5 100644
 --- a/tests/SurfaceMeshOptimizerPhase21Tests.cpp
 +++ b/tests/SurfaceMeshOptimizerPhase21Tests.cpp
-@@ -160,6 +160,32 @@ TEST(SurfaceMeshOptimizerPhase21,
+@@ -160,6 +160,45 @@ TEST(SurfaceMeshOptimizerPhase21,
    EXPECT_GT(nonPlanar.warpageDegrees, 0.0);
  }
  
@@ -64,6 +86,19 @@ index d7c4e1729..05215edde 100644
 +              1.0e-9);
 +  EXPECT_NEAR(quality.warpageDegrees, 0.0, 1.0e-9);
 +  EXPECT_NEAR(quality.signedScaledJacobian, -0.8, 1.0e-12);
++
++  // The same quad listed clockwise is inverted against the source normal, but
++  // its interior angles and inside diagonal are its own.
++  Eigen::MatrixXd clockwise = concave;
++  clockwise.row(1) = concave.row(3);
++  clockwise.row(3) = concave.row(1);
++  const auto inverted = directional::geometry::evaluate_surface_quad_quality(
++      clockwise, one_quad(), 0, Eigen::RowVector3d(0.0, 0.0, 1.0));
++  EXPECT_FALSE(inverted.convex);
++  EXPECT_NEAR(inverted.maximumAngleDegrees, reflex, 1.0e-9);
++  EXPECT_NEAR(inverted.minimumAngleDegrees, (360.0 - 90.0 - reflex) / 2.0,
++              1.0e-9);
++  EXPECT_NEAR(inverted.warpageDegrees, 0.0, 1.0e-9);
 +
 +  Eigen::MatrixXd convex = concave;
 +  convex.row(2) << 1.5, 1.5, 0.5;

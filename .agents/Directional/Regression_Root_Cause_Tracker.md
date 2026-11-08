@@ -1,6 +1,14 @@
 **TB84 COMPLETE / MATCH (2026-11-08 UTC; inherited P13-e and P13-n candidates, NOT a stable event):** [execution report](Architecture_M6_CP3_TB84_P13_Contact_Predicates_Full_Gate_Execution_Report_20261108.md). Exact CB99 source `553932b04…`, package `13595960339`; [gate 42427677870](https://github.com/akashskypatel/Directional/actions/runs/42427677870) **906/906 PASS**, membership 987 (81 deferred), 1,820/1,820 hashes; four pinned TB83 digests exact. [Census 42427753547](https://github.com/akashskypatel/Directional/actions/runs/42427753547) **1 PASS / 2 registered RED**, 9/9 hashes, Cylinder and BunnyRandom digests exact TB83, Vase identical through simplification. Vase's four former strict geometric issues are gone (`validationIssues=0`); it still fails closed with `AggregateCompletionValidationFailure` after 67,750 informational quads. This is the **pre-existing P13-n quality/shape candidate** for RA-210.4 Review, not a new accepted-green loss or stable regression. BunnyRandom P13-e singularity-port class-count mismatch at source vertex 49 remains separate. No regression ID/category/recurrence increment: stable **66/17/49**, debt **1**, accepted CP2 **491/491**, selector497/CP3 unpromoted. Next Review `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`.
 
-**RA-211 (2026-11-08; P13-n owners, NOT stable):** [RA-211](Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Census_Adjudication_20261108.md).
+**RA-212 (2026-11-08; RA-211 re-entered, NOT stable):** [RA-212](Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_Legacy_Fallback_Density_20261108.md).
+- **Producer path:** Vase runs the legacy tracing fallback (the phase front returns NotApplicable, reason unpublished). The four passing fixtures are produced by the phase front.
+- **Density:** 1,131 of 1,416 Vase seeds are relief-critical (O31). The layout is about 20× denser than the metric target (size P5/P95 0.0035/0.20); without relief seeds there are 1,184 cells instead of 26,817.
+- **Second writer:** parity repair writes 121 hard-rail breakpoints (§7.4).
+- **Turns:** `turns` has no behavioural consumer, so n2's owner is completion's patch model.
+- **Evaluator artifacts:** `normalP95` 121.56° came from the first-triangle normal (true value 3.74°). CB100 used the source normal.
+- **Fix:** CB100 revised (`8c11fb85…`) and CB101 (`9b42498d…`) → TB85 (908 rows) → Review `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH`.
+
+**RA-211 (2026-11-08; P13-n owners, NOT stable; partly superseded by RA-212):** [RA-211](Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Census_Adjudication_20261108.md).
 - **Vase's aggregate-quality failure after CB99, by worst corner of the 26,373 quads with a >170° corner:**
   - **P13-n1 (90.2%):** arrangement representation vertices (source-edge crossings 53.2%, in-face arc joints 11.5%) and the parity insertions they cause (25.5%; 5,931 raw-odd cells against 301 semantic) are counted as breakpoints by `extract_sides`, parity and `effective_side_counts`;
   - **P13-n2 (8.5%):** reflex L-corners declared +1 (3,874; descriptor `turns` hard-coded);

@@ -1,5 +1,14 @@
 # RA-211 — P13-n side-subdivision quality: per-patch census and owner adjudication (2026-11-08)
 
+> **Partly superseded by [RA-212](Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_Legacy_Fallback_Density_20261108.md) (same day, adversarial re-entry).** The §2 census stands. Corrections:
+> - Vase's layout is about 20× denser than its metric target, because 1,131 of its 1,416 seeds are relief-critical (O31).
+> - Vase is the only census fixture on the legacy fallback; the four passing fixtures are produced by the phase front, so the fixture-digest falsifiers in §4/§7 are vacuous for legacy changes.
+> - `turns` has no behavioural consumer, so P13-n2's owner is completion's patch model, not the descriptor sign.
+> - Parity repair writes 121 rail breakpoints, which §7.4 forbids.
+> - CB100 is replaced (own-plane reference, `8c11fb85…`) and CB101 is added (`normalP95` was 121.56° only because of the first-triangle normal).
+> - TB85 is now 908 rows.
+> - §7's next Review is withdrawn in favour of `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH`.
+
 **Turn:** `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY` (Review / DEFN, P13-n), Claude scratch track. **Disposition:** the REVIEW_BLOCKER is resolved. The owners are adjudicated. One exact CB (CB100) and one TB (TB85) are frozen. The dominant producer fix is prototyped and **falsified as a standalone landing**, so it goes to a separate Review (`M6-CP3-DEFN-P13-SEMANTIC-PATCH-BOUNDARY`) with the evidence below.
 
 ## 1. Block and resolution

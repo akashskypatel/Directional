@@ -1,0 +1,56 @@
+diff --git a/src/geometry/SurfaceMeshOptimizer.cpp b/src/geometry/SurfaceMeshOptimizer.cpp
+index 4caac7b2e..a87ba5b23 100644
+--- a/src/geometry/SurfaceMeshOptimizer.cpp
++++ b/src/geometry/SurfaceMeshOptimizer.cpp
+@@ -2726,7 +2726,7 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
+     const Eigen::RowVector3d sourceNormal =
+         local_source_normal(constraints, faceSource, face);
+     normalErrors.push_back(
+-        angle_degrees(face_normal(vertices, quads, face), sourceNormal));
++        angle_degrees(quad_normal(vertices, quads, face), sourceNormal));
+     const SurfaceQuadQualityMetrics quality =
+         evaluate_surface_quad_quality(vertices, quads, face, sourceNormal);
+     if (!quality.convex) {
+@@ -3029,7 +3029,7 @@ SurfaceOptimizationOverlay make_surface_optimization_overlay(
+         vertices, quads, face, constraints, provenance, &sourceProjection,
+         &sourceLabelSupport);
+     overlay.normalError(face) = angle_degrees(
+-        face_normal(vertices, quads, face),
++        quad_normal(vertices, quads, face),
+         local_source_normal(constraints, faceSource, face));
+     for (int corner = 0; corner < 4; ++corner) {
+       const int row = 4 * face + corner;
+diff --git a/tests/SurfaceMeshOptimizerPhase21Tests.cpp b/tests/SurfaceMeshOptimizerPhase21Tests.cpp
+index a2b2523c5..e0a0a7373 100644
+--- a/tests/SurfaceMeshOptimizerPhase21Tests.cpp
++++ b/tests/SurfaceMeshOptimizerPhase21Tests.cpp
+@@ -199,6 +199,29 @@ TEST(SurfaceMeshOptimizerPhase21,
+   EXPECT_GT(lifted.warpageDegrees, 0.0);
+ }
+ 
++TEST(SurfaceMeshOptimizerPhase21,
++     NormalErrorOfAConcaveQuadDoesNotDependOnItsFirstCorner) {
++  // Reflex corner 1: the triangle on corners 0, 1, 2 faces away from the
++  // source although the quad lies in the source plane.
++  Eigen::MatrixXd vertices(4, 3);
++  vertices << 2.0, 0.0, 0.0,
++      0.5, 0.5, 0.0,
++      0.0, 2.0, 0.0,
++      0.0, 0.0, 0.0;
++  Eigen::MatrixXi sourceFaces(2, 3);
++  sourceFaces << 1, 2, 3,
++      1, 3, 0;
++  const auto constraints = make_constraints(
++      vertices, sourceFaces, Eigen::RowVector3d(0.0, 0.0, 1.0));
++  const auto optimization =
++      directional::geometry::optimize_projected_surface_mesh(
++          vertices, one_quad(), constraints);
++  const auto report = directional::geometry::validate_final_surface_mesh(
++      vertices, one_quad(), constraints, optimization);
++  EXPECT_NEAR(report.normalP95Degrees, 0.0, 1.0e-9);
++  EXPECT_EQ(report.nonConvex, 1);
++}
++
+ TEST(SurfaceMeshOptimizerPhase21,
+      BidirectionalSamplingDetectsSourceCoverageHole) {
+   Eigen::MatrixXd source(4, 3);
