@@ -1,5 +1,14 @@
 **TB84 COMPLETE / MATCH (2026-11-08 UTC; inherited P13-e and P13-n candidates, NOT a stable event):** [execution report](Architecture_M6_CP3_TB84_P13_Contact_Predicates_Full_Gate_Execution_Report_20261108.md). Exact CB99 source `553932b04…`, package `13595960339`; [gate 42427677870](https://github.com/akashskypatel/Directional/actions/runs/42427677870) **906/906 PASS**, membership 987 (81 deferred), 1,820/1,820 hashes; four pinned TB83 digests exact. [Census 42427753547](https://github.com/akashskypatel/Directional/actions/runs/42427753547) **1 PASS / 2 registered RED**, 9/9 hashes, Cylinder and BunnyRandom digests exact TB83, Vase identical through simplification. Vase's four former strict geometric issues are gone (`validationIssues=0`); it still fails closed with `AggregateCompletionValidationFailure` after 67,750 informational quads. This is the **pre-existing P13-n quality/shape candidate** for RA-210.4 Review, not a new accepted-green loss or stable regression. BunnyRandom P13-e singularity-port class-count mismatch at source vertex 49 remains separate. No regression ID/category/recurrence increment: stable **66/17/49**, debt **1**, accepted CP2 **491/491**, selector497/CP3 unpromoted. Next Review `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`.
 
+**RA-211 (2026-11-08; P13-n owners, NOT stable):** [RA-211](Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Census_Adjudication_20261108.md).
+- **Vase's aggregate-quality failure after CB99, by worst corner of the 26,373 quads with a >170° corner:**
+  - **P13-n1 (90.2%):** arrangement representation vertices (source-edge crossings 53.2%, in-face arc joints 11.5%) and the parity insertions they cause (25.5%; 5,931 raw-odd cells against 301 semantic) are counted as breakpoints by `extract_sides`, parity and `effective_side_counts`;
+  - **P13-n2 (8.5%):** reflex L-corners declared +1 (3,874; descriptor `turns` hard-coded);
+  - **P13-n3:** sliver cells from near-coincident traces (677 with side ratio < 0.01);
+  - **P13-n4:** A8 angle and warpage metrics misreport concave quads.
+- **Fix:** exact CB100 (n4) → TB85. The n1 prototype is falsified as a standalone landing (all three variants reject Vase). Review `M6-CP3-DEFN-P13-SEMANTIC-PATCH-BOUNDARY` owns n1–n3.
+- **Latent:** `side_halfedges` ignores a side that wraps around index 0.
+
 **RA-210 (2026-11-06; P13-l2 owners, NOT stable):** [RA-210](Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md).
 - **Vase's strict issues after CB96 come from three contact predicates:**
   - the validator compared area-unit determinants with a length tolerance (342 false pairs; the reported 55/15372 "overlap");

@@ -1,0 +1,256 @@
+diff --git a/include/directional/geometry/SurfaceArrangement.h b/include/directional/geometry/SurfaceArrangement.h
+index 000000000..079158dbf 100644
+--- a/include/directional/geometry/SurfaceArrangement.h
++++ b/include/directional/geometry/SurfaceArrangement.h
+@@ -322,6 +322,10 @@ struct SurfaceArrangementNode {
+   std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+   std::optional<SourceProjectionChart> sourceChart;
+   bool hardBarrierCrossing = false;
++  // A point inside one plain field-line side, such as a trace crossing a
++  // source edge. It is a vertex of the per-face embedding, not a breakpoint:
++  // side counts, boundary parity and completed patches skip it.
++  bool representationOnly = false;
+   Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
+   int sourceEdge = -1;
+   double sourceEdgeParameter = 0.0;
+@@ -725,6 +729,13 @@ bool same_logical_side(
+     const std::vector<SurfaceArrangementNode> &nodes,
+     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces);
+ 
++/** Mark each degree-2 node that both incident cells cross on one plain
++ * logical side; every other node, including later insertions, stays a
++ * breakpoint. */
++void mark_representation_only_nodes(SurfaceCellComplex &complex,
++                                    const Eigen::MatrixXd &vertices,
++                                    const Eigen::MatrixXi &faces);
++
+ } // namespace surface_arrangement_detail
+ 
+ 
+diff --git a/src/geometry/SurfaceArrangement.cpp b/src/geometry/SurfaceArrangement.cpp
+index 000000000..b5b1f6aef 100644
+--- a/src/geometry/SurfaceArrangement.cpp
++++ b/src/geometry/SurfaceArrangement.cpp
+@@ -1519,6 +1519,122 @@ bool same_logical_side(
+          minimumSmoothAlignment;
+ }
+ 
++void mark_representation_only_nodes(SurfaceCellComplex &complex,
++                                    const Eigen::MatrixXd &vertices,
++                                    const Eigen::MatrixXi &faces) {
++  const int nodeCount = static_cast<int>(complex.nodes.size());
++  std::vector<std::vector<int>> outgoing(complex.nodes.size());
++  for (const SurfaceArrangementHalfedge &edge : complex.halfedges) {
++    if (edge.from >= 0 && edge.from < nodeCount) {
++      outgoing[static_cast<std::size_t>(edge.from)].push_back(edge.id);
++    }
++  }
++  const auto plain = [](const SurfaceArrangementHalfedge &edge) {
++    return !edge.hardFeature && !edge.railId.has_value() &&
++           edge.curveId < 0 && !edge.singularitySupport;
++  };
++  const auto halfedge = [&](const int id) -> const SurfaceArrangementHalfedge * {
++    return id >= 0 && id < static_cast<int>(complex.halfedges.size())
++               ? &complex.halfedges[static_cast<std::size_t>(id)]
++               : nullptr;
++  };
++  const auto position = [&](const int id) -> Eigen::RowVector3d {
++    const SurfaceArrangementNode &node = complex.nodes[static_cast<std::size_t>(id)];
++    Eigen::RowVector3d point = Eigen::RowVector3d::Zero();
++    for (int corner = 0; corner < 3; ++corner) {
++      point += node.barycentric(corner) * vertices.row(faces(node.sourceFace, corner));
++    }
++    return point;
++  };
++  // A cell with a reflex corner is not a rectangle of field lines. Patch turns
++  // are all convex, so such a cell keeps every boundary vertex until reflex
++  // corners have an owner.
++  std::vector<unsigned char> convexCell(complex.cells.size(), 1U);
++  for (std::size_t index = 0; index < complex.cells.size(); ++index) {
++    std::map<int, int> byFrom;
++    for (const int id : complex.cells[index].halfedges) {
++      if (const SurfaceArrangementHalfedge *edge = halfedge(id)) {
++        byFrom.emplace(edge->from, id);
++      }
++    }
++    std::vector<int> cycle;
++    for (int id = complex.cells[index].halfedges.empty()
++                      ? -1
++                      : complex.cells[index].halfedges.front();
++         id >= 0 && cycle.size() < complex.cells[index].halfedges.size();) {
++      cycle.push_back(id);
++      const auto next = byFrom.find(halfedge(id)->to);
++      id = next == byFrom.end() ? -1 : next->second;
++    }
++    if (cycle.size() != complex.cells[index].halfedges.size()) {
++      convexCell[index] = 0U;
++      continue;
++    }
++    for (std::size_t k = 0; k < cycle.size(); ++k) {
++      const SurfaceArrangementHalfedge *previous =
++          halfedge(cycle[(k + cycle.size() - 1U) % cycle.size()]);
++      const SurfaceArrangementHalfedge *current = halfedge(cycle[k]);
++      if (previous == nullptr || current == nullptr ||
++          previous->from < 0 || previous->from >= nodeCount ||
++          current->from < 0 || current->from >= nodeCount ||
++          current->to < 0 || current->to >= nodeCount) {
++        convexCell[index] = 0U;
++        break;
++      }
++      if (same_logical_side(*previous, *current, complex.nodes, vertices,
++                            faces)) {
++        continue;
++      }
++      const SurfaceArrangementNode &corner =
++          complex.nodes[static_cast<std::size_t>(current->from)];
++      if (corner.sourceFace < 0 || corner.sourceFace >= faces.rows()) {
++        convexCell[index] = 0U;
++        break;
++      }
++      const Eigen::Vector3d a = (position(current->from) - position(previous->from)).transpose();
++      const Eigen::Vector3d b = (position(current->to) - position(current->from)).transpose();
++      const Eigen::Vector3d p0 = vertices.row(faces(corner.sourceFace, 0)).transpose();
++      const Eigen::Vector3d p1 = vertices.row(faces(corner.sourceFace, 1)).transpose();
++      const Eigen::Vector3d p2 = vertices.row(faces(corner.sourceFace, 2)).transpose();
++      if (a.cross(b).dot((p1 - p0).cross(p2 - p0)) <= 0.0) {
++        convexCell[index] = 0U;
++        break;
++      }
++    }
++  }
++  const auto convex = [&](const int cell) {
++    return cell >= 0 && cell < static_cast<int>(convexCell.size()) &&
++           convexCell[static_cast<std::size_t>(cell)] != 0U;
++  };
++  for (int id = 0; id < nodeCount; ++id) {
++    SurfaceArrangementNode &node = complex.nodes[static_cast<std::size_t>(id)];
++    node.representationOnly = false;
++    const std::vector<int> &out = outgoing[static_cast<std::size_t>(id)];
++    if (node.id != id || node.hardBarrierCrossing || out.size() != 2U) {
++      continue;
++    }
++    const SurfaceArrangementHalfedge *first = halfedge(out[0]);
++    const SurfaceArrangementHalfedge *second = halfedge(out[1]);
++    if (first == nullptr || second == nullptr || first->to == second->to) {
++      continue;
++    }
++    const SurfaceArrangementHalfedge *intoFirstCell = halfedge(second->twin);
++    const SurfaceArrangementHalfedge *intoSecondCell = halfedge(first->twin);
++    if (intoFirstCell == nullptr || intoSecondCell == nullptr ||
++        intoFirstCell->cell != first->cell ||
++        intoSecondCell->cell != second->cell || !convex(first->cell) ||
++        !convex(second->cell) || !plain(*first) ||
++        !plain(*second) || !plain(*intoFirstCell) || !plain(*intoSecondCell)) {
++      continue;
++    }
++    node.representationOnly =
++        same_logical_side(*intoFirstCell, *first, complex.nodes, vertices,
++                          faces) &&
++        same_logical_side(*intoSecondCell, *second, complex.nodes, vertices,
++                          faces);
++  }
++}
++
+ } // namespace directional::geometry::surface_arrangement_detail
+ 
+ namespace directional::geometry {
+diff --git a/src/geometry/SurfaceCellFeasibilityRepair.cpp b/src/geometry/SurfaceCellFeasibilityRepair.cpp
+index 000000000..ae647924a 100644
+--- a/src/geometry/SurfaceCellFeasibilityRepair.cpp
++++ b/src/geometry/SurfaceCellFeasibilityRepair.cpp
+@@ -416,10 +416,24 @@ void split_provenance_interval(
+   }
+ }
+ 
++int boundary_edge_count(const SurfaceCellComplex &complex,
++                        const SurfaceArrangementCell &cell) {
++  int count = 0;
++  for (const int id : cell.halfedges) {
++    const int from = complex.halfedges[static_cast<std::size_t>(id)].from;
++    count += from >= 0 && from < static_cast<int>(complex.nodes.size()) &&
++                     complex.nodes[static_cast<std::size_t>(from)]
++                         .representationOnly
++                 ? 0
++                 : 1;
++  }
++  return count;
++}
++
+ int odd_bounded_cell_count(const SurfaceCellComplex &complex) {
+   return static_cast<int>(std::count_if(
+-      complex.cells.begin(), complex.cells.end(), [](const auto &cell) {
+-        return !cell.boundaryCycle && cell.halfedges.size() % 2U != 0U;
++      complex.cells.begin(), complex.cells.end(), [&](const auto &cell) {
++        return !cell.boundaryCycle && boundary_edge_count(complex, cell) % 2;
+       }));
+ }
+ 
+@@ -1784,8 +1798,9 @@ SurfaceCellParityRepairResult repair_surface_cell_boundary_parity(
+       std::vector<unsigned char> parity(input.cells.size(), 0U);
+       for (const int cell : component) {
+         if (!input.cells[static_cast<std::size_t>(cell)].boundaryCycle &&
+-            input.cells[static_cast<std::size_t>(cell)].halfedges.size() % 2U !=
+-                0U) {
++            surface_cell_feasibility_detail::boundary_edge_count(
++                input, input.cells[static_cast<std::size_t>(cell)]) %
++                2) {
+           parity[static_cast<std::size_t>(cell)] = 1U;
+         }
+       }
+diff --git a/src/geometry/PatchDescriptor.cpp b/src/geometry/PatchDescriptor.cpp
+index 000000000..cd1257691 100644
+--- a/src/geometry/PatchDescriptor.cpp
++++ b/src/geometry/PatchDescriptor.cpp
+@@ -245,8 +245,10 @@ extract_sides(const SurfaceCellComplex &complex,
+     }
+     PatchSideDescriptor &side = sides.back();
+     side.halfedges.push_back(id);
+-    side.boundaryVertices.push_back(edge.from);
+-    ++side.subdivisionCount;
++    if (!complex.nodes[static_cast<std::size_t>(edge.from)].representationOnly) {
++      side.boundaryVertices.push_back(edge.from);
++      ++side.subdivisionCount;
++    }
+     side.hardFeature = side.hardFeature || edge.hardFeature;
+     if (edge.railId.has_value()) {
+       side.railIds.insert(edge.railId.value());
+@@ -1765,6 +1767,14 @@ PatchDescriptor derive_patch_descriptor(
+       descriptor.feasibility = check_pure_quad_patch_admissibility(patch);
+       return descriptor;
+     }
++    const int sourceVertex = patch_descriptor_detail::source_vertex_at_node(
++        *node, F, options.barycentricTolerance);
++    if (sourceVertex >= 0) {
++      boundarySourceVertices.insert(sourceVertex);
++    }
++    if (node->representationOnly) {
++      continue;
++    }
+     patch.boundaryVertices.push_back(node->id);
+     patch.boundaryRailIds.push_back(edge.railId);
+     patch.boundaryCurveIds.push_back(edge.curveId);
+@@ -1786,11 +1796,6 @@ PatchDescriptor derive_patch_descriptor(
+         patch_descriptor_detail::node_surface_point(*node, V, F, edge));
+     patch.hardFeatureCrossing =
+         patch.hardFeatureCrossing || node->hardBarrierCrossing;
+-    const int sourceVertex = patch_descriptor_detail::source_vertex_at_node(
+-        *node, F, options.barycentricTolerance);
+-    if (sourceVertex >= 0) {
+-      boundarySourceVertices.insert(sourceVertex);
+-    }
+   }
+ 
+   descriptor.domainIdentityAudit =
+diff --git a/src/pipeline/RemeshPipeline.cpp b/src/pipeline/RemeshPipeline.cpp
+index 000000000..c9a356d4a 100644
+--- a/src/pipeline/RemeshPipeline.cpp
++++ b/src/pipeline/RemeshPipeline.cpp
+@@ -13919,6 +13919,8 @@ remesh_from_raw_cross_field_impl_with_stage_products(
+       completionResult = geometry::SurfaceCellComplexCompletionResult::produced(
+           std::move(completionEvidence), std::move(completionProduct));
+     } else {
++      geometry::surface_arrangement_detail::mark_representation_only_nodes(
++          completionComplex, meshWhole.V, meshWhole.F);
+       completionResult = geometry::complete_surface_cell_complex(
+           std::move(completionComplex), meshWhole.V, meshWhole.F,
+           completionOptions);

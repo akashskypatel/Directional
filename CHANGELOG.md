@@ -1,3 +1,18 @@
+## 2026-11-08 — RA-211: P13-n census; owners n1–n4; exact CB100 → TB85; Review P13-n1/n2/n3 next
+
+- **Turn:** `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`, resumed from the ChatGPT BLOCKED Review. [RA-211](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Census_Adjudication_20261108.md).
+- **Block:** resolved with a retained-geometry scratch census (digest byte-identical; product sources = CB99). Every patch side, corner, valence-2 vertex and bad quad was joined to its arrangement node.
+- **Findings:**
+  - 90.2% of the 26,373 quads with a >170° corner have that corner at a representation vertex counted as a breakpoint (P13-n1); all 4,463 valence-2 vertices are such nodes;
+  - 8.5% are at reflex L-corners declared convex (P13-n2);
+  - sliver cells (P13-n3);
+  - A8 metrics unsigned and using both diagonals (P13-n4; ChatGPT's S2 confirmed);
+  - A3 is not consumed on this path.
+- **Falsified:** the n1 prototype rejects all of Vase in three variants; it is kept as do-not-apply Review evidence.
+- **CB100 (exact):** reflex-aware interior angles and interior-diagonal warpage. Convex quads keep identical bits. Scratch: 6 fixture digests identical, local 907-row gate 906/907 (only O16), new test fails on legacy, deferred failures unchanged.
+- **TB85 manifest:** 907 rows, `6ee84959…`, membership 988.
+- No product or test source changed in the repository; the patch is a committed `.diff`.
+
 ## 2026-11-08 UTC — TB84 contact-predicates full gate and production census (Test + Benchmark)
 
 - **COMPLETE / MATCH:** [TB84 report](.agents/Directional/Architecture_M6_CP3_TB84_P13_Contact_Predicates_Full_Gate_Execution_Report_20261108.md); exact immutable CB99 source `553932b04fb433b560e24c59d23751f70f7f2c3e`, package `13595960339`; [gate 42427677870](https://github.com/akashskypatel/Directional/actions/runs/42427677870), result `13595899602`, 906/906 PASS, membership 987, 1,820/1,820 hashes; new guards 904–906 PASS and four pinned TB83 digests byte-identical.

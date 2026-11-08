@@ -1,5 +1,7 @@
 # P13-n Side-Subdivision Quality — Review WIP (2026-11-08)
 
+> **Reviewed by [RA-211](Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Census_Adjudication_20261108.md) (2026-11-08).** The block is resolved by a scratch census. S1 and S2 are confirmed. S1 is P13-n1; the census adds parity insertions (25.5%) and in-face arc joints (11.5%) beyond source-edge crossings (53.2%). S2 is P13-n4, fixed by exact CB100. Items 1–4 of "Unresolved proof" are answered in RA-211 §2. Item 5's owner branches are adjudicated in RA-211 §3–§4: the descriptor/count model, not A3; reflex turns and slivers are coupled to it. The same-turn continuation below (TB84 artifact aggregate-only; counterexample re-derived) agrees with RA-211, whose census is the required independent scratch evidence.
+
 **Canonical turn:** `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`, Review/DEFN. **Disposition:** partial static proof; per-patch source/runtime census not yet independently available; no CB/TB authority issued. This record is not a final Review closeout.
 
 ## Frozen authority and boundaries

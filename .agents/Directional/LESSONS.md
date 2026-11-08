@@ -374,6 +374,8 @@ This document records **reusable failure-derived engineering lessons**, not an e
 
 - **Census every contact a first-failure validator hides, and check predicate units.** The strict validator stops at its first self-intersection. The all-pairs census showed 342 contacts, all false: a length tolerance compared with an area-unit determinant, and fans across concave quads. Fixing only the reported pair would have exposed the next false one. Before attributing a "global overlap" to a producer, count every contact under each candidate predicate. Then make the producer reject what the validator reports, at the same tolerance (RA-210).
 
+- **Count what each output defect sits on, and prototype the fix before freezing it.** RA-211 joined every Vase quad with a >170° corner back to the arrangement node at that corner. 90% sat on degree-2 representation vertices that three count writers treat as breakpoints. The obvious fix (skip those vertices) was falsified in a scratch prototype within one turn: it exposes reflex L-corners declared convex, sliver cells and a latent side-attribution offset, and it rejects the whole mesh. Freezing it from the census alone would have regressed Vase from a produced mesh to no mesh. A struct field also changed every arrangement digest through a `sizeof`-dependent memory estimate, until it was placed in existing padding. Check digest-hashed memory estimates when a data-model change should be behaviour-neutral (RA-211).
+
 ## Contracts, planning, reviews, and durable records
 
 - **Plan from the current normative contract and reachable implementation.** Before freezing an

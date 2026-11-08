@@ -1,0 +1,79 @@
+diff --git a/src/geometry/SurfaceMeshOptimizer.cpp b/src/geometry/SurfaceMeshOptimizer.cpp
+index 54a44ba0a..62849bf24 100644
+--- a/src/geometry/SurfaceMeshOptimizer.cpp
++++ b/src/geometry/SurfaceMeshOptimizer.cpp
+@@ -1738,6 +1738,7 @@ SurfaceQuadQualityMetrics evaluate_surface_quad_quality(
+   SurfaceQuadQualityMetrics quality;
+   const Eigen::RowVector3d normal = normalized_or_zero(sourceNormal);
+   std::array<double, 4> lengths{};
++  std::array<bool, 4> positiveCorner{};
+   quality.minimumAngleDegrees = std::numeric_limits<double>::infinity();
+   quality.maximumAngleDegrees = 0.0;
+   for (int corner = 0; corner < 4; ++corner) {
+@@ -1751,7 +1752,11 @@ SurfaceQuadQualityMetrics evaluate_surface_quad_quality(
+     const double cornerScale = next.norm() * previous.norm();
+     quality.convex = quality.convex && cornerScale > 1.0e-15 &&
+                      signedCorner / cornerScale > 1.0e-12;
+-    const double angle = angle_degrees(previous, next);
++    positiveCorner[static_cast<std::size_t>(corner)] = signedCorner > 0.0;
++    // Interior angle about the source normal: a reflex corner exceeds 180.
++    const double unsignedAngle = angle_degrees(previous, next);
++    const double angle =
++        signedCorner < 0.0 ? 360.0 - unsignedAngle : unsignedAngle;
+     quality.minimumAngleDegrees =
+         std::min(quality.minimumAngleDegrees, angle);
+     quality.maximumAngleDegrees =
+@@ -1777,7 +1782,15 @@ SurfaceQuadQualityMetrics evaluate_surface_quad_quality(
+   const Eigen::RowVector3d n123 = normalized_or_zero(cross3(p2 - p1, p3 - p1));
+   const double diagonal02 = angle_degrees(n012, n023);
+   const double diagonal13 = angle_degrees(n013, n123);
+-  quality.warpageDegrees = std::max(diagonal02, diagonal13);
++  // Only a diagonal inside the quad splits it into its two triangles; the
++  // outside diagonal of a concave quad gives opposed normals even when the
++  // quad is planar. A diagonal is inside when both corners off it are convex.
++  const bool inside02 = positiveCorner[1] && positiveCorner[3];
++  const bool inside13 = positiveCorner[0] && positiveCorner[2];
++  quality.warpageDegrees =
++      inside02 && !inside13   ? diagonal02
++      : inside13 && !inside02 ? diagonal13
++                              : std::max(diagonal02, diagonal13);
+   return quality;
+ }
+ 
+diff --git a/tests/SurfaceMeshOptimizerPhase21Tests.cpp b/tests/SurfaceMeshOptimizerPhase21Tests.cpp
+index d7c4e1729..05215edde 100644
+--- a/tests/SurfaceMeshOptimizerPhase21Tests.cpp
++++ b/tests/SurfaceMeshOptimizerPhase21Tests.cpp
+@@ -160,6 +160,32 @@ TEST(SurfaceMeshOptimizerPhase21,
+   EXPECT_GT(nonPlanar.warpageDegrees, 0.0);
+ }
+ 
++TEST(SurfaceMeshOptimizerPhase21,
++     ConcaveQuadReportsItsReflexAngleAndInteriorDiagonalWarpage) {
++  Eigen::MatrixXd concave(4, 3);
++  concave << 0.0, 0.0, 0.0,
++      2.0, 0.0, 0.0,
++      0.5, 0.5, 0.0,
++      0.0, 2.0, 0.0;
++  const auto quality = directional::geometry::evaluate_surface_quad_quality(
++      concave, one_quad(), 0, Eigen::RowVector3d(0.0, 0.0, 1.0));
++  EXPECT_FALSE(quality.convex);
++  const double reflex = 180.0 + std::atan2(4.0, 3.0) * 180.0 / std::acos(-1.0);
++  EXPECT_NEAR(quality.maximumAngleDegrees, reflex, 1.0e-9);
++  EXPECT_NEAR(quality.minimumAngleDegrees, (360.0 - 90.0 - reflex) / 2.0,
++              1.0e-9);
++  EXPECT_NEAR(quality.warpageDegrees, 0.0, 1.0e-9);
++  EXPECT_NEAR(quality.signedScaledJacobian, -0.8, 1.0e-12);
++
++  Eigen::MatrixXd convex = concave;
++  convex.row(2) << 1.5, 1.5, 0.5;
++  const auto lifted = directional::geometry::evaluate_surface_quad_quality(
++      convex, one_quad(), 0, Eigen::RowVector3d(0.0, 0.0, 1.0));
++  EXPECT_TRUE(lifted.convex);
++  EXPECT_LT(lifted.maximumAngleDegrees, 180.0);
++  EXPECT_GT(lifted.warpageDegrees, 0.0);
++}
++
+ TEST(SurfaceMeshOptimizerPhase21,
+      BidirectionalSamplingDetectsSourceCoverageHole) {
+   Eigen::MatrixXd source(4, 3);

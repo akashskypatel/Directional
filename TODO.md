@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY` (P13-n Review; RA-210 §4, step 53). TB84 completed / MATCH on CB99 immutable package: 906/906, membership 987, Cylinder PASS, BunnyRandom expected P13-e RED, Vase expected aggregate-quality RED with zero strict validation issues; [report](.agents/Directional/Architecture_M6_CP3_TB84_P13_Contact_Predicates_Full_Gate_Execution_Report_20261108.md). No CP3/selector497 promotion.
+> **Current canonical next:** `M6-CP3-CB100-P13-EVALUATOR-CONCAVE-QUAD-METRICS` (exact patch, compile only; RA-211 §5, step 54), then TB85 (step 55), then Review `M6-CP3-DEFN-P13-SEMANTIC-PATCH-BOUNDARY` (step 56). The P13-n Review is complete ([RA-211](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Census_Adjudication_20261108.md)); TB84 MATCH stands (906/906, membership 987).
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -7,7 +7,37 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — RA-210: P13-l2 resolved; Vase residue is three contact predicates; CB97 → CB98 → CB99 → TB84; P13-n next (2026-11-06)
+## CURRENT — RA-211: P13-n census; owners n1–n4; the representation fix is falsified as a standalone landing; CB100 → TB85 → Review P13-n1/n2/n3 (2026-11-08)
+
+- [x] **P13-n REVIEW_BLOCKER resolved by [RA-211](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Census_Adjudication_20261108.md)** (Claude scratch track; retained-geometry census; digest byte-identical; product sources = CB99):
+  - **Census:** 114,913 sides carry 71,727 side-interior vertices. Only 55 are junctions; the rest are degree-2 representation nodes (46,452 source-edge crossings, 25,008 in-face, the latter including 9,079 parity insertions). Semantic counts would put 114,725 sides at 1. 5,931 cells are odd under raw counts versus 301 under semantic counts.
+  - **Attribution of the 26,373 quads with a >170° corner:** representation vertex 90.2% (source-edge 53.2%, parity insertion 25.5%, arc joint 11.5%), reflex L-corner declared +1 8.5%, other 1.3%. All 4,463 valence-2 vertices are representation nodes.
+  - **Owners:**
+    - **P13-n1:** three count writers (`extract_sides`, parity, `effective_side_counts`) count representation halfedges (DESIGN §6.2, §7.4).
+    - **P13-n2:** descriptor turns are hard-coded +1 (3,874 reflex L-corners).
+    - **P13-n3:** sliver cells (677 with side ratio < 0.01).
+    - **P13-n4:** A8 metrics are unsigned and use both diagonals (WIP S2).
+    - A3 is not consumed on this path.
+  - **Latent defect:** `side_halfedges` ignores a side that wraps around index 0.
+  - **Falsified:** the n1 prototype (three variants) rejects all of Vase: side-repair offset, an L-hexagon bow-tie, or a sliver plus an asymmetric mark. [Prototype diff](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Representation_Breakpoint_Prototype_FALSIFIED.diff), **do not apply**.
+- **RA-211 sequence:** steps 54–55 for the implementation agent, one turn each, in order; then Review step 56.
+  54. [ ] **NEXT `M6-CP3-CB100-P13-EVALUATOR-CONCAVE-QUAD-METRICS`** (CB, compile only; RA-211.5):
+     - Precheck: `git diff --quiet 553932b04fb433b560e24c59d23751f70f7f2c3e HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
+     - Patch `.agents/Directional/Architecture_M6_CP3_CB100_P13_Evaluator_Concave_Quad_Metrics.diff`:
+       - SHA-256 `d55589c799776ee8449fb4eff6a037a80b228c0d64df6299edc7ab654f9638cb`, 79 lines; keep its 2 single-space context lines;
+       - `15 2` `src/geometry/SurfaceMeshOptimizer.cpp` → `8798fa013a9636d5892109c44ab9e50280881176230caa30c18cf1ba913490ec`;
+       - `26 0` `tests/SurfaceMeshOptimizerPhase21Tests.cpp` → `6a6d600473fe7300d74b1b414fdac50ee5117a36bc30b6110c526b9e9ece8589`.
+     - Mismatch → `M6-CP3-PLAN-P13-EVALUATOR-CONCAVE-QUAD-METRICS-STOP`; infrastructure → `M6-CP3-CB100A-P13-EVALUATOR-CONCAVE-QUAD-METRICS-ORCH`.
+  55. [ ] **`M6-CP3-TB85-P13-CONCAVE-QUALITY-METRICS-FULL-GATE-EXEC`** (TB-EXEC; RA-211.6):
+     - Gate: [907-row manifest](.agents/Directional/Architecture_M6_TB85_P13_Concave_Quality_Metrics_Full_Gate_Case_Manifest.tsv) `6ee8495981ae5f8fe3475ae6593c9063030c36bd76b6ceed50a5fded6cd0afbd`; ledger v5; **907/907**, membership 988.
+     - **Pinned:** gate rows 795/796/797/864 and census Cylinder, BunnyRandom and Vase digests byte-identical to TB84; Vase terminal `AggregateCompletionValidationFailure`.
+     - Mismatch → `M6-CP3-TB85-P13-CONCAVE-QUALITY-METRICS-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB85A-P13-CONCAVE-QUALITY-METRICS-ORCH`.
+  56. [ ] **Review (after TB85) `M6-CP3-DEFN-P13-SEMANTIC-PATCH-BOUNDARY`** (P13-n1/n2/n3; Claude, scratch build; RA-211.7):
+     - one combined prototype in which Vase completes with no `PatchCompletionRejected` and the census improves;
+     - then narrow exact CBs: representation flag and writer without consumers; wrap-correct side attribution; reflex turns (or the upstream strand fix); semantic counts in all three writers;
+     - falsifiers: five fixture digests identical; a two-triangle unit test {1,2,2,1} → {1,1,1,1}; Vase valence-2 and >170° counts fall.
+
+## EARLIER — RA-210: P13-l2 resolved; Vase residue is three contact predicates; CB97 → CB98 → CB99 → TB84; P13-n next (2026-11-06)
 
 - [x] **P13-l2 REVIEW_BLOCKER resolved by [RA-210](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md)** (Claude scratch track; Review scratch probes are a Review duty):
   - **Provenance:** the retained-geometry probe has a digest byte-identical to the baseline. Node 9679 is a degree-2 source-edge crossing of layout trace 966; 36055 is the 966×459 crossing 9e-8 away. Both traces are ordinary layout support: no rail, not mandatory, not redundant.
@@ -46,7 +76,7 @@
      - **Registered (macOS-observed):** Vase `validationIssues=0`, terminal `AggregateCompletionValidationFailure`.
      - Mismatch → `M6-CP3-TB84-P13-CONTACT-PREDICATES-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB84A-P13-CONTACT-PREDICATES-ORCH`.
      - **Observed:** [TB84 report](.agents/Directional/Architecture_M6_CP3_TB84_P13_Contact_Predicates_Full_Gate_Execution_Report_20261108.md) — gate 906/906 PASS, membership 987, 1,820/1,820 hashes, three census cases (Cylinder PASS, BunnyRandom/Vase registered RED), 9/9 hashes; Vase `validationIssues=0`, `AggregateCompletionValidationFailure`. Stable 66/17/49, debt 1, CP2 491/491 unchanged.
-  53. [ ] **NEXT Review `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`** (P13-n; Claude, scratch build; RA-210.4):
+  53. [x] **Review COMPLETE `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`** (P13-n; RA-211 above; Claude, scratch build; RA-210.4):
      - exact per-patch counts of degree-2 source-edge side nodes and flat corners;
      - check that the warpage, normal and Jacobian metrics handle concave quads;
      - owner: A3 conformity plan vs completion interior-vertex patterns;
