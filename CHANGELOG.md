@@ -1,3 +1,9 @@
+## 2026-11-08 UTC — CB101 quad-normal own-plane evaluator (Code + Build)
+
+- RA-212 §5 approved 56-line patch SHA-256 `9b42498d9e3615488c9007499aea590c195d472b66e519c67d5ff124190155f1` applied at [source `23e35798abf0eb3584509c564166ccd97c41cc21`](https://github.com/akashskypatel/Directional/commit/23e35798abf0eb3584509c564166ccd97c41cc21); both exact postimages verified: `ac441cd36be7bec02903f5c35baa85ba0f171022012457b892f99c3707793384` / `0362e0bd636e89543d403812c39cc96602e0fb05cb642c8c1f7366f333e0dfba`.
+- [GMP compile-only run 42443381491](https://github.com/akashskypatel/Directional/actions/runs/42443381491): eight Release/static targets, GMP/GMPXX, immutable package `13602662424`, ZIP SHA-256 `61a0460f8c60d2429c7b7a62d73dd7110ed7c68c919a939a6741cf5377cdf1b1`, `runtimeExecution=false`. Phase21 regression compiled but not executed; no local or remote tests/benchmarks were run in CB101.
+- [CB101 record](.agents/Directional/Architecture_M6_CP3_CB101_P13_Evaluator_Quad_Normal_Own_Plane_Code_Build_Record_20261108.md). Next separate artifact-only TB85 (908-row manifest, membership 989). Accepted CP2 491/491; stable 66/17/49 and debt1 unchanged; no selector497/CP3 promotion.
+
 ## 2026-11-08 UTC — CB100 evaluator concave-quad metrics (Code + Build)
 
 - Applied RA-212 §4's exact revised 114-line patch `8c11fb85…` to evaluator and Phase21 regression. Two postimage SHA-256s match; [source `5d8ad72c…`](https://github.com/akashskypatel/Directional/commit/5d8ad72c87abafbd74e9a907b2c356739c059b7e).

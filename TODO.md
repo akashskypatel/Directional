@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-CB101-P13-EVALUATOR-QUAD-NORMAL-OWN-PLANE` (RA-212 §5, exact patch and compile only; step 55), then TB85 (908 rows, step 56), then Review `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH` (step 57). [RA-212](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_Legacy_Fallback_Density_20261108.md) re-entered RA-211; TB84 MATCH stands (906/906, membership 987).
+> **Current canonical next:** `M6-CP3-TB85-P13-CONCAVE-QUALITY-METRICS-FULL-GATE-EXEC` (RA-212 §7, 908-row immutable package gate; step 56), then Review `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH` (step 57). [RA-212](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_Legacy_Fallback_Density_20261108.md) re-entered RA-211; TB84 MATCH stands (906/906, membership 987).
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -26,13 +26,14 @@
        - `29 2` `src/geometry/SurfaceMeshOptimizer.cpp` → `a0f816b3bc96050ab2c7a68189001e88d22b2a56335befb4e4893b3d456107c0`;
        - `39 0` `tests/SurfaceMeshOptimizerPhase21Tests.cpp` → `6104b59ba09a74045b5b9b4ba3a8c811b8424addc36da338bbab8bb0374537fe`.
      - [CB100 compile-only record](.agents/Directional/Architecture_M6_CP3_CB100_P13_Evaluator_Concave_Quad_Metrics_Code_Build_Record_20261108.md): source `5d8ad72c…`, [run 42441672881](https://github.com/akashskypatel/Directional/actions/runs/42441672881), immutable artifact `13601404996`, GMP/GMPXX, no runtime. Mismatch/infra routes did not fire.
-  55. [ ] **NEXT `M6-CP3-CB101-P13-EVALUATOR-QUAD-NORMAL-OWN-PLANE`** (CB, compile only; RA-212.5; precheck the CB100 results):
+  55. [x] **COMPLETE `M6-CP3-CB101-P13-EVALUATOR-QUAD-NORMAL-OWN-PLANE`** (CB, compile only; RA-212.5; precheck the CB100 results):
      - Patch `.agents/Directional/Architecture_M6_CP3_CB101_P13_Evaluator_Quad_Normal_Own_Plane.diff`:
        - SHA-256 `9b42498d9e3615488c9007499aea590c195d472b66e519c67d5ff124190155f1`, 56 lines; keep its 1 single-space context line;
        - `2 2` `src/geometry/SurfaceMeshOptimizer.cpp` → `ac441cd36be7bec02903f5c35baa85ba0f171022012457b892f99c3707793384`;
        - `23 0` `tests/SurfaceMeshOptimizerPhase21Tests.cpp` → `0362e0bd636e89543d403812c39cc96602e0fb05cb642c8c1f7366f333e0dfba`.
+     - [CB101 code/build record](.agents/Directional/Architecture_M6_CP3_CB101_P13_Evaluator_Quad_Normal_Own_Plane_Code_Build_Record_20261108.md): verified exact postimages, applied source `23e35798abf0eb3584509c564166ccd97c41cc21`, [GMP compile 42443381491](https://github.com/akashskypatel/Directional/actions/runs/42443381491) and immutable package `13602662424`, `runtimeExecution=false`. New Phase21 test source compiled but not run; no acceptance promotion.
      - Mismatch → `M6-CP3-PLAN-P13-EVALUATOR-QUAD-NORMAL-OWN-PLANE-STOP`; infrastructure → `M6-CP3-CB101A-P13-EVALUATOR-QUAD-NORMAL-OWN-PLANE-ORCH`.
-  56. [ ] **`M6-CP3-TB85-P13-CONCAVE-QUALITY-METRICS-FULL-GATE-EXEC`** (TB-EXEC; RA-212.7):
+  56. [ ] **NEXT `M6-CP3-TB85-P13-CONCAVE-QUALITY-METRICS-FULL-GATE-EXEC`** (TB-EXEC; RA-212.7):
      - Gate: [908-row manifest](.agents/Directional/Architecture_M6_TB85_P13_Concave_Quality_Metrics_Full_Gate_Case_Manifest.tsv) `ec088eb1121a5846605a4bb3675657b68477c88513c28795350369c03bb9f999`; ledger v5; **908/908**, membership 989.
      - **Pinned:** gate rows 795/796/797/864 and census Cylinder, BunnyRandom and Vase digests byte-identical to TB84; Vase terminal `AggregateCompletionValidationFailure`.
      - Mismatch → `M6-CP3-TB85-P13-CONCAVE-QUALITY-METRICS-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB85A-P13-CONCAVE-QUALITY-METRICS-ORCH`.
