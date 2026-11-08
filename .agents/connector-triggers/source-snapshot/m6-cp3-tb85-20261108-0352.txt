@@ -1,3 +1,0 @@
-Canonical turn: M6-CP3-TB85-P13-CONCAVE-QUALITY-METRICS-FULL-GATE-EXEC
-Source authority before trigger: 91c9244c017fa656f34769ff6837fad94b6e54df
-Event source commit is the exact snapshot authority.
