@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workflow_key": "tb87-reaudit-static-check",
+  "workflow": "TB87 Reaudit Static Review Check",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/tb87-reaudit-static-check-temp.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "5cba58ba6d44eb3935716d42509a3a861967582c",
+  "source_sha": "5cba58ba6d44eb3935716d42509a3a861967582c",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 42496774176,
+  "run_attempt": 1,
+  "run_number": 1,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/42496774176",
+  "result": "success",
+  "summary": "TB87 substantive independent re-audit static boundary and ledgers",
+  "reported_at": "2026-11-08T15:50:28Z",
+  "mailbox_branch": "workflow-mailbox",
+  "artifacts": [
+    {
+      "id": 13624265524,
+      "name": "workflow-mailbox-publisher-log-42496774176-attempt-1",
+      "size_in_bytes": 388,
+      "digest": "sha256:039f35f6719ebeb1b923bee6dcc34d1f2e921d7c6977171e978c9cab0740fe5f",
+      "expired": false,
+      "created_at": "2026-11-08T15:50:27Z",
+      "expires_at": "2026-11-22T15:50:27Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42496774176/artifacts/13624265524",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13624265524/zip"
+    },
+    {
+      "id": 13623477652,
+      "name": "tb87-reaudit-static-check-42496774176",
+      "size_in_bytes": 1253,
+      "digest": "sha256:584f2e7cb0df3e59be1d5ef608672147ac3922dbbc01d211d890fba59b2de19c",
+      "expired": false,
+      "created_at": "2026-11-08T15:50:10Z",
+      "expires_at": "2026-11-22T15:50:09Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42496774176/artifacts/13623477652",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13623477652/zip"
+    }
+  ]
+}
