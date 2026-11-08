@@ -1,0 +1,11 @@
+# M6-CP3 CB104 — A3 recorded source-rim intervals (Code + Build)
+
+**Verdict: COMPLETE, compile-only; runtime not executed.** Exact RA-215 §4 patch `dfacc5cbc535b16b8b387431a4078c3db3120acbee2ab7e2eac71b044364bb0c` applied to source commit `b41fbf72a4d4d2255b4b0e94e0148de8378e2364`. It changes only `SurfaceCellTracing.h`, `SurfaceCellTracing.cpp` and `SurfaceCellsPhase10Tests.cpp`, including fixed GUARD 910. No tests or fixtures were authored beyond the frozen patch, and no selector was edited.
+
+- **Apply evidence:** [Drive apply run 42484510769](https://github.com/akashskypatel/Directional/actions/runs/42484510769), immutable result artifact `13618772974`; application commit `b41fbf72a4d4d2255b4b0e94e0148de8378e2364`.
+- **Compile evidence:** [run 42484665857](https://github.com/akashskypatel/Directional/actions/runs/42484665857), job `128743878418` SUCCESS. Immutable result artifact `13619640763`, ZIP SHA-256 `0273b89a9a72ccebd4b5b18e1b60b489e615909bf748600eb924bff0a0c2fd98`.
+- **Integrity:** 28/28 packaged SHA256SUMS verified, packaged source SHA matches `b41fbf72a…`, all source-state files empty; preflight and build exit codes 0. All 8 targets compiled: directional_core, directional_pipeline, directional_surface_cell_authority_kernel_tests, directional_surface_cell_producer_tests, directional_surface_cell_completion_tests, directional_surface_cell_validation_tests, directional_compiled_api_tests, directional_benchmarks.
+- **Arithmetic:** `DIRECTIONAL_ENABLE_GMP=ON`; authoritative link command includes both `/usr/lib/x86_64-linux-gnu/libgmpxx.so` and `libgmp.so`; `exactArithmeticBackend=GMP`.
+- **Boundary:** `runtimeExecution=false`; no Directional tests, benchmarks, or executables run. Compile success does not establish GUARD 910 runtime validity, pure-quad production, or CP3 promotion.
+- **Stable authority unchanged:** CP2 accepted 491/491; TB86 latest executed 909/909 membership 990; 66/17/49, debt 1, 81 deferred; selector497/CP3 unpromoted. No new accepted-green regression recorded.
+- **Separate exact next:** `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-EXEC` (RA-215 §5), frozen 910-case manifest SHA-256 `c435519f6304fdcedb794e45187c8c4645e0bb36d32ec567e7979d292fb245bf`, membership 991, no rebuild or repair.

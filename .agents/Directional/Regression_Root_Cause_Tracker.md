@@ -1,6 +1,6 @@
 **RA-215 step-61 re-entry (2026-11-08; NOT a new stable regression; static only):** [record](Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Adversarial_Review_20261108.md). Product sources = CB103 `000752d8…`.
 - **D9 rim (correction).** The step-61 claim that the rectangular hard-rail fixture "does not establish a curved-disk A3-consuming non-hard rim" is **false**. Under A3, the uniform and annulus producers decline any region touching a rail (`SurfaceCellTracing.cpp:13432`, `:14243`), so curved-disk produces every region of that fixture in cut-domain mode (`:15549-15553`), and its physical rims are A3-scheduled.
-  - Owner: exact CB104 `dfacc5cb…` (core + GUARD 910) → TB87, 910 rows `c435519f…`.
+  - Owner: exact CB104 `dfacc5cb…` (core + GUARD 910) compiled at `b41fbf72…`, [record](Architecture_M6_CP3_CB104_P13_A3_Source_Rim_Intervals_Code_Build_Record_20261108.md), [run 42484665857](https://github.com/akashskypatel/Directional/actions/runs/42484665857) 8/8 and 28/28 GMP package. TB87 remains unexecuted, 910 rows `c435519f…`.
   - Falsifiers:
     - every GSB edge carries a unit interval whose span's single carrier is a physical edge, equal to the route's one Boundary step, with matching orientation, in both face-row orders;
     - every physical A3 span is covered;

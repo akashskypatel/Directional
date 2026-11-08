@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-CB104-P13-A3-RECORDED-BOUNDARY-INTERVALS` (step 62, compile-only Code + Build from the exact patch `dfacc5cb…`, [RA-215](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Adversarial_Review_20261108.md) §4; then TB87, 910 rows), after [TB86 COMPLETE / MATCH](.agents/Directional/Architecture_M6_CP3_TB86_P13_A3_Span_Coverage_Full_Gate_Execution_Report_20261108.md): immutable 909/909 PASS, membership 990, seven TB85 digests exact; Cylinder PASS, BunnyRandom/Vase pre-registered RED. Accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred; selector497/CP3 unpromoted.
+> **Current canonical next:** `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-EXEC` (step 63, artifact-only Test + Benchmark on verified [CB104 compile-only package](.agents/Directional/Architecture_M6_CP3_CB104_P13_A3_Source_Rim_Intervals_Code_Build_Record_20261108.md), RA-215 §5, 910 rows), after [TB86 COMPLETE / MATCH](.agents/Directional/Architecture_M6_CP3_TB86_P13_A3_Span_Coverage_Full_Gate_Execution_Report_20261108.md): immutable 909/909 PASS, membership 990, seven TB85 digests exact; Cylinder PASS, BunnyRandom/Vase pre-registered RED. Accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred; selector497/CP3 unpromoted.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -44,12 +44,12 @@
      - [Result report](.agents/Directional/Architecture_M6_CP3_TB86_P13_A3_Span_Coverage_Full_Gate_Execution_Report_20261108.md): gate 909/909 PASS, membership 990, 1,826/1,826 checksums; 7/7 pinned digests exact, 7/7 A3 records satisfy invariants; census 1 PASS / 2 expected RED, 9/9 hashes; no promotion.
      - Routes were not activated: no mismatch or infrastructure failure.
   61. [x] **COMPLETE Review (runtime-free), re-entered by RA-215** `M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS` — [decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Review_20261108.md) (contract and reader census stand) → [RA-215](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Adversarial_Review_20261108.md). The core-only patch `916c591a…` is superseded: do not apply it alone.
-  62. [ ] **NEXT Code + Build** `M6-CP3-CB104-P13-A3-RECORDED-BOUNDARY-INTERVALS` (implementation agent, compile only).
+  62. [x] **COMPLETE Code + Build** `M6-CP3-CB104-P13-A3-RECORDED-BOUNDARY-INTERVALS` (implementation agent, compile only).
      - Patch: [exact diff](.agents/Directional/Architecture_M6_CP3_CB104_P13_A3_Source_Rim_Intervals_Exact.diff), `dfacc5cbc535b16b8b387431a4078c3db3120acbee2ab7e2eac71b044364bb0c`, 227 lines, keep its 2 single-space context lines.
      - Numstat: `3 1` / `10 5` / `147 0`. Base: product = CB103 `000752d8…`.
-     - Apply exactly, run the eight-target GMP compile, package. Author no test.
+     - Applied exact patch at `b41fbf72…`; [compile run 42484665857](https://github.com/akashskypatel/Directional/actions/runs/42484665857) eight-target GMP/GMPXX PASS, package `13619640763` SHA-256 `0273b89a…`, 28/28 hashes; `runtimeExecution=false`. [CB104 record](.agents/Directional/Architecture_M6_CP3_CB104_P13_A3_Source_Rim_Intervals_Code_Build_Record_20261108.md).
      - Routes: mismatch → `M6-CP3-PLAN-P13-A3-RECORDED-BOUNDARY-INTERVALS-STOP`; infrastructure → `M6-CP3-CB104A-P13-A3-RECORDED-BOUNDARY-INTERVALS-ORCH`.
-  63. [ ] **TB87** `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-EXEC`.
+  63. [ ] **NEXT TB87** `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-EXEC`.
      - Manifest: [manifest](.agents/Directional/Architecture_M6_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Case_Manifest.tsv), 910 rows, `c435519f6304fdcedb794e45187c8c4645e0bb36d32ec567e7979d292fb245bf`, membership 991, ledger v5 81, census `3af1dc0d…`.
      - Expected: 910/910 (GUARD 909 and 910 PASS). Rows 795/796/797/864 and the 3 census `platform-digest` **and** `a3-coverage` lines are byte-identical to TB86.
      - Routes: mismatch → `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-REV` (Review, runtime-free); infrastructure → `M6-CP3-TB87A-P13-A3-RECORDED-BOUNDARY-INTERVALS-ORCH`. No test repair inside the TB.

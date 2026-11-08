@@ -1,3 +1,9 @@
+## 2026-11-08 UTC — CB104 exact A3 source-rim intervals (Code + Build; compile-only)
+
+- [CB104 record](.agents/Directional/Architecture_M6_CP3_CB104_P13_A3_Source_Rim_Intervals_Code_Build_Record_20261108.md): applied RA-215 exact 3-path patch `dfacc5cb…` at [`b41fbf72…`](https://github.com/akashskypatel/Directional/commit/b41fbf72a4d4d2255b4b0e94e0148de8378e2364), including GUARD 910. No selector, fixture, or unapproved test edits.
+- [Eight-target GMP compile 42484665857](https://github.com/akashskypatel/Directional/actions/runs/42484665857), artifact `13619640763`, ZIP `0273b89a9a72ccebd4b5b18e1b60b489e615909bf748600eb924bff0a0c2fd98`; 28/28 internal hashes, GMPXX/GMP linked, clean source, `runtimeExecution=false`.
+- Next TB87 artifact-only 910-case manifest membership 991; no tests/benchmarks executed in CB104, no CP3 promotion or stable accounting change (CP2 491/491, 66/17/49 debt 1, 81 deferred).
+
 ## 2026-11-08 UTC — RA-215: step-61 D9 Review re-entered; exact CB104 and TB87 frozen (runtime-free)
 
 - [RA-215](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Adversarial_Review_20261108.md): the step-61 contract and reader census stand.
