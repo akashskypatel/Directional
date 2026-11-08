@@ -1,3 +1,8 @@
+## 2026-11-08 UTC — TB90 exact partition-stable D7 scheduler full-gate MATCH (Test + Benchmark)
+
+- [TB90 report](.agents/Directional/Architecture_M6_CP3_TB90_P13_A3_Partition_Stable_Count_Switch_Full_Gate_Execution_Report_20261108.md): compiled CB107 source `34967c8…`, immutable package 13633039235. Gate [42522538976](https://github.com/akashskypatel/Directional/actions/runs/42522538976) **914/914 PASS**, membership 995, 1,836/1,836 hashes, GUARD 914 PASS; census [42522755014](https://github.com/akashskypatel/Directional/actions/runs/42522755014) Cylinder PASS, BunnyRandom/Vase registered RED, 9/9 hashes. 7/7 A3 records unchanged and 7/7 platform records match RA-216 §7; Cylinder baseline/tracing hashes and Vase baseline hash receive the pre-registered D7 rebaseline with unchanged counts. No rebuild or source/test/fixture/selector mutation.
+- No new stable event; accepted CP2 491/491, stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted. Next separate runtime-free Review: `M6-CP3-DEFN-P13-A3-METRIC-BREAKPOINT-PLACEMENT` (D7b, 64.5).
+
 ## 2026-11-08 UTC — CB107 exact partition-stable count scheduler switch (Code + Build, compile-only)
 
 - [CB107 record](.agents/Directional/Architecture_M6_CP3_CB107_P13_A3_Partition_Stable_Count_Switch_Code_Build_Record_20261108.md): RA-216 frozen scheduler switch + GUARD 914, three exact intended paths; source [`34967c89817a9d43a7c99eaf337032f9e9a927fb`](https://github.com/akashskypatel/Directional/commit/34967c89817a9d43a7c99eaf337032f9e9a927fb), [patch-apply run 42520704505](https://github.com/akashskypatel/Directional/actions/runs/42520704505), artifact `13632989000`; transient Google Drive patch retired.
