@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb87-rev-substantive-reaudit-20261108-v1",
+  "request_id": "m6-cp3-tb87-rev-reaudit-reference-harmonization-20261108",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb87-rev-substantive-reaudit",
-  "file_id": "1hXw9V2j9h57V4aKuZriD9AZqqqEDPo_w",
-  "patch_sha256": "4a6094ac8fbd4b09110b518a7f0be63f89bf597469a6a33eca254f5429a3c20d",
-  "base_sha": "4a9bf98f0718dbea77416dc58cc3e19c81d8de56",
+  "mailbox_key": "m6-cp3-tb87-rev-harmonization",
+  "file_id": "1iOxFmWQTi0ECi5qNAWxK-CtMQOKjaiP8",
+  "patch_sha256": "3477ee1a04edad729e1df5cfb573df397ecd09f3a2d8db675fd4f05da885d228",
+  "base_sha": "5cba58ba6d44eb3935716d42509a3a861967582c",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): substantive TB87 re-audit and split A3/A4 follow-up turns",
+  "commit_message": "docs(directional): reconcile TB87 re-audit successor references",
   "retention_days": 14
 }
