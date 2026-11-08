@@ -1,0 +1,35 @@
+# M6-CP3 P13 A4/A2b producer — read-only A2a′/A2b/A3 extraction seam (same-turn continuation, 2026-11-08)
+
+**Turn:** `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER`, Review, **IN_PROGRESS**. **Source authority:** previously verified frozen source `c54184c3caab9dfd37eab6653ae923e0a5c733e9`, snapshot workflow `42452191280`, 6,234-file hash inventory. No new source snapshot or C++ runtime was produced in this continuation. This record **does not freeze any successor**, grant a D1 tier change, accept Vase output, or supersede RA-213.
+
+## New finding: use the already published diagnostic products and injected stage-3 stop
+
+`src/pipeline/RemeshPipeline.cpp:12912–13039` constructs and retains `SurfaceCutGraph` (A2a′), `GlobalTopologyPlan` (A2b) and `GlobalConformityBaselinePlan` (A3) **before tracing**. They are copied to `RemeshResult.surfaceCellContext.productSnapshots`. `:13383–13393` permits a typed **`injectFailureAfterStage=3`** return after tracing. With `surfaceCells.retainIntermediateGeometry=true` and `fallbackPolicy=Fail`, the `fail_surface_cells` lambda (`:12342–12429`) does **not** discard those retained A2a′/A2b/A3 snapshots. Thus an independent Review scratch can read all three authoritative products from the rejected `RemeshResult` without changing the production pipeline or waiting for the legacy completed-mesh path. `src/cli/RemeshCommand.cpp:410–417` currently exports only retained A5–A7 materialization data, so `--diagnostics-prefix` alone is **not** sufficient to recover A2b/A3.
+
+**Important precondition:** the injected return is reached only if tracing is **not itself rejected** first (`RemeshPipeline.cpp:13374–13389`). RA-213's measured Vase phase-front outcome was `NotApplicable`, making this a plausible, **unexecuted** extraction route. It must be run and verified; no claim of result availability is made.
+
+## Concrete scratch overlay (downloadable, not committed into production/test source)
+
+Provided `review_vase_a2b_a3_export.py` constructs a modified **copy** of `tests/SurfaceCellDesignAcceptanceTests.cpp` from the immutable source and adds one diagnostic-only GTest `A4A2bReviewScratch.ExportCertifiedVaseA2bA3`. It reuses exactly the production-acceptance fixture loader (`vase__surface_cells`), generated raw cross field and benchmark options; sets `injectFailureAfterStage=3`; and writes a line-oriented TSV with these record families:
+
+- `REGION`, `WALK`, `REGIONFACE`, `ARC`, `ARCPIECE`: typed A2b region IDs, exact source-face orbit, ordered oriented arc occurrence, endpoint nodes, source-support path;
+- `SPAN`, `SPANPIECE`, `BREAK`: production **baseline** A3 preferred/final counts, source-support carrier and exact breakpoint location as piece index plus exact numerator/denominator;
+- `FACEOWNER`, `ORBIT`, `FRAGSIDE`: A2a′ certified per-source-face orbit and trace-segment side ownership;
+- `METRIC`: per-source-vertex target size from the actual pipeline metric, not a global uniform proxy.
+
+The injected test expects `InjectedStageFailure/tracing`, validates product presence, three certified singularity-free discs, and metric-vector extent; it deliberately does not claim a quadrangulation result. It appends source code to an **off-branch copy** and prints its source/postimage hashes. The test source file in the working branch remains unchanged. Scratch overlay **not compiled**: no C++ type check, GMP build, runner execution, or actual per-region measurements are claimed. Before using it as runtime evidence, compile via an authorized remote GMP scratch workflow and execute with GTest filter `A4A2bReviewScratch.ExportCertifiedVaseA2bA3`, preserving the log and source SHA. Do not silently install an ad hoc workflow or modify the durable dispatcher/reusable workflows: the existing dispatcher has no custom scratch-overlay operation, and GitHub workflow policy requires a diagnosed fallback, reusable compile ownership, and validated workflow authority.
+
+## Independent verifier and non-vacuity
+
+`verify_vase_a2b_a3_export.py` consumes a complete marked TSV segment and checks ordered walk closure, opposite orientation and complete ownership of shared Trace arcs, one exterior owner of Mandatory arcs, source-support piece equality between A2b/A3, exactly covered consecutive A3 breakpoint ordinals with increasing exact piece-index positions and **actual terminal positions** (0 and `pieceCount`), positive exact counts and positive metric, region-even parity, target-size sample coverage, and A2b disc source-face orbit membership in certified A2a′ owners. It pins RA-213's **historical measurements as expected values only**: 3 regions; 145 Mandatory + 3 Trace; 187 scheduled / 188 preferred; exterior 164 and trace subdivisions 23; region boundary counts 46/70/94. Any discrepancy must be **reported**, not fudged to green.
+
+Scratch non-vacuity test `test_export_oracle_nonvacuity.py`: synthetic positive **1/1 PASS**; six deliberately corrupted streams **6/6 rejected** (wrong owner orbit, wrong exact endpoint, reversed arc orientation, duplicate/incorrect incidence, nonpositive metric, missing finish marker). **Correction recorded:** the initial version did **not** reject a modified final endpoint (`1/2` in place of `1`); a failing negative exposed the gap and the verifier now enforces first/last piece-coordinate values. Neither the synthetic result nor the checker constitutes a production A4→A3 conformant output.
+
+## Future actual producer proof, still outstanding
+
+1. Execute the read-only exporter in a remote **GMP-enabled scratch** without changing checked-in test/product sources; preserve exact source/runtimes/hashes. Validate the real typed A2a′/A2b/A3 walks, metric and breakpoints using the independent checker.
+2. Use the true three A2b disc boundary occurrences and certified source-face fragments to compare a well-defined maximal Mandatory-chain candidate, not a hypothetical 20/21/21 split. Its metric/breakpoint and positivity contract requires an authorized D5 change; earlier falsifier disproves naive piece-index reuse.
+3. Construct A4 source-face-attached quads honoring real trace and Mandatory breakpoints, port corners, interior fill; verify reciprocal side ownership, geometry, prescribed valence and all A5–A8/field/size/quality gates. Prior 7,212-quad global and three surrogate-disc meshes are not this output.
+4. D6: recommend evaluating D1 `QualityRelaxed` with named quality exceptions and all strict topology/geometry invariants retained, **but user approval is required before changing an expected gate**. CB102 stays withdrawn and successor `UNKNOWN`.
+
+**Boundary:** only a Review scratch exporter and oracle were authored. Production source, tests, fixtures, selectors, CI workflows, build policy, accepted CP2 491/491, TB85 908/908, stable 66/17/49, debt 1, and 81 deferred were not modified or re-executed. No evidence supports marking this canonical Review COMPLETE.
