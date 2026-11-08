@@ -1,2 +1,0 @@
-# TB86 temporary trigger; preserve durable dispatcher and mailbox
-.agents/connector-triggers/source-snapshot/tb86-20261108-1023.json
