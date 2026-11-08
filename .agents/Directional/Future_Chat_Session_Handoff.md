@@ -41,13 +41,13 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Regression accounting and debt | Accepted CP2 **491/491**; stable **66/17/49**, debt **1**; ledger v5 81 deferred (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE); TB86 candidate membership **990** (TB85 historical membership 989). Selector497/CP3 unpromoted. O32a verified; O32b–e, O30b, O31, O33 remain. |
 | Active boundary | RA-214 §5: CB103/TB86 covered A3 report-only observation; **step 61 D9 Review complete** ([decision](Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Review_20261108.md)); **next CB104** source-rim intervals on genuinely A3-consuming curved disks, non-vacuous test + GMP compile only, then TB87 separate. The 7,797-byte draft test is withdrawn; [Architecture_M6_CP3_CB104_P13_A3_Recorded_Boundary_Intervals_Core.diff](Architecture_M6_CP3_CB104_P13_A3_Recorded_Boundary_Intervals_Core.diff) is source-only candidate, not an executed fix. D7 metric/D5 chain step 64 and per-A2b-disc domain step 65 later. Carried: P13-e, O30b, O31 (legacy only), O32b–e, O33, O27–O29; D6 user decision pending. |
 
-## Mandatory next turn — `M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS` (step 61, runtime-free Review)
+## Mandatory next turn — `M6-CP3-CB104-P13-A3-RECORDED-BOUNDARY-INTERVALS` (step 62, compile-only Code + Build)
 
-- **Authority:** [RA-214](Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md) §5 and [TB86 MATCH](Architecture_M6_CP3_TB86_P13_A3_Span_Coverage_Full_Gate_Execution_Report_20261108.md). Work from exact CB103 semantic source `000752d8…`; no runtime, compile or binary execution in this Review (`REVIEW_TURN_POLICY.md` §4.3).
-- **Objective:** resolve D9 by auditing every `sharedBoundaryInterval` reader including `RemeshPipeline.cpp:2285,4832,5109` and `SurfaceCellTracing.cpp:19882`; define recorded A3 unit intervals on `GenuineSourceBoundary` edges of curved-disk, with source/ordinal identity and independent validation.
-- **Deliverable:** one exact, bounded CB104 patch and separate TB87 falsifiers for rim interval completeness, negative mutation controls, cross-region same-source identity, and digest impact; do not silently change A3 plans, accepted selector or existing per-disc producers. Predicted digest changes are limited to curved-disk fixtures.
-- **Boundary:** no implementation edits, no test execution, no compile, no acceptance promotion during this DEFN. Preserve singularity veto and previous accepted CP2 491/491; D6 expected-D1 recommendation is pending user decision and is not required for step 61.
-- **On success:** authorized Code + Build slice CB104 (canonical ID must be frozen in the Review before execution), then separate TB87. On unresolved design/authority failure, report a typed Review blocker without entering CB104. No successor implementation during this turn.
+- **Authority:** completed [step-61 D9 Review](Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Review_20261108.md) after authentic full-history `review_check.py boundary` and `ledgers --base 8b7299b43` PASS in [run 42480258574](https://github.com/akashskypatel/Directional/actions/runs/42480258574). The earlier snapshot-only failures were lack-of-history artifacts, not green evidence.
+- **Objective:** implement only recorded unit A3 intervals on actual curved-disk `GenuineSourceBoundary` rims with `useAcceptedConformity`, retaining source arc/ordinal identity, orientation, `exterior=true`, and no manufactured twin/periodic/hard-rail relation.
+- **Code + Build scope:** revalidate the exact frozen source-only [core patch](Architecture_M6_CP3_CB104_P13_A3_Recorded_Boundary_Intervals_Core.diff), SHA-256 `916c591adebc3c1ccacffbcc8acbb0a59ef1d0338c18fb93e9c9b3d87ab11bf0`, then add the smallest non-vacuous produced curved-disk A3-consuming non-hard rim fixture/test; the former 7,797-byte draft test is invalid and must not be applied. Compile only via mandated GMP workflow; do not execute binaries.
+- **Stop conditions:** if an actual source-rim fixture cannot be produced or source attachment/tiling cannot be proved, return to Review instead of claiming success. Do not change A3 counts, breakpoints, D9 trace-seam scope, hard-rail/periodic matching, accepted selector, or recovery/fallback semantics.
+- **Following turn:** separate immutable TB87, with pre-registered positive and negative interval, foreign-span, cross-region, report-only coverage and digest controls from the step-61 Review. Do not begin TB87 in CB104.
 
 ### Step 58 complete runtime-free (RA-214)
 
@@ -243,7 +243,7 @@ Rows 49–60 are complete (row 58 runtime-free, RA-214; row 59 CB103 compile-onl
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS** (runtime-free Review, [RA-214](Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md) §5 and [TB86 report](Architecture_M6_CP3_TB86_P13_A3_Span_Coverage_Full_Gate_Execution_Report_20261108.md)).
+`load_next`: **M6-CP3-CB104-P13-A3-RECORDED-BOUNDARY-INTERVALS** (compile-only Code + Build, [step-61 frozen Review](Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Review_20261108.md), authenticated full-history boundary + ledger PASS in [run 42480258574](https://github.com/akashskypatel/Directional/actions/runs/42480258574)).
 - CB89 compiled source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, immutable package artifact `13370954424`, 28/28 hashes, eight GMP/GMPXX targets; no test execution.
 - TB79 artifact-only gate (RA-203.6) finished: 899/899, census MATCH.
 - RA-204 completed the O30 Review; CB90 and TB80 are done. The fixed-field replay is withdrawn: do not build a field fixture.

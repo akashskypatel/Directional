@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS` (step 61, runtime-free Review under RA-214 §5), after [TB86 COMPLETE / MATCH](.agents/Directional/Architecture_M6_CP3_TB86_P13_A3_Span_Coverage_Full_Gate_Execution_Report_20261108.md): immutable 909/909 PASS, membership 990, seven TB85 digests exact; Cylinder PASS, BunnyRandom/Vase pre-registered RED. Accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred; selector497/CP3 unpromoted.
+> **Current canonical next:** `M6-CP3-CB104-P13-A3-RECORDED-BOUNDARY-INTERVALS` (step 62, compile-only Code + Build; step-61 runtime-free Review closed by authenticated Git-history gate 42480258574), after [TB86 COMPLETE / MATCH](.agents/Directional/Architecture_M6_CP3_TB86_P13_A3_Span_Coverage_Full_Gate_Execution_Report_20261108.md): immutable 909/909 PASS, membership 990, seven TB85 digests exact; Cylinder PASS, BunnyRandom/Vase pre-registered RED. Accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred; selector497/CP3 unpromoted.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
