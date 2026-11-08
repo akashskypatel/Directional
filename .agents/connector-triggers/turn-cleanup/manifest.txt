@@ -1,2 +1,0 @@
-# TB87 re-audit temporary static-check trigger
-.agents/connector-triggers/review-boundary/tb87-reaudit-20261108.txt

@@ -1,3 +1,0 @@
-turn=M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-REV
-read_only_static=true
-final_harmonized_docs=true
