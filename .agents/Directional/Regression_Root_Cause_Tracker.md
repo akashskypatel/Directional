@@ -26,7 +26,8 @@
 - **D7, A3 metric depends on the piece split.**
   - Root cause: `GlobalConformityBaselineSupport.cpp:192-239` counts `round(√(m·Σλ²))` ≥ Σλ, and `GlobalConformityBaseline.cpp:739-767` places breakpoints by piece index.
   - Falsifier: λ=(0.1, 3.9) gives count 6, not 4, with 3 edges in the short piece.
-  - Owner: step 64. Prohibited: chain aggregation (D5) before the fix.
+  - [D7 definition](Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Review_20261108.md): integrate positive vertex reciprocal-target density along the *physical source-attached path*, choose the nearest integer of that additive integral and invert its cumulative measure at final scheduled ordinals with exact carrier/position identity. Separate CB106 + immutable TB are unverified; prohibit floating offset substitution and D5 chain aggregation before that validation.
+  - Owner: step 64 CB106, then separate immutable TB. Prohibited: chain aggregation (D5) before the fix.
 - **D8, receipt overclaims.**
   - Root cause: `SurfaceConformityPlanReceipt` is minted at `SurfaceCellTracing.cpp:18375` before producers run, and hashed at `RemeshPipeline.cpp:2091`.
   - Owner: CB103 (comment fix plus coverage observation). Prohibited: citing the receipt as consumption evidence.

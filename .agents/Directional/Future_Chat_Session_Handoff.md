@@ -39,7 +39,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06; unchanged. TB71 remains unpromoted candidate only. |
 | Latest candidate | **TB88 COMPLETE / MATCH** [report](Architecture_M6_CP3_TB88_P13_A3_Observed_Route_Orientation_Full_Gate_Execution_Report_20261108.md): [gate 42500794427](https://github.com/akashskypatel/Directional/actions/runs/42500794427) 910/910, membership 991, 1,828/1,828 hashes, GUARD 909/910 PASS; [census 42500825875](https://github.com/akashskypatel/Directional/actions/runs/42500825875) Cylinder PASS, BunnyRandom/Vase registered RED, 9/9 hashes; 7/7 raw platform digests and 7/7 A3 coverage lines byte-identical to TB86. Correct observed-route test oracle verified; no general producer/A3 consumption acceptance. |
 | Regression accounting and debt | Accepted CP2 **491/491**, stable **66/17/49**, debt **1**, ledger v5 **81 deferred** (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE); TB88 candidate membership 991. Selector497/CP3 unpromoted. TB87 wrong-frame guard candidate resolved only at test-oracle level; O32a verified; O32b–e, O30b, O31, O33 remain. |
-| Active boundary | **TB88 verified; D7 step 64 is next**: run runtime-free definition `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC` independently; preserve all D7 partition-invariance falsifiers. Later steps stay D5 64B, uniform/annulus D4 64C/64D, D9c 65A, trace 65B, A4 disc 65C, D8 65D. No CP3/selector497 or direct output promotion. D6 user decision remains pending. |
+| Active boundary | **D7 step 64 definition frozen as candidate, implementation unverified**: [D7 decision](Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Review_20261108.md) establishes additive metric and exact physical breakpoints; one authorized next CB106, then separate immutable TB. Later steps stay D5 64B, uniform/annulus D4 64C/64D, D9c 65A, trace 65B, A4 disc 65C, D8 65D. No CP3/selector497 or direct output promotion. D6 user decision remains pending. |
 
 ### Revised post-TB88 bounded sequence (requested independent re-audit; one change family per turn)
 
@@ -59,10 +59,10 @@ The [TB87 substantive re-audit](Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Rou
 
 The prior combined 64 (D7+D5), 64A (uniform+annulus), and 65 (D9c+trace+disc) are **superseded only as bundled implementation assignments**. Do not lose their existing semantic requirements, lineage, or debt. These future IDs are sequence metadata; **only D7 step 64 is the immediate NEXT_TURN**.
 
-## Mandatory next turn — `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC` (D7, step 64; runtime-free Review)
+## Completed D7 definition / mandatory next CB106 — partition-stable A3 metric (step 64)
 
 - **Prerequisite met:** [TB88 MATCH](Architecture_M6_CP3_TB88_P13_A3_Observed_Route_Orientation_Full_Gate_Execution_Report_20261108.md), immutable CB105 910/910, 991 membership, GUARD 909/910 pass, stable pinned raw digest evidence and registered census. No CP3 or selector promotion.
-- **Define D7 only:** replace piece-count-dependent A3 metric `round(sqrt(m * sum(lambda_i^2)))` and piece-index breakpoint assignment with partition-invariant physical path length/count and exact breakpoint placement semantics, including re-partitioned arc falsifiers; preserve DESIGN §7.4 and single-writer authority. Do not merge with D5 maximal-chain scheduling or D4 producer-consumption implementation.
+- **D7 decision:** [runtime-free Review](Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Review_20261108.md) specifies exact integrated reciprocal-target metric and cumulative breakpoint positions, including re-partitioned arc falsifiers and algebraic-location stop gate. **Next:** `M6-CP3-CB106-P13-A3-PARTITION-STABLE-METRIC`, compile only; separate immutable TB required. Do not merge D5/D4.
 - **Execution boundary:** runtime-free; no compile, tests, artifact dispatch, source changes, acceptance claims, or next-stage D5/D4 tasks. Freeze a narrow, reviewable definition and exact falsifiers for a separate CB + TB. Preserve all existing stable accounting (CP2 491/491; 66/17/49 debt 1; 81 deferred). If definition authority conflicts, classify before proceeding.
 
 ### Step 61 re-entered (RA-215)

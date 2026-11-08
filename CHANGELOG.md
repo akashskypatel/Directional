@@ -1,3 +1,8 @@
+## 2026-11-08 UTC — D7 partition-stable metric definition (runtime-free Review)
+
+- [D7 decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Review_20261108.md): independently traced source formula `sqrt(m * sum(lambda_i^2))` and piece-index ordinal placement; established the piece-representation instability with `lambda=(0.1,3.9)` (6 versus 4) and defined additive integrated reciprocal-target physical metric, exact cumulative breakpoints, re-partition/reversal/variable-target falsifiers and a stop gate for algebraic exactness. DESIGN §7.4 amended for D7 only; no product/test/selector edits, compile or runtime.
+- Exact next CB106 is D7 implementation + compile only; immutable TB separately required. TB88 910/910 candidate MATCH, accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred; CP3/selector497 remain unpromoted.
+
 ## 2026-11-08 UTC — TB88 observed-route immutable full-gate MATCH (Test + Benchmark)
 
 - [TB88 report](.agents/Directional/Architecture_M6_CP3_TB88_P13_A3_Observed_Route_Orientation_Full_Gate_Execution_Report_20261108.md): exact CB105 source `d96df38e5ebfe33bbf979f27a82f7a5a332a7738`, package 13624369054; [gate run 42500794427](https://github.com/akashskypatel/Directional/actions/runs/42500794427) **910/910 PASS**, membership 991, GUARD 909/910 pass, 1,828/1,828 hashes; [census run 42500825875](https://github.com/akashskypatel/Directional/actions/runs/42500825875) Cylinder PASS, BunnyRandom/Vase expected RED, 9/9 hashes, 7/7 platform and 7/7 A3 lines byte-identical to TB86. No rebuild/relink/configure/benchmark or source/test/fixture/selector changes.
