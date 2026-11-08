@@ -1,3 +1,15 @@
+## 2026-11-08 UTC — RA-215: step-61 D9 Review re-entered; exact CB104 and TB87 frozen (runtime-free)
+
+- [RA-215](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Adversarial_Review_20261108.md): the step-61 contract and reader census stand.
+  - F1: the rectangular hard-rail fixture *is* a curved-disk A3 rim witness.
+  - F2: CB104 was not exact.
+  - F3–F5: unbound or unconstructible falsifiers; digest expectations pinned.
+  - F6–F7: an unlisted acceptance widening; comment facts restored.
+  - F8: D4 owned by the new step 64A.
+- Frozen [exact CB104](.agents/Directional/Architecture_M6_CP3_CB104_P13_A3_Source_Rim_Intervals_Exact.diff) `dfacc5cb…`: the core plus GUARD 910 `A3SourceRimIntervalsAreRecordedSingleSidedAndValidated`, 227 lines. `git apply --check` and `-fsyntax-only` are clean.
+- Frozen the [TB87 manifest](.agents/Directional/Architecture_M6_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Case_Manifest.tsv): 910 rows, `c435519f…`, `SELF_CHECK_PASS cases=910 deferred=81`, membership 991.
+- New candidate D9c. No product, test or build change; nothing executed. CP2 491/491, stable 66/17/49, debt 1, 81 deferred; selector497/CP3 unpromoted.
+
 ## 2026-11-08 UTC — TB86 A3 span-coverage immutable full gate + census (Test + Benchmark)
 
 ## 2026-11-08 UTC — Step-61 D9 recorded A3 source-rim interval Review (runtime-free)

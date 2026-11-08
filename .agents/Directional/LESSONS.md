@@ -388,6 +388,13 @@ This document records **reusable failure-derived engineering lessons**, not an e
   stage. Do not run a prototype inside the Review. Three agent blockers on this point (RA-200, RA-201,
   step 58) were called "procedural" when they were governance. A convention written in a handoff is not
   a policy exception; only the user can amend policy.
+- **A Review freezes the test; a CB never designs one (RA-215).** The step-61 decision rejected the only
+  witness without tracing which producer runs it. Under an A3 plan, a rail-touching region is always
+  curved-disk produced. It then told CB104 to "author the smallest non-vacuous test, or stop". When a
+  Review cannot name a witness, it must trace the producer dispatch under the fixture's exact options and
+  freeze the test, or stop itself. Bind every falsifier to the predicate that produces its outcome. A
+  tamper that no product predicate rejects (here, span attachment of a single-sided interval) is an
+  oracle in the test or a registered gap, never an expected rejection.
 - **Plan from the current normative contract and reachable implementation.** Before freezing an
   obligation, identify the actual producer, owning stage, live branch and witness class; confirm it can
   be expressed at that checkpoint. Do not retroactively require a later milestone's capability or treat

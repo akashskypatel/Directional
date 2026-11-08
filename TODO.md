@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-CB104-P13-A3-RECORDED-BOUNDARY-INTERVALS` (step 62, compile-only Code + Build; step-61 runtime-free Review closed by authenticated Git-history gate 42480258574), after [TB86 COMPLETE / MATCH](.agents/Directional/Architecture_M6_CP3_TB86_P13_A3_Span_Coverage_Full_Gate_Execution_Report_20261108.md): immutable 909/909 PASS, membership 990, seven TB85 digests exact; Cylinder PASS, BunnyRandom/Vase pre-registered RED. Accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred; selector497/CP3 unpromoted.
+> **Current canonical next:** `M6-CP3-CB104-P13-A3-RECORDED-BOUNDARY-INTERVALS` (step 62, compile-only Code + Build from the exact patch `dfacc5cb…`, [RA-215](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Adversarial_Review_20261108.md) §4; then TB87, 910 rows), after [TB86 COMPLETE / MATCH](.agents/Directional/Architecture_M6_CP3_TB86_P13_A3_Span_Coverage_Full_Gate_Execution_Report_20261108.md): immutable 909/909 PASS, membership 990, seven TB85 digests exact; Cylinder PASS, BunnyRandom/Vase pre-registered RED. Accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred; selector497/CP3 unpromoted.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -7,7 +7,21 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — RA-214: step 58 resolved runtime-free; A4→A3 work re-sliced; CB103 → TB86 frozen (2026-11-08)
+## CURRENT — RA-215: step 61 re-entered; exact CB104 + TB87 frozen; D9c and D4 owned (2026-11-08)
+
+- [x] **RA-215** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Adversarial_Review_20261108.md)) re-entered the step-61 D9 decision.
+  - **Stands:** the producer/factory contract (single-sided rim interval, absent rim interval legal at the factory, HardRail presence unchanged) and the reader census.
+  - **F1:** the rectangular hard-rail fixture *is* a curved-disk A3 rim witness. Under A3, the uniform and annulus producers decline regions that touch rails.
+  - **F2:** CB104 asked the implementation agent to design a test. It is now an exact patch.
+  - **F3:** no "source attachment" check exists. It becomes a test oracle, and the factory side is D9c (step 65).
+  - **F4:** a cross-region rim cannot be constructed; that falsifier moves to step 65.
+  - **F5:** digest expectations are pinned: all 7 lines unchanged.
+  - **F6:** a physical hard edge is now accepted.
+  - **F7:** the dropped comment facts are restored.
+  - **F8:** D4 is owned by step 64A.
+- The active step list (59–66, NEXT = 62) follows in the next section, realigned by RA-215 §6.
+
+## CURRENT STEP LIST (59–66) — RA-214 slices, realigned by RA-215 (2026-11-08)
 
 - [x] **RA-214** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md)) resumed the `BLOCKED` step 58.
   - **Block:** valid. `REVIEW_TURN_POLICY.md` §4.3 makes Reviews and DEFNs runtime-free. RA-213 §4 (a prototype and gate measurement inside a Review) is withdrawn, and the "Claude, scratch build" label is suspended on steps 44, 44A, 44B and 44C.
@@ -29,11 +43,19 @@
      - `a3-coverage`: partial=0, foreign=0, and covered + unrecorded = scheduled; Vase observed=0.
      - [Result report](.agents/Directional/Architecture_M6_CP3_TB86_P13_A3_Span_Coverage_Full_Gate_Execution_Report_20261108.md): gate 909/909 PASS, membership 990, 1,826/1,826 checksums; 7/7 pinned digests exact, 7/7 A3 records satisfy invariants; census 1 PASS / 2 expected RED, 9/9 hashes; no promotion.
      - Routes were not activated: no mismatch or infrastructure failure.
-  61. [x] **COMPLETE Review (runtime-free)** `M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS` — [decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Review_20261108.md). D9 source-rim contract and all interval readers audited; one flawed test draft withdrawn. Core patch `916c591adebc3c1ccacffbcc8acbb0a59ef1d0338c18fb93e9c9b3d87ab11bf0` frozen as review evidence only; no code, test, build, gate or selector executed.
-  62. [ ] **NEXT Code + Build** `M6-CP3-CB104-P13-A3-RECORDED-BOUNDARY-INTERVALS`: use frozen [Architecture_M6_CP3_CB104_P13_A3_Recorded_Boundary_Intervals_Core.diff](.agents/Directional/Architecture_M6_CP3_CB104_P13_A3_Recorded_Boundary_Intervals_Core.diff) plus a non-vacuous genuinely A3-consuming non-hard source-rim test; no fake factory absence rejection; compile only and package exact GMP authority. Stop if fixture or source provenance is unproved, or source/test scope escapes D9.
-  63. [ ] **TB87**, separate immutable artifact-only full gate with independent positive/negative rim, foreign-span, cross-region and legacy-producer controls from step-61 review; no test repairs during TB.
+  61. [x] **COMPLETE Review (runtime-free), re-entered by RA-215** `M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS` — [decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Review_20261108.md) (contract and reader census stand) → [RA-215](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Adversarial_Review_20261108.md). The core-only patch `916c591a…` is superseded: do not apply it alone.
+  62. [ ] **NEXT Code + Build** `M6-CP3-CB104-P13-A3-RECORDED-BOUNDARY-INTERVALS` (implementation agent, compile only).
+     - Patch: [exact diff](.agents/Directional/Architecture_M6_CP3_CB104_P13_A3_Source_Rim_Intervals_Exact.diff), `dfacc5cbc535b16b8b387431a4078c3db3120acbee2ab7e2eac71b044364bb0c`, 227 lines, keep its 2 single-space context lines.
+     - Numstat: `3 1` / `10 5` / `147 0`. Base: product = CB103 `000752d8…`.
+     - Apply exactly, run the eight-target GMP compile, package. Author no test.
+     - Routes: mismatch → `M6-CP3-PLAN-P13-A3-RECORDED-BOUNDARY-INTERVALS-STOP`; infrastructure → `M6-CP3-CB104A-P13-A3-RECORDED-BOUNDARY-INTERVALS-ORCH`.
+  63. [ ] **TB87** `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-EXEC`.
+     - Manifest: [manifest](.agents/Directional/Architecture_M6_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Case_Manifest.tsv), 910 rows, `c435519f6304fdcedb794e45187c8c4645e0bb36d32ec567e7979d292fb245bf`, membership 991, ledger v5 81, census `3af1dc0d…`.
+     - Expected: 910/910 (GUARD 909 and 910 PASS). Rows 795/796/797/864 and the 3 census `platform-digest` **and** `a3-coverage` lines are byte-identical to TB86.
+     - Routes: mismatch → `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-REV` (Review, runtime-free); infrastructure → `M6-CP3-TB87A-P13-A3-RECORDED-BOUNDARY-INTERVALS-ORCH`. No test repair inside the TB.
   64. [ ] Review (runtime-free) `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC`: D7, then D5 maximal Mandatory chains, with a DESIGN §7.4 amendment.
-  65. [ ] Review (runtime-free) `M6-CP3-DEFN-P13-A4-A2B-DISC-DOMAIN`: plan-trace edge kind plus disc domain.
+  64A. [ ] Review (runtime-free) `M6-CP3-DEFN-P13-A3-UNIFORM-ANNULUS-CONSUMPTION` (D4, RA-215 F8). The uniform and annulus producers ignore A3 (DESIGN §2.1 item 7). Either they adopt and record A3 breakpoints, or they decline honestly under an A3 plan. After 64; before CP3 promotion.
+  65. [ ] Review (runtime-free) `M6-CP3-DEFN-P13-A4-A2B-DISC-DOMAIN`: plan-trace edge kind with reciprocal intervals, D9c span-to-carrier authority, the cross-region falsifier, and the disc domain.
   66. [ ] Per-disc boundary and corners (needs D6) → fill (§4.9) → dispatch and honest `Declined` flags (D3). One DEFN → CB → TB each.
   - Parallel: step 44 (P13-e), re-scoped runtime-free when opened. O31 and P13-n1/2/3 are legacy-only and not scheduled.
 

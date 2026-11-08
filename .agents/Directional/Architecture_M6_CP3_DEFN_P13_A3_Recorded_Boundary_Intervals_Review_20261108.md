@@ -1,5 +1,13 @@
 # M6-CP3 step 61 — Recorded A3 source-boundary intervals (runtime-free Review, final decision)
 
+> **Partly superseded by [RA-215](Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Adversarial_Review_20261108.md) (2026-11-08).** The contract and the reader census stand. The following are superseded by RA-215 §4–§5:
+> - the claim that the rectangular hard-rail fixture is not a curved-disk rim witness (F1);
+> - the "source attachment" factory validation claim (F3);
+> - the CB104 test-repair and scope clauses;
+> - TB87 falsifiers 2–4.
+>
+> CB104 is the exact patch `dfacc5cb…`. Do not apply the core-only diff by itself.
+
 **Turn:** `M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS`.
 **Authority:** RA-214 §5; TB86 immutable 909/909 MATCH, membership 990, not CP3 acceptance. Source inspection: exact source snapshot `4e398ceaf03f2f602ec0047aa4ccb2278208fca0` (snapshot workflow 42474548804); semantic CB103 is `000752d896aad4e515bcffc23331c26692539830`.
 **Boundary:** definition and static source review only; no product/test implementation committed, compiled or executed. The repository holds only a frozen candidate **core code diff as a document** for the separate Code + Build turn, not an executed repair.
