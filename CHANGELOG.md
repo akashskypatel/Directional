@@ -1,3 +1,9 @@
+## 2026-11-08 UTC — CB105 observed-route orientation oracle (Code + Build; compile-only)
+
+- [CB105 record](.agents/Directional/Architecture_M6_CP3_CB105_P13_A3_Observed_Route_Orientation_Oracle_Code_Build_Record_20261108.md): frozen TB87-REV one-test `oriented_steps()` guard correction; only `tests/SurfaceCellsPhase10Tests.cpp` changed. Source [`d96df38e5ebfe33bbf979f27a82f7a5a332a7738`](https://github.com/akashskypatel/Directional/commit/d96df38e5ebfe33bbf979f27a82f7a5a332a7738), [apply run 42498457181](https://github.com/akashskypatel/Directional/actions/runs/42498457181), staged patch retired.
+- [Eight-target GMP compile 42498606907](https://github.com/akashskypatel/Directional/actions/runs/42498606907), immutable package `13624369054` (`3c044ac3ba37…`), 28/28 checksums, GMPXX/GMP, `runtimeExecution=false`; no tests or benchmarks executed.
+- TB87 remains 909/910 unaccepted; next `M6-CP3-TB88-P13-A3-OBSERVED-ROUTE-ORIENTATION-FULL-GATE-EXEC` separately executes frozen 910-case gate, membership 991, with unchanged ledger/digests/census; accepted CP2 491/491 and stable 66/17/49 debt 1 unchanged.
+
 ## 2026-11-08 UTC — TB87 independent observed-route orientation Review (runtime-free)
 
 - Requested substantive re-audit: a one-step canonical route stores `-1` regardless of observed sign, so TB87 mismatch does not establish producer sign correctness. Preserved the exact CB105/TB88 boundary and split the later D7, D5, uniform D4, annulus D4, D9c, reciprocal trace, disc domain and receipt D8 work into separately testable DEFN → CB → TB turns. No production/test mutation or new runtime claim.
