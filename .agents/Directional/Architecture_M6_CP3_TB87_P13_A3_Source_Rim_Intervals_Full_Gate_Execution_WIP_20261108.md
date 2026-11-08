@@ -29,3 +29,12 @@ These are sequential overwrites of the **durable** `.agents/Directional/agent-di
 ## Cleanup
 
 One temporary source-snapshot trigger was created: `.agents/connector-triggers/source-snapshot/tb87-20261108-1402.txt`. Remove it with the authorized turn-cleanup workflow after preserving evidence. Never delete `.agents/Directional/agent-dispatch-request.json` or orphan-branch mailbox history.
+
+## Bounded-session observed gate result — confirmed semantic mismatch
+
+- Gate mailbox `.workflow-mailbox/m6-cp3-tb87-gate/latest.json` reports workflow [42488019698](https://github.com/akashskypatel/Directional/actions/runs/42488019698), event SHA `66604de091a16e08076861cbf90c1e9e149411c2`, `result=failure`.
+- Gate result artifact **13620204214**, outer SHA-256 `f3fcd27fa87151933f8a41c6487ea6a6cd453f5a91fe7a246eb97fa9983f9925`; its `SHA256SUMS` verified **1828/1828**. `execution-boundary.json`: **910 executed / 909 passed / 1 RED**, no abnormal/missing/skipped/duplicate, `membership=991`, `control_bad=1`, `postflight=true`, exit 90 (`ValueError: required controls failed`). Explicitly `compile=false`, `relink=false`, `configure=false`, `benchmark=false`.
+- **Only failing row = 910**: `SurfaceCellAuthorityContractCutover.A3SourceRimIntervalsAreRecordedSingleSidedAndValidated`. `raw/910.log` at `Directional/tests/SurfaceCellsPhase10Tests.cpp:7445` asserts `step.orientation() == interval.orientation` but finds **−1 vs +1** across multiple forward-face-row cases. GUARD 909 passed.
+- This is **not a passing gate** and **not an infrastructure/safety-check failure**; it is a semantic/test-contract mismatch requiring the authorized `...-FULL-GATE-REV` Review route after the TB87 census and documentation are reconciled. Do not change code or tests inside the artifact-only TB87 turn.
+- At bounded closeout, census mailbox `.workflow-mailbox/m6-cp3-tb87-census/latest.json` was still unpublished; result unknown. Its request event SHA is `e02483196176d69010b5d89c9f39532960711368`; discover once published, download artifact once, compare raw digest lines to TB86.
+- TB87 retains `IN_PROGRESS` only because census adjudication, digest comparison, tracker/report/handoff closeout, and temporary-marker cleanup are unfinished; this is not a `BLOCKED` turn. On resumption preserve the original `Started at` and populate `Resumed at`.
