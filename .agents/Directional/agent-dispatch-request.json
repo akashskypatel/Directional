@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb89-documentation-closeout-20261108-2008",
+  "request_id": "m6-cp3-tb89-closeout-stale-state-correction-20261108-2009",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb89-documentation-closeout-apply",
-  "file_id": "1Gumx2slTd1mbW1ug18L9OVDZA7GL7mLb",
-  "patch_sha256": "e90d3d15ac1e36b997641247f542c67d7a7355fc8ad6571b4064f6b37862faa4",
-  "base_sha": "212231e293316766e2e0a25bd8cbd2aced0c1fc7",
+  "mailbox_key": "m6-cp3-tb89-task-state-correction-apply",
+  "file_id": "1AqmTyyQuEusDD95vWrzyX8M8nqk3ZCgD",
+  "patch_sha256": "32366e813a0f3ec286a435fa92ece14531fd6a0d0163cee82b0e6f82bfb986ad",
+  "base_sha": "6da418c84109149a327a899f0ac05785c1c37573",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): close out TB89 immutable gate and census",
+  "commit_message": "docs(agent): correct TB89 stale task-state references",
   "retention_days": 14
 }
