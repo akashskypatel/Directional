@@ -1,3 +1,0 @@
-turn=M6-CP3-TB89-P13-A3-PARTITION-STABLE-METRIC-FULL-GATE-EXEC
-purpose=exact repository source snapshot for artifact-only gate
-entry_status_commit=bbeb7a1cd0ce7ab8679eb43c1e2635aec8b80c24

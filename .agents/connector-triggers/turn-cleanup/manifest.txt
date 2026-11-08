@@ -1,2 +1,0 @@
-# TB89 temporary source snapshot trigger cleanup
-.agents/connector-triggers/source-snapshot/m6-cp3-tb89-20261108-1939.txt
