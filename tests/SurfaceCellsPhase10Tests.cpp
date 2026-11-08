@@ -7439,7 +7439,9 @@ TEST(SurfaceCellAuthorityContractCutover,
       const auto *carrier = physical_carrier(*schedule);
       ASSERT_NE(nullptr, carrier) << "rim interval on a non-physical span " << index;
       ASSERT_EQ(1U, edge.route.steps().size()) << index;
-      const auto &step = edge.route.steps().front();
+      const auto observedSteps = edge.route.oriented_steps();
+      ASSERT_EQ(1U, observedSteps.size()) << index;
+      const auto &step = observedSteps.front();
       EXPECT_EQ(directional::authority::TransitionStepKind::Boundary, step.kind());
       EXPECT_EQ(carrier->edge, step.topology()) << index;
       EXPECT_EQ(step.orientation(), interval.orientation) << index;
