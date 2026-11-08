@@ -1,3 +1,9 @@
+## 2026-11-08 UTC — CB103 A3 span-coverage receipt (Code + Build; compile-only)
+
+- [CB103 record](.agents/Directional/Architecture_M6_CP3_CB103_P13_A3_Span_Coverage_Receipt_Code_Build_Record_20261108.md): exact RA-214 §6 six-file patch `0982bd4a…` applied at source [`000752d896aad4`](https://github.com/akashskypatel/Directional/commit/000752d896aad4e515bcffc23331c26692539830) by [run 42467958970](https://github.com/akashskypatel/Directional/actions/runs/42467958970); report-only A3 span coverage and nonvacuous GUARD compiled.
+- [Eight-target GMP compile 42468093355](https://github.com/akashskypatel/Directional/actions/runs/42468093355): package `13613225138`, ZIP SHA-256 `b7fc883e27bd31f03e595e120aa685feba3bb769ce84837dc73da94e11ee13d2`; 28/28 internal hashes, both `gmpxx` and `gmp` linked; clean source, `runtimeExecution=false`; no tests or benchmarks.
+- TB86 remains an **unexecuted**, separately authorized artifact-only 909-row gate (`3573ffbf…`), membership 990. No promotion: TB85 last executed 908/908, CP2 accepted 491/491, stable 66/17/49 debt 1, 81 deferred; D6 pending the user. Next `M6-CP3-TB86-P13-A3-SPAN-COVERAGE-FULL-GATE-EXEC`.
+
 ## 2026-11-08 UTC — RA-214: step 58 resolved runtime-free; CB103 and TB86 frozen (no product change)
 
 - [RA-214](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md) resumed the `BLOCKED` `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER`.

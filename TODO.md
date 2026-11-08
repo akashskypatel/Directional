@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-CB103-P13-A3-SPAN-COVERAGE-RECEIPT` (implementation agent, exact patch `0982bd4a…`; [RA-214](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md) §6, step 59) → `M6-CP3-TB86-P13-A3-SPAN-COVERAGE-FULL-GATE-EXEC` (manifest 909 `3573ffbf…`). Step 58 closed runtime-free. Preserve TB85 immutable 908/908 PASS, membership 989, and accepted CP2 491/491; do not promote selector497/CP3.
+> **Current canonical next:** `M6-CP3-TB86-P13-A3-SPAN-COVERAGE-FULL-GATE-EXEC` (artifact-only gate, manifest 909 `3573ffbf…`), after [CB103 compile-only](.agents/Directional/Architecture_M6_CP3_CB103_P13_A3_Span_Coverage_Receipt_Code_Build_Record_20261108.md). Step 59 complete; step 58 closed runtime-free. Preserve TB85 immutable 908/908 PASS, membership 989, and accepted CP2 491/491; do not promote selector497/CP3.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -18,12 +18,12 @@
   - **D6:** expected D1 recommended (one rim corner per disc). **User approval pending.**
   - **D5:** sequenced after D7.
 - [x] Step 58 complete (runtime-free).
-  59. [ ] **NEXT `M6-CP3-CB103-P13-A3-SPAN-COVERAGE-RECEIPT`** (implementation agent).
+  59. [x] **COMPLETE `M6-CP3-CB103-P13-A3-SPAN-COVERAGE-RECEIPT`** (compile only; [record](.agents/Directional/Architecture_M6_CP3_CB103_P13_A3_Span_Coverage_Receipt_Code_Build_Record_20261108.md)).
      - Patch: [diff](.agents/Directional/Architecture_M6_CP3_CB103_P13_A3_Span_Coverage_Receipt.diff), `0982bd4ae02d98c876ee42c53b19b7f9452cc90708db991d9ee415609db531ec`, 292 lines, keep its 8 single-space context lines.
      - Numstat: `8 0` / `36 1` / `71 0` / `22 0` / `11 0` / `63 0`.
      - Compile only.
      - Routes: mismatch → `M6-CP3-PLAN-P13-A3-SPAN-COVERAGE-RECEIPT-STOP`; infrastructure → `M6-CP3-CB103A-P13-A3-SPAN-COVERAGE-RECEIPT-ORCH`.
-  60. [ ] `M6-CP3-TB86-P13-A3-SPAN-COVERAGE-FULL-GATE-EXEC`: [manifest](.agents/Directional/Architecture_M6_TB86_P13_A3_Span_Coverage_Full_Gate_Case_Manifest.tsv), 909 rows, `3573ffbf6cba47592489c34f2177988c1b66871db4cd983577694dbb9dcabe76`, membership 990.
+  60. [ ] **NEXT `M6-CP3-TB86-P13-A3-SPAN-COVERAGE-FULL-GATE-EXEC`**: [manifest](.agents/Directional/Architecture_M6_TB86_P13_A3_Span_Coverage_Full_Gate_Case_Manifest.tsv), 909 rows, `3573ffbf6cba47592489c34f2177988c1b66871db4cd983577694dbb9dcabe76`, membership 990.
      - Expected: 909/909.
      - Rows 795, 796, 797 and 864 and the census `platform-digest` lines byte-identical to TB85.
      - `a3-coverage`: partial=0, foreign=0, and covered + unrecorded = scheduled; Vase observed=0.
