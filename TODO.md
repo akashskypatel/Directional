@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-CB100-P13-EVALUATOR-CONCAVE-QUAD-METRICS` (**revised** exact patch `8c11fb85…`, compile only; RA-212 §4, step 54), then CB101 (step 55), then TB85 (908 rows, step 56), then Review `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH` (step 57). [RA-212](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_Legacy_Fallback_Density_20261108.md) re-entered RA-211; TB84 MATCH stands (906/906, membership 987).
+> **Current canonical next:** `M6-CP3-CB101-P13-EVALUATOR-QUAD-NORMAL-OWN-PLANE` (RA-212 §5, exact patch and compile only; step 55), then TB85 (908 rows, step 56), then Review `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH` (step 57). [RA-212](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_Legacy_Fallback_Density_20261108.md) re-entered RA-211; TB84 MATCH stands (906/906, membership 987).
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -19,14 +19,14 @@
   - **Missed metric artifact:** `normalP95` 121.56° came from the first-triangle normal (whole-quad normal: 3.74°).
   - **Wrong reference in CB100:** it used the source normal; the validator uses the quad's own normal. Its inverted-quad angles and warpage were wrong.
 - **RA-212 sequence:** steps 54–56 for the implementation agent, one turn each, in order; then Review step 57.
-  54. [ ] **NEXT `M6-CP3-CB100-P13-EVALUATOR-CONCAVE-QUAD-METRICS`** (CB, compile only; RA-212.4; **revised**, supersedes `d55589c7…`):
+  54. [x] **COMPLETE `M6-CP3-CB100-P13-EVALUATOR-CONCAVE-QUAD-METRICS`** (CB, compile only; RA-212.4; **revised**, supersedes `d55589c7…`):
      - Precheck: `git diff --quiet 553932b04fb433b560e24c59d23751f70f7f2c3e HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
      - Patch `.agents/Directional/Architecture_M6_CP3_CB100_P13_Evaluator_Concave_Quad_Metrics.diff`:
        - SHA-256 `8c11fb8541b5dc799f66a5ac8ea325b1e7045b8b50b93ecc6f8689ec92e947a7`, 114 lines; keep its 4 single-space context lines;
        - `29 2` `src/geometry/SurfaceMeshOptimizer.cpp` → `a0f816b3bc96050ab2c7a68189001e88d22b2a56335befb4e4893b3d456107c0`;
        - `39 0` `tests/SurfaceMeshOptimizerPhase21Tests.cpp` → `6104b59ba09a74045b5b9b4ba3a8c811b8424addc36da338bbab8bb0374537fe`.
-     - Mismatch → `M6-CP3-PLAN-P13-EVALUATOR-CONCAVE-QUAD-METRICS-STOP`; infrastructure → `M6-CP3-CB100A-P13-EVALUATOR-CONCAVE-QUAD-METRICS-ORCH`.
-  55. [ ] **`M6-CP3-CB101-P13-EVALUATOR-QUAD-NORMAL-OWN-PLANE`** (CB, compile only; RA-212.5; precheck the CB100 results):
+     - [CB100 compile-only record](.agents/Directional/Architecture_M6_CP3_CB100_P13_Evaluator_Concave_Quad_Metrics_Code_Build_Record_20261108.md): source `5d8ad72c…`, [run 42441672881](https://github.com/akashskypatel/Directional/actions/runs/42441672881), immutable artifact `13601404996`, GMP/GMPXX, no runtime. Mismatch/infra routes did not fire.
+  55. [ ] **NEXT `M6-CP3-CB101-P13-EVALUATOR-QUAD-NORMAL-OWN-PLANE`** (CB, compile only; RA-212.5; precheck the CB100 results):
      - Patch `.agents/Directional/Architecture_M6_CP3_CB101_P13_Evaluator_Quad_Normal_Own_Plane.diff`:
        - SHA-256 `9b42498d9e3615488c9007499aea590c195d472b66e519c67d5ff124190155f1`, 56 lines; keep its 1 single-space context line;
        - `2 2` `src/geometry/SurfaceMeshOptimizer.cpp` → `ac441cd36be7bec02903f5c35baa85ba0f171022012457b892f99c3707793384`;
@@ -62,7 +62,7 @@
        - SHA-256 `d55589c799776ee8449fb4eff6a037a80b228c0d64df6299edc7ab654f9638cb`, 79 lines; keep its 2 single-space context lines;
        - `15 2` `src/geometry/SurfaceMeshOptimizer.cpp` → `8798fa013a9636d5892109c44ab9e50280881176230caa30c18cf1ba913490ec`;
        - `26 0` `tests/SurfaceMeshOptimizerPhase21Tests.cpp` → `6a6d600473fe7300d74b1b414fdac50ee5117a36bc30b6110c526b9e9ece8589`.
-     - Mismatch → `M6-CP3-PLAN-P13-EVALUATOR-CONCAVE-QUAD-METRICS-STOP`; infrastructure → `M6-CP3-CB100A-P13-EVALUATOR-CONCAVE-QUAD-METRICS-ORCH`.
+     - [CB100 compile-only record](.agents/Directional/Architecture_M6_CP3_CB100_P13_Evaluator_Concave_Quad_Metrics_Code_Build_Record_20261108.md): source `5d8ad72c…`, [run 42441672881](https://github.com/akashskypatel/Directional/actions/runs/42441672881), immutable artifact `13601404996`, GMP/GMPXX, no runtime. Mismatch/infra routes did not fire.
   55. [ ] ~~RA-211.6 TB85 907 rows `6ee84959…`~~ **SUPERSEDED by RA-212.7 (908 rows `ec088eb1…`).** Original record:
      - Gate: [907-row manifest](.agents/Directional/Architecture_M6_TB85_P13_Concave_Quality_Metrics_Full_Gate_Case_Manifest.tsv) `6ee8495981ae5f8fe3475ae6593c9063030c36bd76b6ceed50a5fded6cd0afbd`; ledger v5; **907/907**, membership 988.
      - **Pinned:** gate rows 795/796/797/864 and census Cylinder, BunnyRandom and Vase digests byte-identical to TB84; Vase terminal `AggregateCompletionValidationFailure`.

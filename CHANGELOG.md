@@ -1,3 +1,9 @@
+## 2026-11-08 UTC — CB100 evaluator concave-quad metrics (Code + Build)
+
+- Applied RA-212 §4's exact revised 114-line patch `8c11fb85…` to evaluator and Phase21 regression. Two postimage SHA-256s match; [source `5d8ad72c…`](https://github.com/akashskypatel/Directional/commit/5d8ad72c87abafbd74e9a907b2c356739c059b7e).
+- [Compile-only run 42441672881](https://github.com/akashskypatel/Directional/actions/runs/42441672881): eight targets GREEN, GMP/GMPXX, immutable artifact `13601404996`, `runtimeExecution=false`; tests/benchmarks not run. [CB100 record](.agents/Directional/Architecture_M6_CP3_CB100_P13_Evaluator_Concave_Quad_Metrics_Code_Build_Record_20261108.md).
+- Next separate CB101 (RA-212 §5); CB100 does not promote selector497 or CP3.
+
 ## 2026-11-08 — RA-212: RA-211 re-entered; Vase on the legacy fallback, relief-seeded and 20× too dense; CB100 revised + CB101 → TB85 (908); Review Vase producer path next
 
 - **Turn:** `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`, adversarial re-entry of RA-211. [RA-212](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_Legacy_Fallback_Density_20261108.md).

@@ -1,0 +1,10 @@
+# CB100 evaluator concave-quad metrics — Code + Build (2026-11-08 UTC)
+
+- **Turn:** `M6-CP3-CB100-P13-EVALUATOR-CONCAVE-QUAD-METRICS`, authorized by RA-212 §4 (revised).
+- **Precheck:** exact 703ef98ab858 source snapshot, 6,229/6,229 SHA-256 checks; CB99 semantic paths unchanged.
+- **Patch:** RA-212 approved 114-line diff SHA-256 `8c11fb8541b5dc799f66a5ac8ea325b1e7045b8b50b93ecc6f8689ec92e947a7`, with all 4 single-space context lines preserved. Transport envelope SHA-256 `82a396c65f9e9a6fe964e85f85f564ff2cb69c142d9aab4dc0366357aa295cd9`.
+- **Scope:** only `src/geometry/SurfaceMeshOptimizer.cpp` (+29/-2) and `tests/SurfaceMeshOptimizerPhase21Tests.cpp` (+39/-0). Postimage SHA-256s `a0f816b3bc96050ab2c7a68189001e88d22b2a56335befb4e4893b3d456107c0` and `6104b59ba09a74045b5b9b4ba3a8c811b8424addc36da338bbab8bb0374537fe`.
+- **Applied source:** [`5d8ad72c87abafbd74e9a907b2c356739c059b7e`](https://github.com/akashskypatel/Directional/commit/5d8ad72c87abafbd74e9a907b2c356739c059b7e) via [Drive apply 42441492844](https://github.com/akashskypatel/Directional/actions/runs/42441492844), artifact 13602140052 SHA-256 `b16abaa703b5c986574d8904e1045ed51541cfa367e9407d1ffd6c10deeb10c2`; temporary Drive patch permanently deleted.
+- **Compile-only:** [GitHub Actions 42441672881](https://github.com/akashskypatel/Directional/actions/runs/42441672881) / job `128612094537`; eight Release/static targets, exact source `5d8ad72c87abafbd74e9a907b2c356739c059b7e`, GMP/GMPXX; immutable result artifact `13601404996`, ZIP SHA-256 `9ed191492f4fbf2abd9fe8d38589a52032a54618d665397e4f26abec186a5ddb`, packaged source SHA-256 `34a2b085d6a7c79c07ba7c32d70a704a6bfe80f09dbd579babd1c2a51f6105f2`, recursive manifest `28/28`; `runtimeExecution=false`.
+- **Behavioral boundary:** new focused Phase21 regression compiled, **not executed**. No tests, benchmarks, generated discovery, or project runtime; no selector or production acceptance promotion.
+- **State:** CB100 compiled; next turn, separately, `M6-CP3-CB101-P13-EVALUATOR-QUAD-NORMAL-OWN-PLANE` under RA-212 §5; prerequisite postimage hashes must match.
