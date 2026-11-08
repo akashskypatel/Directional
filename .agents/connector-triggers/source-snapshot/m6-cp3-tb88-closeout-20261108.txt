@@ -1,4 +1,0 @@
-turn=M6-CP3-TB88-P13-A3-OBSERVED-ROUTE-ORIENTATION-FULL-GATE-EXEC
-requested_at=2026-11-08T16:57:48Z
-source_authority=8c170cdc3038df285c1f9c4362c62336223730c1
-purpose=final-documentation-diff-baseline
