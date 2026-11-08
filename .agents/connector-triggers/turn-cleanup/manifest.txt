@@ -1,0 +1,2 @@
+# TB87 temporary state; durable dispatcher and mailbox intentionally excluded
+.agents/connector-triggers/source-snapshot/tb87-20261108-1402.txt
