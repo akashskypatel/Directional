@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb87-doc-closeout-20261108-1434",
+  "request_id": "m6-cp3-tb87-rev-doc-closeout-20261108-1515",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb87-doc-closeout",
-  "file_id": "1b9ceTx1ff6rPSZn7SpTvmHyimdCEfa74",
-  "patch_sha256": "18e4bf08670312e9f662fe9d7a277bca3f531d6640a2bdee61604e938d5673cd",
-  "base_sha": "c69890068f72b1909ed728df31861fb088163c03",
+  "mailbox_key": "m6-cp3-tb87-rev-doc-closeout",
+  "file_id": "1au7NWmT0CPQnKrZoeNJN_Ywf1o_8l0aY",
+  "patch_sha256": "7493c4c105070ad3f2d8429c76a64e650078d9a74296b67559662e395a38aeaf",
+  "base_sha": "d8b42b00598f4a39a6419012979c75c053a4a40a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB87 mismatch and route guard review",
+  "commit_message": "docs(directional): adjudicate TB87 observed-route orientation oracle",
   "retention_days": 14
 }
