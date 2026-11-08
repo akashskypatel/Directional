@@ -1,0 +1,3 @@
+turn=M6-CP3-DEFN-P13-VASE-PRODUCER-PATH
+purpose=read-only source review
+entry_status_commit=9ca11737843909216337b9e9300e0e459452db24
