@@ -1,0 +1,2 @@
+# M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY: only current-turn temporary state
+.agents/connector-triggers/source-snapshot/m6-cp3-defn-p13-side-subdivision-quality-20261108.txt
