@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb104-compile-20261108-1322",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb104-compile",
-  "source_sha": "b41fbf72a4d4d2255b4b0e94e0148de8378e2364",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb104-a3-source-rim"
+  "request_id": "m6-cp3-cb104-doc-closeout-20261108-1349",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb104-doc-closeout",
+  "file_id": "1RiPc-qJ7uOfPlh90QpflYnI7AA6BsiC8",
+  "patch_sha256": "578a9af31751ad4bb4f84abceb0642524902517c91aaddcb15bc700ff6ad2e71",
+  "base_sha": "b41fbf72a4d4d2255b4b0e94e0148de8378e2364",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB104 compile and authorize TB87",
+  "retention_days": 14
 }
