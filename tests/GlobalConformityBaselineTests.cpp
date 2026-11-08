@@ -1096,3 +1096,269 @@ TEST(GlobalConformityBaseline,
   std::cout << "D7_PREFERRED_COUNT_RECEIPT case=scheduler-objective whole=4"
             << " uneven=4 halves=4\n";
 }
+
+namespace {
+
+using directional::geometry::BaselineConformityMetricRun;
+using directional::geometry::ConformityBreakpointLocation;
+using directional::geometry::global_conformity_baseline_detail::
+    derive_metric_breakpoint_location;
+using directional::geometry::global_conformity_baseline_detail::
+    derive_partition_stable_metric_runs;
+using ExactPoint = std::array<FieldExactRational, 3>;
+
+// D7b witnesses (RA-217) pin both the location a breakpoint is stored as and
+// the exact point it names; every expected value is hand-computed.
+ExactPoint exact_source_point(const ConformitySourcePoint &point,
+                              const Eigen::MatrixXd &vertices) {
+  const auto coordinate = [&](std::size_t vertex, std::size_t axis) {
+    return *FieldExactRational::from_double_exact(
+        vertices(static_cast<Eigen::Index>(vertex), static_cast<Eigen::Index>(axis)));
+  };
+  ExactPoint out;
+  if (const auto *vertex = std::get_if<SourceVertexId>(&point)) {
+    for (std::size_t axis = 0U; axis < 3U; ++axis) {
+      out[axis] = coordinate(vertex->index(), axis);
+    }
+    return out;
+  }
+  const auto &edge = std::get<ConformityEdgePoint>(point);
+  const auto one = FieldExactRational::from_integer(1);
+  for (std::size_t axis = 0U; axis < 3U; ++axis) {
+    out[axis] = (one - edge.parameter) * coordinate(edge.edge.first().index(), axis) +
+                edge.parameter * coordinate(edge.edge.second().index(), axis);
+  }
+  return out;
+}
+
+std::optional<ConformityBreakpointLocation> d7b_location(
+    const ConformitySpanInput &span, const Eigen::MatrixXd &vertices,
+    const Eigen::VectorXd &target, int count, int ordinal) {
+  const auto runs = derive_partition_stable_metric_runs(span, vertices, target);
+  if (!runs) return std::nullopt;
+  return derive_metric_breakpoint_location(span.id, span.supportPieces.size(),
+                                           *runs, EInt(count), EInt(ordinal));
+}
+
+std::string located(const std::optional<ConformityBreakpointLocation> &location) {
+  if (!location) return "none";
+  return std::to_string(location->supportPieceIndex) + ":" +
+         location->localNumerator.to_string() + "/" +
+         location->localDenominator.to_string() +
+         (location->firstEndpoint ? " first" : "") +
+         (location->lastEndpoint ? " last" : "");
+}
+
+ExactPoint d7b_point(const ConformitySpanInput &span,
+                     const Eigen::MatrixXd &vertices,
+                     const Eigen::VectorXd &target, int count, int ordinal) {
+  const auto location = d7b_location(span, vertices, target, count, ordinal);
+  if (!location) throw std::runtime_error("D7b placement failed");
+  const auto &piece = span.supportPieces.at(location->supportPieceIndex);
+  const auto local = *FieldExactRational::from_exact_fraction(
+      location->localNumerator, location->localDenominator);
+  const auto start = exact_source_point(piece.first, vertices);
+  const auto end = exact_source_point(piece.second, vertices);
+  ExactPoint out;
+  for (std::size_t axis = 0U; axis < 3U; ++axis) {
+    out[axis] = start[axis] + local * (end[axis] - start[axis]);
+  }
+  return out;
+}
+
+ExactPoint xy(int xNumerator, int xDenominator, int yNumerator, int yDenominator) {
+  return {*FieldExactRational::from_ratio(xNumerator, xDenominator),
+          *FieldExactRational::from_ratio(yNumerator, yDenominator),
+          FieldExactRational::from_integer(0)};
+}
+
+} // namespace
+
+TEST(GlobalConformityBaseline, D7bBreakpointsFollowTheRunNotThePieceIndex) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0,
+              4.0, 0.0, 0.0,
+              0.0, 1.0, 0.0;
+  const Eigen::VectorXd unit = Eigen::VectorXd::Constant(3, 1.0);
+  const auto edge = SourceEdgeTopologyKey::from_indices(0, 1, 3).value();
+
+  // Lengths (0.1, 3.9) at count 4 form one run, so breakpoints 1-3 sit at
+  // x = 1, 2, 3 on the second piece. Piece-index placement stored 0:2/4, 1:0/4
+  // and 1:2/4, that is x = 0.05, 0.1 and 2.05.
+  const auto uneven = edge_span_cut_at(edge, {{1, 40}});
+  EXPECT_EQ("0:0/1 first", located(d7b_location(uneven, vertices, unit, 4, 0)));
+  EXPECT_EQ("1:3/13", located(d7b_location(uneven, vertices, unit, 4, 1)));
+  EXPECT_EQ("1:19/39", located(d7b_location(uneven, vertices, unit, 4, 2)));
+  EXPECT_EQ("1:29/39", located(d7b_location(uneven, vertices, unit, 4, 3)));
+  EXPECT_EQ("1:1/1 last", located(d7b_location(uneven, vertices, unit, 4, 4)));
+  // A single piece keeps the unreduced (j, n).
+  EXPECT_EQ("0:2/4",
+            located(d7b_location(edge_span_cut_at(edge, {}), vertices, unit, 4, 2)));
+
+  // Every split, forwards and reversed, names the same points x = j.
+  const std::vector<std::vector<std::pair<int, int>>> splits{
+      {},
+      {{1, 40}},
+      {{1, 8}},
+      {{1, 8}, {1, 2}, {3, 4}},
+      {{1, 16}, {1, 8}, {1, 4}, {1, 2}, {3, 4}, {7, 8}}};
+  for (const auto &cuts : splits) {
+    const auto span = edge_span_cut_at(edge, cuts);
+    const auto reversed = reversed_span(span);
+    for (int j = 0; j <= 4; ++j) {
+      EXPECT_EQ(xy(j, 1, 0, 1), d7b_point(span, vertices, unit, 4, j))
+          << "pieces=" << span.supportPieces.size() << " j=" << j;
+      EXPECT_EQ(xy(j, 1, 0, 1), d7b_point(reversed, vertices, unit, 4, 4 - j))
+          << "reversed pieces=" << span.supportPieces.size() << " j=" << j;
+    }
+  }
+  std::cout << "D7B_BREAKPOINT_RECEIPT case=one-run uneven=1:3/13,1:19/39,1:29/39"
+            << " single=0:2/4 splits=5 reversed=5\n";
+}
+
+TEST(GlobalConformityBaseline, D7bBreakpointsShareOrdinalsAcrossRunsByMetric) {
+  // Leg 1 has length 1 at rho = 1 (metric 1); leg 2 has length 2 with rho
+  // rising from 1 to 2 (metric 3). At count 4 the corner is breakpoint 1 and
+  // leg 2 is cut evenly in length at y = 2/3 and 4/3. Spacing by total length
+  // would put breakpoint 1 at (0.75, 0) and piece-index spacing at (0.5, 0).
+  Eigen::MatrixXd bent(3, 3);
+  bent << 0.0, 0.0, 0.0,
+          1.0, 0.0, 0.0,
+          1.0, 2.0, 0.0;
+  Eigen::VectorXd target(3);
+  target << 1.0, 1.0, 0.5;
+  const auto first = SourceEdgeTopologyKey::from_indices(0, 1, 3).value();
+  const auto second = SourceEdgeTopologyKey::from_indices(1, 2, 3).value();
+  const directional::authority::SourceSupport onFirst =
+      directional::authority::SourceEdgeSupport{first};
+  const directional::authority::SourceSupport onSecond =
+      directional::authority::SourceEdgeSupport{second};
+  const ConformitySourcePoint middle =
+      ConformityEdgePoint{second, *FieldExactRational::from_ratio(1, 2)};
+  ConformitySpanInput corner = d7_span();
+  corner.supportPieces = {{onFirst, first.first(), first.second()},
+                          {onSecond, second.first(), second.second()}};
+  ConformitySpanInput cornerCut = d7_span();
+  cornerCut.supportPieces = {{onFirst, first.first(), first.second()},
+                             {onSecond, second.first(), middle},
+                             {onSecond, middle, second.second()}};
+  ASSERT_EQ(std::optional<EInt>(EInt(4)), d7_count(corner, bent, target));
+  ASSERT_EQ(std::optional<EInt>(EInt(4)), d7_count(cornerCut, bent, target));
+
+  const auto runs = derive_partition_stable_metric_runs(cornerCut, bent, target);
+  ASSERT_TRUE(runs.has_value());
+  ASSERT_EQ(2U, runs->size());
+  EXPECT_EQ(0U, (*runs)[0].firstPiece);
+  EXPECT_EQ(1U, (*runs)[1].firstPiece);
+  EXPECT_EQ((std::vector<FieldExactRational>{
+                FieldExactRational::from_integer(0),
+                *FieldExactRational::from_ratio(1, 2)}),
+            (*runs)[1].pieceStarts);
+  EXPECT_EQ(FieldExactRational::from_integer(1), (*runs)[0].squaredMetric);
+  EXPECT_EQ(FieldExactRational::from_integer(9), (*runs)[1].squaredMetric);
+
+  const std::vector<ExactPoint> expected{xy(0, 1, 0, 1), xy(1, 1, 0, 1),
+                                         xy(1, 1, 2, 3), xy(1, 1, 4, 3),
+                                         xy(1, 1, 2, 1)};
+  for (const ConformitySpanInput *span : {&corner, &cornerCut}) {
+    const auto reversed = reversed_span(*span);
+    for (int j = 0; j <= 4; ++j) {
+      EXPECT_EQ(expected[static_cast<std::size_t>(j)],
+                d7b_point(*span, bent, target, 4, j))
+          << "pieces=" << span->supportPieces.size() << " j=" << j;
+      EXPECT_EQ(expected[static_cast<std::size_t>(j)],
+                d7b_point(reversed, bent, target, 4, 4 - j))
+          << "reversed pieces=" << span->supportPieces.size() << " j=" << j;
+    }
+  }
+  // The corner belongs to the run that starts there, in either direction.
+  EXPECT_EQ("1:0/1", located(d7b_location(corner, bent, target, 4, 1)));
+  EXPECT_EQ("1:1/3", located(d7b_location(corner, bent, target, 4, 2)));
+  EXPECT_EQ("1:2/3", located(d7b_location(cornerCut, bent, target, 4, 2)));
+  EXPECT_EQ("2:1/3", located(d7b_location(cornerCut, bent, target, 4, 3)));
+  EXPECT_EQ("2:0/1",
+            located(d7b_location(reversed_span(cornerCut), bent, target, 4, 3)));
+  std::cout << "D7B_BREAKPOINT_RECEIPT case=two-runs corner=1:0/1"
+            << " leg2=1:1/3,1:2/3 cut=1:2/3,2:1/3 reversedCorner=2:0/1\n";
+}
+
+TEST(GlobalConformityBaseline,
+     D7bBreakpointsGiveEveryRunWeightAndRejectBrokenProfiles) {
+  Eigen::MatrixXd line(3, 3);
+  line << 0.0, 0.0, 0.0,
+          4.0, 0.0, 0.0,
+          0.0, 1.0, 0.0;
+  const Eigen::VectorXd unit = Eigen::VectorXd::Constant(3, 1.0);
+  const auto edge = SourceEdgeTopologyKey::from_indices(0, 1, 3).value();
+
+  // rho rising along one piece still spaces it evenly in length and keeps the
+  // unreduced (j, n): count 6 at h = (1, 0.5).
+  Eigen::VectorXd rising(3);
+  rising << 1.0, 0.5, 1.0;
+  const auto whole = edge_span_cut_at(edge, {});
+  ASSERT_EQ(std::optional<EInt>(EInt(6)), d7_count(whole, line, rising));
+  for (int j = 1; j < 6; ++j) {
+    EXPECT_EQ("0:" + std::to_string(j) + "/6",
+              located(d7b_location(whole, line, rising, 6, j)));
+  }
+
+  // A run of metric 2^-70 adds nothing to the count (floor at 2^-64) but still
+  // weighs 1 in placement (ceiling), so no run is erased: every breakpoint
+  // exists, breakpoint 1 lies 3 * 2^-66 short of y = 1, and reversal maps j to
+  // n - j exactly. A zero weight would make the reversed corner ambiguous.
+  const double tiny = std::ldexp(1.0, -70);
+  Eigen::MatrixXd hook(3, 3);
+  hook << 0.0, 0.0, 0.0,
+          tiny, 0.0, 0.0,
+          tiny, 4.0, 0.0;
+  const auto second = SourceEdgeTopologyKey::from_indices(1, 2, 3).value();
+  ConformitySpanInput hooked = d7_span();
+  hooked.supportPieces = {
+      {directional::authority::SourceEdgeSupport{edge}, edge.first(),
+       edge.second()},
+      {directional::authority::SourceEdgeSupport{second}, second.first(),
+       second.second()}};
+  ASSERT_EQ(std::optional<EInt>(EInt(4)), d7_count(hooked, hook, unit));
+  EXPECT_EQ("1:73786976294838206461/295147905179352825856",
+            located(d7b_location(hooked, hook, unit, 4, 1)));
+  const auto reversedHook = reversed_span(hooked);
+  for (int j = 0; j <= 4; ++j) {
+    EXPECT_EQ(d7b_point(hooked, hook, unit, 4, j),
+              d7b_point(reversedHook, hook, unit, 4, 4 - j))
+        << "j=" << j;
+  }
+
+  // A profile that does not tile the span's pieces, or a bad ordinal or
+  // count, places nothing.
+  const auto halves = edge_span_cut_at(edge, {{1, 2}});
+  const auto runs = derive_partition_stable_metric_runs(halves, line, unit);
+  ASSERT_TRUE(runs.has_value());
+  const auto place = [&](const std::vector<BaselineConformityMetricRun> &profile,
+                         std::size_t pieces, int count, int ordinal) {
+    return derive_metric_breakpoint_location(halves.id, pieces, profile,
+                                             EInt(count), EInt(ordinal))
+        .has_value();
+  };
+  EXPECT_TRUE(place(*runs, 2U, 4, 1));
+  EXPECT_FALSE(place(*runs, 3U, 4, 1));
+  EXPECT_FALSE(place(*runs, 1U, 4, 1));
+  EXPECT_FALSE(place({}, 2U, 4, 1));
+  EXPECT_FALSE(place(*runs, 2U, 0, 0));
+  EXPECT_FALSE(place(*runs, 2U, 4, -1));
+  EXPECT_FALSE(place(*runs, 2U, 4, 5));
+  auto shifted = *runs;
+  shifted.front().firstPiece = 1U;
+  EXPECT_FALSE(place(shifted, 2U, 4, 1));
+  auto late = *runs;
+  late.front().pieceStarts.front() = *FieldExactRational::from_ratio(1, 4);
+  EXPECT_FALSE(place(late, 2U, 4, 1));
+  auto unordered = *runs;
+  unordered.front().pieceStarts.back() = FieldExactRational::from_integer(0);
+  EXPECT_FALSE(place(unordered, 2U, 4, 1));
+  auto weightless = *runs;
+  weightless.front().squaredMetric = FieldExactRational::from_integer(0);
+  EXPECT_FALSE(place(weightless, 2U, 4, 1));
+  EXPECT_FALSE(d7b_location(d7_span(), line, unit, 4, 1).has_value());
+  std::cout << "D7B_BREAKPOINT_RECEIPT case=weights single=0:j/6"
+            << " tinyRun=placed reversed=5 brokenProfiles=10\n";
+}

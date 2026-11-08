@@ -136,6 +136,21 @@ struct BaselineConformityExactWidthReceipt {
   bool operator==(const BaselineConformityExactWidthReceipt &) const = default;
 };
 
+/**
+ * One maximal straight run of a span's support, as the D7 count integrates it.
+ * Breakpoints are shared across runs by metric and spaced linearly in length
+ * within a run (RA-217).
+ */
+struct BaselineConformityMetricRun {
+  std::size_t firstPiece = 0U;
+  /** Fraction of the run's length at which each of its pieces starts. */
+  std::vector<authority::FieldExactRational> pieceStarts;
+  /** Exact square of the run's integral of 1/h. */
+  authority::FieldExactRational squaredMetric;
+
+  bool operator==(const BaselineConformityMetricRun &) const = default;
+};
+
 /** Exact §17.7 certificate for the family/sign-free production baseline. */
 struct GlobalConformityBaselineCertificate {
   std::vector<BaselineConformitySpanParityReceipt> spanParity;

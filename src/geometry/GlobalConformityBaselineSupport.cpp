@@ -1,5 +1,6 @@
 #include "GlobalConformityBaselineSupport.h"
 
+#include <algorithm>
 #include <array>
 #include <map>
 #include <set>
@@ -167,6 +168,21 @@ EInt integer_sqrt_floor(const EInt &value) {
   }
 }
 
+// floor(2^64 * metric) for a run's exact squared metric: its D7 count share.
+EInt scaled_metric_floor(const FieldExactRational &squared, const EInt &scale) {
+  return integer_sqrt_floor(squared.exact_numerator() * scale * scale /
+                            squared.exact_denominator());
+}
+
+// ceil(2^64 * metric): the run's breakpoint weight, at least 1 for every
+// positive-length run, so no run is erased and reversal stays exact (RA-217).
+EInt scaled_metric_ceiling(const FieldExactRational &squared, const EInt &scale) {
+  const EInt scaledSquare = squared.exact_numerator() * scale * scale;
+  EInt ceiling = scaledSquare / squared.exact_denominator();
+  if (ceiling * squared.exact_denominator() != scaledSquare) ceiling += EInt(1);
+  return integer_sqrt_floor(ceiling - EInt(1)) + EInt(1);
+}
+
 } // namespace
 
 EInt exact_from_size(std::size_t value) {
@@ -203,28 +219,39 @@ std::optional<EInt> derive_preferred_count_exact(
                                                        targetSize);
 }
 
-std::optional<EInt> derive_partition_stable_preferred_count_exact(
-    const ConformitySpanInput &span, const Eigen::MatrixXd &sourceVertices,
-    const Eigen::VectorXd &targetSize) {
+std::optional<std::vector<BaselineConformityMetricRun>>
+derive_partition_stable_metric_runs(const ConformitySpanInput &span,
+                                    const Eigen::MatrixXd &sourceVertices,
+                                    const Eigen::VectorXd &targetSize) {
   if (span.supportPieces.empty()) return std::nullopt;
   const auto zero = exact_integer(0);
   const auto half = exact_ratio(EInt(1), EInt(2));
-  const EInt scale = exact_power(EInt(2), kPartitionStableMetricFractionalBits);
   // A run is a maximal sequence of consecutive pieces along one direction u.
   // rho is affine on each piece, so a piece d contributes exactly
   // (d.u) * (rho0 + rho1) / 2 / |u|, and the run's squared metric is rational.
+  std::vector<BaselineConformityMetricRun> runs;
   std::array<FieldExactRational, 3> direction{zero, zero, zero};
   FieldExactRational directionSquared = zero;
   FieldExactRational runMeasure = zero;
-  EInt scaledTotal(0);
-  const auto close_run = [&]() {
-    if (directionSquared == zero) return;
-    const auto squared = runMeasure * runMeasure / directionSquared;
-    scaledTotal += integer_sqrt_floor(squared.exact_numerator() * scale *
-                                      scale / squared.exact_denominator());
+  std::vector<FieldExactRational> runAlong;
+  const auto close_run = [&](std::size_t endPiece) {
+    if (runAlong.empty()) return;
+    BaselineConformityMetricRun run;
+    run.firstPiece = endPiece - runAlong.size();
+    FieldExactRational length = zero;
+    for (const auto &along : runAlong) length = length + along;
+    FieldExactRational start = zero;
+    for (const auto &along : runAlong) {
+      run.pieceStarts.push_back(start / length);
+      start = start + along;
+    }
+    run.squaredMetric = runMeasure * runMeasure / directionSquared;
+    runs.push_back(std::move(run));
+    runAlong.clear();
   };
   std::optional<ConformitySourcePoint> previous;
-  for (const auto &piece : span.supportPieces) {
+  for (std::size_t index = 0U; index < span.supportPieces.size(); ++index) {
+    const auto &piece = span.supportPieces[index];
     if (previous && *previous != piece.first) return std::nullopt;
     const auto first =
         point_weights(piece.first, static_cast<std::size_t>(sourceVertices.rows()));
@@ -252,21 +279,105 @@ std::optional<EInt> derive_partition_stable_preferred_count_exact(
     if (deltaSquared == zero) return std::nullopt;
     // Same direction iff Cauchy-Schwarz holds with equality and d.u > 0.
     if (!(along > zero && along * along == deltaSquared * directionSquared)) {
-      close_run();
+      close_run(index);
       direction = delta;
       directionSquared = deltaSquared;
       runMeasure = zero;
       along = deltaSquared;
     }
     runMeasure = runMeasure + along * (*rho0 + *rho1) * half;
+    runAlong.push_back(along);
     previous = piece.second;
   }
-  close_run();
+  close_run(span.supportPieces.size());
+  return runs;
+}
+
+std::optional<EInt> derive_partition_stable_preferred_count_exact(
+    const ConformitySpanInput &span, const Eigen::MatrixXd &sourceVertices,
+    const Eigen::VectorXd &targetSize) {
+  const auto runs =
+      derive_partition_stable_metric_runs(span, sourceVertices, targetSize);
+  if (!runs) return std::nullopt;
+  const EInt scale = exact_power(EInt(2), kPartitionStableMetricFractionalBits);
+  EInt scaledTotal(0);
+  for (const auto &run : *runs) {
+    scaledTotal += scaled_metric_floor(run.squaredMetric, scale);
+  }
 
   EInt nearest = scaledTotal / scale;
   if (EInt(2) * (scaledTotal - nearest * scale) > scale) nearest += EInt(1);
   if (nearest < EInt(1)) nearest = EInt(1);
   return nearest;
+}
+
+std::optional<ConformityBreakpointLocation> derive_metric_breakpoint_location(
+    ConformitySpanId span, std::size_t pieceCount,
+    const std::vector<BaselineConformityMetricRun> &runs, const EInt &count,
+    const EInt &ordinal) {
+  const EInt zero(0);
+  const EInt one(1);
+  if (pieceCount == 0U || runs.empty() || count < one || ordinal < zero ||
+      ordinal > count) {
+    return std::nullopt;
+  }
+  // The runs must tile the pieces in order, each run's piece starts rising
+  // strictly from 0 and staying below 1.
+  const auto exactZero = exact_integer(0);
+  const auto exactOne = exact_integer(1);
+  std::size_t nextPiece = 0U;
+  for (const auto &run : runs) {
+    const auto &starts = run.pieceStarts;
+    if (run.firstPiece != nextPiece || starts.empty() ||
+        starts.size() > pieceCount - nextPiece || starts.front() != exactZero ||
+        !(starts.back() < exactOne) || !(run.squaredMetric > exactZero) ||
+        std::adjacent_find(starts.begin(), starts.end(),
+                           [](const auto &a, const auto &b) { return !(a < b); }) !=
+            starts.end()) {
+      return std::nullopt;
+    }
+    nextPiece += starts.size();
+  }
+  if (nextPiece != pieceCount) return std::nullopt;
+
+  const ConformityBreakpointId id{span, ordinal};
+  if (ordinal == zero) {
+    return ConformityBreakpointLocation{id, 0U, zero, one, true, false};
+  }
+  if (ordinal == count) {
+    return ConformityBreakpointLocation{id, pieceCount - 1U, one, one, false, true};
+  }
+  if (pieceCount == 1U) {
+    return ConformityBreakpointLocation{id, 0U, ordinal, count, false, false};
+  }
+
+  // Run r owns the ordinals with C_r <= ordinal * W / count < C_r + W_r, where
+  // W_r is the run's weight and W, C_r are the total and prefix weights. Within
+  // the run, t = (ordinal * W - count * C_r) / (count * W_r) is linear in length.
+  const EInt scale = exact_power(EInt(2), kPartitionStableMetricFractionalBits);
+  std::vector<EInt> weights;
+  EInt total(0);
+  for (const auto &run : runs) {
+    weights.push_back(scaled_metric_ceiling(run.squaredMetric, scale));
+    total += weights.back();
+  }
+  const EInt target = ordinal * total;
+  EInt prefix(0);
+  for (std::size_t r = 0U; r < runs.size(); ++r) {
+    if (target < count * (prefix + weights[r])) {
+      const auto t = exact_ratio(target - count * prefix, count * weights[r]);
+      const auto &starts = runs[r].pieceStarts;
+      const auto piece = static_cast<std::size_t>(
+          std::upper_bound(starts.begin(), starts.end(), t) - starts.begin() - 1);
+      const auto end = piece + 1U < starts.size() ? starts[piece + 1U] : exactOne;
+      const auto local = (t - starts[piece]) / (end - starts[piece]);
+      return ConformityBreakpointLocation{id, runs[r].firstPiece + piece,
+                                          local.exact_numerator(),
+                                          local.exact_denominator(), false, false};
+    }
+    prefix += weights[r];
+  }
+  return std::nullopt;
 }
 
 std::uint64_t exact_target_metric_digest(const Eigen::VectorXd &targetSize) {

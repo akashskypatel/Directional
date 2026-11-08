@@ -3,8 +3,10 @@
 #include <cstddef>
 #include <cstdint>
 #include <optional>
+#include <vector>
 
 #include <Eigen/Core>
+#include <directional/geometry/GlobalConformityBaseline.h>
 #include <directional/geometry/GlobalConformityPlan.h>
 
 namespace directional::geometry::global_conformity_baseline_detail {
@@ -19,6 +21,22 @@ namespace directional::geometry::global_conformity_baseline_detail {
 [[nodiscard]] std::optional<EInt> derive_partition_stable_preferred_count_exact(
     const ConformitySpanInput &span, const Eigen::MatrixXd &sourceVertices,
     const Eigen::VectorXd &targetSize);
+
+// D7 runs (RA-217): the maximal straight runs that the D7 count integrates
+// over. The count and breakpoint placement are both derived from them.
+[[nodiscard]] std::optional<std::vector<BaselineConformityMetricRun>>
+derive_partition_stable_metric_runs(const ConformitySpanInput &span,
+                                    const Eigen::MatrixXd &sourceVertices,
+                                    const Eigen::VectorXd &targetSize);
+
+// D7b breakpoint `ordinal` of `count` (RA-217): runs share the ordinals by
+// metric and each run spaces its share linearly in length. A single-piece
+// span keeps the unreduced fraction (ordinal, count).
+[[nodiscard]] std::optional<ConformityBreakpointLocation>
+derive_metric_breakpoint_location(
+    ConformitySpanId span, std::size_t pieceCount,
+    const std::vector<BaselineConformityMetricRun> &runs, const EInt &count,
+    const EInt &ordinal);
 
 [[nodiscard]] std::uint64_t
 exact_target_metric_digest(const Eigen::VectorXd &targetSize);
