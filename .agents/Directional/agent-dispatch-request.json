@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb90-docs-20261108-2122",
+  "request_id": "m6-cp3-tb90-todo-drift-20261108-2124",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb90-docs",
-  "file_id": "1F6PL78uLhImtyt95bNEy4gXJc3WDa6ia",
-  "patch_sha256": "62bcc549db09a5518eacea42ebf0c121a6a1c0dfc34e53ccb971119c6f91e73b",
-  "base_sha": "438deafb043ef7fd4b84e0b41292e6b200d40d96",
+  "mailbox_key": "m6-cp3-tb90-todo-drift",
+  "file_id": "1dduWRgsAwhgk2rin2iAr_AipZJAAwzQn",
+  "patch_sha256": "e3a0c743ae2a22528de7a6c58754d66580d1f2f1e38778108399f45fc3e411ec",
+  "base_sha": "fc0b8491d5181e7eb8c4da085d5a8736174dc286",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(surface-cells): close TB90 D7 count-switch verification",
+  "commit_message": "docs(surface-cells): correct stale TB90 TODO pointer",
   "retention_days": 14
 }
