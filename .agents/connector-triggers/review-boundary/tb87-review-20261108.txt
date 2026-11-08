@@ -1,3 +1,0 @@
-turn=M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-REV
-boundary=review_check.py boundary and ledgers
-no_runtime=true

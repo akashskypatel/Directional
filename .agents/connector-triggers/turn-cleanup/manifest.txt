@@ -1,3 +1,0 @@
-# TB87 independent-review temporary state
-.agents/connector-triggers/source-snapshot/tb87-rev-20261108-1456.txt
-.agents/connector-triggers/review-boundary/tb87-review-20261108.txt
