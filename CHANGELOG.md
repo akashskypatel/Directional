@@ -1,3 +1,8 @@
+## 2026-11-08 UTC — TB87 independent observed-route orientation Review (runtime-free)
+
+- [TB87-REV](.agents/Directional/Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Orientation_Adjudication_20261108.md) independently verified 1,828/1,828 gate hashes, 32 repeated rim-edge failures across both row orders, and the `CanonicalRoute::steps()` canonical-vs-observed frame mismatch. No production defect proven by the guard failure.
+- Frozen exact [CB105 test-only patch](.agents/Directional/Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Oracle_Exact.diff) SHA256 `9e9635ae…`; compile/package only in CB105, immutable 910-case TB88 separately. No runtime in Review; TB87 remains 909/910 unaccepted, CP2 491/491, stable 66/17/49 debt 1, CP3 unpromoted.
+
 ## 2026-11-08 UTC — TB87 immutable full-gate mismatch; census MATCH (Test + Benchmark)
 
 - [TB87 report](.agents/Directional/Architecture_M6_CP3_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Execution_Report_20261108.md): CB104 source `b41fbf72…`, package 13619640763, gate [42488019698](https://github.com/akashskypatel/Directional/actions/runs/42488019698) **909/910** (GUARD 910 −1 vs +1 orientation mismatch), membership 991, 1,828/1,828 hashes; no rebuild or test repair.

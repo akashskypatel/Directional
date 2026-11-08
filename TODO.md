@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-REV` (runtime-free independent Review after [TB87 COMPLETE / MISMATCH](.agents/Directional/Architecture_M6_CP3_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Execution_Report_20261108.md)). Immutable CB104 gate 909/910 (GUARD 910 orientation RED), membership 991; census Cylinder PASS, BunnyRandom/Vase registered RED; 7/7 platform and 7/7 A3 digest lines byte-identical to TB86. Accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred; selector497/CP3 unpromoted.
+> **Current canonical next:** `M6-CP3-CB105-P13-A3-OBSERVED-ROUTE-ORIENTATION-ORACLE` (exact test-only compile after completed independent Review after [TB87 COMPLETE / MISMATCH](.agents/Directional/Architecture_M6_CP3_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Execution_Report_20261108.md)). Immutable CB104 gate 909/910 (GUARD 910 orientation RED), membership 991; census Cylinder PASS, BunnyRandom/Vase registered RED; 7/7 platform and 7/7 A3 digest lines byte-identical to TB86. Accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred; selector497/CP3 unpromoted.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -6,6 +6,10 @@
 - [x] **TB72A orchestration corrected and immutable gate verified:** [run 41540264758](https://github.com/akashskypatel/Directional/actions/runs/41540264758), exact executor `df586285…`, CB78 immutable artifact `13181887585`, **883/883 PASS**, 81 deferred, membership 964, 1,774/1,774 packaged hashes, no rebuild; preserved invalid TB72 attempt. [Record](.agents/Directional/Architecture_M6_CP3_TB72A_Orchestration_Record_20261102.md).
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
+
+## CURRENT — TB87-REV: guard 910 canonical-versus-observed frame adjudicated; CB105 exact test fix next (2026-11-08)
+
+- [x] **TB87-REV** [decision](.agents/Directional/Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Orientation_Adjudication_20261108.md): observed orientation must use `CanonicalRoute::oriented_steps()`, not canonical storage `steps()`. 32 matching rim indices in both row orders, 64 failures, no producer sign violation shown. Frozen exact test-only [CB105 diff](.agents/Directional/Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Oracle_Exact.diff) and separate TB88; no review-time runtime. No CP3 promotion.
 
 ## CURRENT — RA-215: step 61 re-entered; exact CB104 + TB87 frozen; D9c and D4 owned (2026-11-08)
 
