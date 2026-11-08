@@ -1,3 +1,0 @@
-Snapshot request for M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC.
-Status entry SHA: 1eab45aa70115646bc421f8af2255260674d1307
-Read-only source snapshot; no runtime execution.
