@@ -1,8 +1,10 @@
 ---TURN_STATUS---
 Turn: M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY
-Status: IN_PROGRESS
+Status: BLOCKED
 Successor: UNKNOWN
 Started at: 2026-11-08T00:42:12Z
 Resumed at: 
 Ended at: 
+Blocker Type: REVIEW_BLOCKER
+Blocker Details: Independent per-patch Vase source-edge subdivision and concave-quality scratch census required by RA-210.4 remains unavailable; obtain immutable-source lineage evidence before adjudicating owner or CB successor.
 ---END_TURN_STATUS---
