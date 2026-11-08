@@ -1,0 +1,2 @@
+# CB104 temporary source-snapshot marker only
+.agents/connector-triggers/source-snapshot/m6-cp3-cb104-20261108-1314.txt
