@@ -1,2 +1,0 @@
-# Temporary paths created during M6-CP3-CB106-P13-A3-PARTITION-STABLE-METRIC
-.agents/connector-triggers/source-snapshot/m6-cp3-cb106-20261108-1849.txt
