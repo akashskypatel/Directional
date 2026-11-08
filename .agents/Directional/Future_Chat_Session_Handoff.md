@@ -34,12 +34,12 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-08 · **TB90 COMPLETE / MATCH** under RA-216 §7. Exact CB107 scheduler count was exercised by 914/914 required cases (GUARD 914 PASS); census Cylinder PASS, BunnyRandom/Vase registered RED. D7 registered baseline-hash changes did not alter counts. D7b step 64.5 is the only next turn, runtime-free Review. D5/D4/D9c/A2b/A4/D8 remain; D6 user decision pending. |
+| Currency | 2026-11-08 · **TB90 COMPLETE / MATCH** under RA-216 §7. Exact CB107 scheduler count was exercised by 914/914 required cases (GUARD 914 PASS); census Cylinder PASS, BunnyRandom/Vase registered RED. D7 registered baseline-hash changes did not alter counts. D7b step 64.5 definition is complete; CB108 is the only next turn, compile-only. D5/D4/D9c/A2b/A4/D8 remain; D6 user decision pending. |
 | Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing`; CB107 exact source `34967c89817a9d43a7c99eaf337032f9e9a927fb`, immutable package `13633039235` (8-target GMP, 28/28 hashes, no runtime). PR #8 remains draft/unmerged. |
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06; unchanged. TB71 remains unpromoted candidate only. |
 | Latest candidate | **TB90 COMPLETE / MATCH** [[TB90 verified report](Architecture_M6_CP3_TB90_P13_A3_Partition_Stable_Count_Switch_Full_Gate_Execution_Report_20261108.md)]: gate [42522538976](https://github.com/akashskypatel/Directional/actions/runs/42522538976) **914/914 PASS**, membership 995, 1,836/1,836 hashes, GUARD 914 PASS; census [42522755014](https://github.com/akashskypatel/Directional/actions/runs/42522755014) Cylinder PASS, BunnyRandom/Vase registered RED, 9/9 hashes. Seven A3 lines identical to TB88; platform digests match RA-216 §7 with registered Cylinder and Vase D7 baseline-hash rebaseline; no count change. |
-| Regression accounting and debt | Accepted CP2 **491/491**, stable **66/17/49**, debt **1**, deferred ledger v5 **81**. TB90 candidate membership **995**; no new stable event or accepted-green loss; selector497/CP3 unpromoted. Pre-existing BunnyRandom P13-e and Vase completion/producer RED remain; D7b/D5/D4/D9c/A2b/A4/D8 open. |
-| Active boundary | **Step 64.4 TB90 COMPLETE / MATCH; step 64.5 D7b DEFN NEXT**, runtime-free Review. After D7b authority, separate CB108 compile-only then TB91. No CP3/selector497 or general direct output promotion. D6 user decision pending. |
+| Regression accounting and debt | Accepted CP2 **491/491**, stable **66/17/49**, debt **1**, deferred ledger v5 **81**. TB90 candidate membership **995**; no new stable event or accepted-green loss; selector497/CP3 unpromoted. Pre-existing BunnyRandom P13-e and Vase completion/producer RED remain; D7b implementation (CB108/TB91)/D5/D4/D9c/A2b/A4/D8 open. |
+| Active boundary | **Step 64.4 TB90 COMPLETE / MATCH; step 64.5 D7b DEFN COMPLETE**, [exact decision](Architecture_M6_CP3_DEFN_P13_A3_Metric_Breakpoint_Placement_Review_20261108.md); **CB108 NEXT** (compile-only), then independent TB91. After D7b authority, separate CB108 compile-only then TB91. No CP3/selector497 or general direct output promotion. D6 user decision pending. |
 
 ### Revised post-TB88 bounded sequence (requested independent re-audit; one change family per turn)
 
@@ -48,7 +48,7 @@ The [TB87 substantive re-audit](Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Rou
 | Order | Review definition turn | Independent requirement and falsifier |
 |---|---|---|
 | 64 / D7 | `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC` — COMPLETE, re-entered by RA-216 → CB106 → TB89 → CB107 → TB90 | Run-wise exact integer count invariant to piece splits (RA-216 §4–§7) |
-| 64.5 / D7b | `M6-CP3-DEFN-P13-A3-METRIC-BREAKPOINT-PLACEMENT` → CB108 → TB91 | Metric spacing across runs, length within a run, exact rational points; single-piece spans unchanged (RA-216 §8); before D5 |
+| 64.5 / D7b | `M6-CP3-DEFN-P13-A3-METRIC-BREAKPOINT-PLACEMENT` **COMPLETE** → CB108 NEXT → TB91 | Metric spacing across runs, length within a run, exact rational points; single-piece spans unchanged (RA-216 §8); before D5 |
 | 64B / D5 | `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING` | Maximal-chain topology, span identity, positivity and source lineage; split/merged source-edge representation cannot change physical counts without certified authority |
 | 64C / D4 uniform | `M6-CP3-DEFN-P13-A3-UNIFORM-PLAN-CONSUMPTION` | Uniform producer uses exact A3 plan, or declines, with missing-breakpoint and row-order controls |
 | 64D / D4 annulus | `M6-CP3-DEFN-P13-A3-ANNULUS-PLAN-CONSUMPTION` | Annulus producer independently consumes exact periodic/cut plan, with reversed-boundary tamper |
@@ -58,9 +58,11 @@ The [TB87 substantive re-audit](Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Rou
 | 65D / D8 | `M6-CP3-DEFN-P13-A3-CONSUMPTION-RECEIPT-VALIDATION` | Receipt cannot imply consumption without validated per-producer schedule coverage, with omission tamper |
 | 66+ | Per-disc corners (D6 user decision required), fill, dispatch | Each separately defined, implemented and verified; no premature acceptance |
 
-The prior combined 64 (D7+D5), 64A (uniform+annulus), and 65 (D9c+trace+disc) are **superseded only as bundled implementation assignments**. Do not lose their existing semantic requirements, lineage, or debt. These future IDs are sequence metadata; **only D7b (step 64.5) is the immediate NEXT_TURN after TB90 MATCH**.
+The prior combined 64 (D7+D5), 64A (uniform+annulus), and 65 (D9c+trace+disc) are **superseded only as bundled implementation assignments**. Do not lose their existing semantic requirements, lineage, or debt. These future IDs are sequence metadata; **only CB108 (D7b implementation) is the immediate NEXT_TURN after the completed step-64.5 review**.
 
-## Mandatory next turn — `M6-CP3-DEFN-P13-A3-METRIC-BREAKPOINT-PLACEMENT` (step 64.5; runtime-free Review)
+## Completed D7b Review / mandatory next Code + Build — `M6-CP3-CB108-P13-A3-METRIC-BREAKPOINT-PLACEMENT`
+
+- **Frozen placement decision:** [D7b definition](Architecture_M6_CP3_DEFN_P13_A3_Metric_Breakpoint_Placement_Review_20261108.md) specifies exact run-weight placement, baseline-only immutable profiles, preserved single-piece `(j,n)`, compact exact width receipts, independent recomputation, typed zero-metric fail-closed cases and independent negative falsifiers. The subsequent TB91 is distinct from this compile-only turn. No runtime evidence is claimed by this Review.
 
 - **Entry:** [TB90 verified report](Architecture_M6_CP3_TB90_P13_A3_Partition_Stable_Count_Switch_Full_Gate_Execution_Report_20261108.md): exact CB107 source `34967c89817a9d43a7c99eaf337032f9e9a927fb`, package `13633039235`, gate 914/914 PASS and census 1 PASS/2 registered RED, all artifact hashes verified; registered D7 hash changes comply with RA-216 §7; accepted CP2 491/491, stable 66/17/49, debt 1, deferred81. Selector497/CP3 remain unpromoted.
 - **Review scope only:** RA-216 §8. Freeze exact rational breakpoint placement with metric allocation across runs and linear interpolation within a run, preserve single-piece behavior; decide where a run profile lives and width receipts; pre-register falsifiers and independent CB108/TB91 artifact-only gates. Do not execute runtime, compile, implement code, or combine D5/D4/D9c in this DEFN turn. Do not change framed CP1/CP2 copies.
@@ -272,7 +274,7 @@ Facts are in the records, `TODO.md` steps and Review track, `CHANGELOG.md` and t
 | **64.2 — COMPLETE / MATCH** | `M6-CP3-TB89-P13-A3-PARTITION-STABLE-METRIC-FULL-GATE-EXEC` | 913 rows `8a4a6fef…`, membership 994; 913/913 and 7 + 7 lines byte-identical to TB88. Mismatch → `M6-CP3-TB89-P13-A3-PARTITION-STABLE-METRIC-FULL-GATE-REV`; infrastructure → `M6-CP3-TB89A-P13-A3-PARTITION-STABLE-METRIC-ORCH` |
 | **64.3 — COMPLETE (compile-only)** | `M6-CP3-CB107-P13-A3-PARTITION-STABLE-COUNT-SWITCH` | After TB89 MATCH; RA-216 §7 `c1caefb9…` (217 lines, keep 10 single-space context lines), numstat `2 56` / `1 1` / `52 22`, on top of CB106. Mismatch → `M6-CP3-PLAN-P13-A3-PARTITION-STABLE-COUNT-SWITCH-STOP`; infrastructure → `M6-CP3-CB107A-P13-A3-PARTITION-STABLE-COUNT-SWITCH-ORCH` |
 | **64.4 — COMPLETE / MATCH** | `M6-CP3-TB90-P13-A3-PARTITION-STABLE-COUNT-SWITCH-FULL-GATE-EXEC` | 914 rows `45dfbb53…`, membership 995; RA-216 §7 outcome table (registered baseline-hash rebaseline). Mismatch → `M6-CP3-TB90-P13-A3-PARTITION-STABLE-COUNT-SWITCH-FULL-GATE-REV`; infrastructure → `M6-CP3-TB90A-P13-A3-PARTITION-STABLE-COUNT-SWITCH-ORCH` |
-| **64.5 — NEXT** (Review, runtime-free) | `M6-CP3-DEFN-P13-A3-METRIC-BREAKPOINT-PLACEMENT` (D7b) → CB108 → TB91 | RA-216 §8 semantics; decides profile storage and width receipts; before 64B |
+| **64.5 — COMPLETE** (Review, runtime-free) | `M6-CP3-DEFN-P13-A3-METRIC-BREAKPOINT-PLACEMENT` (D7b) → CB108 → TB91 | RA-216 §8 semantics; decides profile storage and width receipts; before 64B |
 | 64B–65D (Review, runtime-free; scoped) | **See revised bounded sequence above** | D5 chains (consumer accepts multi-piece spans) → D4 uniform → D4 annulus → D9c carrier attachment → A2b reciprocal trace → A4 disc domain → D8 receipt; each DEFN then dedicated CB then dedicated TB |
 | 66+ | per-disc boundary and corners (D6) → fill (§4.9) → aggregator dispatch with honest `Declined` flags (D3) | One DEFN → CB → TB each |
 | — WITHDRAWN | `M6-CP3-DEFN-P13-SEMANTIC-PATCH-BOUNDARY` | RA-211.7; withdrawn by RA-212.3 (measured on a noise-seeded layout 20× denser than target) |
@@ -282,11 +284,11 @@ Facts are in the records, `TODO.md` steps and Review track, `CHANGELOG.md` and t
 | 44C (Review) | `M6-CP3-DEFN-P13-CHART-FACE-PER-QUAD-COST` (O33) | Claude, scratch build; one chart-level cache for the five per-quad chart-face sites (RA-206.5); before Vase reaches optimization |
 | 45 | P13 re-census → metamorphic census rows (O32) → O6/O9 where reached → matrix 6/6 → retire/FIXTURE/PRODUCT/OPEN slices → CP3-REV | One slice at a time |
 
-Rows 49–64.4 are complete as turns. TB90 64.4 is MATCH (914/914, census 1 PASS/2 expected RED); next D7b 64.5 DEFN, then its independently authorized CB108 → TB91 → 64B–65D → 66+. Selector497/CP3 unpromoted.
+Rows 49–64.4 are complete as turns. TB90 64.4 is MATCH (914/914, census 1 PASS/2 expected RED); D7b 64.5 DEFN complete; next CB108 → TB91 → 64B–65D → 66+. Selector497/CP3 unpromoted.
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-DEFN-P13-A3-METRIC-BREAKPOINT-PLACEMENT** (D7b, runtime-free Review; use [TB90 verified report](Architecture_M6_CP3_TB90_P13_A3_Partition_Stable_Count_Switch_Full_Gate_Execution_Report_20261108.md) and RA-216 §8; do not execute CB108/TB91 in this turn).
+`load_next`: **M6-CP3-CB108-P13-A3-METRIC-BREAKPOINT-PLACEMENT** (D7b implementation, compile-only; follow [D7b frozen Review](Architecture_M6_CP3_DEFN_P13_A3_Metric_Breakpoint_Placement_Review_20261108.md), RA-216 §8 and separate TB91 immutable evidence gate; do not execute tests/benchmarks in CB108).
 - CB89 compiled source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, immutable package artifact `13370954424`, 28/28 hashes, eight GMP/GMPXX targets; no test execution.
 - TB79 artifact-only gate (RA-203.6) finished: 899/899, census MATCH.
 - RA-204 completed the O30 Review; CB90 and TB80 are done. The fixed-field replay is withdrawn: do not build a field fixture.

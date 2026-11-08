@@ -1,3 +1,7 @@
+## 2026-11-08 UTC — D7b exact metric breakpoint placement definition (runtime-free Review)
+
+- [D7b decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Metric_Breakpoint_Placement_Review_20261108.md): exact run-metric allocation with linear within-run rational location, immutable baseline-only profiles, preserved single-piece `(j,n)`, independent validator, compact width receipt and zero-run fail-closed rule. No implementation or runtime claim; previous D7 count TB90 remains 914/914 MATCH, membership 995, census 1 PASS/2 expected RED. Next separate CB108 compile-only then TB91 immutable gate. CP2 491/491, stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted.
+
 ## 2026-11-08 UTC — TB90 exact partition-stable D7 scheduler full-gate MATCH (Test + Benchmark)
 
 - [TB90 report](.agents/Directional/Architecture_M6_CP3_TB90_P13_A3_Partition_Stable_Count_Switch_Full_Gate_Execution_Report_20261108.md): compiled CB107 source `34967c8…`, immutable package 13633039235. Gate [42522538976](https://github.com/akashskypatel/Directional/actions/runs/42522538976) **914/914 PASS**, membership 995, 1,836/1,836 hashes, GUARD 914 PASS; census [42522755014](https://github.com/akashskypatel/Directional/actions/runs/42522755014) Cylinder PASS, BunnyRandom/Vase registered RED, 9/9 hashes. 7/7 A3 records unchanged and 7/7 platform records match RA-216 §7; Cylinder baseline/tracing hashes and Vase baseline hash receive the pre-registered D7 rebaseline with unchanged counts. No rebuild or source/test/fixture/selector mutation.
