@@ -1,0 +1,28 @@
+# TB88 — observed-route orientation immutable full gate and census (2026-11-08 UTC)
+
+**Turn:** `M6-CP3-TB88-P13-A3-OBSERVED-ROUTE-ORIENTATION-FULL-GATE-EXEC` — **COMPLETE / MATCH**. Authorized successor: runtime-free definition `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC` (D7, step 64), starting in a separate turn. This is a verified candidate gate, **not** CP3 or selector497 promotion, not direct production acceptance, and not a production-side sign fix.
+
+## Immutable authority and execution boundary
+
+- [TB87-REV decision](Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Orientation_Adjudication_20261108.md) showed GUARD 910's prior `CanonicalRoute::steps()` comparison used canonical storage orientation instead of observed traversal; [CB105](Architecture_M6_CP3_CB105_P13_A3_Observed_Route_Orientation_Oracle_Code_Build_Record_20261108.md) changed only the test oracle to `oriented_steps()`. Exact compiled source `d96df38e5ebfe33bbf979f27a82f7a5a332a7738`, eight-target GMP/GMPXX compile [42498606907](https://github.com/akashskypatel/Directional/actions/runs/42498606907), immutable package **13624369054**, outer SHA-256 `3c044ac3ba37a69b9a2e34f140c53412f2628c2a2fe64e2bbd431179d9dd0857`, 28/28 package hashes. No runtime in CB105.
+- Frozen gate manifest SHA-256 `c435519f6304fdcedb794e45187c8c4645e0bb36d32ec567e7979d292fb245bf`, 910 rows; deferred ledger v5 SHA-256 `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`, 81 deferred, required membership 991; census manifest SHA-256 `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`, 3 registered cases. Harness SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`.
+- Executor source snapshot event `4e552e85611f06967e3b3f6ca1ec5e1cca67cc0b`, [run 42500336108](https://github.com/akashskypatel/Directional/actions/runs/42500336108), artifact **13625461764**, ZIP SHA-256 `6832d9e21031674568f4b6b4eab6e2b4f27abed828f26df6d86b8c07a6b0c983`, 6,260/6,260 file hashes and source tar digest verified. Control snapshot SHA is not the semantic package SHA.
+- Both dispatcher jobs ran the immutable artifact, postflight true, clean execution boundary (`compile=false`, `relink=false`, `configure=false`, `benchmark=false`). No source/test/fixture/selector modifications or runtime repairs; PR #8 remains draft/unmerged.
+
+## Gate: MATCH
+
+- [Gate run 42500794427](https://github.com/akashskypatel/Directional/actions/runs/42500794427), event commit `19e38c220dba8e65d48da7b65c1a544c073ea6e7`, result artifact **13625633275**, outer ZIP SHA-256 `dc5d09796a1915aabfb0e700b7185197fbd37c448859f994821171172067ab85`, **1,828/1,828 internal hashes verified**.
+- **910 planned = 910 executed = 910 PASS**, zero RED/abnormal/missing/skipped/duplicate/control errors; membership **991**, postflight true, exit 0. GUARD **909** and **910** each pass. GUARD 910 exercises the rectangular hard-rail A3 rim in both source-face row orders, physical carrier, observed orientation, tiling, missing/stretch/tamper controls. A passing test proves this scoped oracle, not general D4/A3 consumption.
+- Pinned gate rows **795 CloseSheets, 796 MultiFaceSeam, 797 Plane, 864 Cylinder**: raw `platform-digest` lines **4/4 byte-identical** and raw `a3-coverage` lines **4/4 byte-identical** to immutable TB86 gate artifact **13613643740**.
+
+## Production census: registered observations MATCH
+
+- [Census run 42500825875](https://github.com/akashskypatel/Directional/actions/runs/42500825875), event commit `51b8fa03a942e0136a9a9f26a982140daf67dcab`, artifact **13625589074**, outer ZIP SHA-256 `641665484d4eb7d56f2c89d31b08d6e237ff5f9836ec99b0cae96cbf4eefd0b3`, **9/9 internal hashes verified**.
+- Three cases independently executed: **Cylinder PASS**, **BunnyRandom expected RED**, **Vase expected RED**; no abnormal/missing/skipped/duplicate/control/unexpected-pass errors, postflight true, exit 0. The two REDs remain registered observations, not success. Historical ownership remains BunnyRandom P13-e singularity-port mismatch at vertex 49 and Vase legacy-completion failure; this TB88 ledger's `reason-not-observed` does not independently establish new typed failure causes.
+- All three census raw `platform-digest` and `a3-coverage` lines are **3/3 each byte-identical** to TB86 census artifact **13613991005**. Across gate+census **7/7 platform + 7/7 A3** digest lines match TB86 exactly. A3 observed coverage remains incomplete (e.g., Cylinder scheduled 81, covered 0, unrecorded 81); there is no new plan-consumption acceptance.
+
+## Regression classification, limitations and next gate
+
+- **TB87 GUARD 910 candidate mismatch closed as a wrong-frame test-oracle comparison** after independent TB87-REV and passing CB105's correct observed-traversal oracle in TB88; this does not certify every producer orientation or full plan binding. No new accepted-green regression, stable regression ID, event, category or recurrence. Pre-existing BunnyRandom/Vase REDs and D7, D5, D4, D9c and D8 obligations remain open.
+- Accepted CP2 remains **491/491**; stable **66 events / 17 categories / 49 recurrences**, debt **1**, 81 deferred. Selector497 and CP3 remain unpromoted. No rebaseline and no direct-production success claim. The 910/910 result is a separately verified candidate gate.
+- Follow the existing D7→D5→uniform D4→annulus D4→D9c→trace→A4 disc→D8 sequence, each own runtime-free definition and separately compiled/tested narrow change. **Next turn only:** `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC`. No successor work began in TB88. Prior [dispatch WIP](Architecture_M6_CP3_TB88_P13_A3_Observed_Route_Orientation_Full_Gate_Execution_WIP_20261108.md) is superseded as current evidence by this report.

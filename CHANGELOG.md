@@ -1,3 +1,8 @@
+## 2026-11-08 UTC — TB88 observed-route immutable full-gate MATCH (Test + Benchmark)
+
+- [TB88 report](.agents/Directional/Architecture_M6_CP3_TB88_P13_A3_Observed_Route_Orientation_Full_Gate_Execution_Report_20261108.md): exact CB105 source `d96df38e5ebfe33bbf979f27a82f7a5a332a7738`, package 13624369054; [gate run 42500794427](https://github.com/akashskypatel/Directional/actions/runs/42500794427) **910/910 PASS**, membership 991, GUARD 909/910 pass, 1,828/1,828 hashes; [census run 42500825875](https://github.com/akashskypatel/Directional/actions/runs/42500825875) Cylinder PASS, BunnyRandom/Vase expected RED, 9/9 hashes, 7/7 platform and 7/7 A3 lines byte-identical to TB86. No rebuild/relink/configure/benchmark or source/test/fixture/selector changes.
+- TB87 wrong-frame oracle candidate resolved by exact CB105 `oriented_steps()` test and TB88 pass, not a producer sign/consumption fix. CP2 491/491 accepted; stable 66/17/49, debt 1, 81 deferred; selector497/CP3 unpromoted. Next separate runtime-free D7 metric definition `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC`.
+
 ## 2026-11-08 UTC — CB105 observed-route orientation oracle (Code + Build; compile-only)
 
 - [CB105 record](.agents/Directional/Architecture_M6_CP3_CB105_P13_A3_Observed_Route_Orientation_Oracle_Code_Build_Record_20261108.md): frozen TB87-REV one-test `oriented_steps()` guard correction; only `tests/SurfaceCellsPhase10Tests.cpp` changed. Source [`d96df38e5ebfe33bbf979f27a82f7a5a332a7738`](https://github.com/akashskypatel/Directional/commit/d96df38e5ebfe33bbf979f27a82f7a5a332a7738), [apply run 42498457181](https://github.com/akashskypatel/Directional/actions/runs/42498457181), staged patch retired.
