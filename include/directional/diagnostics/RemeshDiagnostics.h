@@ -624,6 +624,14 @@ struct RemeshDiagnostics {
   bool surfaceCellUniformPhaseFrontProducerDeclined = false;
   bool surfaceCellPeriodicPhaseFrontProducerDeclined = false;
   bool surfaceCellBoundedDiskPhaseFrontProducerDeclined = false;
+  // RA-214 D4: report-only A3 span coverage recorded on the produced A4
+  // product; observed only when A4 produced under an accepted A3 plan.
+  bool surfaceCellA3CoverageObserved = false;
+  std::size_t surfaceCellA3ScheduledSpans = 0U;
+  std::size_t surfaceCellA3CoveredSpans = 0U;
+  std::size_t surfaceCellA3PartialSpans = 0U;
+  std::size_t surfaceCellA3UnrecordedSpans = 0U;
+  std::size_t surfaceCellA3ForeignIntervalEdges = 0U;
   std::size_t surfaceCellTopologyRegionCount = 0U;
   std::size_t surfaceCellInternalIsolationSeamCount = 0U;
   std::size_t surfaceCellConsumedTopologyRegionCount = 0U;

@@ -9660,6 +9660,77 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       std::move(hardRailClosedChains), std::move(hardRailOpenChains));
 }
 
+SurfaceA3CoverageSummary summarize_a3_span_coverage(
+    const std::vector<SurfaceFrontEdge> &edges,
+    const GlobalConformityBaselinePlan &baseline) {
+  using Rational = authority::FieldExactRational;
+  const Rational one = Rational::from_integer(1);
+  std::map<authority::NetworkArcId, std::map<Rational, std::size_t>>
+      lowerOrdinals;
+  std::map<authority::NetworkArcId, std::size_t> intervalEdges;
+  std::set<authority::NetworkArcId> nonUnitSpans;
+  std::size_t totalIntervalEdges = 0U;
+  for (const SurfaceFrontEdge &edge : edges) {
+    if (!edge.sharedBoundaryInterval.has_value()) continue;
+    const SurfaceSharedBoundaryInterval &interval = *edge.sharedBoundaryInterval;
+    const bool decreasing = interval.secondOrdinal < interval.firstOrdinal;
+    const Rational &lower =
+        decreasing ? interval.secondOrdinal : interval.firstOrdinal;
+    const Rational &upper =
+        decreasing ? interval.firstOrdinal : interval.secondOrdinal;
+    if (upper - lower != one) nonUnitSpans.insert(interval.span);
+    ++lowerOrdinals[interval.span][lower];
+    ++intervalEdges[interval.span];
+    ++totalIntervalEdges;
+  }
+  std::map<authority::NetworkArcId, std::size_t> incidences;
+  for (const BaselineConformityIncidence &incidence : baseline.incidences()) {
+    ++incidences[incidence.span.network_arc()];
+  }
+
+  SurfaceA3CoverageSummary summary;
+  summary.scheduledSpans = baseline.schedule().size();
+  summary.spans.reserve(baseline.schedule().size());
+  std::size_t scheduledIntervalEdges = 0U;
+  for (const ConformityScheduleEntry &entry : baseline.schedule()) {
+    SurfaceA3SpanCoverage coverage{entry.span.network_arc()};
+    const auto incidence = incidences.find(coverage.span);
+    coverage.incidences =
+        incidence == incidences.end() ? 0U : incidence->second;
+    const auto recorded = intervalEdges.find(coverage.span);
+    coverage.intervalEdges =
+        recorded == intervalEdges.end() ? 0U : recorded->second;
+    scheduledIntervalEdges += coverage.intervalEdges;
+    if (coverage.intervalEdges == 0U) {
+      ++summary.unrecordedSpans;
+      summary.spans.push_back(coverage);
+      continue;
+    }
+    // Unit intervals tile [0, count] exactly when their lower ordinals are
+    // 0, 1, ..., count - 1, each recorded once per boundary incidence.
+    bool tiles = coverage.incidences > 0U &&
+                 nonUnitSpans.count(coverage.span) == 0U;
+    Rational expected = Rational::from_integer(0);
+    for (const auto &[lower, multiplicity] : lowerOrdinals.at(coverage.span)) {
+      if (!tiles || lower != expected || multiplicity != coverage.incidences) {
+        tiles = false;
+        break;
+      }
+      expected = expected + one;
+    }
+    const auto count = Rational::from_exact_fraction(entry.count, EInt(1));
+    coverage.covered = tiles && count.has_value() && expected == *count;
+    if (coverage.covered) {
+      ++summary.coveredSpans;
+    } else {
+      ++summary.partialSpans;
+    }
+    summary.spans.push_back(coverage);
+  }
+  summary.foreignIntervalEdges = totalIntervalEdges - scheduledIntervalEdges;
+  return summary;
+}
+
 } // namespace directional::geometry
 
 namespace directional::geometry::surface_cell_tracing_detail {

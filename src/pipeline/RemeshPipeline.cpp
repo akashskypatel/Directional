@@ -13268,6 +13268,20 @@ remesh_from_raw_cross_field_impl_with_stage_products(
                                 "tracing");
     }
     const bool useAuthoritativePhaseFront = phaseFrontProduct != nullptr;
+    if (useAuthoritativePhaseFront &&
+        globalConformityBaselineProduct.has_value()) {
+      // RA-214 D4: observation only; no disposition reads these counters.
+      const geometry::SurfaceA3CoverageSummary coverage =
+          geometry::summarize_a3_span_coverage(
+              phaseFrontProduct->edges(), *globalConformityBaselineProduct);
+      result.diagnostics.surfaceCellA3CoverageObserved = true;
+      result.diagnostics.surfaceCellA3ScheduledSpans = coverage.scheduledSpans;
+      result.diagnostics.surfaceCellA3CoveredSpans = coverage.coveredSpans;
+      result.diagnostics.surfaceCellA3PartialSpans = coverage.partialSpans;
+      result.diagnostics.surfaceCellA3UnrecordedSpans = coverage.unrecordedSpans;
+      result.diagnostics.surfaceCellA3ForeignIntervalEdges =
+          coverage.foreignIntervalEdges;
+    }
     AuthoritativePhaseFrontMeshResult authoritativePhaseFrontMesh;
     if (useAuthoritativePhaseFront) {
       AuthoritativePhaseFrontDiagnostics materializationDiagnostics;
@@ -16879,6 +16893,14 @@ void accumulate_component_diagnostics(
       source.surfaceCellConsumedInternalIsolationSeamCount;
   target.surfaceCellConsumedPeriodicHolonomyCount +=
       source.surfaceCellConsumedPeriodicHolonomyCount;
+  target.surfaceCellA3CoverageObserved =
+      target.surfaceCellA3CoverageObserved || source.surfaceCellA3CoverageObserved;
+  target.surfaceCellA3ScheduledSpans += source.surfaceCellA3ScheduledSpans;
+  target.surfaceCellA3CoveredSpans += source.surfaceCellA3CoveredSpans;
+  target.surfaceCellA3PartialSpans += source.surfaceCellA3PartialSpans;
+  target.surfaceCellA3UnrecordedSpans += source.surfaceCellA3UnrecordedSpans;
+  target.surfaceCellA3ForeignIntervalEdges +=
+      source.surfaceCellA3ForeignIntervalEdges;
   target.surfaceCellMaterializedConnectedComponentCount +=
       source.surfaceCellMaterializedConnectedComponentCount;
   target.surfaceCellMaterializedBoundaryLoopCount +=

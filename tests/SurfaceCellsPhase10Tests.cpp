@@ -7321,6 +7321,69 @@ TEST(SurfaceCellAuthorityContractCutover,
   }
 }
 
+// RA-214 D4: the receipt binds plan digests only. The coverage summary
+// observes which A3 spans the product records as consumed, and must notice a
+// dropped or stretched interval on an otherwise covered hard-rail span.
+TEST(SurfaceCellAuthorityContractCutover,
+     A3SpanCoverageObservesRecordedHardRailIntervalsAndTheirLoss) {
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_TRUE(fixture.conformityBaseline.has_value());
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition())
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             fixture.network.phaseFront.rejection_reason())
+      << hard_rail_first_failure_detail(fixture.network);
+  const auto &product = fixture.network.phaseFront.product();
+  const auto &baseline = *fixture.conformityBaseline;
+  const auto summary =
+      directional::geometry::summarize_a3_span_coverage(product.edges(), baseline);
+  ASSERT_EQ(baseline.schedule().size(), summary.scheduledSpans);
+  ASSERT_EQ(summary.scheduledSpans, summary.spans.size());
+  EXPECT_EQ(summary.scheduledSpans, summary.coveredSpans + summary.partialSpans +
+                                        summary.unrecordedSpans);
+  EXPECT_EQ(0U, summary.partialSpans);
+  EXPECT_EQ(0U, summary.foreignIntervalEdges);
+  std::set<directional::authority::NetworkArcId> railSpans;
+  for (const auto &interval : shared_boundary_intervals(product)) {
+    railSpans.insert(interval.span);
+  }
+  ASSERT_FALSE(railSpans.empty());
+  for (const auto &coverage : summary.spans) {
+    if (railSpans.count(coverage.span) != 0U) {
+      EXPECT_TRUE(coverage.covered) << coverage.span.index();
+    }
+  }
+  EXPECT_GE(summary.coveredSpans, railSpans.size());
+  RecordProperty("a3CoverageScheduled", std::to_string(summary.scheduledSpans));
+  RecordProperty("a3CoverageCovered", std::to_string(summary.coveredSpans));
+  RecordProperty("a3CoverageUnrecorded", std::to_string(summary.unrecordedSpans));
+
+  const auto pairs = hard_rail_phase_front_pairs(product);
+  ASSERT_FALSE(pairs.empty());
+  const auto railEdge = static_cast<std::size_t>(pairs.front().first);
+  ASSERT_TRUE(product.edges()[railEdge].sharedBoundaryInterval.has_value());
+
+  auto droppedEdges = product.edges();
+  droppedEdges[railEdge].sharedBoundaryInterval.reset();
+  const auto dropped =
+      directional::geometry::summarize_a3_span_coverage(droppedEdges, baseline);
+  EXPECT_EQ(summary.coveredSpans - 1U, dropped.coveredSpans);
+  EXPECT_EQ(1U, dropped.partialSpans);
+
+  auto stretchedEdges = product.edges();
+  auto &stretched = *stretchedEdges[railEdge].sharedBoundaryInterval;
+  const auto two = directional::authority::FieldExactRational::from_integer(2);
+  if (stretched.firstOrdinal < stretched.secondOrdinal) {
+    stretched.secondOrdinal = stretched.firstOrdinal + two;
+  } else {
+    stretched.firstOrdinal = stretched.secondOrdinal + two;
+  }
+  const auto stretchedSummary =
+      directional::geometry::summarize_a3_span_coverage(stretchedEdges, baseline);
+  EXPECT_EQ(summary.coveredSpans - 1U, stretchedSummary.coveredSpans);
+  EXPECT_EQ(1U, stretchedSummary.partialSpans);
+}
+
 // RA-43.4: an explicitly named standalone geometry diagnostic may not
 // bypass typed source ownership once the real A2a network is supplied.
 // Exercise the same genuinely produced rail in both modes. Runtime is deferred.

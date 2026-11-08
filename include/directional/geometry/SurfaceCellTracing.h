@@ -1497,7 +1497,11 @@ make_periodic_relation_endpoint_state(
     authority::QuarterTurn relationRotation,
     const SurfacePeriodicRelationEndpointBranchAuthority &branchAuthority);
 
-/** Immutable receipt proving which accepted A2b/A3 plans A4 consumed. */
+/**
+ * Immutable binding of the accepted A2b/A3 plans supplied to A4. It is minted
+ * before any regional producer runs, so it does not prove consumption; use
+ * summarize_a3_span_coverage for what the product actually recorded (RA-214).
+ */
 struct SurfaceConformityPlanReceipt {
   std::uint64_t topologyPlanDigest = 0U;
   std::uint64_t baselinePlanDigest = 0U;
@@ -2101,6 +2105,37 @@ private:
   SurfaceHardRailClosedChains hardRailClosedChains_;
   SurfaceHardRailOpenChains hardRailOpenChains_;
 };
+
+/** Report-only A3 consumption recorded for one scheduled span (RA-214 D4). */
+struct SurfaceA3SpanCoverage {
+  authority::NetworkArcId span;
+  /// A3 region-boundary occurrences of the span: one per side to be tiled.
+  std::size_t incidences = 0U;
+  /// Front edges recording a shared-boundary interval on the span.
+  std::size_t intervalEdges = 0U;
+  /// Unit intervals tile [0, count] exactly once per incidence.
+  bool covered = false;
+};
+
+struct SurfaceA3CoverageSummary {
+  std::size_t scheduledSpans = 0U;
+  std::size_t coveredSpans = 0U;
+  std::size_t partialSpans = 0U;
+  std::size_t unrecordedSpans = 0U;
+  /// Interval edges naming a span absent from the A3 schedule.
+  std::size_t foreignIntervalEdges = 0U;
+  /// One entry per A3 schedule entry, in schedule order.
+  std::vector<SurfaceA3SpanCoverage> spans;
+};
+
+/**
+ * Observe which A3 spans an A4 edge set records as consumed. Pure and
+ * report-only: it neither validates nor rejects, and a span whose breakpoints a
+ * producer used without recording intervals reads as unrecorded.
+ */
+[[nodiscard]] SurfaceA3CoverageSummary summarize_a3_span_coverage(
+    const std::vector<SurfaceFrontEdge> &edges,
+    const GlobalConformityBaselinePlan &baseline);
 
 struct NotApplicable {};
 

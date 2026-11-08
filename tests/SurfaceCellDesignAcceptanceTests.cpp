@@ -106,6 +106,17 @@ void print_platform_digest(const char *testName,
     }
   }
   std::cout << std::endl;
+  // Report-only A3 consumption recorded by A4 (RA-214 D4), on its own line so
+  // the digest line above stays comparable with earlier runs.
+  const auto &diagnostics = result.diagnostics;
+  std::cout << "a3-coverage case=" << testName
+            << " observed=" << (diagnostics.surfaceCellA3CoverageObserved ? 1 : 0)
+            << " scheduled=" << diagnostics.surfaceCellA3ScheduledSpans
+            << " covered=" << diagnostics.surfaceCellA3CoveredSpans
+            << " partial=" << diagnostics.surfaceCellA3PartialSpans
+            << " unrecorded=" << diagnostics.surfaceCellA3UnrecordedSpans
+            << " foreign=" << diagnostics.surfaceCellA3ForeignIntervalEdges
+            << std::endl;
 }
 
 
