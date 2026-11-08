@@ -1,5 +1,12 @@
 ## 2026-11-08 UTC — TB86 A3 span-coverage immutable full gate + census (Test + Benchmark)
 
+## 2026-11-08 UTC — Step-61 D9 recorded A3 source-rim interval Review (runtime-free)
+
+- [Final decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Review_20261108.md): audited `sharedBoundaryInterval` producer, factory, coverage, digest and periodic/hard-rail/A2b consumers on exact snapshot `4e398ceaf03f2f602ec0047aa4ccb2278208fca0` (workflow 42474548804). Physical source rims on the A3-consuming curved-disk path need exact single-sided unit intervals; generic no-A3 source rims remain valid without those records. A2b Trace seam is a distinct step-65 obligation.
+- Froze only the two-file [Architecture_M6_CP3_CB104_P13_A3_Recorded_Boundary_Intervals_Core.diff](.agents/Directional/Architecture_M6_CP3_CB104_P13_A3_Recorded_Boundary_Intervals_Core.diff) source draft, SHA-256 `916c591adebc3c1ccacffbcc8acbb0a59ef1d0338c18fb93e9c9b3d87ab11bf0`. The superseded 7,797-byte draft test is invalid (wrong fixture and false expectation of generic missing-interval rejection) and **must not be applied**. CB104 must author a real produced non-hard source-rim test, compile only, then separate TB87 performs registered falsifiers. No code/test/selector changed or executed in this Review.
+- CP2 accepted 491/491, stable 66/17/49, debt 1, 81 deferred; TB86 candidate 909/909 membership 990, selector497/CP3 unpromoted. `review_check.py boundary` against original repository history and remote `git status -sb` are not executable in archive-only ChatGPT Web; this limit is not presented as verification.
+
+
 - [TB86 COMPLETE / MATCH](.agents/Directional/Architecture_M6_CP3_TB86_P13_A3_Span_Coverage_Full_Gate_Execution_Report_20261108.md): exact CB103 GMP package `13613225138`, [gate 42471488975](https://github.com/akashskypatel/Directional/actions/runs/42471488975) **909/909 PASS**, membership 990, 1,826/1,826 checksums, 4/4 pinned TB85 gate digests; GUARD 909 PASS. [Census 42471512649](https://github.com/akashskypatel/Directional/actions/runs/42471512649) 1 PASS / 2 registered RED, 9/9 checksums, 3/3 pinned digests. Seven A3 records satisfy conservation and show no false claimed consumption; Vase `observed=0`.
 - No configure/build/relink or product-source/test/fixture edits; no new stable regression or promotion. CP2 491/491, stable 66/17/49, debt 1, 81 deferred; selector497/CP3 unpromoted. Next runtime-free Review step 61 `M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS` (RA-214 §5).
 

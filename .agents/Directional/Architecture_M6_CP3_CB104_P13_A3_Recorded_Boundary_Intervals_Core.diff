@@ -1,0 +1,67 @@
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -1646,9 +1646,9 @@
+   std::optional<authority::PeriodicRelationId> periodicRelation;
+   /// Optional exact rail owner.
+   std::optional<authority::HardRailId> railId;
+-  /// Exact A3 shared-boundary provenance. Required for production HardRail
+-  /// pairing and retained when an exact same-region pair is promoted to
+-  /// PeriodicCut; periodicRelation remains the quotient owner.
++  /// Exact A3 unit-interval provenance on HardRail, PeriodicCut, or
++  /// GenuineSourceBoundary. Source boundaries are single-sided; paired
++  /// interior relations retain reciprocal incidence/ordinal authority.
+   std::optional<SurfaceSharedBoundaryInterval> sharedBoundaryInterval;
+   /// Relation-owned endpoint states for same-region A3 PeriodicCut pairing.
+   /// Ordinary cell placement remains in fromLattice/toLattice unchanged.
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -9386,7 +9386,10 @@
+       const bool increasing = interval.firstOrdinal < interval.secondOrdinal;
+       const bool decreasing = interval.secondOrdinal < interval.firstOrdinal;
+       if ((edge.boundaryKind != SurfaceFrontBoundaryKind::HardRail &&
+-           edge.boundaryKind != SurfaceFrontBoundaryKind::PeriodicCut) ||
++           edge.boundaryKind != SurfaceFrontBoundaryKind::PeriodicCut &&
++           edge.boundaryKind != SurfaceFrontBoundaryKind::GenuineSourceBoundary) ||
++          (edge.boundaryKind == SurfaceFrontBoundaryKind::GenuineSourceBoundary &&
++           (edge.oppositeEdge >= 0 || !edge.exterior)) ||
+           (!increasing && !decreasing) ||
+           (increasing && interval.orientation != authority::Orientation::Forward) ||
+           (decreasing && interval.orientation != authority::Orientation::Reverse) ||
+@@ -17625,7 +17628,8 @@
+           subdivision.uv.push_back(uv);
+           return true;
+         };
+-        const bool shared = run.edgeAuthority[edgeIndex].hardFeature;
++        const bool recordedA3 = run.edgeAuthority[edgeIndex].hardFeature ||
++                                run.edgeAuthority[edgeIndex].sourceBoundary;
+
+         const auto append_arc = [&](const ArcSchedule &arcSchedule,
+                                     const bool increasing) -> bool {
+@@ -17656,7 +17660,7 @@
+                 return false;
+               }
+               std::optional<SurfaceSharedBoundaryInterval> interval;
+-              if (shared) {
++              if (recordedA3) {
+                 interval = SurfaceSharedBoundaryInterval{
+                     arcSchedule.arc->id,
+                     authority::FieldExactRational::from_integer(
+@@ -17678,7 +17682,7 @@
+                 return false;
+               }
+               std::optional<SurfaceSharedBoundaryInterval> interval;
+-              if (shared) {
++              if (recordedA3) {
+                 interval = SurfaceSharedBoundaryInterval{
+                     arcSchedule.arc->id,
+                     authority::FieldExactRational::from_integer(
+@@ -18183,7 +18187,8 @@
+         return result;
+       }
+       edge.sharedBoundaryInterval = std::move(acceptedInterval);
+-      if ((edge.boundaryKind == SurfaceFrontBoundaryKind::HardRail) !=
++      if ((edge.boundaryKind == SurfaceFrontBoundaryKind::HardRail ||
++           edge.boundaryKind == SurfaceFrontBoundaryKind::GenuineSourceBoundary) !=
+           edge.sharedBoundaryInterval.has_value()) {
+         set_phase_front_failure(
+             result.failure,

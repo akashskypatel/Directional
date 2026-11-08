@@ -10,7 +10,8 @@
   - Owner: CB103 (comment fix plus coverage observation). Prohibited: citing the receipt as consumption evidence.
 - **D9, A3 consumption unrecordable on rim and plan-trace edges.**
   - Root cause: the validator admits intervals only on HardRail and PeriodicCut (`:9386`), and curved-disk records them only for `hardFeature` (`:17557`).
-  - Owner: step 61 → CB104.
+  - Owner: step 61 [runtime-free decision](Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Review_20261108.md) COMPLETE → CB104 compile-only → TB87. Source-rim interval is permitted only as a single-sided physical exterior edge and mandatory only where curved-disk actually consumes A3; no-A3 generic rims remain legal. The superseded CB104 draft test incorrectly assumed a rectangular hard-rail fixture proved a curved-disk natural rim and demanded generic missing-interval rejection. Do not apply that test.
+  - Falsifiers: actual produced non-hard A3 rim; independent unit-ordinal tiling, missing/stretched/foreign/orientation tamper, unchanged legacy no-A3/HardRail/PeriodicCut, source-row and cross-region identity, pinned unaffected digests. D9 A2b trace seam remains step 65; no accepted-green event counted.
 - **Governance:** the "Claude, scratch build" Review label had no policy authority (`REVIEW_TURN_POLICY.md` §4.3). It is suspended. Earlier probe results are non-accepted information.
 - **Carried:** D6 user decision (expected D1 recommended); P13-e, O30b, O31 (legacy only), O32b–e, O33, O27–O29.
 

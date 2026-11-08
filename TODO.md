@@ -29,8 +29,9 @@
      - `a3-coverage`: partial=0, foreign=0, and covered + unrecorded = scheduled; Vase observed=0.
      - [Result report](.agents/Directional/Architecture_M6_CP3_TB86_P13_A3_Span_Coverage_Full_Gate_Execution_Report_20261108.md): gate 909/909 PASS, membership 990, 1,826/1,826 checksums; 7/7 pinned digests exact, 7/7 A3 records satisfy invariants; census 1 PASS / 2 expected RED, 9/9 hashes; no promotion.
      - Routes were not activated: no mismatch or infrastructure failure.
-  61. [ ] **NEXT Review (runtime-free, TB86 MATCH)** `M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS`, for D9. Audit every `sharedBoundaryInterval` consumer, then freeze exact CB104: rim intervals on `GenuineSourceBoundary` edges, recorded by curved-disk.
-  62. [ ] CB104 → 63. [ ] TB87.
+  61. [x] **COMPLETE Review (runtime-free)** `M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS` — [decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Review_20261108.md). D9 source-rim contract and all interval readers audited; one flawed test draft withdrawn. Core patch `916c591adebc3c1ccacffbcc8acbb0a59ef1d0338c18fb93e9c9b3d87ab11bf0` frozen as review evidence only; no code, test, build, gate or selector executed.
+  62. [ ] **NEXT Code + Build** `M6-CP3-CB104-P13-A3-RECORDED-BOUNDARY-INTERVALS`: use frozen [Architecture_M6_CP3_CB104_P13_A3_Recorded_Boundary_Intervals_Core.diff](.agents/Directional/Architecture_M6_CP3_CB104_P13_A3_Recorded_Boundary_Intervals_Core.diff) plus a non-vacuous genuinely A3-consuming non-hard source-rim test; no fake factory absence rejection; compile only and package exact GMP authority. Stop if fixture or source provenance is unproved, or source/test scope escapes D9.
+  63. [ ] **TB87**, separate immutable artifact-only full gate with independent positive/negative rim, foreign-span, cross-region and legacy-producer controls from step-61 review; no test repairs during TB.
   64. [ ] Review (runtime-free) `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC`: D7, then D5 maximal Mandatory chains, with a DESIGN §7.4 amendment.
   65. [ ] Review (runtime-free) `M6-CP3-DEFN-P13-A4-A2B-DISC-DOMAIN`: plan-trace edge kind plus disc domain.
   66. [ ] Per-disc boundary and corners (needs D6) → fill (§4.9) → dispatch and honest `Declined` flags (D3). One DEFN → CB → TB each.
