@@ -127,19 +127,6 @@ std::optional<std::array<FieldExactRational, 3>> exact_position(
   return position;
 }
 
-std::optional<FieldExactRational> exact_target(const VertexWeights &weights,
-                                               const Eigen::VectorXd &target) {
-  FieldExactRational value = exact_integer(0);
-  for (const auto &[vertex, weight] : weights) {
-    if (vertex >= static_cast<std::size_t>(target.size())) return std::nullopt;
-    const auto exact =
-        FieldExactRational::from_double_exact(target(static_cast<Eigen::Index>(vertex)));
-    if (!exact || *exact <= exact_integer(0)) return std::nullopt;
-    value = value + weight * *exact;
-  }
-  return value;
-}
-
 // D7 density rho = 1/h, interpolated from exact vertex reciprocals so that it
 // is affine on every source simplex (RA-216).
 std::optional<FieldExactRational>
@@ -212,49 +199,8 @@ std::optional<std::size_t> exact_to_size_checked(const EInt &value) {
 std::optional<EInt> derive_preferred_count_exact(
     const ConformitySpanInput &span, const Eigen::MatrixXd &sourceVertices,
     const Eigen::VectorXd &targetSize) {
-  if (span.supportPieces.empty()) return std::nullopt;
-  FieldExactRational energy = exact_integer(0);
-  std::optional<ConformitySourcePoint> previous;
-  for (const auto &piece : span.supportPieces) {
-    if (previous && *previous != piece.first) return std::nullopt;
-    const auto first =
-        point_weights(piece.first, static_cast<std::size_t>(sourceVertices.rows()));
-    const auto second =
-        point_weights(piece.second, static_cast<std::size_t>(sourceVertices.rows()));
-    if (!first || !second || piece.first == piece.second ||
-        !carrier_contains(piece.carrier, *first) ||
-        !carrier_contains(piece.carrier, *second)) {
-      return std::nullopt;
-    }
-    const auto p0 = exact_position(*first, sourceVertices);
-    const auto p1 = exact_position(*second, sourceVertices);
-    const auto h0 = exact_target(*first, targetSize);
-    const auto h1 = exact_target(*second, targetSize);
-    if (!p0 || !p1 || !h0 || !h1) return std::nullopt;
-
-    FieldExactRational squaredLength = exact_integer(0);
-    for (std::size_t axis = 0U; axis < 3U; ++axis) {
-      const auto delta = (*p1)[axis] - (*p0)[axis];
-      squaredLength = squaredLength + delta * delta;
-    }
-    if (squaredLength == exact_integer(0)) return std::nullopt;
-    const auto midpointTarget =
-        (*h0 + *h1) * exact_ratio(EInt(1), EInt(2));
-    energy = energy + squaredLength / (midpointTarget * midpointTarget);
-    previous = piece.second;
-  }
-
-  energy = energy *
-           exact_ratio(exact_from_size(span.supportPieces.size()), EInt(1));
-  if (energy <= exact_integer(0)) return std::nullopt;
-  const EInt floor = integer_sqrt_floor(
-      energy.exact_numerator() / energy.exact_denominator());
-  const EInt odd = EInt(2) * floor + EInt(1);
-  const bool roundDown = EInt(4) * energy.exact_numerator() <=
-                         odd * odd * energy.exact_denominator();
-  EInt nearest = roundDown ? floor : floor + EInt(1);
-  if (nearest < EInt(1)) nearest = EInt(1);
-  return nearest;
+  return derive_partition_stable_preferred_count_exact(span, sourceVertices,
+                                                       targetSize);
 }
 
 std::optional<EInt> derive_partition_stable_preferred_count_exact(
