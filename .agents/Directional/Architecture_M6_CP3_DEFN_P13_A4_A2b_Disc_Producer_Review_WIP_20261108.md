@@ -1,0 +1,27 @@
+# A4 per-A2b-disc review — unfinished source-backed memo (2026-11-08)
+
+**Canonical turn:** `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER` (Review/Definition, IN_PROGRESS). **Frozen source:** `c54184c3caab9dfd37eab6653ae923e0a5c733e9` (Actions snapshot 42452191280, artifact 13605344013, 6,234 file checksums verified). CB102 is withdrawn by RA-213. This memo is *not* a completed review/plan and authorizes no successor implementation turn.
+
+## Re-derived evidence and critical findings
+
+The committed Vase OFF has 1,274 vertices, 2,404 triangles, 3,677 unique edges, Euler characteristic 1, 142 edges on one boundary loop, surface area 1.74371836 and perimeter 5.49645870. At target 0.0883 the boundary target is ~62 segments; the existing A3 schedule uses 164 (2.635x). RA-213 measures 3 certified A2b discs, 145 Mandatory arcs, 3 Trace arcs, trace counts 10/4/9, region boundary sums 70/94/46. Check: 210 = 164 + 2*(10+4+9). A small parity feasibility illustration uses three hypothetical mandatory-chain counts 20/21/21 and existing trace counts, giving even per-disc boundaries 34/34/40. This is **not** an actual A3 re-solve or geometrically feasible patch witness.
+
+Frozen source:
+- `src/geometry/SurfaceCellTracing.cpp:13336,14146,15448`: all three source-region producers veto any singularity. The Vase source topology has one region, making region-scoped gating inadequate.
+- `:15483`: curved-disk uses A2b cut domain only for regions with hard features; Vase has none. `:15548`: requires A2b candidate source face set equal to all active source-region faces, impossible for a partition into the three discs.
+- `:15580ff,17377ff`: portions of accepted-boundary code require source-edge support; A2b trace paths may run through face interiors. A true per-disc producer must use exact A2a' face fragments and arbitrary canonical paths, never flatten to source-edge or positional identity.
+- `:18326ff`: uniform/annulus work iterates source-topology regions, not A2b discs and does not consume the full A3 schedule. RA-213's output/A3 mismatch: Plane 32/42, MultiFaceSeam 32/48, CloseSheets 80/96; Cylinder has 64/64 outer but ignores 49 cut arcs (131 counts).
+- `src/geometry/GlobalConformityPlan.cpp:42`: one schedule span **per entire A2b arc**, exact incidence to region boundary. D5 maximal Mandatory chain aggregation therefore requires authoritative upstream A2b arc production or a separately proved virtual map, not a local A3 loophole.
+- DESIGN §4.9: Tutte-based injection is an option for classified rectangular cases, not a proof for any arbitrary even-boundary A2b disc.
+
+## Design adjudication pending
+
+Recommendation for **the fixed supplied Vase field**: provisionally expect D1 `QualityRelaxed` with named *quality-only* exceptions and intact structural gates, pending explicit user approval and an actual independently verified output. The field one +¼ interior singularity and disc identity force a net +3 further irregularity in `sum_int(4-v)+sum_boundary(3-v)=4`. A zero-mismatch boundary target plus zero unprescribed interior poles is not a simultaneously attainable requirement. Changing to a boundary-aligned field or globally changing boundary targets would be a separate, approved study; do not edit gates/field automatically.
+
+## Provisional slices, not frozen for implementation
+
+(1) Non-vacuous exact A4→A3 conformance verifier with mutated trace and orientation witnesses; (2) source-chart/face-fragment disc domain from certified A2b region; (3) immutable A3 breakpoint consumption on *all* boundary arcs, including shared traces; (4) actual source-attached pure-quad local fill, port valence/index and A5–A8 registration. Each future semantic slice is compile-only then separate full-gate TB. Stop on any ambiguity in chart, shared trace ownership, connectivity, source sheet, index, boundary ordering, or post-A3 subdivision. Do not combine D5 topology/scheduler aggregation with A4 producer changes in one diagnostic trial.
+
+**Not completed:** actual A3 chain re-solve, source-attached per-disc scratch prototype, full gate measurements, independent selector ancestry verification, mandatory full Review closeout updates (`ORIENTATION`, `CHANGELOG`, tracker, `TODO`, handoff, consolidation) and successor freeze. `review_check.py boundary` on snapshot passed local file/selector checks, failed durable ancestor checks because snapshot contains no `.git`. No code/tests/selectors/gates were changed. Repo source-read-mode policy miss: some initial direct doc reads preceded snapshot mode; further analysis used a single exact verified snapshot.
+
+**Next action:** finish a real per-A2b-disc source-fragment/A3-boundary proof on exact source, obtain user decision before changing any Vase quality expectation, then prepare a policy-compliant formal Review record and exactly one authorized successor. User-visible long evidence: `Directional_A4_A2b_Review_Working_Evidence_20261108.md` (2026-11-08 chat attachment).
