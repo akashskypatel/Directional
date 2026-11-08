@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH` (Review, Claude scratch; RA-212 §3, step 57). **TB85 COMPLETE/MATCH**: 908/908 PASS, membership 989; all 7 pinned TB84 digests exact; census 1 PASS / 2 expected RED. [RA-212](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_Legacy_Fallback_Density_20261108.md) re-entered RA-211; TB84 MATCH stands (906/906, membership 987).
+> **Current canonical next:** `M6-CP3-CB102-P13-PHASE-FRONT-APPLICABILITY-RECEIPTS` (Code + Build, compile only; [Vase Review](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Phase_Front_Producer_Path_Review_20261108.md) §4). Preserve TB85 immutable 908/908 PASS, membership 989, and accepted CP2 491/491; do not promote selector497/CP3.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -38,11 +38,13 @@
      - **Pinned:** gate rows 795/796/797/864 and census Cylinder, BunnyRandom and Vase digests byte-identical to TB84; Vase terminal `AggregateCompletionValidationFailure`.
      - Mismatch → `M6-CP3-TB85-P13-CONCAVE-QUALITY-METRICS-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB85A-P13-CONCAVE-QUALITY-METRICS-ORCH`.
      - **Observed:** [gate 42444755166](https://github.com/akashskypatel/Directional/actions/runs/42444755166) 908/908 PASS, membership 989, 1,824/1,824 hashes; 4/4 pinned TB84 gate digests exact. [Census 42444788841](https://github.com/akashskypatel/Directional/actions/runs/42444788841) Cylinder PASS, BunnyRandom P13-e and Vase P13-n expected RED, 9/9 hashes; 3/3 platform digests exact. No runtime remediation or promotion.
-  57. [ ] **NEXT Review `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH`** (Claude, scratch build; RA-212.3; TB85 MATCH prerequisite met):
+  57. [x] **Review decision `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH`** (Claude, scratch build; RA-212.3; TB85 MATCH prerequisite met):
      - publish why each A4 phase-front producer (uniform, periodic annulus, curved bounded disk) returns NotApplicable for Vase's regions, with a narrow diagnostic CB if the reason is not retained;
      - decide between extending A4 coverage (DESIGN-conformant) and keeping the fallback for P13. If the fallback is kept: fix seeding density first (relief seeds, O31); re-census at target density, where parity repair failing is the first terminal; forbid rail writes by parity repair; then take up n1/n2/n3 only as they recur;
      - attribute every failing Vase gate: field P95 36.4, size, angle, warpage, aspect, SJ, nonConvex, boundary valence 248, singularity valence 1;
      - falsifiers must run on the legacy path (Vase or legacy unit fixtures), not only on phase-front fixtures.
+
+  58. [ ] **NEXT CB102 `M6-CP3-CB102-P13-PHASE-FRONT-APPLICABILITY-RECEIPTS`** (Code + Build, compile-only): publish exact per-region typed singularity-port counts, topology class, and first NotApplicable reason for all three phase-front producers. Preserve all runtime dispositions, zero/failing controls and A3 schedule; add a focused negative/positive diagnostic regression but compile it only. [Frozen review, falsifiers and stop rules](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Phase_Front_Producer_Path_Review_20261108.md). Separate immutable TB must execute before a behavioral A4 extension.
 
 ## EARLIER — RA-211 (partly superseded by RA-212): P13-n census; owners n1–n4; the representation fix is falsified as a standalone landing; CB100 → TB85 → Review P13-n1/n2/n3 (2026-11-08)
 

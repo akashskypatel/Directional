@@ -1,3 +1,8 @@
+## 2026-11-08 UTC — Vase A4 producer-path Review decision (no runtime/product change)
+
+- [Independent Review](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Phase_Front_Producer_Path_Review_20261108.md) confirms all three A4 phase-front families early-decline on one source-global typed singularity-port guard. Vase's typed singularity seed makes that gate true; per-region topology and post-veto applicability remain unmeasured. DESIGN-aligned decision: extend singularity-capable A4 construction after measured per-region receipts; do not treat the legacy 20×-dense fallback as production success.
+- Frozen diagnostic-only Code + Build successor `M6-CP3-CB102-P13-PHASE-FRONT-APPLICABILITY-RECEIPTS`, with nonvacuous mixed-region and zero-port controls, no semantic change, compile-only, then separate TB. P13-e, O31, O32, O33 and P13-n obligations carried; no new accepted-green loss or promotion. CP2 491/491, stable 66/17/49 debt1, selector497/CP3 unpromoted.
+
 ## 2026-11-08 UTC — TB85 concave-quality full gate and production census (Test + Benchmark)
 
 - **COMPLETE / MATCH** under RA-212 §7: [report](.agents/Directional/Architecture_M6_CP3_TB85_P13_Concave_Quality_Metrics_Full_Gate_Execution_Report_20261108.md), immutable CB101 source `23e35798abf0eb3584509c564166ccd97c41cc21`, GMP package `13602662424`; verified 6,231/6,231 source-snapshot hashes.

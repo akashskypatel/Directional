@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-11-08 · [RA-212](Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_Legacy_Fallback_Density_20261108.md) re-enters RA-211. Vase is the only census fixture on the **legacy tracing fallback** (the phase front returns NotApplicable). Its layout is relief-seeded (1,131 of 1,416 seeds, O31) and about 20× denser than the metric target. Its `normalP95` failure was a first-triangle artifact. **Next: CB100 (revised) → CB101 → TB85 (908), then Review `M6-CP3-DEFN-P13-VASE-PRODUCER-PATH`.**
+**Currency:** 2026-11-08 · [Vase producer-path Review](Architecture_M6_CP3_DEFN_P13_Vase_Phase_Front_Producer_Path_Review_20261108.md) independently identifies a source-global singularity-port veto in all three A4 producers. TB85 MATCH (908/908, membership 989) leaves Vase on fail-closed legacy tracing; relief seeds dominate its density, and legacy parity mutates A3 rails. Accepted CP2 491/491, stable 66/17/49 debt1, selector497/CP3 unpromoted. **Next: CB102 applicability receipts, compile only; behavioral A4 extension requires an independent TB.**
 - **Before it:** P13-m, fixed by [RA-202](Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md). The fix is Amendment 34 and exact CB85–CB88, removing three memory-bound census-path scans plus two Amendment 33 sites.
 - **The block.** The ChatGPT Review saw a conflict between "runtime-free" and a probe re-run. The fault is RA-202.9's route: it named no track and asked one platform to explain a split between two. Review scratch probes are a duty (RA-166.6 F6, RA-188.1), Linux runtime is a TB, and no policy changes.
 - **TB78** (CB85–CB88) matches on gate 899/899 and on every census line except the count. Vase reaches RED `SelfIntersectingFace` in 268.93 s on Linux, so P13-m's Linux objective is met.
@@ -67,7 +67,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | Immutable CB96 compiled [source `11c8172`](https://github.com/akashskypatel/Directional/commit/11c8172ad467c6dc865f2f3352e75b78f5469a2b); [TB83](Architecture_M6_CP3_TB83_P13_Embedding_Predicate_Full_Gate_Execution_Report_20261106.md) **903/903 MATCH** (membership 984), census Cylinder PASS / BunnyRandom P13-e RED / Vase P13-l2 four issues RED. Active P13-l2 Review has independently excluded a 4955/4957 shared-side count mismatch and an automatic proximity stitch; completed quad 21286 consumes one logical side, the validator has independent geometric false positives, and an inherited 23301 source microedge still requires exact FlowRep/arrangement provenance. Accepted CP2 491/491, stable 66/17/49, debt 1; selector497/CP3 unpromoted. |
+| **M6-CP3 — active** | CB100/CB101 exact GMP compile-only artifacts; TB85 immutable 908/908 PASS, membership 989, Cylinder PASS / BunnyRandom P13-e RED / Vase legacy-fallback P13-n RED. Vase A4 global singularity veto identified in Review; diagnostic-only CB102 next. Accepted CP2 491/491, stable 66/17/49 debt1; selector497/CP3 unpromoted. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 **Prior Review authority:** [RA-187](Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md) (GUI layers; full-gate TB rule), [RA-186](Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) (CLI sidecar; DR4), [RA-185](Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md) (DIAG-RETAIN display; DR2 → M8-CP2), [RA-184](Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) (DIAG-RETAIN), [RA-183](Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) (O2 gate; O2b, O16), [RA-181](Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md) (O15 discharged; O15c) and [RA-179](Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md) (RP-01 closed; local-mode rules). Implementers get only exact patches and manifests.
@@ -123,6 +123,8 @@ Fixture generation, provenance, licenses and checksums are recorded in [generate
 The separation is deliberate: accepted selector continuity and frozen invariants are not negotiable fixes for a RED; diagnostics are not acceptance; representative production claims require production-path witnesses. See the [review policy](REVIEW_TURN_POLICY.md), [testing strategy](../../tests/TESTING_STRATEGY.md) and [workflow policy](GitHub_Workflow_Policy.md) for actual requirements, repository operation, artifact transport and mailbox behavior.
 
 ## 7. Open problems — priority, not a task ledger
+
+- **Immediate P13 Vase producer:** all three A4 families reject every region on a source-global typed singularity-port guard (`SurfaceCellTracing.cpp:5529,13336,14146,15448`). CB102 must publish per-region applicability and nonvacuous singularity controls without changing selection; A4 singularity-capable construction is the chosen direction, not verified success. Legacy relief density (O31) and A3-rail parity mutations remain non-authoritative evidence; no fallback quality work is approved ahead of direct producer proof.
 
 **Immediate:**
 - CB90 and TB80 are complete (898/899; row 899 RED).
@@ -185,6 +187,8 @@ macOS O16 stays separate.
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
+
+- **Source-wide eligibility masquerading as a regional A4 decline (P13 Vase):** a shared `singularity_ports().empty()` check precedes all three region-specific constructors; one source singularity vetoes even unrelated regions, yet the aggregator publishes no owner reason. Preserve source-wide and regional counts and typed first-decline receipts, rather than weakening a guard without constructing singularity-correct front topology (Vase producer Review, 2026-11-08).
 
 - **A per-query check that moves down a level (P13-k):** lending the label support removed the per-quad chart graph, but the same O(F) source binding check then ran once per chart face and once per label query. Re-profile after each cost fix, and remove the check at every call depth: check once per stage, then lend structures that carry their build-time check (RA-201).
 - **A whole-collection rescan per element (P13-m):** a check about one node, vertex or transaction walked the whole halfedge list, edge map or active network. The cost hid outside the stage being fixed, and it was memory-bound, so it hit one platform hardest. Profile the whole run, index by the filter key, and check a transaction by its net change (Amendment 34, RA-202).
