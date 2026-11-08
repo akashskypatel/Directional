@@ -403,6 +403,14 @@ This document records **reusable failure-derived engineering lessons**, not an e
   objective, a defined exact integer function (here, run-wise integer square roots) is exact enough.
   Check that a consumer exists before specifying a representation change, and split a
   production-affecting change from an inert one.
+- **Agreeing functions share one decomposition; a rounding must not erase a part (RA-217).** The D7b
+  decision split runs at conditions the D7 count never uses, and failed closed when a run's floor weight
+  was zero, which would have made an unconsumed placement edge case a baseline-build failure. A function
+  that must agree with another reads its decomposition through one shared function. Where rounding to
+  zero breaks an invariant (here, reversal at a run join), choose the rounding that cannot reach zero
+  (ceiling) from the same exact quantity instead of adding a failure. Before switching a stored
+  representation, grep the accepted tests for assertions on the old encoding and amend them in the
+  switch CB, registered by the Review.
 - **Plan from the current normative contract and reachable implementation.** Before freezing an
   obligation, identify the actual producer, owning stage, live branch and witness class; confirm it can
   be expressed at that checkpoint. Do not retroactively require a later milestone's capability or treat

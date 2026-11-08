@@ -1,5 +1,7 @@
 # D7b — Exact A3 metric-breakpoint placement (runtime-free Review)
 
+> **Partly superseded by [RA-217](Architecture_M6_CP3_DEFN_P13_A3_Metric_Breakpoint_Placement_Adversarial_Review_20261108.md) (2026-11-08).** The placement formula, reversal analysis, single-piece `(j,n)` rule and baseline-only ownership stand. Rule 1's extra run splits, rule 3's zero-weight fail-closed (replaced by ceiling weights), the "canonical source entity"/"typed provenance" wording, the width-receipt section and the prose CB108 scope are replaced by RA-217 §4–§7: exact CB108 (unwired) → TB91 → exact CB109 (switch) → TB92. The closeout's "no selector rebaseline" is corrected: CB109 amends selector:392's assertions.
+
 **Turn:** `M6-CP3-DEFN-P13-A3-METRIC-BREAKPOINT-PLACEMENT`, step 64.5, 2026-11-08. **Disposition:** bounded design definition, not a compile, test, or production-success claim. **Next separate turn:** `M6-CP3-CB108-P13-A3-METRIC-BREAKPOINT-PLACEMENT` (Code + Build, compile-only), then `M6-CP3-TB91-P13-A3-METRIC-BREAKPOINT-PLACEMENT-FULL-GATE-EXEC` (immutable artifact-only Test + Benchmark). These new IDs are turn metadata, never code symbol names.
 
 ## Evidence and authority
