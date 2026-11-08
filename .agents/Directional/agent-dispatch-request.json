@@ -1,1 +1,12 @@
-{"schema_version":1,"request_id":"m6-cp3-p13-a3-history-closeout-20261108","operation":"drive_apply","mailbox_key":"m6-cp3-p13-a3-history-closeout","file_id":"1jAtWCosV0Or6LhvvayW3wkNOxC3bHKFv","patch_sha256":"cdf7ecce424af61db707a98604bab8fe439d1d20e2f28a9af052def60b5b969a","base_sha":"aadb72a4051978ff29668887caea2a27e6727c77","target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing","commit_message":"docs(surface-cells): close D9 review with authenticated boundary evidence","retention_days":14}
+{
+  "schema_version": 1,
+  "request_id": "m6-cp3-cb104-a3-rim-apply-20261108-1320",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb104-a3-rim-apply",
+  "file_id": "1HkNj1ct25z-v_X9CWy45-WqolPE2MO1u",
+  "patch_sha256": "67f47763a01a69c20613d50e3f7f4951a95a792ca46e64b67443ed49629ec98e",
+  "base_sha": "ee95b7984940afa63e22d182c6d620d57025dfa5",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(surface-cells): record source-rim A3 interval authority",
+  "retention_days": 14
+}
