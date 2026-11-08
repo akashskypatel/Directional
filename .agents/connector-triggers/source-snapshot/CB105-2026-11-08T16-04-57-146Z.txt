@@ -1,2 +1,0 @@
-Purpose: one exact source snapshot for M6-CP3-CB105-P13-A3-OBSERVED-ROUTE-ORIENTATION-ORACLE
-Snapshot source: trigger commit (unchanged semantic source)
