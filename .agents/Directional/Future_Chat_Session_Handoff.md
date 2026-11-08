@@ -283,7 +283,7 @@ Facts are in the records, `TODO.md` steps and Review track, `CHANGELOG.md` and t
 | 44C (Review) | `M6-CP3-DEFN-P13-CHART-FACE-PER-QUAD-COST` (O33) | Claude, scratch build; one chart-level cache for the five per-quad chart-face sites (RA-206.5); before Vase reaches optimization |
 | 45 | P13 re-census → metamorphic census rows (O32) → O6/O9 where reached → matrix 6/6 → retire/FIXTURE/PRODUCT/OPEN slices → CP3-REV | One slice at a time |
 
-Rows 49–64.2 are complete as turns; row 63 TB87 remains **MISMATCH** (resolved at test-oracle level by TB87-REV → CB105 → TB88 MATCH); TB89 64.2 is COMPLETE / MATCH. Next: CB107 → TB90 → D7b 64.5 (DEFN → CB108 → TB91) → 64B, 64C, 64D, 65A, 65B, 65C, 65D → 66+. Only CB106 is authorized now; CB107 is pre-frozen and runs only after TB89 MATCH. Rows 44, 44A, 44B and 44C keep their scope, but their "Claude, scratch build" label is suspended (RA-214 §1). Each is re-scoped runtime-free when it is opened, unless the user explicitly authorizes a `REVIEW_TURN_POLICY.md` §4.3 amendment.
+Rows 49–64.2 are complete as turns; row 63 TB87 remains **MISMATCH** (resolved at test-oracle level by TB87-REV → CB105 → TB88 MATCH); TB89 64.2 is COMPLETE / MATCH. Next: CB107 → TB90 → D7b 64.5 (DEFN → CB108 → TB91) → 64B, 64C, 64D, 65A, 65B, 65C, 65D → 66+. Only CB107 is authorized as the next turn now that TB89 is MATCH; it must compile without tests before TB90 is opened. Rows 44, 44A, 44B and 44C keep their scope, but their "Claude, scratch build" label is suspended (RA-214 §1). Each is re-scoped runtime-free when it is opened, unless the user explicitly authorizes a `REVIEW_TURN_POLICY.md` §4.3 amendment.
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
