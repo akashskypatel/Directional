@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb107-count-switch-compile-20261108-2035",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb107-count-switch-compile",
-  "source_sha": "34967c89817a9d43a7c99eaf337032f9e9a927fb",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb107-count-switch"
+  "request_id": "m6-cp3-cb107-docs-closeout-20261108-2040",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb107-docs-closeout-apply",
+  "file_id": "1_ExjfYisU4DhLf6IVFn-Y4N_VbDiIVjY",
+  "patch_sha256": "3a1ed7fe2bb7cc7b4e3073a33d00c0c4a4cd515663d22c441d933250bdcbbc6f",
+  "base_sha": "fa3dcf20badc0af156c6f05bb6d55c8aef2f5d52",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(agent): close CB107 compile-only and hand off TB90",
+  "retention_days": 14
 }
