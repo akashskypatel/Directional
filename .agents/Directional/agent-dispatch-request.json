@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb89-closeout-stale-state-correction-20261108-2009",
+  "request_id": "m6-cp3-cb107-count-switch-apply-20261108-2032",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb89-task-state-correction-apply",
-  "file_id": "1AqmTyyQuEusDD95vWrzyX8M8nqk3ZCgD",
-  "patch_sha256": "32366e813a0f3ec286a435fa92ece14531fd6a0d0163cee82b0e6f82bfb986ad",
-  "base_sha": "6da418c84109149a327a899f0ac05785c1c37573",
+  "mailbox_key": "m6-cp3-cb107-count-switch-apply",
+  "file_id": "1EbimHqlXVZ1Hn1lTGefub4cNLy-nBSbC",
+  "patch_sha256": "b4ab1a8204de052168c152c7a1ee50b4953c285a19a368d3b8a1f86f5cd13d48",
+  "base_sha": "9dcba327c006e9807db55d584b0c430878148792",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): correct TB89 stale task-state references",
+  "commit_message": "feat(surface-cells): use partition-stable preferred count in scheduler",
   "retention_days": 14
 }
