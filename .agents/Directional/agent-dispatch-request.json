@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-d7-verify-closeout-20261108-1749",
+  "request_id": "m6-cp3-cb106-partition-stable-count-20261108-1917",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-d7-review-verified-closeout",
-  "file_id": "1bJMAzR2Oai1o8ziSfJeDklwnWEfsRnJF",
-  "patch_sha256": "5ee04cbe5cab7c4ad4a3c020570cc86aa2ac55326f7793f1bbcc3973b93a2375",
-  "base_sha": "3315fbfd2a651ddc44a50cf8fa5ad0dbc78d0289",
+  "mailbox_key": "m6-cp3-cb106-partition-stable-count-apply",
+  "file_id": "1oExWPe6adJ7J71WyrQTNDoWaIiisDuj4",
+  "patch_sha256": "402d6130575239050d1a52a6bee2d339b6ea939d9bc8e200ce773ba33b7502c2",
+  "base_sha": "43c4542c14f5a77dc7197844603c394e6b4efe04",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): record verified D7 review-history gate",
+  "commit_message": "feat(surface-cells): add exact partition-stable A3 count and guards",
   "retention_days": 14
 }
