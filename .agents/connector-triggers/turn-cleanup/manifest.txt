@@ -1,2 +1,0 @@
-# M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY temporary source-snapshot trigger
-.agents/connector-triggers/source-snapshot/20261108-0149-p13-side-subdivision-review.txt
