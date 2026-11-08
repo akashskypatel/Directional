@@ -1,0 +1,37 @@
+# P13-n Side-Subdivision Quality — Review WIP (2026-11-08)
+
+**Canonical turn:** `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`, Review/DEFN. **Disposition:** partial static proof; per-patch source/runtime census not yet independently available; no CB/TB authority issued. This record is not a final Review closeout.
+
+## Frozen authority and boundaries
+
+Exact verified source snapshot: `cb54686d60a0105b65c6713eb90e05dbd517011b` (run `42431005187`, artifact `13596888419`, ZIP SHA-256 `c6613ac1383a91da6bdc9f578e8d5abe575b3d7b7342810e740ec18f50bb5a18`; all 6,222 snapshot files verified). This source differs from CB99 in STATUS/trigger control-plane commits, not an accepted new semantic package.
+
+Previous `TB84` remains **906/906 PASS / membership 987**; Vase RED `AggregateCompletionValidationFailure` with zero strict validation issues and 67,750 informational quads. CP2 491/491 accepted; stable 66/17/49, debt 1, selector497 and CP3 unpromoted. RA-210.4 reports 26,323/67,750 quads with corners above 170° and 4,543 valence-2 output vertices **on a scratch run**. Those counts have **not** been re-derived from retained output here. No compile, Directional binary, test, benchmark, selector, product, fixture, or build mutation occurred in this Review.
+
+## Static finding S1: representation segments enter patch-side counts
+
+`src/geometry/PatchDescriptor.cpp:230-249` groups boundary halfedges by field family and `same_logical_side` then does `++side.subdivisionCount` **for each arrangement halfedge**, with no check that the edge endpoint is a semantic A3 breakpoint. Lines 1736-1743 copy those counts into `patch.sideEdgeCounts`. `PureQuadCompletion.cpp` consumes `patch.sideEdgeCounts` for admissibility and the rectangular grid. Thus the currently inspected completion path can force source-triangle crossing vertices, when represented as separate boundary halfedges, to be treated as completion subdivisions. This is a source-level mechanism, **not** proof of its exact frequency in Vase or proof that each crossing is extraneous: true feature endpoints, hard rails, front events and A3-owned breakpoints must be distinguished by typed lineage.
+
+DESIGN §5 A3/§7.4 owns the *semantic* positive shared breakpoint schedule before A4; its counts are over full A2b arcs, not a raw sum over source-triangle cuts. An A3 schedule is not shown to be consumed by this exact `extract_sides` counting path. An implementation decision must explicitly reconcile the two authority surfaces, not silently discard boundary vertices.
+
+## Static finding S2: concave-quad quality formulas are not faithful
+
+`src/geometry/SurfaceMeshOptimizer.cpp:1734-1780`:
+- Convexity uses oriented corner cross-products; the `nonConvex` classification is direction-aware.
+- Angle extrema use unsigned `angle_degrees(previous,next)` (range [0,180]), so they misreport a reflex interior angle (e.g. 233.1301° becomes 126.8699°).
+- Warpage is the maximum normal disagreement from **both** diagonals. For a concave planar polygon, the exterior diagonal's two triangles can have opposite normals despite perfectly coplanar vertices, giving a false 180°.
+- `signed_scaled_jacobian` (lines 1598-1615) is the minimum signed *corner* Jacobian; it is negative at any properly oriented reflex corner. That is legitimate as a concavity rejection but is not an independent sign of folding.
+
+Independent exact planar counterexample, CCW vertices `[(0,0),(2,0),(0.5,0.5),(0,2)]`, source normal +Z: corner 2 signed cross = -2, normalized signed Jacobian = -0.8, unsigned angle = 126.86989765°, actual reflex angle = 233.13010235°; diagonal (0,2) triangles have positive signed doubles areas `1,1`, while diagonal (1,3) triangles have signed doubles areas `4,-2`. Existing warpage formula therefore returns **180° for an exactly planar quad**. This is an independent geometric falsifier, not a Directional runtime result.
+
+The existing acceptance gates in `SurfaceMeshOptimizer.cpp:2906-2917` also require `nonConvex==0` and `scaledJacobianMin>0`. Fixing presentation/measurement of concave geometry alone must not be used to waive those gates. A single source-aware polygon metric with independent verification is required before interpreting the Vase warpage/angle distributions as shape evidence.
+
+## Unresolved proof and required same-turn continuation
+
+1. Reproduce an **immutable-source, scratch Review-only** census with complete per-patch raw identities: `(patchId,sideId,arrangementNodeId,sourceEdge,sourceEdgeT,incident trace/rail/family,degree,typed A3 breakpoint)`; include exact output-vertex and completed-quad lineage. All raw counts must be reproducible, with a checked manifest and exact source identity. No production code/test/fixture mutation, no compilation on ChatGPT Web.
+2. Re-derive, separately, the number of degree-2 *arrangement nodes* on source-edge crossings; their distribution per logical side and patch; the number of degree-2 *output vertices*; and the number of output quad corners above 170°. Report overlaps and exceptions, not only marginals. A degree-2 output vertex is not automatically a degree-2 arrangement node.
+3. Independently evaluate corner interior angles with reflex detection; use only geometrically interior diagonal triangulations for concave-quad warpage; compare source/Newell normals and signed corner Jacobians, with both convex and concave controls. Distinguish valid-but-nonconvex from invalid inverted, folded or self-intersecting geometry.
+4. Cross-tab poor-quality quads by the exact origin of each side breakpoint: A3 schedule, hard rail/feature, real front event, or source triangulation representation. Compare at least one representation-only subdivision and one genuine protected breakpoint under an invariant source-triangle refinement/permutation. A source-row or source-edge split must not mutate the semantic schedule unless source topology/field actually changes.
+5. Only after the causal census freeze one owner-specific bounded CB successor and its falsifiers. Candidate branches: A3-to-descriptor schedule/identity binding if representation crossings create unwanted sides; completion interior topology/embedding if quality fails with correct A3 schedules; evaluator metric correction as a separately witnessed oracle issue. Do not conflate these, remove needed vertices, weld close sheets, or weaken validation.
+
+**Boundary:** the Review cannot complete its required per-patch proof from the retained aggregate report alone. A fresh scratch census on the authorized Review track or equivalent pre-existing raw output evidence is a prerequisite. Preserve `TB84` and all independent P13-e/O30b/O31/O32b-e/O33/O27-O29 obligations.
