@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb108-compile-20261108-2301",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb108-compile",
-  "source_sha": "8599a9eedf945f2f7b9e257427502652da1a7f4b",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb108-compile"
+  "request_id": "m6-cp3-cb108-docs-20261108-2321",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb108-docs",
+  "file_id": "1HUpxMtQbcWf0u8X2oJmkAzZGEbu8EbV5",
+  "patch_sha256": "493c1be2c1a111f03b85f7c9a0ae95f0366583cfd534d1645a5e19ed00592728",
+  "base_sha": "37361e0f73594b1d69c0a97f4295ad5999724e36",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record CB108 compile and hand off immutable TB91",
+  "retention_days": 14
 }
