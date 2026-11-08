@@ -35,3 +35,7 @@ Reproducibility: all v2 scratch source files, generated off-branch C++ overlay, 
 4. Independently verify A4→A3 occurrence ownership and retain typed `not exercised` for the four existing non-A3-consuming producers. Freeze no new CB slice until D4/D5/D6 and runtime evidence are resolved.
 
 **Protected state unchanged:** accepted CP2 491/491, stable 66/17/49, debt 1, ledger v5 81 deferred, TB85 908/908 unpromoted, CB102 withdrawn. No source/test/selector/workflow mutation. Review remains unfinished, with no authorized implementation successor. Do not mark complete, reinterpret failed checks as passes, or claim actual Vase runtime evidence.
+
+## Independent boundary-check status at this continuation
+
+`python3 .agents/Directional/tools/review_check.py boundary` was rerun on the verified source snapshot and exited **1**. The checker reported 4 Git-history-dependent FAIL rows (baseline ancestor plus three durable rewrite-source checks) because the archive has no `.git`; this execution is **not PASS**. All available selector/no-document-change checks reported PASS. An independent live GitHub compare of base `8b7299b43764a6ba3444e5bc774a2f1b65e99731` to frozen source `c54184c3caab9dfd37eab6653ae923e0a5c733e9` returned `status=ahead`, `ahead_by=4371`, `behind_by=0`, with merge base exactly `8b7299b43764a6ba3444e5bc774a2f1b65e99731`. That separately establishes ancestry, **not** the three historical content comparisons. No accepted package/selectors were changed.
