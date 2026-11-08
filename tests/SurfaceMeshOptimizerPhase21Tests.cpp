@@ -200,6 +200,29 @@ TEST(SurfaceMeshOptimizerPhase21,
 }
 
 TEST(SurfaceMeshOptimizerPhase21,
+     NormalErrorOfAConcaveQuadDoesNotDependOnItsFirstCorner) {
+  // Reflex corner 1: the triangle on corners 0, 1, 2 faces away from the
+  // source although the quad lies in the source plane.
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 2.0, 0.0, 0.0,
+      0.5, 0.5, 0.0,
+      0.0, 2.0, 0.0,
+      0.0, 0.0, 0.0;
+  Eigen::MatrixXi sourceFaces(2, 3);
+  sourceFaces << 1, 2, 3,
+      1, 3, 0;
+  const auto constraints = make_constraints(
+      vertices, sourceFaces, Eigen::RowVector3d(0.0, 0.0, 1.0));
+  const auto optimization =
+      directional::geometry::optimize_projected_surface_mesh(
+          vertices, one_quad(), constraints);
+  const auto report = directional::geometry::validate_final_surface_mesh(
+      vertices, one_quad(), constraints, optimization);
+  EXPECT_NEAR(report.normalP95Degrees, 0.0, 1.0e-9);
+  EXPECT_EQ(report.nonConvex, 1);
+}
+
+TEST(SurfaceMeshOptimizerPhase21,
      BidirectionalSamplingDetectsSourceCoverageHole) {
   Eigen::MatrixXd source(4, 3);
   source << 0.0, 0.0, 0.0,

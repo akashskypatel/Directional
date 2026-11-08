@@ -2726,7 +2726,7 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
     const Eigen::RowVector3d sourceNormal =
         local_source_normal(constraints, faceSource, face);
     normalErrors.push_back(
-        angle_degrees(face_normal(vertices, quads, face), sourceNormal));
+        angle_degrees(quad_normal(vertices, quads, face), sourceNormal));
     const SurfaceQuadQualityMetrics quality =
         evaluate_surface_quad_quality(vertices, quads, face, sourceNormal);
     if (!quality.convex) {
@@ -3029,7 +3029,7 @@ SurfaceOptimizationOverlay make_surface_optimization_overlay(
         vertices, quads, face, constraints, provenance, &sourceProjection,
         &sourceLabelSupport);
     overlay.normalError(face) = angle_degrees(
-        face_normal(vertices, quads, face),
+        quad_normal(vertices, quads, face),
         local_source_normal(constraints, faceSource, face));
     for (int corner = 0; corner < 4; ++corner) {
       const int row = 4 * face + corner;
