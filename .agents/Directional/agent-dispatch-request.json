@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb87-rev-reaudit-reference-harmonization-20261108",
+  "request_id": "m6-cp3-cb105-observed-route-oracle-apply-20261108",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb87-rev-harmonization",
-  "file_id": "1iOxFmWQTi0ECi5qNAWxK-CtMQOKjaiP8",
-  "patch_sha256": "3477ee1a04edad729e1df5cfb573df397ecd09f3a2d8db675fd4f05da885d228",
-  "base_sha": "5cba58ba6d44eb3935716d42509a3a861967582c",
+  "mailbox_key": "m6-cp3-cb105-observed-route-oracle-apply",
+  "file_id": "1PUsPRE1iukjIVpZ1qAq2IX0urQX85RtL",
+  "patch_sha256": "893f617bd57649650d2187a6c8b9ffdb69e87d232697d441908de45fc4510e19",
+  "base_sha": "0da65c77feb3f9f49bd100ecdcda0abde1fd05e0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): reconcile TB87 re-audit successor references",
+  "commit_message": "test(surface-cells): compare A3 rim orientation in observed route frame",
   "retention_days": 14
 }
