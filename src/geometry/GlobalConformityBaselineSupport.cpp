@@ -140,6 +140,26 @@ std::optional<FieldExactRational> exact_target(const VertexWeights &weights,
   return value;
 }
 
+// D7 density rho = 1/h, interpolated from exact vertex reciprocals so that it
+// is affine on every source simplex (RA-216).
+std::optional<FieldExactRational>
+exact_reciprocal_target(const VertexWeights &weights,
+                        const Eigen::VectorXd &target) {
+  FieldExactRational value = exact_integer(0);
+  for (const auto &[vertex, weight] : weights) {
+    if (vertex >= static_cast<std::size_t>(target.size())) return std::nullopt;
+    const auto exact =
+        FieldExactRational::from_double_exact(target(static_cast<Eigen::Index>(vertex)));
+    if (!exact || *exact <= exact_integer(0)) return std::nullopt;
+    value = value + weight / *exact;
+  }
+  return value;
+}
+
+// Each straight run contributes the floor of its exact metric length at this
+// many fractional bits; the D7 count rounds their sum once (RA-216).
+constexpr std::size_t kPartitionStableMetricFractionalBits = 64U;
+
 EInt exact_power(EInt base, std::size_t exponent) {
   EInt result(1);
   while (exponent != 0U) {
@@ -233,6 +253,72 @@ std::optional<EInt> derive_preferred_count_exact(
   const bool roundDown = EInt(4) * energy.exact_numerator() <=
                          odd * odd * energy.exact_denominator();
   EInt nearest = roundDown ? floor : floor + EInt(1);
+  if (nearest < EInt(1)) nearest = EInt(1);
+  return nearest;
+}
+
+std::optional<EInt> derive_partition_stable_preferred_count_exact(
+    const ConformitySpanInput &span, const Eigen::MatrixXd &sourceVertices,
+    const Eigen::VectorXd &targetSize) {
+  if (span.supportPieces.empty()) return std::nullopt;
+  const auto zero = exact_integer(0);
+  const auto half = exact_ratio(EInt(1), EInt(2));
+  const EInt scale = exact_power(EInt(2), kPartitionStableMetricFractionalBits);
+  // A run is a maximal sequence of consecutive pieces along one direction u.
+  // rho is affine on each piece, so a piece d contributes exactly
+  // (d.u) * (rho0 + rho1) / 2 / |u|, and the run's squared metric is rational.
+  std::array<FieldExactRational, 3> direction{zero, zero, zero};
+  FieldExactRational directionSquared = zero;
+  FieldExactRational runMeasure = zero;
+  EInt scaledTotal(0);
+  const auto close_run = [&]() {
+    if (directionSquared == zero) return;
+    const auto squared = runMeasure * runMeasure / directionSquared;
+    scaledTotal += integer_sqrt_floor(squared.exact_numerator() * scale *
+                                      scale / squared.exact_denominator());
+  };
+  std::optional<ConformitySourcePoint> previous;
+  for (const auto &piece : span.supportPieces) {
+    if (previous && *previous != piece.first) return std::nullopt;
+    const auto first =
+        point_weights(piece.first, static_cast<std::size_t>(sourceVertices.rows()));
+    const auto second =
+        point_weights(piece.second, static_cast<std::size_t>(sourceVertices.rows()));
+    if (!first || !second || piece.first == piece.second ||
+        !carrier_contains(piece.carrier, *first) ||
+        !carrier_contains(piece.carrier, *second)) {
+      return std::nullopt;
+    }
+    const auto p0 = exact_position(*first, sourceVertices);
+    const auto p1 = exact_position(*second, sourceVertices);
+    const auto rho0 = exact_reciprocal_target(*first, targetSize);
+    const auto rho1 = exact_reciprocal_target(*second, targetSize);
+    if (!p0 || !p1 || !rho0 || !rho1) return std::nullopt;
+
+    std::array<FieldExactRational, 3> delta{zero, zero, zero};
+    FieldExactRational deltaSquared = zero;
+    FieldExactRational along = zero;
+    for (std::size_t axis = 0U; axis < 3U; ++axis) {
+      delta[axis] = (*p1)[axis] - (*p0)[axis];
+      deltaSquared = deltaSquared + delta[axis] * delta[axis];
+      along = along + delta[axis] * direction[axis];
+    }
+    if (deltaSquared == zero) return std::nullopt;
+    // Same direction iff Cauchy-Schwarz holds with equality and d.u > 0.
+    if (!(along > zero && along * along == deltaSquared * directionSquared)) {
+      close_run();
+      direction = delta;
+      directionSquared = deltaSquared;
+      runMeasure = zero;
+      along = deltaSquared;
+    }
+    runMeasure = runMeasure + along * (*rho0 + *rho1) * half;
+    previous = piece.second;
+  }
+  close_run();
+
+  EInt nearest = scaledTotal / scale;
+  if (EInt(2) * (scaledTotal - nearest * scale) > scale) nearest += EInt(1);
   if (nearest < EInt(1)) nearest = EInt(1);
   return nearest;
 }

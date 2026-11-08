@@ -13,6 +13,13 @@ namespace directional::geometry::global_conformity_baseline_detail {
     const ConformitySpanInput &span, const Eigen::MatrixXd &sourceVertices,
     const Eigen::VectorXd &targetSize);
 
+// D7 preferred count (RA-216): the rounded integral of rho = 1/h along the
+// span's physical path, independent of how the path is split into pieces.
+// Not yet the scheduler's objective; derive_preferred_count_exact still is.
+[[nodiscard]] std::optional<EInt> derive_partition_stable_preferred_count_exact(
+    const ConformitySpanInput &span, const Eigen::MatrixXd &sourceVertices,
+    const Eigen::VectorXd &targetSize);
+
 [[nodiscard]] std::uint64_t
 exact_target_metric_digest(const Eigen::VectorXd &targetSize);
 
