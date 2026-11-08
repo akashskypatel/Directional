@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb105-observed-route-oracle-apply-20261108",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb105-observed-route-oracle-apply",
-  "file_id": "1PUsPRE1iukjIVpZ1qAq2IX0urQX85RtL",
-  "patch_sha256": "893f617bd57649650d2187a6c8b9ffdb69e87d232697d441908de45fc4510e19",
-  "base_sha": "0da65c77feb3f9f49bd100ecdcda0abde1fd05e0",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surface-cells): compare A3 rim orientation in observed route frame",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb105-observed-route-compile-20261108",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb105-observed-route-compile",
+  "source_sha": "d96df38e5ebfe33bbf979f27a82f7a5a332a7738",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-cb105-observed-route"
 }
