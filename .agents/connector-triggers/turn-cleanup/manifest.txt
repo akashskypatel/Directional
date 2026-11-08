@@ -1,2 +1,0 @@
-# M6-CP3-DEFN-P13-VASE-PRODUCER-PATH temporary state
-.agents/connector-triggers/source-snapshot/M6-CP3-VASE-PRODUCER-PATH-20261108-0444.txt
