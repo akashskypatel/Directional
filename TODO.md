@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-TB84-P13-CONTACT-PREDICATES-FULL-GATE-EXEC`. CB97–CB99 source and compile-only turns completed; execute TB84 separately. Authority: [RA-210](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md) §5 exactly: CB97 (`84b8414f…`), CB98 (`14986e38…`), CB99 (`92c67e63…`), then TB84 (§6). Steps 49–52; then Review P13-n (step 53).
+> **Current canonical next:** `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY` (P13-n Review; RA-210 §4, step 53). TB84 completed / MATCH on CB99 immutable package: 906/906, membership 987, Cylinder PASS, BunnyRandom expected P13-e RED, Vase expected aggregate-quality RED with zero strict validation issues; [report](.agents/Directional/Architecture_M6_CP3_TB84_P13_Contact_Predicates_Full_Gate_Execution_Report_20261108.md). No CP3/selector497 promotion.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -40,12 +40,13 @@
        - numstat `11 4` / `7 0` / `4 0` / `42 15` / `14 10` / `41 0`; results in RA-210.5.
      - Mismatch → `M6-CP3-PLAN-P13-COMPLETION-CORNER-ON-OPPOSITE-EDGE-STOP`.
      - [CB99 record](.agents/Directional/Architecture_M6_CP3_CB99_P13_Completion_Corner_On_Opposite_Edge_Code_Build_Record_20261107.md): exact source `553932b04fb433b560e24c59d23751f70f7f2c3e`, GMP compile [run 42425406875](https://github.com/akashskypatel/Directional/actions/runs/42425406875), immutable package `13595960339`, `runtimeExecution=false`; no TB executed.
-  52. [ ] **NEXT `M6-CP3-TB84-P13-CONTACT-PREDICATES-FULL-GATE-EXEC`** (TB-EXEC; RA-210.6):
+  52. [x] **COMPLETE / MATCH `M6-CP3-TB84-P13-CONTACT-PREDICATES-FULL-GATE-EXEC`** (TB-EXEC; RA-210.6):
      - Gate: [906-row manifest](.agents/Directional/Architecture_M6_TB84_P13_Contact_Predicates_Full_Gate_Case_Manifest.tsv) `09eff7ed146ef39836706f4d87ae8e9309e35ab16787b6d1e8c3f39314a0b7ff`; ledger v5; **906/906**, membership 987.
      - **Pinned:** gate rows 795/796/797/864, census Cylinder and BunnyRandom byte-identical to TB83; Vase through `simplification`.
      - **Registered (macOS-observed):** Vase `validationIssues=0`, terminal `AggregateCompletionValidationFailure`.
      - Mismatch → `M6-CP3-TB84-P13-CONTACT-PREDICATES-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB84A-P13-CONTACT-PREDICATES-ORCH`.
-  53. [ ] **Review (after TB84) `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`** (P13-n; Claude, scratch build; RA-210.4):
+     - **Observed:** [TB84 report](.agents/Directional/Architecture_M6_CP3_TB84_P13_Contact_Predicates_Full_Gate_Execution_Report_20261108.md) — gate 906/906 PASS, membership 987, 1,820/1,820 hashes, three census cases (Cylinder PASS, BunnyRandom/Vase registered RED), 9/9 hashes; Vase `validationIssues=0`, `AggregateCompletionValidationFailure`. Stable 66/17/49, debt 1, CP2 491/491 unchanged.
+  53. [ ] **NEXT Review `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`** (P13-n; Claude, scratch build; RA-210.4):
      - exact per-patch counts of degree-2 source-edge side nodes and flat corners;
      - check that the warpage, normal and Jacobian metrics handle concave quads;
      - owner: A3 conformity plan vs completion interior-vertex patterns;

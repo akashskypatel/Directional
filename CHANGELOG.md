@@ -1,3 +1,9 @@
+## 2026-11-08 UTC — TB84 contact-predicates full gate and production census (Test + Benchmark)
+
+- **COMPLETE / MATCH:** [TB84 report](.agents/Directional/Architecture_M6_CP3_TB84_P13_Contact_Predicates_Full_Gate_Execution_Report_20261108.md); exact immutable CB99 source `553932b04fb433b560e24c59d23751f70f7f2c3e`, package `13595960339`; [gate 42427677870](https://github.com/akashskypatel/Directional/actions/runs/42427677870), result `13595899602`, 906/906 PASS, membership 987, 1,820/1,820 hashes; new guards 904–906 PASS and four pinned TB83 digests byte-identical.
+- [Census 42427753547](https://github.com/akashskypatel/Directional/actions/runs/42427753547), result `13597160142`: 1 PASS / 2 registered RED, 9/9 hashes, Cylinder/BunnyRandom digests exact TB83; Vase exact through simplification, `validationIssues=0` (previously 4), `AggregateCompletionValidationFailure`, 67,750 informational quads. No source, package, test, fixture or selector mutation; no compilation/relink, postflight true.
+- No new stable regression: CP2 accepted 491/491, 66/17/49, debt 1 unchanged; selector497 and CP3 unpromoted. Next separate Review `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY` (RA-210.4; source-edge side subdivision and quad quality).
+
 ## 2026-11-07 UTC — CB99 completion corner-on-opposite-edge (Code + Build)
 
 - Exact RA-210.5 344-line patch SHA-256 `92c67e63…2d45dcbe` applied to six prescribed paths at [source `553932b04fb433b560e24c59d23751f70f7f2c3e`](https://github.com/akashskypatel/Directional/commit/553932b04fb433b560e24c59d23751f70f7f2c3e), all six postimages matching. Remote application [42425276322](https://github.com/akashskypatel/Directional/actions/runs/42425276322) succeeded; temporary Drive patch staging retired.
