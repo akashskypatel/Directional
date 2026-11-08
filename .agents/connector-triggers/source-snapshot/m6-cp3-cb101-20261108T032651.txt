@@ -1,3 +1,0 @@
-CB101 source snapshot
-Entry SHA: 6dfa6a866429386560de1c2894930b313f93dcd5
-Reason: freeze source authority for code/build turn; snapshot event SHA is authoritative.
