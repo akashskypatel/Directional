@@ -1,2 +1,0 @@
-# M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER temporary files; snapshot 42452191280 verified
-.agents/connector-triggers/source-snapshot/20261108-0549-a4-a2b-review.txt

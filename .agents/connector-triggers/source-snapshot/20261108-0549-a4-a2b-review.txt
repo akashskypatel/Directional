@@ -1,2 +1,0 @@
-Purpose: exact source snapshot for M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER review.
-No build, test, or semantic mutation authorized.
