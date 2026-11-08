@@ -58,6 +58,6 @@ TB88's immutable 910/910 MATCH (membership 991) establishes its specific observe
 | Consolidation under CLEAN_UP_POLICY | No historical evidence deleted; one review decision and in-place durable current-state changes only. |
 | Successor frozen | CB106 only, D7 metric and exact breakpoint implementation; falsifiers and stop rule above. |
 | Turn boundary held | Static source inspection only; no generated Directional runtime/build/test, no implementation/test/selector mutation. |
-| review_check.py boundary | Not yet verified on authentic Git history; snapshot excludes `.git`. Cannot claim PASS from a synthetic mirror. |
+| review_check.py boundary | PASS on full authentic Git history, with durable-section and selector checks; append-only ledger scan PASS. Independent [run 42506579219](https://github.com/akashskypatel/Directional/actions/runs/42506579219), `D7_REVIEW_GATE_PASSED`. |
 | `STATUS` lifecycle maintained | Initial in-progress beacon committed; final beacon follows actual durable publication status. |
-| Pushed to origin, branch in sync | Not yet verified; patch publication and remote readback pending. No local `git status -sb` against actual origin is claimed. |
+| Pushed to origin, branch in sync | Drive apply commit `aa55054543e8a5d1b309cc9d46f0ff543117b05c` confirmed by remote PR HEAD/readback and authentic-history workflow; runner reported clean detached HEAD. A tracking-branch `git status -sb` was not available in ChatGPT Web, so no such claim is made. |
