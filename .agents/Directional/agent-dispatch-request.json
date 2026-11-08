@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb88-doc-closeout-20261108-1707",
+  "request_id": "m6-cp3-defn-d7-partition-metric-20261108-1742",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb88-doc-closeout",
-  "file_id": "1hcVS__6SF0u9retnYxHT6okcTKl-jAdZ",
-  "patch_sha256": "ee52e42dea3652f03a2e1dab925e3157235c4631d7e62f41494da98566e37a52",
-  "base_sha": "c67fe51034af2ae25865901aa25db6550f0ade47",
+  "mailbox_key": "m6-cp3-defn-d7-partition-metric",
+  "file_id": "1GjhcB6JN7bjKL0L-kh_7ngmMmEgBQDDh",
+  "patch_sha256": "4b699d883357cb9c80824459ffb7bf6260a6a16f57b7f9ee8e32e01b55544a8b",
+  "base_sha": "3fb96ef304b12441b05aa9159ee1888a0c45729c",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): close TB88 immutable gate and route D7 definition",
+  "commit_message": "docs(agent): define A3 partition-stable metric contract D7",
   "retention_days": 14
 }
