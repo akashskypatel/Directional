@@ -1,5 +1,7 @@
 ## 2026-11-08 UTC — TB87 independent observed-route orientation Review (runtime-free)
 
+- Requested substantive re-audit: a one-step canonical route stores `-1` regardless of observed sign, so TB87 mismatch does not establish producer sign correctness. Preserved the exact CB105/TB88 boundary and split the later D7, D5, uniform D4, annulus D4, D9c, reciprocal trace, disc domain and receipt D8 work into separately testable DEFN → CB → TB turns. No production/test mutation or new runtime claim.
+
 - [TB87-REV](.agents/Directional/Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Orientation_Adjudication_20261108.md) independently verified 1,828/1,828 gate hashes, 32 repeated rim-edge failures across both row orders, and the `CanonicalRoute::steps()` canonical-vs-observed frame mismatch. No production defect proven by the guard failure.
 - Frozen exact [CB105 test-only patch](.agents/Directional/Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Oracle_Exact.diff) SHA256 `9e9635ae…`; compile/package only in CB105, immutable 910-case TB88 separately. No runtime in Review; TB87 remains 909/910 unaccepted, CP2 491/491, stable 66/17/49 debt 1, CP3 unpromoted.
 

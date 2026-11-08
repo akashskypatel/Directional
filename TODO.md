@@ -7,9 +7,27 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — TB87-REV: guard 910 canonical-versus-observed frame adjudicated; CB105 exact test fix next (2026-11-08)
+## CURRENT — TB87-REV substantive re-audit; CB105 exact test patch next (2026-11-08)
 
 - [x] **TB87-REV** [decision](.agents/Directional/Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Orientation_Adjudication_20261108.md): observed orientation must use `CanonicalRoute::oriented_steps()`, not canonical storage `steps()`. 32 matching rim indices in both row orders, 64 failures, no producer sign violation shown. Frozen exact test-only [CB105 diff](.agents/Directional/Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Oracle_Exact.diff) and separate TB88; no review-time runtime. No CP3 promotion.
+
+**Re-audit findings (source/design):** the stored single-step `CanonicalRoute` sign is always `-1` under current lexical normalization; the 64 TB87 mismatches do not prove any producer sign. `oriented_steps()` is the correct observed-frame test oracle but requires TB88 runtime. Factory validation accepts sign-consistent wrong spans/paired ordinal-sign reversal without A3 schedule binding (D9c), and receipt digests do not prove A3 consumption (D8); uniform/annulus D4 and partition D7 vs chain D5 remain separate production gaps. None is a new accepted-green regression. The next turn remains **only CB105**, then **only TB88**.
+
+**Post-TB88 implementation sequence — no monolithic assignment:** each row is an independent runtime-free DEFN followed, *after approval*, by a narrow exact CB (compile-only) and an immutable TB (positive, tamper, row-invariance, accepted-prefix-preserving) before the next row.
+
+| Order | Review-definition owner | Separate proof obligation |
+|---|---|---|
+| 64 D7 | `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC` | Same geometric path across different piece splits → same count and positions |
+| 64B D5 | `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING` | Chain topology, original-arc lineage, positivity, exact coverage |
+| 64C D4 | `M6-CP3-DEFN-P13-A3-UNIFORM-PLAN-CONSUMPTION` | Uniform A3 coverage or typed decline; omission falsifier |
+| 64D D4 | `M6-CP3-DEFN-P13-A3-ANNULUS-PLAN-CONSUMPTION` | Annulus periodic/cut coverage and orientation falsifier |
+| 65A D9c | `M6-CP3-DEFN-P13-A3-BOUNDARY-SPAN-CARRIER-BINDING` | Factory rejects wrong span/carrier and paired sign/ordinal tamper; absent physical rim remains legal |
+| 65B D9 | `M6-CP3-DEFN-P13-A2B-RECIPROCAL-TRACE-INTERVALS` | Exact cross-region reciprocal trace identity and tamper |
+| 65C A4 | `M6-CP3-DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION` | Three Vase A2b discs, independent domain construction; no fill/dispatch |
+| 65D D8 | `M6-CP3-DEFN-P13-A3-CONSUMPTION-RECEIPT-VALIDATION` | Receipt reflects actual accepted schedule consumption |
+| 66+ | Corners/D6 → fill → dispatch | Distinct DEFN/CB/TB each, D6 user decision pending |
+
+The previous combined 64/64A/65 entries below are *historical umbrellas only*; this table supersedes their bundled implementation scopes. [Decision and falsifiers](.agents/Directional/Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Orientation_Adjudication_20261108.md#requested-substantive-re-audit--independent-static-source-analysis-2026-11-08).
 
 ## CURRENT — RA-215: step 61 re-entered; exact CB104 + TB87 frozen; D9c and D4 owned (2026-11-08)
 
@@ -57,9 +75,9 @@
      - Manifest: [manifest](.agents/Directional/Architecture_M6_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Case_Manifest.tsv), 910 rows, `c435519f6304fdcedb794e45187c8c4645e0bb36d32ec567e7979d292fb245bf`, membership 991, ledger v5 81, census `3af1dc0d…`.
      - Expected: 910/910 (GUARD 909 and 910 PASS). Rows 795/796/797/864 and the 3 census `platform-digest` **and** `a3-coverage` lines are byte-identical to TB86.
      - [Verified TB87 report](.agents/Directional/Architecture_M6_CP3_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Execution_Report_20261108.md): gate 909/910, GUARD 910 RED at `SurfaceCellsPhase10Tests.cpp:7445` (−1 route step vs +1 interval orientation), 1,828/1,828 checksums; census 1 PASS / 2 expected RED, 9/9 checksums; 7/7 pinned platform and 7/7 A3 lines exact. No repair inside TB. **Activated mismatch route → `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-REV` (Review, runtime-free)**; step 64 is deferred until adjudication.
-  64. [ ] Review (runtime-free) `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC`: D7, then D5 maximal Mandatory chains, with a DESIGN §7.4 amendment.
-  64A. [ ] Review (runtime-free) `M6-CP3-DEFN-P13-A3-UNIFORM-ANNULUS-CONSUMPTION` (D4, RA-215 F8). The uniform and annulus producers ignore A3 (DESIGN §2.1 item 7). Either they adopt and record A3 breakpoints, or they decline honestly under an A3 plan. After 64; before CP3 promotion.
-  65. [ ] Review (runtime-free) `M6-CP3-DEFN-P13-A4-A2B-DISC-DOMAIN`: plan-trace edge kind with reciprocal intervals, D9c span-to-carrier authority, the cross-region falsifier, and the disc domain.
+  64. [ ] Review (runtime-free) `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC`: **D7 only**, independent of D5; see revised 64–65D sequence above.
+  64A. [ ] **Superseded combined D4 bundle**; separate 64C uniform and 64D annulus, each DEFN/CB/TB, before CP3 promotion.
+  65. [ ] **Superseded combined D9c+trace+disc bundle**; separate 65A, 65B and 65C, plus 65D D8, per table above.
   66. [ ] Per-disc boundary and corners (needs D6) → fill (§4.9) → dispatch and honest `Declined` flags (D3). One DEFN → CB → TB each.
   - Parallel: step 44 (P13-e), re-scoped runtime-free when opened. O31 and P13-n1/2/3 are legacy-only and not scheduled.
 

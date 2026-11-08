@@ -41,6 +41,24 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Regression accounting and debt | Accepted CP2 **491/491**; stable **66/17/49**, debt **1**; ledger v5 81 deferred (47 FIXTURE, 7 PRODUCT, 22 OPEN, 5 RETIRE); TB87 candidate membership **991** (TB86 historical membership 990). Selector497/CP3 unpromoted. O32a verified; O32b–e, O30b, O31, O33 remain. |
 | Active boundary | **TB87-REV adjudicated**: GUARD 910 compared canonical storage frame with observed edge traversal. Exact test-only CB105 then separate TB88. Preserve all RA-215 coverage and tamper checks; no direct acceptance or selector promotion. D7/D5 step64, D4 step64A, D9c step65, D6 user decision pending. |
 
+### Revised post-TB88 bounded sequence (requested independent re-audit; one change family per turn)
+
+The [TB87 substantive re-audit](Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Orientation_Adjudication_20261108.md#requested-substantive-re-audit--independent-static-source-analysis-2026-11-08) confirms the CB105 test-frame correction, but **does not establish a production sign fix or A3 plan consumption**. After *CB105* (test-only compile) and *TB88* (frozen artifact-only gate), schedule in this order. Each DEFN is **runtime-free**, followed by its own **exact scoped Code + Build** and its own **artifact-only Test + Benchmark**; no grouped CB/TB implementations or changes to frozen selector, fixtures, or failure accounting. Halt at the first mismatch for independent Review.
+
+| Order | Review definition turn | Independent requirement and falsifier |
+|---|---|---|
+| 64 / D7 | `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC` | One source path partitioned differently gives same count and breakpoint positions; amend DESIGN §7.4 for metric only, before D5 |
+| 64B / D5 | `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING` | Maximal-chain topology, span identity, positivity and source lineage; split/merged source-edge representation cannot change physical counts without certified authority |
+| 64C / D4 uniform | `M6-CP3-DEFN-P13-A3-UNIFORM-PLAN-CONSUMPTION` | Uniform producer uses exact A3 plan, or declines, with missing-breakpoint and row-order controls |
+| 64D / D4 annulus | `M6-CP3-DEFN-P13-A3-ANNULUS-PLAN-CONSUMPTION` | Annulus producer independently consumes exact periodic/cut plan, with reversed-boundary tamper |
+| 65A / D9c | `M6-CP3-DEFN-P13-A3-BOUNDARY-SPAN-CARRIER-BINDING` | Factory validates typed carrier/span attachment; foreign span and coupled endpoint/sign reversal negative; legal absent physical rim still allowed |
+| 65B / D9 trace | `M6-CP3-DEFN-P13-A2B-RECIPROCAL-TRACE-INTERVALS` | One reciprocal plan-trace edge/occurrence contract; exact paired region/span and inverted ordinals/orientations, cross-region tamper |
+| 65C / A4 | `M6-CP3-DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION` | Construct A4 bounded domains from A2a′ fragments and A2b walks using A3; first targeted 3-disc Vase evidence, no filling or dispatch |
+| 65D / D8 | `M6-CP3-DEFN-P13-A3-CONSUMPTION-RECEIPT-VALIDATION` | Receipt cannot imply consumption without validated per-producer schedule coverage, with omission tamper |
+| 66+ | Per-disc corners (D6 user decision required), fill, dispatch | Each separately defined, implemented and verified; no premature acceptance |
+
+The prior combined 64 (D7+D5), 64A (uniform+annulus), and 65 (D9c+trace+disc) are **superseded only as bundled implementation assignments**. Do not lose their existing semantic requirements, lineage, or debt. These future IDs are sequence metadata; **only CB105 is the immediate NEXT_TURN**.
+
 ## Mandatory next turn — `M6-CP3-CB105-P13-A3-OBSERVED-ROUTE-ORIENTATION-ORACLE` (exact test-only Code + Build)
 
 - **Trigger:** [TB87-REV independent adjudication](Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Orientation_Adjudication_20261108.md) proved GUARD 910 compared canonical `route.steps()` to an observed A3 source-rim interval orientation. The frozen gate was 909/910; no product defect was isolated by that mismatch.
@@ -236,9 +254,7 @@ Facts are in the records, `TODO.md` steps and Review track, `CHANGELOG.md` and t
 | 61 — Review COMPLETE (re-entered) | `M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS` | [step-61 decision](Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Review_20261108.md) (contract and reader census stand) → [RA-215](Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Adversarial_Review_20261108.md): false witness rejection, non-exact CB104, unbound falsifiers; exact CB104 + TB87 frozen; D9c; D4 owner 64A |
 | **62 — COMPLETE** | `M6-CP3-CB104-P13-A3-RECORDED-BOUNDARY-INTERVALS` | Implementation agent, compile only; RA-215 §4 `dfacc5cb…` (227 lines, keep 2 single-space context lines), numstat `3 1` / `10 5` / `147 0`. Mismatch → `M6-CP3-PLAN-P13-A3-RECORDED-BOUNDARY-INTERVALS-STOP`; infrastructure → `M6-CP3-CB104A-P13-A3-RECORDED-BOUNDARY-INTERVALS-ORCH` |
 | **63 — COMPLETE / MISMATCH** | `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-EXEC` | [TB87 report](Architecture_M6_CP3_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Execution_Report_20261108.md): gate 909/910, GUARD 910 orientation mismatch (−1 vs +1); census expected 1 PASS / 2 RED; 7 platform + 7 A3 lines byte-identical to TB86. Activated `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-REV` Review route; step 64 not open |
-| 64 (Review, runtime-free) | `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC` | D7, then D5: partition-invariant exact count, arc-length breakpoints, then maximal Mandatory chains; DESIGN §7.4 amendment; exact CB/TB |
-| 64A (Review, runtime-free) | `M6-CP3-DEFN-P13-A3-UNIFORM-ANNULUS-CONSUMPTION` | D4 (RA-215 F8): the uniform and annulus producers ignore A3, yet produce every observed gate case (DESIGN §2.1 item 7). Either they adopt and record A3 rim and cut breakpoints, or they decline honestly under an A3 plan. After 64; independent of 65; before CP3 promotion |
-| 65 (Review, runtime-free) | `M6-CP3-DEFN-P13-A4-A2B-DISC-DOMAIN` | A2b plan-trace edge kind with reciprocal intervals, D9c span-to-carrier authority, cross-region falsifier (from step 61), and the disc-domain builder (A2a′ fragments, oriented walk, A3 breakpoints); exact CB/TB; its TB first measures Vase's 3 discs |
+| 64–65D (Review, runtime-free; scoped) | **See revised bounded sequence above** | D7 metric → D5 chains → D4 uniform → D4 annulus → D9c carrier attachment → A2b reciprocal trace → A4 disc domain → D8 receipt; each DEFN then dedicated CB then dedicated TB; old combined 64/64A/65 rows superseded as implementation bundles. |
 | 66+ | per-disc boundary and corners (D6) → fill (§4.9) → aggregator dispatch with honest `Declined` flags (D3) | One DEFN → CB → TB each |
 | — WITHDRAWN | `M6-CP3-DEFN-P13-SEMANTIC-PATCH-BOUNDARY` | RA-211.7; withdrawn by RA-212.3 (measured on a noise-seeded layout 20× denser than target) |
 | 44 (Review, parallel) | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49) → CB → TB | Runtime-free DEFN (RA-214 §1; scratch label suspended), then exact patch |
@@ -247,11 +263,11 @@ Facts are in the records, `TODO.md` steps and Review track, `CHANGELOG.md` and t
 | 44C (Review) | `M6-CP3-DEFN-P13-CHART-FACE-PER-QUAD-COST` (O33) | Claude, scratch build; one chart-level cache for the five per-quad chart-face sites (RA-206.5); before Vase reaches optimization |
 | 45 | P13 re-census → metamorphic census rows (O32) → O6/O9 where reached → matrix 6/6 → retire/FIXTURE/PRODUCT/OPEN slices → CP3-REV | One slice at a time |
 
-Rows 49–63 are complete as turns; row 63 TB87 is **MISMATCH**, so `M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-REV` intervenes before step 64. The authorized sequence is TB87 Review → exact corrective CB/TB when justified → 64 → 64A → 65 → 66+. Rows 44, 44A, 44B and 44C keep their scope, but their "Claude, scratch build" label is suspended (RA-214 §1). Each is re-scoped runtime-free when it is opened, unless the user explicitly authorizes a `REVIEW_TURN_POLICY.md` §4.3 amendment.
+Rows 49–63 are complete as turns; row 63 TB87 remains **MISMATCH**. TB87-REV is re-audited: next CB105 exact test-only build → TB88 frozen gate → individual DEFN/CB/TB sequences 64, 64B, 64C, 64D, 65A, 65B, 65C, 65D → 66+. Only the first successor is authorized now. Rows 44, 44A, 44B and 44C keep their scope, but their "Claude, scratch build" label is suspended (RA-214 §1). Each is re-scoped runtime-free when it is opened, unless the user explicitly authorizes a `REVIEW_TURN_POLICY.md` §4.3 amendment.
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-TB87-P13-A3-RECORDED-BOUNDARY-INTERVALS-FULL-GATE-REV** (runtime-free Review of TB87 failed GUARD 910; [TB87 final report](Architecture_M6_CP3_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Execution_Report_20261108.md), [RA-215](Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Adversarial_Review_20261108.md), exact CB104 source `b41fbf72…`, immutable package 13619640763).
+`load_next`: **M6-CP3-CB105-P13-A3-OBSERVED-ROUTE-ORIENTATION-ORACLE** (approved exact one-test compile-only correction; TB87-REV substantive re-audit completed; [TB87 final report](Architecture_M6_CP3_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Execution_Report_20261108.md), [RA-215](Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Adversarial_Review_20261108.md), exact CB104 source `b41fbf72…`, immutable package 13619640763).
 - CB89 compiled source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, immutable package artifact `13370954424`, 28/28 hashes, eight GMP/GMPXX targets; no test execution.
 - TB79 artifact-only gate (RA-203.6) finished: 899/899, census MATCH.
 - RA-204 completed the O30 Review; CB90 and TB80 are done. The fixed-field replay is withdrawn: do not build a field fixture.
