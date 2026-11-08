@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb87-rev-doc-closeout-20261108-1518-v2",
+  "request_id": "m6-cp3-tb87-rev-substantive-reaudit-20261108-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb87-rev-doc-closeout-v2",
-  "file_id": "1mpDpw7QUsntrQolE6zEg_9MlOQ6tswyt",
-  "patch_sha256": "9169174af3729180cbbc7430fa7327cfeb71ad7acdc19dc16a4d2312db4b22b2",
-  "base_sha": "d8b42b00598f4a39a6419012979c75c053a4a40a",
+  "mailbox_key": "m6-cp3-tb87-rev-substantive-reaudit",
+  "file_id": "1hXw9V2j9h57V4aKuZriD9AZqqqEDPo_w",
+  "patch_sha256": "4a6094ac8fbd4b09110b518a7f0be63f89bf597469a6a33eca254f5429a3c20d",
+  "base_sha": "4a9bf98f0718dbea77416dc58cc3e19c81d8de56",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): adjudicate TB87 observed-route orientation oracle",
+  "commit_message": "docs(directional): substantive TB87 re-audit and split A3/A4 follow-up turns",
   "retention_days": 14
 }
