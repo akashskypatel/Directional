@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-d7b-defn-apply-20261108-2152",
+  "request_id": "m6-cp3-cb108-drive-apply-20261108-2300",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-d7b-defn-apply",
-  "file_id": "13DMoPjXC8Qvumym5s_K8ZMcUoaLt0HjU",
-  "patch_sha256": "2b72affc70eb073610a96662626cc7d75745d1ccf922ef9e6d1e9a9613c72e78",
-  "base_sha": "e8c56a30c2bbb64c5ec384321c37663c4f49ec72",
+  "mailbox_key": "m6-cp3-cb108-drive-apply",
+  "file_id": "1tZVtlF0wMPxkKyn8tE7UY5DUImbDequg",
+  "patch_sha256": "0b66a45a398cf81555ce3f2dfc971aa16fc30cf4b3920797f64c6b79ab998f02",
+  "base_sha": "37361e0f73594b1d69c0a97f4295ad5999724e36",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(surface-cells): freeze D7b metric breakpoint placement review",
+  "commit_message": "feat(surface-cells): add D7b metric breakpoint placement helpers and guards",
   "retention_days": 14
 }
