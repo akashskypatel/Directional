@@ -1,3 +1,8 @@
+## 2026-11-08 UTC — TB86 A3 span-coverage immutable full gate + census (Test + Benchmark)
+
+- [TB86 COMPLETE / MATCH](.agents/Directional/Architecture_M6_CP3_TB86_P13_A3_Span_Coverage_Full_Gate_Execution_Report_20261108.md): exact CB103 GMP package `13613225138`, [gate 42471488975](https://github.com/akashskypatel/Directional/actions/runs/42471488975) **909/909 PASS**, membership 990, 1,826/1,826 checksums, 4/4 pinned TB85 gate digests; GUARD 909 PASS. [Census 42471512649](https://github.com/akashskypatel/Directional/actions/runs/42471512649) 1 PASS / 2 registered RED, 9/9 checksums, 3/3 pinned digests. Seven A3 records satisfy conservation and show no false claimed consumption; Vase `observed=0`.
+- No configure/build/relink or product-source/test/fixture edits; no new stable regression or promotion. CP2 491/491, stable 66/17/49, debt 1, 81 deferred; selector497/CP3 unpromoted. Next runtime-free Review step 61 `M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS` (RA-214 §5).
+
 ## 2026-11-08 UTC — CB103 A3 span-coverage receipt (Code + Build; compile-only)
 
 - [CB103 record](.agents/Directional/Architecture_M6_CP3_CB103_P13_A3_Span_Coverage_Receipt_Code_Build_Record_20261108.md): exact RA-214 §6 six-file patch `0982bd4a…` applied at source [`000752d896aad4`](https://github.com/akashskypatel/Directional/commit/000752d896aad4e515bcffc23331c26692539830) by [run 42467958970](https://github.com/akashskypatel/Directional/actions/runs/42467958970); report-only A3 span coverage and nonvacuous GUARD compiled.

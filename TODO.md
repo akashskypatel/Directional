@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-TB86-P13-A3-SPAN-COVERAGE-FULL-GATE-EXEC` (artifact-only gate, manifest 909 `3573ffbf…`), after [CB103 compile-only](.agents/Directional/Architecture_M6_CP3_CB103_P13_A3_Span_Coverage_Receipt_Code_Build_Record_20261108.md). Step 59 complete; step 58 closed runtime-free. Preserve TB85 immutable 908/908 PASS, membership 989, and accepted CP2 491/491; do not promote selector497/CP3.
+> **Current canonical next:** `M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS` (step 61, runtime-free Review under RA-214 §5), after [TB86 COMPLETE / MATCH](.agents/Directional/Architecture_M6_CP3_TB86_P13_A3_Span_Coverage_Full_Gate_Execution_Report_20261108.md): immutable 909/909 PASS, membership 990, seven TB85 digests exact; Cylinder PASS, BunnyRandom/Vase pre-registered RED. Accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred; selector497/CP3 unpromoted.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -23,12 +23,13 @@
      - Numstat: `8 0` / `36 1` / `71 0` / `22 0` / `11 0` / `63 0`.
      - Compile only.
      - Routes: mismatch → `M6-CP3-PLAN-P13-A3-SPAN-COVERAGE-RECEIPT-STOP`; infrastructure → `M6-CP3-CB103A-P13-A3-SPAN-COVERAGE-RECEIPT-ORCH`.
-  60. [ ] **NEXT `M6-CP3-TB86-P13-A3-SPAN-COVERAGE-FULL-GATE-EXEC`**: [manifest](.agents/Directional/Architecture_M6_TB86_P13_A3_Span_Coverage_Full_Gate_Case_Manifest.tsv), 909 rows, `3573ffbf6cba47592489c34f2177988c1b66871db4cd983577694dbb9dcabe76`, membership 990.
+  60. [x] **COMPLETE / MATCH `M6-CP3-TB86-P13-A3-SPAN-COVERAGE-FULL-GATE-EXEC`**: [manifest](.agents/Directional/Architecture_M6_TB86_P13_A3_Span_Coverage_Full_Gate_Case_Manifest.tsv), 909 rows, `3573ffbf6cba47592489c34f2177988c1b66871db4cd983577694dbb9dcabe76`, membership 990.
      - Expected: 909/909.
      - Rows 795, 796, 797 and 864 and the census `platform-digest` lines byte-identical to TB85.
      - `a3-coverage`: partial=0, foreign=0, and covered + unrecorded = scheduled; Vase observed=0.
-     - Routes: mismatch → `…-TB86-…-FULL-GATE-REV` (Review, runtime-free); infrastructure → `M6-CP3-TB86A-P13-A3-SPAN-COVERAGE-ORCH`.
-  61. [ ] Review (runtime-free, after CB103 lands) `M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS`, for D9. Audit every `sharedBoundaryInterval` consumer, then freeze exact CB104: rim intervals on `GenuineSourceBoundary` edges, recorded by curved-disk.
+     - [Result report](.agents/Directional/Architecture_M6_CP3_TB86_P13_A3_Span_Coverage_Full_Gate_Execution_Report_20261108.md): gate 909/909 PASS, membership 990, 1,826/1,826 checksums; 7/7 pinned digests exact, 7/7 A3 records satisfy invariants; census 1 PASS / 2 expected RED, 9/9 hashes; no promotion.
+     - Routes were not activated: no mismatch or infrastructure failure.
+  61. [ ] **NEXT Review (runtime-free, TB86 MATCH)** `M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS`, for D9. Audit every `sharedBoundaryInterval` consumer, then freeze exact CB104: rim intervals on `GenuineSourceBoundary` edges, recorded by curved-disk.
   62. [ ] CB104 → 63. [ ] TB87.
   64. [ ] Review (runtime-free) `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC`: D7, then D5 maximal Mandatory chains, with a DESIGN §7.4 amendment.
   65. [ ] Review (runtime-free) `M6-CP3-DEFN-P13-A4-A2B-DISC-DOMAIN`: plan-trace edge kind plus disc domain.

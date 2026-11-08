@@ -1,0 +1,34 @@
+# TB86 — A3 span-coverage receipt full-gate and census (2026-11-08 UTC)
+
+**Turn:** `M6-CP3-TB86-P13-A3-SPAN-COVERAGE-FULL-GATE-EXEC` (step 60), resumed from a committed in-progress checkpoint. **COMPLETE / MATCH** against RA-214 §6. Separate artifact-only Test + Benchmark: no configure, compile, relink, benchmark or source/test/build mutation in either executor. No CP3 or selector497 promotion.
+
+## Immutable provenance and execution
+
+- Governing [RA-214](Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md) §6; CB103 [compile-only record](Architecture_M6_CP3_CB103_P13_A3_Span_Coverage_Receipt_Code_Build_Record_20261108.md). Semantic source `000752d896aad4e515bcffc23331c26692539830`, GMP eight-target [compile run 42468093355](https://github.com/akashskypatel/Directional/actions/runs/42468093355); immutable package artifact **13613225138** (ZIP SHA-256 `b7fc883e27bd31f03e595e120aa685feba3bb769ce84837dc73da94e11ee13d2`; internal 28/28, source TAR SHA-256 `16af3c8af1c771bc475bc9c47185b05670a93418c076d2baee9c07a44e5f2951`). Build had `runtimeExecution=false`, GMP/GMPXX.
+- Executor exact snapshot source SHA `5fafaab293f5fd7df7652db15cfc7490a9740c25`; [snapshot workflow 42471196693](https://github.com/akashskypatel/Directional/actions/runs/42471196693), artifact **13613821373**, provider ZIP SHA-256 `dc18c503bf95c3b51cecd991728d3059ca48321563468e396898c8792603b712`; nested TAR checked and **6,246/6,246** per-file hashes verified. Snapshot is execution-control authority, not semantic CB103 source.
+- Existing artifact-only harness `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh` SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`. 909-row frozen manifest SHA-256 `3573ffbf6cba47592489c34f2177988c1b66871db4cd983577694dbb9dcabe76`, 81-row deferred ledger SHA-256 `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`; census three-row manifest SHA-256 `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`. Both preflight manifests self-checked.
+
+## Full gate — MATCH
+
+- [GitHub Actions gate 42471488975](https://github.com/akashskypatel/Directional/actions/runs/42471488975), event commit `385ec94e6f007ad3603c7ff88dacef81b4203369`, result artifact **13613643740**, provider ZIP SHA-256 `bc5d225f7b1047b379ff79c8520dae5908f199206de18ca1b84d188478028116`. **1,826/1,826 internal checksums** valid; **909/909 PASS**, **membership 990 = 909 gated + 81 deferred**. No RED, abnormal, missing, skipped, duplicate, invalid control, or unexpected PASS. Postflight true; exit 0. Execution boundary: `compile=false`, `relink=false`, `configure=false`, `benchmark=false`.
+- All TB85 908 gate identities retained, with exactly one added GUARD 909 `SurfaceCellAuthorityContractCutover.A3SpanCoverageObservesRecordedHardRailIntervalsAndTheirLoss`, PASS (2,667 ms); mutations exercise a dropped and stretched interval without weakening the oracle. Selected gate rows **795 CloseSheets**, **796 MultiFaceSeam**, **797 Plane**, **864 Cylinder** have their complete `platform-digest` lines **4/4 byte-identical** to TB85 artifact **13603128508**.
+- Gate `a3-coverage` observations: CloseSheets `observed=1 scheduled=24 covered=0 unrecorded=24`; MultiFaceSeam `1/16/0/16`; Plane `1/14/0/14`; Cylinder `1/81/0/81`. For all four: `partial=0 foreign=0` and `covered+unrecorded=scheduled`. Zero covered spans on these cases is an **observed gap**, not proof that they consume A3; CB103 is report-only and D9 remains.
+
+## Production census — expected REDs unchanged
+
+- [GitHub Actions census 42471512649](https://github.com/akashskypatel/Directional/actions/runs/42471512649), event commit `6ec540ad698c8a31d36099a923caa16087b83a26`, result artifact **13613991005**, provider ZIP SHA-256 `2cf1078654b3b49f3e094d29b0c968df400fb811daebff5142966b13613c56ed`. **9/9 internal checksums** valid, **3/3 executed**, **1 PASS / 2 pre-registered RED**, no abnormal/missing/skipped/duplicate/control errors; postflight true, exit 0, no rebuild/repair. **3/3 complete platform-digest lines byte-identical** to TB85 census artifact **13603685923**.
+
+| Fixture | Result and exact terminal evidence | Wall | Peak RSS |
+|---|---|---:|---:|
+| Cylinder | PASS, no validation issue, A3 `observed=1 scheduled=81 covered=0 partial=0 unrecorded=81 foreign=0` | 11.88 s | 48,604 KiB |
+| BunnyRandom | Expected RED, `InvalidFieldTransportAtlas:field-transport-atlas/SingularityPortClassCountMismatch;sourceVertex=49` (P13-e); `observed=0 scheduled=0 covered=0 partial=0 unrecorded=0 foreign=0` | 0.95 s | 24,620 KiB |
+| Vase | Expected RED, `NotProductionReady:completion detail=AggregateCompletionValidationFailure` (legacy producer); 189,462 traces / 26,817 arrangement cells / 67,750 **informational** completed quads, no accepted output; `observed=0 scheduled=0 covered=0 partial=0 unrecorded=0 foreign=0` | 247.79 s | 2,080,708 KiB |
+
+The census's longer wall times than TB85 (Cylinder 8.58 s, BunnyRandom 0.80 s, Vase 205.77 s) do **not** establish a measured performance regression: these are different remote runner invocations, without controlled repeated trials. Their byte-identical diagnostic digests establish the pinned structural invariant, not identical runtime metrics.
+
+## Disposition and next turn
+
+- **Frozen falsifiers satisfied.** Seven `a3-coverage` records checked: `partial=0`, `foreign=0`, and exact count conservation; named cases show required observation flags (Vase `observed=0`). All seven pinned platform digests match TB85. No new accepted-green loss, no new stable regression ID/event/category/recurrence. Existing P13-e, D7/D9, P13-n/O31 legacy Vase, O30b, O32b–e, O33 and O27–O29 remain owned, not silently repaired.
+- **Accepted CP2: 491/491 unchanged**. Stable regression ledger **66 events / 17 categories / 49 recurrences**, debt **1**. Deferred ledger v5 **81**, selector497/CP3 **unpromoted**. TB86 is a candidate verification, not a production certification. D6 (Vase expected D1 recommendation) still awaits user approval; not a prerequisite here.
+- Exactly one authorized next turn: runtime-free Review/DEFN **`M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS`** (step 61). Under RA-214 §5, audit every `sharedBoundaryInterval` consumer including `RemeshPipeline.cpp:2285,4832,5109` and `SurfaceCellTracing.cpp:19882`; freeze an exact CB104 patch for recorded `GenuineSourceBoundary` rim intervals. No Review work is performed in TB86.
+- The previous chat's [WIP execution checkpoint](Architecture_M6_CP3_TB86_P13_A3_Span_Coverage_Full_Gate_Execution_WIP_20261108.md) is superseded by this report. Temporary snapshot marker was cleaned by [workflow 42471707712](https://github.com/akashskypatel/Directional/actions/runs/42471707712); durable dispatcher slot and `workflow-mailbox` retained.
