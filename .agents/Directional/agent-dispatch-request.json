@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb114-docs-closeout-20261109-1833",
+  "request_id": "m6-cp3-cb114-docs-correction-20261109-1836",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb114-docs-closeout",
-  "file_id": "1oSwxS1rNZra2770G3NQofTVQX-vIzGit",
-  "patch_sha256": "b0e683fb50ce3ca79d80204d819716d4a0322cb5bcbc4b5bc6284bdd43e1347a",
-  "base_sha": "9c7fc2fcc16ec99e7c86733bd190cfa269c50671",
+  "mailbox_key": "m6-cp3-cb114-docs-correction",
+  "file_id": "1G1X3_AnlSvfmCAPMGP7QUkQxFdBIp4Ef",
+  "patch_sha256": "21887b670622529d43f95c823661072269fa6db281be3e624d1d2714035b72b7",
+  "base_sha": "fb27380db9f29d3e26a155583e5664fd5598c253",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): close CB114 selector-path turn and advance handoff to CB115",
+  "commit_message": "docs(agent): correct CB114 successor references in TODO and handoff",
   "retention_days": 14
 }
