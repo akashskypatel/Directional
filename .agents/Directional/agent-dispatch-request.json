@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb109-p13-a3-placement-switch-20261109-0038",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb109-apply",
-  "file_id": "1dbSHst1PMX5G5K_XXtL5ZPkxjZZwd3gP",
-  "patch_sha256": "3a11cb2978e200c98d391ac5ed591fc029426e0065767c2dd95e65720276a80b",
-  "base_sha": "6e75734c5fbc8649e8239c6ed574bf0bd56ad22e",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(surface-cells): activate partition-stable metric breakpoint placement",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb109-compile-20261109-0039",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb109-compile",
+  "source_sha": "3f64cbf2c79ab580bbf97509142df1d5415c4404",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-cb109-metric-breakpoint-placement"
 }
