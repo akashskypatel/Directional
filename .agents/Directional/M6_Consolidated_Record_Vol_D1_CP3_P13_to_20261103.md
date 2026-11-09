@@ -508,7 +508,7 @@ index 3ebd635ac..92efd233b 100644
    - `MEMBERSHIP_LEDGER`: ledger v4, 82 rows, `36241caa61d3d27aa062fee05cf3af12a62a81a5a11a42e3ea75e46b0590139d`.
    - Pre-registered: **863/863 PASS**, postflight true, membership 945.
 2. **Census:**
-   - Manifest: [`Architecture_M6_TB63_P13_Census_Case_Manifest.tsv`](Architecture_M6_TB63_P13_Census_Case_Manifest.tsv), 3 OBSERVE rows (Cylinder, BunnyRandom, Vase), `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`. No ledger.
+   - Manifest: [`Architecture_M6_TB63_P13_Census_Case_Manifest.tsv`](gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv), 3 OBSERVE rows (Cylinder, BunnyRandom, Vase), `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`. No ledger.
    - Pre-registered: row 1 **PASS**, row 2 **RED** with `CutTransportDomainIdentityMismatch` and `cutChi=-3`, row 3 **RED** with `detail=BranchContinuationExactMagnitudeExceeded`.
    - A census PASS never changes gate membership.
 

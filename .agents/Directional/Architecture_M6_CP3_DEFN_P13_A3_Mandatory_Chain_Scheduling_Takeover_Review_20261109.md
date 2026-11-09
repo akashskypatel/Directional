@@ -79,7 +79,7 @@ Vase: 142 rim edges plus 3 trace terminals give 145 Mandatory arcs. The stops ar
 
 ## 6. TB93, frozen
 
-- [Manifest](Architecture_M6_TB93_P13_A3_Mandatory_Chain_Partition_Full_Gate_Case_Manifest.tsv): 923 rows, SHA-256 `a8c4a59920ee22c8f3260de2d5b467f9ce3aa4a72526d1dcd593a3b063e9095a`. It is TB92's 918 rows byte for byte, plus GUARD 919–923.
+- [Manifest](gates/Architecture_M6_TB93_P13_A3_Mandatory_Chain_Partition_Full_Gate_Case_Manifest.tsv): 923 rows, SHA-256 `a8c4a59920ee22c8f3260de2d5b467f9ce3aa4a72526d1dcd593a3b063e9095a`. It is TB92's 918 rows byte for byte, plus GUARD 919–923.
   - `SELF_CHECK_PASS cases=923 deferred=81`; membership 1004; ledger v5 `fd433f54…`; harness `78b8002c…`.
 
 | Outcome | Route |

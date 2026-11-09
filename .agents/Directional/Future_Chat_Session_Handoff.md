@@ -94,9 +94,14 @@ The prior combined 64 (D7+D5), 64A (uniform+annulus), and 65 (D9c+trace+disc) ar
 
 ## Next after CB114 — `M6-CP3-CB110-P13-A3-MANDATORY-CHAIN-PARTITION` (step 64B.1; RA-218 §5)
 
+- **Gate inputs live in `.agents/Directional/gates/`** (moved byte-identically, 2026-11-09). Pass these paths to the harness:
+  - TB93 manifest `.agents/Directional/gates/Architecture_M6_TB93_P13_A3_Mandatory_Chain_Partition_Full_Gate_Case_Manifest.tsv` (`a8c4a599…`);
+  - deferred ledger `.agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv` (`fd433f54…`);
+  - census manifest `.agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv` (`3af1dc0d…`).
+
 - **Type:** implementation agent, **compile only**. Apply [the exact patch](Architecture_M6_CP3_CB110_P13_A3_Mandatory_Chain_Partition_Exact.diff) exactly: SHA-256 `ff3fdf5f1a34ea942075f681a760cbec423df4a4800c2024992ceb77a05054f0`, 522 lines, keep its 6 single-space context lines. Numstat `112 0` `GlobalConformityBaselineSupport.cpp` / `25 0` `GlobalConformityBaselineSupport.h` / `333 1` `GlobalConformityBaselineTests.cpp`. Base is product source CB109 `3f64cbf2…`. Then run the eight-target GMP/GMPXX compile and package. Run nothing; author no test.
 - **Stops:** mismatch → `M6-CP3-PLAN-P13-A3-MANDATORY-CHAIN-PARTITION-STOP`; infrastructure → `M6-CP3-CB110A-P13-A3-MANDATORY-CHAIN-PARTITION-ORCH`.
-- **Then:** `M6-CP3-TB93-P13-A3-MANDATORY-CHAIN-PARTITION-FULL-GATE-EXEC`, using [the manifest](Architecture_M6_TB93_P13_A3_Mandatory_Chain_Partition_Full_Gate_Case_Manifest.tsv) (923 rows, `a8c4a599…`, membership 1004, ledger v5 81).
+- **Then:** `M6-CP3-TB93-P13-A3-MANDATORY-CHAIN-PARTITION-FULL-GATE-EXEC`, using [the manifest](gates/Architecture_M6_TB93_P13_A3_Mandatory_Chain_Partition_Full_Gate_Case_Manifest.tsv) (923 rows, `a8c4a599…`, membership 1004, ledger v5 81).
   - Expect 923/923, with the 7 platform-digest and 7 a3-coverage lines byte-identical to TB92. Record the 5 `D5_CHAIN_RECEIPT` lines.
   - Mismatch → `M6-CP3-TB93-P13-A3-MANDATORY-CHAIN-PARTITION-FULL-GATE-REV`; infrastructure → `M6-CP3-TB93A-P13-A3-MANDATORY-CHAIN-PARTITION-ORCH`.
 - **In parallel (Review agent):** `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SPAN-SWITCH` (64B.3) freezes CB111 (stop set), CB112 (curved-disk multi-piece consumption, behaviour-neutral) and CB113 (span switch), or reaches `M6-CP3-PLAN-P13-A3-MANDATORY-CHAIN-SPAN-SWITCH-STOP`.

@@ -2439,7 +2439,7 @@ Within a run, placement stays linear in length; that deviation is documented in 
 - **Tests:**
   - selector:392's denominator assertions are replaced by `count == 4`, `0:1/2` and `1:1/2` (G7).
   - New GUARD 918, `D7bPlanBreakpointsAreTheMetricPlacementForEverySplit`: on the square fixture at h = ¼, the whole, {⅛} and halves splits each give a plan location equal to the D7b location at x = j/4. The stored interior locations are `0:1/4 0:2/4 0:3/4 | 1:1/7 1:3/7 1:5/7 | 0:1/2 1:0/1 1:1/2`. This test fails on CB108, where the uneven split's plan locations are still piece-index.
-- **TB92:** [manifest](Architecture_M6_TB92_P13_A3_Metric_Breakpoint_Placement_Switch_Full_Gate_Case_Manifest.tsv) of 918 rows, `d714a52e4f3c7716dd08ea40258ad04fea0c93ecc998b77aa0eab60a77846d13`, membership 999, `SELF_CHECK_PASS cases=918 deferred=81`. Pre-registered outcome:
+- **TB92:** [manifest](gates/Architecture_M6_TB92_P13_A3_Metric_Breakpoint_Placement_Switch_Full_Gate_Case_Manifest.tsv) of 918 rows, `d714a52e4f3c7716dd08ea40258ad04fea0c93ecc998b77aa0eab60a77846d13`, membership 999, `SELF_CHECK_PASS cases=918 deferred=81`. Pre-registered outcome:
 
 | Record | Rule |
 |---|---|

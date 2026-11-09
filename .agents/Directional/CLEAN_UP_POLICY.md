@@ -95,7 +95,7 @@ If classification or authority is uncertain, stop and ask the user before editin
 
 ## Directory structure
 
-Cleanup and consolidation preserve the `.agents/Directional` layout defined in `RETENTION_POLICY.md` § `.agents/Directional` layout. That means documents at the top level, selectors in `selectors/`, scripts in `tools/`, fixed-path tool inputs in `tools/data/`, and cited historical evidence data in `evidence/`. A turn that adds a file places it by that rule. A turn that finds a misplaced file moves it byte-identically and updates its references.
+Cleanup and consolidation preserve the `.agents/Directional` layout defined in `RETENTION_POLICY.md` § `.agents/Directional` layout. That means documents at the top level, current gate inputs in `gates/`, selectors in `selectors/`, scripts in `tools/`, fixed-path tool inputs in `tools/data/`, and cited historical evidence data in `evidence/`. A turn that adds a file places it by that rule. A turn that finds a misplaced file moves it byte-identically and updates its references.
 
 ## Cleanup verification
 

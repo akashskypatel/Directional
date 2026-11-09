@@ -1,3 +1,8 @@
+## 2026-11-09 UTC — Current gate inputs moved to `.agents/Directional/gates/` (user-instructed)
+
+- The TB93 and TB92 gate case manifests, the TB63 census case manifest and deferred ledger v5 moved byte-identically (SHA-256 `a8c4a599…`, `d714a52e…`, `3af1dc0d…`, `fd433f54…` unchanged). No workflow, tool, test or dispatch file reads them by fixed path; the handoff and TODO now give the `gates/` paths for TB93.
+- The `RETENTION_POLICY.md` layout section adds `gates/` for current gate inputs and sends superseded ones to `evidence/` (if cited) or the fold index. `CLEAN_UP_POLICY.md` and ORIENTATION follow.
+
 ## 2026-11-09 UTC — Historical evidence TSVs moved to `.agents/Directional/evidence/` (user-instructed)
 
 - Eight evidence TSVs that no tool reads moved byte-identically, with SHA-256 compared before and after, so the hashes pinned in the frozen definitions still verify. They are `TB13C`/`TB16C`/`TB21` `Selector_497_Red_Inventory`, `TB1_Entry_R3_Red_Classification`, `TB29_Targeted_Case_Manifest`, `TB31_Census_Case_Manifest`, `R4_Carrier_Review_Derived_Classification` and `R4_Witness_Breadth_Measured_Predicates`. No tool, workflow, test or source reads them, so no implementation patch is needed.
@@ -36,7 +41,7 @@
 ## 2026-11-09 UTC — RA-218 D5 mandatory-chain scheduling definition (Review takeover; runtime-free)
 
 - [RA-218](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md): the Review agent took over the stalled 64B DEFN (13 h, 11 WIP records, no patch; all banner-superseded). D5 is decided as A3 scheduling of maximal Mandatory chains over an unchanged A2b. Arcs join only where the rotation has degree 2, both arcs are Mandatory on the same rail, and the node is not a stop (port, feature corner or junction). New debt O34: uncut closed rails stay per arc. DESIGN §7.4 is amended, effective at CB113.
-- Frozen: exact [CB110](.agents/Directional/Architecture_M6_CP3_CB110_P13_A3_Mandatory_Chain_Partition_Exact.diff) `ff3fdf5f…` (unwired partition + support, GUARD 919–923) and [TB93](.agents/Directional/Architecture_M6_TB93_P13_A3_Mandatory_Chain_Partition_Full_Gate_Case_Manifest.tsv) (923 rows `a8c4a599…`, membership 1004, `SELF_CHECK_PASS`). Switch DEFN 64B.3 is on the Review track in parallel. No product or test source changed and nothing ran. CP2 491/491, stable 66/17/49, debt 1, 81 deferred, selector497/CP3 unpromoted.
+- Frozen: exact [CB110](.agents/Directional/Architecture_M6_CP3_CB110_P13_A3_Mandatory_Chain_Partition_Exact.diff) `ff3fdf5f…` (unwired partition + support, GUARD 919–923) and [TB93](.agents/Directional/gates/Architecture_M6_TB93_P13_A3_Mandatory_Chain_Partition_Full_Gate_Case_Manifest.tsv) (923 rows `a8c4a599…`, membership 1004, `SELF_CHECK_PASS`). Switch DEFN 64B.3 is on the Review track in parallel. No product or test source changed and nothing ran. CP2 491/491, stable 66/17/49, debt 1, 81 deferred, selector497/CP3 unpromoted.
 
 ## 2026-11-09 UTC — TB92 immutable D7b placement-switch full gate MATCH (Test + Benchmark)
 
