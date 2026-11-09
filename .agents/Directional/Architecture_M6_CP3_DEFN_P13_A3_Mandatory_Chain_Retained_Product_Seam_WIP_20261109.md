@@ -28,6 +28,15 @@ The independent verifier must reconstruct rail→source edge→network mandatory
 
 **Deferred beyond first TB:** changing A3 count positivity to per-chain, quotient parity, metric run allocation and rational interval placement, multi-child region-boundary expansion, A4 consumption, and independent verification of child-with-zero-interior-breakpoint coverage. These require later separate definition/CB/TB authority, including a normative §7.4 amendment **before** switching scheduling. Even if the first TB succeeds, it does not authorize the 64C uniform or 64D annulus work within this canonical turn.
 
+### Narrow prospective source/test edit set — not yet an approved diff
+
+- `include/directional/geometry/MandatoryArcChains.h`: immutable ordered original-arc partition; builder and independent candidate validator accept *oriented* source faces, A2b topology, network, source regions and ordered rails. No redundant carriers or ownership cache.
+- `src/geometry/MandatoryArcChains.cpp`, `CMakeLists.txt`: build rail-ordered chains and independently validate complete original-arc coverage, left/right oriented face incidence, legal joins, exact support, and maximality. A complete reversal is equivalent; an isolated reversed child is not.
+- `src/pipeline/RemeshPipeline.cpp`, `include/directional/pipeline/RemeshPipeline.h`: produce a stage-owned checked partition after A2b and before unchanged A3; retain the typed component product plus optional one-way diagnostic copy. Invalid production partition fails closed.
+- `tests/FieldAlignedCurveNetworkTests.cpp`: positive *two distinct original arcs*; missing, duplicate, local reversal, source gap, foreign rail, wrong side, branch/Trace junction, same-key altered winding; full reversal and source-row permutation controls.
+
+**Not frozen:** these paths are source-derived implementation guidance, not an exact applyable source/test patch or authorization for CB. Separate TB must independently prove a real Vase multi-child unit; synthetic green cannot meet that gate. CB remains eight-target GMP/GMPXX compile-only, with no project binary execution.
+
 ## 4. Unresolved Review gate
 
 The present code and TB92 census do **not** prove any production Vase eligible pair. The exact source/test patch, compile manifest, immutable TB oracle, final Review §5 answers, and one formally authorized CB successor are still to be frozen. The previous proposed diagnostic-only exporter remains withdrawn under RA-214. No implementation, test, fixture, selector, benchmark, workflow, or runtime change is performed by this Review. This turn remains open; do not transition to successor work.
