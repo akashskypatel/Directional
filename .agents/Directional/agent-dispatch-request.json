@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb110-apply-20261109-1913",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb110-drive-apply",
-  "file_id": "1fGH7wXdFtbzzw1piZ6yv9lgeswv4GXy-",
-  "patch_sha256": "79aee2f1803ba2cfb821c6344ae097ae3965bdec76d7a434c37afd9d0883d1c0",
-  "base_sha": "066101daaacf03e67a1cc3bf9c9033fca25ce1e7",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(surface-cells): add unwired mandatory chain partition and guards",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb110-compile-20261109-1915",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb110-compile",
+  "source_sha": "3f81e804ac8dc44e16557339be7881a2d653fc61",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb110-compile"
 }
