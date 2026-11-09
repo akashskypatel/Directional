@@ -16,7 +16,7 @@ A chain is a view over original A2b Mandatory arcs, guided by validated ordered 
 
 Store each chain's **ordered, oriented original child IDs only**; recover exact carriers, owner occurrences and component/sheet/rail lineage from unchanged validated stage inputs through checked lookups. Do not introduce redundant parallel copies. D7 metric runs and D7b rational placement remain authoritative. A later scheduling switch must independently expand each unit interval to all original region incidences, including children without interior breakpoints; reversal maps `j ↔ n-j`. The independent validator recomputes child/occurrence coverage without trusting producer flags or hashes.
 
-Product: [retained partition](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Retained_Product_Seam_WIP_20261109.md), [protected-corner authority](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Protected_Corner_Binding_WIP_20261109.md).
+Product: [retained partition](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Retained_Product_Seam_WIP_20261109.md), [protected-corner authority](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Protected_Corner_Binding_WIP_20261109.md). Prepared but **unapplied** [coverage/test patch](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Coverage_Patch_WIP_20261109.md) is incomplete; not CB authority.
 
 Proof: [side-walk](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Side_Walk_Oracle_WIP_20261109.md), [incidence](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Incidence_Proof_Gates_20261109.md), [recovery](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Evidence_Recovery_20261109.md), [independent TB contract](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Independent_TB_Contract_WIP_20261109.md) (pre-registered; not executed).
 
