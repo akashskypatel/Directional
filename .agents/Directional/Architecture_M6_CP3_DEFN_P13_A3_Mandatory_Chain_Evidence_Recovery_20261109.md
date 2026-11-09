@@ -34,3 +34,11 @@ digest alone.
 The original A2b arc map, `DESIGN.md §7.4` per-arc-positive count, D7/D7b exact metric/placement and all A3/CP2 accepted identities remain authoritative. No completed chain scheduler, reduced Vase boundary count, valid A4 consumer, CP3 promotion, D6 gate decision or complete Review closeout is claimed.
 
 **Open same-turn work:** Freeze the exact smallest *retained chain-topology product* patch and independent falsifiers, obtain the required review/authority closeout, then allow its separate CB and TB. Do not repeat the withdrawn diagnostic-only exporter. This is a pending Review definition and measurement, not a connector safety failure.
+
+## 5. Minimal implementation seam verified in the frozen source
+
+The first product slice can reuse `GlobalTopologyPlan::arcs()/regions()/rotation_system()` (`GlobalTopologyPlan.h:676–711`), `FieldAlignedCurveNetwork::mandatory_edges()` (`SurfaceCellTracing.h:532–553`), exact source paths and `SourceTopologyRegions`. A2b's `build_arcs` splits Mandatory edges at a Trace terminal (`EmbeddedGraphTopology.cpp:497–557`), while `build_cut_nodes` synthesizes cut/crossing node IDs (`:384–414`). The candidate producer must not infer a terminal's source vertex by indexing the original network nodes.
+
+Keep `RemeshPipeline.cpp:1005–1016` per-arc A3 input unchanged in this first stage; `GlobalConformityBaseline.cpp:279–456` currently rejects any missing or merged original arc and computes parity per original occurrence. Add a source-authoritative chain partition with complete ordered child IDs/provenance as a **retained production representation**, not output-only logs. An independent validator must reconstruct the partition and distinguish forbidden joins; tampering any child/owner/rail/port/carrier must reject. No chain-count improvement follows merely from producing this topology view.
+
+**Non-vacuity gate:** a real multi-arc joined unit, a Trace-stop negative, a foreign sheet/rail negative and a child-omission negative must each produce independently checkable results. Absence of the positive witness routes to another Review, not silent acceptance. Existing per-arc counts and all baseline digests stay fixed in the first slice.
