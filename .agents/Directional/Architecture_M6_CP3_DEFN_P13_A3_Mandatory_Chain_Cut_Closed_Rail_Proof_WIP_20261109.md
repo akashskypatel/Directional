@@ -40,3 +40,7 @@ A same-region **two-sided occurrence** is not a chain that **returns to its star
 ## 6. Review correction: partition-only is not chain scheduling
 
 A first Code + Build that publishes a partition while leaving A3 per-original-arc may prove maximality and real production joins, but **not** chain counts, exact breakpoints, per-child interval expansion, parity quotient or A4 consumption. Its TB cannot close D5 scheduling or authorize D4 work. Before successor freeze, account explicitly for a separate D5 scheduler/validator/consumer definition, Code + Build and immutable TB, preserving `DESIGN.md` §7.4 positivity until a dedicated switch is authorized. No successor begins in this Review.
+
+## 7. Exact directed-successor check (static source audit)
+
+`EmbeddedGraphTopology.cpp:1868-1919` defines `successor(d)` as the cyclic predecessor of `reverse(d)` in the head node's `counterClockwise` rotation. For joined oriented arcs `a,b`, independently require `successor(a)==b` (left) and `successor(reverse(b))==reverse(a)` (right), then bind both to actual ordered region occurrences. Exterior requires Boundary kind, one source-face incident and correct face winding (`:1975-2010`), not a fabricated occurrence. These are necessary, not sufficient: exact rail/source support, sheet/component, Trace/Cut, corner, endpoint-slot and maximality gates still apply. No Vase witness or scheduling acceptance is inferred.
