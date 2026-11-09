@@ -18,7 +18,7 @@ Store each chain's **ordered, oriented original child IDs only**; recover exact 
 
 Related current-source seam: [retained partition product/validator WIP](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Retained_Product_Seam_WIP_20261109.md).
 
-See [incidence proof gates](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Incidence_Proof_Gates_20261109.md) for detailed parity conditions and [evidence recovery](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Evidence_Recovery_20261109.md) for the exact production/view/TB route.
+See [side-walk oracle](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Side_Walk_Oracle_WIP_20261109.md) and [incidence proof gates](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Incidence_Proof_Gates_20261109.md) for detailed parity conditions and [evidence recovery](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Evidence_Recovery_20261109.md) for the exact production/view/TB route.
 
 ## 3. RA-214 authority correction and smallest next slice
 
