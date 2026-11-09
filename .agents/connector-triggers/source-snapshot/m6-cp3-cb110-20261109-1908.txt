@@ -1,0 +1,2 @@
+Source snapshot requested for M6-CP3-CB110-P13-A3-MANDATORY-CHAIN-PARTITION.
+Frozen pre-trigger head: 0127f75396c0ff5dd07fc5aaf4fa13327c40e97c
