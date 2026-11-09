@@ -1,0 +1,3 @@
+Purpose: CB109 exact immutable source snapshot for code/build turn.
+Authority: agent/surface_cell_quad/p5-recover-bridge-healing after entry STATUS 44f0a6fee1a7b7a74f804b659b1d862c7a05e585.
+Execution: snapshot only; no tests or compile.
