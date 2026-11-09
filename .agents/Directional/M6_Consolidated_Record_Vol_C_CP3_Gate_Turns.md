@@ -1,6 +1,6 @@
 # M6 consolidated record, volume C: CP3 numbered CB/TB Review decisions and non-P13 definitions, through 2026-10-31
 
-This volume holds **80** former standalone `Architecture_M6*` records, moved here on 2026-11-09 by user instruction ("consolidate these records and prune if the content from each is already documented elsewhere"). No record's content was already documented elsewhere: verbatim-line coverage in the permanent documents was at most 27%. So each record is kept **verbatim** as one section below, and nothing is summarized. Only two things changed: heading levels are demoted by two, and links to other moved records point to their sections. Each original file existed standalone at commit `7a460a5e41c4a77a51b69db672e69f910532718c` (`git show 7a460a5e41c4a77a51b69db672e69f910532718c:.agents/Directional/<name>`). Anchors inside a record (`#…`) may resolve to an earlier record in this volume that has the same heading text. The [moved-record map](M6_Consolidated_Record.md#m6-moved-record-map-2026-11-09) lists every record and its volume.
+This volume holds **80** former standalone `Architecture_M6*` records, moved here on 2026-11-09 by user instruction ("consolidate these records and prune if the content from each is already documented elsewhere"). No record's content was already documented elsewhere: verbatim-line coverage in the permanent documents was at most 27%. So each record is kept **verbatim** as one section below, and nothing is summarized. Only three things changed: heading levels are demoted by two, links to other moved records point to their sections, and paths to relocated files now include their new folder (`selectors/`, `tools/data/`, `evidence/`). Each original file existed standalone at commit `7a460a5e41c4a77a51b69db672e69f910532718c` (`git show 7a460a5e41c4a77a51b69db672e69f910532718c:.agents/Directional/<name>`). Anchors inside a record (`#…`) may resolve to an earlier record in this volume that has the same heading text. The [moved-record map](M6_Consolidated_Record.md#m6-moved-record-map-2026-11-09) lists every record and its volume.
 
 | Original file | Title |
 |---|---|
@@ -4814,7 +4814,7 @@ This matters because the RED rule depends on GoogleTest's unadorned summary line
 | `EXPECTED_CANDIDATE_ZIP_SHA256` | `da56650a18f99443abf5f721620bb00fd5701dd1e660741da9aafb924a6dfbf5` |
 | `EXPECTED_ROOT_MANIFEST_SHA256` | `e6149577b0bb240efadd4bc47638ffd3b1441d6f99664542fa66b368df35454b` (28 entries) |
 | `EXPECTED_SOURCE_ARCHIVE_SHA256` | `d06d8484b98ffedfb38d99ebf38deee960d170e7d7fa3011f51453249e61371e` (matches its manifest entry) |
-| `CASE_MANIFEST` | `.agents/Directional/Architecture_M6_CP3_TB29_Targeted_Case_Manifest.tsv` |
+| `CASE_MANIFEST` | `.agents/Directional/evidence/Architecture_M6_CP3_TB29_Targeted_Case_Manifest.tsv` |
 | `CASE_MANIFEST_SHA256` | `39fa5eb83e2da1b0668bc7368c5304011ec13de8804c54a2a3466f927c42d236` |
 | `EXPECTED_CASE_COUNT` | `44` |
 | Harness | `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh`, SHA-256 `436f5fff9c3bec97457f4bc6b7c2b6182cb3f47707eb14a66af3b6a3f3dc3c9a` |
@@ -5290,7 +5290,7 @@ CB29 matches RA-143.3 exactly. It still needs a census: the change alters A4's a
   - `EXPECTED_CANDIDATE_ZIP_SHA256=9e2da1f4b5cf95ac45364e8c428f0bd9116dcfe96772de18d02a5a7bfb167319`;
   - `EXPECTED_ROOT_MANIFEST_SHA256=5f7259b7…320d`;
   - `EXPECTED_SOURCE_ARCHIVE_SHA256=e5ec5390…f53a`;
-  - `CASE_MANIFEST=.agents/Directional/Architecture_M6_CP3_TB31_Census_Case_Manifest.tsv`;
+  - `CASE_MANIFEST=.agents/Directional/evidence/Architecture_M6_CP3_TB31_Census_Case_Manifest.tsv`;
   - `CASE_MANIFEST_SHA256=b1c135d4…aa43e`;
   - `EXPECTED_CASE_COUNT=497`.
 - **Prediction:** **472/497**, with exactly the 25 RA-144.2 rows RED and zero regressions from PASS to RED.

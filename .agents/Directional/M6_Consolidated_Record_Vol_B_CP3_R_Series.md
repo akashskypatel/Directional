@@ -1,6 +1,6 @@
 # M6 consolidated record, volume B: CP3 R-series Review, specification and audit records (R2–R10)
 
-This volume holds **45** former standalone `Architecture_M6*` records, moved here on 2026-11-09 by user instruction ("consolidate these records and prune if the content from each is already documented elsewhere"). No record's content was already documented elsewhere: verbatim-line coverage in the permanent documents was at most 27%. So each record is kept **verbatim** as one section below, and nothing is summarized. Only two things changed: heading levels are demoted by two, and links to other moved records point to their sections. Each original file existed standalone at commit `7a460a5e41c4a77a51b69db672e69f910532718c` (`git show 7a460a5e41c4a77a51b69db672e69f910532718c:.agents/Directional/<name>`). Anchors inside a record (`#…`) may resolve to an earlier record in this volume that has the same heading text. The [moved-record map](M6_Consolidated_Record.md#m6-moved-record-map-2026-11-09) lists every record and its volume.
+This volume holds **45** former standalone `Architecture_M6*` records, moved here on 2026-11-09 by user instruction ("consolidate these records and prune if the content from each is already documented elsewhere"). No record's content was already documented elsewhere: verbatim-line coverage in the permanent documents was at most 27%. So each record is kept **verbatim** as one section below, and nothing is summarized. Only three things changed: heading levels are demoted by two, links to other moved records point to their sections, and paths to relocated files now include their new folder (`selectors/`, `tools/data/`, `evidence/`). Each original file existed standalone at commit `7a460a5e41c4a77a51b69db672e69f910532718c` (`git show 7a460a5e41c4a77a51b69db672e69f910532718c:.agents/Directional/<name>`). Anchors inside a record (`#…`) may resolve to an earlier record in this volume that has the same heading text. The [moved-record map](M6_Consolidated_Record.md#m6-moved-record-map-2026-11-09) lists every record and its volume.
 
 | Original file | Title |
 |---|---|
@@ -7436,7 +7436,7 @@ correct, and must not be suppressed.
 
 - Verified snapshot workflow [`38154965590`](https://github.com/akashskypatel/Directional/actions/runs/38154965590), job `114515978657`, event/source `57540deb13da2eb14bea9352f28670160026e780`, artifact `11708521074`, ZIP SHA-256 `ead51d98ff2a436c237067a22d2fa209e82297426ee36fd5e1e200fe236ccea5`.
 - Inner `source.tar.gz` SHA-256 `923d97f6a3408a7fb6a13fed5f2f60dbbee060516d25025214370dd077278d70`; complete `SHA256SUMS` **6207/6207** entries pass, snapshot metadata `runtimeExecution=false`.
-- Frozen historical first-failure source: `.agents/Directional/Architecture_M6_CP3_TB1_Entry_R3_Red_Classification.tsv`; current source is after multiple compile-only fixture repairs. No current R4 runtime failure evidence is available.
+- Frozen historical first-failure source: `.agents/Directional/evidence/Architecture_M6_CP3_TB1_Entry_R3_Red_Classification.tsv`; current source is after multiple compile-only fixture repairs. No current R4 runtime failure evidence is available.
 
 #### Specific uncovered risk: three-face rail-incidence oracle is potentially vacuous
 

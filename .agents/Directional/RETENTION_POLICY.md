@@ -96,8 +96,9 @@ User-authorized 2026-11-09. Every turn keeps this structure, and new files go to
 - **`.agents/Directional/selectors/`:** every byte-frozen selector file and its routing receipts (§ Selector files).
 - **`.agents/Directional/tools/`:** scripts, harnesses and tool documentation.
 - **`.agents/Directional/tools/data/`:** any data file a tool reads by a fixed path, such as harness case lists or source inventories. A tool may read a selector from `selectors/` and turn inputs passed as arguments from wherever they live. Any other fixed-path input belongs in `tools/data/`.
+- **`.agents/Directional/evidence/`:** historical evidence data files that no tool reads but that records cite, often by pinned SHA-256. Examples are red inventories, classification tables and superseded case manifests kept as accepted evidence. They are byte-frozen: never edited, consolidated into a document, or deleted without explicit user authorization naming the files.
 
-A file moved between these locations is moved byte-identically with an unchanged name. References to it are updated in the same change, or by an exact patch scheduled as the next implementation turn. Byte-pinned evidence data that no tool reads (for example the `Selector_497_Red_Inventory` and historical case-manifest TSVs whose hashes the frozen definitions cite) stays a standalone file at the top level until a user instruction names a destination.
+A file moved between these locations is moved byte-identically with an unchanged name. References to it are updated in the same change, or by an exact patch scheduled as the next implementation turn. When a current per-turn data artifact (a gate or census case manifest, or a deferred ledger) is superseded, it is folded per `CLEAN_UP_POLICY.md` unless a retained record cites it as evidence. In that case it moves byte-identically to `evidence/`.
 
 ## Evidence retention
 

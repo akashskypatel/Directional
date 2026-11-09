@@ -783,7 +783,7 @@ Record: `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md`.
 
 ## TB21 — selector-497 census on CB20A; candidate/non-stable (2026-10-21)
 
-Artifact-only [run 39533914719](https://github.com/akashskypatel/Directional/actions/runs/39533914719), result `12317287104` (ZIP SHA-256 `12279a26fbe8d2f9d2c4bae6b0317b46b9fb6480212127a59e415fb46f089c8d`), semantic source `e22c5da5f`, package `12310848591`. **449/497 PASS, 48 RED; 0 PASS→RED; RED→PASS `cp3entry:6`.** Every other RED keeps its TB18 first failure, except the eight M2 rows, which keep their TB20 failures. Inventory `.agents/Directional/Architecture_M6_CP3_TB21_Selector_497_Red_Inventory.tsv`. Reviewed by RA-115; no stable count changes.
+Artifact-only [run 39533914719](https://github.com/akashskypatel/Directional/actions/runs/39533914719), result `12317287104` (ZIP SHA-256 `12279a26fbe8d2f9d2c4bae6b0317b46b9fb6480212127a59e415fb46f089c8d`), semantic source `e22c5da5f`, package `12310848591`. **449/497 PASS, 48 RED; 0 PASS→RED; RED→PASS `cp3entry:6`.** Every other RED keeps its TB18 first failure, except the eight M2 rows, which keep their TB20 failures. Inventory `.agents/Directional/evidence/Architecture_M6_CP3_TB21_Selector_497_Red_Inventory.tsv`. Reviewed by RA-115; no stable count changes.
 
 ## TB19A — torus rejection-site harvest; candidate/non-stable (2026-10-20)
 

@@ -1,3 +1,8 @@
+## 2026-11-09 UTC — Historical evidence TSVs moved to `.agents/Directional/evidence/` (user-instructed)
+
+- Eight evidence TSVs that no tool reads moved byte-identically, with SHA-256 compared before and after, so the hashes pinned in the frozen definitions still verify. They are `TB13C`/`TB16C`/`TB21` `Selector_497_Red_Inventory`, `TB1_Entry_R3_Red_Classification`, `TB29_Targeted_Case_Manifest`, `TB31_Census_Case_Manifest`, `R4_Carrier_Review_Derived_Classification` and `R4_Witness_Breadth_Measured_Predicates`. No tool, workflow, test or source reads them, so no implementation patch is needed.
+- The `RETENTION_POLICY.md` layout section adds `evidence/` (byte-frozen, cited evidence data) and the rule for superseded per-turn data artifacts that records cite. `CLEAN_UP_POLICY.md` and ORIENTATION were updated to match.
+
 ## 2026-11-09 UTC — Tool-read data moved to `.agents/Directional/tools/data/`; folder layout fixed in policy (user-instructed)
 
 - Five TSVs read by harness scripts (R4 historical source inventory, TB34–TB37 case files) moved byte-identically, with SHA-256 compared before and after, to `.agents/Directional/tools/data/`. Three CHANGELOG links were updated.
@@ -2932,7 +2937,7 @@ Artifact-only TB5 [38831615391](https://github.com/akashskypatel/Directional/act
   `remesh_from_raw_cross_field` entry — all `InvalidHardRailRouteCertificate` / `predicate=endpoint-1` /
   `no-exact-terminal-corner` on edge `(1,4)`. RA-56.3's `A4_ROUTE_CERTIFICATE_REJECTION` reading is now
   **measured**, satisfying RA-56.8. Rows frozen in
-  `.agents/Directional/Architecture_M6_CP3_R4_Witness_Breadth_Measured_Predicates_20261015.tsv`.
+  `.agents/Directional/evidence/Architecture_M6_CP3_R4_Witness_Breadth_Measured_Predicates_20261015.tsv`.
 - **RA-56.5 RESOLVED — the geometry is ACROSS-rail.** `faceEnds=0,2|0,3` read through the emitter at
   `src/geometry/SurfaceCellTracing.cpp:18948` puts the first front wholly inside face 0 and the second
   starting in face 3 — the two faces of edge `(1,4)`. The fronts meet at a shared **interior** point of
