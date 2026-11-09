@@ -1,2 +1,0 @@
-# CB114 continuation temporary source snapshot only; retain dispatcher, mailbox and immutable artifacts
-.agents/connector-triggers/source-snapshot/cb114-verify-20261109-1757.txt
