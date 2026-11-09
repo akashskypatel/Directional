@@ -238,7 +238,7 @@ expected = {
 }
 selectors = {}
 for n in [397, 401, 403, 405, 406, 407]:
-    path = root / f'.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_{n}.txt'
+    path = root / f'.agents/Directional/selectors/Architecture_M3_CP4c3_Required_Green_Selector_{n}.txt'
     rows = [line.strip() for line in path.read_text().splitlines() if line.strip()]
     digest = hashlib.sha256(('\n'.join(rows) + '\n').encode()).hexdigest()
     if len(rows) != n or digest != expected[n]:
@@ -268,7 +268,7 @@ import sys
 
 root = pathlib.Path(sys.argv[1])
 out = pathlib.Path(sys.argv[2])
-selector = [line.strip() for line in (root / '.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_407.txt').read_text().splitlines() if line.strip()]
+selector = [line.strip() for line in (root / '.agents/Directional/selectors/Architecture_M3_CP4c3_Required_Green_Selector_407.txt').read_text().splitlines() if line.strip()]
 cmake = (root / 'cmake/DirectionalTests.cmake').read_text()
 targets = {
     'directional_compiled_api_tests': ['tests/CompiledLibraryTests.cpp'],
@@ -390,7 +390,7 @@ if [[ "$MODE" == '--preflight-only' ]]; then
   exit 0
 fi
 
-selector="$SOURCE/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_407.txt"
+selector="$SOURCE/.agents/Directional/selectors/Architecture_M3_CP4c3_Required_Green_Selector_407.txt"
 echo -e 'ordinal\tidentity\tbinary\texit\tselected\tresult\traw_log' > "${RESULT}/ledger.tsv"
 echo -e 'ordinal\tresource_log\tmax_rss_kb\telapsed' > "${RESULT}/resource-summary.tsv"
 runtime_started=true

@@ -261,7 +261,7 @@ import sys
 
 root = pathlib.Path(sys.argv[1])
 out = pathlib.Path(sys.argv[2])
-selector = (root / '.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_397.txt').read_text().splitlines()
+selector = (root / '.agents/Directional/selectors/Architecture_M3_CP4c3_Required_Green_Selector_397.txt').read_text().splitlines()
 cm = (root / 'cmake/DirectionalTests.cmake').read_text()
 targets = {
     'directional_compiled_api_tests': ['tests/CompiledLibraryTests.cpp'],
@@ -334,7 +334,7 @@ fi
 
 echo -e 'ordinal\tidentity\tbinary\texit\tselected\tresult\traw_log' > "${RESULT}/ledger.tsv"
 runtime_started=true
-selector="$SOURCE/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_397.txt"
+selector="$SOURCE/.agents/Directional/selectors/Architecture_M3_CP4c3_Required_Green_Selector_397.txt"
 while IFS= read -r identity || [[ -n "$identity" ]]; do
   ordinal="$(grep -F -n -x "$identity" "$selector" | cut -d: -f1)"
   [[ -n "$ordinal" ]] || fail_orchestration "ordinal not found for identity $identity"

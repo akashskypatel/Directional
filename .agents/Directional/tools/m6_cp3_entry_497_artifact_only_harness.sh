@@ -11,10 +11,10 @@ set -euo pipefail
 : "${EXPECTED_CANDIDATE_ZIP_SHA256:?}"
 : "${EXPECTED_ROOT_MANIFEST_SHA256:?}"
 : "${EXPECTED_SOURCE_ARCHIVE_SHA256:?}"
-FOCUSED30_RELATIVE_PATH='.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt'
-FOCUSED12_RELATIVE_PATH='.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt'
-SELECTOR_RELATIVE_PATH='.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt'
-ROUTING_RELATIVE_PATH='.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv'
+FOCUSED30_RELATIVE_PATH='.agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt'
+FOCUSED12_RELATIVE_PATH='.agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt'
+SELECTOR_RELATIVE_PATH='.agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt'
+ROUTING_RELATIVE_PATH='.agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv'
 EXPECTED_FOCUSED30_COUNT=30
 EXPECTED_FOCUSED12_COUNT=12
 EXPECTED_SELECTOR_COUNT=449

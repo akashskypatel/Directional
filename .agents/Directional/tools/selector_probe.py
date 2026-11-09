@@ -47,7 +47,7 @@ def agents_dir():
 def selector_files():
     """Map selector cardinality -> path, for every Required_Green_Selector_<n>.txt."""
     found = {}
-    pattern = os.path.join(agents_dir(), "*Required_Green_Selector_*.txt")
+    pattern = os.path.join(agents_dir(), "selectors", "*Required_Green_Selector_*.txt")
     for path in glob.glob(pattern):
         m = re.search(r"Required_Green_Selector_(\d+)\.txt$", os.path.basename(path))
         if m:
@@ -80,7 +80,7 @@ def resolve(n):
 def newest_selector():
     files = selector_files()
     if not files:
-        sys.exit("no selector files found under %s" % agents_dir())
+        sys.exit("no selector files found under %s" % os.path.join(agents_dir(), "selectors"))
     return max(files)
 
 

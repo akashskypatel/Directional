@@ -85,7 +85,7 @@ def sha_lf(path):
 
 
 def selector_paths():
-    base = os.path.join(repo_root(), ".agents", "Directional")
+    base = os.path.join(repo_root(), ".agents", "Directional", "selectors")
     out = {}
     for name in os.listdir(base):
         m = re.search(r"Required_Green_Selector_(\d+)\.txt$", name)
@@ -146,9 +146,23 @@ def cmd_boundary(args):
     # An actual byte-frozen selector is a .txt named by a number, or the M1 full
     # selector. Match those exactly -- a substring test also fires on documents
     # about selectors, such as Required_Green_Selector_Manifest.md.
-    selector_touched = [p for p in paths
-                        if re.search(r"Required_Green_Selector_\d+\.txt$", p)
-                        or p.endswith("M1_Full_Required_Green_Selector.txt")]
+    # A rename into selectors/ that keeps the name and the bytes is a relocation
+    # (RETENTION_POLICY.md, relocation record), not a mutation.
+    def relocated(entry):
+        if entry[0] != "R" or " -> " not in entry[3:]:
+            return False
+        old, new = [s.strip().strip('"') for s in entry[3:].split(" -> ", 1)]
+        if (os.path.basename(old) != os.path.basename(new)
+                or not new.startswith(".agents/Directional/selectors/")):
+            return False
+        before = git("rev-parse", "HEAD:%s" % old).stdout.strip()
+        after = git("hash-object", new).stdout.strip()
+        return bool(before) and before == after
+
+    selector_touched = [line[3:].strip().strip('"') for line in entries
+                        if not relocated(line)
+                        and (re.search(r"Required_Green_Selector_\d+\.txt$", line)
+                             or line.endswith("M1_Full_Required_Green_Selector.txt"))]
     report(not selector_touched, "no selector mutation",
            "clean" if not selector_touched else ", ".join(selector_touched))
 

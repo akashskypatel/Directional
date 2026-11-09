@@ -19,7 +19,7 @@ Pure standard library, deliberately: `numpy` has been missing on two different r
 ## `selector_manifest.py`
 
 Regenerates `../Required_Green_Selector_Manifest.md` — the derived index of every byte-frozen
-`Required_Green_Selector_*.txt`: identity count, LF-normalized SHA-256, prefix parent, appended identities and
+`selectors/*Required_Green_Selector_*.txt`: identity count, LF-normalized SHA-256, prefix parent, appended identities and
 role.
 
 ```

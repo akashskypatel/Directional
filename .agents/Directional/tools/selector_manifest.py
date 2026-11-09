@@ -18,7 +18,7 @@ def lf_lines(p):
 def lf_sha(lines):
     return hashlib.sha256(("\n".join(lines) + "\n").encode()).hexdigest()
 
-fs = sorted(glob.glob(os.path.join(d, "*Required_Green_Selector_*.txt")),
+fs = sorted(glob.glob(os.path.join(d, "selectors", "*Required_Green_Selector_*.txt")),
             key=lambda p: int(re.search(r"_(\d+)\.txt$", p).group(1)))
 
 ROLE = {
@@ -75,9 +75,10 @@ for p in fs:
     prev = (num, L)
 
 def git_first_commit(path):
-    r = subprocess.run(["git", "log", "--reverse", "--format=%h %ad", "--date=short", "--", path],
+    # --follow: selectors moved into selectors/ on 2026-11-09; report the original first commit.
+    r = subprocess.run(["git", "log", "--follow", "--format=%h %ad", "--date=short", "--", path],
                        cwd=root, capture_output=True, text=True, encoding="utf-8", errors="replace")
-    line = (r.stdout or "").strip().split("\n")[0]
+    line = (r.stdout or "").strip().split("\n")[-1]
     return line if line else "-"
 
 out = []
@@ -141,7 +142,7 @@ for num, name, n, sha, parent, added, role, note in rows:
 
     out.append("### %d — %s" % (num, role.replace("**", "")))
     out.append("")
-    out.append("`%s` — %d identities, first committed %s." % (name, n, git_first_commit(".agents/Directional/" + name)))
+    out.append("`%s` — %d identities, first committed %s." % (name, n, git_first_commit(".agents/Directional/selectors/" + name)))
     if note:
         out.append("")
         out.append(note)
@@ -159,7 +160,7 @@ for num, name, n, sha, parent, added, role, note in rows:
             out.append("- `%s`" % a.strip())
     out.append("")
 
-m1 = os.path.join(d, "M1_Full_Required_Green_Selector.txt")
+m1 = os.path.join(d, "selectors", "M1_Full_Required_Green_Selector.txt")
 if os.path.exists(m1):
     L = lf_lines(m1)
     out.append("""## Separate lineage — M1
