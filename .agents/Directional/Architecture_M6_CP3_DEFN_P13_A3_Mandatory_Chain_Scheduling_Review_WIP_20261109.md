@@ -55,3 +55,11 @@ Use D7 preferred count and D7b ceiling-weight placement on the **concatenated ex
 - **Remaining Review work:** freeze the exact retained chain-topology product/validator CB and TB with falsifiers; measure the actual Vase join partition before switching A3 counts or A4 consumers; make the required normative amendment and complete the policy §5 review closeout only when evidence supports it. The source snapshot has no `.git`, so a history-dependent `review_check.py boundary` pass cannot be established from it; no such pass is claimed. Prior execution statements have not been independently reproduced in this turn.
 
 **No D5 final plan, successor implementation authorization, direct Vase compression, D6 decision, or CP3 promotion is claimed.**
+
+## RA-214 authority audit (2026-11-09)
+
+RA-214 §1.3/§2 withdrew the read-only A2b/A3 exporter and **forbids diagnostic-only CBs**. The earlier D5 test-only Vase serializer proposal was invalid and is withdrawn in the [evidence-recovery correction](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Evidence_Recovery_20261109.md). Instead, first freeze a retained and independently verified production Mandatory-chain topology view, with the real eligible/forbidden joins observed in a separate artifact-only TB. It may add no scheduling/count effects until a later §7.4 amendment and complete child/parity/consumer proofs. No successor CB is frozen yet.
+
+Source seam: `GlobalTopologyPlan` arcs/regions/rotations; `FieldAlignedMandatoryEdge` HardRail/component; `SourceTopologyRegions` sheets; A2b Trace-cut interior endpoints; existing `RemeshPipeline.cpp:1005–1016` per-arc inputs and `GlobalConformityBaseline.cpp:279–456` bijection/parity remain unchanged. Zero certified joins cannot be claimed as Vase compression.
+
+**Actual checker:** `python3 .agents/Directional/tools/review_check.py boundary` ran on the verified source archive and exited **1**: local mutation checks clean, ancestor/durable-baseline checks failed due missing `.git`. Its “untracked” selector messages are not real new selector changes; no history-level PASS is claimed.
