@@ -1,2 +1,0 @@
-# CB114 temporary source-snapshot trigger; preserve durable dispatcher and mailbox
-.agents/connector-triggers/source-snapshot/cb114-20261109-1721.txt
