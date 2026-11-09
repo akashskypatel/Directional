@@ -1,6 +1,6 @@
 # D5 mandatory-chain scheduling: exact incidence proof gate
 
-**Authority / scope.** Same canonical runtime-free Review/Definition `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING`; this is an additive, non-accepting analysis companion to the current `Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Review_WIP_20261109.md`. Static source was read from the verified snapshot `18102b6249068f440dcb2150dfb2e014a9aa225c` (workflow 42551485386, artifact 13645093415, verified 6283/6283). No build, runtime, tests, benchmark or selector mutation.
+**Authority / scope.** Same canonical runtime-free Review/Definition `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING`; this is an additive, non-accepting analysis companion to the current `Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Review_WIP_20261109.md`. Static source was read from the verified snapshot `18102b6249068f440dcb2150dfb2e014a9aa225c` (workflow 42551485386, artifact 13645093415, verified 6283/6283). Review-only; no runtime or source mutation.
 
 ## 1. Independent source-derived constraints
 
@@ -22,7 +22,7 @@ Maximality is deterministic closure under these certified pairwise joins, **not*
 
 ## 3. Unit count and breakpoint expansion
 
-For chain `C = (a_0,...,a_(k-1))`, construct a single ordered exact path by concatenating all *original* support pieces, carrying the signed child-interval map. Run D7's canonical direction-run metric over **that physical path**, not the prior per-arc preferred counts. D7b allocates a *strictly positive count to the unit* and uses positive ceiling-weight runs, exact rational run interpolation and canonical reversal. Because `n_C` may be less than `k`, a child arc is allowed zero **interior** chain breakpoints; this is not a zero-length child, a zero-valued original scheduled span, or an omitted source segment. Map each unit subdivision's two exact endpoints and its ordered (possibly multi-piece and multi-child) carrier walk into the immutable original source topology.
+For chain `C = (a_0,...,a_(k-1))`, form an ordered path retaining original carriers and signed child maps. D7 requires `previous == piece.first` on complete `ConformitySourcePoint` objects (`GlobalConformityBaselineSupport.cpp:237–240`); certified source-entity equality across child joins needs a proven compatible endpoint representation, not silent carrier rewriting. Run D7's canonical direction-run metric over **that physical path**, not the prior per-arc preferred counts. D7b allocates a *strictly positive count to the unit* and uses positive ceiling-weight runs, exact rational run interpolation and canonical reversal. Because `n_C` may be less than `k`, a child arc is allowed zero **interior** chain breakpoints; this is not a zero-length child, a zero-valued original scheduled span, or an omitted source segment. Map each unit subdivision's two exact endpoints and its ordered (possibly multi-piece and multi-child) carrier walk into the immutable original source topology.
 
 Represent an interval that crosses a child join as **one** unit interval with an ordered multi-child exact source-support walk, never a separate phantom quad edge on each child. At each internal join, use a canonical half-open ownership convention for the point, but retain both original adjacent support incidences as provenance; reversal must map unit ordinal `j` to `n_C-j` and reverse the full child/interval walk. Validate complete interval coverage of every child (including a child with no interior breakpoint) before A4 consumes anything.
 
@@ -32,7 +32,6 @@ The existing algorithm constructs a region-to-span graph with one or two boundar
 
 The independent certificate verifier must independently derive the quotient from immutable source/network/topology authority, compare original child partitions and all exact source supports/ordered occurrences, expand every scheduled interval back to `(unit, child, source support, region occurrence, direction)`, verify each interval has exactly the required incidences, and rederive each region's parity. Only then may the unchanged exact T-join + lex-prefix rule run on the quotient graph. A constructor and verifier sharing the same unchecked quotient digest or inferred ownership are not independent proof.
 
-**Non-identifiability:** Aggregate Vase counts do not identify any admissible join or a measured 62-count chain; see the existing WIP and RA-213 §2 for those totals.
 
 ## 5. Smallest code and evidence seam (not yet authorized)
 
