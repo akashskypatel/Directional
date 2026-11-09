@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb114-docs-correction-20261109-1836",
+  "request_id": "m6-cp3-cb115-tool-data-paths-20261109-1851",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb114-docs-correction",
-  "file_id": "1G1X3_AnlSvfmCAPMGP7QUkQxFdBIp4Ef",
-  "patch_sha256": "21887b670622529d43f95c823661072269fa6db281be3e624d1d2714035b72b7",
-  "base_sha": "fb27380db9f29d3e26a155583e5664fd5598c253",
+  "mailbox_key": "m6-cp3-cb115-tool-data-paths",
+  "file_id": "1dIb4BJ36c7jnNsplf-ZUzrs2gKGROLQ3",
+  "patch_sha256": "c4792aeb2d2d8bf4e7a9649068c9a81e4404980442da96dfec22f87861a6752d",
+  "base_sha": "2c38f451d664778ddb237c8488ec78aefb11ad05",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): correct CB114 successor references in TODO and handoff",
+  "commit_message": "chore(agent): repair tool-data fixed paths in 13 harnesses",
   "retention_days": 14
 }
