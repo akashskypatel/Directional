@@ -35,7 +35,7 @@ Only after such measured evidence may a separate count/placement and A4-consumer
 3. No per-unit-positivity normative amendment, approved multi-child consumer or complete source-to-region parity equivalence proof exists. They cannot be silently delegated to implementation.
 4. Handoff/TODO/ORIENTATION/CHANGELOG/ROADMAP and the Review §5 final closeout have not been updated to claim a completed D5 definition. The next session must remain in this exact turn rather than starting 64C.
 
-**Boundary checker (actually executed in this continuation):** `python3 .agents/Directional/tools/review_check.py boundary` on the verified source snapshot exited **1**. Product/test/fixture/build and selector mutation checks printed clean, but history-based ancestor and durable rewrite checks fail because the archive has no `.git`. Selector “untracked/new” labels are artifacts of the history-free archive, not evidence of current-branch selector changes. An authenticated Git-history-level pass remains outstanding.
+**Boundary audit:** Local `review_check.py boundary` exits **1** (snapshot lacks `.git`); source/selector mutation checks clean, historical checks unavailable. Remote GitHub compare independently verifies rewrite base `8b7299b43764a6ba3444e5bc774a2f1b65e99731` is an ancestor (0 behind); protected headings preserved: Handoff 4/4, ORIENTATION 1/1, Tracker 0/0. This is not a passing local worktree checker.
 
 ## Review closeout — open obligations, **not a final acceptance**
 
@@ -56,6 +56,6 @@ Only after such measured evidence may a separate count/placement and A4-consumer
 | Consolidation under CLEAN_UP_POLICY | Older source-audit supplements consolidated into this WIP/companion files; no durable history deleted |
 | Successor frozen | **No**; one exact product source/test patch plus TB falsifiers still required |
 | Turn boundary held | Runtime-free; no product/test/fixture/selector or workflow mutation in this Review |
-| review_check.py boundary | Exit 1 in history-free archive; cannot claim full pass |
+| review_check.py boundary | Exit 1 locally; remote baseline ancestry/headings verified, not a local pass |
 | `STATUS` lifecycle maintained | Entry/resume beacon written; final same-turn beacon required as last repository action |
 | Pushed to origin, branch in sync | Connector writes land remotely; final PR/head verification required; local `git status -sb` cannot prove origin sync from a source tarball |
