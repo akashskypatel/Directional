@@ -34,6 +34,7 @@ Only after such measured evidence may a separate count/placement and A4-consumer
 2. Actual production-derived Vase arc/region/source-support incidence sufficient to prove at least one admissible pair does not appear in existing checked census output; runtime may occur only in a separately authorized TB of a retained product.
 3. No per-unit-positivity normative amendment, approved multi-child consumer or complete source-to-region parity equivalence proof exists. They cannot be silently delegated to implementation.
 4. Handoff/TODO/ORIENTATION/CHANGELOG/ROADMAP and the Review §5 final closeout have not been updated to claim a completed D5 definition. The next session must remain in this exact turn rather than starting 64C.
+5. **Negative-test reachability is not frozen:** a minimal ID-and-orientation-only chain candidate cannot directly mutate source carrier, region-side/orbit, face winding, sheet or rail authority. The independent TB contract §C now distinguishes candidate-only tamper, legal contrasting A2b input, and invalid upstream input, and requires actual target-predicate reachability before PASS. Existing earlier draft checklists that name bogus carrier/side-row mutations are not independent chain-validator proof by themselves. The first CB must demonstrate a genuinely reachable certified multi-edge join, deliberate incompatible candidate IDs under the *same valid* source tuple, nonmaximal split, and independently checked typed failure; unverifiable fixture cases remain `not exercised`, not green. Source/test patch remains unfrozen.
 
 **Boundary audit:** Local `review_check.py boundary` exits **1** (snapshot lacks `.git`); source/selector mutation checks clean, historical checks unavailable. Remote GitHub compare independently verifies rewrite base `8b7299b43764a6ba3444e5bc774a2f1b65e99731` is an ancestor (0 behind); protected headings preserved: Handoff 4/4, ORIENTATION 1/1, Tracker 0/0. This is not a passing local worktree checker.
 
@@ -43,7 +44,7 @@ Only after such measured evidence may a separate count/placement and A4-consumer
 |---|---|
 | Accepted selector prefix re-hashed | 449 `d4a0d1b7…`, prefix448 `70ff0860…` exact; full hashes and byte proof in side-walk oracle; history checker unresolved |
 | Decisive claims independently re-derived | Source bijection/parity/source-path/rail access checked against verified snapshot; snapshot 6,285/6,285 hashes |
-| Non-vacuity checked | Existing aggregate Vase figures cannot prove a joined chain; positive and tamper controls are mandated but not run |
+| Non-vacuity checked | Vase aggregate cannot prove a joined chain; candidate-only vs upstream-invalid tamper categories reclassified by actual reachability; all future positive/negative tests remain **unrun** and no real production join proved |
 | Prior obligations discharged/carried | RA-214 diagnostic-only withdrawal discharged; RA-216/217 D7/D7b reused; 64B chain proof, D4 64C/64D, D9c 65A, Trace 65B, A4 65C, D8 65D, D6 decision carried |
 | Stable accounting | No accepted loss; CP2 491/491, stable 66/17/49 debt1, 81 deferred, selector497/CP3 unpromoted |
 | New candidates/obligations recorded | Candidate production chain partition/independent validator in evidence-recovery companion; tracker closeout pending |
