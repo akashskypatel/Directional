@@ -39,7 +39,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Last accepted semantic runtime | **CP2 491/491**, accepted 2026-10-06; unchanged. TB71 remains unpromoted candidate only. |
 | Latest candidate | **TB92 COMPLETE / MATCH** [verified TB92 report](Architecture_M6_CP3_TB92_P13_A3_Metric_Breakpoint_Placement_Switch_Full_Gate_Execution_Report_20261109.md)]: [gate 42545187846](https://github.com/akashskypatel/Directional/actions/runs/42545187846) **918/918 PASS**, membership 999, 1,844/1,844 hashes, selector:392 + GUARD 918 PASS; [census 42545246897](https://github.com/akashskypatel/Directional/actions/runs/42545246897) Cylinder PASS, BunnyRandom/Vase registered RED, 9/9 hashes. **7/7 A3** lines identical to TB91; Vase baseline hash changes as registered, `/count` stable, no unregistered drift or CP3 promotion. |
 | Regression accounting and debt | Accepted CP2 **491/491**, stable **66/17/49**, debt **1**, deferred ledger v5 **81**. TB92 gate membership **999**, no new stable event or accepted-green loss; selector497/CP3 unpromoted. BunnyRandom P13-e and Vase completion/producer RED unchanged; D5 defined by RA-218 (CB110 → TB93 next; switch 64B.3; new debt O34, uncut closed rails); D4/D9c/A2b/A4/D8 open and D6 decision pending. |
-| Active boundary | **Step 64B D5 DEFN COMPLETE ([RA-218](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md)); 64B.1 CB110 NEXT** (implementation agent, compile only), then 64B.2 TB93; 64B.3 switch DEFN on the Review track in parallel. Last gate TB92 918/918, membership 999; no CP3/selector497 or direct-production promotion. |
+| Active boundary | **Selectors moved to `.agents/Directional/selectors/` (user-instructed, 2026-11-09). Next: 64B.0 CB114** (implementation agent re-points tool selector paths), then 64B.1 CB110 (compile only), then 64B.2 TB93; 64B.3 switch DEFN on the Review track in parallel. 64B D5 DEFN COMPLETE ([RA-218](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md)). Last gate TB92 918/918, membership 999; no CP3/selector497 or direct-production promotion. |
 
 ### Revised post-TB88 bounded sequence (requested independent re-audit; one change family per turn)
 
@@ -60,7 +60,34 @@ The [TB87 substantive re-audit](Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Rou
 
 The prior combined 64 (D7+D5), 64A (uniform+annulus), and 65 (D9c+trace+disc) are **superseded only as bundled implementation assignments**. Do not lose their existing semantic requirements, lineage, or debt. These future IDs are sequence metadata; **step 64B.1 CB110 is now the immediate NEXT_TURN** (RA-218 §3).
 
-## Mandatory next turn — `M6-CP3-CB110-P13-A3-MANDATORY-CHAIN-PARTITION` (step 64B.1; RA-218 §5)
+## Mandatory next turn — `M6-CP3-CB114-SELECTOR-PATHS` (step 64B.0; user-instructed selector move)
+
+- **Why:** by user instruction, all 54 byte-frozen selector files now live in **`.agents/Directional/selectors/`**:
+  - 45 numbered `*Required_Green_Selector_<n>.txt`;
+  - `M1_Full_Required_Green_Selector.txt`;
+  - 6 `*Required_Green_Focused_<n>.txt`;
+  - 2 `*Selector_<n>_Static_Routing_Receipt.tsv`.
+
+  They moved as byte-identical renames with unchanged names; see `RETENTION_POLICY.md` § Selector files, relocation record. Tools and harnesses still read the old paths until this turn lands. No workflow, test, source or CMake file reads a selector, so the TB93 gate harness is unaffected.
+- **Type:** implementation agent; update selector references to the new location by applying [the exact patch](Architecture_M6_CP3_CB114_Selector_Paths_Exact.diff) exactly.
+  - SHA-256 `59ebcadcf3615f63966c6e43220eafb09afa697577ed08d63a3f07e476ce6f29`, 810 lines; keep its 18 single-space context lines.
+  - 42 files, +153 −138: `review_check.py` `18 4`, `selector_manifest.py` `6 5`, `selector_probe.py` `2 2`, `tools/README.md` `1 1`, and 38 harness `.sh` files that read selectors.
+  - Base: the selector-move commit. Tools only; no product, test, workflow or selector byte changes.
+- **What the patch does:**
+  - Re-points every `.agents/Directional/<selector>` path to `.agents/Directional/selectors/<selector>`.
+  - The selector globs in `review_check.py`, `selector_manifest.py` and `selector_probe.py` read `selectors/`.
+  - `selector_manifest.py` uses `git log --follow`, so "first committed" dates survive the move.
+  - `review_check.py boundary` treats a same-name, same-bytes rename into `selectors/` as a relocation; any other selector change is still a mutation.
+- **Verify, static only:**
+  - `bash -n` on each changed `.sh` and `python3 -m py_compile` on each changed `.py`;
+  - `python3 .agents/Directional/tools/review_check.py boundary` → ALL CHECKS PASSED;
+  - `grep -rnE '\.agents/Directional/(Architecture_M[0-9A-Za-z_]*(Required_Green_(Selector|Focused)|_Static_Routing_Receipt)|M1_Full_Required_Green_Selector)' .agents/Directional/tools` → no output.
+- **Do not regenerate `Required_Green_Selector_Manifest.md`.** The tool's ROLE table is stale against the hand-maintained roles of selectors 427–449, and duplicate-number rows sort by filesystem order. Regenerating rewrites 14 rows; that is pre-existing tooling debt, recorded in TODO. The Review checked that the patched tool's output is byte-identical to the unpatched tool's output on the pre-move tree.
+- **Stops:** mismatch → `M6-CP3-PLAN-SELECTOR-PATHS-STOP`; infrastructure → `M6-CP3-CB114A-SELECTOR-PATHS-ORCH`.
+- **Numbering:** CB114, because RA-218 reserves CB111–CB113 for the D5 switch.
+- **Then:** `M6-CP3-CB110-P13-A3-MANDATORY-CHAIN-PARTITION`, per the section below.
+
+## Next after CB114 — `M6-CP3-CB110-P13-A3-MANDATORY-CHAIN-PARTITION` (step 64B.1; RA-218 §5)
 
 - **Type:** implementation agent, **compile only**. Apply [the exact patch](Architecture_M6_CP3_CB110_P13_A3_Mandatory_Chain_Partition_Exact.diff) exactly: SHA-256 `ff3fdf5f1a34ea942075f681a760cbec423df4a4800c2024992ceb77a05054f0`, 522 lines, keep its 6 single-space context lines. Numstat `112 0` `GlobalConformityBaselineSupport.cpp` / `25 0` `GlobalConformityBaselineSupport.h` / `333 1` `GlobalConformityBaselineTests.cpp`. Base is product source CB109 `3f64cbf2…`. Then run the eight-target GMP/GMPXX compile and package. Run nothing; author no test.
 - **Stops:** mismatch → `M6-CP3-PLAN-P13-A3-MANDATORY-CHAIN-PARTITION-STOP`; infrastructure → `M6-CP3-CB110A-P13-A3-MANDATORY-CHAIN-PARTITION-ORCH`.
@@ -308,7 +335,8 @@ Facts are in the records, `TODO.md` steps and Review track, `CHANGELOG.md` and t
 | 64.8 — COMPLETE | `M6-CP3-CB109-P13-A3-METRIC-BREAKPOINT-PLACEMENT-SWITCH` | [CB109 record](Architecture_M6_CP3_CB109_P13_A3_Metric_Breakpoint_Placement_Switch_Code_Build_Record_20261109.md), exact switch compiled 8/8 GMP/GMPXX, package `13641673331`, 28/28 hashes, no runtime; TB92 separate |
 | 64.9 — COMPLETE / MATCH | `M6-CP3-TB92-P13-A3-METRIC-BREAKPOINT-PLACEMENT-SWITCH-FULL-GATE-EXEC` | [TB92 report](Architecture_M6_CP3_TB92_P13_A3_Metric_Breakpoint_Placement_Switch_Full_Gate_Execution_Report_20261109.md) 918/918 PASS, census 1 PASS/2 registered RED; 918 rows `d714a52e…`, membership 999; RA-217 §7 outcome table. Mismatch → `M6-CP3-TB92-P13-A3-METRIC-BREAKPOINT-PLACEMENT-SWITCH-FULL-GATE-REV`; infrastructure → `M6-CP3-TB92A-P13-A3-METRIC-BREAKPOINT-PLACEMENT-SWITCH-ORCH` |
 | 64B — Review COMPLETE (takeover) | `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING` (D5) | Implementation-agent attempt stalled 13 h with 11 WIP records and no patch → [RA-218](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md): A3-level chains, join rule, stops, O34; exact CB110 + TB93 frozen; switch split to 64B.3 |
-| **64B.1 — NEXT** | `M6-CP3-CB110-P13-A3-MANDATORY-CHAIN-PARTITION` | Implementation agent, compile only; RA-218 §5 `ff3fdf5f…` (522 lines, keep 6 single-space context lines), numstat `112 0` / `25 0` / `333 1`. Mismatch → `M6-CP3-PLAN-P13-A3-MANDATORY-CHAIN-PARTITION-STOP`; infrastructure → `M6-CP3-CB110A-P13-A3-MANDATORY-CHAIN-PARTITION-ORCH` |
+| **64B.0 — NEXT** | `M6-CP3-CB114-SELECTOR-PATHS` | Implementation agent; user-instructed selector move. Apply `Architecture_M6_CP3_CB114_Selector_Paths_Exact.diff` `59ebcadc…` (810 lines, keep 18 single-space context lines; 42 tool files). Static checks only; do not regenerate the selector manifest. Mismatch → `M6-CP3-PLAN-SELECTOR-PATHS-STOP`; infrastructure → `M6-CP3-CB114A-SELECTOR-PATHS-ORCH` |
+| 64B.1 | `M6-CP3-CB110-P13-A3-MANDATORY-CHAIN-PARTITION` | Implementation agent, compile only; RA-218 §5 `ff3fdf5f…` (522 lines, keep 6 single-space context lines), numstat `112 0` / `25 0` / `333 1`. Mismatch → `M6-CP3-PLAN-P13-A3-MANDATORY-CHAIN-PARTITION-STOP`; infrastructure → `M6-CP3-CB110A-P13-A3-MANDATORY-CHAIN-PARTITION-ORCH` |
 | 64B.2 | `M6-CP3-TB93-P13-A3-MANDATORY-CHAIN-PARTITION-FULL-GATE-EXEC` | 923 rows `a8c4a599…`, membership 1004; 923/923 and 7 + 7 lines byte-identical to TB92 (RA-218 §6). Mismatch → `M6-CP3-TB93-P13-A3-MANDATORY-CHAIN-PARTITION-FULL-GATE-REV`; infrastructure → `M6-CP3-TB93A-P13-A3-MANDATORY-CHAIN-PARTITION-ORCH` |
 | 64B.3 (Review agent, parallel) | `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SPAN-SWITCH` | Freeze CB111 stop set (ports + feature corners/junctions → nodes, unwired), CB112 curved-disk arc → span/piece-offset consumption (behaviour-neutral), CB113 span switch + validator + wiring (Vase prediction: 145 Mandatory spans → 3), each with a full-gate TB; or `M6-CP3-PLAN-P13-A3-MANDATORY-CHAIN-SPAN-SWITCH-STOP` |
 | 64C–65D (Review, runtime-free; scoped) | **See revised bounded sequence above** | D4 uniform → D4 annulus → D9c carrier attachment → A2b reciprocal trace → A4 disc domain → D8 receipt; each DEFN then dedicated CB then dedicated TB |
@@ -324,7 +352,7 @@ Rows 49–64.9 are complete as turns. TB90 64.4 is MATCH (914/914, census 1 PASS
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB110-P13-A3-MANDATORY-CHAIN-PARTITION** (step 64B.1; implementation agent; apply RA-218 §5 exactly, then compile only; no runtime, no authored test). Then TB93 (RA-218 §6). The Review agent runs 64B.3 in parallel. Preserve the 66/17/49 and accepted CP2 491/491 ledgers.
+`load_next`: **M6-CP3-CB114-SELECTOR-PATHS** (step 64B.0; implementation agent; apply the exact tool patch that re-points selector paths to `.agents/Directional/selectors/`; static checks only). Then **M6-CP3-CB110-P13-A3-MANDATORY-CHAIN-PARTITION** (RA-218 §5, compile only) and TB93 (RA-218 §6). The Review agent runs 64B.3 in parallel. Preserve the 66/17/49 and accepted CP2 491/491 ledgers.
 - CB89 compiled source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, immutable package artifact `13370954424`, 28/28 hashes, eight GMP/GMPXX targets; no test execution.
 - TB79 artifact-only gate (RA-203.6) finished: 899/899, census MATCH.
 - RA-204 completed the O30 Review; CB90 and TB80 are done. The fixed-field replay is withdrawn: do not build a field fixture.
