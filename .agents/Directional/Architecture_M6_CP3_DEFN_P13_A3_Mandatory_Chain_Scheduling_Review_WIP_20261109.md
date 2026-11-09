@@ -41,8 +41,8 @@ Only after such measured evidence may a separate count/placement and A4-consumer
 
 | Duty | Answer |
 |---|---|
-| Accepted selector prefix re-hashed | n/a this attempt: no selector change; exact-head comparison found no selector paths; history-based checker remains unverified |
-| Decisive claims independently re-derived | Source bijection/parity/source-path/rail access checked against verified snapshot; snapshot 6,283/6,283 hashes |
+| Accepted selector prefix re-hashed | 449 `d4a0d1b7…`, prefix448 `70ff0860…` exact; full hashes and byte proof in side-walk oracle; history checker unresolved |
+| Decisive claims independently re-derived | Source bijection/parity/source-path/rail access checked against verified snapshot; snapshot 6,285/6,285 hashes |
 | Non-vacuity checked | Existing aggregate Vase figures cannot prove a joined chain; positive and tamper controls are mandated but not run |
 | Prior obligations discharged/carried | RA-214 diagnostic-only withdrawal discharged; RA-216/217 D7/D7b reused; 64B chain proof, D4 64C/64D, D9c 65A, Trace 65B, A4 65C, D8 65D, D6 decision carried |
 | Stable accounting | No accepted loss; CP2 491/491, stable 66/17/49 debt1, 81 deferred, selector497/CP3 unpromoted |
