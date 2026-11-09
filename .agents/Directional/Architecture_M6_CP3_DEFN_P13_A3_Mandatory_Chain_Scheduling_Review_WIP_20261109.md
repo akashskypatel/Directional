@@ -16,7 +16,9 @@ A chain is a **view over immutable original A2b arcs**, seeded by prevalidated o
 
 Store each chain's **ordered, oriented original child IDs only**; recover exact carriers, owner occurrences and component/sheet/rail lineage from unchanged validated stage inputs through checked lookups. Do not introduce redundant parallel copies. D7 metric runs and D7b rational placement remain authoritative. A later scheduling switch must independently expand each unit interval to all original region incidences, including children without interior breakpoints; reversal maps `j ↔ n-j`. The independent validator recomputes child/occurrence coverage without trusting producer flags or hashes.
 
-Related current-source seam: [retained partition product/validator WIP](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Retained_Product_Seam_WIP_20261109.md).\n\nSee [incidence proof gates](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Incidence_Proof_Gates_20261109.md) for detailed parity conditions and [evidence recovery](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Evidence_Recovery_20261109.md) for the exact production/view/TB route.
+Related current-source seam: [retained partition product/validator WIP](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Retained_Product_Seam_WIP_20261109.md).
+
+See [incidence proof gates](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Incidence_Proof_Gates_20261109.md) for detailed parity conditions and [evidence recovery](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Evidence_Recovery_20261109.md) for the exact production/view/TB route.
 
 ## 3. RA-214 authority correction and smallest next slice
 
