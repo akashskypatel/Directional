@@ -5459,7 +5459,7 @@ The resulting gate is **365**. Its bytes are frozen by the turn that creates the
 
 ##### 7.5 The frozen CP4c-2 gate — selector 361
 
-Created this turn as `.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_361.txt`. It is candidate
+Created this turn as `.agents/Directional/selectors/Architecture_M3_CP4c2_Required_Green_Selector_361.txt`. It is candidate
 357 with the four §7.1 identities appended in the order listed.
 
 | authority | source file | derivation | SHA-256 |
@@ -5763,7 +5763,7 @@ torus and sphere did.
 
 ##### 6.1 Frozen now — selector 367
 
-Created as `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_367.txt`: accepted **365** plus the
+Created as `.agents/Directional/selectors/Architecture_M3_CP4c3_Required_Green_Selector_367.txt`: accepted **365** plus the
 two identities that exist today and that CP4c-3 owns by prior commitment.
 
 | ordinal | identity | why gated |

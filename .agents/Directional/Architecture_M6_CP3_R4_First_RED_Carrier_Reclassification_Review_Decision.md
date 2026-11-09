@@ -46,7 +46,7 @@ baseline exists for this identity."* That is true of the **new test's own name**
   whole family is RED — this is not one witness's precondition failing.
 - Two of those identities — `ProductionA4PublishesAcceptedA2bA3ConformityReceipt` and
   `HardRailPairingIsFaceRowOrderInvariant` — are **inside the frozen `selector449`**
-  (`.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt`, the file the 497 harness
+  (`.agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt`, the file the 497 harness
   pins at `tools/m6_cp3_entry_497_artifact_only_harness.sh:16`).
 - `Architecture_M6_CP3_TB1_Entry_R3_Red_Classification.tsv` already carries this failure. The 94 R3 RED
   decompose into eight carriers, and the largest is **`A4_ROUTE_CERTIFICATE_REJECTION` at 39**, of which

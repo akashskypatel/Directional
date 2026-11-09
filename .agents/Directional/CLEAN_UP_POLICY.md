@@ -67,7 +67,8 @@ current document per role instead of an accumulating per-turn series.
    between reviews still resolves. First applied at `M3-CP4c-3-TB20-REV`.
 4. **Retain one current document per role.** After consolidation the family retains: the current runtime-authority
    report, the current review record, exactly one next-turn plan, the consolidated historical record, the
-   consolidated normative definitions, and every byte-frozen selector file. Nothing else from the per-turn series.
+   consolidated normative definitions, and every byte-frozen selector file (all kept in
+   `.agents/Directional/selectors/`; see `RETENTION_POLICY.md` § Selector files). Nothing else from the per-turn series.
 5. **Never fold current authority.** The current immutable source/package/runtime authority and the single frozen
    next-turn plan are retained until superseded by their successors.
 6. **Repair references in the same turn.** After folding, rewrite live citations of the folded filenames to the

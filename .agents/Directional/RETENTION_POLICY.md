@@ -63,7 +63,10 @@ In addition to the durable set, retain only the current authoritative evidence/r
 
 ## Selector files — never consolidated
 
-Every `Required_Green_Selector_*.txt` is durable, byte-frozen authority. They are **not** subject to the REVIEW-turn
+Every selector file is durable, byte-frozen authority. All selector files live in **`.agents/Directional/selectors/`**:
+the numbered `*Required_Green_Selector_<n>.txt` files, `M1_Full_Required_Green_Selector.txt`, the M6
+`*Required_Green_Focused_<n>.txt` files, and the `*Selector_<n>_Static_Routing_Receipt.tsv` routing receipts that
+belong to them. A new selector file is added there, never elsewhere. They are **not** subject to the REVIEW-turn
 document consolidation in `CLEAN_UP_POLICY.md`, and no turn may consolidate, rename, merge or delete one without
 explicit user authorization naming the exact files.
 
@@ -77,6 +80,13 @@ unique bytes and are not reconstructible from the chain at all.
 appended identities and roles. It is additive and grants no authority: **where it disagrees with a selector file,
 the selector file wins.** Regenerate it with `tools/selector_manifest.py` after any turn that appends a selector.
 A selector filename is not an identity count — read the count from the manifest.
+
+**Relocation record (user-authorized 2026-11-09).** By explicit user instruction, all 54 selector files (45 numbered
+selectors, the M1 full selector, 6 focused selectors and 2 routing receipts) were moved byte-identically, with
+unchanged filenames, from `.agents/Directional/` to `.agents/Directional/selectors/`. Every file's SHA-256 was
+compared before and after the move. Their history continues under `git log --follow`. The move changed no selector
+byte, identity, hash or role. `Required_Green_Selector_Manifest.md` stays at its listed path. Tools and harnesses
+that read selectors are re-pointed by the implementation agent's exact patch `M6-CP3-CB114-SELECTOR-PATHS`.
 
 ## Evidence retention
 
