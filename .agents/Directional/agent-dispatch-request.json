@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-d5-review-side-proof-20261109-1111-fix-paths",
+  "request_id": "m6-cp3-d5-endpoint-ports-review-20261109-1135",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-d5-review-side-proof-fixed",
-  "file_id": "1iz3Iwt1iXK24TJo3vqcvPsuYO3-EeE0n",
-  "patch_sha256": "1d0e6ff5131a117c39a64ddee5aa630b98c3efe625f1398795c96d10f5bfa80a",
-  "base_sha": "3f28e64a4f062638bb9eb892815623e8fdfa77a4",
+  "mailbox_key": "m6-cp3-d5-endpoint-port-review",
+  "file_id": "1XaLTUPf_9sazILEDFLLFgPbOO6Rpql_Q",
+  "patch_sha256": "7f248f7c5fd67d441201264d6ccbb4905930fe5014eb192f7aafd187f76592d0",
+  "base_sha": "25e17db42ad0e2da39e0a42eae2f62a8444e806c",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(d5): align physical-side and region-incidence proof gates",
+  "commit_message": "docs(d5): require endpoint-port and simple-path join proof",
   "retention_days": 14
 }
