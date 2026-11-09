@@ -1,6 +1,6 @@
 # TB92 — metric-breakpoint placement switch immutable full gate and census (2026-11-09 UTC)
 
-**Turn:** `M6-CP3-TB92-P13-A3-METRIC-BREAKPOINT-PLACEMENT-SWITCH-FULL-GATE-EXEC` — **COMPLETE / MATCH** under [RA-217 §7](Architecture_M6_CP3_DEFN_P13_A3_Metric_Breakpoint_Placement_Adversarial_Review_20261108.md). This is an artifact-only Test + Benchmark execution; no rebuild, relink, configuration, benchmark, source/test/fixture/selector edit, or acceptance promotion.
+**Turn:** `M6-CP3-TB92-P13-A3-METRIC-BREAKPOINT-PLACEMENT-SWITCH-FULL-GATE-EXEC` — **COMPLETE / MATCH** under [RA-217 §7](M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_a3_metric_breakpoint_placement_adversarial_review_20261108md "moved: Architecture_M6_CP3_DEFN_P13_A3_Metric_Breakpoint_Placement_Adversarial_Review_20261108.md"). This is an artifact-only Test + Benchmark execution; no rebuild, relink, configuration, benchmark, source/test/fixture/selector edit, or acceptance promotion.
 
 ## Frozen identities and verified execution
 

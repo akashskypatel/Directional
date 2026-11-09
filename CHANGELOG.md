@@ -1,3 +1,10 @@
+## 2026-11-09 UTC — Remaining `Architecture_M6*` records consolidated into five volumes (user-instructed)
+
+- 231 standalone Review, definition and audit records were moved verbatim into `M6_Consolidated_Record_Vol_A`/`B`/`C`/`D1`/`D2`, one section per former file. Only heading levels (+2) and links to other moved records changed. A script confirmed all 231 sections against their originals with 0 mismatches.
+- None was pruned. The instruction was to prune only content already documented elsewhere, and no record qualified: the share of each record's substantive lines found verbatim in the permanent documents was at most 27% (221 of 235 under 10%).
+- 342 links in 13 files were retargeted to the volume sections; 0 dead links remain. `M6_Consolidated_Record.md` gains the M6 moved-record map.
+- 23 `Architecture_M*` files remain standalone: frozen definitions, RA-218, the TB92 report, the CB109 record, the CB110/CB114 patches and the data files.
+
 ## 2026-11-09 UTC — Selector files moved to `.agents/Directional/selectors/` (user-instructed)
 
 - All 54 byte-frozen selector files moved as byte-identical renames with unchanged names; SHA-256 was compared before and after. The set is 45 numbered `Required_Green_Selector`, `M1_Full_Required_Green_Selector.txt`, 6 M6 `Required_Green_Focused` and 2 static routing receipts. `RETENTION_POLICY.md` § Selector files now names the location and carries the relocation record; `CLEAN_UP_POLICY.md` points to it. `Required_Green_Selector_Manifest.md` stays in place. Five path mentions were updated in closure and review records.
@@ -41,11 +48,11 @@
 
 ## 2026-11-08 UTC — RA-217: D7b re-entered; exact CB108 and CB109 frozen (runtime-free Review)
 
-- [RA-217](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Metric_Breakpoint_Placement_Adversarial_Review_20261108.md) re-entered the D7b decision. Its placement formula, reversal analysis and single-piece `(j,n)` rule stand. Corrections: placement reads the count's runs through one `derive_partition_stable_metric_runs`; run weights are `⌈2⁶⁴·metric⌉`, so a tiny run can no longer fail the baseline build; the width receipt keeps M4 §5.5's encountered-ordinal definition; selector:392's assertions are amended by the switch. Frozen: [CB108](.agents/Directional/M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB108_P13_A3_Metric_Breakpoint_Placement_Exact.diff") `c56559ae…` (unwired) → TB91 917 rows `0b16a30e…` (identical) → [CB109](.agents/Directional/M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB109_P13_A3_Metric_Breakpoint_Placement_Switch_Exact.diff") `be4cac4e…` (switch) → TB92 918 rows `d714a52e…` (pre-registered rule). DESIGN §7.4 amended. No product, test or runtime change. CP2 491/491, stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted.
+- [RA-217](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_a3_metric_breakpoint_placement_adversarial_review_20261108md "moved: Architecture_M6_CP3_DEFN_P13_A3_Metric_Breakpoint_Placement_Adversarial_Review_20261108.md") re-entered the D7b decision. Its placement formula, reversal analysis and single-piece `(j,n)` rule stand. Corrections: placement reads the count's runs through one `derive_partition_stable_metric_runs`; run weights are `⌈2⁶⁴·metric⌉`, so a tiny run can no longer fail the baseline build; the width receipt keeps M4 §5.5's encountered-ordinal definition; selector:392's assertions are amended by the switch. Frozen: [CB108](.agents/Directional/M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB108_P13_A3_Metric_Breakpoint_Placement_Exact.diff") `c56559ae…` (unwired) → TB91 917 rows `0b16a30e…` (identical) → [CB109](.agents/Directional/M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB109_P13_A3_Metric_Breakpoint_Placement_Switch_Exact.diff") `be4cac4e…` (switch) → TB92 918 rows `d714a52e…` (pre-registered rule). DESIGN §7.4 amended. No product, test or runtime change. CP2 491/491, stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted.
 
 ## 2026-11-08 UTC — D7b exact metric breakpoint placement definition (runtime-free Review)
 
-- [D7b decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Metric_Breakpoint_Placement_Review_20261108.md): exact run-metric allocation with linear within-run rational location, immutable baseline-only profiles, preserved single-piece `(j,n)`, independent validator, compact width receipt and zero-run fail-closed rule. No implementation or runtime claim; previous D7 count TB90 remains 914/914 MATCH, membership 995, census 1 PASS/2 expected RED. Next separate CB108 compile-only then TB91 immutable gate. CP2 491/491, stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted.
+- [D7b decision](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_a3_metric_breakpoint_placement_review_20261108md "moved: Architecture_M6_CP3_DEFN_P13_A3_Metric_Breakpoint_Placement_Review_20261108.md"): exact run-metric allocation with linear within-run rational location, immutable baseline-only profiles, preserved single-piece `(j,n)`, independent validator, compact width receipt and zero-run fail-closed rule. No implementation or runtime claim; previous D7 count TB90 remains 914/914 MATCH, membership 995, census 1 PASS/2 expected RED. Next separate CB108 compile-only then TB91 immutable gate. CP2 491/491, stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted.
 
 ## 2026-11-08 UTC — TB90 exact partition-stable D7 scheduler full-gate MATCH (Test + Benchmark)
 
@@ -69,12 +76,12 @@
 
 ## 2026-11-08 UTC — RA-216: step 64 (D7) re-entered; exact CB106 + CB107 (runtime-free Review)
 
-- [RA-216](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Adversarial_Review_20261108.md) re-entered the [D7 decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Review_20261108.md). Its diagnosis and density model stand. Its exact sum-of-square-roots rounding and algebraic inverse breakpoints cannot be decided by the rational kernel, so they are replaced by a run-wise exact integer count (DESIGN §7.4 corrected). Placement, which has no multi-piece production consumer yet, moves to D7b (64.5) before D5. The framed CP1/CP2 copies stay frozen.
+- [RA-216](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_a3_partition_stable_metric_adversarial_review_20261108md "moved: Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Adversarial_Review_20261108.md") re-entered the [D7 decision](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_a3_partition_stable_metric_review_20261108md "moved: Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Review_20261108.md"). Its diagnosis and density model stand. Its exact sum-of-square-roots rounding and algebraic inverse breakpoints cannot be decided by the rational kernel, so they are replaced by a run-wise exact integer count (DESIGN §7.4 corrected). Placement, which has no multi-piece production consumer yet, moves to D7b (64.5) before D5. The framed CP1/CP2 copies stay frozen.
 - Frozen: exact [CB106](.agents/Directional/M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB106_P13_A3_Partition_Stable_Count_Exact.diff") `2ee84014…` (count + 3 GUARD tests, not wired) with TB89 (913, all digests identical), and exact [CB107](.agents/Directional/M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB107_P13_A3_Partition_Stable_Count_Switch_Exact.diff") `c1caefb9…` (scheduler switch + GUARD 914) with TB90 (914, pre-registered rebaseline rule). Both patches are checked with `-fsyntax-only`, and every expected value was recomputed in exact fractions. No product/test source changed and nothing was run. CP2 491/491, stable 66/17/49, debt 1, 81 deferred; CP3/selector497 unpromoted.
 
 ## 2026-11-08 UTC — D7 partition-stable metric definition (runtime-free Review)
 
-- [D7 decision](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Review_20261108.md): independently traced source formula `sqrt(m * sum(lambda_i^2))` and piece-index ordinal placement; established the piece-representation instability with `lambda=(0.1,3.9)` (6 versus 4) and defined additive integrated reciprocal-target physical metric, exact cumulative breakpoints, re-partition/reversal/variable-target falsifiers and a stop gate for algebraic exactness. DESIGN §7.4 amended for D7 only; no product/test/selector edits, compile or runtime.
+- [D7 decision](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_a3_partition_stable_metric_review_20261108md "moved: Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Review_20261108.md"): independently traced source formula `sqrt(m * sum(lambda_i^2))` and piece-index ordinal placement; established the piece-representation instability with `lambda=(0.1,3.9)` (6 versus 4) and defined additive integrated reciprocal-target physical metric, exact cumulative breakpoints, re-partition/reversal/variable-target falsifiers and a stop gate for algebraic exactness. DESIGN §7.4 amended for D7 only; no product/test/selector edits, compile or runtime.
 - Exact next CB106 is D7 implementation + compile only; immutable TB separately required. TB88 910/910 candidate MATCH, accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred; CP3/selector497 remain unpromoted.
 
 ## 2026-11-08 UTC — TB88 observed-route immutable full-gate MATCH (Test + Benchmark)
@@ -92,7 +99,7 @@
 
 - Requested substantive re-audit: a one-step canonical route stores `-1` regardless of observed sign, so TB87 mismatch does not establish producer sign correctness. Preserved the exact CB105/TB88 boundary and split the later D7, D5, uniform D4, annulus D4, D9c, reciprocal trace, disc domain and receipt D8 work into separately testable DEFN → CB → TB turns. No production/test mutation or new runtime claim.
 
-- [TB87-REV](.agents/Directional/Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Orientation_Adjudication_20261108.md) independently verified 1,828/1,828 gate hashes, 32 repeated rim-edge failures across both row orders, and the `CanonicalRoute::steps()` canonical-vs-observed frame mismatch. No production defect proven by the guard failure.
+- [TB87-REV](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_tb87_rev_p13_a3_observed_route_orientation_adjudication_20261108md "moved: Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Orientation_Adjudication_20261108.md") independently verified 1,828/1,828 gate hashes, 32 repeated rim-edge failures across both row orders, and the `CanonicalRoute::steps()` canonical-vs-observed frame mismatch. No production defect proven by the guard failure.
 - Frozen exact [CB105 test-only patch](.agents/Directional/M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Oracle_Exact.diff") SHA256 `9e9635ae…`; compile/package only in CB105, immutable 910-case TB88 separately. No runtime in Review; TB87 remains 909/910 unaccepted, CP2 491/491, stable 66/17/49 debt 1, CP3 unpromoted.
 
 ## 2026-11-08 UTC — TB87 immutable full-gate mismatch; census MATCH (Test + Benchmark)
@@ -109,7 +116,7 @@
 
 ## 2026-11-08 UTC — RA-215: step-61 D9 Review re-entered; exact CB104 and TB87 frozen (runtime-free)
 
-- [RA-215](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Adversarial_Review_20261108.md): the step-61 contract and reader census stand.
+- [RA-215](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_a3_recorded_boundary_intervals_adversarial_review_20261108md "moved: Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Adversarial_Review_20261108.md"): the step-61 contract and reader census stand.
   - F1: the rectangular hard-rail fixture *is* a curved-disk A3 rim witness.
   - F2: CB104 was not exact.
   - F3–F5: unbound or unconstructible falsifiers; digest expectations pinned.
@@ -139,7 +146,7 @@
 
 ## 2026-11-08 UTC — RA-214: step 58 resolved runtime-free; CB103 and TB86 frozen (no product change)
 
-- [RA-214](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md) resumed the `BLOCKED` `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER`.
+- [RA-214](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_a4_a2b_disc_producer_runtime_free_resolution_20261108md "moved: Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Runtime_Free_Resolution_20261108.md") resumed the `BLOCKED` `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER`.
   - The block is valid: `REVIEW_TURN_POLICY.md` §4.3 makes Reviews runtime-free.
   - RA-213 §4 is withdrawn, and the "Claude, scratch build" track label is suspended.
   - No policy file was edited.
@@ -155,7 +162,7 @@
 
 ## 2026-11-08 UTC — RA-213: Vase producer-path Review re-entered; CB102 withdrawn (no product change)
 
-- [RA-213](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Producer_Path_Adversarial_Review_A2b_Disc_Construction_20261108.md) re-entered the runtime-free Vase Review on the scratch build. The veto proof stands. The direction is revised to A4 **per A2b disc**: Vase's 3 discs are already certified singularity-free, and ports are disc corners.
+- [RA-213](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_vase_producer_path_adversarial_review_a2b_disc_construction_20261108md "moved: Architecture_M6_CP3_DEFN_P13_Vase_Producer_Path_Adversarial_Review_A2b_Disc_Construction_20261108.md") re-entered the runtime-free Vase Review on the scratch build. The veto proof stands. The direction is revised to A4 **per A2b disc**: Vase's 3 discs are already certified singularity-free, and ports are disc corners.
 - Measured:
   - with the veto bypassed, curved-disk returns `Rejected`, not a silent output;
   - no produced census fixture consumes A3;
@@ -189,7 +196,7 @@
 
 ## 2026-11-08 — RA-212: RA-211 re-entered; Vase on the legacy fallback, relief-seeded and 20× too dense; CB100 revised + CB101 → TB85 (908); Review Vase producer path next
 
-- **Turn:** `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`, adversarial re-entry of RA-211. [RA-212](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_Legacy_Fallback_Density_20261108.md).
+- **Turn:** `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`, adversarial re-entry of RA-211. [RA-212](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_side_subdivision_quality_review_legacy_fallback_density_20261108md "moved: Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_Legacy_Fallback_Density_20261108.md").
 - **Findings:**
   - Vase is the only census fixture on the legacy tracing fallback; the phase front returns NotApplicable, reason unpublished. RA-211's fixture-digest falsifiers were vacuous.
   - 1,131 of 1,416 Vase seeds are relief-critical (O31); the layout is about 20× denser than the metric target. A scratch run without relief seeds gives 1,184 cells instead of 26,817.
@@ -205,7 +212,7 @@
 
 ## 2026-11-08 — RA-211: P13-n census; owners n1–n4; exact CB100 → TB85; Review P13-n1/n2/n3 next
 
-- **Turn:** `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`, resumed from the ChatGPT BLOCKED Review. [RA-211](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Census_Adjudication_20261108.md).
+- **Turn:** `M6-CP3-DEFN-P13-SIDE-SUBDIVISION-QUALITY`, resumed from the ChatGPT BLOCKED Review. [RA-211](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_side_subdivision_quality_census_adjudication_20261108md "moved: Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Census_Adjudication_20261108.md").
 - **Block:** resolved with a retained-geometry scratch census (digest byte-identical; product sources = CB99). Every patch side, corner, valence-2 vertex and bad quad was joined to its arrangement node.
 - **Findings:**
   - 90.2% of the 26,373 quads with a >170° corner have that corner at a representation vertex counted as a breakpoint (P13-n1); all 4,463 valence-2 vertices are such nodes;
@@ -244,7 +251,7 @@
 
 ## 2026-11-06 — RA-210: P13-l2 block resolved; three contact predicates; exact CB97 → CB98 → CB99 → TB84
 
-- **Turn:** `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP`, resumed from the ChatGPT BLOCKED Review. [RA-210](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md).
+- **Turn:** `M6-CP3-DEFN-P13-COMPLETED-MESH-STITCH-OVERLAP`, resumed from the ChatGPT BLOCKED Review. [RA-210](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_stitch_overlap_provenance_probe_adjudication_20261106md "moved: Architecture_M6_CP3_DEFN_P13_Stitch_Overlap_Provenance_Probe_Adjudication_20261106.md").
 - **Block:** resolved with a retained-geometry scratch probe whose digest is byte-identical to the baseline. Review scratch probes are a Review duty.
 - **Provenance:** the 23301 microedge is a crossing of layout traces 966×459, 9e-8 from 966's degree-2 source-edge crossing. No redundant trace, no identity defect.
 - **Owners:**
@@ -289,7 +296,7 @@
 
 ## 2026-11-05 — RA-209: review of RA-208; orientation pass removed; own-plane embedding predicates; exact CB94 → CB95 → CB96 → TB83
 
-- **Turn:** adversarial review of `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` ([RA-208](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md)). [RA-209](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_Single_Writer_Own_Plane_20261105.md).
+- **Turn:** adversarial review of `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION` ([RA-208](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_completed_mesh_orientation_probe_adjudication_20261105md "moved: Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md")). [RA-209](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_completed_mesh_orientation_review_single_writer_own_plane_20261105md "moved: Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_Single_Writer_Own_Plane_20261105.md").
 - **Stands:** the census and CB93, which the implementation agent applied at `e96e98806` with verified result hashes; its compile is in progress.
 - **Corrected:**
   - the orientation pass is a second writer of completion's product and flips 0 pipeline quads once CB93 is applied, so it is removed (CB94);
@@ -305,7 +312,7 @@
 
 ## 2026-11-05 — RA-208: P13-l block resolved; owners measured; exact CB93 → CB94 → TB83
 
-- **Turn:** `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`, resumed from the ChatGPT BLOCKED WIP. [RA-208](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md).
+- **Turn:** `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`, resumed from the ChatGPT BLOCKED WIP. [RA-208](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_completed_mesh_orientation_probe_adjudication_20261105md "moved: Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Probe_Adjudication_20261105.md").
 - **The block:** runtime for a Review. No policy change: Review scratch probes are a duty (RA-203.1), and a diagnostic CB/TB is unnecessary. The WIP's static proofs and the rejected-result snapshot channel were used.
 - **Measured on CB92 Vase:**
   - the stitched completion has 0 same-direction edges and 0 quads inverted against the source;
@@ -330,7 +337,7 @@
 
 ## 2026-11-05 — RA-207: O32a seed Review reviewed; exact CB92 (per-fan seeding) → TB82
 
-- **Reviewed turn:** `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (re-entry). [RA-207](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md), using a scratch build.
+- **Reviewed turn:** `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (re-entry). [RA-207](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_row_permutation_seeds_review_fan_seeding_20261105md "moved: Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_Review_Fan_Seeding_20261105.md"), using a scratch build.
 - **Stands:** the mechanism (lowest-face-row vertex seeds; row-keyed de-duplication) and the scratch remedy. Re-derived: 1,416 seeds with an identical digest, 189,462 traces and 30,989 strands in four orders.
 - **Withdrawn:**
   - the prose CB92 plan (not a patch; conditional STOP);
@@ -346,14 +353,14 @@
 - **Independent fan admissibility audit (continuation 8):** source fixture `vase.off` SHA-256 `5f7bedc1783486589a8721a7b9be881064f361e4a07fd8c5278d8b8f55b2c868` has 1,274/1,274 intrinsic vertex fans singleton, consistent with zero explicit hard edges. Existing `FieldAlignedSingularityPort` provides region/component but no fan and relief inputs are vertex-scoped. The protected-edge synthetic fan test proves topology identity, **not** permission to duplicate raw relief obligations into both fans. CB92 revised to unique-fan admission with typed fail-closed result if ambiguous; no implementation or successor start. Evidence `fan_admissibility_audit.md` SHA-256 `a8eb822d71c1706793c8225489c09806ef0c45b4f2b7d32b8c2b88db75ac18ad`.
 
 
-- Canonical `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` Review, no product/test/fixture/selector modifications on the working branch. [Evidence record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_O32a_Vase_Producer_Scratch_Result_20261105.md).
+- Canonical `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` Review, no product/test/fixture/selector modifications on the working branch. [Evidence record](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_o32a_vase_producer_scratch_result_20261105md "moved: Architecture_M6_CP3_DEFN_P13_O32a_Vase_Producer_Scratch_Result_20261105.md").
 - Independently rederived uncorrected Vase seed totals 1,456/1,460/1,458/1,455 across base+3 consistent source face-row permutations, caused by `vertex_point` first-face-row selection and `initialize_seed` face/barycentric collision with mandatory rail seeds. Corrected scratch candidate yields 1,416 semantic-equal seeds in all four orders. Typed protected-edge fan test passes.
 - **Corrected inaccurate former claim:** one-sample-per-rail negative test is not valid strict typed rail authority. New complete two-rail test verifies both typed rail-edge intervals survive; missing typed source-edge and duplicate rail-ID mutations are rejected. GMP remote compile [42034591362](https://github.com/akashskypatel/Directional/actions/runs/42034591362), artifact `13418271529`, package hash `05436c29810164e8aaf8c43a098965a91bc84314dc855630eb2690ee8693e145`, 23/23 internal hashes, focused 2/2 PASS. Older failing test retained as evidence of its invalid fixture.
-- Full scratch Vase remains typed `SelfIntersectingFace` RED in each order; trace/strand/arrangement counts 189,462/30,989/26,817 match but completed quad counts vary 67,750/67,782/67,766/67,778. O32b–e remain open, with no CP3 promotion. [Bounded CB92 plan](.agents/Directional/Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity_Plan_20261105.md) written; must await formal Review closeout. CP2 491/491, stable 66/17/49, debt1 unchanged.
+- Full scratch Vase remains typed `SelfIntersectingFace` RED in each order; trace/strand/arrangement counts 189,462/30,989/26,817 match but completed quad counts vary 67,750/67,782/67,766/67,778. O32b–e remain open, with no CP3 promotion. [Bounded CB92 plan](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_cb92_p13_source_vertex_fan_seed_identity_plan_20261105md "moved: Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity_Plan_20261105.md") written; must await formal Review closeout. CP2 491/491, stable 66/17/49, debt1 unchanged.
 
 ## 2026-11-05 — TB81 immutable gate/census MATCH; O32a Review next
 
-- [TB81 report](.agents/Directional/Architecture_M6_CP3_TB81_P13_Final_Validation_Binding_Full_Gate_Execution_Report_20261105.md): frozen CB91 package `13394321724`, source `96ee281a…`; [gate 41985957797](https://github.com/akashskypatel/Directional/actions/runs/41985957797) **899/899 PASS**, membership 980, 1,806/1,806 SHA256SUMS; [census 41985991943](https://github.com/akashskypatel/Directional/actions/runs/41985991943) expected Cylinder PASS, BunnyRandom P13-e vertex49 RED, Vase `SelfIntersectingFace` completion RED (192,482 traces / 26,817 cells / 67,746 quads) in 257.08 s, 9/9 SHA256SUMS.
+- [TB81 report](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_tb81_p13_final_validation_binding_full_gate_execution_report_20261105md "moved: Architecture_M6_CP3_TB81_P13_Final_Validation_Binding_Full_Gate_Execution_Report_20261105.md"): frozen CB91 package `13394321724`, source `96ee281a…`; [gate 41985957797](https://github.com/akashskypatel/Directional/actions/runs/41985957797) **899/899 PASS**, membership 980, 1,806/1,806 SHA256SUMS; [census 41985991943](https://github.com/akashskypatel/Directional/actions/runs/41985991943) expected Cylinder PASS, BunnyRandom P13-e vertex49 RED, Vase `SelfIntersectingFace` completion RED (192,482 traces / 26,817 cells / 67,746 quads) in 257.08 s, 9/9 SHA256SUMS.
 - Seven Linux platform-digest lines byte-identical to TB80, exact one per registered log, postflight true; both dispatcher runs passed with configure/compile/relink/benchmark false. Row899 PASS on deterministic positive and size-invariant binding-count checks; prior TB80 wall-clock RED corrected. **MATCH, not CP3 acceptance**; no stable regression. CP2 491/491; stable 66/17/49, debt1, selector497/CP3 unpromoted.
 - Next separate Review `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (O32a; RA-206.7 / RA-205.4); P13-l follows, O30b/O31/O33/P13-e remain open. Source-snapshot cleanup completed in [41986198930](https://github.com/akashskypatel/Directional/actions/runs/41986198930).
 
@@ -365,7 +372,7 @@
 
 ## 2026-11-05 — RA-206: TB80 Review reviewed; row 899 is a per-vertex O(F) binding check; exact CB91 → TB81
 
-- **Reviewed turn:** `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV`. [RA-206](.agents/Directional/Architecture_M6_CP3_TB80_REV_Review_Final_Validation_Binding_Per_Vertex_20261105.md), using scratch probes and the TB80 raw artifacts.
+- **Reviewed turn:** `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV`. [RA-206](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_tb80_rev_review_final_validation_binding_per_vertex_20261105md "moved: Architecture_M6_CP3_TB80_REV_Review_Final_Validation_Binding_Per_Vertex_20261105.md"), using scratch probes and the TB80 raw artifacts.
 - **The TB80 Review's evidence verification stands.** Its defects:
   - CB90 was not excluded, though its diff cannot reach row 899;
   - its hypothesis (a per-quad bind at the optimizer boundary) was wrong;
@@ -406,7 +413,7 @@
 
 ## 2026-11-05 — RA-205: RA-204 reviewed; O32 source-row permutation opened; CB90 → TB80 stand
 
-- **Turn:** re-entry of `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`; [RA-205](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md), using scratch probes.
+- **Turn:** re-entry of `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`; [RA-205](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_smooth_field_portability_review_row_permutation_20261105md "moved: Architecture_M6_CP3_DEFN_P13_Smooth_Field_Portability_Review_Row_Permutation_20261105.md"), using scratch probes.
 - **Stands:** RA-204's cross-library cell-order mechanism and CB90. Completion's hash containers are order-safe.
 - **Corrections to RA-204:**
   - a completed count that depends on the cell schedule violates DESIGN §10.1 (completion's ownership repair: patch-id tie, bounded budget);
@@ -417,7 +424,7 @@
 
 ## 2026-11-05 — RA-204: O30 is an arrangement cell-order defect; exact CB90 → TB80
 
-- **Turn:** `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`, realigned. [RA-204](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md) reviews the ChatGPT O30 Review, using scratch builds: FMA off, a GCC/libstdc++ field generator, and libc++ randomized ties.
+- **Turn:** `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`, realigned. [RA-204](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_platform_split_review_arrangement_cell_order_20261105md "moved: Architecture_M6_CP3_DEFN_P13_Platform_Split_Review_Arrangement_Cell_Order_20261105.md") reviews the ChatGPT O30 Review, using scratch builds: FMA off, a GCC/libstdc++ field generator, and libc++ randomized ties.
 - **Review findings:**
   - The digest comparison stands.
   - The atlas digest hashes exact `effort` bits, so it and five later hashes are noise carriers. Measured: ±1-ULP field perturbations change them without changing the output.
@@ -461,7 +468,7 @@
 
 ## 2026-11-04 — RA-203: TB78 Review closed; Vase completion platform split O30; exact CB89 → TB79
 
-- **Turn:** `M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV`, resumed by the Claude Review from the ChatGPT Review's BLOCKED checkpoint. [RA-203](.agents/Directional/Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md).
+- **Turn:** `M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV`, resumed by the Claude Review from the ChatGPT Review's BLOCKED checkpoint. [RA-203](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_tb78_rev_p13_platform_split_adjudication_20261104md "moved: Architecture_M6_CP3_TB78_REV_P13_Platform_Split_Adjudication_20261104.md").
 - **The block** was RA-202.9's mismatch route, not `REVIEW_TURN_POLICY.md` §4.3. The route named no track, and it asked a macOS recipe to explain a Linux/macOS split. Review scratch probes are a duty (RA-166.6 F6, RA-188.1), and Linux runtime is a TB. No policy file is changed.
 - **RA-202.9's error, owned.** It pinned 67,829 completed Vase quads, a macOS-only value, for Linux.
 - **TB78 is COMPLETE.** Gate 899/899, membership 980, and every census line match except the count. Vase reaches RED `SelfIntersectingFace` in 268.93 s, so P13-m's Linux objective is met.
@@ -518,7 +525,7 @@
 
 ## 2026-11-04 — RA-202: TB76 Review re-adjudicated; P13-m census-path cost → Amendment 34, exact CB85–CB88
 
-- [RA-202](.agents/Directional/Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md) re-adjudicated the TB76 Review by scratch probes on the CB83 source. These are Review-track documents; no product source changed.
+- [RA-202](.agents/Directional/M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_tb76_rev_p13_census_path_cost_probe_adjudication_20261104md "moved: Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md") re-adjudicated the TB76 Review by scratch probes on the CB83 source. These are Review-track documents; no product source changed.
 - **Owner: P13-m.** Three memory-bound scans outside RA-201's stage, plus two Amendment 33 sites. On macOS at HEAD:
   - the arrangement T-junction scan took 94.5 s (every halfedge per node occurrence);
   - selection took 24 s (whole-network endpoint degrees per transaction);
@@ -583,7 +590,7 @@
 
 # 2026-11-03 — RA-201 P13-k optimizer source-query cost probe adjudication (Review; documentation only)
 
-- [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md) closes `M6-CP3-DEFN-P13-OPTIMIZER-SOURCE-QUERY-COST` by scratch probes on CB79. The ChatGPT static preflight's `REVIEW_BLOCKER` was procedural.
+- [RA-201](.agents/Directional/M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_optimizer_source_query_cost_probe_adjudication_20261103md "moved: Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md") closes `M6-CP3-DEFN-P13-OPTIMIZER-SOURCE-QUERY-COST` by scratch probes on CB79. The ChatGPT static preflight's `REVIEW_BLOCKER` was procedural.
 - Findings:
   - P13-k is one class at five instances: the rail fill's binding check per (vertex, interval); `source_face_scope` per chart face; the authority check and BVH per `nearest_source_point` call; a label support per quad; and `SourcePointLabelSupport::available()` per query.
   - Vase reaches its verdict in about 250 s (sites 1–2 only: 1,521 s), with the verdict unchanged.
@@ -610,7 +617,7 @@
 
 # 2026-11-03 — RA-200 P13-j stitched-vertex probe adjudication; exact CB79, TB73; P13-k optimizer DEFN
 
-- [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md) closes `M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX`. The ChatGPT same-turn Review had set a `REVIEW_BLOCKER` because the completed lineage at nodes 5351/5356/5357/5359/5355 could not be measured without C++; the probes ran on the macOS scratch build.
+- [RA-200](.agents/Directional/M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_assembly_stitched_vertex_probe_adjudication_20261103md "moved: Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md") closes `M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX`. The ChatGPT same-turn Review had set a `REVIEW_BLOCKER` because the completed lineage at nodes 5351/5356/5357/5359/5355 could not be measured without C++; the probes ran on the macOS scratch build.
 - **Findings:**
   - The stitcher's lineage certificates are identical on both sides of each split node.
   - `derive_patch_descriptor` keys a boundary corner by the source scope of the halfedge leaving it. That splits 23,221 of 66,783 Vase nodes, and the HEAD assembly has Euler −19,442.
@@ -643,7 +650,7 @@
 
 # 2026-11-02 — RA-199 P13-i FlowRep selection probe adjudication; exact CB78, TB72; P13-j assembly DEFN
 
-- [RA-199](.agents/Directional/Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-FLOWREP-SELECTION`. ChatGPT had set it BLOCKED because its session cannot run scratch probes; RA-198.6 had put this probe DEFN on the Review track, so the probes ran there.
+- [RA-199](.agents/Directional/M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_flowrep_selection_probe_adjudication_20261102md "moved: Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Adjudication_20261102.md") closes `M6-CP3-DEFN-P13-FLOWREP-SELECTION`. ChatGPT had set it BLOCKED because its session cannot run scratch probes; RA-198.6 had put this probe DEFN on the Review track, so the probes ran there.
 - **Findings:**
   - Selection cannot see whether a support trace meets the layout. Seed traces never end on another trace, so each of Vase's 115 supports is one flowline touching only its rail.
   - Exactly 10 supports return to the rail they left and meet no other trace; all five lenses are among them. Not admitting them clears every two-sided cell, and one pass is the fixed point.
@@ -670,7 +677,7 @@
 
 # 2026-11-02 — RA-198 P13-h2/P13-i probe adjudication; exact CB77, TB71; selection DEFN
 
-- [RA-198](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS`. ChatGPT had set it BLOCKED because Review policy forbids runtime probes. RA-197 had placed this probe DEFN on the Review track's scratch build, and RA-198 ran the probes there.
+- [RA-198](.agents/Directional/M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_arrangement_sliver_cells_probe_adjudication_20261102md "moved: Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md") closes `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS`. ChatGPT had set it BLOCKED because Review policy forbids runtime probes. RA-197 had placed this probe DEFN on the Review track's scratch build, and RA-198 ran the probes there.
 - **Findings:**
   - P13-h2: the four needle grids complete under the existing Amendment 28 pattern search over the same boundary. The closed-form dispatch never offered it to them.
   - P13-i: the five lenses are optional rim support traces. The cross field leaves the rim at 0.1°–88°, so no tangent rule separates them.
@@ -693,7 +700,7 @@
 
 # 2026-11-02 — RA-197 P13-h/P13-i probe adjudication; exact CB76, TB70
 
-- [RA-197](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING`, which ChatGPT had set BLOCKED for "missing Vase descriptor evidence". The evidence was a Review-track probe on the scratch build, and RA-197 ran it.
+- [RA-197](.agents/Directional/M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_completion_grid_embedding_probe_adjudication_20261102md "moved: Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md") closes `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING`, which ChatGPT had set BLOCKED for "missing Vase descriptor evidence". The evidence was a Review-track probe on the scratch build, and RA-197 ran it.
 - **Findings:**
   - 220 of the 224 closed-form failures are boundary-only strips.
   - `ordered_boundary` starts each cell at its smallest halfedge id, and `extract_sides` closes side 0 across that start. So `boundaryVertices[0]` is often mid-side, and the closed-form grid builds a twisted ladder.
@@ -722,7 +729,7 @@
 
 # 2026-11-01 — RA-196 P13-g probe adjudication; exact CB73/CB74/CB75, TB69
 
-- [RA-196](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) reopens `M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING` and supersedes the static decision's CB73. That CB73 had an open A/B branch, a witness product and a stop rule.
+- [RA-196](.agents/Directional/M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_completion_quad_embedding_probe_adjudication_20261101md "moved: Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md") reopens `M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING` and supersedes the static decision's CB73. That CB73 had an open A/B branch, a witness product and a stop rule.
 - **Findings:**
   - Patch 1200's boundary is simple (branch A is false).
   - The fixed balanced split reaches 4 of an octagon's 12 quadrangulations, and the only 2 embedded ones are fans.
@@ -761,7 +768,7 @@
 
 # 2026-11-01 — RA-195 P13-f completion ownership cost: probe adjudication, exact CB71/CB72
 
-- [RA-195](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Probe_Adjudication_20261101.md) adjudicates the static P13-f decision (`55b8e18b6`) with probes on CB70 source.
+- [RA-195](.agents/Directional/M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_completion_ownership_cost_probe_adjudication_20261101md "moved: Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Probe_Adjudication_20261101.md") adjudicates the static P13-f decision (`55b8e18b6`) with probes on CB70 source.
   - Findings: the decision ran no probe and left Vase's next failure unnamed. It froze an open-ended CB71 plan, with the API, binding rule and tests left to the agent. Its pointer-identity ban contradicts the graph's own borrowed, build-time-bound design. It never measured its cost inventory, and it set TB obligations a TB cannot observe.
   - Probes (macOS): graph construction is 93.5 % of Vase's completion CPU (per-vertex closure 83.2 %). With per-vertex reuse only, Vase still costs about 5 ms per patch. With per-vertex and per-pass reuse, Vase ends in 138 s at `completion` with `InvalidCompletionQuadEmbedding` (P13-g; patch 1200, bounded-combinatorial, variant 15, bow-tie). HEAD reaches the same failure uncapped after 1,732 s.
   - Production build of the exact patches: Vase gives the same RED. Gate 872/873, only O16 row 283; ledger only Vase changes; mutants M1/M2 are each caught by their own new test.
@@ -795,12 +802,12 @@
 
 # 2026-11-01 — RA-194 review of the landed Vase diagnostics CB67; exact revert, renumbering
 
-- The withdrawn diagnostics CB67 (`M6-CP3-CB67-P13-VASE-INCIDENCE-BOUNDARY-PROBE`) landed on top of RA-193 as `829a47b2d` (dispatcher apply, no compile). [RA-194](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Landed_Incidence_Probe_Revert_20261101.md) reviewed it. It compiles and keeps verdicts, but it still ends Vase at `completion`, records the symptom `HalfedgeCellOutOfRange` rather than the arrangement's `RepeatedNodeCycle`, adds an unused public comparator, and puts its only test in the unbuilt historical target, in a file that no longer compiles.
+- The withdrawn diagnostics CB67 (`M6-CP3-CB67-P13-VASE-INCIDENCE-BOUNDARY-PROBE`) landed on top of RA-193 as `829a47b2d` (dispatcher apply, no compile). [RA-194](.agents/Directional/M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_vase_landed_incidence_probe_revert_20261101md "moved: Architecture_M6_CP3_DEFN_P13_Vase_Landed_Incidence_Probe_Revert_20261101.md") reviewed it. It compiles and keeps verdicts, but it still ends Vase at `completion`, records the symptom `HalfedgeCellOutOfRange` rather than the arrangement's `RepeatedNodeCycle`, adds an unused public comparator, and puts its only test in the unbuilt historical target, in a file that no longer compiles.
 - Ruled: revert exactly. CB68 `M6-CP3-CB68-P13-REVERT-INCIDENCE-BOUNDARY-PROBE` (`a6b8cf62…`) restores `911840c1…` byte for byte, so it needs no build. RA-193's exact patches follow unchanged as CB69 (O18 terminal) and CB70 (rotation system); TB66 and TB67 are unchanged. The chain revert → CB69 → CB70 was verified to apply in scratch with the frozen result SHAs.
 
 # 2026-11-01 — RA-193 Vase arrangement rotation system: probe adjudication, exact CB67/CB68
 
-- [RA-193](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vase_Arrangement_Rotation_Probe_Adjudication_20261101.md) reopened `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE` with scratch probes. Vase's arrangement publishes zero cells (`RepeatedNodeCycle`, node 33). Its directed wedges are keyed by a per-face chart, so every trace crossing a source edge or vertex U-turns (R1). Its edge angles are counter-clockwise on only one face, so 72 of 167 multi-ray edge rotations are mirrored (R2). The pipeline records the stage as succeeded anyway (R3, O18). DESIGN Amendment 26 added.
+- [RA-193](.agents/Directional/M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_vase_arrangement_rotation_probe_adjudication_20261101md "moved: Architecture_M6_CP3_DEFN_P13_Vase_Arrangement_Rotation_Probe_Adjudication_20261101.md") reopened `M6-CP3-DEFN-P13-VASE-COMPLETION-INCIDENCE` with scratch probes. Vase's arrangement publishes zero cells (`RepeatedNodeCycle`, node 33). Its directed wedges are keyed by a per-face chart, so every trace crossing a source edge or vertex U-turns (R1). Its edge angles are counter-clockwise on only one face, so 72 of 167 multi-ray edge rotations are mirrored (R2). The pipeline records the stage as succeeded anyway (R3, O18). DESIGN Amendment 26 added.
 - The static decision's open-ended diagnostics CB67 is withdrawn. CB67 (`35727214…`, `29 1`) ends the run typed at the arrangement; CB68 (`e93f5d8c…`, `37 30` / `95 0`, two new tests) fixes the rotation system. TB66 reuses the 869 manifest (membership 950); TB67 uses the new 871-row manifest `434e6d37…` (membership 952).
 - Probes (macOS): gate 868/869 in both patched states and 870/871 on the clean build (only O16); ledger 0/81 PASS in both modes, only Vase changes; with both fixes Vase's arrangement is valid (26,827 cells) and completion exceeds 600 s, rebuilding an O(F) transition graph per vertex and per patch (new P13-f).
 
@@ -821,7 +828,7 @@
 
 # 2026-11-01 — RA-192 P13-c slit adapter adjudicated; CB66 exact patch next
 
-- [RA-192](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md) probe-adjudicates RA-191 and closes `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT`. RA-191's diagnosis stands. Its general edge-side incidence product, its consumer-wide scope, its open-ended CB66 and its unexecutable falsifiers are replaced. **DESIGN Amendment 25 is rewritten:**
+- [RA-192](.agents/Directional/M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_slit_cycle_basis_probe_adjudication_20261101md "moved: Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md") probe-adjudicates RA-191 and closes `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT`. RA-191's diagnosis stands. Its general edge-side incidence product, its consumer-wide scope, its open-ended CB66 and its unexecutable falsifiers are replaced. **DESIGN Amendment 25 is rewritten:**
   - The face array glues a barrier edge only when both endpoints are interior tips.
   - A1 applies each such slit exactly: one more edge and loop, the tip rows merged into one boundary row, the slit column dropped, and curvature `2π − Σθ(u) − Σθ(v)`.
   - A handle generator that crosses a slit fails closed (`HandleGeneratorCrossesSlit`, O19).
@@ -830,7 +837,7 @@
 
 # 2026-11-01 — RA-191 P13-c single-edge barrier slit definition
 
-- [RA-191](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Single_Edge_Barrier_Slit_Review_Decision_20261101.md) adjudicates `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT`: source-level cut-edge identity loss under `TriMesh`, independent exact CW counts, and Amendment 25's required cut-side incidence (two boundary occurrences may share both tips). No runtime or product/test/selector edits; no new accepted-green loss. The exact next turn is `M6-CP3-CB66-P13-CUT-SIDE-INCIDENCE` compile-only, followed conditionally by TB65. Vase P13-d/O18 remains independent. Stable 66/17/49, debt1; CP2 491/491 accepted, TB64 866/947 candidate, selector497/CP3 unpromoted.
+- [RA-191](.agents/Directional/M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_single_edge_barrier_slit_review_decision_20261101md "moved: Architecture_M6_CP3_DEFN_P13_Single_Edge_Barrier_Slit_Review_Decision_20261101.md") adjudicates `M6-CP3-DEFN-P13-SINGLE-EDGE-BARRIER-SLIT`: source-level cut-edge identity loss under `TriMesh`, independent exact CW counts, and Amendment 25's required cut-side incidence (two boundary occurrences may share both tips). No runtime or product/test/selector edits; no new accepted-green loss. The exact next turn is `M6-CP3-CB66-P13-CUT-SIDE-INCIDENCE` compile-only, followed conditionally by TB65. Vase P13-d/O18 remains independent. Stable 66/17/49, debt1; CP2 491/491 accepted, TB64 866/947 candidate, selector497/CP3 unpromoted.
 
 # 2026-11-01 — TB64 immutable dyadic full gate and independent P13 census
 
@@ -845,7 +852,7 @@
 
 # 2026-10-31 — RA-190 O15c dyadic A2a exit adjudicated; CB65 exact patch next
 
-- [RA-190](.agents/Directional/Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md) closes `M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH` (Review, scratch probes).
+- [RA-190](.agents/Directional/M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_o15c_dyadic_exit_probe_adjudication_20261031md "moved: Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md") closes `M6-CP3-DEFN-P13-O15C-CONTINUATION-WIDTH` (Review, scratch probes).
   - The unmodified `review_check.py boundary` passes on an authentic Git checkout.
   - It upholds RA-189's dyadic exit and Cylinder promotion, and rules its defects R1–R7: rounding site, endpoint failure, vacuous orientation, undefined certificates, no probe, monolithic CB, membership.
 - **Probes (macOS):**
@@ -874,7 +881,7 @@
 
 # 2026-10-31 — RA-188 P13 probe adjudication; CB64 chart-binding cache next
 
-- [RA-188](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Probe_Adjudication_20261031.md) (`M6-CP3-DEFN-P13-PROBE-ADJUDICATION`, Review, scratch probes on current source) reviews the P13 decision.
+- [RA-188](.agents/Directional/M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_probe_adjudication_20261031md "moved: Architecture_M6_CP3_DEFN_P13_Probe_Adjudication_20261031.md") (`M6-CP3-DEFN-P13-PROBE-ADJUDICATION`, Review, scratch probes on current source) reviews the P13 decision.
   - It upholds the decision's audit. The decision's matrix, however, was stale pre-CB55 evidence; it skipped the Review probes; and its 300 s harness CB and TB were withdrawn as vacuous.
   - **Cylinder:** PASS in 182 s. 96% of samples fall in `SourceChartTransitionGraph::available()` O(F) re-validation; the fix brings it to 7.8 s with byte-identical output.
   - **Vase:** A4 O15c overflow. The width grows about 200 bits per step and fails at step 21.
@@ -914,7 +921,7 @@
 
 # 2026-10-31 — TB60 on CB61: 862/863, CLI 11/11, GUI linked; DIAG-RETAIN closed
 
-- [TB60 report](.agents/Directional/Architecture_M6_TB60_Diag_Retain_GUI_Full_Gate_Local_Test_Report_20261031.md): one CLI+GUI-ON build of CB61 source. The 863-row gate gives **862/863** (only row 283, pre-registered O16), membership 945; result `2b098fb4…`; Haiku audit clean. The CLI cases pass 11/11 and `directional-ui` links the same GMP. This is also CB60's full-gate TB. DIAG-RETAIN (CB58–CB61) is closed. Next `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE`.
+- [TB60 report](.agents/Directional/M6_Consolidated_Record_Vol_A_Definitions_CP1_CP2.md#architecture_m6_tb60_diag_retain_gui_full_gate_local_test_report_20261031md "moved: Architecture_M6_TB60_Diag_Retain_GUI_Full_Gate_Local_Test_Report_20261031.md"): one CLI+GUI-ON build of CB61 source. The 863-row gate gives **862/863** (only row 283, pre-registered O16), membership 945; result `2b098fb4…`; Haiku audit clean. The CLI cases pass 11/11 and `directional-ui` links the same GMP. This is also CB60's full-gate TB. DIAG-RETAIN (CB58–CB61) is closed. Next `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE`.
 
 # 2026-10-31 — CB61 DIAG-RETAIN GUI layers built locally
 
@@ -922,7 +929,7 @@
 
 # 2026-10-31 — RA-187 DIAG-RETAIN GUI layers defined; full-gate correction
 
-- [RA-187](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md) (local). CB61 adds three read-only GUI layers over the CB59 adapter (occurrence cell sides, occurrences coloured by A6 class, A7 quads); the probe compiles and links `directional-ui` GUI-ON. Correction: TB59 ran only the CLI cases, but `Turn_Cadence.md` §2 requires the full gate, so CB61 builds the gate targets with the CLI and GUI, and TB60 runs the 863-row gate plus the CLI cases. CB61 `afab7d5d…`. Next `M6-CB61-DIAG-RETAIN-GUI-LAYERS`.
+- [RA-187](.agents/Directional/M6_Consolidated_Record_Vol_A_Definitions_CP1_CP2.md#architecture_m6_defn_diag_retain_gui_layers_20261031md "moved: Architecture_M6_DEFN_Diag_Retain_GUI_Layers_20261031.md") (local). CB61 adds three read-only GUI layers over the CB59 adapter (occurrence cell sides, occurrences coloured by A6 class, A7 quads); the probe compiles and links `directional-ui` GUI-ON. Correction: TB59 ran only the CLI cases, but `Turn_Cadence.md` §2 requires the full gate, so CB61 builds the gate targets with the CLI and GUI, and TB60 runs the 863-row gate plus the CLI cases. CB61 `afab7d5d…`. Next `M6-CB61-DIAG-RETAIN-GUI-LAYERS`.
 
 # 2026-10-31 — TB59 CLI check runs on CB60: all three registered cases match
 
@@ -934,7 +941,7 @@
 
 # 2026-10-31 — RA-186 DIAG-RETAIN CLI sidecar defined
 
-- [RA-186](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md) (local). The CLI throws before any diagnostics when a result is not produced, so CB60 writes `<prefix>.materialization.txt` from the CB59 dump right after the remesh call, when the snapshots are retained. A CLI-ON probe on the plane pins three runs (dump present only with retention and a prefix: 64 cells, 256 occurrences, 224 relations, 81 classes and vertices). New DR4: the existing cut-mesh sidecars throw on every SurfaceCells product (pre-existing; M8-CP2). GUI layers → `M6-DEFN-DIAG-RETAIN-GUI-LAYERS`. CB60 `d14aaeff…`. Next `M6-CB60-DIAG-RETAIN-CLI-SIDECAR`.
+- [RA-186](.agents/Directional/M6_Consolidated_Record_Vol_A_Definitions_CP1_CP2.md#architecture_m6_defn_diag_retain_cli_materialization_sidecar_20261031md "moved: Architecture_M6_DEFN_Diag_Retain_CLI_Materialization_Sidecar_20261031.md") (local). The CLI throws before any diagnostics when a result is not produced, so CB60 writes `<prefix>.materialization.txt` from the CB59 dump right after the remesh call, when the snapshots are retained. A CLI-ON probe on the plane pins three runs (dump present only with retention and a prefix: 64 cells, 256 occurrences, 224 relations, 81 classes and vertices). New DR4: the existing cut-mesh sidecars throw on every SurfaceCells product (pre-existing; M8-CP2). GUI layers → `M6-DEFN-DIAG-RETAIN-GUI-LAYERS`. CB60 `d14aaeff…`. Next `M6-CB60-DIAG-RETAIN-CLI-SIDECAR`.
 
 # 2026-10-31 — TB58 local gate on CB59: 862/863, display adapter landed
 
@@ -946,7 +953,7 @@
 
 # 2026-10-31 — RA-185 DIAG-RETAIN display adapter defined
 
-- [RA-185](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md) (local; Sonnet trace). The CLI never reads the snapshots and neither the CLI nor the GUI builds under the gate's flags, so CB59 adds one polyscope-free adapter in `directional_pipeline`: display arrays (A5 occurrences, sides and relations; A6 class per occurrence; A7 vertices and quads) and a line-oriented text dump, both by const reference. Two new tests in the API binary (25/25); membership 945. CB59 `78108421…`; TB58 863 `31c1360a…`. CLI/GUI wiring → `M6-DEFN-DIAG-RETAIN-CLI-GUI-WIRING`; DR2 → M8-CP2. Next `M6-CB59-DIAG-RETAIN-MATERIALIZATION-DISPLAY`.
+- [RA-185](.agents/Directional/M6_Consolidated_Record_Vol_A_Definitions_CP1_CP2.md#architecture_m6_defn_diag_retain_materialization_display_20261031md "moved: Architecture_M6_DEFN_Diag_Retain_Materialization_Display_20261031.md") (local; Sonnet trace). The CLI never reads the snapshots and neither the CLI nor the GUI builds under the gate's flags, so CB59 adds one polyscope-free adapter in `directional_pipeline`: display arrays (A5 occurrences, sides and relations; A6 class per occurrence; A7 vertices and quads) and a line-oriented text dump, both by const reference. Two new tests in the API binary (25/25); membership 945. CB59 `78108421…`; TB58 863 `31c1360a…`. CLI/GUI wiring → `M6-DEFN-DIAG-RETAIN-CLI-GUI-WIRING`; DR2 → M8-CP2. Next `M6-CB59-DIAG-RETAIN-MATERIALIZATION-DISPLAY`.
 
 # 2026-10-31 — TB57 local gate on CB58: 860/861, A5–A7 diagnostic snapshots landed
 
@@ -962,7 +969,7 @@
 
 # 2026-10-31 — RA-184 DIAG-RETAIN A5–A7 snapshots defined
 
-- [RA-184](.agents/Directional/Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md) (local; Sonnet trace). A5–A7 run inside one materialization helper whose products died on return. CB58 copies each one as an immutable snapshot right after its stage succeeds, retained only on request, with a separately named entry point because the materializer signature is pinned. Two new tests; the probe gate gives 860/861 (only 283) and deferred rows are unchanged. CB58 `c72e47cc…`; TB57 861 `f898c9b6…`; membership 943. Open: DR1–DR3. Next `M6-CB58-DIAG-RETAIN-A5-A7-SNAPSHOTS`.
+- [RA-184](.agents/Directional/M6_Consolidated_Record_Vol_A_Definitions_CP1_CP2.md#architecture_m6_defn_diag_retain_a5_a7_snapshots_20261031md "moved: Architecture_M6_DEFN_Diag_Retain_A5_A7_Snapshots_20261031.md") (local; Sonnet trace). A5–A7 run inside one materialization helper whose products died on return. CB58 copies each one as an immutable snapshot right after its stage succeeds, retained only on request, with a separately named entry point because the materializer signature is pinned. Two new tests; the probe gate gives 860/861 (only 283) and deferred rows are unchanged. CB58 `c72e47cc…`; TB57 861 `f898c9b6…`; membership 943. Open: DR1–DR3. Next `M6-CB58-DIAG-RETAIN-A5-A7-SNAPSHOTS`.
 
 # 2026-10-31 — TB56 local gate on CB57: 858/859, O2 entry gate landed
 
@@ -974,7 +981,7 @@
 
 # 2026-10-31 — RA-183 O2 no-atlas entry gate defined
 
-- [RA-183](.agents/Directional/Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md) (local; Sonnet inventory, Haiku comparison). Production always supplies an atlas. Without one, closed feature-free inputs went NotApplicable and the seed fallback published legacy-matching outputs (D2; probes: tetrahedron, octahedron, cube). CB57 (`35eb2fbc…`) rejects that case at `atlas-binding`. The new test fails before and passes after; the 858-row gate and 82 deferred verdicts are unchanged. D3 and the legacy detail branches → O2b; row 283 → O16 (LegacyInteger backend). TB56 859 `c8437d61…`, membership 941. Next `M6-CP3-CB57-O2-NO-ATLAS-ENTRY-GATE`.
+- [RA-183](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_o2_no_atlas_entry_gate_20261031md "moved: Architecture_M6_CP3_DEFN_O2_No_Atlas_Entry_Gate_20261031.md") (local; Sonnet inventory, Haiku comparison). Production always supplies an atlas. Without one, closed feature-free inputs went NotApplicable and the seed fallback published legacy-matching outputs (D2; probes: tetrahedron, octahedron, cube). CB57 (`35eb2fbc…`) rejects that case at `atlas-binding`. The new test fails before and passes after; the 858-row gate and 82 deferred verdicts are unchanged. D3 and the legacy detail branches → O2b; row 283 → O16 (LegacyInteger backend). TB56 859 `c8437d61…`, membership 941. Next `M6-CP3-CB57-O2-NO-ATLAS-ENTRY-GATE`.
 
 # 2026-10-31 — TB55 local gate on CB56: 857/858, row 935 gated
 
@@ -990,7 +997,7 @@
 
 # 2026-10-31 — RA-181 TB54 review: O15 discharged
 
-- [RA-181](.agents/Directional/Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md) (local; reduced independence, offset by a Sonnet source review, Haiku audits and an FMA-free rebuild). All five RA-176.3 conditions are met: the FMA-free build of CB55's source gives verdicts identical to TB54 (856/857) and byte-identical atlas partitions; rows 856 and 857 pass. **O15 discharged**; a Linux CI confirmation is carried. New **O15c**: exact directions widen trace parameters (genus_two 107→217, sphere_prescribed 429→1,531 of 4,096 bits; fail-closed) → P13. Row 283 stays O2. Stable 66/17/49, debt 1. Next `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS`.
+- [RA-181](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_tb54_rev_o15_discharge_20261031md "moved: Architecture_M6_CP3_TB54_REV_O15_Discharge_20261031.md") (local; reduced independence, offset by a Sonnet source review, Haiku audits and an FMA-free rebuild). All five RA-176.3 conditions are met: the FMA-free build of CB55's source gives verdicts identical to TB54 (856/857) and byte-identical atlas partitions; rows 856 and 857 pass. **O15 discharged**; a Linux CI confirmation is carried. New **O15c**: exact directions widen trace parameters (genus_two 107→217, sphere_prescribed 429→1,531 of 4,096 bits; fail-closed) → P13. Row 283 stays O2. Stable 66/17/49, debt 1. Next `M6-CP3-DEFN-API-DISPLAY-VERTEX-STOP-WITNESS`.
 
 # 2026-10-31 — TB54 local gate on CB55: 856/857 (O15 rows green at default arithmetic)
 
@@ -1008,7 +1015,7 @@
 
 # 2026-10-30 — RA-179 TB53 review: RP-01 closed; O15 attribution
 
-- [RA-179](.agents/Directional/Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md) (local; reduced independence, offset by subagent traces and audits plus attribution builds). Compiling only `FieldTransportAtlas.cpp` without FMA clears all 18 vertex-35 reds (O15). An FMA-free build passes 854/855. Row 283 is a pre-existing macOS legacy failure (O2).
+- [RA-179](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_tb53_rev_local_gate_platform_attribution_rp01_closure_20261030md "moved: Architecture_M6_CP3_TB53_REV_Local_Gate_Platform_Attribution_RP01_Closure_20261030.md") (local; reduced independence, offset by subagent traces and audits plus attribution builds). Compiling only `FieldTransportAtlas.cpp` without FMA clears all 18 vertex-35 reds (O15). An FMA-free build passes 854/855. Row 283 is a pre-existing macOS legacy failure (O2).
 - **RP-01 closed**; a Linux confirmation run is carried as its falsifier. O15's row list is corrected from 18 to 21 rows (471 removed; 637, 638, 652 and 656 added). RA-178.2's FMA-off check was ineffective (ninja 1.13 rebuilt the object) and is re-verified. Local-mode convention: `-ffp-contract=off` packages, with row 283 pre-registered. Stable 66/17/49, debt 1. Next `M6-CP3-DEFN-A3-ATLAS-EXACT-SECTOR-PREDICATES`.
 
 # 2026-10-30 — TB53 local five-binary gate on CB54 (836 PASS / 19 RED, macOS)
@@ -1305,7 +1312,7 @@
 
 ## 2026-10-27 — RA-164 TB45-REV audit; 174/cp3entry:4 decided; CP3 cadence realigned
 
-- [RA-164](.agents/Directional/Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md): TB45-REV confirmed (9/9 members). 174: nonmanifold fixture, `TriMesh::set_mesh` throws before the rail builder. cp3entry:4: A4 checked factory correctly rejects the torn draft at `open-rail-chain`. Clusters E (201, cp3entry:2) and G (442, `focused30:12`, cp3entry:1). Cadence realigned to `Turn_Cadence.md`: CB→full-gate TB direct, red TB → Review-owned DEFN, STOP codes, no `UNKNOWN` successor. Frozen TB46 504-row manifest (predict 499/5). Next CB46. No build/runtime; accounting unchanged.
+- [RA-164](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_tb45_rev_audit_rail_oracle_triage_cadence_realignment_decision_20261027md "moved: Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md"): TB45-REV confirmed (9/9 members). 174: nonmanifold fixture, `TriMesh::set_mesh` throws before the rail builder. cp3entry:4: A4 checked factory correctly rejects the torn draft at `open-rail-chain`. Clusters E (201, cp3entry:2) and G (442, `focused30:12`, cp3entry:1). Cadence realigned to `Turn_Cadence.md`: CB→full-gate TB direct, red TB → Review-owned DEFN, STOP codes, no `UNKNOWN` successor. Frozen TB46 504-row manifest (predict 499/5). Next CB46. No build/runtime; accounting unchanged.
 
 ## 2026-10-27 — TB45 selector242 independent focused Review accepted (no CP3 promotion)
 
@@ -1325,7 +1332,7 @@
 
 ## 2026-10-26 — RA-163 selector242 DEFN Review: owner corrected, A3 branch decided, CB45 respecified
 
-- [RA-163](.agents/Directional/Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md): DEFN partially accepted. D1 missed `SurfaceIsolationSeamTransportCertificate::make` → `NonReciprocalTransport` (accepted selector185). D2 decided statically: the disk's only inner edge cancels out of the dual-cycle basis, so the mutation is a gauge relabel and A3 accepts it. Branch B rejected. 242 re-homed under the same identity; CB45 draft superseded by RA-163.3. No code, build or runtime.
+- [RA-163](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_selector242_seam_consumer_review_decision_20261026md "moved: Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md"): DEFN partially accepted. D1 missed `SurfaceIsolationSeamTransportCertificate::make` → `NonReciprocalTransport` (accepted selector185). D2 decided statically: the disk's only inner edge cancels out of the dual-cycle basis, so the mutation is a gauge relabel and A3 accepts it. Branch B rejected. 242 re-homed under the same identity; CB45 draft superseded by RA-163.3. No code, build or runtime.
 
 ## 2026-10-26 — selector242 cross-region seam-consumer definition (no runtime)
 
@@ -1333,7 +1340,7 @@
 
 ## 2026-10-26 — RA-162 TB44-REV audit: P1-a remedy corrected; selector242 DEFN scoped
 
-- [RA-162](.agents/Directional/Architecture_M6_CP3_TB44_REV_Audit_P1_Torn_Input_Selector242_Scope_Decision_20261026.md): TB44-REV confirmed (ZIP `f1b30006…6b986`, 11/11, 4/4 log joins). 8219 remedy rejected (torn `hardFeatureEdges` input; production derives it from rails). New RA-162 C1: open-rail hard-edge cover gap at the checked factory (O5). 242 mutation is invisible to atlas-bound A4; DEFN D1–D4 scope frozen; CB45/TB45 IDs frozen. No code, build or runtime.
+- [RA-162](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_tb44_rev_audit_p1_torn_input_selector242_scope_decision_20261026md "moved: Architecture_M6_CP3_TB44_REV_Audit_P1_Torn_Input_Selector242_Scope_Decision_20261026.md"): TB44-REV confirmed (ZIP `f1b30006…6b986`, 11/11, 4/4 log joins). 8219 remedy rejected (torn `hardFeatureEdges` input; production derives it from rails). New RA-162 C1: open-rail hard-edge cover gap at the checked factory (O5). 242 mutation is invisible to atlas-bound A4; DEFN D1–D4 scope frozen; CB45/TB45 IDs frozen. No code, build or runtime.
 
 ## 2026-10-26 — TB44 artifact-only verification: selector405 PASS, guard8219 RED
 
@@ -1352,7 +1359,7 @@
 
 ## 2026-10-26 — RA-161 TB43-REV audit: selector405 root-caused; O4 demoted
 
-- [RA-161](.agents/Directional/Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md) confirmed TB43-REV (12/12 hashes, 4/4 log joins). 190 half (d) pins the `atlas-binding` locus but cannot detect a silent identity fallback (carried to the O2 DEFN).
+- [RA-161](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_tb43_rev_audit_selector405_fixture_provenance_decision_20261026md "moved: Architecture_M6_CP3_TB43_REV_Audit_Selector405_Fixture_Provenance_Decision_20261026.md") confirmed TB43-REV (12/12 hashes, 4/4 log joins). 190 half (d) pins the `atlas-binding` locus but cannot detect a silent identity fallback (carried to the O2 DEFN).
 - Accepted-prefix RED selector405: the fixed-plan helper omits the A2b terminal contacts/chains production always supplies (TB38 `missing-terminal-or-closed-rail-provenance`); stale fixture, not an A4 defect. Next `M6-CP3-CB44-RP01-SELECTOR405-FIXED-PLAN-RAIL-PROVENANCE`. O4 moved behind the REDs. No source, selector, acceptance or regression total changed.
 
 ## 2026-10-26 — TB43 independent focused Review accepted; O4 DEFN next
@@ -1375,7 +1382,7 @@
 
 ## 2026-10-26 — RA-160 legacy-path DEFN Review: 190 re-home amended; O2 production CB withdrawn
 
-- [RA-160](.agents/Directional/Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md) accepted the DEFN in part. Q1 holds and is stronger than RA-159 N2: `legacyField` is fully inert. Q2 amended: A3 `MissingAdjacency` duplicates `selector:28`, so CB43 also pins the unpinned no-atlas A4 ingress locus (`atlas-binding`).
+- [RA-160](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_legacy_matching_path_disposition_review_decision_20261026md "moved: Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_Review_Decision_20261026.md") accepted the DEFN in part. Q1 holds and is stronger than RA-159 N2: `legacyField` is fully inert. Q2 amended: A3 `MissingAdjacency` duplicates `selector:28`, so CB43 also pins the unpinned no-atlas A4 ingress locus (`atlas-binding`).
 - Q4 incomplete: NotApplicable no-atlas inputs publish legacy-decided seed-fallback outputs; crossField `trace_surface_field` always forwards legacy containers; periodic step defaults to identity transport. O2 production CB withdrawn to post-RP-01. Next `M6-CP3-CB43-RP01-SELECTOR190-LEGACY-INGRESS-REHOME`. No source, selector, acceptance or regression total changed.
 
 ## 2026-10-26 — legacy matching-path disposition defined; independent Review next
@@ -1384,7 +1391,7 @@
 
 ## 2026-10-26 — RA-159 TB42-REV audit: selector190 vacuity; legacy-path DEFN bound
 
-- [RA-159](.agents/Directional/Architecture_M6_CP3_TB42_REV_Audit_Selector190_Vacuity_And_DEFN_Spec_Decision_20261026.md) confirmed TB42-REV (5/5, 1/1); O3 3/3 focused candidate.
+- [RA-159](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_tb42_rev_audit_selector190_vacuity_and_defn_spec_decision_20261026md "moved: Architecture_M6_CP3_TB42_REV_Audit_Selector190_Vacuity_And_DEFN_Spec_Decision_20261026.md") confirmed TB42-REV (5/5, 1/1); O3 3/3 focused candidate.
 - selector190 has passed vacuously since `7ccdcd527`; its CP2 credit was for an oracle now void under D1. The legacy-path DEFN now has six bound questions and STOP rules. New O6: nonrectangular bounded disks are rejected by design with no owner.
 - Stable 66/17/49 debt 1; CP2 491/491 accepted; selector497 frozen; RP-01 open.
 
@@ -1398,7 +1405,7 @@
 
 ## 2026-10-26 — RA-158 TB41-REV audit: O3 owner assigned; DEFN split by mechanism
 
-- [RA-158](.agents/Directional/Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md) confirmed TB41-REV (39/39, 18/18). The unexecuted third O3 locus test gets TB42 before CB42 package `12634151125` expires (2026-11-02T07:22Z).
+- [RA-158](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_tb41_rev_audit_o3_owner_and_defn_split_decision_20261026md "moved: Architecture_M6_CP3_TB41_REV_Audit_O3_Owner_And_DEFN_Split_Decision_20261026.md") confirmed TB41-REV (39/39, 18/18). The unexecuted third O3 locus test gets TB42 before CB42 package `12634151125` expires (2026-11-02T07:22Z).
 - The legacy-path/seam DEFN is split into three single-mechanism DEFNs (190+O2; O4; 242) with frozen Review IDs. New O5: 249/598 producer-binary tests are in no frozen gate; disposition DEFN before the census.
 - Stable 66/17/49 debt 1; CP2 491/491 accepted; selector497 frozen; RP-01 open.
 
@@ -1455,7 +1462,7 @@
   - CB39 now requires an untampered-A3 baseline and `code`+`sourceEdge` assertions, and removes the unsatisfiable A4 negatives.
   - O4 recorded: A4 `MissingTransitionProvenance` loses its only witness.
   - Duplicate tracker entry merged.
-  - [Decision](.agents/Directional/Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md).
+  - [Decision](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_tb40_rev_audit_cb39_a3_tamper_spec_decision_20261025md "moved: Architecture_M6_CP3_TB40_REV_Audit_CB39_A3_Tamper_Spec_Decision_20261025.md").
 ## 2026-10-25 — TB40-REV accepted focused selector250 candidate (no CP3 promotion)
 
 - [Independent static review](.agents/Directional/M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_TB40_Selector250_Rail_Authority_Independent_Review_20261025.md") rederived TB40 result ZIP SHA256 `84d63107…e7a320`, 29/29 packaged checksums, 13/13 raw logs and 13/13 PASS (selector250 one preregistered `unexpected_pass`, 12 guards). TB39 predecessor separately rehashed 17/17 and 7/7 with `hard-rail-contact-missing` RED. CB38 only test +50/−0; original `Produced` and sheet/holonomy assertions remain discriminating. RA-156 250 fixture owner discharged as **focused candidate only**; stable 66/17/49 debt1, CP2 491/491, TB38 490/504 candidate, selector497 and CP3 unaccepted. Exact successor `M6-CP3-CB39-RP01-A3-SOURCE-EDGE-TAMPER-REHOME` (test-only/compile-only, no runtime).
@@ -1471,7 +1478,7 @@
   - Corrective spec replaced: test 250 must derive `authoritativeRails` and all three provenance maps through the production rail functions, as `make_curved_disk_fixture` does.
   - The 250 owner (CB38) moves ahead of the A/B/C re-homes, which are renumbered CB39–CB41.
   - O3 recorded: the polygonal-disk rejection oracles are reason-only; CB42 pins the locus.
-  - [Decision](.agents/Directional/Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md).
+  - [Decision](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_tb39_rev_audit_selector250_rail_provenance_decision_20261025md "moved: Architecture_M6_CP3_TB39_REV_Audit_Selector250_Rail_Provenance_Decision_20261025.md").
 - **2026-10-25 — TB39-REV independently binds 250 to missing checked-factory source-rail provenance (diagnostic only).** Reverified TB39 artifact `12609665120` (17/17 hashes, 7/7 raw logs: six GUARD PASS, selector250 expected RED). `InvalidSourceAuthority(0)`/`MissingRailTerminalContact(6)` at `SurfaceCellTracing.cpp:8655–8661` follows from composed fixture hard edges with absent contacts and closed chains; production derives those separately. Not periodic-action O1. No product/test/selector/source mutation, no accepted-green loss, stable 66/17/49 debt1, CP2 491/491, CP3 unaccepted; next `CB38-A`, with 250 fixture owner reserved for the later specified stage. [Decision](.agents/Directional/M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_TB39_Selector250_Factory_Site_Independent_Review_20261025.md").
 
 - **2026-10-25 — TB39 selector250 checked-factory site harvested (artifact-only; no promotion).** [run 40221114658](https://github.com/akashskypatel/Directional/actions/runs/40221114658), immutable CB37 package `12607777892`, result `12609665120` ZIP SHA-256 `10af6fa84e855973e11a9fcd5c9d91e9d4bf13b97662082f658b3ec693271f06`: 7/7 fresh cases, 6 GUARD PASS + selector250 expected RED, 17/17 result hashes, no skips/missing/duplicate/control failures, postflight true. Raw `PublishedProductRejected` error=0/detail=6/`site=hard-rail-contact-missing`; owner not yet adjudicated. No compile/relink or source/test/selector/fixture edits; 66/17/49 debt1, CP2 491/491. [Report](.agents/Directional/M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_TB39_Selector250_Factory_Site_Harvest_Report_20261025.md"); next independent TB39-REV.
@@ -1486,7 +1493,7 @@
   - Narrowed DEFN keeps 190 and 242.
   - O2 recorded: legacy matching branches cannot produce output.
   - Next: CB37, the message-only 250 site exposure.
-  - [Decision](.agents/Directional/Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md).
+  - [Decision](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_tb38_rev_audit_tamper_oracle_homes_decision_20261025md "moved: Architecture_M6_CP3_TB38_REV_Audit_Tamper_Oracle_Homes_Decision_20261025.md").
 
 ## 2026-10-25 — M6 CP3 TB38 independent Review (candidate accepted)
 
@@ -1502,7 +1509,7 @@ Reviewed the immutable TB38 504-case census using independently re-downloaded 1,
   - 204, 242 and 247 join 191/192 as atlas-ingress tamper oracles.
   - 250 flagged as D2-reachable.
   - O1 recorded: cut-route identity transport, and A4 digests change across CB36.
-  - [Decision](.agents/Directional/Architecture_M6_CP3_TB37_REV_Audit_Periodic_Census_Manifest_Decision_20261025.md).
+  - [Decision](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_tb37_rev_audit_periodic_census_manifest_decision_20261025md "moved: Architecture_M6_CP3_TB37_REV_Audit_Periodic_Census_Manifest_Decision_20261025.md").
 
 - **2026-10-25 — TB37-REV focused independent Review ACCEPTED; TB38 census next.** Direct archive audit: 16 unique processes, 14 PASS / 2 identical inherited RED (191/192), 21/21 result + 28/28 CB36 package hashes, 16/16 raw joins and frozen manifest digest. Numeric enum bytes match TB36; two harness text-based disposition warnings false, not new regressions. Three new periodic-route witnesses now PASS; no full-selector/CP3/accepted-prefix promotion. Stable 66/17/49 debt1; full 497 TB38 against TB32 is single successor. [Decision](.agents/Directional/M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Independent_Review_Decision_20261025.md").
 
@@ -1517,7 +1524,7 @@ Reviewed the immutable TB38 504-case census using independently re-downloaded 1,
   - Bound the CB36 D2 spec: `transport()` as the first branch, the existing locus convention, and a static-only falsifier for a missing transport.
   - Corrected RA-152: A3 already validates `sourceEdge`, and D2 changes no relation ids.
   - Split TB37 (focused 16 rows) from TB38 (full census).
-  - [Decision](.agents/Directional/Architecture_M6_CP3_TB36_REV_Audit_Periodic_Route_Atlas_Transport_Decision_20261025.md).
+  - [Decision](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_tb36_rev_audit_periodic_route_atlas_transport_decision_20261025md "moved: Architecture_M6_CP3_TB36_REV_Audit_Periodic_Route_Atlas_Transport_Decision_20261025.md").
 
 **2026-10-25 — TB36-R1 independent Review validates baseline and localizes RA-152 F1 (non-promoting).** Independently verified immutable 5/5 RED logs, result `12586275698` SHA `dceb186b64ac7bef4d10fb657fd02808b38b1de282e0049e8eadcf14d1f43033` and nine internal entries; source snapshot `12587813322` 5,868 verified files; accepted 449 SHA `d4a0d1b7…`. `PublishedProductRejected(68)` is a checked-factory outcome after A4 rather than proof of periodic-guard rejection; nested sub-error unmeasured. Source audit confirms A4 periodic observed steps ignore authoritative atlas and default to zero. RA-152 D2 narrow Code + Build authorized next, not implemented in Review. Stable 66/17/49 debt1; CP2 491/491, selector497 unchanged, CP3 unaccepted. [Independent decision](.agents/Directional/M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_TB36_R1_Periodic_Monodromy_Baseline_Independent_Review_Decision_20261025.md").
 
@@ -1543,7 +1550,7 @@ Reviewed the immutable TB38 504-case census using independently re-downloaded 1,
   - Recorded that R4 had made 191/192 unsatisfiable.
   - Decided the single-writer contract D1–D4 and withdrew the ingress DEFN.
   - Next: CB35, test-only witnesses compiled before any fix.
-  - [Decision](.agents/Directional/Architecture_M6_CP3_TB35_REV_Audit_Periodic_Route_Transport_Decision_20261024.md).
+  - [Decision](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_tb35_rev_audit_periodic_route_transport_decision_20261024md "moved: Architecture_M6_CP3_TB35_REV_Audit_Periodic_Route_Transport_Decision_20261024.md").
 - **2026-10-24 — `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY-REV` (independent review, non-promoting).** Reopened original TB35 immutable 13-case report and raw logs: ZIP SHA `155ae1c43c7c83b43decf43ba5b8a711860cf00f304e9f975a0c552a26e1309e`, 18/18 internal, 11 PASS / 2 RED; verified manifest `d67e503d...e75af8` and unchanged CB34 test/production source. Identified 191/192 negative mutations discarded by atlas-owned cross-field ingress, 189/190 nondiscriminating legacy-path positives; RA-151.1/.2 candidate recorded. No CP3/497 acceptance, stable 66/17/49 debt1, CP2 491/491 accepted; exactly next `M6-CP3-DEFN-RP01-PERIODIC-INGRESS-AUTHORITY`. [Decision](.agents/Directional/M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md").
 ## 2026-10-24 — TB35 immutable face-gauge verification: 11 PASS / 2 RED
 
@@ -1564,7 +1571,7 @@ Reviewed the immutable TB38 504-case census using independently re-downloaded 1,
   - the gauge must relabel face 1's frame as well as add +1/−1/−1 to its three edge matchings;
   - an A3 branch-topology invariance oracle, a new test outside the selector, guards the change;
   - switching the source field is prohibited.
-- Recorded the R3/R4 history of the accepted-prefix rows `selector:189–195`. [RA-150](.agents/Directional/Architecture_M6_CP3_TB34_REV_Audit_Face_Gauge_Representation_Decision_20261024.md). Stable 66/17/49, debt 1; CP2 491/491; RP-01 open.
+- Recorded the R3/R4 history of the accepted-prefix rows `selector:189–195`. [RA-150](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_tb34_rev_audit_face_gauge_representation_decision_20261024md "moved: Architecture_M6_CP3_TB34_REV_Audit_Face_Gauge_Representation_Decision_20261024.md"). Stable 66/17/49, debt 1; CP2 491/491; RP-01 open.
 
 ## 2026-10-24 — TB34 independent Review assigns source-fixture cycle owner
 
@@ -1720,7 +1727,7 @@ Recomputed TB29 artifact outer SHA, 92 packaged hashes, 44 exact one-RUN raw log
 
 ## 2026-10-23 — TB29H reusable targeted artifact-only harness statically validated
 
-- **2026-10-23 — RA-138 TB29H-REV:** Independent static harness review: syntax, manifest hashes, case census and negative self-checks verified; runtime authorization **rejected** for timeout/crash-as-RED, missing case-count commitment and truncated A5 reasons. No Directional binaries run, no product/selector mutation. Exact next `M6-CP3-TB29H-RP02-TARGETED-ARTIFACT-HARNESS-CORRECTION`; TB29 held until corrective independent Review. [Decision](.agents/Directional/Architecture_M6_CP3_TB29H_Targeted_Harness_Review_Decision_20261023.md).
+- **2026-10-23 — RA-138 TB29H-REV:** Independent static harness review: syntax, manifest hashes, case census and negative self-checks verified; runtime authorization **rejected** for timeout/crash-as-RED, missing case-count commitment and truncated A5 reasons. No Directional binaries run, no product/selector mutation. Exact next `M6-CP3-TB29H-RP02-TARGETED-ARTIFACT-HARNESS-CORRECTION`; TB29 held until corrective independent Review. [Decision](.agents/Directional/M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_tb29h_targeted_harness_review_decision_20261023md "moved: Architecture_M6_CP3_TB29H_Targeted_Harness_Review_Decision_20261023.md").
 
 - New `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh` SHA-256 `be3db020d5292a7ecb3851d4e662cadb08696e4dd1befe0e159c920069b9b412`. Manifest-driven, environment-bound immutable package checks, multi-binary exact-one test selection, typed failure reasons, fail-closed control gates and evidence postflight.
 - Static validation: bash syntax, Python compilation, 44-row manifest accepted, duplicate-test and unknown-kind mutations rejected. No runtime or compilation executed, no selector/test/fixture/product/workflow changes. Record: `Architecture_M6_CP3_TB29H_Targeted_Harness_Code_Build_Record_20261023.md`.

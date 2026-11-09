@@ -1,6 +1,6 @@
 ## RA-201 — P13-k optimizer source-query cost: one binding check per stage, lent structures; exact CB80–CB83, TB74–TB76; next failure P13-l (2026-11-03)
 
-- [RA-201](Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md) closes `M6-CP3-DEFN-P13-OPTIMIZER-SOURCE-QUERY-COST` and supersedes, as open work, the [static preflight](Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md). The preflight's requirements stand and are met.
+- [RA-201](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_optimizer_source_query_cost_probe_adjudication_20261103md "moved: Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md") closes `M6-CP3-DEFN-P13-OPTIMIZER-SOURCE-QUERY-COST` and supersedes, as open work, the [static preflight](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_optimizer_source_query_cost_static_preflight_20261103md "moved: Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md"). The preflight's requirements stand and are met.
 - **DESIGN Amendment 33:** the surface-optimizer stage checks the source binding once. It lends a `SourceProjectionCache` only for the same constraints object, carrying its build-time authority check. It lends a `SourcePointLabelSupport` only when the support borrows exactly the constraints' faces, authority and hard-edge set. Inner queries read row labels through `bound_source_face_scope`. A structure that does not fit is ignored, and checks, failure codes and their order are unchanged.
 - Frozen: CB80 `d4dda97e…`, CB81 `ffa4b554…`, CB82 `b963ea3d…` and CB83 `3741697e…` as `.diff` files, applied in that order on `3feb2a41…`. TB74 888 `bb4e771f…` (membership 969), TB75 890 `a134d941…` (971) and TB76 893 `3b727161…` (974). Census `3af1dc0d…` unchanged.
 - Registered: TB74 and TB75 Vase ABNORMAL 600 s; TB76 Vase RED `NotProductionReady:completion detail=SelfIntersectingFace`; Cylinder PASS and BunnyRandom P13-e throughout.
@@ -8,7 +8,7 @@
 
 ## RA-200 — P13-j stitched vertex: node-keyed boundary corners; exact CB79, TB73; next failure P13-k (2026-11-03)
 
-- [RA-200](Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md) closes `M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX` and supersedes, as open work, its 13 same-turn Review records (their measured facts stand). **DESIGN Amendment 32:** a completed patch's boundary-node stitch key is the arrangement node's identity over its primary point and every occurrence, each in its own source scope. It is not the subset in the scope of the halfedge leaving the node. The assembler's checks are unchanged.
+- [RA-200](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_assembly_stitched_vertex_probe_adjudication_20261103md "moved: Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md") closes `M6-CP3-DEFN-P13-ASSEMBLY-STITCHED-VERTEX` and supersedes, as open work, its 13 same-turn Review records (their measured facts stand). **DESIGN Amendment 32:** a completed patch's boundary-node stitch key is the arrangement node's identity over its primary point and every occurrence, each in its own source scope. It is not the subset in the scope of the halfedge leaving the node. The assembler's checks are unchanged.
 - P13-j owner: the completion-boundary key producer (`derive_patch_descriptor`). Not owners: the assembler (it correctly fails closed), the arrangement (node 5355 is a reciprocal four-cell ring), typed authority (identical on both sides), the completion cache (initial pass, unwitnessed). V2 and the reciprocal-DSU candidates are withdrawn.
 - Turn IDs:
   - CB79 `M6-CP3-CB79-P13-NODE-STITCH-KEY` (`89f37001…`, `25 2` / `95 0`, rows 884–886).
@@ -17,7 +17,7 @@
 
 ## RA-199 — P13-i FlowRep selection: unmet support chords; exact CB78, TB72; next failure P13-j (2026-11-02)
 
-- [RA-199](Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-FLOWREP-SELECTION` and supersedes its probe preflight and static review. **DESIGN Amendment 31:** a layout-support trace that returns to the rail it left, crossed or touched by no other non-rail arc, is not admitted to selection. It stays inactive: no coverage samples, no cycle. One pass is the fixed point.
+- [RA-199](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_flowrep_selection_probe_adjudication_20261102md "moved: Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Adjudication_20261102.md") closes `M6-CP3-DEFN-P13-FLOWREP-SELECTION` and supersedes its probe preflight and static review. **DESIGN Amendment 31:** a layout-support trace that returns to the rail it left, crossed or touched by no other non-rail arc, is not admitted to selection. It stays inactive: no coverage samples, no cycle. One pass is the fixed point.
 - P13-i owner: what A2a selection admits (`build_flow_rep_selection_input`). Not owners: the coverage tolerance, cross-face coverage and the exact degree rule (O25, quality). Proposals remain one required cycle each.
 - Turn IDs:
   - CB78 `M6-CP3-CB78-P13-SUPPORT-CHORD-ADMISSION` (`1d8b80e7…`, `119 0` / `153 0`, rows 882–883).
@@ -26,7 +26,7 @@
 
 ## RA-198 — P13-h2 needle grids and P13-i rail lenses: probe adjudication; exact CB77, TB71; selection DEFN (2026-11-02)
 
-- [RA-198](Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS` and supersedes its review WIP. **DESIGN Amendment 30:** a closed-form grid that generated vertices and fails the Amendment 28 predicate gives way to the pattern search over the same boundary when that search finds an embedded quadrangulation (backend `Pattern`). Otherwise the grid stands and the validator reports its failure. 1×1 cells and strips are unchanged.
+- [RA-198](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_arrangement_sliver_cells_probe_adjudication_20261102md "moved: Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md") closes `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS` and supersedes its review WIP. **DESIGN Amendment 30:** a closed-form grid that generated vertices and fails the Amendment 28 predicate gives way to the pattern search over the same boundary when that search finds an embedded quadrangulation (backend `Pattern`). Otherwise the grid stands and the validator reports its failure. 1×1 cells and strips are unchanged.
 - P13-i owner: A2a network selection, which removes no optional trace on Vase. The completion admissibility rejection of two-sided cells stands.
 - Turn IDs:
   - CB77 `M6-CP3-CB77-P13-NEEDLE-GRID-BOUNDARY-SEARCH` (`673010d4…`, row 881).
@@ -36,7 +36,7 @@
 
 ## RA-197 — P13-h/P13-i closed-form grids and side-count descriptors: probe adjudication; exact CB76, TB70 (2026-11-02)
 
-- [RA-197](Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md) closes `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING` and supersedes its review WIP. **DESIGN Amendment 29:** `PureQuadPatch::sideEdgeCounts` partitions `boundaryVertices` in order from index 0. `derive_patch_descriptor` rotates its boundary traversal to side 0's first halfedge; the domain identity is rotation-invariant.
+- [RA-197](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_completion_grid_embedding_probe_adjudication_20261102md "moved: Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md") closes `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING` and supersedes its review WIP. **DESIGN Amendment 29:** `PureQuadPatch::sideEdgeCounts` partitions `boundaryVertices` in order from index 0. `derive_patch_descriptor` rotates its boundary traversal to side 0's first halfedge; the domain identity is rotation-invariant.
 - Turn IDs:
   - CB76 `M6-CP3-CB76-P13-PATCH-BOUNDARY-SIDE-START` (`5c7918fb…`, rows 879–880).
   - TB70 `M6-CP3-TB70-P13-PATCH-SIDE-START-FULL-GATE-EXEC` (manifest 880 `a9f964c8…`, membership 961).
@@ -45,7 +45,7 @@
 
 ## RA-196 — P13-g completion quad embedding: probe adjudication; exact CB73/CB74/CB75, TB69 (2026-11-01)
 
-- [RA-196](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md) supersedes the static decision's CB73 scope. **DESIGN Amendment 28:**
+- [RA-196](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_completion_quad_embedding_probe_adjudication_20261101md "moved: Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md") supersedes the static decision's CB73 scope. **DESIGN Amendment 28:**
   - A completion quad embeds only if it is simple in its own Newell plane and its vector area lies within 60° of the summed unit normals of the source faces under its corners. One predicate, `quad_embedding_failure`, serves both the validator and the producers.
   - The pattern and bounded backends keep the balanced split if it embeds. Otherwise they search every quadrangulation of the forward cycle (DP, first admissible split). Reversed variants keep the split and are rejected. If nothing embeds, the patch fails with the typed `NoEmbeddedQuadrangulation`.
   - The completion terminal detail is the typed `SurfaceCellComplexCompletionFailureKind`.
@@ -60,7 +60,7 @@
 
 ## RA-195 — P13-f completion ownership cost: probe adjudication; exact CB71/CB72, TB68 (2026-11-01)
 
-- [RA-195](Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Probe_Adjudication_20261101.md) supersedes the static decision's open-ended CB71 plan. **DESIGN Amendment 27:**
+- [RA-195](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_completion_ownership_cost_probe_adjudication_20261101md "moved: Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Probe_Adjudication_20261101.md") supersedes the static decision's open-ended CB71 plan. **DESIGN Amendment 27:**
   - A stage builds one `SourceChartTransitionGraph` per invocation (per completion pass, per materialized mesh) and lends it to its per-patch and per-vertex checks.
   - A callee reuses a lent graph only if the graph borrows exactly its inputs: the face-matrix, authority and hard-edge-set objects and the tolerance. The graph's build-time `source_bound()` then stands for `matches_source_faces`.
   - Any other graph is ignored, and the callee builds its own. A lent graph is never trusted and never a new failure; checks, codes and order are unchanged.
@@ -73,12 +73,12 @@
 
 ## RA-194 — P13-d Vase: landed diagnostics CB67 reverted; RA-193's patches renumbered (2026-11-01)
 
-- [RA-194](Architecture_M6_CP3_DEFN_P13_Vase_Landed_Incidence_Probe_Revert_20261101.md) reviews `829a47b2d`, the withdrawn diagnostics CB67 that landed uncompiled. It does not meet Amendment 26 (the run still ends at `completion`), it reports the downstream symptom as the first clause, and its test cannot compile or run. Revert it exactly.
+- [RA-194](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_vase_landed_incidence_probe_revert_20261101md "moved: Architecture_M6_CP3_DEFN_P13_Vase_Landed_Incidence_Probe_Revert_20261101.md") reviews `829a47b2d`, the withdrawn diagnostics CB67 that landed uncompiled. It does not meet Amendment 26 (the run still ends at `completion`), it reports the downstream symptom as the first clause, and its test cannot compile or run. Revert it exactly.
 - Turn IDs: CB68 `M6-CP3-CB68-P13-REVERT-INCIDENCE-BOUNDARY-PROBE` (exact revert `a6b8cf62…`, postcheck equality with `911840c1…`, no build); CB69 `M6-CP3-CB69-P13-ARRANGEMENT-INCIDENCE-TERMINAL` (RA-193.10); CB70 `M6-CP3-CB70-P13-ARRANGEMENT-WEDGE-ROTATION` (RA-193.11). TB66 and TB67 are unchanged.
 
 ## RA-193 — P13-d Vase arrangement rotation system, probe adjudication of the Vase decision (2026-11-01)
 
-- [RA-193](Architecture_M6_CP3_DEFN_P13_Vase_Arrangement_Rotation_Probe_Adjudication_20261101.md) applies the Vase decision's F1 rule with probes: the generic arrangement is the first invalid producer (0 cells). **DESIGN Amendment 26:**
+- [RA-193](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_vase_arrangement_rotation_probe_adjudication_20261101md "moved: Architecture_M6_CP3_DEFN_P13_Vase_Arrangement_Rotation_Probe_Adjudication_20261101.md") applies the Vase decision's F1 rule with probes: the generic arrangement is the first invalid producer (0 cells). **DESIGN Amendment 26:**
   - A directed wedge at a source edge or vertex is one rotation shared by every incident face chart, keyed by the canonical `SourceEntityIdentity`.
   - Edge angles are counter-clockwise in the source orientation: `θ` on the face that traverses low→high, `2π − θ` on the other.
   - An arrangement with invalid incidence ends the run at the `arrangement` stage with its own typed failure and the failure node's source face as locus (Amendment 19).
@@ -87,7 +87,7 @@
 
 ## RA-192 — P13-c slit adapter, probe adjudication of RA-191 (2026-11-01)
 
-- [RA-192](Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md) keeps RA-191's diagnosis and its rejection of a rail exemption and of midpoint insertion. **DESIGN Amendment 25 is rewritten:**
+- [RA-192](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_slit_cycle_basis_probe_adjudication_20261101md "moved: Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md") keeps RA-191's diagnosis and its rejection of a rail exemption and of midpoint insertion. **DESIGN Amendment 25 is rewritten:**
   - The face array glues a barrier edge exactly when both endpoints are interior tips, and realises every other configuration (proved).
   - A1 applies each slit in its cut accounting and its `dual_cycles` basis: two tip rows become one boundary row, the slit column is removed, and the curvature is `2π − Σθ(u) − Σθ(v)`.
   - A region without a slit is bit-identical to before.
@@ -98,7 +98,7 @@
 
 ## RA-190 — O15c dyadic A2a exit, probe adjudication of RA-189 (2026-10-31)
 
-- [RA-190](Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md) keeps RA-189's dyadic exit (`n/2^52`, ties to even, integer arithmetic) and its Cylinder promotion. **DESIGN Amendment 24 is rewritten:**
+- [RA-190](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_o15c_dyadic_exit_probe_adjudication_20261031md "moved: Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md") keeps RA-189's dyadic exit (`n/2^52`, ties to even, integer arithmetic) and its Cylinder promotion. **DESIGN Amendment 24 is rewritten:**
   - It rounds at one site, the `EdgeExit` construction in `resolve_field_branch_continuation`, which every consumer replays.
   - It uses the open grid `1 ≤ n ≤ 2^52 − 1`, so an interior exit stays interior and there is no new failure.
   - There are no certificates or receipts. The trace is defined by its published geometry.
@@ -107,7 +107,7 @@
 
 ## RA-188 — P13 probe adjudication (2026-10-31)
 
-- [RA-188](Architecture_M6_CP3_DEFN_P13_Probe_Adjudication_20261031.md) re-observed the three deferred design rows at current source.
+- [RA-188](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_probe_adjudication_20261031md "moved: Architecture_M6_CP3_DEFN_P13_Probe_Adjudication_20261031.md") re-observed the three deferred design rows at current source.
   - **P13-a, Cylinder:** PASS. Its 600 s CI timeout comes from `SourceChartTransitionGraph::available()` re-running O(F) `matches_source_faces` on every query. CB64 caches the build-time binding: 182 s → 7.8 s, output byte-identical.
   - **P13-b, Vase:** O15c fires. The exact A4 continuation width grows about 200 bits per step and fails at step 21. A bounded continuation policy is required, and topological predicates stay exact.
   - **P13-c, BunnyRandom:** Amendment 15.3 cannot slit a tip–tip single-edge barrier arc. DESIGN must be amended.
@@ -250,7 +250,7 @@
 
 ## RA-164 — TB45-REV audit; rail oracle re-homes; RED clusters; cadence P1–P6 (2026-10-27)
 
-- [Decision](Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md).
+- [Decision](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_tb45_rev_audit_rail_oracle_triage_cadence_realignment_decision_20261027md "moved: Architecture_M6_CP3_TB45_REV_Audit_Rail_Oracle_Triage_Cadence_Realignment_Decision_20261027.md").
 - **RA-164.2** H1 174 = nonmanifold fixture (TriMesh owns manifoldness); H2 cp3entry:4 owner = A4 checked factory `open-rail-chain`; cluster E = 201, cp3entry:2; cluster G = 442, `focused30:12`, cp3entry:1.
 - **RA-164.3** P1 CB→TB direct with allowlist + manifest + outcome table; P2 full-gate TBs only; P3 red TB → Review-owned DEFN (absorbs REVIEW+PLAN); P4 STOP S1–S5 fixed successors; P5 no `UNKNOWN` on COMPLETE/BLOCKED; P6 REV-AUDIT only on record conflict.
 - **RA-164.4/.5** CB46 hunks H1, H2, D1–D3; TB46 manifest `717f4f0f…6bb087`, predict 499/5.
@@ -258,7 +258,7 @@
 
 ## RA-163 — selector242 DEFN Review: certificate-factory owner; A3 accepts; 242 re-homed (2026-10-26)
 
-[Decision](Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md).
+[Decision](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_selector242_seam_consumer_review_decision_20261026md "moved: Architecture_M6_CP3_DEFN_Selector242_Seam_Consumer_Review_Decision_20261026.md").
 
 - **RA-163.1** R1 owner = `SurfaceIsolationSeamTransportCertificate::make` / `NonReciprocalTransport` (selector185); R2 mutated A3 accepts (tree-dual gauge relabel); R3 old A4 expectation unreachable; R4 Branch B rejected.
 - **RA-163.2** 242 same identity; meaning: non-reciprocity unrepresentable through A3 and rejected at the certificate owner on the source-adjacent seam.
@@ -268,7 +268,7 @@
 
 ## RA-162 — TB44-REV audited: P1-a torn input; RA-162 C1; selector242 DEFN scope (2026-10-26)
 
-[Decision](Architecture_M6_CP3_TB44_REV_Audit_P1_Torn_Input_Selector242_Scope_Decision_20261026.md).
+[Decision](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_tb44_rev_audit_p1_torn_input_selector242_scope_decision_20261026md "moved: Architecture_M6_CP3_TB44_REV_Audit_P1_Torn_Input_Selector242_Scope_Decision_20261026.md").
 
 - **RA-162.1** TB44 re-verified (11/11, 4/4 log joins, manifest frozen before dispatch, no source drift); 405 invariance is by construction.
 - **RA-162.2** F1 8219 remedy unsound (production `hardFeatureEdges` = rail edges); F2 → C1 open-rail cover gap; F3 P1-b confirmed; F4 242 mutation never consumed by atlas-bound A4, A3 reciprocity structural.
@@ -3303,7 +3303,7 @@ Candidate/non-stable; no promotion, no stable event, no regression recurrence, n
 ---
 ## RA-60 — the interior-endpoint repair is faithful and the falsifier clears, but the new endpoint collapses onto the closed-chain encoding **FROZEN at M6-CP3-TB1-R4-REPAIR-REV** (2026-10-15)
 
-Adjudicates `M6-CP3-CB1-R4-WITNESS-REPAIR`. The **compile is ACCEPTED**, the **implementation is ACCEPTED as faithful to RA-59.9**, the **Step 0 falsifier CLEARS** (on this Review's derivation, not the turn's), and **four defects plus one principal design finding** are recorded. **No runtime outcome has been observed and none is claimed** (LESSON 160). Full decision: [Architecture_M6_CP3_R4_Interior_Endpoint_Repair_Review_Decision.md](Architecture_M6_CP3_R4_Interior_Endpoint_Repair_Review_Decision.md).
+Adjudicates `M6-CP3-CB1-R4-WITNESS-REPAIR`. The **compile is ACCEPTED**, the **implementation is ACCEPTED as faithful to RA-59.9**, the **Step 0 falsifier CLEARS** (on this Review's derivation, not the turn's), and **four defects plus one principal design finding** are recorded. **No runtime outcome has been observed and none is claimed** (LESSON 160). Full decision: [Architecture_M6_CP3_R4_Interior_Endpoint_Repair_Review_Decision.md](M6_Consolidated_Record_Vol_B_CP3_R_Series.md#architecture_m6_cp3_r4_interior_endpoint_repair_review_decisionmd "moved: Architecture_M6_CP3_R4_Interior_Endpoint_Repair_Review_Decision.md").
 
 **RA-60.1 — compile accepted, boundary held.** Eight-target GMP/GMPXX **GREEN**: run `38720128740`, exact semantic `570c51733761c17a198bda6c9aba7d8b1e7ae2dd`, result artifact `11964478813` (outer SHA-256 `0e1e87a48ef090588c8675bd87bc8c7560a1ade5dbe44cac391c78e0cbe21ae5`), 28/28 packaged checksums, exits `0/0`, GMP ON, real `gmpxx`/`gmp`, `runtimeExecution=false`. Change surface independently confirmed: exactly **two** files, test change **purely additive** (zero deletions); Quotient and REPackage tests, `cmake/`, `benchmarks/` and every selector file **untouched**; **no fixture geometry changed** (RA-59.12).
 
@@ -3334,7 +3334,7 @@ Adjudicates `M6-CP3-CB1-R4-WITNESS-REPAIR`. The **compile is ACCEPTED**, the **i
 ---
 ## RA-59 — the census closes the hypothesis set: pairing and truncation are eliminated from source, the certificate model is SELECTED as an interior-endpoint domain gap **FROZEN at M6-CP3-TB1-R4-CARRIER-REV** (2026-10-15)
 
-Adjudicates `M6-CP3-TB1-R4-ENDPOINT39-CENSUS`. The **measurement is ACCEPTED**; its **interpretation is AMENDED and then CLOSED**. Full decision: [Architecture_M6_CP3_R4_Carrier_Review_Decision.md](Architecture_M6_CP3_R4_Carrier_Review_Decision.md); derived per-identity classification: `Architecture_M6_CP3_R4_Carrier_Review_Derived_Classification_20261015.tsv`.
+Adjudicates `M6-CP3-TB1-R4-ENDPOINT39-CENSUS`. The **measurement is ACCEPTED**; its **interpretation is AMENDED and then CLOSED**. Full decision: [Architecture_M6_CP3_R4_Carrier_Review_Decision.md](M6_Consolidated_Record_Vol_B_CP3_R_Series.md#architecture_m6_cp3_r4_carrier_review_decisionmd "moved: Architecture_M6_CP3_R4_Carrier_Review_Decision.md"); derived per-identity classification: `Architecture_M6_CP3_R4_Carrier_Review_Derived_Classification_20261015.tsv`.
 
 **RA-59.1 — measurement accepted.** `executed=39 red=39 missing=0 postflight=true exit=0` on the same immutable package (compile `38664036225`, artifact `11939982141`, semantic `953f812ff1f431e3ad3af3b68a92284a7831c94a`), workflow `38687783618`, result `11950303475` (ZIP SHA-256 `3bce344f3a13403a830a2800fea4c47d1e7cdd53f6f3eac6629de57d70788b32`), 28/28 manifest before and after, all four frozen selector hashes matched. Re-derived independently: all **39/39** executed identities are members of the 94-row R3 RED register, and 117 field comparisons against that register yield **zero** mismatches.
 
