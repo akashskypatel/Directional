@@ -1,2 +1,0 @@
-# TB93 one-time source-snapshot trigger; durable dispatcher and mailbox excluded
-.agents/connector-triggers/source-snapshot/tb93-20261109-1933.txt
