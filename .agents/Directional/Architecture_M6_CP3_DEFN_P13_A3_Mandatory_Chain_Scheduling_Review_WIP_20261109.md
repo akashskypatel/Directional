@@ -1,65 +1,59 @@
-# D5 Mandatory-chain scheduling — independent source-review WIP (2026-11-09 UTC)
+# Mandatory boundary-chain scheduling — D5 Review/Definition WIP (2026-11-09)
 
-**Canonical turn:** `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING`.
-**Review status:** unfinished. This document preserves evidence and candidate rules, **not** an approved plan or successor Code + Build turn.
+**Canonical turn:** `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING` (64B). **Not complete. No successor implementation is approved.** This is runtime-free review evidence, not a code/test change, scheduler acceptance or product promotion.
 
-**Snapshot authority:** source SHA `8619797108487b7de8206a8a95f1560fbbf6420d`; workflow `42549408358`, artifact `13645155759`, ZIP digest `6e1e50932c6d3d28a958c2e6ed4ee44200facffe12900be48ce8104fde66192f`, **6,282/6,282** file hashes verified. Semantic CB109 compiled source `3f64cbf2c79ab580bbf97509142df1d5415c4404`. Predecessor TB92 **918/918** (membership 999), Cylinder PASS, BunnyRandom and Vase expected RED. Neither tests nor build nor runtime executed during D5 review.
+## 1. Exact authority and existing evidence
 
-## Verified architectural obstacle
+- Immutable compiled source CB109 `3f64cbf2c79ab580bbf97509142df1d5415c4404`. Predecessor TB92 918/918 PASS, membership 999, seven A3 receipts, registered Cylinder PASS / BunnyRandom RED / Vase completion RED. Accepted CP2 491/491; stable 66/17/49 debt1; 81 deferred; selector497/CP3 unpromoted.
+- Initial D5 source snapshot `8619797108487b7de8206a8a95f1560fbbf6420d` (workflow 42549408358, 6,282/6,282 file hashes) and later `18102b6249068f440dcb2150dfb2e014a9aa225c` (workflow 42551485386, artifact 13645093415, archive SHA-256 `079f70dfdda1c5f0a4b8b63608be266b5b586d6aa6000488c2f2bc92ec20a50f`, 6,283/6,283 checksums verified in this continuation). GitHub compare after the latter snapshot found only D5 Review docs, a removed trigger marker and root `STATUS`; no source/test/fixture/selector/benchmark/workflow files changed.
+- Prior independently inspected TB92 Vase census artifact 13643067924 (9/9 inner hashes) exposes aggregate counts but no complete per-original-arc oriented walks, source carriers, fan stops or child-to-breakpoint maps. The reported 145 Mandatory, 3 Trace, 164 exterior subdivisions, regional totals 70/94/46 and hypothetical 62/64 scheduling outcomes **do not prove any admissible joined chain**. No real Vase chain-compression result is claimed.
 
-- `EmbeddedGraphTopology.cpp:497–557` produces Mandatory A2b arcs from original source-edge intervals and splits at trace contacts.
-- `RemeshPipeline.cpp:1005–1016` creates one A3 `ConformitySpanId::from_network_arc` for **each** A2b arc.
-- `GlobalConformityBaseline.cpp:266–334` validates exact one-to-one span/arc binding; `:340–456` builds its parity graph over these original arcs.
-- `SurfaceCellTracing.cpp:17449–17641` requires single-piece Mandatory support, positive per-arc counts and per-arc schedule lookup; no current A4 producer consumes a coalesced multi-arc Mandatory chain.
-- `DESIGN.md §7.4` requires each full A2b arc to have a positive count. Moving positivity to a maximal-chain schedule **requires an explicit normative amendment**, coordinated producer and independent validator changes, and complete child-arc coverage; regrouping A3 spans alone would violate current authority.
-- RA-216 and RA-217 already replaced earlier partition-sensitive preferred count and piece-index placement. D5 must reuse D7's exact metric runs and D7b's exact rational breakpoint placement.
+## 2. Source-derived obstacle and conservative contract
 
-## Candidate semantics requiring adjudication
+`EmbeddedGraphTopology.cpp:497–557` produces original Mandatory A2b arcs, including splits at exact Trace contacts; `:384–414` can synthesize topology nodes absent from the original field network. `RemeshPipeline.cpp:1005–1016` creates an A3 span for **every original arc**. `GlobalConformityBaseline.cpp:279–456` validates exact span/arc bijection, original region-boundary occurrence identities and parity. `SurfaceCellTracing.cpp:17449–17641` still consumes single-piece positive per-arc Mandatory schedules. DESIGN §7.4 explicitly demands positive counts for each full A2b arc. Simply replacing the spans with chain units or inserting fake zero-count children is invalid; scheduling must not change before its own normative amendment and producer/validator/consumer design.
 
-A chain is an **A3 scheduling view** over unchanged A2b Mandatory arcs. Join only consecutive arcs having certified equal exact source endpoint, component/sheet, hard rail, original region/exterior incidence pair, compatible oriented region occurrence and unique nonbranching Mandatory continuation. Stop at trace contact, feature/singularity port, branch, region or rail change, barrier or ambiguity. Preserve other Trace/Cut arcs as singleton schedule units. Closed cycles require canonical rotation/reversal-invariant semantic identity, not source row or hash.
+A candidate chain is a **view over the immutable original graph**. It may join consecutive Mandatory children only when independent topology establishes exact source endpoint identity, identical component/sheet/`HardRailId` and distinct-region or region/exterior ownership, matching oriented boundary occurrences, unique nonbranching fan, and no trace terminal, port, protected corner, hard-rail terminal or other barrier. Reject uncertain joins, ambiguous fans, same-region self-loops and uncut cycles conservatively. Different `NetworkEdgeId` values do **not** by themselves prevent joining on the same rail. Source-edge parameter 0/1 endpoint canonicalization yields source vertices; equality of coordinates alone never proves equality of topological entities. Record typed disqualifications.
 
-Each unit retains ordered original `NetworkArcId` children, exact support paths, orientations, original Mandatory edge lineage and all region boundary occurrences. One checked monotone chain-ordinal-to-child/source-piece map must preserve every original arc and each occurrence exactly once, with canonical half-open join ownership; physical points must reverse exactly even if local representations differ.
+Preserve every child's ID, signed orientation, complete ordered source-support carriers, original boundary occurrences, and component/sheet/rail lineage. Exact D7 metric runs and D7b rational breakpoint placement remain the only acceptable counting/placement rules. Later unit parity must be recomputed from **expanded original** region incidences, and interval walks crossing child joins must cover all source pieces exactly once, including a child with no interior breakpoint; reversal must map `j ↔ n-j`. The independent verifier must reconstruct original-child and occurrence coverage without trusting a producer hash.
 
-Use D7 preferred count and D7b ceiling-weight placement on the **concatenated exact chain**, with positive count per unit only *after* normative amendment. A child with no internal breakpoint must still have source-supported length and complete coverage; never invent zero-length edges or fake positive per-child entries. Construct parity/T-join on units only if every child has identical two incident region endpoints or region+component-local exterior. Re-expand the certificate to original region occurrences. Keep the independent exact validator, canonical lex-prefix tie-breaks and reciprocal Trace matching.
+See [incidence proof gates](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Incidence_Proof_Gates_20261109.md) for detailed parity conditions and [evidence recovery](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Evidence_Recovery_20261109.md) for the exact production/view/TB route.
 
-## Required independent positive and negative evidence (not yet run)
+## 3. RA-214 authority correction and smallest next slice
 
-1. A real production-derived admissible multi-Mandatory-arc chain with a source-chart seam; a multi-piece **single** arc is insufficient.
-2. A trace terminal that must break the chain; tampered continuation rejects.
-3. Different component, sheet, rail, region, corner or branch that forbids merging despite positional coincidence.
-4. Equivalent admissible support segmentation, reversal and source-row permutation produce identical physical counts/breakpoints.
-5. Correct cyclic-start canonicalization or typed unsupported-cycle failure.
-6. Tampered missing/duplicate/reversed/foreign original child, exact carrier, shared owner and region incidence must reject.
-7. Unit count smaller than child-arc count must preserve exact original arc coverage and even region parity without T-junctions.
-8. No regression or promotion of CP2 491/491, stable 66/17/49 debt1, 81 deferred, selector497/CP3 unpromoted.
+RA-214 §1.3/§2 prohibits diagnostic-only Code + Build slices: runtime-derived Review facts may only be measured by an immutable Test + Benchmark turn exercising **a retained product representation, oracle or producer**. The previous idea to add a test-only Vase exporter is withdrawn; do not implement it. The next candidate product is a **certified Mandatory boundary-chain topology partition** plus independent validator, with original A2b and A3 scheduling unchanged. It is intended for later A3 consumption, not a digest/log sidecar. Before CB authorization this Review must freeze exact source/test patches, true independent falsifiers, accepted selector protection and a single bounded successor.
 
-## Unresolved and next same-turn action
+The product must partition every original Mandatory arc exactly once, retain signed children/owners/carriers and typed rejected joins, and validate from original A2b/network/source-region facts. The **non-vacuity gate** for its later artifact-only TB is at least one real production Vase unit containing two or more **different original Mandatory arc IDs**, with independently derived source/region/rail/sheet proof; otherwise route to Review without claiming a chain reduction. Required negatives: Trace terminal, different component/sheet/rail/region, branch/port/corner, self-loop/cycle, missing/duplicate/reordered child, reversed boundary owner, foreign carrier, gap/overlap, and wrong source-support endpoint. Source-row permutation, exact path segmentation and chain reversal must preserve physical meaning.
 
-**Q1:** Derive **actual** admissible Vase A2b joins, trace contacts, and source incidence from frozen production evidence. Reported 164 arc-level boundaries vs ~62 target is not proof that valid maximal chains reduce the schedule; prior 62/64 calculations are hypothetical, not measured A3 chain results.
+Only after such measured evidence may a separate count/placement and A4-consumer switch amend DESIGN §7.4 and recompute exact chain parity. Keep D4 uniform/annulus, D9c factory carrier, reciprocal Trace, A4 disc, D8 and D6 user decision separate. **A first product view that adds no valid join is not a successful D5 behavior change.**
 
-**Q2:** Prove the original oriented child and region-boundary incidence is preserved through chain quotient, especially cycles and repeated forward/reversed region occurrences.
+## 4. Current blockers to Review completion
 
-**Q3:** Freeze a minimal vertical producer+independent validator+read-only multi-child consumer, with real positive and tampered negative controls. D4 uniform/annulus, D9c, A2b, A4, D8 and D6 user decision remain separate.
+1. The exact production type and attachment location, independently implemented validation seam, source/test diff and immutable TB artifact oracle are **not frozen**. A conceptual view without a later consumer or independent failing tests is not an adequate successor.
+2. Actual production-derived Vase arc/region/source-support incidence sufficient to prove at least one admissible pair does not appear in existing checked census output; runtime may occur only in a separately authorized TB of a retained product.
+3. No per-unit-positivity normative amendment, approved multi-child consumer or complete source-to-region parity equivalence proof exists. They cannot be silently delegated to implementation.
+4. Handoff/TODO/ORIENTATION/CHANGELOG/ROADMAP and the Review §5 final closeout have not been updated to claim a completed D5 definition. The next session must remain in this exact turn rather than starting 64C.
 
-**Q4:** Amend `DESIGN.md §7.4` explicitly for per-chain positivity, exact child lineage and quotient parity, only after the Review proves admissibility.
+**Boundary checker (actually executed in this continuation):** `python3 .agents/Directional/tools/review_check.py boundary` on the verified source snapshot exited **1**. Product/test/fixture/build and selector mutation checks printed clean, but history-based ancestor and durable rewrite checks fail because the archive has no `.git`. Selector “untracked/new” labels are artifacts of the history-free archive, not evidence of current-branch selector changes. An authenticated Git-history-level pass remains outstanding.
 
-**Stop:** This WIP does not authorize a successor CB turn; no final D5 definition, normative amendment or Review closeout has been published. Follow this same canonical turn, not a guessed successor.
+## Review closeout — open obligations, **not a final acceptance**
 
-**Procedure disclosure:** Entry STATUS posted. Handoff/source docs were mistakenly read before choosing the mandated snapshot mode and completing policy reads; subsequent iterative inspection used the verified snapshot. The tool-call ledger was not initialized at the first invocation; exact total is unknown. A fuller local 103-line WIP review is separately preserved in the current conversation.
-## Same-turn verification and evidence route (2026-11-09 UTC)
-
-- **Exact source review:** snapshot `18102b6249068f440dcb2150dfb2e014a9aa225c`, workflow 42551485386, artifact 13645093415; nested tar plus **6,283/6,283** individual file hashes verified. No product/test/selector/source mutation or project runtime in Review.
-- **Source-derived D5 quotient proof:** [D5 incidence proof gates](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Incidence_Proof_Gates_20261109.md) preserves the original A2b arc-to-schedule binding, join/admissibility criteria, D7/D7b exact support identities, original region occurrence expansion, parity proof and test tamper matrix. Per-arc positivity under DESIGN §7.4 remains normative; no scheduler/consumer rewrite is approved.
-- **Immutable runtime evidence checked:** TB92 census artifact 13643067924, ZIP digest `7bd174072c806555c4fd98251b3cfc29e2ac674b737b6becd5ab5ceb72a3dd76`, 9/9 inner checksums. Vase's registered completion RED, original stage digests and A3 coverage were observed, but per-original-arc incidence, support carriers and exact breakpoint-to-child mappings were **not** serialized. The 145/3/164 count summary cannot independently establish any admissible maximal chain.
-- **Smallest observable evidence route:** [D5 evidence recovery](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Evidence_Recovery_20261109.md) identifies existing retained A2b/A3 product snapshots accessible at the Vase acceptance test return seam, even following a completion-stage rejection. **Governance correction:** RA-214 §1.3/§2 explicitly forbids a diagnostic-only CB; the earlier test-only exporter proposal is **withdrawn**. The next candidate is a retained production Mandatory-chain topology view plus an independently checked verifier, to be observed in its separate artifact-only TB. See the corrected evidence-recovery review; this product slice is not frozen or executed.
-- **Remaining Review work:** freeze the exact retained chain-topology product/validator CB and TB with falsifiers; measure the actual Vase join partition before switching A3 counts or A4 consumers; make the required normative amendment and complete the policy §5 review closeout only when evidence supports it. The source snapshot has no `.git`, so a history-dependent `review_check.py boundary` pass cannot be established from it; no such pass is claimed. Prior execution statements have not been independently reproduced in this turn.
-
-**No D5 final plan, successor implementation authorization, direct Vase compression, D6 decision, or CP3 promotion is claimed.**
-
-## RA-214 authority audit (2026-11-09)
-
-RA-214 §1.3/§2 withdrew the read-only A2b/A3 exporter and **forbids diagnostic-only CBs**. The earlier D5 test-only Vase serializer proposal was invalid and is withdrawn in the [evidence-recovery correction](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Evidence_Recovery_20261109.md). Instead, first freeze a retained and independently verified production Mandatory-chain topology view, with the real eligible/forbidden joins observed in a separate artifact-only TB. It may add no scheduling/count effects until a later §7.4 amendment and complete child/parity/consumer proofs. No successor CB is frozen yet.
-
-Source seam: `GlobalTopologyPlan` arcs/regions/rotations; `FieldAlignedMandatoryEdge` HardRail/component; `SourceTopologyRegions` sheets; A2b Trace-cut interior endpoints; existing `RemeshPipeline.cpp:1005–1016` per-arc inputs and `GlobalConformityBaseline.cpp:279–456` bijection/parity remain unchanged. Zero certified joins cannot be claimed as Vase compression.
-
-**Actual checker:** `python3 .agents/Directional/tools/review_check.py boundary` ran on the verified source archive and exited **1**: local mutation checks clean, ancestor/durable-baseline checks failed due missing `.git`. Its “untracked” selector messages are not real new selector changes; no history-level PASS is claimed.
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | n/a this attempt: no selector change; exact-head comparison found no selector paths; history-based checker remains unverified |
+| Decisive claims independently re-derived | Source bijection/parity/source-path/rail access checked against verified snapshot; snapshot 6,283/6,283 hashes |
+| Non-vacuity checked | Existing aggregate Vase figures cannot prove a joined chain; positive and tamper controls are mandated but not run |
+| Prior obligations discharged/carried | RA-214 diagnostic-only withdrawal discharged; RA-216/217 D7/D7b reused; 64B chain proof, D4 64C/64D, D9c 65A, Trace 65B, A4 65C, D8 65D, D6 decision carried |
+| Stable accounting | No accepted loss; CP2 491/491, stable 66/17/49 debt1, 81 deferred, selector497/CP3 unpromoted |
+| New candidates/obligations recorded | Candidate production chain partition/independent validator in evidence-recovery companion; tracker closeout pending |
+| ORIENTATION currency line | Pending final review resolution; currently still identifies 64B as immediate next |
+| ORIENTATION §3 / §4 / §7 / §8 | Pending; no witness or accepted status change; open D5 obligation persists |
+| CHANGELOG | Pending final definition closeout |
+| ROADMAP | n/a checkpoint change: 64B remains active; review before final closeout |
+| Selector manifest | n/a no selector change or acceptance |
+| LESSONS | Existing lessons on non-vacuity and runtime-free Review apply; no new lesson claimed |
+| Consolidation under CLEAN_UP_POLICY | Older source-audit supplements consolidated into this WIP/companion files; no durable history deleted |
+| Successor frozen | **No**; one exact product source/test patch plus TB falsifiers still required |
+| Turn boundary held | Runtime-free; no product/test/fixture/selector or workflow mutation in this Review |
+| review_check.py boundary | Exit 1 in history-free archive; cannot claim full pass |
+| `STATUS` lifecycle maintained | Entry/resume beacon written; final same-turn beacon required as last repository action |
+| Pushed to origin, branch in sync | Connector writes land remotely; final PR/head verification required; local `git status -sb` cannot prove origin sync from a source tarball |
