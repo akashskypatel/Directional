@@ -1,5 +1,7 @@
 # D5 prospective non-vacuous positive fixture — static source preflight (2026-11-09)
 
+> **SUPERSEDED by [RA-218](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md) (2026-11-09).** Provenance only. The D5 layer, contract and sequence are in RA-218 §1–§3; this record's open gates are withdrawn or carried there.
+
 Canonical turn: `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING` (runtime-free Review). **Candidate only, not a proven legal join, test result, approved Code + Build diff, or production Vase witness.**
 
 ## Existing fixture, no duplicate scaffold

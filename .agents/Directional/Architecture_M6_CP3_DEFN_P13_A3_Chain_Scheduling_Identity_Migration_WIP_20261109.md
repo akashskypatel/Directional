@@ -1,5 +1,7 @@
 # Mandatory-chain A3 identity and consumer migration — source-derived D5 Review WIP
 
+> **SUPERSEDED by [RA-218](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md) (2026-11-09).** Provenance only. The D5 layer, contract and sequence are in RA-218 §1–§3; this record's open gates are withdrawn or carried there.
+
 **Canonical turn:** `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING` (step 64B, runtime-free). **This is an independent source-contract audit, not an approved source/test patch, compiler result, runtime measurement, or successor authority.** Compare verified 2026-11-09 D5 source snapshot `3f28e64a4f062638bb9eb892815623e8fdfa77a4` to current branch before implementation: the intervening reviewed commits touched documentation/control files only. Accepted CB109/TB92 918/918, membership 999, CP2 491/491 and the unpromoted selector remain unchanged.
 
 ## 1. Exact incompatibility at the current A3 authority

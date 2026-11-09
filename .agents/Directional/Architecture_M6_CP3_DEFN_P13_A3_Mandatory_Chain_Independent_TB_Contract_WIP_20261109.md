@@ -1,5 +1,7 @@
 # D5 independent retained-partition TB contract — Review WIP (2026-11-09)
 
+> **SUPERSEDED by [RA-218](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md) (2026-11-09).** Provenance only. The D5 layer, contract and sequence are in RA-218 §1–§3; this record's open gates are withdrawn or carried there.
+
 **Canonical definition:** `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING`. This is the pre-registered, runtime-free **test/evidence contract** for a future Test + Benchmark turn; it is not the exact applyable source/test patch, a successful production Vase join, permission to run in Review, a frozen CB successor, or a D5 closeout. Entry authority CB109/TB92, 918/918, membership 999, CP2 accepted 491/491, stable 66/17/49, debt 1, deferred 81; no CP3 promotion.
 
 ## A. Evidence seam verified from source snapshot

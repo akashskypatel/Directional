@@ -1,5 +1,7 @@
 # Mandatory boundary-chain scheduling — D5 Review/Definition WIP (2026-11-09)
 
+> **SUPERSEDED by [RA-218](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md) (2026-11-09).** Provenance only. The D5 layer, contract and sequence are in RA-218 §1–§3; this record's open gates are withdrawn or carried there.
+
 **Canonical turn:** `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING` (64B). **Not complete. No successor implementation is approved.** This is runtime-free review evidence, not a code/test change, scheduler acceptance or product promotion.
 
 ## 1. Exact authority and existing evidence

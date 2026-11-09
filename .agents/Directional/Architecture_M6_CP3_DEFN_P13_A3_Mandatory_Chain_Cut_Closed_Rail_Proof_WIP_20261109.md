@@ -1,5 +1,7 @@
 # D5: a closed rail cut by A2b Trace terminals can yield open Mandatory chains
 
+> **SUPERSEDED by [RA-218](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md) (2026-11-09).** Provenance only. The D5 layer, contract and sequence are in RA-218 §1–§3; this record's open gates are withdrawn or carried there.
+
 **Review-only source correction, 2026-11-09.** Canonical turn: `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING`. This document corrects any reading of "closed source rail" as an unconditional no-join rule; it does not authorize a cyclic scheduling unit, prove a Vase join, replace the existing side/feature authority gates, freeze a C++ patch or begin a successor.
 
 ## 1. Independently checked evidence and its limits

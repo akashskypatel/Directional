@@ -1,5 +1,7 @@
 # D5 mandatory-chain scheduling: exact incidence proof gate
 
+> **SUPERSEDED by [RA-218](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md) (2026-11-09).** Provenance only. The D5 layer, contract and sequence are in RA-218 §1–§3; this record's open gates are withdrawn or carried there.
+
 **Scope.** Runtime-free D5 proof companion to `Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Review_WIP_20261109.md`. Snapshot `18102b6249068f440dcb2150dfb2e014a9aa225c`, workflow 42551485386, 6283/6283 file hashes; no runtime or source mutation.
 
 ## 1. Independent source-derived constraints

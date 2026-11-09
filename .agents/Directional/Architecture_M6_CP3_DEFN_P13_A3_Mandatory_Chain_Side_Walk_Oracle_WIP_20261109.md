@@ -1,5 +1,7 @@
 # D5 mandatory-chain side-walk proof — source-derived Review WIP
 
+> **SUPERSEDED by [RA-218](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md) (2026-11-09).** Provenance only. The D5 layer, contract and sequence are in RA-218 §1–§3; this record's open gates are withdrawn or carried there.
+
 **Canonical turn:** `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING`; runtime-free definition only. This refines the [scheduling Review](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Review_WIP_20261109.md) and [incidence gates](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Incidence_Proof_Gates_20261109.md). It is **not** a source/test diff, successful Vase proof, approved CB, or scheduler switch.
 
 ## Source facts (verified snapshot `e7091fa999dad6462f4616ec691cc1961a8ca0f3`)

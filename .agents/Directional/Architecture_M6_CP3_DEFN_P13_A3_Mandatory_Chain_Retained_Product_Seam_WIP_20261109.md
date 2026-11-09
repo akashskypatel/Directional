@@ -1,5 +1,7 @@
 # Mandatory-arc chain product: retained producer/validator seam (D5 WIP, 2026-11-09)
 
+> **SUPERSEDED by [RA-218](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md) (2026-11-09).** Provenance only. The D5 layer, contract and sequence are in RA-218 §1–§3; this record's open gates are withdrawn or carried there.
+
 **Authority:** `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING`, a runtime-free Review/Definition. This is a source-derived implementation-boundary finding, **not** an approved CB diff, runtime result, completed Review, or successor. It refines the existing scheduling Review WIP, incidence proof gates, and evidence-recovery record; none is superseded. Snapshot `e7091fa999dad6462f4616ec691cc1961a8ca0f3` (workflow 42571131202), archive SHA-256 `92a2ca70c95c8bd560a9c8e00d8677d285b07ef1f07996497f9a9aed34534189`, all 6,285 file hashes passed.
 
 ## 1. Actual data and insertion seam

@@ -411,6 +411,14 @@ This document records **reusable failure-derived engineering lessons**, not an e
   (ceiling) from the same exact quantity instead of adding a failure. Before switching a stored
   representation, grep the accepted tests for assertions on the old encoding and amend them in the
   switch CB, registered by the Review.
+- **Put a change in the stage that owns the quantity (RA-218).** The D5 attempt kept A3 spans as they
+  were and proposed a separate chain product next to them. Each gap that choice opened became a new
+  proof gate (fragment sides, corner re-derivation, identity migration, a production join before any
+  code), and the turn stalled for 13 hours without a patch. D5 changes a scheduling count, so the
+  scheduler's span set changes, and the topology stage stays as it is. When a definition keeps
+  growing gates, re-ask which stage owns the quantity before adding another one. Read upstream
+  products (here, feature-curve corners) as authority rather than re-deriving them, and land the
+  smallest pure function with hand-built tests first.
 - **Plan from the current normative contract and reachable implementation.** Before freezing an
   obligation, identify the actual producer, owning stage, live branch and witness class; confirm it can
   be expressed at that checkpoint. Do not retroactively require a later milestone's capability or treat

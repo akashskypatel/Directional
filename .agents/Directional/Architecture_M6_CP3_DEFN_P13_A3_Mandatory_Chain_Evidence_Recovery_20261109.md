@@ -1,5 +1,7 @@
 # D5 production-incidence evidence recovery — runtime-free Review finding (2026-11-09)
 
+> **SUPERSEDED by [RA-218](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md) (2026-11-09).** Provenance only. The D5 layer, contract and sequence are in RA-218 §1–§3; this record's open gates are withdrawn or carried there.
+
 **Canonical turn:** `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING` (64B D5), still unfinished. This is an evidence-route correction, not an implementation or runtime authorization. Read with the current D5 Review WIP and `Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Incidence_Proof_Gates_20261109.md`.
 
 ## 1. Exact retained evidence checked in this Review

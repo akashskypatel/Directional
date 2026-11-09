@@ -1,5 +1,7 @@
 # D5 mandatory-chain protected-corner and retention binding — source-derived WIP
 
+> **SUPERSEDED by [RA-218](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md) (2026-11-09).** Provenance only. The D5 layer, contract and sequence are in RA-218 §1–§3; this record's open gates are withdrawn or carried there.
+
 **Authority:** canonical `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING` Review/Definition. Verified semantic source snapshot `e7091fa999dad6462f4616ec691cc1961a8ca0f3` (6,285/6,285 hashes). This is a correction to the proposed CB/TB contract, **not** a frozen source/test patch, execution result, approved successor or evidence of an eligible production Vase join.
 
 ## 1. Previously omitted producer input: feature-curve corners

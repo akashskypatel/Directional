@@ -1,5 +1,7 @@
 # Mandatory original-arc coverage precondition — local source/test patch WIP
 
+> **SUPERSEDED by [RA-218](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md) (2026-11-09).** Provenance only. The D5 layer, contract and sequence are in RA-218 §1–§3; this record's open gates are withdrawn or carried there.
+
 **Canonical Review:** `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING`. This record identifies a **prepared but unapplied** source/test diff. It does **not** close D5, authorize CB, claim executable test success, establish legal joining, or supersede [the independent TB contract](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Independent_TB_Contract_WIP_20261109.md).
 
 ## Recoverable exact bytes

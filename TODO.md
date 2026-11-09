@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING` (step 64B D5, runtime-free Review definition). [verified TB92 report](Architecture_M6_CP3_TB92_P13_A3_Metric_Breakpoint_Placement_Switch_Full_Gate_Execution_Report_20261109.md) verified CB109 source `3f64cbf…` immutable package `13641673331`: 918/918 PASS (membership 999), selector:392 and GUARD 918 PASS, census Cylinder PASS/BunnyRandom and Vase registered RED, seven A3 lines identical to TB91 and RA-217 §7 permitted Vase baseline hash change. CP2 491/491, stable 66/17/49, debt 1, 81 deferred, selector497/CP3 unpromoted.
+> **Current canonical next:** `M6-CP3-CB110-P13-A3-MANDATORY-CHAIN-PARTITION` (step 64B.1, implementation agent, compile only; [RA-218](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md) §5). Then TB93 (64B.2). The Review agent runs 64B.3 (`M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SPAN-SWITCH`) in parallel. 64B D5 DEFN is COMPLETE after the Review takeover. Last gate TB92 918/918, membership 999. CP2 491/491, stable 66/17/49, debt 1, 81 deferred, selector497/CP3 unpromoted.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -6,6 +6,26 @@
 - [x] **TB72A orchestration corrected and immutable gate verified:** [run 41540264758](https://github.com/akashskypatel/Directional/actions/runs/41540264758), exact executor `df586285…`, CB78 immutable artifact `13181887585`, **883/883 PASS**, 81 deferred, membership 964, 1,774/1,774 packaged hashes, no rebuild; preserved invalid TB72 attempt. [Record](.agents/Directional/Architecture_M6_CP3_TB72A_Orchestration_Record_20261102.md).
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md)** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md)** (scratch probes). The ChatGPT [static preflight](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md)'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
+
+## CURRENT — RA-218: step 64B (D5) taken over and completed; exact CB110 + TB93 frozen; switch DEFN 64B.3 on the Review track (2026-11-09)
+
+- [x] **RA-218** ([RA-218](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md)) took over the stalled D5 DEFN. The implementation agent's attempt ran 13 h with 11 WIP records, all now banner-superseded, and froze no patch.
+  - **Stands:** spans are bijective with arcs; rails span feature corners (`emit_run`), so corners must be stops; a closed rail opens only at a stop; Vase's rim has no corner (maximum 29.8°); no sidecars (RA-214).
+  - **W1:** the separate diagnostic chain-partition product is withdrawn. D5 changes the A3 span set.
+  - **W2:** the validator does not re-derive the floating corner predicate; the feature map is upstream authority.
+  - **W3:** a production Vase join is not required before any CB; it belongs to the switch TB.
+  - **W4:** no new chain-unit identity type; the partition is canonical.
+  - **W5:** no merging in A2b, which assumes one edge per Mandatory arc at about 30 sites.
+  - **Contract:** A3 chains over an unchanged A2b. Arcs join at a node only when the rotation has degree 2, both arcs are Mandatory on the same `HardRailId`, and the node is not a stop (port, feature corner or junction). Uncut closed rails stay per arc (new debt **O34**). DESIGN §7.4 is amended, effective at CB113.
+- **Step 64B sliced (each step independently testable):**
+  64B.1. [ ] **NEXT** `M6-CP3-CB110-P13-A3-MANDATORY-CHAIN-PARTITION`: unwired partition + support functions, plus GUARD 919–923. [Diff](.agents/Directional/Architecture_M6_CP3_CB110_P13_A3_Mandatory_Chain_Partition_Exact.diff) `ff3fdf5f1a34ea942075f681a760cbec423df4a4800c2024992ceb77a05054f0`, 522 lines, 6 single-space context lines, numstat `112 0` / `25 0` / `333 1`. Compile only. Mismatch → `M6-CP3-PLAN-P13-A3-MANDATORY-CHAIN-PARTITION-STOP`; infrastructure → `M6-CP3-CB110A-P13-A3-MANDATORY-CHAIN-PARTITION-ORCH`.
+  64B.2. [ ] `M6-CP3-TB93-P13-A3-MANDATORY-CHAIN-PARTITION-FULL-GATE-EXEC`: [manifest](.agents/Directional/Architecture_M6_TB93_P13_A3_Mandatory_Chain_Partition_Full_Gate_Case_Manifest.tsv) 923 rows `a8c4a59920ee22c8f3260de2d5b467f9ce3aa4a72526d1dcd593a3b063e9095a`, membership 1004. Expect 923/923 with the 7 platform + 7 A3 lines byte-identical to TB92; record the 5 `D5_CHAIN_RECEIPT` lines. Mismatch → `M6-CP3-TB93-P13-A3-MANDATORY-CHAIN-PARTITION-FULL-GATE-REV`; infrastructure → `M6-CP3-TB93A-P13-A3-MANDATORY-CHAIN-PARTITION-ORCH`.
+  64B.3. [ ] **Review agent, parallel with 64B.1–64B.2** `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SPAN-SWITCH`. Freezes three patches, each with a full-gate TB:
+     - CB111: stop-set derivation, unwired.
+     - CB112: curved-disk arc → span/piece-offset consumption, behaviour-neutral.
+     - CB113: span switch, validator and wiring. Vase prediction: 145 Mandatory spans → 3; no join → `NoCertifiedProductionJoin`.
+     - Exit: those patches, or `M6-CP3-PLAN-P13-A3-MANDATORY-CHAIN-SPAN-SWITCH-STOP`.
+- Then 64C/64D D4 → 65A–65D → 66+, per the table below.
 
 ## CLOSED — RA-217: step 64.5 (D7b) re-entered; CB108/TB91/CB109/TB92 verified (2026-11-09)
 
@@ -24,7 +44,7 @@
   64.7. [x] **COMPLETE / MATCH** `M6-CP3-TB91-P13-A3-METRIC-BREAKPOINT-PLACEMENT-FULL-GATE-EXEC` — [manifest](.agents/Directional/Architecture_M6_TB91_P13_A3_Metric_Breakpoint_Placement_Full_Gate_Case_Manifest.tsv) 917 rows `0b16a30e332e42888339c6bdd8bcb66127281fca2c6430e22ef7e98065fb1752`, membership 998. Verified 917/917 PASS and 7 platform + 7 A3 lines byte-identical to TB90; [TB91 report](.agents/Directional/Architecture_M6_CP3_TB91_P13_A3_Metric_Breakpoint_Placement_Full_Gate_Execution_Report_20261109.md), gate run 42536610714, census run 42536628967. Mismatch → `M6-CP3-TB91-P13-A3-METRIC-BREAKPOINT-PLACEMENT-FULL-GATE-REV`; infrastructure → `M6-CP3-TB91A-P13-A3-METRIC-BREAKPOINT-PLACEMENT-ORCH`
   64.8. [x] **COMPLETE / BUILD GREEN** `M6-CP3-CB109-P13-A3-METRIC-BREAKPOINT-PLACEMENT-SWITCH` — exact RA-217 six-file patch, [record](.agents/Directional/Architecture_M6_CP3_CB109_P13_A3_Metric_Breakpoint_Placement_Switch_Code_Build_Record_20261109.md); source `3f64cbf2c79ab580bbf97509142df1d5415c4404`, package `13641673331`, 8/8 GMP/GMPXX targets, 28/28 hashes; compile only, no runtime.
   64.9. [x] **COMPLETE / MATCH** `M6-CP3-TB92-P13-A3-METRIC-BREAKPOINT-PLACEMENT-SWITCH-FULL-GATE-EXEC` — [manifest](.agents/Directional/Architecture_M6_TB92_P13_A3_Metric_Breakpoint_Placement_Switch_Full_Gate_Case_Manifest.tsv) 918 rows `d714a52e4f3c7716dd08ea40258ad04fea0c93ecc998b77aa0eab60a77846d13`, membership 999; RA-217 §7 outcome table (a3-coverage identical; baseline hash may change, `/count` identical; later counts and `validationIssues` identical). Mismatch → `M6-CP3-TB92-P13-A3-METRIC-BREAKPOINT-PLACEMENT-SWITCH-FULL-GATE-REV`; infrastructure → `M6-CP3-TB92A-P13-A3-METRIC-BREAKPOINT-PLACEMENT-SWITCH-ORCH` [verified TB92 report](Architecture_M6_CP3_TB92_P13_A3_Metric_Breakpoint_Placement_Switch_Full_Gate_Execution_Report_20261109.md): 918/918, 999 membership, 7/7 A3 unchanged, Vase baseline hash registered; 1 PASS/2 expected RED census.
-- **NEXT: 64B D5** (its consumer accepts multi-piece spans) → 64C/64D D4 → 65A–65D → 66+, per the table below.
+- **Then 64B D5:** COMPLETE by RA-218 (section above).
 
 ## EARLIER — RA-216: step 64 (D7) re-entered; exact CB106 + CB107, TB89 + TB90 frozen; placement split to D7b (2026-11-08)
 
@@ -58,7 +78,7 @@
 |---|---|---|
 | 64 D7 | `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC` (COMPLETE, RA-216) → CB106 → TB89 → CB107 → TB90 | Same geometric path across different piece splits → same count |
 | 64.5 D7b | `M6-CP3-DEFN-P13-A3-METRIC-BREAKPOINT-PLACEMENT` (COMPLETE, RA-217) → CB108 → TB91 → CB109 → TB92 | Same path → same breakpoint points; single-piece spans unchanged |
-| 64B D5 | `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING` | Chain topology, original-arc lineage, positivity, exact coverage |
+| 64B D5 | `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING` (COMPLETE, RA-218) → CB110 → TB93; 64B.3 switch DEFN → CB111–CB113 | Chain topology, original-arc lineage, positivity, exact coverage |
 | 64C D4 | `M6-CP3-DEFN-P13-A3-UNIFORM-PLAN-CONSUMPTION` | Uniform A3 coverage or typed decline; omission falsifier |
 | 64D D4 | `M6-CP3-DEFN-P13-A3-ANNULUS-PLAN-CONSUMPTION` | Annulus periodic/cut coverage and orientation falsifier |
 | 65A D9c | `M6-CP3-DEFN-P13-A3-BOUNDARY-SPAN-CARRIER-BINDING` | Factory rejects wrong span/carrier and paired sign/ordinal tamper; absent physical rim remains legal |
