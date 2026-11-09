@@ -43,3 +43,7 @@
 ## Interval semantics correction (same DEFN, later verified source analysis)
 
 The earlier suggestion that final multi-piece front intervals require fractional ordinal widths was **too broad**. [The source review](Architecture_M6_CP3_DEFN_P13_A3_Span_Switch_Interval_Identity_Source_Review_20261109.md) establishes that D7b's **piece-local** breakpoint fractions can coexist with **unit-width** final intervals. A chain with scheduled count 1 across three source pieces must produce one front edge following all three source pieces, not three fractional front edges. Preserve the unit interval, hard-rail pairing and A3 coverage validators. The remaining challenge is constructing a logical interval's complete route across raw arc/occurrence boundaries, including certified periodic side ownership; CB112 and CB113 are still unfrozen. This correction supersedes conflicting suggestions in this working review without claiming production verification.
+
+## Fourth continuation: logical-side helper candidate
+
+A review-only, **uncompiled and unapplied** 3-file (+209/−0) C++ helper/test patch for oriented cyclic chain-side derivation is preserved in [the exact candidate record](Architecture_M6_CP3_DEFN_P13_A3_Span_Switch_Logical_Sides_Candidate_20261109.md), SHA-256 `027f2699b39794f4959dfb00d0f217b297156fafd63a4bd00ec98f2181c5f617`. It does not supply CB112 or the atomic CB113 switch; the DEFN remains unfinished.
