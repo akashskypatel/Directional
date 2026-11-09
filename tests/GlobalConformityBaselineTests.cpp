@@ -172,6 +172,7 @@ std::vector<SurfaceCellRail> rails_from_atlas(
 struct TopologyFixture {
   TriMesh mesh;
   GlobalTopologyPlan topology;
+  std::vector<directional::geometry::FieldAlignedMandatoryEdge> mandatoryEdges;
 };
 
 TopologyFixture make_topology_fixture(TriMesh mesh) {
@@ -191,7 +192,8 @@ TopologyFixture make_topology_fixture(TriMesh mesh) {
       mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority,
       network.value(), cutGraph.value());
   if (!topology) throw std::runtime_error("topology fixture failed");
-  return {std::move(mesh), std::move(topology.value())};
+  return {std::move(mesh), std::move(topology.value()),
+          network.value().mandatory_edges()};
 }
 
 SourceEdgeTopologyKey find_edge(const TriMesh &mesh, int first, int second) {
@@ -1410,4 +1412,334 @@ TEST(GlobalConformityBaseline,
             stored);
   std::cout << "D7B_BREAKPOINT_RECEIPT case=plan whole=0:1/4,0:2/4,0:3/4"
             << " uneven=1:1/7,1:3/7,1:5/7 halves=0:1/2,1:0/1,1:1/2\n";
+}
+
+namespace {
+
+using directional::authority::NetworkArcId;
+using directional::authority::NetworkNodeId;
+using directional::authority::Orientation;
+using directional::geometry::ConformitySupportPiece;
+using directional::geometry::FieldAlignedMandatoryEdge;
+using directional::geometry::GlobalTopologyArc;
+using directional::geometry::GlobalTopologyNodeRotation;
+using directional::geometry::GlobalTopologyOrientedArc;
+using directional::geometry::global_conformity_baseline_detail::BaselineMandatoryChain;
+using directional::geometry::global_conformity_baseline_detail::derive_mandatory_chain_partition;
+using directional::geometry::global_conformity_baseline_detail::derive_mandatory_chain_support;
+using directional::geometry::global_conformity_baseline_detail::derive_partition_stable_preferred_count_exact;
+
+constexpr std::size_t kChainExtent = 8U;
+
+NetworkNodeId chain_node(int index) {
+  return NetworkNodeId::from_index(index, kChainExtent).value();
+}
+
+// A hand-built A2b graph: node i sits on source vertex i, and each Mandatory
+// arc has its own network edge unless it shares one (a trace-terminal split).
+struct ChainGraph {
+  std::vector<GlobalTopologyArc> arcs;
+  std::vector<FieldAlignedMandatoryEdge> edges;
+};
+
+void add_arc(ChainGraph &graph, int first, int second,
+             GlobalTopologyArcKind kind = GlobalTopologyArcKind::Mandatory,
+             int rail = 0, std::optional<int> sharedEdge = std::nullopt) {
+  const int index = static_cast<int>(graph.arcs.size());
+  GlobalTopologyArc arc{.id = NetworkArcId::from_index(index, kChainExtent).value(),
+                        .kind = kind,
+                        .firstNode = chain_node(first),
+                        .secondNode = chain_node(second)};
+  const auto edge = SourceEdgeTopologyKey::from_indices(
+                        first, first == second ? (first + 1) % static_cast<int>(kChainExtent) : second,
+                        kChainExtent)
+                        .value();
+  if (first != second) {
+    arc.sourcePath = {
+        {directional::authority::SourceEdgeSupport{edge},
+         SourceVertexId::from_index(first, kChainExtent).value(),
+         SourceVertexId::from_index(second, kChainExtent).value()}};
+  }
+  if (kind == GlobalTopologyArcKind::Mandatory) {
+    arc.mandatoryEdge = directional::authority::NetworkEdgeId::from_index(
+                            sharedEdge.value_or(index), kChainExtent)
+                            .value();
+    if (!sharedEdge) {
+      graph.edges.emplace_back(
+          *arc.mandatoryEdge, HardRailId::from_index(rail, kChainExtent).value(),
+          edge, SurfaceCellRailKind::Boundary, arc.firstNode, arc.secondNode,
+          directional::authority::SourceComponentId::from_index(0, 1).value(),
+          std::vector<directional::authority::TopologyRegionId>{});
+    }
+  }
+  graph.arcs.push_back(std::move(arc));
+}
+
+// A2b's convention: an arc leaves its first node forwards, its second reversed.
+std::vector<GlobalTopologyNodeRotation>
+rotations_of(const std::vector<GlobalTopologyArc> &arcs) {
+  std::map<NetworkNodeId, std::vector<GlobalTopologyOrientedArc>> outgoing;
+  for (const auto &arc : arcs) {
+    outgoing[arc.firstNode].push_back({arc.id, Orientation::Forward});
+    outgoing[arc.secondNode].push_back({arc.id, Orientation::Reverse});
+  }
+  std::vector<GlobalTopologyNodeRotation> rotations;
+  for (auto &[node, incidences] : outgoing) {
+    rotations.push_back({node, std::move(incidences)});
+  }
+  return rotations;
+}
+
+// "0F,1R|2F": chains of arc indices with their orientations.
+std::string chain_shape(
+    const std::optional<std::vector<BaselineMandatoryChain>> &chains) {
+  if (!chains) return "none";
+  std::string out;
+  for (const auto &chain : *chains) {
+    if (!out.empty()) out += '|';
+    for (std::size_t k = 0U; k < chain.arcs.size(); ++k) {
+      if (k != 0U) out += ',';
+      out += std::to_string(chain.arcs[k].arc.index());
+      out += chain.arcs[k].orientation == Orientation::Forward ? 'F' : 'R';
+    }
+  }
+  return out;
+}
+
+std::string partition_shape(const ChainGraph &graph, const std::set<int> &stops) {
+  std::set<NetworkNodeId> stopNodes;
+  for (const int stop : stops) stopNodes.insert(chain_node(stop));
+  return chain_shape(derive_mandatory_chain_partition(
+      graph.arcs, rotations_of(graph.arcs), graph.edges, stopNodes));
+}
+
+} // namespace
+
+TEST(GlobalConformityBaseline, D5ChainsJoinOnlyThroughUnprotectedSameRailNodes) {
+  // Rail 0 runs 0-1-2-3-4 with arc 1 stored backwards; rail 1 continues 4-5
+  // and a trace leaves 5. Node 3 is a stop, such as a feature corner.
+  ChainGraph graph;
+  add_arc(graph, 0, 1);
+  add_arc(graph, 2, 1);
+  add_arc(graph, 2, 3);
+  add_arc(graph, 3, 4);
+  add_arc(graph, 4, 5, GlobalTopologyArcKind::Mandatory, 1);
+  add_arc(graph, 5, 6, GlobalTopologyArcKind::Trace);
+  EXPECT_EQ("0F,1R,2F|3F|4F|5F", partition_shape(graph, {3}));
+  EXPECT_EQ("0F,1R,2F,3F|4F|5F", partition_shape(graph, {}));
+  EXPECT_EQ("0F|1F|2F|3F|4F|5F", partition_shape(graph, {1, 2, 3}));
+
+  // Row order does not matter.
+  auto permuted = graph;
+  std::reverse(permuted.arcs.begin(), permuted.arcs.end());
+  std::reverse(permuted.edges.begin(), permuted.edges.end());
+  auto rotations = rotations_of(permuted.arcs);
+  std::reverse(rotations.begin(), rotations.end());
+  for (auto &rotation : rotations) {
+    std::reverse(rotation.counterClockwise.begin(),
+                 rotation.counterClockwise.end());
+  }
+  EXPECT_EQ("0F,1R,2F|3F|4F|5F",
+            chain_shape(derive_mandatory_chain_partition(
+                permuted.arcs, rotations, permuted.edges, {chain_node(3)})));
+
+  // A trace terminal splits one network edge into two arcs. Their node has
+  // three incidences, so the halves stay apart.
+  ChainGraph split;
+  add_arc(split, 0, 1);
+  add_arc(split, 1, 2, GlobalTopologyArcKind::Mandatory, 0, 0);
+  add_arc(split, 1, 3, GlobalTopologyArcKind::Trace);
+  EXPECT_EQ("0F|1F|2F", partition_shape(split, {}));
+  std::cout << "D5_CHAIN_RECEIPT case=joins stop=0F,1R,2F|3F|4F|5F"
+            << " open=0F,1R,2F,3F|4F|5F permuted=same split=0F|1F|2F\n";
+}
+
+TEST(GlobalConformityBaseline, D5ChainsOpenAClosedRailOnlyAtAStop) {
+  // With no stop every arc of a closed rail is joined at both ends, so the
+  // cycle stays single. Stops open it into chains read from the lower-id end.
+  ChainGraph loop;
+  add_arc(loop, 0, 1);
+  add_arc(loop, 1, 2);
+  add_arc(loop, 2, 0);
+  EXPECT_EQ("0F|1F|2F", partition_shape(loop, {}));
+  EXPECT_EQ("0F,1F,2F", partition_shape(loop, {0}));
+  EXPECT_EQ("0R,2R,1R", partition_shape(loop, {1}));
+  EXPECT_EQ("0F|1F,2F", partition_shape(loop, {0, 1}));
+
+  ChainGraph pair;
+  add_arc(pair, 0, 1);
+  add_arc(pair, 1, 0);
+  EXPECT_EQ("0F|1F", partition_shape(pair, {}));
+  EXPECT_EQ("0F,1F", partition_shape(pair, {0}));
+
+  // A loop arc fills its node's rotation by itself and joins nothing.
+  ChainGraph self;
+  add_arc(self, 0, 0);
+  EXPECT_EQ("0F", partition_shape(self, {}));
+  std::cout << "D5_CHAIN_RECEIPT case=cycles uncut=0F|1F|2F stop0=0F,1F,2F"
+            << " stop1=0R,2R,1R pair=0F,1F self=0F\n";
+}
+
+TEST(GlobalConformityBaseline, D5ChainPartitionRejectsInconsistentGraphs) {
+  ChainGraph graph;
+  add_arc(graph, 0, 1);
+  add_arc(graph, 1, 2);
+  const auto rotations = rotations_of(graph.arcs);
+  const auto shape = [](const std::vector<GlobalTopologyArc> &arcs,
+                        const std::vector<GlobalTopologyNodeRotation> &rotation,
+                        const std::vector<FieldAlignedMandatoryEdge> &edges) {
+    return chain_shape(derive_mandatory_chain_partition(arcs, rotation, edges, {}));
+  };
+  EXPECT_EQ("0F,1F", shape(graph.arcs, rotations, graph.edges));
+  EXPECT_EQ("", shape({}, {}, {}));
+
+  auto noEdge = graph.arcs;
+  noEdge[1].mandatoryEdge.reset();
+  EXPECT_EQ("none", shape(noEdge, rotations, graph.edges));
+  auto unknownEdge = graph.edges;
+  unknownEdge.pop_back();
+  EXPECT_EQ("none", shape(graph.arcs, rotations, unknownEdge));
+  auto duplicateEdge = graph.edges;
+  duplicateEdge.push_back(duplicateEdge.front());
+  EXPECT_EQ("none", shape(graph.arcs, rotations, duplicateEdge));
+  auto duplicateArc = graph.arcs;
+  duplicateArc.push_back(duplicateArc.front());
+  EXPECT_EQ("none", shape(duplicateArc, rotations, graph.edges));
+
+  // Rotations are node 0 {0F}, node 1 {0R, 1F}, node 2 {1R}.
+  auto wrongEnd = rotations;
+  wrongEnd.front().counterClockwise.front().orientation = Orientation::Reverse;
+  EXPECT_EQ("none", shape(graph.arcs, wrongEnd, graph.edges));
+  auto missing = rotations;
+  missing.back().counterClockwise.clear();
+  EXPECT_EQ("none", shape(graph.arcs, missing, graph.edges));
+  auto repeatedNode = rotations;
+  repeatedNode.push_back(repeatedNode.front());
+  EXPECT_EQ("none", shape(graph.arcs, repeatedNode, graph.edges));
+  auto repeatedIncidence = rotations;
+  repeatedIncidence.front().counterClockwise.push_back(
+      repeatedIncidence.front().counterClockwise.front());
+  EXPECT_EQ("none", shape(graph.arcs, repeatedIncidence, graph.edges));
+  auto foreign = rotations;
+  foreign.front().counterClockwise.push_back(
+      {NetworkArcId::from_index(7, kChainExtent).value(), Orientation::Forward});
+  EXPECT_EQ("none", shape(graph.arcs, foreign, graph.edges));
+  std::cout << "D5_CHAIN_RECEIPT case=rejections rejected=9 empty=accepted\n";
+}
+
+TEST(GlobalConformityBaseline, D5ChainSupportIsTheOrientedPathAndIsCountedOnce) {
+  // Three unit arcs along x at h = 2, the middle one stored backwards. Alone
+  // each has metric 1/2 and count 1; the chain has metric 3/2 and count 1.
+  ChainGraph graph;
+  add_arc(graph, 0, 1);
+  add_arc(graph, 2, 1);
+  add_arc(graph, 2, 3);
+  Eigen::MatrixXd vertices = Eigen::MatrixXd::Zero(kChainExtent, 3);
+  for (int x = 0; x < 4; ++x) vertices(x, 0) = x;
+  const Eigen::VectorXd h = Eigen::VectorXd::Constant(kChainExtent, 2.0);
+  const auto chains = derive_mandatory_chain_partition(
+      graph.arcs, rotations_of(graph.arcs), graph.edges, {});
+  ASSERT_EQ("0F,1R,2F", chain_shape(chains));
+  const auto support = derive_mandatory_chain_support(chains->front(), graph.arcs);
+  ASSERT_TRUE(support.has_value());
+  std::vector<ConformitySupportPiece> expected;
+  for (int x = 0; x < 3; ++x) {
+    const auto edge =
+        SourceEdgeTopologyKey::from_indices(x, x + 1, kChainExtent).value();
+    expected.push_back({directional::authority::SourceEdgeSupport{edge},
+                        edge.first(), edge.second()});
+  }
+  EXPECT_TRUE(expected == *support);
+  const auto count = [&](std::vector<ConformitySupportPiece> pieces) {
+    return derive_partition_stable_preferred_count_exact(
+               ConformitySpanInput{
+                   ConformitySpanId::from_network_arc(graph.arcs.front().id),
+                   std::move(pieces)},
+               vertices, h)
+        .value_or(EInt(-1))
+        .to_string();
+  };
+  EXPECT_EQ("1", count(*support));
+  for (const auto &arc : graph.arcs) EXPECT_EQ("1", count(arc.sourcePath));
+
+  // A gap, a broken orientation, an unknown arc or no arc is not a chain.
+  const auto id = [&](int index) { return graph.arcs[index].id; };
+  EXPECT_FALSE(derive_mandatory_chain_support(
+                   BaselineMandatoryChain{{{id(0), Orientation::Forward},
+                                           {id(2), Orientation::Forward}}},
+                   graph.arcs)
+                   .has_value());
+  EXPECT_FALSE(derive_mandatory_chain_support(
+                   BaselineMandatoryChain{{{id(0), Orientation::Reverse},
+                                           {id(1), Orientation::Reverse}}},
+                   graph.arcs)
+                   .has_value());
+  EXPECT_FALSE(derive_mandatory_chain_support(
+                   BaselineMandatoryChain{
+                       {{NetworkArcId::from_index(7, kChainExtent).value(),
+                         Orientation::Forward}}},
+                   graph.arcs)
+                   .has_value());
+  EXPECT_FALSE(
+      derive_mandatory_chain_support(BaselineMandatoryChain{}, graph.arcs)
+          .has_value());
+  std::cout << "D5_CHAIN_RECEIPT case=support chainCount=1 arcCounts=1,1,1"
+            << " rejected=4\n";
+}
+
+TEST(GlobalConformityBaseline, D5ChainPartitionCoversARealA2bPlanOnce) {
+  const auto fixture = make_topology_fixture(make_square_mesh());
+  const auto &arcs = fixture.topology.arcs();
+  const auto &rotations = fixture.topology.rotation_system();
+
+  // The fixture gives every boundary edge its own rail, so nothing joins.
+  const auto own = derive_mandatory_chain_partition(
+      arcs, rotations, fixture.mandatoryEdges, {});
+  ASSERT_TRUE(own.has_value());
+  ASSERT_EQ(arcs.size(), own->size());
+  for (const auto &chain : *own) {
+    ASSERT_EQ(1U, chain.arcs.size());
+    EXPECT_TRUE(chain.arcs.front().orientation == Orientation::Forward);
+  }
+
+  // On one rail, with no stop and with a stop at a Mandatory arc's first node,
+  // every arc lies in exactly one continuous chain with a path support.
+  auto oneRail = fixture.mandatoryEdges;
+  ASSERT_FALSE(oneRail.empty());
+  for (auto &edge : oneRail) edge.rail = oneRail.front().rail;
+  const auto mandatory =
+      std::find_if(arcs.begin(), arcs.end(), [](const auto &arc) {
+        return arc.kind == GlobalTopologyArcKind::Mandatory;
+      });
+  ASSERT_NE(arcs.end(), mandatory);
+  std::vector<std::size_t> chainCounts;
+  for (const auto &stops : {std::set<NetworkNodeId>{},
+                            std::set<NetworkNodeId>{mandatory->firstNode}}) {
+    const auto chains =
+        derive_mandatory_chain_partition(arcs, rotations, oneRail, stops);
+    ASSERT_TRUE(chains.has_value());
+    chainCounts.push_back(chains->size());
+    std::set<NetworkArcId> seen;
+    for (const auto &chain : *chains) {
+      std::optional<NetworkNodeId> end;
+      for (const auto &oriented : chain.arcs) {
+        EXPECT_TRUE(seen.insert(oriented.arc).second);
+        const auto *arc = fixture.topology.find_arc(oriented.arc);
+        ASSERT_NE(nullptr, arc);
+        const bool forward = oriented.orientation == Orientation::Forward;
+        if (end) EXPECT_TRUE(*end == (forward ? arc->firstNode : arc->secondNode));
+        end = forward ? arc->secondNode : arc->firstNode;
+        if (chain.arcs.size() > 1U) {
+          EXPECT_TRUE(arc->kind == GlobalTopologyArcKind::Mandatory);
+        }
+      }
+      if (chain.arcs.size() > 1U) {
+        EXPECT_TRUE(derive_mandatory_chain_support(chain, arcs).has_value());
+      }
+    }
+    EXPECT_EQ(arcs.size(), seen.size());
+  }
+  std::cout << "D5_CHAIN_RECEIPT case=square arcs=" << arcs.size()
+            << " ownRails=" << own->size() << " oneRail=" << chainCounts[0]
+            << " oneRailStop=" << chainCounts[1] << "\n";
 }

@@ -365,6 +365,118 @@ std::optional<ConformityBreakpointLocation> derive_metric_breakpoint_location(
   return std::nullopt;
 }
 
+std::optional<std::vector<BaselineMandatoryChain>>
+derive_mandatory_chain_partition(
+    const std::vector<GlobalTopologyArc> &arcs,
+    const std::vector<GlobalTopologyNodeRotation> &rotations,
+    const std::vector<FieldAlignedMandatoryEdge> &mandatoryEdges,
+    const std::set<authority::NetworkNodeId> &stopNodes) {
+  using authority::NetworkArcId;
+  using authority::NetworkNodeId;
+  using authority::Orientation;
+  std::map<authority::NetworkEdgeId, authority::HardRailId> railOfEdge;
+  for (const auto &edge : mandatoryEdges) {
+    if (!railOfEdge.emplace(edge.id, edge.rail).second) return std::nullopt;
+  }
+  std::map<NetworkArcId, const GlobalTopologyArc *> arcById;
+  std::map<NetworkArcId, authority::HardRailId> railOfArc;
+  for (const auto &arc : arcs) {
+    if (!arcById.emplace(arc.id, &arc).second) return std::nullopt;
+    if (arc.kind != GlobalTopologyArcKind::Mandatory) continue;
+    if (!arc.mandatoryEdge) return std::nullopt;
+    const auto rail = railOfEdge.find(*arc.mandatoryEdge);
+    if (rail == railOfEdge.end()) return std::nullopt;
+    railOfArc.emplace(arc.id, rail->second);
+  }
+
+  // The two arcs that continue through each pass-through node.
+  std::map<NetworkNodeId, std::array<NetworkArcId, 2>> joins;
+  std::set<NetworkNodeId> rotationNodes;
+  std::set<GlobalTopologyOrientedArc> incidences;
+  for (const auto &rotation : rotations) {
+    if (!rotationNodes.insert(rotation.node).second) return std::nullopt;
+    for (const auto &incidence : rotation.counterClockwise) {
+      const auto found = arcById.find(incidence.arc);
+      if (found == arcById.end() || !incidences.insert(incidence).second) {
+        return std::nullopt;
+      }
+      const auto end = incidence.orientation == Orientation::Forward
+                           ? found->second->firstNode
+                           : found->second->secondNode;
+      if (end != rotation.node) return std::nullopt;
+    }
+    if (stopNodes.count(rotation.node) != 0U ||
+        rotation.counterClockwise.size() != 2U) {
+      continue;
+    }
+    const auto first = rotation.counterClockwise[0].arc;
+    const auto second = rotation.counterClockwise[1].arc;
+    const auto firstRail = railOfArc.find(first);
+    const auto secondRail = railOfArc.find(second);
+    if (first != second && firstRail != railOfArc.end() &&
+        secondRail != railOfArc.end() && firstRail->second == secondRail->second) {
+      joins.emplace(rotation.node, std::array<NetworkArcId, 2>{first, second});
+    }
+  }
+
+  // Every arc end has exactly one rotation incidence, so a join names every
+  // arc that ends at its node.
+  if (incidences.size() != 2U * arcById.size()) return std::nullopt;
+
+  std::vector<BaselineMandatoryChain> chains;
+  std::set<NetworkArcId> placed;
+  // Each path is walked from its lower-id end arc; arcs with both ends joined
+  // are path interiors or lie on a join cycle.
+  for (const auto &[id, arc] : arcById) {
+    const bool joinedFirst = joins.count(arc->firstNode) != 0U;
+    const bool joinedSecond = joins.count(arc->secondNode) != 0U;
+    if (placed.count(id) != 0U || (joinedFirst && joinedSecond)) continue;
+    BaselineMandatoryChain chain;
+    NetworkArcId current = id;
+    NetworkNodeId entry = joinedFirst ? arc->secondNode : arc->firstNode;
+    while (true) {
+      if (!placed.insert(current).second) return std::nullopt;
+      const auto *currentArc = arcById.at(current);
+      const bool forward = currentArc->firstNode == entry;
+      chain.arcs.push_back(
+          {current, forward ? Orientation::Forward : Orientation::Reverse});
+      const auto exit = forward ? currentArc->secondNode : currentArc->firstNode;
+      const auto join = joins.find(exit);
+      if (join == joins.end()) break;
+      current = join->second[0] == current ? join->second[1] : join->second[0];
+      entry = exit;
+    }
+    chains.push_back(std::move(chain));
+  }
+  for (const auto &[id, arc] : arcById) {
+    (void)arc;
+    if (placed.insert(id).second) {
+      chains.push_back(BaselineMandatoryChain{{{id, Orientation::Forward}}});
+    }
+  }
+  std::sort(chains.begin(), chains.end(), [](const auto &lhs, const auto &rhs) {
+    return lhs.arcs.front().arc < rhs.arcs.front().arc;
+  });
+  return chains;
+}
+
+std::optional<std::vector<ConformitySupportPiece>>
+derive_mandatory_chain_support(const BaselineMandatoryChain &chain,
+                               const std::vector<GlobalTopologyArc> &arcs) {
+  std::vector<ConformitySupportPiece> support;
+  for (const auto &oriented : chain.arcs) {
+    const auto arc = std::find_if(arcs.begin(), arcs.end(), [&](const auto &candidate) {
+      return candidate.id == oriented.arc;
+    });
+    if (arc == arcs.end()) return std::nullopt;
+    const auto path = authority::exact_source_path_for_orientation(
+        arc->sourcePath, oriented.orientation);
+    support.insert(support.end(), path.begin(), path.end());
+  }
+  if (!authority::exact_source_path_is_canonical(support)) return std::nullopt;
+  return support;
+}
+
 std::uint64_t exact_target_metric_digest(const Eigen::VectorXd &targetSize) {
   std::uint64_t hash = kFnvOffset;
   hash_u64(hash, static_cast<std::uint64_t>(targetSize.size()));
