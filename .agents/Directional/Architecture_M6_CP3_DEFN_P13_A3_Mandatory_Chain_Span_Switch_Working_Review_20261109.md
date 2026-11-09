@@ -39,3 +39,7 @@
 - Apply the Review policy's full closeout checklist, including independently rerun `review_check.py boundary` on real history, document reconciliation, and cleanup, before a COMPLETE beacon is permitted.
 
 **Current lifecycle:** same canonical 64B.3 definition remains unfinished, but no external decision or missing permission prevents continuing its static analysis. No CB successor is authorized by this working note. The final root `STATUS` beacon, not this note, is the lifecycle signal.
+
+## Interval semantics correction (same DEFN, later verified source analysis)
+
+The earlier suggestion that final multi-piece front intervals require fractional ordinal widths was **too broad**. [The source review](Architecture_M6_CP3_DEFN_P13_A3_Span_Switch_Interval_Identity_Source_Review_20261109.md) establishes that D7b's **piece-local** breakpoint fractions can coexist with **unit-width** final intervals. A chain with scheduled count 1 across three source pieces must produce one front edge following all three source pieces, not three fractional front edges. Preserve the unit interval, hard-rail pairing and A3 coverage validators. The remaining challenge is constructing a logical interval's complete route across raw arc/occurrence boundaries, including certified periodic side ownership; CB112 and CB113 are still unfrozen. This correction supersedes conflicting suggestions in this working review without claiming production verification.
