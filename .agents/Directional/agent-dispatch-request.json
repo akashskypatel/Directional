@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb91-handoff-heading-20261109-0013",
+  "request_id": "m6-cp3-cb109-p13-a3-placement-switch-20261109-0038",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb91-heading",
-  "file_id": "1DbKcmBH4SxTo6QnEbLGov__5V03tHnwB",
-  "patch_sha256": "94ef7fb3f1983b04b5c75d19f40baa9a8f8b80262a0b864d764b1b353d5d6cb1",
-  "base_sha": "49325af6f524a3e35883e6d4852400ddf59dd6c5",
+  "mailbox_key": "m6-cp3-cb109-apply",
+  "file_id": "1dbSHst1PMX5G5K_XXtL5ZPkxjZZwd3gP",
+  "patch_sha256": "3a11cb2978e200c98d391ac5ed591fc029426e0065767c2dd95e65720276a80b",
+  "base_sha": "6e75734c5fbc8649e8239c6ed574bf0bd56ad22e",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): restore mandatory handoff heading after TB91",
+  "commit_message": "feat(surface-cells): activate partition-stable metric breakpoint placement",
   "retention_days": 14
 }
