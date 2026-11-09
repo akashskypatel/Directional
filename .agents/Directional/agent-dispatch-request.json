@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-d5-chain-unit-identity-20261109-1200",
+  "request_id": "m6-cp3-cb114-selector-paths-20261109-1728",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-d5-chain-unit-identity",
-  "file_id": "1gKRbD-2GAtPU0_KcjG2mS_cGSWAQGbgW",
-  "patch_sha256": "a24c1f01efc571efca4d7d9d1309b065c8003d4048f9c21ae744f76b24288f1f",
-  "base_sha": "1753c8b8009d0d7d0ce5dfe3f39765109b6a9f0d",
+  "mailbox_key": "m6-cp3-cb114-selector-paths",
+  "file_id": "1MDFNeiB7A-ux29dPGdGj84Jz7NskIgr5",
+  "patch_sha256": "5e3726d9401f62f348b416d20d9a2a4999da6d56aef3702d4b9781a0b05883a8",
+  "base_sha": "2fa4d63623c269da1746bf2c7a1f26aa47f51701",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(d5): freeze identity-migration prerequisites for chain scheduling",
+  "commit_message": "chore(selectors): update tool paths after selector directory relocation",
   "retention_days": 14
 }
