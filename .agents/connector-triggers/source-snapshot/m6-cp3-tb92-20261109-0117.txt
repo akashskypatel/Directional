@@ -1,3 +1,0 @@
-Turn: M6-CP3-TB92-P13-A3-METRIC-BREAKPOINT-PLACEMENT-SWITCH-FULL-GATE-EXEC
-Purpose: exact source snapshot for immutable-artifact TB92 execution
-Entry STATUS commit: bc51b3edc55a4c1429324bfc9fe86550b15a9efc
