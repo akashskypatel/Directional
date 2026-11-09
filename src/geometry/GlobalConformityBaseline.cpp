@@ -117,10 +117,12 @@ void finalize_exact_widths(BaselineConformityExactWidthReceipt &widths) {
 
 void observe_compact_breakpoint_widths(
     BaselineConformityExactWidthReceipt &widths,
-    const std::vector<ConformityScheduleEntry> &schedule) {
+    const std::vector<ConformityScheduleEntry> &schedule,
+    const std::vector<std::vector<BaselineConformityMetricRun>> &metricRuns) {
   const EInt zero(0);
   const EInt one(1);
-  for (const auto &entry : schedule) {
+  for (std::size_t index = 0U; index < schedule.size(); ++index) {
+    const auto &entry = schedule[index];
     observe_bits(widths.breakpointOrdinalBits, zero);
     observe_bits(widths.breakpointOrdinalBits, entry.count);
     observe_bits(widths.breakpointNumeratorBits, zero);
@@ -128,16 +130,17 @@ void observe_compact_breakpoint_widths(
     observe_bits(widths.breakpointDenominatorBits, one);
     if (entry.count <= one || entry.supportPieces.empty()) continue;
 
-    const EInt pieceCount =
-        global_conformity_baseline_detail::exact_from_size(
-            entry.supportPieces.size());
     for (const EInt ordinal : {one, entry.count - one}) {
-      const EInt scaled = pieceCount * ordinal;
-      const EInt quotient = scaled / entry.count;
-      const EInt numerator = scaled - quotient * entry.count;
+      const auto location =
+          global_conformity_baseline_detail::derive_metric_breakpoint_location(
+              entry.span, entry.supportPieces.size(), metricRuns.at(index),
+              entry.count, ordinal);
+      if (!location) {
+        throw std::runtime_error("baseline metric breakpoint placement failed");
+      }
       observe_bits(widths.breakpointOrdinalBits, ordinal);
-      observe_bits(widths.breakpointNumeratorBits, numerator);
-      observe_bits(widths.breakpointDenominatorBits, entry.count);
+      observe_bits(widths.breakpointNumeratorBits, location->localNumerator);
+      observe_bits(widths.breakpointDenominatorBits, location->localDenominator);
     }
   }
 }
@@ -228,6 +231,7 @@ struct DisjointSet {
 struct NormalizedBaselineProblem {
   std::vector<ConformitySpanInput> spans;
   std::vector<EInt> preferred;
+  std::vector<std::vector<BaselineConformityMetricRun>> metricRuns;
   std::vector<BaselineConformityIncidence> incidences;
   std::vector<authority::NetworkRegionId> regions;
   std::vector<std::vector<std::size_t>> spanRegionEnds;
@@ -301,13 +305,17 @@ NormalizeResult normalize_baseline(const GlobalTopologyPlan &topology,
     const auto preferred =
         global_conformity_baseline_detail::derive_preferred_count_exact(
             out.spans[index], input.sourceVertices, input.targetSize);
-    if (!preferred) {
+    auto runs =
+        global_conformity_baseline_detail::derive_partition_stable_metric_runs(
+            out.spans[index], input.sourceVertices, input.targetSize);
+    if (!preferred || !runs) {
       auto error = make_error(GlobalConformityPlanErrorCode::DegenerateConformityPath,
                               "baseline exact preferred-count derivation failed");
       error.span = out.spans[index].id;
       return error;
     }
     out.preferred.push_back(*preferred);
+    out.metricRuns.push_back(std::move(*runs));
     spanIndex.emplace(out.spans[index].id, index);
   }
 
@@ -711,14 +719,16 @@ GlobalConformityBaselineBuildResult build_global_conformity_baseline(
           std::max(certificate.exactWidths.matchingDistanceBits,
                    receipt.maximumMatchingDistanceBitWidth);
     }
-    observe_compact_breakpoint_widths(certificate.exactWidths, schedule);
+    observe_compact_breakpoint_widths(certificate.exactWidths, schedule,
+                                      problem.metricRuns);
     finalize_exact_widths(certificate.exactWidths);
 
     const auto digest = semantic_digest(topology, schedule, problem.incidences,
                                         certificate);
     GlobalConformityBaselinePlan plan(std::move(schedule),
                                       std::move(problem.incidences),
-                                      std::move(certificate), digest);
+                                      std::move(certificate), digest,
+                                      std::move(problem.metricRuns));
     const auto validated = validate_global_conformity_baseline(topology, input, plan);
     return validated ? GlobalConformityBaselineBuildResult(std::move(plan))
                      : validated;
@@ -740,30 +750,12 @@ std::optional<ConformityBreakpointLocation>
 GlobalConformityBaselinePlan::breakpoint_location(
     ConformitySpanId span, const EInt &exactOrdinal) const {
   const auto *entry = find_schedule(span);
-  if (entry == nullptr || exactOrdinal < EInt(0) || exactOrdinal > entry->count ||
-      entry->supportPieces.empty()) {
-    return std::nullopt;
-  }
-  if (exactOrdinal == EInt(0)) {
-    return ConformityBreakpointLocation{{span, exactOrdinal}, 0U, EInt(0), EInt(1),
-                                        true, false};
-  }
-  if (exactOrdinal == entry->count) {
-    return ConformityBreakpointLocation{
-        {span, exactOrdinal}, entry->supportPieces.size() - 1U, EInt(1), EInt(1),
-        false, true};
-  }
-  const EInt pieceCount =
-      global_conformity_baseline_detail::exact_from_size(entry->supportPieces.size());
-  const EInt scaled = pieceCount * exactOrdinal;
-  const EInt quotient = scaled / entry->count;
-  const EInt numerator = scaled - quotient * entry->count;
-  if (quotient < EInt(0) || quotient >= pieceCount) return std::nullopt;
-  const auto piece =
-      global_conformity_baseline_detail::exact_to_size_checked(quotient);
-  if (!piece || *piece >= entry->supportPieces.size()) return std::nullopt;
-  return ConformityBreakpointLocation{{span, exactOrdinal}, *piece, numerator,
-                                      entry->count, false, false};
+  if (entry == nullptr) return std::nullopt;
+  const auto index = static_cast<std::size_t>(entry - schedule_.data());
+  if (index >= metricRuns_.size()) return std::nullopt;
+  return global_conformity_baseline_detail::derive_metric_breakpoint_location(
+      span, entry->supportPieces.size(), metricRuns_[index], entry->count,
+      exactOrdinal);
 }
 
 GlobalConformityBaselineValidationCandidate

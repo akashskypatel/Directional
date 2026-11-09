@@ -120,12 +120,14 @@ void finalize_exact_widths(BaselineConformityExactWidthReceipt &widths) {
        widths.breakpointDenominatorBits});
 }
 
-void independently_observe_compact_breakpoint_widths(
+bool independently_observe_compact_breakpoint_widths(
     BaselineConformityExactWidthReceipt &widths,
-    const std::vector<ConformityScheduleEntry> &schedule) {
+    const std::vector<ConformityScheduleEntry> &schedule,
+    const std::vector<std::vector<BaselineConformityMetricRun>> &metricRuns) {
   const EInt zero(0);
   const EInt one(1);
-  for (const auto &entry : schedule) {
+  for (std::size_t index = 0U; index < schedule.size(); ++index) {
+    const auto &entry = schedule[index];
     observe_bits(widths.breakpointOrdinalBits, zero);
     observe_bits(widths.breakpointOrdinalBits, entry.count);
     observe_bits(widths.breakpointNumeratorBits, zero);
@@ -133,18 +135,18 @@ void independently_observe_compact_breakpoint_widths(
     observe_bits(widths.breakpointDenominatorBits, one);
     if (entry.count <= one || entry.supportPieces.empty()) continue;
 
-    const EInt pieceCount =
-        global_conformity_baseline_detail::exact_from_size(
-            entry.supportPieces.size());
     for (const EInt ordinal : {one, entry.count - one}) {
-      const EInt scaled = pieceCount * ordinal;
-      const EInt quotient = scaled / entry.count;
-      const EInt numerator = scaled - quotient * entry.count;
+      const auto location =
+          global_conformity_baseline_detail::derive_metric_breakpoint_location(
+              entry.span, entry.supportPieces.size(), metricRuns[index],
+              entry.count, ordinal);
+      if (!location) return false;
       observe_bits(widths.breakpointOrdinalBits, ordinal);
-      observe_bits(widths.breakpointNumeratorBits, numerator);
-      observe_bits(widths.breakpointDenominatorBits, entry.count);
+      observe_bits(widths.breakpointNumeratorBits, location->localNumerator);
+      observe_bits(widths.breakpointDenominatorBits, location->localDenominator);
     }
   }
+  return true;
 }
 
 std::optional<MinimumTJoinWorkEvidence> independently_derive_t_join_work(
@@ -321,6 +323,7 @@ struct DisjointSet {
 struct IndependentProblem {
   std::vector<ConformitySpanInput> spans;
   std::vector<EInt> preferred;
+  std::vector<std::vector<BaselineConformityMetricRun>> metricRuns;
   std::vector<BaselineConformityIncidence> incidences;
   std::vector<authority::NetworkRegionId> regions;
   std::vector<std::vector<std::size_t>> spanEnds;
@@ -359,8 +362,12 @@ std::optional<IndependentProblem> rebuild_problem(
     const auto preferred =
         global_conformity_baseline_detail::derive_preferred_count_exact(
             out.spans[span], input.sourceVertices, input.targetSize);
-    if (!preferred) return std::nullopt;
+    auto runs =
+        global_conformity_baseline_detail::derive_partition_stable_metric_runs(
+            out.spans[span], input.sourceVertices, input.targetSize);
+    if (!preferred || !runs) return std::nullopt;
     out.preferred.push_back(*preferred);
+    out.metricRuns.push_back(std::move(*runs));
     spanIndex.emplace(out.spans[span].id, span);
   }
 
@@ -661,8 +668,10 @@ validate_global_conformity_baseline_candidate(
   for (const auto &entry : candidate.schedule) {
     observe_bits(independentWidths.scheduledCountBits, entry.count);
   }
-  independently_observe_compact_breakpoint_widths(independentWidths,
-                                                   candidate.schedule);
+  if (!independently_observe_compact_breakpoint_widths(
+          independentWidths, candidate.schedule, problem->metricRuns)) {
+    return validation_error("baseline metric breakpoint placement failed");
+  }
 
   ParityFixedChoices fixed(problem->spans.size(), -1);
   const auto independentInitial =
@@ -853,13 +862,28 @@ GlobalConformityBaselineBuildResult validate_global_conformity_baseline(
           validation_error("baseline compact breakpoint endpoint mismatch"));
     }
     if (entry.count > EInt(1)) {
+      // Interior breakpoints are the D7b placement of the span's runs,
+      // re-derived from the input rather than read from the plan.
       const EInt one(1);
-      const auto forward = plan.breakpoint_location(entry.span, one);
-      const auto reverse = plan.breakpoint_location(entry.span, entry.count - one);
-      if (!forward || !reverse || forward->localDenominator != entry.count ||
-          reverse->localDenominator != entry.count) {
-        return GlobalConformityBaselineBuildResult(
-            validation_error("baseline compact exact-ordinal breakpoint mismatch"));
+      const auto runs =
+          global_conformity_baseline_detail::derive_partition_stable_metric_runs(
+              {entry.span, entry.supportPieces}, input.sourceVertices,
+              input.targetSize);
+      for (const EInt ordinal : {one, entry.count - one}) {
+        const auto stored = plan.breakpoint_location(entry.span, ordinal);
+        const auto derived =
+            runs ? global_conformity_baseline_detail::derive_metric_breakpoint_location(
+                       entry.span, entry.supportPieces.size(), *runs,
+                       entry.count, ordinal)
+                 : std::nullopt;
+        if (!stored || !derived || !(stored->id == derived->id) ||
+            stored->supportPieceIndex != derived->supportPieceIndex ||
+            stored->localNumerator != derived->localNumerator ||
+            stored->localDenominator != derived->localDenominator ||
+            stored->firstEndpoint || stored->lastEndpoint) {
+          return GlobalConformityBaselineBuildResult(
+              validation_error("baseline compact exact-ordinal breakpoint mismatch"));
+        }
       }
     }
   }

@@ -240,14 +240,18 @@ private:
       std::vector<ConformityScheduleEntry> schedule,
       std::vector<BaselineConformityIncidence> incidences,
       GlobalConformityBaselineCertificate certificate,
-      std::uint64_t semanticDigest)
+      std::uint64_t semanticDigest,
+      std::vector<std::vector<BaselineConformityMetricRun>> metricRuns)
       : schedule_(std::move(schedule)), incidences_(std::move(incidences)),
-        certificate_(std::move(certificate)), semanticDigest_(semanticDigest) {}
+        certificate_(std::move(certificate)), semanticDigest_(semanticDigest),
+        metricRuns_(std::move(metricRuns)) {}
 
   std::vector<ConformityScheduleEntry> schedule_;
   std::vector<BaselineConformityIncidence> incidences_;
   GlobalConformityBaselineCertificate certificate_;
   std::uint64_t semanticDigest_ = 0U;
+  /** D7 runs of each schedule entry, in schedule order (RA-217). */
+  std::vector<std::vector<BaselineConformityMetricRun>> metricRuns_;
 };
 
 class GlobalConformityBaselineBuildResult {

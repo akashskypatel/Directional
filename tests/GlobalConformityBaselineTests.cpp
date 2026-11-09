@@ -735,8 +735,16 @@ TEST(GlobalConformityBaseline,
       first.value().breakpoint_location(entry.span, entry.count - one);
   ASSERT_TRUE(forward.has_value());
   ASSERT_TRUE(reverse.has_value());
-  EXPECT_EQ(entry.count, forward->localDenominator);
-  EXPECT_EQ(entry.count, reverse->localDenominator);
+  // The halved span is one run, so breakpoints 1 and n - 1 sit a quarter in
+  // from each end, stored reduced (D7b, RA-217); piece-index placement stored
+  // the same points as 0:2/4 and 1:2/4.
+  ASSERT_EQ(EInt(4), entry.count);
+  EXPECT_EQ(0U, forward->supportPieceIndex);
+  EXPECT_EQ(EInt(1), forward->localNumerator);
+  EXPECT_EQ(EInt(2), forward->localDenominator);
+  EXPECT_EQ(1U, reverse->supportPieceIndex);
+  EXPECT_EQ(EInt(1), reverse->localNumerator);
+  EXPECT_EQ(EInt(2), reverse->localDenominator);
   EXPECT_EQ(one, forward->id.exactOrdinal);
   EXPECT_EQ(entry.count - one, reverse->id.exactOrdinal);
   std::cout << "M4_CP3_BASELINE_RECEIPT ordinal=392 preferredCount="
@@ -1361,4 +1369,45 @@ TEST(GlobalConformityBaseline,
   EXPECT_FALSE(d7b_location(d7_span(), line, unit, 4, 1).has_value());
   std::cout << "D7B_BREAKPOINT_RECEIPT case=weights single=0:j/6"
             << " tinyRun=placed reversed=5 brokenProfiles=10\n";
+}
+
+TEST(GlobalConformityBaseline,
+     D7bPlanBreakpointsAreTheMetricPlacementForEverySplit) {
+  // One A3 span on the unit edge (0, 1) at h = 1/4, whole, cut at 1/8 and
+  // halved: the built and validated plan stores the D7b placement of its runs,
+  // so breakpoint j is at x = j/4 every time. Piece-index placement stored the
+  // cut span's breakpoints as 0:2/4, 1:0/4 and 1:2/4 (x = 1/16, 1/8, 9/16).
+  const auto fixture = make_topology_fixture(make_square_mesh());
+  auto whole = make_baseline_input(fixture, 0.25, 1U);
+  auto uneven = whole;
+  uneven.spans.front().supportPieces =
+      edge_span_cut_at(find_edge(fixture.mesh, 0, 1), {{1, 8}}).supportPieces;
+  auto halves = make_baseline_input(fixture, 0.25, 1U, true);
+  std::vector<std::string> stored;
+  for (const GlobalConformityBaselineInput *input : {&whole, &uneven, &halves}) {
+    const auto built = directional::geometry::build_global_conformity_baseline(
+        fixture.topology, *input);
+    ASSERT_TRUE(built);
+    const auto &span = input->spans.front();
+    const auto *entry = built.value().find_schedule(span.id);
+    ASSERT_NE(nullptr, entry);
+    ASSERT_EQ(EInt(4), entry->count);
+    for (int j = 0; j <= 4; ++j) {
+      const auto location = built.value().breakpoint_location(span.id, EInt(j));
+      EXPECT_EQ(located(d7b_location(span, input->sourceVertices,
+                                     input->targetSize, 4, j)),
+                located(location))
+          << "pieces=" << span.supportPieces.size() << " j=" << j;
+      EXPECT_EQ(xy(j, 4, 0, 1),
+                d7b_point(span, input->sourceVertices, input->targetSize, 4, j))
+          << "pieces=" << span.supportPieces.size() << " j=" << j;
+      if (j > 0 && j < 4) stored.push_back(located(location));
+    }
+  }
+  EXPECT_EQ((std::vector<std::string>{"0:1/4", "0:2/4", "0:3/4", "1:1/7",
+                                      "1:3/7", "1:5/7", "0:1/2", "1:0/1",
+                                      "1:1/2"}),
+            stored);
+  std::cout << "D7B_BREAKPOINT_RECEIPT case=plan whole=0:1/4,0:2/4,0:3/4"
+            << " uneven=1:1/7,1:3/7,1:5/7 halves=0:1/2,1:0/1,1:1/2\n";
 }

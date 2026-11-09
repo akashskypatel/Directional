@@ -42,6 +42,5 @@ derive_metric_breakpoint_location(
 exact_target_metric_digest(const Eigen::VectorXd &targetSize);
 
 [[nodiscard]] EInt exact_from_size(std::size_t value);
-[[nodiscard]] std::optional<std::size_t> exact_to_size_checked(const EInt &value);
 
 } // namespace directional::geometry::global_conformity_baseline_detail

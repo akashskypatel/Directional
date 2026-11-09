@@ -197,21 +197,6 @@ EInt exact_from_size(std::size_t value) {
   return out;
 }
 
-std::optional<std::size_t> exact_to_size_checked(const EInt &value) {
-  if (value < EInt(0)) return std::nullopt;
-  std::size_t out = 0U;
-  const EInt two(2);
-  EInt remaining = value;
-  std::size_t shift = 0U;
-  while (remaining != EInt(0)) {
-    if (shift >= sizeof(std::size_t) * 8U) return std::nullopt;
-    if (remaining % two != EInt(0)) out |= std::size_t{1} << shift;
-    remaining /= two;
-    ++shift;
-  }
-  return out;
-}
-
 std::optional<EInt> derive_preferred_count_exact(
     const ConformitySpanInput &span, const Eigen::MatrixXd &sourceVertices,
     const Eigen::VectorXd &targetSize) {
