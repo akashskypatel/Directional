@@ -45,13 +45,13 @@ Only after such measured evidence may a separate count/placement and A4-consumer
 | Duty | Answer |
 |---|---|
 | Accepted selector prefix re-hashed | 449 `d4a0d1b7…`, prefix448 `70ff0860…` exact; full hashes and byte proof in side-walk oracle; history checker unresolved |
-| Decisive claims independently re-derived | Source bijection/parity/source-path/rail access checked against verified snapshot; snapshot 6,285/6,285 hashes |
+| Decisive claims independently re-derived | Source bijection/parity/source-path/rail access previously inspected; verified latest source snapshot `3f28e64a…` has 6,291/6,291 file SHA-256 PASS (independently rechecked 2026-11-09), and original raw Vase rim's 142-edge/29.8454° statistics independently reproduced; these do not establish a joined production chain |
 | Non-vacuity checked | Vase aggregate cannot prove a joined chain; candidate-only vs upstream-invalid tamper categories reclassified by actual reachability; all future positive/negative tests remain **unrun** and no real production join proved |
 | Prior obligations discharged/carried | RA-214 diagnostic-only withdrawal discharged; RA-216/217 D7/D7b reused; 64B chain proof, D4 64C/64D, D9c 65A, Trace 65B, A4 65C, D8 65D, D6 decision carried |
 | Stable accounting | No accepted loss; CP2 491/491, stable 66/17/49 debt1, 81 deferred, selector497/CP3 unpromoted |
 | New candidates/obligations recorded | Candidate production chain partition/independent validator in evidence-recovery companion; tracker closeout pending |
-| ORIENTATION currency line | Pending final review resolution; currently still identifies 64B as immediate next |
-| ORIENTATION §3 / §4 / §7 / §8 | Pending; no witness or accepted status change; open D5 obligation persists |
+| ORIENTATION currency line | Updated 2026-11-09 to identify **current open 64B D5 Review** and its remaining proof gates; final definition closeout still pending |
+| ORIENTATION §3 / §4 / §7 / §8 | §3 accepted state unchanged (TB92/CP2); §4 witness status unchanged; §7 active D5 debt and source-bound feature retention updated; §8 graph-face fragment identity pattern recorded. Final consolidation and closeout pending |
 | CHANGELOG | Pending final definition closeout |
 | ROADMAP | n/a checkpoint change: 64B remains active; review before final closeout |
 | Selector manifest | n/a no selector change or acceptance |
