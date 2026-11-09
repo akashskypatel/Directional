@@ -30,3 +30,13 @@
 ## 4. Scope and remaining work
 
 This correction does **not** change the already frozen A2b topology, source-rail extraction, §7.4 per-original-arc positive A3 spans, D7/D7b exact metric or rational placement, A4 consumers, fixture, selectors, or workflows. The first CB must publish a genuinely retained typed chain-partition producer plus independent candidate validator between A2b and unchanged A3; a one-way diagnostic copy may be exposed to the registered Vase rejection-path TB. The exact compilable source/test patch and bounded successor remain unfrozen. Review is runtime-free; no executable result or Vase join is claimed.
+
+## 5. Review correction: region identity is not physical-side identity (2026-11-09)
+
+The side-walk WIP says "two region IDs must be distinct." That is conservative exclusion, **not a proven A3 invariant**. `GlobalConformityBaseline.cpp:343–363` creates a distinct `ConformityBoundaryIncidenceId{region, ordinal}` for each boundary occurrence and permits span degree one or two; `:375–383` avoids region self-union, but `:441–451` still forms a two-ended graph edge when both occurrences have the same region ID. Parity counts two occurrences, not two distinct region IDs.
+
+A same-region **two-sided occurrence** is not a chain that **returns to its starting source point**. Same-region dual-side joins remain ineligible until independently certified as two different physical sides, two separate oppositely oriented ordered A2b boundary-occurrence walks and unique rotation continuation for each. Classify exclusions as uncertified, not intrinsically invalid A2b topology. A represented positive is needed before admitting same-region joins. The negative is physical-side aliasing, not equal region IDs.
+
+## 6. Review correction: partition-only is not chain scheduling
+
+A first Code + Build that publishes a partition while leaving A3 per-original-arc may prove maximality and real production joins, but **not** chain counts, exact breakpoints, per-child interval expansion, parity quotient or A4 consumption. Its TB cannot close D5 scheduling or authorize D4 work. Before successor freeze, account explicitly for a separate D5 scheduler/validator/consumer definition, Code + Build and immutable TB, preserving `DESIGN.md` §7.4 positivity until a dedicated switch is authorized. No successor begins in this Review.
