@@ -1,3 +1,8 @@
+## 2026-11-09 UTC — CB110 mandatory-chain partition compiled (Code + Build only)
+
+- [CB110 record](.agents/Directional/Architecture_M6_CP3_CB110_P13_A3_Mandatory_Chain_Partition_Code_Build_Record_20261109.md): RA-218's frozen 522-line patch (`ff3fdf5f…`) applied via [workflow 42681375946](https://github.com/akashskypatel/Directional/actions/runs/42681375946), exact semantic commit `3f81e804ac8dc44e16557339be7881a2d653fc61`, temporary Drive file retired. Unwired Mandatory-chain partition/support + GUARD 919–923; only three prescribed files changed.
+- [Eight-target GMP/GMPXX compile 42681720745](https://github.com/akashskypatel/Directional/actions/runs/42681720745), artifact `13703311532`, ZIP SHA `a9c32244…`, **28/28** packaged hashes and exit 0, `runtimeExecution=false`. No tests/benchmarks; TB92 918/918 is the latest immutable gate; CP2 491/491, 66/17/49, debt 1, deferred 81 unchanged. Next separate **TB93 923-row artifact-only gate**; no CP3/selector497 promotion.
+
 ## 2026-11-09 UTC — CB115 tool-data harness path repair COMPLETE (static verification)
 
 - [CB115 record](.agents/Directional/Architecture_M6_CP3_CB115_Tool_Data_Paths_Code_Build_Record_20261109.md): exact 13-file frozen patch `d4b79b8c…` applied after CB114 via [workflow 42677764349](https://github.com/akashskypatel/Directional/actions/runs/42677764349), producing commit `6a5f11a47358443979e8ebbd1c78283f36f6dc2b`. All 13 shell syntax checks passed locally, no obsolete tool-data paths remain, and the diff is whitespace-clean. Five TSV inputs retain their relocated bytes. No build, runtime, gate, selector or semantic acceptance claim. Next independent turn is CB110.

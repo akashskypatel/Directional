@@ -1,0 +1,11 @@
+# CB110 — mandatory chain partition (Code + Build, compile-only)
+
+**Verdict: COMPLETE / BUILD GREEN (unwired). Runtime not executed.** RA-218 §3 prescribed the exact 522-line frozen patch, diff-body SHA-256 `ff3fdf5f1a34ea942075f681a760cbec423df4a4800c2024992ceb77a05054f0`, with three intended paths and GUARD 919–923; it was applied unchanged. The mandatory-chain partition and support functions remain unwired.
+
+- **Snapshot:** exact source `066101daaacf03e67a1cc3bf9c9033fca25ce1e7`, [snapshot run 42680524263](https://github.com/akashskypatel/Directional/actions/runs/42680524263), artifact `13702237186`, 5403/5403 file SHA-256 checks.
+- **Patch:** full transport SHA-256 `79aee2f1803ba2cfb821c6344ae097ae3965bdec76d7a434c37afd9d0883d1c0`, applied by [run 42681375946](https://github.com/akashskypatel/Directional/actions/runs/42681375946), result artifact `13703026238`, commit [`3f81e804ac8dc44e16557339be7881a2d653fc61`](https://github.com/akashskypatel/Directional/commit/3f81e804ac8dc44e16557339be7881a2d653fc61). Owner-side Google Drive staging retirement succeeded.
+- **Compile:** [run 42681720745](https://github.com/akashskypatel/Directional/actions/runs/42681720745), result artifact `13703311532`, outer ZIP SHA-256 `a9c3224463d5fd16a7ec07c30eac34b140b200d2bc1bb7279f2dc6b59e79da9d`; 28/28 internal checksums; exact source SHA, clean source; preflight/build exit 0. Eight targets: `directional_core`, `directional_pipeline`, `directional_surface_cell_authority_kernel_tests`, `directional_surface_cell_producer_tests`, `directional_surface_cell_completion_tests`, `directional_surface_cell_validation_tests`, `directional_compiled_api_tests`, `directional_benchmarks`.
+- **Boundary:** `DIRECTIONAL_ENABLE_GMP=ON`, both `/usr/lib/x86_64-linux-gnu/libgmpxx.so` and `libgmp.so` in generated link; `exactArithmeticBackend=GMP`, `turnBoundary=Code+Build-only`, `runtimeExecution=false`. No test, benchmark or production binary execution; no runtime acceptance claim.
+- **Accounting:** CP2 accepted 491/491; stable 66/17/49, debt 1, deferred 81 unchanged; last immutable TB92 gate 918/918 MATCH, membership 999; selector497/CP3 unpromoted.
+
+**Separate authorized successor:** `M6-CP3-TB93-P13-A3-MANDATORY-CHAIN-PARTITION-FULL-GATE-EXEC` (923-row immutable gate, membership 1004, RA-218 §6). No TB93 work was started in this CB110 turn.
