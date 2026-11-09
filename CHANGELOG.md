@@ -5851,3 +5851,7 @@ No new regression candidate is recorded; stable accounting remains 60/16/44, deb
 **Authorized successor:** `M6-CP3-TB1-ENTRY-R3-EXEC` — distinct artifact-only frozen 497-process TB; four supplementary RA-40(C) tests must be separately scheduled and counted with diagnostic-only weight; do not merge into 497. Organic produced witnesses, historical R2 first failures, and 47 accepted→RED restorations remain entirely unverified until TB; no promotion or test pass claim. Any prior local entries below describing the second compile as pending are historical and superseded by this record.
 
 ---
+
+## 2026-11-09 — M6-CP3-CB114-SELECTOR-PATHS (static-only closeout)
+
+CB114 exact 42-file selector-path patch committed as `555d7bf4195200da589f11157485bee5ac82d31c`; [full-history boundary verification](https://github.com/akashskypatel/Directional/actions/runs/42674255536) at source `b9f45a29222552cc02538f9e34905975336c58de` passed unmodified `review_check.py boundary` with genuine Git ancestry; 38/38 `bash -n`, 3/3 `py_compile`, zero old-path grep hits, 54 relocated selectors; no build/runtime/selector bytes changed. Historical pre-existing handoff/orientation size warnings retained without unauthorized edits. Working branch `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/unmerged; 54 selector bytes and existing gate authority unchanged, CP2 491/491, TB92 918/918, stable 66/17/49, deferred 81. Exact successor `M6-CP3-CB115-TOOL-DATA-PATHS`; do not start until the final COMPLETE beacon.
