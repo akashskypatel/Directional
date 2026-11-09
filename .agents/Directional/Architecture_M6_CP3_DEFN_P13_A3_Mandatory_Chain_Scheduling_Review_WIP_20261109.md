@@ -18,7 +18,7 @@ Store each chain's **ordered, oriented original child IDs only**; recover exact 
 
 Related current-source seam: [retained partition product/validator WIP](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Retained_Product_Seam_WIP_20261109.md).
 
-See [side-walk oracle](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Side_Walk_Oracle_WIP_20261109.md) and [incidence proof gates](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Incidence_Proof_Gates_20261109.md) for detailed parity conditions and [evidence recovery](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Evidence_Recovery_20261109.md) for the exact production/view/TB route.
+Proof: [side-walk](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Side_Walk_Oracle_WIP_20261109.md), [incidence](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Incidence_Proof_Gates_20261109.md), [recovery](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Evidence_Recovery_20261109.md), [independent TB contract](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Independent_TB_Contract_WIP_20261109.md) (pre-registered; not executed).
 
 ## 3. RA-214 authority correction and smallest next slice
 
@@ -30,7 +30,7 @@ Only after such measured evidence may a separate count/placement and A4-consumer
 
 ## 4. Current blockers to Review completion
 
-1. The exact production type and attachment location, independently implemented validation seam, source/test diff and immutable TB artifact oracle are **not frozen**. A conceptual view without a later consumer or independent failing tests is not an adequate successor.
+1. Exact typed producer/validator source and test diff, attachment and independent failing tests remain **unfrozen**. The TB schema is pre-registered but unexecuted; a conceptual view is not a CB successor.
 2. Actual production-derived Vase arc/region/source-support incidence sufficient to prove at least one admissible pair does not appear in existing checked census output; runtime may occur only in a separately authorized TB of a retained product.
 3. No per-unit-positivity normative amendment, approved multi-child consumer or complete source-to-region parity equivalence proof exists. They cannot be silently delegated to implementation.
 4. Handoff/TODO/ORIENTATION/CHANGELOG/ROADMAP and the Review §5 final closeout have not been updated to claim a completed D5 definition. The next session must remain in this exact turn rather than starting 64C.
