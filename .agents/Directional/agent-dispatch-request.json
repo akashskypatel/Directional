@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-d5-endpoint-ports-review-20261109-1135",
+  "request_id": "m6-cp3-d5-chain-unit-identity-20261109-1200",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-d5-endpoint-port-review",
-  "file_id": "1XaLTUPf_9sazILEDFLLFgPbOO6Rpql_Q",
-  "patch_sha256": "7f248f7c5fd67d441201264d6ccbb4905930fe5014eb192f7aafd187f76592d0",
-  "base_sha": "25e17db42ad0e2da39e0a42eae2f62a8444e806c",
+  "mailbox_key": "m6-cp3-d5-chain-unit-identity",
+  "file_id": "1gKRbD-2GAtPU0_KcjG2mS_cGSWAQGbgW",
+  "patch_sha256": "a24c1f01efc571efca4d7d9d1309b065c8003d4048f9c21ae744f76b24288f1f",
+  "base_sha": "1753c8b8009d0d7d0ce5dfe3f39765109b6a9f0d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(d5): require endpoint-port and simple-path join proof",
+  "commit_message": "docs(d5): freeze identity-migration prerequisites for chain scheduling",
   "retention_days": 14
 }
