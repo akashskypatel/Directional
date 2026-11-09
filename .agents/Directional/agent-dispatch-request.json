@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb109-compile-20261109-0039",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb109-compile",
-  "source_sha": "3f64cbf2c79ab580bbf97509142df1d5415c4404",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-cb109-metric-breakpoint-placement"
+  "request_id": "m6-cp3-cb109-docs-closeout-20261109-0100",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb109-docs",
+  "file_id": "1BHyPUw-4pyyDqJ7Zh5Z7-8SPqh4b12PZ",
+  "patch_sha256": "c951a02d8f3ba5eb7c8c356d9fc031d74c58526d1783eb4da4585c4f1134cb0f",
+  "base_sha": "6e75734c5fbc8649e8239c6ed574bf0bd56ad22e",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB109 compile and hand off TB92",
+  "retention_days": 14
 }
