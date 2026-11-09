@@ -1,3 +1,7 @@
+## 2026-11-09 UTC — CB115 tool-data harness path repair COMPLETE (static verification)
+
+- [CB115 record](.agents/Directional/Architecture_M6_CP3_CB115_Tool_Data_Paths_Code_Build_Record_20261109.md): exact 13-file frozen patch `d4b79b8c…` applied after CB114 via [workflow 42677764349](https://github.com/akashskypatel/Directional/actions/runs/42677764349), producing commit `6a5f11a47358443979e8ebbd1c78283f36f6dc2b`. All 13 shell syntax checks passed locally, no obsolete tool-data paths remain, and the diff is whitespace-clean. Five TSV inputs retain their relocated bytes. No build, runtime, gate, selector or semantic acceptance claim. Next independent turn is CB110.
+
 ## 2026-11-09 UTC — Current gate inputs moved to `.agents/Directional/gates/` (user-instructed)
 
 - The TB93 and TB92 gate case manifests, the TB63 census case manifest and deferred ledger v5 moved byte-identically (SHA-256 `a8c4a599…`, `d714a52e…`, `3af1dc0d…`, `fd433f54…` unchanged). No workflow, tool, test or dispatch file reads them by fixed path; the handoff and TODO now give the `gates/` paths for TB93.
