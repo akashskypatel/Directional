@@ -36,6 +36,6 @@ Independently parsed the unchanged raw fixture `benchmarks/fixtures/milestone-g/
 
 **Qualified inference, corrected by [cut-closed-rail proof](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Cut_Closed_Rail_Proof_WIP_20261109.md):** a closed rail **without** certified cuts remains unmergeable, but an A2b Trace terminal can split the *arc join graph* on a still-closed parent rail. Two or more protected stops can yield admissible open paths. TB92 independently confirms exactly one published rail but does **not** expose its `closed` flag or exact Trace-to-rail mapping. Neither zero eligible joins nor a Vase reduction follows from the raw 142-edge loop or 145/3 aggregate counts. The immutable TB must classify the actual post-veto arc graph, and explicitly report `NoCertifiedProductionJoin` RED if no eligible open path exists. Do not invent a cyclic seam or change A3 counts.
 
-## 4. Scope guard
+## 5. Scope guard
 
 Do **not** change existing A2b arcs, source-rail extraction, `AdaptiveFeatureMapBuilder` options, A3 per-original-arc positive schedules, §7.4, D7/D7b metric/placement, A4 tracing, accepted CP1/CP2 selectors, fixtures, or source-grid recovery in this definition. The future CB remains compile-only (eight GMP/GMPXX targets, no project binaries); future TB must use its separately immutable package. No Vase success, reduction or runtime count is claimed.
