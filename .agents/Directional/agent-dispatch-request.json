@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb92-docs-closeout-20261109-0149",
+  "request_id": "m6-cp3-d5-review-side-proof-20261109-1109",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb92-docs",
-  "file_id": "1dC59XwP8StozRrwtluJOi0D3cn74a3pO",
-  "patch_sha256": "c9618f2649f1e151b3ce94d27f471d21d75babd043a178e65ad53a8d1faddcaa",
-  "base_sha": "a759516f058993b8faf5626431e69907431b9def",
+  "mailbox_key": "m6-cp3-d5-review-side-proof",
+  "file_id": "1RouOBeR8_9R5-T0_o_z1881QRgu765GJ",
+  "patch_sha256": "2a7932bf371ffddbcc9e1c90029db88ca04917e394ddc852b20a8fa9ca4a7c3c",
+  "base_sha": "3f28e64a4f062638bb9eb892815623e8fdfa77a4",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record TB92 verified MATCH and D5 handoff",
+  "commit_message": "docs(d5): align physical-side and region-incidence proof gates",
   "retention_days": 14
 }
