@@ -1,0 +1,2 @@
+Exact-source snapshot for ongoing M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING.
+Triggered from branch head c1bbee1b1b00e84a19a20163e7d7046f9efe2c8a.
