@@ -1,6 +1,6 @@
 # RA-215 — Step 61 (D9 recorded boundary intervals) re-entered: exact CB104, falsifiers re-bound, D4 owned
 
-**Turn:** `M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS` (adversarial re-entry of the [step-61 decision](Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Review_20261108.md)). Runtime-free (`REVIEW_TURN_POLICY.md` §4.3). Product and test sources are CB103 `000752d8…`, unchanged at HEAD. I read the TB86 gate-result artifact `13613643740` as evidence, in an isolated scratch directory; nothing was built or run. Patch authoring used `-fsyntax-only`, which produced no object file and is not evidence.
+**Turn:** `M6-CP3-DEFN-P13-A3-RECORDED-BOUNDARY-INTERVALS` (adversarial re-entry of the [step-61 decision](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_A3_Recorded_Boundary_Intervals_Review_20261108.md")). Runtime-free (`REVIEW_TURN_POLICY.md` §4.3). Product and test sources are CB103 `000752d8…`, unchanged at HEAD. I read the TB86 gate-result artifact `13613643740` as evidence, in an isolated scratch directory; nothing was built or run. Patch authoring used `-fsyntax-only`, which produced no object file and is not evidence.
 
 ## 1. Verdict
 
@@ -45,7 +45,7 @@ RA-215 freezes an exact CB104 (core plus test) and an exact TB87. It also gives 
 
 ## 4. CB104, frozen exact
 
-[`Architecture_M6_CP3_CB104_P13_A3_Source_Rim_Intervals_Exact.diff`](Architecture_M6_CP3_CB104_P13_A3_Source_Rim_Intervals_Exact.diff):
+[`Architecture_M6_CP3_CB104_P13_A3_Source_Rim_Intervals_Exact.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB104_P13_A3_Source_Rim_Intervals_Exact.diff"):
 
 | Property | Value |
 |---|---|
@@ -90,7 +90,7 @@ Factory checks, forward order only:
 
 | Property | Value |
 |---|---|
-| Manifest | [`Architecture_M6_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Case_Manifest.tsv`](Architecture_M6_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Case_Manifest.tsv): TB86's 909 rows plus GUARD 910 |
+| Manifest | [`Architecture_M6_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Case_Manifest.tsv`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB87_P13_A3_Source_Rim_Intervals_Full_Gate_Case_Manifest.tsv"): TB86's 909 rows plus GUARD 910 |
 | SHA-256 | `c435519f6304fdcedb794e45187c8c4645e0bb36d32ec567e7979d292fb245bf` |
 | Harness self-check | `SELF_CHECK_PASS cases=910 deferred=81` |
 | Ledger | v5 `fd433f54…` |

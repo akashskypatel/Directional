@@ -70,7 +70,7 @@ RA-216 makes four changes:
 
 ## 5. Exact CB106 — the D7 count, not yet wired, plus its falsifiers
 
-[Diff](Architecture_M6_CP3_CB106_P13_A3_Partition_Stable_Count_Exact.diff):
+[Diff](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB106_P13_A3_Partition_Stable_Count_Exact.diff"):
 - SHA-256 `2ee8401442bed8e1df7f5f92de199acc18477df3e7e10ed36e56b4d715afb777`, 382 lines; keep its 7 single-space context lines.
 - Numstat `86 0` `GlobalConformityBaselineSupport.cpp`, `7 0` `.h`, `238 0` `GlobalConformityBaselineTests.cpp`. It applies cleanly to HEAD.
 - `-fsyntax-only` passes for both `.cpp` files. That is a syntax check, not a build.
@@ -93,13 +93,13 @@ Routes:
 
 ## 6. TB89 — CB106 full gate
 
-- [Manifest](Architecture_M6_TB89_P13_A3_Partition_Stable_Count_Full_Gate_Case_Manifest.tsv): 913 rows, `8a4a6fef2a8b8b6e3c81ef1aa11de8f71dab883ee2d1d43b653f0ab129811ef8`. It is TB87/TB88's 910 rows plus GUARD 911–913. `SELF_CHECK_PASS cases=913 deferred=81`; membership 994; ledger v5 `fd433f54…`; census `3af1dc0d…`.
+- [Manifest](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB89_P13_A3_Partition_Stable_Count_Full_Gate_Case_Manifest.tsv"): 913 rows, `8a4a6fef2a8b8b6e3c81ef1aa11de8f71dab883ee2d1d43b653f0ab129811ef8`. It is TB87/TB88's 910 rows plus GUARD 911–913. `SELF_CHECK_PASS cases=913 deferred=81`; membership 994; ledger v5 `fd433f54…`; census `3af1dc0d…`.
 - **Expected:** 913/913. All 7 `platform-digest` and all 7 `a3-coverage` lines are byte-identical to TB88, because the new function has no production caller.
 - Routes: mismatch → `M6-CP3-TB89-P13-A3-PARTITION-STABLE-METRIC-FULL-GATE-REV` (Review, runtime-free); infrastructure → `M6-CP3-TB89A-P13-A3-PARTITION-STABLE-METRIC-ORCH`.
 
 ## 7. Exact CB107 — make the D7 count the scheduler's objective — and TB90
 
-[Diff](Architecture_M6_CP3_CB107_P13_A3_Partition_Stable_Count_Switch_Exact.diff):
+[Diff](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB107_P13_A3_Partition_Stable_Count_Switch_Exact.diff"):
 - SHA-256 `c1caefb973f8157823018dbd6fcb2d4ff2f47bcf79f41d3ef77d0b216ab9aa5f`, 217 lines; keep its 10 single-space context lines.
 - Numstat `2 56` / `1 1` / `52 22`. It applies **only on top of CB106**. Precondition: TB89 MATCH.
 - `-fsyntax-only` passes.
@@ -115,7 +115,7 @@ Routes:
 - infrastructure → `M6-CP3-CB107A-P13-A3-PARTITION-STABLE-COUNT-SWITCH-ORCH`.
 
 **TB90** `M6-CP3-TB90-P13-A3-PARTITION-STABLE-COUNT-SWITCH-FULL-GATE-EXEC`:
-- [Manifest](Architecture_M6_TB90_P13_A3_Partition_Stable_Count_Switch_Full_Gate_Case_Manifest.tsv): 914 rows, `45dfbb533ed3668f48a0146a3ce6800f57a2221368380c31c8e60a7974c64607`. `SELF_CHECK_PASS cases=914 deferred=81`; membership 995.
+- [Manifest](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB90_P13_A3_Partition_Stable_Count_Switch_Full_Gate_Case_Manifest.tsv"): 914 rows, `45dfbb533ed3668f48a0146a3ce6800f57a2221368380c31c8e60a7974c64607`. `SELF_CHECK_PASS cases=914 deferred=81`; membership 995.
 - Expected outcomes:
   - 914/914;
   - all 7 `a3-coverage` lines byte-identical to TB88;

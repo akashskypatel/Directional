@@ -70,7 +70,7 @@ Builds are local CB56 source plus the CB57 patch, default arithmetic.
 
 ## RA-183.5 TB56 frozen inputs
 
-- **Gate:** [`Architecture_M6_CP3_TB56_O2_Full_Gate_Case_Manifest.tsv`](Architecture_M6_CP3_TB56_O2_Full_Gate_Case_Manifest.tsv), 859 rows, SHA-256 `c8437d61e5b9a12d37bcd9d026dc859ee7954e56eaf904f193d8b2a549a2097f`. The first 859 lines are TB55 (`eb508378…`); row 859 is `GUARD ra183:o2-no-atlas-not-applicable` (producer binary).
+- **Gate:** [`Architecture_M6_CP3_TB56_O2_Full_Gate_Case_Manifest.tsv`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_TB56_O2_Full_Gate_Case_Manifest.tsv"), 859 rows, SHA-256 `c8437d61e5b9a12d37bcd9d026dc859ee7954e56eaf904f193d8b2a549a2097f`. The first 859 lines are TB55 (`eb508378…`); row 859 is `GUARD ra183:o2-no-atlas-not-applicable` (producer binary).
 - **Ledger:** v4 is unchanged (82, `36241caa…`).
 - **Checks run:** `--self-check` gives `SELF_CHECK_PASS cases=859 deferred=82`. The real membership check of the patched binaries gives **941**.
 

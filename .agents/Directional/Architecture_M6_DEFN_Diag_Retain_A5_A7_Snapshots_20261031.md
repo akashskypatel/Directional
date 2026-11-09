@@ -76,7 +76,7 @@ Builds are local CB57 source plus the CB58 patch, default arithmetic.
 
 ## RA-184.6 TB57 frozen inputs
 
-- **Gate:** [`Architecture_M6_CP3_TB57_Diag_Retain_Full_Gate_Case_Manifest.tsv`](Architecture_M6_CP3_TB57_Diag_Retain_Full_Gate_Case_Manifest.tsv), 861 rows, SHA-256 `f898c9b67c6f6f2c7ffa5bfaf054cb82dc8b691db0f74f0d28e3bee5ceab2b32`.
+- **Gate:** [`Architecture_M6_CP3_TB57_Diag_Retain_Full_Gate_Case_Manifest.tsv`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_TB57_Diag_Retain_Full_Gate_Case_Manifest.tsv"), 861 rows, SHA-256 `f898c9b67c6f6f2c7ffa5bfaf054cb82dc8b691db0f74f0d28e3bee5ceab2b32`.
   - The first 860 lines are TB56 (`c8437d61…`).
   - Rows 860 (`ra184:diag-retain-helper-copies`) and 861 (`ra184:diag-retain-iff-requested`) are GUARD rows in the producer binary.
 - **Ledger:** v4 is unchanged (82).

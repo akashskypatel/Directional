@@ -1,7 +1,7 @@
 # RA-207 — Review of the O32a seed Review: the mechanism holds; CB92 becomes an exact, capability-preserving patch (2026-11-05)
 
 **Reviewed turn:** `M6-CP3-DEFN-P13-ROW-PERMUTATION-SEEDS` (ChatGPT, closed `cb2c68539`). Its records:
-- [WIP](Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_WIP_20261105.md);
+- [WIP](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_Row_Permutation_Seeds_WIP_20261105.md");
 - [producer scratch result](Architecture_M6_CP3_DEFN_P13_O32a_Vase_Producer_Scratch_Result_20261105.md);
 - [CB92 plan](Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity_Plan_20261105.md);
 - scratch branch `origin/scratch/p13-o32a-seed-review-20261105`.
@@ -47,7 +47,7 @@ This re-entry reviews them. It keeps the successor ID `M6-CP3-CB92-P13-SOURCE-VE
 ## RA-207.3 CB92 — exact patch (`M6-CP3-CB92-P13-SOURCE-VERTEX-FAN-SEED-IDENTITY`, ID kept)
 
 - **Precheck:** `git diff --quiet 96ee281a40920f21eb911880a3b2c458ef4f0563 HEAD -- src include tests benchmarks CMakeLists.txt cmake` (the CB91 source).
-- **Patch:** [`Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity.diff`](Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity.diff).
+- **Patch:** [`Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB92_P13_Source_Vertex_Fan_Seed_Identity.diff").
   - SHA-256 `c377b206c195613b045b0f5a431df5dc31e553035343b567cdeb2ba0751834fa`.
   - 285 lines; **keep its 5 single-space context lines**.
 
@@ -98,7 +98,7 @@ This re-entry reviews them. It keeps the successor ID `M6-CP3-CB92-P13-SOURCE-VE
 ## RA-207.5 TB82 — `M6-CP3-TB82-P13-SOURCE-VERTEX-FAN-SEED-FULL-GATE-EXEC`
 
 - **Package:** the immutable CB92 package, artifact-only.
-- **Gate:** [`Architecture_M6_TB82_P13_Vertex_Fan_Seeds_Full_Gate_Case_Manifest.tsv`](Architecture_M6_TB82_P13_Vertex_Fan_Seeds_Full_Gate_Case_Manifest.tsv).
+- **Gate:** [`Architecture_M6_TB82_P13_Vertex_Fan_Seeds_Full_Gate_Case_Manifest.tsv`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB82_P13_Vertex_Fan_Seeds_Full_Gate_Case_Manifest.tsv").
   - 901 rows, SHA-256 `9fbf329167cbe84698d5a08eda6e5374200c7729a5f0f1e4292836227902f878`.
   - TB78's 899 rows byte for byte, plus GUARD rows 900–901.
   - `SELF_CHECK_PASS cases=901 deferred=81` with ledger v5.

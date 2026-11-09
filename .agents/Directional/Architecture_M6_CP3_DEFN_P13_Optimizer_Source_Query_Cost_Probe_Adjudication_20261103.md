@@ -82,7 +82,7 @@
 Code + Build, compile only, implementation agent, Linux.
 
 - **Precheck:** `git diff --quiet 3feb2a4182a5a12c2a9f306272756f8333a44b59 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
-- **Patch:** [`Architecture_M6_CP3_CB80_P13_Rail_Binding_Once.diff`](Architecture_M6_CP3_CB80_P13_Rail_Binding_Once.diff), byte for byte. SHA-256 `d4dda97eeea13c4c50ca107fa06bf093b7a173abce9a0bbfb268e8793da265fe`, 281 lines, 11 single-space context lines. Run `git apply --check`, then apply.
+- **Patch:** [`Architecture_M6_CP3_CB80_P13_Rail_Binding_Once.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB80_P13_Rail_Binding_Once.diff"), byte for byte. SHA-256 `d4dda97eeea13c4c50ca107fa06bf093b7a173abce9a0bbfb268e8793da265fe`, 281 lines, 11 single-space context lines. Run `git apply --check`, then apply.
 
   | Path | Numstat | Result SHA-256 |
   |---|---|---|
@@ -105,7 +105,7 @@ Code + Build, compile only, implementation agent, Linux.
 
 Test + Benchmark, artifact-only, CB80's immutable package.
 
-- **Gate:** [manifest](Architecture_M6_TB74_P13_Rail_Binding_Once_Full_Gate_Case_Manifest.tsv), 888 rows, SHA-256 `bb4e771fd911d9aefdb83c89cf2ac8def41e464bb41f26778a1b3a98adbee4da`. It is TB73's 886 rows byte for byte plus GUARD rows 887–888.
+- **Gate:** [manifest](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB74_P13_Rail_Binding_Once_Full_Gate_Case_Manifest.tsv"), 888 rows, SHA-256 `bb4e771fd911d9aefdb83c89cf2ac8def41e464bb41f26778a1b3a98adbee4da`. It is TB73's 886 rows byte for byte plus GUARD rows 887–888.
   - Ledger v5 `fd433f54…`; harness P8 `78b8002c…`; `SELF_CHECK_PASS cases=888 deferred=81`.
   - Pre-registered **888/888**, membership **969**.
 - **Census:** `3af1dc0d…`, unchanged. Cylinder PASS; BunnyRandom P13-e unchanged; **Vase ABNORMAL, 600 s timeout (exit 124)**, because the per-quad label support remains until CB82.
@@ -116,7 +116,7 @@ Test + Benchmark, artifact-only, CB80's immutable package.
 Code + Build, compile only.
 
 - **Precheck:** the product paths differ from `3feb2a41…` in exactly CB80's three paths, each at its RA-201.4 result SHA-256.
-- **Patch:** [`Architecture_M6_CP3_CB81_P13_Lent_Projection_Cache.diff`](Architecture_M6_CP3_CB81_P13_Lent_Projection_Cache.diff), byte for byte. SHA-256 `ffa4b5548b6bf45f044dac4b46fb2cca51db051b324d2ca7c0116faae99a4e30`, 169 lines, 6 single-space context lines.
+- **Patch:** [`Architecture_M6_CP3_CB81_P13_Lent_Projection_Cache.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB81_P13_Lent_Projection_Cache.diff"), byte for byte. SHA-256 `ffa4b5548b6bf45f044dac4b46fb2cca51db051b324d2ca7c0116faae99a4e30`, 169 lines, 6 single-space context lines.
 
   | Path | Numstat | Result SHA-256 |
   |---|---|---|
@@ -135,14 +135,14 @@ Code + Build, compile only.
 
 ## RA-201.7 TB75 — `M6-CP3-TB75-P13-LENT-PROJECTION-CACHE-FULL-GATE-EXEC`
 
-- **Gate:** [manifest](Architecture_M6_TB75_P13_Lent_Projection_Cache_Full_Gate_Case_Manifest.tsv), 890 rows, SHA-256 `a134d9411bd5885fa85d7405e2a733da7cd4d5899d17a83f6dbcb501d18326c6`. It is TB74's 888 rows plus rows 889–890; `SELF_CHECK_PASS cases=890 deferred=81`. Pre-registered **890/890**, membership **971**.
+- **Gate:** [manifest](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB75_P13_Lent_Projection_Cache_Full_Gate_Case_Manifest.tsv"), 890 rows, SHA-256 `a134d9411bd5885fa85d7405e2a733da7cd4d5899d17a83f6dbcb501d18326c6`. It is TB74's 888 rows plus rows 889–890; `SELF_CHECK_PASS cases=890 deferred=81`. Pre-registered **890/890**, membership **971**.
 - **Census:** as TB74 (**Vase ABNORMAL 600 s**).
 - **Outcomes:** `M6-CP3-TB75-P13-LENT-PROJECTION-CACHE-FULL-GATE-REV` / `M6-CP3-TB75A-P13-LENT-PROJECTION-CACHE-ORCH`.
 
 ## RA-201.8 CB82 — `M6-CP3-CB82-P13-LENT-LABEL-SUPPORT`
 
 - **Precheck:** the product paths differ from `3feb2a41…` in exactly the CB80/CB81 paths, each at its RA-201.6 result SHA-256 (the rail file at its RA-201.4 hash).
-- **Patch:** [`Architecture_M6_CP3_CB82_P13_Lent_Label_Support.diff`](Architecture_M6_CP3_CB82_P13_Lent_Label_Support.diff), byte for byte. SHA-256 `b963ea3d4b440fea66b65926478861b7bb6c489166f21b7db41769dc31cde1d2`, 349 lines, 10 single-space context lines.
+- **Patch:** [`Architecture_M6_CP3_CB82_P13_Lent_Label_Support.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB82_P13_Lent_Label_Support.diff"), byte for byte. SHA-256 `b963ea3d4b440fea66b65926478861b7bb6c489166f21b7db41769dc31cde1d2`, 349 lines, 10 single-space context lines.
 
   | Path | Numstat | Result SHA-256 |
   |---|---|---|
@@ -164,14 +164,14 @@ Code + Build, compile only.
 ## RA-201.9 CB83 — `M6-CP3-CB83-P13-OUTPUT-VALIDATION-TERMINAL-DETAIL`
 
 - **Precheck:** the product paths differ from `3feb2a41…` in exactly the CB80–CB82 paths, each at its latest RA-201 result SHA-256.
-- **Patch:** [`Architecture_M6_CP3_CB83_P13_Output_Validation_Terminal_Detail.diff`](Architecture_M6_CP3_CB83_P13_Output_Validation_Terminal_Detail.diff), byte for byte. SHA-256 `3741697ed34d219579a97081db3763126292a3d103a445e2ceda6cbbf37df682`, 16 lines, 1 single-space context line. Numstat `4 1` `src/pipeline/RemeshPipeline.cpp`; result SHA-256 `ceb0ec7f0b0f6be6ef4e45f512d7b5068958bd131e2517b5136fc4060ce37df2`.
+- **Patch:** [`Architecture_M6_CP3_CB83_P13_Output_Validation_Terminal_Detail.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB83_P13_Output_Validation_Terminal_Detail.diff"), byte for byte. SHA-256 `3741697ed34d219579a97081db3763126292a3d103a445e2ceda6cbbf37df682`, 16 lines, 1 single-space context line. Numstat `4 1` `src/pipeline/RemeshPipeline.cpp`; result SHA-256 `ceb0ec7f0b0f6be6ef4e45f512d7b5068958bd131e2517b5136fc4060ce37df2`.
 - **Content:** when the completed mesh fails its pre-optimization validation, the terminal detail is the reason the diagnostics already record: the first strict issue, `MissingFeatureRail`, or `AggregateCompletionValidationFailure`. This follows CB75. Nothing else changes.
 - **Tests:** none new. The only fixture that reaches this branch is the Vase census; TB76 registers its detail.
 - **Build / outcomes:** as CB80; `M6-CP3-PLAN-P13-OUTPUT-VALIDATION-TERMINAL-STOP` / `M6-CP3-CB83A-P13-OUTPUT-VALIDATION-TERMINAL-ORCH`.
 
 ## RA-201.10 TB76 — `M6-CP3-TB76-P13-OPTIMIZER-SOURCE-QUERY-FULL-GATE-EXEC`
 
-- **Gate:** [manifest](Architecture_M6_TB76_P13_Optimizer_Source_Query_Full_Gate_Case_Manifest.tsv), 893 rows, SHA-256 `3b72716137800726f9ce46a7ea6aee1f8a7db0122be29df97c359ea098545bf8`. It is TB75's 890 rows plus rows 891–893; `SELF_CHECK_PASS cases=893 deferred=81`. Pre-registered **893/893**, membership **974**.
+- **Gate:** [manifest](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB76_P13_Optimizer_Source_Query_Full_Gate_Case_Manifest.tsv"), 893 rows, SHA-256 `3b72716137800726f9ce46a7ea6aee1f8a7db0122be29df97c359ea098545bf8`. It is TB75's 890 rows plus rows 891–893; `SELF_CHECK_PASS cases=893 deferred=81`. Pre-registered **893/893**, membership **974**.
 - **Census:** `3af1dc0d…`, unchanged.
   - Cylinder PASS; BunnyRandom P13-e unchanged.
   - **Vase RED within 600 s: `terminal=NotProductionReady:completion detail=SelfIntersectingFace … completedQuads=67829 completion=`** (macOS scratch: about 250 s).

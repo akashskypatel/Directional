@@ -2,7 +2,7 @@
 
 **Turn:** `M6-CP3-TB76-P13-OPTIMIZER-SOURCE-QUERY-FULL-GATE-REV`, re-adjudicated by Review (Claude, scratch build) — **COMPLETE**.
 
-It supersedes the [TB76 independent Review](Architecture_M6_CP3_TB76_P13_Linux_Vase_Independent_Review_Decision_20261104.md)'s successor. It also withdraws the turn that successor started, `M6-CP3-CB84-P13-LINUX-VASE-DIAGNOSTIC-TIMING`. That turn is IN_PROGRESS, but its patch was never applied or compiled ([preservation record](Architecture_M6_CP3_CB84_P13_Linux_Vase_Diagnostic_Timing_Work_Preservation_20261104.md)). **Do not apply that preserved patch.** The CB84 number stays with the withdrawn turn.
+It supersedes the [TB76 independent Review](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_TB76_P13_Linux_Vase_Independent_Review_Decision_20261104.md")'s successor. It also withdraws the turn that successor started, `M6-CP3-CB84-P13-LINUX-VASE-DIAGNOSTIC-TIMING`. That turn is IN_PROGRESS, but its patch was never applied or compiled ([preservation record](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB84_P13_Linux_Vase_Diagnostic_Timing_Work_Preservation_20261104.md")). **Do not apply that preserved patch.** The CB84 number stays with the withdrawn turn.
 
 **Base:** HEAD `299be8bd7`. Its product source equals CB83 `2278b8b649b4262fb70a522371ed282655383af5` (`git diff --quiet` over `src include tests benchmarks CMakeLists.txt cmake`).
 
@@ -88,7 +88,7 @@ It supersedes the [TB76 independent Review](Architecture_M6_CP3_TB76_P13_Linux_V
 Code + Build, compile only, implementation agent, Linux.
 
 - **Precheck:** `git diff --quiet 2278b8b649b4262fb70a522371ed282655383af5 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
-- **Patch:** [`Architecture_M6_CP3_CB85_P13_Arrangement_TJunction_Face_Scan.diff`](Architecture_M6_CP3_CB85_P13_Arrangement_TJunction_Face_Scan.diff), byte for byte.
+- **Patch:** [`Architecture_M6_CP3_CB85_P13_Arrangement_TJunction_Face_Scan.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB85_P13_Arrangement_TJunction_Face_Scan.diff"), byte for byte.
   - SHA-256 `5b6d35a4808393d7274d8f574fa4f68eb343946bc3b065f2c1e8992babcac2f7`.
   - 178 lines; keep its 2 single-space context lines.
   - Run `git apply --check`, then `git apply`.
@@ -117,7 +117,7 @@ Code + Build, compile only, implementation agent, Linux.
 Code + Build, compile only, applied on CB85.
 
 - **Precheck:** the three CB85 result hashes above.
-- **Patch:** [`Architecture_M6_CP3_CB86_P13_Selection_Endpoint_Net_Change.diff`](Architecture_M6_CP3_CB86_P13_Selection_Endpoint_Net_Change.diff).
+- **Patch:** [`Architecture_M6_CP3_CB86_P13_Selection_Endpoint_Net_Change.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB86_P13_Selection_Endpoint_Net_Change.diff").
   - SHA-256 `c2a0c3083df29f99b43dd953ca871f02abf7961f731b52d5de5650c0b621ae81`.
   - 167 lines; keep its 7 single-space context lines.
 
@@ -137,7 +137,7 @@ Code + Build, compile only, applied on CB85.
 
 Test + Benchmark, artifact-only, CB86's immutable package.
 
-- **Gate:** [manifest](Architecture_M6_TB77_P13_Pre_Assembly_Cost_Full_Gate_Case_Manifest.tsv), 896 rows, SHA-256 `48ef4743b18683e78d9f740c4eb0e7f249abcab78a4aeac849620e251d9fface`.
+- **Gate:** [manifest](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB77_P13_Pre_Assembly_Cost_Full_Gate_Case_Manifest.tsv"), 896 rows, SHA-256 `48ef4743b18683e78d9f740c4eb0e7f249abcab78a4aeac849620e251d9fface`.
   - It is TB76's 893 rows byte for byte, plus GUARD rows 894–896.
   - Ledger v5 `fd433f54…`; harness P8 `78b8002c…`; `SELF_CHECK_PASS cases=896 deferred=81`.
   - Pre-registered **896/896**, membership **977**.
@@ -156,7 +156,7 @@ Test + Benchmark, artifact-only, CB86's immutable package.
 Code + Build, compile only, applied on CB86.
 
 - **Precheck:** the CB86 result hashes.
-- **Patch:** [`Architecture_M6_CP3_CB87_P13_Bow_Tie_Vertex_Edges.diff`](Architecture_M6_CP3_CB87_P13_Bow_Tie_Vertex_Edges.diff).
+- **Patch:** [`Architecture_M6_CP3_CB87_P13_Bow_Tie_Vertex_Edges.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB87_P13_Bow_Tie_Vertex_Edges.diff").
   - SHA-256 `eeef1a515995e032e2a35342a4b92a678c309933845c03102915c1e071f53237`.
   - 134 lines; keep its 1 single-space context line.
 
@@ -176,7 +176,7 @@ Code + Build, compile only, applied on CB86.
 Code + Build, compile only, applied on CB87.
 
 - **Precheck:** the CB87 result hashes.
-- **Patch:** [`Architecture_M6_CP3_CB88_P13_Final_Validation_Row_Labels.diff`](Architecture_M6_CP3_CB88_P13_Final_Validation_Row_Labels.diff).
+- **Patch:** [`Architecture_M6_CP3_CB88_P13_Final_Validation_Row_Labels.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB88_P13_Final_Validation_Row_Labels.diff").
   - SHA-256 `ee12a33fedc24047a960f38a7ba04b905d54716d80ff8c40b5723614b5636640`.
   - 72 lines; 0 single-space context lines.
 
@@ -193,7 +193,7 @@ Code + Build, compile only, applied on CB87.
 
 Test + Benchmark, artifact-only, CB88's immutable package.
 
-- **Gate:** [manifest](Architecture_M6_TB78_P13_Census_Path_Cost_Full_Gate_Case_Manifest.tsv), 899 rows, SHA-256 `9d2c1ec598fea2b95b251fd2e007b7086740e51fb8f6f3ad7ff5671ab09ddb44`.
+- **Gate:** [manifest](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB78_P13_Census_Path_Cost_Full_Gate_Case_Manifest.tsv"), 899 rows, SHA-256 `9d2c1ec598fea2b95b251fd2e007b7086740e51fb8f6f3ad7ff5671ab09ddb44`.
   - It is TB77's 896 rows byte for byte, plus GUARD rows 897–899.
   - `SELF_CHECK_PASS cases=899 deferred=81`.
   - Pre-registered **899/899**, membership **980**.

@@ -1,6 +1,6 @@
 # RA-199 — P13-i FlowRep selection: probe adjudication; unmet support chords; exact CB78, TB72; next failure P13-j (2026-11-02)
 
-**Turn:** `M6-CP3-DEFN-P13-FLOWREP-SELECTION` (Review/Definition, P13-i). ChatGPT started it at 2026-11-02T18:16:23Z. It wrote a [probe preflight](Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Preflight_20261102.md) and an earlier [static review](Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Invariants_Review_20261102.md), then set `STATUS` to BLOCKED: its session cannot run the scratch probes RA-198.6 requires.
+**Turn:** `M6-CP3-DEFN-P13-FLOWREP-SELECTION` (Review/Definition, P13-i). ChatGPT started it at 2026-11-02T18:16:23Z. It wrote a [probe preflight](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Preflight_20261102.md") and an earlier [static review](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Invariants_Review_20261102.md"), then set `STATUS` to BLOCKED: its session cannot run the scratch probes RA-198.6 requires.
 
 That block is procedural, as in RA-197 and RA-198. RA-198.6 put this probe DEFN on the Review track, on the scratch build. `REVIEW_TURN_POLICY.md` §4.3 keeps a Review free of repository product, test, fixture and selector changes; scratch diagnostic probes change none of those. Resumed here at 20:52:44Z on the RA-198 scratch build.
 
@@ -120,7 +120,7 @@ Code + Build, compile only, implementation agent, Linux.
 
 Test + Benchmark, artifact-only, CB78's immutable package.
 
-- **Gate:** [manifest](Architecture_M6_TB72_P13_Support_Chord_Full_Gate_Case_Manifest.tsv), 883 rows, SHA-256 `e9eabb064fba1aa625b20931f1b85cf3f441c0c877a81cccd49b73bb5ebd3031`. That is TB71's 881 rows byte for byte plus GUARD rows 882–883.
+- **Gate:** [manifest](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB72_P13_Support_Chord_Full_Gate_Case_Manifest.tsv"), 883 rows, SHA-256 `e9eabb064fba1aa625b20931f1b85cf3f441c0c877a81cccd49b73bb5ebd3031`. That is TB71's 881 rows byte for byte plus GUARD rows 882–883.
   - Ledger v5 `fd433f54…`; harness P8 `78b8002c…`; `SELF_CHECK_PASS cases=883 deferred=81`.
   - Pre-registered **883/883**, membership **964**.
 - **Census:** `3af1dc0d…`, unchanged.

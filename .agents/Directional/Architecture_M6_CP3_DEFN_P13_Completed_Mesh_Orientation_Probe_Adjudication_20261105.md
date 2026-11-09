@@ -7,7 +7,7 @@
 >
 > CB94 to CB96 and TB83 are replaced, and the RA-208 CB94 diff and TB83 manifest are removed (never applied).
 
-**Turn:** `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`, resumed from the ChatGPT Review's BLOCKED checkpoint. See its [WIP](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_WIP_20261105.md).
+**Turn:** `M6-CP3-DEFN-P13-COMPLETED-MESH-ORIENTATION`, resumed from the ChatGPT Review's BLOCKED checkpoint. See its [WIP](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Orientation_Review_WIP_20261105.md").
 
 **Source:** HEAD at CB92's semantic source `d9921cdd5`. `git diff --quiet d9921cdd5 HEAD -- src include tests benchmarks CMakeLists.txt cmake` passes.
 
@@ -59,7 +59,7 @@ The ChatGPT Review stopped with `REVIEW_BLOCKER`: the snapshots need a new Direc
 ## RA-208.3 CB93 — `M6-CP3-CB93-P13-ORIENTATION-WHOLE-QUAD-NORMAL` (exact)
 
 - **Precheck:** `git diff --quiet d9921cdd5a174bbb00b68387082cf08df80f97c5 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
-- **Patch:** [`Architecture_M6_CP3_CB93_P13_Orientation_Whole_Quad_Normal.diff`](Architecture_M6_CP3_CB93_P13_Orientation_Whole_Quad_Normal.diff).
+- **Patch:** [`Architecture_M6_CP3_CB93_P13_Orientation_Whole_Quad_Normal.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB93_P13_Orientation_Whole_Quad_Normal.diff").
   - SHA-256 `2510e2ddefa717eb71cf50174c29b461713caa5588e61382aab926ef48deebfe`.
   - 94 lines; **keep its 2 single-space context lines**.
 
@@ -81,7 +81,7 @@ The ChatGPT Review stopped with `REVIEW_BLOCKER`: the snapshots need a new Direc
 ## RA-208.4 CB94 — `M6-CP3-CB94-P13-QUAD-SELF-INTERSECTION-CORNER-ORDER` (exact, applied on CB93)
 
 - **Precheck:** the three CB93 result SHA-256 values above, and the CB93 source commit.
-- **Patch:** [`Architecture_M6_CP3_CB94_P13_Quad_Self_Intersection_Corner_Order.diff`](Architecture_M6_CP3_CB94_P13_Quad_Self_Intersection_Corner_Order.diff).
+- **Patch:** [`Architecture_M6_CP3_CB94_P13_Quad_Self_Intersection_Corner_Order.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB94_P13_Quad_Self_Intersection_Corner_Order.diff").
   - SHA-256 `a15632d1ba9149c7fbb47bba6fae71db56c34de999debd2977cc797d51a7ef91`.
   - 88 lines; **keep its 2 single-space context lines**.
 
@@ -122,7 +122,7 @@ The ChatGPT Review stopped with `REVIEW_BLOCKER`: the snapshots need a new Direc
 ## RA-208.5 TB83 — `M6-CP3-TB83-P13-ORIENTATION-PREDICATE-FULL-GATE-EXEC` (after CB94)
 
 - **Package:** the immutable CB94 package, which contains CB93.
-- **Gate:** [`Architecture_M6_TB83_P13_Orientation_Predicate_Full_Gate_Case_Manifest.tsv`](Architecture_M6_TB83_P13_Orientation_Predicate_Full_Gate_Case_Manifest.tsv).
+- **Gate:** [`Architecture_M6_TB83_P13_Orientation_Predicate_Full_Gate_Case_Manifest.tsv`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB83_P13_Orientation_Predicate_Full_Gate_Case_Manifest.tsv").
   - 903 rows, SHA-256 `20dc101d78889dc98adf4a048fb253ec66c4fda640e76247a0d5d9f4a92d57fb`.
   - TB82's 901 rows byte for byte, plus GUARD rows 902–903.
   - `SELF_CHECK_PASS cases=903 deferred=81`.

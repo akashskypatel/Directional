@@ -1,6 +1,6 @@
 # RA-163 — selector242 DEFN Review: D1 missed the typed owner, D2 decided statically, Branch B rejected (2026-10-26)
 
-**Turn:** `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER-REV`. **Reviewed:** [DEFN decision](Architecture_M6_CP3_DEFN_Selector242_Cross_Region_Seam_Consumer_Decision_20261026.md) and the [conditional CB45 draft](Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Specification_20261026.md) on source `9ab1563ee` (no `src`, `include` or `tests` drift since).
+**Turn:** `M6-CP3-DEFN-RP01-SELECTOR242-CROSS-REGION-SEAM-CONSUMER-REV`. **Reviewed:** [DEFN decision](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_Selector242_Cross_Region_Seam_Consumer_Decision_20261026.md") and the [conditional CB45 draft](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB45_Selector242_Seam_Rehome_Specification_20261026.md") on source `9ab1563ee` (no `src`, `include` or `tests` drift since).
 
 **Decision:** the DEFN is **PARTIALLY ACCEPTED**.
 - Accepted: D2's vacuity diagnosis and D4.

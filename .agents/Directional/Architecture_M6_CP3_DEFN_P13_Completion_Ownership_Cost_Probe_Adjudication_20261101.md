@@ -1,6 +1,6 @@
 # RA-195 — P13-f completion ownership cost: probe adjudication; exact CB71/CB72, TB68 (2026-11-01)
 
-**Turn:** `M6-CP3-DEFN-P13-COMPLETION-OWNERSHIP-COST` (Review/Definition), reopened at `fa06ae4ff`. The [static decision](Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Review_Decision_20261101.md) (ChatGPT, `55b8e18b6`) named the right two cost sites. But it ran no probe, so it did not name Vase's next failure. It also froze an open-ended Code + Build plan ([CB71 plan](Architecture_M6_CP3_CB71_P13_Completion_Chart_Graph_Reuse_Code_Build_Plan_20261101.md)) whose API, binding rule and tests the implementation agent would have had to design. RA-193.4 gave this DEFN one exit: name Vase's next failure, or a PASS, within the 600 s harness bound. RA-195 meets that exit with probes on current source and replaces the plan with two exact patches.
+**Turn:** `M6-CP3-DEFN-P13-COMPLETION-OWNERSHIP-COST` (Review/Definition), reopened at `fa06ae4ff`. The [static decision](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Review_Decision_20261101.md") (ChatGPT, `55b8e18b6`) named the right two cost sites. But it ran no probe, so it did not name Vase's next failure. It also froze an open-ended Code + Build plan ([CB71 plan](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB71_P13_Completion_Chart_Graph_Reuse_Code_Build_Plan_20261101.md")) whose API, binding rule and tests the implementation agent would have had to design. RA-193.4 gave this DEFN one exit: name Vase's next failure, or a PASS, within the 600 s harness bound. RA-195 meets that exit with probes on current source and replaces the plan with two exact patches.
 
 Source at review: HEAD `fa06ae4ff`; `src include tests benchmarks CMakeLists.txt cmake` are byte-equal to CB70 `9754500b2058229b7f0a6268838953650690b031` (TB67 package `13087332886`, 871/871). Nothing landed after TB67 except documents.
 
@@ -101,7 +101,7 @@ Code + Build, implementation agent, Linux workflow runner, compile only.
 
 Test + Benchmark, artifact-only, CB72's immutable package.
 
-- **Gate:** [manifest](Architecture_M6_TB68_P13_Completion_Graph_Reuse_Full_Gate_Case_Manifest.tsv), 873 rows, SHA-256 `3b6b9f425d4061885b393ccd2d530cbcd3d4f39916859e0db197ce1e6029ea60`: TB67's 871 plus rows 872–873. Ledger v5 `fd433f54…`; harness P8 `78b8002c…`, `SELF_CHECK_PASS cases=873 deferred=81`. Pre-registered **873/873**, membership **954** (873 + 81).
+- **Gate:** [manifest](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB68_P13_Completion_Graph_Reuse_Full_Gate_Case_Manifest.tsv"), 873 rows, SHA-256 `3b6b9f425d4061885b393ccd2d530cbcd3d4f39916859e0db197ce1e6029ea60`: TB67's 871 plus rows 872–873. Ledger v5 `fd433f54…`; harness P8 `78b8002c…`, `SELF_CHECK_PASS cases=873 deferred=81`. Pre-registered **873/873**, membership **954** (873 + 81).
 - **Census:** `3af1dc0d…`, unchanged.
   - Cylinder: PASS.
   - BunnyRandom: P13-e unchanged (`SingularityPortClassCountMismatch;sourceVertex=49`).

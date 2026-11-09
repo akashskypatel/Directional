@@ -89,7 +89,7 @@
 
 ## 4. CB100 (revised) — evaluator interior angles and warpage in the quad's own plane (exact)
 
-- **Patch:** [`Architecture_M6_CP3_CB100_P13_Evaluator_Concave_Quad_Metrics.diff`](Architecture_M6_CP3_CB100_P13_Evaluator_Concave_Quad_Metrics.diff), SHA-256 **`8c11fb8541b5dc799f66a5ac8ea325b1e7045b8b50b93ecc6f8689ec92e947a7`**, 114 lines. Keep its 4 single-space context lines. It **supersedes** `d55589c7…` (RA-211.5), which was never applied.
+- **Patch:** [`Architecture_M6_CP3_CB100_P13_Evaluator_Concave_Quad_Metrics.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB100_P13_Evaluator_Concave_Quad_Metrics.diff"), SHA-256 **`8c11fb8541b5dc799f66a5ac8ea325b1e7045b8b50b93ecc6f8689ec92e947a7`**, 114 lines. Keep its 4 single-space context lines. It **supersedes** `d55589c7…` (RA-211.5), which was never applied.
 - **Numstat and post-image SHA-256:**
   - `29 2` `src/geometry/SurfaceMeshOptimizer.cpp` → `a0f816b3bc96050ab2c7a68189001e88d22b2a56335befb4e4893b3d456107c0`
   - `39 0` `tests/SurfaceMeshOptimizerPhase21Tests.cpp` → `6104b59ba09a74045b5b9b4ba3a8c811b8424addc36da338bbab8bb0374537fe`
@@ -108,7 +108,7 @@
 
 ## 5. CB101 — report normal error in the quad's own plane (exact)
 
-- **Patch:** [`Architecture_M6_CP3_CB101_P13_Evaluator_Quad_Normal_Own_Plane.diff`](Architecture_M6_CP3_CB101_P13_Evaluator_Quad_Normal_Own_Plane.diff), SHA-256 **`9b42498d9e3615488c9007499aea590c195d472b66e519c67d5ff124190155f1`**, 56 lines. Keep its 1 single-space context line.
+- **Patch:** [`Architecture_M6_CP3_CB101_P13_Evaluator_Quad_Normal_Own_Plane.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB101_P13_Evaluator_Quad_Normal_Own_Plane.diff"), SHA-256 **`9b42498d9e3615488c9007499aea590c195d472b66e519c67d5ff124190155f1`**, 56 lines. Keep its 1 single-space context line.
 - **Precheck:** the CB100 post-images above.
 - **Numstat and post-image SHA-256:**
   - `2 2` `src/geometry/SurfaceMeshOptimizer.cpp` → `ac441cd36be7bec02903f5c35baa85ba0f171022012457b892f99c3707793384`
@@ -127,7 +127,7 @@
 
 ## 7. TB85 (revised)
 
-- **Manifest:** [`Architecture_M6_TB85_P13_Concave_Quality_Metrics_Full_Gate_Case_Manifest.tsv`](Architecture_M6_TB85_P13_Concave_Quality_Metrics_Full_Gate_Case_Manifest.tsv), **908 rows**, SHA-256 **`ec088eb1121a5846605a4bb3675657b68477c88513c28795350369c03bb9f999`**. It is TB84's 906 rows plus GUARD 907 (CB100 test) and GUARD 908 (CB101 test). `SELF_CHECK_PASS cases=908 deferred=81`; membership **989**. It supersedes the 907-row `6ee84959…`.
+- **Manifest:** [`Architecture_M6_TB85_P13_Concave_Quality_Metrics_Full_Gate_Case_Manifest.tsv`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB85_P13_Concave_Quality_Metrics_Full_Gate_Case_Manifest.tsv"), **908 rows**, SHA-256 **`ec088eb1121a5846605a4bb3675657b68477c88513c28795350369c03bb9f999`**. It is TB84's 906 rows plus GUARD 907 (CB100 test) and GUARD 908 (CB101 test). `SELF_CHECK_PASS cases=908 deferred=81`; membership **989**. It supersedes the 907-row `6ee84959…`.
 - **Pins:** rows 795/796/797/864 and the Cylinder, BunnyRandom and Vase census digest lines byte-identical to TB84 (Vase `completion=946b59dbe8279a65/67750`, `validationIssues=0`, terminal `AggregateCompletionValidationFailure`).
 - **Routes:** mismatch → `M6-CP3-TB85-P13-CONCAVE-QUALITY-METRICS-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB85A-P13-CONCAVE-QUALITY-METRICS-ORCH`.
 

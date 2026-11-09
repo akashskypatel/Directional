@@ -1,6 +1,6 @@
 # RA-150 — TB34-REV audit: periodic-route fixture is a face gauge, not a transition edit (2026-10-24)
 
-**Turn:** `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST-REV-AUDIT` (Review, documents only). **Audited:** [TB34-REV](Architecture_M6_CP3_TB34_A3_Cycle_Locus_Harvest_Review_Decision_20261024.md) and its [CB34 plan](Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Plan_20261024.md). Source inspected at `c57e4e1d9` (no product/test change since CB33 `f807c2b89`). **Verdict:** owner classification **ACCEPTED**; CB34 transformation **CORRECTED** (RA-150.3), precondition and stop rules **ADDED**. No runtime or build was run in Review.
+**Turn:** `M6-CP3-TB34-RP01-A3-CYCLE-LOCUS-HARVEST-REV-AUDIT` (Review, documents only). **Audited:** [TB34-REV](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_TB34_A3_Cycle_Locus_Harvest_Review_Decision_20261024.md") and its [CB34 plan](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB34_Periodic_Route_Face_Gauge_Code_Build_Plan_20261024.md"). Source inspected at `c57e4e1d9` (no product/test change since CB33 `f807c2b89`). **Verdict:** owner classification **ACCEPTED**; CB34 transformation **CORRECTED** (RA-150.3), precondition and stop rules **ADDED**. No runtime or build was run in Review.
 
 ## RA-150.1 — Classification independently confirmed
 

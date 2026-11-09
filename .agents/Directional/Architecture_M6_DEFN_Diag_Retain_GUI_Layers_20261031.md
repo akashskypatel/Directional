@@ -45,7 +45,7 @@
 
 ## RA-187.5 TB60 frozen inputs
 
-- **Gate:** the TB58 manifest [`Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv`](Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv) unchanged (863 rows, `31c1360a…`); ledger v4 (82, `36241caa…`); membership 945.
+- **Gate:** the TB58 manifest [`Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv") unchanged (863 rows, `31c1360a…`); ledger v4 (82, `36241caa…`); membership 945.
 - **CLI cases:** the three RA-186.3 runs with the TB59 check script (`build/local-evidence/TB59/tb59_check.sh`, `16137c4e…`) against `tools.zip`'s `bin/directional`.
 - **GUI link check:** `otool -L bin/directional-ui` lists the same Homebrew GMP libraries as `pkg.zip`'s `gmp-evidence.txt`.
 

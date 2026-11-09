@@ -13,7 +13,7 @@
 
 ## 1. Block and resolution
 
-ChatGPT's [WIP](Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_WIP_20261108.md) blocked on "independent per-patch Vase source-edge subdivision and concave-quality scratch census … unavailable; obtain immutable-source lineage evidence". The WIP's static findings S1 and S2 are correct (§3).
+ChatGPT's [WIP](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_Side_Subdivision_Quality_Review_WIP_20261108.md") blocked on "independent per-patch Vase source-edge subdivision and concave-quality scratch census … unavailable; obtain immutable-source lineage evidence". The WIP's static findings S1 and S2 are correct (§3).
 
 Scratch census on the Review track (RA-166.6 F6, RA-188.1, RA-203.1):
 - **Source:** HEAD `c9c50f1e9`. Product sources are byte-identical to CB99 `553932b04`; only the env-gated test probe in `SurfaceCellDesignAcceptanceTests.cpp` differs.
@@ -80,7 +80,7 @@ Scratch census on the Review track (RA-166.6 F6, RA-188.1, RA-203.1):
 
 ## 4. Prototype evidence (scratch only, not for application)
 
-The prototype adds `SurfaceArrangementNode::representationOnly`. It is placed beside `hardBarrierCrossing` so that `sizeof` is unchanged; otherwise `memoryRatioEstimate` changes every `arrangement` digest. A single writer, `mark_representation_only_nodes`, runs once before completion. It marks a node that has degree 2, plain edges (no hard/rail/curve/singularity), no hard barrier, and that **both** incident cells cross on the same logical side. Consumers: parity count, descriptor sides, and the patch boundary. The prototype diff (variant C below, 256 lines, SHA-256 `bcc260b4…`) is kept as Review evidence in [`Architecture_M6_CP3_DEFN_P13_Representation_Breakpoint_Prototype_FALSIFIED.diff`](Architecture_M6_CP3_DEFN_P13_Representation_Breakpoint_Prototype_FALSIFIED.diff). **Do not apply it.**
+The prototype adds `SurfaceArrangementNode::representationOnly`. It is placed beside `hardBarrierCrossing` so that `sizeof` is unchanged; otherwise `memoryRatioEstimate` changes every `arrangement` digest. A single writer, `mark_representation_only_nodes`, runs once before completion. It marks a node that has degree 2, plain edges (no hard/rail/curve/singularity), no hard barrier, and that **both** incident cells cross on the same logical side. Consumers: parity count, descriptor sides, and the patch boundary. The prototype diff (variant C below, 256 lines, SHA-256 `bcc260b4…`) is kept as Review evidence in [`Architecture_M6_CP3_DEFN_P13_Representation_Breakpoint_Prototype_FALSIFIED.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_Representation_Breakpoint_Prototype_FALSIFIED.diff"). **Do not apply it.**
 
 | Variant | Odd cells / parity splits | Vase terminal |
 |---|---|---|
@@ -95,7 +95,7 @@ In all variants the Plane/MultiFaceSeam/CloseSheets/Cylinder/BunnyRandom digests
 
 ## 5. CB100 — evaluator concave-quad metrics (exact)
 
-- **Patch:** [`Architecture_M6_CP3_CB100_P13_Evaluator_Concave_Quad_Metrics.diff`](Architecture_M6_CP3_CB100_P13_Evaluator_Concave_Quad_Metrics.diff), SHA-256 `d55589c799776ee8449fb4eff6a037a80b228c0d64df6299edc7ab654f9638cb`, 79 lines. Keep its 2 single-space context lines.
+- **Patch:** [`Architecture_M6_CP3_CB100_P13_Evaluator_Concave_Quad_Metrics.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB100_P13_Evaluator_Concave_Quad_Metrics.diff"), SHA-256 `d55589c799776ee8449fb4eff6a037a80b228c0d64df6299edc7ab654f9638cb`, 79 lines. Keep its 2 single-space context lines.
 - **Numstat and post-image SHA-256:**
   - `15 2` `src/geometry/SurfaceMeshOptimizer.cpp` → `8798fa013a9636d5892109c44ab9e50280881176230caa30c18cf1ba913490ec`
   - `26 0` `tests/SurfaceMeshOptimizerPhase21Tests.cpp` → `6a6d600473fe7300d74b1b414fdac50ee5117a36bc30b6110c526b9e9ece8589`
@@ -119,7 +119,7 @@ In all variants the Plane/MultiFaceSeam/CloseSheets/Cylinder/BunnyRandom digests
 
 ## 6. TB85
 
-- **Manifest:** [`Architecture_M6_TB85_P13_Concave_Quality_Metrics_Full_Gate_Case_Manifest.tsv`](Architecture_M6_TB85_P13_Concave_Quality_Metrics_Full_Gate_Case_Manifest.tsv), 907 rows, SHA-256 `6ee8495981ae5f8fe3475ae6593c9063030c36bd76b6ceed50a5fded6cd0afbd`. It is TB84's 906 rows plus GUARD 907 (`ra211:evaluator-concave-quad-metrics`, validation binary). `SELF_CHECK_PASS cases=907 deferred=81`; membership **988**.
+- **Manifest:** [`Architecture_M6_TB85_P13_Concave_Quality_Metrics_Full_Gate_Case_Manifest.tsv`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB85_P13_Concave_Quality_Metrics_Full_Gate_Case_Manifest.tsv"), 907 rows, SHA-256 `6ee8495981ae5f8fe3475ae6593c9063030c36bd76b6ceed50a5fded6cd0afbd`. It is TB84's 906 rows plus GUARD 907 (`ra211:evaluator-concave-quad-metrics`, validation binary). `SELF_CHECK_PASS cases=907 deferred=81`; membership **988**.
 - **Pinned:** gate rows 795/796/797/864 and the Cylinder/BunnyRandom census `platform-digest` lines byte-identical to TB84. The Vase line is byte-identical to TB84 (`completion=946b59dbe8279a65/67750`, `validationIssues=0`), terminal `AggregateCompletionValidationFailure`. The Vase metric values are a macOS Review observation, not a pin.
 - **Routes:** mismatch → `M6-CP3-TB85-P13-CONCAVE-QUALITY-METRICS-FULL-GATE-REV` (Review, Claude, scratch build); infrastructure → `M6-CP3-TB85A-P13-CONCAVE-QUALITY-METRICS-ORCH`.
 - **Local scratch gate:** 906/907; only row 283 (O16, macOS) is red.

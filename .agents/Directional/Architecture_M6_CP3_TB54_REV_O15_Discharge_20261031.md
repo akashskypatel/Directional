@@ -11,7 +11,7 @@ Variant builds are diagnostic only (GMP_COMPILE_POLICY).
 
 ## RA-181.1 Evidence re-verified
 
-- **TB54 result** `build/local-evidence/TB54/result.zip` (`706f4ce7…`): 857 executed, 856 PASS, row 283 RED, membership 940, postflight true. The Haiku audit verifies 1,722/1,722 checksums and 857/857 manifest↔ledger↔log joins; the 940 membership pairs are exactly the manifest plus ledger v3. ([TB54 report](Architecture_M6_CP3_TB54_O15_Full_Gate_Local_Test_Report_20261031.md).)
+- **TB54 result** `build/local-evidence/TB54/result.zip` (`706f4ce7…`): 857 executed, 856 PASS, row 283 RED, membership 940, postflight true. The Haiku audit verifies 1,722/1,722 checksums and 857/857 manifest↔ledger↔log joins; the 940 membership pairs are exactly the manifest plus ledger v3. ([TB54 report](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_TB54_O15_Full_Gate_Local_Test_Report_20261031.md").)
 - **FMA-free diagnostic** of source `04027167…` (atlas object with 0 FMA instructions): 857 rows give 856 PASS, with only 283 red. The verdicts equal TB54 row by row (0 mismatches). The 4,797 atlas partition records are byte-identical to TB54 (`65824e4b…`). Row 857 shows 3/3/3/3 at vertices 10, 35, 47 and 71 in both modes. Evidence: `build/local-evidence/TB54-REV/` (gitignored).
 - **Source review (Sonnet):** T1, T2 and T3 at `04027167` are correct.
   - The gauge comparator is a strict weak order by counter-clockwise angle in [0, 2π), and its tie check means "same angle".

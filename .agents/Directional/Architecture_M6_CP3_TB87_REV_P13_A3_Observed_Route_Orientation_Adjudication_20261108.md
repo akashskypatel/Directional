@@ -20,7 +20,7 @@
 
 ## Exact corrective implementation and falsifiers
 
-**Frozen successor:** `M6-CP3-CB105-P13-A3-OBSERVED-ROUTE-ORIENTATION-ORACLE` (one test-only edit, compile/package only, GMP/GMPXX, no execution). Apply [the exact approved patch](Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Oracle_Exact.diff) against source authority `b41fbf72a4d4d2255b4b0e94e0148de8378e2364` (source-semantic files unchanged by TB87). Full SHA256 of patch `9e9635aea3245ee298906101f873db6427d9bf08d9842614f4b75ff027e801a8`; test preimage `7f70db2393f4f439b907d26497e5e9366c623a448887960d80556e47c4d74695`, postimage `a43eb329e874cbeb527d13c8dbc5c879bea638e422b08452f4402f236a4c52f4`.
+**Frozen successor:** `M6-CP3-CB105-P13-A3-OBSERVED-ROUTE-ORIENTATION-ORACLE` (one test-only edit, compile/package only, GMP/GMPXX, no execution). Apply [the exact approved patch](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Route_Oracle_Exact.diff") against source authority `b41fbf72a4d4d2255b4b0e94e0148de8378e2364` (source-semantic files unchanged by TB87). Full SHA256 of patch `9e9635aea3245ee298906101f873db6427d9bf08d9842614f4b75ff027e801a8`; test preimage `7f70db2393f4f439b907d26497e5e9366c623a448887960d80556e47c4d74695`, postimage `a43eb329e874cbeb527d13c8dbc5c879bea638e422b08452f4402f236a4c52f4`.
 
 Change only the route observation to:
 

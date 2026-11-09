@@ -1,6 +1,6 @@
 # RA-152 — TB35-REV audit: the A4 periodic rotation guard is dead on the atlas path (2026-10-24)
 
-**Turn:** `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY-REV-AUDIT` (Review). **Subject:** [TB35-REV](Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md) (RA-151). **Decision:** RA-151's evidence verification and non-promotion are **accepted**; its owner statement is **incomplete and partly wrong**; its successor `M6-CP3-DEFN-RP01-PERIODIC-INGRESS-AUTHORITY` is **withdrawn** and replaced by a test-first production track below. Static source review only; no build or runtime.
+**Turn:** `M6-CP3-TB35-RP01-PERIODIC-ROUTE-GAUGE-VERIFY-REV-AUDIT` (Review). **Subject:** [TB35-REV](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Independent_Review_Decision_20261024.md") (RA-151). **Decision:** RA-151's evidence verification and non-promotion are **accepted**; its owner statement is **incomplete and partly wrong**; its successor `M6-CP3-DEFN-RP01-PERIODIC-INGRESS-AUTHORITY` is **withdrawn** and replaced by a test-first production track below. Static source review only; no build or runtime.
 
 ## RA-152.1 — What TB35-REV got right
 
@@ -33,7 +33,7 @@ At the accepted 449 prefix (`993932656`), 189–192 called `build_periodic_route
 
 | # | Turn | Scope / gate |
 |---|---|---|
-| 1 | `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS` | Test-only: helper + 3 witness tests; compile only. [Plan](Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Code_Build_Plan_20261024.md). |
+| 1 | `M6-CP3-CB35-RP01-PERIODIC-MONODROMY-WITNESS` | Test-only: helper + 3 witness tests; compile only. [Plan](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB35_Periodic_Monodromy_Witness_Code_Build_Plan_20261024.md"). |
 | 2 | `…-CB35-…-REV` | Static review; issues the TB36 manifest. |
 | 3 | `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE` | Pre-fix: 3 witnesses + 191/192. Predicted: A3 accepts k=2 (k=1 measured); all 3 witnesses RED; record first reason. **STOP** if any witness is GREEN pre-fix, if A3 rejects k=2, or if a witness fails before the periodic producer. |
 | 4 | `…-TB36-…-REV` | Adjudicate; authorize CB36. |

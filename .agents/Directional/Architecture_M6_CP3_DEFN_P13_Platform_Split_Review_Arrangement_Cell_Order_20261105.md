@@ -7,7 +7,7 @@
 >
 > A source-face row permutation changes Vase's seed set, traces, strands and quads (O32).
 
-**Turn:** `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`, the successor frozen by the ChatGPT O30 Review ([digest adjudication](Architecture_M6_CP3_DEFN_P13_Platform_Split_Digest_Adjudication_20261105.md), `92e2e9ce8`). The user asked for an adversarial review of `M6-CP3-DEFN-P13-PLATFORM-SPLIT`. This turn reviews it, withdraws its generated-field branch and closes the turn with an exact fix.
+**Turn:** `M6-CP3-DEFN-P13-SMOOTH-FIELD-PORTABILITY`, the successor frozen by the ChatGPT O30 Review ([digest adjudication](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_Platform_Split_Digest_Adjudication_20261105.md"), `92e2e9ce8`). The user asked for an adversarial review of `M6-CP3-DEFN-P13-PLATFORM-SPLIT`. This turn reviews it, withdraws its generated-field branch and closes the turn with an exact fix.
 
 **Source:** HEAD `6be82f33c`. `git diff --quiet 9c9616695 HEAD -- src include tests benchmarks CMakeLists.txt cmake` passes, so the source is CB89's, and its product source is CB88's.
 
@@ -159,7 +159,7 @@ The inputs are bit-identical. FMA off reproduces Linux on Plane and CloseSheets,
 ## RA-204.7 CB90 — exact patch (`M6-CP3-CB90-P13-ARRANGEMENT-CELL-ORDER-TIEBREAK`)
 
 - **Precheck:** `git diff --quiet 9c9616695ecdc8c6ec219eb7486cbe85f3915c95 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
-- **Patch:** [`Architecture_M6_CP3_CB90_P13_Arrangement_Cell_Order_Tiebreak.diff`](Architecture_M6_CP3_CB90_P13_Arrangement_Cell_Order_Tiebreak.diff), applied byte for byte.
+- **Patch:** [`Architecture_M6_CP3_CB90_P13_Arrangement_Cell_Order_Tiebreak.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB90_P13_Arrangement_Cell_Order_Tiebreak.diff"), applied byte for byte.
   - SHA-256 `0931939d461ad2d19a6e45e9d39fb5ba130c9846a0bd286b7a9dda0d0228ab24`.
   - 36 lines. Keep its 1 single-space context line.
 - **Content:**
@@ -201,7 +201,7 @@ The inputs are bit-identical. FMA off reproduces Linux on Plane and CloseSheets,
 
 ## RA-204.9 macOS post-CB90 reference and the frozen O30 decision table
 
-[`Architecture_M6_CP3_CB90_P13_Platform_Digest_macOS_FMAoff_Reference.tsv`](Architecture_M6_CP3_CB90_P13_Platform_Digest_macOS_FMAoff_Reference.tsv) holds 129 rows from build B with CB90 (SHA-256 `955223c86c78c4ffd30dbc20fdb39a44f14cefbea271acf036d1cad59299a7d6`). FMA off was chosen because it matches Linux arithmetic for contraction.
+[`Architecture_M6_CP3_CB90_P13_Platform_Digest_macOS_FMAoff_Reference.tsv`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB90_P13_Platform_Digest_macOS_FMAoff_Reference.tsv") holds 129 rows from build B with CB90 (SHA-256 `955223c86c78c4ffd30dbc20fdb39a44f14cefbea271acf036d1cad59299a7d6`). FMA off was chosen because it matches Linux arithmetic for contraction.
 
 **What TB80 records** (each Linux value next to its reference value):
 

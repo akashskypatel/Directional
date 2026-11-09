@@ -4,9 +4,9 @@
 
 ## Frozen inputs
 
-- **Packages:** CB61 `build/local-evidence/CB61/pkg.zip` (`f39152f7…`, root `SHA256SUMS` `1c5cccb9…`) and `tools.zip` (`c324950f…`, 8 entries, re-verified after extraction); source `e1fd0e4b7560c4fa5bde96853b978d336c522e8f`, archive `2caf2ece…`. macOS arm64, default arithmetic. [CB61 record](Architecture_M6_CB61_Diag_Retain_GUI_Layers_Code_Build_Record_20261031.md).
-- **Gate:** the TB58 manifest [`Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv`](Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv) (863 rows, `31c1360a…`); [ledger v4](Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v4.tsv) (82, `36241caa…`).
-- **Runner:** `tools/m6_cp3_local_gate_driver.py` with harness `78b8002c…`, three workers, in the form given in the [TB57 report](Architecture_M6_TB57_Diag_Retain_Full_Gate_Local_Test_Report_20261031.md) with the inputs above. CLI cases: `build/local-evidence/TB59/tb59_check.sh` (`16137c4e…`) on `tools.zip`'s `bin/directional`.
+- **Packages:** CB61 `build/local-evidence/CB61/pkg.zip` (`f39152f7…`, root `SHA256SUMS` `1c5cccb9…`) and `tools.zip` (`c324950f…`, 8 entries, re-verified after extraction); source `e1fd0e4b7560c4fa5bde96853b978d336c522e8f`, archive `2caf2ece…`. macOS arm64, default arithmetic. [CB61 record](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CB61_Diag_Retain_GUI_Layers_Code_Build_Record_20261031.md").
+- **Gate:** the TB58 manifest [`Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv") (863 rows, `31c1360a…`); [ledger v4](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v4.tsv") (82, `36241caa…`).
+- **Runner:** `tools/m6_cp3_local_gate_driver.py` with harness `78b8002c…`, three workers, in the form given in the [TB57 report](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB57_Diag_Retain_Full_Gate_Local_Test_Report_20261031.md") with the inputs above. CLI cases: `build/local-evidence/TB59/tb59_check.sh` (`16137c4e…`) on `tools.zip`'s `bin/directional`.
 
 ## Result
 

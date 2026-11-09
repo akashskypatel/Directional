@@ -32,7 +32,7 @@
    - Over all 67,750 Vase quads: **17 cross in their own plane** and 31 in the source-normal plane (36 together).
    - **12 of them are bow-ties in both planes:** two reflex corners against each normal, and diagonal dihedrals up to 178.7°.
    - Completion's axis predicate accepts all 17, and so did RA-208's CB94. The order-invariant and faithful definition is **orthogonal projection onto the Newell plane**, in both producer and validator, each with its own implementation (DESIGN §9).
-3. **The success claim was inflated.** RA-208 reported "Vase 35,416 → 4 issues". The 4 held only because the validator shared completion's blind spot. Under the faithful definition the validator alone reports 21 (17 twisted quads, 1 overlap, 3 T-junctions). Only with the producer also fixed (CB96) does Vase return to **4 validator-reported issues**. Their physical causes were not yet independently adjudicated at RA-209; the later [P13-l2 Review](Architecture_M6_CP3_DEFN_P13_PreStitch_Vector_ABI_Probe_Review_20261106.md) proves a false-positive overlap and identifies separate completion and source-support defects. Do not interpret the four reports as four independently certified physical intersections.
+3. **The success claim was inflated.** RA-208 reported "Vase 35,416 → 4 issues". The 4 held only because the validator shared completion's blind spot. Under the faithful definition the validator alone reports 21 (17 twisted quads, 1 overlap, 3 T-junctions). Only with the producer also fixed (CB96) does Vase return to **4 validator-reported issues**. Their physical causes were not yet independently adjudicated at RA-209; the later [P13-l2 Review](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_PreStitch_Vector_ABI_Probe_Review_20261106.md") proves a false-positive overlap and identifies separate completion and source-support defects. Do not interpret the four reports as four independently certified physical intersections.
 4. **Minor:** CB94's degenerate rule compares the vector area with `tolerance · longestEdge²`. That makes the geometric tolerance act as a dimensionless ratio, inconsistent with its absolute use in `ZeroAreaFace`. The criterion is scale-invariant (area/L² ≤ 1e-9) and has no false positive on any fixture; it is kept, and the comment states it.
 
 ## RA-209.3 Realigned turns (exact; each applies on the previous one's result)
@@ -41,7 +41,7 @@
 
 **CB94 — `M6-CP3-CB94-P13-ORIENTATION-SINGLE-WRITER`**
 - **Precheck:** `git diff --quiet e96e98806cf5fd055df3dd45c629f124c77c5dd5 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
-- **Patch:** [`Architecture_M6_CP3_CB94_P13_Orientation_Single_Writer.diff`](Architecture_M6_CP3_CB94_P13_Orientation_Single_Writer.diff).
+- **Patch:** [`Architecture_M6_CP3_CB94_P13_Orientation_Single_Writer.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB94_P13_Orientation_Single_Writer.diff").
   - SHA-256 `a19dd0cde27d1a95f24f4c40ec89d9264fdb44f5aae59da75af5abb1465e52b7`.
   - 183 lines; **keep its 5 single-space context lines**.
 
@@ -56,7 +56,7 @@
 
 **CB95 — `M6-CP3-CB95-P13-QUAD-SELF-INTERSECTION-OWN-PLANE`**
 - **Precheck:** the three CB94 result hashes.
-- **Patch:** [`Architecture_M6_CP3_CB95_P13_Quad_Self_Intersection_Own_Plane.diff`](Architecture_M6_CP3_CB95_P13_Quad_Self_Intersection_Own_Plane.diff).
+- **Patch:** [`Architecture_M6_CP3_CB95_P13_Quad_Self_Intersection_Own_Plane.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB95_P13_Quad_Self_Intersection_Own_Plane.diff").
   - SHA-256 `8207716b9993a9d1e290ff4fe9eb4794ff505dfb601708bcd965c68cf4d0c014`.
   - 158 lines; **keep its 4 single-space context lines**.
 
@@ -77,7 +77,7 @@
 
 **CB96 — `M6-CP3-CB96-P13-COMPLETION-EMBEDDING-OWN-PLANE`**
 - **Precheck:** the two CB95 result hashes.
-- **Patch:** [`Architecture_M6_CP3_CB96_P13_Completion_Embedding_Own_Plane.diff`](Architecture_M6_CP3_CB96_P13_Completion_Embedding_Own_Plane.diff).
+- **Patch:** [`Architecture_M6_CP3_CB96_P13_Completion_Embedding_Own_Plane.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB96_P13_Completion_Embedding_Own_Plane.diff").
   - SHA-256 `a7e81da57d5d1bf37847ccf0b5ee3abeca5230c0605d35056e6a12d40b54f469`.
   - 74 lines; 0 single-space context lines.
 
@@ -117,7 +117,7 @@
 ## RA-209.4 TB83 — `M6-CP3-TB83-P13-EMBEDDING-PREDICATE-FULL-GATE-EXEC` (after CB96)
 
 - **Package:** the immutable CB96 package.
-- **Gate:** [`Architecture_M6_TB83_P13_Embedding_Predicate_Full_Gate_Case_Manifest.tsv`](Architecture_M6_TB83_P13_Embedding_Predicate_Full_Gate_Case_Manifest.tsv).
+- **Gate:** [`Architecture_M6_TB83_P13_Embedding_Predicate_Full_Gate_Case_Manifest.tsv`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB83_P13_Embedding_Predicate_Full_Gate_Case_Manifest.tsv").
   - 903 rows, SHA-256 `61e9edbedee3731b04d7b6279b79a0fd0e0b651686638e9b832773f7aa0a36aa`.
   - TB82's 901 rows byte for byte, plus row 902 (the CB95 test, producer binary) and row 903 (the CB96 test, completion binary).
   - `SELF_CHECK_PASS cases=903 deferred=81`.

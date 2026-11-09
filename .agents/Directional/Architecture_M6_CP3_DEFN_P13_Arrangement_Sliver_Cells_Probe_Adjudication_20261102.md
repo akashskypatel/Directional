@@ -1,6 +1,6 @@
 # RA-198 — P13-h2 needle grids and P13-i rail lenses: probe adjudication; exact CB77, TB71; selection DEFN (2026-11-02)
 
-**Turn:** `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS` (Review/Definition). ChatGPT started it at 2026-11-02T05:14:30Z and set `STATUS` to BLOCKED at 15:07Z. Its [review WIP](Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Review_WIP_20261102.md), about 100 commits long, says it lacks the original trace states, the FlowRep selection decisions and needle completion evidence, and that Review policy forbids runtime probes.
+**Turn:** `M6-CP3-DEFN-P13-ARRANGEMENT-SLIVER-CELLS` (Review/Definition). ChatGPT started it at 2026-11-02T05:14:30Z and set `STATUS` to BLOCKED at 15:07Z. Its [review WIP](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Review_WIP_20261102.md"), about 100 commits long, says it lacks the original trace states, the FlowRep selection decisions and needle completion evidence, and that Review policy forbids runtime probes.
 
 That block is procedural. RA-197.3 and handoff step 20 put this DEFN on the Review track as a **probe DEFN on the scratch build**: the evidence is a probe to run, not an artifact to find. `REVIEW_TURN_POLICY.md` §4.3 keeps a Review free of product, test, fixture and selector changes in the repository. Scratch diagnostic probes leave all of those untouched, and they have been the Review track's evidence since RA-188 (GMP_COMPILE_POLICY: diagnostic only, never gate authority). Resumed here at 15:54:02Z on the RA-197 scratch build.
 
@@ -106,7 +106,7 @@ Code + Build, compile only, implementation agent, Linux.
 
 Test + Benchmark, artifact-only, CB77's immutable package.
 
-- **Gate:** [manifest](Architecture_M6_TB71_P13_Needle_Grid_Full_Gate_Case_Manifest.tsv), 881 rows, SHA-256 `f2503dcaf91b13c4a221d52fe7a18899327ab6f96862c3688a67f8f8d14c78a6`. That is TB70's 880 rows byte for byte plus GUARD row 881.
+- **Gate:** [manifest](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB71_P13_Needle_Grid_Full_Gate_Case_Manifest.tsv"), 881 rows, SHA-256 `f2503dcaf91b13c4a221d52fe7a18899327ab6f96862c3688a67f8f8d14c78a6`. That is TB70's 880 rows byte for byte plus GUARD row 881.
   - Ledger v5 `fd433f54…`; harness P8 `78b8002c…`; `SELF_CHECK_PASS cases=881 deferred=81`.
   - Pre-registered **881/881**, membership **962**.
 - **Census:** `3af1dc0d…`, unchanged.

@@ -1,6 +1,6 @@
 # RA-196 — P13-g completion quad embedding: probe adjudication; exact CB73/CB74/CB75, TB69 (2026-11-01)
 
-**Turn:** `M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING` (Review/Definition), reopened at `fe29a3554`. The [static decision](Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md) (ChatGPT, `6b6048966`) ran no binary. It left its central question open: is patch 1200's boundary malformed (branch A), or is the split inadmissible (branch B)? It then froze a CB73 that would investigate, branch and possibly stop. RA-195.7 gave this DEFN one exit: name the owner, close `detail=None`, and produce an exact patch. RA-196 meets that exit with probes on current source. It replaces the decision's CB73 with three exact patches and a TB.
+**Turn:** `M6-CP3-DEFN-P13-COMPLETION-QUAD-EMBEDDING` (Review/Definition), reopened at `fe29a3554`. The [static decision](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Review_Decision_20261101.md") (ChatGPT, `6b6048966`) ran no binary. It left its central question open: is patch 1200's boundary malformed (branch A), or is the split inadmissible (branch B)? It then froze a CB73 that would investigate, branch and possibly stop. RA-195.7 gave this DEFN one exit: name the owner, close `detail=None`, and produce an exact patch. RA-196 meets that exit with probes on current source. It replaces the decision's CB73 with three exact patches and a TB.
 
 Source at review: HEAD `fe29a3554`, fast-forwarded to `b7eb717b4` at closeout. `src include tests benchmarks CMakeLists.txt cmake` are byte-equal to CB72 `7b85b450bc98abfb65db511fdcd524eb11f537f8` (TB68 package `13093439789`, 873/873) at both. Only documents and orchestration landed after TB68. A CB73 attempt under the superseded scope started at 2026-11-01T21:39:52Z (`60bc9ac84` … `b7eb717b4`, resumed 22:02:58Z). It changed only `STATUS` and is superseded: CB73 restarts from RA-196.9, whose precheck still holds.
 
@@ -165,7 +165,7 @@ Code + Build, compile only.
 
 Test + Benchmark, artifact-only, CB75's immutable package.
 
-- **Gate:** [manifest](Architecture_M6_TB69_P13_Completion_Embedding_Full_Gate_Case_Manifest.tsv), 878 rows, SHA-256 `aaaba077a067853a00310683946f82394c60247bd42717fd283b4d7cde423c82`. That is TB68's 873 rows byte for byte plus GUARD rows 874–878.
+- **Gate:** [manifest](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB69_P13_Completion_Embedding_Full_Gate_Case_Manifest.tsv"), 878 rows, SHA-256 `aaaba077a067853a00310683946f82394c60247bd42717fd283b4d7cde423c82`. That is TB68's 873 rows byte for byte plus GUARD rows 874–878.
   - Ledger v5 `fd433f54…`; harness P8 `78b8002c…`; `SELF_CHECK_PASS cases=878 deferred=81`.
   - Pre-registered **878/878**, membership **959**.
 - **Census:** `3af1dc0d…`, unchanged.

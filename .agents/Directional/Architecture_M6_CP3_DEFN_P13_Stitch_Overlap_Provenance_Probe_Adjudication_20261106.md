@@ -6,7 +6,7 @@
 - semantic CB96 `11c8172ad467c6dc865f2f3352e75b78f5469a2b`, unchanged through `89cc1d18e`;
 - scratch build `bld55n` (macOS, FMA-off, static), synced to the tree named in each section.
 
-**Owning WIP:** [P13-l2 Review WIP](Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Stitch_Overlap_Review_WIP_20261106.md) and its supplements. Their exact issue tuples, patch owners and side schedules are accepted as recorded.
+**Owning WIP:** [P13-l2 Review WIP](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_Completed_Mesh_Stitch_Overlap_Review_WIP_20261106.md") and its supplements. Their exact issue tuples, patch owners and side schedules are accepted as recorded.
 
 ## RA-210.1 The block
 
@@ -83,7 +83,7 @@ All-pairs census of the strict validator's global contact test on the CB96 Vase 
 
 **CB97 — `M6-CP3-CB97-P13-VALIDATOR-CONTACT-LENGTH-UNITS`**
 - **Precheck:** `git diff --quiet 11c8172ad467c6dc865f2f3352e75b78f5469a2b HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
-- **Patch:** [`Architecture_M6_CP3_CB97_P13_Validator_Contact_Length_Units.diff`](Architecture_M6_CP3_CB97_P13_Validator_Contact_Length_Units.diff).
+- **Patch:** [`Architecture_M6_CP3_CB97_P13_Validator_Contact_Length_Units.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB97_P13_Validator_Contact_Length_Units.diff").
   - SHA-256 `84b8414fb58df6dfb90b5e425d15c26aac0ccaa73b4ffbf31dbf9dbc38737071`.
   - 114 lines; **keep its 5 single-space context lines**.
 
@@ -98,7 +98,7 @@ All-pairs census of the strict validator's global contact test on the CB96 Vase 
 
 **CB98 — `M6-CP3-CB98-P13-VALIDATOR-CONCAVE-QUAD-TRIANGLES`**
 - **Precheck:** the CB97 results.
-- **Patch:** [`…CB98_P13_Validator_Concave_Quad_Triangles.diff`](Architecture_M6_CP3_CB98_P13_Validator_Concave_Quad_Triangles.diff).
+- **Patch:** [`…CB98_P13_Validator_Concave_Quad_Triangles.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB98_P13_Validator_Concave_Quad_Triangles.diff").
   - SHA-256 `14986e38261eb46796262b262801bcf9c5dd255344c918f10867224510b7ce6a`.
   - 113 lines; **keep its 4 single-space context lines**.
 
@@ -113,7 +113,7 @@ All-pairs census of the strict validator's global contact test on the CB96 Vase 
 
 **CB99 — `M6-CP3-CB99-P13-COMPLETION-CORNER-ON-OPPOSITE-EDGE`**
 - **Precheck:** the CB98 results.
-- **Patch:** [`…CB99_P13_Completion_Corner_On_Opposite_Edge.diff`](Architecture_M6_CP3_CB99_P13_Completion_Corner_On_Opposite_Edge.diff).
+- **Patch:** [`…CB99_P13_Completion_Corner_On_Opposite_Edge.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB99_P13_Completion_Corner_On_Opposite_Edge.diff").
   - SHA-256 `92c67e63bbbeabb7504e349c8f48637c3b26aee39e36423fbeee0a1e2d45dcbe`.
   - 344 lines; **keep its 14 single-space context lines**.
 
@@ -151,7 +151,7 @@ All-pairs census of the strict validator's global contact test on the CB96 Vase 
 
 ## RA-210.6 TB84 — `M6-CP3-TB84-P13-CONTACT-PREDICATES-FULL-GATE-EXEC` (after CB99)
 
-- **Gate:** [`Architecture_M6_TB84_P13_Contact_Predicates_Full_Gate_Case_Manifest.tsv`](Architecture_M6_TB84_P13_Contact_Predicates_Full_Gate_Case_Manifest.tsv).
+- **Gate:** [`Architecture_M6_TB84_P13_Contact_Predicates_Full_Gate_Case_Manifest.tsv`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB84_P13_Contact_Predicates_Full_Gate_Case_Manifest.tsv").
   - 906 rows, SHA-256 `09eff7ed146ef39836706f4d87ae8e9309e35ab16787b6d1e8c3f39314a0b7ff`.
   - TB83's 903 rows byte for byte, plus GUARD rows 904–906 (the three new tests).
   - `SELF_CHECK_PASS cases=906 deferred=81`.

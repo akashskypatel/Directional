@@ -1,6 +1,6 @@
 # RA-206 — Review of the TB80 Review: row 899 exposed a real O(F×V) binding check, and its wall clock was calibrated on macOS (2026-11-05)
 
-**Reviewed turn:** `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV` (ChatGPT, [adjudication](Architecture_M6_CP3_TB80_REV_Final_Validation_Cost_Gate_Adjudication_20261105.md), `1b3e790aa`). It froze `M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE` as an open-ended evidence turn.
+**Reviewed turn:** `M6-CP3-TB80-P13-ARRANGEMENT-CELL-ORDER-FULL-GATE-REV` (ChatGPT, [adjudication](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_TB80_REV_Final_Validation_Cost_Gate_Adjudication_20261105.md"), `1b3e790aa`). It froze `M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE` as an open-ended evidence turn.
 
 **State:**
 - The implementation agent opened that CB91 at 2026-11-05T05:56:03Z (`c714b4f8c`).
@@ -88,7 +88,7 @@ The slope is still 0.56 ms per quad at F = 28,800 (0.16 ms at 7,200).
 ## RA-206.3 CB91 — exact patch (`M6-CP3-CB91-P13-FINAL-VALIDATION-BINDING-COST-EVIDENCE`, ID kept)
 
 - **Precheck:** `git diff --quiet e00ef91a8a5dff8b125c9abfe388952cec20cbe1 HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
-- **Patch:** [`Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Once.diff`](Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Once.diff).
+- **Patch:** [`Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Once.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB91_P13_Final_Validation_Binding_Once.diff").
   - SHA-256 `c323ae01e44a96998c07c2e0e0fd30b70d3d867201e49d97480003198d1c4a43`.
   - 177 lines; **keep its 5 single-space context lines**.
 
@@ -111,7 +111,7 @@ The slope is still 0.56 ms per quad at F = 28,800 (0.16 ms at 7,200).
   | Check | Result |
   |---|---|
   | Local gate, 899 rows | **898/899** (only row 283, O16) |
-  | Census digests (Plane, MultiFaceSeam, CloseSheets, Cylinder, BunnyRandom, Vase) | **129/129 items byte-identical** to the [post-CB90 reference](Architecture_M6_CP3_CB90_P13_Platform_Digest_macOS_FMAoff_Reference.tsv), including every `validation` hash |
+  | Census digests (Plane, MultiFaceSeam, CloseSheets, Cylinder, BunnyRandom, Vase) | **129/129 items byte-identical** to the [post-CB90 reference](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB90_P13_Platform_Digest_macOS_FMAoff_Reference.tsv"), including every `validation` hash |
   | Row 899 | PASS in 3/3 runs |
   | M1 (per-vertex check restored) | **FAILS**: 450 > 16, 130 ≠ 450 |
   | M4 (RA-202's CB88 revert) | **FAILS**: 30,409 > 16 |

@@ -1,6 +1,6 @@
 # RA-214 — `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER` resolved runtime-free; first A4→A3 slice frozen (2026-11-08)
 
-**Turn:** `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER` (step 58), resumed from `BLOCKED` (Review/DEFN, Claude). **Subject:** the blocker raised by the same turn's earlier attempt ([WIP index](Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Review_WIP_20261108.md), [execution-authority record](Architecture_M6_CP3_DEFN_P13_A4_A2b_Exact_Support_Export_Execution_Authority_Review_20261108.md)) and the scope [RA-213](Architecture_M6_CP3_DEFN_P13_Vase_Producer_Path_Adversarial_Review_A2b_Disc_Construction_20261108.md) §4 gave this turn. **Verdict:** the blocker is valid, and the fault is RA-213 §4 (mine). This turn completes **runtime-free**. Runtime facts move to the TBs of narrow product slices. The first slice, **CB103**, is frozen as an exact patch, and **TB86** is frozen as a 909-row manifest.
+**Turn:** `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER` (step 58), resumed from `BLOCKED` (Review/DEFN, Claude). **Subject:** the blocker raised by the same turn's earlier attempt ([WIP index](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Review_WIP_20261108.md"), [execution-authority record](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_A4_A2b_Exact_Support_Export_Execution_Authority_Review_20261108.md")) and the scope [RA-213](Architecture_M6_CP3_DEFN_P13_Vase_Producer_Path_Adversarial_Review_A2b_Disc_Construction_20261108.md) §4 gave this turn. **Verdict:** the blocker is valid, and the fault is RA-213 §4 (mine). This turn completes **runtime-free**. Runtime facts move to the TBs of narrow product slices. The first slice, **CB103**, is frozen as an exact patch, and **TB86** is frozen as a 909-row manifest.
 
 **Evidence base:** HEAD `07d1a2207`. Product sources are unchanged since compiled CB101 `23e35798…` (`git diff --stat 23e35798..HEAD -- src include tests` is empty). Static source reading only. No Directional binary was built or executed. The one compile-tool use is a `-fsyntax-only` check of the frozen patch, which emits no object file (§6).
 
@@ -97,7 +97,7 @@ Its outputs:
 
 No disposition reads the counters, and nothing is hashed.
 
-**Patch:** [`Architecture_M6_CP3_CB103_P13_A3_Span_Coverage_Receipt.diff`](Architecture_M6_CP3_CB103_P13_A3_Span_Coverage_Receipt.diff), base `07d1a2207`.
+**Patch:** [`Architecture_M6_CP3_CB103_P13_A3_Span_Coverage_Receipt.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB103_P13_A3_Span_Coverage_Receipt.diff"), base `07d1a2207`.
 
 | Property | Value |
 |---|---|
@@ -111,7 +111,7 @@ No disposition reads the counters, and nothing is hashed.
 
 **TB86** runs on the CB103 package.
 
-- **Manifest:** [`Architecture_M6_TB86_P13_A3_Span_Coverage_Full_Gate_Case_Manifest.tsv`](Architecture_M6_TB86_P13_A3_Span_Coverage_Full_Gate_Case_Manifest.tsv). It has 909 rows: TB85's 908 plus GUARD 909, `SurfaceCellAuthorityContractCutover.A3SpanCoverageObservesRecordedHardRailIntervalsAndTheirLoss`.
+- **Manifest:** [`Architecture_M6_TB86_P13_A3_Span_Coverage_Full_Gate_Case_Manifest.tsv`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB86_P13_A3_Span_Coverage_Full_Gate_Case_Manifest.tsv"). It has 909 rows: TB85's 908 plus GUARD 909, `SurfaceCellAuthorityContractCutover.A3SpanCoverageObservesRecordedHardRailIntervalsAndTheirLoss`.
   - SHA-256 `3573ffbf6cba47592489c34f2177988c1b66871db4cd983577694dbb9dcabe76`
   - `SELF_CHECK_PASS cases=909 deferred=81`
   - membership 990

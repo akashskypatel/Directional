@@ -21,7 +21,7 @@ The attempt found real facts but put D5 in the wrong layer, and every gate it ad
 - **W5, A2b-level merging** (considered here, rejected). A2b assumes one source edge per Mandatory arc in about 30 places: `EmbeddedGraphTopology.cpp`, `GlobalTopologyPlan.cpp:2708`, `SurfaceCutGraph.cpp:476`, and `SurfaceCellTracing.cpp:17451` and `:18911`. Merging there would rewrite the region and fragment engine to change a scheduling quantity.
 - Process: a DEFN was handed to the implementation agent, against the Review-track rule (RA-172). The next DEFN (64B.3) is assigned to the Review agent.
 
-The 11 WIP records carry a superseded banner and are kept as provenance.
+The 11 WIP records were folded on 2026-11-09; they are listed in the [M6 folded document index](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete).
 
 ## 2. D5 contract
 

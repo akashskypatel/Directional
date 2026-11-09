@@ -1,6 +1,6 @@
 # Off-selector census: independently re-derived first-failure inventory (working DEFN evidence)
 
-> **Superseded as authority by [RA-172](Architecture_M6_CP3_DEFN_RP01_Off_Selector_Coverage_Disposition_20261030.md) (2026-10-30).** This file is retained as per-row source evidence for the repair slices. Row dispositions are in RA-172.4 and the frozen deferred ledger. The "proposed 916" manifest named below was withdrawn and folded; TB51 is the frozen 831-row manifest.
+> **Superseded as authority by [RA-172](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_RP01_Off_Selector_Coverage_Disposition_20261030.md") (2026-10-30).** This file is retained as per-row source evidence for the repair slices. Row dispositions are in RA-172.4 and the frozen deferred ledger. The "proposed 916" manifest named below was withdrawn and folded; TB51 is the frozen 831-row manifest.
 >
 > INCOMPLETE ANALYSIS: group classifications below are **hypotheses**, not an adjudicated root-cause finding or stable-regression change. Do not dispatch CB work or execute the proposed TB51 manifest until the DEFN review is completed.
 

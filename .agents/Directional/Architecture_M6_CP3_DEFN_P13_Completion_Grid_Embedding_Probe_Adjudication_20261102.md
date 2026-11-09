@@ -1,6 +1,6 @@
 # RA-197 — P13-h/P13-i closed-form grids and side-count descriptors: probe adjudication; exact CB76, TB70 (2026-11-02)
 
-**Turn:** `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING` (Review/Definition). ChatGPT started it at 2026-11-02T01:14:57Z and set `STATUS` to BLOCKED: the [review WIP](Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Review_WIP_20261102.md) asks for "missing Vase descriptor evidence" before it can name an owner. Resumed here at 03:14:48Z on the RA-196 scratch build. RA-196.8 step 5 had already placed this DEFN on that build. The trace is a probe to run, not an artifact to find, so the block was procedural.
+**Turn:** `M6-CP3-DEFN-P13-COMPLETION-GRID-EMBEDDING` (Review/Definition). ChatGPT started it at 2026-11-02T01:14:57Z and set `STATUS` to BLOCKED: the [review WIP](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Review_WIP_20261102.md") asks for "missing Vase descriptor evidence" before it can name an owner. Resumed here at 03:14:48Z on the RA-196 scratch build. RA-196.8 step 5 had already placed this DEFN on that build. The trace is a probe to run, not an artifact to find, so the block was procedural.
 
 Source at review: HEAD `8510d1e48`. `src include tests benchmarks CMakeLists.txt cmake` are byte-equal to CB75 `8656c4fed5070a467da491b60ead5c8ab1d99dbd` (TB69 package `13107147891`, 878/878). Only documents landed after CB75. The scratch tree `wt61`/`bld61` equals that source (verified file by file) before the probe was added.
 
@@ -136,7 +136,7 @@ Code + Build, compile only, implementation agent, Linux.
 
 Test + Benchmark, artifact-only, CB76's immutable package.
 
-- **Gate:** [manifest](Architecture_M6_TB70_P13_Patch_Side_Start_Full_Gate_Case_Manifest.tsv), 880 rows, SHA-256 `a9f964c843a5620f281bf2ca2f07e7df9b8d11a7769218a635a5b707aaf2b03b`. That is TB69's 878 rows byte for byte plus GUARD rows 879–880.
+- **Gate:** [manifest](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB70_P13_Patch_Side_Start_Full_Gate_Case_Manifest.tsv"), 880 rows, SHA-256 `a9f964c843a5620f281bf2ca2f07e7df9b8d11a7769218a635a5b707aaf2b03b`. That is TB69's 878 rows byte for byte plus GUARD rows 879–880.
   - Ledger v5 `fd433f54…`; harness P8 `78b8002c…`; `SELF_CHECK_PASS cases=880 deferred=81`.
   - Pre-registered **880/880**, membership **961**.
 - **Census:** `3af1dc0d…`, unchanged.

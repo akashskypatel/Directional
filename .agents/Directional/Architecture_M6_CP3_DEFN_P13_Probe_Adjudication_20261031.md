@@ -1,6 +1,6 @@
 # RA-188 — P13 probe adjudication: three deferred rows, three causes (2026-10-31)
 
-**Turn:** `M6-CP3-DEFN-P13-PROBE-ADJUDICATION` (DEFN, Review track). It reviews `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE` ([P13 decision](Architecture_M6_CP3_DEFN_P13_Design_Acceptance_Decision_20261031.md)) and replaces its unstarted successors.
+**Turn:** `M6-CP3-DEFN-P13-PROBE-ADJUDICATION` (DEFN, Review track). It reviews `M6-CP3-DEFN-P13-DESIGN-ACCEPTANCE-MATRIX-PROBE` ([P13 decision](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_Design_Acceptance_Decision_20261031.md")) and replaces its unstarted successors.
 - **Method:** scratch probes are diagnostic only and carry no gate authority (RA-165.2 F1, RA-166.6 F6). They ran on a local macOS arm64 build of `e1fd0e4b…`, which equals HEAD in `src`, `include`, `tests`, `benchmarks`, `CMakeLists.txt` and `cmake` (the CB63 semantic source), at default arithmetic, with one fixture per process. TB63's census is the Linux confirmation.
 
 ## RA-188.1 Review of the P13 decision
@@ -77,7 +77,7 @@
 **Turn:** `M6-CP3-TB63-P13-CENSUS-FULL-GATE-EXEC` (TB-EXEC; implementation agent; Linux workflow runner). It makes two P8 harness `--execute` runs on the immutable CB64 package (harness `78b8002c…`, unchanged).
 
 1. **Gate:**
-   - Manifest: [`Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv`](Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv), 863 rows, `31c1360ab5738cab682e628304914af4a3f7ad4dd077a8f688e79536bf371341`.
+   - Manifest: [`Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv"), 863 rows, `31c1360ab5738cab682e628304914af4a3f7ad4dd077a8f688e79536bf371341`.
    - `MEMBERSHIP_LEDGER`: ledger v4, 82 rows, `36241caa61d3d27aa062fee05cf3af12a62a81a5a11a42e3ea75e46b0590139d`.
    - Pre-registered: **863/863 PASS**, postflight true, membership 945.
 2. **Census:**

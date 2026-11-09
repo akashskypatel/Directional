@@ -58,7 +58,7 @@ Builds are local CB58 source plus the CB59 patch, default arithmetic, incrementa
 
 ## RA-185.5 TB58 frozen inputs
 
-- **Gate:** [`Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv`](Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv), 863 rows, SHA-256 `31c1360ab5738cab682e628304914af4a3f7ad4dd077a8f688e79536bf371341`.
+- **Gate:** [`Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB58_Diag_Retain_Display_Full_Gate_Case_Manifest.tsv"), 863 rows, SHA-256 `31c1360ab5738cab682e628304914af4a3f7ad4dd077a8f688e79536bf371341`.
   - The first 862 lines are TB57 (`f898c9b6…`).
   - Rows 862 (`ra185:materialization-display-retained`) and 863 (`ra185:materialization-display-absent`) are GUARD rows in `directional_compiled_api_tests`.
 - **Ledger:** v4 is unchanged (82, `36241caa…`).

@@ -1,6 +1,6 @@
 # RA-203 — TB78 Review: the review-boundary block, and the Vase completed-quad platform split (2026-11-04)
 
-**Turn:** `M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV`. The Claude Review resumes it from the ChatGPT Review's BLOCKED checkpoint ([WIP](Architecture_M6_CP3_TB78_REV_P13_Census_Count_Review_WIP_20261104.md)).
+**Turn:** `M6-CP3-TB78-P13-CENSUS-PATH-COST-FULL-GATE-REV`. The Claude Review resumes it from the ChatGPT Review's BLOCKED checkpoint ([WIP](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_TB78_REV_P13_Census_Count_Review_WIP_20261104.md")).
 
 **Source:** HEAD `4614f6858`. `git diff --quiet 6cc50f878ef829711e16262759afb3367bec2aff HEAD -- src include tests benchmarks CMakeLists.txt cmake` passes, so the product and test source is CB88's.
 
@@ -117,7 +117,7 @@ Stage hashes quantize coordinates to 1e-9 (`hash_combine_double`). Equal hashes 
 Code + Build, test-only, compile only.
 
 - **Precheck:** `git diff --quiet 6cc50f878ef829711e16262759afb3367bec2aff HEAD -- src include tests benchmarks CMakeLists.txt cmake`.
-- **Patch:** [`Architecture_M6_CP3_CB89_P13_Census_Platform_Digest.diff`](Architecture_M6_CP3_CB89_P13_Census_Platform_Digest.diff).
+- **Patch:** [`Architecture_M6_CP3_CB89_P13_Census_Platform_Digest.diff`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB89_P13_Census_Platform_Digest.diff").
   - 68 lines, SHA-256 `64af5c71ad57a662724b077761f71c1c38893be6ed32516fc568166e85c23f71`.
   - Keep its 3 single-space context lines.
   - Numstat `45 0` `tests/SurfaceCellDesignAcceptanceTests.cpp`.
@@ -144,7 +144,7 @@ Code + Build, test-only, compile only.
 
 Test + Benchmark, artifact-only, on CB89's immutable package.
 
-- **Gate:** [TB78 manifest](Architecture_M6_TB78_P13_Census_Path_Cost_Full_Gate_Case_Manifest.tsv), reused unchanged.
+- **Gate:** [TB78 manifest](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB78_P13_Census_Path_Cost_Full_Gate_Case_Manifest.tsv"), reused unchanged.
   - 899 rows, SHA-256 `9d2c1ec598fea2b95b251fd2e007b7086740e51fb8f6f3ad7ff5671ab09ddb44`; ledger v5 `fd433f54…`.
   - Registered **899/899**, membership **980**.
   - The raw logs of rows 795 (CloseSheets), 796 (MultiFaceSeam), 797 (Plane) and 864 (Cylinder) each contain exactly one `platform-digest` line.
@@ -164,7 +164,7 @@ Test + Benchmark, artifact-only, on CB89's immutable package.
 
 ## RA-203.7 macOS reference (scratch: CB88 source + CB89)
 
-[`Architecture_M6_CP3_CB89_P13_Platform_Digest_macOS_Reference.tsv`](Architecture_M6_CP3_CB89_P13_Platform_Digest_macOS_Reference.tsv): 129 rows (case, item, value, count) for Plane, MultiFaceSeam, CloseSheets, Cylinder, BunnyRandom and Vase. SHA-256 `7e2796fe4991553becf1006d400f288368fe9c9781a6bc0d154faaaa821a167e`; checked against the raw logs.
+[`Architecture_M6_CP3_CB89_P13_Platform_Digest_macOS_Reference.tsv`](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB89_P13_Platform_Digest_macOS_Reference.tsv"): 129 rows (case, item, value, count) for Plane, MultiFaceSeam, CloseSheets, Cylinder, BunnyRandom and Vase. SHA-256 `7e2796fe4991553becf1006d400f288368fe9c9781a6bc0d154faaaa821a167e`; checked against the raw logs.
 
 | Vase item | macOS value / count |
 |---|---|

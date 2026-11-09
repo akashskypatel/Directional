@@ -1,6 +1,6 @@
 # RA-160 — Legacy matching-path DEFN Review: 190 re-home amended; O2 production CB withdrawn (2026-10-26)
 
-**Turn:** `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION-REV`, run by the Review Agent. **Decision:** the [DEFN](Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_20261026.md) is **ACCEPTED IN PART**.
+**Turn:** `M6-CP3-DEFN-RP01-LEGACY-MATCHING-PATH-DISPOSITION-REV`, run by the Review Agent. **Decision:** the [DEFN](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_Legacy_Matching_Path_Disposition_20261026.md") is **ACCEPTED IN PART**.
 - Q1–Q3 are accepted. Q2 is amended (RA-160.3).
 - Q4–Q5 are **rejected as incomplete**, so the Q6 production CB is **not authorized**.
 - O2 retirement moves after RP-01 (RA-160.4).

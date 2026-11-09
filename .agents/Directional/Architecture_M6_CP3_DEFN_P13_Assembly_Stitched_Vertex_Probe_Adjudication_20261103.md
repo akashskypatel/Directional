@@ -134,7 +134,7 @@ Code + Build, compile only, implementation agent, Linux.
 
 Test + Benchmark, artifact-only, CB79's immutable package.
 
-- **Gate:** [manifest](Architecture_M6_TB73_P13_Node_Stitch_Key_Full_Gate_Case_Manifest.tsv), 886 rows, SHA-256 `5d09fa337b42adc8629f4bded8ea35b2181e468fb9dd91f7db5414fa534cfc4a`: TB72's 883 rows byte for byte plus GUARD rows 884–886 (`directional_surface_cell_completion_tests`).
+- **Gate:** [manifest](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB73_P13_Node_Stitch_Key_Full_Gate_Case_Manifest.tsv"), 886 rows, SHA-256 `5d09fa337b42adc8629f4bded8ea35b2181e468fb9dd91f7db5414fa534cfc4a`: TB72's 883 rows byte for byte plus GUARD rows 884–886 (`directional_surface_cell_completion_tests`).
   - Ledger v5 `fd433f54…`; harness P8 `78b8002c…`; `SELF_CHECK_PASS cases=886 deferred=81`.
   - Pre-registered **886/886**, membership **967**.
 - **Census:** `3af1dc0d…`, unchanged.

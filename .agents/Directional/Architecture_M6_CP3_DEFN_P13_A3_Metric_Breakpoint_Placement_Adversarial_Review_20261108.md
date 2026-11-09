@@ -104,7 +104,7 @@ Within a run, placement stays linear in length; that deviation is documented in 
 
 ## 5. Exact CB108 — the run profile and placement, not yet wired
 
-- [Patch](Architecture_M6_CP3_CB108_P13_A3_Metric_Breakpoint_Placement_Exact.diff): SHA-256 `c56559ae0d2abced96151cb6ad113fc53c7a70b47200eec04499b847ae08f202`, 532 lines, 11 single-space context lines. Numstat: `15 0` `GlobalConformityBaseline.h`; `124 13` `GlobalConformityBaselineSupport.cpp`; `18 0` `GlobalConformityBaselineSupport.h`; `266 0` `GlobalConformityBaselineTests.cpp`. It applies cleanly to HEAD (product = CB107 `34967c89…`).
+- [Patch](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB108_P13_A3_Metric_Breakpoint_Placement_Exact.diff"): SHA-256 `c56559ae0d2abced96151cb6ad113fc53c7a70b47200eec04499b847ae08f202`, 532 lines, 11 single-space context lines. Numstat: `15 0` `GlobalConformityBaseline.h`; `124 13` `GlobalConformityBaselineSupport.cpp`; `18 0` `GlobalConformityBaselineSupport.h`; `266 0` `GlobalConformityBaselineTests.cpp`. It applies cleanly to HEAD (product = CB107 `34967c89…`).
 - **Product changes:**
   - `BaselineConformityMetricRun` is added to the baseline header, with nothing reading it yet.
   - `derive_partition_stable_metric_runs` is added, and the count now sums floors over it. This is a refactor with identical arithmetic.
@@ -119,7 +119,7 @@ Within a run, placement stays linear in length; that deviation is documented in 
 
 ## 6. TB91 — CB108 full gate
 
-- [Manifest](Architecture_M6_TB91_P13_A3_Metric_Breakpoint_Placement_Full_Gate_Case_Manifest.tsv): 917 rows, `0b16a30e332e42888339c6bdd8bcb66127281fca2c6430e22ef7e98065fb1752`. It is TB90's 914 rows plus GUARD 915–917. `SELF_CHECK_PASS cases=917 deferred=81`; membership 998; ledger v5 `fd433f54…`; census `3af1dc0d…`; harness `78b8002c…`.
+- [Manifest](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_TB91_P13_A3_Metric_Breakpoint_Placement_Full_Gate_Case_Manifest.tsv"): 917 rows, `0b16a30e332e42888339c6bdd8bcb66127281fca2c6430e22ef7e98065fb1752`. It is TB90's 914 rows plus GUARD 915–917. `SELF_CHECK_PASS cases=917 deferred=81`; membership 998; ledger v5 `fd433f54…`; census `3af1dc0d…`; harness `78b8002c…`.
 - **Expect:**
   - 917/917;
   - all 7 `platform-digest` and 7 `a3-coverage` lines byte-identical to TB90;
@@ -128,7 +128,7 @@ Within a run, placement stays linear in length; that deviation is documented in 
 
 ## 7. Exact CB109 — make the D7b placement the plan's, and TB92
 
-- [Patch](Architecture_M6_CP3_CB109_P13_A3_Metric_Breakpoint_Placement_Switch_Exact.diff): SHA-256 `be4cac4ea85651d0d327f28ba6c9df0a625c4e0e22d518bdedb31d401116e302`, 377 lines, 15 single-space context lines. Numstat: `6 2` `GlobalConformityBaseline.h`; `29 37` `GlobalConformityBaseline.cpp`; `0 15` `GlobalConformityBaselineSupport.cpp`; `0 1` `GlobalConformityBaselineSupport.h`; `44 20` `GlobalConformityBaselineValidator.cpp`; `51 2` `GlobalConformityBaselineTests.cpp`. It applies only on top of CB108.
+- [Patch](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB109_P13_A3_Metric_Breakpoint_Placement_Switch_Exact.diff"): SHA-256 `be4cac4ea85651d0d327f28ba6c9df0a625c4e0e22d518bdedb31d401116e302`, 377 lines, 15 single-space context lines. Numstat: `6 2` `GlobalConformityBaseline.h`; `29 37` `GlobalConformityBaseline.cpp`; `0 15` `GlobalConformityBaselineSupport.cpp`; `0 1` `GlobalConformityBaselineSupport.h`; `44 20` `GlobalConformityBaselineValidator.cpp`; `51 2` `GlobalConformityBaselineTests.cpp`. It applies only on top of CB108.
 - **Why these five files are one turn:** the producer receipt and its validator twin are compared for equality, and the wrapper's interior check reads the plan. Changing any one of them without the others fails every multi-piece build.
 - **Product changes:**
   - The plan stores `metricRuns_`, and `breakpoint_location` delegates to the placement function.

@@ -1,6 +1,6 @@
 # RA-153 — TB36-REV audit: D2 authorized as specified; RA-152 errata; TB37 split (2026-10-25)
 
-**Turn:** `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE-REV-AUDIT` (Review). **Subject:** [TB36-REV](Architecture_M6_CP3_TB36_R1_Periodic_Monodromy_Baseline_Independent_Review_Decision_20261025.md). **Decision:** TB36-REV is **accepted**: 0/5 pre-fix baseline, F1 confirmed, successor CB36 (D2 only). Three corrections are binding on CB36 and later turns, plus two errata to my own RA-152. This is static review; I did not re-hash TB36's artifacts and rely on TB36-REV's recorded hashes.
+**Turn:** `M6-CP3-TB36-RP01-PERIODIC-MONODROMY-BASELINE-REV-AUDIT` (Review). **Subject:** [TB36-REV](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_TB36_R1_Periodic_Monodromy_Baseline_Independent_Review_Decision_20261025.md"). **Decision:** TB36-REV is **accepted**: 0/5 pre-fix baseline, F1 confirmed, successor CB36 (D2 only). Three corrections are binding on CB36 and later turns, plus two errata to my own RA-152. This is static review; I did not re-hash TB36's artifacts and rely on TB36-REV's recorded hashes.
 
 ## RA-153.1 — What the baseline establishes
 
@@ -45,7 +45,7 @@ TB36-REV bundled the witnesses, TB35's 13 cases and a full 497-row census into o
 
 | # | Turn | Scope / gate |
 |---|---|---|
-| 1 | `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT` | D2 per RA-153.3; compile only. [Plan](Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Plan_20261025.md). |
+| 1 | `M6-CP3-CB36-RP01-PERIODIC-ROUTE-ATLAS-TRANSPORT` | D2 per RA-153.3; compile only. [Plan](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_CB36_Periodic_Route_Atlas_Transport_Code_Build_Plan_20261025.md"). |
 | 2 | `…-CB36-…-REV` | Static review; issues the TB37 16-row manifest with the RA-153.4 predictions. |
 | 3 | `M6-CP3-TB37-RP01-PERIODIC-ROUTE-ATLAS-VERIFY` → `…-REV` | Focused 16 rows. |
 | 4 | `M6-CP3-TB38-RP01-PERIODIC-ROUTE-ATLAS-CENSUS` → `…-REV` | Full 497 census. |

@@ -1,6 +1,6 @@
 # M6-CP3 A4/A2b — independent topology-only scratch, 2026-11-08
 
-**Turn:** `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER` (Review, still IN_PROGRESS). **Exact frozen source:** `c54184c3caab9dfd37eab6653ae923e0a5c733e9` (snapshot workflow 42452191280, metadata and `source.tar.gz.sha256` verified). Read with the previous [WIP review](Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Review_WIP_20261108.md), [feasibility continuation](Architecture_M6_CP3_DEFN_P13_A4_A2b_Three_Side_Feasibility_Continuation_20261108.md), and RA-213.
+**Turn:** `M6-CP3-DEFN-P13-A4-A2B-DISC-PRODUCER` (Review, still IN_PROGRESS). **Exact frozen source:** `c54184c3caab9dfd37eab6653ae923e0a5c733e9` (snapshot workflow 42452191280, metadata and `source.tar.gz.sha256` verified). Read with the previous [WIP review](M6_Consolidated_Record.md#m6-folded-document-index-2026-11-09--durable-do-not-delete "folded: Architecture_M6_CP3_DEFN_P13_A4_A2b_Disc_Producer_Review_WIP_20261108.md"), [feasibility continuation](Architecture_M6_CP3_DEFN_P13_A4_A2b_Three_Side_Feasibility_Continuation_20261108.md), and RA-213.
 
 ## Independent scratch evidence (not production A4 or A3)
 
