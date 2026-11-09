@@ -42,7 +42,7 @@ done
 cp -a "$p/bin/." "$r/v/bin/"
 mkdir -p "$r/v/test-data/benchmarks"; cp -a "$s/benchmarks/fixtures" "$r/v/test-data/benchmarks/"
 (cd "$r/v"; find . -type f -print0 | sort -z | xargs -0 sha256sum) > "$r/v0"
-inventory="$GITHUB_WORKSPACE/.agents/Directional/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
+inventory="$GITHUB_WORKSPACE/.agents/Directional/tools/data/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
 [[ -f "$inventory" ]] || die 'census inventory missing'
 [[ "$(sha "$inventory")" == de05a7bd5ca27eb243156ecd38434fbc69d06f4b791bdd3dbcfc5982c273a865 ]] || die 'census inventory drift'
 mapfile -t tests < <(tail -n +2 "$inventory" | cut -f2)

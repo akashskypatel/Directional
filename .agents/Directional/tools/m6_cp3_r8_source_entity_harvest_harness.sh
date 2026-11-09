@@ -55,7 +55,7 @@ try:
  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
  shutil.copytree(src/"benchmarks/fixtures",view/"test-data/benchmarks")
  initial=(inventory(pkg),inventory(src),inventory(view))
- test_inv=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
+ test_inv=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/tools/data/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
  check(sha256(test_inv)=="de05a7bd5ca27eb243156ecd38434fbc69d06f4b791bdd3dbcfc5982c273a865","test inventory drift")
  history=list(csv.reader(test_inv.open(),delimiter="\t"))[1:]
  check(len(history)==39,"historical inventory count")

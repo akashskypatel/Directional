@@ -59,7 +59,7 @@ try:
  v0=inventory(view)
  exe=view/"bin/directional_surface_cell_producer_tests"
  check(exe.exists(),"producer executable absent")
- inv=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
+ inv=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/tools/data/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
  check(hashfile(inv)=="de05a7bd5ca27eb243156ecd38434fbc69d06f4b791bdd3dbcfc5982c273a865","inventory drift")
  rows=list(csv.reader(inv.open(),delimiter="\t"))[1:]
  check(len(rows)==39,"inventory count")

@@ -24,7 +24,7 @@ def files(root):return {str(p.relative_to(root)):sha(p) for p in root.rglob("*")
 state={"planned":16,"executed":0,"red":0,"pass":0,"missing":0,"locus_bad":0,"control_bad":0,"postflight":False,"review_stop":[]}
 rows=[]; rc=90
 try:
- manifest=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Case_Manifest.tsv"
+ manifest=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/tools/data/Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Case_Manifest.tsv"
  require(sha(manifest)==manifesthash,"TB37 manifest drift")
  with manifest.open(newline="") as f:cases=list(csv.DictReader(f,delimiter="\t"))
  require(len(cases)==16 and [int(c["row"]) for c in cases]==list(range(1,17)),"TB37 16 rows")
