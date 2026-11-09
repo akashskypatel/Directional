@@ -60,7 +60,7 @@ The [TB87 substantive re-audit](Architecture_M6_CP3_TB87_REV_P13_A3_Observed_Rou
 
 The prior combined 64 (D7+D5), 64A (uniform+annulus), and 65 (D9c+trace+disc) are **superseded only as bundled implementation assignments**. Do not lose their existing semantic requirements, lineage, or debt. These future IDs are sequence metadata; **only TB91 (artifact-only test of compiled CB108) is the immediate NEXT_TURN**.
 
-## Verified TB91 boundary and mandatory next turn — `M6-CP3-CB109-P13-A3-METRIC-BREAKPOINT-PLACEMENT-SWITCH` (RA-217 §7)
+## Mandatory next turn — `M6-CP3-CB109-P13-A3-METRIC-BREAKPOINT-PLACEMENT-SWITCH` (RA-217 §7; TB91 verified)
 
 - **TB91 verified:** [report](Architecture_M6_CP3_TB91_P13_A3_Metric_Breakpoint_Placement_Full_Gate_Execution_Report_20261109.md), gate 917/917 PASS (membership 998), 1,842/1,842 hashes, GUARD 915–917 PASS; census Cylinder PASS, BunnyRandom/Vase registered RED, 9/9 hashes. All 7 platform and 7 A3 lines byte-identical to TB90, no rebaseline.
 - **Former TB91 owner/type:** implementation agent, artifact-only Test + Benchmark (separate from CB108 Code + Build). [CB108 compile record](Architecture_M6_CP3_CB108_P13_A3_Metric_Breakpoint_Placement_Code_Build_Record_20261108.md) is complete; source `8599a9eedf945f2f7b9e257427502652da1a7f4b`, immutable package `13638776269` (GMP/GMPXX eight-target compile, 28/28 manifest hashes, `runtimeExecution=false`).
