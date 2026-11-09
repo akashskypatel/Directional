@@ -1,2 +1,0 @@
-# TB91 temporary source snapshot trigger (exclude durable dispatcher and workflow-mailbox)
-.agents/connector-triggers/source-snapshot/tb91-20261108-2339.txt
