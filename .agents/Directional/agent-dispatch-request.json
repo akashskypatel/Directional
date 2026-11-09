@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb110-compile-20261109-1915",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb110-compile",
-  "source_sha": "3f81e804ac8dc44e16557339be7881a2d653fc61",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb110-compile"
+  "request_id": "m6-cp3-cb110-docs-closeout-20261109-1922",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb110-docs-closeout",
+  "file_id": "1JW5In4wjKKuTbmN3iYhICbjOGHQ2sZX5",
+  "patch_sha256": "66c1b35941ee6e7d549fa445c35e598beca68c54ca302e7e1c0aa2db084c4637",
+  "base_sha": "3f81e804ac8dc44e16557339be7881a2d653fc61",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(agent): record CB110 compile and hand off TB93",
+  "retention_days": 14
 }
