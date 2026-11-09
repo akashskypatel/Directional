@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb115-closeout-20261109-1856",
+  "request_id": "m6-cp3-cb110-apply-20261109-1913",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb115-closeout",
-  "file_id": "1jpTFOGhhEqggLnKjvLCvx6MSUj8XOeXL",
-  "patch_sha256": "eaaca354f12bd073a0184195575daaf50d859bf3070f1e4f8800bc4ca8b0e555",
-  "base_sha": "2c38f451d664778ddb237c8488ec78aefb11ad05",
+  "mailbox_key": "m6-cp3-cb110-drive-apply",
+  "file_id": "1fGH7wXdFtbzzw1piZ6yv9lgeswv4GXy-",
+  "patch_sha256": "79aee2f1803ba2cfb821c6344ae097ae3965bdec76d7a434c37afd9d0883d1c0",
+  "base_sha": "066101daaacf03e67a1cc3bf9c9033fca25ce1e7",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): close CB115 and hand off CB110",
+  "commit_message": "feat(surface-cells): add unwired mandatory chain partition and guards",
   "retention_days": 14
 }
