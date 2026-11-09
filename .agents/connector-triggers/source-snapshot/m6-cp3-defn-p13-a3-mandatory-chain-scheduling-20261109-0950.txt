@@ -1,0 +1,3 @@
+canonical_turn=M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING
+frozen_source_sha=8683be878d84aba276e7f1e806b11ffe56d79403
+request=source-snapshot
