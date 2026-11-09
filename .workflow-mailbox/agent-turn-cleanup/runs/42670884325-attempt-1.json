@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "workflow_key": "agent-turn-cleanup",
+  "workflow": "Agent Turn Temporary-State Cleanup",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/agent-turn-cleanup.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "fdbed4b492ab825951198c836abf18bbe684fa51",
+  "source_sha": "fdbed4b492ab825951198c836abf18bbe684fa51",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 42670884325,
+  "run_attempt": 1,
+  "run_number": 795,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/42670884325",
+  "result": "abandoned",
+  "summary": "Turn temporary-state cleanup.",
+  "reported_at": "2026-11-09T18:08:20Z",
+  "mailbox_branch": "workflow-mailbox",
+  "artifacts": [
+    {
+      "id": 13697894502,
+      "name": "workflow-mailbox-publisher-log-42670884325-attempt-1",
+      "size_in_bytes": 390,
+      "digest": "sha256:31bb86f1925b691bf433b73b4679d5f729488b17c2cb89cd279eb981faf6b3c3",
+      "expired": false,
+      "created_at": "2026-11-09T18:08:20Z",
+      "expires_at": "2026-11-23T18:08:19Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42670884325/artifacts/13697894502",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13697894502/zip"
+    },
+    {
+      "id": 13697664392,
+      "name": "agent-workflow-schema-validator-log-42670884325",
+      "size_in_bytes": 490,
+      "digest": "sha256:8e47aa7882bae65e100592893255e1dc76a0212faf6e9d977ad915311617004f",
+      "expired": false,
+      "created_at": "2026-11-09T18:06:29Z",
+      "expires_at": "2026-11-16T18:06:29Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42670884325/artifacts/13697664392",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13697664392/zip"
+    },
+    {
+      "id": 13697634399,
+      "name": "agent-workflow-schema-validation-42670884325",
+      "size_in_bytes": 439,
+      "digest": "sha256:8ac4a6455ef69a3a702ea4f055a6ba48b459e8cb36eb71c24caa196ac3013ee0",
+      "expired": false,
+      "created_at": "2026-11-09T18:06:28Z",
+      "expires_at": "2026-11-16T18:06:28Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/42670884325/artifacts/13697634399",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/13697634399/zip"
+    }
+  ]
+}
