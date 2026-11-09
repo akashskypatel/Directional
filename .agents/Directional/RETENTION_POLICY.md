@@ -88,6 +88,17 @@ compared before and after the move. Their history continues under `git log --fol
 byte, identity, hash or role. `Required_Green_Selector_Manifest.md` stays at its listed path. Tools and harnesses
 that read selectors are re-pointed by the implementation agent's exact patch `M6-CP3-CB114-SELECTOR-PATHS`.
 
+## `.agents/Directional` layout — DURABLE, DO NOT DELETE
+
+User-authorized 2026-11-09. Every turn keeps this structure, and new files go to the location that matches their role:
+
+- **`.agents/Directional/` (top level):** documents only. That means policies, durable project authority, `DESIGN.md`, the handoff, ORIENTATION, the tracker, LESSONS, closure and consolidated records (including the `M6_Consolidated_Record_Vol_*` volumes), `Architecture_M6_Frozen_Definitions.md`, and the current per-turn artifacts. The current per-turn artifacts are the current review record and reports, the next-turn exact `.diff` patches, the current gate and census case manifests, and the current deferred ledger. `agent-dispatch-request.json` also stays at its listed path. Per-turn artifacts are folded into the consolidated records once superseded (`CLEAN_UP_POLICY.md`).
+- **`.agents/Directional/selectors/`:** every byte-frozen selector file and its routing receipts (§ Selector files).
+- **`.agents/Directional/tools/`:** scripts, harnesses and tool documentation.
+- **`.agents/Directional/tools/data/`:** any data file a tool reads by a fixed path, such as harness case lists or source inventories. A tool may read a selector from `selectors/` and turn inputs passed as arguments from wherever they live. Any other fixed-path input belongs in `tools/data/`.
+
+A file moved between these locations is moved byte-identically with an unchanged name. References to it are updated in the same change, or by an exact patch scheduled as the next implementation turn. Byte-pinned evidence data that no tool reads (for example the `Selector_497_Red_Inventory` and historical case-manifest TSVs whose hashes the frozen definitions cite) stays a standalone file at the top level until a user instruction names a destination.
+
 ## Evidence retention
 
 - Raw machine-readable evidence that is still the sole authority for a claim is not stale and must be retained until its necessary facts have been folded into an appropriate durable/current record.

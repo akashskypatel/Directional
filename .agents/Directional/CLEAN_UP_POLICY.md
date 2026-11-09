@@ -93,6 +93,10 @@ This section is the standing user authorization required by `RETENTION_POLICY.md
 
 If classification or authority is uncertain, stop and ask the user before editing.
 
+## Directory structure
+
+Cleanup and consolidation preserve the `.agents/Directional` layout defined in `RETENTION_POLICY.md` § `.agents/Directional` layout. That means documents at the top level, selectors in `selectors/`, scripts in `tools/`, and fixed-path tool inputs in `tools/data/`. A turn that adds a file places it by that rule. A turn that finds a misplaced file moves it byte-identically and updates its references.
+
 ## Cleanup verification
 
 After cleanup:
