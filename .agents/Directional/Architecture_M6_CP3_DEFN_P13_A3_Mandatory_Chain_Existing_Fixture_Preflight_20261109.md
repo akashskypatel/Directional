@@ -19,3 +19,10 @@ After establishing one eligible original-edge pair, compare an emitted two-child
 ## Production gate still separate
 
 The future immutable TB must **also** derive at least one valid real retained Vase chain spanning two distinct original Mandatory `NetworkEdgeId` values, with both physical sides and feature protection certified; otherwise it reports `NoCertifiedProductionJoin` RED. This synthetic fixture cannot replace that gate. This Review does not authorize source/test/selector/build edits, alter A2b/A3 per-original-arc positivity, amend DESIGN §7.4, run a binary, or start successor 64C.
+
+## Independent audit receipts (this Review attempt)
+
+- Exact source snapshot 926286a774176e1e7581d463aac1c6af76e14099, workflow 42629406968/artifact 13679483000; 6292/6292 hashes verified. GitHub comparison from that event SHA to this finding's initial commit 46298d9b8c5fd7ed1407e6d04d84a359dfa911c4 reports only D5 Review documentation, STATUS and retired snapshot trigger changed; no production, test, fixture, selector or build source mutation.
+- Recomputed frozen selector449 SHA-256 d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414 and accepted selector448 SHA-256 70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789. Selector449 begins with the *exact complete bytes* of selector448; no reordering/acceptance promotion.
+- Recomputed preserved raw 8709-byte patch SHA-256 0c86332c97b1046c0f6b4182d9b9cac916929df10cc7e76199c4c2065ba4e6a8. Git apply --check on the verified source snapshot PASS; **patch remains unapplied**. An earlier scratch check used an invalid absolute --directory in a throwaway git init and failed due to command setup; correcting to apply --check from the source root passed without any writes.
+- Ran review_check.py boundary against the source-only archive: exit 1, because Git ancestry is not packaged, so durable baseline ancestor/source checks cannot pass. Selector checks passed. This is **not** a successful history audit, build, test, benchmark or runtime proof.
