@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb91-docs-20261109-0010",
+  "request_id": "m6-cp3-tb91-handoff-heading-20261109-0013",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb91-docs",
-  "file_id": "1f4yqxzsJ6F7gZX_fwUhj2jWE_4sPcTHI",
-  "patch_sha256": "a6f9d83aa2fd86523b7ba0d335d8267a3902346954cb3fb94d15677bc9388f1b",
-  "base_sha": "457b1ea018925735b8a98ab026a39593b974bacb",
+  "mailbox_key": "m6-cp3-tb91-heading",
+  "file_id": "1DbKcmBH4SxTo6QnEbLGov__5V03tHnwB",
+  "patch_sha256": "94ef7fb3f1983b04b5c75d19f40baa9a8f8b80262a0b864d764b1b353d5d6cb1",
+  "base_sha": "49325af6f524a3e35883e6d4852400ddf59dd6c5",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB91 immutable full-gate match and hand off CB109",
+  "commit_message": "docs(directional): restore mandatory handoff heading after TB91",
   "retention_days": 14
 }
