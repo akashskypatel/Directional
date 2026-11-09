@@ -1,2 +1,0 @@
-# CB110 temporary source snapshot trigger; no workflows or durable slots
-.agents/connector-triggers/source-snapshot/m6-cp3-cb110-20261109-1908.txt
