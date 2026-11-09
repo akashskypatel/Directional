@@ -1,0 +1,3 @@
+P13 A3 same-turn source snapshot.
+Turn: M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING
+Request: exact push-event SHA, source snapshot only; no build or runtime.
