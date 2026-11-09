@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb114-selector-paths-20261109-1728",
+  "request_id": "m6-cp3-cb114-docs-closeout-20261109-1833",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb114-selector-paths",
-  "file_id": "1MDFNeiB7A-ux29dPGdGj84Jz7NskIgr5",
-  "patch_sha256": "5e3726d9401f62f348b416d20d9a2a4999da6d56aef3702d4b9781a0b05883a8",
-  "base_sha": "2fa4d63623c269da1746bf2c7a1f26aa47f51701",
+  "mailbox_key": "m6-cp3-cb114-docs-closeout",
+  "file_id": "1oSwxS1rNZra2770G3NQofTVQX-vIzGit",
+  "patch_sha256": "b0e683fb50ce3ca79d80204d819716d4a0322cb5bcbc4b5bc6284bdd43e1347a",
+  "base_sha": "9c7fc2fcc16ec99e7c86733bd190cfa269c50671",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "chore(selectors): update tool paths after selector directory relocation",
+  "commit_message": "docs(agent): close CB114 selector-path turn and advance handoff to CB115",
   "retention_days": 14
 }
