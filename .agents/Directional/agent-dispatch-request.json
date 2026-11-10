@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb95-docs-closeout-20261110-v1",
+  "request_id": "m6-cp3-cb113-chained-input-factory-apply-20261110-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb95-docs-closeout",
-  "file_id": "1KMHO1_4Y2H4SuxDS-A2ygzjgn--OqKp1",
-  "patch_sha256": "de8aa079bcae666923ae1ff74a0033aef4fea408f37ff7dc2820ff784344e229",
-  "base_sha": "5ccd7d7f5de73ce2972282773e7c3d8e7dcf319f",
+  "mailbox_key": "m6-cp3-cb113-chained-input-factory-apply",
+  "file_id": "1RpS5r68o_uip9qgNtB6tNGzgYNEgpi5U",
+  "patch_sha256": "9af7770095eb20b9b07ef347457501eceb2d6d2472c251bb7a72fcc75b83ab07",
+  "base_sha": "35912b11ff870d914c08599ef7b3d45f5a09c89b",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): verify TB95 immutable gate and hand off Review 64B.8",
+  "commit_message": "feat(surface-cells): add independent chained A3 baseline input factory",
   "retention_days": 14
 }
