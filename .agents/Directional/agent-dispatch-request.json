@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb112-arc-bindings-compile-20261110-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb112-arc-bindings-compile",
-  "source_sha": "35912b11ff870d914c08599ef7b3d45f5a09c89b",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "cb112-chain-arc-bindings-compile"
+  "request_id": "m6-cp3-cb112-docs-closeout-20261110-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb112-docs-closeout",
+  "file_id": "1J5E9sMUMHjSUo1UyVm1WWajz-QPVkHVB",
+  "patch_sha256": "8c17b8f3627018ffa26fc50964b86f365d9b5026218b0c41a69bc0d1b744d68d",
+  "base_sha": "35912b11ff870d914c08599ef7b3d45f5a09c89b",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB112 compile checkpoint and hand off TB95",
+  "retention_days": 14
 }
