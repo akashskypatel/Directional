@@ -1,3 +1,8 @@
+## 2026-11-10 UTC — TB99 uniform chained-plan full gate COMPLETE / MATCH
+
+- [TB99 report](.agents/Directional/Architecture_M6_CP3_TB99_P13_A3_Uniform_Declines_Chained_Plan_Full_Gate_Execution_Report_20261110.md): immutable CB118 artifact `13806737420`, source `6f0f9331…`; [gate 42913554879](https://github.com/akashskypatel/Directional/actions/runs/42913554879) **936/936 PASS** (membership **1017**, 1880/1880 internal checksums); [census 42913713088](https://github.com/akashskypatel/Directional/actions/runs/42913713088) 1 PASS/2 registered RED (9/9 checksums). All 7+7 raw platform/A3 lines match TB97 byte-for-byte. RA-223 `D4_UNIFORM_RECEIPT` reports perArc 128 cells, 0/16 covered and chained eight cells, 8/8 covered on focused two-square fixture.
+- Artifact-only, no compile/relink/test-source/fixture/selector edits; CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged; O36 unswitched and CP3 unpromoted. Next separate Review/Definition `M6-CP3-DEFN-P13-A3-DISC-CORNER-STOPS` (64B.13), not started here.
+
 ## 2026-11-10 UTC — CB118 uniform A3 plan decline compiled (Code + Build only)
 
 - [Record](.agents/Directional/Architecture_M6_CP3_CB118_P13_A3_Uniform_Declines_Chained_Plan_Code_Build_Record_20261110.md): exact RA-223 patch SHA-256 `5e0837d07a2fc46e96cabd73ca0bab6c587f1bca0c6992c43c4245b81fc8976b` applied at [source 6f0f9331a0dd3cf5a8d404134b0ad0669e5719c7](https://github.com/akashskypatel/Directional/commit/6f0f9331a0dd3cf5a8d404134b0ad0669e5719c7), changing only `SurfaceCellTracing.cpp` (+9/−1) and `SurfaceCellsPhase10Tests.cpp` (+87/−1). The uniform producer now declines chained A3 plans. No production switch.
