@@ -1,3 +1,8 @@
+## 2026-11-10 UTC — CB117 rim census receipt compiled (Code + Build only)
+
+- [CB117 record](.agents/Directional/Architecture_M6_CP3_CB117_P13_A3_Rim_Census_Receipt_Code_Build_Record_20261110.md): applied the exact RA-222 test-only patch (`f2238aeb…`, 206 lines, +188/−0, one single-space context line) without production changes. [Source f3ad580](https://github.com/akashskypatel/Directional/commit/f3ad580ba0f0178e399d1cfeda258e55a5055f7f); [compile run 42890766143](https://github.com/akashskypatel/Directional/actions/runs/42890766143) succeeded on eight GMP/GMPXX targets. Artifact `13798262569`: 28/28 packaged hashes, clean source, `runtimeExecution=false`. No runtime gate claim.
+- Next: **TB98 64C.2** (artifact-only 935-row gate, 4 `d4-rim` receipt lines); then CB118 → TB99 in distinct turns. Accepted CP2 491/491; stable 66/17/49, debt 1, 81 deferred; selector497/CP3 not promoted.
+
 ## 2026-11-10 UTC — RA-223 adversarial re-review of the D4 uniform definition (Review; runtime-free)
 
 - [RA-223](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Uniform_Plan_Consumption_Adversarial_Review_20261110.md): RA-222's decision, CB117 and TB98 stand. Added exact [CB118](.agents/Directional/Architecture_M6_CP3_CB118_P13_A3_Uniform_Declines_Chained_Plan_Exact.diff) `5e0837d0…` (the uniform producer declines every region of a chained A3 plan; production plans are not chained; GUARD 936 on two plain squares) with [TB99](.agents/Directional/gates/Architecture_M6_TB99_P13_A3_Uniform_Declines_Chained_Plan_Full_Gate_Case_Manifest.tsv) (936 rows `c137e3f8…`, membership 1017). TB98 MATCH now routes to CB118.
