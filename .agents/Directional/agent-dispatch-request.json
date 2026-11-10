@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb117-rim-census-20261110-v2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb117-rim-census-apply-v2",
-  "file_id": "1JF-O9C8Ol58NmEAB_5dml-zQZLlpJTLx",
-  "patch_sha256": "487f3bd9a57a874611aca912e3a398d7869a45ccd3762beabd76b973cf0cfae5",
-  "base_sha": "1e88250062c9195edcf1b94200db22af302aa0c6",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surface-cells): add CB117 exact D4 rim census receipt",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb117-rim-census-compile-20261110-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb117-rim-census-compile",
+  "source_sha": "f3ad580ba0f0178e399d1cfeda258e55a5055f7f",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb117-rim-census"
 }
