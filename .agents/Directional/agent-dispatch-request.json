@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb118-compile-20261110-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb118-compile",
-  "source_sha": "6f0f9331a0dd3cf5a8d404134b0ad0669e5719c7",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-cb118-compile"
+  "request_id": "m6-cp3-cb118-doc-closeout-20261110-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb118-doc-closeout",
+  "file_id": "1LohSnjqn3I5VA5Ju43-ap1CyGiVk1ml9",
+  "patch_sha256": "6880c1225b36ac1f510aa4c4e0a4521f2937d2ea8a92872e8876f27028957369",
+  "base_sha": "66d1ef41c069fd9c4543d453f39cbd56001c26f6",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record CB118 green build and route TB99",
+  "retention_days": 14
 }
