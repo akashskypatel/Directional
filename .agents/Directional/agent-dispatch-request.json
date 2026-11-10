@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb96-docs-closeout-20261110-v1",
+  "request_id": "m6-cp3-cb116-chain-aware-consumers-apply-20261110-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb96-docs-closeout",
-  "file_id": "1SNEpH354Pqolac6zLtUJDWi6MYnjNRMQ",
-  "patch_sha256": "774ea6f9ec299ac4808d462e794383bb77aa48cbcb4eec2ed532db883b29e946",
-  "base_sha": "a8130576469a6f879aa6ce645d4b15a73b63ac72",
+  "mailbox_key": "m6-cp3-cb116-chain-aware-consumers-apply",
+  "file_id": "1rZwDYSHecitSvTUWlgHEGdzlQ6b8t0lW",
+  "patch_sha256": "22dce9a04dcf85805dba89865b1c19cd56eb07d416e43faa7bd9af8cecd2d1e3",
+  "base_sha": "d7f1c999afcb8f340ec030d50bbfc601ab758289",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB96 immutable full-gate MATCH and hand off CB116",
+  "commit_message": "feat(surface-cells): add chain-aware A4 consumers (CB116)",
   "retention_days": 14
 }
