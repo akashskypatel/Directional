@@ -1743,3 +1743,105 @@ TEST(GlobalConformityBaseline, D5ChainPartitionCoversARealA2bPlanOnce) {
             << " ownRails=" << own->size() << " oneRail=" << chainCounts[0]
             << " oneRailStop=" << chainCounts[1] << "\n";
 }
+
+namespace {
+
+using directional::geometry::AdaptiveFeatureCurve;
+using directional::geometry::FieldAlignedCurveNetworkNode;
+using directional::geometry::FieldAlignedSingularityPort;
+using directional::geometry::global_conformity_baseline_detail::derive_mandatory_chain_stop_nodes;
+
+FieldAlignedCurveNetworkNode stop_node(int node, int vertex) {
+  return {chain_node(node),
+          SourceVertexId::from_index(vertex, kChainExtent).value()};
+}
+
+FieldAlignedSingularityPort stop_port(int node, int vertex) {
+  return {directional::authority::SingularityPortId::from_index(0, 1).value(),
+          directional::authority::FieldSingularityId::from_index(0, 1).value(),
+          chain_node(node),
+          SourceVertexId::from_index(vertex, kChainExtent).value(),
+          directional::authority::SourceComponentId::from_index(0, 1).value(),
+          directional::authority::TopologyRegionId::from_index(0, 1).value(),
+          1, 0};
+}
+
+// "1,4": stop node indices in order.
+std::string stop_shape(const std::set<NetworkNodeId> &stops) {
+  std::string out;
+  for (const auto &stop : stops) {
+    if (!out.empty()) out += ',';
+    out += std::to_string(stop.index());
+  }
+  return out;
+}
+
+} // namespace
+
+TEST(GlobalConformityBaseline,
+     D5StopNodesReadPortsFeatureCurvesAndHardFeatureEdges) {
+  // Node k sits on source vertex 7 - k, so a node index is never its vertex.
+  std::vector<FieldAlignedCurveNetworkNode> nodes;
+  for (int k = 0; k < 6; ++k) nodes.push_back(stop_node(k, 7 - k));
+  const std::vector<FieldAlignedSingularityPort> ports{stop_port(4, 3)};
+  // Edge 0 is a source boundary on nodes 0-1, edge 1 a hard feature on 2-3.
+  ChainGraph graph;
+  add_arc(graph, 0, 1);
+  add_arc(graph, 2, 3);
+  graph.edges[1].kind = SurfaceCellRailKind::HardFeature;
+  // Vertex 2 carries node 5 and vertex 6 node 1; vertex 0 carries no node.
+  AdaptiveFeatureCurve curve;
+  curve.corners = {2, 0};
+  curve.junctions = {6};
+
+  EXPECT_EQ("", stop_shape(derive_mandatory_chain_stop_nodes(nodes, {}, {}, {})));
+  EXPECT_EQ("4",
+            stop_shape(derive_mandatory_chain_stop_nodes(nodes, ports, {}, {})));
+  EXPECT_EQ("2,3", stop_shape(derive_mandatory_chain_stop_nodes(
+                       nodes, {}, graph.edges, {})));
+  EXPECT_EQ("1,5", stop_shape(derive_mandatory_chain_stop_nodes(nodes, {}, {},
+                                                                {curve})));
+  EXPECT_EQ("1,2,3,4,5", stop_shape(derive_mandatory_chain_stop_nodes(
+                             nodes, ports, graph.edges, {curve})));
+
+  // Row order does not matter.
+  std::reverse(nodes.begin(), nodes.end());
+  std::reverse(graph.edges.begin(), graph.edges.end());
+  std::reverse(curve.corners.begin(), curve.corners.end());
+  EXPECT_EQ("1,2,3,4,5", stop_shape(derive_mandatory_chain_stop_nodes(
+                             nodes, ports, graph.edges, {curve})));
+  std::cout << "D5_STOP_RECEIPT case=sources none= ports=4 hardFeature=2,3"
+            << " curves=1,5 all=1,2,3,4,5 permuted=same\n";
+}
+
+TEST(GlobalConformityBaseline, D5StopNodesKeepHardFeatureRailsPerArc) {
+  // Rail 0 is a source boundary 0-1-2-3 and rail 1 a hard feature 3-4-5.
+  ChainGraph graph;
+  add_arc(graph, 0, 1);
+  add_arc(graph, 1, 2);
+  add_arc(graph, 2, 3);
+  add_arc(graph, 3, 4, GlobalTopologyArcKind::Mandatory, 1);
+  add_arc(graph, 4, 5, GlobalTopologyArcKind::Mandatory, 1);
+  graph.edges[3].kind = SurfaceCellRailKind::HardFeature;
+  graph.edges[4].kind = SurfaceCellRailKind::HardFeature;
+  std::vector<FieldAlignedCurveNetworkNode> nodes;
+  for (int k = 0; k < 6; ++k) nodes.push_back(stop_node(k, k));
+  const auto shape = [&](const std::vector<FieldAlignedSingularityPort> &ports,
+                         const std::vector<AdaptiveFeatureCurve> &curves) {
+    return chain_shape(derive_mandatory_chain_partition(
+        graph.arcs, rotations_of(graph.arcs), graph.edges,
+        derive_mandatory_chain_stop_nodes(nodes, ports, graph.edges, curves)));
+  };
+
+  // With no stop at all the two hard-feature arcs would join at node 4.
+  EXPECT_EQ("0F,1F,2F|3F,4F", partition_shape(graph, {}));
+  EXPECT_EQ("0F,1F,2F|3F|4F", shape({}, {}));
+  // A feature corner on vertex 1 and a port on node 2 each cut the boundary.
+  AdaptiveFeatureCurve corner;
+  corner.corners = {1};
+  EXPECT_EQ("0F|1F,2F|3F|4F", shape({}, {corner}));
+  EXPECT_EQ("0F,1F|2F|3F|4F", shape({stop_port(2, 2)}, {}));
+  std::cout << "D5_STOP_RECEIPT case=partition unstopped=0F,1F,2F|3F,4F"
+            << " stage1=0F,1F,2F|3F|4F corner1=0F|1F,2F|3F|4F"
+            << " port2=0F,1F|2F|3F|4F\n";
+}

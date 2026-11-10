@@ -7,6 +7,7 @@
 #include <vector>
 
 #include <Eigen/Core>
+#include <directional/geometry/AdaptiveFeatureMap.h>
 #include <directional/geometry/GlobalConformityBaseline.h>
 #include <directional/geometry/GlobalConformityPlan.h>
 
@@ -62,6 +63,17 @@ derive_mandatory_chain_partition(
 [[nodiscard]] std::optional<std::vector<ConformitySupportPiece>>
 derive_mandatory_chain_support(const BaselineMandatoryChain &chain,
                                const std::vector<GlobalTopologyArc> &arcs);
+
+// D5 stop nodes (RA-219): the nodes where a chain ends whatever their
+// rotation. They are the singularity-port nodes, the nodes on a corner or
+// junction vertex of an upstream feature curve, and both ends of every
+// hard-feature edge, so only source-boundary rails join.
+[[nodiscard]] std::set<authority::NetworkNodeId>
+derive_mandatory_chain_stop_nodes(
+    const std::vector<FieldAlignedCurveNetworkNode> &nodes,
+    const std::vector<FieldAlignedSingularityPort> &ports,
+    const std::vector<FieldAlignedMandatoryEdge> &mandatoryEdges,
+    const std::vector<AdaptiveFeatureCurve> &curves);
 
 [[nodiscard]] std::uint64_t
 exact_target_metric_digest(const Eigen::VectorXd &targetSize);
