@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb98-gate-20261110-v1",
+  "request_id": "m6-cp3-tb98-census-20261110-v1",
   "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb98-gate",
+  "mailbox_key": "m6-cp3-tb98-census",
   "executor_sha": "3afcc87823bc957562c4790c18f321bcfea97682",
   "semantic_source_sha": "f3ad580ba0f0178e399d1cfeda258e55a5055f7f",
   "turn_id": "M6-CP3-TB98-P13-A3-RIM-CENSUS-RECEIPT-FULL-GATE-EXEC",
@@ -14,12 +14,10 @@
     "EXPECTED_CANDIDATE_ZIP_SHA256": "1373a09070e1092afb9246dacec5a22cb65941221ffacc15114ea65ee1f507d0",
     "EXPECTED_ROOT_MANIFEST_SHA256": "291274c86c0a23fa9224e92ef7452b1a5bd54dc5a03df5c4faed76442ff7b1c0",
     "EXPECTED_SOURCE_ARCHIVE_SHA256": "dac4a8031a8471e810329d7dfaa2ab52c38030f118aefb126b2f0b20a3b38558",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB98_P13_A3_Rim_Census_Receipt_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "2c967a93e54223000b30539f8be76a2240d68f874446d9d77350846856e5a3a6",
-    "EXPECTED_CASE_COUNT": 935,
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
+    "EXPECTED_CASE_COUNT": 3
   },
-  "artifact_prefix": "m6-cp3-tb98-gate",
+  "artifact_prefix": "m6-cp3-tb98-census",
   "retention_days": 14
 }
