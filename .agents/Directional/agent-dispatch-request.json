@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb97-docs-closeout-20261110-v1",
+  "request_id": "m6-cp3-tb97-docs-correction-20261110-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb97-docs-closeout",
-  "file_id": "1oYFiqrat4Ll70E0IAASXPJj7hW5RtCMg",
-  "patch_sha256": "f4c1f81b1459780ae1751ea847f06ebe7fab7cb61851a7b1fdb4c59dbf2f7978",
-  "base_sha": "5eaf6c9acc466d91167cbaabeaa5136d8fb7d275",
+  "mailbox_key": "m6-cp3-tb97-docs-correction",
+  "file_id": "1iqkFtKr9nQVfWHV-rRyFVj4vkczg1X7Z",
+  "patch_sha256": "5f0d69e475df0aeed9de87beb826abfe6ba602b7c749c610971e37a2c4252a1e",
+  "base_sha": "398ed74437bb42fa61e1f2b470dd1432defcd742",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record TB97 MATCH and hand off 64C review",
+  "commit_message": "docs(directional): correct TB97 handoff authority links",
   "retention_days": 14
 }
