@@ -1,4 +1,4 @@
-> **Current canonical next:** `M6-CP3-DEFN-P13-A3-UNIFORM-PLAN-CONSUMPTION` (64C, Review-only; TB97 full gate COMPLETE / MATCH). [TB97 report](.agents/Directional/Architecture_M6_CP3_TB97_P13_A3_Chain_Aware_Consumers_Full_Gate_Execution_Report_20261110.md): gate 931/931 PASS, membership 1012, 1,870/1,870 checksums, 2 consumer receipts; census Cylinder PASS, BunnyRandom/Vase registered RED, 9/9 hashes; 7+7 raw lines equal TB95. D5 production switch O36 remains unscheduled; CP2 491/491, stable 66/17/49, debt 1, deferred 81; selector497/CP3 unpromoted.
+> **Current canonical next:** `M6-CP3-CB117-P13-A3-RIM-CENSUS-RECEIPT` (64C.1, implementation agent, compile only, test only; [RA-222](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Uniform_Plan_Consumption_Review_20261110.md) §4), then TB98 from its frozen manifest. TB97 **COMPLETE / MATCH** (931/931, membership 1012). 64C COMPLETE: the D4 uniform switch joins the D5 switch under O36, unscheduled. CP2 491/491, stable 66/17/49, debt 1, 81 deferred, selector497/CP3 unpromoted.
 
 ## TB72 invalid gate evidence and TB72A correction (2026-11-02)
 
@@ -7,7 +7,20 @@
 - [x] **P13-j Review/Definition closed by [RA-200](.agents/Directional/M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_assembly_stitched_vertex_probe_adjudication_20261103md "moved: Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md")** (scratch probes; the ChatGPT same-turn records' `REVIEW_BLOCKER` was procedural: the completed lineage could not be measured without C++). Their measured facts stand; their open conditions are closed by RA-200.3. See step 19 and the Review track.
 - [x] **P13-k Review/Definition closed by [RA-201](.agents/Directional/M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_optimizer_source_query_cost_probe_adjudication_20261103md "moved: Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md")** (scratch probes). The ChatGPT [static preflight](.agents/Directional/M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_optimizer_source_query_cost_static_preflight_20261103md "moved: Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Static_Preflight_20261103.md")'s `REVIEW_BLOCKER` was procedural: the DEFN needed scratch execution. Its requirements are met. See steps 21–27 and the Review track.
 
-## CURRENT — RA-221: step 64B.8 re-reviewed; CB113 split into factory (CB113 → TB96) and consumers (CB116 → TB97) (2026-11-10)
+## CURRENT — RA-222: step 64C (D4 uniform) complete; test-only CB117 + TB98 frozen (2026-11-10)
+
+- [x] **RA-222** ([RA-222](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Uniform_Plan_Consumption_Review_20261110.md)): under an A3 plan the uniform producer declines every region and the bounded-disk producer consumes the plan. The one-line switch is not frozen; it needs the chained schedule and corner stops, so it joins O36.
+
+**Turn sequence**
+
+  64C.1. [ ] **NEXT, implementation agent** `M6-CP3-CB117-P13-A3-RIM-CENSUS-RECEIPT`, compile only, test only. [Diff](.agents/Directional/Architecture_M6_CP3_CB117_P13_A3_Rim_Census_Receipt_Exact.diff) `f2238aebf8a98eee00c3842c37f6cf1e97607e3c6d94734295d3a6add06e8c8b`, 206 lines, 1 single-space context line, numstat `188 0`. Mismatch → `M6-CP3-PLAN-P13-A3-RIM-CENSUS-RECEIPT-STOP`; infrastructure → `M6-CP3-CB117A-P13-A3-RIM-CENSUS-RECEIPT-ORCH`.
+  64C.2. [ ] `M6-CP3-TB98-P13-A3-RIM-CENSUS-RECEIPT-FULL-GATE-EXEC`: [manifest](.agents/Directional/gates/Architecture_M6_TB98_P13_A3_Rim_Census_Receipt_Full_Gate_Case_Manifest.tsv) 935 rows `2c967a93e54223000b30539f8be76a2240d68f874446d9d77350846856e5a3a6`, membership 1016. Expect 935/935 and 7 + 7 lines byte-identical to TB97; record the 4 `d4-rim` lines. MATCH → `M6-CP3-DEFN-P13-A3-DISC-CORNER-STOPS` (Review only). Mismatch → `M6-CP3-TB98-P13-A3-RIM-CENSUS-RECEIPT-FULL-GATE-REV`; infrastructure → `M6-CP3-TB98A-P13-A3-RIM-CENSUS-RECEIPT-ORCH`.
+  64B.13. [ ] **Review agent only** `M6-CP3-DEFN-P13-A3-DISC-CORNER-STOPS` (O38, decided); reads the `d4-rim` lines.
+  64D. [ ] **Review agent only** `M6-CP3-DEFN-P13-A3-ANNULUS-PLAN-CONSUMPTION`.
+  O36. [ ] D5 and D4 uniform production switches, **unscheduled**: one Review definition after 64B.13, two separate CBs. State: mixed stage produces on the rectangular fixture (TB97); O38 decided; O37 open; switch TB oracles listed in RA-222 §3.
+- Then 65A–65D → 66+.
+
+## CLOSED — RA-221: step 64B.8 re-reviewed; CB113 split into factory (CB113 → TB96) and consumers (CB116 → TB97) (2026-11-10)
 
 - [x] **RA-220** ([RA-220](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Boundary_Chain_Consumption_Review_20261110.md)) read every A3 schedule consumer. Finding: stage 1 rounds a chained boundary side and the per-arc hard rail facing it separately; the bounded-disk producer needs opposite sides equal.
 - [x] **RA-221** ([RA-221](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Boundary_Chain_Consumption_Adversarial_Review_20261110.md)) re-reviewed RA-220 adversarially: withdrew its monolithic CB113/TB96, shared the accepted chain-support function with the factory, and corrected the switch conditions.
@@ -18,7 +31,7 @@
   64B.10. [x] **COMPLETE / MATCH** `M6-CP3-TB96-P13-A3-CHAINED-INPUT-FACTORY-FULL-GATE-EXEC`: [manifest](.agents/Directional/gates/Architecture_M6_TB96_P13_A3_Chained_Input_Factory_Full_Gate_Case_Manifest.tsv) 930 rows `227405f4e775717f7941fc1366fac41098e3dadd36b51eeb7b238e6feb633b26`, membership 1011. Verified 930/930, 7 + 7 lines byte-identical to TB95, two `D5_FACTORY_RECEIPT` lines; [report](.agents/Directional/Architecture_M6_CP3_TB96_P13_A3_Chained_Input_Factory_Full_Gate_Execution_Report_20261110.md). MATCH → CB116. Mismatch → `M6-CP3-TB96-P13-A3-CHAINED-INPUT-FACTORY-FULL-GATE-REV`; infrastructure → `M6-CP3-TB96A-P13-A3-CHAINED-INPUT-FACTORY-ORCH`.
   64B.11. [x] **COMPLETE / BUILD GREEN** `M6-CP3-CB116-P13-A3-CHAIN-AWARE-CONSUMERS`, compile only, on top of CB113. [Diff](.agents/Directional/Architecture_M6_CP3_CB116_P13_A3_Chain_Aware_Consumers_Exact.diff) `954b11df326285b2aaa5a293d36ef1c82380628d8ea4209a13d8b8461562a7cf`, 527 lines, 8 single-space context lines, numstat `184 72` / `137 0`. Mismatch → `M6-CP3-PLAN-P13-A3-CHAIN-AWARE-CONSUMERS-STOP`; infrastructure → `M6-CP3-CB116A-P13-A3-CHAIN-AWARE-CONSUMERS-ORCH`.
   64B.12. [x] **COMPLETE / MATCH** `M6-CP3-TB97-P13-A3-CHAIN-AWARE-CONSUMERS-FULL-GATE-EXEC`: [manifest](.agents/Directional/gates/Architecture_M6_TB97_P13_A3_Chain_Aware_Consumers_Full_Gate_Case_Manifest.tsv) 931 rows `111afe9375f78ac12d5118f2af494fac87cf43f7ad79fe5ee274bada1aa16341`, membership 1012. Verified 931/931 and 7 + 7 lines byte-identical to TB95; both `D5_CONSUMER_RECEIPT` lines in [report](.agents/Directional/Architecture_M6_CP3_TB97_P13_A3_Chain_Aware_Consumers_Full_Gate_Execution_Report_20261110.md). MATCH → `M6-CP3-DEFN-P13-A3-UNIFORM-PLAN-CONSUMPTION` (Review only). Mismatch → `M6-CP3-TB97-P13-A3-CHAIN-AWARE-CONSUMERS-FULL-GATE-REV`; infrastructure → `M6-CP3-TB97A-P13-A3-CHAIN-AWARE-CONSUMERS-ORCH`.
-  64C. [ ] **NEXT / Review agent only** `M6-CP3-DEFN-P13-A3-UNIFORM-PLAN-CONSUMPTION` (D4); records the TB96/TB97 receipts against O36. Then 64D → 65A–65D → 66+.
+  64C. [x] **COMPLETE (RA-222, section above)** `M6-CP3-DEFN-P13-A3-UNIFORM-PLAN-CONSUMPTION` (D4); TB96/TB97 receipts recorded against O36. Then 64D → 65A–65D → 66+.
 
 **Obligations opened or amended**
 
@@ -119,7 +132,7 @@
 | 64 D7 | `M6-CP3-DEFN-P13-A3-PARTITION-STABLE-METRIC` (COMPLETE, RA-216) → CB106 → TB89 → CB107 → TB90 | Same geometric path across different piece splits → same count |
 | 64.5 D7b | `M6-CP3-DEFN-P13-A3-METRIC-BREAKPOINT-PLACEMENT` (COMPLETE, RA-217) → CB108 → TB91 → CB109 → TB92 | Same path → same breakpoint points; single-piece spans unchanged |
 | 64B D5 | `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SCHEDULING` (COMPLETE, RA-218) → CB110 → TB93; 64B.3 switch DEFN (COMPLETE, RA-219) → CB111 → TB94 → CB112 → TB95; 64B.8 `M6-CP3-DEFN-P13-A3-BOUNDARY-CHAIN-CONSUMPTION` (COMPLETE, RA-220/RA-221) → CB113 → TB96 → CB116 → TB97; production switch O36 (unscheduled) | Chain topology, original-arc lineage, positivity, exact coverage |
-| 64C D4 | `M6-CP3-DEFN-P13-A3-UNIFORM-PLAN-CONSUMPTION` | Uniform A3 coverage or typed decline; omission falsifier |
+| 64C D4 | `M6-CP3-DEFN-P13-A3-UNIFORM-PLAN-CONSUMPTION` (COMPLETE, RA-222) → CB117 → TB98; switch with O36 | Uniform A3 coverage or typed decline; omission falsifier |
 | 64D D4 | `M6-CP3-DEFN-P13-A3-ANNULUS-PLAN-CONSUMPTION` | Annulus periodic/cut coverage and orientation falsifier |
 | 65A D9c | `M6-CP3-DEFN-P13-A3-BOUNDARY-SPAN-CARRIER-BINDING` | Factory rejects wrong span/carrier and paired sign/ordinal tamper; absent physical rim remains legal |
 | 65B D9 | `M6-CP3-DEFN-P13-A2B-RECIPROCAL-TRACE-INTERVALS` | Exact cross-region reciprocal trace identity and tamper |

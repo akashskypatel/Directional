@@ -411,6 +411,11 @@ This document records **reusable failure-derived engineering lessons**, not an e
   (ceiling) from the same exact quantity instead of adding a failure. Before switching a stored
   representation, grep the accepted tests for assertions on the old encoding and amend them in the
   switch CB, registered by the Review.
+- **A second producer does not need the plan; it needs to step aside (RA-222).** D4 asked the uniform
+  producer to consume A3 or decline. Declining keeps one reader of the plan and is one line, but it
+  moves three green fixtures to a producer with a stricter precondition (equal opposite sides).
+  Before freezing a dispatch change, name the precondition of the producer that inherits the
+  region and measure it per fixture with a test-only receipt.
 - **Split a patch at the stage boundary, and re-review your own freeze (RA-221).** RA-220 froze one
   patch holding an A3 factory and three A4 consumer rewrites. The factory was testable alone; the
   consumers were not separable from each other. Split where an independent test exists and say why
