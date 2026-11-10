@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb99-doc-closeout-20261110-v1",
+  "request_id": "m6-cp3-cb119-apply-20261110-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb99-doc-closeout",
-  "file_id": "1JIiEYF2UsmLzw23-E86-J_x8zE_aUjEA",
-  "patch_sha256": "245c7fd02e4d3063e3822fb2e468c507a90c44cb0b818853556a42cd21d53446",
-  "base_sha": "d8a804400fa64af0b127230bf4feaa141fbe7451",
+  "mailbox_key": "m6-cp3-cb119-apply",
+  "file_id": "1ycQW_6Rbsl8rLqhteuk_CHU7SBO93VGm",
+  "patch_sha256": "1d82a815b1af6ca060e6c55170a1a065b8f1c30362fdb1f0cda344b0a715b5df",
+  "base_sha": "d99e7bde555fef6b0be0bddfb10505431c7bf81b",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record verified TB99 MATCH and route corner stops Review",
+  "commit_message": "feat(surface-cells): add boundary field corner derivation and guards",
   "retention_days": 14
 }
