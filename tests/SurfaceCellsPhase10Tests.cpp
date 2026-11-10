@@ -7098,6 +7098,7 @@ struct RectangularHardRailPhaseFrontFixture {
       conformityBaseline;
   std::vector<directional::geometry::SurfaceCellRail> rails;
   Eigen::VectorXd targetSize;
+  std::vector<directional::geometry::AdaptiveFeatureCurve> featureCurves;
 };
 
 directional::TriMesh make_reversed_rectangular_feature_pair_mesh() {
@@ -7156,7 +7157,22 @@ RectangularHardRailPhaseFrontFixture build_rectangular_hard_rail_phase_front(
   fixture.rails =
       result.surfaceCellContext.productSnapshots.authoritativeRails;
   fixture.targetSize = result.surfaceCellContext.metricField.targetSize;
+  fixture.featureCurves = result.surfaceCellContext.featureMap.curves;
   return fixture;
+}
+
+// "2:3,1:1": each A3 span as support pieces : count, sorted.
+std::string a3_span_count_shape(
+    const directional::geometry::GlobalConformityBaselinePlan &baseline) {
+  std::vector<std::string> spans;
+  for (const auto &entry : baseline.schedule()) {
+    spans.push_back(std::to_string(entry.supportPieces.size()) + ':' +
+                    entry.count.to_string());
+  }
+  std::sort(spans.begin(), spans.end());
+  std::string out;
+  for (const auto &span : spans) out += (out.empty() ? "" : ",") + span;
+  return out;
 }
 
 // Report the source-attested A4 first-rejected predicate only after a
@@ -7942,6 +7958,119 @@ TEST(SurfaceCellAuthorityContractCutover,
   EXPECT_EQ(expectedTransports, actualTransports)
       << "A1 must retain every within-region non-hard interior transit, "
          "not merely remove certified hard carriers";
+}
+
+// RA-220 (D5): the chained A3 input joins the source-boundary arcs of one rail
+// between stops into one span and copies every other arc verbatim. Nothing
+// consumes it yet. At target size 1 every arc is a unit source edge and both
+// regions have an even boundary, so the counts are exact with no flip.
+TEST(SurfaceCellAuthorityContractCutover,
+     D5ChainedInputJoinsOnlySourceBoundaryRailsAndCountsEachChainOnce) {
+  using directional::geometry::ConformitySpanId;
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_TRUE(fixture.topologyPlan.has_value());
+  ASSERT_TRUE(fixture.fieldNetwork.has_value());
+  const auto &topology = *fixture.topologyPlan;
+  const auto &edges = fixture.fieldNetwork->mandatory_edges();
+  const Eigen::VectorXd unit =
+      Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 1.0);
+  const auto chained =
+      directional::geometry::make_chained_global_conformity_baseline_input(
+          fixture.mesh.V, unit, topology, *fixture.fieldNetwork,
+          fixture.featureCurves);
+  ASSERT_TRUE(chained.has_value());
+
+  // Chains exist and hold only source-boundary arcs.
+  ASSERT_FALSE(chained->chains.empty());
+  std::map<directional::authority::NetworkArcId, std::size_t> chainLength;
+  std::set<directional::authority::NetworkArcId> laterArcs;
+  for (const auto &chain : chained->chains) {
+    ASSERT_GE(chain.size(), 2U);
+    chainLength[chain.front().arc] = chain.size();
+    for (std::size_t ordinal = 0U; ordinal < chain.size(); ++ordinal) {
+      if (ordinal != 0U) laterArcs.insert(chain[ordinal].arc);
+      const auto *arc = topology.find_arc(chain[ordinal].arc);
+      ASSERT_NE(nullptr, arc);
+      ASSERT_TRUE(arc->mandatoryEdge.has_value());
+      const auto edge = std::find_if(edges.begin(), edges.end(), [&](const auto &e) {
+        return e.id == *arc->mandatoryEdge;
+      });
+      ASSERT_NE(edges.end(), edge);
+      EXPECT_TRUE(edge->kind !=
+                  directional::geometry::SurfaceCellRailKind::HardFeature);
+    }
+  }
+  // Every arc outside a chain keeps its own span and its verbatim support; a
+  // chain's later arcs have none.
+  ASSERT_EQ(topology.arcs().size(), chained->spans.size() + laterArcs.size());
+  for (const auto &arc : topology.arcs()) {
+    const auto span = std::find_if(
+        chained->spans.begin(), chained->spans.end(), [&](const auto &candidate) {
+          return candidate.id == ConformitySpanId::from_network_arc(arc.id);
+        });
+    if (laterArcs.count(arc.id) != 0U) {
+      EXPECT_EQ(chained->spans.end(), span) << arc.id.index();
+      continue;
+    }
+    ASSERT_NE(chained->spans.end(), span) << arc.id.index();
+    if (chainLength.count(arc.id) == 0U) {
+      EXPECT_TRUE(span->supportPieces == arc.sourcePath) << arc.id.index();
+    }
+  }
+
+  const auto perArc = directional::geometry::build_global_conformity_baseline(
+      topology, directional::pipeline::remesh_pipeline_detail::
+                    make_global_conformity_baseline_input(fixture.mesh.V, unit,
+                                                          topology));
+  const auto built =
+      directional::geometry::build_global_conformity_baseline(topology, *chained);
+  ASSERT_TRUE(perArc);
+  ASSERT_TRUE(built);
+  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline(
+      topology, *chained, built.value()));
+  for (const auto &entry : perArc.value().schedule()) {
+    EXPECT_EQ("1", entry.count.to_string());
+  }
+  for (const auto &entry : built.value().schedule()) {
+    const auto chain = chainLength.find(entry.span.network_arc());
+    const std::size_t length = chain == chainLength.end() ? 1U : chain->second;
+    EXPECT_EQ(std::to_string(length), entry.count.to_string());
+    EXPECT_EQ(length, entry.supportPieces.size());
+  }
+  for (const auto &chain : chained->chains) {
+    for (std::size_t ordinal = 0U; ordinal < chain.size(); ++ordinal) {
+      const auto *binding = built.value().find_arc_binding(chain[ordinal].arc);
+      ASSERT_NE(nullptr, binding);
+      EXPECT_TRUE(binding->span ==
+                  ConformitySpanId::from_network_arc(chain.front().arc));
+      EXPECT_EQ(ordinal, binding->chainOrdinal);
+      EXPECT_EQ(ordinal, binding->firstSupportPiece);
+    }
+  }
+  std::cout << "D5_FACTORY_RECEIPT case=unit arcs=" << topology.arcs().size()
+            << " chains=" << chained->chains.size()
+            << " chainedArcs=" << laterArcs.size()
+            << " perArc=" << a3_span_count_shape(perArc.value())
+            << " chained=" << a3_span_count_shape(built.value()) << "\n";
+
+  // At the fixture's own target size the chained input still builds and
+  // validates. Its counts are reported: a chain and the per-arc hard rail that
+  // faces it round separately.
+  const auto targetChained =
+      directional::geometry::make_chained_global_conformity_baseline_input(
+          fixture.mesh.V, fixture.targetSize, topology, *fixture.fieldNetwork,
+          fixture.featureCurves);
+  ASSERT_TRUE(targetChained.has_value());
+  EXPECT_TRUE(targetChained->chains == chained->chains);
+  const auto targetBuilt = directional::geometry::build_global_conformity_baseline(
+      topology, *targetChained);
+  ASSERT_TRUE(targetBuilt);
+  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline(
+      topology, *targetChained, targetBuilt.value()));
+  ASSERT_TRUE(fixture.conformityBaseline.has_value());
+  std::cout << "D5_FACTORY_RECEIPT case=fixtureTarget perArc="
+            << a3_span_count_shape(*fixture.conformityBaseline)
+            << " chained=" << a3_span_count_shape(targetBuilt.value()) << "\n";
 }
 
 TEST(SurfaceCellAuthorityContractCutover,

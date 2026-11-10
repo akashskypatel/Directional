@@ -61,6 +61,7 @@ derive_mandatory_chain_partition(
     const std::set<authority::NetworkNodeId> &stopNodes);
 
 // D5 chain support (RA-218): the arcs' exact paths in chain orientation.
+// `arcs` is sorted by id, as A2b publishes it.
 [[nodiscard]] std::optional<std::vector<ConformitySupportPiece>>
 derive_mandatory_chain_support(const BaselineMandatoryChain &chain,
                                const std::vector<GlobalTopologyArc> &arcs);

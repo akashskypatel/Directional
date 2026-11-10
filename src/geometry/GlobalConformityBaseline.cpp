@@ -796,6 +796,39 @@ GlobalConformityBaselinePlan::find_arc_binding(
   return found != arcBindings_.end() ? &found->second : nullptr;
 }
 
+std::optional<GlobalConformityBaselineInput>
+make_chained_global_conformity_baseline_input(
+    const Eigen::MatrixXd &sourceVertices, const Eigen::VectorXd &targetSize,
+    const GlobalTopologyPlan &topology, const FieldAlignedCurveNetwork &network,
+    const std::vector<AdaptiveFeatureCurve> &featureCurves) {
+  const auto chains =
+      global_conformity_baseline_detail::derive_mandatory_chain_partition(
+          topology.arcs(), topology.rotation_system(), network.mandatory_edges(),
+          global_conformity_baseline_detail::derive_mandatory_chain_stop_nodes(
+              network.nodes(), network.singularity_ports(),
+              network.mandatory_edges(), featureCurves));
+  if (!chains) return std::nullopt;
+  GlobalConformityBaselineInput input;
+  input.sourceVertices = sourceVertices;
+  input.targetSize = targetSize;
+  input.spans.reserve(chains->size());
+  for (const auto &chain : *chains) {
+    const auto span = ConformitySpanId::from_network_arc(chain.arcs.front().arc);
+    if (chain.arcs.size() == 1U) {
+      input.spans.push_back(
+          {span, topology.find_arc(chain.arcs.front().arc)->sourcePath});
+      continue;
+    }
+    auto support =
+        global_conformity_baseline_detail::derive_mandatory_chain_support(
+            chain, topology.arcs());
+    if (!support) return std::nullopt;
+    input.spans.push_back({span, std::move(*support)});
+    input.chains.push_back(chain.arcs);
+  }
+  return input;
+}
+
 GlobalConformityBaselineValidationCandidate
 GlobalConformityBaselinePlan::validation_candidate() const {
   return {schedule_, incidences_, certificate_, semanticDigest_};

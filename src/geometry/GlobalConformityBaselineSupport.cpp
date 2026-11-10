@@ -465,10 +465,12 @@ derive_mandatory_chain_support(const BaselineMandatoryChain &chain,
                                const std::vector<GlobalTopologyArc> &arcs) {
   std::vector<ConformitySupportPiece> support;
   for (const auto &oriented : chain.arcs) {
-    const auto arc = std::find_if(arcs.begin(), arcs.end(), [&](const auto &candidate) {
-      return candidate.id == oriented.arc;
-    });
-    if (arc == arcs.end()) return std::nullopt;
+    const auto arc = std::lower_bound(
+        arcs.begin(), arcs.end(), oriented.arc,
+        [](const auto &candidate, const authority::NetworkArcId id) {
+          return candidate.id < id;
+        });
+    if (arc == arcs.end() || arc->id != oriented.arc) return std::nullopt;
     const auto path = authority::exact_source_path_for_orientation(
         arc->sourcePath, oriented.orientation);
     support.insert(support.end(), path.begin(), path.end());
