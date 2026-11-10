@@ -1,3 +1,0 @@
-source_snapshot=CB116
-turn=M6-CP3-CB116-P13-A3-CHAIN-AWARE-CONSUMERS
-beacon_commit=3621a8c73ada1169cf97a9d1b38c8f2a4eccf8a2
