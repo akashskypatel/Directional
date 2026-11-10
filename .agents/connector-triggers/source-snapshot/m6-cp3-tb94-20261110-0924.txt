@@ -1,3 +1,0 @@
-turn=M6-CP3-TB94-P13-A3-CHAIN-STOP-NODES-FULL-GATE-EXEC
-source_head_before_marker=5fb132ac32286193208b0b032b12e63076ade5c3
-purpose=artifact-only-test-verification
