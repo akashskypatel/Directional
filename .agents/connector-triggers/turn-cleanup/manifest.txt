@@ -1,2 +1,0 @@
-# TB97 temporary source-snapshot trigger
-.agents/connector-triggers/source-snapshot/m6-cp3-tb97-20261110-1815.txt

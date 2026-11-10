@@ -1,3 +1,0 @@
-request=TB97 authorized source snapshot
-turn=M6-CP3-TB97-P13-A3-CHAIN-AWARE-CONSUMERS-FULL-GATE-EXEC
-ref=agent/surface_cell_quad/p5-recover-bridge-healing
