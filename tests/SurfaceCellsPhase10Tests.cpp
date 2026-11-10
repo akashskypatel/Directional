@@ -8296,6 +8296,148 @@ TEST(SurfaceCellAuthorityContractCutover,
   }
 }
 
+// RA-224: the source-boundary vertices where the boundary-following field
+// branch changes are derived from the field alone, with no region. This mesh
+// separates them from geometric corners: an isosceles triangle with a 4-unit
+// base (split at its midpoint, vertex 3) and height 1, under a field along the
+// base. The two base ends turn by 153 degrees, which the feature map's
+// line-angle test reads as nearly straight, and the field branch reverses
+// there. The apex turns by 53 degrees, a geometric corner, and both of its
+// edges follow one branch.
+TEST(SurfaceCellAuthorityContractCutover,
+     BoundaryFieldCornersFollowTheFieldNotTheGeometry) {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0, 4.0, 0.0, 0.0, 2.0, 1.0, 0.0, 2.0, 0.0, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 3, 2, 3, 1, 2;
+  const auto corners = [&](const Eigen::MatrixXi &faceRows,
+                           const Eigen::RowVector3d &axisX,
+                           const Eigen::RowVector3d &axisY) {
+    std::vector<int> out;
+    for (const auto vertex :
+         directional::geometry::derive_boundary_field_corner_vertices(
+             vertices, faceRows, axisX.replicate(faceRows.rows(), 1),
+             axisY.replicate(faceRows.rows(), 1))) {
+      out.push_back(static_cast<int>(vertex.index()));
+    }
+    return out;
+  };
+  const Eigen::RowVector3d x(1.0, 0.0, 0.0);
+  const Eigen::RowVector3d y(0.0, 1.0, 0.0);
+  EXPECT_EQ((std::vector<int>{0, 1}), corners(faces, x, y));
+  // Source-face row order does not change the answer.
+  EXPECT_EQ((std::vector<int>{0, 1}),
+            corners(faces.colwise().reverse().eval(), x, y));
+  // A field at 45 degrees to the base ties two branches on every base edge. A
+  // vertex with an undecided branch is reported, and the apex now turns.
+  const double c = std::sqrt(0.5);
+  EXPECT_EQ((std::vector<int>{0, 1, 2, 3}),
+            corners(faces, Eigen::RowVector3d(c, c, 0.0),
+                    Eigen::RowVector3d(-c, c, 0.0)));
+}
+
+// At a rim node that only its two rim arcs reach, a field corner (RA-224) must
+// be exactly a side start the curved producer derives inside the region, on
+// its accepted-cut path (hard rail) and on its plain path (chained plan).
+TEST(SurfaceCellAuthorityContractCutover,
+     BoundaryFieldCornersMatchTheCurvedProducersSideStarts) {
+  using directional::geometry::SurfaceCellProducerDisposition;
+  for (const bool withHardRail : {true, false}) {
+    for (const bool reverseFaceRows : {false, true}) {
+      SCOPED_TRACE(std::string(withHardRail ? "hard rail" : "plain") +
+                   (reverseFaceRows ? ", reversed face rows"
+                                    : ", forward face rows"));
+      auto fixture =
+          build_rectangular_hard_rail_phase_front(reverseFaceRows, withHardRail);
+      ASSERT_TRUE(fixture.topologyPlan.has_value());
+      ASSERT_TRUE(fixture.fieldNetwork.has_value());
+      ASSERT_TRUE(fixture.atlas.has_value());
+      const auto &topology = *fixture.topologyPlan;
+
+      Eigen::MatrixXd faceAxisX;
+      Eigen::MatrixXd faceAxisY;
+      directional::geometry::cross_field_axes(fixture.crossField, faceAxisX,
+                                              faceAxisY);
+      std::set<int> corners;
+      for (const auto vertex :
+           directional::geometry::derive_boundary_field_corner_vertices(
+               fixture.mesh.V, fixture.mesh.F, faceAxisX, faceAxisY,
+               &*fixture.atlas)) {
+        corners.insert(static_cast<int>(vertex.index()));
+      }
+      // The four corners of each 2x2 square.
+      EXPECT_EQ((std::set<int>{0, 2, 6, 8, 9, 11, 15, 17}), corners);
+
+      std::set<directional::authority::NetworkNodeId> rimNodes;
+      for (const auto &edge : fixture.fieldNetwork->mandatory_edges()) {
+        if (edge.kind != directional::geometry::SurfaceCellRailKind::Boundary) {
+          continue;
+        }
+        rimNodes.insert(edge.firstNode);
+        rimNodes.insert(edge.secondNode);
+      }
+      std::set<directional::authority::NetworkNodeId> passThrough;
+      for (const auto &rotation : topology.rotation_system()) {
+        if (rotation.counterClockwise.size() == 2U &&
+            rimNodes.count(rotation.node) != 0U) {
+          passThrough.insert(rotation.node);
+        }
+      }
+      std::set<int> rimVertices;
+      for (const auto &node : fixture.fieldNetwork->nodes()) {
+        if (passThrough.count(node.id) != 0U) {
+          rimVertices.insert(static_cast<int>(node.sourceVertex.index()));
+        }
+      }
+
+      directional::geometry::SurfaceCellNetwork network = fixture.network;
+      if (!withHardRail) {
+        const Eigen::VectorXd unit =
+            Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 1.0);
+        const auto chainedInput =
+            directional::geometry::make_chained_global_conformity_baseline_input(
+                fixture.mesh.V, unit, topology, *fixture.fieldNetwork,
+                fixture.featureCurves);
+        ASSERT_TRUE(chainedInput.has_value());
+        const auto chainedBuilt =
+            directional::geometry::build_global_conformity_baseline(
+                topology, *chainedInput);
+        ASSERT_TRUE(chainedBuilt);
+        fixture.conformityBaseline = chainedBuilt.value();
+        network = build_fixed_plan_rectangular_hard_rail_network(fixture, 1.0);
+      }
+      ASSERT_EQ(SurfaceCellProducerDisposition::Produced,
+                network.phaseFront.disposition())
+          << directional::geometry::surface_phase_front_failure_reason_name(
+                 network.phaseFront.rejection_reason());
+      const auto &phases =
+          network.phaseFront.product().boundedDiskBoundaryPhases();
+      ASSERT_FALSE(phases.empty());
+      std::set<int> sideStarts;
+      for (const auto &phase : phases) {
+        for (const auto &run : phase.runs) sideStarts.insert(run.startVertex);
+      }
+
+      std::set<int> rimCorners;
+      std::set<int> rimSideStarts;
+      for (const int vertex : rimVertices) {
+        if (corners.count(vertex) != 0U) rimCorners.insert(vertex);
+        if (sideStarts.count(vertex) != 0U) rimSideStarts.insert(vertex);
+      }
+      EXPECT_FALSE(rimCorners.empty());
+      EXPECT_LT(rimCorners.size(), rimVertices.size());
+      EXPECT_EQ(rimSideStarts, rimCorners);
+      if (reverseFaceRows) continue;
+      std::cout << "FIELD_CORNER_RECEIPT case="
+                << (withHardRail ? "rail" : "plain")
+                << " corners=" << corners.size()
+                << " passThroughRimNodes=" << rimVertices.size()
+                << " sideStarts=" << sideStarts.size()
+                << " rimSideStarts=" << rimSideStarts.size() << "\n";
+    }
+  }
+}
+
 TEST(SurfaceCellAuthorityContractCutover,
      FixedConformityPlanTargetPerturbationPreservesSharedBoundaryIntervals) {
   const auto fixture = build_rectangular_hard_rail_phase_front();

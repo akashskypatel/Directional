@@ -21533,6 +21533,123 @@ SurfaceCellNetwork build_surface_cell_network(
                                     &crossField.edgeTransitions);
 }
 
+namespace {
+
+// The field branch of `face` that follows the directed source edge a -> b, by
+// the bounded-disk producer's boundary-phase rule; nothing when no branch
+// follows it unambiguously.
+std::optional<int> boundary_edge_field_branch(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const int face, const int a, const int b) {
+  using namespace surface_cell_tracing_detail;
+  constexpr double kBoundaryAlignment = 0.7;
+  const Eigen::RowVector3d normal = face_normal(vertices, faces, face);
+  const Eigen::RowVector3d edgeDirection =
+      project_tangent(row3(vertices, b) - row3(vertices, a), normal);
+  if (edgeDirection.squaredNorm() == 0.0) return std::nullopt;
+  double bestAlignment = -std::numeric_limits<double>::infinity();
+  double secondAlignment = -std::numeric_limits<double>::infinity();
+  int bestBranch = -1;
+  for (int branch = 0; branch < 4; ++branch) {
+    int family = 0;
+    int sign = 1;
+    family_sign_from_branch(branch, family, sign);
+    const Eigen::RowVector3d fieldDirection = project_tangent(
+        axis_for_family(faceAxisX, faceAxisY, face, family, sign), normal);
+    if (fieldDirection.squaredNorm() == 0.0) continue;
+    const double alignment = fieldDirection.dot(edgeDirection);
+    if (alignment > bestAlignment) {
+      secondAlignment = bestAlignment;
+      bestAlignment = alignment;
+      bestBranch = branch;
+    } else if (alignment > secondAlignment) {
+      secondAlignment = alignment;
+    }
+  }
+  const double ambiguityTolerance = 256.0 *
+                                    std::numeric_limits<double>::epsilon() *
+                                    std::max(1.0, std::abs(bestAlignment));
+  if (bestBranch < 0 || bestAlignment < kBoundaryAlignment ||
+      std::abs(bestAlignment - secondAlignment) <= ambiguityTolerance) {
+    return std::nullopt;
+  }
+  return bestBranch;
+}
+
+} // namespace
+
+std::vector<authority::SourceVertexId> derive_boundary_field_corner_vertices(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const authority::FieldTransportAtlas *fieldTransportAtlas) {
+  using namespace surface_cell_tracing_detail;
+  const auto edgeFaces = edge_faces(faces);
+  const auto matchingIndices = edge_matching_indices(edgeFaces);
+  const std::size_t vertexExtent = source_vertex_extent(faces);
+  const EdgeTransitionLookup transitionLookup =
+      authoritative_edge_transition_lookup(fieldTransportAtlas, nullptr,
+                                           vertexExtent);
+  std::set<authority::SourceVertexId> corners;
+  for (const auto &[rimEdge, rimFaces] : edgeFaces) {
+    if (rimFaces[1] >= 0) continue;
+    // The rim edge enters `vertex` along its face; `next` is the far end of
+    // the face's other edge at that vertex.
+    int face = rimFaces[0];
+    int corner = 0;
+    while (edge_key(faces(face, corner), faces(face, (corner + 1) % 3),
+                    vertexExtent) != rimEdge) {
+      ++corner;
+    }
+    const int vertex = faces(face, (corner + 1) % 3);
+    int next = faces(face, (corner + 2) % 3);
+    std::optional<int> branch = boundary_edge_field_branch(
+        vertices, faces, faceAxisX, faceAxisY, face, faces(face, corner),
+        vertex);
+    bool turns = !branch.has_value();
+    // Carry the branch across the vertex's face fan to the rim edge that
+    // leaves it. The step bound ends the walk on a non-manifold fan.
+    for (Eigen::Index step = 0; !turns; ++step) {
+      const auto fanEdge = edge_key(vertex, next, vertexExtent);
+      const auto &fanFaces = edgeFaces.at(fanEdge);
+      if (fanFaces[1] < 0) {
+        turns = boundary_edge_field_branch(vertices, faces, faceAxisX,
+                                           faceAxisY, face, vertex, next) !=
+                branch;
+        break;
+      }
+      const int target = fanFaces[0] == face ? fanFaces[1] : fanFaces[0];
+      int family = 0;
+      int sign = 1;
+      family_sign_from_branch(*branch, family, sign);
+      const BranchTransitionResult carried = resolve_branch_transition(
+          vertices, faces, faceAxisX, faceAxisY, edgeFaces, matchingIndices,
+          transitionLookup, fanEdge, face, target, family, sign,
+          project_tangent(
+              axis_for_family(faceAxisX, faceAxisY, face, family, sign),
+              face_normal(vertices, faces, face)),
+          nullptr, nullptr, nullptr);
+      if (!carried.valid || step >= faces.rows()) {
+        turns = true;
+        break;
+      }
+      branch = branch_from_family_sign(carried.family, carried.sign);
+      face = target;
+      for (int targetCorner = 0; targetCorner < 3; ++targetCorner) {
+        if (faces(face, targetCorner) == vertex) {
+          next = faces(face, (targetCorner + 1) % 3);
+        }
+      }
+    }
+    if (turns) {
+      corners.insert(authority::SourceVertexId::from_index(
+                         vertex, static_cast<std::size_t>(vertices.rows()))
+                         .value());
+    }
+  }
+  return {corners.begin(), corners.end()};
+}
+
 } // namespace directional::geometry
 
 namespace directional::geometry {

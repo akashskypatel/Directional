@@ -2957,6 +2957,21 @@ SurfaceCellNetwork build_surface_cell_network(
     const fields::CrossFieldResult &crossField, const Eigen::VectorXd &targetSize,
     const SurfaceCellTracingOptions &options = {});
 
+/**
+ * D5 disc corners (RA-224): the source-boundary vertices where the field
+ * branch that follows the boundary changes. The branch of the rim edge that
+ * enters a vertex is carried across the vertex's face fan and compared with
+ * the branch of the rim edge that leaves it, by the bounded-disk producer's
+ * alignment and transport rules. A vertex where a branch is undecided or the
+ * fan cannot be crossed is reported too. Sorted; independent of regions and of
+ * face-row order. Without an atlas the transport is the principal matching.
+ */
+[[nodiscard]] std::vector<authority::SourceVertexId>
+derive_boundary_field_corner_vertices(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const authority::FieldTransportAtlas *fieldTransportAtlas = nullptr);
+
 SurfaceCellTracingOverlay make_surface_cell_tracing_overlay(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
