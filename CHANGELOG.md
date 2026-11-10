@@ -1,3 +1,8 @@
+## 2026-11-10 UTC — TB95 arc-binding full gate COMPLETE / MATCH
+
+- [Verified TB95 report](.agents/Directional/Architecture_M6_CP3_TB95_P13_A3_Chain_Arc_Bindings_Full_Gate_Execution_Report_20261110.md): immutable CB112 artifact `13754529459` (source `35912b11ff870d914c08599ef7b3d45f5a09c89b`) executed artifact-only. [Gate 42804987908](https://github.com/akashskypatel/Directional/actions/runs/42804987908) **929/929 PASS**, membership 1010, 1,866/1,866 checksums, 4 `D5_BINDING_RECEIPT` lines and exact 7+7 raw-line equality to TB94. [Census 42805285534](https://github.com/akashskypatel/Directional/actions/runs/42805285534): Cylinder PASS; BunnyRandom/Vase registered RED unchanged, 9/9 checksums. No configure, compile, relink or benchmark.
+- Stable **66/17/49**, accepted CP2 **491/491**, debt **1**, deferred **81** unchanged; selector497/CP3 unpromoted. Next **Review-only 64B.8** `M6-CP3-DEFN-P13-A3-BOUNDARY-CHAIN-CONSUMPTION` to freeze CB113/TB96 (RA-219 §4); no successor work included here.
+
 ## 2026-11-10 UTC — CB112 mandatory-chain arc bindings compiled (Code + Build only)
 
 - [CB112 record](.agents/Directional/Architecture_M6_CP3_CB112_P13_A3_Chain_Arc_Bindings_Code_Build_Record_20261110.md): exact frozen RA-219 §7 patch `ae7da62f…` (703 lines, six source/test paths, +511/−17) applied at semantic source [`35912b11ff870d914c08599ef7b3d45f5a09c89b`](https://github.com/akashskypatel/Directional/commit/35912b11ff870d914c08599ef7b3d45f5a09c89b) through [Drive apply 42798558368](https://github.com/akashskypatel/Directional/actions/runs/42798558368). First attempt failed before mutation on missing transport header; corrected transport preserved frozen diff body; both staged Drive files retired.
