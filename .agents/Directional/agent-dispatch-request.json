@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb93-doc-closeout-20261109-2005",
+  "request_id": "m6-cp3-cb111-p13-a3-chain-stop-nodes-20261110-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb93-doc-closeout",
-  "file_id": "16KqeH0uB5YITWqS3cTMwRbN9720ofdxR",
-  "patch_sha256": "6ad741a385963add7875971177f523e901851ed033c88acdea8c3ef7fc9cee9e",
-  "base_sha": "4a1b76f32a922d4e5b0450f555ebb568e35f70f6",
+  "mailbox_key": "m6-cp3-cb111-chain-stop-nodes-code-apply",
+  "file_id": "1qigubS44rr455qDBMIfvlydEZGZDwh8P",
+  "patch_sha256": "22b2ef11126f16a0347f57acbc8967f09a2503fbad30ce160a0ef0e387226a51",
+  "base_sha": "879b63bce362ee2085912343e7988a195b6df714",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): close TB93 immutable gate as MATCH",
+  "commit_message": "feat(surface-cells): derive canonical mandatory chain stop nodes (CB111)",
   "retention_days": 14
 }
