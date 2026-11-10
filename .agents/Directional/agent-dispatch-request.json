@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb117-rim-census-compile-20261110-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb117-rim-census-compile",
-  "source_sha": "f3ad580ba0f0178e399d1cfeda258e55a5055f7f",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb117-rim-census"
+  "request_id": "m6-cp3-cb117-doc-closeout-20261110-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb117-doc-closeout",
+  "file_id": "1b-KBnmouBm8asj8GVMmxVG_YBxduC8V2",
+  "patch_sha256": "23ac00f359191a1081519fc3f76e983ba3c1018c38ada5d2a333ae1ddd2c595e",
+  "base_sha": "785c4df6d399c9fdb1b2cfc35a316248fe161799",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB117 and route next to immutable TB98",
+  "retention_days": 14
 }
