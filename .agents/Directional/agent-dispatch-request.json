@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb111-docs-closeout-20261110-v2-delimiter",
+  "request_id": "m6-cp3-cb111-handoff-drift-closeout-20261110-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb111-docs-closeout-v2",
-  "file_id": "1VHNPZcjJpGTheUnrNIbwb1uuRMRHYVha",
-  "patch_sha256": "2cbb8ae1be2c5760321f3f94dfd24cdf0dedf764ea781ee809007dfa35805794",
-  "base_sha": "879b63bce362ee2085912343e7988a195b6df714",
+  "mailbox_key": "m6-cp3-cb111-handoff-drift-closeout",
+  "file_id": "1Mkju72rT57n58FmcRMU50llqpJ9KZNbE",
+  "patch_sha256": "bd4b62047dfe915a2f7de45803966e4bcc2bddc9d77dc7219d4db6832ce6404a",
+  "base_sha": "7733a34ea55a4e4d5f9893d010bdb465585bc71f",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): close CB111 code-build evidence and schedule TB94",
+  "commit_message": "docs(agent): correct CB111 handoff currency and TB94 next turn",
   "retention_days": 14
 }
