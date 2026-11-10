@@ -1,5 +1,7 @@
 # RA-220 — D5 boundary-chain consumption (step 64B.8)
 
+> **AMENDED (2026-11-10) by [RA-221](Architecture_M6_CP3_DEFN_P13_A3_Boundary_Chain_Consumption_Adversarial_Review_20261110.md).** §1–§3 stand with RA-221's corrections. The CB113 patch and TB96 manifest frozen in §4–§5, and the O36 rule in §6, are **withdrawn**; RA-221 §3–§4 replace them. The withdrawn files remain in history at `75ff2b9a3`.
+
 **Turn:** `M6-CP3-DEFN-P13-A3-BOUNDARY-CHAIN-CONSUMPTION` (64B.8, Review). **Disposition: COMPLETE.** One exact patch and one full-gate manifest are frozen: CB113 makes every A3 consumer chain-aware and adds the chained input factory, **without wiring it into production**; TB96 gates it. The production switch is **not** frozen: this Review found that the stage-1 switch is predicted to reject regions that are green today (§2). TB96 measures that prediction on the smallest product slice. Runtime-free: syntax checks and one model only; no product or test source changed in the repository.
 
 ## 1. What was read
@@ -41,7 +43,7 @@ The adaptive target size is not computable here, so this is a prediction, not a 
 
 ## 4. CB113, frozen
 
-- [Patch](Architecture_M6_CP3_CB113_P13_A3_Chain_Aware_Consumers_Exact.diff): SHA-256 `af68344bfec46c0219833db8c41e0089e2e4d6f479cf79fec7a3910a1bee19f4`, 675 lines, 16 single-space context lines. Numstat `12 0` `GlobalConformityBaseline.h`; `32 0` `GlobalConformityBaseline.cpp`; `182 72` `SurfaceCellTracing.cpp`; `193 0` `SurfaceCellsPhase10Tests.cpp`. Base is product source CB112 `35912b11f…`; `git apply --check` is clean at HEAD.
+- Patch (withdrawn; `Architecture_M6_CP3_CB113_P13_A3_Chain_Aware_Consumers_Exact.diff` at `75ff2b9a3`): SHA-256 `af68344bfec46c0219833db8c41e0089e2e4d6f479cf79fec7a3910a1bee19f4`, 675 lines, 16 single-space context lines. Numstat `12 0` `GlobalConformityBaseline.h`; `32 0` `GlobalConformityBaseline.cpp`; `182 72` `SurfaceCellTracing.cpp`; `193 0` `SurfaceCellsPhase10Tests.cpp`. Base is product source CB112 `35912b11f…`; `git apply --check` is clean at HEAD.
 - **Neutral for production**, because production still builds the per-arc input. For a per-arc plan: every binding is ordinal 0, Forward, piece 0, so the identifying-arc ordinal is the arc's own and the composed orientation is the walk's; the walk makes the same `append_point` calls up to repeats of an identical point, and pushes the same intervals in the same order; no new rejection can fire (the first breakpoint is at the arc's walk start and the last at its walk end).
 - **Tests (GUARD 930–931)**, both on the rectangular hard-rail fixture, which now keeps its feature curves:
 
@@ -58,7 +60,7 @@ The adaptive target size is not computable here, so this is a prediction, not a 
 
 ## 5. TB96, frozen
 
-- [Manifest](gates/Architecture_M6_TB96_P13_A3_Chain_Aware_Consumers_Full_Gate_Case_Manifest.tsv): 931 rows, SHA-256 `ca7238a48d8f2cbc17b872feb7fd9502ac81891b1d094fe36f9a7e34cd4613ee`. It is TB95's 929 rows byte for byte, plus GUARD 930–931. `SELF_CHECK_PASS cases=931 deferred=81`; membership 1012; ledger v5 and harness `78b8002c…` unchanged.
+- Manifest (withdrawn; `gates/Architecture_M6_TB96_P13_A3_Chain_Aware_Consumers_Full_Gate_Case_Manifest.tsv` at `75ff2b9a3`): 931 rows, SHA-256 `ca7238a48d8f2cbc17b872feb7fd9502ac81891b1d094fe36f9a7e34cd4613ee`. It is TB95's 929 rows byte for byte, plus GUARD 930–931. `SELF_CHECK_PASS cases=931 deferred=81`; membership 1012; ledger v5 and harness `78b8002c…` unchanged.
 
 | Outcome | Route |
 |---|---|

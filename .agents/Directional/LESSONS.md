@@ -411,6 +411,12 @@ This document records **reusable failure-derived engineering lessons**, not an e
   (ceiling) from the same exact quantity instead of adding a failure. Before switching a stored
   representation, grep the accepted tests for assertions on the old encoding and amend them in the
   switch CB, registered by the Review.
+- **Split a patch at the stage boundary, and re-review your own freeze (RA-221).** RA-220 froze one
+  patch holding an A3 factory and three A4 consumer rewrites. The factory was testable alone; the
+  consumers were not separable from each other. Split where an independent test exists and say why
+  the rest stays together. The same review had re-implemented an accepted helper to dodge a linear
+  search: fix the helper's cost and share it instead. A switch condition needs evidence per model
+  class, not one fixture; write the conditions as a numbered obligation list.
 - **Ask what the old representation guaranteed by accident (RA-220).** Per-arc counts made opposite
   sides of a region agree on structured source meshes, although A3 only solves parity. Chaining
   one kind of rail and not the other removes that agreement. Before switching a representation in
