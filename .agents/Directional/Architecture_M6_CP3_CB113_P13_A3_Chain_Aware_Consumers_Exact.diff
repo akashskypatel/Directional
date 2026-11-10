@@ -1,0 +1,675 @@
+diff --git a/include/directional/geometry/GlobalConformityBaseline.h b/include/directional/geometry/GlobalConformityBaseline.h
+index b40d01938..3fff2f305 100644
+--- a/include/directional/geometry/GlobalConformityBaseline.h
++++ b/include/directional/geometry/GlobalConformityBaseline.h
+@@ -21,6 +21,9 @@
+ 
+ namespace directional::geometry {
+ 
++class FieldAlignedCurveNetwork;
++struct AdaptiveFeatureCurve;
++
+ /** Family/sign-free occurrence of one A2b span in one region boundary walk. */
+ struct BaselineConformityIncidence {
+   ConformityBoundaryIncidenceId id;
+@@ -309,6 +312,15 @@ private:
+ build_global_conformity_baseline(const GlobalTopologyPlan &topology,
+                                  const GlobalConformityBaselineInput &input);
+ 
++/** D5 A3 input over an A2b plan (RA-220): one span per arc, except that the
++ *  source-boundary arcs of one rail between stops form one chained span.
++ *  Nothing when the plan and the network do not describe one graph. */
++[[nodiscard]] std::optional<GlobalConformityBaselineInput>
++make_chained_global_conformity_baseline_input(
++    const Eigen::MatrixXd &sourceVertices, const Eigen::VectorXd &targetSize,
++    const GlobalTopologyPlan &topology, const FieldAlignedCurveNetwork &network,
++    const std::vector<AdaptiveFeatureCurve> &featureCurves);
++
+ [[nodiscard]] std::optional<GlobalConformityPlanError>
+ validate_global_conformity_baseline_candidate(
+     const GlobalTopologyPlan &topology,
+diff --git a/src/geometry/GlobalConformityBaseline.cpp b/src/geometry/GlobalConformityBaseline.cpp
+index 3d632b230..9fba7664c 100644
+--- a/src/geometry/GlobalConformityBaseline.cpp
++++ b/src/geometry/GlobalConformityBaseline.cpp
+@@ -796,6 +796,38 @@ GlobalConformityBaselinePlan::find_arc_binding(
+   return found != arcBindings_.end() ? &found->second : nullptr;
+ }
+ 
++std::optional<GlobalConformityBaselineInput>
++make_chained_global_conformity_baseline_input(
++    const Eigen::MatrixXd &sourceVertices, const Eigen::VectorXd &targetSize,
++    const GlobalTopologyPlan &topology, const FieldAlignedCurveNetwork &network,
++    const std::vector<AdaptiveFeatureCurve> &featureCurves) {
++  const auto chains =
++      global_conformity_baseline_detail::derive_mandatory_chain_partition(
++          topology.arcs(), topology.rotation_system(), network.mandatory_edges(),
++          global_conformity_baseline_detail::derive_mandatory_chain_stop_nodes(
++              network.nodes(), network.singularity_ports(),
++              network.mandatory_edges(), featureCurves));
++  if (!chains) return std::nullopt;
++  GlobalConformityBaselineInput input;
++  input.sourceVertices = sourceVertices;
++  input.targetSize = targetSize;
++  input.spans.reserve(chains->size());
++  for (const auto &chain : *chains) {
++    // The chain's support is its arcs' exact paths in chain orientation.
++    std::vector<ConformitySupportPiece> support;
++    for (const auto &oriented : chain.arcs) {
++      const auto path = authority::exact_source_path_for_orientation(
++          topology.find_arc(oriented.arc)->sourcePath, oriented.orientation);
++      support.insert(support.end(), path.begin(), path.end());
++    }
++    input.spans.push_back(
++        {ConformitySpanId::from_network_arc(chain.arcs.front().arc),
++         std::move(support)});
++    if (chain.arcs.size() > 1U) input.chains.push_back(chain.arcs);
++  }
++  return input;
++}
++
+ GlobalConformityBaselineValidationCandidate
+ GlobalConformityBaselinePlan::validation_candidate() const {
+   return {schedule_, incidences_, certificate_, semanticDigest_};
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 659ae24e2..b98bd7bea 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -13271,6 +13271,34 @@ bool orient_and_validate_phase_front_cell(
+   return true;
+ }
+ 
++// D5 (RA-220): the A3 span that schedules an arc. The schedule is null unless
++// the arc's path, in its chain orientation, is the slice of the span's support
++// that the arc's binding names.
++struct BoundArcSchedule {
++  const BaselineConformityArcBinding *binding = nullptr;
++  const ConformityScheduleEntry *schedule = nullptr;
++};
++
++BoundArcSchedule bound_arc_schedule(const GlobalConformityBaselinePlan &baseline,
++                                    const GlobalTopologyArc &arc) {
++  const BaselineConformityArcBinding *binding = baseline.find_arc_binding(arc.id);
++  if (binding == nullptr) return {};
++  const ConformityScheduleEntry *schedule = baseline.find_schedule(binding->span);
++  if (schedule == nullptr) return {};
++  const authority::ExactSourcePath path =
++      authority::exact_source_path_for_orientation(arc.sourcePath,
++                                                   binding->orientation);
++  const auto &support = schedule->supportPieces;
++  if (path.empty() || binding->firstSupportPiece > support.size() ||
++      path.size() > support.size() - binding->firstSupportPiece ||
++      !std::equal(path.begin(), path.end(),
++                  support.begin() + static_cast<std::ptrdiff_t>(
++                                        binding->firstSupportPiece))) {
++    return {};
++  }
++  return {binding, schedule};
++}
++
+ } // namespace
+ 
+ struct AcceptedCutBoundaryFaceAuthorityKey {
+@@ -15660,8 +15688,25 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+             SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+         return result;
+       }
+-      const ConformityBoundaryIncidenceId incidenceId{acceptedRegion->id,
+-                                                       ordinal};
++      const BoundArcSchedule bound = bound_arc_schedule(baseline, *arc);
++      const std::size_t walkSize = acceptedRegion->boundary.size();
++      if (bound.schedule == nullptr || bound.binding->chainOrdinal >= walkSize) {
++        result.disposition = SurfaceCellProducerDisposition::Rejected;
++        set_phase_front_failure(
++            result.failure,
++            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
++        return result;
++      }
++      // D5 (RA-220): a span's side is read at its identifying arc. The walk
++      // meets that arc chainOrdinal arcs before this one when it follows the
++      // chain, and as many after it otherwise.
++      const bool alongChain =
++          orientedArc.orientation == bound.binding->orientation;
++      const ConformityBoundaryIncidenceId incidenceId{
++          acceptedRegion->id,
++          (alongChain ? ordinal + walkSize - bound.binding->chainOrdinal
++                      : ordinal + bound.binding->chainOrdinal) %
++              walkSize};
+       const BaselineConformityIncidence *incidence = nullptr;
+       for (const BaselineConformityIncidence &candidate : baseline.incidences()) {
+         if (candidate.id != incidenceId) continue;
+@@ -15674,12 +15719,10 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+         }
+         incidence = &candidate;
+       }
+-      const ConformitySpanId span =
+-          ConformitySpanId::from_network_arc(orientedArc.arc);
+-      const ConformityScheduleEntry *schedule = baseline.find_schedule(span);
+-      if (incidence == nullptr || incidence->span != span ||
+-          incidence->orientation != orientedArc.orientation ||
+-          schedule == nullptr || schedule->supportPieces != arc->sourcePath) {
++      if (incidence == nullptr || incidence->span != bound.binding->span ||
++          incidence->orientation != (alongChain
++                                         ? authority::Orientation::Forward
++                                         : authority::Orientation::Reverse)) {
+         result.disposition = SurfaceCellProducerDisposition::Rejected;
+         set_phase_front_failure(
+             result.failure,
+@@ -17413,12 +17456,23 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+         *options.globalConformityBaselinePlan;
+     const auto zero = authority::FieldExactRational::from_integer(0);
+     const auto one = authority::FieldExactRational::from_integer(1);
++    // D5 (RA-220): each span's breakpoints, ordinals 0..count, located once.
++    std::map<ConformitySpanId, std::vector<ConformityBreakpointLocation>>
++        spanBreakpoints;
+ 
+     for (int side = 0; side < 4; ++side) {
+       const SurfaceBoundedDiskBoundaryRun &run =
+           phaseRecord.runs[static_cast<std::size_t>(side)];
+       AcceptedBoundarySubdivision &subdivision =
+           acceptedBoundary[static_cast<std::size_t>(side)];
++      // D5 (RA-220): the last breakpoint this side emitted, and whether it
++      // lies where the walk leaves the arc it was last met on.
++      struct SideCursor {
++        ConformitySpanId span;
++        std::size_t ordinal = 0U;
++        bool atArcEnd = false;
++      };
++      std::optional<SideCursor> cursor;
+       for (std::size_t edgeIndex = 0;
+            edgeIndex < run.sourceEdgeTopology.size(); ++edgeIndex) {
+         const authority::SourceEdgeTopologyKey &edge =
+@@ -17436,6 +17490,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+ 
+         struct ArcSchedule {
+           const GlobalTopologyArc *arc = nullptr;
++          const BaselineConformityArcBinding *binding = nullptr;
+           const ConformityScheduleEntry *schedule = nullptr;
+           authority::FieldExactRational first =
+               authority::FieldExactRational::from_integer(0);
+@@ -17457,20 +17512,19 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+                                                   edge);
+           const auto second = exact_edge_parameter(arc.sourcePath.front().second,
+                                                    edge);
+-          const ConformitySpanId span =
+-              ConformitySpanId::from_network_arc(arc.id);
+-          const ConformityScheduleEntry *schedule = baseline.find_schedule(span);
++          const BoundArcSchedule bound = bound_arc_schedule(baseline, arc);
++          const ConformityScheduleEntry *schedule = bound.schedule;
+           const auto count =
+               schedule == nullptr ? std::optional<std::size_t>{}
+                                   : exact_count_to_size(schedule->count);
+           if (carrier == nullptr || carrier->edge != edge || !first || !second ||
+-              !(*first < *second) || schedule == nullptr ||
+-              schedule->supportPieces != arc.sourcePath || !count ||
++              !(*first < *second) || schedule == nullptr || !count ||
+               *count == 0U ||
+               *count > static_cast<std::size_t>(std::numeric_limits<int>::max())) {
+             return false;
+           }
+-          arcSchedules.push_back({&arc, schedule, *first, *second, *count});
++          arcSchedules.push_back(
++              {&arc, bound.binding, schedule, *first, *second, *count});
+           return true;
+         };
+ 
+@@ -17496,8 +17550,8 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+                 SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+             return result;
+           }
+-          const ConformitySpanId span =
+-              ConformitySpanId::from_network_arc(accepted.arc);
++          const BaselineConformityArcBinding &binding =
++              *arcSchedules.front().binding;
+           const BaselineConformityIncidence *incidence = nullptr;
+           for (const BaselineConformityIncidence &candidate :
+                baseline.incidences()) {
+@@ -17511,8 +17565,11 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+             }
+             incidence = &candidate;
+           }
+-          if (incidence == nullptr || incidence->span != span ||
+-              incidence->orientation != accepted.orientation) {
++          if (incidence == nullptr || incidence->span != binding.span ||
++              incidence->orientation !=
++                  (accepted.orientation == binding.orientation
++                       ? authority::Orientation::Forward
++                       : authority::Orientation::Reverse)) {
+             result.disposition = SurfaceCellProducerDisposition::Rejected;
+             set_phase_front_failure(
+                 result.failure,
+@@ -17631,69 +17688,110 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+         const bool recordedA3 = run.edgeAuthority[edgeIndex].hardFeature ||
+                                 run.edgeAuthority[edgeIndex].sourceBoundary;
+ 
++        // D5 (RA-220): emit the span's breakpoints that lie on this arc, in
++        // walk order. Two consecutive breakpoints of one span bound a unit
++        // interval, wherever the arcs between them end. A side starts, and a
++        // span gives way to the next, only on a breakpoint at the vertex the
++        // walk is on.
+         const auto append_arc = [&](const ArcSchedule &arcSchedule,
+                                     const bool increasing) -> bool {
+-          const ConformitySpanId span =
+-              ConformitySpanId::from_network_arc(arcSchedule.arc->id);
+-          const auto location_parameter = [&](const std::size_t ordinal)
+-              -> std::optional<authority::FieldExactRational> {
+-            const EInt exactOrdinal(static_cast<long long>(ordinal));
+-            const auto location = baseline.breakpoint_location(span, exactOrdinal);
+-            if (!location || location->supportPieceIndex != 0U ||
+-                location->localDenominator == EInt(0)) {
+-              return std::nullopt;
+-            }
+-            const auto local = authority::FieldExactRational::from_exact_fraction(
+-                location->localNumerator, location->localDenominator);
+-            if (!local) return std::nullopt;
+-            return arcSchedule.first +
+-                   *local * (arcSchedule.second - arcSchedule.first);
+-          };
+-          if (increasing) {
+-            for (std::size_t ordinal = 0U; ordinal < arcSchedule.count;
++          const BaselineConformityArcBinding &binding = *arcSchedule.binding;
++          const ConformitySpanId span = binding.span;
++          auto located = spanBreakpoints.find(span);
++          if (located == spanBreakpoints.end()) {
++            std::vector<ConformityBreakpointLocation> locations;
++            locations.reserve(arcSchedule.count + 1U);
++            for (std::size_t ordinal = 0U; ordinal <= arcSchedule.count;
+                  ++ordinal) {
+-              const auto firstParameter = location_parameter(ordinal);
+-              const auto secondParameter = location_parameter(ordinal + 1U);
+-              if (!firstParameter || !secondParameter ||
+-                  !append_point(*firstParameter, run.sourceFaces[edgeIndex]) ||
+-                  !append_point(*secondParameter, run.sourceFaces[edgeIndex])) {
++              auto location = baseline.breakpoint_location(
++                  span, EInt(static_cast<long long>(ordinal)));
++              if (!location || location->localDenominator == EInt(0)) {
+                 return false;
+               }
+-              std::optional<SurfaceSharedBoundaryInterval> interval;
+-              if (recordedA3) {
+-                interval = SurfaceSharedBoundaryInterval{
+-                    arcSchedule.arc->id,
+-                    authority::FieldExactRational::from_integer(
+-                        static_cast<std::int64_t>(ordinal)),
+-                    authority::FieldExactRational::from_integer(
+-                        static_cast<std::int64_t>(ordinal + 1U)),
+-                    authority::Orientation::Forward, boundaryOccurrence};
+-              }
+-              subdivision.intervals.push_back(std::move(interval));
++              locations.push_back(std::move(*location));
+             }
+-          } else {
+-            for (std::size_t ordinal = arcSchedule.count; ordinal > 0U;
+-                 --ordinal) {
+-              const auto firstParameter = location_parameter(ordinal);
+-              const auto secondParameter = location_parameter(ordinal - 1U);
+-              if (!firstParameter || !secondParameter ||
+-                  !append_point(*firstParameter, run.sourceFaces[edgeIndex]) ||
+-                  !append_point(*secondParameter, run.sourceFaces[edgeIndex])) {
+-                return false;
+-              }
++            located = spanBreakpoints.emplace(span, std::move(locations)).first;
++          }
++          const std::vector<ConformityBreakpointLocation> &locations =
++              located->second;
++          // A Mandatory arc is one piece of its span's support.
++          const std::size_t piece = binding.firstSupportPiece;
++          const auto before_piece = [](const ConformityBreakpointLocation &location,
++                                       const std::size_t value) {
++            return location.supportPieceIndex < value;
++          };
++          const std::size_t begin = static_cast<std::size_t>(
++              std::lower_bound(locations.begin(), locations.end(), piece,
++                               before_piece) -
++              locations.begin());
++          std::size_t end = static_cast<std::size_t>(
++              std::lower_bound(locations.begin(), locations.end(), piece + 1U,
++                               before_piece) -
++              locations.begin());
++          // A breakpoint on the piece's far end is located at the start of the
++          // next piece.
++          if (end < locations.size() &&
++              locations[end].supportPieceIndex == piece + 1U &&
++              locations[end].localNumerator == EInt(0)) {
++            ++end;
++          }
++          const bool chainForward =
++              binding.orientation == authority::Orientation::Forward;
++          const authority::FieldExactRational &pieceStart =
++              chainForward ? arcSchedule.first : arcSchedule.second;
++          const authority::FieldExactRational &pieceEnd =
++              chainForward ? arcSchedule.second : arcSchedule.first;
++          const authority::FieldExactRational &walkStart =
++              increasing ? arcSchedule.first : arcSchedule.second;
++          const authority::FieldExactRational &walkEnd =
++              increasing ? arcSchedule.second : arcSchedule.first;
++          // The side follows the span when it walks the arc along its chain.
++          const bool ascending = increasing == chainForward;
++          for (std::size_t step = 0U; step < end - begin; ++step) {
++            const std::size_t ordinal =
++                ascending ? begin + step : end - 1U - step;
++            const ConformityBreakpointLocation &location = locations[ordinal];
++            const auto local =
++                location.supportPieceIndex == piece
++                    ? authority::FieldExactRational::from_exact_fraction(
++                          location.localNumerator, location.localDenominator)
++                    : std::optional<authority::FieldExactRational>{one};
++            if (!local) return false;
++            const authority::FieldExactRational parameter =
++                pieceStart + *local * (pieceEnd - pieceStart);
++            if (cursor && cursor->span == span && cursor->ordinal == ordinal) {
++              cursor->atArcEnd = parameter == walkEnd;
++              continue;
++            }
++            const bool sameSpan = cursor && cursor->span == span;
++            if (sameSpan ? (ascending ? ordinal != cursor->ordinal + 1U
++                                      : ordinal + 1U != cursor->ordinal)
++                         : ((cursor && !cursor->atArcEnd) ||
++                            parameter != walkStart)) {
++              return false;
++            }
++            if (!append_point(parameter, run.sourceFaces[edgeIndex])) {
++              return false;
++            }
++            if (sameSpan) {
+               std::optional<SurfaceSharedBoundaryInterval> interval;
+               if (recordedA3) {
+                 interval = SurfaceSharedBoundaryInterval{
+-                    arcSchedule.arc->id,
++                    span.network_arc(),
+                     authority::FieldExactRational::from_integer(
+-                        static_cast<std::int64_t>(ordinal)),
++                        static_cast<std::int64_t>(cursor->ordinal)),
+                     authority::FieldExactRational::from_integer(
+-                        static_cast<std::int64_t>(ordinal - 1U)),
+-                    authority::Orientation::Reverse, boundaryOccurrence};
++                        static_cast<std::int64_t>(ordinal)),
++                    ascending ? authority::Orientation::Forward
++                              : authority::Orientation::Reverse,
++                    boundaryOccurrence};
+               }
+               subdivision.intervals.push_back(std::move(interval));
+             }
++            cursor = SideCursor{span, ordinal, parameter == walkEnd};
+           }
++          if (!cursor) return false;
++          if (begin == end) cursor->atArcEnd = false;
+           return true;
+         };
+ 
+@@ -17719,7 +17817,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+           }
+         }
+       }
+-      if (subdivision.points.size() < 2U ||
++      if (!cursor || !cursor->atArcEnd || subdivision.points.size() < 2U ||
+           subdivision.intervals.size() + 1U != subdivision.points.size() ||
+           subdivision.uv.size() != subdivision.points.size()) {
+         result.disposition = SurfaceCellProducerDisposition::Rejected;
+@@ -18429,24 +18527,36 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
+     const GlobalTopologyPlan &topology = *options.globalTopologyPlan;
+     const GlobalConformityBaselinePlan &baseline =
+         *options.globalConformityBaselinePlan;
+-    if (baseline.topology_plan_digest() != topology.semantic_digest() ||
+-        baseline.schedule().size() != topology.arcs().size()) {
++    if (baseline.topology_plan_digest() != topology.semantic_digest()) {
+       result.disposition = SurfaceCellProducerDisposition::Rejected;
+       set_phase_front_failure(
+           result.failure,
+           SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+       return result;
+     }
++    // D5 (RA-220): every arc's path is its slice of its span's support, and
++    // the slices leave no support piece over.
++    std::size_t arcPieces = 0U;
+     for (const GlobalTopologyArc &arc : topology.arcs()) {
+-      const ConformitySpanId span = ConformitySpanId::from_network_arc(arc.id);
+-      const ConformityScheduleEntry *schedule = baseline.find_schedule(span);
+-      if (schedule == nullptr || schedule->supportPieces != arc.sourcePath) {
++      if (bound_arc_schedule(baseline, arc).schedule == nullptr) {
+         result.disposition = SurfaceCellProducerDisposition::Rejected;
+         set_phase_front_failure(
+             result.failure,
+             SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+         return result;
+       }
++      arcPieces += arc.sourcePath.size();
++    }
++    std::size_t supportPieces = 0U;
++    for (const ConformityScheduleEntry &entry : baseline.schedule()) {
++      supportPieces += entry.supportPieces.size();
++    }
++    if (arcPieces != supportPieces) {
++      result.disposition = SurfaceCellProducerDisposition::Rejected;
++      set_phase_front_failure(
++          result.failure,
++          SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
++      return result;
+     }
+     result.conformityPlanReceipt = SurfaceConformityPlanReceipt{
+         topology.semantic_digest(), baseline.semantic_digest(),
+diff --git a/tests/SurfaceCellsPhase10Tests.cpp b/tests/SurfaceCellsPhase10Tests.cpp
+index e1142324f..b96bb3283 100644
+--- a/tests/SurfaceCellsPhase10Tests.cpp
++++ b/tests/SurfaceCellsPhase10Tests.cpp
+@@ -7,6 +7,7 @@
+ #include <Eigen/Eigenvalues>
+ 
+ #include "TestFixturePaths.h"
++#include "../src/geometry/GlobalConformityBaselineSupport.h"
+ #include <directional/validation/MeshValidator.h>
+ #include <directional/validation/ValidationVisualizer.h>
+ 
+@@ -7098,6 +7099,7 @@ struct RectangularHardRailPhaseFrontFixture {
+       conformityBaseline;
+   std::vector<directional::geometry::SurfaceCellRail> rails;
+   Eigen::VectorXd targetSize;
++  std::vector<directional::geometry::AdaptiveFeatureCurve> featureCurves;
+ };
+ 
+ directional::TriMesh make_reversed_rectangular_feature_pair_mesh() {
+@@ -7156,6 +7158,7 @@ RectangularHardRailPhaseFrontFixture build_rectangular_hard_rail_phase_front(
+   fixture.rails =
+       result.surfaceCellContext.productSnapshots.authoritativeRails;
+   fixture.targetSize = result.surfaceCellContext.metricField.targetSize;
++  fixture.featureCurves = result.surfaceCellContext.featureMap.curves;
+   return fixture;
+ }
+ 
+@@ -7944,6 +7947,196 @@ TEST(SurfaceCellAuthorityContractCutover,
+          "not merely remove certified hard carriers";
+ }
+ 
++// RA-220 (D5): the chained A3 input joins the source-boundary arcs of one rail
++// between stops and leaves hard-feature arcs alone. At target size 1 every unit
++// source edge is one interval under either input, so the chained baseline must
++// give the bounded-disk producer the subdivision the per-arc baseline gives it.
++TEST(SurfaceCellAuthorityContractCutover,
++     D5ChainedBaselineAtUnitSizeReproducesThePerArcGrid) {
++  auto fixture = build_rectangular_hard_rail_phase_front();
++  ASSERT_TRUE(fixture.topologyPlan.has_value());
++  ASSERT_TRUE(fixture.fieldNetwork.has_value());
++  const auto &topology = *fixture.topologyPlan;
++  const auto provenance = directional::pipeline::hard_rail_source_provenance_from_rails(
++      fixture.rails, static_cast<std::size_t>(fixture.mesh.V.rows()));
++  ASSERT_TRUE(provenance.has_value());
++  const Eigen::VectorXd unit =
++      Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 1.0);
++  const auto perArcInput = directional::pipeline::remesh_pipeline_detail::
++      make_global_conformity_baseline_input(fixture.mesh.V, unit, topology);
++  const auto chainedInput =
++      directional::geometry::make_chained_global_conformity_baseline_input(
++          fixture.mesh.V, unit, topology, *fixture.fieldNetwork,
++          fixture.featureCurves);
++  ASSERT_TRUE(chainedInput.has_value());
++
++  // Chains exist, hold only source-boundary arcs, and replace their later arcs.
++  ASSERT_FALSE(chainedInput->chains.empty());
++  std::map<directional::geometry::ConformitySpanId, std::size_t> chainLength;
++  std::size_t chainedArcs = 0U;
++  for (const auto &chain : chainedInput->chains) {
++    ASSERT_GE(chain.size(), 2U);
++    chainLength[directional::geometry::ConformitySpanId::from_network_arc(
++        chain.front().arc)] = chain.size();
++    chainedArcs += chain.size() - 1U;
++    // The span's support is the accepted D5 chain support.
++    const auto *span = &*std::find_if(
++        chainedInput->spans.begin(), chainedInput->spans.end(),
++        [&](const auto &candidate) {
++          return candidate.id.network_arc() == chain.front().arc;
++        });
++    const auto support = directional::geometry::global_conformity_baseline_detail::
++        derive_mandatory_chain_support({chain}, topology.arcs());
++    ASSERT_TRUE(support.has_value());
++    EXPECT_TRUE(*support == span->supportPieces);
++    for (const auto &oriented : chain) {
++      const auto *arc = topology.find_arc(oriented.arc);
++      ASSERT_NE(nullptr, arc);
++      ASSERT_TRUE(arc->mandatoryEdge.has_value());
++      const auto &edges = fixture.fieldNetwork->mandatory_edges();
++      const auto edge = std::find_if(edges.begin(), edges.end(), [&](const auto &e) {
++        return e.id == *arc->mandatoryEdge;
++      });
++      ASSERT_NE(edges.end(), edge);
++      EXPECT_TRUE(edge->kind != directional::geometry::SurfaceCellRailKind::HardFeature);
++    }
++  }
++  EXPECT_EQ(topology.arcs().size(), chainedInput->spans.size() + chainedArcs);
++
++  const auto perArcBuilt =
++      directional::geometry::build_global_conformity_baseline(topology, perArcInput);
++  const auto chainedBuilt = directional::geometry::build_global_conformity_baseline(
++      topology, *chainedInput);
++  ASSERT_TRUE(perArcBuilt);
++  ASSERT_TRUE(chainedBuilt);
++  // Every arc is a unit source edge: one interval per edge, with no flip.
++  for (const auto &entry : perArcBuilt.value().schedule()) {
++    EXPECT_EQ("1", entry.count.to_string());
++  }
++  for (const auto &entry : chainedBuilt.value().schedule()) {
++    const auto chain = chainLength.find(entry.span);
++    EXPECT_EQ(std::to_string(chain == chainLength.end() ? 1U : chain->second),
++              entry.count.to_string());
++  }
++
++  const auto produce = [&](const directional::geometry::GlobalConformityBaselinePlan &baseline) {
++    fixture.conformityBaseline = baseline;
++    return build_fixed_plan_rectangular_hard_rail_network(
++        fixture, 1.0, &provenance->terminalContacts, nullptr,
++        &provenance->closedChains);
++  };
++  const auto perArc = produce(perArcBuilt.value());
++  const auto chained = produce(chainedBuilt.value());
++  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
++            perArc.phaseFront.disposition())
++      << directional::geometry::surface_phase_front_failure_reason_name(
++             perArc.phaseFront.rejection_reason())
++      << hard_rail_first_failure_detail(perArc);
++  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
++            chained.phaseFront.disposition())
++      << directional::geometry::surface_phase_front_failure_reason_name(
++             chained.phaseFront.rejection_reason())
++      << hard_rail_first_failure_detail(chained);
++  const auto &perArcProduct = perArc.phaseFront.product();
++  const auto &chainedProduct = chained.phaseFront.product();
++  EXPECT_EQ(perArcProduct.gridU(), chainedProduct.gridU());
++  EXPECT_EQ(perArcProduct.gridV(), chainedProduct.gridV());
++  ASSERT_EQ(perArcProduct.edges().size(), chainedProduct.edges().size());
++  ASSERT_EQ(perArcProduct.cells().size(), chainedProduct.cells().size());
++  for (std::size_t cell = 0U; cell < perArcProduct.cells().size(); ++cell) {
++    for (std::size_t corner = 0U; corner < 4U; ++corner) {
++      const auto &expected = perArcProduct.cells()[cell].corners[corner];
++      const auto &actual = chainedProduct.cells()[cell].corners[corner];
++      EXPECT_EQ(expected.face, actual.face) << cell << '/' << corner;
++      EXPECT_TRUE(expected.barycentric == actual.barycentric)
++          << cell << '/' << corner;
++    }
++  }
++
++  // The chained product tiles every span the per-arc product tiled.
++  const auto perArcSummary = directional::geometry::summarize_a3_span_coverage(
++      perArcProduct.edges(), perArcBuilt.value());
++  const auto chainedSummary = directional::geometry::summarize_a3_span_coverage(
++      chainedProduct.edges(), chainedBuilt.value());
++  EXPECT_EQ(0U, chainedSummary.partialSpans);
++  EXPECT_EQ(0U, chainedSummary.foreignIntervalEdges);
++  EXPECT_EQ(perArcSummary.unrecordedSpans, chainedSummary.unrecordedSpans);
++  EXPECT_EQ(perArcSummary.coveredSpans, chainedSummary.coveredSpans + chainedArcs);
++  for (const auto &coverage : chainedSummary.spans) {
++    if (chainLength.count(directional::geometry::ConformitySpanId::from_network_arc(
++            coverage.span)) != 0U) {
++      EXPECT_TRUE(coverage.covered) << coverage.span.index();
++    }
++  }
++  std::cout << "D5_CONSUMER_RECEIPT case=unit arcs=" << topology.arcs().size()
++            << " chains=" << chainedInput->chains.size()
++            << " chainedArcs=" << chainedArcs
++            << " cells=" << chainedProduct.cells().size()
++            << " coveredPerArc=" << perArcSummary.coveredSpans
++            << " coveredChained=" << chainedSummary.coveredSpans << "\n";
++}
++
++// RA-220 (D5): at the fixture's own target size a chained boundary side and
++// the per-arc hard rail facing it round separately. The baseline must still
++// build and validate; what the producer then does is reported, not asserted,
++// and decides whether the production switch can precede hard-rail chaining.
++TEST(SurfaceCellAuthorityContractCutover,
++     D5ChainedBaselineAtTheFixtureTargetBuildsAndReportsItsDisposition) {
++  auto fixture = build_rectangular_hard_rail_phase_front();
++  ASSERT_TRUE(fixture.topologyPlan.has_value());
++  ASSERT_TRUE(fixture.fieldNetwork.has_value());
++  const auto &topology = *fixture.topologyPlan;
++  const auto provenance = directional::pipeline::hard_rail_source_provenance_from_rails(
++      fixture.rails, static_cast<std::size_t>(fixture.mesh.V.rows()));
++  ASSERT_TRUE(provenance.has_value());
++  const auto input =
++      directional::geometry::make_chained_global_conformity_baseline_input(
++          fixture.mesh.V, fixture.targetSize, topology, *fixture.fieldNetwork,
++          fixture.featureCurves);
++  ASSERT_TRUE(input.has_value());
++  const auto built =
++      directional::geometry::build_global_conformity_baseline(topology, *input);
++  ASSERT_TRUE(built);
++  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline(
++      topology, *input, built.value()));
++  std::size_t chainedArcs = 0U;
++  for (const auto &chain : input->chains) chainedArcs += chain.size() - 1U;
++  EXPECT_EQ(topology.arcs().size(), built.value().schedule().size() + chainedArcs);
++
++  std::ostringstream counts;
++  for (const auto &chain : input->chains) {
++    const auto *head = built.value().find_schedule(
++        directional::geometry::ConformitySpanId::from_network_arc(chain.front().arc));
++    ASSERT_NE(nullptr, head);
++    counts << (counts.tellp() > 0 ? "," : "") << chain.size() << ':'
++           << head->count.to_string();
++  }
++  fixture.conformityBaseline = built.value();
++  const auto network = build_fixed_plan_rectangular_hard_rail_network(
++      fixture, 1.0, &provenance->terminalContacts, nullptr,
++      &provenance->closedChains);
++  const bool produced =
++      network.phaseFront.disposition() ==
++      directional::geometry::SurfaceCellProducerDisposition::Produced;
++  std::string covered = "none";
++  if (produced) {
++    const auto summary = directional::geometry::summarize_a3_span_coverage(
++        network.phaseFront.product().edges(), built.value());
++    EXPECT_EQ(0U, summary.partialSpans);
++    EXPECT_EQ(0U, summary.foreignIntervalEdges);
++    covered = std::to_string(summary.coveredSpans) + '/' +
++              std::to_string(summary.scheduledSpans);
++  }
++  std::cout << "D5_CONSUMER_RECEIPT case=fixtureTarget chains="
++            << input->chains.size() << " arcsToCount=" << counts.str()
++            << " disposition=" << (produced ? "Produced" : "Rejected")
++            << " reason="
++            << (produced ? "None"
++                         : directional::geometry::surface_phase_front_failure_reason_name(
++                               network.phaseFront.rejection_reason()))
++            << " covered=" << covered << "\n";
++}
++
+ TEST(SurfaceCellAuthorityContractCutover,
+      FixedConformityPlanTargetPerturbationPreservesSharedBoundaryIntervals) {
+   const auto fixture = build_rectangular_hard_rail_phase_front();

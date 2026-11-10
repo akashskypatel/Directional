@@ -1,3 +1,9 @@
+## 2026-11-10 UTC — RA-220 D5 boundary-chain consumption definition (Review; runtime-free)
+
+- [RA-220](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Boundary_Chain_Consumption_Review_20261110.md): every A3 schedule consumer read. Frozen: exact [CB113](.agents/Directional/Architecture_M6_CP3_CB113_P13_A3_Chain_Aware_Consumers_Exact.diff) `af68344b…` (preflight, cut domain and bounded-disk side walk resolve arcs through the D5 binding; chained input factory added to the geometry library; production still builds the per-arc input; GUARD 930–931) with [TB96](.agents/Directional/gates/Architecture_M6_TB96_P13_A3_Chain_Aware_Consumers_Full_Gate_Case_Manifest.tsv) (931 rows `ca7238a4…`, membership 1012).
+- Finding: a stage-1 production switch is predicted to reject regions where a chained boundary side faces a per-arc hard rail. The switch is not frozen; TB96 measures the rectangular hard-rail fixture and 64C places the switch (O36).
+- Next: `M6-CP3-CB113-P13-A3-CHAIN-AWARE-CONSUMERS`. Stable 66/17/49, CP2 491/491, debt 1, 81 deferred unchanged. No product or test source changed.
+
 ## 2026-11-10 UTC — TB95 arc-binding full gate COMPLETE / MATCH
 
 - [Verified TB95 report](.agents/Directional/Architecture_M6_CP3_TB95_P13_A3_Chain_Arc_Bindings_Full_Gate_Execution_Report_20261110.md): immutable CB112 artifact `13754529459` (source `35912b11ff870d914c08599ef7b3d45f5a09c89b`) executed artifact-only. [Gate 42804987908](https://github.com/akashskypatel/Directional/actions/runs/42804987908) **929/929 PASS**, membership 1010, 1,866/1,866 checksums, 4 `D5_BINDING_RECEIPT` lines and exact 7+7 raw-line equality to TB94. [Census 42805285534](https://github.com/akashskypatel/Directional/actions/runs/42805285534): Cylinder PASS; BunnyRandom/Vase registered RED unchanged, 9/9 checksums. No configure, compile, relink or benchmark.

@@ -411,6 +411,12 @@ This document records **reusable failure-derived engineering lessons**, not an e
   (ceiling) from the same exact quantity instead of adding a failure. Before switching a stored
   representation, grep the accepted tests for assertions on the old encoding and amend them in the
   switch CB, registered by the Review.
+- **Ask what the old representation guaranteed by accident (RA-220).** Per-arc counts made opposite
+  sides of a region agree on structured source meshes, although A3 only solves parity. Chaining
+  one kind of rail and not the other removes that agreement. Before switching a representation in
+  stages, list what each consumer checks across spans (here: opposite sides equal) and whether a
+  mixed stage still satisfies it. Land the consumers first, unwired, with one test where the old
+  and new inputs must give the same product and one receipt that measures the case in doubt.
 - **Freeze what is decided; name the rest as its own turn (RA-219).** RA-218 asked one definition
   to freeze three patches, and the third rewrote consumers of an interface the second introduced.
   The turn also reached the implementation agent, which resumed it five times and froze nothing.
