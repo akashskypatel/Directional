@@ -64,7 +64,7 @@ The chained schedule gives each rail between stops one metric count, which is wh
 | Any failure in 932–935, any regression in 1–931, or any digest change | MISMATCH → `M6-CP3-TB98-P13-A3-RIM-CENSUS-RECEIPT-FULL-GATE-REV` (Review) |
 | Infrastructure | `M6-CP3-TB98A-P13-A3-RIM-CENSUS-RECEIPT-ORCH` |
 
-**Registered predictions (not pass conditions).** Plane: 4 sides, with `chained` equal to `output` on each (8 per side) and `perArc` larger. `recorded=0` on every uniform fixture. Cylinder: `output` equals `perArc` on its rims.
+**Registered predictions (not pass conditions).** Plane: 4 sides, with `chained` equal to `output` on each (8 per side) and `perArc` larger. *(TB98: 4 sides and `perArc` larger held; `chained` equal to `output` was false, 10 against 8. See [RA-224](Architecture_M6_CP3_DEFN_P13_A3_Disc_Corner_Stops_Review_20261110.md) §1.)* `recorded=0` on every uniform fixture. Cylinder: `output` equals `perArc` on its rims.
 
 ## 6. O36 after TB96 and TB97
 

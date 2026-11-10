@@ -416,6 +416,17 @@ This document records **reusable failure-derived engineering lessons**, not an e
   production (here: a chained plan can never be built by a uniform lattice), land that half with
   a test that injects the new input, and let the test report which producer ran. Check the producer
   in the middle of a dispatch chain too: it must pass the region on, not reject it.
+- **Ask what a per-region quantity depends on before publishing it upstream (RA-224).** The side
+  corners looked like region state: a gauge built by transport from a root face. At a rim node that
+  only its two rim arcs reach, the gauge difference is the transport across that vertex's own faces,
+  so the corner is a property of the vertex and the field. Check locality first; it decides whether
+  the product is a list of source vertices or a table per region. Then land the product unwired and
+  prove it equal to the consumer's own derivation with a test that shares no code with it, before
+  making the consumer read it. A decided mechanism ("the producer reads the product") is still a
+  claim: check which of the consumer's cases the product covers.
+- **A registered prediction that fails is a finding (RA-224).** RA-222 predicted the chained count
+  would equal the uniform lattice; TB98 showed 10 against 8. Read each receipt against its
+  prediction when the gate closes, and carry the difference into the switch's digest plan.
 - **A second producer does not need the plan; it needs to step aside (RA-222).** D4 asked the uniform
   producer to consume A3 or decline. Declining keeps one reader of the plan and is one line, but it
   moves three green fixtures to a producer with a stricter precondition (equal opposite sides).
