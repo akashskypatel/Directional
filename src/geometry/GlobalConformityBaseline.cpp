@@ -232,6 +232,7 @@ struct NormalizedBaselineProblem {
   std::vector<ConformitySpanInput> spans;
   std::vector<EInt> preferred;
   std::vector<std::vector<BaselineConformityMetricRun>> metricRuns;
+  std::map<authority::NetworkArcId, BaselineConformityArcBinding> arcBindings;
   std::vector<BaselineConformityIncidence> incidences;
   std::vector<authority::NetworkRegionId> regions;
   std::vector<std::vector<std::size_t>> spanRegionEnds;
@@ -259,6 +260,16 @@ std::uint64_t normalized_digest(const GlobalTopologyPlan &topology,
   }
   hash_u64(hash, static_cast<std::uint64_t>(problem.incidences.size()));
   for (const auto &incidence : problem.incidences) hash_incidence(hash, incidence);
+  // D5 (RA-219): only the arcs a chain adds are hashed, so a per-arc problem
+  // keeps its digest.
+  for (const auto &[arc, binding] : problem.arcBindings) {
+    if (binding.chainOrdinal == 0U) continue;
+    hash_id(hash, arc);
+    hash_id(hash, binding.span.network_arc());
+    hash_u64(hash, static_cast<std::uint64_t>(binding.chainOrdinal));
+    hash_u64(hash, static_cast<std::uint64_t>(
+                       static_cast<int>(binding.orientation) + 1));
+  }
   return hash;
 }
 
@@ -284,7 +295,12 @@ NormalizeResult normalize_baseline(const GlobalTopologyPlan &topology,
             [](const auto &first, const auto &second) {
               return first.id < second.id;
             });
-  if (out.spans.size() != topology.arcs().size()) {
+  // D5 (RA-219): a chain covers its identifying arc and the arcs after it.
+  std::size_t chainedArcs = 0U;
+  for (const auto &chain : input.chains) {
+    if (!chain.empty()) chainedArcs += chain.size() - 1U;
+  }
+  if (out.spans.size() + chainedArcs != topology.arcs().size()) {
     return make_error(GlobalConformityPlanErrorCode::InvalidTopologyBinding,
                       "baseline schedules every full A2b arc exactly once");
   }
@@ -319,6 +335,14 @@ NormalizeResult normalize_baseline(const GlobalTopologyPlan &topology,
     spanIndex.emplace(out.spans[index].id, index);
   }
 
+  auto arcBindings = global_conformity_baseline_detail::derive_span_arc_bindings(
+      topology.arcs(), topology.rotation_system(), out.spans, input.chains);
+  if (!arcBindings) {
+    return make_error(GlobalConformityPlanErrorCode::InvalidTopologyBinding,
+                      "baseline chains do not partition the A2b arcs");
+  }
+  out.arcBindings = std::move(*arcBindings);
+
   std::vector<const GlobalTopologyRegion *> orderedRegions;
   orderedRegions.reserve(topology.regions().size());
   for (const auto &region : topology.regions()) orderedRegions.push_back(&region);
@@ -342,17 +366,23 @@ NormalizeResult normalize_baseline(const GlobalTopologyPlan &topology,
     const auto regionIt = regionIndex.find(region->id);
     for (std::size_t ordinal = 0U; ordinal < region->boundary.size(); ++ordinal) {
       const auto &boundary = region->boundary[ordinal];
-      const auto span = ConformitySpanId::from_network_arc(boundary.arc);
-      const auto spanIt = spanIndex.find(span);
-      if (spanIt == spanIndex.end()) {
+      const auto bound = out.arcBindings.find(boundary.arc);
+      if (bound == out.arcBindings.end()) {
         auto error = make_error(GlobalConformityPlanErrorCode::InvalidBoundaryIncidence,
                                 "A2b boundary names an unscheduled span");
         error.incidence = ConformityBoundaryIncidenceId{region->id, ordinal};
         return error;
       }
-      out.incidences.push_back({{region->id, ordinal}, span,
-                                boundary.orientation});
-      out.spanRegionEnds[spanIt->second].push_back(regionIt->second);
+      // D5 (RA-219): a chain crosses only nodes with two incidences, so a walk
+      // holds it whole and its side is read once, at the identifying arc.
+      if (bound->second.chainOrdinal != 0U) continue;
+      out.incidences.push_back(
+          {{region->id, ordinal}, bound->second.span,
+           boundary.orientation == bound->second.orientation
+               ? authority::Orientation::Forward
+               : authority::Orientation::Reverse});
+      out.spanRegionEnds[spanIndex.at(bound->second.span)].push_back(
+          regionIt->second);
     }
   }
 
@@ -728,7 +758,8 @@ GlobalConformityBaselineBuildResult build_global_conformity_baseline(
     GlobalConformityBaselinePlan plan(std::move(schedule),
                                       std::move(problem.incidences),
                                       std::move(certificate), digest,
-                                      std::move(problem.metricRuns));
+                                      std::move(problem.metricRuns),
+                                      std::move(problem.arcBindings));
     const auto validated = validate_global_conformity_baseline(topology, input, plan);
     return validated ? GlobalConformityBaselineBuildResult(std::move(plan))
                      : validated;
@@ -756,6 +787,13 @@ GlobalConformityBaselinePlan::breakpoint_location(
   return global_conformity_baseline_detail::derive_metric_breakpoint_location(
       span, entry->supportPieces.size(), metricRuns_[index], entry->count,
       exactOrdinal);
+}
+
+const BaselineConformityArcBinding *
+GlobalConformityBaselinePlan::find_arc_binding(
+    authority::NetworkArcId arc) const noexcept {
+  const auto found = arcBindings_.find(arc);
+  return found != arcBindings_.end() ? &found->second : nullptr;
 }
 
 GlobalConformityBaselineValidationCandidate

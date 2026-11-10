@@ -503,6 +503,81 @@ std::set<authority::NetworkNodeId> derive_mandatory_chain_stop_nodes(
   return stops;
 }
 
+std::optional<std::map<authority::NetworkArcId, BaselineConformityArcBinding>>
+derive_span_arc_bindings(
+    const std::vector<GlobalTopologyArc> &arcs,
+    const std::vector<GlobalTopologyNodeRotation> &rotations,
+    const std::vector<ConformitySpanInput> &spans,
+    const std::vector<std::vector<GlobalTopologyOrientedArc>> &chains) {
+  std::map<authority::NetworkArcId, const GlobalTopologyArc *> arcById;
+  for (const auto &arc : arcs) {
+    if (!arcById.emplace(arc.id, &arc).second) return std::nullopt;
+  }
+  std::map<authority::NetworkNodeId, std::size_t> incidenceCount;
+  for (const auto &rotation : rotations) {
+    if (!incidenceCount
+             .emplace(rotation.node, rotation.counterClockwise.size())
+             .second) {
+      return std::nullopt;
+    }
+  }
+  std::map<authority::NetworkArcId, BaselineConformityArcBinding> bindings;
+  for (const auto &chain : chains) {
+    if (chain.size() < 2U) return std::nullopt;
+    const auto span = ConformitySpanId::from_network_arc(chain.front().arc);
+    std::optional<authority::NetworkNodeId> exit;
+    std::size_t firstSupportPiece = 0U;
+    for (std::size_t ordinal = 0U; ordinal < chain.size(); ++ordinal) {
+      const auto known = arcById.find(chain[ordinal].arc);
+      if (known == arcById.end() ||
+          known->second->kind != GlobalTopologyArcKind::Mandatory) {
+        return std::nullopt;
+      }
+      const auto *arc = known->second;
+      const bool forward =
+          chain[ordinal].orientation == authority::Orientation::Forward;
+      const auto entry = forward ? arc->firstNode : arc->secondNode;
+      if (exit) {
+        const auto count = incidenceCount.find(entry);
+        if (entry != *exit || count == incidenceCount.end() ||
+            count->second != 2U) {
+          return std::nullopt;
+        }
+      }
+      exit = forward ? arc->secondNode : arc->firstNode;
+      if (!bindings
+               .emplace(arc->id,
+                        BaselineConformityArcBinding{span, ordinal,
+                                                     chain[ordinal].orientation,
+                                                     firstSupportPiece})
+               .second) {
+        return std::nullopt;
+      }
+      firstSupportPiece += arc->sourcePath.size();
+    }
+  }
+  std::size_t ledChains = 0U;
+  std::set<authority::NetworkArcId> scheduled;
+  for (const auto &span : spans) {
+    const auto arc = span.id.network_arc();
+    if (!scheduled.insert(arc).second) return std::nullopt;
+    const auto found = bindings.find(arc);
+    if (found != bindings.end()) {
+      // A span on a chained arc must lead that chain.
+      if (found->second.chainOrdinal != 0U) return std::nullopt;
+      ++ledChains;
+    } else if (arcById.count(arc) == 0U) {
+      return std::nullopt;
+    } else {
+      bindings.emplace(arc, BaselineConformityArcBinding{span.id});
+    }
+  }
+  if (ledChains != chains.size() || bindings.size() != arcs.size()) {
+    return std::nullopt;
+  }
+  return bindings;
+}
+
 std::uint64_t exact_target_metric_digest(const Eigen::VectorXd &targetSize) {
   std::uint64_t hash = kFnvOffset;
   hash_u64(hash, static_cast<std::uint64_t>(targetSize.size()));

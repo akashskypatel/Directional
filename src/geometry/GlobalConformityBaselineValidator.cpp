@@ -351,7 +351,13 @@ std::optional<IndependentProblem> rebuild_problem(
             [](const auto &first, const auto &second) {
               return first.id < second.id;
             });
-  if (out.spans.size() != topology.arcs().size()) return std::nullopt;
+  std::size_t chainedArcs = 0U;
+  for (const auto &chain : input.chains) {
+    if (!chain.empty()) chainedArcs += chain.size() - 1U;
+  }
+  if (out.spans.size() + chainedArcs != topology.arcs().size()) {
+    return std::nullopt;
+  }
 
   std::map<ConformitySpanId, std::size_t> spanIndex;
   for (std::size_t span = 0U; span < out.spans.size(); ++span) {
@@ -371,6 +377,11 @@ std::optional<IndependentProblem> rebuild_problem(
     spanIndex.emplace(out.spans[span].id, span);
   }
 
+  const auto arcBindings =
+      global_conformity_baseline_detail::derive_span_arc_bindings(
+          topology.arcs(), topology.rotation_system(), out.spans, input.chains);
+  if (!arcBindings) return std::nullopt;
+
   std::vector<const GlobalTopologyRegion *> regions;
   for (const auto &region : topology.regions()) regions.push_back(&region);
   std::sort(regions.begin(), regions.end(), [](const auto *first, const auto *second) {
@@ -387,12 +398,17 @@ std::optional<IndependentProblem> rebuild_problem(
   for (const auto *region : regions) {
     for (std::size_t ordinal = 0U; ordinal < region->boundary.size(); ++ordinal) {
       const auto &boundary = region->boundary[ordinal];
-      const auto span = ConformitySpanId::from_network_arc(boundary.arc);
-      const auto found = spanIndex.find(span);
-      if (found == spanIndex.end()) return std::nullopt;
-      out.incidences.push_back({{region->id, ordinal}, span,
-                                boundary.orientation});
-      out.spanEnds[found->second].push_back(regionIndex.at(region->id));
+      const auto bound = arcBindings->find(boundary.arc);
+      if (bound == arcBindings->end()) return std::nullopt;
+      // D5 (RA-219): a chain's side is read once, at its identifying arc.
+      if (bound->second.chainOrdinal != 0U) continue;
+      out.incidences.push_back(
+          {{region->id, ordinal}, bound->second.span,
+           boundary.orientation == bound->second.orientation
+               ? authority::Orientation::Forward
+               : authority::Orientation::Reverse});
+      out.spanEnds[spanIndex.at(bound->second.span)].push_back(
+          regionIndex.at(region->id));
     }
   }
   for (const auto &ends : out.spanEnds) {
@@ -489,6 +505,14 @@ std::optional<IndependentProblem> rebuild_problem(
   }
   hash_u64(hash, static_cast<std::uint64_t>(out.incidences.size()));
   for (const auto &incidence : out.incidences) hash_incidence(hash, incidence);
+  for (const auto &[arc, binding] : *arcBindings) {
+    if (binding.chainOrdinal == 0U) continue;
+    hash_id(hash, arc);
+    hash_id(hash, binding.span.network_arc());
+    hash_u64(hash, static_cast<std::uint64_t>(binding.chainOrdinal));
+    hash_u64(hash, static_cast<std::uint64_t>(
+                       static_cast<int>(binding.orientation) + 1));
+  }
   out.normalizedDigest = hash;
   return out;
 }

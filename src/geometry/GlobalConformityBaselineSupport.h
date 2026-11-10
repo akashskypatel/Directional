@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <map>
 #include <optional>
 #include <set>
 #include <vector>
@@ -74,6 +75,19 @@ derive_mandatory_chain_stop_nodes(
     const std::vector<FieldAlignedSingularityPort> &ports,
     const std::vector<FieldAlignedMandatoryEdge> &mandatoryEdges,
     const std::vector<AdaptiveFeatureCurve> &curves);
+
+// D5 arc bindings (RA-219): the span that schedules each A2b arc. A span
+// without a chain covers only its identifying arc. Returns nothing unless the
+// spans and chains cover every A2b arc exactly once, each chain is led by a
+// span's identifying arc, and each chain is a path of Mandatory arcs through
+// nodes with exactly two incidences. Rails and stops are the caller's.
+[[nodiscard]] std::optional<
+    std::map<authority::NetworkArcId, BaselineConformityArcBinding>>
+derive_span_arc_bindings(
+    const std::vector<GlobalTopologyArc> &arcs,
+    const std::vector<GlobalTopologyNodeRotation> &rotations,
+    const std::vector<ConformitySpanInput> &spans,
+    const std::vector<std::vector<GlobalTopologyOrientedArc>> &chains);
 
 [[nodiscard]] std::uint64_t
 exact_target_metric_digest(const Eigen::VectorXd &targetSize);

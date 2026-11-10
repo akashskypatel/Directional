@@ -10,6 +10,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <map>
 #include <optional>
 #include <utility>
 #include <variant>
@@ -173,6 +174,19 @@ struct GlobalConformityBaselineCertificate {
   bool operator==(const GlobalConformityBaselineCertificate &) const = default;
 };
 
+/** D5 binding of one A2b arc to the span that schedules it (RA-219). */
+struct BaselineConformityArcBinding {
+  ConformitySpanId span;
+  /** Ordinal of the arc in the span's chain; the identifying arc is 0. */
+  std::size_t chainOrdinal = 0U;
+  /** Orientation of the arc along the span's chain. */
+  authority::Orientation orientation = authority::Orientation::Forward;
+  /** Source-path pieces of the chain's arcs before this one. */
+  std::size_t firstSupportPiece = 0U;
+
+  bool operator==(const BaselineConformityArcBinding &) const = default;
+};
+
 /**
  * Baseline A3 input. Boundary incidences are intentionally not caller supplied:
  * they are rebuilt from GlobalTopologyPlan region boundary walks so family/sign
@@ -182,6 +196,12 @@ struct GlobalConformityBaselineInput {
   Eigen::MatrixXd sourceVertices;
   Eigen::VectorXd targetSize;
   std::vector<ConformitySpanInput> spans;
+  /**
+   * D5 chains (RA-219): the A2b arcs each multi-arc span covers, in order, with
+   * the identifying arc first. A span without a chain covers only its
+   * identifying arc.
+   */
+  std::vector<std::vector<GlobalTopologyOrientedArc>> chains;
 };
 
 struct GlobalConformityBaselineValidationCandidate {
@@ -229,6 +249,8 @@ public:
   find_schedule(ConformitySpanId span) const noexcept;
   [[nodiscard]] std::optional<ConformityBreakpointLocation>
   breakpoint_location(ConformitySpanId span, const EInt &exactOrdinal) const;
+  [[nodiscard]] const BaselineConformityArcBinding *
+  find_arc_binding(authority::NetworkArcId arc) const noexcept;
   [[nodiscard]] GlobalConformityBaselineValidationCandidate
   validation_candidate() const;
 
@@ -241,10 +263,12 @@ private:
       std::vector<BaselineConformityIncidence> incidences,
       GlobalConformityBaselineCertificate certificate,
       std::uint64_t semanticDigest,
-      std::vector<std::vector<BaselineConformityMetricRun>> metricRuns)
+      std::vector<std::vector<BaselineConformityMetricRun>> metricRuns,
+      std::map<authority::NetworkArcId, BaselineConformityArcBinding> arcBindings)
       : schedule_(std::move(schedule)), incidences_(std::move(incidences)),
         certificate_(std::move(certificate)), semanticDigest_(semanticDigest),
-        metricRuns_(std::move(metricRuns)) {}
+        metricRuns_(std::move(metricRuns)),
+        arcBindings_(std::move(arcBindings)) {}
 
   std::vector<ConformityScheduleEntry> schedule_;
   std::vector<BaselineConformityIncidence> incidences_;
@@ -252,6 +276,8 @@ private:
   std::uint64_t semanticDigest_ = 0U;
   /** D7 runs of each schedule entry, in schedule order (RA-217). */
   std::vector<std::vector<BaselineConformityMetricRun>> metricRuns_;
+  /** D5 span of every A2b arc (RA-219). */
+  std::map<authority::NetworkArcId, BaselineConformityArcBinding> arcBindings_;
 };
 
 class GlobalConformityBaselineBuildResult {
