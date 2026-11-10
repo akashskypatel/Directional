@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb113-chained-input-factory-compile-20261110-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb113-chained-input-factory-compile",
-  "source_sha": "62493cee6c779613dae389e42ef2e60206fec522",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb113-chained-input-factory"
+  "request_id": "m6-cp3-cb113-docs-closeout-20261110-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb113-docs-closeout",
+  "file_id": "1m4k4tPxioeYrjTr3H8t1DHCyAsbqNllR",
+  "patch_sha256": "af79c7c65bdea0d5206c3abfaca54c32ff16dfb506920b3b8eb326c542da57d8",
+  "base_sha": "c852a4cfabe79e0226d01ef5d0c5ec5810da2662",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB113 compile evidence and hand off TB96",
+  "retention_days": 14
 }
