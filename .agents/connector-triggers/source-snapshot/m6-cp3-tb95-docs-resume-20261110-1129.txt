@@ -1,3 +1,0 @@
-purpose=TB95 immutable test-benchmark documentation closeout
-turn=M6-CP3-TB95-P13-A3-CHAIN-ARC-BINDINGS-FULL-GATE-EXEC
-scope=source-snapshot-only
