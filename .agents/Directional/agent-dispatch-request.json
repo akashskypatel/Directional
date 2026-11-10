@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb112-docs-closeout-20261110-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb112-docs-closeout",
-  "file_id": "1J5E9sMUMHjSUo1UyVm1WWajz-QPVkHVB",
-  "patch_sha256": "8c17b8f3627018ffa26fc50964b86f365d9b5026218b0c41a69bc0d1b744d68d",
-  "base_sha": "35912b11ff870d914c08599ef7b3d45f5a09c89b",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB112 compile checkpoint and hand off TB95",
-  "retention_days": 14
+  "request_id": "m6-cp3-tb95-gate-20261110-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb95-gate",
+  "executor_sha": "35912b11ff870d914c08599ef7b3d45f5a09c89b",
+  "semantic_source_sha": "35912b11ff870d914c08599ef7b3d45f5a09c89b",
+  "turn_id": "M6-CP3-TB95-P13-A3-CHAIN-ARC-BINDINGS-GATE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "13754529459",
+    "EXPECTED_SOURCE_SHA": "35912b11ff870d914c08599ef7b3d45f5a09c89b",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "dc8096a810fba4a000aa16ee1cc786f5e3460cf7692eaf76e3a9408e56f812e1",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "c34cc746c24968293fc0ae961daa649092f766e392beb93e1bb8e85cf2d9692f",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "443947c8e9b8187fee0b11e7316c9c26320494d3b26c981f6046883df549ddba",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB95_P13_A3_Chain_Arc_Bindings_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "bcf9420d6ae0caee0d66100bb777946bd45c85dad609a7f9b648c67ea7345229",
+    "EXPECTED_CASE_COUNT": "929",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  },
+  "artifact_prefix": "m6-cp3-tb95-gate",
+  "retention_days": 7
 }
