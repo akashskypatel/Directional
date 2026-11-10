@@ -8073,6 +8073,143 @@ TEST(SurfaceCellAuthorityContractCutover,
             << " chained=" << a3_span_count_shape(targetBuilt.value()) << "\n";
 }
 
+// RA-220 (D5): at target size 1 every unit source edge is one interval under
+// the per-arc and the chained A3 input alike, so the chain-aware bounded-disk
+// producer must build the same cells from both. Only the span labels differ.
+TEST(SurfaceCellAuthorityContractCutover,
+     D5ChainedBaselineAtUnitSizeReproducesThePerArcGrid) {
+  auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_TRUE(fixture.topologyPlan.has_value());
+  ASSERT_TRUE(fixture.fieldNetwork.has_value());
+  const auto &topology = *fixture.topologyPlan;
+  const auto provenance = directional::pipeline::hard_rail_source_provenance_from_rails(
+      fixture.rails, static_cast<std::size_t>(fixture.mesh.V.rows()));
+  ASSERT_TRUE(provenance.has_value());
+  const Eigen::VectorXd unit =
+      Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 1.0);
+  const auto chainedInput =
+      directional::geometry::make_chained_global_conformity_baseline_input(
+          fixture.mesh.V, unit, topology, *fixture.fieldNetwork,
+          fixture.featureCurves);
+  ASSERT_TRUE(chainedInput.has_value());
+  ASSERT_FALSE(chainedInput->chains.empty());
+  std::set<directional::authority::NetworkArcId> chainSpans;
+  std::size_t chainedArcs = 0U;
+  for (const auto &chain : chainedInput->chains) {
+    chainSpans.insert(chain.front().arc);
+    chainedArcs += chain.size() - 1U;
+  }
+  const auto perArcBuilt = directional::geometry::build_global_conformity_baseline(
+      topology, directional::pipeline::remesh_pipeline_detail::
+                    make_global_conformity_baseline_input(fixture.mesh.V, unit,
+                                                          topology));
+  const auto chainedBuilt = directional::geometry::build_global_conformity_baseline(
+      topology, *chainedInput);
+  ASSERT_TRUE(perArcBuilt);
+  ASSERT_TRUE(chainedBuilt);
+
+  const auto produce = [&](const directional::geometry::GlobalConformityBaselinePlan &baseline) {
+    fixture.conformityBaseline = baseline;
+    return build_fixed_plan_rectangular_hard_rail_network(
+        fixture, 1.0, &provenance->terminalContacts, nullptr,
+        &provenance->closedChains);
+  };
+  const auto perArc = produce(perArcBuilt.value());
+  const auto chained = produce(chainedBuilt.value());
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            perArc.phaseFront.disposition())
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             perArc.phaseFront.rejection_reason())
+      << hard_rail_first_failure_detail(perArc);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            chained.phaseFront.disposition())
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             chained.phaseFront.rejection_reason())
+      << hard_rail_first_failure_detail(chained);
+  const auto &perArcProduct = perArc.phaseFront.product();
+  const auto &chainedProduct = chained.phaseFront.product();
+  EXPECT_EQ(perArcProduct.gridU(), chainedProduct.gridU());
+  EXPECT_EQ(perArcProduct.gridV(), chainedProduct.gridV());
+  ASSERT_EQ(perArcProduct.edges().size(), chainedProduct.edges().size());
+  ASSERT_EQ(perArcProduct.cells().size(), chainedProduct.cells().size());
+  for (std::size_t cell = 0U; cell < perArcProduct.cells().size(); ++cell) {
+    for (std::size_t corner = 0U; corner < 4U; ++corner) {
+      const auto &expected = perArcProduct.cells()[cell].corners[corner];
+      const auto &actual = chainedProduct.cells()[cell].corners[corner];
+      EXPECT_EQ(expected.face, actual.face) << cell << '/' << corner;
+      EXPECT_TRUE(expected.barycentric == actual.barycentric)
+          << cell << '/' << corner;
+    }
+  }
+  // Edge for edge, the two products record the same unit intervals or none.
+  std::size_t chainIntervals = 0U;
+  for (std::size_t edge = 0U; edge < perArcProduct.edges().size(); ++edge) {
+    const auto &expected = perArcProduct.edges()[edge].sharedBoundaryInterval;
+    const auto &actual = chainedProduct.edges()[edge].sharedBoundaryInterval;
+    ASSERT_EQ(expected.has_value(), actual.has_value()) << edge;
+    if (!actual.has_value()) continue;
+    const auto *binding = chainedBuilt.value().find_arc_binding(expected->span);
+    ASSERT_NE(nullptr, binding) << edge;
+    EXPECT_TRUE(actual->span == binding->span.network_arc()) << edge;
+    if (chainSpans.count(actual->span) != 0U) ++chainIntervals;
+  }
+  EXPECT_EQ(chainedArcs + chainSpans.size(), chainIntervals);
+
+  // The chained product tiles every span the per-arc product tiled.
+  const auto perArcSummary = directional::geometry::summarize_a3_span_coverage(
+      perArcProduct.edges(), perArcBuilt.value());
+  const auto chainedSummary = directional::geometry::summarize_a3_span_coverage(
+      chainedProduct.edges(), chainedBuilt.value());
+  EXPECT_EQ(0U, chainedSummary.partialSpans);
+  EXPECT_EQ(0U, chainedSummary.foreignIntervalEdges);
+  EXPECT_EQ(perArcSummary.unrecordedSpans, chainedSummary.unrecordedSpans);
+  EXPECT_EQ(perArcSummary.coveredSpans, chainedSummary.coveredSpans + chainedArcs);
+  for (const auto &coverage : chainedSummary.spans) {
+    if (chainSpans.count(coverage.span) != 0U) {
+      EXPECT_TRUE(coverage.covered) << coverage.span.index();
+    }
+  }
+  std::cout << "D5_CONSUMER_RECEIPT case=unit chains=" << chainSpans.size()
+            << " chainedArcs=" << chainedArcs
+            << " cells=" << chainedProduct.cells().size()
+            << " chainIntervals=" << chainIntervals
+            << " coveredPerArc=" << perArcSummary.coveredSpans
+            << " coveredChained=" << chainedSummary.coveredSpans << "\n";
+
+  // At the fixture's own target size a chained boundary side and the per-arc
+  // hard rail facing it round separately. What the producer then does is
+  // reported, not asserted; a produced network must still tile its spans.
+  const auto targetInput =
+      directional::geometry::make_chained_global_conformity_baseline_input(
+          fixture.mesh.V, fixture.targetSize, topology, *fixture.fieldNetwork,
+          fixture.featureCurves);
+  ASSERT_TRUE(targetInput.has_value());
+  const auto targetBuilt = directional::geometry::build_global_conformity_baseline(
+      topology, *targetInput);
+  ASSERT_TRUE(targetBuilt);
+  const auto target = produce(targetBuilt.value());
+  const bool produced =
+      target.phaseFront.disposition() ==
+      directional::geometry::SurfaceCellProducerDisposition::Produced;
+  std::string covered = "none";
+  if (produced) {
+    const auto summary = directional::geometry::summarize_a3_span_coverage(
+        target.phaseFront.product().edges(), targetBuilt.value());
+    EXPECT_EQ(0U, summary.partialSpans);
+    EXPECT_EQ(0U, summary.foreignIntervalEdges);
+    covered = std::to_string(summary.coveredSpans) + '/' +
+              std::to_string(summary.scheduledSpans);
+  }
+  std::cout << "D5_CONSUMER_RECEIPT case=fixtureTarget spans="
+            << a3_span_count_shape(targetBuilt.value())
+            << " disposition=" << (produced ? "Produced" : "Rejected")
+            << " reason="
+            << (produced ? "None"
+                         : directional::geometry::surface_phase_front_failure_reason_name(
+                               target.phaseFront.rejection_reason()))
+            << " covered=" << covered << "\n";
+}
+
 TEST(SurfaceCellAuthorityContractCutover,
      FixedConformityPlanTargetPerturbationPreservesSharedBoundaryIntervals) {
   const auto fixture = build_rectangular_hard_rail_phase_front();
