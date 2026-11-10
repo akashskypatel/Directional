@@ -13462,8 +13462,16 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
     }
     return false;
   };
+  // D4 (RA-223): a chained A3 plan schedules fewer spans than there are arcs.
+  // A uniform lattice cannot place a chain's breakpoints, so the curved
+  // producer owns every region of such a plan.
+  const bool chainedPlan =
+      options.globalConformityBaselinePlan != nullptr &&
+      options.globalTopologyPlan != nullptr &&
+      options.globalConformityBaselinePlan->schedule().size() !=
+          options.globalTopologyPlan->arcs().size();
   if (options.globalConformityBaselinePlan != nullptr &&
-      region_has_hard_feature()) {
+      (chainedPlan || region_has_hard_feature())) {
     return result;
   }
   UniformPhaseFrame applicabilityFrame;

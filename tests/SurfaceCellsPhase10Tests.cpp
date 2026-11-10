@@ -7112,7 +7112,7 @@ directional::TriMesh make_reversed_rectangular_feature_pair_mesh() {
 }
 
 RectangularHardRailPhaseFrontFixture build_rectangular_hard_rail_phase_front(
-    const bool reverseFaceRows = false) {
+    const bool reverseFaceRows = false, const bool withHardRail = true) {
   RectangularHardRailPhaseFrontFixture fixture;
   fixture.mesh = reverseFaceRows
                      ? make_reversed_rectangular_feature_pair_mesh()
@@ -7127,6 +7127,7 @@ RectangularHardRailPhaseFrontFixture build_rectangular_hard_rail_phase_front(
   options.surfaceCells.retainIntermediateGeometry = true;
   options.lengthRatio = 0.2;
   for (const int component : {0, 1}) {
+    if (!withHardRail) break;
     const int offset = component * 9;
     options.surfaceCells.featureMap.userHardEdges.insert(
         {offset + 1, offset + 4});
@@ -8208,6 +8209,91 @@ TEST(SurfaceCellAuthorityContractCutover,
                          : directional::geometry::surface_phase_front_failure_reason_name(
                                target.phaseFront.rejection_reason()))
             << " covered=" << covered << "\n";
+}
+
+// RA-223 (D4): the uniform producer builds its lattice from the target size and
+// cannot place a chained span's breakpoints, so it declines every region of a
+// chained A3 plan and the curved producer, which reads the plan, takes over.
+// The fixture is the two plain 2x2 squares, with no hard rail.
+TEST(SurfaceCellAuthorityContractCutover,
+     D4UniformProducerDeclinesAChainedPlan) {
+  for (const bool reverseFaceRows : {false, true}) {
+    SCOPED_TRACE(reverseFaceRows ? "reversed face rows" : "forward face rows");
+    auto fixture = build_rectangular_hard_rail_phase_front(reverseFaceRows, false);
+    ASSERT_TRUE(fixture.topologyPlan.has_value());
+    ASSERT_TRUE(fixture.fieldNetwork.has_value());
+    ASSERT_TRUE(fixture.hardFeatureEdges.empty());
+    const auto &topology = *fixture.topologyPlan;
+    const Eigen::VectorXd unit =
+        Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 1.0);
+    const auto chainedInput =
+        directional::geometry::make_chained_global_conformity_baseline_input(
+            fixture.mesh.V, unit, topology, *fixture.fieldNetwork,
+            fixture.featureCurves);
+    ASSERT_TRUE(chainedInput.has_value());
+    // Each square's rim is cut at its four corners into four two-edge sides.
+    ASSERT_FALSE(chainedInput->chains.empty());
+    const auto perArcBuilt = directional::geometry::build_global_conformity_baseline(
+        topology, directional::pipeline::remesh_pipeline_detail::
+                      make_global_conformity_baseline_input(fixture.mesh.V, unit,
+                                                            topology));
+    const auto chainedBuilt = directional::geometry::build_global_conformity_baseline(
+        topology, *chainedInput);
+    ASSERT_TRUE(perArcBuilt);
+    ASSERT_TRUE(chainedBuilt);
+    ASSERT_LT(chainedBuilt.value().schedule().size(), topology.arcs().size());
+
+    struct Outcome {
+      bool produced = false;
+      std::string reason = "None";
+      std::size_t cells = 0U;
+      std::size_t discPhases = 0U;
+      directional::geometry::SurfaceA3CoverageSummary coverage;
+    };
+    const auto produce = [&](const directional::geometry::GlobalConformityBaselinePlan &baseline) {
+      fixture.conformityBaseline = baseline;
+      const auto network = build_fixed_plan_rectangular_hard_rail_network(fixture, 1.0);
+      Outcome outcome;
+      outcome.produced =
+          network.phaseFront.disposition() ==
+          directional::geometry::SurfaceCellProducerDisposition::Produced;
+      if (!outcome.produced) {
+        outcome.reason = directional::geometry::surface_phase_front_failure_reason_name(
+            network.phaseFront.rejection_reason());
+        return outcome;
+      }
+      const auto &product = network.phaseFront.product();
+      outcome.cells = product.cells().size();
+      outcome.discPhases = product.boundedDiskBoundaryPhases().size();
+      outcome.coverage = directional::geometry::summarize_a3_span_coverage(
+          product.edges(), baseline);
+      return outcome;
+    };
+    const Outcome perArc = produce(perArcBuilt.value());
+    const Outcome chained = produce(chainedBuilt.value());
+
+    // Whatever builds a chained plan's regions reads the plan: a produced
+    // network comes from the curved producer and tiles every scheduled span.
+    if (chained.produced) {
+      EXPECT_GT(chained.discPhases, 0U);
+      EXPECT_EQ(0U, chained.coverage.unrecordedSpans);
+      EXPECT_EQ(0U, chained.coverage.partialSpans);
+      EXPECT_EQ(0U, chained.coverage.foreignIntervalEdges);
+      EXPECT_EQ(chained.coverage.scheduledSpans, chained.coverage.coveredSpans);
+    }
+    if (reverseFaceRows) continue;
+    const auto report = [](const char *plan, const Outcome &outcome) {
+      std::cout << "D4_UNIFORM_RECEIPT plan=" << plan << " disposition="
+                << (outcome.produced ? "Produced" : "Rejected")
+                << " reason=" << outcome.reason << " cells=" << outcome.cells
+                << " discPhases=" << outcome.discPhases
+                << " scheduled=" << outcome.coverage.scheduledSpans
+                << " covered=" << outcome.coverage.coveredSpans
+                << " unrecorded=" << outcome.coverage.unrecordedSpans << "\n";
+    };
+    report("perArc", perArc);
+    report("chained", chained);
+  }
 }
 
 TEST(SurfaceCellAuthorityContractCutover,
