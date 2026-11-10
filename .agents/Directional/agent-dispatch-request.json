@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb98-doc-closeout-20261110-v1",
+  "request_id": "m6-cp3-cb118-patch-apply-20261110-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb98-doc-closeout",
-  "file_id": "14ySP_xpZCIuuhP5f2kxg9Js9sMs36T5F",
-  "patch_sha256": "4a8027027101350ea252952268fca944e05d6ed193f754202add5641e2289568",
-  "base_sha": "6fca52b8d8164a6bc738cb19a672b33e00c45a9a",
+  "mailbox_key": "m6-cp3-cb118-patch-apply",
+  "file_id": "1cOZERKo-JUJgFgvMYpB0hDN3lDnxOwc3",
+  "patch_sha256": "87a57edcbc71f72b8aa844109768249cccd43b49fdf2373f08083ae9f850d40a",
+  "base_sha": "42b703f7d0b228a8e4fcba6fa086e7c9732db618",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB98 and route next to CB118",
+  "commit_message": "feat(surface-cells): decline chained A3 plans in uniform producer",
   "retention_days": 14
 }
