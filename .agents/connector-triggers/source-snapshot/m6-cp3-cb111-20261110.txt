@@ -1,4 +1,0 @@
-CB111 exact source snapshot trigger
-Requested UTC: 2026-11-10T08:33:03.484Z
-Baseline before marker: 9cca2f5e21caece310e036d9546820db87f5c47b
-Scope: source verification only; no build or runtime.
