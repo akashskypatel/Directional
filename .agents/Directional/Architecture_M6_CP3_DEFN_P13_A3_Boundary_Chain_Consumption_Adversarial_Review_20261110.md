@@ -10,7 +10,7 @@
 | F2 | **The factory re-implemented the accepted chain support** and dropped its canonical-path check, to avoid a linear arc search. That breaks RA-217's rule that agreeing code shares one decomposition | Design | `derive_mandatory_chain_support` now finds arcs by binary search (A2b publishes arcs sorted by id), and the factory calls it for every chain. Single arcs are copied verbatim, as the per-arc binder does |
 | F3 | **RA-220 §6 let 64C freeze the production switch if one fixture produced.** One fixture is not evidence for Plane, Cylinder or Vase | Architecture | Withdrawn. O36 now lists what the switch needs (§4) |
 | F4 | **The stage-1 finding was understated.** DESIGN §7.4 makes baseline A3 parity-only and gives A4 the "rectangular / general even-boundary constructibility question". Per-arc counts satisfy the rectangular producer by accident. Full chaining restores equality only where opposite sides have equal metric length; it does not on curved discs | Architecture | Recorded in DESIGN §7.4 and O36. D5 alone cannot turn Vase green; it needs an A4 producer for unequal opposite sides or a framed schedule |
-| F5 | **The stop set does not contain disc corners.** A source-boundary loop is one closed rail; corners split neither curves nor rails (`tangent_compatible_at_vertex` accepts every Boundary–Boundary pair). A chain stops only where `is_corner` flags a vertex, at junctions, ports and hard-feature ends. Bounded-disk corners are field-branch changes, known only in A4. A smooth disc therefore has corners inside spans, and RA-220's walk rejects them | Architecture | New obligation **O38**: before the switch, either A3 learns the corner nodes from an upstream product or A4 moves corners to breakpoints. This is the D6 decision |
+| F5 | **The stop set does not contain disc corners.** A source-boundary loop is one closed rail; corners split neither curves nor rails (`tangent_compatible_at_vertex` accepts every Boundary–Boundary pair). A chain stops only where `is_corner` flags a vertex, at junctions, ports and hard-feature ends. Bounded-disk corners are field-branch changes, known only in A4. A smooth disc therefore has corners inside spans, and RA-220's walk rejects them | Architecture | New obligation **O38**: before the switch, either A3 learns the corner nodes from an upstream product or A4 moves corners to breakpoints. This was first labelled D6 in error; D6 is the Vase success criterion and is unrelated (see the addendum) |
 | F6 | **Cost.** `breakpoint_location` recomputes every run's weight (a big-integer square root) on each call. Locating a chain's `count + 1` breakpoints costs `count × runs` roots; a 5,000-edge boundary with 2,500 intervals needs about 10⁷ | Performance | New obligation **O37**: a batch location function (one pass over the runs) before the switch. Not needed for CB116's tests |
 | F7 | **RA-215 (D9) says a rim interval carries "the route's orientation".** Under D5 the label follows span ordinals, so an arc stored against its chain has a Forward interval on a Reverse route step | Contract | No production code compares the two (audit, §2). The RA-215 test does, and must be amended at the switch (O36) |
 | F8 | RA-220's second test asserted nothing about the producer | Test | Folded into the consumer test as a receipt; the factory test now carries the firm assertions and reports both count vectors, so the side mismatch can be read arithmetically from TB96 without the producer |
@@ -79,7 +79,7 @@ No behavioural defect was found in the side walk. One reported defect (a multi-p
 **O36 — the D5 production switch.** It is not scheduled. It is one call-site change plus test amendments, and it may be frozen only when all of these hold:
 
 1. hard-feature rails chain too (O35, with the A4 definition 65C), or the TB97 receipt shows the mixed stage producing;
-2. disc corners cannot fall inside a span (O38, D6);
+2. disc corners cannot fall inside a span (O38; decided, see the addendum);
 3. breakpoints are located in one pass (O37);
 4. its TB pre-registers which digests may change (closed surfaces may not), and amends `RemeshPipeline.PublishesOneValidatedGlobalConformityBaselineImmediatelyAfterA2b` and `A3SourceRimIntervalsAreRecordedSingleSidedAndValidated` (one-piece support, one-step route, step orientation equal to interval orientation).
 
@@ -96,3 +96,28 @@ Even then, opposite sides agree only where their metric lengths do (F4). Regions
 | Stable accounting | CP2 491/491, stable 66/17/49, debt 1, 81 deferred; TB95 929/929, membership 1010; selector497/CP3 unpromoted |
 | ORIENTATION / CHANGELOG / LESSONS / tracker / DESIGN §7.4 / handoff / TODO | Updated |
 | Turn boundary | No product or test source changed in the repository. The withdrawn CB113 diff and TB96 manifest were never applied; they remain in history at `75ff2b9a3` |
+
+## Addendum (2026-11-10): user decision on O38
+
+**Correction.** F5 and §4 called O38 "the D6 decision". That was wrong. D6 is the Vase success criterion (RA-214: field-derived valence targets, expected tier D1, or a boundary-aligned field) and is **still pending**. O38 is a separate question and is the one decided here.
+
+**Decision (user, 2026-11-10): the subdivision gives way.** Disc corners are chain stops. A chain always ends at a corner, so every side of a region is a whole number of spans and no span turns a corner. Corners stay where the field puts them; A4 does not move a corner to a breakpoint.
+
+**What it requires.**
+
+1. The corner nodes become a published upstream product: the boundary nodes where the field branch that follows the boundary changes. Today that test runs inside the bounded-disk producer (`rebuild_run_starts`), in floating point, per region.
+2. `derive_mandatory_chain_stop_nodes` reads that product as a fourth source of stops.
+3. The bounded-disk producer reads its side starts from the same product instead of deriving them again, so the scheduler and the producer cannot disagree. A corner that is not a stop then stays a typed rejection and marks a defect, not a normal outcome.
+
+**Turn.** `M6-CP3-DEFN-P13-A3-DISC-CORNER-STOPS` (step 64B.13, **Review agent only**). It defines the product and its determinism rule (DESIGN §10.1 row permutation), and freezes an unwired exact patch with tests and its full-gate TB. It does not block CB116, TB97 or 64C and may run alongside them. Exit: those frozen inputs, or `M6-CP3-PLAN-P13-A3-DISC-CORNER-STOPS-STOP` naming the blocking fact.
+
+**TB96 evidence that changes §3.3's prediction.** TB96 closed MATCH. Its receipt reads `case=fixtureTarget perArc=1:4 ×20  chained=1:4 ×12, 2:8 ×4`: at the fixture's own target size a unit edge counts 4 and a two-edge chain counts 8. The registered prediction (a chain count that is not twice the per-edge count) is **false for this fixture**; the adaptive target is about 0.25, not 0.69. The mixed stage is consistent here, so TB97's `fixtureTarget` is now expected to produce. The general finding stands: a chain and the per-arc rail facing it round separately, and they agree only when the edge-to-target ratio is close to an integer.
+
+**O36 after this decision.**
+
+| Condition | State |
+|---|---|
+| Hard-feature rails chain (O35), or TB97 shows the mixed stage producing | Open; TB97 decides for the rectangular fixture only |
+| Disc corners cannot fall inside a span (O38) | **Decided**; work scheduled as 64B.13 |
+| Breakpoints located in one pass (O37) | Open; to be frozen with the switch definition |
+| Switch TB pre-registers digest changes and amends the two named tests | Open |

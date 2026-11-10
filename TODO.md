@@ -22,9 +22,10 @@
 
 **Obligations opened or amended**
 
-  O36. [ ] D5 production switch, **unscheduled**. Needs: O35 (hard-feature rails chain, with 65C) or a producing TB97 `fixtureTarget` receipt; O38; O37; a TB that pre-registers which digests may change and amends the two tests named in RA-221 §4.
+  O36. [ ] D5 production switch, **unscheduled**. Needs: O35 (hard-feature rails chain, with 65C) or a producing TB97 `fixtureTarget` receipt; O38 (decided; 64B.13); O37; a TB that pre-registers which digests may change and amends the two tests named in RA-221 §4.
   O37. [ ] Locate a span's breakpoints in one pass over its runs (today each call recomputes every run's weight).
-  O38. [ ] Disc corners must not fall inside a chained span: A3 learns corner nodes from an upstream product, or A4 moves corners to breakpoints (D6, user decision pending).
+  O38. [x] **Decided (user, 2026-11-10): disc corners are chain stops.** The corner nodes become a published upstream product read by the D5 stop set and by the bounded-disk producer; A4 never moves a corner. This is not D6 (Vase success criterion), which stays pending. Work: 64B.13 below.
+  64B.13. [ ] **Review agent only, parallel to 64B.11–64C** `M6-CP3-DEFN-P13-A3-DISC-CORNER-STOPS`: define the corner product and its determinism rule; freeze an unwired exact patch with tests and its full-gate TB. Exit: those, or `M6-CP3-PLAN-P13-A3-DISC-CORNER-STOPS-STOP`. Blocks only O36.
 
 ## CLOSED — RA-219: step 64B.3 (D5 span switch) taken over and completed; exact CB111 + TB94 and CB112 + TB95 frozen (2026-11-09)
 

@@ -1,3 +1,8 @@
+## 2026-11-10 UTC — User decision on O38: disc corners are chain stops
+
+- Recorded in [RA-221 addendum](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Boundary_Chain_Consumption_Adversarial_Review_20261110.md#addendum-2026-11-10-user-decision-on-o38) and DESIGN §7.4. The corner nodes become a published upstream product read by the D5 stop set and by the bounded-disk producer. Review-only 64B.13 `M6-CP3-DEFN-P13-A3-DISC-CORNER-STOPS` is scheduled alongside CB116/TB97/64C; it blocks only the production switch O36.
+- Corrections: O38 is not D6 (the Vase success criterion, still pending). TB96's receipt shows the mixed stage consistent on the rectangular fixture (unit edge 4, two-edge chain 8), so RA-221's rejection prediction for that fixture is withdrawn.
+
 ## 2026-11-10 UTC — TB96 chained input-factory full gate COMPLETE / MATCH (artifact-only)
 
 - [TB96 report](.agents/Directional/Architecture_M6_CP3_TB96_P13_A3_Chained_Input_Factory_Full_Gate_Execution_Report_20261110.md): immutable CB113 artifact `13767625281`; [gate 42825856146](https://github.com/akashskypatel/Directional/actions/runs/42825856146) **930/930 PASS**, membership 1011, 1,868/1,868 SHA-256 checksums, two `D5_FACTORY_RECEIPT` lines; [census 42825913745](https://github.com/akashskypatel/Directional/actions/runs/42825913745) Cylinder PASS and two registered RED, 9/9 checksums. Seven platform digests and seven A3 coverage records identical to TB95; no rebuild, benchmark, source/test/fixture/selector edits or production promotion. CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged. **CB116 compile-only is the next turn, not started.**
