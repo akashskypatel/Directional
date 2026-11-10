@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb94-documentation-closeout-20261110-v1",
+  "request_id": "m6-cp3-cb112-arc-bindings-apply-20261110-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb94-docs-closeout",
-  "file_id": "1GrNDtTdxCa_8n_Y77H3cuy3TSxH0tqVk",
-  "patch_sha256": "92a636a8a8b8dfa7d3a241a4ec90e6be75924c2f2f27fc349e08226cd3ab49c0",
-  "base_sha": "e2c198814d6bc57116dfc1fbb749ab728af621f6",
+  "mailbox_key": "m6-cp3-cb112-arc-bindings-apply",
+  "file_id": "1ux3jg6XndTn8DQbZKZmwgT1FOPHoXa0E",
+  "patch_sha256": "ae7da62fb0ca96bf51da6baed2a49084b992c4acd00baeecb175bbfe14d86ae9",
+  "base_sha": "d20b207a2d950412dd461b72d3415733f56bc980",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record TB94 full-gate MATCH and CB112 handoff",
+  "commit_message": "feat(directional): bind baseline A2b arcs to mandatory chains (CB112)",
   "retention_days": 14
 }
