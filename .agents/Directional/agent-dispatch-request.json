@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb97-docs-correction-20261110-v1",
+  "request_id": "m6-cp3-cb117-rim-census-20261110-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb97-docs-correction",
-  "file_id": "1iqkFtKr9nQVfWHV-rRyFVj4vkczg1X7Z",
-  "patch_sha256": "5f0d69e475df0aeed9de87beb826abfe6ba602b7c749c610971e37a2c4252a1e",
-  "base_sha": "398ed74437bb42fa61e1f2b470dd1432defcd742",
+  "mailbox_key": "m6-cp3-cb117-rim-census-apply",
+  "file_id": "1PoQFWXT3jVyPLaySRTfzaiTWfEdf4Rtw",
+  "patch_sha256": "f2238aebf8a98eee00c3842c37f6cf1e97607e3c6d94734295d3a6add06e8c8b",
+  "base_sha": "1e88250062c9195edcf1b94200db22af302aa0c6",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): correct TB97 handoff authority links",
+  "commit_message": "test(surface-cells): add CB117 exact D4 rim census receipt",
   "retention_days": 14
 }
