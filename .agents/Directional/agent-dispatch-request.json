@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb111-handoff-drift-closeout-20261110-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb111-handoff-drift-closeout",
-  "file_id": "1Mkju72rT57n58FmcRMU50llqpJ9KZNbE",
-  "patch_sha256": "bd4b62047dfe915a2f7de45803966e4bcc2bddc9d77dc7219d4db6832ce6404a",
-  "base_sha": "7733a34ea55a4e4d5f9893d010bdb465585bc71f",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(agent): correct CB111 handoff currency and TB94 next turn",
-  "retention_days": 14
+  "request_id": "m6-cp3-tb94-gate-20261110-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb94-gate",
+  "executor_sha": "e2c198814d6bc57116dfc1fbb749ab728af621f6",
+  "semantic_source_sha": "abad9902b29e555bc568072b41189e10cad24138",
+  "turn_id": "M6-CP3-TB94-P13-A3-CHAIN-STOP-NODES-GATE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "13749155800",
+    "EXPECTED_SOURCE_SHA": "abad9902b29e555bc568072b41189e10cad24138",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "acf62e697c08a3514457c94fdafa56e4ef2d8803e8937cde82a2f71eaf55d76d",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "3c8a3ebbba01099eb97a718ce103b0194a04a4346dbf5e18c1be6a681a5048c5",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "763a5f2d9eca1617c8ed7e703f47a35c62c707f3e88d83bf81f7ce98f77585a7",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB94_P13_A3_Chain_Stop_Nodes_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "ebaf1972c824b0b6256e77c15c309d6a0595f46b26d365368eec8145333bfce9",
+    "EXPECTED_CASE_COUNT": "925",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  },
+  "artifact_prefix": "m6-cp3-tb94-gate",
+  "retention_days": 7
 }
