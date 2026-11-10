@@ -1,3 +1,8 @@
+## 2026-11-10 UTC — CB111 mandatory chain stop nodes compiled (Code + Build only)
+
+- [CB111 record](.agents/Directional/Architecture_M6_CP3_CB111_P13_A3_Chain_Stop_Nodes_Code_Build_Record_20261110.md): exact RA-219 patch `f71c1aba…`, 3 source/test paths +140 lines, applied by [run 42784278671](https://github.com/akashskypatel/Directional/actions/runs/42784278671) at `abad9902b29e555bc568072b41189e10cad24138`; staged Google Drive patch retired by owner.
+- [Eight-target GMP/GMPXX compile 42784806547](https://github.com/akashskypatel/Directional/actions/runs/42784806547), artifact `13749155800`, ZIP SHA `acf62e697c08a3514457c94fdafa56e4ef2d8803e8937cde82a2f71eaf55d76d`, 28/28 checksums, clean source and exit 0, `runtimeExecution=false`. GUARD 924–925 compiled, not executed; next separate TB94 gate (925 rows, membership 1006). CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged; no CP3/selector497 promotion. Session disclosed initial snapshot-gate ordering deviation.
+
 ## 2026-11-09 UTC — RA-219 D5 span-switch definition (Review takeover; runtime-free)
 
 - [RA-219](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Span_Switch_Takeover_Review_20261109.md): the Review agent took over the stalled 64B.3 DEFN (five resumes, 4 WIP records, no patch; all banner-superseded). The baseline input carries chain membership and the baseline checks structure only; a chain's side is read once at its identifying arc; consumers resolve arcs through `find_arc_binding`; stage 1 chains source-boundary rails only (new debt O35).

@@ -1,0 +1,12 @@
+# CB111 — mandatory chain stop nodes (Code + Build, compile-only)
+
+**Verdict: COMPLETE / BUILD GREEN; unwired.** RA-219 §5's exact frozen 177-line patch SHA-256 `f71c1abad17ba1539d8fe869e86cb4e25d05fb31d7c96d6c2b4c2b284aef03f4` was applied without changing its three prescribed paths. Adds canonical mandatory-chain stop-node derivation and GUARD 924–925; function remains unwired.
+
+- **Source:** exact snapshot `879b63bce362ee2085912343e7988a195b6df714`, [run 42783522383](https://github.com/akashskypatel/Directional/actions/runs/42783522383), artifact `13748085112`, 5414/5414 verified SHA-256 file sums.
+- **Apply:** preserved full patch SHA-256 `22b2ef11126f16a0347f57acbc8967f09a2503fbad30ce160a0ef0e387226a51`, [run 42784278671](https://github.com/akashskypatel/Directional/actions/runs/42784278671), result `13747318129`; exact applied commit [`abad9902b29e555bc568072b41189e10cad24138`](https://github.com/akashskypatel/Directional/commit/abad9902b29e555bc568072b41189e10cad24138). Owner-side Drive file retired successfully.
+- **Compile:** [run 42784806547](https://github.com/akashskypatel/Directional/actions/runs/42784806547), artifact `13749155800`, ZIP SHA-256 `acf62e697c08a3514457c94fdafa56e4ef2d8803e8937cde82a2f71eaf55d76d`. All **28/28** package file checksums verified; source is the applied SHA, status clean, preflight/build exit 0; all eight required targets compiled. CMake configured `DIRECTIONAL_ENABLE_GMP=ON`; generated link command includes both `libgmpxx.so` and `libgmp.so`.
+- **Boundary:** `exactArithmeticBackend=GMP`, `turnBoundary=Code+Build-only`, `runtimeExecution=false`; no Directional tests, benchmarks or product runtime executed. Compile evidence does not establish GUARD runtime acceptance or direct production output.
+- **Policy exception:** first three repository document reads preceded explicit `READ_MODE=snapshot` selection; the session switched to a fully verified snapshot and used no subsequent piecemeal source reads. The initial tool-call ledger was not maintained, so an exact call count is unavailable.
+- **Accounting:** CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged; TB93 remains latest immutable gate 923/923, membership 1004; selector497 and CP3 remain unpromoted.
+
+**Separate successor:** `M6-CP3-TB94-P13-A3-CHAIN-STOP-NODES-FULL-GATE-EXEC`, 925-row immutable artifact-only gate (membership 1006). No TB94 work was started in CB111.
