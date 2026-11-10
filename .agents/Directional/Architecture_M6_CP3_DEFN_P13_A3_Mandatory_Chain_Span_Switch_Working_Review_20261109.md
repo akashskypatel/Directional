@@ -1,3 +1,5 @@
+> **SUPERSEDED (2026-11-09) by [RA-219](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Span_Switch_Takeover_Review_20261109.md).** This working document froze nothing and authorizes nothing. It is kept as provenance only.
+
 # Mandatory-chain span switch — same-turn working Review (2026-11-09)
 
 **Canonical turn:** `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SPAN-SWITCH` (64B.3, RA-218). **IN PROGRESS — no CB111, CB112 or CB113 patch is frozen.** This is a bounded review finding, not an authorization to implement any of those turns. Do not start a successor on this record alone.

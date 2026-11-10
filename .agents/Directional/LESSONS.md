@@ -411,6 +411,14 @@ This document records **reusable failure-derived engineering lessons**, not an e
   (ceiling) from the same exact quantity instead of adding a failure. Before switching a stored
   representation, grep the accepted tests for assertions on the old encoding and amend them in the
   switch CB, registered by the Review.
+- **Freeze what is decided; name the rest as its own turn (RA-219).** RA-218 asked one definition
+  to freeze three patches, and the third rewrote consumers of an interface the second introduced.
+  The turn also reached the implementation agent, which resumed it five times and froze nothing.
+  A definition closes when its independent patches are frozen and the dependent one is a named,
+  Review-only turn with its rules written. Put policy (rails, stops) in the factory and let the
+  validator check structure only, so the validated product does not pull in upstream inputs. Check
+  a helper's contract standalone: a duplicate span hid a chain with no span until the model row
+  `{0,0,4}` was written.
 - **Put a change in the stage that owns the quantity (RA-218).** The D5 attempt kept A3 spans as they
   were and proposed a separate chain product next to them. Each gap that choice opened became a new
   proof gate (fragment sides, corner re-derivation, identity migration, a production join before any

@@ -1,0 +1,703 @@
+diff --git a/include/directional/geometry/GlobalConformityBaseline.h b/include/directional/geometry/GlobalConformityBaseline.h
+index e5db28c25..b40d01938 100644
+--- a/include/directional/geometry/GlobalConformityBaseline.h
++++ b/include/directional/geometry/GlobalConformityBaseline.h
+@@ -10,6 +10,7 @@
+ 
+ #include <cstddef>
+ #include <cstdint>
++#include <map>
+ #include <optional>
+ #include <utility>
+ #include <variant>
+@@ -173,6 +174,19 @@ struct GlobalConformityBaselineCertificate {
+   bool operator==(const GlobalConformityBaselineCertificate &) const = default;
+ };
+ 
++/** D5 binding of one A2b arc to the span that schedules it (RA-219). */
++struct BaselineConformityArcBinding {
++  ConformitySpanId span;
++  /** Ordinal of the arc in the span's chain; the identifying arc is 0. */
++  std::size_t chainOrdinal = 0U;
++  /** Orientation of the arc along the span's chain. */
++  authority::Orientation orientation = authority::Orientation::Forward;
++  /** Source-path pieces of the chain's arcs before this one. */
++  std::size_t firstSupportPiece = 0U;
++
++  bool operator==(const BaselineConformityArcBinding &) const = default;
++};
++
+ /**
+  * Baseline A3 input. Boundary incidences are intentionally not caller supplied:
+  * they are rebuilt from GlobalTopologyPlan region boundary walks so family/sign
+@@ -182,6 +196,12 @@ struct GlobalConformityBaselineInput {
+   Eigen::MatrixXd sourceVertices;
+   Eigen::VectorXd targetSize;
+   std::vector<ConformitySpanInput> spans;
++  /**
++   * D5 chains (RA-219): the A2b arcs each multi-arc span covers, in order, with
++   * the identifying arc first. A span without a chain covers only its
++   * identifying arc.
++   */
++  std::vector<std::vector<GlobalTopologyOrientedArc>> chains;
+ };
+ 
+ struct GlobalConformityBaselineValidationCandidate {
+@@ -229,6 +249,8 @@ public:
+   find_schedule(ConformitySpanId span) const noexcept;
+   [[nodiscard]] std::optional<ConformityBreakpointLocation>
+   breakpoint_location(ConformitySpanId span, const EInt &exactOrdinal) const;
++  [[nodiscard]] const BaselineConformityArcBinding *
++  find_arc_binding(authority::NetworkArcId arc) const noexcept;
+   [[nodiscard]] GlobalConformityBaselineValidationCandidate
+   validation_candidate() const;
+ 
+@@ -241,10 +263,12 @@ private:
+       std::vector<BaselineConformityIncidence> incidences,
+       GlobalConformityBaselineCertificate certificate,
+       std::uint64_t semanticDigest,
+-      std::vector<std::vector<BaselineConformityMetricRun>> metricRuns)
++      std::vector<std::vector<BaselineConformityMetricRun>> metricRuns,
++      std::map<authority::NetworkArcId, BaselineConformityArcBinding> arcBindings)
+       : schedule_(std::move(schedule)), incidences_(std::move(incidences)),
+         certificate_(std::move(certificate)), semanticDigest_(semanticDigest),
+-        metricRuns_(std::move(metricRuns)) {}
++        metricRuns_(std::move(metricRuns)),
++        arcBindings_(std::move(arcBindings)) {}
+ 
+   std::vector<ConformityScheduleEntry> schedule_;
+   std::vector<BaselineConformityIncidence> incidences_;
+@@ -252,6 +276,8 @@ private:
+   std::uint64_t semanticDigest_ = 0U;
+   /** D7 runs of each schedule entry, in schedule order (RA-217). */
+   std::vector<std::vector<BaselineConformityMetricRun>> metricRuns_;
++  /** D5 span of every A2b arc (RA-219). */
++  std::map<authority::NetworkArcId, BaselineConformityArcBinding> arcBindings_;
+ };
+ 
+ class GlobalConformityBaselineBuildResult {
+diff --git a/src/geometry/GlobalConformityBaseline.cpp b/src/geometry/GlobalConformityBaseline.cpp
+index 2915e5a7e..3d632b230 100644
+--- a/src/geometry/GlobalConformityBaseline.cpp
++++ b/src/geometry/GlobalConformityBaseline.cpp
+@@ -232,6 +232,7 @@ struct NormalizedBaselineProblem {
+   std::vector<ConformitySpanInput> spans;
+   std::vector<EInt> preferred;
+   std::vector<std::vector<BaselineConformityMetricRun>> metricRuns;
++  std::map<authority::NetworkArcId, BaselineConformityArcBinding> arcBindings;
+   std::vector<BaselineConformityIncidence> incidences;
+   std::vector<authority::NetworkRegionId> regions;
+   std::vector<std::vector<std::size_t>> spanRegionEnds;
+@@ -259,6 +260,16 @@ std::uint64_t normalized_digest(const GlobalTopologyPlan &topology,
+   }
+   hash_u64(hash, static_cast<std::uint64_t>(problem.incidences.size()));
+   for (const auto &incidence : problem.incidences) hash_incidence(hash, incidence);
++  // D5 (RA-219): only the arcs a chain adds are hashed, so a per-arc problem
++  // keeps its digest.
++  for (const auto &[arc, binding] : problem.arcBindings) {
++    if (binding.chainOrdinal == 0U) continue;
++    hash_id(hash, arc);
++    hash_id(hash, binding.span.network_arc());
++    hash_u64(hash, static_cast<std::uint64_t>(binding.chainOrdinal));
++    hash_u64(hash, static_cast<std::uint64_t>(
++                       static_cast<int>(binding.orientation) + 1));
++  }
+   return hash;
+ }
+ 
+@@ -284,7 +295,12 @@ NormalizeResult normalize_baseline(const GlobalTopologyPlan &topology,
+             [](const auto &first, const auto &second) {
+               return first.id < second.id;
+             });
+-  if (out.spans.size() != topology.arcs().size()) {
++  // D5 (RA-219): a chain covers its identifying arc and the arcs after it.
++  std::size_t chainedArcs = 0U;
++  for (const auto &chain : input.chains) {
++    if (!chain.empty()) chainedArcs += chain.size() - 1U;
++  }
++  if (out.spans.size() + chainedArcs != topology.arcs().size()) {
+     return make_error(GlobalConformityPlanErrorCode::InvalidTopologyBinding,
+                       "baseline schedules every full A2b arc exactly once");
+   }
+@@ -319,6 +335,14 @@ NormalizeResult normalize_baseline(const GlobalTopologyPlan &topology,
+     spanIndex.emplace(out.spans[index].id, index);
+   }
+ 
++  auto arcBindings = global_conformity_baseline_detail::derive_span_arc_bindings(
++      topology.arcs(), topology.rotation_system(), out.spans, input.chains);
++  if (!arcBindings) {
++    return make_error(GlobalConformityPlanErrorCode::InvalidTopologyBinding,
++                      "baseline chains do not partition the A2b arcs");
++  }
++  out.arcBindings = std::move(*arcBindings);
++
+   std::vector<const GlobalTopologyRegion *> orderedRegions;
+   orderedRegions.reserve(topology.regions().size());
+   for (const auto &region : topology.regions()) orderedRegions.push_back(&region);
+@@ -342,17 +366,23 @@ NormalizeResult normalize_baseline(const GlobalTopologyPlan &topology,
+     const auto regionIt = regionIndex.find(region->id);
+     for (std::size_t ordinal = 0U; ordinal < region->boundary.size(); ++ordinal) {
+       const auto &boundary = region->boundary[ordinal];
+-      const auto span = ConformitySpanId::from_network_arc(boundary.arc);
+-      const auto spanIt = spanIndex.find(span);
+-      if (spanIt == spanIndex.end()) {
++      const auto bound = out.arcBindings.find(boundary.arc);
++      if (bound == out.arcBindings.end()) {
+         auto error = make_error(GlobalConformityPlanErrorCode::InvalidBoundaryIncidence,
+                                 "A2b boundary names an unscheduled span");
+         error.incidence = ConformityBoundaryIncidenceId{region->id, ordinal};
+         return error;
+       }
+-      out.incidences.push_back({{region->id, ordinal}, span,
+-                                boundary.orientation});
+-      out.spanRegionEnds[spanIt->second].push_back(regionIt->second);
++      // D5 (RA-219): a chain crosses only nodes with two incidences, so a walk
++      // holds it whole and its side is read once, at the identifying arc.
++      if (bound->second.chainOrdinal != 0U) continue;
++      out.incidences.push_back(
++          {{region->id, ordinal}, bound->second.span,
++           boundary.orientation == bound->second.orientation
++               ? authority::Orientation::Forward
++               : authority::Orientation::Reverse});
++      out.spanRegionEnds[spanIndex.at(bound->second.span)].push_back(
++          regionIt->second);
+     }
+   }
+ 
+@@ -728,7 +758,8 @@ GlobalConformityBaselineBuildResult build_global_conformity_baseline(
+     GlobalConformityBaselinePlan plan(std::move(schedule),
+                                       std::move(problem.incidences),
+                                       std::move(certificate), digest,
+-                                      std::move(problem.metricRuns));
++                                      std::move(problem.metricRuns),
++                                      std::move(problem.arcBindings));
+     const auto validated = validate_global_conformity_baseline(topology, input, plan);
+     return validated ? GlobalConformityBaselineBuildResult(std::move(plan))
+                      : validated;
+@@ -758,6 +789,13 @@ GlobalConformityBaselinePlan::breakpoint_location(
+       exactOrdinal);
+ }
+ 
++const BaselineConformityArcBinding *
++GlobalConformityBaselinePlan::find_arc_binding(
++    authority::NetworkArcId arc) const noexcept {
++  const auto found = arcBindings_.find(arc);
++  return found != arcBindings_.end() ? &found->second : nullptr;
++}
++
+ GlobalConformityBaselineValidationCandidate
+ GlobalConformityBaselinePlan::validation_candidate() const {
+   return {schedule_, incidences_, certificate_, semanticDigest_};
+diff --git a/src/geometry/GlobalConformityBaselineSupport.cpp b/src/geometry/GlobalConformityBaselineSupport.cpp
+index 24c7b4f21..081f9dd58 100644
+--- a/src/geometry/GlobalConformityBaselineSupport.cpp
++++ b/src/geometry/GlobalConformityBaselineSupport.cpp
+@@ -503,6 +503,81 @@ std::set<authority::NetworkNodeId> derive_mandatory_chain_stop_nodes(
+   return stops;
+ }
+ 
++std::optional<std::map<authority::NetworkArcId, BaselineConformityArcBinding>>
++derive_span_arc_bindings(
++    const std::vector<GlobalTopologyArc> &arcs,
++    const std::vector<GlobalTopologyNodeRotation> &rotations,
++    const std::vector<ConformitySpanInput> &spans,
++    const std::vector<std::vector<GlobalTopologyOrientedArc>> &chains) {
++  std::map<authority::NetworkArcId, const GlobalTopologyArc *> arcById;
++  for (const auto &arc : arcs) {
++    if (!arcById.emplace(arc.id, &arc).second) return std::nullopt;
++  }
++  std::map<authority::NetworkNodeId, std::size_t> incidenceCount;
++  for (const auto &rotation : rotations) {
++    if (!incidenceCount
++             .emplace(rotation.node, rotation.counterClockwise.size())
++             .second) {
++      return std::nullopt;
++    }
++  }
++  std::map<authority::NetworkArcId, BaselineConformityArcBinding> bindings;
++  for (const auto &chain : chains) {
++    if (chain.size() < 2U) return std::nullopt;
++    const auto span = ConformitySpanId::from_network_arc(chain.front().arc);
++    std::optional<authority::NetworkNodeId> exit;
++    std::size_t firstSupportPiece = 0U;
++    for (std::size_t ordinal = 0U; ordinal < chain.size(); ++ordinal) {
++      const auto known = arcById.find(chain[ordinal].arc);
++      if (known == arcById.end() ||
++          known->second->kind != GlobalTopologyArcKind::Mandatory) {
++        return std::nullopt;
++      }
++      const auto *arc = known->second;
++      const bool forward =
++          chain[ordinal].orientation == authority::Orientation::Forward;
++      const auto entry = forward ? arc->firstNode : arc->secondNode;
++      if (exit) {
++        const auto count = incidenceCount.find(entry);
++        if (entry != *exit || count == incidenceCount.end() ||
++            count->second != 2U) {
++          return std::nullopt;
++        }
++      }
++      exit = forward ? arc->secondNode : arc->firstNode;
++      if (!bindings
++               .emplace(arc->id,
++                        BaselineConformityArcBinding{span, ordinal,
++                                                     chain[ordinal].orientation,
++                                                     firstSupportPiece})
++               .second) {
++        return std::nullopt;
++      }
++      firstSupportPiece += arc->sourcePath.size();
++    }
++  }
++  std::size_t ledChains = 0U;
++  std::set<authority::NetworkArcId> scheduled;
++  for (const auto &span : spans) {
++    const auto arc = span.id.network_arc();
++    if (!scheduled.insert(arc).second) return std::nullopt;
++    const auto found = bindings.find(arc);
++    if (found != bindings.end()) {
++      // A span on a chained arc must lead that chain.
++      if (found->second.chainOrdinal != 0U) return std::nullopt;
++      ++ledChains;
++    } else if (arcById.count(arc) == 0U) {
++      return std::nullopt;
++    } else {
++      bindings.emplace(arc, BaselineConformityArcBinding{span.id});
++    }
++  }
++  if (ledChains != chains.size() || bindings.size() != arcs.size()) {
++    return std::nullopt;
++  }
++  return bindings;
++}
++
+ std::uint64_t exact_target_metric_digest(const Eigen::VectorXd &targetSize) {
+   std::uint64_t hash = kFnvOffset;
+   hash_u64(hash, static_cast<std::uint64_t>(targetSize.size()));
+diff --git a/src/geometry/GlobalConformityBaselineSupport.h b/src/geometry/GlobalConformityBaselineSupport.h
+index e2cc0cf2d..8c82cb4cf 100644
+--- a/src/geometry/GlobalConformityBaselineSupport.h
++++ b/src/geometry/GlobalConformityBaselineSupport.h
+@@ -2,6 +2,7 @@
+ 
+ #include <cstddef>
+ #include <cstdint>
++#include <map>
+ #include <optional>
+ #include <set>
+ #include <vector>
+@@ -75,6 +76,19 @@ derive_mandatory_chain_stop_nodes(
+     const std::vector<FieldAlignedMandatoryEdge> &mandatoryEdges,
+     const std::vector<AdaptiveFeatureCurve> &curves);
+ 
++// D5 arc bindings (RA-219): the span that schedules each A2b arc. A span
++// without a chain covers only its identifying arc. Returns nothing unless the
++// spans and chains cover every A2b arc exactly once, each chain is led by a
++// span's identifying arc, and each chain is a path of Mandatory arcs through
++// nodes with exactly two incidences. Rails and stops are the caller's.
++[[nodiscard]] std::optional<
++    std::map<authority::NetworkArcId, BaselineConformityArcBinding>>
++derive_span_arc_bindings(
++    const std::vector<GlobalTopologyArc> &arcs,
++    const std::vector<GlobalTopologyNodeRotation> &rotations,
++    const std::vector<ConformitySpanInput> &spans,
++    const std::vector<std::vector<GlobalTopologyOrientedArc>> &chains);
++
+ [[nodiscard]] std::uint64_t
+ exact_target_metric_digest(const Eigen::VectorXd &targetSize);
+ 
+diff --git a/src/geometry/GlobalConformityBaselineValidator.cpp b/src/geometry/GlobalConformityBaselineValidator.cpp
+index 52dbe303d..c214f1d22 100644
+--- a/src/geometry/GlobalConformityBaselineValidator.cpp
++++ b/src/geometry/GlobalConformityBaselineValidator.cpp
+@@ -351,7 +351,13 @@ std::optional<IndependentProblem> rebuild_problem(
+             [](const auto &first, const auto &second) {
+               return first.id < second.id;
+             });
+-  if (out.spans.size() != topology.arcs().size()) return std::nullopt;
++  std::size_t chainedArcs = 0U;
++  for (const auto &chain : input.chains) {
++    if (!chain.empty()) chainedArcs += chain.size() - 1U;
++  }
++  if (out.spans.size() + chainedArcs != topology.arcs().size()) {
++    return std::nullopt;
++  }
+ 
+   std::map<ConformitySpanId, std::size_t> spanIndex;
+   for (std::size_t span = 0U; span < out.spans.size(); ++span) {
+@@ -371,6 +377,11 @@ std::optional<IndependentProblem> rebuild_problem(
+     spanIndex.emplace(out.spans[span].id, span);
+   }
+ 
++  const auto arcBindings =
++      global_conformity_baseline_detail::derive_span_arc_bindings(
++          topology.arcs(), topology.rotation_system(), out.spans, input.chains);
++  if (!arcBindings) return std::nullopt;
++
+   std::vector<const GlobalTopologyRegion *> regions;
+   for (const auto &region : topology.regions()) regions.push_back(&region);
+   std::sort(regions.begin(), regions.end(), [](const auto *first, const auto *second) {
+@@ -387,12 +398,17 @@ std::optional<IndependentProblem> rebuild_problem(
+   for (const auto *region : regions) {
+     for (std::size_t ordinal = 0U; ordinal < region->boundary.size(); ++ordinal) {
+       const auto &boundary = region->boundary[ordinal];
+-      const auto span = ConformitySpanId::from_network_arc(boundary.arc);
+-      const auto found = spanIndex.find(span);
+-      if (found == spanIndex.end()) return std::nullopt;
+-      out.incidences.push_back({{region->id, ordinal}, span,
+-                                boundary.orientation});
+-      out.spanEnds[found->second].push_back(regionIndex.at(region->id));
++      const auto bound = arcBindings->find(boundary.arc);
++      if (bound == arcBindings->end()) return std::nullopt;
++      // D5 (RA-219): a chain's side is read once, at its identifying arc.
++      if (bound->second.chainOrdinal != 0U) continue;
++      out.incidences.push_back(
++          {{region->id, ordinal}, bound->second.span,
++           boundary.orientation == bound->second.orientation
++               ? authority::Orientation::Forward
++               : authority::Orientation::Reverse});
++      out.spanEnds[spanIndex.at(bound->second.span)].push_back(
++          regionIndex.at(region->id));
+     }
+   }
+   for (const auto &ends : out.spanEnds) {
+@@ -489,6 +505,14 @@ std::optional<IndependentProblem> rebuild_problem(
+   }
+   hash_u64(hash, static_cast<std::uint64_t>(out.incidences.size()));
+   for (const auto &incidence : out.incidences) hash_incidence(hash, incidence);
++  for (const auto &[arc, binding] : *arcBindings) {
++    if (binding.chainOrdinal == 0U) continue;
++    hash_id(hash, arc);
++    hash_id(hash, binding.span.network_arc());
++    hash_u64(hash, static_cast<std::uint64_t>(binding.chainOrdinal));
++    hash_u64(hash, static_cast<std::uint64_t>(
++                       static_cast<int>(binding.orientation) + 1));
++  }
+   out.normalizedDigest = hash;
+   return out;
+ }
+diff --git a/tests/GlobalConformityBaselineTests.cpp b/tests/GlobalConformityBaselineTests.cpp
+index 31b82bc6e..a8988642e 100644
+--- a/tests/GlobalConformityBaselineTests.cpp
++++ b/tests/GlobalConformityBaselineTests.cpp
+@@ -1845,3 +1845,320 @@ TEST(GlobalConformityBaseline, D5StopNodesKeepHardFeatureRailsPerArc) {
+             << " stage1=0F,1F,2F|3F|4F corner1=0F|1F,2F|3F|4F"
+             << " port2=0F,1F|2F|3F|4F\n";
+ }
++
++namespace {
++
++using directional::geometry::BaselineConformityArcBinding;
++using directional::geometry::global_conformity_baseline_detail::derive_span_arc_bindings;
++
++// The inverse of chain_shape for one-digit arcs: "0F,1R|2F,3F".
++std::vector<std::vector<GlobalTopologyOrientedArc>>
++chains_of(const std::string &shape) {
++  std::vector<std::vector<GlobalTopologyOrientedArc>> chains;
++  if (!shape.empty()) chains.emplace_back();
++  for (std::size_t k = 0U; k < shape.size(); k += 3U) {
++    chains.back().push_back(
++        {NetworkArcId::from_index(shape[k] - '0', kChainExtent).value(),
++         shape[k + 1U] == 'F' ? Orientation::Forward : Orientation::Reverse});
++    if (k + 2U < shape.size() && shape[k + 2U] == '|') chains.emplace_back();
++  }
++  return chains;
++}
++
++// "1=0.1R+2": arc 1 is ordinal 1 of span 0's chain, reversed, after 2 pieces.
++std::string binding_shape(const ChainGraph &graph,
++                          const std::vector<int> &spanArcs,
++                          const std::string &chains) {
++  std::vector<ConformitySpanInput> spans;
++  for (const int arc : spanArcs) {
++    spans.push_back({ConformitySpanId::from_network_arc(
++                         NetworkArcId::from_index(arc, kChainExtent).value()),
++                     {}});
++  }
++  const auto bindings = derive_span_arc_bindings(
++      graph.arcs, rotations_of(graph.arcs), spans, chains_of(chains));
++  if (!bindings) return "none";
++  std::string out;
++  for (const auto &[arc, binding] : *bindings) {
++    if (!out.empty()) out += ',';
++    out += std::to_string(arc.index());
++    out += '=';
++    out += std::to_string(binding.span.network_arc().index());
++    out += '.';
++    out += std::to_string(binding.chainOrdinal);
++    out += binding.orientation == Orientation::Forward ? 'F' : 'R';
++    out += '+';
++    out += std::to_string(binding.firstSupportPiece);
++  }
++  return out;
++}
++
++// 0 -a0- 1 -a1- 2 -a2- 3 -a3- 4 -a4- 5: a1 is stored backwards, a4 is a trace,
++// and a0 has two source pieces (only the number of pieces is read).
++ChainGraph binding_path_graph() {
++  ChainGraph graph;
++  add_arc(graph, 0, 1);
++  add_arc(graph, 2, 1);
++  add_arc(graph, 2, 3);
++  add_arc(graph, 3, 4);
++  add_arc(graph, 4, 5, GlobalTopologyArcKind::Trace);
++  graph.arcs[0].sourcePath.push_back(graph.arcs[0].sourcePath.front());
++  return graph;
++}
++
++// The square's four Mandatory arcs as one continuous walk: the accepted
++// partition on one rail with one stop.
++std::vector<GlobalTopologyOrientedArc>
++square_loop(const TopologyFixture &fixture) {
++  auto oneRail = fixture.mandatoryEdges;
++  for (auto &edge : oneRail) edge.rail = oneRail.front().rail;
++  const auto chains = derive_mandatory_chain_partition(
++      fixture.topology.arcs(), fixture.topology.rotation_system(), oneRail,
++      {fixture.topology.arcs().front().firstNode});
++  if (!chains || chains->size() != 1U) return {};
++  return chains->front().arcs;
++}
++
++GlobalTopologyOrientedArc reversed(GlobalTopologyOrientedArc arc) {
++  arc.orientation = directional::authority::reverse_orientation(arc.orientation);
++  return arc;
++}
++
++// The per-arc input with the given chains: only a chain's first arc keeps its
++// span.
++GlobalConformityBaselineInput chained_input(
++    const TopologyFixture &fixture,
++    std::vector<std::vector<GlobalTopologyOrientedArc>> chains) {
++  auto input = make_baseline_input(fixture, 1.0);
++  for (const auto &chain : chains) {
++    for (std::size_t k = 1U; k < chain.size(); ++k) {
++      std::erase_if(input.spans, [&](const auto &span) {
++        return span.id.network_arc() == chain[k].arc;
++      });
++    }
++  }
++  input.chains = std::move(chains);
++  return input;
++}
++
++} // namespace
++
++TEST(GlobalConformityBaseline, D5ArcBindingsFollowChainsAndKeepOtherSpansPerArc) {
++  const auto graph = binding_path_graph();
++  const std::string perArc = "0=0.0F+0,1=1.0F+0,2=2.0F+0,3=3.0F+0,4=4.0F+0";
++  const std::string three = "0=0.0F+0,1=0.1R+2,2=0.2F+3,3=3.0F+0,4=4.0F+0";
++  const std::string back = "0=2.2R+2,1=2.1F+1,2=2.0R+0,3=3.0F+0,4=4.0F+0";
++  const std::string pairs = "0=0.0F+0,1=0.1R+2,2=2.0F+0,3=2.1F+1,4=4.0F+0";
++  EXPECT_EQ(perArc, binding_shape(graph, {0, 1, 2, 3, 4}, ""));
++  EXPECT_EQ(three, binding_shape(graph, {0, 3, 4}, "0F,1R,2F"));
++  EXPECT_EQ(back, binding_shape(graph, {2, 3, 4}, "2R,1F,0R"));
++  EXPECT_EQ(pairs, binding_shape(graph, {0, 2, 4}, "0F,1R|2F,3F"));
++  // Neither the span order nor the chain order matters.
++  EXPECT_EQ(pairs, binding_shape(graph, {4, 2, 0}, "2F,3F|0F,1R"));
++  std::cout << "D5_BINDING_RECEIPT case=shapes perArc=" << perArc
++            << " three=" << three << " back=" << back << " pairs=" << pairs
++            << " permuted=same\n";
++}
++
++TEST(GlobalConformityBaseline, D5ArcBindingsRejectWhatIsNotAPartitionIntoChains) {
++  auto graph = binding_path_graph();
++  std::size_t rejected = 0U;
++  const auto reject = [&](const std::vector<int> &spans, const std::string &chains) {
++    EXPECT_EQ("none", binding_shape(graph, spans, chains)) << chains;
++    ++rejected;
++  };
++  // A chain is two or more known Mandatory arcs, head to tail.
++  reject({0, 1, 2, 3, 4}, "0F");
++  reject({0, 1, 2, 3, 4}, "0F,7F");
++  reject({0, 1, 2, 3}, "3F,4F");
++  reject({0, 1, 3, 4}, "0F,2F");
++  reject({0, 2, 3, 4}, "0F,1F");
++  // Every arc has one span: its own, or the one that leads its chain.
++  reject({0, 2, 3, 4}, "0F,1R|2R,1F");
++  reject({0, 1, 2, 3, 4}, "0F,1R");
++  reject({1, 2, 3, 4}, "0F,1R");
++  reject({2, 3, 4}, "0F,1R");
++  reject({0, 2, 3}, "0F,1R");
++  reject({0, 2, 3, 4, 7}, "0F,1R");
++  // A span given twice cannot stand in for a missing one.
++  reject({0, 0, 4}, "0F,1R|2F,3F");
++  reject({2, 2, 3, 4}, "0F,1R");
++  reject({0, 0, 1, 2, 3, 4}, "");
++  // A chain does not cross a node with a third incidence.
++  add_arc(graph, 1, 6);
++  reject({0, 2, 3, 4, 5}, "0F,1R");
++  EXPECT_EQ("0=0.0F+0,1=1.0F+0,2=2.0F+0,3=2.1F+1,4=4.0F+0,5=5.0F+0",
++            binding_shape(graph, {0, 1, 2, 4, 5}, "2F,3F"));
++  EXPECT_EQ(15U, rejected);
++  std::cout << "D5_BINDING_RECEIPT case=rejections rejected=" << rejected
++            << " branchSibling=accepted\n";
++}
++
++TEST(GlobalConformityBaseline, D5ChainedSpansScheduleOnceAndReadTheirSideAtTheIdentifyingArc) {
++  const auto fixture = make_topology_fixture(make_square_mesh());
++  const auto loop = square_loop(fixture);
++  ASSERT_EQ(4U, loop.size());
++  ASSERT_EQ(1U, fixture.topology.regions().size());
++  const auto &walk = fixture.topology.regions().front().boundary;
++  ASSERT_EQ(4U, walk.size());
++  const auto walk_orientation = [&](NetworkArcId arc) {
++    return std::find_if(walk.begin(), walk.end(), [&](const auto &entry) {
++             return entry.arc == arc;
++           })->orientation;
++  };
++  // The walk goes round the loop one way: with it or against it throughout.
++  const bool withLoop = walk_orientation(loop[0].arc) == loop[0].orientation;
++  for (const auto &arc : loop) {
++    EXPECT_EQ(withLoop, walk_orientation(arc.arc) == arc.orientation);
++  }
++  const auto build = [&](const GlobalConformityBaselineInput &input) {
++    return directional::geometry::build_global_conformity_baseline(
++        fixture.topology, input);
++  };
++  // Each incidence sits where the walk meets its span's identifying arc.
++  const auto expect_sides = [&](const GlobalConformityBaselinePlan &plan) {
++    ASSERT_EQ(plan.schedule().size(), plan.incidences().size());
++    for (const auto &incidence : plan.incidences()) {
++      const auto ordinal = incidence.id.canonicalBoundaryOccurrenceOrdinal;
++      ASSERT_LT(ordinal, walk.size());
++      EXPECT_TRUE(walk[ordinal].arc == incidence.span.network_arc());
++    }
++  };
++  const auto side = [](const GlobalConformityBaselinePlan &plan,
++                       NetworkArcId arc) {
++    return std::find_if(plan.incidences().begin(), plan.incidences().end(),
++                        [&](const auto &incidence) {
++                          return incidence.span.network_arc() == arc;
++                        })
++        ->orientation;
++  };
++  const auto span_of = [](const GlobalTopologyOrientedArc &arc) {
++    return ConformitySpanId::from_network_arc(arc.arc);
++  };
++
++  // Without chains every arc is its own span, read as the walk reads it.
++  const auto perArcInput = make_baseline_input(fixture, 1.0);
++  const auto perArc = build(perArcInput);
++  ASSERT_TRUE(perArc);
++  expect_sides(perArc.value());
++  EXPECT_EQ((std::vector<int>{1, 1, 1, 1}), exact_counts(perArc.value()));
++  for (const auto &arc : loop) {
++    const auto *binding = perArc.value().find_arc_binding(arc.arc);
++    ASSERT_NE(nullptr, binding);
++    EXPECT_TRUE(*binding == BaselineConformityArcBinding{span_of(arc)});
++    EXPECT_TRUE(side(perArc.value(), arc.arc) == walk_orientation(arc.arc));
++  }
++
++  // Two arcs as one span: three spans of count 1 bound an odd region, so one
++  // flips, as on the triangle.
++  const auto pairInput = chained_input(fixture, {{loop[0], loop[1]}});
++  const auto pair = build(pairInput);
++  ASSERT_TRUE(pair);
++  expect_sides(pair.value());
++  EXPECT_EQ(nullptr, pair.value().find_schedule(span_of(loop[1])));
++  EXPECT_EQ((std::vector<int>{1, 1, 2}), exact_counts(pair.value()));
++  EXPECT_EQ(EInt(1), pair.value().certificate().minimumFlipCount);
++  EXPECT_TRUE(pair.value().certificate().regions.front().finalParityEven);
++  const std::size_t firstPieces =
++      fixture.topology.find_arc(loop[0].arc)->sourcePath.size();
++  EXPECT_TRUE(*pair.value().find_arc_binding(loop[0].arc) ==
++              (BaselineConformityArcBinding{span_of(loop[0]), 0U,
++                                            loop[0].orientation, 0U}));
++  EXPECT_TRUE(*pair.value().find_arc_binding(loop[1].arc) ==
++              (BaselineConformityArcBinding{span_of(loop[0]), 1U,
++                                            loop[1].orientation, firstPieces}));
++  EXPECT_TRUE(*pair.value().find_arc_binding(loop[2].arc) ==
++              BaselineConformityArcBinding{span_of(loop[2])});
++  EXPECT_EQ(withLoop, side(pair.value(), loop[0].arc) == Orientation::Forward);
++
++  // The same two arcs led from the other end are read the other way.
++  const auto backInput =
++      chained_input(fixture, {{reversed(loop[1]), reversed(loop[0])}});
++  const auto back = build(backInput);
++  ASSERT_TRUE(back);
++  expect_sides(back.value());
++  EXPECT_EQ(nullptr, back.value().find_schedule(span_of(loop[0])));
++  EXPECT_EQ(withLoop, side(back.value(), loop[1].arc) == Orientation::Reverse);
++  EXPECT_TRUE(*back.value().find_arc_binding(loop[0].arc) ==
++              (BaselineConformityArcBinding{
++                  span_of(loop[1]), 1U,
++                  directional::authority::reverse_orientation(loop[0].orientation),
++                  fixture.topology.find_arc(loop[1].arc)->sourcePath.size()}));
++
++  // Two chains: two spans of count 1 bound an even region, so nothing flips.
++  const auto pairsInput =
++      chained_input(fixture, {{loop[0], loop[1]}, {loop[2], loop[3]}});
++  const auto pairs = build(pairsInput);
++  ASSERT_TRUE(pairs);
++  expect_sides(pairs.value());
++  EXPECT_EQ((std::vector<int>{1, 1}), exact_counts(pairs.value()));
++  EXPECT_EQ(EInt(0), pairs.value().certificate().minimumFlipCount);
++  auto permuted = pairsInput;
++  std::reverse(permuted.spans.begin(), permuted.spans.end());
++  std::reverse(permuted.chains.begin(), permuted.chains.end());
++  const auto permutedPairs = build(permuted);
++  ASSERT_TRUE(permutedPairs);
++  EXPECT_EQ(pairs.value().semantic_digest(),
++            permutedPairs.value().semantic_digest());
++
++  // The four problems are different problems, and each candidate validates
++  // against its own input only.
++  const std::vector<const GlobalConformityBaselineInput *> inputs{
++      &perArcInput, &pairInput, &backInput, &pairsInput};
++  const std::vector<const GlobalConformityBaselinePlan *> plans{
++      &perArc.value(), &pair.value(), &back.value(), &pairs.value()};
++  std::set<std::uint64_t> digests;
++  std::size_t crossRejected = 0U;
++  for (std::size_t plan = 0U; plan < plans.size(); ++plan) {
++    digests.insert(plans[plan]->certificate().normalizedProblemDigest);
++    const auto candidate = plans[plan]->validation_candidate();
++    for (std::size_t input = 0U; input < inputs.size(); ++input) {
++      const auto error =
++          directional::geometry::validate_global_conformity_baseline_candidate(
++              fixture.topology, *inputs[input], candidate);
++      EXPECT_EQ(plan != input, error.has_value());
++      if (error) ++crossRejected;
++    }
++  }
++  EXPECT_EQ(4U, digests.size());
++  EXPECT_EQ(12U, crossRejected);
++  std::cout << "D5_BINDING_RECEIPT case=square perArc=1,1,1,1 pair=1,1,2"
++            << " pairs=1,1 backSide=opposite digests=" << digests.size()
++            << " crossRejected=" << crossRejected << "\n";
++}
++
++TEST(GlobalConformityBaseline, D5BaselineRejectsChainsThatDoNotPartitionTheArcs) {
++  const auto fixture = make_topology_fixture(make_square_mesh());
++  const auto loop = square_loop(fixture);
++  ASSERT_EQ(4U, loop.size());
++  const auto detail = [&](const GlobalConformityBaselineInput &input) {
++    const auto built = directional::geometry::build_global_conformity_baseline(
++        fixture.topology, input);
++    if (built) return std::string("built");
++    EXPECT_TRUE(built.error().code ==
++                directional::geometry::GlobalConformityPlanErrorCode::
++                    InvalidTopologyBinding);
++    return built.error().detail;
++  };
++  const std::string count = "baseline schedules every full A2b arc exactly once";
++  const std::string partition = "baseline chains do not partition the A2b arcs";
++
++  // A chained arc that keeps its own span is counted twice.
++  auto kept = make_baseline_input(fixture, 1.0);
++  kept.chains = {{loop[0], loop[1]}};
++  EXPECT_EQ(count, detail(kept));
++  // Arcs that do not meet are not a chain.
++  EXPECT_EQ(partition, detail(chained_input(fixture, {{loop[0], loop[2]}})));
++  // Nor are two arcs taken against their direction.
++  EXPECT_EQ(partition,
++            detail(chained_input(fixture, {{reversed(loop[0]), reversed(loop[1])}})));
++  // A chain is led by its first arc, not its second.
++  auto headless = chained_input(fixture, {{loop[1], loop[0]}});
++  headless.chains = {{loop[0], loop[1]}};
++  EXPECT_EQ(partition, detail(headless));
++  // One arc is not a chain.
++  auto single = make_baseline_input(fixture, 1.0);
++  single.chains = {{loop[0]}};
++  EXPECT_EQ(partition, detail(single));
++  std::cout << "D5_BINDING_RECEIPT case=baselineRejections count=1 partition=4\n";
++}

@@ -1,3 +1,5 @@
+> **SUPERSEDED (2026-11-09) by [RA-219](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Span_Switch_Takeover_Review_20261109.md).** This working document froze nothing and authorizes nothing. It is kept as provenance only.
+
 # D5 chain-span switch: source-derived logical-side review candidate (2026-11-09)
 
 **Authority:** `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SPAN-SWITCH`, 64B.3 Review, **unfinished**. This is a narrow **CB113 helper draft only**; it is **not the full CB113 patch**, **not frozen**, **not compiled or executed**, and **not authorized for application**. See [RA-218](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md) §3 and [the interval/identity source review](Architecture_M6_CP3_DEFN_P13_A3_Span_Switch_Interval_Identity_Source_Review_20261109.md).

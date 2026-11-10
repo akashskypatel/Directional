@@ -1,3 +1,5 @@
+> **SUPERSEDED (2026-11-09) by [RA-219](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Span_Switch_Takeover_Review_20261109.md).** This working document froze nothing and authorizes nothing. It is kept as provenance only.
+
 # D5 chain-span switch: corrected interval and incidence contract (2026-11-09)
 
 **Active canonical turn:** `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SPAN-SWITCH` (64B.3, Review). **IN PROGRESS: not a frozen CB112/CB113 patch or implementation authorization.** Evidence is the exact verified source snapshot `82d74f543d51803f92002f156a4250f32bf968a1`, source-snapshot run `42699570720`, artifact `13710408472`, 5,405/5,405 hashes, and RA-218 §§2–4. This record corrects the overbroad fractional-front-ordinal suggestion in the earlier [working review](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Span_Switch_Working_Review_20261109.md).

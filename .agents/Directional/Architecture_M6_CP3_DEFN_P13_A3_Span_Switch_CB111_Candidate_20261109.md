@@ -1,3 +1,5 @@
+> **SUPERSEDED (2026-11-09) by [RA-219](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Span_Switch_Takeover_Review_20261109.md).** This working document froze nothing and authorizes nothing. It is kept as provenance only.
+
 # CB111 stop-set candidate — definition-turn preservation (2026-11-09)
 
 **Canonical owner:** `M6-CP3-DEFN-P13-A3-MANDATORY-CHAIN-SPAN-SWITCH` (64B.3). **Draft only — NOT FROZEN, NOT APPLIED, NOT A CB turn.** This is a continuation aid subordinate to [RA-218](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md) and the [working review](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Span_Switch_Working_Review_20261109.md). Do not advance to CB111.
