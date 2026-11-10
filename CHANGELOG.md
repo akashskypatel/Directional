@@ -1,3 +1,8 @@
+## 2026-11-10 UTC — TB94 chain stop-node full gate COMPLETE / MATCH
+
+- [Immutable TB94 report](.agents/Directional/Architecture_M6_CP3_TB94_P13_A3_Chain_Stop_Nodes_Full_Gate_Execution_Report_20261110.md): CB111 source `abad9902b29e555bc568072b41189e10cad24138`, package `13749155800`, 28/28 packaged hashes, no rebuild. [Gate 42791092755](https://github.com/akashskypatel/Directional/actions/runs/42791092755) **925/925 PASS**, membership **1006**, **1,858/1,858** checksums and both new `D5_STOP_RECEIPT` guards; [census 42791131187](https://github.com/akashskypatel/Directional/actions/runs/42791131187) Cylinder PASS, BunnyRandom/Vase registered RED, 9/9 hashes. All **7/7** raw platform-digest and **7/7** A3-coverage lines identical to TB93; rows 1–923 unchanged. No compile, relink, configure, benchmark, source/test/selector edit, CP3 promotion or accepted-green loss.
+- Stable **66/17/49**, CP2 **491/491**, regression debt **1**, deferred ledger **81**. Stop-node helper remains unwired; next separate CB112 compile-only. Original entry snapshot read-order deviation disclosed in the report; no successor implementation performed.
+
 ## 2026-11-10 UTC — CB111 mandatory chain stop nodes compiled (Code + Build only)
 
 - [CB111 record](.agents/Directional/Architecture_M6_CP3_CB111_P13_A3_Chain_Stop_Nodes_Code_Build_Record_20261110.md): exact RA-219 patch `f71c1aba…`, 3 source/test paths +140 lines, applied by [run 42784278671](https://github.com/akashskypatel/Directional/actions/runs/42784278671) at `abad9902b29e555bc568072b41189e10cad24138`; staged Google Drive patch retired by owner.
