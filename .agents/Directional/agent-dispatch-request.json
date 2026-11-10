@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb113-chained-input-factory-apply-20261110-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb113-chained-input-factory-apply",
-  "file_id": "1RpS5r68o_uip9qgNtB6tNGzgYNEgpi5U",
-  "patch_sha256": "9af7770095eb20b9b07ef347457501eceb2d6d2472c251bb7a72fcc75b83ab07",
-  "base_sha": "35912b11ff870d914c08599ef7b3d45f5a09c89b",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(surface-cells): add independent chained A3 baseline input factory",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb113-chained-input-factory-compile-20261110-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb113-chained-input-factory-compile",
+  "source_sha": "62493cee6c779613dae389e42ef2e60206fec522",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb113-chained-input-factory"
 }
