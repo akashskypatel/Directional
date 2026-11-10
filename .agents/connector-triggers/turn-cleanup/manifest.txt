@@ -1,0 +1,2 @@
+# CB118 temporary source-snapshot trigger only; durable request and workflow remain
+.agents/connector-triggers/source-snapshot/cb118-20261110-2148.json
