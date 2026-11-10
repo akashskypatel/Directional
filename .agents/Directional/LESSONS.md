@@ -411,6 +411,11 @@ This document records **reusable failure-derived engineering lessons**, not an e
   (ceiling) from the same exact quantity instead of adding a failure. Before switching a stored
   representation, grep the accepted tests for assertions on the old encoding and amend them in the
   switch CB, registered by the Review.
+- **A decision without an executing turn is not progress (RA-223).** RA-222 decided a dispatch rule
+  and froze only a count receipt. Look for the half of a rule that is unconditional and inert in
+  production (here: a chained plan can never be built by a uniform lattice), land that half with
+  a test that injects the new input, and let the test report which producer ran. Check the producer
+  in the middle of a dispatch chain too: it must pass the region on, not reject it.
 - **A second producer does not need the plan; it needs to step aside (RA-222).** D4 asked the uniform
   producer to consume A3 or decline. Declining keeps one reader of the plan and is one line, but it
   moves three green fixtures to a producer with a stricter precondition (equal opposite sides).

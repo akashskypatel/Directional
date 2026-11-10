@@ -1,3 +1,9 @@
+## 2026-11-10 UTC — RA-223 adversarial re-review of the D4 uniform definition (Review; runtime-free)
+
+- [RA-223](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Uniform_Plan_Consumption_Adversarial_Review_20261110.md): RA-222's decision, CB117 and TB98 stand. Added exact [CB118](.agents/Directional/Architecture_M6_CP3_CB118_P13_A3_Uniform_Declines_Chained_Plan_Exact.diff) `5e0837d0…` (the uniform producer declines every region of a chained A3 plan; production plans are not chained; GUARD 936 on two plain squares) with [TB99](.agents/Directional/gates/Architecture_M6_TB99_P13_A3_Uniform_Declines_Chained_Plan_Full_Gate_Case_Manifest.tsv) (936 rows `c137e3f8…`, membership 1017). TB98 MATCH now routes to CB118.
+- Findings: the annulus producer passes a disc on (confirmed); the corner predicate misses turns sharper than 135° (for 64B.13); uncut closed rims (O34) are a switch precondition.
+- Next: `M6-CP3-CB117-P13-A3-RIM-CENSUS-RECEIPT`. Stable 66/17/49, CP2 491/491, debt 1, 81 deferred unchanged. No product or test source changed.
+
 ## 2026-11-10 UTC — RA-222 D4 uniform plan consumption definition (Review; runtime-free)
 
 - [RA-222](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Uniform_Plan_Consumption_Review_20261110.md): under an A3 plan the uniform producer is to decline every region, leaving the bounded-disk producer as the single disc producer that reads A3. The switch is not frozen; it shares the D5 switch's preconditions and joins O36.

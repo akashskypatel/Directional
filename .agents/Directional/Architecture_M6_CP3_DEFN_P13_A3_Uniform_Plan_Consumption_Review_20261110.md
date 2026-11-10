@@ -1,5 +1,7 @@
 # RA-222 — D4 uniform plan consumption (step 64C)
 
+> **AMENDED (2026-11-10) by [RA-223](Architecture_M6_CP3_DEFN_P13_A3_Uniform_Plan_Consumption_Adversarial_Review_20261110.md).** The decision, CB117 and TB98 stand. TB98's MATCH route is now `M6-CP3-CB118-P13-A3-UNIFORM-DECLINES-CHAINED-PLAN`; CB118 → TB99 are added before 64B.13; O34 joins the switch preconditions.
+
 **Turn:** `M6-CP3-DEFN-P13-A3-UNIFORM-PLAN-CONSUMPTION` (64C, Review). **Disposition: COMPLETE.** The D4 contract for the uniform producer is decided (§2). Its production switch is **not** frozen, because it shares its preconditions with the D5 switch (§3). One narrow, test-only patch is frozen instead: CB117 reports, for each produced gate fixture, the rim counts of both A3 schedules against the output; TB98 gates it. Runtime-free: syntax checks only; no product or test source changed in the repository.
 
 ## 1. What was read
