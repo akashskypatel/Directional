@@ -1,3 +1,7 @@
+## 2026-11-10 UTC — CB116 chain-aware A4 consumers compiled (Code + Build only)
+
+- [CB116 record](.agents/Directional/Architecture_M6_CP3_CB116_P13_A3_Chain_Aware_Consumers_Code_Build_Record_20261110.md): exact frozen RA-221 patch `954b11df…` applied by [workflow 42860877515](https://github.com/akashskypatel/Directional/actions/runs/42860877515), semantic commit `57c253ba782ebc5fbf61b953e0169c4c85f66253`. Eight-target GMP/GMPXX compile [run 42861295562](https://github.com/akashskypatel/Directional/actions/runs/42861295562), artifact `13784269032`, 28/28 packaged hashes, no runtime execution. GUARD 931 is for separate TB97; production chaining still unwired. Last runtime gate TB96 930/930 MATCH, CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged; no CP3 or selector497 promotion. Next independent TB97 artifact-only turn.
+
 ## 2026-11-10 UTC — User decision on O38: disc corners are chain stops
 
 - Recorded in [RA-221 addendum](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Boundary_Chain_Consumption_Adversarial_Review_20261110.md#addendum-2026-11-10-user-decision-on-o38) and DESIGN §7.4. The corner nodes become a published upstream product read by the D5 stop set and by the bounded-disk producer. Review-only 64B.13 `M6-CP3-DEFN-P13-A3-DISC-CORNER-STOPS` is scheduled alongside CB116/TB97/64C; it blocks only the production switch O36.
