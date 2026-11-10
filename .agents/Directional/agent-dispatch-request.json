@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb118-patch-apply-20261110-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb118-patch-apply",
-  "file_id": "1cOZERKo-JUJgFgvMYpB0hDN3lDnxOwc3",
-  "patch_sha256": "87a57edcbc71f72b8aa844109768249cccd43b49fdf2373f08083ae9f850d40a",
-  "base_sha": "42b703f7d0b228a8e4fcba6fa086e7c9732db618",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(surface-cells): decline chained A3 plans in uniform producer",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb118-compile-20261110-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb118-compile",
+  "source_sha": "6f0f9331a0dd3cf5a8d404134b0ad0669e5719c7",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-cb118-compile"
 }
