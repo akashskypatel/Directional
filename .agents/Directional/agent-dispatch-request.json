@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb112-arc-bindings-apply-20261110-v2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb112-arc-bindings-apply-v2",
-  "file_id": "1v5UT8C07ignZyy0mITUZ4ptU0KXCZjih",
-  "patch_sha256": "e3bfde7c7b32008e2866b501b4500ad759a950894a700d43459f3f66f45f81c7",
-  "base_sha": "d20b207a2d950412dd461b72d3415733f56bc980",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(directional): bind baseline A2b arcs to mandatory chains (CB112)",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb112-arc-bindings-compile-20261110-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb112-arc-bindings-compile",
+  "source_sha": "35912b11ff870d914c08599ef7b3d45f5a09c89b",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "cb112-chain-arc-bindings-compile"
 }
