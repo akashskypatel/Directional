@@ -1,3 +1,0 @@
-turn=M6-CP3-CB113-P13-A3-CHAINED-INPUT-FACTORY
-source_at_entry=122421795af83980c1e6f845a0862c8d91f2ab22
-purpose=one exact source snapshot; compile-only implementation
