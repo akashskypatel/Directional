@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb111-chain-stop-nodes-compile-20261110-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb111-chain-stop-nodes-compile",
-  "source_sha": "abad9902b29e555bc568072b41189e10cad24138",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-cb111-compile"
+  "request_id": "m6-cp3-cb111-docs-closeout-20261110-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb111-docs-closeout",
+  "file_id": "1jMXB3L2e85IYTxJxsbK0PTjQtXqTUUR3",
+  "patch_sha256": "01983c453a20f8761b51d543d2bd14292fa3fec2aeb086e32e4cbe6c97e14953",
+  "base_sha": "879b63bce362ee2085912343e7988a195b6df714",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(agent): close CB111 code-build evidence and schedule TB94",
+  "retention_days": 14
 }
