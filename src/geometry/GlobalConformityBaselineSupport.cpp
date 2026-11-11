@@ -483,7 +483,8 @@ std::set<authority::NetworkNodeId> derive_mandatory_chain_stop_nodes(
     const std::vector<FieldAlignedCurveNetworkNode> &nodes,
     const std::vector<FieldAlignedSingularityPort> &ports,
     const std::vector<FieldAlignedMandatoryEdge> &mandatoryEdges,
-    const std::vector<AdaptiveFeatureCurve> &curves) {
+    const std::vector<AdaptiveFeatureCurve> &curves,
+    const std::vector<authority::SourceVertexId> &fieldCornerVertices) {
   std::set<authority::NetworkNodeId> stops;
   for (const auto &port : ports) stops.insert(port.node);
   for (const auto &edge : mandatoryEdges) {
@@ -491,13 +492,16 @@ std::set<authority::NetworkNodeId> derive_mandatory_chain_stop_nodes(
     stops.insert(edge.firstNode);
     stops.insert(edge.secondNode);
   }
-  std::set<std::int64_t> featureVertices;
+  std::set<std::int64_t> stopVertices;
   for (const auto &curve : curves) {
-    featureVertices.insert(curve.corners.begin(), curve.corners.end());
-    featureVertices.insert(curve.junctions.begin(), curve.junctions.end());
+    stopVertices.insert(curve.corners.begin(), curve.corners.end());
+    stopVertices.insert(curve.junctions.begin(), curve.junctions.end());
+  }
+  for (const auto vertex : fieldCornerVertices) {
+    stopVertices.insert(static_cast<std::int64_t>(vertex.index()));
   }
   for (const auto &node : nodes) {
-    if (featureVertices.count(
+    if (stopVertices.count(
             static_cast<std::int64_t>(node.sourceVertex.index())) != 0U) {
       stops.insert(node.id);
     }

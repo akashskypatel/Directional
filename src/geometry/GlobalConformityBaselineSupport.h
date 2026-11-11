@@ -68,14 +68,16 @@ derive_mandatory_chain_support(const BaselineMandatoryChain &chain,
 
 // D5 stop nodes (RA-219): the nodes where a chain ends whatever their
 // rotation. They are the singularity-port nodes, the nodes on a corner or
-// junction vertex of an upstream feature curve, and both ends of every
-// hard-feature edge, so only source-boundary rails join.
+// junction vertex of an upstream feature curve, the nodes on a boundary field
+// corner (RA-224), and both ends of every hard-feature edge, so only
+// source-boundary rails join.
 [[nodiscard]] std::set<authority::NetworkNodeId>
 derive_mandatory_chain_stop_nodes(
     const std::vector<FieldAlignedCurveNetworkNode> &nodes,
     const std::vector<FieldAlignedSingularityPort> &ports,
     const std::vector<FieldAlignedMandatoryEdge> &mandatoryEdges,
-    const std::vector<AdaptiveFeatureCurve> &curves);
+    const std::vector<AdaptiveFeatureCurve> &curves,
+    const std::vector<authority::SourceVertexId> &fieldCornerVertices = {});
 
 // D5 arc bindings (RA-219): the span that schedules each A2b arc. A span
 // without a chain covers only its identifying arc. Returns nothing unless the

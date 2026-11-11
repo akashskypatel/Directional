@@ -1846,6 +1846,35 @@ TEST(GlobalConformityBaseline, D5StopNodesKeepHardFeatureRailsPerArc) {
             << " port2=0F,1F|2F|3F|4F\n";
 }
 
+// A boundary field corner (RA-224) stops a chain as a feature corner does,
+// through the node on its source vertex.
+TEST(GlobalConformityBaseline, StopNodesReadBoundaryFieldCorners) {
+  // Rail 0 is a source boundary 0-1-2-3; node k sits on source vertex 7 - k.
+  ChainGraph graph;
+  add_arc(graph, 0, 1);
+  add_arc(graph, 1, 2);
+  add_arc(graph, 2, 3);
+  std::vector<FieldAlignedCurveNetworkNode> nodes;
+  for (int k = 0; k < 4; ++k) nodes.push_back(stop_node(k, 7 - k));
+  const auto vertex = [](const int index) {
+    return SourceVertexId::from_index(index, kChainExtent).value();
+  };
+  const auto shape = [&](const std::vector<SourceVertexId> &fieldCorners) {
+    return chain_shape(derive_mandatory_chain_partition(
+        graph.arcs, rotations_of(graph.arcs), graph.edges,
+        derive_mandatory_chain_stop_nodes(nodes, {}, graph.edges, {},
+                                          fieldCorners)));
+  };
+  EXPECT_EQ("0F,1F,2F", shape({}));
+  // Vertex 5 carries node 2 and vertex 6 node 1; vertex 0 carries no node.
+  EXPECT_EQ("0F,1F|2F", shape({vertex(5)}));
+  EXPECT_EQ("0F|1F|2F", shape({vertex(5), vertex(6)}));
+  EXPECT_EQ("0F|1F|2F", shape({vertex(6), vertex(5)}));
+  EXPECT_EQ("0F|1F|2F", shape({vertex(5), vertex(6), vertex(5)}));
+  EXPECT_EQ("0F,1F,2F", shape({vertex(0)}));
+  EXPECT_EQ("0F,1F|2F", shape({vertex(0), vertex(5)}));
+}
+
 namespace {
 
 using directional::geometry::BaselineConformityArcBinding;
