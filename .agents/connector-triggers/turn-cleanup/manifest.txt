@@ -1,0 +1,2 @@
+# M6-CP3-TB101A-P13-A3-FIELD-CORNER-STOP-NODES-EXEC temporary files
+.agents/connector-triggers/source-snapshot/tb101a-20261111-0937.txt
