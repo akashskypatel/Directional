@@ -1,3 +1,9 @@
+## 2026-11-11 UTC — TB106 exact rim branch rule full gate COMPLETE / scoped MATCH (64B.25)
+
+- [TB106 report](.agents/Directional/Architecture_M6_CP3_TB106_P13_A3_Exact_Rim_Branch_Rule_Full_Gate_Execution_Report_20261111.md): immutable CB125 package `13894015691`, source `0ff93f167feb69dc290d4f220a0f8d32a906e2f7`. [Gate 43110402612](https://github.com/akashskypatel/Directional/actions/runs/43110402612): 943/943 PASS, membership 1,024, 1,894/1,894 hashes; first 942 ledger records and 25 inherited receipts identical to TB105. Four `rim-branch` and four `rim-branch-agreement` lines record zero exact-only, binary64-only, or changed decisions.
+- [Production census 43110688688](https://github.com/akashskypatel/Directional/actions/runs/43110688688): Cylinder PASS, BunnyRandom/Vase two registered RED, 9/9 hashes; unchanged three case records, six platform/coverage receipts and terminal reasons. No new stable regression. No configure, compile, relink, repair, benchmark, selector edit, or production switch during TB106. CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged; O36 unwired; CP3/selector497 unpromoted.
+- **Next separate turn:** `M6-CP3-CB126-P13-A3-EXACT-RIM-BRANCH-OWNER` (64B.26), the RA-226 frozen exact-rule-owner patch, compile only. No successor code was executed in TB106.
+
 ## 2026-11-11 UTC — CB125 exact rim branch predicate compiled (64B.24; no runtime)
 
 - RA-226 frozen 251-line patch SHA-256 `f257368a3c6848af144f730794e840a077204cef0dae979df8275f050d4f2e37` applied to the four prescribed source and test files. Source `0ff93f167feb69dc290d4f220a0f8d32a906e2f7`; [patch apply run 43102523069](https://github.com/akashskypatel/Directional/actions/runs/43102523069). The new exact function remains unwired; binary64 still owns the production path.
