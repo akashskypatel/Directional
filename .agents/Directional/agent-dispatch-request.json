@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "tb101c-tech-review-audit-20261111-v1",
+  "request_id": "tb101c-adversarial-audit-review-20261111-v1",
   "operation": "drive_apply",
-  "mailbox_key": "tb101c-tech-review-audit-20261111",
-  "file_id": "1LyhVcQnG3eni1d3ciJ56F7-W_jAL2o1S",
-  "patch_sha256": "63803c926f38cd7e2b401d353d0d58800e95acdbecf04f51d34bf3c255ad1b30",
-  "base_sha": "ca1d913427a409e6ed2518361cecc26657573581",
+  "mailbox_key": "tb101c-adversarial-audit-review-20261111",
+  "file_id": "18Kfc8g_kTx9DM5x7Eu6-Mv52laqQhpdM",
+  "patch_sha256": "e5e67219bba7a43cdabb1e2fb430d9e79a56536bc70db05646b8dfe24899736c",
+  "base_sha": "3303a1259791c310bbc55a2d7f69e0dbb69c79e8",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): audit TB101C field-corner design and freeze narrow turns",
+  "commit_message": "docs(directional): correct TB101C audit architecture and narrow work sequence",
   "retention_days": 14
 }
