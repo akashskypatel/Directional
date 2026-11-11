@@ -1,3 +1,8 @@
+## 2026-11-11 UTC — TB100B corrected boundary field-corner full gate COMPLETE / MATCH (artifact-only)
+
+- [TB100B report](.agents/Directional/Architecture_M6_CP3_TB100B_P13_A3_Boundary_Field_Corners_Corrected_Gate_Execution_Report_20261111.md): CB119B immutable package `13826405755`, source `d47b7c24…`; [gate 42958701539](https://github.com/akashskypatel/Directional/actions/runs/42958701539) 938/938 PASS (row 938 corrected from prior RED); [census 42958806101](https://github.com/akashskypatel/Directional/actions/runs/42958806101) Cylinder PASS, BunnyRandom/Vase registered RED. Gate/census artifact hashes and internal 1,884/9 checksums verified, no compile/relink or source edits.
+- All inherited 936 control rows, seven platform-digest and seven A3-coverage lines, four d4-rim lines and both field-corner receipts match TB100; no new stable regression or production promotion. Accepted CP2 491/491, 66/17/49, debt1, deferred81 unchanged. Independent TB100B Review next; CB120/O36 not started.
+
 ## 2026-11-11 UTC — CB119B independent boundary-corner oracle (Code + Build)
 
 - One-file test-only patch at `d47b7c24b11cfb568d4ffce971590b8e5f966dc4`: test 938 computes hard-rail corner expectations from source-triangle boundary edges and configured hard-feature endpoints, and verifies the independent atlas `HardFeature` barriers. Plain eight-corner control, both face-row orders, and pass-through comparisons remain. No production, selector, fixture, workflow, or validator changes.
