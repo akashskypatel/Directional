@@ -1,3 +1,9 @@
+## 2026-11-11 UTC — CB125 exact rim branch predicate compiled (64B.24; no runtime)
+
+- RA-226 frozen 251-line patch SHA-256 `f257368a3c6848af144f730794e840a077204cef0dae979df8275f050d4f2e37` applied to the four prescribed source and test files. Source `0ff93f167feb69dc290d4f220a0f8d32a906e2f7`; [patch apply run 43102523069](https://github.com/akashskypatel/Directional/actions/runs/43102523069). The new exact function remains unwired; binary64 still owns the production path.
+- [Compile run 43103045569](https://github.com/akashskypatel/Directional/actions/runs/43103045569), [artifact 13894015691](https://github.com/akashskypatel/Directional/actions/runs/43103045569/artifacts/13894015691), package SHA-256 `72aca96c3a4fdfc8707e8a4b24ff678455184f4c573650535dc176f78fa58d54`. Eight GMP/GMPXX targets compiled; `runtimeExecution=false`; no tests or benchmarks. [CB125 record](.agents/Directional/Architecture_M6_CP3_CB125_P13_A3_Exact_Rim_Branch_Rule_Code_Build_Record_20261111.md).
+- Correction: the earlier run 43100858672 compiled unpatched source `088271ee78a673fc4bcaeac2f737c4232d51f664`. Its success is not CB125 build evidence. It cannot establish exact-rule compile acceptance. TB106 is next, in a separate turn; CP2 491/491, stable 66/17/49, debt 1 and deferred 81 unchanged.
+
 ## 2026-11-11 UTC — RA-226: exact rim branch rule defined (64B.23, O39; Review, no runtime)
 
 - [RA-226](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Exact_Rim_Arithmetic_Review_20261111.md) completed `M6-CP3-DEFN-P13-A3-EXACT-RIM-ARITHMETIC`. The per-edge rim branch rule is defined on the stored doubles as exact rationals: in-plane cosines compared as squares, threshold 7/10 inclusive, exact ties only, no tolerance and no normalization. The fan carry and the corner product's result type are unchanged.
