@@ -578,6 +578,16 @@ This document records **reusable failure-derived engineering lessons**, not an e
   check on it, and give observation runs (censuses) a kind whose REDs are evidence rather than
   control failures. RA-169/170 froze site text and parameterized names the harness rejected, and
   GUARD rows that would fail on any census RED; each cost a zero-execution CI turn (RA-171).
+- **Reduce a floating rule algebraically before making it exact (RA-226).** The rim branch rule
+  projects, normalizes and compares cosines. Written with one in-plane inner product and squared
+  cosines it needs no square root, no division by a length and no assumption that the edge lies in
+  the face. If an exact version seems to need the sign of `a + b√r`, look for the form that does not.
+- **Test an exact predicate with inputs the rounded rule cannot separate (RA-226).** Three inputs
+  within one rounding unit, or inside the old tolerance, must get three different exact answers.
+  The old rule gives one answer for all three, so the test fails if the old rule is renamed.
+- **Exactness is owed where one rounding unit can turn a decision (RA-226).** The tie band and the
+  threshold of the rim rule are such places. The fan carry's forward test has a 45° margin under
+  principal matching, so it stays; record the bound and its limit instead of replacing the code.
 - **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
   still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).
 - **A TB runs the full current gate even when its CB touches no gate binary.** A CLI- or GUI-only CB

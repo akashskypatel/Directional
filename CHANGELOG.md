@@ -1,3 +1,10 @@
+## 2026-11-11 UTC — RA-226: exact rim branch rule defined (64B.23, O39; Review, no runtime)
+
+- [RA-226](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Exact_Rim_Arithmetic_Review_20261111.md) completed `M6-CP3-DEFN-P13-A3-EXACT-RIM-ARITHMETIC`. The per-edge rim branch rule is defined on the stored doubles as exact rationals: in-plane cosines compared as squares, threshold 7/10 inclusive, exact ties only, no tolerance and no normalization. The fan carry and the corner product's result type are unchanged.
+- Frozen for the implementation agent: exact CB125 `f257368a3c6848af144f730794e840a077204cef0dae979df8275f050d4f2e37` (251 lines; the exact rule unwired, test 943 and an agreement receipt) with TB106 (943 rows `938836fc3326df11ccb3d475e0c6a3a4d629d8ac6e252436dcfac47286bfb651`, membership 1024), and exact CB126 `f5526f22d3f04a9c5e0120dd969c8586a79d247b9b5a0d2506f7a3e7b4c9bc25` (174 lines; the exact rule becomes the one owner) with TB107 (the same 943 rows).
+- Runtime-free checks only: `-fsyntax-only` returns 0 on the three touched files in both patch states, both patches apply in order, both manifests pass the harness self-check, and an exact-fraction model reproduces every asserted value. No product or test source changed in the repository. Accepted CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged; O36 unwired; CP3/selector497 unpromoted.
+- Next: `M6-CP3-CB125-P13-A3-EXACT-RIM-BRANCH-RULE` (implementation agent, compile only).
+
 ## 2026-11-11 UTC — TB105 shared rim branch rule full gate COMPLETE / scoped MATCH (64B.22)
 
 - [TB105 report](.agents/Directional/Architecture_M6_CP3_TB105_P13_A3_Shared_Rim_Branch_Rule_Full_Gate_Execution_Report_20261111.md): immutable CB124 source `acffbffe7f8cb247f9d6118526f37f7d5a7cebad`, compiled artifact `13876075161`; [full gate 43067225397](https://github.com/akashskypatel/Directional/actions/runs/43067225397) 942/942 PASS, membership 1,023, 1,892/1,892 result checksums and 25/25 receipt/digest lines identical to TB104.
