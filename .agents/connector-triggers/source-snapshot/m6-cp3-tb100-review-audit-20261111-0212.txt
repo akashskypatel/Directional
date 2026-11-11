@@ -1,4 +1,0 @@
-turn=M6-CP3-TB100-P13-A3-BOUNDARY-FIELD-CORNERS-REV-AUDIT
-frozen_head=20c3b7a4dd59a8343dd7f6bb47e36f049deb0f31
-read_mode=snapshot
-review_only=true
