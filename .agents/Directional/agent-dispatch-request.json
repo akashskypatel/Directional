@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "tb101c-doc-correction-20261111-v1",
+  "request_id": "tb101c-rev-docs-20261111-v1",
   "operation": "drive_apply",
-  "mailbox_key": "tb101c-doc-correction-20261111",
-  "file_id": "1rvXvjP6L_xuQZHeE0HyQB8K5mVzJSWw_",
-  "patch_sha256": "b8afebf9a596510ea25af34adb87c5690de01f0cbc4aae7a90624ccdb783f188",
-  "base_sha": "6c206863d75862cab15c94694da62cfda342f173",
+  "mailbox_key": "tb101c-rev-docs-20261111",
+  "file_id": "191nG6Q_yLbi7Lj1dRWkQm48qxS1px_1e",
+  "patch_sha256": "b52aa03308f2b80159a982e46cff4f33f39e90394a01e7bf41a8da8030850257",
+  "base_sha": "40810073d8614bc1d8d9a4ba37b309f2dbc84b4f",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): correct TB101C report link and stale next-turn note",
+  "commit_message": "docs(directional): independently review TB101C field-corner gate",
   "retention_days": 14
 }
