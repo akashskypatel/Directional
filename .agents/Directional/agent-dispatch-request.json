@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "cb123-derived-corner-apply-20261111-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "cb123-derived-corner-apply-20261111",
-  "file_id": "1foIDqvksAkk3309UtbwRGSv7Xs8cqBqj",
-  "patch_sha256": "96e2f2888a69ad3b1e80568dfb0cf04d0e9960fa34c08f8817e42ffcbe2d1b3c",
-  "base_sha": "aaec7c0d1fbac11d2a765f7a00fecac3a708fe05",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surface-cells): verify field-derived boundary corner chain stops",
-  "retention_days": 14
+  "request_id": "cb123-derived-corner-compile-20261111-v1",
+  "operation": "compile",
+  "mailbox_key": "cb123-derived-corner-compile-20261111",
+  "source_sha": "dcfc9494830b150af944b057eb7003a69806085a",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-cb123"
 }
