@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb119b-oracle-20261111-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb119b-oracle-apply",
-  "file_id": "14yoevAOqjCCsIcMSoRgOBtLjNmfE5pUF",
-  "patch_sha256": "e7e0bc1bb0eae0387b072fa465bb9f5187f5746a766cf10d8040907743334524",
-  "base_sha": "e31595097e70f498b7df99e6b1e1851d254a1bbb",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: derive boundary corner oracle from configured hard-feature endpoints",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb119b-oracle-compile-20261111-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb119b-oracle-compile",
+  "source_sha": "d47b7c24b11cfb568d4ffce971590b8e5f966dc4",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-cb119b-compile"
 }
