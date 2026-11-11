@@ -1,2 +1,0 @@
-# CB126 temporary source-snapshot trigger only. Retain durable request and workflow mailbox.
-.agents/connector-triggers/source-snapshot/m6-cp3-cb126-20261111-2303.txt
