@@ -1,12 +1,19 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb105-docs-link-20261111-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb105-docs-link-20261111",
-  "file_id": "12HqFNtbQLumdkF0Wcxk8ttKbPPnfKTjz",
-  "patch_sha256": "b63834833a42f94e676ec8697ec26f09dc310801beae7b52cbda9f8e761c2942",
-  "base_sha": "da3c213c0e4cbda1b0633dcab735c7bfaa472d16",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: correct TB105 report link in root changelog",
+  "request_id": "m6-cp3-cb125-exact-rim-compile-20261111-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb125-exact-rim-compile-20261111",
+  "source_sha": "088271ee78a673fc4bcaeac2f737c4232d51f664",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb125-exact-rim",
   "retention_days": 14
 }
