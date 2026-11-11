@@ -8365,8 +8365,59 @@ TEST(SurfaceCellAuthorityContractCutover,
                &*fixture.atlas)) {
         corners.insert(static_cast<int>(vertex.index()));
       }
-      // The four corners of each 2x2 square.
-      EXPECT_EQ((std::set<int>{0, 2, 6, 8, 9, 11, 15, 17}), corners);
+      // Derive the hard-rail endpoints from the configured source edges,
+      // not from the field-corner product or the regional side starts.
+      using directional::authority::FieldTransportBarrierKind;
+      using directional::authority::SourceEdgeTopologyKey;
+      std::set<SourceEdgeTopologyKey> sourceEdges;
+      std::set<SourceEdgeTopologyKey> interiorEdges;
+      for (int face = 0; face < fixture.mesh.F.rows(); ++face) {
+        for (int corner = 0; corner < 3; ++corner) {
+          const auto edge = test_source_edge_topology(
+              fixture.mesh.F(face, corner),
+              fixture.mesh.F(face, (corner + 1) % 3));
+          if (!sourceEdges.insert(edge).second) {
+            EXPECT_TRUE(interiorEdges.insert(edge).second)
+                << "source edge belongs to more than two triangles";
+          }
+        }
+      }
+      std::set<int> boundaryVertices;
+      for (const auto &edge : sourceEdges) {
+        if (interiorEdges.contains(edge)) continue;
+        boundaryVertices.insert(static_cast<int>(edge.first().index()));
+        boundaryVertices.insert(static_cast<int>(edge.second().index()));
+      }
+      std::set<SourceEdgeTopologyKey> atlasHardBarriers;
+      for (const auto &barrier : fixture.atlas->nontraversable_edges()) {
+        if (barrier.kind != FieldTransportBarrierKind::HardFeature) continue;
+        EXPECT_TRUE(atlasHardBarriers.insert(barrier.sourceEdge).second);
+        EXPECT_TRUE(barrier.firstFace.has_value());
+        EXPECT_TRUE(barrier.secondFace.has_value());
+        EXPECT_EQ(nullptr, fixture.atlas->find_adjacency(barrier.sourceEdge));
+      }
+      EXPECT_EQ(fixture.hardFeatureEdges, atlasHardBarriers)
+          << "configured source hard edges must all block atlas transport";
+
+      std::set<int> hardRailBoundaryEndpoints;
+      for (const auto &edge : fixture.hardFeatureEdges) {
+        EXPECT_TRUE(interiorEdges.contains(edge))
+            << "a configured hard rail must be an interior source edge";
+        EXPECT_EQ(nullptr, fixture.atlas->find_adjacency(edge));
+        for (const auto vertex : {edge.first(), edge.second()}) {
+          if (boundaryVertices.contains(static_cast<int>(vertex.index()))) {
+            hardRailBoundaryEndpoints.insert(static_cast<int>(vertex.index()));
+          }
+        }
+      }
+      EXPECT_EQ(withHardRail ? (std::set<int>{1, 7, 10, 16})
+                             : std::set<int>{},
+                hardRailBoundaryEndpoints)
+          << "the source fixture must attest the four rail termini";
+      std::set<int> expectedCorners{0, 2, 6, 8, 9, 11, 15, 17};
+      expectedCorners.insert(hardRailBoundaryEndpoints.begin(),
+                             hardRailBoundaryEndpoints.end());
+      EXPECT_EQ(expectedCorners, corners);
 
       std::set<directional::authority::NetworkNodeId> rimNodes;
       for (const auto &edge : fixture.fieldNetwork->mandatory_edges()) {
