@@ -1,3 +1,7 @@
+## 2026-11-11 UTC — TB101B focused factory field-corner test MATCH
+
+- [Report](.agents/Directional/Architecture_M6_CP3_TB101B_P13_A3_Field_Corner_Factory_Focused_Execution_Report_20261111.md): [artifact-only run 43010509767](https://github.com/akashskypatel/Directional/actions/runs/43010509767) 1/1 PASS on immutable CB120B source `5e603a239d9d7519668b9c42cb3c2b6e8f16d2f8`, package `13848350912`; 28/28 package and 5/5 result checksums verified, no rebuild, relink or benchmark. No new regression or promotion; CP2 491/491, stable 66/17/49, debt1, deferred81 retained. Next `M6-CP3-CB120C-P13-A3-FIELD-CORNER-CENSUS` in separate Code + Build.
+
 ## 2026-11-11 UTC — CB120B factory field-corner forwarding compiled (Code + Build only)
 
 - [Record](.agents/Directional/Architecture_M6_CP3_CB120B_P13_A3_Field_Corner_Factory_Forwarding_Code_Build_Record_20261111.md): source `5e603a239d9d7519668b9c42cb3c2b6e8f16d2f8`, three changed paths (factory declaration, forwarding implementation, focused regression). Applied by [run 43003912737](https://github.com/akashskypatel/Directional/actions/runs/43003912737). Only authoritative source-vertex field corners are forwarded to the existing stop helper; existing call sites remain compatible.
