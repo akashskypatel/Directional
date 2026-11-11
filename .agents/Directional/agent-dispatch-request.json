@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "tb101b-docs-closeout-20261111-v1",
+  "request_id": "cb120c-field-corner-census-apply-20261111-v1",
   "operation": "drive_apply",
-  "mailbox_key": "tb101b-docs-closeout",
-  "file_id": "126GXy-yQsuGwTfmqV-bwHOkYZtn8e592",
-  "patch_sha256": "8814932ce8904885cb16c5b662380f7148be0890b25c7b36f71d45dbf2c61872",
-  "base_sha": "a85fc49a3cb141363b16f34e673eda50f072391a",
+  "mailbox_key": "cb120c-field-corner-census-apply",
+  "file_id": "1QIIvN0jzd9WI7RkpAj3shZGQm8ahj9h3",
+  "patch_sha256": "939804d7259d7e166f4651e2eedf60e39b9577970b163f7663daa67b618e24c1",
+  "base_sha": "032557eb333dae62f8a6829bb50cb87563b268d6",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record TB101B focused factory gate MATCH",
+  "commit_message": "test(directional): add boundary field-corner census receipts",
   "retention_days": 14
 }
