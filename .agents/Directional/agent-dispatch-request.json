@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb100-full-gate-20261111-v1",
+  "request_id": "m6-cp3-tb100-full-gate-20261111-v2",
   "operation": "test_benchmark",
   "mailbox_key": "m6-cp3-tb100-full-gate",
   "executor_sha": "99e4fac05390d78e2365730c3672119e5dde1d83",
@@ -10,7 +10,7 @@
   "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
   "environment": {
     "CANDIDATE_ARTIFACT_ID": "13815545121",
-    "EXPECTED_SOURCE_SHA": "cd1d451b4190bdd6b88e07fafa7e6fe69ff5f3d2",
+    "EXPECTED_SOURCE_SHA": "cd1d451b4190bdd6b88e07fafa7e6fe69ff5b3d2",
     "EXPECTED_CANDIDATE_ZIP_SHA256": "6af2c551287b8861f64955f8604d968091ebcfbb9db9ceff08126c5edbe1e70a",
     "EXPECTED_ROOT_MANIFEST_SHA256": "57f3e7d73fa05f53ff34a034d74037b1d95f8a8f60a90faef30186eb3d124df9",
     "EXPECTED_SOURCE_ARCHIVE_SHA256": "ee8fc70c40f662c684afaa109459baf4430b52c68eb57b12769c9dca619bb792",
