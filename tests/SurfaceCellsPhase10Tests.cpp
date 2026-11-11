@@ -8336,6 +8336,68 @@ TEST(SurfaceCellAuthorityContractCutover,
                     Eigen::RowVector3d(-c, c, 0.0)));
 }
 
+// O39: the rim branch rule decides on the stored values themselves. The
+// binary64 rule cannot separate the inputs of either group below: the
+// threshold group differs by less than one rounding unit, and the tie group
+// lies inside its tolerance.
+TEST(SurfaceCellAuthorityContractCutover,
+     ExactRimBranchDecidesThresholdAndTiesOnStoredValues) {
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+  // The branch of the single face along a -> b, or -1 when undecided.
+  const auto branch = [&](const Eigen::MatrixXd &vertices,
+                          const Eigen::RowVector3d &axisX,
+                          const Eigen::RowVector3d &axisY, const int a,
+                          const int b) {
+    return directional::geometry::surface_cell_tracing_detail::
+        exact_boundary_edge_field_branch(vertices, faces, axisX, axisY, 0, a, b)
+            .value_or(-1);
+  };
+  const double tiny = std::ldexp(1.0, -600);
+
+  // Threshold. The face spans the edge (3,4,5) and the X axis (1,1,0), whose
+  // cosine is 7 / (sqrt(50) sqrt(2)) = 7/10. Y lies in the face, across the
+  // edge. Raising X out of the face by `tiny` turns its in-plane part toward
+  // the edge; lowering it turns it away.
+  Eigen::MatrixXd tilted(3, 3);
+  tilted << 0.0, 0.0, 0.0, 3.0, 4.0, 5.0, 1.0, 1.0, 0.0;
+  const Eigen::RowVector3d atThreshold(1.0, 1.0, 0.0);
+  const Eigen::RowVector3d across(29.0, 22.0, -35.0);
+  const Eigen::RowVector3d normal(-5.0, 5.0, -1.0);
+  EXPECT_EQ(0, branch(tilted, atThreshold, across, 0, 1));
+  EXPECT_EQ(0, branch(tilted, Eigen::RowVector3d(1.0, 1.0, tiny), across, 0, 1));
+  EXPECT_EQ(-1,
+            branch(tilted, Eigen::RowVector3d(1.0, 1.0, -tiny), across, 0, 1));
+  // The reversed edge follows the opposite branch.
+  EXPECT_EQ(2, branch(tilted, atThreshold, across, 1, 0));
+  // Only the in-plane part of an axis counts, and no scale does.
+  EXPECT_EQ(0, branch(tilted, atThreshold + 7.0 * normal, across, 0, 1));
+  EXPECT_EQ(0, branch(tiny * tilted, std::ldexp(1.0, 300) * atThreshold,
+                      tiny * across, 0, 1));
+
+  // Ties. On a flat face with the edge along x, axes at exactly 45 degrees
+  // tie. One unit in the last place of one component decides.
+  Eigen::MatrixXd flat(3, 3);
+  flat << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  const Eigen::RowVector3d diagonal(1.0, 1.0, 0.0);
+  EXPECT_EQ(-1,
+            branch(flat, diagonal, Eigen::RowVector3d(-1.0, 1.0, 0.0), 0, 1));
+  EXPECT_EQ(0, branch(flat, diagonal,
+                      Eigen::RowVector3d(-1.0, std::nextafter(1.0, 2.0), 0.0),
+                      0, 1));
+  EXPECT_EQ(3, branch(flat, diagonal,
+                      Eigen::RowVector3d(-1.0, std::nextafter(1.0, 0.0), 0.0),
+                      0, 1));
+
+  // A family with no in-plane part is not a candidate, and a face with no
+  // area decides nothing.
+  const Eigen::RowVector3d x(1.0, 0.0, 0.0);
+  EXPECT_EQ(0, branch(flat, x, Eigen::RowVector3d(0.0, 0.0, 1.0), 0, 1));
+  Eigen::MatrixXd collinear(3, 3);
+  collinear << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 2.0, 0.0, 0.0;
+  EXPECT_EQ(-1, branch(collinear, x, Eigen::RowVector3d(0.0, 1.0, 0.0), 0, 1));
+}
+
 // At a rim node that only its two rim arcs reach, a field corner (RA-224) must
 // be exactly a side start the curved producer derives inside the region, on
 // its accepted-cut path (hard rail) and on its plain path (chained plan).

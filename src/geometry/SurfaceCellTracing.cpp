@@ -15543,8 +15543,6 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
 }
 
 
-namespace {
-
 // The field branch of `face` that follows the directed source edge a -> b;
 // nothing when no branch follows it unambiguously. The bounded-disk producer's
 // side starts and the boundary field corners both read this one rule.
@@ -15587,7 +15585,78 @@ std::optional<int> boundary_edge_field_branch(
   return bestBranch;
 }
 
-} // namespace
+// The same rule decided exactly on the stored doubles (O39). A branch follows
+// the edge when the in-plane parts of its axis and of the edge make the
+// largest of the four cosines and that cosine is at least 7/10. When both
+// families reach the largest cosine they tie and nothing is returned. Nothing
+// is normalized, so the answer does not depend on the scale of the
+// coordinates or of the axes.
+std::optional<int> exact_boundary_edge_field_branch(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const int face, const int a, const int b) {
+  using Exact = authority::FieldExactRational;
+  using ExactVector = std::array<Exact, 3>;
+  bool finite = true;
+  const auto exact_row = [&finite](const Eigen::MatrixXd &matrix,
+                                   const int row) {
+    ExactVector result;
+    for (int axis = 0; axis < 3; ++axis) {
+      const auto value = Exact::from_double_exact(matrix(row, axis));
+      if (value.has_value()) {
+        result[static_cast<std::size_t>(axis)] = *value;
+      } else {
+        finite = false;
+      }
+    }
+    return result;
+  };
+  const auto difference = [](const ExactVector &p, const ExactVector &q) {
+    return ExactVector{p[0] - q[0], p[1] - q[1], p[2] - q[2]};
+  };
+  const auto dot = [](const ExactVector &p, const ExactVector &q) {
+    return p[0] * q[0] + p[1] * q[1] + p[2] * q[2];
+  };
+  const ExactVector origin = exact_row(vertices, faces(face, 0));
+  const ExactVector first =
+      difference(exact_row(vertices, faces(face, 1)), origin);
+  const ExactVector second =
+      difference(exact_row(vertices, faces(face, 2)), origin);
+  const ExactVector normal{first[1] * second[2] - first[2] * second[1],
+                           first[2] * second[0] - first[0] * second[2],
+                           first[0] * second[1] - first[1] * second[0]};
+  const ExactVector edge =
+      difference(exact_row(vertices, b), exact_row(vertices, a));
+  const std::array<ExactVector, 2> axes{exact_row(faceAxisX, face),
+                                        exact_row(faceAxisY, face)};
+  // The inner product of the in-plane parts of two vectors, times |normal|^2.
+  const Exact normalSquared = dot(normal, normal);
+  const auto in_plane = [&](const ExactVector &p, const ExactVector &q) {
+    return dot(p, q) * normalSquared - dot(p, normal) * dot(q, normal);
+  };
+  const Exact zero = Exact::from_integer(0);
+  const Exact edgeSquared = in_plane(edge, edge);
+  if (!finite || edgeSquared == zero) return std::nullopt;
+  // cosine^2 = along^2 / (axisSquared * edgeSquared). The edge's factor is
+  // shared, so it enters only at the threshold. A family with no in-plane
+  // part has cosine zero.
+  std::array<Exact, 2> along{zero, zero};
+  std::array<Exact, 2> cosineSquared{zero, zero};
+  for (std::size_t family = 0U; family < 2U; ++family) {
+    const Exact axisSquared = in_plane(axes[family], axes[family]);
+    along[family] = in_plane(axes[family], edge);
+    if (axisSquared > zero) {
+      cosineSquared[family] = along[family] * along[family] / axisSquared;
+    }
+  }
+  if (cosineSquared[0] == cosineSquared[1]) return std::nullopt;
+  const std::size_t family = cosineSquared[0] > cosineSquared[1] ? 0U : 1U;
+  if (Exact::from_integer(100) * cosineSquared[family] <
+      Exact::from_integer(49) * edgeSquared) {
+    return std::nullopt;
+  }
+  return static_cast<int>(family) + (along[family] > zero ? 0 : 2);
+}
 
 SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,

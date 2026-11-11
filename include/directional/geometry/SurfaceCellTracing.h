@@ -2665,6 +2665,18 @@ SurfaceTraceState make_trace_state(const SurfaceTracePoint &point,
 
 int normalized_branch(const int branch);
 
+// The field branch of `face` (0 +X, 1 +Y, 2 -X, 3 -Y) that follows the
+// directed source edge a -> b; nothing when undecided. The binary64 rule is
+// the bounded-disk producer's; the exact rule replaces it (O39).
+[[nodiscard]] std::optional<int> boundary_edge_field_branch(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    int face, int a, int b);
+[[nodiscard]] std::optional<int> exact_boundary_edge_field_branch(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    int face, int a, int b);
+
 SurfacePeriodicHolonomy canonicalize_periodic_holonomy(
     SurfacePeriodicHolonomy relation);
 
