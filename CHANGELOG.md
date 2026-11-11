@@ -1,3 +1,7 @@
+## 2026-11-11 — Independent review of TB101C audit revision
+
+[Technical review](.agents/Directional/Architecture_M6_CP3_TB101C_Audit_Revision_Independent_Review_20261111.md) corrected a second design gap. The network has one node per source vertex, but the D5 chain partition joins only nodes with two total incidences. Two source fans at one shared node cannot obtain independent join behavior from a node-only fan resolver. The conditional plan now starts with per-arc-incidence identity, requires a separate join-compatibility Review, and puts exact branch authority before a derived-positive field-corner test. Eight documentation paths changed; no product or test source, selector, build or runtime changed. The 940/940 gate remains scoped; CP3 is not promoted. Next `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION` only.
+
 ## 2026-11-11 — Adversarial review of TB101C technical audit
 
 [Review]('.agents/Directional/Architecture_M6_CP3_TB101C_Audit_Adversarial_Review_20261111.md) corrected the proposed work sequence. A node-only fan resolver cannot match a corner product that contains only a source vertex. The revised plan adds a fan-keyed corner producer before the A3 filter. It also requires exact source-derived normals and an explicit 0.7 threshold policy before a shared branch owner. No source/test/selector code changed. The 940/940 gate remains scoped, with no new production success. Next only `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION`.

@@ -1,5 +1,7 @@
 # Independent review of TB101C technical audit — 2026-11-11
 
+> **Independent correction (2026-11-11):** [review of this Review](Architecture_M6_CP3_TB101C_Audit_Revision_Independent_Review_20261111.md) found that the network creates one node per source vertex, and its chain partition joins only nodes of degree two. This review's node-wide fan resolver and two-fan split/join test do not prove the stated outcome. The derived-positive test also precedes exact branch authority. **Its 15-row plan is superseded.** Use the bounded incidence-based sequence in the new review, handoff and TODO. Preserve its factual observations as history.
+
 ## Situation
 
 **Verdict: correct diagnosis, incomplete remedy.** Keep the prior audit's three risk areas and the scoped 940/940 test result. Reject its claim that the first two resolver/filter turns can establish fan-scoped corner safety. The corner producer still publishes a bare source-vertex list. A correct node resolver cannot reconstruct an occurrence that the corner producer discarded. Freeze the corrected sequence below. No implementation, tests or build logic change in this Review.
