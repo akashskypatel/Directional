@@ -1,3 +1,0 @@
-turn=M6-CP3-CB126-P13-A3-EXACT-RIM-BRANCH-OWNER
-prior_head=b9b775f61e00b0ca37e1776dbc536346bdebd997
-purpose=exact-source-snapshot
