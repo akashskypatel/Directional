@@ -1,3 +1,0 @@
-turn=M6-CP3-CB120C-P13-A3-FIELD-CORNER-CENSUS
-purpose=read-only source snapshot
-runtimeExecution=false
