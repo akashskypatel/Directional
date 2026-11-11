@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "cb120c-field-corner-census-compile-20261111-v1",
-  "operation": "compile",
-  "mailbox_key": "cb120c-field-corner-census-compile",
-  "source_sha": "e1e5b17e94f189c88c74172e12dfd6ac93cc532b",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "cb120c-field-corner-census-compile"
+  "request_id": "cb120c-field-corner-census-docs-20261111-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "cb120c-field-corner-census-docs",
+  "file_id": "18lpggpGfwYk3iycoKStFjZCr69iLzwhq",
+  "patch_sha256": "124f96c6ccd13ec499309c7fdf921b4eebaea8cb9862c7a1098ee88d379fc5c4",
+  "base_sha": "032557eb333dae62f8a6829bb50cb87563b268d6",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record CB120C compile and TB101C handoff",
+  "retention_days": 14
 }
