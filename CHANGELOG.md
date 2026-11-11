@@ -1,3 +1,8 @@
+## 2026-11-11 UTC — CB119B independent boundary-corner oracle (Code + Build)
+
+- One-file test-only patch at `d47b7c24b11cfb568d4ffce971590b8e5f966dc4`: test 938 computes hard-rail corner expectations from source-triangle boundary edges and configured hard-feature endpoints, and verifies the independent atlas `HardFeature` barriers. Plain eight-corner control, both face-row orders, and pass-through comparisons remain. No production, selector, fixture, workflow, or validator changes.
+- [CB119B compile run](https://github.com/akashskypatel/Directional/actions/runs/42953097338); [artifact 13826405755](https://github.com/akashskypatel/Directional/actions/runs/42953097338/artifacts/13826405755); ZIP SHA-256 `a94196c1276a976618db161478d2e43cfc49f2d1a6977b54a74725f8dac2d667`. Eight required targets compiled with GMP/GMPXX; no test, benchmark, or runtime execution. A separate TB100B artifact-only gate and independent Review remain required. [Record](.agents/Directional/Architecture_M6_CP3_CB119B_P13_A3_Boundary_Field_Corner_Oracle_Code_Build_Record_20261111.md). Accepted CP2 491/491, stable 66/17/49, debt1, deferred81 unchanged.
+
 ## 2026-11-11 UTC — TB100 Review adversarial audit (Review-only)
 
 - [Adversarial audit](.agents/Directional/Architecture_M6_CP3_TB100_REV_Audit_20261111.md): verified the prior verdict **for its one hard-rail fixture only**, 938-row TB100 evidence (1,884/1,884 hashes; 937 PASS, 1 RED) and census (9/9), and corrected the scope of its assurance. The four hard-feature boundary endpoints are required C1 conservative chain stops; not proof of all field/region corner production.

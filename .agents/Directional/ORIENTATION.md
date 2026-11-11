@@ -58,7 +58,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Latest independent Review (2026-11-11):** TB100 row 938 is RED because its rail-inclusive full-set oracle omits four required non-traversable barrier endpoints. Source C1 demands their conservative inclusion. Scoped pass-through equality passed; no producer defect proved. Correct test oracle in one separate Code + Build `{nextturn}`; then distinct full-gate TB and Review before CB120. No CP3 acceptance or change to 66/17/49, debt1, 81 deferred, CP2 491/491.
+**Latest independent Review (2026-11-11):** TB100 row 938 is RED because its rail-inclusive full-set oracle omits four required non-traversable barrier endpoints. Source C1 demands their conservative inclusion. Scoped pass-through equality passed; no producer defect proved. CB119B oracle-only compile is complete at `d47b7c24b11cfb568d4ffce971590b8e5f966dc4`; the next turn is the corrected artifact-only TB100B full gate and then independent Review before CB120. No CP3 acceptance or change to 66/17/49, debt1, 81 deferred, CP2 491/491.
 
 **M0–M5 are complete/closed; M6 is active at CP3.** Closure means the checkpoint's frozen criteria passed, **not** that representative output is production-ready.
 

@@ -34,12 +34,12 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-11 · **TB100 Review adversarial audit COMPLETE; next test-only CB119B**, [report](Architecture_M6_CP3_TB100_P13_A3_Boundary_Field_Corners_Full_Gate_Execution_Report_20261111.md); 937/938 PASS on immutable CB119. Next distinct Code + Build `M6-CP3-CB119B-P13-A3-BOUNDARY-FIELD-CORNER-ORACLE`, not CB120. |
-| Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing`; CB119 source `cd1d451b4190bdd6b88e07fafa7e6fe69ff5b3d2`, [artifact 13815545121](https://github.com/akashskypatel/Directional/actions/runs/42926339655/artifacts/13815545121), eight GMP/GMPXX compile targets. PR #8 draft/open/unmerged. |
+| Currency | 2026-11-11 · **CB119B Code + Build COMPLETE; next artifact-only TB100B.** The original TB100 mismatch remains 937/938 until a distinct corrected gate executes. [CB119B record](Architecture_M6_CP3_CB119B_P13_A3_Boundary_Field_Corner_Oracle_Code_Build_Record_20261111.md). |
+| Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing`; CB119B test source `d47b7c24b11cfb568d4ffce971590b8e5f966dc4`, [CB119B compile run](https://github.com/akashskypatel/Directional/actions/runs/42953097338), [artifact 13826405755](https://github.com/akashskypatel/Directional/actions/runs/42953097338/artifacts/13826405755); SHA-256 `a94196c1276a976618db161478d2e43cfc49f2d1a6977b54a74725f8dac2d667`, eight GMP/GMPXX compile targets. PR #8 draft/open/unmerged. |
 | Last accepted semantic runtime | **CP2 491/491** (2026-10-06); CP3/selector497 unpromoted. |
 | Latest candidate | **TB100 new unpromoted corner-set discrepancy:** row 938 expected {0,2,6,8,9,11,15,17}, observed {0,1,2,6,7,8,9,10,11,15,16,17} on both face orders; extra {1,7,10,16}. Scoped rim-node equality passed. [Gate 42932637408](https://github.com/akashskypatel/Directional/actions/runs/42932637408) artifact `13817910944`; [census 42932960676](https://github.com/akashskypatel/Directional/actions/runs/42932960676) Cylinder PASS, BunnyRandom/Vase known RED. No production promotion. |
 | Regression accounting and debt | CP2 **491/491** accepted, stable **66 events / 17 categories / 49 recurrences**, debt **1**, deferred **81** unchanged. New TB100 gate candidate only, not stable. O34/O35/O36/O37/O39 and D6 open; O38 defined but unpromoted. |
-| Active boundary | **Independent TB100 Review complete:** C1 face-fan crossing barrier explains hard-rail extra corners. RA-224 §4 eight-only test oracle was incorrect; no producer defect established. See [M6-CP3-TB100-P13-A3-BOUNDARY-FIELD-CORNERS-FULL-GATE-REV](Architecture_M6_CP3_TB100_REV_P13_A3_Boundary_Field_Corner_Oracle_Adjudication_20261111.md). Next `M6-CP3-CB119B-P13-A3-BOUNDARY-FIELD-CORNER-ORACLE` changes only row-938 test oracle with independent falsifiers; compile only. CB120/TB101 and O36 switch remain deferred pending separately reviewed corrected full gate. |
+| Active boundary | **CB119B compile-only complete:** changed only test 938 oracle. Expected corners derive from configured source hard-feature edges and independent atlas barrier classification, with both face-row orders and pass-through assertions preserved. Runtime is not verified. Next `M6-CP3-TB100B-P13-A3-BOUNDARY-FIELD-CORNERS-CORRECTED-GATE-EXEC` must execute the immutable 938-case gate and census without rebuilding, then independent Review. CB120/TB101 and O36 stay deferred. |
 
 ## Authoritative adversarial review and narrow turn order — 2026-11-11
 
@@ -47,8 +47,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 **Turn chain (one concern per Code + Build, independent runtime afterward):**
 
-1. **NEXT** `M6-CP3-CB119B-P13-A3-BOUNDARY-FIELD-CORNER-ORACLE` — change one test only, compile; preserve all previous checks and independent barrier oracle.
-2. `M6-CP3-TB100B-P13-A3-BOUNDARY-FIELD-CORNERS-CORRECTED-GATE-EXEC` — immutable 938-case full gate and census; then `M6-CP3-TB100B-P13-A3-BOUNDARY-FIELD-CORNERS-CORRECTED-GATE-REV` — independent acceptance.
+1. **COMPLETE / compile only** `M6-CP3-CB119B-P13-A3-BOUNDARY-FIELD-CORNER-ORACLE` — one test changed; [CB119B compile run](https://github.com/akashskypatel/Directional/actions/runs/42953097338), [artifact 13826405755](https://github.com/akashskypatel/Directional/actions/runs/42953097338/artifacts/13826405755); no runtime acceptance.
+2. **NEXT** `M6-CP3-TB100B-P13-A3-BOUNDARY-FIELD-CORNERS-CORRECTED-GATE-EXEC` — immutable 938-case full gate and census; then `M6-CP3-TB100B-P13-A3-BOUNDARY-FIELD-CORNERS-CORRECTED-GATE-REV` — independent acceptance.
 3. `M6-CP3-CB120A-P13-A3-FIELD-CORNER-STOP-NODES` — stop helper only; then `M6-CP3-TB101A-P13-A3-FIELD-CORNER-STOP-NODES-EXEC` — focused artifact-only test.
 4. `M6-CP3-CB120B-P13-A3-FIELD-CORNER-FACTORY-FORWARDING` — factory only; then `M6-CP3-TB101B-P13-A3-FIELD-CORNER-FACTORY-EXEC` — focused artifact-only test.
 5. `M6-CP3-CB120C-P13-A3-FIELD-CORNER-CENSUS` — test receipt only; then `M6-CP3-TB101C-P13-A3-FIELD-CORNER-STOPS-FULL-GATE-EXEC` — 940-case gate and census, then `M6-CP3-TB101C-P13-A3-FIELD-CORNER-STOPS-FULL-GATE-REV` — independent acceptance.
@@ -56,9 +56,9 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 Each entry after the NEXT turn is conditional on its preceding gate. The detailed scope, stop rules and falsifiers are in the linked audit. Do not skip an independent review when a focused/full result is a mismatch.
 
-## Mandatory next turn — `M6-CP3-CB119B-P13-A3-BOUNDARY-FIELD-CORNER-ORACLE` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB100B-P13-A3-BOUNDARY-FIELD-CORNERS-CORRECTED-GATE-EXEC` — EXACT NEXT
 
-**Code + Build, compile-only.** Correct the hard-rail test 938 oracle against **independent configured source-feature endpoints and atlas HardFeature classification**, preserve plain eight corners and pass-through scoped equality in both face orders. See [M6-CP3-TB100-P13-A3-BOUNDARY-FIELD-CORNERS-FULL-GATE-REV](Architecture_M6_CP3_TB100_REV_P13_A3_Boundary_Field_Corner_Oracle_Adjudication_20261111.md) for falsifiers and stop rules. Do not change product, atlas, fixture, selector, or workflow. Do not start CB120 or TB101; schedule a separate immutable corrected TB100 full-gate execution and independent Review only after compile evidence.
+**Test + Benchmark, artifact-only.** Execute the existing 938-row full-gate manifest and three-case census from the immutable CB119B GMP package ([artifact 13826405755](https://github.com/akashskypatel/Directional/actions/runs/42953097338/artifacts/13826405755)), without configure, rebuild, relink, repair, or source changes. Verify all 938 identities and independent C1 oracle outcomes, both face-row orders, the 936 inherited cases, seven platform lines, seven A3 lines, four d4-rim lines, and both field-corner receipts. On any mismatch, route to independent Review; do not advance CB120 or claim production acceptance. Reference [TB100 independent review](Architecture_M6_CP3_TB100_REV_P13_A3_Boundary_Field_Corner_Oracle_Adjudication_20261111.md).
 
 ### Previous TB100 Review (complete; retained reference)
 
