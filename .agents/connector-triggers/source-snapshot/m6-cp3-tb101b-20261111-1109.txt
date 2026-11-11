@@ -1,0 +1,4 @@
+TB101B exact source snapshot request
+Canonical turn: M6-CP3-TB101B-P13-A3-FIELD-CORNER-FACTORY-EXEC
+Frozen starting authority: cdd8a28a036974a51b3a507c4773873ff1dc3298
+Read-only source extraction; no tests or builds.
