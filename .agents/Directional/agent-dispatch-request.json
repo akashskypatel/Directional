@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb106-closeout-docs-drive-20261111-v1",
+  "request_id": "m6-cp3-cb126-exact-rim-owner-drive-20261111-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb106-closeout-docs-20261111-v1",
-  "file_id": "17eWZ7EPnG-IwpjB8nmIbDzG3rhSRQVIL",
-  "patch_sha256": "2857af1409b5912e11b321ff5b226c7e7f7532a6cf4e3f44678ee099d38c189f",
-  "base_sha": "99d0e2d5365ca0ea6529944786b04652f7d3fdc4",
+  "mailbox_key": "m6-cp3-cb126-exact-rim-owner-drive-20261111-v1",
+  "file_id": "1PF4U1WtlZkPUYUSsgxziIVdBHV2AiXa4",
+  "patch_sha256": "7b9f2c96cddf6f8670603907e71f91ab84fa7cf9f272b9cdbd83da0fcfcc08cf",
+  "base_sha": "60712792cf2b989710777f2cab5a9e3f4bde11ad",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb106): close exact rim branch full gate scoped match",
+  "commit_message": "feat(cb126): make exact rim branch rule authoritative",
   "retention_days": 14
 }
