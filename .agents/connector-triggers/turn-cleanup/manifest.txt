@@ -1,2 +1,0 @@
-# TB106 source-snapshot temporary trigger only
-.agents/connector-triggers/source-snapshot/m6-cp3-tb106-20261111-2210.txt
