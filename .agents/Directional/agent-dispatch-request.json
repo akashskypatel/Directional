@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "tb101a-docs-closeout-20261111-v1",
+  "request_id": "cb120b-field-corner-factory-apply-20261111-v1",
   "operation": "drive_apply",
-  "mailbox_key": "tb101a-docs-closeout",
-  "file_id": "1PF-YZoURTlqqsRYNpnL-nCb3bt24n1Mv",
-  "patch_sha256": "24d9a8a0008dc825afe47b59b49d609755e20bf2df9c4f4a0cb87818c93eaf58",
-  "base_sha": "bb365d72894fcd279256c1e13a3d166b9101d512",
+  "mailbox_key": "cb120b-field-corner-factory-apply",
+  "file_id": "1YIZbmqmz-CCP12R0hVfaHNHVPaKFsPZA",
+  "patch_sha256": "3bd4555f863e54e604a67b9684b4db3a42913c3773b7963940f544b13182d0c9",
+  "base_sha": "4aebd4a989b122d39af0d5e33a2789106239276a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close TB101A focused stop-node artifact-only test",
+  "commit_message": "geometry: forward field corners through chained baseline factory",
   "retention_days": 14
 }
