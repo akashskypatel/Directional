@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "request_id": "cb123-docs-closeout-20261111-v2-paths",
-  "operation": "drive_apply",
-  "mailbox_key": "cb123-docs-closeout-v2-20261111",
-  "file_id": "19CZhz9OXygJ5ikAPZfKi2Ss6n0YfIe3B",
-  "patch_sha256": "a2251ac040eaec3cc30639b45f48e10f59a452342df9f2d992af2eae183c10b8",
-  "base_sha": "eab1997732cc87422c42aec579c768e96c6ff3fb",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB123 verified compile and hand off TB104",
+  "request_id": "m6-cp3-tb104-20261111-exec-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb104-field-corner-full-gate-20261111",
+  "executor_sha": "fe1f733a3d792c8c5cbf2600c858b73c10561b05",
+  "semantic_source_sha": "dcfc9494830b150af944b057eb7003a69806085a",
+  "turn_id": "M6-CP3-TB104-P13-A3-DERIVED-FIELD-CORNER-WITNESS-FULL-GATE-EXEC",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "13867931016",
+    "EXPECTED_SOURCE_SHA": "dcfc9494830b150af944b057eb7003a69806085a",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "c1c5a80fa4d20fa84c7a09c0709ec664858deb42a07891fb0ff17088d4aa9b40",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "999912b9f3d05064313ca83b9ce585211d4e9759affabc4ab1caefc1c5e903e6",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "aa08afb5eec2043bbce5955c8fe9ac80478cd94ad77884388acdfad743b07769",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB104_P13_A3_Derived_Field_Corner_Witness_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "7b0b4545e607b138c03caab682c6d6b698639335fcf497fa8da71751bcea4b9e",
+    "EXPECTED_CASE_COUNT": "942",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  },
+  "artifact_prefix": "m6-cp3-tb104-derived-corner-gate",
   "retention_days": 14
 }
