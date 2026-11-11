@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "cb120a-stop-helper-20261111-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "cb120a-stop-helper-apply",
-  "file_id": "1qieZTp_VV-DimiNWolBYDxaXE-sHiBaN",
-  "patch_sha256": "917b08f2966efad34c5c2e989caa0328470691463f3989cac37ae744e10bd4a1",
-  "base_sha": "46d6e001d4824a91c43598a6f3e845897148ac70",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "surface cells: add declared boundary field corners to mandatory chain stops",
-  "retention_days": 14
+  "request_id": "cb120a-compile-20261111-v1",
+  "operation": "compile",
+  "mailbox_key": "cb120a-field-corner-stop-compile",
+  "source_sha": "47afc84ec1104a7457324a967b9362deff549624",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "cb120a-field-corner-stop"
 }
