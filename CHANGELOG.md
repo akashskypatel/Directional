@@ -1,3 +1,9 @@
+## 2026-11-11 UTC — CB120B factory field-corner forwarding compiled (Code + Build only)
+
+- [Record](.agents/Directional/Architecture_M6_CP3_CB120B_P13_A3_Field_Corner_Factory_Forwarding_Code_Build_Record_20261111.md): source `5e603a239d9d7519668b9c42cb3c2b6e8f16d2f8`, three changed paths (factory declaration, forwarding implementation, focused regression). Applied by [run 43003912737](https://github.com/akashskypatel/Directional/actions/runs/43003912737). Only authoritative source-vertex field corners are forwarded to the existing stop helper; existing call sites remain compatible.
+- [Compile 43004287273](https://github.com/akashskypatel/Directional/actions/runs/43004287273), artifact `13848350912`, SHA-256 `ad7ced00acc60c3da2ffe5b051d0cc929a8f509a7591ca6274d022db66d80e7c`. Eight mandatory GMP/GMPXX targets; `runtimeExecution=false`; no runtime test or benchmark. No production wiring or CP3 promotion.
+- Next separate artifact-only `M6-CP3-TB101B-P13-A3-FIELD-CORNER-FACTORY-EXEC`. CP2 491/491, stable 66/17/49, debt 1 and deferred 81 unchanged. O39 still required before O36.
+
 ## 2026-11-11 UTC — TB101A focused field-corner stop-node execution MATCH
 
 - [Execution report](.agents/Directional/Architecture_M6_CP3_TB101A_P13_A3_Field_Corner_Stop_Nodes_Focused_Execution_Report_20261111.md): immutable CB120A artifact `13843326855`, source `47afc84ec1104a7457324a967b9362deff549624`. [Runtime 42998151385](https://github.com/akashskypatel/Directional/actions/runs/42998151385), result `13845480844` (SHA-256 `f1b476ae453ecc98921affe374d548117dc1ff3abf2a88782a10da3add9b9c5d`): focused test 1/1 PASS; no rebuild, abnormal, missing or skipped; unchanged package verified. New single-case execution manifest only, no compiled source or test edits.
