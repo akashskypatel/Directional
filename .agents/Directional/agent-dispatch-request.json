@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb119-compile-20261110-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb119-compile",
-  "source_sha": "cd1d451b4190bdd6b88e07fafa7e6fe69ff5b3d2",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-cb119-gmp-compile"
+  "request_id": "m6-cp3-cb119-doc-closeout-20261111-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb119-doc-closeout",
+  "file_id": "1aGDVyjeM5R-iZQSXF71mVtojWAWWEaaO",
+  "patch_sha256": "a57a732d2108ff0be8bd79ee48b5694ebe1d576095a128d51af3fed51acea973",
+  "base_sha": "d99e7bde555fef6b0be0bddfb10505431c7bf81b",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record CB119 verified compile and advance TB100",
+  "retention_days": 14
 }
