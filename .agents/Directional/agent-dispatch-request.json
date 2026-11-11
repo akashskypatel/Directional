@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "cb120b-field-corner-compile-20261111-v1",
-  "operation": "compile",
-  "mailbox_key": "cb120b-field-corner-compile",
-  "source_sha": "5e603a239d9d7519668b9c42cb3c2b6e8f16d2f8",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "cb120b-field-corner-factory"
+  "request_id": "cb120b-factory-docs-closeout-20261111-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "cb120b-factory-docs-closeout",
+  "file_id": "1TY-wBbhEvxF6CsinvncE7pLQ2mBmuzi6",
+  "patch_sha256": "b9a04958213ad10b0212cfeb9367c7d6a173ace38fb11cd64d98f714c850e8d4",
+  "base_sha": "4aebd4a989b122d39af0d5e33a2789106239276a",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close CB120B GMP compile-only factory forwarding",
+  "retention_days": 14
 }
