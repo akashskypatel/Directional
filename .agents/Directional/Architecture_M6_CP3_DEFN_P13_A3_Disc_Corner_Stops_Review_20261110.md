@@ -1,5 +1,7 @@
 # RA-224 — Disc corner stops (step 64B.13, obligation O38)
 
+> **AMENDED (2026-11-11) by [RA-225](Architecture_M6_CP3_DEFN_P13_A3_Boundary_Fan_Stop_Identity_Review_20261111.md).** The definition C1–C4 stands and the source vertex is confirmed as the stop key. Row 938's expected corner set was wrong (TB100 937/938; corrected by CB119B). F3 holds only for an orthonormal cross on a flat fan. O39 is a precondition of the switch. C3's single owner is frozen as CB124.
+
 **Turn:** `M6-CP3-DEFN-P13-A3-DISC-CORNER-STOPS` (Review). **Disposition: COMPLETE.** The corner product is defined (§3) and two exact patches with their gates are frozen: CB119 → TB100 adds the product, unwired; CB120 → TB101 makes the D5 stop set read it, in a factory that production does not call yet. Runtime-free: syntax checks and a Python model only; no product or test source changed in the repository.
 
 The user decided O38 on 2026-11-10 ([RA-221 addendum](Architecture_M6_CP3_DEFN_P13_A3_Boundary_Chain_Consumption_Adversarial_Review_20261110.md#addendum-2026-11-10-user-decision-on-o38)): disc corners are chain stops, read from a published upstream product. This record defines that product. It narrows one item of the addendum (F2).

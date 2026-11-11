@@ -427,6 +427,16 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - **A registered prediction that fails is a finding (RA-224).** RA-222 predicted the chained count
   would equal the uniform lattice; TB98 showed 10 against 8. Read each receipt against its
   prediction when the gate closes, and carry the difference into the switch's digest plan.
+- **A model must take its barriers from the code it models (RA-225).** RA-224 checked a test's
+  expected corner set with a Python model that assumed a transport across every interior edge. The
+  atlas has none across a hard-feature edge, so TB100 closed 937/938 on the expectation, not on the
+  product. Before trusting a model, list each call it replaces and read where that call can fail.
+- **Check that a defect can occur before designing its cure (RA-225).** Four reviews built a 16-turn
+  plan to keep corner stops apart for two fans at one node. A chain joins only at a node with
+  exactly two incidences, and such a node has four, so no chain ever passes it. Trace the failing
+  path through the consumer's own guard first. If the guard already excludes it, write the guard
+  down as a control test and withdraw the plan. Keep the parts of a rejected plan that stand on
+  their own (here: a derived witness, one owner, an exact rule).
 - **A second producer does not need the plan; it needs to step aside (RA-222).** D4 asked the uniform
   producer to consume A3 or decline. Declining keeps one reader of the plan and is one line, but it
   moves three green fixtures to a producer with a stricter precondition (equal opposite sides).
