@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "tb101a-field-corner-stop-nodes-20261111-v1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb101a-field-corner-stops",
-  "executor_sha": "23c6f286697be3b84b307da3113ae34d0d1dc923",
-  "semantic_source_sha": "47afc84ec1104a7457324a967b9362deff549624",
-  "turn_id": "M6-CP3-TB101A-P13-A3-FIELD-CORNER-STOP-NODES-EXEC",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "13843326855",
-    "EXPECTED_SOURCE_SHA": "47afc84ec1104a7457324a967b9362deff549624",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "a515a41813a4409a69df1a93501c1a40654718547de5814d2901c410979d6eba",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "aab3b495b1649f0de8f416202c2fb9123d84721c351b846327c18c9c611166e1",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "6f40950686e5af08a94028cebd8fa0d04d999f02add91bf56a878557768857c0",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB101A_Field_Corner_Stop_Nodes_Focused_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "5b8bf773e3bbc0b18e71747b0e0bd928ce207ecb1d4d3c0973113384870e073d",
-    "EXPECTED_CASE_COUNT": "1"
-  },
-  "artifact_prefix": "m6-cp3-tb101a-field-corner-stops",
+  "request_id": "tb101a-docs-closeout-20261111-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "tb101a-docs-closeout",
+  "file_id": "1PF-YZoURTlqqsRYNpnL-nCb3bt24n1Mv",
+  "patch_sha256": "24d9a8a0008dc825afe47b59b49d609755e20bf2df9c4f4a0cb87818c93eaf58",
+  "base_sha": "bb365d72894fcd279256c1e13a3d166b9101d512",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close TB101A focused stop-node artifact-only test",
   "retention_days": 14
 }
