@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb100b-docs-closeout-20261111-v1",
+  "request_id": "m6-cp3-tb100b-rev-docs-20261111-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb100b-docs-closeout",
-  "file_id": "1K49UnN0a5LBXmKGbDMgcN5wp1YlzIomU",
-  "patch_sha256": "a0bffd76922a3fb4c3931245d9862e84108f44f3b212df2dbf6e8ee932155701",
-  "base_sha": "f34d003fc87434efa46b5ac0bc18761d7367ad40",
+  "mailbox_key": "m6-cp3-tb100b-rev-docs",
+  "file_id": "1kttf9k9SRYWeoydY-K1OB5FTWJjv773z",
+  "patch_sha256": "1f59f7ad5ae283c1c8f58918549ac1732f338e4913e3cf80ded6aab8e2369430",
+  "base_sha": "71e567e6b2085c8abcc017ec3447aa1e4e926a98",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record immutable TB100B corrected gate and census",
+  "commit_message": "docs: independently review corrected TB100B gate and freeze CB120A",
   "retention_days": 14
 }
