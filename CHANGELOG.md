@@ -1,3 +1,9 @@
+## 2026-11-11 UTC — TB105 shared rim branch rule full gate COMPLETE / scoped MATCH (64B.22)
+
+- [TB105 report](Architecture_M6_CP3_TB105_P13_A3_Shared_Rim_Branch_Rule_Full_Gate_Execution_Report_20261111.md): immutable CB124 source `acffbffe7f8cb247f9d6118526f37f7d5a7cebad`, compiled artifact `13876075161`; [full gate 43067225397](https://github.com/akashskypatel/Directional/actions/runs/43067225397) 942/942 PASS, membership 1,023, 1,892/1,892 result checksums and 25/25 receipt/digest lines identical to TB104.
+- [Three-case census 43067399163](https://github.com/akashskypatel/Directional/actions/runs/43067399163) retained Cylinder PASS and BunnyRandom/Vase two existing registered RED, 9/9 hashes, identical three ledger records and six receipts. No newly observed regression, no rerun or rebuild. CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged. O36 unwired and CP3/selector497 unpromoted.
+- Next, in a **new turn only**, Review-only `M6-CP3-DEFN-P13-A3-EXACT-RIM-ARITHMETIC` (O39), per RA-225. PR #8 remains draft/unmerged.
+
 ## 2026-11-11 UTC — CB124 shared rim branch rule compiled (64B.21; no runtime)
 
 - Applied frozen one-file diff `5a39539eea26246f2758bd5bea40ca9ae339fce1b502ee98daf8c26630be7e1a` (+51/−83) to `src/geometry/SurfaceCellTracing.cpp`; exact source `acffbffe7f8cb247f9d6118526f37f7d5a7cebad`. The bounded-disk producer reuses the existing per-edge branch helper; arithmetic is unchanged.
