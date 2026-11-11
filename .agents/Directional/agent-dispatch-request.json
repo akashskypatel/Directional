@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb126-exact-rim-owner-compile-20261111-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb126-exact-rim-owner-compile-20261111-v1",
-  "source_sha": "3ac6801e4bffb721ffce993cba1e4157b6fa31b8",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb126-p13-a3-exact-rim-owner"
+  "request_id": "m6-cp3-cb126-docs-closeout-drive-20261111-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb126-docs-closeout-drive-20261111-v1",
+  "file_id": "1PbDUCuWd3WbHMmSUw5MsoC29QXOpArjY",
+  "patch_sha256": "22da34bdeb44867b323a1eb65ab1b20b35b2008596c5f9e5292a617402e5bf92",
+  "base_sha": "60712792cf2b989710777f2cab5a9e3f4bde11ad",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cb126): record exact rim owner compile and TB107 handoff",
+  "retention_days": 14
 }
