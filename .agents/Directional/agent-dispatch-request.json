@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "tb101c-adversarial-audit-review-20261111-v1",
+  "request_id": "tb101c-audit-rev-independent-20261111-v1",
   "operation": "drive_apply",
-  "mailbox_key": "tb101c-adversarial-audit-review-20261111",
-  "file_id": "18Kfc8g_kTx9DM5x7Eu6-Mv52laqQhpdM",
-  "patch_sha256": "e5e67219bba7a43cdabb1e2fb430d9e79a56536bc70db05646b8dfe24899736c",
-  "base_sha": "3303a1259791c310bbc55a2d7f69e0dbb69c79e8",
+  "mailbox_key": "tb101c-audit-rev-independent-20261111",
+  "file_id": "1v8GiHeS3HHu4DsaecjNFADPIH7rOKaRA",
+  "patch_sha256": "fec99d230ff09601ed5d0fce656e8b96a7dba30cd31f1ac3200d198162e7b6fe",
+  "base_sha": "42fc1143d0e0ed5892b971e149f64e64899842eb",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): correct TB101C audit architecture and narrow work sequence",
+  "commit_message": "docs(directional): correct TB101C audit revision join architecture",
   "retention_days": 14
 }
