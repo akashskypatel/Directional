@@ -512,7 +512,7 @@ TEST_P(SurfaceCellDesignD4RimCensus, ReportsRimCountsAgainstTheA3Schedules) {
             << stoppedInput->spans.size() << std::endl;
 
   // O39: the exact rim branch rule on every source-boundary edge, taken in
-  // its face's direction, and against the binary64 rule it replaces.
+  // its face's direction.
   std::map<std::pair<int, int>, int> edgeFaceCount;
   for (int face = 0; face < mesh.faces.rows(); ++face) {
     for (int corner = 0; corner < 3; ++corner) {
@@ -523,10 +523,6 @@ TEST_P(SurfaceCellDesignD4RimCensus, ReportsRimCountsAgainstTheA3Schedules) {
   }
   std::size_t sourceRimEdges = 0U;
   std::size_t decided = 0U;
-  std::size_t same = 0U;
-  std::size_t exactOnly = 0U;
-  std::size_t binary64Only = 0U;
-  std::size_t differ = 0U;
   for (int face = 0; face < mesh.faces.rows(); ++face) {
     for (int corner = 0; corner < 3; ++corner) {
       const int a = mesh.faces(face, corner);
@@ -535,32 +531,14 @@ TEST_P(SurfaceCellDesignD4RimCensus, ReportsRimCountsAgainstTheA3Schedules) {
       const auto exact = directional::geometry::surface_cell_tracing_detail::
           exact_boundary_edge_field_branch(mesh.vertices, mesh.faces, faceAxisX,
                                            faceAxisY, face, a, b);
-      const auto binary64 = directional::geometry::surface_cell_tracing_detail::
-          boundary_edge_field_branch(mesh.vertices, mesh.faces, faceAxisX,
-                                     faceAxisY, face, a, b);
       ++sourceRimEdges;
       if (exact.has_value()) ++decided;
-      if (exact == binary64) {
-        ++same;
-      } else if (!binary64.has_value()) {
-        ++exactOnly;
-      } else if (!exact.has_value()) {
-        ++binary64Only;
-      } else {
-        ++differ;
-      }
     }
   }
   EXPECT_GT(sourceRimEdges, 0U);
-  // Where both rules decide, they name the same branch.
-  EXPECT_EQ(0U, differ);
   std::cout << "rim-branch case=" << GetParam().testName
             << " rimEdges=" << sourceRimEdges << " decided=" << decided
             << " undecided=" << sourceRimEdges - decided << std::endl;
-  std::cout << "rim-branch-agreement case=" << GetParam().testName
-            << " same=" << same << " exactOnly=" << exactOnly
-            << " binary64Only=" << binary64Only << " differ=" << differ
-            << std::endl;
 }
 
 INSTANTIATE_TEST_SUITE_P(

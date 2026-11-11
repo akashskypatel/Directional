@@ -15543,54 +15543,14 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
 }
 
 
-// The field branch of `face` that follows the directed source edge a -> b;
-// nothing when no branch follows it unambiguously. The bounded-disk producer's
-// side starts and the boundary field corners both read this one rule.
-std::optional<int> boundary_edge_field_branch(
-    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
-    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
-    const int face, const int a, const int b) {
-  using namespace surface_cell_tracing_detail;
-  constexpr double kBoundaryAlignment = 0.7;
-  const Eigen::RowVector3d normal = face_normal(vertices, faces, face);
-  const Eigen::RowVector3d edgeDirection =
-      project_tangent(row3(vertices, b) - row3(vertices, a), normal);
-  if (edgeDirection.squaredNorm() == 0.0) return std::nullopt;
-  double bestAlignment = -std::numeric_limits<double>::infinity();
-  double secondAlignment = -std::numeric_limits<double>::infinity();
-  int bestBranch = -1;
-  for (int branch = 0; branch < 4; ++branch) {
-    int family = 0;
-    int sign = 1;
-    family_sign_from_branch(branch, family, sign);
-    const Eigen::RowVector3d fieldDirection = project_tangent(
-        axis_for_family(faceAxisX, faceAxisY, face, family, sign), normal);
-    if (fieldDirection.squaredNorm() == 0.0) continue;
-    const double alignment = fieldDirection.dot(edgeDirection);
-    if (alignment > bestAlignment) {
-      secondAlignment = bestAlignment;
-      bestAlignment = alignment;
-      bestBranch = branch;
-    } else if (alignment > secondAlignment) {
-      secondAlignment = alignment;
-    }
-  }
-  const double ambiguityTolerance = 256.0 *
-                                    std::numeric_limits<double>::epsilon() *
-                                    std::max(1.0, std::abs(bestAlignment));
-  if (bestBranch < 0 || bestAlignment < kBoundaryAlignment ||
-      std::abs(bestAlignment - secondAlignment) <= ambiguityTolerance) {
-    return std::nullopt;
-  }
-  return bestBranch;
-}
-
-// The same rule decided exactly on the stored doubles (O39). A branch follows
-// the edge when the in-plane parts of its axis and of the edge make the
-// largest of the four cosines and that cosine is at least 7/10. When both
-// families reach the largest cosine they tie and nothing is returned. Nothing
-// is normalized, so the answer does not depend on the scale of the
-// coordinates or of the axes.
+// The field branch of `face` that follows the directed source edge a -> b,
+// decided exactly on the stored doubles (O39); nothing when no branch does.
+// The bounded-disk producer's side starts and the boundary field corners both
+// read this one rule. A branch follows the edge when the in-plane parts of its
+// axis and of the edge make the largest of the four cosines and that cosine is
+// at least 7/10. When both families reach the largest cosine they tie and
+// nothing is returned. Nothing is normalized, so the answer does not depend on
+// the scale of the coordinates or of the axes.
 std::optional<int> exact_boundary_edge_field_branch(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
@@ -16824,7 +16784,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
       return result;
     }
     const int face = *faceRow;
-    const std::optional<int> localBranch = boundary_edge_field_branch(
+    const std::optional<int> localBranch = exact_boundary_edge_field_branch(
         vertices, faces, faceAxisX, faceAxisY, face, a, b);
     if (!localBranch.has_value()) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
@@ -21640,7 +21600,7 @@ std::vector<authority::SourceVertexId> derive_boundary_field_corner_vertices(
     }
     const int vertex = faces(face, (corner + 1) % 3);
     int next = faces(face, (corner + 2) % 3);
-    std::optional<int> branch = boundary_edge_field_branch(
+    std::optional<int> branch = exact_boundary_edge_field_branch(
         vertices, faces, faceAxisX, faceAxisY, face, faces(face, corner),
         vertex);
     bool turns = !branch.has_value();
@@ -21650,9 +21610,9 @@ std::vector<authority::SourceVertexId> derive_boundary_field_corner_vertices(
       const auto fanEdge = edge_key(vertex, next, vertexExtent);
       const auto &fanFaces = edgeFaces.at(fanEdge);
       if (fanFaces[1] < 0) {
-        turns = boundary_edge_field_branch(vertices, faces, faceAxisX,
-                                           faceAxisY, face, vertex, next) !=
-                branch;
+        turns = exact_boundary_edge_field_branch(vertices, faces, faceAxisX,
+                                                 faceAxisY, face, vertex,
+                                                 next) != branch;
         break;
       }
       const int target = fanFaces[0] == face ? fanFaces[1] : fanFaces[0];
