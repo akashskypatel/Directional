@@ -1,3 +1,8 @@
+## 2026-11-11 UTC — TB104 derived field-corner witness gate COMPLETE / scoped MATCH
+
+- [Report](.agents/Directional/Architecture_M6_CP3_TB104_P13_A3_Derived_Field_Corner_Witness_Full_Gate_Execution_Report_20261111.md): immutable CB123 source `dcfc9494830b150af944b057eb7003a69806085a`, package `13867931016`. [Gate 43054464177](https://github.com/akashskypatel/Directional/actions/runs/43054464177) **942/942 PASS**, membership 1023, 1,892/1,892 result hashes; two new GUARD tests pass and 940 inherited rows match TB101C. All 7+7 platform/A3 lines, four D4 rim/corner and two field-corner receipts unchanged; derived receipt recorded verbatim in report.
+- [Census 43054723909](https://github.com/akashskypatel/Directional/actions/runs/43054723909): 1 PASS / 2 existing registered RED, 9/9 hashes, no abnormal; no configure/compile/relink/benchmark and no source/test/selector changes. Stable CP2 491/491, 66/17/49, debt1, deferred81 unchanged; CP3/selector497 not promoted. Sole next turn `M6-CP3-CB124-P13-A3-SHARED-RIM-BRANCH-RULE` (compile-only).
+
 ## 2026-11-11 UTC — CB123 derived field corner witness compiled (64B.19; no runtime)
 
 - Applied exact frozen 110-line patch SHA-256 `332b3d3e5cd0fc435062d2cb8378c4364a1f39dd5cb58b66a6c74860e72c1199`, +99/-0 in `tests/GlobalConformityBaselineTests.cpp` only. Applied source `dcfc9494830b150af944b057eb7003a69806085a`. No product code change.
