@@ -1,10 +1,10 @@
 # Directional — Project Orientation
 
-> **Technical Review currency (2026-11-11):** TB100B 938/938 remains an isolated gate PASS, not direct production acceptance. The [adversarial re-review addendum](Architecture_M6_CP3_TB100B_REV_P13_A3_Corrected_Corner_Gate_Independent_Review_20261111.md#owner-requested-adversarial-re-review--technical-corrections-2026-11-11) corrects two false CB120A stop falsifiers and records fan/sheet identity and O39 exact-authority gates. Next remains `M6-CP3-CB120A-P13-A3-FIELD-CORNER-STOP-NODES` (helper only).
+> **Technical Review currency (2026-11-11):** TB101C independent Review: 940/940 and bounded census MATCH; source-boundary helper/factory only. [Review](Architecture_M6_CP3_TB101C_REV_P13_A3_Field_Corner_Stops_Independent_Review_20261111.md). Next `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY` (Review only). O39 before O36; CP3/selector497 unpromoted.
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-11-11 · **TB100B independent corrected-gate Review MATCH for the unwired source-boundary corner product**; [record](Architecture_M6_CP3_TB100B_REV_P13_A3_Corrected_Corner_Gate_Independent_Review_20261111.md). Next only `M6-CP3-CB120A-P13-A3-FIELD-CORNER-STOP-NODES` (stop-node helper, compile-only). Verified 938/938 immutable gate and unchanged raw records; Cylinder PASS, BunnyRandom/Vase RED. CP2 491/491, stable 66/17/49, debt1, deferred81; CP3/selector497 unpromoted. O39 remains mandatory before O36.
+**Currency:** 2026-11-11 · TB101C independent Review MATCH, gate 940/940 and census Cylinder PASS, BunnyRandom/Vase RED. [Independent Review](Architecture_M6_CP3_TB101C_REV_P13_A3_Field_Corner_Stops_Independent_Review_20261111.md). Next only `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY`; fan/sheet identity and O39 exact branch authority are not yet proved. CP2 491/491, stable 66/17/49, debt1, deferred81; CP3/selector497 unpromoted.
 **2026-11-11 TB100/TB100B adjudication:** prior [audit](Architecture_M6_CP3_TB100_REV_Audit_20261111.md) identified a narrow test-oracle defect. The corrected 938/938 artifact-only gate passed; [independent TB100B Review](Architecture_M6_CP3_TB100B_REV_P13_A3_Corrected_Corner_Gate_Independent_Review_20261111.md) rechecked the source/atlas barriers and inherited controls. The source-boundary product remains unwired. O39 exact decision remains required before production O36; only CB120A stop-node helper may follow.
 - **Before it:** P13-m, fixed by [RA-202](M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_tb76_rev_p13_census_path_cost_probe_adjudication_20261104md "moved: Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md"). The fix is Amendment 34 and exact CB85–CB88, removing three memory-bound census-path scans plus two Amendment 33 sites.
 - **The block.** The ChatGPT Review saw a conflict between "runtime-free" and a probe re-run. The fault is RA-202.9's route: it named no track and asked one platform to explain a split between two. ~~Review scratch probes are a duty (RA-166.6 F6, RA-188.1)~~ **Superseded by RA-214 §1:** `REVIEW_TURN_POLICY.md` §4.3 makes Reviews runtime-free, and no policy authorizes Review probes. Runtime belongs to TB.
@@ -60,7 +60,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Latest independent Review (2026-11-11):** [TB100B Review](Architecture_M6_CP3_TB100B_REV_P13_A3_Corrected_Corner_Gate_Independent_Review_20261111.md) confirms the corrected full test gate 938/938 and the old rail endpoint oracle omission `{1,7,10,16}`. The 936 inherited rows and all diagnostic records matched prior accepted evidence. Source-boundary-only product unpromoted; next `M6-CP3-CB120A-P13-A3-FIELD-CORNER-STOP-NODES`. Stable 66/17/49, CP2 491/491, debt1, 81 deferred unchanged. §4 witnesses unchanged. §7 O39 exact branch authority and O36 stay open; §8 no new recurring pattern beyond the prior unpromoted oracle mistake.
+**Latest independent Review (2026-11-11):** [TB101C independent Review](Architecture_M6_CP3_TB101C_REV_P13_A3_Field_Corner_Stops_Independent_Review_20261111.md) verified immutable 940/940 PASS, 1,888+9 internal hashes, 938 inherited rows, unchanged 7/7 platform and A3, 4/4 rim records, and 4 new corner records; census Cylinder PASS, BunnyRandom/Vase existing RED. Accepted only the unwired helper/factory gate. Missing historical stop receipt is not claimed. Next `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY`; fan/sheet identity and exact O39 still required before O36. Stable 66/17/49, CP2 491/491, debt1, deferred81. §4 fixture states unchanged; §8 no new recurring pattern.
 
 **M0–M5 are complete/closed; M6 is active at CP3.** Closure means the checkpoint's frozen criteria passed, **not** that representative output is production-ready.
 
@@ -132,7 +132,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-- **First: TB100 hard-rail corner test oracle** — RA-224 §4 eight-only expectation contradicts C1 for non-traversable hard edges. `{nextturn}` is the sole next corrective Code + Build; no CB120 until independently corrected full gate. The atlas and field-product behavior are not proved defective.
+- **Historical: TB100 hard-rail corner test oracle** — RA-224 §4 eight-only expectation contradicts C1 for non-traversable hard edges. This oracle was corrected in TB100B and the CB120A/B/C slices; TB101C independent Review is complete. The next Review is fan/sheet identity, not another CB120 execution. The atlas and field-product behavior are not proved defective.
 
 - **Immediate P13 Vase producer (RA-213, re-sliced by RA-214):** A4 must construct per **A2b disc**, consuming A3 on every arc. Vase has 3 such discs, already certified singularity-free, with ports as corners. No current producer builds a source region that A2b partitions. The work is now a slice sequence, each slice a CB with its own TB:
   - CB103: the A3 coverage oracle (report-only) → TB86 MATCH;

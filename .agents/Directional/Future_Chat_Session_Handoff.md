@@ -34,12 +34,12 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-11 · **TB101C COMPLETE / MATCH**: [940-case gate and three-case census report](Architecture_M6_CP3_TB101C_P13_A3_Field_Corner_Stops_Full_Gate_Execution_Report_20261111.md) verified; next independent `M6-CP3-TB101C-P13-A3-FIELD-CORNER-STOPS-FULL-GATE-REV` only. No production promotion. |
+| Currency | 2026-11-11 · **TB101C independently REVIEWED / scoped MATCH**: [940-case gate and three-case census report](Architecture_M6_CP3_TB101C_P13_A3_Field_Corner_Stops_Full_Gate_Execution_Report_20261111.md) verified; next `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY` (Review only). [Independent adjudication](Architecture_M6_CP3_TB101C_REV_P13_A3_Field_Corner_Stops_Independent_Review_20261111.md). No production promotion. |
 | Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing`; CB120C source `e1e5b17e94f189c88c74172e12dfd6ac93cc532b`, [compile run 43013777504](https://github.com/akashskypatel/Directional/actions/runs/43013777504), [artifact 13852160952](https://github.com/akashskypatel/Directional/actions/runs/43013777504/artifacts/13852160952), ZIP SHA-256 `17dfdcf06d33b312a282d1c6f3cce68223df7010dce367b04897e848a2e16e74`, eight GMP/GMPXX compile targets, `runtimeExecution=false`. PR #8 draft/open/unmerged. |
 | Last accepted semantic runtime | **CP2 491/491** (2026-10-06); CP3/selector497 unpromoted. |
-| Latest candidate | **latest TB101C candidate (Review pending)**: 940/940, membership 1021, 1,888/1,888 hashes; three-case census 1 PASS / 2 registered RED; preceded by independently accepted TB100B 938/938; Cylinder PASS, BunnyRandom/Vase registered RED. [Report](Architecture_M6_CP3_TB100B_P13_A3_Boundary_Field_Corners_Corrected_Gate_Execution_Report_20261111.md) and [Review](Architecture_M6_CP3_TB100B_REV_P13_A3_Corrected_Corner_Gate_Independent_Review_20261111.md). |
+| Latest candidate | **latest TB101C candidate (Review accepted, narrow gate only)**: 940/940, membership 1021, 1,888/1,888 hashes; three-case census 1 PASS / 2 registered RED; preceded by independently accepted TB100B 938/938; Cylinder PASS, BunnyRandom/Vase registered RED. [Report](Architecture_M6_CP3_TB100B_P13_A3_Boundary_Field_Corners_Corrected_Gate_Execution_Report_20261111.md) and [Review](Architecture_M6_CP3_TB100B_REV_P13_A3_Corrected_Corner_Gate_Independent_Review_20261111.md). |
 | Regression accounting and debt | CP2 **491/491** accepted, stable **66 events / 17 categories / 49 recurrences**, debt **1**, deferred **81** unchanged. New TB100 gate candidate only, not stable. O34/O35/O36/O37/O39 and D6 open; O38 defined but unpromoted. |
-| Active boundary | **Next independent Review** `M6-CP3-TB101C-P13-A3-FIELD-CORNER-STOPS-FULL-GATE-REV`: verify TB101C full gate, census and the missing historical stop receipt without new runtime. No source/selector/test mutation, CP3 promotion or D4/D5 production switch; O39 pre-O36. |
+| Active boundary | **Next Review** `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY`: decide source-vertex-to-chart-fan and sheet-safe stop identity; the TB101C full gate, census and missing historical stop receipt were independently reviewed in [Architecture_M6_CP3_TB101C_REV_P13_A3_Field_Corner_Stops_Independent_Review_20261111.md](Architecture_M6_CP3_TB101C_REV_P13_A3_Field_Corner_Stops_Independent_Review_20261111.md). No source/selector/test mutation, CP3 promotion or D4/D5 production switch; O39 pre-O36. |
 
 ## Authoritative adversarial review and narrow turn order — 2026-11-11
 
@@ -58,9 +58,13 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 Each entry after the NEXT turn is conditional on its preceding gate. The detailed scope, stop rules and falsifiers are in the linked audit. Do not skip an independent review when a focused/full result is a mismatch.
 
-## Mandatory next turn — `M6-CP3-TB101C-P13-A3-FIELD-CORNER-STOPS-FULL-GATE-REV` — EXACT NEXT
+## Last completed turn — `M6-CP3-TB101C-P13-A3-FIELD-CORNER-STOPS-FULL-GATE-REV` — independent scoped MATCH
 
 **Independent Review only; no rebuild or edits.** Re-open the immutable TB101C [report](Architecture_M6_CP3_TB101C_P13_A3_Field_Corner_Stops_Full_Gate_Execution_Report_20261111.md), 940-case [run 43016290356](https://github.com/akashskypatel/Directional/actions/runs/43016290356), artifact `13853426731`, three-case census [run 43016362575](https://github.com/akashskypatel/Directional/actions/runs/43016362575), artifact `13853038984`; verify checksum manifests and seven unchanged platform/A3 records, four unchanged rim records, and four recorded corner records. Examine the non-emitted historical `FIELD_CORNER_STOP_RECEIPT` under current sliced authority; do not assume it passed. Independently decide acceptance, preserve O39 before O36, CP3/selector497 unpromoted.
+
+## Mandatory next turn — `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY` — EXACT NEXT
+
+**Review only, runtime-free.** The [TB101C independent record](Architecture_M6_CP3_TB101C_REV_P13_A3_Field_Corner_Stops_Independent_Review_20261111.md) accepts 940/940 PASS, 938 inherited rows and the registered census without production promotion. Decide whether a source-vertex stop identifies every matching network occurrence, or only a specific source-chart fan and sheet. Provide counterexamples for shared source vertices across incompatible fans, review nontrivial straight-rim field transport and prove one exact identity rule before authorizing a small Code + Build. O39 exact branch authority remains a separate later Review; O36 is prohibited until O39 and other gates are discharged. No successor work has begun.
 
 ### Previous TB100 Review (complete; retained reference)
 
