@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-11-10 · **CB118 64C.3 COMPLETE / BUILD GREEN** ([record](Architecture_M6_CP3_CB118_P13_A3_Uniform_Declines_Chained_Plan_Code_Build_Record_20261110.md)), exact frozen patch `5e0837d07a2fc46e96cabd73ca0bab6c587f1bca0c6992c43c4245b81fc8976b`, source `6f0f9331a0dd3cf5a8d404134b0ad0669e5719c7`, [compile run 42909557526](https://github.com/akashskypatel/Directional/actions/runs/42909557526), [artifact 13806737420](https://github.com/akashskypatel/Directional/actions/runs/42909557526/artifacts/13806737420), eight mandatory GMP/GMPXX targets, 28/28 checksums, `runtimeExecution=false`. **Next separate TB99 64C.4** (936-row immutable artifact-only gate, membership 1017; runtime not yet executed). TB98 935/935 MATCH, membership 1016; accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred. O36 switch unscheduled, CP3/selector497 unpromoted, D6 pending.
+**Currency:** 2026-11-11 · **TB100 64B.15 independent Review: test-oracle defect, MISMATCH; corrective Code + Build next**. See [M6-CP3-TB100-P13-A3-BOUNDARY-FIELD-CORNERS-FULL-GATE-REV](Architecture_M6_CP3_TB100_REV_P13_A3_Boundary_Field_Corner_Oracle_Adjudication_20261111.md). Historical checkpoint: **CB118 64C.3 COMPLETE / BUILD GREEN** ([record](Architecture_M6_CP3_CB118_P13_A3_Uniform_Declines_Chained_Plan_Code_Build_Record_20261110.md)), exact frozen patch `5e0837d07a2fc46e96cabd73ca0bab6c587f1bca0c6992c43c4245b81fc8976b`, source `6f0f9331a0dd3cf5a8d404134b0ad0669e5719c7`, [compile run 42909557526](https://github.com/akashskypatel/Directional/actions/runs/42909557526), [artifact 13806737420](https://github.com/akashskypatel/Directional/actions/runs/42909557526/artifacts/13806737420), eight mandatory GMP/GMPXX targets, 28/28 checksums, `runtimeExecution=false`. **Next separate TB99 64C.4** (936-row immutable artifact-only gate, membership 1017; runtime not yet executed). TB98 935/935 MATCH, membership 1016; accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred. O36 switch unscheduled, CP3/selector497 unpromoted, D6 pending.
 - **Before it:** P13-m, fixed by [RA-202](M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_tb76_rev_p13_census_path_cost_probe_adjudication_20261104md "moved: Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md"). The fix is Amendment 34 and exact CB85–CB88, removing three memory-bound census-path scans plus two Amendment 33 sites.
 - **The block.** The ChatGPT Review saw a conflict between "runtime-free" and a probe re-run. The fault is RA-202.9's route: it named no track and asked one platform to explain a split between two. ~~Review scratch probes are a duty (RA-166.6 F6, RA-188.1)~~ **Superseded by RA-214 §1:** `REVIEW_TURN_POLICY.md` §4.3 makes Reviews runtime-free, and no policy authorizes Review probes. Runtime belongs to TB.
 - **TB78** (CB85–CB88) matches on gate 899/899 and on every census line except the count. Vase reaches RED `SelfIntersectingFace` in 268.93 s on Linux, so P13-m's Linux objective is met.
@@ -56,6 +56,8 @@ The objective is **production-ready Pipeline B at M8-CP3**, not merely passing i
 Each arrow denotes a checked, immutable producer-to-consumer boundary. Details and stop conditions belong to [DESIGN.md](DESIGN.md#5-normative-pipeline--pipeline-b), not this map.
 
 ## 3. Where we are
+
+**Latest independent Review (2026-11-11):** TB100 row 938 is RED because its rail-inclusive full-set oracle omits four required non-traversable barrier endpoints. Source C1 demands their conservative inclusion. Scoped pass-through equality passed; no producer defect proved. Correct test oracle in one separate Code + Build `{nextturn}`; then distinct full-gate TB and Review before CB120. No CP3 acceptance or change to 66/17/49, debt1, 81 deferred, CP2 491/491.
 
 **M0–M5 are complete/closed; M6 is active at CP3.** Closure means the checkpoint's frozen criteria passed, **not** that representative output is production-ready.
 
@@ -126,6 +128,8 @@ Fixture generation, provenance, licenses and checksums are recorded in [generate
 The separation is deliberate: accepted selector continuity and frozen invariants are not negotiable fixes for a RED; diagnostics are not acceptance; representative production claims require production-path witnesses. See the [review policy](REVIEW_TURN_POLICY.md), [testing strategy](../../tests/TESTING_STRATEGY.md) and [workflow policy](GitHub_Workflow_Policy.md) for actual requirements, repository operation, artifact transport and mailbox behavior.
 
 ## 7. Open problems — priority, not a task ledger
+
+- **First: TB100 hard-rail corner test oracle** — RA-224 §4 eight-only expectation contradicts C1 for non-traversable hard edges. `{nextturn}` is the sole next corrective Code + Build; no CB120 until independently corrected full gate. The atlas and field-product behavior are not proved defective.
 
 - **Immediate P13 Vase producer (RA-213, re-sliced by RA-214):** A4 must construct per **A2b disc**, consuming A3 on every arc. Vase has 3 such discs, already certified singularity-free, with ports as corners. No current producer builds a source region that A2b partitions. The work is now a slice sequence, each slice a CB with its own TB:
   - CB103: the A3 coverage oracle (report-only) → TB86 MATCH;
@@ -199,6 +203,8 @@ macOS O16 stays separate.
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
+
+- **Full-set oracle exceeds a scoped equivalence (TB100-REV):** a pass-through-rim equality does not prohibit conservative corners at hard-feature barriers. Independent test expectations must include every C1 admissible cause and derive barrier endpoints from source topology, not copy the product. See [M6-CP3-TB100-P13-A3-BOUNDARY-FIELD-CORNERS-FULL-GATE-REV](Architecture_M6_CP3_TB100_REV_P13_A3_Boundary_Field_Corner_Oracle_Adjudication_20261111.md).
 
 - **A DEFN that keeps adding proof gates is in the wrong layer (RA-218):** the stalled D5 attempt put chains in a separate diagnostic product beside unchanged A3 spans. Every gate it added (fragment sides, corner re-derivation, identity migration, a production join before any CB) followed from that choice. Ask which stage owns the quantity being changed. D5 changes a scheduling count, so the A3 span set changes and A2b does not; degree-2 pass-through nodes make side and region continuity automatic.
 
