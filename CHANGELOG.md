@@ -1,3 +1,8 @@
+## 2026-11-11 UTC — independent TB100B corrected boundary field-corner gate Review: MATCH within test scope
+
+- [Independent Review](.agents/Directional/Architecture_M6_CP3_TB100B_REV_P13_A3_Corrected_Corner_Gate_Independent_Review_20261111.md): rederived 938/938 corrected gate and all inherited 936 controls; 1,884/1,884 gate and 9/9 census packaged hashes, seven platform + seven A3 + four D4 raw records and both field-corner receipts unchanged. The first TB100 failure was the unpromoted test-oracle omission of four non-traversable hard-rail rim endpoints. The correction is nonvacuous on plain/rail and both face-row orders. Cylinder PASS; BunnyRandom/Vase remain registered RED. No production or stable regression acceptance.
+- Next bounded Code + Build: `M6-CP3-CB120A-P13-A3-FIELD-CORNER-STOP-NODES`. O39 exact-boundary-branch debt remains pre-O36. CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged. Runtime-free Review; no test, source or selector mutation.
+
 ## 2026-11-11 UTC — TB100B corrected boundary field-corner full gate COMPLETE / MATCH (artifact-only)
 
 - [TB100B report](.agents/Directional/Architecture_M6_CP3_TB100B_P13_A3_Boundary_Field_Corners_Corrected_Gate_Execution_Report_20261111.md): CB119B immutable package `13826405755`, source `d47b7c24…`; [gate 42958701539](https://github.com/akashskypatel/Directional/actions/runs/42958701539) 938/938 PASS (row 938 corrected from prior RED); [census 42958806101](https://github.com/akashskypatel/Directional/actions/runs/42958806101) Cylinder PASS, BunnyRandom/Vase registered RED. Gate/census artifact hashes and internal 1,884/9 checksums verified, no compile/relink or source edits.
