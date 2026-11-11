@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb106-exact-rim-branch-census-20261111-v1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb106-exact-rim-branch-census-20261111-v1",
-  "executor_sha": "99d0e2d5365ca0ea6529944786b04652f7d3fdc4",
-  "semantic_source_sha": "0ff93f167feb69dc290d4f220a0f8d32a906e2f7",
-  "turn_id": "M6-CP3-TB106-P13-A3-EXACT-RIM-BRANCH-RULE-FULL-GATE-EXEC",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "artifact_prefix": "m6-cp3-tb106-exact-rim-census",
-  "retention_days": 14,
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "13894015691",
-    "EXPECTED_SOURCE_SHA": "0ff93f167feb69dc290d4f220a0f8d32a906e2f7",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "72aca96c3a4fdfc8707e8a4b24ff678455184f4c573650535dc176f78fa58d54",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "ebe09a840ef3401a7f2f860f4bb37a444c8a92773033d7c3ac14654e1a0ac131",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "8ef2a1f0349075e91502cc3455698941213fef6d28009c5303418375becda620",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
-    "EXPECTED_CASE_COUNT": "3"
-  }
+  "request_id": "m6-cp3-tb106-closeout-docs-drive-20261111-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb106-closeout-docs-20261111-v1",
+  "file_id": "17eWZ7EPnG-IwpjB8nmIbDzG3rhSRQVIL",
+  "patch_sha256": "2857af1409b5912e11b321ff5b226c7e7f7532a6cf4e3f44678ee099d38c189f",
+  "base_sha": "99d0e2d5365ca0ea6529944786b04652f7d3fdc4",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(tb106): close exact rim branch full gate scoped match",
+  "retention_days": 14
 }
