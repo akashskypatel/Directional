@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb100b-rev-docs-20261111-v1",
+  "request_id": "tb100b-adversarial-review-20261111-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb100b-rev-docs",
-  "file_id": "1kttf9k9SRYWeoydY-K1OB5FTWJjv773z",
-  "patch_sha256": "1f59f7ad5ae283c1c8f58918549ac1732f338e4913e3cf80ded6aab8e2369430",
-  "base_sha": "71e567e6b2085c8abcc017ec3447aa1e4e926a98",
+  "mailbox_key": "tb100b-adversarial-review-docs",
+  "file_id": "1nC6bZQFwDQUtbBaAdwzOztcEu1wApw_k",
+  "patch_sha256": "16036fcd1006692f5713c513c1dd0464e70dc6d8f0ae0c4466ff05375629f7ff",
+  "base_sha": "b4fee1c9dbbf91dd2a8aa96870f3ae3b988d1c54",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: independently review corrected TB100B gate and freeze CB120A",
+  "commit_message": "docs: correct TB100B review falsifiers and freeze narrow technical gates",
   "retention_days": 14
 }
