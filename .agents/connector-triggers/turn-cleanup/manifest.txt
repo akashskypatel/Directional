@@ -1,0 +1,2 @@
+# CB123 temporary snapshot trigger only
+.agents/connector-triggers/source-snapshot/CB123-20261111-1506.txt
