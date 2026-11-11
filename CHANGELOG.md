@@ -1,3 +1,9 @@
+## 2026-11-11 UTC — CB123 derived field corner witness compiled (64B.19; no runtime)
+
+- Applied exact frozen 110-line patch SHA-256 `332b3d3e5cd0fc435062d2cb8378c4364a1f39dd5cb58b66a6c74860e72c1199`, +99/-0 in `tests/GlobalConformityBaselineTests.cpp` only. Applied source `dcfc9494830b150af944b057eb7003a69806085a`. No product code change.
+- Eight-target GMP/GMPXX compile passed [run 43046771206](https://github.com/akashskypatel/Directional/actions/runs/43046771206); immutable artifact 13867931016 SHA-256 `c1c5a80fa4d20fa84c7a09c0709ec664858deb42a07891fb0ff17088d4aa9b40`. Internal checksum and exit codes passed; `runtimeExecution=false`. No test or benchmark run. [Record](.agents/Directional/Architecture_M6_CP3_CB123_P13_A3_Derived_Field_Corner_Witness_Code_Build_Record_20261111.md).
+- Source snapshot and temporary trigger cleanup succeeded; staged Google Drive patch deleted. Stable 66/17/49, debt 1, 81 deferred and CP2 491/491 unchanged. TB104 is next separate turn.
+
 ## 2026-11-11 UTC — Boundary fan stop identity decided (64B.18, Review; runtime-free)
 
 - [RA-225](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Boundary_Fan_Stop_Identity_Review_20261111.md): a corner stop is keyed by source vertex. The network has one node per source vertex and a chain joins only at a node with exactly two incidences; a vertex shared by two face fans is a node with four, so no chain passes it. The 16-row fan-resolver plan and `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION` are withdrawn before use.
