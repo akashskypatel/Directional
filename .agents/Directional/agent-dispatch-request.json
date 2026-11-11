@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb100-census-20261111-v1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb100-census",
-  "executor_sha": "99e4fac05390d78e2365730c3672119e5dde1d83",
-  "semantic_source_sha": "cd1d451b4190bdd6b88e07fafa7e6fe69ff5b3d2",
-  "turn_id": "M6-CP3-TB100-P13-A3-BOUNDARY-FIELD-CORNERS-CENSUS",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "13815545121",
-    "EXPECTED_SOURCE_SHA": "cd1d451b4190bdd6b88e07fafa7e6fe69ff5b3d2",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "6af2c551287b8861f64955f8604d968091ebcfbb9db9ceff08126c5edbe1e70a",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "57f3e7d73fa05f53ff34a034d74037b1d95f8a8f60a90faef30186eb3d124df9",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "ee8fc70c40f662c684afaa109459baf4430b52c68eb57b12769c9dca619bb792",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
-    "EXPECTED_CASE_COUNT": "3"
-  },
-  "artifact_prefix": "m6-cp3-tb100-census",
+  "request_id": "m6-cp3-tb100-rev-docs-20261111-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb100-rev-docs",
+  "file_id": "149Ugo6bVRSxaANiUMIdfhGbnNAaYxGps",
+  "patch_sha256": "f086622a28303e201da148fea81af73b4bc0d16da1ca1fc988373fdaa9b5fe61",
+  "base_sha": "fa8f759306e9690913d5f122847b477f8f8b568b",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: adjudicate TB100 corner oracle and freeze corrective turn",
   "retention_days": 14
 }
