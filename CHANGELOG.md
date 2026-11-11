@@ -1,3 +1,7 @@
+## 2026-11-11 — Adversarial review of TB101C technical audit
+
+[Review]('.agents/Directional/Architecture_M6_CP3_TB101C_Audit_Adversarial_Review_20261111.md) corrected the proposed work sequence. A node-only fan resolver cannot match a corner product that contains only a source vertex. The revised plan adds a fan-keyed corner producer before the A3 filter. It also requires exact source-derived normals and an explicit 0.7 threshold policy before a shared branch owner. No source/test/selector code changed. The 940/940 gate remains scoped, with no new production success. Next only `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION`.
+
 ## 2026-11-11 — User-authorized technical audit of TB101C Review
 
 [Review audit](.agents/Directional/Architecture_M6_CP3_TB101C_REV_Audit_Code_Architecture_20261111.md) independently checked the field-corner helper, A4 boundary-branch logic, typed fan authority and non-vacuity. The 940/940 test scope stands, but the derived corner-stop contract and exact branch owner are not production accepted. The audit defines the fan/sheet key, single exact branch owner, and twelve separate, conditional CB/TB gates. NEXT `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION` only. No product or test source changed; CP3 remains unpromoted.

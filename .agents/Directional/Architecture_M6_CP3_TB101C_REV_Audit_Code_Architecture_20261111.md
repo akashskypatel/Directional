@@ -1,5 +1,7 @@
 # TB101C technical and architectural review audit — 2026-11-11
 
+> **Adversarial correction (2026-11-11):** [independent review](Architecture_M6_CP3_TB101C_Audit_Adversarial_Review_20261111.md) found that this record resolves only the network-node fan. Its original sequence omitted an equally necessary **fan-keyed corner producer**. Its exact branch formula also omitted exact input construction and the 0.7 binary64 threshold distinction. Use the corrected sequence in the independent review, handoff and TODO. Historical observations and scoped 940/940 remain valid.
+
 ## Situation
 
 **Review decision: PARTIAL ACCEPTANCE ONLY.** The prior TB101C Review correctly accepts the immutable 940/940 test result as a test result. It correctly keeps CP3 unpromoted. It does **not** establish that a field-derived corner stops exactly one intrinsic rim fan. Production use is not accepted. This audit completes the previously deferred fan-identity and branch-owner design decisions. It authorizes only the small, unwired implementation sequence below.
