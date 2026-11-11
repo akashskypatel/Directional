@@ -1,0 +1,3 @@
+turn=M6-CP3-TB100-P13-A3-BOUNDARY-FIELD-CORNERS-FULL-GATE-REV
+status_entry_sha=90d46b6908030ccb2eac9a9a525b645152abd161
+purpose=source snapshot for independent review
