@@ -1,0 +1,2 @@
+Source snapshot request for M6-CP3-TB101A-P13-A3-FIELD-CORNER-STOP-NODES-EXEC.
+The source authority is the commit created by this trigger.
