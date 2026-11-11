@@ -1,3 +1,9 @@
+## 2026-11-11 UTC — TB100 boundary field corners MISMATCH (artifact-only)
+
+- [TB100 report](.agents/Directional/Architecture_M6_CP3_TB100_P13_A3_Boundary_Field_Corners_Full_Gate_Execution_Report_20261111.md): immutable CB119 source `cd1d451b4190bdd6b88e07fafa7e6fe69ff5b3d2`, package `13815545121`. [Corrected gate 42932637408](https://github.com/akashskypatel/Directional/actions/runs/42932637408), result `13817910944`, **937/938 PASS**; new row 938 fails the hard-rail full-corner equality with extra vertices `{1,7,10,16}` in both face orders. Scoped rim-side-start equality passes.
+- All 936 inherited rows PASS; 7+7 raw TB97 lines and four d4-rim TB98 lines unchanged. [Census 42932960676](https://github.com/akashskypatel/Directional/actions/runs/42932960676), result `13817628224`: Cylinder PASS, BunnyRandom/Vase previously registered RED. Artifacts and postflight verified; no rebuild, code/fixture/selector edits. First request failed before executing any tests and is not semantic evidence.
+- No accepted regression: CP2 **491/491**, stable **66/17/49**, debt **1**, deferred **81** unchanged. O36 switch off, CP3/selector497 unpromoted. Next `M6-CP3-TB100-P13-A3-BOUNDARY-FIELD-CORNERS-FULL-GATE-REV` independent Review, not CB120.
+
 ## 2026-11-10 UTC — CB119 boundary field corner product compiled (Code + Build only)
 
 - [Record](.agents/Directional/Architecture_M6_CP3_CB119_P13_A3_Boundary_Field_Corners_Code_Build_Record_20261110.md): exact RA-224 diff `06d6cadd…`, applied in [source cd1d451b4190bdd6b88e07fafa7e6fe69ff5b3d2](https://github.com/akashskypatel/Directional/commit/cd1d451b4190bdd6b88e07fafa7e6fe69ff5b3d2) to three intended files (+15/+117/+142, no deletions). The new field-corner product is unwired.
