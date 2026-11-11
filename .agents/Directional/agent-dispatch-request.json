@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "cb120b-field-corner-factory-apply-20261111-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "cb120b-field-corner-factory-apply",
-  "file_id": "1YIZbmqmz-CCP12R0hVfaHNHVPaKFsPZA",
-  "patch_sha256": "3bd4555f863e54e604a67b9684b4db3a42913c3773b7963940f544b13182d0c9",
-  "base_sha": "4aebd4a989b122d39af0d5e33a2789106239276a",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "geometry: forward field corners through chained baseline factory",
-  "retention_days": 14
+  "request_id": "cb120b-field-corner-compile-20261111-v1",
+  "operation": "compile",
+  "mailbox_key": "cb120b-field-corner-compile",
+  "source_sha": "5e603a239d9d7519668b9c42cb3c2b6e8f16d2f8",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "cb120b-field-corner-factory"
 }
