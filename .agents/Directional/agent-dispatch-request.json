@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb105-docs-20261111-v1",
+  "request_id": "m6-cp3-tb105-docs-link-20261111-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb105-docs-20261111",
-  "file_id": "1RY_hXz0e-4dP9Je7C7dWF2JQ6fbqTV0W",
-  "patch_sha256": "94c8a4bb8d5cb177b7b2d2521e0c6f1f7cfa96a47ab3eea35f9b7b2dfdca3b60",
-  "base_sha": "643baeb5473f0b74d168c9e651efa2fad3eef56c",
+  "mailbox_key": "m6-cp3-tb105-docs-link-20261111",
+  "file_id": "12HqFNtbQLumdkF0Wcxk8ttKbPPnfKTjz",
+  "patch_sha256": "b63834833a42f94e676ec8697ec26f09dc310801beae7b52cbda9f8e761c2942",
+  "base_sha": "da3c213c0e4cbda1b0633dcab735c7bfaa472d16",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close TB105 scoped gate and preserve evidence; hand off exact rim review",
+  "commit_message": "docs: correct TB105 report link in root changelog",
   "retention_days": 14
 }
