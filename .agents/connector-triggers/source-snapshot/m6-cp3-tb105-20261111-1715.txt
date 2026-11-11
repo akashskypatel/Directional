@@ -1,3 +1,0 @@
-turn=M6-CP3-TB105-P13-A3-SHARED-RIM-BRANCH-RULE-FULL-GATE-EXEC
-source_authority=e319b6d399216960fd56d80b3e2768d4da7e19ac
-purpose=verified read-only source snapshot and gate authority

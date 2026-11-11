@@ -1,2 +1,0 @@
-# Remove only TB105 temporary repository trigger; retain durable dispatcher and workflow-mailbox.
-.agents/connector-triggers/source-snapshot/m6-cp3-tb105-20261111-1715.txt
