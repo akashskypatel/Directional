@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb125-frozen-exact-drive-apply-20261111-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb125-exact-source-apply-20261111",
-  "file_id": "1a3lZH8TKlrm4IHl2yxBb_65vVGUVSFfp",
-  "patch_sha256": "45eaaca0676fc62736daef38b8a7f4854c563b1dd1305ccf007d04d235e52de3",
-  "base_sha": "088271ee78a673fc4bcaeac2f737c4232d51f664",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix: implement exact stored-value rim branch predicate",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb125-exact-rim-compile-20261111-v3",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb125-exact-rim-compiled-patched-20261111",
+  "source_sha": "0ff93f167feb69dc290d4f220a0f8d32a906e2f7",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb125-exact-rim-patched"
 }
