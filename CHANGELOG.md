@@ -1,3 +1,9 @@
+## 2026-11-10 UTC — CB119 boundary field corner product compiled (Code + Build only)
+
+- [Record](.agents/Directional/Architecture_M6_CP3_CB119_P13_A3_Boundary_Field_Corners_Code_Build_Record_20261110.md): exact RA-224 diff `06d6cadd…`, applied in [source cd1d451b4190bdd6b88e07fafa7e6fe69ff5b3d2](https://github.com/akashskypatel/Directional/commit/cd1d451b4190bdd6b88e07fafa7e6fe69ff5b3d2) to three intended files (+15/+117/+142, no deletions). The new field-corner product is unwired.
+- [Compile 42926339655](https://github.com/akashskypatel/Directional/actions/runs/42926339655), artifact `13815545121`, SHA-256 `6af2c551287b8861f64955f8604d968091ebcfbb9db9ceff08126c5edbe1e70a`, `28` package checksums, eight GMP/GMPXX targets, `runtimeExecution=false`. No tests or benchmarks ran.
+- Next `TB100` 938-row artifact-only gate; no source changes. Accepted CP2 491/491, stable 66/17/49, debt 1, 81 deferred; O36 remains off and CP3/selector497 unpromoted.
+
 ## 2026-11-10 UTC — Disc corner stops defined (64B.13, Review; runtime-free)
 
 - [RA-224](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Disc_Corner_Stops_Review_20261110.md): the O38 corner product is the list of source-boundary vertices where the boundary-following field branch changes across the vertex's own faces. It needs no region. The D5 stop set reads it as a fourth source; the bounded-disk producer keeps deriving its side starts and a test proves the two equal.
