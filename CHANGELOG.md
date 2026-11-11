@@ -1,3 +1,8 @@
+## 2026-11-11 UTC — TB101A focused field-corner stop-node execution MATCH
+
+- [Execution report](.agents/Directional/Architecture_M6_CP3_TB101A_P13_A3_Field_Corner_Stop_Nodes_Focused_Execution_Report_20261111.md): immutable CB120A artifact `13843326855`, source `47afc84ec1104a7457324a967b9362deff549624`. [Runtime 42998151385](https://github.com/akashskypatel/Directional/actions/runs/42998151385), result `13845480844` (SHA-256 `f1b476ae453ecc98921affe374d548117dc1ff3abf2a88782a10da3add9b9c5d`): focused test 1/1 PASS; no rebuild, abnormal, missing or skipped; unchanged package verified. New single-case execution manifest only, no compiled source or test edits.
+- Next **separate** Code + Build: `M6-CP3-CB120B-P13-A3-FIELD-CORNER-FACTORY-FORWARDING`. CP2 491/491 and stable 66/17/49, debt1, deferred81 unchanged; CP3/selector497 unpromoted. O39 before O36.
+
 ## 2026-11-11 UTC — CB120A field-corner stop-node helper compiled (Code + Build only)
 
 - [Record](.agents/Directional/Architecture_M6_CP3_CB120A_P13_A3_Field_Corner_Stop_Nodes_Code_Build_Record_20261111.md): code source `47afc84ec1104a7457324a967b9362deff549624`; three focused source/test files (+43/−8), no factory, census, selector or production changes. Stop set now accepts declared source-vertex field corners; order/duplicate and unrelated-vertex regressions added.
