@@ -1,0 +1,2 @@
+Snapshot request for M6-CP3-CB123-P13-A3-DERIVED-FIELD-CORNER-WITNESS.
+The triggering commit is the exact frozen source.
