@@ -1,3 +1,9 @@
+## 2026-11-11 UTC — CB126 exact rim branch owner compiled (64B.26; no runtime)
+
+- RA-226 frozen 174-line patch SHA-256 `f5526f22d3f04a9c5e0120dd969c8586a79d247b9b5a0d2506f7a3e7b4c9bc25` applied to three paths at `3ac6801e4bffb721ffce993cba1e4157b6fa31b8`. [Apply run 43117312334](https://github.com/akashskypatel/Directional/actions/runs/43117312334). The bounded-disk producer and boundary corner product now use the exact rim branch rule; the binary64 owner and comparison receipt were removed.
+- [Compile run 43117594163](https://github.com/akashskypatel/Directional/actions/runs/43117594163), [artifact 13898984781](https://github.com/akashskypatel/Directional/actions/runs/43117594163/artifacts/13898984781), ZIP SHA-256 `6fd3b5a1a4aa2845afd74a4fa48bbb884c68a8977657dbb7634e840c8524f341`. Eight GMP/GMPXX targets compiled, 28/28 checksums verified; `runtimeExecution=false`, no tests or benchmarks. [CB126 record](.agents/Directional/Architecture_M6_CP3_CB126_P13_A3_Exact_Rim_Branch_Owner_Code_Build_Record_20261111.md).
+- **Next separate turn:** `M6-CP3-TB107-P13-A3-EXACT-RIM-BRANCH-OWNER-FULL-GATE-EXEC` (943-row artifact-only gate). CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged; O36 unwired, CP3/selector497 unpromoted.
+
 ## 2026-11-11 UTC — TB106 exact rim branch rule full gate COMPLETE / scoped MATCH (64B.25)
 
 - [TB106 report](.agents/Directional/Architecture_M6_CP3_TB106_P13_A3_Exact_Rim_Branch_Rule_Full_Gate_Execution_Report_20261111.md): immutable CB125 package `13894015691`, source `0ff93f167feb69dc290d4f220a0f8d32a906e2f7`. [Gate 43110402612](https://github.com/akashskypatel/Directional/actions/runs/43110402612): 943/943 PASS, membership 1,024, 1,894/1,894 hashes; first 942 ledger records and 25 inherited receipts identical to TB105. Four `rim-branch` and four `rim-branch-agreement` lines record zero exact-only, binary64-only, or changed decisions.
