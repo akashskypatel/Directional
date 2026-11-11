@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb125-doc-closeout-drive-20261111-v2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb125-doc-closeout-20261111-v2",
-  "file_id": "1Q2x7wxPoSX8cADzMEEPYMQhYm3nOHvrg",
-  "patch_sha256": "7a33bcb28760858bea2c66939a941d01dcb4cdd99bb8cf7e54ea1678afdbe09b",
-  "base_sha": "088271ee78a673fc4bcaeac2f737c4232d51f664",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close CB125 evidence and authorize TB106 as next turn",
-  "retention_days": 14
+  "request_id": "m6-cp3-tb106-exact-rim-branch-gate-20261111-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb106-exact-rim-branch-gate-20261111-v1",
+  "executor_sha": "99d0e2d5365ca0ea6529944786b04652f7d3fdc4",
+  "semantic_source_sha": "0ff93f167feb69dc290d4f220a0f8d32a906e2f7",
+  "turn_id": "M6-CP3-TB106-P13-A3-EXACT-RIM-BRANCH-RULE-FULL-GATE-EXEC",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "artifact_prefix": "m6-cp3-tb106-exact-rim-branch",
+  "retention_days": 14,
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "13894015691",
+    "EXPECTED_SOURCE_SHA": "0ff93f167feb69dc290d4f220a0f8d32a906e2f7",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "72aca96c3a4fdfc8707e8a4b24ff678455184f4c573650535dc176f78fa58d54",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "ebe09a840ef3401a7f2f860f4bb37a444c8a92773033d7c3ac14654e1a0ac131",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "8ef2a1f0349075e91502cc3455698941213fef6d28009c5303418375becda620",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB106_P13_A3_Exact_Rim_Branch_Rule_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "938836fc3326df11ccb3d475e0c6a3a4d629d8ac6e252436dcfac47286bfb651",
+    "EXPECTED_CASE_COUNT": "943",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  }
 }
