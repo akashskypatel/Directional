@@ -60,7 +60,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Latest independent Review (2026-11-11):** [TB101C independent Review](Architecture_M6_CP3_TB101C_REV_P13_A3_Field_Corner_Stops_Independent_Review_20261111.md) verified immutable 940/940 PASS, 1,888+9 internal hashes, 938 inherited rows, unchanged 7/7 platform and A3, 4/4 rim records, and 4 new corner records; census Cylinder PASS, BunnyRandom/Vase existing RED. Accepted only the unwired helper/factory gate. Missing historical stop receipt is not claimed. Next `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY`; fan/sheet identity and exact O39 still required before O36. Stable 66/17/49, CP2 491/491, debt1, deferred81. §4 fixture states unchanged; §8 no new recurring pattern.
+**Latest technical Review audit (2026-11-11):** [TB101C audit](Architecture_M6_CP3_TB101C_REV_Audit_Code_Architecture_20261111.md) preserves 940/940 scoped test acceptance. The vertex-only stop helper can cross chart fans; the corner and A4 branch writers duplicate approximate decisions. No derived corner changed a live chain in the four census cases. Fan/sheet identity and exact single-writer branch semantics are now defined, not implemented or runtime accepted. NEXT `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION` only. CP2 491/491, stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted.
 
 **M0–M5 are complete/closed; M6 is active at CP3.** Closure means the checkpoint's frozen criteria passed, **not** that representative output is production-ready.
 
@@ -130,7 +130,10 @@ Fixture generation, provenance, licenses and checksums are recorded in [generate
 
 The separation is deliberate: accepted selector continuity and frozen invariants are not negotiable fixes for a RED; diagnostics are not acceptance; representative production claims require production-path witnesses. See the [review policy](REVIEW_TURN_POLICY.md), [testing strategy](../../tests/TESTING_STRATEGY.md) and [workflow policy](GitHub_Workflow_Policy.md) for actual requirements, repository operation, artifact transport and mailbox behavior.
 
-## 7. Open problems — priority, not a task ledger
+## 7. Open problems
+
+**Current priority:** `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION` (unwired source-vertex fan/sheet resolver), then the narrowly sliced CB/TB gates in [the technical audit](Architecture_M6_CP3_TB101C_REV_Audit_Code_Architecture_20261111.md). A source-vertex number alone is not a valid fan-specific stop. A green manual stop test does not prove a field-derived chain split. O39 exact branch ownership remains a prerequisite for O36. The older proposed `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY` Review has been completed in this audit.
+ — priority, not a task ledger
 
 - **Historical: TB100 hard-rail corner test oracle** — RA-224 §4 eight-only expectation contradicts C1 for non-traversable hard edges. This oracle was corrected in TB100B and the CB120A/B/C slices; TB101C independent Review is complete. The next Review is fan/sheet identity, not another CB120 execution. The atlas and field-product behavior are not proved defective.
 

@@ -34,12 +34,27 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-11 · **TB101C independently REVIEWED / scoped MATCH**: [940-case gate and three-case census report](Architecture_M6_CP3_TB101C_P13_A3_Field_Corner_Stops_Full_Gate_Execution_Report_20261111.md) verified; next `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY` (Review only). [Independent adjudication](Architecture_M6_CP3_TB101C_REV_P13_A3_Field_Corner_Stops_Independent_Review_20261111.md). No production promotion. |
+| Currency | 2026-11-11 · **TB101C technical audit: scoped acceptance only**: [adjudication](Architecture_M6_CP3_TB101C_REV_Audit_Code_Architecture_20261111.md). Source fan and exact branch semantics are now defined for narrow implementation. First successor `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION`. Previously **TB101C independently REVIEWED / scoped MATCH**: [940-case gate and three-case census report](Architecture_M6_CP3_TB101C_P13_A3_Field_Corner_Stops_Full_Gate_Execution_Report_20261111.md) verified; next `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY` (Review only). [Independent adjudication](Architecture_M6_CP3_TB101C_REV_P13_A3_Field_Corner_Stops_Independent_Review_20261111.md). No production promotion. |
 | Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing`; CB120C source `e1e5b17e94f189c88c74172e12dfd6ac93cc532b`, [compile run 43013777504](https://github.com/akashskypatel/Directional/actions/runs/43013777504), [artifact 13852160952](https://github.com/akashskypatel/Directional/actions/runs/43013777504/artifacts/13852160952), ZIP SHA-256 `17dfdcf06d33b312a282d1c6f3cce68223df7010dce367b04897e848a2e16e74`, eight GMP/GMPXX compile targets, `runtimeExecution=false`. PR #8 draft/open/unmerged. |
 | Last accepted semantic runtime | **CP2 491/491** (2026-10-06); CP3/selector497 unpromoted. |
 | Latest candidate | **latest TB101C candidate (Review accepted, narrow gate only)**: 940/940, membership 1021, 1,888/1,888 hashes; three-case census 1 PASS / 2 registered RED; preceded by independently accepted TB100B 938/938; Cylinder PASS, BunnyRandom/Vase registered RED. [Report](Architecture_M6_CP3_TB100B_P13_A3_Boundary_Field_Corners_Corrected_Gate_Execution_Report_20261111.md) and [Review](Architecture_M6_CP3_TB100B_REV_P13_A3_Corrected_Corner_Gate_Independent_Review_20261111.md). |
 | Regression accounting and debt | CP2 **491/491** accepted, stable **66 events / 17 categories / 49 recurrences**, debt **1**, deferred **81** unchanged. New TB100 gate candidate only, not stable. O34/O35/O36/O37/O39 and D6 open; O38 defined but unpromoted. |
-| Active boundary | **Next Review** `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY`: decide source-vertex-to-chart-fan and sheet-safe stop identity; the TB101C full gate, census and missing historical stop receipt were independently reviewed in [Architecture_M6_CP3_TB101C_REV_P13_A3_Field_Corner_Stops_Independent_Review_20261111.md](Architecture_M6_CP3_TB101C_REV_P13_A3_Field_Corner_Stops_Independent_Review_20261111.md). No source/selector/test mutation, CP3 promotion or D4/D5 production switch; O39 pre-O36. |
+| Active boundary | **NEXT Code + Build** `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION`: unwired typed source-fan/sheet resolver only. [Audit](Architecture_M6_CP3_TB101C_REV_Audit_Code_Architecture_20261111.md). Prior proposed Review `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY` is discharged by this owner-requested technical audit. Historical question: decide source-vertex-to-chart-fan and sheet-safe stop identity; the TB101C full gate, census and missing historical stop receipt were independently reviewed in [Architecture_M6_CP3_TB101C_REV_P13_A3_Field_Corner_Stops_Independent_Review_20261111.md](Architecture_M6_CP3_TB101C_REV_P13_A3_Field_Corner_Stops_Independent_Review_20261111.md). No source/selector/test mutation, CP3 promotion or D4/D5 production switch; O39 pre-O36. |
+
+### User-authorized technical review audit — 2026-11-11
+
+The [TB101C technical audit](Architecture_M6_CP3_TB101C_REV_Audit_Code_Architecture_20261111.md) **supersedes the old next Review-only definition** `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY`. It completes that definition using the existing `SourceVertexEntityIdentity`, source-chart fan and sheet authority. It also freezes the exact single-writer boundary-branch decision (O39). The 940/940 gate is valid only as an unwired test gate. The derived positive corner-stop contract is not proved. The first implementation action is **only** `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION` (compile-only, unwired fan resolver). Each later row in the audit requires its own immutable TB and may stop on RED. No O36 switch or CP3 promotion.
+
+**Conditional sequence:**
+
+1. `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION` → `M6-CP3-TB102A-P13-A3-FAN-STOP-IDENTITY-EXEC` (typed source fan and sheet resolver).
+2. `M6-CP3-CB121B-P13-A3-FAN-SCOPED-STOP-FILTER` → `M6-CP3-TB102B-P13-A3-FAN-SCOPED-STOP-EXEC` (unwired stop filter).
+3. `M6-CP3-CB121C-P13-A3-DERIVED-CORNER-POSITIVE-ORACLE` → `M6-CP3-TB102C-P13-A3-DERIVED-CORNER-POSITIVE-EXEC` (derived positive test; may intentionally produce RED).
+4. `M6-CP3-CB122A-P13-A3-EXACT-RIM-BRANCH-OWNER` → `M6-CP3-TB103A-P13-A3-EXACT-RIM-BRANCH-EXEC` (unwired exact branch owner).
+5. `M6-CP3-CB122B-P13-A3-RIM-BRANCH-CORNER-CONSUMER` → `M6-CP3-TB103B-P13-A3-RIM-BRANCH-CORNER-EXEC` (corner reader).
+6. `M6-CP3-CB122C-P13-A3-RIM-BRANCH-A4-CONSUMER` → `M6-CP3-TB103C-P13-A3-RIM-BRANCH-A4-EXEC` (A4 reader).
+
+O34, O35 and O37 retain separate later definitions/CB/TB before O36. The user has not approved D6's expected Vase exit. All later tasks are conditional; they are **not** one combined agent turn.
 
 ## Authoritative adversarial review and narrow turn order — 2026-11-11
 
@@ -62,7 +77,7 @@ Each entry after the NEXT turn is conditional on its preceding gate. The detaile
 
 **Independent Review only; no rebuild or edits.** Re-open the immutable TB101C [report](Architecture_M6_CP3_TB101C_P13_A3_Field_Corner_Stops_Full_Gate_Execution_Report_20261111.md), 940-case [run 43016290356](https://github.com/akashskypatel/Directional/actions/runs/43016290356), artifact `13853426731`, three-case census [run 43016362575](https://github.com/akashskypatel/Directional/actions/runs/43016362575), artifact `13853038984`; verify checksum manifests and seven unchanged platform/A3 records, four unchanged rim records, and four recorded corner records. Examine the non-emitted historical `FIELD_CORNER_STOP_RECEIPT` under current sliced authority; do not assume it passed. Independently decide acceptance, preserve O39 before O36, CP3/selector497 unpromoted.
 
-## Mandatory next turn — `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY` — EXACT NEXT
+## Former next Review — `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY` — superseded by user-authorized audit
 
 **Review only, runtime-free.** The [TB101C independent record](Architecture_M6_CP3_TB101C_REV_P13_A3_Field_Corner_Stops_Independent_Review_20261111.md) accepts 940/940 PASS, 938 inherited rows and the registered census without production promotion. Decide whether a source-vertex stop identifies every matching network occurrence, or only a specific source-chart fan and sheet. Provide counterexamples for shared source vertices across incompatible fans, review nontrivial straight-rim field transport and prove one exact identity rule before authorizing a small Code + Build. O39 exact branch authority remains a separate later Review; O36 is prohibited until O39 and other gates are discharged. No successor work has begun.
 

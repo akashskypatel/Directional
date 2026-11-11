@@ -1,3 +1,20 @@
+**CURRENT NEXT (2026-11-11, user-authorized technical audit):** `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION`. Compile-only, unwired source-fan/sheet binding. [Audit](Architecture_M6_CP3_TB101C_REV_Audit_Code_Architecture_20261111.md). The older next Review `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY` was discharged by this audit; do not open it. No production wiring, test runtime in CB, or selector promotion. See the exact conditional sequence below.
+
+### User-authorized technical review audit — 2026-11-11
+
+The [TB101C technical audit](Architecture_M6_CP3_TB101C_REV_Audit_Code_Architecture_20261111.md) **supersedes the old next Review-only definition** `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY`. It completes that definition using the existing `SourceVertexEntityIdentity`, source-chart fan and sheet authority. It also freezes the exact single-writer boundary-branch decision (O39). The 940/940 gate is valid only as an unwired test gate. The derived positive corner-stop contract is not proved. The first implementation action is **only** `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION` (compile-only, unwired fan resolver). Each later row in the audit requires its own immutable TB and may stop on RED. No O36 switch or CP3 promotion.
+
+**Conditional sequence:**
+
+1. `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION` → `M6-CP3-TB102A-P13-A3-FAN-STOP-IDENTITY-EXEC` (typed source fan and sheet resolver).
+2. `M6-CP3-CB121B-P13-A3-FAN-SCOPED-STOP-FILTER` → `M6-CP3-TB102B-P13-A3-FAN-SCOPED-STOP-EXEC` (unwired stop filter).
+3. `M6-CP3-CB121C-P13-A3-DERIVED-CORNER-POSITIVE-ORACLE` → `M6-CP3-TB102C-P13-A3-DERIVED-CORNER-POSITIVE-EXEC` (derived positive test; may intentionally produce RED).
+4. `M6-CP3-CB122A-P13-A3-EXACT-RIM-BRANCH-OWNER` → `M6-CP3-TB103A-P13-A3-EXACT-RIM-BRANCH-EXEC` (unwired exact branch owner).
+5. `M6-CP3-CB122B-P13-A3-RIM-BRANCH-CORNER-CONSUMER` → `M6-CP3-TB103B-P13-A3-RIM-BRANCH-CORNER-EXEC` (corner reader).
+6. `M6-CP3-CB122C-P13-A3-RIM-BRANCH-A4-CONSUMER` → `M6-CP3-TB103C-P13-A3-RIM-BRANCH-A4-EXEC` (A4 reader).
+
+O34, O35 and O37 retain separate later definitions/CB/TB before O36. The user has not approved D6's expected Vase exit. All later tasks are conditional; they are **not** one combined agent turn.
+
 **TB101C independent Review COMPLETE / scoped MATCH (2026-11-11):** [independent record](.agents/Directional/Architecture_M6_CP3_TB101C_REV_P13_A3_Field_Corner_Stops_Independent_Review_20261111.md); 940/940 full gate and 1 PASS/2 registered RED census accepted only within test scope. Absent historical stop receipt not inferred. Fan/sheet identity and O39 exact branch ownership remain open, CP3/selector497 unpromoted. Next Review only `M6-CP3-DEFN-P13-A3-BOUNDARY-FAN-STOP-IDENTITY`.
 
 **TB101C COMPLETE / MATCH (2026-11-11; scoped immutable gate):** [report](.agents/Directional/Architecture_M6_CP3_TB101C_P13_A3_Field_Corner_Stops_Full_Gate_Execution_Report_20261111.md); 940/940 PASS, membership 1021, 1,888 checksums; census 1 PASS/2 existing RED, 9 checksums; seven platform and seven A3 lines unchanged, four d4-rim and four new d4-corner receipts recorded. Historical `FIELD_CORNER_STOP_RECEIPT` not emitted; independent Review required. No new stable regression evidence; 66/17/49, debt1, deferred81, CP2 491/491 unchanged; CP3/selector497 unpromoted, O39 before O36. Next `M6-CP3-TB101C-P13-A3-FIELD-CORNER-STOPS-FULL-GATE-REV`.
