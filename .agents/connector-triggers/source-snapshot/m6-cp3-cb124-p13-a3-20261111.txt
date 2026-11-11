@@ -1,0 +1,3 @@
+turn=M6-CP3-CB124-P13-A3-SHARED-RIM-BRANCH-RULE
+read_mode=snapshot
+purpose=bounded code-build source inspection
