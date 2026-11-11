@@ -1,0 +1,2 @@
+# TB100B temporary source snapshot trigger only
+.agents/connector-triggers/source-snapshot/m6-cp3-tb100b-20261111.txt
