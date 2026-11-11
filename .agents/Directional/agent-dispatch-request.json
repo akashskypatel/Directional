@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb119b-closeout-docs-20261111-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb119b-closeout-docs",
-  "file_id": "1Y344Xy72AzXKbsJNZE22ktcI2ivYdIqf",
-  "patch_sha256": "9df57a68f3ff67984bf451c27f1bfbbd95d7c9c6cd7d3cc347fe5c761ea76a9c",
-  "base_sha": "d47b7c24b11cfb568d4ffce971590b8e5f966dc4",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close out CB119B compile-only and hand off corrected test gate",
+  "request_id": "m6-cp3-tb100b-corrected-full-gate-20261111-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb100b-corrected-gate",
+  "executor_sha": "0828e543560953646ac9e4ae7c5b529f4923761e",
+  "semantic_source_sha": "d47b7c24b11cfb568d4ffce971590b8e5f966dc4",
+  "turn_id": "M6-CP3-TB100B-P13-A3-BOUNDARY-FIELD-CORNERS-CORRECTED-GATE-EXEC",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "13826405755",
+    "EXPECTED_SOURCE_SHA": "d47b7c24b11cfb568d4ffce971590b8e5f966dc4",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "a94196c1276a976618db161478d2e43cfc49f2d1a6977b54a74725f8dac2d667",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "744bc88351085ed536a4cf90b13434f681ca5291a7aef487d3708e60398b0f02",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "7769f77e02583eef90c41de7e4584e69ee24a084b7f0efe3f754ba56c398aae6",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB100_P13_A3_Boundary_Field_Corners_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "2df4bd96ee8a52323ffa4f07292e37a3b6e4aedd6424fb9dc68e805da2cbc24c",
+    "EXPECTED_CASE_COUNT": "938",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  },
+  "artifact_prefix": "m6-cp3-tb100b-corrected-gate",
   "retention_days": 14
 }
