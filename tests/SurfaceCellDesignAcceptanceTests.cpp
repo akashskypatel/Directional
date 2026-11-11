@@ -476,6 +476,40 @@ TEST_P(SurfaceCellDesignD4RimCensus, ReportsRimCountsAgainstTheA3Schedules) {
             << " unresolved=" << unresolved
             << " arcs:perArc/chained/output/recorded=" << list.str()
             << std::endl;
+
+  // RA-224: the chained schedule once rim rails also stop at the boundary
+  // field corners. `chains` and `spans` read without/with those stops.
+  if (!chainedInput.has_value() || !snapshots.fieldTransportAtlas.has_value()) {
+    std::cout << "d4-corner case=" << GetParam().testName << " inputs=foreign"
+              << std::endl;
+    return;
+  }
+  Eigen::MatrixXd faceAxisX;
+  Eigen::MatrixXd faceAxisY;
+  directional::geometry::cross_field_axes(snapshots.crossField, faceAxisX,
+                                          faceAxisY);
+  const auto fieldCorners =
+      directional::geometry::derive_boundary_field_corner_vertices(
+          mesh.vertices, mesh.faces, faceAxisX, faceAxisY,
+          &*snapshots.fieldTransportAtlas);
+  const auto stoppedInput =
+      directional::geometry::make_chained_global_conformity_baseline_input(
+          mesh.vertices, targetSize, topology, network,
+          context.featureMap.curves, fieldCorners);
+  ASSERT_TRUE(stoppedInput.has_value());
+  const auto stoppedBuilt = directional::geometry::build_global_conformity_baseline(
+      topology, *stoppedInput);
+  ASSERT_TRUE(stoppedBuilt);
+  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline(
+      topology, *stoppedInput, stoppedBuilt.value()));
+  // A stop only ever splits a span.
+  EXPECT_GE(stoppedInput->spans.size(), chainedInput->spans.size());
+  std::cout << "d4-corner case=" << GetParam().testName << " inputs=own"
+            << " fieldCorners=" << fieldCorners.size()
+            << " chains=" << chainedInput->chains.size() << '/'
+            << stoppedInput->chains.size()
+            << " spans=" << chainedInput->spans.size() << '/'
+            << stoppedInput->spans.size() << std::endl;
 }
 
 INSTANTIATE_TEST_SUITE_P(
