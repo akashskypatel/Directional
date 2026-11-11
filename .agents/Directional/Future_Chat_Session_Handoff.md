@@ -34,12 +34,12 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-11 · **CB120C COMPLETE / BUILD GREEN**: test-only four-case field-corner census compiled, not executed; [record](Architecture_M6_CP3_CB120C_P13_A3_Field_Corner_Census_Code_Build_Record_20261111.md). Next separate `M6-CP3-TB101C-P13-A3-FIELD-CORNER-STOPS-FULL-GATE-EXEC` (artifact-only 940-case full gate and census), then independent Review. No production promotion. |
+| Currency | 2026-11-11 · **TB101C COMPLETE / MATCH**: [940-case gate and three-case census report](Architecture_M6_CP3_TB101C_P13_A3_Field_Corner_Stops_Full_Gate_Execution_Report_20261111.md) verified; next independent `M6-CP3-TB101C-P13-A3-FIELD-CORNER-STOPS-FULL-GATE-REV` only. No production promotion. |
 | Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing`; CB120C source `e1e5b17e94f189c88c74172e12dfd6ac93cc532b`, [compile run 43013777504](https://github.com/akashskypatel/Directional/actions/runs/43013777504), [artifact 13852160952](https://github.com/akashskypatel/Directional/actions/runs/43013777504/artifacts/13852160952), ZIP SHA-256 `17dfdcf06d33b312a282d1c6f3cce68223df7010dce367b04897e848a2e16e74`, eight GMP/GMPXX compile targets, `runtimeExecution=false`. PR #8 draft/open/unmerged. |
 | Last accepted semantic runtime | **CP2 491/491** (2026-10-06); CP3/selector497 unpromoted. |
-| Latest candidate | **independently accepted corrected TB100B test gate**: 938/938, membership 1019, 1,884/1,884 hashes; Cylinder PASS, BunnyRandom/Vase registered RED. [Report](Architecture_M6_CP3_TB100B_P13_A3_Boundary_Field_Corners_Corrected_Gate_Execution_Report_20261111.md) and [Review](Architecture_M6_CP3_TB100B_REV_P13_A3_Corrected_Corner_Gate_Independent_Review_20261111.md). |
+| Latest candidate | **latest TB101C candidate (Review pending)**: 940/940, membership 1021, 1,888/1,888 hashes; three-case census 1 PASS / 2 registered RED; preceded by independently accepted TB100B 938/938; Cylinder PASS, BunnyRandom/Vase registered RED. [Report](Architecture_M6_CP3_TB100B_P13_A3_Boundary_Field_Corners_Corrected_Gate_Execution_Report_20261111.md) and [Review](Architecture_M6_CP3_TB100B_REV_P13_A3_Corrected_Corner_Gate_Independent_Review_20261111.md). |
 | Regression accounting and debt | CP2 **491/491** accepted, stable **66 events / 17 categories / 49 recurrences**, debt **1**, deferred **81** unchanged. New TB100 gate candidate only, not stable. O34/O35/O36/O37/O39 and D6 open; O38 defined but unpromoted. |
-| Active boundary | **Next Test + Benchmark** `M6-CP3-TB101C-P13-A3-FIELD-CORNER-STOPS-FULL-GATE-EXEC`: use the immutable CB120C compile package, existing 940-case gate and separate census. No rebuild, source/selector/test mutation, CP3 promotion or D4/D5 production switch; O39 pre-O36. TB101C independent Review is conditional on the execution result. |
+| Active boundary | **Next independent Review** `M6-CP3-TB101C-P13-A3-FIELD-CORNER-STOPS-FULL-GATE-REV`: verify TB101C full gate, census and the missing historical stop receipt without new runtime. No source/selector/test mutation, CP3 promotion or D4/D5 production switch; O39 pre-O36. |
 
 ## Authoritative adversarial review and narrow turn order — 2026-11-11
 
@@ -58,9 +58,9 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 Each entry after the NEXT turn is conditional on its preceding gate. The detailed scope, stop rules and falsifiers are in the linked audit. Do not skip an independent review when a focused/full result is a mismatch.
 
-## Mandatory next turn — `M6-CP3-TB101C-P13-A3-FIELD-CORNER-STOPS-FULL-GATE-EXEC` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB101C-P13-A3-FIELD-CORNER-STOPS-FULL-GATE-REV` — EXACT NEXT
 
-**Separate artifact-only Test + Benchmark; no rebuild or edits.** Use CB120C immutable compiled source `e1e5b17e94f189c88c74172e12dfd6ac93cc532b`, [compile 43013777504](https://github.com/akashskypatel/Directional/actions/runs/43013777504), [artifact 13852160952](https://github.com/akashskypatel/Directional/actions/runs/43013777504/artifacts/13852160952). Execute only the existing 940-case field-corner stop full gate and the predeclared census. Preserve raw platform, A3 and `d4-rim` evidence; record all four new `d4-corner` receipts verbatim. Independently verify the immutable package source, manifests and checksums. Any mismatch requires independent Review; even a MATCH requires the separate TB101C Review before further implementation. No selector497/CP3 promotion, D4/D5 production switch, or O36 before O39. PR #8 remains draft/unmerged.
+**Independent Review only; no rebuild or edits.** Re-open the immutable TB101C [report](Architecture_M6_CP3_TB101C_P13_A3_Field_Corner_Stops_Full_Gate_Execution_Report_20261111.md), 940-case [run 43016290356](https://github.com/akashskypatel/Directional/actions/runs/43016290356), artifact `13853426731`, three-case census [run 43016362575](https://github.com/akashskypatel/Directional/actions/runs/43016362575), artifact `13853038984`; verify checksum manifests and seven unchanged platform/A3 records, four unchanged rim records, and four recorded corner records. Examine the non-emitted historical `FIELD_CORNER_STOP_RECEIPT` under current sliced authority; do not assume it passed. Independently decide acceptance, preserve O39 before O36, CP3/selector497 unpromoted.
 
 ### Previous TB100 Review (complete; retained reference)
 
