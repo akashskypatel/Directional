@@ -1,4 +1,0 @@
-CB119B source snapshot request
-Turn: M6-CP3-CB119B-P13-A3-BOUNDARY-FIELD-CORNER-ORACLE
-Branch: agent/surface_cell_quad/p5-recover-bridge-healing
-Purpose: freeze exact source for code/build work
