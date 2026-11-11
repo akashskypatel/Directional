@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "tb101b-field-corner-factory-20261111-v1",
-  "operation": "test_benchmark",
-  "mailbox_key": "tb101b-field-corner-factory",
-  "executor_sha": "48d25902b8d66a631a33f034a7391d204da3709f",
-  "semantic_source_sha": "5e603a239d9d7519668b9c42cb3c2b6e8f16d2f8",
-  "turn_id": "M6-CP3-TB101B-P13-A3-FIELD-CORNER-FACTORY-EXEC",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": 13848350912,
-    "EXPECTED_SOURCE_SHA": "5e603a239d9d7519668b9c42cb3c2b6e8f16d2f8",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "ad7ced00acc60c3da2ffe5b051d0cc929a8f509a7591ca6274d022db66d80e7c",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "482141c09549dd9899a4840543d848b21663dc2580ef44041833b84089b83182",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "ba5b772128066599b97537bdb1d587a5ac5cae8eb9d3d2da38a50b9bd5db97e4",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB101B_Field_Corner_Factory_Focused_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "6895038de1fb1f1575b7b293438541f46a732879eab2433dada5a101b0780e1a",
-    "EXPECTED_CASE_COUNT": 1
-  },
-  "artifact_prefix": "m6-cp3-tb101b-field-corner-factory",
+  "request_id": "tb101b-docs-closeout-20261111-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "tb101b-docs-closeout",
+  "file_id": "126GXy-yQsuGwTfmqV-bwHOkYZtn8e592",
+  "patch_sha256": "8814932ce8904885cb16c5b662380f7148be0890b25c7b36f71d45dbf2c61872",
+  "base_sha": "a85fc49a3cb141363b16f34e673eda50f072391a",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record TB101B focused factory gate MATCH",
   "retention_days": 14
 }
