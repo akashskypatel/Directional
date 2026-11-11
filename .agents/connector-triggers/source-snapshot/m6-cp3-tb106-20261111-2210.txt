@@ -1,0 +1,3 @@
+Canonical turn: M6-CP3-TB106-P13-A3-EXACT-RIM-BRANCH-RULE-FULL-GATE-EXEC
+Source authority before trigger: d1c1797581ecc2897cbd86b26ab0425c233498ed
+Purpose: exact verified source snapshot for immutable TB106 execution.
