@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "tb101c-audit-rev-independent-20261111-v1",
+  "request_id": "cb123-derived-corner-apply-20261111-v1",
   "operation": "drive_apply",
-  "mailbox_key": "tb101c-audit-rev-independent-20261111",
-  "file_id": "1v8GiHeS3HHu4DsaecjNFADPIH7rOKaRA",
-  "patch_sha256": "fec99d230ff09601ed5d0fce656e8b96a7dba30cd31f1ac3200d198162e7b6fe",
-  "base_sha": "42fc1143d0e0ed5892b971e149f64e64899842eb",
+  "mailbox_key": "cb123-derived-corner-apply-20261111",
+  "file_id": "1foIDqvksAkk3309UtbwRGSv7Xs8cqBqj",
+  "patch_sha256": "96e2f2888a69ad3b1e80568dfb0cf04d0e9960fa34c08f8817e42ffcbe2d1b3c",
+  "base_sha": "aaec7c0d1fbac11d2a765f7a00fecac3a708fe05",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): correct TB101C audit revision join architecture",
+  "commit_message": "test(surface-cells): verify field-derived boundary corner chain stops",
   "retention_days": 14
 }
