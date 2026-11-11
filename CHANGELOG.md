@@ -1,3 +1,8 @@
+## 2026-11-11 UTC — TB100 Review adversarial audit (Review-only)
+
+- [Adversarial audit](.agents/Directional/Architecture_M6_CP3_TB100_REV_Audit_20261111.md): verified the prior verdict **for its one hard-rail fixture only**, 938-row TB100 evidence (1,884/1,884 hashes; 937 PASS, 1 RED) and census (9/9), and corrected the scope of its assurance. The four hard-feature boundary endpoints are required C1 conservative chain stops; not proof of all field/region corner production.
+- **Next:** isolated test-only CB119B; corrected full gate and separate Review; CB120 divided into small stop-node/factory/census Code + Build and artifact-only turns. O39 exact decision is now an explicit prerequisite to the production D5/D4 switch under DESIGN Amendment 18. No source/test/selector/manifest edits or tests/builds in this Review. CP2 491/491, stable 66/17/49, debt1 and deferred81 unchanged.
+
 **2026-11-11 — `M6-CP3-TB100-P13-A3-BOUNDARY-FIELD-CORNERS-FULL-GATE-REV` (Review, runtime-free):** The TB100 937/938 RED is a frozen test-oracle/spec error at RA-224 §4, not a proven producer fault. Hard-feature barrier endpoints {1,7,10,16} are source-boundary conservative corners under C1; pass-through rim-side-start equality still holds. Corrected normative assertion, froze sole successor `M6-CP3-CB119B-P13-A3-BOUNDARY-FIELD-CORNER-ORACLE` for test-only compile-only correction with independent falsifiers. No code, test, fixture or selector changed by this Review. CP2 491/491, stable 66/17/49 debt1 deferred81, CP3 unpromoted. [Independent decision](.agents/Directional/Architecture_M6_CP3_TB100_REV_P13_A3_Boundary_Field_Corner_Oracle_Adjudication_20261111.md).
 
 ## 2026-11-11 UTC — TB100 boundary field corners MISMATCH (artifact-only)
