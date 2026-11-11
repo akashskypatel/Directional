@@ -1,3 +1,9 @@
+## 2026-11-11 UTC — CB120A field-corner stop-node helper compiled (Code + Build only)
+
+- [Record](.agents/Directional/Architecture_M6_CP3_CB120A_P13_A3_Field_Corner_Stop_Nodes_Code_Build_Record_20261111.md): code source `47afc84ec1104a7457324a967b9362deff549624`; three focused source/test files (+43/−8), no factory, census, selector or production changes. Stop set now accepts declared source-vertex field corners; order/duplicate and unrelated-vertex regressions added.
+- [Compile 42993845258](https://github.com/akashskypatel/Directional/actions/runs/42993845258) with mandatory GMP/GMPXX, [artifact 13843326855](https://github.com/akashskypatel/Directional/actions/runs/42993845258/artifacts/13843326855), ZIP SHA-256 `a515a41813a4409a69df1a93501c1a40654718547de5814d2901c410979d6eba`; eight required targets, `runtimeExecution=false`, no tests or benchmarks. Apply run `42993541959` verified the source patch.
+- Next `M6-CP3-TB101A-P13-A3-FIELD-CORNER-STOP-NODES-EXEC` artifact-only focused gate. CP2 491/491; stable 66/17/49, debt1, deferred81 unchanged. CP3/selector497 unpromoted; O39 still required before O36.
+
 ## 2026-11-11 — Adversarial technical review of TB100B gate Review
 
 Corrected two contradictory stop-set falsifiers without changing source or accepted gate results: hard-feature endpoints already stop whether or not on the rim; a pass-through rim field corner must stop. Scoped 938/938 acceptance remains, production remains unpromoted. Split the next helper/factory/census changes and independent gates; added fan/sheet identity and exact shared branch-decision Review preconditions before O36. See the amended TB100B independent Review document.
