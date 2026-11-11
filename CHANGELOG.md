@@ -1,3 +1,7 @@
+## 2026-11-11 — Adversarial technical review of TB100B gate Review
+
+Corrected two contradictory stop-set falsifiers without changing source or accepted gate results: hard-feature endpoints already stop whether or not on the rim; a pass-through rim field corner must stop. Scoped 938/938 acceptance remains, production remains unpromoted. Split the next helper/factory/census changes and independent gates; added fan/sheet identity and exact shared branch-decision Review preconditions before O36. See the amended TB100B independent Review document.
+
 ## 2026-11-11 UTC — independent TB100B corrected boundary field-corner gate Review: MATCH within test scope
 
 - [Independent Review](.agents/Directional/Architecture_M6_CP3_TB100B_REV_P13_A3_Corrected_Corner_Gate_Independent_Review_20261111.md): rederived 938/938 corrected gate and all inherited 936 controls; 1,884/1,884 gate and 9/9 census packaged hashes, seven platform + seven A3 + four D4 raw records and both field-corner receipts unchanged. The first TB100 failure was the unpromoted test-oracle omission of four non-traversable hard-rail rim endpoints. The correction is nonvacuous on plain/rail and both face-row orders. Cylinder PASS; BunnyRandom/Vase remain registered RED. No production or stable regression acceptance.

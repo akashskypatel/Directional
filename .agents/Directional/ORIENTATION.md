@@ -1,5 +1,7 @@
 # Directional — Project Orientation
 
+> **Technical Review currency (2026-11-11):** TB100B 938/938 remains an isolated gate PASS, not direct production acceptance. The [adversarial re-review addendum](Architecture_M6_CP3_TB100B_REV_P13_A3_Corrected_Corner_Gate_Independent_Review_20261111.md#owner-requested-adversarial-re-review--technical-corrections-2026-11-11) corrects two false CB120A stop falsifiers and records fan/sheet identity and O39 exact-authority gates. Next remains `M6-CP3-CB120A-P13-A3-FIELD-CORNER-STOP-NODES` (helper only).
+
 >This rewrite was expressly requested on 2026-10-16.
 
 **Currency:** 2026-11-11 · **TB100B independent corrected-gate Review MATCH for the unwired source-boundary corner product**; [record](Architecture_M6_CP3_TB100B_REV_P13_A3_Corrected_Corner_Gate_Independent_Review_20261111.md). Next only `M6-CP3-CB120A-P13-A3-FIELD-CORNER-STOP-NODES` (stop-node helper, compile-only). Verified 938/938 immutable gate and unchanged raw records; Cylinder PASS, BunnyRandom/Vase RED. CP2 491/491, stable 66/17/49, debt1, deferred81; CP3/selector497 unpromoted. O39 remains mandatory before O36.
