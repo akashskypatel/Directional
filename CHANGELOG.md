@@ -1,3 +1,9 @@
+## 2026-11-11 UTC — CB124 shared rim branch rule compiled (64B.21; no runtime)
+
+- Applied frozen one-file diff `5a39539eea26246f2758bd5bea40ca9ae339fce1b502ee98daf8c26630be7e1a` (+51/−83) to `src/geometry/SurfaceCellTracing.cpp`; exact source `acffbffe7f8cb247f9d6118526f37f7d5a7cebad`. The bounded-disk producer reuses the existing per-edge branch helper; arithmetic is unchanged.
+- Eight GMP/GMPXX targets compiled in [run 43064008515](https://github.com/akashskypatel/Directional/actions/runs/43064008515); immutable artifact `13876075161` ZIP SHA-256 `7e4cda077030e7db77edbb29eea7d40b43c15ecd452190be4f5ad6a2023cb3f1`, `runtimeExecution=false`. No tests or benchmarks were run. [Record](.agents/Directional/Architecture_M6_CP3_CB124_P13_A3_Shared_Rim_Branch_Rule_Code_Build_Record_20261111.md).
+- Accepted CP2 491/491 and stable 66/17/49, debt 1, deferred 81 unchanged; O36 unwired; CP3/selector497 unpromoted. Next separate `M6-CP3-TB105-P13-A3-SHARED-RIM-BRANCH-RULE-FULL-GATE-EXEC` only.
+
 ## 2026-11-11 UTC — TB104 derived field-corner witness gate COMPLETE / scoped MATCH
 
 - [Report](.agents/Directional/Architecture_M6_CP3_TB104_P13_A3_Derived_Field_Corner_Witness_Full_Gate_Execution_Report_20261111.md): immutable CB123 source `dcfc9494830b150af944b057eb7003a69806085a`, package `13867931016`. [Gate 43054464177](https://github.com/akashskypatel/Directional/actions/runs/43054464177) **942/942 PASS**, membership 1023, 1,892/1,892 result hashes; two new GUARD tests pass and 940 inherited rows match TB101C. All 7+7 platform/A3 lines, four D4 rim/corner and two field-corner receipts unchanged; derived receipt recorded verbatim in report.
