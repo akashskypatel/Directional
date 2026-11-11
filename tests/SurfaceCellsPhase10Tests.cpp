@@ -8489,6 +8489,61 @@ TEST(SurfaceCellAuthorityContractCutover,
   }
 }
 
+// A field corner is a stop in the factory, including at a pass-through rim
+// vertex. Existing field corners do not change the existing chain partition.
+TEST(SurfaceCellAuthorityContractCutover,
+     ChainedInputStopsAtBoundaryFieldCorners) {
+  for (const bool reverseFaceRows : {false, true}) {
+    SCOPED_TRACE(reverseFaceRows ? "reversed" : "forward");
+    const auto fixture = build_rectangular_hard_rail_phase_front(reverseFaceRows);
+    ASSERT_TRUE(fixture.topologyPlan.has_value());
+    ASSERT_TRUE(fixture.fieldNetwork.has_value());
+    ASSERT_TRUE(fixture.atlas.has_value());
+    const auto &topology = *fixture.topologyPlan;
+    Eigen::MatrixXd faceAxisX;
+    Eigen::MatrixXd faceAxisY;
+    directional::geometry::cross_field_axes(fixture.crossField, faceAxisX,
+                                            faceAxisY);
+    const auto corners =
+        directional::geometry::derive_boundary_field_corner_vertices(
+            fixture.mesh.V, fixture.mesh.F, faceAxisX, faceAxisY,
+            &*fixture.atlas);
+    const auto input =
+        [&](const std::vector<directional::authority::SourceVertexId> &stops) {
+          return directional::geometry::make_chained_global_conformity_baseline_input(
+              fixture.mesh.V, fixture.targetSize, topology,
+              *fixture.fieldNetwork, fixture.featureCurves, stops);
+        };
+    const auto original = input({});
+    const auto derived = input(corners);
+    ASSERT_TRUE(original.has_value());
+    ASSERT_TRUE(derived.has_value());
+    ASSERT_EQ(4U, original->chains.size());
+    EXPECT_EQ(original->chains, derived->chains);
+    EXPECT_EQ(original->spans.size(), derived->spans.size());
+
+    const auto sourceVertex = [&](const int index) {
+      return directional::authority::SourceVertexId::from_index(
+                 index, static_cast<std::size_t>(fixture.mesh.V.rows()))
+          .value();
+    };
+    // Vertex 3 is on a side interior, not an existing chain stop.
+    const auto split = input({sourceVertex(3)});
+    const auto duplicate = input({sourceVertex(3), sourceVertex(3)});
+    ASSERT_TRUE(split.has_value());
+    ASSERT_TRUE(duplicate.has_value());
+    EXPECT_EQ(3U, split->chains.size());
+    EXPECT_EQ(original->spans.size() + 1U, split->spans.size());
+    EXPECT_EQ(split->chains, duplicate->chains);
+    EXPECT_EQ(split->spans.size(), duplicate->spans.size());
+    const auto built =
+        directional::geometry::build_global_conformity_baseline(topology, *split);
+    ASSERT_TRUE(built);
+    EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline(
+        topology, *split, built.value()));
+  }
+}
+
 TEST(SurfaceCellAuthorityContractCutover,
      FixedConformityPlanTargetPerturbationPreservesSharedBoundaryIntervals) {
   const auto fixture = build_rectangular_hard_rail_phase_front();

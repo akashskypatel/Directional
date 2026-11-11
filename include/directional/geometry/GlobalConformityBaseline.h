@@ -314,13 +314,14 @@ build_global_conformity_baseline(const GlobalTopologyPlan &topology,
 
 /** D5 A3 input over an A2b plan (RA-220): one span per arc, with each arc's
  *  support copied verbatim, except that the source-boundary arcs of one rail
- *  between stops form one chained span. Nothing when the plan and the network
- *  do not describe one graph. */
+ *  between stops form one chained span. Boundary field-corner source vertices
+ *  also stop chains. Nothing when the plan and network differ. */
 [[nodiscard]] std::optional<GlobalConformityBaselineInput>
 make_chained_global_conformity_baseline_input(
     const Eigen::MatrixXd &sourceVertices, const Eigen::VectorXd &targetSize,
     const GlobalTopologyPlan &topology, const FieldAlignedCurveNetwork &network,
-    const std::vector<AdaptiveFeatureCurve> &featureCurves);
+    const std::vector<AdaptiveFeatureCurve> &featureCurves,
+    const std::vector<authority::SourceVertexId> &fieldCornerVertices = {});
 
 [[nodiscard]] std::optional<GlobalConformityPlanError>
 validate_global_conformity_baseline_candidate(

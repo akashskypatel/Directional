@@ -800,13 +800,14 @@ std::optional<GlobalConformityBaselineInput>
 make_chained_global_conformity_baseline_input(
     const Eigen::MatrixXd &sourceVertices, const Eigen::VectorXd &targetSize,
     const GlobalTopologyPlan &topology, const FieldAlignedCurveNetwork &network,
-    const std::vector<AdaptiveFeatureCurve> &featureCurves) {
+    const std::vector<AdaptiveFeatureCurve> &featureCurves,
+    const std::vector<authority::SourceVertexId> &fieldCornerVertices) {
   const auto chains =
       global_conformity_baseline_detail::derive_mandatory_chain_partition(
           topology.arcs(), topology.rotation_system(), network.mandatory_edges(),
           global_conformity_baseline_detail::derive_mandatory_chain_stop_nodes(
               network.nodes(), network.singularity_ports(),
-              network.mandatory_edges(), featureCurves));
+              network.mandatory_edges(), featureCurves, fieldCornerVertices));
   if (!chains) return std::nullopt;
   GlobalConformityBaselineInput input;
   input.sourceVertices = sourceVertices;
