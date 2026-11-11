@@ -1,0 +1,2 @@
+Source snapshot request for M6-CP3-TB101C-P13-A3-FIELD-CORNER-STOPS-FULL-GATE-REV.
+Freeze the push-event commit as the source authority. No tests or builds.
