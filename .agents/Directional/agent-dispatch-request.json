@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb128-annulus-rim-edge-schedule-compile-20261112-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb128-annulus-rim-edge-schedule-compile-20261112-v1",
-  "source_sha": "739e79e240f75ac1c24e659004b13b425803081b",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-cb128-annulus-rim-edge-schedule"
+  "request_id": "m6-cp3-cb128-docs-closeout-20261112-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb128-docs-closeout-20261112-v1",
+  "file_id": "1tCMvTbNj8T0gKQkiqfeHOdXx3syB_ZuB",
+  "patch_sha256": "256421dd464ece62513693f79164dcf554d9681fa61453d491545f09f7696535",
+  "base_sha": "4c4e48fd4cf1c5966904f0d631507b7bc571ff87",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cb128): record compiled annulus edge schedule and hand off TB109",
+  "retention_days": 14
 }
