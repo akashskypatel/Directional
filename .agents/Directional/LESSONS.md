@@ -623,6 +623,10 @@ This document records **reusable failure-derived engineering lessons**, not an e
   check turned a "completion failure" into a fixture property. Also read how the measure is
   normalized: the size ratio treats rail edges as on target, so a low size percentile describes
   interior edges.
+- **A receipt that predicts both hypotheses settles the owner in one gate (RA-233).** H1
+  (grading) and H2 (parity) predicted opposite `switch-size`/`switch-spans` values, and TB114
+  decided it. When every repair changes a contract the user owns, stop at a named decision with
+  the costs written out, and keep only decision-independent measurements running.
 - **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
   still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).
 - **A TB runs the full current gate even when its CB touches no gate binary.** A CLI- or GUI-only CB

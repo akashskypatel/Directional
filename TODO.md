@@ -1,4 +1,29 @@
-## CURRENT — TB114 scoped MATCH (64E.8); interior size grading Review next, 2026-11-12
+## CURRENT — RA-233: O41 is A4 size grading (64E.9); CB134 next; user decision D10 pending, 2026-11-12
+
+> **Canonical next:** `M6-CP3-CB134-P13-A4-PRODUCTION-SIZE-CENSUS` (implementation agent, compile only, test only). [Exact patch](.agents/Directional/Architecture_M6_CP3_CB134_P13_A4_Production_Size_Census_Exact.diff) `0f3eb0d8c62043013f47b5815fc280d959aec13bca4f7f79d52d2b4431ae4ab4`, 17 lines, keep 1 single-space context line. Numstat: `6 0` `tests/SurfaceCellDesignAcceptanceTests.cpp`. Base: HEAD `a988f8cab`.
+
+- [x] **RA-233** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Interior_Size_Grading_Review_20261112.md)) completed `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING` (64E.9).
+  - H2 is refuted: no parity moves.
+  - H1 holds: on MultiFaceSeam chained, boundaries sit at target (≈1.02) and interior p5 is 0.434; the target grows up to 3× inward.
+  - Per-arc passes only by over-coarsening boundaries (1.28×).
+  - O41's owner is A4 construction.
+- [ ] **D10 (user decision, new):** how to repair O41.
+  - **A:** A4 size transitions (graded constructions with irregular vertex pairs; overlaps 65C).
+  - **B:** region-aware A3 count (changes D7; coarsens boundaries on purpose).
+  - **C:** gate policy (accept undersized interior cells).
+
+  Activation is held until D10 is answered and O41 is fixed.
+
+| Step | Turn | Owner |
+|---|---|---|
+| 64E.9 **COMPLETE** | `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING` (RA-233) | Review |
+| **64E.10 NEXT** | `M6-CP3-CB134-P13-A4-PRODUCTION-SIZE-CENSUS`: the receipts on the production design-acceptance runs, including Vase. Mismatch → `M6-CP3-PLAN-P13-A4-PRODUCTION-SIZE-CENSUS-STOP`; infrastructure → `M6-CP3-CB134A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH` | implementation agent |
+| 64E.11 | `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-EXEC`: TB114's manifest byte for byte plus the census. MATCH needs 945/945, census verdicts unchanged, every TB114 receipt unchanged, `production` lines recorded, and Vase's completion `switch-run` with `switch-validation accepted=0 strict=0`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB115A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH` | implementation agent |
+| D10 | A, B or C (RA-233 §3) | **user** |
+| 64E.12 | `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION`: applies D10 with Vase evidence | **Review agent only** |
+| later | Activation, after O41 | Review, then implementation |
+
+## PREVIOUS — TB114 scoped MATCH (64E.8), 2026-11-12
 
 > **Exact next turn:** `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING` (**Review only**, RA-232 §6). [TB114 report](.agents/Directional/Architecture_M6_CP3_TB114_P13_A4_Completed_Mesh_Size_Census_Execution_Evidence_20261112.md), [gate run 43231582288](https://github.com/akashskypatel/Directional/actions/runs/43231582288). The immutable CB133 source `e60f2c76cc782767daf149d9a78af09474eb310e` passed **945/945**, 1,026 memberships, 1,898/1,898 hashes, 945 inherited ledger rows and 46/46 inherited receipt lines. Eight `switch-size` and four `switch-spans` lines were observed. Product switch still off; CP3/selector497 unpromoted.
 

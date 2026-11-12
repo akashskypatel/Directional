@@ -1,3 +1,10 @@
+## 2026-11-12 UTC — RA-233 interior size grading: O41 owner is A4; user decision D10 (64E.9; Review, runtime-free)
+
+- [RA-233](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Interior_Size_Grading_Review_20261112.md): TB114 refutes parity raises (no span moved on any fixture). It confirms interior size grading: MultiFaceSeam chained boundaries sit at target (≈1.02), while interior p5 is 0.434 under a target that grows up to 3× inward. Per-arc passes only by over-coarsening boundaries (1.28×, within the gate's 4× rail tolerance).
+- O41's owner is A4 construction. New user decision **D10**: (A) A4 size transitions, (B) a region-aware A3 count, or (C) a gate policy.
+- Frozen regardless of D10: CB134 (`0f3eb0d8…`, 17 lines, test only; production-path receipts including Vase) → TB115 (TB114 manifest plus census). Then the Review-only `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION`.
+- Verification: `-fsyntax-only` 0; CB134 applies at HEAD; the manifest self-check passes. No product or test source changed in the repository.
+
 ## 2026-11-12 UTC — TB114 immutable size census full gate matched (64E.8)
 
 - [TB114 retained evidence](.agents/Directional/Architecture_M6_CP3_TB114_P13_A4_Completed_Mesh_Size_Census_Execution_Evidence_20261112.md): [run 43231582288](https://github.com/akashskypatel/Directional/actions/runs/43231582288) SUCCESS; exact CB133 source `e60f2c76cc782767daf149d9a78af09474eb310e`, immutable compile artifact `13947781593`, result artifact `13950773589` (ZIP SHA-256 `ae08fb620b087ce7b05b177dd21d8b98f821f4817c3a217ece504bcf93073f3d`). Full gate **945/945 PASS**, membership **1,026**, result checksums **1,898/1,898**, inherited ledger semantic rows **945/945** and diagnostic receipt lines **46/46 byte-identical** to TB113. No rebuild, relink or benchmark.
