@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb132-p13-a4-compile-20261112-1138-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb132-p13-a4-compile-20261112-1138-v1",
-  "source_sha": "196f611769ee738a86d4aa46903d0ed592384691",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb132-p13-a4-compile"
+  "request_id": "m6-cp3-cb132-p13-a4-closeout-docs-20261112-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb132-p13-a4-closeout-docs-20261112-v1",
+  "file_id": "1powPB9vN23agBlRRzQb4focH_kaN6vkC",
+  "patch_sha256": "b7bc1a5373418279629cb42ddfb6c8ab5b93b34a920b344ebae4f611081299bb",
+  "base_sha": "4161f80651a44435bcb6001601f8b41acd025cc8",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cb132): record compile gate evidence and TB113 handoff",
+  "retention_days": 14
 }
