@@ -1,2 +1,0 @@
-M6-CP3-CB132-P13-A4-COMPLETED-MESH-GATE-CENSUS
-source snapshot for exact test-only patch
