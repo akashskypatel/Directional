@@ -1,3 +1,0 @@
-Turn: M6-CP3-TB111-P13-A3-ANNULUS-RIM-PAIR-CENSUS-FULL-GATE-EXEC
-Requested source: d9dde92f938fab7688644fe2e420214bcefa93cb
-Snapshot basis: current branch exact event SHA; no semantic edits.
