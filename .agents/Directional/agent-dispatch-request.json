@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb132-p13-a4-closeout-docs-20261112-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb132-p13-a4-closeout-docs-20261112-v1",
-  "file_id": "1powPB9vN23agBlRRzQb4focH_kaN6vkC",
-  "patch_sha256": "b7bc1a5373418279629cb42ddfb6c8ab5b93b34a920b344ebae4f611081299bb",
-  "base_sha": "4161f80651a44435bcb6001601f8b41acd025cc8",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cb132): record compile gate evidence and TB113 handoff",
-  "retention_days": 14
+  "request_id": "m6-cp3-tb113-completed-mesh-gate-full-20261112-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb113-completed-mesh-gate-full-20261112-v1",
+  "executor_sha": "e9390bd8133ea7dc224a726d07d808b615948e33",
+  "semantic_source_sha": "196f611769ee738a86d4aa46903d0ed592384691",
+  "turn_id": "M6-CP3-TB113-P13-A4-COMPLETED-MESH-GATE-CENSUS-FULL-GATE-EXEC",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "artifact_prefix": "m6-cp3-tb113-completed-mesh-gate-full",
+  "retention_days": 14,
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "13941286743",
+    "EXPECTED_SOURCE_SHA": "196f611769ee738a86d4aa46903d0ed592384691",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "3964dde25c8005048e018f2927f2f7dd29c288eb2afcb2d43ddd9451288c3b5e",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "b1469e8796c1a2de094a376e62a49232794f1dcb55bbf4c4da2f162d81a08029",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "c26a2c0c5fef6ed29e155d2013c23ac22a838f883559791f663cfc95efea2434",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB113_P13_A4_Completed_Mesh_Gate_Census_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "16a909bd6d3fe2b9ba37d263b89fb8ca16dcc3dd42214e4cabcae26c05c91020",
+    "EXPECTED_CASE_COUNT": "945",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  }
 }
