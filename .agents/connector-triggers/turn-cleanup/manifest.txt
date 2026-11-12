@@ -1,0 +1,2 @@
+# CB131 temporary state
+.agents/connector-triggers/source-snapshot/cb131-rim-chain-switch-staging-20261112.txt
