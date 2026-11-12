@@ -1,3 +1,8 @@
+## 2026-11-12 UTC — Routing after TB110: O36 Review ID assigned (64E)
+
+- TB110's `Successor: UNKNOWN` resolved. RA-228 §7 authorized the O36 switch definition as a separate Review, and the Review track assigned it the ID `M6-CP3-DEFN-P13-A3-PRODUCTION-SWITCH` (step 64E, Review agent only). `STATUS` now names it.
+- No implementation turn is runnable: every frozen exact patch (CB125–CB130) is applied. The handoff, `TODO.md` and ORIENTATION now agree. Stale "NEXT" pointers to TB110 and TB111 and the old `load_next` were corrected. No source, test, manifest or selector changed.
+
 ## 2026-11-12 UTC — TB110 annulus rim consumption full gate (64D.7; scoped MATCH)
 
 [TB110 report](.agents/Directional/Architecture_M6_CP3_TB110_P13_A3_Annulus_Rim_Consumption_Full_Gate_Execution_Report_20261112.md): CB129 immutable source `4bef62be917318caad514768a316029e55c6c230`, artifact `13922992326`. [Gate 43178827546](https://github.com/akashskypatel/Directional/actions/runs/43178827546) 944/944 PASS, 1,025 members, 1,896/1,896 artifact hashes. [Census 43178858839](https://github.com/akashskypatel/Directional/actions/runs/43178858839) Cylinder PASS, BunnyRandom/Vase registered RED, 9/9 hashes. Row729 `annulus-read` = 32 readable/equal-output, 64 output/recorded; pairing 16/16 unchanged. Gate row864 Cylinder tracing/coverage and row935 D4 rim receipts changed only as registered in RA-228 §7 and RA-229 §5. All other 944 substantive gate rows and inherited receipts unchanged. No new stable regression; CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged. O36 remains unwired; CP3/selector497 unpromoted. Separate next Review: O36 switch definition, with canonical ID still unspecified; no successor work in TB110.

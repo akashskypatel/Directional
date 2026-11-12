@@ -1,9 +1,35 @@
-## CURRENT — TB110 full gate scoped MATCH (64D.7), 2026-11-12
+## CURRENT — Review-only `M6-CP3-DEFN-P13-A3-PRODUCTION-SWITCH` next (64E); no implementation turn runnable, 2026-11-12
 
-> **TB110 COMPLETE / scoped MATCH.** [Evidence report](.agents/Directional/Architecture_M6_CP3_TB110_P13_A3_Annulus_Rim_Consumption_Full_Gate_Execution_Report_20261112.md): CB129 immutable source `4bef62be917318caad514768a316029e55c6c230`, artifact `13922992326`; [gate 43178827546](https://github.com/akashskypatel/Directional/actions/runs/43178827546) **944/944 PASS**, 1,025 memberships, 1,896/1,896 checksums; [census 43178858839](https://github.com/akashskypatel/Directional/actions/runs/43178858839) Cylinder PASS, BunnyRandom/Vase previously registered RED, 9/9 checksums. Row729 `rimEdges=32 readable=32 equalOutput=32 outputRimEdges=64 recorded=64`; pairing remains 16/16; only authorized Cylinder tracing/coverage and D4 rim receipt changes. No new regression. **Next separate Review: O36 switch definition (canonical ID not yet specified).** Do not start it without exact authority. O36 unwired, CP3/selector497 unpromoted; CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged.
+> **Canonical next (Review agent only):** `M6-CP3-DEFN-P13-A3-PRODUCTION-SWITCH`, the O36 switch definition that RA-228 §7 authorized on TB110 MATCH. The Review track assigned this ID on 2026-11-12, replacing TB110's `Successor: UNKNOWN`.
+> **Implementation agent: no runnable turn.** CB125–CB130 are all applied, and no frozen exact patch is open. Do not open, draft or resume the Review; do not apply patches, run gates, wire O36, change selectors or promote CP3 until the Review freezes its CB/TB pair.
+
+- [ ] **64E O36 switch definition** (Review): one definition, two switch patches (D5 chains, D4 consumption), each with its own CB and TB. It must decide or carry:
+  - O35 (met on TB97).
+  - O38 corner product: applied, not wired into the pipeline.
+  - The exact branch owner and O39: done.
+  - O34: narrowed.
+  - O37, one-pass breakpoint location: open.
+  - The bounded-disk producer builds plain regions: met (TB99).
+  - A smooth-rim disc receipt: owed.
+  - The switch digest and cell-count plan, with amendments to `RemeshPipeline.PublishesOneValidatedGlobalConformityBaselineImmediatelyAfterA2b` and `A3SourceRimIntervalsAreRecordedSingleSidedAndValidated`.
+  - The RA-228 annulus clause: annulus rim vertices are chain stops.
+  - O40 is not opened (`paired=16`).
+
+| Step | Turn | Owner |
+|---|---|---|
+| 64D.9 **COMPLETE** | `M6-CP3-CB130-P13-A3-ANNULUS-RIM-PAIR-CENSUS` (compile only) | implementation agent |
+| 64D.10 **COMPLETE / scoped MATCH** | `M6-CP3-TB111-P13-A3-ANNULUS-RIM-PAIR-CENSUS-FULL-GATE-EXEC`: `paired=16 planRims=32/32` | implementation agent |
+| 64D.6 **COMPLETE** | `M6-CP3-CB129-P13-A3-ANNULUS-RIM-CONSUMPTION` (compile only) | implementation agent |
+| 64D.7 **COMPLETE / scoped MATCH** | `M6-CP3-TB110-P13-A3-ANNULUS-RIM-CONSUMPTION-FULL-GATE-EXEC`: 944/944, row 729 `equalOutput=32 recorded=64` | implementation agent |
+| **64E NEXT** | `M6-CP3-DEFN-P13-A3-PRODUCTION-SWITCH` (O36 switch definition) | **Review agent only** |
+| after 64E | The CB/TB pairs frozen by 64E (measuring or unwired CB first, then the D5 and D4 switch CBs) | implementation agent |
+
+## PREVIOUS — TB110 full gate scoped MATCH (64D.7), 2026-11-12
+
+> **TB110 COMPLETE / scoped MATCH.** [Evidence report](.agents/Directional/Architecture_M6_CP3_TB110_P13_A3_Annulus_Rim_Consumption_Full_Gate_Execution_Report_20261112.md): CB129 immutable source `4bef62be917318caad514768a316029e55c6c230`, artifact `13922992326`; [gate 43178827546](https://github.com/akashskypatel/Directional/actions/runs/43178827546) **944/944 PASS**, 1,025 memberships, 1,896/1,896 checksums; [census 43178858839](https://github.com/akashskypatel/Directional/actions/runs/43178858839) Cylinder PASS, BunnyRandom/Vase previously registered RED, 9/9 checksums. Row729 `rimEdges=32 readable=32 equalOutput=32 outputRimEdges=64 recorded=64`; pairing remains 16/16; only authorized Cylinder tracing/coverage and D4 rim receipt changes. No new regression. **Next separate Review: O36 switch definition**, since assigned the ID `M6-CP3-DEFN-P13-A3-PRODUCTION-SWITCH` (see CURRENT). O36 unwired, CP3/selector497 unpromoted; CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged.
 
 - [x] **64D.7 TB110** frozen artifact-only gate MATCH under RA-228 §7 / RA-229 §5; no recompilation or mutation.
-- [ ] **O36 Review definition** must receive an exact ID and address the already listed independent preconditions before any implementation. Do not start the switch in TB110.
+- [x] **O36 Review definition ID assigned:** `M6-CP3-DEFN-P13-A3-PRODUCTION-SWITCH` (64E; tracked in CURRENT).
 
 ## CURRENT — CB129 compile-only complete (64D.6); TB110 next, 2026-11-12
 
