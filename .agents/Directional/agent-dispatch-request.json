@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb113-closeout-docs-20261112-v1",
+  "request_id": "m6-cp3-cb133-size-census-apply-20261112-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb113-closeout-docs-20261112-v1",
-  "file_id": "1poIoyBAEugP5dBJUOjWAae7MKFQDTSEh",
-  "patch_sha256": "279162bf762c7845c0635649931c0e553fe642381caa021827a18e9a355e46d3",
-  "base_sha": "0dbd5bbba757610b849d189cd41016426b432533",
+  "mailbox_key": "m6-cp3-cb133-size-census-apply-20261112-v1",
+  "file_id": "1FRfMkk3B4FVoc7jWZN3gJAHvnk9zb1MU",
+  "patch_sha256": "508b44f6a01b359c4c337bab47d12ca384f12e2a9e673de104080eec7ee598f9",
+  "base_sha": "804735a152a9828ee710277bea70913e09079471",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb113): record 945-case completed-mesh gate census and next review",
+  "commit_message": "test(cb133): add completed-mesh size and parity-span census receipts",
   "retention_days": 14
 }
