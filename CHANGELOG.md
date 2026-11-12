@@ -1,3 +1,9 @@
+## 2026-11-12 UTC — TB108 annulus rim census full gate COMPLETE / scoped MATCH (64D.2)
+
+- [TB108 report](.agents/Directional/Architecture_M6_CP3_TB108_P13_A3_Annulus_Rim_Census_Full_Gate_Execution_Report_20261112.md): CB127 immutable package `13905818229` / source `39e91beb507468777aa90ffd83e23c146652d3ca`. [Full gate 43138368852](https://github.com/akashskypatel/Directional/actions/runs/43138368852): **943/943 PASS**, membership **1,024**, **1,894/1,894** checksums, 19 inherited gate receipts and four exact rim-branch receipts identical to TB107. Twelve `annulus-rim` receipts recorded; Cylinder perArc `periodic=1`, 32 rim edges, 32 vertex breaks, 32 equal-output, 32 even-split, zero split; chained and stopped identical at 28 breaks.
+- [Census 43138410775](https://github.com/akashskypatel/Directional/actions/runs/43138410775): **1 PASS / 2 previously registered RED**, 9/9 hashes, six inherited receipt lines and substantive case records unchanged from TB107. No compile/configure/relink/benchmark or semantic/source/selector change. No accepted-green loss or new stable regression; CP2 491/491, stable 66/17/49, debt 1, deferred 81; O36 unwired, CP3/selector497 unpromoted.
+- **Next separate Review-only** `M6-CP3-DEFN-P13-A3-ANNULUS-RIM-SCHEDULE`. This TB did not begin it.
+
 ## 2026-11-12 UTC — CB127 annulus rim census compiled (64D.1; no runtime)
 
 - [CB127 code/build record](.agents/Directional/Architecture_M6_CP3_CB127_P13_A3_Annulus_Rim_Census_Code_Build_Record_20261112.md): applied RA-227 frozen test-only patch (`99 0`) at `39e91beb507468777aa90ffd83e23c146652d3ca`, no production source modifications. [Compile 43133009660](https://github.com/akashskypatel/Directional/actions/runs/43133009660), artifact `13905818229`, eight GMP/GMPXX targets PASS, 28/28 packaged checksums, `runtimeExecution=false`. No tests or benchmarks executed.
