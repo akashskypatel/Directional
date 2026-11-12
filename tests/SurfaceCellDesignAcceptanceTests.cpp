@@ -392,6 +392,12 @@ TEST_P(SurfaceCellDesignAcceptance,
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, field.raw, options);
   print_platform_digest(GetParam().testName, mesh, field.raw, result);
+  // RA-233 (O41): the final gate's inputs and the size split on the
+  // production (per-arc) path, so Vase's registered completion failure can be
+  // compared with the chained MultiFaceSeam one.
+  print_switch_receipt(GetParam().testName, "production", result);
+  print_switch_size_receipt(GetParam().testName, "production", mesh.faces,
+                            result);
 
   const auto independentOracle =
       directional::tests::surface_cell_oracle::inspect_surface_cell_product(
