@@ -1,6 +1,6 @@
-## CURRENT — RA-233: O41 is A4 size grading (64E.9); CB134 next; user decision D10 pending, 2026-11-12
+## CURRENT — CB134 compiled (64E.10); TB115 next; user decision D10 pending, 2026-11-12
 
-> **Canonical next:** `M6-CP3-CB134-P13-A4-PRODUCTION-SIZE-CENSUS` (implementation agent, compile only, test only). [Exact patch](.agents/Directional/Architecture_M6_CP3_CB134_P13_A4_Production_Size_Census_Exact.diff) `0f3eb0d8c62043013f47b5815fc280d959aec13bca4f7f79d52d2b4431ae4ab4`, 17 lines, keep 1 single-space context line. Numstat: `6 0` `tests/SurfaceCellDesignAcceptanceTests.cpp`. Base: HEAD `a988f8cab`.
+> **Canonical next:** `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-EXEC` (artifact-only Test + Benchmark). [CB134 record](.agents/Directional/Architecture_M6_CP3_CB134_P13_A4_Production_Size_Census_Code_Build_Record_20261112.md), source `c565a3ada13d4b785fb45182db80fd5adf665add`, [compile 43244784978](https://github.com/akashskypatel/Directional/actions/runs/43244784978), artifact `13956118408`. Follow RA-233 §5; no rebuild and no successor work in CB134.
 
 - [x] **RA-233** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Interior_Size_Grading_Review_20261112.md)) completed `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING` (64E.9).
   - H2 is refuted: no parity moves.
@@ -12,13 +12,13 @@
   - **B:** region-aware A3 count (changes D7; coarsens boundaries on purpose).
   - **C:** gate policy (accept undersized interior cells).
 
-  Activation is held until D10 is answered and O41 is fixed.
+  Activation is held until D10 is answered and O41 is fixed. CB134 compiled the production-labelled test receipts without executing them.
 
 | Step | Turn | Owner |
 |---|---|---|
 | 64E.9 **COMPLETE** | `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING` (RA-233) | Review |
-| **64E.10 NEXT** | `M6-CP3-CB134-P13-A4-PRODUCTION-SIZE-CENSUS`: the receipts on the production design-acceptance runs, including Vase. Mismatch → `M6-CP3-PLAN-P13-A4-PRODUCTION-SIZE-CENSUS-STOP`; infrastructure → `M6-CP3-CB134A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH` | implementation agent |
-| 64E.11 | `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-EXEC`: TB114's manifest byte for byte plus the census. MATCH needs 945/945, census verdicts unchanged, every TB114 receipt unchanged, `production` lines recorded, and Vase's completion `switch-run` with `switch-validation accepted=0 strict=0`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB115A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH` | implementation agent |
+| 64E.10 **COMPLETE** | `M6-CP3-CB134-P13-A4-PRODUCTION-SIZE-CENSUS`: the receipts on the production design-acceptance runs, including Vase. Mismatch → `M6-CP3-PLAN-P13-A4-PRODUCTION-SIZE-CENSUS-STOP`; infrastructure → `M6-CP3-CB134A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH` | implementation agent |
+| **64E.11 NEXT** | `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-EXEC`: TB114's manifest byte for byte plus the census. MATCH needs 945/945, census verdicts unchanged, every TB114 receipt unchanged, `production` lines recorded, and Vase's completion `switch-run` with `switch-validation accepted=0 strict=0`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB115A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH` | implementation agent |
 | D10 | A, B or C (RA-233 §3) | **user** |
 | 64E.12 | `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION`: applies D10 with Vase evidence | **Review agent only** |
 | later | Activation, after O41 | Review, then implementation |

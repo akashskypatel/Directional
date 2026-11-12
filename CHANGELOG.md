@@ -1,3 +1,8 @@
+## 2026-11-12 UTC — CB134 production-size census compiled (64E.10; no runtime)
+
+- [CB134 record](.agents/Directional/Architecture_M6_CP3_CB134_P13_A4_Production_Size_Census_Code_Build_Record_20261112.md): exact six-line test-source-only patch committed at `c565a3ada13d4b785fb45182db80fd5adf665add`; [compile 43244784978](https://github.com/akashskypatel/Directional/actions/runs/43244784978) SUCCESS, package `13956118408`, ZIP SHA-256 `e1e4d67cee10be6001369ec8f7fc9e7e09225202dbd87fdbc51facf483dd88dd`, 28/28 internal checksums.
+- Eight targets compiled with GMP/GMPXX; no Directional binary ran. Next separate turn is `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-EXEC`. Stable accounting and O41/D10 remain unchanged; no activation or CP3 promotion.
+
 ## 2026-11-12 UTC — RA-233 interior size grading: O41 owner is A4; user decision D10 (64E.9; Review, runtime-free)
 
 - [RA-233](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Interior_Size_Grading_Review_20261112.md): TB114 refutes parity raises (no span moved on any fixture). It confirms interior size grading: MultiFaceSeam chained boundaries sit at target (≈1.02), while interior p5 is 0.434 under a target that grows up to 3× inward. Per-arc passes only by over-coarsening boundaries (1.28×, within the gate's 4× rail tolerance).
