@@ -1,17 +1,12 @@
-## CURRENT — CB130 annulus rim pair census compiled (64D.9); TB111 next, 2026-11-12
+## CURRENT — TB111 paired-annulus gate complete (64D.10); CB129 next, 2026-11-12
 
-> **Canonical next:** `M6-CP3-TB111-P13-A3-ANNULUS-RIM-PAIR-CENSUS-FULL-GATE-EXEC` (artifact-only Test + Benchmark). Exact compiled CB130 source `d9dde92f938fab7688644fe2e420214bcefa93cb`; [compile run 43163829447](https://github.com/akashskypatel/Directional/actions/runs/43163829447), package `13918449673`. TB111 uses frozen 944-row manifest and RA-229 §5. No runtime was executed in CB130.
+> **Canonical next separate turn:** `M6-CP3-CB129-P13-A3-ANNULUS-RIM-CONSUMPTION` (Code + Build, compile only). [TB111 report](.agents/Directional/Architecture_M6_CP3_TB111_P13_A3_Annulus_Rim_Pair_Census_Full_Gate_Execution_Report_20261112.md): immutable CB130 source `d9dde92f938fab7688644fe2e420214bcefa93cb`, package `13918449673`; [full gate 43166348659](https://github.com/akashskypatel/Directional/actions/runs/43166348659) **944/944 PASS**, 1,025 members, 1,896/1,896 hashes; [census 43166395557](https://github.com/akashskypatel/Directional/actions/runs/43166395557) one PASS and two unchanged registered RED, 9/9 hashes. All 41 prior receipts unchanged. Row 729 has `strips=16 paired=16 rimSources=16/16 planRims=32/32`; the RA-229 §5 condition is met.
 
-- [x] **RA-229** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Annulus_Rim_Pairing_Review_20261112.md)) completed `M6-CP3-DEFN-P13-A3-ANNULUS-RIM-PAIRING` (64D.8).
-  - Baseline A3 owes positive counts, shared subdivisions and even region parity, not paired rims, so A3 stays as it is.
-  - TB109's `equalOutput=24` is a rounding difference between the annulus's rule and A3's, not proof of unpaired strips.
-  - CB130 → TB111 measure pairing on row 729.
-
-| Step | Turn | Owner |
-|---|---|---|
-| 64D.9 **COMPLETE / BUILD GREEN** | `M6-CP3-CB130-P13-A3-ANNULUS-RIM-PAIR-CENSUS`: row 729 prints `annulus-pair … strips paired rimSources planRims`. Mismatch → `M6-CP3-PLAN-P13-A3-ANNULUS-RIM-PAIR-CENSUS-STOP`; infrastructure → `M6-CP3-CB130A-P13-A3-ANNULUS-RIM-PAIR-CENSUS-ORCH` | implementation agent |
-| 64D.10 **NEXT** | `M6-CP3-TB111-P13-A3-ANNULUS-RIM-PAIR-CENSUS-FULL-GATE-EXEC`: TB109 manifest byte for byte. MATCH needs 944/944, all TB109 receipts unchanged, census unchanged, and `strips=16 rimSources=16/16`. `paired=16` → CB129 (unchanged patch, base CB130), with TB110 re-registered by RA-229 §5; else the Review-only `M6-CP3-DEFN-P13-A4-ANNULUS-COUNT-TRANSITION` (O40). Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB111A-P13-A3-ANNULUS-RIM-PAIR-CENSUS-ORCH` | implementation agent |
-| later | O36 switch definition (annulus clause; O40 if opened) | Review |
+- [x] RA-229 pairing definition and CB130 compile-only receipt.
+- [x] **64D.10 TB111 complete / scoped MATCH**; no rebuild or source/test/fixture/selector change.
+- [ ] **64D.6 CB129 next:** use unchanged RA-228 patch `Architecture_M6_CP3_CB129_P13_A3_Annulus_Rim_Consumption_Exact.diff`, SHA-256 prefix `ce80f25e`, on top of CB130; compile-only. See RA-229 §5 for re-registered TB110 acceptance. Do not begin in TB111.
+- [ ] **64D.7 TB110 after CB129:** separate immutable artifact test/benchmark.
+- [ ] Later O36 switch Review; remains unwired. CP2 491/491 accepted, stable 66/17/49, debt 1, deferred 81. No CP3 or selector497 promotion.
 
 ## PREVIOUS — TB109 scoped MATCH (64D.5), 2026-11-12
 
