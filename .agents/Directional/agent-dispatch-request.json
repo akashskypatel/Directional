@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb133-size-census-apply-20261112-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb133-size-census-apply-20261112-v1",
-  "file_id": "1FRfMkk3B4FVoc7jWZN3gJAHvnk9zb1MU",
-  "patch_sha256": "508b44f6a01b359c4c337bab47d12ca384f12e2a9e673de104080eec7ee598f9",
-  "base_sha": "804735a152a9828ee710277bea70913e09079471",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(cb133): add completed-mesh size and parity-span census receipts",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb133-size-census-compile-20261112-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb133-size-census-compile-20261112-v1",
+  "source_sha": "e60f2c76cc782767daf149d9a78af09474eb310e",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb133-size-census-compile"
 }
