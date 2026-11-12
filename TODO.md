@@ -1,3 +1,13 @@
+## CURRENT — CB135 compiled singularity-port directions; TB116 next (P13-e.1), 2026-11-12
+
+> **Canonical next, separate Test + Benchmark turn:** `M6-CP3-TB116-P13-SINGULARITY-PORT-DIRECTION-CENSUS-FULL-GATE-EXEC`. [CB135 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB135_P13_Singularity_Port_Direction_Census_Code_Build_Record_20261112.md); exact source `40f979d203b08cec236d047e4e9968b5d86d15d3`, [compile 43271247925](https://github.com/akashskypatel/Directional/actions/runs/43271247925), artifact `13968642290`; eight GMP targets; no runtime.
+
+- [x] **CB135 P13-e.1:** exact 28-line atlas `partition direction` diagnostics compiled; no algorithm, validator, test, or fixture changes. Source snapshot 5,529/5,529 and compile package checksums valid.
+- [ ] **TB116 P13-e.2:** run immutable artifact-only 945-row gate and BunnyRandom direction census. Require prior receipts/verdicts unchanged and four `inSector=1` incidences (fan/branch 0/2, 2/0, 4/0, 6/0). On mismatch use named Review/stop path; do not silently repair.
+- [ ] **P13-e.3:** only independent Review `M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER` may assign A1 versus lift owner after TB116.
+
+## PREVIOUS — RA-235 and CB135 plan (kept for history)
+
 ## CURRENT — RA-235: P13-e port count measured (P13-e.0); CB135 next, 2026-11-12
 
 > **Canonical next:** `M6-CP3-CB135-P13-SINGULARITY-PORT-DIRECTION-CENSUS` (implementation agent, compile only). [Exact patch](.agents/Directional/Architecture_M6_CP3_CB135_P13_Singularity_Port_Direction_Census_Exact.diff) `fd9ccba26c722edfb75644083ae017c3896fe27bc0f138d90b935332f6c29996`, 39 lines, no single-space context lines. Numstat: `28 0` `src/authority/FieldTransportAtlas.cpp`. Base: HEAD `ca7586757`.

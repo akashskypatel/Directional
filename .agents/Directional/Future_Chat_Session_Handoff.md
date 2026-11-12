@@ -1,3 +1,9 @@
+## CB135 COMPLETE (P13-e.1, compile only) — next: `M6-CP3-TB116-P13-SINGULARITY-PORT-DIRECTION-CENSUS-FULL-GATE-EXEC` — 2026-11-12 UTC
+
+**Canonical completed turn:** `M6-CP3-CB135-P13-SINGULARITY-PORT-DIRECTION-CENSUS` ([CB135 record](Architecture_M6_CP3_CB135_P13_Singularity_Port_Direction_Census_Code_Build_Record_20261112.md)). Exact semantic source `40f979d203b08cec236d047e4e9968b5d86d15d3`; [compile 43271247925](https://github.com/akashskypatel/Directional/actions/runs/43271247925) SUCCESS, eight GMP/GMPXX targets; immutable artifact `13968642290`, ZIP SHA-256 `e952583fdcb74d30f25ba55c2613d288626b8c37e078100a7f7ee958f544e41e`, checksums valid, clean source, `runtimeExecution=false`. Direction census is compiled, **not executed**. TB116 alone owns the 945-row gate, invariant receipts and BunnyRandom vertex49 fan-face directions. TB115 945/945 is inherited; CP2 491/491 and stable 66/17/49 (debt1, deferred81) unchanged. CP3/selector497 unpromoted; production per-arc, D10 defer. No successor work started.
+
+**Previous state (kept below):**
+
 ## RA-235 COMPLETE (P13-e.0) — next: `M6-CP3-CB135-P13-SINGULARITY-PORT-DIRECTION-CENSUS` (implementation agent, compile only) — 2026-11-12 UTC
 
 **Canonical completed turn:** `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` ([RA-235](Architecture_M6_CP3_DEFN_P13_Singularity_Port_Count_Review_20261112.md)). The TB115 census artifact's BunnyRandom log shows vertex 49 with 4 port classes against an expected 5. That is a parity loss, so one separatrix lies on a radial edge, where no per-face wedge contains it. Frozen: CB135 → TB116 (fan-face direction diagnostics). Then the Review-only `M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER`.

@@ -1,3 +1,8 @@
+## 2026-11-12 UTC — CB135 singularity-port direction census compiled, no runtime (P13-e.1)
+
+- [CB135 evidence](.agents/Directional/Architecture_M6_CP3_CB135_P13_Singularity_Port_Direction_Census_Code_Build_Record_20261112.md): one production file, 28 new `partition direction` diagnostic lines, exact source `40f979d203b08cec236d047e4e9968b5d86d15d3`. [Compile run 43271247925](https://github.com/akashskypatel/Directional/actions/runs/43271247925) SUCCESS; immutable artifact `13968642290`, ZIP SHA-256 `e952583fdcb74d30f25ba55c2613d288626b8c37e078100a7f7ee958f544e41e`; all eight targets, GMP/GMPXX, `runtimeExecution=false` and clean source. No tests or benchmarks were executed; TB115's 945/945 is inherited, not new evidence.
+- **Next independent turn:** `M6-CP3-TB116-P13-SINGULARITY-PORT-DIRECTION-CENSUS-FULL-GATE-EXEC`. No acceptance promotion or A1/lift ownership decision. CP2 491/491, stable 66/17/49, debt1/deferred81 unchanged; CP3/selector497 unpromoted; D10 defer.
+
 ## 2026-11-12 UTC — RA-235 singularity port count, P13-e (Review, runtime-free)
 
 - [RA-235](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Singularity_Port_Count_Review_20261112.md): TB115's census artifact (SHA verified) shows BunnyRandom vertex 49 (index −1) with 4 wedge incidences in 4 classes, against `4 − index` = 5. The count has the wrong parity for any continuous field, so one separatrix lies on a radial edge where the face-wise field jumps.
