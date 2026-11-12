@@ -1,3 +1,0 @@
-turn=M6-CP3-CB129-P13-A3-ANNULUS-RIM-CONSUMPTION
-frozen_source_sha=fe0208aff49a6f56115a0d6c3da71552798fc798
-purpose=handoff-closeout-verification
