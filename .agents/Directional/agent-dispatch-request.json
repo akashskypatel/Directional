@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb116-direction-full-gate-20261112-v1",
+  "request_id": "m6-cp3-tb116-direction-census-20261112-v1",
   "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb116-direction-full-gate-v1",
+  "mailbox_key": "m6-cp3-tb116-direction-census-v1",
   "executor_sha": "6b4b734b2d02b12f135068d6d25dd149052b071b",
   "semantic_source_sha": "40f979d203b08cec236d047e4e9968b5d86d15d3",
   "turn_id": "M6-CP3-TB116-P13-SINGULARITY-PORT-DIRECTION-CENSUS-FULL-GATE-EXEC",
   "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
   "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "artifact_prefix": "m6-cp3-tb116-direction-gate",
+  "artifact_prefix": "m6-cp3-tb116-direction-census",
   "retention_days": 14,
   "environment": {
     "CANDIDATE_ARTIFACT_ID": 13968642290,
@@ -16,10 +16,8 @@
     "EXPECTED_CANDIDATE_ZIP_SHA256": "e952583fdcb74d30f25ba55c2613d288626b8c37e078100a7f7ee958f544e41e",
     "EXPECTED_ROOT_MANIFEST_SHA256": "6e894bf16c78740f1761075207bc67e74092bfc2795c7f290e3f4f5a293a11dd",
     "EXPECTED_SOURCE_ARCHIVE_SHA256": "c29cbb291cdeb6992fd2ee5c7a508cc49908b58e9c4cee5ba4747bfc9193cfd3",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB116_P13_Singularity_Port_Direction_Census_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "16a909bd6d3fe2b9ba37d263b89fb8ca16dcc3dd42214e4cabcae26c05c91020",
-    "EXPECTED_CASE_COUNT": 945,
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
+    "EXPECTED_CASE_COUNT": 3
   }
 }
