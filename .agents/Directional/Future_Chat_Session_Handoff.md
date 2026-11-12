@@ -1,4 +1,10 @@
-## CB133 COMPLETE (64E.7; compile only) — next: `M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-EXEC` (artifact-only, TB114) (2026-11-12 UTC)
+## TB114 COMPLETE / scoped MATCH (64E.8) — next Review-only `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING` (2026-11-12 UTC)
+
+[TB114 report](Architecture_M6_CP3_TB114_P13_A4_Completed_Mesh_Size_Census_Execution_Evidence_20261112.md): source `e60f2c76cc782767daf149d9a78af09474eb310e`, immutable artifact `13947781593`, [gate run 43231582288](https://github.com/akashskypatel/Directional/actions/runs/43231582288) SUCCESS, result artifact `13950773589`, 945/945 PASS, membership 1,026 and 1,898/1,898 hashes. All inherited TB113 ledger records and 46 receipt lines agree. Eight `switch-size` and four `switch-spans` observations are present; MultiFaceSeam chained has 36 interior edges below half target and no parity-raised span. O41 remains open and unpromoted. CP2 accepted 491/491, stable 66/17/49, debt 1, deferred 81, CP3/selector497 unpromoted; `chainRimSchedules=false`. This TB turn did not start the Review.
+
+**Previous completed state (kept below):**
+
+## PREVIOUS — CB133 COMPLETE (64E.7; compile only) — next: `M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-EXEC` (artifact-only, TB114) (2026-11-12 UTC)
 
 **Canonical completed turn:** `M6-CP3-CB133-P13-A4-COMPLETED-MESH-SIZE-CENSUS` ([CB133 record](Architecture_M6_CP3_CB133_P13_A4_Completed_Mesh_Size_Census_Code_Build_Record_20261112.md)). Exact test-only source `e60f2c76cc782767daf149d9a78af09474eb310e`, compile run `43224657893` SUCCESS, package `13947781593`, ZIP SHA-256 `e89169f233a6e8c9591acdaaaa76fc345900af19d056c6ee088e1bdfb8ca3aa5`, 28/28 hashes, eight GMP/GMPXX targets, clean source, `runtimeExecution=false`. No tests or benchmarks ran. New `switch-size` / `switch-spans` receipts are **compiled, not observed**. TB113 945/945 is still the last scoped runtime. CP2 491/491, stable 66/17/49, debt 1 and deferred 81 unchanged. `chainRimSchedules=false`, O41 open, CP3/selector497 unpromoted. **Next separate turn:** `M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-EXEC` (RA-232 §5). No successor work started.
 
@@ -62,27 +68,32 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Patch Application Strategy | `.agents/Directional/Patch_Application_Strategy.md` |
 | Mandatory End Checklist | `.agents/Directional/Mandatory_End_Checklist.md` |
 
-## Current CB131 Code + Build checkpoint — complete (64E.1)
+## Current TB114 full-gate checkpoint — complete (64E.8)
 
-[CB131 record](Architecture_M6_CP3_CB131_P13_A3_Rim_Chain_Switch_Staging_Code_Build_Record_20261112.md): RA-230 frozen nine-file patch applied at source `240d2a1948c95521e9b90740244e7dd7de46483a`; [compile run 43193524342](https://github.com/akashskypatel/Directional/actions/runs/43193524342) succeeded on eight targets; [artifact 13931894182](https://github.com/akashskypatel/Directional/actions/runs/43193524342/artifacts/13931894182) ZIP SHA-256 `cf7b19cb429f0983eb4b90ed5c37c75ccc0bf1402586812f4b1acbc79eeaf1c6` with 28/28 checksums, GMP/GMPXX, clean source and `runtimeExecution=false`. Both temporary Drive patch files retired; corrected backup retained in the Directional ChatGPT Library. Next is a separate TB112; no runtime acceptance or selector promotion in CB131.
+[Gate evidence](Architecture_M6_CP3_TB114_P13_A4_Completed_Mesh_Size_Census_Execution_Evidence_20261112.md) establishes scoped MATCH (945/945) without acceptance promotion. The O41 MultiFaceSeam size-grading question belongs to the separate RA-232 §6 Review. Production remains per-arc.
 
 ## Current immutable authority — replace in place
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | **CB133 COMPLETE (64E.7, compile only):** [record](Architecture_M6_CP3_CB133_P13_A4_Completed_Mesh_Size_Census_Code_Build_Record_20261112.md), source `e60f2c76cc782767daf149d9a78af09474eb310e`, [compile 43224657893](https://github.com/akashskypatel/Directional/actions/runs/43224657893), artifact `13947781593` (28/28 GMP/GMPXX checks, no runtime). **NEXT:** `M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-EXEC`. Previous: **RA-232 COMPLETE (64E.6, Review):** [record](Architecture_M6_CP3_DEFN_P13_A4_Completed_Mesh_Gate_Review_20261112.md). The disc's failure is a fixture effect; O41 is narrowed to MultiFaceSeam chained size p5. TB113 945/945 scoped MATCH is the latest gate. **NEXT:** `M6-CP3-CB133-P13-A4-COMPLETED-MESH-SIZE-CENSUS`. Previous: **CB132 COMPLETE (64E.4, compile-only):** [record](Architecture_M6_CP3_CB132_P13_A4_Completed_Mesh_Gate_Census_Code_Build_Record_20261112.md), source `196f611769ee738a86d4aa46903d0ed592384691`, compile 43210849945, package 13941286743; TB113 NEXT. Prior **RA-231 COMPLETE (64E.3, Review; switch not activated):** [record](Architecture_M6_CP3_DEFN_P13_A3_Switch_Activation_Review_20261112.md). O41 opened (bounded-disk completed mesh fails the final gate with no strict issue). CB132 → TB113 frozen. **NEXT:** `M6-CP3-DEFN-P13-A4-COMPLETED-MESH-GATE` (Review only). Previous: **TB112 COMPLETE / scoped MATCH (64E.2)**; [report](Architecture_M6_CP3_TB112_P13_A3_Rim_Chain_Switch_Staging_Full_Gate_Execution_Report_20261112.md), run 43199861547, result artifact `13935551687`; 945/945 PASS, membership 1,026, 1,898/1,898 hashes, ten switch receipts. **NEXT:** Review-only `M6-CP3-DEFN-P13-A3-SWITCH-ACTIVATION`. Chained MultiFaceSeam and SmoothRimDisc completion failures require ownership decision before flip. Production remains off, CP3/selector497 unpromoted. |
+| Currency | **TB114 COMPLETE / scoped MATCH (64E.8):** [report](Architecture_M6_CP3_TB114_P13_A4_Completed_Mesh_Size_Census_Execution_Evidence_20261112.md); [run 43231582288](https://github.com/akashskypatel/Directional/actions/runs/43231582288) SUCCESS. Full gate 945/945, membership 1,026, 1,898/1,898 hashes, 46/46 predecessor receipts identical. Next **Review-only** `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING`. |
 | Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing` / `e60f2c76cc782767daf149d9a78af09474eb310e`; [compile 43224657893](https://github.com/akashskypatel/Directional/actions/runs/43224657893), artifact `13947781593`, ZIP SHA-256 `e89169f233a6e8c9591acdaaaa76fc345900af19d056c6ee088e1bdfb8ca3aa5`, 8/8 GMP/GMPXX targets and 28/28 hashes, no runtime. PR #8 draft/open/unmerged. |
 | Last accepted semantic runtime | **CP2 491/491** (2026-10-06); CP3/selector497 unpromoted. |
-| Latest candidate | **TB112 scoped MATCH, unpromoted:** 945/945, membership 1,026; all 944 TB110 receipts unchanged; chained completion failures remain Review-only diagnostic evidence. Prior **TB110 scoped MATCH, unpromoted:** 944/944, membership 1,025; the annulus reads and records both rims from the A3 plan (CB129). Not O36 production acceptance. Previous: **TB111 scoped MATCH, unpromoted:** 944/944, membership 1,025, 41/41 inherited TB109 receipts unchanged; `annulus-pair … strips=16 paired=16 rimSources=16/16 planRims=32/32`. Existing `annulus-read` unchanged. |
+| Latest candidate | **TB114 unpromoted O41 observation:** MultiFaceSeam chained interior size p5 `0.43405`, 36 interior edges below half target; stopped spans `raised=0 lowered=0`. SmoothRimDisc remains an expected fixture diagnostic. Do not infer the corrective owner outside Review. |
 | Regression accounting and debt | CP2 **491/491** accepted, stable **66 events / 17 categories / 49 recurrences**, debt **1**, deferred **81**. O34 narrowed; O35 met, O37 compiled behind option, O38 staged, O39 exact owner complete; O36 activation and D6 open. |
-| Active boundary | **64E.7 CB133 COMPLETE; 64E.8 TB114 NEXT** (artifact-only). Production stays per-arc (`chainRimSchedules=false`); no CP3/selector497 promotion. |
+| Active boundary | **64E.8 TB114 COMPLETE; 64E.9 interior-size Review NEXT.** Production stays per-arc (`chainRimSchedules=false`), gate limits unchanged, no CP3/selector497 promotion. |
 
-## Mandatory next turn — `M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-EXEC` — EXACT NEXT (step 64E.8)
+## Mandatory next turn — `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING` — EXACT NEXT (step 64E.9)
 
-- **Artifact-only Test + Benchmark.** Consume immutable CB133 compile package `13947781593`, source `e60f2c76cc782767daf149d9a78af09474eb310e`, [run 43224657893](https://github.com/akashskypatel/Directional/actions/runs/43224657893). Do not rebuild, relink, repair, or modify any package file.
-- Manifest `.agents/Directional/gates/Architecture_M6_TB114_P13_A4_Completed_Mesh_Size_Census_Full_Gate_Case_Manifest.tsv`: TB113's byte-identical 945 rows, SHA-256 `16a909bd6d3fe2b9ba37d263b89fb8ca16dcc3dd42214e4cabcae26c05c91020`, membership 1,026.
-- MATCH requires 945/945 and all TB113 receipts unchanged, new `switch-size` / `switch-spans` lines present, and the MultiFaceSeam chained `switch-size` record. Run no successor Review in TB114.
-- MATCH → `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING` (Review only); mismatch → `M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-REV`; infrastructure → `M6-CP3-TB114A-P13-A4-COMPLETED-MESH-SIZE-CENSUS-ORCH`.
+- **Type / owner:** Review-only under [RA-232 §6](Architecture_M6_CP3_DEFN_P13_A4_Completed_Mesh_Gate_Review_20261112.md). No implementation, tests, builds, runtime probes, selector mutation, or activation in this TB114 turn.
+- **Objective:** Use the eight `switch-size` and four `switch-spans` observations in [TB114](Architecture_M6_CP3_TB114_P13_A4_Completed_Mesh_Size_Census_Execution_Evidence_20261112.md) and immutable [result artifact `13950773589`](https://github.com/akashskypatel/Directional/actions/runs/43231582288/artifacts/13950773589) to identify O41's owner. Evaluate H1 (A4 interior size grading) against H2 (A3 parity rounding) using the exact recorded data.
+- **In scope for the next Review:** Decide the corrective owner and freeze the fix/verification gate, or present the policy choice to the user if interior transitions are out of reach. Re-define production switch activation only after the evidence supports it.
+- **Out of scope:** No relaxation of completed-mesh quality limits, no default flip (`chainRimSchedules=false`), no CP3/selector497 promotion without separate authority.
+- **Next boundary:** RA-232 §6 names no automatic implementation successor. The Review must explicitly freeze its own successor. No successor work is started here.
+
+## Completed TB114 — frozen execution evidence
+
+- Immutable CB133 package `13947781593`, semantic source `e60f2c76cc782767daf149d9a78af09474eb310e`; frozen 945-row manifest SHA-256 `16a909bd6d3fe2b9ba37d263b89fb8ca16dcc3dd42214e4cabcae26c05c91020`. [Run 43231582288](https://github.com/akashskypatel/Directional/actions/runs/43231582288) succeeded without rebuild, 945/945 PASS, all 46 predecessor receipts unchanged; four span and eight size lines present. The separate SmoothRimDisc test did not emit a size line, as its source does not call the helper. No new stable regression.
 
 ### Completed — CB133 64E.7; frozen plan preserved below
 
@@ -802,7 +813,7 @@ Rows 49–64B.9 are complete as turns. TB90 64.4 is MATCH (914/914, census 1 PAS
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-EXEC** (64E.8, artifact-only Test + Benchmark). Consume immutable CB133 source `e60f2c76cc782767daf149d9a78af09474eb310e`, package `13947781593` from compile 43224657893, with no rebuild. Use frozen 945-row TB114 manifest `16a909bd6d3fe2b9ba37d263b89fb8ca16dcc3dd42214e4cabcae26c05c91020` and RA-232 §5 MATCH criteria. Then (only in a later turn) Review `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING`. Keep `chainRimSchedules=false`; TB113 remains last scoped runtime 945/945.
+`load_next`: **M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING** (64E.9, Review-only). Read RA-232 §6, [TB114](Architecture_M6_CP3_TB114_P13_A4_Completed_Mesh_Size_Census_Execution_Evidence_20261112.md), and its `switch-size`/`switch-spans` raw records. No runtime or source mutation is authorized before a Review freezes corrective work. Preserve `chainRimSchedules=false`, accepted CP2 491/491, stable 66/17/49, debt 1, deferred 81, and unpromoted CP3/selector497.
 - CB89 compiled source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, immutable package artifact `13370954424`, 28/28 hashes, eight GMP/GMPXX targets; no test execution.
 - TB79 artifact-only gate (RA-203.6) finished: 899/899, census MATCH.
 - RA-204 completed the O30 Review; CB90 and TB80 are done. The fixed-field replay is withdrawn: do not build a field fixture.

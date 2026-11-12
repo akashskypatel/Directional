@@ -1,4 +1,12 @@
-## CURRENT — CB133 compile complete (64E.7); TB114 next, 2026-11-12
+## CURRENT — TB114 scoped MATCH (64E.8); interior size grading Review next, 2026-11-12
+
+> **Exact next turn:** `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING` (**Review only**, RA-232 §6). [TB114 report](.agents/Directional/Architecture_M6_CP3_TB114_P13_A4_Completed_Mesh_Size_Census_Execution_Evidence_20261112.md), [gate run 43231582288](https://github.com/akashskypatel/Directional/actions/runs/43231582288). The immutable CB133 source `e60f2c76cc782767daf149d9a78af09474eb310e` passed **945/945**, 1,026 memberships, 1,898/1,898 hashes, 945 inherited ledger rows and 46/46 inherited receipt lines. Eight `switch-size` and four `switch-spans` lines were observed. Product switch still off; CP3/selector497 unpromoted.
+
+- [x] **64E.8 TB114:** scoped MATCH, immutable package. No code, fixture, manifest, threshold, option, selector, or runtime artifact mutation.
+- [ ] **O41 (existing unpromoted candidate):** MultiFaceSeam chained size p5 `0.43405`; boundary p50 `1.02344`, interior below half `36`, target range `0.0942809–0.282843`, and no parity count raised or lowered. The Review must adjudicate A4 interior-size grading (H1) versus A3 parity rounding (H2), define the corrective owner and evidence gate, and re-evaluate activation. Do not choose a fix in TB114.
+- [ ] **64E.9 Review only:** `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING`. Keep production `chainRimSchedules=false`, CP2 491/491, stable 66/17/49, debt 1, deferred 81, and unpromoted CP3/selector497.
+
+## PREVIOUS — CB133 compile complete (64E.7); TB114 was next, 2026-11-12
 
 > **Canonical next:** `M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-EXEC` (artifact-only Test + Benchmark). [CB133 record](.agents/Directional/Architecture_M6_CP3_CB133_P13_A4_Completed_Mesh_Size_Census_Code_Build_Record_20261112.md); exact compiled source `e60f2c76cc782767daf149d9a78af09474eb310e`, package `13947781593`, run 43224657893, 28/28 hashes, GMP/GMPXX, no runtime. TB114 inherits 945 rows and manifest `16a909bd6d3fe2b9ba37d263b89fb8ca16dcc3dd42214e4cabcae26c05c91020`. O41 remains open; `chainRimSchedules=false`.
 
