@@ -633,6 +633,34 @@ build_singularity_attachments(
               singularity.topologyRegion};
           return std::nullopt;
         }
+        // P13-e (RA-235): where each branch points relative to the fan
+        // face's wedge, so a separatrix lost between two wedges is visible.
+        // Components are the direction's barycentric weights on the wedge's
+        // two far vertices; both non-negative means inside the wedge.
+        {
+          const auto &faceVertices = face.topology.vertices();
+          std::clog << "FieldTransportAtlas.partition direction singularity="
+                    << singularity.id.index() << " fanIndex=" << fanIndex
+                    << " branch=" << static_cast<int>(pairing.branch.value());
+          if (pairing.direction.is_barycentric()) {
+            for (std::size_t index = 0U; index < faceVertices.size(); ++index) {
+              if (faceVertices[index] == singularity.sourceVertex) continue;
+              std::clog << " v" << faceVertices[index].index() << '='
+                        << static_cast<double>(
+                               pairing.direction[index].to_double());
+            }
+          } else {
+            std::clog << " direction=none";
+          }
+          std::clog << " next=" << face.nextVertex.index()
+                    << " inSector="
+                    << (direction_in_vertex_sector(sourceMesh, face.row,
+                                                   singularity.sourceVertex,
+                                                   pairing.direction)
+                            ? 1
+                            : 0)
+                    << '\n';
+        }
         if (!direction_in_vertex_sector(sourceMesh, face.row,
                                         singularity.sourceVertex,
                                         pairing.direction)) {
