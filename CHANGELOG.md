@@ -1,3 +1,9 @@
+## 2026-11-12 UTC — CB128 annulus rim edge schedule compiled (64D.4; no runtime)
+
+- [CB128 record](.agents/Directional/Architecture_M6_CP3_CB128_P13_A3_Annulus_Rim_Edge_Schedule_Code_Build_Record_20261112.md): applied RA-228 frozen patch, SHA-256 `eb7e63e262dfd6a030aa1bba375a3a6fbccb1ceeae3901e7ee4479dd3bbeec0b` (709 lines, three files). [Apply 43150034720](https://github.com/akashskypatel/Directional/actions/runs/43150034720) yielded source `739e79e240f75ac1c24e659004b13b425803081b`. The bounded-disk producer now uses a shared arc reader; the annulus rim reader remains unwired. Added row 944 unit test and row 729 receipt.
+- [Compile 43150206247](https://github.com/akashskypatel/Directional/actions/runs/43150206247) **SUCCESS**; [artifact 13913578057](https://github.com/akashskypatel/Directional/actions/runs/43150206247/artifacts/13913578057), ZIP `1eb3f762034dff9cf31f1ba45362a9f1b371eda35986fc062f3bd521e679f394`. Eight GMP/GMPXX targets, 28/28 hashes, exact clean source, zero build exit codes, `runtimeExecution=false`. No compiled binary, test or benchmark ran.
+- **Next separate turn:** `M6-CP3-TB109-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE-FULL-GATE-EXEC`. The previous TB108 943/943 scoped MATCH and its registered RED cases remain the latest runtime evidence; CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged; O36 unwired and CP3/selector497 unpromoted.
+
 ## 2026-11-12 UTC — RA-228 annulus rim schedule defined (64D.3; Review, runtime-free)
 
 - [RA-228](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Annulus_Rim_Schedule_Review_20261112.md): one shared reader for a Mandatory arc on its source edge. An annulus strip reads on an exact even split with equal `n` on both rims. Rim cell edges record their intervals. An unreadable strip rejects. O36 annulus clause: rim vertices are chain stops.

@@ -1,6 +1,6 @@
-## CURRENT — RA-228 annulus rim schedule defined (64D.3); CB128 next, 2026-11-12
+## CURRENT — CB128 compiled (64D.4); TB109 next, 2026-11-12
 
-> **Canonical next:** `M6-CP3-CB128-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE` (implementation agent, compile only). [Exact patch](.agents/Directional/Architecture_M6_CP3_CB128_P13_A3_Annulus_Rim_Edge_Schedule_Exact.diff) `eb7e63e262dfd6a030aa1bba375a3a6fbccb1ceeae3901e7ee4479dd3bbeec0b`, 709 lines, keep 15 single-space context lines. Numstat: `44 0` header, `262 148` `src/geometry/SurfaceCellTracing.cpp`, `130 0` `tests/SurfaceCellsPhase10Tests.cpp`. Base: HEAD `35969200f`.
+> **Canonical next, separate Test + Benchmark:** `M6-CP3-TB109-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE-FULL-GATE-EXEC` (64D.5). **CB128 COMPLETE / compile-only:** [record](.agents/Directional/Architecture_M6_CP3_CB128_P13_A3_Annulus_Rim_Edge_Schedule_Code_Build_Record_20261112.md); source `739e79e240f75ac1c24e659004b13b425803081b`, [compile 43150206247](https://github.com/akashskypatel/Directional/actions/runs/43150206247), artifact `13913578057`, eight GMP/GMPXX targets PASS, 28/28 hashes, `runtimeExecution=false`. CB128 exact frozen patch `eb7e63e2…` applied to three declared files. No tests or benchmarks executed; O36 remains unwired, CP3/selector497 unpromoted.
 
 - [x] **RA-228** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Annulus_Rim_Schedule_Review_20261112.md)) completed `M6-CP3-DEFN-P13-A3-ANNULUS-RIM-SCHEDULE` (64D.3).
   - Both producers read an arc on its source edge through one function.
@@ -10,8 +10,8 @@
 
 | Step | Turn | Owner |
 |---|---|---|
-| 64D.4 **NEXT** | `M6-CP3-CB128-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE`: shared arc reader, unwired rim reader, row 944 test, row 729 receipt. Mismatch → `M6-CP3-PLAN-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE-STOP`; infrastructure → `M6-CP3-CB128A-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE-ORCH` | implementation agent |
-| 64D.5 | `M6-CP3-TB109-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE-FULL-GATE-EXEC`: 944 rows `46e5c8a8…`, membership 1,025. MATCH needs 944/944, every TB108 receipt line unchanged, census unchanged, and the row 729 line with `recorded=0`. Then CB129 if row 729 has `readable` = `equalOutput` = `rimEdges`, else the Review-only `M6-CP3-DEFN-P13-A3-ANNULUS-RIM-PAIRING`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB109A-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE-ORCH` | implementation agent |
+| 64D.4 **COMPLETE / compile-only** | `M6-CP3-CB128-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE`: shared arc reader, unwired rim reader, row 944 test, row 729 receipt. Mismatch → `M6-CP3-PLAN-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE-STOP`; infrastructure → `M6-CP3-CB128A-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE-ORCH` | implementation agent |
+| 64D.5 **NEXT / artifact-only** | `M6-CP3-TB109-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE-FULL-GATE-EXEC`: 944 rows `46e5c8a8…`, membership 1,025. MATCH needs 944/944, every TB108 receipt line unchanged, census unchanged, and the row 729 line with `recorded=0`. Then CB129 if row 729 has `readable` = `equalOutput` = `rimEdges`, else the Review-only `M6-CP3-DEFN-P13-A3-ANNULUS-RIM-PAIRING`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB109A-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE-ORCH` | implementation agent |
 | 64D.6 | `M6-CP3-CB129-P13-A3-ANNULUS-RIM-CONSUMPTION`: `ce80f25e…`, 166 lines, keep 4 single-space context lines; numstat `105 2` / `8 0` / `4 0`; base CB128. Mismatch → `M6-CP3-PLAN-P13-A3-ANNULUS-RIM-CONSUMPTION-STOP`; infrastructure → `M6-CP3-CB129A-P13-A3-ANNULUS-RIM-CONSUMPTION-ORCH` | implementation agent |
 | 64D.7 | `M6-CP3-TB110-P13-A3-ANNULUS-RIM-CONSUMPTION-FULL-GATE-EXEC`: TB109 manifest; changes registered in RA-228 §7. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB110A-P13-A3-ANNULUS-RIM-CONSUMPTION-ORCH` | implementation agent |
 | later | O36 switch definition, with the annulus clause | Review |
