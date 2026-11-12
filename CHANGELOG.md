@@ -1,3 +1,9 @@
+## 2026-11-12 UTC — CB132 completed-mesh gate census compiled (64E.4; no runtime)
+
+- [CB132 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB132_P13_A4_Completed_Mesh_Gate_Census_Code_Build_Record_20261112.md): exact RA-231 test-only patch, 32 added lines, at [source `196f611769ee738a86d4aa46903d0ed592384691`](https://github.com/akashskypatel/Directional/commit/196f611769ee738a86d4aa46903d0ed592384691); [apply run 43210491507](https://github.com/akashskypatel/Directional/actions/runs/43210491507). `switch-run` stays unchanged; `switch-validation` reports final gate measures when available. No production source, selector, option or acceptance change.
+- [Compile 43210849945](https://github.com/akashskypatel/Directional/actions/runs/43210849945) SUCCESS, [package 13941286743](https://github.com/akashskypatel/Directional/actions/runs/43210849945/artifacts/13941286743), ZIP SHA-256 `3964dde25c8005048e018f2927f2f7dd29c288eb2afcb2d43ddd9451288c3b5e`, 28/28 checksums; eight mandatory targets, GMP/GMPXX, `runtimeExecution=false`, no tests/benchmarks. TB112 945/945 remains last scoped runtime; CP2 491/491 and stable 66/17/49, debt 1, deferred 81 unchanged. CP3/selector497 unpromoted, O41 open.
+- **Next separate turn:** `M6-CP3-TB113-P13-A4-COMPLETED-MESH-GATE-CENSUS-FULL-GATE-EXEC` (artifact-only, RA-231 §5). Do not start it within CB132.
+
 ## 2026-11-12 UTC — RA-231 switch activation: not activated (64E.3; Review, runtime-free)
 
 - [RA-231](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Switch_Activation_Review_20261112.md): TB112 shows the chained switch's own stages working (phase front produced, every span covered, Cylinder identical). But chained MultiFaceSeam fails completion, which would lose accepted row 796. SmoothRimDisc fails under both schedules.
