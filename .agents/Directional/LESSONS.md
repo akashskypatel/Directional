@@ -609,6 +609,11 @@ This document records **reusable failure-derived engineering lessons**, not an e
   rim edges of a strip have equal plan counts. TB109 failed the stronger test and settled nothing.
   Print the consumer's own predicate in the measuring receipt, and use count neutrality only to
   register digests.
+- **Stage a pipeline-wide switch behind an off-by-default option and measure it on the real
+  fixtures (RA-230).** A switch that changes every boundary fixture's plan and producer cannot be
+  registered runtime-free. Landing it off by default, with a second run per fixture printing what
+  it builds, keeps the gate byte-identical and gives the activation turn exact numbers to
+  register. Check first that the option is not hashed into any digest.
 - **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
   still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).
 - **A TB runs the full current gate even when its CB touches no gate binary.** A CLI- or GUI-only CB

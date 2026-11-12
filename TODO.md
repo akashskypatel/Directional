@@ -1,4 +1,22 @@
-## CURRENT — Review-only `M6-CP3-DEFN-P13-A3-PRODUCTION-SWITCH` next (64E); no implementation turn runnable, 2026-11-12
+## CURRENT — RA-230 production switch defined (64E); CB131 next, 2026-11-12
+
+> **Canonical next:** `M6-CP3-CB131-P13-A3-RIM-CHAIN-SWITCH-STAGING` (implementation agent, compile only). [Exact patch](.agents/Directional/Architecture_M6_CP3_CB131_P13_A3_Rim_Chain_Switch_Staging_Exact.diff) `571ae1ef904420af6a2919379f8326d0d80b85c2390f02b4317c1c488b10021c`, 423 lines, keep 11 single-space context lines, nine files (RA-230 §4). Base: HEAD `4963dcba7`.
+
+- [x] **RA-230** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Production_Switch_Review_20261112.md)) completed `M6-CP3-DEFN-P13-A3-PRODUCTION-SWITCH` (64E). The O36 switch:
+  - D5: A3 rim chains stopped at field corners (O38) and annulus rim vertices (RA-228).
+  - D4: the uniform producer declines every planned region.
+  - O37: a one-pass breakpoint locator.
+  - Staged behind `SurfaceCellOptions::chainRimSchedules` (off); production stays per-arc until activation.
+
+| Step | Turn | Owner |
+|---|---|---|
+| 64E **COMPLETE** | `M6-CP3-DEFN-P13-A3-PRODUCTION-SWITCH` (RA-230) | Review |
+| **64E.1 NEXT** | `M6-CP3-CB131-P13-A3-RIM-CHAIN-SWITCH-STAGING`: switch staging, compile only. Mismatch → `M6-CP3-PLAN-P13-A3-RIM-CHAIN-SWITCH-STAGING-STOP`; infrastructure → `M6-CP3-CB131A-P13-A3-RIM-CHAIN-SWITCH-STAGING-ORCH` | implementation agent |
+| 64E.2 | `M6-CP3-TB112-P13-A3-RIM-CHAIN-SWITCH-STAGING-FULL-GATE-EXEC`: 945 rows `16a909bd…`, membership 1,026. MATCH needs 945/945, every TB110 receipt unchanged, census unchanged, ten `switch-run` lines, and each `perArc` line `produced=1` with `a3` equal to TB110's `a3-coverage`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB112A-P13-A3-RIM-CHAIN-SWITCH-STAGING-ORCH` | implementation agent |
+| 64E.3 | `M6-CP3-DEFN-P13-A3-SWITCH-ACTIVATION`: reads the `switch-run` lines; freezes the flip or routes failing fixtures | **Review agent only** |
+| then | Activation CB → TB frozen by 64E.3 | implementation agent |
+
+## PREVIOUS — 64E assigned after TB110, 2026-11-12
 
 > **Canonical next (Review agent only):** `M6-CP3-DEFN-P13-A3-PRODUCTION-SWITCH`, the O36 switch definition that RA-228 §7 authorized on TB110 MATCH. The Review track assigned this ID on 2026-11-12, replacing TB110's `Successor: UNKNOWN`.
 > **Implementation agent: no runnable turn.** CB125–CB130 are all applied, and no frozen exact patch is open. Do not open, draft or resume the Review; do not apply patches, run gates, wire O36, change selectors or promote CP3 until the Review freezes its CB/TB pair.

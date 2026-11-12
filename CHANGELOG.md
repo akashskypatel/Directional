@@ -1,3 +1,12 @@
+## 2026-11-12 UTC — RA-230 production switch defined (64E; Review, runtime-free)
+
+- [RA-230](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Production_Switch_Review_20261112.md) defines the O36 switch:
+  - D5: A3 rim chains stopped at field corners and annulus rim vertices.
+  - D4: the uniform producer declines every planned region.
+  - O37: a one-pass breakpoint locator.
+- The switch is staged behind `SurfaceCellOptions::chainRimSchedules`, off by default. Frozen: CB131 (`571ae1ef…`, 423 lines, nine files) → TB112 (945 rows, `16a909bd…`, membership 1,026). TB112 prints `switch-run` receipts on four census fixtures and a new smooth-rim disc row. Then the Review-only `M6-CP3-DEFN-P13-A3-SWITCH-ACTIVATION`.
+- Verification: `-fsyntax-only` returned 0 on all five touched sources; CB131 applies at HEAD; the manifest self-check passes. No product or test source changed in the repository.
+
 ## 2026-11-12 UTC — Routing after TB110: O36 Review ID assigned (64E)
 
 - TB110's `Successor: UNKNOWN` resolved. RA-228 §7 authorized the O36 switch definition as a separate Review, and the Review track assigned it the ID `M6-CP3-DEFN-P13-A3-PRODUCTION-SWITCH` (step 64E, Review agent only). `STATUS` now names it.
