@@ -5673,6 +5673,57 @@ TEST(SurfaceCellsPhase10,
   EXPECT_TRUE(result.diagnostics.surfaceCellPeriodicHolonomyAvailable);
   EXPECT_TRUE(network.seeds.empty());
   EXPECT_TRUE(network.traces.empty());
+
+  // RA-228: on how many rim edges the plan reads as an annulus rim, and with
+  // the count of output rim edges the annulus builds there.
+  const auto &snapshots = result.surfaceCellContext.productSnapshots;
+  if (!snapshots.globalTopologyPlan.has_value() ||
+      !snapshots.globalConformityBaseline.has_value() ||
+      !snapshots.fieldAlignedCurveNetwork.has_value()) {
+    std::cout << "annulus-read case=CommittedCylinder inputs=missing" << std::endl;
+    return;
+  }
+  const auto &curveNetwork = *snapshots.fieldAlignedCurveNetwork;
+  std::map<directional::authority::NetworkEdgeId, std::size_t> output;
+  std::size_t outputRimEdges = 0U;
+  std::size_t recorded = 0U;
+  for (const auto &edge : network.phaseFront.product().edges()) {
+    if (edge.boundaryKind !=
+            directional::geometry::SurfaceFrontBoundaryKind::GenuineSourceBoundary ||
+        edge.route.steps().empty()) {
+      continue;
+    }
+    ++outputRimEdges;
+    if (edge.sharedBoundaryInterval.has_value()) ++recorded;
+    const auto *mandatory =
+        curveNetwork.find_mandatory_edge(edge.route.steps().front().topology());
+    if (mandatory != nullptr) ++output[mandatory->id];
+  }
+  std::size_t rimEdges = 0U;
+  std::size_t readable = 0U;
+  std::size_t equalOutput = 0U;
+  for (const auto &mandatory : curveNetwork.mandatory_edges()) {
+    if (mandatory.kind != directional::geometry::SurfaceCellRailKind::Boundary) {
+      continue;
+    }
+    ++rimEdges;
+    const auto arcs =
+        directional::geometry::surface_cell_tracing_detail::source_edge_arc_breakpoints(
+            *snapshots.globalTopologyPlan, *snapshots.globalConformityBaseline,
+            mandatory.id, mandatory.sourceEdge);
+    if (!arcs) continue;
+    const auto rim =
+        directional::geometry::surface_cell_tracing_detail::read_annulus_rim_edge(
+            *arcs, true);
+    if (!rim) continue;
+    ++readable;
+    const auto built = output.find(mandatory.id);
+    if (built != output.end() && built->second == rim->size()) ++equalOutput;
+  }
+  std::cout << "annulus-read case=CommittedCylinder rimEdges=" << rimEdges
+            << " readable=" << readable << " equalOutput=" << equalOutput
+            << " outputRimEdges=" << outputRimEdges << " recorded=" << recorded
+            << std::endl;
 }
 
 
@@ -8396,6 +8447,85 @@ TEST(SurfaceCellAuthorityContractCutover,
   Eigen::MatrixXd collinear(3, 3);
   collinear << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 2.0, 0.0, 0.0;
   EXPECT_EQ(-1, branch(collinear, x, Eigen::RowVector3d(0.0, 1.0, 0.0), 0, 1));
+}
+
+// D4 (RA-228): an annulus rim edge is read from its arcs' span breakpoints in
+// the strip's walk order. It reads only when every arc starts and ends on a
+// breakpoint, consecutive breakpoints are consecutive ordinals and the edge is
+// split evenly. Walking it the other way reads the same intervals reversed.
+TEST(SurfaceCellAuthorityContractCutover,
+     D4AnnulusRimEdgeReadsEvenSplitsInWalkOrder) {
+  namespace detail = directional::geometry::surface_cell_tracing_detail;
+  using directional::authority::FieldExactRational;
+  using directional::authority::NetworkArcId;
+  const NetworkArcId spanA = NetworkArcId::from_index(0, 2U).value();
+  const NetworkArcId spanB = NetworkArcId::from_index(1, 2U).value();
+  const auto q = [](const std::int64_t numerator, const std::int64_t denominator) {
+    return FieldExactRational::from_integer(numerator) /
+           FieldExactRational::from_integer(denominator);
+  };
+  const auto arc =
+      [](const NetworkArcId span, const FieldExactRational &first,
+         const FieldExactRational &second,
+         const std::vector<std::pair<std::size_t, FieldExactRational>> &points) {
+        detail::SourceEdgeArcBreakpoints located{span, first, second, {}};
+        for (const auto &[ordinal, parameter] : points) {
+          located.breakpoints.push_back({ordinal, parameter});
+        }
+        return located;
+      };
+  using Read = std::vector<std::tuple<char, std::size_t, std::size_t>>;
+  const auto read = [&](const std::vector<detail::SourceEdgeArcBreakpoints> &arcs,
+                        const bool forward) -> std::optional<Read> {
+    const auto intervals = detail::read_annulus_rim_edge(arcs, forward);
+    if (!intervals) return std::nullopt;
+    Read named;
+    for (const auto &interval : *intervals) {
+      named.emplace_back(interval.span == spanA ? 'A' : 'B',
+                         interval.startOrdinal, interval.endOrdinal);
+    }
+    return named;
+  };
+
+  // One arc, its span running with the edge, count 2.
+  const std::vector<detail::SourceEdgeArcBreakpoints> withEdge{
+      arc(spanA, q(0, 1), q(1, 1), {{0U, q(0, 1)}, {1U, q(1, 2)}, {2U, q(1, 1)}})};
+  EXPECT_EQ(std::optional<Read>(Read{{'A', 0U, 1U}, {'A', 1U, 2U}}),
+            read(withEdge, true));
+  EXPECT_EQ(std::optional<Read>(Read{{'A', 2U, 1U}, {'A', 1U, 0U}}),
+            read(withEdge, false));
+  // Its span running against the edge.
+  const std::vector<detail::SourceEdgeArcBreakpoints> againstEdge{
+      arc(spanA, q(0, 1), q(1, 1), {{3U, q(1, 1)}, {4U, q(1, 2)}, {5U, q(0, 1)}})};
+  EXPECT_EQ(std::optional<Read>(Read{{'A', 5U, 4U}, {'A', 4U, 3U}}),
+            read(againstEdge, true));
+  // Two arcs meeting at the middle of the edge.
+  const std::vector<detail::SourceEdgeArcBreakpoints> twoArcs{
+      arc(spanA, q(0, 1), q(1, 2), {{0U, q(0, 1)}, {1U, q(1, 2)}}),
+      arc(spanB, q(1, 2), q(1, 1), {{0U, q(1, 2)}, {1U, q(1, 1)}})};
+  EXPECT_EQ(std::optional<Read>(Read{{'A', 0U, 1U}, {'B', 0U, 1U}}),
+            read(twoArcs, true));
+  EXPECT_EQ(std::optional<Read>(Read{{'B', 1U, 0U}, {'A', 1U, 0U}}),
+            read(twoArcs, false));
+
+  // A span that bridges the edge's far vertex has no breakpoint there.
+  EXPECT_FALSE(read({arc(spanA, q(0, 1), q(1, 1), {{0U, q(0, 1)}, {1U, q(2, 3)}})},
+                    true)
+                   .has_value());
+  // Arcs meeting off the middle split the edge unevenly.
+  EXPECT_FALSE(read({arc(spanA, q(0, 1), q(1, 3), {{0U, q(0, 1)}, {1U, q(1, 3)}}),
+                     arc(spanB, q(1, 3), q(1, 1), {{0U, q(1, 3)}, {1U, q(1, 1)}})},
+                    true)
+                   .has_value());
+  // A skipped ordinal, an arc that leaves the edge's start uncovered, and no
+  // arc at all.
+  EXPECT_FALSE(read({arc(spanA, q(0, 1), q(1, 1), {{0U, q(0, 1)}, {2U, q(1, 1)}})},
+                    true)
+                   .has_value());
+  EXPECT_FALSE(read({arc(spanA, q(1, 2), q(1, 1), {{0U, q(1, 2)}, {1U, q(1, 1)}})},
+                    true)
+                   .has_value());
+  EXPECT_FALSE(read({}, true).has_value());
 }
 
 // At a rim node that only its two rim arcs reach, a field corner (RA-224) must

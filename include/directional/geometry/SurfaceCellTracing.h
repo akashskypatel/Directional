@@ -2673,6 +2673,50 @@ int normalized_branch(const int branch);
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     int face, int a, int b);
 
+// D4/D5 (RA-228): the A3 span breakpoints one Mandatory arc carries on its
+// source edge, in ascending ordinal; a breakpoint on either end of the arc is
+// included. Parameters are on the edge from its first vertex, and the arc
+// covers [first, second] there.
+struct SourceEdgeSpanBreakpoint {
+  std::size_t ordinal = 0U;
+  authority::FieldExactRational parameter;
+};
+
+struct SourceEdgeArcBreakpoints {
+  authority::NetworkArcId span;
+  authority::FieldExactRational first;
+  authority::FieldExactRational second;
+  std::vector<SourceEdgeSpanBreakpoint> breakpoints;
+};
+
+// D4/D5 (RA-228): every Mandatory arc on `mandatoryEdge`, read on source edge
+// `edge` from the plan, in edge order. Nothing unless at most two arcs tile
+// the edge and their spans locate every ordinal. Producers read source edges
+// through the same rule.
+[[nodiscard]] std::optional<std::vector<SourceEdgeArcBreakpoints>>
+source_edge_arc_breakpoints(const GlobalTopologyPlan &topology,
+                            const GlobalConformityBaselinePlan &baseline,
+                            authority::NetworkEdgeId mandatoryEdge,
+                            const authority::SourceEdgeTopologyKey &edge);
+
+// D4 (RA-228): one unit interval of an annulus rim edge, with its span and the
+// ordinals at the start and the end of the walk across it.
+struct AnnulusRimInterval {
+  authority::NetworkArcId span;
+  std::size_t startOrdinal = 0U;
+  std::size_t endOrdinal = 0U;
+};
+
+// D4 (RA-228): a rim source edge of a periodic annulus strip, read from the
+// arcs on it (in edge order) as the strip walks it, from the edge's first
+// vertex when `forward`. Entry k runs from walk parameter k/n to (k+1)/n,
+// where n is the entry count. Nothing unless every arc starts and ends on a
+// breakpoint, consecutive breakpoints are consecutive ordinals, and the
+// breakpoints split the edge evenly.
+[[nodiscard]] std::optional<std::vector<AnnulusRimInterval>>
+read_annulus_rim_edge(const std::vector<SourceEdgeArcBreakpoints> &arcs,
+                      bool forward);
+
 SurfacePeriodicHolonomy canonicalize_periodic_holonomy(
     SurfacePeriodicHolonomy relation);
 
