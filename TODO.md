@@ -1,3 +1,11 @@
+## CURRENT — CB129 compile-only complete (64D.6); TB110 next, 2026-11-12
+
+> **Next separate turn:** `M6-CP3-TB110-P13-A3-ANNULUS-RIM-CONSUMPTION-FULL-GATE-EXEC` (artifact-only test/benchmark). CB129 exact source `4bef62be917318caad514768a316029e55c6c230`, [compile 43173104948](https://github.com/akashskypatel/Directional/actions/runs/43173104948), [package 13922992326](https://github.com/akashskypatel/Directional/actions/runs/43173104948/artifacts/13922992326), 28/28 checksums, GMP/GMPXX, eight targets, `runtimeExecution=false`. [Code/build record](.agents/Directional/Architecture_M6_CP3_CB129_P13_A3_Annulus_Rim_Consumption_Code_Build_Record_20261112.md).
+
+- [x] **64D.6 CB129** frozen annulus consumption patch applied and compile verified; no runtime executed.
+- [ ] **64D.7 TB110** run only as next distinct turn with immutable package and RA-229 §5 gate.
+- [ ] O36 later review; unwired. CP2 491/491 accepted, stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted.
+
 ## CURRENT — TB111 paired-annulus gate complete (64D.10); CB129 next, 2026-11-12
 
 > **Canonical next separate turn:** `M6-CP3-CB129-P13-A3-ANNULUS-RIM-CONSUMPTION` (Code + Build, compile only). [TB111 report](.agents/Directional/Architecture_M6_CP3_TB111_P13_A3_Annulus_Rim_Pair_Census_Full_Gate_Execution_Report_20261112.md): immutable CB130 source `d9dde92f938fab7688644fe2e420214bcefa93cb`, package `13918449673`; [full gate 43166348659](https://github.com/akashskypatel/Directional/actions/runs/43166348659) **944/944 PASS**, 1,025 members, 1,896/1,896 hashes; [census 43166395557](https://github.com/akashskypatel/Directional/actions/runs/43166395557) one PASS and two unchanged registered RED, 9/9 hashes. All 41 prior receipts unchanged. Row 729 has `strips=16 paired=16 rimSources=16/16 planRims=32/32`; the RA-229 §5 condition is met.

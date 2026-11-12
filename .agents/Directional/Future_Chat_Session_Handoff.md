@@ -30,6 +30,10 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Patch Application Strategy | `.agents/Directional/Patch_Application_Strategy.md` |
 | Mandatory End Checklist | `.agents/Directional/Mandatory_End_Checklist.md` |
 
+## Current CB129 Code + Build checkpoint — complete (64D.6)
+
+[CB129 record](Architecture_M6_CP3_CB129_P13_A3_Annulus_Rim_Consumption_Code_Build_Record_20261112.md): applied the RA-228/RA-229 frozen three-path patch, source `4bef62be917318caad514768a316029e55c6c230`; [compile run 43173104948](https://github.com/akashskypatel/Directional/actions/runs/43173104948), [artifact 13922992326](https://github.com/akashskypatel/Directional/actions/runs/43173104948/artifacts/13922992326), ZIP SHA-256 `0f26e0e193c9ab414663ee686ea09ce0b68683dc95d5127f65bbcfa903b2db57`. Eight targets, 28/28 checksum checks, GMP/GMPXX, `runtimeExecution=false`. **NEXT SEPARATE TURN: `M6-CP3-TB110-P13-A3-ANNULUS-RIM-CONSUMPTION-FULL-GATE-EXEC`**, artifact-only. No test execution or promotion in CB129. Previous TB111 944/944 unchanged; CP2 491/491, stable 66/17/49, debt 1 and deferred 81 unchanged.
+
 ## Current immutable authority — replace in place
 
 | Field | Exact value / evidence owner |
@@ -39,9 +43,9 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Last accepted semantic runtime | **CP2 491/491** (2026-10-06); CP3/selector497 unpromoted. |
 | Latest candidate | **TB111 scoped MATCH, unpromoted:** 944/944, membership 1,025, 41/41 inherited TB109 receipts unchanged; `annulus-pair … strips=16 paired=16 rimSources=16/16 planRims=32/32`. Existing `annulus-read` unchanged. |
 | Regression accounting and debt | CP2 **491/491** accepted, stable **66 events / 17 categories / 49 recurrences**, debt **1**, deferred **81** unchanged. O34 narrowed; O35, O36, O37, D6 open; O38 applied but unwired; O39 exact owner complete. |
-| Active boundary | **64D.10 TB111 COMPLETE / MATCH; 64D.6 CB129 NEXT** (Code + Build, compile only). RA-229 §5 pairing gate met. O36 unwired, no production switch yet, no CP3 promotion. |
+| Active boundary | **64D.6 CB129 COMPLETE / compile only; TB110 NEXT** (separate immutable artifact gate). O36 unwired, no CP3 promotion. |
 
-## Mandatory next turn — `M6-CP3-CB129-P13-A3-ANNULUS-RIM-CONSUMPTION` — EXACT NEXT
+## Previously authorized CB129 — completed; new mandatory next turn `M6-CP3-TB110-P13-A3-ANNULUS-RIM-CONSUMPTION-FULL-GATE-EXEC`
 
 - **Code + Build, compile only (64D.6).** TB111 proved RA-229 §5's `paired=16` condition. Apply only frozen [CB129 patch](Architecture_M6_CP3_CB129_P13_A3_Annulus_Rim_Consumption_Exact.diff) on top of CB130. Use the complete frozen patch SHA and path/line contracts in RA-228; base is CB130. No runtime in CB129. Do not change A3, O36, or the selector.
 - **After CB129:** separate immutable `M6-CP3-TB110-P13-A3-ANNULUS-RIM-CONSUMPTION-FULL-GATE-EXEC`; its row-729 acceptance was re-registered by RA-229 §5. Under the plan `planRims=32/32`, so `annulus-read` must report `equalOutput=32 outputRimEdges=64 recorded=64`; `annulus-pair` must remain byte-identical to TB111. No TB110 run is authorized in CB129.
