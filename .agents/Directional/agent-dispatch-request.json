@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb134-apply-20261112-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb134-apply-20261112-v1",
-  "file_id": "1MagDLE8TZzaaO4upEQ4g5hoIk4Ga3hbq",
-  "patch_sha256": "2649c22e812514b73e823ddcca0cb54be0c4b33fd9d530dc7454ffed8afa89c2",
-  "base_sha": "50a35378be5aa95166ef32d687201337e3854542",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(cb134): add production size and validation census receipts",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb134-compile-20261112-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb134-compile-20261112-v1",
+  "source_sha": "c565a3ada13d4b785fb45182db80fd5adf665add",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb134-production-size-census"
 }
