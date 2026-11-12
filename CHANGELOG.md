@@ -1,3 +1,9 @@
+## 2026-11-12 UTC — TB107 exact rim owner full gate COMPLETE / scoped MATCH (64B.27)
+
+- [TB107 report](.agents/Directional/Architecture_M6_CP3_TB107_P13_A3_Exact_Rim_Branch_Owner_Full_Gate_Execution_Report_20261112.md): CB126 immutable source `3ac6801e4bffb721ffce993cba1e4157b6fa31b8`, artifact `13898984781`. [Gate 43123561178](https://github.com/akashskypatel/Directional/actions/runs/43123561178) **943/943 PASS**, 1,024 membership, 1,894/1,894 hashes; 19 inherited gate receipts + four `rim-branch` lines byte-identical to TB106; no `rim-branch-agreement`. [Census 43123599679](https://github.com/akashskypatel/Directional/actions/runs/43123599679) Cylinder PASS / BunnyRandom and Vase registered RED, 9/9 hashes, six inherited census receipts equal to TB106. All 25 old receipts unchanged.
+- No compile/relink/configure/benchmark, source/test/fixture mutation or product switch during TB107. No accepted-green loss or new stable regression. CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged; O36 unwired, CP3/selector497 unpromoted.
+- **Next separate turn:** `M6-CP3-DEFN-P13-A3-ANNULUS-PLAN-CONSUMPTION` (Review-only; not started).
+
 ## 2026-11-11 UTC — CB126 exact rim branch owner compiled (64B.26; no runtime)
 
 - RA-226 frozen 174-line patch SHA-256 `f5526f22d3f04a9c5e0120dd969c8586a79d247b9b5a0d2506f7a3e7b4c9bc25` applied to three paths at `3ac6801e4bffb721ffce993cba1e4157b6fa31b8`. [Apply run 43117312334](https://github.com/akashskypatel/Directional/actions/runs/43117312334). The bounded-disk producer and boundary corner product now use the exact rim branch rule; the binary64 owner and comparison receipt were removed.
