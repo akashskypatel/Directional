@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb135-direction-census-apply-20261112-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb135-direction-census-apply-v1",
-  "file_id": "1RSsZnyhG9cUSCXQ8O5oaX7DFzaQg-I3R",
-  "patch_sha256": "302bb481aaa092b1e6d7e809d01a1576686ab7e746cdae72278ce21e9a00f426",
-  "base_sha": "fe0544389d51676cd5d331b1eb332df5f37b2812",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(atlas): emit singularity-port direction census",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb135-direction-census-compile-20261112-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb135-direction-census-compile-v1",
+  "source_sha": "40f979d203b08cec236d047e4e9968b5d86d15d3",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb135-direction-census-compile"
 }
