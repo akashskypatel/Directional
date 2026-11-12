@@ -1,0 +1,78 @@
+diff --git a/tests/SurfaceCellsPhase10Tests.cpp b/tests/SurfaceCellsPhase10Tests.cpp
+index 90dc3f2ef..580491926 100644
+--- a/tests/SurfaceCellsPhase10Tests.cpp
++++ b/tests/SurfaceCellsPhase10Tests.cpp
+@@ -5687,6 +5687,9 @@ TEST(SurfaceCellsPhase10,
+   std::map<directional::authority::NetworkEdgeId, std::size_t> output;
+   std::size_t outputRimEdges = 0U;
+   std::size_t recorded = 0U;
++  // RA-229: the rim edge under each lattice column, on each rim.
++  std::array<std::map<std::int64_t, directional::authority::NetworkEdgeId>, 2>
++      columnEdge;
+   for (const auto &edge : network.phaseFront.product().edges()) {
+     if (edge.boundaryKind !=
+             directional::geometry::SurfaceFrontBoundaryKind::GenuineSourceBoundary ||
+@@ -5697,11 +5700,19 @@ TEST(SurfaceCellsPhase10,
+     if (edge.sharedBoundaryInterval.has_value()) ++recorded;
+     const auto *mandatory =
+         curveNetwork.find_mandatory_edge(edge.route.steps().front().topology());
+-    if (mandatory != nullptr) ++output[mandatory->id];
++    if (mandatory != nullptr) {
++      ++output[mandatory->id];
++      const std::int64_t column =
++          std::min<std::int64_t>(edge.fromLattice.latticeCoordinate.x,
++                                 edge.toLattice.latticeCoordinate.x);
++      columnEdge[edge.fromLattice.latticeCoordinate.y == 0 ? 0U : 1U].emplace(
++          column, mandatory->id);
++    }
+   }
+   std::size_t rimEdges = 0U;
+   std::size_t readable = 0U;
+   std::size_t equalOutput = 0U;
++  std::map<directional::authority::NetworkEdgeId, std::size_t> planCount;
+   for (const auto &mandatory : curveNetwork.mandatory_edges()) {
+     if (mandatory.kind != directional::geometry::SurfaceCellRailKind::Boundary) {
+       continue;
+@@ -5717,9 +5728,42 @@ TEST(SurfaceCellsPhase10,
+             *arcs, true);
+     if (!rim) continue;
+     ++readable;
++    planCount.emplace(mandatory.id, rim->size());
+     const auto built = output.find(mandatory.id);
+     if (built != output.end() && built->second == rim->size()) ++equalOutput;
+   }
++  // RA-229: the annulus pairs the two rim edges whose output edges share a
++  // lattice column into one strip. The plan pairs a strip when it gives both
++  // edges the same count; the annulus can read the plan only if every strip
++  // pairs.
++  std::set<std::pair<directional::authority::NetworkEdgeId,
++                     directional::authority::NetworkEdgeId>>
++      strips;
++  for (const auto &[column, first] : columnEdge[0]) {
++    const auto second = columnEdge[1].find(column);
++    if (second != columnEdge[1].end()) strips.emplace(first, second->second);
++  }
++  std::size_t paired = 0U;
++  for (const auto &[first, second] : strips) {
++    const auto a = planCount.find(first);
++    const auto b = planCount.find(second);
++    if (a != planCount.end() && b != planCount.end() && a->second == b->second) {
++      ++paired;
++    }
++  }
++  std::array<std::set<directional::authority::NetworkEdgeId>, 2> rimSources;
++  std::array<std::size_t, 2> planRim{0U, 0U};
++  for (std::size_t rim = 0U; rim < 2U; ++rim) {
++    for (const auto &[column, edge] : columnEdge[rim]) rimSources[rim].insert(edge);
++    for (const auto &edge : rimSources[rim]) {
++      const auto count = planCount.find(edge);
++      if (count != planCount.end()) planRim[rim] += count->second;
++    }
++  }
++  std::cout << "annulus-pair case=CommittedCylinder strips=" << strips.size()
++            << " paired=" << paired << " rimSources=" << rimSources[0].size()
++            << '/' << rimSources[1].size() << " planRims=" << planRim[0] << '/'
++            << planRim[1] << std::endl;
+   std::cout << "annulus-read case=CommittedCylinder rimEdges=" << rimEdges
+             << " readable=" << readable << " equalOutput=" << equalOutput
+             << " outputRimEdges=" << outputRimEdges << " recorded=" << recorded

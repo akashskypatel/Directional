@@ -1,3 +1,9 @@
+## 2026-11-12 UTC — RA-229 annulus rim pairing defined (64D.8; Review, runtime-free)
+
+- [RA-229](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Annulus_Rim_Pairing_Review_20261112.md): baseline A3 does not owe paired annulus rims and is not changed. TB109's row 729 `equalOutput=24` is a rounding difference, not proof that strips fail to pair. RA-228's route condition was stronger than readability (corrected).
+- Frozen CB130 (`009166a1…`, 78 lines, test only; row 729 `annulus-pair` receipt) → TB111 (TB109 manifest). `paired=16` → CB129 unchanged, with TB110's row 729 condition re-registered; otherwise O40 → Review-only `M6-CP3-DEFN-P13-A4-ANNULUS-COUNT-TRANSITION`.
+- Verification: CB130 applies at HEAD and CB129 applies on CB130; `-fsyntax-only` 0 on both stages; manifest self-check passes. No product or test source changed in the repository.
+
 ## 2026-11-12 — TB109 annulus rim-edge schedule full gate (64D.5, scoped MATCH)
 
 [TB109 execution report](.agents/Directional/Architecture_M6_CP3_TB109_P13_A3_Annulus_Rim_Edge_Schedule_Full_Gate_Execution_Report_20261112.md) records the CB128 immutable artifact-only run: gate [43155345821](https://github.com/akashskypatel/Directional/actions/runs/43155345821), 944/944 PASS, membership 1,025 and 1,896/1,896 hashes; census [43155374160](https://github.com/akashskypatel/Directional/actions/runs/43155374160), Cylinder PASS and BunnyRandom/Vase registered RED, 9/9 hashes. The 41 inherited, rim-branch and annulus-rim receipt lines match TB108 exactly; census platform/coverage digests match. Row 729 reports `rimEdges=32 readable=32 equalOutput=24 outputRimEdges=56 recorded=0`. TB109 meets RA-228 §5's scoped MATCH gate, but its unequal output count forbids CB129. The next separate turn is Review-only `M6-CP3-DEFN-P13-A3-ANNULUS-RIM-PAIRING`. No rebuild, source/test/fixture or selector changes, no production switch, no accepted CP3 promotion. Stable 66/17/49, debt 1 and deferred 81 unchanged.

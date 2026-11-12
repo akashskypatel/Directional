@@ -604,6 +604,11 @@ This document records **reusable failure-derived engineering lessons**, not an e
   `k/n` exactly lets the annulus keep its own coordinate expression, so its lattice stays
   bit-identical. Allowing any matching split would have needed a rational-to-double conversion
   with no guarantee of exactness. Narrow the rule and record which case it now rejects.
+- **Gate a switch on the predicate the consumer actually needs (RA-229).** RA-228 routed on
+  "unchanged counts" (`equalOutput = rimEdges`), which is stronger than "readable", meaning both
+  rim edges of a strip have equal plan counts. TB109 failed the stronger test and settled nothing.
+  Print the consumer's own predicate in the measuring receipt, and use count neutrality only to
+  register digests.
 - **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
   still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).
 - **A TB runs the full current gate even when its CB touches no gate binary.** A CLI- or GUI-only CB

@@ -1,4 +1,19 @@
-## CURRENT — TB109 scoped MATCH (64D.5); annulus rim pairing Review next, 2026-11-12
+## CURRENT — RA-229 annulus rim pairing defined (64D.8); CB130 next, 2026-11-12
+
+> **Canonical next:** `M6-CP3-CB130-P13-A3-ANNULUS-RIM-PAIR-CENSUS` (implementation agent, compile only, test only). [Exact patch](.agents/Directional/Architecture_M6_CP3_CB130_P13_A3_Annulus_Rim_Pair_Census_Exact.diff) `009166a110f887198d556bdf8abd28c0e388c9ab28542e454376a39817290dc0`, 78 lines, no single-space context lines. Numstat: `45 1` `tests/SurfaceCellsPhase10Tests.cpp`. Base: HEAD `e2aa661e1`.
+
+- [x] **RA-229** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Annulus_Rim_Pairing_Review_20261112.md)) completed `M6-CP3-DEFN-P13-A3-ANNULUS-RIM-PAIRING` (64D.8).
+  - Baseline A3 owes positive counts, shared subdivisions and even region parity, not paired rims, so A3 stays as it is.
+  - TB109's `equalOutput=24` is a rounding difference between the annulus's rule and A3's, not proof of unpaired strips.
+  - CB130 → TB111 measure pairing on row 729.
+
+| Step | Turn | Owner |
+|---|---|---|
+| 64D.9 **NEXT** | `M6-CP3-CB130-P13-A3-ANNULUS-RIM-PAIR-CENSUS`: row 729 prints `annulus-pair … strips paired rimSources planRims`. Mismatch → `M6-CP3-PLAN-P13-A3-ANNULUS-RIM-PAIR-CENSUS-STOP`; infrastructure → `M6-CP3-CB130A-P13-A3-ANNULUS-RIM-PAIR-CENSUS-ORCH` | implementation agent |
+| 64D.10 | `M6-CP3-TB111-P13-A3-ANNULUS-RIM-PAIR-CENSUS-FULL-GATE-EXEC`: TB109 manifest byte for byte. MATCH needs 944/944, all TB109 receipts unchanged, census unchanged, and `strips=16 rimSources=16/16`. `paired=16` → CB129 (unchanged patch, base CB130), with TB110 re-registered by RA-229 §5; else the Review-only `M6-CP3-DEFN-P13-A4-ANNULUS-COUNT-TRANSITION` (O40). Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB111A-P13-A3-ANNULUS-RIM-PAIR-CENSUS-ORCH` | implementation agent |
+| later | O36 switch definition (annulus clause; O40 if opened) | Review |
+
+## PREVIOUS — TB109 scoped MATCH (64D.5), 2026-11-12
 
 > **Canonical next, separate Review-only:** `M6-CP3-DEFN-P13-A3-ANNULUS-RIM-PAIRING`, because TB109's row 729 has `rimEdges=32`, `readable=32`, `equalOutput=24`, `outputRimEdges=56`, `recorded=0`. **TB109 COMPLETE / scoped MATCH:** [report](.agents/Directional/Architecture_M6_CP3_TB109_P13_A3_Annulus_Rim_Edge_Schedule_Full_Gate_Execution_Report_20261112.md); [gate 43155345821](https://github.com/akashskypatel/Directional/actions/runs/43155345821) **944/944 PASS**, membership 1,025, 1,896/1,896 hashes and all 41 reference receipts unchanged; [census 43155374160](https://github.com/akashskypatel/Directional/actions/runs/43155374160) Cylinder PASS/BunnyRandom and Vase registered RED, 9/9 hashes, census digests unchanged. **CB129 prohibited until pairing Review decides paired count consistency.** O36 unwired; CP3/selector497 unpromoted; stable 66/17/49, debt 1, deferred 81.
 
