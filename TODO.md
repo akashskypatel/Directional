@@ -1,4 +1,22 @@
-## CURRENT — TB112 scoped MATCH (64E.2); activation Review next, 2026-11-12
+## CURRENT — RA-231: switch not activated (64E.3); CB132 next, 2026-11-12
+
+> **Canonical next:** `M6-CP3-CB132-P13-A4-COMPLETED-MESH-GATE-CENSUS` (implementation agent, compile only, test only). [Exact patch](.agents/Directional/Architecture_M6_CP3_CB132_P13_A4_Completed_Mesh_Gate_Census_Exact.diff) `ccaed2b5ecd4b6c562fdaed313f547f063cbf047225778836bf1eb9683182d90`, 43 lines, keep 2 single-space context lines. Numstat: `32 0` `tests/SurfaceCellDesignAcceptanceTests.cpp`. Base: HEAD `638bc767b`.
+
+- [x] **RA-231** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Switch_Activation_Review_20261112.md)) completed `M6-CP3-DEFN-P13-A3-SWITCH-ACTIVATION` (64E.3): **not activated.**
+  - Chained MultiFaceSeam fails completion, and its per-arc design-acceptance row 796 is accepted green.
+  - The switch's own stages work.
+  - SmoothRimDisc fails the same gate under per-arc too, so the cause does not depend on the schedule.
+- [ ] **O41** (new, precondition of activation): the bounded-disk completed mesh fails the final gate with no strict issue (`AggregateCompletionValidationFailure`). Witnesses: SmoothRimDisc (both schedules), MultiFaceSeam (chained). Possibly related: Vase's registered RED.
+
+| Step | Turn | Owner |
+|---|---|---|
+| 64E.3 **COMPLETE (not activated)** | `M6-CP3-DEFN-P13-A3-SWITCH-ACTIVATION` (RA-231) | Review |
+| **64E.4 NEXT** | `M6-CP3-CB132-P13-A4-COMPLETED-MESH-GATE-CENSUS`: a `switch-validation` line with every input of the final mesh gate. Mismatch → `M6-CP3-PLAN-P13-A4-COMPLETED-MESH-GATE-CENSUS-STOP`; infrastructure → `M6-CP3-CB132A-P13-A4-COMPLETED-MESH-GATE-CENSUS-ORCH` | implementation agent |
+| 64E.5 | `M6-CP3-TB113-P13-A4-COMPLETED-MESH-GATE-CENSUS-FULL-GATE-EXEC`: TB112's manifest byte for byte (945 rows). MATCH needs 945/945, every TB112 receipt unchanged, `switch-validation` lines recorded, and `accepted=0 strict=0` on the three failing runs. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB113A-P13-A4-COMPLETED-MESH-GATE-CENSUS-ORCH` | implementation agent |
+| 64E.6 | `M6-CP3-DEFN-P13-A4-COMPLETED-MESH-GATE` (O41 cause and fix) | **Review agent only** |
+| later | Activation re-defined after O41 | Review, then implementation |
+
+## PREVIOUS — TB112 scoped MATCH (64E.2), 2026-11-12
 
 > **Canonical next (Review only):** `M6-CP3-DEFN-P13-A3-SWITCH-ACTIVATION`. [TB112 report](.agents/Directional/Architecture_M6_CP3_TB112_P13_A3_Rim_Chain_Switch_Staging_Full_Gate_Execution_Report_20261112.md) establishes scoped MATCH: 945/945 PASS, 1,026 members, all TB110 inherited receipts byte-identical, ten switch-run receipts. Chained MultiFaceSeam and SmoothRimDisc do not produce valid output and require Review ownership; the default remains per-arc. No CP3/selector497 promotion.
 

@@ -1,3 +1,10 @@
+## 2026-11-12 UTC — RA-231 switch activation: not activated (64E.3; Review, runtime-free)
+
+- [RA-231](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Switch_Activation_Review_20261112.md): TB112 shows the chained switch's own stages working (phase front produced, every span covered, Cylinder identical). But chained MultiFaceSeam fails completion, which would lose accepted row 796. SmoothRimDisc fails under both schedules.
+- New O41: the bounded-disk completed mesh fails the final gate with no strict issue. It may be related to Vase's registered RED. `chainRimSchedules` stays off.
+- Frozen: CB132 (`ccaed2b5…`, 43 lines, test only; `switch-validation` receipt) → TB113 (TB112 manifest, 945 rows). Then the Review-only `M6-CP3-DEFN-P13-A4-COMPLETED-MESH-GATE`.
+- Verification: `-fsyntax-only` 0 on the test file; CB132 applies at HEAD; the manifest self-check passes. No product or test source changed in the repository.
+
 ## 2026-11-12 UTC — TB112 rim-chain switch staging full gate (64E.2; scoped MATCH)
 
 - [TB112 report](.agents/Directional/Architecture_M6_CP3_TB112_P13_A3_Rim_Chain_Switch_Staging_Full_Gate_Execution_Report_20261112.md): immutable CB131 package `13931894182`, source `240d2a1948c95521e9b90740244e7dd7de46483a`, [run 43199861547](https://github.com/akashskypatel/Directional/actions/runs/43199861547), artifact `13935551687` digest `1b0178823ac5a9c0fd45589090f04b0d8f794c22301761cb00a5e1bed11b8888`. Gate **945/945**, 1,026 members, 1,898/1,898 checksums; 944 TB110 inherited receipts unchanged, ten switch-run receipts present. No rebuild or source/fixture/default option changes.

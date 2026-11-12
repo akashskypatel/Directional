@@ -614,6 +614,10 @@ This document records **reusable failure-derived engineering lessons**, not an e
   registered runtime-free. Landing it off by default, with a second run per fixture printing what
   it builds, keeps the gate byte-identical and gives the activation turn exact numbers to
   register. Check first that the option is not hashed into any digest.
+- **A synthetic witness can expose a defect the switch did not cause (RA-231).** The smooth-rim
+  disc, added to measure the switch, failed under the old schedule too. Read the old-path line of
+  a paired receipt before blaming the change. A failure reported only as "aggregate" needs a
+  receipt that prints every measure behind it before any cure is designed.
 - **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
   still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).
 - **A TB runs the full current gate even when its CB touches no gate binary.** A CLI- or GUI-only CB
