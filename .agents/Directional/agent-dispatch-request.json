@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb129-closeout-docs-v1",
+  "request_id": "m6-cp3-cb129-load-next-closeout-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb129-closeout-docs",
-  "file_id": "1lMCo1wiEnbG_wzuqL5tYpTCrkteqvvFT",
-  "patch_sha256": "df340aecec03e965b6791ba1139a0bb0e9e85315c6741add803fd9b8521b1706",
-  "base_sha": "5a0309b8a184ff9c4aee36ef1af871c82538b2f8",
+  "mailbox_key": "m6-cp3-cb129-load-next-closeout",
+  "file_id": "1ij_-nQxmnX2TLdgrh8OFkOxbE4voPsH2",
+  "patch_sha256": "9e93fc2cc9bcbafaf78b2138849170993d91a590f63352053be04c6c93955c53",
+  "base_sha": "842e88307e95e6d3de22bcd6d9b0b9cea83ac335",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record verified CB129 compile and TB110 handoff",
+  "commit_message": "docs(directional): correct CB129 load-next handoff to TB110",
   "retention_days": 7
 }
