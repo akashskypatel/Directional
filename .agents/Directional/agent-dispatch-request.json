@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb111-closeout-docs-20261112-v1",
+  "request_id": "m6-cp3-cb129-annulus-rim-consumption-apply-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb111-closeout-docs-20261112-v1",
-  "file_id": "15pZkqUy7b0F7qOIM6hBhuX1i_JI3Ygc7",
-  "patch_sha256": "e68a997d340cf113d8c1525a9790bded5e607139647a00a8d5a40cede757c5c4",
-  "base_sha": "7f06b87e4664d2b29a4bda0d873b9001f036eab0",
+  "mailbox_key": "m6-cp3-cb129-annulus-rim-apply-v1",
+  "file_id": "1RJ9twDmIIcoAZyXyblcY3V1sIjVNPwb7",
+  "patch_sha256": "09242f89e7e41dff74e865ba6f9897abcc8f9eb80c0445dd39924903e6b270a0",
+  "base_sha": "5a0309b8a184ff9c4aee36ef1af871c82538b2f8",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close TB111 pairing full gate and authorize CB129",
+  "commit_message": "feat(surface-cells): consume exact annulus rim schedules from A3 plan",
   "retention_days": 7
 }
