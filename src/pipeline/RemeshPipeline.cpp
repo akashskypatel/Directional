@@ -13012,11 +13012,38 @@ remesh_from_raw_cross_field_impl_with_stage_products(
                 globalTopologyPlanProduct->rotation_system().size()),
         true);
 
-    const geometry::GlobalConformityBaselineInput conformityBaselineInput =
-        remesh_pipeline_detail::make_global_conformity_baseline_input(
-            meshWhole.V, targetSize.targetSize, *globalTopologyPlanProduct);
+    std::optional<geometry::GlobalConformityBaselineInput> conformityBaselineInput;
+    if (options.surfaceCells.chainRimSchedules) {
+      // Rim chains stop where the field turns (D5 corners) and at every
+      // annulus rim vertex (RA-228), and the uniform producer declines every
+      // planned region (D4).
+      std::vector<authority::SourceVertexId> rimStops =
+          geometry::derive_boundary_field_corner_vertices(
+              meshWhole.V, meshWhole.F, faceAxisX, faceAxisY,
+              &*fieldTransportAtlasProduct);
+      const std::vector<authority::SourceVertexId> annulusStops =
+          geometry::derive_annulus_rim_stop_vertices(*sourceTopologyRegionsProduct);
+      rimStops.insert(rimStops.end(), annulusStops.begin(), annulusStops.end());
+      std::sort(rimStops.begin(), rimStops.end());
+      rimStops.erase(std::unique(rimStops.begin(), rimStops.end()),
+                     rimStops.end());
+      conformityBaselineInput =
+          geometry::make_chained_global_conformity_baseline_input(
+              meshWhole.V, targetSize.targetSize, *globalTopologyPlanProduct,
+              *fieldAlignedNetworkProduct, featureMap.curves, rimStops);
+      if (!conformityBaselineInput) {
+        return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
+                                  "global-conformity-baseline/chained-input",
+                                  "chained-input");
+      }
+      tracingOptions.declinePlannedUniformRegions = true;
+    } else {
+      conformityBaselineInput =
+          remesh_pipeline_detail::make_global_conformity_baseline_input(
+              meshWhole.V, targetSize.targetSize, *globalTopologyPlanProduct);
+    }
     auto conformityBaselineBuild = geometry::build_global_conformity_baseline(
-        *globalTopologyPlanProduct, conformityBaselineInput);
+        *globalTopologyPlanProduct, *conformityBaselineInput);
     if (!conformityBaselineBuild) {
       const auto &error = conformityBaselineBuild.error();
       return fail_surface_cells(

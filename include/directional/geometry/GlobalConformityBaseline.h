@@ -252,6 +252,10 @@ public:
   find_schedule(ConformitySpanId span) const noexcept;
   [[nodiscard]] std::optional<ConformityBreakpointLocation>
   breakpoint_location(ConformitySpanId span, const EInt &exactOrdinal) const;
+  /** O37: the span's breakpoints 0..count in one pass, each equal to
+   *  breakpoint_location for its ordinal. */
+  [[nodiscard]] std::optional<std::vector<ConformityBreakpointLocation>>
+  breakpoint_locations(ConformitySpanId span) const;
   [[nodiscard]] const BaselineConformityArcBinding *
   find_arc_binding(authority::NetworkArcId arc) const noexcept;
   [[nodiscard]] GlobalConformityBaselineValidationCandidate

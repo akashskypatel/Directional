@@ -2385,6 +2385,10 @@ struct SurfaceCellTracingOptions {
   /// Accepted A2b/A3 authority consumed by the production A4 shared-boundary cutover.
   const GlobalTopologyPlan *globalTopologyPlan = nullptr;
   const GlobalConformityBaselinePlan *globalConformityBaselinePlan = nullptr;
+  /// D4: under a plan the uniform producer declines every region, so a
+  /// producer that reads the plan builds it. Off by default until the
+  /// production switch.
+  bool declinePlannedUniformRegions = false;
   [[nodiscard]] bool has_legacy_raw_singularity_ingress() const noexcept {
     return !singularityVertices.empty() || !singularityIndexNumerators.empty();
   }
@@ -3023,6 +3027,15 @@ derive_boundary_field_corner_vertices(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const authority::FieldTransportAtlas *fieldTransportAtlas = nullptr);
+
+/**
+ * D4 annulus rims (RA-228): every endpoint of a boundary edge of a region with
+ * Euler characteristic 0 and two boundary loops, the regions the periodic
+ * annulus producer can take. A chained A3 schedule stops at these vertices,
+ * so each annulus rim edge keeps a breakpoint at both ends. Sorted, unique.
+ */
+[[nodiscard]] std::vector<authority::SourceVertexId>
+derive_annulus_rim_stop_vertices(const SourceTopologyRegions &regions);
 
 SurfaceCellTracingOverlay make_surface_cell_tracing_overlay(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,

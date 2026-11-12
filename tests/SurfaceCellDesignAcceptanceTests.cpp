@@ -121,6 +121,26 @@ void print_platform_digest(const char *testName,
             << std::endl;
 }
 
+// O36 staging (RA-230): what one pipeline run built, so the per-arc and the
+// chained rim schedules can be compared on the same input.
+void print_switch_receipt(const std::string &testName, const char *schedule,
+                          const directional::pipeline::RemeshResult &result) {
+  const auto &diagnostics = result.diagnostics;
+  std::cout << "switch-run case=" << testName << " schedule=" << schedule
+            << " produced=" << (result.is_produced() ? 1 : 0) << " faces="
+            << (result.is_produced() ? result.product().faces.rows() : 0)
+            << " failure=" << diagnostics.terminalFailureCode << '/'
+            << diagnostics.terminalFailureStage
+            << " phaseFront=" << diagnostics.surfaceCellAuthoritativeProducerDisposition
+            << " invalid=" << diagnostics.surfaceCellFirstInvalidProducerStage
+            << '/' << diagnostics.surfaceCellFirstInvalidProducerReason
+            << " a3=" << diagnostics.surfaceCellA3ScheduledSpans << '/'
+            << diagnostics.surfaceCellA3CoveredSpans << '/'
+            << diagnostics.surfaceCellA3PartialSpans << '/'
+            << diagnostics.surfaceCellA3UnrecordedSpans << '/'
+            << diagnostics.surfaceCellA3ForeignIntervalEdges << std::endl;
+}
+
 
 struct FixtureTopologyStats {
   int boundaryEdges = 0;
@@ -344,6 +364,17 @@ TEST_P(SurfaceCellDesignD4RimCensus, ReportsRimCountsAgainstTheA3Schedules) {
   const directional::pipeline::RemeshResult result =
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, field.raw, options);
+
+  // O36 staging (RA-230): the same input with chained rim schedules.
+  print_switch_receipt(GetParam().testName, "perArc", result);
+  {
+    directional::pipeline::RemeshOptions chainedOptions = options;
+    chainedOptions.surfaceCells.chainRimSchedules = true;
+    print_switch_receipt(GetParam().testName, "chained",
+                         directional::pipeline::remesh_from_raw_cross_field(
+                             mesh.vertices, mesh.faces, field.raw,
+                             chainedOptions));
+  }
 
   const auto &context = result.surfaceCellContext;
   const auto &snapshots = context.productSnapshots;
@@ -646,6 +677,31 @@ TEST_P(SurfaceCellDesignD4RimCensus, ReportsRimCountsAgainstTheA3Schedules) {
   report_rim_schedule("perArc", perArc);
   report_rim_schedule("chained", *chained);
   report_rim_schedule("stopped", stoppedBuilt.value());
+
+  // O37: the one-pass locator gives every span's breakpoints exactly as the
+  // per-ordinal locator does, on all three schedules.
+  using PlanPointer = const directional::geometry::GlobalConformityBaselinePlan *;
+  for (const PlanPointer plan : std::initializer_list<PlanPointer>{
+           &perArc, &*chained, &stoppedBuilt.value()}) {
+    for (const auto &entry : plan->schedule()) {
+      const auto batch = plan->breakpoint_locations(entry.span);
+      ASSERT_TRUE(batch.has_value());
+      ASSERT_EQ(std::stoull(entry.count.to_string()) + 1U, batch->size());
+      for (std::size_t ordinal = 0U; ordinal < batch->size(); ++ordinal) {
+        const auto single = plan->breakpoint_location(
+            entry.span, EInt(static_cast<long long>(ordinal)));
+        ASSERT_TRUE(single.has_value());
+        const auto &located = (*batch)[ordinal];
+        EXPECT_TRUE(located.id == single->id &&
+                    located.supportPieceIndex == single->supportPieceIndex &&
+                    located.localNumerator == single->localNumerator &&
+                    located.localDenominator == single->localDenominator &&
+                    located.firstEndpoint == single->firstEndpoint &&
+                    located.lastEndpoint == single->lastEndpoint)
+            << entry.span.network_arc().index() << '/' << ordinal;
+      }
+    }
+  }
 }
 
 INSTANTIATE_TEST_SUITE_P(
@@ -659,5 +715,62 @@ INSTANTIATE_TEST_SUITE_P(
     [](const ::testing::TestParamInfo<DesignAcceptanceCase> &info) {
       return info.param.testName;
     });
+
+// O36 staging (RA-230): a flat disc whose rim is smooth, so only the field
+// corners can cut it into sides. No gate fixture has one. Receipt only.
+TEST(SurfaceCellDesignSwitchReceipt, SmoothRimDiscUnderBothRimSchedules) {
+  constexpr int kSegments = 32;
+  constexpr int kRings = 6;
+  const double pi = std::acos(-1.0);
+  const auto vertex = [](const int ring, const int segment) {
+    return 1 + (ring - 1) * kSegments + (segment % kSegments);
+  };
+  Eigen::MatrixXd vertices(1 + kRings * kSegments, 3);
+  vertices.row(0) << 0.0, 0.0, 0.0;
+  for (int ring = 1; ring <= kRings; ++ring) {
+    for (int segment = 0; segment < kSegments; ++segment) {
+      const double angle = 2.0 * pi * segment / kSegments;
+      const double radius = static_cast<double>(ring) / kRings;
+      vertices.row(vertex(ring, segment)) << radius * std::cos(angle),
+          radius * std::sin(angle), 0.0;
+    }
+  }
+  Eigen::MatrixXi faces(kSegments * (2 * kRings - 1), 3);
+  int face = 0;
+  for (int segment = 0; segment < kSegments; ++segment) {
+    faces.row(face++) << 0, vertex(1, segment), vertex(1, segment + 1);
+  }
+  for (int ring = 1; ring < kRings; ++ring) {
+    for (int segment = 0; segment < kSegments; ++segment) {
+      const int a = vertex(ring, segment);
+      const int b = vertex(ring, segment + 1);
+      const int c = vertex(ring + 1, segment + 1);
+      const int d = vertex(ring + 1, segment);
+      faces.row(face++) << a, d, c;
+      faces.row(face++) << a, c, b;
+    }
+  }
+  ASSERT_EQ(faces.rows(), face);
+  Eigen::MatrixXd raw(faces.rows(), 12);
+  for (int row = 0; row < faces.rows(); ++row) {
+    raw.row(row) << 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0,
+        0.0;
+  }
+
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.lengthRatio = 0.2;
+  print_switch_receipt("SmoothRimDisc", "perArc",
+                       directional::pipeline::remesh_from_raw_cross_field(
+                           vertices, faces, raw, options));
+  options.surfaceCells.chainRimSchedules = true;
+  print_switch_receipt("SmoothRimDisc", "chained",
+                       directional::pipeline::remesh_from_raw_cross_field(
+                           vertices, faces, raw, options));
+}
 
 } // namespace

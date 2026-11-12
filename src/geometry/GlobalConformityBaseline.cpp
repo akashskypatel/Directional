@@ -789,6 +789,16 @@ GlobalConformityBaselinePlan::breakpoint_location(
       exactOrdinal);
 }
 
+std::optional<std::vector<ConformityBreakpointLocation>>
+GlobalConformityBaselinePlan::breakpoint_locations(ConformitySpanId span) const {
+  const auto *entry = find_schedule(span);
+  if (entry == nullptr) return std::nullopt;
+  const auto index = static_cast<std::size_t>(entry - schedule_.data());
+  if (index >= metricRuns_.size()) return std::nullopt;
+  return global_conformity_baseline_detail::derive_metric_breakpoint_locations(
+      span, entry->supportPieces.size(), metricRuns_[index], entry->count);
+}
+
 const BaselineConformityArcBinding *
 GlobalConformityBaselinePlan::find_arc_binding(
     authority::NetworkArcId arc) const noexcept {

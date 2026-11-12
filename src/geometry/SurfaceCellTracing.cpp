@@ -13357,17 +13357,16 @@ std::optional<EdgeArcSchedule> edge_arc_schedule(
   const ConformitySpanId span = binding.span;
   auto located = spanBreakpoints.find(span);
   if (located == spanBreakpoints.end()) {
-    std::vector<ConformityBreakpointLocation> locations;
-    locations.reserve(*count + 1U);
-    for (std::size_t ordinal = 0U; ordinal <= *count; ++ordinal) {
-      auto location = baseline.breakpoint_location(
-          span, EInt(static_cast<long long>(ordinal)));
-      if (!location || location->localDenominator == EInt(0)) {
-        return std::nullopt;
-      }
-      locations.push_back(std::move(*location));
+    // O37: one pass over the span's runs.
+    auto locations = baseline.breakpoint_locations(span);
+    if (!locations || locations->size() != *count + 1U ||
+        std::any_of(locations->begin(), locations->end(),
+                    [](const ConformityBreakpointLocation &location) {
+                      return location.localDenominator == EInt(0);
+                    })) {
+      return std::nullopt;
     }
-    located = spanBreakpoints.emplace(span, std::move(locations)).first;
+    located = spanBreakpoints.emplace(span, std::move(*locations)).first;
   }
   const std::vector<ConformityBreakpointLocation> &locations = located->second;
   // A Mandatory arc is one piece of its span's support.
@@ -13647,7 +13646,8 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
       options.globalConformityBaselinePlan->schedule().size() !=
           options.globalTopologyPlan->arcs().size();
   if (options.globalConformityBaselinePlan != nullptr &&
-      (chainedPlan || region_has_hard_feature())) {
+      (chainedPlan || options.declinePlannedUniformRegions ||
+       region_has_hard_feature())) {
     return result;
   }
   UniformPhaseFrame applicabilityFrame;
@@ -21791,6 +21791,23 @@ SurfaceCellNetwork build_surface_cell_network(
                                     targetSize, options, &crossField.matching,
                                     &crossField.effort,
                                     &crossField.edgeTransitions);
+}
+
+std::vector<authority::SourceVertexId> derive_annulus_rim_stop_vertices(
+    const SourceTopologyRegions &regions) {
+  std::vector<authority::SourceVertexId> stops;
+  for (const SurfaceTopologyRegion &region : regions.regions()) {
+    if (region.euler_characteristic() != 0 || region.boundary_loop_count() != 2) {
+      continue;
+    }
+    for (const authority::SourceEdgeTopologyKey &edge : region.boundary_edges()) {
+      stops.push_back(edge.first());
+      stops.push_back(edge.second());
+    }
+  }
+  std::sort(stops.begin(), stops.end());
+  stops.erase(std::unique(stops.begin(), stops.end()), stops.end());
+  return stops;
 }
 
 std::vector<authority::SourceVertexId> derive_boundary_field_corner_vertices(

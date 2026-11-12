@@ -41,6 +41,14 @@ derive_metric_breakpoint_location(
     const std::vector<BaselineConformityMetricRun> &runs, const EInt &count,
     const EInt &ordinal);
 
+// O37: every breakpoint 0..count of the span, equal to calling
+// derive_metric_breakpoint_location for each ordinal, with the run weights
+// computed once.
+[[nodiscard]] std::optional<std::vector<ConformityBreakpointLocation>>
+derive_metric_breakpoint_locations(
+    ConformitySpanId span, std::size_t pieceCount,
+    const std::vector<BaselineConformityMetricRun> &runs, const EInt &count);
+
 // D5 maximal Mandatory chain (RA-218): consecutive oriented A2b arcs, each
 // starting at the node where the previous one ends.
 struct BaselineMandatoryChain {

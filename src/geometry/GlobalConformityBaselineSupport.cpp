@@ -365,6 +365,61 @@ std::optional<ConformityBreakpointLocation> derive_metric_breakpoint_location(
   return std::nullopt;
 }
 
+std::optional<std::vector<ConformityBreakpointLocation>>
+derive_metric_breakpoint_locations(
+    ConformitySpanId span, std::size_t pieceCount,
+    const std::vector<BaselineConformityMetricRun> &runs, const EInt &count) {
+  const EInt zero(0);
+  // Ordinal 0 checks the span and its runs as every ordinal would.
+  auto first =
+      derive_metric_breakpoint_location(span, pieceCount, runs, count, zero);
+  if (!first) return std::nullopt;
+  std::vector<ConformityBreakpointLocation> locations;
+  locations.push_back(std::move(*first));
+  const EInt scale = exact_power(EInt(2), kPartitionStableMetricFractionalBits);
+  std::vector<EInt> weights;
+  EInt total(0);
+  if (pieceCount > 1U) {
+    for (const auto &run : runs) {
+      weights.push_back(scaled_metric_ceiling(run.squaredMetric, scale));
+      total += weights.back();
+    }
+  }
+  const auto exactOne = exact_integer(1);
+  std::size_t r = 0U;
+  EInt prefix(0);
+  for (EInt ordinal(1); ordinal <= count; ordinal += EInt(1)) {
+    const ConformityBreakpointId id{span, ordinal};
+    if (ordinal == count) {
+      locations.push_back(ConformityBreakpointLocation{
+          id, pieceCount - 1U, EInt(1), EInt(1), false, true});
+      continue;
+    }
+    if (pieceCount == 1U) {
+      locations.push_back(
+          ConformityBreakpointLocation{id, 0U, ordinal, count, false, false});
+      continue;
+    }
+    // The owning run never moves back as the ordinal rises.
+    const EInt target = ordinal * total;
+    while (r < runs.size() && !(target < count * (prefix + weights[r]))) {
+      prefix += weights[r];
+      ++r;
+    }
+    if (r == runs.size()) return std::nullopt;
+    const auto t = exact_ratio(target - count * prefix, count * weights[r]);
+    const auto &starts = runs[r].pieceStarts;
+    const auto piece = static_cast<std::size_t>(
+        std::upper_bound(starts.begin(), starts.end(), t) - starts.begin() - 1);
+    const auto end = piece + 1U < starts.size() ? starts[piece + 1U] : exactOne;
+    const auto local = (t - starts[piece]) / (end - starts[piece]);
+    locations.push_back(ConformityBreakpointLocation{
+        id, runs[r].firstPiece + piece, local.exact_numerator(),
+        local.exact_denominator(), false, false});
+  }
+  return locations;
+}
+
 std::optional<std::vector<BaselineMandatoryChain>>
 derive_mandatory_chain_partition(
     const std::vector<GlobalTopologyArc> &arcs,

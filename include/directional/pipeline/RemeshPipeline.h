@@ -165,6 +165,11 @@ struct SurfaceCellOptions {
   /// may relax the requested final edge size. Recovery has fixed connectivity;
   /// requests outside this bound remain visible as validation failures.
   double maxSourceGridRecoveryTargetRelaxation = 2.0;
+  /// A3 schedules each source-boundary rail as chains, stopped at boundary
+  /// field corners and annulus rim vertices, and the uniform producer declines
+  /// every planned region. Off: one span per arc. Off by default until the
+  /// production switch is accepted.
+  bool chainRimSchedules = false;
   bool useSkeletonHints = false;
   /// Performance is a closeout/benchmark disposition by default, not a mesh
   /// validity invariant. Enable this only when a caller intentionally wants a
