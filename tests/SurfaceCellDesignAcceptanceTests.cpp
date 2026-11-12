@@ -476,6 +476,14 @@ TEST_P(SurfaceCellDesignD4RimCensus, ReportsRimCountsAgainstTheA3Schedules) {
             << " unresolved=" << unresolved
             << " arcs:perArc/chained/output/recorded=" << list.str()
             << std::endl;
+  // RA-228: an annulus reads both rims from the plan, so it records an
+  // interval on every output rim edge.
+  if (produced && !phaseFront.product().periodicHolonomies().empty()) {
+    std::size_t recorded = 0U;
+    for (const auto &[head, side] : sides) recorded += side.recorded;
+    EXPECT_EQ(0U, unresolved);
+    EXPECT_EQ(rimEdges, recorded);
+  }
 
   // RA-224: the chained schedule once rim rails also stop at the boundary
   // field corners. `chains` and `spans` read without/with those stops.

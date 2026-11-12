@@ -5768,6 +5768,10 @@ TEST(SurfaceCellsPhase10,
             << " readable=" << readable << " equalOutput=" << equalOutput
             << " outputRimEdges=" << outputRimEdges << " recorded=" << recorded
             << std::endl;
+  // RA-228: the annulus reads both rims from the plan, so every output rim
+  // edge records its interval.
+  EXPECT_GT(outputRimEdges, 0U);
+  EXPECT_EQ(outputRimEdges, recorded);
 }
 
 

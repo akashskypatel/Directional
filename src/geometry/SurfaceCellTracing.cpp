@@ -14489,8 +14489,8 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
       activeFaces.empty()) {
     return result;
   }
-  // The periodic producer does not publish accepted A3 shared-boundary
-  // interval provenance.  When hard rails are governed by the immutable A3
+  // The periodic producer reads only its two rims from the A3 plan (RA-228),
+  // never hard rails.  When hard rails are governed by the immutable A3
   // plan, defer to the bounded curved producer instead of recreating shared
   // identity from local geometry.
   const auto region_has_hard_feature = [&]() {
@@ -15173,6 +15173,73 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
     stripSubdivisions[static_cast<std::size_t>(u)] = subdivisions;
     periodicSubdivisionCount += subdivisions;
   }
+  // D4 (RA-228): under an A3 plan both rims are read from it. A strip is
+  // readable when its two rim edges split evenly into the same number of span
+  // intervals with every arc end on a breakpoint; that number replaces the
+  // strip's own count, and the rim cell edges record the intervals. One
+  // unreadable strip rejects the region.
+  std::array<std::vector<AnnulusRimInterval>, 2> rimIntervals;
+  if (options.globalConformityBaselinePlan != nullptr) {
+    bool readable = options.globalTopologyPlan != nullptr &&
+                    options.fieldAlignedNetwork != nullptr;
+    SpanBreakpointLocations spanBreakpoints;
+    const std::array<int, 2> rimLayers{0, maxDistance};
+    periodicSubdivisionCount = 0;
+    for (int u = 0; readable && u < ringSize; ++u) {
+      const int next = (u + 1) % ringSize;
+      std::array<std::vector<AnnulusRimInterval>, 2> strip;
+      for (std::size_t rim = 0U; readable && rim < 2U; ++rim) {
+        const auto &ring = rings[static_cast<std::size_t>(rimLayers[rim])];
+        const int a = ring[static_cast<std::size_t>(u)];
+        const int b = ring[static_cast<std::size_t>(next)];
+        const authority::SourceEdgeTopologyKey edge =
+            edge_key(a, b, source_vertex_extent(faces));
+        const auto firstId = authority::SourceVertexId::from_index(
+            static_cast<std::int64_t>(a), source_vertex_extent(faces));
+        const FieldAlignedMandatoryEdge *mandatory =
+            options.fieldAlignedNetwork->find_mandatory_edge(edge);
+        std::optional<std::vector<EdgeArcSchedule>> arcs;
+        if (mandatory != nullptr) {
+          arcs = mandatory_edge_arc_schedules(
+              *options.globalTopologyPlan, *options.globalConformityBaselinePlan,
+              mandatory->id, edge, spanBreakpoints);
+        }
+        std::optional<std::vector<AnnulusRimInterval>> read;
+        if (arcs && firstId) {
+          std::vector<SourceEdgeArcBreakpoints> located;
+          located.reserve(arcs->size());
+          for (const EdgeArcSchedule &arc : *arcs) located.push_back(arc.located);
+          read = read_annulus_rim_edge(located, firstId.value() == edge.first());
+        }
+        if (!read) {
+          readable = false;
+        } else {
+          strip[rim] = std::move(*read);
+        }
+      }
+      if (!readable || strip[0].size() != strip[1].size() ||
+          strip[0].size() > static_cast<std::size_t>(
+                                std::numeric_limits<int>::max() -
+                                periodicSubdivisionCount)) {
+        readable = false;
+        break;
+      }
+      stripSubdivisions[static_cast<std::size_t>(u)] =
+          static_cast<int>(strip[0].size());
+      periodicSubdivisionCount += static_cast<int>(strip[0].size());
+      for (std::size_t rim = 0U; rim < 2U; ++rim) {
+        rimIntervals[rim].insert(rimIntervals[rim].end(), strip[rim].begin(),
+                                 strip[rim].end());
+      }
+    }
+    if (!readable) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+      return result;
+    }
+  }
   result.gridU = periodicSubdivisionCount;
   result.gridV = std::max(1, static_cast<int>(std::llround(height / target)));
 
@@ -15741,6 +15808,42 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
                               static_cast<int>(edge.filledCell.index()),
                               edge.filledSide);
       return result;
+    }
+    if (options.globalConformityBaselinePlan != nullptr) {
+      // D4 (RA-228): rim interval k lies between lattice columns k and k + 1;
+      // the edge records it in its own direction.
+      const std::int64_t fromColumn = edge.fromLattice.latticeCoordinate.x;
+      const std::int64_t toColumn = edge.toLattice.latticeCoordinate.x;
+      const std::int64_t column = std::min(fromColumn, toColumn);
+      const auto &rim =
+          rimIntervals[edge.fromLattice.latticeCoordinate.y == 0 ? 0U : 1U];
+      std::optional<SurfaceSharedBoundaryInterval> interval;
+      if ((toColumn == fromColumn + 1 || fromColumn == toColumn + 1) &&
+          column >= 0 && static_cast<std::uint64_t>(column) < rim.size()) {
+        const AnnulusRimInterval &read = rim[static_cast<std::size_t>(column)];
+        const bool along = toColumn > fromColumn;
+        const std::size_t first = along ? read.startOrdinal : read.endOrdinal;
+        const std::size_t second = along ? read.endOrdinal : read.startOrdinal;
+        interval = SurfaceSharedBoundaryInterval{
+            read.span,
+            authority::FieldExactRational::from_integer(
+                static_cast<std::int64_t>(first)),
+            authority::FieldExactRational::from_integer(
+                static_cast<std::int64_t>(second)),
+            second > first ? authority::Orientation::Forward
+                           : authority::Orientation::Reverse,
+            std::nullopt};
+      }
+      edge.sharedBoundaryInterval = std::move(interval);
+      if ((edge.boundaryKind == SurfaceFrontBoundaryKind::HardRail ||
+           edge.boundaryKind == SurfaceFrontBoundaryKind::GenuineSourceBoundary) !=
+          edge.sharedBoundaryInterval.has_value()) {
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority,
+            static_cast<int>(edge.filledCell.index()), edge.filledSide);
+        return result;
+      }
     }
     edge.exterior = true;
     edge.unfilledSide = 0;
