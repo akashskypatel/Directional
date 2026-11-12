@@ -1,3 +1,9 @@
+## 2026-11-12 UTC — TB115 immutable production-size full gate matched (64E.11)
+
+- [TB115 evidence](.agents/Directional/Architecture_M6_CP3_TB115_P13_A4_Production_Size_Census_Full_Gate_Execution_Report_20261112.md): exact source `c565a3ada13d4b785fb45182db80fd5adf665add`, package `13956118408`; [full gate 43252819031](https://github.com/akashskypatel/Directional/actions/runs/43252819031) 945/945 PASS, 1,026 memberships, 1,898/1,898 result hashes and 48 inherited receipts unchanged; 12 new production records. [Three-case census 43253370547](https://github.com/akashskypatel/Directional/actions/runs/43253370547) Cylinder PASS, BunnyRandom/Vase registered RED, 9/9 result hashes. No build or source edit during TB115.
+- Vase completion reports 67,750 invalid candidate quads, interior size p5 `0.00346652`, 134,598/135,290 interior edges below half target, and separate geometry/shape validation failures. No acceptance promotion; no new stable regression. CP2 491/491, stable 66/17/49, debt 1, deferred 81. `chainRimSchedules=false`; CP3/selector497 unpromoted; O41 open, D10 pending.
+- **Next separate turn:** Review-only `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` (RA-233 §6); no successor Review work has started.
+
 ## 2026-11-12 UTC — CB134 production-size census compiled (64E.10; no runtime)
 
 - [CB134 record](.agents/Directional/Architecture_M6_CP3_CB134_P13_A4_Production_Size_Census_Code_Build_Record_20261112.md): exact six-line test-source-only patch committed at `c565a3ada13d4b785fb45182db80fd5adf665add`; [compile 43244784978](https://github.com/akashskypatel/Directional/actions/runs/43244784978) SUCCESS, package `13956118408`, ZIP SHA-256 `e1e4d67cee10be6001369ec8f7fc9e7e09225202dbd87fdbc51facf483dd88dd`, 28/28 internal checksums.

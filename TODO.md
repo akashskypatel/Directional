@@ -1,4 +1,13 @@
-## CURRENT — CB134 compiled (64E.10); TB115 next; user decision D10 pending, 2026-11-12
+## CURRENT — TB115 scoped MATCH (64E.11); D10 pending, 2026-11-12
+
+> **Canonical next, separate Review-only turn:** `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` (RA-233 §6). [TB115 evidence](.agents/Directional/Architecture_M6_CP3_TB115_P13_A4_Production_Size_Census_Full_Gate_Execution_Report_20261112.md). Do not start it in TB115.
+
+- [x] **64E.11 TB115:** immutable CB134 package, full gate 945/945 PASS, 1,026 memberships, 1,898/1,898 hashes; 48/48 retained TB114 receipts, 12 new `production` lines. Census Cylinder PASS, BunnyRandom/Vase registered RED, 9/9 hashes. No recompile, new stable regression, or accepted-green loss.
+- [ ] **D10 — user decision (RA-233 §3):** A = A4 graded size transitions; B = region-aware A3 count; C = gate-policy change. No option selected. The Review must consider Vase's separate shape/geometry defects as well as extreme size variation before planning a repair.
+- [ ] **O41:** A4 interior-size grading and the existing Vase completion obligation remain open. Vase interior p5 `0.00346652`, 134,598/135,290 interior edges below half target, plus negative Jacobian, nonconvex and angle failures. Do not infer that one change fixes all failures.
+- [ ] **Production switch:** stay disabled (`chainRimSchedules=false`); CP3/selector497 unpromoted. Retain CP2 491/491, stable 66/17/49, debt 1, deferred 81.
+
+## PREVIOUS — CB134 compiled (64E.10); TB115 next; user decision D10 pending, 2026-11-12
 
 > **Canonical next:** `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-EXEC` (artifact-only Test + Benchmark). [CB134 record](.agents/Directional/Architecture_M6_CP3_CB134_P13_A4_Production_Size_Census_Code_Build_Record_20261112.md), source `c565a3ada13d4b785fb45182db80fd5adf665add`, [compile 43244784978](https://github.com/akashskypatel/Directional/actions/runs/43244784978), artifact `13956118408`. Follow RA-233 §5; no rebuild and no successor work in CB134.
 
