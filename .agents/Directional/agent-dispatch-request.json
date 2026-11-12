@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb127-annulus-rim-census-drive-20261112-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb127-rim-census-drive-20261112-v1",
-  "file_id": "1NB3LcE-Xh0dWjRKtNG-QBktqHkY7lMTU",
-  "patch_sha256": "dac70bf96f0958e5e2c5ff808ec98d3c41ffb90a477b30d82cd03d2fcb01c8e8",
-  "base_sha": "668f1637d88d863e338bb47eb4ab9b1dd48a8420",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(cb127): add exact annulus rim schedule census",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb127-annulus-rim-census-compile-20261112-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb127-annulus-rim-compile-20261112-v1",
+  "source_sha": "39e91beb507468777aa90ffd83e23c146652d3ca",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb127-annulus-rim-census-compile"
 }
