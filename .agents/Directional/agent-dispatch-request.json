@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb131-docs-apply-20261112-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb131-docs-apply-20261112-v1",
-  "file_id": "1DT5__ovcMlkKMWn4Q-eL15tq0jkLwJxq",
-  "patch_sha256": "227a0825ad2326f07b52801d4c88b8f5323fab213da89cd5076a82d055806e2b",
-  "base_sha": "2e40ae6e4ea73e64b2a963448a746ba3a19a6aa7",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB131 and authorize immutable TB112",
-  "retention_days": 7
+  "request_id": "m6-cp3-tb112-rim-switch-full-gate-20261112-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb112-rim-switch-full-gate-20261112-v1",
+  "executor_sha": "58ac965a5fc1368bdc160ab0a06e4847e0566376",
+  "semantic_source_sha": "240d2a1948c95521e9b90740244e7dd7de46483a",
+  "turn_id": "M6-CP3-TB112-P13-A3-RIM-CHAIN-SWITCH-STAGING-FULL-GATE-EXEC",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "artifact_prefix": "m6-cp3-tb112-rim-switch-full-gate",
+  "retention_days": 14,
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "13931894182",
+    "EXPECTED_SOURCE_SHA": "240d2a1948c95521e9b90740244e7dd7de46483a",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "cf7b19cb429f0983eb4b90ed5c37c75ccc0bf1402586812f4b1acbc79eeaf1c6",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "30944136367449506a1d943a53ce2d305560bfd450f052338560bd3403b6f0a9",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "02744176534f8d938032a41344a9830516e80e351733b7c4e8178954b2043fc4",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB112_P13_A3_Rim_Chain_Switch_Staging_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "16a909bd6d3fe2b9ba37d263b89fb8ca16dcc3dd42214e4cabcae26c05c91020",
+    "EXPECTED_CASE_COUNT": "945",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  }
 }
