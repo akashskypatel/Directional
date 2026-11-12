@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb115-docs-closeout-20261112-v1",
+  "request_id": "m6-cp3-cb135-direction-census-apply-20261112-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb115-docs-closeout-20261112-v1",
-  "file_id": "1UAafcEcRbIEwujar20sS8JImJJNTXDm5",
-  "patch_sha256": "cb33b05c41568831e1a446aee1585d0a1fcffe31b1373a7f0ccabeb0a79eb73c",
-  "base_sha": "61e4984d5b2df6c2525f6d6e9c9bee36fd77e86a",
+  "mailbox_key": "m6-cp3-cb135-direction-census-apply-v1",
+  "file_id": "1RSsZnyhG9cUSCXQ8O5oaX7DFzaQg-I3R",
+  "patch_sha256": "302bb481aaa092b1e6d7e809d01a1576686ab7e746cdae72278ce21e9a00f426",
+  "base_sha": "fe0544389d51676cd5d331b1eb332df5f37b2812",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb115): record production size census scoped match",
+  "commit_message": "feat(atlas): emit singularity-port direction census",
   "retention_days": 14
 }
