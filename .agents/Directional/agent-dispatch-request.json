@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb133-size-census-compile-20261112-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb133-size-census-compile-20261112-v1",
-  "source_sha": "e60f2c76cc782767daf149d9a78af09474eb310e",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb133-size-census-compile"
+  "request_id": "m6-cp3-cb133-closeout-docs-20261112-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb133-closeout-docs-20261112-v1",
+  "file_id": "1YhSkiAqPOjaUoRQAPR1BFOGeKwa0lNdo",
+  "patch_sha256": "00983ae3fc5fc5ff4121c719487541b51d7ea7560c4c782b34f720b1bef335a9",
+  "base_sha": "e60f2c76cc782767daf149d9a78af09474eb310e",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cb133): record compile-only evidence and TB114 handoff",
+  "retention_days": 14
 }
