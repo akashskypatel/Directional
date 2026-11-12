@@ -1,4 +1,12 @@
-## CURRENT — CB135 compiled singularity-port directions; TB116 next (P13-e.1), 2026-11-12
+## CURRENT — TB116 MATCH; P13-e.3 Review-only next (2026-11-12 UTC)
+
+- [x] **TB116 P13-e.2** completed the 945/945 immutable full gate and the three-case census. The matched outcome is recorded in [Architecture_M6_CP3_TB116_P13_Singularity_Port_Direction_Census_Full_Gate_Execution_Report_20261112.md](.agents/Directional/Architecture_M6_CP3_TB116_P13_Singularity_Port_Direction_Census_Full_Gate_Execution_Report_20261112.md). Vertex 49 still has 4 of 5 required port classes. All 32 direction records were captured; in-sector fan/branch pairs are (0,2), (2,0), (4,0), (6,0). No new stable regression.
+- [ ] **Next:** `M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER`, Review only. Decide the A1 sector rule against the transport-lift representative. No implementation work is authorized before that decision.
+- **Carry:** CP2 491/491, stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted; `chainRimSchedules=false`; D10 remains defer.
+
+## PREVIOUS — CB135 compiled; TB116 plan (completed)
+
+## CB135 compiled singularity-port directions; TB116 plan (historical), 2026-11-12
 
 > **Canonical next, separate Test + Benchmark turn:** `M6-CP3-TB116-P13-SINGULARITY-PORT-DIRECTION-CENSUS-FULL-GATE-EXEC`. [CB135 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB135_P13_Singularity_Port_Direction_Census_Code_Build_Record_20261112.md); exact source `40f979d203b08cec236d047e4e9968b5d86d15d3`, [compile 43271247925](https://github.com/akashskypatel/Directional/actions/runs/43271247925), artifact `13968642290`; eight GMP targets; no runtime.
 
