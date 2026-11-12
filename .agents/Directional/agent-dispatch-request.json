@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb129-annulus-rim-compile-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb129-annulus-rim-compile",
-  "source_sha": "4bef62be917318caad514768a316029e55c6c230",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb129-annulus-rim-compile"
+  "request_id": "m6-cp3-cb129-closeout-docs-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb129-closeout-docs",
+  "file_id": "1lMCo1wiEnbG_wzuqL5tYpTCrkteqvvFT",
+  "patch_sha256": "df340aecec03e965b6791ba1139a0bb0e9e85315c6741add803fd9b8521b1706",
+  "base_sha": "5a0309b8a184ff9c4aee36ef1af871c82538b2f8",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record verified CB129 compile and TB110 handoff",
+  "retention_days": 7
 }
