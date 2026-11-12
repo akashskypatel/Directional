@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb109-annulus-rim-edge-schedule-production-20261112-v1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb109-annulus-rim-edge-schedule-production-20261112-v1",
-  "executor_sha": "739e79e240f75ac1c24e659004b13b425803081b",
-  "semantic_source_sha": "739e79e240f75ac1c24e659004b13b425803081b",
-  "turn_id": "M6-CP3-TB109-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE-FULL-GATE-EXEC",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "13913578057",
-    "EXPECTED_SOURCE_SHA": "739e79e240f75ac1c24e659004b13b425803081b",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "1eb3f762034dff9cf31f1ba45362a9f1b371eda35986fc062f3bd521e679f394",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "793f62c6cc5629be51403ef154b5dd08962c937e5d15323134acb72ca415e004",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "d2504b4fbcafa49adcd0497382bcaa1024ec3c90145a6b87ac2d02973b93347e",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
-    "EXPECTED_CASE_COUNT": "3"
-  },
-  "artifact_prefix": "m6-cp3-tb109-p13-a3-annulus-rim-edge-schedule-production",
+  "request_id": "m6-cp3-tb109-annulus-rim-closeout-docs-20261112-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb109-annulus-rim-closeout-docs-20261112-v1",
+  "file_id": "1PoVF5sESI5pBIvkTTUT9Yy1gy_chpOEz",
+  "patch_sha256": "060a7f7b9df86b4afc8c543e3b2f116b17112dcdf2bfef24b4b56f901d335350",
+  "base_sha": "63d87f88d26822c1e95157e774d46382d6f0c908",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close TB109 scoped MATCH and route annulus pairing review",
   "retention_days": 7
 }
