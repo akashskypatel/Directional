@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb130-rim-pair-compile-20261112-v2",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb130-rim-pair-compile-20261112-v2",
-  "source_sha": "d9dde92f938fab7688644fe2e420214bcefa93cb",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb130-annulus-rim-pair"
+  "request_id": "m6-cp3-cb130-docs-20261112-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb130-docs-20261112-v1",
+  "file_id": "1X3O_pmtG_KqDYJnoqbiZ2CKV_WaNu8j_",
+  "patch_sha256": "13c0f4cc65c31d5611ec94826c398c13604b49c7b85212e340aad0db24b4959f",
+  "base_sha": "f7e13debc3a7fd18599d7b9c5cda84fbbe9520d4",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record CB130 compile and authorize immutable TB111 gate",
+  "retention_days": 7
 }
