@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb107-docs-closeout-drive-20261112-v1",
+  "request_id": "m6-cp3-cb127-annulus-rim-census-drive-20261112-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb107-docs-closeout-drive-20261112-v1",
-  "file_id": "1VFN8IKjSKfJvEvqmrAzJFIvWD6c4lUFJ",
-  "patch_sha256": "622931ae7e1b6835938c9e2a49f567d1eefd1c0114eceabc057bc72899088049",
-  "base_sha": "b6e10c2f7a9c93e7324d1af528ade344e4e5948c",
+  "mailbox_key": "m6-cp3-cb127-rim-census-drive-20261112-v1",
+  "file_id": "1NB3LcE-Xh0dWjRKtNG-QBktqHkY7lMTU",
+  "patch_sha256": "dac70bf96f0958e5e2c5ff808ec98d3c41ffb90a477b30d82cd03d2fcb01c8e8",
+  "base_sha": "668f1637d88d863e338bb47eb4ab9b1dd48a8420",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb107): record scoped match and hand off annulus review",
+  "commit_message": "test(cb127): add exact annulus rim schedule census",
   "retention_days": 14
 }
