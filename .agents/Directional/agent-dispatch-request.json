@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb133-closeout-docs-20261112-v3",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb133-closeout-docs-20261112-v3",
-  "file_id": "1sffpf1548U8ex7O2yNTIvnrys4kru8Y_",
-  "patch_sha256": "4f7ee3a090a49d12c2f0eab2347b3590c312faed0656887078a3eccfa49fd639",
-  "base_sha": "e60f2c76cc782767daf149d9a78af09474eb310e",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cb133): close compiled mesh size census and hand off TB114",
-  "retention_days": 14
+  "request_id": "m6-cp3-tb114-mesh-size-full-20261112-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb114-mesh-size-full-20261112-v1",
+  "executor_sha": "e60f2c76cc782767daf149d9a78af09474eb310e",
+  "semantic_source_sha": "e60f2c76cc782767daf149d9a78af09474eb310e",
+  "turn_id": "M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-EXEC",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "artifact_prefix": "m6-cp3-tb114-mesh-size-full",
+  "retention_days": 14,
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "13947781593",
+    "EXPECTED_SOURCE_SHA": "e60f2c76cc782767daf149d9a78af09474eb310e",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "e89169f233a6e8c9591acdaaaa76fc345900af19d056c6ee088e1bdfb8ca3aa5",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "b1e87be1251147272be8424a6ce67dab5872d791dfbd839994a800cb4fbed89d",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "25cb12a8d5b539eb8fbe1d5822fa82a1c39ab51d6da8cffb138b3bbb573e216e",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB114_P13_A4_Completed_Mesh_Size_Census_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "16a909bd6d3fe2b9ba37d263b89fb8ca16dcc3dd42214e4cabcae26c05c91020",
+    "EXPECTED_CASE_COUNT": "945",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  }
 }
