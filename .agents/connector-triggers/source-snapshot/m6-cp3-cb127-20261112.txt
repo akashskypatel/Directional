@@ -1,0 +1,4 @@
+turn=M6-CP3-CB127-P13-A3-ANNULUS-RIM-CENSUS
+frozen_head=a49ad9589955a9ae7e2a967a44b8944b59fb7f53
+purpose=verified source snapshot for exact approved test-only patch
+retry=0
