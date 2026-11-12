@@ -1,0 +1,3 @@
+Request source snapshot for M6-CP3-TB116-P13-SINGULARITY-PORT-DIRECTION-CENSUS-FULL-GATE-EXEC.
+Compiled semantic source: 40f979d203b08cec236d047e4e9968b5d86d15d3
+Read mode: snapshot.
