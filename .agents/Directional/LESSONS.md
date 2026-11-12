@@ -627,6 +627,10 @@ This document records **reusable failure-derived engineering lessons**, not an e
   (grading) and H2 (parity) predicted opposite `switch-size`/`switch-spans` values, and TB114
   decided it. When every repair changes a contract the user owns, stop at a named decision with
   the costs written out, and keep only decision-independent measurements running.
+- **Read the diagnostics a registered RED already prints before adding new ones (RA-235).** The
+  atlas wrote vertex 49's full port partition to stderr in every census run. A parity check on
+  those lines (4 classes where 4 − index = 5) located the defect class without any new run. The
+  new receipt only adds what the old lines lack: the directions.
 - **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
   still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).
 - **A TB runs the full current gate even when its CB touches no gate binary.** A CLI- or GUI-only CB

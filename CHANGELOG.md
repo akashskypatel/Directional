@@ -1,3 +1,10 @@
+## 2026-11-12 UTC — RA-235 singularity port count, P13-e (Review, runtime-free)
+
+- [RA-235](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Singularity_Port_Count_Review_20261112.md): TB115's census artifact (SHA verified) shows BunnyRandom vertex 49 (index −1) with 4 wedge incidences in 4 classes, against `4 − index` = 5. The count has the wrong parity for any continuous field, so one separatrix lies on a radial edge where the face-wise field jumps.
+- The owner is A1's sector rule (no edge ports) or the lift representative (+3 at edge (49,109)).
+- Frozen: CB135 (`fd9ccba2…`, 39 lines; atlas `partition direction` stderr lines, no behaviour change) → TB116 (TB115 manifest plus census). Then the Review-only `M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER`.
+- Verification: `-fsyntax-only` 0; CB135 applies at HEAD; the manifest self-check passes. No product or test source changed in the repository.
+
 ## 2026-11-12 UTC — RA-234 size grading decision: D10 = defer the switch (64E.12; Review, runtime-free)
 
 - [RA-234](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Size_Grading_Decision_Review_20261112.md): the user answered D10 with **defer the switch**. Production stays per-arc with `chainRimSchedules` off. O41 and switch activation fold into 65C (A4 interior size transitions). Options B and C are not taken.

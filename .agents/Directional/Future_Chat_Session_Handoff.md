@@ -1,4 +1,10 @@
-## RA-234 COMPLETE (64E.12; D10 = defer the switch) — next: Review-only `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e); no implementation turn runnable — 2026-11-12 UTC
+## RA-235 COMPLETE (P13-e.0) — next: `M6-CP3-CB135-P13-SINGULARITY-PORT-DIRECTION-CENSUS` (implementation agent, compile only) — 2026-11-12 UTC
+
+**Canonical completed turn:** `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` ([RA-235](Architecture_M6_CP3_DEFN_P13_Singularity_Port_Count_Review_20261112.md)). The TB115 census artifact's BunnyRandom log shows vertex 49 with 4 port classes against an expected 5. That is a parity loss, so one separatrix lies on a radial edge, where no per-face wedge contains it. Frozen: CB135 → TB116 (fan-face direction diagnostics). Then the Review-only `M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER`.
+
+**Previous state (kept below):**
+
+## RA-234 COMPLETE (64E.12; D10 = defer the switch) — Review-only P13-e was next (now complete) — 2026-11-12 UTC
 
 **Canonical completed turn:** `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` ([RA-234](Architecture_M6_CP3_DEFN_P13_A4_Size_Grading_Decision_Review_20261112.md)). The user answered D10 with **defer the switch**. Production stays per-arc. O41 and switch activation fold into 65C. TB115 showed Vase's RED is unrelated: Vase uses the legacy trace path. Next work goes to real-output blockers: P13-e (BunnyRandom), then 65A → 65D for Vase.
 
@@ -95,12 +101,12 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | **RA-234 COMPLETE (64E.12, Review):** [record](Architecture_M6_CP3_DEFN_P13_A4_Size_Grading_Decision_Review_20261112.md). D10 = defer the switch (user, 2026-11-12); O41 folded into 65C; Vase's RED is unrelated (legacy path). **NEXT:** Review-only `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT`; no implementation turn runnable. Previous: **TB115 COMPLETE (64E.11):** [record](Architecture_M6_CP3_CB134_P13_A4_Production_Size_Census_Code_Build_Record_20261112.md), [compile 43244784978](https://github.com/akashskypatel/Directional/actions/runs/43244784978), package `13956118408`. **NEXT:** `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` (Review-only); D10 pending and O41 open. |
+| Currency | **RA-235 COMPLETE (P13-e.0, Review):** [record](Architecture_M6_CP3_DEFN_P13_Singularity_Port_Count_Review_20261112.md). BunnyRandom vertex 49: 4 port classes against an expected 5 is a parity loss, so a separatrix sits on a radial edge. CB135 → TB116 frozen to print fan-face directions. **NEXT:** `M6-CP3-CB135-P13-SINGULARITY-PORT-DIRECTION-CENSUS` (compile only). Previous: **RA-234 COMPLETE (64E.12, Review):** [record](Architecture_M6_CP3_DEFN_P13_A4_Size_Grading_Decision_Review_20261112.md). D10 = defer the switch (user, 2026-11-12); O41 folded into 65C; Vase's RED is unrelated (legacy path). **NEXT:** Review-only `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT`; no implementation turn runnable. Previous: **TB115 COMPLETE (64E.11):** [record](Architecture_M6_CP3_CB134_P13_A4_Production_Size_Census_Code_Build_Record_20261112.md), [compile 43244784978](https://github.com/akashskypatel/Directional/actions/runs/43244784978), package `13956118408`. **NEXT:** `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` (Review-only); D10 pending and O41 open. |
 | Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing` / `c565a3ada13d4b785fb45182db80fd5adf665add`; compile run `43244784978`, artifact `13956118408`, ZIP SHA-256 `e1e4d67cee10be6001369ec8f7fc9e7e09225202dbd87fdbc51facf483dd88dd`, eight GMP/GMPXX targets, compile-only; PR #8 draft/open/unmerged. |
 | Last accepted semantic runtime | **CP2 491/491** (2026-10-06); CP3/selector497 unpromoted. |
 | Latest candidate | **TB115 unpromoted O41/Vase evidence:** 945/945 scoped gate; Vase completion RED with interior p5 `0.00346652` and 134,598/135,290 interior edges below half; negative Jacobian and nonconvex quads; D10 pending. Prior TB114 observation:  MultiFaceSeam chained interior size p5 `0.43405`, 36 interior edges below half target; stopped spans `raised=0 lowered=0`. SmoothRimDisc remains an expected fixture diagnostic. Do not infer the corrective owner outside Review. |
 | Regression accounting and debt | CP2 **491/491** accepted, stable **66 events / 17 categories / 49 recurrences**, debt **1**, deferred **81**. O34 narrowed; O35 met, O37 compiled behind option, O38 staged, O39 exact owner complete; O36 activation and D6 open. |
-| Active boundary | **64E.12 RA-234 COMPLETE: D10 answered (defer the switch). Next: Review-only `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e).** No implementation turn is runnable. `chainRimSchedules=false`; gate unchanged; CP3/selector497 unpromoted. |
+| Active boundary | **P13-e.0 RA-235 COMPLETE; P13-e.1 CB135 NEXT** (implementation agent, compile only). `chainRimSchedules=false`; gate unchanged; CP3/selector497 unpromoted. |
 
 ## Completed — `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-EXEC` (step 64E.11; evidence retained above)
 
@@ -109,9 +115,28 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 - On MATCH, only the **next** separate turn may begin: `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` (Review only). Mismatch → `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-REV`; infrastructure → `M6-CP3-TB115A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH`.
 - **Carry:** D10 user decision still pending, O41 open, CP2 491/491, stable 66/17/49, debt 1, deferred 81; no switch activation, CP3/selector497 promotion, or gate relaxation.
 
-## Mandatory next turn — `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` — Review agent only (P13-e)
+## Mandatory next turn — `M6-CP3-CB135-P13-SINGULARITY-PORT-DIRECTION-CENSUS` — EXACT NEXT (step P13-e.1)
 
-- **Implementation agent: no runnable turn.** RA-234 froze no patch. Do not open, draft or resume this Review. Do not apply any patch, run any gate, set `chainRimSchedules`, change a threshold, change a selector or promote CP3. Wait until this Review freezes its CB/TB pair.
+- **Code + Build, compile only.** Apply the [exact patch](Architecture_M6_CP3_CB135_P13_Singularity_Port_Direction_Census_Exact.diff) and nothing else:
+  - SHA-256 `fd9ccba26c722edfb75644083ae017c3896fe27bc0f138d90b935332f6c29996`, 39 lines, no single-space context lines.
+  - Numstat: `28 0` `src/authority/FieldTransportAtlas.cpp`.
+  - Base: HEAD `ca7586757` (CB134 source `c565a3ada` plus documentation).
+  - Mismatch → `M6-CP3-PLAN-P13-SINGULARITY-PORT-DIRECTION-CENSUS-STOP`; infrastructure → `M6-CP3-CB135A-P13-SINGULARITY-PORT-DIRECTION-CENSUS-ORCH`.
+- **What it does ([RA-235](Architecture_M6_CP3_DEFN_P13_Singularity_Port_Count_Review_20261112.md) §4):** the atlas's existing partition diagnostics add a `FieldTransportAtlas.partition direction` line per fan face and branch. Each gives the direction weights on the wedge's two far vertices and the predicate's own `inSector` verdict. It is a stderr line only, with no behaviour or digest change.
+- **Then TB116 (P13-e.2):** `M6-CP3-TB116-P13-SINGULARITY-PORT-DIRECTION-CENSUS-FULL-GATE-EXEC`.
+  - Manifest `.agents/Directional/gates/Architecture_M6_TB116_P13_Singularity_Port_Direction_Census_Full_Gate_Case_Manifest.tsv`: TB115's byte for byte, 945 rows, `16a909bd…`, plus the census.
+  - MATCH: 945/945; census verdicts unchanged; every TB115 receipt line unchanged.
+  - BunnyRandom's census log must have `partition direction singularity=6` lines for fan faces 0–7, with `inSector=1` exactly on (0,b2), (2,b0), (4,b0), (6,b0); record them verbatim.
+  - On MATCH close with `Successor: M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER` (**Review agent only**).
+  - Mismatch → `M6-CP3-TB116-P13-SINGULARITY-PORT-DIRECTION-CENSUS-FULL-GATE-REV`; infrastructure → `M6-CP3-TB116A-P13-SINGULARITY-PORT-DIRECTION-CENSUS-ORCH`.
+- **RA-235 in brief:**
+  - At vertex 49, A1 found 4 port classes where `4 − index` = 5. A continuous field's separatrix count has the parity of `4 − index`, so the per-face wedge count lost one, which must sit on a radial edge where the face-wise field jumps.
+  - The owner is either A1's sector rule, which cannot represent an edge port, or the transport lift representative (+3 at edge (49,109)).
+  - The direction lines decide it.
+
+### Completed — `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e.0, RA-235); its earlier brief retained
+
+- **Implementation agent (historical brief):** RA-234 froze no patch; this Review has now frozen CB135.
 - **Review scope (P13-e, BunnyRandom):**
   - BunnyRandom fails at `field-transport-atlas/SingularityPortClassCountMismatch` at source vertex 49 (an index −1 singularity). It has 4 sector incidences in an 8-face fan, where A1 requires `4 − index` port classes. This holds on macOS, FMA-off and Linux (TB65).
   - Decide whether A1's sector rule or the field owns it, and freeze a measuring or fixing CB/TB.
@@ -321,7 +346,10 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | 64E.11 — COMPLETE / scoped MATCH | `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-EXEC` | `.agents/Directional/gates/Architecture_M6_TB115_P13_A4_Production_Size_Census_Full_Gate_Case_Manifest.tsv` (TB114's byte for byte, 945 rows) plus the census. Expect 945/945; census verdicts unchanged; every TB114 receipt unchanged; `production` lines recorded; the Vase `switch-run` completion failure and `switch-validation accepted=0 strict=0` | Close with `Successor: M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` | `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-REV`; infrastructure `M6-CP3-TB115A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH` |
 | — | **D10 ANSWERED (user, 2026-11-12): defer the switch.** Options A, B and C not taken now; O41 folds into 65C | **user** | 64E.12 | — |
 | 64E.12 **COMPLETE** | `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` | [RA-234](Architecture_M6_CP3_DEFN_P13_A4_Size_Grading_Decision_Review_20261112.md): production stays per-arc; Vase's RED is unrelated; no patch frozen | P13-e | — |
-| **NEXT (Review agent only)** | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49) | No implementation turn is runnable; the Review freezes its own CB/TB | its CB/TB | — |
+| P13-e.0 **COMPLETE** | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49) | [RA-235](Architecture_M6_CP3_DEFN_P13_Singularity_Port_Count_Review_20261112.md): 4 classes against an expected 5 is a parity loss; a separatrix lies on a radial edge; owner is the sector rule or the lift representative | P13-e.1 | — |
+| **P13-e.1 — NEXT** | `M6-CP3-CB135-P13-SINGULARITY-PORT-DIRECTION-CENSUS` (compile only) | [Exact patch](Architecture_M6_CP3_CB135_P13_Singularity_Port_Direction_Census_Exact.diff) `fd9ccba26c722edfb75644083ae017c3896fe27bc0f138d90b935332f6c29996`, 39 lines, no single-space context lines; numstat `28 0` `src/authority/FieldTransportAtlas.cpp`; base HEAD `ca7586757` | P13-e.2 | `M6-CP3-PLAN-P13-SINGULARITY-PORT-DIRECTION-CENSUS-STOP`; infrastructure `M6-CP3-CB135A-P13-SINGULARITY-PORT-DIRECTION-CENSUS-ORCH` |
+| P13-e.2 | `M6-CP3-TB116-P13-SINGULARITY-PORT-DIRECTION-CENSUS-FULL-GATE-EXEC` | `.agents/Directional/gates/Architecture_M6_TB116_P13_Singularity_Port_Direction_Census_Full_Gate_Case_Manifest.tsv` (TB115's byte for byte) plus the census. Expect 945/945; verdicts unchanged; every TB115 receipt unchanged; BunnyRandom singularity-6 direction lines with `inSector=1` exactly at the four existing incidences | Close with `Successor: M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER` | `M6-CP3-TB116-P13-SINGULARITY-PORT-DIRECTION-CENSUS-FULL-GATE-REV`; infrastructure `M6-CP3-TB116A-P13-SINGULARITY-PORT-DIRECTION-CENSUS-ORCH` |
+| P13-e.3 | `M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER` | **Review agent only.** Names the owner from the direction lines and freezes the fix with an exact model of vertex 49's fan | its CB/TB | — |
 | then | 65A `M6-CP3-DEFN-P13-A3-BOUNDARY-SPAN-CARRIER-BINDING` → 65B → 65C (carries O41 and switch activation) → 65D | Review, then implementation | — | — |
 
 Out of scope for 64B.19–64B.27: any fan or occurrence resolver, any change to the D5 join rule, any change to `resolve_branch_transition` or the fan carry, pipeline wiring, and any source change beyond the exact patches.
@@ -850,7 +878,10 @@ Facts are in the records, `TODO.md` steps and Review track, `CHANGELOG.md` and t
 | 64E.11 — COMPLETE / scoped MATCH | `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-EXEC` | TB114 manifest byte for byte plus the census; MATCH conditions in RA-233 §5. MATCH → `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` (Review only). Mismatch → `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-REV`; infrastructure → `M6-CP3-TB115A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH` |
 | D10 (user) — ANSWERED | — | **Defer the switch** (2026-11-12): production per-arc; O41 and activation fold into 65C |
 | 64E.12 — Review COMPLETE | `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` | [RA-234](Architecture_M6_CP3_DEFN_P13_A4_Size_Grading_Decision_Review_20261112.md): D10 applied; Vase's RED is unrelated (legacy path, phase front not applicable); no patch frozen |
-| **NEXT (Review only)** | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` | P13-e, BunnyRandom vertex 49; the implementation agent waits for its CB/TB |
+| P13-e.0 — Review COMPLETE | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` | [RA-235](Architecture_M6_CP3_DEFN_P13_Singularity_Port_Count_Review_20261112.md): vertex 49 has 4 classes against an expected 5, a parity loss; CB135 + TB116 frozen |
+| **P13-e.1 — NEXT** | `M6-CP3-CB135-P13-SINGULARITY-PORT-DIRECTION-CENSUS` | Implementation agent, compile only; RA-235 §4 `fd9ccba2…` (39 lines, no single-space context lines), numstat `28 0`. Mismatch → `M6-CP3-PLAN-P13-SINGULARITY-PORT-DIRECTION-CENSUS-STOP`; infrastructure → `M6-CP3-CB135A-P13-SINGULARITY-PORT-DIRECTION-CENSUS-ORCH` |
+| P13-e.2 | `M6-CP3-TB116-P13-SINGULARITY-PORT-DIRECTION-CENSUS-FULL-GATE-EXEC` | TB115 manifest byte for byte plus the census; MATCH conditions in RA-235 §5. MATCH → `M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER` (Review only). Mismatch → `M6-CP3-TB116-P13-SINGULARITY-PORT-DIRECTION-CENSUS-FULL-GATE-REV`; infrastructure → `M6-CP3-TB116A-P13-SINGULARITY-PORT-DIRECTION-CENSUS-ORCH` |
+| P13-e.3 (Review only) | `M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER` | Owner (sector rule vs lift) and fix (RA-235 §6) |
 | then | 65A → 65B → 65C (with O41 and activation) → 65D | See the revised bounded sequence |
 | 64C–65D (Review, runtime-free; scoped) | **See revised bounded sequence above** | D4 uniform → D4 annulus → D9c carrier attachment → A2b reciprocal trace → A4 disc domain → D8 receipt; each DEFN then dedicated CB then dedicated TB |
 | 66+ | per-disc boundary and corners (D6) → fill (§4.9) → aggregator dispatch with honest `Declined` flags (D3) | One DEFN → CB → TB each |
@@ -865,7 +896,7 @@ Rows 49–64B.9 are complete as turns. TB90 64.4 is MATCH (914/914, census 1 PAS
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **No implementation turn is runnable.** Next canonical turn: **M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT** (P13-e, Review agent only). The implementation agent must not open, draft or resume it, apply any patch, run any gate, set `chainRimSchedules`, change a threshold, change a selector or promote CP3 until that Review freezes its exact CB/TB pair. D10 is answered (defer the switch, RA-234). TB115 is complete (945/945). Preserve accepted CP2 491/491, stable 66/17/49, debt 1, deferred 81.
+`load_next`: **M6-CP3-CB135-P13-SINGULARITY-PORT-DIRECTION-CENSUS** (P13-e.1, Code + Build, compile only). Apply `.agents/Directional/Architecture_M6_CP3_CB135_P13_Singularity_Port_Direction_Census_Exact.diff` and nothing else: SHA-256 `fd9ccba26c722edfb75644083ae017c3896fe27bc0f138d90b935332f6c29996`, 39 lines, no single-space context lines. Numstat: `28 0` `src/authority/FieldTransportAtlas.cpp`. Base: HEAD `ca7586757`. Then TB116 (RA-235 §5), then the Review-only `M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER`. Preserve `chainRimSchedules=false`, accepted CP2 491/491, stable 66/17/49, debt 1, deferred 81.
 - CB89 compiled source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, immutable package artifact `13370954424`, 28/28 hashes, eight GMP/GMPXX targets; no test execution.
 - TB79 artifact-only gate (RA-203.6) finished: 899/899, census MATCH.
 - RA-204 completed the O30 Review; CB90 and TB80 are done. The fixed-field replay is withdrawn: do not build a field fixture.

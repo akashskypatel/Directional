@@ -1,4 +1,21 @@
-## CURRENT — RA-234: D10 = defer the switch (64E.12); next Review-only P13-e; no implementation turn runnable, 2026-11-12
+## CURRENT — RA-235: P13-e port count measured (P13-e.0); CB135 next, 2026-11-12
+
+> **Canonical next:** `M6-CP3-CB135-P13-SINGULARITY-PORT-DIRECTION-CENSUS` (implementation agent, compile only). [Exact patch](.agents/Directional/Architecture_M6_CP3_CB135_P13_Singularity_Port_Direction_Census_Exact.diff) `fd9ccba26c722edfb75644083ae017c3896fe27bc0f138d90b935332f6c29996`, 39 lines, no single-space context lines. Numstat: `28 0` `src/authority/FieldTransportAtlas.cpp`. Base: HEAD `ca7586757`.
+
+- [x] **RA-235** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Singularity_Port_Count_Review_20261112.md)) completed `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT`.
+  - The TB115 census artifact shows BunnyRandom vertex 49 (index −1) with 4 sector incidences in 4 classes, against `4 − index` = 5. Its eight radial lifts sum to 5 ≡ 1 (mod 4).
+  - A continuous field's separatrix count has the parity of `4 − index`, so the per-face wedge rule lost one separatrix. It lies on a radial edge where the face-wise field jumps across the edge direction.
+  - The owner is either A1's sector rule, which has no edge ports, or the lift representative (+3 at edge (49,109)). CB135 prints fan-face directions to decide.
+
+| Step | Turn | Owner |
+|---|---|---|
+| P13-e.0 **COMPLETE** | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (RA-235) | Review |
+| **P13-e.1 NEXT** | `M6-CP3-CB135-P13-SINGULARITY-PORT-DIRECTION-CENSUS`: atlas `partition direction` stderr lines. Mismatch → `M6-CP3-PLAN-P13-SINGULARITY-PORT-DIRECTION-CENSUS-STOP`; infrastructure → `M6-CP3-CB135A-P13-SINGULARITY-PORT-DIRECTION-CENSUS-ORCH` | implementation agent |
+| P13-e.2 | `M6-CP3-TB116-P13-SINGULARITY-PORT-DIRECTION-CENSUS-FULL-GATE-EXEC`: TB115's manifest byte for byte plus the census. MATCH needs 945/945, verdicts unchanged, every TB115 receipt unchanged, and the singularity-6 direction lines with `inSector=1` exactly at the four incidences. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB116A-P13-SINGULARITY-PORT-DIRECTION-CENSUS-ORCH` | implementation agent |
+| P13-e.3 | `M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER` | **Review agent only** |
+| then | 65A → 65B → 65C (O41, switch activation) → 65D; O31/O32 in parallel | Review, then implementation |
+
+## PREVIOUS — RA-234: D10 = defer the switch (64E.12), 2026-11-12
 
 > **Canonical next (Review agent only):** `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49). **Implementation agent: no runnable turn.** RA-234 froze no patch. Wait for the P13-e Review's CB/TB.
 
