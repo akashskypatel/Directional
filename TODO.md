@@ -1,4 +1,17 @@
-## CURRENT — TB107 COMPLETE / scoped MATCH (64B.27); next Review-only, 2026-11-12
+## CURRENT — annulus plan consumption defined (RA-227, 64D); CB127 next (64D.1), 2026-11-12
+
+> **Canonical next:** `M6-CP3-CB127-P13-A3-ANNULUS-RIM-CENSUS` (implementation agent, compile only, test source only). [Exact patch](.agents/Directional/Architecture_M6_CP3_CB127_P13_A3_Annulus_Rim_Census_Exact.diff) `d796c60dd0fa83c57194f89e9e97c949888d3a0e081a11ec1e7badb320a1d7da`, 110 lines, keep 1 single-space context line, numstat `99 0` `tests/SurfaceCellDesignAcceptanceTests.cpp`, base CB126 `3ac6801e4bffb721ffce993cba1e4157b6fa31b8`.
+
+- [x] **RA-227** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Annulus_Plan_Consumption_Review_20261112.md)) completed `M6-CP3-DEFN-P13-A3-ANNULUS-PLAN-CONSUMPTION` (64D). The annulus producer does not read A3 and cannot decline (no other producer builds an Euler-0 region), so under a plan it consumes its two rims. A strip is readable when both rim edges have breakpoints at their ends and the same split. Per-arc schedules give today's `k/n`. Chained schedules spread ordinals by run weight and usually bridge rim vertices. The ring scoring (RA-226 F4) gets no code.
+
+| Step | Turn | Owner |
+|---|---|---|
+| 64D.1 **NEXT** | `M6-CP3-CB127-P13-A3-ANNULUS-RIM-CENSUS`: three `annulus-rim` lines per rim-census case. Mismatch → `M6-CP3-PLAN-P13-A3-ANNULUS-RIM-CENSUS-STOP`; infrastructure → `M6-CP3-CB127A-P13-A3-ANNULUS-RIM-CENSUS-ORCH` | implementation agent |
+| 64D.2 | `M6-CP3-TB108-P13-A3-ANNULUS-RIM-CENSUS-FULL-GATE-EXEC`: TB107 manifest (943 rows). MATCH needs 943/943, earlier receipts unchanged, the Cylinder `perArc` line `rimEdges=32 split=0 vertexBreaks=32 equalOutput=32 evenSplit=32` with `periodic`≥1, and Cylinder `chained` = `stopped`. MATCH → 64D.3; otherwise `M6-CP3-TB108-P13-A3-ANNULUS-RIM-CENSUS-FULL-GATE-REV`; infrastructure `M6-CP3-TB108A-P13-A3-ANNULUS-RIM-CENSUS-ORCH` | implementation agent |
+| 64D.3 | `M6-CP3-DEFN-P13-A3-ANNULUS-RIM-SCHEDULE`: shared side reader, annulus rim reader with reversed-boundary tamper, O36 annulus clause | **Review agent only** (the implementation agent must not open it) |
+| later | O36 switch definition; its preconditions now include "annulus rims readable under the switch schedule" | Review |
+
+## PREVIOUS — TB107 COMPLETE / scoped MATCH (64B.27), 2026-11-12
 
 > **Authorized next separate turn:** `M6-CP3-DEFN-P13-A3-ANNULUS-PLAN-CONSUMPTION` (Review-only; not started). [TB107 report](.agents/Directional/Architecture_M6_CP3_TB107_P13_A3_Exact_Rim_Branch_Owner_Full_Gate_Execution_Report_20261112.md): CB126 immutable source `3ac6801e4bffb721ffce993cba1e4157b6fa31b8`, artifact `13898984781`; [gate 43123561178](https://github.com/akashskypatel/Directional/actions/runs/43123561178) 943/943 PASS, 1,024 membership, 1,894/1,894 evidence checks, 19 inherited gate receipts and four rim receipts identical to TB106, zero agreement receipts; [census 43123599679](https://github.com/akashskypatel/Directional/actions/runs/43123599679) 1 PASS / 2 registered RED, six inherited receipts identical, 9/9 evidence checks. Across both streams 25/25 inherited receipts unchanged. No new stable regression: CP2 491/491, stable 66/17/49, debt 1, deferred 81. O36 remains unwired and CP3/selector497 unpromoted.
 

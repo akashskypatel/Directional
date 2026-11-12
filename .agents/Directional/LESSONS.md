@@ -588,6 +588,14 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - **Exactness is owed where one rounding unit can turn a decision (RA-226).** The tie band and the
   threshold of the rim rule are such places. The fan carry's forward test has a 45° margin under
   principal matching, so it stays; record the bound and its limit instead of replacing the code.
+- **A producer that no other producer can replace must consume, not decline (RA-227).** The D4
+  uniform answer (decline under a plan) did not carry over to the annulus: the bounded-disk
+  producer stops at Euler ≠ 1, so a declined annulus has no producer. Check the dispatch chain for
+  a successor before reusing a decline decision.
+- **Read the locator before assuming where breakpoints land (RA-227).** A chained span spreads
+  its ordinals over runs by weight, so a run boundary is a breakpoint only when the weights divide
+  exactly. A consumer whose lattice needs a breakpoint at every source vertex cannot read a chain
+  that bridges one. Measure it per edge with a receipt before freezing a reader.
 - **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
   still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).
 - **A TB runs the full current gate even when its CB touches no gate binary.** A CLI- or GUI-only CB

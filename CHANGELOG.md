@@ -1,3 +1,9 @@
+## 2026-11-12 UTC — RA-227 annulus plan consumption defined (64D; Review, runtime-free)
+
+- [RA-227](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Annulus_Plan_Consumption_Review_20261112.md): the periodic annulus producer does not read A3 and cannot decline (no other producer builds an Euler-0 region), so under a plan it consumes its two rims. A strip is readable when both rim edges have breakpoints at their ends and the same split. The per-arc schedule gives today's `k/n`; a chained schedule usually bridges rim vertices. The ring scoring (RA-226 F4) gets no code.
+- Frozen: CB127 test-only rim census (`d796c60d…`, 110 lines, numstat `99 0`) and TB108 (the TB107 manifest, 943 rows). Review-only follow-on `M6-CP3-DEFN-P13-A3-ANNULUS-RIM-SCHEDULE` freezes the reader after TB108.
+- No product or test source changed. CP2 491/491, stable 66/17/49, debt 1, deferred 81; O36 unwired; CP3/selector497 unpromoted.
+
 ## 2026-11-12 UTC — TB107 exact rim owner full gate COMPLETE / scoped MATCH (64B.27)
 
 - [TB107 report](.agents/Directional/Architecture_M6_CP3_TB107_P13_A3_Exact_Rim_Branch_Owner_Full_Gate_Execution_Report_20261112.md): CB126 immutable source `3ac6801e4bffb721ffce993cba1e4157b6fa31b8`, artifact `13898984781`. [Gate 43123561178](https://github.com/akashskypatel/Directional/actions/runs/43123561178) **943/943 PASS**, 1,024 membership, 1,894/1,894 hashes; 19 inherited gate receipts + four `rim-branch` lines byte-identical to TB106; no `rim-branch-agreement`. [Census 43123599679](https://github.com/akashskypatel/Directional/actions/runs/43123599679) Cylinder PASS / BunnyRandom and Vase registered RED, 9/9 hashes, six inherited census receipts equal to TB106. All 25 old receipts unchanged.
