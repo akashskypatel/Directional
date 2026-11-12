@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb114-docs-closeout-20261112-v1",
+  "request_id": "m6-cp3-cb134-apply-20261112-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb114-docs-closeout-20261112-v1",
-  "file_id": "19an6GvqRr33Z1ZWv2iiC7I3vlhG04lLF",
-  "patch_sha256": "7d1ce66020cb69ca3ce4fb925ff2ac5d8ddc14e44d7643b6c1bd68bd917140ac",
-  "base_sha": "fe3bc29643edb10757220ddbf6386e5b62704bc9",
+  "mailbox_key": "m6-cp3-cb134-apply-20261112-v1",
+  "file_id": "1MagDLE8TZzaaO4upEQ4g5hoIk4Ga3hbq",
+  "patch_sha256": "2649c22e812514b73e823ddcca0cb54be0c4b33fd9d530dc7454ffed8afa89c2",
+  "base_sha": "50a35378be5aa95166ef32d687201337e3854542",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb114): close full gate and hand off interior grading Review",
+  "commit_message": "test(cb134): add production size and validation census receipts",
   "retention_days": 14
 }
