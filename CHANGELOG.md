@@ -1,3 +1,11 @@
+## 2026-11-12 UTC — RA-232 completed-mesh gate: O41 narrowed (64E.6; Review, runtime-free)
+
+- [RA-232](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Completed_Mesh_Gate_Review_20261112.md): TB113's gate inputs split O41.
+  - SmoothRimDisc fails field (16.5°/29.2°), size p5 and Jacobian p5 = 0.19509 = sin 168.75°, the corner cells on a smooth 32-gon rim. A constant field on a round rim cannot pass without interior singularities, so the gate is right and the producer is right. The row stays as the O38 pipeline receipt.
+  - MultiFaceSeam chained fails only size p5 0.434, from interior edges (rail edges score 1).
+- Frozen: CB133 (`87477324…`, 129 lines, test only; `switch-size` and `switch-spans` lines) → TB114 (TB113 manifest). Then the Review-only `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING`. Gate thresholds are unchanged; activation is held.
+- Verification: `-fsyntax-only` 0; CB133 applies at HEAD; the manifest self-check passes. No product or test source changed in the repository.
+
 ## 2026-11-12 UTC — TB113 completed-mesh gate census full gate (64E.5; scoped MATCH)
 
 - [TB113 record](.agents/Directional/Architecture_M6_CP3_TB113_P13_A4_Completed_Mesh_Gate_Census_Full_Gate_Execution_Report_20261112.md): immutable CB132 package `13941286743`, source `196f611769ee738a86d4aa46903d0ed592384691`, [run 43213775926](https://github.com/akashskypatel/Directional/actions/runs/43213775926) success and [result artifact `13944045361`](https://github.com/akashskypatel/Directional/actions/runs/43213775926/artifacts/13944045361), ZIP SHA-256 `c07047dab745cdb3b48eda699233982229ec5ce5b818f01fc82b96a7979c6223`. **945/945 passed**, 1,026 memberships, 1,898/1,898 internal checksums, no invalid/skip/missing/duplicate rows, postflight PASS; no configure/compile/relink/benchmark.

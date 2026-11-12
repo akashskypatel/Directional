@@ -1,4 +1,22 @@
-## CURRENT — TB113 scoped MATCH (64E.5); O41 Review next, 2026-11-12
+## CURRENT — RA-232: O41 narrowed (64E.6); CB133 next, 2026-11-12
+
+> **Canonical next:** `M6-CP3-CB133-P13-A4-COMPLETED-MESH-SIZE-CENSUS` (implementation agent, compile only, test only). [Exact patch](.agents/Directional/Architecture_M6_CP3_CB133_P13_A4_Completed_Mesh_Size_Census_Exact.diff) `874773240cc5934854915a0f7ed8076c10dc5073100c41030859c32f44e570ee`, 129 lines, keep 5 single-space context lines. Numstat: `97 4` `tests/SurfaceCellDesignAcceptanceTests.cpp`. Base: HEAD `b2ae6d7c9`.
+
+- [x] **RA-232** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Completed_Mesh_Gate_Review_20261112.md)) completed `M6-CP3-DEFN-P13-A4-COMPLETED-MESH-GATE` (64E.6).
+  - SmoothRimDisc fails by construction: a constant field on a round rim, with corner cells at 168.75° (Jacobian sin 168.75° = 0.19509, as measured). The gate is right; the row stays as the O38 pipeline receipt.
+  - O41 is narrowed to MultiFaceSeam chained: size p5 0.434 from interior edges, since the gate counts rail edges as on target.
+  - Gate thresholds are unchanged, and activation is held.
+- [ ] **O41 (narrowed):** MultiFaceSeam chained size p5 below 0.5. H1: one uniform lattice under a target that grows inward. H2: a parity-raised span.
+
+| Step | Turn | Owner |
+|---|---|---|
+| 64E.6 **COMPLETE** | `M6-CP3-DEFN-P13-A4-COMPLETED-MESH-GATE` (RA-232) | Review |
+| **64E.7 NEXT** | `M6-CP3-CB133-P13-A4-COMPLETED-MESH-SIZE-CENSUS`: `switch-size` and `switch-spans` lines. Mismatch → `M6-CP3-PLAN-P13-A4-COMPLETED-MESH-SIZE-CENSUS-STOP`; infrastructure → `M6-CP3-CB133A-P13-A4-COMPLETED-MESH-SIZE-CENSUS-ORCH` | implementation agent |
+| 64E.8 | `M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-EXEC`: TB113's manifest byte for byte. MATCH needs 945/945, every TB113 receipt unchanged, the new lines recorded, and a `switch-size` line for MultiFaceSeam chained. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB114A-P13-A4-COMPLETED-MESH-SIZE-CENSUS-ORCH` | implementation agent |
+| 64E.9 | `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING` (O41 owner: H1 or H2) | **Review agent only** |
+| later | Activation, after O41 | Review, then implementation |
+
+## PREVIOUS — TB113 scoped MATCH (64E.5), 2026-11-12
 
 > **Canonical next separate turn:** `M6-CP3-DEFN-P13-A4-COMPLETED-MESH-GATE` (**Review-only**, RA-231 §6). [TB113 report](.agents/Directional/Architecture_M6_CP3_TB113_P13_A4_Completed_Mesh_Gate_Census_Full_Gate_Execution_Report_20261112.md): immutable CB132 source `196f611769ee738a86d4aa46903d0ed592384691`, result [run 43213775926](https://github.com/akashskypatel/Directional/actions/runs/43213775926), artifact `13944045361`; 945/945 PASS, 1,026 memberships, 1,898/1,898 verified hashes, 46/46 TB112 receipts unchanged and ten new gate input records. All three expected failures print `accepted=0 strict=0`. No build, test-source, product, fixture, or selector changes in TB113.
 

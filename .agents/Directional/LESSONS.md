@@ -618,6 +618,11 @@ This document records **reusable failure-derived engineering lessons**, not an e
   disc, added to measure the switch, failed under the old schedule too. Read the old-path line of
   a paired receipt before blaming the change. A failure reported only as "aggregate" needs a
   receipt that prints every measure behind it before any cure is designed.
+- **Match a measured number to the geometry before calling it a defect (RA-232).** The disc's
+  Jacobian p5 0.19509 is exactly sin 168.75°, the rim angle of a 32-gon at a corner cell. That one
+  check turned a "completion failure" into a fixture property. Also read how the measure is
+  normalized: the size ratio treats rail edges as on target, so a low size percentile describes
+  interior edges.
 - **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
   still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).
 - **A TB runs the full current gate even when its CB touches no gate binary.** A CLI- or GUI-only CB
