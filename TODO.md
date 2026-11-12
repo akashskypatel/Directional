@@ -1,4 +1,22 @@
-## CURRENT — TB108 full gate MATCH (64D.2); M6-CP3-DEFN-P13-A3-ANNULUS-RIM-SCHEDULE next (Review-only), 2026-11-12
+## CURRENT — RA-228 annulus rim schedule defined (64D.3); CB128 next, 2026-11-12
+
+> **Canonical next:** `M6-CP3-CB128-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE` (implementation agent, compile only). [Exact patch](.agents/Directional/Architecture_M6_CP3_CB128_P13_A3_Annulus_Rim_Edge_Schedule_Exact.diff) `eb7e63e262dfd6a030aa1bba375a3a6fbccb1ceeae3901e7ee4479dd3bbeec0b`, 709 lines, keep 15 single-space context lines. Numstat: `44 0` header, `262 148` `src/geometry/SurfaceCellTracing.cpp`, `130 0` `tests/SurfaceCellsPhase10Tests.cpp`. Base: HEAD `35969200f`.
+
+- [x] **RA-228** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Annulus_Rim_Schedule_Review_20261112.md)) completed `M6-CP3-DEFN-P13-A3-ANNULUS-RIM-SCHEDULE` (64D.3).
+  - Both producers read an arc on its source edge through one function.
+  - An annulus strip reads when both rim edges split exactly into `k/n` with the same `n` and every arc end on a breakpoint.
+  - O36 clause: annulus rim vertices are chain stops.
+  - Row 729 runs the annulus at a length ratio no census covered, so TB109 measures it before CB129 switches.
+
+| Step | Turn | Owner |
+|---|---|---|
+| 64D.4 **NEXT** | `M6-CP3-CB128-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE`: shared arc reader, unwired rim reader, row 944 test, row 729 receipt. Mismatch → `M6-CP3-PLAN-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE-STOP`; infrastructure → `M6-CP3-CB128A-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE-ORCH` | implementation agent |
+| 64D.5 | `M6-CP3-TB109-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE-FULL-GATE-EXEC`: 944 rows `46e5c8a8…`, membership 1,025. MATCH needs 944/944, every TB108 receipt line unchanged, census unchanged, and the row 729 line with `recorded=0`. Then CB129 if row 729 has `readable` = `equalOutput` = `rimEdges`, else the Review-only `M6-CP3-DEFN-P13-A3-ANNULUS-RIM-PAIRING`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB109A-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE-ORCH` | implementation agent |
+| 64D.6 | `M6-CP3-CB129-P13-A3-ANNULUS-RIM-CONSUMPTION`: `ce80f25e…`, 166 lines, keep 4 single-space context lines; numstat `105 2` / `8 0` / `4 0`; base CB128. Mismatch → `M6-CP3-PLAN-P13-A3-ANNULUS-RIM-CONSUMPTION-STOP`; infrastructure → `M6-CP3-CB129A-P13-A3-ANNULUS-RIM-CONSUMPTION-ORCH` | implementation agent |
+| 64D.7 | `M6-CP3-TB110-P13-A3-ANNULUS-RIM-CONSUMPTION-FULL-GATE-EXEC`: TB109 manifest; changes registered in RA-228 §7. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB110A-P13-A3-ANNULUS-RIM-CONSUMPTION-ORCH` | implementation agent |
+| later | O36 switch definition, with the annulus clause | Review |
+
+## PREVIOUS — TB108 full gate MATCH (64D.2), 2026-11-12
 
 > **Canonical next, separate Review-only:** `M6-CP3-DEFN-P13-A3-ANNULUS-RIM-SCHEDULE` (64D.3). **TB108 COMPLETE / scoped MATCH:** [report](.agents/Directional/Architecture_M6_CP3_TB108_P13_A3_Annulus_Rim_Census_Full_Gate_Execution_Report_20261112.md); [full gate 43138368852](https://github.com/akashskypatel/Directional/actions/runs/43138368852) **943/943 PASS**, membership 1,024, 1,894/1,894 hashes, 25 inherited receipts and four rim-branch receipts unchanged; 12 annulus-rim lines. [Census 43138410775](https://github.com/akashskypatel/Directional/actions/runs/43138410775) Cylinder PASS / BunnyRandom and Vase registered RED, 9/9 hashes. Cylinder perArc 32/32 equal-output breakpoints; chained and stopped 28/32. No O36 wiring, selector edit or CP3 promotion.
 
@@ -8,7 +26,7 @@
 |---|---|---|
 | 64D.1 **COMPLETE / compile-only** | `M6-CP3-CB127-P13-A3-ANNULUS-RIM-CENSUS`: three `annulus-rim` lines per rim-census case. Mismatch → `M6-CP3-PLAN-P13-A3-ANNULUS-RIM-CENSUS-STOP`; infrastructure → `M6-CP3-CB127A-P13-A3-ANNULUS-RIM-CENSUS-ORCH` | implementation agent |
 | 64D.2 **COMPLETE / scoped MATCH** | `M6-CP3-TB108-P13-A3-ANNULUS-RIM-CENSUS-FULL-GATE-EXEC`: TB107 manifest (943 rows). MATCH needs 943/943, earlier receipts unchanged, the Cylinder `perArc` line `rimEdges=32 split=0 vertexBreaks=32 equalOutput=32 evenSplit=32` with `periodic`≥1, and Cylinder `chained` = `stopped`. MATCH → 64D.3; otherwise `M6-CP3-TB108-P13-A3-ANNULUS-RIM-CENSUS-FULL-GATE-REV`; infrastructure `M6-CP3-TB108A-P13-A3-ANNULUS-RIM-CENSUS-ORCH` | implementation agent |
-| 64D.3 **NEXT / Review only** | `M6-CP3-DEFN-P13-A3-ANNULUS-RIM-SCHEDULE`: shared side reader, annulus rim reader with reversed-boundary tamper, O36 annulus clause | **Review agent only** (the implementation agent must not open it) |
+| 64D.3 **COMPLETE (RA-228)** | `M6-CP3-DEFN-P13-A3-ANNULUS-RIM-SCHEDULE`: shared side reader, annulus rim reader with reversed-boundary tamper, O36 annulus clause | Review agent |
 | later | O36 switch definition; its preconditions now include "annulus rims readable under the switch schedule" | Review |
 
 ## PREVIOUS — TB107 COMPLETE / scoped MATCH (64B.27), 2026-11-12

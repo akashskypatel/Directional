@@ -1,3 +1,9 @@
+## 2026-11-12 UTC — RA-228 annulus rim schedule defined (64D.3; Review, runtime-free)
+
+- [RA-228](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Annulus_Rim_Schedule_Review_20261112.md): one shared reader for a Mandatory arc on its source edge. An annulus strip reads on an exact even split with equal `n` on both rims. Rim cell edges record their intervals. An unreadable strip rejects. O36 annulus clause: rim vertices are chain stops.
+- Frozen CB128 (`eb7e63e2…`, 709 lines; shared reader, unwired rim reader, row 944 test, row 729 receipt) → TB109 (944 rows, `46e5c8a8…`, membership 1,025). Then, if row 729 reads fully, CB129 (`ce80f25e…`, 166 lines; the switch) → TB110, whose changes are registered in RA-228 §7.
+- Verification: `-fsyntax-only` 0 on all touched sources at both stages; CB128 applies at HEAD and CB129 on CB128; manifest self-checks pass; an exact model gives all ten unit-test expectations. No product or test source changed in the repository.
+
 ## 2026-11-12 UTC — TB108 annulus rim census full gate COMPLETE / scoped MATCH (64D.2)
 
 - [TB108 report](.agents/Directional/Architecture_M6_CP3_TB108_P13_A3_Annulus_Rim_Census_Full_Gate_Execution_Report_20261112.md): CB127 immutable package `13905818229` / source `39e91beb507468777aa90ffd83e23c146652d3ca`. [Full gate 43138368852](https://github.com/akashskypatel/Directional/actions/runs/43138368852): **943/943 PASS**, membership **1,024**, **1,894/1,894** checksums, 19 inherited gate receipts and four exact rim-branch receipts identical to TB107. Twelve `annulus-rim` receipts recorded; Cylinder perArc `periodic=1`, 32 rim edges, 32 vertex breaks, 32 equal-output, 32 even-split, zero split; chained and stopped identical at 28 breaks.

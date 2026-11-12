@@ -596,6 +596,14 @@ This document records **reusable failure-derived engineering lessons**, not an e
   its ordinals over runs by weight, so a run boundary is a breakpoint only when the weights divide
   exactly. A consumer whose lattice needs a breakpoint at every source vertex cannot read a chain
   that bridges one. Measure it per edge with a receipt before freezing a reader.
+- **Before a producer switch, list every gate row that runs that producer (RA-228).** The census
+  covered the benchmark Cylinder only. Row 729 runs the same mesh at another length ratio, where
+  A3's parity solve may give paired rims different counts. Put the measuring receipt on that row in
+  the unwired CB, and make the switch CB depend on what it shows.
+- **Keep a split exact when the consumer already places that exact point (RA-228).** Requiring
+  `k/n` exactly lets the annulus keep its own coordinate expression, so its lattice stays
+  bit-identical. Allowing any matching split would have needed a rational-to-double conversion
+  with no guarantee of exactness. Narrow the rule and record which case it now rejects.
 - **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
   still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).
 - **A TB runs the full current gate even when its CB touches no gate binary.** A CLI- or GUI-only CB
