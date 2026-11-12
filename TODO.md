@@ -1,4 +1,18 @@
-## CURRENT — CB132 compile complete (64E.4); TB113 next, 2026-11-12
+## CURRENT — TB113 scoped MATCH (64E.5); O41 Review next, 2026-11-12
+
+> **Canonical next separate turn:** `M6-CP3-DEFN-P13-A4-COMPLETED-MESH-GATE` (**Review-only**, RA-231 §6). [TB113 report](.agents/Directional/Architecture_M6_CP3_TB113_P13_A4_Completed_Mesh_Gate_Census_Full_Gate_Execution_Report_20261112.md): immutable CB132 source `196f611769ee738a86d4aa46903d0ed592384691`, result [run 43213775926](https://github.com/akashskypatel/Directional/actions/runs/43213775926), artifact `13944045361`; 945/945 PASS, 1,026 memberships, 1,898/1,898 verified hashes, 46/46 TB112 receipts unchanged and ten new gate input records. All three expected failures print `accepted=0 strict=0`. No build, test-source, product, fixture, or selector changes in TB113.
+
+- [x] **TB113** artifact-only census full gate: scoped MATCH, no new stable regression. CP2 491/491 accepted; stable 66 events / 17 categories / 49 recurrences, debt 1, deferred 81.
+- [ ] **O41** Review: assign owner and fix for the bounded-disk completed-mesh gate; compare MultiFaceSeam chained and SmoothRimDisc perArc/chained, and check Vase if comparable evidence exists. Do not infer root cause solely from the printed values.
+- [ ] **Activation** remains separately gated after O41. `chainRimSchedules=false`, CP3/selector497 unpromoted.
+
+| Step | Turn | Owner |
+|---|---|---|
+| 64E.5 **COMPLETE / scoped MATCH** | `M6-CP3-TB113-P13-A4-COMPLETED-MESH-GATE-CENSUS-FULL-GATE-EXEC` | implementation agent |
+| **64E.6 NEXT** | `M6-CP3-DEFN-P13-A4-COMPLETED-MESH-GATE` | Review agent only |
+| Later | Switch activation redefinition after O41 | Review, then implementation |
+
+## PREVIOUS — CB132 compile complete (64E.4); TB113 was next, 2026-11-12
 
 > **Canonical next:** `M6-CP3-TB113-P13-A4-COMPLETED-MESH-GATE-CENSUS-FULL-GATE-EXEC` (artifact-only Test + Benchmark; separate turn). CB132 [compiled record](.agents/Directional/Architecture_M6_CP3_CB132_P13_A4_Completed_Mesh_Gate_Census_Code_Build_Record_20261112.md): source `196f611769ee738a86d4aa46903d0ed592384691`, [run 43210849945](https://github.com/akashskypatel/Directional/actions/runs/43210849945), package `13941286743`, 28/28 checksums, GMP/GMPXX, `runtimeExecution=false`. No tests or benchmarks ran.
 
