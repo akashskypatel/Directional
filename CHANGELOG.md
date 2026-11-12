@@ -1,3 +1,9 @@
+## 2026-11-12 UTC — CB130 annulus rim pair census compiled (64D.9; no runtime)
+
+- [CB130 record](.agents/Directional/Architecture_M6_CP3_CB130_P13_A3_Annulus_Rim_Pair_Census_Code_Build_Record_20261112.md): applied the exact RA-229 test-only patch (45 insertions, 1 deletion) at source [`d9dde92f938fab7688644fe2e420214bcefa93cb`](https://github.com/akashskypatel/Directional/commit/d9dde92f938fab7688644fe2e420214bcefa93cb) by [Drive apply 43163566540](https://github.com/akashskypatel/Directional/actions/runs/43163566540). The `annulus-pair` receipt measures the 16 proposed rim strips without modifying production logic or adding assertions.
+- [Compile 43163829447](https://github.com/akashskypatel/Directional/actions/runs/43163829447) **SUCCESS**; [artifact 13918449673](https://github.com/akashskypatel/Directional/actions/runs/43163829447/artifacts/13918449673), ZIP SHA-256 `a2e42a855cd0469a137465fb631fa74c98c3d522eec24b9ad1a41a89db15679c`; eight GMP/GMPXX targets and 28/28 packaged checksums, `runtimeExecution=false`. A first dispatcher request failed strict schema validation, then corrected v2 succeeded.
+- **Next separate turn TB111:** immutable full gate, RA-229 §5. TB109 remains latest measured 944/944 scoped MATCH. CP2 491/491, stable 66/17/49, debt1, deferred81 unchanged, O36 unwired and CP3 unpromoted. Neither TB111 nor CB129 began.
+
 ## 2026-11-12 UTC — RA-229 annulus rim pairing defined (64D.8; Review, runtime-free)
 
 - [RA-229](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Annulus_Rim_Pairing_Review_20261112.md): baseline A3 does not owe paired annulus rims and is not changed. TB109's row 729 `equalOutput=24` is a rounding difference, not proof that strips fail to pair. RA-228's route condition was stronger than readability (corrected).
