@@ -1,3 +1,0 @@
-turn=M6-CP3-CB131-P13-A3-RIM-CHAIN-SWITCH-STAGING
-snapshot_request=true
-entry_head=9ff5fd17bec5acd2e05019bfa9276511266281a1
