@@ -139,6 +139,38 @@ void print_switch_receipt(const std::string &testName, const char *schedule,
             << diagnostics.surfaceCellA3PartialSpans << '/'
             << diagnostics.surfaceCellA3UnrecordedSpans << '/'
             << diagnostics.surfaceCellA3ForeignIntervalEdges << std::endl;
+  // RA-231: every input of the final mesh gate, so a run rejected without a
+  // strict issue (AggregateCompletionValidationFailure) shows which measure
+  // failed. Values are pairs: p95/max, median/p95, p5/p95 or min/p5.
+  const auto &snapshots = result.surfaceCellContext.productSnapshots;
+  if (!snapshots.hasValidationResult) return;
+  const auto &gate = snapshots.validationResult;
+  std::cout << "switch-validation case=" << testName << " schedule=" << schedule
+            << " accepted=" << (gate.accepted ? 1 : 0)
+            << " strict=" << gate.strictValidationIssues.size()
+            << " quadToSource=" << gate.quadToSourceP95 << '/'
+            << gate.quadToSourceMax << " sourceToOutput="
+            << gate.sourceToOutputP95 << '/' << gate.sourceToOutputMax
+            << " normalP95=" << gate.normalP95Degrees
+            << " field=" << gate.fieldMedianDegrees << '/' << gate.fieldP95Degrees
+            << " size=" << gate.sizeP5 << '/' << gate.sizeP95
+            << " angle=" << gate.angleP5Degrees << '/' << gate.angleP95Degrees
+            << " warpage=" << gate.warpageP95Degrees << '/'
+            << gate.warpageMaxDegrees << " aspect=" << gate.aspectP95 << '/'
+            << gate.aspectP99 << " jacobian=" << gate.scaledJacobianMin << '/'
+            << gate.scaledJacobianP5 << " nonConvex=" << gate.nonConvex
+            << " boundaryValence=" << gate.boundaryValenceMismatchCount << '/'
+            << gate.boundaryValenceTargetCount << " singularityValence="
+            << gate.requiredSingularityValenceMismatchCount << '/'
+            << gate.requiredSingularityValenceTargetCount
+            << " tJunctions=" << gate.tJunctions
+            << " nonManifold=" << gate.nonManifold
+            << " degenerate=" << gate.degenerate << " inverted=" << gate.inverted
+            << " selfIntersecting=" << gate.selfIntersecting
+            << " topologyFixed=" << (gate.topologyHashFixed ? 1 : 0)
+            << " featureOrdered=" << (gate.featureParametersOrdered ? 1 : 0)
+            << " onComponents=" << (gate.projectionStayedOnComponents ? 1 : 0)
+            << std::endl;
 }
 
 
