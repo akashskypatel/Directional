@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb109-annulus-rim-edge-schedule-gate-20261112-v1",
+  "request_id": "m6-cp3-tb109-annulus-rim-edge-schedule-production-20261112-v1",
   "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb109-annulus-rim-edge-schedule-gate-20261112-v1",
+  "mailbox_key": "m6-cp3-tb109-annulus-rim-edge-schedule-production-20261112-v1",
   "executor_sha": "739e79e240f75ac1c24e659004b13b425803081b",
   "semantic_source_sha": "739e79e240f75ac1c24e659004b13b425803081b",
   "turn_id": "M6-CP3-TB109-P13-A3-ANNULUS-RIM-EDGE-SCHEDULE-FULL-GATE-EXEC",
@@ -14,12 +14,10 @@
     "EXPECTED_CANDIDATE_ZIP_SHA256": "1eb3f762034dff9cf31f1ba45362a9f1b371eda35986fc062f3bd521e679f394",
     "EXPECTED_ROOT_MANIFEST_SHA256": "793f62c6cc5629be51403ef154b5dd08962c937e5d15323134acb72ca415e004",
     "EXPECTED_SOURCE_ARCHIVE_SHA256": "d2504b4fbcafa49adcd0497382bcaa1024ec3c90145a6b87ac2d02973b93347e",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB109_P13_A3_Annulus_Rim_Edge_Schedule_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "46e5c8a8ffb1a8d6337d782bef44fa852d3b17870e2f06ab037d55a8ea201f61",
-    "EXPECTED_CASE_COUNT": "944",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
+    "EXPECTED_CASE_COUNT": "3"
   },
-  "artifact_prefix": "m6-cp3-tb109-p13-a3-annulus-rim-edge-schedule-gate",
+  "artifact_prefix": "m6-cp3-tb109-p13-a3-annulus-rim-edge-schedule-production",
   "retention_days": 7
 }
