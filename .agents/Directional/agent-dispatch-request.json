@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb116-closeout-20261112-v1",
+  "request_id": "m6-cp3-tb116-handoff-authority-20261112-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb116-closeout-v1",
-  "file_id": "1CcQOFI7ZZGEwzW7G1gDX6vEat1tT0kRA",
-  "patch_sha256": "7eb96d83d96e9a82ca0cf5ddbba7bc8a84ec4cd267cb5166aea934523fab078c",
-  "base_sha": "6b4b734b2d02b12f135068d6d25dd149052b071b",
+  "mailbox_key": "m6-cp3-tb116-handoff-authority-v1",
+  "file_id": "11zuREkrmr9gOa5gFzcaH_k1E-dixXNxO",
+  "patch_sha256": "06db2f8ca4cfb971c3d7e42b0b5712862e1e9f9ca14e0d4544c6f04e6a64f790",
+  "base_sha": "6bc0c33b7967e0e8e79a639487cc81d7e625430e",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close TB116 invariant gate and hand off port ownership review",
+  "commit_message": "docs: update TB116 handoff authority table",
   "retention_days": 14
 }
