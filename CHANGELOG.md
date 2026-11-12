@@ -1,3 +1,10 @@
+## 2026-11-12 UTC — CB131 rim-chain switch staging compiled (64E.1; no runtime)
+
+- [CB131 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB131_P13_A3_Rim_Chain_Switch_Staging_Code_Build_Record_20261112.md): RA-230 nine-file patch committed at [source `240d2a1948c95521e9b90740244e7dd7de46483a`](https://github.com/akashskypatel/Directional/commit/240d2a1948c95521e9b90740244e7dd7de46483a), applied through [Drive workflow 43193295001](https://github.com/akashskypatel/Directional/actions/runs/43193295001); prior patch-header attempt 43192934342 failed before source change, corrected exact diff-body retry succeeded. Both transient Drive staging files retired.
+- [Compile run 43193524342](https://github.com/akashskypatel/Directional/actions/runs/43193524342) **SUCCESS**, [immutable package `13931894182`](https://github.com/akashskypatel/Directional/actions/runs/43193524342/artifacts/13931894182), ZIP SHA-256 `cf7b19cb429f0983eb4b90ed5c37c75ccc0bf1402586812f4b1acbc79eeaf1c6`; eight approved targets compiled and linked; package 28/28 SHA-256; GMP/GMPXX verified on recorded linker command; source clean, exit codes zero, `runtimeExecution=false`. No Directional test, benchmark or runtime run.
+- `chainRimSchedules` stays off by default, so production remains per-arc pending an independent Review-only activation decision. CP2 491/491 and stable 66/17/49, debt 1, deferred 81 unchanged. TB110 remains latest observed scoped MATCH 944/944, CP3/selector497 unpromoted.
+- **Next separate turn:** `M6-CP3-TB112-P13-A3-RIM-CHAIN-SWITCH-STAGING-FULL-GATE-EXEC`, artifact-only 945-row manifest SHA-256 `16a909bd6d3fe2b9ba37d263b89fb8ca16dcc3dd42214e4cabcae26c05c91020`, membership 1,026; RA-230 §5. No TB112 work was started in CB131.
+
 ## 2026-11-12 UTC — RA-230 production switch defined (64E; Review, runtime-free)
 
 - [RA-230](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Production_Switch_Review_20261112.md) defines the O36 switch:

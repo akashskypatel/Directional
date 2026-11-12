@@ -1,20 +1,18 @@
-## CURRENT — RA-230 production switch defined (64E); CB131 next, 2026-11-12
+## CURRENT — CB131 compiled (64E.1); TB112 next, 2026-11-12
 
-> **Canonical next:** `M6-CP3-CB131-P13-A3-RIM-CHAIN-SWITCH-STAGING` (implementation agent, compile only). [Exact patch](.agents/Directional/Architecture_M6_CP3_CB131_P13_A3_Rim_Chain_Switch_Staging_Exact.diff) `571ae1ef904420af6a2919379f8326d0d80b85c2390f02b4317c1c488b10021c`, 423 lines, keep 11 single-space context lines, nine files (RA-230 §4). Base: HEAD `4963dcba7`.
+> **Canonical next:** `M6-CP3-TB112-P13-A3-RIM-CHAIN-SWITCH-STAGING-FULL-GATE-EXEC` (artifact-only). [CB131 record](.agents/Directional/Architecture_M6_CP3_CB131_P13_A3_Rim_Chain_Switch_Staging_Code_Build_Record_20261112.md): source `240d2a1948c95521e9b90740244e7dd7de46483a`, [compile run 43193524342](https://github.com/akashskypatel/Directional/actions/runs/43193524342), package `13931894182`, ZIP SHA-256 `cf7b19cb429f0983eb4b90ed5c37c75ccc0bf1402586812f4b1acbc79eeaf1c6`, eight required GMP/GMPXX targets, 28/28 checksums, `runtimeExecution=false`. Frozen 945-row manifest SHA-256 `16a909bd6d3fe2b9ba37d263b89fb8ca16dcc3dd42214e4cabcae26c05c91020`, membership 1,026. No TB112 work started in CB131.
 
-- [x] **RA-230** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Production_Switch_Review_20261112.md)) completed `M6-CP3-DEFN-P13-A3-PRODUCTION-SWITCH` (64E). The O36 switch:
-  - D5: A3 rim chains stopped at field corners (O38) and annulus rim vertices (RA-228).
-  - D4: the uniform producer declines every planned region.
-  - O37: a one-pass breakpoint locator.
-  - Staged behind `SurfaceCellOptions::chainRimSchedules` (off); production stays per-arc until activation.
+- [x] **RA-230** (64E, Review) defined O36, O37 and the option-staged switch. The `chainRimSchedules` default remains off; production uses per-arc until activation.
+- [x] **CB131** (64E.1, Code + Build): exact nine-file patch committed as source `240d2a1948c95521e9b90740244e7dd7de46483a`, compile-only verified; no runtime tests, benchmarks, selector change or CP3 promotion.
+- [ ] **TB112** (64E.2, Test + Benchmark): artifact-only 945/945, inherited TB110 receipts unchanged, ten `switch-run` receipts, correct perArc `a3` counts; see RA-230 §5.
+- [ ] **Switch activation** (64E.3, Review-only after TB112): decide whether to flip the default or route failing fixtures from chained receipts.
 
 | Step | Turn | Owner |
 |---|---|---|
-| 64E **COMPLETE** | `M6-CP3-DEFN-P13-A3-PRODUCTION-SWITCH` (RA-230) | Review |
-| **64E.1 NEXT** | `M6-CP3-CB131-P13-A3-RIM-CHAIN-SWITCH-STAGING`: switch staging, compile only. Mismatch → `M6-CP3-PLAN-P13-A3-RIM-CHAIN-SWITCH-STAGING-STOP`; infrastructure → `M6-CP3-CB131A-P13-A3-RIM-CHAIN-SWITCH-STAGING-ORCH` | implementation agent |
-| 64E.2 | `M6-CP3-TB112-P13-A3-RIM-CHAIN-SWITCH-STAGING-FULL-GATE-EXEC`: 945 rows `16a909bd…`, membership 1,026. MATCH needs 945/945, every TB110 receipt unchanged, census unchanged, ten `switch-run` lines, and each `perArc` line `produced=1` with `a3` equal to TB110's `a3-coverage`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB112A-P13-A3-RIM-CHAIN-SWITCH-STAGING-ORCH` | implementation agent |
-| 64E.3 | `M6-CP3-DEFN-P13-A3-SWITCH-ACTIVATION`: reads the `switch-run` lines; freezes the flip or routes failing fixtures | **Review agent only** |
-| then | Activation CB → TB frozen by 64E.3 | implementation agent |
+| 64E COMPLETE | `M6-CP3-DEFN-P13-A3-PRODUCTION-SWITCH` (RA-230) | Review |
+| **64E.1 COMPLETE** | `M6-CP3-CB131-P13-A3-RIM-CHAIN-SWITCH-STAGING` (compile-only, source `240d2a1948c9`, package `13931894182`) | implementation agent |
+| **64E.2 NEXT** | `M6-CP3-TB112-P13-A3-RIM-CHAIN-SWITCH-STAGING-FULL-GATE-EXEC` (frozen immutable gate; mismatch → TB112 REV, infrastructure → TB112A ORCH) | implementation agent |
+| 64E.3 conditional | `M6-CP3-DEFN-P13-A3-SWITCH-ACTIVATION` | **Review agent only** |
 
 ## PREVIOUS — 64E assigned after TB110, 2026-11-12
 
