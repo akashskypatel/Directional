@@ -1,0 +1,1 @@
+TB115 artifact-only documentation closeout snapshot. No implementation or runtime mutation.
