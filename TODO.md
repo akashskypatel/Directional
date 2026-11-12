@@ -1,18 +1,18 @@
-## CURRENT — CB131 compiled (64E.1); TB112 next, 2026-11-12
+## CURRENT — TB112 scoped MATCH (64E.2); activation Review next, 2026-11-12
 
-> **Canonical next:** `M6-CP3-TB112-P13-A3-RIM-CHAIN-SWITCH-STAGING-FULL-GATE-EXEC` (artifact-only). [CB131 record](.agents/Directional/Architecture_M6_CP3_CB131_P13_A3_Rim_Chain_Switch_Staging_Code_Build_Record_20261112.md): source `240d2a1948c95521e9b90740244e7dd7de46483a`, [compile run 43193524342](https://github.com/akashskypatel/Directional/actions/runs/43193524342), package `13931894182`, ZIP SHA-256 `cf7b19cb429f0983eb4b90ed5c37c75ccc0bf1402586812f4b1acbc79eeaf1c6`, eight required GMP/GMPXX targets, 28/28 checksums, `runtimeExecution=false`. Frozen 945-row manifest SHA-256 `16a909bd6d3fe2b9ba37d263b89fb8ca16dcc3dd42214e4cabcae26c05c91020`, membership 1,026. No TB112 work started in CB131.
+> **Canonical next (Review only):** `M6-CP3-DEFN-P13-A3-SWITCH-ACTIVATION`. [TB112 report](.agents/Directional/Architecture_M6_CP3_TB112_P13_A3_Rim_Chain_Switch_Staging_Full_Gate_Execution_Report_20261112.md) establishes scoped MATCH: 945/945 PASS, 1,026 members, all TB110 inherited receipts byte-identical, ten switch-run receipts. Chained MultiFaceSeam and SmoothRimDisc do not produce valid output and require Review ownership; the default remains per-arc. No CP3/selector497 promotion.
 
 - [x] **RA-230** (64E, Review) defined O36, O37 and the option-staged switch. The `chainRimSchedules` default remains off; production uses per-arc until activation.
 - [x] **CB131** (64E.1, Code + Build): exact nine-file patch committed as source `240d2a1948c95521e9b90740244e7dd7de46483a`, compile-only verified; no runtime tests, benchmarks, selector change or CP3 promotion.
-- [ ] **TB112** (64E.2, Test + Benchmark): artifact-only 945/945, inherited TB110 receipts unchanged, ten `switch-run` receipts, correct perArc `a3` counts; see RA-230 §5.
-- [ ] **Switch activation** (64E.3, Review-only after TB112): decide whether to flip the default or route failing fixtures from chained receipts.
+- [x] **TB112** (64E.2, Test + Benchmark): 945/945 PASS; TB110 inherited receipts unchanged; ten switch-run receipts; per-arc A3 counts match. Chained MultiFaceSeam and SmoothRimDisc completion failures retained as non-stable Review evidence (RA-230 §5).
+- [ ] **Switch activation** (64E.3, Review only): inspect the chained MultiFaceSeam/SmoothRimDisc failures; select A4 construction or narrower stop rule before any default change (RA-230 §6).
 
 | Step | Turn | Owner |
 |---|---|---|
 | 64E COMPLETE | `M6-CP3-DEFN-P13-A3-PRODUCTION-SWITCH` (RA-230) | Review |
 | **64E.1 COMPLETE** | `M6-CP3-CB131-P13-A3-RIM-CHAIN-SWITCH-STAGING` (compile-only, source `240d2a1948c9`, package `13931894182`) | implementation agent |
-| **64E.2 NEXT** | `M6-CP3-TB112-P13-A3-RIM-CHAIN-SWITCH-STAGING-FULL-GATE-EXEC` (frozen immutable gate; mismatch → TB112 REV, infrastructure → TB112A ORCH) | implementation agent |
-| 64E.3 conditional | `M6-CP3-DEFN-P13-A3-SWITCH-ACTIVATION` | **Review agent only** |
+| **64E.2 COMPLETE / MATCH** | `M6-CP3-TB112-P13-A3-RIM-CHAIN-SWITCH-STAGING-FULL-GATE-EXEC` (945/945, ten receipts, 944 inherited unchanged) | implementation agent |
+| **64E.3 NEXT** | `M6-CP3-DEFN-P13-A3-SWITCH-ACTIVATION` (Review conditional on chained completion evidence) | **Review agent only** |
 
 ## PREVIOUS — 64E assigned after TB110, 2026-11-12
 

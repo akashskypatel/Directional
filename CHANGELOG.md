@@ -1,3 +1,9 @@
+## 2026-11-12 UTC — TB112 rim-chain switch staging full gate (64E.2; scoped MATCH)
+
+- [TB112 report](.agents/Directional/Architecture_M6_CP3_TB112_P13_A3_Rim_Chain_Switch_Staging_Full_Gate_Execution_Report_20261112.md): immutable CB131 package `13931894182`, source `240d2a1948c95521e9b90740244e7dd7de46483a`, [run 43199861547](https://github.com/akashskypatel/Directional/actions/runs/43199861547), artifact `13935551687` digest `1b0178823ac5a9c0fd45589090f04b0d8f794c22301761cb00a5e1bed11b8888`. Gate **945/945**, 1,026 members, 1,898/1,898 checksums; 944 TB110 inherited receipts unchanged, ten switch-run receipts present. No rebuild or source/fixture/default option changes.
+- All four existing per-arc census cases produce output with unchanged A3 coverage. Chained MultiFaceSeam and SmoothRimDisc fail completion; the disc per-arc run also fails completion and is informational under RA-230 §5. These are candidate-only switch-on observations, not gate RED or accepted-green loss; stable 66/17/49, debt 1, deferred 81 and CP2 491/491 unchanged. CP3/selector497 not promoted, production switch still off.
+- **Next separate turn:** Review-only `M6-CP3-DEFN-P13-A3-SWITCH-ACTIVATION` (RA-230 §6), to determine owner of chained completion failures before any activation.
+
 ## 2026-11-12 UTC — CB131 rim-chain switch staging compiled (64E.1; no runtime)
 
 - [CB131 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB131_P13_A3_Rim_Chain_Switch_Staging_Code_Build_Record_20261112.md): RA-230 nine-file patch committed at [source `240d2a1948c95521e9b90740244e7dd7de46483a`](https://github.com/akashskypatel/Directional/commit/240d2a1948c95521e9b90740244e7dd7de46483a), applied through [Drive workflow 43193295001](https://github.com/akashskypatel/Directional/actions/runs/43193295001); prior patch-header attempt 43192934342 failed before source change, corrected exact diff-body retry succeeded. Both transient Drive staging files retired.
