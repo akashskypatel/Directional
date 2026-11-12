@@ -1,2 +1,0 @@
-# TB112 cleanup, preserve durable dispatcher and workflow mailbox
-.agents/connector-triggers/source-snapshot/m6-cp3-tb112-20261112-1018.txt
