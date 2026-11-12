@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb133-closeout-docs-20261112-v2",
+  "request_id": "m6-cp3-cb133-closeout-docs-20261112-v3",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb133-closeout-docs-20261112-v2",
-  "file_id": "1ZPblizfAnXZTqKujaA3pD0xOxWkrkg0w",
-  "patch_sha256": "1fa65395512a9b6ed28855734874e6ca963093c45bc9fb16c66497fa0ace8c14",
+  "mailbox_key": "m6-cp3-cb133-closeout-docs-20261112-v3",
+  "file_id": "1sffpf1548U8ex7O2yNTIvnrys4kru8Y_",
+  "patch_sha256": "4f7ee3a090a49d12c2f0eab2347b3590c312faed0656887078a3eccfa49fd639",
   "base_sha": "e60f2c76cc782767daf149d9a78af09474eb310e",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cb133): record compile-only evidence and TB114 handoff",
+  "commit_message": "docs(cb133): close compiled mesh size census and hand off TB114",
   "retention_days": 14
 }
