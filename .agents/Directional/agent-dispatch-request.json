@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb129-load-next-closeout-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb129-load-next-closeout",
-  "file_id": "1ij_-nQxmnX2TLdgrh8OFkOxbE4voPsH2",
-  "patch_sha256": "9e93fc2cc9bcbafaf78b2138849170993d91a590f63352053be04c6c93955c53",
-  "base_sha": "842e88307e95e6d3de22bcd6d9b0b9cea83ac335",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): correct CB129 load-next handoff to TB110",
+  "request_id": "m6-cp3-tb110-gate-20261112-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb110-annulus-rim-consumption-gate-20261112-v1",
+  "executor_sha": "2453d656687a585a34f6ec2b790d5de4ac0f4c47",
+  "semantic_source_sha": "4bef62be917318caad514768a316029e55c6c230",
+  "turn_id": "M6-CP3-TB110-GATE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "13922992326",
+    "EXPECTED_SOURCE_SHA": "4bef62be917318caad514768a316029e55c6c230",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "0f26e0e193c9ab414663ee686ea09ce0b68683dc95d5127f65bbcfa903b2db57",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "a3a2ee49895ec2146d31ace4cd5f691c5f9a49b562180f0c50d2388ec394e11f",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "62dadcc3d52a3446ac61823f04ec8a72708be335616fd88000fe383d30253e88",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB110_P13_A3_Annulus_Rim_Consumption_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "46e5c8a8ffb1a8d6337d782bef44fa852d3b17870e2f06ab037d55a8ea201f61",
+    "EXPECTED_CASE_COUNT": "944",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  },
+  "artifact_prefix": "m6-cp3-tb110-gate",
   "retention_days": 7
 }
