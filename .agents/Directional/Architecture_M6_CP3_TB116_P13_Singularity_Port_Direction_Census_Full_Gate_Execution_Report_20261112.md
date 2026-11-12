@@ -81,6 +81,8 @@ The existing summary in the same log is unchanged:
 FieldTransportAtlas.partition summary singularity=6 sourceVertex=49 topologyRegion=0 incidences=4 classes=4 expectedClasses=5
 ```
 
+**Documentation closeout:** Verified patch SHA-256 `7eb96d83d96e9a82ca0cf5ddbba7bc8a84ec4cd267cb5166aea934523fab078c` applied at commit `6bc0c33b7967e0e8e79a639487cc81d7e625430e`; Drive staging cleanup succeeded. The document drift audit retains two pre-existing `DOCUMENT_BLOAT` findings in the handoff and orientation. The earlier TB116 attempt read multiple files before selecting the required source snapshot mode; the later verified snapshot did not change the immutable runtime evidence.
+
 ## Recommendation
 
 The scoped checkpoint is **MATCH**. Start `M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER` only in a new, Review-only turn under RA-235 §6. Review the verified fan-face directions and signed lifts to choose the owning corrective stage. Do not change the field, sector predicate, transport lift, gate, selector, or production schedule inside TB116.
