@@ -1,3 +1,9 @@
+## 2026-11-12 UTC — RA-234 size grading decision: D10 = defer the switch (64E.12; Review, runtime-free)
+
+- [RA-234](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Size_Grading_Decision_Review_20261112.md): the user answered D10 with **defer the switch**. Production stays per-arc with `chainRimSchedules` off. O41 and switch activation fold into 65C (A4 interior size transitions). Options B and C are not taken.
+- TB115 shows Vase's RED is unrelated to O41. Its phase front is not applicable and A3 covers nothing, so Vase runs on the legacy trace path. Its quads are about 20× undersized, with negative Jacobians, 16,808 non-convex cells and valence mismatches; these belong to O31/O32 and 65C.
+- Next: Review-only `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom). No implementation turn is runnable, and no patch or manifest was frozen. No product or test source changed.
+
 ## 2026-11-12 UTC — TB115 immutable production-size full gate matched (64E.11)
 
 - [TB115 evidence](.agents/Directional/Architecture_M6_CP3_TB115_P13_A4_Production_Size_Census_Full_Gate_Execution_Report_20261112.md): exact source `c565a3ada13d4b785fb45182db80fd5adf665add`, package `13956118408`; [full gate 43252819031](https://github.com/akashskypatel/Directional/actions/runs/43252819031) 945/945 PASS, 1,026 memberships, 1,898/1,898 result hashes and 48 inherited receipts unchanged; 12 new production records. [Three-case census 43253370547](https://github.com/akashskypatel/Directional/actions/runs/43253370547) Cylinder PASS, BunnyRandom/Vase registered RED, 9/9 result hashes. No build or source edit during TB115.

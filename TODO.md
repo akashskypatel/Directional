@@ -1,4 +1,22 @@
-## CURRENT — TB115 scoped MATCH (64E.11); D10 pending, 2026-11-12
+## CURRENT — RA-234: D10 = defer the switch (64E.12); next Review-only P13-e; no implementation turn runnable, 2026-11-12
+
+> **Canonical next (Review agent only):** `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49). **Implementation agent: no runnable turn.** RA-234 froze no patch. Wait for the P13-e Review's CB/TB.
+
+- [x] **RA-234** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Size_Grading_Decision_Review_20261112.md)) completed `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` (64E.12).
+  - **D10 answered by the user (2026-11-12): defer the switch.** Production stays per-arc and `chainRimSchedules` stays off.
+  - O41 and switch activation fold into 65C (A4 interior size transitions). Options B and C are not taken.
+  - TB115 shows Vase's RED is unrelated. Vase's phase front is not applicable, A3 covers nothing, and its legacy-path quads are about 20× undersized and geometrically invalid. Those belong to O31/O32 and 65C.
+- [x] **D10** — answered: defer.
+- [ ] **P13-e** `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (Review, next): BunnyRandom index −1 vertex 49 has 4 sector incidences where A1 requires `4 − index` port classes. Decide whether A1's sector rule or the field owns it.
+
+| Step | Turn | Owner |
+|---|---|---|
+| 64E.12 **COMPLETE** | `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` (RA-234; D10 = defer) | Review |
+| **NEXT** | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e) → its CB → TB | **Review agent only**, then implementation |
+| then | 65A `M6-CP3-DEFN-P13-A3-BOUNDARY-SPAN-CARRIER-BINDING` → 65B `M6-CP3-DEFN-P13-A2B-RECIPROCAL-TRACE-INTERVALS` → 65C `M6-CP3-DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION` (carries O41 and switch activation) → 65D `M6-CP3-DEFN-P13-A3-CONSUMPTION-RECEIPT-VALIDATION` | Review, then implementation |
+| parallel | O31 `M6-CP3-DEFN-P13-RELIEF-NOISE-TIES`; O32e (Vase legacy density) | Review |
+
+## PREVIOUS — TB115 scoped MATCH (64E.11), 2026-11-12
 
 > **Canonical next, separate Review-only turn:** `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` (RA-233 §6). [TB115 evidence](.agents/Directional/Architecture_M6_CP3_TB115_P13_A4_Production_Size_Census_Full_Gate_Execution_Report_20261112.md). Do not start it in TB115.
 

@@ -1132,3 +1132,5 @@ D5 alone is not enough, because the uniform producer treats a plan as chained on
 - (A) graded A4 constructions;
 - (B) a region-aware A3 count that coarsens boundaries on purpose;
 - (C) a gate policy.
+
+**D10 answered: defer** ([RA-234](Architecture_M6_CP3_DEFN_P13_A4_Size_Grading_Decision_Review_20261112.md), user, 2026-11-12). Production keeps per-arc A3 schedules. Interior size transitions become part of the A4 disc-domain construction (65C), and the chain switch is activated only after them. The count contract (D7) and the final gate's thresholds are unchanged.

@@ -1,4 +1,8 @@
-## TB115 COMPLETE (64E.11) — next: `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` (Review only; D10 pending) — 2026-11-12 UTC
+## RA-234 COMPLETE (64E.12; D10 = defer the switch) — next: Review-only `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e); no implementation turn runnable — 2026-11-12 UTC
+
+**Canonical completed turn:** `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` ([RA-234](Architecture_M6_CP3_DEFN_P13_A4_Size_Grading_Decision_Review_20261112.md)). The user answered D10 with **defer the switch**. Production stays per-arc. O41 and switch activation fold into 65C. TB115 showed Vase's RED is unrelated: Vase uses the legacy trace path. Next work goes to real-output blockers: P13-e (BunnyRandom), then 65A → 65D for Vase.
+
+**Previous state (kept below):**
 
 **Canonical completed turn:** `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-EXEC`. [TB115 evidence](Architecture_M6_CP3_TB115_P13_A4_Production_Size_Census_Full_Gate_Execution_Report_20261112.md). Exact CB134 source `c565a3ada13d4b785fb45182db80fd5adf665add`, immutable package `13956118408`. Full gate [43252819031](https://github.com/akashskypatel/Directional/actions/runs/43252819031) 945/945 PASS, 1,026 memberships, 1,898/1,898 hashes and all 48 previous diagnostic receipts retained; twelve new `production` lines. Census [43253370547](https://github.com/akashskypatel/Directional/actions/runs/43253370547): Cylinder PASS; BunnyRandom and Vase registered RED, nine hashes verified. No rebuild.
 
@@ -91,12 +95,12 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | **TB115 COMPLETE (64E.11):** [record](Architecture_M6_CP3_CB134_P13_A4_Production_Size_Census_Code_Build_Record_20261112.md), [compile 43244784978](https://github.com/akashskypatel/Directional/actions/runs/43244784978), package `13956118408`. **NEXT:** `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` (Review-only); D10 pending and O41 open. |
+| Currency | **RA-234 COMPLETE (64E.12, Review):** [record](Architecture_M6_CP3_DEFN_P13_A4_Size_Grading_Decision_Review_20261112.md). D10 = defer the switch (user, 2026-11-12); O41 folded into 65C; Vase's RED is unrelated (legacy path). **NEXT:** Review-only `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT`; no implementation turn runnable. Previous: **TB115 COMPLETE (64E.11):** [record](Architecture_M6_CP3_CB134_P13_A4_Production_Size_Census_Code_Build_Record_20261112.md), [compile 43244784978](https://github.com/akashskypatel/Directional/actions/runs/43244784978), package `13956118408`. **NEXT:** `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` (Review-only); D10 pending and O41 open. |
 | Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing` / `c565a3ada13d4b785fb45182db80fd5adf665add`; compile run `43244784978`, artifact `13956118408`, ZIP SHA-256 `e1e4d67cee10be6001369ec8f7fc9e7e09225202dbd87fdbc51facf483dd88dd`, eight GMP/GMPXX targets, compile-only; PR #8 draft/open/unmerged. |
 | Last accepted semantic runtime | **CP2 491/491** (2026-10-06); CP3/selector497 unpromoted. |
 | Latest candidate | **TB115 unpromoted O41/Vase evidence:** 945/945 scoped gate; Vase completion RED with interior p5 `0.00346652` and 134,598/135,290 interior edges below half; negative Jacobian and nonconvex quads; D10 pending. Prior TB114 observation:  MultiFaceSeam chained interior size p5 `0.43405`, 36 interior edges below half target; stopped spans `raised=0 lowered=0`. SmoothRimDisc remains an expected fixture diagnostic. Do not infer the corrective owner outside Review. |
 | Regression accounting and debt | CP2 **491/491** accepted, stable **66 events / 17 categories / 49 recurrences**, debt **1**, deferred **81**. O34 narrowed; O35 met, O37 compiled behind option, O38 staged, O39 exact owner complete; O36 activation and D6 open. |
-| Active boundary | **64E.11 TB115 COMPLETE; 64E.12 Review NEXT** (artifact-only). D10 pending; `chainRimSchedules=false`; gate unchanged; CP3/selector497 unpromoted. |
+| Active boundary | **64E.12 RA-234 COMPLETE: D10 answered (defer the switch). Next: Review-only `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e).** No implementation turn is runnable. `chainRimSchedules=false`; gate unchanged; CP3/selector497 unpromoted. |
 
 ## Completed — `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-EXEC` (step 64E.11; evidence retained above)
 
@@ -105,11 +109,19 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 - On MATCH, only the **next** separate turn may begin: `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` (Review only). Mismatch → `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-REV`; infrastructure → `M6-CP3-TB115A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH`.
 - **Carry:** D10 user decision still pending, O41 open, CP2 491/491, stable 66/17/49, debt 1, deferred 81; no switch activation, CP3/selector497 promotion, or gate relaxation.
 
-## Mandatory next turn — `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` (Review-only; RA-233 §6)
+## Mandatory next turn — `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` — Review agent only (P13-e)
 
-- Read TB115 report, Vase production receipts, and RA-233 D10 options. Request user choice A/B/C if still unanswered; do not infer acceptance or silently select a policy change.
-- Freeze the first CB/TB pair of the selected option only after D10 authorization. Distinguish size-grading and the other Vase validation failures.
-- Preserve CP2 491/491, stable 66/17/49, debt 1, deferred 81; O41 open, CP3/selector497 unpromoted and `chainRimSchedules=false`. This Review is a separate turn, not begun by TB115.
+- **Implementation agent: no runnable turn.** RA-234 froze no patch. Do not open, draft or resume this Review. Do not apply any patch, run any gate, set `chainRimSchedules`, change a threshold, change a selector or promote CP3. Wait until this Review freezes its CB/TB pair.
+- **Review scope (P13-e, BunnyRandom):**
+  - BunnyRandom fails at `field-transport-atlas/SingularityPortClassCountMismatch` at source vertex 49 (an index −1 singularity). It has 4 sector incidences in an 8-face fan, where A1 requires `4 − index` port classes. This holds on macOS, FMA-off and Linux (TB65).
+  - Decide whether A1's sector rule or the field owns it, and freeze a measuring or fixing CB/TB.
+  - Read `TODO.md` (P13-e entry), the [TB115 report](Architecture_M6_CP3_TB115_P13_A4_Production_Size_Census_Full_Gate_Execution_Report_20261112.md) BunnyRandom line, and the field transport atlas port-class code.
+- **After it:** 65A `M6-CP3-DEFN-P13-A3-BOUNDARY-SPAN-CARRIER-BINDING` → 65B → 65C, which now carries O41 and switch activation (RA-234) → 65D.
+
+### Completed — `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` (64E.12, [RA-234](Architecture_M6_CP3_DEFN_P13_A4_Size_Grading_Decision_Review_20261112.md))
+
+- **D10, answered by the user on 2026-11-12: defer the switch.** Production stays per-arc and `chainRimSchedules` stays off. O41 and switch activation fold into 65C (A4 interior size transitions). Options B and C are not taken.
+- **TB115 shows Vase's RED is unrelated to O41.** The phase front is not applicable and A3 covers nothing, so Vase uses the legacy trace path: about 20× too dense, with negative Jacobians, non-convex cells and valence mismatches. Those belong to O31/O32 and to 65C.
 
 ### Completed — `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING` (64E.9, RA-233); its brief retained
 
@@ -305,10 +317,12 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | **64E.7 — COMPLETE / compile-only** | `M6-CP3-CB133-P13-A4-COMPLETED-MESH-SIZE-CENSUS` (compile only, test only) | [Exact patch](Architecture_M6_CP3_CB133_P13_A4_Completed_Mesh_Size_Census_Exact.diff) `874773240cc5934854915a0f7ed8076c10dc5073100c41030859c32f44e570ee`, 129 lines, keep 5 single-space context lines; numstat `97 4` `tests/SurfaceCellDesignAcceptanceTests.cpp`; base HEAD `b2ae6d7c9` | 64E.8 | `M6-CP3-PLAN-P13-A4-COMPLETED-MESH-SIZE-CENSUS-STOP`; infrastructure `M6-CP3-CB133A-P13-A4-COMPLETED-MESH-SIZE-CENSUS-ORCH` |
 | **64E.8 — COMPLETE / scoped MATCH** | `M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-EXEC` | `.agents/Directional/gates/Architecture_M6_TB114_P13_A4_Completed_Mesh_Size_Census_Full_Gate_Case_Manifest.tsv` (TB113's byte for byte, 945 rows). Expect 945/945; every TB113 receipt unchanged; `switch-size` and `switch-spans` lines recorded; `switch-size` present for MultiFaceSeam chained | Close with `Successor: M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING` | `M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-REV`; infrastructure `M6-CP3-TB114A-P13-A4-COMPLETED-MESH-SIZE-CENSUS-ORCH` |
 | 64E.9 **COMPLETE** | `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING` | [RA-233](Architecture_M6_CP3_DEFN_P13_A4_Interior_Size_Grading_Review_20261112.md): H1 holds, H2 refuted; O41 owner is A4; user decision D10 pending | 64E.10 | — |
-| **64E.10 — NEXT** | `M6-CP3-CB134-P13-A4-PRODUCTION-SIZE-CENSUS` (compile only, test only) | [Exact patch](Architecture_M6_CP3_CB134_P13_A4_Production_Size_Census_Exact.diff) `0f3eb0d8c62043013f47b5815fc280d959aec13bca4f7f79d52d2b4431ae4ab4`, 17 lines, keep 1 single-space context line; numstat `6 0` `tests/SurfaceCellDesignAcceptanceTests.cpp`; base HEAD `a988f8cab` | 64E.11 | `M6-CP3-PLAN-P13-A4-PRODUCTION-SIZE-CENSUS-STOP`; infrastructure `M6-CP3-CB134A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH` |
-| 64E.11 | `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-EXEC` | `.agents/Directional/gates/Architecture_M6_TB115_P13_A4_Production_Size_Census_Full_Gate_Case_Manifest.tsv` (TB114's byte for byte, 945 rows) plus the census. Expect 945/945; census verdicts unchanged; every TB114 receipt unchanged; `production` lines recorded; the Vase `switch-run` completion failure and `switch-validation accepted=0 strict=0` | Close with `Successor: M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` | `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-REV`; infrastructure `M6-CP3-TB115A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH` |
-| — | **D10** user decision: A (A4 size transitions), B (region-aware A3 count) or C (gate policy) — RA-233 §3 | **user** | 64E.12 | — |
-| 64E.12 | `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` | **Review agent only.** Applies D10 with TB115's Vase evidence; freezes the chosen option's first CB/TB, or stops at the decision | its CB/TB | — |
+| **64E.10 — COMPLETE** | `M6-CP3-CB134-P13-A4-PRODUCTION-SIZE-CENSUS` (compile only, test only) | [Exact patch](Architecture_M6_CP3_CB134_P13_A4_Production_Size_Census_Exact.diff) `0f3eb0d8c62043013f47b5815fc280d959aec13bca4f7f79d52d2b4431ae4ab4`, 17 lines, keep 1 single-space context line; numstat `6 0` `tests/SurfaceCellDesignAcceptanceTests.cpp`; base HEAD `a988f8cab` | 64E.11 | `M6-CP3-PLAN-P13-A4-PRODUCTION-SIZE-CENSUS-STOP`; infrastructure `M6-CP3-CB134A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH` |
+| 64E.11 — COMPLETE / scoped MATCH | `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-EXEC` | `.agents/Directional/gates/Architecture_M6_TB115_P13_A4_Production_Size_Census_Full_Gate_Case_Manifest.tsv` (TB114's byte for byte, 945 rows) plus the census. Expect 945/945; census verdicts unchanged; every TB114 receipt unchanged; `production` lines recorded; the Vase `switch-run` completion failure and `switch-validation accepted=0 strict=0` | Close with `Successor: M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` | `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-REV`; infrastructure `M6-CP3-TB115A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH` |
+| — | **D10 ANSWERED (user, 2026-11-12): defer the switch.** Options A, B and C not taken now; O41 folds into 65C | **user** | 64E.12 | — |
+| 64E.12 **COMPLETE** | `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` | [RA-234](Architecture_M6_CP3_DEFN_P13_A4_Size_Grading_Decision_Review_20261112.md): production stays per-arc; Vase's RED is unrelated; no patch frozen | P13-e | — |
+| **NEXT (Review agent only)** | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` (P13-e, BunnyRandom vertex 49) | No implementation turn is runnable; the Review freezes its own CB/TB | its CB/TB | — |
+| then | 65A `M6-CP3-DEFN-P13-A3-BOUNDARY-SPAN-CARRIER-BINDING` → 65B → 65C (carries O41 and switch activation) → 65D | Review, then implementation | — | — |
 
 Out of scope for 64B.19–64B.27: any fan or occurrence resolver, any change to the D5 join rule, any change to `resolve_branch_transition` or the fan carry, pipeline wiring, and any source change beyond the exact patches.
 
@@ -461,7 +475,7 @@ The [TB87 substantive re-audit](M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261
 | 64D / D4 annulus | `M6-CP3-DEFN-P13-A3-ANNULUS-PLAN-CONSUMPTION` | Annulus producer independently consumes exact periodic/cut plan, with reversed-boundary tamper |
 | 65A / D9c | `M6-CP3-DEFN-P13-A3-BOUNDARY-SPAN-CARRIER-BINDING` | Factory validates typed carrier/span attachment; foreign span and coupled endpoint/sign reversal negative; legal absent physical rim still allowed |
 | 65B / D9 trace | `M6-CP3-DEFN-P13-A2B-RECIPROCAL-TRACE-INTERVALS` | One reciprocal plan-trace edge/occurrence contract; exact paired region/span and inverted ordinals/orientations, cross-region tamper |
-| 65C / A4 | `M6-CP3-DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION` | Construct A4 bounded domains from A2a′ fragments and A2b walks using A3; first targeted 3-disc Vase evidence, no filling or dispatch |
+| 65C / A4 | `M6-CP3-DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION` | Construct A4 bounded domains from A2a′ fragments and A2b walks using A3; first targeted 3-disc Vase evidence, no filling or dispatch. **Also carries O41 (RA-234):** interior size transitions where the target varies inside a region beyond the size band, and activation of the chain switch (`chainRimSchedules`), re-measured by the `switch-*` receipts |
 | 65D / D8 | `M6-CP3-DEFN-P13-A3-CONSUMPTION-RECEIPT-VALIDATION` | Receipt cannot imply consumption without validated per-producer schedule coverage, with omission tamper |
 | 66+ | Per-disc corners (D6 user decision required), fill, dispatch | Each separately defined, implemented and verified; no premature acceptance |
 
@@ -832,10 +846,12 @@ Facts are in the records, `TODO.md` steps and Review track, `CHANGELOG.md` and t
 | **64E.7 — COMPLETE / compile-only** | `M6-CP3-CB133-P13-A4-COMPLETED-MESH-SIZE-CENSUS` | Implementation agent, compile only, test only; RA-232 §4 `87477324…` (129 lines, keep 5 single-space context lines), numstat `97 4`. Mismatch → `M6-CP3-PLAN-P13-A4-COMPLETED-MESH-SIZE-CENSUS-STOP`; infrastructure → `M6-CP3-CB133A-P13-A4-COMPLETED-MESH-SIZE-CENSUS-ORCH` |
 | **64E.8 — COMPLETE / scoped MATCH** | `M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-EXEC` | TB113 manifest byte for byte; MATCH conditions in RA-232 §5. MATCH → `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING` (Review only). Mismatch → `M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-REV`; infrastructure → `M6-CP3-TB114A-P13-A4-COMPLETED-MESH-SIZE-CENSUS-ORCH` |
 | 64E.9 — Review COMPLETE | `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING` | [RA-233](Architecture_M6_CP3_DEFN_P13_A4_Interior_Size_Grading_Review_20261112.md): H2 refuted (no parity moves); H1 holds (MultiFaceSeam chained boundary ≈1.02, interior p5 0.434, target up to 3× inward; per-arc passes by 1.28× boundary over-coarsening); O41 owner = A4; user decision D10 (A/B/C); CB134 + TB115 frozen |
-| **64E.10 — NEXT** | `M6-CP3-CB134-P13-A4-PRODUCTION-SIZE-CENSUS` | Implementation agent, compile only, test only; RA-233 §4 `0f3eb0d8…` (17 lines, keep 1 single-space context line), numstat `6 0`. Mismatch → `M6-CP3-PLAN-P13-A4-PRODUCTION-SIZE-CENSUS-STOP`; infrastructure → `M6-CP3-CB134A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH` |
-| 64E.11 | `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-EXEC` | TB114 manifest byte for byte plus the census; MATCH conditions in RA-233 §5. MATCH → `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` (Review only). Mismatch → `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-REV`; infrastructure → `M6-CP3-TB115A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH` |
-| D10 (user) | — | A4 size transitions / region-aware A3 count / gate policy (RA-233 §3) |
-| 64E.12 (Review only) | `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` | Applies D10 with Vase evidence (RA-233 §6) |
+| **64E.10 — COMPLETE** | `M6-CP3-CB134-P13-A4-PRODUCTION-SIZE-CENSUS` | Implementation agent, compile only, test only; RA-233 §4 `0f3eb0d8…` (17 lines, keep 1 single-space context line), numstat `6 0`. Mismatch → `M6-CP3-PLAN-P13-A4-PRODUCTION-SIZE-CENSUS-STOP`; infrastructure → `M6-CP3-CB134A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH` |
+| 64E.11 — COMPLETE / scoped MATCH | `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-EXEC` | TB114 manifest byte for byte plus the census; MATCH conditions in RA-233 §5. MATCH → `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` (Review only). Mismatch → `M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-REV`; infrastructure → `M6-CP3-TB115A-P13-A4-PRODUCTION-SIZE-CENSUS-ORCH` |
+| D10 (user) — ANSWERED | — | **Defer the switch** (2026-11-12): production per-arc; O41 and activation fold into 65C |
+| 64E.12 — Review COMPLETE | `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION` | [RA-234](Architecture_M6_CP3_DEFN_P13_A4_Size_Grading_Decision_Review_20261112.md): D10 applied; Vase's RED is unrelated (legacy path, phase front not applicable); no patch frozen |
+| **NEXT (Review only)** | `M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT` | P13-e, BunnyRandom vertex 49; the implementation agent waits for its CB/TB |
+| then | 65A → 65B → 65C (with O41 and activation) → 65D | See the revised bounded sequence |
 | 64C–65D (Review, runtime-free; scoped) | **See revised bounded sequence above** | D4 uniform → D4 annulus → D9c carrier attachment → A2b reciprocal trace → A4 disc domain → D8 receipt; each DEFN then dedicated CB then dedicated TB |
 | 66+ | per-disc boundary and corners (D6) → fill (§4.9) → aggregator dispatch with honest `Declined` flags (D3) | One DEFN → CB → TB each |
 | — WITHDRAWN | `M6-CP3-DEFN-P13-SEMANTIC-PATCH-BOUNDARY` | RA-211.7; withdrawn by RA-212.3 (measured on a noise-seeded layout 20× denser than target) |
@@ -849,7 +865,7 @@ Rows 49–64B.9 are complete as turns. TB90 64.4 is MATCH (914/914, census 1 PAS
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB134-P13-A4-PRODUCTION-SIZE-CENSUS** (64E.10, Code + Build, compile only, test source only). Apply `.agents/Directional/Architecture_M6_CP3_CB134_P13_A4_Production_Size_Census_Exact.diff` and nothing else: SHA-256 `0f3eb0d8c62043013f47b5815fc280d959aec13bca4f7f79d52d2b4431ae4ab4`, 17 lines, keep 1 single-space context line. Numstat: `6 0` `tests/SurfaceCellDesignAcceptanceTests.cpp`. Base: HEAD `a988f8cab`. Then TB115 (RA-233 §5), then the Review-only `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION`. User decision D10 is pending. Preserve `chainRimSchedules=false`, accepted CP2 491/491, stable 66/17/49, debt 1, deferred 81, and unpromoted CP3/selector497.
+`load_next`: **No implementation turn is runnable.** Next canonical turn: **M6-CP3-DEFN-P13-SINGULARITY-PORT-COUNT** (P13-e, Review agent only). The implementation agent must not open, draft or resume it, apply any patch, run any gate, set `chainRimSchedules`, change a threshold, change a selector or promote CP3 until that Review freezes its exact CB/TB pair. D10 is answered (defer the switch, RA-234). TB115 is complete (945/945). Preserve accepted CP2 491/491, stable 66/17/49, debt 1, deferred 81.
 - CB89 compiled source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, immutable package artifact `13370954424`, 28/28 hashes, eight GMP/GMPXX targets; no test execution.
 - TB79 artifact-only gate (RA-203.6) finished: 899/899, census MATCH.
 - RA-204 completed the O30 Review; CB90 and TB80 are done. The fixed-field replay is withdrawn: do not build a field fixture.
