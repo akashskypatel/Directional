@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb131-rim-chain-switch-apply-20261112-v2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb131-rim-chain-switch-apply-20261112-v2",
-  "file_id": "12oAOrRIXtCP18HMP6K-rg34o_e8zTwTN",
-  "patch_sha256": "ff35298a6d9c3e745f25bc0fabe3103e5fcf93e54d1dcb1fe2ba5eb6dd9595f3",
-  "base_sha": "2e40ae6e4ea73e64b2a963448a746ba3a19a6aa7",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(directional): stage rim-chain switch behind opt-in",
-  "retention_days": 7
+  "request_id": "m6-cp3-cb131-rim-chain-compile-20261112-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb131-rim-chain-compile-20261112-v1",
+  "source_sha": "240d2a1948c95521e9b90740244e7dd7de46483a",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb131-rim-chain-compile"
 }
