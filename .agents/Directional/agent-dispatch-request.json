@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb108-docs-closeout-20261112-v1",
+  "request_id": "m6-cp3-cb128-annulus-rim-edge-schedule-20261112-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb108-docs-closeout-20261112-v1",
-  "file_id": "1Rf-Ta6FH6pCiZFFCvzCM-izmNKKD7NRZ",
-  "patch_sha256": "7560f39f86874fe63d6ef74468a983efcff7bef34c68664432e9bc901b199998",
-  "base_sha": "f453c9ab7f353a751d1f6983dfb9e4c7c04b8632",
+  "mailbox_key": "m6-cp3-cb128-annulus-rim-edge-schedule-20261112-v1",
+  "file_id": "1EUgX0rAh-iHV5GkBxRiE7pbIb-r7uMIG",
+  "patch_sha256": "f89966c26b3f920ccb7daa6933b08e9c2767300cdf78403c6106240ce22ca8dc",
+  "base_sha": "11f1dafb879562315d02cf9feaf4c90721d5c32d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb108): verify annulus rim census and hand off Review",
+  "commit_message": "feat(surface-cells): add shared A3 edge schedule and unwired annulus rim reader (CB128)",
   "retention_days": 14
 }
