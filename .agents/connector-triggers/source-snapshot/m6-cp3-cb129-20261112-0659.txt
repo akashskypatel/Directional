@@ -1,0 +1,3 @@
+turn=M6-CP3-CB129-P13-A3-ANNULUS-RIM-CONSUMPTION
+frozen_source_sha=9b1fa7b700b5c93e159a383e9033051a21c3f651
+purpose=authoritative_source_inspection
