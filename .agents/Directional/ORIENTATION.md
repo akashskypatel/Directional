@@ -1,3 +1,5 @@
+**Current currency (2026-11-12, supersedes the earlier CB130/TB111 next-turn note below):** TB110 **COMPLETE / scoped MATCH** under RA-228 §7 and RA-229 §5. [TB110 report](Architecture_M6_CP3_TB110_P13_A3_Annulus_Rim_Consumption_Full_Gate_Execution_Report_20261112.md): 944/944 PASS, 1,025 memberships; census Cylinder PASS, BunnyRandom/Vase already registered RED. Annulus rim reader records all 64 output rim edges; O36 stays unwired. Next is a separate Review to define the O36 switch; no canonical turn ID has been assigned. Preserve CP2 491/491, stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted.
+
 # Directional — Project Orientation
 
 > **Superseded Review currency (2026-11-11):** [Adversarial TB101C review](Architecture_M6_CP3_TB101C_Audit_Adversarial_Review_20261111.md) corrected producer/consumer fan identity and source-exact branch semantics. Scoped 940/940 remains valid, direct BunnyRandom/Vase RED. Next only `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION`. CP3/selector497 remain unpromoted.

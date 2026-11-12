@@ -1,3 +1,10 @@
+## CURRENT — TB110 full gate scoped MATCH (64D.7), 2026-11-12
+
+> **TB110 COMPLETE / scoped MATCH.** [Evidence report](.agents/Directional/Architecture_M6_CP3_TB110_P13_A3_Annulus_Rim_Consumption_Full_Gate_Execution_Report_20261112.md): CB129 immutable source `4bef62be917318caad514768a316029e55c6c230`, artifact `13922992326`; [gate 43178827546](https://github.com/akashskypatel/Directional/actions/runs/43178827546) **944/944 PASS**, 1,025 memberships, 1,896/1,896 checksums; [census 43178858839](https://github.com/akashskypatel/Directional/actions/runs/43178858839) Cylinder PASS, BunnyRandom/Vase previously registered RED, 9/9 checksums. Row729 `rimEdges=32 readable=32 equalOutput=32 outputRimEdges=64 recorded=64`; pairing remains 16/16; only authorized Cylinder tracing/coverage and D4 rim receipt changes. No new regression. **Next separate Review: O36 switch definition (canonical ID not yet specified).** Do not start it without exact authority. O36 unwired, CP3/selector497 unpromoted; CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged.
+
+- [x] **64D.7 TB110** frozen artifact-only gate MATCH under RA-228 §7 / RA-229 §5; no recompilation or mutation.
+- [ ] **O36 Review definition** must receive an exact ID and address the already listed independent preconditions before any implementation. Do not start the switch in TB110.
+
 ## CURRENT — CB129 compile-only complete (64D.6); TB110 next, 2026-11-12
 
 > **Next separate turn:** `M6-CP3-TB110-P13-A3-ANNULUS-RIM-CONSUMPTION-FULL-GATE-EXEC` (artifact-only test/benchmark). CB129 exact source `4bef62be917318caad514768a316029e55c6c230`, [compile 43173104948](https://github.com/akashskypatel/Directional/actions/runs/43173104948), [package 13922992326](https://github.com/akashskypatel/Directional/actions/runs/43173104948/artifacts/13922992326), 28/28 checksums, GMP/GMPXX, eight targets, `runtimeExecution=false`. [Code/build record](.agents/Directional/Architecture_M6_CP3_CB129_P13_A3_Annulus_Rim_Consumption_Code_Build_Record_20261112.md).

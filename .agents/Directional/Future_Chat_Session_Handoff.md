@@ -1,3 +1,9 @@
+## TB110 COMPLETE — separate O36 Review definition next (2026-11-12 UTC)
+
+**Canonical completed turn:** `M6-CP3-TB110-P13-A3-ANNULUS-RIM-CONSUMPTION-FULL-GATE-EXEC` (64D.7). [TB110 report](Architecture_M6_CP3_TB110_P13_A3_Annulus_Rim_Consumption_Full_Gate_Execution_Report_20261112.md): exact CB129 source `4bef62be917318caad514768a316029e55c6c230`, package `13922992326`; [gate 43178827546](https://github.com/akashskypatel/Directional/actions/runs/43178827546) **944/944 PASS**, 1,025 memberships, 1,896/1,896 checksums; [production census 43178858839](https://github.com/akashskypatel/Directional/actions/runs/43178858839) Cylinder PASS, BunnyRandom/Vase registered RED, 9/9 hashes. RA-228 §7 / RA-229 §5 scoped MATCH. Row729 `annulus-read` reads and records all 32 rims / 64 output rim edges, `annulus-pair` 16/16 unchanged. Only explicitly permitted rows 729/864/935 have receipt changes; all other receipts and substantive records unchanged. No new stable regression. CP2 491/491, stable 66/17/49, debt1, deferred81 unchanged. O36 still unwired; no CP3/selector497 promotion, source/test/fixture mutation, or compilation.
+
+**Next separate Review only:** define the O36 switch with its existing O34/O35/O37 preconditions, corner product, shared exact branch owner, smooth-rim disc evidence, and annulus rim chain-stop clause. **No canonical ID for this Review is given in the current RA-228, RA-229, TODO, or handoff; do not invent one.** `STATUS` successor is `UNKNOWN` until authority assigns it. No successor work was started by TB110. Preserve PR #8 draft and unmerged.
+
 # Future Chat Session Handoff
 
 > **EXPLICIT USER AUTHORIZATION REQUIRED** to modify or delete this file; unauthorized changes must be reverted during documentation drift audit. This rewrite was expressly requested on 2026-10-16.</br>
