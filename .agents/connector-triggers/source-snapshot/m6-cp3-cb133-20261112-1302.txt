@@ -1,3 +1,0 @@
-Turn: M6-CP3-CB133-P13-A4-COMPLETED-MESH-SIZE-CENSUS
-Purpose: one exact source snapshot for code/build same-turn continuation.
-Source entry beacon: e32efdb5e80604e92c82851768fbf18f59bde8f6

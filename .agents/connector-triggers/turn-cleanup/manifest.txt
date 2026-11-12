@@ -1,2 +1,0 @@
-# CB133 same-turn cleanup
-.agents/connector-triggers/source-snapshot/m6-cp3-cb133-20261112-1302.txt
