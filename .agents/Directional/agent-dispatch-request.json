@@ -1,12 +1,19 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb130-rim-pair-code-20261112-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb130-rim-pair-code-20261112-v1",
-  "file_id": "13xA9AQfJ9troAAI7s4oBtOw3jfGf0XyH",
-  "patch_sha256": "0f9f8b45587814a0ad55c1ea131a0c408e5b1643a7c0778e13d264fa73f04f6b",
-  "base_sha": "f7e13debc3a7fd18599d7b9c5cda84fbbe9520d4",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: add exact annulus rim pair census receipt (CB130)",
+  "request_id": "m6-cp3-cb130-rim-pair-compile-20261112-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb130-rim-pair-compile-20261112-v1",
+  "source_sha": "d9dde92f938fab7688644fe2e420214bcefa93cb",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb130-annulus-rim-pair",
   "retention_days": 7
 }
