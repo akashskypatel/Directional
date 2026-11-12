@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb111-pair-production-census-20261112-v1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb111-pair-production-census-20261112-v1",
-  "executor_sha": "7f06b87e4664d2b29a4bda0d873b9001f036eab0",
-  "semantic_source_sha": "d9dde92f938fab7688644fe2e420214bcefa93cb",
-  "turn_id": "M6-CP3-TB111-P13-A3-ANNULUS-RIM-PAIR-CENSUS-FULL-GATE-EXEC",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "13918449673",
-    "EXPECTED_SOURCE_SHA": "d9dde92f938fab7688644fe2e420214bcefa93cb",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "a2e42a855cd0469a137465fb631fa74c98c3d522eec24b9ad1a41a89db15679c",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "4e8f8cf500a58b5a2805c30e4685eb678576624e8d0929cdd7b56e934dce18aa",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "c71bdc1dcabd6821c5b90b6fd006bc1667b01f0a91317092c4f9f1dbc39587f7",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
-    "EXPECTED_CASE_COUNT": "3"
-  },
-  "artifact_prefix": "m6-cp3-tb111-annulus-rim-pair-production-census",
+  "request_id": "m6-cp3-tb111-closeout-docs-20261112-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb111-closeout-docs-20261112-v1",
+  "file_id": "15pZkqUy7b0F7qOIM6hBhuX1i_JI3Ygc7",
+  "patch_sha256": "e68a997d340cf113d8c1525a9790bded5e607139647a00a8d5a40cede757c5c4",
+  "base_sha": "7f06b87e4664d2b29a4bda0d873b9001f036eab0",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close TB111 pairing full gate and authorize CB129",
   "retention_days": 7
 }
