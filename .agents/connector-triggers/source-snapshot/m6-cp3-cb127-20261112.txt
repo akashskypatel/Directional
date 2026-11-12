@@ -1,3 +1,0 @@
-Source snapshot request for M6-CP3-CB127-P13-A3-ANNULUS-RIM-CENSUS
-Working branch agent/surface_cell_quad/p5-recover-bridge-healing
-Source authority: event commit SHA; no runtime execution.
