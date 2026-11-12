@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb108-annulus-rim-census-gate-20261112-v1",
+  "request_id": "m6-cp3-tb108-annulus-rim-census-production-20261112-v1",
   "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb108-annulus-rim-census-gate-20261112-v1",
+  "mailbox_key": "m6-cp3-tb108-annulus-rim-census-production-20261112-v1",
   "executor_sha": "39e91beb507468777aa90ffd83e23c146652d3ca",
   "semantic_source_sha": "39e91beb507468777aa90ffd83e23c146652d3ca",
   "turn_id": "M6-CP3-TB108-P13-A3-ANNULUS-RIM-CENSUS-FULL-GATE-EXEC",
@@ -14,12 +14,10 @@
     "EXPECTED_CANDIDATE_ZIP_SHA256": "3d9feda87b4a42ae6adc5f31a75164777a4d8ec0e9442b07304ac4a968fac15e",
     "EXPECTED_ROOT_MANIFEST_SHA256": "c7051103e66cb9651bdff4028dee1c82f93285d80b477de2441358a8c3dfedc0",
     "EXPECTED_SOURCE_ARCHIVE_SHA256": "34cbbdf5b65ada62955640497612d821fdd73071fa920de9117d59e629c58985",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB108_P13_A3_Annulus_Rim_Census_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "938836fc3326df11ccb3d475e0c6a3a4d629d8ac6e252436dcfac47286bfb651",
-    "EXPECTED_CASE_COUNT": "943",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
+    "EXPECTED_CASE_COUNT": "3"
   },
-  "artifact_prefix": "m6-cp3-tb108-p13-a3-annulus-rim-census-gate",
+  "artifact_prefix": "m6-cp3-tb108-p13-a3-annulus-rim-census-production",
   "retention_days": 7
 }
