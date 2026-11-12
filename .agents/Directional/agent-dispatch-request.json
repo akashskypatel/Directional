@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb115-production-size-full-20261112-v1",
+  "request_id": "m6-cp3-tb115-production-census-20261112-v1",
   "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb115-production-size-full-20261112-v1",
+  "mailbox_key": "m6-cp3-tb115-production-census-20261112-v1",
   "executor_sha": "c565a3ada13d4b785fb45182db80fd5adf665add",
   "semantic_source_sha": "c565a3ada13d4b785fb45182db80fd5adf665add",
-  "turn_id": "M6-CP3-TB115-P13-A4-PRODUCTION-SIZE-CENSUS-FULL-GATE-EXEC",
+  "turn_id": "M6-CP3-TB115-PRODUCTION",
   "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
   "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "artifact_prefix": "m6-cp3-tb115-production-size-full",
+  "artifact_prefix": "m6-cp3-tb115-production",
   "retention_days": 14,
   "environment": {
     "CANDIDATE_ARTIFACT_ID": "13956118408",
@@ -16,10 +16,8 @@
     "EXPECTED_CANDIDATE_ZIP_SHA256": "e1e4d67cee10be6001369ec8f7fc9e7e09225202dbd87fdbc51facf483dd88dd",
     "EXPECTED_ROOT_MANIFEST_SHA256": "008b625bc06629b6e5c07845fc95df84c698a588e3e3b9054a498e4f89111a89",
     "EXPECTED_SOURCE_ARCHIVE_SHA256": "111c2205b79840cb0b3ca1e450d8fbd1ac9c3c37efa12c8971a6b0719df83ace",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB115_P13_A4_Production_Size_Census_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "16a909bd6d3fe2b9ba37d263b89fb8ca16dcc3dd42214e4cabcae26c05c91020",
-    "EXPECTED_CASE_COUNT": "945",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
+    "EXPECTED_CASE_COUNT": "3"
   }
 }
