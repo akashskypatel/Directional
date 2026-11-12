@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb134-compile-20261112-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb134-compile-20261112-v1",
-  "source_sha": "c565a3ada13d4b785fb45182db80fd5adf665add",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb134-production-size-census"
+  "request_id": "m6-cp3-cb134-docs-closeout-20261112-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb134-docs-closeout-20261112-v1",
+  "file_id": "18eN9ZabMT4eCXyaghLXFXYF_az6uulsx",
+  "patch_sha256": "a12eb9b44ca937cbe3531dda9d91aa941dee944830280d77f8167636d5a7ad4e",
+  "base_sha": "409312aed547c2c1e898aa3f840f921d16c764ca",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cb134): record compiled production census and TB115 handoff",
+  "retention_days": 14
 }
