@@ -1,4 +1,10 @@
-## CURRENT — RA-232: O41 narrowed (64E.6); CB133 next, 2026-11-12
+## CURRENT — CB133 compile complete (64E.7); TB114 next, 2026-11-12
+
+> **Canonical next:** `M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-EXEC` (artifact-only Test + Benchmark). [CB133 record](.agents/Directional/Architecture_M6_CP3_CB133_P13_A4_Completed_Mesh_Size_Census_Code_Build_Record_20261112.md); exact compiled source `e60f2c76cc782767daf149d9a78af09474eb310e`, package `13947781593`, run 43224657893, 28/28 hashes, GMP/GMPXX, no runtime. TB114 inherits 945 rows and manifest `16a909bd6d3fe2b9ba37d263b89fb8ca16dcc3dd42214e4cabcae26c05c91020`. O41 remains open; `chainRimSchedules=false`.
+
+- [x] **CB133:** exact test-only 97-add/4-delete patch applied and eight-target compile-only passed. No runtime, product, fixture, selector, or threshold change.
+
+## PREVIOUS — RA-232: O41 narrowed (64E.6); CB133 compiled, 2026-11-12
 
 > **Canonical next:** `M6-CP3-CB133-P13-A4-COMPLETED-MESH-SIZE-CENSUS` (implementation agent, compile only, test only). [Exact patch](.agents/Directional/Architecture_M6_CP3_CB133_P13_A4_Completed_Mesh_Size_Census_Exact.diff) `874773240cc5934854915a0f7ed8076c10dc5073100c41030859c32f44e570ee`, 129 lines, keep 5 single-space context lines. Numstat: `97 4` `tests/SurfaceCellDesignAcceptanceTests.cpp`. Base: HEAD `b2ae6d7c9`.
 
@@ -11,8 +17,8 @@
 | Step | Turn | Owner |
 |---|---|---|
 | 64E.6 **COMPLETE** | `M6-CP3-DEFN-P13-A4-COMPLETED-MESH-GATE` (RA-232) | Review |
-| **64E.7 NEXT** | `M6-CP3-CB133-P13-A4-COMPLETED-MESH-SIZE-CENSUS`: `switch-size` and `switch-spans` lines. Mismatch → `M6-CP3-PLAN-P13-A4-COMPLETED-MESH-SIZE-CENSUS-STOP`; infrastructure → `M6-CP3-CB133A-P13-A4-COMPLETED-MESH-SIZE-CENSUS-ORCH` | implementation agent |
-| 64E.8 | `M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-EXEC`: TB113's manifest byte for byte. MATCH needs 945/945, every TB113 receipt unchanged, the new lines recorded, and a `switch-size` line for MultiFaceSeam chained. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB114A-P13-A4-COMPLETED-MESH-SIZE-CENSUS-ORCH` | implementation agent |
+| 64E.7 **COMPLETE / compile-only** | `M6-CP3-CB133-P13-A4-COMPLETED-MESH-SIZE-CENSUS`: `switch-size` and `switch-spans` lines. Mismatch → `M6-CP3-PLAN-P13-A4-COMPLETED-MESH-SIZE-CENSUS-STOP`; infrastructure → `M6-CP3-CB133A-P13-A4-COMPLETED-MESH-SIZE-CENSUS-ORCH` | implementation agent |
+| **64E.8 NEXT** | `M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-EXEC`: TB113's manifest byte for byte. MATCH needs 945/945, every TB113 receipt unchanged, the new lines recorded, and a `switch-size` line for MultiFaceSeam chained. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB114A-P13-A4-COMPLETED-MESH-SIZE-CENSUS-ORCH` | implementation agent |
 | 64E.9 | `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING` (O41 owner: H1 or H2) | **Review agent only** |
 | later | Activation, after O41 | Review, then implementation |
 

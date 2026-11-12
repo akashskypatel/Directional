@@ -1,3 +1,9 @@
+## 2026-11-12 UTC — CB133 completed-mesh size census compiled (64E.7; no runtime)
+
+- [CB133 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB133_P13_A4_Completed_Mesh_Size_Census_Code_Build_Record_20261112.md): exact RA-232 test-only patch, 97 additions/4 deletions in one test file; [semantic source `e60f2c76cc782767daf149d9a78af09474eb310e`](https://github.com/akashskypatel/Directional/commit/e60f2c76cc782767daf149d9a78af09474eb310e), [Drive apply 43224295903](https://github.com/akashskypatel/Directional/actions/runs/43224295903). Temporary Drive file retired.
+- [Compile 43224657893](https://github.com/akashskypatel/Directional/actions/runs/43224657893) SUCCESS, artifact `13947781593`, ZIP SHA-256 `e89169f233a6e8c9591acdaaaa76fc345900af19d056c6ee088e1bdfb8ca3aa5`, 28/28 hashes, eight GMP/GMPXX targets, clean source, `runtimeExecution=false`. `switch-size` / `switch-spans` are compiled but not tested; no product, selector, or option mutation.
+- Next separate turn: `M6-CP3-TB114-P13-A4-COMPLETED-MESH-SIZE-CENSUS-FULL-GATE-EXEC` (RA-232 §5), immutable artifact-only 945-row gate; no TB114 work in CB133. TB113 945/945 scoped PASS remains last runtime. CP2 491/491, stable 66/17/49, debt 1, deferred 81, O41 open, CP3/selector497 unpromoted; `chainRimSchedules=false`.
+
 ## 2026-11-12 UTC — RA-232 completed-mesh gate: O41 narrowed (64E.6; Review, runtime-free)
 
 - [RA-232](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Completed_Mesh_Gate_Review_20261112.md): TB113's gate inputs split O41.
