@@ -1,25 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb113-completed-mesh-gate-full-20261112-v1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb113-completed-mesh-gate-full-20261112-v1",
-  "executor_sha": "e9390bd8133ea7dc224a726d07d808b615948e33",
-  "semantic_source_sha": "196f611769ee738a86d4aa46903d0ed592384691",
-  "turn_id": "M6-CP3-TB113-P13-A4-COMPLETED-MESH-GATE-CENSUS-FULL-GATE-EXEC",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "artifact_prefix": "m6-cp3-tb113-completed-mesh-gate-full",
-  "retention_days": 14,
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "13941286743",
-    "EXPECTED_SOURCE_SHA": "196f611769ee738a86d4aa46903d0ed592384691",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "3964dde25c8005048e018f2927f2f7dd29c288eb2afcb2d43ddd9451288c3b5e",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "b1469e8796c1a2de094a376e62a49232794f1dcb55bbf4c4da2f162d81a08029",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "c26a2c0c5fef6ed29e155d2013c23ac22a838f883559791f663cfc95efea2434",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB113_P13_A4_Completed_Mesh_Gate_Census_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "16a909bd6d3fe2b9ba37d263b89fb8ca16dcc3dd42214e4cabcae26c05c91020",
-    "EXPECTED_CASE_COUNT": "945",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
-  }
+  "request_id": "m6-cp3-tb113-closeout-docs-20261112-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb113-closeout-docs-20261112-v1",
+  "file_id": "1poIoyBAEugP5dBJUOjWAae7MKFQDTSEh",
+  "patch_sha256": "279162bf762c7845c0635649931c0e553fe642381caa021827a18e9a355e46d3",
+  "base_sha": "0dbd5bbba757610b849d189cd41016426b432533",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(tb113): record 945-case completed-mesh gate census and next review",
+  "retention_days": 14
 }
