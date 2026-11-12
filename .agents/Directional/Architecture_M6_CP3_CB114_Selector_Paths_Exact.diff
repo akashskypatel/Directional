@@ -1,0 +1,810 @@
+diff --git a/.agents/Directional/tools/README.md b/.agents/Directional/tools/README.md
+index ea482bd1c..98147f492 100644
+--- a/.agents/Directional/tools/README.md
++++ b/.agents/Directional/tools/README.md
+@@ -19,7 +19,7 @@ Pure standard library, deliberately: `numpy` has been missing on two different r
+ ## `selector_manifest.py`
+ 
+ Regenerates `../Required_Green_Selector_Manifest.md` — the derived index of every byte-frozen
+-`Required_Green_Selector_*.txt`: identity count, LF-normalized SHA-256, prefix parent, appended identities and
++`selectors/*Required_Green_Selector_*.txt`: identity count, LF-normalized SHA-256, prefix parent, appended identities and
+ role.
+ 
+ ```
+diff --git a/.agents/Directional/tools/m3_cp4c3_tb23_r1_harness.sh b/.agents/Directional/tools/m3_cp4c3_tb23_r1_harness.sh
+index a2e574b35..d153acb3d 100755
+--- a/.agents/Directional/tools/m3_cp4c3_tb23_r1_harness.sh
++++ b/.agents/Directional/tools/m3_cp4c3_tb23_r1_harness.sh
+@@ -261,7 +261,7 @@ import sys
+ 
+ root = pathlib.Path(sys.argv[1])
+ out = pathlib.Path(sys.argv[2])
+-selector = (root / '.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_397.txt').read_text().splitlines()
++selector = (root / '.agents/Directional/selectors/Architecture_M3_CP4c3_Required_Green_Selector_397.txt').read_text().splitlines()
+ cm = (root / 'cmake/DirectionalTests.cmake').read_text()
+ targets = {
+     'directional_compiled_api_tests': ['tests/CompiledLibraryTests.cpp'],
+@@ -334,7 +334,7 @@ fi
+ 
+ echo -e 'ordinal\tidentity\tbinary\texit\tselected\tresult\traw_log' > "${RESULT}/ledger.tsv"
+ runtime_started=true
+-selector="$SOURCE/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_397.txt"
++selector="$SOURCE/.agents/Directional/selectors/Architecture_M3_CP4c3_Required_Green_Selector_397.txt"
+ while IFS= read -r identity || [[ -n "$identity" ]]; do
+   ordinal="$(grep -F -n -x "$identity" "$selector" | cut -d: -f1)"
+   [[ -n "$ordinal" ]] || fail_orchestration "ordinal not found for identity $identity"
+diff --git a/.agents/Directional/tools/m3_cp4c3_tb28_r3_harness.sh b/.agents/Directional/tools/m3_cp4c3_tb28_r3_harness.sh
+index 9e5ee85c1..34bbb14ff 100755
+--- a/.agents/Directional/tools/m3_cp4c3_tb28_r3_harness.sh
++++ b/.agents/Directional/tools/m3_cp4c3_tb28_r3_harness.sh
+@@ -238,7 +238,7 @@ expected = {
+ }
+ selectors = {}
+ for n in [397, 401, 403, 405, 406, 407]:
+-    path = root / f'.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_{n}.txt'
++    path = root / f'.agents/Directional/selectors/Architecture_M3_CP4c3_Required_Green_Selector_{n}.txt'
+     rows = [line.strip() for line in path.read_text().splitlines() if line.strip()]
+     digest = hashlib.sha256(('\n'.join(rows) + '\n').encode()).hexdigest()
+     if len(rows) != n or digest != expected[n]:
+@@ -268,7 +268,7 @@ import sys
+ 
+ root = pathlib.Path(sys.argv[1])
+ out = pathlib.Path(sys.argv[2])
+-selector = [line.strip() for line in (root / '.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_407.txt').read_text().splitlines() if line.strip()]
++selector = [line.strip() for line in (root / '.agents/Directional/selectors/Architecture_M3_CP4c3_Required_Green_Selector_407.txt').read_text().splitlines() if line.strip()]
+ cmake = (root / 'cmake/DirectionalTests.cmake').read_text()
+ targets = {
+     'directional_compiled_api_tests': ['tests/CompiledLibraryTests.cpp'],
+@@ -390,7 +390,7 @@ if [[ "$MODE" == '--preflight-only' ]]; then
+   exit 0
+ fi
+ 
+-selector="$SOURCE/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_407.txt"
++selector="$SOURCE/.agents/Directional/selectors/Architecture_M3_CP4c3_Required_Green_Selector_407.txt"
+ echo -e 'ordinal\tidentity\tbinary\texit\tselected\tresult\traw_log' > "${RESULT}/ledger.tsv"
+ echo -e 'ordinal\tresource_log\tmax_rss_kb\telapsed' > "${RESULT}/resource-summary.tsv"
+ runtime_started=true
+diff --git a/.agents/Directional/tools/m4_cp1_tb2_artifact_only_harness.sh b/.agents/Directional/tools/m4_cp1_tb2_artifact_only_harness.sh
+index de28d9723..7eea3db03 100755
+--- a/.agents/Directional/tools/m4_cp1_tb2_artifact_only_harness.sh
++++ b/.agents/Directional/tools/m4_cp1_tb2_artifact_only_harness.sh
+@@ -11,7 +11,7 @@ set -euo pipefail
+ : "${EXPECTED_ZIP_SHA256:?}"
+ 
+ EXPECTED_SOURCE_SHA='680f9f1573d3c7e56a273366436463e40e196131'
+-SELECTOR_RELATIVE_PATH='.agents/Directional/Architecture_M4_CP1_Required_Green_Selector_373.txt'
++SELECTOR_RELATIVE_PATH='.agents/Directional/selectors/Architecture_M4_CP1_Required_Green_Selector_373.txt'
+ EXPECTED_SELECTOR_COUNT=373
+ EXPECTED_SELECTOR_SHA256='6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b'
+ ACCEPTED_PREFIX_COUNT=365
+diff --git a/.agents/Directional/tools/m5_cp1_tb1_r2_artifact_only_harness.sh b/.agents/Directional/tools/m5_cp1_tb1_r2_artifact_only_harness.sh
+index 8571120cb..bd020d469 100755
+--- a/.agents/Directional/tools/m5_cp1_tb1_r2_artifact_only_harness.sh
++++ b/.agents/Directional/tools/m5_cp1_tb1_r2_artifact_only_harness.sh
+@@ -12,7 +12,7 @@ EXPECTED_SOURCE_SHA='b98f461b9a392cc182891a81c0a84b0b01dfbb45'
+ EXPECTED_CANDIDATE_ZIP_SHA256='fdc4046630c6f48b2bc76aad74ebc07b443a024fc9cfd76507bae515eb8668ea'
+ EXPECTED_ROOT_MANIFEST_SHA256='8330461b8c5e489059e2ec320cb2e2d5243d6ef36dc01b667b5cefc09f609a3d'
+ EXPECTED_SOURCE_ARCHIVE_SHA256='4f51257db12ae24363a45ddfa62778200e9ac0a8ef4ce2b585c8c606350d78b9'
+-SELECTOR_RELATIVE_PATH='.agents/Directional/Architecture_M4_CP4_CB8_Required_Green_Selector_430.txt'
++SELECTOR_RELATIVE_PATH='.agents/Directional/selectors/Architecture_M4_CP4_CB8_Required_Green_Selector_430.txt'
+ EXPECTED_SELECTOR_COUNT=430
+ EXPECTED_SELECTOR_SHA256='1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6'
+ EXPECTED_SELECTOR427_SHA256='f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f'
+diff --git a/.agents/Directional/tools/m5_cp3_tb1_r15_r1_artifact_only_harness.sh b/.agents/Directional/tools/m5_cp3_tb1_r15_r1_artifact_only_harness.sh
+index aa9100df5..4c89df25f 100755
+--- a/.agents/Directional/tools/m5_cp3_tb1_r15_r1_artifact_only_harness.sh
++++ b/.agents/Directional/tools/m5_cp3_tb1_r15_r1_artifact_only_harness.sh
+@@ -12,7 +12,7 @@ EXPECTED_SOURCE_SHA='1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3'
+ EXPECTED_CANDIDATE_ZIP_SHA256='eb1e2be55150022cdba05acf6b38433eb16352e4b3b6a561742e62de26cfd866'
+ EXPECTED_ROOT_MANIFEST_SHA256='a6c288ff4ef5afff8122f9dae0e330fe1cab4928b7bd5b5604b7d2fd5e32b951'
+ EXPECTED_SOURCE_ARCHIVE_SHA256='e6bed804841ecf590ccd1c372c906e19b927e5cf0d253d0d361993fa92ce68e0'
+-SELECTOR_RELATIVE_PATH='.agents/Directional/Architecture_M4_CP4_CB8_Required_Green_Selector_430.txt'
++SELECTOR_RELATIVE_PATH='.agents/Directional/selectors/Architecture_M4_CP4_CB8_Required_Green_Selector_430.txt'
+ EXPECTED_SELECTOR_COUNT=430
+ EXPECTED_SELECTOR_SHA256='1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6'
+ EXPECTED_SELECTOR427_SHA256='f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f'
+diff --git a/.agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh b/.agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh
+index 007bf988f..c902488e5 100644
+--- a/.agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh
+@@ -11,10 +11,10 @@ set -euo pipefail
+ : "${EXPECTED_CANDIDATE_ZIP_SHA256:?}"
+ : "${EXPECTED_ROOT_MANIFEST_SHA256:?}"
+ : "${EXPECTED_SOURCE_ARCHIVE_SHA256:?}"
+-FOCUSED30_RELATIVE_PATH='.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt'
+-FOCUSED12_RELATIVE_PATH='.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt'
+-SELECTOR_RELATIVE_PATH='.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt'
+-ROUTING_RELATIVE_PATH='.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv'
++FOCUSED30_RELATIVE_PATH='.agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt'
++FOCUSED12_RELATIVE_PATH='.agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt'
++SELECTOR_RELATIVE_PATH='.agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt'
++ROUTING_RELATIVE_PATH='.agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv'
+ EXPECTED_FOCUSED30_COUNT=30
+ EXPECTED_FOCUSED12_COUNT=12
+ EXPECTED_SELECTOR_COUNT=449
+diff --git a/.agents/Directional/tools/m6_cp3_r10_open_rail_chain_interval_harness.sh b/.agents/Directional/tools/m6_cp3_r10_open_rail_chain_interval_harness.sh
+index 96828e0ea..57698ea8a 100644
+--- a/.agents/Directional/tools/m6_cp3_r10_open_rail_chain_interval_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r10_open_rail_chain_interval_harness.sh
+@@ -46,10 +46,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha+".tar.gz"),"r:gz") as tf:tf.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for name,h in frozen.items():check(sha256(src/name)==h,"frozen selector drift: "+name)
+  view=root/"view";(view/"bin").mkdir()
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+diff --git a/.agents/Directional/tools/m6_cp3_r10_open_rail_chain_interval_truth_table_harness.sh b/.agents/Directional/tools/m6_cp3_r10_open_rail_chain_interval_truth_table_harness.sh
+index 38d31e555..589a4ed74 100644
+--- a/.agents/Directional/tools/m6_cp3_r10_open_rail_chain_interval_truth_table_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r10_open_rail_chain_interval_truth_table_harness.sh
+@@ -46,10 +46,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha+".tar.gz"),"r:gz") as tf:tf.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for name,h in frozen.items():check(sha256(src/name)==h,"frozen selector drift: "+name)
+  view=root/"view";(view/"bin").mkdir()
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+diff --git a/.agents/Directional/tools/m6_cp3_r10_open_rail_chain_provenance_harness.sh b/.agents/Directional/tools/m6_cp3_r10_open_rail_chain_provenance_harness.sh
+index d967d9048..8f9dee099 100644
+--- a/.agents/Directional/tools/m6_cp3_r10_open_rail_chain_provenance_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r10_open_rail_chain_provenance_harness.sh
+@@ -46,10 +46,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha+".tar.gz"),"r:gz") as tf:tf.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for name,h in frozen.items():check(sha256(src/name)==h,"frozen selector drift: "+name)
+  view=root/"view";(view/"bin").mkdir()
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+diff --git a/.agents/Directional/tools/m6_cp3_r10_open_rail_route_anchor_harness.sh b/.agents/Directional/tools/m6_cp3_r10_open_rail_route_anchor_harness.sh
+index 2ecfc72ba..ae627a2f7 100644
+--- a/.agents/Directional/tools/m6_cp3_r10_open_rail_route_anchor_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r10_open_rail_route_anchor_harness.sh
+@@ -46,10 +46,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha+".tar.gz"),"r:gz") as tf:tf.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for name,h in frozen.items():check(sha256(src/name)==h,"frozen selector drift: "+name)
+  view=root/"view";(view/"bin").mkdir()
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+diff --git a/.agents/Directional/tools/m6_cp3_r4_endpoint39_census_harness.sh b/.agents/Directional/tools/m6_cp3_r4_endpoint39_census_harness.sh
+index 8daa78a1d..a885f3269 100644
+--- a/.agents/Directional/tools/m6_cp3_r4_endpoint39_census_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r4_endpoint39_census_harness.sh
+@@ -31,10 +31,10 @@ a="$p/source/source-953f812ff1f431e3ad3af3b68a92284a7831c94a.tar.gz"
+ [[ "$(sha "$a")" == 3d0bf938f0bf2828ef407ceeb092254b003682336c97e83f88867efa2c3c38e9 ]] || die packaged_source_hash
+ tar -xzf "$a" -C "$s"
+ for pair in \
+- '.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt:1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6' \
+- '.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt:2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed' \
+- '.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt:d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414' \
+- '.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv:9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707'; do
++ '.agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt:1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6' \
++ '.agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt:2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed' \
++ '.agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt:d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414' \
++ '.agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv:9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707'; do
+  [[ "$(sha "$s/${pair%%:*}")" == "${pair##*:}" ]] || die "frozen selector $pair"
+ done
+ (cd "$p"; find . -type f -print0 | sort -z | xargs -0 sha256sum) > "$r/p0"
+diff --git a/.agents/Directional/tools/m6_cp3_r4_endpoint_chart_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_r4_endpoint_chart_harvest_harness.sh
+index ee302e584..e60ab79fd 100644
+--- a/.agents/Directional/tools/m6_cp3_r4_endpoint_chart_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r4_endpoint_chart_harvest_harness.sh
+@@ -31,10 +31,10 @@ a="$p/source/source-5be5e123e14e2ddab8bb8c0db2a354a0a900435a.tar.gz"
+ [[ "$(sha "$a")" == 5433c2acb1d94b1a9f034faa96756a3c4a53e240b5c3902616c3995826682ec0 ]] || die packaged_source_hash
+ tar -xzf "$a" -C "$s"
+ for pair in \
+- '.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt:1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6' \
+- '.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt:2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed' \
+- '.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt:d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414' \
+- '.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv:9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707'; do
++ '.agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt:1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6' \
++ '.agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt:2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed' \
++ '.agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt:d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414' \
++ '.agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv:9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707'; do
+  [[ "$(sha "$s/${pair%%:*}")" == "${pair##*:}" ]] || die "frozen selector $pair"
+ done
+ (cd "$p"; find . -type f -print0 | sort -z | xargs -0 sha256sum) > "$r/p0"
+diff --git a/.agents/Directional/tools/m6_cp3_r4_interior_witness_harness.sh b/.agents/Directional/tools/m6_cp3_r4_interior_witness_harness.sh
+index ed2ee5b60..85b036a01 100644
+--- a/.agents/Directional/tools/m6_cp3_r4_interior_witness_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r4_interior_witness_harness.sh
+@@ -31,10 +31,10 @@ a="$p/source/source-570c51733761c17a198bda6c9aba7d8b1e7ae2dd.tar.gz"
+ [[ "$(sha "$a")" == 48d5775db4e68941b9136fbe7d85f38821d15061d2568b40f69e9574158732c0 ]] || die packaged_source_hash
+ tar -xzf "$a" -C "$s"
+ for pair in \
+- '.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt:1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6' \
+- '.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt:2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed' \
+- '.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt:d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414' \
+- '.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv:9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707'; do
++ '.agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt:1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6' \
++ '.agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt:2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed' \
++ '.agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt:d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414' \
++ '.agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv:9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707'; do
+  [[ "$(sha "$s/${pair%%:*}")" == "${pair##*:}" ]] || die "frozen selector $pair"
+ done
+ (cd "$p"; find . -type f -print0 | sort -z | xargs -0 sha256sum) > "$r/p0"
+diff --git a/.agents/Directional/tools/m6_cp3_r4_probe_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_r4_probe_harvest_harness.sh
+index 4f6beb483..9342cb9d2 100644
+--- a/.agents/Directional/tools/m6_cp3_r4_probe_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r4_probe_harvest_harness.sh
+@@ -31,10 +31,10 @@ a="$p/source/source-16c3134c02ab3872eee77a6b9dcc9d3fc6e01b7b.tar.gz"
+ [[ "$(sha "$a")" == 9671b28a187fccb5f0355f11487517bff744938f15e1bcb23c2a1cb8670d8440 ]] || die packaged_source_hash
+ tar -xzf "$a" -C "$s"
+ for pair in \
+- '.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt:1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6' \
+- '.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt:2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed' \
+- '.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt:d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414' \
+- '.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv:9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707'; do
++ '.agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt:1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6' \
++ '.agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt:2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed' \
++ '.agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt:d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414' \
++ '.agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv:9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707'; do
+  [[ "$(sha "$s/${pair%%:*}")" == "${pair##*:}" ]] || die "frozen selector $pair"
+ done
+ (cd "$p"; find . -type f -print0 | sort -z | xargs -0 sha256sum) > "$r/p0"
+diff --git a/.agents/Directional/tools/m6_cp3_r4_supplemental_witness_harness.sh b/.agents/Directional/tools/m6_cp3_r4_supplemental_witness_harness.sh
+index 9e039ce20..f1dd546c3 100644
+--- a/.agents/Directional/tools/m6_cp3_r4_supplemental_witness_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r4_supplemental_witness_harness.sh
+@@ -31,10 +31,10 @@ a="$p/source/source-953f812ff1f431e3ad3af3b68a92284a7831c94a.tar.gz"
+ [[ "$(sha "$a")" == 3d0bf938f0bf2828ef407ceeb092254b003682336c97e83f88867efa2c3c38e9 ]] || die packaged_source_hash
+ tar -xzf "$a" -C "$s"
+ for pair in \
+- '.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt:1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6' \
+- '.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt:2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed' \
+- '.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt:d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414' \
+- '.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv:9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707'; do
++ '.agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt:1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6' \
++ '.agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt:2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed' \
++ '.agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt:d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414' \
++ '.agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv:9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707'; do
+  [[ "$(sha "$s/${pair%%:*}")" == "${pair##*:}" ]] || die "frozen selector $pair"
+ done
+ (cd "$p"; find . -type f -print0 | sort -z | xargs -0 sha256sum) > "$r/p0"
+diff --git a/.agents/Directional/tools/m6_cp3_r4_true_control_harness.sh b/.agents/Directional/tools/m6_cp3_r4_true_control_harness.sh
+index d607ccf44..917b08331 100644
+--- a/.agents/Directional/tools/m6_cp3_r4_true_control_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r4_true_control_harness.sh
+@@ -31,10 +31,10 @@ a="$p/source/source-953f812ff1f431e3ad3af3b68a92284a7831c94a.tar.gz"
+ [[ "$(sha "$a")" == 3d0bf938f0bf2828ef407ceeb092254b003682336c97e83f88867efa2c3c38e9 ]] || die packaged_source_hash
+ tar -xzf "$a" -C "$s"
+ for pair in \
+- '.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt:1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6' \
+- '.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt:2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed' \
+- '.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt:d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414' \
+- '.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv:9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707'; do
++ '.agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt:1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6' \
++ '.agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt:2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed' \
++ '.agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt:d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414' \
++ '.agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv:9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707'; do
+  [[ "$(sha "$s/${pair%%:*}")" == "${pair##*:}" ]] || die "frozen selector $pair"
+ done
+ (cd "$p"; find . -type f -print0 | sort -z | xargs -0 sha256sum) > "$r/p0"
+diff --git a/.agents/Directional/tools/m6_cp3_r4_witness_breadth_harness.sh b/.agents/Directional/tools/m6_cp3_r4_witness_breadth_harness.sh
+index 00a516abc..098b99bbf 100644
+--- a/.agents/Directional/tools/m6_cp3_r4_witness_breadth_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r4_witness_breadth_harness.sh
+@@ -31,10 +31,10 @@ a="$p/source/source-953f812ff1f431e3ad3af3b68a92284a7831c94a.tar.gz"
+ [[ "$(sha "$a")" == 3d0bf938f0bf2828ef407ceeb092254b003682336c97e83f88867efa2c3c38e9 ]] || die packaged_source_hash
+ tar -xzf "$a" -C "$s"
+ for pair in \
+- '.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt:1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6' \
+- '.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt:2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed' \
+- '.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt:d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414' \
+- '.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv:9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707'; do
++ '.agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt:1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6' \
++ '.agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt:2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed' \
++ '.agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt:d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414' \
++ '.agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv:9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707'; do
+  [[ "$(sha "$s/${pair%%:*}")" == "${pair##*:}" ]] || die "frozen selector $pair"
+ done
+ (cd "$p"; find . -type f -print0 | sort -z | xargs -0 sha256sum) > "$r/p0"
+diff --git a/.agents/Directional/tools/m6_cp3_r5_route_path_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_r5_route_path_harvest_harness.sh
+index 6d87d4586..9cce2ebb0 100644
+--- a/.agents/Directional/tools/m6_cp3_r5_route_path_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r5_route_path_harvest_harness.sh
+@@ -31,10 +31,10 @@ a="$p/source/source-a143af264bc8b33f0e1b2f8def16b2479b53d5fc.tar.gz"
+ [[ "$(sha "$a")" == f554f5f19a6c264a99ddba7b1538485ae344b63b3509bdab26ab8a113218a3c3 ]] || die packaged_source_hash
+ tar -xzf "$a" -C "$s"
+ for pair in \
+- '.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt:1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6' \
+- '.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt:2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed' \
+- '.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt:d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414' \
+- '.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv:9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707'; do
++ '.agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt:1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6' \
++ '.agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt:2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed' \
++ '.agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt:d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414' \
++ '.agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv:9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707'; do
+  [[ "$(sha "$s/${pair%%:*}")" == "${pair##*:}" ]] || die "frozen selector $pair"
+ done
+ (cd "$p"; find . -type f -print0 | sort -z | xargs -0 sha256sum) > "$r/p0"
+diff --git a/.agents/Directional/tools/m6_cp3_r7_admissible_face_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_r7_admissible_face_harvest_harness.sh
+index e52753952..36684460c 100644
+--- a/.agents/Directional/tools/m6_cp3_r7_admissible_face_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r7_admissible_face_harvest_harness.sh
+@@ -47,10 +47,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha0+".tar.gz"),"r:gz") as f:f.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for p,h in frozen.items():check(hashfile(src/p)==h,"selector drift "+p)
+  p0,s0=inventory(pkg),inventory(src)
+  view=root/"view";(view/"bin").mkdir()
+diff --git a/.agents/Directional/tools/m6_cp3_r7_lattice_uv_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_r7_lattice_uv_harvest_harness.sh
+index 5034b115f..93b0cff6d 100644
+--- a/.agents/Directional/tools/m6_cp3_r7_lattice_uv_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r7_lattice_uv_harvest_harness.sh
+@@ -47,10 +47,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha0+".tar.gz"),"r:gz") as f:f.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for p,h in frozen.items():check(hashfile(src/p)==h,"selector drift "+p)
+  p0,s0=inventory(pkg),inventory(src)
+  view=root/"view";(view/"bin").mkdir()
+diff --git a/.agents/Directional/tools/m6_cp3_r8_source_entity_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_r8_source_entity_harvest_harness.sh
+index bf15161c7..a15b2e121 100644
+--- a/.agents/Directional/tools/m6_cp3_r8_source_entity_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r8_source_entity_harvest_harness.sh
+@@ -46,10 +46,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha+".tar.gz"),"r:gz") as tf:tf.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for name,h in frozen.items():check(sha256(src/name)==h,"frozen selector drift: "+name)
+  view=root/"view";(view/"bin").mkdir()
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+diff --git a/.agents/Directional/tools/m6_cp3_r9_terminal_star_path_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_r9_terminal_star_path_harvest_harness.sh
+index 933a66608..8ee5df1ea 100644
+--- a/.agents/Directional/tools/m6_cp3_r9_terminal_star_path_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r9_terminal_star_path_harvest_harness.sh
+@@ -46,10 +46,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha+".tar.gz"),"r:gz") as tf:tf.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for name,h in frozen.items():check(sha256(src/name)==h,"frozen selector drift: "+name)
+  view=root/"view";(view/"bin").mkdir()
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+diff --git a/.agents/Directional/tools/m6_cp3_tb15_exact_i_endpoint_witness_harness.sh b/.agents/Directional/tools/m6_cp3_tb15_exact_i_endpoint_witness_harness.sh
+index 5241b82d9..1eb5bf536 100644
+--- a/.agents/Directional/tools/m6_cp3_tb15_exact_i_endpoint_witness_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb15_exact_i_endpoint_witness_harness.sh
+@@ -46,10 +46,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha+".tar.gz"),"r:gz") as tf:tf.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for name,h in frozen.items():check(sha256(src/name)==h,"frozen selector drift: "+name)
+  view=root/"view";(view/"bin").mkdir()
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+diff --git a/.agents/Directional/tools/m6_cp3_tb16_exact_i_endpoint_witness_checkers_harness.sh b/.agents/Directional/tools/m6_cp3_tb16_exact_i_endpoint_witness_checkers_harness.sh
+index 5831a73d1..1961ef5bf 100644
+--- a/.agents/Directional/tools/m6_cp3_tb16_exact_i_endpoint_witness_checkers_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb16_exact_i_endpoint_witness_checkers_harness.sh
+@@ -46,10 +46,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha+".tar.gz"),"r:gz") as tf:tf.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for name,h in frozen.items():check(sha256(src/name)==h,"frozen selector drift: "+name)
+  view=root/"view";(view/"bin").mkdir()
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+diff --git a/.agents/Directional/tools/m6_cp3_tb16a_exact_i_endpoint_witness_checkers_harness.sh b/.agents/Directional/tools/m6_cp3_tb16a_exact_i_endpoint_witness_checkers_harness.sh
+index b7a836faa..fff31661d 100644
+--- a/.agents/Directional/tools/m6_cp3_tb16a_exact_i_endpoint_witness_checkers_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb16a_exact_i_endpoint_witness_checkers_harness.sh
+@@ -46,10 +46,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha+".tar.gz"),"r:gz") as tf:tf.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for name,h in frozen.items():check(sha256(src/name)==h,"frozen selector drift: "+name)
+  view=root/"view";(view/"bin").mkdir()
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+diff --git a/.agents/Directional/tools/m6_cp3_tb19_factory_rejection_site_harness.sh b/.agents/Directional/tools/m6_cp3_tb19_factory_rejection_site_harness.sh
+index b638d8c35..e4f0da49b 100644
+--- a/.agents/Directional/tools/m6_cp3_tb19_factory_rejection_site_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb19_factory_rejection_site_harness.sh
+@@ -46,10 +46,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha+".tar.gz"),"r:gz") as tf:tf.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for name,h in frozen.items():check(sha256(src/name)==h,"frozen selector drift: "+name)
+  view=root/"view";(view/"bin").mkdir()
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+diff --git a/.agents/Directional/tools/m6_cp3_tb19a_torus_rejection_site_harness.sh b/.agents/Directional/tools/m6_cp3_tb19a_torus_rejection_site_harness.sh
+index 542a20d40..fcfc9d488 100644
+--- a/.agents/Directional/tools/m6_cp3_tb19a_torus_rejection_site_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb19a_torus_rejection_site_harness.sh
+@@ -46,10 +46,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha+".tar.gz"),"r:gz") as tf:tf.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for name,h in frozen.items():check(sha256(src/name)==h,"frozen selector drift: "+name)
+  view=root/"view";(view/"bin").mkdir()
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+diff --git a/.agents/Directional/tools/m6_cp3_tb20_gauge_pin_domain_harness.sh b/.agents/Directional/tools/m6_cp3_tb20_gauge_pin_domain_harness.sh
+index a66afc4c8..2f8ebf564 100644
+--- a/.agents/Directional/tools/m6_cp3_tb20_gauge_pin_domain_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb20_gauge_pin_domain_harness.sh
+@@ -46,10 +46,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha+".tar.gz"),"r:gz") as tf:tf.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for name,h in frozen.items():check(sha256(src/name)==h,"frozen selector drift: "+name)
+  view=root/"view";(view/"bin").mkdir()
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+diff --git a/.agents/Directional/tools/m6_cp3_tb22_torus_witness_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_tb22_torus_witness_harvest_harness.sh
+index e69166523..c83e0285d 100644
+--- a/.agents/Directional/tools/m6_cp3_tb22_torus_witness_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb22_torus_witness_harvest_harness.sh
+@@ -48,10 +48,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha+".tar.gz"),"r:gz") as tf:tf.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for name,h in frozen.items():check(sha256(src/name)==h,"frozen selector drift: "+name)
+  view=root/"view";(view/"bin").mkdir()
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+diff --git a/.agents/Directional/tools/m6_cp3_tb23_torus_a5_site_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_tb23_torus_a5_site_harvest_harness.sh
+index 02a41fbdf..048dbac96 100755
+--- a/.agents/Directional/tools/m6_cp3_tb23_torus_a5_site_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb23_torus_a5_site_harvest_harness.sh
+@@ -45,10 +45,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha+".tar.gz"),"r:gz") as tf:tf.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for name,h in frozen.items():check(sha256(src/name)==h,"frozen selector drift: "+name)
+  view=root/"view";(view/"bin").mkdir()
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+diff --git a/.agents/Directional/tools/m6_cp3_tb25_seam_frame_values_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_tb25_seam_frame_values_harvest_harness.sh
+index 592044b15..925f0f134 100644
+--- a/.agents/Directional/tools/m6_cp3_tb25_seam_frame_values_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb25_seam_frame_values_harvest_harness.sh
+@@ -44,10 +44,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha+".tar.gz"),"r:gz") as tf:tf.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for name,h in frozen.items():check(sha256(src/name)==h,"frozen selector drift: "+name)
+  view=root/"view";(view/"bin").mkdir()
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+diff --git a/.agents/Directional/tools/m6_cp3_tb26_shared_node_seam_witness_harness.sh b/.agents/Directional/tools/m6_cp3_tb26_shared_node_seam_witness_harness.sh
+index ddd5ca7a7..f0e159503 100644
+--- a/.agents/Directional/tools/m6_cp3_tb26_shared_node_seam_witness_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb26_shared_node_seam_witness_harness.sh
+@@ -61,7 +61,7 @@ try:
+  ck(h(srczip)=="08fa3b76d1fa9c7348e66f10ec3bf77d0561c61d28df9c88f9aa579f8257c245","source hash")
+  with tarfile.open(srczip) as f:f.extractall(root/"source",filter="data")
+  src=root/"source"
+- frozen={".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ frozen={".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for path,hash2 in frozen.items():ck(h(src/path)==hash2,"frozen selector: "+path)
+  view=root/"view"
+  (view/"bin").mkdir()
+diff --git a/.agents/Directional/tools/m6_cp3_tb27_a7_cross_sheet_verification_harness.sh b/.agents/Directional/tools/m6_cp3_tb27_a7_cross_sheet_verification_harness.sh
+index d9fef8a97..5a14c2c1d 100644
+--- a/.agents/Directional/tools/m6_cp3_tb27_a7_cross_sheet_verification_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb27_a7_cross_sheet_verification_harness.sh
+@@ -65,7 +65,7 @@ try:
+  ck(h(srczip)=="d37cfbdab24b92aad6ab2ecfd135d92702c0874f9c69a0164bf578705d78955c","source hash")
+  with tarfile.open(srczip) as f:f.extractall(root/"source",filter="data")
+  src=root/"source"
+- frozen={".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ frozen={".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for path,hash2 in frozen.items():ck(h(src/path)==hash2,"frozen selector: "+path)
+  view=root/"view"
+  (view/"bin").mkdir()
+diff --git a/.agents/Directional/tools/m6_cp3_tb34_a3_cycle_locus_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_tb34_a3_cycle_locus_harvest_harness.sh
+index fbc49bbc9..3c7537c18 100644
+--- a/.agents/Directional/tools/m6_cp3_tb34_a3_cycle_locus_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb34_a3_cycle_locus_harvest_harness.sh
+@@ -46,8 +46,8 @@ try:
+  require("runtimeExecution=false" in boundary and "exactArithmeticBackend=GMP" in boundary,"compile/GMP boundary")
+  with tarfile.open(pkg/"source"/("source-"+source+".tar.gz")) as t:t.extractall(root/"src",filter="data")
+  src=root/"src"
+- frozen={".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ frozen={".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for path,value in frozen.items():require(sha(src/path)==value,"frozen selector drift "+path)
+  view=root/"view";(view/"bin").mkdir()
+  for name in {c["binary"] for c in cases}:
+diff --git a/.agents/Directional/tools/m6_cp3_tb35_periodic_route_gauge_harness.sh b/.agents/Directional/tools/m6_cp3_tb35_periodic_route_gauge_harness.sh
+index f9adcfa0e..066a04e18 100644
+--- a/.agents/Directional/tools/m6_cp3_tb35_periodic_route_gauge_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb35_periodic_route_gauge_harness.sh
+@@ -47,8 +47,8 @@ try:
+  require("runtimeExecution=false" in boundary and "exactArithmeticBackend=GMP" in boundary,"compile/GMP boundary")
+  with tarfile.open(pkg/"source"/("source-"+source+".tar.gz")) as t:t.extractall(root/"src",filter="data")
+  src=root/"src"
+- frozen={".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ frozen={".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for path,value in frozen.items():require(sha(src/path)==value,"frozen selector drift "+path)
+  view=root/"view";(view/"bin").mkdir()
+  for name in {c["binary"] for c in cases}:
+diff --git a/.agents/Directional/tools/m6_cp3_tb36_periodic_monodromy_baseline_harness.sh b/.agents/Directional/tools/m6_cp3_tb36_periodic_monodromy_baseline_harness.sh
+index e45c53e70..d1526eee3 100644
+--- a/.agents/Directional/tools/m6_cp3_tb36_periodic_monodromy_baseline_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb36_periodic_monodromy_baseline_harness.sh
+@@ -47,8 +47,8 @@ try:
+  require("runtimeExecution=false" in boundary and "exactArithmeticBackend=GMP" in boundary,"compile/GMP boundary")
+  with tarfile.open(pkg/"source"/("source-"+source+".tar.gz")) as t:t.extractall(root/"src",filter="data")
+  src=root/"src"
+- frozen={".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ frozen={".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for path,value in frozen.items():require(sha(src/path)==value,"frozen selector drift "+path)
+  view=root/"view";(view/"bin").mkdir()
+  for name in {c["binary"] for c in cases}:
+diff --git a/.agents/Directional/tools/m6_cp3_tb37_periodic_route_atlas_verify_harness.sh b/.agents/Directional/tools/m6_cp3_tb37_periodic_route_atlas_verify_harness.sh
+index 7ba8f3bf6..0ddf7d71e 100644
+--- a/.agents/Directional/tools/m6_cp3_tb37_periodic_route_atlas_verify_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb37_periodic_route_atlas_verify_harness.sh
+@@ -47,8 +47,8 @@ try:
+  require("runtimeExecution=false" in boundary and "exactArithmeticBackend=GMP" in boundary,"compile/GMP boundary")
+  with tarfile.open(pkg/"source"/("source-"+source+".tar.gz")) as t:t.extractall(root/"src",filter="data")
+  src=root/"src"
+- frozen={".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ frozen={".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for path,value in frozen.items():require(sha(src/path)==value,"frozen selector drift "+path)
+  view=root/"view";(view/"bin").mkdir()
+  for name in {c["binary"] for c in cases}:
+diff --git a/.agents/Directional/tools/open_rail_interior_vertex_harness.sh b/.agents/Directional/tools/open_rail_interior_vertex_harness.sh
+index 559540e2c..0526d9ed4 100644
+--- a/.agents/Directional/tools/open_rail_interior_vertex_harness.sh
++++ b/.agents/Directional/tools/open_rail_interior_vertex_harness.sh
+@@ -46,10 +46,10 @@ try:
+  with tarfile.open(pkg/"source"/("source-"+sha+".tar.gz"),"r:gz") as tf:tf.extractall(root/"source",filter="data")
+  src=root/"source"
+  frozen={
+- ".agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
+- ".agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
+- ".agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
++ ".agents/Directional/selectors/Architecture_M6_CP1_Required_Green_Focused_30.txt":"1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6",
++ ".agents/Directional/selectors/Architecture_M6_CP2_Required_Green_Focused_12.txt":"2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt":"d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414",
++ ".agents/Directional/selectors/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv":"9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707"}
+  for name,h in frozen.items():check(sha256(src/name)==h,"frozen selector drift: "+name)
+  view=root/"view";(view/"bin").mkdir()
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+diff --git a/.agents/Directional/tools/review_check.py b/.agents/Directional/tools/review_check.py
+index b9362e675..51b4367b6 100644
+--- a/.agents/Directional/tools/review_check.py
++++ b/.agents/Directional/tools/review_check.py
+@@ -85,7 +85,7 @@ def sha_lf(path):
+ 
+ 
+ def selector_paths():
+-    base = os.path.join(repo_root(), ".agents", "Directional")
++    base = os.path.join(repo_root(), ".agents", "Directional", "selectors")
+     out = {}
+     for name in os.listdir(base):
+         m = re.search(r"Required_Green_Selector_(\d+)\.txt$", name)
+@@ -146,9 +146,23 @@ def cmd_boundary(args):
+     # An actual byte-frozen selector is a .txt named by a number, or the M1 full
+     # selector. Match those exactly -- a substring test also fires on documents
+     # about selectors, such as Required_Green_Selector_Manifest.md.
+-    selector_touched = [p for p in paths
+-                        if re.search(r"Required_Green_Selector_\d+\.txt$", p)
+-                        or p.endswith("M1_Full_Required_Green_Selector.txt")]
++    # A rename into selectors/ that keeps the name and the bytes is a relocation
++    # (RETENTION_POLICY.md, relocation record), not a mutation.
++    def relocated(entry):
++        if entry[0] != "R" or " -> " not in entry[3:]:
++            return False
++        old, new = [s.strip().strip('"') for s in entry[3:].split(" -> ", 1)]
++        if (os.path.basename(old) != os.path.basename(new)
++                or not new.startswith(".agents/Directional/selectors/")):
++            return False
++        before = git("rev-parse", "HEAD:%s" % old).stdout.strip()
++        after = git("hash-object", new).stdout.strip()
++        return bool(before) and before == after
++
++    selector_touched = [line[3:].strip().strip('"') for line in entries
++                        if not relocated(line)
++                        and (re.search(r"Required_Green_Selector_\d+\.txt$", line)
++                             or line.endswith("M1_Full_Required_Green_Selector.txt"))]
+     report(not selector_touched, "no selector mutation",
+            "clean" if not selector_touched else ", ".join(selector_touched))
+ 
+diff --git a/.agents/Directional/tools/selector_manifest.py b/.agents/Directional/tools/selector_manifest.py
+index 3a42fb6e8..89a62f8d2 100644
+--- a/.agents/Directional/tools/selector_manifest.py
++++ b/.agents/Directional/tools/selector_manifest.py
+@@ -18,7 +18,7 @@ def lf_lines(p):
+ def lf_sha(lines):
+     return hashlib.sha256(("\n".join(lines) + "\n").encode()).hexdigest()
+ 
+-fs = sorted(glob.glob(os.path.join(d, "*Required_Green_Selector_*.txt")),
++fs = sorted(glob.glob(os.path.join(d, "selectors", "*Required_Green_Selector_*.txt")),
+             key=lambda p: int(re.search(r"_(\d+)\.txt$", p).group(1)))
+ 
+ ROLE = {
+@@ -75,9 +75,10 @@ for p in fs:
+     prev = (num, L)
+ 
+ def git_first_commit(path):
+-    r = subprocess.run(["git", "log", "--reverse", "--format=%h %ad", "--date=short", "--", path],
++    # --follow: selectors moved into selectors/ on 2026-11-09; report the original first commit.
++    r = subprocess.run(["git", "log", "--follow", "--format=%h %ad", "--date=short", "--", path],
+                        cwd=root, capture_output=True, text=True, encoding="utf-8", errors="replace")
+-    line = (r.stdout or "").strip().split("\n")[0]
++    line = (r.stdout or "").strip().split("\n")[-1]
+     return line if line else "-"
+ 
+ out = []
+@@ -141,7 +142,7 @@ for num, name, n, sha, parent, added, role, note in rows:
+ 
+     out.append("### %d — %s" % (num, role.replace("**", "")))
+     out.append("")
+-    out.append("`%s` — %d identities, first committed %s." % (name, n, git_first_commit(".agents/Directional/" + name)))
++    out.append("`%s` — %d identities, first committed %s." % (name, n, git_first_commit(".agents/Directional/selectors/" + name)))
+     if note:
+         out.append("")
+         out.append(note)
+@@ -159,7 +160,7 @@ for num, name, n, sha, parent, added, role, note in rows:
+             out.append("- `%s`" % a.strip())
+     out.append("")
+ 
+-m1 = os.path.join(d, "M1_Full_Required_Green_Selector.txt")
++m1 = os.path.join(d, "selectors", "M1_Full_Required_Green_Selector.txt")
+ if os.path.exists(m1):
+     L = lf_lines(m1)
+     out.append("""## Separate lineage — M1
+diff --git a/.agents/Directional/tools/selector_probe.py b/.agents/Directional/tools/selector_probe.py
+index 508c9dae9..6cdb025e9 100644
+--- a/.agents/Directional/tools/selector_probe.py
++++ b/.agents/Directional/tools/selector_probe.py
+@@ -47,7 +47,7 @@ def agents_dir():
+ def selector_files():
+     """Map selector cardinality -> path, for every Required_Green_Selector_<n>.txt."""
+     found = {}
+-    pattern = os.path.join(agents_dir(), "*Required_Green_Selector_*.txt")
++    pattern = os.path.join(agents_dir(), "selectors", "*Required_Green_Selector_*.txt")
+     for path in glob.glob(pattern):
+         m = re.search(r"Required_Green_Selector_(\d+)\.txt$", os.path.basename(path))
+         if m:
+@@ -80,7 +80,7 @@ def resolve(n):
+ def newest_selector():
+     files = selector_files()
+     if not files:
+-        sys.exit("no selector files found under %s" % agents_dir())
++        sys.exit("no selector files found under %s" % os.path.join(agents_dir(), "selectors"))
+     return max(files)
+ 
+ 

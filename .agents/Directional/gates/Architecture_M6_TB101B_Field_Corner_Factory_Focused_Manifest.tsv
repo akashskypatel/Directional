@@ -1,0 +1,2 @@
+row	kind	identity	test	binary	expect	asserted_site
+1	OBSERVE	tb101b:field-corner-factory	SurfaceCellAuthorityContractCutover.ChainedInputStopsAtBoundaryFieldCorners	directional_surface_cell_producer_tests	OBSERVE	-

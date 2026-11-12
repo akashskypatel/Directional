@@ -309,8 +309,10 @@ std::optional<std::filesystem::path> FilePicker::draw() {
                      selectionBuffer_.size());
 
     if (!error_.empty()) {
-      ImGui::TextColored(ImVec4(1.0F, 0.35F, 0.35F, 1.0F), "%s",
-                         error_.c_str());
+      // Wrap: TextColored would clip a long path error at the window edge.
+      ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0F, 0.35F, 0.35F, 1.0F));
+      ImGui::TextWrapped("%s", error_.c_str());
+      ImGui::PopStyleColor();
     } else {
       ImGui::Spacing();
     }

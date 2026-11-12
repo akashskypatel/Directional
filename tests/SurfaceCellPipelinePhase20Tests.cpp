@@ -7,12 +7,22 @@
 #include <string>
 #include <vector>
 
+#if defined(_WIN32)
+#include <windows.h>
+#elif defined(__APPLE__)
+#include <mach-o/dyld.h>
+#else
+#include <unistd.h>
+#endif
+
 #include <gtest/gtest.h>
 
 #include <directional/fields/CrossField.h>
 #include <directional/pipeline/RemeshPipeline.h>
 
 #include "BenchmarkCases.h"
+#include "TestFixturePaths.h"
+#include "TestAuthorityIds.h"
 
 namespace {
 
@@ -20,6 +30,7 @@ struct SyntheticMesh {
   Eigen::MatrixXd vertices;
   Eigen::MatrixXi faces;
 };
+
 
 
 const directional::SurfaceCellStageLineage *find_stage_lineage(
@@ -327,6 +338,12 @@ directional::pipeline::RemeshOptions surface_options() {
   directional::pipeline::RemeshOptions options;
   options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
   options.surfaceCells.enabled = true;
+  // These tests inspect authoritative stage payloads. Production callers keep
+  // only scalar diagnostics unless this opt-in is explicitly enabled.
+  options.surfaceCells.retainIntermediateGeometry = true;
+  // Recovery is non-authoritative and default-off. Tests that intentionally
+  // exercise it opt in through this legacy production-fixture helper.
+  options.surfaceCells.allowSourceGridRecovery = true;
   // SurfaceCells honors the public target-length ratio when no explicit
   // adaptive base size is supplied. Keep the synthetic production fixtures
   // at the same coarse resolution used by the Milestone G matrix.
@@ -338,9 +355,9 @@ std::string signature(const directional::pipeline::RemeshResult &result) {
   return result.diagnostics.requestedBackend + "/" +
          result.diagnostics.executedBackend + "/" +
          result.diagnostics.terminalFailureCode + "/" +
-         std::to_string(result.vertices.rows()) + "/" +
-         std::to_string(result.faces.rows()) + "/" +
-         std::to_string(result.degrees.sum());
+         std::to_string(result.product().vertices.rows()) + "/" +
+         std::to_string(result.product().faces.rows()) + "/" +
+         std::to_string(result.product().degrees.sum());
 }
 
 std::string patch_descriptor_summary(
@@ -528,9 +545,9 @@ TEST(SurfaceCellPipelinePhase20, FeatureRailsRetainOrderedIntervalsAcrossSourceT
 
   const auto railBuild =
       directional::pipeline::build_authoritative_surface_cell_rails(meshWhole, map);
-  ASSERT_TRUE(railBuild.success);
+  ASSERT_TRUE(railBuild.is_produced());
   const std::vector<directional::geometry::SurfaceCellRail> &rails =
-      railBuild.rails;
+      railBuild.product().rails;
 
   ASSERT_EQ(1U, rails.size());
   const directional::geometry::SurfaceCellRail &rail = rails.front();
@@ -571,9 +588,11 @@ TEST(SurfaceCellPipelinePhase20,
 
   const auto result =
       directional::pipeline::build_authoritative_surface_cell_rails(meshWhole, map);
-  EXPECT_FALSE(result.success);
-  EXPECT_EQ(result.failedEdgeIndex, 0);
-  EXPECT_TRUE(result.rails.empty());
+  ASSERT_TRUE(result.is_rejected());
+  ASSERT_NE(result.rejection(), nullptr);
+  EXPECT_EQ(result.rejection()->failedEdgeIndex, 0);
+  EXPECT_EQ(result.rejection()->kind,
+            directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge);
 }
 
 TEST(SurfaceCellPipelinePhase20,
@@ -593,10 +612,10 @@ TEST(SurfaceCellPipelinePhase20,
                 network.traces[0].segments[0].railSideSign = -1;
               }));
   EXPECT_NE(hash([](auto &network) {
-                network.traces[0].segments[0].railId = 7;
+                network.traces[0].segments[0].railId = directional::tests::test_hard_rail_id(7);
               }),
             hash([](auto &network) {
-                network.traces[0].segments[0].railId = 8;
+                network.traces[0].segments[0].railId = directional::tests::test_hard_rail_id(8);
               }));
   EXPECT_NE(hash([](auto &network) {
                 network.traces[0].segments[0].railT1 = 0.25;
@@ -623,7 +642,7 @@ TEST(SurfaceCellPipelinePhase20, ArrangementArcHashChangesWhenRailIdentityChange
   first[0].featureClass = 3;
   first[0].hardFeature = true;
   first[0].provenance = 5;
-  first[0].railId = 4;
+  first[0].railId = directional::tests::test_hard_rail_id(4);
   first[0].curveId = 21;
   first[0].sourceComponent = 2;
   first[0].railT0 = 0.25;
@@ -722,6 +741,33 @@ TEST(SurfaceCellPipelinePhase20, CompletionHashChangesWhenProvenanceChangesWitho
   EXPECT_NE(directional::pipeline::hash_completion(first),
             directional::pipeline::hash_completion(second));
 }
+TEST(SurfaceCellPipelinePhase20,
+     ProductionDefaultReleasesConsumedIntermediateGeometry) {
+  const SyntheticMesh mesh = make_planar_grid(1);
+  directional::pipeline::RemeshOptions options = surface_options();
+  options.surfaceCells.retainIntermediateGeometry = false;
+
+  const directional::pipeline::RemeshResult result =
+      directional::pipeline::remesh_from_raw_cross_field(
+          mesh.vertices, mesh.faces,
+          constant_raw_field(mesh.faces.rows()), options);
+
+  ASSERT_TRUE(result.is_produced()) << result.diagnostics.terminalFailureCode << "/"
+                              << result.diagnostics.terminalFailureStage;
+  EXPECT_FALSE(result.surfaceCellContext.hasTraceNetwork);
+  EXPECT_TRUE(result.surfaceCellContext.productSnapshots.traceNetwork.traces.empty());
+  EXPECT_FALSE(result.surfaceCellContext.hasFlowRepNetwork);
+  EXPECT_FALSE(result.surfaceCellContext.hasEmbeddedArrangementArcs);
+  EXPECT_FALSE(result.surfaceCellContext.hasArrangement);
+  EXPECT_FALSE(result.surfaceCellContext.hasSimplifiedComplex);
+  EXPECT_FALSE(result.surfaceCellContext.hasCompletionComplex);
+  EXPECT_FALSE(result.surfaceCellContext.hasPatchDescriptors);
+  EXPECT_TRUE(result.diagnostics.surfaceCellTraceCountAvailable);
+  EXPECT_TRUE(result.diagnostics.surfaceCellArrangementCountAvailable);
+  EXPECT_TRUE(result.diagnostics.surfaceCellSimplifiedCountAvailable);
+  EXPECT_TRUE(result.diagnostics.surfaceCellCompletedQuadCountAvailable);
+}
+
 TEST(SurfaceCellPipelinePhase20, BackendNamesAndParsersExposeStableApi) {
   using directional::pipeline::RemeshBackend;
   using directional::pipeline::SurfaceCellFallbackPolicy;
@@ -783,7 +829,7 @@ TEST(SurfaceCellPipelinePhase20, InvalidRawFieldDimsReturnPreciseFailureCode) {
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, badRaw, surface_options());
 
-  EXPECT_FALSE(result.success);
+  EXPECT_FALSE(result.is_produced());
   EXPECT_EQ("SurfaceCells", result.diagnostics.remeshBackend);
   EXPECT_EQ("SurfaceCells", result.diagnostics.requestedBackend);
   EXPECT_EQ("SurfaceCells", result.diagnostics.executedBackend);
@@ -803,7 +849,7 @@ TEST(SurfaceCellPipelinePhase20, InvalidRawFieldValuesFailClosedBeforeFinalizati
   directional::pipeline::RemeshResult result =
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, surface_options());
-  EXPECT_FALSE(result.success);
+  EXPECT_FALSE(result.is_produced());
   EXPECT_EQ("InvalidFieldDimensions", result.diagnostics.terminalFailureCode);
   EXPECT_EQ("cross-field-validation", result.diagnostics.terminalFailureStage);
 
@@ -811,7 +857,7 @@ TEST(SurfaceCellPipelinePhase20, InvalidRawFieldValuesFailClosedBeforeFinalizati
   raw.block(1, 3, 1, 3).setZero();
   result = directional::pipeline::remesh_from_raw_cross_field(
       mesh.vertices, mesh.faces, raw, surface_options());
-  EXPECT_FALSE(result.success);
+  EXPECT_FALSE(result.is_produced());
   EXPECT_EQ("InvalidFieldDimensions", result.diagnostics.terminalFailureCode);
   EXPECT_EQ("cross-field-validation", result.diagnostics.terminalFailureStage);
 }
@@ -862,23 +908,23 @@ TEST(SurfaceCellPipelinePhase20, CrossFieldResultRequiresMatchingAndSingularitie
       meshWhole, constant_raw_field(mesh.faces.rows()));
   result = directional::pipeline::remesh_from_cross_field_result(
       mesh.vertices, mesh.faces, field, options);
-  EXPECT_TRUE(result.success);
+  EXPECT_TRUE(result.is_produced());
   EXPECT_EQ("None", result.diagnostics.terminalFailureCode);
   EXPECT_TRUE(result.diagnostics.surfaceCellRemeshOccurred);
-  ASSERT_TRUE(result.surfaceCellContext.hasCrossField);
+  ASSERT_TRUE(result.surfaceCellContext.productSnapshots.hasCrossField);
   EXPECT_TRUE(result.surfaceCellContext.crossFieldHasMatching);
   EXPECT_TRUE(result.surfaceCellContext.crossFieldHasSingularities);
-  EXPECT_TRUE(result.surfaceCellContext.crossField.confidenceComputed);
-  EXPECT_TRUE(result.surfaceCellContext.crossField.uncoveredFacePolicyApplied);
+  EXPECT_TRUE(result.surfaceCellContext.productSnapshots.crossField.confidenceComputed);
+  EXPECT_TRUE(result.surfaceCellContext.productSnapshots.crossField.uncoveredFacePolicyApplied);
   EXPECT_EQ(field.matching.size(),
-            result.surfaceCellContext.crossField.matching.size());
+            result.surfaceCellContext.productSnapshots.crossField.matching.size());
   EXPECT_EQ(field.rawField.rows(),
-            result.surfaceCellContext.crossField.rawField.rows());
+            result.surfaceCellContext.productSnapshots.crossField.rawField.rows());
   EXPECT_NE(nullptr, find_context_product(result.surfaceCellContext,
                                           "cross-field"));
   ASSERT_TRUE(result.surfaceCellContext.hasTraceNetwork);
   const directional::geometry::SurfaceCellNetwork &traceNetwork =
-      result.surfaceCellContext.traceNetwork;
+      result.surfaceCellContext.productSnapshots.traceNetwork;
   ASSERT_EQ(mesh.faces.rows(), traceNetwork.sourceFaceComponents.size());
   ASSERT_EQ(mesh.faces.rows(), traceNetwork.sourceFaceSheets.size());
   EXPECT_EQ(0, traceNetwork.sourceFaceComponents[0]);
@@ -902,9 +948,11 @@ TEST(SurfaceCellPipelinePhase20, CrossFieldResultRequiresMatchingAndSingularitie
             trace_respects_source_component(
                 sideTrace, traceNetwork.sourceFaceComponents));
   }
-  EXPECT_STREQ("CompletedSurfaceCells", surface_cell_output_origin_name(result.diagnostics.surfaceCellOutputOrigin));
+  EXPECT_STREQ("SourceGridRecovery",
+               surface_cell_output_origin_name(
+                   result.diagnostics.surfaceCellOutputOrigin));
   if (result.diagnostics.surfaceCellRemeshOccurred) {
-    EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
+    EXPECT_EQ(directional::SurfaceCellOutputOrigin::SourceGridRecovery,
               result.diagnostics.surfaceCellOutputOrigin);
   }
 }
@@ -918,7 +966,7 @@ TEST(SurfaceCellPipelinePhase20, CrossFieldResultRequiresEdgeTransitionRecords) 
       directional::pipeline::remesh_from_cross_field_result(
           mesh.vertices, mesh.faces, field, surface_options());
 
-  EXPECT_FALSE(result.success);
+  EXPECT_FALSE(result.is_produced());
   EXPECT_EQ("MissingMatching", result.diagnostics.terminalFailureCode);
   EXPECT_EQ("cross-field-validation", result.diagnostics.terminalFailureStage);
   EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
@@ -940,25 +988,25 @@ TEST(SurfaceCellPipelinePhase20, RawAndFinalizedFieldInputsHaveEquivalentMetadat
       directional::pipeline::remesh_from_cross_field_result(
           mesh.vertices, mesh.faces, finalized, options);
 
-  ASSERT_TRUE(rawResult.surfaceCellContext.hasCrossField);
-  ASSERT_TRUE(finalizedResult.surfaceCellContext.hasCrossField);
-  EXPECT_TRUE(rawResult.surfaceCellContext.crossField.matchingComputed);
-  EXPECT_TRUE(rawResult.surfaceCellContext.crossField.singularitiesComputed);
-  EXPECT_TRUE(rawResult.surfaceCellContext.crossField.confidenceComputed);
-  EXPECT_TRUE(rawResult.surfaceCellContext.crossField.uncoveredFacePolicyApplied);
+  ASSERT_TRUE(rawResult.surfaceCellContext.productSnapshots.hasCrossField);
+  ASSERT_TRUE(finalizedResult.surfaceCellContext.productSnapshots.hasCrossField);
+  EXPECT_TRUE(rawResult.surfaceCellContext.productSnapshots.crossField.matchingComputed);
+  EXPECT_TRUE(rawResult.surfaceCellContext.productSnapshots.crossField.singularitiesComputed);
+  EXPECT_TRUE(rawResult.surfaceCellContext.productSnapshots.crossField.confidenceComputed);
+  EXPECT_TRUE(rawResult.surfaceCellContext.productSnapshots.crossField.uncoveredFacePolicyApplied);
   EXPECT_EQ(finalized.matching.size(),
-            rawResult.surfaceCellContext.crossField.matching.size());
+            rawResult.surfaceCellContext.productSnapshots.crossField.matching.size());
   EXPECT_EQ(finalized.effort.size(),
-            rawResult.surfaceCellContext.crossField.effort.size());
+            rawResult.surfaceCellContext.productSnapshots.crossField.effort.size());
   EXPECT_EQ(finalized.singularCycles.size(),
-            rawResult.surfaceCellContext.crossField.singularCycles.size());
+            rawResult.surfaceCellContext.productSnapshots.crossField.singularCycles.size());
   EXPECT_EQ(finalized.singularIndices.size(),
-            rawResult.surfaceCellContext.crossField.singularIndices.size());
-  EXPECT_EQ(0, rawResult.surfaceCellContext.crossField.uncoveredFaces.size());
-  EXPECT_EQ(rawResult.surfaceCellContext.crossField.matching.size(),
-            finalizedResult.surfaceCellContext.crossField.matching.size());
-  EXPECT_EQ(rawResult.surfaceCellContext.crossField.singularitiesComputed,
-            finalizedResult.surfaceCellContext.crossField.singularitiesComputed);
+            rawResult.surfaceCellContext.productSnapshots.crossField.singularIndices.size());
+  EXPECT_EQ(0, rawResult.surfaceCellContext.productSnapshots.crossField.uncoveredFaces.size());
+  EXPECT_EQ(rawResult.surfaceCellContext.productSnapshots.crossField.matching.size(),
+            finalizedResult.surfaceCellContext.productSnapshots.crossField.matching.size());
+  EXPECT_EQ(rawResult.surfaceCellContext.productSnapshots.crossField.singularitiesComputed,
+            finalizedResult.surfaceCellContext.productSnapshots.crossField.singularitiesComputed);
 }
 
 TEST(SurfaceCellPipelinePhase20, UncoveredRawFieldFacesFailBeforeTracing) {
@@ -970,11 +1018,11 @@ TEST(SurfaceCellPipelinePhase20, UncoveredRawFieldFacesFailBeforeTracing) {
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, surface_options());
 
-  EXPECT_FALSE(result.success);
+  EXPECT_FALSE(result.is_produced());
   EXPECT_EQ("InvalidFieldDimensions", result.diagnostics.terminalFailureCode);
   EXPECT_EQ("cross-field-validation", result.diagnostics.terminalFailureStage);
   EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
-  EXPECT_FALSE(result.surfaceCellContext.hasCrossField);
+  EXPECT_FALSE(result.surfaceCellContext.productSnapshots.hasCrossField);
   EXPECT_EQ(nullptr, find_stage_lineage(result.diagnostics, "tracing"));
 }
 
@@ -989,14 +1037,14 @@ TEST(SurfaceCellPipelinePhase20, ExplicitFallbackPoliciesAreObservable) {
   directional::pipeline::RemeshResult result =
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, options);
-  EXPECT_FALSE(result.success);
+  EXPECT_FALSE(result.is_produced());
   EXPECT_FALSE(result.diagnostics.surfaceCellFallbackAttempted);
 
   options.surfaceCells.fallbackPolicy =
       directional::pipeline::SurfaceCellFallbackPolicy::ReturnInputMesh;
   result = directional::pipeline::remesh_from_raw_cross_field(
       mesh.vertices, mesh.faces, raw, options);
-  EXPECT_TRUE(result.success) << "relief=" << result.diagnostics.surfaceCellReliefPatchCount << " trace=" << result.diagnostics.surfaceCellTraceSegmentCount << " arrangement=" << result.diagnostics.surfaceCellArrangementCellCount << " simplified=" << result.diagnostics.surfaceCellSimplifiedCellCount << " completed=" << result.diagnostics.surfaceCellCompletedQuadCount << " opt=" << result.diagnostics.surfaceCellOptimizationIterationCount << " terminal=" << result.diagnostics.terminalFailureCode << ":" << result.diagnostics.terminalFailureStage;
+  EXPECT_TRUE(result.is_produced()) << "relief=" << result.diagnostics.surfaceCellReliefPatchCount << " trace=" << result.diagnostics.surfaceCellTraceSegmentCount << " arrangement=" << result.diagnostics.surfaceCellArrangementCellCount << " simplified=" << result.diagnostics.surfaceCellSimplifiedCellCount << " completed=" << result.diagnostics.surfaceCellCompletedQuadCount << " opt=" << result.diagnostics.surfaceCellOptimizationIterationCount << " terminal=" << result.diagnostics.terminalFailureCode << ":" << result.diagnostics.terminalFailureStage;
   EXPECT_TRUE(result.diagnostics.surfaceCellFallbackAttempted);
   EXPECT_TRUE(result.diagnostics.surfaceCellReturnedInputMeshFallback);
   EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
@@ -1050,20 +1098,22 @@ TEST(SurfaceCellPipelinePhase20, RealStageDiagnosticsAreDerivedFromIntermediates
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, surface_options());
 
-  EXPECT_TRUE(result.success);
+  EXPECT_TRUE(result.is_produced());
   EXPECT_EQ("None", result.diagnostics.terminalFailureCode);
   EXPECT_TRUE(result.diagnostics.surfaceCellRemeshOccurred);
-  ASSERT_TRUE(result.surfaceCellContext.hasCrossField);
+  ASSERT_TRUE(result.surfaceCellContext.productSnapshots.hasCrossField);
   EXPECT_TRUE(result.surfaceCellContext.crossFieldHasMatching);
-  EXPECT_EQ(result.crossFieldMatching.size(),
-            result.surfaceCellContext.crossField.matching.size());
+  EXPECT_EQ(result.product().crossFieldMatching.size(),
+            result.surfaceCellContext.productSnapshots.crossField.matching.size());
   EXPECT_EQ(raw.rows(),
-            result.surfaceCellContext.crossField.rawField.rows());
+            result.surfaceCellContext.productSnapshots.crossField.rawField.rows());
   EXPECT_NE(nullptr, find_context_product(result.surfaceCellContext,
                                           "cross-field"));
-  EXPECT_STREQ("CompletedSurfaceCells", surface_cell_output_origin_name(result.diagnostics.surfaceCellOutputOrigin));
+  EXPECT_STREQ("SourceGridRecovery",
+               surface_cell_output_origin_name(
+                   result.diagnostics.surfaceCellOutputOrigin));
   if (result.diagnostics.surfaceCellRemeshOccurred) {
-    EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
+    EXPECT_EQ(directional::SurfaceCellOutputOrigin::SourceGridRecovery,
               result.diagnostics.surfaceCellOutputOrigin);
   }
   EXPECT_TRUE(result.diagnostics.overallPipelineTimeAvailable);
@@ -1076,7 +1126,7 @@ TEST(SurfaceCellPipelinePhase20, RealStageDiagnosticsAreDerivedFromIntermediates
             result.diagnostics.surfaceCellMetricSampleCount);
   EXPECT_NE(static_cast<std::size_t>(mesh.faces.rows()),
             result.diagnostics.surfaceCellFeatureCount);
-  EXPECT_EQ(result.outputVertexProvenance.size(),
+  EXPECT_EQ(result.product().outputVertexProvenance.size(),
             result.diagnostics.surfaceCellProvenanceVertexCount);
   EXPECT_EQ(0U, result.diagnostics.surfaceCellValidationFailures);
   EXPECT_TRUE(result.diagnostics.surfaceCellReliefCountAvailable);
@@ -1087,46 +1137,46 @@ TEST(SurfaceCellPipelinePhase20, RealStageDiagnosticsAreDerivedFromIntermediates
   EXPECT_TRUE(result.diagnostics.surfaceCellOptimizationIterationCountAvailable);
   EXPECT_GT(result.diagnostics.surfaceCellReliefPatchCount, 0U);
   EXPECT_GT(result.diagnostics.surfaceCellTraceSegmentCount, 0U);
-  EXPECT_EQ(static_cast<std::size_t>(result.faces.rows()),
+  EXPECT_EQ(static_cast<std::size_t>(result.product().faces.rows()),
             result.diagnostics.surfaceCellCompletedQuadCount);
   const directional::pipeline::SurfaceCellPipelineContext &context =
       result.surfaceCellContext;
   EXPECT_TRUE(context.hasSourceMesh);
-  EXPECT_TRUE(context.hasCrossField);
+  EXPECT_TRUE(context.productSnapshots.hasCrossField);
   EXPECT_TRUE(context.hasFeatureMap);
-  EXPECT_TRUE(context.hasAuthoritativeRails);
+  EXPECT_TRUE(context.productSnapshots.hasAuthoritativeRails);
   EXPECT_TRUE(context.hasMetricField);
   EXPECT_TRUE(context.hasReliefResult);
   EXPECT_TRUE(context.hasTraceNetwork);
   EXPECT_TRUE(context.hasFlowRepNetwork);
-  EXPECT_TRUE(context.flowRepNetwork.selectionSucceeded);
-  EXPECT_TRUE(context.flowRepNetwork.coverageEvidenceUsed);
-  EXPECT_TRUE(context.flowRepNetwork.cycleEvidenceUsed);
-  EXPECT_GT(context.flowRepNetwork.coverageSampleCount, 0);
-  EXPECT_GT(context.flowRepNetwork.cycleEvidenceCount, 0);
-  EXPECT_EQ(context.flowRepNetwork.mandatoryRails,
-            context.flowRepNetwork.retainedMandatoryRails);
+  EXPECT_TRUE(context.productSnapshots.flowRepNetwork.selectionSucceeded);
+  EXPECT_TRUE(context.productSnapshots.flowRepNetwork.coverageEvidenceUsed);
+  EXPECT_TRUE(context.productSnapshots.flowRepNetwork.cycleEvidenceUsed);
+  EXPECT_GT(context.productSnapshots.flowRepNetwork.coverageSampleCount, 0);
+  EXPECT_GT(context.productSnapshots.flowRepNetwork.cycleEvidenceCount, 0);
+  EXPECT_EQ(context.productSnapshots.flowRepNetwork.mandatoryRails,
+            context.productSnapshots.flowRepNetwork.retainedMandatoryRails);
   EXPECT_TRUE(context.hasEmbeddedArrangementArcs);
   EXPECT_TRUE(context.hasArrangement);
   EXPECT_TRUE(context.hasSimplifiedComplex);
   EXPECT_TRUE(context.hasCompletedPatches);
-  EXPECT_TRUE(context.hasOptimizationResult);
-  EXPECT_TRUE(context.hasValidationResult);
-  EXPECT_TRUE(context.validationResult.authoritativeBoundaryUsed);
-  EXPECT_TRUE(context.validationResult.authoritativeFeatureRailsUsed);
+  EXPECT_TRUE(context.productSnapshots.hasOptimizationResult);
+  EXPECT_TRUE(context.productSnapshots.hasValidationResult);
+  EXPECT_TRUE(context.productSnapshots.validationResult.authoritativeBoundaryUsed);
+  EXPECT_TRUE(context.productSnapshots.validationResult.authoritativeFeatureRailsUsed);
   EXPECT_GE(result.diagnostics.surfaceCellOptimizationSeconds, 0.0);
   EXPECT_GE(result.diagnostics.surfaceCellValidationSeconds, 0.0);
   EXPECT_LE(result.diagnostics.surfaceCellOptimizationSeconds +
                 result.diagnostics.surfaceCellValidationSeconds,
             result.diagnostics.overallPipelineSeconds + 1.0e-6);
-  EXPECT_EQ(context.validationResult.optimizerTimeWithinGate,
+  EXPECT_EQ(context.productSnapshots.validationResult.optimizerTimeWithinGate,
             result.diagnostics.surfaceCellOptimizationSeconds <=
                 0.25 * result.diagnostics.overallPipelineSeconds + 1.0e-6);
   EXPECT_EQ(mesh.faces.rows(), context.sourceMesh.F.rows());
   EXPECT_EQ(result.diagnostics.surfaceCellFeatureCount,
             context.featureMap.edges.size());
   EXPECT_EQ(result.diagnostics.surfaceCellTraceSegmentCount > 0,
-            !context.traceNetwork.traces.empty());
+            !context.productSnapshots.traceNetwork.traces.empty());
   EXPECT_EQ(result.diagnostics.surfaceCellCompletedQuadCount,
             static_cast<std::size_t>(context.completedQuads.rows()));
   for (const std::string &productName : {"source", "cross-field",
@@ -1186,7 +1236,8 @@ TEST(SurfaceCellPipelinePhase20, ReliefBarrierEdgesStopTracingAcrossSourceEdge) 
   directional::geometry::SurfaceCellTracingOptions options;
   options.maxTraceLength = 2.0;
   options.reliefBarrierEdges.insert(
-      directional::pipeline::surface_cell_source_edge_key(0, 2));
+      directional::pipeline::surface_cell_source_edge_key(
+          0, 2, static_cast<std::size_t>(mesh.vertices.rows())));
   options.reliefBarriersEmbedded = true;
 
   const directional::geometry::SurfaceTraceResult trace =
@@ -1213,7 +1264,7 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingConsumesSelectedReliefRootsRegionsAn
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, options);
 
-  EXPECT_FALSE(result.success);
+  EXPECT_FALSE(result.is_produced());
   EXPECT_EQ("InjectedStageFailure", result.diagnostics.terminalFailureCode);
   EXPECT_EQ("tracing", result.diagnostics.terminalFailureStage);
   const directional::pipeline::SurfaceCellPipelineContext &context =
@@ -1230,11 +1281,11 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingConsumesSelectedReliefRootsRegionsAn
                 context.reliefBarrierEdges.size(),
             consumption->elementCount);
   EXPECT_EQ(context.reliefRootSelection.roots,
-            context.traceNetwork.reliefRootVertices);
+            context.productSnapshots.traceNetwork.reliefRootVertices);
   EXPECT_EQ(context.reliefRootSelection.labels.size(),
-            context.traceNetwork.reliefRegionLabels.size());
+            context.productSnapshots.traceNetwork.reliefRegionLabels.size());
   EXPECT_EQ(context.reliefBarrierEdges,
-            context.traceNetwork.reliefBarrierEdges);
+            context.productSnapshots.traceNetwork.reliefBarrierEdges);
   EXPECT_EQ(mesh.vertices.rows(), context.reliefRootSelection.labels.size());
 
   std::set<int> canceledExtrema;
@@ -1244,26 +1295,26 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingConsumesSelectedReliefRootsRegionsAn
       canceledExtrema.insert(pair.extremum);
     }
   }
-  for (const int root : context.traceNetwork.reliefRootVertices) {
+  for (const int root : context.productSnapshots.traceNetwork.reliefRootVertices) {
     EXPECT_EQ(0U, canceledExtrema.count(root));
   }
 
   std::set<int> rootRegions;
-  for (const int root : context.traceNetwork.reliefRootVertices) {
+  for (const int root : context.productSnapshots.traceNetwork.reliefRootVertices) {
     ASSERT_GE(root, 0);
-    ASSERT_LT(root, context.traceNetwork.reliefRegionLabels.size());
-    const int region = context.traceNetwork.reliefRegionLabels[root];
+    ASSERT_LT(root, context.productSnapshots.traceNetwork.reliefRegionLabels.size());
+    const int region = context.productSnapshots.traceNetwork.reliefRegionLabels[root];
     ASSERT_GE(region, 0);
     rootRegions.insert(region);
   }
   std::set<int> seededRegions;
   for (const directional::geometry::SurfaceTraceSeed &seed :
-       context.traceNetwork.seeds) {
+       context.productSnapshots.traceNetwork.seeds) {
     const int vertex =
         directional::geometry::surface_cell_tracing_detail::seed_anchor_vertex(
             seed, mesh.faces, static_cast<int>(mesh.vertices.rows()));
-    if (vertex >= 0 && vertex < context.traceNetwork.reliefRegionLabels.size()) {
-      const int region = context.traceNetwork.reliefRegionLabels[vertex];
+    if (vertex >= 0 && vertex < context.productSnapshots.traceNetwork.reliefRegionLabels.size()) {
+      const int region = context.productSnapshots.traceNetwork.reliefRegionLabels[vertex];
       if (region >= 0) {
         seededRegions.insert(region);
       }
@@ -1282,7 +1333,7 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingConsumesSelectedReliefRootsRegionsAn
   EXPECT_TRUE(relief->consumedByNextStage);
   EXPECT_EQ(directional::SurfaceCellConsumptionKind::Partial,
             relief->consumptionKind);
-  EXPECT_EQ(directional::pipeline::hash_trace_network(context.traceNetwork),
+  EXPECT_EQ(directional::pipeline::hash_trace_network(context.productSnapshots.traceNetwork),
             tracing->outputObject.structuralHash);
 }
 
@@ -1295,16 +1346,16 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingUsesFamilySwapMatchingAcrossSourceEd
       directional::pipeline::remesh_from_cross_field_result(
           mesh.vertices, mesh.faces, matching_swap_cross_field(mesh), options);
 
-  EXPECT_FALSE(result.success);
+  EXPECT_FALSE(result.is_produced());
   EXPECT_EQ("InjectedStageFailure", result.diagnostics.terminalFailureCode);
   EXPECT_EQ("tracing", result.diagnostics.terminalFailureStage);
   const directional::pipeline::SurfaceCellPipelineContext &context =
       result.surfaceCellContext;
   ASSERT_TRUE(context.hasTraceNetwork);
-  ASSERT_TRUE(context.hasCrossField);
+  ASSERT_TRUE(context.productSnapshots.hasCrossField);
   directional::TriMesh sourceMesh;
   sourceMesh.set_mesh(mesh.vertices, mesh.faces);
-  ASSERT_EQ(sourceMesh.EF.rows(), context.crossField.matching.size());
+  ASSERT_EQ(sourceMesh.EF.rows(), context.productSnapshots.crossField.matching.size());
   int interiorEdge = -1;
   for (int edge = 0; edge < sourceMesh.EF.rows(); ++edge) {
     if (sourceMesh.EF(edge, 0) >= 0 && sourceMesh.EF(edge, 1) >= 0) {
@@ -1313,7 +1364,7 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingUsesFamilySwapMatchingAcrossSourceEd
     }
   }
   ASSERT_GE(interiorEdge, 0);
-  EXPECT_EQ(1, context.crossField.matching[interiorEdge]);
+  EXPECT_EQ(1, context.productSnapshots.crossField.matching[interiorEdge]);
 
   directional::geometry::SurfaceTraceSeed seed;
   seed.point.face = 0;
@@ -1322,7 +1373,7 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingUsesFamilySwapMatchingAcrossSourceEd
   tracingOptions.maxTraceLength = 10.0;
   const directional::geometry::SurfaceTraceResult trace =
       directional::geometry::trace_surface_field(
-          mesh.vertices, mesh.faces, context.crossField, seed, 0, -1,
+          mesh.vertices, mesh.faces, context.productSnapshots.crossField, seed, 0, -1,
           tracingOptions);
   ASSERT_GE(trace.segments.size(), 2U);
   EXPECT_EQ(1, trace.segments[0].matching);
@@ -1333,7 +1384,7 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingUsesFamilySwapMatchingAcrossSourceEd
   const directional::SurfaceCellStageLineage *tracing =
       find_stage_lineage(result.diagnostics, "tracing");
   ASSERT_NE(nullptr, tracing);
-  EXPECT_EQ(directional::pipeline::hash_trace_network(context.traceNetwork),
+  EXPECT_EQ(directional::pipeline::hash_trace_network(context.productSnapshots.traceNetwork),
             tracing->outputObject.structuralHash);
 }
 
@@ -1341,12 +1392,6 @@ TEST(SurfaceCellPipelinePhase20, TraceMatchingUsesSourceEdgeTransitionIdentity) 
   const SyntheticMesh mesh = make_planar_grid(2);
   directional::TriMesh sourceMesh;
   sourceMesh.set_mesh(mesh.vertices, mesh.faces);
-  Eigen::MatrixXd faceAxisX =
-      Eigen::MatrixXd::Zero(mesh.faces.rows(), 3);
-  Eigen::MatrixXd faceAxisY =
-      Eigen::MatrixXd::Zero(mesh.faces.rows(), 3);
-  faceAxisX.rowwise() = Eigen::RowVector3d(1.0, 0.0, 0.0);
-  faceAxisY.rowwise() = Eigen::RowVector3d(0.0, 1.0, 0.0);
   Eigen::VectorXi matching = Eigen::VectorXi::Zero(sourceMesh.EF.rows());
   Eigen::VectorXd effort = Eigen::VectorXd::Zero(sourceMesh.EF.rows());
   std::vector<directional::fields::CrossFieldEdgeTransition> transitions;
@@ -1359,7 +1404,7 @@ TEST(SurfaceCellPipelinePhase20, TraceMatchingUsesSourceEdgeTransitionIdentity) 
     transition.secondFace = sourceMesh.EF(edge, 1);
     transition.matching =
         sourceMesh.EF(edge, 0) >= 0 && sourceMesh.EF(edge, 1) >= 0
-            ? (edge % 3) + 1
+            ? edge % 4
             : -1;
     transition.effort =
         sourceMesh.EF(edge, 0) >= 0 && sourceMesh.EF(edge, 1) >= 0
@@ -1400,7 +1445,38 @@ TEST(SurfaceCellPipelinePhase20, TraceMatchingUsesSourceEdgeTransitionIdentity) 
     const Eigen::RowVector3d end =
         directional::geometry::surface_cell_tracing_detail::point_position(
             mesh.vertices, mesh.faces, edgeMidpoint);
-    faceAxisX.row(face) = (end - start).normalized();
+    const Eigen::RowVector3d forward = (end - start).normalized();
+    const Eigen::RowVector3d perpendicular(-forward.y(), forward.x(), 0.0);
+    Eigen::MatrixXd faceAxisX =
+        Eigen::MatrixXd::Zero(mesh.faces.rows(), 3);
+    Eigen::MatrixXd faceAxisY =
+        Eigen::MatrixXd::Zero(mesh.faces.rows(), 3);
+    faceAxisX.rowwise() = Eigen::RowVector3d(1.0, 0.0, 0.0);
+    faceAxisY.rowwise() = Eigen::RowVector3d(0.0, 1.0, 0.0);
+    faceAxisX.row(face) = forward;
+    faceAxisY.row(face) = perpendicular;
+
+    // Configure the destination chart so the authoritative matching branch
+    // continues into the adjacent triangle. This isolates transition-record
+    // lookup from unrelated degenerate continuation geometry.
+    switch (((matching(edge) % 4) + 4) % 4) {
+    case 0:
+      faceAxisX.row(neighbor) = forward;
+      faceAxisY.row(neighbor) = perpendicular;
+      break;
+    case 1:
+      faceAxisX.row(neighbor) = perpendicular;
+      faceAxisY.row(neighbor) = forward;
+      break;
+    case 2:
+      faceAxisX.row(neighbor) = -forward;
+      faceAxisY.row(neighbor) = perpendicular;
+      break;
+    case 3:
+      faceAxisX.row(neighbor) = perpendicular;
+      faceAxisY.row(neighbor) = -forward;
+      break;
+    }
 
     directional::geometry::SurfaceCellTracingOptions options;
     options.maxTraceLength = 10.0;
@@ -1408,8 +1484,11 @@ TEST(SurfaceCellPipelinePhase20, TraceMatchingUsesSourceEdgeTransitionIdentity) 
         directional::geometry::trace_surface_field(
             mesh.vertices, mesh.faces, faceAxisX, faceAxisY, seed, 0, 1,
             options, &matching, &effort, &transitions);
-
-    ASSERT_GE(trace.segments.size(), 2U) << edge;
+    // The contract under test is the transition metadata attached to the
+    // segment that crosses this source edge. A valid trace may terminate in
+    // the destination triangle immediately after that crossing, so requiring
+    // a second segment would test unrelated continuation geometry.
+    ASSERT_FALSE(trace.segments.empty()) << edge;
     EXPECT_EQ(matching(edge), trace.segments[0].matching) << edge;
     EXPECT_NEAR(effort(edge), trace.segments[0].matchingEffort, 1.0e-12)
         << edge;
@@ -1435,170 +1514,63 @@ TEST(SurfaceCellPipelinePhase20, MissingEdgeTransitionTerminatesTraceFieldMetada
   EXPECT_EQ(directional::geometry::TraceTerminationReason::FieldMetadata,
             trace.termination);
 }
-TEST(SurfaceCellPipelinePhase20, LiveTracingConsumesAuthoritativeBoundaryAndHardFeatureRails) {
-  const SyntheticMesh mesh = make_two_square_components();
-  const Eigen::MatrixXd raw = constant_raw_field(mesh.faces.rows());
-  directional::pipeline::RemeshOptions options = surface_options();
-  options.surfaceCells.featureMap.userHardEdges.insert({0, 2});
-  options.surfaceCells.injectFailureAfterStage = 6;
-
-  const directional::pipeline::RemeshResult result =
-      directional::pipeline::remesh_from_raw_cross_field(
-          mesh.vertices, mesh.faces, raw, options);
-
-  EXPECT_FALSE(result.success);
-  EXPECT_EQ("InjectedStageFailure", result.diagnostics.terminalFailureCode);
-  EXPECT_EQ("arrangement", result.diagnostics.terminalFailureStage);
-  const directional::pipeline::SurfaceCellPipelineContext &context =
-      result.surfaceCellContext;
-  ASSERT_TRUE(context.hasAuthoritativeRails);
-  ASSERT_FALSE(context.authoritativeRails.empty());
-  const directional::pipeline::SurfaceCellContextProductDebug *railsProduct =
-      find_context_product(context, "rails");
-  ASSERT_NE(nullptr, railsProduct);
-  EXPECT_TRUE(railsProduct->available);
-  EXPECT_EQ(context.authoritativeRails.size(), railsProduct->elementCount);
-  ASSERT_TRUE(context.hasTraceNetwork);
-  EXPECT_EQ(context.authoritativeRails.size(),
-            context.traceNetwork.authoritativeRails.size());
-
-  bool hasBoundaryRail = false;
-  bool hasHardRail = false;
-  std::set<int> railIds;
-  for (const directional::geometry::SurfaceCellRail &rail :
-       context.authoritativeRails) {
-    railIds.insert(rail.id);
-    hasBoundaryRail = hasBoundaryRail ||
-        rail.kind == directional::geometry::SurfaceCellRailKind::Boundary;
-    hasHardRail = hasHardRail ||
-        rail.kind == directional::geometry::SurfaceCellRailKind::HardFeature;
-    EXPECT_GE(rail.curveId, 0);
-    EXPECT_GE(rail.component, 0);
-    EXPECT_GE(rail.samples.size(), 2U);
-    for (const directional::geometry::SurfaceCellRailSample &sample :
-         rail.samples) {
-      EXPECT_GE(sample.sourceFace, 0);
-      EXPECT_GE(sample.sourceEdge, 0);
-      EXPECT_NEAR(1.0, sample.barycentric.sum(), 1.0e-12);
-    }
-  }
-  EXPECT_TRUE(hasBoundaryRail);
-  EXPECT_TRUE(hasHardRail);
-
-  bool sawRailSeed = false;
-  for (const directional::geometry::SurfaceTraceSeed &seed :
-       context.traceNetwork.seeds) {
-    if ((seed.provenance == directional::geometry::SurfaceSeedProvenance::Boundary ||
-         seed.provenance == directional::geometry::SurfaceSeedProvenance::Feature) &&
-        railIds.count(seed.sourceId) != 0) {
-      sawRailSeed = true;
-    }
-  }
-  EXPECT_TRUE(sawRailSeed);
-
-  bool sawHardFlowRepRail = false;
-  bool sawBoundaryFlowRepRail = false;
-  for (const directional::geometry::FlowRepArc &arc : context.flowRepArcs) {
-    if (arc.railId >= 0) {
-      EXPECT_TRUE(arc.mandatoryRail);
-      EXPECT_GE(arc.curveId, 0);
-      EXPECT_LE(arc.railT0, arc.railT1);
-      sawHardFlowRepRail = sawHardFlowRepRail || arc.hardFeatureRail;
-      sawBoundaryFlowRepRail = sawBoundaryFlowRepRail || arc.boundaryRail;
-    }
-  }
-  EXPECT_TRUE(sawHardFlowRepRail);
-  EXPECT_TRUE(sawBoundaryFlowRepRail);
-  ASSERT_TRUE(context.hasFlowRepNetwork);
-  EXPECT_TRUE(context.flowRepNetwork.selectionSucceeded);
-  EXPECT_TRUE(context.flowRepNetwork.coverageEvidenceUsed);
-  EXPECT_TRUE(context.flowRepNetwork.cycleEvidenceUsed);
-  EXPECT_EQ(context.flowRepNetwork.mandatoryRails,
-            context.flowRepNetwork.retainedMandatoryRails);
-
-  bool sawArrangementRail = false;
-  for (const directional::geometry::SurfaceArrangementArc &arc :
-       context.embeddedArrangementArcs) {
-    if (arc.railId >= 0) {
-      sawArrangementRail = true;
-      EXPECT_GE(arc.curveId, 0);
-      EXPECT_TRUE(arc.hardFeature);
-    }
-  }
-  EXPECT_TRUE(sawArrangementRail);
-  bool sawHalfedgeRail = false;
-  for (const directional::geometry::SurfaceArrangementHalfedge &halfedge :
-       context.arrangement.halfedges) {
-    if (halfedge.railId >= 0) {
-      sawHalfedgeRail = true;
-      EXPECT_GE(halfedge.curveId, 0);
-      EXPECT_GE(halfedge.railT0, 0.0);
-      EXPECT_LE(halfedge.railT0, 1.0);
-      EXPECT_GE(halfedge.railT1, 0.0);
-      EXPECT_LE(halfedge.railT1, 1.0);
-    }
-  }
-  EXPECT_TRUE(sawHalfedgeRail);
-
-  const directional::SurfaceCellStageLineage *tracing =
-      find_stage_lineage(result.diagnostics, "tracing");
-  ASSERT_NE(nullptr, tracing);
-  EXPECT_TRUE(tracing->consumedByNextStage);
-  EXPECT_EQ(directional::pipeline::hash_trace_network(context.traceNetwork),
-            tracing->outputObject.structuralHash);
-}
-TEST(SurfaceCellPipelinePhase20, TryLegacyPreservesInjectedSurfaceCellFailureWhenLegacyFails) {
-  const SyntheticMesh mesh = make_two_square_components();
-  const Eigen::MatrixXd raw = constant_raw_field(mesh.faces.rows());
-  directional::pipeline::RemeshOptions options = surface_options();
-  options.surfaceCells.injectFailureAfterStage = 9;
-  options.surfaceCells.fallbackPolicy =
-      directional::pipeline::SurfaceCellFallbackPolicy::TryLegacy;
-
-  const directional::pipeline::RemeshResult result =
-      directional::pipeline::remesh_from_raw_cross_field(
-          mesh.vertices, mesh.faces, raw, options);
-
-  EXPECT_FALSE(result.success);
-  EXPECT_TRUE(result.diagnostics.surfaceCellFallbackAttempted);
-  EXPECT_FALSE(result.diagnostics.surfaceCellUsedLegacyFallback);
-  EXPECT_EQ("SurfaceCells", result.diagnostics.requestedBackend);
-  EXPECT_EQ("SurfaceCells", result.diagnostics.executedBackend);
-  EXPECT_EQ("InjectedStageFailure",
-            result.diagnostics.originalSurfaceCellFailureCode);
-  EXPECT_EQ("InjectedStageFailure", result.diagnostics.terminalFailureCode);
-  EXPECT_EQ("InjectedStageFailure",
-            result.diagnostics.surfaceCellFallbackCause);
-  EXPECT_STREQ("None", surface_cell_output_origin_name(result.diagnostics.surfaceCellOutputOrigin));
-}
-
-
-TEST(SurfaceCellPipelinePhase20, TryLegacyReportsExecutedBackendWhenLegacySucceeds) {
+TEST(SurfaceCellPipelinePhase20, FailedSurfaceCellPipelineNeverRunsLegacyIntegration) {
   const SyntheticMesh mesh = make_planar_grid();
   const Eigen::MatrixXd raw = constant_raw_field(mesh.faces.rows());
   directional::pipeline::RemeshOptions options = surface_options();
   options.surfaceCells.injectFailureAfterStage = 9;
   options.surfaceCells.fallbackPolicy =
-      directional::pipeline::SurfaceCellFallbackPolicy::TryLegacy;
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
 
   const directional::pipeline::RemeshResult result =
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, options);
 
-  ASSERT_TRUE(result.success);
-  EXPECT_TRUE(result.diagnostics.surfaceCellFallbackAttempted);
-  EXPECT_TRUE(result.diagnostics.surfaceCellUsedLegacyFallback);
+  EXPECT_FALSE(result.is_produced());
+  EXPECT_EQ(nullptr, result.produced_product());
   EXPECT_EQ("SurfaceCells", result.diagnostics.requestedBackend);
-  EXPECT_EQ("LegacyInteger", result.diagnostics.executedBackend);
+  EXPECT_EQ("SurfaceCells", result.diagnostics.executedBackend);
   EXPECT_EQ("InjectedStageFailure",
             result.diagnostics.originalSurfaceCellFailureCode);
   EXPECT_EQ("optimization",
             result.diagnostics.originalSurfaceCellFailureStage);
-  EXPECT_EQ("InjectedStageFailure",
-            result.diagnostics.surfaceCellFallbackCause);
+  EXPECT_EQ("InjectedStageFailure", result.diagnostics.terminalFailureCode);
+  EXPECT_EQ("optimization", result.diagnostics.terminalFailureStage);
+  EXPECT_FALSE(result.diagnostics.surfaceCellFallbackAttempted);
+  EXPECT_FALSE(result.diagnostics.surfaceCellUsedLegacyFallback);
+  EXPECT_TRUE(result.diagnostics.surfaceCellFallbackCause.empty());
   EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
-  EXPECT_STREQ("LegacyFallback", surface_cell_output_origin_name(result.diagnostics.surfaceCellOutputOrigin));
-  EXPECT_NE("InjectedStageFailure", result.diagnostics.terminalFailureCode);
+  EXPECT_STREQ("None", surface_cell_output_origin_name(
+                             result.diagnostics.surfaceCellOutputOrigin));
+  EXPECT_DOUBLE_EQ(0.0, result.diagnostics.setupIntegrationSeconds);
+  EXPECT_DOUBLE_EQ(0.0, result.diagnostics.integrationTotalSeconds);
+  EXPECT_DOUBLE_EQ(0.0, result.diagnostics.setupMesherSeconds);
+  EXPECT_DOUBLE_EQ(0.0, result.diagnostics.mesherTotalSeconds);
+  EXPECT_EQ(0U, result.diagnostics.integration.integerIterations);
+  EXPECT_EQ(0U, result.diagnostics.integration.directFactorizations);
+  EXPECT_DOUBLE_EQ(0.0,
+                   result.diagnostics.integration.numericFactorizationSeconds);
+}
+
+TEST(SurfaceCellPipelinePhase20, DisconnectedFailureDoesNotEnterLegacyBackend) {
+  const SyntheticMesh mesh = make_two_square_components();
+  const Eigen::MatrixXd raw = constant_raw_field(mesh.faces.rows());
+  directional::pipeline::RemeshOptions options = surface_options();
+  options.surfaceCells.injectFailureAfterStage = 9;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+
+  const directional::pipeline::RemeshResult result =
+      directional::pipeline::remesh_from_raw_cross_field(
+          mesh.vertices, mesh.faces, raw, options);
+
+  EXPECT_FALSE(result.is_produced());
+  EXPECT_EQ("SurfaceCells", result.diagnostics.executedBackend);
+  EXPECT_FALSE(result.diagnostics.surfaceCellFallbackAttempted);
+  EXPECT_FALSE(result.diagnostics.surfaceCellUsedLegacyFallback);
+  EXPECT_EQ("InjectedStageFailure", result.diagnostics.terminalFailureCode);
+  EXPECT_DOUBLE_EQ(0.0, result.diagnostics.integrationTotalSeconds);
+  EXPECT_EQ(0U, result.diagnostics.integration.directFactorizations);
 }
 
 TEST(SurfaceCellPipelinePhase20, CylinderFixtureCompletesProductionOutput) {
@@ -1609,22 +1581,22 @@ TEST(SurfaceCellPipelinePhase20, CylinderFixtureCompletesProductionOutput) {
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, surface_options());
 
-  ASSERT_TRUE(result.success) << result.diagnostics.terminalFailureCode << "/"
+  ASSERT_TRUE(result.is_produced()) << result.diagnostics.terminalFailureCode << "/"
                               << result.diagnostics.terminalFailureStage;
   EXPECT_TRUE(result.diagnostics.surfaceCellRemeshOccurred);
   EXPECT_EQ("SurfaceCells", result.diagnostics.executedBackend);
-  EXPECT_STREQ("CompletedSurfaceCells",
+  EXPECT_STREQ("SourceGridRecovery",
                surface_cell_output_origin_name(
                    result.diagnostics.surfaceCellOutputOrigin));
   EXPECT_EQ("None", result.diagnostics.terminalFailureCode);
   EXPECT_TRUE(result.diagnostics.terminalFailureStage.empty());
   EXPECT_TRUE(result.diagnostics.surfaceCellSourceGridRecoveryUsed);
-  EXPECT_TRUE(result.surfaceCellContext.sourceGridRecoveryUsed);
+  EXPECT_TRUE(result.surfaceCellContext.productSnapshots.sourceGridRecoveryUsed);
   EXPECT_EQ(static_cast<std::size_t>(2 * mesh.faces.rows()),
             result.diagnostics.surfaceCellCompletedQuadCount);
-  EXPECT_EQ(2 * mesh.faces.rows(), result.faces.rows());
-  EXPECT_GT(result.vertices.rows(), mesh.vertices.rows());
-  EXPECT_TRUE((result.degrees.array() == 4).all());
+  EXPECT_EQ(2 * mesh.faces.rows(), result.product().faces.rows());
+  EXPECT_GT(result.product().vertices.rows(), mesh.vertices.rows());
+  EXPECT_TRUE((result.product().degrees.array() == 4).all());
 }
 TEST(SurfaceCellPipelinePhase20, MultiFaceStripCompletesProductionOutput) {
   const SyntheticMesh mesh = make_two_square_strip();
@@ -1639,23 +1611,23 @@ TEST(SurfaceCellPipelinePhase20, MultiFaceStripCompletesProductionOutput) {
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, options);
 
-  ASSERT_TRUE(result.success) << result.diagnostics.terminalFailureCode << "/"
+  ASSERT_TRUE(result.is_produced()) << result.diagnostics.terminalFailureCode << "/"
                               << result.diagnostics.terminalFailureStage;
   EXPECT_TRUE(result.diagnostics.surfaceCellRemeshOccurred);
-  EXPECT_STREQ("CompletedSurfaceCells",
+  EXPECT_STREQ("SourceGridRecovery",
                surface_cell_output_origin_name(
                    result.diagnostics.surfaceCellOutputOrigin));
   EXPECT_EQ("None", result.diagnostics.terminalFailureCode);
   EXPECT_TRUE(result.diagnostics.terminalFailureStage.empty());
   EXPECT_TRUE(result.diagnostics.surfaceCellSourceGridRecoveryUsed);
-  EXPECT_TRUE(result.surfaceCellContext.sourceGridRecoveryUsed);
+  EXPECT_TRUE(result.surfaceCellContext.productSnapshots.sourceGridRecoveryUsed);
   EXPECT_EQ(static_cast<std::size_t>(2 * mesh.faces.rows()),
             result.diagnostics.surfaceCellCompletedQuadCount);
-  EXPECT_EQ(2 * mesh.faces.rows(), result.faces.rows());
-  EXPECT_GT(result.vertices.rows(), mesh.vertices.rows());
-  EXPECT_TRUE((result.degrees.array() == 4).all());
-  EXPECT_EQ(result.surfaceCellContext.crossField.matching.size(),
-            result.crossFieldMatching.size());
+  EXPECT_EQ(2 * mesh.faces.rows(), result.product().faces.rows());
+  EXPECT_GT(result.product().vertices.rows(), mesh.vertices.rows());
+  EXPECT_TRUE((result.product().degrees.array() == 4).all());
+  EXPECT_EQ(result.surfaceCellContext.productSnapshots.crossField.matching.size(),
+            result.product().crossFieldMatching.size());
   EXPECT_FALSE(result.diagnostics.surfaceCellStageLineage.empty());
 }
 
@@ -1667,25 +1639,27 @@ TEST(SurfaceCellPipelinePhase20, CloseSheetsDoNotLeakSourceProvenance) {
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, surface_options());
 
-  EXPECT_TRUE(result.success);
+  EXPECT_TRUE(result.is_produced());
   EXPECT_TRUE(result.diagnostics.surfaceCellRemeshOccurred);
-  ASSERT_TRUE(result.surfaceCellContext.hasCrossField);
+  ASSERT_TRUE(result.surfaceCellContext.productSnapshots.hasCrossField);
   EXPECT_TRUE(result.surfaceCellContext.crossFieldHasMatching);
-  EXPECT_EQ(result.crossFieldMatching.size(),
-            result.surfaceCellContext.crossField.matching.size());
+  EXPECT_EQ(result.product().crossFieldMatching.size(),
+            result.surfaceCellContext.productSnapshots.crossField.matching.size());
   EXPECT_EQ(raw.rows(),
-            result.surfaceCellContext.crossField.rawField.rows());
+            result.surfaceCellContext.productSnapshots.crossField.rawField.rows());
   EXPECT_NE(nullptr, find_context_product(result.surfaceCellContext,
                                           "cross-field"));
-  EXPECT_STREQ("CompletedSurfaceCells", surface_cell_output_origin_name(result.diagnostics.surfaceCellOutputOrigin));
+  EXPECT_STREQ("SourceGridRecovery",
+               surface_cell_output_origin_name(
+                   result.diagnostics.surfaceCellOutputOrigin));
   if (result.diagnostics.surfaceCellRemeshOccurred) {
-    EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
+    EXPECT_EQ(directional::SurfaceCellOutputOrigin::SourceGridRecovery,
               result.diagnostics.surfaceCellOutputOrigin);
   }
   EXPECT_EQ("None", result.diagnostics.terminalFailureCode);
   EXPECT_TRUE(result.diagnostics.surfaceCellSourceGridRecoveryUsed);
-  EXPECT_TRUE(result.surfaceCellContext.sourceGridRecoveryUsed);
-  EXPECT_TRUE(result.surfaceCellContext.hasSourceGridRecoveryTargetSize);
+  EXPECT_TRUE(result.surfaceCellContext.productSnapshots.sourceGridRecoveryUsed);
+  EXPECT_TRUE(result.surfaceCellContext.productSnapshots.hasSourceGridRecoveryTargetSize);
   EXPECT_GT(
       result.diagnostics
           .surfaceCellSourceGridRecoveryTargetSizeMaxRelaxationRatio,
@@ -1707,37 +1681,37 @@ TEST(SurfaceCellPipelinePhase20, ConnectedCloseSheetsKeepDistinctLocalSheetLabel
       directional::pipeline::remesh_from_cross_field_result(
           mesh.vertices, mesh.faces, matching_swap_cross_field(mesh), options);
 
-  EXPECT_FALSE(result.success);
+  EXPECT_FALSE(result.is_produced());
   EXPECT_EQ("InjectedStageFailure", result.diagnostics.terminalFailureCode);
   EXPECT_EQ("tracing", result.diagnostics.terminalFailureStage);
   const directional::pipeline::SurfaceCellPipelineContext &context =
       result.surfaceCellContext;
-  ASSERT_TRUE(context.hasSourceSurfaceLabels);
+  ASSERT_TRUE(context.productSnapshots.hasSourceSurfaceLabels);
   ASSERT_EQ(mesh.faces.rows(),
-            context.sourceSurfaceLabels.componentByFace.size());
+            context.productSnapshots.sourceSurfaceLabels.componentByFace.size());
   ASSERT_EQ(mesh.faces.rows(),
-            context.sourceSurfaceLabels.localSheetByFace.size());
-  EXPECT_EQ(context.sourceSurfaceLabels.componentByFace[0],
-            context.sourceSurfaceLabels.componentByFace[4]);
-  EXPECT_NE(context.sourceSurfaceLabels.localSheetByFace[0],
-            context.sourceSurfaceLabels.localSheetByFace[4]);
+            context.productSnapshots.sourceSurfaceLabels.localSheetByFace.size());
+  EXPECT_EQ(context.productSnapshots.sourceSurfaceLabels.componentByFace[0],
+            context.productSnapshots.sourceSurfaceLabels.componentByFace[4]);
+  EXPECT_NE(context.productSnapshots.sourceSurfaceLabels.localSheetByFace[0],
+            context.productSnapshots.sourceSurfaceLabels.localSheetByFace[4]);
   ASSERT_TRUE(context.hasTraceNetwork);
-  EXPECT_EQ(context.sourceSurfaceLabels.componentByFace,
-            context.traceNetwork.sourceFaceComponents);
-  EXPECT_EQ(context.sourceSurfaceLabels.localSheetByFace,
-            context.traceNetwork.sourceFaceSheets);
+  EXPECT_EQ(context.productSnapshots.sourceSurfaceLabels.componentByFace,
+            context.productSnapshots.traceNetwork.sourceFaceComponents);
+  EXPECT_EQ(context.productSnapshots.sourceSurfaceLabels.localSheetByFace,
+            context.productSnapshots.traceNetwork.sourceFaceSheets);
   for (const directional::geometry::SurfaceTraceResult &trace :
-       context.traceNetwork.traces) {
+       context.productSnapshots.traceNetwork.traces) {
     EXPECT_TRUE(
         directional::geometry::surface_cell_tracing_detail::
             trace_respects_source_component(
-                trace, context.traceNetwork.sourceFaceComponents));
+                trace, context.productSnapshots.traceNetwork.sourceFaceComponents));
   }
   const directional::pipeline::SurfaceCellContextProductDebug *labels =
       find_context_product(context, "source-labels");
   ASSERT_NE(nullptr, labels);
   EXPECT_TRUE(labels->available);
-  EXPECT_EQ(context.sourceSurfaceLabels.localSheetByFace.size(),
+  EXPECT_EQ(context.productSnapshots.sourceSurfaceLabels.localSheetByFace.size(),
             labels->elementCount);
 }
 
@@ -1767,14 +1741,13 @@ TEST(SurfaceCellPipelinePhase20,
           mesh.vertices, mesh.faces, constant_raw_field(mesh.faces.rows()),
           options);
 
-  EXPECT_FALSE(result.success);
+  EXPECT_FALSE(result.is_produced());
   EXPECT_EQ("InvalidClassifierOptions",
             result.diagnostics.terminalFailureCode);
   EXPECT_EQ("source-classification",
             result.diagnostics.terminalFailureStage);
   EXPECT_FALSE(result.surfaceCellContext.hasTraceNetwork);
-  EXPECT_EQ(0, result.vertices.rows());
-  EXPECT_EQ(0, result.faces.rows());
+  EXPECT_EQ(nullptr, result.produced_product());
 }
 
 
@@ -1788,14 +1761,14 @@ TEST(SurfaceCellPipelinePhase20, PairedBoundaryProofGateIsExplicit) {
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, options);
 
-  EXPECT_FALSE(result.success);
+  EXPECT_FALSE(result.is_produced());
   EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
   EXPECT_EQ("NotProductionReady", result.diagnostics.terminalFailureCode);
   EXPECT_EQ("completion", result.diagnostics.terminalFailureStage);
-  EXPECT_TRUE(result.surfaceCellContext.outputLineageValidation
+  EXPECT_TRUE(result.surfaceCellContext.productSnapshots.outputLineageValidation
                   .solelyPairedSourceTriangleBoundaries)
       << "descriptors=" << result.surfaceCellContext.patchDescriptors.size()
-      << " completed=" << result.surfaceCellContext.completedPatches.size()
+      << " completed=" << result.surfaceCellContext.productSnapshots.completedPatches.size()
       << " parity="
       << result.surfaceCellContext.completionOddCellsBeforeRepair << "->"
       << result.surfaceCellContext.completionOddCellsAfterRepair
@@ -1804,7 +1777,7 @@ TEST(SurfaceCellPipelinePhase20, PairedBoundaryProofGateIsExplicit) {
       << result.surfaceCellContext.completionSideInfeasibleAfterRepair
       << " patches=" << patch_descriptor_summary(result);
   EXPECT_EQ("PairedSourceTriangleBoundaryOutput",
-            result.surfaceCellContext.outputLineageValidation.failure);
+            result.surfaceCellContext.productSnapshots.outputLineageValidation.failure);
 }
 TEST(SurfaceCellPipelinePhase20,
      PairedBoundaryOutputFailsClosedWhenRecoveryIsDisabled) {
@@ -1817,14 +1790,14 @@ TEST(SurfaceCellPipelinePhase20,
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, options);
 
-  EXPECT_FALSE(result.success);
+  EXPECT_FALSE(result.is_produced());
   EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
   EXPECT_EQ("NotProductionReady", result.diagnostics.terminalFailureCode);
   EXPECT_EQ("completion", result.diagnostics.terminalFailureStage);
-  EXPECT_TRUE(result.surfaceCellContext.outputLineageValidation
+  EXPECT_TRUE(result.surfaceCellContext.productSnapshots.outputLineageValidation
                   .solelyPairedSourceTriangleBoundaries)
       << "descriptors=" << result.surfaceCellContext.patchDescriptors.size()
-      << " completed=" << result.surfaceCellContext.completedPatches.size()
+      << " completed=" << result.surfaceCellContext.productSnapshots.completedPatches.size()
       << " parity="
       << result.surfaceCellContext.completionOddCellsBeforeRepair << "->"
       << result.surfaceCellContext.completionOddCellsAfterRepair
@@ -1833,7 +1806,7 @@ TEST(SurfaceCellPipelinePhase20,
       << result.surfaceCellContext.completionSideInfeasibleAfterRepair
       << " patches=" << patch_descriptor_summary(result);
   EXPECT_EQ("PairedSourceTriangleBoundaryOutput",
-            result.surfaceCellContext.outputLineageValidation.failure);
+            result.surfaceCellContext.productSnapshots.outputLineageValidation.failure);
 }
 
 TEST(SurfaceCellPipelinePhase20, ValidationRejectionCannotReportCompletedSurfaceCells) {
@@ -1846,7 +1819,7 @@ TEST(SurfaceCellPipelinePhase20, ValidationRejectionCannotReportCompletedSurface
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, options);
 
-  ASSERT_FALSE(result.success);
+  ASSERT_FALSE(result.is_produced());
   EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
   EXPECT_EQ(directional::SurfaceCellOutputOrigin::None,
             result.diagnostics.surfaceCellOutputOrigin);
@@ -1856,7 +1829,7 @@ TEST(SurfaceCellPipelinePhase20, ValidationRejectionCannotReportCompletedSurface
   EXPECT_TRUE(result.diagnostics.surfaceCellValidationFailureCountAvailable);
   EXPECT_GT(result.diagnostics.surfaceCellValidationFailures, 0U);
   EXPECT_TRUE(result.diagnostics.surfaceCellProvenanceVertexCountAvailable);
-  EXPECT_EQ(result.surfaceCellContext.optimizationResult.vertexProvenance.size(),
+  EXPECT_EQ(result.surfaceCellContext.productSnapshots.optimizationResult.vertexProvenance.size(),
             result.diagnostics.surfaceCellProvenanceVertexCount);
   ASSERT_FALSE(result.diagnostics.surfaceCellStageLineage.empty());
   const directional::SurfaceCellStageLineage &lastStage =
@@ -1906,7 +1879,7 @@ TEST(SurfaceCellPipelinePhase20, InjectedFailuresPreserveLastCompletedStageArtif
         directional::pipeline::remesh_from_raw_cross_field(
             mesh.vertices, mesh.faces, raw, options);
 
-    EXPECT_FALSE(result.success) << stage;
+    EXPECT_FALSE(result.is_produced()) << stage;
     EXPECT_EQ("InjectedStageFailure", result.diagnostics.terminalFailureCode)
         << stage;
     EXPECT_EQ(stages[static_cast<std::size_t>(stage)],
@@ -1963,7 +1936,7 @@ TEST(SurfaceCellPipelinePhase20, ComponentSchedulingAppliesToSurfaceCells) {
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, options);
 
-  ASSERT_TRUE(result.success)
+  ASSERT_TRUE(result.is_produced())
       << result.diagnostics.terminalFailureCode << "/"
       << result.diagnostics.terminalFailureStage << " component="
       << result.diagnostics.failedComponentIndex;
@@ -1974,11 +1947,11 @@ TEST(SurfaceCellPipelinePhase20, ComponentSchedulingAppliesToSurfaceCells) {
   EXPECT_EQ("None", result.diagnostics.terminalFailureCode);
   EXPECT_FALSE(result.diagnostics.surfaceCellFallbackAttempted);
   EXPECT_FALSE(result.diagnostics.surfaceCellReturnedInputMeshFallback);
-  EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
+  EXPECT_EQ(directional::SurfaceCellOutputOrigin::SourceGridRecovery,
             result.diagnostics.surfaceCellOutputOrigin);
   EXPECT_EQ(2U, result.diagnostics.componentCount);
   EXPECT_EQ(2U, result.diagnostics.components.size());
-  EXPECT_TRUE(result.surfaceCellContext.hasCrossField);
+  EXPECT_TRUE(result.surfaceCellContext.productSnapshots.hasCrossField);
   ASSERT_FALSE(result.diagnostics.surfaceCellStageLineage.empty());
   for (const directional::SurfaceCellStageLineage &lineage :
        result.diagnostics.surfaceCellStageLineage) {
@@ -2007,19 +1980,19 @@ TEST(SurfaceCellPipelinePhase20,
       directional::pipeline::remesh_from_cross_field_result(
           mesh.vertices, mesh.faces, field, options);
 
-  ASSERT_TRUE(result.success)
+  ASSERT_TRUE(result.is_produced())
       << result.diagnostics.terminalFailureCode << "/"
       << result.diagnostics.terminalFailureStage << " component="
       << result.diagnostics.failedComponentIndex;
   EXPECT_TRUE(result.diagnostics.surfaceCellRemeshOccurred);
-  EXPECT_EQ(field.rawField, result.rawCrossField);
-  EXPECT_EQ(field.matching, result.crossFieldMatching);
-  EXPECT_EQ(field.effort, result.crossFieldEffort);
-  EXPECT_EQ(field.singularCycles, result.crossFieldSingularCycles);
-  EXPECT_EQ(field.singularIndices, result.crossFieldSingularIndices);
-  ASSERT_TRUE(result.surfaceCellContext.hasCrossField);
-  EXPECT_EQ(field.matching, result.surfaceCellContext.crossField.matching);
-  EXPECT_EQ(field.effort, result.surfaceCellContext.crossField.effort);
+  EXPECT_EQ(field.rawField, result.product().rawCrossField);
+  EXPECT_EQ(field.matching, result.product().crossFieldMatching);
+  EXPECT_EQ(field.effort, result.product().crossFieldEffort);
+  EXPECT_EQ(field.singularCycles, result.product().crossFieldSingularCycles);
+  EXPECT_EQ(field.singularIndices, result.product().crossFieldSingularIndices);
+  ASSERT_TRUE(result.surfaceCellContext.productSnapshots.hasCrossField);
+  EXPECT_EQ(field.matching, result.surfaceCellContext.productSnapshots.crossField.matching);
+  EXPECT_EQ(field.effort, result.surfaceCellContext.productSnapshots.crossField.effort);
   EXPECT_EQ(2U, result.diagnostics.componentCount);
 }
 
@@ -2041,10 +2014,27 @@ TEST(SurfaceCellPipelinePhase20, SurfaceCellFallbackIsDeterministic) {
   }
 }
 
+TEST(SurfaceCellPipelinePhase20,
+     PackagedFixtureClosureIsExecutableRelative) {
+  const std::filesystem::path fixtureRoot =
+      directional::tests::test_executable_directory() /
+      "test-data/benchmarks/fixtures";
+  for (const char *manifest : {"manifest.example.json",
+                               "milestone_g_manifest.json",
+                               "repo_regressions.json"}) {
+    EXPECT_TRUE(std::filesystem::is_regular_file(fixtureRoot / manifest))
+        << (fixtureRoot / manifest).string();
+  }
+  EXPECT_TRUE(std::filesystem::is_regular_file(
+      fixtureRoot / "milestone-g/bunny_1k_random.obj"));
+}
+
 TEST(SurfaceCellPipelinePhase20, BenchmarkManifestDispatchesBackends) {
   const std::filesystem::path manifestPath =
-      std::filesystem::path(DIRECTIONAL_TEST_SOURCE_DIR) /
-      "benchmarks/fixtures/manifest.example.json";
+      directional::tests::test_executable_directory() /
+      "test-data/benchmarks/fixtures/manifest.example.json";
+  ASSERT_TRUE(std::filesystem::is_regular_file(manifestPath))
+      << manifestPath.string();
   const std::vector<directional::bench::BenchmarkCase> cases =
       directional::bench::load_benchmark_manifest(manifestPath);
 

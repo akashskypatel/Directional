@@ -1,0 +1,1136 @@
+# Direct Surface-Cell Quadrangulation Architecture
+ 
+**Status:** normative architecture  
+**Scope:** the direct, source-authoritative, pure-quad surface-cell backend  
+**Decision:** this experimental branch stores one authority contract per semantic fact. Existing behavior is evidence only; each replacement is an in-place producer-to-consumer cutover and the displaced contract is deleted in the same change.
+ 
+**Pipeline decision:** the backend implements **Pipeline B** (separatrix-derived topology, no global coordinate integration) as the default and only currently normative construction path. **Pipeline A** (single-solve decomposed coordinate integration) is a documented optional future path. Pipeline A is not implemented, not tested, and not a design requirement until Pipeline B is fully functional and producing production-level output against the committed representative matrix.
+ 
+**Disposition decision:** the backend produces a **graded output disposition** rather than a binary accept/reject. Strict direct acceptance remains the highest and only certified tier. Below it, the pipeline emits the best structurally-sound mesh it can, explicitly labeled with its degradation, rather than failing hard. Only a small, enumerated set of catastrophic conditions produces no mesh at all. Degradation is never silent, never repairs upstream authority, and never relabels itself as certified.
+ 
+## 1. Document authority
+ 
+This file defines architecture and invariants only. It intentionally contains no artifact IDs, run counts, current failure totals, or "next turn" instructions.
+ 
+| Concern | Authoritative record |
+|---|---|
+| Normative product and architecture | this `DESIGN.md` |
+| Current gate and next accepted action | `TODO.md` |
+| Checkpoint decomposition from the accepted gate to production-ready | `.agents/Directional/ROADMAP.md` |
+| Exact next-session instructions | `.agents/Directional/Future_Chat_Session_Handoff.md` |
+| Runtime, build, and benchmark evidence | dated plan/report documents |
+| Regression history and repeated patterns | `.agents/Directional/Regression_Root_Cause_Tracker.md` |
+| Point-in-time PR-wide audit evidence | `.agents/Directional/PR_8_Regression_Audit_Inventory.md` |
+| Normative testing policy | `tests/TESTING_STRATEGY.md` |
+| Test-suite audit findings and redesign order | `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md` |
+| Prior architecture findings this design answers | `.agents/Directional/Surface_Cell_Architecture_Independent_Design_Review_Report.md` |
+ 
+If a status record conflicts with this file, status does not redefine an architectural invariant. If two status records conflict, the newest evidence report governs and the status records must be reconciled before implementation resumes.
+ 
+## 2. Product contract
+ 
+Given a source triangle mesh, a degree-four directional field, exact source-feature constraints, and a target-size field, the backend produces a deterministic, source-attached, manifold pure-quad mesh together with an explicit disposition describing the strength of the guarantees that mesh carries.
+
+### 2.1 Certified acceptance
+ 
+A result is **Certified** only if all of the following hold:
+ 
+1. every output face is a quadrilateral;
+2. output topology is derived from explicit source-topology and field-transport authority;
+3. source components, boundaries, hard features, local isolation sheets, cuts, singularities, and periodic relations remain distinguishable;
+4. every output vertex has auditable source support;
+5. all owned topology regions, rail relations, isolation-seam certificates, and periodic relations are consumed exactly once or rejected with a typed failure;
+6. output incidence, connected components, boundary loops, orientability, manifoldness, and Euler characteristic are computed from the materialized mesh rather than predicted;
+7. no region was constructed from a degraded, substituted, or relaxed plan; every region's construction consumed the certified global plan unmodified;
+8. deterministic identity is invariant under source-face row enumeration, output emission order, container order, and thread scheduling;
+9. work is bounded by a global, auditable budget with a monotone progress measure;
+10. field alignment, feature preservation, source-surface approximation, and element quality satisfy independently verified, explicitly calibrated acceptance criteria.
+Requirement 7 replaces the previous absolute prohibition on fallback. The prohibition was correct about its target — silent substitution masking producer defects — and that target is now enforced by disposition typing (§2.2) rather than by refusing to emit anything. Certified output still contains no fallback, recovery, or generic-producer substitution of any kind.
+ 
+### 2.2 Output disposition ladder
+ 
+Every run terminates in exactly one typed disposition. Dispositions are totally ordered; the pipeline emits the **highest tier it can establish by verification**, never a tier it merely hopes holds.
+ 
+| Tier | Name | Mesh emitted | Guarantees |
+|---|---|---|---|
+| D0 | `Certified` | pure quad, complete | all of §2.1 |
+| D1 | `QualityRelaxed` | pure quad, complete | §2.1 items 1–9; one or more calibrated quality gates (item 10) missed, each named with its measured value |
+| D2 | `LocallyDegraded` | pure quad, complete | §2.1 items 1–6, 8, 9; one or more regions constructed by a named degraded producer; every such region individually identified |
+| D3 | `Partial` | pure quad, incomplete | §2.1 items 1–6, 8, 9 hold **on the emitted subset**; one or more regions omitted, leaving boundary loops where they were; every omitted region identified with its typed failure |
+| D4 | `DiagnosticOnly` | none | no mesh; typed failure record and last valid certificate set only |
+ 
+Rules that hold across the ladder:
+ 
+1. **Verification, not intent, assigns the tier.** The disposition is computed by the independent verifier (§9) from the materialized product, never asserted by a producer or by the orchestrator.
+2. **Monotone truthfulness.** A run may only ever move *down* the ladder as it proceeds. No stage may raise a disposition. A tier once lowered is never restored within the same run.
+3. **Degradation is data.** Every drop from D0 carries a `DegradationCertificate` (§6.7) naming the stage, the owning region or gate, the typed cause, and the substitution actually applied. A disposition without a complete degradation record is itself a verification failure and forces D4.
+4. **No upstream mutation.** Degradation may only affect construction *at or below* the stage where it is triggered. It may never edit, repair, re-solve, or re-derive an earlier stage's immutable product. Stage products remain single-writer under all dispositions.
+5. **Degraded output is never certified output.** D1–D3 results are structurally usable meshes. They are not evidence that the strict path works, may not close a strict gate, and may not be compared against certified baselines as equivalents.
+6. **Determinism applies at every tier.** The metamorphic invariants of §10.1 hold for D1–D3 output exactly as for D0, including which regions degraded and how.
+7. **Degradation is bounded.** Each degradation is a single, finite, non-recursive substitution. A degraded producer may not itself degrade further, and degradation may not be retried. This keeps the work ledger (§10.2) valid under all dispositions.
+### 2.3 Catastrophic conditions
+ 
+D4 is reserved for conditions under which no emitted mesh could be meaningfully interpreted. The set is closed and enumerated:
+ 
+- `SourceAuthorityUnestablished` — A0 cannot produce exact support, incidence, or component structure for the input after sanitization;
+- `FieldTransportUnestablished` — A1 cannot produce a typed transport for the traversable adjacency, or the field fails the quadrangulability precondition (§7.5);
+- `NoRegionConstructed` — A4 produced zero accepted regions, so there is no subset to emit;
+- `VerifierIntegrityFailure` — the verifier's own invariants fail, so no claim about the output can be trusted at any tier;
+- `BudgetExhaustedBeforeFirstRegion` — the global work budget was consumed before any region completed.
+Nothing outside this list is catastrophic. In particular, an infeasible conformity plan, a failed region, a violated quality threshold, an unconsumed relation, and an exhausted per-region budget are all *non-catastrophic* and resolve to D1–D3.
+ 
+### 2.4 Scope of the discrete problem
+ 
+The default backend (Pipeline B) replaces global mixed-integer coordinate integration entirely. It does **not** claim to eliminate global discrete topology decisions. Shared rail subdivision, parity, holonomy, and quotient consistency are global combinatorial constraints and must be solved explicitly — but as graph and flow problems over an `O(n)` structure, not as integer variables inside a linear system.
+ 
+Pipeline A (§16) reintroduces coordinate integration in a restructured form and is out of scope until Pipeline B is production-level.
+ 
+## 3. Architectural diagnosis
+ 
+The recurring failures are not independent local bugs. They arise from one repeated architectural cycle:
+ 
+1. a producer emits several partially overlapping representations of authority;
+2. weakly typed integers, parallel vectors, booleans, hashes, and container positions carry semantic meaning;
+3. a downstream consumer reconstructs missing topology or chooses among the representations;
+4. a focused test validates the reconstructed proxy rather than the production certificate;
+5. a more representative fixture changes enumeration, chart overlap, or the number of relations;
+6. the previous proxy ceases to be equivalent to the source semantics;
+7. a new field or consumer-side exception is added, increasing the next ambiguity.
+The correction is a certificate-carrying, single-writer pipeline. Each stage owns one immutable output type, establishes explicit postconditions, and passes sufficient semantic evidence to the next stage. Downstream stages validate or consume authority; they never recreate it.
+ 
+Graded disposition does not weaken this correction. The failure mode the strict rule guarded against was *silent* substitution — a consumer quietly filling a gap and a test then validating the fill. Under §2.2 a substitution is a typed, verified, independently reported product fact that lowers the run's tier, so it cannot be mistaken for correct behavior by a test, a gate, or a reader.
+ 
+## 4. Scientific grounding
+ 
+The architecture adopts the following established ideas without copying a reference pipeline wholesale.
+ 
+### 4.1 Directional-field topology is explicit data
+ 
+Vaxman et al., *Directional Field Synthesis, Design, and Processing* (2016), distinguish discretization from representation and show that principal matching alone can alias field topology. Period jumps, matchings, connections, singularity indices, and holonomy are discrete degrees of freedom. Therefore:
+ 
+- field transport is a first-class algebraic object;
+- a face chart, a local isolation sheet, and a source-topology region are separate domains;
+- non-principal transport cannot be inferred from local geometry or a selected representative;
+- cycle sums and non-contractible-cycle holonomy are verified explicitly.
+### 4.2 MIQ supplies the transport algebra, not the backend architecture
+ 
+Bommes, Zimmer, and Kobbelt, *Mixed-Integer Quadrangulation* (2009), cut the surface and construct a seamless parametrization whose cross-chart transitions are grid automorphisms. The surface-cell backend retains that precise algebra:
+ 
+\[
+T(p) = R_{90}^{r}p + t,\qquad r\in\mathbb Z_4,\quad t\in\mathbb Z^2.
+\]
+ 
+Rotation and translation are different typed values. Composition, inverse, canonicalization, and cycle closure are defined once. The backend does not replace them with an untyped route, a face choice, or a zero-rotation special case.
+ 
+MIQ's *solver* structure is explicitly not adopted by Pipeline B. Iterative rounding re-solves the parametrization system once per integer variable; that cost structure is the motivating reason the default path carries no integer variables in any linear system.
+ 
+### 4.3 QEx supplies the exactness boundary
+ 
+Ebke et al., *QEx: Robust Quad Mesh Extraction* (2013), separate input preprocessing, geometry extraction, and connectivity extraction. QEx sanitizes the numerical parametrization and transition functions before making deterministic local decisions with exact predicates; it also distinguishes triangle corners, extracted vertices, ports, connections, and halfedges.
+ 
+For surface cells this implies:
+ 
+- sanitize numeric source positions and barycentric coordinates once at the boundary;
+- use exact source-simplex and combinatorial identities thereafter;
+- keep corner occurrences separate from quotient vertices;
+- extract connectivity from explicit relations, not world-space coincidence;
+- give the validator certificates rather than asking it to repeat extraction.
+### 4.4 QuadWild supplies the global-before-local conformity rule
+ 
+Pietroni et al., *Reliable Feature-Line Driven Quad-Remeshing* (2021), construct a patch layout, solve a global integer program for shared patch-side tessellation and parity, and only then quadrangulate patches independently. The key reusable rule is ordering, not the particular ILP:
+ 
+> all shared boundary subdivisions are decided once, globally, before any local producer commits cells.
+ 
+The surface-cell backend therefore owns a `GlobalConformityPlan`. Independent region producers may not select hard-rail breakpoints and ask an aggregator to pair them afterward.
+ 
+### 4.5 Combinatorial tracing supplies the network primitive
+ 
+Ray and Sokolov, *Robust Polylines Tracing for N-Symmetry Direction Field on Triangulated Surfaces* (2014), trace field-aligned polylines that provably cannot cross or merge. Each triangle boundary is decomposed into inflow and outflow intervals; the pairing is resolved by a guaranteed combinatorial algorithm, and barycentric positions propagate in arbitrary precision rather than by numerical integration.
+ 
+This is the normative tracing primitive for A2a. Its properties are exactly the ones the architecture requires elsewhere: the branch decision is combinatorial rather than a nearest-direction heuristic, positions are exact barycentric values compatible with `SourceSupport`, and the non-crossing guarantee is structural rather than a post-hoc repair.
+ 
+**Grazing edges — the piecewise-constant case Ray and Sokolov's continuum statement does not cover.** Where a triangle's inflow/outflow decomposition is read from a piecewise-constant per-face field, a shared edge may be an outflow interval of **both** incident triangles. The field is then nearly parallel to that edge on both sides, and no crossing occurs. A trace reaching such an edge neither crosses it nor stops on it: it **transits along the edge** to the endpoint that both incident directions drive the edge parameter toward, and re-enters the vertex rule there — terminating if that vertex is a singularity, re-emitting through the vertex sector rule otherwise. A hard rail still wins: if the edge is a mandatory edge the trace terminates on first contact and is never slid along.
+ 
+Four properties are load-bearing and each is checkable rather than assumed:
+ 
+- **the decision is exact and combinatorial.** The three-way relation of a carrier to a face (inflow, tangent, outflow) is the sign of that face's published barycentric direction at the coordinate opposite the carrier, and the transit endpoint is the common sign of the two faces' rates of change of the edge parameter. No tolerance, threshold, or magnitude comparison participates. Disagreement between the two faces is a typed rejection, never a tie-break.
+- **the transit is one step.** The direction is constant per face, so the grazing condition and both parameter rates are constant along the whole edge. The slide is monotone and reaches an endpoint in a single step; the tracing model acquires no edge-following state.
+- **it is the continuous extension of the exactly-tangent case.** When the entry face's direction is exactly tangent to the entry edge, the trace already travels along that edge and exits at a vertex — the same vertex, selected by the same expression. A model that terminated on grazing would be discontinuous across a measure-zero configuration.
+- **non-crossing is preserved; non-merging is a measurement.** A transit lies on an edge and creates no interior crossing. Two traces entering the same grazing edge would overlap along it, so the count of traces per grazing edge is an observation the stage must publish, not an assumption it may make.
+ 
+### 4.6 The motorcycle graph supplies the region-decomposition guarantee
+ 
+Eppstein, Goodrich, Kim, and Tamstorf, *Motorcycle Graphs: Canonical Quad Mesh Partitioning* (2008), define a canonical partition in which each trace terminates on first contact with an existing trace. For fields with at least one singularity port or a source boundary, that traced network supplies the intended cell decomposition. On a closed index-free surface, however, A2a may legitimately publish a non-cellular or even empty curve network; disc-region authority then comes from the separate A2a′ `SurfaceCutGraph`, derived from source topology and the immutable A2a network before any region exists.
+ 
+Three consequences are load-bearing here:
+ 
+- **termination and cleanliness by construction.** Crash-on-contact removes limit cycles and non-terminating traces structurally. The architecture does not contain a "detect and repair limit cycles" step because it does not create them.
+- **disc topology by construction when the traced network is cellular.** For closed index-free surfaces, A2a′ completes the immutable A2a network to a cellular embedding before region derivation; region validity (§7.2) is still a property of the decomposition, not a post-region repair.
+- **the conformity plan is the same object.** The decomposition is describable as an `O(n)` graph whose nodes are region corners, whose edges are shared boundary arcs between two regions, and whose edge labels are subdivision counts along those arcs. That is precisely `GlobalConformityPlan`.
+Minimizing the number of regions is NP-hard but efficiently approximable; the architecture therefore treats region count as a quality objective, never a validity condition.
+ 
+**The termination guarantee is conditional, and its condition is named.** The motorcycle argument above assumes motorcycles walking the edge chains of an *existing quadrilateral mesh*, where every step consumes an edge and non-termination is impossible by counting. A2a is one stage earlier: it traces a piecewise-constant field on a triangle mesh, carrying an exact position in face interiors. That is a one-dimensional dynamical system and it does admit limit cycles — one is exhibited on the prescribed sphere witness, with an exactly affine, provably contracting first-return map around a closed circuit. Crash-on-contact still terminates every such trace there, but for a different reason than the counting argument: the **perpendicular branch family** crosses a circulating trace almost immediately, and branches `b` and `b±1` cross transversally while `b` and `b+2` never can. On a field with a minimal component the perpendicular family does not save it, and the outcome is a field-quadrangulability judgement under §4.10 and §7.5 — a graded disposition, never a silent truncation.
+ 
+Two consequences are load-bearing and must not be softened. **A trace's own self-contact cannot serve as the stopping rule**: the field direction is one constant vector per `(face, branch)`, so two visits to the same face on the same branch lay down parallel segments that can never cross. And **no length budget derived from the mesh may terminate a trace**: measured on the prescribed sphere, the longest correctly terminating trace and one lap of a never-terminating trace have the same arc length to four decimal places, so length carries no information about whether a trace will terminate. A trace stopped by a length budget also ends at a point that is neither a singularity, a rail, nor a contact, leaving an arc that bounds no region and breaking §7.2's disc validity by construction. Trace length is a diagnostic and a disposition input only.
+ 
+### 4.7 Interval assignment is a flow problem, not an ILP
+ 
+Campen, Bommes, and Kobbelt, *Quantized Global Parametrization* (2015), show that the per-cell consistency conditions — opposite sides of a cell must sum to equal parametric length — form an underdetermined homogeneous linear Diophantine system whose coefficients are drawn from `{-1, 0, 1}` with exactly two non-zeros per column, and that navigating its solution space by generating vectors admits a deterministic Dijkstra-type algorithm rather than branch-and-bound. They further note that for a decomposition without T-junctions the generating vectors are orthogonal, coefficients are chosen independently per dual cycle, and *processing order does not matter*.
+ 
+Heistermann, Warnett, and Bommes, *Min-Deviation-Flow in Bi-directed Graphs for T-Mesh Quantization* (2023), formulate the assignment as a minimum-deviation-flow problem in bi-directed networks and disclose an exact iterative-refinement algorithm: construct a feasible integer flow, reduce each bounded refinement to weighted perfect b-matching and then weighted perfect matching, and repeat until no exact improvement exists. Their Corollary 3.7 proves finite convergence for fixed refinement bound, Theorem 3.8 proves that a non-improving iteration with bound at least two is globally optimal, and Corollary 3.9 concludes exact optimality.
+ 
+This is the normative algorithmic basis for A3 after `M4-DEFN-R1`. M4 retains its input-derived finite count cap and theorem-derived exact lexicographic encoding, but expresses the frozen L1 objective as an exact separable convex Bi-MDF cost and uses the disclosed refinement algorithm with fixed `M=2`; see `Architecture_M4_DEFN_Frozen_Definitions.md` §7. The outer optimizer now has **finite exact convergence**, not a claimed polynomial runtime bound. This is an explicit assurance amendment, while semantic exactness and canonical tie-breaking remain unchanged.
+
+**Production-baseline supersession (`M4-CP3-DEFN-R1`).** The Bi-MDF construction remains historical authority for the accepted fully framed CP1/CP2 problem, but it is no longer the baseline production A3 algorithm because accepted A2b does not universally own U/V/sign incidence labels for Cut or Mandatory arcs. Baseline production A3 now reduces the unchanged exact L1 target objective subject only to per-region all-quad boundary parity to an exact minimum-cardinality T-join plus canonical lex-prefix refinement; see frozen definitions §17. A stronger framed schedule may return only through an explicit upstream frame certificate and a new definition.
+ 
+### 4.8 Exact combinatorial coordinates supply the support kernel
+ 
+Gillespie, Sharp, and Crane, *Integer Coordinates for Intrinsic Geometry Processing* (2021), encode curve/edge crossing structure as one integer per edge, avoiding floating-point data entirely and guaranteeing that the structure always encodes a valid subdivision. Intrinsic mollification adds a bounded slack to edge lengths so that all triangles satisfy the triangle inequality, changing geometry only where a triangle is within tolerance of degenerate.
+ 
+This is the normative implementation basis for the `SourceSupport` kernel (§6.3) and for bounded input conditioning. **Amendment 20 supersedes the older A0-sanitization ownership:** value-changing mollification/quantization/regularization, when permitted by the frozen CP-COND policy, occurs only in the pre-A0 `InputConditioner` and is recorded in the raw-to-conditioned certificate. A0 consumes the immutable conditioned product and may validate/canonicalize exact identities, but may not change values. Integer coordinates are the exact identity carried afterward.
+ 
+### 4.9 Injective region interiors are available without optimization
+ 
+Fu et al., *Inversion-free Geometric Mapping Construction: A Survey* (2021), survey the constrained non-convex optimization normally required to guarantee inversion-free maps. For the rectangular local cases A4 classifies after A3 has fixed shared boundary subdivisions, Tutte's barycentric embedding supplies one injective construction route without changing shared-boundary authority, as used for the same purpose by Zhou et al., *Combinatorial Construction of Seamless Parameter Domains* (2020). `M4-CP3-DEFN-R1` corrects the earlier overstatement that every A4 disc is a convex integer rectangle: baseline A3 guarantees exact shared subdivisions and even disc-boundary parity; A4 owns the stronger local rectangular/small-side/singularity/general-even-boundary constructibility question.
+ 
+The architecture therefore treats guaranteed injectivity and distortion-minimizing quality as *separate* concerns with separate mechanisms, rather than depending on one optimizer for both.
+ 
+### 4.10 Field quadrangulability is a checkable precondition
+ 
+Campen, Shen, Zhou, and Zorin, *Seamless Parametrization with Arbitrary Cones for Arbitrary Genus* (2019), establish that for topologically admissible cone sets a solution generally exists, and observe that convexified constraints can render solvable instances apparently infeasible. Shen et al., *Which Cross Fields Can Be Quadrangulated?* (2022), relate cross-field topology to parametrization topology directly.
+ 
+Two architectural consequences: infeasibility encountered downstream should be presumed an artifact of over-constraint or discretization rather than of the input, and the admissibility of the field is a **precondition** verified at A1 (§7.5), not a discovery made at A3.
+ 
+### 4.11 Instant Meshes and FlowRep delimit local heuristics
+ 
+Jakob et al., *Instant Field-Aligned Meshes* (2015), demonstrate scalable local orientation and position fields. Those fields are valuable geometric proposals, but their proximity-based extraction and quad-dominant contract are not semantic topology authority for this backend.
+ 
+Gori et al., *FlowRep* (2017), show that robust curve selection depends on global strand and cycle context, not only local edge alignment. This supports using global rail/cycle structure to plan cells, while keeping perceptual or curvature scores as quality objectives rather than validity criteria. FlowRep's published algorithm consumes an existing quad-dominant mesh and is therefore not adoptable as a generator here; only its network-selection principle transfers.
+ 
+### 4.12 Existing implementations
+ 
+- `libQEx` is the reference for explicit extraction entities and an exact-predicate boundary.
+- `QuadWild` is the reference for phase separation and global side-count consistency before local tessellation.
+- `libSatsuma` is an **algorithm/reference implementation** for the Heistermann/Warnett/Bommes exact Bi-MDF refinement pipeline, not M4's numeric authority. Its upstream `int` flow, `double` target/cost, `int64_t` matching weight and tolerance-based refinement terminal do not satisfy M4's arbitrary-precision contract. M4 ports/adapts only the disclosed algorithm/reductions with exact arithmetic; a library may supply weighted perfect matching only if its numeric interface preserves exact M4 comparisons.
+- `geometry-central` is the reference implementation for integer/normal coordinates and intrinsic mollification.
+- `Directional` is the reference for field matching, singularities, and transport metadata.
+- the supplied AutoRemesher implementation is a useful comparison for field/parameterization/extraction staging, but its hole repair, largest-island selection, and triangle/n-gon emission are incompatible with pure-quad authority at any disposition tier.
+## 5. Normative pipeline — Pipeline B
+ 
+Each stage is a pure transformation over immutable inputs. A stage may create diagnostics, but diagnostics never influence semantic identity or acceptance.
+ 
+| Stage | Input | Owned immutable output | Required postcondition |
+|---|---|---|---|
+| **Conditioning. Raw-input authority** | raw source mesh, raw cross field, feature metadata, exact `ConditioningPolicy` | `ConditionedSourceProduct` + `ConditioningCertificate`, or typed `ConditioningFailure` | value changes occur at most once; raw→conditioned correspondence is certified and independently falsifiable |
+| A0. Source authority | immutable `ConditionedSourceProduct` | `SourceAuthoritySnapshot` | exact support, incidence, components, sheets, barriers, and stable typed IDs are complete; no value-changing sanitization occurs here |
+| A1. Field transport atlas | A0 and cross field | `FieldTransportAtlas` | every traversable adjacency has a typed transport; cycle and singularity facts are explicit; quadrangulability precondition is decided |
+| A2a. Field-aligned curve network | A0–A1 | `FieldAlignedCurveNetwork` | every required singularity port is owned once; every trace is branch-consistent, non-crossing, and terminates at a typed network event |
+| A2a′. Surface cut graph | A0–A2a | `SurfaceCutGraph` | the immutable field-aligned network plus deterministic source-edge cuts is a certified cellular embedding; already-cellular input publishes an empty cut set |
+| A2b. Topology plan | A0–A2a′ | `GlobalTopologyPlan` | regions, cuts, rails, singularity ports, seam certificates, and holonomy ownership are complete; every region is a disc unless explicitly typed otherwise |
+| A3. Conformity plan | A0–A2b and target size | `GlobalConformityPlan` | every shared rail has one positive breakpoint sequence; side counts and parity are globally feasible |
+| A4. Local construction | A0–A3 | `RegionCellComplex` per region | cells conform exactly to the supplied plan; no shared decision is recomputed |
+| A5. Occurrence complex | all A4 outputs | `SurfaceOccurrenceComplex` | every cell corner and directed side is explicit; relations refer to occurrence IDs |
+| A6. Quotient plan and materialization | A0–A5 | `QuotientCertificate` and quad mesh | only certified equivalences merge occurrences; one accepted cell maps to one output quad |
+| A7. Geometry embedding | A0 and A6 | source-attached vertex geometry | every vertex has exact source support and remains on the intended source sheet |
+| A8. Independent verification | A0–A7 | `VerificationReport`; M7 extends A8 with `OutputDisposition` | all certificates, mesh invariants, lineage, and expected topology are independently checked; M6 verifies immutable producer state, while M7 computes disposition without changing that state |
+| A9. Diagnostics/export | verified records | logs and public result | diagnostics are derived, stable, and cannot mutate authority |
+ 
+No stage may write into an earlier stage's object. Aggregation is a new stage output, not normalization by mutation.
+ 
+### 5.1 Stage cost structure
+ 
+The default path contains **no global linear system and no numeric factorization**. The pre-A0 conditioner is a bounded exact/certified pass over raw authority under its explicit policy; A0 and A1 are linear passes. A2a is combinatorial tracing in exact arithmetic. A2a′, A2b, and A3 are graph and flow problems over an `O(n)` structure. A4 is local and parallel per region. A5–A9 are combinatorial. This property is normative: any proposed change that introduces a global factorization into the default path is a stop condition (§15) and belongs in Pipeline A instead.
+ 
+### 5.2 Degradation points
+ 
+Degradation is permitted at exactly four points, each with one named substitution and one resulting tier:
+ 
+| Trigger | Stage | Permitted substitution | Resulting tier |
+|---|---|---|---|
+| a quality gate is missed but all structural certificates verify | A8 | none; the mesh is emitted as-is with measured values | D1 |
+| a region producer returns `Rejected` | A4 | that region only is built by the declared degraded producer | D2 |
+| a region has no degraded producer, or the degraded producer also fails | A4 | that region only is omitted; its rails become boundary loops | D3 |
+| the conformity plan is infeasible for a rail subset | A3 | the affected rails' regions are marked non-constructible; construction proceeds for the remainder | D3 |
+ 
+No other stage may degrade. A0, A1, A2a, A2a′, A2b, A5, A6, A7, and A9 have no degraded mode: a failure at those stages is either catastrophic (§2.3) or is a defect to be fixed, never worked around.
+ 
+### 5.3 The degraded region producer
+ 
+Exactly one degraded producer is declared, and its contract is deliberately minimal:
+ 
+- it consumes the same immutable `GlobalConformityPlan` rails as the strict producer, unmodified;
+- it emits pure quads only;
+- it produces cells conforming exactly to the already-fixed boundary breakpoints, so neighbouring regions are unaffected and the quotient stage sees no difference in relation structure;
+- it makes no field-alignment, feature-preservation, or element-quality claim;
+- it is bounded, non-recursive, and cannot itself degrade;
+- it emits a `DegradationCertificate` naming the region and the strict producer's typed failure.
+Its purpose is to keep the output mesh complete and manifold, not to be good. Regions it builds are individually identified in the verification report so their quality is never averaged silently into the whole.
+ 
+## 6. Canonical domain model
+ 
+### 6.1 Strong IDs
+ 
+Every semantic domain has a distinct type. Bare `int`, `uint64_t`, or `vector<int64_t>` is prohibited at public stage boundaries.
+ 
+Minimum required domains:
+ 
+```cpp
+struct SourceVertexId;
+struct SourceFaceId;
+struct SourceEdgeTopologyKey;
+struct InteriorTransitionId;
+struct SourceComponentId;
+struct IsolationSheetId;
+struct TopologyRegionId;
+struct FieldChartId;
+struct HardRailId;
+struct PeriodicRelationId;
+struct CellId;
+struct OccurrenceId;
+struct QuotientClassId;
+struct SingularityId;
+struct FieldBranch;
+struct NetworkNodeId;
+struct TraceId;
+```
+ 
+Conversion between domains requires a named function returning `expected<T, DomainError>`. Numeric coincidence is never a conversion.
+ 
+### 6.2 Semantic identity versus representation handles
+ 
+Semantic identity contains only source-invariant facts. Representation handles—vector offsets, emitted face rows, front-edge indices, local patch ordinals, completion backend IDs, hashes, and cache indices—are stored separately.
+ 
+Rules:
+ 
+1. equality and ordering of semantic objects never use representation handles;
+2. hashes may accelerate lookup after equality is defined, but a hash is never the primary canonical order or identity;
+3. reverse orientation is canonicalized with an explicit orientation bit, not rejected because its vector is lexicographically larger;
+4. container order and object address never establish ownership;
+5. cached "last" or "selected" values are derived from the canonical object and not stored as independent authority.
+### 6.3 Exact source support
+ 
+One shared source-support kernel classifies a point as a tagged value:
+ 
+```cpp
+using SourceSupport = std::variant<
+    SourceVertexSupport,
+    SourceEdgeSupport,
+    SourceFaceInteriorSupport>;
+```
+ 
+It owns canonicalization, rebinding, equality, hashing, and incidence queries. Materialization, hard-rail pairing, chart resolution, ownership, and validation must use this kernel. Consumer-specific `1e-9` tests or `1e12` quantized keys cannot define identity.
+ 
+**Amendment-20 supersession.** A0 is no longer a value-changing sanitization owner. The pre-A0 `InputConditioner` is the sole boundary that may change input values, under the exact/certified `M4-CP-COND` policy. A0 consumes the immutable conditioned product and only validates/canonicalizes exact support authority. A tolerance-derived value may be logged as geometry evidence but cannot decide sanitizability, correspondence, admissibility or ownership after the CP-COND cutover.
+ 
+### 6.4 Charts and transport
+ 
+There is one `FieldChartId` type. Duplicate chart structs with reordered fields are prohibited.
+ 
+```cpp
+struct GridAutomorphism {
+  QuarterTurn rotation;      // Z4
+  LatticeTranslation shift;  // Z2
+};
+ 
+struct TransitionStep {
+  SourceEdgeTopologyKey topology;
+  std::optional<InteriorTransitionId> interior;
+  GridAutomorphism transport;
+  Orientation orientation;
+};
+ 
+struct CanonicalRoute {
+  std::vector<TransitionStep> steps;
+  Orientation canonicalOrientation;
+};
+```
+ 
+Topology and the optional compact transition ID are one value object, never parallel vectors. A genuine one-face source boundary has topology and no interior transition. A two-face transport requires both. Route construction validates positional correspondence once.
+ 
+### 6.5 Closed producer outcomes
+ 
+A producer exposes exactly one state:
+ 
+```cpp
+template<class T>
+using ProducerOutcome = std::variant<
+    NotApplicable,
+    Produced<T>,
+    Rejected<ProducerFailure>>;
+```
+ 
+There are no public `attempted` or `succeeded` aliases. Construction uses named factories; consumers use exhaustive visitation. `Produced<T>` guarantees a nonempty, internally valid payload. `Rejected` guarantees a typed failure and no consumable partial product. Debug snapshots are a separate, explicitly non-semantic channel.
+ 
+The dispatch rule is fixed:
+ 
+- `NotApplicable`: the dispatcher may try the next declared producer;
+- `Produced`: commit exactly this result;
+- `Rejected`: stop; **generic substitution is forbidden**.
+This is unchanged by graded disposition, and the distinction is the crux of the design. A producer never substitutes for another producer, never emits a partial payload, and never softens its own failure. Degradation is not a producer behavior at all: it is a decision taken one level up, by the disposition stage (§6.7), which observes a terminal `Rejected`, records it, and invokes a *separately declared, explicitly named* degraded producer whose output is labeled as such. `Rejected` remains terminal for the strict producer that emitted it.
+ 
+### 6.6 Certificates
+ 
+Every non-local semantic decision is represented by a certificate with a verifier.
+ 
+Required certificates include:
+ 
+- `FieldTransportCycleCertificate`;
+- `FieldQuadrangulabilityCertificate`;
+- `CurveNetworkCertificate`;
+- `IsolationSeamTransportCertificate`;
+- `PeriodicHolonomyCertificate`;
+- `HardRailScheduleCertificate`;
+- `RegionConformityCertificate`;
+- `ChartSelectionCertificate`;
+- `QuotientRelationCertificate`;
+- `SourceSupportCertificate`;
+- `MaterializationCertificate`.
+A `ChartSelectionCertificate` records the selected component and the ordered canonical relation path for every participating occurrence. A boolean `witnessed` flag or reachable-set membership is not sufficient evidence.
+ 
+### 6.7 Disposition and degradation
+ 
+Disposition is a first-class stage product, not a status flag.
+ 
+```cpp
+enum class DispositionTier { Certified, QualityRelaxed, LocallyDegraded, Partial, DiagnosticOnly };
+ 
+struct DegradationCertificate {
+  StageId               stage;
+  DegradationScope      scope;        // whole-run gate, or one TopologyRegionId
+  ProducerFailure       cause;        // the terminal typed failure observed
+  SubstitutionKind      substitution; // None | DegradedRegionProducer | RegionOmitted
+  DispositionTier       impliedTier;
+};
+ 
+struct OutputDisposition {
+  DispositionTier                        tier;
+  std::vector<DegradationCertificate>    degradations;
+  std::vector<QualityGateResult>         gateResults;   // measured values, not booleans
+  std::optional<CatastrophicCause>       catastrophic;  // set iff tier == DiagnosticOnly
+};
+```
+ 
+Invariants:
+ 
+1. `tier` equals the minimum of `Certified` and every `impliedTier` present in `degradations`; the verifier recomputes this rather than trusting a stored value;
+2. `degradations` is empty if and only if `tier` is `Certified` or `QualityRelaxed` with all gates passed;
+3. every `DegradationCertificate` whose scope is a region names a region that exists in the topology plan and, for `RegionOmitted`, is absent from the materialized mesh;
+4. `catastrophic` is set if and only if the tier is `DiagnosticOnly`, and its value is drawn from the closed set in §2.3;
+5. `gateResults` records measured values for every calibrated gate whether or not it passed, so a relaxation is quantified rather than merely flagged;
+6. `OutputDisposition` is immutable once emitted and is part of the exported public result.
+The disposition stage is the **only** component permitted to observe a `Rejected` outcome and continue. It may not inspect, repair, or reinterpret the rejected payload — `Rejected` carries no consumable product — and may only choose between the two declared substitutions or omission.
+ 
+## 7. Global topology and conformity
+ 
+### 7.1 Separate region, sheet, and chart authority
+ 
+- a **source-topology region** is a producer domain bounded by source boundaries, hard rails, or explicit cuts;
+- an **isolation sheet** prevents unintended geometric cross-sheet interactions;
+- a **field chart** is a local frame/transport domain;
+- a **quotient class** is an output equivalence class of occurrences.
+These concepts may correlate, but none is a numeric alias or representative for another.
+ 
+### 7.2 The curve network and region derivation
+ 
+`GlobalTopologyPlan` regions are derived, not assumed. The derivation is normative:
+ 
+1. create ports from every cross-field singularity, with port count derived from the field index;
+2. create mandatory graph edges from hard features and source boundaries;
+3. trace the designated field branch from every singularity port using the combinatorial tracing primitive (§4.5);
+4. transport the branch intrinsically across source triangles, maintaining branch consistency;
+5. terminate each trace on first contact with an existing trace, a boundary, a feature, or a singularity — never in a regular face interior;
+6. record every trace intersection as an explicit network node;
+7. globally select and simplify the candidate network subject to the mandatory topology being preserved;
+8. before any region exists, consume the A2a′ `SurfaceCutGraph`, which deterministically adds only certified source-edge cuts needed to make the immutable A2a network a cellular embedding;
+9. extract the faces of that certified cellular embedding (field-aligned network plus cut graph);
+10. emit those faces as topology regions.
+Invariants on `FieldAlignedCurveNetwork`:
+ 
+1. every required singularity port is owned exactly once;
+2. every trace maintains branch-consistent transport along its full length;
+3. no trace terminates silently in a regular face interior;
+4. trace intersections create explicit graph nodes;
+5. feature and boundary constraints are first-class graph edges;
+6. every selected curve bounds one or two regions as appropriate;
+7. every resulting region has disc topology unless explicitly typed otherwise; on closed index-free surfaces this invariant is supplied by the certified A2a′ cut graph rather than by A2a alone;
+8. network reduction may remove redundant traces but may not alter required singularity index or port topology.
+Because tracing is combinatorial and terminates on contact, invariant 3 holds by construction. Invariant 7 holds directly when A2a is already cellular and otherwise through the certified A2a′ cut graph before region derivation. The architecture contains no limit-cycle detection, tiny-region collapse, post-`GlobalTopologyPlan` re-cut, or non-disc region repair step; adding one is a stop condition because it would repair an immutable upstream product. A2a′ is not such a repair: it is the single pre-region authority that completes a closed index-free embedding without changing A2a.
+ 
+#### 7.2.1 Amendment record — normative
+
+Amendments 12–14 refine §7.2 steps 8–10 and were declared in the CP4c-2 frozen-definition documents; Amendment 15
+was declared at `M3-CP4c-3-DEFN-R1` and governs how A1 derives a region's transport domain, and Amendment 16 at
+`M3-CP4c-3-TB2-REV` generalizes it to every derivation that walks transport in any stage (scope widened at
+`M3-CP4c-3-TB3-R1-REV`); Amendment 17 at `M3-CP4c-3-TB4-REV` governs how an election among candidate cells is
+decided, Amendments 18-19 at `M3-CP4c-3-TB5-REV` govern the provenance of values reaching a topological
+decision and the reportability of every producer exit, and Amendments 20-21, added when the adversarial
+architecture review was re-evaluated under a production lens, introduce input conditioning as a stage and typed
+regularizable degeneracy; and Amendments 22-23 at `M3-CP4c-3-DEFN-R2` define how a curve continues through a source
+vertex and what an architecture owes when an exact decision has no bounded algebraic representation. They are
+normative and
+are recorded here so §7.2 can be read without them being lost. This subsection is additive: nothing above it is
+withdrawn except where an amendment says so explicitly.
+
+- **Amendment 12 — precondition, not repair.** Establishing a precondition *before* a product is derived is not
+  repairing that product afterward. A2a′ runs before any region exists and may not read a `GlobalTopologyPlan`.
+  Source: `M3_CP4c_Frozen_Definitions.md` Part I; restated in `…DEFN_R1…` §3.5.
+- **Amendment 13 — the normative complex.** A2a′ certifies cellularity in the **actual embedded graph** of
+  `FieldAlignedCurveNetwork ∪ cutEdges`: vertices are network nodes plus nodes created by cuts, edges are network
+  arcs plus cut arcs, faces are the **dart orbits** under the node rotation system. Source-edge carrier provenance
+  is not graph-edge authority. The whole-source-face / source-edge-barrier partition is **withdrawn as cellularity
+  authority** and survives only as a cut-proposal heuristic and diagnostic provenance, and every publication of it
+  must say so. Source: `M3_CP4c_Frozen_Definitions.md` Part II §3.
+- **Amendment 14 — trace-crossed cut admissibility, and completeness.** A source edge crossed by a trace at an
+  interior point **is** an admissible cut; promoting it adds one arc per sub-interval between consecutive crossings
+  and one cut-created node per crossing, subdividing the trace **in the derived arrangement only**. The immutable
+  network — its traces, segments, events and digests — is unchanged. The admissible cut set is therefore every
+  source edge that is not already a graph arc. Consequently `network ∪ (source 1-skeleton)` is a cellular
+  embedding, a sufficient cut set always exists, and step 8's "certified source-edge cuts" is a total contract
+  rather than a conditional one. Source: `M3_CP4c_Frozen_Definitions.md` Part III §§3, 5.
+- **Amendment 15 — a topology region's transport domain is the region cut along its non-separating barriers.**
+  A region's face set, its published `euler_characteristic()` and its published `boundary_loop_count()` are facts
+  about the **uncut** source complex and are unchanged. A1's tangent bundle, cycle basis and index quantities are
+  derived instead from the region's **transport domain**: the region **cut along**
+  `B(R) = { e ∈ hardFeatureEdges : both faces incident to e belong to R }`, its non-separating barrier set.
+  Four consequences are normative.
+  1. **`B(R)` is the whole defect class.** A source-boundary edge and a region- or component-crossing edge each
+     have at most one incident face in `R`, so both are already local boundary edges; a traversable edge has an
+     adjacency. Only a hard-feature edge can be non-traversable *and* interior to a region. Isolation seams —
+     same region, same component, different sheet — are traversable by design and are **not** barriers.
+  2. **The cut never disconnects.** A region is a connected component of the face graph built *without* barrier
+     edges, so cutting along `B(R)` leaves that graph untouched. It follows that no subset of `B(R)` separates
+     `R`, and hence that on a region with `χ = 2, b = 0` every component of `B(R)` is a tree.
+  3. **The cut is a face-array rewrite with a fixed endpoint rule, plus the slits of Amendment 25.** A vertex `v` incident to `B(R)` is duplicated
+     into one copy per connected component of `star(v) ∖ B(R)`: `copies(v) = d_B(v)` for `v` interior,
+     `d_B(v) + 1` for `v` on the region's local-mesh boundary. An open arc's **tip** has `d = 1` and is therefore
+     **not** duplicated — the cut surface genuinely touches itself there — but it does become a boundary vertex.
+     The result is a manifold with boundary; geometry does not move. The one configuration the face array cannot
+     represent is a barrier edge whose two endpoints are both interior tips: neither is duplicated, so its two sides
+     stay glued. A1 applies that slit exactly in its cut accounting and cycle basis (Amendment 25).
+  4. **The arithmetic is an identity, not a coincidence:** `χ(R_cut) = χ(R) − χ(B) + ∂`, where `χ(B) = |V(B)| −
+     |B|` and `∂` counts `B`'s vertices already on the region's boundary. Barrier edges become boundary edges,
+     leave `dual_cycles`' inner-edge columns, and can no longer demand a transport adjacency — so a barrier can
+     never again raise `CycleTransportAdjacencyMissing`.
+
+  The amendment is **not free** and its costs are normative too: A1's local-mesh-versus-region cross-check must be
+  **replaced** by the identity in 4 rather than deleted; a region that gains a slit moves from the closed
+  `ClosedShenSufficient` index equality to the boundary-corrected `RelativeBoundary` branch; and every vertex on a
+  barrier loses its inner-vertex cycle, so a prescribed singularity there must be re-bound to the slit's boundary
+  cycle and **fail closed** when it binds to nothing. Amendment 12 is not weakened: constructing a derived
+  transport domain is not repairing an upstream product, exactly as Amendment 14 established for the derived
+  arrangement. Source: `M3_CP4c_Frozen_Definitions.md` Part V §§2-7.
+- **Amendment 16 — every derivation that walks transport is a transport-domain operation.** Amendment 15
+  defined a region's transport domain and applied it to the cycle basis. It applies to **every** derivation
+  that traverses transport, in **any** stage, without exception — including singularity port attachment, its
+  incident-fan construction, A2a's vertex-transit resolution, and any future consumer. *(Scope widened from "every
+  A1 derivation" to every stage at `M3-CP4c-3-TB3-R1-REV`: the reasoning was never A1-specific, A2a's
+  `resolve_field_vertex_transit` already complies by consuming the atlas's barrier-free transport set, and stating
+  the obligation prevents a later turn from closing a red by widening a traversal across a barrier. A derivation
+  whose transport walk is **truncated** by a barrier must report or handle the truncation — terminating at the
+  barrier where the stage models that — and may never restore uniqueness by crossing one.)* A barrier edge is **never** traversed, never supplied with a branch
+  transport, and never required to have one; supplying one so that a fan closes is the port-derivation form of
+  Amendment 15's prohibited option C. Where a derivation assumed a **closed** ring or a fully traversable
+  neighbourhood, that assumption is replaced by the corresponding transport-domain object: the fan of one local
+  copy — one connected component of `star(v) ∖ B(R)` — which is **open** when the vertex lies on a barrier. A
+  degree-1 barrier vertex is not exempt: its star is not split, but its ring walk still straddles the barrier ray.
+  One product may not hold two notions of traversability, so a vertex bound to a slit boundary cycle may not also
+  be required to present a closed transportable ring.
+
+  The amendment fixes the **frame and the prohibition**; it deliberately leaves open whether an *open* sector fan
+  still emits singularity ports (per-sector ports, versus absorbing the index into the slit boundary cycle and
+  emitting none), because the two differ in product-visible behaviour — the second means no traces start at such a
+  singularity — and the choice requires a measured census of barrier-incident singularities that does not yet
+  exist. Source: `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md` §5 (folded 2026-09-03 — resolve via the folded document index in `M3_CP4c_Consolidated_Record.md`).
+
+- **Amendment 17 — an election among candidate cells is decided from a single datum, not from one representative
+  per cell.** Where a producer chooses among candidate faces, sectors or cells by asking *"is this cell's own
+  representative of the datum admissible in this cell?"*, the question is **not a partition test**, and its
+  non-uniqueness cannot be removed by refining the cells, tightening a half-open convention, ordering the
+  candidates, or introducing a tolerance — the non-uniqueness is not in the cells. A partition disambiguates one
+  point among cells; it cannot disambiguate one point per cell. Vertex continuation in particular is a property of
+  **one** incoming ray and must be decided from that ray — expressed once and tested against the fan, or
+  equivalently from where the ray exits the vertex star. A cross field's per-face branch representatives are
+  related by transport, **not equal as vectors**, so testing each face against its own representative tests a
+  different point in every cell.
+
+  Three corrections are **prohibited** because they remove the symptom rather than the cause: electing the first
+  candidate or ordering faces to force uniqueness; widening or narrowing the sector convention; and introducing any
+  tolerance into a predicate that is exact today. Changing an arrival-mode exclusion in order to alter cardinality
+  is prohibited for the same reason. The amendment fixes the frame and the prohibitions; **which** single datum is
+  used — the incoming direction transported into each candidate, the ray's geometric exit from the star, or a
+  continuation owner published upstream — is a single-writer question left to the turn that measures the elected
+  directions. Source: `Architecture_M3_CP4c3_TB4_Independent_Review_Record.md` §§AQ2, 5 (folded 2026-09-03 — resolve via the folded document index in `M3_CP4c_Consolidated_Record.md`).
+
+- **Amendment 18 — exactness is a property of the derivation chain, not of the final comparison.** A value that
+  reaches a topological decision may not have passed through floating point at **any** point in its derivation,
+  even when the comparison itself is exact. Converting an exact quantity to `double` and back — for transport, for
+  normalization, or for convenience — destroys the guarantee regardless of the comparison's type, and introduces
+  silent failure modes (underflow to zero, non-finite intermediates, failed reconstruction) precisely where the
+  decision is least observable. Where performance requires it, a **certified filter** is admitted: a
+  floating-point or interval evaluation that either returns the provably-correct result or **defers to the exact
+  computation** (Shewchuk-style adaptive predicates, or interval arithmetic used as a filter). A filter that can
+  return a different answer than the exact path is not a filter and is prohibited; so is snapping an exact
+  coordinate onto a bounded lattice, which changes the value rather than the cost. Source:
+  `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` §AT6, §9 (folded 2026-09-03 — resolve via the folded document index in `M3_CP4c_Consolidated_Record.md`).1.
+- **Amendment 19 — a producer may not have an unreportable exit.** Every control-flow path that can end in a typed
+  failure must record a typed reason. An early `continue`, a `nullopt` return on a conversion, or a guard that
+  skips a state must leave evidence. A producer that reports a typed name describing a decision it never made is
+  **worse** than one that reports nothing, because the name is believed — five consecutive review turns have been
+  spent on names that misdescribed their own cause. Where a producer publishes per-state diagnostics, the
+  diagnostic must be recorded **before** any conditional that can skip the state, and an empty diagnostic set must
+  itself be a distinguishable, named condition. Source:
+  `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` §AT1-AT2, §11 (folded 2026-09-03 — resolve via the folded document index in `M3_CP4c_Consolidated_Record.md`).
+
+- **Amendment 20 — input admissibility and conditioning is a stage, not an assumption.** A0 has a predecessor. The
+  conditioning stage consumes the raw input and either emits a **conditioned source product** — immutable, with its
+  own semantic digest and a **certified correspondence** to the raw input recording every repair applied — or fails
+  with a typed inadmissibility reason. All downstream exactness and topology guarantees are stated **relative to
+  the conditioned product**, and the correspondence is what makes that honest rather than a loophole. This is the
+  **only** place where value-changing operations on input geometry or fields are permitted: quantization onto a
+  bounded rational lattice, sliver repair or refusal, near-duplicate merging, and field-matching admissibility
+  repair all belong here — applied **once, at the boundary, and recorded**. Applying any of them mid-pipeline
+  remains prohibited (Amendment 18): a value silently changed between stages corrupts every guarantee already
+  published, whereas a value changed once at the boundary and published is a product like any other. Source:
+  `Architecture_Adversarial_Review_Reevaluation_Production_Lens.md` §§3.1, 4, 5.
+
+  **M4-CP-COND definition freeze (2026-09-13).** `Architecture_M4_CP_COND_Frozen_Definitions.md` makes this boundary concrete: finite binary64 is exactified bit-for-bit before semantic decisions; the initial conditioned product preserves one-to-one face identity, permits only a single explicit exact lattice transform, exact-equality safe vertex merge and uniquely certified discrete `Z4` branch reindex, and initially handles slivers by exact typed refusal rather than topology-changing repair. The current legacy `BoundedMeshPreconditioner` and tolerant raw-field finalization checks are not semantic conditioning authority. A0/A1 may consume and reject the immutable conditioned product but may not mutate it.
+- **Amendment 21 — degeneracy is a typed product state, not only a failure.** The error surface bifurcates:
+  `FatalInadmissible` (corrupted or contradictory input no policy can resolve) versus `RegularizableDegeneracy` (a
+  discrete-mesh condition with a defined, deterministic resolution). A regularization must be **exact and
+  deterministic**, must be **recorded in the certificate** with its locus and the resolving policy, and must map
+  the run to a **disposition tier** (§6.7), so a regularized result is never silently indistinguishable from a
+  clean one. Two prohibitions. Regularization may **not** be applied where a partition or an exact predicate
+  already decides — an apparent ambiguity there is evidence of a representation defect, and the vertex-sector
+  election keeps its Amendment 17 prohibition. And a regularization may never **invent** topology ("phantom
+  ports"); it may only resolve a choice among admissible alternatives, or fail closed with a typed deficit naming
+  what geometry could not supply. Source:
+  `Architecture_Adversarial_Review_Reevaluation_Production_Lens.md` §§3.2, 3.4, 5.
+
+- **Amendment 22 — a curve continues through a source vertex along the *straightest geodesic* of the intrinsic
+  vertex star, decided in one arrival-anchored development, and the outcome is one typed certificate.** The
+  primitive datum is **one exact incoming ray**, anchored once at the vertex-arrival event, expressed in the
+  arrival face's chart, pointing away from the vertex back along the incoming trace, and written by A2a branch
+  continuation. The decision is: order the admissible incident fan (barrier and source-boundary truncation
+  inherited, not redefined); anchor the arrival face with the seed at developed angle `α`; unfold each subsequent
+  face sector isometrically about its shared radial edge into one developed chart, so the `k`-th radial ray sits at
+  the cumulative intrinsic angle `A_k = Σ_{i<k} θ_i`; continue at `β = α + Θ/2` where `Θ = Σ_i θ_i` is the cone
+  angle; apply the **unchanged** exact half-open sector convention to the developed sectors `[A_k, A_{k+1})`; and
+  return exactly one owner certificate or one typed non-owner state.
+
+  **Straightest geodesic, not the developed straight line, and that choice is the substance of the amendment.**
+  `β = α + π` can, on a star with `Θ ≠ 2π`, point into no sector (a gap) or into two (an overlap). `β = α + Θ/2`
+  can do neither: for any `Θ > 0` it lands in exactly one half-open sector because the sectors partition `[0, Θ)`.
+  The two coincide exactly at an intrinsically flat vertex, which is the only case where "straight" is unambiguous.
+  The amendment therefore does not adjudicate the non-flat ambiguity by policy — it adopts a semantics in which the
+  ambiguity does not arise, at the price of one visible commitment: continuation at a cone point bisects the cone.
+
+  Three consequences are binding. **A1 is not redefined:** `signedLift` maps a branch label and is never a transport
+  of an arbitrary geometric ray; the development consumes A0 geometry and A1 fan topology only, and may not consult
+  any per-face cross representative. **Every candidate-local value is demoted to audit data** — a candidate's own
+  `direction`, its `representativeDirection`, and any label obtained by lifting into a target face may be published
+  but may not enter the decision; deciding from them is the Amendment 17 defect in its concrete form. And the
+  residual cases are **named, not resolved silently**: a continuation exactly on a radial ray is decided by the
+  existing half-open convention and recorded as such; a continuation leaving an open (barrier- or
+  boundary-truncated) fan is a typed fail-closed state, never restored by crossing the barrier (Amendment 16); and a
+  sector of angle exactly `0` or `π` is reported with its locus at A2a and repaired only at the conditioning stage
+  (Amendment 20), never in place. Candidate ordering, nearest-angle selection, a seam, a tolerance, and inventing a
+  port or face all remain prohibited (Amendments 17, 21). Source:
+  `M3_CP4c_Frozen_Definitions.md` Part VI §§AX1-AX3, AX5.
+
+- **Amendment 23 — where an exact decision has no bounded algebraic representation, the architecture must state the
+  budget, not hide it.** Electing a developed sector is deciding the sign of a signed sum of arccosines of algebraic
+  numbers: each face angle has `cos θ = D/√P` and `sin θ = √Q/√P` with `D`, `P`, `Q` exact rationals, so composing
+  the fan's rotations exactly lands in a tower of degree up to `4^k` in the fan length `k`. That cost is real and
+  may not be papered over. A topological decision whose exact evaluation grows with an input parameter is
+  admissible only if the producer (a) publishes a **certified filter** that returns the provably-correct answer or
+  defers — never an approximation; (b) names an **exact fallback that always terminates and is actually
+  implemented**, because it is the only path that can decide the exactly-degenerate case; and (c) declares an
+  **explicit budget** on the parameter with a **typed fail-closed state** for inputs that exceed it. "The filter was
+  inconclusive" is not an answer, and an undeclared budget is not a budget — it is an undiscovered failure mode.
+  This is the exactness counterpart of Amendment 19: an unbounded computation with no declared limit is an
+  unreportable exit wearing a performance costume. Three routes are named inadmissible so they are not rediscovered
+  as ideas: plain `FieldExactRational` hinge rotation, whose field is not closed under the construction; floating
+  transport followed by exactification, which is Amendment 18 and the CB6 defect verbatim; and "filter
+  inconclusive ⇒ reject", which silently converts the boundary case into a failure. An exactly-recognizable rational
+  short-circuit is permitted as an optimization — a right angle is `u·w = 0`, two angles are complementary iff
+  `D₁D₂ ≥ 0 ∧ (D₁D₂)² = Q₁Q₂` — provided it is an exact identity and the general path stays reachable. Source:
+  `M3_CP4c_Frozen_Definitions.md` Part VI §AX4.
+
+- **Amendment 24 — A2a publishes an interior exit on a dyadic grid (M6 P13 O15c).** `resolve_field_branch_continuation` elects the outgoing carrier and decides a vertex hit with exact rational predicates on the exact local exit, as before, and an exit at a vertex (parameter 0 or 1) is published unchanged. An interior exit `t`, with `0 < t < 1`, is published as `n / 2^52`, where `n` is the integer nearest to `2^52 t`, ties to even, restricted to `1 ≤ n ≤ 2^52 − 1`. The restriction keeps an interior exit interior, so rounding never creates or removes a vertex hit, and no new failure is introduced. The rounding uses integer arithmetic only, never floating point. It happens at exactly one site, the `EdgeExit` construction inside the resolver. Every consumer (the legacy and canonical tracers, the crossing predicate and the segment-exit replay) re-derives a segment's exit by calling the resolver, so all of them see one geometry, and a segment's exit is always the next segment's entry. Consequences: (a) every entry continued by A2a is at most 53 bits wide however long the trace is, so `kFieldExactContinuationMagnitudeBits` binds only on an entry constructed outside A2a; (b) each published exit lies within `2^-53` of an edge length of the exact exit from its published entry, but the trace is defined by its published geometry, not by the exact integral curve of the field, and no accumulated deviation is tracked or certified; (c) an exact coincidence of events that depends on an inexact exit may separate (on the prescribed sphere, 56 → 60 network events with unchanged per-trace terminals); (d) termination is unchanged: the exact-state cycle guard, the combinatorial-recurrence guard and the step budget. `2^52` is part of the definition; changing it is a DESIGN change. This is an exception to Amendment 18 only for a newly constructed A2a interior exit. It never modifies source, A0 or A1 data, nor a trace already published; Amendment 20 is unchanged. RA-189 chose the dyadic grid; [RA-190](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_o15c_dyadic_exit_probe_adjudication_20261031md "moved: Architecture_M6_CP3_DEFN_P13_O15C_Dyadic_Exit_Probe_Adjudication_20261031.md") fixed the site, replaced RA-189's endpoint failure with the open grid, withdrew its certificate and receipt obligations, and probe-verified the result (the gate is unchanged, and Vase passes A4).
+
+- **Amendment 25 — A1 slits an interior tip–tip barrier edge in its cycle basis (M6 P13-c).** The face-array cut of Amendment 15.3 glues a barrier edge `e = (u, v)` exactly when `u` and `v` both have barrier degree one and lie off the region's local boundary: each then has one copy, and `e`'s two faces share both. Every other barrier configuration is realised by the face array. A1 records each glued edge as a *slit* and applies it exactly, with no new vertex, face or coordinate:
+  - **Accounting.** The cut gains one edge and one boundary loop per slit (`χ` −1, `b` +1), and the boundary-multiplicity check counts the slit's two sides.
+  - **Cycle basis.** It is `dual_cycles` of the face array, with every slit applied. The rows of `u` and `v` merge into one boundary-loop row `ring(u) + ring(v)`, in which `e`'s column cancels, and the column is removed. The loop's curvature is `2π − Σθ(u) − Σθ(v)`, which is `dual_cycles`' boundary formula for the loop `[u, v]`. Slit loops follow the face-array loops in source-edge order.
+  - **No slit, no change.** A region without a slit gets the basis it had before, bit for bit.
+  - **Handle generators.** A generator that crosses a slit would need transport across the barrier. A1 fails closed with `IncompleteCycleBasis/HandleGeneratorCrossesSlit` at the slit's source edge (O19). A barrier therefore still never raises `CycleTransportAdjacencyMissing` (15.4).
+  - **Unchanged.** Transport adjacency is keyed by source edge and already excludes every hard-feature edge. A singular tip binds to its slit loop like any barrier tip.
+
+  No rail exemption, midpoint insertion, coordinate weld or late arithmetic correction is permitted. [RA-191](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_single_edge_barrier_slit_review_decision_20261101md "moved: Architecture_M6_CP3_DEFN_P13_Single_Edge_Barrier_Slit_Review_Decision_20261101.md") found the gap. [RA-192](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_slit_cycle_basis_probe_adjudication_20261101md "moved: Architecture_M6_CP3_DEFN_P13_Slit_Cycle_Basis_Probe_Adjudication_20261101.md") proved it is the only one, withdrew RA-191's general edge-side incidence product, and probe-verified this adapter: the gate is unchanged, and BunnyRandom passes the cut identity and reaches P13-e.
+
+- **Amendment 26 — the arrangement's rotation system is one counter-clockwise rotation per source entity, and an invalid arrangement ends the run (M6 P13-d, O18).** At a node on a source edge or source vertex, the rays witnessed by every incident face chart form one directed wedge, keyed by the canonical `SourceEntityIdentity` (the edge, or the vertex fan, with its field chart), never by the witnessing face's projection chart. An edge ray's angle is measured counter-clockwise in the source orientation: from the canonical low→high direction on the face that traverses low→high, and as `2π − θ` on the opposite face. A face walk therefore continues across every shared edge and vertex and never turns back along a trace. If the arrangement still reports invalid incidence, the pipeline ends at the `arrangement` stage, with the arrangement's own `SurfaceArrangementIncidenceFailure` as the detail code and the failure node's source face as the locus (Amendment 19). It never forwards a cell-less complex to completion. [RA-193](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_vase_arrangement_rotation_probe_adjudication_20261101md "moved: Architecture_M6_CP3_DEFN_P13_Vase_Arrangement_Rotation_Probe_Adjudication_20261101.md") found both defects by probe on Vase.
+- **Amendment 27 — a stage builds its source-chart graph once and lends it to its per-patch and per-vertex checks (M6 P13-f).** A `SourceChartTransitionGraph` is an O(F) build over immutable stage products (§7.3). A stage builds one per invocation: one per completion pass, shared by every generated, retried and cache-reused patch, and one per materialized mesh. It passes that graph by `const` reference to each ownership check. A callee reuses a lent graph only if the graph *borrows* exactly the callee's inputs: the same face-matrix, source-authority and hard-edge-set objects and the same barycentric tolerance. The graph's build-time `source_bound()` then stands for `matches_source_faces` on those inputs. A graph that does not borrow exactly those inputs is ignored, and the callee builds its own graph, which is the path that existed before this amendment. A lent graph is never accepted on trust and never causes a new failure. Checks, failure codes and their order are unchanged. Standalone callers lend nothing. [RA-195](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_completion_ownership_cost_probe_adjudication_20261101md "moved: Architecture_M6_CP3_DEFN_P13_Completion_Ownership_Cost_Probe_Adjudication_20261101.md") measured the per-vertex rebuild at 93.5 % of Vase's completion CPU.
+- **Amendment 28 — a completed quad agrees with the source surface, and a boundary-only completion searches every quadrangulation before failing (M6 P13-g).** A completion quad is embedded only if it is simple in its own Newell plane (non-degenerate normal, non-zero projected area, no bow-tie; existing checks in their existing order) **and** its vector area lies within 60° of the local source orientation, the sum of the unit normals of the source faces carrying its four corners. One predicate, `quad_embedding_failure`, owns this test. The completion validator applies it whenever it has the source matrices, and so does every producer that chooses quads by geometry. The 60° margin is structural, not a quality bound: it rejects folded quads and edge-on slivers, whose orientation sign is numerical noise. The pattern and bounded-combinatorial backends keep the historical balanced split when every one of its quads embeds. Otherwise they search every quadrangulation of the same forward boundary cycle by diagonals, with a DP over sub-polygons that keeps the first admissible split in index order. A reversed variant winds against the patch boundary, so it keeps the split and the validator rejects it. If no quadrangulation embeds, the patch fails with the typed `NoEmbeddedQuadrangulation`, which no rotation can change. A rejected completion stage reports its typed `SurfaceCellComplexCompletionFailureKind` as the terminal detail, and the per-patch reason stays in the completion failure (Amendment 19). [RA-196](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_completion_quad_embedding_probe_adjudication_20261101md "moved: Architecture_M6_CP3_DEFN_P13_Completion_Quad_Embedding_Probe_Adjudication_20261101.md") found 2,552 of Vase's 12,452 accepted boundary-only completions folded or edge-on under the old validator, and an embedded quadrangulation for every one of its 12,524 boundary-only patches.
+- **Amendment 29 — a patch boundary starts at the first vertex of side 0 (M6 P13-h).** `PureQuadPatch::sideEdgeCounts` partitions `boundaryVertices` in order from index 0: side `k` starts at the sum of the earlier counts, and every per-patch boundary array follows the same order. `derive_patch_descriptor` owns this. Its boundary traversal starts at the smallest halfedge id, and `extract_sides` closes a side across that start, so the descriptor rotates the traversal to side 0's first halfedge before it builds the patch. The domain identity is rotation-invariant, so identities and descriptor order do not change. Completion templates may read corners and sides by index offset; the closed-form grid and the pole template do. A completion's embedding check cannot catch a violation, because a twisted ladder in a convex cell is still embedded. [RA-197](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_completion_grid_embedding_probe_adjudication_20261102md "moved: Architecture_M6_CP3_DEFN_P13_Completion_Grid_Embedding_Probe_Adjudication_20261102.md") found 5,868 of Vase's 23,329 four-sided descriptors offset. 222 of them fail; 2,055 more closed-form completions were accepted with their corners on the wrong vertices.
+- **Amendment 30 — a closed-form grid gives way to the boundary search when its generated vertices fold a quad (M6 P13-h2).** The closed-form grid places its generated vertices from the four corners alone. On a thin patch bent by more than its thickness, a generated vertex can fall outside the patch, and its projection folds a quad, although the boundary has an embedded quadrangulation. When a closed-form grid that generated vertices fails the Amendment 28 predicate, completion runs the pattern search over the same boundary and keeps its result (backend `Pattern`) if it finds one. Otherwise the grid stands and the validator reports its failure. 1×1 cells, strips, and every typed failure of a boundary that has no embedded quadrangulation are unchanged. Thinness is a quality objective, not a validity criterion (§4.11), so a needle cell is completed, and its needle quads remain a quality item (O23, M7). [RA-198](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_arrangement_sliver_cells_probe_adjudication_20261102md "moved: Architecture_M6_CP3_DEFN_P13_Arrangement_Sliver_Cells_Probe_Adjudication_20261102.md") found four such grids on Vase; the search completes all four.
+- **Amendment 31 — an unmet support chord is not admitted to selection (M6 P13-i).** A layout-support trace is kept to connect the rail its seed lies on to the surrounding layout. One that returns to that same rail, crossed or touched by no other non-rail arc, connects nothing: with the rail it bounds only a cell whose corners are its own two ends, which no completion can mesh. `build_flow_rep_selection_input` leaves such a chord inactive, so it has no coverage samples and no cycle, and the selection reports it among its removed arcs. Both ends must lie on a source vertex or source edge that the same rail's arcs run along, decided on canonical node keys. Rails, singularity supports, spokes, proposals, and supports that join two different rails are untouched. Meeting is symmetric and an unmet chord meets no other trace, so one pass is the fixed point (step 7, invariant 8). This is a topological rule, not a distance tolerance: three of Vase's five rim lenses lie 2–6 % of the target size from the rail, beyond the 2 % coverage bound. [RA-199](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_flowrep_selection_probe_adjudication_20261102md "moved: Architecture_M6_CP3_DEFN_P13_FlowRep_Selection_Probe_Adjudication_20261102.md") found exactly ten such chords on Vase, all five lenses among them. Removing them clears every two-sided cell.
+- **Amendment 32 — a completed patch's boundary corner is keyed by its arrangement node, not by the halfedge that leaves it (M6 P13-j).** Each prepared arrangement node is one output vertex for every cell around it: the complex's reciprocal twin halfedges are the certified relation (§8 rule 1). `derive_patch_descriptor` therefore publishes, as `boundaryNodeIdentities`, the node's identity over its primary point and every occurrence, each in its own source scope (region and chart). It does not use the subset in the scope of the halfedge leaving the node in one cell. That subset differs between cells whenever a node on a source edge or vertex is left through different source faces, and it left 23,221 of Vase's 66,783 nodes with two keys, so the cracks were caught only where three met. The assembler's typed-authority intersection, position, edge and vertex-link checks are unchanged and remain the verification. Halfedge and domain identities keep their chart-scoped endpoints, since an oriented edge lies in one chart. [RA-200](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_assembly_stitched_vertex_probe_adjudication_20261103md "moved: Architecture_M6_CP3_DEFN_P13_Assembly_Stitched_Vertex_Probe_Adjudication_20261103.md") measured identical typed certificates on both sides of every split Vase node it examined. With node keys, Vase assembles to the source topology (Euler 1, one boundary loop).
+- **Amendment 33 — the surface-optimizer stage checks the source binding once and lends its source structures (M6 P13-k).** Amendment 27's rule extends to the optimizer, its rail fill and its validation. A query about one output vertex, rail interval, quad or chart face does not re-run `matches_source_faces`, build a source BVH or build a chart graph. The stage checks the binding once: the rail fill checks it once per fill, and the other stage entry points check `source_optimization_has_complete_authority`. Inner queries then read row labels through `bound_source_face_scope`. A lent `SourceProjectionCache` is used only when it was built for the same constraints object, and it carries its build-time authority check. A lent `SourcePointLabelSupport` is used only when it borrows exactly the constraints' face matrix, authority and hard-edge set. Its `available()` relies on its graph's build-time binding check, as the graph's own `available()` already did. A structure that does not fit is ignored, and the callee builds its own after its own check, as before. Public standalone helpers keep their own check. Checks, failure codes and their order are unchanged. [RA-201](M6_Consolidated_Record_Vol_D1_CP3_P13_to_20261103.md#architecture_m6_cp3_defn_p13_optimizer_source_query_cost_probe_adjudication_20261103md "moved: Architecture_M6_CP3_DEFN_P13_Optimizer_Source_Query_Cost_Probe_Adjudication_20261103.md") measured Vase reaching its verdict in about 250 s with the stage corrected, and unchanged; with only the rail and projection sites corrected it took 1,521 s.
+- **Amendment 34 — a pass over a mesh-sized collection reads, for each element, only what that element concerns (M6 P13-m).** It generalizes Amendments 27 and 33 to every stage on the production path. A check about one element indexes the collection once, by the key it filters on (source face, vertex), and does not rescan the whole collection per element. A value that does not depend on the inner element is made once per element. A transaction check whose accepted state is invariant reads only the transaction's net change. Results, the order of visits within an element, failure codes and their order are unchanged. Three sites violated this, and their cost was memory-bound: on Vase, under macOS, they took 94.5, 24 and 19.7 s of a 256 s run.
+  - The arrangement's geometric T-junction scan read every halfedge for every node occurrence (57,636 nodes × 168,902 halfedges). It now reads the halfedges of the occurrence's source face and makes the occurrence's authority scope once. `geometricTJunctionHalfedgeVisits` counts the visits.
+  - Selection recounted the endpoint degrees of the whole active network for each of 4,047 transactions. The active network always has exactly the protected degrees: it starts dense and accepts only transactions that keep them. So `transaction_keeps_protected_endpoint_degrees` checks that the transaction's net change is zero at every protected endpoint.
+  - `MeshValidator`'s bow-tie check read every edge for each of 68,038 vertices. It now reads each vertex's own edges, whichever end of the edge the vertex is.
+
+  The two remaining per-query binding checks in `validate_final_surface_mesh` are Amendment 33 sites. With all four corrected, Vase reaches the same verdict in 108.5 s ([RA-202](M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_tb76_rev_p13_census_path_cost_probe_adjudication_20261104md "moved: Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md")).
+
+### 7.3 Single-writer authority
+ 
+`SourceAuthoritySnapshot`, `GlobalTopologyPlan`, and `GlobalConformityPlan` are referenced, not copied into multiple mutable aggregates. A consumer receives a `const` view or stable typed ID. Network, phase-front, materializer, and validator objects cannot each own divergent copies of face-region or sheet arrays.
+ 
+Local producers construct fully scoped objects. An aggregator may verify scope and remap representation handles, but it may not overwrite source component, topology region, sheet membership, route, or relation semantics after production. This holds identically for the degraded producer.
+ 
+### 7.4 Hard-rail scheduling
+ 
+All regions incident to a hard rail contribute requirements to one scheduling problem. The scheduler computes:
+ 
+- a canonical ordered breakpoint sequence in exact source-rail coordinates;
+- incident region/side ownership;
+- target-size objective and permitted deviation;
+- shared edge count;
+- parity and 2:1 adaptivity constraints where enabled;
+- singularity/feature endpoints that are fixed;
+- a proof that both sides consume the identical sequence.
+Only after the schedule verifies may region producers run. They consume breakpoint IDs and may not insert, remove, quantize, or reorder shared breakpoints. This is the architectural correction for target-size-dependent `InvalidHardRailPairing`.
+ 
+The assignment is **positive**: every rail receives at least one subdivision. Positivity is the validity criterion, it is locally checkable, and it structurally prevents the degeneracy that zero-length rails would imply. The cost is that some coarse configurations otherwise expressible with zero-length edges are excluded; that is an accepted quality trade for a criterion that can be certified without a parametrization.
+ 
+The scheduler is a deterministic exact graph algorithm (§4.7). `M4-CP3-DEFN-R1` supersedes the former production-baseline family/sign Bi-MDF constraint system: every full A2b arc receives one positive exact count, and each region's boundary-incidence count sum must be even. Relative to exact preferred counts, changing a span parity costs exactly one unit of the primary L1 objective, so the baseline optimization is an exact minimum-cardinality T-join followed by canonical lex-prefix refinement. Generic branch-and-bound, floating optimization, tolerance matching, raw cross-face branch comparison and heuristic repair remain forbidden. The accepted fixed-`M=2` Bi-MDF solver/certificate remains historical framed CP1/CP2 evidence only.
+ 
+**D7 partition-stable target-size metric (2026-11-08 definition, corrected by RA-216).** A3's preferred count depends on the physical, oriented, source-attached path, not on how its support is split into pieces. The density `rho = 1/h` is interpolated barycentrically from exact vertex reciprocals, so it is affine on each source simplex, and `integral rho ds` over a straight piece is exactly its length times its mean endpoint density. Consecutive pieces along one direction form a canonical run; a direction change, including a fold-back, starts a new run. A run's metric is `S/|u|` with a rational square. Each run contributes `floor(2^64 * metric)` by exact integer square root, never floating point, and the preferred count is `max(1, nearest integer of the sum)` with halves down. The count is therefore invariant to collinear re-splits, piece reversal and source-face row order, and lies at most `runs * 2^-64` below the exact integral. Exact rounding of a sum of square roots is not required: it is the sum-of-square-roots decision, and the target size is an objective with permitted deviation. Exact global positivity, parity, T-join, lex-prefix refinement and single-writer ownership are unchanged. **Placement (D7b, before D5 chains; RA-217):** placement reads the same runs as the count. Runs share the ordinals by weights `ceil(2^64 * metric)`, which are never zero, so no run is erased and reversal maps ordinal j to n−j at the same point. Each run spaces its share linearly in length, so every location stays an exact rational source point in the existing representation. A single-piece span keeps today's unreduced `(j, n)`; multi-piece local fractions are stored reduced. The breakpoint width receipt records the values validation encounters (ordinals 0, 1, n−1, n), as the M4 closure record §5.5 defines it. An exact inverse of the quadratic within-run metric is not used, because it would make breakpoints irrational, contrary to the exact source-rail coordinates above. Only the production baseline (`GlobalConformityBaselineSupport.cpp`, `GlobalConformityBaseline.cpp`, its validator) changes; the framed CP1/CP2 copies stay frozen. See the [D7 decision](M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_a3_partition_stable_metric_review_20261108md "moved: Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Review_20261108.md"), [RA-216](M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_a3_partition_stable_metric_adversarial_review_20261108md "moved: Architecture_M6_CP3_DEFN_P13_A3_Partition_Stable_Metric_Adversarial_Review_20261108.md"), the [D7b decision](M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_a3_metric_breakpoint_placement_review_20261108md "moved: Architecture_M6_CP3_DEFN_P13_A3_Metric_Breakpoint_Placement_Review_20261108.md") and [RA-217](M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_defn_p13_a3_metric_breakpoint_placement_adversarial_review_20261108md "moved: Architecture_M6_CP3_DEFN_P13_A3_Metric_Breakpoint_Placement_Adversarial_Review_20261108.md"). D5 chain construction, D4 consumption and D8 receipt verification remain separate obligations.
+
+**D4 uniform regions ([RA-222](Architecture_M6_CP3_DEFN_P13_A3_Uniform_Plan_Consumption_Review_20261110.md), 2026-11-10; takes effect with O36).** A region produced under an A3 plan places its boundary vertices on the plan's breakpoints and records a unit interval on every boundary cell edge. The uniform producer cannot do that, so under a plan it declines every region and the bounded-disk producer, the single disc producer that reads A3, builds it. The uniform producer remains for callers without a plan. It is staged ([RA-223](Architecture_M6_CP3_DEFN_P13_A3_Uniform_Plan_Consumption_Adversarial_Review_20261110.md)): from CB118 the uniform producer declines every region of a chained plan, because its lattice cannot place a chain's breakpoints; declining per-arc plans too is the production switch. Until then, under a per-arc plan, it declines only hard-feature regions and its regions report no A3 coverage. A closed rim with no stop stays per arc (O34), so the switch also needs rims cut at their corners; the corner product of RA-224 cuts a rim wherever the field turns.
+
+**Boundary field-corner identity and branch-owner amendment (2026-11-11, [technical audit](Architecture_M6_CP3_TB101C_REV_Audit_Code_Architecture_20261111.md)).** *Status: the identity part of this paragraph is superseded by [RA-225](Architecture_M6_CP3_DEFN_P13_A3_Boundary_Fan_Stop_Identity_Review_20261111.md), under which the source vertex is the stop key and no occurrence resolver exists. The branch-owner part stands; its exact rule is defined by [RA-226](Architecture_M6_CP3_DEFN_P13_A3_Exact_Rim_Arithmetic_Review_20261111.md).* A `SourceVertexId` by itself does not identify a corner stop when that source vertex has multiple isolated source-chart fans or sheets. The corner stop for A3 is an occurrence with existing typed `SourceVertexEntityIdentity`, verified source fan and sheet. The chained factory may stop only the resolved matching occurrence. An unresolved or conflicting occurrence fails closed; it cannot silently stop every node with that vertex number. Existing port and hard-feature stops remain independent. One exact, source-data-based owner must publish each directed boundary-edge branch and any undecided state. The corner product and A4 bounded-disk side walk are readers of that product, not independent alignment calculators. Use stored-double exact arithmetic, certified atlas transport, and scale-invariant signed comparisons. Do not use an epsilon to decide a topological branch. The implementation sequence and non-vacuity gates are in the audit. This amendment adds a required safety condition before O36; it does not approve the switch or change A2b arc ownership.
+
+**D5 maximal Mandatory chains (RA-218, 2026-11-09; takes effect at the production switch, obligation O36).** A2b keeps one Mandatory arc per source edge or trace-split piece. A3 schedules over chains instead of those arcs: two Mandatory arcs join at a node whose rotation holds exactly those two arcs, when both lie on one hard rail and the node is not a stop. Stops are singularity-port nodes and feature-curve corners and junctions. In stage 1 both ends of every hard-feature edge are stops too, so only source-boundary rails join (RA-219; debt O35 until A4 routes a multi-piece span). Trace and Cut arcs stay single, and a closed rail with no stop keeps one span per arc (debt O34). Each chain is one span: its support is its children's oriented paths, and it receives one positive count. Every child of a chain has the same region sides, because each pass-through node has degree 2, so region parity is unchanged in kind. The baseline input carries each chain's arcs in order, identifying arc first. The baseline and its validator check structure only, through one shared function: spans and chains cover every A2b arc once, each chain is led by its span's identifying arc, and each chain is a path of Mandatory arcs through nodes with exactly two incidences. Rails, stops and maximality are the pipeline factory's contract. A chain's region side is read once, at the identifying arc, with orientation Forward when the walk follows the chain; consumers resolve an arc to its span, chain ordinal and support-piece offset through the plan ([RA-219](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Span_Switch_Takeover_Review_20261109.md) §2, amending RA-218). Consumers are chain-aware from CB113 ([RA-220](Architecture_M6_CP3_DEFN_P13_A3_Boundary_Chain_Consumption_Review_20261110.md)): preflight and the cut domain check each arc's path against its slice of the span's support, and the bounded-disk side walk emits a span's breakpoints across its arcs, starting and ending a side, and changing span, only on a breakpoint at the walk's vertex. A side corner inside a span rejects unless a breakpoint lies on it (corners per disc are D6). Stage 1 leaves a chained boundary side and a per-arc hard rail to round separately; A3 is parity-only and the bounded-disk producer needs opposite sides equal, so production keeps the per-arc input until O36 is discharged. O36 needs hard-feature rails chained (O35), disc corners that cannot fall inside a span (O38) and breakpoints located in one pass (O37). **O38 is decided (user, 2026-11-10; [RA-221 addendum](Architecture_M6_CP3_DEFN_P13_A3_Boundary_Chain_Consumption_Adversarial_Review_20261110.md#addendum-2026-11-10-user-decision-on-o38)): disc corners are chain stops.** The boundary vertices where the boundary-following field branch changes become a published upstream product. **Defined by [RA-224](Architecture_M6_CP3_DEFN_P13_A3_Disc_Corner_Stops_Review_20261110.md) (2026-11-10):** the product lists the source-boundary vertices where the branch of the rim edge entering a vertex, carried across the vertex's face fan, differs from the branch of the rim edge leaving it. The per-edge branch and the transport are the bounded-disk producer's rules, and a vertex where they cannot decide counts as a corner. No region is needed: at a rim node that only its two rim arcs reach, the whole fan lies in one region. The D5 stop set reads the product as a fourth source. The source vertex is the stop key: a node that can join has exactly two incidences and therefore one fan ([RA-225](Architecture_M6_CP3_DEFN_P13_A3_Boundary_Fan_Stop_Identity_Review_20261111.md)). The producer keeps deriving its side starts, because sides also start at trace, cut and hard-rail nodes; at such rim nodes its side starts must equal the product, and a corner inside a span with no breakpoint on it stays a typed rejection. Feature corners remain stops, so a side may hold several spans. The field rule also covers every turn the feature map's line-angle test misses. It is floating point until CB126; the exact rule for its one owner is defined by [RA-226](Architecture_M6_CP3_DEFN_P13_A3_Exact_Rim_Arithmetic_Review_20261111.md) and is due before the switch (O39). Until the switch the product is unwired (CB119) and only the unwired chained factory reads it (CB120). Every region side is then a whole number of spans, no span turns a corner, and A4 never moves a corner to a breakpoint. Chaining every rail restores equal opposite sides only where their metric lengths agree; other regions need an A4 producer for unequal sides ([RA-221](Architecture_M6_CP3_DEFN_P13_A3_Boundary_Chain_Consumption_Adversarial_Review_20261110.md)). Until the switch, the sentence above ("every full A2b arc receives one positive exact count") remains in force. See the [RA-218 decision](Architecture_M6_CP3_DEFN_P13_A3_Mandatory_Chain_Scheduling_Takeover_Review_20261109.md).
+
+For a well-formed baseline binding the parity schedule is always feasible (`x_s=2` for every span is a constructive witness), so baseline A3 does not emit ordinary mathematical infeasibility subsets. Malformed binding/support/metric/work-bound failures stay typed construction failures. Stronger local field/shape constructibility is owned by A4 and may route affected regions toward D3 without changing A3 shared breakpoints.
+ 
+### 7.5 Field quadrangulability precondition
+ 
+A1 decides, before any topology is planned, whether the supplied field admits a quadrangulation consistent with its singularity and holonomy structure, and emits a `FieldQuadrangulabilityCertificate`. A field that fails this check is a catastrophic condition (§2.3), because no downstream disposition could produce meaningful output from it.
+ 
+Placing this check at A1 is deliberate. Infeasibility discovered at A3 is expensive, arrives after substantial work, and is easily misattributed to the scheduler; the same fact is cheap and unambiguous at A1.
+ 
+### 7.6 Holonomy
+ 
+Periodic transport is a complete grid automorphism. Zero rotation is an ordinary value, not a different representation. Composition around every owned cycle must match the declared holonomy. The canonical typed transport algebra and materializer can consume nonzero `Z4` authority when that authority is supplied directly. The current producer does not emit nonzero periodic `Z4`; produced nonzero-`Z4` authority remains deferred to `G4-B003` / M5. Direct materializer evidence therefore does not constitute produced end-to-end support.
+ 
+## 8. Occurrence and quotient architecture
+ 
+Equal lattice coordinates or equal 3D positions do not imply equal output vertices. Each produced cell owns four distinct corner occurrences. Occurrences merge only through one of these certified relations:
+ 
+1. reciprocal ordinary-front relation;
+2. exact hard-rail relation using the shared schedule;
+3. explicit periodic relation with grid automorphism;
+4. singularity-port relation owned by the topology plan.
+Every relation contains canonical endpoint occurrence IDs, source support, chart transport, orientation, and owner certificate ID. Front-edge positions and emission indices are optional provenance, not equality.
+ 
+The quotient builder:
+ 
+1. verifies every relation independently;
+2. rejects duplicate, conflicting, unowned, or nonreciprocal relations;
+3. computes equivalence classes with deterministic union order over canonical IDs;
+4. proves every owned relation was consumed exactly once **within the constructed region set**;
+5. emits one vertex per verified class and one quad per accepted cell;
+6. records a materialization certificate linking every output incidence to its source occurrences.
+No world-space weld, post-hoc cell merge, representative-sheet selection, count/frequency ownership rule, or arbitrary subset search is allowed, at any disposition tier.
+ 
+Under D3, relations owned by omitted regions are not orphaned defects: the disposition stage removes them from the owned set together with their region, and records that removal in the degradation certificate. Rule 4 is then checked against the reduced set. A relation that is unconsumed *without* a corresponding omission certificate remains a hard verification failure.
+ 
+## 9. Validation architecture
+ 
+Validation is an independent certificate verifier, not a second producer.
+ 
+It may recompute elementary source incidence and output mesh topology from immutable inputs. It may not infer missing hard-rail endpoints from front-edge indices, reconstruct producer routes from whichever face is selected, or silently canonicalize malformed producer state.
+ 
+Validation layers:
+ 
+1. **schema:** typed IDs, closed outcomes, sorted/unique canonical sets, no dangling references;
+2. **certificate:** transition, network, seam, rail, holonomy, chart-path, quotient, and materialization proofs;
+3. **source attachment:** exact support and sheet/component constraints;
+4. **mesh topology:** twins, orientation, manifoldness, connected components, boundary loops, Euler characteristic;
+5. **product:** pure quads, one cell to one quad, complete lineage;
+6. **geometry:** inversion, self-intersection, size, alignment, and quality thresholds;
+7. **disposition:** the tier is recomputed from the materialized product and the degradation set; every degradation certificate is matched to an observable product fact; no degradation is unrecorded and no record is unsubstantiated.
+Layer 7 is symmetric and both directions are required. An unrecorded degradation is a verification failure because it would misrepresent the product's guarantees. A recorded degradation with no corresponding product fact is equally a failure, because it would mask a defect behind a fictional excuse.
+ 
+Layers 4 and 5 are evaluated against the emitted subset under D3, with the omitted region set supplied as an explicit input to the verifier rather than inferred from what is missing.
+ 
+The verifier uses independently written checks at stage boundaries. Shared primitive types are allowed; reusing the producer's decision procedure as the validator is not independent evidence.
+ 
+## 10. Determinism and complexity
+ 
+### 10.1 Determinism
+ 
+Canonical ordering uses semantic tuples of typed source identities. Hashes, object addresses, thread completion order, source-face row order, and output row order do not participate.
+ 
+Metamorphic invariants are mandatory and apply at every disposition tier:
+ 
+- source-face row permutation preserves semantic output digest;
+- region and producer scheduling permutation preserves it;
+- route reversal plus orientation inversion preserves relation identity;
+- output vertex/face row permutation preserves it;
+- changing source support, transport, connectivity, winding, or sheet separation changes it;
+- **the disposition tier, the set of degraded regions, and the set of omitted regions are themselves invariant under all of the above permutations.**
+The final invariant is what makes graded disposition safe. A degradation whose occurrence depended on scheduling order would be a nondeterminism defect wearing a degradation label, and the metamorphic suite is what distinguishes the two.
+ 
+Raw hashes remain same-artifact diagnostics only.
+ 
+### 10.2 Work ledger
+ 
+Every recursive, retrying, or combinatorial stage owns a global `WorkLedger`:
+ 
+```cpp
+struct WorkLedger {
+  std::size_t proposedStates;
+  std::size_t committedStates;
+  std::size_t rejectedStates;
+  std::size_t remainingBudget;
+  MonotoneMeasure measure;
+};
+```
+ 
+Local limits nested inside outer loops do not bound total work. A stage must prove that each accepted edit decreases a lexicographic monotone measure or consumes a finite global budget. Timeout is never correctness evidence.
+ 
+Budget exhaustion is a disposition input, not a hard failure. Exhaustion during region construction marks the remaining regions non-constructible and proceeds to D3 with the last valid certificate set. Exhaustion before any region completes is catastrophic (§2.3). Because degradation is bounded and non-recursive (§2.2 rule 7), the total work under any disposition remains bounded by the same measure as the strict path plus one bounded substitution per region.
+ 
+## 11. Module boundaries
+ 
+The target source layout is responsibility-based:
+ 
+```text
+surface_cells/
+  authority/       SourceAuthoritySnapshot, strong IDs, source support
+  transport/       chart atlas, grid automorphisms, routes, cycle proofs
+  network/         combinatorial tracing, curve network, selection
+  planning/        topology plan, rail schedule, parity/conformity
+  construction/    bounded region producers (strict and declared degraded)
+  occurrence/      cells, corners, directed sides, relation registry
+  quotient/        quotient plan and materialization
+  disposition/     degradation certificates, tier computation, omission bookkeeping
+  verification/    independent certificate, mesh, and disposition verifiers
+  diagnostics/     derived reports and serialization
+```
+ 
+File size is not itself an invariant, but a module that combines producer selection, topology planning, canonicalization, materialization, validation, diagnostics, and disposition violates single ownership. `disposition/` may depend on `construction/` but not the reverse: a producer must not be able to observe or influence its own degradation. New behavior belongs in the target modules. When an existing monolith must change, the affected ownership contract moves completely in that change; a retained bridge is not an architectural destination.
+ 
+## 12. Verification matrix
+ 
+Every stage requires positive, negative/tamper, metamorphic, independent
+semantic, and representative evidence. Every mandatory test names its intent,
+proves its semantic precondition, enters the public production API or named
+stage, uses an independently written input/output oracle, rejects a deliberate
+counterexample, and records its executable/fixture/seed/artifact identity.
+ 
+| Contract | Positive | Negative/tamper | Metamorphic/property | Independent/representative |
+|---|---|---|---|---|
+| typed transition route | boundary and interior routes | domain substitution, missing paired topology | face-row, branch-label, and route-orientation permutation | seam and cylinder through the production entry |
+| curve network | ports owned once; traces terminate at typed events | trace crossing, silent interior termination, unowned port | tracing order and start-port permutation | torus, feature-bearing mechanical part |
+| producer outcome | each of three alternatives | inconsistent payload cannot be constructed | dispatch and call-sequence order do not change rejection | plane plus typed unsupported/invalid inputs |
+| rail schedule | two regions consume one schedule | independent breakpoint insertion; non-positive assignment | region order, uniform scale, and target-size perturbation | torus, thin tube, mechanical feature |
+| chart certificate | chained multi-rail path | missing/duplicate/conflicting relation | source-face/cyclic-start permutation | torus completion with unused and off-face relations |
+| periodic/singularity transport | zero/nonzero rotation algebra and declared indices | wrong inverse/index/owner/unconsumed relation | canonical reversal and quarter-turn branch relabeling | cylinder, torus, prescribed sphere |
+| quotient/materialization | explicit occurrence relations | proximity-only/equal-coordinate merge | emission/component/thread-order permutation | close sheets and torus |
+| **disposition** | each tier reachable and correctly labeled | unrecorded degradation; fabricated degradation record; tier raised mid-run; degraded producer mutating upstream state | tier, degraded set, and omitted set invariant under every §10.1 permutation | induced region failure and induced rail infeasibility on committed fixtures |
+| product mesh | strict direct output | corrupted incidence, lineage, field, feature, and geometry | row, rigid-transform, scale, and triangulation-equivalence families | all ten committed triangle-mesh fixtures |
+| work/resource ledger | bounded completion | cumulative/retry exhaustion | queue order and repeated success/failure sequences | sphere plus structured adversarial corpus |
+ 
+Focused fixtures isolate contracts. Direct gate acceptance enters production
+preprocessing and `remesh_from_raw_cross_field` with committed fixtures. A
+focused proxy cannot close a representative gate.
+ 
+## 13. Test architecture
+ 
+Testing is a first-class architectural boundary. The normative policy is
+`tests/TESTING_STRATEGY.md`; `TA-01` through `TA-12` and staged redesign
+`T0` through `T6` are tracked in the independent test-suite audit.
+ 
+Required evidence layers are:
+ 
+1. type/schema and stage-contract tests;
+2. deterministic generated properties with seed replay and shrinking;
+3. metamorphic tests over representation, topology cycles, transforms,
+   equivalent field branch labels, scheduling, and repeated-call sequences;
+4. a test-only independent semantic verifier for topology, source support,
+   certificates, disposition, geometry, and quality;
+5. the complete committed ten-fixture direct production matrix;
+6. structured invalid/robustness corpora and sanitizer fuzzing with minimized
+   reproducers;
+7. calibrated field, feature, approximation, element-quality, work, memory,
+   and time gates.
+The independent test oracle may share primitive math and typed schemas but may
+not call the producer's acceptance decision or reuse its decision procedure.
+`result.success`, a production-validator pass, an exact count, a raw ID/order,
+an intermediate-retention state, or a hash is not sufficient product evidence.
+Oracle-mutation tests must prove sensitivity to corrupted topology, lineage,
+field/feature correspondence, geometry, quality, and backend disposition.
+ 
+### 13.1 Disposition and gates
+ 
+Graded disposition changes what a gate means, and the change is strict rather than permissive:
+ 
+1. **Strict gates require D0.** Every committed representative fixture gate is closed only by a `Certified` disposition. A D1–D3 result on a fixture that is expected to reach D0 is a **failure**, reported as such. Degradation is a production safety property, never a way to pass a test.
+2. **Degradation paths need their own positive evidence.** Each declared degradation trigger has a test that induces it deliberately — an injected region-producer rejection, an injected rail infeasibility — and asserts the resulting tier, certificate content, mesh manifoldness on the emitted subset, and determinism of the degraded set.
+3. **Known-red intent is distinct from degradation.** A fixture whose strict path is not yet expected to pass is reported as known-red at D0, not silently accepted at D2. The two conditions have different causes and different owners.
+4. **The degraded producer is tested as a product, not as an escape.** It has positive, tamper, and metamorphic evidence of its own: pure-quad output, exact boundary conformance to the unmodified plan, and non-interference with neighbouring regions.
+All portable mandatory tests and minimized replay cases are compiled and
+discovered in the default immutable artifact. Toolchain-specific sanitizer
+fuzz targets are mandatory in their declared Clang sanitizer artifact.
+Labels may separate accepted required-green contracts from explicit known-red
+product intent, nightly corpus/fuzz, and quality tiers; build options may not
+hide mandatory authority. A known-red intent test is reported, not disabled or
+counted as green.
+ 
+## 14. Implementation transition
+ 
+This branch is experimental and has no released surface-cell ABI or serialized schema to preserve. A semantic contract is replaced vertically from producer through verifier/materializer, and the displaced fields, helpers, and tests are removed in the same Code + Build turn. Immutable artifacts remain comparison evidence, but their internal numbering, hashes, row order, and incomplete product behavior are not design requirements.
+ 
+Milestone numbering is revised in this document to accommodate the curve-network and disposition contracts. The mapping from the previous numbering is: prior M1 → M1 (unchanged), prior M2 → M2 (unchanged), prior M3 → M4, prior M4 → M5, prior M5 → M6, prior M6 → M8. M3 (curve network) and M7 (disposition) are new.
+ 
+### M0 — preserve evidence
+ 
+M0 and T1 are complete historical prerequisites. Their artifacts remain evidence for regression classification and independent-oracle adequacy; they do not certify the pre-cutover architecture.
+ 
+### M1 — single-authority contract cutover
+ 
+Finish the authority transition in one Code + Build turn:
+ 
+- checked strong-ID construction at mesh/container ingress;
+- one source-chart value type and one exact `SourceSupport` identity;
+- `TransitionStep`, `CanonicalRoute`, and `GridAutomorphism` as the only stored transport contract;
+- one typed `SourceTopologyRegions` product referenced by cells, front edges, periodic/bounded-disk records, certificates, and occurrences;
+- one fully typed isolation-seam certificate;
+- one exhaustive producer outcome with no consumable partial payload;
+- numeric projection only at direct container/Eigen access or derived export encoding;
+- deletion of every displaced field, conversion helper, alias, and representation-only test.
+Acceptance:
+ 
+- compile-only Code + Build followed by separate immutable Test + Benchmark;
+- `T1` package/oracle authority remains accepted;
+- compile-time non-convertibility and checked-ingress boundary tests;
+- positive, tamper, and permutation tests for region, chart, support, route, periodic, and certificate contracts;
+- no duplicated semantic field or numeric bridge remains in the affected production/test surface;
+- G0–G3 semantic invariants, truthful typed failures, and deterministic identity remain valid;
+- differences from the entering artifact are classified by product/design invariants rather than forced back to prior internal representation.
+### M2 — closed stage products and single writers
+ 
+Any remaining producer with overlapping state is replaced by one exhaustive outcome and one immutable stage product. Consumers reference the product and may validate it; they do not rewrite or reconstruct its semantics.
+ 
+Acceptance:
+ 
+- inconsistent outcomes are unrepresentable;
+- exhaustive dispatch covers every alternative;
+- `Rejected` is terminal for the emitting producer and cannot trigger substitution within `construction/`;
+- the affected direct product gate passes its independent oracle.
+### M3 — field-aligned curve network
+ 
+Introduce `FieldAlignedCurveNetwork` as a typed authoritative product derived by combinatorial tracing, and make `GlobalTopologyPlan` consume it rather than assume regions.
+ 
+Acceptance:
+ 
+- singularity ports derived from field index and owned exactly once;
+- traces are branch-consistent and provably non-crossing;
+- every trace terminates at a typed network event; no silent interior termination is representable;
+- every emitted region carries a disc-topology proof;
+- network selection preserves mandatory topology under tamper;
+- tracing-order and start-port permutation invariance passes.
+### M4 — global conformity plan
+ 
+Move hard-rail breakpoint and side-count selection before regional production. Producers consume one verified positive schedule computed by a deterministic polynomial algorithm.
+ 
+Acceptance:
+ 
+- exact shared-rail schedule positive/tamper tests;
+- target-size variation cannot create different side breakpoints;
+- assignment positivity is certified;
+- the exact-torus `InvalidHardRailPairing` blocker is removed without post-hoc pairing;
+- infeasible rail subsets produce a typed subset-scoped infeasibility, not a run failure;
+- work and solver bounds are reported, with an explicit monotone measure.
+### M5 — certificate-carrying chart and quotient relations
+ 
+Replace verifier-side reachability reconstruction, boolean witness compression, front-edge equality, and relation-vector coupling with canonical relation IDs and explicit path certificates in one producer-to-consumer change.
+ 
+Acceptance:
+ 
+- exact selected relation paths are retained and independently verified;
+- unused valid relations do not alter the selected certificate;
+- missing, duplicate, conflicting, nonreciprocal, and representation-renumbered relations fail typed;
+- torus lineage and quotient acceptance are direct production evidence.
+
+**M4-CP4-DEFN-R1 ownership amendment (2026-09-19).** The inherited `G4-B002` produced-witness debts `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` and `MissingPeriodicRelationOwnerIsRejected` are M5-owned because satisfying them on the one-region torus requires canonical same-sheet relation/basis identity. M5-CP1 owns canonical relation ID/path authority, M5-CP2 owns the typed missing-owner failure, and M5-CP3 owns both direct-production torus re-proofs. Their original `>=2` relation/edge and missing-owner discriminators are preserved; no M4 credit, hard-rail substitution, or direct/draft substitution is allowed.
+### M6 — occurrence, embedding, and independent verification
+ 
+Separate occurrence creation, quotient construction, geometry embedding, and validation as complete stage products. The verifier consumes certificates and independently recomputes elementary incidence; it never repairs producer state. `M6-DEFN` freezes only the structural verification report; `OutputDisposition`, degradation records and verifier tier assignment remain the M7 vertical extension of A8.
+ 
+Acceptance:
+ 
+- equal coordinates without a relation remain distinct;
+- every owned relation is consumed exactly once;
+- exact source support is shared without consumer-specific quantized identity;
+- source-row, output-row, and scheduler permutation invariance passes.
+
+**M4-CP4-DEFN-R2 ownership amendment (2026-09-19).** The inherited `G4-B002` produced-witness debt `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous` is M6-owned because the required closed candidate-bearing arrangement is A5/A6 stage authority: `SurfaceCellPipelineContext` is documented diagnostic-only and must not carry semantic stage authority, so `hasArrangement` cannot be pulled backward into an M4 gate. M6-CP1 owns the authoritative A5 occurrence-complex/stage separation that candidate extraction may consume, and M6-CP3 owns the direct-production re-proof. The original contract is preserved unchanged: fail-closed `SurfaceCells`, no source-grid recovery or fallback substitution, closed source, independently validated candidate eligibility, and a discriminating hard-feature/protection tamper. A synthetic or direct arrangement receives zero credit, and no M4 credit is granted.
+### M7 — disposition and graded degradation
+ 
+Introduce `OutputDisposition`, `DegradationCertificate`, the declared degraded region producer, and verifier layer 7 as one vertical contract.
+ 
+Acceptance:
+ 
+- every tier is reachable and correctly labeled by the verifier, never by a producer;
+- an unrecorded degradation and a fabricated degradation record both fail typed;
+- the tier cannot be raised mid-run;
+- the degraded producer emits pure quads conforming exactly to the unmodified plan and cannot mutate upstream products;
+- omitted-region bookkeeping reconciles with quotient relation consumption;
+- tier, degraded set, and omitted set are invariant under every §10.1 permutation;
+- every strict fixture gate still requires `Certified`; no gate is closed by a degraded result.
+M7 is deliberately sequenced after M6 rather than early. Disposition is a statement *about* the verified product, so it can only be implemented honestly once the verifier and the stage products it describes are themselves correct. Implementing degradation before verification would produce exactly the silent-substitution failure mode §3 identifies.
+ 
+### M8 — module boundaries and operational hardening
+ 
+Move responsibilities to the target module layout and harden diagnostics, resource accounting, packaging, and CI after the owning product contracts are correct.
+ 
+Acceptance:
+ 
+- forbidden producer/verifier dependencies are unavailable;
+- `construction/` cannot depend on `disposition/`;
+- no semantic equality includes execution handles or backend choice;
+- diagnostics cannot feed semantic decisions;
+- no architecture-debt item in the regression tracker remains open.
+## 15. Stop conditions
+ 
+Implementation stops for architectural review if any proposed change:
+ 
+- adds another numeric ID domain without a strong type and checked conversion;
+- adds a second copy of region, sheet, chart, route, or ownership authority;
+- makes a consumer reconstruct producer semantics;
+- uses a hash, container position, output row, or front-edge index as semantic identity;
+- schedules a shared rail independently on two sides;
+- weakens validation or fixture assertions to accommodate behavior;
+- bounds an inner operation while leaving aggregate work multiplicative;
+- encodes a representative-only or zero-rotation special case as the general model;
+- passes a focused proxy while the representative production path remains unexecuted;
+- uses the producer's success decision or validator decision procedure as the independent test oracle;
+- hides a mandatory direct/property/fuzz replay behind a default-off build option or loses its seed/corpus/package identity;
+- **introduces a global linear system or numeric factorization into the Pipeline B default path;**
+- **adds a limit-cycle, tiny-region, or non-disc repair step to the curve network, rather than obtaining those properties from the tracing and termination rules;**
+- **degrades without emitting a degradation certificate, or emits a certificate not substantiated by a product fact;**
+- **allows a producer to observe, choose, or influence its own degradation;**
+- **allows a degradation to modify an upstream immutable stage product;**
+- **allows a degraded result to close a strict gate, serve as a certified baseline, or raise a disposition tier;**
+- **adds a catastrophic cause outside the closed set in §2.3, or makes a non-catastrophic failure terminate the run.**
+## 16. Pipeline A — optional future path
+ 
+Pipeline A is **not normative and not scheduled**. It is recorded here so the option is designed rather than improvised, and so that Pipeline B's stage boundaries are chosen to keep it reachable. No work on Pipeline A is accepted until Pipeline B reaches production-level output on the full committed representative matrix at `Certified` disposition.
+ 
+### 16.1 Motivation
+ 
+The reason to hold this option open is that a solved seamless parametrization supplies a distortion-optimal layout, which traced separatrices do not. Pipeline B's regions are field-faithful; Pipeline A's would additionally be distortion-informed. Whether that difference is material is an empirical question about the input class, to be answered with Pipeline B's measured quality results — not assumed in advance.
+ 
+### 16.2 Structure
+ 
+Pipeline A replaces A2a with a solved layout and adds a per-region embedding step. All other stages are shared:
+ 
+| Stage | Change from Pipeline B |
+|---|---|
+| A0, A1 | unchanged |
+| A2p | **new:** one continuous seamless parametrization solve, containing **no integer variables** |
+| A2a | field-aligned curve network extracted by tracing A2p isolines instead of field separatrices |
+| A2a′ | unchanged in contract; `SurfaceCutGraph` certifies/completes the immutable isoline-traced network before region derivation |
+| A2b | unchanged in contract; regions derived from the certified cellular embedding |
+| A3 | unchanged in contract; may use the parametric-distance validity test in addition to positivity, permitting zero-length rails |
+| A4 | region interiors embedded by guaranteed-injective barycentric mapping with A3-fixed boundaries, optionally refined per region |
+| A5–A9 | unchanged |
+ 
+### 16.3 Cost thesis
+ 
+The performance claim that motivates Pipeline A is that the historical cost is refactorization *count*, not a single factorization. Moving all discrete decisions into A3 leaves exactly one integer-free global solve at A2p, and fixing every region boundary at A3 decomposes the remaining work into independent per-region problems that parallelize.
+ 
+This thesis is **unvalidated** and must be measured before any implementation:
+ 
+1. profile the existing solve, separating symbolic factorization, numeric factorization, and refactorization count; the thesis holds only if cost scales with integer-variable count;
+2. time one region embedding on a representative region, multiply by expected region count, divide by available parallelism; the decomposition is worthwhile only if that product is small relative to a single global solve.
+Neither measurement requires implementing Pipeline A.
+ 
+### 16.4 Conditions for reconsideration
+ 
+Pipeline A becomes eligible for design work only when all of the following hold:
+ 
+- Pipeline B reaches `Certified` on the full committed representative matrix;
+- Pipeline B's calibrated quality gates are defined, measured, and stable;
+- a measured quality deficit attributable to separatrix-derived layout is documented against those gates;
+- both cost measurements in §16.3 support the decomposition thesis.
+Absent all four, Pipeline A remains documentation.
+ 
+### 16.5 Non-negotiable constraints if adopted
+ 
+- A2p carries no integer variables; any reintroduction of mixed-integer coordinate solving is rejected outright;
+- Pipeline A does not replace Pipeline B; both remain selectable and both remain covered by the full verification matrix;
+- disposition, determinism, work-ledger, and single-writer invariants apply to Pipeline A identically and without exception;
+- A2p failure is a catastrophic condition **for Pipeline A runs only**, and must fall back to Pipeline B selection at the orchestration level rather than degrade internally.
+## 17. References
+ 
+1. Amir Vaxman et al. "Directional Field Synthesis, Design, and Processing." *Computer Graphics Forum* 35(2), 2016. See the [Directional project](https://avaxman.github.io/Directional/) and course materials.
+2. David Bommes, Henrik Zimmer, and Leif Kobbelt. "Mixed-Integer Quadrangulation." *ACM TOG* 28(3), 2009. [Project page](https://www.graphics.rwth-aachen.de/publication/0344/).
+3. Hans-Christian Ebke et al. "QEx: Robust Quad Mesh Extraction." *ACM TOG* 32(6), 2013. [Paper](https://graphics.rwth-aachen.de/media/papers/ebck2013_1.pdf) and [libQEx](https://github.com/hcebke/libQEx).
+4. Nico Pietroni et al. "Reliable Feature-Line Driven Quad-Remeshing." *ACM TOG* 40(4), 2021. [Project and paper](https://www.quadmesh.cloud/) and [QuadWild implementation](https://github.com/nicopietroni/quadwild).
+5. Nicolas Ray and Dmitry Sokolov. "Robust Polylines Tracing for N-Symmetry Direction Field on Triangulated Surfaces." *ACM TOG* 33(3), 2014. [HAL record](https://inria.hal.science/hal-01092823).
+6. David Eppstein, Michael T. Goodrich, Ethan Kim, and Rasmus Tamstorf. "Motorcycle Graphs: Canonical Quad Mesh Partitioning." *Computer Graphics Forum* 27(5), 2008. [PDF](https://media.disneyanimation.com/uploads/production/publication_asset/36/asset/motorcycle_sgp_2008.pdf).
+7. Marcel Campen, David Bommes, and Leif Kobbelt. "Quantized Global Parametrization." *ACM TOG* 34(6), 2015. [Paper](https://www.graphics.rwth-aachen.de/media/papers/campen_sa2015_qgp_medium.pdf).
+8. Martin Heistermann, Jethro Warnett, and David Bommes. "Min-Deviation-Flow in Bi-directed Graphs for T-Mesh Quantization." *ACM TOG* 42(4), 2023. [Project page](https://www.algohex.eu/publications/bimdf-quantization/) and [libSatsuma](https://github.com/cgg-bern/libsatsuma).
+9. Yoann Coudert-Osmont et al. "Quad Mesh Quantization Without a T-Mesh." *Computer Graphics Forum* 43(1), 2024. [Project page](https://www.algohex.eu/publications/quad-mesh-quantization-without-a-t-mesh/).
+10. Mark Gillespie, Nicholas Sharp, and Keenan Crane. "Integer Coordinates for Intrinsic Geometry Processing." *ACM TOG* 40(6), 2021. [Paper](https://arxiv.org/abs/2106.00220) and [geometry-central documentation](https://geometry-central.net/surface/intrinsic_triangulations/integer_coordinates/).
+11. Ryan Viertel, Braxton Osting, and Matthew Staten. "Coarse Quad Layouts Through Robust Simplification of Cross Field Separatrix Partitions." 2019. [Paper](https://arxiv.org/abs/1905.09097).
+12. Xiao-Ming Fu et al. "Inversion-free Geometric Mapping Construction: A Survey." *Computational Visual Media* 7(3), 2021. [Paper](https://www.sciopen.com/article/10.1007/s41095-021-0233-9).
+13. Jiaran Zhou, Changhe Tu, Denis Zorin, and Marcel Campen. "Combinatorial Construction of Seamless Parameter Domains." *Computer Graphics Forum* 39(2), 2020.
+14. Marcel Campen, Hanxiao Shen, Jiaran Zhou, and Denis Zorin. "Seamless Parametrization with Arbitrary Cones for Arbitrary Genus." *ACM TOG* 39(1), 2019. [Paper](https://dl.acm.org/doi/10.1145/3360511).
+15. Hanxiao Shen et al. "Which Cross Fields Can Be Quadrangulated? Global Parameterization from Prescribed Holonomy Signatures." *ACM TOG*, 2022.
+16. Wenzel Jakob et al. "Instant Field-Aligned Meshes." *ACM TOG* 34(6), 2015. [Project page](https://rgl.epfl.ch/publications/Jakob2015Instant).
+17. Giorgio Gori et al. "FlowRep: Descriptive Curve Networks for Free-Form Design Shapes." *ACM TOG* 36(4), 2017. [Project page](https://www.cs.ubc.ca/labs/imager/tr/2017/FlowRep/).
+18. Qingnan Zhou and Alec Jacobson. "Thingi10K: A Dataset of 10,000 3D-Printing Models." 2016. [Paper](https://arxiv.org/abs/1605.04797) and [dataset](https://github.com/Thingi10K/Thingi10K).
+19. LLVM Project. [libFuzzer documentation](https://llvm.org/docs/LibFuzzer.html).
+20. [RapidCheck](https://github.com/emil-e/rapidcheck), [libQEx reference tests](https://github.com/hcebke/libQEx/blob/517dcaa0cc87646baa89e52cfc8e23766776f6d5/tests/reference_meshes.cc), [Geometry Central intrinsic properties](https://github.com/nmwsharp/geometry-central/blob/019669ddabda05e0f71fa3587cfb3c1dadf19cb8/test/src/intrinsic_triangulation_test.cpp), and [CGAL remeshing tests](https://github.com/CGAL/cgal/blob/548fc90ea5d38402df679426283475ec78db0537/PMP_Remeshing/test/PMP_Remeshing/remeshing_test.cpp).
+
+**Correction to boundary field-corner identity and branch ownership (2026-11-11, [independent adversarial review](Architecture_M6_CP3_TB101C_Audit_Adversarial_Review_20261111.md)).** Both **the boundary-corner producer** and the A3 chain consumer must publish or resolve the same typed `(source component, vertex, fan)` occurrence. A node-only fan resolver cannot recover the producer's discarded fan information from `SourceVertexId`. The producer must retain the certified sheet and its source-face/fan witness. Unknown or contradictory source support fails closed. This applies independently of hard-edge and port stops. The exact branch owner must derive the normal and projection from the immutable conditioned source and certified field frame **before** any floating normalization. A comparison made exact after rounded normalization is not a certified exact decision. The current binary64 `0.7` literal and the mathematical rational `7/10` differ; a separate Review must freeze which exact threshold owns the new decision. Branch-change and undecided/invalid transport are separate typed results. An undecided branch cannot prove a field corner or permit production chaining. The corrected CB/TB sequence precedes O36.
+
+
+**Further correction: node identity is not fan-incidence identity (2026-11-11, [independent Review](Architecture_M6_CP3_TB101C_Audit_Revision_Independent_Review_20261111.md)).** The A2b network currently creates one node per source vertex; multiple chart fans can share that node. Its D5 mandatory-chain partition joins only at nodes with two total incidences and stores one join per node. A corner key `(source component, vertex, fan)` cannot by itself give one shared node separate stop states. An admissible field-corner stop must bind a **specific oriented arc-end incidence** to a certified source component, vertex fan, sheet and corner product. The exact source path carrier alone may lack an owning face; do not infer one. No new pair join at a multi-fan node is authorized until a separate Review establishes the correct A2b rotation, pair ownership, rail, region sides and cycle invariants. If no correct pair can be certified, retain the old partition and define a distinct A2b topology correction. The exact-branch definition and owner must precede any derived-positive corner acceptance, because the legacy helper treats an undecided branch as a corner. Production remains unchanged. The corrected work order is in the Review, handoff and TODO.
+
+**Decision on corner-stop identity (2026-11-11, [RA-225](Architecture_M6_CP3_DEFN_P13_A3_Boundary_Fan_Stop_Identity_Review_20261111.md)); it supersedes the two corrections above where they conflict.** A corner stop is keyed by source vertex. The network has one node per source vertex, and a chain joins only at a node with exactly two incidences. A vertex shared by two face fans that each have rim edges is a node with four, so no chain passes it and a vertex-keyed stop cannot cut another fan's chain. A node that can join has both rim arcs in one fan, and the corner product walks that fan. The join rule is unchanged: no per-incidence join at a shared node is defined or planned, and no arc-endpoint resolver is needed. Two points of the corrections above stand. The per-edge branch rule has one owner, read by both the corner product and the bounded-disk producer (CB124). That owner gets an exact rule before the production switch (O39; `M6-CP3-DEFN-P13-A3-EXACT-RIM-ARITHMETIC`). A vertex the rule cannot decide is a stop, because the producer rejects a region there.
+
+**Exact rim branch rule (O39; 2026-11-11, [RA-226](Architecture_M6_CP3_DEFN_P13_A3_Exact_Rim_Arithmetic_Review_20261111.md)).** The per-edge owner decides on the stored doubles of the face's three vertices and two axes, read as exact rationals. These are the arrays the atlas reads. With the unnormalized face normal `N`, the in-plane inner product times `|N|²` is `g(p,q) = (p·q)(N·N) − (p·N)(q·N)`. For an axis `A` and the directed edge `E`, `cos² = g(A,E)² / (g(A,A) g(E,E))` with the sign of `g(A,E)`. The family with the larger `cos²` wins and the sign picks its branch. Equal squares tie, and a tie is undecided. The winner must reach the rational 7/10, inclusive. There is no tolerance, no square root and no normalization, so the answer depends only on the in-plane directions. A non-finite value, a zero edge, a face with no area or an edge normal to the face is undecided; a family with no in-plane part is not a candidate. The result is a branch or nothing. The corner product stays a list of source vertices: a changed branch and an undecided one are both stops, and no consumer reads the difference, so no separate typed result is added (this amends the sentence RA-225 wrote here). The carry across the vertex's fan is unchanged: it takes the atlas quarter-turn and keeps the oriented branch that continues forward. That forward test is binary64, but under the principal matching of an orthogonal cross its operand is at least `cos 45°`, so rounding cannot turn it. The rule lands unwired (CB125), is compared with the binary64 rule on every rim edge of the census fixtures (TB106), and then replaces it as the one owner (CB126, TB107). The annulus ring scoring has its own binary64 alignment rule and is not a reader of this owner; it is settled with the annulus definition.
+
+**D4 annulus regions ([RA-227](Architecture_M6_CP3_DEFN_P13_A3_Annulus_Plan_Consumption_Review_20261112.md), 2026-11-12).** An Euler-0 region with two rims and no hard feature stays with the periodic annulus producer under an A3 plan. No other producer builds it, so it cannot decline as the uniform producer does. Its boundary is its two rims, and it consumes them. The trace and cut spans inside it belong to A4 and the trace contract. Each rim is walked in lattice order with the bounded-disk producer's side reader, one shared decomposition. A strip is readable when, on both of its rim edges, every arc's two ends are breakpoints and the breakpoints split the edge at the same local parameters. Then the strip's count is that split, the rim lattice vertices are the plan's exact points, and each rim cell edge records its unit interval. A rim with an unreadable strip is not consumed, and the producer rejects it as the bounded-disk producer rejects an unreadable side. `gridU` is the sum of the strip counts, equal to each rim's interval total. Under the per-arc schedule a strip's breakpoints sit at `k/n`, the annulus's existing placement. A chained schedule spreads ordinals over runs by weight. A rim vertex where the direction turns is a breakpoint only when the weights divide exactly, so a chain usually bridges it. The bounded-disk producer can read that. The annulus product lattice cannot, so the O36 switch must say what annulus rims get. The ring correspondence scoring is a sum of squared `acos` values, has no rational exact form and is not an A3 reader. Its tie band rejects exact ties, so it stays as it is. Staged as a test-only rim census (CB127, TB108), then the reader (Review-only follow-on).
+
+**D4 annulus rim reader ([RA-228](Architecture_M6_CP3_DEFN_P13_A3_Annulus_Rim_Schedule_Review_20261112.md), 2026-11-12).**
+- Both producers read a Mandatory arc on its source edge through one function, which gives the arc's bound span and the span breakpoints on it as edge parameters. The bounded-disk producer then joins arcs along a side and may bridge a vertex; the annulus does not join.
+- A rim edge reads only when every arc starts and ends on a breakpoint, consecutive breakpoints are consecutive ordinals, and the split is exactly `k/n`. A strip reads when both of its rim edges give the same `n`. The exact split keeps the annulus's own coordinates, so the lattice is bit-identical wherever `n` is unchanged.
+- Each rim cell edge records its interval in its own direction. A rim edge has an interval exactly when it is genuine boundary or hard rail.
+- The O36 switch must stop chains at every annulus rim vertex: the switch passes them as vertex stops, as it passes the field corners. On Cylinder only two two-arc chains pass a rim vertex today, and their lengths differ by a rounding unit, so they bridge it.
+- Staged as CB128 → TB109 (shared reader, unwired rim reader, and a receipt on the one gate row that runs the annulus at another length ratio), then CB129 → TB110 (the switch). CB129 applies only if TB109 shows that row reading on every rim edge.
+
+**Annulus rim pairing ([RA-229](Architecture_M6_CP3_DEFN_P13_A3_Annulus_Rim_Pairing_Review_20261112.md), 2026-11-12).** Baseline A3 owes each arc a positive count, identical shared subdivisions and an even boundary sum per region. It does not owe equal counts on the two rims of an annulus strip. That would be a framed schedule (§4.7), so A3 is not changed to serve the annulus. The annulus counts a strip from the mean over both rims, while A3 counts each rim edge from its own metric integral, so the two disagree near a half. That disagreement alone does not stop the annulus reading the plan. What stops it is a strip whose two rim edges get different plan counts. Such a strip needs an A4 construction (O40): sheared columns when the rim totals are equal, irregular vertices when they are not. Row 729's pairing is measured by CB130 → TB111 before the annulus switch.
+
+**Production switch, O36 ([RA-230](Architecture_M6_CP3_DEFN_P13_A3_Production_Switch_Review_20261112.md), 2026-11-12).** The switch has two parts:
+- **D5:** A3 schedules each source-boundary rail as chains. Chains stop at the boundary field corners and at every boundary vertex of an Euler-0, two-loop region, the regions the annulus producer can take.
+- **D4:** the uniform producer declines every region under a plan, so a producer that reads A3 builds each one.
+
+D5 alone is not enough, because the uniform producer treats a plan as chained only when it has fewer spans than arcs. Breakpoints are located in one pass per span (O37). The switch is staged behind `SurfaceCellOptions::chainRimSchedules`, off by default, until receipts on the real fixtures and on a smooth-rim disc show what it builds. A separate activation turn then removes the option and the per-arc branch. **Activation is held ([RA-231](Architecture_M6_CP3_DEFN_P13_A3_Switch_Activation_Review_20261112.md)).** Under the switch every boundary fixture's phase front is produced and every span covered. But a bounded-disk product's completed mesh can fail the final gate before optimization with no strict issue (O41): MultiFaceSeam fails under chains, and a smooth-rim disc under either schedule. The gate checks the unoptimized completed mesh against the same measures as the final output, so a producer swap is accepted only when completion passes that gate. [RA-232](Architecture_M6_CP3_DEFN_P13_A4_Completed_Mesh_Gate_Review_20261112.md) found two separate causes behind O41.
+- **A constant field on a round rim cannot pass the gate.** The bounded-disk producer cuts the rim into four sides at the field corners. The corner cells take the rim's interior angle there, about 180°, and the frame must turn with the rim. A rim-aligned field would need interior singularities. Such a fixture tests the phase front only.
+- **The size measure treats rail edges as on target.** A low size percentile therefore reports interior cells, and a single uniform lattice cannot follow a target that varies across a region by more than the size band allows.
+
+**Interior size grading ([RA-233](Architecture_M6_CP3_DEFN_P13_A4_Interior_Size_Grading_Review_20261112.md), 2026-11-12).** A single-patch region has one count across each pair of opposite sides. Its boundary count comes from A3, from the boundary's metric. When the target grows inward, as the adaptive target does away from boundaries and features, interior cells are undersized. The only way to follow both the boundary and the interior targets is a size transition inside the region. Per-arc schedules hide this by rounding each short source edge to one cell, which over-coarsens boundaries within the gate's rail tolerance. The repair is user decision D10:
+- (A) graded A4 constructions;
+- (B) a region-aware A3 count that coarsens boundaries on purpose;
+- (C) a gate policy.
+
+**D10 answered: defer** ([RA-234](Architecture_M6_CP3_DEFN_P13_A4_Size_Grading_Decision_Review_20261112.md), user, 2026-11-12). Production keeps per-arc A3 schedules. Interior size transitions become part of the A4 disc-domain construction (65C), and the chain switch is activated only after them. The count contract (D7) and the final gate's thresholds are unchanged.
