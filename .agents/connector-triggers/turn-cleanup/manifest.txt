@@ -1,1 +1,0 @@
-.agents/connector-triggers/source-snapshot/m6-cp3-tb107-closeout-20261112-0019.txt
