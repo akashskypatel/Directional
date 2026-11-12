@@ -1,1 +1,0 @@
-TB110 source snapshot. Current turn: M6-CP3-TB110-P13-A3-ANNULUS-RIM-CONSUMPTION-FULL-GATE-EXEC. Frozen entry authority: 9fd81e789e358e70e7a24abbe8fff6d34ede6f01. Snapshot event SHA authoritative. No source mutation.
