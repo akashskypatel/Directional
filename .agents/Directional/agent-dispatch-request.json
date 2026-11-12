@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb109-annulus-rim-closeout-docs-20261112-v1",
+  "request_id": "m6-cp3-cb130-rim-pair-code-20261112-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb109-annulus-rim-closeout-docs-20261112-v1",
-  "file_id": "1PoVF5sESI5pBIvkTTUT9Yy1gy_chpOEz",
-  "patch_sha256": "060a7f7b9df86b4afc8c543e3b2f116b17112dcdf2bfef24b4b56f901d335350",
-  "base_sha": "63d87f88d26822c1e95157e774d46382d6f0c908",
+  "mailbox_key": "m6-cp3-cb130-rim-pair-code-20261112-v1",
+  "file_id": "13xA9AQfJ9troAAI7s4oBtOw3jfGf0XyH",
+  "patch_sha256": "0f9f8b45587814a0ad55c1ea131a0c408e5b1643a7c0778e13d264fa73f04f6b",
+  "base_sha": "f7e13debc3a7fd18599d7b9c5cda84fbbe9520d4",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close TB109 scoped MATCH and route annulus pairing review",
+  "commit_message": "test: add exact annulus rim pair census receipt (CB130)",
   "retention_days": 7
 }
