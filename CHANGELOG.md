@@ -1,3 +1,8 @@
+## 2026-11-12 UTC — CB127 annulus rim census compiled (64D.1; no runtime)
+
+- [CB127 code/build record](.agents/Directional/Architecture_M6_CP3_CB127_P13_A3_Annulus_Rim_Census_Code_Build_Record_20261112.md): applied RA-227 frozen test-only patch (`99 0`) at `39e91beb507468777aa90ffd83e23c146652d3ca`, no production source modifications. [Compile 43133009660](https://github.com/akashskypatel/Directional/actions/runs/43133009660), artifact `13905818229`, eight GMP/GMPXX targets PASS, 28/28 packaged checksums, `runtimeExecution=false`. No tests or benchmarks executed.
+- **Next separate turn TB108** artifact-only full gate. TB107 943/943 scoped MATCH and inherited 1 PASS / 2 registered RED remain prior evidence; CP2 491/491, stable 66/17/49, debt 1, deferred 81, O36 unwired, CP3 unpromoted unchanged.
+
 ## 2026-11-12 UTC — RA-227 annulus plan consumption defined (64D; Review, runtime-free)
 
 - [RA-227](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A3_Annulus_Plan_Consumption_Review_20261112.md): the periodic annulus producer does not read A3 and cannot decline (no other producer builds an Euler-0 region), so under a plan it consumes its two rims. A strip is readable when both rim edges have breakpoints at their ends and the same split. The per-arc schedule gives today's `k/n`; a chained schedule usually bridges rim vertices. The ring scoring (RA-226 F4) gets no code.
