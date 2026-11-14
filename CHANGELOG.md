@@ -1,3 +1,11 @@
+## 2026-11-14 UTC — RA-236 singularity port owner: A1's sector rule; D11 = A, edge-sliding ports (P13-e.3; Review, runtime-free)
+
+- [RA-236](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Singularity_Port_Owner_Review_20261112.md): an unfolding model of BunnyRandom vertex 49's eight-face fan, using the repository mesh and TB116's 32 direction lines, reproduces the atlas's four incidences. It confirms index −1 (turning −450.001°) and jumps under 20°: the +3 lift is a −7.8° jump, so the lift is cleared.
+- One separatrix straddles the ray to vertex 48: face 0's branch points 10.8° past it, and face 1's transported branch 7.4° short. It slides along edge (49,48), where no wedge holds it. The owner is A1's sector rule.
+- Identity for any valid fan: `classes + edgePorts = 4 − index`. The user chose **D11 = A, edge-sliding ports**.
+- Frozen: CB136 (`cca1ce4c…`, 70 lines; exact report-only straddle detector, `partition edgePorts` lines) → TB117 (TB116 manifest plus census; `identity=1` everywhere). Then the Review-only `M6-CP3-DEFN-P13-EDGE-SLIDING-SEPARATRIX-TRACE`.
+- Verification: `-fsyntax-only` 0; CB136 applies at HEAD; the manifest self-check passes; the exact sign predicate run on all 32 lines finds only (0,1,48-49). No product or test source changed in the repository.
+
 ## 2026-11-12 UTC — TB116 singularity-port direction census MATCH (P13-e.2)
 
 - [TB116 evidence](.agents/Directional/Architecture_M6_CP3_TB116_P13_Singularity_Port_Direction_Census_Full_Gate_Execution_Report_20261112.md): source `40f979d203b08cec236d047e4e9968b5d86d15d3`, package `13968642290`. [Gate 43275319557](https://github.com/akashskypatel/Directional/actions/runs/43275319557) **945/945 PASS**, 1,026 memberships, 1,898/1,898 file hashes. [Census 43275431208](https://github.com/akashskypatel/Directional/actions/runs/43275431208) Cylinder PASS, BunnyRandom/Vase expected RED, 9/9 file hashes. All existing census atlas records and `switch-*` receipts match TB115. BunnyRandom source vertex 49 still gives 4 classes instead of 5; 32 directions and exact four positive wedge decisions are preserved verbatim in the report.

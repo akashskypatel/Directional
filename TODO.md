@@ -1,4 +1,23 @@
-## CURRENT — TB116 MATCH; P13-e.3 Review-only next (2026-11-12 UTC)
+## CURRENT — RA-236: P13-e owner is A1's sector rule; D11 = A (edge-sliding ports); CB136 next, 2026-11-12
+
+> **Canonical next:** `M6-CP3-CB136-P13-EDGE-PORT-STRADDLE-CENSUS` (implementation agent, compile only). [Exact patch](.agents/Directional/Architecture_M6_CP3_CB136_P13_Edge_Port_Straddle_Census_Exact.diff) `cca1ce4cc55aa3e9173ba548cf2d0faaa4bda42c1aad72978daf8a6356740dc4`, 70 lines, keep 1 single-space context line. Numstat: `59 0` `src/authority/FieldTransportAtlas.cpp`. Base: HEAD `3ad99427f`.
+
+- [x] **RA-236** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Singularity_Port_Owner_Review_20261112.md)) completed `M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER`.
+  - An unfolding model of vertex 49's fan, built from the repository mesh and the TB116 directions, confirms index −1 and small jumps (the +3 lift is a −7.8° jump).
+  - One separatrix straddles the ray to vertex 48 and slides along edge (49,48).
+  - The owner is A1's sector rule; the lift is cleared.
+  - Identity for any valid fan: `classes + edgePorts = 4 − index`.
+- [x] **D11** — answered by the user (2026-11-12): **A, edge-sliding ports** (A1 port on the radial edge plus an A2a edge-supported trace start).
+
+| Step | Turn | Owner |
+|---|---|---|
+| P13-e.3 **COMPLETE** | `M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER` (RA-236; D11 = A) | Review |
+| **P13-e.4 NEXT** | `M6-CP3-CB136-P13-EDGE-PORT-STRADDLE-CENSUS`: report-only exact straddle detector, `partition edgePorts` lines. Mismatch → `M6-CP3-PLAN-P13-EDGE-PORT-STRADDLE-CENSUS-STOP`; infrastructure → `M6-CP3-CB136A-P13-EDGE-PORT-STRADDLE-CENSUS-ORCH` | implementation agent |
+| P13-e.5 | `M6-CP3-TB117-P13-EDGE-PORT-STRADDLE-CENSUS-FULL-GATE-EXEC`: TB116's manifest byte for byte plus the census. MATCH needs 945/945, verdicts unchanged, every TB116 receipt unchanged, `identity=1` on every `edgePorts` line, and only BunnyRandom singularity 6 with `edgePorts=1` (0,1,48-49). Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB117A-P13-EDGE-PORT-STRADDLE-CENSUS-ORCH` | implementation agent |
+| P13-e.6 | `M6-CP3-DEFN-P13-EDGE-SLIDING-SEPARATRIX-TRACE`: A1 edge-port attachment and A2a edge-supported trace start; freezes the wiring CB/TB | **Review agent only** |
+| then | Wiring CB → TB (BunnyRandom expected past the atlas); 65A → 65D (O41 and switch activation in 65C); O31/O32 | Review, then implementation |
+
+## PREVIOUS — TB116 MATCH (P13-e.2), 2026-11-12
 
 - [x] **TB116 P13-e.2** completed the 945/945 immutable full gate and the three-case census. The matched outcome is recorded in [Architecture_M6_CP3_TB116_P13_Singularity_Port_Direction_Census_Full_Gate_Execution_Report_20261112.md](.agents/Directional/Architecture_M6_CP3_TB116_P13_Singularity_Port_Direction_Census_Full_Gate_Execution_Report_20261112.md). Vertex 49 still has 4 of 5 required port classes. All 32 direction records were captured; in-sector fan/branch pairs are (0,2), (2,0), (4,0), (6,0). No new stable regression.
 - [ ] **Next:** `M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER`, Review only. Decide the A1 sector rule against the transport-lift representative. No implementation work is authorized before that decision.

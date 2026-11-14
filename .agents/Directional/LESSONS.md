@@ -631,6 +631,12 @@ This document records **reusable failure-derived engineering lessons**, not an e
   atlas wrote vertex 49's full port partition to stderr in every census run. A parity check on
   those lines (4 classes where 4 − index = 5) located the defect class without any new run. The
   new receipt only adds what the old lines lack: the directions.
+- **Turn a count mismatch into an identity before changing the counter (RA-236).** The class
+  union already merges a separatrix counted twice, so `classes + straddles = 4 − index` holds
+  for every valid fan. That proved edge ports cannot change any singularity that passes today,
+  and let the report-only detector check the identity on every run before any wiring. An
+  unfolding model fed with the receipt's directions and the repository mesh located the
+  straddle exactly.
 - **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
   still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).
 - **A TB runs the full current gate even when its CB touches no gate binary.** A CLI- or GUI-only CB
