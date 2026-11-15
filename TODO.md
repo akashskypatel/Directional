@@ -1,3 +1,13 @@
+## CURRENT — CB136 exact edge-port census compiled (P13-e.4); TB117 next, 2026-11-15 UTC
+
+> **Canonical next:** `M6-CP3-TB117-P13-EDGE-PORT-STRADDLE-CENSUS-FULL-GATE-EXEC` (artifact-only Test + Benchmark; do not rebuild). [CB136 evidence](.agents/Directional/Architecture_M6_CP3_CB136_P13_Edge_Port_Straddle_Census_Code_Build_Record_20261115.md): exact semantic source `1d5c9514b8ec479d90e059107dd627656e37d15f`; compile [run 43772905298](https://github.com/akashskypatel/Directional/actions/runs/43772905298), package `14184697141` (SHA-256 `e0b781baffb3057eae1197d5539f7850221269042393def73ae17c06abe1bc7a`). Eight GMP/GMPXX targets compiled; no runtime.
+
+- [x] **P13-e.4 / CB136:** report-only exact edge-port straddle detector committed and compiled, 59 added lines in `src/authority/FieldTransportAtlas.cpp`; no behavior changes.
+- [ ] **P13-e.5 / TB117:** verify the unchanged 945-case gate and production census against immutable CB136 package. Require identity on every edge-port line and one BunnyRandom vertex49 straddle.
+- **Carry:** CP2 491/491, stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted; `chainRimSchedules=false`; D10 defer.
+
+## PREVIOUS — RA-236 and CB136 planning (retained)
+
 ## CURRENT — RA-236: P13-e owner is A1's sector rule; D11 = A (edge-sliding ports); CB136 next, 2026-11-12
 
 > **Canonical next:** `M6-CP3-CB136-P13-EDGE-PORT-STRADDLE-CENSUS` (implementation agent, compile only). [Exact patch](.agents/Directional/Architecture_M6_CP3_CB136_P13_Edge_Port_Straddle_Census_Exact.diff) `cca1ce4cc55aa3e9173ba548cf2d0faaa4bda42c1aad72978daf8a6356740dc4`, 70 lines, keep 1 single-space context line. Numstat: `59 0` `src/authority/FieldTransportAtlas.cpp`. Base: HEAD `3ad99427f`.

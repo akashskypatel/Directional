@@ -1,3 +1,9 @@
+## 2026-11-15 UTC — CB136 P13-e.4: exact edge-port census compiled, no runtime
+
+- [CB136 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB136_P13_Edge_Port_Straddle_Census_Code_Build_Record_20261115.md): RA-236 exact report-only 59-line atlas patch committed at `1d5c9514b8ec479d90e059107dd627656e37d15f`. Source snapshot 5,534/5,534 verified; patch apply run 43772565839 SUCCESS.
+- [Compile 43772905298](https://github.com/akashskypatel/Directional/actions/runs/43772905298) SUCCESS; immutable package `14184697141`, ZIP SHA-256 `e0b781baffb3057eae1197d5539f7850221269042393def73ae17c06abe1bc7a`; eight GMP/GMPXX targets; `runtimeExecution=false`.
+- Next separate turn: `M6-CP3-TB117-P13-EDGE-PORT-STRADDLE-CENSUS-FULL-GATE-EXEC` (artifact only). No TB117 gate, acceptance, or selector promotion claimed. CP2 491/491 and stable 66/17/49, debt1, deferred81 remain.
+
 ## 2026-11-14 UTC — RA-236 singularity port owner: A1's sector rule; D11 = A, edge-sliding ports (P13-e.3; Review, runtime-free)
 
 - [RA-236](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Singularity_Port_Owner_Review_20261112.md): an unfolding model of BunnyRandom vertex 49's eight-face fan, using the repository mesh and TB116's 32 direction lines, reproduces the atlas's four incidences. It confirms index −1 (turning −450.001°) and jumps under 20°: the +3 lift is a −7.8° jump, so the lift is cleared.
