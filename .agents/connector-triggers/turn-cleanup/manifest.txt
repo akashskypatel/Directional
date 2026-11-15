@@ -1,2 +1,0 @@
-# CB136 cleanup: remove exactly one temporary source-snapshot marker.
-.agents/connector-triggers/source-snapshot/m6-cp3-cb136-20261115-2259.txt
