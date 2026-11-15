@@ -1,2 +1,0 @@
-Turn: M6-CP3-TB117-P13-EDGE-PORT-STRADDLE-CENSUS-FULL-GATE-EXEC
-Purpose: exact authoritative source snapshot for TB117 gate verification

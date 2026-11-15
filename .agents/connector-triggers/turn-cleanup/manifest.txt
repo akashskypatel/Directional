@@ -1,2 +1,0 @@
-# TB117 verified temporary state cleanup
-.agents/connector-triggers/source-snapshot/m6-cp3-tb117-20261115-2322.txt
