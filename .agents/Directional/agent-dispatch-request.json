@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb136-documentation-20261115-v2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb136-documentation-v2",
-  "file_id": "1pnRoj4ryI1fVyKl-tEZ78NZPnJIohXCY",
-  "patch_sha256": "b312b7f5a67a8ec939bb449e7b4f590644a75f53fa6a4d1a05ec5c9373baeae3",
-  "base_sha": "024d66b817cc9fbd7581ebb76652ec8108d2a39a",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close CB136 compile checkpoint and hand off TB117",
-  "retention_days": 14
+  "request_id": "m6-cp3-tb117-edge-port-full-gate-20261115-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb117-edge-port-full-gate",
+  "executor_sha": "e4959b594443e09e587a876d12f99d8e4ea47b00",
+  "semantic_source_sha": "1d5c9514b8ec479d90e059107dd627656e37d15f",
+  "turn_id": "M6-CP3-TB117-P13-EDGE-PORT-STRADDLE-CENSUS-FULL-GATE-EXEC",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "artifact_prefix": "m6-cp3-tb117-edge-port-full-gate",
+  "retention_days": 14,
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "14184697141",
+    "EXPECTED_SOURCE_SHA": "1d5c9514b8ec479d90e059107dd627656e37d15f",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "e0b781baffb3057eae1197d5539f7850221269042393def73ae17c06abe1bc7a",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "408d070cddc98bb3a97068ec3c74b480900e67d426166abe53de423d22c5bccf",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "6729be6a8db849b03931714b47454a42252532acb6837bb6b8711244a9fdaa89",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB117_P13_Edge_Port_Straddle_Census_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "16a909bd6d3fe2b9ba37d263b89fb8ca16dcc3dd42214e4cabcae26c05c91020",
+    "EXPECTED_CASE_COUNT": "945",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  }
 }
