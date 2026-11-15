@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb116-handoff-authority-20261112-v1",
+  "request_id": "m6-cp3-cb136-edge-port-apply-20261115-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb116-handoff-authority-v1",
-  "file_id": "11zuREkrmr9gOa5gFzcaH_k1E-dixXNxO",
-  "patch_sha256": "06db2f8ca4cfb971c3d7e42b0b5712862e1e9f9ca14e0d4544c6f04e6a64f790",
-  "base_sha": "6bc0c33b7967e0e8e79a639487cc81d7e625430e",
+  "mailbox_key": "m6-cp3-cb136-edge-port-apply",
+  "file_id": "1x6F-CtjKsr2UFuDsI-_XJCcZdHU43cku",
+  "patch_sha256": "60a471eca89e27d97780d0d9ea88e7a2150f0e05468202afc5965944e2c60458",
+  "base_sha": "024d66b817cc9fbd7581ebb76652ec8108d2a39a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: update TB116 handoff authority table",
+  "commit_message": "feat(surface): add report-only exact edge-port straddle census",
   "retention_days": 14
 }
