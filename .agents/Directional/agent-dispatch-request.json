@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb136-compile-20261115-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb136-compile",
-  "source_sha": "1d5c9514b8ec479d90e059107dd627656e37d15f",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb136-p13-edge-port"
+  "request_id": "m6-cp3-cb136-documentation-20261115-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb136-documentation",
+  "file_id": "1_BKXZXTi4-XR6JqkVYSi87In-GwZkgIZ",
+  "patch_sha256": "d7ac0f521324f1826e8bf1d4c6c8e11024cd1a1c3df61542b407aadcafa1e5ad",
+  "base_sha": "024d66b817cc9fbd7581ebb76652ec8108d2a39a",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close CB136 compile checkpoint and hand off TB117",
+  "retention_days": 14
 }
