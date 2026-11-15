@@ -1,3 +1,8 @@
+## 2026-11-15 UTC — TB117 edge-port straddle census full gate MATCH (P13-e.5)
+
+- [TB117 report](.agents/Directional/Architecture_M6_CP3_TB117_P13_Edge_Port_Straddle_Census_Full_Gate_Execution_Report_20261115.md): immutable CB136 package `14184697141` / semantic source `1d5c9514b8ec479d90e059107dd627656e37d15f`, no rebuild. [Gate 43774649075](https://github.com/akashskypatel/Directional/actions/runs/43774649075) **945/945 PASS**, 1,026 memberships, 1,898/1,898 hashes; [census 43774679374](https://github.com/akashskypatel/Directional/actions/runs/43774679374) Cylinder PASS, BunnyRandom/Vase expected RED, 9/9 hashes. All TB116 receipts and 216 census direction records unchanged. All **470** new edge-port records have `identity=1`; BunnyRandom vertex 49 has exactly one radial-edge straddle `(0,1,48-49)` and `classes=4 edgePorts=1 expectedClasses=5`.
+- No new stable regression, source/test/selector/manifest change, or CP3 promotion. CP2 491/491, stable 66/17/49, debt1, deferred81, `chainRimSchedules=false`. **Next separate Review-only:** `M6-CP3-DEFN-P13-EDGE-SLIDING-SEPARATRIX-TRACE`.
+
 ## 2026-11-15 UTC — CB136 P13-e.4: exact edge-port census compiled, no runtime
 
 - [CB136 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB136_P13_Edge_Port_Straddle_Census_Code_Build_Record_20261115.md): RA-236 exact report-only 59-line atlas patch committed at `1d5c9514b8ec479d90e059107dd627656e37d15f`. Source snapshot 5,534/5,534 verified; patch apply run 43772565839 SUCCESS.

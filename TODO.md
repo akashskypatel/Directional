@@ -1,3 +1,11 @@
+## CURRENT — TB117 full gate MATCH (P13-e.5); edge-sliding Review next, 2026-11-15 UTC
+
+> **Canonical next Review-only:** `M6-CP3-DEFN-P13-EDGE-SLIDING-SEPARATRIX-TRACE` under [RA-236 §6](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Singularity_Port_Owner_Review_20261112.md). [TB117 evidence](.agents/Directional/Architecture_M6_CP3_TB117_P13_Edge_Port_Straddle_Census_Full_Gate_Execution_Report_20261115.md): immutable CB136 artifact, 945/945 gate, three-case census unchanged, all 470 edge-port identities valid; only BunnyRandom vertex 49 has one radial-edge straddle.
+
+- [x] **P13-e.5 / TB117:** MATCH; all TB116 receipts unchanged; no rebuild or selector promotion.
+- [ ] **P13-e.6 / Review:** define A1 radial-edge port attachment and A2a edge-supported trace start; freeze subsequent wiring Code + Build and Test + Benchmark scope. Do not implement during TB117.
+- **Carry:** CP2 491/491; stable 66/17/49, debt1, deferred81; CP3/selector497 unpromoted; `chainRimSchedules=false`; O41 and activation remain in 65C; O31/O32 open.
+
 ## CURRENT — CB136 exact edge-port census compiled (P13-e.4); TB117 next, 2026-11-15 UTC
 
 > **Canonical next:** `M6-CP3-TB117-P13-EDGE-PORT-STRADDLE-CENSUS-FULL-GATE-EXEC` (artifact-only Test + Benchmark; do not rebuild). [CB136 evidence](.agents/Directional/Architecture_M6_CP3_CB136_P13_Edge_Port_Straddle_Census_Code_Build_Record_20261115.md): exact semantic source `1d5c9514b8ec479d90e059107dd627656e37d15f`; compile [run 43772905298](https://github.com/akashskypatel/Directional/actions/runs/43772905298), package `14184697141` (SHA-256 `e0b781baffb3057eae1197d5539f7850221269042393def73ae17c06abe1bc7a`). Eight GMP/GMPXX targets compiled; no runtime.
