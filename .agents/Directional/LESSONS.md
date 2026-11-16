@@ -669,6 +669,13 @@ This document records **reusable failure-derived engineering lessons**, not an e
   48 no sector's field left the vertex at all. A conformance fix chosen from the first instance
   alone would have moved accepted rows and still left BunnyRandom RED. Check whether any candidate
   could succeed at all (here: does any sector flow out?) before comparing seeds.
+- **A user-owned configuration at a new location usually already has a rule elsewhere; find it
+  before designing one (RA-241).** D12 = A's "two fields point at each other across a radial edge" is
+  the atlas straddle at a singular vertex. That rule already decides with the exact along-edge
+  advance and departs through the edge-port path, so the regular-vertex case reuses both. A
+  conformance switch measured neutral on every accepted row (CB140 → TB121) needs no option
+  staging. When it and an answered decision change the same stage, and each fires only on its
+  own predicate, freeze them in one CB with a receipt for each.
 - **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
   still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).
 - **A TB runs the full current gate even when its CB touches no gate binary.** A CLI- or GUI-only CB

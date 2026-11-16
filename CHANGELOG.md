@@ -1,3 +1,12 @@
+## 2026-11-16 UTC — RA-241 edge-transit seed conformance outcome; D12 = A (P13-e.18)
+
+- [RA-241](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Edge_Transit_Seed_Conformance_Outcome_Review_20261116.md): TB121 accepted; the AX1 carrier seed changes no gate owner. The user answered D12 = A.
+- Frozen CB141 (`cc937c06…`, 3 files `+482/−24`):
+  - the carrier seed for `EdgeTransit` vertex transits (O44);
+  - `follow_field_vertex_transit_outflow` (Cross/Slide/Unresolved), with the `vertexOutflowFollow` receipt;
+  - two unit tests (gate rows 948–949).
+- TB122 manifest `a56ad00c…` (949 rows, membership 1,030).
+
 ## 2026-11-16 UTC — TB121 edge-transit seed conformance full gate: scoped MATCH (P13-e.17)
 
 - [TB121 report](.agents/Directional/Architecture_M6_CP3_TB121_P13_Edge_Transit_Seed_Conformance_Receipt_Full_Gate_Execution_Report_20261116.md): immutable CB140 source `6a293e4641a2160cb9f447322c9aa1d1d26f3838`, artifact `14206223032`; [gate 43827835396](https://github.com/akashskypatel/Directional/actions/runs/43827835396) 947/947 PASS, 1,902/1,902 checksums; [census 43827920795](https://github.com/akashskypatel/Directional/actions/runs/43827920795) 1 PASS/2 expected RED, 9/9 checksums; 55/55 frozen receipts unchanged. BunnyRandom trace 51 at vertex 137: new `EdgeTransit` diagnostic `codeOwner=3 carrierOwner=4 carrierOwnerLeaves=1`; 0 diagnostics in gate. No source, fixture, test, selector or build changes; stable 66/17/49, debt1 deferred81, CP2 491/491 inherited; D12 pending. Next separate turn: `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME`.

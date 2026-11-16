@@ -1,3 +1,13 @@
+## RA-241 COMPLETE (P13-e.18; D12 = A; carrier seed + outflow follow frozen) — next: `M6-CP3-CB141-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW` (implementation agent, compile only) — 2026-11-16 UTC
+
+**Canonical completed turn:** `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME` (Review only). [RA-241](Architecture_M6_CP3_DEFN_P13_Edge_Transit_Seed_Conformance_Outcome_Review_20261116.md). TB121 accepted as scoped MATCH (re-downloaded, 1,902/1,902 and 9/9 hashes, census receipts identical to TB120, Q1/Q2 hold). The AX1 carrier seed changed no gate owner, so it is switched unconditionally. **The user answered D12 = A (follow the field).** CB141 (`cc937c06…`, 3 files, +482/−24) does both:
+- it seeds `EdgeTransit` elections on the carrier ray (O44);
+- it follows an owner without outflow: Cross to the first outflowing sector, or Slide along a mutual radial when both fields advance along it exactly, by the edge-port departure. Otherwise the election is kept.
+
+It adds two tests (rows 948–949). TB122 uses manifest `a56ad00c…` (949 rows, membership 1,030). Carry O42/O43, O44 (closes at P13-e.21), D11=A, D10 deferred, D6 pending, CP2 491/491, stable 66/17/49, debt1, deferred81, `chainRimSchedules=false`, CP3/selector497 unpromoted.
+
+**Previous completed state (retained):**
+
 ## TB121 COMPLETE / scoped MATCH (P13-e.17) — next: `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME` (Review only) — 2026-11-16 UTC
 
 **Canonical completed turn:** `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC`. [TB121 report](Architecture_M6_CP3_TB121_P13_Edge_Transit_Seed_Conformance_Receipt_Full_Gate_Execution_Report_20261116.md). CB140 exact source `6a293e4641a2160cb9f447322c9aa1d1d26f3838`, package `14206223032`. Full gate [run 43827835396](https://github.com/akashskypatel/Directional/actions/runs/43827835396), artifact `14208145885`: **947/947 PASS**, membership 1,028, 1,902/1,902 hashes. Three-case census [run 43827920795](https://github.com/akashskypatel/Directional/actions/runs/43827920795), artifact `14208251561`: Cylinder PASS, BunnyRandom/Vase expected RED, 9/9 hashes, 55/55 frozen receipt lines identical to TB120. The one new `edgeTransitSeedConformance` line is on BunnyRandom trace 51 at vertex 137: `codeOwner=3 carrierOwner=4 carrierOwnerLeaves=1`; 0 such lines in gate, 0 `modeled=0`. Both runs are artifact-only; no source, test, selector or fixture changes. This is scoped evidence only. **Next separate turn:** Review-only `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME`. D12 remains pending, O42/O43/O44 open; D11=A, D10 deferred, D6 pending; CP2 491/491; stable 66/17/49, debt 1, deferred 81; `chainRimSchedules=false`; CP3/selector497 unpromoted.
@@ -226,14 +236,29 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | **CB140 COMPLETE (P13-e.16):** [record](Architecture_M6_CP3_CB140_P13_Edge_Transit_Seed_Conformance_Receipt_Code_Build_Record_20261116.md). TB120 scoped MATCH accepted (947/947; BunnyRandom terminal locus is the vertex-137 transit). H1 conformance defect (O44) at 137; H2 outflow gap at 349 and 48 → **D12 pending**. **NEXT:** `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC` (artifact only, RA-240 §6). D11=A; D10 defer. |
+| Currency | **RA-241 COMPLETE (P13-e.18):** [record](Architecture_M6_CP3_DEFN_P13_Edge_Transit_Seed_Conformance_Outcome_Review_20261116.md). TB121 scoped MATCH accepted (947/947; one seed-conformance line, vertex 137). **D12 = A** (user). CB141 frozen: AX1 carrier seed (O44) + D12 outflow follow, two tests. **NEXT:** `M6-CP3-CB141-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW` (compile only). D11=A; D10 defer. |
 | Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing`; exact CB140 semantic source `6a293e4641a2160cb9f447322c9aa1d1d26f3838`; compile run `43825208976`; package `14206223032` (ZIP SHA-256 `98acb75fbed52ab6909be65d165310ac8dfe0c75a5be5117aed473c4fd7db089`). Draft PR #8 remains open/unmerged. |
 | Last accepted semantic runtime | **CP2 491/491** (2026-10-06); CP3/selector497 unpromoted. |
-| Latest candidate | **TB119/TB120 P13-e candidate, unpromoted:** BunnyRandom first terminal `NotProductionReady/field-aligned-network`, `BranchContinuationDegenerateEntry`, locus face (137,149,162) at vertex 137 (trace 51). RA-240: the A2a vertex transit is the owner stage. Vertex 137 is caused by the AX1 seed (O44); vertices 48 and 349 by the Amendment 22 outflow gap (D12 pending). Vase remains separately registered `NotProductionReady/completion`. O41 open; D10 = defer. |
+| Latest candidate | **TB119–TB121 P13-e candidate, unpromoted:** BunnyRandom first terminal `NotProductionReady/field-aligned-network`, `BranchContinuationDegenerateEntry`, locus face (137,149,162) at vertex 137 (trace 51). Its two causes have fixes frozen in CB141: the AX1 seed (O44) at vertex 137, and the outflow gap at vertices 48 and 349 (D12 = A). Vase remains separately registered `NotProductionReady/completion`. O41 open; D10 = defer. |
 | Regression accounting and debt | CP2 **491/491** accepted, stable **66 events / 17 categories / 49 recurrences**, debt **1**, deferred **81**. O34 narrowed; O35 met, O37 compiled behind option, O38 staged, O39 exact owner complete; O36 activation and D6 open. |
-| Active boundary | **P13-e.16 CB140 COMPLETE; P13-e.17 TB121 NEXT** (artifact only). D12 pending. `chainRimSchedules=false`; CP3/selector497 unpromoted. |
+| Active boundary | **P13-e.18 RA-241 COMPLETE; P13-e.19 CB141 NEXT** (compile only), then TB122 (P13-e.20). D12 = A. `chainRimSchedules=false`; CP3/selector497 unpromoted. |
 
-## Mandatory next turn — `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC` (step P13-e.17)
+## Mandatory next turn — `M6-CP3-CB141-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW` (step P13-e.19)
+
+- **Implementation agent, compile only.** Apply exactly [the CB141 diff](Architecture_M6_CP3_CB141_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Follow_Exact.diff).
+  - SHA-256 `cc937c0674b1deb6fd0bbf2fb561d1ad1fa1a1a1a26df58af6939103f08242b5`; 655 lines, 3-line context.
+  - Numstat: `41 1` header, `239 23` `src/geometry/SurfaceCellTracing.cpp`, `202 0` `tests/FieldAlignedCurveNetworkTests.cpp`.
+  - [RA-241 §3](Architecture_M6_CP3_DEFN_P13_Edge_Transit_Seed_Conformance_Outcome_Review_20261116.md) is the authority.
+- **Precheck:** `git diff --quiet 6a293e4641a2160cb9f447322c9aa1d1d26f3838 HEAD -- src include tests`.
+- Compile the GMP/GMPXX package. Run no tests or benchmarks. Change no source beyond the patch.
+- **Routes:**
+  - Mismatch → `M6-CP3-PLAN-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-STOP`.
+  - Infrastructure → `M6-CP3-CB141A-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-ORCH`.
+  - Success → `M6-CP3-TB122-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-FULL-GATE-EXEC`. It runs manifest `gates/Architecture_M6_TB122_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Follow_Full_Gate_Case_Manifest.tsv` (`a56ad00ce48424a8505b7a6ab71500a4c60285b3d96ceecaf7cf1a3724f5f2b1`, 949 rows, membership 1,030) plus census `3af1dc0d…`, with MATCH per RA-241 §4.
+- After TB122 comes Review-only `M6-CP3-DEFN-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-OUTCOME` (P13-e.21).
+- **Carry unchanged:** D11=A, D12=A, D10 deferred, D6 pending, O42/O43/O44 open, CP2 491/491, stable 66/17/49, debt 1, deferred 81, CP3/selector497 unpromoted, `chainRimSchedules=false`.
+
+### Completed — TB121 (P13-e.17, scoped MATCH); its brief retained
 
 - **Test + Benchmark, artifact only.** Use CB140's immutable GMP package `14206223032` from source `6a293e4641a2160cb9f447322c9aa1d1d26f3838`. Do not configure, build, relink, patch, repair, or run discovery. [RA-240 §6](Architecture_M6_CP3_DEFN_P13_Vertex_Transit_Outflow_Outcome_Review_20261116.md) is the authority.
 - Use the TB120 manifests unchanged: gate `3aac432b9f466e5ce06601c90a08ad09c1886dfeb97c38b05e9bd46f51a1190b` (947 rows, membership 1,028) and three-case census `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`.
@@ -573,8 +598,11 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | P13-e.14 — COMPLETE / scoped MATCH | `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC` | TB119 manifest unchanged (`3aac432b…`, 947 rows, membership 1,028) plus the census; MATCH per RA-239 §5; record the locus and every R1/sector line | Close with `Successor: M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME` | `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-REV`; infrastructure `M6-CP3-TB120A-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-ORCH` |
 | P13-e.15 **COMPLETE** | `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME` | [RA-240](Architecture_M6_CP3_DEFN_P13_Vertex_Transit_Outflow_Outcome_Review_20261116.md): H1 (AX1 seed, O44) at vertex 137; H2 (Amendment 22 outflow gap) at 349 and 48 → D12 pending; diagnostic CB140 + TB121 frozen | P13-e.16 | — |
 | **P13-e.16 — COMPLETE / COMPILE GREEN** | `M6-CP3-CB140-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT` (compile only) | [Exact patch](Architecture_M6_CP3_CB140_P13_Edge_Transit_Seed_Conformance_Receipt_Exact.diff) `2e135b8cc18c6e59187928779756d429d0c8e2819e9dcfdc21344f71e8b667eb`, 123 lines, 3-line context; 1 file `+105`; base: CB139 source plus documentation | Close with `Successor: M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC` | `M6-CP3-PLAN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-STOP`; infrastructure `M6-CP3-CB140A-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-ORCH` |
-| P13-e.17 | `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC` (artifact only) | TB120 manifests unchanged; MATCH per RA-240 §6; record every `edgeTransitSeedConformance` line | Close with `Successor: M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME` | `…-FULL-GATE-REV`; infrastructure `M6-CP3-TB121A-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-ORCH` |
-| P13-e.18 | `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME` | **Review agent only.** AX1 seed switch from TB121's counts (staged if accepted rows move); ask D12 if still open; freeze the D12 CB if answered | its CB/TB | — |
+| P13-e.17 **COMPLETE / scoped MATCH** | `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC` (artifact only) | TB120 manifests unchanged; MATCH per RA-240 §6; record every `edgeTransitSeedConformance` line | Close with `Successor: M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME` | `…-FULL-GATE-REV`; infrastructure `M6-CP3-TB121A-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-ORCH` |
+| P13-e.18 **COMPLETE** | `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME` | [RA-241](Architecture_M6_CP3_DEFN_P13_Edge_Transit_Seed_Conformance_Outcome_Review_20261116.md): TB121 accepted; AX1 seed switch measured neutral; **D12 = A** (user); CB141 + TB122 frozen | P13-e.19 | — |
+| **P13-e.19 — NEXT** | `M6-CP3-CB141-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW` (compile only) | [Exact patch](Architecture_M6_CP3_CB141_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Follow_Exact.diff) `cc937c0674b1deb6fd0bbf2fb561d1ad1fa1a1a1a26df58af6939103f08242b5`, 655 lines, 3-line context; 3 files `+482/−24`; base: CB140 source plus documentation | Close with `Successor: M6-CP3-TB122-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-FULL-GATE-EXEC` | `M6-CP3-PLAN-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-STOP`; infrastructure `M6-CP3-CB141A-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-ORCH` |
+| P13-e.20 | `M6-CP3-TB122-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-FULL-GATE-EXEC` (artifact only) | Manifest `a56ad00c…` (949 rows, membership 1,030) + census `3af1dc0d…`; MATCH per RA-241 §4; record every R1, conformance, `vertexOutflowFollow` and departure line | Close with `Successor: M6-CP3-DEFN-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-OUTCOME` | `…-FULL-GATE-REV`; infrastructure `M6-CP3-TB122A-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-ORCH` |
+| P13-e.21 | `M6-CP3-DEFN-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-OUTCOME` | **Review agent only.** Read BunnyRandom's new terminal and name its owner stage; close O44 | its CB/TB | — |
 | then | 65A `M6-CP3-DEFN-P13-A3-BOUNDARY-SPAN-CARRIER-BINDING` → 65B → 65C (carries O41 and switch activation) → 65D | Review, then implementation | — | — |
 
 Out of scope for 64B.19–64B.27: any fan or occurrence resolver, any change to the D5 join rule, any change to `resolve_branch_transition` or the fan carry, pipeline wiring, and any source change beyond the exact patches.
@@ -1120,8 +1148,11 @@ Facts are in the records, `TODO.md` steps and Review track, `CHANGELOG.md` and t
 | P13-e.14 — COMPLETE / scoped MATCH | `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC` | TB119 manifest unchanged plus the census; MATCH per RA-239 §5. MATCH → `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME`. Mismatch → `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-REV`; infrastructure → `M6-CP3-TB120A-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-ORCH` |
 | P13-e.15 — Review COMPLETE | `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME` | [RA-240](Architecture_M6_CP3_DEFN_P13_Vertex_Transit_Outflow_Outcome_Review_20261116.md): H1 at 137 (O44), H2 at 349/48 (D12 pending); CB140 + TB121 frozen |
 | **P13-e.16 — COMPLETE / COMPILE GREEN** | `M6-CP3-CB140-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT` | Implementation agent, compile only; RA-240 §5 `2e135b8c…` (123 lines, 3-line context), 1 file `+105`. Mismatch → `M6-CP3-PLAN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-STOP`; infrastructure → `M6-CP3-CB140A-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-ORCH` |
-| P13-e.17 | `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC` | TB120 manifests unchanged; MATCH per RA-240 §6. MATCH → `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB121A-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-ORCH` |
-| P13-e.18 (Review only) | `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME` | AX1 seed switch from TB121's counts; D12 asked if still open |
+| P13-e.17 — COMPLETE / scoped MATCH | `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC` | TB120 manifests unchanged; MATCH per RA-240 §6. MATCH → `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB121A-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-ORCH` |
+| P13-e.18 — Review COMPLETE | `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME` | [RA-241](Architecture_M6_CP3_DEFN_P13_Edge_Transit_Seed_Conformance_Outcome_Review_20261116.md): TB121 accepted; D12 = A; CB141 + TB122 frozen |
+| **P13-e.19 — NEXT** | `M6-CP3-CB141-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW` | Implementation agent, compile only; RA-241 §3 `cc937c06…` (655 lines), 3 files `+482/−24`. Mismatch → `M6-CP3-PLAN-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-STOP`; infrastructure → `M6-CP3-CB141A-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-ORCH` |
+| P13-e.20 | `M6-CP3-TB122-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-FULL-GATE-EXEC` | Manifest `a56ad00c…` (949 rows) + census; MATCH per RA-241 §4. MATCH → P13-e.21. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB122A-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-ORCH` |
+| P13-e.21 (Review only) | `M6-CP3-DEFN-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-OUTCOME` | BunnyRandom's next terminal and its owner stage; O44 closes |
 | then | 65A → 65B → 65C (with O41 and activation) → 65D | See the revised bounded sequence |
 | 64C–65D (Review, runtime-free; scoped) | **See revised bounded sequence above** | D4 uniform → D4 annulus → D9c carrier attachment → A2b reciprocal trace → A4 disc domain → D8 receipt; each DEFN then dedicated CB then dedicated TB |
 | 66+ | per-disc boundary and corners (D6) → fill (§4.9) → aggregator dispatch with honest `Declined` flags (D3) | One DEFN → CB → TB each |
@@ -1136,7 +1167,7 @@ Rows 49–64B.9 are complete as turns. TB90 64.4 is MATCH (914/914, census 1 PAS
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC** (P13-e.17, Test + Benchmark, artifact only).
+`load_next`: **M6-CP3-CB141-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW** (P13-e.19, implementation agent, compile only).
 - Apply exactly RA-240 §5's patch `2e135b8c…` at HEAD (source equals CB139 `c520674030c76be455111d7c41aae7d5f53ce900`); build the eight GMP/GMPXX targets; publish an immutable package. Do not run tests.
 - Then TB121 (RA-240 §6, TB120 manifests unchanged), then Review-only `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME`.
 - D12 (Amendment 22 outflow gap at vertices 48/349) is pending; do not implement any D12 option before the user answers.
