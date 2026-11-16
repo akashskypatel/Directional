@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb122-adversarial-review-closeout-20261116-v1",
+  "request_id": "m6-cp3-tb122-review-closeout-table-20261116-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb122-adversarial-review-closeout",
-  "file_id": "1gqBqCTJbA6rE4XR5JlKS3i_dqPDBNi7i",
-  "patch_sha256": "f1c867959a06a8ac80fd6dc86a83cff359f3e9f6aca180cf23b2848cfcf644fd",
-  "base_sha": "9161806ed6bd5c52856067264211fd7bb47b2875",
+  "mailbox_key": "m6-cp3-tb122-review-closeout-table",
+  "file_id": "1pjHs6uy_UuZ-6s82s2l3x75vNqpMLamv",
+  "patch_sha256": "ec1002226a52c996a30d787bc7c8941875b3e9989acebb3161168fb90acfa1fb",
+  "base_sha": "b5a82aad5689bcad3f708aa1c5bbe29385c81d45",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): adversarial TB122 review and narrow turn sequence",
+  "commit_message": "docs(directional): complete adversarial TB122 review checklist",
   "retention_days": 14
 }
