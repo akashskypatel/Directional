@@ -1,0 +1,2 @@
+TB118 source snapshot. Frozen branch authority immediately before trigger: 54c546f743a38010d44d6f37a318d194b9ffb9b6
+Artifact-only test turn. No compile or source changes.
