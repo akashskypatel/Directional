@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb118-documentation-closeout-v2-20261116-v2",
+  "request_id": "m6-cp3-cb138-edge-port-slide-20261116-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb118-documentation-closeout-v2",
-  "file_id": "1hXJCPCaf4NvM5qes3izQYYGPoJLWT1k5",
-  "patch_sha256": "f0d35ea4f5494621cbee727e8209840f89593dca3dcbd0c16d0c3748723402e7",
-  "base_sha": "9afc87052def367896fbf4115256bab7332ed779",
+  "mailbox_key": "m6-cp3-cb138-edge-port-slide",
+  "file_id": "1RmHMyLyMnOAL2Wve12mvaw6DCzqnrc2k",
+  "patch_sha256": "14ea418a6054305173e97304c661ac31b083e4181b316e0540ba9b6f85115501",
+  "base_sha": "0a7b1d8cd3c0101390b02e2e5b9555d28cd1a092",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb118): record scoped full-gate match and vertex367 terminal",
+  "commit_message": "fix(surface-cells): use exact radial slide for obtuse edge ports",
   "retention_days": 14
 }
