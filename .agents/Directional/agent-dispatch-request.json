@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb141-apply-20261116-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb141-apply",
-  "file_id": "1Yt7J0L8GElJn9GAqPA4RlWv0CQ052xFq",
-  "patch_sha256": "2b665a4055d91efa9872bb8446304fff0dae12e40f708a3af82ac04f989c4971",
-  "base_sha": "af289f341baeef4fb1dcc8c337b85f832b8f0bd2",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): seed vertex transit from carrier and follow outflow",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb141-compile-20261116-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb141-compile",
+  "source_sha": "2dedeb097a7d652fd50979c9edbf7acc11222a9c",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb141-compile"
 }
