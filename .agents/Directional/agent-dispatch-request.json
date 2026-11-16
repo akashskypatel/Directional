@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb120-census-20261116-a",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb120-census",
-  "executor_sha": "415ca426398274884df14de21d14e0077ac96d19",
-  "semantic_source_sha": "c520674030c76be455111d7c41aae7d5f53ce900",
-  "turn_id": "M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC-census",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "artifact_prefix": "m6-cp3-tb120-census",
-  "retention_days": 14,
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": 14199183882,
-    "EXPECTED_SOURCE_SHA": "c520674030c76be455111d7c41aae7d5f53ce900",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "daac64075be07c96f0654a933cb0be919f6ce8046c67104786c1caaa1760d120",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "dbc7710af9e48c087e021d53831d85678034c3539b6d8e6fa862a78616c6e43f",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "e9aa51a04cda5995a482057ca2b6993c7670b920b6f41b858a2edc79e6d593ae",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
-    "EXPECTED_CASE_COUNT": 3
-  }
+  "request_id": "m6-cp3-tb120-doc-closeout-20261116-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb120-doc-closeout",
+  "file_id": "1KSgKwM0qwb57M6xa3BxBF323NjFQOlb8",
+  "patch_sha256": "73639348713a7787e27a3da7182a732ea5684784820f748ea6714d999dbb63be",
+  "base_sha": "8f4da25f9730164740c79888e864d5d150995c73",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record TB120 scoped gate and census evidence",
+  "retention_days": 14
 }
