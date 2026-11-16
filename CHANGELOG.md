@@ -1,3 +1,9 @@
+## 2026-11-16 UTC — RA-238: exact along-edge rule for edge-supported ports frozen (P13-e.9)
+
+- [RA-238](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Edge_Port_Trace_Outcome_Review_20261116.md): BunnyRandom vertex 367's refused straddle (170,367) starts in a face that is obtuse at 367. A1's weight-on-vertex test (+8.77) refused it although the exact along-edge rate leaves 367 in both faces, and A2a's grazing endpoint test is undecided there.
+- Frozen [CB138](.agents/Directional/Architecture_M6_CP3_CB138_P13_Obtuse_Edge_Port_Slide_Exact.diff) `53985fef…`: A1 attaches iff d·(x_far − x_S) > 0 in both faces, and A2a's edge-port departure slides to the far vertex. New test `FieldTransportAtlas.PublishesEdgeSupportedPortFromFaceObtuseAtVertex`. TB119 manifest `3aac432b…` (947 rows).
+- Gate-neutral by TB118 evidence. O43 opened (ordinary grazing still uses the endpoint-rate proxy). No source changed in this turn; CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged. **Next:** `M6-CP3-CB138-P13-OBTUSE-EDGE-PORT-SLIDE`.
+
 ## 2026-11-16 UTC — TB118 scoped MATCH: 946-case edge-supported port gate and production census (P13-e.8)
 
 - [TB118 report](.agents/Directional/Architecture_M6_CP3_TB118_P13_Edge_Supported_Port_Trace_Full_Gate_Execution_Report_20261116.md): CB137 immutable package `14190250585`, source `4a63be7a17b5784f0fa742883bbf99e4fe546360`; [gate 43788910187](https://github.com/akashskypatel/Directional/actions/runs/43788910187) **946/946 PASS**, 1,027 memberships, 1,900 hashes; [census 43788935665](https://github.com/akashskypatel/Directional/actions/runs/43788935665) Cylinder PASS, BunnyRandom/Vase registered RED, 9/9 hashes. Neither run rebuilt.

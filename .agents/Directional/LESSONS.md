@@ -644,6 +644,14 @@ This document records **reusable failure-derived engineering lessons**, not an e
   reads `carrier.second()`), make the producer's condition strong enough that either numbering
   gives the same answer. Prove a synthetic fixture's predictions with a model before freezing a
   test that cannot be run in the Review.
+- **A sign test on one vertex weight is a proxy for a direction; name the geometry it assumes
+  (RA-238).** "Negative weight on S" means "moving away from S along the edge" only when the
+  face's third vertex projects inside the edge. Vertex 367's start face is obtuse at S, so the
+  proxy refused a real port and the accepted grazing rule could not decide its slide. The exact
+  quantity (the direction dotted with the edge, from the barycentric weights and the stored
+  doubles) needs no square root. Before replacing a proxy in an accepted consumer, keep the
+  change to the configurations no gate row reaches and log the rest as an obligation to measure.
+  Fit the model to every logged decision first (11/11 here) so it is known to read the code.
 - **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
   still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).
 - **A TB runs the full current gate even when its CB touches no gate binary.** A CLI- or GUI-only CB

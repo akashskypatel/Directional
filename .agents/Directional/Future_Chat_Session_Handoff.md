@@ -1,3 +1,22 @@
+## RA-238 COMPLETE (P13-e.9; obtuse-face edge port + exact slide frozen) — next: `M6-CP3-CB138-P13-OBTUSE-EDGE-PORT-SLIDE` (implementation agent, compile only) — 2026-11-16 UTC
+
+**Canonical completed turn:** `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME` (Review only). [RA-238](Architecture_M6_CP3_DEFN_P13_Edge_Port_Trace_Outcome_Review_20261116.md).
+- **TB118 accepted** as a scoped MATCH. The duplicated legacy `M3_CP4AB_FRAGMENT_DIAG` text is pre-existing nondeterminism, so later MATCH conditions compare receipt lines, not whole raw logs.
+- **Vertex 367 root cause.** A1's attach test (weight on S < 0 in both faces) stands in for the slide direction and fails when the face is obtuse at S. In face (162,170,367), vertex 162 projects at r = −1.23 behind 367, so w₃₆₇ = +8.77 although the exact rate along the edge, away from 367, is positive in both faces (0.005438 and 0.005415). A model on the repository mesh and the TB118 direction lines reproduces all 11 logged `attached` bits.
+- **A2a has the same flaw.** The grazing transit's endpoint-rate test on `carrier.second()` = 367 is undecided there, so CB137's departure would stop with `BranchGrazingSlideDirectionAmbiguous`.
+- **Fix (CB138).**
+  - A1 attaches iff T = d·(x_far − x_S) > 0 in both faces. This is exact on the stored doubles and independent of vertex numbering.
+  - A2a's edge-port departure slides to the carrier's far vertex through the new `resolve_field_edge_port_slide`; ordinary grazing is unchanged.
+  - New test `FieldTransportAtlas.PublishesEdgeSupportedPortFromFaceObtuseAtVertex` uses a planar fan with a 140° face, the same shape as vertex 367. It fails on CB137 with `SingularityPortClassCountMismatch`.
+- **Gate neutral.** Rows 1–945 have no straddle (TB118), and row 946 still attaches (T = 1.190 and 1.190).
+- **Frozen:**
+  - [CB138 exact patch](Architecture_M6_CP3_CB138_P13_Obtuse_Edge_Port_Slide_Exact.diff) `53985fef66e2e7262d4624c79f5b037e58e4760f4db18403d37c683a4e0e5d60` (334 lines, keep 5 single-space context lines; 4 files, `+211 −25`).
+  - TB119 manifest: TB118 plus row 947, `3aac432b…`, `SELF_CHECK_PASS cases=947 deferred=81`.
+- **New obligation:** O43 (ordinary grazing still uses the endpoint-rate proxy; measure per row before switching it).
+- **Carry:** no repository source changed; CP2 491/491; stable 66/17/49; debt 1; deferred 81; `chainRimSchedules=false`; O42 open.
+
+**Previous completed state (retained):**
+
 ## TB118 scoped MATCH (P13-e.8): vertex49 edge port attached, new vertex367 terminal — next Review-only `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME` — 2026-11-16 UTC
 
 **Completed current turn:** `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC` ([execution report](Architecture_M6_CP3_TB118_P13_Edge_Supported_Port_Trace_Full_Gate_Execution_Report_20261116.md)). Exact compiled CB137 source `4a63be7a17b5784f0fa742883bbf99e4fe546360`, package `14190250585`; [gate 43788910187](https://github.com/akashskypatel/Directional/actions/runs/43788910187) 946/946 PASS, membership 1,027, artifact `14191897640` SHA-256 `8603e4f7898f1d2ff609d21c8596af4a319bdf68b5644d3603ae907cb89b2389`, 1,900/1,900 hashes; [census 43788935665](https://github.com/akashskypatel/Directional/actions/runs/43788935665) Cylinder PASS, BunnyRandom and Vase registered RED, artifact `14192370504` SHA-256 `317e3623e0b958a3da42750f3883dea1146a6ec3f66abf2bd31035282a73f7fb`, 9/9 hashes. No rebuild, test/fixture/selector edit, or production change.
@@ -159,14 +178,34 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | **RA-237 COMPLETE (P13-e.6):** [record](Architecture_M6_CP3_DEFN_P13_Edge_Sliding_Separatrix_Trace_Review_20261116.md). Edge-supported port (A1) and departure (A2a) frozen as CB137 `0d3f2374…`; TB118 manifest `5fee837d…` (946 rows). TB117 (MATCH, 945/945) is the latest runtime. **NEXT:** `M6-CP3-CB137-P13-EDGE-SUPPORTED-PORT-TRACE` (compile only, RA-237 §3). D11=A; D10 defer. |
-| Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing`; exact CB136 semantic source `1d5c9514b8ec479d90e059107dd627656e37d15f`; compile run `43772905298`; package `14184697141` (ZIP SHA-256 `e0b781baffb3057eae1197d5539f7850221269042393def73ae17c06abe1bc7a`). Draft PR #8 remains open/unmerged. |
+| Currency | **RA-238 COMPLETE (P13-e.9):** [record](Architecture_M6_CP3_DEFN_P13_Edge_Port_Trace_Outcome_Review_20261116.md). Exact along-edge attach rule (A1) and edge-port slide (A2a) frozen as CB138 `53985fef…`; TB119 manifest `3aac432b…` (947 rows). TB118 (scoped MATCH, 946/946; BunnyRandom first terminal at vertex 367) is the latest runtime. **NEXT:** `M6-CP3-CB138-P13-OBTUSE-EDGE-PORT-SLIDE` (compile only, RA-238 §4). D11=A; D10 defer. |
+| Working branch / compiled source | `agent/surface_cell_quad/p5-recover-bridge-healing`; exact CB137 semantic source `4a63be7a17b5784f0fa742883bbf99e4fe546360`; compile run `43784411304`; package `14190250585` (ZIP SHA-256 `4ec81008bfb8270d2299005a5ec6f08ad57fb99ef00676001f680cb476fee8e3`). Draft PR #8 remains open/unmerged. |
 | Last accepted semantic runtime | **CP2 491/491** (2026-10-06); CP3/selector497 unpromoted. |
 | Latest candidate | **TB116 P13-e diagnosis remains unpromoted:** BunnyRandom vertex49 gives 4 classes, expected 5. Four `inSector=1` directions occur at (fan,branch) (0,2), (2,0), (4,0), (6,0). Review must distinguish A1 radial-edge sector handling from a transport-lift representative. Vase remains separately registered `NotProductionReady/completion`. O41 remains open and D10=defer. |
 | Regression accounting and debt | CP2 **491/491** accepted, stable **66 events / 17 categories / 49 recurrences**, debt **1**, deferred **81**. O34 narrowed; O35 met, O37 compiled behind option, O38 staged, O39 exact owner complete; O36 activation and D6 open. |
-| Active boundary | **P13-e.5 TB117 MATCH; P13-e.6 RA-237 COMPLETE; P13-e.7 CB137 NEXT** (compile only). `chainRimSchedules=false`; CP3/selector497 unpromoted. |
+| Active boundary | **P13-e.8 TB118 scoped MATCH; P13-e.9 RA-238 COMPLETE; P13-e.10 CB138 NEXT** (compile only). `chainRimSchedules=false`; CP3/selector497 unpromoted. |
 
-## Mandatory next turn — `M6-CP3-CB137-P13-EDGE-SUPPORTED-PORT-TRACE` — EXACT NEXT (step P13-e.7)
+## Mandatory next turn — `M6-CP3-CB138-P13-OBTUSE-EDGE-PORT-SLIDE` — EXACT NEXT (step P13-e.10)
+
+- **Code + Build, compile only.** Apply exactly [CB138](Architecture_M6_CP3_CB138_P13_Obtuse_Edge_Port_Slide_Exact.diff):
+  - SHA-256 `53985fef66e2e7262d4624c79f5b037e58e4760f4db18403d37c683a4e0e5d60`, 334 lines; keep its 5 single-space context lines.
+  - Numstat `16 2` `include/directional/geometry/SurfaceCellTracing.h`, `36 9` `src/authority/FieldTransportAtlas.cpp`, `22 6` `src/geometry/SurfaceCellTracing.cpp`, `137 8` `tests/FieldTransportAtlasTests.cpp`.
+  - Base HEAD `c8bd85e5c` (CB137 source `4a63be7a1` plus documentation), or any descendant that changes only documentation.
+- [RA-238 §4](Architecture_M6_CP3_DEFN_P13_Edge_Port_Trace_Outcome_Review_20261116.md) is authority. Build the eight GMP/GMPXX targets and publish an immutable package; do not run tests.
+- Mismatch → `M6-CP3-PLAN-P13-OBTUSE-EDGE-PORT-SLIDE-STOP`; infrastructure → `M6-CP3-CB138A-P13-OBTUSE-EDGE-PORT-SLIDE-ORCH`. On success close with `Successor: M6-CP3-TB119-P13-OBTUSE-EDGE-PORT-SLIDE-FULL-GATE-EXEC`.
+- **Then TB119** (RA-238 §5), artifact only:
+  - Manifest `gates/Architecture_M6_TB119_P13_Obtuse_Edge_Port_Slide_Full_Gate_Case_Manifest.tsv` (TB118 + row 947, SHA `3aac432b9f466e5ce06601c90a08ad09c1886dfeb97c38b05e9bd46f51a1190b`, membership 1,028) plus the census.
+  - **MATCH:**
+    - 947/947 PASS.
+    - Rows 1–946: receipts and verdicts as in TB118, allowing the duplicated legacy diagnostic text.
+    - Row 947: two `attached=1` edge ports, `fanIndex=1 (5,6)` and `fanIndex=2 (4,6)`, and `identity=1`.
+    - Cylinder and Vase unchanged.
+    - BunnyRandom: `edgePort singularity=32 fanIndex=1 branch=0 carrier=(170,367) attached=1` and no vertex-367 mismatch. Any `edgePortDeparture` has `slideEnd` equal to the carrier's far vertex. Record the next terminal.
+  - Mismatch → `M6-CP3-TB119-P13-OBTUSE-EDGE-PORT-SLIDE-FULL-GATE-REV`; infrastructure → `M6-CP3-TB119A-P13-OBTUSE-EDGE-PORT-SLIDE-ORCH`.
+  - Then Review-only `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME` (P13-e.12).
+- **Do not:** change source beyond the exact patch; run tests in CB138; set `chainRimSchedules`; change gate thresholds or selectors; promote CP3/selector497. **Carry:** D11=A, D10 defer, CP2 491/491, stable 66/17/49, debt 1, deferred 81; O42, O43 open.
+
+### Completed — `M6-CP3-CB137-P13-EDGE-SUPPORTED-PORT-TRACE` (P13-e.7) and TB118 (P13-e.8, scoped MATCH); their brief retained
 
 - **Code + Build, compile only.** Apply exactly [CB137](Architecture_M6_CP3_CB137_P13_Edge_Supported_Port_Trace_Exact.diff):
   - SHA-256 `0d3f2374a3260da70ea529c873b409187a0005f76f405d4791c3a10e35f0996e`, 470 lines; keep its 9 single-space context lines.
@@ -456,9 +495,12 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | P13-e.4 — COMPLETE | `M6-CP3-CB136-P13-EDGE-PORT-STRADDLE-CENSUS` (compile only) | [Exact patch](Architecture_M6_CP3_CB136_P13_Edge_Port_Straddle_Census_Exact.diff) `cca1ce4cc55aa3e9173ba548cf2d0faaa4bda42c1aad72978daf8a6356740dc4`, 70 lines, keep 1 single-space context line; numstat `59 0` `src/authority/FieldTransportAtlas.cpp`; base HEAD `3ad99427f` | P13-e.5 | `M6-CP3-PLAN-P13-EDGE-PORT-STRADDLE-CENSUS-STOP`; infrastructure `M6-CP3-CB136A-P13-EDGE-PORT-STRADDLE-CENSUS-ORCH` |
 | P13-e.5 — COMPLETE / MATCH | `M6-CP3-TB117-P13-EDGE-PORT-STRADDLE-CENSUS-FULL-GATE-EXEC` | [TB117 report](Architecture_M6_CP3_TB117_P13_Edge_Port_Straddle_Census_Full_Gate_Execution_Report_20261115.md): 945/945; 470/470 `identity=1`; only straddle BunnyRandom (0,1,48-49) | P13-e.6 | — |
 | P13-e.6 **COMPLETE** | `M6-CP3-DEFN-P13-EDGE-SLIDING-SEPARATRIX-TRACE` | [RA-237](Architecture_M6_CP3_DEFN_P13_Edge_Sliding_Separatrix_Trace_Review_20261116.md): the straddle is A2a's grazing precondition; A1 attaches a slide-away straddle as an edge port (radial `firstOutgoingCarrier`); A2a departs on the carrier and slides by the existing grazing transit | P13-e.7 | — |
-| **P13-e.7 — NEXT** | `M6-CP3-CB137-P13-EDGE-SUPPORTED-PORT-TRACE` (compile only) | [Exact patch](Architecture_M6_CP3_CB137_P13_Edge_Supported_Port_Trace_Exact.diff) `0d3f2374a3260da70ea529c873b409187a0005f76f405d4791c3a10e35f0996e`, 470 lines, keep 9 single-space context lines; 5 files `+311 −8`; base HEAD `95fe03fee` | Close with `Successor: M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC` | `M6-CP3-PLAN-P13-EDGE-SUPPORTED-PORT-TRACE-STOP`; infrastructure `M6-CP3-CB137A-P13-EDGE-SUPPORTED-PORT-TRACE-ORCH` |
-| P13-e.8 | `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC` | `.agents/Directional/gates/Architecture_M6_TB118_P13_Edge_Supported_Port_Trace_Full_Gate_Case_Manifest.tsv` (TB117 + row 946, `5fee837d…`) plus the census; MATCH per RA-237 §4; BunnyRandom's next blocker recorded | Close with `Successor: M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME` | `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-REV`; infrastructure `M6-CP3-TB118A-P13-EDGE-SUPPORTED-PORT-TRACE-ORCH` |
-| P13-e.9 | `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME` | **Review agent only.** Reads TB118's BunnyRandom terminal and names its owner, or routes to 65A if BunnyRandom passes | its CB/TB or 65A | — |
+| P13-e.7 — COMPLETE | `M6-CP3-CB137-P13-EDGE-SUPPORTED-PORT-TRACE` (compile only) | [Exact patch](Architecture_M6_CP3_CB137_P13_Edge_Supported_Port_Trace_Exact.diff) `0d3f2374a3260da70ea529c873b409187a0005f76f405d4791c3a10e35f0996e`, 470 lines, keep 9 single-space context lines; 5 files `+311 −8`; base HEAD `95fe03fee` | Close with `Successor: M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC` | `M6-CP3-PLAN-P13-EDGE-SUPPORTED-PORT-TRACE-STOP`; infrastructure `M6-CP3-CB137A-P13-EDGE-SUPPORTED-PORT-TRACE-ORCH` |
+| P13-e.8 — COMPLETE / scoped MATCH | `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC` | `.agents/Directional/gates/Architecture_M6_TB118_P13_Edge_Supported_Port_Trace_Full_Gate_Case_Manifest.tsv` (TB117 + row 946, `5fee837d…`) plus the census; MATCH per RA-237 §4; BunnyRandom's next blocker recorded | Close with `Successor: M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME` | `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-REV`; infrastructure `M6-CP3-TB118A-P13-EDGE-SUPPORTED-PORT-TRACE-ORCH` |
+| P13-e.9 **COMPLETE** | `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME` | [RA-238](Architecture_M6_CP3_DEFN_P13_Edge_Port_Trace_Outcome_Review_20261116.md): vertex 367 straddle refused by the wS proxy (obtuse start face); exact along-edge rule in A1, edge-port slide from A1's decision in A2a; O43 opened | P13-e.10 | — |
+| **P13-e.10 — NEXT** | `M6-CP3-CB138-P13-OBTUSE-EDGE-PORT-SLIDE` (compile only) | [Exact patch](Architecture_M6_CP3_CB138_P13_Obtuse_Edge_Port_Slide_Exact.diff) `53985fef66e2e7262d4624c79f5b037e58e4760f4db18403d37c683a4e0e5d60`, 334 lines, keep 5 single-space context lines; 4 files `+211 −25`; base HEAD `c8bd85e5c` | Close with `Successor: M6-CP3-TB119-P13-OBTUSE-EDGE-PORT-SLIDE-FULL-GATE-EXEC` | `M6-CP3-PLAN-P13-OBTUSE-EDGE-PORT-SLIDE-STOP`; infrastructure `M6-CP3-CB138A-P13-OBTUSE-EDGE-PORT-SLIDE-ORCH` |
+| P13-e.11 | `M6-CP3-TB119-P13-OBTUSE-EDGE-PORT-SLIDE-FULL-GATE-EXEC` | `.agents/Directional/gates/Architecture_M6_TB119_P13_Obtuse_Edge_Port_Slide_Full_Gate_Case_Manifest.tsv` (TB118 + row 947, `3aac432b…`, membership 1,028) plus the census; MATCH per RA-238 §5; BunnyRandom's next blocker recorded | Close with `Successor: M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME` | `M6-CP3-TB119-P13-OBTUSE-EDGE-PORT-SLIDE-FULL-GATE-REV`; infrastructure `M6-CP3-TB119A-P13-OBTUSE-EDGE-PORT-SLIDE-ORCH` |
+| P13-e.12 | `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME` | **Review agent only.** Reads TB119's BunnyRandom terminal and names its owner, or routes to 65A if BunnyRandom passes | its CB/TB or 65A | — |
 | then | 65A `M6-CP3-DEFN-P13-A3-BOUNDARY-SPAN-CARRIER-BINDING` → 65B → 65C (carries O41 and switch activation) → 65D | Review, then implementation | — | — |
 
 Out of scope for 64B.19–64B.27: any fan or occurrence resolver, any change to the D5 join rule, any change to `resolve_branch_transition` or the fan carry, pipeline wiring, and any source change beyond the exact patches.
@@ -994,9 +1036,12 @@ Facts are in the records, `TODO.md` steps and Review track, `CHANGELOG.md` and t
 | P13-e.4 — COMPLETE | `M6-CP3-CB136-P13-EDGE-PORT-STRADDLE-CENSUS` | Implementation agent, compile only; [record](Architecture_M6_CP3_CB136_P13_Edge_Port_Straddle_Census_Code_Build_Record_20261115.md); exact semantic `1d5c9514b8ec479d90e059107dd627656e37d15f`; compiled run 43772905298; RA-236 §4 `cca1ce4c…` (70 lines, keep 1 single-space context line), numstat `59 0`. Mismatch → `M6-CP3-PLAN-P13-EDGE-PORT-STRADDLE-CENSUS-STOP`; infrastructure → `M6-CP3-CB136A-P13-EDGE-PORT-STRADDLE-CENSUS-ORCH` |
 | P13-e.5 — COMPLETE / MATCH | `M6-CP3-TB117-P13-EDGE-PORT-STRADDLE-CENSUS-FULL-GATE-EXEC` | [TB117 report](Architecture_M6_CP3_TB117_P13_Edge_Port_Straddle_Census_Full_Gate_Execution_Report_20261115.md): 945/945, 470/470 `identity=1`, only straddle BunnyRandom (0,1,48-49) |
 | P13-e.6 — Review COMPLETE | `M6-CP3-DEFN-P13-EDGE-SLIDING-SEPARATRIX-TRACE` | [RA-237](Architecture_M6_CP3_DEFN_P13_Edge_Sliding_Separatrix_Trace_Review_20261116.md): edge-supported port (A1) + departure into the existing grazing transit (A2a); CB137 + TB118 frozen; O42 opened |
-| **P13-e.7 — NEXT** | `M6-CP3-CB137-P13-EDGE-SUPPORTED-PORT-TRACE` | Implementation agent, compile only; RA-237 §3 `0d3f2374…` (470 lines, keep 9 single-space context lines), 5 files `+311 −8`. Mismatch → `M6-CP3-PLAN-P13-EDGE-SUPPORTED-PORT-TRACE-STOP`; infrastructure → `M6-CP3-CB137A-P13-EDGE-SUPPORTED-PORT-TRACE-ORCH` |
-| P13-e.8 | `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC` | TB117 manifest + row 946 (`5fee837d…`) plus the census; MATCH per RA-237 §4. MATCH → `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME`. Mismatch → `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-REV`; infrastructure → `M6-CP3-TB118A-P13-EDGE-SUPPORTED-PORT-TRACE-ORCH` |
-| P13-e.9 (Review only) | `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME` | Reads TB118's BunnyRandom terminal; names its owner or routes to 65A |
+| P13-e.7 — COMPLETE | `M6-CP3-CB137-P13-EDGE-SUPPORTED-PORT-TRACE` | Implementation agent, compile only; RA-237 §3 `0d3f2374…` (470 lines, keep 9 single-space context lines), 5 files `+311 −8`. Mismatch → `M6-CP3-PLAN-P13-EDGE-SUPPORTED-PORT-TRACE-STOP`; infrastructure → `M6-CP3-CB137A-P13-EDGE-SUPPORTED-PORT-TRACE-ORCH` |
+| P13-e.8 — COMPLETE / scoped MATCH | `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC` | TB117 manifest + row 946 (`5fee837d…`) plus the census; MATCH per RA-237 §4. MATCH → `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME`. Mismatch → `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-REV`; infrastructure → `M6-CP3-TB118A-P13-EDGE-SUPPORTED-PORT-TRACE-ORCH` |
+| P13-e.9 — Review COMPLETE | `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME` | [RA-238](Architecture_M6_CP3_DEFN_P13_Edge_Port_Trace_Outcome_Review_20261116.md): vertex 367's straddle needs the exact along-edge rule (obtuse start face); CB138 + TB119 frozen; O43 opened |
+| **P13-e.10 — NEXT** | `M6-CP3-CB138-P13-OBTUSE-EDGE-PORT-SLIDE` | Implementation agent, compile only; RA-238 §4 `53985fef…` (334 lines, keep 5 single-space context lines), 4 files `+211 −25`. Mismatch → `M6-CP3-PLAN-P13-OBTUSE-EDGE-PORT-SLIDE-STOP`; infrastructure → `M6-CP3-CB138A-P13-OBTUSE-EDGE-PORT-SLIDE-ORCH` |
+| P13-e.11 | `M6-CP3-TB119-P13-OBTUSE-EDGE-PORT-SLIDE-FULL-GATE-EXEC` | TB118 manifest + row 947 (`3aac432b…`) plus the census; MATCH per RA-238 §5. MATCH → `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME`. Mismatch → `M6-CP3-TB119-P13-OBTUSE-EDGE-PORT-SLIDE-FULL-GATE-REV`; infrastructure → `M6-CP3-TB119A-P13-OBTUSE-EDGE-PORT-SLIDE-ORCH` |
+| P13-e.12 (Review only) | `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME` | Reads TB119's BunnyRandom terminal; names its owner or routes to 65A |
 | then | 65A → 65B → 65C (with O41 and activation) → 65D | See the revised bounded sequence |
 | 64C–65D (Review, runtime-free; scoped) | **See revised bounded sequence above** | D4 uniform → D4 annulus → D9c carrier attachment → A2b reciprocal trace → A4 disc domain → D8 receipt; each DEFN then dedicated CB then dedicated TB |
 | 66+ | per-disc boundary and corners (D6) → fill (§4.9) → aggregator dispatch with honest `Declined` flags (D3) | One DEFN → CB → TB each |
@@ -1011,11 +1056,11 @@ Rows 49–64B.9 are complete as turns. TB90 64.4 is MATCH (914/914, census 1 PAS
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB137-P13-EDGE-SUPPORTED-PORT-TRACE** (P13-e.7, Code + Build, compile only).
-- Apply exactly `.agents/Directional/Architecture_M6_CP3_CB137_P13_Edge_Supported_Port_Trace_Exact.diff` (SHA-256 `0d3f2374a3260da70ea529c873b409187a0005f76f405d4791c3a10e35f0996e`, 470 lines, keep 9 single-space context lines) at HEAD `95fe03fee` or a documentation-only descendant.
-- [RA-237 §3](Architecture_M6_CP3_DEFN_P13_Edge_Sliding_Separatrix_Trace_Review_20261116.md) governs. Build the GMP/GMPXX targets; no test execution.
-- Then TB118 (RA-237 §4, manifest `5fee837d…`, 946 rows), then Review-only `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME`.
-- **Carry:** D11=A, D10 defer; preserve `chainRimSchedules=false`, CP2 491/491, stable 66/17/49, debt1, deferred81.
+`load_next`: **M6-CP3-CB138-P13-OBTUSE-EDGE-PORT-SLIDE** (P13-e.10, Code + Build, compile only).
+- Apply exactly `.agents/Directional/Architecture_M6_CP3_CB138_P13_Obtuse_Edge_Port_Slide_Exact.diff` (SHA-256 `53985fef66e2e7262d4624c79f5b037e58e4760f4db18403d37c683a4e0e5d60`, 334 lines, keep 5 single-space context lines) at HEAD `c8bd85e5c` or a documentation-only descendant.
+- [RA-238 §4](Architecture_M6_CP3_DEFN_P13_Edge_Port_Trace_Outcome_Review_20261116.md) governs. Build the GMP/GMPXX targets; no test execution.
+- Then TB119 (RA-238 §5, manifest `3aac432b…`, 947 rows), then Review-only `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME`.
+- **Carry:** D11=A, D10 defer; O42, O43 open; preserve `chainRimSchedules=false`, CP2 491/491, stable 66/17/49, debt1, deferred81.
 - CB89 compiled source `9c9616695ecdc8c6ec219eb7486cbe85f3915c95`, immutable package artifact `13370954424`, 28/28 hashes, eight GMP/GMPXX targets; no test execution.
 - TB79 artifact-only gate (RA-203.6) finished: 899/899, census MATCH.
 - RA-204 completed the O30 Review; CB90 and TB80 are done. The fixed-field replay is withdrawn: do not build a field fixture.
