@@ -1423,7 +1423,8 @@ FieldVertexTransitResult resolve_field_vertex_transit(
     const std::optional<authority::TraceId> provenanceTrace,
     const std::optional<std::size_t> provenanceEvent,
     const std::map<authority::SourceEdgeTopologyKey,
-                   const authority::FieldNonTraversableEdge *> *sourceBarriers) {
+                   const authority::FieldNonTraversableEdge *> *sourceBarriers,
+    const std::optional<authority::SourceVertexId> arrivalCarrierEnd) {
   struct TransitState {
     authority::SourceFaceTopologyKey sourceFace;
     authority::FieldBranch branch;
@@ -1503,6 +1504,26 @@ FieldVertexTransitResult resolve_field_vertex_transit(
   authority::FieldBranchDirection arrivalRay = currentPairing->direction;
   for (VertexStarRational &coordinate : arrivalRay.barycentric) {
     coordinate = -coordinate;
+  }
+  if (arrivalMode == FieldVertexArrivalMode::EdgeTransit &&
+      arrivalCarrierEnd.has_value()) {
+    // AX1 (RA-240 F1): after a slide the trace arrives along its carrier, so
+    // the seed is the carrier ray, an exact radial of the arrival face.
+    const auto &vertices = currentFace.vertices();
+    const auto vertexAt = std::find(vertices.begin(), vertices.end(), sourceVertex);
+    const auto endAt =
+        std::find(vertices.begin(), vertices.end(), *arrivalCarrierEnd);
+    if (vertexAt == vertices.end() || endAt == vertices.end() ||
+        vertexAt == endAt) {
+      return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
+    }
+    for (VertexStarRational &coordinate : arrivalRay.barycentric) {
+      coordinate = vertex_star_zero();
+    }
+    arrivalRay.barycentric[static_cast<std::size_t>(
+        std::distance(vertices.begin(), vertexAt))] = -vertex_star_one();
+    arrivalRay.barycentric[static_cast<std::size_t>(
+        std::distance(vertices.begin(), endAt))] = vertex_star_one();
   }
   audit->seed = VertexStarRaySeed{sourceVertex, currentFace, currentBranch,
                                   arrivalRay, arrivalMode, false, std::nullopt,
@@ -1887,6 +1908,126 @@ FieldVertexTransitResult resolve_field_vertex_transit(
   audit->radialRay = radialRay;
   audit->sectors[ownerIndex].containsContinuation = true;
   return FieldVertexTransitDecision{owner.sourceFace, owner.branch, audit};
+}
+
+FieldVertexOutflowFollow follow_field_vertex_transit_outflow(
+    const TriMesh &sourceMesh, const authority::FieldBranchTopology &topology,
+    const authority::SourceVertexId sourceVertex,
+    const FieldVertexTransitDecision &transit) {
+  const auto keep = [&](const FieldVertexOutflowFollowKind kind) {
+    return FieldVertexOutflowFollow{kind, transit, std::nullopt};
+  };
+  const auto zero = vertex_star_zero();
+  const auto direction_of = [&](const VertexStarSectorAudit &sector)
+      -> const authority::FieldBranchDirection * {
+    const authority::FieldFaceBranchFrame *frame =
+        topology.find_frame(sector.sourceFace);
+    if (frame == nullptr) return nullptr;
+    const authority::FieldBranchBoundaryPairing *result = nullptr;
+    for (const authority::FieldBranchBoundaryPairing &pairing : frame->branches) {
+      if (pairing.branch != sector.branch) continue;
+      if (result != nullptr) return nullptr;
+      result = &pairing;
+    }
+    return result == nullptr || !result->direction.is_barycentric()
+               ? nullptr
+               : &result->direction;
+  };
+  // +1: the field crosses the previous radial edge into the next sector; -1:
+  // it crosses the next radial edge into the preceding one; 0: it leaves the
+  // vertex. None when it points into the vertex or is unavailable.
+  const auto crossing =
+      [&](const VertexStarSectorAudit &sector) -> std::optional<int> {
+    const authority::FieldBranchDirection *direction = direction_of(sector);
+    if (direction == nullptr) return std::nullopt;
+    std::optional<bool> overNext;
+    std::optional<bool> overPrevious;
+    const auto &vertices = sector.sourceFace.vertices();
+    for (std::size_t index = 0U; index < vertices.size(); ++index) {
+      if (vertices[index] == sector.previousRadialVertex) {
+        overNext = (*direction)[index] < zero;
+      } else if (vertices[index] == sector.nextRadialVertex) {
+        overPrevious = (*direction)[index] < zero;
+      }
+    }
+    if (!overNext.has_value() || !overPrevious.has_value() ||
+        (*overNext && *overPrevious)) {
+      return std::nullopt;
+    }
+    return *overPrevious ? 1 : (*overNext ? -1 : 0);
+  };
+
+  const auto &audit = transit.vertexStarTransit;
+  if (!audit.has_value()) return keep(FieldVertexOutflowFollowKind::Unresolved);
+  const auto &sectors = audit->sectors;
+  const auto owner = std::find_if(
+      sectors.begin(), sectors.end(), [&](const VertexStarSectorAudit &sector) {
+        return sector.containsContinuation;
+      });
+  if (owner == sectors.end() || owner->sourceFace != transit.nextFace ||
+      owner->branch != transit.nextBranch) {
+    return keep(FieldVertexOutflowFollowKind::Unresolved);
+  }
+  const auto ownerStep = crossing(*owner);
+  if (!ownerStep.has_value()) return keep(FieldVertexOutflowFollowKind::Unresolved);
+  if (*ownerStep == 0) return keep(FieldVertexOutflowFollowKind::OwnerLeaves);
+
+  const int step = *ownerStep;
+  std::size_t current =
+      static_cast<std::size_t>(std::distance(sectors.begin(), owner));
+  for (std::size_t moved = 1U; moved < sectors.size(); ++moved) {
+    std::size_t target = 0U;
+    if (step > 0 && current + 1U < sectors.size()) {
+      target = current + 1U;
+    } else if (step < 0 && current > 0U) {
+      target = current - 1U;
+    } else if (audit->closedFan) {
+      target = step > 0 ? 0U : sectors.size() - 1U;
+    } else {
+      return keep(FieldVertexOutflowFollowKind::Unresolved);
+    }
+    const auto targetStep = crossing(sectors[target]);
+    if (!targetStep.has_value()) {
+      return keep(FieldVertexOutflowFollowKind::Unresolved);
+    }
+    if (*targetStep == 0) {
+      return FieldVertexOutflowFollow{
+          FieldVertexOutflowFollowKind::Cross,
+          FieldVertexTransitDecision{sectors[target].sourceFace,
+                                     sectors[target].branch, audit},
+          std::nullopt};
+    }
+    if (*targetStep == -step) {
+      const authority::SourceVertexId shared =
+          step > 0 ? sectors[current].previousRadialVertex
+                   : sectors[current].nextRadialVertex;
+      const auto carrier =
+          authority::SourceEdgeTopologyKey::make(sourceVertex, shared);
+      const auto origin = vertex_star_exact_position(sourceMesh, sourceVertex);
+      const auto end = vertex_star_exact_position(sourceMesh, shared);
+      if (!carrier || !origin || !end) {
+        return keep(FieldVertexOutflowFollowKind::Unresolved);
+      }
+      const VertexStarExactVector3 radial = vertex_star_subtract(*end, *origin);
+      const auto advances = [&](const VertexStarSectorAudit &sector) {
+        const authority::FieldBranchDirection *direction = direction_of(sector);
+        if (direction == nullptr) return false;
+        const auto vector =
+            vertex_star_exact_direction(sourceMesh, sector.sourceFace, *direction);
+        return vector.has_value() && vertex_star_dot(*vector, radial) > zero;
+      };
+      if (!advances(sectors[current]) || !advances(sectors[target])) {
+        return keep(FieldVertexOutflowFollowKind::Unresolved);
+      }
+      return FieldVertexOutflowFollow{
+          FieldVertexOutflowFollowKind::Slide,
+          FieldVertexTransitDecision{sectors[current].sourceFace,
+                                     sectors[current].branch, audit},
+          carrier.value()};
+    }
+    current = target;
+  }
+  return keep(FieldVertexOutflowFollowKind::Unresolved);
 }
 
 std::size_t field_aligned_trace_step_budget(
@@ -3082,6 +3223,13 @@ enum class FieldAlignedProposalDisposition : std::uint8_t {
   TerminalBarrier = 2,
 };
 
+// A step that starts at `vertex` by sliding along the radial `carrier`: an
+// edge-supported port's first step, or a D12 = A vertex-transit slide.
+struct FieldAlignedVertexSlide {
+  authority::SourceEdgeTopologyKey carrier;
+  authority::SourceVertexId vertex;
+};
+
 struct FieldAlignedTraceProposal {
   explicit FieldAlignedTraceProposal(FieldAlignedCandidateTraceSegment value)
       : segment(std::move(value)) {}
@@ -3094,6 +3242,7 @@ struct FieldAlignedTraceProposal {
   std::optional<authority::FieldBoundaryPoint> nextEntryPoint;
   std::optional<authority::SourceEdgeTopologyKey> nextIncomingCarrier;
   std::optional<FieldAlignedCandidateTraceTransition> nextEntryTransport;
+  std::optional<FieldAlignedVertexSlide> nextVertexSlide;
   std::optional<authority::FieldSingularityId> terminalSingularity;
   std::optional<authority::SourceEdgeTopologyKey> terminalBarrier;
   std::optional<authority::FieldBoundaryPoint> terminalPoint;
@@ -3118,6 +3267,8 @@ struct FieldAlignedTraceRuntime {
   FieldAlignedArrivalMeasure arrival;
   // Radial carrier of an edge-supported port; consumed by the first proposal.
   std::optional<authority::SourceEdgeTopologyKey> edgePortCarrier;
+  // D12 = A slide from the entry vertex; consumed by the next proposal.
+  std::optional<FieldAlignedVertexSlide> vertexSlide;
   bool active = true;
   std::optional<FieldAlignedTraceProposal> proposal;
   std::vector<FieldAlignedArrivalMeasure> segmentStarts;
@@ -3222,12 +3373,49 @@ void report_field_vertex_transit_without_outflow(
   }
 }
 
+// P13-e (RA-241, D12 = A): print every vertex transit whose elected owner has
+// no outflow, with how follow_field_vertex_transit_outflow continued it.
+void report_field_vertex_outflow_follow(
+    const FieldAlignedCandidateTrace &trace,
+    const authority::SourceVertexId vertex,
+    const FieldVertexTransitDecision &elected,
+    const FieldVertexOutflowFollow &follow) {
+  if (follow.kind == FieldVertexOutflowFollowKind::OwnerLeaves) return;
+  const auto face_text = [](const authority::SourceFaceTopologyKey &face) {
+    const auto &vertices = face.vertices();
+    std::ostringstream out;
+    out << '(' << vertices[0].index() << ',' << vertices[1].index() << ','
+        << vertices[2].index() << ')';
+    return out.str();
+  };
+  std::clog << "FieldAlignedCurveNetwork.vertexOutflowFollow singularity="
+            << trace.singularity.index()
+            << " sourceVertex=" << trace.sourceVertex.index()
+            << " trace=" << trace.id.index()
+            << " step=" << trace.segments.size() << " vertex=" << vertex.index()
+            << " outcome="
+            << (follow.kind == FieldVertexOutflowFollowKind::Cross
+                    ? "Cross"
+                    : follow.kind == FieldVertexOutflowFollowKind::Slide
+                          ? "Slide"
+                          : "Unresolved")
+            << " elected=" << face_text(elected.nextFace)
+            << " continuation=" << face_text(follow.continuation.nextFace)
+            << " branch="
+            << static_cast<int>(follow.continuation.nextBranch.value());
+  if (follow.slideCarrier.has_value()) {
+    std::clog << " carrier=(" << follow.slideCarrier->first().index() << ','
+              << follow.slideCarrier->second().index() << ')';
+  }
+  std::clog << '\n';
+}
+
 // P13-e (RA-240): AX1 defines the vertex-transit seed as the ray from the
-// vertex back along the incoming trace. After an edge slide that ray is the
-// carrier, but the election seeds from the arrival face's negated field.
-// Re-run the closed-fan election (Amendment 22) from the carrier ray on the
-// audited sectors and print each arrival whose owner would change, or that
-// this model cannot evaluate. The decision is unchanged.
+// vertex back along the incoming trace; after an edge slide that ray is the
+// carrier, which seeds the election since RA-241. Re-run the closed-fan
+// election (Amendment 22) from the carrier ray on the audited sectors and
+// print each arrival whose owner differs, or that this model cannot evaluate.
+// The decision is unchanged.
 void report_field_edge_transit_seed_conformance(
     const authority::FieldBranchTopology &topology,
     const FieldAlignedCandidateTrace &trace,
@@ -3380,11 +3568,16 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
 
   const bool edgePortDeparture =
       runtime.edgePortCarrier.has_value() && trace.segments.empty();
-  auto continuation =
+  const std::optional<FieldAlignedVertexSlide> departure =
       edgePortDeparture
+          ? std::optional<FieldAlignedVertexSlide>{FieldAlignedVertexSlide{
+                *runtime.edgePortCarrier, trace.sourceVertex}}
+          : runtime.vertexSlide;
+  auto continuation =
+      departure.has_value()
           ? resolve_field_edge_port_departure(runtime.currentFace, *pairing,
-                                              *runtime.edgePortCarrier,
-                                              trace.sourceVertex)
+                                              departure->carrier,
+                                              departure->vertex)
           : resolve_field_branch_continuation(
                 runtime.currentFace, *pairing, runtime.currentEntryPoint);
   if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&continuation)) {
@@ -3445,12 +3638,21 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
     if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&transit)) {
       return traceError(std::move(*error));
     }
-    const FieldVertexTransitDecision vertexTransit =
+    const FieldVertexTransitDecision elected =
         std::get<FieldVertexTransitDecision>(transit);
     report_field_vertex_transit_without_outflow(
         topology, trace, *decision.sourceVertex,
         FieldVertexArrivalMode::FaceInterior, runtime.currentFace,
-        runtime.currentBranch, decision.outgoingCarrier, vertexTransit);
+        runtime.currentBranch, decision.outgoingCarrier, elected);
+    const FieldVertexOutflowFollow follow = follow_field_vertex_transit_outflow(
+        sourceMesh, topology, *decision.sourceVertex, elected);
+    report_field_vertex_outflow_follow(trace, *decision.sourceVertex, elected,
+                                       follow);
+    const FieldVertexTransitDecision &vertexTransit = follow.continuation;
+    if (follow.slideCarrier.has_value()) {
+      proposal.nextVertexSlide =
+          FieldAlignedVertexSlide{*follow.slideCarrier, *decision.sourceVertex};
+    }
     const auto nextEntryPoint = field_boundary_point_at_vertex(
         vertexTransit.nextFace, *decision.sourceVertex);
     if (!nextEntryPoint.has_value()) {
@@ -3469,11 +3671,11 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
   }
 
   if (mandatoryByEdge.count(decision.outgoingCarrier) != 0U) {
-    // An edge-supported port on a barrier edge would end where it starts.
-    if (edgePortDeparture) {
+    // A slide departure on a barrier edge would end where it starts.
+    if (departure.has_value()) {
       return traceError(trace_scoped_field_aligned_error(
           FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
-          trace.sourceVertex, trace.singularity, trace.sourceVertex,
+          trace.sourceVertex, trace.singularity, departure->vertex,
           decision.outgoingCarrier, runtime.currentFace, runtime.currentBranch));
     }
     proposal.disposition = FieldAlignedProposalDisposition::TerminalBarrier;
@@ -3517,18 +3719,19 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
       classify_field_branch_transport_flow(
           runtime.currentFace, *pairing, *nextFace, *nextPairing,
           decision.outgoingCarrier);
-  // An edge-supported port must slide along its carrier away from its vertex.
-  if (edgePortDeparture && targetFlow != FieldBranchEdgeFlowRelation::Outflow) {
+  // A slide departure must slide along its carrier away from its vertex.
+  if (departure.has_value() &&
+      targetFlow != FieldBranchEdgeFlowRelation::Outflow) {
     return traceError(trace_scoped_field_aligned_error(
         FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
-        trace.sourceVertex, trace.singularity, trace.sourceVertex,
+        trace.sourceVertex, trace.singularity, departure->vertex,
         decision.outgoingCarrier, runtime.currentFace, runtime.currentBranch));
   }
   if (targetFlow == FieldBranchEdgeFlowRelation::Outflow) {
     auto transit =
-        edgePortDeparture
+        departure.has_value()
             ? FieldBranchContinuationResult{resolve_field_edge_port_slide(
-                  decision.outgoingCarrier, trace.sourceVertex)}
+                  decision.outgoingCarrier, departure->vertex)}
             : resolve_field_branch_grazing_transit(
                   runtime.currentFace, *pairing, *nextFace, *nextPairing,
                   decision.outgoingCarrier, directed->signedLift,
@@ -3594,19 +3797,31 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
         sourceMesh, topology, trace.sourceComponent, trace.sourceTopologyRegion,
         runtime.currentFace, runtime.currentBranch, *edgeTransit.sourceVertex,
         FieldVertexArrivalMode::EdgeTransit, trace.id, trace.segments.size(),
-        &mandatoryByEdge);
+        &mandatoryByEdge,
+        decision.outgoingCarrier.first() == *edgeTransit.sourceVertex
+            ? decision.outgoingCarrier.second()
+            : decision.outgoingCarrier.first());
     if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&vertexTransit)) {
       return traceError(std::move(*error));
     }
-    const FieldVertexTransitDecision next =
+    const FieldVertexTransitDecision elected =
         std::get<FieldVertexTransitDecision>(vertexTransit);
     report_field_vertex_transit_without_outflow(
         topology, trace, *edgeTransit.sourceVertex,
         FieldVertexArrivalMode::EdgeTransit, runtime.currentFace,
-        runtime.currentBranch, decision.outgoingCarrier, next);
+        runtime.currentBranch, decision.outgoingCarrier, elected);
     report_field_edge_transit_seed_conformance(
         topology, trace, *edgeTransit.sourceVertex, runtime.currentFace,
-        decision.outgoingCarrier, next);
+        decision.outgoingCarrier, elected);
+    const FieldVertexOutflowFollow follow = follow_field_vertex_transit_outflow(
+        sourceMesh, topology, *edgeTransit.sourceVertex, elected);
+    report_field_vertex_outflow_follow(trace, *edgeTransit.sourceVertex,
+                                       elected, follow);
+    const FieldVertexTransitDecision &next = follow.continuation;
+    if (follow.slideCarrier.has_value()) {
+      proposal.nextVertexSlide =
+          FieldAlignedVertexSlide{*follow.slideCarrier, *edgeTransit.sourceVertex};
+    }
     const auto nextEntryPoint =
         field_boundary_point_at_vertex(next.nextFace, *edgeTransit.sourceVertex);
     if (!nextEntryPoint.has_value()) {
@@ -4307,6 +4522,7 @@ canonical_field_aligned_traces_and_events(
     runtime.currentEntryPoint = *proposal.nextEntryPoint;
     runtime.incomingCarrier = proposal.nextIncomingCarrier;
     runtime.entryTransport = proposal.nextEntryTransport;
+    runtime.vertexSlide = proposal.nextVertexSlide;
   }
 
   for (const FieldAlignedCandidateTrace &trace : candidate.candidateTraces) {

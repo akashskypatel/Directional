@@ -388,6 +388,21 @@ CrossFieldResult make_planar_radial_arrival_field(const TriMesh &mesh) {
   return field;
 }
 
+// Planar field with one primary direction per face and zero matching, so each
+// face's primary branch is transported to every other face's primary branch.
+CrossFieldResult make_planar_face_primary_field(
+    const TriMesh &mesh, const std::vector<Eigen::RowVector3d> &primaries) {
+  CrossFieldResult field = make_zero_transport_field(mesh);
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    const Eigen::RowVector3d &primary =
+        primaries[static_cast<std::size_t>(face)];
+    field.primaryDirections.row(face) = primary;
+    field.secondaryDirections.row(face) =
+        Eigen::RowVector3d(-primary.y(), primary.x(), 0.0);
+  }
+  return field;
+}
+
 std::optional<SourceTopologyRegions> make_source_authority(
     const TriMesh &mesh,
     const std::set<SourceEdgeTopologyKey> &hardFeatureEdges = {}) {
@@ -12123,6 +12138,193 @@ TEST(ResolvedBranchCorrection,
     EXPECT_EQ(directional::geometry::VertexStarTransitState::Owner,
               audit.state);
     EXPECT_EQ(1U, audit.ownerCardinality);
+  }
+}
+
+// RA-241 (O44): AX1 seeds a vertex transit on the ray from the vertex back
+// along the incoming trace, which after an edge slide is the carrier. Each
+// case arrives with the branch whose negated field lies on the other radial
+// of the arrival face, so the field seed and the carrier seed elect different
+// owners; the carrier must win.
+TEST(ResolvedBranchCorrection, EdgeTransitArrivalSeedsElectionOnCarrierRay) {
+  using directional::geometry::FieldVertexArrivalMode;
+  using directional::geometry::surface_cell_tracing_detail::
+      FieldVertexTransitDecision;
+  using directional::geometry::surface_cell_tracing_detail::
+      resolve_field_vertex_transit;
+  const TriMesh mesh = make_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, make_planar_radial_arrival_field(mesh));
+  ASSERT_TRUE(atlasBuild);
+  const auto &topology = atlasBuild.value().branch_topology();
+
+  const SourceFaceTopologyKey arrivalFace = topology_face(0, 1, 4, 5U);
+  const SourceVertexId center = SourceVertexId::from_index(4, 5U).value();
+  const SourceVertexId radial0 = SourceVertexId::from_index(0, 5U).value();
+  const SourceVertexId radial1 = SourceVertexId::from_index(1, 5U).value();
+  const auto *arrivalFrame = topology.find_frame(arrivalFace);
+  ASSERT_NE(nullptr, arrivalFrame);
+  const auto &vertices = arrivalFace.vertices();
+  const auto index_of = [&](const SourceVertexId vertex) {
+    return static_cast<std::size_t>(std::distance(
+        vertices.begin(), std::find(vertices.begin(), vertices.end(), vertex)));
+  };
+  const auto zero = exact_integer(0);
+  const auto branch_on = [&](const SourceVertexId radial)
+      -> std::optional<directional::authority::FieldBranch> {
+    const std::size_t radialIndex = index_of(radial);
+    const std::size_t centerIndex = index_of(center);
+    const std::size_t otherIndex = 3U - centerIndex - radialIndex;
+    for (const auto &pairing : arrivalFrame->branches) {
+      if (-pairing.direction[radialIndex] > zero &&
+          -pairing.direction[centerIndex] < zero &&
+          pairing.direction[otherIndex] == zero) {
+        return pairing.branch;
+      }
+    }
+    return std::nullopt;
+  };
+
+  struct CarrierCase {
+    SourceVertexId carrierEnd;
+    SourceVertexId fieldRadial;
+    SourceFaceTopologyKey carrierOwner;
+    SourceFaceTopologyKey fieldOwner;
+  };
+  const std::array<CarrierCase, 2> cases{
+      CarrierCase{radial0, radial1, topology_face(2, 3, 4, 5U),
+                  topology_face(3, 0, 4, 5U)},
+      CarrierCase{radial1, radial0, topology_face(3, 0, 4, 5U),
+                  topology_face(2, 3, 4, 5U)}};
+  for (const CarrierCase &carrierCase : cases) {
+    const auto branch = branch_on(carrierCase.fieldRadial);
+    ASSERT_TRUE(branch.has_value());
+    const auto fieldSeeded = resolve_field_vertex_transit(
+        mesh, topology, arrivalFrame->sourceComponent,
+        arrivalFrame->topologyRegion, arrivalFace, *branch, center,
+        FieldVertexArrivalMode::EdgeTransit);
+    const auto carrierSeeded = resolve_field_vertex_transit(
+        mesh, topology, arrivalFrame->sourceComponent,
+        arrivalFrame->topologyRegion, arrivalFace, *branch, center,
+        FieldVertexArrivalMode::EdgeTransit, std::nullopt, std::nullopt,
+        nullptr, carrierCase.carrierEnd);
+    ASSERT_TRUE(std::holds_alternative<FieldVertexTransitDecision>(fieldSeeded));
+    ASSERT_TRUE(
+        std::holds_alternative<FieldVertexTransitDecision>(carrierSeeded));
+    EXPECT_EQ(carrierCase.fieldOwner,
+              std::get<FieldVertexTransitDecision>(fieldSeeded).nextFace);
+    const auto &decision = std::get<FieldVertexTransitDecision>(carrierSeeded);
+    EXPECT_EQ(carrierCase.carrierOwner, decision.nextFace);
+    ASSERT_TRUE(decision.vertexStarTransit.has_value());
+    const auto &seed = decision.vertexStarTransit->seed;
+    ASSERT_TRUE(seed.has_value());
+    EXPECT_EQ(FieldVertexArrivalMode::EdgeTransit, seed->arrivalMode);
+    EXPECT_TRUE(seed->onRadialRay);
+    ASSERT_TRUE(seed->radialRay.has_value());
+    EXPECT_EQ(carrierCase.carrierEnd, *seed->radialRay);
+  }
+}
+
+// RA-241 (D12 = A): a straight-through arrival at the centre of the planar
+// four-face fan elects the top face (2,3,4) by geometry alone (Amendment 22).
+// Each case sets the faces' primary fields (zero matching, so the arrival's
+// primary branch is every face's primary branch):
+// - leaves: the top field (1,2) leaves the centre, so nothing changes;
+// - cross: the top field (3,1) points over radial (4,2) into the right face,
+//   whose field (2,1) leaves the centre, so the right face continues;
+// - slide: the top field (2,1) and the right field (1,2) point at each other
+//   across radial (4,2) and both advance along it away from the centre, so
+//   the trace slides along (2,4) from the top face.
+TEST(ResolvedBranchCorrection, OwnerWithoutOutflowFollowsFieldAcrossRadialEdge) {
+  using directional::geometry::FieldVertexArrivalMode;
+  using directional::geometry::surface_cell_tracing_detail::
+      FieldVertexOutflowFollowKind;
+  using directional::geometry::surface_cell_tracing_detail::
+      FieldVertexTransitDecision;
+  using directional::geometry::surface_cell_tracing_detail::
+      follow_field_vertex_transit_outflow;
+  using directional::geometry::surface_cell_tracing_detail::
+      resolve_field_vertex_transit;
+  const TriMesh mesh = make_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const SourceFaceTopologyKey arrivalFace = topology_face(0, 1, 4, 5U);
+  const SourceFaceTopologyKey topFace = topology_face(2, 3, 4, 5U);
+  const SourceFaceTopologyKey rightFace = topology_face(1, 2, 4, 5U);
+  const SourceFaceId arrivalRow = SourceFaceId::from_index(0, 4U).value();
+  const SourceVertexId center = SourceVertexId::from_index(4, 5U).value();
+  const SourceEdgeTopologyKey sharedRadial =
+      SourceEdgeTopologyKey::from_indices(2, 4, 5U).value();
+
+  struct FollowCase {
+    const char *name;
+    std::vector<Eigen::RowVector3d> primaries;  // faces (0,1,4) .. (3,0,4)
+    FieldVertexOutflowFollowKind kind;
+    SourceFaceTopologyKey continuation;
+    std::optional<SourceEdgeTopologyKey> slideCarrier;
+  };
+  const std::array<FollowCase, 3> cases{
+      FollowCase{"leaves",
+                 {Eigen::RowVector3d(1.0, 3.0, 0.0),
+                  Eigen::RowVector3d(1.0, 2.0, 0.0),
+                  Eigen::RowVector3d(1.0, 2.0, 0.0),
+                  Eigen::RowVector3d(1.0, 2.0, 0.0)},
+                 FieldVertexOutflowFollowKind::OwnerLeaves, topFace,
+                 std::nullopt},
+      FollowCase{"cross",
+                 {Eigen::RowVector3d(1.0, 2.0, 0.0),
+                  Eigen::RowVector3d(2.0, 1.0, 0.0),
+                  Eigen::RowVector3d(3.0, 1.0, 0.0),
+                  Eigen::RowVector3d(2.0, 3.0, 0.0)},
+                 FieldVertexOutflowFollowKind::Cross, rightFace, std::nullopt},
+      FollowCase{"slide",
+                 {Eigen::RowVector3d(1.0, 3.0, 0.0),
+                  Eigen::RowVector3d(1.0, 2.0, 0.0),
+                  Eigen::RowVector3d(2.0, 1.0, 0.0),
+                  Eigen::RowVector3d(1.0, 2.0, 0.0)},
+                 FieldVertexOutflowFollowKind::Slide, topFace, sharedRadial}};
+
+  for (const FollowCase &followCase : cases) {
+    SCOPED_TRACE(followCase.name);
+    const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+        mesh, *sourceAuthority, {},
+        make_planar_face_primary_field(mesh, followCase.primaries));
+    ASSERT_TRUE(atlasBuild);
+    const auto &topology = atlasBuild.value().branch_topology();
+    const auto *arrivalFrame = topology.find_frame(arrivalFace);
+    ASSERT_NE(nullptr, arrivalFrame);
+
+    // The arrival branch is the one whose negated field lies strictly inside
+    // the arrival face's wedge at the centre: the primary branch.
+    std::optional<directional::authority::FieldBranch> arrivalBranch;
+    std::size_t admitted = 0U;
+    for (const auto &pairing : arrivalFrame->branches) {
+      auto arrivalRay = pairing.direction;
+      for (auto &coordinate : arrivalRay.barycentric) coordinate = -coordinate;
+      if (directional::authority::direction_in_vertex_sector(
+              mesh, arrivalRow, center, arrivalRay)) {
+        arrivalBranch = pairing.branch;
+        ++admitted;
+      }
+    }
+    ASSERT_EQ(1U, admitted);
+
+    const auto transit = resolve_field_vertex_transit(
+        mesh, topology, arrivalFrame->sourceComponent,
+        arrivalFrame->topologyRegion, arrivalFace, *arrivalBranch, center,
+        FieldVertexArrivalMode::FaceInterior);
+    ASSERT_TRUE(std::holds_alternative<FieldVertexTransitDecision>(transit));
+    const auto &elected = std::get<FieldVertexTransitDecision>(transit);
+    ASSERT_EQ(topFace, elected.nextFace);
+
+    const auto follow =
+        follow_field_vertex_transit_outflow(mesh, topology, center, elected);
+    EXPECT_EQ(followCase.kind, follow.kind);
+    EXPECT_EQ(followCase.continuation, follow.continuation.nextFace);
+    EXPECT_EQ(elected.nextBranch, follow.continuation.nextBranch);
+    EXPECT_EQ(followCase.slideCarrier, follow.slideCarrier);
   }
 }
 

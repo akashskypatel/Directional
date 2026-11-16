@@ -1224,7 +1224,47 @@ field_dyadic_interior_exit_parameter(
     // Only diagnostic direct callers may omit this source-owned barrier map.
     // The canonical production trace must supply its validated A1 map.
     const std::map<authority::SourceEdgeTopologyKey,
-                   const authority::FieldNonTraversableEdge *> *sourceBarriers = nullptr);
+                   const authority::FieldNonTraversableEdge *> *sourceBarriers = nullptr,
+    // EdgeTransit only: the other end of the carrier the trace slid along.
+    // AX1 seeds the election on the ray from the vertex back along the
+    // incoming trace, which after a slide is this carrier, not the arrival
+    // face's negated field. Omitted, the negated field seeds the election.
+    std::optional<authority::SourceVertexId> arrivalCarrierEnd = std::nullopt);
+
+enum class FieldVertexOutflowFollowKind : std::uint8_t {
+  OwnerLeaves,
+  Cross,
+  Slide,
+  Unresolved
+};
+
+struct FieldVertexOutflowFollow {
+  FieldVertexOutflowFollowKind kind = FieldVertexOutflowFollowKind::OwnerLeaves;
+  FieldVertexTransitDecision continuation;
+  // Slide only: the radial edge to slide along, away from the vertex.
+  std::optional<authority::SourceEdgeTopologyKey> slideCarrier;
+};
+
+/**
+ * @brief Continuation of a vertex transit whose elected owner has no outflow.
+ *
+ * Amendment 22 elects the owner sector from geometry alone, so its field can
+ * point back into its own wedge (a negative weight on a corner other than the
+ * vertex). Decision D12 = A follows the field by the existing edge rules:
+ * starting at the owner, cross the radial edge the field points over until a
+ * sector's field leaves the vertex (Cross: that sector continues). When two
+ * adjacent sectors' fields point at each other across their shared radial
+ * edge, the trace slides along that edge (Slide), as an edge-supported port
+ * does: only when both fields advance along the edge away from the vertex,
+ * measured exactly on the source geometry, and from the sector it is in.
+ * Anything else (a field pointing into the vertex, an open fan's end, a full
+ * turn, a slide towards the vertex) is Unresolved and keeps the election, so
+ * the next step fails closed as before.
+ */
+[[nodiscard]] FieldVertexOutflowFollow follow_field_vertex_transit_outflow(
+    const TriMesh &sourceMesh, const authority::FieldBranchTopology &topology,
+    authority::SourceVertexId sourceVertex,
+    const FieldVertexTransitDecision &transit);
 
 [[nodiscard]] std::size_t field_aligned_trace_step_budget(
     const authority::FieldBranchTopology &topology) noexcept;
