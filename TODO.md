@@ -4,9 +4,9 @@
 - [ ] **Next separate turn:** `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME`. Review H1 carrier-ray seed against H2 geometric owner with outflow receipts. Do not start that turn inside TB120.
 - [ ] Retain D10 defer, O42/O43, accepted CP2 491/491, stable 66/17/49, debt 1, deferred 81 and production switch off.
 
-## CURRENT — CB139 diagnostic compiled; TB120 artifact-only gate next (P13-e.14), 2026-11-16 UTC
+## Historical CB139 handoff — TB120 completed (P13-e.14), 2026-11-16 UTC
 
-> **Canonical next:** `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC` (artifact-only Test + Benchmark).
+> **Historical CB139 successor (now complete):** `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC`. Current authority is in the TB120 section above.
 > - CB139 [compiled record](.agents/Directional/Architecture_M6_CP3_CB139_P13_Vertex_Transit_Outflow_Receipt_Code_Build_Record_20261116.md): source `c520674030c76be455111d7c41aae7d5f53ce900`, package `14199183882`, 28/28 checks, no runtime.
 > - TB120 authority: [RA-239 §5](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Obtuse_Edge_Port_Outcome_Review_20261116.md).
 
@@ -16,7 +16,7 @@
   - Amendment 22 elects the owner by geometry alone. H1: `EdgeTransit` arrivals seed with the face field, not the carrier ray, which AX1 requires. H2: the geometric owner need not flow out (design gap, would be a user decision).
   - The log names neither trace nor vertex. CB139 prints the full star wherever an owner has no outflow (R1) and the terminal locus (R2). It does not change any decision.
 - [x] **P13-e.13 / CB139 COMPLETE** — [record](.agents/Directional/Architecture_M6_CP3_CB139_P13_Vertex_Transit_Outflow_Receipt_Code_Build_Record_20261116.md); exact patch and eight GMP/GMPXX targets compiled; runtime not executed.
-- [ ] **P13-e.14 / TB120 (NEXT)** — TB119 manifest unchanged (`3aac432b…`, 947 rows, membership 1,028) plus the census. Record the locus and every R1 and sector line.
+- [x] **P13-e.14 / TB120 COMPLETE** — TB119 manifest unchanged (`3aac432b…`, 947 rows, membership 1,028) plus the census. The TB120 report records the locus and every R1 and sector line.
 - [ ] **P13-e.15 / Review only** — `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME`: H1 → AX1 conformance CB (after an EdgeTransit census of accepted rows); H2 → user decision on Amendment 22.
 - [ ] **O43:** ordinary grazing decides its slide with the endpoint-rate proxy. Measure per gate row before switching it.
 - [ ] **O42:** contact classification ignores the slide part of grazing segments and edge-port departures.
