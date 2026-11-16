@@ -1,7 +1,31 @@
-## Current turn: TB120 — scoped MATCH (2026-11-16 UTC)
+## CURRENT — RA-240 complete; CB140 compile-only next (P13-e.16); D12 pending, 2026-11-16 UTC
+
+> **Canonical next:** `M6-CP3-CB140-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT` (implementation agent, compile only). [RA-240](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vertex_Transit_Outflow_Outcome_Review_20261116.md) §5: [exact patch](.agents/Directional/Architecture_M6_CP3_CB140_P13_Edge_Transit_Seed_Conformance_Receipt_Exact.diff) `2e135b8c…`, 123 lines, 1 file `+105`.
+
+- [x] **P13-e.15 / RA-240** completed `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME`.
+  - TB120 accepted as scoped MATCH (artifacts re-verified; P1–P3 hold).
+  - A developed-fan model fits every logged owner (3/3) and every `inOwnSector` flag (20/20).
+  - H1 (AX1 carrier-ray seed) fixes only the terminal star, vertex 137. H2 holds at vertices 349 and 48: the AX1 owner is unchanged, and at 48 no sector flows out.
+- [ ] **D12 (user decision, pending):** what a trace does when the vertex-transit owner has no outflow. Options: A follow the field, B fail closed typed, C defer. Asked in RA-240 and not answered. Ask again in P13-e.18 if still open.
+- [ ] **O44:** the AX1 `EdgeTransit` seed is nonconforming. Switch it only after TB121's counts.
+- [ ] **O43**, **O42** as before.
+- **Carry:** CP2 491/491; stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted; `chainRimSchedules=false`; D10 defer; D6 pending; O41 and activation in 65C; O31/O32 open.
+
+**Turn sequence**
+
+| Step | Turn | Owner |
+|---|---|---|
+| P13-e.14 COMPLETE (scoped MATCH) | `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC` | implementation agent (artifact only) |
+| P13-e.15 COMPLETE | `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME` (RA-240) | Review |
+| **P13-e.16 NEXT** | `M6-CP3-CB140-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT`. Mismatch → `M6-CP3-PLAN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-STOP`; infrastructure → `M6-CP3-CB140A-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-ORCH` | implementation agent (compile only) |
+| P13-e.17 | `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB121A-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-ORCH` | implementation agent (artifact only) |
+| P13-e.18 | `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME` (AX1 switch from counts; D12) | **Review agent only** |
+| then | 65A → 65D (O41, activation in 65C); O31/O32 | Review, then implementation |
+
+## PREVIOUS — TB120 scoped MATCH (2026-11-16 UTC)
 
 - [x] Execute the immutable 947-case CB139 gate and three-case production census, no rebuild. See [TB120 report](.agents/Directional/Architecture_M6_CP3_TB120_P13_Vertex_Transit_Outflow_Receipt_Full_Gate_Execution_Report_20261116.md); gate 14199814782, census 14201142306.
-- [ ] **Next separate turn:** `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME`. Review H1 carrier-ray seed against H2 geometric owner with outflow receipts. Do not start that turn inside TB120.
+- [x] **Next separate turn** `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME` completed as RA-240 (see CURRENT).
 - [ ] Retain D10 defer, O42/O43, accepted CP2 491/491, stable 66/17/49, debt 1, deferred 81 and production switch off.
 
 ## Historical CB139 handoff — TB120 completed (P13-e.14), 2026-11-16 UTC
@@ -17,7 +41,7 @@
   - The log names neither trace nor vertex. CB139 prints the full star wherever an owner has no outflow (R1) and the terminal locus (R2). It does not change any decision.
 - [x] **P13-e.13 / CB139 COMPLETE** — [record](.agents/Directional/Architecture_M6_CP3_CB139_P13_Vertex_Transit_Outflow_Receipt_Code_Build_Record_20261116.md); exact patch and eight GMP/GMPXX targets compiled; runtime not executed.
 - [x] **P13-e.14 / TB120 COMPLETE** — TB119 manifest unchanged (`3aac432b…`, 947 rows, membership 1,028) plus the census. The TB120 report records the locus and every R1 and sector line.
-- [ ] **P13-e.15 / Review only** — `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME`: H1 → AX1 conformance CB (after an EdgeTransit census of accepted rows); H2 → user decision on Amendment 22.
+- [x] **P13-e.15 / Review only COMPLETE (RA-240)** — `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME`.
 - [ ] **O43:** ordinary grazing decides its slide with the endpoint-rate proxy. Measure per gate row before switching it.
 - [ ] **O42:** contact classification ignores the slide part of grazing segments and edge-port departures.
 - **Carry:** CP2 491/491; stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted; `chainRimSchedules=false`; D10 defer; D6 pending; O41 and activation in 65C; O31/O32 open.
@@ -29,7 +53,7 @@
 | P13-e.11 COMPLETE (scoped MATCH) | `M6-CP3-TB119-P13-OBTUSE-EDGE-PORT-SLIDE-FULL-GATE-EXEC` | implementation agent (artifact only) |
 | P13-e.12 COMPLETE | `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME` (RA-239) | Review |
 | P13-e.13 COMPLETE | `M6-CP3-CB139-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT`. Mismatch → `M6-CP3-PLAN-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-STOP`; infrastructure → `M6-CP3-CB139A-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-ORCH` | implementation agent (compile only) |
-| **P13-e.14 NEXT** | `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB120A-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-ORCH` | implementation agent (artifact only) |
+| P13-e.14 COMPLETE | `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB120A-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-ORCH` | implementation agent (artifact only) |
 | P13-e.15 | `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME` | **Review agent only** |
 | then | 65A → 65D (O41, activation in 65C); O31/O32 | Review, then implementation |
 

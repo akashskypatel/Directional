@@ -1,3 +1,7 @@
+## 2026-11-16 — RA-240 BunnyRandom network terminal: owner stage confirmed, two causes (P13-e candidate)
+
+[RA-240](Architecture_M6_CP3_DEFN_P13_Vertex_Transit_Outflow_Outcome_Review_20261116.md): the three TB120 stars without outflow were modelled on the mesh (3/3 owners and 20/20 sector flags reproduced). Vertex 137 (the terminal): the `EdgeTransit` seed is not AX1's carrier ray (O44), and the carrier-ray owner flows out. Vertices 349 and 48: the Amendment 22 owner has no outflow under either seed, and at 48 no sector flows out (D12, a user decision, pending). It stays a non-stable candidate; stable accounting is unchanged (66/17/49, debt 1, deferred 81).
+
 ## 2026-11-16 — TB120 vertex transit outflow diagnostic (scoped MATCH)
 
 [TB120 evidence](Architecture_M6_CP3_TB120_P13_Vertex_Transit_Outflow_Receipt_Full_Gate_Execution_Report_20261116.md): CB139 package `14199183882`, full gate 14199814782 (947 cases; 0 ledger differences), census 14201142306 (3 cases; 2 ledger differences). Outflow R1 lines gate/census: 0/3. The field-aligned network terminal remains a P13-e non-stable candidate pending Review-only `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME`. Do not promote it to a new accepted regression without independent review. Stable 66/17/49, debt1, deferred81 unchanged.

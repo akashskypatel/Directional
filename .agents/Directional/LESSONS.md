@@ -662,6 +662,13 @@ This document records **reusable failure-derived engineering lessons**, not an e
   stay silent, and keep the locus print as the fallback in case the enumeration is wrong. Read
   the frozen definition of each datum the decision consumes (here AX1's arrival ray): an
   implementation can satisfy the amendment in one arrival mode and not in another.
+- **When a failure has two candidate causes, test each at every failing instance, not only at the
+  one that terminated (RA-240).** TB120 logged three vertex stars without outflow. A model of the
+  developed fan reproduced every logged owner and every in-sector flag. The AX1 carrier-ray seed
+  fixed the terminating star (137), but at the other two the AX1 owner was unchanged, and at vertex
+  48 no sector's field left the vertex at all. A conformance fix chosen from the first instance
+  alone would have moved accepted rows and still left BunnyRandom RED. Check whether any candidate
+  could succeed at all (here: does any sector flow out?) before comparing seeds.
 - **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
   still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).
 - **A TB runs the full current gate even when its CB touches no gate binary.** A CLI- or GUI-only CB

@@ -1,3 +1,7 @@
+## 2026-11-16 UTC — RA-240 vertex transit outflow outcome (P13-e.15)
+
+- [RA-240](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vertex_Transit_Outflow_Outcome_Review_20261116.md): TB120 accepted. The AX1 carrier-ray seed fixes BunnyRandom's terminal star (vertex 137) but not vertices 349 and 48, where the Amendment 22 owner has no outflow (D12, pending user decision). Froze the diagnostic CB140 [exact patch](.agents/Directional/Architecture_M6_CP3_CB140_P13_Edge_Transit_Seed_Conformance_Receipt_Exact.diff) `2e135b8c…` and TB121. No source change.
+
 ## 2026-11-16 UTC — TB120 vertex transit outflow receipt full gate: scoped MATCH
 
 - [TB120 report](.agents/Directional/Architecture_M6_CP3_TB120_P13_Vertex_Transit_Outflow_Receipt_Full_Gate_Execution_Report_20261116.md): immutable CB139 package `14199183882` tested with [947-case gate 43810896818](https://github.com/akashskypatel/Directional/actions/runs/43810896818) and [three-case census 43810956948](https://github.com/akashskypatel/Directional/actions/runs/43810956948), artifacts `14199814782` and `14201142306`, with exact differences and R1 sector evidence recorded. No rebuild or source, test, selector, or manifest edit. Successor `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME` remains a separate Review. Stable 66/17/49, debt1, deferred81, CP2 491/491 inherited; no CP3 promotion.
