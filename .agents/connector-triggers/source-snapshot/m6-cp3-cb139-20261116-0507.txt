@@ -1,3 +1,0 @@
-turn=M6-CP3-CB139-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT
-source_parent_sha=80624c24cead60b8d7ab3fc1b305ff70445d835d
-purpose=exact-source-snapshot
