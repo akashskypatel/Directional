@@ -1,0 +1,2 @@
+# TB119 temporary source snapshot marker cleanup
+.agents/connector-triggers/source-snapshot/tb119-20261116.txt
