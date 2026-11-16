@@ -1,25 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb124-corrected-full-gate-20261116-v1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb124-corrected-full-gate-v1",
-  "executor_sha": "305d228e4ea06c3fc6b4e4edcb2634124808aa97",
-  "semantic_source_sha": "57b28b737fd92b083d24d882152dea186211f735",
-  "turn_id": "M6-CP3-TB124-P13-CORRECTED-FULL-GATE-EXEC",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "artifact_prefix": "m6-cp3-tb124-corrected-full-gate",
-  "retention_days": 14,
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "14224898790",
-    "EXPECTED_SOURCE_SHA": "57b28b737fd92b083d24d882152dea186211f735",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "98f448f9e5b5ebcacbd1884ad4e62415d7c10d5878da0ccf1438654b4aeaf52b",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "f56735413bc97d657984761f71d9b02ce5428541882d46a05b58ddf965aa4750",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "f22a6013668b851f5e120688ab6dbbf091f184a3d3f7c952d1772e6af36fea5c",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB122_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Follow_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "a56ad00ce48424a8505b7a6ab71500a4c60285b3d96ceecaf7cf1a3724f5f2b1",
-    "EXPECTED_CASE_COUNT": "949",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
-  }
+  "request_id": "m6-cp3-tb124-closeout-apply-20261116-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb124-closeout-apply-v1",
+  "file_id": "17G4jh6_HgqhlFrjdy6mSud2WHXob_ukO",
+  "patch_sha256": "91d69ec07ad0ed6b24b00ff11424d9fe850938b5d5dc36fa5924a4877bfa22c9",
+  "base_sha": "305d228e4ea06c3fc6b4e4edcb2634124808aa97",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record TB124 corrected full-gate verification",
+  "retention_days": 14
 }
