@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb122-review-closeout-table-20261116-v1",
+  "request_id": "m6-cp3-cb142-cross-face-oracle-apply-20261116-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb122-review-closeout-table",
-  "file_id": "1pjHs6uy_UuZ-6s82s2l3x75vNqpMLamv",
-  "patch_sha256": "ec1002226a52c996a30d787bc7c8941875b3e9989acebb3161168fb90acfa1fb",
-  "base_sha": "b5a82aad5689bcad3f708aa1c5bbe29385c81d45",
+  "mailbox_key": "m6-cp3-cb142-cross-face-oracle-apply",
+  "file_id": "1a-yFvX1koSur1JVu_LlNyoHf7CWrL8Fh",
+  "patch_sha256": "a7046c070b33d2a2e80897a3544a44453c8c3a073d2a6a3b36ca19b00bdb8044",
+  "base_sha": "ac1330de2a758cb4439e2e6c08864968d760dda9",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): complete adversarial TB122 review checklist",
+  "commit_message": "test(surface-cells): independently certify cross-face follow branch",
   "retention_days": 14
 }
