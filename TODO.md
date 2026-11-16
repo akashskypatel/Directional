@@ -1,25 +1,23 @@
-## CURRENT — CB140 compiled; TB121 artifact-only next (P13-e.17); D12 pending, 2026-11-16 UTC
+## CURRENT — TB121 scoped MATCH; independent Review next (P13-e.18), 2026-11-16 UTC
 
-> **Canonical next (separate turn):** `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC` (artifact only), RA-240 §6. CB140 [compiled record](.agents/Directional/Architecture_M6_CP3_CB140_P13_Edge_Transit_Seed_Conformance_Receipt_Code_Build_Record_20261116.md): frozen +105-line diagnostic applied to source `6a293e4641a2160cb9f447322c9aa1d1d26f3838`, [compile 43825208976](https://github.com/akashskypatel/Directional/actions/runs/43825208976) SUCCESS, package `14206223032`, `runtimeExecution=false`. No tests or D12 implementation.
+> **Canonical next (separate turn):** `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME` (Review only). [TB121 report](.agents/Directional/Architecture_M6_CP3_TB121_P13_Edge_Transit_Seed_Conformance_Receipt_Full_Gate_Execution_Report_20261116.md) shows 947/947 gate PASS (membership 1,028), census 1 PASS / 2 expected RED, exact 55/55 inherited receipts, and one new `EdgeTransit` seed conformance diagnostic at BunnyRandom vertex 137 (existing owner 3, carrier-ray owner 4). No semantic gate drift, no source/selector change, and no CP3 promotion.
 
-- [x] **P13-e.15 / RA-240** completed `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME`.
-  - TB120 accepted as scoped MATCH (artifacts re-verified; P1–P3 hold).
-  - A developed-fan model fits every logged owner (3/3) and every `inOwnSector` flag (20/20).
-  - H1 (AX1 carrier-ray seed) fixes only the terminal star, vertex 137. H2 holds at vertices 349 and 48: the AX1 owner is unchanged, and at 48 no sector flows out.
-- [ ] **D12 (user decision, pending):** what a trace does when the vertex-transit owner has no outflow. Options: A follow the field, B fail closed typed, C defer. Asked in RA-240 and not answered. Ask again in P13-e.18 if still open.
-- [ ] **O44:** the AX1 `EdgeTransit` seed is nonconforming. Switch it only after TB121's counts.
-- [ ] **O43**, **O42** as before.
-- **Carry:** CP2 491/491; stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted; `chainRimSchedules=false`; D10 defer; D6 pending; O41 and activation in 65C; O31/O32 open.
+- [x] **P13-e.16 / CB140:** diagnostic code built, immutable GMP/GMPXX package `14206223032`.
+- [x] **P13-e.17 / TB121:** artifact-only [gate run 43827835396](https://github.com/akashskypatel/Directional/actions/runs/43827835396) and [census run 43827920795](https://github.com/akashskypatel/Directional/actions/runs/43827920795) verified as scoped MATCH. Keep raw diagnostic for separate Review; do not implement the seed switch here.
+- [ ] **P13-e.18 (Review only):** decide the AX1 carrier-ray seed switch from TB121 counts and ask D12 again if pending.
+- [ ] **D12 (user decision pending):** A follow field, B typed fail-closed, C defer. Do not implement before approval.
+- [ ] **O44:** `EdgeTransit` seed nonconformance; O42/O43 remain open.
+- **Carry:** D11=A, D10 deferred, D6 pending; accepted CP2 491/491; stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted; `chainRimSchedules=false`; O41 and activation in 65C; O31/O32 open.
 
 **Turn sequence**
 
 | Step | Turn | Owner |
 |---|---|---|
-| P13-e.14 COMPLETE (scoped MATCH) | `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC` | implementation agent (artifact only) |
+| P13-e.14 COMPLETE / MATCH | `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC` | Test + Benchmark |
 | P13-e.15 COMPLETE | `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME` (RA-240) | Review |
-| **P13-e.16 COMPLETE / COMPILE GREEN** | `M6-CP3-CB140-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT`. Mismatch → `M6-CP3-PLAN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-STOP`; infrastructure → `M6-CP3-CB140A-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-ORCH` | implementation agent (compile only) |
-| **P13-e.17 NEXT** | `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB121A-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-ORCH` | implementation agent (artifact only) |
-| P13-e.18 | `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME` (AX1 switch from counts; D12) | **Review agent only** |
+| P13-e.16 COMPLETE / BUILD GREEN | `M6-CP3-CB140-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT` | Code + Build |
+| P13-e.17 COMPLETE / MATCH | `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC` | Test + Benchmark (artifact only) |
+| P13-e.18 NEXT | `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME` | Independent Review |
 | then | 65A → 65D (O41, activation in 65C); O31/O32 | Review, then implementation |
 
 ## PREVIOUS — TB120 scoped MATCH (2026-11-16 UTC)

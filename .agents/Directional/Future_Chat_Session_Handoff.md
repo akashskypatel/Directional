@@ -1,8 +1,14 @@
+## TB121 COMPLETE / scoped MATCH (P13-e.17) — next: `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME` (Review only) — 2026-11-16 UTC
+
+**Canonical completed turn:** `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC`. [TB121 report](Architecture_M6_CP3_TB121_P13_Edge_Transit_Seed_Conformance_Receipt_Full_Gate_Execution_Report_20261116.md). CB140 exact source `6a293e4641a2160cb9f447322c9aa1d1d26f3838`, package `14206223032`. Full gate [run 43827835396](https://github.com/akashskypatel/Directional/actions/runs/43827835396), artifact `14208145885`: **947/947 PASS**, membership 1,028, 1,902/1,902 hashes. Three-case census [run 43827920795](https://github.com/akashskypatel/Directional/actions/runs/43827920795), artifact `14208251561`: Cylinder PASS, BunnyRandom/Vase expected RED, 9/9 hashes, 55/55 frozen receipt lines identical to TB120. The one new `edgeTransitSeedConformance` line is on BunnyRandom trace 51 at vertex 137: `codeOwner=3 carrierOwner=4 carrierOwnerLeaves=1`; 0 such lines in gate, 0 `modeled=0`. Both runs are artifact-only; no source, test, selector or fixture changes. This is scoped evidence only. **Next separate turn:** Review-only `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME`. D12 remains pending, O42/O43/O44 open; D11=A, D10 deferred, D6 pending; CP2 491/491; stable 66/17/49, debt 1, deferred 81; `chainRimSchedules=false`; CP3/selector497 unpromoted.
+
+**Previous completed state (retained):**
+
 ## CB140 COMPLETE (P13-e.16; edge-transit seed conformance diagnostic compiled) — next: `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC` (artifact only) — 2026-11-16 UTC
 
 **Canonical completed turn:** `M6-CP3-CB140-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT`. [Code + Build record](Architecture_M6_CP3_CB140_P13_Edge_Transit_Seed_Conformance_Receipt_Code_Build_Record_20261116.md). RA-240 frozen one-file diff `2e135b8c…` (+105/−0) applied at exact source `6a293e4641a2160cb9f447322c9aa1d1d26f3838`; [compile 43825208976](https://github.com/akashskypatel/Directional/actions/runs/43825208976) **SUCCESS**, package `14206223032` (ZIP SHA-256 `98acb75fbed52ab6909be65d165310ac8dfe0c75a5be5117aed473c4fd7db089`), `28/28` checks, eight GMP/GMPXX targets, `runtimeExecution=false`. Decision, selector, tests and benchmark logic unchanged. **Next separate turn:** TB121 (947-row gate + three-case census, artifact only, RA-240 §6). D12 pending; O42/O43/O44 open; D11=A, D10 deferred, D6 pending; CP2 491/491; stable 66/17/49, debt1, deferred81; `chainRimSchedules=false`; CP3/selector497 unpromoted.
 
-**Previous completed state (retained):**
+
 
 ## RA-240 COMPLETE (P13-e.15; H1 at the terminal star, H2 at two stars; D12 pending) — next: `M6-CP3-CB140-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT` (implementation agent, compile only) — 2026-11-16 UTC
 
