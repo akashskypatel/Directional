@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb139-gmp-compile-20261116-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb139-gmp-compile",
-  "source_sha": "c520674030c76be455111d7c41aae7d5f53ce900",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-cb139-gmp-compile"
+  "request_id": "m6-cp3-cb139-doc-closeout-20261116-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb139-doc-closeout",
+  "file_id": "1wtKsIti9Pj2VSmtgZcD_HfkOcp0111ia",
+  "patch_sha256": "b82179c77b47e59403b7055d317b008864e84891306bb71757f11053f978526a",
+  "base_sha": "e6f6171f6c345424b600eaea1587da9ae878fbfb",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close out CB139 GMP compile evidence",
+  "retention_days": 14
 }
