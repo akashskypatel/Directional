@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb122-doc-closeout-20261116-v2",
+  "request_id": "m6-cp3-tb122-rev-doc-closeout-20261116-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb122-doc-closeout",
-  "file_id": "1KXlOywkLSJzu8eLi4wp2eyDYFAlgKIpG",
-  "patch_sha256": "1c651b736180a615ffbc9e31cafd131c10ac8bf08bec7cdc7aed7b7918f71441",
-  "base_sha": "e2787c7973405a6e5c8f82c2c7b6b46a5782ee61",
+  "mailbox_key": "m6-cp3-tb122-rev-doc-closeout",
+  "file_id": "100SiiZpC_2mqG6vBEpxw7tgXFGH2t8Lq",
+  "patch_sha256": "502c723a61b405524b812f5d5863fba80439c02fb3dbdae7f263a7c34f5725a1",
+  "base_sha": "60b39d61979fb4080eb41fe53df9b45d0325a971",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record TB122 gate mismatch and independent Review route",
+  "commit_message": "docs(directional): adjudicate TB122 cross-frame oracle and terminal cuts",
   "retention_days": 14
 }
