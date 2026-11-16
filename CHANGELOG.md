@@ -1,3 +1,7 @@
+## 2026-11-16 UTC — CB142 cross-face branch oracle compiled (Code + Build)
+
+- [CB142 record](.agents/Directional/Architecture_M6_CP3_CB142_P13_Cross_Face_Branch_Oracle_Correction_Code_Build_Record_20261116.md): test-only exact A1 transport and destination outflow/wedge oracle with wrong-branch/wrong-lift/inward/radial negative controls, source `57b28b737fd92b083d24d882152dea186211f735`. [Compile 43864872021](https://github.com/akashskypatel/Directional/actions/runs/43864872021) **SUCCESS**, immutable package `14224898790`, outer ZIP SHA-256 `98f448f9e5b5ebcacbd1884ad4e62415d7c10d5878da0ccf1438654b4aeaf52b`, 28/28 hashes, eight GMP/GMPXX targets, `runtimeExecution=false`. Initial compile request failed parsing `retention_days`; corrected request compiled successfully. No tests, census, or benchmarks executed. Next separate TB123 focused gate only; CP2 491/491, stable 66/17/49, debt1, deferred81 and unpromoted selector unchanged.
+
 - 2026-11-16 — Owner-requested adversarial TB122 Review: reconciled D12 post-election field-follow with DESIGN Amendment 22, identified incomplete oracle/trace-level evidence and A2a′ exact terminal-identity gap; froze CB142 → focused TB/Review → full gate/Review → terminal census/decision → one narrow correction. No code, tests or acceptance changed.
 ## 2026-11-16 UTC — TB122 independent review: cross-frame test oracle, separate terminal-cut limit
 

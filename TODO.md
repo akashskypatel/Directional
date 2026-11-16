@@ -1,10 +1,10 @@
-## CURRENT — TB122 adversarial Review: small-turn implementation queue (2026-11-16 UTC)
+## CURRENT — CB142 Code + Build complete; TB123 focused artifact-only gate next (2026-11-16 UTC)
 
-> **NEXT_TURN:** `M6-CP3-CB142-P13-CROSS-FACE-BRANCH-ORACLE-CORRECTION` (test-only Code + Build, compile only). [Independent adversarial review](.agents/Directional/Architecture_M6_CP3_TB122_REV_P13_Adversarial_Architecture_Review_20261116.md). No product/selector change or synthetic green result. Stop for Review if the independently derived destination branch differs from the returned Cross branch.
+> **NEXT_TURN:** `M6-CP3-TB123-P13-CROSS-FACE-ORACLE-FOCUSED-EXEC` (Test + Benchmark, immutable artifact only). [CB142 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB142_P13_Cross_Face_Branch_Oracle_Correction_Code_Build_Record_20261116.md). Test-only oracle correction compiled with GMP/GMPXX in [run 43864872021](https://github.com/akashskypatel/Directional/actions/runs/43864872021), artifact `14224898790`, **28/28** package hashes, `runtimeExecution=false`. The new assertion and its negative controls are **not executed**. Do not claim row949 PASS or change product behavior without TB123 plus independent Review.
 
 - [x] Recheck TB122 artifact (948/949) and BunnyRandom cut-graph RED against the code and binding `DESIGN.md` §§2/5, Amendment 22, RA-241.
 - [x] Separate geodesic owner election from D12=A field-follow in `DESIGN.md`; correct prior Review's incomplete architecture assessment.
-- [ ] **CB142:** one test file, exact cross-face lift + physical outward field oracle; wrong-branch/wrong-lift negative controls. Compile only.
+- [x] **CB142:** one test file with exact A1 cross-face lift, strict outward destination-wedge oracle, and four negative controls. All eight GMP/GMPXX targets compiled; no runtime execution.
 - [ ] **TB123:** immutable focused row948/949 and negative controls; no full-suite acceptance inferred.
 - [ ] **TB123-REV:** independent oracle and follow-outcome review; halt if source branch violates the oracle.
 - [ ] **TB124:** immutable full 949-case gate + 3-case census after focused Review only.
