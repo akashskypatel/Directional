@@ -48,3 +48,26 @@ Each turn below owns **one** question. A Code + Build (CB) turn compiles with GM
 ## Verification and closeout boundary
 
 Review-only local actions: verified prior snapshot and immutable gate/census checksums; inspected `DESIGN.md`, RA-241, `FieldTransportAtlas.h`, `SurfaceCellTracing.cpp`, `EmbeddedGraphTopology.cpp`, `FieldAlignedCurveNetworkTests.cpp`, current handoff/TODO and original independent review. **No runtime execution and no source/test/fixture mutation.** The new design supplement is documentation of already owner-approved D12=A with a previously missing two-stage authority condition; product compliance is **not established by this document**. Existing stable counts and accepted selector remain unchanged. Review checklist complete to the evidence available; unknown terminal parameters and full trace outcomes remain explicit, scoped future obligations rather than guessed facts.
+
+## Review closeout
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | No selector mutation; product/selector checks against the verified snapshot passed. No new selector acceptance asserted. |
+| Decisive claims independently re-derived | Source `tests/FieldAlignedCurveNetworkTests.cpp:12326`; `SurfaceCellTracing.cpp:1913–2030,3647–3664,3816–3833`; `EmbeddedGraphTopology.cpp:435–558`; raw gate row949 and BunnyRandom census; immutable artifact hashes checked. |
+| Non-vacuity checked | Row949 actually fails on Cross 2 vs 3; row948 passes; new wrong-branch and wrong-lift falsifiers are specified but deliberately not run in Review. |
+| Prior obligations discharged/carried | C1 wrong oracle confirmed, C2 normative two-stage distinction documented; C3 exact cut equivalence unresolved; C4 unresolved-state propagation unverified; O42/O43/O44 and Vase O41 remain open. |
+| Stable accounting | No change: CP2 491/491; 66 events / 17 categories / 49 recurrences; debt 1; deferred 81; no CP3/selector497 promotion. |
+| New candidates/obligations recorded | C3 and C4/C5 remain evidence and falsification obligations in this report, handoff and TODO; old tracker F1/F2 stable totals unchanged. No new stable classification claimed. |
+| ORIENTATION currency line | Updated to the owner-requested adversarial TB122 review, 2026-11-16. |
+| ORIENTATION §3 / §4 / §7 / §8 | §3 accepted prefix unchanged; §4 witness result unchanged (BunnyRandom/Cylinder/Vase documented in current currency and prior review); §7 CB142 remains first priority; §8 existing source-identity and false test-oracle patterns apply; no new independent pattern claimed. |
+| CHANGELOG | One adversarial correction entry added. |
+| ROADMAP | No milestone/checkpoint reached a new accepted state; unchanged. |
+| Selector manifest | No selector added, removed or accepted; unchanged. |
+| LESSONS | Existing independent-oracle and frozen-variable lessons 170/171 apply; no new cross-project rule established. |
+| Consolidation under CLEAN_UP_POLICY | No historical deletion: both reviews and immutable evidence remain relevant until the corrected gate. |
+| Successor frozen | Exactly `M6-CP3-CB142-P13-CROSS-FACE-BRANCH-ORACLE-CORRECTION`; its negative controls and stop gate are in the sequence above and in handoff/TODO. |
+| Turn boundary held | No test, producer, fixture, selector, build or benchmark source modified; no Directional executable run by this Review. |
+| review_check.py boundary | Local product/selector checks passed; synthetic checkout has no original Git ancestry, so the historical baseline/rewritten-file ancestry checks failed. No false full pass claimed. |
+| `STATUS` lifecycle maintained | Owner-requested review reopened from the prior COMPLETE record, with original `Started at` preserved and `Resumed at` set. Final beacon is the final repository action after docs. |
+| Pushed to origin, branch in sync | Drive apply success and GitHub branch-head read independently confirmed the documentation commit; a synthetic local checkout cannot establish `git status -sb` against origin. |
