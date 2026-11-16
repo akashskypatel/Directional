@@ -1,3 +1,7 @@
+## CURRENT — TB123-REV static oracle reviewed; TB124 full gate is next (2026-11-16 UTC)
+
+> [Independent TB123 outcome review](.agents/Directional/Architecture_M6_CP3_TB123_REV_P13_Cross_Face_Oracle_Outcome_Review_20261116.md): corrected Cross oracle compares A1-transported branch with independently derived strict destination-field wedge and rejects four negative helper inputs. TB123 reported 2/2 focused PASS, but raw local logs were not accessible for independent re-count. The historical TB122 948/949 outcome stands; CP3/selector497 are not accepted. **Next one turn:** `M6-CP3-TB124-P13-CORRECTED-FULL-GATE-AND-CENSUS`, using unchanged CB142 package. Carry O41/O42/O43/O44, BunnyRandom terminal `(241,251)` and separate Unresolved follow work. Do not start the successor from this review.
+
 ## CURRENT — TB123 focused 2/2 PASS; independent Review only next (2026-11-16 UTC)
 
 > `M6-CP3-TB123-P13-CROSS-FACE-ORACLE-FOCUSED-EXEC` completed a focused direct local immutable-artifact run, not a GitHub Actions full gate. [Report](.agents/Directional/Architecture_M6_CP3_TB123_P13_Cross_Face_Oracle_Focused_Execution_Report_20261116.md): corrected rows 948 and 949 passed, each ran exactly once, 28/28 hashes verified before/after, zero skips. Negative controls are embedded row949 assertions. **Next distinct turn:** `M6-CP3-TB123-REV-P13-CROSS-FACE-ORACLE-OUTCOME`. Do not run TB124, CB143, a production matrix or selector promotion in this turn. Carry all TB122 failure history and O42/O43/O44 obligations unchanged.
@@ -10,7 +14,7 @@
 - [x] Separate geodesic owner election from D12=A field-follow in `DESIGN.md`; correct prior Review's incomplete architecture assessment.
 - [x] **CB142:** one test file with exact A1 cross-face lift, strict outward destination-wedge oracle, and four negative controls. All eight GMP/GMPXX targets compiled; no runtime execution.
 - [x] **TB123:** immutable local focused row948/949 2/2 PASS; four embedded negative inputs; no full-suite or production acceptance inferred.
-- [ ] **TB123-REV:** independent oracle and follow-outcome review; halt if source branch violates the oracle.
+- [x] **TB123-REV:** independent static oracle and field-follow review; no raw TB123 log re-count; no product acceptance.
 - [ ] **TB124:** immutable full 949-case gate + 3-case census after focused Review only.
 - [ ] **TB124-REV:** adjudicate gate and O44, require full trace evidence; no automatic promotion.
 - [ ] **CB143:** exact multi-terminal edge inventory only; no graph edit.

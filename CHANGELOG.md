@@ -1,4 +1,8 @@
 ## 2026-11-16 — TB123 focused cross-face oracle execution (2/2 PASS, local immutable artifact)
+## 2026-11-16 — TB123 independent cross-face oracle outcome Review
+
+- [Review](.agents/Directional/Architecture_M6_CP3_TB123_REV_P13_Cross_Face_Oracle_Outcome_Review_20261116.md) independently checked A1 signed-lift comparison, exact right-face outward sector and the four negative helper conditions in the immutable CB142 test source. TB123 reported row948/949 2/2 focused PASS; its raw logs were not accessible for independent recount. Historic TB122 948/949 remains. Next separate turn: TB124 immutable full 949-case gate and three-case census. No product/source/selector change or CP3 acceptance. Stable 66/17/49; debt1 deferred81; CP2 491/491.
+
 
 [TB123 scoped report](.agents/Directional/Architecture_M6_CP3_TB123_P13_Cross_Face_Oracle_Focused_Execution_Report_20261116.md) confirms corrected row948/row949 ran and passed once each directly from CB142 artifact `14224898790`, 28/28 checksums before and after, no skips. Four negative inputs belong to row949 assertions. No remote full-gate or census execution, no source or selector change, and no CP3 promotion. Original TB122 948/949 full gate retained. Next separate independent TB123 Review; O42/O43/O44 and stable 66/17/49 unchanged.
 
