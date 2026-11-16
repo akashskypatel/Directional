@@ -1,3 +1,22 @@
+## CURRENT — TB122 adversarial Review: small-turn implementation queue (2026-11-16 UTC)
+
+> **NEXT_TURN:** `M6-CP3-CB142-P13-CROSS-FACE-BRANCH-ORACLE-CORRECTION` (test-only Code + Build, compile only). [Independent adversarial review](.agents/Directional/Architecture_M6_CP3_TB122_REV_P13_Adversarial_Architecture_Review_20261116.md). No product/selector change or synthetic green result. Stop for Review if the independently derived destination branch differs from the returned Cross branch.
+
+- [x] Recheck TB122 artifact (948/949) and BunnyRandom cut-graph RED against the code and binding `DESIGN.md` §§2/5, Amendment 22, RA-241.
+- [x] Separate geodesic owner election from D12=A field-follow in `DESIGN.md`; correct prior Review's incomplete architecture assessment.
+- [ ] **CB142:** one test file, exact cross-face lift + physical outward field oracle; wrong-branch/wrong-lift negative controls. Compile only.
+- [ ] **TB123:** immutable focused row948/949 and negative controls; no full-suite acceptance inferred.
+- [ ] **TB123-REV:** independent oracle and follow-outcome review; halt if source branch violates the oracle.
+- [ ] **TB124:** immutable full 949-case gate + 3-case census after focused Review only.
+- [ ] **TB124-REV:** adjudicate gate and O44, require full trace evidence; no automatic promotion.
+- [ ] **CB143:** exact multi-terminal edge inventory only; no graph edit.
+- [ ] **TB125:** immutable BunnyRandom inventory and equal/distinct negative fixtures.
+- [ ] **DEFN:** source ownership of duplicate/ordered/incompatible terminal parameters.
+- [ ] **CB144:** one selected ownership correction, compile only; then focused **TB126** and independent Review.
+- [ ] Separate later guard: demonstrate that `Unresolved` vertex follow fails closed before publishing invalid segments. Separate Vase/O41 work unaffected.
+
+**Sequence, owner and stop gates:** CB142 (Code + Build) → TB123 (Test + Benchmark) → TB123-REV (Review) → conditional TB124 (Test + Benchmark) → TB124-REV (Review) → CB143 (Code + Build) → TB125 (Test + Benchmark) → DEFN (Review) → conditional CB144 (Code + Build) → TB126 (Test + Benchmark) → Review. Each turn owns one bounded change or evidence gate; stop immediately at any falsifier. Exact identifiers and acceptance conditions appear in the adversarial report and handoff.
+
 ## CURRENT — TB122 independent Review: test-oracle defect; one bounded Code + Build next (2026-11-16 UTC)
 
 > **Next turn only:** `M6-CP3-CB142-P13-CROSS-FACE-BRANCH-ORACLE-CORRECTION` (test-only oracle correction + compile-only). [Independent review](.agents/Directional/Architecture_M6_CP3_TB122_REV_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Independent_Review_20261116.md). TB122 948/949; row949 mistakenly compares face-local Cross branches. BunnyRandom separately has unsupported multiple terminal cuts on source edge `(241,251)`. P13-e.21 must not start; CP2 491/491 and selector497 frozen.

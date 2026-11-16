@@ -637,6 +637,22 @@ withdrawn except where an amendment says so explicitly.
   port or face all remain prohibited (Amendments 17, 21). Source:
   `M3_CP4c_Frozen_Definitions.md` Part VI §§AX1-AX3, AX5.
 
+- **Amendment 22 supplement — owner-approved D12=A is a separate post-election field-follow decision.**
+  The exact straightest-geodesic owner elected under Amendment 22 remains the *owner*; it is never
+  re-elected by a field vector or renamed when the continuation moves. If its transported A1 field
+  branch does not leave the source vertex, A2a may follow that **same transported branch family**
+  through admissible adjacent sectors, with each cross checked against A1's face-local signed lift.
+  A `Cross` continuation belongs to the destination face and uses the destination face's branch
+  identity, which need not equal the elected face's numeric branch. A `Slide` follows one shared
+  radial only when both incident field directions have exact positive advance along that radial;
+  the hard-rail and barrier rules still prohibit traversing a protected edge. `OwnerLeaves` keeps
+  the elected continuation. `Unresolved` is a typed non-success and must lead to bounded fail-closed
+  output rather than an invented departure. Preserve the original owner separately from the
+  followed destination so an independent test can verify both. This supplement clarifies RA-241's
+  approved D12=A; it **does not authorize** using candidate-local field representatives to make the
+  Amendment 22 owner election, relaxing isolation, or accepting an unverified target branch.
+  The independent proof and end-to-end trace receipt remain mandatory before P13-e acceptance.
+
 - **Amendment 23 — where an exact decision has no bounded algebraic representation, the architecture must state the
   budget, not hide it.** Electing a developed sector is deciding the sign of a signed sum of arccosines of algebraic
   numbers: each face angle has `cos θ = D/√P` and `sin θ = √Q/√P` with `D`, `P`, `Q` exact rationals, so composing

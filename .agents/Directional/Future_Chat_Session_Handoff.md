@@ -1,3 +1,22 @@
+## CURRENT — Owner-requested adversarial TB122-REV re-assessment (2026-11-16 UTC)
+
+**Review judgment:** earlier Cross index equality is not a transported branch oracle; correction still requires an independent A1-lift and exact destination-field proof. D12 field-follow must be a *post-geodesic-election* decision; `DESIGN.md` Amendment 22 now distinguishes them. BunnyRandom's multi-terminal edge `(241,251)` is an A2a/A2a′ identity question, **not** permission to merge or split unmeasured cuts. `Unresolved` propagation and full A2a trace coverage remain unverified. No accepted full gate, direct BunnyRandom/Vase output, or selector promotion. [Adversarial report](Architecture_M6_CP3_TB122_REV_P13_Adversarial_Architecture_Review_20261116.md).
+
+**NEXT_TURN (implementation, one test-only Code + Build):** `M6-CP3-CB142-P13-CROSS-FACE-BRANCH-ORACLE-CORRECTION`. Edit only the cross-face test oracle. Independently compute expected destination branch using exact A1 transport and source wedge/direction; include wrong-branch and wrong-lift failures; retain face/kind/carrier/isolation checks; GMP/GMPXX compile-only. If the actual branch fails the independent oracle, stop and route to Review instead of changing product in CB142.
+
+**Frozen ordered work (one turn per gate; later steps conditional):**
+
+1. CB142 oracle-only compile → `M6-CP3-TB123-P13-CROSS-FACE-ORACLE-FOCUSED-EXEC` (immutable focused test).
+2. `M6-CP3-TB123-REV-P13-CROSS-FACE-ORACLE-OUTCOME` (independent Review, stop on discrepancy).
+3. `M6-CP3-TB124-P13-CORRECTED-FULL-GATE-AND-CENSUS` (immutable full gate + census only if prior Review approves).
+4. `M6-CP3-TB124-REV-P13-FULL-GATE-OUTCOME` (Review, O44 + trace evidence, no automatic P13-e closure).
+5. `M6-CP3-CB143-P13-EDGE-TERMINAL-EXACT-INVENTORY` (rejection-only exact A2a′ inventory; compile).
+6. `M6-CP3-TB125-P13-EDGE-TERMINAL-EXACT-INVENTORY-EXEC` (immutable focus/census).
+7. `M6-CP3-DEFN-P13-EDGE-TERMINAL-EQUIVALENCE-DECISION` (Review; classify duplicate vs distinct vs incompatible, assign one source owner).
+8. `M6-CP3-CB144-P13-EDGE-TERMINAL-OWNER-CORRECTION` (one decided case only, compile) → `M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FOCUSED-EXEC` → independent Review (no automatic production claim).
+
+**Carry:** D11=A, D12=A, D10 deferred, D6 pending; O42/O43/O44 open pending evidence; CP2 491/491; stable 66/17/49, debt1, deferred81; CP3/selector497 frozen and `chainRimSchedules=false`. Vase O41/65A–65D stays separate. Do not start CB143, terminal surgery, or P13-e.21 in CB142.
+
 ## TB122-REV independent adjudication (2026-11-16; next: `M6-CP3-CB142-P13-CROSS-FACE-BRANCH-ORACLE-CORRECTION`)
 
 **Current canonical review:** `M6-CP3-TB122-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-FULL-GATE-REV`. [Independent review](Architecture_M6_CP3_TB122_REV_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Independent_Review_20261116.md). TB122 gate 948 PASS / 1 RED; row949 is an invalid cross-face branch-number equality test oracle (`FieldAlignedCurveNetworkTests.cpp:12326`), not proof of producer failure. Destination outgoing branch still requires independent field/wedge proof. BunnyRandom separately reaches unsupported multiple source-edge terminal cuts on `(241,251)` in `EmbeddedGraphTopology.cpp:483-491`; exact cut ordering/duplication not yet known. Cylinder PASS, Vase RED; no direct output acceptance. **Next exactly one Code + Build:** `M6-CP3-CB142-P13-CROSS-FACE-BRANCH-ORACLE-CORRECTION` test-only correction, compile-only with negative-control falsifier and full source/frame invariants; F2 is separate later work. P13-e.21 outcome Review still deferred. Frozen CP2 491/491, stable 66/17/49 debt1, deferred81; no selector/CP3 promotion.
