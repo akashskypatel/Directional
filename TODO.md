@@ -1,3 +1,11 @@
+## CURRENT — TB122 full-gate MISMATCH; independent Review next (P13-e.20), 2026-11-16 UTC
+
+> **Next separate turn:** `M6-CP3-TB122-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-FULL-GATE-REV` (Review only). [TB122 report](Architecture_M6_CP3_TB122_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Follow_Full_Gate_Execution_Report_20261116.md). Frozen CB141 package `14213982150`; full gate [43848562969](https://github.com/akashskypatel/Directional/actions/runs/43848562969) executed 949 cases: **948 PASS / 1 RED** (row949 cross-face branch value assertion); census [43848642973](https://github.com/akashskypatel/Directional/actions/runs/43848642973) observed BunnyRandom surface-cut-graph terminal at `(241,251)`. No test or producer repair in TB122.
+
+- [x] **P13-e.20 / TB122 execution:** 949/949 cases executed; scoped **MISMATCH**; 1,906/1,906 and 9/9 checksums, inherited 947 rows unchanged.
+- [ ] **TB122 full-gate Review:** adjudicate row949 branch-frame contract and BunnyRandom new cut-graph terminal; preserve failures and independent oracles.
+- [ ] **P13-e.21 outcome Review:** not authorized while TB122 mismatch remains unreviewed; no production promotion.
+
 ## CURRENT — CB141 compile complete; TB122 next (P13-e.20), 2026-11-16 UTC
 
 > **Canonical next (separate turn):** `M6-CP3-TB122-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-FULL-GATE-EXEC` (artifact-only Test + Benchmark). [CB141 record](.agents/Directional/Architecture_M6_CP3_CB141_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Follow_Code_Build_Record_20261116.md): compile [43841809892](https://github.com/akashskypatel/Directional/actions/runs/43841809892) succeeded; exact source `2dedeb097a7d652fd50979c9edbf7acc11222a9c`; artifact `14213982150`, 28/28 hashes, GMP/GMPXX, `runtimeExecution=false`. Use the frozen RA-241 §4 gate and census; do not rebuild.

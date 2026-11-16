@@ -1,0 +1,107 @@
+# TB122 verbatim required receipt lines (all occurrences; original log order preserved)
+# Source: gate result artifact 14216937463 and census result artifact 14217871018.
+
+
+## census row 2 | 102 raw receipts
+FieldAlignedCurveNetwork.edgePortDeparture singularity=6 sourceVertex=49 startFace=(25,48,49) branch=1 carrier=(48,49) slideEnd=48
+FieldAlignedCurveNetwork.vertexTransitWithoutOutflow singularity=6 sourceVertex=49 trace=24 step=0 vertex=48 mode=EdgeTransit arrival=(25,48,49) arrivalBranch=1 carrier=(48,49) owner=(48,271,272) ownerBranch=3 w48=-126.553 w271=128.802 w272=-2.2485 onRadialRay=0 closedFan=1 sectors=7
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=0 face=(25,48,49) branch=1 next=25 previous=49 owner=0 inOwnSector=0 w25=-16.9786 w48=119.813 w49=-102.835
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=1 face=(48,49,109) branch=2 next=49 previous=109 owner=0 inOwnSector=0 w48=165.599 w49=-140.962 w109=-24.6364
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=2 face=(48,109,368) branch=1 next=109 previous=368 owner=0 inOwnSector=0 w48=102.26 w109=-211.593 w368=109.333
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=3 face=(48,271,368) branch=1 next=368 previous=271 owner=0 inOwnSector=0 w48=-107.528 w271=139.79 w368=-32.2624
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=4 face=(48,271,272) branch=3 next=271 previous=272 owner=1 inOwnSector=0 w48=-126.553 w271=128.802 w272=-2.2485
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=5 face=(48,86,272) branch=3 next=272 previous=86 owner=0 inOwnSector=0 w48=-8.8432 w86=-49.1058 w272=57.949
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=6 face=(25,48,86) branch=0 next=86 previous=25 owner=0 inOwnSector=0 w25=-51.2419 w48=35.8159 w86=15.426
+FieldAlignedCurveNetwork.vertexOutflowFollow singularity=6 sourceVertex=49 trace=24 step=0 vertex=48 outcome=Slide elected=(48,271,272) continuation=(48,271,272) branch=3 carrier=(48,271)
+FieldAlignedCurveNetwork.edgePortDeparture singularity=9 sourceVertex=102 startFace=(102,118,455) branch=0 carrier=(102,455) slideEnd=455
+FieldAlignedCurveNetwork.edgePortDeparture singularity=12 sourceVertex=138 startFace=(137,138,347) branch=2 carrier=(137,138) slideEnd=137
+FieldAlignedCurveNetwork.edgePortDeparture singularity=22 sourceVertex=256 startFace=(149,246,256) branch=2 carrier=(149,256) slideEnd=149
+FieldAlignedCurveNetwork.edgePortDeparture singularity=24 sourceVertex=280 startFace=(280,406,411) branch=0 carrier=(280,411) slideEnd=411
+FieldAlignedCurveNetwork.edgePortDeparture singularity=26 sourceVertex=296 startFace=(296,344,365) branch=3 carrier=(296,344) slideEnd=344
+FieldAlignedCurveNetwork.edgePortDeparture singularity=27 sourceVertex=302 startFace=(49,302,349) branch=1 carrier=(302,349) slideEnd=349
+FieldAlignedCurveNetwork.vertexTransitWithoutOutflow singularity=27 sourceVertex=302 trace=99 step=0 vertex=349 mode=EdgeTransit arrival=(49,302,349) arrivalBranch=1 carrier=(302,349) owner=(5,102,349) ownerBranch=2 w5=98.7874 w102=-0.71448 w349=-98.0729 onRadialRay=0 closedFan=1 sectors=7
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=0 face=(49,302,349) branch=1 next=49 previous=302 owner=0 inOwnSector=0 w49=-27.6618 w302=-88.9884 w349=116.65
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=1 face=(302,349,437) branch=1 next=302 previous=437 owner=0 inOwnSector=0 w302=-30.2828 w349=185.157 w437=-154.874
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=2 face=(349,437,455) branch=1 next=437 previous=455 owner=0 inOwnSector=0 w349=194.994 w437=-225.331 w455=30.3377
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=3 face=(102,349,455) branch=2 next=455 previous=102 owner=0 inOwnSector=0 w102=115.078 w349=76.7833 w455=-191.861
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=4 face=(5,102,349) branch=2 next=102 previous=5 owner=1 inOwnSector=0 w5=98.7874 w102=-0.71448 w349=-98.0729
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=5 face=(5,306,349) branch=2 next=5 previous=306 owner=0 inOwnSector=1 w5=95.146 w306=9.75805 w349=-104.904
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=6 face=(49,306,349) branch=1 next=306 previous=49 owner=0 inOwnSector=0 w49=-56.8986 w306=164.858 w349=-107.96
+FieldAlignedCurveNetwork.vertexOutflowFollow singularity=27 sourceVertex=302 trace=99 step=0 vertex=349 outcome=Cross elected=(5,102,349) continuation=(5,306,349) branch=2
+FieldAlignedCurveNetwork.edgePortDeparture singularity=28 sourceVertex=339 startFace=(338,339,378) branch=2 carrier=(338,339) slideEnd=338
+FieldAlignedCurveNetwork.edgePortDeparture singularity=30 sourceVertex=354 startFace=(261,296,354) branch=3 carrier=(261,354) slideEnd=261
+FieldAlignedCurveNetwork.edgePortDeparture singularity=32 sourceVertex=367 startFace=(183,366,367) branch=1 carrier=(366,367) slideEnd=366
+FieldAlignedCurveNetwork.edgePortDeparture singularity=32 sourceVertex=367 startFace=(162,170,367) branch=0 carrier=(170,367) slideEnd=170
+FieldAlignedCurveNetwork.edgePortDeparture singularity=36 sourceVertex=383 startFace=(180,326,383) branch=2 carrier=(180,383) slideEnd=180
+FieldAlignedCurveNetwork.edgePortDeparture singularity=39 sourceVertex=407 startFace=(390,406,407) branch=1 carrier=(406,407) slideEnd=406
+FieldAlignedCurveNetwork.edgePortDeparture singularity=39 sourceVertex=407 startFace=(293,294,407) branch=1 carrier=(294,407) slideEnd=294
+FieldAlignedCurveNetwork.edgePortDeparture singularity=40 sourceVertex=411 startFace=(411,497,498) branch=0 carrier=(411,498) slideEnd=498
+FieldAlignedCurveNetwork.edgePortDeparture singularity=42 sourceVertex=490 startFace=(370,459,490) branch=2 carrier=(370,490) slideEnd=370
+FieldAlignedCurveNetwork.edgePortDeparture singularity=6 sourceVertex=49 startFace=(25,48,49) branch=1 carrier=(48,49) slideEnd=48
+FieldAlignedCurveNetwork.vertexTransitWithoutOutflow singularity=6 sourceVertex=49 trace=24 step=0 vertex=48 mode=EdgeTransit arrival=(25,48,49) arrivalBranch=1 carrier=(48,49) owner=(48,271,272) ownerBranch=3 w48=-126.553 w271=128.802 w272=-2.2485 onRadialRay=0 closedFan=1 sectors=7
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=0 face=(25,48,49) branch=1 next=25 previous=49 owner=0 inOwnSector=0 w25=-16.9786 w48=119.813 w49=-102.835
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=1 face=(48,49,109) branch=2 next=49 previous=109 owner=0 inOwnSector=0 w48=165.599 w49=-140.962 w109=-24.6364
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=2 face=(48,109,368) branch=1 next=109 previous=368 owner=0 inOwnSector=0 w48=102.26 w109=-211.593 w368=109.333
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=3 face=(48,271,368) branch=1 next=368 previous=271 owner=0 inOwnSector=0 w48=-107.528 w271=139.79 w368=-32.2624
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=4 face=(48,271,272) branch=3 next=271 previous=272 owner=1 inOwnSector=0 w48=-126.553 w271=128.802 w272=-2.2485
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=5 face=(48,86,272) branch=3 next=272 previous=86 owner=0 inOwnSector=0 w48=-8.8432 w86=-49.1058 w272=57.949
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=6 face=(25,48,86) branch=0 next=86 previous=25 owner=0 inOwnSector=0 w25=-51.2419 w48=35.8159 w86=15.426
+FieldAlignedCurveNetwork.vertexOutflowFollow singularity=6 sourceVertex=49 trace=24 step=0 vertex=48 outcome=Slide elected=(48,271,272) continuation=(48,271,272) branch=3 carrier=(48,271)
+FieldAlignedCurveNetwork.edgePortDeparture singularity=9 sourceVertex=102 startFace=(102,118,455) branch=0 carrier=(102,455) slideEnd=455
+FieldAlignedCurveNetwork.edgePortDeparture singularity=12 sourceVertex=138 startFace=(137,138,347) branch=2 carrier=(137,138) slideEnd=137
+FieldAlignedCurveNetwork.edgePortDeparture singularity=22 sourceVertex=256 startFace=(149,246,256) branch=2 carrier=(149,256) slideEnd=149
+FieldAlignedCurveNetwork.edgePortDeparture singularity=24 sourceVertex=280 startFace=(280,406,411) branch=0 carrier=(280,411) slideEnd=411
+FieldAlignedCurveNetwork.edgePortDeparture singularity=26 sourceVertex=296 startFace=(296,344,365) branch=3 carrier=(296,344) slideEnd=344
+FieldAlignedCurveNetwork.edgePortDeparture singularity=27 sourceVertex=302 startFace=(49,302,349) branch=1 carrier=(302,349) slideEnd=349
+FieldAlignedCurveNetwork.vertexTransitWithoutOutflow singularity=27 sourceVertex=302 trace=99 step=0 vertex=349 mode=EdgeTransit arrival=(49,302,349) arrivalBranch=1 carrier=(302,349) owner=(5,102,349) ownerBranch=2 w5=98.7874 w102=-0.71448 w349=-98.0729 onRadialRay=0 closedFan=1 sectors=7
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=0 face=(49,302,349) branch=1 next=49 previous=302 owner=0 inOwnSector=0 w49=-27.6618 w302=-88.9884 w349=116.65
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=1 face=(302,349,437) branch=1 next=302 previous=437 owner=0 inOwnSector=0 w302=-30.2828 w349=185.157 w437=-154.874
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=2 face=(349,437,455) branch=1 next=437 previous=455 owner=0 inOwnSector=0 w349=194.994 w437=-225.331 w455=30.3377
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=3 face=(102,349,455) branch=2 next=455 previous=102 owner=0 inOwnSector=0 w102=115.078 w349=76.7833 w455=-191.861
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=4 face=(5,102,349) branch=2 next=102 previous=5 owner=1 inOwnSector=0 w5=98.7874 w102=-0.71448 w349=-98.0729
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=5 face=(5,306,349) branch=2 next=5 previous=306 owner=0 inOwnSector=1 w5=95.146 w306=9.75805 w349=-104.904
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=6 face=(49,306,349) branch=1 next=306 previous=49 owner=0 inOwnSector=0 w49=-56.8986 w306=164.858 w349=-107.96
+FieldAlignedCurveNetwork.vertexOutflowFollow singularity=27 sourceVertex=302 trace=99 step=0 vertex=349 outcome=Cross elected=(5,102,349) continuation=(5,306,349) branch=2
+FieldAlignedCurveNetwork.edgePortDeparture singularity=28 sourceVertex=339 startFace=(338,339,378) branch=2 carrier=(338,339) slideEnd=338
+FieldAlignedCurveNetwork.edgePortDeparture singularity=30 sourceVertex=354 startFace=(261,296,354) branch=3 carrier=(261,354) slideEnd=261
+FieldAlignedCurveNetwork.edgePortDeparture singularity=32 sourceVertex=367 startFace=(183,366,367) branch=1 carrier=(366,367) slideEnd=366
+FieldAlignedCurveNetwork.edgePortDeparture singularity=32 sourceVertex=367 startFace=(162,170,367) branch=0 carrier=(170,367) slideEnd=170
+FieldAlignedCurveNetwork.edgePortDeparture singularity=36 sourceVertex=383 startFace=(180,326,383) branch=2 carrier=(180,383) slideEnd=180
+FieldAlignedCurveNetwork.edgePortDeparture singularity=39 sourceVertex=407 startFace=(390,406,407) branch=1 carrier=(406,407) slideEnd=406
+FieldAlignedCurveNetwork.edgePortDeparture singularity=39 sourceVertex=407 startFace=(293,294,407) branch=1 carrier=(294,407) slideEnd=294
+FieldAlignedCurveNetwork.edgePortDeparture singularity=40 sourceVertex=411 startFace=(411,497,498) branch=0 carrier=(411,498) slideEnd=498
+FieldAlignedCurveNetwork.edgePortDeparture singularity=42 sourceVertex=490 startFace=(370,459,490) branch=2 carrier=(370,490) slideEnd=370
+FieldAlignedCurveNetwork.edgePortDeparture singularity=6 sourceVertex=49 startFace=(25,48,49) branch=1 carrier=(48,49) slideEnd=48
+FieldAlignedCurveNetwork.vertexTransitWithoutOutflow singularity=6 sourceVertex=49 trace=24 step=0 vertex=48 mode=EdgeTransit arrival=(25,48,49) arrivalBranch=1 carrier=(48,49) owner=(48,271,272) ownerBranch=3 w48=-126.553 w271=128.802 w272=-2.2485 onRadialRay=0 closedFan=1 sectors=7
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=0 face=(25,48,49) branch=1 next=25 previous=49 owner=0 inOwnSector=0 w25=-16.9786 w48=119.813 w49=-102.835
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=1 face=(48,49,109) branch=2 next=49 previous=109 owner=0 inOwnSector=0 w48=165.599 w49=-140.962 w109=-24.6364
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=2 face=(48,109,368) branch=1 next=109 previous=368 owner=0 inOwnSector=0 w48=102.26 w109=-211.593 w368=109.333
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=3 face=(48,271,368) branch=1 next=368 previous=271 owner=0 inOwnSector=0 w48=-107.528 w271=139.79 w368=-32.2624
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=4 face=(48,271,272) branch=3 next=271 previous=272 owner=1 inOwnSector=0 w48=-126.553 w271=128.802 w272=-2.2485
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=5 face=(48,86,272) branch=3 next=272 previous=86 owner=0 inOwnSector=0 w48=-8.8432 w86=-49.1058 w272=57.949
+FieldAlignedCurveNetwork.vertexTransitSector vertex=48 trace=24 step=0 index=6 face=(25,48,86) branch=0 next=86 previous=25 owner=0 inOwnSector=0 w25=-51.2419 w48=35.8159 w86=15.426
+FieldAlignedCurveNetwork.vertexOutflowFollow singularity=6 sourceVertex=49 trace=24 step=0 vertex=48 outcome=Slide elected=(48,271,272) continuation=(48,271,272) branch=3 carrier=(48,271)
+FieldAlignedCurveNetwork.edgePortDeparture singularity=9 sourceVertex=102 startFace=(102,118,455) branch=0 carrier=(102,455) slideEnd=455
+FieldAlignedCurveNetwork.edgePortDeparture singularity=12 sourceVertex=138 startFace=(137,138,347) branch=2 carrier=(137,138) slideEnd=137
+FieldAlignedCurveNetwork.edgePortDeparture singularity=22 sourceVertex=256 startFace=(149,246,256) branch=2 carrier=(149,256) slideEnd=149
+FieldAlignedCurveNetwork.edgePortDeparture singularity=24 sourceVertex=280 startFace=(280,406,411) branch=0 carrier=(280,411) slideEnd=411
+FieldAlignedCurveNetwork.edgePortDeparture singularity=26 sourceVertex=296 startFace=(296,344,365) branch=3 carrier=(296,344) slideEnd=344
+FieldAlignedCurveNetwork.edgePortDeparture singularity=27 sourceVertex=302 startFace=(49,302,349) branch=1 carrier=(302,349) slideEnd=349
+FieldAlignedCurveNetwork.vertexTransitWithoutOutflow singularity=27 sourceVertex=302 trace=99 step=0 vertex=349 mode=EdgeTransit arrival=(49,302,349) arrivalBranch=1 carrier=(302,349) owner=(5,102,349) ownerBranch=2 w5=98.7874 w102=-0.71448 w349=-98.0729 onRadialRay=0 closedFan=1 sectors=7
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=0 face=(49,302,349) branch=1 next=49 previous=302 owner=0 inOwnSector=0 w49=-27.6618 w302=-88.9884 w349=116.65
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=1 face=(302,349,437) branch=1 next=302 previous=437 owner=0 inOwnSector=0 w302=-30.2828 w349=185.157 w437=-154.874
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=2 face=(349,437,455) branch=1 next=437 previous=455 owner=0 inOwnSector=0 w349=194.994 w437=-225.331 w455=30.3377
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=3 face=(102,349,455) branch=2 next=455 previous=102 owner=0 inOwnSector=0 w102=115.078 w349=76.7833 w455=-191.861
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=4 face=(5,102,349) branch=2 next=102 previous=5 owner=1 inOwnSector=0 w5=98.7874 w102=-0.71448 w349=-98.0729
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=5 face=(5,306,349) branch=2 next=5 previous=306 owner=0 inOwnSector=1 w5=95.146 w306=9.75805 w349=-104.904
+FieldAlignedCurveNetwork.vertexTransitSector vertex=349 trace=99 step=0 index=6 face=(49,306,349) branch=1 next=306 previous=49 owner=0 inOwnSector=0 w49=-56.8986 w306=164.858 w349=-107.96
+FieldAlignedCurveNetwork.vertexOutflowFollow singularity=27 sourceVertex=302 trace=99 step=0 vertex=349 outcome=Cross elected=(5,102,349) continuation=(5,306,349) branch=2
+FieldAlignedCurveNetwork.edgePortDeparture singularity=28 sourceVertex=339 startFace=(338,339,378) branch=2 carrier=(338,339) slideEnd=338
+FieldAlignedCurveNetwork.edgePortDeparture singularity=30 sourceVertex=354 startFace=(261,296,354) branch=3 carrier=(261,354) slideEnd=261
+FieldAlignedCurveNetwork.edgePortDeparture singularity=32 sourceVertex=367 startFace=(183,366,367) branch=1 carrier=(366,367) slideEnd=366
+FieldAlignedCurveNetwork.edgePortDeparture singularity=32 sourceVertex=367 startFace=(162,170,367) branch=0 carrier=(170,367) slideEnd=170
+FieldAlignedCurveNetwork.edgePortDeparture singularity=36 sourceVertex=383 startFace=(180,326,383) branch=2 carrier=(180,383) slideEnd=180
+FieldAlignedCurveNetwork.edgePortDeparture singularity=39 sourceVertex=407 startFace=(390,406,407) branch=1 carrier=(406,407) slideEnd=406
+FieldAlignedCurveNetwork.edgePortDeparture singularity=39 sourceVertex=407 startFace=(293,294,407) branch=1 carrier=(294,407) slideEnd=294
+FieldAlignedCurveNetwork.edgePortDeparture singularity=40 sourceVertex=411 startFace=(411,497,498) branch=0 carrier=(411,498) slideEnd=498
+FieldAlignedCurveNetwork.edgePortDeparture singularity=42 sourceVertex=490 startFace=(370,459,490) branch=2 carrier=(370,490) slideEnd=370
