@@ -1,16 +1,16 @@
-## CURRENT — RA-239: BunnyRandom DegenerateEntry owned by the A2a vertex transit; diagnostic CB139 next (P13-e.13), 2026-11-16 UTC
+## CURRENT — CB139 diagnostic compiled; TB120 artifact-only gate next (P13-e.14), 2026-11-16 UTC
 
-> **Canonical next:** `M6-CP3-CB139-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT` (implementation agent, compile only).
-> - [Exact patch](.agents/Directional/Architecture_M6_CP3_CB139_P13_Vertex_Transit_Outflow_Receipt_Exact.diff) `bd0d7afeaf7c0a3e196907fcba6b8230ec7955d269b75cfb833b6ea15bd05eb7`: 175 lines, 3-line context; 2 files, `+131 −1`.
-> - Base: CB138 source `2e551bdd9…` plus documentation. Authority: [RA-239 §4](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Obtuse_Edge_Port_Outcome_Review_20261116.md).
+> **Canonical next:** `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC` (artifact-only Test + Benchmark).
+> - CB139 [compiled record](.agents/Directional/Architecture_M6_CP3_CB139_P13_Vertex_Transit_Outflow_Receipt_Code_Build_Record_20261116.md): source `c520674030c76be455111d7c41aae7d5f53ce900`, package `14199183882`, 28/28 checks, no runtime.
+> - TB120 authority: [RA-239 §5](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Obtuse_Edge_Port_Outcome_Review_20261116.md).
 
 - [x] **P13-e.12 / RA-239** completed `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME`.
   - TB119 accepted as a scoped MATCH. Gate and census artifacts were re-downloaded and their hashes verified; row 947 has the two predicted edge ports.
   - `BranchContinuationDegenerateEntry` (exit time 0) is reachable only when a step enters at a vertex after `resolve_field_vertex_transit` elected an owner whose own field does not leave the vertex. Interior edge entries and port first steps cannot reach it.
   - Amendment 22 elects the owner by geometry alone. H1: `EdgeTransit` arrivals seed with the face field, not the carrier ray, which AX1 requires. H2: the geometric owner need not flow out (design gap, would be a user decision).
   - The log names neither trace nor vertex. CB139 prints the full star wherever an owner has no outflow (R1) and the terminal locus (R2). It does not change any decision.
-- [ ] **P13-e.13 / CB139 (NEXT)** — compile only; mismatch → `M6-CP3-PLAN-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-STOP`; infrastructure → `M6-CP3-CB139A-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-ORCH`.
-- [ ] **P13-e.14 / TB120** — TB119 manifest unchanged (`3aac432b…`, 947 rows, membership 1,028) plus the census. Record the locus and every R1 and sector line.
+- [x] **P13-e.13 / CB139 COMPLETE** — [record](.agents/Directional/Architecture_M6_CP3_CB139_P13_Vertex_Transit_Outflow_Receipt_Code_Build_Record_20261116.md); exact patch and eight GMP/GMPXX targets compiled; runtime not executed.
+- [ ] **P13-e.14 / TB120 (NEXT)** — TB119 manifest unchanged (`3aac432b…`, 947 rows, membership 1,028) plus the census. Record the locus and every R1 and sector line.
 - [ ] **P13-e.15 / Review only** — `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME`: H1 → AX1 conformance CB (after an EdgeTransit census of accepted rows); H2 → user decision on Amendment 22.
 - [ ] **O43:** ordinary grazing decides its slide with the endpoint-rate proxy. Measure per gate row before switching it.
 - [ ] **O42:** contact classification ignores the slide part of grazing segments and edge-port departures.
@@ -22,8 +22,8 @@
 |---|---|---|
 | P13-e.11 COMPLETE (scoped MATCH) | `M6-CP3-TB119-P13-OBTUSE-EDGE-PORT-SLIDE-FULL-GATE-EXEC` | implementation agent (artifact only) |
 | P13-e.12 COMPLETE | `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME` (RA-239) | Review |
-| **P13-e.13 NEXT** | `M6-CP3-CB139-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT`. Mismatch → `M6-CP3-PLAN-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-STOP`; infrastructure → `M6-CP3-CB139A-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-ORCH` | implementation agent (compile only) |
-| P13-e.14 | `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB120A-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-ORCH` | implementation agent (artifact only) |
+| P13-e.13 COMPLETE | `M6-CP3-CB139-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT`. Mismatch → `M6-CP3-PLAN-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-STOP`; infrastructure → `M6-CP3-CB139A-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-ORCH` | implementation agent (compile only) |
+| **P13-e.14 NEXT** | `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB120A-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-ORCH` | implementation agent (artifact only) |
 | P13-e.15 | `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME` | **Review agent only** |
 | then | 65A → 65D (O41, activation in 65C); O31/O32 | Review, then implementation |
 

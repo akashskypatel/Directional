@@ -1,3 +1,7 @@
+## 2026-11-16 UTC — CB139 vertex transit outflow receipt compiled (P13-e.13)
+
+- [CB139 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB139_P13_Vertex_Transit_Outflow_Receipt_Code_Build_Record_20261116.md): RA-239 exact diagnostic patch `bd0d7afe…` (two files, +131/−1) at source `c520674030c76be455111d7c41aae7d5f53ce900`; [compile 43808742663](https://github.com/akashskypatel/Directional/actions/runs/43808742663) SUCCESS, immutable artifact `14199183882`, ZIP SHA-256 `daac64075be07c96f0654a933cb0be919f6ce8046c67104786c1caaa1760d120`, 28/28 validated, eight GMP/GMPXX targets, `runtimeExecution=false`. No tests, census, or CP3/selector497 promotion. Next separate turn: `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC` (947-case gate and census). Carry O42/O43, D11=A, D10 defer, CP2 491/491, stable 66/17/49, debt 1, deferred 81.
+
 ## 2026-11-16 UTC — RA-239: BunnyRandom's DegenerateEntry owned by the A2a vertex transit; diagnostic CB139 frozen (P13-e.12)
 
 - [RA-239](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Obtuse_Edge_Port_Outcome_Review_20261116.md): TB119 accepted as scoped MATCH (947/947; gate and census artifacts re-verified). `BranchContinuationDegenerateEntry` is reachable only when a step enters at a vertex after `resolve_field_vertex_transit` elected an owner whose own field does not leave the vertex (Amendment 22 elects by geometry alone). Open: H1, `EdgeTransit` arrivals seed with the face field instead of the carrier ray that AX1 requires; H2, a gap in the design.
