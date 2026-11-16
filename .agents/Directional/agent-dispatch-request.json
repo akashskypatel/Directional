@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb120-authority-correction-20261116-a",
+  "request_id": "m6-cp3-cb140-edge-seed-apply-20261116-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb120-authority-correction",
-  "file_id": "1F26tgAPump0lmiKVvoBz7RJaXxpHRf5g",
-  "patch_sha256": "26f2281a153126c5cd7a214de82009a7301fd4555f6a306c74e6d2187e9bd5e0",
-  "base_sha": "76bd4672d821cac66c1a58244a9e5af241bfffee",
+  "mailbox_key": "m6-cp3-cb140-edge-seed-apply",
+  "file_id": "1OOD-JZoy-6wJ0jqM-SYsTb4fQ4UHskc0",
+  "patch_sha256": "4f6fc15fa52fe3afe75430fe5ab9681744cf2cce304645ff948e4ec03bcbca57",
+  "base_sha": "e945c08b3e42383bd0cb60b1e3e4ce991cb69f91",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): correct stale TB120 handoff headings",
+  "commit_message": "feat(surface-cells): report edge transit seed conformance",
   "retention_days": 14
 }
