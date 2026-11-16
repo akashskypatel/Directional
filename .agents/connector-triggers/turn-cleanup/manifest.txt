@@ -1,2 +1,0 @@
-# CB138 turn cleanup after verified docs and compile
-.agents/connector-triggers/source-snapshot/m6-cp3-cb138-20261116-0305.txt
