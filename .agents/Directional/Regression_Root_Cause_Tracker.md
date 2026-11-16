@@ -1,3 +1,7 @@
+## 2026-11-16 — TB120 vertex transit outflow diagnostic (scoped MATCH)
+
+[TB120 evidence](Architecture_M6_CP3_TB120_P13_Vertex_Transit_Outflow_Receipt_Full_Gate_Execution_Report_20261116.md): CB139 package `14199183882`, full gate 14199814782 (947 cases; 0 ledger differences), census 14201142306 (3 cases; 2 ledger differences). Outflow R1 lines gate/census: 0/3. The field-aligned network terminal remains a P13-e non-stable candidate pending Review-only `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME`. Do not promote it to a new accepted regression without independent review. Stable 66/17/49, debt1, deferred81 unchanged.
+
 ## 2026-11-16 — RA-239 owner stage of the BunnyRandom network terminal (P13-e candidate, cause not yet established)
 
 [RA-239](Architecture_M6_CP3_DEFN_P13_Obtuse_Edge_Port_Outcome_Review_20261116.md): TB119's `BranchContinuationDegenerateEntry` is reachable only through a vertex entry after `resolve_field_vertex_transit`, whose Amendment 22 owner is elected by geometry alone and whose own field may not leave the vertex. Interior edge entries (Outflow goes to grazing; exits are dyadic interior) and port first steps (half-open sector) cannot reach it. Hypotheses: H1, the `EdgeTransit` seed is the arrival face's negated field rather than the carrier ray AX1 requires; H2, a gap in Amendment 22. The trace and vertex are not logged, so diagnostic CB139 + TB120 are frozen. Still a **non-stable P13-e candidate**; stable counts **66/17/49**, debt **1**, deferred **81** unchanged.

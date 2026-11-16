@@ -8,7 +8,9 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency (current):** **CB139 COMPLETE (P13-e.13), compiled and not run.** [Code + Build record](Architecture_M6_CP3_CB139_P13_Vertex_Transit_Outflow_Receipt_Code_Build_Record_20261116.md). [RA-239 plan](Architecture_M6_CP3_DEFN_P13_Obtuse_Edge_Port_Outcome_Review_20261116.md).
+**Currency (2026-11-16, TB120):** Immutable CB139 artifact-only gate and census recorded as **scoped MATCH**. [TB120 report](Architecture_M6_CP3_TB120_P13_Vertex_Transit_Outflow_Receipt_Full_Gate_Execution_Report_20261116.md), gate [43810896818](https://github.com/akashskypatel/Directional/actions/runs/43810896818), census [43810956948](https://github.com/akashskypatel/Directional/actions/runs/43810956948); new vertex-transit R1 and terminal locus evidence belongs to separate Review `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME`. CP2 491/491, stable 66/17/49, debt1, deferred81 and CP3/selector497 unpromoted.
+
+**Currency (previous, CB139):** **CB139 COMPLETE (P13-e.13), compiled and not run.** [Code + Build record](Architecture_M6_CP3_CB139_P13_Vertex_Transit_Outflow_Receipt_Code_Build_Record_20261116.md). [RA-239 plan](Architecture_M6_CP3_DEFN_P13_Obtuse_Edge_Port_Outcome_Review_20261116.md).
 - TB119 (scoped MATCH, 947/947) completed BunnyRandom's atlas with 16 edge ports; its first terminal is now `BranchContinuationDegenerateEntry` in the field-aligned network.
 - RA-239: that error is reachable only after a vertex transit (Amendment 22, geometric owner) elects a face whose own field does not leave the vertex. Two hypotheses are open: H1, `EdgeTransit` arrivals seed with the face field rather than the carrier ray (AX1); H2, a design gap.
 - **NEXT:** `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC` (artifact-only, RA-239 §5) from compiled CB139 source `c520674030c76be455111d7c41aae7d5f53ce900` and package `14199183882`; then Review-only `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME`.

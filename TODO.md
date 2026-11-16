@@ -1,3 +1,9 @@
+## Current turn: TB120 — scoped MATCH (2026-11-16 UTC)
+
+- [x] Execute the immutable 947-case CB139 gate and three-case production census, no rebuild. See [TB120 report](.agents/Directional/Architecture_M6_CP3_TB120_P13_Vertex_Transit_Outflow_Receipt_Full_Gate_Execution_Report_20261116.md); gate 14199814782, census 14201142306.
+- [ ] **Next separate turn:** `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME`. Review H1 carrier-ray seed against H2 geometric owner with outflow receipts. Do not start that turn inside TB120.
+- [ ] Retain D10 defer, O42/O43, accepted CP2 491/491, stable 66/17/49, debt 1, deferred 81 and production switch off.
+
 ## CURRENT — CB139 diagnostic compiled; TB120 artifact-only gate next (P13-e.14), 2026-11-16 UTC
 
 > **Canonical next:** `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC` (artifact-only Test + Benchmark).
