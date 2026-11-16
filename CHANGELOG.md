@@ -1,3 +1,15 @@
+## 2026-11-16 UTC — RA-237: edge-supported singularity port and departure frozen (P13-e.6)
+
+- [RA-237](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Edge_Sliding_Separatrix_Trace_Review_20261116.md) (Review only, runtime-free).
+  - **Finding:** the radial-edge straddle is exactly the precondition of A2a's existing grazing transit.
+  - **A1 change:** A1 attaches a straddle whose slide leaves the vertex as an edge-supported port, whose `firstOutgoingCarrier` is the radial edge.
+  - **A2a change:** the new `resolve_field_edge_port_departure` exits at the vertex on that carrier, and the existing grazing path slides it to the far vertex.
+  - **Inert elsewhere:** TB117 found no straddle anywhere else in the gate or census.
+- **Frozen:**
+  - [CB137 exact patch](.agents/Directional/Architecture_M6_CP3_CB137_P13_Edge_Supported_Port_Trace_Exact.diff) `0d3f2374…` (470 lines; 5 files `+311 −8`), with test `FieldTransportAtlas.PublishesEdgeSupportedPortForRadialStraddle`.
+  - TB118 manifest (TB117 + row 946, `5fee837d…`).
+- No source changed in the repository. O42 opened. **Next:** `M6-CP3-CB137-P13-EDGE-SUPPORTED-PORT-TRACE` (compile only).
+
 ## 2026-11-15 UTC — TB117 edge-port straddle census full gate MATCH (P13-e.5)
 
 - [TB117 report](.agents/Directional/Architecture_M6_CP3_TB117_P13_Edge_Port_Straddle_Census_Full_Gate_Execution_Report_20261115.md): immutable CB136 package `14184697141` / semantic source `1d5c9514b8ec479d90e059107dd627656e37d15f`, no rebuild. [Gate 43774649075](https://github.com/akashskypatel/Directional/actions/runs/43774649075) **945/945 PASS**, 1,026 memberships, 1,898/1,898 hashes; [census 43774679374](https://github.com/akashskypatel/Directional/actions/runs/43774679374) Cylinder PASS, BunnyRandom/Vase expected RED, 9/9 hashes. All TB116 receipts and 216 census direction records unchanged. All **470** new edge-port records have `identity=1`; BunnyRandom vertex 49 has exactly one radial-edge straddle `(0,1,48-49)` and `classes=4 edgePorts=1 expectedClasses=5`.

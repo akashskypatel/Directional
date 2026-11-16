@@ -8,7 +8,13 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency (current):** **RA-236 COMPLETE (P13-e.3).** [Record](Architecture_M6_CP3_DEFN_P13_Singularity_Port_Owner_Review_20261112.md). An unfolding model of BunnyRandom vertex 49's fan, using TB116's directions, confirms index −1 and small jumps. One separatrix straddles radial edge (49,48), so the owner is A1's sector rule and the lift is cleared. The user chose **D11 = A, edge-sliding ports**. **NEXT:** `M6-CP3-CB136-P13-EDGE-PORT-STRADDLE-CENSUS` (compile only), then TB117, then the Review-only `M6-CP3-DEFN-P13-EDGE-SLIDING-SEPARATRIX-TRACE`. D10 = defer the switch (RA-234). CP2 491/491 accepted; CP3/selector497 unpromoted.
+**Currency (current):** **RA-237 COMPLETE (P13-e.6).** [Record](Architecture_M6_CP3_DEFN_P13_Edge_Sliding_Separatrix_Trace_Review_20261116.md).
+- TB117 proved `classes + edgePorts = 4 − index` on every singularity (470/470).
+- RA-237 found that the straddle is exactly the precondition of A2a's existing grazing transit. So A1 attaches a slide-away straddle as an edge-supported port (radial `firstOutgoingCarrier`), and A2a departs at the vertex on that carrier and slides by the existing path.
+- **NEXT:** `M6-CP3-CB137-P13-EDGE-SUPPORTED-PORT-TRACE` (compile only, exact patch `0d3f2374…`), then TB118, then the Review-only `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME`.
+- D11 = A; D10 = defer the switch (RA-234). CP2 491/491 accepted; CP3/selector497 unpromoted.
+
+**Currency (previous):** **RA-236 COMPLETE (P13-e.3).** [Record](Architecture_M6_CP3_DEFN_P13_Singularity_Port_Owner_Review_20261112.md). One separatrix of BunnyRandom vertex 49 straddles radial edge (49,48); the owner is A1's sector rule; the user chose **D11 = A, edge-sliding ports**.
 **2026-11-11 TB100/TB100B adjudication:** prior [audit](Architecture_M6_CP3_TB100_REV_Audit_20261111.md) identified a narrow test-oracle defect. The corrected 938/938 artifact-only gate passed; [independent TB100B Review](Architecture_M6_CP3_TB100B_REV_P13_A3_Corrected_Corner_Gate_Independent_Review_20261111.md) rechecked the source/atlas barriers and inherited controls. The source-boundary product remains unwired. O39 exact decision remains required before production O36; only CB120A stop-node helper may follow.
 - **Before it:** P13-m, fixed by [RA-202](M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_tb76_rev_p13_census_path_cost_probe_adjudication_20261104md "moved: Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md"). The fix is Amendment 34 and exact CB85–CB88, removing three memory-bound census-path scans plus two Amendment 33 sites.
 - **The block.** The ChatGPT Review saw a conflict between "runtime-free" and a probe re-run. The fault is RA-202.9's route: it named no track and asked one platform to explain a split between two. ~~Review scratch probes are a duty (RA-166.6 F6, RA-188.1)~~ **Superseded by RA-214 §1:** `REVIEW_TURN_POLICY.md` §4.3 makes Reviews runtime-free, and no policy authorizes Review probes. Runtime belongs to TB.
@@ -136,7 +142,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** the blockers of real outputs. First P13-e: BunnyRandom fails at the field transport atlas because a separatrix straddles a radial edge. CB136 → TB117 prove `classes + edgePorts = 4 − index` on every singularity. Then the Review-only P13-e.6 defines the edge-sliding port and trace (D11 = A). Then the Vase path, 65A → 65B → 65C → 65D, where 65C also carries O41 and switch activation, with O31/O32 in parallel. The chain switch stays off.
+**Current priority:** the blockers of real outputs. First P13-e: BunnyRandom fails at the field transport atlas because a separatrix straddles a radial edge. TB117 proved the identity, and RA-237 froze the edge-supported port and its departure (CB137 → TB118). TB118 records BunnyRandom's next blocker, and the Review-only P13-e.9 names its owner. Then the Vase path, 65A → 65B → 65C → 65D, where 65C also carries O41 and switch activation, with O31/O32 in parallel. The chain switch stays off.
  — priority, not a task ledger
 
 - **Historical: TB100 hard-rail corner test oracle** — RA-224 §4 eight-only expectation contradicts C1 for non-traversable hard edges. This oracle was corrected in TB100B and the CB120A/B/C slices; TB101C independent Review is complete. The next Review is fan/sheet identity, not another CB120 execution. The atlas and field-product behavior are not proved defective.

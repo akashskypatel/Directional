@@ -637,6 +637,13 @@ This document records **reusable failure-derived engineering lessons**, not an e
   and let the report-only detector check the identity on every run before any wiring. An
   unfolding model fed with the receipt's directions and the repository mesh located the
   straddle exactly.
+- **Before adding a mechanism, check whether the consumer already handles the same configuration
+  elsewhere (RA-237).** The straddle predicate turned out to be exactly the precondition of A2a's
+  grazing transit. So the edge port needs only a zero-length departure into the existing slide,
+  not a new trace mode. Where the accepted rule depends on vertex numbering (the slide direction
+  reads `carrier.second()`), make the producer's condition strong enough that either numbering
+  gives the same answer. Prove a synthetic fixture's predictions with a model before freezing a
+  test that cannot be run in the Review.
 - **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
   still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).
 - **A TB runs the full current gate even when its CB touches no gate binary.** A CLI- or GUI-only CB
