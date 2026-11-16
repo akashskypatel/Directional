@@ -1,10 +1,12 @@
 # Directional — Project Orientation
 
-> **Superseded Review currency (2026-11-11):** [Adversarial TB101C review](Architecture_M6_CP3_TB101C_Audit_Adversarial_Review_20261111.md) corrected producer/consumer fan identity and source-exact branch semantics. Scoped 940/940 remains valid, direct BunnyRandom/Vase RED. Next only `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION`. CP3/selector497 remain unpromoted.
+> **Historical superseded Review currency (2026-11-11):** [Adversarial TB101C review](Architecture_M6_CP3_TB101C_Audit_Adversarial_Review_20261111.md) corrected producer/consumer fan identity and source-exact branch semantics. Scoped 940/940 remains valid, direct BunnyRandom/Vase RED. Next only `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION`. CP3/selector497 remain unpromoted.
+
+**Current currency (2026-11-16):** Independent TB122 review `M6-CP3-TB122-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-FULL-GATE-REV`: gate 948/949, cross-face branch equality test oracle invalid, BunnyRandom cut-graph multi-terminal edge `(241,251)` unsupported. No new accepted output. Exactly one next Code + Build: `M6-CP3-CB142-P13-CROSS-FACE-BRANCH-ORACLE-CORRECTION` (test-only correction, compile-only). [Review record](Architecture_M6_CP3_TB122_REV_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Independent_Review_20261116.md). CP2 491/491; stable 66/17/49; debt1; deferred81; CP3/selector497 frozen.
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency (2026-11-16, RA-241):** **RA-241 COMPLETE (P13-e.18).** [Record](Architecture_M6_CP3_DEFN_P13_Edge_Transit_Seed_Conformance_Outcome_Review_20261116.md). TB121 accepted: the AX1 carrier seed moves no gate owner and moves BunnyRandom vertex 137 to an outflowing owner. The user answered **D12 = A** (follow the field). CB141 seeds `EdgeTransit` elections on the carrier (O44) and follows an owner without outflow: it crosses to the first outflowing sector, or slides along a mutual radial edge by the edge-port departure. **NEXT:** `M6-CP3-CB141-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW` (compile only), then TB122, then Review-only `M6-CP3-DEFN-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-OUTCOME`.
+**Currency (previous, RA-241):** **RA-241 COMPLETE (P13-e.18).** [Record](Architecture_M6_CP3_DEFN_P13_Edge_Transit_Seed_Conformance_Outcome_Review_20261116.md). TB121 accepted: the AX1 carrier seed moves no gate owner and moves BunnyRandom vertex 137 to an outflowing owner. The user answered **D12 = A** (follow the field). CB141 seeds `EdgeTransit` elections on the carrier (O44) and follows an owner without outflow: it crosses to the first outflowing sector, or slides along a mutual radial edge by the edge-port departure. **NEXT:** `M6-CP3-CB141-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW` (compile only), then TB122, then Review-only `M6-CP3-DEFN-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-OUTCOME`.
 
 **Currency (previous, RA-240):** **RA-240 COMPLETE (P13-e.15).** [Record](Architecture_M6_CP3_DEFN_P13_Vertex_Transit_Outflow_Outcome_Review_20261116.md). TB120 accepted. Of BunnyRandom's three vertex stars without outflow, the AX1 carrier-ray seed (O44) fixes only the terminal one, vertex 137. At vertices 349 and 48, Amendment 22's geometric owner has no outflow under any seed, and at 48 no sector flows out. That is user decision **D12**, pending. **NEXT:** `M6-CP3-CB140-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT` (compile only), then TB121, then Review-only `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME`.
 
@@ -72,6 +74,8 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
+**Current M6-CP3 Review (2026-11-16):** TB122 is 948/949; row949 has a wrong cross-face branch-number equality oracle. BunnyRandom advanced to a separate unsupported multi-terminal cut-graph edge; no new production acceptance. Next `M6-CP3-CB142-P13-CROSS-FACE-BRANCH-ORACLE-CORRECTION` only. CP2 accepted 491/491; stable 66/17/49, debt1, deferred81. No selector promotion or checkpoint closure.
+
 **Historical technical Review audit (2026-11-11):** [TB101C audit](Architecture_M6_CP3_TB101C_REV_Audit_Code_Architecture_20261111.md) preserves 940/940 scoped test acceptance. The vertex-only stop helper can cross chart fans; the corner and A4 branch writers duplicate approximate decisions. No derived corner changed a live chain in the four census cases. Fan/sheet identity and exact single-writer branch semantics are now defined, not implemented or runtime accepted. At that historical checkpoint, the planned next turn was `M6-CP3-CB121A-P13-A3-FAN-STOP-IDENTITY-RESOLUTION`. CP2 491/491, stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted.
 
 **M0–M5 are complete/closed; M6 is active at CP3.** Closure means the checkpoint's frozen criteria passed, **not** that representative output is production-ready.
@@ -94,6 +98,8 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
 
 ## 4. Fixtures and witnesses
+
+**Current TB122 witness:** Cylinder PASS; BunnyRandom RED at mandatory edge `(241,251)` (`MandatoryEdgeTerminalOrderUnresolved`, at least two terminal cuts without proven distinct parameters); Vase RED at completion. None is direct production acceptance.
 
 **A3 exactness and the API display witness:** A3 branch topology (face gauge, barycentric derivatives, port order) is exact on the stored doubles (RA-180/RA-181); FMA and FMA-free builds agree byte for byte. Row 935 (`apicensus:19`) is gated with a +½-singularity vertex stop (RA-182). Exact directions widen A4 trace parameters (O15c; for example sphere_prescribed 1,531 of 4,096 bits, fail-closed), and P13 measures them.
 
@@ -143,6 +149,8 @@ Fixture generation, provenance, licenses and checksums are recorded in [generate
 The separation is deliberate: accepted selector continuity and frozen invariants are not negotiable fixes for a RED; diagnostics are not acceptance; representative production claims require production-path witnesses. See the [review policy](REVIEW_TURN_POLICY.md), [testing strategy](../../tests/TESTING_STRATEGY.md) and [workflow policy](GitHub_Workflow_Policy.md) for actual requirements, repository operation, artifact transport and mailbox behavior.
 
 ## 7. Open problems
+
+**Current highest priority (TB122-REV):** fix row949 Cross test oracle with an independent destination-frame field-sector check in `M6-CP3-CB142-P13-CROSS-FACE-BRANCH-ORACLE-CORRECTION`; keep F2 multi-terminal exact cut-graph construction as separate later work. D12=A is decided, not pending. O44 remains open until the corrected gate and production review. This paragraph supersedes the old priorities below where they describe earlier stages as immediate.
 
 **Current priority:** the blockers of real outputs. First P13-e: BunnyRandom fails at the field transport atlas because a separatrix straddles a radial edge. TB117 proved the identity, and RA-237 froze the edge-supported port and its departure (CB137 → TB118). RA-238 fixed the obtuse-face case at vertex 367 (CB138 → TB119). TB119 recorded BunnyRandom's next blocker (`BranchContinuationDegenerateEntry`), and RA-239 named its owner stage, the A2a vertex transit. CB139 and TB120 measured three vertex-transit outflow failures, including the terminal at vertex 137. RA-240 found the AX1 seed nonconformance (O44) at vertex 137 and an Amendment 22 outflow gap at vertices 349 and 48 (user decision D12, pending). CB140 → TB121 showed that the AX1 seed moves only that one owner. The user then answered D12 = A (RA-241), and CB141 → TB122 land the carrier seed and the outflow follow. Then the Vase path, 65A → 65B → 65C → 65D, where 65C also carries O41 and switch activation, with O31/O32 in parallel. The chain switch stays off.
  — priority, not a task ledger
@@ -221,6 +229,8 @@ macOS O16 stays separate.
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
+
+- **Cross-face identifiers need transport (TB122-REV):** two branch numbers in distinct canonical face frames are not directly comparable, even when raw face matching is zero. Build an independent destination field/wedge oracle instead of comparing face-local branch tags. Also distinguish unsupported multiple cuts from demonstrated incompatible geometry. [Review](Architecture_M6_CP3_TB122_REV_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Independent_Review_20261116.md).
 
 - **Full-set oracle exceeds a scoped equivalence (TB100-REV):** a pass-through-rim equality does not prohibit conservative corners at hard-feature barriers. Independent test expectations must include every C1 admissible cause and derive barrier endpoints from source topology, not copy the product. See [M6-CP3-TB100-P13-A3-BOUNDARY-FIELD-CORNERS-FULL-GATE-REV](Architecture_M6_CP3_TB100_REV_P13_A3_Boundary_Field_Corner_Oracle_Adjudication_20261111.md).
 

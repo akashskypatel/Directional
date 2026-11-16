@@ -1,3 +1,7 @@
+## 2026-11-16 UTC — TB122 independent review: cross-frame test oracle, separate terminal-cut limit
+
+- [Review](.agents/Directional/Architecture_M6_CP3_TB122_REV_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Independent_Review_20261116.md) independently classified row949's numeric cross-face branch equality assertion as invalid; its failure remains RED until corrected and retested. BunnyRandom separately reaches unsupported multiple terminal cuts on mandatory edge `(241,251)`; exact distinctness is unproved. Frozen single successor `M6-CP3-CB142-P13-CROSS-FACE-BRANCH-ORACLE-CORRECTION` (test-only, compile-only); no product/selector changes or production acceptance. CP2 491/491; stable 66/17/49 debt1 deferred81.
+
 ## 2026-11-16 UTC — TB122 vertex transit carrier seed/outflow full-gate MISMATCH (P13-e.20)
 
 - [TB122 report](Architecture_M6_CP3_TB122_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Follow_Full_Gate_Execution_Report_20261116.md): immutable CB141 gate [43848562969](https://github.com/akashskypatel/Directional/actions/runs/43848562969) executed 949 cases, **948 PASS, one new test RED**, membership 1,030. Census [43848642973](https://github.com/akashskypatel/Directional/actions/runs/43848642973) registered PASS/RED/RED; BunnyRandom reaches new surface-cut-graph terminal `(241,251)`. No rebuild or source/test/selector changes. Review-only successor `M6-CP3-TB122-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-FULL-GATE-REV`. Stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted.

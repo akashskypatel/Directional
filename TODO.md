@@ -1,3 +1,12 @@
+## CURRENT — TB122 independent Review: test-oracle defect; one bounded Code + Build next (2026-11-16 UTC)
+
+> **Next turn only:** `M6-CP3-CB142-P13-CROSS-FACE-BRANCH-ORACLE-CORRECTION` (test-only oracle correction + compile-only). [Independent review](.agents/Directional/Architecture_M6_CP3_TB122_REV_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Independent_Review_20261116.md). TB122 948/949; row949 mistakenly compares face-local Cross branches. BunnyRandom separately has unsupported multiple terminal cuts on source edge `(241,251)`. P13-e.21 must not start; CP2 491/491 and selector497 frozen.
+
+- [x] **TB122-REV:** independently classify row949 as wrong cross-frame test equality, and cut graph as multi-terminal unsupported path (no ordering proof).
+- [ ] **CB142:** independently derive destination-frame branch from field/wedge and add wrong-branch negative control; correct test only. Compile with required GMP/GMPXX; do not execute tests or benchmarks.
+- [ ] **Later separate item:** inventory exact cuts and derive multi-cut mandatory edge subdivision without positional merging.
+- [ ] **Separate TB gate then P13-e.21:** verify corrected immutable full gate and product evidence before promotion.
+
 ## CURRENT — TB122 full-gate MISMATCH; independent Review next (P13-e.20), 2026-11-16 UTC
 
 > **Next separate turn:** `M6-CP3-TB122-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-FULL-GATE-REV` (Review only). [TB122 report](Architecture_M6_CP3_TB122_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Follow_Full_Gate_Execution_Report_20261116.md). Frozen CB141 package `14213982150`; full gate [43848562969](https://github.com/akashskypatel/Directional/actions/runs/43848562969) executed 949 cases: **948 PASS / 1 RED** (row949 cross-face branch value assertion); census [43848642973](https://github.com/akashskypatel/Directional/actions/runs/43848642973) observed BunnyRandom surface-cut-graph terminal at `(241,251)`. No test or producer repair in TB122.
