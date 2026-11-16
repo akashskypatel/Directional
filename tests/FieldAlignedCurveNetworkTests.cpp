@@ -12323,8 +12323,122 @@ TEST(ResolvedBranchCorrection, OwnerWithoutOutflowFollowsFieldAcrossRadialEdge) 
         follow_field_vertex_transit_outflow(mesh, topology, center, elected);
     EXPECT_EQ(followCase.kind, follow.kind);
     EXPECT_EQ(followCase.continuation, follow.continuation.nextFace);
-    EXPECT_EQ(elected.nextBranch, follow.continuation.nextBranch);
     EXPECT_EQ(followCase.slideCarrier, follow.slideCarrier);
+
+    const auto *ownerFrame = topology.find_frame(elected.nextFace);
+    const auto *destinationFrame =
+        topology.find_frame(follow.continuation.nextFace);
+    ASSERT_NE(nullptr, ownerFrame);
+    ASSERT_NE(nullptr, destinationFrame);
+    EXPECT_EQ(arrivalFrame->sourceComponent, ownerFrame->sourceComponent);
+    EXPECT_EQ(arrivalFrame->topologyRegion, ownerFrame->topologyRegion);
+    EXPECT_EQ(arrivalFrame->sourceComponent,
+              destinationFrame->sourceComponent);
+    EXPECT_EQ(arrivalFrame->topologyRegion,
+              destinationFrame->topologyRegion);
+
+    if (elected.nextFace == follow.continuation.nextFace) {
+      // Numeric branch equality is meaningful only in the same A1 frame.
+      EXPECT_EQ(elected.nextBranch, follow.continuation.nextBranch);
+      continue;
+    }
+
+    ASSERT_EQ(FieldVertexOutflowFollowKind::Cross, follow.kind);
+    ASSERT_EQ(topFace, elected.nextFace);
+    ASSERT_EQ(rightFace, follow.continuation.nextFace);
+    const auto forward = topology.transport(sharedRadial, topFace, rightFace);
+    const auto backward = topology.transport(sharedRadial, rightFace, topFace);
+    ASSERT_TRUE(forward.has_value());
+    ASSERT_TRUE(backward.has_value());
+    const auto transported = elected.nextBranch.rotated(forward->signedLift);
+    EXPECT_EQ(elected.nextBranch,
+              transported.rotated(backward->signedLift))
+        << "A1 round-trip transport must preserve the source branch";
+
+    const auto sourcePairing = std::find_if(
+        ownerFrame->branches.begin(), ownerFrame->branches.end(),
+        [&](const auto &pairing) { return pairing.branch == elected.nextBranch; });
+    ASSERT_NE(ownerFrame->branches.end(), sourcePairing);
+    const auto zero = exact_integer(0);
+    const auto sourceVertices = topFace.vertices();
+    for (std::size_t index = 0; index < sourceVertices.size(); ++index) {
+      if (sourceVertices[index] == SourceVertexId::from_index(3, 5U).value()) {
+        EXPECT_LT(sourcePairing->direction[index], zero)
+            << "owner field must cross the shared radial toward right face";
+      }
+    }
+
+    // Derive the destination branch without consulting the follow audit.
+    // The correct branch is the unique A1 branch strictly leaving the centre
+    // inside the right-face wedge, not an equal-numbered source-face label.
+    const SourceFaceId rightRow = SourceFaceId::from_index(1, 4U).value();
+    const auto strictlyOutward = [&](const auto &direction) {
+      if (!direction.is_barycentric() ||
+          !directional::authority::direction_in_vertex_sector(
+              mesh, rightRow, center, direction)) {
+        return false;
+      }
+      for (std::size_t index = 0; index < 3U; ++index) {
+        if (rightFace.vertices()[index] == center) {
+          if (direction[index] >= zero) return false;
+        } else if (direction[index] <= zero) {
+          return false;  // Reject inward and radial-grazing candidates.
+        }
+      }
+      return true;
+    };
+    const directional::authority::FieldBranchBoundaryPairing *outward = nullptr;
+    std::size_t outwardCount = 0U;
+    for (const auto &pairing : destinationFrame->branches) {
+      if (!strictlyOutward(pairing.direction)) continue;
+      outward = &pairing;
+      ++outwardCount;
+    }
+    ASSERT_EQ(1U, outwardCount)
+        << "the destination field must select one exact interior outflow";
+    ASSERT_NE(nullptr, outward);
+    EXPECT_EQ(transported, outward->branch)
+        << "transported A1 source branch must be the outward destination branch";
+    EXPECT_EQ(outward->branch, follow.continuation.nextBranch)
+        << "field follow must use the independently certified destination branch";
+
+    const auto accepts = [&](const directional::authority::FieldBranch candidate,
+                             const int lift,
+                             const directional::authority::FieldBranchDirection &ray) {
+      return candidate == elected.nextBranch.rotated(lift) &&
+             candidate == outward->branch && strictlyOutward(ray);
+    };
+    EXPECT_TRUE(accepts(follow.continuation.nextBranch, forward->signedLift,
+                        outward->direction));
+    const auto wrongBranch = outward->branch.rotated(1);
+    const auto wrongPairing = std::find_if(
+        destinationFrame->branches.begin(), destinationFrame->branches.end(),
+        [&](const auto &pairing) { return pairing.branch == wrongBranch; });
+    ASSERT_NE(destinationFrame->branches.end(), wrongPairing);
+    EXPECT_FALSE(accepts(wrongBranch, forward->signedLift,
+                         wrongPairing->direction))
+        << "a wrong destination branch must fail the oracle";
+    EXPECT_FALSE(accepts(outward->branch, forward->signedLift + 1,
+                         outward->direction))
+        << "an incorrect A1 lift must fail the oracle";
+    auto inward = outward->direction;
+    for (auto &coordinate : inward.barycentric) coordinate = -coordinate;
+    EXPECT_FALSE(accepts(outward->branch, forward->signedLift, inward))
+        << "an inward destination ray must fail the oracle";
+    auto grazing = outward->direction;
+    std::size_t centerIndex = 0U;
+    for (std::size_t index = 0; index < 3U; ++index) {
+      if (rightFace.vertices()[index] == center) centerIndex = index;
+      if (rightFace.vertices()[index] ==
+          SourceVertexId::from_index(1, 5U).value()) {
+        grazing.barycentric[index] = zero;
+      }
+    }
+    grazing.barycentric[centerIndex] =
+        -grazing.barycentric[(centerIndex + 1U) % 3U] -
+        grazing.barycentric[(centerIndex + 2U) % 3U];
+    EXPECT_FALSE(accepts(outward->branch, forward->signedLift, grazing))
+        << "a radial-grazing destination ray must fail the oracle";
   }
 }
 
