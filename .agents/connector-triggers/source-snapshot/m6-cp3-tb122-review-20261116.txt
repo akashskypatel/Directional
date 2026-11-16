@@ -1,0 +1,2 @@
+Purpose: exact repository snapshot for M6-CP3-TB122-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-FULL-GATE-REV.
+Source: push event commit of this marker; read-only source extraction. No compile or tests.
