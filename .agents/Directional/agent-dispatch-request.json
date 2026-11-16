@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb121-doc-closeout-20261116-a",
+  "request_id": "m6-cp3-cb141-apply-20261116-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb121-doc-closeout",
-  "file_id": "1fmcMeUQsl1-xsIQ3xD3tVwvKJ8vfSzpB",
-  "patch_sha256": "01b078a860ad05ebf2944aba27530027b917711d0796f2207733a71719c4e8da",
-  "base_sha": "d5003476c4df52863eeb14b841a729653369bc9b",
+  "mailbox_key": "m6-cp3-cb141-apply",
+  "file_id": "1Yt7J0L8GElJn9GAqPA4RlWv0CQ052xFq",
+  "patch_sha256": "2b665a4055d91efa9872bb8446304fff0dae12e40f708a3af82ac04f989c4971",
+  "base_sha": "af289f341baeef4fb1dcc8c337b85f832b8f0bd2",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB121 scoped match and authorize Review",
+  "commit_message": "fix(surface-cells): seed vertex transit from carrier and follow outflow",
   "retention_days": 14
 }
