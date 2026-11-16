@@ -1,3 +1,0 @@
-Turn: M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC
-Freeze: 4e837be09bae4aa13292e42294edd9c4c7bded29
-Purpose: read-only source snapshot; artifact-only TB121
