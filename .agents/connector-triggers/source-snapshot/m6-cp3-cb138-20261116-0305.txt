@@ -1,0 +1,4 @@
+Turn: M6-CP3-CB138-P13-OBTUSE-EDGE-PORT-SLIDE
+Purpose: acquire one exact source snapshot for code/build-only turn.
+Read mode: snapshot
+Runtime execution: false
