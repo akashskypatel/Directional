@@ -1,3 +1,8 @@
+## 2026-11-16 UTC — CB138 obtuse-face edge port and exact slide compiled (P13-e.10)
+
+- [CB138 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB138_P13_Obtuse_Edge_Port_Slide_Code_Build_Record_20261116.md): RA-238 exact four-file patch `53985fef…` applied at source `2e551bdd9ac72ccf3cd65326d58aa7911adee36f`; [compile 43796972574](https://github.com/akashskypatel/Directional/actions/runs/43796972574) SUCCESS, immutable artifact `14195465639`, ZIP SHA-256 `5f7cc46b03b491f95ec907bfccc3a81afd4f36d3cb49330494df2de4fed498ac`, 28/28 hashes, eight GMP/GMPXX targets, `runtimeExecution=false`.
+- No tests, benchmarks, census, or CP3/selector497 promotion. Next separate turn: `M6-CP3-TB119-P13-OBTUSE-EDGE-PORT-SLIDE-FULL-GATE-EXEC` (947-row gate and census). Carry O42/O43 and established baselines.
+
 ## 2026-11-16 UTC — RA-238: exact along-edge rule for edge-supported ports frozen (P13-e.9)
 
 - [RA-238](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Edge_Port_Trace_Outcome_Review_20261116.md): BunnyRandom vertex 367's refused straddle (170,367) starts in a face that is obtuse at 367. A1's weight-on-vertex test (+8.77) refused it although the exact along-edge rate leaves 367 in both faces, and A2a's grazing endpoint test is undecided there.

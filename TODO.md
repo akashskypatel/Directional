@@ -1,6 +1,6 @@
-## CURRENT — RA-238: vertex367 obtuse-face edge port; CB138 next (P13-e.10), 2026-11-16 UTC
+## CURRENT — CB138 compiled: obtuse-face edge port and exact slide; TB119 next (P13-e.11), 2026-11-16 UTC
 
-> **Canonical next:** `M6-CP3-CB138-P13-OBTUSE-EDGE-PORT-SLIDE` (implementation agent, compile only).
+> **Canonical next:** `M6-CP3-TB119-P13-OBTUSE-EDGE-PORT-SLIDE-FULL-GATE-EXEC` (implementation agent, artifact-only). CB138 [record](.agents/Directional/Architecture_M6_CP3_CB138_P13_Obtuse_Edge_Port_Slide_Code_Build_Record_20261116.md): [compile 43796972574](https://github.com/akashskypatel/Directional/actions/runs/43796972574) SUCCESS, package `14195465639` SHA-256 `5f7cc46b03b491f95ec907bfccc3a81afd4f36d3cb49330494df2de4fed498ac`, 28/28 verified, eight GMP/GMPXX targets, `runtimeExecution=false`.
 > - [Exact patch](.agents/Directional/Architecture_M6_CP3_CB138_P13_Obtuse_Edge_Port_Slide_Exact.diff) `53985fef66e2e7262d4624c79f5b037e58e4760f4db18403d37c683a4e0e5d60`: 334 lines, keep 5 single-space context lines; 4 files, `+211 −25`.
 > - Base: HEAD `c8bd85e5c`. Authority: [RA-238 §4](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Edge_Port_Trace_Outcome_Review_20261116.md).
 
@@ -9,8 +9,8 @@
   - Vertex 367: A1 refused straddle (170,367) on the weight-on-S proxy (w₃₆₇ = +8.77, because face (162,170,367) is obtuse at 367). The exact along-edge rate leaves 367 in both faces. A2a's grazing endpoint test is undecided there too.
   - Fix: A1 attaches iff T = d·(x_far − x_S) > 0 in both faces (exact). A2a's edge-port departure slides to the far vertex through `resolve_field_edge_port_slide`.
   - New test `FieldTransportAtlas.PublishesEdgeSupportedPortFromFaceObtuseAtVertex` uses a planar fan with a 140° face. It fails on CB137.
-- [ ] **P13-e.10 / CB138 (NEXT)** — compile only; mismatch → `M6-CP3-PLAN-P13-OBTUSE-EDGE-PORT-SLIDE-STOP`; infrastructure → `M6-CP3-CB138A-P13-OBTUSE-EDGE-PORT-SLIDE-ORCH`.
-- [ ] **P13-e.11 / TB119** — manifest TB118 + row 947 (`3aac432b…`, `SELF_CHECK_PASS cases=947 deferred=81`, membership 1,028) plus the census.
+- [x] **P13-e.10 / CB138 COMPLETE** — exact patch applied at `2e551bdd9ac72ccf3cd65326d58aa7911adee36f`; [compile 43796972574](https://github.com/akashskypatel/Directional/actions/runs/43796972574) SUCCESS, artifact `14195465639`, 28/28 hashes, GMP/GMPXX, `runtimeExecution=false`; [record](.agents/Directional/Architecture_M6_CP3_CB138_P13_Obtuse_Edge_Port_Slide_Code_Build_Record_20261116.md). No tests or benchmarks.
+- [ ] **P13-e.11 / TB119 (NEXT)** — manifest TB118 + row 947 (`3aac432b…`, `SELF_CHECK_PASS cases=947 deferred=81`, membership 1,028) plus the census.
   - MATCH: row 947 has two attached edge ports; BunnyRandom `(170,367) attached=1` with no vertex-367 mismatch.
   - Record BunnyRandom's next blocker.
 - [ ] **P13-e.12 / Review only** — `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME`.
@@ -24,7 +24,7 @@
 |---|---|---|
 | P13-e.8 COMPLETE (scoped MATCH) | `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC` | implementation agent |
 | P13-e.9 COMPLETE | `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME` (RA-238) | Review |
-| **P13-e.10 NEXT** | `M6-CP3-CB138-P13-OBTUSE-EDGE-PORT-SLIDE`. Mismatch → `M6-CP3-PLAN-P13-OBTUSE-EDGE-PORT-SLIDE-STOP`; infrastructure → `M6-CP3-CB138A-P13-OBTUSE-EDGE-PORT-SLIDE-ORCH` | implementation agent (compile only) |
+| P13-e.10 COMPLETE | `M6-CP3-CB138-P13-OBTUSE-EDGE-PORT-SLIDE` — source `2e551bdd9…`; compile 43796972574 SUCCESS, immutable artifact `14195465639`, 28/28 | implementation agent (compile only) |
 | P13-e.11 | `M6-CP3-TB119-P13-OBTUSE-EDGE-PORT-SLIDE-FULL-GATE-EXEC`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB119A-P13-OBTUSE-EDGE-PORT-SLIDE-ORCH` | implementation agent (artifact only) |
 | P13-e.12 | `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME` | **Review agent only** |
 | then | 65A → 65D (O41, activation in 65C); O31/O32 | Review, then implementation |
