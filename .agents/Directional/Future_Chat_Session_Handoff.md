@@ -1,3 +1,10 @@
+## CB137 COMPLETE (P13-e.7; edge-supported port and departure compiled) — next: `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC` — 2026-11-16 UTC
+
+**Canonical completed turn:** `M6-CP3-CB137-P13-EDGE-SUPPORTED-PORT-TRACE` ([CB137 record](Architecture_M6_CP3_CB137_P13_Edge_Supported_Port_Trace_Code_Build_Record_20261116.md)). RA-237 exact patch `0d3f2374a3260da70ea529c873b409187a0005f76f405d4791c3a10e35f0996e` (5 source/test files, +311/-8) applied at source `4a63be7a17b5784f0fa742883bbf99e4fe546360`. Compile [run 43784411304](https://github.com/akashskypatel/Directional/actions/runs/43784411304) SUCCESS; immutable package `14190250585` SHA-256 `4ec81008bfb8270d2299005a5ec6f08ad57fb99ef00676001f680cb476fee8e3`, 28/28 verified. GMP/GMPXX eight-target compile; `runtimeExecution=false`; no runtime, tests, benchmark, or TB118 execution.
+**Next separate turn:** artifact-only TB118 with frozen 946-row manifest SHA `5fee837d7760c8e60a8dc47e8734576465adfd67c44ebebb33789c675ee39d00` (SELF_CHECK_PASS; deferred=81); observe BunnyRandom vertex 49 and all TB117 receipts. After TB118 the Review-only P13-e.9 names the next owner. Carry O42, O41/65C, O31/O32; CP2 491/491, stable 66/17/49, debt1, deferred81, production `chainRimSchedules=false`, CP3/selector497 not promoted.
+
+**Previous completed state (retained):**
+
 ## RA-237 COMPLETE (P13-e.6; edge-supported port + departure frozen) — next: `M6-CP3-CB137-P13-EDGE-SUPPORTED-PORT-TRACE` (implementation agent, compile only) — 2026-11-16 UTC
 
 **Canonical completed turn:** `M6-CP3-DEFN-P13-EDGE-SLIDING-SEPARATRIX-TRACE` (Review only). [RA-237](Architecture_M6_CP3_DEFN_P13_Edge_Sliding_Separatrix_Trace_Review_20261116.md).

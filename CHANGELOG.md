@@ -1,3 +1,8 @@
+## 2026-11-16 UTC — CB137 edge-supported singularity port trace compiled (P13-e.7)
+
+- [CB137 record](.agents/Directional/Architecture_M6_CP3_CB137_P13_Edge_Supported_Port_Trace_Code_Build_Record_20261116.md): frozen RA-237 five-file patch (311 additions, 8 deletions) committed at `4a63be7a17b5784f0fa742883bbf99e4fe546360`. Compile [run 43784411304](https://github.com/akashskypatel/Directional/actions/runs/43784411304) SUCCESS; immutable package `14190250585` (ZIP SHA-256 `4ec81008bfb8270d2299005a5ec6f08ad57fb99ef00676001f680cb476fee8e3`), internal checksum verification 28/28.
+- Eight approved targets compiled with GMP/GMPXX; `runtimeExecution=false`. No Directional tests, benchmarks or census executed. Next separate turn: `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC`. No CP3/selector promotion.
+
 ## 2026-11-16 UTC — RA-237: edge-supported singularity port and departure frozen (P13-e.6)
 
 - [RA-237](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Edge_Sliding_Separatrix_Trace_Review_20261116.md) (Review only, runtime-free).

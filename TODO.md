@@ -1,6 +1,6 @@
-## CURRENT — RA-237: edge-supported port + departure frozen (P13-e.6); CB137 next, 2026-11-16 UTC
+## CURRENT — CB137 compiled edge-supported port + departure (P13-e.7); TB118 next, 2026-11-16 UTC
 
-> **Canonical next:** `M6-CP3-CB137-P13-EDGE-SUPPORTED-PORT-TRACE` (implementation agent, compile only).
+> **Canonical next:** `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC` (artifact-only; do not rebuild).
 > - [Exact patch](.agents/Directional/Architecture_M6_CP3_CB137_P13_Edge_Supported_Port_Trace_Exact.diff) `0d3f2374a3260da70ea529c873b409187a0005f76f405d4791c3a10e35f0996e`: 470 lines, keep 9 single-space context lines; 5 files, `+311 −8`.
 > - Base: HEAD `95fe03fee`. Authority: [RA-237 §3](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Edge_Sliding_Separatrix_Trace_Review_20261116.md).
 
@@ -9,8 +9,8 @@
   - A1 attaches a straddle whose slide leaves the vertex (negative weight on it in both faces) as an edge port, whose radial `firstOutgoingCarrier` contains the vertex. It sits at ratio 0 in slot order.
   - A2a departs at the vertex on that carrier and slides by the existing grazing path.
   - Test `FieldTransportAtlas.PublishesEdgeSupportedPortForRadialStraddle` uses a planar saddle fan, with a control and a straddle case.
-- [ ] **P13-e.7 / CB137** — compile only, exact patch.
-- [ ] **P13-e.8 / TB118** — manifest TB117 + row 946 (`5fee837d…`, `SELF_CHECK_PASS cases=946 deferred=81`) plus the census.
+- [x] **P13-e.7 / CB137** — exact five-file patch compiled with GMP/GMPXX; source `4a63be7a17b5784f0fa742883bbf99e4fe546360`, [run 43784411304](https://github.com/akashskypatel/Directional/actions/runs/43784411304), package `14190250585`; runtime not executed.
+- [ ] **P13-e.8 / TB118 (NEXT)** — manifest TB117 + row 946 (`5fee837d…`, `SELF_CHECK_PASS cases=946 deferred=81`) plus the census.
   - MATCH: inherited rows and Cylinder/Vase receipts unchanged; BunnyRandom vertex 49 `attached=1`, with the exact departure line.
   - Record BunnyRandom's next blocker.
 - [ ] **P13-e.9 / Review only** — `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME`.
@@ -23,8 +23,8 @@
 |---|---|---|
 | P13-e.5 COMPLETE (MATCH) | `M6-CP3-TB117-P13-EDGE-PORT-STRADDLE-CENSUS-FULL-GATE-EXEC` | implementation agent |
 | P13-e.6 COMPLETE | `M6-CP3-DEFN-P13-EDGE-SLIDING-SEPARATRIX-TRACE` (RA-237) | Review |
-| **P13-e.7 NEXT** | `M6-CP3-CB137-P13-EDGE-SUPPORTED-PORT-TRACE`. Mismatch → `M6-CP3-PLAN-P13-EDGE-SUPPORTED-PORT-TRACE-STOP`; infrastructure → `M6-CP3-CB137A-P13-EDGE-SUPPORTED-PORT-TRACE-ORCH` | implementation agent (compile only) |
-| P13-e.8 | `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB118A-P13-EDGE-SUPPORTED-PORT-TRACE-ORCH` | implementation agent (artifact only) |
+| P13-e.7 COMPLETE | `M6-CP3-CB137-P13-EDGE-SUPPORTED-PORT-TRACE`. Mismatch → `M6-CP3-PLAN-P13-EDGE-SUPPORTED-PORT-TRACE-STOP`; infrastructure → `M6-CP3-CB137A-P13-EDGE-SUPPORTED-PORT-TRACE-ORCH` | implementation agent (compile only) |
+| **P13-e.8 NEXT** | `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB118A-P13-EDGE-SUPPORTED-PORT-TRACE-ORCH` | implementation agent (artifact only) |
 | P13-e.9 | `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME` | **Review agent only** |
 | then | 65A → 65D (O41, activation in 65C); O31/O32 | Review, then implementation |
 
