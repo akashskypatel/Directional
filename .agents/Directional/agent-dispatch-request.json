@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb137-edge-supported-port-trace-20261116-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb137-port-trace-apply",
-  "file_id": "1dCWS1xsew-3f07HAtpBukaE2T2Hq-f9z",
-  "patch_sha256": "cbfeec02ed98bfdf875d339aaec79b33f1da1c1551cfafbd9f0ce3935b318a06",
-  "base_sha": "9e7488e3e3132964b8e541af4558ea307e6472b9",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(surface-cells): trace edge-supported singularity ports",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb137-port-trace-compile-20261116-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb137-port-trace-compile",
+  "source_sha": "4a63be7a17b5784f0fa742883bbf99e4fe546360",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb137-port-trace"
 }
