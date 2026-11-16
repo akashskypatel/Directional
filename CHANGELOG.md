@@ -1,3 +1,12 @@
+## 2026-11-16 UTC — RA-242 adversarial re-review of TB123-REV
+
+- [Record §RA-242](.agents/Directional/Architecture_M6_CP3_TB123_REV_P13_Cross_Face_Oracle_Outcome_Review_20261116.md):
+  - The CB142 oracle is confirmed.
+  - O44 is closed on TB122 evidence.
+  - TB124 is narrowed to the full gate only (no census, because the product source is unchanged).
+  - The `Unresolved` typed fail-closed path and the exact-grazing contract are parked as CB145.
+  - The realigned sequence is TB124 → edge-terminal inventory DEFN → CB143 → TB125 → equivalence DEFN → CB144 → TB126 → Review.
+
 ## 2026-11-16 — TB123 focused cross-face oracle execution (2/2 PASS, local immutable artifact)
 ## 2026-11-16 — TB123 independent cross-face oracle outcome Review
 

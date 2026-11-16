@@ -20,6 +20,8 @@
 
 ## 2026-11-16 — RA-241 edge-transit seed conformance outcome (P13-e candidate; fixes frozen)
 
+[RA-242](Architecture_M6_CP3_TB123_REV_P13_Cross_Face_Oracle_Outcome_Review_20261116.md): TB123-REV re-reviewed. **O44 closed**: CI row 948 passed, gate rows are neutral and BunnyRandom vertex 137 is resolved. The D12 follow is confirmed on BunnyRandom (Slide at 48, Cross at 349) and on the corrected row 949 helper oracle; CI acceptance of that oracle waits for TB124. The next P13-e candidate is C3: `build_arcs` rejects ≥2 terminal cuts per mandatory edge and reports only the first. Non-stable; stable accounting unchanged (66/17/49, debt 1, deferred 81).
+
 [RA-241](Architecture_M6_CP3_DEFN_P13_Edge_Transit_Seed_Conformance_Outcome_Review_20261116.md): TB121 accepted. The AX1 carrier seed moves no owner in the 947 gate rows, Cylinder or Vase, and moves BunnyRandom vertex 137 to an outflowing owner. The user answered D12 = A. CB141 freezes both fixes: the carrier seed (O44), and the outflow follow (cross, or slide by the exact edge-port rule) for vertices 349 and 48. The BunnyRandom terminal stays a non-stable P13-e candidate until TB122 measures it. Stable accounting is unchanged (66/17/49, debt 1, deferred 81).
 
 ## 2026-11-16 — TB121 edge-transit seed conformance receipt (scoped MATCH; P13-e candidate)

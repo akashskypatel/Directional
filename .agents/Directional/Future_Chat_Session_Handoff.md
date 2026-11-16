@@ -1,3 +1,28 @@
+## CURRENT — RA-242 adversarial re-review of TB123-REV: O44 closed, TB124 gate-only next (2026-11-16 UTC)
+
+**RA-242: owner-requested adversarial re-review of `M6-CP3-TB123-REV-P13-CROSS-FACE-ORACLE-OUTCOME`.** [Record §RA-242](Architecture_M6_CP3_TB123_REV_P13_Cross_Face_Oracle_Outcome_Review_20261116.md). The CB142 oracle is correct: it compares the transported label with the outward branch. Corrections to the first pass:
+- The TB122 BunnyRandom receipts already confirm S1–S3: Slide at vertex 48 on carrier (48,271), Cross at vertex 349 into (5,306,349), and vertex 137 resolved by the seed. **O44 closes.**
+- The TB124 census is redundant: the product source is byte-identical CB141→CB142→HEAD, so TB124 is the gate only.
+- C4 (`Unresolved`) is a coverage gap: it keeps the pre-CB141 election.
+- Grazing semantics differ between the producer and the oracle.
+- Row 949's original cross-frame equality was an error in the RA-241 freeze.
+
+The next blocker is the `build_arcs` limit of one terminal cut per mandatory edge. Its validator reports only the first such edge, so inventory every edge first. **TB124 MATCH:** 949/949, 0 skipped, 28/28 hashes before and after, rows 1–948 receipts = TB122, no `vertexOutflowFollow`/`Unresolved` line in the gate. Mismatch → `M6-CP3-TB124-P13-CORRECTED-FULL-GATE-REV`; infrastructure → `M6-CP3-TB124A-P13-CORRECTED-FULL-GATE-ORCH`. Carry: O42/O43/C3 open; D11=A, D12=A, D10 deferred, D6 pending; stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted; `chainRimSchedules=false`.
+
+**Turn sequence**
+
+| # | Turn | Owner |
+|---|---|---|
+| 1 NEXT | `M6-CP3-TB124-P13-CORRECTED-FULL-GATE-EXEC` (gate only, no census) | Test + Benchmark (artifact only) |
+| 2 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-INVENTORY` (accept TB124, freeze CB143 diff) | Review |
+| 3 | `M6-CP3-CB143-P13-EDGE-TERMINAL-EXACT-INVENTORY` (diagnostic only) | Code + Build (compile only) |
+| 4 | `M6-CP3-TB125-P13-EDGE-TERMINAL-EXACT-INVENTORY-EXEC` | Test + Benchmark |
+| 5 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-EQUIVALENCE-DECISION` | Review |
+| 6 | `M6-CP3-CB144-P13-EDGE-TERMINAL-OWNER-CORRECTION` | Code + Build |
+| 7 | `M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-EXEC` | Test + Benchmark |
+| 8 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME` | Review |
+| parked | `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY` (typed `Unresolved` fail-closed; exact-grazing test) | Code + Build, then TB and Review |
+
 ## CURRENT — TB123-REV oracle review: static oracle accepted, full gate next (2026-11-16 UTC)
 
 **Canonical turn:** `M6-CP3-TB123-REV-P13-CROSS-FACE-ORACLE-OUTCOME`. [Independent review](Architecture_M6_CP3_TB123_REV_P13_Cross_Face_Oracle_Outcome_Review_20261116.md) verifies source-level A1 lift, unique destination outward branch and four local negative controls. TB123 **reported** two focused PASS runs; raw local logs were not available for independent re-count in this review. No full gate, trace/census acceptance or product promotion. **Exactly one separate successor:** `M6-CP3-TB124-P13-CORRECTED-FULL-GATE-AND-CENSUS` (immutable CB142 artifact `14224898790`, full 949-case gate + three-case census, no rebuild, exact hashes/receipts and fail-closed stop criteria in review record). Keep TB122 historical 948/949; O41/O42/O43/O44 and cut-graph `(241,251)` open. CP2 491/491, stable 66/17/49, debt1, deferred81; selector497/CP3 unpromoted, `chainRimSchedules=false`. Do not start TB124 in this Review.
@@ -1202,7 +1227,7 @@ Rows 49–64B.9 are complete as turns. TB90 64.4 is MATCH (914/914, census 1 PAS
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-CB141-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW** (P13-e.19, implementation agent, compile only).
+`load_next`: **M6-CP3-TB124-P13-CORRECTED-FULL-GATE-EXEC** (implementation agent, artifact-only full gate; RA-242).
 - Apply exactly RA-240 §5's patch `2e135b8c…` at HEAD (source equals CB139 `c520674030c76be455111d7c41aae7d5f53ce900`); build the eight GMP/GMPXX targets; publish an immutable package. Do not run tests.
 - Then TB121 (RA-240 §6, TB120 manifests unchanged), then Review-only `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME`.
 - D12 (Amendment 22 outflow gap at vertices 48/349) is pending; do not implement any D12 option before the user answers.

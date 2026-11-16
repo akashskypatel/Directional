@@ -54,3 +54,72 @@ Authorize **`M6-CP3-TB124-P13-CORRECTED-FULL-GATE-AND-CENSUS`** as a *separate* 
 | Pushed to origin, branch in sync | GitHub drive_apply run 43974781511 succeeded; result artifact 14280916016 verified and exact six-path commit comparison confirmed. Staged Drive file retired. No local tracking branch exists in this ChatGPT Web snapshot, so `git status -sb` could not confirm local ahead/behind state; remote change confirmed through GitHub. |
 
 **Process audit:** Before selecting mandatory `READ_MODE=snapshot`, four repository source/document files were read directly through the connector. This was a tool-use-policy violation; it was disclosed during this session. The rest of the review used verified snapshot material. Tool-call ledger was not reliably maintained from the first invocation; exact call totals and family counts are unknown, not estimated. The snapshot's synthetic Git history did not support the rewrite-ancestry check.
+
+## Owner-requested adversarial re-review (RA-242, 2026-11-16 UTC)
+
+Same canonical turn, reopened at 23:08:50Z. The source was read at HEAD `6dea7ec10`. `git diff --quiet` shows no change in `src include tests` from CB142 `57b28b737` to HEAD, and no change in `src include` from CB141 `2dedeb097` to CB142. CB142 changed the test file only, so the product code is identical across CB141, CB142 and HEAD. No binary was run.
+
+### What the first pass got right
+- **The oracle is correct.** The fan is `make_four_triangle_fan`, with centre vertex 4 at (0,0); top is (2,3,4) and right is (1,2,4).
+  - The top primary (3,1), at about 18°, lies outside top's 45°–135° wedge. It crosses the radial (2,4), so it does not leave the vertex.
+  - The right primary (2,1), at about 27°, lies strictly inside the right wedge (−45° to 45°).
+  - The test therefore fails if the producer returns the untransported label: TB122 observed elected 2 and continuation 3, which means lift +1.
+- **The negative controls only test the test's own `accepts` lambda.** They are not product evidence, and the first pass says so.
+
+### Corrections to the first pass
+1. **The census evidence was ignored.** The TB122 BunnyRandom receipts (`evidence/Architecture_M6_CP3_TB122_Verbatim_Required_Receipts_20261116.txt`) confirm RA-241's predictions S1–S3 exactly:
+   - vertex 48: `outcome=Slide elected=(48,271,272) continuation=(48,271,272) branch=3 carrier=(48,271)`;
+   - vertex 349: `outcome=Cross elected=(5,102,349) continuation=(5,306,349) branch=2`;
+   - vertex 137: no follow line and no `edgeTransitSeedConformance` line, so the carrier seed alone resolved it.
+
+   The network stage then completed. The first terminal moved past the network stage to the cut graph. "Supported only by the constructed witness" understates this. The Cross and Slide continuations were consumed without a network-stage error. Their segment geometry is still unverified, because the cut graph rejects first and no segments are output.
+2. **O44 closes now.** It was the AX1 carrier-seed nonconformance. The evidence:
+   - row 948, the carrier-seed test, passed on CI in TB122;
+   - the 947 inherited rows are unchanged;
+   - Cylinder and Vase are unchanged;
+   - vertex 137 is resolved, with no conformance line.
+
+   Row 949 tests the D12 follow, not O44, so keeping O44 open conflated two contracts.
+3. **The TB124 census is redundant.** The product source is byte-identical to CB141's, so the TB122 census is CB142's census. Only the CI gate is new evidence: TB123's 2/2 local run has no committed raw log. TB124 is narrowed to the gate only.
+4. **C4 is a coverage gap, not a regression risk.** `Unresolved` returns `keep(transit)`, so both call sites (`SurfaceCellTracing.cpp:3647`, `:3816`) behave exactly as before CB141. Before CB141 that path failed closed, as at TB120's vertex 137.
+
+   It still violates the DESIGN supplement, which says `Unresolved` "is a typed non-success". The consumer ignores `follow.kind`, and fail-closed comes only from a later check. The fix is a small, receipt-neutral change: no gate or census run has printed an `Unresolved` line. It is parked as its own CB.
+5. **The DESIGN supplement and the producer disagree on grazing.**
+   - `crossing()` returns 0 ("leaves") when one radial coordinate is exactly zero, so the producer accepts a field running exactly along a radial edge.
+   - Row 949's oracle requires strict outflow.
+   - Neither DESIGN nor a test says which is right for a grazing target sector. With exact arithmetic this needs exactly-aligned input, but such input is reachable on regular meshes.
+
+   Parked with the C4 item: one test-only boundary turn.
+6. **The DESIGN demand to "preserve the original owner" is met at helper level only.** `follow_field_vertex_transit_outflow` takes the election and returns the continuation, and row 949 checks both. The trace retains only the continuation, plus the diagnostic line. No product field is needed unless a consumer reads the owner. None does, so no change is made.
+7. **My own error, in RA-241.** I froze row 949 with `EXPECT_EQ(elected.nextBranch, follow.continuation.nextBranch)` for the Cross case, comparing branch labels across two face frames. That caused TB122's only RED. CB142's transported-label oracle is the correct fix.
+
+### Trajectory
+CP3 progress is sound: each P13-e step moved BunnyRandom's first terminal one stage later. The next blocker is a construction limit, not a numerical defect: `build_arcs` (`EmbeddedGraphTopology.cpp:483–491`) rejects any mandatory edge with two or more terminal cuts. It also reports only the first such edge in map order, so the census hides how many exist.
+
+The exactly-one split (`:494–558`) generalizes directly to strictly ordered distinct exact parameters. Equal parameters are the only case that needs a decision. Inventory comes before the cure: RA-210 says to census every contact a first-failure validator hides, and RA-225 says to check that a defect can occur before designing its cure. The inventory must cover every edge in all three fixtures, not only the first.
+
+### Realigned sequence (each turn is one bounded change or one evidence gate)
+| # | Turn | Owner | Goal / stop |
+|---|---|---|---|
+| 1 NEXT | `M6-CP3-TB124-P13-CORRECTED-FULL-GATE-EXEC` | Test + Benchmark (artifact only, GitHub Actions) | CB142 package `14224898790`, manifest `a56ad00c…` (949 rows, membership 1,030). No census. See the MATCH criteria below. |
+| 2 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-INVENTORY` | Review | Accept TB124 (closes C1 and the scoped D12 follow), then freeze the exact CB143 `.diff`. |
+| 3 | `M6-CP3-CB143-P13-EDGE-TERMINAL-EXACT-INVENTORY` | Code + Build (compile only) | Diagnostic only: one line per edge with ≥2 terminal cuts (trace, node, exact parameter, equal-parameter class) for every such edge. The rejection is unchanged. |
+| 4 | `M6-CP3-TB125-P13-EDGE-TERMINAL-EXACT-INVENTORY-EXEC` | Test + Benchmark | Full gate plus three-case census on the CB143 package. Gate receipts must be unchanged. |
+| 5 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-EQUIVALENCE-DECISION` | Review | Classify every cut. Freeze CB144: N+1 sub-arcs for distinct ordered cuts, and a decided rule for equal parameters (a user decision if it is a contract choice). |
+| 6 | `M6-CP3-CB144-P13-EDGE-TERMINAL-OWNER-CORRECTION` | Code + Build | One class only, with a positive and a negative fixture. |
+| 7 | `M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-EXEC` | Test + Benchmark | Full gate plus census. |
+| 8 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME` | Review | Read the next BunnyRandom terminal. |
+| parked | `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY` | Code + Build, then TB and Review | Typed fail-closed on `Unresolved` at both call sites (C4); one exact-grazing target test (finding 5). Receipt-neutral. Scheduled after step 8, or earlier if a gate shows an `Unresolved` line. |
+
+**TB124 MATCH** requires all of the following:
+- 949/949 PASS and 0 skipped;
+- package hashes 28/28 before and after;
+- rows 1–948 receipt lines identical to TB122;
+- row 949 PASS, with its four `EXPECT_FALSE` controls present in the source at `57b28b737`;
+- no `vertexOutflowFollow` or `Unresolved` line in the gate.
+
+**Routes:**
+- TB124 mismatch → `M6-CP3-TB124-P13-CORRECTED-FULL-GATE-REV` (Review).
+- TB124 infrastructure failure → `M6-CP3-TB124A-P13-CORRECTED-FULL-GATE-ORCH`.
+
+**Carried, unchanged:** O42 and O43 open; O44 **closed** by this re-review; C3 open (the cut graph). D11 = A, D12 = A, D10 deferred, D6 pending. Stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3 and selector497 unpromoted; `chainRimSchedules=false`. DESIGN.md unchanged.
