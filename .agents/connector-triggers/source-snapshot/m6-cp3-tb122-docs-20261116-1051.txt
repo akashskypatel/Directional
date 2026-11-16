@@ -1,1 +1,0 @@
-TB122 documentation snapshot after gate/census completion, exact event commit source authority.
