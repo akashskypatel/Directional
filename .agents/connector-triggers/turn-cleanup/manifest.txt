@@ -1,0 +1,2 @@
+# CB141 temporary source-snapshot trigger; preserve durable dispatcher and workflow-mailbox
+.agents/connector-triggers/source-snapshot/m6-cp3-cb141-20261116-0932.txt
