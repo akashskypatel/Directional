@@ -1,2 +1,0 @@
-# TB118 temporary repository files
-.agents/connector-triggers/source-snapshot/m6-cp3-tb118-20261116-0152.txt
