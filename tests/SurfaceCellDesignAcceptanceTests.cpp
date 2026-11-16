@@ -41,6 +41,32 @@ const directional::bench::BenchmarkCase &find_benchmark_case(
   return *found;
 }
 
+// Where the terminal failure stopped, from the published failure locus.
+std::string failure_locus(const directional::pipeline::RemeshResult &result) {
+  const auto &locus = result.diagnostics.terminalFailureLocus;
+  std::ostringstream out;
+  out << " locus";
+  if (locus.sourceFace.has_value()) {
+    out << " face=(" << (*locus.sourceFace)[0] << ',' << (*locus.sourceFace)[1]
+        << ',' << (*locus.sourceFace)[2] << ')';
+  }
+  if (locus.branch.has_value()) out << " branch=" << *locus.branch;
+  if (locus.sourceEdge.has_value()) {
+    out << " edge=(" << (*locus.sourceEdge)[0] << ',' << (*locus.sourceEdge)[1]
+        << ')';
+  }
+  if (locus.parameter.has_value()) out << " parameter=" << *locus.parameter;
+  for (const std::string &value : locus.exactValues) out << " exact=" << value;
+  if (locus.traceSeedVertex.has_value()) {
+    out << " seedVertex=" << *locus.traceSeedVertex;
+  }
+  if (locus.traceSeedSingularity.has_value()) {
+    out << " seedSingularity=" << *locus.traceSeedSingularity;
+  }
+  out << " history=" << locus.traceHistoryCount;
+  return out.str();
+}
+
 std::string failure_context(const directional::pipeline::RemeshResult &result) {
   return "terminal=" + result.diagnostics.terminalFailureCode + ":" +
          result.diagnostics.terminalFailureStage + " detail=" +
@@ -50,7 +76,8 @@ std::string failure_context(const directional::pipeline::RemeshResult &result) {
          std::to_string(result.diagnostics.surfaceCellArrangementCellCount) +
          " completedQuads=" +
          std::to_string(result.diagnostics.surfaceCellCompletedQuadCount) +
-         " completion=" + result.surfaceCellContext.completionFailure;
+         " completion=" + result.surfaceCellContext.completionFailure +
+         failure_locus(result);
 }
 
 std::string hex64(const std::uint64_t value) {
