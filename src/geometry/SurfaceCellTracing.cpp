@@ -3222,6 +3222,108 @@ void report_field_vertex_transit_without_outflow(
   }
 }
 
+// P13-e (RA-240): AX1 defines the vertex-transit seed as the ray from the
+// vertex back along the incoming trace. After an edge slide that ray is the
+// carrier, but the election seeds from the arrival face's negated field.
+// Re-run the closed-fan election (Amendment 22) from the carrier ray on the
+// audited sectors and print each arrival whose owner would change, or that
+// this model cannot evaluate. The decision is unchanged.
+void report_field_edge_transit_seed_conformance(
+    const authority::FieldBranchTopology &topology,
+    const FieldAlignedCandidateTrace &trace,
+    const authority::SourceVertexId vertex,
+    const authority::SourceFaceTopologyKey &arrivalFace,
+    const authority::SourceEdgeTopologyKey &carrier,
+    const FieldVertexTransitDecision &transit) {
+  const auto &audit = transit.vertexStarTransit;
+  const authority::SourceVertexId carrierEnd =
+      carrier.first() == vertex ? carrier.second() : carrier.first();
+  const auto print_prefix = [&]() {
+    std::clog << "FieldAlignedCurveNetwork.edgeTransitSeedConformance"
+              << " singularity=" << trace.singularity.index()
+              << " sourceVertex=" << trace.sourceVertex.index()
+              << " trace=" << trace.id.index()
+              << " step=" << trace.segments.size() << " vertex=" << vertex.index()
+              << " carrierEnd=" << carrierEnd.index();
+  };
+  if (!audit.has_value() || audit->sectors.empty() || !audit->closedFan ||
+      audit->sectors.front().sourceFace != arrivalFace) {
+    print_prefix();
+    std::clog << " modeled=0 reason=fan closedFan="
+              << (audit.has_value() && audit->closedFan ? 1 : 0) << '\n';
+    return;
+  }
+  const auto &sectors = audit->sectors;
+  const auto term = [](const VertexStarSectorAudit &sector) {
+    return VertexStarAngleTerm{sector.dot, sector.normProduct,
+                               sector.crossSquared};
+  };
+  // beta = alpha + Theta/2, compared doubled: 2 * prefix against Theta + 2a.
+  // The carrier ray is a radial edge of the arrival sector, so alpha is that
+  // sector's angle (previous radial) or zero (next radial).
+  std::vector<VertexStarAngleTerm> right;
+  for (const VertexStarSectorAudit &sector : sectors) right.push_back(term(sector));
+  if (carrierEnd == sectors.front().previousRadialVertex) {
+    vertex_star_append(right, vertex_star_twice(std::vector<VertexStarAngleTerm>{
+                                  term(sectors.front())}));
+  } else if (carrierEnd != sectors.front().nextRadialVertex) {
+    print_prefix();
+    std::clog << " modeled=0 reason=carrier\n";
+    return;
+  }
+  std::size_t carrierOwner = sectors.size();
+  bool carrierOnRadialRay = false;
+  try {
+    std::vector<VertexStarAngleTerm> prefix;
+    for (std::size_t index = 0U; index < sectors.size(); ++index) {
+      prefix.push_back(term(sectors[index]));
+      const int ordering =
+          vertex_star_compare_angle_sums(vertex_star_twice(prefix), right)
+              .ordering;
+      if (ordering < 0) continue;
+      carrierOnRadialRay = ordering == 0;
+      carrierOwner = ordering == 0 ? (index + 1U) % sectors.size() : index;
+      break;
+    }
+  } catch (const std::runtime_error &) {
+    print_prefix();
+    std::clog << " modeled=0 reason=exact\n";
+    return;
+  }
+  if (carrierOwner == sectors.size()) carrierOwner = 0U;
+  std::size_t codeOwner = sectors.size();
+  for (std::size_t index = 0U; index < sectors.size(); ++index) {
+    if (sectors[index].containsContinuation) codeOwner = index;
+  }
+  if (codeOwner == carrierOwner) return;
+
+  const auto leaves = [&](const std::size_t index) {
+    if (index >= sectors.size()) return -1;
+    const authority::FieldFaceBranchFrame *frame =
+        topology.find_frame(sectors[index].sourceFace);
+    const authority::FieldBranchBoundaryPairing *pairing =
+        frame == nullptr
+            ? nullptr
+            : field_aligned_branch_pairing(*frame, sectors[index].branch);
+    if (pairing == nullptr) return -1;
+    const auto zero = authority::FieldExactRational::from_integer(0);
+    const auto &vertices = sectors[index].sourceFace.vertices();
+    for (std::size_t corner = 0U; corner < vertices.size(); ++corner) {
+      if (vertices[corner] != vertex && pairing->direction[corner] < zero) {
+        return 0;
+      }
+    }
+    return 1;
+  };
+  print_prefix();
+  std::clog << " modeled=1 codeOwner=" << codeOwner
+            << " carrierOwner=" << carrierOwner
+            << " carrierOnRadialRay=" << (carrierOnRadialRay ? 1 : 0)
+            << " codeOwnerLeaves=" << leaves(codeOwner)
+            << " carrierOwnerLeaves=" << leaves(carrierOwner)
+            << " sectors=" << sectors.size() << '\n';
+}
+
 FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
     const TriMesh &sourceMesh,
     const authority::FieldTransportAtlas &fieldTransportAtlas,
@@ -3502,6 +3604,9 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
         topology, trace, *edgeTransit.sourceVertex,
         FieldVertexArrivalMode::EdgeTransit, runtime.currentFace,
         runtime.currentBranch, decision.outgoingCarrier, next);
+    report_field_edge_transit_seed_conformance(
+        topology, trace, *edgeTransit.sourceVertex, runtime.currentFace,
+        decision.outgoingCarrier, next);
     const auto nextEntryPoint =
         field_boundary_point_at_vertex(next.nextFace, *edgeTransit.sourceVertex);
     if (!nextEntryPoint.has_value()) {
