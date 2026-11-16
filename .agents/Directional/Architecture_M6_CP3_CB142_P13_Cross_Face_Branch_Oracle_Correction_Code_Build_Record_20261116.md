@@ -26,3 +26,9 @@ CB142 meets the test-only implementation and compile-only requirement. This does
 **Exact separate successor:** `M6-CP3-TB123-P13-CROSS-FACE-ORACLE-FOCUSED-EXEC` (immutable artifact-only focused execution of rows 948 and 949 plus negative controls). The subsequent independent Review is `M6-CP3-TB123-REV-P13-CROSS-FACE-ORACLE-OUTCOME`. Full gate, production census, BunnyRandom terminal inventory, and any semantic repair stay deferred until their separate authorized turns.
 
 Unchanged authority: accepted CP2 **491/491**; stable **66/17/49**, witness debt **1**, deferred **81**. D11=A, D12=A, D10 deferred, D6 pending; O42/O43/O44 open; CP3/selector497 not promoted and `chainRimSchedules=false`. Vase O41 remains separate.
+
+## Documentation audit disposition
+
+- The static document-drift audit was run against both the previous handoff and the updated local documents. Both versions produced the same three existing errors: handoff above its size budget; one historical `CURRENT` heading in the handoff; and `ORIENTATION.md` above its size budget. No additional audit error appeared in this turn.
+- The errors remain open documentation debt. Any consolidation or reduction of protected historical material requires its own authorized scope and preservation review. This Code + Build turn does not claim a clean documentation audit or alter those protected documents.
+- The first document-apply request [43867537904](https://github.com/akashskypatel/Directional/actions/runs/43867537904) failed before commit because the patch header separated intended paths with commas instead of semicolons. The corrected request [43867932152](https://github.com/akashskypatel/Directional/actions/runs/43867932152) applied the unchanged diff body as commit `589f1b0b6eac36362c5263de75a327bce590f9c6`. The four intended document paths were independently checked. Both temporary Drive staging files were deleted successfully.
