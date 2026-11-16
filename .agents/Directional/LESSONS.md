@@ -652,6 +652,16 @@ This document records **reusable failure-derived engineering lessons**, not an e
   doubles) needs no square root. Before replacing a proxy in an accepted consumer, keep the
   change to the configurations no gate row reaches and log the rest as an obligation to measure.
   Fit the model to every logged decision first (11/11 here) so it is known to read the code.
+- **When a failure prints only its code, enumerate every entry that can reach the predicate
+  before guessing the stage, and print the published locus before measuring (RA-239).**
+  `BranchContinuationDegenerateEntry` needs a zero barycentric weight on a corner with a negative
+  direction. Checking each kind of entry (interior edge, port first step, edge-port departure,
+  vertex entry) left only the vertex transit, whose owner is elected by geometry alone. The
+  pipeline already kept the failure locus in `terminalFailureLocus`, but the test printed only the
+  code. Make the measuring receipt fire on the exact predicate the failure needs, so green rows
+  stay silent, and keep the locus print as the fallback in case the enumeration is wrong. Read
+  the frozen definition of each datum the decision consumes (here AX1's arrival ray): an
+  implementation can satisfy the amendment in one arrival mode and not in another.
 - **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
   still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).
 - **A TB runs the full current gate even when its CB touches no gate binary.** A CLI- or GUI-only CB

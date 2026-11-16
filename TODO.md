@@ -1,4 +1,33 @@
-## CURRENT — TB119 scoped MATCH; BunnyRandom now reaches network continuation (P13-e.11), 2026-11-16 UTC
+## CURRENT — RA-239: BunnyRandom DegenerateEntry owned by the A2a vertex transit; diagnostic CB139 next (P13-e.13), 2026-11-16 UTC
+
+> **Canonical next:** `M6-CP3-CB139-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT` (implementation agent, compile only).
+> - [Exact patch](.agents/Directional/Architecture_M6_CP3_CB139_P13_Vertex_Transit_Outflow_Receipt_Exact.diff) `bd0d7afeaf7c0a3e196907fcba6b8230ec7955d269b75cfb833b6ea15bd05eb7`: 175 lines, 3-line context; 2 files, `+131 −1`.
+> - Base: CB138 source `2e551bdd9…` plus documentation. Authority: [RA-239 §4](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Obtuse_Edge_Port_Outcome_Review_20261116.md).
+
+- [x] **P13-e.12 / RA-239** completed `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME`.
+  - TB119 accepted as a scoped MATCH. Gate and census artifacts were re-downloaded and their hashes verified; row 947 has the two predicted edge ports.
+  - `BranchContinuationDegenerateEntry` (exit time 0) is reachable only when a step enters at a vertex after `resolve_field_vertex_transit` elected an owner whose own field does not leave the vertex. Interior edge entries and port first steps cannot reach it.
+  - Amendment 22 elects the owner by geometry alone. H1: `EdgeTransit` arrivals seed with the face field, not the carrier ray, which AX1 requires. H2: the geometric owner need not flow out (design gap, would be a user decision).
+  - The log names neither trace nor vertex. CB139 prints the full star wherever an owner has no outflow (R1) and the terminal locus (R2). It does not change any decision.
+- [ ] **P13-e.13 / CB139 (NEXT)** — compile only; mismatch → `M6-CP3-PLAN-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-STOP`; infrastructure → `M6-CP3-CB139A-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-ORCH`.
+- [ ] **P13-e.14 / TB120** — TB119 manifest unchanged (`3aac432b…`, 947 rows, membership 1,028) plus the census. Record the locus and every R1 and sector line.
+- [ ] **P13-e.15 / Review only** — `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME`: H1 → AX1 conformance CB (after an EdgeTransit census of accepted rows); H2 → user decision on Amendment 22.
+- [ ] **O43:** ordinary grazing decides its slide with the endpoint-rate proxy. Measure per gate row before switching it.
+- [ ] **O42:** contact classification ignores the slide part of grazing segments and edge-port departures.
+- **Carry:** CP2 491/491; stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted; `chainRimSchedules=false`; D10 defer; D6 pending; O41 and activation in 65C; O31/O32 open.
+
+**Turn sequence**
+
+| Step | Turn | Owner |
+|---|---|---|
+| P13-e.11 COMPLETE (scoped MATCH) | `M6-CP3-TB119-P13-OBTUSE-EDGE-PORT-SLIDE-FULL-GATE-EXEC` | implementation agent (artifact only) |
+| P13-e.12 COMPLETE | `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME` (RA-239) | Review |
+| **P13-e.13 NEXT** | `M6-CP3-CB139-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT`. Mismatch → `M6-CP3-PLAN-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-STOP`; infrastructure → `M6-CP3-CB139A-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-ORCH` | implementation agent (compile only) |
+| P13-e.14 | `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB120A-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-ORCH` | implementation agent (artifact only) |
+| P13-e.15 | `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME` | **Review agent only** |
+| then | 65A → 65D (O41, activation in 65C); O31/O32 | Review, then implementation |
+
+## PREVIOUS — TB119 scoped MATCH; BunnyRandom now reaches network continuation (P13-e.11), 2026-11-16 UTC
 
 > **Canonical next (separate Review):** `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME`. [TB119 report](.agents/Directional/Architecture_M6_CP3_TB119_P13_Obtuse_Edge_Port_Slide_Full_Gate_Execution_Report_20261116.md): gate 947/947 PASS, 1,028 membership, 1,902 hashes; census Cylinder PASS, BunnyRandom/Vase registered RED, 9 hashes. BunnyRandom vertex367 both ports attached and both departures execute; new first terminal `NotProductionReady/field-aligned-network`, `BranchContinuationDegenerateEntry`. No CP3 promotion.
 > - [Exact patch](.agents/Directional/Architecture_M6_CP3_CB138_P13_Obtuse_Edge_Port_Slide_Exact.diff) `53985fef66e2e7262d4624c79f5b037e58e4760f4db18403d37c683a4e0e5d60`: 334 lines, keep 5 single-space context lines; 4 files, `+211 −25`.
@@ -13,7 +42,7 @@
 - [x] **P13-e.11 / TB119 (scoped MATCH)** — manifest TB118 + row 947 (`3aac432b…`, `SELF_CHECK_PASS cases=947 deferred=81`, membership 1,028) plus the census.
   - MATCH: row 947 has two attached edge ports; BunnyRandom `(170,367) attached=1` with no vertex-367 mismatch.
   - Observed next first terminal: `BranchContinuationDegenerateEntry` in field-aligned network; Review owns cause and repair.
-- [ ] **P13-e.12 / Review only** — `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME`.
+- [x] **P13-e.12 / Review only** — `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME` (RA-239, see CURRENT).
 - [ ] **O43 (new):** ordinary grazing decides its slide with the endpoint-rate proxy, which can disagree with the exact along-edge rule. Measure per gate row before switching it.
 - [ ] **O42:** contact classification ignores the slide part of grazing segments and edge-port departures.
 - **Carry:** CP2 491/491; stable 66/17/49, debt 1, deferred 81; CP3/selector497 unpromoted; `chainRimSchedules=false`; D10 defer; D6 pending; O41 and activation in 65C; O31/O32 open.

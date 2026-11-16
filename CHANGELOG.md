@@ -1,3 +1,8 @@
+## 2026-11-16 UTC — RA-239: BunnyRandom's DegenerateEntry owned by the A2a vertex transit; diagnostic CB139 frozen (P13-e.12)
+
+- [RA-239](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Obtuse_Edge_Port_Outcome_Review_20261116.md): TB119 accepted as scoped MATCH (947/947; gate and census artifacts re-verified). `BranchContinuationDegenerateEntry` is reachable only when a step enters at a vertex after `resolve_field_vertex_transit` elected an owner whose own field does not leave the vertex (Amendment 22 elects by geometry alone). Open: H1, `EdgeTransit` arrivals seed with the face field instead of the carrier ray that AX1 requires; H2, a gap in the design.
+- Frozen diagnostic [CB139](.agents/Directional/Architecture_M6_CP3_CB139_P13_Vertex_Transit_Outflow_Receipt_Exact.diff) `bd0d7afe…` (+131 −1): R1 prints the vertex star wherever the owner has no outflow, and R2 appends the terminal locus to the acceptance failure message. No decision changes. TB120 reuses the TB119 manifest. No source changed in this turn; CP2 491/491, stable 66/17/49, debt 1, deferred 81 unchanged. **Next:** `M6-CP3-CB139-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT`.
+
 ## 2026-11-16 UTC — CB138 obtuse-face edge port and exact slide compiled (P13-e.10)
 
 - [CB138 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB138_P13_Obtuse_Edge_Port_Slide_Code_Build_Record_20261116.md): RA-238 exact four-file patch `53985fef…` applied at source `2e551bdd9ac72ccf3cd65326d58aa7911adee36f`; [compile 43796972574](https://github.com/akashskypatel/Directional/actions/runs/43796972574) SUCCESS, immutable artifact `14195465639`, ZIP SHA-256 `5f7cc46b03b491f95ec907bfccc3a81afd4f36d3cb49330494df2de4fed498ac`, 28/28 hashes, eight GMP/GMPXX targets, `runtimeExecution=false`.
