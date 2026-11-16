@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb117-documentation-20261115-v1",
+  "request_id": "m6-cp3-cb137-edge-supported-port-trace-20261116-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb117-documentation",
-  "file_id": "1rEoYnrcDBgvZJCjQRVAzqE-ncryEeJZS",
-  "patch_sha256": "3ffe44ce580aab998bd8ec41856494b298a45b7fc0fea24f7a05c4383c58896a",
-  "base_sha": "e4959b594443e09e587a876d12f99d8e4ea47b00",
+  "mailbox_key": "m6-cp3-cb137-port-trace-apply",
+  "file_id": "1dCWS1xsew-3f07HAtpBukaE2T2Hq-f9z",
+  "patch_sha256": "cbfeec02ed98bfdf875d339aaec79b33f1da1c1551cfafbd9f0ce3935b318a06",
+  "base_sha": "9e7488e3e3132964b8e541af4558ea307e6472b9",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb117): record immutable edge-port full-gate MATCH",
+  "commit_message": "feat(surface-cells): trace edge-supported singularity ports",
   "retention_days": 14
 }
