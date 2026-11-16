@@ -2048,6 +2048,19 @@ FieldBranchContinuationResult resolve_field_edge_port_departure(
       carrier, std::nullopt};
 }
 
+FieldBranchContinuationDecision resolve_field_edge_port_slide(
+    const authority::SourceEdgeTopologyKey &carrier,
+    const authority::SourceVertexId singularVertex) {
+  const bool fromFirst = carrier.first() == singularVertex;
+  return FieldBranchContinuationDecision{
+      FieldBranchContinuationKind::EdgeTransit,
+      authority::FieldBoundaryPoint{
+          carrier, authority::ExactUnitParameter{
+                       authority::FieldExactRational::from_integer(
+                           fromFirst ? 1 : 0)}},
+      carrier, fromFirst ? carrier.second() : carrier.first()};
+}
+
 void annotate_field_aligned_trace_seed(
     FieldAlignedCurveNetworkError &error,
     const authority::SourceVertexId traceSeedVertex,
@@ -3311,18 +3324,21 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
         decision.outgoingCarrier, runtime.currentFace, runtime.currentBranch));
   }
   if (targetFlow == FieldBranchEdgeFlowRelation::Outflow) {
-    auto transit = resolve_field_branch_grazing_transit(
-        runtime.currentFace, *pairing, *nextFace, *nextPairing,
-        decision.outgoingCarrier, directed->signedLift,
-        decision.exitPoint.parameter);
+    auto transit =
+        edgePortDeparture
+            ? FieldBranchContinuationResult{resolve_field_edge_port_slide(
+                  decision.outgoingCarrier, trace.sourceVertex)}
+            : resolve_field_branch_grazing_transit(
+                  runtime.currentFace, *pairing, *nextFace, *nextPairing,
+                  decision.outgoingCarrier, directed->signedLift,
+                  decision.exitPoint.parameter);
     if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&transit)) {
       return traceError(std::move(*error));
     }
     const FieldBranchContinuationDecision edgeTransit =
         std::get<FieldBranchContinuationDecision>(transit);
     if (edgeTransit.kind != FieldBranchContinuationKind::EdgeTransit ||
-        !edgeTransit.sourceVertex.has_value() ||
-        (edgePortDeparture && *edgeTransit.sourceVertex == trace.sourceVertex)) {
+        !edgeTransit.sourceVertex.has_value()) {
       return traceError(trace_scoped_field_aligned_error(
           FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
           trace.sourceVertex, trace.singularity, std::nullopt,

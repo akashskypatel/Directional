@@ -808,8 +808,9 @@ build_singularity_attachments(
     // branch in face i+1 points short of it (back into face i) straddles the
     // ray: the separatrix slides along that radial edge and no wedge holds
     // it. Classes plus straddles must equal 4 - index for any valid fan.
-    // A straddle whose slide leaves the vertex (negative weight on it in both
-    // faces) is published as an edge-supported port of face i (RA-237).
+    // A straddle whose slide leaves the vertex (both faces' branches advance
+    // along the radial edge away from it) is published as an edge-supported
+    // port of face i (RA-237, RA-238).
     std::vector<FieldSingularityPortAttachment> edgePorts;
     {
       const FieldExactRational zero = FieldExactRational::from_integer(0);
@@ -823,6 +824,34 @@ build_singularity_attachments(
           if (vertices[index] == vertex) return direction[index];
         }
         return std::nullopt;
+      };
+      // Exact rate at which a face's branch advances along the radial edge
+      // from the singular vertex towards `shared`: the in-plane direction
+      // sum_v w_v x_v dotted with that edge. The weight on the vertex alone
+      // does not give this sign when the face is obtuse at the vertex.
+      const auto alongRadial = [&sourceMesh, &singularity](
+                                   const IncidentFanFace &face,
+                                   const FieldBranchDirection &direction,
+                                   const SourceVertexId shared)
+          -> std::optional<FieldExactRational> {
+        const auto position = [&sourceMesh](const SourceVertexId vertex) {
+          const Eigen::Vector3d point =
+              sourceMesh.V.row(static_cast<int>(vertex.index())).transpose();
+          return exact_vector(point);
+        };
+        const auto origin = position(singularity.sourceVertex);
+        const auto end = position(shared);
+        if (!origin || !end || !direction.is_barycentric()) return std::nullopt;
+        const ExactVector radial = exact_difference(*end, *origin);
+        FieldExactRational rate = FieldExactRational::from_integer(0);
+        const auto &vertices = face.topology.vertices();
+        for (std::size_t index = 0U; index < vertices.size(); ++index) {
+          const auto corner = position(vertices[index]);
+          if (!corner) return std::nullopt;
+          rate = rate + direction[index] *
+                            exact_dot(exact_difference(*corner, *origin), radial);
+        }
+        return rate;
       };
       std::size_t straddles = 0U;
       std::ostringstream listed;
@@ -850,13 +879,11 @@ build_singularity_attachments(
                    << static_cast<int>(pairing.branch.value()) << ','
                    << sourceEdge.first().index() << '-'
                    << sourceEdge.second().index() << ')';
-            const auto towardSource =
-                weight(face, pairing.direction, singularity.sourceVertex);
-            const auto nextTowardSource =
-                weight(nextFace, target->direction, singularity.sourceVertex);
-            const bool attached = towardSource && nextTowardSource &&
-                                  *towardSource < zero &&
-                                  *nextTowardSource < zero;
+            const auto leaving = alongRadial(face, pairing.direction, shared);
+            const auto nextLeaving =
+                alongRadial(nextFace, target->direction, shared);
+            const bool attached = leaving && nextLeaving && *leaving > zero &&
+                                  *nextLeaving > zero;
             if (attached) {
               edgePorts.push_back(FieldSingularityPortAttachment{
                   singularity.id, singularity.sourceVertex, 0, face.topology,

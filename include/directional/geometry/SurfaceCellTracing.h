@@ -1187,12 +1187,26 @@ field_dyadic_interior_exit_parameter(
  * Such a port's separatrix lies on its radial carrier, which contains the
  * singular vertex. The in-face part is empty, so the decision exits at the
  * singular vertex on that carrier; the trace then slides along the carrier by
- * the grazing transit. Fails closed when the carrier is not a radial outflow
- * edge of the start face for this branch.
+ * resolve_field_edge_port_slide. Fails closed when the carrier is not a radial
+ * outflow edge of the start face for this branch.
  */
 [[nodiscard]] FieldBranchContinuationResult resolve_field_edge_port_departure(
     const authority::SourceFaceTopologyKey &startFace,
     const authority::FieldBranchBoundaryPairing &pairing,
+    const authority::SourceEdgeTopologyKey &carrier,
+    authority::SourceVertexId singularVertex);
+
+/**
+ * @brief Slide of an edge-supported port from its vertex along its carrier.
+ *
+ * The atlas publishes an edge-supported port only when both incident faces'
+ * branches advance along the carrier away from the singular vertex, measured
+ * exactly on the source geometry, so the slide ends at the carrier's other
+ * vertex. The grazing transit's endpoint-rate test is not used here: it is
+ * undecided when the start face is obtuse at the singular vertex. The carrier
+ * contains singularVertex; resolve_field_edge_port_departure has checked it.
+ */
+[[nodiscard]] FieldBranchContinuationDecision resolve_field_edge_port_slide(
     const authority::SourceEdgeTopologyKey &carrier,
     authority::SourceVertexId singularVertex);
 
