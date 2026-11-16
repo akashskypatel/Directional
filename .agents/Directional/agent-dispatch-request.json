@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb119-closeout-20261116-v2",
+  "request_id": "m6-cp3-cb139-source-apply-20261116-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb119-closeout-v2",
-  "file_id": "1uzSYnZOehfjA0slTI0klFAn-LcJ9jekT",
-  "patch_sha256": "368891181aabd2eb0ce28ae1ebb1f89427492963359a60cc59344999ca797798",
-  "base_sha": "7326f3609cf026c4ce1328fa1dd58267d3fb5fbe",
+  "mailbox_key": "m6-cp3-cb139-source-apply",
+  "file_id": "1J0wQVWw8YyU3YM7PJgrhy41hJxD8tMEU",
+  "patch_sha256": "8cd7cddf356b9c96f8abedd4c8d7a68f71cc3c9f243c6f91834db531855c25ce",
+  "base_sha": "e6f6171f6c345424b600eaea1587da9ae878fbfb",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb119): record scoped full-gate match and network continuation",
+  "commit_message": "feat(surface-cells): add vertex transit outflow receipt",
   "retention_days": 14
 }
