@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb122-gate-20261116-v1",
+  "request_id": "m6-cp3-tb122-census-20261116-v1",
   "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb122-gate",
+  "mailbox_key": "m6-cp3-tb122-census",
   "executor_sha": "2dedeb097a7d652fd50979c9edbf7acc11222a9c",
   "semantic_source_sha": "2dedeb097a7d652fd50979c9edbf7acc11222a9c",
   "turn_id": "M6-CP3-TB122-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-FULL-GATE-EXEC",
   "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
   "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "artifact_prefix": "m6-cp3-tb122-gate",
+  "artifact_prefix": "m6-cp3-tb122-census",
   "retention_days": 14,
   "environment": {
     "CANDIDATE_ARTIFACT_ID": "14213982150",
@@ -16,10 +16,8 @@
     "EXPECTED_CANDIDATE_ZIP_SHA256": "ea09976a5b961bf5a384e9eaf3ea2c1498a7dbab0a67858c218513d34565f497",
     "EXPECTED_ROOT_MANIFEST_SHA256": "e6bc693ce0f93e7892deadd937bacc41c0ebb533ae70a03933c5c274300144f0",
     "EXPECTED_SOURCE_ARCHIVE_SHA256": "69dba785873a3baafbc554c44469c4a10d4bb7b7de79ef96af68f101d452b25f",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB122_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Follow_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "a56ad00ce48424a8505b7a6ab71500a4c60285b3d96ceecaf7cf1a3724f5f2b1",
-    "EXPECTED_CASE_COUNT": "949",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
+    "EXPECTED_CASE_COUNT": "3"
   }
 }
