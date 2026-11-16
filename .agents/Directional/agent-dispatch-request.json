@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb137-port-trace-compile-20261116-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb137-port-trace-compile",
-  "source_sha": "4a63be7a17b5784f0fa742883bbf99e4fe546360",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb137-port-trace"
+  "request_id": "m6-cp3-cb137-port-trace-documentation-20261116-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb137-port-trace-documentation",
+  "file_id": "1Xpn3G0qpJTIbXLycQ8znn266mhGXQimo",
+  "patch_sha256": "0d3fa1567e47714072097c00663becf33576bc1a2990f86ff8605b85a7d7944f",
+  "base_sha": "4a63be7a17b5784f0fa742883bbf99e4fe546360",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cb137): record exact GMP compile and advance to TB118",
+  "retention_days": 14
 }
