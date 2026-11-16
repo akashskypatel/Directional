@@ -756,6 +756,15 @@ struct FieldDirectedBranchTransport {
   auto operator<=>(const FieldDirectedBranchTransport &) const = default;
 };
 
+/**
+ * One separatrix leaving a singular vertex. For a face-supported port the
+ * branch points into the start face's wedge and firstOutgoingCarrier is the
+ * start face's edge opposite the vertex. For an edge-supported port the
+ * separatrix lies on a radial edge: both incident faces push the branch across
+ * that edge towards each other and its slide along the edge leaves the vertex.
+ * firstOutgoingCarrier is then that radial edge, so it contains sourceVertex,
+ * and startFace is the incident face whose next-vertex ray it is.
+ */
 struct FieldSingularityPortAttachment {
   FieldSingularityId singularity;
   SourceVertexId sourceVertex;

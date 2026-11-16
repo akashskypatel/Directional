@@ -14,6 +14,7 @@
 #include <cmath>
 #include <exception>
 #include <functional>
+#include <iostream>
 #include <limits>
 #include <optional>
 #include <queue>
@@ -2023,6 +2024,30 @@ FieldBranchContinuationResult resolve_field_branch_grazing_transit(
       carrier, endpoint};
 }
 
+FieldBranchContinuationResult resolve_field_edge_port_departure(
+    const authority::SourceFaceTopologyKey &startFace,
+    const authority::FieldBranchBoundaryPairing &pairing,
+    const authority::SourceEdgeTopologyKey &carrier,
+    const authority::SourceVertexId singularVertex) {
+  const bool radial =
+      carrier.first() == singularVertex || carrier.second() == singularVertex;
+  if (!radial || !field_face_opposite_index(startFace, carrier).has_value() ||
+      std::find(pairing.outgoingCarriers.begin(), pairing.outgoingCarriers.end(),
+                carrier) == pairing.outgoingCarriers.end()) {
+    return continuation_error(
+        FieldAlignedCurveNetworkErrorCode::BranchContinuationOutsideOutflowSet,
+        startFace, pairing.branch, carrier, singularVertex, std::nullopt, {},
+        pairing.outgoingCarriers);
+  }
+  return FieldBranchContinuationDecision{
+      FieldBranchContinuationKind::EdgeExit,
+      authority::FieldBoundaryPoint{
+          carrier, authority::ExactUnitParameter{
+                       authority::FieldExactRational::from_integer(
+                           carrier.first() == singularVertex ? 0 : 1)}},
+      carrier, std::nullopt};
+}
+
 void annotate_field_aligned_trace_seed(
     FieldAlignedCurveNetworkError &error,
     const authority::SourceVertexId traceSeedVertex,
@@ -3078,6 +3103,8 @@ struct FieldAlignedTraceRuntime {
   authority::FieldBoundaryPoint currentEntryPoint;
   FieldAlignedTraceTraversalGuard traversalGuard;
   FieldAlignedArrivalMeasure arrival;
+  // Radial carrier of an edge-supported port; consumed by the first proposal.
+  std::optional<authority::SourceEdgeTopologyKey> edgePortCarrier;
   bool active = true;
   std::optional<FieldAlignedTraceProposal> proposal;
   std::vector<FieldAlignedArrivalMeasure> segmentStarts;
@@ -3141,8 +3168,15 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
         runtime.currentFace, runtime.currentBranch));
   }
 
-  auto continuation = resolve_field_branch_continuation(
-      runtime.currentFace, *pairing, runtime.currentEntryPoint);
+  const bool edgePortDeparture =
+      runtime.edgePortCarrier.has_value() && trace.segments.empty();
+  auto continuation =
+      edgePortDeparture
+          ? resolve_field_edge_port_departure(runtime.currentFace, *pairing,
+                                              *runtime.edgePortCarrier,
+                                              trace.sourceVertex)
+          : resolve_field_branch_continuation(
+                runtime.currentFace, *pairing, runtime.currentEntryPoint);
   if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&continuation)) {
     return traceError(std::move(*error));
   }
@@ -3221,6 +3255,13 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
   }
 
   if (mandatoryByEdge.count(decision.outgoingCarrier) != 0U) {
+    // An edge-supported port on a barrier edge would end where it starts.
+    if (edgePortDeparture) {
+      return traceError(trace_scoped_field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+          trace.sourceVertex, trace.singularity, trace.sourceVertex,
+          decision.outgoingCarrier, runtime.currentFace, runtime.currentBranch));
+    }
     proposal.disposition = FieldAlignedProposalDisposition::TerminalBarrier;
     proposal.terminalBarrier = decision.outgoingCarrier;
     proposal.terminalPoint = decision.exitPoint;
@@ -3262,6 +3303,13 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
       classify_field_branch_transport_flow(
           runtime.currentFace, *pairing, *nextFace, *nextPairing,
           decision.outgoingCarrier);
+  // An edge-supported port must slide along its carrier away from its vertex.
+  if (edgePortDeparture && targetFlow != FieldBranchEdgeFlowRelation::Outflow) {
+    return traceError(trace_scoped_field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+        trace.sourceVertex, trace.singularity, trace.sourceVertex,
+        decision.outgoingCarrier, runtime.currentFace, runtime.currentBranch));
+  }
   if (targetFlow == FieldBranchEdgeFlowRelation::Outflow) {
     auto transit = resolve_field_branch_grazing_transit(
         runtime.currentFace, *pairing, *nextFace, *nextPairing,
@@ -3273,11 +3321,24 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
     const FieldBranchContinuationDecision edgeTransit =
         std::get<FieldBranchContinuationDecision>(transit);
     if (edgeTransit.kind != FieldBranchContinuationKind::EdgeTransit ||
-        !edgeTransit.sourceVertex.has_value()) {
+        !edgeTransit.sourceVertex.has_value() ||
+        (edgePortDeparture && *edgeTransit.sourceVertex == trace.sourceVertex)) {
       return traceError(trace_scoped_field_aligned_error(
           FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
           trace.sourceVertex, trace.singularity, std::nullopt,
           decision.outgoingCarrier, runtime.currentFace, runtime.currentBranch));
+    }
+    if (edgePortDeparture) {
+      const auto &faceVertices = runtime.currentFace.vertices();
+      std::clog << "FieldAlignedCurveNetwork.edgePortDeparture singularity="
+                << trace.singularity.index()
+                << " sourceVertex=" << trace.sourceVertex.index()
+                << " startFace=(" << faceVertices[0].index() << ','
+                << faceVertices[1].index() << ',' << faceVertices[2].index()
+                << ") branch=" << static_cast<int>(runtime.currentBranch.value())
+                << " carrier=(" << decision.outgoingCarrier.first().index()
+                << ',' << decision.outgoingCarrier.second().index()
+                << ") slideEnd=" << edgeTransit.sourceVertex->index() << '\n';
     }
     proposal.segment.edgeTransitExit = edgeTransit.exitPoint;
     proposal.terminalPoint = edgeTransit.exitPoint;
@@ -3766,6 +3827,10 @@ canonical_field_aligned_traces_and_events(
         port.sourceTopologyRegion);
     runtimes.emplace_back(attachment->startFace, attachment->branch, *entry,
                           field_aligned_trace_step_budget(topology));
+    if (attachment->firstOutgoingCarrier.first() == port.sourceVertex ||
+        attachment->firstOutgoingCarrier.second() == port.sourceVertex) {
+      runtimes.back().edgePortCarrier = attachment->firstOutgoingCarrier;
+    }
   }
 
   const auto ensure_proposal = [&](const std::size_t traceIndex)

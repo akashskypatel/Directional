@@ -1181,6 +1181,21 @@ field_dyadic_interior_exit_parameter(
     const authority::SourceEdgeTopologyKey &carrier, int signedLift,
     const authority::ExactUnitParameter &entryParameter);
 
+/**
+ * @brief First continuation of an edge-supported singularity port.
+ *
+ * Such a port's separatrix lies on its radial carrier, which contains the
+ * singular vertex. The in-face part is empty, so the decision exits at the
+ * singular vertex on that carrier; the trace then slides along the carrier by
+ * the grazing transit. Fails closed when the carrier is not a radial outflow
+ * edge of the start face for this branch.
+ */
+[[nodiscard]] FieldBranchContinuationResult resolve_field_edge_port_departure(
+    const authority::SourceFaceTopologyKey &startFace,
+    const authority::FieldBranchBoundaryPairing &pairing,
+    const authority::SourceEdgeTopologyKey &carrier,
+    authority::SourceVertexId singularVertex);
+
 [[nodiscard]] FieldVertexTransitResult resolve_field_vertex_transit(
     const TriMesh &sourceMesh,
     const authority::FieldBranchTopology &topology,

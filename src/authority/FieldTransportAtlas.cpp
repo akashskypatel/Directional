@@ -808,6 +808,9 @@ build_singularity_attachments(
     // branch in face i+1 points short of it (back into face i) straddles the
     // ray: the separatrix slides along that radial edge and no wedge holds
     // it. Classes plus straddles must equal 4 - index for any valid fan.
+    // A straddle whose slide leaves the vertex (negative weight on it in both
+    // faces) is published as an edge-supported port of face i (RA-237).
+    std::vector<FieldSingularityPortAttachment> edgePorts;
     {
       const FieldExactRational zero = FieldExactRational::from_integer(0);
       const auto weight = [](const IncidentFanFace &face,
@@ -847,6 +850,25 @@ build_singularity_attachments(
                    << static_cast<int>(pairing.branch.value()) << ','
                    << sourceEdge.first().index() << '-'
                    << sourceEdge.second().index() << ')';
+            const auto towardSource =
+                weight(face, pairing.direction, singularity.sourceVertex);
+            const auto nextTowardSource =
+                weight(nextFace, target->direction, singularity.sourceVertex);
+            const bool attached = towardSource && nextTowardSource &&
+                                  *towardSource < zero &&
+                                  *nextTowardSource < zero;
+            if (attached) {
+              edgePorts.push_back(FieldSingularityPortAttachment{
+                  singularity.id, singularity.sourceVertex, 0, face.topology,
+                  pairing.branch, sourceEdge, *singularity.topologyRegion,
+                  singularity.sourceComponent});
+            }
+            std::clog << "FieldTransportAtlas.partition edgePort singularity="
+                      << singularity.id.index() << " fanIndex=" << fanIndex
+                      << " branch=" << static_cast<int>(pairing.branch.value())
+                      << " carrier=(" << sourceEdge.first().index() << ','
+                      << sourceEdge.second().index() << ')'
+                      << " attached=" << (attached ? 1 : 0) << '\n';
           }
         }
       }
@@ -862,7 +884,7 @@ build_singularity_attachments(
                 << '\n';
     }
 
-    if (static_cast<int>(classes.size()) != expected) {
+    if (static_cast<int>(classes.size() + edgePorts.size()) != expected) {
       error = FieldAtlasBuildError{
           FieldAtlasBuildErrorCode::SingularityPortClassCountMismatch,
           std::nullopt, std::nullopt, singularity.sourceVertex,
@@ -875,7 +897,7 @@ build_singularity_attachments(
                       incidences[index].firstOutgoingCarrier);
     };
     std::vector<FieldSingularityPortAttachment> representatives;
-    representatives.reserve(classes.size());
+    representatives.reserve(classes.size() + edgePorts.size());
     for (auto &[unusedRoot, classIndices] : classes) {
       (void)unusedRoot;
       std::sort(classIndices.begin(), classIndices.end(),
@@ -896,10 +918,14 @@ build_singularity_attachments(
       }
       representatives.push_back(incidences[classIndices.front()]);
     }
+    representatives.insert(representatives.end(), edgePorts.begin(),
+                           edgePorts.end());
 
     // Within one corner the counter-clockwise angle from the next-vertex ray
     // grows with the exact ratio towardPrevious / towardNext (towardNext > 0
-    // for a sector member), so slots compare by cross-multiplication.
+    // for a sector member), so slots compare by cross-multiplication. An
+    // edge-supported port lies on its start face's next-vertex ray, so its
+    // ratio is exactly zero and a face port on the same ray is ambiguous.
     struct OrderedRepresentative {
       FieldSingularityPortAttachment attachment;
       std::size_t counterClockwiseFanSlot = 0U;
@@ -947,12 +973,19 @@ build_singularity_attachments(
             fanIt->row, singularity.sourceVertex, singularity.topologyRegion};
         return std::nullopt;
       }
+      const bool edgeSupported =
+          representative.firstOutgoingCarrier.first() ==
+              singularity.sourceVertex ||
+          representative.firstOutgoingCarrier.second() ==
+              singularity.sourceVertex;
       orderedRepresentatives.push_back(OrderedRepresentative{
           representative, counterClockwiseFanSlot,
           pairing->direction[static_cast<std::size_t>(
               std::distance(faceVertices.begin(), nextAt))],
-          pairing->direction[static_cast<std::size_t>(
-              std::distance(faceVertices.begin(), previousAt))]});
+          edgeSupported
+              ? FieldExactRational::from_integer(0)
+              : pairing->direction[static_cast<std::size_t>(
+                    std::distance(faceVertices.begin(), previousAt))]});
     }
     std::sort(orderedRepresentatives.begin(), orderedRepresentatives.end(),
               [&](const OrderedRepresentative &first,
