@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb137-port-trace-documentation-20261116-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb137-port-trace-documentation",
-  "file_id": "1Xpn3G0qpJTIbXLycQ8znn266mhGXQimo",
-  "patch_sha256": "0d3fa1567e47714072097c00663becf33576bc1a2990f86ff8605b85a7d7944f",
-  "base_sha": "4a63be7a17b5784f0fa742883bbf99e4fe546360",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cb137): record exact GMP compile and advance to TB118",
+  "request_id": "m6-cp3-tb118-gate-20261116-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb118-gate",
+  "executor_sha": "9afc87052def367896fbf4115256bab7332ed779",
+  "semantic_source_sha": "4a63be7a17b5784f0fa742883bbf99e4fe546360",
+  "turn_id": "M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "14190250585",
+    "EXPECTED_SOURCE_SHA": "4a63be7a17b5784f0fa742883bbf99e4fe546360",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "4ec81008bfb8270d2299005a5ec6f08ad57fb99ef00676001f680cb476fee8e3",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "5a1fab4789b73dc6d411ed55dd8bb8e6d10653bc26784a6147ec4925d0a8dfb1",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "145ace404fde041fc5f289ffd2447a33c61d96e874d88e6bd103ff2683c5b535",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB118_P13_Edge_Supported_Port_Trace_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "5fee837d7760c8e60a8dc47e8734576465adfd67c44ebebb33789c675ee39d00",
+    "EXPECTED_CASE_COUNT": "946",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  },
+  "artifact_prefix": "m6-cp3-tb118-gate",
   "retention_days": 14
 }
