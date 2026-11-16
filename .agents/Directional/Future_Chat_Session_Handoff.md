@@ -1,10 +1,8 @@
-## RA-241 COMPLETE (P13-e.18; D12 = A; carrier seed + outflow follow frozen) — next: `M6-CP3-CB141-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW` (implementation agent, compile only) — 2026-11-16 UTC
+## CB141 COMPLETE (P13-e.19; frozen carrier seed and outflow follow compiled) — next: `M6-CP3-TB122-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-FULL-GATE-EXEC` (artifact-only) — 2026-11-16 UTC
 
-**Canonical completed turn:** `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME` (Review only). [RA-241](Architecture_M6_CP3_DEFN_P13_Edge_Transit_Seed_Conformance_Outcome_Review_20261116.md). TB121 accepted as scoped MATCH (re-downloaded, 1,902/1,902 and 9/9 hashes, census receipts identical to TB120, Q1/Q2 hold). The AX1 carrier seed changed no gate owner, so it is switched unconditionally. **The user answered D12 = A (follow the field).** CB141 (`cc937c06…`, 3 files, +482/−24) does both:
-- it seeds `EdgeTransit` elections on the carrier ray (O44);
-- it follows an owner without outflow: Cross to the first outflowing sector, or Slide along a mutual radial when both fields advance along it exactly, by the edge-port departure. Otherwise the election is kept.
+**Canonical completed turn:** `M6-CP3-CB141-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW` (Code + Build). [CB141 record](Architecture_M6_CP3_CB141_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Follow_Code_Build_Record_20261116.md). RA-241 approved D12 = A and the exact three-file carrier/outflow patch (+482/−24). Source `2dedeb097a7d652fd50979c9edbf7acc11222a9c` compiled in [run 43841809892](https://github.com/akashskypatel/Directional/actions/runs/43841809892): **SUCCESS**, immutable artifact `14213982150`, ZIP SHA-256 `ea09976a5b961bf5a384e9eaf3ea2c1498a7dbab0a67858c218513d34565f497`, 28/28 checksums, eight GMP/GMPXX targets, `runtimeExecution=false`. The two new tests were compiled but not run.
 
-It adds two tests (rows 948–949). TB122 uses manifest `a56ad00c…` (949 rows, membership 1,030). Carry O42/O43, O44 (closes at P13-e.21), D11=A, D10 deferred, D6 pending, CP2 491/491, stable 66/17/49, debt1, deferred81, `chainRimSchedules=false`, CP3/selector497 unpromoted.
+**Next separate turn only:** TB122 runs the frozen 949-case manifest `a56ad00c…` (membership 1,030, deferred 81) and three-case census from the CB141 artifact. It must collect the carrier and field-outflow receipts and the new BunnyRandom terminal under RA-241 §4. No rebuild and no source changes. O44 remains open until P13-e.21 Review; O42/O43 remain open. Carry D11=A, D12=A, D10 deferred, D6 pending, CP2 491/491, stable 66/17/49, debt 1, deferred 81, `chainRimSchedules=false`, and CP3/selector497 unpromoted.
 
 **Previous completed state (retained):**
 

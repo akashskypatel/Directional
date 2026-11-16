@@ -1,3 +1,7 @@
+## 2026-11-16 UTC — CB141 vertex transit carrier seed and outflow follow compiled (P13-e.19)
+
+- [CB141 record](.agents/Directional/Architecture_M6_CP3_CB141_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Follow_Code_Build_Record_20261116.md): RA-241's frozen three-file patch (+482/−24) was applied as source `2dedeb097a7d652fd50979c9edbf7acc11222a9c`. The [compile run 43841809892](https://github.com/akashskypatel/Directional/actions/runs/43841809892) succeeded with eight GMP/GMPXX targets; immutable package `14213982150`, ZIP SHA-256 `ea09976a5b961bf5a384e9eaf3ea2c1498a7dbab0a67858c218513d34565f497`, 28/28 hashes, `runtimeExecution=false`. Two new regression tests compiled but did not run. Next separate turn: TB122 artifact-only 949-case gate and three-case census. O44 remains open; no stable regression or CP3 production promotion.
+
 ## 2026-11-16 UTC — RA-241 edge-transit seed conformance outcome; D12 = A (P13-e.18)
 
 - [RA-241](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Edge_Transit_Seed_Conformance_Outcome_Review_20261116.md): TB121 accepted; the AX1 carrier seed changes no gate owner. The user answered D12 = A.

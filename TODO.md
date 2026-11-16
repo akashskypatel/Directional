@@ -1,9 +1,9 @@
-## CURRENT — RA-241 complete: D12 = A; CB141 next (P13-e.19), 2026-11-16 UTC
+## CURRENT — CB141 compile complete; TB122 next (P13-e.20), 2026-11-16 UTC
 
-> **Canonical next (separate turn):** `M6-CP3-CB141-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW` (implementation agent, compile only). [RA-241](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Edge_Transit_Seed_Conformance_Outcome_Review_20261116.md) §3 is the authority. Exact diff `cc937c0674b1deb6fd0bbf2fb561d1ad1fa1a1a1a26df58af6939103f08242b5` (655 lines, 3 files `+482/−24`). Precheck `git diff --quiet 6a293e4641a2160cb9f447322c9aa1d1d26f3838 HEAD -- src include tests`.
+> **Canonical next (separate turn):** `M6-CP3-TB122-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-FULL-GATE-EXEC` (artifact-only Test + Benchmark). [CB141 record](.agents/Directional/Architecture_M6_CP3_CB141_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Follow_Code_Build_Record_20261116.md): compile [43841809892](https://github.com/akashskypatel/Directional/actions/runs/43841809892) succeeded; exact source `2dedeb097a7d652fd50979c9edbf7acc11222a9c`; artifact `14213982150`, 28/28 hashes, GMP/GMPXX, `runtimeExecution=false`. Use the frozen RA-241 §4 gate and census; do not rebuild.
 
 - [x] **P13-e.18 / RA-241:** TB121 accepted (re-downloaded, hashes verified). The AX1 carrier-seed switch is measured neutral on all 947 gate rows. **D12 = A** (user, follow the field).
-- [ ] **P13-e.19 / CB141:** carrier seed (O44) + D12 outflow follow + two tests; compile only.
+- [x] **P13-e.19 / CB141:** carrier seed (O44) + D12 outflow follow + two tests compiled; no runtime.
 - [ ] **P13-e.20 / TB122:** manifest `a56ad00c…` (949 rows, membership 1,030) + census `3af1dc0d…`; MATCH per RA-241 §4.
 - [ ] **P13-e.21 (Review only):** read BunnyRandom's next terminal; close O44.
 - [ ] O42/O43 open; O44 open until P13-e.21.
@@ -15,8 +15,8 @@
 |---|---|---|
 | P13-e.17 COMPLETE / MATCH | `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC` | Test + Benchmark (artifact only) |
 | P13-e.18 COMPLETE | `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME` (RA-241) | Review |
-| P13-e.19 NEXT | `M6-CP3-CB141-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW` | Code + Build (compile only) |
-| P13-e.20 | `M6-CP3-TB122-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-FULL-GATE-EXEC` | Test + Benchmark (artifact only) |
+| P13-e.19 COMPLETE | `M6-CP3-CB141-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW` | Code + Build (compile only) |
+| P13-e.20 NEXT | `M6-CP3-TB122-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-FULL-GATE-EXEC` | Test + Benchmark (artifact only) |
 | P13-e.21 | `M6-CP3-DEFN-P13-VERTEX-TRANSIT-CARRIER-SEED-AND-OUTFLOW-FOLLOW-OUTCOME` | Independent Review |
 | then | 65A → 65D (O41, activation in 65C); O31/O32 | Review, then implementation |
 

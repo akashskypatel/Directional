@@ -1,3 +1,7 @@
+## 2026-11-16 — CB141 carrier seed and outflow follow compiled (P13-e candidate; runtime unverified)
+
+[CB141 Code + Build record](Architecture_M6_CP3_CB141_P13_Vertex_Transit_Carrier_Seed_And_Outflow_Follow_Code_Build_Record_20261116.md): RA-241's two fixes were applied as source `2dedeb097a7d652fd50979c9edbf7acc11222a9c`. The [compile](https://github.com/akashskypatel/Directional/actions/runs/43841809892) passed eight GMP/GMPXX targets; artifact `14213982150`, 28/28 hashes, `runtimeExecution=false`. The two regression tests were **not run**. TB122 must measure whether the carrier-ray seed and field follow change BunnyRandom's terminal; O44 stays open until P13-e.21 Review. This is not a new stable event. Historical totals remain 66 events / 17 categories / 49 recurrences, debt 1, deferred 81; CP2 491/491 accepted, CP3/selector497 unpromoted.
+
 ## 2026-11-16 — RA-241 edge-transit seed conformance outcome (P13-e candidate; fixes frozen)
 
 [RA-241](Architecture_M6_CP3_DEFN_P13_Edge_Transit_Seed_Conformance_Outcome_Review_20261116.md): TB121 accepted. The AX1 carrier seed moves no owner in the 947 gate rows, Cylinder or Vase, and moves BunnyRandom vertex 137 to an outflowing owner. The user answered D12 = A. CB141 freezes both fixes: the carrier seed (O44), and the outflow follow (cross, or slide by the exact edge-port rule) for vertices 349 and 48. The BunnyRandom terminal stays a non-stable P13-e candidate until TB122 measures it. Stable accounting is unchanged (66/17/49, debt 1, deferred 81).
