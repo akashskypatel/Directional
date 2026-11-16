@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb120-doc-closeout-20261116-retry-b",
+  "request_id": "m6-cp3-tb120-authority-correction-20261116-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb120-doc-closeout-retry-b",
-  "file_id": "1KSgKwM0qwb57M6xa3BxBF323NjFQOlb8",
-  "patch_sha256": "73639348713a7787e27a3da7182a732ea5684784820f748ea6714d999dbb63be",
-  "base_sha": "8f4da25f9730164740c79888e864d5d150995c73",
+  "mailbox_key": "m6-cp3-tb120-authority-correction",
+  "file_id": "1F26tgAPump0lmiKVvoBz7RJaXxpHRf5g",
+  "patch_sha256": "26f2281a153126c5cd7a214de82009a7301fd4555f6a306c74e6d2187e9bd5e0",
+  "base_sha": "76bd4672d821cac66c1a58244a9e5af241bfffee",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record TB120 scoped gate and census evidence",
+  "commit_message": "docs(directional): correct stale TB120 handoff headings",
   "retention_days": 14
 }
