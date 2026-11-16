@@ -1,6 +1,6 @@
-## CURRENT — CB138 compiled: obtuse-face edge port and exact slide; TB119 next (P13-e.11), 2026-11-16 UTC
+## CURRENT — TB119 scoped MATCH; BunnyRandom now reaches network continuation (P13-e.11), 2026-11-16 UTC
 
-> **Canonical next:** `M6-CP3-TB119-P13-OBTUSE-EDGE-PORT-SLIDE-FULL-GATE-EXEC` (implementation agent, artifact-only). CB138 [record](.agents/Directional/Architecture_M6_CP3_CB138_P13_Obtuse_Edge_Port_Slide_Code_Build_Record_20261116.md): [compile 43796972574](https://github.com/akashskypatel/Directional/actions/runs/43796972574) SUCCESS, package `14195465639` SHA-256 `5f7cc46b03b491f95ec907bfccc3a81afd4f36d3cb49330494df2de4fed498ac`, 28/28 verified, eight GMP/GMPXX targets, `runtimeExecution=false`.
+> **Canonical next (separate Review):** `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME`. [TB119 report](.agents/Directional/Architecture_M6_CP3_TB119_P13_Obtuse_Edge_Port_Slide_Full_Gate_Execution_Report_20261116.md): gate 947/947 PASS, 1,028 membership, 1,902 hashes; census Cylinder PASS, BunnyRandom/Vase registered RED, 9 hashes. BunnyRandom vertex367 both ports attached and both departures execute; new first terminal `NotProductionReady/field-aligned-network`, `BranchContinuationDegenerateEntry`. No CP3 promotion.
 > - [Exact patch](.agents/Directional/Architecture_M6_CP3_CB138_P13_Obtuse_Edge_Port_Slide_Exact.diff) `53985fef66e2e7262d4624c79f5b037e58e4760f4db18403d37c683a4e0e5d60`: 334 lines, keep 5 single-space context lines; 4 files, `+211 −25`.
 > - Base: HEAD `c8bd85e5c`. Authority: [RA-238 §4](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Edge_Port_Trace_Outcome_Review_20261116.md).
 
@@ -10,9 +10,9 @@
   - Fix: A1 attaches iff T = d·(x_far − x_S) > 0 in both faces (exact). A2a's edge-port departure slides to the far vertex through `resolve_field_edge_port_slide`.
   - New test `FieldTransportAtlas.PublishesEdgeSupportedPortFromFaceObtuseAtVertex` uses a planar fan with a 140° face. It fails on CB137.
 - [x] **P13-e.10 / CB138 COMPLETE** — exact patch applied at `2e551bdd9ac72ccf3cd65326d58aa7911adee36f`; [compile 43796972574](https://github.com/akashskypatel/Directional/actions/runs/43796972574) SUCCESS, artifact `14195465639`, 28/28 hashes, GMP/GMPXX, `runtimeExecution=false`; [record](.agents/Directional/Architecture_M6_CP3_CB138_P13_Obtuse_Edge_Port_Slide_Code_Build_Record_20261116.md). No tests or benchmarks.
-- [ ] **P13-e.11 / TB119 (NEXT)** — manifest TB118 + row 947 (`3aac432b…`, `SELF_CHECK_PASS cases=947 deferred=81`, membership 1,028) plus the census.
+- [x] **P13-e.11 / TB119 (scoped MATCH)** — manifest TB118 + row 947 (`3aac432b…`, `SELF_CHECK_PASS cases=947 deferred=81`, membership 1,028) plus the census.
   - MATCH: row 947 has two attached edge ports; BunnyRandom `(170,367) attached=1` with no vertex-367 mismatch.
-  - Record BunnyRandom's next blocker.
+  - Observed next first terminal: `BranchContinuationDegenerateEntry` in field-aligned network; Review owns cause and repair.
 - [ ] **P13-e.12 / Review only** — `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME`.
 - [ ] **O43 (new):** ordinary grazing decides its slide with the endpoint-rate proxy, which can disagree with the exact along-edge rule. Measure per gate row before switching it.
 - [ ] **O42:** contact classification ignores the slide part of grazing segments and edge-port departures.
@@ -25,7 +25,7 @@
 | P13-e.8 COMPLETE (scoped MATCH) | `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC` | implementation agent |
 | P13-e.9 COMPLETE | `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME` (RA-238) | Review |
 | P13-e.10 COMPLETE | `M6-CP3-CB138-P13-OBTUSE-EDGE-PORT-SLIDE` — source `2e551bdd9…`; compile 43796972574 SUCCESS, immutable artifact `14195465639`, 28/28 | implementation agent (compile only) |
-| P13-e.11 | `M6-CP3-TB119-P13-OBTUSE-EDGE-PORT-SLIDE-FULL-GATE-EXEC`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB119A-P13-OBTUSE-EDGE-PORT-SLIDE-ORCH` | implementation agent (artifact only) |
+| P13-e.11 COMPLETE (scoped MATCH) | `M6-CP3-TB119-P13-OBTUSE-EDGE-PORT-SLIDE-FULL-GATE-EXEC`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB119A-P13-OBTUSE-EDGE-PORT-SLIDE-ORCH` | implementation agent (artifact only) |
 | P13-e.12 | `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME` | **Review agent only** |
 | then | 65A → 65D (O41, activation in 65C); O31/O32 | Review, then implementation |
 
