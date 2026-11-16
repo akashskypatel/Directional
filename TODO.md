@@ -1,6 +1,6 @@
-## CURRENT — RA-240 complete; CB140 compile-only next (P13-e.16); D12 pending, 2026-11-16 UTC
+## CURRENT — CB140 compiled; TB121 artifact-only next (P13-e.17); D12 pending, 2026-11-16 UTC
 
-> **Canonical next:** `M6-CP3-CB140-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT` (implementation agent, compile only). [RA-240](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vertex_Transit_Outflow_Outcome_Review_20261116.md) §5: [exact patch](.agents/Directional/Architecture_M6_CP3_CB140_P13_Edge_Transit_Seed_Conformance_Receipt_Exact.diff) `2e135b8c…`, 123 lines, 1 file `+105`.
+> **Canonical next (separate turn):** `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC` (artifact only), RA-240 §6. CB140 [compiled record](.agents/Directional/Architecture_M6_CP3_CB140_P13_Edge_Transit_Seed_Conformance_Receipt_Code_Build_Record_20261116.md): frozen +105-line diagnostic applied to source `6a293e4641a2160cb9f447322c9aa1d1d26f3838`, [compile 43825208976](https://github.com/akashskypatel/Directional/actions/runs/43825208976) SUCCESS, package `14206223032`, `runtimeExecution=false`. No tests or D12 implementation.
 
 - [x] **P13-e.15 / RA-240** completed `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME`.
   - TB120 accepted as scoped MATCH (artifacts re-verified; P1–P3 hold).
@@ -17,8 +17,8 @@
 |---|---|---|
 | P13-e.14 COMPLETE (scoped MATCH) | `M6-CP3-TB120-P13-VERTEX-TRANSIT-OUTFLOW-RECEIPT-FULL-GATE-EXEC` | implementation agent (artifact only) |
 | P13-e.15 COMPLETE | `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME` (RA-240) | Review |
-| **P13-e.16 NEXT** | `M6-CP3-CB140-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT`. Mismatch → `M6-CP3-PLAN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-STOP`; infrastructure → `M6-CP3-CB140A-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-ORCH` | implementation agent (compile only) |
-| P13-e.17 | `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB121A-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-ORCH` | implementation agent (artifact only) |
+| **P13-e.16 COMPLETE / COMPILE GREEN** | `M6-CP3-CB140-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT`. Mismatch → `M6-CP3-PLAN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-STOP`; infrastructure → `M6-CP3-CB140A-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-ORCH` | implementation agent (compile only) |
+| **P13-e.17 NEXT** | `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB121A-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-ORCH` | implementation agent (artifact only) |
 | P13-e.18 | `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME` (AX1 switch from counts; D12) | **Review agent only** |
 | then | 65A → 65D (O41, activation in 65C); O31/O32 | Review, then implementation |
 

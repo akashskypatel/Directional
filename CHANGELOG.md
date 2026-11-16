@@ -1,3 +1,7 @@
+## 2026-11-16 UTC — CB140 edge transit seed conformance receipt compiled (P13-e.16)
+
+- [CB140 record](.agents/Directional/Architecture_M6_CP3_CB140_P13_Edge_Transit_Seed_Conformance_Receipt_Code_Build_Record_20261116.md): frozen RA-240 +105-line diagnostic applied as source `6a293e4641a2160cb9f447322c9aa1d1d26f3838`. [Compile 43825208976](https://github.com/akashskypatel/Directional/actions/runs/43825208976) SUCCESS, package `14206223032`, SHA-256 `98acb75fbed52ab6909be65d165310ac8dfe0c75a5be5117aed473c4fd7db089`, `28/28` internal hashes, eight GMP/GMPXX targets and `runtimeExecution=false`. No runtime/tests/benchmarks, no decision, selector or recovery change. Next separate artifact-only turn `M6-CP3-TB121-P13-EDGE-TRANSIT-SEED-CONFORMANCE-RECEIPT-FULL-GATE-EXEC`; D12 pending, O42/O43/O44 open, CP2 491/491 and stable 66/17/49 unchanged.
+
 ## 2026-11-16 UTC — RA-240 vertex transit outflow outcome (P13-e.15)
 
 - [RA-240](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Vertex_Transit_Outflow_Outcome_Review_20261116.md): TB120 accepted. The AX1 carrier-ray seed fixes BunnyRandom's terminal star (vertex 137) but not vertices 349 and 48, where the Amendment 22 owner has no outflow (D12, pending user decision). Froze the diagnostic CB140 [exact patch](.agents/Directional/Architecture_M6_CP3_CB140_P13_Edge_Transit_Seed_Conformance_Receipt_Exact.diff) `2e135b8c…` and TB121. No source change.
