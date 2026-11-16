@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb142-doc-closeout-20261116-v2",
+  "request_id": "m6-cp3-tb123-focused-doc-closeout-20261116-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb142-doc-closeout-v2",
-  "file_id": "1sgD0Yhlw4IA-49ESehGl8FQvwMDOm_gD",
-  "patch_sha256": "595fd1e9797217a27f87c1fcda9ea50b7e0aa64adceeadfd2b8ddfd708aa260d",
-  "base_sha": "87388255d4e1dab1b42adb7ed4b1c1bba328e318",
+  "mailbox_key": "m6-cp3-tb123-focused-doc-closeout-v1",
+  "file_id": "18rDd48IP9socuq1iHeOYP4Ay0F78Z-qt",
+  "patch_sha256": "1ffeb49e0c995767df3bde7a4bd35ba9f52b194900a99ac9c21c16cc88318e40",
+  "base_sha": "4e3ce84630bc83a3914d0699e4caa81caf49a11f",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB142 oracle compile and hand off TB123",
+  "commit_message": "docs(directional): record scoped TB123 cross-face oracle test evidence",
   "retention_days": 14
 }
