@@ -1,3 +1,9 @@
+## 2026-11-16 UTC — TB118 scoped MATCH: 946-case edge-supported port gate and production census (P13-e.8)
+
+- [TB118 report](.agents/Directional/Architecture_M6_CP3_TB118_P13_Edge_Supported_Port_Trace_Full_Gate_Execution_Report_20261116.md): CB137 immutable package `14190250585`, source `4a63be7a17b5784f0fa742883bbf99e4fe546360`; [gate 43788910187](https://github.com/akashskypatel/Directional/actions/runs/43788910187) **946/946 PASS**, 1,027 memberships, 1,900 hashes; [census 43788935665](https://github.com/akashskypatel/Directional/actions/runs/43788935665) Cylinder PASS, BunnyRandom/Vase registered RED, 9/9 hashes. Neither run rebuilt.
+- BunnyRandom now attaches vertex49's `(48,49)` edge port and fails first at vertex367 (`SingularityPortClassCountMismatch`); 2 straddles, only 1 attaches. No trace/departure ran. Five inherited raw logs vary only in duplicated legacy diagnostic text; receipt lines and 945 inherited test verdicts unchanged.
+- This is a **non-stable P13-e candidate**, not a new accepted regression; stable 66/17/49, debt1, deferred81, CP2 491/491 unchanged. No CP3/selector497 promotion; `chainRimSchedules=false`. O42 retained. **Next separate turn:** Review-only `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME` (P13-e.9). No successor work was started.
+
 ## 2026-11-16 UTC — CB137 edge-supported singularity port trace compiled (P13-e.7)
 
 - [CB137 record](.agents/Directional/Architecture_M6_CP3_CB137_P13_Edge_Supported_Port_Trace_Code_Build_Record_20261116.md): frozen RA-237 five-file patch (311 additions, 8 deletions) committed at `4a63be7a17b5784f0fa742883bbf99e4fe546360`. Compile [run 43784411304](https://github.com/akashskypatel/Directional/actions/runs/43784411304) SUCCESS; immutable package `14190250585` (ZIP SHA-256 `4ec81008bfb8270d2299005a5ec6f08ad57fb99ef00676001f680cb476fee8e3`), internal checksum verification 28/28.

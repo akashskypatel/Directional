@@ -1,8 +1,6 @@
-## CURRENT — CB137 compiled edge-supported port + departure (P13-e.7); TB118 next, 2026-11-16 UTC
+## CURRENT — TB118 scoped MATCH: vertex49 fixed, BunnyRandom next terminal vertex367 (P13-e.8); Review next, 2026-11-16 UTC
 
-> **Canonical next:** `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC` (artifact-only; do not rebuild).
-> - [Exact patch](.agents/Directional/Architecture_M6_CP3_CB137_P13_Edge_Supported_Port_Trace_Exact.diff) `0d3f2374a3260da70ea529c873b409187a0005f76f405d4791c3a10e35f0996e`: 470 lines, keep 9 single-space context lines; 5 files, `+311 −8`.
-> - Base: HEAD `95fe03fee`. Authority: [RA-237 §3](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Edge_Sliding_Separatrix_Trace_Review_20261116.md).
+> **Canonical next (separate turn):** `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME` (Review-only; RA-237 §5). [TB118 report](.agents/Directional/Architecture_M6_CP3_TB118_P13_Edge_Supported_Port_Trace_Full_Gate_Execution_Report_20261116.md): 946/946 gate PASS and 1,027 membership; production Cylinder PASS, BunnyRandom and Vase expected RED; BunnyRandom's new first terminal is vertex367. No A2a departure ran, no CP3/selector promotion.
 
 - [x] **P13-e.6 / RA-237** completed `M6-CP3-DEFN-P13-EDGE-SLIDING-SEPARATRIX-TRACE`.
   - The straddle is the precondition of A2a's existing grazing transit.
@@ -10,10 +8,8 @@
   - A2a departs at the vertex on that carrier and slides by the existing grazing path.
   - Test `FieldTransportAtlas.PublishesEdgeSupportedPortForRadialStraddle` uses a planar saddle fan, with a control and a straddle case.
 - [x] **P13-e.7 / CB137** — exact five-file patch compiled with GMP/GMPXX; source `4a63be7a17b5784f0fa742883bbf99e4fe546360`, [run 43784411304](https://github.com/akashskypatel/Directional/actions/runs/43784411304), package `14190250585`; runtime not executed.
-- [ ] **P13-e.8 / TB118 (NEXT)** — manifest TB117 + row 946 (`5fee837d…`, `SELF_CHECK_PASS cases=946 deferred=81`) plus the census.
-  - MATCH: inherited rows and Cylinder/Vase receipts unchanged; BunnyRandom vertex 49 `attached=1`, with the exact departure line.
-  - Record BunnyRandom's next blocker.
-- [ ] **P13-e.9 / Review only** — `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME`.
+- [x] **P13-e.8 / TB118 (scoped MATCH)** — 946/946, 1,900/1,900 hashes; census 3/3, 9/9 hashes. Vertex49 `attached=1`, next first terminal vertex367 `SingularityPortClassCountMismatch`; no trace/departure executed. Five inherited legacy raw diagnostic lines duplicate nondeterministically, but required receipts and verdicts agree.
+- [ ] **P13-e.9 / Review only (NEXT)** — `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME`.
 - [ ] **O42 (new):** contact classification ignores the slide part of grazing segments, and now of edge-port departures too.
 - **Carry:** CP2 491/491; stable 66/17/49, debt1, deferred81; CP3/selector497 unpromoted; `chainRimSchedules=false`; D10 defer; D6 pending; O41 and activation in 65C; O31/O32 open.
 
@@ -24,8 +20,8 @@
 | P13-e.5 COMPLETE (MATCH) | `M6-CP3-TB117-P13-EDGE-PORT-STRADDLE-CENSUS-FULL-GATE-EXEC` | implementation agent |
 | P13-e.6 COMPLETE | `M6-CP3-DEFN-P13-EDGE-SLIDING-SEPARATRIX-TRACE` (RA-237) | Review |
 | P13-e.7 COMPLETE | `M6-CP3-CB137-P13-EDGE-SUPPORTED-PORT-TRACE`. Mismatch → `M6-CP3-PLAN-P13-EDGE-SUPPORTED-PORT-TRACE-STOP`; infrastructure → `M6-CP3-CB137A-P13-EDGE-SUPPORTED-PORT-TRACE-ORCH` | implementation agent (compile only) |
-| **P13-e.8 NEXT** | `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB118A-P13-EDGE-SUPPORTED-PORT-TRACE-ORCH` | implementation agent (artifact only) |
-| P13-e.9 | `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME` | **Review agent only** |
+| **P13-e.8 COMPLETE (scoped MATCH)** | `M6-CP3-TB118-P13-EDGE-SUPPORTED-PORT-TRACE-FULL-GATE-EXEC`. Mismatch → `…-FULL-GATE-REV`; infrastructure → `M6-CP3-TB118A-P13-EDGE-SUPPORTED-PORT-TRACE-ORCH` | implementation agent (artifact only) |
+| **P13-e.9 NEXT** | `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME` | **Review agent only** |
 | then | 65A → 65D (O41, activation in 65C); O31/O32 | Review, then implementation |
 
 ## CURRENT — TB117 full gate MATCH (P13-e.5); edge-sliding Review next, 2026-11-15 UTC
