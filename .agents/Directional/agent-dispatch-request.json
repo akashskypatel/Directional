@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb140-edge-seed-compile-20261116-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb140-edge-seed-compile",
-  "source_sha": "6a293e4641a2160cb9f447322c9aa1d1d26f3838",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb140-edge-seed"
+  "request_id": "m6-cp3-cb140-doc-closeout-20261116-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb140-doc-closeout",
+  "file_id": "1yYPlQH6zV68M2sBUnvS4a9rJ8tlfX6c-",
+  "patch_sha256": "4fc24a94f757faa2085dd5ef12a50e737c39a2ec398bc8f7964a7b5ecf7958d7",
+  "base_sha": "e945c08b3e42383bd0cb60b1e3e4ce991cb69f91",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB140 and authorize TB121",
+  "retention_days": 14
 }
