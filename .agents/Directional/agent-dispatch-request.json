@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb142-cross-face-oracle-compile-20261116-v2",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb142-cross-face-oracle-compile-v2",
-  "source_sha": "57b28b737fd92b083d24d882152dea186211f735",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb142-oracle"
+  "request_id": "m6-cp3-cb142-doc-closeout-20261116-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb142-doc-closeout",
+  "file_id": "1Luv4IvUz5m9y7VwWfMnbJJf3ILKoNZ1J",
+  "patch_sha256": "f9680087200e3460785bffc86175e8f9bc9c95e7f496f782f8eeb670022c20c6",
+  "base_sha": "87388255d4e1dab1b42adb7ed4b1c1bba328e318",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB142 oracle compile and hand off TB123",
+  "retention_days": 14
 }
