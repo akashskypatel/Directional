@@ -1,3 +1,7 @@
+## 2026-11-17 — RA-251 re-review of the TB129 Review (non-stable)
+
+[RA-251](Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Independent_Review_20261117.md#ra-251--adversarial-re-review-of-this-review-2026-11-17-utc): MISMATCH/H1/replay upheld. O45 restated: the FC-7 common-carrier proxy covers every trace-trace contact except those whose segment lacks an incoming carrier. Incoming proxy → H1 rejection; outgoing proxy → passes with an edge locus and boundary cut of the struck trace (Amendment 13 violation, candidate in accepted output). Switch predicate must be node-level (barrier `FirstContact` events also carry edges). CB152 withdrawn; CB153 dry-run census → TB130 measures per-row incoming/outgoing counts. No stable event or debit; 66/17/49, debt 1, deferred 81.
+
 ## 2026-11-17 — TB129 independent Review (non-stable adjudication)
 
 [Review](Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Independent_Review_20261117.md): strict MISMATCH upheld despite 953/953 and all 951 former PASS records unchanged. All 68 receipts classified H1. Source proves construction plus Euler-census replay gives two prints per cut-graph rejection path; exact distinct network cardinality in other rows unknown. 54 lines outside allowed rows, two rather than one on BunnyRandom. Candidate belongs to diagnostic/comparison scope, not a new stable product failure. Falsifier: a changed semantic ledger field/digest or changed old receipt under diagnostic-only measurement; preserve R6 historical verdict, no production filtering to obtain MATCH.

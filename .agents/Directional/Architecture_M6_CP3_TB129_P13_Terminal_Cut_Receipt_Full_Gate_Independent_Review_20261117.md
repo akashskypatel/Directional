@@ -92,3 +92,72 @@ The exact contact classification is the likely correct general remedy under DESI
 | review_check.py boundary | Local script: product/test/fixture/build and selector checks PASS. The four history-dependent checks FAIL because the source snapshot has no historical Git objects. Independent GitHub comparison: rewrite base `8b7299b43764a6ba3444e5bc774a2f1b65e99731` is the merge base with snapshot `c696051657610733f071dea5c11b8ce3333352a5` (6,002 ahead, 0 behind). Direct reads of the three rewrite-base blobs establish 4/4 handoff, 1/1 orientation and 0/0 tracker protected headings retained. The history-dependent predicates are thus independently verified, not a claimed script PASS. Drift audit against the exact snapshot preimage: 0 errors, 3 authorized living-document warnings. |
 | STATUS lifecycle maintained | Active M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-REV, start 2026-11-17T13:15:57Z, first entry, resume empty. On verified closeout final direct COMPLETE beacon names the frozen successor and actual UTC end; otherwise IN_PROGRESS, no end. |
 | Pushed to origin, branch in sync | GitHub connector/dispatcher is the remote authority; verify successful applied commit and branch comparison before final beacon. Local snapshot is not an authenticated Git clone; no claim of local origin synchronization. |
+
+## RA-251 — adversarial re-review of this Review (2026-11-17 UTC)
+
+Runtime-free; `-fsyntax-only` only. **Upheld:** MISMATCH under RA-250 §R6; all 68 receipts are H1; R3's replay route (verified: `SurfaceCutGraph.cpp:1011–1016` → `annotate_failure_euler_census` → `build_arcs` at `:212`); rows 858/952 recovered. **Withdrawn:** the prose-only CB152 plan. Replaced by the exact CB153 diff below.
+
+### S0 — my RA-250 errors
+
+- §R6 froze "no other row contains `terminalCutBeforeEnd`" and "exactly one BunnyRandom line". I took the rows that *print* the reason (644/669/698) as the rows that *reach* the guard. 16 more rows build the same prescribed-sphere network without printing it. I also did not trace the failure replay, which runs `build_arcs` twice per rejection. The criterion was wrong; the measurement was right.
+
+### S1 — the common carrier is the generic case, not an exception
+
+Each segment's carriers are edges of its own face. A full crossing has two distinct ones. Two 2-subsets of a triangle's 3 edges always intersect, so `field_aligned_common_carrier` is empty only when a segment has no incoming carrier. That happens at the trace origin, after a vertex hit (`SurfaceCellTracing.cpp:3613–3667`) or after an edge transit (`:3822–3835`); the commit is at `:4523`. Consequences:
+- The exact face-contact collector (CB148/CB149) covers only those contacts. Every other trace-trace contact uses the FC-7 proxy.
+- If the proxy is the terminator's last incoming carrier, the trace ends at n−1 and is rejected (H1).
+- If it is the last outgoing carrier, the trace passes the end guard but is still wrong. `build_node_loci` (`EmbeddedGraphTopology.cpp:1372–1403`) gives the node an **edge locus**, and the struck trace is cut at a segment boundary instead of at its exact interior parameter. That violates Amendment 13 in output that may already be accepted.
+- So the switch is a conformance correction that can change accepted fixtures, not only a repair of failing ones. The Review's "Cylinder/Vase may have zero" framing is unlikely for any fixture with interior contacts. The decisive question is incoming vs outgoing, per row.
+
+### S2 — a blanket classification would break barrier terminations
+
+R4 calls exact contact classification "the likely general remedy". If that means dropping `!event.sourceEdge` from `is_face_contact_event`, it is wrong:
+- Barrier terminations publish an edge-carrying `FirstContact` on an appended contact node (`:3925`), paired with `MandatoryBarrierTermination`. They have no trace-trace Terminal incidence, so the collector would fail them (`ends.empty()` → `FaceContactBindingInvalid`).
+- `:2349` does the same at singularity port nodes.
+- The correct predicate is **node-level**: a non-port node that carries a `TraceIntersection` or `TraceSelfClosure` event. Only `field_aligned_publish_contact` (`:4062–4210`) produces such nodes, and it always writes `terminalContact` for an active terminator.
+- One exception, which the census must count: a Terminal incidence published for an already-inactive trace (`:4081`, `:4100`). It carries no record.
+
+### S3 — wrong population and form for CB152
+
+- **Wrong population.** CB152 observed only the direct acceptance test (gate rows 795/796/797/864 plus the three census cases). The switch affects every row that reaches A2a′ (RA-228).
+- **Wrong form.** The plan was prose that the implementation agent would have to design, and it depended on a network snapshot that multi-component runs may not keep.
+- **Replacement.** The census belongs at the switch predicate itself, inside the product, gate-wide. It also gets a dry run of the exact binding.
+
+`build_embedded_graph_topology` is called from the SurfaceCutGraph certification loop (`SurfaceCutGraph.cpp:1011`) and from `GlobalTopologyPlan.cpp:2574`. Line counts therefore equal call counts and are not predicted.
+
+### S4 — CB153 exact diff (diagnostic only)
+
+`Architecture_M6_CP3_CB153_P13_Carrier_Proxy_Contact_Dry_Run_Exact.diff`: SHA-256 `c8b9bc2115c1bc40da9520f473949b50d52ad5866782e58cf09d1acdd205e350`, 171 lines, numstat `102 2 src/geometry/EmbeddedGraphTopology.cpp`, `7 2 src/geometry/EmbeddedGraphTopology.h`. Precheck `git diff --quiet c45e9abe5085f39c1f5bcb149ec07f95b719177e HEAD -- src include tests`.
+- `carrier_proxy_contact_nodes`: a pure function returning the non-port nodes that carry an edge-carrying `TraceIntersection`/`TraceSelfClosure` event.
+- `collect_face_contact_nodes(network, includeCarrierProxyContacts = false)`. Both production callers (`:1075`, `:1910`) use the default, so behaviour is unchanged.
+- `report_carrier_proxy_contacts`, called once per `build_embedded_graph_topology` before `build_arcs`. It prints nothing when there are no proxy nodes. Otherwise it prints one atomic line (`ostringstream`): `EmbeddedGraphTopology.carrierProxyContacts nodes= terminals= exactRecords= lastIncoming= lastOutgoing= neither= unresolved= exactBinding=ok contactNodes=k | invalid face= trace=`. The dry-run binding uses the flagged collector.
+- Check: `-fsyntax-only -Wall -Wextra -DUSE_GMP_ENABLED` rc 0 with 22 warnings, the same as HEAD; SurfaceCutGraph/GlobalTopologyPlan rc 0. Gap: there is no unit witness, because hand-built networks are impossible (RA-248). The witnesses are the TB130 positive controls.
+
+### S5 — TB130 frozen: `M6-CP3-TB130-P13-CARRIER-PROXY-CONTACT-FULL-GATE-EXEC`
+
+Uses the same gate `941287fa…` (953 rows), census `3af1dc0d…`, deferred `fd433f54…` and harness on the CB153 package; the comparator is the four TB129 archives. **MATCH** requires all of the following:
+1. Gate 953/953 PASS. Census: Cylinder PASS with 288 quads; BunnyRandom and Vase with the same RED dispositions.
+2. After deleting only complete lines that begin `EmbeddedGraphTopology.carrierProxyContacts `, every raw log equals TB129 under TB129's normalizations (elapsed time, row164 complete-line multiset, newline framing). Substantive ledger fields equal.
+3. Every `terminalCutBeforeEnd` line is unchanged per row.
+4. Every census line is well formed, with `terminals = lastIncoming + lastOutgoing + neither + unresolved` and `nodes ≥ 1`.
+5. Positive control: each of the 19 TB129 receipt rows and BunnyRandom has at least one census line with `lastIncoming ≥ 1`.
+
+**Data, not criteria:**
+- Which rows print census lines, and their values, including Cylinder and Vase.
+- The `exactBinding` outcomes.
+- Static predictions, where a violation goes to Review as data and is not a MISMATCH: `neither = 0` (S1); `exactRecords + unresolved = terminals`.
+- A row without a line had no proxy contact node in any topology build, so the switch cannot change it at A2a′. That absence is a real zero here, because the line is computed from the exact network that the build consumes.
+
+### S6 — Turn sequence
+
+1. CB153 (compile only).
+2. TB130.
+3. Review `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH`, which freezes FC-7′ from the TB130 rows:
+   - Contact nodes become face-contact nodes at `:1075`, `:1910` and in `build_node_loci` (`:1373`), using the S2 node predicate.
+   - Barrier and port `FirstContact` events keep their edge locus.
+   - The census print is removed.
+   - The switch ships unstaged only if no accepted row prints `lastOutgoing > 0`; otherwise it ships behind an off-by-default option first (RA-230).
+4. Switch CB, then TB.
+5. `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`, then FC-6.
+
+Held: H2 (not observed), O46, middle-piece direction witness, FC-1/FC-4, C5/O42/O43. O45 becomes the S1/S2 carrier-proxy defect; it stays open until the switch TB. CB145 parked. D11=A, D12=A, D10 deferred, D6 pending.

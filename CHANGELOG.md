@@ -1,3 +1,7 @@
+## 2026-11-17 UTC — RA-251 re-review of the TB129 Review
+
+- [RA-251](.agents/Directional/Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Independent_Review_20261117.md#ra-251--adversarial-re-review-of-this-review-2026-11-17-utc): MISMATCH, H1 and replay upheld; prose CB152 withdrawn. Exact diagnostic CB153 (`c8b9bc21…`, 171 lines, EmbeddedGraphTopology.cpp/.h) and TB130 criteria frozen. Next `M6-CP3-CB153-P13-CARRIER-PROXY-CONTACT-DRY-RUN`.
+
 ## 2026-11-17 UTC — TB129 independent Review (MISMATCH upheld)
 
 - [Review](.agents/Directional/Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Independent_Review_20261117.md): four exact archives, 3,846/3,846 internal checks, 1,912 raw-log bindings, 953/81 membership and accepted prefix independently verified. All 951 prior PASS rows preserved, 858/952 restored. All 68 receipts H1; 54 lines outside allowed rows and two BunnyRandom lines violate R6. The cut-graph construction and Euler-census replay explain duplicate receipts; no counting of lines as distinct networks. Cylinder/Vase contact counts unknown. FC-7 general proxy rule disproved; no replacement or promotion. Stable 66/17/49, debt1, deferred81; CP2 491/491. No runtime or product/test/fixture/selector mutation.

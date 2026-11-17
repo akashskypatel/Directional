@@ -291,6 +291,12 @@ This document records **reusable failure-derived engineering lessons**, not an e
   was never checked against the A2a′ end-cut guard. A common carrier equal to the terminator's
   incoming edge resolves to n−1 by construction. When a definition keeps a proxy, trace it
   through each consumer's acceptance predicate for every role it serves.
+- **Ask how often a proxy fires before scoping its replacement (RA-251).** A pigeonhole check
+  (two 2-subsets of a triangle's three edges always intersect) showed the "exception" proxy was
+  the generic contact case, and that its passing branch was also wrong (edge locus). Measure a
+  switch at its own predicate inside the product, across every gate row, not with one test's
+  observer. Make the switch predicate as narrow as the record that justifies it (node-level
+  TraceIntersection/SelfClosure, not "any contact kind"): other producers share the event kind.
 - **Publish typed, lossless failures from the stage that owns them.** One error label emitted from many
   conditions is an ambiguity, not localization. Give distinct reachable causes with the complete failed
   source object, stage, branch, identity, numeric operands and authoritative support; never collapse

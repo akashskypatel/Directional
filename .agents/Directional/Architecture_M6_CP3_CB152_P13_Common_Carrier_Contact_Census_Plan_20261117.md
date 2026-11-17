@@ -1,4 +1,4 @@
-# CB152 — common-carrier contact census (frozen by TB129 independent Review)
+# CB152 — common-carrier contact census — **WITHDRAWN by RA-251** (prose-only, wrong population; replaced by the exact CB153 diff, see [TB129 Review §RA-251](Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Independent_Review_20261117.md#ra-251--adversarial-re-review-of-this-review-2026-11-17-utc))
 
 **Exactly next:** `M6-CP3-CB152-P13-COMMON-CARRIER-CONTACT-CENSUS`. Type: Code + Build, compile only. Start only after root STATUS marks `M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-REV` COMPLETE with this successor. Source authority CB151 `c45e9abe5085f39c1f5bcb149ec07f95b719177e`; verify no other semantic change. [Review](Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Independent_Review_20261117.md). This plan authorizes no semantic change and no runtime during CB152.
 
