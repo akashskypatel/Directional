@@ -1,0 +1,2 @@
+# CB144B — remove this turn's verified snapshot marker only
+.agents/connector-triggers/source-snapshot/cb144b-20261117.txt
