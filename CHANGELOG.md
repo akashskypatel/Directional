@@ -1,3 +1,9 @@
+## 2026-11-17 UTC — RA-246 adversarial re-review of TB126-REV
+
+- Re-verified RA-245: all four archives match, rows 1–950 are identical to TB125, and the six differing logs differ only in newline framing. Row 951's extent defect was RA-244's own test error; CB144B is sufficient (every assertion traced statically).
+- The face-only BunnyRandom locus excludes every edge-locus rotation site. CB144's changes reach none of the face-only sites, so the terminal is a pre-existing defect that CB144 exposed (candidate C5), not one it caused.
+- Froze test-only CB146: [diff](.agents/Directional/Architecture_M6_CP3_CB146_P13_Rotation_Terminal_Locus_Print_Exact.diff), SHA-256 `4f1fae63d0d3f2626f02c4f27d26a923e0a525173112556fefe50d9e5be56967`. It prints the rotation fields the locus already publishes. Also froze TB127 MATCH criteria and replaced the `UNKNOWN` step after CB144B. Sequence: CB144B → CB146 → TB127 → `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME`.
+
 ## 2026-11-17 UTC — RA-245 TB126 independent Review adjudication
 
 - [Independent Review](.agents/Directional/Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md): reverified all four TB125/TB126 result archives, exact gate prefix and ledger/logs. TB126 950/951; row951 typed trace ID extent failure confirmed statically. No inherited accepted-green loss. New BunnyRandom rotation-system terminal separately unresolved; no product repair or promotion.

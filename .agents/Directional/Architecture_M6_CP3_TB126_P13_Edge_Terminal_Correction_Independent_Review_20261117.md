@@ -64,3 +64,159 @@ Process limitations: Snapshot pre-read order was violated on initial direct hand
 Continuation snapshot: `6ef77580617731bc2d5e364b924c706ad9bb0b34`, run 44013231485, job 133805053077, artifact 14297377278, outer SHA-256 `a15f0ff45d64655463de4aaef8b637e41920d66faec91f8ef37ffef87c1a8997`, inner SHA-256 `9cc8fe4e99e20efe80ec9e255735f0c34b39929f03b240c32ff4f07350089b54`, 5,580/5,580 checksums. Runtime=false. The original continuation note is preserved in [Volume D3](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb126_review_closeout_continuation_20261117md); never replay its old duties after final closeout.
 
 Continuation local verification: 74 complete archived bodies and original hashes verified against the snapshot (72 folded files, two navigation preimages); 173 live references redirected, including three previously broken root-relative references. Document drift audit: zero errors, three protected-document change warnings (authorized Review maintenance under CLEAN_UP_POLICY/REVIEW_TURN_POLICY; all protected headings preserved). Local boundary re-run: product/test/fixture/build and selector checks PASS; four historical-object checks remain unavailable in the synthetic repository as above. All changed paths are Markdown; frozen successor patch unchanged. No runtime or successor execution.
+
+## Owner-requested adversarial re-review (RA-246, 2026-11-17 UTC)
+
+The owner asked for a critical re-review of this turn. It stays runtime-free: two Haiku agents re-downloaded the artifacts, and the source checks were `-fsyntax-only` and reading code.
+
+### 1. What RA-245 got right (re-verified)
+
+- **Archives.** The ZIP SHA-256 of TB125 gate, TB126 gate, TB125 census and TB126 census all match. Checksums: TB125 gate 1,908/1,908 OK, TB126 gate 1,910/1,910 OK.
+- **Gate rows 1–950.** All 11 ledger fields, excluding the log hash, are identical to TB125; 0 cells differ.
+  - Six raw logs differ: rows 156, 173, 190, 191, 477 and 705.
+  - In each, the text is identical once newlines are removed, and the `M3_CP4AB_FRAGMENT_DIAG` marker counts are equal (4/4/8/4/4/8). One side joins two records on one line followed by a blank line. This is the known concurrent-`std::cerr` framing (RA-243), nothing more.
+- **Row 951.** The log is `std::get: wrong index for variant`, and the cause is `trace(38)` built with extent 16.
+- **The CB144B fix is sufficient.**
+  - After it, every index is in range: nodes {0,1,7,8,9,10,11,12,13} < 16, traces {2,3,4,5,6,9,10,38} < 39.
+  - I traced every assertion of the test against `split_mandatory_edge_at_terminals` as committed. Every one holds:
+    - chains of 1, 2 and 3 pieces;
+    - the 1/3 versus 1/3 + 2⁻⁶⁰ pair, which rounds to the same double either way;
+    - `EqualParameters`(5, 6), including when both cuts share node 10, where the equality check fires before the shared-node check;
+    - `TerminalAtEndpoint`(9);
+    - `SharedNode`(9).
+  - So CB144B should give PASS, not a second MISMATCH.
+  - CB144B still applies at HEAD; `src include tests` has not changed since CB144 `7b0668d43`.
+- **Correction of my own record.** The row-951 defect is mine. RA-244 froze the test and called it non-vacuous, but `-fsyntax-only` cannot see a runtime extent contract, and I never checked the `from_index` extents against the IDs used. See the new lesson in LESSONS.md.
+
+### 2. Where RA-245 is wrong or incomplete
+
+**F1. The turn sequence had no reachable exit.**
+- Step 2 of the handoff sequence was `UNKNOWN`, and it said "no additional turn is authorized".
+- So after CB144B the implementation agent had no canonical turn to run, which breaks RA-172.
+- Fixed below: TB127 and the outcome Review now have IDs.
+
+**F2. The planned follow-up TB would have learned nothing about BunnyRandom.**
+- RA-245's TB re-runs the census and requires it to be *identical* to TB126, because product source is unchanged.
+- That run cannot tell us anything new about the blocker. Only after it would a separate diagnostic CB and TB print the subreason: two full CB→TB→Review cycles to reach one fact.
+- Per RA-235/RA-242: the typed fields already exist in `RemeshResult::diagnostics.terminalFailureLocus`, filled by `project_surface_cut_graph_failure_locus` (`RemeshPipeline.cpp:390–548`).
+  - That includes `rotationSystemInconsistencyReason`, `sourceVertex`, `trace`, `arc`, `traceEventIndex`, both rays and the fan census.
+  - Only the census formatter `failure_locus` (`tests/SurfaceCellDesignAcceptanceTests.cpp:45–68`) drops them.
+- Printing them is a test-only change. Its message is only built when the assertion at `:434` fails, so it is gate-neutral: the gate rows that run this test PASS.
+- It belongs in the same TB as the CB144B fix.
+
+**F3. "Introduced vs pre-existing" can be narrowed now, from source.** RA-245 left both open. The printed locus has a face and no edge (`locus face=(5,104,359) history=0`), and that already excludes most failure sites:
+- **Every edge-locus site sets `sourceEdge`, which would print.** These are `EdgeTraceFaceSideInvalid` (`:1790`), `EdgeTraceSecondaryRankInvalid` (`:1805`), `RotationEdge*`, and `RotationEdgeRayEndpointDirectionUnavailable` (`:1788` area).
+- **Face-walk and Euler failures carry no face.**
+- **The sites that can print a face with no edge** are:
+  - `TraceEventPositionInvalid`/`TraceEventPositionNodeConflict` on a face or vertex event (`:706`/`:723`);
+  - `EventNodeLocusMissing` with no event edge (`:904`);
+  - `EventLocusMissingSourceEdge` (`:914`);
+  - the vertex-locus trace failures (`:1545`/`:1561`/`:1576`);
+  - the vertex trace same-rank collision (`:1862`).
+- **CB144 changed only two things:** the Mandatory drafts in `build_arcs`, and the Mandatory branch of `edge_ray_points_to_second_endpoint`.
+  - The direction helper is read only for edge-locus Mandatory/Cut rays.
+  - None of the face-only sites reads a Mandatory draft's interval or direction. Trace-event positions, locus registration and trace-ray vertex keys all come from network events and traces. The collision is between two Trace rays.
+- **Conclusion:** CB144 cannot be the direct rejecting cause. BunnyRandom never reached any code after `build_arcs` before CB144, so this is a pre-existing defect that CB144 exposed.
+- **Two caveats:**
+  - The direction rule's correctness at runtime is still unproven (the RA-244 gap). A wrong but non-failing direction would show up later, in the face walk.
+  - The exact site is still unknown, which is what CB146 measures.
+- **So C3's own predicate is met.** The `build_arcs` multi-cut rejection is gone, and BunnyRandom does not fail at `InvalidNetworkBinding` or `RotationEdgeRayEndpointDirectionUnavailable` on either split edge.
+  - C3 closes at TB127 MATCH, together with the green row 951.
+  - The rotation terminal is a new non-stable candidate, **C5**, owned at A2a′/rotation.
+
+**F4. Process items for the record (not design defects).**
+- RA-245's closeout has lines about Drive staging, timers and missing tool-call ledgers. I took no action on them.
+- The record's "exact multisets … matching records" holds only after newline normalization; the strict per-line multisets differ. That is harmless, but the statement should be read that way.
+
+### 3. Realigned sequence
+
+| # | Turn | Owner | Status |
+|---|---|---|---|
+| 1 | `M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-REV` (RA-245 + RA-246) | Review | COMPLETE |
+| 2 | `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION` | Code + Build (compile only, exact diff, unchanged) | NEXT |
+| 3 | `M6-CP3-CB146-P13-ROTATION-TERMINAL-LOCUS-PRINT` | Code + Build (compile only, exact diff, test-only) | then |
+| 4 | `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-EXEC` | Test + Benchmark (artifact only) | then |
+| 5 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME` | Review: close C3, classify C5, freeze the next CB | then |
+| parked | `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY` | Code + Build | after 5 |
+
+RA-245 named no routes for CB144B, so they are set here: mismatch → `M6-CP3-PLAN-P13-EDGE-TERMINAL-GUARD-EXTENT-STOP`, infrastructure failure → `M6-CP3-CB144BA-P13-EDGE-TERMINAL-GUARD-EXTENT-ORCH`. CB144B's own scope and diff are unchanged.
+
+Each turn can be tested on its own. CB144B and CB146 touch different files and apply in either order (both orders checked). CB146's package contains both, so TB127 runs one package. No Review turn is added.
+
+### 4. CB146 frozen
+
+**Patch:** `Architecture_M6_CP3_CB146_P13_Rotation_Terminal_Locus_Print_Exact.diff`.
+- SHA-256 `4f1fae63d0d3f2626f02c4f27d26a923e0a525173112556fefe50d9e5be56967`.
+- 72 lines.
+- Numstat `61 0 tests/SurfaceCellDesignAcceptanceTests.cpp`. Blob preimage `302ce62d`, postimage `c7108034`.
+
+**Content:** `failure_locus` appends, after the existing ` history=N`, each locus field that is present:
+- ` vertex=`, ` rotationReason=`, ` vertexSecondaryReason=`, ` edgeSecondaryReason=`;
+- ` trace=`, ` secondTrace=`, ` arc=`, ` secondArc=`;
+- ` eventIndex=`, ` eventPositionReason=`, ` eventPositionPass=`;
+- ` previousRay=[…]`, ` currentRay=[…]`;
+- ` fanRays=N[+truncated]`, followed by each ` fanRay=[kind arc trace orientation primary secondary face fanSlot]`.
+
+Every earlier field and its order is unchanged, so every TB126 terminal line must stay an exact prefix.
+
+**Verification:**
+- `git apply --check` passes at HEAD, alone and stacked with CB144B in either order.
+- `-fsyntax-only -Wall -Wextra -DUSE_GMP_ENABLED` returns 0, with 27 warnings, the same set as HEAD.
+
+**Do not:** touch product or other test files, add fields the locus does not already publish, or run anything.
+
+**Routes:**
+- Mismatch → `M6-CP3-PLAN-P13-ROTATION-TERMINAL-LOCUS-PRINT-STOP`.
+- Infrastructure failure → `M6-CP3-CB146A-P13-ROTATION-TERMINAL-LOCUS-PRINT-ORCH`.
+
+The package is the eight RA-245 targets, built from CB144B + CB146 source.
+
+### 5. TB127 frozen
+
+**Package:** the CB146 package. **Gate manifest:** TB126's `44d5a734…` unchanged (951 rows, membership 1,032). **Census:** `3af1dc0d…` unchanged.
+
+**MATCH requires all of the following.**
+
+Gate:
+- 951/951 PASS, 0 skipped, valid postflight.
+- Rows 1–950: ledger fields identical to TB126. Raw logs may differ only in elapsed time and the newline framing of `M3_CP4AB_FRAGMENT_DIAG` (newline-free text equal).
+- Row 951 PASS, with no exception text.
+- No inventory line in the gate.
+
+Census, for every case:
+- Every line is identical to TB126 after normalizing ms timings and gtest `GetParam()` byte dumps, except the `terminal=` line.
+- On the `terminal=` line, TB126's text must be an exact prefix of TB127's.
+- Cylinder PASS, 288 quads.
+- Vase RED, with an unchanged prefix.
+- BunnyRandom RED, with an unchanged prefix (`origin=RotationSystemInconsistent … locus face=(5,104,359) history=0`), the same four inventory lines, and a non-empty ` rotationReason=` suffix.
+  - If the reason is missing, the projection is losing fields: MISMATCH.
+
+**Record, without deciding MATCH:** the BunnyRandom suffix, verbatim.
+
+**Prediction (pre-registered from §2 F3):** the reason is one of the face-only reasons:
+- `TraceEventPositionInvalid`, `TraceEventPositionNodeConflict`;
+- `EventNodeLocusMissing`, `EventLocusMissingSourceEdge`;
+- `VertexTraceFaceMissingFromFan`, `VertexTracePortOrdinalInvalid`, `VertexTraceSecondaryParameterUnavailable`;
+- a vertex trace collision reason.
+
+An edge-locus reason would falsify F3, and the outcome Review must then reopen CB144's direction rule first.
+
+**Routes:**
+- Mismatch → `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-REV`.
+- Infrastructure failure → `M6-CP3-TB127A-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-ORCH`.
+- MATCH → Review-only `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME`.
+
+### 6. Work for the outcome Review (no runtime in it)
+
+- Close C3 on the two pieces of evidence above.
+- Classify C5 by the printed reason. Join the printed trace, vertex or event with the four terminal traces (107, 38, 92, 41), nodes (149, 178, 184, 162) and vertices (241, 251, 278), and read the owning predicate.
+- Freeze the next narrow CB at the owning stage, with a unit test that reaches the rejecting predicate.
+- Separately, freeze a rotation-level test of the middle-piece direction (the RA-244 gap). This becomes urgent if BunnyRandom's next terminal is a face walk.
+
+**Carried:**
+- Open: O42, O43, C3 (until TB127), and C5 (new, non-stable).
+- Closed: O44, C1.
+- Decisions: D11 = A, D12 = A, D10 deferred, D6 pending.
+- Counts: stable 66/17/49, debt 1, deferred 81; CP2 491/491.
+- CP3/selector497 unpromoted; `chainRimSchedules=false`.
+- DESIGN.md unchanged.

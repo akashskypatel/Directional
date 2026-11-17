@@ -1,3 +1,12 @@
+## 2026-11-17 — RA-246 adversarial re-review of TB126-REV (non-stable)
+
+- **Row 951:** the invalid extent was RA-244's authoring error, and CB144B is sufficient.
+- **C5 (new, non-stable):** BunnyRandom `RotationSystemInconsistent`, face `(5,104,359)`.
+  - The face-only locus rules out edge-locus sites, including CB144's direction rule, so C5 is a pre-existing A2a′/rotation defect that CB144 exposed.
+  - Its exact site waits for CB146/TB127.
+- **C3** closes at TB127 MATCH.
+- **Counts unchanged:** stable 66/17/49, debt 1, deferred 81.
+
 ## 2026-11-17 — RA-245 independent TB126 review (non-stable; C3 remains open)
 
 [RA-245](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md): row951 invalid typed-ID witness extent, source-confirmed: `TraceId::from_index(38,16)` returns `IndexOutOfRange`; unchecked `value()` throws before the two-cut producer call. No previously accepted green lost. Owner is test input construction; exact test-only CB144B correction, not product repair. BunnyRandom new non-stable P13-e terminal `RotationSystemInconsistent` / `CellularityNotEstablished`, face `(5,104,359)`: cut graph returned typed failure; formatter omits subreason and exact rejecting site is not established. Carry this as separate unresolved evidence, not a stable ID or a proven introduced regression. All 950 inherited gate rows and meaningful raw receipts match; four inventory lines unchanged; census Cylinder PASS, Vase RED unchanged. No promotion. Stable 66/17/49, debt1, deferred81; CP2 491/491 package `11391685901`; C3/O42/O43 open, O44/C1 closed. Next only `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION`.

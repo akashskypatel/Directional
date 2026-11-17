@@ -1,4 +1,23 @@
-## CURRENT — TB126 independent Review adjudication (2026-11-17 UTC)
+## CURRENT — RA-246 adversarial re-review of TB126-REV (2026-11-17 UTC)
+
+**Findings:**
+- RA-245's evidence and its CB144B fix are confirmed. After the fix, every assertion of row 951 holds when traced statically against the committed split.
+- The row-951 defect was RA-244's own test error.
+- **F1.** The sequence had no exit after CB144B (`UNKNOWN`).
+- **F2.** The planned census re-run could not have told us anything new, because the typed rotation fields are published but never printed.
+- **F3.** The face-only locus excludes every edge-locus site. CB144's changes reach none of the face-only sites, so BunnyRandom's rotation terminal is a pre-existing defect that CB144 exposed (C5), not one it caused.
+
+[Record §RA-246](.agents/Directional/Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md#owner-requested-adversarial-re-review-ra-246-2026-11-17-utc).
+
+**Turn sequence:**
+- [x] `M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-REV` (RA-245 + RA-246): Review, COMPLETE.
+- [ ] **NEXT:** `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION`: exact diff `20aeaf0d…` (19 lines, test-only), compile only.
+- [ ] `M6-CP3-CB146-P13-ROTATION-TERMINAL-LOCUS-PRINT`: exact diff `4f1fae63d0d3f2626f02c4f27d26a923e0a525173112556fefe50d9e5be56967` (72 lines, `tests/SurfaceCellDesignAcceptanceTests.cpp`), compile only, on top of CB144B.
+- [ ] `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-EXEC`: CB146 package, gate `44d5a734…` (951 rows), census `3af1dc0d…`; MATCH per RA-246 §5.
+- [ ] `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME`: Review only; close C3, classify C5, freeze the next CB and the rotation-level direction test.
+- [ ] Parked: `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY`.
+
+## Historical checkpoint — TB126 independent Review adjudication (2026-11-17 UTC)
 
 **Situation:** Independent TB126 Review (M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-REV) adjudicated the immutable full-gate MISMATCH; the additional guard has an invalid test input. [RA-245 independent review](.agents/Directional/Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md).
 **Background:** CB144 source `7b0668d432ccb187c5a2d856494064f0bcb2fb95`, package `14293047782`. TB126 gate result `14294372593` (**950/951**, 1,910/1,910 checksums) and census result `14294313207` (9/9 checksums); TB125 gate/census `14289730737`/`14289927334` independently rechecked. All 950 inherited semantic rows and meaningful receipts match.
@@ -62,7 +81,7 @@ The next blocker is the `build_arcs` limit of one terminal cut per mandatory edg
 - [x] **CB144:** one selected ownership correction, compile only.
 - [x] **TB126:** full gate and census executed, MISMATCH (950/951).
 - [x] `M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-REV`: adjudicated row951 invalid input; separate new terminal not yet causal.
-- [ ] **NEXT:** `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION`; compile-only exact test input fix, no product edits or runtime.
+- [ ] **NEXT:** `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION`; compile-only exact test input fix, no product edits or runtime. Then CB146, TB127 and the outcome Review (see CURRENT RA-246).
 - [ ] Separate later guard: demonstrate that `Unresolved` vertex follow fails closed before publishing invalid segments. Separate Vase/O41 work unaffected.
 
 **Sequence, owner and stop gates:** CB142 (Code + Build) → TB123 (Test + Benchmark) → TB123-REV (Review) → conditional TB124 (Test + Benchmark) → TB124-REV (Review) → CB143 (Code + Build) → TB125 (Test + Benchmark) → DEFN (Review) → conditional CB144 (Code + Build) → TB126 (Test + Benchmark) → Review. Each turn owns one bounded change or evidence gate; stop immediately at any falsifier. Exact identifiers and acceptance conditions appear in the adversarial report and handoff.

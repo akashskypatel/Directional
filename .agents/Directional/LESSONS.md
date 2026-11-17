@@ -126,6 +126,16 @@ This document records **reusable failure-derived engineering lessons**, not an e
   evidence, check its file's CMake target, the CI configure flags, and that the file compiles at HEAD. The
   landed Vase diagnostics put its only falsifier in `MilestoneDClosureTests.cpp`: historical target only,
   configured OFF in CI, and uncompilable since the M1 field cutover (RA-194).
+- **Check every typed-ID constructor in a frozen test against its extent.** `-fsyntax-only` cannot see
+  a runtime domain contract. RA-244 froze row 951 with one shared extent of 16 for node and trace IDs,
+  then used trace 38, and the test threw before reaching its witness (TB126). Size each ID extent from
+  the largest index the test uses, and trace each assertion against the committed function before
+  calling a test non-vacuous (RA-246).
+- **Read which fields a failure locus carries before opening "introduced vs pre-existing".** A locus
+  with a face and no edge excludes every site that sets an edge. Listing the remaining sites against
+  the diff showed that CB144 could not be the direct cause of BunnyRandom's rotation terminal. Print
+  the typed fields the result already publishes in the same TB as the next fix, not in a later
+  diagnostic cycle (RA-246).
 
 ## Semantic ownership, identity, and dataflow
 

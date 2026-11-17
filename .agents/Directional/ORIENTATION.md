@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-17, RA-245 / M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-REV):** TB126 independently adjudicated MISMATCH: 950/951 PASS; row 951 invalid typed trace ID extent, not a demonstrated split defect. BunnyRandom now fails closed at `RotationSystemInconsistent` face `(5,104,359)`; exact subreason unknown. Cylinder PASS 288 quads, Vase RED unchanged. **NEXT:** `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION` (test-only compile, exact diff). [RA-245](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md). C3/O42/O43 open; O44/C1 closed; CP2 491/491, stable 66/17/49 debt1 deferred81; selector497/CP3 unpromoted.
+**Current currency (2026-11-17, RA-246 re-review of M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-REV):** TB126 is a MISMATCH: 950/951 PASS. Row 951 had an invalid typed trace-ID extent (RA-244's test error); CB144B fixes it, and RA-246 traced every assertion statically. BunnyRandom fails closed at `RotationSystemInconsistent`, face `(5,104,359)`. The face-only locus excludes edge-locus sites, so this is a pre-existing defect that CB144 exposed (C5); its site is unresolved. **NEXT:** CB144B → CB146 (test-only print of the published rotation fields) → TB127 → `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME`. [Record](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md). C3/O42/O43 open, C5 new; O44/C1 closed; CP2 491/491; stable 66/17/49, debt 1, deferred 81; selector497/CP3 unpromoted.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Current M6-CP3 Review (2026-11-17):** TB125 scoped accepted 950/950. TB126 950/951, new guard stopped before two-cut invocation; all 950 inherited rows and substantive receipts match. No accepted-green loss or new product acceptance. Next `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION` only; [RA-245](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md).
+**Current M6-CP3 Review (2026-11-17):** TB125 scoped accepted 950/950. TB126 950/951, new guard stopped before two-cut invocation; all 950 inherited rows and substantive receipts match. No accepted-green loss or new product acceptance. Next `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION`, then CB146 → TB127 → outcome Review (RA-246); [RA-245](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md).
 
 **M0–M5 are complete/closed; M6 is active at CP3.** Closure means the checkpoint's frozen criteria passed, **not** that representative output is production-ready.
 
