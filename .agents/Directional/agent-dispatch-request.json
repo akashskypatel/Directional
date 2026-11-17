@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb155-compile-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb155-compile-v1",
-  "source_sha": "cce5be20ea7237f59f3c0acca25a4ba57813644e",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb155"
+  "request_id": "m6-cp3-cb155-closeout-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb155-closeout-v1",
+  "file_id": "1LEnOhJdCOeHJxPfdsyUXMgFF8H5lkNj3",
+  "patch_sha256": "22fbe0fe088002baf8d1dc50f67130d05fe3f5c41ecd3b518dc720ca5890b150",
+  "base_sha": "cce7a43ba713c59f9d8dff977b010d2aee0d1005",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record CB155 compile evidence and freeze TB132 handoff",
+  "retention_days": 30
 }
