@@ -1,4 +1,4 @@
-## CURRENT — RA-251: CB152 withdrawn; exact carrier-proxy dry-run census next (2026-11-17 UTC)
+## CURRENT — CB153 compiled; frozen carrier-proxy dry-run full gate next (2026-11-17 UTC)
 
 [RA-251](.agents/Directional/Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Independent_Review_20261117.md#ra-251--adversarial-re-review-of-this-review-2026-11-17-utc) upholds the TB129 MISMATCH and H1, and verifies the failure replay (two receipts per rejection).
 - **Common carrier.** It is the generic case: it is empty only when a segment has no incoming carrier (origin, vertex hit, edge transit). Outgoing-proxy contacts pass the guard but get an edge locus, which violates Amendment 13 even in accepted output.
@@ -8,10 +8,10 @@
 
 Turn sequence:
 - [x] `M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-REV` + RA-251: Review, COMPLETE.
-- [ ] **NEXT (Code + Build, compile only):** `M6-CP3-CB153-P13-CARRIER-PROXY-CONTACT-DRY-RUN`.
+- [x] **COMPLETE (Code + Build, compile only):** `M6-CP3-CB153-P13-CARRIER-PROXY-CONTACT-DRY-RUN`. [Record](.agents/Directional/Architecture_M6_CP3_CB153_P13_Carrier_Proxy_Contact_Dry_Run_Code_Build_Record_20261117.md). Source `95f082b144f2bbe145d764cbf6b3d10d123a6514`; package `14338920906`; eight GMP/GMPXX targets, no runtime.
   - Exact diff `.agents/Directional/Architecture_M6_CP3_CB153_P13_Carrier_Proxy_Contact_Dry_Run_Exact.diff`: SHA-256 `c8b9bc2115c1bc40da9520f473949b50d52ad5866782e58cf09d1acdd205e350`, 171 lines; numstat `102 2 src/geometry/EmbeddedGraphTopology.cpp`, `7 2 src/geometry/EmbeddedGraphTopology.h`.
   - Precheck: `git diff --quiet c45e9abe5085f39c1f5bcb149ec07f95b719177e HEAD -- src include tests`. Build the eight RA-245 targets; runtimeExecution=false.
-- [ ] Then `M6-CP3-TB130-P13-CARRIER-PROXY-CONTACT-FULL-GATE-EXEC`: frozen gate `941287fa…`, census `3af1dc0d…`, deferred `fd433f54…`. MATCH per RA-251 §S5: logs equal TB129 after deleting census lines; receipts unchanged; positive controls have `lastIncoming≥1`.
+- [ ] **NEXT (Test + Benchmark):** `M6-CP3-TB130-P13-CARRIER-PROXY-CONTACT-FULL-GATE-EXEC`: frozen gate `941287fa…`, census `3af1dc0d…`, deferred `fd433f54…`. MATCH per RA-251 §S5: logs equal TB129 after deleting census lines; receipts unchanged; positive controls have `lastIncoming≥1`.
 - [ ] Then Review `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH`: freeze FC-7′ (the node-level switch at `:1075`/`:1910`/`build_node_loci`). Unstaged only if no accepted row has `lastOutgoing>0`, else an off-by-default option first. Then switch CB → TB.
 - [ ] Held: `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`, then `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6).
 - [ ] Withdrawn: CB149B, CB152. Parked: CB145. O45 = carrier-proxy defect, open until switch TB.

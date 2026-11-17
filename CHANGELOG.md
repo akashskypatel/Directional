@@ -1,3 +1,8 @@
+## 2026-11-17 UTC — CB153 carrier-proxy contact dry run compiled
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB153_P13_Carrier_Proxy_Contact_Dry_Run_Code_Build_Record_20261117.md): frozen RA-251 diagnostic-only patch `c8b9bc21…`, source `95f082b144f2bbe145d764cbf6b3d10d123a6514`, package `14338920906`. Eight GMP/GMPXX targets; no runtime, product-decision change, selector change or promotion.
+- Exactly next separately `M6-CP3-TB130-P13-CARRIER-PROXY-CONTACT-FULL-GATE-EXEC`. Stable 66/17/49, debt1, deferred81, CP2 491/491.
+
 ## 2026-11-17 UTC — RA-251 re-review of the TB129 Review
 
 - [RA-251](.agents/Directional/Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Independent_Review_20261117.md#ra-251--adversarial-re-review-of-this-review-2026-11-17-utc): MISMATCH, H1 and replay upheld; prose CB152 withdrawn. Exact diagnostic CB153 (`c8b9bc21…`, 171 lines, EmbeddedGraphTopology.cpp/.h) and TB130 criteria frozen. Next `M6-CP3-CB153-P13-CARRIER-PROXY-CONTACT-DRY-RUN`.
