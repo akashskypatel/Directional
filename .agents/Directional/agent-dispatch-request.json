@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb131-review-closeout-v1",
+  "request_id": "m6-cp3-cb155-apply-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb131-review-closeout-v1",
-  "file_id": "1if1ITO8ek0JF5NMTiHQdRFrk1zfX8ikj",
-  "patch_sha256": "1938d20b1b29490da6755ebd4d765e9f7e2a7eef08c1eefc3a4c23caa497c53d",
-  "base_sha": "cd69d087dfd1088ae3170cdd87a0b490e308f1dd",
+  "mailbox_key": "m6-cp3-cb155-apply-v1",
+  "file_id": "1ahYTjCDplFBvH65quDSVXjfJFeLQ2HRa",
+  "patch_sha256": "720bc0b8e41fd32aae0698e25b131559c86e4c69cad323bb3b9bc5ac26f63f0c",
+  "base_sha": "18f161cfbaecb91bf9b43f9120aa277400b7d88e",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: adjudicate TB131 carrier-contact switch and freeze comparison definition",
+  "commit_message": "Add cut-binding conflict receipts to existing rejecting guards",
   "retention_days": 30
 }
