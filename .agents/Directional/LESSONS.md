@@ -297,6 +297,11 @@ This document records **reusable failure-derived engineering lessons**, not an e
   switch at its own predicate inside the product, across every gate row, not with one test's
   observer. Make the switch predicate as narrow as the record that justifies it (node-level
   TraceIntersection/SelfClosure, not "any contact kind"): other producers share the event kind.
+- **State a staging trigger as the property it protects, then check that property (RA-252).** RA-251's
+  "no accepted row prints lastOutgoing>0" fired on PASS rows whose proxy builds were all rejected; pairing
+  each census line with its rejection receipt in the raw logs showed no accepted output was at risk. Before
+  freezing a switch's test predictions, list the tests that use the affected fixture as a failing example
+  or skip on its failure (rows 648/858): they become premise-tests the switch may legitimately turn RED.
 - **Publish typed, lossless failures from the stage that owns them.** One error label emitted from many
   conditions is an ambiguity, not localization. Give distinct reachable causes with the complete failed
   source object, stage, branch, identity, numeric operands and authoritative support; never collapse

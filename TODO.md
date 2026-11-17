@@ -1,4 +1,21 @@
-## CURRENT — TB130 MATCH; carrier-contact switch definition next (2026-11-17 UTC)
+## CURRENT — RA-252: FC-7′ frozen; exact carrier-contact switch next (2026-11-17 UTC)
+
+[RA-252 DEFN](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Carrier_Contact_Switch_Review_20261117.md) re-opened the TB130 gate and census archives (digests match). Every build with a proxy contact is followed by exactly two H1 receipts, so all are rejected at A2a′ and no accepted output carries a proxy contact.
+- **FC-7′.** A non-port node with a TraceIntersection or TraceSelfClosure event is a face-contact node, whatever its proxy edge. Barrier and port `FirstContact` keep the edge path. The producer keeps publishing the proxy (digest stability).
+- **Staging.** The switch ships unstaged. This corrects my RA-251 §S6 trigger: it fired on rows whose proxy builds are all rejected.
+- **Premise tests.** Rows 648 and 858 use the sphere as a failing example. They may go RED only at their premise assertions.
+
+Turn sequence:
+- [x] `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH` (RA-252): Review, COMPLETE.
+- [ ] **NEXT (Code + Build, compile only):** `M6-CP3-CB154-P13-CARRIER-CONTACT-NODE-SWITCH`.
+  - Exact diff `.agents/Directional/Architecture_M6_CP3_CB154_P13_Carrier_Contact_Node_Switch_Exact.diff`: SHA-256 `98e14bfe3fb030a691eed5d181f8e427e28072c2b00e96e47b2372ed214430b9`, 230 lines; numstat `30 105 src/geometry/EmbeddedGraphTopology.cpp`, `6 9 src/geometry/EmbeddedGraphTopology.h`.
+  - Precheck: `git diff --quiet 95f082b144f2bbe145d764cbf6b3d10d123a6514 HEAD -- src include tests`. Build the eight RA-245 targets; runtimeExecution=false.
+- [ ] Then `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-EXEC`: gate `941287fa…`, census `3af1dc0d…`, deferred `fd433f54…`; comparator TB130. MATCH per DEFN §6.
+- [ ] Then `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-REV`, then `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME` → `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6).
+- [ ] Withdrawn: CB149B, CB152. Parked: CB145. O45 is resolved by FC-7′ only on TB131 MATCH.
+- [ ] Carried: H2 (not observed), O46, C5/O42/O43, FC-1/FC-4 producer proof, middle-piece direction witness. Stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted. D11=A, D12=A, D10 deferred, D6 pending.
+
+## Historical checkpoint — TB130 MATCH; carrier-contact switch definition next (2026-11-17 UTC)
 
 [RA-251](.agents/Directional/Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Independent_Review_20261117.md#ra-251--adversarial-re-review-of-this-review-2026-11-17-utc) upholds the TB129 MISMATCH and H1, and verifies the failure replay (two receipts per rejection).
 - **Common carrier.** It is the generic case: it is empty only when a segment has no incoming carrier (origin, vertex hit, edge transit). Outgoing-proxy contacts pass the guard but get an edge locus, which violates Amendment 13 even in accepted output.
@@ -12,7 +29,7 @@ Turn sequence:
   - Exact diff `.agents/Directional/Architecture_M6_CP3_CB153_P13_Carrier_Proxy_Contact_Dry_Run_Exact.diff`: SHA-256 `c8b9bc2115c1bc40da9520f473949b50d52ad5866782e58cf09d1acdd205e350`, 171 lines; numstat `102 2 src/geometry/EmbeddedGraphTopology.cpp`, `7 2 src/geometry/EmbeddedGraphTopology.h`.
   - Precheck: `git diff --quiet c45e9abe5085f39c1f5bcb149ec07f95b719177e HEAD -- src include tests`. Build the eight RA-245 targets; runtimeExecution=false.
 - [x] **COMPLETE (Test + Benchmark, MATCH):** `M6-CP3-TB130-P13-CARRIER-PROXY-CONTACT-FULL-GATE-EXEC`. [Report](.agents/Directional/Architecture_M6_CP3_TB130_P13_Carrier_Proxy_Contact_Full_Gate_Execution_Report_20261117.md). Frozen gate `941287fa…` 953/953 PASS; census `3af1dc0d…` Cylinder PASS 288, BunnyRandom/Vase RED unchanged; deferred `fd433f54…` 81. All S5 criteria met; 19 PASS rows have outgoing proxies.
-- [ ] **NEXT (Review / definition):** `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH`. Freeze FC-7′ (the node-level switch at `:1075`/`:1910`/`build_node_loci`). RA-251 §S6 staging condition is met: 19 PASS rows, including six selector identities, print `lastOutgoing>0`. Off-by-default option first. Start only after TB130 COMPLETE. Then switch CB → TB.
+- [x] **COMPLETE (RA-252):** `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH`. Freeze FC-7′ (the node-level switch at `:1075`/`:1910`/`build_node_loci`). RA-251 §S6 staging condition is met: 19 PASS rows, including six selector identities, print `lastOutgoing>0`. Off-by-default option first. Start only after TB130 COMPLETE. Then switch CB → TB.
 - [ ] Held: `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`, then `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6).
 - [ ] Withdrawn: CB149B, CB152. Parked: CB145. O45 = carrier-proxy defect, open until switch TB.
 - [ ] Carried: H2 (not observed), O46, C5/O42/O43, FC-1/FC-4 producer proof, middle-piece direction witness. Stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted. D11=A, D12=A, D10 deferred, D6 pending.

@@ -1,3 +1,7 @@
+## 2026-11-17 — RA-252 carrier-contact switch definition (non-stable)
+
+[DEFN](Architecture_M6_CP3_DEFN_P13_Carrier_Contact_Switch_Review_20261117.md): FC-7′ frozen, O45's remedy. TB130 archives re-opened: each of 34 proxy-contact builds is followed by exactly two H1 receipts, so all are rejected at A2a′ and no accepted output carries a proxy contact. CB154 switch ships unstaged; locality argument predicts 934 gate rows plus Cylinder/Vase byte-equal to TB130. Rows 648/858 hold sphere-failure premises (may go RED only at listed assertions). Falsifier: any other changed row. No stable event or debit; 66/17/49, debt 1, deferred 81.
+
 ## 2026-11-17 — TB130 carrier-proxy contact full gate MATCH (non-stable evidence)
 
 [Execution report](Architecture_M6_CP3_TB130_P13_Carrier_Proxy_Contact_Full_Gate_Execution_Report_20261117.md): immutable CB153 package `14338920906`; gate `14338844806` 953/953 PASS, census `14339793522` one PASS/two registered RED. All RA-251 §S5 criteria pass. Substantive records, old receipts and normalized logs match TB129. No new accepted-result loss, stable event or debit.

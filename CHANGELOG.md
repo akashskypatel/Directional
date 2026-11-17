@@ -1,3 +1,7 @@
+## 2026-11-17 UTC — RA-252 carrier-contact switch definition
+
+- [DEFN](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Carrier_Contact_Switch_Review_20261117.md): FC-7′ (trace-trace contact nodes bind from exact records whatever their proxy edge). Exact unstaged CB154 (`98e14bfe…`, 230 lines, EmbeddedGraphTopology.cpp/.h) and TB131 criteria frozen. Next `M6-CP3-CB154-P13-CARRIER-CONTACT-NODE-SWITCH`.
+
 ## 2026-11-17 UTC — TB130 carrier-proxy contact full gate (MATCH)
 
 - [Execution report](.agents/Directional/Architecture_M6_CP3_TB130_P13_Carrier_Proxy_Contact_Full_Gate_Execution_Report_20261117.md): immutable CB153 source `95f082b144f2bbe145d764cbf6b3d10d123a6514`, package `14338920906`. [Gate 44108374042](https://github.com/akashskypatel/Directional/actions/runs/44108374042), artifact `14338844806`, 953/953 PASS; [census 44108426938](https://github.com/akashskypatel/Directional/actions/runs/44108426938), artifact `14339793522`, Cylinder PASS 288, BunnyRandom/Vase RED unchanged. All S5 criteria pass, 68 old receipts unchanged, 34 valid diagnostic lines. Outgoing proxies in 19 PASS rows. No new stable regression, rebuild, mutation of semantic inputs or promotion.
