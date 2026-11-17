@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb132-closeout-v1",
+  "request_id": "m6-cp3-tb132-review-closeout-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb132-closeout-v1",
-  "file_id": "1Hjg1ANztQ500-ds7FzzuzuN4ksxw-6XE",
-  "patch_sha256": "1fefee6ce1aef33ba1a03f2314fe9eccab5058646b20daa74d9d5bdf8d6110fd",
-  "base_sha": "33c642310417b11e78ff7e34cdc79cc356b44736",
+  "mailbox_key": "m6-cp3-tb132-review-closeout-v1",
+  "file_id": "1BR9t4oVppCWebgJYvnVB9aTBLz7j6THa",
+  "patch_sha256": "6dac6e469b62003aa57cce66ede6961c8d72a5cb4810b823a28a0f3626b98943",
+  "base_sha": "357ca637d7c93100391c43fb5ca894f50bd708d8",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record TB132 full-gate receipt comparison and freeze Review handoff",
+  "commit_message": "docs: independently review TB132 and freeze edge-endpoint contact definition",
   "retention_days": 30
 }
