@@ -206,6 +206,10 @@ std::optional<std::size_t> trace_event_position(
     }
     return std::nullopt;
   }
+  if (diagnostics != nullptr) {
+    diagnostics->pass = pass;
+    diagnostics->candidates = std::move(candidates);
+  }
   return *positions.begin();
 }
 
@@ -843,6 +847,111 @@ void report_mandatory_edge_terminal_inventory(
   std::clog << '\n';
 }
 
+// The first Terminal incidence of a trace whose resolved position lies
+// before the trace's end; it decides ArcTraceTerminalCutPositionMismatch.
+struct TerminalBeforeEnd {
+  std::size_t eventIndex = 0U;
+  std::size_t position = 0U;
+  TraceEventPositionDiagnostics diagnostics;
+};
+
+const char *network_event_kind_label(const FieldAlignedNetworkEventKind kind) {
+  switch (kind) {
+  case FieldAlignedNetworkEventKind::SingularityPortOrigin:
+    return "SingularityPortOrigin";
+  case FieldAlignedNetworkEventKind::FirstContact:
+    return "FirstContact";
+  case FieldAlignedNetworkEventKind::TraceIntersection:
+    return "TraceIntersection";
+  case FieldAlignedNetworkEventKind::MandatoryBarrierTermination:
+    return "MandatoryBarrierTermination";
+  case FieldAlignedNetworkEventKind::SingularityTermination:
+    return "SingularityTermination";
+  case FieldAlignedNetworkEventKind::SingularityPortJunction:
+    return "SingularityPortJunction";
+  case FieldAlignedNetworkEventKind::TraceSelfClosure:
+    return "TraceSelfClosure";
+  case FieldAlignedNetworkEventKind::LimitCycleTermination:
+    return "LimitCycleTermination";
+  }
+  return "Unknown";
+}
+
+void print_face(const authority::SourceFaceTopologyKey &face) {
+  const auto &vertices = face.vertices();
+  std::clog << '(' << vertices[0].index() << ',' << vertices[1].index() << ','
+            << vertices[2].index() << ')';
+}
+
+void print_edge(const std::optional<authority::SourceEdgeTopologyKey> &edge) {
+  if (!edge.has_value()) {
+    std::clog << "none";
+    return;
+  }
+  std::clog << '(' << edge->first().index() << ',' << edge->second().index()
+            << ')';
+}
+
+// P13 (RA-250): one line naming the event, its resolved position and the
+// trace's terminal record, so a census separates a common-carrier contact
+// proxy from a limit-cycle entry or another terminal kind.
+void report_terminal_cut_before_end(const FieldAlignedCandidateTrace &trace,
+                                    const FieldAlignedNetworkEvent &event,
+                                    const TerminalBeforeEnd &terminal) {
+  const FieldAlignedCandidateTraceSegment &last = trace.segments.back();
+  std::clog << "EmbeddedGraphTopology.terminalCutBeforeEnd trace="
+            << trace.id.index() << " sourceVertex=" << trace.sourceVertex.index()
+            << " segments=" << trace.segments.size()
+            << " event=" << terminal.eventIndex
+            << " kind=" << network_event_kind_label(event.kind)
+            << " node=" << event.node.index() << " face=";
+  print_face(event.sourceFace);
+  std::clog << " edge=";
+  print_edge(event.sourceEdge);
+  std::clog << " position=" << terminal.position << " pass=";
+  if (terminal.diagnostics.pass.has_value()) {
+    std::clog << trace_event_position_pass_name(*terminal.diagnostics.pass);
+  } else {
+    std::clog << "none";
+  }
+  for (const TraceEventPositionCandidate &candidate :
+       terminal.diagnostics.candidates) {
+    std::clog << " candidate=[position=" << candidate.position
+              << " segment=" << candidate.segmentIndex << ' '
+              << trace_event_position_carrier_role_name(candidate.carrierRole)
+              << ']';
+  }
+  std::clog << " lastFace=";
+  print_face(last.sourceFace);
+  std::clog << " lastIncoming=";
+  print_edge(last.incomingCarrier);
+  std::clog << " lastOutgoing=";
+  print_edge(last.outgoingCarrier);
+  std::clog << " terminal=";
+  if (trace.terminalContact.has_value()) {
+    std::clog << "contact face=";
+    print_face(trace.terminalContact->sourceFace);
+    std::clog << " struckTrace=" << trace.terminalContact->struckTrace.index()
+              << " struckSegment=" << trace.terminalContact->struckSegmentIndex;
+  } else if (trace.terminalLimitCycle.has_value()) {
+    std::clog << "limitCycle face=";
+    print_face(trace.terminalLimitCycle->sourceFace);
+    std::clog << " entryEdge=";
+    print_edge(trace.terminalLimitCycle->entryPoint.edge);
+  } else if (trace.terminalSingularity.has_value()) {
+    std::clog << "singularity=" << trace.terminalSingularity->index();
+  } else if (trace.terminalBarrier.has_value()) {
+    std::clog << "barrier edge=";
+    print_edge(trace.terminalBarrier);
+  } else if (trace.terminalPoint.has_value()) {
+    std::clog << "point edge=";
+    print_edge(trace.terminalPoint->edge);
+  } else {
+    std::clog << "none";
+  }
+  std::clog << '\n';
+}
+
 } // namespace
 
 ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
@@ -1004,6 +1113,7 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
       }
     }
     bool hasTerminal = false;
+    std::optional<TerminalBeforeEnd> terminalBeforeEnd;
     // A face-contact node's positions come from its exact contact record:
     // the trace's end where it terminates, an interior cut where it is struck.
     for (const auto &[node, contact] : faceContacts) {
@@ -1068,6 +1178,12 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
         }
         hasTerminal = hasTerminal ||
                       incidence.role == FieldAlignedTraceEventRole::Terminal;
+        if (incidence.role == FieldAlignedTraceEventRole::Terminal &&
+            *position < trace.segments.size() &&
+            !terminalBeforeEnd.has_value()) {
+          terminalBeforeEnd =
+              TerminalBeforeEnd{eventIndex, *position, positionDiagnostics};
+        }
       }
     }
     if (!hasTerminal ||
@@ -1076,6 +1192,19 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
       GlobalTopologyPlanError result =
           rotation_error(!hasTerminal ? RotationSystemInconsistencyReason::ArcTraceTerminalEventMissing : RotationSystemInconsistencyReason::ArcTraceTerminalCutPositionMismatch);
       result.sourceVertex = trace.sourceVertex;
+      // The error's locus is the terminal event that resolved before the
+      // trace's end; sourceVertex stays the trace's origin vertex.
+      if (terminalBeforeEnd.has_value()) {
+        const auto &event = network.events()[terminalBeforeEnd->eventIndex];
+        report_terminal_cut_before_end(trace, event, *terminalBeforeEnd);
+        result.trace = trace.id;
+        result.sourceFace = event.sourceFace;
+        result.sourceEdge = event.sourceEdge;
+        result.traceEventIndex = terminalBeforeEnd->eventIndex;
+        result.traceEventPositionPass = terminalBeforeEnd->diagnostics.pass;
+        result.traceEventPositionCandidates =
+            terminalBeforeEnd->diagnostics.candidates;
+      }
       return result;
     }
 
