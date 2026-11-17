@@ -1,6 +1,6 @@
-# TB127 immutable guard and rotation-locus execution — in progress (2026-11-17 UTC)
+# TB127 — guard and rotation-locus full gate (2026-11-17 UTC)
 
-**Canonical turn:** `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-EXEC`. This is an execution checkpoint, not a MATCH, MISMATCH, acceptance, or completed-turn record. Follow [RA-246 §5](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md#5-tb127-frozen). Do not start the successor or dispatch duplicate executions.
+**Canonical turn:** `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-EXEC`. **MISMATCH** under [RA-246 §5](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md#5-tb127-frozen): full gate MATCH, census has four changed assertion-line records. Both executions succeeded at the orchestration level. No new source, test, fixture, manifest, selector or build mutation, configure, compile, relink, benchmark or successor work. PR #8 remains open/draft.
 
 ## Immutable authority and preflight
 
@@ -9,26 +9,45 @@
 - Frozen gate `44d5a734a819a6d353bf3cb83254af86939e017dbd3a6dc3313d71f814ffdd1f` (951 rows), membership ledger `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce` (81 deferred), census `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793` (3 rows). Existing harness SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`. Both manifest self-checks pass.
 - TB126 comparison authority: gate artifact `14294372593`, ZIP SHA-256 `c13a0f5e29ab961a6c6d7a31c2883cfaafbdc577d5727f291eb127e9cc8ea55e`, 1,910/1,910 hashes; census artifact `14294313207`, ZIP SHA-256 `79acdba05b737e6987a39d3908ce7bf3f9375f4c051b5c4a35566670b63eb95f`, 9/9 hashes. Raw ledger hash, selected-case binding, execution boundaries independently verified. TB126 gate 950/951, row 951 exception; census Cylinder PASS 288, BunnyRandom and Vase RED.
 
-## Registered executions
+## Execution identity
 
-| Work | Request event SHA | Actions run | Mailbox key |
+| Work | Request event SHA | Actions run / runtime job | Mailbox key (attempt 1, success) |
 |---|---|---|---|
-| Full gate, 951 rows | `f5e23873d5ebccb83687388dd78330aa2c162802` | [44024527625](https://github.com/akashskypatel/Directional/actions/runs/44024527625) | `m6-cp3-tb127-gate-v1` |
-| Census, 3 rows | `91ad92da0476dfda290ee8fe877488556f7dcb81` | [44024687415](https://github.com/akashskypatel/Directional/actions/runs/44024687415) | `m6-cp3-tb127-census-v1` |
+| Full gate | `f5e23873d5ebccb83687388dd78330aa2c162802` | [44024527625](https://github.com/akashskypatel/Directional/actions/runs/44024527625) / `133841749525` | `m6-cp3-tb127-gate-v1` |
+| Census | `91ad92da0476dfda290ee8fe877488556f7dcb81` | [44024687415](https://github.com/akashskypatel/Directional/actions/runs/44024687415) / `133845742752` | `m6-cp3-tb127-census-v1` |
 
-Gate validation, parse, checkout and harness contract passed. Runtime job `133841749525` in progress; census pending behind the gate in the serialized dispatcher. Result artifacts, runtime verdicts and terminal suffix not yet observed. Both request event commits freeze their inputs; do not replace the pending census by another dispatcher request. No source/test/fixture/selector/manifest/build change and no successor work.
+Both immutable mailbox records bind the exact events and CB146 semantic source. Gate request SHA-256 `013b457bfe75c3c69d62894ff42a1c4d71b351e792d2c37675ccce3706aec0b4`; census `15bd6f0bbfad0eaf08a520b70762b6ad0418fe4f9d3e043c509d8efcb14414c9`. Schema validation, parse, checkout and harness checks passed. Both runs finished organically; no duplicate execution.
 
-## Same-turn continuation
+## Full gate — MATCH
 
-1. Read the two exact Actions runs and their immutable published mailbox records on ref `workflow-mailbox`. Do not trigger another gate or census merely because a run remains in progress.
-2. Download both result artifacts once terminal, verify provider and internal hashes, all raw log bindings, and compare with TB126 against RA-246 §5. Gate: 951/951 and all 950 inherited substantive records, allowed elapsed/newline framing only; no inventory lines. Census: identical normalized non-terminal lines, exact earlier terminal prefixes, four equal BunnyRandom inventory lines, Cylinder PASS 288 and nonempty BunnyRandom rotationReason. Record the suffix verbatim. CB146 adds 61 source lines before the census assertions; report any resulting line-number differences explicitly, without broadening the frozen normalization.
-3. Record exact classification, update the tracker (stable 66/17/49 and debt1, deferred81 unless evidence warrants a change), handoff, TODO and changelog. Keep C3/C5 unresolved until applicable adjudication. No CP3 promotion.
-4. Clean only this turn's temporary snapshot trigger `.agents/connector-triggers/source-snapshot/tb127-20261117.txt` through the documented cleanup workflow after evidence collection; preserve the durable dispatcher, request slot, mailbox records, and PR #8 draft. Final STATUS only after durable closeout. Current turn stays TB127; route only on verified outcome and do not execute the successor in this turn.
+Result artifact `14302887671`, ZIP SHA-256 `017ad5589ae533d4f428312bc59d92409906544f6cd1add1a3db0ccc80383050`; 1,910/1,910 internal checksums, all 951 raw log bindings, exact manifest identities. Gate log artifact `14302982488`. 951/951 PASS, zero RED/skipped/missing/duplicate/abnormal, membership 1,032 (951 gated/81 deferred), postflight true, exit 0. Row951 PASS without exception; no gate inventory lines. All 950 inherited substantive ledger rows match TB126; raw differences only permitted newline framing after elapsed-time normalization in rows 156/168/173/175/190/191/477/705.
 
-## Bounded response yield (05:39 UTC)
+## Census — MISMATCH (exact comparison)
 
-The gate remains in progress and the census remains pending. Both exact request hashes and run identities are verified. The repository-applicable handoff/TODO delta is preserved, not applied: base `21309c49bb7fba212fdfa1ec27e923404916e131`; full SHA-256 `7b126ff10643f006b4946a1853415c8ccb3bbb4aa17c1152ff4ce2cd12ce299e`; diff body `33fe0a43877b9a7f3357809027c0eceb24141bf87dfe9600e7de09aeda903c9e`; 6,596 bytes; `git apply --check` and `git diff --check` passed. File Library `/Directional/Directional__M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-EXEC__base-21309c49bb7f__work-preservation.patch`; staged at Google Drive File ID `1amMuHSmPce0KjirLQ-X63qq2dmmKwYcD`, metadata checked. No drive_apply request while census remains pending: the serial dispatcher can replace a pending request. Reconcile the preserved patch on resume; if runtime evidence is ready, supersede it with a single verified final documentation delta rather than apply stale checkpoint text. Cleanup and result-dependent durable updates remain pending, not skipped. No change to stable regression accounting, accepted selectors or product verdict. Resume the same TB127; do not rerun or advance.
+Result artifact `14302668940`, ZIP SHA-256 `4edf0fe64c45fac424eb0c8ef9ed4e9eaae675373e32f06724df9ea4724f3cc5`; 9/9 internal checksums and all three raw log bindings pass. Census log artifact `14303760529`. All three cases executed once: one PASS, two registered RED, no skips/abnormal/missing/duplicate; postflight true, harness exit 0.
 
-## Verified full-gate result (05:41 UTC)
+| Case | Result | Recorded terminal |
+|---|---|---|
+| Cylinder | PASS, 288 quads | No terminal failure. All normalized lines match. |
+| BunnyRandom | RED, zero output faces | `RotationSystemInconsistent` / `CellularityNotEstablished`, face (5,104,359); exact prior terminal prefix, four identical mandatory-edge inventory lines. |
+| Vase | RED, zero output faces | `AggregateCompletionValidationFailure`, 189462 segments, 26817 arrangement cells, 67750 internal quads; exact prior terminal (no suffix). |
 
-Run [44024527625](https://github.com/akashskypatel/Directional/actions/runs/44024527625) completed successfully; mailbox attempt 1 confirms exact event and semantic source. Result artifact `14302887671`, ZIP SHA-256 `017ad5589ae533d4f428312bc59d92409906544f6cd1add1a3db0ccc80383050`; 1,910/1,910 internal checksums, all 951 raw log bindings, exact manifest identities. 951/951 PASS, 0 RED/skipped/missing/duplicate/abnormal, membership 1,032 (951 gated/81 deferred), postflight true, exit 0, no compile/relink/configure/benchmark. Row951 PASS without exception; no gate inventory lines. All 950 inherited substantive ledger rows match TB126; raw differences only permitted newline framing after elapsed-time normalization in rows 156/168/173/175/190/191/477/705. Gate criterion MATCH. Census run 44024687415 now in progress. Overall TB127 verdict pending. Do not rerun gate, promote selectors, close C3, or start successor. The staging patch remains unapplied; reconcile or supersede it when closing the turn.
+BunnyRandom suffix (verbatim, including leading space):
+
+```text
+ rotationReason=TraceEventPositionInvalid trace=0 eventIndex=18 eventPositionReason=NoCarrierMatch eventPositionPass=SourceEdgeUnavailable
+```
+
+RA-246 F3's registered face-locus prediction includes `TraceEventPositionInvalid`. This is measured, not adjudicated in this TB. Preserve the existing inventory: edges (241,251) and (251,278) each have two distinct parameters, across traces 107/38 and 92/41, nodes 149/178 and 184/162 respectively.
+
+The only normalized non-terminal log differences are the GoogleTest assertion source line numbers. In BunnyRandom and Vase, `tests/SurfaceCellDesignAcceptanceTests.cpp:432: Failure` becomes `:493: Failure`, and `:434: Failure` becomes `:495: Failure`. Two lines per RED case, four total. The two corresponding census ledger `first_failure` fields also change from 432 to 493. All other substantive census ledger fields match (excluding raw log hashes). The frozen CB146 diff adds 61 lines in `failure_locus` before these assertions; unchanged assertion text appears at 493 (independent oracle) and 495 (produced result). RA-246 §5 permits only elapsed times, GetParam byte dumps and the appended terminal text. It does not permit assertion-line relocation. Do not amend that criterion retrospectively. This is a comparison-contract mismatch, not evidence of a newly introduced production regression.
+
+## Classification and route
+
+Keep C3 and C5 open for independent adjudication. O42/O43 open; O44/C1 closed. Stable totals unchanged: 66 events / 17 categories / 49 recurrences, debt 1, deferred 81. Accepted CP2 491/491; CP3/selector497 and D0 not promoted; `chainRimSchedules=false`; D11=A, D12=A, D10 deferred, D6 pending. The earlier guard exception no longer occurs. Vase remains unchanged. No new stable regression ID or accepted-green loss is justified.
+
+Exactly next per the frozen mismatch route: `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-REV`. Review only: adjudicate the four line-number differences, the guard and the printed locus against RA-246. Do not execute a new gate, change source, or start the MATCH-only outcome turn or CB145 here.
+
+## Continuation reconciliation
+
+The earlier interrupted response preserved an unapplied handoff/TODO patch (base `21309c49bb7fba212fdfa1ec27e923404916e131`, full SHA-256 `7b126ff10643f006b4946a1853415c8ccb3bbb4aa17c1152ff4ce2cd12ce299e`, diff body `33fe0a43877b9a7f3357809027c0eceb24141bf87dfe9600e7de09aeda903c9e`, Drive File ID `1amMuHSmPce0KjirLQ-X63qq2dmmKwYcD`). Both hashes match. It is superseded by the result-dependent documentation delta, not applied as stale in-progress state. No replacement runtime executed. Prior attempt's tool ledger is incomplete; do not invent total. The first attempt had late timer/policy loading. This does not alter the immutable evidence.
