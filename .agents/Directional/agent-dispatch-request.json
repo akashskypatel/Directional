@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb128-complete-closeout-v1",
+  "request_id": "m6-cp3-tb128-review-progress-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb128-complete-closeout-v1",
-  "file_id": "1p0g8OoCNvYnz6jZmwfTbmpDy2kcdO-2u",
-  "patch_sha256": "b206020dc8017d6b51c0099bcd7198c89f4bf83579be639bc520672f02b42ace",
-  "base_sha": "93f53bcd82e96e0e3163a75304e197191287999c",
+  "mailbox_key": "m6-cp3-tb128-review-progress-v1",
+  "file_id": "1QzvAFl194wF1mKUP6M2S1NyOEhVjRzha",
+  "patch_sha256": "cbb63acf5e48611c873d7d5fe52798f131e2aa6fdacb0cf014144327322db6f5",
+  "base_sha": "84917b4f29d6e94d55e51b4698bd4c5c957e4b21",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close TB128 verified face-contact gate mismatch",
+  "commit_message": "docs: preserve TB128 independent review findings and bounded receipt plan",
   "retention_days": 7
 }
