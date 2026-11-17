@@ -1,3 +1,11 @@
+## 2026-11-17 UTC — RA-249 face-contact node freeze
+
+- [Review](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Freeze_Review_20261117.md) froze the code for FC-1 – FC-5 as two stacked patches:
+  - CB148, helpers: `b4b82487…`, 475 lines, additive, with a unit test;
+  - CB149, switch: `ddf87b85…`, 270 lines.
+- Also froze the TB128 gate manifest (`941287fa…`, 953 rows; `SELF_CHECK_PASS`).
+- Both patches apply in order. Syntax checks are clean, with warnings identical to HEAD. The tests have not been run. Next: CB148.
+
 ## 2026-11-17 UTC — CB147 pure exact face-contact helpers compiled
 
 - [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB147_P13_Face_Contact_Exact_Helpers_Code_Build_Record_20261117.md): frozen RA-248 exact three-file diff at `43294bde49e1f24aa09d10ca7e5ff632a7c28d6b` (+227/-0). [Compile run 44039082778](https://github.com/akashskypatel/Directional/actions/runs/44039082778) SUCCESS, eight GMP/GMPXX targets, package `14309111230`, 28/28 checksums; new row 952 not run, helpers not wired. No runtime or promotion. Exactly next separately `M6-CP3-DEFN-P13-FACE-CONTACT-NODE-FREEZE`.

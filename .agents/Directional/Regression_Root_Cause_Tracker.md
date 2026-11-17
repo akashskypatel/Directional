@@ -1,3 +1,9 @@
+## 2026-11-17 — RA-249 face-contact node freeze (non-stable)
+
+- **C5:** implementation is frozen as CB148 (additive) and CB149 (switch). The switch changes only networks that currently fail at `build_arcs`.
+- **Predicted next BunnyRandom terminal:** an O46 ownership stage. A `RotationEdge*` failure on edge (241,251) or (251,278) would instead falsify CB144's direction rule.
+- **Counts unchanged:** stable 66/17/49, debt 1, deferred 81.
+
 ## 2026-11-17 — RA-248 face-contact node definition (non-stable)
 
 - **C5:** the owner is A2a′. The contract is FC-1–FC-5; implementation starts at CB147.

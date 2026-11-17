@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-17, RA-248 / `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME`):** C5 is defined. FC-1–FC-5 add an A2a′ face-contact node: a face locus with an exact point, an interior trace cut, partial arcs that share a segment, and an exact counter-clockwise ray order. FC-6 replaces the stale M3 one-chord fragment taxonomy in contact faces (O46). FC-7 keeps the shared-carrier proxy (O45). Hand-built networks are impossible (`make_from_candidate`), so BunnyRandom is the only runtime witness. **NEXT:** `M6-CP3-CB147-P13-FACE-CONTACT-EXACT-HELPERS` (pure helpers, exact diff `5c3def45…`), with the CB148 freeze Review running alongside. [Record](Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Definition_Review_20261117.md). O42/O43/O45/O46 open; CP2 491/491; stable 66/17/49, debt 1, deferred 81; selector497/CP3 unpromoted.
+**Current currency (2026-11-17, RA-249 / `M6-CP3-DEFN-P13-FACE-CONTACT-NODE-FREEZE`):** The face-contact node (FC-1 – FC-5) is frozen as two stacked compile-only CBs: CB148 adds helpers, the collector and typed reasons; CB149 wires them in and changes only networks that fail today. The TB128 manifest (`941287fa…`, 953 rows) is frozen. **NEXT:** `M6-CP3-CB148-P13-FACE-CONTACT-NODE-HELPERS`, then CB149 and TB128. [Record](Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Freeze_Review_20261117.md). O42/O43/O45/O46 open; CP2 491/491; stable 66/17/49, debt 1, deferred 81; selector497/CP3 unpromoted.
 
 ## 1. What the project is
 
