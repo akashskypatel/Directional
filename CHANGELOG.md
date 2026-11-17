@@ -1,3 +1,8 @@
+## 2026-11-17 UTC — CB146 rotation terminal locus print compiled
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB146_P13_Rotation_Terminal_Locus_Print_Code_Build_Record_20261117.md): frozen RA-246 test-only diff at `48e6f97d278b2226036f658ce9060a38b8a374b5`, +61/-0 in the census formatter, prior terminal prefix preserved. [Compile run 44022151247](https://github.com/akashskypatel/Directional/actions/runs/44022151247) SUCCESS, eight GMP/GMPXX targets, package `14301616031`, 28/28 checksums; no runtime, product or selector changes.
+- Exactly next `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-EXEC` (immutable gate and census per RA-246 §5). No promotion. Stable 66/17/49, debt1, deferred81, CP2 491/491.
+
 ## 2026-11-17 UTC — CB144B test-only guard extent correction compiled
 
 - [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB144B_P13_Edge_Terminal_Guard_Extent_Code_Build_Record_20261117.md): frozen RA-245 test-only diff on `5d4077303a1aa46f0755421b607509694177c17f`; independent node/trace ID extents 16/39; every assertion and identity preserved. [Compile run 44019533988](https://github.com/akashskypatel/Directional/actions/runs/44019533988) SUCCESS; eight GMP/GMPXX targets, package `14299943924`, 28/28 checksums. No runtime, selector or product change.
