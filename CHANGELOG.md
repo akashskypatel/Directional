@@ -1,3 +1,7 @@
+## 2026-11-17 UTC — CB148 face-contact node helpers compiled
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB148_P13_Face_Contact_Node_Helpers_Code_Build_Record_20261117.md): exact RA-249 five-file additive patch (+416/-0), source `e05d44b850c378b6e77965f0f314b561a8207435`. [Compile run 44044928423](https://github.com/akashskypatel/Directional/actions/runs/44044928423) SUCCESS; eight GMP/GMPXX targets, package `14311412337`, 28/28 checksums. Face-contact helpers remain unwired; new row 953 compiled, not run. No manifest/selector edit, runtime or promotion. Exactly next separately CB149.
+
 ## 2026-11-17 UTC — RA-249 face-contact node freeze
 
 - [Review](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Freeze_Review_20261117.md) froze the code for FC-1 – FC-5 as two stacked patches:
