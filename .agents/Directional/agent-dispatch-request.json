@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb151-closeout-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb151-closeout-v1",
-  "file_id": "1BOaAPEO_HZkJIo1E1HY-NXXf43eN7lj4",
-  "patch_sha256": "e4c2d2d38a3189e53d5a26457a8970ed32df17a1d1933402faba06bd8816cf31",
-  "base_sha": "802ac656a0c2de45b48ab37264ad35c04576107f",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record CB151 verified compile and frozen TB129 handoff",
+  "request_id": "m6-cp3-tb129-gate-v1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb129-gate-v1",
+  "executor_sha": "c45e9abe5085f39c1f5bcb149ec07f95b719177e",
+  "semantic_source_sha": "c45e9abe5085f39c1f5bcb149ec07f95b719177e",
+  "turn_id": "m6-cp3-tb129-gate",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "14327212608",
+    "EXPECTED_SOURCE_SHA": "c45e9abe5085f39c1f5bcb149ec07f95b719177e",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "9ef0f781947748cf2433566f3704259ab362dbf8f042999f87248ca6d645eb69",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "0c65a1f63be701f8497fb828d3826f3b7a2a23f00042d97600570263647677b7",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "434a3817c90395366c572287e205c3d0d9268241817b20c3f106ba6e2a500417",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB128_P13_Face_Contact_Node_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "941287fa96f3432eb1d67a9ae1e5dc7bc0ca2f3a1775cd5f9fb35482a4fa7962",
+    "EXPECTED_CASE_COUNT": "953",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  },
+  "artifact_prefix": "m6-cp3-tb129-gate",
   "retention_days": 7
 }
