@@ -1,12 +1,1 @@
-{
-  "schema_version": 1,
-  "request_id": "m6-cp3-tb126-rev-consolidation-20261117-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb126-rev-consolidation-20261117-v1",
-  "file_id": "1bXrsg-7QS0F58KD9ztsHpwE-lj0zQuKY",
-  "patch_sha256": "85e14a542af908945750214323661d70872cb1be24fca50be8064d795459c0ed",
-  "base_sha": "6ef77580617731bc2d5e364b924c706ad9bb0b34",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): consolidate TB126 historical review records",
-  "retention_days": 7
-}
+{"schema_version":1,"request_id":"m6-cp3-cb144b-guard-extent-apply-20261117-v1","operation":"drive_apply","mailbox_key":"m6-cp3-cb144b-guard-extent-apply-20261117-v1","file_id":"1afbDZEhVVJZo2rUgsvhUDVkujYbkjinQ","patch_sha256":"0f0a7631511cf28e7f9bdb344d6323e010c9f94349fbbbacb27b2545235379a8","base_sha":"fcfec94620ae89b96c28ad29f9c36381fece50c6","target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing","commit_message":"test: correct mandatory edge terminal trace ID extent","retention_days":7}
