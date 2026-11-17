@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb125-docs-20261117-v1",
+  "request_id": "m6-cp3-cb144-edge-terminal-apply-20261117-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb125-docs-apply-v1",
-  "file_id": "1IS7Mx_W7qAuLAM4jNmbu3OC4KWXtbuPf",
-  "patch_sha256": "fa5173ecd317b1dcbeb3fcc7cf820d5e8887eb0462e53ce905ee1dc17008f2b0",
-  "base_sha": "544b79edde45290b96c9b6132f794cddceb8da27",
+  "mailbox_key": "m6-cp3-cb144-edge-terminal-apply-v1",
+  "file_id": "12tGDmBW-0WR3rF8IqnyGbFUkA7p9iuw1",
+  "patch_sha256": "22b9304038392dd10470b2fbb67bb86fa5a02af54c7232466406b7e4cfbfa740",
+  "base_sha": "a4fbaf7febaacb35479f1337f371e4dbd9548311",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record TB125 exact terminal inventory MATCH",
+  "commit_message": "fix(surface-cells): split mandatory edges at ordered terminal cuts",
   "retention_days": 7
 }
