@@ -1,2 +1,0 @@
-# TB125 temporary file ledger; durable dispatcher and workflow-mailbox are excluded.
-.agents/connector-triggers/source-snapshot/m6-cp3-tb125-20261117-0109.txt
