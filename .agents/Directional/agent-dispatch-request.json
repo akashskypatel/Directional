@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb131-closeout-v1",
+  "request_id": "m6-cp3-tb131-review-closeout-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb131-closeout-v1",
-  "file_id": "1eUPoOGQDRrySU0ATl_Heh2Uut-fcu3hy",
-  "patch_sha256": "752d88cfdc6147ad815889bc3ee8c6286997c05ce37c7d1ce8599709cd1b4165",
-  "base_sha": "60fe83ec4b92789d82ef76b79df2c0ccb1accc65",
+  "mailbox_key": "m6-cp3-tb131-review-closeout-v1",
+  "file_id": "1if1ITO8ek0JF5NMTiHQdRFrk1zfX8ikj",
+  "patch_sha256": "1938d20b1b29490da6755ebd4d765e9f7e2a7eef08c1eefc3a4c23caa497c53d",
+  "base_sha": "cd69d087dfd1088ae3170cdd87a0b490e308f1dd",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record TB131 frozen gate mismatch and independent review handoff",
+  "commit_message": "docs: adjudicate TB131 carrier-contact switch and freeze comparison definition",
   "retention_days": 30
 }
