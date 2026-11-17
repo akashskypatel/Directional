@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB129 gate 953/953, literal MISMATCH upheld; Cylinder PASS, BunnyRandom arc terminal-cut RED, Vase completion RED; contact census before O45 decision; CP3 not accepted) · **Next:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB130 MATCH, gate 953/953; Cylinder PASS, BunnyRandom arc terminal-cut RED, Vase completion RED; carrier-contact switch definition next, staged off by default; CP3 not accepted) · **Next:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

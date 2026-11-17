@@ -1,3 +1,8 @@
+## 2026-11-17 UTC — TB130 carrier-proxy contact full gate (MATCH)
+
+- [Execution report](.agents/Directional/Architecture_M6_CP3_TB130_P13_Carrier_Proxy_Contact_Full_Gate_Execution_Report_20261117.md): immutable CB153 source `95f082b144f2bbe145d764cbf6b3d10d123a6514`, package `14338920906`. [Gate 44108374042](https://github.com/akashskypatel/Directional/actions/runs/44108374042), artifact `14338844806`, 953/953 PASS; [census 44108426938](https://github.com/akashskypatel/Directional/actions/runs/44108426938), artifact `14339793522`, Cylinder PASS 288, BunnyRandom/Vase RED unchanged. All S5 criteria pass, 68 old receipts unchanged, 34 valid diagnostic lines. Outgoing proxies in 19 PASS rows. No new stable regression, rebuild, mutation of semantic inputs or promotion.
+- Exactly next separately `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH` (Review/definition, runtime-free). S6 off-by-default staging condition met; O45 remains open. Stable 66/17/49, debt1, deferred81, CP2 491/491.
+
 ## 2026-11-17 UTC — CB153 carrier-proxy contact dry run compiled
 
 - [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB153_P13_Carrier_Proxy_Contact_Dry_Run_Code_Build_Record_20261117.md): frozen RA-251 diagnostic-only patch `c8b9bc21…`, source `95f082b144f2bbe145d764cbf6b3d10d123a6514`, package `14338920906`. Eight GMP/GMPXX targets; no runtime, product-decision change, selector change or promotion.
