@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb128-gate-v1",
+  "request_id": "m6-cp3-tb128-census-v1",
   "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb128-gate-v1",
+  "mailbox_key": "m6-cp3-tb128-census-v1",
   "executor_sha": "93f53bcd82e96e0e3163a75304e197191287999c",
   "semantic_source_sha": "85f9c703c5de86fb2b401cf83c03499a1ce73a27",
-  "turn_id": "m6-cp3-tb128-gate",
+  "turn_id": "m6-cp3-tb128-census",
   "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
   "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
   "environment": {
@@ -14,12 +14,10 @@
     "EXPECTED_CANDIDATE_ZIP_SHA256": "39ce6f17ed010d26bf3e65dace9100646fc215a3a8050bb8cae6d621dfb23926",
     "EXPECTED_ROOT_MANIFEST_SHA256": "9d2953d707eeaf72323dc0b7db6d28a4889bf0381128b2f105ca66a7bca8c661",
     "EXPECTED_SOURCE_ARCHIVE_SHA256": "b7a13ebccc299a3cb98bde7471c2e678b1a0ddd3e31e5d96e4f3e1d8e506fdf9",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB128_P13_Face_Contact_Node_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "941287fa96f3432eb1d67a9ae1e5dc7bc0ca2f3a1775cd5f9fb35482a4fa7962",
-    "EXPECTED_CASE_COUNT": "953",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
+    "EXPECTED_CASE_COUNT": "3"
   },
-  "artifact_prefix": "m6-cp3-tb128-gate",
+  "artifact_prefix": "m6-cp3-tb128-census",
   "retention_days": 7
 }
