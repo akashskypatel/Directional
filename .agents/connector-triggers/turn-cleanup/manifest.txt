@@ -1,0 +1,2 @@
+# TB127: consumed temporary source-snapshot trigger only
+.agents/connector-triggers/source-snapshot/tb127-20261117.txt
