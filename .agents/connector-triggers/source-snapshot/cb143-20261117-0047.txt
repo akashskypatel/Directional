@@ -1,0 +1,2 @@
+Snapshot request for M6-CP3-CB143-P13-EDGE-TERMINAL-EXACT-INVENTORY
+semantic_base=3eeed2123bc56b28d91703273f65f4cdb2fcaa0c
