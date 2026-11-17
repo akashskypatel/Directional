@@ -1,3 +1,12 @@
+## 2026-11-17 — RA-248 face-contact node definition (non-stable)
+
+- **C5:** the owner is A2a′. The contract is FC-1–FC-5; implementation starts at CB147.
+- **O46 (new):** A2b `build_fragment_corner_incidence` and SurfaceCutGraph ownership encode M3 Amendment 7.
+  - It allows one full chord per face, and only ray origins as an exception.
+  - Under it, terminal slits never separate. Yet SurfaceCutGraph treats a separating slit as a chord to its hypothetical exit.
+  - The canonical exact-crossing tracer breaks that premise. FC-6 is the replacement.
+- **Counts unchanged:** stable 66/17/49, debt 1, deferred 81.
+
 ## 2026-11-17 — RA-247 adversarial re-review of TB127-REV (non-stable)
 
 - **C5:** a trace–trace contact inside a face with no common carrier edge (decided from source). Its owner is A2a′: there is no face-interior node position, `NodeLocus`, rotation branch or shared-segment arc range. No test reaches it.

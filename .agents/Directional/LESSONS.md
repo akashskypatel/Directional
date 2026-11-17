@@ -145,6 +145,14 @@ This document records **reusable failure-derived engineering lessons**, not an e
   appended 61 formatter lines above two assertions and then allowed only the appended terminal text,
   which made TB127 a MISMATCH. Apply RA-102.1 (normalize `file:line`) whenever a CB edits a file
   that census assertions live in (RA-247).
+- **Check a frozen taxonomy's premise against the current producer before reusing it downstream.** M3
+  Amendment 7's rule of one full chord per face came from the legacy face-level contact rule. The
+  canonical tracer stops at exact crossings, so contact faces now hold a chord plus a stub or ray, and
+  A2b rejects them however A2a′ handles the node. Ask what the producer guaranteed when the rule was
+  frozen (RA-248).
+- **Check whether a fixture can be hand-built before planning unit tests for a wired path.**
+  `make_from_candidate` accepts only the canonical tracing, so a wired contact path has only real
+  fixtures as witnesses. Factor its arithmetic into pure functions that unit tests can reach (RA-248).
 
 ## Semantic ownership, identity, and dataflow
 

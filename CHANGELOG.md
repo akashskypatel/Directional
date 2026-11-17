@@ -1,3 +1,10 @@
+## 2026-11-17 UTC — RA-248 face-contact node definition
+
+- [Definition Review](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Definition_Review_20261117.md):
+  - FC-1–FC-7 define the A2a′ node for a trace–trace contact inside a face (C5).
+  - Two downstream stages still follow M3 Amendment 7's one-chord taxonomy, which the canonical tracer no longer satisfies (O46). FC-6 is the replacement ownership rule; it will be implemented after a measuring turn.
+- Froze CB147: pure exact face-chart helpers (orientation, segment parameter, counter-clockwise ray order) and a unit test. [diff](.agents/Directional/Architecture_M6_CP3_CB147_P13_Face_Contact_Exact_Helpers_Exact.diff), SHA-256 `5c3def45e8bdd713ca321b7cfca0f9f3a5935bdf54900afd5548efc55e5df7d1`. Syntax checks are clean and the test logic was checked with an exact Python port. The test has not been run.
+
 ## 2026-11-17 UTC — RA-247 adversarial re-review of TB127-REV
 
 - Re-verified the TB126/TB127 archives, the 951/951 gate and the census differences, which are only the assertion lines moving by 61 plus the BunnyRandom suffix. The criterion defect behind the MISMATCH was RA-246's.

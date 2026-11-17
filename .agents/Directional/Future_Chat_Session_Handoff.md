@@ -31,57 +31,50 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-17 UTC, RA-247 adversarial re-review of TB127-REV (appended to its record); [TB127 execution](Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Full_Gate_Execution_Report_20261117.md): gate MATCH, combined MISMATCH under [RA-246 §5](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md#5-tb127-frozen). [TB127 independent Review](Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Independent_Review_20261117.md): comparison discrepancy independently adjudicated; historical MISMATCH upheld. |
+| Currency | 2026-11-17 UTC, RA-248 face-contact node definition ([record](Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Definition_Review_20261117.md)); prior RA-247 re-review of TB127-REV. |
 | Branch and source | `agent/surface_cell_quad/p5-recover-bridge-healing`; verify HEAD before work. CB146 source `48e6f97d278b2226036f658ce9060a38b8a374b5`, package `14301616031`; [compile record](Architecture_M6_CP3_CB146_P13_Rotation_Terminal_Locus_Print_Code_Build_Record_20261117.md). CB144 product source unchanged; CB144B and CB146 test-only changes both included. |
 | Accepted evidence | [TB125](Architecture_M6_CP3_TB125_P13_Edge_Terminal_Exact_Inventory_Execution_Report_20261117.md) scoped 950/950; artifacts `14289730737`/`14289927334`. Accepted CP2 491/491, package `11391685901`; 497 CP3 identities frozen, not promoted. |
 | Latest candidate | [TB127](Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Full_Gate_Execution_Report_20261117.md): gate `14302887671`, 951/951 PASS; all 950 inherited records match [TB126](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Full_Gate_Execution_Report_20261117.md). Census `14302668940`: Cylinder PASS 288, BunnyRandom and Vase RED unchanged. Four assertion line numbers shift +61; remaining allowed-normalized lines and terminal prefixes match. RA-246 does not authorize line-number normalization. |
 | Regression and debt | Stable 66/17/49, one produced-witness debt, 81 deferred. [Tracker](Regression_Root_Cause_Tracker.md). C5/O42/O43 open; narrow C3/O44/C1 closed. Middle-piece rotation witness remains open. D11=A, D12=A; D10 deferred, D6 pending. `chainRimSchedules=false`. |
-| Active boundary | BunnyRandom `RotationSystemInconsistent` / `CellularityNotEstablished`, face `(5,104,359)` (candidate C5). Verbatim suffix: `rotationReason=TraceEventPositionInvalid trace=0 eventIndex=18 eventPositionReason=NoCarrierMatch eventPositionPass=SourceEdgeUnavailable`. The exact no-edge non-origin/non-terminal rejection is in trace_event_position, before ray ordering. Actual event kind/node/point and struck segment are not published; no product fix is frozen. Vase completion RED unchanged. CP3/D0 not accepted. |
+| Active boundary | BunnyRandom `TraceEventPositionInvalid` at face `(5,104,359)` (C5): a trace–trace contact inside a face with no shared carrier edge. RA-248 defines the A2a′ face-contact node (FC-1–FC-5). The downstream fragment and ownership stages still use the stale M3 one-chord taxonomy (O46, FC-6). CB147 is next. Vase completion RED unchanged. CP3/D0 not accepted. |
 
-## Mandatory next turn — `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB147-P13-FACE-CONTACT-EXACT-HELPERS` — EXACT NEXT
 
-Until root [STATUS](../../STATUS) records COMPLETE for `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-REV`, resume that Review closeout only. Do not start the successor in the current turn.
+Until root [STATUS](../../STATUS) records COMPLETE for `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME`, resume that Review only.
 
-- **Type / owner:** Definition Review, runtime-free; authorized by [TB127 independent Review](Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Independent_Review_20261117.md), not by retroactively declaring TB127 MATCH.
-- **Objective (realigned by RA-247):** Define the face-interior contact node in A2a′.
-  - **Established, do not reopen:**
-    - Event 18 is a trace–trace contact inside face `(5,104,359)`, involving trace 0, whose two segments share no carrier edge (G1).
-    - Every node consumer assumes a vertex or an edge locus: position, `NodeLocus`, rotation, and ten arc-range consumers (G2).
-    - The common-carrier rule is a proxy (G3, O45).
-    - No user decision is needed; DESIGN Amendments 13 and 14 already require this (G5).
-  - **No runtime observation is needed.**
-- **Required outputs ([RA-247 §3](Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Independent_Review_20261117.md#owner-requested-adversarial-re-review-ra-247-2026-11-17-utc)):**
-  1. The representation: face locus plus exact point, an interior `TraceCut`, and a shared segment index with exact partial paths.
-  2. An audit of all ten range consumers.
-  3. An exact ray-order rule at face nodes.
-  4. A fixture or hand-built network that reaches the face-interior branch.
-  5. CB147 frozen as an exact diff, and the CB148, CB149 and TB128 contents fixed.
-  6. A plan for the middle-piece direction witness.
-- **Stop rule:** if a range consumer would need a new DESIGN contract to share a segment index, stop and name the decision.
-- **Out of scope:** no compile, runtime, source/test/fixture/manifest change, CB145, promotion, change to the common-carrier proxy (O45), or validator relaxation.
+- **Type / owner:** Code + Build, compile only, exact diff, per [RA-248](Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Definition_Review_20261117.md) §4.
+- **Objective:** Land three pure exact face-chart helpers and their unit test: `face_chart_orientation`, `face_chart_segment_parameter` and `face_chart_counter_clockwise_ray_order`. Nothing calls them yet, so product behaviour is unchanged.
+- **In scope:**
+  - Apply exactly the [frozen diff](Architecture_M6_CP3_CB147_P13_Face_Contact_Exact_Helpers_Exact.diff): SHA-256 `5c3def45e8bdd713ca321b7cfca0f9f3a5935bdf54900afd5548efc55e5df7d1`, 257 lines.
+  - Numstat: `92 0 src/geometry/EmbeddedGraphTopology.cpp`, `35 0 src/geometry/EmbeddedGraphTopology.h`, `100 0 tests/FieldAlignedCurveNetworkTests.cpp`.
+  - Precheck: `git diff --quiet 48e6f97d278b2226036f658ce9060a38b8a374b5 HEAD -- src include tests`.
+  - Build the eight RA-245 GMP/GMPXX targets through the durable dispatcher. Record the source, targets, package and hashes.
+- **Out of scope:** runtime; any other source, test, fixture, manifest or selector edit; CB148 or later work; validator relaxation; promotion.
+- **Routes:**
+  - Mismatch → `M6-CP3-PLAN-P13-FACE-CONTACT-EXACT-HELPERS-STOP`.
+  - Infrastructure failure → `M6-CP3-CB147A-P13-FACE-CONTACT-EXACT-HELPERS-ORCH`.
+  - On success, no TB follows directly: the new test runs as gate row 952 in TB128, after CB148.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Boundary |
 |---|---|---|
-| COMPLETE | `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-REV` | Independent Review; frozen comparison MISMATCH upheld, non-semantic discrepancy established. |
-| COMPLETE | RA-247 adversarial re-review of TB127-REV | Upheld MISMATCH, narrow C3 and the C5 site; decided event 18's class from source; widened the DEFN to all node-locus consumers. |
-| NEXT | `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME` | Definition Review only: face-interior contact node contract, freezes CB147 (RA-247 §3). |
-| then | `M6-CP3-CB147-P13-FACE-CONTACT-EXACT-HELPERS` | Code + Build: pure exact helpers, not wired, with unit tests. First implementation-agent turn. |
-| then | `M6-CP3-CB148-P13-FACE-NODE-LOCUS-AND-INTERIOR-CUT` | Code + Build: representation plus consumer updates, not wired, with an equal-product test. |
-| then | `M6-CP3-CB149-P13-FACE-CONTACT-SWITCH` | Code + Build: contacts with no common carrier go through the face-node path, with a reaching unit test. |
-| then | `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC` | Test + Benchmark: gate unchanged by construction; census BunnyRandom moves past C5. |
-| then | Outcome Review | Closes C5, or classifies the next terminal. |
-| parked | `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY` | C4 and exact grazing; not next. |
-| parked | O45 common-carrier conformance switch | Amendment 13 debt; staged later, not blocking. |
+| COMPLETE | `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME` (RA-248) | Face-contact node contract FC-1–FC-7; downstream finding O46; CB147 frozen. |
+| NEXT | `M6-CP3-CB147-P13-FACE-CONTACT-EXACT-HELPERS` | Code + Build, compile only, exact diff. |
+| parallel | `M6-CP3-DEFN-P13-FACE-CONTACT-NODE-FREEZE` | Review: freezes CB148 (FC-1–FC-5 for contacts with no shared carrier edge, arithmetic in pure unit-tested functions) and the TB128 gate manifest (TB127 manifest + rows 952 and 953). |
+| then | `M6-CP3-CB148-P13-FACE-CONTACT-NODE-SWITCH` | Code + Build. Gate unchanged by construction; only currently failing networks change. |
+| then | `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC` | Gate + census. BunnyRandom should leave `TraceEventPositionInvalid`; its next terminal is predicted at an FC-6 ownership stage, or at rotation or face walk. |
+| then | `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` | Review: classifies TB128 and freezes CB149 (FC-6, not yet wired, with an equal-product test and a measuring receipt). |
+| later | CB149 → TB129 → CB150 (FC-6 switch) → TB130 | Each staged per RA-230. |
+| parked | `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY`; O45 common-carrier conformance | Not next. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: Definition Review only after root STATUS records TB127 independent Review complete. Use `references/turns/REVIEW.md` and read all mandatory policies first.
+`load_next`: Code + Build (CB147) only after root STATUS records RA-248 complete. Use the turn-appropriate skill and read all mandatory policies first.
 
 0. [ORIENTATION.md](ORIENTATION.md) — project context, read first.
 1. [ROADMAP.md](ROADMAP.md) — milestone position only.
-2. This handoff, [TB127 independent Review](Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Independent_Review_20261117.md), [TB127](Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Full_Gate_Execution_Report_20261117.md), [CB146](Architecture_M6_CP3_CB146_P13_Rotation_Terminal_Locus_Print_Code_Build_Record_20261117.md), [CB144B](Architecture_M6_CP3_CB144B_P13_Edge_Terminal_Guard_Extent_Code_Build_Record_20261117.md) and [RA-245](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md), [RA-244](Architecture_M6_CP3_DEFN_P13_Edge_Terminal_Equivalence_Decision_Review_20261117.md) §5, [CB144](Architecture_M6_CP3_CB144_P13_Edge_Terminal_Owner_Correction_Code_Build_Record_20261117.md), [TB126](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Full_Gate_Execution_Report_20261117.md) and [TB125](Architecture_M6_CP3_TB125_P13_Edge_Terminal_Exact_Inventory_Execution_Report_20261117.md); verify the [exact diff](Architecture_M6_CP3_CB144B_P13_Edge_Terminal_Guard_Extent_Exact.diff), the [CB146 diff](Architecture_M6_CP3_CB146_P13_Rotation_Terminal_Locus_Print_Exact.diff) (RA-246 §4) and the committed manifests.
+2. This handoff, [RA-248](Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Definition_Review_20261117.md) and the [CB147 diff](Architecture_M6_CP3_CB147_P13_Face_Contact_Exact_Helpers_Exact.diff), [TB127 independent Review](Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Independent_Review_20261117.md), [TB127](Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Full_Gate_Execution_Report_20261117.md), [CB146](Architecture_M6_CP3_CB146_P13_Rotation_Terminal_Locus_Print_Code_Build_Record_20261117.md), [CB144B](Architecture_M6_CP3_CB144B_P13_Edge_Terminal_Guard_Extent_Code_Build_Record_20261117.md) and [RA-245](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md), [RA-244](Architecture_M6_CP3_DEFN_P13_Edge_Terminal_Equivalence_Decision_Review_20261117.md) §5, [CB144](Architecture_M6_CP3_CB144_P13_Edge_Terminal_Owner_Correction_Code_Build_Record_20261117.md), [TB126](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Full_Gate_Execution_Report_20261117.md) and [TB125](Architecture_M6_CP3_TB125_P13_Edge_Terminal_Exact_Inventory_Execution_Report_20261117.md); verify the [exact diff](Architecture_M6_CP3_CB144B_P13_Edge_Terminal_Guard_Extent_Exact.diff), the [CB146 diff](Architecture_M6_CP3_CB146_P13_Rotation_Terminal_Locus_Print_Exact.diff) (RA-246 §4) and the committed manifests.
 3. [Architecture_M6_Frozen_Definitions.md](Architecture_M6_Frozen_Definitions.md) and [DESIGN.md](DESIGN.md) for normative constraints; [tracker](Regression_Root_Cause_Tracker.md) and [TODO](../../TODO.md) for unresolved issues and authorized scope.
 4. [Historical record index](M6_Consolidated_Record.md#tb126-review-folded-record-index-2026-11-17) resolves superseded filenames; old turn ladders and navigation preimages are history only, not instructions. The CB84 Linux Vase diagnostic timing attempt, CB121A 16-row fan-resolver plan and CB102 remain withdrawn. Reviews remain runtime-free; no deprecated scratch-build authorization. D6 remains pending and the chain switch remains off.
 

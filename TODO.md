@@ -1,4 +1,29 @@
-## CURRENT — RA-247 adversarial re-review of TB127-REV (2026-11-17 UTC)
+## CURRENT — RA-248 face-contact node definition; CB147 next (2026-11-17 UTC)
+
+**Defined** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Definition_Review_20261117.md)):
+- **FC-1–FC-5:** A2a′ face-contact node for a contact with no shared carrier edge.
+  - Locus: the face plus the exact terminal-contact point.
+  - Positions: the terminating trace ends there; the struck trace gets an interior cut (k, t).
+  - Arcs on the struck trace share segment k, with an exact partial `sourcePath`.
+  - Rotation uses an exact counter-clockwise ray order in the face chart.
+- **FC-6:** boundary-interval corner ownership for faces holding such a node.
+- **FC-7:** contacts with a shared carrier edge keep the proxy (O45).
+
+**New finding O46:** the A2b fragment-corner and SurfaceCutGraph ownership stages still follow M3 Amendment 7 (one full chord per face; slits never separate), which no longer holds for the canonical tracer. So BunnyRandom's next terminal is predicted downstream of A2a′.
+
+**Fixture limit:** `make_from_candidate` rejects hand-built networks, so the wired paths have only the BunnyRandom census as a witness. The middle-piece direction witness is BunnyRandom too.
+
+**Turn sequence:**
+- [x] `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME` (RA-248): Review, COMPLETE.
+- [ ] **NEXT:** `M6-CP3-CB147-P13-FACE-CONTACT-EXACT-HELPERS`: exact diff `5c3def45e8bdd713ca321b7cfca0f9f3a5935bdf54900afd5548efc55e5df7d1` (257 lines), compile only; pure helpers, not yet called.
+- [ ] Parallel Review `M6-CP3-DEFN-P13-FACE-CONTACT-NODE-FREEZE`: freezes CB148 (FC-1–FC-5) and the TB128 manifest (TB127 manifest + rows 952 and 953).
+- [ ] `M6-CP3-CB148-P13-FACE-CONTACT-NODE-SWITCH`: gate unchanged by construction.
+- [ ] `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC`: gate + census.
+- [ ] `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME`: Review; freezes CB149 (FC-6, measuring).
+- [ ] CB149 → TB129 → CB150 → TB130.
+- [ ] Parked: CB145, O45.
+
+## Historical checkpoint — RA-247 adversarial re-review of TB127-REV (2026-11-17 UTC)
 
 **Upheld:**
 - The gate is 951/951.
