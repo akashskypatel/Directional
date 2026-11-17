@@ -3,8 +3,8 @@
 **Turn:** `M6-CP3-DEFN-P13-OBTUSE-EDGE-PORT-OUTCOME` (Review only, P13-e.12).
 
 **Authority read:**
-- the [TB119 report](Architecture_M6_CP3_TB119_P13_Obtuse_Edge_Port_Slide_Full_Gate_Execution_Report_20261116.md);
-- the [CB138 record](Architecture_M6_CP3_CB138_P13_Obtuse_Edge_Port_Slide_Code_Build_Record_20261116.md);
+- the [TB119 report](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb119_p13_obtuse_edge_port_slide_full_gate_execution_report_20261116md);
+- the [CB138 record](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb138_p13_obtuse_edge_port_slide_code_build_record_20261116md);
 - [RA-238](Architecture_M6_CP3_DEFN_P13_Edge_Port_Trace_Outcome_Review_20261116.md);
 - DESIGN Amendments 17 and 22, and `M3_Closure_Record.md` AX1.
 

@@ -1,6 +1,6 @@
 # RA-234 — Size grading decision, D10 (step 64E.12)
 
-Turn `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION`, Review agent only, runtime-free. Input: [TB115](Architecture_M6_CP3_TB115_P13_A4_Production_Size_Census_Full_Gate_Execution_Report_20261112.md) (945/945, scoped MATCH; census Cylinder PASS, BunnyRandom and Vase registered RED; twelve full-gate and seven census `production` lines). RA-233 §3 and §6.
+Turn `M6-CP3-DEFN-P13-A4-SIZE-GRADING-DECISION`, Review agent only, runtime-free. Input: [TB115](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb115_p13_a4_production_size_census_full_gate_execution_report_20261112md) (945/945, scoped MATCH; census Cylinder PASS, BunnyRandom and Vase registered RED; twelve full-gate and seven census `production` lines). RA-233 §3 and §6.
 
 ## 1. What TB115 showed
 

@@ -8,7 +8,7 @@
 
 - Direct GitHub bootstrap beacon `0989743deaa25ab3f573c9e8cf26f269076ef676`.
 - Exact source snapshot `82d74f543d51803f92002f156a4250f32bf968a1`, workflow [42699570720](https://github.com/akashskypatel/Directional/actions/runs/42699570720), artifact `13710408472`, archive SHA-256 `73ed73f3fd0862810344a7b6f13f799107fd306b44152b79094659b0f88e91d1`; all 5,405 source SHA256SUMS verified. Snapshot is read-only inspection authority, not proof of any new compile or runtime.
-- RA-218 §2–§4 and [TB93](Architecture_M6_CP3_TB93_P13_A3_Mandatory_Chain_Partition_Full_Gate_Execution_Report_20261109.md): CB110 partition/support unwired, 923/923 MATCH with membership 1004. Seven platform plus seven A3 raw lines unchanged from TB92. Census Cylinder PASS, BunnyRandom/Vase registered RED. Accepted CP2 491/491; stable 66/17/49, debt 1, deferred 81; selector497/CP3 unpromoted.
+- RA-218 §2–§4 and [TB93](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb93_p13_a3_mandatory_chain_partition_full_gate_execution_report_20261109md): CB110 partition/support unwired, 923/923 MATCH with membership 1004. Seven platform plus seven A3 raw lines unchanged from TB92. Census Cylinder PASS, BunnyRandom/Vase registered RED. Accepted CP2 491/491; stable 66/17/49, debt 1, deferred 81; selector497/CP3 unpromoted.
 - Process deviation: several source documents were fetched directly before the required `READ_MODE=snapshot` gate was enforced. An exact source snapshot was subsequently obtained and verified. Do not report those initial direct reads as a compliant snapshot-first preflight.
 - No product, test, fixture, selector, benchmark, workflow or build source was edited; no Directional runtime or compilation was executed in this Review.
 

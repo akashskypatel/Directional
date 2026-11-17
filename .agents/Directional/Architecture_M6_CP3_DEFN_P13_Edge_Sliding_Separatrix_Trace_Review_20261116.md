@@ -1,6 +1,6 @@
 # RA-237 — Edge-sliding separatrix trace, P13-e.6 (BunnyRandom vertex 49)
 
-Turn `M6-CP3-DEFN-P13-EDGE-SLIDING-SEPARATRIX-TRACE`, Review agent only, runtime-free. Input: [TB117](Architecture_M6_CP3_TB117_P13_Edge_Port_Straddle_Census_Full_Gate_Execution_Report_20261115.md) MATCH (945/945; 470/470 `identity=1`; the only straddle is BunnyRandom `(0,1,48-49)`). Decision D11 = A (edge-sliding ports, [RA-236 §3](Architecture_M6_CP3_DEFN_P13_Singularity_Port_Owner_Review_20261112.md)).
+Turn `M6-CP3-DEFN-P13-EDGE-SLIDING-SEPARATRIX-TRACE`, Review agent only, runtime-free. Input: [TB117](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb117_p13_edge_port_straddle_census_full_gate_execution_report_20261115md) MATCH (945/945; 470/470 `identity=1`; the only straddle is BunnyRandom `(0,1,48-49)`). Decision D11 = A (edge-sliding ports, [RA-236 §3](Architecture_M6_CP3_DEFN_P13_Singularity_Port_Owner_Review_20261112.md)).
 
 ## 1. How A2a consumes a port (read from the code)
 

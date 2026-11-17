@@ -1,6 +1,6 @@
 # RA-231 — Switch activation (step 64E.3)
 
-Turn `M6-CP3-DEFN-P13-A3-SWITCH-ACTIVATION`, Review agent only, runtime-free. Input: [TB112](Architecture_M6_CP3_TB112_P13_A3_Rim_Chain_Switch_Staging_Full_Gate_Execution_Report_20261112.md) (945/945, scoped MATCH; all TB110 receipts unchanged; ten `switch-run` lines). RA-230 §6.
+Turn `M6-CP3-DEFN-P13-A3-SWITCH-ACTIVATION`, Review agent only, runtime-free. Input: [TB112](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb112_p13_a3_rim_chain_switch_staging_full_gate_execution_report_20261112md) (945/945, scoped MATCH; all TB110 receipts unchanged; ten `switch-run` lines). RA-230 §6.
 
 ## 1. What TB112 showed
 

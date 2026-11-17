@@ -1,6 +1,6 @@
 # RA-236 — Singularity port owner, P13-e (BunnyRandom vertex 49)
 
-Turn `M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER`, Review agent only, runtime-free. Input: [TB116](Architecture_M6_CP3_TB116_P13_Singularity_Port_Direction_Census_Full_Gate_Execution_Report_20261112.md) (945/945, scoped MATCH). It recorded 32 `partition direction` lines for singularity 6, with `inSector=1` exactly at the four known incidences. RA-235 §6.
+Turn `M6-CP3-DEFN-P13-SINGULARITY-PORT-OWNER`, Review agent only, runtime-free. Input: [TB116](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb116_p13_singularity_port_direction_census_full_gate_execution_report_20261112md) (945/945, scoped MATCH). It recorded 32 `partition direction` lines for singularity 6, with `inSector=1` exactly at the four known incidences. RA-235 §6.
 
 ## 1. Model
 

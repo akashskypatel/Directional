@@ -1,6 +1,6 @@
 # RA-229 — Annulus rim pairing (step 64D.8)
 
-Turn `M6-CP3-DEFN-P13-A3-ANNULUS-RIM-PAIRING`, Review agent only, runtime-free. Input: TB109 (944/944, scoped MATCH; [report](Architecture_M6_CP3_TB109_P13_A3_Annulus_Rim_Edge_Schedule_Full_Gate_Execution_Report_20261112.md)), RA-228 §5.
+Turn `M6-CP3-DEFN-P13-A3-ANNULUS-RIM-PAIRING`, Review agent only, runtime-free. Input: TB109 (944/944, scoped MATCH; [report](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb109_p13_a3_annulus_rim_edge_schedule_full_gate_execution_report_20261112md)), RA-228 §5.
 
 ## 1. What TB109 showed
 

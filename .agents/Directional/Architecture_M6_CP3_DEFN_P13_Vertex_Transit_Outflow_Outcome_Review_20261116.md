@@ -3,7 +3,7 @@
 **Turn:** `M6-CP3-DEFN-P13-VERTEX-TRANSIT-OUTFLOW-OUTCOME` (Review only, P13-e.15).
 
 **Authority read:**
-- the [TB120 report](Architecture_M6_CP3_TB120_P13_Vertex_Transit_Outflow_Receipt_Full_Gate_Execution_Report_20261116.md);
+- the [TB120 report](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb120_p13_vertex_transit_outflow_receipt_full_gate_execution_report_20261116md);
 - [RA-239](Architecture_M6_CP3_DEFN_P13_Obtuse_Edge_Port_Outcome_Review_20261116.md) §§3–5;
 - DESIGN Amendments 17 and 22, and `M3_Closure_Record.md` AX1;
 - `resolve_field_vertex_transit`, `field_aligned_next_trace_proposal` and `resolve_field_branch_continuation` at HEAD;

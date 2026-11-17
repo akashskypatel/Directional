@@ -1,6 +1,6 @@
 # RA-233 — Interior size grading, O41 owner (step 64E.9)
 
-Turn `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING`, Review agent only, runtime-free. Input: [TB114 evidence](Architecture_M6_CP3_TB114_P13_A4_Completed_Mesh_Size_Census_Execution_Evidence_20261112.md) (945/945, scoped MATCH; 46/46 earlier receipt lines unchanged; 8 `switch-size` and 4 `switch-spans` lines). RA-232 §6.
+Turn `M6-CP3-DEFN-P13-A4-INTERIOR-SIZE-GRADING`, Review agent only, runtime-free. Input: [TB114 evidence](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb114_p13_a4_completed_mesh_size_census_execution_evidence_20261112md) (945/945, scoped MATCH; 46/46 earlier receipt lines unchanged; 8 `switch-size` and 4 `switch-spans` lines). RA-232 §6.
 
 ## 1. What TB114 showed
 

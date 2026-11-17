@@ -1,6 +1,6 @@
 # RA-232 — Completed-mesh gate, O41 (step 64E.6)
 
-Turn `M6-CP3-DEFN-P13-A4-COMPLETED-MESH-GATE`, Review agent only, runtime-free. Input: [TB113](Architecture_M6_CP3_TB113_P13_A4_Completed_Mesh_Gate_Census_Full_Gate_Execution_Report_20261112.md) (945/945, scoped MATCH; 46/46 earlier receipt lines unchanged; ten `switch-validation` lines). RA-231 §6.
+Turn `M6-CP3-DEFN-P13-A4-COMPLETED-MESH-GATE`, Review agent only, runtime-free. Input: [TB113](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb113_p13_a4_completed_mesh_gate_census_full_gate_execution_report_20261112md) (945/945, scoped MATCH; 46/46 earlier receipt lines unchanged; ten `switch-validation` lines). RA-231 §6.
 
 ## 1. What TB113 showed
 

@@ -1,6 +1,6 @@
 # RA-238 — P13-e edge-port trace outcome: obtuse start face at BunnyRandom vertex 367 (2026-11-16 UTC)
 
-**Turn:** `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME` (Review only, P13-e.9). **Authority read:** [TB118 report](Architecture_M6_CP3_TB118_P13_Edge_Supported_Port_Trace_Full_Gate_Execution_Report_20261116.md), [RA-237](Architecture_M6_CP3_DEFN_P13_Edge_Sliding_Separatrix_Trace_Review_20261116.md), compiled CB137 source `4a63be7a17b5784f0fa742883bbf99e4fe546360` (identical to HEAD for the touched files). Runtime-free: no build, test or probe was run.
+**Turn:** `M6-CP3-DEFN-P13-EDGE-PORT-TRACE-OUTCOME` (Review only, P13-e.9). **Authority read:** [TB118 report](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb118_p13_edge_supported_port_trace_full_gate_execution_report_20261116md), [RA-237](Architecture_M6_CP3_DEFN_P13_Edge_Sliding_Separatrix_Trace_Review_20261116.md), compiled CB137 source `4a63be7a17b5784f0fa742883bbf99e4fe546360` (identical to HEAD for the touched files). Runtime-free: no build, test or probe was run.
 
 ## 1. TB118 accepted
 
