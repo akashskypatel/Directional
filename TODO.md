@@ -1,4 +1,4 @@
-## CURRENT — RA-248 face-contact node definition; CB147 next (2026-11-17 UTC)
+## CURRENT — CB147 compiled; CB148 freeze Review next (2026-11-17 UTC)
 
 **Defined** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Definition_Review_20261117.md)):
 - **FC-1–FC-5:** A2a′ face-contact node for a contact with no shared carrier edge.
@@ -15,8 +15,8 @@
 
 **Turn sequence:**
 - [x] `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME` (RA-248): Review, COMPLETE.
-- [ ] **NEXT:** `M6-CP3-CB147-P13-FACE-CONTACT-EXACT-HELPERS`: exact diff `5c3def45e8bdd713ca321b7cfca0f9f3a5935bdf54900afd5548efc55e5df7d1` (257 lines), compile only; pure helpers, not yet called.
-- [ ] Parallel Review `M6-CP3-DEFN-P13-FACE-CONTACT-NODE-FREEZE`: freezes CB148 (FC-1–FC-5) and the TB128 manifest (TB127 manifest + rows 952 and 953).
+- [x] COMPLETE: `M6-CP3-CB147-P13-FACE-CONTACT-EXACT-HELPERS`: exact change committed; compile verified. [Record](.agents/Directional/Architecture_M6_CP3_CB147_P13_Face_Contact_Exact_Helpers_Code_Build_Record_20261117.md).
+- [ ] **NEXT (Review only):** `M6-CP3-DEFN-P13-FACE-CONTACT-NODE-FREEZE`: freezes CB148 (FC-1–FC-5) and the TB128 manifest (TB127 manifest + rows 952 and 953).
 - [ ] `M6-CP3-CB148-P13-FACE-CONTACT-NODE-SWITCH`: gate unchanged by construction.
 - [ ] `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC`: gate + census.
 - [ ] `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME`: Review; freezes CB149 (FC-6, measuring).

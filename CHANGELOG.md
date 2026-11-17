@@ -1,3 +1,7 @@
+## 2026-11-17 UTC — CB147 pure exact face-contact helpers compiled
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB147_P13_Face_Contact_Exact_Helpers_Code_Build_Record_20261117.md): frozen RA-248 exact three-file diff at `43294bde49e1f24aa09d10ca7e5ff632a7c28d6b` (+227/-0). [Compile run 44039082778](https://github.com/akashskypatel/Directional/actions/runs/44039082778) SUCCESS, eight GMP/GMPXX targets, package `14309111230`, 28/28 checksums; new row 952 not run, helpers not wired. No runtime or promotion. Exactly next separately `M6-CP3-DEFN-P13-FACE-CONTACT-NODE-FREEZE`.
+
 ## 2026-11-17 UTC — RA-248 face-contact node definition
 
 - [Definition Review](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Definition_Review_20261117.md):
