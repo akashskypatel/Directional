@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb130-docs-v1",
+  "request_id": "m6-cp3-cb154-apply-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb130-docs-v1",
-  "file_id": "1xOlAjcKXPXFAvs2HwjJe2z-920eRjnAe",
-  "patch_sha256": "e5459f5c68379bb701a13dc006f00362c454c1beeb0779d1f8cc01e5dc31ca71",
-  "base_sha": "5f9536a0bec729b4aaaa9312bcac58ff73425fbd",
+  "mailbox_key": "m6-cp3-cb154-apply-v1",
+  "file_id": "1OIBK-yYevdTfkLDjQEfqCss5T_-Im8b0",
+  "patch_sha256": "9930386f91665cd2777b9b9c50a62fc25c3198305c35df784ecc596abf4f9d9a",
+  "base_sha": "2a6298fb9519fa27c4df1ac3716c1c8a889ffdde",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Record TB130 frozen comparison MATCH and measured proxy exposure"
+  "commit_message": "Classify face contacts by network node rather than carrier edge"
 }
