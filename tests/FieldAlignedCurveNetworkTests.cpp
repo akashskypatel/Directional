@@ -18699,3 +18699,103 @@ TEST(MandatoryEdgeTerminalSplit, SplitsAtOrderedDistinctCutsAndRejectsAmbiguousO
   EXPECT_EQ(embedded::MandatoryEdgeSplitFailureKind::SharedNode, shared->kind);
   EXPECT_EQ(trace(9), shared->trace);
 }
+
+TEST(FaceChartExactGeometry, OrdersRaysAndContactsExactlyAroundAFaceInteriorPoint) {
+  using Point = embedded::FaceChartPoint;
+  const auto zero = exact_ratio(0, 1);
+  const auto one = exact_ratio(1, 1);
+  // 2^-60: below half a double ulp near 1/3 and 1/2, so the perturbed
+  // coordinates below round to the unperturbed ones.
+  const auto epsilon = exact_ratio(1, 1152921504606846976LL);
+  const auto sameDoubles = [](const Point &left, const Point &right) {
+    for (std::size_t index = 0U; index < 3U; ++index) {
+      if (static_cast<double>(left[index].to_double()) !=
+          static_cast<double>(right[index].to_double())) {
+        return false;
+      }
+    }
+    return true;
+  };
+  const Point e0{one, zero, zero};
+  const Point e1{zero, one, zero};
+  const Point e2{zero, zero, one};
+
+  EXPECT_EQ(1, embedded::face_chart_orientation(e0, e1, e2));
+  EXPECT_EQ(-1, embedded::face_chart_orientation(e0, e2, e1));
+  const Point centroid{exact_ratio(1, 3), exact_ratio(1, 3), exact_ratio(1, 3)};
+  const Point halfwayToE0{exact_ratio(2, 3), exact_ratio(1, 6), exact_ratio(1, 6)};
+  EXPECT_EQ(0, embedded::face_chart_orientation(centroid, halfwayToE0, e0));
+  const Point nearCentroid{exact_ratio(1, 3) + epsilon,
+                           exact_ratio(1, 3) - epsilon, exact_ratio(1, 3)};
+  ASSERT_TRUE(sameDoubles(centroid, nearCentroid));
+  EXPECT_EQ(-1, embedded::face_chart_orientation(nearCentroid, halfwayToE0, e0))
+      << "a rounded predicate cannot separate this triple from a collinear one";
+
+  // A straight segment from edge (e0,e1) to edge (e1,e2).
+  const Point entry{exact_ratio(1, 2), exact_ratio(1, 2), zero};
+  const Point exit{zero, exact_ratio(1, 2), exact_ratio(1, 2)};
+  const auto along = [&](const directional::authority::FieldExactRational &t) {
+    return Point{entry[0] + t * (exit[0] - entry[0]),
+                 entry[1] + t * (exit[1] - entry[1]),
+                 entry[2] + t * (exit[2] - entry[2])};
+  };
+  const auto third = exact_ratio(1, 3);
+  const auto justAboveThird = third + epsilon;
+  EXPECT_EQ(third, embedded::face_chart_segment_parameter(entry, exit, along(third)));
+  const auto later = embedded::face_chart_segment_parameter(
+      entry, exit, along(justAboveThird));
+  ASSERT_TRUE(later.has_value());
+  EXPECT_EQ(justAboveThird, *later);
+  ASSERT_TRUE(sameDoubles(along(third), along(justAboveThird)));
+  EXPECT_LT(third, *later) << "two contacts on one segment are ordered exactly";
+  EXPECT_FALSE(embedded::face_chart_segment_parameter(entry, exit, entry))
+      << "the segment's own entry is not an interior point";
+  EXPECT_FALSE(embedded::face_chart_segment_parameter(entry, exit, exit));
+  EXPECT_FALSE(embedded::face_chart_segment_parameter(entry, exit, along(exact_ratio(2, 1))));
+  EXPECT_FALSE(embedded::face_chart_segment_parameter(
+      entry, exit,
+      Point{exact_ratio(1, 3), exact_ratio(1, 2) + epsilon,
+            exact_ratio(1, 6) - epsilon}))
+      << "a point off the segment's line by 2^-60";
+  EXPECT_FALSE(embedded::face_chart_segment_parameter(entry, entry, entry));
+
+  // Rays from an interior point: a struck segment A -> B through the origin
+  // and stubs towards e2 (one side) and the midpoint of (e0,e1) (other side).
+  const Point origin{exact_ratio(1, 4), exact_ratio(1, 4), exact_ratio(1, 2)};
+  const Point towardA{exact_ratio(1, 2), zero, exact_ratio(1, 2)};
+  const Point towardB{zero, exact_ratio(1, 2), exact_ratio(1, 2)};
+  const Point midE0E1{exact_ratio(1, 2), exact_ratio(1, 2), zero};
+  using Order = std::optional<std::vector<std::size_t>>;
+  EXPECT_EQ((Order{{0U, 2U, 1U}}),
+            embedded::face_chart_counter_clockwise_ray_order(
+                origin, {towardB, towardA, e2}));
+  EXPECT_EQ((Order{{0U, 1U, 2U}}),
+            embedded::face_chart_counter_clockwise_ray_order(
+                origin, {towardB, towardA, midE0E1}));
+  EXPECT_EQ((Order{{0U, 2U, 1U, 3U}}),
+            embedded::face_chart_counter_clockwise_ray_order(
+                origin, {towardB, towardA, e2, midE0E1}));
+  EXPECT_EQ((Order{{0U, 3U, 1U, 2U}}),
+            embedded::face_chart_counter_clockwise_ray_order(
+                origin, {midE0E1, e2, towardA, towardB}))
+      << "the same cycle B, e2, A, mid read from another start";
+  const Point nearB{zero, exact_ratio(1, 2) + epsilon, exact_ratio(1, 2) - epsilon};
+  ASSERT_TRUE(sameDoubles(towardB, nearB));
+  EXPECT_EQ((Order{{0U, 1U, 2U}}),
+            embedded::face_chart_counter_clockwise_ray_order(
+                origin, {towardB, towardA, nearB}))
+      << "nearB lies just clockwise of B";
+  EXPECT_EQ((Order{{0U, 2U, 1U}}),
+            embedded::face_chart_counter_clockwise_ray_order(
+                origin, {towardA, towardB, nearB}));
+  const Point beyondB{exact_ratio(-1, 4), exact_ratio(3, 4), exact_ratio(1, 2)};
+  EXPECT_EQ(Order{}, embedded::face_chart_counter_clockwise_ray_order(
+                         origin, {towardB, towardA, beyondB}))
+      << "two rays leaving in the same direction";
+  EXPECT_EQ(Order{}, embedded::face_chart_counter_clockwise_ray_order(
+                         origin, {towardB, origin}));
+  EXPECT_EQ((Order{std::vector<std::size_t>{}}),
+            embedded::face_chart_counter_clockwise_ray_order(origin, {}));
+  EXPECT_EQ((Order{{0U}}),
+            embedded::face_chart_counter_clockwise_ray_order(origin, {towardA}));
+}

@@ -188,6 +188,41 @@ using MandatoryEdgeSplit =
     authority::NetworkNodeId firstNode, authority::NetworkNodeId secondNode,
     std::vector<MandatoryEdgeTerminalCut> cuts);
 
+/**
+ * Exact barycentric coordinates of a point of one source face, listed in that
+ * face's oriented corner order. Every predicate below is affine-invariant, so
+ * no metric geometry is read.
+ */
+using FaceChartPoint = std::array<authority::FieldExactRational, 3>;
+
+/**
+ * Orientation of `a`, `b`, `c` in one face chart: +1 when they run
+ * counter-clockwise in the corner order of their coordinates, -1 when
+ * clockwise, 0 when collinear. Exact.
+ */
+[[nodiscard]] int face_chart_orientation(const FaceChartPoint &a,
+                                         const FaceChartPoint &b,
+                                         const FaceChartPoint &c);
+
+/**
+ * The exact t with point = entry + t * (exit - entry), when the point lies
+ * strictly inside the straight segment from `entry` to `exit`. Empty when the
+ * segment is degenerate, the point is off its line, or t is not in (0, 1).
+ */
+[[nodiscard]] std::optional<authority::FieldExactRational>
+face_chart_segment_parameter(const FaceChartPoint &entry,
+                             const FaceChartPoint &exit,
+                             const FaceChartPoint &point);
+
+/**
+ * Counter-clockwise order of the rays leaving `origin` through each target,
+ * as indices into `targets`, starting at index 0. Empty when a target equals
+ * the origin or two rays leave in the same direction.
+ */
+[[nodiscard]] std::optional<std::vector<std::size_t>>
+face_chart_counter_clockwise_ray_order(const FaceChartPoint &origin,
+                                       const std::vector<FaceChartPoint> &targets);
+
 /** Inventories every source edge that carries two or more terminal cuts. */
 [[nodiscard]] std::vector<MandatoryEdgeTerminalInventory>
 inventory_mandatory_edge_terminals(

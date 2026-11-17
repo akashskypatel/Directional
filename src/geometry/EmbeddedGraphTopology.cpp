@@ -510,6 +510,98 @@ MandatoryEdgeSplit split_mandatory_edge_at_terminals(
   return pieces;
 }
 
+int face_chart_orientation(const FaceChartPoint &a, const FaceChartPoint &b,
+                           const FaceChartPoint &c) {
+  const authority::FieldExactRational determinant =
+      a[0] * (b[1] * c[2] - b[2] * c[1]) - a[1] * (b[0] * c[2] - b[2] * c[0]) +
+      a[2] * (b[0] * c[1] - b[1] * c[0]);
+  const auto zero = authority::FieldExactRational::from_integer(0);
+  if (determinant > zero) return 1;
+  if (determinant < zero) return -1;
+  return 0;
+}
+
+std::optional<authority::FieldExactRational> face_chart_segment_parameter(
+    const FaceChartPoint &entry, const FaceChartPoint &exit,
+    const FaceChartPoint &point) {
+  std::optional<std::size_t> axis;
+  for (std::size_t index = 0U; index < 3U; ++index) {
+    if (exit[index] != entry[index]) {
+      axis = index;
+      break;
+    }
+  }
+  if (!axis.has_value()) return std::nullopt;
+  const authority::FieldExactRational parameter =
+      (point[*axis] - entry[*axis]) / (exit[*axis] - entry[*axis]);
+  for (std::size_t index = 0U; index < 3U; ++index) {
+    if (entry[index] + parameter * (exit[index] - entry[index]) !=
+        point[index]) {
+      return std::nullopt;
+    }
+  }
+  if (!(parameter > authority::FieldExactRational::from_integer(0)) ||
+      !(parameter < authority::FieldExactRational::from_integer(1))) {
+    return std::nullopt;
+  }
+  return parameter;
+}
+
+std::optional<std::vector<std::size_t>> face_chart_counter_clockwise_ray_order(
+    const FaceChartPoint &origin, const std::vector<FaceChartPoint> &targets) {
+  for (const FaceChartPoint &target : targets) {
+    if (target == origin) return std::nullopt;
+  }
+  std::vector<std::size_t> order(targets.size());
+  std::iota(order.begin(), order.end(), 0U);
+  if (targets.empty()) return order;
+
+  // Half-turn classes relative to the ray through targets[0]: 0 is that ray,
+  // 1 the open counter-clockwise half, 2 the opposite ray, 3 the open
+  // clockwise half. Two collinear rays leave in the same direction exactly
+  // when the second displacement is a positive multiple of the first.
+  const auto zero = authority::FieldExactRational::from_integer(0);
+  const auto same_direction = [&](const FaceChartPoint &first,
+                                  const FaceChartPoint &second) {
+    for (std::size_t index = 0U; index < 3U; ++index) {
+      const authority::FieldExactRational step = first[index] - origin[index];
+      if (step.is_zero()) continue;
+      return (second[index] - origin[index]) / step > zero;
+    }
+    return false;
+  };
+  std::vector<int> halfTurn(targets.size(), 0);
+  for (std::size_t index = 1U; index < targets.size(); ++index) {
+    const int side = face_chart_orientation(origin, targets[0], targets[index]);
+    if (side > 0) {
+      halfTurn[index] = 1;
+    } else if (side < 0) {
+      halfTurn[index] = 3;
+    } else if (same_direction(targets[0], targets[index])) {
+      return std::nullopt;
+    } else {
+      halfTurn[index] = 2;
+    }
+  }
+  std::sort(order.begin(), order.end(),
+            [&](const std::size_t lhs, const std::size_t rhs) {
+              if (halfTurn[lhs] != halfTurn[rhs]) {
+                return halfTurn[lhs] < halfTurn[rhs];
+              }
+              return face_chart_orientation(origin, targets[lhs],
+                                            targets[rhs]) > 0;
+            });
+  // Within one class, collinear neighbours share a direction.
+  for (std::size_t index = 1U; index < order.size(); ++index) {
+    if (halfTurn[order[index - 1U]] == halfTurn[order[index]] &&
+        face_chart_orientation(origin, targets[order[index - 1U]],
+                               targets[order[index]]) == 0) {
+      return std::nullopt;
+    }
+  }
+  return order;
+}
+
 namespace {
 
 // P13-e (RA-243): print each mandatory source edge carrying two or more
