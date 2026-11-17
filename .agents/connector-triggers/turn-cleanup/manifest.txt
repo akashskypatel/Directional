@@ -1,0 +1,2 @@
+# TB131 independent Review; only the snapshot marker created in this turn.
+.agents/connector-triggers/source-snapshot/tb131-review-20261117.txt
