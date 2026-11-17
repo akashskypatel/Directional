@@ -1,4 +1,4 @@
-## CURRENT — TB129 execution MISMATCH; independent Review next (2026-11-17 UTC)
+## CURRENT — TB129 independent Review upholds MISMATCH; common-carrier measurement next (2026-11-17 UTC)
 
 [RA-250](.agents/Directional/Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md#ra-250--adversarial-re-review-of-this-review-2026-11-17-utc) upholds the TB128 MISMATCH and corrects the Review in four places:
 - **Row 952.** The Review's witness is verified exactly, under both truncating and rounding conversion.
@@ -15,9 +15,10 @@ Also recorded: my own RA-248/RA-249 errors (the GMP rounding premise, the name-o
   - Eight RA-245 targets compiled; package `14325348753`. No runtime.
 - [x] **COMPLETE:** `M6-CP3-CB151-P13-TERMINAL-CUT-BEFORE-END-RECEIPT`. [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB151_P13_Terminal_Cut_Before_End_Receipt_Code_Build_Record_20261117.md). Source `c45e9abe5085f39c1f5bcb149ec07f95b719177e`; package `14327212608`. No runtime.
 - [x] **COMPLETE (MISMATCH):** `M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-EXEC`. [Execution report](.agents/Directional/Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Execution_Report_20261117.md). 953/953 PASS; raw-log scope/count violates RA-250 §R6. All 66 sphere and two BunnyRandom receipts classify H1; Cylinder/Vase unchanged.
-- [ ] **NEXT (independent Review, runtime-free):** `M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-REV`. Re-open the exact candidate/comparison archives, adjudicate receipt scope/count and H1; no fix or promotion authorized in this execution.
-- [ ] Held: MATCH-only `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME` and `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6), pending the Review decision.
-- [ ] Withdrawn: CB149B. Parked: CB145, O45 (H1 would retire it).
+- [x] **COMPLETE (MISMATCH upheld):** `M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-REV`. [Independent Review](.agents/Directional/Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Independent_Review_20261117.md). Two restored REDs, 68 H1 lines; 54 out-of-scope lines and duplicate BunnyRandom from diagnostic replay. No promotion.
+- [ ] **NEXT (Code + Build only):** `M6-CP3-CB152-P13-COMMON-CARRIER-CONTACT-CENSUS`. [Frozen test-observation plan](.agents/Directional/Architecture_M6_CP3_CB152_P13_Common_Carrier_Contact_Census_Plan_20261117.md). Count unique contact nodes and terminal bindings on actual Cylinder/Vase/BunnyRandom snapshots in later TB. No semantic switch or runtime now. Start only after COMPLETE beacon.
+- [ ] Held: MATCH-only `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME` and `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6); no automatic activation.
+- [ ] Withdrawn: CB149B. Parked: CB145; O45 remains open, FC-7 unconditional rule disproved; measure switch coverage first.
 - [ ] Carried: C5/O42/O43/O45/O46 open; FC-1/FC-4 producer proof; middle-piece direction witness. Stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted.
 
 ## Historical checkpoint — TB128 MISMATCH reviewed; bounded receipt next (2026-11-17 UTC)

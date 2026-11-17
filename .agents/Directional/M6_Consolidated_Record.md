@@ -2059,3 +2059,10 @@ By user instruction, the 231 remaining standalone `Architecture_M6*` Review, def
 | [Architecture_M6_CP3_TB125_P13_Edge_Terminal_Exact_Inventory_Execution_Report_20261117.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb125_p13_edge_terminal_exact_inventory_execution_report_20261117md) | 42 | Scoped MATCH 950/950; historical accepted evidence |
 | [Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Full_Gate_Execution_Report_20261117.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb126_p13_edge_terminal_correction_full_gate_execution_report_20261117md) | 48 | MISMATCH 950/951; invalid guard witness |
 | [Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Full_Gate_Execution_Report_20261117.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb127_p13_guard_and_rotation_locus_full_gate_execution_report_20261117md) | 57 | Gate 951/951; strict census MISMATCH (assertion relocation) |
+
+
+## TB129 Review folded continuation (2026-11-17)
+
+| Original file | Lines | Verdict/role | Retained home |
+|---|---:|---|---|
+| `Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Continuation_20261117.md` | 31 | Superseded in-progress execution continuation; TB129 complete MISMATCH | [Volume D3](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb129_p13_terminal_cut_receipt_full_gate_continuation_20261117md) |

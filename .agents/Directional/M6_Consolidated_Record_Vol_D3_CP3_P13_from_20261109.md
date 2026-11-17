@@ -4923,3 +4923,44 @@ The earlier interrupted response preserved an unapplied handoff/TODO patch (base
 
 The six-file documentation patch (base `21309c49bb7fba212fdfa1ec27e923404916e131`, SHA-256 `61a2d980b2cca344bf0dd1383b18c949bb45a66e5e9101ac207eecc022bd14cb`) passed local apply and whitespace checks. [Apply run 44027628991](https://github.com/akashskypatel/Directional/actions/runs/44027628991) succeeded; result artifact `14304270928` verified. Applied commit `9ccd4a9aa523967a044bc87a1421322af2c928c6`; all six resulting file blob hashes independently match. Drift audit: zero errors, three protected-document currency warnings; durable sections retained. Final evidence bundle in File Library `/Directional/Evidence/Directional_TB127_verified_evidence.zip`, SHA-256 `e0b5c4641e812680ce5fedfa4f4d3703aa39ce9c1b0a87adc3601b3668e2f6ca`. The final Drive patch and earlier superseded patch were both deleted after successful application. [Cleanup run 44027872780](https://github.com/akashskypatel/Directional/actions/runs/44027872780) succeeded; result artifact `14303428163` verified; cleanup commit `8a5d781b3dec01e5220a6984ed534800d25126d6`. TB127 marker and cleanup manifest absent; ten durable workflows and request slot intact; 37 pre-existing legacy controls left outside this turn's scope. No implementation or acceptance promotion.
 ~~~
+
+
+<a id="architecture_m6_cp3_tb129_p13_terminal_cut_receipt_full_gate_continuation_20261117md"></a>
+
+## Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Continuation_20261117.md
+
+Original: `c696051657610733f071dea5c11b8ce3333352a5:.agents/Directional/Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Continuation_20261117.md` · 31 lines · SHA-256 `ca12b358207c502f2ddd99808fec9c3713d7188abdbf52260f40d5be9f68d523`. Superseded continuation; only historical dispatch/preflight provenance, not current instructions.
+
+````````markdown
+# TB129 P13 terminal-cut receipt — execution continuation (2026-11-17 UTC)
+
+## Situation
+
+Canonical turn `M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-EXEC`, entered 2026-11-17T12:28:20Z. CB151 was COMPLETE at entry. Both frozen Test + Benchmark execution requests have been committed. Resume this same turn. No duplicate dispatch, rebuild, source/test/fixture/build/manifest edit, successor execution or promotion is authorized. Neither candidate result is verified yet. No MATCH/MISMATCH or H1/H2 claim.
+
+## Background — immutable authority
+
+- Semantic source and harness executor: `c45e9abe5085f39c1f5bcb149ec07f95b719177e`; CB151 package `14327212608`, ZIP `9ef0f781947748cf2433566f3704259ab362dbf8f042999f87248ca6d645eb69`, source archive `434a3817c90395366c572287e205c3d0d9268241817b20c3f106ba6e2a500417`; root manifest `0c65a1f63be701f8497fb828d3826f3b7a2a23f00042d97600570263647677b7`. 28/28 package checksums, six executable modes and GMP/GMPXX dependency evidence verified. Exact harness SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`.
+- Frozen gate `941287fa96f3432eb1d67a9ae1e5dc7bc0ca2f3a1775cd5f9fb35482a4fa7962` (953 rows), deferred ledger `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce` (81 identities), census `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793` (3 rows). Harness self-check passed for both manifests; no binaries executed locally.
+- TB128 comparison gate `14318100443`, ZIP `e208416775f474f75d79ec76697ed19d643a121d8ad086cd37b8f3a330436e5d`; census `14317054197`, ZIP `cdf7dab92f0e8c2650db6e2e5ac015d7ab5f07e251b4acdd17e6ed511ee7ccf4`. 1,923/1,923 archive member SHA checks, frozen row identities, every raw-log hash, boundary and gate membership checked. TB128 951/953 PASS, rows 858/952 RED; census 1 PASS, 2 allowed RED. These are baseline results, not TB129.
+- Snapshot source `a6fbf0e7cd718d4017a8dca5a33411bd885d9d8e`, run `44083674865`, snapshot job `134040521983`, artifact `14327658805` ZIP `60117c76247b2b4aa1874662358c05f21390cf63a92de51244bb15a4138cf855`; 5,522/5,522 file hashes verified. Snapshot marker `.agents/connector-triggers/source-snapshot/tb129-20261117T122820Z.txt` requires cleanup when safe. No source delta after semantic source; only control/docs changes. PR #8 draft, open, unmerged.
+
+## Assessment — exact submitted requests
+
+| Work | Event commit | Mailbox key (ref `workflow-mailbox`) | Request SHA-256 |
+|---|---|---|---|
+| Full gate | `d86a4d8cd5df50fa9441f4656ed1f3ee508a4007` | `m6-cp3-tb129-gate-v1` | `172788d0c07d4d08f6827e31a23814143cdb6b5ebbe22d1ac9c255b981efdf25` |
+| Census | `9b6721c617d850666159fe22b7dd8f7892cc080f` | `m6-cp3-tb129-census-v1` | `3d0607a041db9c59bae092d23705c6b9e51c0f314e3d6afbc9e1ebb49f00a37a` |
+
+Both exact request blobs are Git-addressable at `.agents/Directional/agent-dispatch-request.json` at their event commits. The durable dispatcher serializes requests and checks out the exact event commit. A later request-slot value does not invalidate an existing execution. At last observation no final mailbox record had been published; absence is not evidence of failure. No candidate score or receipt classification established. Product totals remain 66/17/49, debt 1, deferred 81, CP2 491/491; CP3/selector497/D0 unpromoted.
+
+## Recommendation — exact continuation
+
+1. Read/update root STATUS at entry, preserve the original start time. Read both mailbox paths `.workflow-mailbox/<key>/latest.json` on orphan ref `workflow-mailbox`. Verify event and source SHA, run/jobs, result/log artifacts and ZIP/checksum/boundary identity. If a mailbox is absent after plausible completion, use the authorized bounded recent-runs fallback, not duplicate dispatch. If execution fails, retain exact failure evidence and route per RA-250.
+2. Verify complete gate rows and membership 1,034; compare every row against TB128 under the exact permitted normalization. Rows 644/669/698 must have one receipt per rejected network and only the expressly authorized fields changed; row 164 complete-record multiset only. Confirm row 858 and 952 PASS and no other receipt under R6. Compare census Cylinder/Vase and BunnyRandom complete preterminal prefix and receipt. Classify every sphere and BunnyRandom receipt H1/H2/new owner exactly; H2 candidate face needs carrier binding proof. Do not infer a class from static plausibility alone. Preserve raw logs and all discrepancies; no corrective implementation in this turn.
+3. Write owning execution report, update regression tracker for observed candidates, handoff/TODO and CHANGELOG; complete cleanup and drift audit. Set final STATUS with the frozen route only after evidence and durable closeout. MATCH → `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`; MISMATCH → `M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-REV`; infrastructure failure → `M6-CP3-TB129A-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-ORCH`. Read RA-250 §R6 in `Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md`. No successor work in this turn.
+
+## Preservation at bounded yield
+
+Both final mailbox paths were absent at the last check before the closeout window (approximately 12:42 UTC). Do not submit another dispatcher request until both prior executions are terminal or independently resolved: GitHub concurrency can replace a pending request in the same group. Navigation-only patch (handoff and TODO) is verified locally and staged, not applied: `Directional__M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-EXEC__base-a6fbf0e7cd71__work-preservation.patch`, base `a6fbf0e7cd718d4017a8dca5a33411bd885d9d8e`, full SHA-256 `4dc37e62be90ee32b2d6046721e1f7a5272a54a5b6addc00ec86930a569fed27`, body SHA-256 `ffee41f7d94eca3e2787a61118b5a908e1f90d27edbc2e3e6b9db7e17b21108c`, Library `libfile_53efa39c07e08191af7d3f6393fa6e7f`, Google Drive File ID `1IkqCZpvmhowmHXZrGYOI4v3aCnygo1kd` (9285 bytes, MIME text/x-diff, Directional-CI parent verified). Apply after terminal evidence or supersede with the complete final documentation patch, verifying intended paths unchanged. Retire staged files only after verified disposition. Library continuation evidence `Directional_TB129_continuation_evidence.zip`, SHA-256 `6a865666beefbcf8dd66f061a2e0ceb0027334d0dd89bc0fff61560f0605ee67`, contains exact request JSON, TB128 raw comparison archives, offline comparison helper (baseline verification only), navigation patch, and baseline drift audit (0 findings). The final navigation postimage audit, actual candidate evidence, regression-tracker adjudication, temporary marker cleanup and formal closure remain pending. No new regressions claimed.
+````````

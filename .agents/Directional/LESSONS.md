@@ -286,7 +286,7 @@ This document records **reusable failure-derived engineering lessons**, not an e
   reach the guarded state; exclude unreachable branches, and name the deterministic ones as
   hypotheses with distinct receipt signatures. Make the error carry the deciding event's existing
   fields, not just the object's origin. Before calling a log-order change unexplained, check
-  whether the emitting stage runs concurrently.
+  whether the emitting stage runs concurrently. Count every construction and diagnostic replay call path before freezing receipt cardinality; a failure-only Euler census can rerun the same rejecting helper on the same network (TB129). Trace shared fixture accessors before freezing affected rows. Log-line counts are not unique semantic identities; preserve the literal original verdict when the comparator prediction is wrong.
 - **A proxy rule must satisfy every guard downstream (RA-250).** "Keep the proxy" (RA-248 FC-7)
   was never checked against the A2a′ end-cut guard. A common carrier equal to the terminator's
   incoming edge resolves to n−1 by construction. When a definition keeps a proxy, trace it

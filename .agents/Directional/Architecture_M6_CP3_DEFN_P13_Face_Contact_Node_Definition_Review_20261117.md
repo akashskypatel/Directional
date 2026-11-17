@@ -79,7 +79,7 @@ For C5's configuration this means:
 - A stub that ends at a face-contact node has a single boundary crossing. It separates through its exact endpoint and never through its hypothetical `outgoingCarrier`.
 - For a face with one chord or with rays from one corner origin, this rule gives exactly what the existing branches give. That is the equal-product obligation for the CB that implements it.
 
-**FC-7. Contacts with a common carrier are unchanged.** They keep the proxy path (O45, deferred).
+**FC-7.** ~~Contacts with a common carrier are unchanged. They keep the proxy path (O45, deferred).~~ **Disproved as a general valid rule:** [TB129 independent Review](Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Independent_Review_20261117.md) verifies the common-carrier incoming proxy resolves the terminating trace at n−1 and violates the exact end-cut guard on sphere and BunnyRandom. Amendment 13 and FC-1–FC-6 obligations remain unchanged. O45 is open. The implementation still uses this proxy; measure exact common-carrier contacts on Cylinder/Vase before freezing its replacement. No semantic switch is authorized by this correction.
 
 **Fixture limit (reported, not hidden).**
 - `FieldAlignedCurveNetwork::make_from_candidate` rejects any candidate that differs from canonical tracing (`SurfaceCellTracing.cpp:5723–5743`), so no test can hand-build a contact network.
