@@ -1,2 +1,0 @@
-# TB127 independent review temporary state only
-.agents/connector-triggers/source-snapshot/tb127-review-20261117.txt
