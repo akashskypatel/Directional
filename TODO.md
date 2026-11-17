@@ -1,3 +1,29 @@
+## CURRENT — RA-243 edge-terminal inventory Review; CB143 next (2026-11-17 UTC)
+
+**RA-243 COMPLETE.** [Record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Edge_Terminal_Inventory_Review_20261117.md).
+- **TB124 accepted.** The artifact was re-downloaded: 1,906/1,906 hashes match, and the ledger differs from TB122 only in row 949 (RED→PASS).
+- **Rows 164/176/190/195 are diagnostic interleaving.** Those rows run `std::async` component workers that print the diagnostic to `std::cerr` concurrently. They are not product nondeterminism.
+- **C1 is closed**, and the scoped D12 follow is accepted.
+- **The C3 rejection has never been tested,** and `build_arcs` hides every offending edge after the first.
+- **CB143 is frozen.** It is diagnostic only and the rejection is unchanged. Patch `Architecture_M6_CP3_CB143_P13_Edge_Terminal_Exact_Inventory_Exact.diff`, SHA `c0439b1f303827d2f9584373bf7a8515df771649ff9ab4c04ab9b1d1cc29205b`, 223 lines. It adds the exact inventory function, the `SurfaceCutGraph.mandatoryEdgeTerminalInventory` line and gate row 950.
+- **The TB125 manifest is frozen:** `9a112bd1…`, 950 rows, membership 1,031, plus the census `3af1dc0d…`. MATCH criteria are in record §4.
+
+Carry: O42/O43/C3 open; O44 and C1 closed; D11=A, D12=A, D10 deferred, D6 pending; stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted; `chainRimSchedules=false`.
+
+**Turn sequence**
+
+| # | Turn | Owner | Status |
+|---|---|---|---|
+| 1 | `M6-CP3-TB124-P13-CORRECTED-FULL-GATE-EXEC` | Test + Benchmark | COMPLETE, accepted (RA-243) |
+| 2 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-INVENTORY` (RA-243) | Review | COMPLETE |
+| 3 | `M6-CP3-CB143-P13-EDGE-TERMINAL-EXACT-INVENTORY` | Code + Build (compile only, exact diff) | **NEXT** |
+| 4 | `M6-CP3-TB125-P13-EDGE-TERMINAL-EXACT-INVENTORY-EXEC` | Test + Benchmark (artifact only) | then |
+| 5 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-EQUIVALENCE-DECISION` | Review (freezes CB144) | then |
+| 6 | `M6-CP3-CB144-P13-EDGE-TERMINAL-OWNER-CORRECTION` | Code + Build | then |
+| 7 | `M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-EXEC` | Test + Benchmark | then |
+| 8 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME` | Review | then |
+| parked | `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY` | Code + Build, then TB and Review | after 8 |
+
 ## 2026-11-16 — TB124 full gate complete; Review-only edge-terminal inventory next
 
 - [x] `M6-CP3-TB124-P13-CORRECTED-FULL-GATE-EXEC`: immutable CB142 949/949 PASS, 0 skipped, 1,906/1,906 result hashes, 28/28 package hashes before/after; no build/census. [TB124 report](.agents/Directional/Architecture_M6_CP3_TB124_P13_Corrected_Full_Gate_Execution_Report_20261116.md). Four inherited legacy diagnostic logs have ordering/line-join variation only; semantic receipts and record multisets unchanged.

@@ -1,3 +1,29 @@
+## CURRENT — RA-243 edge-terminal inventory Review: TB124 accepted, CB143 frozen (2026-11-17 UTC)
+
+**RA-243 COMPLETE.** [Record](Architecture_M6_CP3_DEFN_P13_Edge_Terminal_Inventory_Review_20261117.md).
+- **TB124 accepted.** The artifact was re-downloaded: 1,906/1,906 hashes match, and the ledger differs from TB122 only in row 949 (RED→PASS).
+- **Rows 164/176/190/195 are diagnostic interleaving.** Those rows run `std::async` component workers that print the diagnostic to `std::cerr` concurrently. They are not product nondeterminism.
+- **C1 is closed**, and the scoped D12 follow is accepted.
+- **The C3 rejection has never been tested,** and `build_arcs` hides every offending edge after the first.
+- **CB143 is frozen.** It is diagnostic only and the rejection is unchanged. Patch `Architecture_M6_CP3_CB143_P13_Edge_Terminal_Exact_Inventory_Exact.diff`, SHA `c0439b1f303827d2f9584373bf7a8515df771649ff9ab4c04ab9b1d1cc29205b`, 223 lines. It adds the exact inventory function, the `SurfaceCutGraph.mandatoryEdgeTerminalInventory` line and gate row 950.
+- **The TB125 manifest is frozen:** `9a112bd1…`, 950 rows, membership 1,031, plus the census `3af1dc0d…`. MATCH criteria are in record §4.
+
+Carry: O42/O43/C3 open; O44 and C1 closed; D11=A, D12=A, D10 deferred, D6 pending; stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted; `chainRimSchedules=false`.
+
+**Turn sequence**
+
+| # | Turn | Owner | Status |
+|---|---|---|---|
+| 1 | `M6-CP3-TB124-P13-CORRECTED-FULL-GATE-EXEC` | Test + Benchmark | COMPLETE, accepted (RA-243) |
+| 2 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-INVENTORY` (RA-243) | Review | COMPLETE |
+| 3 | `M6-CP3-CB143-P13-EDGE-TERMINAL-EXACT-INVENTORY` | Code + Build (compile only, exact diff) | **NEXT** |
+| 4 | `M6-CP3-TB125-P13-EDGE-TERMINAL-EXACT-INVENTORY-EXEC` | Test + Benchmark (artifact only) | then |
+| 5 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-EQUIVALENCE-DECISION` | Review (freezes CB144) | then |
+| 6 | `M6-CP3-CB144-P13-EDGE-TERMINAL-OWNER-CORRECTION` | Code + Build | then |
+| 7 | `M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-EXEC` | Test + Benchmark | then |
+| 8 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME` | Review | then |
+| parked | `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY` | Code + Build, then TB and Review | after 8 |
+
 ## CURRENT — TB124 corrected 949-case full gate: scoped MATCH; next Review edge-terminal inventory (2026-11-16 UTC)
 
 **Canonical TB124 completed subject to documentation publication.** [TB124 report](Architecture_M6_CP3_TB124_P13_Corrected_Full_Gate_Execution_Report_20261116.md): immutable CB142 package `14224898790` at source `57b28b737fd92b083d24d882152dea186211f735`; [gate `43980520479`](https://github.com/akashskypatel/Directional/actions/runs/43980520479), artifact `14283755675` SHA-256 `016b9528c330d60a3202d8594d0d6f37b6c0eb76415cab2f0c93ecc965d30d42`. **949/949 PASS, zero skipped, 1,906/1,906 hashes**, valid 28/28 package postflight. All 948 inherited semantic ledger rows and required case receipts agree with TB122. Rows 164/176/190/195 vary only in order or joining of unchanged legacy diagnostic fragments; raw logs are not byte-identical. Row949 PASS; no `vertexOutflowFollow` or follow-kind `Unresolved` gate output. No census, compile, relink, benchmark, test/fixture/selector/product edit or CP3 promotion.
@@ -1233,7 +1259,7 @@ Rows 49–64B.9 are complete as turns. TB90 64.4 is MATCH (914/914, census 1 PAS
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **M6-CP3-TB124-P13-CORRECTED-FULL-GATE-EXEC** (implementation agent, artifact-only full gate; RA-242).
+`load_next`: **M6-CP3-CB143-P13-EDGE-TERMINAL-EXACT-INVENTORY** (implementation agent, compile only, exact diff; RA-243).
 - Apply exactly RA-240 §5's patch `2e135b8c…` at HEAD (source equals CB139 `c520674030c76be455111d7c41aae7d5f53ce900`); build the eight GMP/GMPXX targets; publish an immutable package. Do not run tests.
 - Then TB121 (RA-240 §6, TB120 manifests unchanged), then Review-only `M6-CP3-DEFN-P13-EDGE-TRANSIT-SEED-CONFORMANCE-OUTCOME`.
 - D12 (Amendment 22 outflow gap at vertices 48/349) is pending; do not implement any D12 option before the user answers.
