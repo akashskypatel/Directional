@@ -69,3 +69,169 @@ Historical comparison `6ef77580617731bc2d5e364b924c706ad9bb0b34` to resumption h
 | review_check.py boundary | Exit 1: 44 PASS, four history-only checks unavailable in the verified source snapshot. The independent GitHub ancestry and exact rewrite-baseline blob checks above establish all four historical predicates; all five original protected headings remain. No checker change or synthetic ancestry claim. Final drift audit: zero errors, three authorized currency-update warnings (handoff, ORIENTATION, ROADMAP). Source, test, fixture, build, exact diff, manifest and selector paths unchanged. The Review closeout uses these independent checks, not a claimed local checker PASS. |
 | STATUS lifecycle maintained | Entry `2026-11-17T10:29:25Z`; resumed `2026-11-17T10:56:06Z`; the final direct root STATUS write records completion and authorized successor after push verification. |
 | Pushed to origin, branch in sync | First review patch applied and verified at `a63be5f1d5a2f4f5d05fb7306e15238271181e57`; cleanup receipt verified. Final closeout patch is subject to dispatcher hash/apply/push verification and connector branch compare before final STATUS. ChatGPT Web uses remote connector evidence instead of a local tracking branch; no local `git status -sb` sync claim. |
+
+## RA-250 — adversarial re-review of this Review (2026-11-17 UTC)
+
+This is a Review-only pass. I fetched origin, and Haiku agents ran read-only audits.
+- No binary was built or run.
+- The row 952 witness was checked with an exact Python model (`python3 -I`).
+- Both new patches pass `-fsyntax-only -Wall -Wextra -DUSE_GMP_ENABLED`.
+
+**Verdict.** The MISMATCH disposition stands. Four parts of this Review are wrong or incomplete (§R1–§R4). Its successor, the prose-only `M6-CP3-CB149B-P13-TERMINAL-CUT-AUTHORITY-RECEIPT`, is **withdrawn**. It is replaced by two exact patches (CB150, CB151) and the TB129 measurement (§R6).
+
+### R0. My own errors in RA-248/RA-249
+
+- **Row 952 (RA-248).** The witness assumed that `to_double` rounds to nearest. GMP `get_d` truncates toward zero. So `1/2 − 2⁻⁶⁰` converts to the double just below 1/2, and the guard `sameDoubles(towardB, nearB)` was false. This Review's diagnosis is correct.
+- **RA-249's "the gate cannot change" argument was incomplete.**
+  - It searched for tests by reason name only. It missed row 858's locus-shape assertion (`faceLocus.sourceFace.has_value()`) and the prescribed-sphere log text in rows 644/669/698.
+  - Its O46 prediction was wrong: arc construction still rejects, before any rotation or ownership stage runs.
+- **The larger error is in RA-248 FC-7.** FC-7 said "contacts with a common carrier keep the proxy". I did not check that rule against the A2a′ end-cut guard. §R2 shows the rule is defective by construction.
+
+### R1. Row 952: the replacement witness is verified independently
+
+- **Witness.** `O=(1/6,1/6,2/3)`, `A=(1/3,0,2/3)`, `B=(0,1/3,2/3)`, `N=(0,1/3+2⁻⁶⁰,2/3−2⁻⁶⁰)` and `beyond=2B−O=(−1/6,1/2,2/3)`.
+- **Same doubles under either conversion.** B and N give the same doubles under truncation (`0x1.5555555555555p-2`, `0x1.5555555555555p-1`) and under round-to-nearest. So the guard no longer depends on the conversion mode.
+- **Expected orders.** A model mirroring `face_chart_counter_clockwise_ray_order` line by line yields all ten expected orders: `[0,2,1] [0,1,2] [0,2,1,3] [0,3,1,2] [0,1,2] [0,2,1] null null [] [0]`. Also `orient(O,B,N) = −1` (clockwise) and `orient(O,A,B) = 0` (A and B are opposite).
+- **Earlier guards in the same test.** The two earlier same-double guards (centroid; `along(1/3)`) also hold under truncation, so no other assertion in row 952 rests on the false premise.
+- **Frozen as CB150** (test-only). `Architecture_M6_CP3_CB150_P13_Face_Chart_Witness_Correction_Exact.diff`:
+  - SHA-256 `63a6bd0b95099f0be05b22ca5d0adb539569e5f5afa6b2d8950a6b2ab9e905ba`;
+  - 49 lines;
+  - numstat `10 7 tests/FieldAlignedCurveNetworkTests.cpp`.
+
+  No assertion was removed or weakened. Only the stimulus coordinates and the comment change.
+
+### R2. Terminal owner: the event is undetermined, but the candidates are narrower than this Review says
+
+**Static reduction** (`EmbeddedGraphTopology.cpp` `build_arcs`):
+- Collected face-contact terminals insert the end key `(n, ∅)`.
+- So `ArcTraceTerminalCutPositionMismatch` means every Terminal incidence of the failing trace resolved through `trace_event_position` to a boundary k < n.
+
+I checked each production Terminal producer. The finalize path, at `SurfaceCellTracing.cpp:4550`, is census-only: its callers are `:5113` under `contactCensus != nullptr` and the diagnostic wrapper `:5505`.
+
+| Producer | Event `sourceEdge` | Can it resolve to k < n? |
+|---|---|---|
+| `field_aligned_publish_contact` `:4062`, with a common carrier | `common.front()` of the two segments' carrier sets (`:2871`) | **Yes, always, when the chosen edge is the terminating segment's incoming carrier and not its outgoing carrier.** The face-restricted pass then matches only `(n−1, segment n−1, Incoming)`. The committed terminating segment keeps its full-crossing `outgoingCarrier` (`:3589`, `:4052`), so the end edge is not a carrier the pass can match. **This is H1.** Because `common.front()` takes the smallest key, which shared edge is chosen is arbitrary. |
+| Limit cycle `:3942` | `entryPoint.edge`; the event face is the face being **re-entered** | **Yes, by construction.** The last segment lies in the predecessor face. Only an earlier visit j < n−1 in the re-entered face can match: one visit gives a unique j and so the observed reason; two visits give `AmbiguousCarrierMatch`. **This is H2.** |
+| Barrier `:3894` | `terminalBarrier`, which is the last segment's outgoing carrier | No: it resolves to n. |
+| Singularity `:2278` | `terminalPoint->edge` | Resolves to n when that edge is the last segment's outgoing carrier. The code does not assert this; the receipt will show it. |
+| Origin shortcut (`event.node == origin`, no edge) | — | **Unreachable for a Terminal incidence.** Every Terminal event at a port node carries an edge, and face-contact nodes exclude ports. |
+
+**What this changes in the Review:**
+- This Review listed "singularity/barrier/limit-cycle events and origin shortcut" as equally open alternatives. That is inaccurate. Barrier and origin shortcut are excluded, singularity is unlikely, and H1 and H2 are both deterministic.
+- **Independent of what BunnyRandom shows, H1 is a latent defect in FC-7.** The O45 proxy cannot satisfy the end-cut guard whenever the selected common carrier is the terminator's incoming edge. It also always places the struck trace's node at a segment boundary, not at the contact point.
+- Whether H1 or H2 is BunnyRandom's actual cause is still unmeasured. The census locus prints only `vertex=3`, which is the trace's **origin** vertex.
+
+### R3. Row 164: static source does establish the cause
+
+The Review says "static source does not establish emission-order cause". That is wrong.
+- Row 164 runs with `parallelizeComponents=true` and `maxComponentThreads=2` (`SurfaceCellsPhase10Tests.cpp:10271`).
+- Components run through `std::async` (`RemeshPipeline.cpp:17726`). Each calls `GlobalTopologyPlan::make`, which writes `M3_CP4AB_FRAGMENT_DIAG` records to `std::clog` (`GlobalTopologyPlan.cpp:1532–1971`).
+- Within one component, records are ordered by value: `std::map`/`std::set` over `SourceFaceTopologyKey`, and a sorted vector.
+- So the order *between* the two components' records depends on thread scheduling. The equal-multiset observation is exactly what that predicts.
+
+**Ruling.** Row 164 is not a product discrepancy. From TB129 on, row 164 is compared as a multiset of complete newline-free records. Any changed record value, or a torn line, is still a MISMATCH. No other row gets this allowance.
+
+### R4. Row 858: restore the face from the real failing event, not from a guess
+
+- The display only projects `terminalFailureLocus.sourceFace` (`SurfaceCellTracingDisplay.cpp:188`).
+- The current mismatch error sets only `sourceVertex`, which is the trace's origin. It is not the place where the error occurred.
+- CB151 sets the error's `sourceFace` and `sourceEdge` from the Terminal event that resolved before the end. That is the producer's own face; it is not synthesized from a seed or origin. Row 858 then has a real cut-graph face witness again.
+- A Haiku audit found no decision site in `src/` that reads these fields on this error; they are only copied and printed. The display gains only the "stopping face" annotation.
+- Predicted outcome: row 858 PASS.
+
+### R5. CB151: terminal-cut-before-end receipt (diagnostic only; replaces CB149B)
+
+`Architecture_M6_CP3_CB151_P13_Terminal_Cut_Before_End_Receipt_Exact.diff`:
+- SHA-256 `044529d63c2f9e82cad38fb95cad00d4fa299918c6bcd02ffb3c56cc1947b516`;
+- 168 lines;
+- numstat `129 0 src/geometry/EmbeddedGraphTopology.cpp`;
+- it applies independently of CB150 (the two patches touch different files).
+
+**Changes:**
+1. `trace_event_position` also records `pass` and `candidates` on success. This is read only by the new branch below.
+2. `build_arcs` remembers the first Terminal incidence that resolves to k < n.
+3. On `ArcTraceTerminalCutPositionMismatch`, the error additionally carries that incidence's `trace`, `sourceFace`, `sourceEdge`, `traceEventIndex`, `traceEventPositionPass` and `traceEventPositionCandidates`. All are existing fields with existing printers.
+4. It prints one `EmbeddedGraphTopology.terminalCutBeforeEnd` line, giving:
+   - the trace, the origin `sourceVertex`, `segments=n`, the event index, the event kind, the node, the face and the edge;
+   - the resolved `position`, the `pass` and each candidate;
+   - the last segment's face and carriers;
+   - the terminal record kind with its face and edge (contact: struck trace and segment; limit cycle: face and entry edge).
+
+   This follows the existing `report_mandatory_edge_terminal_inventory` pattern in the same file.
+
+**What does not change:**
+- No decision changes. The reason, return path, cuts and every other error are untouched.
+- Syntax checks return 0 with HEAD's warning counts (EGT 22, test 42).
+
+**Test gap.** The branch cannot be unit-tested, because networks cannot be hand-built (RA-248 fixture limit). Rows 644/669/698/858 and BunnyRandom are its witnesses.
+
+### R6. TB129 frozen: `M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-EXEC`
+
+**Inputs:**
+- Package: CB151, i.e. CB149 + CB150 + CB151.
+- Gate manifest: the TB128 manifest unchanged (`941287fa96f3432eb1d67a9ae1e5dc7bc0ca2f3a1775cd5f9fb35482a4fa7962`; 953 rows, deferred 81, membership 1,034).
+- Census `3af1dc0d…`.
+- Comparison authority: TB128 gate `14318100443`, census `14317054197`.
+
+**MATCH requires all of the following:**
+1. 953/953 PASS, with valid postflight. Row 952 and row 858 are now PASS.
+2. Every row except 164, 644, 669, 698, 858 and 952 has the same ledger fields and raw log as TB128, under TB128's permitted normalizations.
+   - Row 164 is compared as a multiset (§R3).
+   - Rows 644/669/698 may differ only by:
+     - exactly one added `terminalCutBeforeEnd` line per rejected network;
+     - the newly populated `trace`, `traceEvent`, `errorSourceFace`, `traceEventClaimedSourceEdge` and candidate fields.
+   - `originatingRotationSystemReason` stays `ArcTraceTerminalCutPositionMismatch`.
+3. No other row's log contains `terminalCutBeforeEnd`.
+4. Cylinder (PASS, 288 quads) and Vase census logs are identical to TB128 after the normalizations.
+5. BunnyRandom:
+   - every line before the terminal is identical to TB128;
+   - exactly one `terminalCutBeforeEnd` line;
+   - the terminal is still `ArcTraceTerminalCutPositionMismatch`, now with `face=`, `edge=`, `trace=`, `eventIndex=` and `eventPositionPass=`.
+
+**Classify each receipt (sphere and BunnyRandom).** Record the class; the class does not decide MATCH.
+- **H1:** kind is `TraceIntersection` or `TraceSelfClosure`, terminal is `contact`, the position is n−1, and the candidate is (segment n−1, Incoming) with `edge = lastIncoming`.
+- **H2:** kind is `LimitCycleTermination`, terminal is `limitCycle`, and the candidate is (j < n−1, Incoming) in the limit-cycle face.
+- Anything else is recorded verbatim and becomes a new owner.
+
+**Routes:**
+- Mismatch → `M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-REV`.
+- Infrastructure failure → `M6-CP3-TB129A-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-ORCH`.
+- MATCH → Review `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`.
+
+**Pre-assigned work for the outcome Review:**
+- **H1:** freeze contact classification by the exact `terminalContact` binding instead of by the absence of an edge. This retires O45 for contacts.
+  - It must first count common-carrier contacts on Cylinder and Vase, because the switch changes them (RA-230).
+- **H2:** the limit-cycle terminal resolves at the trace end. The producer must publish the face of the last segment, or the Terminal role must bind to the last segment's outgoing carrier.
+
+**What stays as it is:**
+- FC-6 (old CB150+) is renumbered after this sequence.
+- CB145 and the middle-piece direction witness stay parked.
+- FC-1/FC-4 producer-proof obligations are carried.
+
+### R7. Turn sequence
+
+| # | Turn | Owner | Status |
+|---|---|---|---|
+| 1 | `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-REV` with the RA-250 re-review | Review | COMPLETE |
+| 2 | `M6-CP3-CB150-P13-FACE-CHART-WITNESS-CORRECTION` | Code + Build (compile only, exact diff) | **NEXT** |
+| 3 | `M6-CP3-CB151-P13-TERMINAL-CUT-BEFORE-END-RECEIPT` | Code + Build (compile only, exact diff) | then |
+| 4 | `M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-EXEC` | Test + Benchmark | then |
+| 5 | `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME` | Review | Classifies H1/H2 and freezes the fix CBs |
+| 6+ | Fix CB(s) → TB → `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6) | — | Staged per RA-230 |
+| withdrawn | `M6-CP3-CB149B-P13-TERMINAL-CUT-AUTHORITY-RECEIPT` | — | Replaced by CB151 |
+| parked | `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY`; O45, which H1 would retire | — | — |
+
+**Routes for the two Code + Build turns:**
+- CB150: mismatch → `M6-CP3-PLAN-P13-FACE-CHART-WITNESS-STOP`; infrastructure failure → `M6-CP3-CB150A-P13-FACE-CHART-WITNESS-ORCH`.
+- CB151: mismatch → `M6-CP3-PLAN-P13-TERMINAL-CUT-RECEIPT-STOP`; infrastructure failure → `M6-CP3-CB151A-P13-TERMINAL-CUT-RECEIPT-ORCH`.
+- Both build the eight RA-245 GMP/GMPXX targets, with `runtimeExecution=false`.
+
+**Prechecks:**
+- CB150: `git diff --quiet 85f9c703c5de86fb2b401cf83c03499a1ce73a27 HEAD -- src include tests`.
+- CB151: `src include tests` equal `85f9c703c` plus exactly CB150.
+
+**Carried unchanged:**
+- Stable 66/17/49, debt 1, deferred 81; CP2 491/491.
+- C5, O42, O43, O45, O46 open.
+- D11 = A, D12 = A, D10 deferred, D6 pending.
+- CP3/selector497 not promoted; `chainRimSchedules=false`.

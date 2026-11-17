@@ -1,3 +1,15 @@
+## 2026-11-17 — RA-250 re-review of the TB128 Review
+
+[RA-250](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md#ra-250--adversarial-re-review-of-this-review-2026-11-17-utc):
+- **C5.** The terminal owner is narrowed statically. A mismatch means every Terminal incidence resolved to k < n. That leaves two deterministic owners:
+  - **H1:** a `field_aligned_publish_contact` common carrier that is the terminating segment's incoming edge (`common.front()`). This is an FC-7 defect in its own right.
+  - **H2:** a `LimitCycleTermination` published with the re-entered face, which matches an earlier visit.
+
+  Barrier events and the origin shortcut are excluded. The singularity case is unasserted. The CB151 receipt measures which owner applies; the falsifier is a receipt of a third kind.
+- **Row 952.** Test premise defect (GMP `get_d` truncates). The CB150 witness is verified exactly under both conversion modes.
+- **Row 164.** Concurrent `std::async` component emission into `std::clog`; the values are unchanged. Compared as a multiset of complete records from TB129 on. A torn line or a changed value is still a MISMATCH.
+- **Row 858.** The locus loss comes from the mismatch error carrying only the origin vertex. CB151 adds the failing terminal event's own face, which is real producer data.
+
 ## 2026-11-17 — TB128 independent Review (MISMATCH upheld)
 
 [M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-REV](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md): Independent evidence confirms 951/953 MISMATCH; census MATCH. Row858 is an inherited required guard loss outside the accepted 491; row952 has a false GMP conversion premise, six assertions unexecuted; row953 proves only the helper. BunnyRandom has a remaining Terminal incidence at a cut before trace extent; source vertex 3 is the origin, actual event and owner unknown. O46 prediction not met. No promotion. Stable 66/17/49, debt1, deferred81, CP2 accepted 491/491.

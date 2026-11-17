@@ -1,4 +1,25 @@
-## CURRENT — TB128 MISMATCH reviewed; bounded receipt next (2026-11-17 UTC)
+## CURRENT — RA-250 re-review of TB128-REV; CB150 exact witness correction next (2026-11-17 UTC)
+
+[RA-250](.agents/Directional/Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md#ra-250--adversarial-re-review-of-this-review-2026-11-17-utc) upholds the TB128 MISMATCH and corrects the Review in four places:
+- **Row 952.** The Review's witness is verified exactly, under both truncating and rounding conversion.
+- **Row 164.** It is `std::async` interleaving of `M3_CP4AB_FRAGMENT_DIAG` records, and is compared as a multiset from TB129 on.
+- **Terminal owner.** It is narrowed statically to H1 (a common-carrier contact proxy on the terminator's incoming edge; this is an FC-7 defect) or H2 (a limit-cycle event published on the re-entered face). Barrier events and the origin shortcut are excluded.
+- **CB149B.** The prose plan is withdrawn and replaced by the exact CB151.
+
+Also recorded: my own RA-248/RA-249 errors (the GMP rounding premise, the name-only gate argument, the O46 prediction).
+
+- [x] `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-REV` + RA-250: Review, COMPLETE.
+- [ ] **NEXT:** `M6-CP3-CB150-P13-FACE-CHART-WITNESS-CORRECTION`. Code + Build, compile only.
+  - Exact diff `.agents/Directional/Architecture_M6_CP3_CB150_P13_Face_Chart_Witness_Correction_Exact.diff`: SHA-256 `63a6bd0b95099f0be05b22ca5d0adb539569e5f5afa6b2d8950a6b2ab9e905ba`, 49 lines, `10 7 tests/FieldAlignedCurveNetworkTests.cpp`.
+  - Precheck: `git diff --quiet 85f9c703c5de86fb2b401cf83c03499a1ce73a27 HEAD -- src include tests`.
+  - Build the eight RA-245 targets.
+- [ ] Then `M6-CP3-CB151-P13-TERMINAL-CUT-BEFORE-END-RECEIPT`. Exact diff `044529d63c2f9e82cad38fb95cad00d4fa299918c6bcd02ffb3c56cc1947b516`, 168 lines, `129 0 src/geometry/EmbeddedGraphTopology.cpp`. Compile only.
+- [ ] Then `M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-EXEC`. Manifest `941287fa…` (953 rows) and census `3af1dc0d…`. MATCH criteria and the H1/H2 classification are in RA-250 §R6.
+- [ ] Then Review `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`, which freezes the fix CBs (staged per RA-230). After that, `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6).
+- [ ] Withdrawn: CB149B. Parked: CB145, O45 (H1 would retire it).
+- [ ] Carried: C5/O42/O43/O45/O46 open; FC-1/FC-4 producer proof; middle-piece direction witness. Stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted.
+
+## Historical checkpoint — TB128 MISMATCH reviewed; bounded receipt next (2026-11-17 UTC)
 
 [TB128 report](.agents/Directional/Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Execution_Report_20261117.md) — immutable CB149 package `14315237769`, 951/953 PASS, all cases ran, postflight valid. Census comparison MATCH; Cylinder PASS 288, Vase RED unchanged, BunnyRandom RED `ArcTraceTerminalCutPositionMismatch`, vertex 3. The O46 ownership prediction did not occur. Separate middle-piece direction witness remains open. No promotion.
 

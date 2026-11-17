@@ -1,3 +1,9 @@
+## 2026-11-17 UTC — RA-250 re-review of the TB128 Review
+
+- [RA-250](.agents/Directional/Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md#ra-250--adversarial-re-review-of-this-review-2026-11-17-utc) upholds the MISMATCH and withdraws the prose CB149B plan. It freezes the exact [CB150](.agents/Directional/Architecture_M6_CP3_CB150_P13_Face_Chart_Witness_Correction_Exact.diff) row 952 witness correction, the [CB151](.agents/Directional/Architecture_M6_CP3_CB151_P13_Terminal_Cut_Before_End_Receipt_Exact.diff) terminal-cut receipt and TB129.
+- Row 164 is classified as concurrent log interleaving. The terminal owner is narrowed to H1 (contact proxy) or H2 (limit-cycle face).
+- It records the RA-248/RA-249 errors: the GMP rounding premise, the name-only gate argument and the wrong O46 prediction.
+
 ## 2026-11-17 UTC — TB128 independent Review (MISMATCH upheld)
 
 - [Review](.agents/Directional/Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md): Independent evidence confirms 951/953 MISMATCH; census MATCH. Row858 is an inherited required guard loss outside the accepted 491; row952 has a false GMP conversion premise, six assertions unexecuted; row953 proves only the helper. BunnyRandom has a remaining Terminal incidence at a cut before trace extent; source vertex 3 is the origin, actual event and owner unknown. O46 prediction not met. No promotion. No code/test/build/runtime change; next bounded diagnostic-only receipt `M6-CP3-CB149B-P13-TERMINAL-CUT-AUTHORITY-RECEIPT` (start only after Review COMPLETE). Stable 66/17/49, debt1, deferred81.

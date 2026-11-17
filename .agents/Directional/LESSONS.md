@@ -281,6 +281,16 @@ This document records **reusable failure-derived engineering lessons**, not an e
 
 ## Diagnostics, classifiers, and causal investigation
 
+- **Reduce a guard to its producers before measuring (RA-250).** Before freezing a receipt for a
+  guard, list every producer that can feed it. For each one, derive from the code whether it can
+  reach the guarded state; exclude unreachable branches, and name the deterministic ones as
+  hypotheses with distinct receipt signatures. Make the error carry the deciding event's existing
+  fields, not just the object's origin. Before calling a log-order change unexplained, check
+  whether the emitting stage runs concurrently.
+- **A proxy rule must satisfy every guard downstream (RA-250).** "Keep the proxy" (RA-248 FC-7)
+  was never checked against the A2a′ end-cut guard. A common carrier equal to the terminator's
+  incoming edge resolves to n−1 by construction. When a definition keeps a proxy, trace it
+  through each consumer's acceptance predicate for every role it serves.
 - **Publish typed, lossless failures from the stage that owns them.** One error label emitted from many
   conditions is an ambiguity, not localization. Give distinct reachable causes with the complete failed
   source object, stage, branch, identity, numeric operands and authoritative support; never collapse
