@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb148-compile-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb148-compile-v1",
-  "source_sha": "e05d44b850c378b6e77965f0f314b561a8207435",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb148"
+  "request_id": "m6-cp3-cb148-in-progress-closeout-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb148-in-progress-closeout-v1",
+  "file_id": "1RVo6phkHXXYpyDrbSQ84UuBB3JUN46kg",
+  "patch_sha256": "c652b1d1c0ac3bfb0ba561e3e2b8f33f84cb6fdc4eb2b3e09569d8dbf6348be1",
+  "base_sha": "e991f2d5aec1198a30b1d13e44a8fd77418e9f16",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record CB148 compile verification pending",
+  "retention_days": 7
 }
