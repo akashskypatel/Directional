@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb148-in-progress-closeout-v1",
+  "request_id": "m6-cp3-cb148-complete-closeout-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb148-in-progress-closeout-v1",
-  "file_id": "1RVo6phkHXXYpyDrbSQ84UuBB3JUN46kg",
-  "patch_sha256": "c652b1d1c0ac3bfb0ba561e3e2b8f33f84cb6fdc4eb2b3e09569d8dbf6348be1",
-  "base_sha": "e991f2d5aec1198a30b1d13e44a8fd77418e9f16",
+  "mailbox_key": "m6-cp3-cb148-complete-closeout-v1",
+  "file_id": "1-Aa59jSl6ZgmF5BljJDkLR0DHFTiuGEc",
+  "patch_sha256": "a5c93d27da08a1c1457db8b8c4eec0bbcf546ffdef290105edeffdaedb2c766c",
+  "base_sha": "f0f7adbb24ffe31412f68ed46d5e7e253326c8e1",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record CB148 compile verification pending",
+  "commit_message": "docs: close CB148 verified compile gate",
   "retention_days": 7
 }
