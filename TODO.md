@@ -1,6 +1,8 @@
-## CURRENT — RA-246 adversarial re-review of TB126-REV (2026-11-17 UTC)
+## CURRENT — CB144B compile-only complete; CB146 next (2026-11-17 UTC)
 
-**Findings:**
+**CB144B:** [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB144B_P13_Edge_Terminal_Guard_Extent_Code_Build_Record_20261117.md); exact source `5d4077303a1aa46f0755421b607509694177c17f`, package `14299943924`, eight GMP/GMPXX targets, 28/28 checksums. No runtime.
+
+**RA-246 findings:**
 - RA-245's evidence and its CB144B fix are confirmed. After the fix, every assertion of row 951 holds when traced statically against the committed split.
 - The row-951 defect was RA-244's own test error.
 - **F1.** The sequence had no exit after CB144B (`UNKNOWN`).
@@ -11,8 +13,8 @@
 
 **Turn sequence:**
 - [x] `M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-REV` (RA-245 + RA-246): Review, COMPLETE.
-- [ ] **NEXT:** `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION`: exact diff `20aeaf0d…` (19 lines, test-only), compile only.
-- [ ] `M6-CP3-CB146-P13-ROTATION-TERMINAL-LOCUS-PRINT`: exact diff `4f1fae63d0d3f2626f02c4f27d26a923e0a525173112556fefe50d9e5be56967` (72 lines, `tests/SurfaceCellDesignAcceptanceTests.cpp`), compile only, on top of CB144B.
+- [x] `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION`: frozen test-only correction compiled; package verified.
+- [ ] **NEXT:** `M6-CP3-CB146-P13-ROTATION-TERMINAL-LOCUS-PRINT`: exact diff `4f1fae63d0d3f2626f02c4f27d26a923e0a525173112556fefe50d9e5be56967` (72 lines, `tests/SurfaceCellDesignAcceptanceTests.cpp`), compile only, on top of CB144B.
 - [ ] `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-EXEC`: CB146 package, gate `44d5a734…` (951 rows), census `3af1dc0d…`; MATCH per RA-246 §5.
 - [ ] `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME`: Review only; close C3, classify C5, freeze the next CB and the rotation-level direction test.
 - [ ] Parked: `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY`.
@@ -53,7 +55,8 @@ The next blocker is the `build_arcs` limit of one terminal cut per mandatory edg
 | 6 | `M6-CP3-CB144-P13-EDGE-TERMINAL-OWNER-CORRECTION` | Code + Build |
 | 7 | `M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-EXEC` | Test + Benchmark |
 | 8 COMPLETE (adjudication) | `M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-REV` | Review |
-| 9 NEXT | `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION` | Code + Build (test-only, compile only) |
+| 9 COMPLETE | `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION` | Code + Build (test-only, compile only) |
+| 10 NEXT | `M6-CP3-CB146-P13-ROTATION-TERMINAL-LOCUS-PRINT` | Code + Build (test-only, compile only) |
 | parked | `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY` (typed `Unresolved` fail-closed; exact-grazing test) | Code + Build, then TB and Review |
 
 ## Historical checkpoint — TB123-REV static oracle reviewed; TB124 full gate is next (2026-11-16 UTC)
@@ -81,7 +84,8 @@ The next blocker is the `build_arcs` limit of one terminal cut per mandatory edg
 - [x] **CB144:** one selected ownership correction, compile only.
 - [x] **TB126:** full gate and census executed, MISMATCH (950/951).
 - [x] `M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-REV`: adjudicated row951 invalid input; separate new terminal not yet causal.
-- [ ] **NEXT:** `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION`; compile-only exact test input fix, no product edits or runtime. Then CB146, TB127 and the outcome Review (see CURRENT RA-246).
+- [x] `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION`; compile-only exact test input fix, no product edits or runtime.
+- [ ] **NEXT:** `M6-CP3-CB146-P13-ROTATION-TERMINAL-LOCUS-PRINT`; then TB127 and outcome Review (see CURRENT).
 - [ ] Separate later guard: demonstrate that `Unresolved` vertex follow fails closed before publishing invalid segments. Separate Vase/O41 work unaffected.
 
 **Sequence, owner and stop gates:** CB142 (Code + Build) → TB123 (Test + Benchmark) → TB123-REV (Review) → conditional TB124 (Test + Benchmark) → TB124-REV (Review) → CB143 (Code + Build) → TB125 (Test + Benchmark) → DEFN (Review) → conditional CB144 (Code + Build) → TB126 (Test + Benchmark) → Review. Each turn owns one bounded change or evidence gate; stop immediately at any falsifier. Exact identifiers and acceptance conditions appear in the adversarial report and handoff.

@@ -1,3 +1,8 @@
+## 2026-11-17 UTC — CB144B test-only guard extent correction compiled
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB144B_P13_Edge_Terminal_Guard_Extent_Code_Build_Record_20261117.md): frozen RA-245 test-only diff on `5d4077303a1aa46f0755421b607509694177c17f`; independent node/trace ID extents 16/39; every assertion and identity preserved. [Compile run 44019533988](https://github.com/akashskypatel/Directional/actions/runs/44019533988) SUCCESS; eight GMP/GMPXX targets, package `14299943924`, 28/28 checksums. No runtime, selector or product change.
+- Exactly next `M6-CP3-CB146-P13-ROTATION-TERMINAL-LOCUS-PRINT` (separate compile-only turn, RA-246 §4); TB127 subsequently uses CB146 package. No promotion. Stable 66/17/49, debt1, deferred81, CP2 491/491.
+
 ## 2026-11-17 UTC — RA-246 adversarial re-review of TB126-REV
 
 - Re-verified RA-245: all four archives match, rows 1–950 are identical to TB125, and the six differing logs differ only in newline framing. Row 951's extent defect was RA-244's own test error; CB144B is sufficient (every assertion traced statically).
