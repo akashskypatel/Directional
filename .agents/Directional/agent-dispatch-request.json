@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb144-edge-terminal-apply-20261117-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb144-edge-terminal-apply-v1",
-  "file_id": "12tGDmBW-0WR3rF8IqnyGbFUkA7p9iuw1",
-  "patch_sha256": "22b9304038392dd10470b2fbb67bb86fa5a02af54c7232466406b7e4cfbfa740",
-  "base_sha": "a4fbaf7febaacb35479f1337f371e4dbd9548311",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): split mandatory edges at ordered terminal cuts",
-  "retention_days": 7
+  "request_id": "m6-cp3-cb144-edge-terminal-compile-20261117-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb144-edge-terminal-compile-v1",
+  "source_sha": "7b0668d432ccb187c5a2d856494064f0bcb2fb95",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb144-edge-terminal"
 }
