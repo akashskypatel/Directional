@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb156-compile-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb156-compile-v1",
-  "source_sha": "779fe661e260f506592c64791fbe655734029478",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb156"
+  "request_id": "m6-cp3-cb156-closeout-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb156-closeout-v1",
+  "file_id": "1VA1nb1ZgEDRFU9rk0nDHVX5Rn_BesiYO",
+  "patch_sha256": "94bbd85aa06a695a3701c9f78a02cba4e1d2699e5221b71166b330605f1e72a6",
+  "base_sha": "706ae582215b16701a844daeb22150afe8e75ea0",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record CB156 compile evidence and authorize TB133",
+  "retention_days": 30
 }
