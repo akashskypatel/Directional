@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb129-census-v1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb129-census-v1",
-  "executor_sha": "c45e9abe5085f39c1f5bcb149ec07f95b719177e",
-  "semantic_source_sha": "c45e9abe5085f39c1f5bcb149ec07f95b719177e",
-  "turn_id": "m6-cp3-tb129-census",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "14327212608",
-    "EXPECTED_SOURCE_SHA": "c45e9abe5085f39c1f5bcb149ec07f95b719177e",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "9ef0f781947748cf2433566f3704259ab362dbf8f042999f87248ca6d645eb69",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "0c65a1f63be701f8497fb828d3826f3b7a2a23f00042d97600570263647677b7",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "434a3817c90395366c572287e205c3d0d9268241817b20c3f106ba6e2a500417",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
-    "EXPECTED_CASE_COUNT": "3"
-  },
-  "artifact_prefix": "m6-cp3-tb129-census",
+  "request_id": "m6-cp3-tb129-closeout-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb129-closeout-v1",
+  "file_id": "1R5M8DdD8iX6xez1H504UREy9m2mOIC_F",
+  "patch_sha256": "20167eb0fe22d1c639a65d1081deac9e08727044ca4cb03f6ad3885dece6509f",
+  "base_sha": "773dddaeb02a9ca3a61aac595f0bf08d003d5fa5",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record TB129 frozen comparison mismatch and H1 receipts",
   "retention_days": 7
 }
