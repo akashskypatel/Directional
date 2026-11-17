@@ -1,0 +1,2 @@
+M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-EXEC
+Snapshot exact push event for continuation and closeout; no semantic changes.
