@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb150-compile-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb150-compile-v1",
-  "source_sha": "b3d7b66e10ed8cfdd94eb0a1f67222efcd2525d9",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb150-compile"
+  "request_id": "m6-cp3-cb150-closeout-apply-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb150-closeout-apply-v1",
+  "file_id": "1oi8AG3H-MgjSNjOjeRh63CoMxUAcmaDH",
+  "patch_sha256": "c05e5faa6a7f5dc7a472504c099bc34f9fc7793aa375d4e0a90d17c626e51386",
+  "base_sha": "bdac7c285eb48c5ce4e038db273afb947ee8ff42",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record verified CB150 compile-only closeout",
+  "retention_days": 7
 }
