@@ -292,9 +292,14 @@ using FaceContactNodeResult =
     std::variant<std::map<authority::NetworkNodeId, FaceContactNode>,
                  GlobalTopologyPlanError>;
 
-/** Collects and validates every face-contact node of the network. */
+/**
+ * Collects and validates every face-contact node of the network. With
+ * `includeCarrierProxyContacts`, a trace-trace contact node whose events carry
+ * a common-carrier edge is also bound from the exact contact records.
+ */
 [[nodiscard]] FaceContactNodeResult
-collect_face_contact_nodes(const FieldAlignedCurveNetwork &network);
+collect_face_contact_nodes(const FieldAlignedCurveNetwork &network,
+                           bool includeCarrierProxyContacts = false);
 
 /** Inventories every source edge that carries two or more terminal cuts. */
 [[nodiscard]] std::vector<MandatoryEdgeTerminalInventory>
