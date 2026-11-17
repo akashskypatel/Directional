@@ -3460,6 +3460,12 @@ const char *rotation_system_inconsistency_reason_name(
     return "RotationVertexTraceRaysExactlyCoincident";
   case RotationSystemInconsistencyReason::VertexTraceSecondaryParameterUnavailable:
     return "VertexTraceSecondaryParameterUnavailable";
+  case RotationSystemInconsistencyReason::FaceContactBindingInvalid:
+    return "FaceContactBindingInvalid";
+  case RotationSystemInconsistencyReason::FaceContactRayDirectionCollision:
+    return "FaceContactRayDirectionCollision";
+  case RotationSystemInconsistencyReason::FaceContactRayUnsupported:
+    return "FaceContactRayUnsupported";
   }
   return "Unknown";
 }

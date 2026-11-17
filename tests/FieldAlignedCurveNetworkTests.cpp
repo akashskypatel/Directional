@@ -18799,3 +18799,118 @@ TEST(FaceChartExactGeometry, OrdersRaysAndContactsExactlyAroundAFaceInteriorPoin
   EXPECT_EQ((Order{{0U}}),
             embedded::face_chart_counter_clockwise_ray_order(origin, {towardA}));
 }
+
+TEST(FaceContactNode, SplitsAStruckSegmentAtAnExactInteriorContactPoint) {
+  using directional::authority::FieldBranch;
+  using directional::authority::TopologyRegionId;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+  using directional::geometry::RotationSystemInconsistencyReason;
+  using Point = embedded::FaceChartPoint;
+  using Position = embedded::TraceCutPosition;
+  const auto zero = exact_ratio(0, 1);
+  const auto half = exact_ratio(1, 2);
+  const auto third = exact_ratio(1, 3);
+  const auto epsilon = exact_ratio(1, 1152921504606846976LL);
+
+  // Segment 0 crosses face (0,1,2) from edge (0,1) to edge (1,2); segment 1
+  // crosses face (1,2,3) and the trace ends on edge (2,3).
+  const SourceFaceTopologyKey first = topology_face(0, 1, 2, 4U);
+  const SourceFaceTopologyKey second = topology_face(1, 2, 3, 4U);
+  FieldAlignedCandidateTrace trace(
+      TraceId::from_index(0U, 1U).value(),
+      SingularityPortId::from_index(0, 1).value(),
+      FieldSingularityId::from_index(0, 1).value(),
+      SourceVertexId::from_index(0, 4).value(),
+      SourceComponentId::from_index(0, 1).value(),
+      TopologyRegionId::from_index(0, 1).value());
+  const auto branch = FieldBranch::from_integer(0);
+  trace.segments.emplace_back(first, branch,
+                              boundary_point(topology_edge(0, 1, 4U), 1, 2),
+                              topology_edge(0, 1, 4U), topology_edge(1, 2, 4U),
+                              std::nullopt);
+  trace.segments.emplace_back(second, branch,
+                              boundary_point(topology_edge(1, 2, 4U), 1, 2),
+                              topology_edge(1, 2, 4U), topology_edge(2, 3, 4U),
+                              std::nullopt);
+  trace.terminalPoint = boundary_point(topology_edge(2, 3, 4U), 1, 2);
+
+  const Point entry{half, half, zero};
+  const Point exit{zero, half, half};
+  EXPECT_EQ(entry, embedded::trace_segment_canonical_entry(trace, 0U));
+  EXPECT_EQ(exit, embedded::trace_segment_canonical_exit(trace, 0U));
+  EXPECT_EQ((Point{half, half, zero}),
+            embedded::trace_segment_canonical_entry(trace, 1U));
+  EXPECT_EQ((Point{zero, half, half}),
+            embedded::trace_segment_canonical_exit(trace, 1U))
+      << "the last segment ends at the trace's terminal point";
+  EXPECT_FALSE(embedded::trace_segment_canonical_exit(trace, 2U));
+
+  const Point contact{third, half, exact_ratio(1, 6)};
+  EXPECT_EQ(third, embedded::trace_segment_contact_parameter(trace, 0U, contact));
+  EXPECT_FALSE(embedded::trace_segment_contact_parameter(trace, 0U, exit))
+      << "a contact must lie strictly inside the struck segment";
+  FieldAlignedCandidateTrace transit = trace;
+  transit.segments[0].edgeTransitExit =
+      boundary_point(topology_edge(1, 2, 4U), 1, 2);
+  EXPECT_FALSE(embedded::trace_segment_canonical_exit(transit, 0U))
+      << "an edge-transit segment is not straight in its face";
+  EXPECT_FALSE(embedded::trace_segment_contact_parameter(transit, 0U, contact));
+
+  // Positions sort along the trace: boundary k, interior cuts of k in exact
+  // order, boundary k + 1.
+  const Position start{0U, std::nullopt};
+  const Position atContact{0U, third};
+  const Position justAfter{0U, third + epsilon};
+  const Position middle{1U, std::nullopt};
+  const Position end{2U, std::nullopt};
+  EXPECT_LT(start, atContact);
+  EXPECT_LT(atContact, justAfter);
+  EXPECT_LT(justAfter, middle);
+  EXPECT_LT(middle, end);
+  using Range = std::pair<std::size_t, std::size_t>;
+  EXPECT_EQ((Range{0U, 1U}), embedded::trace_cut_segment_range(start, atContact));
+  EXPECT_EQ((Range{0U, 1U}), embedded::trace_cut_segment_range(atContact, justAfter));
+  EXPECT_EQ((Range{0U, 1U}), embedded::trace_cut_segment_range(atContact, middle));
+  EXPECT_EQ((Range{0U, 2U}), embedded::trace_cut_segment_range(atContact, end));
+  EXPECT_EQ((Range{0U, 2U}), embedded::trace_cut_segment_range(start, end));
+
+  const auto whole = embedded::exact_trace_path_between(trace, start, end);
+  const auto before = embedded::exact_trace_path_between(trace, start, atContact);
+  const auto after = embedded::exact_trace_path_between(trace, atContact, end);
+  const auto between = embedded::exact_trace_path_between(trace, atContact, justAfter);
+  ASSERT_TRUE(whole.has_value());
+  ASSERT_TRUE(before.has_value());
+  ASSERT_TRUE(after.has_value());
+  ASSERT_TRUE(between.has_value());
+  ASSERT_EQ(2U, whole->size());
+  ASSERT_EQ(1U, before->size());
+  ASSERT_EQ(2U, after->size());
+  ASSERT_EQ(1U, between->size());
+  const auto contactPoint =
+      directional::authority::canonical_exact_source_face_point(first, contact);
+  ASSERT_TRUE(contactPoint.has_value());
+  EXPECT_EQ((*whole)[0].first, (*before)[0].first);
+  EXPECT_EQ(*contactPoint, (*before)[0].second);
+  EXPECT_EQ(*contactPoint, (*after)[0].first);
+  EXPECT_EQ((*whole)[0].second, (*after)[0].second);
+  EXPECT_EQ((*whole)[0].carrier, (*after)[0].carrier);
+  EXPECT_EQ((*whole)[1], (*after)[1])
+      << "pieces beyond the split segment are the whole-path pieces";
+  EXPECT_EQ(*contactPoint, (*between)[0].first);
+  EXPECT_NE((*between)[0].first, (*between)[0].second)
+      << "two contacts 2^-60 apart on one segment stay distinct";
+  EXPECT_FALSE(embedded::exact_trace_path_between(trace, atContact, atContact));
+  EXPECT_FALSE(embedded::exact_trace_path_between(trace, end, start));
+
+  EXPECT_STREQ("FaceContactBindingInvalid",
+               directional::geometry::rotation_system_inconsistency_reason_name(
+                   RotationSystemInconsistencyReason::FaceContactBindingInvalid));
+  EXPECT_STREQ("FaceContactRayDirectionCollision",
+               directional::geometry::rotation_system_inconsistency_reason_name(
+                   RotationSystemInconsistencyReason::
+                       FaceContactRayDirectionCollision));
+  EXPECT_STREQ("FaceContactRayUnsupported",
+               directional::geometry::rotation_system_inconsistency_reason_name(
+                   RotationSystemInconsistencyReason::FaceContactRayUnsupported));
+}

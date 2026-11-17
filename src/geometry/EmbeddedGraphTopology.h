@@ -12,6 +12,7 @@
 #include <map>
 #include <optional>
 #include <set>
+#include <utility>
 #include <variant>
 #include <vector>
 
@@ -222,6 +223,78 @@ face_chart_segment_parameter(const FaceChartPoint &entry,
 [[nodiscard]] std::optional<std::vector<std::size_t>>
 face_chart_counter_clockwise_ray_order(const FaceChartPoint &origin,
                                        const std::vector<FaceChartPoint> &targets);
+
+/**
+ * A position on a candidate trace. With no `parameter` it is the boundary
+ * before segment `segment` (the trace's end when `segment` is the segment
+ * count); otherwise it is the exact interior point at `parameter`, in (0, 1),
+ * along that segment. The defaulted order is the order along the trace.
+ */
+struct TraceCutPosition {
+  std::size_t segment = 0U;
+  std::optional<authority::FieldExactRational> parameter;
+
+  auto operator<=>(const TraceCutPosition &) const = default;
+};
+
+/**
+ * Where a trace segment starts and ends in its own face, as exact barycentric
+ * coordinates in the canonical vertex order of that face's topology key. The
+ * end is the next segment's entry, or the trace's terminal point or contact.
+ * Empty when the point is not available; the end is also empty for a segment
+ * that transits along an edge, which is not straight in its face.
+ */
+[[nodiscard]] std::optional<FaceChartPoint> trace_segment_canonical_entry(
+    const FieldAlignedCandidateTrace &trace, std::size_t segment);
+[[nodiscard]] std::optional<FaceChartPoint> trace_segment_canonical_exit(
+    const FieldAlignedCandidateTrace &trace, std::size_t segment);
+
+/**
+ * The exact parameter, in (0, 1), of a contact point strictly inside a
+ * straight trace segment. `point` uses the canonical chart of the segment's
+ * face. Empty when the segment's ends are unavailable or the point is not
+ * strictly inside it.
+ */
+[[nodiscard]] std::optional<authority::FieldExactRational>
+trace_segment_contact_parameter(const FieldAlignedCandidateTrace &trace,
+                                std::size_t segment,
+                                const FaceChartPoint &point);
+
+/** Segment range [first, onePastLast) of the arc between two positions. */
+[[nodiscard]] std::pair<std::size_t, std::size_t>
+trace_cut_segment_range(const TraceCutPosition &first,
+                        const TraceCutPosition &second);
+
+/**
+ * The exact source path of a trace between two positions, `first` before
+ * `second`. A piece starts or ends at an interior position's exact point;
+ * between two segment boundaries it equals the whole-segment path.
+ */
+[[nodiscard]] std::optional<authority::ExactSourcePath>
+exact_trace_path_between(const FieldAlignedCandidateTrace &trace,
+                         const TraceCutPosition &first,
+                         const TraceCutPosition &second);
+
+/**
+ * A network node at a trace-trace contact strictly inside a source face: the
+ * contact event has no source edge and the node is not a port node.
+ */
+struct FaceContactNode {
+  authority::SourceFaceTopologyKey face;
+  /** Exact contact point in the canonical chart of `face`. */
+  FaceChartPoint point;
+  /** Traces that end at this node. */
+  std::set<authority::TraceId> terminating;
+  /** Interior positions of the struck traces at this node. */
+  std::map<authority::TraceId, TraceCutPosition> interior;
+};
+using FaceContactNodeResult =
+    std::variant<std::map<authority::NetworkNodeId, FaceContactNode>,
+                 GlobalTopologyPlanError>;
+
+/** Collects and validates every face-contact node of the network. */
+[[nodiscard]] FaceContactNodeResult
+collect_face_contact_nodes(const FieldAlignedCurveNetwork &network);
 
 /** Inventories every source edge that carries two or more terminal cuts. */
 [[nodiscard]] std::vector<MandatoryEdgeTerminalInventory>

@@ -604,6 +604,222 @@ std::optional<std::vector<std::size_t>> face_chart_counter_clockwise_ray_order(
 
 namespace {
 
+std::optional<FaceChartPoint> canonical_boundary_barycentric(
+    const authority::SourceFaceTopologyKey &face,
+    const authority::FieldBoundaryPoint &point) {
+  const auto &vertices = face.vertices();
+  FaceChartPoint barycentric{authority::FieldExactRational::from_integer(0),
+                             authority::FieldExactRational::from_integer(0),
+                             authority::FieldExactRational::from_integer(0)};
+  std::optional<std::size_t> firstIndex;
+  std::optional<std::size_t> secondIndex;
+  for (std::size_t index = 0U; index < vertices.size(); ++index) {
+    if (vertices[index] == point.edge.first()) firstIndex = index;
+    if (vertices[index] == point.edge.second()) secondIndex = index;
+  }
+  if (!firstIndex.has_value() || !secondIndex.has_value()) return std::nullopt;
+  barycentric[*firstIndex] =
+      authority::FieldExactRational::from_integer(1) - point.parameter.value;
+  barycentric[*secondIndex] = point.parameter.value;
+  return barycentric;
+}
+
+std::set<authority::NetworkNodeId> port_nodes(
+    const FieldAlignedCurveNetwork &network) {
+  std::set<authority::NetworkNodeId> result;
+  for (const auto &port : network.singularity_ports()) result.insert(port.node);
+  return result;
+}
+
+bool is_face_contact_event(const FieldAlignedNetworkEvent &event,
+                           const std::set<authority::NetworkNodeId> &ports) {
+  return !event.sourceEdge.has_value() && ports.count(event.node) == 0U &&
+         (event.kind == FieldAlignedNetworkEventKind::FirstContact ||
+          event.kind == FieldAlignedNetworkEventKind::TraceIntersection ||
+          event.kind == FieldAlignedNetworkEventKind::TraceSelfClosure);
+}
+
+GlobalTopologyPlanError face_contact_error(
+    const RotationSystemInconsistencyReason reason,
+    const authority::SourceFaceTopologyKey &face,
+    const std::optional<authority::TraceId> trace) {
+  GlobalTopologyPlanError result = rotation_error(reason);
+  result.sourceFace = face;
+  result.trace = trace;
+  return result;
+}
+
+} // namespace
+
+std::optional<FaceChartPoint> trace_segment_canonical_entry(
+    const FieldAlignedCandidateTrace &trace, const std::size_t segment) {
+  if (segment >= trace.segments.size()) return std::nullopt;
+  return canonical_boundary_barycentric(trace.segments[segment].sourceFace,
+                                        trace.segments[segment].entryPoint);
+}
+
+std::optional<FaceChartPoint> trace_segment_canonical_exit(
+    const FieldAlignedCandidateTrace &trace, const std::size_t segment) {
+  if (segment >= trace.segments.size()) return std::nullopt;
+  const FieldAlignedCandidateTraceSegment &current = trace.segments[segment];
+  if (current.edgeTransitExit.has_value()) return std::nullopt;
+  if (segment + 1U < trace.segments.size()) {
+    return canonical_boundary_barycentric(
+        current.sourceFace, trace.segments[segment + 1U].entryPoint);
+  }
+  if (trace.terminalContact.has_value()) {
+    if (trace.terminalContact->sourceFace != current.sourceFace) {
+      return std::nullopt;
+    }
+    return trace.terminalContact->barycentric;
+  }
+  if (trace.terminalPoint.has_value()) {
+    return canonical_boundary_barycentric(current.sourceFace,
+                                          *trace.terminalPoint);
+  }
+  return std::nullopt;
+}
+
+std::optional<authority::FieldExactRational> trace_segment_contact_parameter(
+    const FieldAlignedCandidateTrace &trace, const std::size_t segment,
+    const FaceChartPoint &point) {
+  const auto entry = trace_segment_canonical_entry(trace, segment);
+  const auto exit = trace_segment_canonical_exit(trace, segment);
+  if (!entry.has_value() || !exit.has_value()) return std::nullopt;
+  return face_chart_segment_parameter(*entry, *exit, point);
+}
+
+std::pair<std::size_t, std::size_t> trace_cut_segment_range(
+    const TraceCutPosition &first, const TraceCutPosition &second) {
+  return {first.segment, second.parameter.has_value() ? second.segment + 1U
+                                                      : second.segment};
+}
+
+std::optional<authority::ExactSourcePath> exact_trace_path_between(
+    const FieldAlignedCandidateTrace &trace, const TraceCutPosition &first,
+    const TraceCutPosition &second) {
+  if (!(first < second)) return std::nullopt;
+  if (!first.parameter.has_value() && !second.parameter.has_value()) {
+    return exact_trace_path(trace, first.segment, second.segment);
+  }
+  const auto [begin, end] = trace_cut_segment_range(first, second);
+  if (begin >= end || end > trace.segments.size()) return std::nullopt;
+  const auto interior_point = [&](const TraceCutPosition &position)
+      -> std::optional<authority::ExactSourcePoint> {
+    const auto entry = trace_segment_canonical_entry(trace, position.segment);
+    const auto exit = trace_segment_canonical_exit(trace, position.segment);
+    const auto zero = authority::FieldExactRational::from_integer(0);
+    const auto one = authority::FieldExactRational::from_integer(1);
+    const authority::FieldExactRational &t = *position.parameter;
+    if (!entry.has_value() || !exit.has_value() || !(t > zero) ||
+        !(t < one)) {
+      return std::nullopt;
+    }
+    FaceChartPoint point = *entry;
+    for (std::size_t index = 0U; index < 3U; ++index) {
+      point[index] = (*entry)[index] + t * ((*exit)[index] - (*entry)[index]);
+    }
+    return authority::canonical_exact_source_face_point(
+        trace.segments[position.segment].sourceFace, point);
+  };
+  authority::ExactSourcePath path;
+  path.reserve(end - begin);
+  for (std::size_t segmentIndex = begin; segmentIndex < end; ++segmentIndex) {
+    const auto &segment = trace.segments[segmentIndex];
+    const auto start =
+        segmentIndex == begin && first.parameter.has_value()
+            ? interior_point(first)
+            : authority::canonical_exact_source_boundary_point(
+                  segment.entryPoint);
+    const auto finish = segmentIndex + 1U == end && second.parameter.has_value()
+                            ? interior_point(second)
+                            : exact_trace_segment_end(trace, segmentIndex);
+    if (!start.has_value() || !finish.has_value()) return std::nullopt;
+    path.push_back(authority::ExactSourceSupportPiece{
+        authority::SourceFaceInteriorSupport{segment.sourceFace}, *start,
+        *finish});
+  }
+  return authority::exact_source_path_is_canonical(path)
+             ? std::optional<authority::ExactSourcePath>{std::move(path)}
+             : std::nullopt;
+}
+
+FaceContactNodeResult collect_face_contact_nodes(
+    const FieldAlignedCurveNetwork &network) {
+  constexpr RotationSystemInconsistencyReason kInvalid =
+      RotationSystemInconsistencyReason::FaceContactBindingInvalid;
+  const std::set<authority::NetworkNodeId> ports = port_nodes(network);
+  std::map<authority::NetworkNodeId, authority::SourceFaceTopologyKey> faces;
+  std::map<authority::NetworkNodeId, std::set<authority::TraceId>> incident;
+  std::map<authority::NetworkNodeId, std::set<authority::TraceId>> ending;
+  for (const auto &event : network.events()) {
+    if (!is_face_contact_event(event, ports)) continue;
+    const auto [face, inserted] = faces.emplace(event.node, event.sourceFace);
+    if (!inserted && face->second != event.sourceFace) {
+      return face_contact_error(kInvalid, event.sourceFace, std::nullopt);
+    }
+    for (const auto &incidence : event.incidences) {
+      incident[event.node].insert(incidence.trace);
+      if (incidence.role == FieldAlignedTraceEventRole::Terminal) {
+        ending[event.node].insert(incidence.trace);
+      }
+    }
+  }
+
+  std::map<authority::NetworkNodeId, FaceContactNode> result;
+  for (const auto &[node, face] : faces) {
+    const std::set<authority::TraceId> &ends = ending[node];
+    if (ends.empty()) return face_contact_error(kInvalid, face, std::nullopt);
+    std::optional<FaceChartPoint> point;
+    for (const authority::TraceId id : ends) {
+      const FieldAlignedCandidateTrace *trace = find_trace(network, id);
+      if (trace == nullptr || !trace->terminalContact.has_value() ||
+          trace->terminalContact->sourceFace != face ||
+          (point.has_value() && *point != trace->terminalContact->barycentric)) {
+        return face_contact_error(kInvalid, face, id);
+      }
+      point = trace->terminalContact->barycentric;
+    }
+    FaceContactNode contact{face, *point, ends, {}};
+    for (const authority::TraceId id : ends) {
+      const FieldAlignedTerminalContact &record =
+          *find_trace(network, id)->terminalContact;
+      const FieldAlignedCandidateTrace *struck =
+          find_trace(network, record.struckTrace);
+      if (struck == nullptr) return face_contact_error(kInvalid, face, id);
+      // Two traces that both end here strike each other's last segment.
+      if (ends.count(record.struckTrace) != 0U &&
+          record.struckSegmentIndex + 1U == struck->segments.size()) {
+        continue;
+      }
+      if (record.struckSegmentIndex >= struck->segments.size() ||
+          struck->segments[record.struckSegmentIndex].sourceFace != face) {
+        return face_contact_error(kInvalid, face, record.struckTrace);
+      }
+      const auto parameter = trace_segment_contact_parameter(
+          *struck, record.struckSegmentIndex, contact.point);
+      if (!parameter.has_value()) {
+        return face_contact_error(kInvalid, face, record.struckTrace);
+      }
+      const TraceCutPosition position{record.struckSegmentIndex, *parameter};
+      const auto [stored, inserted] =
+          contact.interior.emplace(record.struckTrace, position);
+      if (!inserted && stored->second != position) {
+        return face_contact_error(kInvalid, face, record.struckTrace);
+      }
+    }
+    for (const authority::TraceId id : incident[node]) {
+      if (ends.count(id) == 0U && contact.interior.count(id) == 0U) {
+        return face_contact_error(kInvalid, face, id);
+      }
+    }
+    result.emplace(node, std::move(contact));
+  }
+  return result;
+}
+
+namespace {
+
 // P13-e (RA-243): print each mandatory source edge carrying two or more
 // terminal cuts in exact order, so one census shows every such edge.
 void report_mandatory_edge_terminal_inventory(

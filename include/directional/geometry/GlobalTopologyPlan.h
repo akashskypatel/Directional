@@ -276,6 +276,12 @@ enum class RotationSystemInconsistencyReason : std::uint8_t {
   CandidateRotationSystemMismatch = 61,
   RotationVertexTraceRaysExactlyCoincident = 62,
   VertexTraceSecondaryParameterUnavailable = 63,
+  /** A face-interior contact node lacks a consistent exact binding. */
+  FaceContactBindingInvalid = 64,
+  /** Two rays leave a face-interior contact node in the same direction. */
+  FaceContactRayDirectionCollision = 65,
+  /** A non-trace arc or a foreign-face ray reaches a face-interior node. */
+  FaceContactRayUnsupported = 66,
 };
 
 enum class VertexTraceSecondaryParameterFailureReason : std::uint8_t {
