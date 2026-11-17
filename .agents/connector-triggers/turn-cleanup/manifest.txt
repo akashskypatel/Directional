@@ -1,2 +1,0 @@
-# TB129 temporary state only; retain durable dispatcher and orphan mailbox
-.agents/connector-triggers/source-snapshot/tb129-20261117T122820Z.txt
