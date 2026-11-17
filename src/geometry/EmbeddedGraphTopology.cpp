@@ -309,6 +309,14 @@ std::optional<authority::ExactSourcePath> exact_trace_path(
              : std::nullopt;
 }
 
+namespace {
+void report_duplicate_cut_crossing(
+    const FieldAlignedCurveNetwork &network,
+    const authority::SourceEdgeTopologyKey &edge,
+    const authority::ExactUnitParameter &parameter, authority::TraceId first,
+    authority::TraceId second, std::size_t cutEdgeCount);
+} // namespace
+
 CutNodeBindingResult build_cut_node_bindings(
     const FieldAlignedCurveNetwork &network,
     const std::vector<authority::SourceEdgeTopologyKey> &cutEdges) {
@@ -372,6 +380,10 @@ CutNodeBindingResult build_cut_node_bindings(
       auto &byPoint = traceByExactPoint[*segment.incomingCarrier];
       const auto duplicate = byPoint.find(segment.entryPoint.parameter);
       if (duplicate != byPoint.end() && duplicate->second != trace.id) {
+        report_duplicate_cut_crossing(network, *segment.incomingCarrier,
+                                      segment.entryPoint.parameter,
+                                      duplicate->second, trace.id,
+                                      cutEdges.size());
         GlobalTopologyPlanError failure =
             error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
         failure.sourceEdge = *segment.incomingCarrier;
@@ -976,6 +988,148 @@ void report_terminal_cut_before_end(const FieldAlignedCandidateTrace &trace,
   std::clog << '\n';
 }
 
+void print_node_events(const FieldAlignedCurveNetwork &network,
+                       const authority::NetworkNodeId node) {
+  std::clog << " events=";
+  bool any = false;
+  for (const auto &event : network.events()) {
+    if (event.node != node) continue;
+    std::clog << (any ? "," : "") << network_event_kind_label(event.kind)
+              << '@';
+    print_edge(event.sourceEdge);
+    any = true;
+  }
+  if (!any) std::clog << "none";
+}
+
+void print_trace_terminal_contact(const FieldAlignedCandidateTrace *trace) {
+  if (trace == nullptr || !trace->terminalContact.has_value()) {
+    std::clog << " struckTrace=none";
+    return;
+  }
+  std::clog << " struckTrace=" << trace->terminalContact->struckTrace.index()
+            << " struckSegment=" << trace->terminalContact->struckSegmentIndex
+            << " contactFace=";
+  print_face(trace->terminalContact->sourceFace);
+  std::clog << " at=";
+  for (const auto &coordinate : trace->terminalContact->barycentric) {
+    std::clog << static_cast<double>(coordinate.to_double()) << ' ';
+  }
+}
+
+// P13 (RA-253): both traces that cross one selected cut edge at the same
+// exact point, and every event incident to both, so the duplicate crossing
+// can be attributed to a shared network node or to two unrelated traces.
+void report_duplicate_cut_crossing(
+    const FieldAlignedCurveNetwork &network,
+    const authority::SourceEdgeTopologyKey &edge,
+    const authority::ExactUnitParameter &parameter,
+    const authority::TraceId first, const authority::TraceId second,
+    const std::size_t cutEdgeCount) {
+  const std::streamsize precision = std::clog.precision(17);
+  std::clog << "EmbeddedGraphTopology.duplicateCutCrossing edge=";
+  print_edge(edge);
+  std::clog << " t="
+            << static_cast<double>(parameter.value.to_double())
+            << " cutEdges=" << cutEdgeCount;
+  for (const authority::TraceId id : {first, second}) {
+    const FieldAlignedCandidateTrace *trace = find_trace(network, id);
+    std::clog << " trace=[" << id.index();
+    if (trace != nullptr) {
+      std::clog << " segments=" << trace->segments.size() << " crossing=";
+      for (std::size_t index = 0U; index < trace->segments.size(); ++index) {
+        const auto &segment = trace->segments[index];
+        if (segment.incomingCarrier == edge &&
+            segment.entryPoint.parameter == parameter) {
+          std::clog << index << ' ';
+        }
+      }
+    }
+    print_trace_terminal_contact(trace);
+    std::clog << ']';
+  }
+  std::clog << " sharedEvents=";
+  bool any = false;
+  for (const auto &event : network.events()) {
+    const auto touches = [&](const authority::TraceId id) {
+      return std::any_of(event.incidences.begin(), event.incidences.end(),
+                         [&](const auto &incidence) {
+                           return incidence.trace == id;
+                         });
+    };
+    if (!touches(first) || !touches(second)) continue;
+    std::clog << (any ? "," : "") << event.node.index() << ':'
+              << network_event_kind_label(event.kind) << '@';
+    print_edge(event.sourceEdge);
+    any = true;
+  }
+  if (!any) std::clog << "none";
+  std::clog << '\n';
+  std::clog.precision(precision);
+}
+
+void print_cut_claimant(
+    const FieldAlignedCurveNetwork &network,
+    const std::map<authority::NetworkNodeId, FaceContactNode> &faceContacts,
+    const CutNodeBindings &cutNodes, const authority::NetworkNodeId node) {
+  std::clog << "[node=" << node.index();
+  const auto contact = faceContacts.find(node);
+  const auto crossing = cutNodes.syntheticCrossings.find(node);
+  if (contact != faceContacts.end()) {
+    std::clog << " contact face=";
+    print_face(contact->second.face);
+    std::clog << " point=";
+    for (const auto &coordinate : contact->second.point) {
+      std::clog << static_cast<double>(coordinate.to_double()) << ' ';
+    }
+    std::clog << "terminating=";
+    for (const authority::TraceId id : contact->second.terminating) {
+      std::clog << id.index();
+      print_trace_terminal_contact(find_trace(network, id));
+      std::clog << ' ';
+    }
+    std::clog << "interior=";
+    for (const auto &[id, position] : contact->second.interior) {
+      std::clog << id.index() << ':' << position.segment << ':'
+                << static_cast<double>(position.parameter->to_double())
+                << ' ';
+    }
+  } else if (crossing != cutNodes.syntheticCrossings.end()) {
+    std::clog << " crossing edge=";
+    print_edge(crossing->second.key.sourceEdge);
+    std::clog << " trace=" << crossing->second.key.trace.index()
+              << " segment=" << crossing->second.key.segmentPosition;
+  } else {
+    std::clog << " network";
+  }
+  print_node_events(network, node);
+  std::clog << ']';
+}
+
+// P13 (RA-253): the two nodes that claim one cut position of a trace when a
+// face-contact node is inserted, so the conflict can be attributed.
+void report_contact_cut_conflict(
+    const FieldAlignedCurveNetwork &network,
+    const std::map<authority::NetworkNodeId, FaceContactNode> &faceContacts,
+    const CutNodeBindings &cutNodes, const authority::TraceId trace,
+    const TraceCutPosition &position, const authority::NetworkNodeId existing,
+    const authority::NetworkNodeId claimant) {
+  const std::streamsize precision = std::clog.precision(17);
+  std::clog << "EmbeddedGraphTopology.contactCutConflict trace="
+            << trace.index() << " position=" << position.segment << ':';
+  if (position.parameter.has_value()) {
+    std::clog << static_cast<double>(position.parameter->to_double());
+  } else {
+    std::clog << "boundary";
+  }
+  std::clog << " existing=";
+  print_cut_claimant(network, faceContacts, cutNodes, existing);
+  std::clog << " claimant=";
+  print_cut_claimant(network, faceContacts, cutNodes, claimant);
+  std::clog << '\n';
+  std::clog.precision(precision);
+}
+
 } // namespace
 
 ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
@@ -1154,6 +1308,9 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
       for (const TraceCutPosition &position : positions) {
         const auto inserted = cuts.emplace(position, node);
         if (!inserted.second && inserted.first->second != node) {
+          report_contact_cut_conflict(network, faceContacts, cutNodes,
+                                      trace.id, position,
+                                      inserted.first->second, node);
           GlobalTopologyPlanError result =
               error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
           result.trace = trace.id;
