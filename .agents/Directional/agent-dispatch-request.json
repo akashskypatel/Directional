@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb126-docs-apply-20261117-v1",
+  "request_id": "m6-cp3-tb126-rev-docs-apply-20261117-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb126-docs-apply-20261117-v1",
-  "file_id": "1wG5aJBtEpgHRpNhcLD4y5ooHbJvAnMAR",
-  "patch_sha256": "7b11f2176c0fa1e779b3128d7a05da7c57096c523a1052bf970fd84807c5b070",
-  "base_sha": "a4141a2d6ac2183e977cf43d9eb6e9e8b0b3c92f",
+  "mailbox_key": "m6-cp3-tb126-rev-docs-apply-20261117-v1",
+  "file_id": "1I3L7q9DdPJ3TDW33nw6M5mqA5t2HK-ps",
+  "patch_sha256": "b895034b133c4f380ec984dc060186e9008f171ec21e264a2c8bd6ec23b293db",
+  "base_sha": "40cdd9f1014e912e788aec66491d33075c37f7b7",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB126 execution evidence and route mismatch review",
+  "commit_message": "docs(directional): adjudicate TB126 mismatch and freeze test-only correction",
   "retention_days": 7
 }
