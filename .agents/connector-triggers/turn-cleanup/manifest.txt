@@ -1,2 +1,0 @@
-# CB156 temporary state only
-.agents/connector-triggers/source-snapshot/cb156-20261117.txt
