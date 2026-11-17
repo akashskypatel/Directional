@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb150-closeout-apply-v2",
+  "request_id": "m6-cp3-cb151-apply-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb150-closeout-apply-v2",
-  "file_id": "1WEZvWQB6iZyNnOuCS9sL5h6_wbuMq3Zr",
-  "patch_sha256": "b73d48816c431e7fef2fbbaa1859d41b1c9a39de914d4f87a8f6525438fb0eab",
-  "base_sha": "5a6cbe05628f3077bcea1a05a3a62aad650c5b57",
+  "mailbox_key": "m6-cp3-cb151-apply-v1",
+  "file_id": "1VziKchCSySWEeL2529jABTDNOGX-Zb4U",
+  "patch_sha256": "1d5b999621f4057b974018cad3f1b97f746c921048b52320c4c303f546be5229",
+  "base_sha": "bfc133744a434c7b1fb175c7f609ed727060646e",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record verified CB150 compile-only closeout",
+  "commit_message": "diagnostics: record terminal cut before trace end",
   "retention_days": 7
 }
