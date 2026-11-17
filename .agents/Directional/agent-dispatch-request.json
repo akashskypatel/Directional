@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb124-closeout-apply-20261116-v1",
+  "request_id": "m6-cp3-cb143-edge-terminal-exact-inventory-apply-20261117-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb124-closeout-apply-v1",
-  "file_id": "17G4jh6_HgqhlFrjdy6mSud2WHXob_ukO",
-  "patch_sha256": "91d69ec07ad0ed6b24b00ff11424d9fe850938b5d5dc36fa5924a4877bfa22c9",
-  "base_sha": "305d228e4ea06c3fc6b4e4edcb2634124808aa97",
+  "mailbox_key": "m6-cp3-cb143-edge-terminal-apply-v1",
+  "file_id": "1ao4sFuaVDsU6ruEHwKJAGHw18HiWbFjk",
+  "patch_sha256": "717fedde2a88c158e7b59137cbaf4113fb16eb0cb5eff217f1f326ee7ef882e6",
+  "base_sha": "fb3bb9d0b022b93284de41d88007191586ef5ff4",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record TB124 corrected full-gate verification",
+  "commit_message": "feat(surface-cells): inventory exact mandatory-edge terminals",
   "retention_days": 14
 }
