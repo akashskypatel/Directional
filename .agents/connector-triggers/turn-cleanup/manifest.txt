@@ -1,0 +1,2 @@
+# CB155: remove the consumed source snapshot trigger
+.agents/connector-triggers/source-snapshot/cb155-20261117T1810Z.json
