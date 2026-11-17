@@ -1,1 +1,0 @@
-TB127 immutable execution source snapshot. Capture the exact trigger commit.
