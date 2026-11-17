@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <array>
 #include <cstdint>
+#include <iomanip>
+#include <iostream>
 #include <limits>
 #include <map>
 #include <numeric>
@@ -424,16 +426,77 @@ CutNodeBindingResult build_cut_node_bindings(
   return result;
 }
 
+std::vector<MandatoryEdgeTerminalInventory>
+inventory_mandatory_edge_terminals(
+    const std::map<authority::SourceEdgeTopologyKey,
+                   std::vector<MandatoryEdgeTerminalCut>> &cutsByEdge) {
+  std::vector<MandatoryEdgeTerminalInventory> result;
+  for (const auto &[sourceEdge, cuts] : cutsByEdge) {
+    if (cuts.size() < 2U) continue;
+    MandatoryEdgeTerminalInventory inventory{sourceEdge, cuts, {}, 0U, true};
+    std::sort(inventory.cuts.begin(), inventory.cuts.end(),
+              [](const MandatoryEdgeTerminalCut &left,
+                 const MandatoryEdgeTerminalCut &right) {
+                if (left.parameter.value != right.parameter.value) {
+                  return left.parameter.value < right.parameter.value;
+                }
+                return left.trace.index() < right.trace.index();
+              });
+    for (std::size_t index = 0U; index < inventory.cuts.size(); ++index) {
+      const bool sameAsPrevious =
+          index > 0U && inventory.cuts[index].parameter.value ==
+                            inventory.cuts[index - 1U].parameter.value;
+      if (!sameAsPrevious) ++inventory.distinctParameters;
+      inventory.orderClass.push_back(inventory.distinctParameters - 1U);
+      if (sameAsPrevious &&
+          inventory.cuts[index].node != inventory.cuts[index - 1U].node) {
+        inventory.equalParametersShareNode = false;
+      }
+    }
+    result.push_back(std::move(inventory));
+  }
+  return result;
+}
+
+namespace {
+
+// P13-e (RA-243): print each mandatory source edge that build_arcs rejects for
+// carrying two or more terminal cuts, so one census shows every such edge.
+void report_mandatory_edge_terminal_inventory(
+    const FieldAlignedCurveNetwork &network,
+    const MandatoryEdgeTerminalInventory &inventory) {
+  std::clog << "SurfaceCutGraph.mandatoryEdgeTerminalInventory edge=("
+            << inventory.sourceEdge.first().index() << ','
+            << inventory.sourceEdge.second().index()
+            << ") cuts=" << inventory.cuts.size()
+            << " distinctParameters=" << inventory.distinctParameters
+            << " equalParametersShareNode="
+            << (inventory.equalParametersShareNode ? 1 : 0);
+  for (std::size_t index = 0U; index < inventory.cuts.size(); ++index) {
+    const MandatoryEdgeTerminalCut &cut = inventory.cuts[index];
+    const FieldAlignedCandidateTrace *trace = find_trace(network, cut.trace);
+    std::clog << " cut" << index << "=[trace=" << cut.trace.index()
+              << " singularity=";
+    if (trace != nullptr) {
+      std::clog << trace->singularity.index();
+    } else {
+      std::clog << '-';
+    }
+    std::clog << " node=" << cut.node.index()
+              << " class=" << inventory.orderClass[index] << " t="
+              << std::setprecision(17)
+              << static_cast<double>(cut.parameter.value.to_double()) << ']';
+  }
+  std::clog << '\n';
+}
+
+} // namespace
+
 ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
                           const std::vector<authority::SourceEdgeTopologyKey> &cutEdges,
                           const CutNodeBindings &cutNodes) {
-  struct TerminalBarrierCut {
-    authority::TraceId trace;
-    authority::NetworkNodeId node;
-    authority::ExactUnitParameter parameter;
-  };
-
-  std::map<authority::SourceEdgeTopologyKey, std::vector<TerminalBarrierCut>>
+  std::map<authority::SourceEdgeTopologyKey,
+           std::vector<MandatoryEdgeTerminalCut>>
       terminalCutsByEdge;
   for (const auto &trace : network.candidate_traces()) {
     if (!trace.terminalBarrier.has_value()) continue;
@@ -476,10 +539,14 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
       return result;
     }
     terminalCutsByEdge[*trace.terminalBarrier].push_back(
-        TerminalBarrierCut{trace.id, *terminalNode,
+        MandatoryEdgeTerminalCut{trace.id, *terminalNode,
                            trace.terminalPoint->parameter});
   }
 
+  for (const MandatoryEdgeTerminalInventory &inventory :
+       inventory_mandatory_edge_terminals(terminalCutsByEdge)) {
+    report_mandatory_edge_terminal_inventory(network, inventory);
+  }
   for (const auto &[sourceEdge, cuts] : terminalCutsByEdge) {
     if (cuts.size() < 2U) continue;
     GlobalTopologyPlanError result =

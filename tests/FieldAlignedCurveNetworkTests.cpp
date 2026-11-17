@@ -18516,3 +18516,66 @@ TEST(FieldTransportAtlas, TorusSlitKeepsBothHandlesOrFailsClosedAtTheSlit) {
             crossedBuild.error().incompleteCycleBasisReason);
   EXPECT_EQ(crossed, crossedBuild.error().sourceEdge);
 }
+
+TEST(MandatoryEdgeTerminalInventory, OrdersCutsExactlyAndClassesEqualParameters) {
+  using directional::authority::ExactUnitParameter;
+  using directional::authority::NetworkNodeId;
+  using directional::authority::TraceId;
+  constexpr std::size_t vertexCount = 8U;
+  constexpr std::size_t idCount = 16U;
+  const auto edge = [&](const std::size_t first, const std::size_t second) {
+    return SourceEdgeTopologyKey::from_indices(first, second, vertexCount)
+        .value();
+  };
+  const auto cut = [&](const std::size_t trace, const std::size_t node,
+                       const directional::authority::FieldExactRational t) {
+    return embedded::MandatoryEdgeTerminalCut{
+        TraceId::from_index(trace, idCount).value(),
+        NetworkNodeId::from_index(node, idCount).value(),
+        ExactUnitParameter{t}};
+  };
+  // 1/3 and 1/3 + 2^-60 round to the same double; only exact order splits them.
+  const auto third = exact_ratio(1, 3);
+  const auto justAboveThird =
+      exact_ratio(1152921504606846979LL, 3458764513820540928LL);
+  ASSERT_EQ(static_cast<double>(third.to_double()),
+            static_cast<double>(justAboveThird.to_double()));
+  ASSERT_LT(third, justAboveThird);
+
+  std::map<SourceEdgeTopologyKey, std::vector<embedded::MandatoryEdgeTerminalCut>>
+      cutsByEdge;
+  cutsByEdge[edge(0, 1)] = {cut(1, 1, exact_ratio(1, 2))};
+  cutsByEdge[edge(1, 2)] = {cut(5, 10, exact_ratio(3, 4)),
+                            cut(7, 11, exact_ratio(1, 4)),
+                            cut(2, 10, exact_ratio(3, 4))};
+  cutsByEdge[edge(2, 3)] = {cut(3, 12, exact_ratio(1, 2)),
+                            cut(4, 13, exact_ratio(1, 2))};
+  cutsByEdge[edge(3, 4)] = {cut(9, 14, justAboveThird), cut(8, 15, third)};
+
+  const auto inventory = embedded::inventory_mandatory_edge_terminals(cutsByEdge);
+  ASSERT_EQ(3U, inventory.size()) << "a single terminal cut is not inventoried";
+
+  const auto traces = [](const embedded::MandatoryEdgeTerminalInventory &entry) {
+    std::vector<std::size_t> result;
+    for (const auto &item : entry.cuts) result.push_back(item.trace.index());
+    return result;
+  };
+  EXPECT_EQ(edge(1, 2), inventory[0].sourceEdge);
+  EXPECT_EQ((std::vector<std::size_t>{7U, 2U, 5U}), traces(inventory[0]))
+      << "exact parameter order, trace id breaking the 3/4 tie";
+  EXPECT_EQ((std::vector<std::size_t>{0U, 1U, 1U}), inventory[0].orderClass);
+  EXPECT_EQ(2U, inventory[0].distinctParameters);
+  EXPECT_TRUE(inventory[0].equalParametersShareNode);
+
+  EXPECT_EQ(edge(2, 3), inventory[1].sourceEdge);
+  EXPECT_EQ((std::vector<std::size_t>{0U, 0U}), inventory[1].orderClass);
+  EXPECT_EQ(1U, inventory[1].distinctParameters);
+  EXPECT_FALSE(inventory[1].equalParametersShareNode)
+      << "equal parameters bound to different nodes must be reported";
+
+  EXPECT_EQ(edge(3, 4), inventory[2].sourceEdge);
+  EXPECT_EQ((std::vector<std::size_t>{8U, 9U}), traces(inventory[2]));
+  EXPECT_EQ((std::vector<std::size_t>{0U, 1U}), inventory[2].orderClass);
+  EXPECT_EQ(2U, inventory[2].distinctParameters)
+      << "parameters one rounding unit apart are distinct";
+}

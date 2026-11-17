@@ -128,6 +128,33 @@ using ExteriorOrbitBuildResult =
 [[nodiscard]] CutNodeBindingResult build_cut_node_bindings(
     const FieldAlignedCurveNetwork &network,
     const std::vector<authority::SourceEdgeTopologyKey> &cutEdges);
+/** One trace terminating on the interior of a mandatory source edge. */
+struct MandatoryEdgeTerminalCut {
+  authority::TraceId trace;
+  authority::NetworkNodeId node;
+  authority::ExactUnitParameter parameter;
+};
+
+/**
+ * Exact order of the terminal cuts on one mandatory source edge that has two
+ * or more of them. Cuts are sorted by exact edge parameter (trace id breaks
+ * ties); orderClass[i] numbers the distinct parameters along the edge, so
+ * equal parameters share a class.
+ */
+struct MandatoryEdgeTerminalInventory {
+  authority::SourceEdgeTopologyKey sourceEdge;
+  std::vector<MandatoryEdgeTerminalCut> cuts;
+  std::vector<std::size_t> orderClass;
+  std::size_t distinctParameters = 0U;
+  /** True when every class of equal parameters binds a single network node. */
+  bool equalParametersShareNode = true;
+};
+
+/** Inventories every source edge that carries two or more terminal cuts. */
+[[nodiscard]] std::vector<MandatoryEdgeTerminalInventory>
+inventory_mandatory_edge_terminals(
+    const std::map<authority::SourceEdgeTopologyKey,
+                   std::vector<MandatoryEdgeTerminalCut>> &cutsByEdge);
 [[nodiscard]] ArcBuildResult build_arcs(
     const FieldAlignedCurveNetwork &network,
     const std::vector<authority::SourceEdgeTopologyKey> &cutEdges,
