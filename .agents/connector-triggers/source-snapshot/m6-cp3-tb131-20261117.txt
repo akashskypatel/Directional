@@ -1,0 +1,1 @@
+TB131 exact source snapshot; capture the marker commit for artifact-only gate authority.
