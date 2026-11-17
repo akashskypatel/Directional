@@ -1,3 +1,8 @@
+## 2026-11-17 UTC — RA-254 re-review of the TB132 Review
+
+- [RA-254](.agents/Directional/Architecture_M6_CP3_TB132_P13_Cut_Binding_Conflict_Receipt_Full_Gate_Independent_Review_20261117.md#ra-254--adversarial-re-review-of-this-review-2026-11-17-utc): MATCH upheld. `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` is withdrawn as the immediate successor because the sphere and BunnyRandom contact kinds are unmeasured. O47 opened.
+- Frozen `Architecture_M6_CP3_CB156_P13_Same_Face_Segment_Pair_Receipt_Exact.diff` (SHA-256 `1246f12b…bfc205`, +65/-0) and the TB133 criteria. Next is `M6-CP3-CB156-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT`.
+
 ## 2026-11-17 UTC — TB132 independent Review (MATCH upheld)
 
 - [Independent Review](.agents/Directional/Architecture_M6_CP3_TB132_P13_Cut_Binding_Conflict_Receipt_Full_Gate_Independent_Review_20261117.md): verified 956/956 ledger/log pairs and 491/491 accepted prefix; sphere exact duplicate cut crossing lacks certified producer contact, BunnyRandom two producer node IDs share one exact struck-trace contact. S4/O45 narrow consumer-proxy closure. No stable event or promotion; 66/17/49, debt1, deferred81. Next separately `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT`; coincident-contact DEFN held. No source/test/runtime changes.

@@ -67,3 +67,76 @@ Carry C5/O42/O43/O46, H2, FC-1/FC-4 broad producer proof, middle-piece direction
 | Push and sync | Connector workflow must attest patch push and exact changed paths; local scratch is not origin checkout. |
 
 Procedural limitation: initial direct document reads preceded mandatory snapshot selection; corrected by verified snapshot. Full start-policy reading and tool-call ledger not certified. No policy changes. This limits procedural certification, not the independent evidence above.
+
+## RA-254 — adversarial re-review of this Review (2026-11-17 UTC)
+
+### S0 — verdict
+
+The MATCH, the 956/956 comparison, the guard locations and the S4 proof for canonical proper crossings are upheld. I re-checked the TB132 gate and census ZIP SHA-256 values against the table above. I read the producer at `SurfaceCellTracing.cpp:4330–4430` and the consumer helpers at `EmbeddedGraphTopology.cpp:520–556` and `:685–721`. The successor is **withdrawn**: `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` is replaced by a measurement, because the receipt cannot tell the two possible contact kinds apart and they need different repairs. My own RA-253 S3 called BunnyRandom "likely a producer node-identity issue". That was premature for the same reason, and I correct it here.
+
+### S1 — what the producer actually drops
+
+Pending/pending (`:4344–4349`) and pending/committed-wall (`:4411–4417`) both `continue` on every kind except `ProperCrossing`. That includes both `EndpointTouch` and `CollinearOverlap` (classifier `:2378–2494`). The Review names only the endpoint case. Either discarded kind can produce both receipts:
+
+- **Sphere.** Trace 4 and trace 6 each enter segment 7 through edge (0,2) at one exact parameter, in opposite directions: trace 4 goes (0,1,2)→(0,2,3), trace 6 goes (0,2,3)→(0,1,2). Two readings are possible:
+  - **(a) Transverse.** The traces cross each other exactly on the edge. Each face sees only a V-shaped `EndpointTouch`.
+  - **(b) Head-on overlap.** The traces share one supporting line in opposite directions, so the classifier returns `CollinearOverlap`. This is a separatrix-connection-type event, whose cure is a joined or terminated pair. A contact node on an edge is the wrong cure for it.
+- **Static arguments conflict.** Reading (b) would make trace 4 cross ray trace 0 at trace 6's terminal point without stopping. Reading (a) needs an exact rational coincidence on edge (0,2). Yet the mirror-image terminal contacts differ by about 1e-16, so the mesh is not exactly symmetric. Neither reading is established.
+- **BunnyRandom.** Nodes 220 and 222 sit at one exact rational point on trace 82 segment 0. Two readings are possible:
+  - **(a′) Genuine triple point.** Traces 43 and 15 arrive from different directions.
+  - **(b′) Overlap.** Traces 43 and 15 overlap upstream, so they share the supporting line in face (21,72,273).
+
+  In case (b′), the held `COINCIDENT-CONTACT-NODE-IDENTITY` cure, which makes the two contacts one node, would hide a doubled arc that bounds a zero-area region. The Review's statement that "the supported defect is a missing coincident-contact identity" goes beyond the evidence.
+
+### S2 — O45 transfer
+
+The S4 proof is correct for canonical same-face proper crossings, and O45 stays narrowly closed. However, reading (a) is exactly a contact on a mesh edge. Such a contact strikes the other trace at a segment boundary. The consumer's `face_chart_segment_parameter` (`:533–556`) requires the exact parameter to satisfy 0 < t < 1, and FC-7′ assumes the contact lies strictly inside a face. Both would reject or misplace it. New obligation **O47: edge-locus contact representation in the consumer.** Any edge-contact repair must state how the contact node relates to the struck trace's own edge crossing (one node, one event set). O47 is owned by whichever DEFN the data selects.
+
+### S3 — measurement: CB156 (exact, print-only)
+
+`.agents/Directional/Architecture_M6_CP3_CB156_P13_Same_Face_Segment_Pair_Receipt_Exact.diff`:
+- SHA-256 `1246f12b3cc22f62aa70ea503cf14e1f8438b160995e85225ba26c8fb7bfc205`, 90 lines, numstat `65 0 src/geometry/EmbeddedGraphTopology.cpp`.
+- It adds `print_same_face_segment_pairs`. For every segment pair of two traces in one source face, it prints:
+  - the segment indices, the face and both branches;
+  - four exact `face_chart_orientation` signs: second segment's entry and exit against the first segment's line, then the reverse;
+  - which canonical ends coincide (`ee`/`ex`/`xe`/`xx`).
+- It is called inside both existing RA-253 receipts. For the sphere it compares traces 4 and 6. For BunnyRandom it compares the first terminating trace of the existing node with that of the claimant node.
+
+Checks done:
+- `git apply --check` passes at HEAD `b53e7b2a2`.
+- A `-fsyntax-only` compile succeeds, with 22 warnings at both HEAD and patched.
+- A Haiku read-only audit found the patch print-only:
+  - calls happen only inside the two already-rejecting branches, between the precision save and restore;
+  - every optional dereference is guarded;
+  - there is no undefined behaviour.
+
+Known limits: a degenerate segment (entry equal to exit) gives zero signs, so read `eq=` before calling a pair collinear. Only the first terminating trace per node is printed.
+
+### S4 — TB133 criteria (frozen)
+
+- **Inputs.** Same gate `941287fa…`, census `3af1dc0d…`, deferred `fd433f54…` and harness `78b8002c…`. Comparator: TB132 gate `14359654903`, census `14362615302`.
+- **Normalizations.** N1–N4 as in RA-253 S7. **N5′:** delete the field `sameFacePairs=…` up to (not including) ` sharedEvents=` or the line end. The rest of every receipt line must then equal TB132's line byte-for-byte, with the same per-row count (66 lines across the same 19 sphere rows; 2 on BunnyRandom).
+- **MATCH** requires all of the following:
+  1. Every substantive ledger equals TB132's.
+  2. The logs are equal under N1–N4 plus N5′.
+  3. Every new receipt line carries a `sameFacePairs=` field.
+  4. Nothing else differs. Any other difference is a MISMATCH.
+- **Field contents are data.** `none` or `unevaluated` is data, not a mismatch.
+- **Classification for TB133-REV.** On the pairs whose `eq=` names the shared locus:
+  - All four signs zero means overlap, which selects `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` for the sphere, or that DEFN's co-directional case for BunnyRandom.
+  - Any nonzero sign at the shared edge point means a transverse meeting. That selects `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` (with O47) for the sphere, or `M6-CP3-DEFN-P13-COINCIDENT-CONTACT-NODE-IDENTITY` for BunnyRandom.
+  - If both sites are overlaps, one DEFN covers both.
+- **Mismatch route.** `M6-CP3-PLAN-P13-SEGMENT-PAIR-RECEIPT-STOP`. Infrastructure route: `M6-CP3-CB156A-P13-SEGMENT-PAIR-RECEIPT-ORCH`.
+
+### S5 — turn sequence
+
+1. `M6-CP3-CB156-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT` (Code + Build, compile only).
+2. `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-EXEC`.
+3. `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-REV`, which classifies each site per S4 and freezes at most one DEFN per site.
+4. The selected DEFN.
+
+Held: FC-6, terminal-cut outcome, and the row 858 face-witness fix (after the sphere repair). CB145 stays parked.
+
+### S6 — lesson
+
+Before naming a repair for an exact coincidence, list every classifier outcome that the producer discards at that locus, and measure which one occurred. A coincidence receipt shows that a point is shared. It does not show how the curves meet there.

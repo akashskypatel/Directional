@@ -1,3 +1,7 @@
+## 2026-11-17 — RA-254 re-review of the TB132 Review (non-stable)
+
+[RA-254](Architecture_M6_CP3_TB132_P13_Cut_Binding_Conflict_Receipt_Full_Gate_Independent_Review_20261117.md#ra-254--adversarial-re-review-of-this-review-2026-11-17-utc): MATCH upheld. Both producer candidates are re-scoped as **under-determined**. The same-face queue drops `EndpointTouch` *and* `CollinearOverlap` (`SurfaceCellTracing.cpp:4344`, `:4411`). Sphere traces 4/6 at edge (0,2) may be a transverse edge meeting or a head-on overlap. BunnyRandom traces 43/15 may form a triple point or overlap. **O47 opened:** consumer representation of an edge-locus contact (`face_chart_segment_parameter` requires 0<t<1; FC-7′ is interior-only). O45 narrow closure kept. Next CB156 (exact print-only same-face segment-pair receipt), then TB133. No stable change: 66/17/49, debt 1, deferred 81.
+
 ## 2026-11-17 — TB132 independent Review (MATCH upheld)
 
 [Review](Architecture_M6_CP3_TB132_P13_Cut_Binding_Conflict_Receipt_Full_Gate_Independent_Review_20261117.md): 956/956 independent substantive/log comparisons; 491/491 accepted prefix; 952/953 gate, row858 permitted RED; Cylinder PASS288, BunnyRandom/Vase RED. No stable loss.

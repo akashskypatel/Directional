@@ -1,9 +1,22 @@
-## CURRENT — TB132 independent Review MATCH upheld; O45 narrow closure (2026-11-17 UTC)
+## CURRENT — RA-254: TB132 MATCH upheld; measure contact kind before any DEFN (2026-11-17 UTC)
+
+[RA-254](.agents/Directional/Architecture_M6_CP3_TB132_P13_Cut_Binding_Conflict_Receipt_Full_Gate_Independent_Review_20261117.md#ra-254--adversarial-re-review-of-this-review-2026-11-17-utc): the producer drops both `EndpointTouch` and `CollinearOverlap` (`SurfaceCellTracing.cpp:4344`, `:4411`). The receipts cannot tell a transverse edge meeting from a head-on/co-directional overlap at either site, and the cures differ. EDGE-ENDPOINT DEFN withdrawn as immediate successor; RA-253 S3 "node identity" framing corrected. O45 narrow closure kept; O47 (edge-locus contact in consumer) opened.
+
+Turn sequence:
+- [x] RA-254 re-review (Review): CB156 exact diff and TB133 criteria frozen.
+- [ ] **NEXT (Code + Build, compile only):** `M6-CP3-CB156-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT`.
+  - Exact diff `.agents/Directional/Architecture_M6_CP3_CB156_P13_Same_Face_Segment_Pair_Receipt_Exact.diff`: SHA-256 `1246f12b3cc22f62aa70ea503cf14e1f8438b160995e85225ba26c8fb7bfc205`, 90 lines; numstat `65 0 src/geometry/EmbeddedGraphTopology.cpp`.
+  - Precheck `git diff --quiet cce5be20ea7237f59f3c0acca25a4ba57813644e HEAD -- src include tests`; eight RA-245 GMP/GMPXX targets; runtimeExecution=false. Mismatch `M6-CP3-PLAN-P13-SEGMENT-PAIR-RECEIPT-STOP`; infrastructure `M6-CP3-CB156A-P13-SEGMENT-PAIR-RECEIPT-ORCH`.
+- [ ] `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-EXEC`: same gate/census/deferred/harness; comparator TB132 (gate `14359654903`, census `14362615302`); N1–N4 + N5′; MATCH per RA-254 S4.
+- [ ] `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-REV`: classify each site (all-zero signs at the shared locus = overlap; else transverse) and freeze at most one DEFN per site: `…-OPPOSING-TRACE-OVERLAP`, `…-EDGE-ENDPOINT-CONTACT` (+O47) or `…-COINCIDENT-CONTACT-NODE-IDENTITY`.
+- [ ] Held: FC-6, terminal-cut outcome, row858 face-witness fix (after sphere repair). Parked CB145. Carried items as below.
+
+## Historical checkpoint — TB132 independent Review MATCH upheld; O45 narrow closure (2026-11-17 UTC)
 
 [Review](.agents/Directional/Architecture_M6_CP3_TB132_P13_Cut_Binding_Conflict_Receipt_Full_Gate_Independent_Review_20261117.md): 956/956 independently compared, 952/953 gate, 858 permitted premise RED; accepted 491/491. Cylinder PASS 288, BunnyRandom/Vase RED; no CP3 acceptance.
 
 - [x] TB132 EXEC and independent Review complete: sphere missing producer-owned edge endpoint incidence (traces 4/6, edge (0,2)); BunnyRandom producer nodes220/222 claim one exact struck-trace82 position in face (21,72,273). O45 closes for consumer proxy misuse only; FC-1/FC-4 broader proof open.
-- [ ] **NEXT (definition only):** `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` — exact producer-side source-edge contact/roles, guard-preserving positive/negative evidence and stop rules in Review. No consumer welding or guessed cut.
+- [ ] **WITHDRAWN as immediate successor by RA-254 (definition only):** `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` — exact producer-side source-edge contact/roles, guard-preserving positive/negative evidence and stop rules in Review. No consumer welding or guessed cut.
 - [ ] Held: `M6-CP3-DEFN-P13-COINCIDENT-CONTACT-NODE-IDENTITY` — one exact coincident-contact incidence identity; re-derive if sphere repair changes site. FC-6, terminal-cut outcome and row858 face-witness DEFN held (858 after sphere repair).
 - [ ] Carried: H2 unobserved, C5/O42/O43/O46, FC-1/FC-4, middle-piece direction witness; CB145 parked, CB149B/CB152/comparison DEFN withdrawn. Stable 66/17/49, debt1, deferred81. CP2 accepted 491/491; CP3/selector497/D0 unpromoted; D11=A, D12=A, D10 deferred, D6 pending, chainRimSchedules=false.
 
