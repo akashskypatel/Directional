@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb143-edge-terminal-exact-inventory-apply-20261117-v2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb143-edge-terminal-apply-v2",
-  "file_id": "1ao4sFuaVDsU6ruEHwKJAGHw18HiWbFjk",
-  "patch_sha256": "717fedde2a88c158e7b59137cbaf4113fb16eb0cb5eff217f1f326ee7ef882e6",
-  "base_sha": "fb3bb9d0b022b93284de41d88007191586ef5ff4",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(surface-cells): inventory exact mandatory-edge terminals"
+  "request_id": "m6-cp3-cb143-edge-terminal-compile-20261117-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb143-edge-terminal-compile-v1",
+  "source_sha": "6857c66b788841f8e400151b6068b2f23be25167",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb143-edge-terminal-exact-inventory"
 }
