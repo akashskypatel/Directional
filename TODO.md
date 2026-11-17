@@ -1,19 +1,11 @@
-## CURRENT — TB132 cut-binding conflict receipt full gate MATCH; Review next (2026-11-17 UTC)
+## CURRENT — TB132 independent Review MATCH upheld; O45 narrow closure (2026-11-17 UTC)
 
-[Execution report](.agents/Directional/Architecture_M6_CP3_TB132_P13_Cut_Binding_Conflict_Receipt_Full_Gate_Execution_Report_20261117.md): frozen RA-253 S7 MATCH on CB155 package `14357189158`. Gate 952/953 PASS, 858 permitted premise RED; census Cylinder PASS 288, BunnyRandom/Vase RED. Membership 1034. All 956 substantive ledgers and normalized raw logs equal TB131. No retrospective change to TB131 MISMATCH.
+[Review](.agents/Directional/Architecture_M6_CP3_TB132_P13_Cut_Binding_Conflict_Receipt_Full_Gate_Independent_Review_20261117.md): 956/956 independently compared, 952/953 gate, 858 permitted premise RED; accepted 491/491. Cylinder PASS 288, BunnyRandom/Vase RED; no CP3 acceptance.
 
-- **Sphere:** receipt confirms traces 4 and 6 cross selected cut edge (0,2) at one exact crossing parameter, no shared events. Terminal contacts have positive printed barycentric coordinates in their respective faces.
-- **BunnyRandom:** nodes 220/222 contact trace 82 at one exact position in face (21,72,273); each has `FirstContact@none,TraceIntersection@none`. Their printed contact points agree and are strictly interior.
-- **O45:** no printed zero barycentric coordinate. Independent Review decides S4/O45; no closure in execution.
-
-Turn sequence:
-- [x] RA-253 re-review of `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-REV`: COMPLETE.
-- [x] **COMPLETE (Code + Build, compile only):** `M6-CP3-CB155-P13-CUT-BINDING-CONFLICT-RECEIPT`. [Compile record](.agents/Directional/Architecture_M6_CP3_CB155_P13_Cut_Binding_Conflict_Receipt_Code_Build_Record_20261117.md), source `cce5be20ea7237f59f3c0acca25a4ba57813644e`, eight GMP/GMPXX targets, no runtime execution.
-- [x] **COMPLETE (artifact-only Test + Benchmark, MATCH):** `M6-CP3-TB132-P13-CUT-BINDING-CONFLICT-RECEIPT-FULL-GATE-EXEC`. [Execution report](.agents/Directional/Architecture_M6_CP3_TB132_P13_Cut_Binding_Conflict_Receipt_Full_Gate_Execution_Report_20261117.md). No compile, benchmark, repair or promotion.
-- [ ] **NEXT (independent Review):** `M6-CP3-TB132-P13-CUT-BINDING-CONFLICT-RECEIPT-FULL-GATE-REV`. Attribute both sites, decide S4/O45, and freeze at most one repair DEFN per site. No implementation/runtime.
-- [ ] Held: `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`, then `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6); the row 858 face-witness DEFN comes after the sphere repair.
-- [ ] Withdrawn: CB149B, CB152, DEFN-…-COMPARISON. Parked: CB145.
-- [ ] Carried: H2 (not observed), O46, C5/O42/O43, FC-1/FC-4 producer proof, middle-piece direction witness. Stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted. D11=A, D12=A, D10 deferred, D6 pending.
+- [x] TB132 EXEC and independent Review complete: sphere missing producer-owned edge endpoint incidence (traces 4/6, edge (0,2)); BunnyRandom producer nodes220/222 claim one exact struck-trace82 position in face (21,72,273). O45 closes for consumer proxy misuse only; FC-1/FC-4 broader proof open.
+- [ ] **NEXT (definition only):** `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` — exact producer-side source-edge contact/roles, guard-preserving positive/negative evidence and stop rules in Review. No consumer welding or guessed cut.
+- [ ] Held: `M6-CP3-DEFN-P13-COINCIDENT-CONTACT-NODE-IDENTITY` — one exact coincident-contact incidence identity; re-derive if sphere repair changes site. FC-6, terminal-cut outcome and row858 face-witness DEFN held (858 after sphere repair).
+- [ ] Carried: H2 unobserved, C5/O42/O43/O46, FC-1/FC-4, middle-piece direction witness; CB145 parked, CB149B/CB152/comparison DEFN withdrawn. Stable 66/17/49, debt1, deferred81. CP2 accepted 491/491; CP3/selector497/D0 unpromoted; D11=A, D12=A, D10 deferred, D6 pending, chainRimSchedules=false.
 
 ## Historical checkpoint — TB131 Review upheld MISMATCH; comparison definition next (2026-11-17 UTC)
 
