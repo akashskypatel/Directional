@@ -1,3 +1,7 @@
+## 2026-11-17 UTC — CB144 mandatory edge ordered-cut correction compiled
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB144_P13_Edge_Terminal_Owner_Correction_Code_Build_Record_20261117.md): Applied the frozen RA-244 three-file patch at exact source `7b0668d432ccb187c5a2d856494064f0bcb2fb95`. N distinct terminal cuts now yield N + 1 positive owner-preserving pieces, and the middle piece has a valid direction; equal parameters still reject. Compile-only [run 44002798772](https://github.com/akashskypatel/Directional/actions/runs/44002798772) `SUCCESS`, eight GMP/GMPXX targets, artifact `14293047782`, 28/28 checksums, runtime not executed. Row 951 is compiled but not run. Next separate TB126 gate/census, then independent Review; no CP3 promotion.
+
 ## 2026-11-17 UTC — RA-244 edge-terminal equivalence decision
 
 - [Record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Edge_Terminal_Equivalence_Decision_Review_20261117.md):

@@ -1,3 +1,10 @@
+## CURRENT — CB144 ordered terminal split compiled; TB126 next (2026-11-17 UTC)
+
+**Situation:** CB144 Code + Build is complete at source `7b0668d432ccb187c5a2d856494064f0bcb2fb95`. [Record](.agents/Directional/Architecture_M6_CP3_CB144_P13_Edge_Terminal_Owner_Correction_Code_Build_Record_20261117.md).
+**Background:** RA-244 accepted TB125 and froze the exact N + 1 mandatory-edge split, exact-equality rejection and middle-piece direction correction. The 3-file patch was applied unchanged.
+**Assessment:** Compile-only [run 44002798772](https://github.com/akashskypatel/Directional/actions/runs/44002798772) `SUCCESS`: eight GMP/GMPXX targets, artifact `14293047782`, 28/28 checksums, `runtimeExecution=false`. New gate row 951 was **not** run. No product-output acceptance is claimed. O42/O43/C3 remain open, O44/C1 closed; stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted; `chainRimSchedules=false`.
+**Recommendation:** Next **separate** turn only: `M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-EXEC` (frozen RA-244 §5, 951 cases and three-case census). Then independent outcome Review. Do not start TB126 in CB144.
+
 ## CURRENT — RA-244 edge-terminal equivalence decision; CB144 next (2026-11-17 UTC)
 
 **RA-244 COMPLETE.** [Record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Edge_Terminal_Equivalence_Decision_Review_20261117.md).
