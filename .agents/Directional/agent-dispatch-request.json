@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb129-closeout-v1",
+  "request_id": "m6-cp3-tb129-review-docs-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb129-closeout-v1",
-  "file_id": "1R5M8DdD8iX6xez1H504UREy9m2mOIC_F",
-  "patch_sha256": "20167eb0fe22d1c639a65d1081deac9e08727044ca4cb03f6ad3885dece6509f",
-  "base_sha": "773dddaeb02a9ca3a61aac595f0bf08d003d5fa5",
+  "mailbox_key": "m6-cp3-tb129-review-docs-v1",
+  "file_id": "1OJIVKUtGTXUjCiIX__7QImbDlRXy0nLT",
+  "patch_sha256": "a00dee8ef2aac66437fdb10874d3100d6fdd7f8d022d66086c12ca7a21642193",
+  "base_sha": "c696051657610733f071dea5c11b8ce3333352a5",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record TB129 frozen comparison mismatch and H1 receipts",
+  "commit_message": "docs: adjudicate TB129 receipt mismatch and freeze contact census",
   "retention_days": 7
 }
