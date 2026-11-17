@@ -10,7 +10,7 @@ The single CB148 that RA-248 planned is split in two for narrowness. FC-6 moves 
 **Turn sequence:**
 - [x] `M6-CP3-CB147-P13-FACE-CONTACT-EXACT-HELPERS`: compiled.
 - [x] `M6-CP3-DEFN-P13-FACE-CONTACT-NODE-FREEZE` (RA-249): Review, COMPLETE.
-- [ ] **NEXT:** `M6-CP3-CB148-P13-FACE-CONTACT-NODE-HELPERS`: exact diff `b4b8248715e04996bcdc22f2146497d9957bb0923f5602dabbac3c4b44dced6e`, compile only.
+- [ ] **CURRENT:** `M6-CP3-CB148-P13-FACE-CONTACT-NODE-HELPERS`: exact diff applied at `e05d44b85`; verify existing compile request before closing. [In-progress evidence](.agents/Directional/Architecture_M6_CP3_CB148_P13_Face_Contact_Node_Helpers_Code_Build_Record_20261117.md).
 - [ ] `M6-CP3-CB149-P13-FACE-CONTACT-NODE-SWITCH`: exact diff `ddf87b85683e1f34322418ffd5303740822602d845faf3a80ecff9d8d817963c`, compile only.
 - [ ] `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC`: 953-row gate plus census; MATCH per RA-249 §4.
 - [ ] `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME`: Review; freezes CB150 (FC-6).

@@ -40,10 +40,11 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Mandatory next turn — `M6-CP3-CB148-P13-FACE-CONTACT-NODE-HELPERS` — EXACT NEXT
 
-Until root [STATUS](../../STATUS) records COMPLETE for `M6-CP3-DEFN-P13-FACE-CONTACT-NODE-FREEZE`, resume that Review only.
+Root [STATUS](../../STATUS) records CB148 IN_PROGRESS. Resume this turn only until its compile verification and closeout pass.
 
 - **Type / owner:** Code + Build, compile only, exact diff, per [RA-249](Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Freeze_Review_20261117.md) §3.
 - **Objective:** Land the FC-1 – FC-5 helpers, the face-contact collector, three typed rotation reasons and a unit test. All additions; nothing calls them yet.
+- **Resume point:** Exact patch already applied at `e05d44b850c378b6e77965f0f314b561a8207435`; all five postimages match. Do not reapply. Verify the existing compile request (`43e6302d50e6293d335a34da2ee0fcd22603bf8b`, mailbox key `m6-cp3-cb148-compile-v1`) and close this turn before starting CB149. [In-progress evidence](Architecture_M6_CP3_CB148_P13_Face_Contact_Node_Helpers_Code_Build_Record_20261117.md).
 - **In scope:**
   - Apply exactly the [CB148 diff](Architecture_M6_CP3_CB148_P13_Face_Contact_Node_Helpers_Exact.diff): SHA-256 `b4b8248715e04996bcdc22f2146497d9957bb0923f5602dabbac3c4b44dced6e`, 475 lines.
   - Numstat:
