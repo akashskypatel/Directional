@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb143-docs-apply-20261117-v1",
+  "request_id": "m6-cp3-cb143-docs-apply-20261117-v2",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb143-docs-apply-v1",
-  "file_id": "1ICEu1h_VIcp3w_n0TN3KHnBibeIRbDRd",
-  "patch_sha256": "8aa7e32f4a7bb37905245fa3655bb19b320fdca4262a4cb5bbcdf17ac3701ff0",
+  "mailbox_key": "m6-cp3-cb143-docs-apply-v2",
+  "file_id": "1yV4JXBQxte34exEjgLEYWYjMOpmxBGB0",
+  "patch_sha256": "3fac5e610b11fc36b5be1505322566585e14fde694afd10d38c10b7f2e1ab295",
   "base_sha": "f03e9fd11f37e7611575ab59cbbbecd55eb555d9",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "docs(directional): record CB143 exact terminal inventory compile checkpoint"
