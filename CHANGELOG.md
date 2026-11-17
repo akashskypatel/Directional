@@ -1,3 +1,8 @@
+## 2026-11-17 UTC — CB154 carrier-contact node switch compiled
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB154_P13_Carrier_Contact_Node_Switch_Code_Build_Record_20261117.md): exact RA-252 switch `98e14bfe…`, source `452eb3d789016e744e99d88811add0f7e0949165`, package `14347130681`. All eight GMP/GMPXX targets and frozen input hashes verified; no runtime, test change or promotion.
+- Exactly next separately `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-EXEC`. Stable 66/17/49, debt1, deferred81, CP2 491/491.
+
 ## 2026-11-17 UTC — RA-252 carrier-contact switch definition
 
 - [DEFN](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Carrier_Contact_Switch_Review_20261117.md): FC-7′ (trace-trace contact nodes bind from exact records whatever their proxy edge). Exact unstaged CB154 (`98e14bfe…`, 230 lines, EmbeddedGraphTopology.cpp/.h) and TB131 criteria frozen. Next `M6-CP3-CB154-P13-CARRIER-CONTACT-NODE-SWITCH`.

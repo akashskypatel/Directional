@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-17, `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH`, RA-252):** FC-7′ frozen: trace-trace contact nodes bind from exact records whatever their proxy edge. Unstaged exact CB154 switch, because TB130 archives show every proxy-contact build rejected at A2a′. **NEXT:** `M6-CP3-CB154-P13-CARRIER-CONTACT-NODE-SWITCH` → TB131 → TB131 Review. [DEFN](Architecture_M6_CP3_DEFN_P13_Carrier_Contact_Switch_Review_20261117.md). C5/O42/O43/O45/O46 open; CP2 491/491; stable 66/17/49, debt 1, deferred 81; selector497/CP3 unpromoted.
+**Current currency (2026-11-17, `M6-CP3-CB154-P13-CARRIER-CONTACT-NODE-SWITCH`):** FC-7′ frozen: trace-trace contact nodes bind from exact records whatever their proxy edge. Exact CB154 switch compiled without a feature flag because TB130 archives show every proxy-contact build rejected at A2a′. [Compile record](Architecture_M6_CP3_CB154_P13_Carrier_Contact_Node_Switch_Code_Build_Record_20261117.md). **NEXT:** `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-EXEC` → TB131 Review. [DEFN](Architecture_M6_CP3_DEFN_P13_Carrier_Contact_Switch_Review_20261117.md). C5/O42/O43/O45/O46 open; CP2 491/491; stable 66/17/49, debt 1, deferred 81; selector497/CP3 unpromoted.
 
 ## 1. What the project is
 
@@ -103,7 +103,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-- **Current priority:** `M6-CP3-CB154-P13-CARRIER-CONTACT-NODE-SWITCH`, the exact FC-7′ node-level switch (compile only), then TB131 under [DEFN §6](Architecture_M6_CP3_DEFN_P13_Carrier_Contact_Switch_Review_20261117.md). No guessed cut, validator relaxation, producer edge removal, FC-6 or CP3 promotion. FC-1/FC-4 and direction proof remain open.
+- **Current priority:** `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-EXEC`, immutable CB154 package, under [DEFN §6](Architecture_M6_CP3_DEFN_P13_Carrier_Contact_Switch_Review_20261117.md). No guessed cut, validator relaxation, producer edge removal, FC-6 or CP3 promotion. FC-1/FC-4 and direction proof remain open.
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).
