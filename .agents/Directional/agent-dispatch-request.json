@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb151-compile-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb151-compile-v1",
-  "source_sha": "c45e9abe5085f39c1f5bcb149ec07f95b719177e",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb151-compile"
+  "request_id": "m6-cp3-cb151-closeout-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb151-closeout-v1",
+  "file_id": "1BOaAPEO_HZkJIo1E1HY-NXXf43eN7lj4",
+  "patch_sha256": "e4c2d2d38a3189e53d5a26457a8970ed32df17a1d1933402faba06bd8816cf31",
+  "base_sha": "802ac656a0c2de45b48ab37264ad35c04576107f",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record CB151 verified compile and frozen TB129 handoff",
+  "retention_days": 7
 }
