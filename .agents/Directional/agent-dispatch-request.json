@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb129-review-docs-v2",
+  "request_id": "m6-cp3-cb153-apply-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb129-review-docs-v2",
-  "file_id": "1ea1MzQjsxBOhv-127Y4fMqkAOeRmo5CS",
-  "patch_sha256": "da154eb719653d00ac6f158a6311f123c2fcc4b7045f519e533b7cbd23bacb5a",
-  "base_sha": "c696051657610733f071dea5c11b8ce3333352a5",
+  "mailbox_key": "m6-cp3-cb153-apply-v1",
+  "file_id": "1gs3YOcERR2AX7SfaaHibBcszxlUOQUlP",
+  "patch_sha256": "b2443d037b6958b216bb1e3c9e2e016f99bea33deb6866eefe370f391ca4b360",
+  "base_sha": "d65ca0b8fec7c19748765605699083aae5eca799",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: adjudicate TB129 receipt mismatch and freeze contact census",
+  "commit_message": "Add read-only carrier-proxy contact census",
   "retention_days": 7
 }
