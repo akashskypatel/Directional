@@ -1,4 +1,4 @@
-## CURRENT — TB128 MISMATCH; independent Review in progress (2026-11-17 UTC)
+## CURRENT — TB128 MISMATCH reviewed; bounded receipt next (2026-11-17 UTC)
 
 [TB128 report](.agents/Directional/Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Execution_Report_20261117.md) — immutable CB149 package `14315237769`, 951/953 PASS, all cases ran, postflight valid. Census comparison MATCH; Cylinder PASS 288, Vase RED unchanged, BunnyRandom RED `ArcTraceTerminalCutPositionMismatch`, vertex 3. The O46 ownership prediction did not occur. Separate middle-piece direction witness remains open. No promotion.
 
@@ -7,8 +7,10 @@
 - [x] `M6-CP3-CB148-P13-FACE-CONTACT-NODE-HELPERS`: exact diff compiled; package `14311412337`.
 - [x] `M6-CP3-CB149-P13-FACE-CONTACT-NODE-SWITCH`: exact diff compiled; package `14315237769`.
 - [x] `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC`: full gate MISMATCH, census MATCH. Both executions complete.
-- [ ] **CURRENT (Review only):** `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-REV`: [Review findings](.agents/Directional/Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md). Four archives and source checked; gate MISMATCH upheld, actual terminal event not measured. Finish document consolidation, history/boundary audit and formal closeout. Proposed [bounded receipt](.agents/Directional/Architecture_M6_CP3_CB149B_P13_Terminal_Cut_Authority_Receipt_Plan_20261117.md) is held until this Review is COMPLETE; do not start it. Carry row952 witness correction separately and row858 actual locus witness.
-- [ ] Held: MATCH-only `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` and CB150 → TB129 → CB151 → TB130 (FC-6). No successor beyond the mismatch Review is authorized yet.
+- [x] `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-REV`: [independent Review](.agents/Directional/Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md) upholds MISMATCH. Terminal event and owner unmeasured, row952 conversion premise disproved, row858 locus not established. Formal completion depends on root STATUS.
+- [ ] **NEXT (Code + Build only):** `M6-CP3-CB149B-P13-TERMINAL-CUT-AUTHORITY-RECEIPT`: [bounded receipt plan](.agents/Directional/Architecture_M6_CP3_CB149B_P13_Terminal_Cut_Authority_Receipt_Plan_20261117.md). Add the deterministic terminal-cut receipt without changing product decisions, tests or gates. Compile eight GMP/GMPXX targets; no runtime. Start only after the Review's final COMPLETE beacon.
+- [ ] Carry separately: row952 exact witness correction, row858 actual locus and positive face/vertex witnesses, row164 order proof, FC-1/FC-4 conformance and middle-piece direction proof. No bundled corrections.
+- [ ] Held: MATCH-only `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` and CB150 → TB129 → CB151 → TB130 (FC-6). Not authorized by TB128 mismatch.
 - [ ] Parked: CB145, O45. C5/O42/O43/O45/O46 open; narrow C3/O44/C1 closed. Stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted.
 
 ## Historical checkpoint — CB147 compiled; CB148 freeze Review next (2026-11-17 UTC)
@@ -28,7 +30,7 @@
 
 **Turn sequence:**
 - [x] `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME` (RA-248): Review, COMPLETE.
-- [x] COMPLETE: `M6-CP3-CB147-P13-FACE-CONTACT-EXACT-HELPERS`: exact change committed; compile verified. [Record](.agents/Directional/Architecture_M6_CP3_CB147_P13_Face_Contact_Exact_Helpers_Code_Build_Record_20261117.md).
+- [x] COMPLETE: `M6-CP3-CB147-P13-FACE-CONTACT-EXACT-HELPERS`: exact change committed; compile verified. [Record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb147_p13_face_contact_exact_helpers_code_build_record_20261117md).
 - [ ] **NEXT (Review only):** `M6-CP3-DEFN-P13-FACE-CONTACT-NODE-FREEZE`: freezes CB148 (FC-1–FC-5) and the TB128 manifest (TB127 manifest + rows 952 and 953).
 - [ ] `M6-CP3-CB148-P13-FACE-CONTACT-NODE-SWITCH`: gate unchanged by construction.
 - [ ] `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC`: gate + census.

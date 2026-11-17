@@ -4601,3 +4601,325 @@ Gate mailbox matched event `e30b44b8c3e4c973b7ed36362da5f62c896fd002`, run [4405
 
 Do not repeat the gate. Retrieve census when terminal, then complete TB128 report/tracker and handoff closeout. Gate mismatch requires the frozen mismatch route after remaining evidence/closeout; do not start that Review until TB128 is formally complete.
 ````````
+
+## TB128 Review — superseded execution records (2026-11-17)
+
+Eight complete historical reports from `269d7aede2e1a88cc02afdde3ee04f82fa2ac33b`. The records are not active instructions. The original bytes and hashes are indexed below. The current CB149 record, TB128 execution and independent Review, the bounded successor plan, normative RA decisions and frozen diffs remain separate.
+
+| Original file | Lines | Role | Original SHA-256 |
+|---|---:|---|---|
+| [Architecture_M6_CP3_CB144B_P13_Edge_Terminal_Guard_Extent_Code_Build_Record_20261117.md](#architecture_m6_cp3_cb144b_p13_edge_terminal_guard_extent_code_build_record_20261117md) | 19 | Compiled corrected guard extent; no execution | `57c277fa44a8930c1dbc29f1d4fff1455d97c93916309c2b74e65f47f1908c68` |
+| [Architecture_M6_CP3_CB144_P13_Edge_Terminal_Owner_Correction_Code_Build_Record_20261117.md](#architecture_m6_cp3_cb144_p13_edge_terminal_owner_correction_code_build_record_20261117md) | 22 | Compiled exact ordered mandatory-edge correction | `71625ee222adbf3efcd92f06fcab0e886a41f63cda1e3905fb4df3ddd64ebd0e` |
+| [Architecture_M6_CP3_CB146_P13_Rotation_Terminal_Locus_Print_Code_Build_Record_20261117.md](#architecture_m6_cp3_cb146_p13_rotation_terminal_locus_print_code_build_record_20261117md) | 19 | Compiled diagnostic-only rotation locus | `301870c851a6c1ac2e8c0e3c9219517273f65dc9e1ed5d68edc981952162a4ee` |
+| [Architecture_M6_CP3_CB147_P13_Face_Contact_Exact_Helpers_Code_Build_Record_20261117.md](#architecture_m6_cp3_cb147_p13_face_contact_exact_helpers_code_build_record_20261117md) | 19 | Compiled unwired exact helpers | `0fcc650a41b0a8a0d59b789acefb003aa87ef7be8dc64b1669f83f63e6441c77` |
+| [Architecture_M6_CP3_CB148_P13_Face_Contact_Node_Helpers_Code_Build_Record_20261117.md](#architecture_m6_cp3_cb148_p13_face_contact_node_helpers_code_build_record_20261117md) | 25 | Compiled unwired face-contact helpers | `0c0f847823c13557bbbc20d10d776b6a1bfe903efa98b43429af5753415dcc4c` |
+| [Architecture_M6_CP3_TB125_P13_Edge_Terminal_Exact_Inventory_Execution_Report_20261117.md](#architecture_m6_cp3_tb125_p13_edge_terminal_exact_inventory_execution_report_20261117md) | 42 | Scoped MATCH 950/950; historical accepted evidence | `c2e7eeb29c8fa481d388da3283c9aabdf5686277b21462cd085da21e4f3fb08f` |
+| [Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Full_Gate_Execution_Report_20261117.md](#architecture_m6_cp3_tb126_p13_edge_terminal_correction_full_gate_execution_report_20261117md) | 48 | MISMATCH 950/951; invalid guard witness | `7c54ef79c227908e7125849fc9115f9b5788532663033f2b9013c30f938114c9` |
+| [Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Full_Gate_Execution_Report_20261117.md](#architecture_m6_cp3_tb127_p13_guard_and_rotation_locus_full_gate_execution_report_20261117md) | 57 | Gate 951/951; strict census MISMATCH (assertion relocation) | `8b332c2a94144fcb5976f888697938382e111d2d9913dd0d27d3c7d9b8141bb0` |
+
+### Architecture_M6_CP3_CB144B_P13_Edge_Terminal_Guard_Extent_Code_Build_Record_20261117.md
+
+Original: `269d7aede2e1a88cc02afdde3ee04f82fa2ac33b:.agents/Directional/Architecture_M6_CP3_CB144B_P13_Edge_Terminal_Guard_Extent_Code_Build_Record_20261117.md`; SHA-256 `57c277fa44a8930c1dbc29f1d4fff1455d97c93916309c2b74e65f47f1908c68`; 19 lines. Historical record; original commands and next-turn labels are not current authority.
+
+~~~markdown
+# CB144B — mandatory-edge terminal guard extent correction (Code + Build; 2026-11-17 UTC)
+
+## Situation
+- Turn: `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION`. [RA-245 and RA-246](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md) authorize the test-only correction.
+- Source `5d4077303a1aa46f0755421b607509694177c17f`; compile-only [run 44019533988](https://github.com/akashskypatel/Directional/actions/runs/44019533988) `SUCCESS`.
+
+## Background
+- TB126 result 950/951; row 951 threw before the two-cut guard because trace ID 38 used extent 16. The frozen 19-line [diff](Architecture_M6_CP3_CB144B_P13_Edge_Terminal_Guard_Extent_Exact.diff) sets node extent 16 and trace extent 39; all assertions and identities remain unchanged.
+- Snapshot `fcfec94620ae89b96c28ad29f9c36381fece50c6`, [run 44018721386](https://github.com/akashskypatel/Directional/actions/runs/44018721386), artifact `14300465544`, outer SHA-256 `f7bac1f40844f3c1bc162a3c70de804956a8059466c1a54fc55d73a36e4dd5f0`, 5,510/5,510 checksums. Compared against CB144 semantic source `7b0668d432ccb187c5a2d856494064f0bcb2fb95`; only docs/control changed before correction.
+
+## Assessment
+- Frozen diff SHA-256 `20aeaf0d6e999c12d634f7c505418628add662b4484fdfa6dddaa63c3b1ed4ae`. Only `tests/FieldAlignedCurveNetworkTests.cpp` (+4/-3); preimage SHA-256 `417ef255e893af1cf46a736c99b5af1d593de97bf58559a47aa30088baaf1f89`, postimage `9160790d7e9830aee73bc6ce9094e277a49d5cff84036c74ac18b396db38b67e`. Exact remote blob `64400ccf6ebd5fe845fd7353d8b20da856d8b90d`; apply and whitespace checks passed.
+- [Apply run 44019261912](https://github.com/akashskypatel/Directional/actions/runs/44019261912), result/log artifacts `14300526103`/`14299564904`, both ZIP hashes match mailbox. Preservation patch SHA-256 `0f0a7631511cf28e7f9bdb344d6323e010c9f94349fbbbacb27b2545235379a8`. Drive staging retired by owner-authorized connector.
+- Gate manifest SHA-256 `44d5a734a819a6d353bf3cb83254af86939e017dbd3a6dc3313d71f814ffdd1f`; census `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`; frozen selector/manifest bytes unchanged.
+- Compile package `14299943924`, outer SHA-256 `186f213904be8e1da3d25a649c425c2ea782c006967a6f9025814d7b9801fe3e`; log artifact `14300631663`, SHA-256 `0832122708f0a35e795d1c5142ddfcf66df442465b4b9f3a16b2a9df6fafe691`. All 28 checksums verified, source archive test postimage matches, source status clean; all eight approved targets present and build exit 0. GMP (GNU Multiple Precision Arithmetic Library) exact backend with GMPXX C++ interface linkage verified. `runtimeExecution=false`; row 951 compiled, not executed.
+
+## Recommendation
+- Exactly next separate turn: `M6-CP3-CB146-P13-ROTATION-TERMINAL-LOCUS-PRINT`, RA-246 §4. Apply only its frozen test-only diff and compile the eight approved targets; no runtime. TB127 subsequently uses that combined package, not this package alone.
+- Preserve stable 66/17/49, debt 1, deferred 81, CP2 491/491 and CP3/selector497 unpromoted; `chainRimSchedules=false`. C3/O42/O43 open; O44/C1 closed; C5 unresolved. No successor work or promotion in this turn. PR #8 remains draft and unmerged.
+~~~
+
+### Architecture_M6_CP3_CB144_P13_Edge_Terminal_Owner_Correction_Code_Build_Record_20261117.md
+
+Original: `269d7aede2e1a88cc02afdde3ee04f82fa2ac33b:.agents/Directional/Architecture_M6_CP3_CB144_P13_Edge_Terminal_Owner_Correction_Code_Build_Record_20261117.md`; SHA-256 `71625ee222adbf3efcd92f06fcab0e886a41f63cda1e3905fb4df3ddd64ebd0e`; 22 lines. Historical record; original commands and next-turn labels are not current authority.
+
+~~~markdown
+# CB144 — ordered mandatory-edge terminal correction (Code + Build; 2026-11-17 UTC)
+
+## Situation
+- Turn: `M6-CP3-CB144-P13-EDGE-TERMINAL-OWNER-CORRECTION`.
+- Frozen RA-244 correction committed as `7b0668d432ccb187c5a2d856494064f0bcb2fb95`.
+- Compile-only [run 44002798772](https://github.com/akashskypatel/Directional/actions/runs/44002798772): `SUCCESS`.
+
+## Background
+- [RA-244](Architecture_M6_CP3_DEFN_P13_Edge_Terminal_Equivalence_Decision_Review_20261117.md) accepted TB125 and assigned strictly ordered multi-cut edges to A2a′ `build_arcs`.
+- Frozen 371-line [patch](Architecture_M6_CP3_CB144_P13_Edge_Terminal_Ordered_Split_Exact.diff), SHA-256 `081fcb5b96aff08824a661f985c40e3ab3304f3a6b218a1d14f1740df20de122`.
+
+## Assessment
+- Changes are limited to `src/geometry/EmbeddedGraphTopology.cpp`, `.h`, and `tests/FieldAlignedCurveNetworkTests.cpp`; exact changed-path comparison passed.
+- Exact rational ordering makes N terminal cuts into N + 1 positive mandatory edge pieces. Equal parameters remain rejected. The rotation helper follows the low-to-high orientation for middle pieces.
+- New row 951 `MandatoryEdgeTerminalSplit.SplitsAtOrderedDistinctCutsAndRejectsAmbiguousOnes` is compiled only; its assertions have not been executed.
+- Eight approved targets: `all eight compiled and linked`; GMP and GMPXX: `GMP exact backend with libgmpxx.so and libgmp.so on the link command`; `runtimeExecution=false`.
+- Immutable artifact `14293047782`, outer SHA-256 `638eaf00618283551bbec607c1f9484447d96d0bb5000f5ad5df7870d42af929`; internal hashes `28/28 passed`.
+- Transport patch SHA-256 `22b9304038392dd10470b2fbb67bb86fa5a02af54c7232466406b7e4cfbfa740`; [apply run 44002567694](https://github.com/akashskypatel/Directional/actions/runs/44002567694) succeeded; Drive staging file retired.
+
+## Recommendation
+- Exactly next separate turn: `M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-EXEC`. Use RA-244 §5's 951-row manifest (membership 1,032) and three-case census. Do not rebuild or run it in CB144.
+- Preserve stable 66/17/49, debt 1, deferred 81 and CP2 491/491; CP3/selector497 unpromoted; `chainRimSchedules=false`. O42/O43/C3 remain open; O44/C1 are closed. PR #8 remains draft and unmerged.
+~~~
+
+### Architecture_M6_CP3_CB146_P13_Rotation_Terminal_Locus_Print_Code_Build_Record_20261117.md
+
+Original: `269d7aede2e1a88cc02afdde3ee04f82fa2ac33b:.agents/Directional/Architecture_M6_CP3_CB146_P13_Rotation_Terminal_Locus_Print_Code_Build_Record_20261117.md`; SHA-256 `301870c851a6c1ac2e8c0e3c9219517273f65dc9e1ed5d68edc981952162a4ee`; 19 lines. Historical record; original commands and next-turn labels are not current authority.
+
+~~~markdown
+# CB146 — rotation terminal locus print (Code + Build; 2026-11-17 UTC)
+
+## Situation
+- Turn: `M6-CP3-CB146-P13-ROTATION-TERMINAL-LOCUS-PRINT`. [RA-246 §4](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md#4-cb146-frozen) authorizes the exact test-only change.
+- Source `48e6f97d278b2226036f658ce9060a38b8a374b5`; compile-only [run 44022151247](https://github.com/akashskypatel/Directional/actions/runs/44022151247) SUCCESS.
+
+## Background
+- CB144B source `5d4077303a1aa46f0755421b607509694177c17f`, package `14299943924`; TB126 950/951, guard extent corrected in CB144B. BunnyRandom's face-only rotation terminal (candidate C5) needs the typed reason already present in the locus. No producer repair authorized.
+- Snapshot `ec854197b4d1de6f2bf73248dd9194af6fb4f7d8`, [run 44021269683](https://github.com/akashskypatel/Directional/actions/runs/44021269683), artifact `14300508886`; outer SHA-256 `fee4ded64fa4052c6071495784496d3628f9e6cadd35a82dc39b56b30e509df4`, 5,511/5,511 checksums. Comparison against CB144B source shows only documentation and control changes before CB146.
+
+## Assessment
+- Exact [72-line diff](Architecture_M6_CP3_CB146_P13_Rotation_Terminal_Locus_Print_Exact.diff), SHA-256 `4f1fae63d0d3f2626f02c4f27d26a923e0a525173112556fefe50d9e5be56967`, applies only to `tests/SurfaceCellDesignAcceptanceTests.cpp` (+61/-0). Git preimage `302ce62dff54836c6f14cdb92a33aa27e869fdc3`, postimage `c71080341d4f7b09ab3f27925d8d9b9c871c7bc0` verified remotely. Postimage SHA-256 `898d04c1dac0ee609497220b978653acd316c72f39356b45193729757c636477`. Existing terminal text stays as a prefix; append existing typed fields, including reason and ray/fan details. Apply and whitespace checks pass. No assertion, fixture, product, selector, manifest or benchmark edits.
+- [Apply run 44021793173](https://github.com/akashskypatel/Directional/actions/runs/44021793173) SUCCESS; result/log `14300838889`/`14301735195`, both outer hashes verified; preservation patch SHA-256 `a28b4d534ceef83c57346366f46e503b2fc1789c8eddb214d2cc2ca8c0795f08`. Drive staging deleted with owner-authorized connector after verified apply.
+- Gate manifest SHA-256 `44d5a734a819a6d353bf3cb83254af86939e017dbd3a6dc3313d71f814ffdd1f`; census `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`; both unchanged.
+- Compile request event `5a05ab18737401ee8c04bfac1abdc8a2b38b8230`; package `14301616031`, outer SHA-256 `457a9d061cbfe290baa1cad0b3df29b085f81f639dd8ea7e829e38aea6458984`; log `14301033164`, SHA-256 `a81a78362b86118d9e4bc4d47d94ceb6e5859ad25e335ea514b0111feb637138`. 28/28 package checksums verified, source clean, exact test postimage and manifest hashes verified, eight approved targets and GMP (GNU Multiple Precision Arithmetic Library) plus GMPXX C++ interface verified. Build exit 0; `runtimeExecution=false`. No gate, census, or benchmark executed.
+
+## Recommendation
+- Exactly next, separately: `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-EXEC` per [RA-246 §5](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md#5-tb127-frozen). Use the CB146 package; 951-row gate, 1,032 membership, three-case census. Require all frozen MATCH conditions; record BunnyRandom suffix verbatim without deciding outcome in CB146. No repair or promotion.
+- Stable 66/17/49, debt1, deferred81; CP2 accepted 491/491, selector497/CP3 unpromoted; `chainRimSchedules=false`; C3/O42/O43 open, O44/C1 closed, C5 exact site unresolved. D11=A, D12=A, D10 deferred, D6 pending. PR #8 remains draft and unmerged.
+~~~
+
+### Architecture_M6_CP3_CB147_P13_Face_Contact_Exact_Helpers_Code_Build_Record_20261117.md
+
+Original: `269d7aede2e1a88cc02afdde3ee04f82fa2ac33b:.agents/Directional/Architecture_M6_CP3_CB147_P13_Face_Contact_Exact_Helpers_Code_Build_Record_20261117.md`; SHA-256 `0fcc650a41b0a8a0d59b789acefb003aa87ef7be8dc64b1669f83f63e6441c77`; 19 lines. Historical record; original commands and next-turn labels are not current authority.
+
+~~~markdown
+# CB147 — exact face-contact helpers (Code + Build; 2026-11-17 UTC)
+
+## Situation
+- Turn: `M6-CP3-CB147-P13-FACE-CONTACT-EXACT-HELPERS`. [RA-248 §4](Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Definition_Review_20261117.md#4-cb147-frozen-pure-exact-face-chart-helpers-not-wired-in) authorizes the frozen change. Exact implementation source `43294bde49e1f24aa09d10ca7e5ff632a7c28d6b`.
+- Compile-only [run 44039082778](https://github.com/akashskypatel/Directional/actions/runs/44039082778) SUCCESS; package `14309111230` (ZIP SHA-256 `63fdbd1a3039d63a7d934407276ef4831b3914be27fd162da8b95067d83dafd1`), log `14309240475` (ZIP SHA-256 `5bf6f2ad9643169d8fbd8470f8d1355d8ddefe8d3eb6689a1a3eeb2558a171f4`); 28/28 package checksums verified. All eight targets, exact source, three changed-file postimages, unchanged gate/census manifests, clean source and GMP/GMPXX linkage verified. Build exit 0; `runtimeExecution=false`.
+
+## Background
+- Snapshot `008481473332610746d994874b0b1b913e1599ec`, [run 44038020619](https://github.com/akashskypatel/Directional/actions/runs/44038020619), artifact `14307961777`; ZIP SHA-256 `55b12a602027be146cbf4c01620fb8b3d3dd039ea7f57985982776a884daf109`; 5,516/5,516 file checksums verified. Comparison against CB146 source `48e6f97d278b2226036f658ce9060a38b8a374b5` shows no changes under `src`, `include` or `tests` before CB147.
+
+## Assessment
+- Applied the exact [257-line diff](Architecture_M6_CP3_CB147_P13_Face_Contact_Exact_Helpers_Exact.diff), SHA-256 `5c3def45e8bdd713ca321b7cfca0f9f3a5935bdf54900afd5548efc55e5df7d1`, adding 92/35/100 lines to `src/geometry/EmbeddedGraphTopology.cpp`, `src/geometry/EmbeddedGraphTopology.h`, `tests/FieldAlignedCurveNetworkTests.cpp`. Local apply and whitespace checks pass; remote postimage Git blobs `70af0a1ec3817cbc3a1a29df47b313513722bd3d`, `27e8114e3e11ffd99891a5473ebf3e8867239d75`, `98bec9b3e73b014423f633b0160f0726130c6099` match. The three helpers remain unwired. No other product, test, fixture, manifest or selector edit.
+- Test `FaceChartExactGeometry.OrdersRaysAndContactsExactlyAroundAFaceInteriorPoint` is future TB128 row 952, not executed. Gate manifest SHA-256 `44d5a734a819a6d353bf3cb83254af86939e017dbd3a6dc3313d71f814ffdd1f`, census `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`; unchanged.
+- [Apply run 44038513541](https://github.com/akashskypatel/Directional/actions/runs/44038513541) SUCCESS; result/log artifacts `14308840738`/`14307783709` (outer hashes verified), preservation patch SHA-256 `b17fb3b28d10c77528d747fafb9774e87973c31928a652a45cf9df549f428220`; Drive staging deleted after verified application.
+- Initial compile request [run 44038887899](https://github.com/akashskypatel/Directional/actions/runs/44038887899) rejected unsupported `retention_days` before compilation. Corrected the request only; no source change. Retry event `f5bd842765675cfaf7cb008aeb78e1487468bd72`.
+- [Cleanup run 44038987033](https://github.com/akashskypatel/Directional/actions/runs/44038987033) SUCCESS; result `14308397592`, SHA-256 `443d08977f11103a46ae4b9e7c2affb290ab063583237017b217a002ef171c3a`, commit `1107eb8303271bee5b48596cdc5d1a9b494adc92` removes the snapshot marker and manifest only. No durable control files removed.
+
+## Recommendation
+- Exactly next, separately: `M6-CP3-DEFN-P13-FACE-CONTACT-NODE-FREEZE` Review per RA-248 §5. Freeze CB148 (FC-1–FC-5) and TB128 manifest rows 952 and 953; no work on that Review has begun. Test row 952 is compiled, not run.
+- Stable 66/17/49, debt1, deferred81; CP2 accepted 491/491, selector497/CP3 unpromoted; `chainRimSchedules=false`; C5/O42/O43/O45/O46 open, narrow C3/O44/C1 closed. D11=A, D12=A, D10 deferred, D6 pending. PR #8 remains draft and unmerged.
+~~~
+
+### Architecture_M6_CP3_CB148_P13_Face_Contact_Node_Helpers_Code_Build_Record_20261117.md
+
+Original: `269d7aede2e1a88cc02afdde3ee04f82fa2ac33b:.agents/Directional/Architecture_M6_CP3_CB148_P13_Face_Contact_Node_Helpers_Code_Build_Record_20261117.md`; SHA-256 `0c0f847823c13557bbbc20d10d776b6a1bfe903efa98b43429af5753415dcc4c`; 25 lines. Historical record; original commands and next-turn labels are not current authority.
+
+~~~markdown
+# CB148 — face-contact node helpers (Code + Build; 2026-11-17 UTC)
+
+## Situation
+- Turn: `M6-CP3-CB148-P13-FACE-CONTACT-NODE-HELPERS`. [RA-249 §3](Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Freeze_Review_20261117.md) authorizes the frozen additive change. Exact implementation source `e05d44b850c378b6e77965f0f314b561a8207435`.
+- Compile-only [run 44044928423](https://github.com/akashskypatel/Directional/actions/runs/44044928423), job `133908372327`: SUCCESS; package `14311412337` (ZIP SHA-256 `e495ecc80c3828ca624483afb4f5062d28cb12da9828e9ec99a073b99284bb37`), log `14311092914` (ZIP SHA-256 `ab5b2b86c773b584d27d29de94b9e26159a61653c5e2b9d740bc50bb567c17bd`); 28/28 package checksums verified. All eight targets, exact source, five changed-file postimages, unchanged frozen gate/census manifests, clean source and GMP/GMPXX linkage verified. Build and preflight exit 0; `runtimeExecution=false`. Source archive SHA-256 `47b44be840f581bacbb956eb0e57c0d3893a94bb1239b98814bc61213cf766ac`; dispatcher event `43e6302d50e6293d335a34da2ee0fcd22603bf8b`. CMake `DIRECTIONAL_ENABLE_GMP=ON`, Release.
+- Compiled targets: `directional_core`, `directional_pipeline`, `directional_surface_cell_authority_kernel_tests`, `directional_surface_cell_producer_tests`, `directional_surface_cell_completion_tests`, `directional_surface_cell_validation_tests`, `directional_compiled_api_tests`, `directional_benchmarks`.
+
+## Background
+- Snapshot `ce3bcb21dbd77041a4edaf3d57c6c502c5905d3e`, [run 44043983914](https://github.com/akashskypatel/Directional/actions/runs/44043983914), artifact `14310657004`; ZIP SHA-256 `a6c123e6d8058d125c718f1932cfee77f5a1fac6710ab7fc7f635769d48cd16b`; 5,521/5,521 file checksums verified. Comparison against CB147 source `43294bde49e1f24aa09d10ca7e5ff632a7c28d6b` confirms no prior changes under `src`, `include` or `tests`.
+
+## Assessment
+- Applied the exact [475-line diff](Architecture_M6_CP3_CB148_P13_Face_Contact_Node_Helpers_Exact.diff), SHA-256 `b4b8248715e04996bcdc22f2146497d9957bb0923f5602dabbac3c4b44dced6e`, +416/-0. Local apply, whitespace and byte comparison checks pass. Remote postimages (path, added lines, Git blob) match:
+  - `include/directional/geometry/GlobalTopologyPlan.h`, 6, `f33816d1af5abfb2ded60e15b153e1a569061a2f`;
+  - `src/geometry/EmbeddedGraphTopology.cpp`, 216, `dfedf9beee23134b63357d05bdff2f2c399e792a`;
+  - `src/geometry/EmbeddedGraphTopology.h`, 73, `f071bc8593d6b674a6d373000b2dcdb8d313c90b`;
+  - `src/geometry/GlobalTopologyPlan.cpp`, 6, `63d3bbc7cbd2305abef8f5f60fe48a7766b66ad7`;
+  - `tests/FieldAlignedCurveNetworkTests.cpp`, 115, `72705a82bd02d2589303fd189c82a650dda2c21f`.
+- The exact trace cuts, face-contact collector, and three rotation reasons are not wired in. No other product, test, fixture, manifest or selector edit. Test `FaceContactNode.SplitsAStruckSegmentAtAnExactInteriorContactPoint` (future TB128 row 953) is compiled, not run. Gate manifest SHA-256 `941287fa96f3432eb1d67a9ae1e5dc7bc0ca2f3a1775cd5f9fb35482a4fa7962`, census `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`; unchanged.
+- [Apply run 44044553058](https://github.com/akashskypatel/Directional/actions/runs/44044553058) SUCCESS; result/log artifacts `14310592783`/`14310338197` (ZIP hashes `1ffbea9f5d28f4b3633368a45c7ddaebdc15ad118f45663c01178e05b6a729d8`/`3dc4e611401a49ff2b67da16f13c32de9812f0533db273dc50ef088f352ebe84`); preservation patch SHA-256 `afdb4a3e7c7a455664049af0a44221c368efd7fe4069f36dc9b8665b8566c9fb`. Drive staging deleted after verified application.
+- [Cleanup run 44044997569](https://github.com/akashskypatel/Directional/actions/runs/44044997569) SUCCESS; result `14310883076`, SHA-256 `bfb70faac3f9f840f803f41cac6c2bea56f78af38155c78a25b1465780d42bcb`, commit `e991f2d5aec1198a30b1d13e44a8fd77418e9f16` removes the snapshot marker and manifest only. No durable control files removed.
+- Previous [in-progress record application run 44046042670](https://github.com/akashskypatel/Directional/actions/runs/44046042670) succeeded at `34ad4c53613db139a762f97c202509ef02c60fd8`; result/log artifacts `14311941175`/`14311901218` (ZIP SHA-256 `44c1c801226735de29024fbfa58e13e5ab75d785021d6b1d3109f1aff68ceb77`/`375ac5ae5f880a3358ac7831694bd904cf69e9ff2933c3430cb7b59bd90e116a`); consumed Drive patch deleted after verification.
+
+## Recommendation
+- Exactly next, separately: `M6-CP3-CB149-P13-FACE-CONTACT-NODE-SWITCH` per RA-249 §3. Apply only the frozen switch diff, compile only. No successor work has begun.
+- Stable 66/17/49, debt1, deferred81; CP2 accepted 491/491, selector497/CP3 unpromoted; `chainRimSchedules=false`; C5/O42/O43/O45/O46 open, narrow C3/O44/C1 closed. D11=A, D12=A, D10 deferred, D6 pending. PR #8 remains draft and unmerged.
+~~~
+
+### Architecture_M6_CP3_TB125_P13_Edge_Terminal_Exact_Inventory_Execution_Report_20261117.md
+
+Original: `269d7aede2e1a88cc02afdde3ee04f82fa2ac33b:.agents/Directional/Architecture_M6_CP3_TB125_P13_Edge_Terminal_Exact_Inventory_Execution_Report_20261117.md`; SHA-256 `c2e7eeb29c8fa481d388da3283c9aabdf5686277b21462cd085da21e4f3fb08f`; 42 lines. Historical record; original commands and next-turn labels are not current authority.
+
+~~~markdown
+# TB125 — exact mandatory-edge terminal inventory execution (2026-11-17 UTC)
+
+## Situation
+
+**Scoped MATCH under RA-243 §4.** The immutable CB143 package passed all **950/950** full-gate cases, including newly executed row 950. The separately executed three-case census reproduced the expected Cylinder PASS and BunnyRandom/Vase RED outcomes. The BunnyRandom inventory contains exactly two distinct offending source edges; their parameter values are pairwise different on each edge. TB125 is Test + Benchmark only, not a correction, selector promotion, or independent Review.
+
+## Background — exact immutable authority
+
+- **Review and acceptance rules:** [RA-243](Architecture_M6_CP3_DEFN_P13_Edge_Terminal_Inventory_Review_20261117.md) §4. Frozen CB143 source `6857c66b788841f8e400151b6068b2f23be25167`, immutable package artifact `14287742226`, outer ZIP SHA-256 `c35f4dd6c61441794999a55b0068fb41b3ab298d1b473c8ab60048d9b20bdab9`; packaged 28/28 hashes verified, root manifest SHA-256 `ed223aa24e2fd1890c65d8b99970d596c8dd4e6a36cf55d76e54828e9353f95a`, source archive SHA-256 `1c1aa54a35c14370cc9ac76381362e16752cb1e9ebae5e458886ac236894988f`, GMP/GMPXX exact backend, compile-only package (`runtimeExecution=false`). No package repair.
+- **Executor source snapshot:** event SHA `544b79edde45290b96c9b6132f794cddceb8da27`, [run 43993303661](https://github.com/akashskypatel/Directional/actions/runs/43993303661), artifact `14287299024`, ZIP SHA-256 `2a0b6b15c8c16c1d5c4eaaaaec2459fe3139769a3ef910050625936a8f33274f`, 5,571/5,571 source checksums valid; source archive SHA-256 `4657952c1ace3d58eed07f43036811f75134455b25dfc5b9954ba7a2564412b0`.
+- **Harness:** `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh`, SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`. Gate manifest SHA-256 `9a112bd18c4f37248ae8c9fc2c942f9fd19cd67ca4a5236c13f5ed76f95a0290` (950 cases; 1,031 membership and 81 deferred); census manifest SHA-256 `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793` (3 cases).
+- **Gate:** request event `79c7c661c3a239ca181bc56a95b355e8d4e1551b`, mailbox `m6-cp3-tb125-gate-v1`, [run 43993702283](https://github.com/akashskypatel/Directional/actions/runs/43993702283), runtime job `133740624103` success, result artifact `14289730737`, ZIP SHA-256 `c1754245b4ecbde49ba9bbaf9103cbb7975fdb34d40cae57b4e25b7ac56061c8`, **1,908/1,908** checksums; log artifact `14289951218` SHA-256 `f6573545d321947ecf0d50ae6a04f3aff434a202631d8b0fb8b069716f11be0b`.
+- **Census:** request event `c0f4bbc175292ab30c1fd45053f889ff04bb1789`, mailbox `m6-cp3-tb125-census-v1`, [run 43993748585](https://github.com/akashskypatel/Directional/actions/runs/43993748585), runtime job `133744740334` success, result artifact `14289927334`, ZIP SHA-256 `2f5a4b511d1fac710338acba368b3a892f05e5621eb5e0c89dcbb5143e3ff8d6`, **9/9** checksums; log artifact `14290016230` SHA-256 `2365eda2ccd0007d6747ef01aef874ee25f219a710b8c0ecde7e86148db4a584`.
+- **Baselines:** TB124 gate artifact `14283755675` ZIP SHA-256 `016b9528c330d60a3202d8594d0d6f37b6c0eb76415cab2f0c93ecc965d30d42` (1,906/1,906 checksums); TB122 census artifact `14217871018` ZIP SHA-256 `91c7273f140fc779e02949a47b9eed6e2da49119910021ff041ab04f4220ebb5` (9/9). All four result ZIPs were independently verified from their SHA256SUMS files.
+
+## Assessment — required checks
+
+| Requirement | Evidence |
+|---|---|
+| Full gate | 950 planned/executed/passed, 0 RED, 0 missing/skipped/duplicate/abnormal, 1,031 membership, `postflight=true`, `exit=0` |
+| Inherited ledger | Rows 1–949 identical to TB124 in **every substantive field**; only log SHA changes where raw diagnostic output varies |
+| New inventory test | Row 950 `MandatoryEdgeTerminalInventory.OrdersCutsExactlyAndClassesEqualParameters` PASS, one execution, zero skips |
+| Gate inventory | Zero `mandatoryEdgeTerminalInventory` lines in 950 raw logs |
+| Raw gate comparison | After normalizing only GoogleTest elapsed times, six rows differ: 164, 173, 175, 176, 195, 477. Differences are only ordering/line joining of `M3_CP4AB_FRAGMENT_DIAG`; exact per-row diagnostic record multisets match. Removing those prints leaves **949/949** inherited logs equal. No semantic output difference is hidden. |
+| Census | Cylinder PASS; BunnyRandom RED; Vase RED; zero abnormal, missing, skipped and duplicate; `postflight=true`, `exit=0` |
+| Census receipts and terminals | All three substantive ledgers equal TB122 except raw-log SHA. After removing the new inventory lines, and normalizing GoogleTest elapsed times and the process-dependent `GetParam()` object bytes, **3/3** complete raw logs equal TB122; required `FieldTransportAtlas.partition edgePorts`, `FieldAlignedCurveNetwork.vertexOutflowFollow`, `switch-run`, `platform-digest`, and typed terminal receipts are unchanged. |
+| Runtime boundary | Gate and census `compile=false`, `relink=false`, `configure=false`, `benchmark=false`; neither executed an unapproved build or modified the immutable package |
+
+**BunnyRandom observed inventory** (`SurfaceCutGraph.mandatoryEdgeTerminalInventory`):
+
+| Source edge | Exact sort order (trace, node, printed t) | Cuts | Distinct parameters | Equal parameters share node |
+|---|---|---:|---:|---|
+| `(241,251)` | `(107,149,0.29728465697386852)`, `(38,178,0.6954898086630259)` | 2 | 2 | true |
+| `(251,278)` | `(92,184,0.24658061360047423)`, `(41,162,0.26252359514325541)` | 2 | 2 | true |
+
+The four printed inventory lines contain **two distinct edges**, each observed twice with identical details. Unique inventoried edges = **2**; unique edges with `distinctParameters < cuts` = **0**. These are **observations only** under RA-243 (P4/P5), not additional MATCH gates. The `equalParametersShareNode=true` value is vacuous for each edge because it has no equal-parameter pair. The decimal `t` values are diagnostic display values; equality and order are derived by the program's exact rational comparisons, not by these decimal strings. Do **not** infer that duplicates are generally impossible or that CB144 is already proven valid.
+
+**Census rejection:** BunnyRandom remains `MandatoryEdgeTerminalOrderUnresolved` at source edge `(241,251)` and fails closed; Vase retains its previous non-mandatory-edge failure; Cylinder remains green. The inventory precedes the existing rejection and does not change output connectivity. No accepted-green loss, new first-failure locus, unexpected control result, or stable regression is established. C3 remains an open non-stable P13-e candidate with newly bounded cause data; O42/O43 remain open. O44/C1 are closed. Stable events/categories/recurrences remain **66/17/49**, debt **1**, deferred **81**, CP2 accepted **491/491**. CP3 and selector497 remain unpromoted; `chainRimSchedules=false`; D11=A, D12=A, D10 deferred, D6 pending.
+
+## Recommendation — strict turn boundary
+
+TB125 is **MATCH** under RA-243 §4. The next **separate Review-only** turn is `M6-CP3-DEFN-P13-EDGE-TERMINAL-EQUIVALENCE-DECISION`. It must use the exact inventory to decide the source owner and safe topology correction before authorizing CB144. The present turn does **not** select, code, compile, test or run the CB144 successor; it does not revise fixtures, selector membership, existing assertions, baseline regressions or PR metadata.
+~~~
+
+### Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Full_Gate_Execution_Report_20261117.md
+
+Original: `269d7aede2e1a88cc02afdde3ee04f82fa2ac33b:.agents/Directional/Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Full_Gate_Execution_Report_20261117.md`; SHA-256 `7c54ef79c227908e7125849fc9115f9b5788532663033f2b9013c30f938114c9`; 48 lines. Historical record; original commands and next-turn labels are not current authority.
+
+~~~markdown
+# TB126 — exact mandatory-edge terminal correction execution (2026-11-17 UTC)
+
+## Situation
+
+**MISMATCH under RA-244 §5.** The immutable CB144 package passed 950 of 951 gate cases. New required guard row 951 failed with a C++ exception. All 950 inherited test verdicts and substantive ledger fields are unchanged. The separate three-case census advances BunnyRandom beyond both inventoried multi-cut edge failure classes to a new rotation-system rejection. Cylinder and Vase are unchanged. No production acceptance or independent Review is claimed.
+
+## Background — immutable authority
+
+- [RA-244](Architecture_M6_CP3_DEFN_P13_Edge_Terminal_Equivalence_Decision_Review_20261117.md) §5 freezes the MATCH requirements and the mismatch route. [CB144 record](Architecture_M6_CP3_CB144_P13_Edge_Terminal_Owner_Correction_Code_Build_Record_20261117.md): source `7b0668d432ccb187c5a2d856494064f0bcb2fb95`, package artifact `14293047782`, ZIP SHA-256 `638eaf00618283551bbec607c1f9484447d96d0bb5000f5ad5df7870d42af929`, 28/28 packaged hashes verified, GMP/GMPXX exact backend, `runtimeExecution=false`. Root manifest SHA-256 `810ebf4186f4099a26f98664fa83c048862944e54e57f5b486f32689df846858`; source archive `43fb1f865bc8fab6db708f9d2ee27529d2615112cd7ae66917fb8b1e740724c0`.
+- Executor snapshot `a4141a2d6ac2183e977cf43d9eb6e9e8b0b3c92f`, [run 44005047937](https://github.com/akashskypatel/Directional/actions/runs/44005047937), artifact `14293942606`, ZIP SHA-256 `f88424eef94dc3914371d41dc3378f3ed6b925be6a584b42098d637b34e77296`, 5,576/5,576 checksums; source archive `9a81d1170f796c7884029f500bc29c0f254714ff4505a46887081f467497d99f`. Snapshot marker removed at `ab8b087478d0b0c510ad2416612b6dbb4c9bbc82`.
+- Harness `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh`, SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`; gate `44d5a734a819a6d353bf3cb83254af86939e017dbd3a6dc3313d71f814ffdd1f`; census `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`; deferred ledger v5 `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`.
+- Gate request event `d18120e83be9ba573e777a2cab1761656d7772b3`, [run 44005423680](https://github.com/akashskypatel/Directional/actions/runs/44005423680), runtime job `133779695458` failure, mailbox `m6-cp3-tb126-gate-v1` attempt 1 on `workflow-mailbox`; result artifact `14294372593`, ZIP SHA-256 `c13a0f5e29ab961a6c6d7a31c2883cfaafbdc577d5727f291eb127e9cc8ea55e`, 1,910/1,910 checksums; log artifact `14294312534`, SHA-256 `2f3565373c252cf3208bfdac1bf001e0cb94a69656ce54244cf953548a3cdaaf`.
+- Census request event `82389b7425565a9513a6e9adadb82f95854dd059`, [run 44005461405](https://github.com/akashskypatel/Directional/actions/runs/44005461405), runtime job `133783349211` success, mailbox `m6-cp3-tb126-census-v1` attempt 1 on `workflow-mailbox`; result artifact `14294313207`, ZIP SHA-256 `79acdba05b737e6987a39d3908ce7bf3f9375f4c051b5c4a35566670b63eb95f`, 9/9 checksums; log artifact `14294044969`, SHA-256 `038acbea6f2791490db48bbafa4f086123b40b7ce1fa95a618fb143b93552265`.
+- Comparison: TB125 gate artifact `14289730737`, ZIP `c1754245b4ecbde49ba9bbaf9103cbb7975fdb34d40cae57b4e25b7ac56061c8`, 1,908/1,908 hashes; census `14289927334`, ZIP `2f5a4b511d1fac710338acba368b3a892f05e5621eb5e0c89dcbb5143e3ff8d6`, 9/9 hashes. Both result artifacts retained. No duplicate dispatch.
+
+## Assessment — execution and comparison
+
+| Required check | Result |
+|---|---|
+| Full gate | 951 planned/executed, 950 PASS, 1 RED, 0 skipped/missing/duplicate/abnormal, 1,032 membership (81 deferred), `postflight=true`, exit 90 (`required controls failed`) |
+| Inherited gate | All 950 substantive ledger rows equal TB125. After GoogleTest elapsed-time normalization, only rows 156, 173, 190, 191, 477 and 705 differ. The exact `M3_CP4AB_FRAGMENT_DIAG` record multisets agree per row; removing those records and their empty lines leaves all 950 logs equal. No other difference found. |
+| New required guard | Row 951 RED, one execution, exit 1, no skip. `MandatoryEdgeTerminalSplit.SplitsAtOrderedDistinctCutsAndRejectsAmbiguousOnes`; `unknown file: Failure`, `C++ exception with description "std::get: wrong index for variant" thrown in the test body`. Raw log SHA-256 `a17f4092754d04dc2e20c79569911afc474460206e0928d2c9011382d8b18b01`. |
+| Gate inventory | Zero `mandatoryEdgeTerminalInventory` records across all 951 logs. |
+| Census | 3 executed: 1 PASS, 2 RED, zero skipped/missing/duplicate/abnormal; `postflight=true`, exit 0. All substantive ledger fields equal TB125 (the harness ledger does not encode the specific production origin). |
+| Census logs | Cylinder and Vase complete logs equal TB125 after normalizing GoogleTest timings and process-dependent `GetParam()` object bytes. BunnyRandom differs in exactly three lines (all terminal reports); all other lines and all four mandatory-edge inventory records agree. |
+| Immutable boundary | Both executions record `compile=false`, `relink=false`, `configure=false`, `benchmark=false`; no package repair, source/fixture/test/selector change or local Directional binary execution. |
+
+### Census — observed direct producer state
+
+| Case | Verdict | Actual terminal or output |
+|---|---|---|
+| Cylinder | PASS | 288 output quads; every receipt unchanged. |
+| BunnyRandom | RED | `NotProductionReady:surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent`, locus `face=(5,104,359)`, zero output quads. |
+| Vase | RED | `NotProductionReady:completion`, `AggregateCompletionValidationFailure`, 189,462 trace segments, 26,817 arrangement cells, 67,750 completed quads internally, zero accepted output; unchanged. |
+
+BunnyRandom previously returned `MandatoryEdgeTerminalOrderUnresolved`, locus `edge=(241,251)`. The current terminal is neither that origin nor `InvalidNetworkBinding` or `RotationEdgeRayEndpointDirectionUnavailable` on either inventoried edge. The two edges each retain two distinct exact cuts (printed in two attempts): `(241,251)` traces 107/38, nodes 149/178; `(251,278)` traces 92/41, nodes 184/162. Exact residual, sector, edge-port, field-follow and pre-cut receipts are unchanged because the entire normalized log apart from the three terminal lines is identical. The census satisfies the scoped RA-244 production progression requirements, but this cannot override the RED guard. The new rotation-system cause is not yet classified; it may be a latent failure exposed by the split or an introduced defect. Do not infer either without independent evidence.
+
+### Regression assessment — candidate root cause and limits
+
+The exception is consistent with an invalid test identity, not yet with a demonstrated production split failure. In `tests/FieldAlignedCurveNetworkTests.cpp:18588–18598`, both typed ID factories use `idCount=16U`. At line 18650, the test constructs `cut(38,13,...)`; its `trace(38)` calls `TraceId::from_index(38,16).value()`. `SemanticId::from_index` (`include/directional/authority/AuthorityIds.h:182–195`) returns `IndexOutOfRange` for any index >= extent, and `DomainResult::value()` (lines 84–85) uses `std::get<T>` on that error variant. The resulting exception matches the observed log. The later `trace(38)` expected values also exceed the declared extent. This source-derived explanation is a candidate, not a runtime stack trace; the guard does not establish that the N=2 chain or its subsequent exact/equal/endpoint/shared-node controls pass. An independent Review must establish the first failing site, preserve all assertions, and decide any test-only correction. Do not fix the test or relax a validator in TB126.
+
+No previously accepted green row was lost. Row 951 was newly introduced, and BunnyRandom was already RED; therefore neither observation establishes a new stable regression ID or historical-count change. C3 remains open pending independent Review; the new rotation-system terminal is a separate unclassified non-stable P13-e candidate. O42/O43 open; O44/C1 closed. Stable 66 events / 17 categories / 49 recurrences, debt 1, deferred 81; CP2 accepted 491/491; CP3/selector497 unpromoted; `chainRimSchedules=false`; D11=A, D12=A, D10 deferred, D6 pending.
+
+## Recommendation — strict turn boundary
+
+The RA-244 mismatch route is **`M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-REV`** (independent, runtime-free Review). Check the immutable primary evidence and the source-derived guard failure; distinguish test validity from producer correctness, preserve the BunnyRandom new terminal, and decide the next bounded turn. The MATCH-only outcome DEFN and parked CB145 do not start here. Do not repeat either test request or convert this mismatch into an infrastructure failure.
+
+Process note: the initial attempt inspected several documents before applying the mandatory snapshot-read mode. It corrected that ordering miss with the verified snapshot. This continuation reused the same snapshot and did not repeat runtime. Tool-call accounting for the original attempt is incomplete; no fabricated total.
+~~~
+
+### Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Full_Gate_Execution_Report_20261117.md
+
+Original: `269d7aede2e1a88cc02afdde3ee04f82fa2ac33b:.agents/Directional/Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Full_Gate_Execution_Report_20261117.md`; SHA-256 `8b332c2a94144fcb5976f888697938382e111d2d9913dd0d27d3c7d9b8141bb0`; 57 lines. Historical record; original commands and next-turn labels are not current authority.
+
+~~~markdown
+# TB127 — guard and rotation-locus full gate (2026-11-17 UTC)
+
+**Canonical turn:** `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-EXEC`. **MISMATCH** under [RA-246 §5](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md#5-tb127-frozen): full gate MATCH, census has four changed assertion-line records. Both executions succeeded at the orchestration level. No new source, test, fixture, manifest, selector or build mutation, configure, compile, relink, benchmark or successor work. PR #8 remains open/draft.
+
+## Immutable authority and preflight
+
+- CB146 semantic source `48e6f97d278b2226036f658ce9060a38b8a374b5`; package `14301616031`, [compile run 44022151247](https://github.com/akashskypatel/Directional/actions/runs/44022151247). ZIP SHA-256 `457a9d061cbfe290baa1cad0b3df29b085f81f639dd8ea7e829e38aea6458984`; all 28 internal hashes pass; GMP, runtime-free compile boundary, archived executable modes preserved.
+- Executor snapshot `21309c49bb7fba212fdfa1ec27e923404916e131`, [snapshot run 44024046070](https://github.com/akashskypatel/Directional/actions/runs/44024046070), artifact `14302187146`; ZIP SHA-256 `3466a2af85c2ceebff31c69e2a5165692131150b3b4326734fd1a2c5179b077a`; 5,512/5,512 file hashes pass. Compare to semantic source shows only documentation/control changes. Both CB144B and CB146 exact changes and postimages verified.
+- Frozen gate `44d5a734a819a6d353bf3cb83254af86939e017dbd3a6dc3313d71f814ffdd1f` (951 rows), membership ledger `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce` (81 deferred), census `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793` (3 rows). Existing harness SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`. Both manifest self-checks pass.
+- TB126 comparison authority: gate artifact `14294372593`, ZIP SHA-256 `c13a0f5e29ab961a6c6d7a31c2883cfaafbdc577d5727f291eb127e9cc8ea55e`, 1,910/1,910 hashes; census artifact `14294313207`, ZIP SHA-256 `79acdba05b737e6987a39d3908ce7bf3f9375f4c051b5c4a35566670b63eb95f`, 9/9 hashes. Raw ledger hash, selected-case binding, execution boundaries independently verified. TB126 gate 950/951, row 951 exception; census Cylinder PASS 288, BunnyRandom and Vase RED.
+
+## Execution identity
+
+| Work | Request event SHA | Actions run / runtime job | Mailbox key (attempt 1, success) |
+|---|---|---|---|
+| Full gate | `f5e23873d5ebccb83687388dd78330aa2c162802` | [44024527625](https://github.com/akashskypatel/Directional/actions/runs/44024527625) / `133841749525` | `m6-cp3-tb127-gate-v1` |
+| Census | `91ad92da0476dfda290ee8fe877488556f7dcb81` | [44024687415](https://github.com/akashskypatel/Directional/actions/runs/44024687415) / `133845742752` | `m6-cp3-tb127-census-v1` |
+
+Both immutable mailbox records bind the exact events and CB146 semantic source. Gate request SHA-256 `013b457bfe75c3c69d62894ff42a1c4d71b351e792d2c37675ccce3706aec0b4`; census `15bd6f0bbfad0eaf08a520b70762b6ad0418fe4f9d3e043c509d8efcb14414c9`. Schema validation, parse, checkout and harness checks passed. Both runs finished organically; no duplicate execution.
+
+## Full gate — MATCH
+
+Result artifact `14302887671`, ZIP SHA-256 `017ad5589ae533d4f428312bc59d92409906544f6cd1add1a3db0ccc80383050`; 1,910/1,910 internal checksums, all 951 raw log bindings, exact manifest identities. Gate log artifact `14302982488`. 951/951 PASS, zero RED/skipped/missing/duplicate/abnormal, membership 1,032 (951 gated/81 deferred), postflight true, exit 0. Row951 PASS without exception; no gate inventory lines. All 950 inherited substantive ledger rows match TB126; raw differences only permitted newline framing after elapsed-time normalization in rows 156/168/173/175/190/191/477/705.
+
+## Census — MISMATCH (exact comparison)
+
+Result artifact `14302668940`, ZIP SHA-256 `4edf0fe64c45fac424eb0c8ef9ed4e9eaae675373e32f06724df9ea4724f3cc5`; 9/9 internal checksums and all three raw log bindings pass. Census log artifact `14303760529`. All three cases executed once: one PASS, two registered RED, no skips/abnormal/missing/duplicate; postflight true, harness exit 0.
+
+| Case | Result | Recorded terminal |
+|---|---|---|
+| Cylinder | PASS, 288 quads | No terminal failure. All normalized lines match. |
+| BunnyRandom | RED, zero output faces | `RotationSystemInconsistent` / `CellularityNotEstablished`, face (5,104,359); exact prior terminal prefix, four identical mandatory-edge inventory lines. |
+| Vase | RED, zero output faces | `AggregateCompletionValidationFailure`, 189462 segments, 26817 arrangement cells, 67750 internal quads; exact prior terminal (no suffix). |
+
+BunnyRandom suffix (verbatim, including leading space):
+
+```text
+ rotationReason=TraceEventPositionInvalid trace=0 eventIndex=18 eventPositionReason=NoCarrierMatch eventPositionPass=SourceEdgeUnavailable
+```
+
+RA-246 F3's registered face-locus prediction includes `TraceEventPositionInvalid`. This is measured, not adjudicated in this TB. Preserve the existing inventory: edges (241,251) and (251,278) each have two distinct parameters, across traces 107/38 and 92/41, nodes 149/178 and 184/162 respectively.
+
+The only normalized non-terminal log differences are the GoogleTest assertion source line numbers. In BunnyRandom and Vase, `tests/SurfaceCellDesignAcceptanceTests.cpp:432: Failure` becomes `:493: Failure`, and `:434: Failure` becomes `:495: Failure`. Two lines per RED case, four total. The two corresponding census ledger `first_failure` fields also change from 432 to 493. All other substantive census ledger fields match (excluding raw log hashes). The frozen CB146 diff adds 61 lines in `failure_locus` before these assertions; unchanged assertion text appears at 493 (independent oracle) and 495 (produced result). RA-246 §5 permits only elapsed times, GetParam byte dumps and the appended terminal text. It does not permit assertion-line relocation. Do not amend that criterion retrospectively. This is a comparison-contract mismatch, not evidence of a newly introduced production regression.
+
+## Classification and route
+
+Keep C3 and C5 open for independent adjudication. O42/O43 open; O44/C1 closed. Stable totals unchanged: 66 events / 17 categories / 49 recurrences, debt 1, deferred 81. Accepted CP2 491/491; CP3/selector497 and D0 not promoted; `chainRimSchedules=false`; D11=A, D12=A, D10 deferred, D6 pending. The earlier guard exception no longer occurs. Vase remains unchanged. No new stable regression ID or accepted-green loss is justified.
+
+Exactly next per the frozen mismatch route: `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-REV`. Review only: adjudicate the four line-number differences, the guard and the printed locus against RA-246. Do not execute a new gate, change source, or start the MATCH-only outcome turn or CB145 here.
+
+## Continuation reconciliation
+
+The earlier interrupted response preserved an unapplied handoff/TODO patch (base `21309c49bb7fba212fdfa1ec27e923404916e131`, full SHA-256 `7b126ff10643f006b4946a1853415c8ccb3bbb4aa17c1152ff4ce2cd12ce299e`, diff body `33fe0a43877b9a7f3357809027c0eceb24141bf87dfe9600e7de09aeda903c9e`, Drive File ID `1amMuHSmPce0KjirLQ-X63qq2dmmKwYcD`). Both hashes match. It is superseded by the result-dependent documentation delta, not applied as stale in-progress state. No replacement runtime executed. Prior attempt's tool ledger is incomplete; do not invent total. The first attempt had late timer/policy loading. This does not alter the immutable evidence.
+
+## Durable closeout verification
+
+The six-file documentation patch (base `21309c49bb7fba212fdfa1ec27e923404916e131`, SHA-256 `61a2d980b2cca344bf0dd1383b18c949bb45a66e5e9101ac207eecc022bd14cb`) passed local apply and whitespace checks. [Apply run 44027628991](https://github.com/akashskypatel/Directional/actions/runs/44027628991) succeeded; result artifact `14304270928` verified. Applied commit `9ccd4a9aa523967a044bc87a1421322af2c928c6`; all six resulting file blob hashes independently match. Drift audit: zero errors, three protected-document currency warnings; durable sections retained. Final evidence bundle in File Library `/Directional/Evidence/Directional_TB127_verified_evidence.zip`, SHA-256 `e0b5c4641e812680ce5fedfa4f4d3703aa39ce9c1b0a87adc3601b3668e2f6ca`. The final Drive patch and earlier superseded patch were both deleted after successful application. [Cleanup run 44027872780](https://github.com/akashskypatel/Directional/actions/runs/44027872780) succeeded; result artifact `14303428163` verified; cleanup commit `8a5d781b3dec01e5220a6984ed534800d25126d6`. TB127 marker and cleanup manifest absent; ten durable workflows and request slot intact; 37 pre-existing legacy controls left outside this turn's scope. No implementation or acceptance promotion.
+~~~

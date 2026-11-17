@@ -1,6 +1,6 @@
-# Proposed bounded CB149B — terminal cut authority receipt (2026-11-17)
+# Bounded CB149B — terminal cut authority receipt (2026-11-17)
 
-`M6-CP3-CB149B-P13-TERMINAL-CUT-AUTHORITY-RECEIPT` — Code + Build, compile only. This is not active until the independent TB128 Review completes and authorizes it in root STATUS and handoff. Authority: [TB128 Review](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md), CB149 `85f9c703c5de86fb2b401cf83c03499a1ce73a27`. The mismatch route cannot start the old MATCH-only outcome. No implementation in Review.
+`M6-CP3-CB149B-P13-TERMINAL-CUT-AUTHORITY-RECEIPT` — Code + Build, compile only. Start only when root STATUS records COMPLETE for the TB128 independent Review and names this turn. Authority: [TB128 Review](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md), CB149 `85f9c703c5de86fb2b401cf83c03499a1ce73a27`. The mismatch route cannot start the old MATCH-only outcome. No implementation in Review.
 
 ## Scope and expected evidence
 

@@ -2044,3 +2044,18 @@ By user instruction, the 231 remaining standalone `Architecture_M6*` Review, def
 | Original file | Lines | Verdict/role | Retained home |
 |---|---:|---|---|
 | `Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Continuation_20261117.md` | 43 | Superseded in-progress continuation; execution complete MISMATCH | [M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb128_p13_face_contact_full_gate_continuation_20261117md) |
+
+## TB128 Review folded execution record index (2026-11-17)
+
+[Volume D3](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md) holds all eight complete original reports, with source commit, line counts and SHA-256. The historic 72 previously removed records match the TB126 index by filename and line count; the later TB128 continuation is already indexed above. Historical records do not authorize old turns.
+
+| Original file | Lines | Verdict or role |
+|---|---:|---|
+| [Architecture_M6_CP3_CB144B_P13_Edge_Terminal_Guard_Extent_Code_Build_Record_20261117.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb144b_p13_edge_terminal_guard_extent_code_build_record_20261117md) | 19 | Compiled corrected guard extent; no execution |
+| [Architecture_M6_CP3_CB144_P13_Edge_Terminal_Owner_Correction_Code_Build_Record_20261117.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb144_p13_edge_terminal_owner_correction_code_build_record_20261117md) | 22 | Compiled exact ordered mandatory-edge correction |
+| [Architecture_M6_CP3_CB146_P13_Rotation_Terminal_Locus_Print_Code_Build_Record_20261117.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb146_p13_rotation_terminal_locus_print_code_build_record_20261117md) | 19 | Compiled diagnostic-only rotation locus |
+| [Architecture_M6_CP3_CB147_P13_Face_Contact_Exact_Helpers_Code_Build_Record_20261117.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb147_p13_face_contact_exact_helpers_code_build_record_20261117md) | 19 | Compiled unwired exact helpers |
+| [Architecture_M6_CP3_CB148_P13_Face_Contact_Node_Helpers_Code_Build_Record_20261117.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb148_p13_face_contact_node_helpers_code_build_record_20261117md) | 25 | Compiled unwired face-contact helpers |
+| [Architecture_M6_CP3_TB125_P13_Edge_Terminal_Exact_Inventory_Execution_Report_20261117.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb125_p13_edge_terminal_exact_inventory_execution_report_20261117md) | 42 | Scoped MATCH 950/950; historical accepted evidence |
+| [Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Full_Gate_Execution_Report_20261117.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb126_p13_edge_terminal_correction_full_gate_execution_report_20261117md) | 48 | MISMATCH 950/951; invalid guard witness |
+| [Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Full_Gate_Execution_Report_20261117.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb127_p13_guard_and_rotation_locus_full_gate_execution_report_20261117md) | 57 | Gate 951/951; strict census MISMATCH (assertion relocation) |
