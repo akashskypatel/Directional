@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb150-witness-apply-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb150-witness-apply-v1",
-  "file_id": "1XUGrEb9a88Vq8TeEAEhYT4e_-Y1erpyw",
-  "patch_sha256": "ba500f3f9abf8ed81a5866dd70e8ed62626caea6110baf4ae5256c58874f0ea7",
-  "base_sha": "ffcfc64fc3086f662f8088142cde078d8fa970be",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: correct exact face-chart conversion witness",
-  "retention_days": 7
+  "request_id": "m6-cp3-cb150-compile-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb150-compile-v1",
+  "source_sha": "b3d7b66e10ed8cfdd94eb0a1f67222efcd2525d9",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb150-compile"
 }
