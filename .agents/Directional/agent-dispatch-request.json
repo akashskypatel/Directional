@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb149-switch-apply-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb149-switch-apply-v1",
-  "file_id": "19kmHpUfHrXKKTksrI6apC1mTEqMYzjjk",
-  "patch_sha256": "3a1dd6f6f68d7a6b5d45364fa25a6e5467ce1e60438ec862d941d59628becf3e",
-  "base_sha": "53102343509b6fe94ce5fb5d99aead0f12f01866",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(geometry): switch face contact nodes to exact construction",
-  "retention_days": 7
+  "request_id": "m6-cp3-cb149-switch-compile-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb149-switch-compile-v1",
+  "source_sha": "85f9c703c5de86fb2b401cf83c03499a1ce73a27",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb149-switch"
 }
