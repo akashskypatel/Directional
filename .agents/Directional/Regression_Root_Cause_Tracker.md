@@ -1,3 +1,11 @@
+## 2026-11-17 — TB132 cut-binding conflict receipt full gate MATCH (non-stable)
+
+[Execution report](Architecture_M6_CP3_TB132_P13_Cut_Binding_Conflict_Receipt_Full_Gate_Execution_Report_20261117.md): immutable CB155 package `14357189158`, gate `14359654903` 952/953 PASS; census `14362615302` one PASS/two RED. Both postflight valid, membership 1034, 956/956 substantive ledger and normalized raw log records match TB131 (RA-253 S7 N1–N5). Five negative controls and four positive controls pass. Row 858 permitted RED at :155 unchanged; 648 sphere assertions unreached.
+
+- **Sphere (existing C5/cut binding):** 66 receipts in exactly 19 rows confirm duplicate selected cut edge (0,2), exact parameter 0.12749386848657163, trace 4 and 6, each crossing segment 7 of 8, no shared events. Both printed terminal contacts strictly interior in their respective faces. The duplicate cut crossing is not a terminal contact. Review owns cause and repair definition.
+- **BunnyRandom (existing FC-1/FC-4 node-identity candidate):** two contact nodes 220/222, terminating traces 43/15, claim trace 82 segment 0 at 0.2305473011248014, face (21,72,273), same printed barycentric point. Both have `FirstContact@none,TraceIntersection@none`. Both printed contact points strictly interior. Falsifier for a repair: incorrect producer-node or event identity, changed accepted row or protected source authority. No coordinate merge or guard relaxation.
+- **O45:** zero barycentric coordinates not observed on these receipts. Review decides S4/O45; no universal premise proof or closure here. Vase existing completion RED unchanged; Cylinder PASS 288. No new regressions in comparison; prior failures remain non-stable candidates because no accepted result was lost. Stable 66/17/49, debt 1, deferred 81, CP2 491/491; CP3/selector497/D0 unpromoted. Next `M6-CP3-TB132-P13-CUT-BINDING-CONFLICT-RECEIPT-FULL-GATE-REV`.
+
 ## 2026-11-17 — RA-253 re-review of the TB131 Review (non-stable)
 
 [RA-253](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md#ra-253--adversarial-re-review-of-this-review-2026-11-17-utc). No stable event or debit.
