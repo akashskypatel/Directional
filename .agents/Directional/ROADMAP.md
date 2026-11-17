@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB128 gate 951/953, combined MISMATCH; census comparison MATCH; BunnyRandom arc terminal-cut RED and Vase completion RED; independent Review pending, CP3 not accepted) · **Next:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB128 gate 951/953, combined MISMATCH; census comparison MATCH; BunnyRandom arc terminal-cut RED and Vase completion RED; independent Review findings recorded, closeout pending, CP3 not accepted) · **Next:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

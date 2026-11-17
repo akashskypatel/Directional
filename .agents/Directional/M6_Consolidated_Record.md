@@ -2037,3 +2037,10 @@ By user instruction, the 231 remaining standalone `Architecture_M6*` Review, def
 | [Architecture_M6_CP3_TB98_P13_A3_Rim_Census_Receipt_Full_Gate_Execution_Report_20261110.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb98_p13_a3_rim_census_receipt_full_gate_execution_report_20261110md) | 36 | Superseded execution record |
 | [Architecture_M6_CP3_TB99_P13_A3_Uniform_Declines_Chained_Plan_Full_Gate_Execution_Report_20261110.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb99_p13_a3_uniform_declines_chained_plan_full_gate_execution_report_20261110md) | 29 | Superseded execution record |
 | [Architecture_M6_CP3_TB126_Review_Closeout_Continuation_20261117.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb126_review_closeout_continuation_20261117md) | 9 | Retired continuation note |
+
+
+## TB128 Review folded continuation (2026-11-17)
+
+| Original file | Lines | Verdict/role | Retained home |
+|---|---:|---|---|
+| `Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Continuation_20261117.md` | 43 | Superseded in-progress continuation; execution complete MISMATCH | [M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb128_p13_face_contact_full_gate_continuation_20261117md) |

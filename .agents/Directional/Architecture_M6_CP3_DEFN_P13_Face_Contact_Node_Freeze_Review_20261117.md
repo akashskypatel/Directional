@@ -21,7 +21,7 @@ Implementing FC-1 – FC-5 in one patch gave 741 diff lines in five files. Follo
 **Why CB149 changes only networks that fail today.**
 - Every face-contact event set includes a FirstContact whose incidences are Interior. The current `trace_event_position` rejects an Interior incidence that has no edge, so every network with a face contact fails at `build_arcs` today.
 - For a network without face-contact nodes, `collect_face_contact_nodes` returns an empty map. Every position is then a boundary, `trace_cut_segment_range` returns the old `[first, second)`, and `exact_trace_path_between` delegates to the unchanged `exact_trace_path`. So arcs, loci and rotations come out byte-identical.
-- The only possible gate change: a gate row that expects a particular failure from a network with a face contact. A Haiku census (RA-247) found no test that names `TraceEventPositionInvalid`, `NoCarrierMatch`, `EventLocusMissingSourceEdge` or `RotationNodeLocusUnsupported`. TB128's ledger-equality check covers whatever remains.
+- The only possible gate change: a gate row that expects a particular failure from a network with a face contact. A Haiku census (RA-247) found no test that names `TraceEventPositionInvalid`, `NoCarrierMatch`, `EventLocusMissingSourceEdge` or `RotationNodeLocusUnsupported`. TB128's ledger-equality check covers whatever remains. **Correction from [TB128 Review](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md):** literal reason-name scan was insufficient; row858 asserts a specific locus class, not the named reason. Gate equality and all exact assertions remain required.
 
 ## 3. Frozen patches
 

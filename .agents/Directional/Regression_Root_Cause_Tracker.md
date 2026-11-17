@@ -1,3 +1,13 @@
+## 2026-11-17 — TB128 independent Review findings (closeout in progress)
+
+[M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-REV](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md): Independent evidence confirms 951/953 MISMATCH; census MATCH. Row858 is an inherited required guard loss outside the accepted 491; row952 has a false GMP conversion premise, six assertions unexecuted; row953 proves only the helper. BunnyRandom has a remaining Terminal incidence at a cut before trace extent; source vertex 3 is the origin, actual event and owner unknown. O46 prediction not met. No promotion. Stable 66/17/49, debt1, deferred81, CP2 accepted 491/491.
+
+- **C5:** A2a′ end guard is pre-existing; exact event record not identified. Owner: A2a′ position binding/producer pending receipt; falsifier: actual terminal record and max cut key disagree or selection is not a remaining Terminal role. No guessed cut or failure locus. Proposed measurement [Architecture_M6_CP3_CB149B_P13_Terminal_Cut_Authority_Receipt_Plan_20261117.md](Architecture_M6_CP3_CB149B_P13_Terminal_Cut_Authority_Receipt_Plan_20261117.md) held until Review COMPLETE.
+- **Row858:** producer-locus migration candidate; actual subreason/locus unmeasured in row858. Preserve real cut-graph face and vertex display witnesses; no weakened optional check.
+- **Row952:** test-authority conversion defect, exact witness corrected in Review §2 model only. Subsequent separate CB must retain all assertions and prove same doubles under GMP.
+- **Row164:** same record multiset, changed order; strict mismatch remains. No normalization without proven emission/consumer authority.
+- **FC-1/FC-4:** verify canonical producer strict interior and exclusive locus proof; collector lacks explicit respective rejection, no reachable violation established. O42/O43/O45/O46 and direction witness open; C3/O44/C1 narrow closed.
+
 ## 2026-11-17 — TB128 face-contact full gate MISMATCH (non-stable candidates)
 
 [Execution report](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Execution_Report_20261117.md): CB149 source `85f9c703c5de86fb2b401cf83c03499a1ce73a27`, immutable package `14315237769`. Gate [44058536482](https://github.com/akashskypatel/Directional/actions/runs/44058536482), artifact `14318100443`: 951/953 PASS, required REDs 858 and 952, zero skipped/missing/duplicate/abnormal, 1,914/1,914 hashes, valid postflight. Census [44059123332](https://github.com/akashskypatel/Directional/actions/runs/44059123332), artifact `14317054197`, 9/9 hashes: Cylinder PASS 288, BunnyRandom/Vase RED, frozen census comparison MATCH. Combined RA-249 verdict MISMATCH.

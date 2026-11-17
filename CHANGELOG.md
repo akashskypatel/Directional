@@ -1,3 +1,7 @@
+## 2026-11-17 UTC — TB128 independent Review findings (closeout in progress)
+
+- [Review](.agents/Directional/Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md): Independent evidence confirms 951/953 MISMATCH; census MATCH. Row858 is an inherited required guard loss outside the accepted 491; row952 has a false GMP conversion premise, six assertions unexecuted; row953 proves only the helper. BunnyRandom has a remaining Terminal incidence at a cut before trace extent; source vertex 3 is the origin, actual event and owner unknown. O46 prediction not met. No promotion. No code/test/build/runtime change; proposed bounded receipt held pending Review closure. Stable 66/17/49, debt1, deferred81.
+
 ## 2026-11-17 UTC — TB128 face-contact full gate MISMATCH
 
 - [Execution report](.agents/Directional/Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Execution_Report_20261117.md): CB149 source `85f9c703c5de86fb2b401cf83c03499a1ce73a27`, package `14315237769`; [gate 44058536482](https://github.com/akashskypatel/Directional/actions/runs/44058536482), artifact `14318100443`, 951/953 PASS, 1,914/1,914 checksums, membership 1,034, two required REDs (inherited row858 missing face-locus assertion; new row952 same-double conversion witness). Row953 PASS. Inherited raw differences beyond frozen normalization at 164/644/669/698/858.

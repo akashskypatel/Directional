@@ -112,7 +112,7 @@ Nothing calls these yet, so product behaviour is unchanged.
 - `git apply --check` passes at HEAD `276eba262`.
 - Precheck `git diff --quiet 48e6f97d278b2226036f658ce9060a38b8a374b5 HEAD -- src include tests` passes; that is CB146, the last commit to touch those paths.
 - `-fsyntax-only -Wall -Wextra -DUSE_GMP_ENABLED` returns 0, with warnings identical to HEAD (22 for the source, 42 for the test). `GlobalTopologyPlan.cpp` and `SurfaceCutGraph.cpp` have 0 errors.
-- A faithful Python port of the three functions passes all 24 test assertions.
+- ~~A faithful Python port of the three functions passes all 24 test assertions.~~ TB128 row952 disproves the same-double premise under GMP toward-zero conversion. The Python model did not represent this conversion. [Independent Review](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md) §2 derives a valid witness; all exact assertions remain required.
 - Converting the perturbed coordinates to doubles gives the unperturbed values; this is the same pattern as row 951's double-equality assertion, which passed on CI.
 - **The test has not been run.**
 
@@ -135,7 +135,7 @@ Nothing calls these yet, so product behaviour is unchanged.
 | parked | `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY`; O45 | — | — |
 
 **Why this ordering:**
-- **CB148 changes only networks that fail today, so the gate cannot change.** Its path applies only to no-edge contact events. Today every such network already fails at `build_arcs`, because their FirstContact incidences are Interior. Haiku's census found that no test names these failure reasons.
+- **CB148 changes only networks that fail today. ~~So the gate cannot change.~~** TB128 row858 demonstrates an inherited failure-locus guard can change even when a network already fails; retain the guard obligation. Its path applies only to no-edge contact events. Today every such network already fails at `build_arcs`, because their FirstContact incidences are Interior. Haiku's census found that no test names these failure reasons.
 - **FC-6 must be measured before it is switched on.** It touches A2b and SurfaceCutGraph on every fixture.
 
 ## 6. Carried

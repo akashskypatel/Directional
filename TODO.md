@@ -1,4 +1,4 @@
-## CURRENT — TB128 MISMATCH; independent Review next (2026-11-17 UTC)
+## CURRENT — TB128 MISMATCH; independent Review in progress (2026-11-17 UTC)
 
 [TB128 report](.agents/Directional/Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Execution_Report_20261117.md) — immutable CB149 package `14315237769`, 951/953 PASS, all cases ran, postflight valid. Census comparison MATCH; Cylinder PASS 288, Vase RED unchanged, BunnyRandom RED `ArcTraceTerminalCutPositionMismatch`, vertex 3. The O46 ownership prediction did not occur. Separate middle-piece direction witness remains open. No promotion.
 
@@ -7,7 +7,7 @@
 - [x] `M6-CP3-CB148-P13-FACE-CONTACT-NODE-HELPERS`: exact diff compiled; package `14311412337`.
 - [x] `M6-CP3-CB149-P13-FACE-CONTACT-NODE-SWITCH`: exact diff compiled; package `14315237769`.
 - [x] `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC`: full gate MISMATCH, census MATCH. Both executions complete.
-- [ ] **NEXT (Review only):** `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-REV`: independently verify four archives; adjudicate row858 inherited face-locus RED and rows644/669/698 reason changes, new row952 conversion witness RED (later assertions not reached), row953 helper PASS and row164 record ordering. Determine terminal-cut/event owner from source and primary evidence; preserve fail-closed rules, exact witnesses and no guessed loci. If evidence is insufficient, freeze a separate measuring turn. Do not compile, execute, implement or promote.
+- [ ] **CURRENT (Review only):** `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-REV`: [Review findings](.agents/Directional/Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md). Four archives and source checked; gate MISMATCH upheld, actual terminal event not measured. Finish document consolidation, history/boundary audit and formal closeout. Proposed [bounded receipt](.agents/Directional/Architecture_M6_CP3_CB149B_P13_Terminal_Cut_Authority_Receipt_Plan_20261117.md) is held until this Review is COMPLETE; do not start it. Carry row952 witness correction separately and row858 actual locus witness.
 - [ ] Held: MATCH-only `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` and CB150 → TB129 → CB151 → TB130 (FC-6). No successor beyond the mismatch Review is authorized yet.
 - [ ] Parked: CB145, O45. C5/O42/O43/O45/O46 open; narrow C3/O44/C1 closed. Stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted.
 

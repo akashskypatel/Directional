@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-17, TB128 / `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC`):** 951/953 PASS, combined MISMATCH; frozen census comparison MATCH. **NEXT:** `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-REV`. [Report](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Execution_Report_20261117.md). C5/O42/O43/O45/O46 open; CP2 491/491; stable 66/17/49, debt 1, deferred 81; selector497/CP3 unpromoted.
+**Current currency (2026-11-17, TB128 independent Review in progress / `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-REV`):** 951/953 PASS, combined MISMATCH; frozen census comparison MATCH. **CURRENT:** `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-REV`. [Review findings](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md). [Report](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Execution_Report_20261117.md). C5/O42/O43/O45/O46 open; CP2 491/491; stable 66/17/49, debt 1, deferred 81; selector497/CP3 unpromoted.
 
 ## 1. What the project is
 
@@ -45,7 +45,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB128 immutable CB149 gate 951/953 (membership 1,034); combined MISMATCH. Cylinder PASS / BunnyRandom RED at arc terminal-cut guard / Vase RED at completion. Independent Review pending; no CP3/selector497 promotion. [Report](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Execution_Report_20261117.md). |
+| **M6-CP3 — active** | TB128 immutable CB149 gate 951/953 (membership 1,034); combined MISMATCH. Cylinder PASS / BunnyRandom RED at arc terminal-cut guard / Vase RED at completion. Independent Review evidence adjudicated; closeout pending; no CP3/selector497 promotion. [Report](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Execution_Report_20261117.md). |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -54,7 +54,7 @@ Stable accounting remains **66 events / 17 categories / 49 recurrences** with **
 
 **Current TB128 witnesses:** Cylinder PASS, 288 quads. BunnyRandom RED `RotationSystemInconsistent` / `CellularityNotEstablished`, source vertex 3, `ArcTraceTerminalCutPositionMismatch`; previous C5 face-event terminal absent, all preterminal receipts and four inventory records unchanged. O46 downstream prediction did not occur. Vase RED unchanged (189,462 segments; 26,817 arrangement cells; 67,750 internal quads; zero accepted output). Not full direct-production acceptance. [Report](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Execution_Report_20261117.md).
 
-**A3 exactness and the API display witness:** A3 branch topology (face gauge, barycentric derivatives, port order) is exact on the stored doubles (RA-180/RA-181); FMA and FMA-free builds agree byte for byte. Row 935 (`apicensus:19`) is gated with a +½-singularity vertex stop (RA-182). Exact directions widen A4 trace parameters (O15c; for example sphere_prescribed 1,531 of 4,096 bits, fail-closed), and P13 measures them.
+**A3 exactness and the API display witness:** A3 branch topology (face gauge, barycentric derivatives, port order) is exact on the stored doubles (RA-180/RA-181); FMA and FMA-free builds agree byte for byte. Row 858 (`apicensus:19`) retains the +½-singularity vertex stop (RA-182); its separate prescribed-sphere cut-graph face assertion fails in TB128. Row952 fails its GMP conversion premise; exact near-ray assertions remain unmeasured. Exact directions widen A4 trace parameters (O15c; for example sphere_prescribed 1,531 of 4,096 bits, fail-closed), and P13 measures them.
 
 The **ten-case representative direct matrix** is defined by [tests/TESTING_STRATEGY.md §4](../../tests/TESTING_STRATEGY.md#4-mandatory-committed-direct-matrix), using [benchmarks/fixtures/milestone-g/](../../benchmarks/fixtures/milestone-g/) and the [fixture matrix manifest](../../benchmarks/fixtures/milestone_g_manifest.json).
 
@@ -103,7 +103,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-- **Current priority:** `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-REV`. Adjudicate TB128 gate loss and changed diagnostics, the GMP test-witness failure and the A2a′ terminal-cut mismatch; C5 and the middle-piece direction witness remain open. C3 narrow split rejection closed. No guessed source locus or validator relaxation. [TB128 report](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Execution_Report_20261117.md).
+- **Current priority:** `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-REV`. Finish [independent Review closeout](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md); measured gate loss, GMP test-witness defect and pre-existing A2a′ extent guard. Actual terminal incidence and owner require bounded receipt; C5 and the middle-piece direction witness remain open. C3 narrow split rejection closed. No guessed source locus or validator relaxation. [TB128 report](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Execution_Report_20261117.md).
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).
