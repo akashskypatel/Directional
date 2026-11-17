@@ -1,28 +1,8 @@
-## CURRENT — RA-243 edge-terminal inventory Review: TB124 accepted, CB143 frozen (2026-11-17 UTC)
+## CURRENT — CB143 exact terminal inventory compiled; TB125 next (2026-11-17 UTC)
 
-**RA-243 COMPLETE.** [Record](Architecture_M6_CP3_DEFN_P13_Edge_Terminal_Inventory_Review_20261117.md).
-- **TB124 accepted.** The artifact was re-downloaded: 1,906/1,906 hashes match, and the ledger differs from TB122 only in row 949 (RED→PASS).
-- **Rows 164/176/190/195 are diagnostic interleaving.** Those rows run `std::async` component workers that print the diagnostic to `std::cerr` concurrently. They are not product nondeterminism.
-- **C1 is closed**, and the scoped D12 follow is accepted.
-- **The C3 rejection has never been tested,** and `build_arcs` hides every offending edge after the first.
-- **CB143 is frozen.** It is diagnostic only and the rejection is unchanged. Patch `Architecture_M6_CP3_CB143_P13_Edge_Terminal_Exact_Inventory_Exact.diff`, SHA `c0439b1f303827d2f9584373bf7a8515df771649ff9ab4c04ab9b1d1cc29205b`, 223 lines. It adds the exact inventory function, the `SurfaceCutGraph.mandatoryEdgeTerminalInventory` line and gate row 950.
-- **The TB125 manifest is frozen:** `9a112bd1…`, 950 rows, membership 1,031, plus the census `3af1dc0d…`. MATCH criteria are in record §4.
+**CB143 COMPLETE.** [Code + Build record](Architecture_M6_CP3_CB143_P13_Edge_Terminal_Exact_Inventory_Code_Build_Record_20261117.md). Exact frozen RA-243 diff `c0439b1f…` applied at source `6857c66b788841f8e400151b6068b2f23be25167`. The all-edge exact inventory is diagnostic only; the rejection remains unchanged. [Compile 43991193705](https://github.com/akashskypatel/Directional/actions/runs/43991193705) built eight targets with GMP/GMPXX, immutable artifact `14287742226` (ZIP SHA-256 `c35f4dd6c61441794999a55b0068fb41b3ab298d1b473c8ab60048d9b20bdab9`), 28/28 internal hashes, no Directional runtime. TB125 row950 is compiled but **not run**.
 
-Carry: O42/O43/C3 open; O44 and C1 closed; D11=A, D12=A, D10 deferred, D6 pending; stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted; `chainRimSchedules=false`.
-
-**Turn sequence**
-
-| # | Turn | Owner | Status |
-|---|---|---|---|
-| 1 | `M6-CP3-TB124-P13-CORRECTED-FULL-GATE-EXEC` | Test + Benchmark | COMPLETE, accepted (RA-243) |
-| 2 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-INVENTORY` (RA-243) | Review | COMPLETE |
-| 3 | `M6-CP3-CB143-P13-EDGE-TERMINAL-EXACT-INVENTORY` | Code + Build (compile only, exact diff) | **NEXT** |
-| 4 | `M6-CP3-TB125-P13-EDGE-TERMINAL-EXACT-INVENTORY-EXEC` | Test + Benchmark (artifact only) | then |
-| 5 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-EQUIVALENCE-DECISION` | Review (freezes CB144) | then |
-| 6 | `M6-CP3-CB144-P13-EDGE-TERMINAL-OWNER-CORRECTION` | Code + Build | then |
-| 7 | `M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-EXEC` | Test + Benchmark | then |
-| 8 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME` | Review | then |
-| parked | `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY` | Code + Build, then TB and Review | after 8 |
+**Exactly next separate turn:** `M6-CP3-TB125-P13-EDGE-TERMINAL-EXACT-INVENTORY-EXEC` (immutable artifact-only Test + Benchmark). Use the frozen RA-243 950-row manifest SHA `9a112bd1…` and three-case census SHA `3af1dc0d…`; MATCH conditions in RA-243 §4. Do not rebuild, edit product code or promote selector/CP3. O42/O43/C3 open; O44/C1 closed; D11=A/D12=A, D10 deferred/D6 pending; stable 66/17/49, debt1, deferred81; CP2 491/491; CP3/selector497 unpromoted; `chainRimSchedules=false`. PR #8 remains draft/unmerged.
 
 ## CURRENT — TB124 corrected 949-case full gate: scoped MATCH; next Review edge-terminal inventory (2026-11-16 UTC)
 

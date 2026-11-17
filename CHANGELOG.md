@@ -1,3 +1,7 @@
+## 2026-11-17 UTC — CB143 exact mandatory-edge terminal inventory compiled
+
+- [CB143 record](.agents/Directional/Architecture_M6_CP3_CB143_P13_Edge_Terminal_Exact_Inventory_Code_Build_Record_20261117.md): frozen RA-243 exact diff at source `6857c66b788841f8e400151b6068b2f23be25167`, only 3 approved files changed; exact all-edge terminal inventory diagnostic and row950 test source, no behavior change. Compile-only [run 43991193705](https://github.com/akashskypatel/Directional/actions/runs/43991193705) succeeded for all eight GMP/GMPXX targets; immutable package `14287742226`, ZIP SHA-256 `c35f4dd6c61441794999a55b0068fb41b3ab298d1b473c8ab60048d9b20bdab9`, 28/28 checksums, runtime not executed. Separate TB125 follows; no CP3 promotion. First patch-apply attempt failed push race; corrected attempt succeeded and Drive staging was retired.
+
 ## 2026-11-17 UTC — RA-243 edge-terminal inventory Review
 
 - [Record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Edge_Terminal_Inventory_Review_20261117.md):
