@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb150-closeout-apply-v1",
+  "request_id": "m6-cp3-cb150-closeout-apply-v2",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb150-closeout-apply-v1",
-  "file_id": "1oi8AG3H-MgjSNjOjeRh63CoMxUAcmaDH",
-  "patch_sha256": "c05e5faa6a7f5dc7a472504c099bc34f9fc7793aa375d4e0a90d17c626e51386",
-  "base_sha": "bdac7c285eb48c5ce4e038db273afb947ee8ff42",
+  "mailbox_key": "m6-cp3-cb150-closeout-apply-v2",
+  "file_id": "1WEZvWQB6iZyNnOuCS9sL5h6_wbuMq3Zr",
+  "patch_sha256": "b73d48816c431e7fef2fbbaa1859d41b1c9a39de914d4f87a8f6525438fb0eab",
+  "base_sha": "5a6cbe05628f3077bcea1a05a3a62aad650c5b57",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "docs: record verified CB150 compile-only closeout",
   "retention_days": 7
