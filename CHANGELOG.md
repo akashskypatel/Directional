@@ -1,3 +1,8 @@
+## 2026-11-17 UTC — CB150 exact face-chart witness correction compiled
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB150_P13_Face_Chart_Witness_Correction_Code_Build_Record_20261117.md): frozen RA-250 test-only patch `63a6bd0b…`, source `b3d7b66e10ed8cfdd94eb0a1f67222efcd2525d9`, package `14325348753`. No assertion changes, runtime, selector change or promotion.
+- Exactly next, separately: `M6-CP3-CB151-P13-TERMINAL-CUT-BEFORE-END-RECEIPT`. Stable 66/17/49, debt1, deferred81, CP2 491/491.
+
 ## 2026-11-17 UTC — RA-250 re-review of the TB128 Review
 
 - [RA-250](.agents/Directional/Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md#ra-250--adversarial-re-review-of-this-review-2026-11-17-utc) upholds the MISMATCH and withdraws the prose CB149B plan. It freezes the exact [CB150](.agents/Directional/Architecture_M6_CP3_CB150_P13_Face_Chart_Witness_Correction_Exact.diff) row 952 witness correction, the [CB151](.agents/Directional/Architecture_M6_CP3_CB151_P13_Terminal_Cut_Before_End_Receipt_Exact.diff) terminal-cut receipt and TB129.
