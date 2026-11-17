@@ -1,3 +1,11 @@
+## 2026-11-17 — TB131 carrier-contact switch full gate MISMATCH (non-stable evidence)
+
+[Execution report](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Execution_Report_20261117.md): CB154 package `14347130681`, gate `14349985217` 952/953 PASS, census `14349666706` one PASS/two RED with valid postflight. No proxy census or H1 trace-trace receipt in 956 logs. 17 neutral PASS; 648 PASS (sphere premise assertions not reached), 858 permitted RED at `SurfaceCellTracingDisplayTests.cpp:155`. Gate exit 90/control_bad 1 preserved; organic completed evidence.
+
+- **Candidate diagnostic mismatch:** unaffected gate 174/176/179 PASS with equal substantive ledgers. Rows 174/176 reorder six diagnostic lines each; row179 reorders 24 records and concatenates two lines (record multiset equal only after forensic split). Vase differs only in two parameter-object byte dumps after elapsed normalization; the terminal is unchanged. No extension of frozen normalization; independent Review owns classification.
+- **C5/O45 and new terminal candidates:** sphere now `InvalidNetworkBinding/origin=InvalidCutGraphBinding`, trace 4, edge 0-2, no face or rotation reason; BunnyRandom now `RotationSystemInconsistent/TraceEventPositionNodeConflict`, trace 82, face (21,72,273). No accepted output; no O45 closure or semantic switch regression classification yet.
+- Stable 66/17/49, debt 1, deferred 81; CP2 491/491 accepted; CP3/selector497/D0 unpromoted. C5/O42/O43/O45/O46, FC-1/FC-4 and middle-piece direction remain open. Next separately `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-REV`.
+
 ## 2026-11-17 — RA-252 carrier-contact switch definition (non-stable)
 
 [DEFN](Architecture_M6_CP3_DEFN_P13_Carrier_Contact_Switch_Review_20261117.md): FC-7′ frozen, O45's remedy. TB130 archives re-opened: each of 34 proxy-contact builds is followed by exactly two H1 receipts, so all are rejected at A2a′ and no accepted output carries a proxy contact. CB154 switch ships unstaged; locality argument predicts 934 gate rows plus Cylinder/Vase byte-equal to TB130. Rows 648/858 hold sphere-failure premises (may go RED only at listed assertions). Falsifier: any other changed row. No stable event or debit; 66/17/49, debt 1, deferred 81.
