@@ -1,3 +1,8 @@
+## 2026-11-17 UTC — RA-245 TB126 independent Review adjudication
+
+- [Independent Review](.agents/Directional/Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md): reverified all four TB125/TB126 result archives, exact gate prefix and ledger/logs. TB126 950/951; row951 typed trace ID extent failure confirmed statically. No inherited accepted-green loss. New BunnyRandom rotation-system terminal separately unresolved; no product repair or promotion.
+- Exactly next `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION`: [frozen test-only diff](.agents/Directional/Architecture_M6_CP3_CB144B_P13_Edge_Terminal_Guard_Extent_Exact.diff), SHA-256 `20aeaf0d6e999c12d634f7c505418628add662b4484fdfa6dddaa63c3b1ed4ae`, compile-only. C3/O42/O43 open; O44/C1 closed; stable 66/17/49, debt1, deferred81, CP2 491/491, selector497/CP3 unpromoted, chain switch off.
+
 ## 2026-11-17 UTC — TB126 mandatory-edge terminal correction gate MISMATCH
 
 - [Execution report](.agents/Directional/Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Full_Gate_Execution_Report_20261117.md): immutable CB144 artifact `14293047782`; [gate 44005423680](https://github.com/akashskypatel/Directional/actions/runs/44005423680) 950/951 PASS, row951 exception, 1,032 membership, 81 deferred, 1,910/1,910 checksums; all 950 inherited rows unchanged. Candidate invalid test ID index 38 / extent 16 requires independent Review.
