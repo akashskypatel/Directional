@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-17, CB149 / `M6-CP3-CB149-P13-FACE-CONTACT-NODE-SWITCH`):** The face-contact node (FC-1–FC-5) exact switch is compiled in package `14315237769`. No runtime acceptance. The TB128 manifest (`941287fa…`, 953 rows) is frozen. **NEXT:** `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC`. [Record](Architecture_M6_CP3_CB149_P13_Face_Contact_Node_Switch_Code_Build_Record_20261117.md). C5/O42/O43/O45/O46 open; CP2 491/491; stable 66/17/49, debt 1, deferred 81; selector497/CP3 unpromoted.
+**Current currency (2026-11-17, TB128 / `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC`):** 951/953 PASS, combined MISMATCH; frozen census comparison MATCH. **NEXT:** `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-REV`. [Report](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Execution_Report_20261117.md). C5/O42/O43/O45/O46 open; CP2 491/491; stable 66/17/49, debt 1, deferred 81; selector497/CP3 unpromoted.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Current M6-CP3 evidence (2026-11-17):** TB125 scoped accepted 950/950. TB126 950/951; CB144B corrected its test-input extent. TB127 gate 951/951, all 950 inherited rows match. Census strict comparison MISMATCH, independently adjudicated as unchanged assertions relocated. C3 narrow closure, not rotation direction proof. No accepted-green loss or product acceptance. See [handoff](Future_Chat_Session_Handoff.md), [TB127](Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Full_Gate_Execution_Report_20261117.md) and [RA-246](Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md).
+**Current M6-CP3 evidence (2026-11-17):** TB125 scoped accepted 950/950. TB127 gate 951/951, strict census mismatch independently adjudicated. TB128 immutable CB149 gate 951/953: row858 inherited guard RED, row952 new witness RED, row953 PASS; 950/951 inherited substantive ledger records match. Census comparison MATCH, not production acceptance. See [handoff](Future_Chat_Session_Handoff.md) and [TB128](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Execution_Report_20261117.md). C3 narrow closure, not rotation direction proof.
 
 **M0–M5 are complete/closed; M6 is active at CP3.** Closure means the checkpoint's frozen criteria passed, **not** that representative output is production-ready.
 
@@ -45,14 +45,14 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB127 immutable CB146 gate 951/951 (membership 1,032); strict census comparison MISMATCH. Cylinder PASS / BunnyRandom P13-e RED at cut-graph rotation / Vase RED at completion. Comparison independently adjudicated; C5 event binding open; no CP3/selector497 promotion. [Report](Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Full_Gate_Execution_Report_20261117.md). |
+| **M6-CP3 — active** | TB128 immutable CB149 gate 951/953 (membership 1,034); combined MISMATCH. Cylinder PASS / BunnyRandom RED at arc terminal-cut guard / Vase RED at completion. Independent Review pending; no CP3/selector497 promotion. [Report](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Execution_Report_20261117.md). |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
 
 ## 4. Fixtures and witnesses
 
-**Current TB127 witnesses:** Cylinder PASS, 288 quads. BunnyRandom RED `RotationSystemInconsistent` / `CellularityNotEstablished`, face (5,104,359); typed reason `TraceEventPositionInvalid`, trace 0, event 18 (`NoCarrierMatch`, `SourceEdgeUnavailable`). Rejecting branch: non-origin non-terminal incidence without sourceEdge; exact contact binding not established. Prior terminal prefix, four inventory records and upstream receipts match TB126. Vase RED unchanged (189,462 segments; 26,817 arrangement cells; 67,750 internal quads; zero accepted output). Not full direct-production acceptance.
+**Current TB128 witnesses:** Cylinder PASS, 288 quads. BunnyRandom RED `RotationSystemInconsistent` / `CellularityNotEstablished`, source vertex 3, `ArcTraceTerminalCutPositionMismatch`; previous C5 face-event terminal absent, all preterminal receipts and four inventory records unchanged. O46 downstream prediction did not occur. Vase RED unchanged (189,462 segments; 26,817 arrangement cells; 67,750 internal quads; zero accepted output). Not full direct-production acceptance. [Report](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Execution_Report_20261117.md).
 
 **A3 exactness and the API display witness:** A3 branch topology (face gauge, barycentric derivatives, port order) is exact on the stored doubles (RA-180/RA-181); FMA and FMA-free builds agree byte for byte. Row 935 (`apicensus:19`) is gated with a +½-singularity vertex stop (RA-182). Exact directions widen A4 trace parameters (O15c; for example sphere_prescribed 1,531 of 4,096 bits, fail-closed), and P13 measures them.
 
@@ -103,7 +103,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-- **Current priority:** `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC`. Test the immutable CB149 face-contact switch with the frozen gate and census. C5 remains open until runtime evidence; separate middle-piece rotation direction witness remains open. C3 narrow split rejection closed. No guessed sourceEdge or validator relaxation. [RA-249](Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Freeze_Review_20261117.md).
+- **Current priority:** `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-REV`. Adjudicate TB128 gate loss and changed diagnostics, the GMP test-witness failure and the A2a′ terminal-cut mismatch; C5 and the middle-piece direction witness remain open. C3 narrow split rejection closed. No guessed source locus or validator relaxation. [TB128 report](Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Execution_Report_20261117.md).
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).
