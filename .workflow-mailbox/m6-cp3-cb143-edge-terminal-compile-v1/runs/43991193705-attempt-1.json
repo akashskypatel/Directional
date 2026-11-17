@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "workflow_key": "m6-cp3-cb143-edge-terminal-compile-v1",
+  "workflow": "Agent Durable Operation Dispatcher",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/agent-operation-dispatcher.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "f03e9fd11f37e7611575ab59cbbbecd55eb555d9",
+  "source_sha": "6857c66b788841f8e400151b6068b2f23be25167",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 43991193705,
+  "run_attempt": 1,
+  "run_number": 1652,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/43991193705",
+  "result": "success",
+  "summary": "durable-dispatch request_id=m6-cp3-cb143-edge-terminal-compile-20261117-v1 operation=compile request_sha256=4f62a55e6a13a03c9d12c66cc3d980f6479b71c1da206de0e8447ac9772cd0ac",
+  "reported_at": "2026-11-17T00:56:22Z",
+  "mailbox_branch": "workflow-mailbox",
+  "artifacts": [
+    {
+      "id": 14288286412,
+      "name": "agent-workflow-schema-validator-log-43991193705",
+      "size_in_bytes": 489,
+      "digest": "sha256:d79705e2fafc877474f85974e80fc960c5189287e7175b689747a3614fe71311",
+      "expired": false,
+      "created_at": "2026-11-17T00:53:04Z",
+      "expires_at": "2026-11-24T00:53:04Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/43991193705/artifacts/14288286412",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14288286412/zip"
+    },
+    {
+      "id": 14288206480,
+      "name": "agent-workflow-schema-validator-log-43991193705",
+      "size_in_bytes": 498,
+      "digest": "sha256:e7a7c6a50dcbd9ee3d9d8c76865cb054de0b71677bb7cc7b19b9b15ecabb5c71",
+      "expired": false,
+      "created_at": "2026-11-17T00:53:08Z",
+      "expires_at": "2026-11-24T00:53:07Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/43991193705/artifacts/14288206480",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14288206480/zip"
+    },
+    {
+      "id": 14287742226,
+      "name": "m6-cp3-cb143-edge-terminal-exact-inventory-result-43991193705",
+      "size_in_bytes": 42456022,
+      "digest": "sha256:c35f4dd6c61441794999a55b0068fb41b3ab298d1b473c8ab60048d9b20bdab9",
+      "expired": false,
+      "created_at": "2026-11-17T00:56:03Z",
+      "expires_at": "2026-11-24T00:55:59Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/43991193705/artifacts/14287742226",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14287742226/zip"
+    },
+    {
+      "id": 14287737258,
+      "name": "workflow-mailbox-publisher-log-43991193705-attempt-1",
+      "size_in_bytes": 387,
+      "digest": "sha256:380f35aa2b5dc7b651d8b6f58c69c48e385ec3429ff77f94dff782717f521166",
+      "expired": false,
+      "created_at": "2026-11-17T00:56:20Z",
+      "expires_at": "2026-12-01T00:56:19Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/43991193705/artifacts/14287737258",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14287737258/zip"
+    },
+    {
+      "id": 14287557279,
+      "name": "agent-operation-dispatcher-log-43991193705",
+      "size_in_bytes": 512,
+      "digest": "sha256:c432390a9bc0631e7deae68020f91300e3f9a4de270a6dfcffb7748f60fe3f45",
+      "expired": false,
+      "created_at": "2026-11-17T00:53:15Z",
+      "expires_at": "2026-12-01T00:53:14Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/43991193705/artifacts/14287557279",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14287557279/zip"
+    },
+    {
+      "id": 14287347130,
+      "name": "agent-workflow-schema-validation-43991193705",
+      "size_in_bytes": 442,
+      "digest": "sha256:0fe72c3855044c7ee7e43ade53eb2d0077ad38cf66cf3e889f8501aac1432e1b",
+      "expired": false,
+      "created_at": "2026-11-17T00:53:03Z",
+      "expires_at": "2026-11-24T00:53:02Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/43991193705/artifacts/14287347130",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14287347130/zip"
+    },
+    {
+      "id": 14287267191,
+      "name": "agent-workflow-schema-validation-43991193705",
+      "size_in_bytes": 445,
+      "digest": "sha256:252e93b88d1cd9aaf37d5881782f429db79ffda9539009cb57fb1022044f4359",
+      "expired": false,
+      "created_at": "2026-11-17T00:53:07Z",
+      "expires_at": "2026-11-24T00:53:06Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/43991193705/artifacts/14287267191",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14287267191/zip"
+    },
+    {
+      "id": 14286944481,
+      "name": "m6-cp3-cb143-edge-terminal-exact-inventory-log-43991193705",
+      "size_in_bytes": 4187,
+      "digest": "sha256:03b241aad084ed447139ac786dc0180d8df404378de2d0c01ccdde316281c13d",
+      "expired": false,
+      "created_at": "2026-11-17T00:56:04Z",
+      "expires_at": "2026-11-24T00:56:03Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/43991193705/artifacts/14286944481",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14286944481/zip"
+    }
+  ]
+}
