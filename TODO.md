@@ -1,4 +1,4 @@
-## CURRENT — RA-253 re-review of TB131 Review; CB155 cut-binding receipt next (2026-11-17 UTC)
+## CURRENT — CB155 cut-binding receipt compiled; TB132 next (2026-11-17 UTC)
 
 [RA-253](.agents/Directional/Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md#ra-253--adversarial-re-review-of-this-review-2026-11-17-utc) keeps the literal TB131 MISMATCH as history. It withdraws the comparator-only DEFN because the question is settled from source.
 - **Comparator.** Rows 174/176/179 come from the region-projection diagnostic interleaving in `std::async` component workers. The Vase difference is the address bytes of two `const char*` parameters. RA-252's row164-only rule was my error (S0). The prospective rule is TB132 N3–N5, with negative controls.
@@ -8,11 +8,11 @@
 
 Turn sequence:
 - [x] RA-253 re-review of `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-REV`: COMPLETE.
-- [ ] **NEXT (Code + Build, compile only):** `M6-CP3-CB155-P13-CUT-BINDING-CONFLICT-RECEIPT`.
+- [x] **COMPLETE (Code + Build, compile only):** `M6-CP3-CB155-P13-CUT-BINDING-CONFLICT-RECEIPT`. Source `cce5be20ea7237f59f3c0acca25a4ba57813644e`, package `14357189158`, eight GMP/GMPXX targets, `runtimeExecution=false`. [Compile record and TB132 plan](.agents/Directional/Architecture_M6_CP3_CB155_P13_Cut_Binding_Conflict_Receipt_Code_Build_Record_20261117.md).
   - Exact diff `.agents/Directional/Architecture_M6_CP3_CB155_P13_Cut_Binding_Conflict_Receipt_Exact.diff`: SHA-256 `2a9de80f6781caab9c741d450715627ebd136d5407778a2587e05afa3e0f7761`, 189 lines; numstat `157 0 src/geometry/EmbeddedGraphTopology.cpp`.
   - Precheck: `git diff --quiet 452eb3d789016e744e99d88811add0f7e0949165 HEAD -- src include tests`. Build the eight RA-245 targets; runtimeExecution=false.
   - Routes: compile defect → `M6-CP3-PLAN-P13-CUT-BINDING-RECEIPT-STOP`; infrastructure → `M6-CP3-CB155A-P13-CUT-BINDING-RECEIPT-ORCH`.
-- [ ] `M6-CP3-TB132-P13-CUT-BINDING-CONFLICT-RECEIPT-FULL-GATE-EXEC`. Same gate `941287fa…`, census `3af1dc0d…`, deferred `fd433f54…` and harness `78b8002c…`; comparator TB131; normalizations N1–N5 and MATCH per RA-253 S7.
+- [ ] **NEXT (artifact-only Test + Benchmark):** `M6-CP3-TB132-P13-CUT-BINDING-CONFLICT-RECEIPT-FULL-GATE-EXEC`. Same gate `941287fa…`, census `3af1dc0d…`, deferred `fd433f54…` and harness `78b8002c…`; comparator TB131; normalizations N1–N5 and MATCH per RA-253 S7.
 - [ ] `M6-CP3-TB132-P13-CUT-BINDING-CONFLICT-RECEIPT-FULL-GATE-REV`. Attribute both sites, decide S4/O45, and freeze at most one repair DEFN per site.
 - [ ] Held: `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`, then `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6); the row 858 face-witness DEFN comes after the sphere repair.
 - [ ] Withdrawn: CB149B, CB152, DEFN-…-COMPARISON. Parked: CB145.

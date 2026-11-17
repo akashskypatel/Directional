@@ -1,3 +1,8 @@
+## 2026-11-17 UTC — CB155 cut-binding conflict receipts (compile only)
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB155_P13_Cut_Binding_Conflict_Receipt_Code_Build_Record_20261117.md): exact frozen +157/-0 diagnostic diff in `EmbeddedGraphTopology.cpp`; source `cce5be20ea7237f59f3c0acca25a4ba57813644e`, [compile 44149517147](https://github.com/akashskypatel/Directional/actions/runs/44149517147), package `14357189158` SHA-256 `1fe10a511db165b3f4d3d06b8002b0d8241a237ef81d789e3cb5e1676650da4e`. Eight GMP/GMPXX targets; 28/28 checksums, 371/371 source files, unchanged frozen inputs, no runtime or test changes.
+- Exactly next separately `M6-CP3-TB132-P13-CUT-BINDING-CONFLICT-RECEIPT-FULL-GATE-EXEC` per RA-253 S7. No stable event, witness discharge or promotion; 66/17/49, debt 1, deferred 81, CP2 491/491.
+
 ## 2026-11-17 UTC — RA-253 re-review of the TB131 Review
 
 - [RA-253](.agents/Directional/Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md#ra-253--adversarial-re-review-of-this-review-2026-11-17-utc): the literal MISMATCH is kept. The unaffected-log differences are attributed from source to diagnostic interleaving and parameter address bytes. `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH-COMPARISON` is withdrawn.
