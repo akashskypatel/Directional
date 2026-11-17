@@ -1,3 +1,10 @@
+## 2026-11-17 UTC — RA-244 edge-terminal equivalence decision
+
+- [Record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Edge_Terminal_Equivalence_Decision_Review_20261117.md):
+  - TB125 is accepted. The four BunnyRandom terminal cuts are distinct and strictly ordered.
+  - CB144 is frozen: an N + 1 ordered split of mandatory edges in A2a′, plus a direction-rule fix in the rotation step, plus gate row 951.
+  - The TB126 manifest (951 rows) and census are frozen.
+
 ## 2026-11-17 — TB125 exact mandatory-edge inventory gate and census (scoped MATCH)
 
 - [TB125 execution report](.agents/Directional/Architecture_M6_CP3_TB125_P13_Edge_Terminal_Exact_Inventory_Execution_Report_20261117.md): frozen CB143 source `6857c66b788841f8e400151b6068b2f23be25167`, artifact `14287742226` (28/28 package hashes, GMP). [Gate 43993702283](https://github.com/akashskypatel/Directional/actions/runs/43993702283) 950/950 PASS, 1,031 membership, 1,908/1,908 checksums. All 949 inherited ledger rows match TB124. Six elapsed-normalized raw logs vary only by concurrent `M3_CP4AB_FRAGMENT_DIAG` ordering/joining; exact record multisets match.

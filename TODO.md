@@ -1,3 +1,27 @@
+## CURRENT — RA-244 edge-terminal equivalence decision; CB144 next (2026-11-17 UTC)
+
+**RA-244 COMPLETE.** [Record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Edge_Terminal_Equivalence_Decision_Review_20261117.md).
+- **TB125 accepted.** Both artifacts were re-downloaded and hash-checked.
+- **Classification:** BunnyRandom's two offending edges, (241,251) and (251,278), carry 2 + 2 distinct cuts. All four are different traces from different singularities, ending at different nodes, and no two share an exact parameter. There are no duplicates.
+- **Owner:** A2a′ (`build_arcs`); tracing is correct.
+- **Fix 1 (CB144):** N ordered cuts give N + 1 mandatory pieces from low to high parameter, all keeping the original owner. Equal parameters are still rejected (`MandatoryEdgeTerminalOrderUnresolved`).
+- **Fix 2 (CB144):** the rotation step's direction helper decided a mandatory piece's direction only by endpoint identity, so the middle piece between two terminals would have failed (`RotationEdgeRayEndpointDirectionUnavailable`). It now uses the low-to-high orientation.
+- **Patch:** `Architecture_M6_CP3_CB144_P13_Edge_Terminal_Ordered_Split_Exact.diff`, SHA `081fcb5b96aff08824a661f985c40e3ab3304f3a6b218a1d14f1740df20de122`, 371 lines, plus gate row 951.
+- **TB126 manifest:** `44d5a734…`, 951 rows, membership 1,032, plus the census `3af1dc0d…`. MATCH criteria are in record §5.
+
+Carry: O42/O43/C3 open; O44 and C1 closed; D11=A, D12=A, D10 deferred, D6 pending; stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted; `chainRimSchedules=false`.
+
+**Turn sequence**
+
+| # | Turn | Owner | Status |
+|---|---|---|---|
+| 1 | `M6-CP3-TB125-P13-EDGE-TERMINAL-EXACT-INVENTORY-EXEC` | Test + Benchmark | COMPLETE, accepted (RA-244) |
+| 2 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-EQUIVALENCE-DECISION` (RA-244) | Review | COMPLETE |
+| 3 | `M6-CP3-CB144-P13-EDGE-TERMINAL-OWNER-CORRECTION` | Code + Build (compile only, exact diff) | **NEXT** |
+| 4 | `M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-EXEC` | Test + Benchmark (artifact only) | then |
+| 5 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME` | Review | then |
+| parked | `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY` | Code + Build, then TB and Review | after 5 |
+
 ## CURRENT — TB125 exact terminal inventory: scoped MATCH; separate equivalence Review next (2026-11-17 UTC)
 
 **TB125 COMPLETE.** [TB125 report](.agents/Directional/Architecture_M6_CP3_TB125_P13_Edge_Terminal_Exact_Inventory_Execution_Report_20261117.md) records immutable CB143 artifact `14287742226`, [gate run 43993702283](https://github.com/akashskypatel/Directional/actions/runs/43993702283) **950/950 PASS**, 1,908/1,908 checksums, all 949 TB124 semantic rows unchanged; six raw rows differ only by previously identified diagnostic print interleaving. [Census run 43993748585](https://github.com/akashskypatel/Directional/actions/runs/43993748585): Cylinder PASS, BunnyRandom/Vase their existing RED outcomes, 9/9 hashes, inherited receipts unchanged. BunnyRandom inventories **two distinct source edges** `(241,251)` and `(251,278)`, each with 2 distinct exact parameters, 0 equal-parameter cut pairs; duplicate inventory lines reflect repeated observations. No topology or producer correction was performed. **Exactly next separate turn:** Review-only `M6-CP3-DEFN-P13-EDGE-TERMINAL-EQUIVALENCE-DECISION`; no CB144 yet. Stable 66/17/49, debt1, deferred81, CP2 491/491, CP3/selector497 unpromoted, `chainRimSchedules=false`; O42/O43/C3 open, O44/C1 closed. PR #8 remains draft/unmerged.
