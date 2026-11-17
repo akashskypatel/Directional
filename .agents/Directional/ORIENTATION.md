@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-17, `M6-CP3-CB154-P13-CARRIER-CONTACT-NODE-SWITCH`):** FC-7′ frozen: trace-trace contact nodes bind from exact records whatever their proxy edge. Exact CB154 switch compiled without a feature flag because TB130 archives show every proxy-contact build rejected at A2a′. [Compile record](Architecture_M6_CP3_CB154_P13_Carrier_Contact_Node_Switch_Code_Build_Record_20261117.md). **NEXT:** `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-EXEC` → TB131 Review. [DEFN](Architecture_M6_CP3_DEFN_P13_Carrier_Contact_Switch_Review_20261117.md). C5/O42/O43/O45/O46 open; CP2 491/491; stable 66/17/49, debt 1, deferred 81; selector497/CP3 unpromoted.
+**Current currency (2026-11-17, `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-REV`):** TB131 MISMATCH upheld, 952/953 PASS, no accepted-green loss. Four unaffected logs have presentation-only forensic differences; strict comparison failed. O45 remains open. [Review](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md). **NEXT:** `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH-COMPARISON`. CP2 491/491; stable 66/17/49, debt 1, deferred 81; selector497/CP3 unpromoted.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Current M6-CP3 evidence (2026-11-17):** TB125 scoped accepted 950/950. TB129 immutable CB151 gate 953/953, both prior REDs (858/952) restored, no formerly PASS ledger loss; literal comparison MISMATCH. Census Cylinder PASS and BunnyRandom/Vase registered RED; not production acceptance. See [handoff](Future_Chat_Session_Handoff.md) and [Review](Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Independent_Review_20261117.md). C3 narrow closure, not rotation direction proof.
+**Current M6-CP3 evidence (2026-11-17):** TB125 scoped accepted 950/950. TB131 candidate 952/953; accepted prefix 491/491, row858 permitted premise RED, 648 sphere branch unreached. Strict MISMATCH upheld; 17 neutral PASS and no measured H1 receipts. Cylinder PASS, BunnyRandom/Vase RED. [Review](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md). C3 narrow closure, not rotation direction proof.
 
 **M0–M5 are complete/closed; M6 is active at CP3.** Closure means the checkpoint's frozen criteria passed, **not** that representative output is production-ready.
 
@@ -45,14 +45,14 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB129 immutable CB151 gate 953/953 (membership 1,034); strict MISMATCH. Cylinder PASS / BunnyRandom RED at arc terminal-cut guard / Vase RED at completion. H1 observed; measurement before any classification change; no CP3/selector497 promotion. [Review](Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Independent_Review_20261117.md). |
+| **M6-CP3 — active** | TB131 952/953 (membership 1,034), MISMATCH upheld. Cylinder PASS / BunnyRandom binding RED / Vase completion RED; no O45 closure or CP3/selector497 promotion. [Review](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md). |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
 
 ## 4. Fixtures and witnesses
 
-**Current TB129 witnesses:** Cylinder PASS, 288 quads. BunnyRandom RED `RotationSystemInconsistent` / `CellularityNotEstablished`, origin vertex 3, `ArcTraceTerminalCutPositionMismatch`, actual terminal face (42,335,336), incoming edge (42,336), trace 1/event117, H1. O46 prediction did not occur. Vase RED unchanged (189,462 segments; 26,817 arrangement cells; 67,750 internal quads; zero accepted output). No actual common-carrier contact count for Cylinder/Vase. [Review](Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Independent_Review_20261117.md).
+**Current TB131 witnesses:** Cylinder PASS, 288 quads. BunnyRandom RED `TraceEventPositionNodeConflict`, trace82, face (21,72,273). Prescribed sphere RED `InvalidCutGraphBinding`, trace4 edge0–2; unique guard not established. Vase RED unchanged (189,462 segments; 26,817 arrangement cells; 67,750 internal quads; zero accepted output). [Review](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md).
 
 **A3 exactness and the API display witness:** A3 branch topology (face gauge, barycentric derivatives, port order) is exact on the stored doubles (RA-180/RA-181); FMA and FMA-free builds agree byte for byte. Row 858 (`apicensus:19`) retains the +½-singularity vertex stop (RA-182) and now passes its distinct sphere cut-graph face assertion. Row952 PASS with the corrected exact witness and retained assertions. Exact directions widen A4 trace parameters (O15c; e.g. sphere_prescribed 1,531 of 4,096 bits, fail-closed), and P13 measures them.
 
@@ -103,14 +103,14 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-- **Current priority:** `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-EXEC`, immutable CB154 package, under [DEFN §6](Architecture_M6_CP3_DEFN_P13_Carrier_Contact_Switch_Review_20261117.md). No guessed cut, validator relaxation, producer edge removal, FC-6 or CP3 promotion. FC-1/FC-4 and direction proof remain open.
+- **Current priority:** `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH-COMPARISON` — freeze prospective comparison authority and discriminating negative controls. No retroactive MATCH, guessed cut, validator relaxation, producer edge removal, FC-6 or CP3 promotion. FC-1/FC-4, O45/O46 and direction proof remain open. [Review](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md).
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).
 
 ## 8. Recurring defect patterns
 
-The full reusable rules are in [LESSONS.md](LESSONS.md). Key patterns: one semantic owner per fact; exact certified source identity rather than coordinate equality; preserve frozen byte identities; distinguish invalid stimulus from product failure; negative controls must reach the rejecting predicate; no inherited PASS claim implies production acceptance. RA-245 typed-ID extent; RA-102.1 assertion relocation; RA-250 actual GMP conversion and guard producer proof. TB129 repeats RA-250: trace diagnostic replay and shared fixture callers before freezing receipt scope/count; count distinct semantic identities, not log lines. Prior evidence and detailed causes remain in their owning records and the [historical navigation preimage](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#orientationmd).
+The full reusable rules are in [LESSONS.md](LESSONS.md). Key patterns: one semantic owner per fact; exact certified source identity rather than coordinate equality; preserve frozen byte identities; distinguish invalid stimulus from product failure; negative controls must reach the rejecting predicate; no inherited PASS claim implies production acceptance. RA-245 typed-ID extent; RA-102.1 assertion relocation; RA-250 actual GMP conversion and guard producer proof. TB129 repeats RA-250: trace diagnostic replay and shared fixture callers before freezing receipt scope/count; count distinct semantic identities, not log lines. TB131: compare full diagnostic records and pointer-object presentation only under prospective explicit rules; do not treat a forensic explanation as a frozen gate pass. Prior evidence and detailed causes remain in their owning records and the [historical navigation preimage](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#orientationmd).
 
 ## 9. Code entry points
 

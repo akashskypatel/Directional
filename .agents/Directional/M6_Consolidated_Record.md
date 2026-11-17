@@ -2066,3 +2066,10 @@ By user instruction, the 231 remaining standalone `Architecture_M6*` Review, def
 | Original file | Lines | Verdict/role | Retained home |
 |---|---:|---|---|
 | `Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Continuation_20261117.md` | 31 | Superseded in-progress execution continuation; TB129 complete MISMATCH | [Volume D3](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb129_p13_terminal_cut_receipt_full_gate_continuation_20261117md) |
+
+
+## TB131 Review folded continuation (2026-11-17)
+
+| Original file | Lines | Verdict/role | Retained home |
+|---|---:|---|---|
+| `Architecture_M6_CP3_TB130_P13_Carrier_Proxy_Contact_Full_Gate_Continuation_20261117.md` | 31 | Superseded TB130 continuation; execution completed MATCH | [Volume D3](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb130_p13_carrier_proxy_contact_full_gate_continuation_20261117md) |

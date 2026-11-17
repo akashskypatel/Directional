@@ -1,3 +1,8 @@
+## 2026-11-17 UTC — TB131 independent Review (MISMATCH upheld)
+
+- [Review](.agents/Directional/Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md): all 491 accepted prefix rows PASS; 952/953 candidate, 17 neutral PASS, 858 permitted premise RED, 648 sphere assertions unreached. Three region projection diagnostics differ in ordering/framing only and Vase differs in pointer-object presentation under forensic comparison; literal frozen MISMATCH remains. Sphere/BunnyRandom new binding failures localized to candidates, not yet uniquely classified. O45 stays open. No stable event, promotion, runtime or semantic mutation.
+- Next separately `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH-COMPARISON`; terminal-cut outcome/FC-6 held. Stable 66/17/49, debt1, deferred81, CP2 491/491.
+
 ## 2026-11-17 UTC — TB131 carrier-contact switch full gate (MISMATCH)
 
 - [Execution report](.agents/Directional/Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Execution_Report_20261117.md): CB154 source `452eb3d789016e744e99d88811add0f7e0949165`, package `14347130681`; gate [44127005835](https://github.com/akashskypatel/Directional/actions/runs/44127005835), artifact `14349985217`, 952/953 PASS; census [44127493046](https://github.com/akashskypatel/Directional/actions/runs/44127493046), artifact `14349666706`, Cylinder PASS 288, BunnyRandom/Vase RED. Both postflights true. 858 permitted premise RED only; 17 neutral PASS, no H1 or proxy census. Unaffected rows 174/176/179 and Vase log differ under frozen rules; no widening. Sphere `InvalidCutGraphBinding`, BunnyRandom `TraceEventPositionNodeConflict`. No rebuild, mutation of semantic inputs, stable event or promotion.

@@ -31,20 +31,19 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-17 UTC, TB131 executed the CB154 FC-7′ switch: MISMATCH under RA-252 §6. [Execution report](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Execution_Report_20261117.md). Gate 952/953 PASS, all 17 neutral PASS, 648 PASS, 858 permitted premise RED at line 155; no proxy census or trace-trace H1 receipt. |
+| Currency | 2026-11-17 UTC, TB131 independent Review upheld MISMATCH. [Review](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md). 952/953 PASS, accepted prefix 491/491; 17 neutral PASS; 858 permitted premise RED; 648 sphere assertions unreached. |
 | Branch and source | `agent/surface_cell_quad/p5-recover-bridge-healing`; verify HEAD. CB154 source `452eb3d789016e744e99d88811add0f7e0949165`; package `14347130681`, ZIP SHA-256 `f768d7dc97fb6cf7f345f45fe6e52e681c6d7c21b6436ff3239ef44cec382489`; [compile record](Architecture_M6_CP3_CB154_P13_Carrier_Contact_Node_Switch_Code_Build_Record_20261117.md). CB151/TB129 comparator authority remains in the TB129 execution report. |
 | Accepted evidence | [TB125](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb125_p13_edge_terminal_exact_inventory_execution_report_20261117md) scoped 950/950; artifacts `14289730737`/`14289927334`. CP2 491/491, package `11391685901`; 497 CP3 identities frozen, not promoted. TB127 comparison authority: package `14301616031`, source `48e6f97d278b2226036f658ce9060a38b8a374b5`, gate `14302887671` 951/951, census `14302668940`. |
-| Latest candidate | TB131 gate `14349985217` (952/953, membership 1,034), census `14349666706` (Cylinder PASS 288, BunnyRandom/Vase RED), both postflight valid. Unaffected gate 931/934 match; rows 174/176/179 differ in diagnostic order/framing; Vase parameter bytes differ under literal frozen rules. [Report](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Execution_Report_20261117.md). Comparator TB130 gate `14338844806`, census `14339793522`. 955/956 substantive ledger records equal. |
+| Latest candidate | TB131 gate `14349985217` (952/953, membership 1,034), census `14349666706` (Cylinder PASS 288, BunnyRandom/Vase RED), both postflight valid. 955/956 substantive ledger records equal; 174/176/179 and Vase differ only in presentation under forensic comparison, strict MISMATCH. Comparator TB130 gate `14338844806`, census `14339793522`. [Review](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md). |
 | Regression and debt | Stable 66/17/49, one produced-witness debt, 81 deferred. [Tracker](Regression_Root_Cause_Tracker.md). C5/O42/O43/O45/O46 open; narrow C3/O44/C1 closed. Middle-piece direction witness open. D11=A, D12=A; D10 deferred, D6 pending. `chainRimSchedules=false`. |
-| Active boundary | FC-7′ eliminates observed H1 receipts but TB131 MISMATCH precludes O45 closure. Sphere `InvalidNetworkBinding/origin=InvalidCutGraphBinding`, trace 4, edge 0-2, no face or rotation reason; BunnyRandom `RotationSystemInconsistent/TraceEventPositionNodeConflict`, trace 82, face (21,72,273). Row 648 sphere assertions not reached; row 858 RED at `SurfaceCellTracingDisplayTests.cpp:155` (no face locus). FC-6, H2 and MATCH-only definition held. No CP3/D0 acceptance. |
+| Active boundary | FC-7′ eliminates observed H1 receipts but TB131 MISMATCH precludes O45 closure. Sphere `InvalidNetworkBinding/origin=InvalidCutGraphBinding`, trace 4, edge 0-2, no face or rotation reason; BunnyRandom `RotationSystemInconsistent/TraceEventPositionNodeConflict`, trace 82, face (21,72,273). Row 648 sphere assertions not reached; row 858 RED at `SurfaceCellTracingDisplayTests.cpp:155` (no face locus). FC-6, H2 and MATCH-only terminal-cut definition held; prospective comparison definition first. No CP3/D0 acceptance. |
 
-## Mandatory next turn — `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-REV` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH-COMPARISON` — EXACT NEXT
 
-Start only after root [STATUS](../../STATUS) records COMPLETE for `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-EXEC` with this successor. Authority: [TB131 execution report](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Execution_Report_20261117.md) and [RA-252 §6](Architecture_M6_CP3_DEFN_P13_Carrier_Contact_Switch_Review_20261117.md).
+Start only after root [STATUS](../../STATUS) records COMPLETE for `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-REV` with this successor. Authority: [Review](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md), Recommendation section; original frozen RA-252 §6 remains unchanged.
 
-- **Type / owner:** independent Review, runtime-free. Re-open immutable TB131 gate `14349985217` and census `14349666706`, plus TB130 comparator `14338844806`/`14339793522`; exact source and digests in report.
-- **Verify:** adjudicate literal MISMATCH and four unexpected log differences, including TB129's parameter-object normalization precedent; confirm neutral and premise rows, absence of retired receipts, and new sphere/BunnyRandom failures. Distinguish diagnostic changes from semantic regressions; review FC-7′ locality and formulate the authorized next action only on evidence.
-- **Out of scope:** runtime, rebuild, source/test/fixture/selector mutation, FC-6/H2 implementation, promotion. Do not treat disappearance of H1 as closure of O45 before adjudication.
+- **Type / owner:** runtime-free Review/definition only. Freeze prospective exact comparator rules for complete region projection diagnostic records and parameter-object presentation; implement no product or test change. Require negative controls for altered/missing/duplicated/malformed records, non-record bytes and ledger changes. Decide whether new artifact-only execution on unchanged CB154 is required and freeze it before dispatch.
+- **Stop:** if comparator cannot discriminate controls, retain MISMATCH and O45 open. Do not reinterpret TB131 as MATCH or promote. Keep all manifests, 953 gate identities, 81 deferred and 3 census cases. Define future diagnostic observation of sphere/BunnyRandom and premise correction separately. No FC-6/H2, product or runtime work.
 
 ## Turn Sequence
 
@@ -62,14 +61,15 @@ Start only after root [STATUS](../../STATUS) records COMPLETE for `M6-CP3-TB131-
 | COMPLETE | `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH` (RA-252) | FC-7′ frozen; unstaged switch justified (all proxy builds rejected); CB154 exact diff and TB131 criteria. [DEFN](Architecture_M6_CP3_DEFN_P13_Carrier_Contact_Switch_Review_20261117.md). |
 | COMPLETE | `M6-CP3-CB154-P13-CARRIER-CONTACT-NODE-SWITCH` | Exact diff compiled with eight targets; [record](Architecture_M6_CP3_CB154_P13_Carrier_Contact_Node_Switch_Code_Build_Record_20261117.md). |
 | COMPLETE (MISMATCH) | `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-EXEC` | 952/953 PASS, permitted premise RED 858, unaffected log differences 174/176/179 and Vase; no retired receipts. [Report](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Execution_Report_20261117.md). |
-| NEXT | `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-REV` | Independently adjudicate literal mismatch, premise RED, and new sphere/BunnyRandom outcomes. |
-| Held | `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`; `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6) | After the TB131 Review. |
+| COMPLETE (MISMATCH upheld) | `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-REV` | [Review](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md): presentation attribution only; no O45 closure or promotion. |
+| NEXT | `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH-COMPARISON` | Prospective comparison definition, runtime-free. |
+| Held | `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`; `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6) | After comparison disposition; not authorized now. |
 | Withdrawn | `M6-CP3-CB149B-P13-TERMINAL-CUT-AUTHORITY-RECEIPT`; `M6-CP3-CB152-P13-COMMON-CARRIER-CONTACT-CENSUS` | Replaced by CB151; replaced by CB153 (RA-251). |
 | Parked | `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY` | O45 resolved by FC-7′ only on TB131 MATCH. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: independent Review (`M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-REV`), only after TB131 STATUS is COMPLETE naming it. Use the turn-appropriate skill and read all mandatory policies first.
+`load_next`: runtime-free comparison definition (`M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH-COMPARISON`), only after TB131 Review STATUS is COMPLETE naming it. Read [Review](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md) and mandatory policies first.
 
 0. [ORIENTATION.md](ORIENTATION.md) — project context, read first.
 1. [ROADMAP.md](ROADMAP.md) — milestone position only.
