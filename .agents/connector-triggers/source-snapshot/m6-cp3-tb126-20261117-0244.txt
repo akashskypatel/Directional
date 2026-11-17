@@ -1,0 +1,2 @@
+Turn: M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-EXEC
+Purpose: exact source snapshot only; no runtime execution.
