@@ -54,3 +54,116 @@ Carry C5/O42/O43 open, O44/C1 and narrow C3 closed, C4/CB145 and exact grazing p
 | Pushed to origin, branch in sync | Connector-driven snapshot/patch workflow, no real local origin; require remote applied commit, changed-path verification and cleanup before COMPLETE. |
 
 Process limits: snapshot pre-read ordering was violated initially; switched to verified snapshot. Timer started about one minute after request; earlier actual deadline governs. Tool-call ledger incomplete across context compaction; exact total unavailable. External turn-based skill root SKILL.md fetch returned 404; repository cadence and mandatory policy remain binding. No fresh build, runtime or full package re-download.
+
+## Owner-requested adversarial re-review (RA-247, 2026-11-17 UTC)
+
+The owner asked for a critical re-review of this turn. It stays runtime-free: Haiku agents re-downloaded the TB126 and TB127 artifacts and ran a read-only consumer census. My own analysis read the source only.
+
+### 1. Upheld
+
+- **Gate.** 951/951 PASS, with rows 1–950 identical to TB126 (see §6).
+- **Census.** The MISMATCH stands, and it is not semantic. CB146 inserted 61 lines above the two assertions, so `:432`/`:434` became `:493`/`:495` in BunnyRandom and Vase. That moved four lines, and two census `first_failure` fields shifted with them.
+  - The comparison defect is mine. RA-246 §5 allowed only the appended terminal text, although an existing lesson (RA-102.1, normalize `file:line`) covers exactly this. That criterion should have allowed relocations that the diff proves.
+  - Refusing to amend the criterion after the fact, and not repeating the TB, is right.
+- **Narrow C3 closure.** Upheld.
+- **C5 site.** `trace_event_position` (`EmbeddedGraphTopology.cpp:154–172`) returns nullopt for an incidence that has no event edge and is neither the origin nor Terminal. `build_arcs` (`:702–719`) turns that into `TraceEventPositionInvalid`.
+
+### 2. Where the TB127 Review is incomplete
+
+**G1. The kind of event is already decided by the source; no observation is needed.**
+
+The Review left "event kind / node / role" open and allowed a bounded read-only observation. Listing every event producer in `SurfaceCellTracing.cpp` closes it:
+- `SingularityPortOrigin` and the port junction (`:3880`, `:4617–4623`) carry no edge, but the producer requires `port->node == firstPort->node` for every incidence (`:4600`). So the node is the trace's own origin node, and `trace_event_position` returns 0.
+- Barrier termination (`:3926`, `:4725`), singularity termination (`:2350`), limit cycle (`:3961`) and self-closure via the last segment (`:4764`) all publish an edge.
+- The only events that can have no edge together with a non-origin Interior incidence are trace–trace contacts:
+  - `field_aligned_publish_contact` (`:4203–4210`), which publishes a FirstContact with both incidences Interior, then a TraceIntersection with Terminal for the trace that stops and Interior for the struck trace;
+  - the finalize path (`:4680–4686`).
+  
+  Both take their edge from `field_aligned_common_carrier`, which returns an edge that both segments touch.
+
+So event 18 is a trace–trace contact inside face `(5,104,359)`, involving trace 0, whose two segments share no carrier edge.
+- Which incidence of trace 0 it is does not matter: every such contact fails here for both traces, because the FirstContact incidences are always Interior.
+- A further observation could name the other trace, but it would not change the contract.
+
+**G2. Fixing the position alone would only move the failure. Every consumer of a node's location assumes a vertex or an edge.**
+- **Position.** `TraceCut` stores an integer segment boundary only.
+- **Locus.** `NodeLocus` (`EmbeddedGraphTopology.h:70–73`) holds only `vertex` and `edge`. `build_node_loci` registers a contact node through the event's edge, and fails with `EventLocusMissingSourceEdge` (`:914`) when there is none. That is the next terminal after a position-only fix.
+- **Rotation.** There is no face branch (`RotationNodeLocusUnsupported`, `:1830`).
+- **Arc ranges.** Splitting the struck trace inside segment k means two arcs share segment k. Ten functions read `firstSegment`/`onePastLastSegment`/`sourceFaces`/`sourcePath` from arcs:
+  - `trace_ray_face`, `vertex_trace_ray_second_point`, `edge_locus_secondary_rank` and `build_rotation_system` (EmbeddedGraphTopology);
+  - `build_source_face_ownership` (SurfaceCutGraph `:508–758`);
+  - `annotate_trace_segment_incidence`, `build_fragment_corner_incidence`, `build_regions` (×3), `candidate_semantic_digest` and `validate_candidate_structure` (GlobalTopologyPlan);
+  - plus users of `sourcePath` only: `edge_arc_schedule`, `bound_arc_schedule`, the phase-front builders, the conformity baseline and the display.
+  
+  Each needs an audit for any assumption that ranges are disjoint.
+
+A definition that covers only "event position" repeats RA-244's lesson (read every consumer of the split object first).
+
+**G3. The common-carrier rule is a proxy, and it conflicts with Amendment 13 even where it works.**
+- For a contact strictly inside a face, the event's edge is a carrier both segments touch, not where the contact lies.
+- A2a′ then places the node at a segment boundary and registers it as an edge locus. That amounts to sliding the node along the struck segment onto that edge.
+- The result is a valid combinatorial embedding only while at most one contact lies on that side of the struck segment. Otherwise two nodes land on the same integer position and fail closed with `TraceEventPositionNodeConflict`.
+- It is still "carrier provenance used as graph authority", which DESIGN Amendment 13 forbids. I'm registering it as **O45**: a conformance debt that does not block now.
+- The new face-node path must apply first only to contacts that have no common carrier, so the gate is unchanged by construction (no gate row reaches that branch). Switching every contact over later is a separate decision, staged per RA-230.
+
+**G4. Why BunnyRandom reaches this now, and why nothing caught it.**
+- Two segments in one triangle that both have an entry and an exit edge always share an edge (2 + 2 > 3). So the common carrier can be missing only when a segment has no `incomingCarrier`.
+- That happens on a trace's first segment, after vertex transit (`:2720`, and via `proposal.nextIncomingCarrier` `:4523`) and after edge transit (`:2817`). The D11 and D12 work made such segments more common on BunnyRandom.
+- No test in `tests/` mentions `TraceEventPositionInvalid`, `NoCarrierMatch`, `EventLocusMissingSourceEdge` or `RotationNodeLocusUnsupported`, so none of these paths has ever been reached by a test (lesson RA-243).
+
+**G5. No user decision is needed.** Amendment 13 already requires the actual embedded graph, whose nodes include contacts inside faces. Amendment 14 already allows A2a′ to subdivide a trace in the derived arrangement while leaving the immutable network unchanged. So the face-interior node is required by the existing contract, not a new one.
+
+### 3. Realigned definition scope (`M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME`, Review only)
+
+The DEFN takes G1–G5 as established and must produce all of the following.
+
+1. **Representation.** I recommend:
+   - `NodeLocus` gains a face plus an exact barycentric point;
+   - a trace cut is either an integer boundary or (segment k, exact point) strictly inside k, using `terminalContact.barycentric` and `struckSegmentIndex`;
+   - several cuts inside one segment are ordered by an exact parameter along that segment;
+   - the two arcs at an interior split share segment index k, and their exact `sourcePath` pieces end or start at the contact point.
+2. **Consumer audit.** Go through all ten range consumers in G2. For each, state whether two arcs sharing segment k is correct, or what must change.
+3. **Rotation rule at a face node.** Order the rays counter-clockwise using an exact orientation test in the face's own vertex order (Amendment 26: one rotation per source entity). This covers a T-contact (three rays), self-closure (three) and a symmetric double termination (two).
+4. **Test reachability.** Find a way to build a minimal network with a face-interior T-contact that has no common carrier, by hand or from an existing fixture. Check that it reaches the new branch.
+5. **Freeze the sequence below,** with the first CB's diff frozen exactly. The DEFN may also freeze later diffs if they are independent.
+6. **Plan the rotation-level middle-piece direction witness** (RA-244 gap). If no fixture can reach both directions, name the missing fixture.
+
+**Stop rule:** if the audit finds a consumer that cannot tolerate a shared segment index without a new DESIGN contract, stop and name the decision.
+
+### 4. Turn sequence (each turn testable on its own)
+
+| # | Turn | Owner | Content |
+|---|---|---|---|
+| 1 | `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-REV` (+ RA-247) | Review | COMPLETE |
+| 2 | `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME` | Review | NEXT. Freezes everything in §3. |
+| 3 | `M6-CP3-CB147-P13-FACE-CONTACT-EXACT-HELPERS` | Code + Build | Pure exact helpers, not wired in: the contact parameter along a segment and the order of several contacts in one segment; the ray order at a face node; partial-segment exact path pieces. Unit tests use inputs that rounding cannot separate. No product dispatch changes. |
+| 4 | `M6-CP3-CB148-P13-FACE-NODE-LOCUS-AND-INTERIOR-CUT` | Code + Build | Representation: face `NodeLocus` and interior `TraceCut`, with range consumers updated per the audit. Still not wired, plus an equal-product test showing that integer-cut cases produce byte-identical arcs. |
+| 5 | `M6-CP3-CB149-P13-FACE-CONTACT-SWITCH` | Code + Build | Contacts with no common carrier go through the face-node path, which is also wired into locus registration and rotation. Includes the unit test from §3.4. The common-carrier proxy (O45) is untouched. |
+| 6 | `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC` | Test + Benchmark | Gate unchanged by construction; census BunnyRandom moves past C5. |
+| 7 | Outcome Review | Review | Closes C5, or classifies the next terminal. |
+| parked | `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY`; O45 conformance switch | — | — |
+
+The DEFN may merge or split steps 3–5 if its audit shows that is safer, but every step must stay independently testable.
+
+### 5. Carried
+
+- Open: C5, O42, O43, O45 (new, deferred).
+- Middle-piece direction witness still to do; C4/CB145 and exact grazing parked.
+- Closed: narrow C3, O44, C1.
+- Decisions: D11 = A, D12 = A, D10 deferred, D6 pending.
+- Counts: stable 66/17/49, debt 1, deferred 81; CP2 491/491.
+- CP3/selector497 unpromoted; `chainRimSchedules=false`.
+- DESIGN.md unchanged (G5).
+
+### 6. Evidence re-verified (Haiku agents)
+
+- **Archives.** All four ZIPs match: TB127 gate `017ad558…`, TB127 census `4edf0fe6…`, TB126 gate `c13a0f5e…`, TB126 census `79acdba0…`. Checksums: gate 1,910/1,910 OK and census 9/9 OK for both TB126 and TB127.
+- **Gate.** TB127 is 951 PASS, 0 RED.
+  - Rows 1–950 have 0 differing ledger cells compared with TB126.
+  - Eight raw logs differ (156, 168, 173, 175, 190, 191, 477, 705); none differs once newlines are removed.
+  - Row 951's log contains no "exception" or "Failure".
+  - Every raw log hash matches its ledger entry.
+- **Census.** Cylinder is identical.
+  - BunnyRandom differs in `:432`→`:493` and `:434`→`:495`, plus its terminal line, which keeps the TB126 text as an exact prefix and gains the suffix quoted above.
+  - Vase differs in the same two line numbers, and its terminal line is byte-identical.
+  - In the census ledger, only `first_failure` changed, in rows 2 and 3, from 432 to 493.

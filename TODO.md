@@ -1,4 +1,31 @@
-## CURRENT — TB127 mismatch independently adjudicated (2026-11-17 UTC)
+## CURRENT — RA-247 adversarial re-review of TB127-REV (2026-11-17 UTC)
+
+**Upheld:**
+- The gate is 951/951.
+- The census MISMATCH is only the assertion lines moving by 61. That criterion defect was RA-246's own: it ignored lesson RA-102.1.
+- Narrow C3 closure.
+- The C5 site at `trace_event_position`.
+
+**Findings:**
+- **G1.** The source already decides event 18's class: a trace–trace contact inside face (5,104,359), involving trace 0, with no common carrier edge. No observation is needed.
+- **G2.** Fixing the position alone would fail next at `EventLocusMissingSourceEdge`. `NodeLocus` has only vertex and edge, rotation has no face branch, and ten consumers read arc segment ranges.
+- **G3.** The common-carrier rule is a proxy that conflicts with Amendment 13 (O45, deferred).
+- **G4.** The rejection was never reached by any test.
+- **G5.** No user decision is needed.
+
+[Record §RA-247](.agents/Directional/Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Independent_Review_20261117.md#owner-requested-adversarial-re-review-ra-247-2026-11-17-utc).
+
+**Turn sequence:**
+- [x] `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-REV` (+ RA-247): Review, COMPLETE.
+- [ ] **NEXT (Review only):** `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME`. Defines the face-interior contact node: representation, audit of all ten consumers, rotation rule, a reaching fixture. Freezes CB147.
+- [ ] `M6-CP3-CB147-P13-FACE-CONTACT-EXACT-HELPERS`: pure exact helpers, not wired (first implementation turn).
+- [ ] `M6-CP3-CB148-P13-FACE-NODE-LOCUS-AND-INTERIOR-CUT`: representation and consumers, not wired, with an equal-product test.
+- [ ] `M6-CP3-CB149-P13-FACE-CONTACT-SWITCH`: contacts with no common carrier use the face-node path, with a reaching unit test.
+- [ ] `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC`: gate unchanged; census BunnyRandom moves past C5.
+- [ ] Outcome Review.
+- [ ] Parked: CB145 (C4 and grazing), O45 conformance switch, middle-piece direction witness (planned in the DEFN).
+
+## Historical checkpoint — TB127 mismatch independently adjudicated (2026-11-17 UTC)
 
 **Situation:** [TB127 independent Review](.agents/Directional/Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Independent_Review_20261117.md): strict RA-246 comparison MISMATCH upheld; gate 951/951, all 950 inherited rows match. Four census assertion locations shifted by 61 lines, exact unchanged assertions verified; non-semantic comparison discrepancy, not a new regression.
 

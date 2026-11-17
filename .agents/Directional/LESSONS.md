@@ -136,6 +136,15 @@ This document records **reusable failure-derived engineering lessons**, not an e
   the diff showed that CB144 could not be the direct cause of BunnyRandom's rotation terminal. Print
   the typed fields the result already publishes in the same TB as the next fix, not in a later
   diagnostic cycle (RA-246).
+- **Before defining a fix at one rejecting site, list every consumer of the same concept.** C5 failed at
+  trace-event placement. The same contact node would next fail at locus registration
+  (`NodeLocus` has only vertex and edge), then at rotation, then in ten arc-range readers. List the
+  event producers too: when only one producer can emit the observed shape (no edge, Interior role,
+  node is not the origin), the event's class is decided without a runtime observation (RA-247).
+- **A frozen census comparison must allow assertion-line moves that the CB's own diff proves.** RA-246
+  appended 61 formatter lines above two assertions and then allowed only the appended terminal text,
+  which made TB127 a MISMATCH. Apply RA-102.1 (normalize `file:line`) whenever a CB edits a file
+  that census assertions live in (RA-247).
 
 ## Semantic ownership, identity, and dataflow
 

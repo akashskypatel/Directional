@@ -1,3 +1,9 @@
+## 2026-11-17 UTC — RA-247 adversarial re-review of TB127-REV
+
+- Re-verified the TB126/TB127 archives, the 951/951 gate and the census differences, which are only the assertion lines moving by 61 plus the BunnyRandom suffix. The criterion defect behind the MISMATCH was RA-246's.
+- C5 is a trace–trace contact inside a face with no common carrier edge. The source decides this; no observation is needed. A2a′ lacks a face-interior node in its position, locus, rotation and arc-range handling. The common-carrier proxy is registered as O45, deferred.
+- The DEFN is widened to define the face-interior contact node and freeze CB147. Planned after it: CB148 → CB149 → TB128. [Record](.agents/Directional/Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Independent_Review_20261117.md).
+
 ## 2026-11-17 UTC — TB127 independent Review (comparison MISMATCH upheld)
 
 - [TB127 independent Review](.agents/Directional/Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Independent_Review_20261117.md): four result archives and raw ledger bindings verified, 951/951 gate, strict census MISMATCH only due to exact +61 assertion relocation; no changed assertion or accepted-green loss. C3 narrow split predicate discharged, C5 exact no-edge event-place rejection localized before rotation ordering; event identity still unresolved. Middle-piece direction witness remains open.

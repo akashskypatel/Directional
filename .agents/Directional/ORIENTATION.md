@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-17, `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-REV`):** Gate 951/951 PASS; frozen comparison MISMATCH adjudicated as exact assertion relocation only. Cylinder PASS, BunnyRandom and Vase RED. C3 narrow closure; C5 rejecting event position branch proven, exact event binding open. [TB127 independent Review](Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Independent_Review_20261117.md). Next `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME` (Definition Review only). CP2 491/491; stable 66/17/49, debt1, deferred81, CP3/selector497 unpromoted; O42/O43 open, O44/C1 closed.
+**Current currency (2026-11-17, RA-247 re-review of `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-REV`):** Gate 951/951 PASS. The census MISMATCH is only the assertion lines moving by 61, which is RA-246's criterion defect. C3 is narrowly closed. C5: BunnyRandom `TraceEventPositionInvalid`, trace 0, face (5,104,359). From source alone it is a trace–trace contact inside a face with no common carrier edge, and A2a′ has no face-interior node: position, `NodeLocus`, rotation and arc ranges all assume a vertex or an edge. Amendments 13 and 14 already require such nodes, so no user decision is needed. The common-carrier proxy is now O45 (deferred). **NEXT:** Review-only `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME` (RA-247 §3), then CB147 → CB148 → CB149 → TB128. [Record](Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Independent_Review_20261117.md). O42/O43/O45 open; CP2 491/491; stable 66/17/49, debt 1, deferred 81; selector497/CP3 unpromoted.
 
 ## 1. What the project is
 
