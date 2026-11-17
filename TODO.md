@@ -1,19 +1,15 @@
-## CURRENT — TB127 execution complete; mismatch Review next (2026-11-17 UTC)
+## CURRENT — TB127 mismatch independently adjudicated (2026-11-17 UTC)
 
-**Situation:** [TB127 execution report](.agents/Directional/Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Full_Gate_Execution_Report_20261117.md) records a gate MATCH and a strict combined MISMATCH against [RA-246 §5](.agents/Directional/Architecture_M6_CP3_TB126_P13_Edge_Terminal_Correction_Independent_Review_20261117.md#5-tb127-frozen).
+**Situation:** [TB127 independent Review](.agents/Directional/Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Independent_Review_20261117.md): strict RA-246 comparison MISMATCH upheld; gate 951/951, all 950 inherited rows match. Four census assertion locations shifted by 61 lines, exact unchanged assertions verified; non-semantic comparison discrepancy, not a new regression.
 
-**Background:** CB144B fixed the typed trace-ID extent in row 951. CB146 added 61 formatter lines only. Semantic source `48e6f97d278b2226036f658ce9060a38b8a374b5`, package `14301616031`; gate `14302887671` 951/951 PASS, all 950 inherited rows match, 1,910/1,910 hashes. Census `14302668940`, 9/9 hashes. Cylinder PASS 288, BunnyRandom and Vase RED unchanged.
+**Background:** CB146 source `48e6f97d278b2226036f658ce9060a38b8a374b5`, package `14301616031`; TB127 gate `14302887671`, census `14302668940`. Cylinder PASS 288; BunnyRandom and Vase RED. CP2 491/491 accepted; CP3/selector497 not accepted.
 
-**Assessment:** Four normalized census lines differ only in assertion source line numbers (432→493 and 434→495 in both RED cases). RA-246 permits no such normalization. BunnyRandom's prior terminal prefix and four inventory lines match; new suffix `rotationReason=TraceEventPositionInvalid trace=0 eventIndex=18 eventPositionReason=NoCarrierMatch eventPositionPass=SourceEdgeUnavailable` matches the registered face-only prediction. This does not prove the exact root cause. No new stable event or accepted-green loss. C3/C5/O42/O43 open; O44/C1 closed; stable 66/17/49, debt1, deferred81, CP2 491/491; selector497/CP3 unpromoted; `chainRimSchedules=false`; D11=A, D12=A, D10 deferred, D6 pending.
+**Assessment:** C3 narrow split-cardinality obligation discharged by independent adjudication; not proof of middle-piece direction. C5 trace 0/event 18, face (5,104,359), `rotationReason=TraceEventPositionInvalid trace=0 eventIndex=18 eventPositionReason=NoCarrierMatch eventPositionPass=SourceEdgeUnavailable`: non-origin non-terminal event lacks sourceEdge, rejected before ray ordering. Exact event-node/role/contact position and struck segment unproven. Stable 66/17/49, debt1, deferred81; C5/O42/O43 open, O44/C1 closed, chainRimSchedules=false; D11=A, D12=A, D10 deferred, D6 pending.
 
-**Recommendation / turn sequence:**
-- [x] `M6-CP3-TB126-P13-EDGE-TERMINAL-CORRECTION-FULL-GATE-REV` (RA-245 + RA-246): Review complete.
-- [x] `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION`: exact test-only compile verified.
-- [x] `M6-CP3-CB146-P13-ROTATION-TERMINAL-LOCUS-PRINT`: exact formatter compile verified.
-- [x] `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-EXEC`: immutable gate/census executed, combined MISMATCH.
-- [ ] **NEXT:** `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-REV`: independent Review only. Adjudicate assertion identity/line relocation, guard result and typed fail-closed locus; no runtime. Freeze exactly one next turn under Review authority.
-- [ ] Original MATCH-only `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME`: not authorized directly by TB127. Retain C3/C5 classification, narrow owning-stage correction and separate rotation-level middle-piece direction test obligations from RA-246 §6.
-- [ ] Parked: `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY` (C4 and exact grazing); no source changes or promotion in TB127.
+**Recommendation:**
+- [x] `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-REV`: Independent Review, no runtime.
+- [ ] **NEXT:** `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME`: separate Definition Review, follow exact scope/falsifiers in [TB127 independent Review](.agents/Directional/Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Independent_Review_20261117.md). Define event authority and exact path split or freeze a discriminating observation if evidence is insufficient. No repair or runtime. Preserve separate middle-piece direction oracle through rotation.
+- [ ] Parked: `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY` (C4/exact grazing).
 
 ## Historical checkpoint — TB126 independent Review adjudication (2026-11-17 UTC)
 
@@ -54,7 +50,7 @@ The next blocker is the `build_arcs` limit of one terminal cut per mandatory edg
 | 9 COMPLETE | `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION` | Code + Build (test-only, compile only) |
 | 10 COMPLETE | `M6-CP3-CB146-P13-ROTATION-TERMINAL-LOCUS-PRINT` | Code + Build (test-only, compile only) |
 | 11 COMPLETE | `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-EXEC` | Test + Benchmark (gate MATCH; combined MISMATCH) |
-| 12 NEXT | `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-REV` | Independent Review only |
+| 12 COMPLETE | `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-REV` | Independent Review adjudicated; see CURRENT. |
 | parked | `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY` (typed `Unresolved` fail-closed; exact-grazing test) | Code + Build, then TB and Review |
 
 ## Historical checkpoint — TB123-REV static oracle reviewed; TB124 full gate is next (2026-11-16 UTC)
@@ -85,7 +81,7 @@ The next blocker is the `build_arcs` limit of one terminal cut per mandatory edg
 - [x] `M6-CP3-CB144B-P13-EDGE-TERMINAL-GUARD-EXTENT-CORRECTION`; compile-only exact test input fix, no product edits or runtime.
 - [x] `M6-CP3-CB146-P13-ROTATION-TERMINAL-LOCUS-PRINT`: test-only compile verified.
 - [x] `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-EXEC`: combined MISMATCH.
-- [ ] **NEXT:** `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-REV` (see CURRENT).
+- [x] `M6-CP3-TB127-P13-GUARD-AND-ROTATION-LOCUS-FULL-GATE-REV` (see CURRENT).
 - [ ] Separate later guard: demonstrate that `Unresolved` vertex follow fails closed before publishing invalid segments. Separate Vase/O41 work unaffected.
 
 **Sequence, owner and stop gates:** CB142 (Code + Build) → TB123 (Test + Benchmark) → TB123-REV (Review) → conditional TB124 (Test + Benchmark) → TB124-REV (Review) → CB143 (Code + Build) → TB125 (Test + Benchmark) → DEFN (Review) → conditional CB144 (Code + Build) → TB126 (Test + Benchmark) → Review. Each turn owns one bounded change or evidence gate; stop immediately at any falsifier. Exact identifiers and acceptance conditions appear in the adversarial report and handoff.

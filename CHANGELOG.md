@@ -1,3 +1,8 @@
+## 2026-11-17 UTC — TB127 independent Review (comparison MISMATCH upheld)
+
+- [TB127 independent Review](.agents/Directional/Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Independent_Review_20261117.md): four result archives and raw ledger bindings verified, 951/951 gate, strict census MISMATCH only due to exact +61 assertion relocation; no changed assertion or accepted-green loss. C3 narrow split predicate discharged, C5 exact no-edge event-place rejection localized before rotation ordering; event identity still unresolved. Middle-piece direction witness remains open.
+- Exactly next `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME`, separate runtime-free Definition Review authorized by adjudication. Stable 66/17/49, debt1, deferred81; CP2 491/491, CP3/selector497 unpromoted. No product/test/selector mutation or successor execution.
+
 ## 2026-11-17 UTC — TB127 guard and rotation-locus gate (combined MISMATCH)
 
 - [Execution report](.agents/Directional/Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Full_Gate_Execution_Report_20261117.md): immutable CB146 package `14301616031`, source `48e6f97d278b2226036f658ce9060a38b8a374b5`; [gate 44024527625](https://github.com/akashskypatel/Directional/actions/runs/44024527625), artifact `14302887671`, 951/951 PASS, 1,910/1,910 checksums, 950 inherited records match. [Census 44024687415](https://github.com/akashskypatel/Directional/actions/runs/44024687415), artifact `14302668940`, 9/9 checksums. Cylinder PASS 288; BunnyRandom and Vase RED unchanged. Four assertion lines differ only by +61 from the frozen CB146 formatter insertion; the RA-246 comparison does not allow that normalization. Both executions succeeded; the combined result is MISMATCH, not an infrastructure failure.

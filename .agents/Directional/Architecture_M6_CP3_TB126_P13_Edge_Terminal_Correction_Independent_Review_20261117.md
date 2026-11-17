@@ -220,3 +220,7 @@ An edge-locus reason would falsify F3, and the outcome Review must then reopen C
 - Counts: stable 66/17/49, debt 1, deferred 81; CP2 491/491.
 - CP3/selector497 unpromoted; `chainRimSchedules=false`.
 - DESIGN.md unchanged.
+
+### Post-TB127 independent adjudication (2026-11-17)
+
+[TB127 independent Review](Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Independent_Review_20261117.md) establishes the strict §5 MISMATCH and unchanged assertion identity. The original MATCH route remains historical; the Review separately discharges narrow C3 and authorizes `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME`. C5 event placement predicate proven, exact event binding unproven. §5 is not retroactively normalized or weakened; §6 middle-piece direction obligation remains.
