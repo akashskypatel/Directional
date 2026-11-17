@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb128-review-progress-v1",
+  "request_id": "m6-cp3-tb128-review-final-closeout-v2",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb128-review-progress-v1",
-  "file_id": "1QzvAFl194wF1mKUP6M2S1NyOEhVjRzha",
-  "patch_sha256": "cbb63acf5e48611c873d7d5fe52798f131e2aa6fdacb0cf014144327322db6f5",
-  "base_sha": "84917b4f29d6e94d55e51b4698bd4c5c957e4b21",
+  "mailbox_key": "m6-cp3-tb128-review-final-closeout-v2",
+  "file_id": "1gUzpTqyGDh3KF_UsMNE6coxChZIZWljb",
+  "patch_sha256": "994e421cab1932f186d3f8687ecee2e8619e2b90e266d99dbe478e844f2ef696",
+  "base_sha": "269d7aede2e1a88cc02afdde3ee04f82fa2ac33b",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve TB128 independent review findings and bounded receipt plan",
+  "commit_message": "docs: close TB128 independent review and freeze bounded terminal receipt",
   "retention_days": 7
 }
