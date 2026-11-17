@@ -1,3 +1,7 @@
+## 2026-11-16 UTC — TB124 corrected cross-face oracle full gate: scoped MATCH
+
+- [TB124 report](.agents/Directional/Architecture_M6_CP3_TB124_P13_Corrected_Full_Gate_Execution_Report_20261116.md): existing CB142 package `14224898790` (semantic source `57b28b737fd92b083d24d882152dea186211f735`), [test run `43980520479`](https://github.com/akashskypatel/Directional/actions/runs/43980520479), result `14283755675` (SHA-256 `016b9528c330d60a3202d8594d0d6f37b6c0eb76415cab2f0c93ecc965d30d42`), log `14283725881` (SHA-256 `00d81c610969747fd975bdd3b03a13e0e8f86f38d8693db5e02d8ea3e122c5e4`). **949/949 PASS**, zero skipped, 1,906/1,906 manifest, 28/28 immutable package, postflight true. Row949 corrected oracle passed; 948 inherited semantic records unchanged. Four raw diagnostic logs change only ordering/line concatenation; unchanged record multisets, non-stable classification, no product regression. No census/rebuild/selector/promotion. RA-242's next separate turn is Review `M6-CP3-DEFN-P13-EDGE-TERMINAL-INVENTORY`. Stable 66/17/49, debt1 deferred81 and CP2 491/491 preserved.
+
 ## 2026-11-16 UTC — RA-242 adversarial re-review of TB123-REV
 
 - [Record §RA-242](.agents/Directional/Architecture_M6_CP3_TB123_REV_P13_Cross_Face_Oracle_Outcome_Review_20261116.md):

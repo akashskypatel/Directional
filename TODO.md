@@ -1,3 +1,9 @@
+## 2026-11-16 — TB124 full gate complete; Review-only edge-terminal inventory next
+
+- [x] `M6-CP3-TB124-P13-CORRECTED-FULL-GATE-EXEC`: immutable CB142 949/949 PASS, 0 skipped, 1,906/1,906 result hashes, 28/28 package hashes before/after; no build/census. [TB124 report](.agents/Directional/Architecture_M6_CP3_TB124_P13_Corrected_Full_Gate_Execution_Report_20261116.md). Four inherited legacy diagnostic logs have ordering/line-join variation only; semantic receipts and record multisets unchanged.
+- [ ] **NEXT** `M6-CP3-DEFN-P13-EDGE-TERMINAL-INVENTORY`: separate Review accepts scoped gate, defines all-edge exact multi-terminal inventory and freezes CB143 diff per RA-242. Do not start implementation from this turn.
+- [ ] After Review: CB143 diagnostic-only compile → TB125 full gate/census → equivalence Review → CB144 one-owner correction → TB126 gate/census → independent outcome Review. C4 and exact grazing later at CB145. Keep all existing frozen selector, product, and acceptance constraints.
+
 ## CURRENT — RA-242 adversarial re-review of TB123-REV; TB124 gate-only next (2026-11-16 UTC)
 
 > **RA-242: owner-requested adversarial re-review of `M6-CP3-TB123-REV-P13-CROSS-FACE-ORACLE-OUTCOME`.** [Record §RA-242](.agents/Directional/Architecture_M6_CP3_TB123_REV_P13_Cross_Face_Oracle_Outcome_Review_20261116.md). The CB142 oracle is correct: it compares the transported label with the outward branch. Corrections to the first pass:
