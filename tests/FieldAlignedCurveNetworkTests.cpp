@@ -18585,12 +18585,13 @@ TEST(MandatoryEdgeTerminalSplit, SplitsAtOrderedDistinctCutsAndRejectsAmbiguousO
   using directional::authority::FieldExactRational;
   using directional::authority::NetworkNodeId;
   using directional::authority::TraceId;
-  constexpr std::size_t idCount = 16U;
+  constexpr std::size_t nodeCount = 16U;
+  constexpr std::size_t traceCount = 39U;
   const auto node = [&](const std::size_t index) {
-    return NetworkNodeId::from_index(index, idCount).value();
+    return NetworkNodeId::from_index(index, nodeCount).value();
   };
   const auto trace = [&](const std::size_t index) {
-    return TraceId::from_index(index, idCount).value();
+    return TraceId::from_index(index, traceCount).value();
   };
   const auto cut = [&](const std::size_t traceIndex, const std::size_t nodeIndex,
                        const FieldExactRational t) {
