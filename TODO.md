@@ -1,4 +1,24 @@
-## CURRENT — TB131 Review upheld MISMATCH; comparison definition next (2026-11-17 UTC)
+## CURRENT — RA-253 re-review of TB131 Review; CB155 cut-binding receipt next (2026-11-17 UTC)
+
+[RA-253](.agents/Directional/Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md#ra-253--adversarial-re-review-of-this-review-2026-11-17-utc) keeps the literal TB131 MISMATCH as history. It withdraws the comparator-only DEFN because the question is settled from source.
+- **Comparator.** Rows 174/176/179 come from the region-projection diagnostic interleaving in `std::async` component workers. The Vase difference is the address bytes of two `const char*` parameters. RA-252's row164-only rule was my error (S0). The prospective rule is TB132 N3–N5, with negative controls.
+- **Sphere.** It passed the cut-free embedded build, including the rotation system and face walk, with all 12 FC-7′ contacts. It now fails in cut search at the `:373` guard: two traces cross cut edge (0,2) at one exact point. This was found by static elimination and is not yet observed.
+- **BunnyRandom.** At attempt 0, two face-contact nodes claim one position on trace 82.
+- **O45** stays open until the contact points are shown to be strictly interior (S4).
+
+Turn sequence:
+- [x] RA-253 re-review of `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-REV`: COMPLETE.
+- [ ] **NEXT (Code + Build, compile only):** `M6-CP3-CB155-P13-CUT-BINDING-CONFLICT-RECEIPT`.
+  - Exact diff `.agents/Directional/Architecture_M6_CP3_CB155_P13_Cut_Binding_Conflict_Receipt_Exact.diff`: SHA-256 `2a9de80f6781caab9c741d450715627ebd136d5407778a2587e05afa3e0f7761`, 189 lines; numstat `157 0 src/geometry/EmbeddedGraphTopology.cpp`.
+  - Precheck: `git diff --quiet 452eb3d789016e744e99d88811add0f7e0949165 HEAD -- src include tests`. Build the eight RA-245 targets; runtimeExecution=false.
+  - Routes: compile defect → `M6-CP3-PLAN-P13-CUT-BINDING-RECEIPT-STOP`; infrastructure → `M6-CP3-CB155A-P13-CUT-BINDING-RECEIPT-ORCH`.
+- [ ] `M6-CP3-TB132-P13-CUT-BINDING-CONFLICT-RECEIPT-FULL-GATE-EXEC`. Same gate `941287fa…`, census `3af1dc0d…`, deferred `fd433f54…` and harness `78b8002c…`; comparator TB131; normalizations N1–N5 and MATCH per RA-253 S7.
+- [ ] `M6-CP3-TB132-P13-CUT-BINDING-CONFLICT-RECEIPT-FULL-GATE-REV`. Attribute both sites, decide S4/O45, and freeze at most one repair DEFN per site.
+- [ ] Held: `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`, then `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6); the row 858 face-witness DEFN comes after the sphere repair.
+- [ ] Withdrawn: CB149B, CB152, DEFN-…-COMPARISON. Parked: CB145.
+- [ ] Carried: H2 (not observed), O46, C5/O42/O43, FC-1/FC-4 producer proof, middle-piece direction witness. Stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted. D11=A, D12=A, D10 deferred, D6 pending.
+
+## Historical checkpoint — TB131 Review upheld MISMATCH; comparison definition next (2026-11-17 UTC)
 
 [RA-252 DEFN](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Carrier_Contact_Switch_Review_20261117.md) re-opened the TB130 gate and census archives (digests match). Every build with a proxy contact is followed by exactly two H1 receipts, so all are rejected at A2a′ and no accepted output carries a proxy contact.
 - **FC-7′.** A non-port node with a TraceIntersection or TraceSelfClosure event is a face-contact node, whatever its proxy edge. Barrier and port `FirstContact` keep the edge path. The producer keeps publishing the proxy (digest stability).
@@ -12,7 +32,7 @@ Turn sequence:
   - Source `452eb3d789016e744e99d88811add0f7e0949165`; package `14347130681`, all eight targets verified, runtimeExecution=false.
 - [x] **COMPLETE (Test + Benchmark, MISMATCH):** `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-EXEC`. [Execution report](.agents/Directional/Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Execution_Report_20261117.md). Gate 952/953 PASS; 858 permitted premise RED at line 155; 17/17 neutral PASS; zero H1 or proxy census records. Unaffected logs 931/934 match; 174/176/179 differ; Vase parameter bytes differ under literal frozen rules. Sphere `InvalidCutGraphBinding` trace 4; BunnyRandom `TraceEventPositionNodeConflict` trace 82. No promotion or O45 closure.
 - [x] **COMPLETE (independent Review, MISMATCH upheld):** `M6-CP3-TB131-P13-CARRIER-CONTACT-SWITCH-FULL-GATE-REV`. [Review](.agents/Directional/Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md). Forensic presentation equivalence only; no stable loss, no O45 closure. Sphere and BunnyRandom rejection-site candidates; row858 premise and row648 unreached sphere assertions preserved.
-- [ ] **NEXT (Review/definition only):** `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH-COMPARISON`. Freeze prospective exact comparator and negative controls, preserve all existing gate identities, define whether a fresh artifact-only comparison is needed. No code/runtime, no historic MATCH or promotion. Held: `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME` → `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6).
+- [x] **WITHDRAWN by RA-253:** `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH-COMPARISON`. Freeze prospective exact comparator and negative controls, preserve all existing gate identities, define whether a fresh artifact-only comparison is needed. No code/runtime, no historic MATCH or promotion. Held: `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME` → `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6).
 - [ ] Withdrawn: CB149B, CB152. Parked: CB145. O45 is resolved by FC-7′ only on TB131 MATCH.
 - [ ] Carried: H2 (not observed), O46, C5/O42/O43, FC-1/FC-4 producer proof, middle-piece direction witness. Stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted. D11=A, D12=A, D10 deferred, D6 pending.
 

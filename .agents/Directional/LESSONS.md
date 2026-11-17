@@ -297,6 +297,7 @@ This document records **reusable failure-derived engineering lessons**, not an e
   switch at its own predicate inside the product, across every gate row, not with one test's
   observer. Make the switch predicate as narrow as the record that justifies it (node-level
   TraceIntersection/SelfClosure, not "any contact kind"): other producers share the event kind.
+- **When a guard rejects with a locus, enumerate every guard that can set that field combination and eliminate the unreachable ones from the producer before buying a receipt (RA-253).** The TB131 Review listed four candidate sites for the sphere's `InvalidCutGraphBinding`. Three were unreachable: unique keys, segment 0 has no incoming carrier, and one carrier per segment. The remaining site also implied that the cut-free build had succeeded, which was the most important new fact. Ask what a failure's stage implies about the stages before it. A loop that returns on any failure proves every earlier iteration passed. When a frozen comparator fails on logs, first check the emitter's concurrency and the comparator's coverage of that emitter class; do not spend a definition turn on it.
 - **State a staging trigger as the property it protects, then check that property (RA-252).** RA-251's
   "no accepted row prints lastOutgoing>0" fired on PASS rows whose proxy builds were all rejected; pairing
   each census line with its rejection receipt in the raw logs showed no accepted output was at risk. Before

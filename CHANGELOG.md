@@ -1,3 +1,9 @@
+## 2026-11-17 UTC — RA-253 re-review of the TB131 Review
+
+- [RA-253](.agents/Directional/Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md#ra-253--adversarial-re-review-of-this-review-2026-11-17-utc): the literal MISMATCH is kept. The unaffected-log differences are attributed from source to diagnostic interleaving and parameter address bytes. `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH-COMPARISON` is withdrawn.
+- The sphere passed the cut-free embedded build with FC-7′ contacts. Its new rejection is a duplicate exact crossing of cut edge (0,2), found by static elimination. BunnyRandom: two contact nodes claim one position on trace 82. O45 is open pending the contact-point check.
+- Next is `M6-CP3-CB155-P13-CUT-BINDING-CONFLICT-RECEIPT`: an exact print-only diff, SHA-256 `2a9de80f…`. Then TB132 with N1–N5 and MATCH criteria. Stable 66/17/49, debt 1, deferred 81, CP2 491/491.
+
 ## 2026-11-17 UTC — TB131 independent Review (MISMATCH upheld)
 
 - [Review](.agents/Directional/Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md): all 491 accepted prefix rows PASS; 952/953 candidate, 17 neutral PASS, 858 permitted premise RED, 648 sphere assertions unreached. Three region projection diagnostics differ in ordering/framing only and Vase differs in pointer-object presentation under forensic comparison; literal frozen MISMATCH remains. Sphere/BunnyRandom new binding failures localized to candidates, not yet uniquely classified. O45 stays open. No stable event, promotion, runtime or semantic mutation.

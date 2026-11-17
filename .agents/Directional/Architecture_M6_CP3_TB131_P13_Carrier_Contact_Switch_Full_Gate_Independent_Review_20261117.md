@@ -77,3 +77,119 @@ Accounting: 66 stable events / 17 categories / 49 recurrences; one produced-witn
 | review_check.py boundary | Local verified snapshot lacks historical Git objects. Scratch preimage comparison checks unchanged code, selectors and retained durable sections; history-dependent baseline checks cannot pass locally. See preservation evidence for actual result. |
 | STATUS lifecycle maintained | Initial IN_PROGRESS beacon commit edf81aa644b1dbda0524a938dd3bccd1ede983c1, start 2026-11-17T17:20:16Z, resume empty. Final direct beacon after delivery/cleanup; if not verified, retain IN_PROGRESS. |
 | Pushed to origin, branch in sync | Local snapshot is not an authenticated checkout. Verify dispatcher apply and remote branch diff before final COMPLETE; no claim of local origin synchronization. |
+
+## RA-253 — adversarial re-review of this Review (2026-11-17 UTC)
+
+Runtime-free. I re-opened the TB131 gate `14349985217` (ZIP `3747ea47…`, matches) and census `14349666706` (ZIP `784df0aa…`, matches) in an isolated directory with `python3 -I`, and checked source at HEAD (`git diff --quiet 452eb3d7… HEAD -- src include tests` holds). Haiku agents ran read-only source audits.
+
+**Verdict.** The literal MISMATCH stands as history. Every substantive claim about the unaffected rows is upheld. But the successor is wrong: a comparator-only DEFN turn does no product work, and its question can be settled now from source. This Review also missed the most important new fact (S2) and the site discrimination it allows (S2/S3). **`M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH-COMPARISON` is withdrawn.** Its comparator rule is frozen below as TB132 normalization N3–N5. Next is an exact print-only receipt CB at the two newly reached guards.
+
+### S0. My own RA-252 error
+RA-252 §6 criterion 1 carried only the row164 complete-line-multiset rule. Rows 174/176/179 are from the same `SurfaceCellAuthorityContractCutover` family and reach the same emitter. I did not check the emitter's concurrency; RA-250's lesson already said to. I also omitted the parameter-object masking that the TB129 Review had used. The MISMATCH came from my freeze, not from CB154.
+
+### S1. Comparator, settled from source
+- **Emitter.** `emit_region_euler_certificate_diagnostics` (`GlobalTopologyPlan.cpp:1959–1991`) is called through `build_region_certificate` `:2359` → `build_region_certificates` `:2447` → `canonical_candidate` `:2631` → `GlobalTopologyPlan::make` `:3028`, then `RemeshPipeline.cpp:12958`. That path runs inside per-component `std::async` workers (`RemeshPipeline.cpp:17726`, `:19571`).
+- **Rows.** Rows 174/176/179 (`SurfaceCellsPhase10Tests.cpp:10631`, `:10505`, `:9959`) reach the emitter through the final-validation counterfactual aggregate.
+- **Interleaving.** `std::cerr << out.str() << '\n'` makes two separate insertions. The concatenated records and stray empty line in row 179 are the signature of another worker's insertion landing between them.
+- **Vase.** The two differing bytes are two `const char*` addresses (`SurfaceCellDesignAcceptanceTests.cpp:26–29`).
+- **Ruling.** CB154 changes only `EmbeddedGraphTopology`, and 952/953 substantive ledgers are equal. So these are scheduling and pointer presentation. A fresh run on CB154 is not needed. The prospective rule is TB132 N3–N5, with negative controls.
+
+### S2. The sphere passed the zero-cut build — first time
+The sphere's `InvalidCutGraphBinding` sets both `trace` and `sourceEdge`, so it can only come from `:373–380`, `:414–420`, `:1121–1128` or `:1130–1137`. The last three are unreachable:
+- **`:414`:** crossing keys are unique per trace and segment, and node ids come from a counter.
+- **`:1121`:** a crossing exists only for a segment with an `incomingCarrier`. Segment 0 never has one: `runtime.incomingCarrier` starts empty (`SurfaceCellTracing.cpp:3263`) and is set only for following segments (`:4523`). The loop bound also excludes position ≥ size.
+- **`:1130`:** only the origin precedes, and a segment has one incoming carrier.
+
+**Site.** It is therefore the `:373` guard: two distinct traces cross selected cut edge (0,2) at the same exact interior parameter, and trace 4 is the earlier of the two.
+
+**Consequence.** Edge (0,2) was a selected cut, and `SurfaceCutGraph.cpp:1007–1016` returns on any failure. So the cut-free `build_embedded_graph_topology` at attempt 0 **succeeded**. The sphere's arcs, rotation system and face walk were built with all 12 contacts bound by FC-7′, which is positive evidence for the switch. The failure is in cut search, a stage the sphere had never reached.
+
+**Not printed.** `secondTrace`, the parameter and the attempt index are absent because the test printer (`FieldAlignedCurveNetworkTests.cpp:7335–7375`) does not print them. The elimination is a static model, and CB155 tests it.
+
+### S3. BunnyRandom: two face-contact nodes claim one position
+- **Guard.** The locus has both `trace` and face set, so it is the contact-insertion guard (`:1155–1164`), as this Review said.
+- **The claimants are both face-contact nodes.** The origin key `{0,∅}` and the crossing keys `{k<size,∅}` can never equal a contact key: an interior key carries a parameter, and an end key is `{size,∅}`. Events are inserted after contacts.
+- **It happens at attempt 0.** Contact insertion is independent of the cut set, so BunnyRandom never obtains a topology.
+- **Possible causes, both producer node-identity facts:**
+  - Two distinct nodes record the same contact. The collector checks every terminating trace's face and point, so the face and point would be equal.
+  - Two contacts strike trace 82 at the same exact point.
+- **Unknown.** Whether the conflict was masked before CB154 by the earlier H1 rejection on trace 1. CB155 prints each node's events, so an FC-7′-promoted node is identifiable.
+
+### S4. FC-7′ premise gap
+FC-7′ says a trace-trace contact lies strictly inside a face. S2 means two traces pass through one exact point of edge (0,2). If they share a contact node there, the contact lies **on** an edge and FC-7′ gives it a face locus, so the premise fails. I have not proved whether `field_aligned_publish_contact` excludes boundary contacts. CB155 prints every contact's barycentric point; a zero coordinate falsifies the premise.
+
+**O45 remains open.** It closes on TB132 when every printed contact point is strictly interior. The comparator does not decide it.
+
+### S5. Premise rows
+I agree with this Review: row 858 remains a registered permitted RED at `:155`, and row 648's sphere assertions are unreached. No test change is made while the sphere's terminal still moves with each fix. The 858 face-witness correction is a later DEFN after the sphere repair is chosen.
+
+### S6. CB155 — `M6-CP3-CB155-P13-CUT-BINDING-CONFLICT-RECEIPT` (exact, print-only)
+**The patch.** `Architecture_M6_CP3_CB155_P13_Cut_Binding_Conflict_Receipt_Exact.diff`:
+- SHA-256 `2a9de80f6781caab9c741d450715627ebd136d5407778a2587e05afa3e0f7761`; 189 lines; numstat `157 0 src/geometry/EmbeddedGraphTopology.cpp`.
+- Precheck: `git diff --quiet 452eb3d789016e744e99d88811add0f7e0949165 HEAD -- src include tests`.
+- `git apply --check` passes at HEAD. `-fsyntax-only` returns rc 0 with 22 warnings, the same as HEAD.
+
+**What it prints.** Two `std::clog` lines, each inside an already-rejecting branch:
+- `EmbeddedGraphTopology.duplicateCutCrossing` reports the edge, parameter and cut-edge count. For both traces it reports the crossing segment(s), segment count and terminal contact (struck trace and segment, contact face, barycentric `at=`), plus every event incident to both traces (node, kind, edge).
+- `EmbeddedGraphTopology.contactCutConflict` reports the trace and position. For each of the two claimant nodes it reports the role (contact/crossing/network), face, point, terminating traces with their contact records, interior positions, and events (kind and edge).
+
+**Neutrality.** `std::clog` precision is saved and restored. No control flow changes. The failure replay (`SurfaceCutGraph.cpp:208`/`:212`) prints each line twice.
+
+**Tests.** There are none. No test reaches either guard deliberately: `TraceEventPositionNodeConflict` has no test reference, and the only `secondTrace` test is the mandatory-edge splitter. The witnesses are the TB132 criteria.
+
+### S7. TB132 frozen — `M6-CP3-TB132-P13-CUT-BINDING-CONFLICT-RECEIPT-FULL-GATE-EXEC`
+**Setup.** TB132 runs on the CB155 package with the same inputs:
+- gate `941287fa…` (953 rows), census `3af1dc0d…`, deferred `fd433f54…`, harness `78b8002c…`.
+- Comparator: TB131 (gate `14349985217`, census `14349666706`).
+
+**Normalizations, applied prospectively:**
+
+| Rule | What it normalizes |
+|---|---|
+| N1 | Elapsed time. |
+| N2 | Newline framing. |
+| N3 | Gate-wide, `M3_CP4AB_FRAGMENT_DIAG` records are compared as a multiset of complete records split at the prefix. The prefix count must equal the record count, and the non-record remainder must be byte-equal in order. |
+| N4 | Only in the census parameterized rows, the bytes of `GetParam() = 16-byte object <…>` are masked. |
+| N5 | Lines starting `EmbeddedGraphTopology.duplicateCutCrossing ` or `EmbeddedGraphTopology.contactCutConflict ` are removed before comparison. |
+
+**Negative controls.** The comparator must report MISMATCH on mutated TB131 copies with:
+- one M3 record removed, duplicated or altered;
+- one non-record byte altered;
+- one ledger field changed.
+
+**MATCH requires all of:**
+1. All 953 gate and 3 census substantive ledger records equal TB131:
+   - row 858 RED only at `:155`;
+   - Cylinder PASS (288 quads);
+   - BunnyRandom and Vase RED.
+2. Raw logs equal TB131 under N1–N5.
+3. `duplicateCutCrossing` lines appear only in the 19 sphere rows: 380, 388, 393, 394, 396, 397, 644, 645, 648, 669, 686, 691, 694, 698, 699, 700, 843, 844, 858. `contactCutConflict` lines appear only in the census BunnyRandom log. Within one log, the lines of a failing build are identical.
+4. Rows 644 and 698 each contain a `duplicateCutCrossing` line with `edge=(0,2)` whose first trace is 4. BunnyRandom contains a `contactCutConflict` line with `trace=82`, whose claimant is a contact in face (21,72,273). This falsifies or confirms S2/S3.
+5. Anything else is a MISMATCH.
+
+**Data, not criteria:**
+- the second trace and its parameter;
+- the shared events;
+- each claimant's role and events (edge-carrying, i.e. FC-7′-promoted, or not);
+- any zero barycentric coordinate (S4).
+
+**Routes:**
+- MATCH → `M6-CP3-TB132-P13-CUT-BINDING-CONFLICT-RECEIPT-FULL-GATE-REV`.
+- Criterion 4 fails → the static model is falsified → independent Review.
+- Infrastructure → `M6-CP3-TB132A-P13-CUT-BINDING-RECEIPT-ORCH`.
+
+### S8. Turn sequence
+1. RA-253 (this re-review) — COMPLETE.
+2. `M6-CP3-CB155-P13-CUT-BINDING-CONFLICT-RECEIPT`, compile only. Compile defect → `M6-CP3-PLAN-P13-CUT-BINDING-RECEIPT-STOP`; infrastructure → `M6-CP3-CB155A-P13-CUT-BINDING-RECEIPT-ORCH`.
+3. `M6-CP3-TB132-P13-CUT-BINDING-CONFLICT-RECEIPT-FULL-GATE-EXEC`.
+4. `M6-CP3-TB132-P13-CUT-BINDING-CONFLICT-RECEIPT-FULL-GATE-REV`. It attributes both sites, decides S4/O45, and freezes at most one repair DEFN per site:
+   - sphere: a shared network node on a cut edge, or a missed producer contact;
+   - BunnyRandom: coincident-contact node identity, under FC-1/FC-4.
+5. Held: `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`, then `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6); the row 858 face-witness DEFN comes after the sphere repair.
+
+Withdrawn: `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH-COMPARISON`, CB149B, CB152. Parked: CB145.
+
+**Unchanged:**
+- Accounting: stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted.
+- Decisions: D11=A, D12=A, D10 deferred, D6 pending.
+- Open items: H2, O46, C5/O42/O43, FC-1/FC-4 producer proof and the direction witness are carried.

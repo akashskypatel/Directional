@@ -1,3 +1,11 @@
+## 2026-11-17 — RA-253 re-review of the TB131 Review (non-stable)
+
+[RA-253](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md#ra-253--adversarial-re-review-of-this-review-2026-11-17-utc). No stable event or debit.
+- **Comparison:** the 174/176/179 differences are the region-projection diagnostic interleaved across `std::async` component workers (`GlobalTopologyPlan.cpp:1991`, `RemeshPipeline.cpp:17726`/`:19571`). Vase differs only in `const char*` parameter bytes. RA-252's row164-only rule was the defect. Prospective N3–N5 rules apply from TB132.
+- **Sphere:** of the four guards that set trace+edge, three are unreachable, which leaves the `:373` duplicate exact crossing on cut edge (0,2). So the zero-cut embedded build succeeded with FC-7′ contacts. To be confirmed by the CB155 receipt in TB132.
+- **BunnyRandom:** the contact-insertion conflict is between two face-contact nodes at attempt 0. Candidate: a producer node-identity fact (FC-1/FC-4).
+- **O45 open (S4):** FC-7′ assumes contacts lie strictly inside a face. A zero barycentric coordinate in TB132 falsifies this.
+
 ## 2026-11-17 — TB131 independent Review (MISMATCH upheld, non-stable)
 
 [Review](Architecture_M6_CP3_TB131_P13_Carrier_Contact_Switch_Full_Gate_Independent_Review_20261117.md): independently verified 3,846 hashes, 1,912 raw-log bindings, accepted 491/491 prefix, 953+81 membership; 952/953 gate PASS, 955/956 substantive records equal. Row858 permitted premise RED at :155; row648 sphere assertions unreached. Strict comparator still fails.
