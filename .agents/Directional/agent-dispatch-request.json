@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb132-review-closeout-v1",
+  "request_id": "m6-cp3-cb156-source-apply-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb132-review-closeout-v1",
-  "file_id": "1BR9t4oVppCWebgJYvnVB9aTBLz7j6THa",
-  "patch_sha256": "6dac6e469b62003aa57cce66ede6961c8d72a5cb4810b823a28a0f3626b98943",
-  "base_sha": "357ca637d7c93100391c43fb5ca894f50bd708d8",
+  "mailbox_key": "m6-cp3-cb156-source-apply-v1",
+  "file_id": "1X_Kxvk9wfUTtvKG4RM-n9KsQSwDynDws",
+  "patch_sha256": "b190830991b8f92f5f330d8551a136b570b4025f19921bec98ee7c869c729fb8",
+  "base_sha": "0115c4e77ae6d7b858e9914a00b9e01b12d93048",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: independently review TB132 and freeze edge-endpoint contact definition",
+  "commit_message": "Add exact same-face segment pair diagnostic receipts",
   "retention_days": 30
 }
