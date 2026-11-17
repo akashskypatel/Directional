@@ -16,7 +16,6 @@
 #include <numeric>
 #include <optional>
 #include <set>
-#include <sstream>
 #include <tuple>
 #include <utility>
 #include <variant>
@@ -629,28 +628,35 @@ std::set<authority::NetworkNodeId> port_nodes(
   return result;
 }
 
-bool is_face_contact_event(const FieldAlignedNetworkEvent &event,
-                           const std::set<authority::NetworkNodeId> &ports) {
-  return !event.sourceEdge.has_value() && ports.count(event.node) == 0U &&
-         (event.kind == FieldAlignedNetworkEventKind::FirstContact ||
-          event.kind == FieldAlignedNetworkEventKind::TraceIntersection ||
-          event.kind == FieldAlignedNetworkEventKind::TraceSelfClosure);
-}
-
-// A non-port node where a trace ends on a trace whose events carry the
-// common carrier of the two segments in place of the exact contact point.
-std::set<authority::NetworkNodeId> carrier_proxy_contact_nodes(
-    const FieldAlignedCurveNetwork &network,
-    const std::set<authority::NetworkNodeId> &ports) {
+// Non-port nodes where a trace ends on a trace strictly inside a face. A
+// trace-trace contact (TraceIntersection or TraceSelfClosure) is one even when
+// its events carry the two segments' common carrier: that edge is not where
+// the contact lies, and the exact point is in the terminating trace's record.
+// An edge-carrying FirstContact alone (a barrier termination) is not.
+std::set<authority::NetworkNodeId>
+face_contact_nodes(const FieldAlignedCurveNetwork &network) {
+  const std::set<authority::NetworkNodeId> ports = port_nodes(network);
   std::set<authority::NetworkNodeId> result;
   for (const auto &event : network.events()) {
-    if (event.sourceEdge.has_value() && ports.count(event.node) == 0U &&
-        (event.kind == FieldAlignedNetworkEventKind::TraceIntersection ||
-         event.kind == FieldAlignedNetworkEventKind::TraceSelfClosure)) {
+    if (ports.count(event.node) != 0U) continue;
+    const bool traceContact =
+        event.kind == FieldAlignedNetworkEventKind::TraceIntersection ||
+        event.kind == FieldAlignedNetworkEventKind::TraceSelfClosure;
+    if (traceContact ||
+        (!event.sourceEdge.has_value() &&
+         event.kind == FieldAlignedNetworkEventKind::FirstContact)) {
       result.insert(event.node);
     }
   }
   return result;
+}
+
+bool is_face_contact_event(const FieldAlignedNetworkEvent &event,
+                           const std::set<authority::NetworkNodeId> &nodes) {
+  return nodes.count(event.node) != 0U &&
+         (event.kind == FieldAlignedNetworkEventKind::FirstContact ||
+          event.kind == FieldAlignedNetworkEventKind::TraceIntersection ||
+          event.kind == FieldAlignedNetworkEventKind::TraceSelfClosure);
 }
 
 GlobalTopologyPlanError face_contact_error(
@@ -759,22 +765,16 @@ std::optional<authority::ExactSourcePath> exact_trace_path_between(
 }
 
 FaceContactNodeResult collect_face_contact_nodes(
-    const FieldAlignedCurveNetwork &network,
-    const bool includeCarrierProxyContacts) {
+    const FieldAlignedCurveNetwork &network) {
   constexpr RotationSystemInconsistencyReason kInvalid =
       RotationSystemInconsistencyReason::FaceContactBindingInvalid;
-  const std::set<authority::NetworkNodeId> ports = port_nodes(network);
-  const std::set<authority::NetworkNodeId> proxyNodes =
-      includeCarrierProxyContacts ? carrier_proxy_contact_nodes(network, ports)
-                                  : std::set<authority::NetworkNodeId>{};
+  const std::set<authority::NetworkNodeId> contactNodes =
+      face_contact_nodes(network);
   std::map<authority::NetworkNodeId, authority::SourceFaceTopologyKey> faces;
   std::map<authority::NetworkNodeId, std::set<authority::TraceId>> incident;
   std::map<authority::NetworkNodeId, std::set<authority::TraceId>> ending;
   for (const auto &event : network.events()) {
-    if (!is_face_contact_event(event, ports) &&
-        proxyNodes.count(event.node) == 0U) {
-      continue;
-    }
+    if (!is_face_contact_event(event, contactNodes)) continue;
     const auto [face, inserted] = faces.emplace(event.node, event.sourceFace);
     if (!inserted && face->second != event.sourceFace) {
       return face_contact_error(kInvalid, event.sourceFace, std::nullopt);
@@ -974,81 +974,6 @@ void report_terminal_cut_before_end(const FieldAlignedCandidateTrace &trace,
     std::clog << "none";
   }
   std::clog << '\n';
-}
-
-// P13 (RA-251): one line per topology build with common-carrier contact
-// nodes. It relates each ending trace's last segment to the proxy edge and
-// reports whether the exact contact records alone bind every contact node.
-// Read-only; the build itself still uses the proxy.
-void report_carrier_proxy_contacts(const FieldAlignedCurveNetwork &network) {
-  const std::set<authority::NetworkNodeId> nodes =
-      carrier_proxy_contact_nodes(network, port_nodes(network));
-  if (nodes.empty()) return;
-  std::size_t terminals = 0U;
-  std::size_t exactRecords = 0U;
-  std::size_t lastIncoming = 0U;
-  std::size_t lastOutgoing = 0U;
-  std::size_t neither = 0U;
-  std::size_t unresolved = 0U;
-  for (const auto &event : network.events()) {
-    if (nodes.count(event.node) == 0U ||
-        event.kind == FieldAlignedNetworkEventKind::FirstContact) {
-      continue;
-    }
-    for (const auto &incidence : event.incidences) {
-      if (incidence.role != FieldAlignedTraceEventRole::Terminal) continue;
-      ++terminals;
-      const FieldAlignedCandidateTrace *trace =
-          find_trace(network, incidence.trace);
-      if (trace == nullptr || trace->segments.empty() ||
-          !event.sourceEdge.has_value()) {
-        ++unresolved;
-        continue;
-      }
-      if (trace->terminalContact.has_value() &&
-          trace->terminalContact->sourceFace == event.sourceFace) {
-        ++exactRecords;
-      }
-      const FieldAlignedCandidateTraceSegment &last = trace->segments.back();
-      if (last.incomingCarrier == event.sourceEdge) {
-        ++lastIncoming;
-      } else if (last.outgoingCarrier == *event.sourceEdge) {
-        ++lastOutgoing;
-      } else {
-        ++neither;
-      }
-    }
-  }
-  const FaceContactNodeResult exact =
-      collect_face_contact_nodes(network, true);
-  std::ostringstream line;
-  line << "EmbeddedGraphTopology.carrierProxyContacts nodes=" << nodes.size()
-       << " terminals=" << terminals << " exactRecords=" << exactRecords
-       << " lastIncoming=" << lastIncoming << " lastOutgoing=" << lastOutgoing
-       << " neither=" << neither << " unresolved=" << unresolved
-       << " exactBinding=";
-  if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&exact)) {
-    line << "invalid face=";
-    if (failure->sourceFace.has_value()) {
-      const auto &vertices = failure->sourceFace->vertices();
-      line << '(' << vertices[0].index() << ',' << vertices[1].index() << ','
-           << vertices[2].index() << ')';
-    } else {
-      line << "none";
-    }
-    line << " trace=";
-    if (failure->trace.has_value()) {
-      line << failure->trace->index();
-    } else {
-      line << "none";
-    }
-  } else {
-    line << "ok contactNodes="
-         << std::get<std::map<authority::NetworkNodeId, FaceContactNode>>(exact)
-                .size();
-  }
-  line << '\n';
-  std::clog << line.str();
 }
 
 } // namespace
@@ -1467,9 +1392,10 @@ NodeLocusResult build_node_loci(const FieldAlignedCurveNetwork &network,
 
   // A face-contact node has neither a vertex nor an edge locus; rotation
   // reads its face and exact point from collect_face_contact_nodes.
-  const std::set<authority::NetworkNodeId> ports = port_nodes(network);
+  const std::set<authority::NetworkNodeId> contactNodes =
+      face_contact_nodes(network);
   for (const auto &event : network.events()) {
-    if (is_face_contact_event(event, ports)) continue;
+    if (is_face_contact_event(event, contactNodes)) continue;
     auto found = loci.find(event.node);
     if (found == loci.end()) {
       GlobalTopologyPlanError result =
@@ -2699,7 +2625,6 @@ EmbeddedGraphTopologyBuildResult build_embedded_graph_topology(
   }
   const auto cutNodes = std::get<CutNodeBindings>(cutNodeBuild);
 
-  report_carrier_proxy_contacts(network);
   const auto arcBuild = build_arcs(network, cutEdges, cutNodes);
   if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&arcBuild)) {
     return *failure;

@@ -276,8 +276,10 @@ exact_trace_path_between(const FieldAlignedCandidateTrace &trace,
                          const TraceCutPosition &second);
 
 /**
- * A network node at a trace-trace contact strictly inside a source face: the
- * contact event has no source edge and the node is not a port node.
+ * A network node at a trace-trace contact strictly inside a source face: a
+ * non-port node with a TraceIntersection or TraceSelfClosure event, or with
+ * contact events that have no source edge. A common-carrier source edge on
+ * such an event is not the contact's locus.
  */
 struct FaceContactNode {
   authority::SourceFaceTopologyKey face;
@@ -292,14 +294,9 @@ using FaceContactNodeResult =
     std::variant<std::map<authority::NetworkNodeId, FaceContactNode>,
                  GlobalTopologyPlanError>;
 
-/**
- * Collects and validates every face-contact node of the network. With
- * `includeCarrierProxyContacts`, a trace-trace contact node whose events carry
- * a common-carrier edge is also bound from the exact contact records.
- */
+/** Collects and validates every face-contact node of the network. */
 [[nodiscard]] FaceContactNodeResult
-collect_face_contact_nodes(const FieldAlignedCurveNetwork &network,
-                           bool includeCarrierProxyContacts = false);
+collect_face_contact_nodes(const FieldAlignedCurveNetwork &network);
 
 /** Inventories every source edge that carries two or more terminal cuts. */
 [[nodiscard]] std::vector<MandatoryEdgeTerminalInventory>
