@@ -1,0 +1,2 @@
+# TB130 snapshot control only; retain durable dispatcher and prior-turn markers.
+.agents/connector-triggers/source-snapshot/tb130-20261117T145249Z.txt
