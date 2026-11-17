@@ -1017,6 +1017,60 @@ void print_trace_terminal_contact(const FieldAlignedCandidateTrace *trace) {
   }
 }
 
+// P13 (RA-254): every pair of segments of two traces that lie in one source
+// face, with their branches, the exact orientation signs of each segment's
+// ends against the other segment's supporting line (first line, then second
+// line; all four zero means one supporting line, i.e. a collinear overlap)
+// and which canonical ends coincide (e = entry, x = exit; first trace first).
+void print_same_face_segment_pairs(const FieldAlignedCurveNetwork &network,
+                                   const authority::TraceId first,
+                                   const authority::TraceId second) {
+  std::clog << " sameFacePairs=" << first.index() << '/' << second.index()
+            << ':';
+  const FieldAlignedCandidateTrace *a = find_trace(network, first);
+  const FieldAlignedCandidateTrace *b = find_trace(network, second);
+  bool any = false;
+  if (a != nullptr && b != nullptr) {
+    for (std::size_t i = 0U; i < a->segments.size(); ++i) {
+      for (std::size_t j = 0U; j < b->segments.size(); ++j) {
+        if (a->segments[i].sourceFace != b->segments[j].sourceFace) continue;
+        std::clog << (any ? "," : "") << i << '-' << j << '@';
+        print_face(a->segments[i].sourceFace);
+        std::clog << "b=" << static_cast<int>(a->segments[i].branch.value())
+                  << '-' << static_cast<int>(b->segments[j].branch.value())
+                  << " o=";
+        const auto aEntry = trace_segment_canonical_entry(*a, i);
+        const auto aExit = trace_segment_canonical_exit(*a, i);
+        const auto bEntry = trace_segment_canonical_entry(*b, j);
+        const auto bExit = trace_segment_canonical_exit(*b, j);
+        if (aEntry.has_value() && aExit.has_value() && bEntry.has_value() &&
+            bExit.has_value()) {
+          std::clog << face_chart_orientation(*aEntry, *aExit, *bEntry) << ':'
+                    << face_chart_orientation(*aEntry, *aExit, *bExit) << ':'
+                    << face_chart_orientation(*bEntry, *bExit, *aEntry) << ':'
+                    << face_chart_orientation(*bEntry, *bExit, *aExit)
+                    << " eq=";
+          bool equal = false;
+          for (const auto &[label, left, right] :
+               {std::tuple{"ee", &*aEntry, &*bEntry},
+                std::tuple{"ex", &*aEntry, &*bExit},
+                std::tuple{"xe", &*aExit, &*bEntry},
+                std::tuple{"xx", &*aExit, &*bExit}}) {
+            if (*left != *right) continue;
+            std::clog << (equal ? "+" : "") << label;
+            equal = true;
+          }
+          if (!equal) std::clog << '-';
+        } else {
+          std::clog << "unevaluated";
+        }
+        any = true;
+      }
+    }
+  }
+  if (!any) std::clog << "none";
+}
+
 // P13 (RA-253): both traces that cross one selected cut edge at the same
 // exact point, and every event incident to both, so the duplicate crossing
 // can be attributed to a shared network node or to two unrelated traces.
@@ -1048,6 +1102,7 @@ void report_duplicate_cut_crossing(
     print_trace_terminal_contact(trace);
     std::clog << ']';
   }
+  print_same_face_segment_pairs(network, first, second);
   std::clog << " sharedEvents=";
   bool any = false;
   for (const auto &event : network.events()) {
@@ -1126,6 +1181,16 @@ void report_contact_cut_conflict(
   print_cut_claimant(network, faceContacts, cutNodes, existing);
   std::clog << " claimant=";
   print_cut_claimant(network, faceContacts, cutNodes, claimant);
+  const auto existingContact = faceContacts.find(existing);
+  const auto claimantContact = faceContacts.find(claimant);
+  if (existingContact != faceContacts.end() &&
+      claimantContact != faceContacts.end() &&
+      !existingContact->second.terminating.empty() &&
+      !claimantContact->second.terminating.empty()) {
+    print_same_face_segment_pairs(
+        network, *existingContact->second.terminating.begin(),
+        *claimantContact->second.terminating.begin());
+  }
   std::clog << '\n';
   std::clog.precision(precision);
 }
