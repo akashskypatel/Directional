@@ -18579,3 +18579,122 @@ TEST(MandatoryEdgeTerminalInventory, OrdersCutsExactlyAndClassesEqualParameters)
   EXPECT_EQ(2U, inventory[2].distinctParameters)
       << "parameters one rounding unit apart are distinct";
 }
+
+TEST(MandatoryEdgeTerminalSplit, SplitsAtOrderedDistinctCutsAndRejectsAmbiguousOnes) {
+  using directional::authority::ExactUnitParameter;
+  using directional::authority::FieldExactRational;
+  using directional::authority::NetworkNodeId;
+  using directional::authority::TraceId;
+  constexpr std::size_t idCount = 16U;
+  const auto node = [&](const std::size_t index) {
+    return NetworkNodeId::from_index(index, idCount).value();
+  };
+  const auto trace = [&](const std::size_t index) {
+    return TraceId::from_index(index, idCount).value();
+  };
+  const auto cut = [&](const std::size_t traceIndex, const std::size_t nodeIndex,
+                       const FieldExactRational t) {
+    return embedded::MandatoryEdgeTerminalCut{trace(traceIndex), node(nodeIndex),
+                                              ExactUnitParameter{t}};
+  };
+  const auto zero = FieldExactRational::from_integer(0);
+  const auto one = FieldExactRational::from_integer(1);
+  const auto first = node(0);
+  const auto second = node(1);
+  const auto pieces = [&](std::vector<embedded::MandatoryEdgeTerminalCut> cuts) {
+    const auto split =
+        embedded::split_mandatory_edge_at_terminals(first, second, std::move(cuts));
+    EXPECT_TRUE(std::holds_alternative<std::vector<embedded::MandatoryEdgePiece>>(split));
+    return std::holds_alternative<std::vector<embedded::MandatoryEdgePiece>>(split)
+               ? std::get<std::vector<embedded::MandatoryEdgePiece>>(split)
+               : std::vector<embedded::MandatoryEdgePiece>{};
+  };
+  const auto failure = [&](std::vector<embedded::MandatoryEdgeTerminalCut> cuts) {
+    const auto split =
+        embedded::split_mandatory_edge_at_terminals(first, second, std::move(cuts));
+    EXPECT_TRUE(std::holds_alternative<embedded::MandatoryEdgeSplitFailure>(split));
+    return std::holds_alternative<embedded::MandatoryEdgeSplitFailure>(split)
+               ? std::optional<embedded::MandatoryEdgeSplitFailure>{
+                     std::get<embedded::MandatoryEdgeSplitFailure>(split)}
+               : std::nullopt;
+  };
+  // Every piece runs from lower to higher parameter and the pieces chain
+  // from the first endpoint to the second, covering [0, 1] exactly once.
+  const auto expectChain = [&](const std::vector<embedded::MandatoryEdgePiece> &chain) {
+    ASSERT_FALSE(chain.empty());
+    EXPECT_EQ(first, chain.front().firstNode);
+    EXPECT_EQ(zero, chain.front().firstParameter);
+    EXPECT_EQ(second, chain.back().secondNode);
+    EXPECT_EQ(one, chain.back().secondParameter);
+    for (std::size_t index = 0U; index < chain.size(); ++index) {
+      EXPECT_LT(chain[index].firstParameter, chain[index].secondParameter);
+      if (index == 0U) continue;
+      EXPECT_EQ(chain[index - 1U].secondNode, chain[index].firstNode);
+      EXPECT_EQ(chain[index - 1U].secondParameter, chain[index].firstParameter);
+    }
+  };
+
+  const auto uncut = pieces({});
+  ASSERT_EQ(1U, uncut.size());
+  expectChain(uncut);
+  EXPECT_FALSE(uncut.front().adjacentTrace.has_value());
+
+  const auto single = pieces({cut(4, 7, exact_ratio(1, 2))});
+  ASSERT_EQ(2U, single.size());
+  expectChain(single);
+  EXPECT_EQ(node(7), single[0].secondNode);
+  EXPECT_EQ(trace(4), single[0].adjacentTrace);
+  EXPECT_EQ(trace(4), single[1].adjacentTrace);
+
+  // Given out of order (the BunnyRandom (241,251) shape): sorted exactly.
+  const auto two = pieces({cut(38, 13, exact_ratio(7, 10)),
+                           cut(10, 12, exact_ratio(3, 10))});
+  ASSERT_EQ(3U, two.size());
+  expectChain(two);
+  EXPECT_EQ(node(12), two[0].secondNode);
+  EXPECT_EQ(node(13), two[1].secondNode);
+  EXPECT_EQ(exact_ratio(3, 10), two[1].firstParameter);
+  EXPECT_EQ(exact_ratio(7, 10), two[1].secondParameter);
+  EXPECT_EQ(trace(10), two[0].adjacentTrace);
+  EXPECT_EQ(trace(38), two[1].adjacentTrace);
+  EXPECT_EQ(trace(38), two[2].adjacentTrace);
+
+  // One rounding unit apart in double, distinct in exact order.
+  const auto third = exact_ratio(1, 3);
+  const auto justAboveThird =
+      exact_ratio(1152921504606846979LL, 3458764513820540928LL);
+  ASSERT_EQ(static_cast<double>(third.to_double()),
+            static_cast<double>(justAboveThird.to_double()));
+  const auto close = pieces({cut(3, 9, justAboveThird), cut(2, 8, third)});
+  ASSERT_EQ(3U, close.size());
+  expectChain(close);
+  EXPECT_EQ(node(8), close[0].secondNode);
+  EXPECT_EQ(node(9), close[1].secondNode);
+
+  const auto equal = failure({cut(6, 10, exact_ratio(1, 2)),
+                              cut(5, 11, exact_ratio(1, 2))});
+  ASSERT_TRUE(equal.has_value());
+  EXPECT_EQ(embedded::MandatoryEdgeSplitFailureKind::EqualParameters, equal->kind);
+  EXPECT_EQ(trace(5), equal->trace);
+  EXPECT_EQ(trace(6), equal->secondTrace);
+
+  const auto equalSameNode = failure({cut(6, 10, exact_ratio(1, 2)),
+                                      cut(5, 10, exact_ratio(1, 2))});
+  ASSERT_TRUE(equalSameNode.has_value());
+  EXPECT_EQ(embedded::MandatoryEdgeSplitFailureKind::EqualParameters,
+            equalSameNode->kind)
+      << "coincident cuts stay rejected even on one node";
+
+  const auto atEndpoint = failure({cut(4, 7, exact_ratio(1, 4)),
+                                   cut(9, 1, exact_ratio(3, 4))});
+  ASSERT_TRUE(atEndpoint.has_value());
+  EXPECT_EQ(embedded::MandatoryEdgeSplitFailureKind::TerminalAtEndpoint,
+            atEndpoint->kind);
+  EXPECT_EQ(trace(9), atEndpoint->trace);
+
+  const auto shared = failure({cut(4, 7, exact_ratio(1, 4)),
+                               cut(9, 7, exact_ratio(3, 4))});
+  ASSERT_TRUE(shared.has_value());
+  EXPECT_EQ(embedded::MandatoryEdgeSplitFailureKind::SharedNode, shared->kind);
+  EXPECT_EQ(trace(9), shared->trace);
+}

@@ -458,10 +458,62 @@ inventory_mandatory_edge_terminals(
   return result;
 }
 
+MandatoryEdgeSplit split_mandatory_edge_at_terminals(
+    const authority::NetworkNodeId firstNode,
+    const authority::NetworkNodeId secondNode,
+    std::vector<MandatoryEdgeTerminalCut> cuts) {
+  std::sort(cuts.begin(), cuts.end(),
+            [](const MandatoryEdgeTerminalCut &left,
+               const MandatoryEdgeTerminalCut &right) {
+              if (left.parameter.value != right.parameter.value) {
+                return left.parameter.value < right.parameter.value;
+              }
+              return left.trace.index() < right.trace.index();
+            });
+  for (const MandatoryEdgeTerminalCut &cut : cuts) {
+    if (cut.node == firstNode || cut.node == secondNode) {
+      return MandatoryEdgeSplitFailure{
+          MandatoryEdgeSplitFailureKind::TerminalAtEndpoint, cut.trace,
+          std::nullopt};
+    }
+  }
+  std::set<authority::NetworkNodeId> nodes;
+  for (std::size_t index = 0U; index < cuts.size(); ++index) {
+    if (index > 0U &&
+        cuts[index].parameter.value == cuts[index - 1U].parameter.value) {
+      return MandatoryEdgeSplitFailure{
+          MandatoryEdgeSplitFailureKind::EqualParameters,
+          cuts[index - 1U].trace, cuts[index].trace};
+    }
+    if (!nodes.insert(cuts[index].node).second) {
+      return MandatoryEdgeSplitFailure{
+          MandatoryEdgeSplitFailureKind::SharedNode, cuts[index].trace,
+          std::nullopt};
+    }
+  }
+  std::vector<MandatoryEdgePiece> pieces;
+  pieces.reserve(cuts.size() + 1U);
+  authority::NetworkNodeId lowerNode = firstNode;
+  authority::FieldExactRational lowerParameter =
+      authority::FieldExactRational::from_integer(0);
+  for (const MandatoryEdgeTerminalCut &cut : cuts) {
+    pieces.push_back(MandatoryEdgePiece{lowerNode, cut.node, lowerParameter,
+                                        cut.parameter.value, cut.trace});
+    lowerNode = cut.node;
+    lowerParameter = cut.parameter.value;
+  }
+  pieces.push_back(MandatoryEdgePiece{
+      lowerNode, secondNode, lowerParameter,
+      authority::FieldExactRational::from_integer(1),
+      cuts.empty() ? std::nullopt
+                   : std::optional<authority::TraceId>{cuts.back().trace}});
+  return pieces;
+}
+
 namespace {
 
-// P13-e (RA-243): print each mandatory source edge that build_arcs rejects for
-// carrying two or more terminal cuts, so one census shows every such edge.
+// P13-e (RA-243): print each mandatory source edge carrying two or more
+// terminal cuts in exact order, so one census shows every such edge.
 void report_mandatory_edge_terminal_inventory(
     const FieldAlignedCurveNetwork &network,
     const MandatoryEdgeTerminalInventory &inventory) {
@@ -547,81 +599,54 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
        inventory_mandatory_edge_terminals(terminalCutsByEdge)) {
     report_mandatory_edge_terminal_inventory(network, inventory);
   }
-  for (const auto &[sourceEdge, cuts] : terminalCutsByEdge) {
-    if (cuts.size() < 2U) continue;
-    GlobalTopologyPlanError result =
-        error(GlobalTopologyPlanErrorCode::MandatoryEdgeTerminalOrderUnresolved);
-    result.sourceEdge = sourceEdge;
-    result.trace = cuts[0].trace;
-    result.secondTrace = cuts[1].trace;
-    return result;
-  }
-
   std::vector<ArcDraft> drafts;
   drafts.reserve(network.mandatory_edges().size() + terminalCutsByEdge.size() +
                  network.candidate_traces().size() + cutEdges.size());
   std::set<authority::SourceEdgeTopologyKey> consumedTerminalEdges;
   for (const auto &edge : network.mandatory_edges()) {
     const auto cuts = terminalCutsByEdge.find(edge.sourceEdge);
-    if (cuts == terminalCutsByEdge.end()) {
-      ArcDraft draft(edge.firstNode, edge.secondNode);
-      draft.kind = GlobalTopologyArcKind::Mandatory;
-      draft.mandatoryEdge = edge.id;
+    const MandatoryEdgeSplit split = split_mandatory_edge_at_terminals(
+        edge.firstNode, edge.secondNode,
+        cuts == terminalCutsByEdge.end()
+            ? std::vector<MandatoryEdgeTerminalCut>{}
+            : cuts->second);
+    if (const auto *failure = std::get_if<MandatoryEdgeSplitFailure>(&split)) {
+      if (failure->kind == MandatoryEdgeSplitFailureKind::EqualParameters) {
+        GlobalTopologyPlanError result = error(
+            GlobalTopologyPlanErrorCode::MandatoryEdgeTerminalOrderUnresolved);
+        result.sourceEdge = edge.sourceEdge;
+        result.trace = failure->trace;
+        result.secondTrace = failure->secondTrace;
+        return result;
+      }
+      GlobalTopologyPlanError result =
+          error(GlobalTopologyPlanErrorCode::InvalidNetworkBinding);
+      result.networkEdge = edge.id;
+      result.trace = failure->trace;
+      result.sourceEdge = edge.sourceEdge;
+      return result;
+    }
+    if (cuts != terminalCutsByEdge.end()) {
+      consumedTerminalEdges.insert(edge.sourceEdge);
+    }
+    for (const MandatoryEdgePiece &piece :
+         std::get<std::vector<MandatoryEdgePiece>>(split)) {
       const auto path = exact_edge_interval_path(
-          edge.sourceEdge, authority::FieldExactRational::from_integer(0),
-          authority::FieldExactRational::from_integer(1));
+          edge.sourceEdge, piece.firstParameter, piece.secondParameter);
       if (!path.has_value()) {
         GlobalTopologyPlanError result =
             error(GlobalTopologyPlanErrorCode::InvalidNetworkBinding);
         result.networkEdge = edge.id;
+        result.trace = piece.adjacentTrace;
         result.sourceEdge = edge.sourceEdge;
         return result;
       }
+      ArcDraft draft(piece.firstNode, piece.secondNode);
+      draft.kind = GlobalTopologyArcKind::Mandatory;
+      draft.mandatoryEdge = edge.id;
       draft.sourcePath = *path;
       drafts.push_back(std::move(draft));
-      continue;
     }
-
-    if (cuts->second.size() != 1U) {
-      return error(GlobalTopologyPlanErrorCode::InvalidNetworkBinding);
-    }
-    const authority::NetworkNodeId terminal = cuts->second.front().node;
-    if (terminal == edge.firstNode || terminal == edge.secondNode) {
-      GlobalTopologyPlanError result =
-          error(GlobalTopologyPlanErrorCode::InvalidNetworkBinding);
-      result.networkEdge = edge.id;
-      result.trace = cuts->second.front().trace;
-      result.sourceEdge = edge.sourceEdge;
-      return result;
-    }
-    consumedTerminalEdges.insert(edge.sourceEdge);
-
-    const auto firstPath = exact_edge_interval_path(
-        edge.sourceEdge, authority::FieldExactRational::from_integer(0),
-        cuts->second.front().parameter.value);
-    const auto secondPath = exact_edge_interval_path(
-        edge.sourceEdge, cuts->second.front().parameter.value,
-        authority::FieldExactRational::from_integer(1));
-    if (!firstPath.has_value() || !secondPath.has_value()) {
-      GlobalTopologyPlanError result =
-          error(GlobalTopologyPlanErrorCode::InvalidNetworkBinding);
-      result.networkEdge = edge.id;
-      result.trace = cuts->second.front().trace;
-      result.sourceEdge = edge.sourceEdge;
-      return result;
-    }
-
-    ArcDraft first(edge.firstNode, terminal);
-    first.kind = GlobalTopologyArcKind::Mandatory;
-    first.mandatoryEdge = edge.id;
-    first.sourcePath = *firstPath;
-    drafts.push_back(std::move(first));
-
-    ArcDraft second(terminal, edge.secondNode);
-    second.kind = GlobalTopologyArcKind::Mandatory;
-    second.mandatoryEdge = edge.id;
-    second.sourcePath = *secondPath;
-    drafts.push_back(std::move(second));
   }
   for (const auto &[sourceEdge, cuts] : terminalCutsByEdge) {
     (void)cuts;
@@ -1070,9 +1095,9 @@ std::optional<bool> edge_ray_points_to_second_endpoint(
     if (mandatory == nullptr || mandatory->sourceEdge != sourceEdge) {
       return std::nullopt;
     }
-    if (destination == mandatory->secondNode) return true;
-    if (destination == mandatory->firstNode) return false;
-    return std::nullopt;
+    // build_arcs orients every Mandatory piece from lower to higher edge
+    // parameter, including pieces between two terminal cuts.
+    return orientation == authority::Orientation::Forward;
   }
   if (arc.kind != GlobalTopologyArcKind::Cut || arc.cutEdge != sourceEdge) {
     return std::nullopt;

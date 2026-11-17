@@ -150,6 +150,44 @@ struct MandatoryEdgeTerminalInventory {
   bool equalParametersShareNode = true;
 };
 
+/** One piece of a mandatory source edge, from lower to higher edge parameter. */
+struct MandatoryEdgePiece {
+  authority::NetworkNodeId firstNode;
+  authority::NetworkNodeId secondNode;
+  authority::FieldExactRational firstParameter;
+  authority::FieldExactRational secondParameter;
+  /** The terminal cut at the piece's upper end, or the last cut for the final
+   * piece; none when the edge has no terminal cut. */
+  std::optional<authority::TraceId> adjacentTrace;
+};
+
+enum class MandatoryEdgeSplitFailureKind {
+  /** A terminal cut binds one of the edge's endpoint nodes. */
+  TerminalAtEndpoint,
+  /** Two terminal cuts share one exact edge parameter. */
+  EqualParameters,
+  /** One node terminates two cuts at different edge parameters. */
+  SharedNode,
+};
+
+struct MandatoryEdgeSplitFailure {
+  MandatoryEdgeSplitFailureKind kind;
+  authority::TraceId trace;
+  std::optional<authority::TraceId> secondTrace;
+};
+
+using MandatoryEdgeSplit =
+    std::variant<std::vector<MandatoryEdgePiece>, MandatoryEdgeSplitFailure>;
+
+/**
+ * Splits a mandatory edge running from `firstNode` (parameter 0) to
+ * `secondNode` (parameter 1) at its terminal cuts, in exact parameter order.
+ * N strictly ordered cuts with distinct interior nodes give N + 1 pieces.
+ */
+[[nodiscard]] MandatoryEdgeSplit split_mandatory_edge_at_terminals(
+    authority::NetworkNodeId firstNode, authority::NetworkNodeId secondNode,
+    std::vector<MandatoryEdgeTerminalCut> cuts);
+
 /** Inventories every source edge that carries two or more terminal cuts. */
 [[nodiscard]] std::vector<MandatoryEdgeTerminalInventory>
 inventory_mandatory_edge_terminals(
