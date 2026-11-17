@@ -1,0 +1,2 @@
+M6-CP3-TB132-P13-CUT-BINDING-CONFLICT-RECEIPT-FULL-GATE-EXEC
+Snapshot of exact trigger commit for policy/closeout inspection; runtime source remains cce5be20ea7237f59f3c0acca25a4ba57813644e.
