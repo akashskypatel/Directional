@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-17, RA-249 / `M6-CP3-DEFN-P13-FACE-CONTACT-NODE-FREEZE`):** The face-contact node (FC-1 – FC-5) is frozen as two stacked compile-only CBs: CB148 adds helpers, the collector and typed reasons; CB149 wires them in and changes only networks that fail today. The TB128 manifest (`941287fa…`, 953 rows) is frozen. **NEXT:** `M6-CP3-CB148-P13-FACE-CONTACT-NODE-HELPERS`, then CB149 and TB128. [Record](Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Freeze_Review_20261117.md). O42/O43/O45/O46 open; CP2 491/491; stable 66/17/49, debt 1, deferred 81; selector497/CP3 unpromoted.
+**Current currency (2026-11-17, CB149 / `M6-CP3-CB149-P13-FACE-CONTACT-NODE-SWITCH`):** The face-contact node (FC-1–FC-5) exact switch is compiled in package `14315237769`. No runtime acceptance. The TB128 manifest (`941287fa…`, 953 rows) is frozen. **NEXT:** `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC`. [Record](Architecture_M6_CP3_CB149_P13_Face_Contact_Node_Switch_Code_Build_Record_20261117.md). C5/O42/O43/O45/O46 open; CP2 491/491; stable 66/17/49, debt 1, deferred 81; selector497/CP3 unpromoted.
 
 ## 1. What the project is
 
@@ -103,7 +103,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-- **Current priority:** `M6-CP3-DEFN-P13-EDGE-TERMINAL-CORRECTION-OUTCOME`. C5 event placement before ray ordering; freeze exact contact authority and source-path subdivision contract or a bounded discriminating observation. C3 narrow split rejection closed; separate middle-piece rotation direction witness remains open. No guessed sourceEdge or validator relaxation. [TB127 independent Review](Architecture_M6_CP3_TB127_P13_Guard_And_Rotation_Locus_Independent_Review_20261117.md).
+- **Current priority:** `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC`. Test the immutable CB149 face-contact switch with the frozen gate and census. C5 remains open until runtime evidence; separate middle-piece rotation direction witness remains open. C3 narrow split rejection closed. No guessed sourceEdge or validator relaxation. [RA-249](Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Freeze_Review_20261117.md).
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).

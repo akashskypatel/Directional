@@ -1,3 +1,7 @@
+## 2026-11-17 — CB149 face-contact node switch compiled (no runtime evidence)
+
+- [Code + Build record](Architecture_M6_CP3_CB149_P13_Face_Contact_Node_Switch_Code_Build_Record_20261117.md): exact switch compiled, package `14315237769`. C5 stays open pending TB128. O42/O43/O45/O46 and the middle-piece direction witness remain open; narrow C3/O44/C1 remain closed. No new stable regression event or acceptance promotion. Stable 66/17/49, debt 1, deferred 81.
+
 ## 2026-11-17 — RA-249 face-contact node freeze (non-stable)
 
 - **C5:** implementation is frozen as CB148 (additive) and CB149 (switch). The switch changes only networks that currently fail at `build_arcs`.

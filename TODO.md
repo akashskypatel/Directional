@@ -1,8 +1,8 @@
-## CURRENT — CB148 compiled; CB149 next (2026-11-17 UTC)
+## CURRENT — CB149 compiled; TB128 next (2026-11-17 UTC)
 
 **Frozen** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Freeze_Review_20261117.md)):
-- **CB148:** helpers, collector and reasons; additive only, not called yet. Diff `b4b82487…`, 475 lines.
-- **CB149:** wiring into `build_arcs`, `build_node_loci` and rotation. Diff `ddf87b85…`, 270 lines. It changes only networks that fail today at `build_arcs`.
+- **CB148:** additive helpers, collector and reasons; now connected by CB149. Diff `b4b82487…`, 475 lines.
+- **CB149:** wiring into `build_arcs`, `build_node_loci` and rotation. Diff `ddf87b85…`, 270 lines. The exact switch is compiled; runtime effect remains unverified.
 - **TB128 manifest:** `941287fa…`, 953 rows.
 
 The single CB148 that RA-248 planned is split in two for narrowness. FC-6 moves to CB150 and later.
@@ -11,8 +11,8 @@ The single CB148 that RA-248 planned is split in two for narrowness. FC-6 moves 
 - [x] `M6-CP3-CB147-P13-FACE-CONTACT-EXACT-HELPERS`: compiled.
 - [x] `M6-CP3-DEFN-P13-FACE-CONTACT-NODE-FREEZE` (RA-249): Review, COMPLETE.
 - [x] `M6-CP3-CB148-P13-FACE-CONTACT-NODE-HELPERS`: exact diff compiled, package `14311412337`; [record](.agents/Directional/Architecture_M6_CP3_CB148_P13_Face_Contact_Node_Helpers_Code_Build_Record_20261117.md). No runtime.
-- [ ] **NEXT:** `M6-CP3-CB149-P13-FACE-CONTACT-NODE-SWITCH`: exact diff `ddf87b85683e1f34322418ffd5303740822602d845faf3a80ecff9d8d817963c`, compile only.
-- [ ] `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC`: 953-row gate plus census; MATCH per RA-249 §4.
+- [x] `M6-CP3-CB149-P13-FACE-CONTACT-NODE-SWITCH`: exact diff compiled, package `14315237769`; [record](.agents/Directional/Architecture_M6_CP3_CB149_P13_Face_Contact_Node_Switch_Code_Build_Record_20261117.md). No runtime.
+- [ ] **NEXT:** `M6-CP3-TB128-P13-FACE-CONTACT-FULL-GATE-EXEC`: immutable package `14315237769`, 953-row gate plus census; MATCH per RA-249 §4.
 - [ ] `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME`: Review; freezes CB150 (FC-6).
 - [ ] CB150 → TB129 → CB151 → TB130.
 - [ ] Parked: CB145, O45.

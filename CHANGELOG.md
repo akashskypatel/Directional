@@ -1,3 +1,7 @@
+## 2026-11-17 UTC — CB149 face-contact node switch compiled
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB149_P13_Face_Contact_Node_Switch_Code_Build_Record_20261117.md): exact RA-249 one-file switch (+148/-27), source `85f9c703c5de86fb2b401cf83c03499a1ce73a27`. [Compile run 44054969830](https://github.com/akashskypatel/Directional/actions/runs/44054969830) SUCCESS; eight GMP/GMPXX targets, package `14315237769`, 28/28 checksums. The frozen face-contact helpers are wired. Both manifests are unchanged; no runtime or promotion. Exactly next separately TB128.
+
 ## 2026-11-17 UTC — CB148 face-contact node helpers compiled
 
 - [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB148_P13_Face_Contact_Node_Helpers_Code_Build_Record_20261117.md): exact RA-249 five-file additive patch (+416/-0), source `e05d44b850c378b6e77965f0f314b561a8207435`. [Compile run 44044928423](https://github.com/akashskypatel/Directional/actions/runs/44044928423) SUCCESS; eight GMP/GMPXX targets, package `14311412337`, 28/28 checksums. Face-contact helpers remain unwired; new row 953 compiled, not run. No manifest/selector edit, runtime or promotion. Exactly next separately CB149.
