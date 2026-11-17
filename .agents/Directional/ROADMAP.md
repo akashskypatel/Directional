@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB126 950/951; RA-245 test-input exception confirmed, BunnyRandom cut-graph rotation-system RED; CB144B exact test-only compile next; CP3 not accepted) · **Next:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB127 gate 951/951, strict census comparison MISMATCH; BunnyRandom rotation RED and Vase completion RED; independent adjudication pending, CP3 not accepted) · **Next:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
