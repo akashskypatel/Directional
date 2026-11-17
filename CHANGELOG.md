@@ -1,3 +1,8 @@
+## 2026-11-17 UTC — TB129 terminal-cut receipt full gate (MISMATCH)
+
+- [Execution report](.agents/Directional/Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Execution_Report_20261117.md): immutable CB151 source `c45e9abe5085f39c1f5bcb149ec07f95b719177e`, package `14327212608`; [gate 44083905317](https://github.com/akashskypatel/Directional/actions/runs/44083905317) artifact `14329895372`, 953/953 PASS; [census 44084015700](https://github.com/akashskypatel/Directional/actions/runs/44084015700) artifact `14328938547`, 1 PASS/2 registered RED. All 1,923 candidate internal hashes and valid postflight verified. All 68 terminal-cut receipts H1, but extra gate rows and two BunnyRandom lines violate frozen R6. Both required prior REDs restored. Cylinder/Vase unchanged; no source/test/manifest/build edits, rerun, promotion or successor work.
+- Exactly next separately `M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-REV`. Stable 66/17/49, debt1, deferred81, CP2 491/491; C5/O45 remain open pending independent review.
+
 ## 2026-11-17 UTC — CB151 terminal cut before end receipt compiled
 
 - [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB151_P13_Terminal_Cut_Before_End_Receipt_Code_Build_Record_20261117.md): frozen RA-250 diagnostic-only patch `044529d6…`, source `c45e9abe5085f39c1f5bcb149ec07f95b719177e`, package `14327212608`. Eight GMP/GMPXX targets; no runtime, product-decision change, selector change or promotion.
