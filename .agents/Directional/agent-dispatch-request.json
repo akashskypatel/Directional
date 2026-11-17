@@ -1,18 +1,12 @@
 {
-  "schema_version": 1,
-  "request_id": "m6-cp3-cb149-switch-compile-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb149-switch-compile-v1",
-  "source_sha": "85f9c703c5de86fb2b401cf83c03499a1ce73a27",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb149-switch"
+  "schema_version":1,
+  "request_id":"m6-cp3-cb149-complete-closeout-v1",
+  "operation":"drive_apply",
+  "mailbox_key":"m6-cp3-cb149-complete-closeout-v1",
+  "file_id":"1VXpmyRG9amrShxYIw499n6yI8xNoQhWD",
+  "patch_sha256":"e45be95b38e307be012926dc4e631faf95e9e2835d62c90a6b45dfdfd447c377",
+  "base_sha":"28b6c5206660937075151d654eddcf3e9df26ea3",
+  "target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message":"docs: close CB149 verified compile gate",
+  "retention_days":7
 }
