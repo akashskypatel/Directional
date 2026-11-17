@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb154-compile-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb154-compile-v1",
-  "source_sha": "452eb3d789016e744e99d88811add0f7e0949165",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb154-compile"
+  "request_id": "m6-cp3-cb154-docs-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb154-docs-v1",
+  "file_id": "1PKRJj0pfb-7YUzbbX9Qjg5XObojzLb6Q",
+  "patch_sha256": "3bc0ee8393e15ed8cfdb06795331ae242050101fa20adc10574b63443d421b79",
+  "base_sha": "4ab8c26fd661bd193689fc64dd67c9295a1f75cc",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "Record CB154 compile evidence and frozen TB131 successor"
 }
