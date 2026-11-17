@@ -64,6 +64,67 @@ std::string failure_locus(const directional::pipeline::RemeshResult &result) {
     out << " seedSingularity=" << *locus.traceSeedSingularity;
   }
   out << " history=" << locus.traceHistoryCount;
+  // Typed rotation/cut-graph fields already published in the locus, appended
+  // after the fields above so the earlier part of the line is unchanged.
+  const auto ray = [&](const char *name,
+                       const directional::SurfaceCellRotationRayDiagnostics
+                           &value) {
+    out << ' ' << name << "=[" << value.kind << " arc=" << value.arc
+        << " trace=";
+    if (value.trace.has_value()) {
+      out << *value.trace;
+    } else {
+      out << '-';
+    }
+    out << ' ' << value.orientation << " primary=" << value.primary
+        << " secondary=";
+    if (value.secondaryAvailable) {
+      out << value.secondary;
+    } else {
+      out << '-';
+    }
+    if (value.sourceFace.has_value()) {
+      out << " face=(" << (*value.sourceFace)[0] << ','
+          << (*value.sourceFace)[1] << ',' << (*value.sourceFace)[2] << ')';
+    }
+    if (value.fanSlot.has_value()) out << " fanSlot=" << *value.fanSlot;
+    out << ']';
+  };
+  if (locus.sourceVertex.has_value()) out << " vertex=" << *locus.sourceVertex;
+  if (!locus.rotationSystemInconsistencyReason.empty()) {
+    out << " rotationReason=" << locus.rotationSystemInconsistencyReason;
+  }
+  if (!locus.vertexTraceSecondaryParameterFailureReason.empty()) {
+    out << " vertexSecondaryReason="
+        << locus.vertexTraceSecondaryParameterFailureReason;
+  }
+  if (!locus.edgeTraceSecondaryRankFailureReason.empty()) {
+    out << " edgeSecondaryReason=" << locus.edgeTraceSecondaryRankFailureReason;
+  }
+  if (locus.trace.has_value()) out << " trace=" << *locus.trace;
+  if (locus.secondTrace.has_value()) out << " secondTrace=" << *locus.secondTrace;
+  if (locus.arc.has_value()) out << " arc=" << *locus.arc;
+  if (locus.secondArc.has_value()) out << " secondArc=" << *locus.secondArc;
+  if (locus.traceEventIndex.has_value()) {
+    out << " eventIndex=" << *locus.traceEventIndex;
+  }
+  if (!locus.traceEventPositionFailureReason.empty()) {
+    out << " eventPositionReason=" << locus.traceEventPositionFailureReason;
+  }
+  if (!locus.traceEventPositionPass.empty()) {
+    out << " eventPositionPass=" << locus.traceEventPositionPass;
+  }
+  if (locus.rotationPreviousRay.has_value()) {
+    ray("previousRay", *locus.rotationPreviousRay);
+  }
+  if (locus.rotationCurrentRay.has_value()) {
+    ray("currentRay", *locus.rotationCurrentRay);
+  }
+  if (locus.rotationFanCensus.totalRayCount != 0U) {
+    out << " fanRays=" << locus.rotationFanCensus.totalRayCount
+        << (locus.rotationFanCensus.truncated ? "+truncated" : "");
+    for (const auto &value : locus.rotationFanCensus.rays) ray("fanRay", value);
+  }
   return out.str();
 }
 
