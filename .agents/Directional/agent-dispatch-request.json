@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb131-census-v1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb131-census-v1",
-  "executor_sha": "452eb3d789016e744e99d88811add0f7e0949165",
-  "semantic_source_sha": "452eb3d789016e744e99d88811add0f7e0949165",
-  "turn_id": "m6-cp3-tb131-census",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "14347130681",
-    "EXPECTED_SOURCE_SHA": "452eb3d789016e744e99d88811add0f7e0949165",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "f768d7dc97fb6cf7f345f45fe6e52e681c6d7c21b6436ff3239ef44cec382489",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "c3e3504b14a94a3315ca997ae80da3d926b30ac77923a80aa29891bfaff5dc4f",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "715e5f1f1fd9d06179dd5360561cee55d757cd99cf3872ebbe704ed7befdcee6",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
-    "EXPECTED_CASE_COUNT": "3"
-  },
-  "artifact_prefix": "m6-cp3-tb131-census",
+  "request_id": "m6-cp3-tb131-closeout-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb131-closeout-v1",
+  "file_id": "1eUPoOGQDRrySU0ATl_Heh2Uut-fcu3hy",
+  "patch_sha256": "752d88cfdc6147ad815889bc3ee8c6286997c05ce37c7d1ce8599709cd1b4165",
+  "base_sha": "60fe83ec4b92789d82ef76b79df2c0ccb1accc65",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record TB131 frozen gate mismatch and independent review handoff",
   "retention_days": 30
 }
