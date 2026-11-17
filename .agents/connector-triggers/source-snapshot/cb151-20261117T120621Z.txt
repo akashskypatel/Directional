@@ -1,2 +1,0 @@
-M6-CP3-CB151-P13-TERMINAL-CUT-BEFORE-END-RECEIPT
-Snapshot exact push event SHA; parent f1787d1332ed8bb8f514855a961d131a0fdccae1.
