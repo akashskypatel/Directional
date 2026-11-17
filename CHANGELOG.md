@@ -1,3 +1,8 @@
+## 2026-11-17 UTC — CB156 same-face segment-pair receipts (compile only)
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB156_P13_Same_Face_Segment_Pair_Receipt_Code_Build_Record_20261117.md): exact frozen +65/-0 diagnostic delta in `EmbeddedGraphTopology.cpp`. Source `779fe661e260f506592c64791fbe655734029478`, [compile run 44174690490](https://github.com/akashskypatel/Directional/actions/runs/44174690490), package `14369087138` SHA-256 `9bec7da392d32c0dafedb77bc08426a2aeaa795c7905e6e5facde7ad8c14d032`. Eight GMP/GMPXX targets, 28/28 checksums, 371/371 source files, four frozen inputs unchanged, no runtime execution.
+- Next separately `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-EXEC` per RA-254 S4. TB132 remains runtime authority. No stable event, witness discharge or promotion; stable 66/17/49, debt 1, deferred 81, CP2 491/491.
+
 ## 2026-11-17 UTC — RA-254 re-review of the TB132 Review
 
 - [RA-254](.agents/Directional/Architecture_M6_CP3_TB132_P13_Cut_Binding_Conflict_Receipt_Full_Gate_Independent_Review_20261117.md#ra-254--adversarial-re-review-of-this-review-2026-11-17-utc): MATCH upheld. `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` is withdrawn as the immediate successor because the sphere and BunnyRandom contact kinds are unmeasured. O47 opened.

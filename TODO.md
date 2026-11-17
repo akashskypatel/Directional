@@ -4,10 +4,10 @@
 
 Turn sequence:
 - [x] RA-254 re-review (Review): CB156 exact diff and TB133 criteria frozen.
-- [ ] **NEXT (Code + Build, compile only):** `M6-CP3-CB156-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT`.
+- [x] **COMPLETE (Code + Build, compile only):** `M6-CP3-CB156-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT`. [Compile record](.agents/Directional/Architecture_M6_CP3_CB156_P13_Same_Face_Segment_Pair_Receipt_Code_Build_Record_20261117.md); source `779fe661e260f506592c64791fbe655734029478`, package `14369087138`, eight GMP/GMPXX targets, `runtimeExecution=false`.
   - Exact diff `.agents/Directional/Architecture_M6_CP3_CB156_P13_Same_Face_Segment_Pair_Receipt_Exact.diff`: SHA-256 `1246f12b3cc22f62aa70ea503cf14e1f8438b160995e85225ba26c8fb7bfc205`, 90 lines; numstat `65 0 src/geometry/EmbeddedGraphTopology.cpp`.
   - Precheck `git diff --quiet cce5be20ea7237f59f3c0acca25a4ba57813644e HEAD -- src include tests`; eight RA-245 GMP/GMPXX targets; runtimeExecution=false. Mismatch `M6-CP3-PLAN-P13-SEGMENT-PAIR-RECEIPT-STOP`; infrastructure `M6-CP3-CB156A-P13-SEGMENT-PAIR-RECEIPT-ORCH`.
-- [ ] `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-EXEC`: same gate/census/deferred/harness; comparator TB132 (gate `14359654903`, census `14362615302`); N1–N4 + N5′; MATCH per RA-254 S4.
+- [ ] **NEXT (Test + Benchmark, artifact only):** `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-EXEC`: same gate/census/deferred/harness; comparator TB132 (gate `14359654903`, census `14362615302`); N1–N4 + N5′; MATCH per RA-254 S4.
 - [ ] `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-REV`: classify each site (all-zero signs at the shared locus = overlap; else transverse) and freeze at most one DEFN per site: `…-OPPOSING-TRACE-OVERLAP`, `…-EDGE-ENDPOINT-CONTACT` (+O47) or `…-COINCIDENT-CONTACT-NODE-IDENTITY`.
 - [ ] Held: FC-6, terminal-cut outcome, row858 face-witness fix (after sphere repair). Parked CB145. Carried items as below.
 
