@@ -1,2 +1,0 @@
-# CB148 temporary-state ledger
-.agents/connector-triggers/source-snapshot/m6-cp3-cb148-20261117.txt
