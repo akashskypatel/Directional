@@ -1,0 +1,3 @@
+TB125 artifact-only inventory execution source snapshot.
+Pinned branch authority after entry STATUS: 76499fbdb6920b5fdccf944475ba2e1cb95facf8
+No semantic source edits intended.
