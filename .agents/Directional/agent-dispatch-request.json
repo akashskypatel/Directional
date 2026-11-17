@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb148-complete-closeout-v1",
+  "request_id": "m6-cp3-cb149-switch-apply-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb148-complete-closeout-v1",
-  "file_id": "1-Aa59jSl6ZgmF5BljJDkLR0DHFTiuGEc",
-  "patch_sha256": "a5c93d27da08a1c1457db8b8c4eec0bbcf546ffdef290105edeffdaedb2c766c",
-  "base_sha": "f0f7adbb24ffe31412f68ed46d5e7e253326c8e1",
+  "mailbox_key": "m6-cp3-cb149-switch-apply-v1",
+  "file_id": "19kmHpUfHrXKKTksrI6apC1mTEqMYzjjk",
+  "patch_sha256": "3a1dd6f6f68d7a6b5d45364fa25a6e5467ce1e60438ec862d941d59628becf3e",
+  "base_sha": "53102343509b6fe94ce5fb5d99aead0f12f01866",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close CB148 verified compile gate",
+  "commit_message": "fix(geometry): switch face contact nodes to exact construction",
   "retention_days": 7
 }
