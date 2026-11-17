@@ -1,3 +1,8 @@
+## 2026-11-17 UTC — CB151 terminal cut before end receipt compiled
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB151_P13_Terminal_Cut_Before_End_Receipt_Code_Build_Record_20261117.md): frozen RA-250 diagnostic-only patch `044529d6…`, source `c45e9abe5085f39c1f5bcb149ec07f95b719177e`, package `14327212608`. Eight GMP/GMPXX targets; no runtime, product-decision change, selector change or promotion.
+- Exactly next, separately: `M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-EXEC`. Stable 66/17/49, debt1, deferred81, CP2 491/491.
+
 ## 2026-11-17 UTC — CB150 exact face-chart witness correction compiled
 
 - [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB150_P13_Face_Chart_Witness_Correction_Code_Build_Record_20261117.md): frozen RA-250 test-only patch `63a6bd0b…`, source `b3d7b66e10ed8cfdd94eb0a1f67222efcd2525d9`, package `14325348753`. No assertion changes, runtime, selector change or promotion.

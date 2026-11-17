@@ -1,4 +1,4 @@
-## CURRENT — CB150 compiled; CB151 next (2026-11-17 UTC)
+## CURRENT — CB151 compiled; TB129 next (2026-11-17 UTC)
 
 [RA-250](.agents/Directional/Architecture_M6_CP3_TB128_P13_Face_Contact_Full_Gate_Independent_Review_20261117.md#ra-250--adversarial-re-review-of-this-review-2026-11-17-utc) upholds the TB128 MISMATCH and corrects the Review in four places:
 - **Row 952.** The Review's witness is verified exactly, under both truncating and rounding conversion.
@@ -13,8 +13,8 @@ Also recorded: my own RA-248/RA-249 errors (the GMP rounding premise, the name-o
   - Exact diff `.agents/Directional/Architecture_M6_CP3_CB150_P13_Face_Chart_Witness_Correction_Exact.diff`: SHA-256 `63a6bd0b95099f0be05b22ca5d0adb539569e5f5afa6b2d8950a6b2ab9e905ba`, 49 lines, `10 7 tests/FieldAlignedCurveNetworkTests.cpp`.
   - Precheck: `git diff --quiet 85f9c703c5de86fb2b401cf83c03499a1ce73a27 HEAD -- src include tests`.
   - Eight RA-245 targets compiled; package `14325348753`. No runtime.
-- [ ] **NEXT:** `M6-CP3-CB151-P13-TERMINAL-CUT-BEFORE-END-RECEIPT`. Exact diff `044529d63c2f9e82cad38fb95cad00d4fa299918c6bcd02ffb3c56cc1947b516`, 168 lines, `129 0 src/geometry/EmbeddedGraphTopology.cpp`. Compile only.
-- [ ] Then `M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-EXEC`. Manifest `941287fa…` (953 rows) and census `3af1dc0d…`. MATCH criteria and the H1/H2 classification are in RA-250 §R6.
+- [x] **COMPLETE:** `M6-CP3-CB151-P13-TERMINAL-CUT-BEFORE-END-RECEIPT`. [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB151_P13_Terminal_Cut_Before_End_Receipt_Code_Build_Record_20261117.md). Source `c45e9abe5085f39c1f5bcb149ec07f95b719177e`; package `14327212608`. No runtime.
+- [ ] **NEXT:** `M6-CP3-TB129-P13-TERMINAL-CUT-RECEIPT-FULL-GATE-EXEC`. Manifest `941287fa…` (953 rows) and census `3af1dc0d…`. MATCH criteria and the H1/H2 classification are in RA-250 §R6.
 - [ ] Then Review `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`, which freezes the fix CBs (staged per RA-230). After that, `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6).
 - [ ] Withdrawn: CB149B. Parked: CB145, O45 (H1 would retire it).
 - [ ] Carried: C5/O42/O43/O45/O46 open; FC-1/FC-4 producer proof; middle-piece direction witness. Stable 66/17/49, debt 1, deferred 81; CP2 491/491; CP3/selector497 unpromoted.
