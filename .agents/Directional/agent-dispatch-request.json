@@ -1,1 +1,18 @@
-{"schema_version":1,"request_id":"m6-cp3-cb148-exact-apply-v1","operation":"drive_apply","mailbox_key":"m6-cp3-cb148-exact-apply-v1","file_id":"1AjXi8MUU9LORBGwS5oIrhG3LHUCala-n","patch_sha256":"afdb4a3e7c7a455664049af0a44221c368efd7fe4069f36dc9b8665b8566c9fb","base_sha":"ce3bcb21dbd77041a4edaf3d57c6c502c5905d3e","target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing","commit_message":"feat: add exact face-contact node helpers","retention_days":7}
+{
+  "schema_version": 1,
+  "request_id": "m6-cp3-cb148-compile-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb148-compile-v1",
+  "source_sha": "e05d44b850c378b6e77965f0f314b561a8207435",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb148"
+}
