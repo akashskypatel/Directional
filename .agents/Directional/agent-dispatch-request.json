@@ -1,1 +1,19 @@
-{"schema_version":1,"request_id":"m6-cp3-cb147-apply-v1","operation":"drive_apply","mailbox_key":"m6-cp3-cb147-apply-v1","file_id":"1U1JlB5w37Iw1CS8-5YkZ6jp3yLWk3-5n","patch_sha256":"b17fb3b28d10c77528d747fafb9774e87973c31928a652a45cf9df549f428220","base_sha":"008481473332610746d994874b0b1b913e1599ec","target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing","commit_message":"geometry: add exact face-chart contact helpers and focused test","retention_days":7}
+{
+  "schema_version": 1,
+  "request_id": "m6-cp3-cb147-compile-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb147-compile-v1",
+  "source_sha": "43294bde49e1f24aa09d10ca7e5ff632a7c28d6b",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb147-compile",
+  "retention_days": 7
+}
