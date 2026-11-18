@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-17, RA-254 re-review of TB132 Review):** 956/956 MATCH upheld, 952/953 gate, accepted prefix 491/491. O45 consumer-proxy defect closed narrowly. Both producer sites are under-determined: transverse meeting vs collinear overlap, both dropped by the same-face queue. CB156 exact receipt compiled (no runtime); TB133 next. O47 open. [Review](Architecture_M6_CP3_TB132_P13_Cut_Binding_Conflict_Receipt_Full_Gate_Independent_Review_20261117.md).
+**Current currency (2026-11-18, TB133 execution MATCH):** 956/956 match TB132, 952/953 gate, accepted prefix 491/491. Both producer sites now have exact pair-sign receipts; independent TB133-REV decides contact kind. O45 consumer-proxy narrow closure kept; O47 open. [Execution report](Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Execution_Report_20261118.md).
 
 ## 1. What the project is
 
@@ -103,7 +103,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-- **Current priority:** `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-EXEC` → TB133-REV (RA-254; [CB156 compile record](Architecture_M6_CP3_CB156_P13_Same_Face_Segment_Pair_Receipt_Code_Build_Record_20261117.md)). Measure whether each site is a transverse meeting or a collinear overlap before any repair DEFN; O47 edge-locus contact open. No guessed cut, guard relaxation, coordinate node merge, producer proxy removal, FC-6 or CP3 promotion. FC-1/FC-4, O46 and direction proof open; O45 consumer proxy narrowly closed. [Review](Architecture_M6_CP3_TB132_P13_Cut_Binding_Conflict_Receipt_Full_Gate_Independent_Review_20261117.md).
+- **Current priority:** `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-REV`. Independently verify [TB133 execution evidence](Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Execution_Report_20261118.md) and classify each site per RA-254 S4 before freezing a repair DEFN. O47 open. No guessed cut, guard relaxation, coordinate node merge, producer proxy removal, FC-6 or CP3 promotion. FC-1/FC-4, O46 and direction proof open; O45 consumer proxy narrowly closed.
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).

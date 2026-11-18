@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — TB133 same-face segment-pair receipt full gate (MATCH)
+
+- [Execution report](.agents/Directional/Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Execution_Report_20261118.md): CB156 package `14369087138`, source `779fe661e260f506592c64791fbe655734029478`. Gate `14381507340` 952/953; census `14383400603` Cylinder PASS/288, BunnyRandom/Vase RED; 956/956 MATCH under RA-254 S4, 66 sphere and two BunnyRandom receipts with `sameFacePairs=`. Both postflight valid; 491/491 prefix unchanged. All ten comparator negative controls pass; no new regression, geometry acceptance or promotion.
+- Next separately `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-REV`. Classify the two contact sites independently and freeze at most one repair DEFN per site. Stable 66/17/49, debt 1, deferred 81; CP2 491/491.
+
 ## 2026-11-17 UTC — CB156 same-face segment-pair receipts (compile only)
 
 - [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB156_P13_Same_Face_Segment_Pair_Receipt_Code_Build_Record_20261117.md): exact frozen +65/-0 diagnostic delta in `EmbeddedGraphTopology.cpp`. Source `779fe661e260f506592c64791fbe655734029478`, [compile run 44174690490](https://github.com/akashskypatel/Directional/actions/runs/44174690490), package `14369087138` SHA-256 `9bec7da392d32c0dafedb77bc08426a2aeaa795c7905e6e5facde7ad8c14d032`. Eight GMP/GMPXX targets, 28/28 checksums, 371/371 source files, four frozen inputs unchanged, no runtime execution.
