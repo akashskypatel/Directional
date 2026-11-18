@@ -59,3 +59,36 @@ C5/O42/O43/O46/O47/O48, H2/H4, FC-1/FC-4 and middle-piece direction witness rema
 Historical ledger check ran and returned missing rewrite baseline/CHANGELOG/LESSONS history in snapshot. Connector audit of commits since prior Review `5be561aaa656a3ae806c89e8d0b5e32d76029972` found CHANGELOG append-only +5/+5/+4, LESSONS unchanged. All three durable files present with historical required headings retained. Full historical scan remains unverified; synthetic snapshot Git is not history. No policy exemption or historical PASS claimed. Initial attempt direct reads before snapshot selection and comparator output-directory collision corrected (fresh directory and verified rerun); exact cross-attempt tool ledger not recoverable. This Review does not run product code.
 
 Documentation drift audit (`--base HEAD` against exact local snapshot): zero errors; three protected-document-change warnings for authorized handoff, ORIENTATION and ROADMAP currency edits; prior handoff size warning resolved (15,213 bytes). Durable headings retained. No DESIGN or frozen policy edits; historical review edits are only relocated execution-report links.
+
+## RA-263 — adversarial re-review of this Review (2026-11-18 UTC)
+
+Resumed 2026-11-18T22:49:01Z. Runtime-free: three Haiku read-only audits, direct reads, `-fsyntax-only` on CB167 and the TB142 manifest self-check. Source base CB166 `3b599879a`. **MATCH, R+/R-edge, O49 before CB169 and the CB167 freeze are upheld.** The sequence after TB142 is realigned (S3).
+
+### S1 — what holds
+
+1. **Evidence.** In each sphere block there are 10 terminal grazing slides: traces 0,1,9,10,11,12,13,14,21,22, segment 6 of 7, `traversed=1`. Pairs share a face and converge on vertices 8, 21, 34, 45, 49 and 0, which are approaches to singular vertices. None is published: 19 of the 20 rows stop at `duplicateCutCrossing` (edge (0,2), traces 4/6) in `build_cut_node_bindings` before `build_arcs`. BunnyRandom stops inside `build_arcs` at trace 82. The Review's split between receipt reach and publication reach is correct.
+2. **CB167** (`9163ad66…`, applies cleanly to HEAD). The leaf reproduces the legacy single-segment body exactly. `exact_trace_interior_point` is a pure lift of the old lambda. The new `exact_trace_piece_path_between` is unwired, and it fails closed on a cut inside any slide segment (EPO-5). All 13 row-960 expectations were checked by hand: midpoint (1/2,1/4,1/4) in (1,2,4); clipped contact (3/8,1/8,1/2) = v4 + ½(s − v4) with s = (3/4,1/4,0); edge contact (0,½,½) = finish; vertex contact → v2; departure aliases v0. The 3-piece expectation fails under the old chord algorithm. Syntax-only: EmbeddedGraphTopology.cpp 0 errors / 22 warnings, tests 0 / 42 (= base). TB142 manifest self-check passes (960+81); its first 960 lines are identical to TB140's.
+
+### S2 — defects
+
+1. **RA-262 S3 R0 was defined at the wrong level (my error).** "No traversed slide" is a receipt fact; H4 needs a *published* slide. Every route should have been stated at publication. The Review applied the right reading; this records the correction.
+2. **The TB144 criterion is too permissive.** "Attribute every difference to a listed piece" admits changes on rows that publish no slide graph. Because no fixture publishes a slide, the cutover may change *no* outcome. Required instead: all 962 prior rows and census outcomes strictly equal, including BunnyRandom's first failure (trace 82 `TraceEventPositionNodeConflict`). A new earlier `InvalidNetworkBinding` on traces 43/15 or an edge-only trace is a stop, not an attributed difference. Positive rows may differ only after a fixture publishes slides (S3).
+3. **The required "focused positive publication control" cannot be met in the current order.** Networks cannot be hand-built: `make_from_candidate` replays the producer (`SurfaceCellTracing.cpp:5433–5450`; LESSONS RA-248). No fixture reaches slide publication. CB169 would therefore land with no positive end-to-end witness, against the Review's own requirement.
+4. **Trajectory: the gate-visible blocker has no owner in the sequence.** Sphere C5/O47 blocks 19 rows, and row 858's premise RED (`faceLocus.sourceFace` empty because the failure locus is edge (0,2)). Its rule is already defined: RA-259 S3.1/S3.6, the (entry, entry) carrier contact, and RA-260 S2.3–S2.5/S2.7: the later trace ends at its previous segment's end with `carrierLocus`, the earlier trace is cut at the existing boundary `{k, ∅}`, and an edge contact node is used. It needs **no slide pieces and no H4 cutover**. The current producer drops it as an `EndpointTouch` (`:2466–2486`; guard `:4397`, `:4470`). Yet RA-262 S3 queued it inside CB171/CB172, after five gate-invisible H4 turns. Fixing O47 first also turns the sphere into the slide-publishing witness that CB169 needs (S2.3).
+
+### S3 — realigned sequence (replaces RA-262 S3 after TB142)
+
+| Turn | Scope | Test |
+|---|---|---|
+| CB167 (frozen, unchanged) | leaf + unwired piece path | TB142 (row 960) |
+| EC1 | `FieldAlignedTerminalContact::carrierLocus` (inert, digest only when present) + producer receipt counting (entry, entry) equal-parameter coincidences per fixture (interior parameters only; RA-259 S3.3) | TB: counts gate-wide; every sphere row has the 4/6 locus; any other fixture is listed |
+| EC2 | Graph edge contact node (RA-260 S2.5) as a pure helper + wired consumer; inert (no producer sets `carrierLocus`) | TB: strict equality |
+| EC3 | Producer switch, (entry, entry) only, via `first_field_aligned_carrier_contact` restricted to `movingInSlide=false, wallInSlide=false`; slides are not considered | TB: sphere rows predicted to leave `duplicateCutCrossing`; next site measured; 858 premise change predicted |
+| CB168 → [O49] → CB169 → CB170 | RA-262 S2 EPO contract unchanged; CB169's positive witness is a sphere row that publishes the terminal slides | TBs per S2.2 |
+| CB171 → CB172 | slide piece positions → slide-interval contact (O48), after the vertex-overlap rule and tie control; deletes the CB160/CB166 receipts | TBs |
+
+TB142-REV freezes EC1 as an exact diff. If EC1's census finds (entry, entry) coincidences outside the sphere, EC3 lists their predicted outcomes before freezing.
+
+### S4 — closeout
+
+Accepted prefix 491/491 and stable 66/17/49, debt 1, deferred 81 are unchanged. No promotion. Carried: C5/O42/O43/O46/O47/O48, H2/H4, FC-1/FC-4, O49. FC-6 and terminal-cut held; the row-858 fix is held until EC3. CB145 parked. D11=A, D12=A, D10 deferred, D6 pending. Successor unchanged: `M6-CP3-CB167-P13-TRACE-PIECE-PATH-HELPER`.

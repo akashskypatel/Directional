@@ -1,3 +1,7 @@
+## 2026-11-18 UTC — RA-263 re-review of the TB141 Review (non-stable)
+
+- [RA-263](.agents/Directional/Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Independent_Review_20261118.md#ra-263--adversarial-re-review-of-this-review-2026-11-18-utc): CB167 upheld (hand-checked expectations, syntax baseline); R0 correction; TB144 strict; sphere O47 entry-contact track EC1–EC3 placed before the H4 cutover. No product change.
+
 ## 2026-11-18 UTC — TB141 independent review (MATCH; successor frozen)
 
 - [TB141 Review](.agents/Directional/Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Independent_Review_20261118.md): independent 962/962 and accepted prefix491/491; 1266 retained traversed records and exact block inventory. R+/R-edge; no graph publication proof. Exact CB167 leaf + unwired path helper and row960 frozen; offline gate self-check PASS; no implementation or promotion. [Plan](.agents/Directional/Architecture_M6_CP3_CB167_P13_Trace_Piece_Path_Helper_Plan_20261118.md).

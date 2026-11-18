@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-18, TB141-REV):** [TB141 Review](Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Independent_Review_20261118.md): 962/962 MATCH; R+ and R-edge, O49 before CB169. CB167 exact unwired helper frozen; compile-only next.
+**Current currency (2026-11-18, TB141-REV + RA-263 → `M6-CP3-CB167-P13-TRACE-PIECE-PATH-HELPER`):** TB141 MATCH upheld; no fixture publishes a slide (sphere stops at C5 before arcs, BunnyRandom at trace 82). [RA-263](Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Independent_Review_20261118.md#ra-263--adversarial-re-review-of-this-review-2026-11-18-utc) moves the sphere O47 (entry, entry) contact track EC1–EC3 ahead of the H4 cutover, which gets the sphere as its positive witness; TB144 strict equality.
 
 ## 1. What the project is
 
@@ -103,7 +103,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-- **Current priority:** Follow [TB141 Review](Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Independent_Review_20261118.md); then CB167 leaf + inert concatenation, CB168 binding (inert), O49 before CB169 coordinated geometry cutover, CB170 chords/polylines, CB171/172 carrier contact. Follow RA-262 EPO contract and RA-259/260 contact rules. CB167 compile-only under the exact frozen plan; later turns need separate authority.
+- **Current priority:** [RA-263](Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Independent_Review_20261118.md#ra-263--adversarial-re-review-of-this-review-2026-11-18-utc) sequence: CB167 → TB142 → EC1 carrierLocus + entry-coincidence receipt → EC2 edge contact node (inert) → EC3 (entry, entry) switch (sphere O47, 19 rows + 858 premise) → CB168 → [O49] → CB169 H4 cutover → CB170 → CB171/172 slide contact (O48). RA-262 EPO contract and RA-259 S3 / RA-260 S2 contact rules remain authority.
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).
