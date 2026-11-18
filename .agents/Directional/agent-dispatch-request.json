@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb135-closeout-v1",
-  "mailbox_key": "m6-cp3-tb135-closeout-v1",
-  "file_id": "1iSStKh4tYJ57aBI7vUGTSj8bRiMjrTit",
-  "patch_sha256": "328c577abd125e908d057242a3ec49106ed54acb82c5d90e8733b1fbe3b6eb94",
-  "base_sha": "4311be687be9d442f740412244acafa2623ff497",
+  "request_id": "m6-cp3-tb135-review-closeout-v1",
+  "mailbox_key": "m6-cp3-tb135-review-closeout-v1",
+  "file_id": "1W7jr64Mab_Qaxb7CXuKmf1ZW-Qv79-Kd",
+  "patch_sha256": "c9bfe896fc535a4ed2682cf99080636158777943f37a905bfbe6b4fa3a2102bb",
+  "base_sha": "b8c1afe92aa128213e2ac0ba7ed88b55829b39b8",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Record TB135 edge-transit entry gate MATCH and review handoff",
+  "commit_message": "Record TB135 independent MATCH and freeze overlap definition successor",
   "retention_days": 30
 }
