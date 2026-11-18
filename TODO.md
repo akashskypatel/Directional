@@ -1,4 +1,4 @@
-## CURRENT — RA-257: H3 confirmed, carrier-occupancy helpers next (2026-11-18 UTC)
+## CURRENT — RA-257: H3 confirmed, carrier-occupancy gate next (2026-11-18 UTC)
 
 [RA-257](.agents/Directional/Architecture_M6_CP3_TB135_P13_Edge_Transit_Entry_Full_Gate_Independent_Review_20261118.md#ra-257--adversarial-re-review-of-this-review-2026-11-18-utc) upholds the TB135 Review's MATCH (956/956), and the measured onset X43 (t43=0.26324148596788688 on (94,210)) confirms RA-256 S1. It finds two defects:
 - **H3 is real (S1).** For edge-departure segments (edge-port seed or `vertexSlide`), the traced face piece has zero length and the whole segment is a slide. The classifier still recomputes an opposite-edge chord that was never traced. That chord is either skipped as Unevaluated or able to produce a phantom ProperCrossing. The BunnyRandom grazing slides are unaffected.
@@ -6,11 +6,8 @@
 
 Turn sequence:
 - [x] RA-257 re-review (Review): CB159 exact diff, TB136 manifest and criteria frozen; DEFN obligations S5.
-- [ ] **EXACT NEXT (Code + Build, compile only):** `M6-CP3-CB159-P13-CARRIER-OCCUPANCY-HELPERS`.
-  - Exact diff `.agents/Directional/Architecture_M6_CP3_CB159_P13_Carrier_Occupancy_Helpers_Exact.diff`: SHA-256 `756bd652b4f188398fe2b652b078f61aa34123b7748f71f5a7bb0d303cffa266`, 192 lines. Numstat: `31 0` SurfaceCellTracing.h, `51 0` SurfaceCellTracing.cpp, `80 0` FieldAlignedCurveNetworkTests.cpp.
-  - Precheck `git diff --quiet 5bdc7c092a8935faeab75cf7a739928fd8ddca46 HEAD -- src include tests`. Eight RA-245 GMP/GMPXX targets; runtimeExecution=false.
-  - Mismatch route `M6-CP3-PLAN-P13-CARRIER-OCCUPANCY-HELPERS-STOP`; infrastructure route `M6-CP3-CB159A-P13-CARRIER-OCCUPANCY-HELPERS-ORCH`.
-- [ ] **Then (Test + Benchmark):** `M6-CP3-TB136-P13-CARRIER-OCCUPANCY-HELPERS-FULL-GATE-EXEC`. Manifest `.agents/Directional/gates/Architecture_M6_TB136_P13_Carrier_Occupancy_Helpers_Full_Gate_Case_Manifest.tsv` (`dac17a50…`, 954 rows, membership 1,035); census, deferred and harness unchanged. MATCH: rows 1–953 and census equal TB135 under N1–N4, receipts byte-identical, row 954 PASS.
+- [x] **COMPLETE (Code + Build, compile only):** `M6-CP3-CB159-P13-CARRIER-OCCUPANCY-HELPERS`. [Record](.agents/Directional/Architecture_M6_CP3_CB159_P13_Carrier_Occupancy_Helpers_Code_Build_Record_20261118.md); source `18cc4a7d3e8ae43ce854c0edc834ab156156dcbf`, package `14405225071`, ZIP SHA-256 `2e142b042d02b81e6626c40b03f2116628d017adf510a9c2ea7f96f9a8994e8c`. Exact +162/-0, eight GMP/GMPXX targets; no runtime.
+- [ ] **EXACT NEXT (Test + Benchmark):** `M6-CP3-TB136-P13-CARRIER-OCCUPANCY-HELPERS-FULL-GATE-EXEC`. Manifest `.agents/Directional/gates/Architecture_M6_TB136_P13_Carrier_Occupancy_Helpers_Full_Gate_Case_Manifest.tsv` (`dac17a50…`, 954 rows, membership 1,035); census, deferred and harness unchanged. MATCH: rows 1–953 and census equal TB135 under N1–N4, receipts byte-identical, row 954 PASS; nothing else differs. Mismatch `M6-CP3-PLAN-P13-CARRIER-OCCUPANCY-HELPERS-STOP`; infrastructure `M6-CP3-CB159A-P13-CARRIER-OCCUPANCY-HELPERS-ORCH`.
 - [ ] (Review, parallel) `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT`: H3 measuring receipt first (S5.1), slide-piece cut ordering and terminal-in-slide (S5.3), sphere entry-occupancy equality (S5.4); helpers CB + wiring CB.
 - [ ] (Review) `M6-CP3-TB136-P13-CARRIER-OCCUPANCY-HELPERS-FULL-GATE-REV`, then `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (carrier-keyed slide-piece contact, arrival seniority; S5.2).
 - [ ] Held: FC-6, terminal-cut outcome, row858 fix. Parked CB145. D11=A, D12=A unchanged; stable 66/17/49, debt 1, deferred 81; CP2 491/491; no promotion.
