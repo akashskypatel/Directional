@@ -1,2 +1,0 @@
-CB166: source snapshot for entry head 7868625e89d11ab65f7c684fe0f8159e57d1c5ac.
-Snapshot push event SHA is the inspection authority; marker-only change.
