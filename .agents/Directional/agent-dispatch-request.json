@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb163-apply-v1",
-  "operation": "drive_apply",
-  "file_id": "1ewWHboJn0wb0_JRT7QsBNdm4pHhEXiRA",
-  "patch_sha256": "7d95622d045f068e4470d154b5ad7cadd1257511c12ab42c7d9fb92fffd0e369",
-  "base_sha": "1780478073ebb0f9902d870045e95c5160f61a99",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Add exact carrier contact helper and focused test",
-  "mailbox_key": "m6-cp3-cb163-apply-v1",
-  "retention_days": 30
+  "request_id": "m6-cp3-cb163-compile-v1",
+  "operation": "compile",
+  "source_sha": "03a2c07bcd46f860fa74c6c78f61dc934fc1af60",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb163-compile-v1",
+  "mailbox_key": "m6-cp3-cb163-compile-v1"
 }
