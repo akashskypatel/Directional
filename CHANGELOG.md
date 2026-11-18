@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — RA-255 re-review of the TB133 Review
+
+- [RA-255](.agents/Directional/Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md#ra-255--adversarial-re-review-of-this-review-2026-11-18-utc): MATCH upheld. The sphere through-crossing is proven, and BunnyRandom's overlap starts at vertex 94 (O48). The sphere DEFN scope is corrected and that DEFN moves to the Review track.
+- Frozen `Architecture_M6_CP3_CB157_P13_Trace_Path_Receipt_Exact.diff` (SHA-256 `56ef75c9…5f18`, +50/-0) and the TB134 criteria. Next is `M6-CP3-CB157-P13-TRACE-PATH-RECEIPT`.
+
 ## 2026-11-18 UTC — TB133 independent review (MATCH upheld)
 
 - [Review](.agents/Directional/Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md): four exact artifacts, 956/956 independent comparison, 952/953 gate, 491/491 prefix, 14 receipt/log mutation controls. Sphere transverse shared endpoint; BunnyRandom co-directional overlap across three terminal segments. No stable loss or promotion. Next separately `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` (C5/O47); BunnyRandom overlap held. No project runtime, build or semantic change.

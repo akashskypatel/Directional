@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-18, TB133 independent MATCH):** 956/956 comparison, 952/953 gate, accepted 491/491. Sphere transverse edge endpoint; BunnyRandom co-directional terminal overlap. [Review](Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md). O47 open; O45 narrow closure retained.
+**Current currency (2026-11-18, RA-255 re-review of TB133 Review):** 956/956 MATCH upheld, 952/953 gate, accepted 491/491. The sphere is a proven through-crossing at an exact point on edge (0,2) (C5/O47). BunnyRandom traces 43/15 are identical from the vertex-94 transit onward (O48). [RA-255](Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md#ra-255--adversarial-re-review-of-this-review-2026-11-18-utc).
 
 ## 1. What the project is
 
@@ -103,7 +103,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-- **Current priority:** `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` — definition only for C5/O47; [TB133 review](Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md) establishes transverse endpoint but not order or roles. BunnyRandom co-directional overlap held until remeasurement after sphere repair. No guessed cut, coordinate merge, guard relaxation, producer proxy removal, FC-6 or CP3 promotion. FC-1/FC-4, O46 and direction proof open; O45 consumer proxy narrowly closed.
+- **Current priority:** implementation `M6-CP3-CB157-P13-TRACE-PATH-RECEIPT` → TB134; Review track in parallel `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` (RA-255 S2: reuse the crossing seniority rule, exact edge-key detection, face/edge/vertex locus representations), then the TB134-REV overlap DEFN. No guessed cut, guard relaxation, coordinate merge, D12 change or CP3 promotion.
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).

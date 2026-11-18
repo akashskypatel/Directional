@@ -81,3 +81,94 @@ Carry C5/O42/O43/O46/O47, H2 unobserved, FC-1/FC-4 broad producer proof, middle-
 | review_check.py boundary | Product/selector checks PASS; stock script FAIL for absent historical Git object in verified source snapshot. Independent connector comparison of rewrite base 8b7299b43764a6ba3444e5bc774a2f1b65e99731 proves ancestor; exact historical headings fetched and matched (four handoff, one orientation); drift audit 0 errors and three authorized document-change warnings. |
 | `STATUS` lifecycle maintained | Current TB133-REV, initial entry IN_PROGRESS, started 2026-11-18T00:19:46Z, Resumed at empty. Final beacon follows verified closeout and names exact successor only when COMPLETE; not claimed by this receipt. |
 | Pushed to origin, branch in sync | See verified Drive application and branch comparison at final closeout; local git is snapshot-only, not an origin checkout, so no fabricated git status -sb result. |
+
+## RA-255 — adversarial re-review of this Review (2026-11-18 UTC)
+
+### S0 — verdict
+
+The MATCH and both classifications are upheld. The sphere is a transverse meeting and BunnyRandom is a co-directional overlap. Three corrections follow:
+1. The sphere result is stronger than this Review states (S1).
+2. The BunnyRandom hold is sequenced on a wrong premise (S3).
+3. The sphere DEFN brief keeps questions open that the data already answer, and omits the vertex locus (S2).
+
+`M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` stays the Review-track successor with the scope in S2. The implementation track runs, in parallel, a measurement that does not depend on any open decision: CB157 → TB134 (S4–S5).
+
+### S1 — sphere: a through-crossing, not a touch
+
+This Review says the signs do "not by itself prove an alternating four-ray order". They do, once chart orientation is fixed:
+- The charts list vertices in key order: (0,1,2) and (0,2,3).
+- Unfold both faces across edge (0,2). Vertices v1 and v3 lie on opposite sides of the edge line, so both charts have the same planar rotational sense.
+- In (0,1,2), `o=0:+1:+1:0` puts trace 6's outgoing ray on one side of trace 4's incoming ray.
+- In (0,2,3), `o=-1:0:0:-1` puts trace 6's incoming ray on the matching side of trace 4's outgoing ray.
+- The cyclic order of the four rays around P is therefore A, B, A, B. Trace 4 and trace 6 cross at P on edge (0,2).
+- The result does not depend on which end of the edge is v0.
+
+A Haiku agent re-derived this independently, including a numeric instance that satisfies every measured sign. So "simultaneous, terminal or through" is settled as **through-crossing**. The only remaining question is which trace arrived at P first.
+
+### S2 — scope corrections for `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT`
+
+1. **Reuse the existing crossing rule; add no new role taxonomy.**
+   - A through-crossing is the configuration that `ProperCrossing` already handles. Seniority comes from `field_aligned_compare_priority_arrivals`. A conclusive later arrival terminates at a contact. An inconclusive comparison follows the frozen symmetric rule (`SurfaceCellTracing.cpp:4370–4376`, `:4429–4433`).
+   - The near-mirror symmetry of traces 4 and 6 makes the inconclusive branch a live case. The DEFN must state its outcome at P explicitly.
+2. **Detect at edge transport, keyed by the exact (edge, parameter).**
+   - Do not widen the same-face classifier. Each face sees only a V-shaped `EndpointTouch`; alternation needs both faces.
+   - The exact key already exists in the consumer (`EmbeddedGraphTopology.cpp:365–401`). The producer needs the same key, checked against both pending and committed segments. The DEFN applies the S1 alternation test to that key.
+3. **O47 representation.**
+   - `TraceCutPosition{segment k, parameter nullopt}` already denotes the entry boundary of struck segment k, which is exactly the struck trace's edge crossing.
+   - The contact node must be that crossing's node, with one event set. It must not be a new `FaceContactNode`.
+   - The DEFN must define an edge-locus contact without weakening the interior-only `face_chart_segment_parameter` helper.
+4. **Vertex locus (new O48).**
+   - BunnyRandom's overlap begins at a source-vertex transit (S3). The locus classes are therefore face interior (FC-7′), edge point (O47) and source vertex (O48).
+   - The DEFN must define all three representations, even though the sphere CB implements only the edge point. Otherwise the BunnyRandom repair would redo the representation.
+5. **Split the freeze per RA-249.** First an additive helpers CB with exact unit tests (alternation predicate; edge-key coincidence). Then a stacked wiring CB with its own TB criteria.
+
+### S3 — BunnyRandom: the overlap starts at vertex 94
+
+- **Before the merge the traces are distinct.** The nine nonmatching pairs (43/15 segments 0–8 vs 3–13 and 12 vs 18) all share a branch. Their signs are constant: ±1 against each other's line, opposite in the reverse direction. These are distinct parallel straight segments, and such segments cannot meet inside a face.
+- **Unevaluated pair.** The next pair, 13/19 in (94,124,210), is unevaluated. At least one canonical exit is missing, which means an edge-transit or vertex exit.
+- **The merge is at vertex 94.**
+  - Segment 14 of trace 43 and segment 20 of trace 15, in (72,94,243), have identical entries. They follow segments 13 and 19 immediately.
+  - Faces (94,124,210) and (72,94,243) share only vertex 94.
+  - So both traces transit **vertex 94** and leave along one outflow. They stay identical through (72,243,273) and (21,72,273), and strike trace 82 at one point.
+- **Upstream cause.** A second trace arriving at an already-transited vertex, or sliding into it under D11/D12 edge rules, is not detected as a contact.
+- **What the repair must not do.** It must not change D12 (user decision): D12 governs where a trace goes, not whether a second arrival at an occupied locus is a contact.
+- **Why the hold rationale fails.** The sphere repair is an edge-point rule and cannot reach a vertex transit. "Remeasure after sphere correction" therefore buys nothing.
+- **What CB157 must confirm.** Whether it was a vertex hit or an edge slide, and which trace arrived first. Once TB134 shows that, the overlap DEFN can proceed in parallel.
+
+### S4 — CB157 (exact, print-only)
+
+`.agents/Directional/Architecture_M6_CP3_CB157_P13_Trace_Path_Receipt_Exact.diff`, SHA-256 `56ef75c91cf72be85752af61cb276c73aeaf1ca692f92aa5061326fac9eb5f18`, 68 lines, numstat `50 0 src/geometry/EmbeddedGraphTopology.cpp`.
+- It adds `print_boundary_point` and `print_trace_path`.
+- For each of the two compared traces, it prints every segment's face, branch, entry (edge:parameter, `=v<id>` when the parameter is exactly 0 or 1), incoming and outgoing carrier and edge-transit exit, plus the end kind.
+- It is appended inside the existing `sameFacePairs=` field, so it inherits the RA-254 call sites and the precision window.
+- Precheck: `git diff --quiet 779fe661e260f506592c64791fbe655734029478 HEAD -- src include tests`.
+- A `-fsyntax-only` compile gives the same 22 warnings at HEAD and patched. A Haiku read-only audit found it print-only, with every optional value checked before use and no undefined behaviour.
+
+### S5 — TB134 criteria (frozen)
+
+- **Inputs.** Same gate `941287fa…`, census `3af1dc0d…`, deferred `fd433f54…` and harness `78b8002c…`. Comparator: TB133 gate `14381507340`, census `14383400603`.
+- **Normalizations.** N1–N4 as in RA-253 S7. **N5″:** delete from the first ` path=` up to (not including) ` sharedEvents=` or the line end. The rest of every receipt line must equal TB133's line byte-for-byte, with the same per-row counts (66 lines across 19 sphere rows; 2 on BunnyRandom).
+- **MATCH** requires all of the following:
+  1. Every ledger equals TB133's.
+  2. The logs are equal under N1–N4 plus N5″.
+  3. Every receipt line carries exactly two ` path=` fields.
+  4. Nothing else differs. Any other difference is a MISMATCH.
+- **Mismatch route.** `M6-CP3-PLAN-P13-TRACE-PATH-RECEIPT-STOP`. Infrastructure route: `M6-CP3-CB157A-P13-TRACE-PATH-RECEIPT-ORCH`.
+- **TB134-REV reads** the first segment pair of traces 43 and 15 with exactly equal entries, the transit kind and which trace arrived first. It then freezes `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (co-directional, vertex locus O48).
+
+### S6 — turn sequence
+
+- **Implementation track:**
+  1. `M6-CP3-CB157-P13-TRACE-PATH-RECEIPT` (Code + Build, compile only).
+  2. `M6-CP3-TB134-P13-TRACE-PATH-RECEIPT-FULL-GATE-EXEC`.
+  3. The CB/TB pairs frozen by the DEFNs below.
+- **Review track** (runs in parallel with steps 1–2):
+  1. `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` with the S2 scope. It freezes a helpers CB and a wiring CB.
+  2. `M6-CP3-TB134-P13-TRACE-PATH-RECEIPT-FULL-GATE-REV`.
+  3. `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP`.
+- **Held:** FC-6, the terminal-cut outcome, and the row 858 face-witness fix (after the sphere repair). CB145 stays parked.
+
+### S7 — lessons
+
+- A crossing at a mesh edge is invisible to a same-face classifier. Decide crossing versus touch from both faces' signs once the chart orientations are fixed, before declaring the question open.
+- Distinct parallel segments with the same branch cannot converge inside a face. When two traces later coincide, find their first shared entry: the merge happened at a vertex or edge transit.

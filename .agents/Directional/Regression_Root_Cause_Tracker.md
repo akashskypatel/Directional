@@ -1,3 +1,11 @@
+## 2026-11-18 — RA-255 re-review of the TB133 Review (non-stable)
+
+[RA-255](Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md#ra-255--adversarial-re-review-of-this-review-2026-11-18-utc): MATCH upheld.
+- **Sphere C5.** A through-crossing at an exact point on edge (0,2), proven from the four-ray alternation. O47 owner: `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT`.
+- **BunnyRandom FC-1/FC-4.** A co-directional overlap that begins at the vertex-94 transit. **O48 opened:** a second arrival at an occupied vertex transit is not a contact, and the consumer has no vertex-locus representation. D12 itself is not at fault.
+- **Next.** CB157 (exact path receipt), then TB134.
+- **Stable accounting unchanged:** 66/17/49, debt 1, deferred 81.
+
 ## 2026-11-18 — TB133 independent Review MATCH upheld (non-stable)
 
 [Review](Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md): 956/956, 952/953 gate, accepted prefix 491/491; 68 exact pair receipts. No stable event. C5 sphere endpoint class: nonzero signs in both adjacent faces, eq=xe/ex; O47 owns exact edge contact in consumer. Producer must prove ordered shared event and role/arrival; falsify if no exact eligible endpoint, existing shared incidence, collinearity or wrong sheet. Next `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT`. BunnyRandom FC-1/FC-4: two nodes claim one trace82 locus, traces43/15 share three nondegenerate co-directional terminal segments; earlier pair unevaluated. Hold `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` co-directional case until remeasure after sphere correction; falsify if distinct canonical ends, nonzero signs, degenerate or changed locus. No node-only merge. Preserve all existing guards and acceptance authority.
