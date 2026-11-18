@@ -1,3 +1,7 @@
+## 2026-11-18 — TB140 independent review (in progress)
+
+[Partial review](Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md): 961/961 prior rows MATCH, 959 PASS control, 491/491 prefix, no new stable event. CB166 recursive helper dependency and two incomplete synthetic transit setups identified; candidate plan not frozen. H4 remains open; no promotion. Stable 66/17/49, debt1, deferred81.
+
 ## 2026-11-18 — TB140 trace-segment-pieces helper full gate MATCH (non-stable)
 
 [Execution report](Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Execution_Report_20261118.md): 961/961 prior rows match TB139 under N1–N4, row 959 PASS; gate `14458589267` 958/959, census `14460885073`, all 1,266 slide proposal lines byte-identical (48 seed, 3 vertex, 1,215 grazing), 68 other receipts, 48 departures, zero crossing lines, 1,738 region records unchanged. No newly introduced regression or candidate: the same permitted row 858 RED, unreached row 648 sphere assertions, BunnyRandom trace-82 contact-cut conflict and Vase completion RED remain. The helper is unwired; H4 is live and its consumers are not corrected; C5/O47/O48 remain open. H3 closure remains narrow. Stable 66/17/49, one produced-witness debt, deferred 81, accepted CP2 491/491; no CP3/selector497/D0 promotion. Independent TB140-REV owns adjudication and CB166 freeze.

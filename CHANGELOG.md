@@ -1,3 +1,7 @@
+## 2026-11-18 UTC — TB140 independent review (partial; evidence MATCH)
+
+- [Partial review](.agents/Directional/Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md): 961/961 prior rows MATCH; row959 PASS; accepted prefix491/491; no new stable event or promotion. Candidate CB166 plan not frozen; same canonical review remains in progress.
+
 ## 2026-11-18 UTC — TB140 trace-segment-pieces helper full gate (execution MATCH)
 
 - [Execution report](.agents/Directional/Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Execution_Report_20261118.md): immutable CB165 package `14459000178`, source `fb51da7142646ebed97527d976fd8b382607160a`; gate `14458589267` 958/959, census `14460885073`; 961/961 prior rows match under N1–N4, row 959 PASS. All slide proposals byte-identical (48 seed, 3 vertex, 1,215 grazing), 68 other receipts, 48 departures, zero crossing lines. Valid postflight, no rebuild or new regression; stable 66/17/49, debt 1, deferred 81; CP2 491/491. H4/O47/O48 open; no CP3/D0 promotion.
