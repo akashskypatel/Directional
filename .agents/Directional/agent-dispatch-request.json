@@ -1,1 +1,12 @@
-{"schema_version":1,"request_id":"m6-cp3-cb166-committed-slide-receipt-compile","operation":"compile","source_sha":"3b599879ac05a79fb2ddce9a930da3683051017d","targets":["directional_core","directional_pipeline","directional_surface_cell_authority_kernel_tests","directional_surface_cell_producer_tests","directional_surface_cell_completion_tests","directional_surface_cell_validation_tests","directional_compiled_api_tests","directional_benchmarks"],"artifact_prefix":"m6-cp3-cb166-committed-slide-receipt","mailbox_key":"m6-cp3-cb166-committed-slide-receipt-compile"}
+{
+  "schema_version": 1,
+  "request_id": "m6-cp3-cb166-committed-slide-receipt-closeout",
+  "operation": "drive_apply",
+  "file_id": "1LTrKG-nDwe85jBVTdCdbNUgXjAxWB_lX",
+  "patch_sha256": "d8783c9adcb22f58a7a647ec132ffafa03cf9c772c0125a9ac10096fcf82aaf3",
+  "base_sha": "3b599879ac05a79fb2ddce9a930da3683051017d",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close CB166 committed slide receipt build",
+  "mailbox_key": "m6-cp3-cb166-committed-slide-receipt-closeout",
+  "retention_days": 30
+}
