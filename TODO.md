@@ -1,4 +1,4 @@
-## CURRENT — TB141 independent review MATCH; CB167 frozen; RA-263 realigned sequence (2026-11-18 UTC)
+## CURRENT — CB167 compile PASS; TB142 next; TB141 reviewed runtime retained (2026-11-18 UTC)
 
 [RA-263](.agents/Directional/Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Independent_Review_20261118.md#ra-263--adversarial-re-review-of-this-review-2026-11-18-utc) upholds MATCH and CB167. It corrects RA-262's R0 (receipt vs publication) and tightens TB144 to strict equality, since no fixture publishes a slide. It moves the sphere O47 (entry, entry) contact (rule already defined in RA-259 S3 / RA-260 S2; no slide pieces needed) before the H4 cutover, so CB169 gets a real positive witness (networks cannot be hand-built).
 
@@ -12,8 +12,8 @@ Turn sequence:
 - [x] **COMPLETE (Test + Benchmark, artifact only):** `M6-CP3-TB141-P13-COMMITTED-SLIDE-RECEIPT-FULL-GATE-EXEC`; [report](.agents/Directional/Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Execution_Report_20261118.md): 962/962 MATCH, 958/959 gate and census unchanged; 1,266 traversed (1,215 faceThenEdge, 51 edgeOnly), zero R-x. No promotion.
 - [x] RA-263 re-review (Review): CB167 upheld; EC1–EC3 inserted before CB168; TB144 strict.
 - [x] **COMPLETE (independent Review):** `M6-CP3-TB141-P13-COMMITTED-SLIDE-RECEIPT-FULL-GATE-REV` — [TB141 Review](.agents/Directional/Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Independent_Review_20261118.md): MATCH; R+/R-edge; CB167 frozen.
-- [ ] **NEXT (Code + Build):** `M6-CP3-CB167-P13-TRACE-PIECE-PATH-HELPER` — [exact plan](.agents/Directional/Architecture_M6_CP3_CB167_P13_Trace_Piece_Path_Helper_Plan_20261118.md); compile-only, no product caller switch.
-- [ ] NEXT after CB167: `M6-CP3-TB142-P13-TRACE-PIECE-PATH-HELPER-FULL-GATE-EXEC` (manifest `2468d8ba…`, 960+81) → TB142-REV freezes EC1.
+- [x] **COMPLETE (Code + Build, compile only):** `M6-CP3-CB167-P13-TRACE-PIECE-PATH-HELPER` — [compile record](.agents/Directional/Architecture_M6_CP3_CB167_P13_Trace_Piece_Path_Helper_Code_Build_Record_20261118.md); source `ecc67015cc4ff28ec15c086787a9450bd585bf94`, package `14481197196`, SHA-256 `274064da966f5a0257115c851cbc530c5f8fd9a3b1979b5d06844dab0ce1f04b`; exact +222/-22 across three files, eight GMP/GMPXX targets, no product caller switch or runtime.
+- [ ] **NEXT (Test + Benchmark, artifact only):** `M6-CP3-TB142-P13-TRACE-PIECE-PATH-HELPER-FULL-GATE-EXEC` (manifest `2468d8ba…`, 960+81) → TB142-REV freezes EC1.
 - [ ] Prospective ([RA-263 S3](.agents/Directional/Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Independent_Review_20261118.md#ra-263--adversarial-re-review-of-this-review-2026-11-18-utc)): EC1 `carrierLocus` + (entry, entry) coincidence receipt (TB) → EC2 edge contact node, inert (TB) → EC3 (entry, entry) producer switch for sphere O47 (TB) → CB168 `sourcePieceCounts` binding (TB) → [O49 CB] → CB169 H4 cutover, sphere as positive witness (TB144 strict incl. BunnyRandom first failure) → CB170 chords + polylines → CB171 slide positions → CB172 slide contact O48 (after vertex-overlap rule + tie control; deletes CB160/CB166 receipts).
 - Held: FC-6, TERMINAL-CUT-OUTCOME, row-858 fix. Parked: CB145. D11=A, D12=A unchanged.
 

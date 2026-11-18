@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — CB167 trace-piece path helper (compile only)
+
+- [Compile record](.agents/Directional/Architecture_M6_CP3_CB167_P13_Trace_Piece_Path_Helper_Code_Build_Record_20261118.md): exact source `ecc67015cc4ff28ec15c086787a9450bd585bf94`, package `14481197196`, ZIP SHA-256 `274064da966f5a0257115c851cbc530c5f8fd9a3b1979b5d06844dab0ce1f04b`. Frozen +222/-22 across three files; ordered piece path helper unwired, ordinary clipping factored, row960 added. Eight GMP/GMPXX targets, 28/28 package hashes, 371/371 product/test files, four frozen inputs. No runtime.
+- Exact next `M6-CP3-TB142-P13-TRACE-PIECE-PATH-HELPER-FULL-GATE-EXEC` under frozen plan, row960 PASS expected, 962 prior rows compared under N1–N6. TB141 remains reviewed runtime; stable 66/17/49, debt 1, deferred 81, CP2 491/491. No CP3/D0 promotion.
+
 ## 2026-11-18 UTC — RA-263 re-review of the TB141 Review (non-stable)
 
 - [RA-263](.agents/Directional/Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Independent_Review_20261118.md#ra-263--adversarial-re-review-of-this-review-2026-11-18-utc): CB167 upheld (hand-checked expectations, syntax baseline); R0 correction; TB144 strict; sphere O47 entry-contact track EC1–EC3 placed before the H4 cutover. No product change.
