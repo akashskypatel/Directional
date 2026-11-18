@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb162-resume-documentation-v1",
+  "request_id": "m6-cp3-cb162-verified-closeout-v2",
   "operation": "drive_apply",
-  "file_id": "1IAejEqpSv41LjpWwRaqtfMZIGuB_Vabw",
-  "patch_sha256": "1c749a7d0144baf926e893987a89d990c0bd0cecc7e5d76808e164656b25d7d2",
-  "base_sha": "a343f9bc95d9b08201875ed55f456ab7c9a1379b",
+  "file_id": "1ZyTNQ-SjJT31ZDy8WtjM7XwZbkBVV7au",
+  "patch_sha256": "404cfb57b70f4184e832841fc5893e3ffee8f0aaf1743d6d89d11770753da51a",
+  "base_sha": "eba81eea9def41c87d3a6a220ef9d4f1ddc2a8d6",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Record CB162 applied source and pending compile evidence",
-  "mailbox_key": "m6-cp3-cb162-resume-documentation-v1",
+  "commit_message": "Record CB162 verified compile closeout and CB163 successor",
+  "mailbox_key": "m6-cp3-cb162-verified-closeout-v2",
   "retention_days": 30
 }
