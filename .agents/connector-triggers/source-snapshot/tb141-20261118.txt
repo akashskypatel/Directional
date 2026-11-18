@@ -1,1 +1,0 @@
-TB141 execution authority snapshot. Capture the exact push-event source SHA; no compilation or runtime.
