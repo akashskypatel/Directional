@@ -1,3 +1,7 @@
+## 2026-11-18 — TB141 committed-slide receipt full gate MATCH (non-stable)
+
+[TB141 execution](Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Execution_Report_20261118.md): 962/962 MATCH under N1–N6; gate `14473040819` 958/959 (same row858 RED), census `14473701160` unchanged; 1,266 traversed (1,215 faceThenEdge, 51 edgeOnly in BunnyRandom), zero R-x in 123 blocks. No new stable event or candidate; prior failures remain. H4/O49 open; retained receipts do not prove graph publication; TB141-REV owns routes. Stable 66/17/49, debt 1, deferred 81, CP2 491/491; no promotion.
+
 ## 2026-11-18 — RA-262 exact-piece ownership contract (H4 stop resolved, non-stable)
 
 [RA-262](Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md#ra-262--exact-piece-ownership-contract-design-stop-resolved-2026-11-18-utc): the plan-validator contradiction is upheld (1:1 face pieces, `GlobalTopologyPlan.cpp:2689–2705`). Region and cut graph are traversal-level certifiers and unchanged for grazing (homotopic path, same carriers, whole-edge barriers already the rule). **O49 opened:** an edge-only segment is counted as a face chord and gives F the orbit across its carrier (pre-existing, independent of H4). **H4 publication unmeasured:** `slideProposal` is pre-commit; the CB166 `committedSlide` receipt measures kept/traversed slides. No new stable event; 66/17/49, debt 1, deferred 81.

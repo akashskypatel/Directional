@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — TB141 committed-slide receipt execution (MATCH)
+
+- [Execution report](.agents/Directional/Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Execution_Report_20261118.md): source `3b599879ac05a79fb2ddce9a930da3683051017d`, package `14468664897`; gate `14473040819` 958/959, census `14473701160`; 962/962 MATCH, membership 1,040, prefix491/491.
+- 1,266 traversed receipts: 1,215 faceThenEdge, 51 edgeOnly, zero R-x. Publication and route decision deferred to `M6-CP3-TB141-P13-COMMITTED-SLIDE-RECEIPT-FULL-GATE-REV`. Stable 66/17/49, debt 1, deferred 81; no promotion.
+
 ## 2026-11-18 UTC — CB166 committed-slide receipt (compile only)
 
 - [Compile record](.agents/Directional/Architecture_M6_CP3_CB166_P13_Committed_Slide_Receipt_Code_Build_Record_20261118.md): exact source `3b599879ac05a79fb2ddce9a930da3683051017d`, package `14468664897`, ZIP SHA-256 `02382960246e34577e34780b842472213ac7fa6925d60dc886fba2f7273d7ddc`. Frozen +38/-0 in `SurfaceCellTracing.cpp`, receipt only. Eight GMP/GMPXX targets; 28/28 package checksums, 371/371 source/test files, four frozen inputs. No runtime execution or product acceptance.
