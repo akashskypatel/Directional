@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — CB157 trace-path receipts (compile only)
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB157_P13_Trace_Path_Receipt_Code_Build_Record_20261118.md): exact +50/-0 print-only delta in `EmbeddedGraphTopology.cpp`. Source `a8d1cc9603f9a556564f0b741692217ec6a791ef`, [compile run 44217327522](https://github.com/akashskypatel/Directional/actions/runs/44217327522), package `14389450751` SHA-256 `d67682c649eefda89612ca9543951f9410560d15e31836e97043b6058a17f8f8`. Eight GMP/GMPXX targets, 28/28 checksums, 371/371 source files, four frozen inputs unchanged; no runtime execution.
+- Next separately `M6-CP3-TB134-P13-TRACE-PATH-RECEIPT-FULL-GATE-EXEC` per RA-255 S5. TB133 remains measured authority; stable 66/17/49, debt 1, deferred 81, CP2 491/491. No acceptance or promotion.
+
 ## 2026-11-18 UTC — RA-255 re-review of the TB133 Review
 
 - [RA-255](.agents/Directional/Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md#ra-255--adversarial-re-review-of-this-review-2026-11-18-utc): MATCH upheld. The sphere through-crossing is proven, and BunnyRandom's overlap starts at vertex 94 (O48). The sphere DEFN scope is corrected and that DEFN moves to the Review track.

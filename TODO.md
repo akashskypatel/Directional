@@ -7,11 +7,11 @@
 
 Turn sequence:
 - [x] RA-255 re-review (Review): CB157 exact diff and TB134 criteria frozen.
-- [ ] **NEXT (impl, Code + Build, compile only):** `M6-CP3-CB157-P13-TRACE-PATH-RECEIPT`.
+- [x] **COMPLETE (Code + Build, compile only):** `M6-CP3-CB157-P13-TRACE-PATH-RECEIPT`. [Compile record](.agents/Directional/Architecture_M6_CP3_CB157_P13_Trace_Path_Receipt_Code_Build_Record_20261118.md); source `a8d1cc9603f9a556564f0b741692217ec6a791ef`, package `14389450751`, eight GMP/GMPXX targets, `runtimeExecution=false`.
   - Exact diff `.agents/Directional/Architecture_M6_CP3_CB157_P13_Trace_Path_Receipt_Exact.diff`: SHA-256 `56ef75c91cf72be85752af61cb276c73aeaf1ca692f92aa5061326fac9eb5f18`, 68 lines; numstat `50 0 src/geometry/EmbeddedGraphTopology.cpp`.
   - Precheck `git diff --quiet 779fe661e260f506592c64791fbe655734029478 HEAD -- src include tests`; eight RA-245 GMP/GMPXX targets; runtimeExecution=false.
   - Mismatch route `M6-CP3-PLAN-P13-TRACE-PATH-RECEIPT-STOP`; infrastructure route `M6-CP3-CB157A-P13-TRACE-PATH-RECEIPT-ORCH`.
-- [ ] (impl) `M6-CP3-TB134-P13-TRACE-PATH-RECEIPT-FULL-GATE-EXEC`: same gate/census/deferred/harness; comparator TB133 gate `14381507340`, census `14383400603`; N1–N4 + N5″; MATCH per RA-255 S5.
+- [ ] **NEXT (impl, Test + Benchmark, artifact only):** `M6-CP3-TB134-P13-TRACE-PATH-RECEIPT-FULL-GATE-EXEC`: same gate/census/deferred/harness; comparator TB133 gate `14381507340`, census `14383400603`; N1–N4 + N5″; MATCH per RA-255 S5.
 - [ ] (Review, parallel) `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` per RA-255 S2: freeze a helpers CB (alternation predicate, edge-key coincidence, exact unit tests) and a stacked wiring CB with TB criteria; define the face/edge/vertex locus representations.
 - [ ] (Review) `M6-CP3-TB134-P13-TRACE-PATH-RECEIPT-FULL-GATE-REV` → `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (co-directional, vertex 94, O48; D12 unchanged).
 - [ ] Held: FC-6, terminal-cut outcome, row858 fix (after sphere repair). Parked CB145. Carried C5/O42/O43/O46/O47/O48, H2, FC-1/FC-4, middle-piece witness; stable 66/17/49, debt 1, deferred 81; CP2 491/491; no promotion.
