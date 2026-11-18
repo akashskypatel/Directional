@@ -1,2 +1,0 @@
-# TB134 closeout — current turn temporary marker only
-.agents/connector-triggers/source-snapshot/tb134-20261118T0158Z.txt
