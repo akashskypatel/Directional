@@ -1,1 +1,0 @@
-.agents/connector-triggers/source-snapshot/tb141-independent-review-20261118.txt
