@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb133-rev-closeout-v2",
+  "request_id": "m6-cp3-cb157-apply-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb133-rev-closeout-v2",
-  "file_id": "1Gw-qyzpX8CKv6fmZi85SDbWhFrq2N49j",
-  "patch_sha256": "0b57f121c1c80fd94748ff17ec24185b0436d38539e43c42cd82015c48b3907f",
-  "base_sha": "8a796dc905a07f188c5a5b2834e4e16b9b9a8642",
+  "mailbox_key": "m6-cp3-cb157-apply-v1",
+  "file_id": "16tk9-sphYwBLC6V2WH6euzVJ9RlJ_QXN",
+  "patch_sha256": "83a8606f985706e4c4bc116231d7fcdc74dd6198d32a636cc1028cc16716d2b8",
+  "base_sha": "a14cc3660676dc54c012cbd97c0f77a28b167d37",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: uphold TB133 independent MATCH and select sphere endpoint definition",
+  "commit_message": "Add exact trace path diagnostic receipt",
   "retention_days": 30
 }
