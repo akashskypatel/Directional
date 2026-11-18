@@ -19045,3 +19045,69 @@ TEST(FieldAlignedCarrierOccupancy,
   noSlide.edgeTransitEntry.reset();
   EXPECT_FALSE(field_aligned_segment_departs_along_carrier(noSlide));
 }
+
+TEST(FieldAlignedCarrierOccupancy,
+     DepartureSlideHasNoInteriorChordContact) {
+  using directional::authority::FieldBranch;
+  using directional::geometry::FieldAlignedCandidateTraceSegment;
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  const TriMesh mesh = make_square_mesh();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto atlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, make_planar_radial_arrival_field(mesh));
+  ASSERT_TRUE(atlas);
+  const auto &topology = atlas.value().branch_topology();
+  const auto face = topology_face(0, 1, 2, 4U);
+  const auto ab = topology_edge(0, 1, 4U);
+  const auto bc = topology_edge(1, 2, 4U);
+  const auto ac = topology_edge(0, 2, 4U);
+  const auto towardDiagonal = FieldBranch::from_integer(1);
+  const auto across = FieldBranch::from_integer(0);
+
+  // The ordinary ray from vertex 1 reaches the midpoint of (0,2).
+  // The wall runs from midpoint (0,1) to midpoint (1,2).
+  const FieldAlignedCandidateTraceSegment ordinary(
+      face, towardDiagonal, boundary_point(ab, 1, 1), std::nullopt, ac,
+      std::nullopt);
+  const FieldAlignedCandidateTraceSegment wall(
+      face, across, boundary_point(ab, 1, 2), ab, bc, std::nullopt);
+  const auto control = classify_field_aligned_segment_contact(
+      topology, ordinary, wall);
+  ASSERT_EQ(FieldAlignedSegmentContactKind::ProperCrossing, control.kind);
+  ASSERT_TRUE(control.barycentric.has_value());
+  EXPECT_EQ(exact_ratio(1, 4), (*control.barycentric)[0]);
+  EXPECT_EQ(exact_ratio(1, 2), (*control.barycentric)[1]);
+  EXPECT_EQ(exact_ratio(1, 4), (*control.barycentric)[2]);
+
+  // The departure starts at vertex 1 under two different edge keys. It
+  // travels on (1,2), not along the ray used by the ordinary control.
+  FieldAlignedCandidateTraceSegment departure = ordinary;
+  departure.outgoingCarrier = bc;
+  departure.edgeTransitEntry = boundary_point(bc, 0, 1);
+  departure.edgeTransitExit = boundary_point(bc, 1, 1);
+  ASSERT_TRUE(field_aligned_segment_departs_along_carrier(departure));
+  const auto first = classify_field_aligned_segment_contact(
+      topology, departure, wall);
+  const auto second = classify_field_aligned_segment_contact(
+      topology, wall, departure);
+  EXPECT_EQ(FieldAlignedSegmentContactKind::Disjoint, first.kind);
+  EXPECT_FALSE(first.barycentric.has_value());
+  EXPECT_EQ(FieldAlignedSegmentContactKind::Disjoint, second.kind);
+  EXPECT_FALSE(second.barycentric.has_value());
+
+  // A mid-edge arrival to a carrier still has a nonzero face piece. Its
+  // recorded slide start equals the recomputed exit; keep its crossing.
+  FieldAlignedCandidateTraceSegment grazing(
+      face, towardDiagonal, boundary_point(ab, 3, 4), ab, ac, std::nullopt);
+  grazing.edgeTransitEntry = boundary_point(ac, 3, 8);
+  grazing.edgeTransitExit = boundary_point(ac, 1, 1);
+  ASSERT_FALSE(field_aligned_segment_departs_along_carrier(grazing));
+  const auto retained = classify_field_aligned_segment_contact(
+      topology, grazing, wall);
+  ASSERT_EQ(FieldAlignedSegmentContactKind::ProperCrossing, retained.kind);
+  ASSERT_TRUE(retained.barycentric.has_value());
+  EXPECT_EQ(exact_ratio(3, 8), (*retained.barycentric)[0]);
+  EXPECT_EQ(exact_ratio(1, 2), (*retained.barycentric)[1]);
+  EXPECT_EQ(exact_ratio(1, 8), (*retained.barycentric)[2]);
+}

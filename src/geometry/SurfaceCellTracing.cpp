@@ -3087,6 +3087,7 @@ FieldAlignedFilteredScalar field_aligned_filtered_exact(
 std::optional<authority::FieldBoundaryPoint> field_aligned_segment_exit_point(
     const authority::FieldBranchTopology &topology,
     const FieldAlignedCandidateTraceSegment &segment) {
+  if (segment.edgeTransitEntry.has_value()) return segment.edgeTransitEntry;
   const authority::FieldFaceBranchFrame *frame =
       topology.find_frame(segment.sourceFace);
   const authority::FieldBranchBoundaryPairing *pairing =
