@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-18, RA-262 → `M6-CP3-CB166-P13-COMMITTED-SLIDE-RECEIPT`):** [RA-262](Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md#ra-262--exact-piece-ownership-contract-design-stop-resolved-2026-11-18-utc) resolves the TB140-REV design stop: EPO contract (traversal layer unchanged, geometry layer from real pieces, explicit `sourcePieceCounts` binding, O49 edge-only ownership). CB166 committed-slide receipt and TB141 frozen; slide publication unmeasured until TB141.
+**Current currency (2026-11-18, TB141-REV in progress):** [TB141 Review (in progress)](Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Independent_Review_20261118.md): 962/962 MATCH; R+ and R-edge, O49 before CB169. CB167 candidate not frozen; current review closeout remains active.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Current M6-CP3 evidence (2026-11-18):** TB140 independent MATCH, 958/959 gate, 491/491 accepted prefix; row858 permitted premise RED, row648 sphere assertions unreached. Cylinder PASS/288; BunnyRandom and Vase RED. All 68 other receipts unchanged, 48 seed, 3 vertex, 1,215 grazing proposals. H3 narrowly closed; H4/C5/O47/O48 open. No CP3/D0 promotion. [TB140 Review](Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md).
+**Current M6-CP3 evidence (2026-11-18):** TB141 independently MATCH, 958/959 gate, 491/491 accepted prefix; row858 permitted premise RED, row648 sphere assertions unreached. Cylinder PASS/288; BunnyRandom and Vase RED. 1,266 retained slides, 51 edge-only. Graph build fails before publication on BunnyRandom. H3 narrowly closed; H4/C5/O47/O48/O49 open. No CP3/D0 promotion. [TB141 Review (in progress)](Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Independent_Review_20261118.md).
 
 **M0–M5 are complete/closed; M6 is active at CP3.** Closure means the checkpoint's frozen criteria passed, **not** that representative output is production-ready.
 
@@ -45,7 +45,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB140 958/959 (membership 1,040); 961/961 prior rows independent MATCH; row959 PASS. Cylinder PASS / BunnyRandom binding RED / Vase completion RED. CB165 unwired helper verified; H4 open; CB166 design stop. No CP3/selector497 promotion. [TB140 Review](Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md). |
+| **M6-CP3 — active** | TB141 958/959 (membership 1,040); 962/962 prior rows independent MATCH. Cylinder PASS / BunnyRandom binding RED / Vase completion RED. H4/O49 open; CB167 candidate not frozen. No CP3/selector497 promotion. [TB141 Review (in progress)](Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Independent_Review_20261118.md). |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -103,7 +103,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-- **Current priority:** [RA-262](Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md#ra-262--exact-piece-ownership-contract-design-stop-resolved-2026-11-18-utc) sequence: CB166 receipt → TB141 (routes R0/R+/R-edge/R-x) → CB167 leaf → CB168 binding (inert) → [O49] → CB169 coordinated geometry cutover → CB170 chords/polylines → CB171/172 carrier contact. RA-259 S3 and RA-260 S2 keep contact-rule and representation authority under the EPO contract.
+- **Current priority:** Finish [TB141 Review (in progress)](Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Independent_Review_20261118.md); then CB167 leaf + inert concatenation, CB168 binding (inert), O49 before CB169 coordinated geometry cutover, CB170 chords/polylines, CB171/172 carrier contact. Follow RA-262 EPO contract and RA-259/260 contact rules. Do not start a successor until Review closes.
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).
