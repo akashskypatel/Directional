@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — TB136 independent Review (MATCH upheld)
+
+- [Review](.agents/Directional/Architecture_M6_CP3_TB136_P13_Carrier_Occupancy_Helpers_Full_Gate_Independent_Review_20261118.md): 956/956 existing cases independently MATCH under RA-257 S4, row 954 helper PASS; 68 receipts byte-identical. Gate 953/954; census Cylinder PASS/288, BunnyRandom/Vase RED. Accepted CP2 491/491. No production correction, stable regression or promotion; no runtime or source changes.
+- Exact next `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP`; sphere DEFN remains parallel. Stable 66/17/49, debt 1, deferred 81.
+
 ## 2026-11-18 UTC — TB136 carrier occupancy helpers full gate (MATCH)
 
 - [Execution report](.agents/Directional/Architecture_M6_CP3_TB136_P13_Carrier_Occupancy_Helpers_Full_Gate_Execution_Report_20261118.md): 956/956 TB135 rows match under RA-257 S4, plus the new helper test PASS. Gate `14406791564` 953/954, census `14406826878` Cylinder PASS/288, BunnyRandom/Vase RED; 68 receipts byte-identical. No new semantic regression. No rebuild or package repair.
