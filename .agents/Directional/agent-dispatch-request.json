@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb135-review-closeout-v1",
-  "mailbox_key": "m6-cp3-tb135-review-closeout-v1",
-  "file_id": "1W7jr64Mab_Qaxb7CXuKmf1ZW-Qv79-Kd",
-  "patch_sha256": "c9bfe896fc535a4ed2682cf99080636158777943f37a905bfbe6b4fa3a2102bb",
-  "base_sha": "b8c1afe92aa128213e2ac0ba7ed88b55829b39b8",
+  "request_id": "m6-cp3-cb159-apply-v1",
+  "mailbox_key": "m6-cp3-cb159-apply-v1",
+  "file_id": "1ysxBjvAbpeDWT-769zwferYCC1cAbTYS",
+  "patch_sha256": "aefa7a8915c3edde4fd5d435395c86a8871538673bb595637cfee46086880a85",
+  "base_sha": "c65ff74dcaf9408cdd6bd532dbf00f9646f09205",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Record TB135 independent MATCH and freeze overlap definition successor",
+  "commit_message": "Add exact carrier occupancy helpers and focused unit test",
   "retention_days": 30
 }
