@@ -1,4 +1,22 @@
-## CURRENT — TB134 independent MATCH; common carrier overlap and arrival order (2026-11-18 UTC)
+## CURRENT — RA-256: onset certified, slide start recorded next (2026-11-18 UTC)
+
+[RA-256](.agents/Directional/Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Independent_Review_20261118.md#ra-256--adversarial-re-review-of-this-review-2026-11-18-utc) upholds the TB134 Review's MATCH and its correction of RA-255's vertex-onset claim. It finds three defects:
+- **Onset (S1).** The receipt settles it. Trace 15 is trace 43 scaled about v210 by k=0.0886278847694713, which equals trace 15's entry on (210,290). So X43 is nearer v94, the shared interval is [X43, v94], and the first shared locus is X43 in either arrival order. Trace 43 arrived first, so trace 15 should end at X43.
+- **Representation (S2).** `FieldAlignedCandidateTraceSegment` drops the slide start (`decision.exitPoint`). The producer classifier never sees slide pieces, and the consumer cannot represent X43. H3 (unverified): the classifier's recomputed exit may differ from the traced one on vertex-slide segments.
+- **Routing (S3/S6).** The Review-only successor left the implementation agent without a turn. Now CB158/TB135 run first, and the two DEFNs share one edge-locus representation.
+
+Turn sequence:
+- [x] RA-256 re-review (Review): CB158 exact diff and TB135 criteria frozen.
+- [ ] **EXACT NEXT (Code + Build, compile only):** `M6-CP3-CB158-P13-EDGE-TRANSIT-ENTRY-RECORD`.
+  - Exact diff `.agents/Directional/Architecture_M6_CP3_CB158_P13_Edge_Transit_Entry_Record_Exact.diff`: SHA-256 `17dd9ac558f9d2e24bd4d5010262b9d3092c9414c8d9d9bfbbbfa3b4ef12822f`, 51 lines. Numstat: `5 0` header, `4 0` EmbeddedGraphTopology.cpp, `2 0` SurfaceCellTracing.cpp.
+  - Precheck `git diff --quiet a8d1cc9603f9a556564f0b741692217ec6a791ef HEAD -- src include tests`. Eight RA-245 GMP/GMPXX targets; runtimeExecution=false.
+  - Mismatch route `M6-CP3-PLAN-P13-EDGE-TRANSIT-ENTRY-RECEIPT-STOP`; infrastructure route `M6-CP3-CB158A-P13-EDGE-TRANSIT-ENTRY-RECEIPT-ORCH`.
+- [ ] **Then (Test + Benchmark):** `M6-CP3-TB135-P13-EDGE-TRANSIT-ENTRY-FULL-GATE-EXEC`. Same four inputs; comparator TB134 gate `14390702505` / census `14391390784`; N1–N4 + N6; MATCH per RA-256 S5 criteria 1–6, including (1−t15)/(1−t43)=0.0886278847694713 ±1e-12 relative.
+- [ ] (Review, parallel) `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` per RA-255 S2 + RA-256 S3: shared edge-locus cut representation, including slide-piece ordering; freeze helpers CB + wiring CB.
+- [ ] (Review) `M6-CP3-TB135-P13-EDGE-TRANSIT-ENTRY-FULL-GATE-REV`, then `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (co-directional slide overlap; check H3; helpers CB then wiring CB).
+- [ ] Held: FC-6, terminal-cut outcome, row858 fix. Parked CB145. D11=A, D12=A unchanged; stable 66/17/49, debt 1, deferred 81; CP2 491/491; no promotion.
+
+## Historical checkpoint — TB134 independent MATCH; common carrier overlap and arrival order (2026-11-18 UTC)
 
 [RA-255](.agents/Directional/Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md#ra-255--adversarial-re-review-of-this-review-2026-11-18-utc) and [TB134 Review](.agents/Directional/Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Independent_Review_20261118.md):
 - **Sphere.** The TB133 signs plus consistent chart orientation give an alternating four-ray order. Traces 4/6 cross at P on edge (0,2) (Haiku re-derived this).
@@ -14,7 +32,7 @@ Turn sequence:
 - [x] **COMPLETE (Test + Benchmark, artifact only):** `M6-CP3-TB134-P13-TRACE-PATH-RECEIPT-FULL-GATE-EXEC`. [Execution report](.agents/Directional/Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Execution_Report_20261118.md); Gate `14390702505` 952/953; census `14391390784` Cylinder PASS/288, BunnyRandom/Vase RED; 956/956 MATCH under RA-255 S5; 66 sphere lines across 19 rows and two BunnyRandom lines, two ` path=` fields per receipt. Both postflight valid; accepted prefix 491/491.
 - [ ] (Review, parallel) `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` per RA-255 S2: freeze a helpers CB (alternation predicate, edge-key coincidence, exact unit tests) and a stacked wiring CB with TB criteria; define the face/edge/vertex locus representations.
 - [x] **COMPLETE (independent Review):** `M6-CP3-TB134-P13-TRACE-PATH-RECEIPT-FULL-GATE-REV`. [Review](.agents/Directional/Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Independent_Review_20261118.md); 956/956 MATCH, first equal face entry v94, same-direction overlap starts on (94,210), 43 earlier by bounded arc length.
-- [ ] **EXACT NEXT (Review, definition only):** `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` — exact carrier interval and vertex incidence, onset parameter unresolved; D12 unchanged, no implementation.
+- [ ] ~~EXACT NEXT~~ superseded by RA-256: `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` now follows CB158/TB135.
 - [ ] Held: FC-6, terminal-cut outcome, row858 fix (after sphere repair). Parked CB145. Carried C5/O42/O43/O46/O47/O48, H2, FC-1/FC-4, middle-piece witness; stable 66/17/49, debt 1, deferred 81; CP2 491/491; no promotion.
 
 ## Historical checkpoint — TB133 independent Review MATCH; sphere edge-endpoint definition next (2026-11-18 UTC)

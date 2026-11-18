@@ -82,3 +82,98 @@ The initial attempt read some required startup policies after its first source r
 | review_check.py boundary | Unmodified script exit 1, historical Git objects unavailable locally. Product/selector mutation, 39 numbered selector hashes and 3 file-presence checks PASS. Independent GitHub rewrite-ancestor and exact historical heading checks meet all missing predicates (5/5 headings; all 3 historical documents). Drift audit: 0 errors; initial patch 3 protected-navigation warnings, continuation 2. REVIEW_TURN_POLICY §§3.1–3.2 and the owner-authorized continuation require these in-place updates. No protected-policy or selector edit. No false local PASS. |
 | `STATUS` lifecycle maintained | Current TB134-REV entry 2026-11-18T02:41:35Z, resumed 2026-11-18T03:05:47Z, successor as above. Final beacon must follow the verified documentation push and cleanup; the final UTC end time is set only by that beacon. |
 | Pushed to origin, branch in sync | Prior documentation push independently verified against actual branch and PR #8 HEAD. For the closeout patch require successful remote apply, exact changed-path comparison, matching final remote blobs and branch HEAD before publishing COMPLETE. Local Git is snapshot-only, so an origin-checkout `git status -sb` result is not available; use the GitHub remote authority check, not the synthetic index, as synchronization evidence. |
+
+## RA-256 — adversarial re-review of this Review (2026-11-18 UTC)
+
+### S0 — verdict
+
+MATCH 956/956 is upheld. The correction that the first equal face entry (v94) is not the earliest overlap is upheld. It also corrects RA-255 S3, which wrongly placed the overlap onset at the vertex-94 transit. The arrival order (43 first, by disjoint bounds with a 0.0022 gap against a 1e-4 widening) is upheld. Three defects follow: an onset left open that the receipt already settles, a missing representation, and a successor that the implementation agent cannot execute.
+
+### S1 — the onset is certified by the receipt
+
+Same-branch traces in one face are parallel, as the nine signed pairs and the duplicate pairs show. Parallel lines that cross two edges sharing a vertex V map one edge onto the other by a scaling about V.
+
+- **Face (124,210,290), branch 1.** Trace 43 segment 12 enters at v290. Trace 15 segment 18 enters at (210,290):0.088627884769471255. Both leave on (124,210).
+- **Face (94,124,210), branch 2.** Trace 43 enters (124,210) at 0.61720848767415282 and trace 15 at 0.96607399795485316. Both leave on (94,210).
+- **Scaling about v210.** The receipt's parameters run from `edge.first()` to `edge.second()`. With that convention, (1−0.96607399795485316)/(1−0.61720848767415282) = 0.0886278847694713. This equals trace 15's entry parameter on (210,290), an independent receipt value. So trace 15 is the image of trace 43 under a scaling about v210 by k = 0.0886278847694713, with t15 = 1 − k(1 − t43) on (94,210).
+- **Consequences:**
+  - X43 (trace 43's slide start on (94,210)) is nearer v94 than X15.
+  - The common carrier interval is [X43, v94], which is trace 43's whole slide.
+  - The first shared locus is X43 in either arrival order. Arrival order only decides which trace ends there.
+  - Since 43 arrives first, the expected repair is that trace 15 terminates at X43 against trace 43 segment 13, at the junction of that segment's face piece and its slide piece.
+
+### S2 — missing representation (architecture)
+
+- **Producer.** `FieldAlignedCandidateTraceSegment` drops the slide start. In `SurfaceCellTracing.cpp`:
+  - `decision.exitPoint` (:3586–3605) is used for the face piece length and the slide length (:3774–3783).
+  - Only `edgeTransitExit` (the vertex) is stored (:3763, :2784). No proposal, trace or receipt keeps the slide start.
+- **Producer classifier.** It sees only the face chord. `field_aligned_segment_exit_point` (:3086–3102) recomputes the exit, the classifier (:3112) compares only segments in the same face, and the slide piece is never classified, in either face.
+  - **H3 (unverified):** the recomputation calls `resolve_field_branch_continuation` from `entryPoint`. The tracer instead calls `resolve_field_edge_port_departure` when `vertexSlide` or an edge-port departure is set (:3569–3580). For those segments, the classified chord may differ from the traced one.
+- **Consumer.** In `EmbeddedGraphTopology.cpp`:
+  - `trace_segment_canonical_exit` returns nullopt for a slide segment (:697).
+  - `exact_trace_segment_end` uses the vertex (:276).
+  - `FieldAlignedNetworkPolylines.cpp:94` draws a chord to the vertex.
+- **Effect.** X43 cannot be represented anywhere downstream. The Review's DEFN asks for an "exact directed slide-piece interval" without noting that the record lacks its start, so the DEFN would stall. Recording the slide start is a precondition for O48 under any outcome, and it does not depend on the open decision.
+
+### S3 — DEFN scope corrections
+
+- **O47 and O48 are both edge-locus contacts.**
+  - Sphere: P on (0,2), at a segment boundary of both traces.
+  - BunnyRandom: X43 on (94,210), the slide start of trace 43 and an interior point of trace 15's slide.
+- **`M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` defines the shared edge-locus cut representation.** It must order positions along a slide segment: the face piece first (face parameter), then the slide piece (carrier parameter from `edgeTransitEntry` to `edgeTransitExit`). It must also define EndpointTouch handling.
+- **`M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` extends this to slide pieces.** The ID is kept, but the scope is co-directional overlap.
+  - Classify slide pieces as segments on the carrier: EndpointTouch for X43 against trace 15's slide, and CollinearOverlap.
+  - The later trace terminates at the first wall point along its own path.
+  - Reuse the arrival seniority rule and its inconclusive outcome.
+  - Check H3.
+  - Freeze an unwired helpers CB (exact ordering and classification, unit tests), then a wiring CB.
+
+### S4 — CB158 (frozen)
+
+- **Patch.** `.agents/Directional/Architecture_M6_CP3_CB158_P13_Edge_Transit_Entry_Record_Exact.diff`, SHA-256 `17dd9ac558f9d2e24bd4d5010262b9d3092c9414c8d9d9bfbbbfa3b4ef12822f`, 51 lines. Numstat: `5 0` header, `4 0` `EmbeddedGraphTopology.cpp`, `2 0` `SurfaceCellTracing.cpp`.
+- **What it does.**
+  - Adds `edgeTransitEntry` to the segment.
+  - Sets it to `decision.exitPoint` beside both `edgeTransitExit` writers.
+  - Prints ` slide=<bp>` before ` transit=` in the CB157 path receipt.
+- **Kept out of the digest** on purpose. The digest feeds logged network and certificate digests; including the field belongs to the wiring CB, once it has behaviour.
+- **Checks.**
+  - Precheck: `git diff --quiet a8d1cc9603f9a556564f0b741692217ec6a791ef HEAD -- src include tests`.
+  - `git apply --check` passes.
+  - A `-fsyntax-only` compile of both translation units (with `-DUSE_GMP_ENABLED`) returns 0 with the same 3 warnings before and after the patch.
+  - Unrelated: on macOS, `SourceChartTransitions.h:529` needs `<iterator>`.
+  - A Haiku read-only audit raised two questions, both settled against the code:
+    - Edge-port departure: `resolve_field_edge_port_departure` (:2168–2189) returns as `exitPoint` the departure vertex on the carrier, which is where the slide starts.
+    - The new field joins the defaulted `operator<=>`. Its only whole-segment comparison, `validate_field_aligned_candidate` (:5457), compares two runs of the same production producer. The legacy writer (:2784) feeds only the frozen contact census (:5099–5105).
+    - No sizeof hashing, no field-by-field copy, and every optional is checked before use.
+- **No new test.** The field has no behavioural reader yet. Its first behavioural reader, the helpers CB, carries the unit tests. The TB135 predictions below are the falsifier.
+
+### S5 — TB135 criteria (frozen)
+
+- **Inputs.** Gate `941287fa…`, census `3af1dc0d…`, deferred `fd433f54…`, harness `78b8002c…`. Comparator: TB134 gate `14390702505`, census `14391390784`.
+- **Normalizations.** N1–N4 as in RA-253 S7. **N6:** delete every ` slide=` token, up to the next space or the line end. The remainder must equal TB134 byte-for-byte, including `path=` fields, with the same counts (66 lines on 19 rows, plus 2).
+- **MATCH** requires all of the following:
+  1. Every ledger is equal.
+  2. The logs are equal under N1–N4 plus N6.
+  3. Each ` slide=` immediately precedes a ` transit=` in the same segment, and the two counts are equal per line.
+  4. The sphere lines have no ` slide=`.
+  5. BunnyRandom carries ` slide=` on exactly trace 43 segments 11 and 13 and trace 15 segment 19, each on that segment's `to=` carrier. The parameters for segments 13 and 19 are strictly inside (0,1).
+  6. On (94,210), t43 < t15 and (1−t15)/(1−t43) = 0.0886278847694713 within a relative 1e-12.
+- **Failing criterion 6 means the S1 model is wrong.** Stop and route to Review.
+- **Routes.** Mismatch: `M6-CP3-PLAN-P13-EDGE-TRANSIT-ENTRY-RECEIPT-STOP`. Infrastructure: `M6-CP3-CB158A-P13-EDGE-TRANSIT-ENTRY-RECEIPT-ORCH`.
+
+### S6 — turn sequence
+
+- **Implementation track:**
+  1. `M6-CP3-CB158-P13-EDGE-TRANSIT-ENTRY-RECORD` (compile only).
+  2. `M6-CP3-TB135-P13-EDGE-TRANSIT-ENTRY-FULL-GATE-EXEC`.
+  3. The helpers CB, then the wiring CB, each with its TB, as the DEFNs freeze them.
+- **Review track** (parallel with steps 1–2):
+  1. `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT`, with the shared edge-locus representation.
+  2. `M6-CP3-TB135-P13-EDGE-TRANSIT-ENTRY-FULL-GATE-REV`.
+  3. `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP`, using the TB135 values.
+- **Held:** FC-6, the terminal-cut outcome and row 858. **Parked:** CB145. D11=A and D12=A are unchanged.
+
+### S7 — lessons
+
+- Before defining ownership at a locus, check that the record stores it. A dropped intermediate makes a locus impossible to represent.
+- Parallel same-branch traces are related by a scaling about a shared vertex. Their order along an exit edge follows from their entry order, so check the ratio against a second face.
