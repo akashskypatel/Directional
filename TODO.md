@@ -1,4 +1,17 @@
-## CURRENT — TB140 independent MATCH; CB166 scope stopped; same Review blocked (2026-11-18 UTC)
+## CURRENT — RA-262: exact-piece ownership contract approved; CB166 committed-slide receipt frozen (2026-11-18 UTC)
+
+[RA-262](.agents/Directional/Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md#ra-262--exact-piece-ownership-contract-design-stop-resolved-2026-11-18-utc) resolves the TB140-REV design stop. It upholds the stop on the plan validator (`GlobalTopologyPlan.cpp:2689–2705`, 1:1 face pieces). It rejects partial cut-graph barriers as out of scope: region and cut graph are traversal-level certifiers, unchanged for grazing. It records O49 (edge-only segment ownership) and the unmeasured publication of slides (S1.4).
+- **EPO contract (S2):** two layers (traversal unchanged; geometry from real pieces); one leaf decomposition; explicit `sourcePieceCounts` binding; rays and ranks from actual first/last pieces with no new tie-break; edge-only segments fail closed until O49.
+- **Revised sequence (S3)** replaces RA-261 S4.
+
+Turn sequence:
+- [x] RA-262 (Review, TB140-REV resumed): contract, sequence, CB166 exact diff, TB141 criteria frozen.
+- [ ] **CURRENT (Code + Build, compile only):** `M6-CP3-CB166-P13-COMMITTED-SLIDE-RECEIPT`: `.agents/Directional/Architecture_M6_CP3_CB166_P13_Committed_Slide_Receipt_Exact.diff`, SHA-256 `55ed2145623aa30902293b46ced91317635acf7c1b3a4d2d16cec89c3432b3ca`, 49 lines, +38 `src/geometry/SurfaceCellTracing.cpp`; precheck base `fb51da7142646ebed97527d976fd8b382607160a`; eight RA-245 targets; runtimeExecution=false.
+- [ ] NEXT: `M6-CP3-TB141-P13-COMMITTED-SLIDE-RECEIPT-FULL-GATE-EXEC` (TB140 manifest `390fe1bd…` unchanged; N1–N6 equality; kind × traversed counts per row and fixture) → TB141-REV (routes R0/R+/R-edge/R-x; freezes CB167).
+- [ ] Prospective: CB167 leaf decomposition (TB142, row 960) → CB168 `sourcePieceCounts` binding, inert (TB143) → [O49 CB if R-edge] → CB169 coordinated geometry cutover (TB144) → CB170 local chords + polylines → CB171 carrier locus (unwired) → CB172 carrier wiring (after vertex-overlap rule + tie control; deletes CB160/CB166 receipts).
+- Held: FC-6, TERMINAL-CUT-OUTCOME, row-858 fix. Parked: CB145. D11=A, D12=A unchanged.
+
+## PRIOR — TB140 independent MATCH; CB166 scope stopped; Review blocked, resolved by RA-262 (2026-11-18 UTC)
 
 [RA-261](.agents/Directional/Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md#ra-261--adversarial-re-review-of-this-review-2026-11-18-utc) upholds MATCH (source = CB164) and accepts the TB139 Review's 1,200-grazing count, its contact-truncation guard and its vertex-overlap obligation. Findings:
 - **Prose successor (S1.1).** CB165 was a plan for the implementer to design. It is now an exact diff (S2).
@@ -9,8 +22,8 @@ Turn sequence:
 - [x] RA-261 re-review (Review): CB165 exact diff and TB140 manifest/criteria frozen; switch split.
 - [x] **COMPLETE (Code + Build, compile only):** `M6-CP3-CB165-P13-TRACE-SEGMENT-PIECES-HELPER`: [compile record](.agents/Directional/Architecture_M6_CP3_CB165_P13_Trace_Segment_Pieces_Helper_Code_Build_Record_20261118.md); source `fb51da7142646ebed97527d976fd8b382607160a`, package `14459000178`, SHA-256 `501bc0fe607d38a14fa3afe49814809fd0a7505c18f0ad61bb2e09674ffd486e`. Exact +184 lines, eight targets; no runtime.
 - [x] **COMPLETE (Test + Benchmark, artifact only):** `M6-CP3-TB140-P13-TRACE-SEGMENT-PIECES-HELPER-FULL-GATE-EXEC`. [Execution report](.agents/Directional/Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Execution_Report_20261118.md): MATCH 961/961 prior rows under N1–N4; new row 959 PASS, gate `14458589267` 958/959, census `14460885073`; slide receipts byte-identical, membership 1,040 and deferred 81. No new regression or promotion.
-- [ ] **CURRENT (Review; blocked):** `M6-CP3-TB140-P13-TRACE-SEGMENT-PIECES-HELPER-FULL-GATE-REV`: [TB140 Review](.agents/Directional/Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md) independently rederived MATCH, but the embedded-only CB166 scope is incompatible with mandatory cut/region certifiers and plan validation. Obtain decision on coordinated exact-piece ownership, revised scope and falsifiers. No successor frozen.
-- [ ] Held prospective CB166–CB170 sequence: do not start. S4.1 scope suspended; separate visualization and later contact wiring subject to revised authority. Vertex-overlap rule and tie control remain open.
+- [x] **COMPLETE via RA-262 (Review, was blocked):** `M6-CP3-TB140-P13-TRACE-SEGMENT-PIECES-HELPER-FULL-GATE-REV`: [TB140 Review](.agents/Directional/Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md) independently rederived MATCH, but the embedded-only CB166 scope is incompatible with mandatory cut/region certifiers and plan validation. Obtain decision on coordinated exact-piece ownership, revised scope and falsifiers. No successor frozen.
+- [x] ~~Held prospective CB166–CB170 sequence~~ superseded by RA-262 S3 (see CURRENT).
 - [ ] Held: FC-6, terminal-cut outcome, row858 fix. Parked CB145. D11=A, D12=A unchanged; stable 66/17/49, debt 1, deferred 81; CP2 491/491; no promotion.
 
 ## Historical checkpoint — RA-260: TB138 Review upheld; H4 opened; S5.3 defined; CB162–CB164 compile PASS; TB139 independent MATCH; CB165 next (2026-11-18 UTC)

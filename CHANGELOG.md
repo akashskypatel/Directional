@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — RA-262 exact-piece ownership contract (Review; design stop resolved)
+
+- [RA-262](.agents/Directional/Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md#ra-262--exact-piece-ownership-contract-design-stop-resolved-2026-11-18-utc): EPO contract approved (two layers, single leaf decomposition, explicit `sourcePieceCounts` binding, real-piece rays/ranks, edge-only fail-closed until O49); RA-261 S4 replaced by the S3 sequence.
+- Frozen: CB166 committed-slide receipt (`55ed2145…`, +38 SurfaceCellTracing.cpp) and TB141 criteria (TB140 manifest, N1–N6). No product change in this Review.
+
 ## 2026-11-18 UTC — TB140 independent review (evidence MATCH; design stop)
 
 - [TB140 Review](.agents/Directional/Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md): 961/961 prior rows MATCH; row959 PASS; accepted prefix491/491; stable accounting unchanged. Candidate CB166 withdrawn: embedded-only path change conflicts with mandatory path validation and cut/region chord ownership. RA-261 S4.1 suspended pending coordinated exact-piece contract decision. Same canonical review held; no successor, code, runtime or promotion.

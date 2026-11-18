@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-18, `M6-CP3-TB140-P13-TRACE-SEGMENT-PIECES-HELPER-FULL-GATE-REV`):** [TB140 Review](Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md) independent MATCH (961/961 prior rows; row959 PASS). CB166 scope stopped on mixed-path ownership/certifier contradiction. Current review blocked pending coordinated contract decision; no successor frozen.
+**Current currency (2026-11-18, RA-262 → `M6-CP3-CB166-P13-COMMITTED-SLIDE-RECEIPT`):** [RA-262](Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md#ra-262--exact-piece-ownership-contract-design-stop-resolved-2026-11-18-utc) resolves the TB140-REV design stop: EPO contract (traversal layer unchanged, geometry layer from real pieces, explicit `sourcePieceCounts` binding, O49 edge-only ownership). CB166 committed-slide receipt and TB141 frozen; slide publication unmeasured until TB141.
 
 ## 1. What the project is
 
@@ -103,7 +103,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-- **Current priority:** [TB140 Review](Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md) design stop. Exact-piece graph paths/rays require an agreed cut/region ownership contract and independent path validation; RA-261 S4.1 scope suspended. Current Review only; no CB166–170 execution. RA-259 S3 and RA-260 S2 retain contact rule and representation authority, subject to the unresolved ownership decision.
+- **Current priority:** [RA-262](Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md#ra-262--exact-piece-ownership-contract-design-stop-resolved-2026-11-18-utc) sequence: CB166 receipt → TB141 (routes R0/R+/R-edge/R-x) → CB167 leaf → CB168 binding (inert) → [O49] → CB169 coordinated geometry cutover → CB170 chords/polylines → CB171/172 carrier contact. RA-259 S3 and RA-260 S2 keep contact-rule and representation authority under the EPO contract.
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).
