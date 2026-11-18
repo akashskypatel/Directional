@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — CB160 departure-chord crossing receipt (compile only)
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB160_P13_Departure_Chord_Crossing_Receipt_Code_Build_Record_20261118.md): exact +104/-0 frozen patch. Source `66fb0c5ec42fa57614a504437724b18d7004cbb1`, [compile run 44273742220](https://github.com/akashskypatel/Directional/actions/runs/44273742220), package `14414860103`, SHA-256 `8b2277e9e5ac2fc71ffe4e61a6012e5ac892f2a92c0f03b24613d695437aaec2`. Eight GMP/GMPXX targets, 28/28 checksums, 371/371 source files, four frozen inputs; no runtime.
+- Next separately `M6-CP3-TB137-P13-DEPARTURE-CHORD-CROSSING-RECEIPT-FULL-GATE-EXEC` per RA-258 S4. Stable 66/17/49, debt 1, deferred 81, CP2 491/491; no promotion.
+
 ## 2026-11-18 UTC — RA-258 re-review of the TB136 Review
 
 - [RA-258](.agents/Directional/Architecture_M6_CP3_TB136_P13_Carrier_Occupancy_Helpers_Full_Gate_Independent_Review_20261118.md#ra-258--adversarial-re-review-of-this-review-2026-11-18-utc): MATCH upheld. The Review skipped the H3 receipt (RA-257 S5.1) and again routed only to a Review. CB160 is frozen: an unwired departure predicate, a `departureChordCrossing` receipt in both contact loops and one unit test. TB137 adds manifest row 955 and the N5 rule.
