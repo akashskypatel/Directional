@@ -422,6 +422,11 @@ struct FieldAlignedCandidateTraceSegment {
   std::optional<authority::SourceEdgeTopologyKey> incomingCarrier;
   authority::SourceEdgeTopologyKey outgoingCarrier;
   std::optional<FieldAlignedCandidateTraceTransition> entryTransport;
+  // Point of outgoingCarrier where the trace reaches the carrier and starts
+  // sliding along it to edgeTransitExit; the slide length is measured from
+  // it. Set together with edgeTransitExit. Not part of the candidate digest:
+  // it comes from the same exact face-exit decision as outgoingCarrier.
+  std::optional<authority::FieldBoundaryPoint> edgeTransitEntry;
   std::optional<authority::FieldBoundaryPoint> edgeTransitExit;
 
   auto operator<=>(const FieldAlignedCandidateTraceSegment &) const = default;

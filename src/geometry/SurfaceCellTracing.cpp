@@ -2781,6 +2781,7 @@ FieldAlignedCandidateTraceResult legacy_canonical_field_aligned_traces(
               port.sourceVertex, port.singularity, std::nullopt,
               decision.outgoingCarrier, currentFace, currentBranch));
         }
+        trace.segments.back().edgeTransitEntry = decision.exitPoint;
         trace.segments.back().edgeTransitExit = edgeTransit.exitPoint;
         trace.terminalPoint = edgeTransit.exitPoint;
         const authority::FieldSingularityFact *terminalSingularity =
@@ -3760,6 +3761,7 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
                 << ',' << decision.outgoingCarrier.second().index()
                 << ") slideEnd=" << edgeTransit.sourceVertex->index() << '\n';
     }
+    proposal.segment.edgeTransitEntry = decision.exitPoint;
     proposal.segment.edgeTransitExit = edgeTransit.exitPoint;
     proposal.terminalPoint = edgeTransit.exitPoint;
     const auto transitExitBarycentric = field_boundary_point_barycentric(

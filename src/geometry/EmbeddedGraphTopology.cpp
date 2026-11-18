@@ -1050,6 +1050,10 @@ void print_trace_path(const FieldAlignedCandidateTrace *trace,
     print_edge(segment.incomingCarrier);
     std::clog << " to=";
     print_edge(segment.outgoingCarrier);
+    if (segment.edgeTransitEntry.has_value()) {
+      std::clog << " slide=";
+      print_boundary_point(*segment.edgeTransitEntry);
+    }
     if (segment.edgeTransitExit.has_value()) {
       std::clog << " transit=";
       print_boundary_point(*segment.edgeTransitExit);
