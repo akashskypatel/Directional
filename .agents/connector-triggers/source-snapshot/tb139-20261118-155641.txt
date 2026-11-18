@@ -1,0 +1,1 @@
+TB139 exact source inspection snapshot; artifact-only gate; no runtime.
