@@ -1,1 +1,18 @@
-{"schema_version":1,"request_id":"m6-cp3-cb160-apply-v2","operation":"drive_apply","file_id":"1oJ4_pYDzfcNdgvGvDrqZo_YO__7zQBFt","patch_sha256":"33e279c42b0909b1e4ea7b9fa1b819f0555c7150ad2b07dea298af3311747b44","base_sha":"7eb67941ef950169637f3c01e7807cc4f0cd36d8","target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing","commit_message":"Add departure chord crossing receipt and exact carrier departure predicate","mailbox_key":"m6-cp3-cb160-apply-v2","retention_days":30}
+{
+  "schema_version": 1,
+  "request_id": "m6-cp3-cb160-compile-v1",
+  "operation": "compile",
+  "source_sha": "66fb0c5ec42fa57614a504437724b18d7004cbb1",
+  "targets": [
+    "directional_benchmarks",
+    "directional_compiled_api_tests",
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_validation_tests"
+  ],
+  "artifact_prefix": "m6-cp3-cb160-departure-chord-receipt",
+  "mailbox_key": "m6-cp3-cb160-compile-v1"
+}
