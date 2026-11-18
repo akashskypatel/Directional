@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — RA-259 re-review of the TB137 Review
+
+- [RA-259](.agents/Directional/Architecture_M6_CP3_TB137_P13_Departure_Chord_Crossing_Receipt_Full_Gate_Independent_Review_20261118.md#ra-259--adversarial-re-review-of-this-review-2026-11-18-utc): MATCH upheld; CB161 accepted after a Haiku re-derivation of the test geometry. Slide contact defined (RA-257 S5.2 closed, S5.4 folded in). Frozen: CB162 (`field_aligned_arrival_at_slide_parameter`), CB163 (`first_field_aligned_carrier_contact`), and the TB139 manifest (rows 957/958). The CB160 receipt is scheduled for deletion in the wiring CB.
+- Exact next `M6-CP3-CB161-P13-DEPARTURE-CHORD-CLASSIFIER-SWITCH`; Review track `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` (S5.3).
+
 ## 2026-11-18 UTC — TB137 independent Review (MATCH)
 
 - [TB137 independent Review](.agents/Directional/Architecture_M6_CP3_TB137_P13_Departure_Chord_Crossing_Receipt_Full_Gate_Independent_Review_20261118.md): 957/957 prior rows MATCH; row 955 PASS; 68 other receipts byte-identical; zero departure-chord crossing lines and 48 edge-port departure lines (BunnyRandom only). 3,852 artifact checksums, 11 offline comparison controls, prefix 491/491, frozen package/source and membership 1,036 verified. No product runtime, stable regression or promotion.

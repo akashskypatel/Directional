@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-18, `M6-CP3-TB137-P13-DEPARTURE-CHORD-CROSSING-RECEIPT-FULL-GATE-REV`):** [TB137 independent Review](Architecture_M6_CP3_TB137_P13_Departure_Chord_Crossing_Receipt_Full_Gate_Independent_Review_20261118.md) upholds TB137 MATCH. 957/957 prior rows MATCH; row 955 PASS; 68 other receipts byte-identical; zero departure-chord crossing lines and 48 edge-port departure lines (BunnyRandom only). CB161 frozen; no production acceptance.
+**Current currency (2026-11-18, RA-259 re-review of `M6-CP3-TB137-P13-DEPARTURE-CHORD-CROSSING-RECEIPT-FULL-GATE-REV`):** [RA-259](Architecture_M6_CP3_TB137_P13_Departure_Chord_Crossing_Receipt_Full_Gate_Independent_Review_20261118.md#ra-259--adversarial-re-review-of-this-review-2026-11-18-utc) upholds TB137 MATCH (zero departure-chord crossings) and accepts CB161. It defines slide contact (edge-keyed entry/slide occupancy, existing arrival rule) and freezes the unwired helpers CB162/CB163 with TB139.
 
 ## 1. What the project is
 
@@ -103,7 +103,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-- **Current priority:** [M6-CP3-CB161-P13-DEPARTURE-CHORD-CLASSIFIER-SWITCH](Architecture_M6_CP3_TB137_P13_Departure_Chord_Crossing_Receipt_Full_Gate_Independent_Review_20261118.md#recommendation--frozen-successor) (compile only), then TB138 equality. RA-258 S5 zero-line branch upheld; retain terminal override and both crossing consumers. Parallel Review track: `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (RA-257 S5.2), then sphere remainder S5.3/S5.4. No guessed cut, guard relaxation, coordinate merge, D12 change or CP3 promotion.
+- **Current priority:** [RA-259 S3–S6](Architecture_M6_CP3_TB137_P13_Departure_Chord_Crossing_Receipt_Full_Gate_Independent_Review_20261118.md#ra-259--adversarial-re-review-of-this-review-2026-11-18-utc): `M6-CP3-CB161-P13-DEPARTURE-CHORD-CLASSIFIER-SWITCH` → TB138 → CB162 → CB163 → TB139. Review track: `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` (S5.3, the cut representation of a slide locus), which freezes the wiring CB that ends trace 15 at X43 (O48) and resolves the sphere entry/entry case (O47). No guessed cut, guard relaxation, coordinate merge, D12 change or CP3 promotion.
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).

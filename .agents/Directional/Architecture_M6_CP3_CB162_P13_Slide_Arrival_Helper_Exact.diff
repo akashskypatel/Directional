@@ -1,0 +1,139 @@
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index 1779901c5..45e8226dd 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -1335,6 +1335,18 @@ field_aligned_segment_slide_occupancy(
+ [[nodiscard]] bool field_aligned_segment_departs_along_carrier(
+     const FieldAlignedCandidateTraceSegment &segment);
+ 
++// Arrival at carrier parameter `parameter` inside the segment's slide: the
++// face piece to the slide start, then along the carrier, summed and advanced
++// once as the producer advances a sliding segment. At the slide end this is
++// the segment's end arrival. Empty when the segment has no slide or the
++// parameter lies outside it.
++[[nodiscard]] std::optional<FieldAlignedArrivalMeasure>
++field_aligned_arrival_at_slide_parameter(
++    const TriMesh &sourceMesh,
++    const FieldAlignedCandidateTraceSegment &segment,
++    FieldAlignedArrivalMeasure start,
++    const authority::FieldExactRational &parameter);
++
+ } // namespace surface_cell_tracing_detail
+ 
+ struct SurfaceTraceSeed {
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 1a19b0713..4c92d8e2f 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -5612,6 +5612,38 @@ bool field_aligned_segment_departs_along_carrier(
+   return entry.has_value() && slideStart.has_value() && *entry == *slideStart;
+ }
+ 
++std::optional<FieldAlignedArrivalMeasure>
++field_aligned_arrival_at_slide_parameter(
++    const TriMesh &sourceMesh,
++    const FieldAlignedCandidateTraceSegment &segment,
++    const FieldAlignedArrivalMeasure start,
++    const authority::FieldExactRational &parameter) {
++  const auto slide = field_aligned_segment_slide_occupancy(segment);
++  if (!slide.has_value()) return std::nullopt;
++  const bool ascending = slide->from <= slide->to;
++  const authority::FieldExactRational &low = ascending ? slide->from : slide->to;
++  const authority::FieldExactRational &high = ascending ? slide->to : slide->from;
++  if (parameter < low || high < parameter) return std::nullopt;
++  const auto entry =
++      field_boundary_point_barycentric(segment.sourceFace, segment.entryPoint);
++  const auto slideStart = field_boundary_point_barycentric(
++      segment.sourceFace, *segment.edgeTransitEntry);
++  const auto point = field_boundary_point_barycentric(
++      segment.sourceFace,
++      authority::FieldBoundaryPoint{segment.outgoingCarrier,
++                                    authority::ExactUnitParameter{parameter}});
++  if (!entry.has_value() || !slideStart.has_value() || !point.has_value()) {
++    return std::nullopt;
++  }
++  const auto facePiece = field_aligned_filtered_length(
++      sourceMesh, segment.sourceFace, *entry, *slideStart);
++  const auto slidePiece = field_aligned_filtered_length(
++      sourceMesh, segment.sourceFace, *slideStart, *point);
++  if (!facePiece.has_value() || !slidePiece.has_value()) return std::nullopt;
++  return field_aligned_arrival_advance(
++      start, field_aligned_filtered_add(*facePiece, *slidePiece));
++}
++
+ std::optional<FieldAlignedArrivalMeasure>
+ field_aligned_filtered_arrival_measure(
+     const TriMesh &sourceMesh,
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 318971883..0a1be3774 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -19111,3 +19111,68 @@ TEST(FieldAlignedCarrierOccupancy,
+   EXPECT_EQ(exact_ratio(1, 2), (*retained.barycentric)[1]);
+   EXPECT_EQ(exact_ratio(1, 8), (*retained.barycentric)[2]);
+ }
++
++TEST(FieldAlignedCarrierOccupancy,
++     ArrivalInsideASlideAddsTheFacePieceAndTheCarrierRun) {
++  using directional::authority::FieldBranch;
++  using directional::geometry::FieldAlignedCandidateTraceSegment;
++  using directional::geometry::surface_cell_tracing_detail::
++      FieldAlignedArrivalMeasure;
++  using directional::geometry::surface_cell_tracing_detail::
++      field_aligned_arrival_at_slide_parameter;
++  // Face (0,1,2) of the unit square: v0=(0,0), v1=(1,0), v2=(1,1). The
++  // carrier (0,2) is the diagonal, of length sqrt(2).
++  const TriMesh mesh = make_square_mesh();
++  const auto face = topology_face(0, 1, 2, 4U);
++  const auto ab = topology_edge(0, 1, 4U);
++  const auto ac = topology_edge(0, 2, 4U);
++  const auto branch = FieldBranch::from_integer(0);
++  const double root2 = std::sqrt(2.0);
++  const FieldAlignedArrivalMeasure start{2.0, 0.0, 5U};
++
++  // Entered at (3/4,0), slides from (3/8,3/8) to v2. The face piece is
++  // 3*sqrt(2)/8 long; the run to the midpoint (1/2,1/2) adds sqrt(2)/8.
++  FieldAlignedCandidateTraceSegment grazing(
++      face, branch, boundary_point(ab, 3, 4), ab, ac, std::nullopt);
++  grazing.edgeTransitEntry = boundary_point(ac, 3, 8);
++  grazing.edgeTransitExit = boundary_point(ac, 1, 1);
++  const auto midpoint = field_aligned_arrival_at_slide_parameter(
++      mesh, grazing, start, exact_ratio(1, 2));
++  ASSERT_TRUE(midpoint.has_value());
++  EXPECT_NEAR(2.0 + root2 / 2.0, midpoint->value, 1e-12);
++  EXPECT_GT(midpoint->bound, 0.0);
++  EXPECT_EQ(6U, midpoint->segmentCount);
++  const auto slideStart = field_aligned_arrival_at_slide_parameter(
++      mesh, grazing, start, exact_ratio(3, 8));
++  ASSERT_TRUE(slideStart.has_value());
++  EXPECT_NEAR(2.0 + 3.0 * root2 / 8.0, slideStart->value, 1e-12);
++  const auto slideEnd = field_aligned_arrival_at_slide_parameter(
++      mesh, grazing, start, exact_ratio(1, 1));
++  ASSERT_TRUE(slideEnd.has_value());
++  EXPECT_NEAR(2.0 + root2, slideEnd->value, 1e-12);
++  // Before the slide start, and no slide at all.
++  EXPECT_FALSE(field_aligned_arrival_at_slide_parameter(
++                   mesh, grazing, start, exact_ratio(37, 100))
++                   .has_value());
++  FieldAlignedCandidateTraceSegment crossing = grazing;
++  crossing.edgeTransitEntry.reset();
++  crossing.edgeTransitExit.reset();
++  EXPECT_FALSE(field_aligned_arrival_at_slide_parameter(
++                   mesh, crossing, start, exact_ratio(1, 2))
++                   .has_value());
++
++  // A departure from v2 toward v0: no face piece, and the slide parameter
++  // decreases, so 1/4 is three quarters of the diagonal away.
++  FieldAlignedCandidateTraceSegment departure(
++      face, branch, boundary_point(topology_edge(1, 2, 4U), 1, 1),
++      std::nullopt, ac, std::nullopt);
++  departure.edgeTransitEntry = boundary_point(ac, 1, 1);
++  departure.edgeTransitExit = boundary_point(ac, 0, 1);
++  const auto quarter = field_aligned_arrival_at_slide_parameter(
++      mesh, departure, start, exact_ratio(1, 4));
++  ASSERT_TRUE(quarter.has_value());
++  EXPECT_NEAR(2.0 + 3.0 * root2 / 4.0, quarter->value, 1e-12);
++  EXPECT_FALSE(field_aligned_arrival_at_slide_parameter(
++                   mesh, departure, start, exact_ratio(-1, 4))
++                   .has_value());
++}

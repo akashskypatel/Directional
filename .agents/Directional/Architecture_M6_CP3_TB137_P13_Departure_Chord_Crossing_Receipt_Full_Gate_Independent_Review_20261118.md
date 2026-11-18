@@ -68,3 +68,106 @@ Parallel Review track remains `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (RA-257 S
 | Pushed to origin, branch in sync | Web connector: verify patch apply and remote postimages, cleanup and final beacon; no local clone or upstream to compare. |
 
 Procedure qualifications: initial direct guidance reads preceded explicit snapshot-mode selection; timer used shell, and full mandatory start-policy reading and exact tool ledger are not confirmed. Source-only snapshot cannot certify historical base checks; local Git index is synthetic. Drift audit: zero errors, three expected protected landing-document update warnings (handoff, orientation, roadmap), scope authorized by requested Review and mandatory policy. Exact durable headings preserved against snapshot. These limitations do not change the independent archived evidence. No claim of successor implementation or execution.
+
+## RA-259 — adversarial re-review of this Review (2026-11-18 UTC)
+
+### S0 — verdict
+
+MATCH upheld: zero `departureChordCrossing` lines gate-wide and in the census; 48 `edgePortDeparture` lines, all BunnyRandom. Product source at HEAD equals CB160 (`git diff --quiet 66fb0c5ec42fa57614a504437724b18d7004cbb1 HEAD -- src include tests`). The archive figures come from this Review; RA-259 did not re-open the archives (runtime-free). CB161 is accepted as frozen (S1). Two defects follow (S2), and RA-259 completes the slide-contact definition that three Reviews have left on the Review track (S3).
+
+### S1 — CB161 checked
+
+- **Geometry.** A Haiku read-only audit derived the branches from `build_boundary_pairing` and the gauge rule (`src/authority/FieldTransportAtlas.cpp:151–216, 330–368`). In face (0,1,2), branch 0 = +(1,1), barycentric (−1,0,1), and branch 1 = −(1,−1), barycentric (1,−2,1). All three exits the test relies on follow from `resolve_field_branch_continuation`.
+- **Fail before, pass after.** The control crossing is (1/4,1/2,1/4). Before the switch the departure calls give that crossing, and after it they give `Disjoint` in both orders. The grazing control (3/8,1/2,1/8) is a regression guard, not a fail-before case.
+- **Patch.** No name collisions, and `git apply --check` passes.
+- **Scope.** Only the classifier reads `field_aligned_segment_exit_point`; no test calls the segment classifier. Returning `edgeTransitEntry` unconditionally is correct: both producer sites write the traced decision's exit there (:2784, :3764), so "the stored exit" is the traced exit by definition.
+
+### S2 — defects
+
+1. **CB160's receipt is unreachable after CB161.** A departure's face piece becomes a point, and a point cannot make a `ProperCrossing`. So TB138's "zero crossing lines" criterion holds by construction and does not test anything; the only real tests are row 956 and the 958-row equality. The receipt lambda and its two calls become dead code. The slide-contact wiring CB, which edits the same two loops, must delete them. Keep `field_aligned_segment_departs_along_carrier`, which rows 955/956 test.
+2. **The definition stalled.** RA-257 S5.2 has been the "parallel Review" item through RA-257, RA-258 and this Review. After CB161/TB138 the implementation agent would have nothing left. Also, after CB161 a departure slide has no contact representation at all (48 departures on BunnyRandom). It had none that was correct before either, but this makes the slide contact the next real-output blocker.
+
+### S3 — slide contact defined (closes RA-257 S5.2, folds in S5.4)
+
+1. **Occupancy.** A segment occupies a mesh edge at its entry crossing (a point) and along its slide (an interval). Occupancy is keyed by `SourceEdgeTopologyKey`, independent of face, so walls in both incident faces count.
+2. **Locus.** `first_field_aligned_carrier_contact(moving, wall)`:
+   - The moving entry is checked before the moving slide.
+   - Along the slide, the first shared parameter in the moving direction wins.
+   - At an equal parameter, the wall's entry wins over its slide, because the wall reached it first.
+3. **Vertex meetings.** A meeting that is a single point at an edge end (parameter 0 or 1) is not a carrier contact. It stays with the vertex transit rules; D5, D11 and D12 are unchanged.
+4. **Arrivals.** At its entry, a side's arrival is its segment start, computed with the existing `field_aligned_arrival_at_barycentric` at the entry. In its slide, it is `field_aligned_arrival_at_slide_parameter` (CB162), from `runtime.arrival` for the moving side and `segmentStarts[w]` for a wall.
+5. **Outcome.** The same rule as a face crossing:
+   - `field_aligned_compare_priority_arrivals`;
+   - `Earlier` gives no event;
+   - `Later` gives a Contact event at the locus, and the moving trace crashes;
+   - `Inconclusive` against a retired wall gives `ContactInconclusiveAgainstRetiredWall`;
+   - pending-vs-pending uses the existing symmetric scheduling.
+6. **Sphere O47.** Traces 4/6 entering edge (0,2) at P from opposite faces are rule 2's (entry, entry) case.
+7. **BunnyRandom O48 prediction.**
+   - On edge (94,210), parameters run from v94: the slide of 15:19 goes from 0.93470265131543506 to 0, and the slide of 43:13 from 0.26324148596788688 to 0.
+   - The locus is X43 = 0.26324148596788688, in both slides (CB163 test case 1).
+   - Trace 43 is earlier (RA-256), so trace 15 is `Later` and ends at X43.
+8. **Not decided here (S5.3, still Review).** How the Contact event, the moving trace's terminal record and the wall's `TraceCutPosition` represent a locus inside a slide piece or at an entry point. The proposed ordering is the face piece, then the slide piece by carrier parameter. The wiring CB needs this.
+
+### S4 — CB162 and CB163 (frozen, unwired)
+
+Both patches are stacked on CB161, so each one's preimage is the previous patch's postimage. Each is compile only. Precheck for both: product source equals CB160 `66fb0c5ec…` plus exactly the frozen diffs before it.
+
+- **CB162.** `.agents/Directional/Architecture_M6_CP3_CB162_P13_Slide_Arrival_Helper_Exact.diff`, SHA-256 `1a3cbb1a74dd4d071e29006b49f379b3af053a3fcc71f17609d2612c5efcb853`, 139 lines. Numstat: `12 0` header, `32 0` .cpp, `65 0` tests.
+  - Adds `field_aligned_arrival_at_slide_parameter`. Inside the slide it returns `advance(start, add(len(entry→slideStart), len(slideStart→point)))`, the producer's own operations in the producer's order, so at the slide end it reproduces the segment's end arrival. Outside the slide it returns empty.
+  - Test `ArrivalInsideASlideAddsTheFacePieceAndTheCarrierRun` uses the unit square:
+    - a grazing slide's midpoint, start and end: √2/2, 3√2/8 and √2 past the start;
+    - a point before the slide start, and no slide;
+    - a departure (zero face piece) running toward the lower parameter, 3√2/4 at parameter 1/4;
+    - a point outside [0,1];
+    - `segmentCount` increments once.
+- **CB163.** `.agents/Directional/Architecture_M6_CP3_CB163_P13_Carrier_Contact_Helper_Exact.diff`, SHA-256 `3a7f96f20eb9f9f6d8af825b7649d7bd603baa5b4007a639ceb60f9a918e67a8`, 175 lines. Numstat: `20 0` header, `44 0` .cpp, `81 0` tests.
+  - Adds `FieldAlignedCarrierContact {carrier, parameter, movingInSlide, wallInSlide}` and `first_field_aligned_carrier_contact`, per S3.1–S3.3.
+  - Test `FirstCarrierContactMeetsEntriesAndSlidesAcrossFaces`:
+    - the BunnyRandom shape in both roles: 3/10, in both slides;
+    - the sphere shape, crossings from opposite faces at one point: 1/3, at both entries;
+    - a near miss of 1/100;
+    - a crossing into a wall's slide, and a slide over a wall's crossing;
+    - the first wall point on an ascending slide;
+    - disjoint parts of the edge;
+    - a meeting only at v0, which gives no contact;
+    - a slide on another edge.
+- **Checks.**
+  - `git apply` of CB161 → CB162 → CB163 succeeds in sequence.
+  - `-fsyntax-only -Wall -Wextra -DUSE_GMP_ENABLED` passes on both files with warning counts unchanged (43 and 42).
+  - A Haiku read-only audit confirmed that CB162 uses the producer's operands and order (:3606, :3768, :3776–3795), so at the slide end it reproduces the end arrival bit for bit. It hand-evaluated all 7 CB162 and all 10 CB163 expectations (all PASS), found no compile risk, and confirmed both patches are purely additive with no production callers. Nothing was executed; the tests first run in TB139.
+- **Routes.** Mismatch: `M6-CP3-PLAN-P13-SLIDE-CONTACT-HELPERS-STOP`. Infrastructure: `M6-CP3-CB162A-P13-SLIDE-CONTACT-HELPERS-ORCH`.
+
+### S5 — TB139 criteria (frozen)
+
+- **Package.** CB163, which contains CB161 + CB162 + CB163.
+- **Gate manifest.** `gates/Architecture_M6_TB139_P13_Slide_Arrival_And_Carrier_Contact_Helpers_Full_Gate_Case_Manifest.tsv`, SHA-256 `96766f760965c01216cbe94f92f67eefcfc40bf78e17dbcd5379bee7556f2d29`. It is the TB138 manifest `95e61be9…` byte for byte, plus row 957 (`ra259:slide-arrival-helper`) and row 958 (`ra259:first-carrier-contact-helper`), both `directional_surface_cell_producer_tests`, PASS. `SELF_CHECK_PASS cases=958 deferred=81`; membership 1,039.
+- **Unchanged inputs.** Census `3af1dc0d…`, deferred `fd433f54…`, harness `78b8002c…`.
+- **MATCH** requires all of the following:
+  1. Gate rows 1–956 and the 3 census rows equal the TB138 artifacts under N1–N4 only.
+  2. All receipts are byte-identical.
+  3. Rows 957 and 958 are PASS.
+  4. Nothing else differs.
+- **Why one gate for two CBs.** Both are unwired and additive, and each has its own attributable row. A RED row names its CB.
+- **Routes.** Mismatch: `M6-CP3-PLAN-P13-SLIDE-CONTACT-HELPERS-STOP`. Infrastructure: `M6-CP3-TB139A-P13-SLIDE-CONTACT-HELPERS-ORCH`.
+
+### S6 — turn sequence
+
+- **Implementation track:**
+  1. `M6-CP3-CB161-P13-DEPARTURE-CHORD-CLASSIFIER-SWITCH` (compile).
+  2. `M6-CP3-TB138-P13-DEPARTURE-CHORD-CLASSIFIER-SWITCH-FULL-GATE-EXEC`.
+  3. `M6-CP3-CB162-P13-SLIDE-ARRIVAL-HELPER` (compile), only after a TB138 MATCH.
+  4. `M6-CP3-CB163-P13-CARRIER-CONTACT-HELPER` (compile).
+  5. `M6-CP3-TB139-P13-SLIDE-CONTACT-HELPERS-FULL-GATE-EXEC`.
+  6. The slide-contact wiring CB, then its TB, once S5.3 is defined. That CB also deletes the CB160 receipt.
+- **Review track:**
+  1. `M6-CP3-TB138-P13-DEPARTURE-CHORD-CLASSIFIER-SWITCH-FULL-GATE-REV` (gates CB162).
+  2. `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT`, narrowed to S5.3 (publication and cut position of a locus in a slide or at an entry) and run in parallel. It freezes the wiring CB.
+  3. `M6-CP3-TB139-…-REV`.
+- `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` is discharged by S3.
+- **Held:** FC-6, TERMINAL-CUT-OUTCOME and row 858. **Parked:** CB145. D11=A and D12=A are unchanged.
+
+### S7 — lessons
+
+- Once a switch makes a receipt's condition impossible, an "equals zero" criterion on that receipt tests nothing. Name the real test and schedule the receipt's deletion.
+- When a definition has stayed on the Review track through three Reviews, write it in the current Review and freeze the decision-independent helpers it implies.
