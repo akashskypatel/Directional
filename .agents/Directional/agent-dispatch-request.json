@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb159-apply-v1",
-  "mailbox_key": "m6-cp3-cb159-apply-v1",
-  "file_id": "1ysxBjvAbpeDWT-769zwferYCC1cAbTYS",
-  "patch_sha256": "aefa7a8915c3edde4fd5d435395c86a8871538673bb595637cfee46086880a85",
-  "base_sha": "c65ff74dcaf9408cdd6bd532dbf00f9646f09205",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Add exact carrier occupancy helpers and focused unit test",
-  "retention_days": 30
+  "operation": "compile",
+  "request_id": "m6-cp3-cb159-compile-v1",
+  "mailbox_key": "m6-cp3-cb159-compile-v1",
+  "source_sha": "18cc4a7d3e8ae43ce854c0edc834ab156156dcbf",
+  "targets": [
+    "directional_benchmarks",
+    "directional_compiled_api_tests",
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_validation_tests"
+  ],
+  "artifact_prefix": "m6-cp3-cb159-compile"
 }
