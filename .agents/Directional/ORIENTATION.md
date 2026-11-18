@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-18, RA-261 re-review of `M6-CP3-TB139-P13-SLIDE-CONTACT-HELPERS-FULL-GATE-REV`):** [RA-261](Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md#ra-261--adversarial-re-review-of-this-review-2026-11-18-utc) upholds the TB139 MATCH (959/959, rows 957/958 PASS). H4 is live: 1,200 grazing proposals on 20 sphere rows. CB165 is frozen as an exact diff (the prose plan is superseded), TB140 is frozen, and the H4 switch is split by consumer. Exact next: CB165.
+**Current currency (2026-11-18, RA-261 re-review of `M6-CP3-TB139-P13-SLIDE-CONTACT-HELPERS-FULL-GATE-REV`):** [RA-261](Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md#ra-261--adversarial-re-review-of-this-review-2026-11-18-utc) upholds the TB139 MATCH (959/959, rows 957/958 PASS). H4 is live: 1,200 grazing proposals on 20 sphere rows. CB165 is frozen as an exact diff (the prose plan is superseded), TB140 is frozen, and the H4 switch is split by consumer. [CB165 compile PASS](Architecture_M6_CP3_CB165_P13_Trace_Segment_Pieces_Helper_Code_Build_Record_20261118.md); exact next: TB140.
 
 ## 1. What the project is
 
@@ -45,7 +45,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB139 957/958 (membership 1,039); 959/959 prior rows independent MATCH and rows 957/958 PASS. Cylinder PASS / BunnyRandom binding RED / Vase completion RED. H3 narrowly closed; H4/C5/O47/O48 open. CB165 unwired helper next; no CP3/selector497 promotion. [Review](Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md). |
+| **M6-CP3 — active** | TB139 957/958 (membership 1,039); 959/959 prior rows independent MATCH and rows 957/958 PASS. Cylinder PASS / BunnyRandom binding RED / Vase completion RED. H3 narrowly closed; H4/C5/O47/O48 open. CB165 unwired helper compile PASS; TB140 next; no CP3/selector497 promotion. [Review](Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md). |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).

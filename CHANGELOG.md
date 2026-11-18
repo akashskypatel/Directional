@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — CB165 trace segment pieces helper (compile only)
+
+- [Compile record](.agents/Directional/Architecture_M6_CP3_CB165_P13_Trace_Segment_Pieces_Helper_Code_Build_Record_20261118.md): source `fb51da7142646ebed97527d976fd8b382607160a`, package `14459000178`, ZIP SHA-256 `501bc0fe607d38a14fa3afe49814809fd0a7505c18f0ad61bb2e09674ffd486e`. Frozen +184/-0 in three files; no production callers. Eight GMP/GMPXX targets, 28/28 checksums, 371/371 product/test files, four frozen inputs; no runtime.
+- Exact next `M6-CP3-TB140-P13-TRACE-SEGMENT-PIECES-HELPER-FULL-GATE-EXEC` per RA-261 S3. TB139 runtime authority; stable 66/17/49, debt 1, deferred 81; CP2 491/491; H4/O47/O48 open. No promotion.
+
 ## 2026-11-18 UTC — RA-261 re-review of the TB139 Review
 
 - [RA-261](.agents/Directional/Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md#ra-261--adversarial-re-review-of-this-review-2026-11-18-utc): MATCH upheld. The CB165 prose plan is replaced by an exact diff (SHA-256 `dd9fdbf5…`, +13/+59/+112). TB140 is frozen (manifest `390fe1bd…`, 959 rows). The H4 switch is split into CB166 (embedded-graph paths and rays), CB167 (local chords), CB168 (polylines), CB169 (unwired position and locus fields) and CB170 (wiring).
