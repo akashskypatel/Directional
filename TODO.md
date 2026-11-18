@@ -1,8 +1,8 @@
-## CURRENT — RA-256: onset certified, slide start compiled (2026-11-18 UTC)
+## CURRENT — TB135 independent MATCH; edge-locus overlap definition next (2026-11-18 UTC)
 
 [RA-256](.agents/Directional/Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Independent_Review_20261118.md#ra-256--adversarial-re-review-of-this-review-2026-11-18-utc) upholds the TB134 Review's MATCH and its correction of RA-255's vertex-onset claim. It finds three defects:
 - **Onset (S1).** The receipt settles it. Trace 15 is trace 43 scaled about v210 by k=0.0886278847694713, which equals trace 15's entry on (210,290). So X43 is nearer v94, the shared interval is [X43, v94], and the first shared locus is X43 in either arrival order. Trace 43 arrived first, so trace 15 should end at X43.
-- **Representation (S2).** `FieldAlignedCandidateTraceSegment` drops the slide start (`decision.exitPoint`). The producer classifier never sees slide pieces, and the consumer cannot represent X43. H3 (unverified): the classifier's recomputed exit may differ from the traced one on vertex-slide segments.
+- **Representation (S2).** `FieldAlignedCandidateTraceSegment` formerly dropped the slide start (`decision.exitPoint`); CB158 now stores it and TB135 independently verifies it. The producer classifier still does not classify slide pieces, and the consumer cannot yet represent X43 as a cut. H3 (unverified): the classifier's recomputed exit may differ from the traced one on vertex-slide segments.
 - **Routing (S3/S6).** The Review-only successor left the implementation agent without a turn. Now CB158/TB135 run first, and the two DEFNs share one edge-locus representation.
 
 Turn sequence:
@@ -13,7 +13,8 @@ Turn sequence:
   - Mismatch route `M6-CP3-PLAN-P13-EDGE-TRANSIT-ENTRY-RECEIPT-STOP`; infrastructure route `M6-CP3-CB158A-P13-EDGE-TRANSIT-ENTRY-RECEIPT-ORCH`.
 - [x] **COMPLETE (Test + Benchmark, artifact only):** `M6-CP3-TB135-P13-EDGE-TRANSIT-ENTRY-FULL-GATE-EXEC`. [Execution report](.agents/Directional/Architecture_M6_CP3_TB135_P13_Edge_Transit_Entry_Full_Gate_Execution_Report_20261118.md): 956/956 MATCH under RA-256 S5; gate `14398029488` 952/953 and census `14398329619` Cylinder PASS/288, BunnyRandom/Vase RED; accepted prefix 491/491. 66 sphere receipts on 19 rows have no slide tokens; both BunnyRandom receipts carry precisely 43:11, 43:13, 15:19. On (94,210), t43=0.26324148596788688, t15=0.93470265131543506, ratio=0.0886278847694711840154612716578249278676129003001871014945774 (relative 1e-12 criterion met).
 - [ ] (Review, parallel) `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` per RA-255 S2 + RA-256 S3: shared edge-locus cut representation, including slide-piece ordering; freeze helpers CB + wiring CB.
-- [ ] **EXACT NEXT (Review):** `M6-CP3-TB135-P13-EDGE-TRANSIT-ENTRY-FULL-GATE-REV`, then `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (co-directional slide overlap; check H3; helpers CB then wiring CB).
+- [x] **COMPLETE (independent Review):** `M6-CP3-TB135-P13-EDGE-TRANSIT-ENTRY-FULL-GATE-REV`. [Review](.agents/Directional/Architecture_M6_CP3_TB135_P13_Edge_Transit_Entry_Full_Gate_Independent_Review_20261118.md); 956/956 MATCH upheld under RA-256 S5; 952/953 gate, 491/491 accepted prefix; Cylinder PASS/288, BunnyRandom/Vase RED. On (94,210), t43=0.26324148596788688 and t15=0.93470265131543506; ratio 0.088627884769471184 (relative error 1.31e-15 to the frozen prediction).
+- [ ] **EXACT NEXT (Review):** `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (co-directional slide overlap; check H3; shared edge-locus representation; freeze helpers CB then wiring CB).
 - [ ] Held: FC-6, terminal-cut outcome, row858 fix. Parked CB145. D11=A, D12=A unchanged; stable 66/17/49, debt 1, deferred 81; CP2 491/491; no promotion.
 
 ## Historical checkpoint — TB134 independent MATCH; common carrier overlap and arrival order (2026-11-18 UTC)
