@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb136-closeout-v1",
+  "request_id": "m6-cp3-tb136-rev-closeout-v1",
   "operation": "drive_apply",
-  "file_id": "11j0LOrJqfpLXJWYw9JfksHrf_iFsnB2i",
-  "patch_sha256": "2767715e346fbc015ada8531a6390348940d7273d2dfbad805a6ef551e09c774",
-  "base_sha": "fd20fbb80121228dd44b8764fa9e002ee932d571",
+  "file_id": "1GnpzZwIh-G9yBIlxl1-y3BG6XHiRHUJv",
+  "patch_sha256": "b5072355b515cf09eaa6f95bfaebfeace734602f05babf6db383ce4e49785b6f",
+  "base_sha": "84d920709ca909bf54acea8f44d397bbcf805d2e",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close TB136 carrier occupancy helpers full gate MATCH",
-  "mailbox_key": "m6-cp3-tb136-closeout-v1",
+  "commit_message": "docs: record TB136 independent carrier occupancy review",
+  "mailbox_key": "m6-cp3-tb136-rev-closeout-v1",
   "retention_days": 30
 }
