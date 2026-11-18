@@ -1,0 +1,3 @@
+M6-CP3-CB164-P13-SLIDE-PROPOSAL-RECEIPT
+Snapshot the exact trigger event SHA. Entry authority: 45a79979278992321949a0dbf0964678166a346a
+No build or runtime.
