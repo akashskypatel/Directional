@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — TB135 edge-transit entry full gate (MATCH)
+
+- [Execution report](.agents/Directional/Architecture_M6_CP3_TB135_P13_Edge_Transit_Entry_Full_Gate_Execution_Report_20261118.md): 956/956 MATCH under RA-256 S5; gate `14398029488` 952/953 and census `14398329619` Cylinder PASS/288, BunnyRandom/Vase RED; accepted prefix 491/491. 66 sphere receipts on 19 rows have no slide tokens; both BunnyRandom receipts carry precisely 43:11, 43:13, 15:19. On (94,210), t43=0.26324148596788688, t15=0.93470265131543506, ratio=0.0886278847694711840154612716578249278676129003001871014945774 (relative 1e-12 criterion met). Package `14397197316`; no rebuild or source edits.
+- Next separately `M6-CP3-TB135-P13-EDGE-TRANSIT-ENTRY-FULL-GATE-REV`. Stable 66/17/49, debt 1, deferred 81; CP2 491/491. No promotion.
+
 ## 2026-11-18 UTC — CB158 edge-transit entry record (compile only)
 
 - [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB158_P13_Edge_Transit_Entry_Record_Code_Build_Record_20261118.md): exact +11/-0 RA-256 delta; records and prints the slide start without changing the digest or decisions. Source `5bdc7c092a8935faeab75cf7a739928fd8ddca46`, [compile run 44234339459](https://github.com/akashskypatel/Directional/actions/runs/44234339459), package `14397197316` SHA-256 `9282956b0115eb9455b0504e0b32bb6d9200b465313fcb30392954af02310bda`. Eight GMP/GMPXX targets, 28/28 checksums, 371/371 source files, four frozen inputs unchanged; no runtime.
