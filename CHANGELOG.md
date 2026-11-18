@@ -1,6 +1,6 @@
-## 2026-11-18 UTC — TB141 independent review (adjudication MATCH; closeout in progress)
+## 2026-11-18 UTC — TB141 independent review (MATCH; successor frozen)
 
-- [TB141 Review (in progress)](.agents/Directional/Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Independent_Review_20261118.md): independent 962/962 and accepted prefix491/491; 1266 retained traversed records and exact block inventory. R+/R-edge; no graph publication proof. Candidate CB167 diff not frozen; same review remains active, no implementation or promotion.
+- [TB141 Review](.agents/Directional/Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Independent_Review_20261118.md): independent 962/962 and accepted prefix491/491; 1266 retained traversed records and exact block inventory. R+/R-edge; no graph publication proof. Exact CB167 leaf + unwired path helper and row960 frozen; offline gate self-check PASS; no implementation or promotion. [Plan](.agents/Directional/Architecture_M6_CP3_CB167_P13_Trace_Piece_Path_Helper_Plan_20261118.md).
 
 ## 2026-11-18 UTC — TB141 committed-slide receipt execution (MATCH)
 
@@ -23,7 +23,7 @@
 
 ## 2026-11-18 UTC — TB140 trace-segment-pieces helper full gate (execution MATCH)
 
-- [Execution report](.agents/Directional/Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Execution_Report_20261118.md): immutable CB165 package `14459000178`, source `fb51da7142646ebed97527d976fd8b382607160a`; gate `14458589267` 958/959, census `14460885073`; 961/961 prior rows match under N1–N4, row 959 PASS. All slide proposals byte-identical (48 seed, 3 vertex, 1,215 grazing), 68 other receipts, 48 departures, zero crossing lines. Valid postflight, no rebuild or new regression; stable 66/17/49, debt 1, deferred 81; CP2 491/491. H4/O47/O48 open; no CP3/D0 promotion.
+- [Execution report](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb140_p13_trace_segment_pieces_helper_full_gate_execution_report_20261118md): immutable CB165 package `14459000178`, source `fb51da7142646ebed97527d976fd8b382607160a`; gate `14458589267` 958/959, census `14460885073`; 961/961 prior rows match under N1–N4, row 959 PASS. All slide proposals byte-identical (48 seed, 3 vertex, 1,215 grazing), 68 other receipts, 48 departures, zero crossing lines. Valid postflight, no rebuild or new regression; stable 66/17/49, debt 1, deferred 81; CP2 491/491. H4/O47/O48 open; no CP3/D0 promotion.
 - Exact next `M6-CP3-TB140-P13-TRACE-SEGMENT-PIECES-HELPER-FULL-GATE-REV` for independent adjudication and CB166 freeze under RA-261 S4.1; no successor implementation.
 
 ## 2026-11-18 UTC — CB165 trace segment pieces helper (compile only)
@@ -43,7 +43,7 @@
 
 ## 2026-11-18 UTC — TB139 slide-contact helpers full gate (MATCH)
 
-- [Execution report](.agents/Directional/Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Execution_Report_20261118.md): MATCH 959/959 prior rows under N1–N5; rows 957/958 PASS. Gate `14444439110` 957/958; census `14446181288` Cylinder PASS/288, BunnyRandom/Vase RED. All 68 other receipts unchanged; zero crossing lines; 48 seed/departure pairs, 3 vertex and 1,215 grazing receipts; all three predicted grazing witnesses present. No new regression or promotion. [Per-row slide-kind counts](.agents/Directional/evidence/Architecture_M6_CP3_TB139_P13_Slide_Proposal_Counts_20261118.tsv), SHA-256 `8d21f1300a6461fcdd5ad74a692589379584c19feed9eec04c42104b4e71335c`. No rebuild, repair or product/test/fixture mutation.
+- [Execution report](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb139_p13_slide_contact_helpers_full_gate_execution_report_20261118md): MATCH 959/959 prior rows under N1–N5; rows 957/958 PASS. Gate `14444439110` 957/958; census `14446181288` Cylinder PASS/288, BunnyRandom/Vase RED. All 68 other receipts unchanged; zero crossing lines; 48 seed/departure pairs, 3 vertex and 1,215 grazing receipts; all three predicted grazing witnesses present. No new regression or promotion. [Per-row slide-kind counts](.agents/Directional/evidence/Architecture_M6_CP3_TB139_P13_Slide_Proposal_Counts_20261118.tsv), SHA-256 `8d21f1300a6461fcdd5ad74a692589379584c19feed9eec04c42104b4e71335c`. No rebuild, repair or product/test/fixture mutation.
 - Exact next `M6-CP3-TB139-P13-SLIDE-CONTACT-HELPERS-FULL-GATE-REV`; independent Review owns CB165/CB166 staging. H4, O47 and O48 remain open. Stable 66/17/49, debt 1, deferred 81; CP2 491/491.
 
 ## 2026-11-18 UTC — CB164 slide proposal receipt (compile only)

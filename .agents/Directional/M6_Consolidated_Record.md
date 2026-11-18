@@ -2102,3 +2102,13 @@ By user instruction, the 231 remaining standalone `Architecture_M6*` Review, def
 |---|---:|---|---|
 | `Architecture_M6_CP3_TB137_P13_Departure_Chord_Crossing_Receipt_Full_Gate_Execution_Report_20261118.md` | 64 | TB137 execution MATCH, superseded by TB138; original SHA-256 `4d99714ac07fc75b8e8d1da5abb0c6d1145c7355f324151325f45e2ffb22e30a` | [Volume D3](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb137_p13_departure_chord_crossing_receipt_full_gate_execution_report_20261118md) |
 | `Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Full_Gate_Execution_Report_20261118.md` | 71 | TB138 execution MATCH, superseded by TB139; original SHA-256 `416b594645a71c6c2129f25176322e98ccd3fbb5ee4213f148c4c73740622b84` | [Volume D3](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb138_p13_departure_chord_classifier_switch_full_gate_execution_report_20261118md) |
+
+
+## TB141 Review folded execution records (2026-11-18)
+
+| Original | Lines | Disposition | Destination |
+|---|---:|---|---|
+| `Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Execution_Report_20261118.md` | 73 | Superseded by TB141 MATCH; original SHA-256 `5c1c0d41d440db3be55019f31561d229488a98c04a0dc61059de53fd96bdaddd` | [Volume D3](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb139_p13_slide_contact_helpers_full_gate_execution_report_20261118md) |
+| `Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Execution_Report_20261118.md` | 77 | Superseded by TB141 MATCH; original SHA-256 `9c1ece81663d2ad781baee22cfeededc22ff4858f7fe6a6959adab20196eb9c1` | [Volume D3](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb140_p13_trace_segment_pieces_helper_full_gate_execution_report_20261118md) |
+
+TB141 execution checkpoint (16 lines, removed by prior cleanup): original Git blob `e0de037f532e5603cf604b6796129bfcf3382d9c` at `3b0ddc713385273d204214a4359f14127b1edbf1`; pending runtime state superseded by TB141 execution report. Library continuation ZIP SHA-256 `9171683dd8f76239b6cda58e170c1c6e512db5c47fef18a57fe2ae7db4f6c873`; snapshot `28d8f9275ac5cff98f1209c2d4db3e2d61c1139b`, artifact 14472107893, 5,582 hashes verified; gate and census events `f78b7a45ef330b51ce46bd1bf92a6bd09783d837` and `d8c31d792b0ebcae6b6b4bb003af97121e87cbb4`.

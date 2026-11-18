@@ -1,8 +1,8 @@
-# TB141 independent review — evidence MATCH; closeout in progress
+# TB141 independent review — evidence MATCH; CB167 frozen
 
 ## Situation
 
-`M6-CP3-TB141-P13-COMMITTED-SLIDE-RECEIPT-FULL-GATE-REV`, entered 2026-11-18T21:57:04Z. Evidence adjudication: MATCH. Scope decision: R+ and R-edge under RA-262 S3/EPO-6; no R0 or R-x. This record preserves incomplete Review work, not authorization to start CB167 or any successor. No compile, generated product execution, product or test source edit on the working branch, gate/selector mutation, or promotion. PR #8 remains open draft, unmerged.
+`M6-CP3-TB141-P13-COMMITTED-SLIDE-RECEIPT-FULL-GATE-REV`, entered 2026-11-18T21:57:04Z. Evidence adjudication: MATCH. Scope decision: R+ and R-edge under RA-262 S3/EPO-6; no R0 or R-x. This record freezes CB167 for the next turn only, after the Review COMPLETE beacon. No compile, generated product execution, product or test source edit on the working branch, gate/selector mutation, or promotion. PR #8 remains open draft, unmerged.
 
 ## Background — immutable authority
 
@@ -29,30 +29,33 @@ Separate raw receipt scan: 123 contiguous commit blocks, exact matching proposal
 
 C5/O42/O43/O46/O47/O48, H2/H4, FC-1/FC-4 and middle-piece direction witness remain open or carried. O49 required before CB169, same traversal-side contract. H3 and O45 narrow closure retained; C3/O44/C1 closed. FC-6, terminal-cut and row858 held; CB145 parked. Before CB172 require positive overlap starting at vertex rule, tie control, delete CB160/CB166 diagnostics only at authorized wiring. D11=A, D12=A, D10 deferred, D6 pending, chainRimSchedules=false. Stable 66/17/49, debt 1, deferred81; CP2 package 11391685901, 491/491, selector497 frozen not promoted. No new stable event.
 
-## Recommendation — proposed CB167 freeze, pending final static review
+## Recommendation — CB167 frozen, not applied
 
-Candidate only: [Architecture_M6_CP3_CB167_P13_Trace_Piece_Path_Candidate_Not_Frozen.diff](Architecture_M6_CP3_CB167_P13_Trace_Piece_Path_Candidate_Not_Frozen.diff), SHA-256 `14f2abed75fd3ca479f6021a70a5af930f01cad401e6df9003d76a51be124074`; exact two source files and one focused test file, +194/-22; scratch-only diff and reverse applicability check passed. It is **not frozen or authorized to apply**. No product source changed on working branch. The old path reader remains live at EmbeddedGraphTopology.cpp:1589. Two calls from current leaf to exact_trace_path (:730,:753) would recurse if the path reader were changed directly. Draft makes leaf independent, extracts the old ordinary interior interpolation unchanged, and stages a separately named `exact_trace_piece_path_between` to concatenate leaf results, clipping only ordinary segments. No new piece-position semantics. Old live path call remains until coordinated CB169; old tests unchanged. This naming/staging decision follows the unwired clause, not a second semantic authority at cutover. Remove the transitional old reader at CB169, and keep one decomposition.
+[Architecture_M6_CP3_CB167_P13_Trace_Piece_Path_Helper_Plan_20261118.md](Architecture_M6_CP3_CB167_P13_Trace_Piece_Path_Helper_Plan_20261118.md); [Architecture_M6_CP3_CB167_P13_Trace_Piece_Path_Helper_Exact.diff](Architecture_M6_CP3_CB167_P13_Trace_Piece_Path_Helper_Exact.diff), SHA-256 `9163ad66c32f0d9d3a27f95899124b135a7a8cfa210b18d455a31eacfbee651a`. Original candidate (SHA-256 `14f2abed75fd3ca479f6021a70a5af930f01cad401e6df9003d76a51be124074`) retained in Git at `890eeecf79ed3da85666791dda7228997a854dab`; now superseded. Three paths, +222/-22. Scratch-only forward/reverse applicability, clean diff, exact preimages and postimages; static check strengthens row960 with independent typed expected points, edge-only non-last departure, retained terminal clip, and strict invalid-cut controls. Old production path caller unchanged; leaf no longer calls the old path reader and new concatenation unwired. Exact patch not executed, compiled or tested. Row960 prospective PASS; prior 959 unchanged byte-for-byte; offline manifest self-check PASS (960+81). [Frozen gate](gates/Architecture_M6_TB142_P13_Trace_Piece_Path_Helper_Full_Gate_Case_Manifest.tsv) SHA-256 `2468d8baed76322bdda79072e54c287aa421fb627a819ba278c7f7ee77e12db0`. No new selectors. RA-262 controls the later sequence. O49 before CB169; keep rank fixtures 665/666 from withdrawn candidate at CB169. No CP3/D0 promotion.
 
-Draft row960 `FieldAlignedCarrierOccupancy.TracePiecePathKeepsNonLastSlideAndCanonicalContactEndpoints` checks three pieces across adjacent faces (v4 -> (0,1) at 1/4 -> v1 -> (2,4) at 1/2), alternate canonical vertex representation, ordinary partial cuts and exact two-cut span, support/continuity, canonical edge and vertex terminal points, strict invalid/reverse/equal/slide cuts, missing transit and discontinuity. Existing row959 continues to check grazing leaf, clipped terminal contact, reversed slide and departure. Candidate not compiled or run. Check assert-level falsifiers, header visibility, untouched live caller, endpoint semantics and exact patch preimages before freeze. In CB167 only apply the finally frozen diff and compile the eight RA-245 GMP/GMPXX targets; no runtime. TB142 prospective: append one PASS row960 to byte-exact 959-row TB140 gate, 960+81=1041 membership; unchanged census/deferred/harness; strict equality on all 962 prior rows (N1–N6), receipts byte-identical, no unexpected PASS/RED, row858 same permitted site; require 959/960 with row960 PASS, 491/491 prefix. Stop on any product drift, new failure site or missing control. No gate input changes yet.
+## Review closeout
 
-## Continuation / review closeout (not complete)
-
-| Duty | State |
+| Duty | Answer |
 |---|---|
-| Accepted prefix re-hashed | Verified, four hashes above |
-| Decisive claims independently re-derived | Verified artifacts, 962-row comparison, block inventory and source reach; package provenance via immutable preflight |
-| Non-vacuity | Existing row959 and raw proposal/receipt checks; new test is a static draft |
-| Prior obligations | Carried above; complete historical obligation and policy checklist audit pending |
-| Stable accounting | 66/17/49, debt1, accepted CP2 491, deferred81; no promotion |
-| New obligation | O49 sequence; no new stable event |
-| ORIENTATION / CHANGELOG / ROADMAP / tracker | Interim currency update only; final drift audit pending |
-| Selector manifest | No change authorized |
-| LESSONS | No new lesson asserted; full policy/checklist attestation pending |
-| Consolidation | Pending; no historical records retired |
-| Successor | Not frozen; finish static review of candidate and exact turn identity, then freeze one CB167 turn and update live handoff |
-| Turn boundary | Review runtime-free, no product/test/fixture/build/selector edits on working branch |
-| review_check.py boundary / ledgers | Historical Git baseline unavailable in source tar; required full checks not attested. Do not claim synthetic Git history is remote history |
-| STATUS | Current review IN_PROGRESS until durable closeout; original start preserved |
-| Push / branch sync | Verify after actual documentation application and cleanup |
+| Accepted selector prefix re-hashed | Four exact hashes above; 491/491. |
+| Decisive claims independently re-derived | 962/962, 123 blocks and 1266 retained records; source reach and distinct publication adjudication above. Resume snapshot `dacbbd17da42ee513ec8e71b4e7f2cb397121d87`, artifact 14476243890, 5,587/5,587 file hashes; compare prior snapshot to resume head shows only documentation/control changes. |
+| Non-vacuity checked | Existing row959, raw proposal/commit checks; row960 expected values independent of canonicalizer, invalid-cut, edge-only and clipping controls statically reviewed. No runtime claim. |
+| Prior obligations discharged/carried | S5 and prior obligations listed above, including O49 before CB169, 665/666 rank fixtures carried; no new discharge. |
+| Stable accounting | 66/17/49; debt 1; deferred81; CP2 package11391685901 491/491, selector497 not promoted. |
+| New candidates/obligations recorded | O49 route and affected set in tracker; no new stable event. |
+| ORIENTATION currency line | TB141-REV 2026-11-18, independent MATCH. |
+| ORIENTATION §3 / §4 / §7 / §8 | Currency, evidence, milestone and priority refreshed; other unchanged sections not affected. |
+| CHANGELOG | Existing TB141 Review entry amended. |
+| ROADMAP | Review complete, CB167 next, CP3 not accepted. |
+| Selector manifest | n/a: no new or accepted selector; prospective gate appended separately. |
+| LESSONS | n/a: no new pattern; retain lesson 170 on fixed variables. |
+| Consolidation under CLEAN_UP_POLICY | TB139/TB140 execution reports folded intact into D3 with original SHA-256 and index; checkpoint provenance indexed; normative reviews retained. |
+| Successor frozen | `M6-CP3-CB167-P13-TRACE-PIECE-PATH-HELPER`, exact patch and plan above; conditional artifact-only TB142 criteria. |
+| Turn boundary held | Runtime-free; no product/test/fixture/selector/benchmark/build mutation on remote branch. |
+| review_check.py boundary | Ran: local product and selector checks PASS; historical baseline and three durable rewrite-source checks FAIL because source snapshot omits Git history. Remote compare verifies rewrite base `8b7299b43764a6ba3444e5bc774a2f1b65e99731` ancestor (6,459 ahead, zero behind); fetched exact rewrite blobs and checked retained durable headings. Full historical script not attested; scoped alternative below. |
+| STATUS lifecycle maintained | Current TB141-REV resumed 2026-11-18T22:20:58Z, original start 21:57:04Z; final beacon only after applied documentation and cleanup verification. |
+| Pushed to origin, branch in sync | Connector-controlled remote-only commit and readback of branch, not local git push/status; final confirmation in response. |
 
-Process qualifications: initial direct reads preceded snapshot selection; corrected with verified snapshot and source comparison. Initial offline combined self-check and comparison targeted an existing output directory and raised ValueError; reran comparison into a fresh directory. Full mandatory policy/start checklist coverage and exact tool-call ledger not attested. No product execution or broad semantic correction. For next response resume this exact Review, recover verified work before re-derivation, check draft and complete consolidation, boundary/drift and ledger audits, and publish the final beacon only after durable closeout. No successor implementation until the final COMPLETE beacon.
+Historical ledger check ran and returned missing rewrite baseline/CHANGELOG/LESSONS history in snapshot. Connector audit of commits since prior Review `5be561aaa656a3ae806c89e8d0b5e32d76029972` found CHANGELOG append-only +5/+5/+4, LESSONS unchanged. All three durable files present with historical required headings retained. Full historical scan remains unverified; synthetic snapshot Git is not history. No policy exemption or historical PASS claimed. Initial attempt direct reads before snapshot selection and comparator output-directory collision corrected (fresh directory and verified rerun); exact cross-attempt tool ledger not recoverable. This Review does not run product code.
+
+Documentation drift audit (`--base HEAD` against exact local snapshot): zero errors; three protected-document-change warnings for authorized handoff, ORIENTATION and ROADMAP currency edits; prior handoff size warning resolved (15,213 bytes). Durable headings retained. No DESIGN or frozen policy edits; historical review edits are only relocated execution-report links.

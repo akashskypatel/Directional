@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB141 958/959, 962/962 prior rows independently MATCH, prefix491/491; Cylinder PASS/288, BunnyRandom binding RED, Vase completion RED; H4/O49 open, R-edge before CB169; Review closeout in progress; CP3 not accepted) · **Next:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB141 958/959, 962/962 prior rows independently MATCH, prefix491/491; Cylinder PASS/288, BunnyRandom binding RED, Vase completion RED; H4/O49 open, R-edge before CB169; Review MATCH; CB167 frozen; CP3 not accepted) · **Next:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
