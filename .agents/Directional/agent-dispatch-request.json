@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb134-rev-closeout-v1",
+  "request_id": "m6-cp3-cb158-apply-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb134-rev-closeout-v1",
-  "file_id": "1g0krLvQW6WsetDzO8FCVqGFhVBNYGVCb",
-  "patch_sha256": "62ea1838f49963fe4f0e29ce37c1ba1c781bff0f23cd457bbdd246bb05643fa8",
-  "base_sha": "4eb502de7315aa7def143ea50d34ffee0092c2b9",
+  "mailbox_key": "m6-cp3-cb158-apply-v1",
+  "file_id": "19GFBKD6dHpmpZqs0Ga_EX1nGu5qSS-au",
+  "patch_sha256": "0ef0cde84bcf29043c33c2a2c5080c26932c39f147adbe84638f64bc26967d2e",
+  "base_sha": "07ed6ab5afa5bb26a8aecd3767532ee57aa455f5",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Complete TB134 independent review closeout record",
+  "commit_message": "Record edge transit entry in trace segments and receipts",
   "retention_days": 14
 }
