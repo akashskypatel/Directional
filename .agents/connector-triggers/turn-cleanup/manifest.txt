@@ -1,1 +1,0 @@
-.agents/connector-triggers/source-snapshot/cb160-20261118T0844Z.txt
