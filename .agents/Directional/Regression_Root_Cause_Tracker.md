@@ -1,3 +1,12 @@
+## 2026-11-18 — RA-261 re-review of the TB139 Review (non-stable)
+
+[RA-261](Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md#ra-261--adversarial-re-review-of-this-review-2026-11-18-utc): MATCH upheld.
+- **H4 is live, not latent.** There are 1,200 grazing proposals on 20 passing sphere rows; proposals are not commitments, but any committed one already publishes the chord.
+- **Site list corrected.** The H4 sites are `exact_trace_path`/`_between`, the vertex-ray readers (:1929, :2165–2180), `trace_segment_exit_barycentric` (evidence-only chords) and the polylines. `SurfaceCutGraph:268` and `trace_segment_exit_support` are not.
+- **RA-260 S2.6 corrected.** Only a single-point vertex meeting is excluded. A positive overlap that starts at a vertex needs a publication rule before CB170.
+
+No new stable event; 66/17/49, debt 1, deferred 81.
+
 ## 2026-11-18 — TB139 independent Review MATCH (non-stable)
 
 [Review](Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md): 959/959 prior rows match, both controls PASS; 3,862 checksums, 68 other receipts, 1,738 region records, seed identity and grazing predictions verified. No stable event or promotion. H4 open; [CB165 plan](Architecture_M6_CP3_CB165_P13_Trace_Segment_Pieces_Helper_Plan_20261118.md) owns unwired exact pieces, including terminal face-contact clipping of a committed slide proposal (falsifier: publication of any untraversed tail); CB166 staged by 20 proposal-positive rows plus BunnyRandom, not an output-delta mask. Before CB168, resolve RA-259 singleton vertex exclusion vs RA-260 wording for positive overlap starting at a vertex and freeze equal-parameter wall-entry tie control; prohibited: inferred carrier locus, blanket comparison exclusions or weakened tests. Stable 66/17/49, debt 1, deferred 81; CP2 491/491; O47/O48 open.

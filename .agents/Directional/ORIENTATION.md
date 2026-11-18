@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-18, `M6-CP3-TB139-P13-SLIDE-CONTACT-HELPERS-FULL-GATE-REV`):** [Independent Review](Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md) MATCH 959/959 prior rows; both new controls PASS; H3 narrowly closed; H4, C5/O47/O48 open. [CB165 plan](Architecture_M6_CP3_CB165_P13_Trace_Segment_Pieces_Helper_Plan_20261118.md) exact next, unwired helper and focused test, compile only.
+**Current currency (2026-11-18, RA-261 re-review of `M6-CP3-TB139-P13-SLIDE-CONTACT-HELPERS-FULL-GATE-REV`):** [RA-261](Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md#ra-261--adversarial-re-review-of-this-review-2026-11-18-utc) upholds the TB139 MATCH (959/959, rows 957/958 PASS). H4 is live: 1,200 grazing proposals on 20 sphere rows. CB165 is frozen as an exact diff (the prose plan is superseded), TB140 is frozen, and the H4 switch is split by consumer. Exact next: CB165.
 
 ## 1. What the project is
 
@@ -103,7 +103,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-- **Current priority:** [CB165 plan](Architecture_M6_CP3_CB165_P13_Trace_Segment_Pieces_Helper_Plan_20261118.md) unwired helper plus focused test; CB166 piece consumer switch and TB staged using TB139 counts; CB167/CB168 carrier-contact wiring for O48/O47 only afterward. H4 stays open until independent switched-path evidence. RA-259 S3 owns contact rules; RA-260 S2 owns piece positions.
+- **Current priority:** [RA-261 S4–S5](Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md#ra-261--adversarial-re-review-of-this-review-2026-11-18-utc): CB165 → TB140 → TB140-REV (freezes CB166) → CB166 embedded-graph paths and rays + TB → CB167/CB168 local chords and polylines + TB → CB169 piece position and `carrierLocus` → CB170 carrier wiring for O48/O47 (after the vertex-overlap rule). RA-259 S3 and RA-260 S2 own the contact rule and the representation.
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).

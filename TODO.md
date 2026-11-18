@@ -1,4 +1,19 @@
-## CURRENT — RA-260: TB138 Review upheld; H4 opened; S5.3 defined; CB162–CB164 compile PASS; TB139 independent MATCH; CB165 next (2026-11-18 UTC)
+## CURRENT — RA-261: TB139 Review upheld; CB165 frozen exactly; H4 switch split; CB165 next (2026-11-18 UTC)
+
+[RA-261](.agents/Directional/Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md#ra-261--adversarial-re-review-of-this-review-2026-11-18-utc) upholds MATCH (source = CB164) and accepts the TB139 Review's 1,200-grazing count, its contact-truncation guard and its vertex-overlap obligation. Findings:
+- **Prose successor (S1.1).** CB165 was a plan for the implementer to design. It is now an exact diff (S2).
+- **Monolithic switch (S1.2).** CB166 covered every reader in four files. It is split by consumer (S4).
+- **RA-260 corrections (S1.3–S1.4).** H4 is live, not latent (20 sphere rows have grazing slides). `SurfaceCutGraph:268` and `trace_segment_exit_support` are not H4 sites. S2.6 wrongly excluded parameters 0 and 1: only a single-point meeting is excluded, and a positive overlap that starts at a vertex still needs a rule before CB170.
+
+Turn sequence:
+- [x] RA-261 re-review (Review): CB165 exact diff and TB140 manifest/criteria frozen; switch split.
+- [ ] **EXACT NEXT (Code + Build, compile only):** `M6-CP3-CB165-P13-TRACE-SEGMENT-PIECES-HELPER`: `.agents/Directional/Architecture_M6_CP3_CB165_P13_Trace_Segment_Pieces_Helper_Exact.diff`, SHA-256 `dd9fdbf514f0ba6a3d4c7413e7412c801c7ae18e4b29f2d98d1919137d49e49b`, 217 lines, `13 0` EmbeddedGraphTopology.h, `59 0` EmbeddedGraphTopology.cpp, `112 0` FieldAlignedCurveNetworkTests.cpp. Precheck `git diff --quiet 4d8ddfee7dfa8dc651406cfb1de816027c859df2 HEAD -- src include tests`. Routes: `M6-CP3-PLAN-P13-SLIDE-CONTACT-HELPERS-STOP` / `M6-CP3-CB165A-P13-TRACE-SEGMENT-PIECES-HELPER-ORCH`.
+- [ ] (Test + Benchmark) `M6-CP3-TB140-P13-TRACE-SEGMENT-PIECES-HELPER-FULL-GATE-EXEC`: manifest `.agents/Directional/gates/Architecture_M6_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Case_Manifest.tsv` (`390fe1bd2c2e5f6d490ed21dac52219acefd9646081d361d2d4e174dfdedbf52`, 959 rows, membership 1,040). MATCH: rows 1–958 and the census equal TB139 under N1–N4 only (slideProposal lines byte-identical); row 959 PASS.
+- [ ] (Review) TB140-REV: freezes the CB166 patch and its TB criteria (RA-261 S4.1).
+- [ ] Then: CB166 embedded-graph paths and rays + TB → CB167 local chords + CB168 polylines + TB → CB169 piece position and `carrierLocus` (unwired) → CB170 carrier-contact wiring + TB (needs the vertex-overlap rule and a tie control; deletes the CB160 receipt).
+- [ ] Held: FC-6, terminal-cut outcome, row858 fix. Parked CB145. D11=A, D12=A unchanged; stable 66/17/49, debt 1, deferred 81; CP2 491/491; no promotion.
+
+## Historical checkpoint — RA-260: TB138 Review upheld; H4 opened; S5.3 defined; CB162–CB164 compile PASS; TB139 independent MATCH; CB165 next (2026-11-18 UTC)
 
 [RA-260](.agents/Directional/Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Full_Gate_Independent_Review_20261118.md#ra-260--adversarial-re-review-of-this-review-2026-11-18-utc) upholds the TB138 Review's MATCH, the narrow H3 closure and the CB162 authorization (source = CB161; CB162 → CB163 apply; hashes unchanged; boundary check passes locally). Findings:
 - **H4 (S1).** No geometry consumer reads `edgeTransitEntry`. A grazing slide is published as entry → slide end, which skips the slide start (`EmbeddedGraphTopology.cpp:258–305, 730–770, 1948, 2174`; `GlobalTopologyPlan.cpp:260, 349`; `SurfaceCutGraph.cpp:268`; polylines :94). Latent until O48 wiring; BunnyRandom has three such slides.
@@ -12,8 +27,8 @@ Turn sequence:
 - [x] **COMPLETE (Code + Build, compile only):** `M6-CP3-CB164-P13-SLIDE-PROPOSAL-RECEIPT`. [Compile record](.agents/Directional/Architecture_M6_CP3_CB164_P13_Slide_Proposal_Receipt_Code_Build_Record_20261118.md); source `4d8ddfee7dfa8dc651406cfb1de816027c859df2`, package `14440134091`; frozen +17 .cpp, eight targets, no runtime.
 - [x] **COMPLETE (Test + Benchmark, artifact only):** `M6-CP3-TB139-P13-SLIDE-CONTACT-HELPERS-FULL-GATE-EXEC`. [Execution report](.agents/Directional/Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Execution_Report_20261118.md): MATCH 959/959 prior rows under N1–N5; rows 957/958 PASS. Gate `14444439110` 957/958; census `14446181288` Cylinder PASS/288, BunnyRandom/Vase RED. All 68 other receipts unchanged; zero crossing lines; 48 seed/departure pairs, 3 vertex and 1,215 grazing receipts; all three predicted grazing witnesses present. No new regression or promotion. [Counts](.agents/Directional/evidence/Architecture_M6_CP3_TB139_P13_Slide_Proposal_Counts_20261118.tsv) (961 rows).
 - [x] **COMPLETE (independent Review):** `M6-CP3-TB139-P13-SLIDE-CONTACT-HELPERS-FULL-GATE-REV`. [Review](.agents/Directional/Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md): 959/959 prior rows MATCH, both controls PASS, H4 remains open.
-- [ ] **EXACT NEXT (Code + Build):** `M6-CP3-CB165-P13-TRACE-SEGMENT-PIECES-HELPER`. [Plan](.agents/Directional/Architecture_M6_CP3_CB165_P13_Trace_Segment_Pieces_Helper_Plan_20261118.md): unwired helper and focused test; compile only, no runtime or consumer wiring.
-- [ ] Then: CB166 consumer piece switch + TB → CB167 record/position fields (unwired) → CB168 carrier-contact wiring + TB (deletes the CB160 receipt).
+- [x] ~~EXACT NEXT~~ superseded by RA-261: the CB165 prose plan is replaced by an exact diff (see CURRENT).
+- [x] ~~Then~~ superseded by the RA-261 S4 split.
 - [ ] Held: FC-6, terminal-cut outcome, row858 fix. Parked CB145. D11=A, D12=A unchanged; stable 66/17/49, debt 1, deferred 81; CP2 491/491; no promotion.
 
 ## Historical checkpoint — TB138 independent MATCH; slide-arrival helper frozen (2026-11-18 UTC)

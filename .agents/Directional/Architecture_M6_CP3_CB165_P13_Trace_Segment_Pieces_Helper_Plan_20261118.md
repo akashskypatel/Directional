@@ -1,5 +1,7 @@
 # CB165 — exact trace segment pieces helper (Code + Build plan)
 
+**Superseded by [RA-261 S2/S4](Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md#ra-261--adversarial-re-review-of-this-review-2026-11-18-utc):** CB165 is the exact diff `Architecture_M6_CP3_CB165_P13_Trace_Segment_Pieces_Helper_Exact.diff`. CB166 is split by consumer. This plan is historical.
+
 ## Situation
 
 Exact next `M6-CP3-CB165-P13-TRACE-SEGMENT-PIECES-HELPER` after completed TB139 Review. [Independent review](Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md) establishes the CB164 runtime baseline. [RA-260 S2.1](Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Full_Gate_Independent_Review_20261118.md#s2--ra-257-s53-defined-a-contact-locus-inside-a-slide-or-at-an-entry) owns the decomposition. H4 is open; CB165 introduces only the unwired helper and focused test. Do not start CB166 or wire carrier contacts. Semantic authority CB164 `4d8ddfee7dfa8dc651406cfb1de816027c859df2`. Verify no product drift before implementation.

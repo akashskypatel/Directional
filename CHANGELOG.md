@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — RA-261 re-review of the TB139 Review
+
+- [RA-261](.agents/Directional/Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md#ra-261--adversarial-re-review-of-this-review-2026-11-18-utc): MATCH upheld. The CB165 prose plan is replaced by an exact diff (SHA-256 `dd9fdbf5…`, +13/+59/+112). TB140 is frozen (manifest `390fe1bd…`, 959 rows). The H4 switch is split into CB166 (embedded-graph paths and rays), CB167 (local chords), CB168 (polylines), CB169 (unwired position and locus fields) and CB170 (wiring).
+- Corrects RA-260: H4 is live on 20 sphere rows, two of the listed sites are not H4 sites, and the vertex-exclusion wording was wrong.
+
 ## 2026-11-18 UTC — TB139 independent Review (MATCH upheld)
 
 - [Review](.agents/Directional/Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md): 959/959 prior rows match, rows 957/958 PASS, 3,862 checksums, 68 receipts and 1,738 region records unchanged; seed/departure identity and grazing predictions verified. H4, O47/O48 remain open. Stable 66/17/49, debt 1, deferred 81; CP2 491/491. No product runtime or promotion.
