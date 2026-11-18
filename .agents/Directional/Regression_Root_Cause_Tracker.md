@@ -1,6 +1,6 @@
 ## 2026-11-18 — RA-256 re-review of the TB134 Review (non-stable)
 
-[RA-256](Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Independent_Review_20261118.md#ra-256--adversarial-re-review-of-this-review-2026-11-18-utc): TB134 MATCH upheld. **O48 refined:** the shared interval is [X43, v94] on (94,210), certified by a scaling about v210 (k=0.0886278847694713); the first shared locus is X43 in either arrival order. Root precondition: `FieldAlignedCandidateTraceSegment` drops the slide start, so neither the producer classifier nor the consumer can see it. CB158 records it. H3 (classifier recompute vs traced exit on vertex-slide segments) is unverified. No new stable event; 66/17/49, debt 1, deferred 81.
+[RA-256](Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Independent_Review_20261118.md#ra-256--adversarial-re-review-of-this-review-2026-11-18-utc): TB134 MATCH upheld. **O48 refined:** the shared interval is [X43, v94] on (94,210), certified by a scaling about v210 (k=0.0886278847694713); the first shared locus is X43 in either arrival order. Root precondition: `FieldAlignedCandidateTraceSegment` drops the slide start, so neither the producer classifier nor the consumer can see it. CB158 records it (compile PASS, [record](Architecture_M6_CP3_CB158_P13_Edge_Transit_Entry_Record_Code_Build_Record_20261118.md)); TB135 measurement pending. H3 (classifier recompute vs traced exit on vertex-slide segments) is unverified. No new stable event; 66/17/49, debt 1, deferred 81.
 
 ## 2026-11-18 — TB134 independent Review MATCH (non-stable)
 

@@ -1,4 +1,4 @@
-## CURRENT — RA-256: onset certified, slide start recorded next (2026-11-18 UTC)
+## CURRENT — RA-256: onset certified, slide start compiled (2026-11-18 UTC)
 
 [RA-256](.agents/Directional/Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Independent_Review_20261118.md#ra-256--adversarial-re-review-of-this-review-2026-11-18-utc) upholds the TB134 Review's MATCH and its correction of RA-255's vertex-onset claim. It finds three defects:
 - **Onset (S1).** The receipt settles it. Trace 15 is trace 43 scaled about v210 by k=0.0886278847694713, which equals trace 15's entry on (210,290). So X43 is nearer v94, the shared interval is [X43, v94], and the first shared locus is X43 in either arrival order. Trace 43 arrived first, so trace 15 should end at X43.
@@ -7,11 +7,11 @@
 
 Turn sequence:
 - [x] RA-256 re-review (Review): CB158 exact diff and TB135 criteria frozen.
-- [ ] **EXACT NEXT (Code + Build, compile only):** `M6-CP3-CB158-P13-EDGE-TRANSIT-ENTRY-RECORD`.
+- [x] **COMPLETE (Code + Build, compile only):** `M6-CP3-CB158-P13-EDGE-TRANSIT-ENTRY-RECORD`. [Record](.agents/Directional/Architecture_M6_CP3_CB158_P13_Edge_Transit_Entry_Record_Code_Build_Record_20261118.md); source `5bdc7c092a8935faeab75cf7a739928fd8ddca46`, package `14397197316`, SHA-256 `9282956b0115eb9455b0504e0b32bb6d9200b465313fcb30392954af02310bda`. Eight GMP/GMPXX targets, 28/28 checksums, four frozen inputs, no runtime.
   - Exact diff `.agents/Directional/Architecture_M6_CP3_CB158_P13_Edge_Transit_Entry_Record_Exact.diff`: SHA-256 `17dd9ac558f9d2e24bd4d5010262b9d3092c9414c8d9d9bfbbbfa3b4ef12822f`, 51 lines. Numstat: `5 0` header, `4 0` EmbeddedGraphTopology.cpp, `2 0` SurfaceCellTracing.cpp.
   - Precheck `git diff --quiet a8d1cc9603f9a556564f0b741692217ec6a791ef HEAD -- src include tests`. Eight RA-245 GMP/GMPXX targets; runtimeExecution=false.
   - Mismatch route `M6-CP3-PLAN-P13-EDGE-TRANSIT-ENTRY-RECEIPT-STOP`; infrastructure route `M6-CP3-CB158A-P13-EDGE-TRANSIT-ENTRY-RECEIPT-ORCH`.
-- [ ] **Then (Test + Benchmark):** `M6-CP3-TB135-P13-EDGE-TRANSIT-ENTRY-FULL-GATE-EXEC`. Same four inputs; comparator TB134 gate `14390702505` / census `14391390784`; N1–N4 + N6; MATCH per RA-256 S5 criteria 1–6, including (1−t15)/(1−t43)=0.0886278847694713 ±1e-12 relative.
+- [ ] **EXACT NEXT (Test + Benchmark):** `M6-CP3-TB135-P13-EDGE-TRANSIT-ENTRY-FULL-GATE-EXEC`. Use package `14397197316` only. Same four inputs; comparator TB134 gate `14390702505` / census `14391390784`; N1–N4 + N6; MATCH per RA-256 S5 criteria 1–6, including (1−t15)/(1−t43)=0.0886278847694713 ±1e-12 relative.
 - [ ] (Review, parallel) `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` per RA-255 S2 + RA-256 S3: shared edge-locus cut representation, including slide-piece ordering; freeze helpers CB + wiring CB.
 - [ ] (Review) `M6-CP3-TB135-P13-EDGE-TRANSIT-ENTRY-FULL-GATE-REV`, then `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (co-directional slide overlap; check H3; helpers CB then wiring CB).
 - [ ] Held: FC-6, terminal-cut outcome, row858 fix. Parked CB145. D11=A, D12=A unchanged; stable 66/17/49, debt 1, deferred 81; CP2 491/491; no promotion.

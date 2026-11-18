@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — CB158 edge-transit entry record (compile only)
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB158_P13_Edge_Transit_Entry_Record_Code_Build_Record_20261118.md): exact +11/-0 RA-256 delta; records and prints the slide start without changing the digest or decisions. Source `5bdc7c092a8935faeab75cf7a739928fd8ddca46`, [compile run 44234339459](https://github.com/akashskypatel/Directional/actions/runs/44234339459), package `14397197316` SHA-256 `9282956b0115eb9455b0504e0b32bb6d9200b465313fcb30392954af02310bda`. Eight GMP/GMPXX targets, 28/28 checksums, 371/371 source files, four frozen inputs unchanged; no runtime.
+- Next separately `M6-CP3-TB135-P13-EDGE-TRANSIT-ENTRY-FULL-GATE-EXEC` per RA-256 S5. TB134 remains measured authority; stable 66/17/49, debt 1, deferred 81, CP2 491/491. No acceptance or promotion.
+
 ## 2026-11-18 UTC — RA-256 re-review of the TB134 Review
 
 - [RA-256](.agents/Directional/Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Independent_Review_20261118.md#ra-256--adversarial-re-review-of-this-review-2026-11-18-utc): MATCH upheld. Overlap onset certified at X43 on (94,210) by a scaling about v210. The segment record drops the slide start (`decision.exitPoint`). Exact next `M6-CP3-CB158-P13-EDGE-TRANSIT-ENTRY-RECORD` (record + ` slide=` receipt, +11/-0), then TB135 with the ratio prediction. DEFNs remain on the Review track.
