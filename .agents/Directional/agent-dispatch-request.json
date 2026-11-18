@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb164-compile-v1",
-  "operation": "compile",
-  "source_sha": "4d8ddfee7dfa8dc651406cfb1de816027c859df2",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb164-compile",
-  "mailbox_key": "m6-cp3-cb164-compile-v1"
+  "request_id": "m6-cp3-cb164-closeout-docs-v1",
+  "operation": "drive_apply",
+  "file_id": "1EdYpGIQACmypkz2PhmPyjGp5bqboNQpa",
+  "patch_sha256": "fa1953d7446e77f037d725d3e1c2deb87d48bb45247e6d9e665db50aa7ff1395",
+  "base_sha": "a29493c9a0062ef1416c07b926ce139fe84aa2f2",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "Record CB164 verified compile and freeze TB139 handoff",
+  "mailbox_key": "m6-cp3-cb164-closeout-docs-v1",
+  "retention_days": 30
 }
