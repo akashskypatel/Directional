@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB136: 953/954, 956/956 existing cases independently MATCH plus unwired helper PASS; accepted prefix 491/491; Cylinder PASS, BunnyRandom binding RED, Vase completion RED; O45 consumer proxy narrowly closed; O47 open; sphere edge-endpoint definition parallel; BunnyRandom carrier/vertex overlap definition next; CP3 not accepted) · **Next:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB137: 954/955, 957/957 existing cases independently MATCH and row 955 PASS; prefix 491/491; Cylinder PASS/288, BunnyRandom binding RED, Vase completion RED; O45 narrowly closed; C5/O47 and O48 open; CB161 classifier switch frozen; overlap and sphere definitions separate; CP3 not accepted) · **Next:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
