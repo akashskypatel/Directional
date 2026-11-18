@@ -2094,3 +2094,10 @@ By user instruction, the 231 remaining standalone `Architecture_M6*` Review, def
 | Original file | Lines | Verdict/role | Retained home |
 |---|---:|---|---|
 | `Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Execution_Report_20261118.md` | 62 | Superseded TB133 execution; MATCH, comparator of TB134 | [Volume D3](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb133_p13_same_face_segment_pair_receipt_full_gate_execution_report_20261118md) |
+
+
+## TB138 Review folded execution record (2026-11-18)
+
+| Original file | Lines | Verdict/role | Retained home |
+|---|---:|---|---|
+| `Architecture_M6_CP3_TB137_P13_Departure_Chord_Crossing_Receipt_Full_Gate_Execution_Report_20261118.md` | 64 | TB137 execution MATCH, superseded by TB138; original SHA-256 `4d99714ac07fc75b8e8d1da5abb0c6d1145c7355f324151325f45e2ffb22e30a` | [Volume D3](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb137_p13_departure_chord_crossing_receipt_full_gate_execution_report_20261118md) |

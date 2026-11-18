@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — TB138 independent Review (MATCH upheld; H3 narrowly closed)
+
+- [Independent review](.agents/Directional/Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Full_Gate_Independent_Review_20261118.md): 3,856 exact result checksums; 958/958 prior rows MATCH under N1–N4; row 956 PASS; independent rational ordinary/departure/grazing checks and six comparison controls. All 68 receipts, 48 departure lines and 491/491 prefix retained. Gate 955/956; census PASS/RED/RED unchanged. H3 departure-chord defect closed narrowly. No product runtime, source, test or selector mutation; no CP3 promotion.
+- Exact next `M6-CP3-CB162-P13-SLIDE-ARRIVAL-HELPER` per RA-259 S4 (compile only, unwired). O47/O48 and S5.3 remain open. Stable 66/17/49, debt 1, deferred 81. Folded historical TB137 execution record verbatim into Volume D3 and repaired living references.
+
 ## 2026-11-18 UTC — TB138 departure-chord classifier switch full gate (MATCH)
 
 - [Execution report](.agents/Directional/Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Full_Gate_Execution_Report_20261118.md): 958/958 prior rows match TB137 under N1–N4 only; row 956 PASS. Gate `14425931505` 955/956 and census `14425229608` Cylinder PASS/288, BunnyRandom/Vase RED. All 68 other receipts identical; zero crossing lines, 48 departures (BunnyRandom). [Per-row counts](.agents/Directional/evidence/Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Counts_20261118.tsv), SHA-256 `4aa9876fb42339b8f70ef25271319a15fe581995d0285fc6b0867359f43acd9a`. No rebuild, repair, product/test/fixture change or promotion.
@@ -20,7 +25,7 @@
 
 ## 2026-11-18 UTC — TB137 departure-chord crossing receipt full gate (MATCH)
 
-- [Execution report](.agents/Directional/Architecture_M6_CP3_TB137_P13_Departure_Chord_Crossing_Receipt_Full_Gate_Execution_Report_20261118.md): 957/957 existing cases match TB136 under RA-258 S4 (N1–N5), row 955 PASS; gate `14418131624` 954/955, census `14416913949` Cylinder PASS/288, BunnyRandom/Vase RED. All 68 other receipts unchanged; zero departure-chord crossing lines, 48 edge-port departure lines in BunnyRandom. [Per-row table](.agents/Directional/evidence/Architecture_M6_CP3_TB137_P13_Departure_Chord_Crossing_Receipt_Counts_20261118.tsv), SHA-256 `404e2ccca0ae829f2545e4092343e3d7cda6fdb2204c5b908ebaef1785b4748c`. No rebuild, repair, source/test/fixture change, stable regression or promotion.
+- [Execution report](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb137_p13_departure_chord_crossing_receipt_full_gate_execution_report_20261118md): 957/957 existing cases match TB136 under RA-258 S4 (N1–N5), row 955 PASS; gate `14418131624` 954/955, census `14416913949` Cylinder PASS/288, BunnyRandom/Vase RED. All 68 other receipts unchanged; zero departure-chord crossing lines, 48 edge-port departure lines in BunnyRandom. [Per-row table](.agents/Directional/evidence/Architecture_M6_CP3_TB137_P13_Departure_Chord_Crossing_Receipt_Counts_20261118.tsv), SHA-256 `404e2ccca0ae829f2545e4092343e3d7cda6fdb2204c5b908ebaef1785b4748c`. No rebuild, repair, source/test/fixture change, stable regression or promotion.
 - Next separately `M6-CP3-TB137-P13-DEPARTURE-CHORD-CROSSING-RECEIPT-FULL-GATE-REV` per RA-258 S4–S6. Review must rederive the zero-line result before freezing CB161. Stable 66/17/49, debt 1, deferred 81; CP2 491/491.
 
 ## 2026-11-18 UTC — CB160 departure-chord crossing receipt (compile only)
