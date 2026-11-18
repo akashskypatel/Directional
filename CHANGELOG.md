@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — TB134 independent Review (MATCH upheld)
+
+- [Review](.agents/Directional/Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Independent_Review_20261118.md): 956/956, 491/491, 952/953 gate; same-direction carrier slide overlap on (94,210) precedes first equal face entry v94; 43 earlier by conservative arc-length bounds. Exact overlap onset parameter open. O48 remains open; stable 66/17/49, debt1, deferred81. No promotion or source/runtime edits.
+- Exact successor `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (definition only). Sphere O47 definition parallel; D12 unchanged.
+
 ## 2026-11-18 UTC — TB134 trace-path receipt full gate (MATCH)
 
 - [Execution report](.agents/Directional/Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Execution_Report_20261118.md): CB157 package `14389450751`, source `a8d1cc9603f9a556564f0b741692217ec6a791ef`. Gate `14390702505` 952/953; census `14391390784` Cylinder PASS/288, BunnyRandom/Vase RED; 956/956 MATCH under RA-255 S5; 66 sphere lines across 19 rows and two BunnyRandom lines, two ` path=` fields per receipt. Both postflight valid; accepted prefix 491/491. No new regression, geometry acceptance or promotion.
@@ -19,7 +24,7 @@
 
 ## 2026-11-18 UTC — TB133 same-face segment-pair receipt full gate (MATCH)
 
-- [Execution report](.agents/Directional/Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Execution_Report_20261118.md): CB156 package `14369087138`, source `779fe661e260f506592c64791fbe655734029478`. Gate `14381507340` 952/953; census `14383400603` Cylinder PASS/288, BunnyRandom/Vase RED; 956/956 MATCH under RA-254 S4, 66 sphere and two BunnyRandom receipts with `sameFacePairs=`. Both postflight valid; 491/491 prefix unchanged. All ten comparator negative controls pass; no new regression, geometry acceptance or promotion.
+- [Execution report](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb133_p13_same_face_segment_pair_receipt_full_gate_execution_report_20261118md): CB156 package `14369087138`, source `779fe661e260f506592c64791fbe655734029478`. Gate `14381507340` 952/953; census `14383400603` Cylinder PASS/288, BunnyRandom/Vase RED; 956/956 MATCH under RA-254 S4, 66 sphere and two BunnyRandom receipts with `sameFacePairs=`. Both postflight valid; 491/491 prefix unchanged. All ten comparator negative controls pass; no new regression, geometry acceptance or promotion.
 - Next separately `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-REV`. Classify the two contact sites independently and freeze at most one repair DEFN per site. Stable 66/17/49, debt 1, deferred 81; CP2 491/491.
 
 ## 2026-11-17 UTC — CB156 same-face segment-pair receipts (compile only)

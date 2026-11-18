@@ -732,3 +732,5 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - **A TB runs the full current gate even when its CB touches no gate binary.** A CLI- or GUI-only CB
   still needs the gate run (`Turn_Cadence.md` §2). Build the gate targets in the same tree as the extra
   targets and stage them as the standard package, so one TB covers both (RA-187).
+
+- **First equal face entry is not necessarily first geometric overlap (TB134).** Include edge-slide pieces before a regular vertex. Bound runtime arrival using source-backed path pieces and the actual priority policy; unknown slide starts can be enclosed by triangle inequality and convex endpoint bounds. Disjoint bounds prove order without inferring it from trace IDs. Exact onset identity still requires the exact carrier entry, not a decimal display.

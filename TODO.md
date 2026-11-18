@@ -1,9 +1,9 @@
-## CURRENT — RA-255: TB133 MATCH upheld; sphere through-crossing proven; BunnyRandom onset measurement (2026-11-18 UTC)
+## CURRENT — TB134 independent MATCH; common carrier overlap and arrival order (2026-11-18 UTC)
 
 [RA-255](.agents/Directional/Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md#ra-255--adversarial-re-review-of-this-review-2026-11-18-utc):
 - **Sphere.** The TB133 signs plus consistent chart orientation give an alternating four-ray order. Traces 4/6 cross at P on edge (0,2) (Haiku re-derived this).
 - **Sphere DEFN scope.** Reuse the existing crossing seniority rule and state its inconclusive outcome. Detect at edge transport by an exact (edge, parameter) key. O47 reuses `TraceCutPosition{k, nullopt}`.
-- **BunnyRandom.** The traces are distinct parallel lines until vertex 94, then identical. "Remeasure after sphere repair" is withdrawn; O48 (vertex locus) is opened.
+- **BunnyRandom.** Distinct earlier parallel face segments lead to a shared co-directional slide interval on (94,210) before v94; 43 earlier. The first equal face entry is v94, not the exact carrier onset. "Remeasure after sphere repair" is withdrawn; O48 (vertex locus) is opened.
 
 Turn sequence:
 - [x] RA-255 re-review (Review): CB157 exact diff and TB134 criteria frozen.
@@ -13,7 +13,8 @@ Turn sequence:
   - Mismatch route `M6-CP3-PLAN-P13-TRACE-PATH-RECEIPT-STOP`; infrastructure route `M6-CP3-CB157A-P13-TRACE-PATH-RECEIPT-ORCH`.
 - [x] **COMPLETE (Test + Benchmark, artifact only):** `M6-CP3-TB134-P13-TRACE-PATH-RECEIPT-FULL-GATE-EXEC`. [Execution report](.agents/Directional/Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Execution_Report_20261118.md); Gate `14390702505` 952/953; census `14391390784` Cylinder PASS/288, BunnyRandom/Vase RED; 956/956 MATCH under RA-255 S5; 66 sphere lines across 19 rows and two BunnyRandom lines, two ` path=` fields per receipt. Both postflight valid; accepted prefix 491/491.
 - [ ] (Review, parallel) `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` per RA-255 S2: freeze a helpers CB (alternation predicate, edge-key coincidence, exact unit tests) and a stacked wiring CB with TB criteria; define the face/edge/vertex locus representations.
-- [ ] (Review) `M6-CP3-TB134-P13-TRACE-PATH-RECEIPT-FULL-GATE-REV` → `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (co-directional, vertex 94, O48; D12 unchanged).
+- [x] **COMPLETE (independent Review):** `M6-CP3-TB134-P13-TRACE-PATH-RECEIPT-FULL-GATE-REV`. [Review](.agents/Directional/Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Independent_Review_20261118.md); 956/956 MATCH, first equal face entry v94, same-direction overlap starts on (94,210), 43 earlier by bounded arc length.
+- [ ] **EXACT NEXT (Review, definition only):** `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` — exact carrier interval and vertex incidence, onset parameter unresolved; D12 unchanged, no implementation.
 - [ ] Held: FC-6, terminal-cut outcome, row858 fix (after sphere repair). Parked CB145. Carried C5/O42/O43/O46/O47/O48, H2, FC-1/FC-4, middle-piece witness; stable 66/17/49, debt 1, deferred 81; CP2 491/491; no promotion.
 
 ## Historical checkpoint — TB133 independent Review MATCH; sphere edge-endpoint definition next (2026-11-18 UTC)
@@ -25,10 +26,10 @@ Turn sequence:
 - [x] **COMPLETE (Code + Build, compile only):** `M6-CP3-CB156-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT`. [Compile record](.agents/Directional/Architecture_M6_CP3_CB156_P13_Same_Face_Segment_Pair_Receipt_Code_Build_Record_20261117.md); source `779fe661e260f506592c64791fbe655734029478`, package `14369087138`, eight GMP/GMPXX targets, `runtimeExecution=false`.
   - Exact diff `.agents/Directional/Architecture_M6_CP3_CB156_P13_Same_Face_Segment_Pair_Receipt_Exact.diff`: SHA-256 `1246f12b3cc22f62aa70ea503cf14e1f8438b160995e85225ba26c8fb7bfc205`, 90 lines; numstat `65 0 src/geometry/EmbeddedGraphTopology.cpp`.
   - Precheck `git diff --quiet cce5be20ea7237f59f3c0acca25a4ba57813644e HEAD -- src include tests`; eight RA-245 GMP/GMPXX targets; runtimeExecution=false. Mismatch `M6-CP3-PLAN-P13-SEGMENT-PAIR-RECEIPT-STOP`; infrastructure `M6-CP3-CB156A-P13-SEGMENT-PAIR-RECEIPT-ORCH`.
-- [x] **COMPLETE (Test + Benchmark, artifact only):** `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-EXEC`. [Execution report](.agents/Directional/Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Execution_Report_20261118.md); Gate `14381507340` 952/953; census `14383400603` Cylinder PASS/288, BunnyRandom/Vase RED; 956/956 MATCH under RA-254 S4, 66 sphere and two BunnyRandom receipts with `sameFacePairs=`. Both postflight valid; 491/491 prefix unchanged.
+- [x] **COMPLETE (Test + Benchmark, artifact only):** `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-EXEC`. [Execution report](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb133_p13_same_face_segment_pair_receipt_full_gate_execution_report_20261118md); Gate `14381507340` 952/953; census `14383400603` Cylinder PASS/288, BunnyRandom/Vase RED; 956/956 MATCH under RA-254 S4, 66 sphere and two BunnyRandom receipts with `sameFacePairs=`. Both postflight valid; 491/491 prefix unchanged.
 - [x] **COMPLETE (independent Review):** `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-REV`. [Review](.agents/Directional/Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md): 952/953 gate, 491/491 accepted prefix; sphere transverse endpoint and BunnyRandom overlap.
 - [ ] **Moved to the Review track in parallel with CB157 by RA-255 (definition only):** `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` — C5/O47; exact incidence and owner, guard/arrival/role proof and falsifiers per Review. No implementation or runtime.
-- [ ] Held: `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` co-directional case for BunnyRandom, remeasure after sphere correction; do not merge nodes alone.
+- [ ] Historical hold superseded by RA-255 and TB134-REV; do not merge nodes alone.
 - [ ] Held: FC-6, terminal-cut outcome, row858 face-witness fix (after sphere repair). Parked CB145. Carried items as below.
 
 ## Historical checkpoint — TB132 independent Review MATCH upheld; O45 narrow closure (2026-11-17 UTC)
