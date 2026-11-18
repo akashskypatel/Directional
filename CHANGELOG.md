@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — TB138 departure-chord classifier switch full gate (MATCH)
+
+- [Execution report](.agents/Directional/Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Full_Gate_Execution_Report_20261118.md): 958/958 prior rows match TB137 under N1–N4 only; row 956 PASS. Gate `14425931505` 955/956 and census `14425229608` Cylinder PASS/288, BunnyRandom/Vase RED. All 68 other receipts identical; zero crossing lines, 48 departures (BunnyRandom). [Per-row counts](.agents/Directional/evidence/Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Counts_20261118.tsv), SHA-256 `4aa9876fb42339b8f70ef25271319a15fe581995d0285fc6b0867359f43acd9a`. No rebuild, repair, product/test/fixture change or promotion.
+- Exact next `M6-CP3-TB138-P13-DEPARTURE-CHORD-CLASSIFIER-SWITCH-FULL-GATE-REV`. Independent Review gates H3 closure and CB162. Stable 66/17/49, debt 1, deferred 81; CP2 491/491.
+
 ## 2026-11-18 UTC — CB161 departure-chord classifier switch (compile only)
 
 - [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB161_P13_Departure_Chord_Classifier_Switch_Code_Build_Record_20261118.md): frozen +67/-0 patch, source `f14761715004d7ddc27e032698f6540ae1a9b0c4`, [compile run 44296566460](https://github.com/akashskypatel/Directional/actions/runs/44296566460), package `14424780973`, SHA-256 `b55fa59e6c93abd4d40adde92547b309998e03803a3dc95db37feb254346c058`. Eight GMP/GMPXX targets, 28/28 checksums, 371/371 product/test files and four frozen inputs; no runtime.
