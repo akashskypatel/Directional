@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — CB161 departure-chord classifier switch (compile only)
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB161_P13_Departure_Chord_Classifier_Switch_Code_Build_Record_20261118.md): frozen +67/-0 patch, source `f14761715004d7ddc27e032698f6540ae1a9b0c4`, [compile run 44296566460](https://github.com/akashskypatel/Directional/actions/runs/44296566460), package `14424780973`, SHA-256 `b55fa59e6c93abd4d40adde92547b309998e03803a3dc95db37feb254346c058`. Eight GMP/GMPXX targets, 28/28 checksums, 371/371 product/test files and four frozen inputs; no runtime.
+- Next separately `M6-CP3-TB138-P13-DEPARTURE-CHORD-CLASSIFIER-SWITCH-FULL-GATE-EXEC` per TB137 Review and RA-259. Stable 66/17/49, debt 1, deferred 81; CP2 491/491; no promotion.
+
 ## 2026-11-18 UTC — RA-259 re-review of the TB137 Review
 
 - [RA-259](.agents/Directional/Architecture_M6_CP3_TB137_P13_Departure_Chord_Crossing_Receipt_Full_Gate_Independent_Review_20261118.md#ra-259--adversarial-re-review-of-this-review-2026-11-18-utc): MATCH upheld; CB161 accepted after a Haiku re-derivation of the test geometry. Slide contact defined (RA-257 S5.2 closed, S5.4 folded in). Frozen: CB162 (`field_aligned_arrival_at_slide_parameter`), CB163 (`first_field_aligned_carrier_contact`), and the TB139 manifest (rows 957/958). The CB160 receipt is scheduled for deletion in the wiring CB.
