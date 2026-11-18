@@ -1,6 +1,6 @@
-## 2026-11-18 — TB140 independent review (in progress)
+## 2026-11-18 — TB140 independent review (evidence MATCH; H4 design stop, non-stable)
 
-[Partial review](Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md): 961/961 prior rows MATCH, 959 PASS control, 491/491 prefix, no new stable event. CB166 recursive helper dependency and two incomplete synthetic transit setups identified; candidate plan not frozen. H4 remains open; no promotion. Stable 66/17/49, debt1, deferred81.
+[TB140 Review](Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md): 961/961 prior rows MATCH, row959 PASS, prefix491/491, no new stable event. **H4 scope contradiction:** candidate CB166 paths/rays do not satisfy GlobalTopologyPlan:2683–2706 (size and face-only support) and whole-segment chord/side semantics in GlobalTopologyPlan:1211–1345 and SurfaceCutGraph:535–628. Falsifier: canonical grazing arc two pieces/one face; canonical departure one edge piece/no interior split; correct paths must pass independent candidate validation while tampered support/interval/side fails. Owner: current TB140-REV, pending amended exact-piece ownership contract and scope decision. Prohibit weakening validation, treating proposal counts as commits, changing traversal identity to fit a piece count, or applying withdrawn candidate. H4 remains open; stable 66/17/49, debt1, deferred81; no promotion.
 
 ## 2026-11-18 — TB140 trace-segment-pieces helper full gate MATCH (non-stable)
 

@@ -1,6 +1,6 @@
-## 2026-11-18 UTC — TB140 independent review (partial; evidence MATCH)
+## 2026-11-18 UTC — TB140 independent review (evidence MATCH; design stop)
 
-- [Partial review](.agents/Directional/Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md): 961/961 prior rows MATCH; row959 PASS; accepted prefix491/491; no new stable event or promotion. Candidate CB166 plan not frozen; same canonical review remains in progress.
+- [TB140 Review](.agents/Directional/Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md): 961/961 prior rows MATCH; row959 PASS; accepted prefix491/491; stable accounting unchanged. Candidate CB166 withdrawn: embedded-only path change conflicts with mandatory path validation and cut/region chord ownership. RA-261 S4.1 suspended pending coordinated exact-piece contract decision. Same canonical review held; no successor, code, runtime or promotion.
 
 ## 2026-11-18 UTC — TB140 trace-segment-pieces helper full gate (execution MATCH)
 
