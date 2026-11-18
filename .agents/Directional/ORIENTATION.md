@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-18, RA-260 re-review of `M6-CP3-TB138-P13-DEPARTURE-CHORD-CLASSIFIER-SWITCH-FULL-GATE-REV`):** [RA-260](Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Full_Gate_Independent_Review_20261118.md#ra-260--adversarial-re-review-of-this-review-2026-11-18-utc) upholds the TB138 Review's MATCH (958/958, row 956 PASS) and the narrow H3 closure. It opens H4 (slides are published as a chord that skips the slide start), defines RA-257 S5.3 and freezes CB164 plus the TB139 re-freeze. Exact next: CB162.
+**Current currency (2026-11-18, RA-260 re-review of `M6-CP3-TB138-P13-DEPARTURE-CHORD-CLASSIFIER-SWITCH-FULL-GATE-REV`):** [RA-260](Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Full_Gate_Independent_Review_20261118.md#ra-260--adversarial-re-review-of-this-review-2026-11-18-utc) upholds the TB138 Review's MATCH (958/958, row 956 PASS) and the narrow H3 closure. It opens H4 (slides are published as a chord that skips the slide start), defines RA-257 S5.3 and freezes CB164 plus the TB139 re-freeze. CB162 compile PASS (unwired). Exact next: CB163.
 
 ## 1. What the project is
 
@@ -45,7 +45,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB138 955/956 (membership 1,037); 958/958 prior rows independent MATCH and row 956 PASS. Cylinder PASS / BunnyRandom overlap RED / Vase completion RED. H3 narrowly closed; C5/O47 and O48 open. CB162 frozen, no CP3/selector497 promotion. [Review](Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Full_Gate_Independent_Review_20261118.md). |
+| **M6-CP3 — active** | TB138 955/956 (membership 1,037); 958/958 prior rows independent MATCH and row 956 PASS. Cylinder PASS / BunnyRandom overlap RED / Vase completion RED. H3 narrowly closed; C5/O47 and O48 open. CB162 compile PASS (unwired), CB163 frozen; no CP3/selector497 promotion. [Review](Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Full_Gate_Independent_Review_20261118.md). |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -103,7 +103,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-- **Current priority:** [RA-260 S2–S4](Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Full_Gate_Independent_Review_20261118.md#ra-260--adversarial-re-review-of-this-review-2026-11-18-utc): CB162 → CB163 → CB164 (slide-proposal receipt) → TB139 (N5, seed identity, grazing prediction) → TB139-REV, which freezes CB165/CB166 (the piece switch that closes H4) → CB167/CB168 (carrier-contact wiring for O48/O47). RA-259 S3 owns the contact rule.
+- **Current priority:** [RA-260 S2–S4](Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Full_Gate_Independent_Review_20261118.md#ra-260--adversarial-re-review-of-this-review-2026-11-18-utc): CB162 complete (compile only) → CB163 → CB164 (slide-proposal receipt) → TB139 (N5, seed identity, grazing prediction) → TB139-REV, which freezes CB165/CB166 (the piece switch that closes H4) → CB167/CB168 (carrier-contact wiring for O48/O47). RA-259 S3 owns the contact rule.
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).

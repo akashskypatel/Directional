@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB138: 955/956, 958/958 prior rows independently MATCH and row 956 PASS; prefix 491/491; Cylinder PASS/288, BunnyRandom binding RED, Vase completion RED; O45 narrowly closed; C5/O47 and O48 open; H3 narrowly closed; CB162 unwired helper frozen; slide-locus cut definition open; CP3 not accepted) · **Next:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB138: 955/956, 958/958 prior rows independently MATCH and row 956 PASS; prefix 491/491; Cylinder PASS/288, BunnyRandom binding RED, Vase completion RED; O45 narrowly closed; C5/O47 and O48 open; H3 narrowly closed; CB162 unwired helper compile PASS; slide-locus cut definition frozen, implementation open; CP3 not accepted) · **Next:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

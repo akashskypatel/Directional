@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — CB162 slide-arrival helper (compile only)
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB162_P13_Slide_Arrival_Helper_Code_Build_Record_20261118.md): frozen +109/-0 patch, source `9a17c743b94d6f2026c18756092105e2b8118b5a`, package `14433316382`, eight GMP/GMPXX targets; compile PASS, 28/28 manifest checks, 371/371 product/test files match, no runtime. The source remains unwired. The preceding documentation push failed non-fast-forward; its evidence is retained in the record.
+- Exact next `M6-CP3-CB163-P13-CARRIER-CONTACT-HELPER` (compile only) per RA-259 S4; CB164 and TB139 follow in separate turns. TB138 remains the runtime authority. Stable 66/17/49, debt 1, deferred 81; CP2 491/491. No CP3 promotion or change in regression accounting.
+
 ## 2026-11-18 UTC — RA-260 re-review of the TB138 Review
 
 - [RA-260](.agents/Directional/Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Full_Gate_Independent_Review_20261118.md#ra-260--adversarial-re-review-of-this-review-2026-11-18-utc): MATCH, the narrow H3 closure and CB162 are upheld. H4 opened. RA-257 S5.3 is defined (slide/face pieces, `TraceCutPosition` piece, `carrierLocus`, edge contact node), which discharges the EDGE-ENDPOINT-CONTACT DEFN.
