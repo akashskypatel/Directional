@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb162-compile-v1",
-  "operation": "compile",
-  "source_sha": "9a17c743b94d6f2026c18756092105e2b8118b5a",
-  "targets": [
-    "directional_benchmarks",
-    "directional_compiled_api_tests",
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_validation_tests"
-  ],
-  "artifact_prefix": "m6-cp3-cb162-compile",
-  "mailbox_key": "m6-cp3-cb162-compile-v1"
+  "request_id": "m6-cp3-cb162-resume-documentation-v1",
+  "operation": "drive_apply",
+  "file_id": "1IAejEqpSv41LjpWwRaqtfMZIGuB_Vabw",
+  "patch_sha256": "1c749a7d0144baf926e893987a89d990c0bd0cecc7e5d76808e164656b25d7d2",
+  "base_sha": "a343f9bc95d9b08201875ed55f456ab7c9a1379b",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "Record CB162 applied source and pending compile evidence",
+  "mailbox_key": "m6-cp3-cb162-resume-documentation-v1",
+  "retention_days": 30
 }
