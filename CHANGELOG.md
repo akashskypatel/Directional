@@ -1,3 +1,7 @@
+## 2026-11-18 UTC — TB133 independent review (MATCH upheld)
+
+- [Review](.agents/Directional/Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md): four exact artifacts, 956/956 independent comparison, 952/953 gate, 491/491 prefix, 14 receipt/log mutation controls. Sphere transverse shared endpoint; BunnyRandom co-directional overlap across three terminal segments. No stable loss or promotion. Next separately `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` (C5/O47); BunnyRandom overlap held. No project runtime, build or semantic change.
+
 ## 2026-11-18 UTC — TB133 same-face segment-pair receipt full gate (MATCH)
 
 - [Execution report](.agents/Directional/Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Execution_Report_20261118.md): CB156 package `14369087138`, source `779fe661e260f506592c64791fbe655734029478`. Gate `14381507340` 952/953; census `14383400603` Cylinder PASS/288, BunnyRandom/Vase RED; 956/956 MATCH under RA-254 S4, 66 sphere and two BunnyRandom receipts with `sameFacePairs=`. Both postflight valid; 491/491 prefix unchanged. All ten comparator negative controls pass; no new regression, geometry acceptance or promotion.
@@ -54,7 +58,7 @@
 
 ## 2026-11-17 UTC — TB130 carrier-proxy contact full gate (MATCH)
 
-- [Execution report](.agents/Directional/Architecture_M6_CP3_TB130_P13_Carrier_Proxy_Contact_Full_Gate_Execution_Report_20261117.md): immutable CB153 source `95f082b144f2bbe145d764cbf6b3d10d123a6514`, package `14338920906`. [Gate 44108374042](https://github.com/akashskypatel/Directional/actions/runs/44108374042), artifact `14338844806`, 953/953 PASS; [census 44108426938](https://github.com/akashskypatel/Directional/actions/runs/44108426938), artifact `14339793522`, Cylinder PASS 288, BunnyRandom/Vase RED unchanged. All S5 criteria pass, 68 old receipts unchanged, 34 valid diagnostic lines. Outgoing proxies in 19 PASS rows. No new stable regression, rebuild, mutation of semantic inputs or promotion.
+- [Execution report](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb130_p13_carrier_proxy_contact_full_gate_execution_report_20261117md): immutable CB153 source `95f082b144f2bbe145d764cbf6b3d10d123a6514`, package `14338920906`. [Gate 44108374042](https://github.com/akashskypatel/Directional/actions/runs/44108374042), artifact `14338844806`, 953/953 PASS; [census 44108426938](https://github.com/akashskypatel/Directional/actions/runs/44108426938), artifact `14339793522`, Cylinder PASS 288, BunnyRandom/Vase RED unchanged. All S5 criteria pass, 68 old receipts unchanged, 34 valid diagnostic lines. Outgoing proxies in 19 PASS rows. No new stable regression, rebuild, mutation of semantic inputs or promotion.
 - Exactly next separately `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH` (Review/definition, runtime-free). S6 off-by-default staging condition met; O45 remains open. Stable 66/17/49, debt1, deferred81, CP2 491/491.
 
 ## 2026-11-17 UTC — CB153 carrier-proxy contact dry run compiled

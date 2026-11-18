@@ -1,6 +1,6 @@
 # DEFN — carrier-contact node switch (RA-252, 2026-11-17 UTC)
 
-`M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH` — Review, runtime-free (`-fsyntax-only` and offline reads of published artifacts only). Authority: [TB130 report](Architecture_M6_CP3_TB130_P13_Carrier_Proxy_Contact_Full_Gate_Execution_Report_20261117.md) (MATCH), [RA-251](Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Independent_Review_20261117.md#ra-251--adversarial-re-review-of-this-review-2026-11-17-utc), [RA-248 FC contract](Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Definition_Review_20261117.md), DESIGN Amendment 13. Freezes **FC-7′**, the exact CB154 switch diff and the TB131 criteria. Implements nothing.
+`M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH` — Review, runtime-free (`-fsyntax-only` and offline reads of published artifacts only). Authority: [TB130 report](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb130_p13_carrier_proxy_contact_full_gate_execution_report_20261117md) (MATCH), [RA-251](Architecture_M6_CP3_TB129_P13_Terminal_Cut_Receipt_Full_Gate_Independent_Review_20261117.md#ra-251--adversarial-re-review-of-this-review-2026-11-17-utc), [RA-248 FC contract](Architecture_M6_CP3_DEFN_P13_Face_Contact_Node_Definition_Review_20261117.md), DESIGN Amendment 13. Freezes **FC-7′**, the exact CB154 switch diff and the TB131 criteria. Implements nothing.
 
 ## 1. Evidence re-opened
 

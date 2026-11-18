@@ -2080,3 +2080,10 @@ By user instruction, the 231 remaining standalone `Architecture_M6*` Review, def
 | Original file | Lines | Verdict/role | Retained home |
 |---|---:|---|---|
 | `Architecture_M6_CP3_TB132_P13_Cut_Binding_Conflict_Receipt_Continuation_20261117.md` | 30 | Superseded continuation; TB132 MATCH upheld | [Volume D3](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb132_p13_cut_binding_conflict_receipt_continuation_20261117md) |
+
+
+## TB133 Review folded execution record (2026-11-18)
+
+| Original file | Lines | Verdict/role | Retained home |
+|---|---:|---|---|
+| `Architecture_M6_CP3_TB130_P13_Carrier_Proxy_Contact_Full_Gate_Execution_Report_20261117.md` | 118 | Superseded TB130 execution MATCH; historical comparator of TB131 | [Volume D3](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb130_p13_carrier_proxy_contact_full_gate_execution_report_20261117md) |

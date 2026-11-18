@@ -1,6 +1,6 @@
-## CURRENT — TB133 MATCH; independent contact-kind Review next (2026-11-18 UTC)
+## CURRENT — TB133 independent Review MATCH; sphere edge-endpoint definition next (2026-11-18 UTC)
 
-[RA-254](.agents/Directional/Architecture_M6_CP3_TB132_P13_Cut_Binding_Conflict_Receipt_Full_Gate_Independent_Review_20261117.md#ra-254--adversarial-re-review-of-this-review-2026-11-17-utc): the producer drops both `EndpointTouch` and `CollinearOverlap` (`SurfaceCellTracing.cpp:4344`, `:4411`). The receipts cannot tell a transverse edge meeting from a head-on/co-directional overlap at either site, and the cures differ. EDGE-ENDPOINT DEFN withdrawn as immediate successor; RA-253 S3 "node identity" framing corrected. O45 narrow closure kept; O47 (edge-locus contact in consumer) opened.
+[TB133 Review](.agents/Directional/Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md): independent 956/956 MATCH; sphere transverse same-edge endpoint, BunnyRandom co-directional overlap across three exact terminal segments. O47 is open; O45 narrow closure kept.
 
 Turn sequence:
 - [x] RA-254 re-review (Review): CB156 exact diff and TB133 criteria frozen.
@@ -8,7 +8,9 @@ Turn sequence:
   - Exact diff `.agents/Directional/Architecture_M6_CP3_CB156_P13_Same_Face_Segment_Pair_Receipt_Exact.diff`: SHA-256 `1246f12b3cc22f62aa70ea503cf14e1f8438b160995e85225ba26c8fb7bfc205`, 90 lines; numstat `65 0 src/geometry/EmbeddedGraphTopology.cpp`.
   - Precheck `git diff --quiet cce5be20ea7237f59f3c0acca25a4ba57813644e HEAD -- src include tests`; eight RA-245 GMP/GMPXX targets; runtimeExecution=false. Mismatch `M6-CP3-PLAN-P13-SEGMENT-PAIR-RECEIPT-STOP`; infrastructure `M6-CP3-CB156A-P13-SEGMENT-PAIR-RECEIPT-ORCH`.
 - [x] **COMPLETE (Test + Benchmark, artifact only):** `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-EXEC`. [Execution report](.agents/Directional/Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Execution_Report_20261118.md); Gate `14381507340` 952/953; census `14383400603` Cylinder PASS/288, BunnyRandom/Vase RED; 956/956 MATCH under RA-254 S4, 66 sphere and two BunnyRandom receipts with `sameFacePairs=`. Both postflight valid; 491/491 prefix unchanged.
-- [ ] **NEXT (independent Review):** `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-REV`: classify each site (all-zero signs at the shared locus = overlap; else transverse) and freeze at most one DEFN per site: `…-OPPOSING-TRACE-OVERLAP`, `…-EDGE-ENDPOINT-CONTACT` (+O47) or `…-COINCIDENT-CONTACT-NODE-IDENTITY`.
+- [x] **COMPLETE (independent Review):** `M6-CP3-TB133-P13-SAME-FACE-SEGMENT-PAIR-RECEIPT-FULL-GATE-REV`. [Review](.agents/Directional/Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md): 952/953 gate, 491/491 accepted prefix; sphere transverse endpoint and BunnyRandom overlap.
+- [ ] **NEXT (definition only):** `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` — C5/O47; exact incidence and owner, guard/arrival/role proof and falsifiers per Review. No implementation or runtime.
+- [ ] Held: `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` co-directional case for BunnyRandom, remeasure after sphere correction; do not merge nodes alone.
 - [ ] Held: FC-6, terminal-cut outcome, row858 face-witness fix (after sphere repair). Parked CB145. Carried items as below.
 
 ## Historical checkpoint — TB132 independent Review MATCH upheld; O45 narrow closure (2026-11-17 UTC)
@@ -51,7 +53,7 @@ Turn sequence:
 - [x] **COMPLETE (Code + Build, compile only):** `M6-CP3-CB153-P13-CARRIER-PROXY-CONTACT-DRY-RUN`. [Record](.agents/Directional/Architecture_M6_CP3_CB153_P13_Carrier_Proxy_Contact_Dry_Run_Code_Build_Record_20261117.md). Source `95f082b144f2bbe145d764cbf6b3d10d123a6514`; package `14338920906`; eight GMP/GMPXX targets, no runtime.
   - Exact diff `.agents/Directional/Architecture_M6_CP3_CB153_P13_Carrier_Proxy_Contact_Dry_Run_Exact.diff`: SHA-256 `c8b9bc2115c1bc40da9520f473949b50d52ad5866782e58cf09d1acdd205e350`, 171 lines; numstat `102 2 src/geometry/EmbeddedGraphTopology.cpp`, `7 2 src/geometry/EmbeddedGraphTopology.h`.
   - Precheck: `git diff --quiet c45e9abe5085f39c1f5bcb149ec07f95b719177e HEAD -- src include tests`. Build the eight RA-245 targets; runtimeExecution=false.
-- [x] **COMPLETE (Test + Benchmark, MATCH):** `M6-CP3-TB130-P13-CARRIER-PROXY-CONTACT-FULL-GATE-EXEC`. [Report](.agents/Directional/Architecture_M6_CP3_TB130_P13_Carrier_Proxy_Contact_Full_Gate_Execution_Report_20261117.md). Frozen gate `941287fa…` 953/953 PASS; census `3af1dc0d…` Cylinder PASS 288, BunnyRandom/Vase RED unchanged; deferred `fd433f54…` 81. All S5 criteria met; 19 PASS rows have outgoing proxies.
+- [x] **COMPLETE (Test + Benchmark, MATCH):** `M6-CP3-TB130-P13-CARRIER-PROXY-CONTACT-FULL-GATE-EXEC`. [Report](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb130_p13_carrier_proxy_contact_full_gate_execution_report_20261117md). Frozen gate `941287fa…` 953/953 PASS; census `3af1dc0d…` Cylinder PASS 288, BunnyRandom/Vase RED unchanged; deferred `fd433f54…` 81. All S5 criteria met; 19 PASS rows have outgoing proxies.
 - [x] **COMPLETE (RA-252):** `M6-CP3-DEFN-P13-CARRIER-CONTACT-SWITCH`. Freeze FC-7′ (the node-level switch at `:1075`/`:1910`/`build_node_loci`). RA-251 §S6 staging condition is met: 19 PASS rows, including six selector identities, print `lastOutgoing>0`. Off-by-default option first. Start only after TB130 COMPLETE. Then switch CB → TB.
 - [ ] Held: `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`, then `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6).
 - [ ] Withdrawn: CB149B, CB152. Parked: CB145. O45 = carrier-proxy defect, open until switch TB.
