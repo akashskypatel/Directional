@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb133-closeout-v1",
+  "request_id": "m6-cp3-tb133-rev-closeout-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb133-closeout-v1",
-  "file_id": "1p_ZyYPQsQsV6XOvi_cAVksmM3yURozcF",
-  "patch_sha256": "41bc6b1fc14d7e90934e2f1cd0e87effcc4a571c79a2d54ffda2e542bd0eb987",
-  "base_sha": "f0476b8151f963e84dc19d962a86c42a4edb94a8",
+  "mailbox_key": "m6-cp3-tb133-rev-closeout-v1",
+  "file_id": "1cwhBzup6FgXozs1kuXRLhQ7AYSqZVsO7",
+  "patch_sha256": "1575bdc39c3af0acea57e205221952956d68069acdaedcc4ca7da51723f84ad3",
+  "base_sha": "8a796dc905a07f188c5a5b2834e4e16b9b9a8642",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record TB133 MATCH and authorize independent review",
+  "commit_message": "docs: uphold TB133 independent MATCH and select sphere endpoint definition",
   "retention_days": 30
 }
