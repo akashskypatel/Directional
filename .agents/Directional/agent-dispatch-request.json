@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb157-apply-v1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb157-apply-v1",
-  "file_id": "16tk9-sphYwBLC6V2WH6euzVJ9RlJ_QXN",
-  "patch_sha256": "83a8606f985706e4c4bc116231d7fcdc74dd6198d32a636cc1028cc16716d2b8",
-  "base_sha": "a14cc3660676dc54c012cbd97c0f77a28b167d37",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Add exact trace path diagnostic receipt",
-  "retention_days": 30
+  "request_id": "m6-cp3-cb157-compile-v1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb157-compile-v1",
+  "source_sha": "a8d1cc9603f9a556564f0b741692217ec6a791ef",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb157-compile"
 }
