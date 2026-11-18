@@ -68,3 +68,85 @@ Independent offline parser negative controls (10) reject removed/duplicated/alte
 | Pushed to origin, branch in sync | Closeout requires exact remote patch application, changed-path/blob comparison, staging retirement and cleanup before final COMPLETE beacon. The local Git index is snapshot-only, not an origin checkout. |
 
 Procedure deviations: initial source/policy reads preceded explicit snapshot-mode selection; some mandatory startup reads were not confirmed in full before snapshot dispatch. Subsequent inspection used one verified snapshot. The reminder timer used a shell instead of Python; absolute 20-minute bound retained. These are procedure limitations, not a relaxation of the product evidence rules.
+
+## RA-257 — adversarial re-review of this Review (2026-11-18 UTC)
+
+### S0 — verdict
+
+MATCH 956/956 is upheld. The source delta CB157→CB158 hashes to the frozen diff `17dd9ac5…`, and the ratio check is reproduced (relative error 1.3e-15). This confirms that RA-256 S1's onset at X43 (t43 = 0.26324148596788688 on (94,210)) is right. Two defects follow.
+
+### S1 — H3 was decidable statically and is real
+
+Two code paths disagree:
+- **What the tracer does.** When a segment departs along an edge, either as an edge-port seed (`trace.segments.empty()`) or as a `vertexSlide` after a vertex transit (`SurfaceCellTracing.cpp:3569–3580`), the face-exit decision is `resolve_field_edge_port_departure` (:2168–2189). Its exit point is the departure vertex itself. The entry is the same vertex (:4258, :3825–3836). So the traced face piece has zero length, and the whole segment is a slide (non-slide continuation is rejected at :3719–3730).
+- **What the classifier checks.** `field_aligned_segment_exit_point` (:3087–3102) always recomputes `resolve_field_branch_continuation` from the vertex entry. That call never returns the entry vertex. It returns either an error, which becomes Unevaluated and is skipped, or an exit on the opposite edge.
+
+So for departure segments, the classifier tests a chord that was never traced. That can produce a phantom ProperCrossing, while the real slide is never checked. A Haiku audit agrees: the result is "No, in general".
+
+The BunnyRandom segments are grazing slides from interior entries. For those, the recomputation equals the traced decision, so H3 does not explain O48. It is a separate latent defect on the same representation. Now that CB158 has landed, the fix is to read the stored `edgeTransitEntry` rather than recompute. That fix changes behaviour, so it needs a measuring receipt first (the RA-222/RA-224 pattern).
+
+### S2 — the successor again had no implementation turn
+
+The Review's recommendation names only a Review DEFN. That repeats RA-256's routing defect. The shared-carrier computation is needed under any ownership rule:
+- O48: a slide against a slide or a slide start;
+- O47: a crossing point against a crossing point on one edge key.
+
+So its exact, unwired helpers can land now, while the DEFNs proceed in parallel.
+
+### S3 — CB159 (frozen)
+
+- **Patch.** `.agents/Directional/Architecture_M6_CP3_CB159_P13_Carrier_Occupancy_Helpers_Exact.diff`, SHA-256 `756bd652b4f188398fe2b652b078f61aa34123b7748f71f5a7bb0d303cffa266`, 192 lines. Numstat: `31 0` `SurfaceCellTracing.h`, `51 0` `SurfaceCellTracing.cpp`, `80 0` `FieldAlignedCurveNetworkTests.cpp`.
+- **What it adds** (in `surface_cell_tracing_detail`):
+  - `FieldAlignedCarrierOccupancy {carrier, from, to}`: exact parameters measured from `carrier.first()`, in the direction of travel.
+  - `first_shared_carrier_parameter(moving, wall)`: the first parameter along `moving` that also lies in `wall`'s closed interval.
+  - `field_aligned_segment_entry_occupancy`: the crossing point on the incoming carrier.
+  - `field_aligned_segment_slide_occupancy`: `edgeTransitEntry`→`edgeTransitExit` on the outgoing carrier.
+  - Nothing calls them yet.
+- **Unit test.** `FieldAlignedCarrierOccupancy.FirstSharedParameterFollowsTheMovingTraceAlongOneCarrier`:
+  - Positive cases: the BunnyRandom shape (both orders give the inner slide start, never the vertex), ascending and descending pairs, an exact point-point crossing (the sphere shape), and an endpoint touch.
+  - Near misses: intervals one hundredth apart, distinct points, and another carrier.
+  - Segment extraction: an exit without an entry, and an entry off the carrier, both give no occupancy.
+- **Checks.**
+  - Precheck: `git diff --quiet 5bdc7c092a8935faeab75cf7a739928fd8ddca46 HEAD -- src include tests`.
+  - `git apply --check` passes.
+  - `-fsyntax-only -Wall -Wextra -DUSE_GMP_ENABLED` on `SurfaceCellTracing.cpp` and `FieldAlignedCurveNetworkTests.cpp` returns 0, with the same warning counts as HEAD (43 and 42).
+  - A Haiku read-only audit worked every expectation by hand and found all pass. It confirmed the code sits in the non-anonymous `surface_cell_tracing_detail` block (header :733–1301; cpp :373–5640), with no name collisions, dangling references or production callers, and that the patch is purely additive.
+
+### S4 — TB136 criteria (frozen)
+
+- **Package.** CB159 (CB158 plus the helpers).
+- **Gate manifest.** `gates/Architecture_M6_TB136_P13_Carrier_Occupancy_Helpers_Full_Gate_Case_Manifest.tsv`, SHA-256 `dac17a50bccea4999a5482620793bffe42de61d585d69d53724ae0d59055ebc2`. It is the 953-row manifest `941287fa…` byte for byte, plus row 954 (`ra257:carrier-occupancy-first-shared-parameter`, the test above, `directional_surface_cell_producer_tests`, PASS). `SELF_CHECK_PASS cases=954 deferred=81`; membership 1,035.
+- **Unchanged inputs.** Census `3af1dc0d…`, deferred `fd433f54…`, harness `78b8002c…`.
+- **MATCH** requires all of the following:
+  1. Rows 1–953 and the 3 census rows have the same ledger fields as TB135 (gate `14398029488`, census `14398329619`), and logs are equal under N1–N4.
+  2. Receipts, including ` slide=` and ` path=`, are byte-identical.
+  3. Row 954 is PASS.
+  4. Nothing else differs.
+- **Routes.** Mismatch: `M6-CP3-PLAN-P13-CARRIER-OCCUPANCY-HELPERS-STOP`. Infrastructure: `M6-CP3-CB159A-P13-CARRIER-OCCUPANCY-HELPERS-ORCH`.
+
+### S5 — DEFN obligations (Review track)
+
+1. **H3 measurement first.** Freeze a receipt over departure segments. It records whether the recomputed exit differs from `edgeTransitEntry` and whether any such segment produced a published ProperCrossing. Only then switch the classifier to the stored exit.
+2. **Slide-piece contact.**
+   - Build the moving proposal's slide occupancy and each wall's entry and slide occupancies, keyed by carrier rather than face, so walls in both incident faces are included.
+   - Take `first_shared_carrier_parameter`, and decide the later trace by the existing arrival rule and its inconclusive outcome.
+3. **Trace termination inside a slide.** Define the terminal record and consumer cut position on the slide piece: `TraceCutPosition` ordering is the face piece, then the slide piece by carrier parameter. Define the struck position at a slide start (X43 on 43:13).
+4. **The sphere (O47)** uses the same entry-occupancy equality on edge (0,2), per RA-255 S2.
+5. **Staging.** Each obligation gets an unwired helpers CB and then a wiring CB, each with its TB.
+
+### S6 — turn sequence
+
+- **Implementation track:**
+  1. `M6-CP3-CB159-P13-CARRIER-OCCUPANCY-HELPERS` (compile only).
+  2. `M6-CP3-TB136-P13-CARRIER-OCCUPANCY-HELPERS-FULL-GATE-EXEC`.
+  3. Then the CBs frozen by the DEFNs.
+- **Review track** (parallel):
+  1. `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT`, covering S5.3–S5.4 and the H3 receipt (S5.1).
+  2. `M6-CP3-TB136-P13-CARRIER-OCCUPANCY-HELPERS-FULL-GATE-REV`.
+  3. `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (S5.2).
+- **Held:** FC-6, the terminal-cut outcome and row 858. **Parked:** CB145. D11=A and D12=A are unchanged.
+
+### S7 — lessons
+
+- When two code paths compute the same quantity (traced exit versus recomputed exit), compare their dispatch conditions before calling the difference unverified. A branch that only one of them takes is a defect, not a hypothesis.
+- A Review whose only successor is another Review stalls the implementation agent. Land the computation every outcome needs as unwired helpers while the definition proceeds.

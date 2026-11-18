@@ -1,3 +1,7 @@
+## 2026-11-18 UTC — RA-257 re-review of the TB135 Review
+
+- [RA-257](.agents/Directional/Architecture_M6_CP3_TB135_P13_Edge_Transit_Entry_Full_Gate_Independent_Review_20261118.md#ra-257--adversarial-re-review-of-this-review-2026-11-18-utc): MATCH upheld. H3 confirmed statically on edge-departure segments. Exact next `M6-CP3-CB159-P13-CARRIER-OCCUPANCY-HELPERS` (unwired exact helpers + 1 unit test, +162/-0), then TB136 on a 954-row manifest. DEFNs remain on the Review track.
+
 ## 2026-11-18 UTC — TB135 independent Review (MATCH upheld)
 
 - [Review](.agents/Directional/Architecture_M6_CP3_TB135_P13_Edge_Transit_Entry_Full_Gate_Independent_Review_20261118.md): 956/956 MATCH upheld under RA-256 S5; 952/953 gate, 491/491 accepted prefix; Cylinder PASS/288, BunnyRandom/Vase RED. Independently checked six frozen criteria, all 1,912 raw-log bindings, 3,846 archive checks, 66 sphere receipts and both BunnyRandom receipts. On (94,210), t43=0.26324148596788688 and t15=0.93470265131543506; ratio 0.088627884769471184 (relative error 1.31e-15 to the frozen prediction). No new stable event, geometry acceptance or promotion.
