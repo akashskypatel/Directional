@@ -725,9 +725,21 @@ std::optional<authority::ExactSourcePath> exact_trace_segment_pieces(
     const FieldAlignedCandidateTrace &trace, const std::size_t segmentIndex) {
   if (segmentIndex >= trace.segments.size()) return std::nullopt;
   const FieldAlignedCandidateTraceSegment &segment = trace.segments[segmentIndex];
+  const auto face_piece_to_end = [&]() -> std::optional<authority::ExactSourcePath> {
+    const auto first = authority::canonical_exact_source_boundary_point(
+        segment.entryPoint);
+    const auto second = exact_trace_segment_end(trace, segmentIndex);
+    if (!first.has_value() || !second.has_value()) return std::nullopt;
+    authority::ExactSourcePath path{authority::ExactSourceSupportPiece{
+        authority::SourceFaceInteriorSupport{segment.sourceFace}, *first,
+        *second}};
+    return authority::exact_source_path_is_canonical(path)
+               ? std::optional<authority::ExactSourcePath>{std::move(path)}
+               : std::nullopt;
+  };
   if (!segment.edgeTransitEntry.has_value() &&
       !segment.edgeTransitExit.has_value()) {
-    return exact_trace_path(trace, segmentIndex, segmentIndex + 1U);
+    return face_piece_to_end();
   }
   if (!segment.edgeTransitEntry.has_value() ||
       !segment.edgeTransitExit.has_value() ||
@@ -750,7 +762,7 @@ std::optional<authority::ExactSourcePath> exact_trace_segment_pieces(
              .has_value()) {
       return std::nullopt;
     }
-    return exact_trace_path(trace, segmentIndex, segmentIndex + 1U);
+    return face_piece_to_end();
   }
   const auto entry =
       authority::canonical_exact_source_boundary_point(segment.entryPoint);
@@ -786,6 +798,25 @@ std::pair<std::size_t, std::size_t> trace_cut_segment_range(
                                                       : second.segment};
 }
 
+static std::optional<authority::ExactSourcePoint> exact_trace_interior_point(
+    const FieldAlignedCandidateTrace &trace, const TraceCutPosition &position) {
+  const auto entry = trace_segment_canonical_entry(trace, position.segment);
+  const auto exit = trace_segment_canonical_exit(trace, position.segment);
+  const auto zero = authority::FieldExactRational::from_integer(0);
+  const auto one = authority::FieldExactRational::from_integer(1);
+  const authority::FieldExactRational &t = *position.parameter;
+  if (!entry.has_value() || !exit.has_value() || !(t > zero) ||
+      !(t < one)) {
+    return std::nullopt;
+  }
+  FaceChartPoint point = *entry;
+  for (std::size_t index = 0U; index < 3U; ++index) {
+    point[index] = (*entry)[index] + t * ((*exit)[index] - (*entry)[index]);
+  }
+  return authority::canonical_exact_source_face_point(
+      trace.segments[position.segment].sourceFace, point);
+}
+
 std::optional<authority::ExactSourcePath> exact_trace_path_between(
     const FieldAlignedCandidateTrace &trace, const TraceCutPosition &first,
     const TraceCutPosition &second) {
@@ -795,40 +826,56 @@ std::optional<authority::ExactSourcePath> exact_trace_path_between(
   }
   const auto [begin, end] = trace_cut_segment_range(first, second);
   if (begin >= end || end > trace.segments.size()) return std::nullopt;
-  const auto interior_point = [&](const TraceCutPosition &position)
-      -> std::optional<authority::ExactSourcePoint> {
-    const auto entry = trace_segment_canonical_entry(trace, position.segment);
-    const auto exit = trace_segment_canonical_exit(trace, position.segment);
-    const auto zero = authority::FieldExactRational::from_integer(0);
-    const auto one = authority::FieldExactRational::from_integer(1);
-    const authority::FieldExactRational &t = *position.parameter;
-    if (!entry.has_value() || !exit.has_value() || !(t > zero) ||
-        !(t < one)) {
-      return std::nullopt;
-    }
-    FaceChartPoint point = *entry;
-    for (std::size_t index = 0U; index < 3U; ++index) {
-      point[index] = (*entry)[index] + t * ((*exit)[index] - (*entry)[index]);
-    }
-    return authority::canonical_exact_source_face_point(
-        trace.segments[position.segment].sourceFace, point);
-  };
   authority::ExactSourcePath path;
   path.reserve(end - begin);
   for (std::size_t segmentIndex = begin; segmentIndex < end; ++segmentIndex) {
     const auto &segment = trace.segments[segmentIndex];
     const auto start =
         segmentIndex == begin && first.parameter.has_value()
-            ? interior_point(first)
+            ? exact_trace_interior_point(trace, first)
             : authority::canonical_exact_source_boundary_point(
                   segment.entryPoint);
     const auto finish = segmentIndex + 1U == end && second.parameter.has_value()
-                            ? interior_point(second)
+                            ? exact_trace_interior_point(trace, second)
                             : exact_trace_segment_end(trace, segmentIndex);
     if (!start.has_value() || !finish.has_value()) return std::nullopt;
     path.push_back(authority::ExactSourceSupportPiece{
         authority::SourceFaceInteriorSupport{segment.sourceFace}, *start,
         *finish});
+  }
+  return authority::exact_source_path_is_canonical(path)
+             ? std::optional<authority::ExactSourcePath>{std::move(path)}
+             : std::nullopt;
+}
+
+std::optional<authority::ExactSourcePath> exact_trace_piece_path_between(
+    const FieldAlignedCandidateTrace &trace, const TraceCutPosition &first,
+    const TraceCutPosition &second) {
+  if (!(first < second)) return std::nullopt;
+  const auto [begin, end] = trace_cut_segment_range(first, second);
+  if (begin >= end || end > trace.segments.size()) return std::nullopt;
+  authority::ExactSourcePath path;
+  for (std::size_t segmentIndex = begin; segmentIndex < end; ++segmentIndex) {
+    auto pieces = exact_trace_segment_pieces(trace, segmentIndex);
+    if (!pieces.has_value()) return std::nullopt;
+    const bool clipFirst = segmentIndex == begin && first.parameter.has_value();
+    const bool clipLast = segmentIndex + 1U == end && second.parameter.has_value();
+    if (clipFirst || clipLast) {
+      const auto &segment = trace.segments[segmentIndex];
+      if (segment.edgeTransitEntry.has_value() || segment.edgeTransitExit.has_value() ||
+          pieces->size() != 1U) return std::nullopt;
+      if (clipFirst) {
+        const auto point = exact_trace_interior_point(trace, first);
+        if (!point.has_value()) return std::nullopt;
+        pieces->front().first = *point;
+      }
+      if (clipLast) {
+        const auto point = exact_trace_interior_point(trace, second);
+        if (!point.has_value()) return std::nullopt;
+        pieces->back().second = *point;
+      }
+    }
+    path.insert(path.end(), pieces->begin(), pieces->end());
   }
   return authority::exact_source_path_is_canonical(path)
              ? std::optional<authority::ExactSourcePath>{std::move(path)}

@@ -289,6 +289,15 @@ exact_trace_path_between(const FieldAlignedCandidateTrace &trace,
                          const TraceCutPosition &second);
 
 /**
+ * Concatenate the real segment pieces in [first, second). Interior cuts
+ * clip only ordinary face pieces. Unwired until the coordinated graph cutover.
+ */
+[[nodiscard]] std::optional<authority::ExactSourcePath>
+exact_trace_piece_path_between(const FieldAlignedCandidateTrace &trace,
+                               const TraceCutPosition &first,
+                               const TraceCutPosition &second);
+
+/**
  * A network node at a trace-trace contact strictly inside a source face: a
  * non-port node with a TraceIntersection or TraceSelfClosure event, or with
  * contact events that have no source edge. A common-carrier source edge on

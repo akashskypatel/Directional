@@ -19031,6 +19031,150 @@ TEST(FieldAlignedCarrierOccupancy,
 }
 
 TEST(FieldAlignedCarrierOccupancy,
+     TracePiecePathKeepsNonLastSlideAndCanonicalContactEndpoints) {
+  namespace authority = directional::authority;
+  using directional::authority::FieldBranch;
+  using directional::authority::TopologyRegionId;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+  using directional::geometry::FieldAlignedTerminalContact;
+  using Path = authority::ExactSourcePath;
+  using Piece = authority::ExactSourceSupportPiece;
+  using Position = embedded::TraceCutPosition;
+  const auto first = topology_face(0, 1, 4, 5U);
+  const auto second = topology_face(1, 2, 4, 5U);
+  const auto incoming = topology_edge(0, 4, 5U);
+  const auto carrier = topology_edge(0, 1, 5U);
+  const auto next = topology_edge(1, 4, 5U);
+  const auto outgoing = topology_edge(2, 4, 5U);
+  const auto entry = boundary_point(incoming, 1, 1);
+  const auto slideStart = boundary_point(carrier, 1, 4);
+  const auto slideEnd = boundary_point(carrier, 1, 1);
+  const auto nextEntry = boundary_point(next, 0, 1);
+  const auto finish = boundary_point(outgoing, 1, 2);
+  const authority::ExactSourcePoint v0{SourceVertexId::from_index(0, 5).value()};
+  const authority::ExactSourcePoint v1{SourceVertexId::from_index(1, 5).value()};
+  const authority::ExactSourcePoint v2{SourceVertexId::from_index(2, 5).value()};
+  const authority::ExactSourcePoint v4{SourceVertexId::from_index(4, 5).value()};
+  const authority::ExactSourcePoint edgeStart{
+      authority::ExactSourceEdgePoint{carrier, exact_ratio(1, 4)}};
+  const authority::ExactSourcePoint edgeFinish{
+      authority::ExactSourceEdgePoint{outgoing, exact_ratio(1, 2)}};
+  FieldAlignedCandidateTrace trace(
+      TraceId::from_index(0U, 2U).value(),
+      SingularityPortId::from_index(0, 1).value(),
+      FieldSingularityId::from_index(0, 1).value(),
+      SourceVertexId::from_index(4, 5).value(),
+      SourceComponentId::from_index(0, 1).value(),
+      TopologyRegionId::from_index(0, 1).value());
+  const auto branch = FieldBranch::from_integer(0);
+  trace.segments.emplace_back(first, branch, entry, incoming, carrier,
+                              std::nullopt);
+  trace.segments[0].edgeTransitEntry = slideStart;
+  trace.segments[0].edgeTransitExit = slideEnd;
+  trace.segments.emplace_back(second, branch, nextEntry, next, outgoing,
+                              std::nullopt);
+  trace.terminalPoint = finish;
+  const Position start{0U, std::nullopt};
+  const Position middle{1U, std::nullopt};
+  const Position end{2U, std::nullopt};
+  const auto half = exact_ratio(1, 2);
+  const Position cut{1U, half};
+  const Piece facePiece{authority::SourceFaceInteriorSupport{first},
+                        v4, edgeStart};
+  const Piece edgePiece{authority::SourceEdgeSupport{carrier},
+                        edgeStart, v1};
+  const Piece lastPiece{authority::SourceFaceInteriorSupport{second},
+                        v1, edgeFinish};
+  const authority::ExactSourcePoint midpoint{authority::ExactSourceFacePoint{
+      second, {half, exact_ratio(1, 4), exact_ratio(1, 4)}}};
+  const Piece before{lastPiece.carrier, lastPiece.first, midpoint};
+  const Piece after{lastPiece.carrier, midpoint, lastPiece.second};
+  EXPECT_EQ((Path{facePiece, edgePiece, lastPiece}),
+            embedded::exact_trace_piece_path_between(trace, start, end));
+  EXPECT_EQ((Path{facePiece, edgePiece, before}),
+            embedded::exact_trace_piece_path_between(trace, start, cut));
+  EXPECT_EQ((Path{after}),
+            embedded::exact_trace_piece_path_between(trace, cut, end));
+  EXPECT_EQ((Path{facePiece, edgePiece}),
+            embedded::exact_trace_piece_path_between(trace, start, middle));
+  EXPECT_EQ((Path{lastPiece}),
+            embedded::exact_trace_piece_path_between(trace, middle, end));
+  const Position slideCut{0U, half};
+  EXPECT_FALSE(embedded::exact_trace_piece_path_between(trace, start, slideCut));
+  EXPECT_FALSE(embedded::exact_trace_piece_path_between(trace, slideCut, end));
+  EXPECT_FALSE(embedded::exact_trace_piece_path_between(trace, end, start));
+  EXPECT_FALSE(embedded::exact_trace_piece_path_between(trace, cut, cut));
+  EXPECT_FALSE(embedded::exact_trace_piece_path_between(
+      trace, middle, Position{1U, exact_ratio(1, 1)}));
+  EXPECT_FALSE(embedded::exact_trace_piece_path_between(
+      trace, middle, Position{1U, exact_ratio(0, 1)}));
+  EXPECT_FALSE(embedded::exact_trace_piece_path_between(
+      trace, start, Position{3U, std::nullopt}));
+  auto incomplete = trace;
+  incomplete.segments[0].edgeTransitEntry.reset();
+  EXPECT_FALSE(embedded::exact_trace_piece_path_between(incomplete, start, end));
+  auto discontinuous = trace;
+  discontinuous.segments[1].entryPoint = boundary_point(next, 1, 2);
+  EXPECT_FALSE(embedded::exact_trace_piece_path_between(discontinuous, start, end));
+
+  // Non-last departure: entry and slide start are v0 on different carriers.
+  auto departure = trace;
+  departure.sourceVertex = SourceVertexId::from_index(0, 5).value();
+  departure.segments[0].entryPoint = boundary_point(incoming, 0, 1);
+  departure.segments[0].edgeTransitEntry = boundary_point(carrier, 0, 1);
+  const Piece edgeOnly{edgePiece.carrier, v0, v1};
+  EXPECT_EQ((Path{edgeOnly, lastPiece}),
+            embedded::exact_trace_piece_path_between(departure, start, end));
+
+  // A retained slide on the terminal segment is not traversed when the
+  // exact terminal contact is strictly before its start.
+  auto clipped = trace;
+  clipped.segments.pop_back();
+  clipped.terminalPoint.reset();
+  clipped.terminalContact = FieldAlignedTerminalContact{
+      first, {exact_ratio(3, 8), exact_ratio(1, 8), half},
+      TraceId::from_index(1U, 2U).value(), 0U};
+  const authority::ExactSourcePoint clippedEnd{authority::ExactSourceFacePoint{
+      first, {exact_ratio(3, 8), exact_ratio(1, 8), half}}};
+  EXPECT_EQ((Path{Piece{facePiece.carrier, v4, clippedEnd}}),
+            embedded::exact_trace_piece_path_between(clipped, start, middle));
+
+  // These are exact endpoint conversion controls, not permission for the
+  // producer to classify edge or vertex encounters as interior contacts.
+  auto contact = trace;
+  contact.terminalPoint.reset();
+  contact.terminalContact = FieldAlignedTerminalContact{
+      second, {exact_ratio(0, 1), half, half},
+      TraceId::from_index(1U, 2U).value(), 0U};
+  EXPECT_EQ((Path{facePiece, edgePiece, lastPiece}),
+            embedded::exact_trace_piece_path_between(contact, start, end));
+  contact.terminalContact->barycentric = {
+      exact_ratio(0, 1), exact_ratio(1, 1), exact_ratio(0, 1)};
+  const Piece vertexPiece{
+      lastPiece.carrier, lastPiece.first, v2};
+  EXPECT_EQ((Path{facePiece, edgePiece, vertexPiece}),
+            embedded::exact_trace_piece_path_between(contact, start, end));
+  // Ordinary path remains exactly the legacy path, not only a valid path.
+  auto ordinary = trace;
+  ordinary.segments[0].edgeTransitEntry.reset();
+  ordinary.segments[0].edgeTransitExit.reset();
+  EXPECT_EQ(embedded::exact_trace_path_between(ordinary, start, end),
+            embedded::exact_trace_piece_path_between(ordinary, start, end));
+  EXPECT_EQ((Path{Piece{facePiece.carrier, v4, v1},
+                  lastPiece}),
+            embedded::exact_trace_piece_path_between(ordinary, start, end));
+  EXPECT_EQ(embedded::exact_trace_path_between(ordinary, cut, end),
+            embedded::exact_trace_piece_path_between(ordinary, cut, end));
+  const auto threeQuarters = exact_ratio(3, 4);
+  const authority::ExactSourcePoint later{authority::ExactSourceFacePoint{
+      second, {exact_ratio(1, 4), exact_ratio(3, 8), exact_ratio(3, 8)}}};
+  EXPECT_EQ((Path{Piece{lastPiece.carrier, midpoint, later}}),
+            embedded::exact_trace_piece_path_between(
+                ordinary, cut, Position{1U, threeQuarters}));
+}
+
+TEST(FieldAlignedCarrierOccupancy,
      FirstSharedParameterFollowsTheMovingTraceAlongOneCarrier) {
   using directional::authority::FieldBranch;
   using directional::geometry::FieldAlignedCandidateTraceSegment;
