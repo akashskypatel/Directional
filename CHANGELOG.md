@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — TB139 slide-contact helpers full gate (MATCH)
+
+- [Execution report](.agents/Directional/Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Execution_Report_20261118.md): MATCH 959/959 prior rows under N1–N5; rows 957/958 PASS. Gate `14444439110` 957/958; census `14446181288` Cylinder PASS/288, BunnyRandom/Vase RED. All 68 other receipts unchanged; zero crossing lines; 48 seed/departure pairs, 3 vertex and 1,215 grazing receipts; all three predicted grazing witnesses present. No new regression or promotion. [Per-row slide-kind counts](.agents/Directional/evidence/Architecture_M6_CP3_TB139_P13_Slide_Proposal_Counts_20261118.tsv), SHA-256 `8d21f1300a6461fcdd5ad74a692589379584c19feed9eec04c42104b4e71335c`. No rebuild, repair or product/test/fixture mutation.
+- Exact next `M6-CP3-TB139-P13-SLIDE-CONTACT-HELPERS-FULL-GATE-REV`; independent Review owns CB165/CB166 staging. H4, O47 and O48 remain open. Stable 66/17/49, debt 1, deferred 81; CP2 491/491.
+
 ## 2026-11-18 UTC — CB164 slide proposal receipt (compile only)
 
 - [Compile record](.agents/Directional/Architecture_M6_CP3_CB164_P13_Slide_Proposal_Receipt_Code_Build_Record_20261118.md): source `4d8ddfee7dfa8dc651406cfb1de816027c859df2`, package `14440134091`, ZIP SHA-256 `5b4a2c7db08cb610dfa2388b7a0e5898435a154b82da09cc61c232b4e92d6c8a`. Frozen +17/-0 receipt, eight GMP/GMPXX targets, 28/28 checksums, 371/371 product/test files, four frozen inputs; no runtime.
