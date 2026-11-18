@@ -4598,6 +4598,44 @@ canonical_field_aligned_traces_and_events(
     }
   }
 
+  // P13 (RA-262): every slide segment a finished trace keeps, so a gate run
+  // shows which fixtures publish slide geometry. A last segment that ends at a
+  // face contact stops before its slide, so the slide is not traversed.
+  for (const FieldAlignedCandidateTrace &trace : candidate.candidateTraces) {
+    for (std::size_t segmentIndex = 0U; segmentIndex < trace.segments.size();
+         ++segmentIndex) {
+      const FieldAlignedCandidateTraceSegment &segment =
+          trace.segments[segmentIndex];
+      if (!segment.edgeTransitExit.has_value()) continue;
+      const bool contactBeforeSlide =
+          segmentIndex + 1U == trace.segments.size() &&
+          trace.terminalContact.has_value();
+      const auto slideEnd = segment.edgeTransitExit->source_support();
+      const auto *slideEndVertex =
+          slideEnd.has_value()
+              ? std::get_if<authority::SourceVertexSupport>(&*slideEnd)
+              : nullptr;
+      const auto &faceVertices = segment.sourceFace.vertices();
+      std::clog << "FieldAlignedCurveNetwork.committedSlide trace="
+                << trace.id.index() << " segment=" << segmentIndex
+                << " segments=" << trace.segments.size() << " kind="
+                << (field_aligned_segment_departs_along_carrier(segment)
+                        ? "edgeOnly"
+                        : "faceThenEdge")
+                << " face=(" << faceVertices[0].index() << ','
+                << faceVertices[1].index() << ',' << faceVertices[2].index()
+                << ") carrier=(" << segment.outgoingCarrier.first().index()
+                << ',' << segment.outgoingCarrier.second().index()
+                << ") slideEnd=";
+      if (slideEndVertex != nullptr) {
+        std::clog << slideEndVertex->vertex.index();
+      } else {
+        std::clog << '-';
+      }
+      std::clog << " traversed=" << (contactBeforeSlide ? 0 : 1) << '\n';
+    }
+  }
+
   std::sort(candidate.nodes.begin(), candidate.nodes.end(),
             [](const auto &lhs, const auto &rhs) {
               return std::tie(lhs.sourceVertex, lhs.id) <
