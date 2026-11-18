@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "test_benchmark",
-  "executor_sha": "18cc4a7d3e8ae43ce854c0edc834ab156156dcbf",
-  "semantic_source_sha": "18cc4a7d3e8ae43ce854c0edc834ab156156dcbf",
-  "turn_id": "M6-CP3-TB136-P13-CARRIER-OCCUPANCY-HELPERS-FULL-GATE-EXEC",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "retention_days": 30,
-  "request_id": "m6-cp3-tb136-census-v1",
-  "mailbox_key": "m6-cp3-tb136-census-v1",
-  "artifact_prefix": "m6-cp3-tb136-census-v1",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "14405225071",
-    "EXPECTED_SOURCE_SHA": "18cc4a7d3e8ae43ce854c0edc834ab156156dcbf",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "2e142b042d02b81e6626c40b03f2116628d017adf510a9c2ea7f96f9a8994e8c",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "6ba41479543ba299e4afa02c3cd6c211d7c713d32b71c5d66c10d93e909ad97d",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "d97314c08f1b4a49ab47c6962d041cb0be37d1d25ed427dbfbbd031a5bfeb183",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
-    "EXPECTED_CASE_COUNT": "3"
-  }
+  "request_id": "m6-cp3-tb136-closeout-v1",
+  "operation": "drive_apply",
+  "file_id": "11j0LOrJqfpLXJWYw9JfksHrf_iFsnB2i",
+  "patch_sha256": "2767715e346fbc015ada8531a6390348940d7273d2dfbad805a6ef551e09c774",
+  "base_sha": "fd20fbb80121228dd44b8764fa9e002ee932d571",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close TB136 carrier occupancy helpers full gate MATCH",
+  "mailbox_key": "m6-cp3-tb136-closeout-v1",
+  "retention_days": 30
 }
