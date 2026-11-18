@@ -7,19 +7,17 @@
   "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
   "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
   "retention_days": 30,
-  "request_id": "m6-cp3-tb135-gate-v1",
-  "mailbox_key": "m6-cp3-tb135-gate-v1",
-  "artifact_prefix": "m6-cp3-tb135-gate-v1",
+  "request_id": "m6-cp3-tb135-census-v1",
+  "mailbox_key": "m6-cp3-tb135-census-v1",
+  "artifact_prefix": "m6-cp3-tb135-census-v1",
   "environment": {
     "CANDIDATE_ARTIFACT_ID": "14397197316",
     "EXPECTED_SOURCE_SHA": "5bdc7c092a8935faeab75cf7a739928fd8ddca46",
     "EXPECTED_CANDIDATE_ZIP_SHA256": "9282956b0115eb9455b0504e0b32bb6d9200b465313fcb30392954af02310bda",
     "EXPECTED_ROOT_MANIFEST_SHA256": "73c4ca81a2b106017aa7b185a807eb0a316cc29ab44cc83956a6b8a073c83e35",
     "EXPECTED_SOURCE_ARCHIVE_SHA256": "55c977b5f4db5f6f6c508894a8d27f122b4ca29e7618dfd108ea6d9fc6f7a6dc",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB128_P13_Face_Contact_Node_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "941287fa96f3432eb1d67a9ae1e5dc7bc0ca2f3a1775cd5f9fb35482a4fa7962",
-    "EXPECTED_CASE_COUNT": "953",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
+    "EXPECTED_CASE_COUNT": "3"
   }
 }
