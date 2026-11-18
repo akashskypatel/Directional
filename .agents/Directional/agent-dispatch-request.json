@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb158-compile-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb158-compile-v1",
-  "source_sha": "5bdc7c092a8935faeab75cf7a739928fd8ddca46",
-  "targets": [
-    "directional_benchmarks",
-    "directional_compiled_api_tests",
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_validation_tests"
-  ],
-  "artifact_prefix": "m6-cp3-cb158-compile"
+  "request_id": "m6-cp3-cb158-closeout-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb158-closeout-v1",
+  "file_id": "1GTR2qLkSpfwMlJtr0Tz_tZekLgoaVOld",
+  "patch_sha256": "0e167dbc577453e631392a43681a18aa22bd28f65d13af4ad8909eec77556270",
+  "base_sha": "3982ecae3124ac2d929f33f2311d696fba34e9c8",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "Close CB158 compile verification and authorize TB135",
+  "retention_days": 14
 }
