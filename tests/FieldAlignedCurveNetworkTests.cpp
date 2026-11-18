@@ -18997,3 +18997,51 @@ TEST(FieldAlignedCarrierOccupancy,
       std::nullopt);
   EXPECT_FALSE(field_aligned_segment_entry_occupancy(vertexSeed).has_value());
 }
+
+TEST(FieldAlignedCarrierOccupancy,
+     DepartureAlongCarrierMeansTheSlideStartsAtTheEntryPoint) {
+  using directional::authority::FieldBranch;
+  using directional::geometry::FieldAlignedCandidateTraceSegment;
+  using directional::geometry::surface_cell_tracing_detail::
+      field_aligned_segment_departs_along_carrier;
+  const auto carrier = topology_edge(0, 2, 4U);
+  const auto other = topology_edge(0, 1, 4U);
+  const auto face = topology_face(0, 1, 2, 4U);
+  const auto branch = FieldBranch::from_integer(0);
+
+  // Vertex 0 entered through edge (0,1) and left along carrier (0,2): the
+  // same point under two edge keys, so the face piece has zero length.
+  FieldAlignedCandidateTraceSegment departure(
+      face, branch, boundary_point(other, 0, 1), std::nullopt, carrier,
+      std::nullopt);
+  departure.edgeTransitEntry = boundary_point(carrier, 0, 1);
+  departure.edgeTransitExit = boundary_point(carrier, 1, 1);
+  EXPECT_TRUE(field_aligned_segment_departs_along_carrier(departure));
+
+  FieldAlignedCandidateTraceSegment sameKey = departure;
+  sameKey.entryPoint = boundary_point(carrier, 3, 10);
+  sameKey.edgeTransitEntry = boundary_point(carrier, 3, 10);
+  EXPECT_TRUE(field_aligned_segment_departs_along_carrier(sameKey));
+  FieldAlignedCandidateTraceSegment secondEnd = departure;
+  secondEnd.entryPoint = boundary_point(topology_edge(1, 2, 4U), 1, 1);
+  secondEnd.edgeTransitEntry = boundary_point(carrier, 1, 1);
+  secondEnd.edgeTransitExit = boundary_point(carrier, 0, 1);
+  EXPECT_TRUE(field_aligned_segment_departs_along_carrier(secondEnd));
+
+  // A grazing slide entered mid-edge, a slide starting at the other end of
+  // the carrier, an interior point one hundredth away, and no slide at all.
+  FieldAlignedCandidateTraceSegment grazing(
+      face, branch, boundary_point(other, 1, 3), other, carrier, std::nullopt);
+  grazing.edgeTransitEntry = boundary_point(carrier, 3, 10);
+  grazing.edgeTransitExit = boundary_point(carrier, 0, 1);
+  EXPECT_FALSE(field_aligned_segment_departs_along_carrier(grazing));
+  FieldAlignedCandidateTraceSegment farEnd = departure;
+  farEnd.edgeTransitEntry = boundary_point(carrier, 1, 1);
+  EXPECT_FALSE(field_aligned_segment_departs_along_carrier(farEnd));
+  FieldAlignedCandidateTraceSegment nearMiss = sameKey;
+  nearMiss.edgeTransitEntry = boundary_point(carrier, 31, 100);
+  EXPECT_FALSE(field_aligned_segment_departs_along_carrier(nearMiss));
+  FieldAlignedCandidateTraceSegment noSlide = departure;
+  noSlide.edgeTransitEntry.reset();
+  EXPECT_FALSE(field_aligned_segment_departs_along_carrier(noSlide));
+}

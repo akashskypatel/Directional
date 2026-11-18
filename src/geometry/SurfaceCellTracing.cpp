@@ -4302,6 +4302,36 @@ canonical_field_aligned_traces_and_events(
   }
   field_aligned_publish_origin_events(candidate, runtimes);
 
+  // Receipt: a crossing found against a segment that departs along its
+  // carrier was classified on a recomputed chord the trace never followed.
+  const auto reportDepartureChordCrossing =
+      [](const bool pending, const std::size_t firstTraceIndex,
+         const std::size_t firstSegmentIndex,
+         const FieldAlignedCandidateTraceSegment &first,
+         const std::size_t secondTraceIndex,
+         const std::size_t secondSegmentIndex,
+         const FieldAlignedCandidateTraceSegment &second,
+         const bool secondExitIsTerminalContact) {
+        const bool firstDeparts =
+            field_aligned_segment_departs_along_carrier(first);
+        const bool secondDeparts =
+            field_aligned_segment_departs_along_carrier(second);
+        if (!firstDeparts && !secondDeparts) return;
+        const auto &faceVertices = first.sourceFace.vertices();
+        std::clog << "FieldAlignedCurveNetwork.departureChordCrossing pending="
+                  << (pending ? 1 : 0) << " first=" << firstTraceIndex << ':'
+                  << firstSegmentIndex << " second=" << secondTraceIndex << ':'
+                  << secondSegmentIndex << " face=(" << faceVertices[0].index()
+                  << ',' << faceVertices[1].index() << ','
+                  << faceVertices[2].index() << ") departing="
+                  << (firstDeparts ? (secondDeparts ? "both" : "first")
+                                   : "second")
+                  << " secondExit="
+                  << (secondExitIsTerminalContact ? "terminalContact"
+                                                  : "recomputed")
+                  << '\n';
+      };
+
   while (std::any_of(runtimes.begin(), runtimes.end(),
                      [](const auto &runtime) { return runtime.active; })) {
     for (std::size_t traceIndex = 0U; traceIndex < runtimes.size(); ++traceIndex) {
@@ -4350,6 +4380,11 @@ canonical_field_aligned_traces_and_events(
             !contact.barycentric.has_value()) {
           continue;
         }
+        reportDepartureChordCrossing(
+            true, firstIndex, firstTrace.segments.size(),
+            firstRuntime.proposal->segment, secondIndex,
+            secondTrace.segments.size(), secondRuntime.proposal->segment,
+            false);
         const auto firstArrival = field_aligned_arrival_at_barycentric(
             sourceMesh, firstRuntime.proposal->segment, firstRuntime.arrival,
             *contact.barycentric);
@@ -4418,6 +4453,11 @@ canonical_field_aligned_traces_and_events(
               !contact.barycentric.has_value()) {
             continue;
           }
+          reportDepartureChordCrossing(
+              false, movingIndex, movingTrace.segments.size(),
+              movingRuntime.proposal->segment, wallIndex, wallSegmentIndex,
+              wallTrace.segments[wallSegmentIndex],
+              wallTerminalContact.has_value());
           const auto movingArrival = field_aligned_arrival_at_barycentric(
               sourceMesh, movingRuntime.proposal->segment, movingRuntime.arrival,
               *contact.barycentric);
@@ -5559,6 +5599,16 @@ field_aligned_segment_slide_occupancy(
   return FieldAlignedCarrierOccupancy{segment.outgoingCarrier,
                                       segment.edgeTransitEntry->parameter.value,
                                       segment.edgeTransitExit->parameter.value};
+}
+
+bool field_aligned_segment_departs_along_carrier(
+    const FieldAlignedCandidateTraceSegment &segment) {
+  if (!segment.edgeTransitEntry.has_value()) return false;
+  const auto entry =
+      field_boundary_point_barycentric(segment.sourceFace, segment.entryPoint);
+  const auto slideStart = field_boundary_point_barycentric(
+      segment.sourceFace, *segment.edgeTransitEntry);
+  return entry.has_value() && slideStart.has_value() && *entry == *slideStart;
 }
 
 std::optional<FieldAlignedArrivalMeasure>

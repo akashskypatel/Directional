@@ -1329,6 +1329,12 @@ field_aligned_segment_entry_occupancy(
 field_aligned_segment_slide_occupancy(
     const FieldAlignedCandidateTraceSegment &segment);
 
+// True when the recorded slide start (edgeTransitEntry) is the entry point
+// itself, compared by position in the source face rather than by edge key:
+// the traced face piece has zero length and the segment is all slide.
+[[nodiscard]] bool field_aligned_segment_departs_along_carrier(
+    const FieldAlignedCandidateTraceSegment &segment);
+
 } // namespace surface_cell_tracing_detail
 
 struct SurfaceTraceSeed {
