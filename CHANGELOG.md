@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — TB140 trace-segment-pieces helper full gate (execution MATCH)
+
+- [Execution report](.agents/Directional/Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Execution_Report_20261118.md): immutable CB165 package `14459000178`, source `fb51da7142646ebed97527d976fd8b382607160a`; gate `14458589267` 958/959, census `14460885073`; 961/961 prior rows match under N1–N4, row 959 PASS. All slide proposals byte-identical (48 seed, 3 vertex, 1,215 grazing), 68 other receipts, 48 departures, zero crossing lines. Valid postflight, no rebuild or new regression; stable 66/17/49, debt 1, deferred 81; CP2 491/491. H4/O47/O48 open; no CP3/D0 promotion.
+- Exact next `M6-CP3-TB140-P13-TRACE-SEGMENT-PIECES-HELPER-FULL-GATE-REV` for independent adjudication and CB166 freeze under RA-261 S4.1; no successor implementation.
+
 ## 2026-11-18 UTC — CB165 trace segment pieces helper (compile only)
 
 - [Compile record](.agents/Directional/Architecture_M6_CP3_CB165_P13_Trace_Segment_Pieces_Helper_Code_Build_Record_20261118.md): source `fb51da7142646ebed97527d976fd8b382607160a`, package `14459000178`, ZIP SHA-256 `501bc0fe607d38a14fa3afe49814809fd0a7505c18f0ad61bb2e09674ffd486e`. Frozen +184/-0 in three files; no production callers. Eight GMP/GMPXX targets, 28/28 checksums, 371/371 product/test files, four frozen inputs; no runtime.

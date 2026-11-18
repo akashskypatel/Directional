@@ -1,4 +1,4 @@
-## CURRENT — RA-261: TB139 Review upheld; CB165 compile PASS; H4 switch split; TB140 next (2026-11-18 UTC)
+## CURRENT — RA-261: TB139 Review upheld; TB140 execution MATCH; H4 switch split; TB140-REV next (2026-11-18 UTC)
 
 [RA-261](.agents/Directional/Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md#ra-261--adversarial-re-review-of-this-review-2026-11-18-utc) upholds MATCH (source = CB164) and accepts the TB139 Review's 1,200-grazing count, its contact-truncation guard and its vertex-overlap obligation. Findings:
 - **Prose successor (S1.1).** CB165 was a plan for the implementer to design. It is now an exact diff (S2).
@@ -8,8 +8,8 @@
 Turn sequence:
 - [x] RA-261 re-review (Review): CB165 exact diff and TB140 manifest/criteria frozen; switch split.
 - [x] **COMPLETE (Code + Build, compile only):** `M6-CP3-CB165-P13-TRACE-SEGMENT-PIECES-HELPER`: [compile record](.agents/Directional/Architecture_M6_CP3_CB165_P13_Trace_Segment_Pieces_Helper_Code_Build_Record_20261118.md); source `fb51da7142646ebed97527d976fd8b382607160a`, package `14459000178`, SHA-256 `501bc0fe607d38a14fa3afe49814809fd0a7505c18f0ad61bb2e09674ffd486e`. Exact +184 lines, eight targets; no runtime.
-- [ ] **EXACT NEXT (Test + Benchmark):** `M6-CP3-TB140-P13-TRACE-SEGMENT-PIECES-HELPER-FULL-GATE-EXEC`: manifest `.agents/Directional/gates/Architecture_M6_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Case_Manifest.tsv` (`390fe1bd2c2e5f6d490ed21dac52219acefd9646081d361d2d4e174dfdedbf52`, 959 rows, membership 1,040). MATCH: rows 1–958 and the census equal TB139 under N1–N4 only (slideProposal lines byte-identical); row 959 PASS.
-- [ ] (Review) TB140-REV: freezes the CB166 patch and its TB criteria (RA-261 S4.1).
+- [x] **COMPLETE (Test + Benchmark, artifact only):** `M6-CP3-TB140-P13-TRACE-SEGMENT-PIECES-HELPER-FULL-GATE-EXEC`. [Execution report](.agents/Directional/Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Execution_Report_20261118.md): MATCH 961/961 prior rows under N1–N4; new row 959 PASS, gate `14458589267` 958/959, census `14460885073`; slide receipts byte-identical, membership 1,040 and deferred 81. No new regression or promotion.
+- [ ] **EXACT NEXT (Review):** `M6-CP3-TB140-P13-TRACE-SEGMENT-PIECES-HELPER-FULL-GATE-REV`: independently rederive TB140 MATCH and freeze the CB166 patch and TB criteria (RA-261 S4.1).
 - [ ] Then: CB166 embedded-graph paths and rays + TB → CB167 local chords + CB168 polylines + TB → CB169 piece position and `carrierLocus` (unwired) → CB170 carrier-contact wiring + TB (needs the vertex-overlap rule and a tie control; deletes the CB160 receipt).
 - [ ] Held: FC-6, terminal-cut outcome, row858 fix. Parked CB145. D11=A, D12=A unchanged; stable 66/17/49, debt 1, deferred 81; CP2 491/491; no promotion.
 
