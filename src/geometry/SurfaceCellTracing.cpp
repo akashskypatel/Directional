@@ -5644,6 +5644,50 @@ field_aligned_arrival_at_slide_parameter(
       start, field_aligned_filtered_add(*facePiece, *slidePiece));
 }
 
+std::optional<FieldAlignedCarrierContact> first_field_aligned_carrier_contact(
+    const FieldAlignedCandidateTraceSegment &moving,
+    const FieldAlignedCandidateTraceSegment &wall) {
+  const auto wallEntry = field_aligned_segment_entry_occupancy(wall);
+  const auto wallSlide = field_aligned_segment_slide_occupancy(wall);
+  const auto zero = authority::FieldExactRational::from_integer(0);
+  const auto one = authority::FieldExactRational::from_integer(1);
+  const auto meet = [&](const FieldAlignedCarrierOccupancy &occupancy,
+                        const std::optional<FieldAlignedCarrierOccupancy> &other)
+      -> std::optional<authority::FieldExactRational> {
+    if (!other.has_value()) return std::nullopt;
+    const auto first = first_shared_carrier_parameter(occupancy, *other);
+    if (!first.has_value()) return std::nullopt;
+    const auto last = first_shared_carrier_parameter(
+        FieldAlignedCarrierOccupancy{occupancy.carrier, occupancy.to,
+                                     occupancy.from},
+        *other);
+    if (last == first && (*first == zero || *first == one)) return std::nullopt;
+    return first;
+  };
+  const auto contact = [&](const FieldAlignedCarrierOccupancy &occupancy,
+                           const bool movingInSlide)
+      -> std::optional<FieldAlignedCarrierContact> {
+    const auto atEntry = meet(occupancy, wallEntry);
+    const auto inSlide = meet(occupancy, wallSlide);
+    if (!atEntry.has_value() && !inSlide.has_value()) return std::nullopt;
+    const bool ascending = occupancy.from <= occupancy.to;
+    const bool slideFirst =
+        inSlide.has_value() &&
+        (!atEntry.has_value() ||
+         (ascending ? *inSlide < *atEntry : *atEntry < *inSlide));
+    return FieldAlignedCarrierContact{occupancy.carrier,
+                                      slideFirst ? *inSlide : *atEntry,
+                                      movingInSlide, slideFirst};
+  };
+  if (const auto entry = field_aligned_segment_entry_occupancy(moving)) {
+    if (auto found = contact(*entry, false)) return found;
+  }
+  if (const auto slide = field_aligned_segment_slide_occupancy(moving)) {
+    return contact(*slide, true);
+  }
+  return std::nullopt;
+}
+
 std::optional<FieldAlignedArrivalMeasure>
 field_aligned_filtered_arrival_measure(
     const TriMesh &sourceMesh,

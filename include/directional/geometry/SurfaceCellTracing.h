@@ -1347,6 +1347,26 @@ field_aligned_arrival_at_slide_parameter(
     FieldAlignedArrivalMeasure start,
     const authority::FieldExactRational &parameter);
 
+// Where a moving segment first meets a wall segment on one mesh edge. Each
+// side occupies the edge at its entry crossing or along its slide; occupancies
+// are keyed by edge, so the two segments may lie in different faces. The
+// moving entry comes before its slide, and along the slide the first shared
+// parameter wins. A meeting that is a single point at an edge end is a vertex
+// meeting, owned by the vertex transit rules, and is not reported.
+struct FieldAlignedCarrierContact {
+  authority::SourceEdgeTopologyKey carrier;
+  authority::FieldExactRational parameter;
+  bool movingInSlide = false;
+  bool wallInSlide = false;
+
+  auto operator<=>(const FieldAlignedCarrierContact &) const = default;
+};
+
+[[nodiscard]] std::optional<FieldAlignedCarrierContact>
+first_field_aligned_carrier_contact(
+    const FieldAlignedCandidateTraceSegment &moving,
+    const FieldAlignedCandidateTraceSegment &wall);
+
 } // namespace surface_cell_tracing_detail
 
 struct SurfaceTraceSeed {

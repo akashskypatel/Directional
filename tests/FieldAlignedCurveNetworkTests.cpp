@@ -19176,3 +19176,84 @@ TEST(FieldAlignedCarrierOccupancy,
                    mesh, departure, start, exact_ratio(-1, 4))
                    .has_value());
 }
+
+TEST(FieldAlignedCarrierOccupancy,
+     FirstCarrierContactMeetsEntriesAndSlidesAcrossFaces) {
+  using directional::authority::FieldBranch;
+  using directional::geometry::FieldAlignedCandidateTraceSegment;
+  using directional::geometry::surface_cell_tracing_detail::
+      FieldAlignedCarrierContact;
+  using directional::geometry::surface_cell_tracing_detail::
+      first_field_aligned_carrier_contact;
+  // Edge (0,2) is shared by faces (0,1,2) and (0,2,3).
+  const auto carrier = topology_edge(0, 2, 4U);
+  const auto ab = topology_edge(0, 1, 4U);
+  const auto cd = topology_edge(2, 3, 4U);
+  const auto ad = topology_edge(0, 3, 4U);
+  const auto lower = topology_face(0, 1, 2, 4U);
+  const auto upper = topology_face(0, 2, 3, 4U);
+  const auto branch = FieldBranch::from_integer(0);
+  const auto crossingInto = [&](const auto &face, const auto &exitEdge,
+                                const int numerator, const int denominator) {
+    return FieldAlignedCandidateTraceSegment(
+        face, branch, boundary_point(carrier, numerator, denominator), carrier,
+        exitEdge, std::nullopt);
+  };
+  // Slides entered through (0,1) at distinct points, so their entry
+  // crossings never meet each other.
+  const auto slidingOn = [&](const int fromNumerator, const int toNumerator) {
+    FieldAlignedCandidateTraceSegment segment(
+        lower, branch, boundary_point(ab, fromNumerator, 20), ab, carrier,
+        std::nullopt);
+    segment.edgeTransitEntry = boundary_point(carrier, fromNumerator, 10);
+    segment.edgeTransitExit = boundary_point(carrier, toNumerator, 10);
+    return segment;
+  };
+  const auto expected = [&](const int numerator, const int denominator,
+                            const bool movingInSlide, const bool wallInSlide) {
+    return FieldAlignedCarrierContact{carrier,
+                                      exact_ratio(numerator, denominator),
+                                      movingInSlide, wallInSlide};
+  };
+
+  // Two co-directional slides: the later one meets the earlier one where the
+  // inner slide starts, in either role.
+  EXPECT_EQ(first_field_aligned_carrier_contact(slidingOn(9, 0), slidingOn(3, 0)),
+            expected(3, 10, true, true));
+  EXPECT_EQ(first_field_aligned_carrier_contact(slidingOn(3, 0), slidingOn(9, 0)),
+            expected(3, 10, true, true));
+  // Two traces crossing the shared edge at one exact point from opposite
+  // faces, and a crossing that misses by one hundredth.
+  EXPECT_EQ(first_field_aligned_carrier_contact(crossingInto(lower, ab, 1, 3),
+                                                crossingInto(upper, cd, 1, 3)),
+            expected(1, 3, false, false));
+  EXPECT_FALSE(first_field_aligned_carrier_contact(
+                   crossingInto(lower, ab, 34, 100),
+                   crossingInto(upper, cd, 1, 3))
+                   .has_value());
+  // A crossing into a wall's slide, and a slide over a wall's crossing.
+  EXPECT_EQ(first_field_aligned_carrier_contact(crossingInto(upper, ad, 1, 2),
+                                                slidingOn(3, 10)),
+            expected(1, 2, false, true));
+  EXPECT_EQ(first_field_aligned_carrier_contact(slidingOn(9, 0),
+                                                crossingInto(upper, cd, 1, 2)),
+            expected(1, 2, true, false));
+  // Ascending slide: the first wall point along the moving direction wins.
+  EXPECT_EQ(first_field_aligned_carrier_contact(slidingOn(1, 10), slidingOn(7, 10)),
+            expected(7, 10, true, true));
+  // Opposite parts of the edge, and a meeting only at the edge end v0.
+  EXPECT_FALSE(first_field_aligned_carrier_contact(slidingOn(3, 0),
+                                                   slidingOn(5, 10))
+                   .has_value());
+  EXPECT_FALSE(first_field_aligned_carrier_contact(slidingOn(3, 0),
+                                                   crossingInto(upper, cd, 0, 1))
+                   .has_value());
+  // A slide on another edge never meets a crossing of this one.
+  FieldAlignedCandidateTraceSegment elsewhere(
+      lower, branch, boundary_point(carrier, 1, 2), carrier, ab, std::nullopt);
+  elsewhere.edgeTransitEntry = boundary_point(ab, 1, 2);
+  elsewhere.edgeTransitExit = boundary_point(ab, 1, 1);
+  EXPECT_FALSE(first_field_aligned_carrier_contact(elsewhere,
+                                                   crossingInto(upper, cd, 1, 3))
+                   .has_value());
+}
