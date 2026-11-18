@@ -1,9 +1,9 @@
 ## CURRENT — TB134 independent MATCH; common carrier overlap and arrival order (2026-11-18 UTC)
 
-[RA-255](.agents/Directional/Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md#ra-255--adversarial-re-review-of-this-review-2026-11-18-utc):
+[RA-255](.agents/Directional/Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md#ra-255--adversarial-re-review-of-this-review-2026-11-18-utc) and [TB134 Review](.agents/Directional/Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Independent_Review_20261118.md):
 - **Sphere.** The TB133 signs plus consistent chart orientation give an alternating four-ray order. Traces 4/6 cross at P on edge (0,2) (Haiku re-derived this).
 - **Sphere DEFN scope.** Reuse the existing crossing seniority rule and state its inconclusive outcome. Detect at edge transport by an exact (edge, parameter) key. O47 reuses `TraceCutPosition{k, nullopt}`.
-- **BunnyRandom.** Distinct earlier parallel face segments lead to a shared co-directional slide interval on (94,210) before v94; 43 earlier. The first equal face entry is v94, not the exact carrier onset. "Remeasure after sphere repair" is withdrawn; O48 (vertex locus) is opened.
+- **BunnyRandom.** Distinct earlier parallel face segments lead to a shared co-directional slide interval on (94,210) before v94; 43 earlier. The first equal face entry is v94, not the exact carrier onset. "Remeasure after sphere repair" is withdrawn; O48 (carrier interval and vertex locus) remains open.
 
 Turn sequence:
 - [x] RA-255 re-review (Review): CB157 exact diff and TB134 criteria frozen.

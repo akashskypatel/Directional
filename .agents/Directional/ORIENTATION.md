@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-18, TB134 independent Review MATCH):** 956/956 MATCH upheld, 952/953 gate, accepted 491/491. The sphere is a proven through-crossing at an exact point on edge (0,2) (C5/O47). BunnyRandom traces 43/15 share a co-directional slide interval on (94,210) before v94; 43 arrives earlier, exact onset parameter open (O48). [RA-255](Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md#ra-255--adversarial-re-review-of-this-review-2026-11-18-utc).
+**Current currency (2026-11-18, `M6-CP3-TB134-P13-TRACE-PATH-RECEIPT-FULL-GATE-REV`):** 956/956 MATCH upheld, 952/953 gate, accepted 491/491. The sphere is a proven through-crossing at an exact point on edge (0,2) (C5/O47). BunnyRandom traces 43/15 share a co-directional slide interval on (94,210) before v94; 43 arrives earlier, exact onset parameter open (O48). [Review](Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Independent_Review_20261118.md).
 
 ## 1. What the project is
 
@@ -45,7 +45,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB134 952/953 (membership 1,034), 956/956 MATCH. Cylinder PASS / BunnyRandom overlap RED / Vase completion RED. C5/O47 open; no CP3/selector497 promotion. [Review](Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Independent_Review_20261118.md). |
+| **M6-CP3 — active** | TB134 952/953 (membership 1,034), 956/956 MATCH. Cylinder PASS / BunnyRandom overlap RED / Vase completion RED. C5/O47 and O48 open; no CP3/selector497 promotion. [Review](Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Independent_Review_20261118.md). |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).

@@ -118,11 +118,13 @@ A Haiku agent re-derived this independently, including a numeric instance that s
    - The contact node must be that crossing's node, with one event set. It must not be a new `FaceContactNode`.
    - The DEFN must define an edge-locus contact without weakening the interior-only `face_chart_segment_parameter` helper.
 4. **Vertex locus (new O48).**
-   - BunnyRandom's overlap begins at a source-vertex transit (S3). The locus classes are therefore face interior (FC-7′), edge point (O47) and source vertex (O48).
+   - ~~BunnyRandom's overlap begins at a source-vertex transit (S3).~~ [TB134 Review](Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Independent_Review_20261118.md#first-common-carrier-and-first-equal-entry-o48) proves a positive-length co-directional carrier interval on (94,210) before the first equal face entry at vertex 94. The exact onset parameter remains open. Preserve face interior (FC-7′), edge point (O47), and source vertex (O48) representations in this DEFN. The separate O48 DEFN also owns the carrier-interval overlap; the sphere helper and wiring CB scope does not expand.
    - The DEFN must define all three representations, even though the sphere CB implements only the edge point. Otherwise the BunnyRandom repair would redo the representation.
 5. **Split the freeze per RA-249.** First an additive helpers CB with exact unit tests (alternation predicate; edge-key coincidence). Then a stacked wiring CB with its own TB criteria.
 
 ### S3 — BunnyRandom: the overlap starts at vertex 94
+
+**Superseded onset claim:** This section preserves the TB133-era inference. [TB134 Review](Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Independent_Review_20261118.md#first-common-carrier-and-first-equal-entry-o48) establishes that vertex 94 is the first equal face entry, not the first geometric overlap. Both paths slide along the same carrier edge (94,210) toward vertex 94. The O48 obligation includes the earlier carrier interval; the D12 transport decision and frozen TB134 criteria are unchanged.
 
 - **Before the merge the traces are distinct.** The nine nonmatching pairs (43/15 segments 0–8 vs 3–13 and 12 vs 18) all share a branch. Their signs are constant: ±1 against each other's line, opposite in the reverse direction. These are distinct parallel straight segments, and such segments cannot meet inside a face.
 - **Unevaluated pair.** The next pair, 13/19 in (94,124,210), is unevaluated. At least one canonical exit is missing, which means an edge-transit or vertex exit.
