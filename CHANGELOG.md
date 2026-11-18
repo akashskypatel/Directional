@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — CB163 carrier-contact helper (compile only)
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB163_P13_Carrier_Contact_Helper_Code_Build_Record_20261118.md): frozen +145/-0 patch; source `03a2c07bcd46f860fa74c6c78f61dc934fc1af60`, [compile run 44325008446](https://github.com/akashskypatel/Directional/actions/runs/44325008446), package `14436907669`, ZIP SHA-256 `64eccc31c7be5b48f9eea557decbbce1bfd3a4945ce1222148ef9b8a13df296a`. Eight GMP/GMPXX targets; 28/28 checksums, 371/371 product/test files, four frozen inputs; no runtime. Helper remains unwired. No reapplication or rebuild on resume.
+- Exact next `M6-CP3-CB164-P13-SLIDE-PROPOSAL-RECEIPT` (compile only) per RA-260 S3; TB139 follows on the CB164 package. TB138 remains runtime authority; stable 66/17/49, debt 1, deferred 81; CP2 491/491. No promotion or regression accounting change.
+
 ## 2026-11-18 UTC — CB162 slide-arrival helper (compile only)
 
 - [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB162_P13_Slide_Arrival_Helper_Code_Build_Record_20261118.md): frozen +109/-0 patch, source `9a17c743b94d6f2026c18756092105e2b8118b5a`, package `14433316382`, eight GMP/GMPXX targets; compile PASS, 28/28 manifest checks, 371/371 product/test files match, no runtime. The source remains unwired. The preceding documentation push failed non-fast-forward; its evidence is retained in the record.
