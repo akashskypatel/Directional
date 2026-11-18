@@ -5613,6 +5613,38 @@ bool field_aligned_segment_departs_along_carrier(
 }
 
 std::optional<FieldAlignedArrivalMeasure>
+field_aligned_arrival_at_slide_parameter(
+    const TriMesh &sourceMesh,
+    const FieldAlignedCandidateTraceSegment &segment,
+    const FieldAlignedArrivalMeasure start,
+    const authority::FieldExactRational &parameter) {
+  const auto slide = field_aligned_segment_slide_occupancy(segment);
+  if (!slide.has_value()) return std::nullopt;
+  const bool ascending = slide->from <= slide->to;
+  const authority::FieldExactRational &low = ascending ? slide->from : slide->to;
+  const authority::FieldExactRational &high = ascending ? slide->to : slide->from;
+  if (parameter < low || high < parameter) return std::nullopt;
+  const auto entry =
+      field_boundary_point_barycentric(segment.sourceFace, segment.entryPoint);
+  const auto slideStart = field_boundary_point_barycentric(
+      segment.sourceFace, *segment.edgeTransitEntry);
+  const auto point = field_boundary_point_barycentric(
+      segment.sourceFace,
+      authority::FieldBoundaryPoint{segment.outgoingCarrier,
+                                    authority::ExactUnitParameter{parameter}});
+  if (!entry.has_value() || !slideStart.has_value() || !point.has_value()) {
+    return std::nullopt;
+  }
+  const auto facePiece = field_aligned_filtered_length(
+      sourceMesh, segment.sourceFace, *entry, *slideStart);
+  const auto slidePiece = field_aligned_filtered_length(
+      sourceMesh, segment.sourceFace, *slideStart, *point);
+  if (!facePiece.has_value() || !slidePiece.has_value()) return std::nullopt;
+  return field_aligned_arrival_advance(
+      start, field_aligned_filtered_add(*facePiece, *slidePiece));
+}
+
+std::optional<FieldAlignedArrivalMeasure>
 field_aligned_filtered_arrival_measure(
     const TriMesh &sourceMesh,
     const authority::SourceFaceTopologyKey &sourceFace,

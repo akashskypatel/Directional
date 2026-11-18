@@ -19111,3 +19111,68 @@ TEST(FieldAlignedCarrierOccupancy,
   EXPECT_EQ(exact_ratio(1, 2), (*retained.barycentric)[1]);
   EXPECT_EQ(exact_ratio(1, 8), (*retained.barycentric)[2]);
 }
+
+TEST(FieldAlignedCarrierOccupancy,
+     ArrivalInsideASlideAddsTheFacePieceAndTheCarrierRun) {
+  using directional::authority::FieldBranch;
+  using directional::geometry::FieldAlignedCandidateTraceSegment;
+  using directional::geometry::surface_cell_tracing_detail::
+      FieldAlignedArrivalMeasure;
+  using directional::geometry::surface_cell_tracing_detail::
+      field_aligned_arrival_at_slide_parameter;
+  // Face (0,1,2) of the unit square: v0=(0,0), v1=(1,0), v2=(1,1). The
+  // carrier (0,2) is the diagonal, of length sqrt(2).
+  const TriMesh mesh = make_square_mesh();
+  const auto face = topology_face(0, 1, 2, 4U);
+  const auto ab = topology_edge(0, 1, 4U);
+  const auto ac = topology_edge(0, 2, 4U);
+  const auto branch = FieldBranch::from_integer(0);
+  const double root2 = std::sqrt(2.0);
+  const FieldAlignedArrivalMeasure start{2.0, 0.0, 5U};
+
+  // Entered at (3/4,0), slides from (3/8,3/8) to v2. The face piece is
+  // 3*sqrt(2)/8 long; the run to the midpoint (1/2,1/2) adds sqrt(2)/8.
+  FieldAlignedCandidateTraceSegment grazing(
+      face, branch, boundary_point(ab, 3, 4), ab, ac, std::nullopt);
+  grazing.edgeTransitEntry = boundary_point(ac, 3, 8);
+  grazing.edgeTransitExit = boundary_point(ac, 1, 1);
+  const auto midpoint = field_aligned_arrival_at_slide_parameter(
+      mesh, grazing, start, exact_ratio(1, 2));
+  ASSERT_TRUE(midpoint.has_value());
+  EXPECT_NEAR(2.0 + root2 / 2.0, midpoint->value, 1e-12);
+  EXPECT_GT(midpoint->bound, 0.0);
+  EXPECT_EQ(6U, midpoint->segmentCount);
+  const auto slideStart = field_aligned_arrival_at_slide_parameter(
+      mesh, grazing, start, exact_ratio(3, 8));
+  ASSERT_TRUE(slideStart.has_value());
+  EXPECT_NEAR(2.0 + 3.0 * root2 / 8.0, slideStart->value, 1e-12);
+  const auto slideEnd = field_aligned_arrival_at_slide_parameter(
+      mesh, grazing, start, exact_ratio(1, 1));
+  ASSERT_TRUE(slideEnd.has_value());
+  EXPECT_NEAR(2.0 + root2, slideEnd->value, 1e-12);
+  // Before the slide start, and no slide at all.
+  EXPECT_FALSE(field_aligned_arrival_at_slide_parameter(
+                   mesh, grazing, start, exact_ratio(37, 100))
+                   .has_value());
+  FieldAlignedCandidateTraceSegment crossing = grazing;
+  crossing.edgeTransitEntry.reset();
+  crossing.edgeTransitExit.reset();
+  EXPECT_FALSE(field_aligned_arrival_at_slide_parameter(
+                   mesh, crossing, start, exact_ratio(1, 2))
+                   .has_value());
+
+  // A departure from v2 toward v0: no face piece, and the slide parameter
+  // decreases, so 1/4 is three quarters of the diagonal away.
+  FieldAlignedCandidateTraceSegment departure(
+      face, branch, boundary_point(topology_edge(1, 2, 4U), 1, 1),
+      std::nullopt, ac, std::nullopt);
+  departure.edgeTransitEntry = boundary_point(ac, 1, 1);
+  departure.edgeTransitExit = boundary_point(ac, 0, 1);
+  const auto quarter = field_aligned_arrival_at_slide_parameter(
+      mesh, departure, start, exact_ratio(1, 4));
+  ASSERT_TRUE(quarter.has_value());
+  EXPECT_NEAR(2.0 + 3.0 * root2 / 4.0, quarter->value, 1e-12);
+  EXPECT_FALSE(field_aligned_arrival_at_slide_parameter(
+                   mesh, departure, start, exact_ratio(-1, 4))
+                   .has_value());
+}

@@ -1335,6 +1335,18 @@ field_aligned_segment_slide_occupancy(
 [[nodiscard]] bool field_aligned_segment_departs_along_carrier(
     const FieldAlignedCandidateTraceSegment &segment);
 
+// Arrival at carrier parameter `parameter` inside the segment's slide: the
+// face piece to the slide start, then along the carrier, summed and advanced
+// once as the producer advances a sliding segment. At the slide end this is
+// the segment's end arrival. Empty when the segment has no slide or the
+// parameter lies outside it.
+[[nodiscard]] std::optional<FieldAlignedArrivalMeasure>
+field_aligned_arrival_at_slide_parameter(
+    const TriMesh &sourceMesh,
+    const FieldAlignedCandidateTraceSegment &segment,
+    FieldAlignedArrivalMeasure start,
+    const authority::FieldExactRational &parameter);
+
 } // namespace surface_cell_tracing_detail
 
 struct SurfaceTraceSeed {
