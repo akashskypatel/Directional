@@ -1,1 +1,12 @@
-{"schema_version":1,"request_id":"m6-cp3-tb138-review-closeout-v1","operation":"drive_apply","file_id":"1Z9K_aVGYUU5e2uoBBqLomcnQlCa9F67P","patch_sha256":"02d3ac57f05b6e6e1b7855d122e40b9a425870946ff734d2f3f0a9f477f88330","base_sha":"2af995a8d6fb4adcb885dc8b7d50114ccb038dab","target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing","commit_message":"docs: record independent TB138 review and close H3 narrowly","mailbox_key":"m6-cp3-tb138-review-closeout-v1","retention_days":30}
+{
+  "schema_version": 1,
+  "request_id": "m6-cp3-cb162-apply-v1",
+  "operation": "drive_apply",
+  "file_id": "1Hpk9xvqxCA70eeIVG9tA5yER9ySVmFae",
+  "patch_sha256": "f2c668e3c1d1556ffbdcf11d9fbdc7b5d308ec1a28e38a07573b39af5918b648",
+  "base_sha": "08dadcb4beb4fbe1dca64d77b373956c383b3452",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "Add unwired slide arrival helper and focused test",
+  "mailbox_key": "m6-cp3-cb162-apply-v1",
+  "retention_days": 30
+}
