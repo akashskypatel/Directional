@@ -1,12 +1,1 @@
-{
-  "schema_version": 1,
-  "request_id": "m6-cp3-tb136-rev-closeout-v1",
-  "operation": "drive_apply",
-  "file_id": "1GnpzZwIh-G9yBIlxl1-y3BG6XHiRHUJv",
-  "patch_sha256": "b5072355b515cf09eaa6f95bfaebfeace734602f05babf6db383ce4e49785b6f",
-  "base_sha": "84d920709ca909bf54acea8f44d397bbcf805d2e",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record TB136 independent carrier occupancy review",
-  "mailbox_key": "m6-cp3-tb136-rev-closeout-v1",
-  "retention_days": 30
-}
+{"schema_version":1,"request_id":"m6-cp3-cb160-apply-v2","operation":"drive_apply","file_id":"1oJ4_pYDzfcNdgvGvDrqZo_YO__7zQBFt","patch_sha256":"33e279c42b0909b1e4ea7b9fa1b819f0555c7150ad2b07dea298af3311747b44","base_sha":"7eb67941ef950169637f3c01e7807cc4f0cd36d8","target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing","commit_message":"Add departure chord crossing receipt and exact carrier departure predicate","mailbox_key":"m6-cp3-cb160-apply-v2","retention_days":30}
