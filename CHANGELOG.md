@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — TB139 independent Review (MATCH upheld)
+
+- [Review](.agents/Directional/Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Independent_Review_20261118.md): 959/959 prior rows match, rows 957/958 PASS, 3,862 checksums, 68 receipts and 1,738 region records unchanged; seed/departure identity and grazing predictions verified. H4, O47/O48 remain open. Stable 66/17/49, debt 1, deferred 81; CP2 491/491. No product runtime or promotion.
+- Exact next `M6-CP3-CB165-P13-TRACE-SEGMENT-PIECES-HELPER` per [CB165 plan](.agents/Directional/Architecture_M6_CP3_CB165_P13_Trace_Segment_Pieces_Helper_Plan_20261118.md); unwired helper, focused test, compile only. CB166 staging uses proposal counts, not assumed published output changes. TB138 execution report preserved verbatim in Volume D3 and indexed.
+
 ## 2026-11-18 UTC — TB139 slide-contact helpers full gate (MATCH)
 
 - [Execution report](.agents/Directional/Architecture_M6_CP3_TB139_P13_Slide_Contact_Helpers_Full_Gate_Execution_Report_20261118.md): MATCH 959/959 prior rows under N1–N5; rows 957/958 PASS. Gate `14444439110` 957/958; census `14446181288` Cylinder PASS/288, BunnyRandom/Vase RED. All 68 other receipts unchanged; zero crossing lines; 48 seed/departure pairs, 3 vertex and 1,215 grazing receipts; all three predicted grazing witnesses present. No new regression or promotion. [Per-row slide-kind counts](.agents/Directional/evidence/Architecture_M6_CP3_TB139_P13_Slide_Proposal_Counts_20261118.tsv), SHA-256 `8d21f1300a6461fcdd5ad74a692589379584c19feed9eec04c42104b4e71335c`. No rebuild, repair or product/test/fixture mutation.
@@ -30,7 +35,7 @@
 
 ## 2026-11-18 UTC — TB138 departure-chord classifier switch full gate (MATCH)
 
-- [Execution report](.agents/Directional/Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Full_Gate_Execution_Report_20261118.md): 958/958 prior rows match TB137 under N1–N4 only; row 956 PASS. Gate `14425931505` 955/956 and census `14425229608` Cylinder PASS/288, BunnyRandom/Vase RED. All 68 other receipts identical; zero crossing lines, 48 departures (BunnyRandom). [Per-row counts](.agents/Directional/evidence/Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Counts_20261118.tsv), SHA-256 `4aa9876fb42339b8f70ef25271319a15fe581995d0285fc6b0867359f43acd9a`. No rebuild, repair, product/test/fixture change or promotion.
+- [Execution report](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb138_p13_departure_chord_classifier_switch_full_gate_execution_report_20261118md): 958/958 prior rows match TB137 under N1–N4 only; row 956 PASS. Gate `14425931505` 955/956 and census `14425229608` Cylinder PASS/288, BunnyRandom/Vase RED. All 68 other receipts identical; zero crossing lines, 48 departures (BunnyRandom). [Per-row counts](.agents/Directional/evidence/Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Counts_20261118.tsv), SHA-256 `4aa9876fb42339b8f70ef25271319a15fe581995d0285fc6b0867359f43acd9a`. No rebuild, repair, product/test/fixture change or promotion.
 - Exact next `M6-CP3-TB138-P13-DEPARTURE-CHORD-CLASSIFIER-SWITCH-FULL-GATE-REV`. Independent Review gates H3 closure and CB162. Stable 66/17/49, debt 1, deferred 81; CP2 491/491.
 
 ## 2026-11-18 UTC — CB161 departure-chord classifier switch (compile only)
