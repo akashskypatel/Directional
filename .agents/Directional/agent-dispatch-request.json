@@ -1,12 +1,1 @@
-{
-  "schema_version": 1,
-  "request_id": "m6-cp3-tb137-docs-closeout-v1",
-  "operation": "drive_apply",
-  "file_id": "1p6-Et81ch-72sLD8EZOHIrv9iTnun_Ui",
-  "patch_sha256": "006d2e2ee88f99ab0403af6e8123dbb7a04f2d8b889f32ffbd2ff4b593228283",
-  "base_sha": "5bdfb99d5480b48f1a5e0befb7d3d600b8555775",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record TB137 verified full gate and independent review handoff",
-  "mailbox_key": "m6-cp3-tb137-docs-closeout-v1",
-  "retention_days": 30
-}
+{"schema_version":1,"request_id":"m6-cp3-tb137-rev-closeout-v1","operation":"drive_apply","file_id":"1Kqit2SPcuB3UH_59GsgKwrouzO0NrtR7","patch_sha256":"435f4fd870a9381aabd9c6c738b8b4c7f7da533553d6bfe28fa278cd5ba68607","base_sha":"669c3d9f9654c3b3c20585bfb33f2ab7dea66a11","target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing","commit_message":"docs: complete TB137 independent review and freeze CB161","mailbox_key":"m6-cp3-tb137-rev-closeout-v1","retention_days":30}
