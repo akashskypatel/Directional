@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb163-closeout-docs-v1",
+  "request_id": "m6-cp3-cb164-apply-v1",
   "operation": "drive_apply",
-  "file_id": "1SK8sHTUAeZV03fYdPAIGUFIb435XakcE",
-  "patch_sha256": "30cac26eb71f09e9198c8f03e8de62103634b850d3be2a66893f441d3bc25c7b",
-  "base_sha": "a0f0e3b59a48120ff986718a08b53eca510ebe7a",
+  "file_id": "17ItCD6d5-4TpRC7PKHhKG04aPKSnNSKt",
+  "patch_sha256": "7f9a48f23e53ccb1dacfc1b39bec236af65d8fce2b196a51f8f0d96550051443",
+  "base_sha": "bf87bb9de594a2d9ff430817ffce58b269b9ba04",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Record verified CB163 compile and freeze CB164 handoff",
-  "mailbox_key": "m6-cp3-cb163-closeout-docs-v1",
+  "commit_message": "Add frozen production slide proposal receipt",
+  "mailbox_key": "m6-cp3-cb164-apply-v1",
   "retention_days": 30
 }
