@@ -1,4 +1,4 @@
-## CURRENT — RA-262: exact-piece ownership contract approved; CB166 committed-slide receipt frozen (2026-11-18 UTC)
+## CURRENT — RA-262: CB166 committed-slide receipt compiled; TB141 next (2026-11-18 UTC)
 
 [RA-262](.agents/Directional/Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md#ra-262--exact-piece-ownership-contract-design-stop-resolved-2026-11-18-utc) resolves the TB140-REV design stop. It upholds the stop on the plan validator (`GlobalTopologyPlan.cpp:2689–2705`, 1:1 face pieces). It rejects partial cut-graph barriers as out of scope: region and cut graph are traversal-level certifiers, unchanged for grazing. It records O49 (edge-only segment ownership) and the unmeasured publication of slides (S1.4).
 - **EPO contract (S2):** two layers (traversal unchanged; geometry from real pieces); one leaf decomposition; explicit `sourcePieceCounts` binding; rays and ranks from actual first/last pieces with no new tie-break; edge-only segments fail closed until O49.
@@ -6,8 +6,8 @@
 
 Turn sequence:
 - [x] RA-262 (Review, TB140-REV resumed): contract, sequence, CB166 exact diff, TB141 criteria frozen.
-- [ ] **CURRENT (Code + Build, compile only):** `M6-CP3-CB166-P13-COMMITTED-SLIDE-RECEIPT`: `.agents/Directional/Architecture_M6_CP3_CB166_P13_Committed_Slide_Receipt_Exact.diff`, SHA-256 `55ed2145623aa30902293b46ced91317635acf7c1b3a4d2d16cec89c3432b3ca`, 49 lines, +38 `src/geometry/SurfaceCellTracing.cpp`; precheck base `fb51da7142646ebed97527d976fd8b382607160a`; eight RA-245 targets; runtimeExecution=false.
-- [ ] NEXT: `M6-CP3-TB141-P13-COMMITTED-SLIDE-RECEIPT-FULL-GATE-EXEC` (TB140 manifest `390fe1bd…` unchanged; N1–N6 equality; kind × traversed counts per row and fixture) → TB141-REV (routes R0/R+/R-edge/R-x; freezes CB167).
+- [x] **COMPLETE (Code + Build, compile only):** `M6-CP3-CB166-P13-COMMITTED-SLIDE-RECEIPT`: [compile record](.agents/Directional/Architecture_M6_CP3_CB166_P13_Committed_Slide_Receipt_Code_Build_Record_20261118.md); source `3b599879ac05a79fb2ddce9a930da3683051017d`, package `14468664897`, SHA-256 `02382960246e34577e34780b842472213ac7fa6925d60dc886fba2f7273d7ddc`; exact +38/-0 in `SurfaceCellTracing.cpp`, eight GMP/GMPXX targets, no runtime.
+- [ ] **CURRENT (Test + Benchmark, artifact only):** `M6-CP3-TB141-P13-COMMITTED-SLIDE-RECEIPT-FULL-GATE-EXEC` (TB140 manifest `390fe1bd…` unchanged; N1–N6 equality; kind × traversed counts per row and fixture) → TB141-REV (routes R0/R+/R-edge/R-x; freezes CB167).
 - [ ] Prospective: CB167 leaf decomposition (TB142, row 960) → CB168 `sourcePieceCounts` binding, inert (TB143) → [O49 CB if R-edge] → CB169 coordinated geometry cutover (TB144) → CB170 local chords + polylines → CB171 carrier locus (unwired) → CB172 carrier wiring (after vertex-overlap rule + tie control; deletes CB160/CB166 receipts).
 - Held: FC-6, TERMINAL-CUT-OUTCOME, row-858 fix. Parked: CB145. D11=A, D12=A unchanged.
 

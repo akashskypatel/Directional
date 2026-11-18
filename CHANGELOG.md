@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — CB166 committed-slide receipt (compile only)
+
+- [Compile record](.agents/Directional/Architecture_M6_CP3_CB166_P13_Committed_Slide_Receipt_Code_Build_Record_20261118.md): exact source `3b599879ac05a79fb2ddce9a930da3683051017d`, package `14468664897`, ZIP SHA-256 `02382960246e34577e34780b842472213ac7fa6925d60dc886fba2f7273d7ddc`. Frozen +38/-0 in `SurfaceCellTracing.cpp`, receipt only. Eight GMP/GMPXX targets; 28/28 package checksums, 371/371 source/test files, four frozen inputs. No runtime execution or product acceptance.
+- Exact next `M6-CP3-TB141-P13-COMMITTED-SLIDE-RECEIPT-FULL-GATE-EXEC` under RA-262 S3–S4; unchanged TB140 gate/census and N1–N6 comparison, slide kind × traversed inventory. Stable 66/17/49, debt 1, deferred 81; CP2 491/491. H4 publication unmeasured, C5/O47/O48/O49 open; no CP3/D0 promotion.
+
 ## 2026-11-18 UTC — RA-262 exact-piece ownership contract (Review; design stop resolved)
 
 - [RA-262](.agents/Directional/Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md#ra-262--exact-piece-ownership-contract-design-stop-resolved-2026-11-18-utc): EPO contract approved (two layers, single leaf decomposition, explicit `sourcePieceCounts` binding, real-piece rays/ranks, edge-only fail-closed until O49); RA-261 S4 replaced by the S3 sequence.
