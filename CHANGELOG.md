@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — CB164 slide proposal receipt (compile only)
+
+- [Compile record](.agents/Directional/Architecture_M6_CP3_CB164_P13_Slide_Proposal_Receipt_Code_Build_Record_20261118.md): source `4d8ddfee7dfa8dc651406cfb1de816027c859df2`, package `14440134091`, ZIP SHA-256 `5b4a2c7db08cb610dfa2388b7a0e5898435a154b82da09cc61c232b4e92d6c8a`. Frozen +17/-0 receipt, eight GMP/GMPXX targets, 28/28 checksums, 371/371 product/test files, four frozen inputs; no runtime.
+- Exact next `M6-CP3-TB139-P13-SLIDE-CONTACT-HELPERS-FULL-GATE-EXEC` per RA-260 S3. TB138 runtime authority; stable 66/17/49, debt 1, deferred 81; CP2 491/491. No promotion.
+
 ## 2026-11-18 UTC — CB163 carrier-contact helper (compile only)
 
 - [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB163_P13_Carrier_Contact_Helper_Code_Build_Record_20261118.md): frozen +145/-0 patch; source `03a2c07bcd46f860fa74c6c78f61dc934fc1af60`, [compile run 44325008446](https://github.com/akashskypatel/Directional/actions/runs/44325008446), package `14436907669`, ZIP SHA-256 `64eccc31c7be5b48f9eea557decbbce1bfd3a4945ce1222148ef9b8a13df296a`. Eight GMP/GMPXX targets; 28/28 checksums, 371/371 product/test files, four frozen inputs; no runtime. Helper remains unwired. No reapplication or rebuild on resume.
