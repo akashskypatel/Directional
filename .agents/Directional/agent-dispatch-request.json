@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb134-docs-v1",
+  "request_id": "m6-cp3-tb134-rev-docs-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb134-docs-v1",
-  "file_id": "1zncZDhMc2zvNC6bZg0xjjw3ijwzPFZo8",
-  "patch_sha256": "7a390832a64ec78eb9c070ec0e61651714d82c8182de55431aad9b739d6fab08",
-  "base_sha": "59b506bb7a29de2a85f81b0a8159f763863ad6ae",
+  "mailbox_key": "m6-cp3-tb134-rev-docs-v1",
+  "file_id": "1iwl6w1qrwSfX4OxAGaofbnxS5ZNIzEBL",
+  "patch_sha256": "5f9bbda8fde1b8f11f9a248a0f47e33199e0cc01660886effa98d1056b81ce56",
+  "base_sha": "d2b8ec36eeceddf92ad51bb490e93c90cdffc1ff",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Record verified TB134 trace-path full gate MATCH and handoff",
+  "commit_message": "Record TB134 independent review and freeze overlap definition",
   "retention_days": 14
 }
