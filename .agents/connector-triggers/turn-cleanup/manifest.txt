@@ -1,2 +1,0 @@
-# CB165 temporary trigger only
-.agents/connector-triggers/source-snapshot/cb165-20261118.txt
