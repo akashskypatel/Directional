@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — TB136 carrier occupancy helpers full gate (MATCH)
+
+- [Execution report](.agents/Directional/Architecture_M6_CP3_TB136_P13_Carrier_Occupancy_Helpers_Full_Gate_Execution_Report_20261118.md): 956/956 TB135 rows match under RA-257 S4, plus the new helper test PASS. Gate `14406791564` 953/954, census `14406826878` Cylinder PASS/288, BunnyRandom/Vase RED; 68 receipts byte-identical. No new semantic regression. No rebuild or package repair.
+- Next separately `M6-CP3-TB136-P13-CARRIER-OCCUPANCY-HELPERS-FULL-GATE-REV`. Stable 66/17/49, debt 1, deferred 81; CP2 491/491. No CP3/selector497/D0 promotion.
+
 ## 2026-11-18 UTC — CB159 carrier occupancy helpers (compile only)
 
 - [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB159_P13_Carrier_Occupancy_Helpers_Code_Build_Record_20261118.md): exact +162/-0 RA-257 patch, unwired carrier-occupancy helpers and one unit test. Source `18cc4a7d3e8ae43ce854c0edc834ab156156dcbf`, [compile run 44251239457](https://github.com/akashskypatel/Directional/actions/runs/44251239457), package `14405225071` SHA-256 `2e142b042d02b81e6626c40b03f2116628d017adf510a9c2ea7f96f9a8994e8c`. Eight GMP/GMPXX targets, 28/28 checksums, 371/371 source files, four frozen inputs; no runtime execution.
