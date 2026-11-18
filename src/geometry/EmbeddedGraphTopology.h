@@ -260,6 +260,19 @@ trace_segment_contact_parameter(const FieldAlignedCandidateTrace &trace,
                                 std::size_t segment,
                                 const FaceChartPoint &point);
 
+/**
+ * The exact source path segment `segment` of `trace` traverses. A segment
+ * without an edge transit is one face piece to its end. A segment with an edge
+ * transit is a face piece from its entry to the slide start, omitted when the
+ * two are the same point, then an edge piece along its outgoing carrier to the
+ * slide end. A terminal face contact on the last segment ends it on its face
+ * piece, so the slide is not traversed. Empty when the record is incomplete or
+ * inconsistent.
+ */
+[[nodiscard]] std::optional<authority::ExactSourcePath>
+exact_trace_segment_pieces(const FieldAlignedCandidateTrace &trace,
+                           std::size_t segment);
+
 /** Segment range [first, onePastLast) of the arc between two positions. */
 [[nodiscard]] std::pair<std::size_t, std::size_t>
 trace_cut_segment_range(const TraceCutPosition &first,

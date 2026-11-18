@@ -721,6 +721,65 @@ std::optional<authority::FieldExactRational> trace_segment_contact_parameter(
   return face_chart_segment_parameter(*entry, *exit, point);
 }
 
+std::optional<authority::ExactSourcePath> exact_trace_segment_pieces(
+    const FieldAlignedCandidateTrace &trace, const std::size_t segmentIndex) {
+  if (segmentIndex >= trace.segments.size()) return std::nullopt;
+  const FieldAlignedCandidateTraceSegment &segment = trace.segments[segmentIndex];
+  if (!segment.edgeTransitEntry.has_value() &&
+      !segment.edgeTransitExit.has_value()) {
+    return exact_trace_path(trace, segmentIndex, segmentIndex + 1U);
+  }
+  if (!segment.edgeTransitEntry.has_value() ||
+      !segment.edgeTransitExit.has_value() ||
+      segment.edgeTransitEntry->edge != segment.outgoingCarrier ||
+      segment.edgeTransitExit->edge != segment.outgoingCarrier) {
+    return std::nullopt;
+  }
+  const bool last = segmentIndex + 1U == trace.segments.size();
+  if (last && trace.terminalContact.has_value()) {
+    // A contact is published after its whole proposal is committed, so the
+    // record keeps the slide although the trace stops on the face piece.
+    const auto entry =
+        canonical_boundary_barycentric(segment.sourceFace, segment.entryPoint);
+    const auto slideStart = canonical_boundary_barycentric(
+        segment.sourceFace, *segment.edgeTransitEntry);
+    if (!entry.has_value() || !slideStart.has_value() ||
+        trace.terminalContact->sourceFace != segment.sourceFace ||
+        !face_chart_segment_parameter(*entry, *slideStart,
+                                      trace.terminalContact->barycentric)
+             .has_value()) {
+      return std::nullopt;
+    }
+    return exact_trace_path(trace, segmentIndex, segmentIndex + 1U);
+  }
+  const auto entry =
+      authority::canonical_exact_source_boundary_point(segment.entryPoint);
+  const auto slideStart =
+      authority::canonical_exact_source_boundary_point(*segment.edgeTransitEntry);
+  const auto slideEnd =
+      authority::canonical_exact_source_boundary_point(*segment.edgeTransitExit);
+  if (!entry.has_value() || !slideStart.has_value() || !slideEnd.has_value()) {
+    return std::nullopt;
+  }
+  if (last && trace.terminalPoint.has_value() &&
+      authority::canonical_exact_source_boundary_point(*trace.terminalPoint) !=
+          slideEnd) {
+    return std::nullopt;
+  }
+  authority::ExactSourcePath path;
+  if (*entry != *slideStart) {
+    path.push_back(authority::ExactSourceSupportPiece{
+        authority::SourceFaceInteriorSupport{segment.sourceFace}, *entry,
+        *slideStart});
+  }
+  path.push_back(authority::ExactSourceSupportPiece{
+      authority::SourceEdgeSupport{segment.outgoingCarrier}, *slideStart,
+      *slideEnd});
+  return authority::exact_source_path_is_canonical(path)
+             ? std::optional<authority::ExactSourcePath>{std::move(path)}
+             : std::nullopt;
+}
+
 std::pair<std::size_t, std::size_t> trace_cut_segment_range(
     const TraceCutPosition &first, const TraceCutPosition &second) {
   return {first.segment, second.parameter.has_value() ? second.segment + 1U
