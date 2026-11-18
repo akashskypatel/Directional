@@ -3762,6 +3762,23 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
                 << ',' << decision.outgoingCarrier.second().index()
                 << ") slideEnd=" << edgeTransit.sourceVertex->index() << '\n';
     }
+    // P13 (RA-260): every slide proposal, so a gate run shows which fixtures
+    // publish slide segments and whether each has a face piece before its
+    // slide (grazing) or starts on its carrier at a vertex (seed, vertex).
+    {
+      const auto &faceVertices = runtime.currentFace.vertices();
+      std::clog << "FieldAlignedCurveNetwork.slideProposal trace="
+                << trace.id.index() << " segment=" << trace.segments.size()
+                << " kind="
+                << (edgePortDeparture         ? "seed"
+                    : departure.has_value()   ? "vertex"
+                                              : "grazing")
+                << " face=(" << faceVertices[0].index() << ','
+                << faceVertices[1].index() << ',' << faceVertices[2].index()
+                << ") carrier=(" << decision.outgoingCarrier.first().index()
+                << ',' << decision.outgoingCarrier.second().index()
+                << ") slideEnd=" << edgeTransit.sourceVertex->index() << '\n';
+    }
     proposal.segment.edgeTransitEntry = decision.exitPoint;
     proposal.segment.edgeTransitExit = edgeTransit.exitPoint;
     proposal.terminalPoint = edgeTransit.exitPoint;
