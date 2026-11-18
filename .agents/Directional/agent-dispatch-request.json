@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb164-apply-v1",
-  "operation": "drive_apply",
-  "file_id": "17ItCD6d5-4TpRC7PKHhKG04aPKSnNSKt",
-  "patch_sha256": "7f9a48f23e53ccb1dacfc1b39bec236af65d8fce2b196a51f8f0d96550051443",
-  "base_sha": "bf87bb9de594a2d9ff430817ffce58b269b9ba04",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Add frozen production slide proposal receipt",
-  "mailbox_key": "m6-cp3-cb164-apply-v1",
-  "retention_days": 30
+  "request_id": "m6-cp3-cb164-compile-v1",
+  "operation": "compile",
+  "source_sha": "4d8ddfee7dfa8dc651406cfb1de816027c859df2",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb164-compile",
+  "mailbox_key": "m6-cp3-cb164-compile-v1"
 }
