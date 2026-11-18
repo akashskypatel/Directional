@@ -1,0 +1,2 @@
+# CB164 temporary source snapshot marker only
+.agents/connector-triggers/source-snapshot/cb164-20261118T151036Z.txt
