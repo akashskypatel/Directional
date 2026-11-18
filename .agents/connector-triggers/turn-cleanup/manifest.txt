@@ -1,2 +1,0 @@
-# CB161 temporary snapshot trigger only; preserve durable dispatcher and all workflows.
-.agents/connector-triggers/source-snapshot/cb161-20261118T1130Z.txt
