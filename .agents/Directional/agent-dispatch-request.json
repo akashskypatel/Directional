@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb157-compile-v1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb157-compile-v1",
-  "source_sha": "a8d1cc9603f9a556564f0b741692217ec6a791ef",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb157-compile"
+  "request_id": "m6-cp3-cb157-closeout-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb157-closeout-v1",
+  "file_id": "1jpUVkIQ-16ain5uJD_W04iLDtyLIHVpq",
+  "patch_sha256": "bcf5c1e6668d5249f777b125e242be5332531edc3a15375a1acd98a3e0c20195",
+  "base_sha": "ce93364c78cb143ef8b20deb22a2e44096fb810a",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "Record verified CB157 compile and authorized TB134 handoff",
+  "retention_days": 30
 }
