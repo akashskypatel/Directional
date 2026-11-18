@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — TB134 trace-path receipt full gate (MATCH)
+
+- [Execution report](.agents/Directional/Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Execution_Report_20261118.md): CB157 package `14389450751`, source `a8d1cc9603f9a556564f0b741692217ec6a791ef`. Gate `14390702505` 952/953; census `14391390784` Cylinder PASS/288, BunnyRandom/Vase RED; 956/956 MATCH under RA-255 S5; 66 sphere lines across 19 rows and two BunnyRandom lines, two ` path=` fields per receipt. Both postflight valid; accepted prefix 491/491. No new regression, geometry acceptance or promotion.
+- Next separately `M6-CP3-TB134-P13-TRACE-PATH-RECEIPT-FULL-GATE-REV` per RA-255 S5. Stable 66/17/49, debt 1, deferred 81; CP2 491/491.
+
 ## 2026-11-18 UTC — CB157 trace-path receipts (compile only)
 
 - [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB157_P13_Trace_Path_Receipt_Code_Build_Record_20261118.md): exact +50/-0 print-only delta in `EmbeddedGraphTopology.cpp`. Source `a8d1cc9603f9a556564f0b741692217ec6a791ef`, [compile run 44217327522](https://github.com/akashskypatel/Directional/actions/runs/44217327522), package `14389450751` SHA-256 `d67682c649eefda89612ca9543951f9410560d15e31836e97043b6058a17f8f8`. Eight GMP/GMPXX targets, 28/28 checksums, 371/371 source files, four frozen inputs unchanged; no runtime execution.

@@ -1,3 +1,7 @@
+## 2026-11-18 — TB134 trace-path receipt full gate MATCH (non-stable)
+
+[Execution report](Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Execution_Report_20261118.md): Gate `14390702505` 952/953; census `14391390784` Cylinder PASS/288, BunnyRandom/Vase RED; 956/956 MATCH under RA-255 S5; 66 sphere lines across 19 rows and two BunnyRandom lines, two ` path=` fields per receipt. Both postflight valid; accepted prefix 491/491. No new stable event. Sphere C5/O47 and BunnyRandom O48 remain open under RA-255; classify the first equal entry, transit kind and arrival order only in TB134-REV. Vase RED, row858 premise RED, row648 unreached unchanged. No new guard/geometry decision. Stable 66/17/49, debt 1, deferred 81.
+
 ## 2026-11-18 — RA-255 re-review of the TB133 Review (non-stable)
 
 [RA-255](Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md#ra-255--adversarial-re-review-of-this-review-2026-11-18-utc): MATCH upheld.

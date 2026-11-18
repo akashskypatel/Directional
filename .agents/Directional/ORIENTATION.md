@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-18, RA-255 re-review of TB133 Review):** 956/956 MATCH upheld, 952/953 gate, accepted 491/491. The sphere is a proven through-crossing at an exact point on edge (0,2) (C5/O47). BunnyRandom traces 43/15 are identical from the vertex-94 transit onward (O48). [RA-255](Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md#ra-255--adversarial-re-review-of-this-review-2026-11-18-utc).
+**Current currency (2026-11-18, TB134 execution MATCH; independent Review pending):** 956/956 MATCH upheld, 952/953 gate, accepted 491/491. The sphere is a proven through-crossing at an exact point on edge (0,2) (C5/O47). BunnyRandom traces 43/15 are identical from the vertex-94 transit onward (O48). [RA-255](Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md#ra-255--adversarial-re-review-of-this-review-2026-11-18-utc).
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Current M6-CP3 evidence (2026-11-18):** TB133 independent MATCH, 952/953 gate, 491/491 prefix, 858 permitted premise RED, 648 sphere assertions unreached. Cylinder PASS / BunnyRandom and Vase RED. Sphere transverse edge endpoint (C5/O47); BunnyRandom co-directional overlap across three terminal segments. [Review](Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md). No CP3 or D0 promotion.
+**Current M6-CP3 evidence (2026-11-18):** TB134 execution MATCH, 952/953 gate, 491/491 prefix, 858 permitted premise RED, 648 sphere assertions unreached. Cylinder PASS / BunnyRandom and Vase RED. Sphere transverse edge endpoint (C5/O47); BunnyRandom co-directional overlap across three terminal segments. [Review](Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md). No CP3 or D0 promotion.
 
 **M0–M5 are complete/closed; M6 is active at CP3.** Closure means the checkpoint's frozen criteria passed, **not** that representative output is production-ready.
 
@@ -45,14 +45,14 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB133 952/953 (membership 1,034), 956/956 MATCH. Cylinder PASS / BunnyRandom overlap RED / Vase completion RED. C5/O47 open; no CP3/selector497 promotion. [Review](Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md). |
+| **M6-CP3 — active** | TB134 952/953 (membership 1,034), 956/956 MATCH. Cylinder PASS / BunnyRandom overlap RED / Vase completion RED. C5/O47 open; no CP3/selector497 promotion. [Review](Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md). |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
 
 ## 4. Fixtures and witnesses
 
-**Current TB133 witnesses:** Cylinder PASS 288 quads. Sphere RED: traces 4/6 at one exact edge (0,2) endpoint, noncollinear in both faces, no shared events. BunnyRandom RED: nodes 220/222 claim trace82 at one position; terminating traces43/15 have three identical oriented nondegenerate terminal segments. Vase RED unchanged. [Review](Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md).
+**Current TB134 witnesses (same outcomes as TB133):** Cylinder PASS 288 quads. Sphere RED: traces 4/6 at one exact edge (0,2) endpoint, noncollinear in both faces, no shared events. BunnyRandom RED: nodes 220/222 claim trace82 at one position; terminating traces43/15 have three identical oriented nondegenerate terminal segments. Vase RED unchanged. [Review](Architecture_M6_CP3_TB133_P13_Same_Face_Segment_Pair_Receipt_Full_Gate_Independent_Review_20261118.md).
 
 **A3 exactness and the API display witness:** A3 branch topology (face gauge, barycentric derivatives, port order) is exact on the stored doubles (RA-180/RA-181); FMA and FMA-free builds agree byte for byte. Row 858 (`apicensus:19`) retains the +½-singularity vertex stop (RA-182) but its distinct sphere cut-graph face assertion is a permitted RED at :155 in TB131/TB132. Row952 PASS with the corrected exact witness and retained assertions. Exact directions widen A4 trace parameters (O15c; e.g. sphere_prescribed 1,531 of 4,096 bits, fail-closed), and P13 measures them.
 
@@ -103,7 +103,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-- **Current priority:** implementation `M6-CP3-CB157-P13-TRACE-PATH-RECEIPT` → TB134; Review track in parallel `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` (RA-255 S2: reuse the crossing seniority rule, exact edge-key detection, face/edge/vertex locus representations), then the TB134-REV overlap DEFN. No guessed cut, guard relaxation, coordinate merge, D12 change or CP3 promotion.
+- **Current priority:** TB134 execution MATCH; independent TB134-REV pending; Review track in parallel `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` (RA-255 S2: reuse the crossing seniority rule, exact edge-key detection, face/edge/vertex locus representations), then the TB134-REV overlap DEFN. No guessed cut, guard relaxation, coordinate merge, D12 change or CP3 promotion.
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).
