@@ -71,3 +71,85 @@ Exact next: `M6-CP3-CB162-P13-SLIDE-ARRIVAL-HELPER`, compile only. [RA-259 S4](A
 | Pushed to origin, branch in sync | Web connector: verify applied commit, changed paths and branch head via remote readback; `git status -sb` against actual origin is unavailable in source-only snapshot. No self-referential commit claim. |
 
 Procedure qualifications: initial source guidance reads preceded snapshot-mode selection and entry beacon; the first repository mutation was the entry beacon. Shell timer start followed startup by approximately one minute; bounded turn deadline is based on initial request, not timer start. Exact tool-call ledger and full mandatory start-policy review are not confirmed. The source-only snapshot cannot prove the historical rewrite-base checks from local Git; the local index is synthetic. No successor product work was started. These procedure gaps do not change the raw evidence comparison.
+
+## RA-260 — adversarial re-review of this Review (2026-11-18 UTC)
+
+### S0 — verdict
+
+MATCH, the narrow H3 closure and the CB162 authorization are upheld. Product source at HEAD equals CB161 (`git diff --quiet f14761715004d7ddc27e032698f6540ae1a9b0c4 HEAD -- src include tests`). The CB162/CB163 diffs and the TB139 manifest still hash to their frozen values, and CB162 → CB163 apply in sequence. The local `review_check.py boundary` reports ALL CHECKS PASSED, so this Review's snapshot-only failure was environmental. RA-260 did not re-open the archives (runtime-free). One defect (S1) widens what "H3 narrowly closed" leaves open. RA-260 writes the RA-257 S5.3 definition (S2) and adds a measuring receipt ahead of TB139 (S3).
+
+### S1 — defect H4: the published path of a grazing slide is a chord that was never traced
+
+CB161 fixed one reader of the segment record. Every reader that turns a segment into geometry still treats a sliding segment as one straight piece from `entryPoint` to `edgeTransitExit`, and none reads `edgeTransitEntry`:
+- `exact_trace_segment_end`, `exact_trace_path` and `exact_trace_path_between` (`EmbeddedGraphTopology.cpp:258–305, 730–770`), which emit a `SourceFaceInteriorSupport` piece;
+- `EmbeddedGraphTopology.cpp:1948, 2174`;
+- `GlobalTopologyPlan.cpp:260, 349`;
+- `SurfaceCutGraph.cpp:268`;
+- `FieldAlignedNetworkPolylines.cpp:94`.
+
+The only other readers are the classifier (:3090), the validator and a diagnostic print. Slides always end at a mesh vertex (:3748–3766). So for a grazing slide whose start lies strictly inside the carrier, the published path entry → v skips the slide start X: it cuts across the face instead of following entry → X → v. BunnyRandom has such slides (43:11, 43:13, 15:19; TB135, starts strictly inside (94,210)). Both O48 slides would be published as chords from different entries to v94, so the consumer's geometry would never show the overlap the producer detects. For departures the chord lies on the edge, but it is still typed as face-interior support.
+
+H4 is latent today: BunnyRandom stops at the trace-82 cut conflict and produces no output. It becomes live the moment O48 is wired, because trace 15 must end inside its slide. Owner: S2.1. Recorded in the tracker as an open hypothesis.
+
+### S2 — RA-257 S5.3 defined: a contact locus inside a slide or at an entry
+
+1. **Pieces.** Segment k has one decomposition, read by every geometry consumer in S1:
+   - the face piece [entryPoint, edgeTransitEntry] on `SourceFaceInteriorSupport{sourceFace}`, omitted when the two are the same point (a departure, `field_aligned_segment_departs_along_carrier`);
+   - the slide piece [edgeTransitEntry, edgeTransitExit] on `SourceEdgeSupport{outgoingCarrier}`, built with the existing `exact_edge_interval_path`.
+
+   A segment without a slide keeps its single face piece to its end.
+2. **Position.** `TraceCutPosition{segment, piece ∈ {Face, Slide}, parameter}`, ordered lexicographically.
+   - `parameter` empty means the start of the piece. A value in (0,1) is the fraction along the piece in the direction of travel. For the slide piece it runs from `edgeTransitEntry` to `edgeTransitExit`, not in the carrier's canonical orientation.
+   - `{k, Face, ∅}` is the segment boundary, as today, so every existing position stays the same and keeps its order.
+   - A departure has no face piece, so its slide start is `{k, Face, ∅}`; `{k, Slide, ∅}` exists only after a non-empty face piece.
+3. **Terminal record.** `FieldAlignedTerminalContact` gains `std::optional<authority::FieldBoundaryPoint> carrierLocus`. It is set if and only if `first_field_aligned_carrier_contact` (CB163) produced the contact.
+   - `sourceFace`/`barycentric` hold the same point in the moving trace's last segment's face, so the existing face checks still hold.
+   - The digest hashes `carrierLocus` only when it is present, so existing digests are unchanged.
+   - Moving entry contact (`movingInSlide=false`): the proposal is not committed, and the trace ends at its previous segment's end, in that segment's face.
+   - Moving slide contact: the proposal is committed, and the trace ends at the locus inside its slide piece.
+4. **Struck position.** The wall's cut comes from `carrierLocus` and the struck segment, never from a face chart, because the wall may lie in the other face.
+   - `wallInSlide=false` (the wall's entry) gives `{k, Face, ∅}`.
+   - Inside the wall's slide it gives `{k, Slide, fraction}`, or `{k, Slide, ∅}` at the slide start.
+5. **Node.** A carrier contact is an edge node `{carrier, parameter, terminating, interior}`, not a `FaceContactNode`, which is face-interior only (`EmbeddedGraphTopology.h:278–292`). On these events `sourceEdge` is the locus. `is_face_contact_event` excludes them.
+6. **Vertex.** Parameters 0 and 1 stay excluded (RA-259 S3.3).
+7. **O48 prediction.** Trace 15 ends at `{19, Slide, 0.71836873940881…}`, where the fraction is (0.93470265131543506 − X43)/0.93470265131543506. Trace 43 is cut at `{13, Slide, ∅}`, its slide start X43.
+
+   **Sphere O47.** The contact is at both traces' entries. The later trace does not commit its proposal and ends at its previous segment's end. The earlier trace is cut at its segment boundary `{k, Face, ∅}`, which is the existing position for an edge crossing.
+
+### S3 — CB164 slide-proposal receipt (frozen) and the TB139 re-freeze
+
+The S2.1 switch changes every published slide, including the support type of departures. The project has measured slides only on contact-receipt lines (TB135: zero on the sphere rows, three in BunnyRandom) and the 48 seed departures. So the Review cannot yet predict which gate rows or Cylinder outputs the switch would change. Measure first (RA-222, RA-228).
+
+- **CB164.** `.agents/Directional/Architecture_M6_CP3_CB164_P13_Slide_Proposal_Receipt_Exact.diff`, SHA-256 `599524c449eb04b4387ac55667ad63bfe186a70e14f03af375390a2fabecd6a5`, 28 lines, numstat `17 0 src/geometry/SurfaceCellTracing.cpp`. The preimage is the CB163 postimage.
+  - It prints `FieldAlignedCurveNetwork.slideProposal trace= segment= kind=seed|vertex|grazing face= carrier= slideEnd=` for every production slide proposal, immediately after the existing `edgePortDeparture` line.
+  - It is print only: no stream-state change and no control-flow change.
+  - The diagnostic contact-census producer `legacy_canonical_field_aligned_traces` (:2784) is excluded on purpose. It runs only when a census pointer is passed, and that branch returns at :5161, before production tracing.
+  - A Haiku read-only audit confirmed H4 in all the listed consumers and confirmed CB164's kind predicate, its scope, the seed/`edgePortDeparture` count identity and that the patch's context matches.
+  - `-fsyntax-only` passes with 43 warnings (unchanged) and 0 errors.
+  - Compile only. Routes: `M6-CP3-PLAN-P13-SLIDE-CONTACT-HELPERS-STOP` / `M6-CP3-CB164A-P13-SLIDE-PROPOSAL-RECEIPT-ORCH`.
+- **TB139 (replaces RA-259 S5 MATCH 2 and 4).**
+  - **Package and inputs.** The package is CB164 (CB161–CB164). The manifest is unchanged: `96766f76…`, 958 rows, membership 1,039.
+  - **N5:** delete whole lines that begin `FieldAlignedCurveNetwork.slideProposal`. After N1–N5, gate rows 1–956 and the census must equal TB138, and all other receipts must be byte-identical. Rows 957 and 958 must PASS.
+  - **Identity, every row:** the `kind=seed` lines equal the `edgePortDeparture` lines in count and order, giving 48 on BunnyRandom.
+  - **Prediction, BunnyRandom:** `kind=grazing` lines exist for 43:11, 43:13 and 15:19, carrier (94,210) for the latter two. A missing prediction routes to STOP.
+  - **Publish the counts:** a per-row table of slideProposal counts by kind.
+
+### S4 — turn sequence
+
+- **Implementation track:**
+  1. CB162 (compile, EXACT NEXT).
+  2. CB163 (compile).
+  3. CB164 (compile).
+  4. `M6-CP3-TB139-P13-SLIDE-CONTACT-HELPERS-FULL-GATE-EXEC` (S3).
+  5. TB139-REV.
+  6. CB165: the unwired S2.1 piece helper plus a test.
+  7. CB166: the consumer switch to pieces, staged by the TB139 counts, then its TB.
+  8. CB167: the S2.2/S2.3 record and position fields, unwired.
+  9. CB168: carrier-contact wiring (producer loops, publication, edge node; it deletes the CB160 receipt), then its TB.
+- **Review track:** TB139-REV reads the counts and freezes CB165 and the CB166 staging. `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` is discharged by S2.
+- **Held:** FC-6, TERMINAL-CUT-OUTCOME and the row-858 fix. **Parked:** CB145. D11=A and D12=A are unchanged.
+
+### S5 — lessons
+
+- When a recomputation defect is closed at one reader, grep every reader of the same record for the same shortcut before calling the defect closed. H3 was fixed in the classifier, but the same chord survives in seven geometry consumers.
+- Before switching a representation that every published segment of a kind passes through, count that kind per fixture. A contact-line census is not a census of the kind.

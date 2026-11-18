@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — RA-260 re-review of the TB138 Review
+
+- [RA-260](.agents/Directional/Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Full_Gate_Independent_Review_20261118.md#ra-260--adversarial-re-review-of-this-review-2026-11-18-utc): MATCH, the narrow H3 closure and CB162 are upheld. H4 opened. RA-257 S5.3 is defined (slide/face pieces, `TraceCutPosition` piece, `carrierLocus`, edge contact node), which discharges the EDGE-ENDPOINT-CONTACT DEFN.
+- Frozen `M6-CP3-CB164-P13-SLIDE-PROPOSAL-RECEIPT` (SHA-256 `599524c4…`, +17 .cpp, print only). TB139 is re-frozen on the CB164 package with N5, a seed identity and a grazing prediction. Exact next is still CB162.
+
 ## 2026-11-18 UTC — TB138 independent Review (MATCH upheld; H3 narrowly closed)
 
 - [Independent review](.agents/Directional/Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Full_Gate_Independent_Review_20261118.md): 3,856 exact result checksums; 958/958 prior rows MATCH under N1–N4; row 956 PASS; independent rational ordinary/departure/grazing checks and six comparison controls. All 68 receipts, 48 departure lines and 491/491 prefix retained. Gate 955/956; census PASS/RED/RED unchanged. H3 departure-chord defect closed narrowly. No product runtime, source, test or selector mutation; no CP3 promotion.

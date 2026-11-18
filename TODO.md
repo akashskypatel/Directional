@@ -1,4 +1,21 @@
-## CURRENT — TB138 independent MATCH; slide-arrival helper next (2026-11-18 UTC)
+## CURRENT — RA-260: TB138 Review upheld; H4 opened; S5.3 defined; CB162 next (2026-11-18 UTC)
+
+[RA-260](.agents/Directional/Architecture_M6_CP3_TB138_P13_Departure_Chord_Classifier_Switch_Full_Gate_Independent_Review_20261118.md#ra-260--adversarial-re-review-of-this-review-2026-11-18-utc) upholds the TB138 Review's MATCH, the narrow H3 closure and the CB162 authorization (source = CB161; CB162 → CB163 apply; hashes unchanged; boundary check passes locally). Findings:
+- **H4 (S1).** No geometry consumer reads `edgeTransitEntry`. A grazing slide is published as entry → slide end, which skips the slide start (`EmbeddedGraphTopology.cpp:258–305, 730–770, 1948, 2174`; `GlobalTopologyPlan.cpp:260, 349`; `SurfaceCutGraph.cpp:268`; polylines :94). Latent until O48 wiring; BunnyRandom has three such slides.
+- **S5.3 defined (S2).** Face piece plus slide piece (edge support); `TraceCutPosition{segment, piece, parameter}`; `carrierLocus` on the terminal record; struck position from the locus; edge contact node. Prediction: trace 15 ends at `{19, Slide, 0.71837}`, and trace 43 is cut at `{13, Slide, ∅}`.
+- **Measure first (S3).** CB164 slide-proposal receipt, then TB139 re-frozen with N5, a seed identity and a grazing prediction.
+
+Turn sequence:
+- [x] RA-260 re-review (Review): H4 opened; S5.3 defined; EDGE-ENDPOINT-CONTACT DEFN discharged; CB164 frozen; TB139 re-frozen.
+- [ ] **EXACT NEXT (Code + Build, compile only):** `M6-CP3-CB162-P13-SLIDE-ARRIVAL-HELPER`: `.agents/Directional/Architecture_M6_CP3_CB162_P13_Slide_Arrival_Helper_Exact.diff`, SHA-256 `1a3cbb1a74dd4d071e29006b49f379b3af053a3fcc71f17609d2612c5efcb853`, 139 lines, `12 0` header, `32 0` .cpp, `65 0` tests. Precheck: `git diff --quiet f14761715004d7ddc27e032698f6540ae1a9b0c4 HEAD -- src include tests`.
+- [ ] (Code + Build, compile only) `M6-CP3-CB163-P13-CARRIER-CONTACT-HELPER`: SHA-256 `3a7f96f20eb9f9f6d8af825b7649d7bd603baa5b4007a639ceb60f9a918e67a8`, 175 lines; preimage = CB162 postimage.
+- [ ] (Code + Build, compile only) `M6-CP3-CB164-P13-SLIDE-PROPOSAL-RECEIPT`: `.agents/Directional/Architecture_M6_CP3_CB164_P13_Slide_Proposal_Receipt_Exact.diff`, SHA-256 `599524c449eb04b4387ac55667ad63bfe186a70e14f03af375390a2fabecd6a5`, 28 lines, `17 0` SurfaceCellTracing.cpp; preimage = CB163 postimage. Routes: `M6-CP3-PLAN-P13-SLIDE-CONTACT-HELPERS-STOP` / `M6-CP3-CB164A-P13-SLIDE-PROPOSAL-RECEIPT-ORCH`.
+- [ ] (Test + Benchmark) `M6-CP3-TB139-P13-SLIDE-CONTACT-HELPERS-FULL-GATE-EXEC` on the CB164 package. Manifest `96766f76…` (958 rows, membership 1,039) unchanged. MATCH per RA-260 S3: after N1–N5, rows 1–956 and the census equal TB138; other receipts byte-identical; rows 957/958 PASS; seed lines = edgePortDeparture lines per row (48 on BunnyRandom); grazing lines exist for 43:11, 43:13, 15:19; publish per-row counts by kind.
+- [ ] (Review) TB139-REV: reads the counts and freezes CB165 (the unwired piece helper) and the CB166 staging.
+- [ ] Then: CB165 → CB166 consumer piece switch + TB → CB167 record/position fields (unwired) → CB168 carrier-contact wiring + TB (deletes the CB160 receipt).
+- [ ] Held: FC-6, terminal-cut outcome, row858 fix. Parked CB145. D11=A, D12=A unchanged; stable 66/17/49, debt 1, deferred 81; CP2 491/491; no promotion.
+
+## Historical checkpoint — TB138 independent MATCH; slide-arrival helper next (2026-11-18 UTC)
 
 [RA-259](.agents/Directional/Architecture_M6_CP3_TB137_P13_Departure_Chord_Crossing_Receipt_Full_Gate_Independent_Review_20261118.md#ra-259--adversarial-re-review-of-this-review-2026-11-18-utc) upholds the TB137 Review's MATCH and accepts CB161 (Haiku re-derived the field branches and the fail-before/pass-after behaviour). It finds:
 - **Dead receipt (S2.1).** After CB161 a departure piece is a point, so CB160's receipt cannot fire. TB138's "zero crossing lines" criterion therefore holds by construction; the real tests are row 956 and the equality. The slide-contact wiring CB deletes the receipt.
@@ -12,7 +29,7 @@ Turn sequence:
 - [ ] **EXACT NEXT (Code + Build, compile only):** `M6-CP3-CB162-P13-SLIDE-ARRIVAL-HELPER`: `.agents/Directional/Architecture_M6_CP3_CB162_P13_Slide_Arrival_Helper_Exact.diff`, SHA-256 `1a3cbb1a74dd4d071e29006b49f379b3af053a3fcc71f17609d2612c5efcb853`, 139 lines, `12 0` header, `32 0` .cpp, `65 0` tests. Precheck: product source = CB160 + CB161 exactly.
 - [ ] (Code + Build, compile only) `M6-CP3-CB163-P13-CARRIER-CONTACT-HELPER`: `.agents/Directional/Architecture_M6_CP3_CB163_P13_Carrier_Contact_Helper_Exact.diff`, SHA-256 `3a7f96f20eb9f9f6d8af825b7649d7bd603baa5b4007a639ceb60f9a918e67a8`, 175 lines, `20 0` header, `44 0` .cpp, `81 0` tests. Precheck: product source = CB160 + CB161 + CB162 exactly. Mismatch for both: `M6-CP3-PLAN-P13-SLIDE-CONTACT-HELPERS-STOP`; infrastructure `M6-CP3-CB162A-P13-SLIDE-CONTACT-HELPERS-ORCH`.
 - [ ] (Test + Benchmark) `M6-CP3-TB139-P13-SLIDE-CONTACT-HELPERS-FULL-GATE-EXEC`: manifest `.agents/Directional/gates/Architecture_M6_TB139_P13_Slide_Arrival_And_Carrier_Contact_Helpers_Full_Gate_Case_Manifest.tsv` (`96766f760965c01216cbe94f92f67eefcfc40bf78e17dbcd5379bee7556f2d29`, 958 rows, membership 1,039); census, deferred and harness unchanged. MATCH: rows 1–956 and the census equal TB138 under N1–N4, receipts byte-identical, rows 957/958 PASS. Then `…-REV`.
-- [ ] (Review, parallel) `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT`, narrowed to RA-257 S5.3: Contact-event, terminal-record and `TraceCutPosition` representation of a locus inside a slide or at an entry. It freezes the slide-contact wiring CB, which also deletes the CB160 receipt.
+- [x] ~~(Review, parallel)~~ discharged by RA-260 S2: `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT`, narrowed to RA-257 S5.3: Contact-event, terminal-record and `TraceCutPosition` representation of a locus inside a slide or at an entry. It freezes the slide-contact wiring CB, which also deletes the CB160 receipt.
 - [ ] (Code + Build, then Test + Benchmark) slide-contact wiring CB + TB, frozen by that DEFN.
 - [ ] Held: FC-6, terminal-cut outcome, row858 fix. Parked CB145. D11=A, D12=A unchanged; stable 66/17/49, debt 1, deferred 81; CP2 491/491; no promotion.
 
