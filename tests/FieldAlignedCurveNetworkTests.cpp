@@ -18917,3 +18917,83 @@ TEST(FaceContactNode, SplitsAStruckSegmentAtAnExactInteriorContactPoint) {
                directional::geometry::rotation_system_inconsistency_reason_name(
                    RotationSystemInconsistencyReason::FaceContactRayUnsupported));
 }
+
+TEST(FieldAlignedCarrierOccupancy,
+     FirstSharedParameterFollowsTheMovingTraceAlongOneCarrier) {
+  using directional::authority::FieldBranch;
+  using directional::geometry::FieldAlignedCandidateTraceSegment;
+  using directional::geometry::surface_cell_tracing_detail::
+      FieldAlignedCarrierOccupancy;
+  using directional::geometry::surface_cell_tracing_detail::
+      field_aligned_segment_entry_occupancy;
+  using directional::geometry::surface_cell_tracing_detail::
+      field_aligned_segment_slide_occupancy;
+  using directional::geometry::surface_cell_tracing_detail::
+      first_shared_carrier_parameter;
+  const auto carrier = topology_edge(0, 2, 4U);
+  const auto other = topology_edge(0, 1, 4U);
+  const auto occupancy = [&](const int fromNumerator, const int toNumerator) {
+    return FieldAlignedCarrierOccupancy{carrier, exact_ratio(fromNumerator, 10),
+                                        exact_ratio(toNumerator, 10)};
+  };
+
+  // Both slides run toward carrier.first(), the later one starting farther
+  // out: the first shared point is the inner slide's start, not the vertex.
+  EXPECT_EQ(first_shared_carrier_parameter(occupancy(9, 0), occupancy(3, 0)),
+            exact_ratio(3, 10));
+  EXPECT_EQ(first_shared_carrier_parameter(occupancy(3, 0), occupancy(9, 0)),
+            exact_ratio(3, 10));
+  // Ascending moving trace against an ascending and a descending wall.
+  EXPECT_EQ(first_shared_carrier_parameter(occupancy(1, 8), occupancy(5, 10)),
+            exact_ratio(5, 10));
+  EXPECT_EQ(first_shared_carrier_parameter(occupancy(1, 10), occupancy(7, 2)),
+            exact_ratio(2, 10));
+  // A crossing at the same exact point, and a wall point touching the end of
+  // the moving slide.
+  EXPECT_EQ(first_shared_carrier_parameter(occupancy(4, 4), occupancy(4, 4)),
+            exact_ratio(4, 10));
+  EXPECT_EQ(first_shared_carrier_parameter(occupancy(9, 5), occupancy(5, 5)),
+            exact_ratio(5, 10));
+  // Near misses: disjoint by one hundredth, distinct points, other carrier.
+  EXPECT_FALSE(first_shared_carrier_parameter(
+                   occupancy(9, 5),
+                   FieldAlignedCarrierOccupancy{carrier, exact_ratio(49, 100),
+                                                exact_ratio(0, 1)})
+                   .has_value());
+  EXPECT_FALSE(first_shared_carrier_parameter(
+                   occupancy(4, 4),
+                   FieldAlignedCarrierOccupancy{carrier, exact_ratio(41, 100),
+                                                exact_ratio(41, 100)})
+                   .has_value());
+  EXPECT_FALSE(first_shared_carrier_parameter(
+                   occupancy(9, 0),
+                   FieldAlignedCarrierOccupancy{other, exact_ratio(3, 10),
+                                                exact_ratio(0, 1)})
+                   .has_value());
+
+  const auto face = topology_face(0, 1, 2, 4U);
+  const auto branch = FieldBranch::from_integer(0);
+  const FieldAlignedCandidateTraceSegment crossing(
+      face, branch, boundary_point(other, 1, 3), other, carrier, std::nullopt);
+  EXPECT_EQ(field_aligned_segment_entry_occupancy(crossing),
+            (FieldAlignedCarrierOccupancy{other, exact_ratio(1, 3),
+                                          exact_ratio(1, 3)}));
+  EXPECT_FALSE(field_aligned_segment_slide_occupancy(crossing).has_value());
+
+  FieldAlignedCandidateTraceSegment slide = crossing;
+  slide.edgeTransitEntry = boundary_point(carrier, 3, 10);
+  slide.edgeTransitExit = boundary_point(carrier, 0, 1);
+  EXPECT_EQ(field_aligned_segment_slide_occupancy(slide), occupancy(3, 0));
+
+  FieldAlignedCandidateTraceSegment exitOnly = crossing;
+  exitOnly.edgeTransitExit = boundary_point(carrier, 0, 1);
+  EXPECT_FALSE(field_aligned_segment_slide_occupancy(exitOnly).has_value());
+  FieldAlignedCandidateTraceSegment offCarrier = slide;
+  offCarrier.edgeTransitEntry = boundary_point(other, 1, 2);
+  EXPECT_FALSE(field_aligned_segment_slide_occupancy(offCarrier).has_value());
+
+  const FieldAlignedCandidateTraceSegment vertexSeed(
+      face, branch, boundary_point(other, 0, 1), std::nullopt, carrier,
+      std::nullopt);
+  EXPECT_FALSE(field_aligned_segment_entry_occupancy(vertexSeed).has_value());
+}

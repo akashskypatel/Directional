@@ -1298,6 +1298,37 @@ diagnose_finalize_field_aligned_events(
     const authority::FieldBranchTopology &topology,
     FieldAlignedCurveNetworkCandidate &candidate);
 
+// Where a trace lies on one source edge: exact parameters measured from
+// carrier.first(), in the trace's direction of travel. `from` is where the
+// trace reaches the carrier and `to` where it leaves it; a transverse crossing
+// occupies a single point (from == to).
+struct FieldAlignedCarrierOccupancy {
+  authority::SourceEdgeTopologyKey carrier;
+  authority::FieldExactRational from;
+  authority::FieldExactRational to;
+
+  auto operator<=>(const FieldAlignedCarrierOccupancy &) const = default;
+};
+
+// The first parameter met while walking `moving` from `from` to `to` that
+// `wall` also occupies (closed intervals). Empty when the carriers differ or
+// the occupancies are disjoint.
+[[nodiscard]] std::optional<authority::FieldExactRational>
+first_shared_carrier_parameter(const FieldAlignedCarrierOccupancy &moving,
+                               const FieldAlignedCarrierOccupancy &wall);
+
+// The point where the segment crosses its incoming carrier. Empty for a
+// segment that does not enter through an edge crossing.
+[[nodiscard]] std::optional<FieldAlignedCarrierOccupancy>
+field_aligned_segment_entry_occupancy(
+    const FieldAlignedCandidateTraceSegment &segment);
+
+// The segment's slide along its outgoing carrier, from edgeTransitEntry to
+// edgeTransitExit. Empty for a segment without a recorded slide.
+[[nodiscard]] std::optional<FieldAlignedCarrierOccupancy>
+field_aligned_segment_slide_occupancy(
+    const FieldAlignedCandidateTraceSegment &segment);
+
 } // namespace surface_cell_tracing_detail
 
 struct SurfaceTraceSeed {

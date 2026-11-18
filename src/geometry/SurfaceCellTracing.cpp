@@ -5510,6 +5510,57 @@ diagnose_finalize_field_aligned_events(
   return finalize_field_aligned_events(topology, candidate);
 }
 
+std::optional<authority::FieldExactRational>
+first_shared_carrier_parameter(const FieldAlignedCarrierOccupancy &moving,
+                               const FieldAlignedCarrierOccupancy &wall) {
+  if (moving.carrier != wall.carrier) return std::nullopt;
+  const bool wallAscending = wall.from <= wall.to;
+  const authority::FieldExactRational &wallLow =
+      wallAscending ? wall.from : wall.to;
+  const authority::FieldExactRational &wallHigh =
+      wallAscending ? wall.to : wall.from;
+  if (moving.from <= moving.to) {
+    const authority::FieldExactRational first =
+        moving.from < wallLow ? wallLow : moving.from;
+    const authority::FieldExactRational &last =
+        moving.to < wallHigh ? moving.to : wallHigh;
+    if (last < first) return std::nullopt;
+    return first;
+  }
+  const authority::FieldExactRational first =
+      wallHigh < moving.from ? wallHigh : moving.from;
+  const authority::FieldExactRational &last =
+      wallLow < moving.to ? moving.to : wallLow;
+  if (first < last) return std::nullopt;
+  return first;
+}
+
+std::optional<FieldAlignedCarrierOccupancy>
+field_aligned_segment_entry_occupancy(
+    const FieldAlignedCandidateTraceSegment &segment) {
+  if (!segment.incomingCarrier.has_value() ||
+      segment.entryPoint.edge != *segment.incomingCarrier) {
+    return std::nullopt;
+  }
+  return FieldAlignedCarrierOccupancy{*segment.incomingCarrier,
+                                      segment.entryPoint.parameter.value,
+                                      segment.entryPoint.parameter.value};
+}
+
+std::optional<FieldAlignedCarrierOccupancy>
+field_aligned_segment_slide_occupancy(
+    const FieldAlignedCandidateTraceSegment &segment) {
+  if (!segment.edgeTransitEntry.has_value() ||
+      !segment.edgeTransitExit.has_value() ||
+      segment.edgeTransitEntry->edge != segment.outgoingCarrier ||
+      segment.edgeTransitExit->edge != segment.outgoingCarrier) {
+    return std::nullopt;
+  }
+  return FieldAlignedCarrierOccupancy{segment.outgoingCarrier,
+                                      segment.edgeTransitEntry->parameter.value,
+                                      segment.edgeTransitExit->parameter.value};
+}
+
 std::optional<FieldAlignedArrivalMeasure>
 field_aligned_filtered_arrival_measure(
     const TriMesh &sourceMesh,
