@@ -61,3 +61,76 @@ All four raw ZIPs were recovered from the verified EXEC evidence archive and che
 | Pushed to origin, branch in sync | Web connector: validate patch application and remote branch postimages, then cleanup and final STATUS; no local clone/upstream to compare. Final verification recorded outside this patch. |
 
 Procedure limitations: initial direct guidance reads preceded snapshot-mode selection; full mandatory policy reading was not confirmed at entry. Local timer used shell rather than Python. Source snapshot has no historical Git objects; boundary history checks cannot be certified from the synthetic local index. Tool ledger incomplete. No acceptance claim rests on these omissions.
+
+## RA-258 — adversarial re-review of this Review (2026-11-18 UTC)
+
+### S0 — verdict
+
+MATCH upheld. Product source at HEAD equals CB159 (`git diff --quiet 18cc4a7d3e8ae43ce854c0edc834ab156156dcbf HEAD -- src include tests`). The archive hashes and row comparisons are taken from this Review and the EXEC report; RA-258 did not re-open the archives (runtime-free). The Review's non-vacuity claim for row 954 holds: each direction branch, the closed-interval endpoint and the carrier test have a case that fails if that part is wrong. Two defects follow.
+
+### S1 — routing skipped the first Review-track item and left the implementation agent idle again
+
+RA-257 S6 ordered the Review track as: EDGE-ENDPOINT-CONTACT (H3 receipt first, S5.1), then TB136-REV, then OPPOSING-TRACE-OVERLAP (S5.2). The Review jumped to S5.2 and restated "H3 measurement first" as prose with no frozen turn (RA-225: a prose-only next turn is either withdrawn or frozen). The H3 receipt needs no ownership decision, so it is implementation work that could run now. RA-258 freezes it (S3).
+
+### S2 — H3 is wider than RA-257 stated, and the switch's whole effect is one predicate
+
+- **Both loops, both sides.** The pending-vs-pending loop (`SurfaceCellTracing.cpp:4346`) calls the classifier with no exit override. The wall loop (:4414) overrides only a wall's terminal contact. So a *moving* departure proposal also contributes a recomputed chord, not only stored walls.
+- **What the departure set is.** The segment records no dispatch flag, and `entryPoint` comes from `field_boundary_point_at_vertex` (some edge of the face through the vertex), while `edgeTransitEntry` is `{carrier, 0|1}`. The two are the same point under different edge keys. So the set is defined geometrically: the slide start's barycentric coordinates equal the entry's (a zero-length face piece).
+- **Non-departure slides are unaffected by a switch.** For a slide entered mid-edge, the recomputation is the same call with the same face, branch and entry as the traced decision (:3577–3582 vs :3097), so it returns the stored `edgeTransitEntry` exactly.
+- **The switch's consumer-visible delta.** Both consumers read only `ProperCrossing` (:4349, :4417). A zero-length first piece makes both `orient(a,a,·)` zero, so `ProperCrossing` is impossible. An `Unevaluated` that becomes `Disjoint` or `EndpointTouch` is discarded either way. Switching the classifier to the stored exit therefore changes exactly the `ProperCrossing`s that involve a departure segment, and nothing else. The receipt counts exactly those (RA-229: gate a switch on the consumer's own predicate).
+
+### S3 — CB160 (frozen)
+
+- **Patch.** `.agents/Directional/Architecture_M6_CP3_CB160_P13_Departure_Chord_Crossing_Receipt_Exact.diff`, SHA-256 `d6b045aff9e489fd7428bd60de76a3e0e30935d5a14628c8059636fdc625823d`, 155 lines. Numstat: `6 0` `SurfaceCellTracing.h`, `50 0` `SurfaceCellTracing.cpp`, `48 0` `FieldAlignedCurveNetworkTests.cpp`.
+- **What it adds.**
+  - `surface_cell_tracing_detail::field_aligned_segment_departs_along_carrier(segment)`: true iff `edgeTransitEntry` is set and its barycentric coordinates in `sourceFace` equal the entry's.
+  - One `std::clog` receipt, printed in both contact loops right after a `ProperCrossing` is found and only if either segment departs along its carrier: `FieldAlignedCurveNetwork.departureChordCrossing pending=<0|1> first=<trace>:<segment> second=<trace>:<segment> face=(a,b,c) departing=<first|second|both> secondExit=<recomputed|terminalContact>`. A proposal's segment index is `trace.segments.size()`. No control-flow or state change.
+- **Unit test.** `FieldAlignedCarrierOccupancy.DepartureAlongCarrierMeansTheSlideStartsAtTheEntryPoint`. True cases: a vertex entered on edge (0,1) and left along carrier (0,2), which is the same point under two keys; the same at the carrier's second endpoint, entered on (1,2); and an equal interior point on the same key. False cases: a grazing slide entered mid-edge, a slide starting at the carrier's far end, an interior point 1/100 away, and no slide.
+- **Checks.**
+  - Precheck: `git diff --quiet 18cc4a7d3e8ae43ce854c0edc834ab156156dcbf HEAD -- src include tests`.
+  - `git apply --check` passes.
+  - `-fsyntax-only -Wall -Wextra -DUSE_GMP_ENABLED` passes on both files, with warning counts unchanged from HEAD (43 and 42).
+  - No test captures `std::clog`.
+  - A Haiku read-only audit hand-evaluated every expectation (all PASS) and confirmed the patch is additive and behaviour-neutral. It also confirmed that index printing matches the queue events, that `wallTerminalContact` is in scope, that no test captures `std::clog`, and that a grazing slide cannot satisfy the predicate (an exit equal to the entry is rejected at :649–650). Its two notes are applied in the frozen diff: the header comment now states the coordinate comparison exactly, and there is a positive case at `carrier.second()`. The predicate deliberately does not require `edgeTransitEntry.edge == outgoingCarrier`, because it is geometric. Cost: exact barycentric conversion only on ProperCrossings.
+
+### S4 — TB137 criteria (frozen)
+
+- **Package.** CB160.
+- **Gate manifest.** `gates/Architecture_M6_TB137_P13_Departure_Chord_Crossing_Receipt_Full_Gate_Case_Manifest.tsv`, SHA-256 `46200a6042923619d6bb5d5216f62ff6ff1ec1944e2651b040bfabfa04dd9141`. It is the TB136 manifest `dac17a50…` byte for byte, plus row 955 (`ra258:departure-along-carrier-predicate`, the test above, `directional_surface_cell_producer_tests`, PASS). `SELF_CHECK_PASS cases=955 deferred=81`; membership 1,036.
+- **Unchanged inputs.** Census `3af1dc0d…`, deferred `fd433f54…`, harness `78b8002c…`.
+- **MATCH** requires all of the following:
+  1. Gate rows 1–954 and the 3 census rows have the same ledger fields as TB136 (gate `14406791564`, census `14406826878`). Logs are equal under N1–N4 plus **N5**: delete lines that begin `FieldAlignedCurveNetwork.departureChordCrossing ` before comparing, and nothing else.
+  2. Every other receipt, including ` slide=` and ` path=`, is byte-identical.
+  3. Row 955 is PASS.
+  4. Nothing else differs.
+- **Measurement to report.** Per row and per census fixture:
+  - the count of `departureChordCrossing` lines and the set of distinct lines;
+  - the count of existing `FieldAlignedCurveNetwork.edgePortDeparture` lines, as the denominator of rows that depart at all.
+- **No count is predicted.** The count is the unknown being measured. By construction each line names at least one departing segment.
+- **Routes.** Mismatch: `M6-CP3-PLAN-P13-DEPARTURE-CHORD-RECEIPT-STOP`. Infrastructure: `M6-CP3-CB160A-P13-DEPARTURE-CHORD-RECEIPT-ORCH`.
+
+### S5 — what TB137 decides
+
+- **Zero lines gate-wide and in the census.** TB137-REV freezes CB161: `field_aligned_segment_exit_point` returns `edgeTransitEntry` when it is set. That switch is neutral on every measured row by S2. Before freezing it:
+  - grep the accepted tests that call `classify_field_aligned_segment_contact` with slide segments (RA-217);
+  - add a unit test that fails before the switch and passes after: a departure segment against a wall crossing its old chord.
+  - TB138 is then an equality gate.
+- **Any lines.** The phantom crossings were doing work on those rows. Do not switch alone: the Review reads the rows, and the switch ships together with the S5.2 slide-piece contact that replaces them, as one staged helpers-then-wiring pair.
+
+### S6 — turn sequence
+
+- **Implementation track:**
+  1. `M6-CP3-CB160-P13-DEPARTURE-CHORD-CROSSING-RECEIPT` (compile only).
+  2. `M6-CP3-TB137-P13-DEPARTURE-CHORD-CROSSING-RECEIPT-FULL-GATE-EXEC`.
+  3. CB161 (switch) or the S5.2-coupled pair, per S5.
+- **Review track** (parallel):
+  1. `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (RA-257 S5.2, as this Review froze it).
+  2. `M6-CP3-TB137-P13-DEPARTURE-CHORD-CROSSING-RECEIPT-FULL-GATE-REV`.
+  3. `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT`, the remainder: S5.3 terminal-in-slide and cut ordering; S5.4 sphere entry-occupancy equality.
+- **Held:** FC-6, TERMINAL-CUT-OUTCOME and row 858. **Parked:** CB145. D11=A and D12=A are unchanged.
+
+### S7 — lessons
+
+- When a definition step is "measure first", freeze the measuring turn in the Review that names it. Prose obligations get skipped when the next Review reorders the track.
+- Before scoping a recomputation defect, check every call site's override arguments. Here the moving side recomputes too.
+- Define an affected set by geometry when the record has no dispatch flag, and compare points by coordinates, not by edge key.

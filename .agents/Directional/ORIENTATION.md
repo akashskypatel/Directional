@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-18, `M6-CP3-TB136-P13-CARRIER-OCCUPANCY-HELPERS-FULL-GATE-REV`):** [TB136 independent Review](Architecture_M6_CP3_TB136_P13_Carrier_Occupancy_Helpers_Full_Gate_Independent_Review_20261118.md) upholds 956/956 MATCH; gate 953/954, new unwired helper PASS, accepted 491/491. Sphere C5/O47 and BunnyRandom O48 unchanged. RA-257 H3 remains latent. Exact next `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP`; sphere DEFN remains parallel.
+**Current currency (2026-11-18, RA-258 re-review of `M6-CP3-TB136-P13-CARRIER-OCCUPANCY-HELPERS-FULL-GATE-REV`):** [RA-258](Architecture_M6_CP3_TB136_P13_Carrier_Occupancy_Helpers_Full_Gate_Independent_Review_20261118.md#ra-258--adversarial-re-review-of-this-review-2026-11-18-utc) upholds TB136 MATCH (956/956 + row 954 helper PASS, accepted 491/491). It freezes CB160/TB137, a receipt that counts ProperCrossings found on recomputed departure chords (H3); no behaviour change.
 
 ## 1. What the project is
 
@@ -103,7 +103,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-- **Current priority:** [RA-257 S5–S6](Architecture_M6_CP3_TB135_P13_Edge_Transit_Entry_Full_Gate_Independent_Review_20261118.md#ra-257--adversarial-re-review-of-this-review-2026-11-18-utc): `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (Review definition, co-directional slide contact). CB159 exact unwired helpers and TB136 are verified; no production wiring yet. Sphere edge-locus DEFN remains parallel (H3 receipt first). No guessed cut, guard relaxation, coordinate merge, D12 change or CP3 promotion.
+- **Current priority:** [RA-258 S3–S6](Architecture_M6_CP3_TB136_P13_Carrier_Occupancy_Helpers_Full_Gate_Independent_Review_20261118.md#ra-258--adversarial-re-review-of-this-review-2026-11-18-utc): `M6-CP3-CB160-P13-DEPARTURE-CHORD-CROSSING-RECEIPT` (compile only), then TB137. Its count decides whether the classifier switch to the stored exit ships alone or coupled with slide-piece contact. Review track in parallel: `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (RA-257 S5.2), then the sphere edge-locus remainder (S5.3/S5.4). No guessed cut, guard relaxation, coordinate merge, D12 change or CP3 promotion.
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).

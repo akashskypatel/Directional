@@ -1,4 +1,22 @@
-## CURRENT — TB136 independent MATCH; overlap definition next (2026-11-18 UTC)
+## CURRENT — RA-258: H3 departure-chord receipt next (2026-11-18 UTC)
+
+[RA-258](.agents/Directional/Architecture_M6_CP3_TB136_P13_Carrier_Occupancy_Helpers_Full_Gate_Independent_Review_20261118.md#ra-258--adversarial-re-review-of-this-review-2026-11-18-utc) upholds the TB136 Review's MATCH (956/956 + row 954) and finds:
+- **Routing (S1).** The Review skipped RA-257's first Review-track item (the H3 receipt, S5.1), left it as prose, and again gave the implementation agent no turn.
+- **H3 scope (S2).** Both contact loops recompute both segments' exits; only a wall's terminal contact is overridden. The departure set is geometric (slide start equals entry by barycentric coordinates). Switching the classifier to the stored exit changes exactly the ProperCrossings that involve a departure segment, so CB160's receipt counts exactly that delta.
+
+Turn sequence:
+- [x] RA-258 re-review (Review): CB160 exact diff, TB137 manifest and criteria frozen.
+- [ ] **EXACT NEXT (Code + Build, compile only):** `M6-CP3-CB160-P13-DEPARTURE-CHORD-CROSSING-RECEIPT`.
+  - Exact diff `.agents/Directional/Architecture_M6_CP3_CB160_P13_Departure_Chord_Crossing_Receipt_Exact.diff`: SHA-256 `d6b045aff9e489fd7428bd60de76a3e0e30935d5a14628c8059636fdc625823d`, 155 lines. Numstat: `6 0` SurfaceCellTracing.h, `50 0` SurfaceCellTracing.cpp, `48 0` FieldAlignedCurveNetworkTests.cpp.
+  - Precheck `git diff --quiet 18cc4a7d3e8ae43ce854c0edc834ab156156dcbf HEAD -- src include tests`. Eight RA-245 GMP/GMPXX targets; runtimeExecution=false.
+  - Mismatch route `M6-CP3-PLAN-P13-DEPARTURE-CHORD-RECEIPT-STOP`; infrastructure route `M6-CP3-CB160A-P13-DEPARTURE-CHORD-RECEIPT-ORCH`.
+- [ ] **Then (Test + Benchmark, artifact only):** `M6-CP3-TB137-P13-DEPARTURE-CHORD-CROSSING-RECEIPT-FULL-GATE-EXEC`. Manifest `.agents/Directional/gates/Architecture_M6_TB137_P13_Departure_Chord_Crossing_Receipt_Full_Gate_Case_Manifest.tsv` (`46200a6042923619d6bb5d5216f62ff6ff1ec1944e2651b040bfabfa04dd9141`, 955 rows, membership 1,036); census `3af1dc0d…`, deferred `fd433f54…`, harness `78b8002c…` unchanged. Comparator TB136 gate `14406791564`, census `14406826878`. MATCH: rows 1–954 and census equal under N1–N4 + N5 (delete only `FieldAlignedCurveNetwork.departureChordCrossing ` lines); all other receipts byte-identical; row 955 PASS. Report per-row counts of `departureChordCrossing` and `edgePortDeparture` lines and the distinct receipt lines.
+- [ ] (Review, parallel) `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (RA-257 S5.2: carrier-keyed slide-piece contact across incident faces, exact first shared parameter, arrival seniority and inconclusive outcome).
+- [ ] (Review) `M6-CP3-TB137-P13-DEPARTURE-CHORD-CROSSING-RECEIPT-FULL-GATE-REV`, routing per RA-258 S5: zero receipt lines → freeze CB161 (classifier reads `edgeTransitEntry`, with a fail-before/pass-after unit test and an RA-217 grep) → TB138 equality; any lines → the switch is coupled with the S5.2 slide-piece contact.
+- [ ] (Review) `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT`, remainder: S5.3 terminal-in-slide and cut ordering, S5.4 sphere entry-occupancy equality; helpers CB + wiring CB each.
+- [ ] Held: FC-6, terminal-cut outcome, row858 fix. Parked CB145. D11=A, D12=A unchanged; stable 66/17/49, debt 1, deferred 81; CP2 491/491; no promotion.
+
+## Historical checkpoint — TB136 independent MATCH; overlap definition next (2026-11-18 UTC)
 
 [RA-257](.agents/Directional/Architecture_M6_CP3_TB135_P13_Edge_Transit_Entry_Full_Gate_Independent_Review_20261118.md#ra-257--adversarial-re-review-of-this-review-2026-11-18-utc) upholds the TB135 Review's MATCH (956/956), and the measured onset X43 (t43=0.26324148596788688 on (94,210)) confirms RA-256 S1. It finds two defects:
 - **H3 is real (S1).** For edge-departure segments (edge-port seed or `vertexSlide`), the traced face piece has zero length and the whole segment is a slide. The classifier still recomputes an opposite-edge chord that was never traced. That chord is either skipped as Unevaluated or able to produce a phantom ProperCrossing. The BunnyRandom grazing slides are unaffected.
@@ -10,7 +28,7 @@ Turn sequence:
 - [x] **COMPLETE (Test + Benchmark, artifact only):** `M6-CP3-TB136-P13-CARRIER-OCCUPANCY-HELPERS-FULL-GATE-EXEC`. Manifest `.agents/Directional/gates/Architecture_M6_TB136_P13_Carrier_Occupancy_Helpers_Full_Gate_Case_Manifest.tsv` (`dac17a50…`, 954 rows, membership 1,035); census, deferred and harness unchanged. MATCH: rows 1–953 and census equal TB135 under N1–N4, receipts byte-identical, row 954 PASS; nothing else differs. Mismatch `M6-CP3-PLAN-P13-CARRIER-OCCUPANCY-HELPERS-STOP`; infrastructure `M6-CP3-CB159A-P13-CARRIER-OCCUPANCY-HELPERS-ORCH`. Execution MATCH: [report](.agents/Directional/Architecture_M6_CP3_TB136_P13_Carrier_Occupancy_Helpers_Full_Gate_Execution_Report_20261118.md), 956/956 existing rows plus row 954 PASS; gate `14406791564`, census `14406826878`.
 - [ ] (Review, parallel) `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT`: H3 measuring receipt first (S5.1), slide-piece cut ordering and terminal-in-slide (S5.3), sphere entry-occupancy equality (S5.4); helpers CB + wiring CB.
 - [x] **COMPLETE (independent Review):** `M6-CP3-TB136-P13-CARRIER-OCCUPANCY-HELPERS-FULL-GATE-REV`. [Review](.agents/Directional/Architecture_M6_CP3_TB136_P13_Carrier_Occupancy_Helpers_Full_Gate_Independent_Review_20261118.md): 956/956 old cases MATCH, row 954 helper PASS, 68 receipts byte-identical, accepted prefix 491/491; no production correction.
-- [ ] **EXACT NEXT (Review definition):** `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (carrier-keyed slide-piece contact across incident faces, exact first shared parameter, arrival seniority and inconclusive outcome; RA-257 S5.2).
+- [ ] ~~EXACT NEXT~~ superseded by RA-258: CB160/TB137 (H3 receipt) run first on the implementation track; `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` stays on the Review track in parallel.
 - [ ] Held: FC-6, terminal-cut outcome, row858 fix. Parked CB145. D11=A, D12=A unchanged; stable 66/17/49, debt 1, deferred 81; CP2 491/491; no promotion.
 
 ## Historical checkpoint — TB135 independent MATCH; edge-locus overlap definition next (2026-11-18 UTC)

@@ -1,0 +1,155 @@
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index fee17cac5..1779901c5 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -1329,6 +1329,12 @@ field_aligned_segment_entry_occupancy(
+ field_aligned_segment_slide_occupancy(
+     const FieldAlignedCandidateTraceSegment &segment);
+ 
++// True when the recorded slide start (edgeTransitEntry) is the entry point
++// itself, compared by position in the source face rather than by edge key:
++// the traced face piece has zero length and the segment is all slide.
++[[nodiscard]] bool field_aligned_segment_departs_along_carrier(
++    const FieldAlignedCandidateTraceSegment &segment);
++
+ } // namespace surface_cell_tracing_detail
+ 
+ struct SurfaceTraceSeed {
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 504d46a9a..a7b0c772e 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -4302,6 +4302,36 @@ canonical_field_aligned_traces_and_events(
+   }
+   field_aligned_publish_origin_events(candidate, runtimes);
+ 
++  // Receipt: a crossing found against a segment that departs along its
++  // carrier was classified on a recomputed chord the trace never followed.
++  const auto reportDepartureChordCrossing =
++      [](const bool pending, const std::size_t firstTraceIndex,
++         const std::size_t firstSegmentIndex,
++         const FieldAlignedCandidateTraceSegment &first,
++         const std::size_t secondTraceIndex,
++         const std::size_t secondSegmentIndex,
++         const FieldAlignedCandidateTraceSegment &second,
++         const bool secondExitIsTerminalContact) {
++        const bool firstDeparts =
++            field_aligned_segment_departs_along_carrier(first);
++        const bool secondDeparts =
++            field_aligned_segment_departs_along_carrier(second);
++        if (!firstDeparts && !secondDeparts) return;
++        const auto &faceVertices = first.sourceFace.vertices();
++        std::clog << "FieldAlignedCurveNetwork.departureChordCrossing pending="
++                  << (pending ? 1 : 0) << " first=" << firstTraceIndex << ':'
++                  << firstSegmentIndex << " second=" << secondTraceIndex << ':'
++                  << secondSegmentIndex << " face=(" << faceVertices[0].index()
++                  << ',' << faceVertices[1].index() << ','
++                  << faceVertices[2].index() << ") departing="
++                  << (firstDeparts ? (secondDeparts ? "both" : "first")
++                                   : "second")
++                  << " secondExit="
++                  << (secondExitIsTerminalContact ? "terminalContact"
++                                                  : "recomputed")
++                  << '\n';
++      };
++
+   while (std::any_of(runtimes.begin(), runtimes.end(),
+                      [](const auto &runtime) { return runtime.active; })) {
+     for (std::size_t traceIndex = 0U; traceIndex < runtimes.size(); ++traceIndex) {
+@@ -4350,6 +4380,11 @@ canonical_field_aligned_traces_and_events(
+             !contact.barycentric.has_value()) {
+           continue;
+         }
++        reportDepartureChordCrossing(
++            true, firstIndex, firstTrace.segments.size(),
++            firstRuntime.proposal->segment, secondIndex,
++            secondTrace.segments.size(), secondRuntime.proposal->segment,
++            false);
+         const auto firstArrival = field_aligned_arrival_at_barycentric(
+             sourceMesh, firstRuntime.proposal->segment, firstRuntime.arrival,
+             *contact.barycentric);
+@@ -4418,6 +4453,11 @@ canonical_field_aligned_traces_and_events(
+               !contact.barycentric.has_value()) {
+             continue;
+           }
++          reportDepartureChordCrossing(
++              false, movingIndex, movingTrace.segments.size(),
++              movingRuntime.proposal->segment, wallIndex, wallSegmentIndex,
++              wallTrace.segments[wallSegmentIndex],
++              wallTerminalContact.has_value());
+           const auto movingArrival = field_aligned_arrival_at_barycentric(
+               sourceMesh, movingRuntime.proposal->segment, movingRuntime.arrival,
+               *contact.barycentric);
+@@ -5561,6 +5601,16 @@ field_aligned_segment_slide_occupancy(
+                                       segment.edgeTransitExit->parameter.value};
+ }
+ 
++bool field_aligned_segment_departs_along_carrier(
++    const FieldAlignedCandidateTraceSegment &segment) {
++  if (!segment.edgeTransitEntry.has_value()) return false;
++  const auto entry =
++      field_boundary_point_barycentric(segment.sourceFace, segment.entryPoint);
++  const auto slideStart = field_boundary_point_barycentric(
++      segment.sourceFace, *segment.edgeTransitEntry);
++  return entry.has_value() && slideStart.has_value() && *entry == *slideStart;
++}
++
+ std::optional<FieldAlignedArrivalMeasure>
+ field_aligned_filtered_arrival_measure(
+     const TriMesh &sourceMesh,
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 2b192471b..6b7420af5 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -18997,3 +18997,51 @@ TEST(FieldAlignedCarrierOccupancy,
+       std::nullopt);
+   EXPECT_FALSE(field_aligned_segment_entry_occupancy(vertexSeed).has_value());
+ }
++
++TEST(FieldAlignedCarrierOccupancy,
++     DepartureAlongCarrierMeansTheSlideStartsAtTheEntryPoint) {
++  using directional::authority::FieldBranch;
++  using directional::geometry::FieldAlignedCandidateTraceSegment;
++  using directional::geometry::surface_cell_tracing_detail::
++      field_aligned_segment_departs_along_carrier;
++  const auto carrier = topology_edge(0, 2, 4U);
++  const auto other = topology_edge(0, 1, 4U);
++  const auto face = topology_face(0, 1, 2, 4U);
++  const auto branch = FieldBranch::from_integer(0);
++
++  // Vertex 0 entered through edge (0,1) and left along carrier (0,2): the
++  // same point under two edge keys, so the face piece has zero length.
++  FieldAlignedCandidateTraceSegment departure(
++      face, branch, boundary_point(other, 0, 1), std::nullopt, carrier,
++      std::nullopt);
++  departure.edgeTransitEntry = boundary_point(carrier, 0, 1);
++  departure.edgeTransitExit = boundary_point(carrier, 1, 1);
++  EXPECT_TRUE(field_aligned_segment_departs_along_carrier(departure));
++
++  FieldAlignedCandidateTraceSegment sameKey = departure;
++  sameKey.entryPoint = boundary_point(carrier, 3, 10);
++  sameKey.edgeTransitEntry = boundary_point(carrier, 3, 10);
++  EXPECT_TRUE(field_aligned_segment_departs_along_carrier(sameKey));
++  FieldAlignedCandidateTraceSegment secondEnd = departure;
++  secondEnd.entryPoint = boundary_point(topology_edge(1, 2, 4U), 1, 1);
++  secondEnd.edgeTransitEntry = boundary_point(carrier, 1, 1);
++  secondEnd.edgeTransitExit = boundary_point(carrier, 0, 1);
++  EXPECT_TRUE(field_aligned_segment_departs_along_carrier(secondEnd));
++
++  // A grazing slide entered mid-edge, a slide starting at the other end of
++  // the carrier, an interior point one hundredth away, and no slide at all.
++  FieldAlignedCandidateTraceSegment grazing(
++      face, branch, boundary_point(other, 1, 3), other, carrier, std::nullopt);
++  grazing.edgeTransitEntry = boundary_point(carrier, 3, 10);
++  grazing.edgeTransitExit = boundary_point(carrier, 0, 1);
++  EXPECT_FALSE(field_aligned_segment_departs_along_carrier(grazing));
++  FieldAlignedCandidateTraceSegment farEnd = departure;
++  farEnd.edgeTransitEntry = boundary_point(carrier, 1, 1);
++  EXPECT_FALSE(field_aligned_segment_departs_along_carrier(farEnd));
++  FieldAlignedCandidateTraceSegment nearMiss = sameKey;
++  nearMiss.edgeTransitEntry = boundary_point(carrier, 31, 100);
++  EXPECT_FALSE(field_aligned_segment_departs_along_carrier(nearMiss));
++  FieldAlignedCandidateTraceSegment noSlide = departure;
++  noSlide.edgeTransitEntry.reset();
++  EXPECT_FALSE(field_aligned_segment_departs_along_carrier(noSlide));
++}

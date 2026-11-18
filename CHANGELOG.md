@@ -1,3 +1,8 @@
+## 2026-11-18 UTC — RA-258 re-review of the TB136 Review
+
+- [RA-258](.agents/Directional/Architecture_M6_CP3_TB136_P13_Carrier_Occupancy_Helpers_Full_Gate_Independent_Review_20261118.md#ra-258--adversarial-re-review-of-this-review-2026-11-18-utc): MATCH upheld. The Review skipped the H3 receipt (RA-257 S5.1) and again routed only to a Review. CB160 is frozen: an unwired departure predicate, a `departureChordCrossing` receipt in both contact loops and one unit test. TB137 adds manifest row 955 and the N5 rule.
+- Exact next `M6-CP3-CB160-P13-DEPARTURE-CHORD-CROSSING-RECEIPT`; `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` stays on the Review track in parallel.
+
 ## 2026-11-18 UTC — TB136 independent Review (MATCH upheld)
 
 - [Review](.agents/Directional/Architecture_M6_CP3_TB136_P13_Carrier_Occupancy_Helpers_Full_Gate_Independent_Review_20261118.md): 956/956 existing cases independently MATCH under RA-257 S4, row 954 helper PASS; 68 receipts byte-identical. Gate 953/954; census Cylinder PASS/288, BunnyRandom/Vase RED. Accepted CP2 491/491. No production correction, stable regression or promotion; no runtime or source changes.
