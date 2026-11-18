@@ -1,2 +1,0 @@
-# TB133 temporary source snapshot trigger; do not remove durable dispatcher or mailbox
-.agents/connector-triggers/source-snapshot/tb133-20261117T211809Z.txt
