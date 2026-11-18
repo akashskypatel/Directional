@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb160-compile-v1",
-  "operation": "compile",
-  "source_sha": "66fb0c5ec42fa57614a504437724b18d7004cbb1",
-  "targets": [
-    "directional_benchmarks",
-    "directional_compiled_api_tests",
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_validation_tests"
-  ],
-  "artifact_prefix": "m6-cp3-cb160-departure-chord-receipt",
-  "mailbox_key": "m6-cp3-cb160-compile-v1"
+  "request_id": "m6-cp3-cb160-docs-closeout-v1",
+  "operation": "drive_apply",
+  "file_id": "1F9O2-M9AuudateIE_-7oRprc20bypyZz",
+  "patch_sha256": "a1b216e9262db84659ff745164b88dd464b8f03746fd2298e07c82d8e1de38ae",
+  "base_sha": "12f8b61cd55af6a247ae319709987c8836f0c588",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record CB160 verified compile and TB137 handoff",
+  "mailbox_key": "m6-cp3-cb160-docs-closeout-v1",
+  "retention_days": 30
 }
