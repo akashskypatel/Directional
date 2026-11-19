@@ -1,3 +1,7 @@
+## 2026-11-19 UTC — CB168E entry-coincidence arrival receipt (compile PASS)
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB168E_P13_Entry_Coincidence_Arrival_Receipt_Code_Build_Record_20261119.md): exact RA-266 diff `67418422…dc0` (+34/-7 `SurfaceCellTracing.cpp`) applied at source `d43d07dd1564be90bc1a89775b17b524d4e83039`; [compile run 44481277693](https://github.com/akashskypatel/Directional/actions/runs/44481277693), immutable package `14508452647` SHA-256 `5daeba011fc49fde4ad083f5104b5a3847abe8b6742dec841465762b0bd1b609`, eight GMP/GMPXX targets, `runtimeExecution=false`. No tests or benchmarks, no acceptance or normalization changes. Next TB145 artifact-only, not executed in this turn.
+
 ## 2026-11-19 UTC — CB168D carrier-contact edge-node binding (compile PASS)
 
 - [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Code_Build_Record_20261119.md): frozen RA-266 exact patch `cf726ced…8de` applied to `EmbeddedGraphTopology.cpp` (+89/-9) and `EmbeddedGraphTopology.h` (+14/-0); source `60357edb20132b20263fc5a1997f8af50343e2ae`, [compile run 44478377983](https://github.com/akashskypatel/Directional/actions/runs/44478377983), artifact `14507741391`, ZIP SHA-256 `0cafed08563f6699ff4000b7975f880f2de46a1a91266daab539c85439fbe25a`, 28/28 checksums. Eight GMP/GMPXX targets; no runtime. No CP3/D0 promotion. Next CB168E Code + Build only.
