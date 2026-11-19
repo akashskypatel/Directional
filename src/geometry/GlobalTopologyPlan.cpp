@@ -1529,11 +1529,13 @@ RegionBuildResult build_regions(
       // diagnostics are enabled, publish that same record before this early
       // return so the first failing face is observable.
       if (diagnostics != nullptr) {
-        std::cerr << "M3_CP4AB_FRAGMENT_DIAG record=fragment_reconciliation"
-                  << " source_face=" << diagnostic_face(faceKey)
-                  << " fragment_orbit_count=" << found->second.size()
-                  << " trace_piece_count=" << tracePieceCount[faceKey]
-                  << " expected_fragment_count=" << expected << '\n';
+        std::ostringstream out;
+        out << "M3_CP4AB_FRAGMENT_DIAG record=fragment_reconciliation"
+            << " source_face=" << diagnostic_face(faceKey)
+            << " fragment_orbit_count=" << found->second.size()
+            << " trace_piece_count=" << tracePieceCount[faceKey]
+            << " expected_fragment_count=" << expected << '\n';
+        std::cerr << out.str();
       }
       return failure;
     }
@@ -1684,12 +1686,13 @@ RegionBuildResult build_regions(
       const auto pieces = diagnostics->tracePieceCount.find(face);
       const std::size_t tracePieces =
           pieces == diagnostics->tracePieceCount.end() ? 0U : pieces->second;
-      std::cerr << "M3_CP4AB_FRAGMENT_DIAG record=fragment_reconciliation"
-                << " source_face=" << diagnostic_face(face)
-                << " fragment_orbit_count=" << orbits.size()
-                << " trace_piece_count=" << tracePieces
-                << " expected_fragment_count=" << (tracePieces + 1U)
-                << '\n';
+      std::ostringstream out;
+      out << "M3_CP4AB_FRAGMENT_DIAG record=fragment_reconciliation"
+          << " source_face=" << diagnostic_face(face)
+          << " fragment_orbit_count=" << orbits.size()
+          << " trace_piece_count=" << tracePieces
+          << " expected_fragment_count=" << (tracePieces + 1U) << '\n';
+      std::cerr << out.str();
     }
     for (const auto &cutEdge : cutEdges) {
       const auto incident = topology.incidentFaces.find(cutEdge);
@@ -1701,10 +1704,12 @@ RegionBuildResult build_regions(
             evidence == diagnostics->edgeOrbitEvidence.end()
                 ? 0U
                 : evidence->second.size();
-        std::cerr << "M3_CP4AB_FRAGMENT_DIAG record=cut_edge_orbit_evidence"
-                  << " source_face=" << diagnostic_face(face)
-                  << " source_edge=" << diagnostic_edge(cutEdge)
-                  << " orbit_count=" << orbitCount << '\n';
+        std::ostringstream out;
+        out << "M3_CP4AB_FRAGMENT_DIAG record=cut_edge_orbit_evidence"
+            << " source_face=" << diagnostic_face(face)
+            << " source_edge=" << diagnostic_edge(cutEdge)
+            << " orbit_count=" << orbitCount << '\n';
+        std::cerr << out.str();
       }
     }
   }
@@ -1880,7 +1885,8 @@ void emit_fragment_euler_diagnostics(
     std::ostringstream out;
     out << "M3_CP4AB_FRAGMENT_DIAG record=exterior_orbits orbits="
         << diagnostic_values(diagnostics.exteriorOrbits);
-    std::cerr << out.str() << '\n';
+    out << '\n';
+    std::cerr << out.str();
   }
   for (const auto &segment : diagnostics.traceSegments) {
     std::ostringstream out;
@@ -1902,7 +1908,8 @@ void emit_fragment_euler_diagnostics(
     } else {
       out << "none";
     }
-    std::cerr << out.str() << '\n';
+    out << '\n';
+    std::cerr << out.str();
   }
 
   std::ostringstream out;
@@ -1953,7 +1960,8 @@ void emit_fragment_euler_diagnostics(
       << " support_E_int=" << support.interiorAdjacencyCount
       << " support_F=" << support.fragmentCount
       << " support_chi_reduced=" << support.reducedEulerCharacteristic;
-  std::cerr << out.str() << '\n';
+  out << '\n';
+  std::cerr << out.str();
 }
 
 void emit_region_euler_certificate_diagnostics(
@@ -1988,7 +1996,8 @@ void emit_region_euler_certificate_diagnostics(
       << " support_chi_reduced=" << support.reducedEulerCharacteristic
       << " support_chi_whole_source_faces="
       << support.wholeSourceFaceEulerCharacteristic;
-  std::cerr << out.str() << '\n';
+  out << '\n';
+  std::cerr << out.str();
 }
 
 RegionCertificateBuildResult build_region_certificate(
