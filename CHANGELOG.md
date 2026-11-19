@@ -1,6 +1,10 @@
+## 2026-11-19 UTC — TB146 transverse entry mutual stop (required gate RED; Review next)
+
+[TB146 execution](.agents/Directional/Architecture_M6_CP3_TB146_P13_Transverse_Entry_Mutual_Stop_Full_Gate_Execution_Report_20261119.md): gate run `44603830217`, artifact `14569832286`, source `ebbe893bd5415e05ea828d5587a265d08326d1fa`, 961/962 PASS, accepted prefix **490/491** (row393 RED at :17144, four `7 vs 7` assertions), row858 PASS, rows961/962 PASS, 941/941 unaffected prior rows MATCH, all 240 entry receipts unchanged, 66→0 duplicate (0,2) records; cut-search exhaustion at 669/698. Required STOP: no three-row census. Candidate not adjudicated; stable 66/17/49, debt1, deferred81; no promotion.
+
 ## 2026-11-19 UTC — CB168G transverse entry mutual stop (compile PASS)
 
-Exact frozen RA-267 patch `4555af7c88d96cafae2feca72a503735fbcd218629f88dfe20126fc151596aa9` applied (+89/-6 `SurfaceCellTracing.cpp`); semantic source `ebbe893bd5415e05ea828d5587a265d08326d1fa`, [compile run 44599291384](https://github.com/akashskypatel/Directional/actions/runs/44599291384), immutable package `14566343560` ZIP SHA-256 `41fc237f91b24cdc369908f483579ef3e16d55b7c7743ccd97ded4f30b83c717`; 28/28 hashes, all eight GMP/GMPXX targets, `runtimeExecution=false`. No runtime execution or acceptance. [Record](.agents/Directional/Architecture_M6_CP3_CB168G_P13_Transverse_Entry_Mutual_Stop_Code_Build_Record_20261119.md). TB146 is next, not started.
+Exact frozen RA-267 patch `4555af7c88d96cafae2feca72a503735fbcd218629f88dfe20126fc151596aa9` applied (+89/-6 `SurfaceCellTracing.cpp`); semantic source `ebbe893bd5415e05ea828d5587a265d08326d1fa`, [compile run 44599291384](https://github.com/akashskypatel/Directional/actions/runs/44599291384), immutable package `14566343560` ZIP SHA-256 `41fc237f91b24cdc369908f483579ef3e16d55b7c7743ccd97ded4f30b83c717`; 28/28 hashes, all eight GMP/GMPXX targets, `runtimeExecution=false`. No runtime execution or acceptance. [Record](.agents/Directional/Architecture_M6_CP3_CB168G_P13_Transverse_Entry_Mutual_Stop_Code_Build_Record_20261119.md). TB146 executed RED; see the current TB146 entry.
 
 ## 2026-11-19 UTC — CB168F mutual carrier-contact consumer (compile PASS)
 

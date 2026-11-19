@@ -1,3 +1,9 @@
+## 2026-11-19 — TB146 transverse-entry mutual-stop full gate (RED; non-stable candidate)
+
+[TB146 execution](Architecture_M6_CP3_TB146_P13_Transverse_Entry_Mutual_Stop_Full_Gate_Execution_Report_20261119.md): gate run `44603830217`, artifact `14569832286`, source `ebbe893bd5415e05ea828d5587a265d08326d1fa`, 961/962 PASS, accepted prefix **490/491** (row393 RED at :17144, four `7 vs 7` assertions), row858 PASS, rows961/962 PASS, 941/941 unaffected prior rows MATCH, all 240 entry receipts unchanged, 66→0 duplicate (0,2) records; cut-search exhaustion at 669/698. Required STOP: no three-row census. Candidate not adjudicated; stable 66/17/49, debt1, deferred81; no promotion.
+
+**New candidate: row 393 accepted-prefix regression.** `TraceTerminationCorrection.PrescribedSpherePublishesTwentyFourTracesAndCorrectedContactEvents`, four failures at `FieldAlignedCurveNetworkTests.cpp:17144` (`contact.struckSegmentIndex < struck->segments.size()`, 7 vs 7). A changed end-index premise is a possible explanation, not an adjudicated root cause. Current logs omit trace-ID contact mapping. Review owns classification and any corrective freeze. Retain the existing EC3-SYM-1, C5/O47 and O48 obligations; the new cut-search exhaustion is a later observed failure, not a closure or stable-ledger debit. Row858 now passes but remains unpromoted.
+
 ## 2026-11-19 — TB145 carrier-contact binding and arrival receipt full gate (non-stable)
 
 **2026-11-19 RA-267 — EC3-SYM-1 re-owned.** Owner moved from the withdrawn DEFN to exact CB168F (consumer: `carrier_contact_is_mutual`, cut-edge split at the mutual node) + CB168G (producer: inconclusive different-face pending/pending entry → both traces stop before entering, existing `{true,true}` rule) → TB146. It is not a new stable event; 66/17/49, debt1, deferred81 unchanged.
