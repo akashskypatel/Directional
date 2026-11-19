@@ -1,3 +1,7 @@
+## 2026-11-19 UTC — CB168A entry-coincidence receipt (compile evidence pending)
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Code_Build_Record_20261119.md): frozen RA-264 exact 40-line diagnostic change in `SurfaceCellTracing.cpp` committed as `b77a81ff5250aabbf6dd58cf4e9e6c208d4a973f`. Remote patch apply PASS; compile evidence PENDING_COMPILE_EVIDENCE. No EC2/EC3 or runtime, no product acceptance. Current turn remains CB168A.
+
 ## 2026-11-19 UTC — RA-264: EC1 re-frozen receipt-only
 
 - [RA-264](.agents/Directional/Architecture_M6_CP3_TB142_P13_Trace_Piece_Path_Helper_Full_Gate_Independent_Review_20261119.md#ra-264--adversarial-re-review-of-this-review-2026-11-19-utc): TB142 MATCH upheld; 3-file EC1 patch withdrawn; receipt-only diff `013e8d0701cfed054d33b9f4da1c9cb0cb2da051aaa9b690c0d7a670beab1e8e` (+40, `SurfaceCellTracing.cpp`) and TB143 frozen; `carrierLocus` moved to EC2.
