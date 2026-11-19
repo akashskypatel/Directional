@@ -59,12 +59,26 @@ struct CutCrossingBinding {
   auto operator<=>(const CutCrossingBinding &) const = default;
 };
 
+/**
+ * A trace that ends with a carrier locus: the struck trace is cut at the
+ * boundary before `struckSegment`, the segment it enters at that locus.
+ */
+struct CarrierContactBinding {
+  authority::TraceId struckTrace;
+  std::size_t struckSegment = 0U;
+
+  auto operator<=>(const CarrierContactBinding &) const = default;
+};
+
 /** Binding from exact source loci to existing or cut-created graph nodes. */
 struct CutNodeBindings {
   std::map<authority::SourceVertexId, authority::NetworkNodeId> nodeByVertex;
   std::map<authority::NetworkNodeId, authority::SourceVertexId> syntheticVertices;
   std::map<CutCrossingKey, CutCrossingBinding> crossingByKey;
+  /** Crossing by node. A crossing struck by a carrier contact keeps the
+   * contact's network node instead of a cut-created one. */
   std::map<authority::NetworkNodeId, CutCrossingBinding> syntheticCrossings;
+  std::map<authority::NetworkNodeId, CarrierContactBinding> carrierContacts;
   std::size_t combinedNodeExtent = 0U;
 };
 

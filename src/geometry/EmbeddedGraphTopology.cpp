@@ -356,6 +356,49 @@ CutNodeBindingResult build_cut_node_bindings(
     cutVertices.insert(edge.second());
   }
 
+  // A carrier contact's node lies on its carrier where the struck trace enters
+  // the segment carrier_contact_struck_position names. On a selected cut edge
+  // that point is the struck trace's crossing, which then keeps this node.
+  std::map<CutCrossingKey, authority::NetworkNodeId> carrierContactCrossings;
+  for (const auto &event : network.events()) {
+    if (event.kind != FieldAlignedNetworkEventKind::TraceIntersection) continue;
+    for (const auto &incidence : event.incidences) {
+      if (incidence.role != FieldAlignedTraceEventRole::Terminal) continue;
+      const FieldAlignedCandidateTrace *ending =
+          find_trace(network, incidence.trace);
+      if (ending == nullptr || !ending->terminalContact.has_value() ||
+          !ending->terminalContact->carrierLocus.has_value()) {
+        continue;
+      }
+      const FieldAlignedTerminalContact &record = *ending->terminalContact;
+      const authority::SourceEdgeTopologyKey &carrier =
+          record.carrierLocus->edge;
+      const FieldAlignedCandidateTrace *struck =
+          find_trace(network, record.struckTrace);
+      const auto position =
+          struck == nullptr ? std::nullopt
+                            : carrier_contact_struck_position(*struck, record);
+      const CarrierContactBinding contact{
+          record.struckTrace, position.has_value() ? position->segment : 0U};
+      const auto [stored, inserted] =
+          result.carrierContacts.emplace(event.node, contact);
+      if (!position.has_value() || event.sourceEdge != carrier ||
+          (!inserted && stored->second != contact)) {
+        GlobalTopologyPlanError failure =
+            error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+        failure.sourceEdge = carrier;
+        failure.trace = ending->id;
+        failure.secondTrace = record.struckTrace;
+        return failure;
+      }
+      if (selectedCuts.count(carrier) != 0U) {
+        carrierContactCrossings.emplace(
+            CutCrossingKey{carrier, record.struckTrace, position->segment},
+            event.node);
+      }
+    }
+  }
+
   // A trace crossing is published exactly at the next segment's entry point.
   // The segment index is therefore the exact trace-cut position used by
   // build_arcs; no geometric crossing inference or tolerance is needed.
@@ -408,7 +451,10 @@ CutNodeBindingResult build_cut_node_bindings(
           cutVertices.begin(), cutVertices.end(), [&](const auto vertex) {
             return result.nodeByVertex.count(vertex) == 0U;
           })) +
-      crossings.size();
+      static_cast<std::size_t>(std::count_if(
+          crossings.begin(), crossings.end(), [&](const auto &crossing) {
+            return carrierContactCrossings.count(crossing.key) == 0U;
+          }));
   for (const auto vertex : cutVertices) {
     if (result.nodeByVertex.count(vertex) != 0U) continue;
     const auto id = authority::NetworkNodeId::from_index(
@@ -418,12 +464,19 @@ CutNodeBindingResult build_cut_node_bindings(
     result.syntheticVertices.emplace(id.value(), vertex);
   }
   for (const auto &crossing : crossings) {
-    const auto id = authority::NetworkNodeId::from_index(
-        static_cast<std::int64_t>(nextIndex++), extent);
-    if (!id) return error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
-    CutCrossingBinding binding{crossing.key, crossing.parameter, id.value()};
+    std::optional<authority::NetworkNodeId> node;
+    const auto contact = carrierContactCrossings.find(crossing.key);
+    if (contact != carrierContactCrossings.end()) {
+      node = contact->second;
+    } else {
+      const auto id = authority::NetworkNodeId::from_index(
+          static_cast<std::int64_t>(nextIndex++), extent);
+      if (!id) return error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+      node = id.value();
+    }
+    CutCrossingBinding binding{crossing.key, crossing.parameter, *node};
     if (!result.crossingByKey.emplace(crossing.key, binding).second ||
-        !result.syntheticCrossings.emplace(id.value(), binding).second) {
+        !result.syntheticCrossings.emplace(*node, binding).second) {
       GlobalTopologyPlanError failure =
           error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
       failure.sourceEdge = crossing.key.sourceEdge;
@@ -640,11 +693,29 @@ std::set<authority::NetworkNodeId> port_nodes(
   return result;
 }
 
+// True when a trace ending at this event carries a carrier locus: it ends on
+// that source edge, where the struck trace enters a segment.
+bool ends_on_carrier_contact(const FieldAlignedCurveNetwork &network,
+                             const FieldAlignedNetworkEvent &event) {
+  return std::any_of(
+      event.incidences.begin(), event.incidences.end(),
+      [&](const auto &incidence) {
+        if (incidence.role != FieldAlignedTraceEventRole::Terminal) {
+          return false;
+        }
+        const FieldAlignedCandidateTrace *trace =
+            find_trace(network, incidence.trace);
+        return trace != nullptr && trace->terminalContact.has_value() &&
+               trace->terminalContact->carrierLocus.has_value();
+      });
+}
+
 // Non-port nodes where a trace ends on a trace strictly inside a face. A
 // trace-trace contact (TraceIntersection or TraceSelfClosure) is one even when
 // its events carry the two segments' common carrier: that edge is not where
 // the contact lies, and the exact point is in the terminating trace's record.
-// An edge-carrying FirstContact alone (a barrier termination) is not.
+// An edge-carrying FirstContact alone (a barrier termination) is not, nor is a
+// carrier contact, which lies on its carrier (build_cut_node_bindings).
 std::set<authority::NetworkNodeId>
 face_contact_nodes(const FieldAlignedCurveNetwork &network) {
   const std::set<authority::NetworkNodeId> ports = port_nodes(network);
@@ -654,6 +725,7 @@ face_contact_nodes(const FieldAlignedCurveNetwork &network) {
     const bool traceContact =
         event.kind == FieldAlignedNetworkEventKind::TraceIntersection ||
         event.kind == FieldAlignedNetworkEventKind::TraceSelfClosure;
+    if (traceContact && ends_on_carrier_contact(network, event)) continue;
     if (traceContact ||
         (!event.sourceEdge.has_value() &&
          event.kind == FieldAlignedNetworkEventKind::FirstContact)) {
@@ -1571,11 +1643,19 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
          ++eventIndex) {
       const auto &event = network.events()[eventIndex];
       if (faceContacts.count(event.node) != 0U) continue;
+      // A carrier contact cuts the struck trace where its record says.
+      const auto carrierContact = cutNodes.carrierContacts.find(event.node);
       for (const auto &incidence : event.incidences) {
         if (incidence.trace != trace.id) continue;
         TraceEventPositionDiagnostics positionDiagnostics;
-        const auto position = trace_event_position(
-            trace, event, incidence.role, origin->second, &positionDiagnostics);
+        const auto position =
+            carrierContact != cutNodes.carrierContacts.end() &&
+                    carrierContact->second.struckTrace == trace.id &&
+                    incidence.role != FieldAlignedTraceEventRole::Terminal
+                ? std::optional<std::size_t>{carrierContact->second
+                                                 .struckSegment}
+                : trace_event_position(trace, event, incidence.role,
+                                       origin->second, &positionDiagnostics);
         if (!position.has_value() || *position > trace.segments.size()) {
           GlobalTopologyPlanError result =
               error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
