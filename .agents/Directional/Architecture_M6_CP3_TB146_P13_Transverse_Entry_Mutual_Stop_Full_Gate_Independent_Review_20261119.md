@@ -91,3 +91,78 @@ RA-267 unaffected-gate comparison, row961/962 and duplicate-diagnostic predictio
 | review_check.py boundary | Local snapshot check: no product/test/fixture/build or selector mutation, all enumerated selector hashes pass. Historical ancestry/rewrite-source checks fail because snapshot has no Git history. GitHub connector verified the rewrite-baseline protected headings remain; no historical helper PASS is claimed. |
 | STATUS lifecycle maintained | Entry IN_PROGRESS at 2026-11-19T20:43:31Z; no resume stamp; final beacon after transport and verification. |
 | Pushed to origin, branch in sync | Verify remote patch-apply result and head; local snapshot has no origin history, so do not claim `git status -sb` synchronization. |
+
+## RA-268 — adversarial re-review of this Review (2026-11-19 UTC)
+
+### S1 — What holds
+
+- **RED adjudication upheld.**
+  - Source has not drifted since CB168G: `git diff --quiet ebbe893bd HEAD -- src include tests` is clean.
+  - The CB168H preimage `5e5709d5…` matches.
+  - With CB168H applied to HEAD, `tests/FieldAlignedCurveNetworkTests.cpp` passes `-fsyntax-only -Wall -Wextra` with 0 errors and 42 warnings, equal to HEAD. This Review had not compiled it.
+- **Row 393 is a stale premise.** `EXPECT_LT(contact.struckSegmentIndex, struck->segments.size())` fails 4 times as `7 < 7`, which is the mutual-stop end index RA-267 froze. The TB146 event deltas corroborate exactly two mutual contacts: events 60→56 and terminal intersections 12→10.
+- **RA-267's own error, stated plainly.** RA-267 predicted "row 393 still PASS". It relied on an audit summary of the test, did not read the assertion, and so missed the strict index bound (RA-252 already required reading premise tests). The CB168H repair is correct.
+- **CB168H accepted as frozen.**
+  - It keeps the strict `<` for every other contact.
+  - It requires the four directed reciprocal records, exact locus, chart barycentrics, no slide, and one Terminal/Terminal event per trace on two distinct nodes.
+  - It is test-only.
+  - It hard-codes trace ids 4/6/15/19 and the exact parameter. This is acceptable for a fixture witness (the test already pins 24 traces), but a renumbering upstream will fail it loudly, as intended.
+
+### S2 — Design defects of this Review
+
+1. **The sphere's next blocker was mis-located.** The Review calls rows 669/698 "cut-search exhaustion … does not identify the root cause" and parks it with O47. But row 686, `ActualEmbeddedGraphCellularityOracleIsPublishedNonGating`, already prints the actual embedded graph for the sphere (RA-235: read what a RED already prints):
+   - `V=18;E=30;totalOrbits=18;F=18;c=1;s=1;chi=6;sourceChi=2;traceEndpointsAttached=true;noDegreeZeroNodes=true`;
+   - all 18 face components are discs (`boundaryWalks=1, chi=1`).
+
+   A connected graph whose face walks are all discs must give V−E+F = χ(S) = 2. Here the face walks yield 4 more orbits than χ allows. `SurfaceCutGraph.cpp:1058–1089` exhausts only after saturating every remaining source edge, and more cuts cannot repair an inconsistent rotation system. The owner is therefore the rotation/face-walk consumer of trace geometry, not the cut search.
+
+   This Review read the same row in TB145 (artifact `14510581877`, before the switch): `V=20;E=34;F=22;chi=8`. So the residual is **pre-existing**, +6, and the mutual stop reduced it to +4. Both runs have 192 source faces and an identical set of 103 faces repeated across orbits (excess 188→184).
+
+   Repeated faces cannot localize the defect: a source face crossed by a trace legitimately has fragments in several orbits. The printed `fragment[k]={face,local,orbit}` carries no arc, node or edge id.
+
+   The oracle (`independent-face-planar-rotation-seam-orbit`) counts regions of fragments glued across the trace graph. This gives an exact reading. A transverse trace/trace crossing **without a network node** separates regions exactly as a node would, but the graph lacks one vertex and two arcs, so it adds **+1** to V−E+F. CB168G gave exactly two such crossings a node (the sphere pairs on (0,2) and (25,27)), and the residual fell by exactly 2 (+6 → +4).
+
+   The leading hypothesis is therefore **four remaining trace crossings with no node**. TB145 found no other non-slide entry coincidence with different faces. That leaves two candidates:
+   - contacts EC1 suppresses because one end is inside a slide (`movingInSlide || wallInSlide`);
+   - vertex meetings, which `first_field_aligned_carrier_contact` does not report.
+2. **No Test + Benchmark successor was named.** "A later Test + Benchmark" without an identity or manifest leaves a gap after CB168H. It is frozen below as TB147, with the unchanged TB146 manifest.
+3. **The comparison scope was inconsistent.** CB168H is test-only, so every gate row except 393 must be byte-identical to TB146 under the frozen rules. The Review instead mixed TB146 and TB145 baselines without saying this.
+
+### S3 — Frozen successors
+
+- **`M6-CP3-CB168H-P13-MUTUAL-CARRIER-END-ORACLE`** (Code + Build, compile only).
+  - Exact diff `df73a362ef9749c6806eb718540fdaf2c092007bfa8082bb62fb9e8ad533e254`, preimage `5e5709d5…`.
+  - Precheck: `git diff --quiet ebbe893bd5415e05ea828d5587a265d08326d1fa HEAD -- src include tests`.
+  - Eight RA-245 targets, `runtimeExecution=false`.
+- **`M6-CP3-CB168I-P13-SLIDE-COINCIDENCE-RECEIPT`** (Code + Build, compile only, after CB168H).
+  - [Exact diff](Architecture_M6_CP3_CB168I_P13_Slide_Coincidence_Receipt_Exact.diff), SHA-256 `a1b0fa4129341888a5cdc981a22c31d6c6306fce81d2909678fd85ec827626a4`, `23 2 src/geometry/SurfaceCellTracing.cpp`.
+  - It reports a carrier contact inside either segment's slide once per segment pair, in its own stream: `FieldAlignedCurveNetwork.slideCoincidence moving= wall= carrier= parameter= movingInSlide= wallInSlide= faces=`.
+  - Scheduling is unchanged. The `entryCoincidence` stream and its dedupe set are untouched, because the new stream has a separate dedupe set.
+  - `-fsyntax-only -Wall -Wextra`: 43 warnings, equal to HEAD, 0 errors. Stacks with CB168H, since they touch different files.
+- **`M6-CP3-TB147-P13-MUTUAL-CARRIER-END-ORACLE-FULL-GATE-EXEC`.**
+  - **Inputs.** Immutable CB168I package (CB168H + CB168I); unchanged TB146 manifest `aa9911870a7514ea5674f869e74d8681f1ad0fcc8a14f43096b8da4f5210b61f` (962 + 81); unchanged 3-row census and harness.
+  - **Gate (STOP on failure).**
+    - Rows 393, 961 and 962 PASS.
+    - 491/491.
+    - Delete every line starting `FieldAlignedCurveNetwork.slideCoincidence` (the new stream). Then every other row must MATCH TB146 under its frozen rules, typed outcomes included.
+    - Row 393 prints exactly four `SphereMutualCarrierEnd` lines (traces 4, 6, 15, 19) on exactly two distinct `node=` values.
+    - No `M3_CP4AB_FRAGMENT_DIAG` prefix appears twice on a line.
+  - **Census, run only after the gate passes; compare with TB145.**
+    - Cylinder PASS/288.
+    - BunnyRandom first failure trace 82, unchanged.
+    - Vase: measured and reported.
+  - **Raw evidence, routed to Review.**
+    - The row 686 prescribed-sphere summary (V, E, F, orbits, c, chi, sourceChi) and the row 669/698 failure lines, verbatim. Expected: identical to TB146.
+    - `slideCoincidence` census: gate-wide line and row counts. For each sphere row and each census fixture, the deduplicated list of (moving, wall, carrier, parameter, flags, faces).
+    - **Prediction:** the sphere shows `faces=different` slide coincidences accounting for the 4 nodeless crossings, likely 2 symmetric pairs. If there are none, the remaining candidate is vertex meetings.
+- **`M6-CP3-TB147-P13-MUTUAL-CARRIER-END-ORACLE-FULL-GATE-REV`.** Attributes the +4 residual using the slide census, then freezes the next exact turn:
+  - if the slide contacts account for it, the slide-contact producer switch under the RA-259 S3 contact rule, plus the H4 geometry consumers;
+  - if they do not, a vertex-meeting receipt.
+
+### S4 — Sequence
+
+CB168H → CB168I → TB147 → TB147-REV → (slide-contact switch under RA-259 S3 / H4, or vertex-meeting receipt, per the attribution) → CB168 binding → [O49] → CB170 → CB171 → CB172 (O48). Held: FC-6, TERMINAL-CUT-OUTCOME. Row 858's face-witness DEFN is re-evaluated at TB147-REV, since 858 now passes. Parked: CB145. D11=A, D12=A.
+
+### S5 — Closeout
+
+This turn was runtime-free. It ran `-fsyntax-only` on CB168H and CB168I; the TB146 artifact was read by a Haiku agent in an isolated directory, after a SHA check. No product, test, manifest or selector bytes changed. Accounting is unchanged: 66/17/49, debt1, deferred81, CP2 491/491, selector497 not promoted.
