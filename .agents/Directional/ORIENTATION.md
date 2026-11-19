@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-19; TB143-REV + [RA-265](Architecture_M6_CP3_TB143_P13_Entry_Coincidence_Receipt_Full_Gate_Independent_Review_20261119.md#ra-265--adversarial-re-review-of-this-review-2026-11-19-utc) → `M6-CP3-CB168B-P13-REGION-SUPPORT-DIAGNOSTIC-FRAMING`):** TB143 MATCH 962/962 under N1–N7 (rows 169/477 match under N3 as frozen in the TB131 Review); 491/491; sphere entry receipt 19/19; no slide published, no promotion. Next: CB168B (exact, single-write M3 records) → CB168C (EC2a helper) → TB144 → EC2b → EC3 transverse only.
+**Current currency (2026-11-19; TB144 independent Review MATCH; EC2b next):** Primary TB144 gate/census evidence independently matches **963/963** prior TB143 cases under frozen N1–N7; row961 PASS, row858 known RED, zero doubled M3 prefixes; 1,266 slide proposal/committed receipts each and 246 entry receipts unchanged. CP2 491/491 accepted; no CP3, selector497 or D0 promotion. Next only `M6-CP3-CB168D-P13-CARRIER-CONTACT-EDGE-NODE-BINDING` (EC2b inert binding); EC3 transverse producer is later.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Current M6-CP3 evidence (2026-11-19):** TB143 959/960 gate (row858 known RED); independent review finds 960/962 unchanged prior logs, two strict layout exceptions (rows169/477), 491/491 accepted CP2 prefix, 240 gate and six census entry receipts. Cylinder PASS/288; BunnyRandom trace82 and Vase completion RED; no graph publication or CP3/D0 promotion. Stable 66/17/49, debt1, deferred81. [Architecture_M6_CP3_TB143_P13_Entry_Coincidence_Receipt_Full_Gate_Independent_Review_20261119.md](./Architecture_M6_CP3_TB143_P13_Entry_Coincidence_Receipt_Full_Gate_Independent_Review_20261119.md).
+**Current M6-CP3 evidence (2026-11-19):** [TB144 independent Review](Architecture_M6_CP3_TB144_P13_Framing_And_Struck_Position_Full_Gate_Independent_Review_20261119.md) confirms gate 960 PASS / known row858 RED of 961, census Cylinder PASS/288 and BunnyRandom trace82/Vase RED, unchanged **963/963** prior comparisons, 491/491 accepted CP2. Stable 66/17/49, debt1, deferred81; no graph publication or CP3/D0 promotion.
 
 **M0–M5 are complete/closed; M6 is active at CP3.** Closure means the checkpoint's frozen criteria passed, **not** that representative output is production-ready.
 
@@ -45,7 +45,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB143 959/960 (membership 1,041); 962/962 prior records MATCH (RA-265). Cylinder PASS / BunnyRandom binding RED / Vase completion RED. H4/O49 open; EC2a frozen. No CP3/selector497 promotion. [TB143 Review](Architecture_M6_CP3_TB143_P13_Entry_Coincidence_Receipt_Full_Gate_Independent_Review_20261119.md). |
+| **M6-CP3 — active** | TB144 960/961 (membership 1,042); 963/963 prior records MATCH (TB144 Review). Cylinder PASS / BunnyRandom binding RED / Vase completion RED. H4/O49 open; EC2a frozen. No CP3/selector497 promotion. [TB143 Review](Architecture_M6_CP3_TB143_P13_Entry_Coincidence_Receipt_Full_Gate_Independent_Review_20261119.md). |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -103,7 +103,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-- **Current priority:** [RA-265](Architecture_M6_CP3_TB143_P13_Entry_Coincidence_Receipt_Full_Gate_Independent_Review_20261119.md#ra-265--adversarial-re-review-of-this-review-2026-11-19-utc) sequence: CB168B → CB168C (`carrierLocus{}` + `carrier_contact_struck_position`) → TB144 → EC2b inert edge contact node → EC3 transverse (entry, entry) switch (sphere O47; BunnyRandom 15/43 receipts are a co-directional merge owned by O48) → CB168 → [O49] → CB169 H4 cutover → CB170 → CB171/172 (O48). RA-262 EPO contract and RA-259 S3 / RA-260 S2 remain authority.
+- **Current priority:** [TB144 Review](Architecture_M6_CP3_TB144_P13_Framing_And_Struck_Position_Full_Gate_Independent_Review_20261119.md) freezes EC2b only. Then [RA-265](Architecture_M6_CP3_TB143_P13_Entry_Coincidence_Receipt_Full_Gate_Independent_Review_20261119.md#ra-265--adversarial-re-review-of-this-review-2026-11-19-utc) sequence: CB168B → CB168C (`carrierLocus{}` + `carrier_contact_struck_position`) → TB144 → EC2b inert edge contact node → EC3 transverse (entry, entry) switch (sphere O47; BunnyRandom 15/43 receipts are a co-directional merge owned by O48) → CB168 → [O49] → CB169 H4 cutover → CB170 → CB171/172 (O48). RA-262 EPO contract and RA-259 S3 / RA-260 S2 remain authority.
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).
