@@ -1,3 +1,7 @@
+## 2026-11-19 UTC — RA-265: TB143 MATCH; CB168B/CB168C/TB144 frozen
+
+- [RA-265](.agents/Directional/Architecture_M6_CP3_TB143_P13_Entry_Coincidence_Receipt_Full_Gate_Independent_Review_20261119.md#ra-265--adversarial-re-review-of-this-review-2026-11-19-utc): TB143 MATCH 962/962 (N3 per TB131); CB168B exact `7ec11b82…af12`; CB168C (EC2a) `f8badfdf…e204`; TB144 manifest `fc1264e9…e949`; EC3 transverse only.
+
 ## 2026-11-19 UTC — TB143 independent Review: strict 960/962; formatting correction next
 
 - [Independent Review](.agents/Directional/Architecture_M6_CP3_TB143_P13_Entry_Coincidence_Receipt_Full_Gate_Independent_Review_20261119.md) independently verified 3,874 artifact hashes, accepted 491/491 prefix, 957/959 prior gate log matches plus 3/3 census, 240+6 new entry receipts, 19/19 sphere-row positive receipts, 1,266 unchanged raw slide proposal/commit records of each kind. Two joined `region_support_projection` log records (rows169/477) violate frozen N3; no retroactive waiver or strict 962/962 promotion. Next `M6-CP3-CB168B-P13-REGION-SUPPORT-DIAGNOSTIC-FRAMING` compile-only correction; EC2/EC3 held. Stable 66/17/49, debt1, deferred81; no code, test, source, or selector changes in Review.

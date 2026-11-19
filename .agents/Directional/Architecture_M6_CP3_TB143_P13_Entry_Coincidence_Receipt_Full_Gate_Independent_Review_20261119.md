@@ -21,6 +21,8 @@ Accepted selector prefix: 30 SHA-256 `1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae
 
 ## Recommendation — exactly one bounded next turn
 
+> **Superseded by RA-265 (below):** rows 169/477 match under N3 as frozen in the TB131 Review; TB143 is MATCH 962/962. CB168B is re-frozen as an exact diff, followed by CB168C (EC2a) and TB144.
+
 Freeze **`M6-CP3-CB168B-P13-REGION-SUPPORT-DIAGNOSTIC-FRAMING`**, Code + Build **only**, not EC2. The diagnostic producer must emit each complete `region_support_projection` line as one indivisible record (or otherwise serialize output safely) without modifying the content, order semantics, geometry, test outcome, selector, raw slide or entry receipts, other producers, or accepted definitions. Use the smallest shared output point causing this defect; do not add broad diagnostic normalization. Before edits, reproduce the two joined-record shapes in raw TB143 row169/477 logs; identify the exact emitting call and other relevant output sites; compare frozen N3 and verify no source-mutation scope leak. Compile only the authorized GMP/GMPXX targets; `runtimeExecution=false`. Independently verify exact source, eight-target build, compile warnings and package hashes. **Falsifier for its subsequent artifact-only Test + Benchmark:** all 962 prior logs must compare under the *unchanged* N1–N7; 491/491 accepted prefix, row858 failure site, 19/19 sphere receipt witness, N5/N6 raw slides and BunnyRandom first failure must be preserved. Any semantic event change, deleted diagnostic, altered record payload, or unmatched log is STOP, not permission to edit a normalizer. This corrective turn does not run here; EC2/EC3 remain held.
 
 ## Procedure and scope disclosure
@@ -49,3 +51,53 @@ This session read several source documents directly before selecting the mandato
 | review_check.py boundary | Executed on synthetic source-only Git baseline: FAIL (all untracked product paths appear newly created); not accepted as remote boundary proof. Intended patch path audit contains only six documentation files |
 | `STATUS` lifecycle maintained | Bootstrap on current turn; final beacon written only after durable closeout or remains IN_PROGRESS when transport incomplete |
 | Pushed to origin, branch in sync | GitHub Actions patch application and final PR-head read serve as remote confirmation; status remains unconfirmed until those return success |
+
+## RA-265 — adversarial re-review of this Review (2026-11-19 UTC)
+
+### S1 — what holds
+
+The evidence work holds:
+- Four ZIPs and 3,874 hashes were checked, and 491/491 passes.
+- Raw N5/N6 receipts are unchanged; row 858 is RED at the same site; BunnyRandom still fails at trace 82.
+- The sphere witness holds: 19/19 rows with `duplicateCutCrossing edge=(0,2)` carry `entryCoincidence first=4:7 second=6:7` at the exact parameter.
+
+A Haiku re-audit of the raw logs explains "more crossing lines than receipts": every `duplicateCutCrossing` line is logged twice in adjacent identical pairs, while the receipt prints once per producer run. The `4:7` and `15:7` counts are equal in every row. The applied CB168A source equals the RA-264 diff.
+
+### S2 — defects
+
+1. **N3 misread, so the MATCH was wrongly rejected.** N3 was frozen in the TB131 Review for exactly this race. That Review's own row 179 showed the joined record and empty line, and it named the cause as two insertions (`std::cerr << out.str() << '\n'`). Its rule:
+   - compare `M3_CP4AB_FRAGMENT_DIAG` records as a multiset of complete records split at the prefix;
+   - require the prefix count to equal the record count;
+   - require the non-record remainder to be byte-equal in order.
+
+   Later Reviews paraphrased N3 as "sort contiguous complete lines", and this Review applied the paraphrase. Under the frozen rule, rows 169/477 match:
+   - In both rows TB143 has the same four records, joined at column 466 of one line.
+   - Splitting that line at the prefix leaves remainders of `\n` (after the joined line), `\n` (the extra blank line), `\n`, `\n`. TB142 has the same four newlines in the same order.
+
+   TB143 is **MATCH 962/962** under N1–N7. No normalization is changed, prospectively or retroactively.
+2. **Prose successor.** CB168B was frozen as a specification ("use the smallest shared output point"), not an exact diff. The implementation agent receives exact patches only. That specification also covered only the two-insertion sites. Three more emitters write 8–10 insertions each (`GlobalTopologyPlan.cpp:1532`, `:1687`, `:1704`). Interleaving there would split a record, which N3 cannot absorb.
+3. **EC2/EC3 held without cause.** The race is an existing hazard in the component workers (`std::async` at `RemeshPipeline.cpp:17726`/`:19571`), absorbed by N3 since TB131 and independent of EC1. Holding EC2 until "strict evidence is restored" stalled the trajectory on a non-defect.
+4. **The census's design consequence was not read.** The BunnyRandom receipts `15:21/43:15` on (72,243) and `15:22/43:16` on (72,273) are consecutive edges around vertex 72. Both traces enter the face across (72,243) at one point and leave it across (72,273), so both lie in the single face containing those two edges: a co-directional merge, not a transverse crossing.
+   - The merge's onset is earlier: the slide interval of `15:19`/`43:13` on (94,210) (O48; RA-260 S2.7).
+   - The trace-82 failure lies in face (21,72,273) with `terminating=43`, downstream of that merge.
+   - An EC3 switch on every (entry, entry) receipt would therefore stop BunnyRandom's later trace at (72,243), the wrong place, and change its first failure.
+   - The sphere `4:7/6:7` pair is transverse: different source faces, opposite directions (TB132).
+
+### S3 — realigned sequence
+
+| Turn | Scope | Evidence |
+|---|---|---|
+| CB168B | Every M3 record written with one insertion (7 sites), exact diff `7ec11b82…af12` | compile |
+| CB168C (EC2a) | `carrierLocus{}` + digest when present + pure `carrier_contact_struck_position` + injected test, unwired; exact diff `f8badfdf…e204` | compile |
+| TB144 | Manifest `fc1264e9…e949` (TB142 + row 961); 963 prior records vs TB143 under N1–N7 (N3 per TB131); no line with two M3 prefixes | [plan](Architecture_M6_CP3_CB168B_CB168C_TB144_P13_Framing_And_Struck_Position_Plan_20261119.md) |
+| TB144-REV | Freezes EC2b | Review |
+| EC2b | Wire inert edge contact node `{carrier, parameter, terminating, interior}` for terminals with a locus: interior from `carrier_contact_struck_position`; merges with the struck trace's crossing at (edge, parameter) in `build_cut_node_bindings`; `is_face_contact_event` excludes it | TB (strict; no producer sets a locus) |
+| EC3 | Producer switch, **transverse only**: `first_field_aligned_carrier_contact` with both slide flags false **and** different source faces. Predicted: both sphere pairs change, BunnyRandom unchanged. A same-face co-directional entry coincidence is a merge and belongs to the O48 overlap rule (CB171/CB172 must cover it when no earlier slide contact precedes it) | TB |
+| then | CB168 binding → [O49] → CB169 H4 cutover → CB170 → CB171 → CB172 (O48) | RA-262/263 |
+
+### S4 — closeout
+
+- TB143 is MATCH 962/962 with the receipt witness 19/19; 491/491; stable 66/17/49; debt 1; deferred 81; no promotion.
+- The output race is recorded in the tracker as a known non-product hazard owned by CB168B.
+- Carried: C5/O42/O43/O46/O47/O48, H2/H4, FC-1/FC-4, O49. Held: FC-6, terminal-cut and the row-858 fix (until EC3). CB145 parked. D11=A, D12=A.
+- Successor: `M6-CP3-CB168B-P13-REGION-SUPPORT-DIAGNOSTIC-FRAMING`.
