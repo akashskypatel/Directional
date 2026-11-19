@@ -2112,3 +2112,15 @@ By user instruction, the 231 remaining standalone `Architecture_M6*` Review, def
 | `Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Execution_Report_20261118.md` | 77 | Superseded by TB141 MATCH; original SHA-256 `9c1ece81663d2ad781baee22cfeededc22ff4858f7fe6a6959adab20196eb9c1` | [Volume D3](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb140_p13_trace_segment_pieces_helper_full_gate_execution_report_20261118md) |
 
 TB141 execution checkpoint (16 lines, removed by prior cleanup): original Git blob `e0de037f532e5603cf604b6796129bfcf3382d9c` at `3b0ddc713385273d204214a4359f14127b1edbf1`; pending runtime state superseded by TB141 execution report. Library continuation ZIP SHA-256 `9171683dd8f76239b6cda58e170c1c6e512db5c47fef18a57fe2ae7db4f6c873`; snapshot `28d8f9275ac5cff98f1209c2d4db3e2d61c1139b`, artifact 14472107893, 5,582 hashes verified; gate and census events `f78b7a45ef330b51ce46bd1bf92a6bd09783d837` and `d8c31d792b0ebcae6b6b4bb003af97121e87cbb4`.
+
+
+## TB144 Review consolidation (2026-11-19 UTC)
+
+The following four completed, superseded records are preserved verbatim in Volume D3 with their original SHA-256 and line count. They are historical evidence, not current execution instructions. Current TB144 execution/Review, normative RA-265, CB168B/CB168C source-package records and the EC2b plan remain standalone.
+
+| Folded original filename | Lines | Verdict / retained authority |
+|---|---:|---|
+| `Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119.md` | 27 | Consumed RA-264 EC1 plan; CB168A compile and TB143 Review completed; original SHA-256 `c78147907a87619311c0ae2fbc25dc49026b1c46369828f8945bc20ed00b5417`; [complete text](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168a_p13_entry_coincidence_receipt_plan_20261119md) |
+| `Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Code_Build_Record_20261119.md` | 23 | CB168A compile-only PASS, superseded as product baseline by CB168B/CB168C; original SHA-256 `67d148fe5d514720920e80f4587018948a865afdbc0917f4d5332068e435492c`; [complete text](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168a_p13_entry_coincidence_receipt_code_build_record_20261119md) |
+| `Architecture_M6_CP3_CB168B_CB168C_TB144_P13_Framing_And_Struck_Position_Plan_20261119.md` | 55 | Consumed RA-265 EC2a/TB144 plan; TB144 independent Review completed; original SHA-256 `fb87bd097ce621e6bda8315faa85d33c0b03f37f9483540bf0a71e831f2cc9e6`; [complete text](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168b_cb168c_tb144_p13_framing_and_struck_position_plan_20261119md) |
+| `Architecture_M6_CP3_TB143_P13_Entry_Coincidence_Receipt_Full_Gate_Execution_Report_20261119.md` | 49 | TB143 962-case comparator reviewed under RA-265; superseded by TB144 full gate; original SHA-256 `b5801b2af2702bcf9398ca25f51ac4b7d7b311bce0e6a12db7c0ed8f13160f5e`; [complete text](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb143_p13_entry_coincidence_receipt_full_gate_execution_report_20261119md) |

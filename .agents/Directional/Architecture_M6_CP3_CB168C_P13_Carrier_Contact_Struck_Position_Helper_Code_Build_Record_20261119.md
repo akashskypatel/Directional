@@ -6,7 +6,7 @@
 
 ## Background
 
-[RA-265 frozen plan](Architecture_M6_CP3_CB168B_CB168C_TB144_P13_Framing_And_Struck_Position_Plan_20261119.md) authorized only [the exact patch](Architecture_M6_CP3_CB168C_P13_Carrier_Contact_Struck_Position_Helper_Exact.diff), SHA-256 `f8badfdf09864bb88b9ff4d2a870b8e0ba1b03f57b4513d5dfc0f9f7719ee204`. Source snapshot run `44456940377` verified `5600` files at source `91204a2987f393fd88363e0df2b7aba4cd1399af`. Comparison with CB168B source `ddd4d158701bdcca73fe3eb5034d51dd4ff1b694` found no `src`, `include`, or `tests` changes before this patch. The patch applies to that product and edits exactly five authorized paths (+126/-0).
+[RA-265 frozen plan](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168b_cb168c_tb144_p13_framing_and_struck_position_plan_20261119md) authorized only [the exact patch](Architecture_M6_CP3_CB168C_P13_Carrier_Contact_Struck_Position_Helper_Exact.diff), SHA-256 `f8badfdf09864bb88b9ff4d2a870b8e0ba1b03f57b4513d5dfc0f9f7719ee204`. Source snapshot run `44456940377` verified `5600` files at source `91204a2987f393fd88363e0df2b7aba4cd1399af`. Comparison with CB168B source `ddd4d158701bdcca73fe3eb5034d51dd4ff1b694` found no `src`, `include`, or `tests` changes before this patch. The patch applies to that product and edits exactly five authorized paths (+126/-0).
 
 ## Assessment
 

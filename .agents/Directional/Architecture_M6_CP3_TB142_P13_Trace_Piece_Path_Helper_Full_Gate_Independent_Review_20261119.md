@@ -23,7 +23,7 @@
 
 > **Superseded by RA-264 (below):** patch `539fd774…bd7f4` is withdrawn; the revised EC1 diff is `013e8d07…1e8e` (receipt only).
 
-Frozen successor `M6-CP3-CB168A-P13-ENTRY-COINCIDENCE-RECEIPT` applies **only** [Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Exact.diff](Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Exact.diff), SHA-256 `539fd774a2a90dc713eaa957bb48e82dc67dedb3cf35e048c3bcbc07595bd7f4`, to the verified unchanged product/test preimages; see [Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119.md](Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119.md). It adds inert optional `FieldAlignedTerminalContact::carrierLocus`, hashed only when actually present, and exact (entry, entry) interior-parameter diagnostic receipts without changing contact scheduling or graph geometry. Scope: three files, +74/-0; static patch applicability PASS. Neither the frozen patch nor the Review asserts a compiled or measured EC1 result.
+Frozen successor `M6-CP3-CB168A-P13-ENTRY-COINCIDENCE-RECEIPT` applies **only** [Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Exact.diff](Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Exact.diff), SHA-256 `539fd774a2a90dc713eaa957bb48e82dc67dedb3cf35e048c3bcbc07595bd7f4`, to the verified unchanged product/test preimages; see [Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168a_p13_entry_coincidence_receipt_plan_20261119md). It adds inert optional `FieldAlignedTerminalContact::carrierLocus`, hashed only when actually present, and exact (entry, entry) interior-parameter diagnostic receipts without changing contact scheduling or graph geometry. Scope: three files, +74/-0; static patch applicability PASS. Neither the frozen patch nor the Review asserts a compiled or measured EC1 result.
 
 EC1 falsifiers: old 962 prior records (including unchanged raw N5/N6 slide receipts) must remain identical; focused field/default/digest contract must reject mutation; count all deduplicated interior (entry, entry) receipts by fixture and trace-pair, with sphere 4/6 visible in every applicable sphere row; unexpected other-fixture encounters must be enumerated; endpoint 0/1, different carriers, distinct parameters, same trace and replays cannot count; no `carrierLocus` populated and no graph publication in EC1. Stop on any change in row858 site, BunnyRandom first failure, selector prefix, artifact authority, or source scope. Subsequent EC2/EC3 remain prospective and require separate turns and evidence.
 
@@ -46,7 +46,7 @@ Procedure evidence: direct document reads preceded the snapshot READ_MODE select
 | Selector manifest | n/a: no selector edited or accepted |
 | LESSONS | Existing exact-source identity, witness and non-vacuity lessons applied; no new pattern |
 | Consolidation under CLEAN_UP_POLICY | n/a: no historical duplicate records generated; transient snapshot marker removed after evidence collection |
-| Successor frozen | `M6-CP3-CB168A-P13-ENTRY-COINCIDENCE-RECEIPT`; exact diff and falsifiers in [Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119.md](Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119.md) |
+| Successor frozen | `M6-CP3-CB168A-P13-ENTRY-COINCIDENCE-RECEIPT`; exact diff and falsifiers in [Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168a_p13_entry_coincidence_receipt_plan_20261119md) |
 | Turn boundary held | Yes; Review runtime-free, no live product/test/selector/fixture mutation |
 | review_check.py boundary | Source-only snapshot has no rewrite-base Git history; history-dependent verification unavailable; remote code-surface and local diff checks used |
 | `STATUS` lifecycle maintained | Entry beacon in repository, final COMPLETE beacon after publication and cleanup |
@@ -71,7 +71,7 @@ The TB142 MATCH (962/962 under N1–N6, raw N5/N6, 491/491, row 960 PASS, row 85
 | Turn | Scope | Evidence |
 |---|---|---|
 | CB168A (EC1) | receipt only via `first_field_aligned_carrier_contact`, exact diff `013e8d07…1e8e`, +40 one file | compile only |
-| TB143 | TB142 manifest unchanged; N7 deletes entryCoincidence lines; raw census; sphere (0,2) witness is a STOP condition | [plan](Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119.md) |
+| TB143 | TB142 manifest unchanged; N7 deletes entryCoincidence lines; raw census; sphere (0,2) witness is a STOP condition | [plan](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168a_p13_entry_coincidence_receipt_plan_20261119md) |
 | TB143-REV | adjudicate; freeze EC2 | Review |
 | EC2 | `carrierLocus{}` + pure edge-contact-node helper (its first reader, injected test) + wired inert consumer | TB |
 | EC3 | (entry, entry) producer switch; sphere O47 changes; presence-path digest first witnessed | TB |

@@ -89,7 +89,7 @@ A Haiku re-audit of the raw logs explains "more crossing lines than receipts": e
 |---|---|---|
 | CB168B | Every M3 record written with one insertion (7 sites), exact diff `7ec11b82…af12` | compile |
 | CB168C (EC2a) | `carrierLocus{}` + digest when present + pure `carrier_contact_struck_position` + injected test, unwired; exact diff `f8badfdf…e204` | compile |
-| TB144 | Manifest `fc1264e9…e949` (TB142 + row 961); 963 prior records vs TB143 under N1–N7 (N3 per TB131); no line with two M3 prefixes | [plan](Architecture_M6_CP3_CB168B_CB168C_TB144_P13_Framing_And_Struck_Position_Plan_20261119.md) |
+| TB144 | Manifest `fc1264e9…e949` (TB142 + row 961); 963 prior records vs TB143 under N1–N7 (N3 per TB131); no line with two M3 prefixes | [plan](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168b_cb168c_tb144_p13_framing_and_struck_position_plan_20261119md) |
 | TB144-REV | Freezes EC2b | Review |
 | EC2b | Wire inert edge contact node `{carrier, parameter, terminating, interior}` for terminals with a locus: interior from `carrier_contact_struck_position`; merges with the struck trace's crossing at (edge, parameter) in `build_cut_node_bindings`; `is_face_contact_event` excludes it | TB (strict; no producer sets a locus) |
 | EC3 | Producer switch, **transverse only**: `first_field_aligned_carrier_contact` with both slide flags false **and** different source faces. Predicted: both sphere pairs change, BunnyRandom unchanged. A same-face co-directional entry coincidence is a merge and belongs to the O48 overlap rule (CB171/CB172 must cover it when no earlier slide contact precedes it) | TB |

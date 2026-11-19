@@ -5540,3 +5540,192 @@ Closeout application [run 44375376509](https://github.com/akashskypatel/Directio
 ## Recommendation — exact next Review
 
 `M6-CP3-TB140-P13-TRACE-SEGMENT-PIECES-HELPER-FULL-GATE-REV`: independently reopen immutable TB140/TB139 evidence, rederive the frozen MATCH and new control's scope/non-vacuity; adjudicate before freezing the exact CB166 embedded-graph path/ray patch and TB criteria under RA-261 S4.1. No CB166 implementation, runtime rerun, source mutation or CP3/D0 promotion in this execution turn. Historical conditional STOP and infrastructure routes in RA-261 S3 do not apply to this MATCH.
+
+
+---
+
+# TB144 Review — verbatim folded records (2026-11-19 UTC)
+
+These are superseded historical documents. The full original bytes are preserved as fenced Markdown; execution instructions within are historical only. For active authority use the current handoff and the TB144 Review.
+
+## Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119
+
+Original basename: `Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119.md`; original SHA-256 `c78147907a87619311c0ae2fbc25dc49026b1c46369828f8945bc20ed00b5417`; original line count: 27; disposition: Consumed RA-264 EC1 plan; CB168A compile and TB143 Review completed.
+
+~~~~~markdown
+# EC1 — entry-coincidence receipt (frozen Code + Build, revised by RA-264)
+
+## Situation
+
+`M6-CP3-CB168A-P13-ENTRY-COINCIDENCE-RECEIPT` applies **only** [Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Exact.diff](Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Exact.diff), SHA-256 `013e8d0701cfed054d33b9f4da1c9cb0cb2da051aaa9b690c0d7a670beab1e8e`, one path, numstat `40 0 src/geometry/SurfaceCellTracing.cpp`. RA-264 (in the [TB142 Review](Architecture_M6_CP3_TB142_P13_Trace_Piece_Path_Helper_Full_Gate_Independent_Review_20261119.md#ra-264--adversarial-re-review-of-this-review-2026-11-19-utc)) withdrew the earlier three-file patch (SHA `539fd774…bd7f4`); never apply it. Do not start EC2, EC3, CB168 or the H4 cutover.
+
+Precheck: `git diff --quiet ecc67015cc4ff28ec15c086787a9450bd585bf94 HEAD -- src include tests` (product unchanged since CB167), patch SHA, `git apply --check`.
+
+## Background — exact change
+
+- `#include <set>`.
+- In `canonical_field_aligned_traces_and_events`, a local receipt calls the accepted helper `first_field_aligned_carrier_contact(first, second)` and reports only when both returned flags are false (`movingInSlide`, `wallInSlide`): an entry crossing meeting an entry crossing at an interior parameter (the helper already rejects single-point meets at 0 and 1). This is the predicate RA-263 S3 named for the EC3 switch; it is covered by the accepted test `FieldAlignedCarrierOccupancy.FirstCarrierContactMeetsEntriesAndSlidesAcrossFaces` (the opposite-face (0,2) crossing at 1/3, a 1/100 near miss, and an end-point meeting).
+- Called once per pair in the proposal-vs-proposal loop and the proposal-vs-wall loop, before the existing classifier; the same trace never counts; each unordered (trace, segment) pair prints once per producer run:
+  `FieldAlignedCurveNetwork.entryCoincidence first=t:s second=t:s carrier=(a,b) parameter=num/den`.
+- No queue, event, candidate, digest or test change. No new test: the predicate is the accepted helper, and the receipt's evidence is the TB143 census below.
+
+## Assessment — compile falsifiers (this turn)
+
+Compile only the eight RA-245 GMP/GMPXX targets; `runtimeExecution=false`. Review syntax check: 0 errors, 43 warnings (= base). Stop on any precheck, apply, compile or package-hash failure.
+
+## Recommendation — frozen successor `M6-CP3-TB143-P13-ENTRY-COINCIDENCE-RECEIPT-FULL-GATE-EXEC`
+
+- Manifest: unchanged TB142 manifest `gates/Architecture_M6_TB142_P13_Trace_Piece_Path_Helper_Full_Gate_Case_Manifest.tsv`, SHA-256 `2468d8baed76322bdda79072e54c287aa421fb627a819ba278c7f7ee77e12db0` (960 gated + 81 deferred), plus the 3-row census.
+- Comparison to TB142: N1–N6 as frozen, plus **N7**: delete whole lines beginning `FieldAlignedCurveNetwork.entryCoincidence ` (nothing else). All 962 records must then match exactly, raw N5/N6 receipts included; 491/491 prefix; row 858 RED at `SurfaceCellTracingDisplayTests.cpp:155`; BunnyRandom first failure unchanged (trace 82, `TraceEventPositionNodeConflict`).
+- Receipt census, raw: list every entryCoincidence line by row, fixture, pair, carrier and exact parameter, with per-fixture deduplicated counts.
+- Positive witness (falsifiable): every sphere row that logs `EmbeddedGraphTopology.duplicateCutCrossing` on edge (0,2) must also log an entryCoincidence line with `carrier=(0,2)` whose exact parameter is that crossing's parameter (decimal 0.12749386848657163) (expected pair `4:7`/`6:7`: both traces cross (0,2) in opposite directions and enter segment 7 there, TB132/TB133; report the pair as printed). Any such row without a line on that carrier and parameter is a STOP routed to Review (the EC3 predicate misses the known case).
+- Every non-sphere line is enumerated, not adjudicated: each is a fixture EC3 will change, and the EC3 freeze must predict its outcome.
+~~~~~
+
+## Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Code_Build_Record_20261119
+
+Original basename: `Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Code_Build_Record_20261119.md`; original SHA-256 `67d148fe5d514720920e80f4587018948a865afdbc0917f4d5332068e435492c`; original line count: 23; disposition: CB168A compile-only PASS, superseded as product baseline by CB168B/CB168C.
+
+~~~~~markdown
+# CB168A — entry-coincidence receipt (Code + Build, 2026-11-19 UTC)
+
+## Situation
+
+**Compile PASS.** `M6-CP3-CB168A-P13-ENTRY-COINCIDENCE-RECEIPT` source committed at `b77a81ff5250aabbf6dd58cf4e9e6c208d4a973f`. Compile-only dispatcher request `d41c12fa137d3a874fd2860921233dda99b4e97e`; job `135272776905`, [run 44438276172](https://github.com/akashskypatel/Directional/actions/runs/44438276172), immutable result artifact `14488684741` SHA-256 `7dbeb68dd7832fd75976646b77575b3b7848f3bd58a3fe2de005aa41fdd7da39` and compile log `14490006549` SHA-256 `2ece810ec259f52a918297fdf3fcd7885e51fc7b19bb91c71a9c6df0205a1985`. No product runtime was authorized or run in this session. PR #8 was open, draft, unmerged at entry.
+
+## Background
+
+[RA-264 exact frozen plan](Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119.md), [original diff](Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Exact.diff) SHA-256 `013e8d0701cfed054d33b9f4da1c9cb0cb2da051aaa9b690c0d7a670beab1e8e`. Exact snapshot authority `a8c57ca3158f28e5a6538b7050edc1db3f39384c`, [source snapshot run 44437186734](https://github.com/akashskypatel/Directional/actions/runs/44437186734), job `135268985554`, artifact `14489022923` ZIP SHA-256 `c0115e9e62750badba9299742701dfac9e0005feac6fd0ae5972099410aa99b8`; 5592/5592 contained file checksums verified. Comparison to CB167 product source `ecc67015cc4ff28ec15c086787a9450bd585bf94` showed no changes under `src/`, `include/`, or `tests/` before this patch.
+
+Only `src/geometry/SurfaceCellTracing.cpp`: `+40/-0`; preimage Git blob `9b4ec25c16e14fff3512ecfbf89610d2513d4dff`; postimage `feb65a47e6ca9140aa1e95e5ed1e00da27b85295`. The accepted `first_field_aligned_carrier_contact` emits a diagnostic `FieldAlignedCurveNetwork.entryCoincidence` only when both slide flags are false. Unordered trace/segment pairs are reported once. Existing scheduling is unchanged. No EC2/EC3, switch, queue mutation, fixture, selector or test changes.
+
+## Assessment
+
+- Local `git apply --check`, `git apply --reverse --check`, syntax of patch framing and SHA256 verification passed. An exact work-preservation patch `Directional__M6-CP3-CB168A-P13-ENTRY-COINCIDENCE-RECEIPT__base-a8c57ca3158f__work-preservation.patch` (3960 bytes, SHA-256 `1514573f6ade0a9936dda75716e0bde1dd17de8fedc140b5d497e2aa2b96069f`) was saved and uploaded to Drive.
+- [Drive apply run 44437707149](https://github.com/akashskypatel/Directional/actions/runs/44437707149), job `135270743416`, succeeded. Apply result `14489423506` SHA-256 `43c621c611eb5c3c6e03693098cbaa6bc74a5d789f775e4e726f9ff240ded761`; log `14490200049` SHA-256 `b57d1ead6e026661fca1a80a093cacaa69df2201bf2fa0f15fcaf4861a38806b`. Exact patch/base/one source path verified and commit `b77a81ff5250aabbf6dd58cf4e9e6c208d4a973f` pushed. `runtimeExecution=false`.
+- First compile dispatcher request passed targets as a string instead of a required JSON array. Its parse job failed without compiling. This orchestration error was corrected in request `d41c12fa137d3a874fd2860921233dda99b4e97e`; semantic source unchanged. The corrected dispatcher run `44438276172` completed successfully; preflight and build exit 0; eight required target names match the plan; GMP and GMPXX appear on the generated link command. `SHA256SUMS` has 28/28 matching entries, source status clean, `runtimeExecution=false`. This verifies compilation and package integrity, not tests.
+- Entry tool procedure: repo document reads occurred before the mandatory snapshot-mode gate. After identifying the error, source inspection used the exact verified snapshot. No subsequent direct piecemeal source inspection was used. The in-memory tool ledger is partial/unverified and no exact call total is claimed.
+- Unchanged runtime authority: TB142 962/962 previous gate/census rows match TB141 under N1–N6; accepted prefix 491/491; row 858 remains known RED; stable event accounting 66/17/49, produced-witness debt 1, deferred 81. No CP3/D0 acceptance or runtime improvement claimed.
+
+## Recommendation
+
+CB168A compile and packaging are verified. After final documentation, cleanup and status closeout, the exact next turn is `M6-CP3-TB143-P13-ENTRY-COINCIDENCE-RECEIPT-FULL-GATE-EXEC` under the frozen [RA-264 plan](Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119.md): immutable package, 960 gate + 81 deferred, 3-row census, N1–N7 comparison, exact sphere `(0,2)` receipt witness. No rebuild or product source change in TB143.
+~~~~~
+
+## Architecture_M6_CP3_CB168B_CB168C_TB144_P13_Framing_And_Struck_Position_Plan_20261119
+
+Original basename: `Architecture_M6_CP3_CB168B_CB168C_TB144_P13_Framing_And_Struck_Position_Plan_20261119.md`; original SHA-256 `fb87bd097ce621e6bda8315faa85d33c0b03f37f9483540bf0a71e831f2cc9e6`; original line count: 55; disposition: Consumed RA-265 EC2a/TB144 plan; TB144 independent Review completed.
+
+~~~~~markdown
+# CB168B, CB168C and TB144 — diagnostic framing and carrier-contact struck position (frozen by RA-265)
+
+## Situation
+
+[RA-265](Architecture_M6_CP3_TB143_P13_Entry_Coincidence_Receipt_Full_Gate_Independent_Review_20261119.md#ra-265--adversarial-re-review-of-this-review-2026-11-19-utc) reclassifies TB143 as MATCH under the frozen N3 and freezes two narrow Code + Build turns, then one Test + Benchmark covering both. Apply in order; each is compile-only. Precheck for both: `git diff --quiet b77a81ff5250aabbf6dd58cf4e9e6c208d4a973f HEAD -- src include tests` (product unchanged since CB168A) before CB168B, and the CB168B result before CB168C.
+
+## Background — exact patches
+
+| Turn | Patch | SHA-256 | Numstat |
+|---|---|---|---|
+| `M6-CP3-CB168B-P13-REGION-SUPPORT-DIAGNOSTIC-FRAMING` | [diff](Architecture_M6_CP3_CB168B_P13_Region_Support_Diagnostic_Framing_Exact.diff) | `7ec11b82448a3f2c563852a796a6eb3774e5674a625d7f38bf4db6adeaedaf12` | `28 19 src/geometry/GlobalTopologyPlan.cpp` |
+| `M6-CP3-CB168C-P13-CARRIER-CONTACT-STRUCK-POSITION-HELPER` | [diff](Architecture_M6_CP3_CB168C_P13_Carrier_Contact_Struck_Position_Helper_Exact.diff) | `f8badfdf09864bb88b9ff4d2a870b8e0ba1b03f57b4513d5dfc0f9f7719ee204` | `4 0 SurfaceCellTracing.h; 21 0 EmbeddedGraphTopology.cpp; 12 0 EmbeddedGraphTopology.h; 7 0 SurfaceCellTracing.cpp; 82 0 tests/FieldAlignedCurveNetworkTests.cpp` |
+
+- **CB168B.** All seven `M3_CP4AB_FRAGMENT_DIAG` emitters in `GlobalTopologyPlan.cpp` build the whole record, newline included, in an `ostringstream` and write it with one insertion. These emitters run on concurrent `std::async` component workers (`RemeshPipeline.cpp:17726`, `:19571`). Before the change, four wrote `out.str()` then `'\n'` as two insertions: TB143 rows 169/477 and TB131 row 179 show a joined record followed by an empty line. The other three wrote 8–10 insertions, so a record from another worker could land inside a record, which N3 cannot absorb. Record text is unchanged.
+- **CB168C (EC2a, unwired).** `FieldAlignedTerminalContact::carrierLocus{}` (`{}` avoids 10 `-Wmissing-field-initializers` warnings). The digest hashes it only when present. Pure helper `embedded_graph_topology_detail::carrier_contact_struck_position(struck, record)` (RA-260 S2.4, `wallInSlide=false`): it returns `{k, ∅}`, the boundary before struck segment k, only when all of these hold:
+  - `struck.id == record.struckTrace`;
+  - the locus is present;
+  - k is in range;
+  - the locus equals segment k's entry crossing, through the accepted `field_aligned_segment_entry_occupancy`;
+  - the parameter is interior.
+  Otherwise it returns empty, including for a slide contact (owned by CB171/CB172) and for a vertex.
+  - New test `FieldAlignedCarrierOccupancy.CarrierContactCutsTheStruckTraceAtItsEntryCrossingOnly` injects records by hand. It checks one positive case at segment 1, a second positive at segment 0, and seven negative controls: no locus, another parameter, another edge, a segment past the end, another trace, an end vertex, and a point inside a slide. It fails if the helper ignores the parameter, the edge, the trace identity, or the slide/vertex exclusions.
+  - The present-locus digest branch is not unit-testable (internal function; networks cannot be hand-built). It is first witnessed at EC3.
+
+## Assessment — compile falsifiers
+
+Each Code + Build compiles the eight RA-245 GMP/GMPXX targets with `runtimeExecution=false`. The Review ran `-fsyntax-only` with no errors and these warning counts, all equal to base:
+
+| File | Warnings |
+|---|---|
+| `GlobalTopologyPlan.cpp` | 24 |
+| `SurfaceCellTracing.cpp` | 43 |
+| `EmbeddedGraphTopology.cpp` | 22 |
+| `FieldAlignedCurveNetworkTests.cpp` | 42 |
+
+The two patches stack (`git apply --check` in order). Stop on any precheck, apply, compile or package-hash failure.
+
+## Recommendation — frozen `M6-CP3-TB144-P13-FRAMING-AND-STRUCK-POSITION-FULL-GATE-EXEC`
+
+- **Inputs.**
+  - Immutable CB168C package.
+  - Gate manifest [TB144](gates/Architecture_M6_TB144_P13_Carrier_Contact_Struck_Position_Full_Gate_Case_Manifest.tsv), SHA-256 `fc1264e96628ad659302905f5537d8f4fc09973ffbfeaea3a4f228069613e949`: the TB142 manifest plus row 961, so 961 gated + 81 deferred.
+  - Census, deferred list and harness unchanged.
+- **Comparison against TB143.** Use N1, N2, N4, N7 as frozen, and N3 exactly as defined in the TB131 Review: `M3_CP4AB_FRAGMENT_DIAG` records compared as a multiset of complete records split at the prefix, prefix count equal to record count, non-record remainder byte-equal in order.
+  - All 963 prior records (960 gate + 3 census) must match.
+  - Raw `slideProposal` and `committedSlide` lines must be byte-identical.
+  - Per row, the `entryCoincidence` lines must equal TB143's as a multiset.
+- **Required outcomes.**
+  - Row 961 PASS; gate 960/961.
+  - 491/491 accepted prefix.
+  - Row 858 RED at `SurfaceCellTracingDisplayTests.cpp:155`.
+  - BunnyRandom first failure unchanged (trace 82).
+  - Cylinder PASS/288.
+- **Framing check.** No line in either run may contain the `M3_CP4AB_FRAGMENT_DIAG` prefix twice; any such line is a STOP. Absence is weak evidence because the race is rare; presence falsifies CB168B.
+- **Successor.** `M6-CP3-TB144-P13-FRAMING-AND-STRUCK-POSITION-FULL-GATE-REV` freezes EC2b (RA-265 S3).
+~~~~~
+
+## Architecture_M6_CP3_TB143_P13_Entry_Coincidence_Receipt_Full_Gate_Execution_Report_20261119
+
+Original basename: `Architecture_M6_CP3_TB143_P13_Entry_Coincidence_Receipt_Full_Gate_Execution_Report_20261119.md`; original SHA-256 `b5801b2af2702bcf9398ca25f51ac4b7d7b311bce0e6a12db7c0ed8f13160f5e`; original line count: 49; disposition: TB143 962-case comparator reviewed under RA-265; superseded by TB144 full gate.
+
+~~~~~markdown
+# TB143 entry-coincidence receipt — Test + Benchmark execution
+
+## Situation
+
+`EXECUTION COMPLETE — strict prior-log comparison exception`. Full gate run [44441063722](https://github.com/akashskypatel/Directional/actions/runs/44441063722) reached terminal `failure` only because the known row 858 RED makes `control_bad=1`. All 960/960 rows executed: 959 PASS, one unchanged RED, zero skipped, missing, abnormal, duplicate or unexpected positive cases. New row 960 PASS. The 491/491 accepted prefix remains PASS. This is **not** a green full gate or production acceptance.
+
+## Background
+
+Immutable compile package `14488684741` from source `b77a81ff5250aabbf6dd58cf4e9e6c208d4a973f`: original ZIP SHA-256 `7dbeb68dd7832fd75976646b77575b3b7848f3bd58a3fe2de005aa41fdd7da39`; 28/28 internal hashes verified; runtimeExecution=false during compile. Full gate result artifact `14490999571`, ZIP SHA-256 `ffa03f7e359eeed8e76ad3f4f7a1624bed5f69d44c97a50b860939a8a044b11d`, 1,928/1,928 internal SHA-256 checks; separate log `14491976376`, ZIP SHA-256 `f2b44df5df726f4d263732504e97bcab65ee802b2ca89941528e433aa1d5bcd9`. No compile, configure, relink, source, test, selector, fixture or benchmark changes during TB.
+
+Census [run 44441139661](https://github.com/akashskypatel/Directional/actions/runs/44441139661) completed successfully. Result artifact `14492518198` ZIP SHA-256 `4089fc0de5bf38620f98e077b80a0b00706c17240869ff564ff36eb9b8b7cfa1`, **9/9** indexed SHA-256 checks; separate log `14492663147` ZIP SHA-256 `31bb6885bee5c312c6d49c9da9e39dc15204b9eaec6a26e06d3b73fc0fa78d56`. Three of three executed, Cylinder PASS, BunnyRandom RED, Vase RED, no skipped, missing, abnormal, duplicate or unexpected-pass cases, exit 0 and `postflight=true`. No build/configure/relink/benchmark took place. All three prior census ledger records and logs match TB142 under frozen N1/N2/N4/N7 (N3 not required); raw N5/N6 receipts are byte-identical. Thus **960/962** prior logs are exact normalized matches when combined with 957/959 gate matches, and **2/962** are strict deviations (gate rows 169/477). This is not a 962/962 MATCH.
+
+## Assessment
+
+- Prior 959 gate ledger rows match TB142 for identity, selected test, binary, verdict, exit and first-failure/reason. Membership 1,041 entries is byte-identical. Row 858 still RED at `tests/SurfaceCellTracingDisplayTests.cpp:155`.
+- N1 GoogleTest timings, N2 line endings, N3 full `region_support_projection` record ordering, and N7 exact complete-line removal of `FieldAlignedCurveNetwork.entryCoincidence ` were applied in the offline comparison. N5 `slideProposal` and N6 `committedSlide`: 1,200/1,200 gate **raw** lines and 66/66 census **raw** lines of each kind match TB142 byte-for-byte (1,266 records of each type across both runs).
+- **Strict comparison exception:** 957/959 prior gate logs match after N1–N3 and N7. Rows **169** and **477** each contain two complete `region_support_projection` records joined with no newline and one extra blank line. Their parsed record values and counts match the baseline; exact line layout does **not** match under the frozen normalization list. Independent Review must decide if this is an output-interleaving presentation issue. Do not claim 959/959 or 962/962 strict equality.
+- Raw gate entry-coincidence receipts: **240 lines in 20 rows**, 40 distinct fixture-scoped tuples. All observed tuples are the exact pair sets `4:7/6:7` on `(0,2)` and `15:7/19:7` on `(25,27)`, both at `574181338608147/4503599627370496` (double `0.12749386848657163`). The full per-row census is below; repeats are separate producer invocations within a row, not independent fixture identities. In the three-case census, BunnyRandom adds **six** receipt lines (two distinct contacts repeated three times): `15:21/43:15` carrier `(72,243)` at `191903898244039/562949953421312`; `15:22/43:16` carrier `(72,273)` at `1755811011335563/2251799813685248`. Cylinder and Vase add none. These observations do not prove the BunnyRandom routing defect is repaired.
+- All **66** `EmbeddedGraphTopology.duplicateCutCrossing edge=(0,2)` records in **19** sphere rows have a matching `entryCoincidence first=4:7 second=6:7 carrier=(0,2)` with the exact binary rational. No missing sphere witness was found. Row 693 contains a receipt without that crossing diagnostic; this is not evidence of a new mismatch.
+- Other execution failures remain the baseline debt, not proof of a repair: sphere C5/O47, BunnyRandom trace82, Vase completion, and row858. Stable regression accounting **66/17/49**, debt **1**, deferred **81**; selector497 frozen and no product promotion. The two log-format differences are an *unadjudicated presentation candidate*, not an added stable regression.
+
+### Gate receipt census (all source logs retained in artifact)
+
+| Row | Fixture identity | Raw lines | Distinct tuples |
+|---:|---|---:|---:|
+| 843 | `apicensus:12` | 6 | 2 |
+| 844 | `apicensus:13` | 6 | 2 |
+| 858 | `apicensus:19` | 6 | 2 |
+| 644 | `offgate:180` | 6 | 2 |
+| 645 | `offgate:181` | 6 | 2 |
+| 648 | `offgate:185` | 6 | 2 |
+| 669 | `offgate:210` | 26 | 2 |
+| 686 | `offgate:229` | 6 | 2 |
+| 691 | `offgate:234` | 12 | 2 |
+| 693 | `offgate:239` | 6 | 2 |
+| 694 | `offgate:240` | 18 | 2 |
+| 698 | `offgate:246` | 18 | 2 |
+| 699 | `offgate:247` | 12 | 2 |
+| 700 | `offgate:248` | 18 | 2 |
+| 380 | `selector:338` | 18 | 2 |
+| 388 | `selector:346` | 18 | 2 |
+| 393 | `selector:351` | 12 | 2 |
+| 394 | `selector:352` | 14 | 2 |
+| 396 | `selector:354` | 14 | 2 |
+| 397 | `selector:355` | 12 | 2 |
+
+## Recommendation
+
+Both runs and the offline comparison are complete. The execution report must be reviewed independently. **Do not accept a strict MATCH** without resolving rows 169/477 against frozen normalization authority. No EC2/EC3, selector, source, test, or benchmark changes are authorized in this execution turn. Its separately authorized Review successor is `M6-CP3-TB143-P13-ENTRY-COINCIDENCE-RECEIPT-FULL-GATE-REV`. No successor work starts here.
+~~~~~
