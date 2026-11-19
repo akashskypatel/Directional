@@ -76,7 +76,9 @@ struct CutNodeBindings {
   std::map<authority::NetworkNodeId, authority::SourceVertexId> syntheticVertices;
   std::map<CutCrossingKey, CutCrossingBinding> crossingByKey;
   /** Crossing by node. A crossing struck by a carrier contact keeps the
-   * contact's network node instead of a cut-created one. */
+   * contact's network node instead of a cut-created one. A mutual carrier
+   * contact on a selected cut edge splits it at the contact's network node,
+   * listed here only, since neither trace crosses there. */
   std::map<authority::NetworkNodeId, CutCrossingBinding> syntheticCrossings;
   std::map<authority::NetworkNodeId, CarrierContactBinding> carrierContacts;
   std::size_t combinedNodeExtent = 0U;
@@ -285,6 +287,18 @@ trace_segment_contact_parameter(const FieldAlignedCandidateTrace &trace,
 [[nodiscard]] std::optional<TraceCutPosition> carrier_contact_struck_position(
     const FieldAlignedCandidateTrace &struck,
     const FieldAlignedTerminalContact &record);
+
+/**
+ * True when `ending` and `struck` stopped together at one carrier locus, the
+ * outcome of an inconclusive arrival at a shared entry crossing: neither trace
+ * entered its next segment there. Each record names the other trace at that
+ * trace's end (`struckSegmentIndex` equal to its segment count) at the same
+ * edge and interior parameter, and each trace's last segment lies in its
+ * record's face and leaves it through that edge without a slide.
+ */
+[[nodiscard]] bool carrier_contact_is_mutual(
+    const FieldAlignedCandidateTrace &ending,
+    const FieldAlignedCandidateTrace &struck);
 
 /**
  * The exact source path segment `segment` of `trace` traverses. A segment

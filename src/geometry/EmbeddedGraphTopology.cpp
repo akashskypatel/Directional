@@ -360,6 +360,9 @@ CutNodeBindingResult build_cut_node_bindings(
   // the segment carrier_contact_struck_position names. On a selected cut edge
   // that point is the struck trace's crossing, which then keeps this node.
   std::map<CutCrossingKey, authority::NetworkNodeId> carrierContactCrossings;
+  // Two traces that stopped together at a carrier locus both end at the
+  // event node; nothing crosses there, so a selected cut edge is split at it.
+  std::map<authority::NetworkNodeId, CutCrossingBinding> mutualCrossings;
   for (const auto &event : network.events()) {
     if (event.kind != FieldAlignedNetworkEventKind::TraceIntersection) continue;
     for (const auto &incidence : event.incidences) {
@@ -375,6 +378,28 @@ CutNodeBindingResult build_cut_node_bindings(
           record.carrierLocus->edge;
       const FieldAlignedCandidateTrace *struck =
           find_trace(network, record.struckTrace);
+      if (struck != nullptr && carrier_contact_is_mutual(*ending, *struck)) {
+        if (event.sourceEdge != carrier) {
+          GlobalTopologyPlanError failure =
+              error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+          failure.sourceEdge = carrier;
+          failure.trace = ending->id;
+          failure.secondTrace = record.struckTrace;
+          return failure;
+        }
+        if (selectedCuts.count(carrier) != 0U) {
+          const authority::TraceId lower =
+              ending->id < struck->id ? ending->id : struck->id;
+          const FieldAlignedCandidateTrace &owner =
+              lower == ending->id ? *ending : *struck;
+          mutualCrossings.emplace(
+              event.node,
+              CutCrossingBinding{
+                  CutCrossingKey{carrier, lower, owner.segments.size()},
+                  record.carrierLocus->parameter, event.node});
+        }
+        continue;
+      }
       const auto position =
           struck == nullptr ? std::nullopt
                             : carrier_contact_struck_position(*struck, record);
@@ -481,6 +506,15 @@ CutNodeBindingResult build_cut_node_bindings(
           error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
       failure.sourceEdge = crossing.key.sourceEdge;
       failure.trace = crossing.key.trace;
+      return failure;
+    }
+  }
+  for (const auto &[node, binding] : mutualCrossings) {
+    if (!result.syntheticCrossings.emplace(node, binding).second) {
+      GlobalTopologyPlanError failure =
+          error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+      failure.sourceEdge = binding.key.sourceEdge;
+      failure.trace = binding.key.trace;
       return failure;
     }
   }
@@ -803,6 +837,33 @@ std::optional<TraceCutPosition> carrier_contact_struck_position(
     return std::nullopt;
   }
   return TraceCutPosition{record.struckSegmentIndex, std::nullopt};
+}
+
+bool carrier_contact_is_mutual(const FieldAlignedCandidateTrace &ending,
+                               const FieldAlignedCandidateTrace &struck) {
+  const auto namesAtEnd = [](const FieldAlignedCandidateTrace &trace,
+                             const FieldAlignedCandidateTrace &other) {
+    if (trace.segments.empty() || !trace.terminalContact.has_value()) {
+      return false;
+    }
+    const FieldAlignedTerminalContact &record = *trace.terminalContact;
+    const FieldAlignedCandidateTraceSegment &last = trace.segments.back();
+    return record.carrierLocus.has_value() && record.struckTrace == other.id &&
+           record.struckSegmentIndex == other.segments.size() &&
+           record.sourceFace == last.sourceFace &&
+           last.outgoingCarrier == record.carrierLocus->edge &&
+           !last.edgeTransitExit.has_value();
+  };
+  if (ending.id == struck.id || !namesAtEnd(ending, struck) ||
+      !namesAtEnd(struck, ending) ||
+      ending.terminalContact->carrierLocus !=
+          struck.terminalContact->carrierLocus) {
+    return false;
+  }
+  const authority::FieldExactRational &parameter =
+      ending.terminalContact->carrierLocus->parameter.value;
+  return authority::FieldExactRational::from_integer(0) < parameter &&
+         parameter < authority::FieldExactRational::from_integer(1);
 }
 
 std::optional<authority::FieldExactRational> trace_segment_contact_parameter(
@@ -1763,9 +1824,9 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
         authority::ExactUnitParameter{
             authority::FieldExactRational::from_integer(0)},
         first->second);
-    for (const auto &[key, crossing] : cutNodes.crossingByKey) {
-      if (key.sourceEdge == cutEdge) {
-        orderedPoints.emplace_back(crossing.parameter, crossing.node);
+    for (const auto &[node, crossing] : cutNodes.syntheticCrossings) {
+      if (crossing.key.sourceEdge == cutEdge) {
+        orderedPoints.emplace_back(crossing.parameter, node);
       }
     }
     orderedPoints.emplace_back(

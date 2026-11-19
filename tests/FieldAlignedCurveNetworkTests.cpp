@@ -19257,6 +19257,76 @@ TEST(FieldAlignedCarrierOccupancy,
 }
 
 TEST(FieldAlignedCarrierOccupancy,
+     MutualCarrierContactNamesEachTraceAtItsEndOnOneLocus) {
+  using directional::authority::FieldBranch;
+  using directional::authority::TopologyRegionId;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+  using directional::geometry::FieldAlignedTerminalContact;
+  // Edge (0,2) is shared by faces (0,1,2) and (0,2,3). Trace 0 crosses (0,1)
+  // into the lower face and trace 1 crosses (2,3) into the upper face; both
+  // leave through the carrier at 1/3 and stop there before entering.
+  const auto carrier = topology_edge(0, 2, 4U);
+  const auto ab = topology_edge(0, 1, 4U);
+  const auto cd = topology_edge(2, 3, 4U);
+  const auto lower = topology_face(0, 1, 2, 4U);
+  const auto upper = topology_face(0, 2, 3, 4U);
+  const auto branch = FieldBranch::from_integer(0);
+  const auto makeTrace = [](const std::size_t index) {
+    return FieldAlignedCandidateTrace(
+        TraceId::from_index(index, 2U).value(),
+        SingularityPortId::from_index(0, 1).value(),
+        FieldSingularityId::from_index(0, 1).value(),
+        SourceVertexId::from_index(1, 4).value(),
+        SourceComponentId::from_index(0, 1).value(),
+        TopologyRegionId::from_index(0, 1).value());
+  };
+  FieldAlignedCandidateTrace first = makeTrace(0U);
+  first.segments.emplace_back(lower, branch, boundary_point(ab, 1, 2), ab,
+                              carrier, std::nullopt);
+  FieldAlignedCandidateTrace second = makeTrace(1U);
+  second.segments.emplace_back(upper, branch, boundary_point(cd, 1, 2), cd,
+                               carrier, std::nullopt);
+  first.terminalContact = FieldAlignedTerminalContact{
+      lower, {exact_ratio(2, 3), exact_ratio(0, 1), exact_ratio(1, 3)},
+      second.id, 1U, boundary_point(carrier, 1, 3)};
+  second.terminalContact = FieldAlignedTerminalContact{
+      upper, {exact_ratio(2, 3), exact_ratio(1, 3), exact_ratio(0, 1)},
+      first.id, 1U, boundary_point(carrier, 1, 3)};
+  EXPECT_TRUE(embedded::carrier_contact_is_mutual(first, second));
+  EXPECT_TRUE(embedded::carrier_contact_is_mutual(second, first));
+  EXPECT_FALSE(embedded::carrier_contact_is_mutual(first, first));
+  // The struck trace's existing entry is not its end: the one-sided rule
+  // (carrier_contact_struck_position) owns that record.
+  auto continuing = second;
+  continuing.terminalContact.reset();
+  EXPECT_FALSE(embedded::carrier_contact_is_mutual(first, continuing));
+  auto beforeEnd = second;
+  beforeEnd.terminalContact->struckSegmentIndex = 0U;
+  EXPECT_FALSE(embedded::carrier_contact_is_mutual(first, beforeEnd));
+  auto otherParameter = second;
+  otherParameter.terminalContact->carrierLocus = boundary_point(carrier, 1, 2);
+  EXPECT_FALSE(embedded::carrier_contact_is_mutual(first, otherParameter));
+  auto otherFace = second;
+  otherFace.terminalContact->sourceFace = lower;
+  EXPECT_FALSE(embedded::carrier_contact_is_mutual(first, otherFace));
+  auto otherExit = second;
+  otherExit.segments[0].outgoingCarrier = ab;
+  EXPECT_FALSE(embedded::carrier_contact_is_mutual(first, otherExit));
+  auto sliding = second;
+  sliding.segments[0].edgeTransitEntry = boundary_point(carrier, 1, 10);
+  sliding.segments[0].edgeTransitExit = boundary_point(carrier, 1, 3);
+  EXPECT_FALSE(embedded::carrier_contact_is_mutual(first, sliding));
+  // A meeting at the carrier's end vertex is a vertex meeting, not this rule.
+  auto firstAtVertex = first;
+  auto secondAtVertex = second;
+  firstAtVertex.terminalContact->carrierLocus = boundary_point(carrier, 0, 1);
+  secondAtVertex.terminalContact->carrierLocus = boundary_point(carrier, 0, 1);
+  EXPECT_FALSE(
+      embedded::carrier_contact_is_mutual(firstAtVertex, secondAtVertex));
+}
+
+TEST(FieldAlignedCarrierOccupancy,
      FirstSharedParameterFollowsTheMovingTraceAlongOneCarrier) {
   using directional::authority::FieldBranch;
   using directional::geometry::FieldAlignedCandidateTraceSegment;
