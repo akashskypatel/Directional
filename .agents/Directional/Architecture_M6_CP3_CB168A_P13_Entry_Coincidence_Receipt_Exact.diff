@@ -1,0 +1,139 @@
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index 730c1d9c88a99ff1b9fa235c675fa0038200e0cc..600b7e69af9eba3c1e02998642a800991e810fbb 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -437,6 +437,9 @@ struct FieldAlignedTerminalContact {
+   std::array<authority::FieldExactRational, 3> barycentric{};
+   authority::TraceId struckTrace;
+   std::size_t struckSegmentIndex = 0U;
++  // Inert until the entry-contact producer switch. Keep the legacy digest
++  // unchanged when no carrier contact has been published.
++  std::optional<authority::FieldBoundaryPoint> carrierLocus;
+-
++
+   auto operator<=>(const FieldAlignedTerminalContact &) const = default;
+ };
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 9b4ec25c16e14fff3512ecfbf89610d2513d4dff..6d996010ab8bae3ab9cb64916f988cc148d844af 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -18,6 +18,7 @@
+ #include <limits>
+ #include <optional>
+ #include <queue>
++#include <set>
+ #include <sstream>
+-
++
+ namespace directional::geometry::surface_cell_tracing_detail {
+@@ -4350,6 +4351,40 @@ canonical_field_aligned_traces_and_events(
+                   << '\n';
+       };
+-
++
++  using EntryCoincidenceEnd = std::pair<std::size_t, std::size_t>;
++  using EntryCoincidenceKey =
++      std::pair<EntryCoincidenceEnd, EntryCoincidenceEnd>;
++  std::set<EntryCoincidenceKey> reportedEntryCoincidences;
++  const auto reportEntryCoincidence =
++      [&](const std::size_t firstTrace, const std::size_t firstSegment,
++          const FieldAlignedCandidateTraceSegment &first,
++          const std::size_t secondTrace, const std::size_t secondSegment,
++          const FieldAlignedCandidateTraceSegment &second) {
++        if (firstTrace == secondTrace) return;
++        const auto firstEntry = field_aligned_segment_entry_occupancy(first);
++        const auto secondEntry = field_aligned_segment_entry_occupancy(second);
++        if (!firstEntry.has_value() || !secondEntry.has_value() ||
++            firstEntry->carrier != secondEntry->carrier ||
++            firstEntry->from != secondEntry->from) return;
++        const auto zero = authority::FieldExactRational::from_integer(0);
++        const auto one = authority::FieldExactRational::from_integer(1);
++        const auto &parameter = firstEntry->from;
++        if (!(zero < parameter && parameter < one)) return;
++        const EntryCoincidenceEnd a{firstTrace, firstSegment};
++        const EntryCoincidenceEnd b{secondTrace, secondSegment};
++        const EntryCoincidenceKey key = a < b ? EntryCoincidenceKey{a, b}
++                                              : EntryCoincidenceKey{b, a};
++        if (!reportedEntryCoincidences.insert(key).second) return;
++        const auto &edge = firstEntry->carrier;
++        std::clog << "FieldAlignedCurveNetwork.entryCoincidence first="
++                  << key.first.first << ':' << key.first.second
++                  << " second=" << key.second.first << ':'
++                  << key.second.second << " carrier=(" << edge.first().index()
++                  << ',' << edge.second().index() << ") parameter="
++                  << parameter.numerator_string() << '/'
++                  << parameter.denominator_string() << '\n';
++      };
++
+   while (std::any_of(runtimes.begin(), runtimes.end(),
+                      [](const auto &runtime) { return runtime.active; })) {
+     for (std::size_t traceIndex = 0U; traceIndex < runtimes.size(); ++traceIndex) {
+@@ -4391,6 +4426,10 @@ canonical_field_aligned_traces_and_events(
+             firstTrace.sourceVertex == secondTrace.sourceVertex) {
+           continue;
+         }
++        reportEntryCoincidence(
++            firstIndex, firstTrace.segments.size(),
++            firstRuntime.proposal->segment, secondIndex,
++            secondTrace.segments.size(), secondRuntime.proposal->segment);
+         const auto contact = classify_field_aligned_segment_contact_impl(
+             topology, firstRuntime.proposal->segment,
+             secondRuntime.proposal->segment);
+@@ -4463,6 +4502,10 @@ canonical_field_aligned_traces_and_events(
+                       ? std::optional<std::array<authority::FieldExactRational, 3>>{
+                             wallTrace.terminalContact->barycentric}
+                       : std::nullopt;
++          reportEntryCoincidence(
++              movingIndex, movingTrace.segments.size(),
++              movingRuntime.proposal->segment, wallIndex, wallSegmentIndex,
++              wallTrace.segments[wallSegmentIndex]);
+           const auto contact =
+               classify_field_aligned_segment_contact_with_second_exit(
+                   topology, movingRuntime.proposal->segment,
+@@ -5384,6 +5427,12 @@ std::uint64_t field_aligned_candidate_digest(
+       }
+       field_aligned_hash_id(hash, contact.struckTrace);
+       field_aligned_hash_consume(hash, contact.struckSegmentIndex);
++      if (contact.carrierLocus.has_value()) {
++        constexpr std::uint64_t kCarrierContactHashDomain =
++            0x434152524c4f4353ULL; // "CARRLOCS"
++        field_aligned_hash_consume(hash, kCarrierContactHashDomain);
++        field_aligned_hash_boundary_point(hash, *contact.carrierLocus);
++      }
+     }
+     if (trace.terminalLimitCycle.has_value()) {
+       // Preserve every pre-S3 semantic digest byte-for-byte when the new
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index f24ffd7d14a259a0e65d4b212f22a50b48da649a..1c65280ea6c7c6af97a885c071754c7341a0b4c8 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -19030,6 +19030,28 @@ TEST(FieldAlignedCarrierOccupancy,
+   EXPECT_FALSE(embedded::exact_trace_segment_pieces(emptySlide, 0U));
+ }
+-
++
++TEST(FieldAlignedCarrierOccupancy,
++     TerminalCarrierLocusIsInertByDefaultAndExactWhenPresent) {
++  using directional::geometry::FieldAlignedTerminalContact;
++  const auto face = topology_face(0, 1, 2);
++  const auto carrier = topology_edge(0, 2);
++  const auto contactPoint = boundary_point(carrier, 1, 3);
++  const FieldAlignedTerminalContact legacy{
++      face, {exact_ratio(2, 3), exact_ratio(0, 1), exact_ratio(1, 3)},
++      directional::authority::TraceId::from_index(0U, 2U).value(), 0U};
++  ASSERT_FALSE(legacy.carrierLocus.has_value());
++  auto withLocus = legacy;
++  withLocus.carrierLocus = contactPoint;
++  ASSERT_TRUE(withLocus.carrierLocus.has_value());
++  EXPECT_EQ(*withLocus.carrierLocus, contactPoint);
++  EXPECT_NE(withLocus, legacy);
++  auto otherLocus = withLocus;
++  otherLocus.carrierLocus = boundary_point(carrier, 2, 3);
++  EXPECT_NE(otherLocus, withLocus);
++  EXPECT_EQ(legacy.struckSegmentIndex, withLocus.struckSegmentIndex);
++  EXPECT_EQ(legacy.barycentric, withLocus.barycentric);
++}
++
+ TEST(FieldAlignedCarrierOccupancy,
+      TracePiecePathKeepsNonLastSlideAndCanonicalContactEndpoints) {
+   namespace authority = directional::authority;
