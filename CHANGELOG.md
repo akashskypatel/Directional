@@ -1,3 +1,7 @@
+## 2026-11-19 UTC — CB168B region-support diagnostic framing (compile PASS)
+
+- [Compile record](.agents/Directional/Architecture_M6_CP3_CB168B_P13_Region_Support_Diagnostic_Framing_Code_Build_Record_20261119.md): exact RA-265 `+28/-19` patch to `GlobalTopologyPlan.cpp` on source `ddd4d158701bdcca73fe3eb5034d51dd4ff1b694`. Seven diagnostic record emitters use one complete insertion, with record text and producer logic unchanged. [compile run 44454804395](https://github.com/akashskypatel/Directional/actions/runs/44454804395), package `14497790061` SHA-256 `7df9fa3c092e9e761803566f7d00445f2f2e4010f358bd9362c6723f04a41d68`; eight GMP/GMPXX targets, no runtime. Next `M6-CP3-CB168C-P13-CARRIER-CONTACT-STRUCK-POSITION-HELPER`; TB144 remains separate.
+
 ## 2026-11-19 UTC — RA-265: TB143 MATCH; CB168B/CB168C/TB144 frozen
 
 - [RA-265](.agents/Directional/Architecture_M6_CP3_TB143_P13_Entry_Coincidence_Receipt_Full_Gate_Independent_Review_20261119.md#ra-265--adversarial-re-review-of-this-review-2026-11-19-utc): TB143 MATCH 962/962 (N3 per TB131); CB168B exact `7ec11b82…af12`; CB168C (EC2a) `f8badfdf…e204`; TB144 manifest `fc1264e9…e949`; EC3 transverse only.
