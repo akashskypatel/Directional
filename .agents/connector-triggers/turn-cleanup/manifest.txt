@@ -1,0 +1,2 @@
+# CB168A temporary source-snapshot control
+.agents/connector-triggers/source-snapshot/cb168a-entry-coincidence-20261119-0129.txt
