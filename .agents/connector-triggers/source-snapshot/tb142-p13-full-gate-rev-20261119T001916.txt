@@ -1,0 +1,2 @@
+Snapshot request for M6-CP3-TB142-P13-TRACE-PIECE-PATH-HELPER-FULL-GATE-REV
+Review source reference: git event SHA
