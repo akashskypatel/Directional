@@ -1,3 +1,7 @@
+## 2026-11-18 — TB142 full-gate evidence MATCH (non-stable; independent review pending)
+
+[TB142 execution report](Architecture_M6_CP3_TB142_P13_Trace_Piece_Path_Helper_Full_Gate_Execution_Report_20261118.md): all prior 962 gate/census identities, outcomes and normalized logs match TB141 under N1–N6. New row960 PASS, 959/960 full gate, row858 at the same `SurfaceCellTracingDisplayTests.cpp:155` RED, accepted prefix491/491. Census Cylinder PASS/288, BunnyRandom trace82 and Vase still RED. Raw 1,266 proposals and 1,266 committed slide receipts unchanged. This is no new regression or candidate: observed failures have the same causes and sites as TB141. Stable totals remain **66 events / 17 categories / 49 recurrences**, debt 1, deferred 81; no CP3/selector497/D0 promotion. Independent TB142-REV must verify before accepting evidence and freezing EC1.
+
 ## 2026-11-18 — RA-263 re-review of the TB141 Review (non-stable)
 
 [RA-263](Architecture_M6_CP3_TB141_P13_Committed_Slide_Receipt_Full_Gate_Independent_Review_20261118.md#ra-263--adversarial-re-review-of-this-review-2026-11-18-utc): MATCH, R+/R-edge and CB167 upheld. Corrections: RA-262 R0 conflated receipt and publication; TB144 must be strict equality (including BunnyRandom's first failure) because no fixture publishes a slide graph; a positive publication witness cannot be hand-built (RA-248). Trajectory: sphere C5/O47 (19 rows, row 858 premise) is the (entry, entry) carrier contact, already defined and independent of H4; now scheduled first (EC1–EC3). No new stable event; 66/17/49, debt 1, deferred 81.

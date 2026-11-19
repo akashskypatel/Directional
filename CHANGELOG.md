@@ -1,3 +1,7 @@
+## 2026-11-18 UTC — TB142 trace-piece path helper full gate (MATCH; independent Review next)
+
+- [TB142 execution report](.agents/Directional/Architecture_M6_CP3_TB142_P13_Trace_Piece_Path_Helper_Full_Gate_Execution_Report_20261118.md): immutable package `14481197196`; gate `14482831297` 959/960 including new row960 PASS and unchanged row858 RED; census `14482339143` 1 PASS/2 prior RED; 962/962 previous tests match TB141 under N1–N6. 3,872/3,872 internal hashes, 1,266/1,266 raw proposal and committed-slide receipts unchanged, accepted prefix 491/491. No build, source change, new stable regression, promotion, or successor execution. Exact next `M6-CP3-TB142-P13-TRACE-PIECE-PATH-HELPER-FULL-GATE-REV` for independent evidence review and EC1 definition.
+
 ## 2026-11-18 UTC — CB167 trace-piece path helper (compile only)
 
 - [Compile record](.agents/Directional/Architecture_M6_CP3_CB167_P13_Trace_Piece_Path_Helper_Code_Build_Record_20261118.md): exact source `ecc67015cc4ff28ec15c086787a9450bd585bf94`, package `14481197196`, ZIP SHA-256 `274064da966f5a0257115c851cbc530c5f8fd9a3b1979b5d06844dab0ce1f04b`. Frozen +222/-22 across three files; ordered piece path helper unwired, ordinary clipping factored, row960 added. Eight GMP/GMPXX targets, 28/28 package hashes, 371/371 product/test files, four frozen inputs. No runtime.
