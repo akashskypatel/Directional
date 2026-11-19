@@ -1,3 +1,7 @@
+## 2026-11-19 UTC — RA-264: EC1 re-frozen receipt-only
+
+- [RA-264](.agents/Directional/Architecture_M6_CP3_TB142_P13_Trace_Piece_Path_Helper_Full_Gate_Independent_Review_20261119.md#ra-264--adversarial-re-review-of-this-review-2026-11-19-utc): TB142 MATCH upheld; 3-file EC1 patch withdrawn; receipt-only diff `013e8d0701cfed054d33b9f4da1c9cb0cb2da051aaa9b690c0d7a670beab1e8e` (+40, `SurfaceCellTracing.cpp`) and TB143 frozen; `carrierLocus` moved to EC2.
+
 ## 2026-11-19 UTC — TB142 independent Review MATCH; EC1 exact patch frozen
 
 - [Review](.agents/Directional/Architecture_M6_CP3_TB142_P13_Trace_Piece_Path_Helper_Full_Gate_Independent_Review_20261119.md): four ZIPs and 3,872 internal hashes rechecked; 962/962 prior gate/census MATCH under N1–N4, 1,266 raw lines of each slide-receipt type unchanged, 491/491 accepted prefix; row960 PASS, row858 expected RED, no promotion. [EC1 frozen plan](.agents/Directional/Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119.md) and exact diff SHA-256 `539fd774a2a90dc713eaa957bb48e82dc67dedb3cf35e048c3bcbc07595bd7f4`. Next `M6-CP3-CB168A-P13-ENTRY-COINCIDENCE-RECEIPT` (compile only); no review-turn product mutation.

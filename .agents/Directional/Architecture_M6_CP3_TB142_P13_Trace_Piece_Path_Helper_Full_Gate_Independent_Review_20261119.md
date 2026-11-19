@@ -21,6 +21,8 @@
 
 ## Recommendation — exact EC1 freeze
 
+> **Superseded by RA-264 (below):** patch `539fd774…bd7f4` is withdrawn; the revised EC1 diff is `013e8d07…1e8e` (receipt only).
+
 Frozen successor `M6-CP3-CB168A-P13-ENTRY-COINCIDENCE-RECEIPT` applies **only** [Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Exact.diff](Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Exact.diff), SHA-256 `539fd774a2a90dc713eaa957bb48e82dc67dedb3cf35e048c3bcbc07595bd7f4`, to the verified unchanged product/test preimages; see [Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119.md](Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119.md). It adds inert optional `FieldAlignedTerminalContact::carrierLocus`, hashed only when actually present, and exact (entry, entry) interior-parameter diagnostic receipts without changing contact scheduling or graph geometry. Scope: three files, +74/-0; static patch applicability PASS. Neither the frozen patch nor the Review asserts a compiled or measured EC1 result.
 
 EC1 falsifiers: old 962 prior records (including unchanged raw N5/N6 slide receipts) must remain identical; focused field/default/digest contract must reject mutation; count all deduplicated interior (entry, entry) receipts by fixture and trace-pair, with sphere 4/6 visible in every applicable sphere row; unexpected other-fixture encounters must be enumerated; endpoint 0/1, different carriers, distinct parameters, same trace and replays cannot count; no `carrierLocus` populated and no graph publication in EC1. Stop on any change in row858 site, BunnyRandom first failure, selector prefix, artifact authority, or source scope. Subsequent EC2/EC3 remain prospective and require separate turns and evidence.
@@ -49,3 +51,32 @@ Procedure evidence: direct document reads preceded the snapshot READ_MODE select
 | review_check.py boundary | Source-only snapshot has no rewrite-base Git history; history-dependent verification unavailable; remote code-surface and local diff checks used |
 | `STATUS` lifecycle maintained | Entry beacon in repository, final COMPLETE beacon after publication and cleanup |
 | Pushed to origin, branch in sync | GitHub Actions run 44430359926 confirmed the patch commit was pushed to the working branch; subsequent GitHub PR head confirmed remote advancement; local `git status -sb` unavailable without a checkout |
+
+## RA-264 — adversarial re-review of this Review (2026-11-19 UTC)
+
+### S1 — what holds
+
+The TB142 MATCH (962/962 under N1–N6, raw N5/N6, 491/491, row 960 PASS, row 858 RED at the same site) is upheld; no evidence defect was found. The frozen EC1 patch applies to HEAD and compiles syntax-only with 0 errors. Its receipt is reachable for sphere O47: neither producer loop filters by face before the call (the only skip is the first-segment same-source pair), occupancy parameters are measured from `carrier.first()` so opposite-direction crossings compare equal, and traces 4/6 both enter segment 7 across (0,2) at one exact parameter (TB132/TB133: per face that is exit/entry; per crossing it is entry/entry).
+
+### S2 — defects in the EC1 freeze (patch `539fd774…bd7f4` withdrawn)
+
+1. **Duplicate predicate.** The receipt re-implemented entry/entry matching from `field_aligned_segment_entry_occupancy` instead of calling `first_field_aligned_carrier_contact`, the helper RA-263 S3 names for the EC3 switch (`movingInSlide = wallInSlide = false`). They agree on transverse entries today, but the census must measure the switch's own predicate (RA-229, RA-251), and that helper already has an accepted test covering exactly this configuration (opposite-face (0,2) crossing at 1/3, near miss, end point). The new lambda had no test.
+2. **Vacuous test.** `TerminalCarrierLocusIsInertByDefaultAndExactWhenPresent` asserts only `std::optional` and defaulted `operator<=>` semantics; no implementation of the patch could fail it. The claimed contract (digest unchanged when absent, changed when present) is not testable here: `field_aligned_candidate_digest` is internal and networks cannot be hand-built (RA-248).
+3. **Speculative field (my RA-263 S3 error).** RA-263 put `carrierLocus` in EC1 as "inert", but with no reader and no injectable digest it is unexercised code. RA-223's "inert half" needs an injecting test; the first place one exists is EC2's pure edge-contact-node helper. The field moves to EC2.
+4. **Warnings.** `std::optional<…> carrierLocus;` without `{}` adds 10 `-Wmissing-field-initializers` warnings (3 product, 7 tests). EC2 must declare it `{}`.
+5. **No frozen successor TB.** The plan left the TB identity, manifest and normalization "to be frozen", so CB168A would have ended without a defined successor (RA-246).
+
+### S3 — realigned sequence
+
+| Turn | Scope | Evidence |
+|---|---|---|
+| CB168A (EC1) | receipt only via `first_field_aligned_carrier_contact`, exact diff `013e8d07…1e8e`, +40 one file | compile only |
+| TB143 | TB142 manifest unchanged; N7 deletes entryCoincidence lines; raw census; sphere (0,2) witness is a STOP condition | [plan](Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119.md) |
+| TB143-REV | adjudicate; freeze EC2 | Review |
+| EC2 | `carrierLocus{}` + pure edge-contact-node helper (its first reader, injected test) + wired inert consumer | TB |
+| EC3 | (entry, entry) producer switch; sphere O47 changes; presence-path digest first witnessed | TB |
+| then | CB168 binding → [O49] → CB169 H4 cutover (TB strict) → CB170 → CB171 → CB172 (O48) | RA-262/263 |
+
+### S4 — closeout
+
+Accepted prefix 491/491; 66/17/49, debt 1, deferred 81 unchanged; no promotion. Carried: C5/O42/O43/O46/O47/O48, H2/H4, FC-1/FC-4, O49; FC-6, terminal-cut and the row-858 fix held (until EC3); CB145 parked; D11=A, D12=A. Successor: `M6-CP3-CB168A-P13-ENTRY-COINCIDENCE-RECEIPT` with the revised diff.

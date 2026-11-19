@@ -1,3 +1,7 @@
+## 2026-11-19 — RA-264 re-review of the TB142 Review (non-stable)
+
+[RA-264](Architecture_M6_CP3_TB142_P13_Trace_Piece_Path_Helper_Full_Gate_Independent_Review_20261119.md#ra-264--adversarial-re-review-of-this-review-2026-11-19-utc): MATCH upheld. EC1 patch `539fd774…` withdrawn (duplicate predicate, vacuous test, unread field, 10 warnings, no frozen TB); receipt-only EC1 `013e8d07…` on `first_field_aligned_carrier_contact` and TB143 (sphere (0,2) witness as STOP condition) frozen. No stable-count change: 66/17/49; debt 1; 81 deferred.
+
 ## 2026-11-19 — TB142 independent Review (no new stable event)
 
 [Architecture_M6_CP3_TB142_P13_Trace_Piece_Path_Helper_Full_Gate_Independent_Review_20261119.md](Architecture_M6_CP3_TB142_P13_Trace_Piece_Path_Helper_Full_Gate_Independent_Review_20261119.md): 962/962 MATCH under narrowly scoped N1–N4, raw slide receipts 1,266 of each kind unchanged, row960 PASS and row858 site unchanged. No new candidate and no stable-count change: 66/17/49; debt1; 81 deferred. C5/O47 and H4/O48/O49 remain open, EC1 inert receipt next. Falsifier for EC1: exact interior (entry, entry) coincidences must be counted per trace-segment pair without vertex/different-edge/replay contamination; its receipt must not change event scheduling. Owner M6-CP3-CB168A-P13-ENTRY-COINCIDENCE-RECEIPT; EC2/EC3 prohibited until separately reviewed.
