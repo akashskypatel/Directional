@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-19; RA-266 re-review of TB144 Review; CB168D next):** [RA-266](Architecture_M6_CP3_TB144_P13_Framing_And_Struck_Position_Full_Gate_Independent_Review_20261119.md#ra-266--adversarial-re-review-of-this-review-2026-11-19-utc) upholds TB144 **963/963** prior MATCH (row961 PASS, row858 known RED, zero doubled M3 prefixes). CP2 491/491 accepted; no CP3, selector497 or D0 promotion. The prose EC2b freeze is replaced by exact CB168D (EC2b, inert) and CB168E (arrival/face receipt), then TB145; EC3 is frozen by TB145-REV.
+**Current currency (2026-11-19; RA-266 re-review of TB144 Review; CB168D compiled; CB168E next):** [RA-266](Architecture_M6_CP3_TB144_P13_Framing_And_Struck_Position_Full_Gate_Independent_Review_20261119.md#ra-266--adversarial-re-review-of-this-review-2026-11-19-utc) upholds TB144 **963/963** prior MATCH (row961 PASS, row858 known RED, zero doubled M3 prefixes). CP2 491/491 accepted; no CP3, selector497 or D0 promotion. The exact CB168D (EC2b, inert) patch compiled in run 44478377983 (source 60357edb20132b20263fc5a1997f8af50343e2ae); CB168E (arrival/face receipt) is next, then TB145; EC3 is frozen by TB145-REV.
 
 ## 1. What the project is
 

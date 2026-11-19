@@ -1,3 +1,7 @@
+## 2026-11-19 UTC — CB168D carrier-contact edge-node binding (compile PASS)
+
+- [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Code_Build_Record_20261119.md): frozen RA-266 exact patch `cf726ced…8de` applied to `EmbeddedGraphTopology.cpp` (+89/-9) and `EmbeddedGraphTopology.h` (+14/-0); source `60357edb20132b20263fc5a1997f8af50343e2ae`, [compile run 44478377983](https://github.com/akashskypatel/Directional/actions/runs/44478377983), artifact `14507741391`, ZIP SHA-256 `0cafed08563f6699ff4000b7975f880f2de46a1a91266daab539c85439fbe25a`, 28/28 checksums. Eight GMP/GMPXX targets; no runtime. No CP3/D0 promotion. Next CB168E Code + Build only.
+
 ## 2026-11-19 UTC — RA-266: TB144 MATCH upheld; EC2b exact patch, CB168E and TB145 frozen
 
 - [RA-266](.agents/Directional/Architecture_M6_CP3_TB144_P13_Framing_And_Struck_Position_Full_Gate_Independent_Review_20261119.md#ra-266--adversarial-re-review-of-this-review-2026-11-19-utc): TB144 MATCH upheld (source = frozen CB168B+CB168C diffs). The prose EC2b plan is replaced by exact CB168D `cf726ced…8de` (carrier contact is an edge node; validated binding; cut-crossing node merge; struck position from the record; inert) and CB168E `67418422…dc0` (entry-coincidence receipt gains `firstArrival=`/`faces=` for the EC3 freeze); [TB145 plan](.agents/Directional/Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Plan_20261119.md).
