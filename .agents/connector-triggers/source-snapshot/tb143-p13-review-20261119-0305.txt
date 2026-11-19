@@ -1,3 +1,0 @@
-Turn: M6-CP3-TB143-P13-ENTRY-COINCIDENCE-RECEIPT-FULL-GATE-REV
-Purpose: one exact read-only source snapshot for independent review
-Pre-trigger head: 49b759cbb282f1cddcd5ecb834cbdee94ddca2eb
