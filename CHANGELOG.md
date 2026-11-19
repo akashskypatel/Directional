@@ -1,3 +1,7 @@
+## 2026-11-19 — RA-267 re-review of TB145 Review
+
+TB145 MATCH upheld (964/964, 491/491, row858 known RED). The symmetric-binding definition turn is withdrawn: the accepted inconclusive-arrival rule already stops both traces, and the pre-commit struck index names each trace's end. Frozen exact patches: CB168F (mutual carrier-contact consumer and cut-edge split, inert, with unit test) and CB168G (EC3 transverse entry mutual stop), plus TB146 (manifest `aa991187…b61f`). No product change in this turn. [Plan](.agents/Directional/Architecture_M6_CP3_CB168F_P13_Transverse_Entry_Mutual_Stop_Plan_20261119.md).
+
 ## 2026-11-19 UTC — CB168E entry-coincidence arrival receipt (compile PASS)
 
 ## 2026-11-19 — TB145 independent Review

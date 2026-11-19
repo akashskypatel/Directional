@@ -60,3 +60,47 @@ The two Sphere contacts are *transverse entry/entry coincidences*. `first_field_
 | review_check.py boundary | Snapshot artifact has no original Git history; tool requires original rewrite-base commit. No historical-baseline PASS claimed; static path/selector diff checked independently |
 | `STATUS` lifecycle maintained | Entry at 2026-11-19T08:48:32Z; final beacon written separately after repository documentation |
 | Pushed to origin, branch in sync | Record after verified remote Drive patch apply and final branch read; absent verification must be marked unverified |
+
+## RA-267 — adversarial re-review of this Review (2026-11-19 UTC)
+
+### S1 — What holds
+
+Two read-only Haiku audits support the MATCH:
+
+- **Source.** HEAD `src include tests` equals `e0f085eb6` with the frozen CB168D (`cf726ced…`) and CB168E (`67418422…`) patches applied in order. All 371 tracked product files are SHA-equal, and `d43d07dd1` is clean against HEAD.
+- **Evidence.** The execution report has evidence for every frozen TB145 criterion. One label differs: the execution report tags the sphere pairs "(gate 858)", the Review says "20 gate rows". This is not a contradiction, because 20 rows carry the receipt.
+
+**964/964 MATCH, 491/491 and row 961 PASS are upheld.** The EC3 census also holds: both sphere pairs are `inconclusive/different`, and BunnyRandom is `later/same` (O48).
+
+### S2 — Design defects of this Review
+
+1. **The symmetric rule already exists.** The Review rejected "a tie-breaking rule that elects one senior trace" and asked a DEFN to define symmetric semantics. The accepted producer already decides this: `field_aligned_contact_termination_decision` maps `Inconclusive` to `{true, true}`. The pending/pending key comment and the `field_aligned_publish_contact` wall comment both call it "the frozen symmetric case". EC3 reuses that rule (RA-241: reuse the existing rule for the same configuration).
+2. **The record shape was mis-stated.** The Review said a new "preceding-segment exit" binding type was needed. In fact the producer's struck index (`secondPendingSegmentIndex`/`firstPendingSegmentIndex`, read before any commit) already equals the other trace's segment count when neither commits, which is its *end*. Only the consumer must accept "each names the other at its end on one locus". No new type is needed and CB168D's semantics are untouched.
+3. **The real consumer gap was missed.** `build_arcs` splits a cut edge only at `crossingByKey`, which are trace crossings. A mutual stop on the selected cut edge (0,2) has no crossing, so the edge would bypass the contact node. The Review's obligation list does not mention this.
+4. **The definition-only successor left the implementation agent idle.** It also restated the question (RA-218, RA-225, RA-261). Both patches are freezable now, and are frozen below.
+5. **The premise tests were not listed** (RA-252).
+   - Row 648 asserts `ASSERT_FALSE(sphere.plan.has_value())`.
+   - Row 858 requires a face-located sphere failure.
+   - Row 393 requires the sphere network.
+
+   A sphere switch moves all three. The successor TB must route them to Review.
+
+RA-266's own gap: its TB145 census did not record which queue site (pending/pending or pending/wall) produced each receipt. Only one iteration event is processed per loop, and both traces reach P with equal arrivals, so both proposals are pending together. CB168G therefore acts at the pending/pending site only, and TB146 falsifies that: a surviving `duplicateCutCrossing` on (0,2) means the pair was met at the wall site.
+
+### S3 — Frozen realignment
+
+See the [CB168F/CB168G/TB146 plan](Architecture_M6_CP3_CB168F_P13_Transverse_Entry_Mutual_Stop_Plan_20261119.md).
+
+- **CB168F**, consumer, inert, `1239c09d…1bc1c`. It adds the pure `carrier_contact_is_mutual` helper with a 9-control unit test (manifest row 962), splits the cut edge at a mutual node through `syntheticCrossings`, and orders the cut edge over `syntheticCrossings`, which is set-equal to the existing crossings.
+- **CB168G**, the EC3 switch, `4555af7c…6aa9`. On a pending/pending entry coincidence with no slides, different faces and an inconclusive arrival, it enqueues a Contact with `carrierLocus`. Both traces stop at their last segment's end and do not commit; the record is `{last face, locus point, other, other's end index, locus}`.
+- **TB146.** Manifest `aa991187…b61f`. Rows outside the sphere set must MATCH TB145. Sphere rows and premise rows 393, 648 and 858 are enumerated and routed to Review, with a per-trace census.
+
+`DEFN-P13-SYMMETRIC-TRANSVERSE-ENTRY-EDGE-BINDING` is **withdrawn**: its obligations are discharged by S2(1)–(3) and the frozen patches.
+
+### S4 — Sequence
+
+CB168F → CB168G → TB146 → TB146-REV → CB168 binding → [O49] → CB169 H4 cutover → CB170 → CB171 → CB172 (O48, incl. same-face merge). Held: FC-6, TERMINAL-CUT-OUTCOME, row-858 fix (re-evaluated at TB146-REV). Parked: CB145. D11=A, D12=A.
+
+### S5 — Closeout
+
+This turn was runtime-free: only `-fsyntax-only` and the manifest self-check ran. Warning counts equal HEAD in 5 files, with 0 errors. No product, test or selector bytes changed. Stable accounting is unchanged: 66/17/49, debt1, deferred81, CP2 491/491, selector497 not promoted.

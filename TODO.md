@@ -1,4 +1,16 @@
-## CURRENT — TB145 independent Review MATCH; symmetric entry-binding contract next (2026-11-19 UTC)
+## CURRENT — RA-267: TB145 MATCH upheld; EC3 mutual stop frozen as CB168F/CB168G/TB146 (2026-11-19 UTC)
+
+[RA-267](.agents/Directional/Architecture_M6_CP3_TB145_P13_Carrier_Contact_Binding_And_Arrival_Receipt_Full_Gate_Independent_Review_20261119.md#ra-267--adversarial-re-review-of-this-review-2026-11-19-utc) upholds the TB145 Review MATCH, with source equal to the frozen CB168D+CB168E diffs. It withdraws the definition-only successor for three reasons:
+
+- The symmetric rule already exists: `field_aligned_contact_termination_decision` makes an inconclusive arrival stop both traces.
+- The pre-commit struck index already names the other trace's end in a mutual stop, so no new binding type is needed.
+- The real consumer gap, missed by the Review, is that a cut edge splits only at trace crossings.
+
+Frozen ([plan](.agents/Directional/Architecture_M6_CP3_CB168F_P13_Transverse_Entry_Mutual_Stop_Plan_20261119.md)):
+
+- CB168F, consumer, inert, `1239c09d…1bc1c`;
+- CB168G, the EC3 switch for pending/pending entries that are inconclusive and face different faces, `4555af7c…6aa9`;
+- TB146, manifest `aa991187…b61f`. Rows outside the sphere set must MATCH TB145; sphere rows and premise rows 393, 648 and 858 go to Review.
 
 [TB145 execution](.agents/Directional/Architecture_M6_CP3_TB145_P13_Carrier_Contact_Binding_And_Arrival_Receipt_Full_Gate_Execution_Report_20261119.md): immutable source `d43d07dd1564be90bc1a89775b17b524d4e83039`; gate artifact `14510581877` (960 PASS/known row858 RED), census artifact `14510118951` (Cylinder PASS/288, BunnyRandom/Vase RED); **964/964 prior cases MATCH** under frozen N1–N7, 1,939/1,939 hashes. Two transverse sphere contact pairs have `firstArrival=inconclusive, faces=different` and require a symmetric EC3 choice at TB145 Review; two same-face BunnyRandom pairs remain O48. No product acceptance, no new stable regression; 66/17/49, debt1, deferred81.
 
@@ -39,8 +51,12 @@ Turn sequence:
 - [x] **COMPLETE (Code + Build; compile only):** `M6-CP3-CB168E-P13-ENTRY-COINCIDENCE-ARRIVAL-RECEIPT` — [record](.agents/Directional/Architecture_M6_CP3_CB168E_P13_Entry_Coincidence_Arrival_Receipt_Code_Build_Record_20261119.md); exact frozen diff `67418422…dc0`, source `d43d07dd1564be90bc1a89775b17b524d4e83039`, [compile run 44481277693](https://github.com/akashskypatel/Directional/actions/runs/44481277693), package `14508452647` SHA-256 `5daeba011fc49fde4ad083f5104b5a3847abe8b6742dec841465762b0bd1b609`; +34/-7 `SurfaceCellTracing.cpp`, eight GMP/GMPXX targets, `runtimeExecution=false`.
 - [x] **COMPLETE (Test + Benchmark):** `M6-CP3-TB145-P13-CARRIER-CONTACT-BINDING-AND-ARRIVAL-RECEIPT-FULL-GATE-EXEC` — TB144 manifest `fc1264e9…e949`; 964 records vs TB144 under N1–N7 with receipt suffix stripped; EC3 census (firstArrival, faces, cut-edge).
 - [x] **COMPLETE (independent Review):** `M6-CP3-TB145-P13-CARRIER-CONTACT-BINDING-AND-ARRIVAL-RECEIPT-FULL-GATE-REV` — 964/964 independently matched, 491/491 accepted, known row858 RED, 246 entry receipts; rejected unproved EC3 patch due EC3-SYM-1 pre-entry/struck-entry contract conflict. [Review](.agents/Directional/Architecture_M6_CP3_TB145_P13_Carrier_Contact_Binding_And_Arrival_Receipt_Full_Gate_Independent_Review_20261119.md).
-- [ ] **NEXT (definition only):** `M6-CP3-DEFN-P13-SYMMETRIC-TRANSVERSE-ENTRY-EDGE-BINDING` — establish symmetric pre-entry edge node binding and event-incidence proof, both cut/non-cut cases, then freeze an exact implementation patch. No code execution authorized.
-- [ ] Prospective ([RA-266 S3](.agents/Directional/Architecture_M6_CP3_TB144_P13_Framing_And_Struck_Position_Full_Gate_Independent_Review_20261119.md#ra-266--adversarial-re-review-of-this-review-2026-11-19-utc)): EC3 transverse (entry, entry) switch, sphere O47 (TB) → CB168 binding → [O49] → CB169 H4 cutover → CB170 → CB171 → CB172 (O48, incl. same-face merge).
+- [x] **COMPLETE (adversarial re-review):** [RA-267](.agents/Directional/Architecture_M6_CP3_TB145_P13_Carrier_Contact_Binding_And_Arrival_Receipt_Full_Gate_Independent_Review_20261119.md#ra-267--adversarial-re-review-of-this-review-2026-11-19-utc) — MATCH upheld; DEFN-P13-SYMMETRIC-TRANSVERSE-ENTRY-EDGE-BINDING withdrawn; CB168F/CB168G/TB146 frozen.
+- [ ] **NEXT (Code + Build; compile only):** `M6-CP3-CB168F-P13-MUTUAL-CARRIER-CONTACT-CONSUMER` — exact diff `.agents/Directional/Architecture_M6_CP3_CB168F_P13_Mutual_Carrier_Contact_Consumer_Exact.diff`, SHA-256 `1239c09d217078a753764d0bc244991b75be852bab3ea91d29062e117fb1bc1c`, numstat `64 3` EmbeddedGraphTopology.cpp, `15 1` .h, `70 0` FieldAlignedCurveNetworkTests.cpp. Precheck `git diff --quiet d43d07dd1 HEAD -- src include tests`; eight RA-245 targets, `runtimeExecution=false`.
+- [ ] **Then (Code + Build; compile only):** `M6-CP3-CB168G-P13-TRANSVERSE-ENTRY-MUTUAL-STOP` (EC3) — exact diff `.agents/Directional/Architecture_M6_CP3_CB168G_P13_Transverse_Entry_Mutual_Stop_Exact.diff`, SHA-256 `4555af7c88d96cafae2feca72a503735fbcd218629f88dfe20126fc151596aa9`, `89 6` SurfaceCellTracing.cpp.
+- [ ] **Then (Test + Benchmark):** `M6-CP3-TB146-P13-TRANSVERSE-ENTRY-MUTUAL-STOP-FULL-GATE-EXEC` — manifest `.agents/Directional/gates/Architecture_M6_TB146_P13_Transverse_Entry_Mutual_Stop_Full_Gate_Case_Manifest.tsv` (`aa9911870a7514ea5674f869e74d8681f1ad0fcc8a14f43096b8da4f5210b61f`, 962+81). The required, predicted and census items are in the plan.
+- [ ] **Then (Review):** `M6-CP3-TB146-P13-TRANSVERSE-ENTRY-MUTUAL-STOP-FULL-GATE-REV` — adjudicates the sphere rows and the row 648 premise, then freezes the next exact turn.
+- [ ] Prospective ([RA-267 S4](.agents/Directional/Architecture_M6_CP3_TB145_P13_Carrier_Contact_Binding_And_Arrival_Receipt_Full_Gate_Independent_Review_20261119.md#ra-267--adversarial-re-review-of-this-review-2026-11-19-utc)): CB168 binding → [O49] → CB169 H4 cutover → CB170 → CB171 → CB172 (O48, incl. same-face merge).
 - Held: FC-6, TERMINAL-CUT-OUTCOME, row-858 fix. Parked: CB145. D11=A, D12=A unchanged.
 
 ## PRIOR — TB140 independent MATCH; CB166 scope stopped; Review blocked, resolved by RA-262 (2026-11-18 UTC)
