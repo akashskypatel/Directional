@@ -1,2 +1,0 @@
-# TB142 cleanup: remove only this turn's source-snapshot trigger
-.agents/connector-triggers/source-snapshot/tb142-20261118-2329.txt
