@@ -1,3 +1,7 @@
+## 2026-11-19 UTC — CB168F mutual carrier-contact consumer (compile PASS)
+
+Exact RA-267 diff `1239c09d217078a753764d0bc244991b75be852bab3ea91d29062e117fb1bc1c` applied to `EmbeddedGraphTopology.cpp` (+64/-3), `.h` (+15/-1), and `FieldAlignedCurveNetworkTests.cpp` (+70/-0). Semantic source `3825f82eefad94c2be7553037ba329b086bc15a3`; [compile run 44499908949](https://github.com/akashskypatel/Directional/actions/runs/44499908949), immutable package `14516872541` SHA-256 `3fd84e86cd96a30d4ab01ce33ede8078067b659adf75a3eb152c0b112adf6cd2`. Eight GMP/GMPXX targets compiled, `runtimeExecution=false`, no runtime testing, no acceptance or product promotion. [Record](.agents/Directional/Architecture_M6_CP3_CB168F_P13_Mutual_Carrier_Contact_Consumer_Code_Build_Record_20261119.md). CB168G remains next and was not executed.
+
 ## 2026-11-19 — RA-267 re-review of TB145 Review
 
 TB145 MATCH upheld (964/964, 491/491, row858 known RED). The symmetric-binding definition turn is withdrawn: the accepted inconclusive-arrival rule already stops both traces, and the pre-commit struck index names each trace's end. Frozen exact patches: CB168F (mutual carrier-contact consumer and cut-edge split, inert, with unit test) and CB168G (EC3 transverse entry mutual stop), plus TB146 (manifest `aa991187…b61f`). No product change in this turn. [Plan](.agents/Directional/Architecture_M6_CP3_CB168F_P13_Transverse_Entry_Mutual_Stop_Plan_20261119.md).
