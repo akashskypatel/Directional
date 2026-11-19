@@ -1,2 +1,0 @@
-Canonical turn: M6-CP3-CB168E-P13-ENTRY-COINCIDENCE-ARRIVAL-RECEIPT
-Source snapshot requested for this Code + Build turn. No source edits.
