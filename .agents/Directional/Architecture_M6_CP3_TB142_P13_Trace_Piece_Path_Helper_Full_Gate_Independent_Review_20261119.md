@@ -43,9 +43,9 @@ Procedure evidence: direct document reads preceded the snapshot READ_MODE select
 | ROADMAP | n/a: M6-CP3 not closed, no milestone promotion |
 | Selector manifest | n/a: no selector edited or accepted |
 | LESSONS | Existing exact-source identity, witness and non-vacuity lessons applied; no new pattern |
-| Consolidation under CLEAN_UP_POLICY | n/a: no historical duplicate records generated; transient snapshot marker scheduled for removal |
+| Consolidation under CLEAN_UP_POLICY | n/a: no historical duplicate records generated; transient snapshot marker removed after evidence collection |
 | Successor frozen | `M6-CP3-CB168A-P13-ENTRY-COINCIDENCE-RECEIPT`; exact diff and falsifiers in [Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119.md](Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Plan_20261119.md) |
 | Turn boundary held | Yes; Review runtime-free, no live product/test/selector/fixture mutation |
 | review_check.py boundary | Source-only snapshot has no rewrite-base Git history; history-dependent verification unavailable; remote code-surface and local diff checks used |
 | `STATUS` lifecycle maintained | Entry beacon in repository, final COMPLETE beacon after publication and cleanup |
-| Pushed to origin, branch in sync | GitHub connector must confirm final pushed branch authority after patch commit; source-only snapshot lacks `git status -sb` |
+| Pushed to origin, branch in sync | GitHub Actions run 44430359926 confirmed the patch commit was pushed to the working branch; subsequent GitHub PR head confirmed remote advancement; local `git status -sb` unavailable without a checkout |
