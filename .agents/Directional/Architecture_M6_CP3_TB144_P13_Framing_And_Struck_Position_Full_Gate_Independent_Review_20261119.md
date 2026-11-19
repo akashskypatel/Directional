@@ -42,6 +42,6 @@ Freeze only **`M6-CP3-CB168D-P13-CARRIER-CONTACT-EDGE-NODE-BINDING`**, compile-o
 | Consolidation under CLEAN_UP_POLICY | Existing live TB144 execution report and new Review retained; historical TB143/CB168B/C records still cited by live authority and not yet safely folded; defer physical fold until all affected references and full text have a retained home |
 | Successor frozen | `M6-CP3-CB168D-P13-CARRIER-CONTACT-EDGE-NODE-BINDING`; falsifiers and stop rules in [plan](Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Plan_20261119.md) |
 | Turn boundary held | Runtime-free Review; no product, test, fixture, selector, build source or benchmark changed |
-| review_check.py boundary | Pending remote Git ancestry proof; local snapshot synthetic Git does not prove origin ancestry |
+| review_check.py boundary | Executed on exact verified source snapshot; FAIL solely for unavailable Git history and rewrite-base ancestry in synthetic local Git. Product/test/selector mutation checks PASS; independent GitHub commit comparison confirms six documentation paths only. Do not call this a full boundary PASS. |
 | `STATUS` lifecycle maintained | Entry beacon written; final beacon is the last repository action |
-| Pushed to origin, branch in sync | Not claimed until remote patch and head verified |
+| Pushed to origin, branch in sync | GitHub workflow apply succeeded and committed six intended documentation paths to the working branch; independent remote comparison verified scope. A true local `git status -sb` against origin was not available in this ChatGPT Web snapshot, so that stronger claim is not made. |
