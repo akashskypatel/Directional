@@ -1,3 +1,7 @@
+## 2026-11-19 UTC — CB168G transverse entry mutual stop (compile PASS)
+
+Exact frozen RA-267 patch `4555af7c88d96cafae2feca72a503735fbcd218629f88dfe20126fc151596aa9` applied (+89/-6 `SurfaceCellTracing.cpp`); semantic source `ebbe893bd5415e05ea828d5587a265d08326d1fa`, [compile run 44599291384](https://github.com/akashskypatel/Directional/actions/runs/44599291384), immutable package `14566343560` ZIP SHA-256 `41fc237f91b24cdc369908f483579ef3e16d55b7c7743ccd97ded4f30b83c717`; 28/28 hashes, all eight GMP/GMPXX targets, `runtimeExecution=false`. No runtime execution or acceptance. [Record](.agents/Directional/Architecture_M6_CP3_CB168G_P13_Transverse_Entry_Mutual_Stop_Code_Build_Record_20261119.md). TB146 is next, not started.
+
 ## 2026-11-19 UTC — CB168F mutual carrier-contact consumer (compile PASS)
 
 Exact RA-267 diff `1239c09d217078a753764d0bc244991b75be852bab3ea91d29062e117fb1bc1c` applied to `EmbeddedGraphTopology.cpp` (+64/-3), `.h` (+15/-1), and `FieldAlignedCurveNetworkTests.cpp` (+70/-0). Semantic source `3825f82eefad94c2be7553037ba329b086bc15a3`; [compile run 44499908949](https://github.com/akashskypatel/Directional/actions/runs/44499908949), immutable package `14516872541` SHA-256 `3fd84e86cd96a30d4ab01ce33ede8078067b659adf75a3eb152c0b112adf6cd2`. Eight GMP/GMPXX targets compiled, `runtimeExecution=false`, no runtime testing, no acceptance or product promotion. [Record](.agents/Directional/Architecture_M6_CP3_CB168F_P13_Mutual_Carrier_Contact_Consumer_Code_Build_Record_20261119.md). CB168G remains next and was not executed.
