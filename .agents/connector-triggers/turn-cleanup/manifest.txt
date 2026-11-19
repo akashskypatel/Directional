@@ -1,0 +1,2 @@
+# TB143 cleanup after verified 960-case gate, 3-case census, and document patch.
+.agents/connector-triggers/source-snapshot/m6-cp3-tb143-20261119-0154.txt
