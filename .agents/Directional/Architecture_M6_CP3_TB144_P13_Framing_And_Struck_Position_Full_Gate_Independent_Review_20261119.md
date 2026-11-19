@@ -23,7 +23,7 @@
 
 ## Recommendation — EC2b frozen; not executed
 
-Freeze only **`M6-CP3-CB168D-P13-CARRIER-CONTACT-EDGE-NODE-BINDING`**, compile-only, per [RA-265 S3](Architecture_M6_CP3_TB143_P13_Entry_Coincidence_Receipt_Full_Gate_Independent_Review_20261119.md#s3--realigned-sequence) and [bounded plan](Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Plan_20261119.md). The implementation must bind the optional exact carrier locus of an existing terminal contact to the struck trace's incoming crossing on the same source edge and exact parameter, with the helper's interior cut position. The resulting contact is an edge node, not a face contact; it must use the existing shared node and exact provenance, without positional merging, widening input eligibility or switching the production contact producer. No real producer sets `carrierLocus` yet, so any direct-product difference would be unexpected; first TB after compile must check strict comparison and non-vacuous injected positive and negative tests. EC3 (transverse entry/entry production switch) remains separate and later; BunnyRandom's same-face co-directional merge remains O48.
+Freeze only **`M6-CP3-CB168D-P13-CARRIER-CONTACT-EDGE-NODE-BINDING`**, compile-only, per [RA-265 S3](Architecture_M6_CP3_TB143_P13_Entry_Coincidence_Receipt_Full_Gate_Independent_Review_20261119.md#s3--realigned-sequence) and [bounded plan](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168d_p13_carrier_contact_edge_node_binding_plan_20261119md "folded: Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Plan_20261119.md"). The implementation must bind the optional exact carrier locus of an existing terminal contact to the struck trace's incoming crossing on the same source edge and exact parameter, with the helper's interior cut position. The resulting contact is an edge node, not a face contact; it must use the existing shared node and exact provenance, without positional merging, widening input eligibility or switching the production contact producer. No real producer sets `carrierLocus` yet, so any direct-product difference would be unexpected; first TB after compile must check strict comparison and non-vacuous injected positive and negative tests. EC3 (transverse entry/entry production switch) remains separate and later; BunnyRandom's same-face co-directional merge remains O48.
 
 ## Review closeout
 
@@ -42,7 +42,7 @@ Freeze only **`M6-CP3-CB168D-P13-CARRIER-CONTACT-EDGE-NODE-BINDING`**, compile-o
 | Selector manifest | n/a: no accepted selector or membership change |
 | LESSONS | Existing **Compile, runtime, and acceptance are independent evidence** and **A witness must be capable of falsifying its assertion** reused; no new pattern |
 | Consolidation under CLEAN_UP_POLICY | Folded four completed superseded documents (CB168A plan and compile record, consumed CB168B/CB168C/TB144 plan, and TB143 execution report) verbatim into [Volume D3](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb144-review--verbatim-folded-records-2026-11-19-utc), with SHA-256, exact original names and line counts indexed in [M6 consolidated record](M6_Consolidated_Record.md#tb144-review-consolidation-2026-11-19-utc); live links repaired. Current TB144 execution and Review, RA-265 Review, CB168B/CB168C active source records and EC2b plan retained. |
-| Successor frozen | `M6-CP3-CB168D-P13-CARRIER-CONTACT-EDGE-NODE-BINDING`; falsifiers and stop rules in [plan](Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Plan_20261119.md) |
+| Successor frozen | `M6-CP3-CB168D-P13-CARRIER-CONTACT-EDGE-NODE-BINDING`; falsifiers and stop rules in [plan](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168d_p13_carrier_contact_edge_node_binding_plan_20261119md "folded: Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Plan_20261119.md") |
 | Turn boundary held | Runtime-free Review; no product, test, fixture, selector, build source or benchmark changed |
 | Documentation drift audit | `document_drift_audit.py --root . --base HEAD --json` on verified synthetic snapshot: 0 errors, 2 warnings (handoff navigation size 17,322 bytes; review-authorized in-place handoff change). Current durable headings and links preserved; no automated audit warning was suppressed. |
 | review_check.py boundary | Local synthetic-Git checker PASS on product/test/fixture/build/selector bytes, but FAIL on rewrite baseline ancestry because the downloaded source snapshot contains no authentic Git objects. Independent GitHub comparison **proves** `8b7299b43` ancestor (behind 0), CB168C source ancestor and no product/test/build drift. All five durable headings from the rewrite baseline survive in current branch. Local full-check PASS is **not** claimed; remote equivalence is checked separately. |
@@ -78,7 +78,7 @@ Freeze only **`M6-CP3-CB168D-P13-CARRIER-CONTACT-EDGE-NODE-BINDING`**, compile-o
 
 ### S3 — realigned sequence
 
-[Frozen plan](Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Plan_20261119.md).
+[Frozen plan](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168d_p13_carrier_contact_edge_node_binding_plan_20261119md "folded: Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Plan_20261119.md").
 
 | Turn | Scope | Evidence |
 |---|---|---|

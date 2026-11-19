@@ -5729,3 +5729,140 @@ Census [run 44441139661](https://github.com/akashskypatel/Directional/actions/ru
 
 Both runs and the offline comparison are complete. The execution report must be reviewed independently. **Do not accept a strict MATCH** without resolving rows 169/477 against frozen normalization authority. No EC2/EC3, selector, source, test, or benchmark changes are authorized in this execution turn. Its separately authorized Review successor is `M6-CP3-TB143-P13-ENTRY-COINCIDENCE-RECEIPT-FULL-GATE-REV`. No successor work starts here.
 ~~~~~
+
+
+## Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Code_Build_Record_20261119.md
+
+Original SHA-256 `c4b570c2a90f85b1ea0584c1c1345e532dabe9cbb5180bd5e16ff31a1db222b3`; CB168D compile-only PASS; source superseded. Historical provenance: resolver in `M6_Consolidated_Record.md`, TB146 Review consolidation.
+
+# CB168D — carrier-contact edge-node binding (Code + Build, 2026-11-19 UTC)
+
+## Situation
+
+**Compile PASS.** The frozen CB168D code edit is committed at source `60357edb20132b20263fc5a1997f8af50343e2ae`. [Compile run 44478377983](https://github.com/akashskypatel/Directional/actions/runs/44478377983) passed. The immutable compile package artifact `14507741391` has SHA-256 `0cafed08563f6699ff4000b7975f880f2de46a1a91266daab539c85439fbe25a`, with all 28/28 manifest hashes verified. Eight mandatory targets compiled with GMP and GMPXX. `runtimeExecution=false`; no tests or benchmarks were executed.
+
+## Background
+
+RA-266 froze [the exact CB168D patch](Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Exact.diff) at SHA-256 `cf726ced720530467d4d36552fa19880196473a9e5856c0d0408aacb406de8de`. The verified source snapshot was `7358dea7c4968b8be6ef02685425f5d35115d5a7` from [snapshot run 44477429547](https://github.com/akashskypatel/Directional/actions/runs/44477429547). Comparison with CB168C source `e0f085eb65ed186bf836305f2896c69c6c90c519` established zero `src`, `include`, or `tests` changes before applying the patch. The exact change touched only `EmbeddedGraphTopology.cpp` (+89/-9) and `EmbeddedGraphTopology.h` (+14/-0).
+
+## Assessment
+
+The patch makes carrier contact an explicit source-edge node binding, validates the carrier locus, reuses the contact node at a selected cut crossing, excludes carrier contacts from face-only contact nodes, and locates the struck trace cut at the recorded segment. The separate [Drive application run 44478099468](https://github.com/akashskypatel/Directional/actions/runs/44478099468) passed with `runtimeExecution=false`. The complete transport patch SHA-256 is `ab59072fe9b7b6f46a69f5b5e1732c1188678bbaf3ae84107091d043edadfbba`, with exact frozen diff body and base `7358dea7c4968b8be6ef02685425f5d35115d5a7`. Google Drive preservation ID `1_N4pKILvRZusby7psu5P8MhnJTnwghKV` was retained until successful application.
+
+The compiled package names the exact source commit, has empty source-status records, build exit code 0, and records `exactArithmeticBackend=GMP`, `runtimeExecution=false`, and link evidence for `libgmpxx.so` and `libgmp.so`. The eight targets include core, pipeline, authority-kernel, producer, completion, validation, compiled API, and benchmark executables. Compile evidence does not establish runtime correctness. Latest accepted test authority remains TB144 Review: 963/963 prior matching records; known row858 RED, stable 66/17/49, one witness debt, 81 deferred, CP2 491/491. No CP3/D0 acceptance, selector change, or EC3 switch.
+
+## Recommendation
+
+The only next turn is `M6-CP3-CB168E-P13-ENTRY-COINCIDENCE-ARRIVAL-RECEIPT` (Code + Build, compile only), using the frozen exact diff SHA-256 `674184224a4a96dadaefce0be997b75ee03e36414af9062fc87ccd70f5b71dc0`. TB145 is later. Do not run tests, modify CB168E now, or promote product acceptance.
+
+
+
+## Architecture_M6_CP3_CB168E_P13_Entry_Coincidence_Arrival_Receipt_Code_Build_Record_20261119.md
+
+Original SHA-256 `e76e60fe81809e8dd7bfb75c698deee989262e7b00744fd18c538695b448a110`; CB168E compile-only PASS; source superseded. Historical provenance: resolver in `M6_Consolidated_Record.md`, TB146 Review consolidation.
+
+# CB168E — entry-coincidence arrival and face receipt (Code + Build, 2026-11-19 UTC)
+
+## Situation
+
+**Compile PASS.** The exact frozen diagnostic patch was applied at source `d43d07dd1564be90bc1a89775b17b524d4e83039`. [Compile run 44481277693](https://github.com/akashskypatel/Directional/actions/runs/44481277693) completed successfully. Immutable package `14508452647` has ZIP SHA-256 `5daeba011fc49fde4ad083f5104b5a3847abe8b6742dec841465762b0bd1b609` and the verified internal manifest. Eight mandatory targets compiled with GMP and GMPXX. `runtimeExecution=false`: no tests or benchmarks were executed.
+
+## Background
+
+[RA-266 and the frozen CB168D/CB168E/TB145 plan](Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Plan_20261119.md) authorize only [the exact CB168E patch](Architecture_M6_CP3_CB168E_P13_Entry_Coincidence_Arrival_Receipt_Exact.diff), SHA-256 `674184224a4a96dadaefce0be997b75ee03e36414af9062fc87ccd70f5b71dc0`. The source snapshot was `17468a43549d1b6bdf180a6c4d0d77866c063978` ([run 44480601675](https://github.com/akashskypatel/Directional/actions/runs/44480601675)). The compare from CB168D source `60357edb20132b20263fc5a1997f8af50343e2ae` proved zero changes under `src`, `include` or `tests`. The patch changed only `src/geometry/SurfaceCellTracing.cpp` (+34/-7). Drive application [run 44481068695](https://github.com/akashskypatel/Directional/actions/runs/44481068695) verified the patch and pushed the source; the temporary Drive patch was deleted after successful application.
+
+## Assessment
+
+The existing `entryCoincidence` record now includes `firstArrival=earlier|later|inconclusive` and `faces=same|different`. The arrival comparison uses the existing priority comparator, with pending proposal arrival or the committed wall segment start. Source-face equality determines the second field. Only diagnostic content changed; no contact scheduling, selectors, geometry, topology, tests or normalizations changed. Compile-only evidence does not establish runtime behavior. Prior TB144 evidence remains 963/963 MATCH, known row858 RED; no CP3/selector497/D0 promotion.
+
+## Recommendation
+
+**Next turn, not executed here:** `M6-CP3-TB145-P13-CARRIER-CONTACT-BINDING-AND-ARRIVAL-RECEIPT-FULL-GATE-EXEC`. Consume immutable package `14508452647` using the frozen TB145 test plan, with no recompilation or source modifications. Require the complete N1–N7 records and the EC3 arrival/face census before independent Review. Compile log artifact: `14507954700`.
+
+
+
+## Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Plan_20261119.md
+
+Original SHA-256 `79b8b9ba71dcb711dfbe311345967286b71f97142bba1099f74f057a28c95c00`; Consumed RA-266 EC2b plan; TB145 reviewed by RA-267. Historical provenance: resolver in `M6_Consolidated_Record.md`, TB146 Review consolidation.
+
+# CB168D, CB168E and TB145 — carrier-contact edge-node binding and arrival receipt (frozen by RA-266)
+
+## Situation
+
+[RA-266](Architecture_M6_CP3_TB144_P13_Framing_And_Struck_Position_Full_Gate_Independent_Review_20261119.md#ra-266--adversarial-re-review-of-this-review-2026-11-19-utc) replaces the prose EC2b plan the TB144 Review froze here (git history keeps it). It freezes two narrow Code + Build turns as exact patches and one Test + Benchmark covering both. Apply in order; each is compile-only.
+
+Precheck before CB168D: `git diff --quiet e0f085eb65ed186bf836305f2896c69c6c90c519 HEAD -- src include tests` (product unchanged since CB168C). Before CB168E: the CB168D result.
+
+## Background — exact patches
+
+| Turn | Patch | SHA-256 | Numstat |
+|---|---|---|---|
+| `M6-CP3-CB168D-P13-CARRIER-CONTACT-EDGE-NODE-BINDING` (EC2b) | [diff](Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Exact.diff) | `cf726ced720530467d4d36552fa19880196473a9e5856c0d0408aacb406de8de` | `89 9 src/geometry/EmbeddedGraphTopology.cpp; 14 0 src/geometry/EmbeddedGraphTopology.h` |
+| `M6-CP3-CB168E-P13-ENTRY-COINCIDENCE-ARRIVAL-RECEIPT` | [diff](Architecture_M6_CP3_CB168E_P13_Entry_Coincidence_Arrival_Receipt_Exact.diff) | `674184224a4a96dadaefce0be997b75ee03e36414af9062fc87ccd70f5b71dc0` | `34 7 src/geometry/SurfaceCellTracing.cpp` |
+
+- **CB168D (EC2b), the consumer.** A carrier contact is a trace that ends with `terminalContact->carrierLocus`. It ends on that source edge, at the point where the struck trace enters segment k.
+  - **Not a face contact.** `face_contact_nodes` skips a `TraceIntersection`/`TraceSelfClosure` whose Terminal incidence carries a locus. Before this change, `collect_face_contact_nodes` would cut the struck trace at `{k, 0}` through `trace_segment_contact_parameter`. That is a second node beside the crossing `{k, ∅}`, which yields a zero-length arc. With the change, `build_node_loci` gives the node the edge locus from `event.sourceEdge`.
+  - **Validated record.** `build_cut_node_bindings` validates each record:
+    - `carrier_contact_struck_position` (row 961) must return `{k, ∅}`;
+    - `event.sourceEdge` must equal the locus edge;
+    - one node takes one binding.
+    Any failure returns the existing `InvalidCutGraphBinding`, with trace, struck trace and edge set. The result is published as `CutNodeBindings::carrierContacts`.
+  - **Cut-edge merge.** When the carrier is a selected cut edge, the struck trace's crossing `(edge, struck, k)` keeps the contact's network node instead of a cut-created one. The extent counts only cut-created crossings. `syntheticCrossings` also holds the merged node, so `edge_ray` parameter lookup and node loci still find it.
+  - **Non-cut edge.** No crossing exists, and the contact node alone is the cut point for both traces.
+  - **Struck position.** In `build_arcs`, the struck trace's non-terminal incidence at that node takes position k from the binding, not from `trace_event_position`. The terminating trace keeps the existing rule (its end).
+- **CB168E, the measurement EC3 needs.** The EC1 receipt keeps its text and gains two fields: `firstArrival=earlier|later|inconclusive faces=same|different`.
+  - `firstArrival` orders the first end's arrival at the shared entry against the second's. It uses `field_aligned_compare_priority_arrivals` with the active priority, the same rule that decides contacts:
+    - for a pending proposal, the arrival is `runtime.arrival`;
+    - for a committed wall segment, it is `segmentStarts[k]`.
+  - `faces` compares the two entered segments' source faces.
+  - EC3 needs both fields: the later trace is the one that terminates, and `different` is the transverse predicate.
+- **Inert by construction.** No producer sets `carrierLocus`. Every CB168D branch requires a record with a locus, and the extent change subtracts an empty set. CB168E changes only diagnostic text, which N7 deletes.
+- **No new test.** A `FieldAlignedCurveNetwork` cannot be hand-built (RA-248), so `face_contact_nodes`, `build_cut_node_bindings` and `build_arcs` cannot take an injected record. Their arithmetic is the accepted helper (row 961). The wiring is first witnessed by EC3's TB on the sphere.
+
+## Assessment — compile falsifiers
+
+Each Code + Build compiles the eight RA-245 GMP/GMPXX targets with `runtimeExecution=false`. The Review ran `-fsyntax-only` with no errors and these warning counts, all equal to base:
+
+| File | Warnings |
+|---|---|
+| `EmbeddedGraphTopology.cpp` | 22 |
+| `GlobalTopologyPlan.cpp` | 24 |
+| `SurfaceCutGraph.cpp` | 27 |
+| `FieldAlignedCurveNetworkTests.cpp` | 42 |
+| `SurfaceCellTracing.cpp` | 43 |
+
+The two patches stack on HEAD (`git apply --check` in order). Stop on any precheck, apply, compile or package-hash failure.
+
+## Recommendation — frozen `M6-CP3-TB145-P13-CARRIER-CONTACT-BINDING-AND-ARRIVAL-RECEIPT-FULL-GATE-EXEC`
+
+- **Inputs.**
+  - Immutable CB168E package.
+  - Unchanged TB144 manifest `gates/Architecture_M6_TB144_P13_Carrier_Contact_Struck_Position_Full_Gate_Case_Manifest.tsv`, SHA-256 `fc1264e96628ad659302905f5537d8f4fc09973ffbfeaea3a4f228069613e949` (961 gated + 81 deferred).
+  - Unchanged 3-row census and harness.
+- **Comparison against TB144.**
+  - All 964 records (961 gate + 3 census) must match under N1, N2, N4 and N7 as frozen, and N3 exactly as defined in the TB131 Review.
+  - Raw `slideProposal`/`committedSlide` lines must be byte-identical.
+  - Delete the suffix from ` firstArrival=` to the end of each `entryCoincidence` line. Per row, the remainder must equal TB144's lines as a multiset: 240 gate lines in 20 rows, 6 census lines.
+  - Every receipt must end with exactly one `firstArrival=` value and one `faces=` value.
+- **Required outcomes.**
+  - Gate 960/961, with row 961 PASS.
+  - 491/491 accepted prefix.
+  - Row 858 RED at `SurfaceCellTracingDisplayTests.cpp:155`.
+  - BunnyRandom first failure unchanged (trace 82).
+  - Cylinder PASS/288.
+  - No line containing the `M3_CP4AB_FRAGMENT_DIAG` prefix twice.
+- **Census for the EC3 freeze (raw, enumerated, not adjudicated).** One table row per deduplicated pair and fixture, with:
+  - first and second (`t:s`), carrier and exact parameter;
+  - `firstArrival` and `faces`;
+  - whether the same log has an `EmbeddedGraphTopology.duplicateCutCrossing` on that carrier at that parameter, which shows whether the carrier is a cut edge there (merge path) or not (standalone node path).
+
+  Predictions are routed to Review, not STOP:
+  - the sphere pairs `4:7/6:7` on (0,2) and `15:7/19:7` on (25,27) are `faces=different`;
+  - the BunnyRandom `15/43` pairs are `faces=same`;
+  - a `firstArrival=inconclusive` on a `different` pair means EC3 needs a symmetric rule.
+- **Successor.** `M6-CP3-TB145-P13-CARRIER-CONTACT-BINDING-AND-ARRIVAL-RECEIPT-FULL-GATE-REV` freezes EC3, the transverse producer switch, as an exact patch. It carries these obligations:
+  - the later trace (by the receipt's ordering) does not commit the proposal that enters at the locus, and ends at its previous segment's end;
+  - its `terminalContact` holds `{its last segment's face, that point, struck trace, k, carrierLocus}`;
+  - the `TraceIntersection` event's `sourceEdge` equals the locus edge (CB168D rejects anything else);
+  - the predicate is `first_field_aligned_carrier_contact` with both slide flags false and `faces=different`;
+  - same-face merges are left to O48 (CB171/CB172).

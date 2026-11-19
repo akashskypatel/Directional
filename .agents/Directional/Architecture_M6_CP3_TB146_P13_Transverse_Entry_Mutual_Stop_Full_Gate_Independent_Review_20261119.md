@@ -1,0 +1,93 @@
+# TB146 independent full-gate Review — transverse entry mutual stop (2026-11-19 UTC)
+
+## Situation — decision
+
+**Required RED upheld, no acceptance.** TB146 gate 961/962 PASS; required prefix 490/491 (row393 RED, four 7 vs 7 assertions); 941/941 unaffected gate rows MATCH, unchanged 240 entry and 1,200 each slide receipts; 66→0 duplicate (0,2) diagnostics. Row648 PASS; row858 PASS (not promoted); rows669/698 now show cut-search exhaustion. No census: required-prefix stop. Stable 66/17/49, debt1, deferred81. No CP3, selector497 or D0 promotion. The cut-crossing diagnostic disappearance is real; it is not a certified cut graph. Row393 has a stale unconditional struck-index bound for the reciprocal carrier-end representation. Static source establishes the legal end-index case; the logs do not identify the four final contacts. Candidate TB146-ROW393-ORACLE remains non-stable and unproved at runtime. Preserve the prefix gate and require a positive exact reciprocal witness; do not use an unconditional `<=`. This Review adjudicates the failed experiment and freezes one bounded correction, not the implementation or execution of that correction.
+
+## Background — immutable evidence and scope
+
+| Evidence | Artifact | SHA-256 (ZIP) | Internal hashes |
+|---|---:|---|---:|
+| TB146 gate | 14569832286 | `c776ec086e6aa50a11cc8f98db2074c282191a13bf6f58b8bd61de1cf85c6f14` | 1,932/1,932 |
+| TB145 gate | 14510581877 | `bac8df3f16b8161f92813e30644ac5d96e9538395fcd4c6b00b285f83d6519fe` | 1,930/1,930 |
+| TB145 census only | 14510118951 | `463a9be377eed40e8c327760f299819b41928e70535aa34c00fe3d14a8507a1d` | 9/9 |
+
+TB146 immutable package `14566343560`, source `ebbe893bd5415e05ea828d5587a265d08326d1fa`, run `44603830217`, mailbox source and gate digest agree. Execution boundary: planned/executed 962, postflight true, control_bad=1, abnormal/missing/skipped/duplicate=0, exit90, no compile/relink/configure/benchmark. Source snapshot run `44611776561`, artifact `14572133022`, snapshot base `5f103e8e7ccc70f1a5a354ebe213edcd7e5deafd`, ZIP SHA-256 `6fc37bca4840d8c0a9f0e26887def05662e7755157d62727784829b14a7e423c`, 5,614/5,614 source hashes. GitHub comparison from semantic source to snapshot shows no `src`, `include`, `tests`, benchmarks or build change. Both frozen CB168F/G diff digests match RA-267 and both reverse-apply checks pass against source; this is not a reconstruction of every intervening commit.
+
+Independent offline parser checked every raw log binding (962+961+3=1,926), exact manifest identity/order/owner, 962 gated plus 81 deferred unique members, and both raw receipt inventories. The manifest SHA-256 is `aa9911870a7514ea5674f869e74d8681f1ad0fcc8a14f43096b8da4f5210b61f`. Reconstruct each accepted selector byte sequence from gate test names, including newlines:
+
+| Rows | Selector | Recomputed SHA-256 | Byte match |
+|---|---|---|---|
+| 1–30 | CP1 focused30 | `1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6` | yes |
+| 31–42 | CP2 focused12 | `2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed` | yes |
+| 43–491 | M5 selector449 | `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414` | yes |
+
+Under frozen gate normalization (timing, line endings and complete M3 record order; no receipt deletion), 941/941 non-S old rows and their ledger outcomes match. No double M3 prefix. All 1,738 complete M3 records per gate match per row as multisets; 240 entry, 1,200 proposal and 1,200 committed-slide records of each gate match byte for byte per stream. Only verdict changes: 393 PASS→RED and 858 RED→PASS. New 962 PASS; 961 PASS. TB146 census not executed; no 964/964 claim. Historical Cylinder PASS/288, BunnyRandom trace82 RED and Vase RED are not new measurements.
+
+## Assessment — all 20 sphere rows
+
+Derive S exclusively from TB145 `entryCoincidence` lines with `faces=different`. Both exact pairs occur in every S row: 4:7/6:7 on selected cut edge (0,2), 15:7/19:7 on non-cut (25,27); `574181338608147/4503599627370496`, inconclusive arrival. These are pre-switch proposed entries, not post-switch endpoints. Table counts are log occurrences, not distinct contacts. Other fields that the raw logs do not print are unobserved.
+
+| Row | Verdict | Duplicate (0,2) | Pair receipt counts 4/6, 15/19 | Change |
+|---:|---|---:|---:|---|
+| 380 | PASS → PASS | 4 → 0 | 9/9 | Only prior duplicate-crossing lines removed; no outcome change. |
+| 388 | PASS → PASS | 4 → 0 | 9/9 | Only prior duplicate-crossing lines removed; no outcome change. |
+| 393 | PASS → RED | 4 → 0 | 6/6 | Four failures at FieldAlignedCurveNetworkTests.cpp:17144: struck index 7 is not less than count 7; 24 traces assertion and other checks did not fail. |
+| 394 | PASS → PASS | 4 → 0 | 7/7 | Only prior duplicate-crossing lines removed; no outcome change. |
+| 396 | PASS → PASS | 4 → 0 | 7/7 | Only prior duplicate-crossing lines removed; no outcome change. |
+| 397 | PASS → PASS | 4 → 0 | 6/6 | Only prior duplicate-crossing lines removed; no outcome change. |
+| 644 | PASS → PASS | 4 → 0 | 3/3 | Source-edge barrier V/E/F 81/112/33 → 81/109/30; incoming/outgoing carriers 102/112 → 100/109; χ=2, non-disc=0 unchanged. |
+| 645 | PASS → PASS | 2 → 0 | 3/3 | Sphere barrier V/E/F 81/112/33 → 81/109/30; incoming/outgoing 102/112 → 100/109; complete component inventory changed; χ=2, all 30 discs. |
+| 648 | PASS → PASS | 2 → 0 | 3/3 | Negative plan premise remains PASS; plan absence assertion holds. |
+| 669 | PASS → PASS | 4 → 0 | 13/13 | Printed first failure changes to cut-search exhaustion; network events 60→56 and terminal intersection events 12→10. |
+| 686 | PASS → PASS | 4 → 0 | 3/3 | Actual embedded-graph diagnostic V/E/F 20/34/22 → 18/30/18; χ 8→6, source χ=2, producer complex unavailable in both; no acceptance. |
+| 691 | PASS → PASS | 4 → 0 | 6/6 | Only prior duplicate-crossing lines removed; no outcome change. |
+| 693 | PASS → PASS | 0 → 0 | 3/3 | Normalized entire record MATCH; no prior duplicate-crossing diagnostic. |
+| 694 | PASS → PASS | 4 → 0 | 9/9 | Only prior duplicate-crossing lines removed; no outcome change. |
+| 698 | PASS → PASS | 4 → 0 | 9/9 | G5 report: credit none, 24 traces unchanged; new cut-search exhaustion, events 60→56, terminal intersection events 12→10; cross-family receipt interleaving changed, each receipt stream remained byte-equal. |
+| 699 | PASS → PASS | 4 → 0 | 6/6 | Report-only test remains PASS; only duplicate-crossing lines removed. |
+| 700 | PASS → PASS | 4 → 0 | 9/9 | Only prior duplicate-crossing lines removed; no outcome change. |
+| 843 | PASS → PASS | 2 → 0 | 3/3 | Only prior duplicate-crossing lines removed; no outcome change. |
+| 844 | PASS → PASS | 2 → 0 | 3/3 | Only prior duplicate-crossing lines removed; no outcome change. |
+| 858 | RED → PASS | 2 → 0 | 3/3 | RED→PASS at SurfaceCellTracingDisplayTests.cpp:155; source-face presence and display checks now pass; exact face corners not printed. |
+
+Row393 raw log SHA-256 `29230abe7f777f2950a4e4d8c3fba2ee046e0e809e3b23193b3fc59b0c963f8a`: four failures at `FieldAlignedCurveNetworkTests.cpp:17144`, `contact.struckSegmentIndex < struck->segments.size()` (7 vs 7). No other printed assertion fails. The 24-trace requirement, exclusive terminal-kind check, barycentric sum, positive contacts/intersections and existence of a mutual termination all execute; none identifies the four specific reciprocal contacts. Row648's negative plan premise still holds. Row858's previously failing assertion at `SurfaceCellTracingDisplayTests.cpp:155` now passes; its face-locus/display checks are real, but source face corners and exact stage code are not printed in that row. Row669/698 report `InvalidNetworkBinding / InvalidCutGraphBinding` trace4 on (0,2) before, `CutSearchExhaustedBeforeCellularity` after (24 traces, events60→56, terminal intersections12→10). No source-edge locus in new report; exact face unobserved. `SurfaceCutGraph.cpp:1058–1089` emits this typed failure when the saturation search has no remaining eligible edge or cannot add one; this does not identify the root cause. Row686 actual graph diagnostic has chi8→6, not source chi2; no published complex. Rows644/645 source-edge barrier diagnostic chi2/all discs are not proof of actual graph cellularity. No acceptance from any of them.
+
+### Causal source review — TB146-ROW393-ORACLE
+
+`SurfaceCellTracing.cpp:4089–4279`: for a queued carrier-locus contact with inconclusive ordering, `field_aligned_contact_termination_decision` stops both traces. The publisher samples pending indices before commits; the carrier branch does not append either pending segment, uses the last committed face and exact edge point, and records the other trace's previous segment count. `field_boundary_point_barycentric:400` assigns 1−t and t to the edge's canonical vertices, zero elsewhere. `EmbeddedGraphTopology.cpp:842` accepts a reciprocal end only when both distinct traces name each other at their ends, have equal interior carrier loci, last-face/outgoing-carrier agreement and no slide; `build_cut_node_bindings:381` requires the event's source edge and splits a selected cut edge without treating the contact as a crossing. Ordinary one-sided entry binding still requires a real struck segment, and the consumer rejects an unproved end. The row962 helper test is a discriminating positive and negative contract test, not a producer census: both orders true, same trace, continuing, earlier index, wrong parameter/face/exit, slide and vertex reject. It cannot prove the new producer used the helper for the sphere pairs.
+
+The row393 universal strict-index premise therefore conflicts with the explicitly frozen end-index shape. This is a **statically established test-authority defect**; attributing all four anonymous runtime assertions to the predicted pair identities is a hypothesis, not a measured fact. Do not clear the RED, generalize the index test, move the row outside the prefix, elect a winner, add a new semantic binding, suppress a diagnostic, or change the cut search. No final per-trace segment counts, terminal records or event nodes/roles are printed for the four traces in the 20 rows; the older 8-segment descriptions do not establish new 7-segment records. The 66→0 crossing lines and aggregate event reduction are corroboration only. No new stable regression established; keep TB146-ROW393-ORACLE open until the independent production witness passes.
+
+### Obligation disposition
+
+RA-267 unaffected-gate comparison, row961/962 and duplicate-diagnostic prediction: discharged within the gate scope only. Its accepted-prefix control failed and three-case census/trace census remain unfulfilled. EC3-SYM-1 and C5/O47: carry until exact reciprocal producer evidence and cut topology are independently realized. Row648 premise retains PASS; keep it frozen. Row858 measured PASS; no acceptance or separate face-locus correction now, retain exact typed-locus census requirement. 669/698 cut search exhaustion: new observed downstream obstacle, no source-root classification; carry with O47 after the oracle gate. O48 same-face BunnyRandom, H4/O49, CB168 binding, FC-6, H2, terminal-cut, C5/O42/O43/O46 and middle-piece direction witness remain held/open under prior owners. C3/O44/C1 and narrow O45 consumer proxy remain closed; CB145 parked; D11=A, D12=A, D10 deferred, D6 pending, chain switch false. Stable 66 events / 17 categories / 49 recurrences; produced-witness debt1; deferred81; **historically accepted** CP2 491/491 (package `11391685901`), selector497 frozen/unpromoted. No new stable event.
+
+## Recommendation — one bounded successor
+
+`M6-CP3-CB168H-P13-MUTUAL-CARRIER-END-ORACLE`. [Exact test-only patch](Architecture_M6_CP3_CB168H_P13_Mutual_Carrier_End_Oracle_Exact.diff), SHA-256 `df73a362ef9749c6806eb718540fdaf2c092007bfa8082bb62fb9e8ad533e254`. Preimage test SHA-256 `5e5709d5eea5045fdf94c9a89fc1ce882c963210bfb0c02ac60ffab46ab4eb9e`. `git apply --check` passed against the verified source. This is a plan artifact, not an applied or compiled patch. Before applying, verify no code drift since CB168G and the patch/preimage hashes. Scope only the existing row393 test in `tests/FieldAlignedCurveNetworkTests.cpp`; all other test identities, selectors, manifests, fixtures and product bytes remain unchanged. The compile-only turn builds and verifies eight mandatory GMP/GMPXX targets, with `runtimeExecution=false`; stop on any applicability, build, warning/error regression, scope or package verification failure. Do not execute tests in Code + Build.
+
+**Frozen falsifiers for later independent artifact-only gate:** row393 must still check 24 traces and the original terminal and event requirements. Four exact directed records (4→6,6→4,15→19,19→15) must have seven committed segments each, exact reciprocal end index, identical rational edge locus and independent chart barycentrics, last-face/exit agreement and no slide or pending-segment commit. Two different shared nodes must each have exactly the two named terminal roles, matching ports and edge; no other trace may use an end index. Retain the strict `<` elsewhere. New `SphereMutualCarrierEnd` receipts give directed IDs, segment count, struck index, face, edge, exact parameter and node; four successful unique records must correspond to the two nodes, not four copies of one event. A missing/wrong pair, unequal parameter, wrong chart, continuing partner, extra or missing event, wrong count or missing receipt fails the gate or its audit. No call to the production mutual-contact helper from this oracle. Existing row962 negatives remain unchanged. A later Test + Benchmark must keep all 962 identities and 81 deferred, require 491/491 and rows961/962, require row393's exact receipts, compare all other rows to TB146 under the frozen rules (include typed outcomes), and run the unchanged three-case census only after the required gate passes. Compare the census to TB145, not nonexistent TB146 data. Require unchanged Cylinder PASS/288 and BunnyRandom first failure trace82; measure Vase, report Sphere typed locus/remaining census limits. Stop on an unexpected change; never normalize a failed assertion. If the four exact contacts do not match, return to independent Review, not a relaxed oracle. The remaining per-row final-state census is an explicit evidence obligation and not silently filled by row393. No successor beyond this Code + Build is entered or irrevocably authorized here.
+
+## Review closeout
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | Three byte-exact hashes in Background; 490/491 verdict, required stop. |
+| Decisive claims independently re-derived | 3 archives, 1,926 ledger bindings, 1,043 membership, 20 sphere rows, receipt/record comparison. |
+| Non-vacuity checked | Row393 fails four times; row962 negatives discriminate helper; successor exact witness cannot pass absent either pair. |
+| Prior obligations discharged/carried | Explicit disposition above. |
+| Stable accounting | 66/17/49; debt1, deferred81; historical CP2 491/491 package 11391685901. |
+| New candidates/obligations recorded | TB146-ROW393-ORACLE, downstream exhaustion observation, tracker updated. |
+| ORIENTATION currency line | M6-CP3-TB146-P13-TRANSVERSE-ENTRY-MUTUAL-STOP-FULL-GATE-REV, 2026-11-19 UTC. |
+| ORIENTATION §3 / §4 / §7 / §8 | Current evidence and witness, priority and recurring stale-premise pattern updated; historical witness kept separate. |
+| CHANGELOG | Entry added. |
+| ROADMAP | Current checkpoint status updated, no milestone movement. |
+| Selector manifest | n/a; no new or accepted selector. |
+| LESSONS | Existing Review rules 160/170/171: no new production inference or unrelated changes; no new lesson file mutation. |
+| Consolidation under CLEAN_UP_POLICY | CB168D/E compile records and their consumed plan preserved verbatim in D3 and indexed; current comparator and RA-267 source authority retained. |
+| Successor frozen | M6-CP3-CB168H-P13-MUTUAL-CARRIER-END-ORACLE; exact diff and falsifiers above. |
+| Turn boundary held | Runtime-free; actual source/test/selector/fixture/build bytes unmodified; only document plan diff added. |
+| review_check.py boundary | Local snapshot check: no product/test/fixture/build or selector mutation, all enumerated selector hashes pass. Historical ancestry/rewrite-source checks fail because snapshot has no Git history. GitHub connector verified the rewrite-baseline protected headings remain; no historical helper PASS is claimed. |
+| STATUS lifecycle maintained | Entry IN_PROGRESS at 2026-11-19T20:43:31Z; no resume stamp; final beacon after transport and verification. |
+| Pushed to origin, branch in sync | Verify remote patch-apply result and head; local snapshot has no origin history, so do not claim `git status -sb` synchronization. |

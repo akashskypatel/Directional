@@ -2124,3 +2124,14 @@ The following four completed, superseded records are preserved verbatim in Volum
 | `Architecture_M6_CP3_CB168A_P13_Entry_Coincidence_Receipt_Code_Build_Record_20261119.md` | 23 | CB168A compile-only PASS, superseded as product baseline by CB168B/CB168C; original SHA-256 `67d148fe5d514720920e80f4587018948a865afdbc0917f4d5332068e435492c`; [complete text](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168a_p13_entry_coincidence_receipt_code_build_record_20261119md) |
 | `Architecture_M6_CP3_CB168B_CB168C_TB144_P13_Framing_And_Struck_Position_Plan_20261119.md` | 55 | Consumed RA-265 EC2a/TB144 plan; TB144 independent Review completed; original SHA-256 `fb87bd097ce621e6bda8315faa85d33c0b03f37f9483540bf0a71e831f2cc9e6`; [complete text](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168b_cb168c_tb144_p13_framing_and_struck_position_plan_20261119md) |
 | `Architecture_M6_CP3_TB143_P13_Entry_Coincidence_Receipt_Full_Gate_Execution_Report_20261119.md` | 49 | TB143 962-case comparator reviewed under RA-265; superseded by TB144 full gate; original SHA-256 `b5801b2af2702bcf9398ca25f51ac4b7d7b311bce0e6a12db7c0ed8f13160f5e`; [complete text](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb143_p13_entry_coincidence_receipt_full_gate_execution_report_20261119md) |
+
+
+## TB146 Review consolidation (2026-11-19 UTC)
+
+The three superseded CB168D/E records below are preserved verbatim in Volume D3. The frozen RA-267 plan, TB145 comparator and CB168F/G exact source authority still govern the current correction and remain standalone. Historical links inside folded text resolve via this index.
+
+| Folded original filename | Lines | Verdict / retained authority |
+|---|---:|---|
+| `Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Code_Build_Record_20261119.md` | 19 | CB168D compile-only PASS; source superseded; original SHA-256 `c4b570c2a90f85b1ea0584c1c1345e532dabe9cbb5180bd5e16ff31a1db222b3`; [complete text](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168d_p13_carrier_contact_edge_node_binding_code_build_record_20261119md) |
+| `Architecture_M6_CP3_CB168E_P13_Entry_Coincidence_Arrival_Receipt_Code_Build_Record_20261119.md` | 17 | CB168E compile-only PASS; source superseded; original SHA-256 `e76e60fe81809e8dd7bfb75c698deee989262e7b00744fd18c538695b448a110`; [complete text](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168e_p13_entry_coincidence_arrival_receipt_code_build_record_20261119md) |
+| `Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Plan_20261119.md` | 81 | Consumed RA-266 EC2b plan; TB145 reviewed by RA-267; original SHA-256 `79b8b9ba71dcb711dfbe311345967286b71f97142bba1099f74f057a28c95c00`; [complete text](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168d_p13_carrier_contact_edge_node_binding_plan_20261119md) |

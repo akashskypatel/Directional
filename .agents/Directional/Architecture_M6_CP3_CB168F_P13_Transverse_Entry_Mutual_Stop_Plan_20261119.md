@@ -106,7 +106,7 @@ The Review ran `-fsyntax-only -Wall -Wextra -include iterator` (`-include iterat
 - **Predictions, routed to Review (not STOP).**
   - **(0,2) cut edge.** No `EmbeddedGraphTopology.duplicateCutCrossing` on (0,2) at `574181338608147/4503599627370496` in any row of S. If one remains, the pair was met at the pending/wall site and CB168G did not fire. Report it with the trace states.
   - **Sphere first failure.** Its stage, code and typed locus, before and after, per row in S.
-  - **Row 393:** still PASS (24 traces, contact termini > 0).
+  - **Row 393:** ~~still PASS (24 traces, contact termini > 0).~~ TB146 contradicted this prediction (four `7 vs 7` strict struck-index failures). See [TB146 Review](Architecture_M6_CP3_TB146_P13_Transverse_Entry_Mutual_Stop_Full_Gate_Independent_Review_20261119.md). The 24-trace, terminal-kind, exact-locus and contact/event obligations and the 491-row STOP gate remain. Only the independently certified reciprocal carrier-end case may use an end index.
   - **Row 648:** asserts `ASSERT_FALSE(sphere.plan.has_value())`, so it turns RED if the sphere plan now succeeds. That is a premise test, and the Review decides it.
   - **Row 858:** report its new terminal stage and locus, and whether `:155` now passes.
   - **Rows 644, 698, 699:** report-only rows. Note any changed printed outcome.
