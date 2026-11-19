@@ -1,5 +1,7 @@
 # TB144 framing and struck-position — independent Review (2026-11-19 UTC)
 
+> **Superseded in part by [RA-266](#ra-266--adversarial-re-review-of-this-review-2026-11-19-utc):** the MATCH verdict stands; the prose EC2b freeze is replaced by exact patches CB168D/CB168E and TB145.
+
 ## Situation
 
 **MATCH, limited evidence; no product acceptance.** Independently verified all 963 prior comparisons (960 gate + 3 census) against TB143 using frozen N1–N7, including TB131's exact N3 rule. CB168B's diagnostic framing shows zero doubled M3 prefixes. The newly added row 961 passes, while the already-known required-control row 858 remains RED; the workflow is therefore not a green full gate. Freeze the bounded, inert EC2b successor only. No EC2b or EC3 source work occurred in this Review.
@@ -46,3 +48,51 @@ Freeze only **`M6-CP3-CB168D-P13-CARRIER-CONTACT-EDGE-NODE-BINDING`**, compile-o
 | review_check.py boundary | Local synthetic-Git checker PASS on product/test/fixture/build/selector bytes, but FAIL on rewrite baseline ancestry because the downloaded source snapshot contains no authentic Git objects. Independent GitHub comparison **proves** `8b7299b43` ancestor (behind 0), CB168C source ancestor and no product/test/build drift. All five durable headings from the rewrite baseline survive in current branch. Local full-check PASS is **not** claimed; remote equivalence is checked separately. |
 | `STATUS` lifecycle maintained | Entry beacon written; final beacon is the last repository action |
 | Pushed to origin, branch in sync | GitHub connector independently confirmed consolidation apply on working branch: one new commit, 15 intended documentation-only paths (four original files folded); dispatcher run `44472664640` PASS, artifact `14504917234` digest verified, complete SHA-256 and source authority matched. Final remote head must still be checked after cleanup. Local `git status -sb` cannot prove origin sync without an authentic Git checkout; do not claim that stronger check. |
+
+## RA-266 — adversarial re-review of this review (2026-11-19 UTC)
+
+### S1 — what holds
+
+- TB144 is **MATCH**. A Haiku audit applied the frozen CB168B (`7ec11b82…af12`) and CB168C (`f8badfdf…e204`) diffs to `b77a81ff5`. All six changed files are SHA-equal to HEAD, and source `e0f085eb6` is an ancestor.
+- A second audit found the execution report's evidence for every frozen criterion:
+  - 963/963 prior MATCH;
+  - 1,266 raw slide receipts of each kind;
+  - 240 + 6 entry receipts;
+  - row 961 PASS, 960/961;
+  - 491/491;
+  - row 858 at `:155`;
+  - BunnyRandom trace 82;
+  - Cylinder 288;
+  - no doubled M3 prefix.
+- The "19/19 sphere witness rows" figure is consistent with 20 receipt rows: 19 rows fail on (0,2), and all carry the `4:7/6:7` receipt.
+
+### S2 — defects in this review's successor
+
+1. **Prose freeze.** It froze EC2b as a prose plan, which the implementation agent would have had to design. Successors must be exact patches (RA-225, RA-261).
+2. **Wrong binding rule.** It demanded that the locus edge be "in selected cut edges" and "match a real crossing", and rejected anything else with a typed error. A carrier contact on a non-cut edge has no crossing: the contact node itself is the cut point for both traces. The rule would turn valid EC3 contacts into `InvalidCutGraphBinding`.
+3. **Infeasible tests.** The injected positives and negatives through `build_cut_node_bindings` and `face_contact_nodes`, and the "rotate/reorder source faces" invariance, all need a hand-built `FieldAlignedCurveNetwork`. That is impossible (RA-248). The pure arithmetic is already row 961.
+4. **Existing behavior not read.** `trace_event_position` already resolves an edge-carrying event to the struck trace's incoming-carrier segment, and `build_node_loci` takes the edge locus from `event.sourceEdge`. The only real faults are two:
+   - the face-contact classification, which cuts at `{k, 0}` beside the crossing `{k, ∅}`;
+   - the second node at a cut-edge crossing.
+5. **EC3 left without a measurement.** Nothing measured which trace arrives later at the shared entry (that trace terminates), or whether arrivals tie. EC3 would have been frozen blind.
+
+### S3 — realigned sequence
+
+[Frozen plan](Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Plan_20261119.md).
+
+| Turn | Scope | Evidence |
+|---|---|---|
+| CB168D (EC2b) | Exact diff `cf726ced…8de`: non-face carrier contact, validated binding, cut-crossing node merge, struck position from the record | compile; inert (no locus produced) |
+| CB168E | Exact diff `67418422…dc0`: receipt gains `firstArrival=` and `faces=` | compile |
+| TB145 | TB144 manifest unchanged; 964 records vs TB144 under N1–N7 with the receipt suffix stripped; EC3 census | full gate |
+| TB145-REV | Freezes EC3 (transverse switch) as an exact patch, with predicted sphere outcomes | Review |
+| then | EC3 TB → CB168 → [O49] → CB169 H4 cutover → CB170 → CB171 → CB172 (O48) | RA-262/263/265 |
+
+### S4 — closeout
+
+- **Review boundary.** Runtime-free: `-fsyntax-only` only, all files at base warnings, both patches stack.
+- **Housekeeping.**
+  - The handoff is trimmed back under its 16,000-byte budget.
+  - Delegation: two read-only Haiku audits.
+  - No product, test, gate or selector change.
+

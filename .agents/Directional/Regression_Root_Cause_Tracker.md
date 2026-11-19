@@ -1,3 +1,7 @@
+## 2026-11-19 — RA-266 re-review of the TB144 Review (non-stable)
+
+[RA-266](Architecture_M6_CP3_TB144_P13_Framing_And_Struck_Position_Full_Gate_Independent_Review_20261119.md#ra-266--adversarial-re-review-of-this-review-2026-11-19-utc): TB144 MATCH upheld; no new stable event or candidate (66/17/49, debt 1, deferred 81). O47 repair path re-frozen: CB168D exact EC2b consumer (inert), CB168E arrival/face receipt, TB145 strict + EC3 census; EC3 frozen by TB145-REV. O48 (same-face merge) unchanged.
+
 ## 2026-11-19 — TB144 framing and struck-position full gate (non-stable; no new regression)
 
 [TB144 execution report](Architecture_M6_CP3_TB144_P13_Framing_And_Struck_Position_Full_Gate_Execution_Report_20261119.md): source `e0f085eb65ed186bf836305f2896c69c6c90c519`, package `14498438448`; gate artifact `14501920082` 961/961 executed (960 PASS, known row858 RED), census artifact `14502085765` 3/3 (Cylinder PASS/288, BunnyRandom and Vase expected RED); **963/963 prior normalized log/ledger matches** under N1–N7, zero two-prefix M3 lines. New row961 PASS; 491/491 accepted. No new regression or candidate: the existing row858/Cylinder/BunnyRandom/Vase conditions and exact slide/entry receipts are unchanged, while CB168B framing exhibits no repeated-prefix line. Failure root causes remain with C5/O47, O48/O49/H4 and row858; no downstream production correction is proven by the injected guard. Stable **66/17/49**, debt1, deferred81. Independent TB144-REV must adjudicate and freeze EC2b; no CP3/D0 or selector497 promotion.
