@@ -19,3 +19,7 @@ At 2026-11-19T08:12:25Z the gate was running and census was pending. New TB145 r
 ## Recommendation
 
 Resume **this exact TB145 turn**. Observe the two existing runs (do not duplicate triggers); download and verify complete result artifacts after they finish, compare 964 records with TB144 under the frozen N1–N7 rules, collect first-arrival/face/cut-crossing EC3 evidence, then update this report, the regression tracker, TODO and handoff. Do not start the TB145 Review successor before execution closes through the final STATUS beacon. Retain known row858 RED and all production acceptance limits.
+
+## Verified partial gate evidence (2026-11-19T08:14 UTC)
+
+Full-gate [run 44484110110](https://github.com/akashskypatel/Directional/actions/runs/44484110110) completed with workflow result `failure`. Its result artifact `14510581877` matches the GitHub SHA-256 digest `bac8df3f16b8161f92813e30644ac5d96e9538395fcd4c6b00b285f83d6519fe`, and all **1,930/1,930** internal SHA256SUMS entries verify. Its immutable execution boundary reports 961 planned and executed, 960 PASS, one RED, one required-control failure, zero missing/skipped/duplicate/abnormal, 1,042 governed tests, successful postflight, and all compile/relink/configure/benchmark flags `false`. The row ledger, log comparison and census remain unreviewed: do not attribute the RED or declare frozen N1–N7 matching until those checks. Census [run 44484220632](https://github.com/akashskypatel/Directional/actions/runs/44484220632) was `in_progress` at 08:13:18 UTC; no result yet.
