@@ -712,6 +712,27 @@ std::optional<FaceChartPoint> trace_segment_canonical_exit(
   return std::nullopt;
 }
 
+std::optional<TraceCutPosition> carrier_contact_struck_position(
+    const FieldAlignedCandidateTrace &struck,
+    const FieldAlignedTerminalContact &record) {
+  if (struck.id != record.struckTrace || !record.carrierLocus.has_value() ||
+      record.struckSegmentIndex >= struck.segments.size()) {
+    return std::nullopt;
+  }
+  const auto entry =
+      surface_cell_tracing_detail::field_aligned_segment_entry_occupancy(
+          struck.segments[record.struckSegmentIndex]);
+  const authority::FieldExactRational &parameter =
+      record.carrierLocus->parameter.value;
+  if (!entry.has_value() || entry->carrier != record.carrierLocus->edge ||
+      entry->from != parameter ||
+      !(authority::FieldExactRational::from_integer(0) < parameter &&
+        parameter < authority::FieldExactRational::from_integer(1))) {
+    return std::nullopt;
+  }
+  return TraceCutPosition{record.struckSegmentIndex, std::nullopt};
+}
+
 std::optional<authority::FieldExactRational> trace_segment_contact_parameter(
     const FieldAlignedCandidateTrace &trace, const std::size_t segment,
     const FaceChartPoint &point) {

@@ -261,6 +261,18 @@ trace_segment_contact_parameter(const FieldAlignedCandidateTrace &trace,
                                 const FaceChartPoint &point);
 
 /**
+ * Where a terminal carrier contact cuts the struck trace when the contact is
+ * that trace's entry crossing: the boundary before the struck segment. Empty
+ * when `struck` is not the record's struck trace, the record has no carrier
+ * locus, the struck segment does not exist, or the locus is not that
+ * segment's entry crossing at an interior edge parameter (a contact inside a
+ * slide, or at a vertex, is not handled here).
+ */
+[[nodiscard]] std::optional<TraceCutPosition> carrier_contact_struck_position(
+    const FieldAlignedCandidateTrace &struck,
+    const FieldAlignedTerminalContact &record);
+
+/**
  * The exact source path segment `segment` of `trace` traverses. A segment
  * without an edge transit is one face piece to its end. A segment with an edge
  * transit is a face piece from its entry to the slide start, omitted when the

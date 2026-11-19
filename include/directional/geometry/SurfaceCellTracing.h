@@ -437,6 +437,10 @@ struct FieldAlignedTerminalContact {
   std::array<authority::FieldExactRational, 3> barycentric{};
   authority::TraceId struckTrace;
   std::size_t struckSegmentIndex = 0U;
+  // The contact's point on a shared source edge, set only when the
+  // carrier-contact rule produced it; `sourceFace`/`barycentric` hold the
+  // same point in the ending segment's face. Not yet produced.
+  std::optional<authority::FieldBoundaryPoint> carrierLocus{};
 
   auto operator<=>(const FieldAlignedTerminalContact &) const = default;
 };

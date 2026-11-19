@@ -5424,6 +5424,13 @@ std::uint64_t field_aligned_candidate_digest(
       }
       field_aligned_hash_id(hash, contact.struckTrace);
       field_aligned_hash_consume(hash, contact.struckSegmentIndex);
+      // Absent loci add no bytes, so every existing digest is unchanged.
+      if (contact.carrierLocus.has_value()) {
+        constexpr std::uint64_t kCarrierLocusHashDomain =
+            0x434152524c4f4353ULL; // "CARRLOCS"
+        field_aligned_hash_consume(hash, kCarrierLocusHashDomain);
+        field_aligned_hash_boundary_point(hash, *contact.carrierLocus);
+      }
     }
     if (trace.terminalLimitCycle.has_value()) {
       // Preserve every pre-S3 semantic digest byte-for-byte when the new

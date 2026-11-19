@@ -19175,6 +19175,88 @@ TEST(FieldAlignedCarrierOccupancy,
 }
 
 TEST(FieldAlignedCarrierOccupancy,
+     CarrierContactCutsTheStruckTraceAtItsEntryCrossingOnly) {
+  using directional::authority::FieldBranch;
+  using directional::authority::TopologyRegionId;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+  using directional::geometry::FieldAlignedTerminalContact;
+  using Position = embedded::TraceCutPosition;
+  // Edge (0,2) is shared by faces (0,1,2) and (0,2,3).
+  const auto carrier = topology_edge(0, 2, 4U);
+  const auto ab = topology_edge(0, 1, 4U);
+  const auto cd = topology_edge(2, 3, 4U);
+  const auto lower = topology_face(0, 1, 2, 4U);
+  const auto upper = topology_face(0, 2, 3, 4U);
+  const auto branch = FieldBranch::from_integer(0);
+  const auto makeTrace = [](const std::size_t index) {
+    return FieldAlignedCandidateTrace(
+        TraceId::from_index(index, 2U).value(),
+        SingularityPortId::from_index(0, 1).value(),
+        FieldSingularityId::from_index(0, 1).value(),
+        SourceVertexId::from_index(1, 4).value(),
+        SourceComponentId::from_index(0, 1).value(),
+        TopologyRegionId::from_index(0, 1).value());
+  };
+  // The struck trace crosses (0,1) into the lower face, then crosses the
+  // carrier at 1/3 into the upper face.
+  FieldAlignedCandidateTrace struck = makeTrace(1U);
+  struck.segments.emplace_back(lower, branch, boundary_point(ab, 1, 2), ab,
+                               carrier, std::nullopt);
+  struck.segments.emplace_back(upper, branch, boundary_point(carrier, 1, 3),
+                               carrier, cd, std::nullopt);
+  const FieldAlignedTerminalContact atEntry{
+      lower, {exact_ratio(2, 3), exact_ratio(0, 1), exact_ratio(1, 3)},
+      struck.id, 1U, boundary_point(carrier, 1, 3)};
+  EXPECT_EQ(embedded::carrier_contact_struck_position(struck, atEntry),
+            (Position{1U, std::nullopt}));
+
+  // A face contact without a locus, another parameter, another edge, a
+  // segment past the end and another trace are not this cut.
+  auto withoutLocus = atEntry;
+  withoutLocus.carrierLocus.reset();
+  EXPECT_FALSE(embedded::carrier_contact_struck_position(struck, withoutLocus));
+  auto otherParameter = atEntry;
+  otherParameter.carrierLocus = boundary_point(carrier, 1, 2);
+  EXPECT_FALSE(
+      embedded::carrier_contact_struck_position(struck, otherParameter));
+  auto otherEdge = atEntry;
+  otherEdge.carrierLocus = boundary_point(ab, 1, 3);
+  EXPECT_FALSE(embedded::carrier_contact_struck_position(struck, otherEdge));
+  auto pastEnd = atEntry;
+  pastEnd.struckSegmentIndex = 2U;
+  EXPECT_FALSE(embedded::carrier_contact_struck_position(struck, pastEnd));
+  EXPECT_FALSE(
+      embedded::carrier_contact_struck_position(makeTrace(0U), atEntry));
+  // The first segment's own entry crossing is a cut at its boundary too.
+  auto firstEntry = atEntry;
+  firstEntry.struckSegmentIndex = 0U;
+  firstEntry.carrierLocus = boundary_point(ab, 1, 2);
+  EXPECT_EQ(embedded::carrier_contact_struck_position(struck, firstEntry),
+            (Position{0U, std::nullopt}));
+
+  // An entry at the carrier's end vertex is excluded.
+  FieldAlignedCandidateTrace atVertex = makeTrace(1U);
+  atVertex.segments.emplace_back(upper, branch, boundary_point(carrier, 0, 1),
+                                 carrier, cd, std::nullopt);
+  auto vertexContact = atEntry;
+  vertexContact.struckSegmentIndex = 0U;
+  vertexContact.carrierLocus = boundary_point(carrier, 0, 1);
+  EXPECT_FALSE(
+      embedded::carrier_contact_struck_position(atVertex, vertexContact));
+
+  // A locus inside the struck segment's slide is not its entry crossing.
+  FieldAlignedCandidateTrace sliding = makeTrace(1U);
+  sliding.segments.emplace_back(lower, branch, boundary_point(ab, 1, 2), ab,
+                                carrier, std::nullopt);
+  sliding.segments[0].edgeTransitEntry = boundary_point(carrier, 1, 10);
+  sliding.segments[0].edgeTransitExit = boundary_point(carrier, 1, 2);
+  auto inSlide = atEntry;
+  inSlide.struckSegmentIndex = 0U;
+  EXPECT_FALSE(embedded::carrier_contact_struck_position(sliding, inSlide));
+}
+
+TEST(FieldAlignedCarrierOccupancy,
      FirstSharedParameterFollowsTheMovingTraceAlongOneCarrier) {
   using directional::authority::FieldBranch;
   using directional::geometry::FieldAlignedCandidateTraceSegment;
