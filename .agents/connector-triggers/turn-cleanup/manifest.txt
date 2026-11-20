@@ -1,0 +1,2 @@
+# CB168K temporary snapshot trigger; durable dispatcher, workflows and mailbox excluded
+.agents/connector-triggers/source-snapshot/M6-CP3-CB168K-P13-SLIDE-CONTACT-ARRIVAL-RECEIPT.txt
