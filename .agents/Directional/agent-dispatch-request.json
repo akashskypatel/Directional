@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb168o-compile-20261120-v1",
-  "mailbox_key": "m6-cp3-cb168o-compile",
-  "source_sha": "1df6a09ad386791a9befddd9658ddc4d5bb795f2",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb168o-compile"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb168o-docs-20261120-v1",
+  "mailbox_key": "m6-cp3-cb168o-docs",
+  "file_id": "1oIvqv28yrT6P3GPykcIxyxldJm6uYfBZ",
+  "patch_sha256": "33bbbc0000a9571fb07af588a14731274eda9a618510061765d1bd1bfb365944",
+  "base_sha": "db805c6de627139f20d2103f68ac6793ed2e8134",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close CB168O compile and hand off TB152"
 }
