@@ -1,3 +1,0 @@
-M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-REV
-Read-only review source snapshot. No build or test.
-Base authority: 52946088f201d08331370cf71c87584659cc610f
