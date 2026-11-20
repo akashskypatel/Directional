@@ -56,16 +56,16 @@ A later artifact-only gate, not this Review and not the Code + Build turn, must 
 | Non-vacuity checked | Positive reciprocal row393 records and unchanged strict negatives; future exact-contact oracle must provide true positive/negative source-supported cases. |
 | Prior obligations discharged/carried | TB146 row393 premise discharged; O47/C5/O48/O49, H4, FC-6, H2, debt1/deferred81 and promotion holds carried above. |
 | Stable accounting | 66/17/49; debt1; deferred81; CP2 accepted 491/491; no CP3/selector497/D0 promotion. |
-| New candidates/obligations recorded | No new stable ID; O47 residual +4 exact-contact audit required, with the above falsifiers. |
-| ORIENTATION currency line | Pending repository sync; do not claim completion before updated. |
-| ORIENTATION §3 / §4 / §7 / §8 | Pending repository sync; TB147 corrections described above. |
-| CHANGELOG | Pending repository sync. |
-| ROADMAP | CP3 remains active; current evidence note pending repository sync. |
+| New candidates/obligations recorded | Tracker updated with TB147 independent adjudication, O47/C5 exact-contact census owner, falsifiers, prohibited repairs and zero new stable IDs. |
+| ORIENTATION currency line | Updated for 2026-11-20 TB147 independent Review; prior RA-268 currency superseded. |
+| ORIENTATION §3 / §4 / §7 / §8 | Updated gate status, sphere witness, explicit contact-census priority and inference warning; historical TB146 witness retained. |
+| CHANGELOG | Added append-only TB147 review entry; preserved previous entries. |
+| ROADMAP | Updated M6-CP3 status to independently reviewed; no checkpoint movement or M7 entry. |
 | Selector manifest | n/a; no selector added, changed or accepted. |
 | LESSONS | Existing causal diagnosis, source-identity, and non-vacuity rules apply; no new rule proposed. |
-| Consolidation under CLEAN_UP_POLICY | Pending; no prior documents deleted without retained fact/index audit. |
+| Consolidation under CLEAN_UP_POLICY | Audited live TB145 census and TB146 gate baseline, CB168H/I compile records, TB147 runtime report and current review. All remain active evidence dependencies; no newly eligible superseded per-turn files safely foldable in this narrow review; no deletion or new index entry. Historical folded records remain indexed. |
 | Successor frozen | Only CB168J; scope, positive/negative oracle, exact-locus falsifiers, stop rules above. |
 | Turn boundary held | Review-only local evidence inspection; no source, test, build, selector, or runtime mutation. |
 | review_check.py boundary | Snapshot-only product/selector checks pass; history/ancestry checks unavailable without Git metadata. Full verification not claimed. |
-| `STATUS` lifecycle maintained | Entry beacon published for this review, with 2026-11-20T01:53:02Z start; terminal beacon must be last repository mutation. |
-| Pushed to origin, branch in sync | Pending connector write/verification; no local git ancestry; do not assert `git status -sb`. |
+| `STATUS` lifecycle maintained | Initial and resumed beacons published; terminal COMPLETE beacon is the final repository mutation after documentation verification. Started-at fixed at 2026-11-20T01:53:02Z. |
+| Pushed to origin, branch in sync | Documentation patch pushed through approved Drive workflow; final remote branch head to be checked through GitHub connector. Local history-free snapshot cannot provide an authoritative `git status -sb`. |
