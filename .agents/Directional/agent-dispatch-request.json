@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb168k-slide-arrival-apply-20261120-v1",
-  "mailbox_key": "m6-cp3-cb168k-slide-arrival-apply-v1",
-  "file_id": "17ssrZjgxy3fsFfySYv3JH_C_BCVyiqSr",
-  "patch_sha256": "ea7f41636ae90631162a5594f55fc6b06306e3fceb8f77a882e40dd450db21e4",
-  "base_sha": "d6c91a743ba9b5150cf5b4746d208ee00ecbc912",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): record slide-contact arrival ordering",
-  "retention_days": 14
+  "operation": "compile",
+  "request_id": "m6-cp3-cb168k-slide-arrival-compile-20261120-v1",
+  "mailbox_key": "m6-cp3-cb168k-slide-arrival-compile-v1",
+  "source_sha": "0955d28e37a4f17f2488f0f4dd196a2d24aa3c11",
+  "targets": [
+    "directional_benchmarks",
+    "directional_compiled_api_tests",
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_validation_tests"
+  ],
+  "artifact_prefix": "m6-cp3-cb168k-slide-arrival"
 }
