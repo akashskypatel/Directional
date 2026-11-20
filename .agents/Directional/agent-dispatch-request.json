@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-cb168m-docs-20261120-v1",
-  "mailbox_key": "m6-cp3-cb168m-docs",
-  "file_id": "1LaxaTrMKt95tzhQEUu7-SGj8toFGWYkP",
-  "patch_sha256": "e2c26cd52a86ea8278efcc86fd34a33ef478a4dff5f2c933467b01605c2bf906",
-  "base_sha": "0d925e4e5e8324a51ebcd2728bde43015ee38ccd",
+  "request_id": "m6-cp3-cb168n-code-20261120-v1",
+  "mailbox_key": "m6-cp3-cb168n-code",
+  "file_id": "1RIK5lwCkOv1QQaU05Yu8Tz_ElC7znh88",
+  "patch_sha256": "af1be50b108b6970f5e56bd130a2ead55e61a400e3f3c4fc7c6f8fb92ae8b989",
+  "base_sha": "5985a4cf51577e7e1b9b72765d1eb7e55680e4a9",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(surface-cells): record CB168M compile and hand off CB168N",
+  "commit_message": "feat(surface-cells): bind trace source-piece counts to exact path",
   "retention_days": 14
 }
