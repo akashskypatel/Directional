@@ -1,4 +1,33 @@
-## CURRENT — TB150 independent Review PASS; EPO-3 binding Code + Build next (2026-11-20 UTC)
+## CURRENT — RA-273: TB150 PASS upheld; exact EPO-3 binding split into CB168M + CB168N (2026-11-20 UTC)
+
+[RA-273](.agents/Directional/Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md#ra-273--adversarial-re-review-of-this-review-2026-11-20-utc) re-derived TB150: 963/963 MATCH N1–N3 and census 3/3 MATCH N1–N4, with negative controls caught. It withdraws the prose CB168M for three reasons:
+- it was not an exact patch;
+- its two-piece positive could not pass the producer replay (`GlobalTopologyPlan.cpp:2953`);
+- hashing counts would change the census `global-topology-plan=` field, breaking its own MATCH.
+
+The [frozen plan](.agents/Directional/Architecture_M6_CP3_CB168M_P13_Source_Piece_Counts_Binding_Plan_20261120.md) holds the exact sequence.
+
+- [x] RA-273 re-review of `M6-CP3-TB150-P13-SLIDE-INTERIOR-CUT-POSITION-FULL-GATE-REV`.
+- [ ] **NEXT:** `M6-CP3-CB168M-P13-SOURCE-PIECE-BINDING-HELPER` (Code + Build, compile only).
+  - Exact diff `.agents/Directional/Architecture_M6_CP3_CB168M_P13_Source_Piece_Binding_Helper_Exact.diff`, SHA-256 `f65b470dfa00dfedd808a3d6db9a602e77147b77747771826c78f662f30abf91` (`48 4` cpp, `26 3` h, `133 0` tests).
+  - Precheck `git diff --quiet 041bde764365710e6d5148c43751da91205ffd35 HEAD -- src include tests`; `git apply --check`. Eight RA-245 targets, `runtimeExecution=false`.
+- [ ] **THEN:** `M6-CP3-CB168N-P13-SOURCE-PIECE-COUNTS-FIELD` (Code + Build, compile only).
+  - Exact diff `.agents/Directional/Architecture_M6_CP3_CB168N_P13_Source_Piece_Counts_Field_Exact.diff`, SHA-256 `eddf8000ad40251a3b8a60b3d197229f8f8b5406b2789998e9c3d96ce4e37dc2`. It applies on the CB168M result.
+  - Field, all-ones producer, validator wired, no digest change, row 966.
+- [ ] **THEN:** `M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-EXEC`. Manifest `2a902d364612071db04ffa5a116cd988c0babccae58308152cb368df0ff612da` (TB150 + rows 965/966; 966+81). STOP unless:
+  - rows 965 and 966 PASS;
+  - rows 1–964 MATCH TB150 under N1–N3, with receipts compared raw;
+  - 491/491;
+  - census 3/3 MATCH TB150 under N1–N4.
+- [ ] **THEN:** `M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-REV` freezes the cutover split exactly.
+- Prospective:
+  - reader classification (EPO-1; RA-273 S4) → O49/EPO-6 edge-only rule (unwired) → row 686 oracle reads pieces (test-only);
+  - → coordinated cutover CB: paths, counts, rays and ranks, with counts entering the digest → TB;
+  - → wall-loop stop switch CB → TB (row 686 χ=2, rows 669/698 past exhaustion, four nodes);
+  - → CB170 → CB171 → CB172 (O48).
+  - Held: FC-6, TERMINAL-CUT-OUTCOME, row 858 DEFN. Parked: CB145. D11=A, D12=A.
+
+## TB150 independent Review PASS (2026-11-20 UTC) — successor replaced by RA-273
 
 [RA-271](.agents/Directional/Architecture_M6_CP3_TB149_P13_Slide_Contact_Arrival_Full_Gate_Independent_Review_20261120.md) resolves the TB149 STOP. Gate 963/963 MATCH TB148, 491/491; census 3/3 MATCH TB147 under frozen N1–N4. RA-270 had cited only N1–N3 for the census, and the mismatched bytes are ASLR `GetParam` addresses. Sphere: four `wallCommitted=1 movingArrival=later`. Realignment: `build_arcs` writes slides as face chords and the walls are `faceThenEdge`, so the stop switch needs real pieces (EPO-3 + CB169) first. EPO-5 is amended for the piece path only.
 
@@ -10,13 +39,7 @@
   - Manifest `bce554e6723dfaa77f54d070aab7edc6508cd3aaf69a6120871e21b349b78926` (TB148 + row 964; 964+81).
   - Verified rows 960 and 964 PASS; all 504 slide-contact arrival records preserved; 81 deferred unchanged. No product/selector promotion.
 - [x] **COMPLETE (RA-272):** `M6-CP3-TB150-P13-SLIDE-INTERIOR-CUT-POSITION-FULL-GATE-REV`: [independent Review](.agents/Directional/Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md); independently verified 964/964 gate PASS, 963/963 MATCH TB149 N1–N3, 491/491 accepted; 3/3 census MATCH N1–N4; all 504 slide-contact lines preserved. No production repair/promotion.
-- [ ] **NEXT:** `M6-CP3-CB168M-P13-SOURCE-PIECE-COUNTS-BINDING` (Code + Build only): [frozen plan](.agents/Directional/Architecture_M6_CP3_CB168M_P13_Source_Piece_Counts_Binding_Plan_20261120.md), exact EPO-3 `sourcePieceCounts` binding, validator and all-ones producer only; no source-piece producer cutover or runtime.
-- [ ] **THEN:** `M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-EXEC` (separate artifact-only test gate), subject to a verified CB package and frozen independent row-965 manifest.
-- Prospective:
-  - → EPO-3 TB/REV → CB169 H4 cutover (EPO-2/3/4/6, O49, row 686 oracle pieces) → TB/REV
-  - → wall-loop stop switch CB (struck cut from `carrier_contact_slide_position`) → TB (row 686 χ=2, rows 669/698 past exhaustion, four nodes)
-  - → CB170 → CB171 → CB172 (O48, including the BunnyRandom pending and non-last slide contacts).
-  - Held: FC-6, TERMINAL-CUT-OUTCOME, row 858 DEFN. Parked: CB145. D11=A, D12=A.
+- ~~`M6-CP3-CB168M-P13-SOURCE-PIECE-COUNTS-BINDING`~~ (prose plan) — withdrawn by RA-273 S2 and replaced by the exact CB168M/CB168N below.
 
 ## CB168K compiled; TB149 executed (2026-11-20 UTC) — superseded by RA-271
 

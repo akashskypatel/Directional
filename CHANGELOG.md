@@ -1,3 +1,12 @@
+## 2026-11-20 UTC — RA-273 re-review of the TB150 Review; exact EPO-3 binding split
+
+[RA-273](.agents/Directional/Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md#ra-273--adversarial-re-review-of-this-review-2026-11-20-utc) re-derives TB150 from the immutable archives and upholds PASS: gate 963/963 MATCH TB149 under N1–N3 and census 3/3 MATCH under N1–N4, with negative controls caught. It withdraws the prose CB168M plan for three reasons:
+- it was not an exact patch;
+- its two-piece positive could not pass the producer replay;
+- hashing counts into the plan digest would change the census `global-topology-plan=` field and break its own MATCH.
+
+It freezes two exact compile-only turns. CB168M is an unwired binding helper plus piece counts from the single decomposition, with row 965. CB168N adds the field, an all-ones producer and the wired validator, with no digest change and row 966. TB151 (manifest `2a902d36…12da`) follows. No product, test or gate change in this Review.
+
 ## 2026-11-20 UTC — RA-272 TB150 independent full-gate Review PASS
 
 [RA-272](.agents/Directional/Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md) independently verified five archived SHA-256 artifacts and all internal files: TB150 gate 964/964 PASS, 963/963 MATCH TB149 N1–N3, accepted 491/491, 504 slide-contact receipts retained; census 3/3 MATCH under N1–N4 with only four `GetParam` address payloads normalized. Non-vacuity checks detected receipt, sphere-chi, RED-site and address-label tampering. Sphere χ6 vs 2 (+4) and rows669/698 exhaustion remain; no CP3/selector497/D0 promotion. Frozen [CB168M EPO-3 binding plan](.agents/Directional/Architecture_M6_CP3_CB168M_P13_Source_Piece_Counts_Binding_Plan_20261120.md) and its separate TB151; Review runtime-free. Stable 66/17/49, one witness debt, 81 deferred.

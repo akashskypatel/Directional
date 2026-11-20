@@ -1,37 +1,88 @@
-# CB168M — exact source-piece counts binding (frozen by TB150 Review, 2026-11-20 UTC)
+# CB168M, CB168N and TB151 — exact EPO-3 source-piece binding (frozen by RA-273, 2026-11-20 UTC)
 
 ## Situation
 
-The TB150 gate is 964/964 PASS and 963/963 MATCH TB149 under N1–N3; its separate direct census is 3/3 MATCH under N1–N4. The cut-position helper works in isolation, but the production graph still represents an actual face-then-edge slide as one face chord. Before the graph can publish real slide pieces, it must carry an exact segment-to-piece binding.
+TB150 PASS stands. The production graph still writes each slide as one face chord. Before real slide pieces can be published (the cutover), every trace arc needs an exact binding from segments to pieces: EPO-3 in the [TB140 Review](Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md).
 
-## Background and scope
+[RA-273](Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md#ra-273--adversarial-re-review-of-this-review-2026-11-20-utc) withdraws the earlier prose version of this plan for three reasons:
+- it was not an exact patch;
+- its required two-piece positive was unreachable through the replay;
+- its digest rule would have broken its own census MATCH.
 
-Authority: RA-262 §S2 EPO-3, RA-271 §S4, TB150 Review RA-272; compile source `041bde764365710e6d5148c43751da91205ffd35`. **This is one Code + Build turn with no Directional runtime.** The implementation must leave the existing face-chord producer in place. Do not implement CB169 cutover in this turn.
+It is replaced by two exact compile-only turns and one Test + Benchmark.
 
-## Exact implementation contract
+## Exact patches (apply in order)
 
-1. Add `sourcePieceCounts` as `std::vector<std::size_t>` to `ArcDraft` and `GlobalTopologyArc`, parallel to ordered `sourceFaces`. Use a descriptive field name from the contract, not the turn ID.
-2. For each trace arc, require `sourcePieceCounts.size() == sourceFaces.size()` and every count is exactly **1 or 2**, with checked sum equal to `sourcePath.size()`. Reject overflow, zero counts, missing or extra counts and unmatched path sizes. Do not infer piece ownership by position, equality of coordinates, or a tolerance.
-3. Segment `k` consumes exactly its recorded count of consecutive path pieces. Allowed sequences are `[face(sourceFaces[k])]`, `[face(sourceFaces[k]), edge contained in sourceFaces[k]]`, or `[edge contained in sourceFaces[k]]`. Require each recorded face piece to carry that exact source face and each edge piece to belong to its source face. The edge piece must terminate at a source vertex unless it is the **last piece of the whole arc**. Check source support, orientation, the existing endpoint chain and exact canonical path; a non-last terminal edge ending in an interior point must fail closed. Preserve canonical candidate validation and exact replay against immutable source authority.
-4. Modify the existing `build_arcs` trace producer only to emit **one count of 1 for each existing source face**, with no change to its `exact_trace_path_between` call or face-chord `sourcePath`. Update all `ArcDraft` to `GlobalTopologyArc` conversion sites and aggregate initializers. Define the existing mandatory/cut arc contract explicitly and preserve its exact one-piece rule; do not fabricate trace-segment counts for nontrace arcs.
-5. Update the canonical candidate/digest serialization and equality-sensitive consumers to carry and hash the counts, so removing/altering a count changes authority. Inspect every reader of `sourceFaces` and `sourcePath`, including `GlobalTopologyPlan.cpp` validation, exact replay, candidate canonicalization and source identities. The field must not become an unchecked advisory decoration.
-6. Extend existing independent producer/validator tests (as required by project review policy) with one positive for each allowed shape, plus negative controls: missing/excess count, zero, count greater than 2, sum mismatch, incorrect face carrier, edge not contained in face, edge prematurely ending at a nonvertex, order permutation, path/sourceFaces inconsistency, and changed-count digest. Preserve all existing tamper cases and accepted assertions. Do not weaken a test to accept invalid geometry. At least one positive must contain two real pieces for one segment, to prove the validator is not still 1:1.
+| Turn | Patch | SHA-256 | Numstat |
+|---|---|---|---|
+| `M6-CP3-CB168M-P13-SOURCE-PIECE-BINDING-HELPER` | [diff](Architecture_M6_CP3_CB168M_P13_Source_Piece_Binding_Helper_Exact.diff) | `f65b470dfa00dfedd808a3d6db9a602e77147b77747771826c78f662f30abf91` | `48 4 src/geometry/EmbeddedGraphTopology.cpp; 26 3 src/geometry/EmbeddedGraphTopology.h; 133 0 tests/FieldAlignedCurveNetworkTests.cpp` |
+| `M6-CP3-CB168N-P13-SOURCE-PIECE-COUNTS-FIELD` | [diff](Architecture_M6_CP3_CB168N_P13_Source_Piece_Counts_Field_Exact.diff) | `eddf8000ad40251a3b8a60b3d197229f8f8b5406b2789998e9c3d96ce4e37dc2` | `6 0 include/directional/geometry/GlobalTopologyPlan.h; 5 1 src/geometry/EmbeddedGraphTopology.cpp; 7 13 src/geometry/GlobalTopologyPlan.cpp; 91 0 tests/FieldAlignedCurveNetworkTests.cpp` |
 
-## Falsifiers / stop conditions (before implementation)
+**Prechecks.**
+- **CB168M:** `git diff --quiet 041bde764365710e6d5148c43751da91205ffd35 HEAD -- src include tests`, then `git apply --check`. Preimage SHA-256: `EmbeddedGraphTopology.cpp` `28802d65…486d`, `.h` `4399eed3…172c`, tests `324b9e82…eaa9`.
+- **CB168N:** applies on the CB168M result. Preimages: `EmbeddedGraphTopology.cpp` `ca8d4ae6…9201`, tests `a78bbab5…bb4`, `GlobalTopologyPlan.h` `9ed3a4ce…c959`, `GlobalTopologyPlan.cpp` `3825ba33…1439`.
 
-- A valid trace's `sourceFaces` count remains traversal-based, not newly inferred from geometry. If producer data cannot establish exact face/edge containment, **fail closed** rather than use epsilon matching.
-- Any accepted 2-piece path that fails exact replay, canonical source support, or endpoint ownership invalidates this change; do not loosen validators.
-- Any change to production cut graph, rank/ray generation, `build_arcs` geometry, representative fixtures, accepted selector, source-grid recovery or stop switch exceeds scope. Revert/exclude that change rather than fold it in.
-- Nontrace arc source support must continue to pass its prior exact contract; ambiguous use of the new field must be classified before implementation.
-- If source code differs from compiled CB168L semantic surface (`src/`, `include/`, `tests/`) beyond the authorized review-document edits, stop, re-establish exact source authority and re-freeze the diff before compiling.
-- Compilation without required GMP and GMPXX, an unverified package, a failed compile, or a binary executed during Code + Build cannot count as CB acceptance.
+The Review ran `git apply --check` for both in order. `-fsyntax-only -Wall -Wextra -include iterator` warning counts equal HEAD, with 0 errors:
 
-## Verification split
+| File | Warnings |
+|---|---|
+| `EmbeddedGraphTopology.cpp` | 22 |
+| `FieldAlignedCurveNetworkTests.cpp` | 42 |
+| `GlobalTopologyPlan.cpp` | 24 |
+| `SurfaceCutGraph.cpp` | 27 |
+| `GlobalConformityBaselineTests.cpp` | 30 |
 
-**CB168M — Code + Build only:** verify scoped diff and negative test assertions statically; compile the same eight CB168L targets with standard remote GMP/GMPXX workflow; produce immutable source/build ZIP, full hashes, clean status and `runtimeExecution=false`. Do **not** run a compiled binary or test. A successful compile alone does not prove contract behavior.
+Each CB compiles the eight RA-245 GMP/GMPXX targets with `runtimeExecution=false`. STOP on any precheck, apply, compile or package-hash failure.
 
-**Separate TB151 — Test + Benchmark, not started here:** select one new required-green EPO-3 binding identity (anticipated row **965**) appended to the 964 frozen TB150 rows; preserve the 491 accepted-prefix byte identity and 81 deferred cases (anticipated membership **1046**). Reject any zero-selected case. Use immutable CB168M binary without configure, compile, relink, rebuild, patch, fixture changes or benchmarks. Run all **965** required gate cases, each in one fresh process, and all **three** fixed direct census cases in separate fresh processes. Require the new positive/negative two-piece identity to be genuinely reached, its negatives to reject, and original **964/964** rows to match TB150 under unchanged N1–N3 (complete M3 records as counted multiset, no slide-receipt removal). Require census **3/3 MATCH** TB150 under unchanged N1–N4 (only address bytes in two RED cases); Cylinder PASS, BunnyRandom/Vase RED at `:493`. Do not add normalization or promote any deferred row without independent review. Any semantic RED must route to Review, not to an ad-hoc fix in TB.
+### CB168M — binding helper, unwired
 
-## Deferred, explicitly not authorized
+- **`source_piece_binding_failure(sourceFaces, sourcePieceCounts, sourcePath)`** in `embedded_graph_topology_detail`. It returns nothing when the binding holds. Otherwise it returns `SourcePieceBindingFailure{segment}`, where `segment` is empty when the counts do not partition the path.
+- **The rule:**
+  - counts are parallel to faces, each count is 1 or 2, and the counts sum to the path size;
+  - segment k's pieces are `[face(F_k)]`, `[face(F_k), edge of F_k]` or `[edge of F_k]`;
+  - an edge piece ends at a source vertex unless it is the path's last piece;
+  - canonicity is checked by the existing predicate, not here.
+- **`exact_trace_piece_path_between(…, std::vector<std::size_t> *pieceCounts = nullptr)`** reports each segment's piece count after clipping, and writes the counts only on success. Counts and path come from one decomposition (EPO-2).
+- **Row 965 test `FieldAlignedCarrierOccupancy.SourcePieceCountsBindEachTraceSegmentToItsRealPieces`.** It uses the row 960 slide fixture.
+  - **Positives:** for eight ranges (whole trace, slide cut, face cut and segment bounds) plus an edge-only departure, the produced counts equal the expected ones and the helper accepts them. The `[2,1]`, `[2]` and `[1,1]` cases cover all three shapes on real output.
+  - **Negatives:**
+    - counts with no partition: missing, extra, a wrong sum, zero/three, above two;
+    - a split in the wrong place (`[1,2]`);
+    - a wrong face;
+    - permuted pieces;
+    - an edge that is not an edge of the face;
+    - a non-last edge piece ending inside an edge, against the same shape ending at a vertex;
+    - the last-piece exemption;
+    - counts untouched when the path fails.
 
-EPO-2 conversion to real producer pieces, EPO-4 rays/ranks, EPO-6 edge-only traversal/O49, CB169/H4 cutover, row686 piece-aware oracle, slide-contact stop switch, O47/C5 topology repair, O48 BunnyRandom, CP3/selector497/D0 promotion and generic mesh repair. Preserve open sphere `chi=6` versus 2 (+4), `CutSearchExhaustedBeforeCellularity` in rows669/698, 66/17/49 stable accounting, one witness debt and 81 deferred.
+### CB168N — field and validator, all-ones producer
+
+- `GlobalTopologyArc` and `ArcDraft` gain `std::vector<std::size_t> sourcePieceCounts`, appended last. Every positional initializer stays source-compatible: the inventory lists 10-element initializers in tests and the 11-element converter, which is updated.
+- `build_arcs` assigns `ones(sourceFaces.size())` to trace arcs. `exact_trace_path_between` and every path are unchanged.
+- `validate_candidate_structure` replaces the 1:1 rule with `source_piece_binding_failure` and keeps `InvalidSourceBinding`. It sets `failure.sourceFace` exactly when a segment is named, so the old error detail is preserved for count-1 face pieces. A mandatory or cut arc must have empty counts.
+- **Intentional relaxation:** a trace segment may now be one edge piece of its face at the structure stage. The replay against the producer still rejects anything the producer did not emit.
+- **No digest change** (RA-273 S2.3).
+- **Row 966 test `GlobalTopologyPlan.IndependentValidationBindsTraceSegmentsToSourcePieceCounts`.** It uses the cp3b fixture of the accepted tamper matrix, row 441, which is left untouched.
+  - Production arcs carry all-ones counts, edge arcs carry empty ones, and the untampered candidate rebuilds.
+  - Missing, extra and summed counts, and a count on an edge arc, are rejected as `InvalidSourceBinding` on that arc. The old code would have reached the replay and returned `RegionBoundaryArcNotOwnedByNetwork`.
+  - The last chord is split into a face piece and an edge piece of its face. With count 1 the binding rejects it. With count 2 only the replay rejects it (`RegionBoundaryArcNotOwnedByNetwork`), which proves the validator is no longer 1:1.
+  - **Test precondition:** a cp3b trace arc ends at an interior edge point. Row 441's split mandatory arc implies one exists. If it does not, row 966 is RED; that is a test defect routed to Review, not a product failure.
+
+## Frozen `M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-EXEC`
+
+- **Inputs:**
+  - the immutable CB168N package;
+  - manifest [`gates/Architecture_M6_TB151_P13_Source_Piece_Counts_Full_Gate_Case_Manifest.tsv`](gates/Architecture_M6_TB151_P13_Source_Piece_Counts_Full_Gate_Case_Manifest.tsv), SHA-256 `2a902d364612071db04ffa5a116cd988c0babccae58308152cb368df0ff612da`. It is the TB150 manifest byte-for-byte plus rows 965 and 966: 966 gated + 81 deferred, membership 1047;
+  - the unchanged three-row census.
+- **STOP on failure:**
+  - rows 965 and 966 PASS;
+  - rows 1–964 MATCH TB150 under N1–N3, with receipt lines compared raw and no deletion;
+  - 491/491;
+  - census 3/3 MATCH TB150 under N1–N4, including every `platform-digest` field;
+  - no compile, relink, configure or benchmark.
+- **Expected:** every prior row and census line is byte-identical after normalization, because paths, digests and dispatch are unchanged. Any difference is a STOP routed to Review.
+- **Successor:** `M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-REV`. It freezes the cutover split from the RA-273 S4 reader inventory.
+
+## Deferred, not authorized here
+
+EPO-2 producer conversion, EPO-4 rays and ranks, EPO-6/O49, the H4 cutover, the row 686 piece oracle, the stop switch, O48, and any promotion. Counts enter the digest at the cutover.
