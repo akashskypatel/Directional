@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-cb168l-drive-20261120-v1",
+  "request_id": "m6-cp3-cb168l-drive-20261120-v2",
   "mailbox_key": "m6-cp3-cb168l-drive",
-  "file_id": "1PuhyDLVFXMvDneQ76vbYyVFilJ7h717o",
-  "patch_sha256": "26401a6beb41aca02b0096c7079016a493b99444c0d92decd5d3b499f5ca8f3a",
+  "file_id": "1osgECDr9QOEvj-20xnXto8wpWkgsWcQ7",
+  "patch_sha256": "9b2ff8401549c73717757ca527547ac840033dd1089564567dbc87ebacbfd9b0",
   "base_sha": "22f7f9433b6661418c953ca54253926134f13cff",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "feat(surface-cells): support exact slide-interior cut positions",
