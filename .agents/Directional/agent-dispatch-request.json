@@ -1,12 +1,10 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb168n-code-20261120-v1",
-  "mailbox_key": "m6-cp3-cb168n-code",
-  "file_id": "1RIK5lwCkOv1QQaU05Yu8Tz_ElC7znh88",
-  "patch_sha256": "af1be50b108b6970f5e56bd130a2ead55e61a400e3f3c4fc7c6f8fb92ae8b989",
-  "base_sha": "5985a4cf51577e7e1b9b72765d1eb7e55680e4a9",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(surface-cells): bind trace source-piece counts to exact path",
+  "operation": "compile",
+  "request_id": "m6-cp3-cb168n-compile-20261120-v1",
+  "mailbox_key": "m6-cp3-cb168n-compile",
+  "source_sha": "2d587a2e7ec00b7dc8d0a24df9f6902f03fec931",
+  "targets": ["directional_core", "directional_pipeline", "directional_surface_cell_authority_kernel_tests", "directional_surface_cell_producer_tests", "directional_surface_cell_completion_tests", "directional_surface_cell_validation_tests", "directional_compiled_api_tests", "directional_benchmarks"],
+  "artifact_prefix": "m6-cp3-cb168n-compile",
   "retention_days": 14
 }
