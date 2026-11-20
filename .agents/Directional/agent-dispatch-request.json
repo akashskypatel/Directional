@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb168l-compile-20261120-v1",
-  "mailbox_key": "m6-cp3-cb168l-compile",
-  "source_sha": "041bde764365710e6d5148c43751da91205ffd35",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb168l"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb168l-docs-20261120-v1",
+  "mailbox_key": "m6-cp3-cb168l-docs",
+  "file_id": "111stGzXKF1ATNZmexG6prZdn5IPyB8ms",
+  "patch_sha256": "b10afb5cae73442de81d11d1f3138bd09e36af9b832cd30ebe3871be1532cf2f",
+  "base_sha": "52b9bfaed72195afbc2a79ba70c50689ec93a731",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(surface-cells): close CB168L and prepare immutable TB150",
+  "retention_days": 14
 }
