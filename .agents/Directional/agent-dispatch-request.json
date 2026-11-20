@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb150-docs-20261120-v1",
-  "mailbox_key": "m6-cp3-tb150-docs",
-  "file_id": "12EIxGdIQsU3aIXkP-Fue5Q9AwIffAcFy",
-  "patch_sha256": "560db7a49826cc080deaf7684907d7975ad34af60ca51a97d66bfb299eeba8b6",
+  "request_id": "m6-cp3-tb150-docs-20261120-v2",
+  "mailbox_key": "m6-cp3-tb150-docs-v2",
+  "file_id": "1TqGJxW2sM8PrbJZAtaTloJAAMbLTaV-j",
+  "patch_sha256": "bd06410e01c03d0de57dc9ab14884b8d4b78c8c623ef35c0d15b0b1201a7496f",
   "base_sha": "19ca58bf84f7e31271b078dd135c6b2bf8609636",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(surface-cells): close TB150 immutable full gate and census",
+  "commit_message": "docs(surface-cells): close verified TB150 gate and census",
   "retention_days": 14
 }
