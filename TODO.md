@@ -1,4 +1,4 @@
-## CURRENT — TB151 immutable full gate and census PASS; independent TB151-REV next (2026-11-20 UTC)
+## CURRENT — TB151 independent Review upheld; EPO-1 source-arc reader classification next (2026-11-20 UTC)
 
 [RA-273](.agents/Directional/Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md#ra-273--adversarial-re-review-of-this-review-2026-11-20-utc) re-derived TB150: 963/963 MATCH N1–N3 and census 3/3 MATCH N1–N4, with negative controls caught. It withdraws the prose CB168M for three reasons:
 - it was not an exact patch;
@@ -19,7 +19,8 @@ The [frozen plan](.agents/Directional/Architecture_M6_CP3_CB168M_P13_Source_Piec
   - rows 1–964 MATCH TB150 under N1–N3, with receipts compared raw;
   - 491/491;
   - census 3/3 MATCH TB150 under N1–N4.
-- [ ] **NEXT:** `M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-REV` independently rechecks archived gate and census and freezes the cutover split exactly.
+- [x] **COMPLETE:** `M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-REV` independently verified full gate, prior prefix, census, non-vacuity, all 504 raw receipts. [Review](.agents/Directional/Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Independent_Review_20261120.md). No product promotion.
+- [ ] **NEXT:** `M6-CP3-DEFN-P13-SOURCE-ARC-READER-CLASSIFICATION`: EPO-1 reader inventory and falsifiers, definition-only. [Plan](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Source_Arc_Reader_Classification_Plan_20261120.md).
 - Prospective:
   - reader classification (EPO-1; RA-273 S4) → O49/EPO-6 edge-only rule (unwired) → row 686 oracle reads pieces (test-only);
   - → coordinated cutover CB: paths, counts, rays and ranks, with counts entering the digest → TB;

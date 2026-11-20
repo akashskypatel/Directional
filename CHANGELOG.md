@@ -1,3 +1,7 @@
+## 2026-11-20 UTC — TB151 source-piece counts independent full-gate Review PASS
+
+[Review](.agents/Directional/Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Independent_Review_20261120.md) re-hashed the four immutable archives and manifest prefix; independently re-derived 966/966, earlier 964/964 N1–N3, accepted 491/491, 504 unchanged raw slide receipts, and 3/3 census N1–N4. Negative controls confirmed comparisons can reject changed data. No CP3/selector497/D0/H4 promotion; stable 66/17/49, debt one, deferred 81. Next definition-only EPO-1 [reader inventory](/.agents/Directional/Architecture_M6_CP3_DEFN_P13_Source_Arc_Reader_Classification_Plan_20261120.md). Product and test source unchanged.
+
 ## 2026-11-20 UTC — TB151 immutable source-piece-counts full gate and census PASS (no new stable event)
 
 [TB151 execution](.agents/Directional/Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Execution_Report_20261120.md): CB168N package `14618335833` from source `2d587a2e7ec00b7dc8d0a24df9f6902f03fec931` executed without rebuilding; [full-gate run 44716246061](https://github.com/akashskypatel/Directional/actions/runs/44716246061) 966/966 PASS, first 964/964 MATCH TB150 under N1–N3, 491/491 accepted, 504 slide-contact receipts retained. [Census run 44719007530](https://github.com/akashskypatel/Directional/actions/runs/44719007530) 3/3 MATCH TB150 under N1–N4 (Cylinder PASS; BunnyRandom/Vase expected RED). Stable 66/17/49, debt1, deferred81; no CP3/selector497/D0/H4 or sphere χ+4 promotion. Next only independent TB151-REV.
