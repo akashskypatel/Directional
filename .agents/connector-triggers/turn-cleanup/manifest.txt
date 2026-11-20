@@ -1,0 +1,2 @@
+# CB168L temporary source snapshot trigger only
+.agents/connector-triggers/source-snapshot/cb168l-20261120-0636.txt
