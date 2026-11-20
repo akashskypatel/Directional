@@ -13,10 +13,16 @@ Current canonical turn: `M6-CP3-TB150-P13-SLIDE-INTERIOR-CUT-POSITION-FULL-GATE-
 - Read both mailboxes **only on ref `workflow-mailbox`**. Their absence before completion is not failure evidence. The durable dispatcher runs requests serially. Do not duplicate a request because a mailbox has not published yet.
 - Source snapshot run `44692186639` succeeded, source `19ca58bf84f7e31271b078dd135c6b2bf8609636`, artifact `14608653925`, 5631 source checksums validated locally. The temporary snapshot request was removed by cleanup run `44693148703`, commit `dce3d13abe358f92f81c5ab7f5765fdc66cf96b7` (confirmed cleanup result).
 
+## Completed full-gate evidence (verified in resumed session)
+- Workflow [44692445950](https://github.com/akashskypatel/Directional/actions/runs/44692445950) completed SUCCESS. Immutable gate artifact `14609657696`, ZIP SHA-256 `9e2117dc4bf4d5e097beeaa90236b1c44ceafdba90bc3fd4751ef2cd2472874f`; 1,936/1,936 indexed SHA-256 checks passed. Workload jobs, schema validation, and mailbox publication completed successfully.
+- Exact source `041bde764365710e6d5148c43751da91205ffd35`; package `14608341511`; `planned=executed=passed=964`, red/abnormal/missing/skipped/duplicate/control_bad/unexpected_pass=0; membership=1045 (964+81); postflight=true; exit=0; compile/relink/configure/benchmark=false.
+- Row 960 PASS and new row 964 PASS. Accepted CP2 prefix 491/491 PASS. An independent, exact per-row comparator gave **963/963 MATCH against TB149** under frozen N1–N3 only: variable Google Test timing, line-ending equivalence, and complete `M3_CP4AB_FRAGMENT_DIAG record=region_support_projection` records compared as a counted multiset; all other lines compared in original order.
+- The comparison accounts for 1,738 complete M3 records. All 504 `FieldAlignedCurveNetwork.slideContactArrival` lines from TB149 remain present and unchanged. No diagnostic-line deletion, new normalization rule, or new stable regression event is warranted by the gate.
+- The three-case **census result is still pending**; no product outcome or independent Review successor was claimed by this partial report.
+
 ## Pending gates and closure
-1. Verify both immutable result packages and their exact source, run and artifact identities. The evidence, not a workflow title, decides the verdict.
-2. Gate: 964/964 with rows 960/964 PASS; rows 1–963 MATCH TB149 under N1–N3 **with slide-contact receipt lines preserved**, CP2 491/491, 81 deferred.
-3. Census: 3/3 MATCH TB149 under N1–N4. N4 applies only to parameter-object address bytes in census RED lines.
+1. Full gate verified as specified above; retain this result and do not re-run.
+2. Census: 3/3 MATCH TB149 under N1–N4. N4 applies only to parameter-object address bytes in census RED lines.
 4. On a semantic failure, STOP and classify it. Do not patch, rebuild or rerun in this TB turn. Record any regression or candidate in `Regression_Root_Cause_Tracker.md` before closing. A workflow orchestration failure has separate cadence rules.
 5. After actual results are known, complete the authoritative execution report and update the handoff, TODO and changelog. Direct-write final root STATUS as the last repository mutation. If the bounded response ends before results, leave TB150 **IN_PROGRESS**, with its original started timestamp `2026-11-20T07:02:46Z` and blank ended timestamp.
 
