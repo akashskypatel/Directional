@@ -1,0 +1,3 @@
+turn=M6-CP3-CB168H-P13-MUTUAL-CARRIER-END-ORACLE
+requested_source_sha=85730b664b2c36d409ffe71d3d0f38f7bdc8ca75
+purpose=immutable-source-snapshot
