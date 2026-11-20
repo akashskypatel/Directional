@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB151 independent Review confirms 966/966 gate, 964/964 prior match, 491/491 accepted CP2 and three-case census match; χ+4 and four unowned slide contacts remain; EPO-1 reader definition next, no CP3 acceptance) · **Next milestone:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB151 independent Review confirms 966/966 gate, 964/964 prior match, 491/491 accepted CP2 and three-case census match; χ+4 and four unowned slide contacts remain; RA-274 completed the reader classification, CB168O (O49 side rule, unwired) next, no CP3 acceptance) · **Next milestone:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

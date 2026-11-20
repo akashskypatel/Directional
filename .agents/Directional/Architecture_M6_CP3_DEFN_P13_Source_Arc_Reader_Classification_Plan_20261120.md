@@ -1,20 +1,30 @@
-# M6-CP3 — source-arc reader classification (EPO-1 definition-only successor)
+# M6-CP3 — source-arc reader classification: withdrawn as a turn, completed by RA-274 (2026-11-20 UTC)
 
 ## Situation
-The independent TB151 gate preserved 966/966 and the three-case census without repairing the source-piece producer. This document defines **only** the next classification turn. No implementation, build or runtime is authorized by this definition task.
 
-## Background
-The existing production and row686 cut paths encode sliding edges as face chords. A `faceThenEdge` wall cannot be cut correctly by a face chord. RA-273 S4 owns the precise source reader inventory and RA-261 freezes synchronized path/ray consumers.
+The TB151 Review froze `M6-CP3-DEFN-P13-SOURCE-ARC-READER-CLASSIFICATION` as its only successor. [RA-274](Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Independent_Review_20261120.md#ra-274--adversarial-re-review-of-this-review-2026-11-20-utc) withdraws it for three reasons:
+- **It repeated a frozen contract.** EPO-1 (RA-262) already defines the traversal and geometry layers.
+- **It had no executing exit.** Its acceptance criteria were prose.
+- **It inherited an inventory with two errors.** It listed Mandatory-only readers and missed the conformity span input.
 
-## Required classification
-Review every source-arc reader named by RA-273 S4, including `SurfaceCellTracing.cpp` `bound_arc_schedule`, `edge_arc_schedule`, phase-front builders; `SurfaceCutGraph.cpp` `build_source_face_ownership`; `GlobalConformityBaselineSupport.cpp` support/certification consumers; `EmbeddedGraphTopology.cpp` `actual_complement_component_count`. For each reader, record its exact input, output, classification (traversal-sensitive, geometry-only, or both), its piece-count and source-support obligations, and a falsifiable before/after statement. Determine whether the reader interprets a face segment, a source-edge segment, or both. Do not infer support from world coordinates.
+RA-274 S3 holds the complete classification. Do not start the DEFN turn.
 
-## Acceptance and stop rules
-- Complete inventory of all readers and downstream certifiers; absence of an unclassified read demonstrated by source search and reviewed call sites.
-- Explain each `faceThenEdge` and `edgeOnly` case, orientation reversal, endpoints and shared source-edge ownership. Show why the edge interior is not a face chord.
-- Freeze an exact single next-turn scope **only after** proving the reader inventory; later EPO-6/O49 edge-only rule is unwired, the row686 oracle is test-only, and the coordinated production cutover handles paths, counts, rays, ranks and digest together.
-- If any reader ownership or supporting source identity cannot be proved, record the exact conflicting source and stop for a bounded definition decision; do not invent behavior or pass the gate by altering a test.
-- Preserve accepted CP2 491/491, 81 deferred, stable 66/17/49, `chainRimSchedules=false`, and the independent full-gate/census test requirements. No product, test, selector, build, fixture or runtime change in this definition turn.
+## What replaces it
 
-## Deferred sequence — not part of this turn
-EPO-1 definition → O49/EPO-6 unwired edge-only rule → row686 test oracle real-piece reader → EPO-2/3/4 coordinated Code + Build (path/count/ray/rank and count-digest) → independent TB → stop switch → independent TB for χ2 and four nodes → CB170 → CB171 → CB172/O48. This order is a dependency, not permission to combine turns.
+| Order | Turn | Scope |
+|---|---|---|
+| NEXT | `M6-CP3-CB168O-P13-EDGE-PIECE-FACE-SIDE-HELPER` | [Exact diff](Architecture_M6_CP3_CB168O_P13_Edge_Piece_Face_Side_Helper_Exact.diff), SHA-256 `b8daffc93c26260e9ad7af464560fe24de38054db66b57fa866ab1deacfa0d34`. Adds the unwired `edge_piece_face_side` (O49 side rule, RA-274 S2.3) and row 967. Compile only, eight RA-245 GMP/GMPXX targets. |
+| Then | `M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-EXEC` | [Manifest](gates/Architecture_M6_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Case_Manifest.tsv), SHA-256 `cab375d014112b6ab48fe468003b9a57b2918a717e6f56e7478f0417362c0204`: TB151 plus row 967, 967 + 81 deferred. STOP rules in RA-274 S4.2. No census. |
+| Then | `M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-REV` | Freezes the thin O49 ownership wiring and the row 686 piece oracle (test-only) as exact patches |
+
+## Prospective (dependency order, not permission to combine)
+
+1. O49 wiring CB → TB.
+2. Row 686 piece oracle CB (test-only) → TB.
+3. Producer switch. Paths, counts, rays and ranks together (RA-261), with counts added to the digest. Frozen only after the RA-274 S5 checks.
+4. TB.
+5. Stop switch CB (`carrier_contact_slide_position`).
+6. TB: row 686 χ2, rows 669/698, four nodes, and real-piece conformity on the sphere's first plan.
+7. CB170 → CB171 → CB172 (O48).
+
+Held: FC-6, TERMINAL-CUT-OUTCOME, row 858 DEFN. Parked: CB145. D11=A, D12=A. `chainRimSchedules=false`.

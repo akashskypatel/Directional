@@ -53,3 +53,84 @@ The immutable TB151 semantic source is `2d587a2e7ec00b7dc8d0a24df9f6902f03fec931
 | review_check.py boundary | Invoked on a temporary source snapshot: code/test and selector checks PASS; full script FAIL because Git history for `8b7299b43` is absent. Verified all original protected headings against GitHub historical blobs and the exact remote changed-file set. History-complete execution remains unverified. |
 | `STATUS` lifecycle maintained | Entry written on 2026-11-20T11:13:24Z; final beacon must be the last repository mutation |
 | Pushed to origin, branch in sync | Drive application [run 44729296206](https://github.com/akashskypatel/Directional/actions/runs/44729296206) succeeded; applied commit `4751c22806070145d98ebb69aeda1161d9b1df28` verified as PR #8 head (before this small documentation correction). No local source checkout push was performed. |
+
+## RA-274 — adversarial re-review of this Review (2026-11-20 UTC)
+
+Runtime-free: two Haiku read-only audits, direct source reads, `-fsyntax-only` on the new patch, `git apply --check`, manifest self-check. **TB151 PASS is upheld; the successor DEFN is withdrawn and replaced by an exact CB.**
+
+### S1 — Evidence (independently re-derived)
+
+- All four ZIP SHA-256 values match. Internal hashes verify 1,940/1,936/9/9, and the ledger `log_sha256` values match the raw logs.
+- Rows 1–964 agree with TB150 on every ledger field. All 964 raw logs match under N1–N3: 1,738 M3 records in each run, and the 504 `slideContactArrival` lines are identical in order. Rows 965/966 PASS with their `[ OK ]` lines.
+- Census: 3/3 match under N1–N4. N4 is material: the masked bytes differ between runs, two per RED log. Every `platform-digest` line is byte-identical.
+- All four controls mismatch: M3 line deleted, M3 line duplicated, ordinary line altered, unmasked census line altered.
+- `compile`, `configure`, `relink` and `benchmark` are all `false`. The boundary `artifact` field is the executable package (14618335833), not the result artifact.
+- Code: `041bde764` plus the two frozen diffs reproduces `2d587a2e7` byte-for-byte in all five files. `src`, `include` and `tests` are unchanged since.
+
+### S2 — Design defects in this Review
+
+1. **The successor repeated a frozen contract.** EPO-1 ([RA-262](Architecture_M6_CP3_TB140_P13_Trace_Segment_Pieces_Helper_Full_Gate_Independent_Review_20261118.md)) already splits readers into a traversal layer and a geometry layer. The DEFN asked a later turn to classify them again, using prose acceptance criteria and with no executing exit (RA-172/RA-223). The classification is Review work; S3 completes it here.
+2. **The inventory it carried was wrong (my error in RA-273 S4).**
+   - `GlobalConformityBaselineSupport.cpp:530/:617` read Mandatory arcs only. They are unaffected.
+   - The inventory missed the real geometry consumer: both conformity input builders copy every arc's `sourcePath` into span support (`RemeshPipeline.cpp:1014`, `GlobalConformityBaseline.cpp:830`).
+   - It also missed `CutGraphDisplay.cpp:126`.
+3. **EPO-6's side rule is under-specified.** "Forward orbit to F" holds only when F winds the carrier in the slide's direction.
+   - The third-edge rule (`SurfaceCutGraph.cpp:589–625`) and the mandatory rule (`:493`, `EmbeddedGraphTopology.cpp:3332`) both make the forward dart the arc's left side.
+   - A trace can slide either way along an edge of its face.
+   - The exact rule: F takes Forward iff `face_orients_edge_forward(F, e)` equals "the piece advances first→second". The face across e takes the other dart.
+4. **The recommendation stayed monolithic.** It kept "all consumers in one Code + Build". S3 shows the conformity, display and schedule readers consume real pieces without code changes. The cutover therefore splits by what each reader needs.
+
+### S3 — Reader classification (EPO-1, complete)
+
+| Reader | Reads | Layer | At the cutover |
+|---|---|---|---|
+| `validate_candidate_structure` + replay (`GlobalTopologyPlan.cpp:2692–2718`, `:2953`) | faces, counts, path | binding | Already accepts the three shapes (CB168N) |
+| `candidate_semantic_digest` (`:2520–2522`) | faces, path | hash | Path hash changes; add counts (RA-273 S2.3) |
+| `actual_complement_component_count` (`EmbeddedGraphTopology.cpp:3414`) | path | geometry | Edge pieces become barrier intervals. The sliver between chord and edge changes side, but the count is unchanged unless an edge piece overlaps another arc's barrier (O48) |
+| `build_source_face_ownership` (`SurfaceCutGraph.cpp:508–758`) | `sourceFaces`, trace segments | traversal | Unchanged for faceThenEdge. Edge-only segments need O49 (S2.3) |
+| Conformity span support (`RemeshPipeline.cpp:1014`, `GlobalConformityBaseline.cpp:830`) → partition-stable runs, preferred count, breakpoints, schedule digest | whole path | geometry | **New.** A slide bend starts a new metric run, so the count, breakpoints and `global-conformity-baseline=` can change on any plan that publishes a slide |
+| `bound_arc_schedule` `:14237`, piece total `:19764` (`SurfaceCellTracing.cpp`) | path vs span support | consistency | Self-consistent: the support is built from the same path |
+| Disc phase front `:17097` | path carriers | traversal + geometry | Admits a trace arc only when every piece is a vertex-ended edge. An all-edge-only arc is newly admitted: an O49 obligation |
+| `edge_arc_schedule` `:14286`, `generator_route_for_span` `:20237`, `GlobalConformityBaselineSupport.cpp:530/:617` | path | — | Mandatory only; unaffected |
+| `CutGraphDisplay.cpp:126` | path | display | Polylines follow the slide |
+
+No other `src` reader of `sourcePath`, `sourceFaces` or `sourcePieceCounts` exists (audit at `98b370512`). Rays and ranks (EPO-4) are computed inside the producer, so they stay with the producer switch.
+
+### S4 — Frozen successors
+
+1. **`M6-CP3-CB168O-P13-EDGE-PIECE-FACE-SIDE-HELPER`.** Compile only.
+   - Patch: [exact diff](Architecture_M6_CP3_CB168O_P13_Edge_Piece_Face_Side_Helper_Exact.diff), SHA-256 `b8daffc93c26260e9ad7af464560fe24de38054db66b57fa866ab1deacfa0d34`. Numstat: `34 0 src/geometry/EmbeddedGraphTopology.cpp; 13 0 src/geometry/EmbeddedGraphTopology.h; 115 0 tests/FieldAlignedCurveNetworkTests.cpp`.
+   - Preimages: `.cpp` `88e6c062…43a3`, `.h` `c9ff6721…bcde`, tests `f3a7d53f…01fb`.
+   - Precheck: `git diff --quiet 2d587a2e7 HEAD -- src include tests`.
+   - It adds the unwired pure function `edge_piece_face_side(face, piece)`, which implements S2.3 on the producer's own edge piece (one decomposition).
+   - Row 967 `FieldAlignedCarrierOccupancy.EdgePieceFaceSideFollowsTheFaceWindingAlongTheSlide` uses the row-960 departure fixture (real output, counts `{1,1}`). Expected sides are read from the declared windings, not from the function:
+     - face Forward and the face across Reverse;
+     - both swap on the reversed arc;
+     - the side is kept on both parts of a slide cut at 1/2;
+     - empty for a face without the edge, a face piece, a zero-length piece, an off-edge vertex, and another edge's point.
+   - Falsifiers: an always-Forward rule fails, a rule that ignores piece direction fails, and a rule that handles vertices only fails.
+   - Syntax: 0 errors; warnings 22/42/27/24 equal HEAD.
+2. **`M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-EXEC`.**
+   - Manifest [`gates/Architecture_M6_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Case_Manifest.tsv`](gates/Architecture_M6_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Case_Manifest.tsv), SHA-256 `cab375d014112b6ab48fe468003b9a57b2918a717e6f56e7478f0417362c0204`. It is the TB151 manifest as an exact byte prefix plus row 967: 967 + 81 deferred, membership 1048.
+   - STOP on failure:
+     - row 967 PASS;
+     - rows 1–966 MATCH TB151 under N1–N3, with receipt lines compared raw;
+     - 491/491;
+     - no compile, relink, configure or benchmark.
+   - **No census:** the function has no production caller (RA-242). The TB must show this by `grep` in its report.
+3. **`TB152-REV` freezes, each as an exact patch:**
+   - the thin O49 wiring in `build_source_face_ownership`: read `exact_trace_segment_pieces`; for an edge-only segment, F stays out of `traceCutFaces`, F and the face across get their sides from `edge_piece_face_side`, and the other owners are skipped;
+   - the row 686 piece oracle (test-only).
+   No current fixture publishes an edge-only segment to the cut graph (TB141), so the wiring's correctness rests on the pure helper (RA-248), and its gate criterion is strict MATCH.
+
+### S5 — Cutover obligations added
+
+- **Before freezing the producer switch,** list from existing receipts which fixtures build a plan that contains a slide arc and reaches conformity. Expected: none.
+  - The sphere fails at χ before its plan.
+  - Cylinder and Vase have no slides.
+  - BunnyRandom fails inside `build_arcs`.
+  So conformity is expected census-neutral at the switch, but **not after the stop switch**: the sphere's first plan will carry real-piece conformity counts. That TB must check them on real pieces, not chords.
+- **Before freezing the switch,** grep the accepted tests that assert chord shapes (RA-217).
+- Counts enter the digest at the switch (RA-273 S2.3, unchanged).
+
+**Disposition:** TB151 PASS upheld; stable 66/17/49, debt one, 81 deferred, CP2 491/491. No promotion. Successor `M6-CP3-CB168O-P13-EDGE-PIECE-FACE-SIDE-HELPER`.

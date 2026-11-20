@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-20 UTC; TB151 independent Review):** [TB151 execution](Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Execution_Report_20261120.md) 966/966 gate PASS, first 964/964 MATCH TB150 N1–N3, CP2 491/491; separate census 3/3 MATCH TB150 N1–N4. CB168M/CB168N compiled and both new tests passed. TB151-REV independently upheld this narrow PASS; the next turn is EPO-1 source-arc reader classification, not product implementation. Sphere row686 χ6 vs source2 (+4), rows669/698 exhaustion and H4 real-piece cutover remain unresolved. Stable 66/17/49, debt1, deferred81.
+**Current currency (2026-11-20 UTC; RA-274):** [TB151 execution](Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Execution_Report_20261120.md) 966/966 gate PASS, first 964/964 MATCH TB150 N1–N3, CP2 491/491; separate census 3/3 MATCH TB150 N1–N4. [RA-274](Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Independent_Review_20261120.md#ra-274--adversarial-re-review-of-this-review-2026-11-20-utc) upholds it, withdraws the reader-classification DEFN, and completes the classification itself (S3). Next: exact CB168O (unwired O49 side rule, row 967). Sphere row686 χ6 vs source2 (+4), rows669/698 exhaustion and H4 real-piece cutover remain unresolved. Stable 66/17/49, debt1, deferred81.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-20; TB151 Review):** [TB151 execution](Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Execution_Report_20261120.md) verified 966/966 PASS, 964/964 MATCH TB150, and 3/3 census MATCH TB150. CB168M/CB168N are compiled and runtime-tested at frozen scope. The plan digest remains unchanged, and production graph slides remain face chords. Counts enter the digest only with the later coordinated cutover; H4 is held. TB151 independent Review is complete; EPO-1 reader classification is next.
+**Currency (2026-11-20; TB151 Review):** [TB151 execution](Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Execution_Report_20261120.md) verified 966/966 PASS, 964/964 MATCH TB150, and 3/3 census MATCH TB150. CB168M/CB168N are compiled and runtime-tested at frozen scope. The plan digest remains unchanged, and production graph slides remain face chords. Counts enter the digest only with the later coordinated cutover; H4 is held. RA-274 completed the EPO-1 reader classification: conformity span support is a geometry reader (bends change runs), and Mandatory-only readers are unaffected. CB168O is next.
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.
 
@@ -47,7 +47,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB151 966/966 PASS, accepted CP2 491/491, prior 964/964 MATCH TB150; census 3/3 MATCH (Cylinder PASS; BunnyRandom/Vase expected RED). Four unowned edge-slide contacts and sphere χ+4 remain. [TB151 execution](Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Execution_Report_20261120.md); TB151-REV independently upheld the scope; EPO-1 reader classification next. CP3/selector497/D0 not promoted. |
+| **M6-CP3 — active** | TB151 966/966 PASS, accepted CP2 491/491, prior 964/964 MATCH TB150; census 3/3 MATCH (Cylinder PASS; BunnyRandom/Vase expected RED). Four unowned edge-slide contacts and sphere χ+4 remain. [TB151 execution](Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Execution_Report_20261120.md); TB151-REV and RA-274 upheld the scope; CB168O (O49 side rule) next. CP3/selector497/D0 not promoted. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -109,7 +109,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-DEFN-P13-SOURCE-ARC-READER-CLASSIFICATION` is the next definition-only turn. [TB151 independent Review](Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Independent_Review_20261120.md) upheld 966/966, the previous 964/964 under N1–N3, and 3/3 census under N1–N4, with strict non-vacuity controls. First classify every EPO-1 arc reader under [the exact plan](Architecture_M6_CP3_DEFN_P13_Source_Arc_Reader_Classification_Plan_20261120.md); then O49/EPO-6 unwired, row686 test-only oracle, coordinated piece-path/count/ray/rank/digest cutover, and only later the stop switch. No product acceptance was promoted; four slide contacts, row686 χ+4, and rows669/698 remain unresolved.
+**Current priority:** `M6-CP3-CB168O-P13-EDGE-PIECE-FACE-SIDE-HELPER` (exact diff `b8daffc9…0d34`, compile only) → TB152 (TB151 + row 967, no census) → TB152-REV (O49 wiring + row686 piece oracle, exact). [RA-274](Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Independent_Review_20261120.md#ra-274--adversarial-re-review-of-this-review-2026-11-20-utc) withdrew the reader-classification DEFN and completed it (S3). Then producer switch (paths/counts/rays/ranks/digest), and only later the stop switch. No product acceptance was promoted; four slide contacts, row686 χ+4, and rows669/698 remain unresolved.
 
 - **Historical priority (superseded by RA-273):** [RA-272](Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md) had authorized a prose CB168M, now withdrawn.
 

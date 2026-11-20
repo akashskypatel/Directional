@@ -1,4 +1,31 @@
-## CURRENT — TB151 independent Review upheld; EPO-1 source-arc reader classification next (2026-11-20 UTC)
+## CURRENT — RA-274: TB151 PASS upheld; reader classification completed; CB168O next (2026-11-20 UTC)
+
+[RA-274](.agents/Directional/Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Independent_Review_20261120.md#ra-274--adversarial-re-review-of-this-review-2026-11-20-utc) re-derived TB151 (966/966; 964/964 N1–N3; 3/3 N1–N4; controls caught) and checked that CB168M+N reproduce `2d587a2e7` byte-for-byte. It withdraws the reader-classification DEFN and completes the classification in S3. The DEFN repeated EPO-1, had no executing exit and inherited RA-273 S4's errors:
+- `:530/:617` read Mandatory arcs only;
+- conformity span support (`RemeshPipeline.cpp:1014`, `GlobalConformityBaseline.cpp:830`) is the missed geometry reader.
+
+The EPO-6 side rule is now exact. F takes the forward dart iff F winds the carrier in the piece's direction, and the face across takes the other.
+
+- [x] RA-274 re-review of `M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-REV`.
+- [ ] **NEXT:** `M6-CP3-CB168O-P13-EDGE-PIECE-FACE-SIDE-HELPER` (Code + Build, compile only; eight RA-245 targets, `runtimeExecution=false`).
+  - Exact diff `.agents/Directional/Architecture_M6_CP3_CB168O_P13_Edge_Piece_Face_Side_Helper_Exact.diff`, SHA-256 `b8daffc93c26260e9ad7af464560fe24de38054db66b57fa866ab1deacfa0d34` (`34 0` cpp, `13 0` h, `115 0` tests).
+  - Precheck `git diff --quiet 2d587a2e7 HEAD -- src include tests`; `git apply --check`.
+  - Adds unwired `edge_piece_face_side` and row 967 `FieldAlignedCarrierOccupancy.EdgePieceFaceSideFollowsTheFaceWindingAlongTheSlide`.
+- [ ] **Then:** `M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-EXEC`. Manifest `.agents/Directional/gates/Architecture_M6_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Case_Manifest.tsv`, SHA-256 `cab375d014112b6ab48fe468003b9a57b2918a717e6f56e7478f0417362c0204` (TB151 + row 967; 967+81). STOP unless:
+  - row 967 PASS;
+  - rows 1–966 MATCH TB151 under N1–N3, receipts compared raw;
+  - 491/491;
+  - no compile, relink, configure or benchmark.
+  No census: the helper has no production caller; the TB report shows this by grep.
+- [ ] **Then:** `M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-REV`: freeze the O49 ownership wiring CB and the row 686 piece oracle CB (test-only) as exact patches.
+- Prospective:
+  - O49 wiring CB → TB → row 686 oracle CB → TB;
+  - → producer switch (paths, counts, rays, ranks; counts enter the digest), frozen after the RA-274 S5 checks → TB;
+  - → stop switch CB → TB (row 686 χ=2, rows 669/698, four nodes, real-piece conformity);
+  - → CB170 → CB171 → CB172 (O48).
+  - Held: FC-6, TERMINAL-CUT-OUTCOME, row 858 DEFN. Parked: CB145. D11=A, D12=A.
+
+## TB151 independent Review upheld (2026-11-20 UTC) — successor replaced by RA-274
 
 [RA-273](.agents/Directional/Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md#ra-273--adversarial-re-review-of-this-review-2026-11-20-utc) re-derived TB150: 963/963 MATCH N1–N3 and census 3/3 MATCH N1–N4, with negative controls caught. It withdraws the prose CB168M for three reasons:
 - it was not an exact patch;
@@ -20,13 +47,7 @@ The [frozen plan](.agents/Directional/Architecture_M6_CP3_CB168M_P13_Source_Piec
   - 491/491;
   - census 3/3 MATCH TB150 under N1–N4.
 - [x] **COMPLETE:** `M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-REV` independently verified full gate, prior prefix, census, non-vacuity, all 504 raw receipts. [Review](.agents/Directional/Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Independent_Review_20261120.md). No product promotion.
-- [ ] **NEXT:** `M6-CP3-DEFN-P13-SOURCE-ARC-READER-CLASSIFICATION`: EPO-1 reader inventory and falsifiers, definition-only. [Plan](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Source_Arc_Reader_Classification_Plan_20261120.md).
-- Prospective:
-  - reader classification (EPO-1; RA-273 S4) → O49/EPO-6 edge-only rule (unwired) → row 686 oracle reads pieces (test-only);
-  - → coordinated cutover CB: paths, counts, rays and ranks, with counts entering the digest → TB;
-  - → wall-loop stop switch CB → TB (row 686 χ=2, rows 669/698 past exhaustion, four nodes);
-  - → CB170 → CB171 → CB172 (O48).
-  - Held: FC-6, TERMINAL-CUT-OUTCOME, row 858 DEFN. Parked: CB145. D11=A, D12=A.
+- ~~`M6-CP3-DEFN-P13-SOURCE-ARC-READER-CLASSIFICATION`~~ — withdrawn by RA-274 S2.1; classification completed in RA-274 S3 ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_Source_Arc_Reader_Classification_Plan_20261120.md)).
 
 ## TB150 independent Review PASS (2026-11-20 UTC) — successor replaced by RA-273
 
