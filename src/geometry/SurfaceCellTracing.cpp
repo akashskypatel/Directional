@@ -4411,6 +4411,11 @@ canonical_field_aligned_traces_and_events(
   using EntryCoincidenceEnd = std::pair<std::size_t, std::size_t>;
   std::set<std::pair<EntryCoincidenceEnd, EntryCoincidenceEnd>>
       reportedEntryCoincidences;
+  // A shared carrier point inside either segment's slide is not an entry
+  // coincidence and schedules nothing. It is reported once per segment pair
+  // in its own stream, in call order (moving end first), with both slide flags.
+  std::set<std::pair<EntryCoincidenceEnd, EntryCoincidenceEnd>>
+      reportedSlideCoincidences;
   const auto reportEntryCoincidence =
       [&](const EntryCoincidenceEnd first,
           const FieldAlignedCandidateTraceSegment &firstSegment,
@@ -4421,8 +4426,24 @@ canonical_field_aligned_traces_and_events(
         if (first.first == second.first) return;
         const auto contact =
             first_field_aligned_carrier_contact(firstSegment, secondSegment);
-        if (!contact.has_value() || contact->movingInSlide ||
-            contact->wallInSlide) {
+        if (!contact.has_value()) return;
+        if (contact->movingInSlide || contact->wallInSlide) {
+          const auto slideKey = first < second ? std::pair{first, second}
+                                               : std::pair{second, first};
+          if (!reportedSlideCoincidences.insert(slideKey).second) return;
+          std::clog << "FieldAlignedCurveNetwork.slideCoincidence moving="
+                    << first.first << ':' << first.second
+                    << " wall=" << second.first << ':' << second.second
+                    << " carrier=(" << contact->carrier.first().index() << ','
+                    << contact->carrier.second().index() << ") parameter="
+                    << contact->parameter.numerator_string() << '/'
+                    << contact->parameter.denominator_string()
+                    << " movingInSlide=" << contact->movingInSlide
+                    << " wallInSlide=" << contact->wallInSlide << " faces="
+                    << (firstSegment.sourceFace == secondSegment.sourceFace
+                            ? "same"
+                            : "different")
+                    << '\n';
           return;
         }
         const bool inOrder = first < second;
