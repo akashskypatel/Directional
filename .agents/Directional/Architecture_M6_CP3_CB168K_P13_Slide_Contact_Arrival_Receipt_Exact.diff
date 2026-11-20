@@ -1,0 +1,39 @@
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index e332866aa..400805c7c 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -4444,6 +4444,34 @@ canonical_field_aligned_traces_and_events(
+                             ? "same"
+                             : "different")
+                     << '\n';
++          // An entry onto another trace's slide: the moving end's arrival at
++          // its entry ordered against the wall's arrival along its slide at
++          // the same point, by the rule the wall loop uses for crossings.
++          if (!contact->movingInSlide && contact->wallInSlide) {
++            const auto wallAtContact = field_aligned_arrival_at_slide_parameter(
++                sourceMesh, secondSegment, secondArrival, contact->parameter);
++            std::clog << "FieldAlignedCurveNetwork.slideContactArrival moving="
++                      << first.first << ':' << first.second
++                      << " wall=" << second.first << ':' << second.second
++                      << " wallCommitted="
++                      << (second.second <
++                          candidate.candidateTraces[second.first].segments.size())
++                      << " movingArrival=";
++            if (!wallAtContact.has_value()) {
++              std::clog << "unavailable";
++            } else {
++              const FieldAlignedArrivalOrdering ordering =
++                  field_aligned_compare_priority_arrivals(
++                      priority, firstArrival, *wallAtContact, first.first,
++                      second.first);
++              std::clog << (ordering == FieldAlignedArrivalOrdering::Earlier
++                                ? "earlier"
++                            : ordering == FieldAlignedArrivalOrdering::Later
++                                ? "later"
++                                : "inconclusive");
++            }
++            std::clog << '\n';
++          }
+           return;
+         }
+         const bool inOrder = first < second;

@@ -66,3 +66,52 @@ Preserve C5/O47, O48/O49, H4, FC-6, terminal-cut/row858 holds, `chainRimSchedule
 | Pushed to origin, branch in sync | Documentation apply/push is verified separately by dispatcher result; local snapshot lacks authoritative upstream tracking and cannot provide a meaningful `git status -sb` branch-sync attestation. |
 
 **Tool-use/read-mode process disclosure:** initial direct GitHub document reads preceded the mandatory snapshot-mode selection. That breached the conservation pre-read gate; the agent stopped piecemeal source retrieval, obtained a verified exact snapshot for further source analysis, and did not use this process miss as permission to change acceptance or selector evidence. The call ledger before compaction was not retained as a fully exact namespace count; do not substitute invented totals.
+
+## RA-270 — adversarial re-review of this Review (2026-11-20 UTC)
+
+### S1 — What holds
+
+- Gate arithmetic (963/963, 491/491, 962/962 MATCH TB147) and the four row 963 receipts are upheld. RA-269's prediction held field for field: `committed=1 … strictlyInside=1 contactAgrees=1 sharedEvents=0` on four distinct carriers.
+- The constraint that a slide point must not be encoded in `TraceCutPosition::parameter` is correct, with one accuracy fix. Doing so would not "create a false face point": it fails closed. `exact_trace_interior_point` (`EmbeddedGraphTopology.cpp:955`) needs `trace_segment_canonical_exit`, which returns nullopt for any sliding segment (`:803`). `exact_trace_piece_path_between` (`:1018–1020`) also rejects clipping a sliding segment. The conclusion stands: no cut position on an edge-slide piece exists today.
+- Keeping the row 686 oracle unchanged until H4 is correct.
+
+### S2 — Design defects of this Review
+
+1. **The deciding measurement is missing: which trace is later at the contact.** The repair's shape depends on it, and nobody has measured it.
+   - **If the moving trace is later**, it stops at its entry point. Its record is the existing carrier-stop shape (CB168G `field_aligned_carrier_stop_contact`: last segment face, leaving through the locus edge). Only the *struck* side is new: a cut position inside the wall's slide.
+   - **If the wall is later**, the wall should have stopped mid-slide when its slide was pending. But `first_field_aligned_carrier_contact` never compares a slide with another trace's committed *exit* point, so that contact was never even detected. The repair would need a new detection plus an end-inside-slide record, and `exact_trace_segment_pieces` (`:907–921`) currently accepts a terminal contact only on the face piece.
+   - **If inconclusive** against a retired wall, the existing rule fails closed (`ContactInconclusiveAgainstRetiredWall`).
+
+   Freezing a consumer before this is known repeats the RA-266 lesson (give the switch its deciding measurement). Corroborating evidence: two of the four records have moving index > wall index (17/0, 20/1). The pending/pending loop always reports the lower index first, and would have printed the pair with `movingInSlide=1`. So all four come from the committed-wall loop, and the receipt can say so (`wallCommitted`).
+2. **The frozen successor is again a prose plan, and dead code if built.** `CB168K-…-EXACT-SLIDE-INTERIOR-CONTACT-CONSUMER` asks the implementation agent to design a helper. That helper restates `first_field_aligned_carrier_contact` (which already returns carrier, parameter and `wallInSlide`) plus a strict-bounds check. It explicitly defers the representation that is actually missing (a piece-aware cut position, arc split and node locus) to a later Review. It is not an exact diff, it has no reader, and it can't move χ. **Withdrawn.**
+3. **The row 686 oracle becomes a precondition, not a bystander.** After a stop-at-entry switch, the moving trace ends at a point on the wall's *edge slide*. The oracle cuts the wall's segment as the chord entry→slide end, which does not pass through that point. So the endpoint would not lie on any oracle fragment boundary, and row 686 would misread. The oracle's slide reading (an H4 consumer) must therefore switch **before** the TB that reads χ on the repaired graph, not at CB169. Recorded.
+
+### S3 — Frozen successors
+
+- **`M6-CP3-CB168K-P13-SLIDE-CONTACT-ARRIVAL-RECEIPT`** (Code + Build, compile only; diagnostic only).
+  - [Exact diff](Architecture_M6_CP3_CB168K_P13_Slide_Contact_Arrival_Receipt_Exact.diff), SHA-256 `fc70c9aa07ea31f4121ac297f7bc24fca3f82ffadec6ef6880b82f8d99ecb4a4`, numstat `28 0 src/geometry/SurfaceCellTracing.cpp`, preimage `ecbf1470e3c04ab31e8bb244dd6b7a34652d40931502254c16aec447889322f5`.
+  - Inside the existing slide branch of `reportEntryCoincidence`, after the `slideCoincidence` line and only for `!movingInSlide && wallInSlide`, it prints one line: `FieldAlignedCurveNetwork.slideContactArrival moving= wall= wallCommitted= movingArrival=earlier|later|inconclusive|unavailable`.
+  - The wall's arrival comes from the accepted `field_aligned_arrival_at_slide_parameter` on the wall's start arrival. It is compared by `field_aligned_compare_priority_arrivals(priority, moving, wall, movingIndex, wallIndex)`, the same call and order the wall loop uses for crossings.
+  - It is deduplicated with the slide line. Scheduling is unchanged.
+  - Precheck: `git diff --quiet d78404724a7f0bfb0c9c73769e6a68b9f2addd81 HEAD -- src include tests`; `git apply --check`. `-fsyntax-only -Wall -Wextra -include iterator`: 43 warnings, equal to HEAD, 0 errors. Eight RA-245 targets, `runtimeExecution=false`.
+- **`M6-CP3-TB149-P13-SLIDE-CONTACT-ARRIVAL-FULL-GATE-EXEC`.**
+  - Inputs: immutable CB168K package; unchanged TB148 manifest `4350378c95fefeb0dbab6e742b50dcd976af406f865ddef45cc03b35f7b4c01c` (963+81); unchanged 3-row census manifest `3af1dc0d…e793` and harness.
+  - STOP on failure: delete every line starting `FieldAlignedCurveNetwork.slideContactArrival`; then rows 1–963 MATCH TB148 under the frozen rules (N1–N3), with 491/491. Run the census only after the gate passes: 3/3 MATCH TB147 after the same deletion.
+  - To Review, verbatim and deduplicated per row: every `slideContactArrival` line from the 20 sphere rows and the 3 census rows, with counts.
+  - **Prediction (not STOP):** the four sphere pairs print `wallCommitted=1 movingArrival=later`.
+- **`M6-CP3-TB149-…-REV` decision table.**
+  - All four `later`: freeze, as separate exact CBs,
+    - (a) a piece-aware cut position on a slide's edge piece, with path, arc split and node locus, inert, with an injected test;
+    - (b) the row 686 oracle reading slides as real face+edge pieces, test-only, with expected χ unchanged at 6 before the switch;
+    - (c) the wall-loop producer stop (the moving trace ends at its entry with `carrierLocus`; struck = wall segment inside the slide);
+    - (d) a TB with falsifiers: row 686 χ = 2, rows 669/698 past exhaustion, and four Terminal/Interior events on four nodes.
+  - Any `earlier`: a slide-vs-committed-exit detection receipt first.
+  - `inconclusive`/`unavailable`: design stop in the Review.
+
+### S4 — Sequence
+
+CB168K → TB149 → TB149-REV → (all later: slide-piece cut position CB → oracle slide-piece CB → wall-loop stop switch CB → TB; else the detection receipt) → CB168 binding → [O49] → CB169 H4 remainder → CB170 → CB171 → CB172 (O48). Held: FC-6, TERMINAL-CUT-OUTCOME, row 858 DEFN. Parked: CB145. D11=A, D12=A.
+
+### S5 — Closeout
+
+Runtime-free: `-fsyntax-only` on CB168K. Code read: the contact loops, the slide-arrival helper, and the cut-position/path functions in `EmbeddedGraphTopology.cpp`. No product, test, selector or manifest bytes changed. The withdrawn consumer plan is marked as withdrawn. Accounting unchanged: 66/17/49, debt1, deferred81, CP2 491/491, selector497 not promoted.

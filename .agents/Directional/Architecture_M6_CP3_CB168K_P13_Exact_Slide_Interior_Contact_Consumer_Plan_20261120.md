@@ -1,5 +1,7 @@
 # CB168K — exact source-edge slide-interior contact consumer (frozen scope, 2026-11-20 UTC)
 
+> **WITHDRAWN by [RA-270](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md#ra-270--adversarial-re-review-of-this-review-2026-11-20-utc) S2.2.** This was a prose plan, not an exact diff. Its helper restates `first_field_aligned_carrier_contact`, it has no reader, and it defers the missing piece-aware cut position. The successor is `M6-CP3-CB168K-P13-SLIDE-CONTACT-ARRIVAL-RECEIPT`. The text below is kept for history only.
+
 ## Situation
 
 Review-approved next **Code + Build only**: `M6-CP3-CB168K-P13-EXACT-SLIDE-INTERIOR-CONTACT-CONSUMER`. This is an **inert** consumer preparation, not a geometric repair. Exact immutable observations are in [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md). No tests or benchmarks execute during this Code + Build turn.

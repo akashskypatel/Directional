@@ -1,3 +1,7 @@
+## 2026-11-20 UTC — RA-270 re-review of the TB148 Review
+
+[RA-270](.agents/Directional/Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md#ra-270--adversarial-re-review-of-this-review-2026-11-20-utc) upholds TB148 (four unowned sphere slide contacts). It withdraws the prose CB168K inert consumer, freezes the exact arrival-order receipt CB168K (`fc70c9aa…b4a4`) and TB149 (TB148 manifest unchanged), and moves the row 686 oracle slide-piece switch ahead of the repair TB. No product, selector or manifest change.
+
 ## 2026-11-20 UTC — TB148 sphere entry-on-sliding-wall immutable full gate PASS
 
 ## 2026-11-20 — TB148 independent sliding-wall ownership Review (runtime-free)
