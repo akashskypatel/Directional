@@ -1,3 +1,7 @@
+## 2026-11-20 UTC — CB168I slide-coincidence receipt (compile PASS)
+
+Exact RA-268 frozen +23/-2 `SurfaceCellTracing.cpp` applied at `0f738b1c6d3971c1e414039623336d1baa7965d1`; [compile run 44648915530](https://github.com/akashskypatel/Directional/actions/runs/44648915530), artifact `14589748220`, ZIP SHA-256 `5c74512cdc1cef967ee2968a7055b3323722298259170cae3cc74b8755864bb0`. Eight targets compiled with GMP/GMPXX; `runtimeExecution=false`. Added a once-per-pair slide-coincidence diagnostic; no stop scheduling or topology change. No runtime test or promotion. [Record](.agents/Directional/Architecture_M6_CP3_CB168I_P13_Slide_Coincidence_Receipt_Code_Build_Record_20261120.md). Next TB147 artifact-only.
+
 ## 2026-11-20 UTC — CB168H reciprocal mutual carrier-end oracle (compile PASS)
 
 Exact RA-268 frozen test-only diff applied (+87/-1), source `63563a40eda9c6712970f7d9063f343a28e0fdd0`; [compile run 44645373199](https://github.com/akashskypatel/Directional/actions/runs/44645373199), immutable artifact `14587824913` ZIP SHA-256 `67494ea0138b1978e4ebb4434a4b6bcace048e2e27cb409df167b2c448a45c28`, all eight GMP/GMPXX targets and `runtimeExecution=false`. No runtime test, acceptance, or product change. [Record](.agents/Directional/Architecture_M6_CP3_CB168H_P13_Mutual_Carrier_End_Oracle_Code_Build_Record_20261120.md). Next `M6-CP3-CB168I-P13-SLIDE-COINCIDENCE-RECEIPT`; TB147 remains later.
