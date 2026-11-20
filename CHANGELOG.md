@@ -1,3 +1,7 @@
+## 2026-11-20 UTC — CB168K slide-contact arrival-order receipt (compile PASS)
+
+Exact frozen diagnostic diff `fc70c9aa…b4a4` applied to `SurfaceCellTracing.cpp` (+28/-0), source `0955d28e37a4f17f2488f0f4dd196a2d24aa3c11`; [compile run 44679070165](https://github.com/akashskypatel/Directional/actions/runs/44679070165), artifact `14603866682`, ZIP SHA-256 `b5da1e638be05ec80dd946a15d417e40f3613b5ada6652224bea1fdba5fef8d8`. Eight RA-245 GMP/GMPXX targets compiled, `runtimeExecution=false`; no tests, benchmarks or acceptance promotion. The entry measures moving-versus-wall slide arrival order without changing stop behavior. TB148 remains current runtime authority at 963/963, accepted 491/491; stable 66/17/49, debt one, deferred 81. Next only TB149 immutable artifact gate. [Build record](.agents/Directional/Architecture_M6_CP3_CB168K_P13_Slide_Contact_Arrival_Receipt_Code_Build_Record_20261120.md).
+
 ## 2026-11-20 UTC — RA-270 re-review of the TB148 Review
 
 [RA-270](.agents/Directional/Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md#ra-270--adversarial-re-review-of-this-review-2026-11-20-utc) upholds TB148 (four unowned sphere slide contacts). It withdraws the prose CB168K inert consumer, freezes the exact arrival-order receipt CB168K (`fc70c9aa…b4a4`) and TB149 (TB148 manifest unchanged), and moves the row 686 oracle slide-piece switch ahead of the repair TB. No product, selector or manifest change.
