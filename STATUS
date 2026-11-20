@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-REV (independent re-review RA-274)
-Status: IN_PROGRESS
-Successor: pending RA-274
+Status: COMPLETE
+Successor: M6-CP3-CB168O-P13-EDGE-PIECE-FACE-SIDE-HELPER
 Started at: 2026-11-20T11:13:24Z
 Resumed at: 2026-11-20T12:01:33Z
-Ended at: 
+Ended at: 2026-11-20T12:16:43Z
 ---END_TURN_STATUS---
