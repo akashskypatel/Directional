@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb152-docs-20261120-v1",
+  "request_id": "m6-cp3-tb152-docs-20261120-v2",
   "mailbox_key": "m6-cp3-tb152-docs",
-  "file_id": "1Mfw4lvwHsHnu5ngZyRrau63bgIbEaZT3",
-  "patch_sha256": "9e8a673c9d5a91e4eb35957d57dbe46842b51b907d5650bac12e4ad0eac14307",
+  "file_id": "1ulIwJ-JB7nyEJ5DXbqEMvggE75wyZ-sa",
+  "patch_sha256": "c2790495fb18e4076ecb3786dcffb7f120d9817507fdb3f4724ee141c4b418ad",
   "base_sha": "d888118ff14857423fed8939cb25b6e0b4289a8f",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "docs: close TB152 full gate and hand off independent review"
