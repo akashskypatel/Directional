@@ -1,14 +1,46 @@
-## CURRENT — TB152 independent Review PASS; CB168P O49 ownership wiring next (2026-11-20 UTC)
+## CURRENT — RA-275: TB152 upheld; CB168P/CB168Q replaced by exact, tested patches; one TB153 (2026-11-20 UTC)
+
+[RA-275](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-275--adversarial-re-review-of-this-review-2026-11-20-utc) re-derived TB152: ZIP hashes and digests match, rows 1–966 are identical to TB151, and the row 686 oracle records are byte-identical. It withdraws both TB152-REV patches for three reasons:
+- CB168P read whole-segment pieces (an RA-274 S4 error), which is wrong for an arc starting inside a slide (the stop-switch case). It had no test, and no fixture reaches the code. It also wrote fragment sides for uncut faces, and its exclusion reason was relabelled `Other`.
+- CB168Q accepted records the producer rejects.
+- Both diffs were zero-context, with no preimage hashes.
+
+The replacement diffs pass `-fsyntax-only` with 0 errors, warning counts equal HEAD, and apply stacked on `da57cbe63`. Neither has been built or run.
+
+- [x] RA-275 re-review of `M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-REV`.
+- [ ] **NEXT:** `M6-CP3-CB168P-P13-O49-ARC-PIECE-EDGE-ONLY-OWNERSHIP` (Code + Build, compile only; eight RA-245 targets, `runtimeExecution=false`).
+  - Exact diff `.agents/Directional/Architecture_M6_CP3_CB168P_O49_Arc_Piece_Edge_Only_Ownership_Exact.diff`, SHA-256 `ddc146d198c1ecaa3c8b0f5ec2046a97e8b4c806b1070cf82341d53966f5757e` (`2 0` SurfaceCutGraph.h, `23 0` EGT.cpp, `11 0` EGT.h, `33 0` SCG.cpp, `118 0` tests).
+  - Precheck `git diff --quiet 1df6a09ad HEAD -- src include tests`; `git apply --check`. Preimage hashes are in RA-275 S3.
+  - Adds `trace_arc_segment_pieces` and arc-piece O49 ownership: edge-only part → barrier plus side owners for both faces, no cut, no fragment sides, reason `EdgeOnly`. It is inert until the producer switch.
+  - Adds row 968 `FieldAlignedCarrierOccupancy.TraceArcSegmentPiecesReadTheArcsOwnPartOfASlide`.
+- [ ] **Then:** `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` (Code + Build, test-only, compile only).
+  - Diff `.agents/Directional/Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_Fail_Closed_Exact.diff`, SHA-256 `b30af8e7053ab8ada2920d85569701f3db44e4e8d7a1ba4661b1cc65e84c4a28` (`72 4` tests).
+  - Preimage: tests after CB168P `dc6e600c1ae666835c86447bafde8b40a9ad1fc3cc606f3193e947450472b547`.
+- [ ] **Then:** `M6-CP3-TB153-P13-ARC-PIECE-OWNERSHIP-AND-ROW686-ORACLE-FULL-GATE-EXEC`.
+  - Manifest `.agents/Directional/gates/Architecture_M6_TB153_P13_Arc_Piece_Ownership_And_Row686_Oracle_Full_Gate_Case_Manifest.tsv`, SHA-256 `d5cff5133a579da8416f9eb0cc708b74f2cae6ecdcf805c0526ee99e910912cb` (TB152 + row 968; 968+81). STOP unless:
+    - row 968 PASS;
+    - rows 1–967 except 686 MATCH TB152 under N1–N3, receipts raw;
+    - row 686: two-ring and torus records equal TB152; sphere `oracleAvailable` true and all `boundaryCyclesValid=true`; full sphere record reported (predicted χ6; a change is reported, not a STOP);
+    - census 3/3 MATCH TB151 under N1–N4;
+    - 491/491.
+- [ ] **Then:** `M6-CP3-TB153-…-FULL-GATE-REV`: attribute the row 686 sphere record; freeze the producer switch exactly after the RA-274 S5 and RA-275 S4 checks.
+- Prospective:
+  - producer switch → TB;
+  - → stop switch CB → TB (row 686 χ=2, rows 669/698, four nodes, real-piece conformity);
+  - → CB170 → CB171 → CB172 (O48).
+  - Held: FC-6, TERMINAL-CUT-OUTCOME, row 858 DEFN. Parked: CB145. D11=A, D12=A.
+
+## TB152 independent Review PASS (2026-11-20 UTC) — successors replaced by RA-275
 
 [Independent Review](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md) rechecked 967/967 PASS, prior 966/966 MATCH, all 504 unchanged slide contacts and 491/491 CP2, with exact frozen O49 and later row686 patches. Neither proposed code patch has been implemented or built. O49 CB168P is the only next turn; row686 CB168Q is later. Keep sphere χ+4, rows669/698, H4 and CP3 promotion open; stable 66/17/49, debt1, deferred81.
 
 - [x] `M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-REV` (independent Review, no runtime).
-- [ ] **NEXT:** `M6-CP3-CB168P-P13-EDGE-ONLY-SOURCE-FACE-OWNERSHIP` — exact [patch](.agents/Directional/Architecture_M6_CP3_CB168P_O49_Edge_Only_Source_Face_Ownership_Exact.diff), compile-only.
-- [ ] **LATER:** `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` — separate exact [test-only patch](.agents/Directional/Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_Exact.diff), after independent O49 TB/Review.
+- [x] ~~`M6-CP3-CB168P-P13-EDGE-ONLY-SOURCE-FACE-OWNERSHIP`~~ — withdrawn by RA-275 (segment pieces, no test); patch retained in Git at `e3a7bfc38`.
+- [x] ~~CB168Q zero-context patch~~ — replaced by RA-275's fail-closed exact diff; original retained in Git at `e3a7bfc38`.
 
 ## HISTORICAL — TB152 execution and predecessor
 
-## CURRENT — TB152 full gate PASS; independent TB152 Review next (2026-11-20 UTC)
+## TB152 full gate PASS (2026-11-20 UTC) — historical
 
 [TB152 execution](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Execution_Report_20261120.md): immutable CB168O package `14628449217` (source `1df6a09ad386791a9befddd9658ddc4d5bb795f2`) ran [44739657527](https://github.com/akashskypatel/Directional/actions/runs/44739657527). Result `14630642490` SHA-256 `5bfce8410e736c1fce63c4c6fa9b272b20ff91ceac8044bb339c814bfaa3cd04`: 967/967 PASS; 966/966 MATCH TB151 N1–N3 with all 504 raw slide-contact records unchanged; 491/491 CP2; no rebuild or census. Stable 66/17/49, debt1, deferred81. Source helper remains unwired; no CP3/selector497/D0/H4 or row686 promotion.
 

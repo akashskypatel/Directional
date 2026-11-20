@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-20 UTC; TB152 independent Review):** TB152 967/967 PASS; first 966/966 MATCH TB151 under N1–N3 including all 504 raw slide-contact records; CP2 491/491. The CB168O edge-piece helper is compiled and non-vacuously tested but not connected to production. O49 wiring CB168P is the sole next turn, and row686 real-piece oracle CB168Q is later. Sphere χ+4, rows669/698 exhaustion, four unowned slide contacts and H4 remain unresolved. Stable 66/17/49, debt1, deferred81. [Review](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md).
+**Current currency (2026-11-20 UTC; RA-275):** TB152 967/967 PASS upheld, rows 1–966 identical to TB151 and row 686 oracle records byte-identical; CP2 491/491. [RA-275](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-275--adversarial-re-review-of-this-review-2026-11-20-utc) withdrew the TB152-REV patches: CB168P read whole-segment pieces, which is wrong for slide-cut arcs, and was untested; CB168Q accepted inconsistent records. Exact replacements follow: CB168P arc-piece O49 ownership (inert until the producer switch, row 968), then CB168Q row 686 fail-closed oracle (test-only), then one TB153. Sphere χ+4, rows 669/698 exhaustion (no disc embedding, so ownership is unreached), four unowned slide contacts and H4 remain. Stable 66/17/49, debt1, deferred81.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-20; TB152 independent Review):** Independently verified 967/967 PASS, 966/966 prior rows MATCH, 491/491 CP2 and 504 unmasked slide contacts unchanged. CB168O edge-only winding rule remains unwired. Next CB168P O49-only ownership wiring; later CB168Q row686 independent real-piece oracle. No new census or product promotion; prior reader classification and conformity requirements remain under RA-274.
+**Currency (2026-11-20; RA-275):** TB152 upheld. Next is CB168P: O49 ownership reads the arc's own pieces through `trace_arc_segment_pieces`, and edge-only parts own edge sides only. Then CB168Q (test-only oracle), then TB153 (gate 968 + census). No product promotion. RA-274 S5 and RA-275 S4 checks precede the producer switch.
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.
 
@@ -109,7 +109,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB168P-P13-EDGE-ONLY-SOURCE-FACE-OWNERSHIP` next, using the [exact Review patch](Architecture_M6_CP3_CB168P_O49_Edge_Only_Source_Face_Ownership_Exact.diff), then separate TB. The [row686 real-piece oracle patch](Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_Exact.diff) is a later, separate Code + Build after O49 is verified. TB152 independent Review confirmed only the unwired helper gate; no producer or stop switch is authorized yet. Four slide contacts, χ+4 and rows669/698 remain unresolved.
+**Current priority:** `M6-CP3-CB168P-P13-O49-ARC-PIECE-EDGE-ONLY-OWNERSHIP` with the [exact diff](Architecture_M6_CP3_CB168P_O49_Arc_Piece_Edge_Only_Ownership_Exact.diff), then the stacked test-only `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` ([diff](Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_Fail_Closed_Exact.diff)), then one TB153 over both ([RA-275 S3](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-275--adversarial-re-review-of-this-review-2026-11-20-utc)). No producer or stop switch is authorized yet. Four slide contacts, χ+4 and rows 669/698 remain unresolved.
 
 - **Historical priority (superseded by RA-273):** [RA-272](Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md) had authorized a prose CB168M, now withdrawn.
 

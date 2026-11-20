@@ -23,9 +23,9 @@
 
 ## Recommendation — frozen future patches and stop gates
 
-**Successor 1 (only next turn):** `M6-CP3-CB168P-P13-EDGE-ONLY-SOURCE-FACE-OWNERSHIP` (Code + Build, compile-only). The exact proposed source patch is [`Architecture_M6_CP3_CB168P_O49_Edge_Only_Source_Face_Ownership_Exact.diff`](Architecture_M6_CP3_CB168P_O49_Edge_Only_Source_Face_Ownership_Exact.diff). It changes only `src/geometry/SurfaceCutGraph.cpp::build_source_face_ownership`: one edge-only piece uses `edge_piece_face_side` to select the incident face's oriented orbit; neither face becomes an interior `traceCutFaces` member; edge-side ownership is recorded, other owners skipped. Its unchanged faceThenEdge path, terminal-slit exception, certificate filters and cut barriers must remain valid. **STOP** on a missing/invalid carrier, wrong incident-face side, a new owner in another face, any accepted-row raw change beyond frozen N1–N3 or a new RED. Compile eight RA-245 GMP/GMPXX targets, `runtimeExecution=false`; no test or benchmark in CB. The separate TB must show strict prior-row MATCH, and no production census is claimed for unwired fixture conditions.
+**Successor 1 (only next turn):** `M6-CP3-CB168P-P13-EDGE-ONLY-SOURCE-FACE-OWNERSHIP` (Code + Build, compile-only). The exact proposed source patch is `Architecture_M6_CP3_CB168P_O49_Edge_Only_Source_Face_Ownership_Exact.diff` (withdrawn by [RA-275](#ra-275--adversarial-re-review-of-this-review-2026-11-20-utc); retained in Git at `e3a7bfc38`). It changes only `src/geometry/SurfaceCutGraph.cpp::build_source_face_ownership`: one edge-only piece uses `edge_piece_face_side` to select the incident face's oriented orbit; neither face becomes an interior `traceCutFaces` member; edge-side ownership is recorded, other owners skipped. Its unchanged faceThenEdge path, terminal-slit exception, certificate filters and cut barriers must remain valid. **STOP** on a missing/invalid carrier, wrong incident-face side, a new owner in another face, any accepted-row raw change beyond frozen N1–N3 or a new RED. Compile eight RA-245 GMP/GMPXX targets, `runtimeExecution=false`; no test or benchmark in CB. The separate TB must show strict prior-row MATCH, and no production census is claimed for unwired fixture conditions.
 
-**Successor 2 (later, not started):** `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` (Code + Build, compile-only), after CB168P and its independent TB/Review gate. Exact proposed test-only patch: [`Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_Exact.diff`](Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_Exact.diff). Only row686 selects the new independent face+edge piece interpretation; all other callers keep the chord oracle. This derives its geometry from trace transit points rather than querying the production `exact_trace_segment_pieces` helper. **STOP** if an edge interval is not a valid source-edge subset, if terminal contacts are wrongly extended into slides, if χ changes from 6 before the stop switch without an explained source-backed cause, if any prior selected identity changes, or if the new oracle is merely a second copy of the producer. It must not claim repaired χ2 until a subsequent stop-switch TB proves it.
+**Successor 2 (later, not started):** `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` (Code + Build, compile-only), after CB168P and its independent TB/Review gate. Exact proposed test-only patch: `Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_Exact.diff` (withdrawn by [RA-275](#ra-275--adversarial-re-review-of-this-review-2026-11-20-utc); retained in Git at `e3a7bfc38`). Only row686 selects the new independent face+edge piece interpretation; all other callers keep the chord oracle. This derives its geometry from trace transit points rather than querying the production `exact_trace_segment_pieces` helper. **STOP** if an edge interval is not a valid source-edge subset, if terminal contacts are wrongly extended into slides, if χ changes from 6 before the stop switch without an explained source-backed cause, if any prior selected identity changes, or if the new oracle is merely a second copy of the producer. It must not claim repaired χ2 until a subsequent stop-switch TB proves it.
 
 Both proposed patches are planning artifacts, not implemented source. Each passed `git apply --unidiff-zero --check` on the snapshot; zero-context is used only for the stored diff documents to avoid whitespace-only context lines under the repository whitespace gate. No compile or runtime proof exists for either; the next Code + Build must independently check exact preimages and compile. Do not combine the two code turns, change the production switch, add counts to a digest, or activate H4 in this Review. RA-274 S5 conformity-reader and accepted-chord test inventory remains owned by the later producer-switch review.
 
@@ -51,3 +51,75 @@ Both proposed patches are planning artifacts, not implemented source. Each passe
 | review_check.py boundary | Snapshot lacks Git history; exact selector hashes and source diff boundary checked separately; the script cannot prove history without a Git worktree |
 | STATUS lifecycle maintained | Entry beacon and final beacon per policy; final state written only after documentation transport verification |
 | Pushed to origin, branch in sync | `drive_apply` run `44747990701` completed successfully; eight document paths committed and PR head confirmed at `e3a7bfc38c5ece75cb5ebeebdb6ff2bdbd6e7647` before final cleanup; no product source changed |
+
+## RA-275 — adversarial re-review of this Review (2026-11-20 UTC)
+
+**Verdict: TB152 PASS upheld; both frozen successors withdrawn and replaced by exact, tested patches.** The main CB168P defect originates in **my RA-274 S4**, which told this Review to "read `exact_trace_segment_pieces`"; this Review implemented that instruction faithfully.
+
+### S1 — Evidence (independent, read-only)
+
+- Both ZIP SHA-256 values and GitHub API digests match (TB152 `5bfce841…3cd04`, TB151 `c28d6ecc…1dab`). TB152 967/967 PASS; rows 1–966 have identical (row, test, verdict) to TB151; row 967 ran one test, OK.
+- Row 686 `m3Cp4c2ActualGraphOracle` records are byte-identical in TB151 and TB152. The sphere record ends `producerStatus=error;producerError=CutSearchExhaustedBeforeCellularity` (V18/E30/F18, χ6 vs 2). The torus record is split across lines by an interleaved concurrent line in both artifacts, so readers must parse records by witness, not by line.
+- Stale premise corrected: TB141's `duplicateCutCrossing` appears in no TB151/TB152 log. The sphere and rows 669/698 never establish the disc embedding, and `build_source_face_ownership` runs only after it (`SurfaceCutGraph.cpp:893–898`).
+
+### S2 — Design defects in the frozen successors
+
+1. **CB168P read the segment, not the arc.** It took `exact_trace_segment_pieces(*trace, segmentIndex)`, the whole segment, instead of the arc's own pieces (`sourcePath` split by `sourcePieceCounts`, EPO-3). An arc that starts at a cut inside a slide owns only the edge piece after the cut, while the segment is [face, edge] (row 960 `{slideCut, end}` = {1,1}). The stop switch creates exactly that arc on the sphere (`carrier_contact_slide_position` cuts the struck trace inside its slide). The frozen patch would then mark the face trace-cut by that arc with both its orbits, the O49 defect it was meant to remove, and it is a second decomposition beside the published one (RA-217).
+2. **CB168P had no witness and no test.** No gate row or census fixture reaches the changed code with an edge-only segment:
+   - TB141 gate slides are all faceThenEdge.
+   - BunnyRandom's edge-only receipts stop at `TraceEventPositionNodeConflict` in `build_arcs`.
+   - The sphere does not certify.
+
+   The function is file-local (anonymous namespace, `SurfaceCutGraph.cpp:22–1092`). "Strict prior-row MATCH" passes whether the wiring is right or wrong, so the STOPs "wrong incident-face side / new owner in another face" could not be observed (RA-215, RA-264).
+3. **CB168P published misleading records.**
+   - It wrote `traceFragmentSides` for both incident faces, although neither contains a fragment. That flips `trace_crossed()` (`SurfaceCutGraph.h:100`), the predicate exempting a face from the single-orbit check in `proves_cellularity` (`SurfaceCutGraph.cpp:1116–1117`), and it enters the certificate digest (`:916`).
+   - `arcExclusionReasons.erase(F)` was dead: the end-of-arc loop (`:628–634`) relabels F `Other`. The census would then report an edge-only arc as an unexplained interior incidence.
+4. **CB168Q was sound in mechanism but accepted records the producer rejects.** Writing the slide interval into both incident faces keeps seams paired, which the old one-face boundary path did not. However:
+   - It did not require a terminal contact to lie strictly inside the face piece, as `exact_trace_segment_pieces` does.
+   - It did not require the segment to leave at the slide end.
+   - It added a face piece lying along a face edge as a trace piece.
+   - It read raw `parameter.value` instead of the oracle's own edge parameterization.
+   - Its "χ stays 6" STOP had no derivation: V and E come from the network, and only F is geometric.
+5. **Both diffs were zero-context with no preimage hashes.** A zero-context pure insertion (`@@ -565,0 …`) lands by line number with no placement check.
+
+### S3 — Realignment (exact, runtime-free checks only)
+
+`-fsyntax-only` (GMP defines) shows 0 errors and warnings 22/27/42 for EGT.cpp/SCG.cpp/tests, equal to HEAD. Both diffs pass `git apply --check`, stacked, on `da57cbe63`. No build or run.
+
+| Order | Turn | Exact content |
+|---|---|---|
+| NEXT | `M6-CP3-CB168P-P13-O49-ARC-PIECE-EDGE-ONLY-OWNERSHIP` | Full patch details and the row-968 test are in the expansion below this table. Inert until the producer publishes edge pieces (today `exact_trace_path_between` emits face pieces only and counts are 1, `EmbeddedGraphTopology.cpp:1936`). |
+| Then | `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` (test-only, stacked) | [Diff](Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_Fail_Closed_Exact.diff) SHA-256 `b30af8e7053ab8ada2920d85569701f3db44e4e8d7a1ba4661b1cc65e84c4a28`, `72 4` tests. Preimage: tests after CB168P `dc6e600c1ae666835c86447bafde8b40a9ad1fc3cc606f3193e947450472b547`. Row 686 only reads real pieces. It fails closed on the four record inconsistencies in S2.4 and uses `cp4c_oracle_edge_parameter`. Postimage tests `84c9b548d97137aff498dd69b388086e99529b2cab800d94490a65f0bdb77310`. |
+| Then | `M6-CP3-TB153-P13-ARC-PIECE-OWNERSHIP-AND-ROW686-ORACLE-FULL-GATE-EXEC` | Manifest SHA-256 and STOP rules in the expansion below this table. |
+| Then | `M6-CP3-TB153-P13-…-FULL-GATE-REV` | Attributes any row 686 F/χ change to the four row-963 contacts. Freezes the producer switch (paths + counts + rays + ranks; counts in the digest) after the RA-274 S5 checks and S4 below. |
+
+**CB168P expanded:**
+- [Diff](Architecture_M6_CP3_CB168P_O49_Arc_Piece_Edge_Only_Ownership_Exact.diff), SHA-256 `ddc146d198c1ecaa3c8b0f5ec2046a97e8b4c806b1070cf82341d53966f5757e`.
+- Numstat `2 0` SurfaceCutGraph.h, `23 0` EGT.cpp, `11 0` EGT.h, `33 0` SCG.cpp, `118 0` tests.
+- Preimages (= `da57cbe63`; precheck `git diff --quiet 1df6a09ad HEAD -- src include tests`): EGT.cpp `8b86e46f7baed765d43c0848012f2782babdd1ca0c105475e6f3194a5d156ac9`, EGT.h `78437758477dfdb218258a9114de14bac3fb3a0bce5c95a157e6ff70dc7676bf`, SCG.cpp `8533fa4e99c4e7f64237b90338829629d1a5939a680788ce8f46d2c16fb0a7c4`, SCG.h `b52ecf21e24afaff721e0aa0112faa14594480a7095f3917d29ed3a05d38a28b`, tests `f19009d7aa42c9b1fd5a02b2d1e8988f5a9153baff64368658e797bd26f42658`.
+- Adds `trace_arc_segment_pieces(arc, segment)`, the arc's own part of a segment.
+- In `build_source_face_ownership`, an arc part that is exactly one edge piece:
+  - inserts that edge as a barrier;
+  - gives each incident face the edge-side owner `edge_piece_face_side` assigns (Forward → forward-dart orbit);
+  - leaves the face out of `traceCutFaces` and `traceFragmentSides`;
+  - labels it with the new reason `EdgeOnly`.
+- Row 968 `FieldAlignedCarrierOccupancy.TraceArcSegmentPiecesReadTheArcsOwnPartOfASlide` uses real producer pieces:
+  - The arc from a slide cut owns `{(0,1), 5/8 → v1}` while the segment has 2 pieces.
+  - Today's chord arc owns a face piece.
+  - It covers five rejections.
+
+**TB153 expanded:**
+- [Manifest](gates/Architecture_M6_TB153_P13_Arc_Piece_Ownership_And_Row686_Oracle_Full_Gate_Case_Manifest.tsv) SHA-256 `d5cff5133a579da8416f9eb0cc708b74f2cae6ecdcf805c0526ee99e910912cb`: TB152 byte prefix plus row 968, so 968 + 81 = 1049.
+- STOP unless all of the following hold:
+  - row 968 PASS;
+  - rows 1–967 except 686 MATCH TB152 under N1–N3, receipts raw;
+  - row 686: the two-ring and torus records equal TB152, the sphere keeps `oracleAvailable` true with every `boundaryCyclesValid=true`, and its full record is reported;
+  - census 3/3 MATCH TB151 under N1–N4;
+  - CP2 491/491.
+- Predicted sphere χ: 6 (network V/E unchanged). Any F/χ change is reported, not a STOP.
+
+### S4 — Obligations carried
+
+- **Across-face side of a faceThenEdge slide.** After the switch, a [face, edge] segment's edge piece borders the face across, which gets no side owner from it. This is unchanged today, because the carrier is already a barrier. The producer-switch Review checks per fixture whether an uncut component bordering only a published slide loses its seed.
+- **O49 integration is unwitnessed by any fixture.** The evidence is helper-level (rows 967 and 968) until a plan with an edge-only part certifies.
+- **RA-274 S5 checks stand**, plus: grep accepted tests and diagnostics for `notTraceCutReason` names before the switch.

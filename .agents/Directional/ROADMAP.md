@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB152 independent Review confirms 967/967 gate, 966/966 prior match and 491/491 accepted CP2; prior TB151 three-case census remains; χ+4 and four slide contacts unresolved; CB168O remains unwired, CB168P O49 wiring next, then separate row686 oracle CB168Q; no CP3 acceptance) · **Next milestone:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
+**Completed:** M0–M5 · **Now:** M6 / CP3 (RA-275 upholds TB152 967/967, 966/966 prior match and 491/491 CP2. It replaces CB168P/CB168Q with exact tested patches: arc-piece O49 ownership, then the row 686 fail-closed oracle, then one TB153. χ+4 and four slide contacts unresolved; no CP3 acceptance) · **Next milestone:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
