@@ -2696,25 +2696,19 @@ std::optional<GlobalTopologyPlanError> validate_candidate_structure(
       return failure;
     }
     if (arc.kind == GlobalTopologyArcKind::Trace) {
-      if (arc.sourcePath.size() != arc.sourceFaces.size()) {
+      const auto binding = source_piece_binding_failure(
+          arc.sourceFaces, arc.sourcePieceCounts, arc.sourcePath);
+      if (binding.has_value()) {
         GlobalTopologyPlanError failure =
             error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
         failure.arc = arc.id;
+        if (binding->segment.has_value()) {
+          failure.sourceFace = arc.sourceFaces[*binding->segment];
+        }
         return failure;
       }
-      for (std::size_t index = 0U; index < arc.sourcePath.size(); ++index) {
-        const auto *face = std::get_if<authority::SourceFaceInteriorSupport>(
-            &arc.sourcePath[index].carrier);
-        if (face == nullptr || face->face != arc.sourceFaces[index]) {
-          GlobalTopologyPlanError failure =
-              error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
-          failure.arc = arc.id;
-          failure.sourceFace = arc.sourceFaces[index];
-          return failure;
-        }
-      }
     } else {
-      if (arc.sourcePath.size() != 1U) {
+      if (arc.sourcePath.size() != 1U || !arc.sourcePieceCounts.empty()) {
         GlobalTopologyPlanError failure =
             error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
         failure.arc = arc.id;

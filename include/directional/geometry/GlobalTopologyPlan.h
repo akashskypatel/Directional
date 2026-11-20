@@ -53,6 +53,12 @@ struct GlobalTopologyArc {
   std::size_t onePastLastSegment = 0U;
   std::vector<authority::SourceFaceTopologyKey> sourceFaces;
   authority::ExactSourcePath sourcePath;
+  /**
+   * Trace arcs: how many consecutive `sourcePath` pieces each `sourceFaces`
+   * entry owns, 1 or 2 (a face piece, then an edge piece of that face).
+   * Empty on mandatory and cut arcs.
+   */
+  std::vector<std::size_t> sourcePieceCounts;
 
   auto operator<=>(const GlobalTopologyArc &) const = default;
 };

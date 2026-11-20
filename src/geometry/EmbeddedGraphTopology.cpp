@@ -228,6 +228,7 @@ struct ArcDraft {
   std::size_t onePastLastSegment = 0U;
   std::vector<authority::SourceFaceTopologyKey> sourceFaces;
   authority::ExactSourcePath sourcePath;
+  std::vector<std::size_t> sourcePieceCounts;
 };
 
 bool exact_interior_parameter(const authority::ExactUnitParameter &parameter) {
@@ -1897,6 +1898,8 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
            ++segment) {
         draft.sourceFaces.push_back(trace.segments[segment].sourceFace);
       }
+      // One face chord per segment until the graph publishes real pieces.
+      draft.sourcePieceCounts.assign(draft.sourceFaces.size(), 1U);
       const auto path =
           exact_trace_path_between(trace, firstPosition, secondPosition);
       if (!path.has_value()) {
@@ -1984,7 +1987,8 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
         make_id<authority::NetworkArcId>(index, drafts.size()), draft.kind,
         draft.firstNode, draft.secondNode, draft.mandatoryEdge, draft.trace,
         draft.cutEdge, draft.firstSegment, draft.onePastLastSegment,
-        std::move(draft.sourceFaces), std::move(draft.sourcePath)});
+        std::move(draft.sourceFaces), std::move(draft.sourcePath),
+        std::move(draft.sourcePieceCounts)});
   }
   return arcs;
 }

@@ -3584,6 +3584,97 @@ TEST(GlobalTopologyPlan,
   expectRejected(std::move(subintervalTamper), "split subinterval");
 }
 
+TEST(GlobalTopologyPlan,
+     IndependentValidationBindsTraceSegmentsToSourcePieceCounts) {
+  namespace authority = directional::authority;
+  using directional::geometry::GlobalTopologyArcKind;
+  using directional::geometry::GlobalTopologyPlanCandidate;
+  using directional::geometry::GlobalTopologyPlanErrorCode;
+  Cp3bEventFixture fixture = build_cp3b_event_fixture();
+  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(fixture.atlas.has_value());
+  ASSERT_TRUE(fixture.network.has_value());
+  const auto plan = build_topology_plan(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
+  const auto rebuild = [&](GlobalTopologyPlanCandidate candidate) {
+    return rebuild_topology_plan(fixture.mesh, *fixture.sourceAuthority,
+                                 *fixture.atlas, *fixture.network,
+                                 std::move(candidate));
+  };
+
+  // Every trace segment is still published as one face chord.
+  std::optional<std::size_t> traceIndex;
+  std::optional<std::size_t> edgeArcIndex;
+  for (std::size_t index = 0U; index < plan.arcs().size(); ++index) {
+    const auto &arc = plan.arcs()[index];
+    if (arc.kind != GlobalTopologyArcKind::Trace) {
+      EXPECT_TRUE(arc.sourcePieceCounts.empty()) << index;
+      if (!edgeArcIndex.has_value()) edgeArcIndex = index;
+      continue;
+    }
+    EXPECT_EQ(std::vector<std::size_t>(arc.sourceFaces.size(), 1U),
+              arc.sourcePieceCounts)
+        << index;
+    if (!traceIndex.has_value() &&
+        std::holds_alternative<authority::ExactSourceEdgePoint>(
+            arc.sourcePath.back().second)) {
+      traceIndex = index;
+    }
+  }
+  ASSERT_TRUE(traceIndex.has_value());
+  ASSERT_TRUE(edgeArcIndex.has_value());
+  ASSERT_TRUE(rebuild(plan.validation_candidate()));
+
+  const auto expectBindingRejected = [&](GlobalTopologyPlanCandidate candidate,
+                                         const std::size_t arcIndex,
+                                         const char *label) {
+    const auto rejected = rebuild(std::move(candidate));
+    ASSERT_FALSE(rejected) << label;
+    EXPECT_EQ(GlobalTopologyPlanErrorCode::InvalidSourceBinding,
+              rejected.error().code)
+        << label << ' '
+        << directional::geometry::global_topology_plan_error_code_name(
+               rejected.error().code);
+    EXPECT_EQ(plan.arcs()[arcIndex].id, rejected.error().arc) << label;
+  };
+  auto missing = plan.validation_candidate();
+  missing.arcs[*traceIndex].sourcePieceCounts.clear();
+  expectBindingRejected(std::move(missing), *traceIndex, "missing counts");
+  auto extra = plan.validation_candidate();
+  extra.arcs[*traceIndex].sourcePieceCounts.push_back(1U);
+  expectBindingRejected(std::move(extra), *traceIndex, "extra count");
+  auto doubled = plan.validation_candidate();
+  doubled.arcs[*traceIndex].sourcePieceCounts.front() = 2U;
+  expectBindingRejected(std::move(doubled), *traceIndex, "count sum");
+  auto stray = plan.validation_candidate();
+  stray.arcs[*edgeArcIndex].sourcePieceCounts.push_back(1U);
+  expectBindingRejected(std::move(stray), *edgeArcIndex, "edge-arc count");
+
+  // Split the last chord into a face piece and an edge piece of its face.
+  // With count 2 the structure binding accepts it and only the exact
+  // replay rejects it; with count 1 the binding rejects it.
+  auto split = plan.validation_candidate();
+  auto &arc = split.arcs[*traceIndex];
+  const authority::ExactSourceSupportPiece last = arc.sourcePath.back();
+  const auto &end = std::get<authority::ExactSourceEdgePoint>(last.second);
+  const authority::ExactSourcePoint slideStart{authority::ExactSourceEdgePoint{
+      end.edge, end.parameter / authority::FieldExactRational::from_integer(2)}};
+  ASSERT_NE(last.first, slideStart);
+  arc.sourcePath.back().second = slideStart;
+  arc.sourcePath.push_back(authority::ExactSourceSupportPiece{
+      authority::SourceEdgeSupport{end.edge}, slideStart, last.second});
+  ASSERT_TRUE(authority::exact_source_path_is_canonical(arc.sourcePath));
+  auto unbound = split;
+  expectBindingRejected(std::move(unbound), *traceIndex, "split with count 1");
+  arc.sourcePieceCounts.back() = 2U;
+  const auto replayed = rebuild(std::move(split));
+  ASSERT_FALSE(replayed);
+  EXPECT_EQ(GlobalTopologyPlanErrorCode::RegionBoundaryArcNotOwnedByNetwork,
+            replayed.error().code)
+      << directional::geometry::global_topology_plan_error_code_name(
+             replayed.error().code);
+}
+
 TEST(EmbeddedGraphTopology,
      TerminalContactCanonicalBarycentricsRemapToOrientedSourceFaceForVertexRayRanking) {
   using directional::authority::FieldBranch;
