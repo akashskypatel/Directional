@@ -1,6 +1,0 @@
-{
-  "turn": "M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-EXEC",
-  "purpose": "source snapshot for artifact-only TB152 harness/manifest verification",
-  "source_ref": "1df6a09ad386791a9befddd9658ddc4d5bb795f2",
-  "runtimeExecution": false
-}
