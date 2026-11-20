@@ -1,2 +1,0 @@
-# CB168J Code + Build cleanup; one temporary source-snapshot marker
-.agents/connector-triggers/source-snapshot/m6-cp3-cb168j-20261120-0305.txt

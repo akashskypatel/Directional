@@ -1,1 +1,0 @@
-CB168J exact test-only receipt: source snapshot at trigger commit. No runtime/test execution.
