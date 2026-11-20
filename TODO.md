@@ -1,4 +1,13 @@
-## CURRENT — RA-274: TB151 PASS upheld; reader classification completed; CB168O compiled; TB152 next (2026-11-20 UTC)
+## CURRENT — TB152 full gate PASS; independent TB152 Review next (2026-11-20 UTC)
+
+[TB152 execution](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Execution_Report_20261120.md): immutable CB168O package `14628449217` (source `1df6a09ad386791a9befddd9658ddc4d5bb795f2`) ran [44739657527](https://github.com/akashskypatel/Directional/actions/runs/44739657527). Result `14630642490` SHA-256 `5bfce8410e736c1fce63c4c6fa9b272b20ff91ceac8044bb339c814bfaa3cd04`: 967/967 PASS; 966/966 MATCH TB151 N1–N3 with all 504 raw slide-contact records unchanged; 491/491 CP2; no rebuild or census. Stable 66/17/49, debt1, deferred81. Source helper remains unwired; no CP3/selector497/D0/H4 or row686 promotion.
+
+- [x] **COMPLETE:** `M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-EXEC` (artifact-only Test + Benchmark), [report](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Execution_Report_20261120.md).
+- [ ] **NEXT:** `M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-REV` — independently recheck TB152 full gate, freeze exact O49 ownership wiring and row686 piece-oracle (test-only) patches per [RA-274 S4.2](.agents/Directional/Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Independent_Review_20261120.md#ra-274--adversarial-re-review-of-this-review-2026-11-20-utc). Review only; no source/test runtime or later implementation.
+
+## TB152 predecessor and RA-274 frozen scope (2026-11-20 UTC)
+
+## HISTORICAL — RA-274: TB151 PASS upheld; reader classification completed; CB168O compiled; TB152 next (2026-11-20 UTC)
 
 [RA-274](.agents/Directional/Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Independent_Review_20261120.md#ra-274--adversarial-re-review-of-this-review-2026-11-20-utc) re-derived TB151 (966/966; 964/964 N1–N3; 3/3 N1–N4; controls caught) and checked that CB168M+N reproduce `2d587a2e7` byte-for-byte. It withdraws the reader-classification DEFN and completes the classification in S3. The DEFN repeated EPO-1, had no executing exit and inherited RA-273 S4's errors:
 - `:530/:617` read Mandatory arcs only;
@@ -12,13 +21,13 @@ The EPO-6 side rule is now exact. F takes the forward dart iff F winds the carri
   - Precheck `git diff --quiet 2d587a2e7 HEAD -- src include tests`; `git apply --check`.
   - Adds unwired `edge_piece_face_side` and row 967 `FieldAlignedCarrierOccupancy.EdgePieceFaceSideFollowsTheFaceWindingAlongTheSlide`.
   - [Compile record](.agents/Directional/Architecture_M6_CP3_CB168O_P13_Edge_Piece_Face_Side_Helper_Code_Build_Record_20261120.md): source `1df6a09ad386791a9befddd9658ddc4d5bb795f2`; run 44736786708, artifact 14628449217, GMP/GMPXX, `runtimeExecution=false`.
-- [ ] **NEXT:** `M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-EXEC`. Manifest `.agents/Directional/gates/Architecture_M6_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Case_Manifest.tsv`, SHA-256 `cab375d014112b6ab48fe468003b9a57b2918a717e6f56e7478f0417362c0204` (TB151 + row 967; 967+81). STOP unless:
+- [x] **COMPLETE (historical):** `M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-EXEC`. Manifest `.agents/Directional/gates/Architecture_M6_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Case_Manifest.tsv`, SHA-256 `cab375d014112b6ab48fe468003b9a57b2918a717e6f56e7478f0417362c0204` (TB151 + row 967; 967+81). STOP unless:
   - row 967 PASS;
   - rows 1–966 MATCH TB151 under N1–N3, receipts compared raw;
   - 491/491;
   - no compile, relink, configure or benchmark.
   No census: the helper has no production caller; the TB report shows this by grep.
-- [ ] **Then:** `M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-REV`: freeze the O49 ownership wiring CB and the row 686 piece oracle CB (test-only) as exact patches.
+- [ ] **Next Review (listed above):** `M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-REV`: freeze the O49 ownership wiring CB and the row 686 piece oracle CB (test-only) as exact patches.
 - Prospective:
   - O49 wiring CB → TB → row 686 oracle CB → TB;
   - → producer switch (paths, counts, rays, ranks; counts enter the digest), frozen after the RA-274 S5 checks → TB;

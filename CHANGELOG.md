@@ -1,3 +1,7 @@
+## 2026-11-20 UTC — TB152 immutable edge-piece side-helper gate PASS
+
+[TB152 execution](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Execution_Report_20261120.md): immutable CB168O source `1df6a09ad386791a9befddd9658ddc4d5bb795f2`, package `14628449217`, [run 44739657527](https://github.com/akashskypatel/Directional/actions/runs/44739657527), result `14630642490` SHA-256 `5bfce8410e736c1fce63c4c6fa9b272b20ff91ceac8044bb339c814bfaa3cd04`. Gate 967/967 PASS, prior 966/966 MATCH TB151 N1–N3 including all 504 unmasked slide-contact receipts, accepted CP2 491/491. No rebuild/benchmark/census or production caller; helper remains unwired. No new stable event or candidate, 66/17/49, debt1, deferred81. CP3/selector497/D0/H4/row686 unchanged. Next independent TB152 Review only.
+
 ## 2026-11-20 UTC — CB168O exact edge-piece face-side helper compiled (no runtime)
 
 [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB168O_P13_Edge_Piece_Face_Side_Helper_Code_Build_Record_20261120.md): exact frozen diff `b8daffc9…0d34` applied at semantic source `1df6a09ad386791a9befddd9658ddc4d5bb795f2` (162 additions, 3 paths). Compile-only [run 44736786708](https://github.com/akashskypatel/Directional/actions/runs/44736786708) succeeded on eight GMP/GMPXX targets; artifact `14628449217`; `runtimeExecution=false`. Unwired face-side helper and row 967 only; no tests, digest change, production cutover, or promotion. Next TB152 immutable full gate, separate turn.
