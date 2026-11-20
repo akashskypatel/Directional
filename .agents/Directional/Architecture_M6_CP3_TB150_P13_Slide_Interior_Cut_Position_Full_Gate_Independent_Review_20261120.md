@@ -57,6 +57,6 @@ The Review first inspected several repository files before completing the requir
 | Consolidation under CLEAN_UP_POLICY | TB150 execution and CB168L evidence retained in their named records because this review directly depends on them; no deletion until all references and durable homes can be independently checked. |
 | Successor frozen | One Code + Build turn in the plan; separate TB defined but not started. |
 | Turn boundary held | Review only; no code, test, fixture, selector, benchmark or build mutation; no Directional runtime. |
-| review_check.py boundary | PENDING: run against locally materialized source with Git history; if unavailable, mark unable to verify rather than claim pass. |
+| review_check.py boundary | Ran against extracted source: inconclusive/FAIL because the snapshot has no Git history or rewrite-base commit `8b7299b43`. A separate six-path documentation-only diff, `git diff --check`, patch-apply preflight, and 5,633 source-content hashes passed. |
 | `STATUS` lifecycle maintained | Entry beacon published; final beacon after all other repository writes. |
-| Pushed to origin, branch in sync | PENDING: only mark confirmed with verifiable branch ref after successful documentation application. |
+| Pushed to origin, branch in sync | The remote Drive apply workflow completed successfully at commit `36d73c6110a4098ef27b2f1169a01799e0aca97d`; no local `git status -sb` is possible in the source archive. Final remote ref must be verified before STATUS closeout. |
