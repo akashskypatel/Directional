@@ -1,2 +1,0 @@
-# TB148 Review temporary-state cleanup
-.agents/connector-triggers/source-snapshot/tb148-review-20261120-0415.json
