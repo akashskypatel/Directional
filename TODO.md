@@ -1,4 +1,4 @@
-## CURRENT — RA-274: TB151 PASS upheld; reader classification completed; CB168O next (2026-11-20 UTC)
+## CURRENT — RA-274: TB151 PASS upheld; reader classification completed; CB168O compiled; TB152 next (2026-11-20 UTC)
 
 [RA-274](.agents/Directional/Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Independent_Review_20261120.md#ra-274--adversarial-re-review-of-this-review-2026-11-20-utc) re-derived TB151 (966/966; 964/964 N1–N3; 3/3 N1–N4; controls caught) and checked that CB168M+N reproduce `2d587a2e7` byte-for-byte. It withdraws the reader-classification DEFN and completes the classification in S3. The DEFN repeated EPO-1, had no executing exit and inherited RA-273 S4's errors:
 - `:530/:617` read Mandatory arcs only;
@@ -7,11 +7,12 @@
 The EPO-6 side rule is now exact. F takes the forward dart iff F winds the carrier in the piece's direction, and the face across takes the other.
 
 - [x] RA-274 re-review of `M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-REV`.
-- [ ] **NEXT:** `M6-CP3-CB168O-P13-EDGE-PIECE-FACE-SIDE-HELPER` (Code + Build, compile only; eight RA-245 targets, `runtimeExecution=false`).
+- [x] **COMPLETE:** `M6-CP3-CB168O-P13-EDGE-PIECE-FACE-SIDE-HELPER` (Code + Build, compile only; eight RA-245 targets, `runtimeExecution=false`).
   - Exact diff `.agents/Directional/Architecture_M6_CP3_CB168O_P13_Edge_Piece_Face_Side_Helper_Exact.diff`, SHA-256 `b8daffc93c26260e9ad7af464560fe24de38054db66b57fa866ab1deacfa0d34` (`34 0` cpp, `13 0` h, `115 0` tests).
   - Precheck `git diff --quiet 2d587a2e7 HEAD -- src include tests`; `git apply --check`.
   - Adds unwired `edge_piece_face_side` and row 967 `FieldAlignedCarrierOccupancy.EdgePieceFaceSideFollowsTheFaceWindingAlongTheSlide`.
-- [ ] **Then:** `M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-EXEC`. Manifest `.agents/Directional/gates/Architecture_M6_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Case_Manifest.tsv`, SHA-256 `cab375d014112b6ab48fe468003b9a57b2918a717e6f56e7478f0417362c0204` (TB151 + row 967; 967+81). STOP unless:
+  - [Compile record](.agents/Directional/Architecture_M6_CP3_CB168O_P13_Edge_Piece_Face_Side_Helper_Code_Build_Record_20261120.md): source `1df6a09ad386791a9befddd9658ddc4d5bb795f2`; run 44736786708, artifact 14628449217, GMP/GMPXX, `runtimeExecution=false`.
+- [ ] **NEXT:** `M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-EXEC`. Manifest `.agents/Directional/gates/Architecture_M6_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Case_Manifest.tsv`, SHA-256 `cab375d014112b6ab48fe468003b9a57b2918a717e6f56e7478f0417362c0204` (TB151 + row 967; 967+81). STOP unless:
   - row 967 PASS;
   - rows 1–966 MATCH TB151 under N1–N3, receipts compared raw;
   - 491/491;
