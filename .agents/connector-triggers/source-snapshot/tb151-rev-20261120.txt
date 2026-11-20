@@ -1,3 +1,0 @@
-review_source_snapshot=M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-REV
-requested_at=2026-11-20T11:18:30Z
-reason=exact current documentation base for independent review closeout
