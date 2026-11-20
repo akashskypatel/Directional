@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb168m-compile-20261120-v1",
-  "mailbox_key": "m6-cp3-cb168m-compile",
-  "source_sha": "0d925e4e5e8324a51ebcd2728bde43015ee38ccd",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb168m-gmp-compile"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb168m-docs-20261120-v1",
+  "mailbox_key": "m6-cp3-cb168m-docs",
+  "file_id": "1LaxaTrMKt95tzhQEUu7-SGj8toFGWYkP",
+  "patch_sha256": "e2c26cd52a86ea8278efcc86fd34a33ef478a4dff5f2c933467b01605c2bf906",
+  "base_sha": "0d925e4e5e8324a51ebcd2728bde43015ee38ccd",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(surface-cells): record CB168M compile and hand off CB168N",
+  "retention_days": 14
 }
