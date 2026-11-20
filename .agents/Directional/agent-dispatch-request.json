@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb168k-slide-arrival-compile-20261120-v1",
-  "mailbox_key": "m6-cp3-cb168k-slide-arrival-compile-v1",
-  "source_sha": "0955d28e37a4f17f2488f0f4dd196a2d24aa3c11",
-  "targets": [
-    "directional_benchmarks",
-    "directional_compiled_api_tests",
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_validation_tests"
-  ],
-  "artifact_prefix": "m6-cp3-cb168k-slide-arrival"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb168k-closeout-docs-20261120-v1",
+  "mailbox_key": "m6-cp3-cb168k-closeout-docs-v1",
+  "file_id": "1oDuElRwaVxd3SSdsoQLLGiG26IbDN60H",
+  "patch_sha256": "ac3590454b09f2938fadad92584e7025ca434c839ca60d570f70f6fed3ca8c67",
+  "base_sha": "b6f7705d76cfa512bf992779659ce59611e11fad",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB168K and hand off TB149",
+  "retention_days": 14
 }
