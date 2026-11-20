@@ -1,3 +1,7 @@
+## 2026-11-20 UTC — RA-269 re-review of the TB147 Review
+
+[RA-269](.agents/Directional/Architecture_M6_CP3_TB147_P13_Mutual_Carrier_End_Oracle_Full_Gate_Independent_Review_20261120.md#ra-269--adversarial-re-review-of-this-review-2026-11-20-utc) upholds the TB147 gate. It restores the slide explanation of the sphere +4: four same-face entry-on-sliding-wall contacts, never published as nodes. It withdraws the prose CB168J census and freezes an exact test-only receipt (`73df9e52…ce14`) and TB148 (manifest `4350378c…4c01c`, 963+81). No product, selector or accepted-manifest change.
+
 ## 2026-11-20 UTC — TB147 independent Review (gate verified; sphere residual open)
 
 [M6-CP3-TB147-P13-MUTUAL-CARRIER-END-ORACLE-FULL-GATE-REV](Architecture_M6_CP3_TB147_P13_Mutual_Carrier_End_Oracle_Full_Gate_Independent_Review_20261120.md): independent archive and baseline re-derivation confirms full gate 962/962 PASS, accepted prefix 491/491, 961/961 unaffected MATCH, four exact reciprocal row393 witnesses, and 480 same-face-only sphere slide receipts. Actual cut graph V18/E30/F18 remains χ6 versus source2 (+4); no different-face sphere slide witness exists. Three-case census remains Cylinder PASS, BunnyRandom/Vase expected RED; stable 66/17/49, debt1, deferred81 and no CP3/selector497/D0 promotion. Next only `M6-CP3-CB168J-P13-EXACT-TRACE-CONTACT-CENSUS` exact contact/graph incidence census (Code + Build, compile-only), with independent controls and explicit falsifiers. No product/test/fixture/selector change or runtime in this Review.

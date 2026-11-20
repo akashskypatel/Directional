@@ -69,3 +69,48 @@ A later artifact-only gate, not this Review and not the Code + Build turn, must 
 | review_check.py boundary | Snapshot-only product/selector checks pass; history/ancestry checks unavailable without Git metadata. Full verification not claimed. |
 | `STATUS` lifecycle maintained | Initial and resumed beacons published; terminal COMPLETE beacon is the final repository mutation after documentation verification. Started-at fixed at 2026-11-20T01:53:02Z. |
 | Pushed to origin, branch in sync | Documentation patch pushed through approved Drive workflow; final remote branch head to be checked through GitHub connector. Local history-free snapshot cannot provide an authoritative `git status -sb`. |
+
+## RA-269 — adversarial re-review of this Review (2026-11-20 UTC)
+
+### S1 — What holds
+
+- Gate arithmetic (962/962, 491/491, 961/961 MATCH), the four reciprocal `SphereMutualCarrierEnd` records on nodes 9/10, the census 3/3 MATCH and the unchanged row 686 reading (V18/E30/F18, χ6 vs 2) are upheld. No promotion is upheld.
+- **RA-268's own error, stated plainly.** RA-268 predicted the residual would show as `faces=different` slide coincidences. That sub-prediction was derived from EC3's non-slide criterion without asking what the flag compares. `faces` compares the moving trace's *entered* face with the wall's *sliding* face; a wall that slides along the very edge the moving trace enters across lies in the entered face whenever it slides on that face's side. So `faces=same` is the expected form of a crossing, and the flag does not discriminate crossings from non-crossings. The prediction was mis-specified.
+
+### S2 — Design defects of this Review
+
+1. **The slide explanation was discarded on the mis-specified flag, against a matching count.** TB147 measured exactly **four** distinct sphere slide coincidences, all `movingInSlide=0, wallInSlide=1`, and the residual is exactly **+4**. They are one configuration under the sphere's symmetry: walls 0/1/21/22 at segment 6, moving traces 17/20/5/8 at segment 8; parameters `4038890029339747/2^52` (twice), its 1-ulp neighbour `1009722507334937/2^50`, and its complement `464709598030749/2^52` on a reversed edge. The two mutual stops (−2) were the same kind of symmetric copy. Calling the slide hypothesis "contradicted" because no line said `different` reads a sub-detail, not the measurement.
+2. **The code shows these contacts are never published.** Read-only audit (Haiku, cited lines):
+   - `reportEntryCoincidence` (`SurfaceCellTracing.cpp:4430–4450`) logs the slide case and returns; the EC3 switch (`:4531–4535`) excludes slides.
+   - The contact classifier sees the wall only as the chord entry→`edgeTransitEntry` (`field_aligned_segment_exit_point`, `:3088–3092`). A moving entry strictly inside the slide is `Disjoint` (or `EndpointTouch` exactly at the slide start), and both loops keep only `ProperCrossing` (`:4559–4563`, `:4638–4642`).
+   - The embedded graph does use the true slide path (`exact_trace_segment_pieces`, `EmbeddedGraphTopology.cpp:878–948`, used by `build_arcs` at `:1798`). So a wall arc runs along the edge through the moving trace's entry point, and no node is there: a nodeless crossing in exactly the sense RA-268 S2 derived (+1 each).
+3. **The row 686 oracle reads slides as chords.** `cp4c_oracle_fragments` (`FieldAlignedCurveNetworkTests.cpp:8567–8590`) cuts each segment from `entryPoint` to `cp4c_oracle_trace_segment_exit` (`:8421–8438`), the next entry, and never reads `edgeTransitEntry`. In this configuration the moving trace must still cross the wall's chord inside the face, so the oracle counts the same +1. But the oracle is an H4 consumer, and its χ on slide-bearing fixtures is chord geometry. It must switch with the H4 cutover (CB169); recorded as an obligation.
+4. **The frozen successor violates the turn contract.** `CB168J-…-EXACT-TRACE-CONTACT-CENSUS` is a prose plan, not an exact diff. It asks the implementation agent to design an all-pairs exact contact classifier with cut-graph incidence, positive and negative controls, and a fallback producer receipt. That is monolithic and pre-solves nothing (RA-261: never pass a prose plan as the next CB). It is also not discriminating: the four candidate loci are already named exactly. **Withdrawn**, and replaced below.
+5. Vertex meetings stay an unmeasured alternative (correctly noted by this Review, since `first_field_aligned_carrier_contact` rejects isolated end parameters 0 or 1). They are the fallback only if the slide loci turn out to be owned.
+
+### S3 — Frozen successors
+
+- **`M6-CP3-CB168J-P13-SPHERE-ENTRY-ON-SLIDING-WALL-RECEIPT`** (Code + Build, compile only, test-only).
+  - [Exact diff](Architecture_M6_CP3_CB168J_P13_Sphere_Entry_On_Sliding_Wall_Receipt_Exact.diff), SHA-256 `73df9e52b39e90bca10cffe063774e5070aeb0a5f651f521c83124ec9f70ce14`, numstat `113 0 tests/FieldAlignedCurveNetworkTests.cpp`, preimage `24543328d92082defe4cf82fa83b4d8a83d0c7373d61706a56a14db17ceefb91`.
+  - New test `TraceTerminationCorrection.PrescribedSphereEntryOnSlidingWallNodeOwnershipIsPublishedNonGating`. It builds the same sphere and, for each of the four TB147 pairs, reads the committed traces with exact geometry and prints one line `SphereEntryOnSlidingWall moving= wall= carrier= parameter= movingSegments= wallSegments= committed= movingEntryOnCarrier= previousExitCarrier= previousSlides= wallOutgoingIsCarrier= sameFace= wallSlide=a..b strictlyInside= contactAgrees= sharedEvents=k event[node,kind,edge,roles]…`.
+  - It asserts only the 24 traces and trace id equals index. Ownership is printed, not asserted, so a later switch never needs to weaken it. The geometric fields are computed independently of the contact helper; `contactAgrees` cross-checks it.
+  - Precheck: `git diff --quiet 0f738b1c6d3971c1e414039623336d1baa7965d1 HEAD -- src include tests`; `git apply --check`. `-fsyntax-only -Wall -Wextra -include iterator`: 0 errors, 42 warnings, equal to HEAD. Eight RA-245 GMP/GMPXX targets, `runtimeExecution=false`.
+- **`M6-CP3-TB148-P13-SPHERE-ENTRY-ON-SLIDING-WALL-FULL-GATE-EXEC`.**
+  - Inputs: immutable CB168J package; manifest `gates/Architecture_M6_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Case_Manifest.tsv`, SHA-256 `4350378c95fefeb0dbab6e742b50dcd976af406f865ddef45cc03b35f7b4c01c` (TB146 manifest + row 963; 963 gated + 81 deferred, unchanged deferred file). No census: product source is unchanged (RA-242).
+  - STOP on failure: rows 1–962 MATCH TB147 under the frozen rules (no new normalization; test-only patch); 491/491; row 963 PASS with exactly four `SphereEntryOnSlidingWall` lines.
+  - To Review, verbatim: the four lines, and the row 686 summary line.
+  - **Prediction:** for all four, `committed=1 movingEntryOnCarrier=1 previousExitCarrier=1 previousSlides=0 wallOutgoingIsCarrier=1 sameFace=1 strictlyInside=1 contactAgrees=1 sharedEvents=0`. Four unowned transverse crossings = the +4.
+  - **Falsifiers:** any `sharedEvents>0` means that pair is owned, so the residual is not these four (go to a vertex-meeting receipt). `strictlyInside=0` means a touch at the slide end, not a crossing; route to Review before any switch. `committed=0` means the receipt saw a proposal that never committed.
+- **`M6-CP3-TB148-…-REV`.** If the prediction holds, it freezes the entry-on-sliding-wall contact as two exact CBs:
+  - (a) an inert consumer for a one-sided stop whose struck position is inside the wall's edge piece. CB168D's `carrier_contact_struck_position` accepts only the entry.
+  - (b) the producer switch, in both loops, ordering the arrivals with the existing slide-arrival measure.
+
+  Its falsifier is row 686 χ 6→2, with rows 669/698 passing exhaustion. If the prediction fails, it freezes a vertex-meeting receipt.
+
+### S4 — Sequence
+
+CB168J → TB148 → TB148-REV → (entry-on-sliding-wall consumer CB → producer switch CB → TB, or a vertex-meeting receipt) → CB168 binding → [O49] → CB169 H4 (the row 686 oracle switches with it) → CB170 → CB171 → CB172 (O48). Held: FC-6, TERMINAL-CUT-OUTCOME, row 858 DEFN. Parked: CB145. D11=A, D12=A.
+
+### S5 — Closeout
+
+Runtime-free. `-fsyntax-only` on CB168J; manifest self-check (963 rows, 7 fields, unique test names). Haiku read-only audit of slide geometry in the classifier, the graph and the oracle. No product, test, selector or accepted-manifest bytes changed. Accounting unchanged: 66/17/49, debt1, deferred81, CP2 491/491, selector497 not promoted.
