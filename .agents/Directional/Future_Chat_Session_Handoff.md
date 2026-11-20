@@ -39,16 +39,20 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Regression/debt | Stable 66 events / 17 categories / 49 recurrences; one produced-witness debt; 81 deferred. [Tracker](Regression_Root_Cause_Tracker.md). C5/O42/O43/O46/O47/O48/O49 open; C3/O44/C1 and O45 narrow proxy closed. D11=A, D12=A, D10 deferred, D6 pending. `chainRimSchedules=false`. |
 | Active boundary | Row 686: sphere χ6 vs 2 (+4 = four unowned slide contacts), producer `CutSearchExhaustedBeforeCellularity`. Rows 669/698 exhaust the same way. No gate row reaches source-face ownership, which needs a disc embedding. Production arcs and the row 686 oracle write slides as face chords. EPO-5 (RA-271 S4): slide-interior cuts exist on the edge piece in the piece path only. The stop switch waits for the producer switch. |
 
-## Mandatory next turn — `M6-CP3-CB168R-P13-SPHERE-REAL-PIECE-REACH-RECEIPT` — Code + Build only (test-only)
+## Mandatory next turn — `M6-CP3-CB168R-P13-SPHERE-REAL-PIECE-REACH-RECEIPT` — EXACT NEXT
 
-Apply only the [exact diff](Architecture_M6_CP3_CB168R_P13_Sphere_Real_Piece_Reach_Receipt_Exact.diff), SHA-256 `5aee7b0984444dd35aff935764beabd10070b5ed766b25dbe19b882f7739bfec` (`86 0` tests/FieldAlignedCurveNetworkTests.cpp).
-- Before applying: `git diff --quiet 1df6a09ad HEAD -- src include tests`; the tests preimage must be `f19009d7aa42c9b1fd5a02b2d1e8988f5a9153baff64368658e797bd26f42658`; then `git apply --check`.
-- Build: compile the eight RA-245 GMP/GMPXX targets with `runtimeExecution=false`. Run no tests.
-- Do not touch product source or start CB168Q in the same turn.
-
-Then `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE`, test-only: [diff](Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_On_Receipt_Exact.diff) `0c096c94c8124dbf541e96abc07b4c5810d4705dd6ffd6e7f066ecd6aa91d2e5` (`72 4` tests). Its preimage is the tests file after CB168R, `db2bd6f04cca09ddb61804a2ec92feb7165ab82381ecba90928bbeb1fc691cb3`.
-
-TB153 runs on source whose tests file hash is `632a147f…dcc59` and whose product source is unchanged from `1df6a09ad`. Then TB153: [manifest](gates/Architecture_M6_TB153_P13_Real_Piece_Reach_And_Row686_Oracle_Full_Gate_Case_Manifest.tsv) `fc075b4c33e0f934d8636a4c9c4186d19fea24e5cd6ae88e516c5c6ff1514116`, 968 + 81, gate only. STOP rules are in [RA-276 S3](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#s3--realignment-exact--fsyntax-only-0-errors-warnings-42--head-stacked-git-apply---check-on-546243920).
+- **Type / owner:** CB (Code + Build), implementation agent; authorized by [RA-276 S3](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#s3--realignment-exact--fsyntax-only-0-errors-warnings-42--head-stacked-git-apply---check-on-546243920) and its [closeout](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#review-closeout--ra-275-and-ra-276-supersedes-the-closeout-above).
+- **Objective:** apply the test-only receipt that adds row 968, `TraceTerminationCorrection.PrescribedSphereRealTracePieceReachIsPublishedNonGating`, and compile it.
+- **Read before work:** [RA-276](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc); the [exact diff](Architecture_M6_CP3_CB168R_P13_Sphere_Real_Piece_Reach_Receipt_Exact.diff).
+- **In scope:** the diff only.
+  - SHA-256 `5aee7b0984444dd35aff935764beabd10070b5ed766b25dbe19b882f7739bfec` (`86 0` tests/FieldAlignedCurveNetworkTests.cpp).
+  - Precheck: `git diff --quiet 1df6a09ad HEAD -- src include tests`; tests preimage `f19009d7aa42c9b1fd5a02b2d1e8988f5a9153baff64368658e797bd26f42658`; `git apply --check`.
+  - Postimage tests: `db2bd6f04cca09ddb61804a2ec92feb7165ab82381ecba90928bbeb1fc691cb3`.
+  - Compile the eight RA-245 GMP/GMPXX targets with `runtimeExecution=false`.
+- **Out of scope:** product source, any other test edit, running tests or benchmarks, CB168Q, selectors, digests, the producer switch.
+- **Success evidence:** a compile record with the source SHA, run, artifact and ZIP SHA-256, eight targets, `runtimeExecution=false`, and the postimage hash matched.
+- **On success:** `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE`. This test-only CB applies the [diff](Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_On_Receipt_Exact.diff) `0c096c94c8124dbf541e96abc07b4c5810d4705dd6ffd6e7f066ecd6aa91d2e5` (`72 4` tests) to preimage `db2bd6f0…`, giving postimage `632a147f1929ec45a2087176fb8196283e21295fe3dd2f437263a1f7cdfdcc59`. After it comes TB153 ([manifest](gates/Architecture_M6_TB153_P13_Real_Piece_Reach_And_Row686_Oracle_Full_Gate_Case_Manifest.tsv) `fc075b4c33e0f934d8636a4c9c4186d19fea24e5cd6ae88e516c5c6ff1514116`, STOP rules in RA-276 S3).
+- **On failure/blocker:** a precheck, hash or apply mismatch, or a compile error. `UNKNOWN — STOP`: write STATUS `BLOCKED` and return to a Review. Do not adapt the diff.
 
 ## Turn Sequence
 

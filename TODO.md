@@ -9,12 +9,13 @@
 The four sphere walls slide on their last segment (row 963), so whether the stop switch needs arc-piece ownership depends on each wall trace's `terminalBarrier`. The new receipt prints it.
 
 - [x] RA-276 re-review of `M6-CP3-RA-275-TB152-REV-ADVERSARIAL-REVIEW`.
+- [x] Closeout repair (2026-11-20 16:35 UTC): policy closeout block added for RA-275 and RA-276 (the earlier block named the withdrawn CB168P); the handoff next-turn section now follows the template (exactly one next turn, with success and failure edges).
 - [x] Next-turn confirmations (2026-11-20 15:31 and 16:03 UTC). Origin has no new commits and no CI run has started since 13:53 UTC. Haiku re-verified at `f2d511c37`: the precheck passes, both diffs apply stacked, the manifest is a TB152 byte prefix plus row 968, and the routing agrees. Expected tests hash after CB168Q: `632a147f1929ec45a2087176fb8196283e21295fe3dd2f437263a1f7cdfdcc59`.
 - [ ] **NEXT:** `M6-CP3-CB168R-P13-SPHERE-REAL-PIECE-REACH-RECEIPT` (Code + Build, test-only, compile only; eight RA-245 targets, `runtimeExecution=false`).
   - Diff `.agents/Directional/Architecture_M6_CP3_CB168R_P13_Sphere_Real_Piece_Reach_Receipt_Exact.diff`, SHA-256 `5aee7b0984444dd35aff935764beabd10070b5ed766b25dbe19b882f7739bfec` (`86 0` tests).
   - Precheck `git diff --quiet 1df6a09ad HEAD -- src include tests`; tests preimage `f19009d7aa42c9b1fd5a02b2d1e8988f5a9153baff64368658e797bd26f42658`; `git apply --check`.
   - Adds row 968 `TraceTerminationCorrection.PrescribedSphereRealTracePieceReachIsPublishedNonGating`.
-- [ ] **Then:** `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` (Code + Build, test-only).
+- [ ] **Then (successor on CB168R success; not concurrent):** `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` (Code + Build, test-only).
   - Diff `.agents/Directional/Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_On_Receipt_Exact.diff`, SHA-256 `0c096c94c8124dbf541e96abc07b4c5810d4705dd6ffd6e7f066ecd6aa91d2e5` (`72 4` tests).
   - Preimage: tests after CB168R, `db2bd6f04cca09ddb61804a2ec92feb7165ab82381ecba90928bbeb1fc691cb3`.
 - [ ] **Then:** `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-EXEC`.

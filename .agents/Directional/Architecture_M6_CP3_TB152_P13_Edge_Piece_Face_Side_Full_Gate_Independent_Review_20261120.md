@@ -46,7 +46,7 @@ Both proposed patches are planning artifacts, not implemented source. Each passe
 | Selector manifest | n/a: selector is unchanged, no acceptance or new identity in Review |
 | LESSONS | Existing evidence/oracle and source ownership rules apply; no new distinct pattern |
 | Consolidation under CLEAN_UP_POLICY | n/a: no newly superseded standalone Review artifacts eligible for safe folding; existing historical index preserved |
-| Successor frozen | Exactly one next turn CB168P; falsifiers in Recommendation; CB168Q remains later conditional |
+| Successor frozen | Exactly one next turn CB168P; falsifiers in Recommendation; CB168Q remains later conditional. **Superseded:** withdrawn by RA-275, whose own replacement was withdrawn by RA-276. The current successor is in the closeout at the end of this record. |
 | Turn boundary held | Review-only documents and future diffs; no product, test, fixture, selector, build or runtime mutation |
 | review_check.py boundary | Snapshot lacks Git history; exact selector hashes and source diff boundary checked separately; the script cannot prove history without a Git worktree |
 | STATUS lifecycle maintained | Entry beacon and final beacon per policy; final state written only after documentation transport verification |
@@ -204,3 +204,26 @@ RA-274 S5; RA-275 S4 (across-face side of a faceThenEdge slide); disc-phase-fron
 | `build_source_face_ownership`, `build_regions` fragments (`GTP:1259–1283`, mismatch `:1447–1452`), `build_fragment_corner_incidence` (`GTP:458–704`), `build_cut_node_bindings`, `trace_event_position` | d | Unchanged by the producer switch. The first three are the ownership readers for any arc-piece rule (S2.2–S2.3). |
 
 The `localTraceChords` path (`trace_segment_exit_barycentric`, `GTP:255`) is a chord reader feeding diagnostics only. `carrier_contact_slide_position` has no caller yet (the stop switch).
+
+## Review closeout — RA-275 and RA-276 (supersedes the closeout above)
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | Each manifest is an exact byte prefix of the next: TB151 `2a902d36…` of TB152 `cab375d0…` (RA-275 S1), and TB152 of TB153 `fc075b4c…` (checked with `cmp`, plus row 968). CP2 491/491 accepted; selector497 not promoted. |
+| Decisive claims independently re-derived | RA-275 S1: TB152 ZIP and API digests; (row, test, verdict) for rows 1–966; byte-identical row 686 records. RA-276 S1: row 963 walls slide on their last segment. Also: the segment-reader inventory; `-fsyntax-only` (0 errors, warnings equal to HEAD); diff, preimage and postimage hashes with stacked `git apply`, re-verified at HEAD after RA-276. |
+| Non-vacuity checked | RA-275's row 968 was shown to fail statically (`trace_segment_canonical_exit` is nullopt on slides) and was withdrawn. The new row 968 asserts at least 4 slide segments, guaranteed by row 963's four walls, and prints the switch's own helper results, so a receipt that saw no slides would fail. CB168Q fails closed on records the producer rejects. |
+| Prior obligations discharged/carried | Carried: RA-274 S5; RA-275 S4 (across-face side); disc-phase-front admission at the switch; `EdgeOnly` validator names if O49 lands. O49 moved to held (no witness, off the switch path). The four sphere contacts (O47/C5) and H4 remain open. |
+| Stable accounting | 66 events / 17 categories / 49 recurrences; one produced-witness debt; 81 deferred; CP2 491/491 package `11391685901`; selector unchanged. |
+| New candidates/obligations recorded | No new stable event or candidate. Tracker entries for RA-275 and RA-276 added. |
+| ORIENTATION currency line | RA-276, 2026-11-20 UTC. |
+| ORIENTATION §3 / §4 / §7 / §8 | §3 currency and §7 priority updated. §4 n/a: no witness changed. §8 n/a: the patterns went to LESSONS. |
+| CHANGELOG | RA-275 and RA-276 entries added. |
+| ROADMAP | CP3 "Now" line updated (RA-276). |
+| Selector manifest | n/a: no acceptance and no identity change in a Review. |
+| LESSONS | RA-275 and RA-276 entries added. |
+| Consolidation under CLEAN_UP_POLICY | Withdrawn diffs and the superseded TB153 manifest were removed from the tree; they are retained in Git at `e3a7bfc38` and `41b94c585`, and their links in this record were replaced. Nothing else is eligible. |
+| Successor frozen | Exactly one: `M6-CP3-CB168R-P13-SPHERE-REAL-PIECE-REACH-RECEIPT`. Its precheck, hashes and scope are in RA-276 S3 and the handoff. CB168Q, then TB153, then TB153-REV are later frozen edges, not concurrent turns. |
+| Turn boundary held | Runtime-free. Patches were drafted and checked only in removed scratch worktrees; no product, test, selector or fixture source changed in the tree. |
+| review_check.py boundary | ALL CHECKS PASSED (RA-275 and RA-276). |
+| `STATUS` lifecycle maintained | IN_PROGRESS entry and COMPLETE final beacons for RA-275, RA-276, two next-turn confirmations and this repair; all six fields; successor CB168R. |
+| Pushed to origin, branch in sync | Confirmed with `git status -sb` after the final push of each turn (no ahead/behind). |
