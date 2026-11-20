@@ -1,0 +1,2 @@
+# CB168N temporary source snapshot marker only.
+.agents/connector-triggers/source-snapshot/m6-cp3-cb168n-20261120-0907.txt
