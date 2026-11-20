@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb152-review-docs-20261120-v1",
-  "mailbox_key": "m6-cp3-tb152-review-docs",
-  "file_id": "1TLsjy_j922ZTXorgJmm_iFEnRoGJsHRT",
-  "patch_sha256": "950714633424532a73bfce4cc1f9603bc06b71ad06616552c96ecc662660cc94",
+  "request_id": "m6-cp3-tb152-review-docs-20261120-v2",
+  "mailbox_key": "m6-cp3-tb152-review-docs-v2",
+  "file_id": "1DdRyTWDzRC2y4uWwiVQrzdPnopgRcpQr",
+  "patch_sha256": "8f8fb15126dc67ced7bb2f4c7c6ed854025fb4e92df05e672e92a20d07a5b253",
   "base_sha": "ae7086ba47d1cce935694790d95616faf4c81852",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "docs(review): verify TB152 and freeze O49 and row686 patches"
