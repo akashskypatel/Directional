@@ -1,2 +1,0 @@
-# TB150 temporary source snapshot trigger (preserve dispatcher request and mailbox)
-.agents/connector-triggers/source-snapshot/tb150-20261120-0705.json
