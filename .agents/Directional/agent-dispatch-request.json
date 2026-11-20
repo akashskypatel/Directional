@@ -1,10 +1,9 @@
 {
   "schema_version": 1,
   "operation": "compile",
-  "request_id": "m6-cp3-cb168n-compile-20261120-v1",
-  "mailbox_key": "m6-cp3-cb168n-compile",
+  "request_id": "m6-cp3-cb168n-compile-20261120-v2",
+  "mailbox_key": "m6-cp3-cb168n-compile-v2",
   "source_sha": "2d587a2e7ec00b7dc8d0a24df9f6902f03fec931",
   "targets": ["directional_core", "directional_pipeline", "directional_surface_cell_authority_kernel_tests", "directional_surface_cell_producer_tests", "directional_surface_cell_completion_tests", "directional_surface_cell_validation_tests", "directional_compiled_api_tests", "directional_benchmarks"],
-  "artifact_prefix": "m6-cp3-cb168n-compile",
-  "retention_days": 14
+  "artifact_prefix": "m6-cp3-cb168n-compile"
 }
