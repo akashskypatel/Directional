@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-20 UTC; RA-273):** [RA-273](Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md#ra-273--adversarial-re-review-of-this-review-2026-11-20-utc) upholds TB150 PASS: re-derived 963/963 MATCH N1–N3, census 3/3 MATCH N1–N4, negative controls caught. It withdraws the prose CB168M, which was not exact, needed a two-piece positive the producer replay rejects, and would have broken its own census MATCH through the plan digest. Next: exact `M6-CP3-CB168M-P13-SOURCE-PIECE-BINDING-HELPER` → `M6-CP3-CB168N-P13-SOURCE-PIECE-COUNTS-FIELD` → TB151 ([plan](Architecture_M6_CP3_CB168M_P13_Source_Piece_Counts_Binding_Plan_20261120.md)). Sphere row686 χ6 vs 2 (+4); rows669/698 exhaust; no promotion. Stable 66/17/49, debt1, deferred81.
+**Current currency (2026-11-20 UTC; TB151 execution):** [TB151 execution](Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Execution_Report_20261120.md) 966/966 gate PASS, first 964/964 MATCH TB150 N1–N3, CP2 491/491; separate census 3/3 MATCH TB150 N1–N4. CB168M/CB168N compiled and both new tests passed. The next turn is independent TB151-REV, not product implementation. Sphere row686 χ6 vs source2 (+4), rows669/698 exhaustion and H4 real-piece cutover remain unresolved. Stable 66/17/49, debt1, deferred81.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-20, RA-273):** [RA-273](Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md#ra-273--adversarial-re-review-of-this-review-2026-11-20-utc) re-derived TB150 from the archives and upholds PASS. EPO-3 is now two exact turns ([plan](Architecture_M6_CP3_CB168M_P13_Source_Piece_Counts_Binding_Plan_20261120.md)): CB168M is an unwired `source_piece_binding_failure` plus piece counts from the one decomposition, and CB168N adds the field, an all-ones producer and the wired validator, with no digest change. Counts enter the plan digest at the cutover. The graph still writes face chords; H4 is held.
+**Currency (2026-11-20; TB151):** [TB151 execution](Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Execution_Report_20261120.md) verified 966/966 PASS, 964/964 MATCH TB150, and 3/3 census MATCH TB150. CB168M/CB168N are compiled and runtime-tested at frozen scope. The plan digest remains unchanged, and production graph slides remain face chords. Counts enter the digest only with the later coordinated cutover; H4 is held. Independent TB151-REV is the next turn.
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.
 
@@ -47,7 +47,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB150 964/964 gate PASS, accepted CP2 491/491, prior 963/963 MATCH; census 3/3 MATCH (Cylinder PASS; BunnyRandom/Vase expected RED); four unowned source-edge slide contacts, sphere χ+4. [RA-273](Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md#ra-273--adversarial-re-review-of-this-review-2026-11-20-utc); next exact EPO-3 binding CB168M → CB168N → TB151. CP3/selector497/D0 not promoted. |
+| **M6-CP3 — active** | TB151 966/966 PASS, accepted CP2 491/491, prior 964/964 MATCH TB150; census 3/3 MATCH (Cylinder PASS; BunnyRandom/Vase expected RED). Four unowned edge-slide contacts and sphere χ+4 remain. [TB151 execution](Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Execution_Report_20261120.md); independent TB151-REV next. CP3/selector497/D0 not promoted. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -109,7 +109,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** [RA-273](Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md#ra-273--adversarial-re-review-of-this-review-2026-11-20-utc) authorizes `M6-CP3-CB168M-P13-SOURCE-PIECE-BINDING-HELPER` (exact diff `f65b470d…bf91`), then `M6-CP3-CB168N-P13-SOURCE-PIECE-COUNTS-FIELD` (exact diff `eddf8000…7dc2`), both compile only. `M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-EXEC` follows (manifest `2a902d36…12da`) ([plan](Architecture_M6_CP3_CB168M_P13_Source_Piece_Counts_Binding_Plan_20261120.md)). TB151-REV freezes the cutover split. The slide piece path, row686 oracle, stop switch and sphere repair stay held.
+**Current priority:** `M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-REV` is the next independently verified, runtime-free turn. It must re-derive [TB151 execution](Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Execution_Report_20261120.md) from the full gate and separate census and then freeze the precise EPO-1/O49/edge-piece/row686/cutover order. CB168M and CB168N are compiled and TB151 passed. The slide piece path, row686 oracle, stop switch and sphere repair remain held.
 
 - **Historical priority (superseded by RA-273):** [RA-272](Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md) had authorized a prose CB168M, now withdrawn.
 

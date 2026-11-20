@@ -1,4 +1,4 @@
-## CURRENT — CB168N compile-only PASS; TB151 next (2026-11-20 UTC)
+## CURRENT — TB151 immutable full gate and census PASS; independent TB151-REV next (2026-11-20 UTC)
 
 [RA-273](.agents/Directional/Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md#ra-273--adversarial-re-review-of-this-review-2026-11-20-utc) re-derived TB150: 963/963 MATCH N1–N3 and census 3/3 MATCH N1–N4, with negative controls caught. It withdraws the prose CB168M for three reasons:
 - it was not an exact patch;
@@ -14,12 +14,12 @@ The [frozen plan](.agents/Directional/Architecture_M6_CP3_CB168M_P13_Source_Piec
 - [x] **COMPLETE:** `M6-CP3-CB168N-P13-SOURCE-PIECE-COUNTS-FIELD` (Code + Build, compile only). [Record](.agents/Directional/Architecture_M6_CP3_CB168N_P13_Source_Piece_Counts_Field_Code_Build_Record_20261120.md); source `2d587a2e7ec00b7dc8d0a24df9f6902f03fec931`, [compile run 44711983065](https://github.com/akashskypatel/Directional/actions/runs/44711983065), artifact `14618335833`, `runtimeExecution=false`.
   - Exact diff `.agents/Directional/Architecture_M6_CP3_CB168N_P13_Source_Piece_Counts_Field_Exact.diff`, SHA-256 `eddf8000ad40251a3b8a60b3d197229f8f8b5406b2789998e9c3d96ce4e37dc2`. It applies on the CB168M result.
   - Field, all-ones producer, validator wired, no digest change, row 966.
-- [ ] **NEXT:** `M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-EXEC`. Manifest `2a902d364612071db04ffa5a116cd988c0babccae58308152cb368df0ff612da` (TB150 + rows 965/966; 966+81). STOP unless:
+- [x] **COMPLETE:** `M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-EXEC`. [Execution report](.agents/Directional/Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Execution_Report_20261120.md); [gate run 44716246061](https://github.com/akashskypatel/Directional/actions/runs/44716246061) 966/966 PASS, first 964/964 MATCH TB150 N1–N3, 491/491 CP2; [census run 44719007530](https://github.com/akashskypatel/Directional/actions/runs/44719007530) 3/3 MATCH TB150 N1–N4. Manifest `2a902d364612071db04ffa5a116cd988c0babccae58308152cb368df0ff612da` (TB150 + rows 965/966; 966+81). STOP unless:
   - rows 965 and 966 PASS;
   - rows 1–964 MATCH TB150 under N1–N3, with receipts compared raw;
   - 491/491;
   - census 3/3 MATCH TB150 under N1–N4.
-- [ ] **THEN:** `M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-REV` freezes the cutover split exactly.
+- [ ] **NEXT:** `M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-REV` independently rechecks archived gate and census and freezes the cutover split exactly.
 - Prospective:
   - reader classification (EPO-1; RA-273 S4) → O49/EPO-6 edge-only rule (unwired) → row 686 oracle reads pieces (test-only);
   - → coordinated cutover CB: paths, counts, rays and ranks, with counts entering the digest → TB;
