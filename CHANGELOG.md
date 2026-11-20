@@ -1,3 +1,7 @@
+## 2026-11-20 UTC — CB168M exact source-piece binding helper compiled
+
+[CB168M build record](.agents/Directional/Architecture_M6_CP3_CB168M_P13_Source_Piece_Binding_Helper_Code_Build_Record_20261120.md): frozen exact diff applied at `0d925e4e5e8324a51ebcd2728bde43015ee38ccd`; eight GMP/GMPXX targets compiled [run 44705720371](https://github.com/akashskypatel/Directional/actions/runs/44705720371), package `14615216674`, SHA-256 `87f1d08c808cea12b6e81475275bc86a5809ea2cfdd6fc77cfa48f527f9fba2d`, 28/28 package files verified, `runtimeExecution=false`. Added unwired binding validator, piece counts output and row 965 (compile-valid, runtime untested). TB150 remains the latest runtime authority; 66/17/49, debt one, deferred 81 unchanged. Next only CB168N, not started.
+
 ## 2026-11-20 UTC — RA-273 re-review of the TB150 Review; exact EPO-3 binding split
 
 [RA-273](.agents/Directional/Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md#ra-273--adversarial-re-review-of-this-review-2026-11-20-utc) re-derives TB150 from the immutable archives and upholds PASS: gate 963/963 MATCH TB149 under N1–N3 and census 3/3 MATCH under N1–N4, with negative controls caught. It withdraws the prose CB168M plan for three reasons:
