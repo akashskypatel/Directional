@@ -244,7 +244,9 @@ face_chart_counter_clockwise_ray_order(const FaceChartPoint &origin,
  * A position on a candidate trace. With no `parameter` it is the boundary
  * before segment `segment` (the trace's end when `segment` is the segment
  * count); otherwise it is the exact interior point at `parameter`, in (0, 1),
- * along that segment. The defaulted order is the order along the trace.
+ * along that segment. On a segment with a slide the point lies on the slide's
+ * edge piece, at fraction `parameter` from the slide start to the slide end.
+ * The defaulted order is the order along the trace.
  */
 struct TraceCutPosition {
   std::size_t segment = 0U;
@@ -285,6 +287,18 @@ trace_segment_contact_parameter(const FieldAlignedCandidateTrace &trace,
  * slide, or at a vertex, is not handled here).
  */
 [[nodiscard]] std::optional<TraceCutPosition> carrier_contact_struck_position(
+    const FieldAlignedCandidateTrace &struck,
+    const FieldAlignedTerminalContact &record);
+
+/**
+ * Where a terminal carrier contact cuts the struck trace when the locus lies
+ * strictly inside the struck segment's slide on the same edge: that segment,
+ * at the locus's fraction of the slide. Empty when `struck` is not the
+ * record's struck trace, the record has no carrier locus, the struck segment
+ * does not exist or has no slide on the locus edge, or the locus is not
+ * strictly between the slide's ends.
+ */
+[[nodiscard]] std::optional<TraceCutPosition> carrier_contact_slide_position(
     const FieldAlignedCandidateTrace &struck,
     const FieldAlignedTerminalContact &record);
 
@@ -330,7 +344,9 @@ exact_trace_path_between(const FieldAlignedCandidateTrace &trace,
 
 /**
  * Concatenate the real segment pieces in [first, second). Interior cuts
- * clip only ordinary face pieces. Unwired until the coordinated graph cutover.
+ * clip ordinary face pieces, or the edge piece of a traversed slide; the arc
+ * after a slide cut starts on the edge piece. Unwired until the coordinated
+ * graph cutover.
  */
 [[nodiscard]] std::optional<authority::ExactSourcePath>
 exact_trace_piece_path_between(const FieldAlignedCandidateTrace &trace,

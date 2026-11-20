@@ -839,6 +839,30 @@ std::optional<TraceCutPosition> carrier_contact_struck_position(
   return TraceCutPosition{record.struckSegmentIndex, std::nullopt};
 }
 
+std::optional<TraceCutPosition> carrier_contact_slide_position(
+    const FieldAlignedCandidateTrace &struck,
+    const FieldAlignedTerminalContact &record) {
+  if (struck.id != record.struckTrace || !record.carrierLocus.has_value() ||
+      record.struckSegmentIndex >= struck.segments.size()) {
+    return std::nullopt;
+  }
+  const auto slide =
+      surface_cell_tracing_detail::field_aligned_segment_slide_occupancy(
+          struck.segments[record.struckSegmentIndex]);
+  if (!slide.has_value() || slide->carrier != record.carrierLocus->edge ||
+      slide->from == slide->to) {
+    return std::nullopt;
+  }
+  const authority::FieldExactRational fraction =
+      (record.carrierLocus->parameter.value - slide->from) /
+      (slide->to - slide->from);
+  if (!(authority::FieldExactRational::from_integer(0) < fraction &&
+        fraction < authority::FieldExactRational::from_integer(1))) {
+    return std::nullopt;
+  }
+  return TraceCutPosition{record.struckSegmentIndex, fraction};
+}
+
 bool carrier_contact_is_mutual(const FieldAlignedCandidateTrace &ending,
                                const FieldAlignedCandidateTrace &struck) {
   const auto namesAtEnd = [](const FieldAlignedCandidateTrace &trace,
@@ -971,6 +995,24 @@ static std::optional<authority::ExactSourcePoint> exact_trace_interior_point(
       trace.segments[position.segment].sourceFace, point);
 }
 
+// The exact point of a position on its segment's slide edge piece.
+static std::optional<authority::ExactSourcePoint> exact_trace_slide_point(
+    const FieldAlignedCandidateTrace &trace, const TraceCutPosition &position) {
+  const auto slide =
+      surface_cell_tracing_detail::field_aligned_segment_slide_occupancy(
+          trace.segments[position.segment]);
+  const authority::FieldExactRational &t = *position.parameter;
+  if (!slide.has_value() ||
+      !(t > authority::FieldExactRational::from_integer(0)) ||
+      !(t < authority::FieldExactRational::from_integer(1))) {
+    return std::nullopt;
+  }
+  return authority::canonical_exact_source_boundary_point(
+      authority::FieldBoundaryPoint{
+          slide->carrier, authority::ExactUnitParameter{
+                              slide->from + t * (slide->to - slide->from)}});
+}
+
 std::optional<authority::ExactSourcePath> exact_trace_path_between(
     const FieldAlignedCandidateTrace &trace, const TraceCutPosition &first,
     const TraceCutPosition &second) {
@@ -1016,8 +1058,25 @@ std::optional<authority::ExactSourcePath> exact_trace_piece_path_between(
     const bool clipLast = segmentIndex + 1U == end && second.parameter.has_value();
     if (clipFirst || clipLast) {
       const auto &segment = trace.segments[segmentIndex];
-      if (segment.edgeTransitEntry.has_value() || segment.edgeTransitExit.has_value() ||
-          pieces->size() != 1U) return std::nullopt;
+      if (segment.edgeTransitEntry.has_value() || segment.edgeTransitExit.has_value()) {
+        // A slide cut lies on the edge piece, which a traversed slide ends with.
+        if (authority::support_kind(pieces->back().carrier) !=
+            authority::SourceSupportKind::Edge) return std::nullopt;
+        if (clipFirst) {
+          const auto point = exact_trace_slide_point(trace, first);
+          if (!point.has_value()) return std::nullopt;
+          pieces->erase(pieces->begin(), pieces->end() - 1);
+          pieces->front().first = *point;
+        }
+        if (clipLast) {
+          const auto point = exact_trace_slide_point(trace, second);
+          if (!point.has_value()) return std::nullopt;
+          pieces->back().second = *point;
+        }
+        path.insert(path.end(), pieces->begin(), pieces->end());
+        continue;
+      }
+      if (pieces->size() != 1U) return std::nullopt;
       if (clipFirst) {
         const auto point = exact_trace_interior_point(trace, first);
         if (!point.has_value()) return std::nullopt;
