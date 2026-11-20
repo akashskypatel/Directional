@@ -1,4 +1,4 @@
-## CURRENT — CB168L compiled; TB150 artifact-only gate next (2026-11-20 UTC)
+## CURRENT — TB150 full gate and census MATCH; independent Review next (2026-11-20 UTC)
 
 [RA-271](.agents/Directional/Architecture_M6_CP3_TB149_P13_Slide_Contact_Arrival_Full_Gate_Independent_Review_20261120.md) resolves the TB149 STOP. Gate 963/963 MATCH TB148, 491/491; census 3/3 MATCH TB147 under frozen N1–N4. RA-270 had cited only N1–N3 for the census, and the mismatched bytes are ASLR `GetParam` addresses. Sphere: four `wallCommitted=1 movingArrival=later`. Realignment: `build_arcs` writes slides as face chords and the walls are `faceThenEdge`, so the stop switch needs real pieces (EPO-3 + CB169) first. EPO-5 is amended for the piece path only.
 
@@ -6,10 +6,10 @@
 - [x] **COMPLETE:** `M6-CP3-CB168L-P13-SLIDE-INTERIOR-CUT-POSITION` (Code + Build, compile only). [Build record](.agents/Directional/Architecture_M6_CP3_CB168L_P13_Slide_Interior_Cut_Position_Code_Build_Record_20261120.md); [compile run 44689989713](https://github.com/akashskypatel/Directional/actions/runs/44689989713), artifact `14608341511`; eight targets, GMP/GMPXX, `runtimeExecution=false`.
   - Exact diff `.agents/Directional/Architecture_M6_CP3_CB168L_P13_Slide_Interior_Cut_Position_Exact.diff`, SHA-256 `26401a6beb41aca02b0096c7079016a493b99444c0d92decd5d3b499f5ca8f3a`; numstat `61 2` cpp, `18 2` h, `118 2` tests.
   - Precheck: `git diff --quiet 0955d28e37a4f17f2488f0f4dd196a2d24aa3c11 HEAD -- src include tests`; `git apply --check`. Build the eight RA-245 targets with `runtimeExecution=false`.
-- [ ] **NEXT:** `M6-CP3-TB150-P13-SLIDE-INTERIOR-CUT-POSITION-FULL-GATE-EXEC` (artifact-only Test + Benchmark; not run during CB168L).
+- [x] **COMPLETE:** `M6-CP3-TB150-P13-SLIDE-INTERIOR-CUT-POSITION-FULL-GATE-EXEC` (artifact-only Test + Benchmark); [execution report](.agents/Directional/Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Execution_Report_20261120.md); gate 964/964 PASS, previous 963/963 MATCH TB149 N1–N3, CP2 491/491, census 3/3 MATCH TB149 N1–N4.
   - Manifest `bce554e6723dfaa77f54d070aab7edc6508cd3aaf69a6120871e21b349b78926` (TB148 + row 964; 964+81).
-  - STOP on failure: rows 960 and 964 PASS; rows 1–963 MATCH TB149 (N1–N3, receipts compared raw), with 491/491; census 3/3 MATCH TB149 (N1–N4).
-- [ ] **Then:** `M6-CP3-TB150-…-REV`: freeze the exact EPO-3 binding CB (`sourcePieceCounts`, exact validator, producer all-ones, inert) and its TB.
+  - Verified rows 960 and 964 PASS; all 504 slide-contact arrival records preserved; 81 deferred unchanged. No product/selector promotion.
+- [ ] **NEXT:** `M6-CP3-TB150-P13-SLIDE-INTERIOR-CUT-POSITION-FULL-GATE-REV`: freeze the exact EPO-3 binding CB (`sourcePieceCounts`, exact validator, producer all-ones, inert) and its TB.
 - Prospective:
   - → EPO-3 TB/REV → CB169 H4 cutover (EPO-2/3/4/6, O49, row 686 oracle pieces) → TB/REV
   - → wall-loop stop switch CB (struck cut from `carrier_contact_slide_position`) → TB (row 686 χ=2, rows 669/698 past exhaustion, four nodes)

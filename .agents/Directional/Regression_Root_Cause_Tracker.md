@@ -1,3 +1,7 @@
+## 2026-11-20 — TB150 immutable gate/census (no new stable event)
+
+[TB150 execution](Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Execution_Report_20261120.md): 964/964 full gate, 491/491 CP2 prefix, rows 960/964 PASS and 963/963 previous records MATCH TB149 under frozen N1–N3; the 504 slide-contact receipts remain unchanged. Census 3/3 MATCH TB149 under frozen N1–N4: Cylinder PASS; BunnyRandom/Vase remain expected RED at `SurfaceCellDesignAcceptanceTests.cpp:493`. These are carried O47/C5 and deferred production observations, not new regressions; no product semantics or stable regression signature changed. Stable **66 events / 17 categories / 49 recurrences**, one produced-witness debt and 81 deferred. Do not promote CP3, selector497, D0 or H4; next independent TB150 Review owns the EPO-3 plan.
+
 ## 2026-11-20 — RA-271 TB149 Review (no new stable event)
 
 O47/C5: arrival order measured, all four sphere contacts are `later` on committed walls. The repair depends on H4 because production arcs write slides as chords (`exact_trace_path_between`), so the stop switch is ordered after EPO-3 and CB169. TB149's census STOP was a comparator-contract omission in RA-270 (N4), not a product change. Counts unchanged: 66 events, 17 categories, 49 recurrences, one produced-witness debt, 81 deferred.
