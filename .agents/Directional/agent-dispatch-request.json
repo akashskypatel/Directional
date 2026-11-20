@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb150-review-docs-20261120-v1",
-  "mailbox_key": "m6-cp3-tb150-review-docs",
-  "file_id": "12sHRsbQHno77dbdS8xeEDEHpfeVx6_0L",
-  "patch_sha256": "b637888344b499d7be451015dcf324d3beea39fff52ed8b5feae00b385c5d6db",
-  "base_sha": "17fd936991ee0617874c04ae0e7080b7d5ab88a5",
+  "request_id": "m6-cp3-cb168m-source-piece-helper-20261120-v1",
+  "mailbox_key": "m6-cp3-cb168m-source-piece-helper",
+  "file_id": "1joJQXsXVsINn-6KUTzlFokRLjbhaYnsx",
+  "patch_sha256": "579e28642d3580260efa014431dfcd9d43e1bbb8fdd28090ba39bfc3998c4572",
+  "base_sha": "150074bcc2d55dcdae99039b42d9d262234b9e46",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(surface-cells): independently review TB150 and freeze exact EPO-3 binding",
+  "commit_message": "feat(surface-cells): add exact source-piece binding helper (CB168M)",
   "retention_days": 14
 }
