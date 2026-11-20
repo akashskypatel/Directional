@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb151-rev-docs-20261120-v2",
+  "request_id": "m6-cp3-tb151-rev-docs-20261120-v3",
   "mailbox_key": "m6-cp3-tb151-rev-docs",
-  "file_id": "1_wDPMaIRz9YNmgKfD75Y2AsTzDR4uS49",
-  "patch_sha256": "5a839b287e96209b1380268c7b4d8da0e89b74318edcb1bf1138ea2a1435d972",
+  "file_id": "1CRtoe6VnhvNXOC1odmumIUJSTJr4gvuD",
+  "patch_sha256": "05fbc0474c3ca50c5853a111abf600d74299763073b17f0f20daf7fa415d6a5a",
   "base_sha": "5af4df166deb616161d736e5b3c0d4d984b7e752",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(surface-cells): independently review TB151 gate and freeze EPO-1 reader definition"
+  "commit_message": "docs(surface-cells): independently review TB151 gate and freeze EPO-1 reader classification"
 }
