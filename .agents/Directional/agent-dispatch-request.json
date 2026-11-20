@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb151-docs-20261120-v1",
-  "mailbox_key": "m6-cp3-tb151-docs",
-  "file_id": "1OjMyG7_8ui8hWOixJTM31pZx_j7Hp4VI",
-  "patch_sha256": "aa9d6a74ce42bd7c17c2352baf44cc1f05bb722b140654e262957d077c2042a9",
-  "base_sha": "c5c0b6d1411d9c357d724487aa92355f00435ed6",
+  "request_id": "m6-cp3-tb151-rev-docs-20261120-v1",
+  "mailbox_key": "m6-cp3-tb151-rev-docs",
+  "file_id": "1GzNIzuU7klUiBytXMxtWmEJ1dpAz4LSh",
+  "patch_sha256": "107af0adbd764a77c061bbbd9e5e12bfd3114259f2efdcdff0fef69da3b0a6c9",
+  "base_sha": "5af4df166deb616161d736e5b3c0d4d984b7e752",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(surface-cells): close immutable TB151 gate and census"
+  "commit_message": "docs(surface-cells): independently review TB151 gate and freeze EPO-1 reader definition"
 }
