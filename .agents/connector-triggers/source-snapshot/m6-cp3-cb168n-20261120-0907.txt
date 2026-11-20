@@ -1,0 +1,3 @@
+Source snapshot for M6-CP3-CB168N-P13-SOURCE-PIECE-COUNTS-FIELD.
+Freeze source SHA c663f7cc59257d59f36ed17a696e80092929fed8.
+No semantic change. Snapshot read authority only.
