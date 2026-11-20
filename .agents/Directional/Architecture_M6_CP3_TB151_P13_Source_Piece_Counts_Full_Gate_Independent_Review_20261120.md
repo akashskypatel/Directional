@@ -50,6 +50,6 @@ The immutable TB151 semantic source is `2d587a2e7ec00b7dc8d0a24df9f6902f03fec931
 | Consolidation under CLEAN_UP_POLICY | Current TB151 execution, active RA-273 chain, and exact CB168M/N records remain needed for cutover; no current authority folded or deleted |
 | Successor frozen | `M6-CP3-DEFN-P13-SOURCE-ARC-READER-CLASSIFICATION`; falsifiers and stop rules in successor plan |
 | Turn boundary held | Runtime-free analysis of archived results; no source, test, fixture, selector, benchmark or workflow modifications |
-| review_check.py boundary | Not run against a history-complete checkout; source snapshot has no `.git` history. This check remains open. Exact-path diff and `git apply --check` passed. |
+| review_check.py boundary | Invoked on a temporary source snapshot: code/test and selector checks PASS; full script FAIL because Git history for `8b7299b43` is absent. Verified all original protected headings against GitHub historical blobs and the exact remote changed-file set. History-complete execution remains unverified. |
 | `STATUS` lifecycle maintained | Entry written on 2026-11-20T11:13:24Z; final beacon must be the last repository mutation |
-| Pushed to origin, branch in sync | Requires remote patch-apply success and final branch-head confirmation; not claimed by this record alone |
+| Pushed to origin, branch in sync | Drive application [run 44729296206](https://github.com/akashskypatel/Directional/actions/runs/44729296206) succeeded; applied commit `4751c22806070145d98ebb69aeda1161d9b1df28` verified as PR #8 head (before this small documentation correction). No local source checkout push was performed. |
