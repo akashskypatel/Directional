@@ -1,3 +1,13 @@
+## 2026-11-20 — RA-276 re-review of RA-275 (no new stable event)
+
+[RA-276](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc): TB152 PASS stands, with no regression event or candidate. These are design corrections only:
+- RA-275's frozen row 968 would have failed (`trace_segment_canonical_exit` is nullopt on slides);
+- O49 has three ownership readers, and RA-275 wired one;
+- O49 does not gate the producer switch;
+- the switch precondition is unmeasured.
+
+Row 963's four walls slide on their last segment. Next: CB168R receipt, CB168Q oracle, TB153. O47/C5/O49/H4 open. Stable 66/17/49, debt one, 81 deferred, CP2 491/491.
+
 ## 2026-11-20 — RA-275 re-review of the TB152 Review (no new stable event)
 
 [RA-275](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-275--adversarial-re-review-of-this-review-2026-11-20-utc) upheld TB152 on an independent re-derivation: ZIP hashes and digests match, rows 1–966 are identical to TB151, and the row 686 oracle records are byte-identical. There is no regression event or candidate. The sphere stops at `CutSearchExhaustedBeforeCellularity` (TB141's `duplicateCutCrossing` is absent from TB151/TB152), so no gate row reaches source-face ownership. These are design corrections, not runtime defects:

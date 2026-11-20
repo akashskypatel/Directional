@@ -1,3 +1,13 @@
+## 2026-11-20 UTC — RA-276: RA-275 realigned; real-piece reach receipt and rebased row 686 oracle frozen
+
+[RA-276](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc) withdrew RA-275's CB168P (`ddc146d1…`, retained in Git at `41b94c585`) for four reasons:
+- its row 968 called a chord helper that rejects slide segments, so it would fail;
+- it wired only the certifier, although the plan's fragment and corner readers also own trace-touched faces;
+- O49 does not gate the producer switch, because its readers read segments;
+- the switch's precondition was never measured.
+
+Frozen: CB168R (`5aee7b09…bfec`), a test-only sphere real-piece reach receipt as row 968; CB168Q (`0c096c94…d2e5`), the same fail-closed oracle rebased; and TB153 (manifest `fc075b4c…4116`, 968+81, no census). Checks: `-fsyntax-only` with no new warnings. There is no runtime evidence yet. Stable 66/17/49.
+
 ## 2026-11-20 UTC — RA-275: TB152 upheld; O49 wiring and row 686 oracle patches replaced
 
 [RA-275](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-275--adversarial-re-review-of-this-review-2026-11-20-utc) independently re-derived TB152 (967/967; rows 1–966 identical to TB151; row 686 oracle records byte-identical). It withdrew the TB152 Review's CB168P, which read whole-segment pieces instead of the arc's own (an RA-274 S4 error), was untested and unreachable, and wrote fragment sides for uncut faces. It also withdrew CB168Q, which accepted records the producer rejects; both diffs were zero-context. Replacements: CB168P (`ddc146d1…757e`: `trace_arc_segment_pieces`, arc-piece O49 ownership, `EdgeOnly` reason, row 968; inert until the producer switch) and CB168Q (`b30af8e7…4a28`, test-only, fail-closed). One TB153 covers both: manifest `d5cff513…12cb`, 968+81, census 3/3. The diffs pass `-fsyntax-only` with no new warnings; there is no runtime evidence yet. Stable 66/17/49.

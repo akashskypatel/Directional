@@ -1,5 +1,5 @@
 diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
-index bea328c0c..05e107d58 100644
+index a20c4b1af..7c4a6cc29 100644
 --- a/tests/FieldAlignedCurveNetworkTests.cpp
 +++ b/tests/FieldAlignedCurveNetworkTests.cpp
 @@ -8657,7 +8657,8 @@ bool cp4c_oracle_angle_less(const Cp4cOraclePoint &origin,

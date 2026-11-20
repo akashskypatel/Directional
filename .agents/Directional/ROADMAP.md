@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (RA-275 upholds TB152 967/967, 966/966 prior match and 491/491 CP2. It replaces CB168P/CB168Q with exact tested patches: arc-piece O49 ownership, then the row 686 fail-closed oracle, then one TB153. χ+4 and four slide contacts unresolved; no CP3 acceptance) · **Next milestone:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
+**Completed:** M0–M5 · **Now:** M6 / CP3 (RA-276: TB152 967/967 stands. Two test-only CBs measure real-piece reach on the sphere and switch the row 686 oracle to real pieces, then one TB153 decides the producer switch's shape. O49 is off the switch path; χ+4 and four slide contacts unresolved; no CP3 acceptance) · **Next milestone:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

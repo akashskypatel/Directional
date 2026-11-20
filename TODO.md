@@ -1,4 +1,41 @@
-## CURRENT — RA-275: TB152 upheld; CB168P/CB168Q replaced by exact, tested patches; one TB153 (2026-11-20 UTC)
+## CURRENT — RA-276: RA-275 realigned; sphere real-piece reach receipt next (2026-11-20 UTC)
+
+[RA-276](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc) re-reviewed RA-275. TB152 PASS stands. RA-275's CB168P is withdrawn (retained in Git at `41b94c585`):
+- Its row 968 asserted a chord path from inside a slide, which `trace_segment_canonical_exit` makes impossible, so it would fail.
+- It wired one of three ownership readers. The other two are plan fragments (`GlobalTopologyPlan.cpp:1259–1283`) and corner incidence (`:458–704`).
+- O49's readers read trace segments, so the producer switch does not change them.
+- The switch's precondition, that real pieces exist for every sphere trace, was never measured.
+
+The four sphere walls slide on their last segment (row 963), so whether the stop switch needs arc-piece ownership depends on each wall trace's `terminalBarrier`. The new receipt prints it.
+
+- [x] RA-276 re-review of `M6-CP3-RA-275-TB152-REV-ADVERSARIAL-REVIEW`.
+- [ ] **NEXT:** `M6-CP3-CB168R-P13-SPHERE-REAL-PIECE-REACH-RECEIPT` (Code + Build, test-only, compile only; eight RA-245 targets, `runtimeExecution=false`).
+  - Diff `.agents/Directional/Architecture_M6_CP3_CB168R_P13_Sphere_Real_Piece_Reach_Receipt_Exact.diff`, SHA-256 `5aee7b0984444dd35aff935764beabd10070b5ed766b25dbe19b882f7739bfec` (`86 0` tests).
+  - Precheck `git diff --quiet 1df6a09ad HEAD -- src include tests`; tests preimage `f19009d7aa42c9b1fd5a02b2d1e8988f5a9153baff64368658e797bd26f42658`; `git apply --check`.
+  - Adds row 968 `TraceTerminationCorrection.PrescribedSphereRealTracePieceReachIsPublishedNonGating`.
+- [ ] **Then:** `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` (Code + Build, test-only).
+  - Diff `.agents/Directional/Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_On_Receipt_Exact.diff`, SHA-256 `0c096c94c8124dbf541e96abc07b4c5810d4705dd6ffd6e7f066ecd6aa91d2e5` (`72 4` tests).
+  - Preimage: tests after CB168R, `db2bd6f04cca09ddb61804a2ec92feb7165ab82381ecba90928bbeb1fc691cb3`.
+- [ ] **Then:** `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-EXEC`.
+  - Manifest `.agents/Directional/gates/Architecture_M6_TB153_P13_Real_Piece_Reach_And_Row686_Oracle_Full_Gate_Case_Manifest.tsv`, SHA-256 `fc075b4c33e0f934d8636a4c9c4186d19fea24e5cd6ae88e516c5c6ff1514116` (TB152 + row 968; 968+81).
+  - **No census**: product source is unchanged, and the TB shows this by diff grep.
+  - STOP unless:
+    - row 968 PASS, with its lines reported verbatim;
+    - rows 1–967 except 686 MATCH TB152 under N1–N3, receipts raw;
+    - row 686: two-ring and torus records equal TB152 (whole records); sphere `oracleAvailable` true and all `boundaryCyclesValid=true`; sphere record reported (χ6 predicted; a change is reported, not a STOP);
+    - 491/491.
+- [ ] **Then:** `M6-CP3-TB153-…-FULL-GATE-REV`:
+  - attribute the row 686 sphere record;
+  - if row 968 shows no rejected segments and no path or binding failures, freeze an unwired piece-ray helper with a test, then the switch CB; otherwise freeze the producer-rule fix first;
+  - decide from the walls' `terminalBarrier` whether arc-piece ownership is needed before the stop switch.
+- Prospective:
+  - producer switch → TB;
+  - → [arc-piece ownership helper → three readers, only if needed];
+  - → stop switch CB → TB (row 686 χ=2, rows 669/698, four nodes, real-piece conformity);
+  - → CB170 → CB171 → CB172 (O48).
+  - O49 is held until a witness exists. Held: FC-6, TERMINAL-CUT-OUTCOME, row 858 DEFN. Parked: CB145. D11=A, D12=A.
+
+## RA-275 (2026-11-20 UTC) — CB168P/TB153 plan withdrawn by RA-276
 
 [RA-275](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-275--adversarial-re-review-of-this-review-2026-11-20-utc) re-derived TB152: ZIP hashes and digests match, rows 1–966 are identical to TB151, and the row 686 oracle records are byte-identical. It withdraws both TB152-REV patches for three reasons:
 - CB168P read whole-segment pieces (an RA-274 S4 error), which is wrong for an arc starting inside a slide (the stop-switch case). It had no test, and no fixture reaches the code. It also wrote fragment sides for uncut faces, and its exclusion reason was relabelled `Other`.
@@ -8,22 +45,22 @@
 The replacement diffs pass `-fsyntax-only` with 0 errors, warning counts equal HEAD, and apply stacked on `da57cbe63`. Neither has been built or run.
 
 - [x] RA-275 re-review of `M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-REV`.
-- [ ] **NEXT:** `M6-CP3-CB168P-P13-O49-ARC-PIECE-EDGE-ONLY-OWNERSHIP` (Code + Build, compile only; eight RA-245 targets, `runtimeExecution=false`).
+- [x] ~~`M6-CP3-CB168P-P13-O49-ARC-PIECE-EDGE-ONLY-OWNERSHIP`~~ (withdrawn by RA-276; retained in Git at `41b94c585`) (Code + Build, compile only; eight RA-245 targets, `runtimeExecution=false`).
   - Exact diff `.agents/Directional/Architecture_M6_CP3_CB168P_O49_Arc_Piece_Edge_Only_Ownership_Exact.diff`, SHA-256 `ddc146d198c1ecaa3c8b0f5ec2046a97e8b4c806b1070cf82341d53966f5757e` (`2 0` SurfaceCutGraph.h, `23 0` EGT.cpp, `11 0` EGT.h, `33 0` SCG.cpp, `118 0` tests).
   - Precheck `git diff --quiet 1df6a09ad HEAD -- src include tests`; `git apply --check`. Preimage hashes are in RA-275 S3.
   - Adds `trace_arc_segment_pieces` and arc-piece O49 ownership: edge-only part → barrier plus side owners for both faces, no cut, no fragment sides, reason `EdgeOnly`. It is inert until the producer switch.
   - Adds row 968 `FieldAlignedCarrierOccupancy.TraceArcSegmentPiecesReadTheArcsOwnPartOfASlide`.
-- [ ] **Then:** `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` (Code + Build, test-only, compile only).
+- [x] ~~CB168Q on CB168P~~ (rebased onto CB168R by RA-276).
   - Diff `.agents/Directional/Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_Fail_Closed_Exact.diff`, SHA-256 `b30af8e7053ab8ada2920d85569701f3db44e4e8d7a1ba4661b1cc65e84c4a28` (`72 4` tests).
   - Preimage: tests after CB168P `dc6e600c1ae666835c86447bafde8b40a9ad1fc3cc606f3193e947450472b547`.
-- [ ] **Then:** `M6-CP3-TB153-P13-ARC-PIECE-OWNERSHIP-AND-ROW686-ORACLE-FULL-GATE-EXEC`.
+- [x] ~~TB153 over CB168P+CB168Q~~ (replaced by RA-276's TB153).
   - Manifest `.agents/Directional/gates/Architecture_M6_TB153_P13_Arc_Piece_Ownership_And_Row686_Oracle_Full_Gate_Case_Manifest.tsv`, SHA-256 `d5cff5133a579da8416f9eb0cc708b74f2cae6ecdcf805c0526ee99e910912cb` (TB152 + row 968; 968+81). STOP unless:
     - row 968 PASS;
     - rows 1–967 except 686 MATCH TB152 under N1–N3, receipts raw;
     - row 686: two-ring and torus records equal TB152; sphere `oracleAvailable` true and all `boundaryCyclesValid=true`; full sphere record reported (predicted χ6; a change is reported, not a STOP);
     - census 3/3 MATCH TB151 under N1–N4;
     - 491/491.
-- [ ] **Then:** `M6-CP3-TB153-…-FULL-GATE-REV`: attribute the row 686 sphere record; freeze the producer switch exactly after the RA-274 S5 and RA-275 S4 checks.
+- [x] ~~RA-275 TB153-REV scope~~ (replaced by RA-276).
 - Prospective:
   - producer switch → TB;
   - → stop switch CB → TB (row 686 χ=2, rows 669/698, four nodes, real-piece conformity);
