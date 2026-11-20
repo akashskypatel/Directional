@@ -1,2 +1,0 @@
-Snapshot trigger for canonical turn M6-CP3-CB168K-P13-SLIDE-CONTACT-ARRIVAL-RECEIPT.
-Source authority after STATUS entry: 985e6749388c0455611beb1fe206f960774a27ba.
