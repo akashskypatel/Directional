@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB147 independent Review upholds 962/962 gate and 491/491 prefix; sphere +4 graph residual remains unowned, three-fixture census still 1/3; exact source-contact measurement next, not CP3 acceptance) · **Next milestone:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB148 independent Review verifies 963/963 gate, 491/491 accepted prefix and four exact unowned sliding-wall contacts; χ+4 remains; inert consumer next, no CP3 acceptance) · **Next milestone:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
