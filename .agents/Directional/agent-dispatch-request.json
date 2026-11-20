@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb168o-drive-apply-20261120-v1",
-  "mailbox_key": "m6-cp3-cb168o-drive-apply",
-  "file_id": "1JtTVqomkyJB8Y7KuZEPw9V4oYcp8xx1f",
-  "patch_sha256": "b5d99ddc6d6614af6b8b57b14f77f2dd454fa8c4f7e3b520b40ef78dbb9360b8",
-  "base_sha": "04a6e7945445b295eba577eecccc64a0322025e9",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(surface-cells): add unwired edge-piece face-side helper"
+  "operation": "compile",
+  "request_id": "m6-cp3-cb168o-compile-20261120-v1",
+  "mailbox_key": "m6-cp3-cb168o-compile",
+  "source_sha": "1df6a09ad386791a9befddd9658ddc4d5bb795f2",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb168o-compile"
 }
