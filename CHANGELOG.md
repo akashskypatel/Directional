@@ -1,3 +1,7 @@
+## 2026-11-20 UTC — CB168H reciprocal mutual carrier-end oracle (compile PASS)
+
+Exact RA-268 frozen test-only diff applied (+87/-1), source `63563a40eda9c6712970f7d9063f343a28e0fdd0`; [compile run 44645373199](https://github.com/akashskypatel/Directional/actions/runs/44645373199), immutable artifact `14587824913` ZIP SHA-256 `67494ea0138b1978e4ebb4434a4b6bcace048e2e27cb409df167b2c448a45c28`, all eight GMP/GMPXX targets and `runtimeExecution=false`. No runtime test, acceptance, or product change. [Record](.agents/Directional/Architecture_M6_CP3_CB168H_P13_Mutual_Carrier_End_Oracle_Code_Build_Record_20261120.md). Next `M6-CP3-CB168I-P13-SLIDE-COINCIDENCE-RECEIPT`; TB147 remains later.
+
 ## 2026-11-19 — RA-268 re-review of TB146 Review
 
 TB146 RED upheld; row 393 is a stale index premise, which RA-267 mis-predicted as PASS. The frozen test-only CB168H oracle syntax-checks clean. The sphere's cut-search exhaustion is re-located to the trace graph: the independent oracle shows χ 6 vs 2 with every face a disc, which fits nodeless trace crossings (CB168G registered 2 of 6). New exact CB168I adds a slide-coincidence receipt (inert), and TB147 is frozen. No product change in this turn. [RA-268](.agents/Directional/Architecture_M6_CP3_TB146_P13_Transverse_Entry_Mutual_Stop_Full_Gate_Independent_Review_20261119.md#ra-268--adversarial-re-review-of-this-review-2026-11-19-utc).
