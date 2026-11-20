@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb148-rev-docs-20261120-v1",
-  "mailbox_key": "m6-cp3-tb148-rev-docs-apply-v1",
-  "file_id": "1B4KM4wI-rzunrKz_Q15JOtWjL7nypPD0",
-  "patch_sha256": "f4a7ae96c4b93fc7f830d857ad3ea88056533b995e9a941fdc89a0abd8a8e7f5",
-  "base_sha": "9181c85dfe0a23e6c733b470aa289b299af219c3",
+  "request_id": "m6-cp3-cb168k-slide-arrival-apply-20261120-v1",
+  "mailbox_key": "m6-cp3-cb168k-slide-arrival-apply-v1",
+  "file_id": "17ssrZjgxy3fsFfySYv3JH_C_BCVyiqSr",
+  "patch_sha256": "ea7f41636ae90631162a5594f55fc6b06306e3fceb8f77a882e40dd450db21e4",
+  "base_sha": "d6c91a743ba9b5150cf5b4746d208ee00ecbc912",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): independently review TB148 and freeze inert slide consumer",
+  "commit_message": "fix(surface-cells): record slide-contact arrival ordering",
   "retention_days": 14
 }
