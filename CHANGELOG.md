@@ -1,3 +1,7 @@
+## 2026-11-20 UTC — CB168J exact sphere slide receipt compile-only checkpoint
+
+Compile-only run [44665889239](https://github.com/akashskypatel/Directional/actions/runs/44665889239), exact source `d78404724a7f0bfb0c9c73769e6a68b9f2addd81`, immutable package `14596864941` (ZIP SHA-256 `d7b9a99a5b9bf3d50cf9f8df7890d2cabb5f61004a338a9cd1c80e9dac3064b4`); eight RA-245 GMP/GMPXX targets, `runtimeExecution=false`, no tests. Frozen test-only diff `73df9e52…ce14` adds 113 lines to one test file, no production or selector changes. Patch-application run `44665691152` confirmed source commit `d78404724a7f0bfb0c9c73769e6a68b9f2addd81`; no runtime tests. Exact next TB148 immutable 963+81 gate, not executed here. Sphere χ+4, stable 66/17/49, debt one, deferred81 and CP3 nonpromotion persist.
+
 ## 2026-11-20 UTC — RA-269 re-review of the TB147 Review
 
 [RA-269](.agents/Directional/Architecture_M6_CP3_TB147_P13_Mutual_Carrier_End_Oracle_Full_Gate_Independent_Review_20261120.md#ra-269--adversarial-re-review-of-this-review-2026-11-20-utc) upholds the TB147 gate. It restores the slide explanation of the sphere +4: four same-face entry-on-sliding-wall contacts, never published as nodes. It withdraws the prose CB168J census and freezes an exact test-only receipt (`73df9e52…ce14`) and TB148 (manifest `4350378c…4c01c`, 963+81). No product, selector or accepted-manifest change.
