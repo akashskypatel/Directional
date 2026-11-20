@@ -1,1 +1,0 @@
-Source snapshot for CB168O, before exact code-and-build patch application. One-shot trigger.
