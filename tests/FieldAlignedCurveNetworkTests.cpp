@@ -17250,6 +17250,119 @@ TEST(TraceTerminationCorrection,
       << "symmetric/inconclusive same-point arrival must terminate both traces";
 }
 
+// Measurement only. The sphere's four slide coincidences (a pending entry on
+// an edge another trace slides along) are read back from the committed traces
+// with exact geometry, and every network event naming both traces is
+// printed. Ownership is reported, not asserted.
+TEST(TraceTerminationCorrection,
+     PrescribedSphereEntryOnSlidingWallNodeOwnershipIsPublishedNonGating) {
+  using directional::geometry::surface_cell_tracing_detail::
+      first_field_aligned_carrier_contact;
+  const Cp4cReachabilityObservation sphere =
+      observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
+  ASSERT_TRUE(sphere.network.has_value()) << sphere.report;
+  const FieldAlignedCurveNetwork &network = *sphere.network;
+  const auto &traces = network.candidate_traces();
+  ASSERT_EQ(24U, traces.size()) << sphere.report;
+
+  struct SlideEntry {
+    std::size_t moving, movingSegment, wall, wallSegment, first, second;
+    std::int64_t numerator, denominator;
+  };
+  const std::array<SlideEntry, 4> entries{{
+      {17U, 8U, 0U, 6U, 6U, 8U, 4038890029339747LL, 4503599627370496LL},
+      {20U, 8U, 1U, 6U, 16U, 21U, 4038890029339747LL, 4503599627370496LL},
+      {5U, 8U, 21U, 6U, 33U, 34U, 1009722507334937LL, 1125899906842624LL},
+      {8U, 8U, 22U, 6U, 45U, 46U, 464709598030749LL, 4503599627370496LL}}};
+  const auto onCarrier = [](const directional::authority::FieldBoundaryPoint &point,
+                            const SlideEntry &entry) {
+    return point.edge.first().index() == entry.first &&
+           point.edge.second().index() == entry.second;
+  };
+  const auto text = [](const directional::authority::FieldExactRational &value) {
+    return value.numerator_string() + '/' + value.denominator_string();
+  };
+  for (const SlideEntry &entry : entries) {
+    ASSERT_LT(entry.moving, traces.size());
+    ASSERT_LT(entry.wall, traces.size());
+    const auto &moving = traces[entry.moving];
+    const auto &wall = traces[entry.wall];
+    EXPECT_EQ(entry.moving, moving.id.index());
+    EXPECT_EQ(entry.wall, wall.id.index());
+    const auto parameter = exact_ratio(entry.numerator, entry.denominator);
+    std::ostringstream receipt;
+    receipt << "SphereEntryOnSlidingWall moving=" << entry.moving << ':'
+            << entry.movingSegment << " wall=" << entry.wall << ':'
+            << entry.wallSegment << " carrier=(" << entry.first << ','
+            << entry.second << ") parameter=" << text(parameter)
+            << " movingSegments=" << moving.segments.size()
+            << " wallSegments=" << wall.segments.size();
+    const bool committed = entry.movingSegment < moving.segments.size() &&
+                           entry.movingSegment > 0U &&
+                           entry.wallSegment < wall.segments.size();
+    receipt << " committed=" << committed;
+    if (committed) {
+      const auto &entered = moving.segments[entry.movingSegment];
+      const auto &previous = moving.segments[entry.movingSegment - 1U];
+      const auto &sliding = wall.segments[entry.wallSegment];
+      receipt << " movingEntryOnCarrier="
+              << (onCarrier(entered.entryPoint, entry) &&
+                  entered.entryPoint.parameter.value == parameter)
+              << " previousExitCarrier="
+              << (previous.outgoingCarrier == entered.entryPoint.edge)
+              << " previousSlides=" << previous.edgeTransitEntry.has_value()
+              << " wallOutgoingIsCarrier="
+              << (sliding.outgoingCarrier == entered.entryPoint.edge)
+              << " sameFace=" << (sliding.sourceFace == entered.sourceFace);
+      if (sliding.edgeTransitEntry.has_value() &&
+          sliding.edgeTransitExit.has_value() &&
+          onCarrier(*sliding.edgeTransitEntry, entry) &&
+          onCarrier(*sliding.edgeTransitExit, entry)) {
+        const auto &from = sliding.edgeTransitEntry->parameter.value;
+        const auto &to = sliding.edgeTransitExit->parameter.value;
+        const bool ascending = from < to;
+        const auto &low = ascending ? from : to;
+        const auto &high = ascending ? to : from;
+        receipt << " wallSlide=" << text(from) << ".." << text(to)
+                << " strictlyInside=" << (low < parameter && parameter < high);
+      } else {
+        receipt << " wallSlide=none";
+      }
+      const auto contact = first_field_aligned_carrier_contact(entered, sliding);
+      receipt << " contactAgrees="
+              << (contact.has_value() && contact->parameter == parameter &&
+                  contact->carrier == entered.entryPoint.edge &&
+                  !contact->movingInSlide && contact->wallInSlide);
+    }
+    std::size_t sharedEvents = 0U;
+    std::ostringstream events;
+    for (const auto &event : network.events()) {
+      const auto role = [&](const auto &id) -> int {
+        const auto found = std::find_if(
+            event.incidences.begin(), event.incidences.end(),
+            [&](const auto &incidence) { return incidence.trace == id; });
+        return found == event.incidences.end() ? -1
+                                               : static_cast<int>(found->role);
+      };
+      const int movingRole = role(moving.id);
+      const int wallRole = role(wall.id);
+      if (movingRole < 0 || wallRole < 0) continue;
+      ++sharedEvents;
+      events << " event[node=" << event.node.index()
+             << ",kind=" << static_cast<int>(event.kind) << ",edge=";
+      if (event.sourceEdge.has_value()) {
+        events << '(' << event.sourceEdge->first().index() << ','
+               << event.sourceEdge->second().index() << ')';
+      } else {
+        events << '-';
+      }
+      events << ",roles=" << movingRole << '/' << wallRole << ']';
+    }
+    receipt << " sharedEvents=" << sharedEvents << events.str() << '\n';
+    std::cout << receipt.str();
+  }
+}
+
 TEST(TraceTerminationCorrection,
      TerminalContactTamperIsRejectedAtExactLocusBinding) {
   const Cp4cReachabilityObservation sphere =
