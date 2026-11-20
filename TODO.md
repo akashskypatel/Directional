@@ -1,4 +1,4 @@
-## CURRENT — TB150 full gate and census MATCH; independent Review next (2026-11-20 UTC)
+## CURRENT — TB150 independent Review PASS; EPO-3 binding Code + Build next (2026-11-20 UTC)
 
 [RA-271](.agents/Directional/Architecture_M6_CP3_TB149_P13_Slide_Contact_Arrival_Full_Gate_Independent_Review_20261120.md) resolves the TB149 STOP. Gate 963/963 MATCH TB148, 491/491; census 3/3 MATCH TB147 under frozen N1–N4. RA-270 had cited only N1–N3 for the census, and the mismatched bytes are ASLR `GetParam` addresses. Sphere: four `wallCommitted=1 movingArrival=later`. Realignment: `build_arcs` writes slides as face chords and the walls are `faceThenEdge`, so the stop switch needs real pieces (EPO-3 + CB169) first. EPO-5 is amended for the piece path only.
 
@@ -9,7 +9,9 @@
 - [x] **COMPLETE:** `M6-CP3-TB150-P13-SLIDE-INTERIOR-CUT-POSITION-FULL-GATE-EXEC` (artifact-only Test + Benchmark); [execution report](.agents/Directional/Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Execution_Report_20261120.md); gate 964/964 PASS, previous 963/963 MATCH TB149 N1–N3, CP2 491/491, census 3/3 MATCH TB149 N1–N4.
   - Manifest `bce554e6723dfaa77f54d070aab7edc6508cd3aaf69a6120871e21b349b78926` (TB148 + row 964; 964+81).
   - Verified rows 960 and 964 PASS; all 504 slide-contact arrival records preserved; 81 deferred unchanged. No product/selector promotion.
-- [ ] **NEXT:** `M6-CP3-TB150-P13-SLIDE-INTERIOR-CUT-POSITION-FULL-GATE-REV`: freeze the exact EPO-3 binding CB (`sourcePieceCounts`, exact validator, producer all-ones, inert) and its TB.
+- [x] **COMPLETE (RA-272):** `M6-CP3-TB150-P13-SLIDE-INTERIOR-CUT-POSITION-FULL-GATE-REV`: [independent Review](.agents/Directional/Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md); independently verified 964/964 gate PASS, 963/963 MATCH TB149 N1–N3, 491/491 accepted; 3/3 census MATCH N1–N4; all 504 slide-contact lines preserved. No production repair/promotion.
+- [ ] **NEXT:** `M6-CP3-CB168M-P13-SOURCE-PIECE-COUNTS-BINDING` (Code + Build only): [frozen plan](.agents/Directional/Architecture_M6_CP3_CB168M_P13_Source_Piece_Counts_Binding_Plan_20261120.md), exact EPO-3 `sourcePieceCounts` binding, validator and all-ones producer only; no source-piece producer cutover or runtime.
+- [ ] **THEN:** `M6-CP3-TB151-P13-SOURCE-PIECE-COUNTS-FULL-GATE-EXEC` (separate artifact-only test gate), subject to a verified CB package and frozen independent row-965 manifest.
 - Prospective:
   - → EPO-3 TB/REV → CB169 H4 cutover (EPO-2/3/4/6, O49, row 686 oracle pieces) → TB/REV
   - → wall-loop stop switch CB (struck cut from `carrier_contact_slide_position`) → TB (row 686 χ=2, rows 669/698 past exhaustion, four nodes)
