@@ -129,6 +129,40 @@ std::optional<std::size_t> local_edge_index(
   return std::nullopt;
 }
 
+std::optional<authority::Orientation> edge_piece_face_side(
+    const SourceFaceRecord &face,
+    const authority::ExactSourceSupportPiece &piece) {
+  const auto *carrier =
+      std::get_if<authority::SourceEdgeSupport>(&piece.carrier);
+  if (carrier == nullptr || !local_edge_index(face, carrier->edge)) {
+    return std::nullopt;
+  }
+  const auto parameter = [&](const authority::ExactSourcePoint &point)
+      -> std::optional<authority::FieldExactRational> {
+    if (const auto *vertex = std::get_if<authority::SourceVertexId>(&point)) {
+      if (*vertex == carrier->edge.first()) {
+        return authority::FieldExactRational::from_integer(0);
+      }
+      if (*vertex == carrier->edge.second()) {
+        return authority::FieldExactRational::from_integer(1);
+      }
+      return std::nullopt;
+    }
+    const auto *edgePoint =
+        std::get_if<authority::ExactSourceEdgePoint>(&point);
+    if (edgePoint == nullptr || edgePoint->edge != carrier->edge) {
+      return std::nullopt;
+    }
+    return edgePoint->parameter;
+  };
+  const auto first = parameter(piece.first);
+  const auto second = parameter(piece.second);
+  if (!first || !second || *first == *second) return std::nullopt;
+  return face_orients_edge_forward(face, carrier->edge) == (*first < *second)
+             ? authority::Orientation::Forward
+             : authority::Orientation::Reverse;
+}
+
 std::uint64_t network_binding_digest(
     const FieldAlignedCurveNetwork &network) noexcept {
   std::uint64_t hash = kFnvOffset;

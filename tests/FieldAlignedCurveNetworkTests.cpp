@@ -19796,6 +19796,121 @@ TEST(FieldAlignedCarrierOccupancy,
 }
 
 TEST(FieldAlignedCarrierOccupancy,
+     EdgePieceFaceSideFollowsTheFaceWindingAlongTheSlide) {
+  namespace authority = directional::authority;
+  using directional::authority::FieldBranch;
+  using directional::authority::Orientation;
+  using directional::authority::TopologyRegionId;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+  using Counts = std::vector<std::size_t>;
+  using Piece = authority::ExactSourceSupportPiece;
+  using Position = embedded::TraceCutPosition;
+  // Faces [0,1,4] and [1,2,4] are wound as one mesh and [1,0,3] lies across
+  // (0,1). The trace departs vertex 0 along (0,1) to vertex 1 without
+  // entering [0,1,4], then crosses [1,2,4] to (2,4) at 1/2.
+  const auto first = topology_face(0, 1, 4, 5U);
+  const auto second = topology_face(1, 2, 4, 5U);
+  const auto across = topology_face(0, 1, 3, 5U);
+  const auto incoming = topology_edge(0, 4, 5U);
+  const auto carrier = topology_edge(0, 1, 5U);
+  const auto next = topology_edge(1, 4, 5U);
+  const auto outgoing = topology_edge(2, 4, 5U);
+  const auto vertex = [](const int index) {
+    return SourceVertexId::from_index(index, 5U).value();
+  };
+  const auto record = [&](const SourceFaceTopologyKey &key, const int row,
+                          const int a, const int b, const int c) {
+    return embedded::SourceFaceRecord{
+        key,
+        SourceFaceId::from_index(row, 3U).value(),
+        {vertex(a), vertex(b), vertex(c)},
+        {topology_edge(a, b, 5U), topology_edge(b, c, 5U),
+         topology_edge(c, a, 5U)},
+        SourceComponentId::from_index(0, 1U).value(),
+        TopologyRegionId::from_index(0, 1U).value()};
+  };
+  const auto faceA = record(first, 0, 0, 1, 4);
+  const auto faceB = record(second, 1, 1, 2, 4);
+  const auto faceC = record(across, 2, 1, 0, 3);
+  // The expected sides below are read from these windings.
+  ASSERT_TRUE(embedded::face_orients_edge_forward(faceA, carrier));
+  ASSERT_FALSE(embedded::face_orients_edge_forward(faceC, carrier));
+
+  FieldAlignedCandidateTrace departure(
+      TraceId::from_index(0U, 2U).value(),
+      SingularityPortId::from_index(0, 1).value(),
+      FieldSingularityId::from_index(0, 1).value(), vertex(0),
+      SourceComponentId::from_index(0, 1).value(),
+      TopologyRegionId::from_index(0, 1).value());
+  const auto branch = FieldBranch::from_integer(0);
+  departure.segments.emplace_back(first, branch, boundary_point(incoming, 0, 1),
+                                  incoming, carrier, std::nullopt);
+  departure.segments[0].edgeTransitEntry = boundary_point(carrier, 0, 1);
+  departure.segments[0].edgeTransitExit = boundary_point(carrier, 1, 1);
+  departure.segments.emplace_back(second, branch, boundary_point(next, 0, 1),
+                                  next, outgoing, std::nullopt);
+  departure.terminalPoint = boundary_point(outgoing, 1, 2);
+  const Position start{0U, std::nullopt};
+  const Position end{2U, std::nullopt};
+  const Position slideCut{0U, exact_ratio(1, 2)};
+
+  // The producer's own pieces: segment 0 is one edge piece along (0,1).
+  Counts counts;
+  const auto path =
+      embedded::exact_trace_piece_path_between(departure, start, end, &counts);
+  ASSERT_TRUE(path.has_value());
+  ASSERT_EQ((Counts{1U, 1U}), counts);
+  const authority::ExactSourcePoint v0{vertex(0)};
+  const authority::ExactSourcePoint v1{vertex(1)};
+  const authority::ExactSourcePoint v4{vertex(4)};
+  const Piece slide = path->front();
+  ASSERT_EQ((Piece{authority::SourceEdgeSupport{carrier}, v0, v1}), slide);
+
+  // [0,1,4] winds (0,1) along the slide and takes the forward dart; the face
+  // across winds it the other way and takes the reverse dart.
+  EXPECT_EQ(Orientation::Forward, embedded::edge_piece_face_side(faceA, slide));
+  EXPECT_EQ(Orientation::Reverse, embedded::edge_piece_face_side(faceC, slide));
+  // The same arc read in reverse swaps the sides.
+  const auto reversed = authority::reverse_exact_source_path(*path);
+  ASSERT_EQ((Piece{authority::SourceEdgeSupport{carrier}, v1, v0}),
+            reversed.back());
+  EXPECT_EQ(Orientation::Reverse,
+            embedded::edge_piece_face_side(faceA, reversed.back()));
+  EXPECT_EQ(Orientation::Forward,
+            embedded::edge_piece_face_side(faceC, reversed.back()));
+  // A cut inside the slide leaves each part on the same side.
+  const auto toCut =
+      embedded::exact_trace_piece_path_between(departure, start, slideCut);
+  const auto fromCut =
+      embedded::exact_trace_piece_path_between(departure, slideCut, end);
+  ASSERT_TRUE(toCut.has_value());
+  ASSERT_TRUE(fromCut.has_value());
+  const authority::ExactSourcePoint cut{
+      authority::ExactSourceEdgePoint{carrier, exact_ratio(1, 2)}};
+  ASSERT_EQ((Piece{authority::SourceEdgeSupport{carrier}, v0, cut}),
+            toCut->front());
+  ASSERT_EQ((Piece{authority::SourceEdgeSupport{carrier}, cut, v1}),
+            fromCut->front());
+  EXPECT_EQ(Orientation::Forward,
+            embedded::edge_piece_face_side(faceA, toCut->front()));
+  EXPECT_EQ(Orientation::Forward,
+            embedded::edge_piece_face_side(faceA, fromCut->front()));
+  EXPECT_EQ(Orientation::Reverse,
+            embedded::edge_piece_face_side(faceC, fromCut->front()));
+
+  // Empty unless the piece runs along an edge of the face and advances.
+  EXPECT_FALSE(embedded::edge_piece_face_side(faceB, slide));
+  EXPECT_FALSE(embedded::edge_piece_face_side(faceB, path->back()));
+  EXPECT_FALSE(embedded::edge_piece_face_side(faceA, Piece{slide.carrier, v0, v0}));
+  EXPECT_FALSE(embedded::edge_piece_face_side(faceA, Piece{slide.carrier, v0, v4}));
+  EXPECT_FALSE(embedded::edge_piece_face_side(
+      faceA, Piece{slide.carrier, v0,
+                   authority::ExactSourcePoint{authority::ExactSourceEdgePoint{
+                       incoming, exact_ratio(1, 2)}}}));
+}
+
+TEST(FieldAlignedCarrierOccupancy,
      MutualCarrierContactNamesEachTraceAtItsEndOnOneLocus) {
   using directional::authority::FieldBranch;
   using directional::authority::TopologyRegionId;

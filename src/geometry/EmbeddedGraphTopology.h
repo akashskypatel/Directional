@@ -139,6 +139,19 @@ using ExteriorOrbitBuildResult =
 [[nodiscard]] std::optional<std::size_t> local_edge_index(
     const SourceFaceRecord &face,
     const authority::SourceEdgeTopologyKey &edge);
+/**
+ * The dart whose face-walk orbit holds `face` when an arc runs along one of
+ * the face's edges as the edge piece `piece` without entering the face:
+ * Forward exactly when `face` traverses that edge in the piece's direction,
+ * as the incident face of a mandatory arc takes its forward dart; the face
+ * across the edge takes the other dart. Empty when `piece` is not carried by
+ * an edge of `face` or does not advance along it. This is the side rule for
+ * a trace segment that only slides along its face's edge; unwired until the
+ * coordinated graph cutover.
+ */
+[[nodiscard]] std::optional<authority::Orientation> edge_piece_face_side(
+    const SourceFaceRecord &face,
+    const authority::ExactSourceSupportPiece &piece);
 [[nodiscard]] std::uint64_t network_binding_digest(
     const FieldAlignedCurveNetwork &network) noexcept;
 
