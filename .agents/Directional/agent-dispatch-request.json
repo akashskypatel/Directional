@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb168m-source-piece-helper-20261120-v1",
-  "mailbox_key": "m6-cp3-cb168m-source-piece-helper",
-  "file_id": "1joJQXsXVsINn-6KUTzlFokRLjbhaYnsx",
-  "patch_sha256": "579e28642d3580260efa014431dfcd9d43e1bbb8fdd28090ba39bfc3998c4572",
-  "base_sha": "150074bcc2d55dcdae99039b42d9d262234b9e46",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(surface-cells): add exact source-piece binding helper (CB168M)",
-  "retention_days": 14
+  "operation": "compile",
+  "request_id": "m6-cp3-cb168m-compile-20261120-v1",
+  "mailbox_key": "m6-cp3-cb168m-compile",
+  "source_sha": "0d925e4e5e8324a51ebcd2728bde43015ee38ccd",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb168m-gmp-compile"
 }
