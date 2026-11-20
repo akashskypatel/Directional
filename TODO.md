@@ -1,11 +1,29 @@
-## CURRENT — CB168K compiled; TB149 arrival-order full gate next (2026-11-20 UTC)
+## CURRENT — RA-271: TB149 PASS; CB168L slide-interior cut position next (2026-11-20 UTC)
+
+[RA-271](.agents/Directional/Architecture_M6_CP3_TB149_P13_Slide_Contact_Arrival_Full_Gate_Independent_Review_20261120.md) resolves the TB149 STOP. Gate 963/963 MATCH TB148, 491/491; census 3/3 MATCH TB147 under frozen N1–N4. RA-270 had cited only N1–N3 for the census, and the mismatched bytes are ASLR `GetParam` addresses. Sphere: four `wallCommitted=1 movingArrival=later`. Realignment: `build_arcs` writes slides as face chords and the walls are `faceThenEdge`, so the stop switch needs real pieces (EPO-3 + CB169) first. EPO-5 is amended for the piece path only.
+
+- [x] TB149 comparison-authority Review (RA-271): N4 applies, TB149 PASS.
+- [ ] **NEXT:** `M6-CP3-CB168L-P13-SLIDE-INTERIOR-CUT-POSITION` (Code + Build, compile only).
+  - Exact diff `.agents/Directional/Architecture_M6_CP3_CB168L_P13_Slide_Interior_Cut_Position_Exact.diff`, SHA-256 `26401a6beb41aca02b0096c7079016a493b99444c0d92decd5d3b499f5ca8f3a`; numstat `61 2` cpp, `18 2` h, `118 2` tests.
+  - Precheck: `git diff --quiet 0955d28e37a4f17f2488f0f4dd196a2d24aa3c11 HEAD -- src include tests`; `git apply --check`. Build the eight RA-245 targets with `runtimeExecution=false`.
+- [ ] **Then:** `M6-CP3-TB150-P13-SLIDE-INTERIOR-CUT-POSITION-FULL-GATE-EXEC`.
+  - Manifest `bce554e6723dfaa77f54d070aab7edc6508cd3aaf69a6120871e21b349b78926` (TB148 + row 964; 964+81).
+  - STOP on failure: rows 960 and 964 PASS; rows 1–963 MATCH TB149 (N1–N3, receipts compared raw), with 491/491; census 3/3 MATCH TB149 (N1–N4).
+- [ ] **Then:** `M6-CP3-TB150-…-REV`: freeze the exact EPO-3 binding CB (`sourcePieceCounts`, exact validator, producer all-ones, inert) and its TB.
+- Prospective:
+  - → EPO-3 TB/REV → CB169 H4 cutover (EPO-2/3/4/6, O49, row 686 oracle pieces) → TB/REV
+  - → wall-loop stop switch CB (struck cut from `carrier_contact_slide_position`) → TB (row 686 χ=2, rows 669/698 past exhaustion, four nodes)
+  - → CB170 → CB171 → CB172 (O48, including the BunnyRandom pending and non-last slide contacts).
+  - Held: FC-6, TERMINAL-CUT-OUTCOME, row 858 DEFN. Parked: CB145. D11=A, D12=A.
+
+## CB168K compiled; TB149 executed (2026-11-20 UTC) — superseded by RA-271
 
 [RA-270](.agents/Directional/Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md#ra-270--adversarial-re-review-of-this-review-2026-11-20-utc) upholds TB148 (963/963, 491/491, 962/962 MATCH TB147; four unowned contacts strictly inside wall slides). It withdraws the prose inert-consumer CB168K, because the repair shape depends on an unmeasured fact: which trace is later at the contact. If the moving trace is later, it stops at its entry, using the existing CB168G record shape, and only a slide-piece struck cut position is new. If the wall is later, a new slide-vs-committed-exit detection is needed. The row 686 oracle must read real slide pieces before the repair TB.
 
 - [x] RA-270 re-review of `M6-CP3-TB148-P13-SPHERE-ENTRY-ON-SLIDING-WALL-FULL-GATE-REV`.
 - [x] **COMPLETE:** `M6-CP3-CB168K-P13-SLIDE-CONTACT-ARRIVAL-RECEIPT` (Code + Build, compile only). [Compile run 44679070165](https://github.com/akashskypatel/Directional/actions/runs/44679070165), artifact `14603866682`, source `0955d28e37a4f17f2488f0f4dd196a2d24aa3c11`; eight GMP/GMPXX targets, `runtimeExecution=false`, no runtime. [Build record](.agents/Directional/Architecture_M6_CP3_CB168K_P13_Slide_Contact_Arrival_Receipt_Code_Build_Record_20261120.md).
-- [ ] **NEXT:** `M6-CP3-TB149-P13-SLIDE-CONTACT-ARRIVAL-FULL-GATE-EXEC`. Unchanged TB148 manifest `4350378c…4c01c` (963+81). Delete `FieldAlignedCurveNetwork.slideContactArrival` lines; then rows 1–963 MATCH TB148 and 491/491 (STOP otherwise). Census 3/3 MATCH TB147 after the same deletion. All new lines verbatim to Review. Prediction: four sphere `wallCommitted=1 movingArrival=later`.
-- [ ] **Then:** `M6-CP3-TB149-P13-SLIDE-CONTACT-ARRIVAL-FULL-GATE-REV`. All later → slide-piece cut position CB (inert, injected test) → row 686 oracle slide-piece CB (test-only, χ stays 6) → wall-loop stop switch CB → TB (row 686 χ=2, rows 669/698 past exhaustion, four nodes). Any earlier → slide-vs-exit detection receipt. Inconclusive/unavailable → design stop.
+- [x] **COMPLETE (PASS per RA-271):** `M6-CP3-TB149-P13-SLIDE-CONTACT-ARRIVAL-FULL-GATE-EXEC`. Unchanged TB148 manifest `4350378c…4c01c` (963+81). Delete `FieldAlignedCurveNetwork.slideContactArrival` lines; then rows 1–963 MATCH TB148 and 491/491 (STOP otherwise). Census 3/3 MATCH TB147 after the same deletion. All new lines verbatim to Review. Prediction: four sphere `wallCommitted=1 movingArrival=later`.
+- [x] **COMPLETE (RA-271):** `M6-CP3-TB149-P13-SLIDE-CONTACT-ARRIVAL-FULL-GATE-REV`. All later → slide-piece cut position CB (inert, injected test) → row 686 oracle slide-piece CB (test-only, χ stays 6) → wall-loop stop switch CB → TB (row 686 χ=2, rows 669/698 past exhaustion, four nodes). Any earlier → slide-vs-exit detection receipt. Inconclusive/unavailable → design stop.
 - Prospective: → CB168 binding → [O49] → CB169 H4 remainder → CB170 → CB171 → CB172 (O48). Held: FC-6, TERMINAL-CUT-OUTCOME, row 858 DEFN. Parked: CB145. D11=A, D12=A.
 
 ## TB148 independently reviewed (2026-11-20 UTC) — successor replaced by RA-270

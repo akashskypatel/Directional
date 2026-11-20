@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-20, RA-270):** [RA-270](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md#ra-270--adversarial-re-review-of-this-review-2026-11-20-utc) upholds TB148 and withdraws the prose CB168K consumer. Next is the exact arrival-order receipt CB168K, then TB149, then TB149-REV, which picks the repair shape. The row 686 oracle switches to real slide pieces before the repair TB.
+**Currency (2026-11-20, RA-271):** [RA-271](Architecture_M6_CP3_TB149_P13_Slide_Contact_Arrival_Full_Gate_Independent_Review_20261120.md) rules TB149 PASS (gate 963/963 MATCH TB148, 491/491; census 3/3 MATCH TB147 under frozen N1–N4; RA-270 had omitted N4). All four sphere slide contacts are `wallCommitted=1 movingArrival=later`. The production arcs and the row 686 oracle both write slides as chords, so the stop switch waits for EPO-3 and the CB169 cutover; CB168L (unwired slide-interior cut position) is next.
 
 **Currency (2026-11-20, TB148 independent Review):** [TB148 Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) verifies 963/963, 491/491, 962/962 MATCH and four real unowned interior slide entries. χ+4 remains; the face-chord cut-position type cannot encode a slide interior. The next bounded Code + Build is an inert exact slide-interior contact consumer, not a producer switch.
 
@@ -111,7 +111,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-- **Current priority:** [RA-270](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md#ra-270--adversarial-re-review-of-this-review-2026-11-20-utc): `M6-CP3-CB168K-P13-SLIDE-CONTACT-ARRIVAL-RECEIPT` (exact diagnostic diff `fc70c9aa…b4a4`, compile only), then `M6-CP3-TB149-P13-SLIDE-CONTACT-ARRIVAL-FULL-GATE-EXEC` (TB148 manifest unchanged), then TB149-REV. The superseded TB148-Review priority (prose inert consumer) is withdrawn.
+- **Current priority:** [RA-271](Architecture_M6_CP3_TB149_P13_Slide_Contact_Arrival_Full_Gate_Independent_Review_20261120.md): `M6-CP3-CB168L-P13-SLIDE-INTERIOR-CUT-POSITION` (exact diff `26401a6b…f3a`, compile only) → TB150 (manifest `bce554e6…8926`) → TB150-REV freezes the EPO-3 binding CB → CB169 cutover → stop switch → TB.
 
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.

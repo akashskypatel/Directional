@@ -1,3 +1,7 @@
+## 2026-11-20 — RA-271 TB149 Review (no new stable event)
+
+O47/C5: arrival order measured, all four sphere contacts are `later` on committed walls. The repair depends on H4 because production arcs write slides as chords (`exact_trace_path_between`), so the stop switch is ordered after EPO-3 and CB169. TB149's census STOP was a comparator-contract omission in RA-270 (N4), not a product change. Counts unchanged: 66 events, 17 categories, 49 recurrences, one produced-witness debt, 81 deferred.
+
 ## 2026-11-20 — RA-270 re-review of the TB148 Review (no new stable event)
 
 O47/C5: the four unowned slide contacts are confirmed. The repair shape awaits the arrival order at the contact: CB168K receipt → TB149. New ordering obligation: the row 686 oracle (which reads slides as chords) must switch to real face+edge pieces **before** the TB that reads χ on the repaired graph, not at CB169. The prose inert consumer is withdrawn. See [RA-270](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md#ra-270--adversarial-re-review-of-this-review-2026-11-20-utc).

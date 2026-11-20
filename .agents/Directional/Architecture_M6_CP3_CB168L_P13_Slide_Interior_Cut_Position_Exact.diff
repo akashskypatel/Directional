@@ -1,0 +1,286 @@
+diff --git a/src/geometry/EmbeddedGraphTopology.cpp b/src/geometry/EmbeddedGraphTopology.cpp
+index 39102c47a..c217c21b5 100644
+--- a/src/geometry/EmbeddedGraphTopology.cpp
++++ b/src/geometry/EmbeddedGraphTopology.cpp
+@@ -839,6 +839,30 @@ std::optional<TraceCutPosition> carrier_contact_struck_position(
+   return TraceCutPosition{record.struckSegmentIndex, std::nullopt};
+ }
+ 
++std::optional<TraceCutPosition> carrier_contact_slide_position(
++    const FieldAlignedCandidateTrace &struck,
++    const FieldAlignedTerminalContact &record) {
++  if (struck.id != record.struckTrace || !record.carrierLocus.has_value() ||
++      record.struckSegmentIndex >= struck.segments.size()) {
++    return std::nullopt;
++  }
++  const auto slide =
++      surface_cell_tracing_detail::field_aligned_segment_slide_occupancy(
++          struck.segments[record.struckSegmentIndex]);
++  if (!slide.has_value() || slide->carrier != record.carrierLocus->edge ||
++      slide->from == slide->to) {
++    return std::nullopt;
++  }
++  const authority::FieldExactRational fraction =
++      (record.carrierLocus->parameter.value - slide->from) /
++      (slide->to - slide->from);
++  if (!(authority::FieldExactRational::from_integer(0) < fraction &&
++        fraction < authority::FieldExactRational::from_integer(1))) {
++    return std::nullopt;
++  }
++  return TraceCutPosition{record.struckSegmentIndex, fraction};
++}
++
+ bool carrier_contact_is_mutual(const FieldAlignedCandidateTrace &ending,
+                                const FieldAlignedCandidateTrace &struck) {
+   const auto namesAtEnd = [](const FieldAlignedCandidateTrace &trace,
+@@ -971,6 +995,24 @@ static std::optional<authority::ExactSourcePoint> exact_trace_interior_point(
+       trace.segments[position.segment].sourceFace, point);
+ }
+ 
++// The exact point of a position on its segment's slide edge piece.
++static std::optional<authority::ExactSourcePoint> exact_trace_slide_point(
++    const FieldAlignedCandidateTrace &trace, const TraceCutPosition &position) {
++  const auto slide =
++      surface_cell_tracing_detail::field_aligned_segment_slide_occupancy(
++          trace.segments[position.segment]);
++  const authority::FieldExactRational &t = *position.parameter;
++  if (!slide.has_value() ||
++      !(t > authority::FieldExactRational::from_integer(0)) ||
++      !(t < authority::FieldExactRational::from_integer(1))) {
++    return std::nullopt;
++  }
++  return authority::canonical_exact_source_boundary_point(
++      authority::FieldBoundaryPoint{
++          slide->carrier, authority::ExactUnitParameter{
++                              slide->from + t * (slide->to - slide->from)}});
++}
++
+ std::optional<authority::ExactSourcePath> exact_trace_path_between(
+     const FieldAlignedCandidateTrace &trace, const TraceCutPosition &first,
+     const TraceCutPosition &second) {
+@@ -1016,8 +1058,25 @@ std::optional<authority::ExactSourcePath> exact_trace_piece_path_between(
+     const bool clipLast = segmentIndex + 1U == end && second.parameter.has_value();
+     if (clipFirst || clipLast) {
+       const auto &segment = trace.segments[segmentIndex];
+-      if (segment.edgeTransitEntry.has_value() || segment.edgeTransitExit.has_value() ||
+-          pieces->size() != 1U) return std::nullopt;
++      if (segment.edgeTransitEntry.has_value() || segment.edgeTransitExit.has_value()) {
++        // A slide cut lies on the edge piece, which a traversed slide ends with.
++        if (authority::support_kind(pieces->back().carrier) !=
++            authority::SourceSupportKind::Edge) return std::nullopt;
++        if (clipFirst) {
++          const auto point = exact_trace_slide_point(trace, first);
++          if (!point.has_value()) return std::nullopt;
++          pieces->erase(pieces->begin(), pieces->end() - 1);
++          pieces->front().first = *point;
++        }
++        if (clipLast) {
++          const auto point = exact_trace_slide_point(trace, second);
++          if (!point.has_value()) return std::nullopt;
++          pieces->back().second = *point;
++        }
++        path.insert(path.end(), pieces->begin(), pieces->end());
++        continue;
++      }
++      if (pieces->size() != 1U) return std::nullopt;
+       if (clipFirst) {
+         const auto point = exact_trace_interior_point(trace, first);
+         if (!point.has_value()) return std::nullopt;
+diff --git a/src/geometry/EmbeddedGraphTopology.h b/src/geometry/EmbeddedGraphTopology.h
+index 09c220eef..7c08e6f04 100644
+--- a/src/geometry/EmbeddedGraphTopology.h
++++ b/src/geometry/EmbeddedGraphTopology.h
+@@ -244,7 +244,9 @@ face_chart_counter_clockwise_ray_order(const FaceChartPoint &origin,
+  * A position on a candidate trace. With no `parameter` it is the boundary
+  * before segment `segment` (the trace's end when `segment` is the segment
+  * count); otherwise it is the exact interior point at `parameter`, in (0, 1),
+- * along that segment. The defaulted order is the order along the trace.
++ * along that segment. On a segment with a slide the point lies on the slide's
++ * edge piece, at fraction `parameter` from the slide start to the slide end.
++ * The defaulted order is the order along the trace.
+  */
+ struct TraceCutPosition {
+   std::size_t segment = 0U;
+@@ -288,6 +290,18 @@ trace_segment_contact_parameter(const FieldAlignedCandidateTrace &trace,
+     const FieldAlignedCandidateTrace &struck,
+     const FieldAlignedTerminalContact &record);
+ 
++/**
++ * Where a terminal carrier contact cuts the struck trace when the locus lies
++ * strictly inside the struck segment's slide on the same edge: that segment,
++ * at the locus's fraction of the slide. Empty when `struck` is not the
++ * record's struck trace, the record has no carrier locus, the struck segment
++ * does not exist or has no slide on the locus edge, or the locus is not
++ * strictly between the slide's ends.
++ */
++[[nodiscard]] std::optional<TraceCutPosition> carrier_contact_slide_position(
++    const FieldAlignedCandidateTrace &struck,
++    const FieldAlignedTerminalContact &record);
++
+ /**
+  * True when `ending` and `struck` stopped together at one carrier locus, the
+  * outcome of an inconclusive arrival at a shared entry crossing: neither trace
+@@ -330,7 +344,9 @@ exact_trace_path_between(const FieldAlignedCandidateTrace &trace,
+ 
+ /**
+  * Concatenate the real segment pieces in [first, second). Interior cuts
+- * clip only ordinary face pieces. Unwired until the coordinated graph cutover.
++ * clip ordinary face pieces, or the edge piece of a traversed slide; the arc
++ * after a slide cut starts on the edge piece. Unwired until the coordinated
++ * graph cutover.
+  */
+ [[nodiscard]] std::optional<authority::ExactSourcePath>
+ exact_trace_piece_path_between(const FieldAlignedCandidateTrace &trace,
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 7e9020211..aeb1148fd 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -19299,9 +19299,14 @@ TEST(FieldAlignedCarrierOccupancy,
+             embedded::exact_trace_piece_path_between(trace, start, middle));
+   EXPECT_EQ((Path{lastPiece}),
+             embedded::exact_trace_piece_path_between(trace, middle, end));
++  // A slide cut lies on the edge piece: (0,1) at 1/4 + 1/2 * 3/4 = 5/8.
+   const Position slideCut{0U, half};
+-  EXPECT_FALSE(embedded::exact_trace_piece_path_between(trace, start, slideCut));
+-  EXPECT_FALSE(embedded::exact_trace_piece_path_between(trace, slideCut, end));
++  const authority::ExactSourcePoint onSlide{
++      authority::ExactSourceEdgePoint{carrier, exact_ratio(5, 8)}};
++  EXPECT_EQ((Path{facePiece, Piece{edgePiece.carrier, edgeStart, onSlide}}),
++            embedded::exact_trace_piece_path_between(trace, start, slideCut));
++  EXPECT_EQ((Path{Piece{edgePiece.carrier, onSlide, v1}, lastPiece}),
++            embedded::exact_trace_piece_path_between(trace, slideCut, end));
+   EXPECT_FALSE(embedded::exact_trace_piece_path_between(trace, end, start));
+   EXPECT_FALSE(embedded::exact_trace_piece_path_between(trace, cut, cut));
+   EXPECT_FALSE(embedded::exact_trace_piece_path_between(
+@@ -19325,6 +19330,13 @@ TEST(FieldAlignedCarrierOccupancy,
+   const Piece edgeOnly{edgePiece.carrier, v0, v1};
+   EXPECT_EQ((Path{edgeOnly, lastPiece}),
+             embedded::exact_trace_piece_path_between(departure, start, end));
++  // Its slide runs from 0, so the same fraction is (0,1) at 1/2.
++  const authority::ExactSourcePoint departureCut{
++      authority::ExactSourceEdgePoint{carrier, half}};
++  EXPECT_EQ((Path{Piece{edgePiece.carrier, v0, departureCut}}),
++            embedded::exact_trace_piece_path_between(departure, start, slideCut));
++  EXPECT_EQ((Path{Piece{edgePiece.carrier, departureCut, v1}, lastPiece}),
++            embedded::exact_trace_piece_path_between(departure, slideCut, end));
+ 
+   // A retained slide on the terminal segment is not traversed when the
+   // exact terminal contact is strictly before its start.
+@@ -19338,6 +19350,8 @@ TEST(FieldAlignedCarrierOccupancy,
+       first, {exact_ratio(3, 8), exact_ratio(1, 8), half}}};
+   EXPECT_EQ((Path{Piece{facePiece.carrier, v4, clippedEnd}}),
+             embedded::exact_trace_piece_path_between(clipped, start, middle));
++  // An untraversed slide has no edge piece to cut.
++  EXPECT_FALSE(embedded::exact_trace_piece_path_between(clipped, start, slideCut));
+ 
+   // These are exact endpoint conversion controls, not permission for the
+   // producer to classify edge or vertex encounters as interior contacts.
+@@ -19455,6 +19469,108 @@ TEST(FieldAlignedCarrierOccupancy,
+   EXPECT_FALSE(embedded::carrier_contact_struck_position(sliding, inSlide));
+ }
+ 
++TEST(FieldAlignedCarrierOccupancy,
++     CarrierContactInsideASlideCutsTheStruckEdgePieceOnly) {
++  namespace authority = directional::authority;
++  using directional::authority::FieldBranch;
++  using directional::authority::TopologyRegionId;
++  using directional::authority::TraceId;
++  using directional::geometry::FieldAlignedCandidateTrace;
++  using directional::geometry::FieldAlignedTerminalContact;
++  using Path = authority::ExactSourcePath;
++  using Piece = authority::ExactSourceSupportPiece;
++  using Position = embedded::TraceCutPosition;
++  // The struck trace enters face (0,1,4) across (1,4) at 1/2, then slides
++  // along (0,1) from 3/4 down to vertex 0, where it ends. The slide runs
++  // against the edge's parameter direction.
++  const auto face = topology_face(0, 1, 4, 5U);
++  const auto incoming = topology_edge(1, 4, 5U);
++  const auto carrier = topology_edge(0, 1, 5U);
++  const auto other = topology_edge(0, 4, 5U);
++  FieldAlignedCandidateTrace struck(
++      TraceId::from_index(1U, 2U).value(),
++      SingularityPortId::from_index(0, 1).value(),
++      FieldSingularityId::from_index(0, 1).value(),
++      SourceVertexId::from_index(4, 5).value(),
++      SourceComponentId::from_index(0, 1).value(),
++      TopologyRegionId::from_index(0, 1).value());
++  struck.segments.emplace_back(face, FieldBranch::from_integer(0),
++                               boundary_point(incoming, 1, 2), incoming,
++                               carrier, std::nullopt);
++  struck.segments[0].edgeTransitEntry = boundary_point(carrier, 3, 4);
++  struck.segments[0].edgeTransitExit = boundary_point(carrier, 0, 1);
++  struck.terminalPoint = boundary_point(carrier, 0, 1);
++
++  // The locus (0,1) at 3/8 is half way along the slide: (3/8-3/4)/(0-3/4).
++  const FieldAlignedTerminalContact record{
++      face, {exact_ratio(5, 8), exact_ratio(3, 8), exact_ratio(0, 1)},
++      struck.id, 0U, boundary_point(carrier, 3, 8)};
++  const Position cut{0U, exact_ratio(1, 2)};
++  EXPECT_EQ(embedded::carrier_contact_slide_position(struck, record), cut);
++  EXPECT_FALSE(embedded::carrier_contact_struck_position(struck, record));
++
++  const Position start{0U, std::nullopt};
++  const Position end{1U, std::nullopt};
++  const authority::ExactSourcePoint entry{
++      authority::ExactSourceEdgePoint{incoming, exact_ratio(1, 2)}};
++  const authority::ExactSourcePoint slideStart{
++      authority::ExactSourceEdgePoint{carrier, exact_ratio(3, 4)}};
++  const authority::ExactSourcePoint atCut{
++      authority::ExactSourceEdgePoint{carrier, exact_ratio(3, 8)}};
++  const authority::ExactSourcePoint earlier{
++      authority::ExactSourceEdgePoint{carrier, exact_ratio(1, 2)}};
++  const authority::ExactSourcePoint v0{SourceVertexId::from_index(0, 5).value()};
++  const authority::SourceFaceInteriorSupport inFace{face};
++  const authority::SourceEdgeSupport onEdge{carrier};
++  EXPECT_EQ((Path{Piece{inFace, entry, slideStart}, Piece{onEdge, slideStart, atCut}}),
++            embedded::exact_trace_piece_path_between(struck, start, cut));
++  EXPECT_EQ((Path{Piece{onEdge, atCut, v0}}),
++            embedded::exact_trace_piece_path_between(struck, cut, end));
++  // Two cuts on one slide: fraction 1/3 is (0,1) at 3/4 - 1/3 * 3/4 = 1/2.
++  EXPECT_EQ((Path{Piece{onEdge, earlier, atCut}}),
++            embedded::exact_trace_piece_path_between(
++                struck, Position{0U, exact_ratio(1, 3)}, cut));
++  EXPECT_FALSE(embedded::exact_trace_piece_path_between(
++      struck, start, Position{0U, exact_ratio(1, 1)}));
++  EXPECT_FALSE(embedded::exact_trace_piece_path_between(
++      struck, start, Position{0U, exact_ratio(0, 1)}));
++  // The production chord path still fails closed on a slide cut.
++  EXPECT_FALSE(embedded::exact_trace_path_between(struck, start, cut));
++  EXPECT_FALSE(embedded::exact_trace_path_between(struck, cut, end));
++
++  // No locus, the slide's two ends, a locus past the slide, another edge,
++  // another trace, a segment past the end, no slide and an empty slide are
++  // not a slide cut.
++  auto withoutLocus = record;
++  withoutLocus.carrierLocus.reset();
++  EXPECT_FALSE(embedded::carrier_contact_slide_position(struck, withoutLocus));
++  auto atStart = record;
++  atStart.carrierLocus = boundary_point(carrier, 3, 4);
++  EXPECT_FALSE(embedded::carrier_contact_slide_position(struck, atStart));
++  auto atEnd = record;
++  atEnd.carrierLocus = boundary_point(carrier, 0, 1);
++  EXPECT_FALSE(embedded::carrier_contact_slide_position(struck, atEnd));
++  auto beyond = record;
++  beyond.carrierLocus = boundary_point(carrier, 7, 8);
++  EXPECT_FALSE(embedded::carrier_contact_slide_position(struck, beyond));
++  auto otherEdge = record;
++  otherEdge.carrierLocus = boundary_point(other, 3, 8);
++  EXPECT_FALSE(embedded::carrier_contact_slide_position(struck, otherEdge));
++  auto otherTrace = record;
++  otherTrace.struckTrace = TraceId::from_index(0U, 2U).value();
++  EXPECT_FALSE(embedded::carrier_contact_slide_position(struck, otherTrace));
++  auto pastEnd = record;
++  pastEnd.struckSegmentIndex = 1U;
++  EXPECT_FALSE(embedded::carrier_contact_slide_position(struck, pastEnd));
++  auto straight = struck;
++  straight.segments[0].edgeTransitEntry.reset();
++  straight.segments[0].edgeTransitExit.reset();
++  EXPECT_FALSE(embedded::carrier_contact_slide_position(straight, record));
++  auto empty = struck;
++  empty.segments[0].edgeTransitExit = empty.segments[0].edgeTransitEntry;
++  EXPECT_FALSE(embedded::carrier_contact_slide_position(empty, record));
++}
++
+ TEST(FieldAlignedCarrierOccupancy,
+      MutualCarrierContactNamesEachTraceAtItsEndOnOneLocus) {
+   using directional::authority::FieldBranch;
