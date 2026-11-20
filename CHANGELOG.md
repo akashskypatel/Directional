@@ -1,3 +1,7 @@
+## 2026-11-20 UTC — CB168L slide-interior cut position compiled (runtime-free)
+
+Frozen exact slide-piece cut diff applied at `041bde764365710e6d5148c43751da91205ffd35` ([apply run 44689775859](https://github.com/akashskypatel/Directional/actions/runs/44689775859)); [compile run 44689989713](https://github.com/akashskypatel/Directional/actions/runs/44689989713) passed all eight GMP/GMPXX targets. Immutable artifact `14608341511`, ZIP SHA-256 `d189282ce898af54c3cb48d2eaa47107ebaaf36ca2d0afcaec9689dec926084b`, internal manifest 28/28, `runtimeExecution=false`. The consumer is still unwired: no product runtime, no fallback or source-grid recovery, and no acceptance promotion. [CB168L record](.agents/Directional/Architecture_M6_CP3_CB168L_P13_Slide_Interior_Cut_Position_Code_Build_Record_20261120.md). Exact next turn is artifact-only TB150, not executed here.
+
 ## 2026-11-20 UTC — RA-271 TB149 Review and comparison-authority ruling
 
 [RA-271](.agents/Directional/Architecture_M6_CP3_TB149_P13_Slide_Contact_Arrival_Full_Gate_Independent_Review_20261120.md): TB149 PASS. Gate 963/963 MATCH TB148 and 491/491; census 3/3 MATCH TB147 under N1–N4. The STOP came from RA-270's freeze, which cited N1–N3 for the census and dropped the frozen N4 `GetParam` address mask. Sphere arrival order: four `later` on committed walls. The production graph writes slides as chords, so the sphere stop switch moves after EPO-3 and the CB169 cutover. Froze CB168L, an unwired slide-interior cut position (diff `26401a6b…f3a`), and the TB150 manifest `bce554e6…8926`.
