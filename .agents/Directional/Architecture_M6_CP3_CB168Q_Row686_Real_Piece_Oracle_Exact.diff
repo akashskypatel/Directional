@@ -1,0 +1,64 @@
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -8660 +8660,2 @@
+-    const std::vector<SourceEdgeTopologyKey> &cutEdges = {}) {
++    const std::vector<SourceEdgeTopologyKey> &cutEdges = {},
++    const bool useRealPieces = false) {
+@@ -8678,0 +8680,45 @@
++      // Only row 686 selects this independent source-piece reconstruction.
++      // The old chord-based oracle stays unchanged for all other callers.
++      if (useRealPieces &&
++          (segment.edgeTransitEntry.has_value() ||
++           segment.edgeTransitExit.has_value())) {
++        if (!segment.edgeTransitEntry.has_value() ||
++            !segment.edgeTransitExit.has_value() ||
++            segment.edgeTransitEntry->edge != segment.outgoingCarrier ||
++            segment.edgeTransitExit->edge != segment.outgoingCarrier)
++          return std::nullopt;
++        const auto firstPoint = cp4c_oracle_boundary_point(
++            segment.sourceFace, segment.entryPoint);
++        const auto slideStart = cp4c_oracle_boundary_point(
++            segment.sourceFace, *segment.edgeTransitEntry);
++        if (!firstPoint || !slideStart) return std::nullopt;
++        // An authoritative terminal contact ends the face chord before the
++        // committed slide. It does not publish that slide as a trace piece.
++        const bool terminalContact =
++            segmentIndex + 1U == trace.segments.size() &&
++            trace.terminalContact.has_value();
++        if (terminalContact) {
++          const auto terminal =
++              cp4c_oracle_trace_segment_exit(trace, segmentIndex);
++          if (!terminal) return std::nullopt;
++          if (*firstPoint != *terminal)
++            drafts[segment.sourceFace].traces.push_back(
++                Cp4cOracleTracePiece{*firstPoint, *terminal});
++          continue;
++        }
++        if (*firstPoint != *slideStart)
++          drafts[segment.sourceFace].traces.push_back(
++              Cp4cOracleTracePiece{*firstPoint, *slideStart});
++        const auto &carrier = segment.outgoingCarrier;
++        const auto firstParameter = segment.edgeTransitEntry->parameter.value;
++        const auto secondParameter = segment.edgeTransitExit->parameter.value;
++        if (firstParameter == secondParameter) return std::nullopt;
++        const auto incident = topology->incidentFaces.find(carrier);
++        if (incident == topology->incidentFaces.end()) return std::nullopt;
++        for (const auto &face : incident->second) {
++          drafts[face].networkBoundaryIntervals.push_back(
++              Cp4cOracleBoundaryInterval{carrier, firstParameter,
++                                         secondParameter});
++        }
++        continue;
++      }
+@@ -9109 +9155,2 @@
+-    const std::vector<SourceEdgeTopologyKey> &cutEdges) {
++    const std::vector<SourceEdgeTopologyKey> &cutEdges,
++    const bool useRealPieces = false) {
+@@ -9114 +9161,2 @@
+-  const auto fragments = cp4c_oracle_fragments(mesh, network, cutEdges);
++  const auto fragments =
++      cp4c_oracle_fragments(mesh, network, cutEdges, useRealPieces);
+@@ -14992 +15040 @@
+-        fixture.mesh, *fixture.network, cuts);
++        fixture.mesh, *fixture.network, cuts, true);

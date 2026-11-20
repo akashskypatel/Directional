@@ -1,3 +1,13 @@
+## CURRENT — TB152 independent Review PASS; CB168P O49 ownership wiring next (2026-11-20 UTC)
+
+[Independent Review](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md) rechecked 967/967 PASS, prior 966/966 MATCH, all 504 unchanged slide contacts and 491/491 CP2, with exact frozen O49 and later row686 patches. Neither proposed code patch has been implemented or built. O49 CB168P is the only next turn; row686 CB168Q is later. Keep sphere χ+4, rows669/698, H4 and CP3 promotion open; stable 66/17/49, debt1, deferred81.
+
+- [x] `M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-REV` (independent Review, no runtime).
+- [ ] **NEXT:** `M6-CP3-CB168P-P13-EDGE-ONLY-SOURCE-FACE-OWNERSHIP` — exact [patch](.agents/Directional/Architecture_M6_CP3_CB168P_O49_Edge_Only_Source_Face_Ownership_Exact.diff), compile-only.
+- [ ] **LATER:** `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` — separate exact [test-only patch](.agents/Directional/Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_Exact.diff), after independent O49 TB/Review.
+
+## HISTORICAL — TB152 execution and predecessor
+
 ## CURRENT — TB152 full gate PASS; independent TB152 Review next (2026-11-20 UTC)
 
 [TB152 execution](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Execution_Report_20261120.md): immutable CB168O package `14628449217` (source `1df6a09ad386791a9befddd9658ddc4d5bb795f2`) ran [44739657527](https://github.com/akashskypatel/Directional/actions/runs/44739657527). Result `14630642490` SHA-256 `5bfce8410e736c1fce63c4c6fa9b272b20ff91ceac8044bb339c814bfaa3cd04`: 967/967 PASS; 966/966 MATCH TB151 N1–N3 with all 504 raw slide-contact records unchanged; 491/491 CP2; no rebuild or census. Stable 66/17/49, debt1, deferred81. Source helper remains unwired; no CP3/selector497/D0/H4 or row686 promotion.

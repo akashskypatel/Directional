@@ -1,0 +1,39 @@
+diff --git a/src/geometry/SurfaceCutGraph.cpp b/src/geometry/SurfaceCutGraph.cpp
+--- a/src/geometry/SurfaceCutGraph.cpp
++++ b/src/geometry/SurfaceCutGraph.cpp
+@@ -565,0 +566,35 @@
++      // Edge-only source pieces lie on the carrier, not inside either face.
++      // Assign the two boundary sides from the source-face winding instead of
++      // marking the segment's chart as an interior trace-cut face.
++      const auto pieces = exact_trace_segment_pieces(*trace, segmentIndex);
++      if (pieces.has_value() && pieces->size() == 1U) {
++        const auto *edge = std::get_if<authority::SourceEdgeSupport>(
++            &pieces->front().carrier);
++        if (edge != nullptr) {
++          const auto incident =
++              embedded.sourceTopology.incidentFaces.find(edge->edge);
++          if (incident != embedded.sourceTopology.incidentFaces.end()) {
++            barriers.insert(edge->edge);
++            arcExclusionReasons.erase(segment.sourceFace);
++            for (const SourceFace &sideFace : incident->second) {
++              const auto sideRecord =
++                  embedded.sourceTopology.faces.find(sideFace);
++              if (sideRecord == embedded.sourceTopology.faces.end()) continue;
++              const auto side = edge_piece_face_side(sideRecord->second,
++                                                    pieces->front());
++              if (!side.has_value()) continue;
++              const std::size_t orbit =
++                  *side == authority::Orientation::Forward ? forwardOrbit
++                                                           : reverseOrbit;
++              add_owner(sideFace, edge->edge, orbit);
++              if (certificateFaceOrbits.count(orbit) != 0U) {
++                traceSides[sideFace].push_back(
++                    SurfaceCutGraphTraceFragmentSideOwner{
++                        trace->id, segmentIndex, *side, orbit});
++              }
++            }
++            continue;
++          }
++        }
++      }
++
