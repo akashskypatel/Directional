@@ -19572,6 +19572,139 @@ TEST(FieldAlignedCarrierOccupancy,
 }
 
 TEST(FieldAlignedCarrierOccupancy,
+     SourcePieceCountsBindEachTraceSegmentToItsRealPieces) {
+  namespace authority = directional::authority;
+  using directional::authority::FieldBranch;
+  using directional::authority::TopologyRegionId;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+  using Counts = std::vector<std::size_t>;
+  using Faces = std::vector<SourceFaceTopologyKey>;
+  using Failure = embedded::SourcePieceBindingFailure;
+  using Path = authority::ExactSourcePath;
+  using Piece = authority::ExactSourceSupportPiece;
+  using Position = embedded::TraceCutPosition;
+  // Face (0,1,4) is entered at vertex 4 and slid along (0,1) from 1/4 to
+  // vertex 1; face (1,2,4) then runs from vertex 1 to (2,4) at 1/2.
+  const auto first = topology_face(0, 1, 4, 5U);
+  const auto second = topology_face(1, 2, 4, 5U);
+  const auto incoming = topology_edge(0, 4, 5U);
+  const auto carrier = topology_edge(0, 1, 5U);
+  const auto next = topology_edge(1, 4, 5U);
+  const auto outgoing = topology_edge(2, 4, 5U);
+  FieldAlignedCandidateTrace trace(
+      TraceId::from_index(0U, 2U).value(),
+      SingularityPortId::from_index(0, 1).value(),
+      FieldSingularityId::from_index(0, 1).value(),
+      SourceVertexId::from_index(4, 5).value(),
+      SourceComponentId::from_index(0, 1).value(),
+      TopologyRegionId::from_index(0, 1).value());
+  const auto branch = FieldBranch::from_integer(0);
+  trace.segments.emplace_back(first, branch, boundary_point(incoming, 1, 1),
+                              incoming, carrier, std::nullopt);
+  trace.segments[0].edgeTransitEntry = boundary_point(carrier, 1, 4);
+  trace.segments[0].edgeTransitExit = boundary_point(carrier, 1, 1);
+  trace.segments.emplace_back(second, branch, boundary_point(next, 0, 1), next,
+                              outgoing, std::nullopt);
+  trace.terminalPoint = boundary_point(outgoing, 1, 2);
+  const Position start{0U, std::nullopt};
+  const Position middle{1U, std::nullopt};
+  const Position end{2U, std::nullopt};
+  const Position faceCut{1U, exact_ratio(1, 2)};
+  const Position slideCut{0U, exact_ratio(1, 2)};
+  const Faces both{first, second};
+
+  // The real decomposition reports its counts, and they bind its path.
+  struct Range {
+    Position from;
+    Position to;
+    Faces faces;
+    Counts counts;
+  };
+  for (const auto &range : std::vector<Range>{
+           {start, end, both, {2U, 1U}},
+           {start, middle, {first}, {2U}},
+           {middle, end, {second}, {1U}},
+           {start, faceCut, both, {2U, 1U}},
+           {faceCut, end, {second}, {1U}},
+           {start, slideCut, {first}, {2U}},
+           {slideCut, middle, {first}, {1U}},
+           {slideCut, end, both, {1U, 1U}}}) {
+    SCOPED_TRACE(::testing::Message() << "from segment " << range.from.segment
+                                      << " to segment " << range.to.segment);
+    Counts produced;
+    const auto path = embedded::exact_trace_piece_path_between(
+        trace, range.from, range.to, &produced);
+    ASSERT_TRUE(path.has_value());
+    EXPECT_EQ(range.counts, produced);
+    EXPECT_FALSE(embedded::source_piece_binding_failure(range.faces, produced, *path));
+  }
+  auto departure = trace;
+  departure.sourceVertex = SourceVertexId::from_index(0, 5).value();
+  departure.segments[0].entryPoint = boundary_point(incoming, 0, 1);
+  departure.segments[0].edgeTransitEntry = boundary_point(carrier, 0, 1);
+  Counts edgeOnlyCounts;
+  const auto edgeOnly =
+      embedded::exact_trace_piece_path_between(departure, start, end, &edgeOnlyCounts);
+  ASSERT_TRUE(edgeOnly.has_value());
+  EXPECT_EQ((Counts{1U, 1U}), edgeOnlyCounts);
+  EXPECT_FALSE(embedded::source_piece_binding_failure(both, edgeOnlyCounts, *edgeOnly));
+  Counts untouched{7U};
+  EXPECT_FALSE(embedded::exact_trace_piece_path_between(trace, end, start, &untouched));
+  EXPECT_EQ((Counts{7U}), untouched);
+
+  const auto full = embedded::exact_trace_piece_path_between(trace, start, end);
+  ASSERT_TRUE(full.has_value());
+  ASSERT_EQ(3U, full->size());
+  const std::optional<Failure> partition{Failure{}};
+  const auto at = [](const std::size_t segment) {
+    return std::optional<Failure>{Failure{segment}};
+  };
+  EXPECT_EQ(partition, embedded::source_piece_binding_failure(both, Counts{2U}, *full));
+  EXPECT_EQ(partition,
+            embedded::source_piece_binding_failure(both, Counts{2U, 1U, 1U}, *full));
+  EXPECT_EQ(partition,
+            embedded::source_piece_binding_failure(both, Counts{1U, 1U}, *full));
+  EXPECT_EQ(partition,
+            embedded::source_piece_binding_failure(both, Counts{0U, 3U}, *full));
+  EXPECT_EQ(partition,
+            embedded::source_piece_binding_failure(Faces{first}, Counts{3U}, *full));
+  // Counts that partition the path but split it in the wrong place.
+  EXPECT_EQ(at(1U), embedded::source_piece_binding_failure(both, Counts{1U, 2U}, *full));
+  EXPECT_EQ(at(0U), embedded::source_piece_binding_failure(
+                        Faces{second, second}, Counts{2U, 1U}, *full));
+  const Path permuted{(*full)[1], (*full)[0], (*full)[2]};
+  EXPECT_EQ(at(0U), embedded::source_piece_binding_failure(both, Counts{2U, 1U}, permuted));
+  // (0,1) is an edge of (0,1,4) but not of (1,2,4).
+  const auto slide = embedded::exact_trace_piece_path_between(trace, slideCut, middle);
+  ASSERT_TRUE(slide.has_value());
+  EXPECT_FALSE(embedded::source_piece_binding_failure(Faces{first}, Counts{1U}, *slide));
+  EXPECT_EQ(at(0U),
+            embedded::source_piece_binding_failure(Faces{second}, Counts{1U}, *slide));
+  // An edge piece ends at a vertex unless it is the path's last piece.
+  const authority::ExactSourcePoint v1{SourceVertexId::from_index(1, 5).value()};
+  const authority::ExactSourcePoint v4{SourceVertexId::from_index(4, 5).value()};
+  const authority::ExactSourcePoint quarter{
+      authority::ExactSourceEdgePoint{carrier, exact_ratio(1, 4)}};
+  const authority::ExactSourcePoint fiveEighths{
+      authority::ExactSourceEdgePoint{carrier, exact_ratio(5, 8)}};
+  const Path endsAtVertex{
+      Piece{authority::SourceEdgeSupport{carrier}, fiveEighths, v1},
+      Piece{authority::SourceFaceInteriorSupport{first}, v1, v4}};
+  const Path endsInside{
+      Piece{authority::SourceEdgeSupport{carrier}, quarter, fiveEighths},
+      Piece{authority::SourceFaceInteriorSupport{first}, fiveEighths, v4}};
+  ASSERT_TRUE(authority::exact_source_path_is_canonical(endsAtVertex));
+  ASSERT_TRUE(authority::exact_source_path_is_canonical(endsInside));
+  EXPECT_FALSE(embedded::source_piece_binding_failure(
+      Faces{first, first}, Counts{1U, 1U}, endsAtVertex));
+  EXPECT_EQ(at(0U), embedded::source_piece_binding_failure(
+                        Faces{first, first}, Counts{1U, 1U}, endsInside));
+  EXPECT_FALSE(embedded::source_piece_binding_failure(
+      Faces{first}, Counts{1U}, Path{endsInside.front()}));
+}
+
+TEST(FieldAlignedCarrierOccupancy,
      MutualCarrierContactNamesEachTraceAtItsEndOnOneLocus) {
   using directional::authority::FieldBranch;
   using directional::authority::TopologyRegionId;

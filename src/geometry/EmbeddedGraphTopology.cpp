@@ -1046,11 +1046,12 @@ std::optional<authority::ExactSourcePath> exact_trace_path_between(
 
 std::optional<authority::ExactSourcePath> exact_trace_piece_path_between(
     const FieldAlignedCandidateTrace &trace, const TraceCutPosition &first,
-    const TraceCutPosition &second) {
+    const TraceCutPosition &second, std::vector<std::size_t> *pieceCounts) {
   if (!(first < second)) return std::nullopt;
   const auto [begin, end] = trace_cut_segment_range(first, second);
   if (begin >= end || end > trace.segments.size()) return std::nullopt;
   authority::ExactSourcePath path;
+  std::vector<std::size_t> counts;
   for (std::size_t segmentIndex = begin; segmentIndex < end; ++segmentIndex) {
     auto pieces = exact_trace_segment_pieces(trace, segmentIndex);
     if (!pieces.has_value()) return std::nullopt;
@@ -1073,6 +1074,7 @@ std::optional<authority::ExactSourcePath> exact_trace_piece_path_between(
           if (!point.has_value()) return std::nullopt;
           pieces->back().second = *point;
         }
+        counts.push_back(pieces->size());
         path.insert(path.end(), pieces->begin(), pieces->end());
         continue;
       }
@@ -1088,11 +1090,53 @@ std::optional<authority::ExactSourcePath> exact_trace_piece_path_between(
         pieces->back().second = *point;
       }
     }
+    counts.push_back(pieces->size());
     path.insert(path.end(), pieces->begin(), pieces->end());
   }
-  return authority::exact_source_path_is_canonical(path)
-             ? std::optional<authority::ExactSourcePath>{std::move(path)}
-             : std::nullopt;
+  if (!authority::exact_source_path_is_canonical(path)) return std::nullopt;
+  if (pieceCounts != nullptr) *pieceCounts = std::move(counts);
+  return path;
+}
+
+std::optional<SourcePieceBindingFailure> source_piece_binding_failure(
+    const std::vector<authority::SourceFaceTopologyKey> &sourceFaces,
+    const std::vector<std::size_t> &sourcePieceCounts,
+    const authority::ExactSourcePath &sourcePath) {
+  if (sourcePieceCounts.size() != sourceFaces.size()) {
+    return SourcePieceBindingFailure{};
+  }
+  std::size_t total = 0U;
+  for (const std::size_t count : sourcePieceCounts) {
+    if (count != 1U && count != 2U) return SourcePieceBindingFailure{};
+    total += count;
+  }
+  if (total != sourcePath.size()) return SourcePieceBindingFailure{};
+  std::size_t next = 0U;
+  for (std::size_t segment = 0U; segment < sourceFaces.size(); ++segment) {
+    const authority::SourceFaceTopologyKey &face = sourceFaces[segment];
+    const auto &corners = face.vertices();
+    for (std::size_t piece = 0U; piece < sourcePieceCounts[segment];
+         ++piece, ++next) {
+      const authority::ExactSourceSupportPiece &current = sourcePath[next];
+      // A face piece opens its segment; an edge piece closes it.
+      if (const auto *interior = std::get_if<authority::SourceFaceInteriorSupport>(
+              &current.carrier)) {
+        if (piece != 0U || interior->face != face) {
+          return SourcePieceBindingFailure{segment};
+        }
+        continue;
+      }
+      const auto *edge = std::get_if<authority::SourceEdgeSupport>(&current.carrier);
+      if (edge == nullptr || piece + 1U != sourcePieceCounts[segment] ||
+          std::count(corners.begin(), corners.end(), edge->edge.first()) != 1 ||
+          std::count(corners.begin(), corners.end(), edge->edge.second()) != 1 ||
+          (next + 1U != sourcePath.size() &&
+           !std::holds_alternative<authority::SourceVertexId>(current.second))) {
+        return SourcePieceBindingFailure{segment};
+      }
+    }
+  }
+  return std::nullopt;
 }
 
 FaceContactNodeResult collect_face_contact_nodes(

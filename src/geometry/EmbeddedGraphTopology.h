@@ -345,13 +345,36 @@ exact_trace_path_between(const FieldAlignedCandidateTrace &trace,
 /**
  * Concatenate the real segment pieces in [first, second). Interior cuts
  * clip ordinary face pieces, or the edge piece of a traversed slide; the arc
- * after a slide cut starts on the edge piece. Unwired until the coordinated
- * graph cutover.
+ * after a slide cut starts on the edge piece. When `pieceCounts` is given,
+ * it receives how many pieces each segment in the range contributed (1 or 2).
+ * Unwired until the coordinated graph cutover.
  */
 [[nodiscard]] std::optional<authority::ExactSourcePath>
 exact_trace_piece_path_between(const FieldAlignedCandidateTrace &trace,
                                const TraceCutPosition &first,
-                               const TraceCutPosition &second);
+                               const TraceCutPosition &second,
+                               std::vector<std::size_t> *pieceCounts = nullptr);
+
+/** Where a trace arc's source path fails to split into its segments' pieces. */
+struct SourcePieceBindingFailure {
+  /** The failing segment; empty when the counts do not partition the path. */
+  std::optional<std::size_t> segment;
+
+  bool operator==(const SourcePieceBindingFailure &) const = default;
+};
+
+/**
+ * Checks the exact segment-to-piece binding of a trace arc. Segment k owns
+ * the next `sourcePieceCounts[k]` pieces of `sourcePath`, which must be
+ * `[face(sourceFaces[k])]`, `[face(sourceFaces[k]), edge of sourceFaces[k]]`
+ * or `[edge of sourceFaces[k]]`. An edge piece ends at a source vertex unless
+ * it is the path's last piece. Path canonicity is checked separately.
+ */
+[[nodiscard]] std::optional<SourcePieceBindingFailure>
+source_piece_binding_failure(
+    const std::vector<authority::SourceFaceTopologyKey> &sourceFaces,
+    const std::vector<std::size_t> &sourcePieceCounts,
+    const authority::ExactSourcePath &sourcePath);
 
 /**
  * A network node at a trace-trace contact strictly inside a source face: a
