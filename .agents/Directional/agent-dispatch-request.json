@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev157-changelog-20261121-v2",
-  "mailbox_key": "m6-cp3-tb-rev157-changelog-v2",
-  "file_id": "1bC6siwAnLcWd-UO2x24g0uSMVzISWUis",
-  "patch_sha256": "907dbc53df0bd106210aeb76ec772e9540f4ead23734d56e44d1ec7eed092265",
-  "base_sha": "ca3539db7a9153f67ee1d75b7eb5d256cd160989",
+  "request_id": "m6-cp3-tb-rev157-finalize-changelog-20261121-v1",
+  "mailbox_key": "m6-cp3-tb-rev157-changelog-finalize-v1",
+  "file_id": "171wdTC2y7G9TJ6dBM25KrHfnezSPZud7",
+  "patch_sha256": "8c7bdfa07cd8be10af4b960203940c0f9a6180bd11ac0d4e9177cd2c409a3fa4",
+  "base_sha": "5ca9f0334d8b47005aca7be6c18889b6236a249c",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(review): preserve TB-REV-157 independent review continuation in CHANGELOG",
+  "commit_message": "docs(review): finalize TB-REV-157 changelog with frozen exact CB-174",
   "retention_days": 14
 }
