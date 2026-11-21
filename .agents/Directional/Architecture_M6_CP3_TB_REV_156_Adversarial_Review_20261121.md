@@ -27,6 +27,8 @@ CB-172B's source on HEAD equals its frozen postimages. The successor it froze, t
 - TB-REV-156 names "a separate stop-switch CB" with no definition. The only description is TB149's prose: the moving trace ends at its entry with `carrierLocus`, and the wall is split via `carrier_contact_slide_position`.
 - That definition is the critical path to χ+4. TB-REV-157 must freeze it exactly as an unwired helper with a test that reaches it, and without TB149's cut-binding clause (RA-281 F3).
 
+**V3 evidence clarification (TB-REV-157, 2026-11-21 UTC):** [Independent source proof](Architecture_M6_CP3_TB_REV_157_V3_Reaching_Test_Feasibility_20261121.md) finds that the original V3 combined two incompatible stages. The unwired helper must have a test that actually calls it and checks exact stop and wall division (**V3a**). The separate actual production `(0,2)` rotation-builder witness (**V3b**) is still REQUIRED but cannot exist until the canonical stop-switch wiring publishes node and split arcs. This clarification changes the *timing*, not the full-reaching acceptance contract. A pure ray-key assertion or fabricated candidate remains insufficient for V3b. The [exact guarded helper CB proposal](Architecture_M6_CP3_CB174_P13_Later_Entry_Slide_Stop_Helper_Code_Build_Proposal_20261121.md) is conditional until TB-REV-157 closeout. The prior sentence requiring one unwired helper test to satisfy both stages is superseded only on that point.
+
 **V4 — Neutrality is claimed only for the gate (accuracy, minor).**
 - The new pre-pass and composition check run before the existing per-ray checks on the edge-locus path.
 - A row that currently fails at an edge locus could therefore report a different reason, even though no current log names `RayRunsAlongLocusEdge`.
