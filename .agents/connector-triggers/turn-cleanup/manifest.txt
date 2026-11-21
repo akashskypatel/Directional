@@ -1,2 +1,0 @@
-# TB-REV-155 temporary source snapshot trigger, cleanup after review documentation commit
-.agents/connector-triggers/source-snapshot/tb-rev-155-source-20261121.txt
