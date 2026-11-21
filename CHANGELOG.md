@@ -1,3 +1,7 @@
+## 2026-11-21 — CB-172B exact slide-carrier cut admissibility (Code + Build only)
+
+[CB-172B record](.agents/Directional/Architecture_M6_CP3_CB172B_P13_Slide_Carrier_Cut_Admissibility_Code_Build_Record_20261121.md): frozen three-file diff applied as `23c43e6fa01a132b23553302a083d41b01130710`. `TraceSlideCarrier` prevents slipped trace-carrier edges from cut proposals and saturation; row972 added without execution. [GMP compile 44919774599](https://github.com/akashskypatel/Directional/actions/runs/44919774599) produced package `14713691307` (ZIP SHA-256 `6da928ac27a22f0b90c5816978f758ff0d2b03aac6668c3967d47a51104db0d0`), eight targets, `runtimeExecution=false`. The first malformed compile request was rejected before build and corrected. TB155 970/971 RED, TB154 971/971 last green, CP2 491/491 and stable 66/17/49 unchanged; no acceptance. Next separate turn: `M6-CP3-TB-EXEC-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE`.
+
 ## 2026-11-21 — TB-REV-155 adversarial review, record RA-281 (review only)
 
 M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE (continued; record RA-281): RA-280's TB155 diagnosis and exact CB-172B upheld. R2 recorded in DESIGN.md as an Amendment 14 interim restriction (slide carriers withheld until a slide-start cut position exists after the stop switch); R1 shown unsafe before the stop switch; along-locus-edge key added to the stop-switch sequence. No product change. [Record](.agents/Directional/Architecture_M6_CP3_RA281_RA280_Adversarial_Review_20261121.md).
