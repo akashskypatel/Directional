@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb174-slide-contact-compile-20261121-v1",
-  "mailbox_key": "m6-cp3-cb174-slide-contact-compile-v1",
-  "source_sha": "5190b0e759146342998e3f380f7e5fe4eabd1714",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb174-slide-contact-cut-binding"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb174-closeout-docs-20261121-v1",
+  "mailbox_key": "m6-cp3-cb174-closeout-docs-v1",
+  "file_id": "18HA7jV4-S8NY2HiLUMwMCJkMapKKXojj",
+  "patch_sha256": "7f59f417952c43e6028057a14e8b941f17d81aaeb177a1313fb566a679427d63",
+  "base_sha": "36917d2cabc1dad49bef54c86bba0df1235c3b58",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cb174): record compiled cut binding and authorize TB158",
+  "retention_days": 14
 }
