@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tbrev158-docs-20261121-v2",
-  "mailbox_key": "m6-cp3-tbrev158-docs",
-  "file_id": "1deKygnX7qfGv_YfTU4WfdujKb9PY4OKn",
-  "patch_sha256": "7a35805a2c430e2c4ead3da19ca27cdd23e5974879f514e4c6f8f85092e7f73e",
-  "base_sha": "8372f109a606ea5af880ae58a3f01b07d4c24ed1",
+  "request_id": "m6-cp3-cb175-p13-slide-entry-stop-v1",
+  "mailbox_key": "m6-cp3-cb175-p13-slide-entry-stop-apply",
+  "file_id": "1yWTYKpAZJ39bKQa45QT7nAgGksQpJ90V",
+  "patch_sha256": "9e75cff8cd50a8a4e1f084b69445f982331617b3b3b7e5843dafc0a2cb480a4c",
+  "base_sha": "206012ec8e6ae6d1e6f805368cfca45b7d0eca47",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb-rev-158): independently verify full gate and freeze producer switch",
+  "commit_message": "feat(surface-cells): add shared slide-entry stop predicate",
   "retention_days": 14
 }
