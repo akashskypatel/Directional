@@ -1,8 +1,8 @@
-# TB-REV-157 — independent evidence review (work in progress, 2026-11-21 UTC)
+# TB-REV-157 — independent evidence review (complete, 2026-11-21 UTC)
 
 **Canonical turn:** `M6-CP3-TB-REV-157-P13-EDGE-LOCUS-ALONG-EDGE-RAY-KEY-FULL-GATE`.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`; PR #8 remains open, draft and unmerged.
-**Boundary:** Review only. No code, test, fixture, selector, benchmark, build, or workflow source was edited on the working branch; no tests, benchmarks or builds were executed in this review.
+**Boundary:** Review only. No product, test, fixture, selector, benchmark or build source was edited. One **temporary verification workflow** was created to run the mandatory full-Git boundary script, then deleted. Its reusable workflows and permissions were not modified. No Directional tests, benchmarks or builds were executed in this review.
 
 ## Situation — TB157 scoped GREEN upheld by independent byte checks
 
@@ -41,7 +41,7 @@ The Review prepared and then guarded an **unapplied source candidate**, confined
 - Revised candidate includes an exact slide-contact stop and wall-cut witness, negative earlier/equal arrivals, absent/endpoint slides, trace identity, component/region identity and carrier checks, plus two source-derived opposite edge pieces classified into slots 0 and 2. The component/region negatives change typed metadata and are **not** two-sheet production fixtures. These are meaningful helper controls, but **none invokes actual `build_rotation_system`**; they do not discharge V3b.
 - The exact helper CB is frozen as a compile-only successor, with STOP rules and local non-vacuous helper assertions. Full V3b source-attached graph production, two split arcs, rotation-builder `(0,2)` receipt, distinct ordered slots and same-direction failure belong to the separate wiring CB and its later Test + Benchmark gate. A missing builder witness is still a STOP for that later gate, **not** permission to claim success from this helper test.
 
-**Carried obligations:** TB-REV-156 V3a exact helper diff is frozen but uncompiled/unexecuted; V3b full reaching proof is carried to later canonical stop-switch wiring; RA-281 F1/F2/F3 (interim restriction and producer boundary); RA-275 S4a (real slide-plan conformity); O47/C5/O48/O49; sphere χ+4 and four unowned contacts. Neither the scoped GREEN nor the candidate patch discharges these product obligations. RA-279 C1/C2 remain narrowly discharged from TB156/row858 and row972, without any new product claim.
+**Carried obligations:** TB-REV-156 V3a exact helper source is frozen but uncompiled/unexecuted; V3b full reaching proof is carried to later canonical stop-switch wiring; RA-281 F1/F2/F3 (interim restriction and producer boundary); RA-275 S4a (real slide-plan conformity); O47/C5/O48/O49; sphere χ+4 and four unowned contacts. Neither the scoped GREEN nor the candidate patch discharges these product obligations. RA-279 C1/C2 remain narrowly discharged from TB156/row858 and row972, without any new product claim.
 
 ## Additional independent finding — V3 requires two production stages
 
@@ -62,16 +62,16 @@ The TB157 evidence portion is independently upheld. Do not start a successor cod
 | Non-vacuity checked | Prior helper tests plus exact later-slide arrival tests and six added distinct negative controls; source-attached `(0,2)` rotation node remains mandatory only after canonical producer wiring |
 | Prior obligations discharged/carried | V3, RA-281 F1/F2/F3, RA-275 S4a, O47/C5/O48/O49 and sphere carried; RA-279 C1/C2 remain narrowly discharged |
 | Stable accounting | 66/17/49, debt 1, deferred 81; CP2 491/491 only |
-| New candidates/obligations recorded | Guarded candidate plus conditional CB-174 proposal preserved; V3a/V3b source proof recorded in the regression tracker with falsifier and owner; no new stable regression |
-| ORIENTATION currency line | Updated to TB-REV-157, 2026-11-21; current review remains open |
+| New candidates/obligations recorded | Exact frozen CB-174 diff and V3a/V3b source evidence preserved; tracker records falsifier, later V3b owner, and prohibited shortcuts; no new stable regression |
+| ORIENTATION currency line | Updated to TB-REV-157, 2026-11-21; review completed and exact next CB documented |
 | ORIENTATION §3 / §4 / §7 / §8 | §3, §7 updated; §4 n/a (no new production witness), §8 n/a (known non-vacuity defect) |
-| CHANGELOG | Review WIP entry committed via Drive dispatcher (run 44944257242, verified top entry on live branch); earlier headerless dispatch failed and was corrected; consumed files deleted |
-| ROADMAP | Current-turn pointer corrected to active TB-REV-157; checkpoint status unchanged |
+| CHANGELOG | Historical WIP entry amended into one complete TB-REV-157 entry with exact CB-174 v3 SHA; dispatcher run 44946465697 success, live top entry verified, consumed Drive patch deleted |
+| ROADMAP | TB-REV-157 scoped review completed; CB-174 exact helper-only next; CP3 checkpoint remains active, unpromoted |
 | Selector manifest | n/a — no selector added or accepted |
 | LESSONS | Existing evidence/non-vacuity rule; no new general lesson yet |
 | Consolidation under CLEAN_UP_POLICY | n/a — active scoped record, no redundant history folded |
 | Successor frozen | `M6-CP3-CB-174-P13-LATER-ENTRY-SLIDE-STOP-HELPER`; exact three-file diff SHA-256 `684d53d681f1e1ba82730e52239042a6947d6f5a6f035b70d0f252c41807d238`; STOP rules in CB-174 proposal; full V3b builder proof is a separately required wiring-gate condition; turn has NOT started |
 | Turn boundary held | Yes; Review only, no product/test/selector mutation or runtime |
-| `review_check.py boundary` | Pending: snapshot lacks `.git`, and GitHub source is inaccessible to local Git; GitHub commit comparison shows no protected code/test/selector/workflow change, but cannot replace the required script |
-| `STATUS` lifecycle maintained | Entry and resume beacons written; next final beacon remains IN_PROGRESS until V3 is resolved |
-| Pushed to origin, branch in sync | Review record and ORIENTATION committed on branch; no source/selector drift confirmed by compare; full `git status -sb` not available locally |
+| `review_check.py boundary` | **PASS** from full-Git GitHub Actions run 44946170911 at commit b6c0498f: exit 0, all selector hashes and rewrite durable headings PASS; `review_check.py authority 47a874ee...` also PASS. Temporary workflow retired. No local runtime tests/builds |
+| `STATUS` lifecycle maintained | Original start preserved; this resumption recorded; terminal COMPLETE beacon must be the final repository write and name CB-174 exactly |
+| Pushed to origin, branch in sync | GitHub Actions run 44946170911 printed `git status -sb` with branch tracking `origin` and no ahead/behind; subsequent review documentation written directly to origin by GitHub connector; last source diff verification remains code/selector clean |
