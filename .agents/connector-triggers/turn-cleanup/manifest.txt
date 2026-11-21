@@ -1,0 +1,2 @@
+# TB155 temporary source-snapshot marker; preserve workflow-mailbox and durable dispatcher
+.agents/connector-triggers/source-snapshot/m6-cp3-tb155-20261121-1104.txt
