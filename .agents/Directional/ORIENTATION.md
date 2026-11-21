@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-21 UTC; [RA-277 adversarial re-review](Architecture_M6_CP3_RA277_TB154_Adversarial_ReReview_20261121.md)):** qualified independent 971/971 PASS; 968/968 N1–N3 match TB153, 3/3 N1–N4 match TB151, CP2 491/491 accepted. Ten slide ends are observed along-edge with no observed collision, but row971 does not enforce exact totals or type coverage (RA-277-NV1); no verified production change. Stable 66/17/49, debt1, deferred81. Sphere χ6 vs χ2 and four interior slide contacts remain open. **CB169S compiled only**, source `ee0f478ad95debeb3ab5a14010a7b24ea78757f6` / package `14700703142`; next separate TB not started; no stop switch or CP3/selector497/D0/H4 promotion.
+**Current currency (2026-11-21 UTC; [RA-278](Architecture_M6_CP3_RA278_RA277_And_CB169S_Adversarial_Review_20261121.md)):** CB169S producer switch compiled at `ee0f478ad` / package `14700703142`, unexecuted; two exact corrective compile-only turns (CB-170, CB-171) precede TB-EXEC-155. Last executed evidence: TB154 971/971 (qualified by RA-277), census 3/3, CP2 491/491 accepted. Stable 66/17/49, debt1, deferred81. Sphere χ6 vs χ2 and four interior slide contacts remain open; no stop switch or CP3/selector497/D0/H4 promotion.
 
 ## 1. What the project is
 
@@ -109,7 +109,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** CB169S has compiled the real-piece producer, counts, rays/ranks and digest with the RA-277-NV1 test oracle. No new runtime evidence exists; the next step is a separately authorized immutable Test + Benchmark gate. The stop switch and real-piece conformity gate remain subsequent, separately authorized work; O49 is held until suffix-separation evidence. Sphere χ+4, four slide contacts, rows669/698 unresolved.
+**Current priority:** `M6-CP3-CB-170-P13-SEMANTIC-DIGEST-AND-PIECE-COUNT-ORACLE-RESTORE` (Code + Build, compile only), then CB-171 and TB-EXEC-155 (RA-278).
 
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.

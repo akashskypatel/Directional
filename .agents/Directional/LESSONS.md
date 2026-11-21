@@ -220,6 +220,13 @@ This document records **reusable failure-derived engineering lessons**, not an e
   falsifier can run through the real entry point: RA-191's tetrahedron cannot carry an admissible field
   (RA-192).
 
+**RA-278**
+
+- Switch only the branch a new representation creates. Replacing a whole reader (the edge-locus rank) changes ordinary configurations that the representation left unchanged.
+- A new key that shares a slot with an existing key kind (an along-edge trace ray beside an edge arc) needs an explicit coincidence check. Falling through to a sort on id fields is a hidden tie-break.
+- A structural check that the validator already enforces is weaker than the exact assertion it replaced. Restore exactness from an independent record.
+- Before adding a field to a semantic digest, check whether an exact replay already pins it. A defaulted `operator<=>` over the record means it does.
+
 ## Geometry, topology, and mathematical obligations
 
 - **Use the exact complex named by the claim.** Source triangles, split face fragments, embedded arcs,

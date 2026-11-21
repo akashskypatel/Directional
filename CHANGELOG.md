@@ -1,3 +1,7 @@
+## 2026-11-21 — RA-278 adversarial review of RA-277 and CB169S (review only)
+
+RA-278 (2026-11-21 UTC): adversarial review of RA-277 and CB169S. TB154 evidence upheld. CB169S kept; four defects frozen for correction before its TB: C1 digest hashed piece counts for every arc (census break; replay already pins counts — RA-273 S2.3 withdrawn); C2 ordinary edge-locus rank replaced (EPO-5); C3 along-edge rays tie-broken silently against edge arcs; C4 row 966 exact count assertion weakened. Next: CB-170 (`494a5872…`), CB-171, TB-EXEC-155 with allowance A. [Record](.agents/Directional/Architecture_M6_CP3_RA278_RA277_And_CB169S_Adversarial_Review_20261121.md).
+
 ## 2026-11-21 — CB169S real trace-piece producer switch (Code + Build only)
 
 [CB169S record](.agents/Directional/Architecture_M6_CP3_CB169S_P13_Trace_Piece_Producer_Switch_Code_Build_Record_20261121.md): source `ee0f478ad95debeb3ab5a14010a7b24ea78757f6`, patch SHA-256 `7a6daa009357db3ccd0ac62cad5e996f3165f037c682cf0cb24d921bb1369514`; exact piece path/counts wired into `build_arcs`, ray readers use actual end pieces, candidate digest includes counts, prior chord-only test adjusted with negative controls, and RA-277-NV1 adds assertion-based ten-slide controls. Compile run 44888239711, artifact 14700703142, eight GMP/GMPXX targets. No binary execution, selector change, source-face rewrite, stop switch, acceptance, or claimed topology repair. TB154 971/971 and CP2 491/491 are previous evidence only.

@@ -1,6 +1,17 @@
-## CURRENT — CB169S compile-only producer cutover complete (2026-11-21 UTC)
+## CURRENT — RA-278: CB169S corrections before its first TB (2026-11-21 UTC)
 
-[CB169S record](.agents/Directional/Architecture_M6_CP3_CB169S_P13_Trace_Piece_Producer_Switch_Code_Build_Record_20261121.md): exact producer, vertex/edge ray, per-segment count and digest cutover is committed at `ee0f478ad95debeb3ab5a14010a7b24ea78757f6` and compiled in 44888239711 / package 14700703142. New independent RA-277-NV1 sphere guards are compiled **but not executed**. The following Test + Benchmark authority must check full immutable gate, ordinary rays, all-edge-only paths, opposite-face ownership, digest mutation and accepted 491 prefix. No stop switch, acceptance or product improvement is claimed. Next canonical turn remains subject to separate authorization.
+[RA-278](.agents/Directional/Architecture_M6_CP3_RA278_RA277_And_CB169S_Adversarial_Review_20261121.md) keeps the CB169S producer switch (`ee0f478ad`, compiled, unexecuted) and freezes two exact corrective Code + Build turns: C1 digest revert and C4 row 966 oracle (CB-170), then C2 legacy edge-locus rank and C3 fail-closed shared-edge/along-locus-edge rays (CB-171). TB154 remains the last executed gate.
+
+> **NEXT_TURN:** `M6-CP3-CB-170-P13-SEMANTIC-DIGEST-AND-PIECE-COUNT-ORACLE-RESTORE` (Code + Build, compile only). Apply exactly `.agents/Directional/Architecture_M6_CP3_CB170_P13_Digest_And_Piece_Count_Oracle_Restore_Exact.diff` (SHA-256 `494a58729162fc88764d01cccc3e9b480ac1f2565f9b4c391295c21fcc1ab8a3`); compile eight GMP/GMPXX targets, `runtimeExecution=false`. No other edits, no tests, no stop switch.
+
+- [x] `M6-CP3-RA-277-TB-REV-154-ADVERSARIAL-REVIEW` — qualified PASS; RA-277-NV1.
+- [x] `M6-CP3-CB-169S-P13-TRACE-PIECE-PRODUCER-SWITCH` — compiled `ee0f478ad`, pkg `14700703142`; unexecuted.
+- [x] `M6-CP3-RA-278-RA-277-AND-CB-169S-ADVERSARIAL-REVIEW` — CB169S kept; C1–C4 frozen as two exact diffs; RA-273 S2.3 digest obligation withdrawn.
+- [ ] **NEXT:** `M6-CP3-CB-170-P13-SEMANTIC-DIGEST-AND-PIECE-COUNT-ORACLE-RESTORE` — digest revert + row 966 trace-record oracle.
+- [ ] `M6-CP3-CB-171-P13-EDGE-LOCUS-RANK-AND-ALONG-EDGE-COINCIDENCE` — legacy edge-locus rank/primaries; along-locus-edge and shared-edge rays fail closed.
+- [ ] `M6-CP3-TB-EXEC-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE` — TB154 manifest; allowance A = {644, 645, 648, 669, 686, 698, 858, 963, 966, 968, 971}; rest MATCH TB154 N1–N3; census 3/3 MATCH TB151 N1–N4; CP2 491/491.
+- [ ] `M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE` — attribute A-row DIFFs; row 686 vs real-piece oracle; RA-275 S4a; freeze stop-switch helper CB.
+- Prospective: stop-switch helper CB → stop-switch CB → TB → slide-plan conformity → O48 carrier turns (renumbered when frozen). O49 held. FC-6, TERMINAL-CUT-OUTCOME, row858 held; CB-145 parked. D11=A, D12=A.
 
 ## HISTORY — RA-277 qualified PASS; test-oracle gap carried (2026-11-21 UTC)
 
