@@ -1,3 +1,7 @@
+## 2026-11-21 — CB-170 exact semantic digest and count-oracle restoration (Code + Build only)
+
+[CB-170 record](.agents/Directional/Architecture_M6_CP3_CB170_P13_Semantic_Digest_And_Piece_Count_Oracle_Restore_Code_Build_Record_20261121.md): exact C1/C4 frozen patch applied as `9e4bd863a3e825371c6d4ce551dd7badd196ad4d`, restoring the existing candidate digest and independent row 966 trace-record source-piece count oracle. [Compile 44891525358](https://github.com/akashskypatel/Directional/actions/runs/44891525358) produced artifact `14701819126` (ZIP SHA-256 `bf5b2ca85d46d4b78fa619a21f8eedda77a3ab862030848e82a78da3de0d113a`), eight GMP/GMPXX targets, `runtimeExecution=false`. No Directional runtime, test, benchmark, other semantic fix, selector change or acceptance. Previous TB154 971/971, census 3/3 and CP2 491/491 remain historical. C2/C3 only next, CB-171; stable 66/17/49, debt one, deferred 81.
+
 ## 2026-11-21 — RA-278 adversarial review of RA-277 and CB169S (review only)
 
 RA-278 (2026-11-21 UTC): adversarial review of RA-277 and CB169S. TB154 evidence upheld. CB169S kept; four defects frozen for correction before its TB: C1 digest hashed piece counts for every arc (census break; replay already pins counts — RA-273 S2.3 withdrawn); C2 ordinary edge-locus rank replaced (EPO-5); C3 along-edge rays tie-broken silently against edge arcs; C4 row 966 exact count assertion weakened. Next: CB-170 (`494a5872…`), CB-171, TB-EXEC-155 with allowance A. [Record](.agents/Directional/Architecture_M6_CP3_RA278_RA277_And_CB169S_Adversarial_Review_20261121.md).

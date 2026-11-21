@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-21 UTC; [RA-278](Architecture_M6_CP3_RA278_RA277_And_CB169S_Adversarial_Review_20261121.md)):** CB169S producer switch compiled at `ee0f478ad` / package `14700703142`, unexecuted; two exact corrective compile-only turns (CB-170, CB-171) precede TB-EXEC-155. Last executed evidence: TB154 971/971 (qualified by RA-277), census 3/3, CP2 491/491 accepted. Stable 66/17/49, debt1, deferred81. Sphere χ6 vs χ2 and four interior slide contacts remain open; no stop switch or CP3/selector497/D0/H4 promotion.
+**Current currency (2026-11-21 UTC; [CB-170 record](Architecture_M6_CP3_CB170_P13_Semantic_Digest_And_Piece_Count_Oracle_Restore_Code_Build_Record_20261121.md)):** CB169S producer switch remains unexecuted; CB-170 restored the plan digest and trace-record count oracle and compiled as `9e4bd863a3e825371c6d4ce551dd7badd196ad4d` / package `14701819126`. CB-171 is the exact next compile-only turn before TB-EXEC-155. Last executed evidence: TB154 971/971 (qualified by RA-277), census 3/3, CP2 491/491 accepted. Stable 66/17/49, debt1, deferred81. Sphere χ6 vs χ2 and four interior slide contacts remain open; no stop switch or CP3/selector497/D0/H4 promotion.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-21; [RA-278](Architecture_M6_CP3_RA278_RA277_And_CB169S_Adversarial_Review_20261121.md)):** RA-277's TB154 evidence verdict upheld; CB169S producer switch (`ee0f478ad`) kept but corrected before any TB — CB-170 (digest revert, row 966 trace-record oracle) then CB-171 (legacy edge-locus rank, fail-closed shared-edge/along-locus-edge rays), then TB-EXEC-155 with allowance A = {644, 645, 648, 669, 686, 698, 858, 963, 966, 968, 971}.
+**Currency (2026-11-21; [RA-278](Architecture_M6_CP3_RA278_RA277_And_CB169S_Adversarial_Review_20261121.md) and [CB-170 record](Architecture_M6_CP3_CB170_P13_Semantic_Digest_And_Piece_Count_Oracle_Restore_Code_Build_Record_20261121.md)):** RA-277's TB154 evidence verdict upheld; CB169S producer switch (`ee0f478ad`) remains unexecuted; CB-170 C1/C4 correction compiled as `9e4bd863a3e825371c6d4ce551dd7badd196ad4d` (artifact `14701819126`), then CB-171 C2/C3 remains, then TB-EXEC-155 with allowance A = {644, 645, 648, 669, 686, 698, 858, 963, 966, 968, 971}.
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.
 
@@ -109,7 +109,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB-170-P13-SEMANTIC-DIGEST-AND-PIECE-COUNT-ORACLE-RESTORE` (Code + Build, compile only), then CB-171 and TB-EXEC-155 (RA-278). O49 stays held; the stop switch waits for TB-REV-155.
+**Current priority:** `M6-CP3-CB-171-P13-EDGE-LOCUS-RANK-AND-ALONG-EDGE-COINCIDENCE` (Code + Build, compile only), then TB-EXEC-155 (RA-278). CB-170 has compiled; it has not been tested. O49 stays held; the stop switch waits for TB-REV-155.
 
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
