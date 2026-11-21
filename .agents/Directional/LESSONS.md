@@ -240,6 +240,12 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - Rank staging choices by their safety precondition: ask what an alternative would place on records that are still unsplit, not only which rules are unwitnessed.
 - When a planned switch will create the configuration a fail-closed guard rejects, put the guard's replacement inside that switch's sequence.
 
+**TB-REV-156 (adversarial continuation)**
+
+- Before scoping a helper, grep for the geometry classifier the missing rule would consume; if it exists and is tested, freeze only the key rule and route every site through it.
+- A Review told to freeze a CB exactly is not done until a diff with hashes exists; withdraw a prose successor instead of forwarding it.
+- When a change moves a check earlier on a failing path, absence of the old reason in logs does not prove neutrality; give the TB an empty allowance.
+
 ## Geometry, topology, and mathematical obligations
 
 - **Use the exact complex named by the claim.** Source triangles, split face fragments, embedded arcs,

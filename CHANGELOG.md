@@ -1,3 +1,7 @@
+## 2026-11-21 — TB-REV-156 adversarial continuation: exact CB-173 (review only)
+
+M6-CP3-TB-REV-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE (continued after handover): TB156 GREEN upheld; prose CB-173 plan withdrawn; CB-173 frozen as an exact diff (along-locus-edge trace rays take edge-arc slots 0/2 and count as edge rays; composition (0,0)/(2,0)/(0,2); same-direction pair fails closed) with TB157 manifest (TB156 + rows 973–975). No product change. [Record](.agents/Directional/Architecture_M6_CP3_TB_REV_156_Adversarial_Review_20261121.md)
+
 ## 2026-11-21 — TB-REV-156 qualified PASS; next helper-only CB-173
 
 [Independent review](.agents/Directional/Architecture_M6_CP3_TB156_P13_Slide_Carrier_Cut_Admissibility_Full_Gate_Independent_Review_20261121.md) re-hashed original TB156/TB155/TB154 and both census artifacts, re-derived 972/972, immutable 971-case selector prefix, 960/960 non-A matching, sole row966 A difference, unchanged row686 χ+4, ten excluded slide carriers and census 3/3 baseline match. Row858 restored, no forbidden shared-edge guard. RA-279-C1/C2 narrowly discharged; RA-281 F1/F2/F3, RA-275 S4a and sphere obligations carried. [Helper plan](.agents/Directional/Architecture_M6_CP3_CB173_P13_Stop_Switch_Ray_Helpers_Code_Build_Plan_20261121.md) freezes exactly one compiler-only successor `M6-CP3-CB-173-P13-STOP-SWITCH-RAY-HELPERS`. No product, test, selector or benchmark mutation in Review; CP3/497/D0 not promoted.

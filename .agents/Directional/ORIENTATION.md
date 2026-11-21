@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-21 UTC; [M6-CP3-TB-REV-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE](Architecture_M6_CP3_TB156_P13_Slide_Carrier_Cut_Admissibility_Full_Gate_Independent_Review_20261121.md)):** Independent TB156 review PASS: gate 972/972, 960/960 non-A normalized match, row966 only A-diff; census 3/3 baseline match (Cylinder PASS, BunnyRandom/Vase RED), row858 restored, ten slide carriers classified and excluded. Accepted CP2 491/491; stable 66/17/49, debt1, deferred81. Sphere cut-search exhaustion, χ6 vs χ2 and four unowned slide contacts remain. Next `M6-CP3-CB-173-P13-STOP-SWITCH-RAY-HELPERS` helper-only CB; RA-281 Amendment14 interim restriction remains; no CP3/497/D0/H4 promotion.
+**Current currency (2026-11-21 UTC; [M6-CP3-TB-REV-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE, adversarial continuation](Architecture_M6_CP3_TB_REV_156_Adversarial_Review_20261121.md)):** TB156 GREEN 972/972 upheld in scope. The prose CB-173 plan is withdrawn; CB-173 is an exact diff giving along-locus-edge trace rays edge-arc slots, then TB-EXEC-157 (empty allowance) and TB-REV-157, which freezes the stop switch. Accepted CP2 491/491, stable 66/17/49, debt1, deferred81. Sphere χ6 vs χ2 / four contacts and RA-275 S4a open. No stop-switch or CP3/selector497/D0/H4 promotion.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-21; [M6-CP3-TB-REV-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE](Architecture_M6_CP3_TB156_P13_Slide_Carrier_Cut_Admissibility_Full_Gate_Independent_Review_20261121.md)):** TB156 is independently verified GREEN (972/972; census 3/3 baseline match) with row858 restored; only row966 normalized A record changed relative TB154. RA-279-C1/C2 regression discharged only within their scope. The separate helper-only `M6-CP3-CB-173-P13-STOP-SWITCH-RAY-HELPERS` precedes the stop switch; RA-281 F3 along-locus-edge key is required, then later slide-start subdivision can remove Amendment14 interim restriction. Sphere χ+4 remains open.
+**Currency (2026-11-21; [TB-REV-156 adversarial continuation](Architecture_M6_CP3_TB_REV_156_Adversarial_Review_20261121.md)):** exact CB-173 (edge-locus along-edge ray key) replaces the prose helper plan; the stop switch is frozen next by TB-REV-157.
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.

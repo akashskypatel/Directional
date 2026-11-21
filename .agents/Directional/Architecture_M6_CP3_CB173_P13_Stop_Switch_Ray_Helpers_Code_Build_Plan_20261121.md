@@ -1,5 +1,7 @@
 # CB-173 — bounded edge-locus ray helper and controls (compile-only)
 
+> **WITHDRAWN 2026-11-21 (TB-REV-156 adversarial review, [record](Architecture_M6_CP3_TB_REV_156_Adversarial_Review_20261121.md)).** Prose plan replaced by the exact diff [CB-173](Architecture_M6_CP3_CB173_P13_Edge_Locus_Along_Edge_Ray_Key_Exact.diff). Do not implement from this file.
+
 **Canonical turn:** `M6-CP3-CB-173-P13-STOP-SWITCH-RAY-HELPERS` · **Type:** Code + Build, **no runtime**. This is one helper-only code/build turn authorized by [TB156 independent review](Architecture_M6_CP3_TB156_P13_Slide_Carrier_Cut_Admissibility_Full_Gate_Independent_Review_20261121.md). All test and benchmark execution belongs to a separate later turn; no current stop-switch production wiring.
 
 ## Situation and background
