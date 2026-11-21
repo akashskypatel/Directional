@@ -1,14 +1,15 @@
-## CURRENT — TB154 full gate PASS; independent Review next (2026-11-21 UTC)
+## CURRENT — TB154 Review upheld; bounded producer switch next (2026-11-21 UTC)
 
-[TB154 execution](.agents/Directional/Architecture_M6_CP3_TB154_P13_Trace_Piece_Ray_Helpers_Full_Gate_Execution_Report_20261121.md): CB169 immutable package `14694154267` at source `ef86370d0` ran [971-row gate 44874759906](https://github.com/akashskypatel/Directional/actions/runs/44874759906), result `14696380156`; **971/971 PASS**, prior 968/968 MATCH TB153 under N1–N3, row686 included, CP2 **491/491**. [Census 44874777995](https://github.com/akashskypatel/Directional/actions/runs/44874777995), result `14696590265`: **3/3 MATCH** TB151 under N1–N4 (Cylinder PASS; BunnyRandom/Vase expected RED at `:493`). Unwired helper receipts are available for Review. Stable 66/17/49; debt1; deferred81; sphere χ6 and four slide contacts unresolved. No promotion or producer switch.
+[Independent TB154 Review](.agents/Directional/Architecture_M6_CP3_TB154_P13_Trace_Piece_Ray_Helpers_Full_Gate_Independent_Review_20261121.md) re-derived the 971/971 gate, 968/968 TB153 N1–N3 match, census 3/3 TB151 N1–N4 match and CP2 491/491 from immutable logs. Row971 confirms ten along-edge slide ends, no edge coincidences and zero ordinary-ray changes. The helper is not production-wired; the four sphere slide contacts and χ+4 are unresolved. Stable 66/17/49, one witness debt, 81 deferred. No checkpoint, selector497, D0 or H4 promotion.
 
-> **NEXT_TURN:** `M6-CP3-TB-REV-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` (independent Review, no runtime).
-> - Independently verify gate, census and row971 raw receipt identities, evaluate the TB153 Review S3 predictions, and discharge RA-274 S5 obligations before freezing any producer switch.
-> - Preserve the existing four slide-contact/+4 problem, rows 669/698, held O49, CP3 unaccepted, selector 497 unpromoted, and all existing authorizations.
+> **NEXT_TURN:** `M6-CP3-CB-169S-P13-TRACE-PIECE-PRODUCER-SWITCH` (Code + Build, compile-only). Exact scope and independent falsifiers in [TB154 Review](.agents/Directional/Architecture_M6_CP3_TB154_P13_Trace_Piece_Ray_Helpers_Full_Gate_Independent_Review_20261121.md#recommendation--one-frozen-successor).
+> - Wire piece-path producer/counts and piece-ray ranking together, include counts in digest, and retain all source/sheet/face/edge ownership. Address accepted chord-pinning assertions with independent controls instead of weakening them.
+> - Do not start the stop switch, sphere repair, tests, benchmark, or any CP3/selector promotion in this turn.
 
-- [x] `M6-CP3-TB-EXEC-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` — 971/971 PASS; first 968/968 MATCH TB153, census 3/3 MATCH TB151.
-- [ ] **NEXT:** `M6-CP3-TB-REV-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` — independent evidence review; freezes next Code + Build scope if supported.
-- Prospective: producer switch → TB; stop switch → TB (sphere χ2, rows669/698) → CB170 → CB171 → CB172 (O48). O49 held pending suffix-separation proof. FC-6, TERMINAL-CUT-OUTCOME, row858 held; CB145 parked. D11=A, D12=A.
+- [x] `M6-CP3-TB-EXEC-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` — 971/971 PASS; first 968/968 N1–N3 MATCH; census 3/3 N1–N4 MATCH.
+- [x] `M6-CP3-TB-REV-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` — independent PASS, ray predictions checked, RA-274 S5 reviewed; producer switch scoped.
+- [ ] **NEXT:** `M6-CP3-CB-169S-P13-TRACE-PIECE-PRODUCER-SWITCH` — compile-only bounded producer switch, no stop switch.
+- Prospective: producer-switch TB/independent Review → stop switch CB → TB/Review (sphere χ2 and rows669/698 plus suffix/conformity evidence) → CB-170 → CB-171 → CB-172 (O48). O49 held. FC-6, TERMINAL-CUT-OUTCOME, row858 held; CB145 parked. D11=A, D12=A.
 
 ## RA-276 (2026-11-20 UTC) — RA-275 realigned
 
