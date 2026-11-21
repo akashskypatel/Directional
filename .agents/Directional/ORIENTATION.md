@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-21 UTC; [CB-170 record](Architecture_M6_CP3_CB170_P13_Semantic_Digest_And_Piece_Count_Oracle_Restore_Code_Build_Record_20261121.md)):** CB169S producer switch remains unexecuted; CB-170 restored the plan digest and trace-record count oracle and compiled as `9e4bd863a3e825371c6d4ce551dd7badd196ad4d` / package `14701819126`. CB-171 is the exact next compile-only turn before TB-EXEC-155. Last executed evidence: TB154 971/971 (qualified by RA-277), census 3/3, CP2 491/491 accepted. Stable 66/17/49, debt1, deferred81. Sphere χ6 vs χ2 and four interior slide contacts remain open; no stop switch or CP3/selector497/D0/H4 promotion.
+**Current currency (2026-11-21 UTC; [M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE](Architecture_M6_CP3_TB155_P13_Trace_Piece_Producer_Switch_Full_Gate_Independent_Review_20261121.md)):** TB-EXEC-155 is RED (970/971, row858 previously accepted assertion RED; prohibited shared-edge rotation guard at rows644/669/698). This independent Review rejects acceptance and freezes only M6-CP3-CB-172A-P13-CUT-CANDIDATE-SHARED-EDGE-INCIDENCE. The 960 protected cases and three-case census retain baseline matching; accepted CP2 491/491, stable 66/17/49, debt1, deferred81. Sphere χ6 vs χ2/four contacts and RA-275 S4a remain open. No stop-switch or CP3/selector497/D0/H4 promotion.
 
 ## 1. What the project is
 
@@ -33,7 +33,8 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-21; [RA-278](Architecture_M6_CP3_RA278_RA277_And_CB169S_Adversarial_Review_20261121.md) and [CB-170 record](Architecture_M6_CP3_CB170_P13_Semantic_Digest_And_Piece_Count_Oracle_Restore_Code_Build_Record_20261121.md)):** RA-277's TB154 evidence verdict upheld; CB169S producer switch (`ee0f478ad`) remains unexecuted; CB-170 C1/C4 correction compiled as `9e4bd863a3e825371c6d4ce551dd7badd196ad4d` (artifact `14701819126`), then CB-171 C2/C3 remains, then TB-EXEC-155 with allowance A = {644, 645, 648, 669, 686, 698, 858, 963, 966, 968, 971}.
+**Currency (2026-11-21; [M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE](Architecture_M6_CP3_TB155_P13_Trace_Piece_Producer_Switch_Full_Gate_Independent_Review_20261121.md)):** Review rejects TB155 (970 PASS/1 RED) and the forbidden shared-edge reason on rows644/669/698. Source-face display row858 is a genuine accepted failure. Verified 960/960 non-A match, census 3/3 match, CP2 491/491; one bounded CB-172A correction next, before any stop-switch or promotion.
+
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.
 
@@ -47,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | Independent [TB154 Review](Architecture_M6_CP3_TB154_P13_Trace_Piece_Ray_Helpers_Full_Gate_Independent_Review_20261121.md) upholds 971/971, prior 968/968 match, census 3/3 match and CP2 491/491. CB169S producer switch is compiled but not tested, subject to piece-reader and accepted-chord-test controls. Sphere χ+4/four slide contacts and rows669/698 remain; no CP3/selector497/D0 promotion. |
+| **M6-CP3 — active** | TB154 971/971 remains last valid full gate; TB155 970/971 RED, prohibited shared-edge guard and row858 loss; [M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE](Architecture_M6_CP3_TB155_P13_Trace_Piece_Producer_Switch_Full_Gate_Independent_Review_20261121.md) rejects promotion and scopes CB-172A. Four sphere contacts and χ+4 remain. CP2 491/491 accepted; no CP3/selector497/D0 promotion. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -109,7 +110,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB-171-P13-EDGE-LOCUS-RANK-AND-ALONG-EDGE-COINCIDENCE` (Code + Build, compile only), then TB-EXEC-155 (RA-278). CB-170 has compiled; it has not been tested. O49 stays held; the stop switch waits for TB-REV-155.
+**Current priority:** `M6-CP3-CB-172A-P13-CUT-CANDIDATE-SHARED-EDGE-INCIDENCE` (separate Code + Build, compile only) under [M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE](Architecture_M6_CP3_TB155_P13_Trace_Piece_Producer_Switch_Full_Gate_Independent_Review_20261121.md); TB155 is RED and its stop conditions remain active. O49 and the stop switch remain held; RA-275 S4a is carried.
 
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.

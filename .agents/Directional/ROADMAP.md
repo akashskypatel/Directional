@@ -2,13 +2,13 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Updated:** 2026-11-20 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
+**Updated:** 2026-11-21 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
 
 This roadmap answers **what is done, what comes next, and what each milestone delivers**. It is not a turn log, task queue, test ledger, definition spec, or implementation handoff. The product and acceptance contract is [DESIGN.md](DESIGN.md) (especially §§2 and 14); status, detailed plans, unresolved findings, and exact next-turn authorization live in [ORIENTATION.md](ORIENTATION.md), [Future_Chat_Session_Handoff.md](Future_Chat_Session_Handoff.md), [TODO.md](../../TODO.md), and [Regression_Root_Cause_Tracker.md](Regression_Root_Cause_Tracker.md).
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB154 gate 971/971 PASS, prior 968/968 MATCH TB153, census 3/3 MATCH TB151; CB169S producer cutover compiled (source `ee0f478ad95debeb3ab5a14010a7b24ea78757f6`, package `14700703142`), runtime not executed; next separate TB required. Sphere χ+4 and four slide contacts unresolved; no CP3 acceptance) · **Next milestone:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB155 970/971 RED, row858 accepted-source-face regression, prohibited shared-edge guard; independent [M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE](Architecture_M6_CP3_TB155_P13_Trace_Piece_Producer_Switch_Full_Gate_Independent_Review_20261121.md) rejects promotion and freezes only CB-172A compile correction. TB154 971/971 last green gate; sphere χ+4 and four contacts unresolved. CP2 491/491 accepted; no CP3 acceptance) · **Next milestone:** M7 · **Later:** M8.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
