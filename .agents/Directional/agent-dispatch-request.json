@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb154-review-docs-20261121-v1",
-  "mailbox_key": "m6-cp3-tb154-review-docs",
-  "file_id": "1vXmzbXlaGNiEg5AYh82U39BQGNdV493s",
-  "patch_sha256": "df1009c69393b179777e1970a7f076a952de7ca78b47c2e70973bc4ba47d659c",
-  "base_sha": "857862586bf8fb9f771a9917cf7ed1863069a677",
+  "request_id": "m6-cp3-tb154-review-amendment-20261121-v1",
+  "mailbox_key": "m6-cp3-tb154-review-amendment",
+  "file_id": "1eAEetUyPAhf1MbcEwbwHrHjGIBRXi62s",
+  "patch_sha256": "e741987cede6e90be94fdf8a6e61c1f0afd7bc5d475f10dfcaefea5ddad8998f",
+  "base_sha": "186032da53e141cf60a8fff20ce3c373d7ddf144",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb154-review): record independent ray and cutover findings",
+  "commit_message": "docs(tb154-review): verify closeout boundary and record tool limit",
   "retention_days": 30
 }
