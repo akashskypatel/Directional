@@ -1,3 +1,16 @@
+## 2026-11-21 — TB-REV-157 adversarial continuation: CB-174 v3 withdrawn, exact cut-binding CB-174 frozen
+
+The [record](.agents/Directional/Architecture_M6_CP3_TB_REV_157_Adversarial_Review_20261121.md) upholds TB157: artifact `14719149475` re-read, 975/975, and 564 `later` slide-contact receipts.
+
+The v3 stop helper (`684d53d6…`) is withdrawn:
+- It duplicates `field_aligned_carrier_stop_contact` and the queued carrier-event stop.
+- It accepts committed walls only.
+- It misses the entry-only `build_cut_node_bindings` and the segment-boundary-only wall cut in `build_arcs`.
+
+The frozen replacement is CB-174 `M6-CP3-CB-174-P13-SLIDE-CONTACT-CUT-BINDING`: [diff](.agents/Directional/Architecture_M6_CP3_CB174_P13_Slide_Contact_Cut_Binding_Exact.diff), SHA-256 `23629005…1c44`, plus the TB158 manifest of 976 rows (`6a37e461…af0f`). It is gate-neutral by construction, so TB158 runs with an empty allowance.
+
+The producer switch (CB-175) is frozen at TB-REV-158 and carries V3b. Stable counts are unchanged at 66/17/49, and CP3/497/D0/H4 are not promoted.
+
 ## 2026-11-21 — TB-REV-157 independent review complete: exact CB-174 helper frozen
 
 [Independent review](.agents/Directional/Architecture_M6_CP3_TB157_P13_Edge_Locus_Along_Edge_Ray_Key_Independent_Review_20261121.md) re-derived TB157 scoped 975/975 PASS; prior 972/972 N1–N3 unchanged, census 3/3 N1–N4 unchanged, accepted CP2 491/491. No production acceptance. A [source-level V3 feasibility finding](.agents/Directional/Architecture_M6_CP3_TB_REV_157_V3_Reaching_Test_Feasibility_20261121.md) shows a helper-only Code + Build cannot produce a full `(0,2)` slide-contact node for `build_rotation_system`: `make_from_candidate` reconstructs the canonical product and the builder consumes published events/arcs. An [exact frozen CB-174 successor specification](.agents/Directional/Architecture_M6_CP3_CB174_P13_Later_Entry_Slide_Stop_Helper_Code_Build_Proposal_20261121.md) preserves an **unapplied** helper patch SHA-256 `684d53d681f1e1ba82730e52239042a6947d6f5a6f035b70d0f252c41807d238`; full integrated reaching proof remains mandatory when producer wiring is implemented. The Review has frozen CB-174 as the next compile-only Code + Build; no implementation started. The full `(0,2)` rotation-builder proof remains mandatory for the later canonical stop-switch wiring gate. Independent Git-history boundary and source authority passed in run 44946170911; the temporary workflow was retired. Stable 66/17/49, debt 1, deferred 81; CP3/497/D0/H4 held.

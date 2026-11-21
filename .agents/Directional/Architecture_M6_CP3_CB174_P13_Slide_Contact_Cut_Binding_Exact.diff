@@ -1,0 +1,223 @@
+diff --git a/src/geometry/EmbeddedGraphTopology.cpp b/src/geometry/EmbeddedGraphTopology.cpp
+index ee94b20e4..5421b7a09 100644
+--- a/src/geometry/EmbeddedGraphTopology.cpp
++++ b/src/geometry/EmbeddedGraphTopology.cpp
+@@ -394,9 +394,9 @@ CutNodeBindingResult build_cut_node_bindings(
+     cutVertices.insert(edge.second());
+   }
+ 
+-  // A carrier contact's node lies on its carrier where the struck trace enters
+-  // the segment carrier_contact_struck_position names. On a selected cut edge
+-  // that point is the struck trace's crossing, which then keeps this node.
++  // A carrier contact's node lies on its carrier at the struck trace's cut
++  // position. On a selected cut edge an entry contact's point is the struck
++  // trace's crossing, which then keeps this node.
+   std::map<CutCrossingKey, authority::NetworkNodeId> carrierContactCrossings;
+   // Two traces that stopped together at a carrier locus both end at the
+   // event node; nothing crosses there, so a selected cut edge is split at it.
+@@ -440,9 +440,10 @@ CutNodeBindingResult build_cut_node_bindings(
+       }
+       const auto position =
+           struck == nullptr ? std::nullopt
+-                            : carrier_contact_struck_position(*struck, record);
++                            : carrier_contact_cut_position(*struck, record);
+       const CarrierContactBinding contact{
+-          record.struckTrace, position.has_value() ? position->segment : 0U};
++          record.struckTrace, position.has_value() ? position->segment : 0U,
++          position.has_value() ? position->parameter : std::nullopt};
+       const auto [stored, inserted] =
+           result.carrierContacts.emplace(event.node, contact);
+       if (!position.has_value() || event.sourceEdge != carrier ||
+@@ -455,6 +456,16 @@ CutNodeBindingResult build_cut_node_bindings(
+         return failure;
+       }
+       if (selectedCuts.count(carrier) != 0U) {
++        // A slide carrier is never a cut candidate, so a contact inside a slide
++        // has no crossing key on a selected cut edge.
++        if (position->parameter.has_value()) {
++          GlobalTopologyPlanError failure =
++              error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
++          failure.sourceEdge = carrier;
++          failure.trace = ending->id;
++          failure.secondTrace = record.struckTrace;
++          return failure;
++        }
+         carrierContactCrossings.emplace(
+             CutCrossingKey{carrier, record.struckTrace, position->segment},
+             event.node);
+@@ -901,6 +912,14 @@ std::optional<TraceCutPosition> carrier_contact_slide_position(
+   return TraceCutPosition{record.struckSegmentIndex, fraction};
+ }
+ 
++std::optional<TraceCutPosition> carrier_contact_cut_position(
++    const FieldAlignedCandidateTrace &struck,
++    const FieldAlignedTerminalContact &record) {
++  const auto entry = carrier_contact_struck_position(struck, record);
++  if (entry.has_value()) return entry;
++  return carrier_contact_slide_position(struck, record);
++}
++
+ bool carrier_contact_is_mutual(const FieldAlignedCandidateTrace &ending,
+                                const FieldAlignedCandidateTrace &struck) {
+   const auto namesAtEnd = [](const FieldAlignedCandidateTrace &trace,
+@@ -1861,14 +1880,16 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
+       for (const auto &incidence : event.incidences) {
+         if (incidence.trace != trace.id) continue;
+         TraceEventPositionDiagnostics positionDiagnostics;
+-        const auto position =
++        const bool carrierCut =
+             carrierContact != cutNodes.carrierContacts.end() &&
+-                    carrierContact->second.struckTrace == trace.id &&
+-                    incidence.role != FieldAlignedTraceEventRole::Terminal
+-                ? std::optional<std::size_t>{carrierContact->second
+-                                                 .struckSegment}
+-                : trace_event_position(trace, event, incidence.role,
+-                                       origin->second, &positionDiagnostics);
++            carrierContact->second.struckTrace == trace.id &&
++            incidence.role != FieldAlignedTraceEventRole::Terminal;
++        const auto position =
++            carrierCut ? std::optional<std::size_t>{carrierContact->second
++                                                        .struckSegment}
++                       : trace_event_position(trace, event, incidence.role,
++                                              origin->second,
++                                              &positionDiagnostics);
+         if (!position.has_value() || *position > trace.segments.size()) {
+           GlobalTopologyPlanError result =
+               error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+@@ -1885,8 +1906,11 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
+               std::move(positionDiagnostics.candidates);
+           return result;
+         }
++        const std::optional<authority::FieldExactRational> cutParameter =
++            carrierCut ? carrierContact->second.struckParameter
++                       : std::nullopt;
+         const auto inserted =
+-            cuts.emplace(TraceCutPosition{*position, std::nullopt}, event.node);
++            cuts.emplace(TraceCutPosition{*position, cutParameter}, event.node);
+         if (!inserted.second && inserted.first->second != event.node) {
+           GlobalTopologyPlanError result =
+               error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+diff --git a/src/geometry/EmbeddedGraphTopology.h b/src/geometry/EmbeddedGraphTopology.h
+index d095fff41..d46f39d01 100644
+--- a/src/geometry/EmbeddedGraphTopology.h
++++ b/src/geometry/EmbeddedGraphTopology.h
+@@ -61,11 +61,14 @@ struct CutCrossingBinding {
+ 
+ /**
+  * A trace that ends with a carrier locus: the struck trace is cut at the
+- * boundary before `struckSegment`, the segment it enters at that locus.
++ * boundary before `struckSegment` for an entry contact, or inside
++ * `struckSegment`'s slide at fraction `struckParameter` for a contact inside
++ * that slide.
+  */
+ struct CarrierContactBinding {
+   authority::TraceId struckTrace;
+   std::size_t struckSegment = 0U;
++  std::optional<authority::FieldExactRational> struckParameter;
+ 
+   auto operator<=>(const CarrierContactBinding &) const = default;
+ };
+@@ -315,6 +318,15 @@ trace_segment_contact_parameter(const FieldAlignedCandidateTrace &trace,
+     const FieldAlignedCandidateTrace &struck,
+     const FieldAlignedTerminalContact &record);
+ 
++/**
++ * Where a terminal carrier contact cuts the struck trace: the entry position
++ * when the record names the struck segment's entry, otherwise the slide
++ * position. Empty when neither applies.
++ */
++[[nodiscard]] std::optional<TraceCutPosition> carrier_contact_cut_position(
++    const FieldAlignedCandidateTrace &struck,
++    const FieldAlignedTerminalContact &record);
++
+ /**
+  * True when `ending` and `struck` stopped together at one carrier locus, the
+  * outcome of an inconclusive arrival at a shared entry crossing: neither trace
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 4521b08c9..0f6c58d84 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -20344,6 +20344,83 @@ TEST(FieldAlignedCarrierOccupancy,
+   EXPECT_FALSE(embedded::carrier_contact_slide_position(empty, record));
+ }
+ 
++TEST(FieldAlignedCarrierOccupancy,
++     CarrierContactCutPositionTakesTheEntryElseTheSlideInterior) {
++  using directional::authority::FieldBranch;
++  using directional::authority::TopologyRegionId;
++  using directional::authority::TraceId;
++  using directional::geometry::FieldAlignedCandidateTrace;
++  using directional::geometry::FieldAlignedTerminalContact;
++  using Position = embedded::TraceCutPosition;
++  // The struck trace enters face (0,1,4) across (1,4) at 1/2, then slides
++  // along (0,1) from 3/4 down to vertex 0, where it ends.
++  const auto face = topology_face(0, 1, 4, 5U);
++  const auto incoming = topology_edge(1, 4, 5U);
++  const auto carrier = topology_edge(0, 1, 5U);
++  FieldAlignedCandidateTrace struck(
++      TraceId::from_index(1U, 2U).value(),
++      SingularityPortId::from_index(0, 1).value(),
++      FieldSingularityId::from_index(0, 1).value(),
++      SourceVertexId::from_index(4, 5).value(),
++      SourceComponentId::from_index(0, 1).value(),
++      TopologyRegionId::from_index(0, 1).value());
++  struck.segments.emplace_back(face, FieldBranch::from_integer(0),
++                               boundary_point(incoming, 1, 2), incoming,
++                               carrier, std::nullopt);
++  struck.segments[0].edgeTransitEntry = boundary_point(carrier, 3, 4);
++  struck.segments[0].edgeTransitExit = boundary_point(carrier, 0, 1);
++  struck.terminalPoint = boundary_point(carrier, 0, 1);
++
++  // A slide contact at 3/8 (fraction 1/2) and an entry contact at the
++  // midpoint of (1,4), which is the struck segment's own entry.
++  const FieldAlignedTerminalContact slideRecord{
++      face, {exact_ratio(5, 8), exact_ratio(3, 8), exact_ratio(0, 1)},
++      struck.id, 0U, boundary_point(carrier, 3, 8)};
++  const FieldAlignedTerminalContact entryRecord{
++      face, {exact_ratio(0, 1), exact_ratio(1, 2), exact_ratio(1, 2)},
++      struck.id, 0U, boundary_point(incoming, 1, 2)};
++
++  // A slide contact cuts inside the slide; it has no entry position.
++  const Position slideCut{0U, exact_ratio(1, 2)};
++  EXPECT_EQ(embedded::carrier_contact_cut_position(struck, slideRecord),
++            slideCut);
++  EXPECT_EQ(embedded::carrier_contact_cut_position(struck, slideRecord),
++            embedded::carrier_contact_slide_position(struck, slideRecord));
++  EXPECT_FALSE(embedded::carrier_contact_struck_position(struck, slideRecord));
++
++  // An entry contact cuts at the boundary before the segment; it has no slide
++  // position.
++  const Position entryCut{0U, std::nullopt};
++  EXPECT_EQ(embedded::carrier_contact_cut_position(struck, entryRecord),
++            entryCut);
++  EXPECT_EQ(embedded::carrier_contact_cut_position(struck, entryRecord),
++            embedded::carrier_contact_struck_position(struck, entryRecord));
++  EXPECT_FALSE(embedded::carrier_contact_slide_position(struck, entryRecord));
++
++  // The slide's start and end, another trace and a segment past the end are
++  // not a cut position.
++  auto slideStart = slideRecord;
++  slideStart.carrierLocus = boundary_point(carrier, 3, 4);
++  EXPECT_FALSE(embedded::carrier_contact_cut_position(struck, slideStart));
++  auto slideEnd = slideRecord;
++  slideEnd.carrierLocus = boundary_point(carrier, 0, 1);
++  EXPECT_FALSE(embedded::carrier_contact_cut_position(struck, slideEnd));
++  auto otherTrace = slideRecord;
++  otherTrace.struckTrace = TraceId::from_index(0U, 2U).value();
++  EXPECT_FALSE(embedded::carrier_contact_cut_position(struck, otherTrace));
++  auto pastEnd = slideRecord;
++  pastEnd.struckSegmentIndex = 1U;
++  EXPECT_FALSE(embedded::carrier_contact_cut_position(struck, pastEnd));
++
++  // The binding keeps the slide fraction, so an entry binding and a slide
++  // binding on the same segment differ. The production binding and arc wiring
++  // are not reached by this test: no producer emits a contact inside a slide
++  // yet.
++  EXPECT_NE(
++      (embedded::CarrierContactBinding{struck.id, 0U, std::nullopt}),
++      (embedded::CarrierContactBinding{struck.id, 0U, exact_ratio(1, 2)}));
++}
++
+ TEST(FieldAlignedCarrierOccupancy,
+      SourcePieceCountsBindEachTraceSegmentToItsRealPieces) {
+   namespace authority = directional::authority;

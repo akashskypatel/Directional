@@ -1,5 +1,7 @@
 # CB-174 — later entry into a committed slide: exact authorized Code + Build plan
 
+> **WITHDRAWN (2026-11-21, TB-REV-157 adversarial continuation).** Do not apply this helper. W1: it rebuilds `field_aligned_carrier_stop_contact` and bypasses the existing queued-event stop path. W2: it accepts committed walls only, although a pending wall was observed. W3: it misses the binding consumer, which rejects a slide-interior contact. Replacement: the [exact CB-174 cut-binding diff](Architecture_M6_CP3_CB174_P13_Slide_Contact_Cut_Binding_Exact.diff), described in the [adversarial record](Architecture_M6_CP3_TB_REV_157_Adversarial_Review_20261121.md).
+
 **Authorized successor (not started):** `M6-CP3-CB-174-P13-LATER-ENTRY-SLIDE-STOP-HELPER`.
 **Type:** Code + Build; compile and package only. Do not execute Directional runtime. TB-REV-157 completed the V3a/V3b sequencing decision and passed full-Git review boundary verification in [run 44946170911](https://github.com/akashskypatel/Directional/actions/runs/44946170911). CB-174 is authorized as the **next separate turn** only after the terminal TB-REV-157 `STATUS` beacon. Do not execute tests or start later producer wiring in this CB.
 **Source authority:** `47a874ee8baa86284eeee11b4a28f9cca06d73f9` (CB-173 compiled package). The repository `src/`, `include/`, `tests/`, `benchmarks/`, build paths, and selectors must remain unchanged since that commit before applying the patch.

@@ -1,5 +1,7 @@
 # TB-REV-157 — independent evidence review (complete, 2026-11-21 UTC)
 
+> **Successor superseded:** the [adversarial continuation](Architecture_M6_CP3_TB_REV_157_Adversarial_Review_20261121.md) upholds the gate verdict and the V3a/V3b split. It withdraws the CB-174 v3 helper below (W1–W3, W5) and replaces it with the exact `M6-CP3-CB-174-P13-SLIDE-CONTACT-CUT-BINDING` diff.
+
 **Canonical turn:** `M6-CP3-TB-REV-157-P13-EDGE-LOCUS-ALONG-EDGE-RAY-KEY-FULL-GATE`.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`; PR #8 remains open, draft and unmerged.
 **Boundary:** Review only. No product, test, fixture, selector, benchmark or build source was edited. One **temporary verification workflow** was created to run the mandatory full-Git boundary script, then deleted. Its reusable workflows and permissions were not modified. No Directional tests, benchmarks or builds were executed in this review.

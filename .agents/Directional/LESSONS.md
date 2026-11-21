@@ -246,6 +246,13 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - A Review told to freeze a CB exactly is not done until a diff with hashes exists; withdraw a prose successor instead of forwarding it.
 - When a change moves a check earlier on a failing path, absence of the old reason in logs does not prove neutrality; give the TB an empty allowance.
 
+**TB-REV-157 (adversarial continuation)**
+
+- Before freezing a stop helper, check whether the producer already has an event path that applies the stop; if so, freeze only the predicate that feeds it.
+- Before freezing a producer change, trace the new record through every consumer (binding, arcs) and land the consumer first.
+- A test that calls an unwired consumer by hand proves nothing about production; grep that function's production callers first.
+- Keep a helper's domain as wide as the receipts: a committed-only signature silently excludes an observed pending-wall contact.
+
 ## Geometry, topology, and mathematical obligations
 
 - **Use the exact complex named by the claim.** Source triangles, split face fragments, embedded arcs,

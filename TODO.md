@@ -1,4 +1,28 @@
-## CURRENT — TB-REV-157 complete; exact CB-174 stop-helper Code + Build next (2026-11-21 UTC)
+## CURRENT — TB-REV-157 adversarial continuation: CB-174 v3 withdrawn; exact CB-174 cut binding next (2026-11-21 UTC)
+
+The [adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_157_Adversarial_Review_20261121.md) upholds TB157 after re-reading artifact `14719149475`: 975/975 PASS, and 564 slide-contact receipts, all `later`. It withdraws the CB-174 v3 stop helper for four reasons:
+- W1: it duplicates `field_aligned_carrier_stop_contact` and the queued carrier-event stop.
+- W2: it accepts committed walls only.
+- W3: `build_cut_node_bindings` is entry-only and `build_arcs` cuts only at segment boundaries, so a slide-interior stop would be rejected.
+- W5: the patch was Drive-only.
+
+The consumer lands first.
+
+> **NEXT_TURN:** `M6-CP3-CB-174-P13-SLIDE-CONTACT-CUT-BINDING`
+> - Code + Build, compile only. Apply exactly [the diff](.agents/Directional/Architecture_M6_CP3_CB174_P13_Slide_Contact_Cut_Binding_Exact.diff), SHA-256 `236290050270f19b56d849915cfb727a87551477d0be726ac294fd0603fe1c44`; the record has the pre- and postimage hashes.
+> - Content: `carrier_contact_cut_position`, `CarrierContactBinding::struckParameter`, the parametric wall cut in `build_arcs`, a fail-closed slide contact on a selected cut, and test row 976.
+> - Do not run tests, touch the tracer, change selectors or promote CP3/D0/H4.
+
+**Turn sequence:**
+1. **NEXT:** CB-174 (exact, compile only).
+2. `M6-CP3-TB-EXEC-158-P13-SLIDE-CONTACT-CUT-BINDING-FULL-GATE`: manifest `6a37e461…af0f`, 976 rows. STOP unless 976/976 PASS, CP2 491/491, rows 1–975 MATCH TB157 under N1–N3 with an empty allowance, census 3/3 under N1–N4, and no new `InvalidCutGraphBinding`.
+3. `M6-CP3-TB-REV-158-P13-SLIDE-CONTACT-CUT-BINDING-FULL-GATE`: if green, freeze the CB-175 producer switch exactly. It is Later-only, uses one predicate shared by the wall loop and the pair loop, queues the existing carrier event, feeds the receipt from that predicate, and carries the V3b test and per-row predictions.
+4. CB-175 → TB-EXEC-159 and TB-REV-159.
+5. Slide-start subdivision (R1).
+6. RA-275 S4a.
+7. O48.
+
+## HISTORY — TB-REV-157 independent Review; CB-174 v3 helper (withdrawn) (2026-11-21 UTC)
 
 TB157 immutable artifact-only execution: 975/975 PASS, CP2 491/491, rows 1–972 exactly MATCH TB156 under N1–N3 (empty allowance), census 3/3 MATCH TB156 under N1–N4 (Cylinder PASS, BunnyRandom/Vase expected RED), forbidden reasons 0; no compile/configure/relink/benchmark; stable 66/17/49, debt 1, deferred 81 unchanged. [gate run 44934860027](https://github.com/akashskypatel/Directional/actions/runs/44934860027) artifact `14719149475` SHA-256 `9609b0e0eb8b51d692118859fef7f0556f7de5e69c336c1bb5033d2694194d11`; [census run 44934894555](https://github.com/akashskypatel/Directional/actions/runs/44934894555) artifact `14719268782` SHA-256 `9e8f561953ba4ad552a5c30cd2430d0e23c22230e074abd3e2c4ce60b92ebd63`. Sphere remains χ6 vs χ2 and stop switch unwired; no CP3/497/D0 promotion.
 
