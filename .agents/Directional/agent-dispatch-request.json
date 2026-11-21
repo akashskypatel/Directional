@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "test_benchmark",
-  "request_id": "m6-cp3-tb154-census-20261121-v1",
-  "mailbox_key": "m6-cp3-tb154-census",
-  "executor_sha": "ef86370d0a1436250bdc8417b6b1abdeb1df5a74",
-  "semantic_source_sha": "ef86370d0a1436250bdc8417b6b1abdeb1df5a74",
-  "turn_id": "M6-CP3-TB-EXEC-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "14694154267",
-    "EXPECTED_SOURCE_SHA": "ef86370d0a1436250bdc8417b6b1abdeb1df5a74",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "ad39099eba5b02262c9287613d2c5921bdabd24442a47ed21fdd70c9e0340d77",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "c71f0b8f677179170a7c43a7d557b2f7d61c0f6a3d8db220b403dd33bf7ca1f8",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "f517f49672f6e148526303cdbb6971f12a21afc2fdbc1a1d59a68385b5180acc",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
-    "EXPECTED_CASE_COUNT": "3"
-  },
-  "artifact_prefix": "m6-cp3-tb154-census",
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-tb154-docs-20261121-v1",
+  "mailbox_key": "m6-cp3-tb154-docs",
+  "file_id": "1LxSpbyG10z3sn8qHbrGwUclpSrZQJH3_",
+  "patch_sha256": "2c2a9f20cbb648026bde3ce2b628e7ddf4ec6913b87b2055698c1078e1fb4b8c",
+  "base_sha": "178d679a4fba8611f5c0a0af71b340fcfc201841",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(tb154): record immutable full-gate and census evidence",
   "retention_days": 30
 }
