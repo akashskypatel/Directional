@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "workflow_key": "m6-cp3-cb174-slide-contact-compile-v1",
+  "workflow": "Agent Durable Operation Dispatcher",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/agent-operation-dispatcher.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "4f24349b4bc3a45b5a491aa7dc3fb48d0a460a69",
+  "source_sha": "5190b0e759146342998e3f380f7e5fe4eabd1714",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 44950215403,
+  "run_attempt": 1,
+  "run_number": 1959,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/44950215403",
+  "result": "success",
+  "summary": "durable-dispatch request_id=m6-cp3-cb174-slide-contact-compile-20261121-v1 operation=compile request_sha256=d742ff649fac5b95f81c0ea12847c779b4255b47a6c4f019ecb85f71c67c9d79",
+  "reported_at": "2026-11-21T21:14:36Z",
+  "mailbox_branch": "workflow-mailbox",
+  "artifacts": [
+    {
+      "id": 14725800030,
+      "name": "workflow-mailbox-publisher-log-44950215403-attempt-1",
+      "size_in_bytes": 388,
+      "digest": "sha256:80e717b9dc1ea04e5b625ff1e096350eb6a067bba22c213e3d1b8ee0a1a37b44",
+      "expired": false,
+      "created_at": "2026-11-21T21:14:34Z",
+      "expires_at": "2026-12-05T21:14:33Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/44950215403/artifacts/14725800030",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14725800030/zip"
+    },
+    {
+      "id": 14725720080,
+      "name": "agent-workflow-schema-validator-log-44950215403",
+      "size_in_bytes": 489,
+      "digest": "sha256:1a4ac14993f5cd57157cd23fcad86a1a1f304affdb5aabef2d658dd688948f07",
+      "expired": false,
+      "created_at": "2026-11-21T21:11:27Z",
+      "expires_at": "2026-11-28T21:11:26Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/44950215403/artifacts/14725720080",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14725720080/zip"
+    },
+    {
+      "id": 14725675411,
+      "name": "agent-workflow-schema-validator-log-44950215403",
+      "size_in_bytes": 498,
+      "digest": "sha256:b14d380206e1f9520abe9446301673ac40626db4de871d6e79eb7b47fc630fe1",
+      "expired": false,
+      "created_at": "2026-11-21T21:11:30Z",
+      "expires_at": "2026-11-28T21:11:29Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/44950215403/artifacts/14725675411",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14725675411/zip"
+    },
+    {
+      "id": 14725532134,
+      "name": "m6-cp3-cb174-slide-contact-cut-binding-log-44950215403",
+      "size_in_bytes": 4193,
+      "digest": "sha256:b5b98dd2e98463a5ffc919d84c9add8f08cec84c65108f82186712728c6e6ced",
+      "expired": false,
+      "created_at": "2026-11-21T21:14:15Z",
+      "expires_at": "2026-11-28T21:14:15Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/44950215403/artifacts/14725532134",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14725532134/zip"
+    },
+    {
+      "id": 14725387527,
+      "name": "agent-operation-dispatcher-log-44950215403",
+      "size_in_bytes": 512,
+      "digest": "sha256:a83193df44e0914b553d3f927df84d4b70472d700b33caf568baf175d8869f4e",
+      "expired": false,
+      "created_at": "2026-11-21T21:11:39Z",
+      "expires_at": "2026-12-05T21:11:38Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/44950215403/artifacts/14725387527",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14725387527/zip"
+    },
+    {
+      "id": 14724854073,
+      "name": "agent-workflow-schema-validation-44950215403",
+      "size_in_bytes": 443,
+      "digest": "sha256:2b330b54e334ec06202cb990bf4144bd448d3e807f0500fbcb1b1448327598e5",
+      "expired": false,
+      "created_at": "2026-11-21T21:11:26Z",
+      "expires_at": "2026-11-28T21:11:25Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/44950215403/artifacts/14724854073",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14724854073/zip"
+    },
+    {
+      "id": 14724824631,
+      "name": "m6-cp3-cb174-slide-contact-cut-binding-result-44950215403",
+      "size_in_bytes": 44430647,
+      "digest": "sha256:d97f3c7ee36a7cec12ede2c73955b1348c3320951e5dbdce71aed5a4db5de205",
+      "expired": false,
+      "created_at": "2026-11-21T21:14:14Z",
+      "expires_at": "2026-11-28T21:14:11Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/44950215403/artifacts/14724824631",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14724824631/zip"
+    },
+    {
+      "id": 14724614774,
+      "name": "agent-workflow-schema-validation-44950215403",
+      "size_in_bytes": 446,
+      "digest": "sha256:1bb85dd412ea9efefadedc5d2174e75dfc58da01f0090f6620433b75ba693782",
+      "expired": false,
+      "created_at": "2026-11-21T21:11:28Z",
+      "expires_at": "2026-11-28T21:11:27Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/44950215403/artifacts/14724614774",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14724614774/zip"
+    }
+  ]
+}
