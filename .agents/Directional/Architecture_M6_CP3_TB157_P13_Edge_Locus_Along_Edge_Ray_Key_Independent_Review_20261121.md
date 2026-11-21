@@ -43,9 +43,15 @@ The Review prepared and then guarded an **unapplied source candidate**, confined
 
 **Carried obligations:** TB-REV-156 V3 (full reaching test and exact helper diff); RA-281 F1/F2/F3 (interim restriction and producer boundary); RA-275 S4a (real slide-plan conformity); O47/C5/O48/O49; sphere χ+4 and four unowned contacts. Neither the scoped GREEN nor the candidate patch discharges these product obligations. RA-279 C1/C2 remain narrowly discharged from TB156/row858 and row972, without any new product claim.
 
+## Additional independent finding — V3 requires two production stages
+
+The [source-level feasibility record](Architecture_M6_CP3_TB_REV_157_V3_Reaching_Test_Feasibility_20261121.md) identifies an incompatibility in the inherited V3 test timing. The original V3 asks for an **unwired** stop helper with a test that reaches a full rotation-builder node. Yet `make_from_candidate` reconstructs the canonical network after validation (`SurfaceCellTracing.cpp:6155+`); `build_node_loci` only receives published network events or bound cut nodes (`EmbeddedGraphTopology.cpp:2044+`); `build_rotation_system` consumes that network and its actual arcs (`:2756+`). The stand-alone helper publishes none of these. A pure `edge_piece_ray` check or a fabricated candidate therefore cannot prove the required `(0,2)` production node.
+
+The review has **not** waived the integrated requirement. It separates the technical evidence into V3a (exact helper definition and non-vacuous local contracts) and V3b (canonical node/arc publication, actual rotation-builder call, distinct along-edge rays and same-direction mutation during later producer wiring). V3b remains mandatory before accepting the stop-switch wiring gate. A [conditional exact CB-174 proposal](Architecture_M6_CP3_CB174_P13_Later_Entry_Slide_Stop_Helper_Code_Build_Proposal_20261121.md) records the guarded source patch SHA-256, exact per-file preimages and postimages, independent falsifiers, and compile-only STOP rules. It is **not yet an authorized successor**; the Review must explicitly adjudicate the inherited combined V3 sequencing and finish all policy checks before closeout.
+
 ## Recommendation — finish the same Review turn
 
-The evidence portion of TB-REV-157 is upheld. **Do not advance** to a successor code turn until V3's integrated, independent reaching proof and exact patch are frozen. The revised candidate remains conditional and must not be applied without the missing proof. Preserve this turn as unfinished rather than claiming a successful closeout on a pure-helper-only test. No change to selector membership or checkpoint acceptance is authorized.
+The TB157 evidence portion is independently upheld. Do not start a successor code turn, claim a full builder witness, or change source/tests/selectors in this Review. Decide the V3a/V3b sequencing from the verified producer boundary, preserve the full reaching requirement for the first **wired** node, and finish mandatory review closeout checks. The conditional guarded patch remains unapplied. No change to selector membership or checkpoint acceptance is authorized.
 
 ## Review closeout
 
@@ -56,7 +62,7 @@ The evidence portion of TB-REV-157 is upheld. **Do not advance** to a successor 
 | Non-vacuity checked | Three arithmetic helpers have meaningful assertions; integrated `(0,2)` rotation node is still unwitnessed |
 | Prior obligations discharged/carried | V3, RA-281 F1/F2/F3, RA-275 S4a, O47/C5/O48/O49 and sphere carried; RA-279 C1/C2 remain narrowly discharged |
 | Stable accounting | 66/17/49, debt 1, deferred 81; CP2 491/491 only |
-| New candidates/obligations recorded | Candidate exact patch stored separately in Drive; reaching test and frozen successor pending; no new stable regression |
+| New candidates/obligations recorded | Guarded candidate plus conditional CB-174 proposal preserved; V3a helper and V3b full producer-reaching test separated by source evidence; no new stable regression |
 | ORIENTATION currency line | Updated to TB-REV-157, 2026-11-21; current review remains open |
 | ORIENTATION §3 / §4 / §7 / §8 | §3, §7 updated; §4 n/a (no new production witness), §8 n/a (known non-vacuity defect) |
 | CHANGELOG | Pending same-turn closeout |
@@ -64,7 +70,7 @@ The evidence portion of TB-REV-157 is upheld. **Do not advance** to a successor 
 | Selector manifest | n/a — no selector added or accepted |
 | LESSONS | Existing evidence/non-vacuity rule; no new general lesson yet |
 | Consolidation under CLEAN_UP_POLICY | n/a — active scoped record, no redundant history folded |
-| Successor frozen | **Pending**, V3 integrated reaching test missing; no successor launched |
+| Successor frozen | **Pending**: CB-174 proposal is exact but conditional; no successor is authorized before the inherited V3 sequence and review checks are resolved |
 | Turn boundary held | Yes; Review only, no product/test/selector mutation or runtime |
 | `review_check.py boundary` | Pending: GitHub snapshot lacks `.git`; static compare confirms no source/selector drift but is not the script's full repository check |
 | `STATUS` lifecycle maintained | Entry and resume beacons written; next final beacon remains IN_PROGRESS until V3 is resolved |
