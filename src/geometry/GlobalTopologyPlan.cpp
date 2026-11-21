@@ -3469,6 +3469,8 @@ const char *rotation_system_inconsistency_reason_name(
     return "FaceContactRayDirectionCollision";
   case RotationSystemInconsistencyReason::FaceContactRayUnsupported:
     return "FaceContactRayUnsupported";
+  case RotationSystemInconsistencyReason::RotationTraceRaysAlongSharedEdge:
+    return "RotationTraceRaysAlongSharedEdge";
   }
   return "Unknown";
 }
@@ -3505,6 +3507,10 @@ const char *edge_trace_secondary_rank_failure_reason_name(
     return "CoincidentLocalEdgeIndex";
   case EdgeTraceSecondaryRankFailureReason::SourceVertexFallbackUnbound:
     return "SourceVertexFallbackUnbound";
+  case EdgeTraceSecondaryRankFailureReason::FirstPieceNotLeavingLocusIntoFace:
+    return "FirstPieceNotLeavingLocusIntoFace";
+  case EdgeTraceSecondaryRankFailureReason::RayRunsAlongLocusEdge:
+    return "RayRunsAlongLocusEdge";
   }
   return "Unknown";
 }

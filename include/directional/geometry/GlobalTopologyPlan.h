@@ -288,6 +288,8 @@ enum class RotationSystemInconsistencyReason : std::uint8_t {
   FaceContactRayDirectionCollision = 65,
   /** A non-trace arc or a foreign-face ray reaches a face-interior node. */
   FaceContactRayUnsupported = 66,
+  /** Two rays at one node run along the same mesh edge; their order is not exact. */
+  RotationTraceRaysAlongSharedEdge = 67,
 };
 
 enum class VertexTraceSecondaryParameterFailureReason : std::uint8_t {
@@ -305,6 +307,10 @@ enum class EdgeTraceSecondaryRankFailureReason : std::uint8_t {
   OppositeCarrierNotInFace = 3,
   CoincidentLocalEdgeIndex = 4,
   SourceVertexFallbackUnbound = 5,
+  /** The arc's first source piece does not leave the edge locus into the face. */
+  FirstPieceNotLeavingLocusIntoFace = 6,
+  /** The trace ray runs along the edge locus itself; no exact order is defined. */
+  RayRunsAlongLocusEdge = 7,
 };
 
 enum class TraceEventPositionFailureReason : std::uint8_t {
