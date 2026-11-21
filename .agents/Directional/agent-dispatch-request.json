@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "operation": "compile",
-  "request_id": "m6-cp3-cb172b-compile-20261121-v1",
+  "request_id": "m6-cp3-cb172b-compile-20261121-v2",
   "mailbox_key": "m6-cp3-cb172b-slide-carrier-cut-compile",
   "source_sha": "23c43e6fa01a132b23553302a083d41b01130710",
   "targets": [
@@ -14,6 +14,5 @@
     "directional_core",
     "directional_pipeline"
   ],
-  "artifact_prefix": "m6-cp3-cb172b-slide-carrier-cut",
-  "retention_days": 30
+  "artifact_prefix": "m6-cp3-cb172b-slide-carrier-cut"
 }
