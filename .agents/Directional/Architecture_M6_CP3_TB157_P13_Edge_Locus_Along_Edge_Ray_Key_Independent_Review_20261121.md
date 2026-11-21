@@ -65,7 +65,7 @@ The TB157 evidence portion is independently upheld. Do not start a successor cod
 | New candidates/obligations recorded | Guarded candidate plus conditional CB-174 proposal preserved; V3a/V3b source proof recorded in the regression tracker with falsifier and owner; no new stable regression |
 | ORIENTATION currency line | Updated to TB-REV-157, 2026-11-21; current review remains open |
 | ORIENTATION §3 / §4 / §7 / §8 | §3, §7 updated; §4 n/a (no new production witness), §8 n/a (known non-vacuity defect) |
-| CHANGELOG | WIP entry patch sent through Drive dispatcher; verify application before treating as published |
+| CHANGELOG | Review WIP entry committed via Drive dispatcher (run 44944257242, verified top entry on live branch); earlier headerless dispatch failed and was corrected; consumed files deleted |
 | ROADMAP | Current-turn pointer corrected to active TB-REV-157; checkpoint status unchanged |
 | Selector manifest | n/a — no selector added or accepted |
 | LESSONS | Existing evidence/non-vacuity rule; no new general lesson yet |
