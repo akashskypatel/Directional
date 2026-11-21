@@ -1,6 +1,8 @@
-## CURRENT — RA-280 decides TB155 cause; CB-172B next (2026-11-21 UTC)
+## CURRENT — RA-281 upholds RA-280; CB-172B next (2026-11-21 UTC)
 
 [RA-280](.agents/Directional/Architecture_M6_CP3_RA280_TB_REV_155_Adversarial_Review_20261121.md) upholds the [TB-REV-155](.agents/Directional/Architecture_M6_CP3_TB155_P13_Trace_Piece_Producer_Switch_Full_Gate_Independent_Review_20261121.md) STOP on TB155 (970/971; row858 RED; `RotationTraceRaysAlongSharedEdge` rows 644/669/698). Cause: on the all-disc sphere, cut-search saturation adds every source edge, including the ten slid carriers; cut nodes exist only at segment entry points, so the Cut arc on 0–69 overlaps trace 14's slide piece. The guard was right. CB-172A (compile-only turn deciding on runtime evidence) withdrawn. RA-278's C3 prediction ("sphere has none") was wrong: row 971 measures the network before any cut.
+
+[RA-281](.agents/Directional/Architecture_M6_CP3_RA281_RA280_Adversarial_Review_20261121.md) upholds RA-280's diagnosis and the exact CB-172B diff. Corrections: R2 narrows DESIGN Amendment 14 (total cut set) and is now recorded there as an interim restriction (F1); R1 (cut the uncovered remainder at the slide start) is unsafe until the stop switch makes sliding-wall contacts nodes, because the four contacts lie on slid carriers 6–8/16–21/33–34/45–46 (F2); the stop switch will create edge-locus nodes where the wall's pieces run along the carrier, tripping CB-171's `RayRunsAlongLocusEdge`, so its sequence must define the along-locus-edge key (F3).
 
 > **NEXT_TURN:** `M6-CP3-CB-172B-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY` (**Code + Build, compile only**). Apply exactly [CB-172B diff](.agents/Directional/Architecture_M6_CP3_CB172B_P13_Slide_Carrier_Cut_Admissibility_Exact.diff), SHA-256 `7d0e0f0a7765cf23ec22aa35894c54433caccf0bb31c7b7c72657c7d71b395ef`. Eight GMP/GMPXX targets, `runtimeExecution=false`. On failure → BLOCKED, return to Review.
 
@@ -8,10 +10,11 @@ Turn sequence:
 - [x] `M6-CP3-TB-EXEC-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE` — RED 970/971; census 3/3; CP2 491/491.
 - [x] `M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE` — STOP; cause left open.
 - [x] `M6-CP3-RA-280-TB-REV-155-ADVERSARIAL-REVIEW` — cause decided; R2 frozen; CB-172A withdrawn.
+- [x] `M6-CP3-RA-281-RA-280-ADVERSARIAL-REVIEW` — CB-172B upheld; Amendment 14 interim restriction; stop-switch sequence corrected.
 - [ ] **NEXT:** `M6-CP3-CB-172B-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY` — exact diff, compile only.
 - [ ] `M6-CP3-TB-EXEC-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE` — [TB156 manifest](.agents/Directional/gates/Architecture_M6_TB156_P13_Slide_Carrier_Cut_Admissibility_Full_Gate_Case_Manifest.tsv) `cbba9e76fa436f1e2e6ef34d50bb377b931c19fc4780660412a9f6072128dc6a` (972 rows); STOP criteria in RA-280.
 - [ ] `M6-CP3-TB-REV-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE` — attribute A-row DIFFs; row686 vs TB154 real-piece oracle; stop-switch helper CB only on a green gate.
-- Prospective: stop-switch helper CB → stop-switch CB → TB → slide-plan conformity → O48 carrier turns (χ+4 is the next blocker). O49 held; RA-275 S4a carried; FC-6, terminal-cut outcome and row858 face-witness DEFNs held; CB-145 parked. D11=A, D12=A.
+- Prospective: stop-switch helper CB (incl. along-locus-edge key, RA-281 F3) → stop-switch CB → TB/REV → slide-start subdivision CB (R1, deletes the Amendment 14 interim restriction) → TB/REV → slide-plan conformity (RA-275 S4a) → O48 carrier turns (χ+4 is the next blocker). O49 held; FC-6, terminal-cut outcome and row858 face-witness DEFNs held; CB-145 parked. D11=A, D12=A.
 - Withdrawn: `M6-CP3-CB-172A-P13-CUT-CANDIDATE-SHARED-EDGE-INCIDENCE` (RA-280 D3).
 
 ## HISTORY — TB-REV-155 rejects gate (2026-11-21 UTC)

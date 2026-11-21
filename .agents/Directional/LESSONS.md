@@ -234,6 +234,12 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - A compile-only turn cannot own a decision that needs runtime evidence. Decide statically in the Review, or schedule a receipt turn and its TB first.
 - When a representation becomes exact, re-check every candidate generator for configurations the old approximation hid (chord paths hid cuts overlapping slides).
 
+**RA-281**
+
+- Before narrowing a candidate set, read the frozen contract that defines it; record a sound restriction of a total contract as an amendment with its removal condition.
+- Rank staging choices by their safety precondition: ask what an alternative would place on records that are still unsplit, not only which rules are unwitnessed.
+- When a planned switch will create the configuration a fail-closed guard rejects, put the guard's replacement inside that switch's sequence.
+
 ## Geometry, topology, and mathematical obligations
 
 - **Use the exact complex named by the claim.** Source triangles, split face fragments, embedded arcs,

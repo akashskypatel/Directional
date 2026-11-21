@@ -486,7 +486,16 @@ withdrawn except where an amendment says so explicitly.
   network — its traces, segments, events and digests — is unchanged. The admissible cut set is therefore every
   source edge that is not already a graph arc. Consequently `network ∪ (source 1-skeleton)` is a cellular
   embedding, a sufficient cut set always exists, and step 8's "certified source-edge cuts" is a total contract
-  rather than a conditional one. Source: `M3_CP4c_Frozen_Definitions.md` Part III §§3, 5.
+  rather than a conditional one. Source: `M3_CP4c_Frozen_Definitions.md` Part III §§3, 5 (now folded into `M3_Closure_Record.md` Amendment 14).
+- **Amendment 14 interim restriction — slide carriers (RA-280/RA-281, 2026-11-21).** A source edge along which a
+  trace slides (a segment with `edgeTransitEntry`/`edgeTransitExit` on its `outgoingCarrier`) is withheld from the
+  admissible cut set and published as `SurfaceCutCandidateClass::TraceSlideCarrier`. Only its slid interval is
+  already a graph arc, so this narrows Amendment 14: a sufficient cut set exists only while the withheld
+  remainders close no dual cycle around graph material. It is required for soundness until sliding-wall contacts
+  are nodes: a cut on a wall's carrier would put cut-created nodes on the wall's unsplit slide piece. Removal: after
+  the stop switch, a slide-start cut position admits the uncovered remainder with a cut-created node at the slide
+  start, and this bullet is deleted. Falsifier: a cut search that exhausts while a withheld remainder would split
+  its blocking non-disc component. Source: [RA-281](Architecture_M6_CP3_RA281_RA280_Adversarial_Review_20261121.md).
 - **Amendment 15 — a topology region's transport domain is the region cut along its non-separating barriers.**
   A region's face set, its published `euler_characteristic()` and its published `boundary_loop_count()` are facts
   about the **uncut** source complex and are unchanged. A1's tangent bundle, cycle basis and index quantities are
