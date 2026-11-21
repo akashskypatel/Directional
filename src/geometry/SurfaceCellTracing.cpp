@@ -5949,6 +5949,55 @@ std::optional<FieldAlignedCarrierContact> first_field_aligned_carrier_contact(
   return std::nullopt;
 }
 
+std::optional<authority::FieldExactRational>
+field_aligned_slide_interior_fraction(
+    const FieldAlignedCarrierOccupancy &slide,
+    const authority::FieldExactRational &parameter) {
+  if (slide.from == slide.to) return std::nullopt;
+  const authority::FieldExactRational fraction =
+      (parameter - slide.from) / (slide.to - slide.from);
+  if (!(authority::FieldExactRational::from_integer(0) < fraction &&
+        fraction < authority::FieldExactRational::from_integer(1))) {
+    return std::nullopt;
+  }
+  return fraction;
+}
+
+std::optional<FieldAlignedSlideEntryContact> field_aligned_slide_entry_contact(
+    const TriMesh &sourceMesh, const FieldTraceArrivalPriority priority,
+    const FieldAlignedCandidateTraceSegment &moving,
+    const FieldAlignedArrivalMeasure movingArrival,
+    const std::size_t movingTraceIndex,
+    const FieldAlignedCandidateTraceSegment &wall,
+    const FieldAlignedArrivalMeasure wallStart,
+    const std::size_t wallTraceIndex) {
+  const auto contact = first_field_aligned_carrier_contact(moving, wall);
+  if (!contact.has_value() || contact->movingInSlide || !contact->wallInSlide) {
+    return std::nullopt;
+  }
+  const auto slide = field_aligned_segment_slide_occupancy(wall);
+  FieldAlignedSlideEntryContact entry{
+      authority::FieldBoundaryPoint{
+          contact->carrier, authority::ExactUnitParameter{contact->parameter}},
+      slide.has_value() &&
+          field_aligned_slide_interior_fraction(*slide, contact->parameter)
+              .has_value(),
+      std::nullopt};
+  if (const auto wallAtContact = field_aligned_arrival_at_slide_parameter(
+          sourceMesh, wall, wallStart, contact->parameter)) {
+    entry.movingArrival = field_aligned_compare_priority_arrivals(
+        priority, movingArrival, *wallAtContact, movingTraceIndex,
+        wallTraceIndex);
+  }
+  return entry;
+}
+
+bool field_aligned_slide_entry_stops_moving_trace(
+    const FieldAlignedSlideEntryContact &contact) noexcept {
+  return contact.slideInterior &&
+         contact.movingArrival == FieldAlignedArrivalOrdering::Later;
+}
+
 std::optional<FieldAlignedArrivalMeasure>
 field_aligned_filtered_arrival_measure(
     const TriMesh &sourceMesh,

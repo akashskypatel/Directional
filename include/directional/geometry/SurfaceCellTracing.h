@@ -1371,6 +1371,47 @@ first_field_aligned_carrier_contact(
     const FieldAlignedCandidateTraceSegment &moving,
     const FieldAlignedCandidateTraceSegment &wall);
 
+// Where carrier parameter `parameter` falls along `slide`, as the fraction of
+// the way from `slide.from` to `slide.to`. Empty unless the slide has positive
+// length and the parameter lies strictly inside it: a slide end is not an
+// interior point. The producer's slide-entry stop and the cut-graph consumer
+// both use this rule, so a stop the producer publishes is a point the consumer
+// can cut.
+[[nodiscard]] std::optional<authority::FieldExactRational>
+field_aligned_slide_interior_fraction(
+    const FieldAlignedCarrierOccupancy &slide,
+    const authority::FieldExactRational &parameter);
+
+// A moving segment entering across a wall segment's slide: the entry point on
+// the carrier, whether it lies strictly inside the wall's slide, and the
+// moving end's arrival there ordered against the wall's arrival along its
+// slide by the active priority (empty when the wall's arrival is unavailable).
+struct FieldAlignedSlideEntryContact {
+  authority::FieldBoundaryPoint locus;
+  bool slideInterior = false;
+  std::optional<FieldAlignedArrivalOrdering> movingArrival;
+
+  auto operator<=>(const FieldAlignedSlideEntryContact &) const = default;
+};
+
+// The slide-entry contact of `moving` on `wall`. Empty unless the first
+// carrier contact of `moving` with `wall` is `moving`'s entry crossing meeting
+// the wall's slide. The roles are not symmetric: a slide of `moving` over the
+// entry of `wall` is the contact with the roles swapped.
+[[nodiscard]] std::optional<FieldAlignedSlideEntryContact>
+field_aligned_slide_entry_contact(
+    const TriMesh &sourceMesh, FieldTraceArrivalPriority priority,
+    const FieldAlignedCandidateTraceSegment &moving,
+    FieldAlignedArrivalMeasure movingArrival, std::size_t movingTraceIndex,
+    const FieldAlignedCandidateTraceSegment &wall,
+    FieldAlignedArrivalMeasure wallStart, std::size_t wallTraceIndex);
+
+// True when the moving trace stops before entering, at the contact's locus:
+// the locus is strictly inside the wall's slide and the moving end arrives
+// conclusively later. An earlier or inconclusive arrival never stops it here.
+[[nodiscard]] bool field_aligned_slide_entry_stops_moving_trace(
+    const FieldAlignedSlideEntryContact &contact) noexcept;
+
 } // namespace surface_cell_tracing_detail
 
 struct SurfaceTraceSeed {

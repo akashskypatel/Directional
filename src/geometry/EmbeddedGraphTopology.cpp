@@ -898,18 +898,14 @@ std::optional<TraceCutPosition> carrier_contact_slide_position(
   const auto slide =
       surface_cell_tracing_detail::field_aligned_segment_slide_occupancy(
           struck.segments[record.struckSegmentIndex]);
-  if (!slide.has_value() || slide->carrier != record.carrierLocus->edge ||
-      slide->from == slide->to) {
+  if (!slide.has_value() || slide->carrier != record.carrierLocus->edge) {
     return std::nullopt;
   }
-  const authority::FieldExactRational fraction =
-      (record.carrierLocus->parameter.value - slide->from) /
-      (slide->to - slide->from);
-  if (!(authority::FieldExactRational::from_integer(0) < fraction &&
-        fraction < authority::FieldExactRational::from_integer(1))) {
-    return std::nullopt;
-  }
-  return TraceCutPosition{record.struckSegmentIndex, fraction};
+  const auto fraction =
+      surface_cell_tracing_detail::field_aligned_slide_interior_fraction(
+          *slide, record.carrierLocus->parameter.value);
+  if (!fraction.has_value()) return std::nullopt;
+  return TraceCutPosition{record.struckSegmentIndex, *fraction};
 }
 
 std::optional<TraceCutPosition> carrier_contact_cut_position(
