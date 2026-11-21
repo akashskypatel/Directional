@@ -1,24 +1,21 @@
-## CURRENT — TB153 complete; TB153-REV Review next (2026-11-21 UTC)
+## CURRENT — TB153 Review complete; CB169 next (2026-11-21 UTC)
 
-TB153 executed the immutable CB168Q package ([run 44867242174](https://github.com/akashskypatel/Directional/actions/runs/44867242174), result artifact `14692372657`, ZIP SHA-256 `5e102074ae1bbfcf9c1a94a928e8d354725b484c67fa7dc53410d887a12f8147`): **968/968 PASS**, 966/966 rows MATCH TB152 under N1–N3 (row 686 excluded), CP2 491/491, product source unchanged since CB168O (no census). Row 968: 182 segments, 0 rejected, 0 path failures, 0 binding failures, 10 slides (traces 0, 1, 9–14, 21, 22 at segment 6 of 7), all `terminalBarrier=0`. Row 686: two-ring and torus equal; sphere record changed (fragments 376→372, χ6 unchanged), `oracleAvailable` true. [Execution](.agents/Directional/Architecture_M6_CP3_TB153_P13_Real_Piece_Reach_And_Row686_Oracle_Full_Gate_Execution_Report_20261121.md).
+[TB153 Review](.agents/Directional/Architecture_M6_CP3_TB153_P13_Real_Piece_Reach_And_Row686_Oracle_Full_Gate_Independent_Review_20261121.md) upheld TB153 PASS and re-derived it independently (968/968; 966/966 MATCH TB152 N1–N3; 528 `slideContactArrival` lines = 504 + 24 from row 968). Row 686 sphere: the four wall faces lose a fragment (376→372) because the moving entry now touches the wall's edge piece instead of crossing its chord; χ6 unchanged, the +4 attribution stands. Row 968 shows real pieces reachable on every sphere trace, so the switch precondition holds. Arc-piece ownership (O49) is needed only if a wall's suffix separates, measured at the stop-switch TB.
 
-> **NEXT_TURN:** `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-REV` (Review, Review agent; runtime-free).
-> - Re-derive the TB153 comparison from artifacts `14692372657` and `14691849432`; attribute the row 686 sphere record.
-> - Row 968 shows no failures: freeze an unwired piece-based ray helper with its test, then the switch CB (paths, rays, ranks, counts in the digest, after the RA-274 S5 checks).
-> - From the four walls' `terminalBarrier=0` on their last segment, decide whether the stop switch needs arc-piece ownership in all three readers.
-> - On blocker: a named stop routed to the next Review.
+> **NEXT_TURN:** `M6-CP3-CB169-P13-TRACE-PIECE-RAY-HELPERS` (Code + Build, compile only; implementation agent).
+> - Apply [`Architecture_M6_CP3_CB169_P13_Trace_Piece_Ray_Helpers_Exact.diff`](.agents/Directional/Architecture_M6_CP3_CB169_P13_Trace_Piece_Ray_Helpers_Exact.diff), SHA-256 `dd08cd28094c371a6eb63ae6b5c4161f3d94376a023e4fa71288558048966b45` (numstat EGT.cpp 173/54, EGT.h 123/0, tests 806/0).
+> - Precheck `git diff --quiet 203150dff HEAD -- src include tests`, the three preimages, and `git apply --check`; compile the eight RA-245 targets with `runtimeExecution=false`.
+> - On success: `M6-CP3-TB154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE-EXEC` (manifest `0f9c417c…e305`, 971 + 81, plus a TB151-style census). On blocker: UNKNOWN, STOP, STATUS BLOCKED, return to Review; do not adapt the diff.
 
-- [x] RA-276 re-review of `M6-CP3-RA-275-TB152-REV-ADVERSARIAL-REVIEW`.
-- [x] `M6-CP3-CB168R-P13-SPHERE-REAL-PIECE-REACH-RECEIPT` (Code + Build, test-only): row 968 compiled at `7061c8b84`.
-- [x] `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` (Code + Build, test-only): compiled at `203150dff`.
-- [x] `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-EXEC` (Test + Benchmark): PASS, 968/968; see above.
-- [ ] **NEXT:** `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-REV` (see NEXT_TURN above).
+- [x] `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-EXEC` (Test + Benchmark): PASS, 968/968.
+- [x] `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-REV` (Review): PASS upheld; CB169 frozen.
+- [ ] **NEXT:** `M6-CP3-CB169-P13-TRACE-PIECE-RAY-HELPERS` (see NEXT_TURN above).
+- [ ] `M6-CP3-TB154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE-EXEC`, then `M6-CP3-TB154-…-FULL-GATE-REV` (checks the row 971 predictions; freezes the producer switch CB).
 - Prospective:
   - producer switch → TB;
-  - → [arc-piece ownership helper → three readers, only if needed];
-  - → stop switch CB → TB (row 686 χ=2, rows 669/698, four nodes, real-piece conformity);
+  - → stop switch CB (+ suffix-separation receipt) → TB (row 686 χ=2, rows 669/698);
   - → CB170 → CB171 → CB172 (O48).
-  - O49 is held until a witness exists. Held: FC-6, TERMINAL-CUT-OUTCOME, row 858 DEFN. Parked: CB145. D11=A, D12=A.
+  - O49 is held. Held: FC-6, TERMINAL-CUT-OUTCOME, row 858 DEFN. Parked: CB145. D11=A, D12=A.
 
 ## RA-276 (2026-11-20 UTC) — RA-275 realigned
 
