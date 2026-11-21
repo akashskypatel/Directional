@@ -2,7 +2,7 @@
 
 ## Situation
 
-The exact frozen three-file source patch was applied and all eight GNU Multiple Precision (GMP/GMPXX) targets compiled. This Code + Build turn has not executed Directional tests, benchmarks or other binaries. Documentation closeout remains pending; do not advance to the next turn until handoff and TODO are updated and the final STATUS beacon is COMPLETE.
+The exact frozen three-file source patch was applied and all eight GNU Multiple Precision (GMP/GMPXX) targets compiled. This Code + Build turn executed no Directional tests, benchmarks, or other binaries. The handoff, TODO, and changelog changes were committed in documentation closeout run 44921703569. The successor must not start before the final COMPLETE beacon.
 
 ## Background
 
@@ -21,4 +21,4 @@ The exact frozen three-file source patch was applied and all eight GNU Multiple 
 
 ## Recommendation
 
-Finish documentation and STATUS closeout for this **same CB-172B turn**; do not repeat the already-applied source patch or the verified compile. Only after closeout, the next separate turn is `M6-CP3-TB-EXEC-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE`, using artifact `14713691307`, exact 972-row TB156 manifest SHA-256 `cbba9e76fa436f1e2e6ef34d50bb377b931c19fc4780660412a9f6072128dc6a`, and RA-280 STOP criteria. No runtime has been performed in CB-172B.
+After the final COMPLETE beacon, the next separate turn is `M6-CP3-TB-EXEC-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE`, using artifact `14713691307`, exact 972-row TB156 manifest SHA-256 `cbba9e76fa436f1e2e6ef34d50bb377b931c19fc4780660412a9f6072128dc6a`, and RA-280 STOP criteria. No runtime has been performed in CB-172B.
