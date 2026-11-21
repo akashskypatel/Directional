@@ -1,0 +1,2 @@
+TB154 exact working-tree snapshot for artifact-only gate and durable policy/context inspection.
+Source execution authority remains immutable CB169 ef86370d0a1436250bdc8417b6b1abdeb1df5a74.
