@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-cb169s-audit-fix-20261121-v1",
-  "mailbox_key": "m6-cp3-cb169s-audit-fix",
-  "file_id": "10DjjvNxCB_MXjMxWcEv_vXKaYenteHJa",
-  "patch_sha256": "bbc3ceb510aae4092bd462c6693b38a1ed93a01750e9127c083427ca85d16cd6",
-  "base_sha": "7434e3ef2daf5b284e8ccf0699bb8ab0fb0fdd57",
+  "request_id": "m6-cp3-cb170-source-apply-20261121-v1",
+  "mailbox_key": "m6-cp3-cb170-source-apply",
+  "file_id": "16xMMQj1SOUGnSc7DH52S_ltu0o8mm-fC",
+  "patch_sha256": "ae3832c6ce180b79bb649ffef7087a0b7e69a90fb313fcdd7ec83d6f5b05bc34",
+  "base_sha": "a4787a21848f0f6b61aa6dda1011f7c1d5b5be93",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cb169s): preserve mandatory next-turn heading and STOP authority",
+  "commit_message": "fix(cb170): restore semantic digest and trace-piece count oracle",
   "retention_days": 30
 }
