@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-cb169s-closeout-20261121-v1",
-  "mailbox_key": "m6-cp3-cb169s-closeout",
-  "file_id": "17UWx2Sr5guL3ZrqlX9_lMRtzKLt06gSy",
-  "patch_sha256": "d1792b705b08215b84aa6dc2b0eaa11ac1aa505d5032e8017aa7fbdd69d3a1f4",
-  "base_sha": "c3c945947c0e330d5b518b344e8241df2800b707",
+  "request_id": "m6-cp3-cb169s-audit-fix-20261121-v1",
+  "mailbox_key": "m6-cp3-cb169s-audit-fix",
+  "file_id": "10DjjvNxCB_MXjMxWcEv_vXKaYenteHJa",
+  "patch_sha256": "bbc3ceb510aae4092bd462c6693b38a1ed93a01750e9127c083427ca85d16cd6",
+  "base_sha": "7434e3ef2daf5b284e8ccf0699bb8ab0fb0fdd57",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cb169s): record verified compile and next immutable gate requirements",
+  "commit_message": "docs(cb169s): preserve mandatory next-turn heading and STOP authority",
   "retention_days": 30
 }
