@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb155-evidence-closeout-20261121-v1",
-  "mailbox_key": "m6-cp3-tb155-evidence-closeout",
-  "file_id": "1jS1RH-ATh5NYrPGnViluLtxWaFW0AoSc",
-  "patch_sha256": "9a0cb5daebf1cb799036eced46f08f243af2beeb10a427a26e54f6aa5ce5f288",
-  "base_sha": "9f607cf88e35ff9a96100b34fe560a16cf1f1281",
+  "request_id": "m6-cp3-tb-rev155-review-closeout-20261121-v1",
+  "mailbox_key": "m6-cp3-tb-rev155-review-closeout",
+  "file_id": "1WLyX4BAO5JK6O2xsTl2b6qlBcogvqURb",
+  "patch_sha256": "75da3197e078389f533f305a32357bba2af5d68abfda1385dc2ea6039bb0f856",
+  "base_sha": "e628d5b9ccae67712badcfea129e9e5c3570cce9",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb155): publish immutable RED gate evidence and Review handoff",
+  "commit_message": "docs(tb-rev155): reject producer-switch gate and freeze bounded correction",
   "retention_days": 30
 }
