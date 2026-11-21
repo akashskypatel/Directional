@@ -1,12 +1,25 @@
 {
+  "artifact_prefix": "m6-cp3-tb156-gate",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "14713691307",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB156_P13_Slide_Carrier_Cut_Admissibility_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "cbba9e76fa436f1e2e6ef34d50bb377b931c19fc4780660412a9f6072128dc6a",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "6da928ac27a22f0b90c5816978f758ff0d2b03aac6668c3967d47a51104db0d0",
+    "EXPECTED_CASE_COUNT": "972",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "75a51814e15af98ca8c173146ab0858792071c5c3d08e6e0c2e56939908f97fa",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "581ce35eb3ded19c4a32a59445300e67a96b99b913ce5f73da969989fe1c7f2a",
+    "EXPECTED_SOURCE_SHA": "23c43e6fa01a132b23553302a083d41b01130710",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  },
+  "executor_sha": "0c300f2774c66c8fd001f9a9d8f58595b6397608",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "mailbox_key": "m6-cp3-tb156-gate",
+  "operation": "test_benchmark",
+  "request_id": "m6-cp3-tb156-gate-20261121-v1",
+  "retention_days": 30,
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb172b-doc-closeout-20261121-v1",
-  "mailbox_key": "m6-cp3-cb172b-doc-closeout",
-  "file_id": "1Bl2CwWSWk0_sQPHDjcY_dcInxe5a3_ow",
-  "patch_sha256": "0c0e70e55a38a05e367d0ef2cd877aade816f527ba9883f741ec3d0f83270ba5",
-  "base_sha": "e2c3433aeb8e1c170798a9f39f2fac6197ed6ce0",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cb172b): close verified slide-carrier code and compile turn",
-  "retention_days": 30
+  "semantic_source_sha": "23c43e6fa01a132b23553302a083d41b01130710",
+  "turn_id": "M6-CP3-TB156-GATE"
 }
