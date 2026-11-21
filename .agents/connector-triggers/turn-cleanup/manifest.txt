@@ -1,2 +1,0 @@
-# TB157 only. Remove the exact completed source snapshot trigger; preserve durable dispatcher and mailbox.
-.agents/connector-triggers/source-snapshot/m6-cp3-tb157-20261121-1016.txt
