@@ -57,8 +57,8 @@ The evidence portion of TB-REV-157 is upheld. **Do not advance** to a successor 
 | Prior obligations discharged/carried | V3, RA-281 F1/F2/F3, RA-275 S4a, O47/C5/O48/O49 and sphere carried; RA-279 C1/C2 remain narrowly discharged |
 | Stable accounting | 66/17/49, debt 1, deferred 81; CP2 491/491 only |
 | New candidates/obligations recorded | Candidate exact patch stored separately in Drive; reaching test and frozen successor pending; no new stable regression |
-| ORIENTATION currency line | Pending same-turn closeout; remains under review |
-| ORIENTATION §3 / §4 / §7 / §8 | Pending; no new changed product witness |
+| ORIENTATION currency line | Updated to TB-REV-157, 2026-11-21; current review remains open |
+| ORIENTATION §3 / §4 / §7 / §8 | §3, §7 updated; §4 n/a (no new production witness), §8 n/a (known non-vacuity defect) |
 | CHANGELOG | Pending same-turn closeout |
 | ROADMAP | n/a — checkpoint has not advanced |
 | Selector manifest | n/a — no selector added or accepted |
@@ -67,5 +67,5 @@ The evidence portion of TB-REV-157 is upheld. **Do not advance** to a successor 
 | Successor frozen | **Pending**, V3 integrated reaching test missing; no successor launched |
 | Turn boundary held | Yes; Review only, no product/test/selector mutation or runtime |
 | `review_check.py boundary` | Pending: GitHub snapshot lacks `.git`; static compare confirms no source/selector drift but is not the script's full repository check |
-| `STATUS` lifecycle maintained | Review entry beacon written; terminal beacon must remain IN_PROGRESS until V3 is resolved |
-| Pushed to origin, branch in sync | Repository review record is being published; pending direct final verification |
+| `STATUS` lifecycle maintained | Entry and resume beacons written; next final beacon remains IN_PROGRESS until V3 is resolved |
+| Pushed to origin, branch in sync | Review record and ORIENTATION committed on branch; no source/selector drift confirmed by compare; full `git status -sb` not available locally |
