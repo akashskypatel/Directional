@@ -1,1 +1,0 @@
-.agents/connector-triggers/source-snapshot/m6-cp3-tb-rev158-20261121T2245Z.txt

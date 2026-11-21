@@ -1,3 +1,0 @@
-turn=M6-CP3-TB-REV-158-P13-SLIDE-CONTACT-CUT-BINDING-FULL-GATE
-purpose=source snapshot for continued independent review
-requested_at=2026-11-21T22:45:01Z
