@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-21 UTC; [M6-CP3-RA-281-RA-280-ADVERSARIAL-REVIEW](Architecture_M6_CP3_RA281_RA280_Adversarial_Review_20261121.md)):** TB-EXEC-155 stays RED. RA-280's cause (saturated cuts on slid carriers, no cut node at a slide start) and its exact CB-172B are upheld; RA-281 records slide-carrier withholding as a DESIGN Amendment 14 interim restriction and adds the along-locus-edge key to the stop-switch sequence. CB-172B and TB-EXEC-156 next. Accepted CP2 491/491, stable 66/17/49, debt1, deferred81. Sphere χ6 vs χ2/four contacts and RA-275 S4a remain open. No stop-switch or CP3/selector497/D0/H4 promotion.
+**Current currency (2026-11-21 UTC; [M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE, record RA-281](Architecture_M6_CP3_RA281_RA280_Adversarial_Review_20261121.md)):** TB-EXEC-155 stays RED. RA-280's cause (saturated cuts on slid carriers, no cut node at a slide start) and its exact CB-172B are upheld; RA-281 records slide-carrier withholding as a DESIGN Amendment 14 interim restriction and adds the along-locus-edge key to the stop-switch sequence. CB-172B and TB-EXEC-156 next. Accepted CP2 491/491, stable 66/17/49, debt1, deferred81. Sphere χ6 vs χ2/four contacts and RA-275 S4a remain open. No stop-switch or CP3/selector497/D0/H4 promotion.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-21; [M6-CP3-RA-281-RA-280-ADVERSARIAL-REVIEW](Architecture_M6_CP3_RA281_RA280_Adversarial_Review_20261121.md)):** RA-281 upholds RA-280 and CB-172B, records the Amendment 14 interim restriction, and orders the stop switch (with the along-locus-edge key) before the slide-start subdivision that lifts it.
+**Currency (2026-11-21; [M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE, record RA-281](Architecture_M6_CP3_RA281_RA280_Adversarial_Review_20261121.md)):** RA-281 upholds RA-280 and CB-172B, records the Amendment 14 interim restriction, and orders the stop switch (with the along-locus-edge key) before the slide-start subdivision that lifts it.
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.

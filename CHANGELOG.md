@@ -1,10 +1,10 @@
-## 2026-11-21 — RA-281 adversarial review of RA-280 (review only)
+## 2026-11-21 — TB-REV-155 adversarial review, record RA-281 (review only)
 
-M6-CP3-RA-281-RA-280-ADVERSARIAL-REVIEW: RA-280's TB155 diagnosis and exact CB-172B upheld. R2 recorded in DESIGN.md as an Amendment 14 interim restriction (slide carriers withheld until a slide-start cut position exists after the stop switch); R1 shown unsafe before the stop switch; along-locus-edge key added to the stop-switch sequence. No product change. [Record](.agents/Directional/Architecture_M6_CP3_RA281_RA280_Adversarial_Review_20261121.md).
+M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE (continued; record RA-281): RA-280's TB155 diagnosis and exact CB-172B upheld. R2 recorded in DESIGN.md as an Amendment 14 interim restriction (slide carriers withheld until a slide-start cut position exists after the stop switch); R1 shown unsafe before the stop switch; along-locus-edge key added to the stop-switch sequence. No product change. [Record](.agents/Directional/Architecture_M6_CP3_RA281_RA280_Adversarial_Review_20261121.md).
 
-## 2026-11-21 — RA-280 adversarial review of TB-REV-155 (review only)
+## 2026-11-21 — TB-REV-155 adversarial review, record RA-280 (review only)
 
-M6-CP3-RA-280-TB-REV-155-ADVERSARIAL-REVIEW: TB-REV-155 STOP upheld; cause decided (saturated cut on slid carrier 0–69, no cut node at the slide start); CB-172A withdrawn; RA-278 C3 prediction corrected; CB-172B (slide carriers never cut candidates) and TB156 manifest (TB154 + row 972) frozen. No product change in this turn. [Record](.agents/Directional/Architecture_M6_CP3_RA280_TB_REV_155_Adversarial_Review_20261121.md).
+M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE (continued; record RA-280): TB-REV-155 STOP upheld; cause decided (saturated cut on slid carrier 0–69, no cut node at the slide start); CB-172A withdrawn; RA-278 C3 prediction corrected; CB-172B (slide carriers never cut candidates) and TB156 manifest (TB154 + row 972) frozen. No product change in this turn. [Record](.agents/Directional/Architecture_M6_CP3_RA280_TB_REV_155_Adversarial_Review_20261121.md).
 
 ## 2026-11-21 — TB-REV-155 independent gate rejection (Review only)
 

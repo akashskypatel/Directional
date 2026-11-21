@@ -1,4 +1,4 @@
-## CURRENT — RA-281 upholds RA-280; CB-172B next (2026-11-21 UTC)
+## CURRENT — TB-REV-155 adversarial review (records RA-280, RA-281) freezes CB-172B; CB-172B next (2026-11-21 UTC)
 
 [RA-280](.agents/Directional/Architecture_M6_CP3_RA280_TB_REV_155_Adversarial_Review_20261121.md) upholds the [TB-REV-155](.agents/Directional/Architecture_M6_CP3_TB155_P13_Trace_Piece_Producer_Switch_Full_Gate_Independent_Review_20261121.md) STOP on TB155 (970/971; row858 RED; `RotationTraceRaysAlongSharedEdge` rows 644/669/698). Cause: on the all-disc sphere, cut-search saturation adds every source edge, including the ten slid carriers; cut nodes exist only at segment entry points, so the Cut arc on 0–69 overlaps trace 14's slide piece. The guard was right. CB-172A (compile-only turn deciding on runtime evidence) withdrawn. RA-278's C3 prediction ("sphere has none") was wrong: row 971 measures the network before any cut.
 
@@ -8,9 +8,7 @@
 
 Turn sequence:
 - [x] `M6-CP3-TB-EXEC-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE` — RED 970/971; census 3/3; CP2 491/491.
-- [x] `M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE` — STOP; cause left open.
-- [x] `M6-CP3-RA-280-TB-REV-155-ADVERSARIAL-REVIEW` — cause decided; R2 frozen; CB-172A withdrawn.
-- [x] `M6-CP3-RA-281-RA-280-ADVERSARIAL-REVIEW` — CB-172B upheld; Amendment 14 interim restriction; stop-switch sequence corrected.
+- [x] `M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE` — STOP; continued after handover by adversarial-review records RA-280 (cause decided; R2 frozen as CB-172B; CB-172A withdrawn) and RA-281 (CB-172B upheld; Amendment 14 interim restriction; stop-switch sequence corrected).
 - [ ] **NEXT:** `M6-CP3-CB-172B-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY` — exact diff, compile only.
 - [ ] `M6-CP3-TB-EXEC-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE` — [TB156 manifest](.agents/Directional/gates/Architecture_M6_TB156_P13_Slide_Carrier_Cut_Admissibility_Full_Gate_Case_Manifest.tsv) `cbba9e76fa436f1e2e6ef34d50bb377b931c19fc4780660412a9f6072128dc6a` (972 rows); STOP criteria in RA-280.
 - [ ] `M6-CP3-TB-REV-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE` — attribute A-row DIFFs; row686 vs TB154 real-piece oracle; stop-switch helper CB only on a green gate.
