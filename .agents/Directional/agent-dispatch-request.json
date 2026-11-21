@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb156-doc-closeout-20261121-v2",
-  "mailbox_key": "m6-cp3-tb156-doc-closeout-retry",
-  "file_id": "1Fhq4OQZVUd25x9S2J2IGY5fMpWEoeDqp",
-  "patch_sha256": "9d26384c628dde7044d222b8e88e50984bdbbf8ea29854ec6f04b5e283412b9e",
-  "base_sha": "0c300f2774c66c8fd001f9a9d8f58595b6397608",
+  "request_id": "m6-cp3-tb156-review-20261121-v1",
+  "mailbox_key": "m6-cp3-tb156-review-v1",
+  "file_id": "1DHxnilIq7943EbUCMbVEUGk6oNmwDBra",
+  "patch_sha256": "3e83f0d518598f366c2b060c51668a06e7bb076bedfda335b4489a53b0126b9a",
+  "base_sha": "1dc0ca9834ef202606e5d24da2afa352a4be6da2",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb156): record verified slide-carrier gate and census evidence",
+  "commit_message": "docs(tb-rev-156): independently verify gate and freeze stop-switch helper",
   "retention_days": 30
 }
