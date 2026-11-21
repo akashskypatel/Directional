@@ -1,0 +1,3 @@
+M6-CP3-RA-277-TB-REV-154-ADVERSARIAL-REVIEW
+Purpose: exact source snapshot for runtime-free adversarial review
+Expected source: the trigger commit SHA itself
