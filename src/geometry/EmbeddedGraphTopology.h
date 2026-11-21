@@ -360,7 +360,7 @@ exact_trace_path_between(const FieldAlignedCandidateTrace &trace,
  * clip ordinary face pieces, or the edge piece of a traversed slide; the arc
  * after a slide cut starts on the edge piece. When `pieceCounts` is given,
  * it receives how many pieces each segment in the range contributed (1 or 2).
- * Unwired until the coordinated graph cutover.
+ * The committed trace-arc source path is the graph producer after cutover.
  */
 [[nodiscard]] std::optional<authority::ExactSourcePath>
 exact_trace_piece_path_between(const FieldAlignedCandidateTrace &trace,
@@ -505,7 +505,7 @@ using VertexPieceRay = std::variant<VertexPieceRayAlongEdge,
  * face piece of `face` lies in the face's wedge at `locus`; its parameter is
  * the far end's exact opposite-edge parameter, by the formula and failure
  * condition of vertex_locus_secondary_parameter. Assigns no rotation key.
- * Unwired until the coordinated graph cutover.
+ * The committed trace-arc source path is the graph producer after cutover.
  */
 [[nodiscard]] VertexPieceRay vertex_piece_ray(
     const SourceFaceRecord &face, authority::SourceVertexId locus,

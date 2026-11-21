@@ -10,6 +10,7 @@
 #include <iostream>
 #include <limits>
 #include <numbers>
+#include <numeric>
 #include <map>
 #include <optional>
 #include <set>
@@ -3602,7 +3603,7 @@ TEST(GlobalTopologyPlan,
                                  std::move(candidate));
   };
 
-  // Every trace segment is still published as one face chord.
+  // Binding must describe the actual number of source pieces per segment.
   std::optional<std::size_t> traceIndex;
   std::optional<std::size_t> edgeArcIndex;
   for (std::size_t index = 0U; index < plan.arcs().size(); ++index) {
@@ -3612,10 +3613,17 @@ TEST(GlobalTopologyPlan,
       if (!edgeArcIndex.has_value()) edgeArcIndex = index;
       continue;
     }
-    EXPECT_EQ(std::vector<std::size_t>(arc.sourceFaces.size(), 1U),
-              arc.sourcePieceCounts)
+    ASSERT_EQ(arc.sourceFaces.size(), arc.sourcePieceCounts.size()) << index;
+    EXPECT_EQ(arc.sourcePath.size(),
+              std::accumulate(arc.sourcePieceCounts.begin(),
+                              arc.sourcePieceCounts.end(), std::size_t{0}))
         << index;
-    if (!traceIndex.has_value() &&
+    EXPECT_FALSE(embedded::source_piece_binding_failure(
+        arc.sourceFaces, arc.sourcePieceCounts, arc.sourcePath)) << index;
+    if (!traceIndex.has_value() && !arc.sourcePieceCounts.empty() &&
+        arc.sourcePieceCounts.back() == 1U &&
+        std::holds_alternative<authority::SourceFaceInteriorSupport>(
+            arc.sourcePath.back().carrier) &&
         std::holds_alternative<authority::ExactSourceEdgePoint>(
             arc.sourcePath.back().second)) {
       traceIndex = index;
@@ -3644,15 +3652,14 @@ TEST(GlobalTopologyPlan,
   extra.arcs[*traceIndex].sourcePieceCounts.push_back(1U);
   expectBindingRejected(std::move(extra), *traceIndex, "extra count");
   auto doubled = plan.validation_candidate();
-  doubled.arcs[*traceIndex].sourcePieceCounts.front() = 2U;
+  ++doubled.arcs[*traceIndex].sourcePieceCounts.front();
   expectBindingRejected(std::move(doubled), *traceIndex, "count sum");
   auto stray = plan.validation_candidate();
   stray.arcs[*edgeArcIndex].sourcePieceCounts.push_back(1U);
   expectBindingRejected(std::move(stray), *edgeArcIndex, "edge-arc count");
 
-  // Split the last chord into a face piece and an edge piece of its face.
-  // With count 2 the structure binding accepts it and only the exact
-  // replay rejects it; with count 1 the binding rejects it.
+  // Split a real face piece with a fabricated edge continuation.
+  // Even a structurally valid two-piece count must fail exact replay.
   auto split = plan.validation_candidate();
   auto &arc = split.arcs[*traceIndex];
   const authority::ExactSourceSupportPiece last = arc.sourcePath.back();
@@ -3666,7 +3673,7 @@ TEST(GlobalTopologyPlan,
   ASSERT_TRUE(authority::exact_source_path_is_canonical(arc.sourcePath));
   auto unbound = split;
   expectBindingRejected(std::move(unbound), *traceIndex, "split with count 1");
-  arc.sourcePieceCounts.back() = 2U;
+  ++arc.sourcePieceCounts.back();
   const auto replayed = rebuild(std::move(split));
   ASSERT_FALSE(replayed);
   EXPECT_EQ(GlobalTopologyPlanErrorCode::RegionBoundaryArcNotOwnedByNetwork,
@@ -17616,9 +17623,9 @@ TEST(TraceTerminationCorrection,
 // CutSearchExhaustedBeforeCellularity; its arcs, node loci and face contacts
 // come from the production builders. Every ray carried by a mesh edge, every
 // changed vertex parameter and every failure is listed, and every slide
-// segment with its end node's locus and classification. Asserted only: a
-// slide traversed to an arc's end reaches that node along its carrier, the
-// node's classifier accepts the ray, and at least one such end exists.
+// segment with its end node's locus and classification. Independent fixture
+// expectations check every slide carrier, vertex, classification, count,
+// ordinary ray preservation and collision absence.
 TEST(TraceTerminationCorrection,
      PrescribedSphereTracePieceRaysArePublishedNonGating) {
   namespace authority = directional::authority;
@@ -17644,6 +17651,38 @@ TEST(TraceTerminationCorrection,
   const auto arcBuild = embedded::build_arcs(network, {}, *cutNodes);
   const auto *arcs = std::get_if<std::vector<GlobalTopologyArc>>(&arcBuild);
   ASSERT_NE(nullptr, arcs);
+  // Production arcs must now carry the actual face+edge decomposition.
+  // The sphere fixture's ten slide segments are independently recorded in
+  // the trace data and each must own two exact source pieces.
+  std::size_t publishedSlidePieces = 0U;
+  for (const auto &arc : *arcs) {
+    if (arc.kind != GlobalTopologyArcKind::Trace) {
+      EXPECT_TRUE(arc.sourcePieceCounts.empty());
+      continue;
+    }
+    ASSERT_TRUE(arc.trace.has_value());
+    const auto *trace = embedded::find_trace(network, *arc.trace);
+    ASSERT_NE(nullptr, trace);
+    ASSERT_EQ(arc.sourceFaces.size(), arc.sourcePieceCounts.size());
+    ASSERT_EQ(arc.onePastLastSegment - arc.firstSegment,
+              arc.sourcePieceCounts.size());
+    EXPECT_EQ(arc.sourcePath.size(),
+              std::accumulate(arc.sourcePieceCounts.begin(),
+                              arc.sourcePieceCounts.end(), std::size_t{0}));
+    EXPECT_FALSE(embedded::source_piece_binding_failure(
+        arc.sourceFaces, arc.sourcePieceCounts, arc.sourcePath));
+    for (std::size_t i = 0U; i < arc.sourcePieceCounts.size(); ++i) {
+      const auto &segment = trace->segments[arc.firstSegment + i];
+      if (segment.edgeTransitEntry.has_value() ||
+          segment.edgeTransitExit.has_value()) {
+        EXPECT_EQ(2U, arc.sourcePieceCounts[i])
+            << "trace=" << trace->id.index() << " segment="
+            << (arc.firstSegment + i);
+        ++publishedSlidePieces;
+      }
+    }
+  }
+  EXPECT_EQ(10U, publishedSlidePieces);
   const auto lociBuild = embedded::build_node_loci(network, *cutNodes);
   const auto *loci =
       std::get_if<std::map<NetworkNodeId, embedded::NodeLocus>>(&lociBuild);
@@ -17768,6 +17807,21 @@ TEST(TraceTerminationCorrection,
   std::size_t slideArcEnds = 0U;
   std::map<EdgeRayKey, std::size_t> traceEdgeRays;
   std::map<std::pair<TraceId, std::size_t>, std::string> slideEnds;
+  // Independent expected sphere carriers and terminal vertices from the
+  // fixed prescribed trace fixture, not from the helper under test.
+  struct ExpectedSlideRay {
+    std::size_t vertex;
+    std::size_t edgeFirst;
+    std::size_t edgeSecond;
+  };
+  const std::map<std::size_t, ExpectedSlideRay> expectedSlideRays{
+      {0U, {8U, 6U, 8U}},    {9U, {8U, 8U, 9U}},
+      {1U, {21U, 16U, 21U}}, {11U, {21U, 20U, 21U}},
+      {13U, {34U, 32U, 34U}}, {21U, {34U, 33U, 34U}},
+      {12U, {45U, 40U, 45U}}, {22U, {45U, 45U, 46U}},
+      {10U, {49U, 49U, 62U}}, {14U, {0U, 0U, 69U}},
+  };
+  std::set<std::size_t> observedSlideTraces;
   std::ostringstream details;
   for (const GlobalTopologyArc &arc : *arcs) {
     if (arc.kind != GlobalTopologyArcKind::Trace || !arc.trace.has_value()) {
@@ -17802,10 +17856,24 @@ TEST(TraceTerminationCorrection,
             trace->terminalContact.has_value());
       if (slideArcEnd) {
         ++slideArcEnds;
-        EXPECT_TRUE(piece.has_value() &&
-                    piece->carrier ==
-                        authority::SourceSupport{authority::SourceEdgeSupport{
-                            record.outgoingCarrier}})
+        const auto expectation = expectedSlideRays.find(trace->id.index());
+        ASSERT_NE(expectedSlideRays.end(), expectation) << "trace=" << where;
+        EXPECT_TRUE(observedSlideTraces.insert(trace->id.index()).second)
+            << "duplicate source slide: trace=" << where;
+        const auto expectedEdge = topology_edge(
+            static_cast<int>(expectation->second.edgeFirst),
+            static_cast<int>(expectation->second.edgeSecond),
+            static_cast<std::size_t>(sphere.mesh.V.rows()));
+        EXPECT_EQ(expectedEdge, record.outgoingCarrier)
+            << "trace=" << where;
+        ASSERT_TRUE(piece.has_value()) << "trace=" << where;
+        EXPECT_EQ(authority::SourceSupport{authority::SourceEdgeSupport{
+                      expectedEdge}}, piece->carrier)
+            << "trace=" << where;
+        const auto expectedVertex = authority::SourceVertexId::from_index(
+            expectation->second.vertex,
+            static_cast<std::size_t>(sphere.mesh.V.rows())).value();
+        EXPECT_EQ(authority::ExactSourcePoint{expectedVertex}, piece->first)
             << "trace=" << where;
       }
       const auto locus = loci->find(node);
@@ -17898,6 +17966,12 @@ TEST(TraceTerminationCorrection,
       }
       if (slideArcEnd) {
         EXPECT_FALSE(failed) << "trace=" << where << " kind=" << kind;
+        ASSERT_TRUE(atVertex) << "trace=" << where;
+        EXPECT_EQ(authority::SourceVertexId::from_index(
+                      expectedSlideRays.at(trace->id.index()).vertex,
+                      static_cast<std::size_t>(sphere.mesh.V.rows())).value(),
+                  *locus->second.vertex) << "trace=" << where;
+        EXPECT_EQ("alongEdge", kind) << "trace=" << where;
         slideEnds[{trace->id, segment}] = locusText(node) + " kind=" + kind;
       }
       if (listed) {
@@ -17934,6 +18008,9 @@ TEST(TraceTerminationCorrection,
         continue;
       }
       const auto end = slideEnds.find({trace.id, segment});
+      EXPECT_NE(slideEnds.end(), end)
+          << "source slide has no matching arc end: trace="
+          << trace.id.index() << ':' << segment;
       details << "SpherePieceRaySlideEnd trace=" << trace.id.index() << ':'
               << segment << " locus="
               << (end != slideEnds.end() ? end->second
@@ -17941,7 +18018,13 @@ TEST(TraceTerminationCorrection,
               << '\n';
     }
   }
-  EXPECT_LT(0U, slideArcEnds);
+  EXPECT_EQ(expectedSlideRays.size(), slideArcEnds);
+  EXPECT_EQ(expectedSlideRays.size(), observedSlideTraces.size());
+  EXPECT_EQ(expectedSlideRays.size(), slideEnds.size());
+  EXPECT_EQ(0U, changedOrdinary);
+  EXPECT_EQ(0U, failures);
+  EXPECT_EQ(0U, coincidentAlongEdge);
+  EXPECT_EQ(0U, coincidentWithEdgeArc);
   std::cout << "SpherePieceRayReceipt vertexRays=" << vertexRays
             << " alongEdge=" << alongEdge << " inWedge=" << inWedge
             << " edgeRays=" << edgeRays << " alongLocusEdge=" << alongLocusEdge
