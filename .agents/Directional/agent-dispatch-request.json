@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb154-review-amendment-20261121-v1",
-  "mailbox_key": "m6-cp3-tb154-review-amendment",
-  "file_id": "1eAEetUyPAhf1MbcEwbwHrHjGIBRXi62s",
-  "patch_sha256": "e741987cede6e90be94fdf8a6e61c1f0afd7bc5d475f10dfcaefea5ddad8998f",
-  "base_sha": "186032da53e141cf60a8fff20ce3c373d7ddf144",
+  "request_id": "m6-cp3-ra277-review-docs-20261121-v1",
+  "mailbox_key": "m6-cp3-ra277-review-docs",
+  "file_id": "1dB_a8go521YYsNWeDtU0Bs-4jxwiaUXJ",
+  "patch_sha256": "b9c6bf4732c4ad634110a24325aaf72964c652fdda6aa1515b425d7a2e70561d",
+  "base_sha": "98995a1ad087cb40f98d5f7e7e8dc95203f8a4ec",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb154-review): verify closeout boundary and record tool limit",
+  "commit_message": "docs(ra277): correct ray-receipt non-vacuity and preserve review gate",
   "retention_days": 30
 }
