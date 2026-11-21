@@ -1,17 +1,17 @@
-## CURRENT — CB-171 compiled; TB-EXEC-155 is next (2026-11-21 UTC)
+## CURRENT — TB-EXEC-155 RED; independent TB-REV-155 next (2026-11-21 UTC)
 
-[RA-278](.agents/Directional/Architecture_M6_CP3_RA278_RA277_And_CB169S_Adversarial_Review_20261121.md) keeps the CB169S producer switch (`ee0f478ad`, compiled, unexecuted). CB-170 corrected the C1 digest and C4 row 966 oracle. CB-171 corrected the C2 edge-locus rank and C3 shared-edge/along-locus-edge ray handling, with source `65ae140e49db5bd04d202390e71b50f455ff152e` compiled and not executed. TB154 remains the last executed gate.
+[TB155 immutable execution](.agents/Directional/Architecture_M6_CP3_TB155_P13_Trace_Piece_Producer_Switch_Full_Gate_Execution_Report_20261121.md) ran CB-171 semantic source `65ae140e49db5bd04d202390e71b50f455ff152e`, artifact `14702459291`, without a rebuild. [Gate 44895154802](https://github.com/akashskypatel/Directional/actions/runs/44895154802): **970/971**, row 858 RED at `SurfaceCellTracingDisplayTests.cpp:155`; rows 644/669/698 contain prohibited `RotationTraceRaysAlongSharedEdge`, trace 14 edge 0–69. All 960 non-A rows MATCH TB154 under N1–N3; A rows 644/645/669/686/698/858/966 DIFF, 648/963/968/971 MATCH. [Census 44895169959](https://github.com/akashskypatel/Directional/actions/runs/44895169959): **3/3 MATCH** TB151 N1–N4 including platform digests. CP2 491/491 unchanged; stable totals 66/17/49 pending Review, one witness debt, 81 deferred. The direct producer still fails before the sphere χ+4 repair. No promotion or stop switch.
 
-> **NEXT_TURN:** `M6-CP3-TB-EXEC-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE` (artifact-only Test + Benchmark). CB-171 C2/C3 source `65ae140e49db5bd04d202390e71b50f455ff152e` compiled in run 44893723942, artifact 14702459291; see [record](.agents/Directional/Architecture_M6_CP3_CB171_P13_Edge_Locus_Rank_And_Along_Edge_Coincidence_Code_Build_Record_20261121.md). Use the unchanged TB154 manifest, RA-278 allowance A and the independent census; no rebuild, source change, stop switch, selector change or promotion.
+> **NEXT_TURN:** `M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE` (**independent Review only**, no runtime or code). Reopen gate/census artifacts and untruncated first-pair annex, classify the prohibited shared-edge guard and row 858 regression, assess row686 χ6 vs χ2 and RA-275 S4a, and freeze the next bounded remediation. A red gate cannot be retried or bypassed without Review authority.
 
 - [x] `M6-CP3-RA-277-TB-REV-154-ADVERSARIAL-REVIEW` — qualified PASS; RA-277-NV1.
-- [x] `M6-CP3-CB-169S-P13-TRACE-PIECE-PRODUCER-SWITCH` — compiled `ee0f478ad`, pkg `14700703142`; unexecuted.
-- [x] `M6-CP3-RA-278-RA-277-AND-CB-169S-ADVERSARIAL-REVIEW` — CB169S kept; C1–C4 frozen as two exact diffs; RA-273 S2.3 digest obligation withdrawn.
-- [x] **COMPLETE:** `M6-CP3-CB-170-P13-SEMANTIC-DIGEST-AND-PIECE-COUNT-ORACLE-RESTORE` — digest revert + row 966 trace-record oracle; compile only, source `9e4bd863a3e825371c6d4ce551dd7badd196ad4d`; no execution.
-- [x] **COMPLETE:** `M6-CP3-CB-171-P13-EDGE-LOCUS-RANK-AND-ALONG-EDGE-COINCIDENCE` — exact legacy rank and typed failures, source `65ae140e49db5bd04d202390e71b50f455ff152e`, run 44893723942, artifact 14702459291, compile only.
-- [ ] **NEXT:** `M6-CP3-TB-EXEC-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE` — TB154 manifest; allowance A = {644, 645, 648, 669, 686, 698, 858, 963, 966, 968, 971}; rest MATCH TB154 N1–N3; census 3/3 MATCH TB151 N1–N4; CP2 491/491.
-- [ ] `M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE` — attribute A-row DIFFs; row 686 vs real-piece oracle; RA-275 S4a; freeze stop-switch helper CB.
-- Prospective: stop-switch helper CB → stop-switch CB → TB → slide-plan conformity → O48 carrier turns (renumbered when frozen). O49 held. FC-6, TERMINAL-CUT-OUTCOME, row858 held; CB-145 parked. D11=A, D12=A.
+- [x] `M6-CP3-CB-169S-P13-TRACE-PIECE-PRODUCER-SWITCH` — compiled `ee0f478ad`, package `14700703142`, now executed as part of the CB-171 source in TB155.
+- [x] `M6-CP3-RA-278-RA-277-AND-CB-169S-ADVERSARIAL-REVIEW` — C1–C4 corrections frozen before TB155.
+- [x] `M6-CP3-CB-170-P13-SEMANTIC-DIGEST-AND-PIECE-COUNT-ORACLE-RESTORE` — compile only, source `9e4bd863a3e825371c6d4ce551dd7badd196ad4d`.
+- [x] `M6-CP3-CB-171-P13-EDGE-LOCUS-RANK-AND-ALONG-EDGE-COINCIDENCE` — compile only, source `65ae140e49db5bd04d202390e71b50f455ff152e`, artifact `14702459291`.
+- [x] **RED, execution complete:** `M6-CP3-TB-EXEC-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE` — 970/971; row858 RED, forbidden reason rows644/669/698; 960/960 non-A unchanged, census 3/3 baseline match, CP2 491/491. Do not claim checkpoint acceptance.
+- [ ] **NEXT:** `M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE` — independent evidence classification and exact corrective scope. No unreviewed code/test changes.
+- Prospective stop-switch helper CB → stop-switch CB → TB → slide-plan conformity → O48 carrier turns are **held** pending RED Review; O49 held. FC-6, terminal-cut outcome and independent row858 face-witness obligations remain open; CB-145 parked. D11=A, D12=A.
 
 ## HISTORY — RA-277 qualified PASS; test-oracle gap carried (2026-11-21 UTC)
 
