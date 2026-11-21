@@ -1,3 +1,7 @@
+## 2026-11-21 — TB156 immutable slide-carrier full gate (GREEN)
+
+[TB156 report](.agents/Directional/Architecture_M6_CP3_TB156_P13_Slide_Carrier_Cut_Admissibility_Full_Gate_Execution_Report_20261121.md): exact CB-172B package `14713691307` executed with no rebuild, source or test change. [Gate 44924009495](https://github.com/akashskypatel/Directional/actions/runs/44924009495) 972/972; [census 44924025914](https://github.com/akashskypatel/Directional/actions/runs/44924025914) 3/3 baseline match; CP2 491/491; forbidden {}. Stable 66/17/49 unchanged pending independent TB-REV-156; no promotion.
+
 ## 2026-11-21 — CB-172B exact slide-carrier cut admissibility (Code + Build only)
 
 [CB-172B record](.agents/Directional/Architecture_M6_CP3_CB172B_P13_Slide_Carrier_Cut_Admissibility_Code_Build_Record_20261121.md): frozen three-file diff applied as `23c43e6fa01a132b23553302a083d41b01130710`. `TraceSlideCarrier` prevents slipped trace-carrier edges from cut proposals and saturation; row972 added without execution. [GMP compile 44919774599](https://github.com/akashskypatel/Directional/actions/runs/44919774599) produced package `14713691307` (ZIP SHA-256 `6da928ac27a22f0b90c5816978f758ff0d2b03aac6668c3967d47a51104db0d0`), eight targets, `runtimeExecution=false`. The first malformed compile request was rejected before build and corrected. TB155 970/971 RED, TB154 971/971 last green, CP2 491/491 and stable 66/17/49 unchanged; no acceptance. Next separate turn: `M6-CP3-TB-EXEC-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE`.

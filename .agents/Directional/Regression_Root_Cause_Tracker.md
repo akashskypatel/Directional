@@ -1,3 +1,7 @@
+## 2026-11-21 — TB156 execution evidence (GREEN, no stable-count amendment)
+
+[TB156 report](Architecture_M6_CP3_TB156_P13_Slide_Carrier_Cut_Admissibility_Full_Gate_Execution_Report_20261121.md): gate 972/972 (row858 PASS), outside-A differences `[]`, A-row differences `[966]`, forbidden `{}`, census mismatches `[]`. The authoritative next Review will adjudicate these observations, the slide-carrier correction, RA-279-C1/C2, RA-281-A14/F3 and sphere χ+4. No stable regression/event/category/recurrence is added on execution evidence alone: **66/17/49**; produced-witness debt 1, deferred 81, accepted CP2 491/491, unpromoted CP3/497. Do not hide a new RED or alter an accepted assertion.
+
 ## 2026-11-21 — RA-281: RA-280 upheld; Amendment 14 interim restriction (obligation, non-stable)
 
 [RA-281](Architecture_M6_CP3_RA281_RA280_Adversarial_Review_20261121.md) upholds the RA-279-C1/C2 attribution and CB-172B. New obligation **RA-281-A14:** slide carriers are withheld from the admissible cut set, narrowing DESIGN Amendment 14's total cut-set guarantee; owner the post-stop-switch slide-start subdivision CB. Falsifier: a cut search exhausts while a withheld remainder would split its blocking non-disc component. New obligation **RA-281-F3:** the stop switch creates edge-locus nodes on wall slides; its sequence must replace CB-171's `RayRunsAlongLocusEdge` fail-closed with the along-locus-edge key (counted in `edgeRayCount`). Stable counts unchanged 66/17/49.
