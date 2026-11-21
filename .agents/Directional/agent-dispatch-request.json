@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb170-compile-20261121-v1",
-  "mailbox_key": "m6-cp3-cb170-compile",
-  "source_sha": "9e4bd863a3e825371c6d4ce551dd7badd196ad4d",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb170-compile"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb170-docs-apply-20261121-v1",
+  "mailbox_key": "m6-cp3-cb170-docs-apply",
+  "file_id": "1HEpNnvdJLvH9vmBnsrGcWK_OHIqjDyab",
+  "patch_sha256": "927b4ff4f00142b440bcfa37b6d0729b07ec402a21ec4503a12389430c5758ac",
+  "base_sha": "9e4bd863a3e825371c6d4ce551dd7badd196ad4d",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cb170): preserve compiled digest and oracle restoration evidence",
+  "retention_days": 30
 }
