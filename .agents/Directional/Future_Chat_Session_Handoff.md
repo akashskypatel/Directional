@@ -39,10 +39,10 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Regression/debt | Stable 66 events / 17 categories / 49 recurrences; one produced-witness debt; 81 deferred. [Tracker](Regression_Root_Cause_Tracker.md). C5/O42/O43/O46/O47/O48/O49 open; C3/O44/C1 and O45 narrow proxy closed. D11=A, D12=A, D10 deferred, D6 pending. `chainRimSchedules=false`. |
 | Active boundary | Row 686: sphere χ6 vs 2 (+4 = four unowned slide contacts), producer `CutSearchExhaustedBeforeCellularity`; the real-piece oracle keeps χ6. Rows 669/698 exhaust the same way. No gate row reaches source-face ownership, which needs a disc embedding. Production arcs still write slides as face chords; TB154 independent Review and RA-277 are complete, and the separately authorized producer-switch Code + Build turn is next. The stop switch waits for the producer switch. |
 
-## Latest Code + Build — `M6-CP3-CB-169S-P13-TRACE-PIECE-PRODUCER-SWITCH` — COMPLETE
+## Mandatory next turn — UNKNOWN — STOP (pending separate TB authority)
 
 - Compile-only implementation and checks: [CB169S record](Architecture_M6_CP3_CB169S_P13_Trace_Piece_Producer_Switch_Code_Build_Record_20261121.md); source `ee0f478ad95debeb3ab5a14010a7b24ea78757f6`, package `14700703142`. No tests or benchmarks ran.
-- **Next turn requires separate Test + Benchmark authority.** Use the exact package and the independent falsifiers in the TB154 Review and RA-277-NV1. No successor was started; its canonical identity is not frozen here.
+- **UNKNOWN — STOP:** A separately reviewed Test + Benchmark identity has not been frozen. Do not start a successor automatically. When authorized, use the exact package and the independent falsifiers in the TB154 Review and RA-277-NV1. No successor was started; its canonical identity is not frozen here.
 - **STOP:** no stop switch, O49 rewrite, source-face ownership rewrite, production acceptance, selector changes, or sphere repair inference. The prior 971/971 result is not new-switch evidence.
 
 ## Turn Sequence
