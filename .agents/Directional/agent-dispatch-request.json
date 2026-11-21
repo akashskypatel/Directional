@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb158-final-docs-20261121-v2",
-  "mailbox_key": "m6-cp3-tb158-final-docs-v2",
-  "file_id": "1HVx_ytLZcJpRTlJl1e8mG2D7GqbIBer0",
-  "patch_sha256": "dd748fac6e4b6f9a2cefa357e52fc8e99eedbfa145e36c9690a501588daba466",
-  "base_sha": "75a82f1db7afb775025c3a377dabcc7f32d6d2cc",
+  "request_id": "m6-cp3-tbrev158-docs-20261121-v1",
+  "mailbox_key": "m6-cp3-tbrev158-docs",
+  "file_id": "1kv_XbXfL-ieOnc7Dr1AEcF7SrslXVjU7",
+  "patch_sha256": "56d022aa2b3137c0847055aa49ecf8e05ce79a3cd0d7bba52e8d32b43322fd4a",
+  "base_sha": "8372f109a606ea5af880ae58a3f01b07d4c24ed1",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb158): record verified full gate and production census",
+  "commit_message": "docs(tb-rev-158): independently verify full gate and freeze producer switch",
   "retention_days": 14
 }
