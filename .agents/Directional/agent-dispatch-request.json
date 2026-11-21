@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev157-changelog-20261121-v1",
-  "mailbox_key": "m6-cp3-tb-rev157-changelog-v1",
-  "file_id": "13M9cBO5UJDmkiQdvPmeF-mtOQaVhe6pg",
-  "patch_sha256": "34c3b9cbf4358c8d5abe6c4b9491f2df36089590b90f1faf87446e39e53974ed",
-  "base_sha": "a09656810c92634165ef34843bdc7b496a24c054",
+  "request_id": "m6-cp3-tb-rev157-changelog-20261121-v2",
+  "mailbox_key": "m6-cp3-tb-rev157-changelog-v2",
+  "file_id": "1bC6siwAnLcWd-UO2x24g0uSMVzISWUis",
+  "patch_sha256": "907dbc53df0bd106210aeb76ec772e9540f4ead23734d56e44d1ec7eed092265",
+  "base_sha": "ca3539db7a9153f67ee1d75b7eb5d256cd160989",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(review): add TB-REV-157 V3 investigation to append-only changelog",
+  "commit_message": "docs(review): preserve TB-REV-157 independent review continuation in CHANGELOG",
   "retention_days": 14
 }
