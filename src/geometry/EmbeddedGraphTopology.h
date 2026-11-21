@@ -561,6 +561,30 @@ using EdgePieceRay = std::variant<EdgePieceRayAlongLocusEdge,
     const SourceFaceRecord &face, const authority::SourceEdgeTopologyKey &locus,
     const authority::ExactSourceSupportPiece &piece);
 
+/**
+ * Primary slot of a ray that runs along an edge locus, whether it is an edge
+ * arc or a trace piece on the locus edge: 0 toward the edge's second endpoint,
+ * 2 toward its first.
+ */
+[[nodiscard]] std::size_t edge_locus_edge_ray_primary(bool towardSecondEndpoint);
+
+/**
+ * Primary slot of a trace ray that leaves an edge locus into the face of side
+ * rank `sideRank`, given the locus's total edge-ray count. Without edge rays
+ * the slot is the side rank; with two, it is the odd slot between the two
+ * edge-ray slots.
+ */
+[[nodiscard]] std::size_t edge_locus_into_face_primary(std::size_t sideRank,
+                                                       std::size_t edgeRayCount);
+
+/**
+ * Whether an edge locus may carry `arcEdgeRays` edge arcs and
+ * `traceAlongEdgeRays` trace rays along the locus edge: neither kind, or
+ * exactly two of one kind. Mixed pairs are not admitted.
+ */
+[[nodiscard]] bool edge_locus_edge_ray_composition_valid(
+    std::size_t arcEdgeRays, std::size_t traceAlongEdgeRays);
+
 struct EdgeLocusSecondaryRankDiagnosticContext {
   std::optional<authority::SourceFaceTopologyKey> sourceFace;
   std::optional<authority::SourceEdgeTopologyKey> incomingCarrier;

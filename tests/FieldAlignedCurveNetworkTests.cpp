@@ -21052,6 +21052,47 @@ TEST(FieldAlignedCarrierOccupancy,
                       entry}));
 }
 
+// Reachability: no committed gate fixture places an edge-locus node on a
+// slide, so this branch has no current witness; the stop switch is its first.
+TEST(EmbeddedGraphTopology, EdgeLocusAlongEdgeTraceRaysTakeEdgeArcSlots) {
+  EXPECT_EQ(0U, embedded::edge_locus_edge_ray_primary(true));
+  EXPECT_EQ(2U, embedded::edge_locus_edge_ray_primary(false));
+}
+
+TEST(EmbeddedGraphTopology, EdgeLocusIntoFaceRaysInterleaveWithEdgeRays) {
+  EXPECT_EQ(0U, embedded::edge_locus_into_face_primary(0U, 0U));
+  EXPECT_EQ(1U, embedded::edge_locus_into_face_primary(1U, 0U));
+  EXPECT_EQ(1U, embedded::edge_locus_into_face_primary(0U, 2U));
+  EXPECT_EQ(3U, embedded::edge_locus_into_face_primary(1U, 2U));
+
+  // Four rays on one locus: along toward the second endpoint, into side 0,
+  // along toward the first endpoint, into side 1. They must sort to 0..3.
+  std::vector<std::size_t> primaries{
+      embedded::edge_locus_edge_ray_primary(true),
+      embedded::edge_locus_into_face_primary(0U, 2U),
+      embedded::edge_locus_edge_ray_primary(false),
+      embedded::edge_locus_into_face_primary(1U, 2U)};
+  std::sort(primaries.begin(), primaries.end());
+  EXPECT_EQ((std::vector<std::size_t>{0U, 1U, 2U, 3U}), primaries);
+
+  // Falsifier for leaving along-edge rays out of the count: side 0 with no
+  // counted edge ray collides with the slot toward the second endpoint.
+  EXPECT_EQ(embedded::edge_locus_edge_ray_primary(true),
+            embedded::edge_locus_into_face_primary(0U, 0U));
+}
+
+TEST(EmbeddedGraphTopology, EdgeLocusEdgeRayCompositionAdmitsOnlyThroughPairs) {
+  EXPECT_TRUE(embedded::edge_locus_edge_ray_composition_valid(0U, 0U));
+  EXPECT_FALSE(embedded::edge_locus_edge_ray_composition_valid(0U, 1U));
+  EXPECT_TRUE(embedded::edge_locus_edge_ray_composition_valid(0U, 2U));
+  EXPECT_FALSE(embedded::edge_locus_edge_ray_composition_valid(1U, 0U));
+  EXPECT_FALSE(embedded::edge_locus_edge_ray_composition_valid(1U, 1U));
+  EXPECT_FALSE(embedded::edge_locus_edge_ray_composition_valid(1U, 2U));
+  EXPECT_TRUE(embedded::edge_locus_edge_ray_composition_valid(2U, 0U));
+  EXPECT_FALSE(embedded::edge_locus_edge_ray_composition_valid(2U, 1U));
+  EXPECT_FALSE(embedded::edge_locus_edge_ray_composition_valid(2U, 2U));
+}
+
 TEST(FieldAlignedCarrierOccupancy,
      MutualCarrierContactNamesEachTraceAtItsEndOnOneLocus) {
   using directional::authority::FieldBranch;

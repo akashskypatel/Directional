@@ -2603,6 +2603,22 @@ EdgePieceRay edge_piece_ray(const SourceFaceRecord &face,
   return EdgePieceRayIntoFace{face.topology, piece.second};
 }
 
+std::size_t edge_locus_edge_ray_primary(const bool towardSecondEndpoint) {
+  return towardSecondEndpoint ? 0U : 2U;
+}
+
+std::size_t edge_locus_into_face_primary(const std::size_t sideRank,
+                                         const std::size_t edgeRayCount) {
+  return edgeRayCount == 0U ? sideRank : 2U * sideRank + 1U;
+}
+
+bool edge_locus_edge_ray_composition_valid(const std::size_t arcEdgeRays,
+                                           const std::size_t traceAlongEdgeRays) {
+  return (arcEdgeRays == 0U && traceAlongEdgeRays == 0U) ||
+         (arcEdgeRays == 2U && traceAlongEdgeRays == 0U) ||
+         (arcEdgeRays == 0U && traceAlongEdgeRays == 2U);
+}
+
 std::vector<std::size_t> vertex_trace_secondary_ranks(
     const std::vector<authority::FieldExactRational> &parameters) {
   std::vector<std::size_t> order(parameters.size());
@@ -3006,14 +3022,43 @@ RotationBuildResult build_rotation_system(
                 : 1U);
       }
 
-      const std::size_t edgeRayCount = static_cast<std::size_t>(
+      // A trace ray that runs along the locus edge is an edge ray too. Only
+      // successful along-edge classifications are recorded here; every other
+      // trace keeps its existing failure path in the main loop below.
+      std::map<GlobalTopologyOrientedArc, bool> edgeTraceAlongLocus;
+      for (const auto incidence : outgoing) {
+        const auto arcIt = arcById.find(incidence.arc);
+        if (arcIt == arcById.end()) continue;
+        const GlobalTopologyArc &arc = *arcIt->second;
+        if (arc.kind == GlobalTopologyArcKind::Mandatory ||
+            arc.kind == GlobalTopologyArcKind::Cut || !arc.trace.has_value()) {
+          continue;
+        }
+        const auto *trace = find_trace(network, *arc.trace);
+        if (trace == nullptr) continue;
+        const auto face = trace_ray_face(arc, incidence.orientation, *trace);
+        if (!face.has_value() || sideRank.count(*face) == 0U) continue;
+        const auto piece = trace_arc_ray_piece(arc, incidence.orientation);
+        const auto sourceFace = topology.faces.find(*face);
+        if (!piece.has_value() || sourceFace == topology.faces.end()) continue;
+        const auto ray = edge_piece_ray(sourceFace->second,
+                                        *locusIt->second.edge, *piece);
+        if (const auto *along = std::get_if<EdgePieceRayAlongLocusEdge>(&ray)) {
+          edgeTraceAlongLocus.emplace(incidence, along->towardSecondEndpoint);
+        }
+      }
+
+      const std::size_t arcEdgeRayCount = static_cast<std::size_t>(
           std::count_if(outgoing.begin(), outgoing.end(), [&](const auto incidence) {
             const auto arcIt = arcById.find(incidence.arc);
             return arcIt != arcById.end() &&
                    (arcIt->second->kind == GlobalTopologyArcKind::Mandatory ||
                     arcIt->second->kind == GlobalTopologyArcKind::Cut);
           }));
-      if (edgeRayCount != 0U && edgeRayCount != 2U) {
+      const std::size_t traceAlongEdgeRayCount = edgeTraceAlongLocus.size();
+      const std::size_t edgeRayCount = arcEdgeRayCount + traceAlongEdgeRayCount;
+      if (!edge_locus_edge_ray_composition_valid(arcEdgeRayCount,
+                                                 traceAlongEdgeRayCount)) {
         GlobalTopologyPlanError result =
             rotation_error(RotationSystemInconsistencyReason::RotationEdgeRayCountInvalid);
         result.sourceEdge = locusIt->second.edge;
@@ -3023,6 +3068,27 @@ RotationBuildResult build_rotation_system(
         GlobalTopologyPlanError result =
             rotation_error(RotationSystemInconsistencyReason::RotationEdgeRayValenceInvalid);
         result.sourceEdge = locusIt->second.edge;
+        return result;
+      }
+      // Two along-edge trace rays in the same direction would share a slot
+      // with no exact order between them.
+      bool alongTowardSecondSeen = false;
+      bool alongTowardFirstSeen = false;
+      for (const auto incidence : outgoing) {
+        const auto along = edgeTraceAlongLocus.find(incidence);
+        if (along == edgeTraceAlongLocus.end()) continue;
+        bool &seen = along->second ? alongTowardSecondSeen : alongTowardFirstSeen;
+        if (!seen) {
+          seen = true;
+          continue;
+        }
+        const auto arcIt = arcById.find(incidence.arc);
+        const GlobalTopologyArc &arc = *arcIt->second;
+        GlobalTopologyPlanError result = rotation_error(
+            RotationSystemInconsistencyReason::RotationTraceRaysAlongSharedEdge);
+        result.sourceEdge = locusIt->second.edge;
+        result.arc = arc.id;
+        result.trace = arc.trace;
         return result;
       }
 
@@ -3043,12 +3109,17 @@ RotationBuildResult build_rotation_system(
               arc, incidence.orientation, *locusIt->second.edge, network,
               cutNodes);
           if (towardSecond.has_value()) {
-            diagnostic.primary = *towardSecond ? 0U : 2U;
+            diagnostic.primary = edge_locus_edge_ray_primary(*towardSecond);
           }
           return diagnostic;
         }
 
         diagnostic.secondaryAvailable = false;
+        if (const auto along = edgeTraceAlongLocus.find(incidence);
+            along != edgeTraceAlongLocus.end()) {
+          diagnostic.primary = edge_locus_edge_ray_primary(along->second);
+          return diagnostic;
+        }
         if (!arc.trace.has_value()) return diagnostic;
         const auto *trace = find_trace(network, *arc.trace);
         if (trace == nullptr) return diagnostic;
@@ -3057,8 +3128,8 @@ RotationBuildResult build_rotation_system(
         diagnostic.sourceFace = *face;
         const auto side = sideRank.find(*face);
         if (side == sideRank.end()) return diagnostic;
-        diagnostic.primary = edgeRayCount == 0U ? side->second
-                                                : 2U * side->second + 1U;
+        diagnostic.primary =
+            edge_locus_into_face_primary(side->second, edgeRayCount);
         std::optional<std::size_t> secondary;
         const auto piece = trace_arc_ray_piece(arc, incidence.orientation);
         const auto sourceFace = topology.faces.find(*face);
@@ -3135,7 +3206,7 @@ RotationBuildResult build_rotation_system(
           // Around the canonical edge direction, side-rank 0 lies between
           // the ray toward the second endpoint and the ray toward the first;
           // side-rank 1 occupies the complementary sector.
-          key.primary = *towardSecond ? 0U : 2U;
+          key.primary = edge_locus_edge_ray_primary(*towardSecond);
           keyed.emplace_back(key, incidence);
           continue;
         }
@@ -3160,6 +3231,13 @@ RotationBuildResult build_rotation_system(
               RotationSystemInconsistencyReason::EdgeTraceFaceSideInvalid;
           return result;
         }
+        if (const auto along = edgeTraceAlongLocus.find(incidence);
+            along != edgeTraceAlongLocus.end()) {
+          key.primary = edge_locus_edge_ray_primary(along->second);
+          key.secondary = 0U;
+          keyed.emplace_back(key, incidence);
+          continue;
+        }
         EdgeTraceSecondaryRankFailureReason secondaryFailure =
             EdgeTraceSecondaryRankFailureReason::SourceVertexFallbackUnbound;
         EdgeLocusSecondaryRankDiagnosticContext secondaryContext;
@@ -3169,10 +3247,7 @@ RotationBuildResult build_rotation_system(
         if (piece.has_value() && sourceFace != topology.faces.end()) {
           const auto ray = edge_piece_ray(sourceFace->second,
                                           *locusIt->second.edge, *piece);
-          if (std::holds_alternative<EdgePieceRayAlongLocusEdge>(ray)) {
-            secondaryFailure =
-                EdgeTraceSecondaryRankFailureReason::RayRunsAlongLocusEdge;
-          } else if (std::holds_alternative<EdgePieceRayIntoFace>(ray)) {
+          if (std::holds_alternative<EdgePieceRayIntoFace>(ray)) {
             secondary = edge_locus_secondary_rank(
                 topology, *locusIt->second.edge, arc, incidence.orientation,
                 *trace, &secondaryFailure, &secondaryContext);
@@ -3206,9 +3281,8 @@ RotationBuildResult build_rotation_system(
           publish_edge_locus_census(result);
           return result;
         }
-        key.primary = edgeRayCount == 0U
-                          ? sideRank.at(*face)
-                          : 2U * sideRank.at(*face) + 1U;
+        key.primary =
+            edge_locus_into_face_primary(sideRank.at(*face), edgeRayCount);
         key.secondary = *secondary;
         keyed.emplace_back(key, incidence);
       }
