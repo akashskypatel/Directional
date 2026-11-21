@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-21 UTC; [TB-REV-157 independent review](Architecture_M6_CP3_TB157_P13_Edge_Locus_Along_Edge_Ray_Key_Independent_Review_20261121.md)):** TB157 gate independently re-derived 975/975 PASS, rows 1–972 match TB156 under N1–N3, census 3/3 baseline match under N1–N4, accepted CP2 491/491. The Review remains IN_PROGRESS: the uncommitted stop-switch helper has no source-attached `(0,2)` witness through the full rotation builder. Stable 66/17/49, debt1, deferred81. Sphere χ6 vs sourceχ2, four unowned contacts, RA-275 S4a remain open. No CP3/selector497/D0/H4 promotion.
+**Current currency (2026-11-21 UTC; [TB-REV-157 independent review](Architecture_M6_CP3_TB157_P13_Edge_Locus_Along_Edge_Ray_Key_Independent_Review_20261121.md)):** TB157 gate independently re-derived 975/975 PASS, rows 1–972 match TB156 under N1–N3, census 3/3 baseline match under N1–N4, accepted CP2 491/491. The Review remains IN_PROGRESS: an unwired helper cannot create a source-attached `(0,2)` graph node; V3a helper tests and later V3b wired full-rotation proof are separately required. Stable 66/17/49, debt1, deferred81. Sphere χ6 vs sourceχ2, four unowned contacts, RA-275 S4a remain open. No CP3/selector497/D0/H4 promotion.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-21; [TB-REV-157 independent review](Architecture_M6_CP3_TB157_P13_Edge_Locus_Along_Edge_Ray_Key_Independent_Review_20261121.md)):** TB157 independently rechecked GREEN 975/975 and preserved TB156 972/972 without an allowance. The stop-switch helper remains a guarded, unapplied candidate; an actual rotation-builder reaching test is still required before the next Code + Build can be frozen.
+**Currency (2026-11-21; [TB-REV-157 independent review](Architecture_M6_CP3_TB157_P13_Edge_Locus_Along_Edge_Ray_Key_Independent_Review_20261121.md)):** TB157 independently rechecked GREEN 975/975 and preserved TB156 972/972 without an allowance. The stop-switch helper remains a guarded, unapplied candidate and its Code + Build successor is conditional. A separate canonical producer-wiring change must later supply the actual rotation-builder `(0,2)` reaching test. Neither proof is waived.
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.
@@ -48,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB157 gate independently rechecked 975/975 PASS; TB156 972/972 baseline matches, census 3/3 baseline match (Cylinder PASS, BunnyRandom/Vase RED), accepted CP2 491/491. The current TB-REV-157 Review remains unfinished because no full rotation-builder reaching test exists for two along-edge slide rays. Sphere χ6 vs sourceχ2, four unowned contacts and cut-search exhaustion persist. No CP3/497/D0/H4 promotion. |
+| **M6-CP3 — active** | TB157 gate independently rechecked 975/975 PASS; TB156 972/972 baseline matches, census 3/3 baseline match (Cylinder PASS, BunnyRandom/Vase RED), accepted CP2 491/491. The current TB-REV-157 Review remains unfinished; the helper is unwired and cannot publish the full rotation-builder `(0,2)` node. The separate wiring gate must prove that later. Sphere χ6 vs sourceχ2, four unowned contacts and cut-search exhaustion persist. No CP3/497/D0/H4 promotion. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
