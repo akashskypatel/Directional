@@ -6,7 +6,7 @@
 - O49 does not gate the producer switch;
 - the switch precondition is unmeasured.
 
-Row 963's four walls slide on their last segment. CB168R compiled (row 968 at 7061c8b84, package 14691194223; not executed). Next: CB168Q oracle, TB153. O47/C5/O49/H4 open. Stable 66/17/49, debt one, 81 deferred, CP2 491/491.
+Row 963's four walls slide on their last segment. CB168R and CB168Q compiled (row 968 at 7061c8b84, package 14691194223; row 686 real-piece oracle at 203150dff, package 14692425922; not executed). Next: TB153. O47/C5/O49/H4 open. Stable 66/17/49, debt one, 81 deferred, CP2 491/491.
 
 ## 2026-11-20 — RA-275 re-review of the TB152 Review (no new stable event)
 

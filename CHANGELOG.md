@@ -1,3 +1,7 @@
+## 2026-11-21 UTC — CB168Q: row 686 real-piece oracle compiled
+
+Applied the frozen test-only diff (`0c096c94…d2e5`, `72 4` tests) as source `203150dff`, switching the row 686 oracle to real trace pieces and failing closed on producer-rejected records. [Compile run 44866324323](https://github.com/akashskypatel/Directional/actions/runs/44866324323) built the eight RA-245 targets (artifact `14692425922`, ZIP SHA-256 `fccfe710…7f5a0`), `runtimeExecution=false`; the oracle change and row 968 are compiled, not executed. [Record](.agents/Directional/Architecture_M6_CP3_CB168Q_P13_Row686_Real_Piece_Oracle_Code_Build_Record_20261121.md). TB153 manifest `fc075b4c…4116`, its TB152 prefix and the harness re-verified read-only. Next: TB153 EXEC (968+81, no census). Stable 66/17/49.
+
 ## 2026-11-21 UTC — CB168R: sphere real-piece reach receipt compiled
 
 Applied the frozen test-only diff (`5aee7b09…bfec`, `86 0` tests) as source `7061c8b84`, adding row 968 `TraceTerminationCorrection.PrescribedSphereRealTracePieceReachIsPublishedNonGating`. [Compile run 44865315185](https://github.com/akashskypatel/Directional/actions/runs/44865315185) built the eight RA-245 targets (artifact `14691194223`, ZIP SHA-256 `188b54e2…1b01861`), `runtimeExecution=false`; row 968 is compiled, not executed. [Record](.agents/Directional/Architecture_M6_CP3_CB168R_P13_Sphere_Real_Piece_Reach_Receipt_Code_Build_Record_20261121.md). Next: CB168Q (`0c096c94…d2e5`), then TB153. Stable 66/17/49.

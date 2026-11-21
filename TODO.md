@@ -1,18 +1,17 @@
-## CURRENT — CB168R complete; row 686 real-piece oracle next (2026-11-21 UTC)
+## CURRENT — CB168Q complete; TB153 full gate next (2026-11-21 UTC)
 
-CB168R (`7061c8b84`, [compile run 44865315185](https://github.com/akashskypatel/Directional/actions/runs/44865315185), artifact `14691194223`, ZIP SHA-256 `188b54e25897db479edac1bf5330d4c1b2788e94b7b1431354aefd8854b01861`) compiled the eight RA-245 targets with `runtimeExecution=false`. Row 968 is compiled, not executed. [Record](.agents/Directional/Architecture_M6_CP3_CB168R_P13_Sphere_Real_Piece_Reach_Receipt_Code_Build_Record_20261121.md). Authority: [RA-276](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc), which withdrew RA-275's CB168P (retained in Git at `41b94c585`).
+CB168Q (`203150dff`, [compile run 44866324323](https://github.com/akashskypatel/Directional/actions/runs/44866324323), artifact `14692425922`, ZIP SHA-256 `fccfe7103494854c1c7bbcc761fb2e3aaa0d119bc5d044ffa52bcf672307f5a0`) compiled the eight RA-245 targets with `runtimeExecution=false`. Row 968 and the row 686 real-piece oracle are compiled, not executed. [Record](.agents/Directional/Architecture_M6_CP3_CB168Q_P13_Row686_Real_Piece_Oracle_Code_Build_Record_20261121.md). Authority: [RA-276](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc).
 
-> **NEXT_TURN:** `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` (Code + Build, test-only, compile only; eight RA-245 targets, `runtimeExecution=false`).
-> - Diff `.agents/Directional/Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_On_Receipt_Exact.diff`, SHA-256 `0c096c94c8124dbf541e96abc07b4c5810d4705dd6ffd6e7f066ecd6aa91d2e5` (`72 4` tests).
-> - Precheck `git diff --quiet 7061c8b84 HEAD -- src include tests`; tests preimage `db2bd6f04cca09ddb61804a2ec92feb7165ab82381ecba90928bbeb1fc691cb3`; `git apply --check`; postimage `632a147f1929ec45a2087176fb8196283e21295fe3dd2f437263a1f7cdfdcc59`.
-> - Read-only re-verified at `a12daccf2`: numstat `72 4`, apply check clean, preimage and postimage match, manifest `fc075b4c…4116` matches.
-> - On failure or mismatch: STATUS `BLOCKED`, return to a Review. Do not adapt the diff.
+> **NEXT_TURN:** `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-EXEC` (Test + Benchmark, artifact only; gate 968+81, no census).
+> - Package artifact `14692425922` at `203150dff`; manifest `.agents/Directional/gates/Architecture_M6_TB153_P13_Real_Piece_Reach_And_Row686_Oracle_Full_Gate_Case_Manifest.tsv`, SHA-256 `fc075b4c33e0f934d8636a4c9c4186d19fea24e5cd6ae88e516c5c6ff1514116` (TB152 byte prefix plus row 968); harness SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`; baseline TB152 run 44739657527.
+> - STOP unless row 968 PASS (lines verbatim); rows 1–967 except 686 MATCH TB152 under N1–N3; row 686 two-ring and torus records equal TB152, sphere `oracleAvailable` true and all `boundaryCyclesValid=true`; CP2 491/491. Sphere record reported (χ6 predicted).
+> - On failure or mismatch: STATUS `BLOCKED`, return to a Review. Do not adapt the gate.
 
 - [x] RA-276 re-review of `M6-CP3-RA-275-TB152-REV-ADVERSARIAL-REVIEW`.
 - [x] Closeout repair (2026-11-20 16:35 UTC): policy closeout block for RA-275 and RA-276; handoff next-turn section follows the template.
 - [x] `M6-CP3-CB168R-P13-SPHERE-REAL-PIECE-REACH-RECEIPT` (Code + Build, test-only, compile only): diff `5aee7b09…bfec` (`86 0` tests), postimage `db2bd6f0…`, matched; row 968 `TraceTerminationCorrection.PrescribedSphereRealTracePieceReachIsPublishedNonGating` compiled, not executed.
-- [ ] **NEXT:** `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` (see NEXT_TURN above).
-- [ ] **Then:** `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-EXEC`.
+- [x] `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` (Code + Build, test-only, compile only): diff `0c096c94…d2e5` (`72 4` tests), postimage `632a147f…cdfdcc59`, matched; compiled, not executed.
+- [ ] **NEXT:** `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-EXEC` (see NEXT_TURN above).
   - Manifest `.agents/Directional/gates/Architecture_M6_TB153_P13_Real_Piece_Reach_And_Row686_Oracle_Full_Gate_Case_Manifest.tsv`, SHA-256 `fc075b4c33e0f934d8636a4c9c4186d19fea24e5cd6ae88e516c5c6ff1514116` (TB152 + row 968; 968+81).
   - **No census**: product source is unchanged, and the TB shows this by diff grep.
   - STOP unless:

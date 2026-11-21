@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-21 UTC; CB168R compiled, RA-276 authority):** CB168R (`7061c8b84`, artifact `14691194223`) compiled; row 968 is not executed. TB152 967/967 PASS stands; CP2 491/491. [RA-276](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc) withdrew RA-275's CB168P for four reasons: its test would fail; it wired one of three ownership readers; O49 does not gate the producer switch; and the switch's precondition is unmeasured. Next are CB168Q (row 686 fail-closed oracle, test-only), then one TB153 (gate only). The four sphere walls slide on their last segment. Sphere χ+4, rows 669/698 exhaustion, four unowned slide contacts and H4 remain. Stable 66/17/49, debt1, deferred81.
+**Current currency (2026-11-21 UTC; CB168Q compiled, RA-276 authority):** CB168R (`7061c8b84`) and CB168Q (`203150dff`, artifact `14692425922`) compiled; row 968 and the row 686 oracle change are not executed. TB152 967/967 PASS stands; CP2 491/491. [RA-276](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc) withdrew RA-275's CB168P for four reasons: its test would fail; it wired one of three ownership readers; O49 does not gate the producer switch; and the switch's precondition is unmeasured. Next is one TB153 (gate only, 968+81, no census). The four sphere walls slide on their last segment. Sphere χ+4, rows 669/698 exhaustion, four unowned slide contacts and H4 remain. Stable 66/17/49, debt1, deferred81.
 
 ## 1. What the project is
 
@@ -47,7 +47,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB152 967/967 PASS, accepted CP2 491/491, prior 966/966 MATCH TB151; existing TB151 census 3/3 MATCH (Cylinder PASS; BunnyRandom/Vase expected RED). Four unowned edge-slide contacts and sphere χ+4 remain. [TB151 execution](Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Execution_Report_20261120.md); TB152 independent Review upheld the helper scope; CB168P (O49 wiring) next, CB168Q row686 oracle later. CP3/selector497/D0 not promoted. |
+| **M6-CP3 — active** | TB152 967/967 PASS, accepted CP2 491/491, prior 966/966 MATCH TB151; existing TB151 census 3/3 MATCH (Cylinder PASS; BunnyRandom/Vase expected RED). Four unowned edge-slide contacts and sphere χ+4 remain. [TB151 execution](Architecture_M6_CP3_TB151_P13_Source_Piece_Counts_Full_Gate_Execution_Report_20261120.md); TB152 independent Review upheld the helper scope; CB168R and CB168Q compiled (RA-276; CB168P withdrawn); TB153 gate next. CP3/selector497/D0 not promoted. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -109,7 +109,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` ([diff](Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_On_Receipt_Exact.diff), test-only), then one TB153 ([RA-276 S3](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc)). No producer or stop switch is authorized yet. Four slide contacts, χ+4 and rows 669/698 remain unresolved.
+**Current priority:** `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-EXEC` (gate only; [CB168Q record](Architecture_M6_CP3_CB168Q_P13_Row686_Real_Piece_Oracle_Code_Build_Record_20261121.md)), then its Review ([RA-276 S3](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc)). No producer or stop switch is authorized yet. Four slide contacts, χ+4 and rows 669/698 remain unresolved.
 
 - **Historical priority (superseded by RA-273):** [RA-272](Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md) had authorized a prose CB168M, now withdrawn.
 
