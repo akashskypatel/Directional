@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb171-compile-20261121-v1",
-  "mailbox_key": "m6-cp3-cb171-compile",
-  "source_sha": "65ae140e49db5bd04d202390e71b50f455ff152e",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-cb171-compile"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb171-docs-apply-20261121-v1",
+  "mailbox_key": "m6-cp3-cb171-docs-apply",
+  "file_id": "1ALsJyyqKqvPLFwnDAKTBmXa1IWNVIeMx",
+  "patch_sha256": "c52642a48328d8cde19b57bc209c42529ddb3a4113b730931ac70add1261ab50",
+  "base_sha": "65ae140e49db5bd04d202390e71b50f455ff152e",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cb171): preserve verified compile evidence and TB155 handoff",
+  "retention_days": 30
 }
