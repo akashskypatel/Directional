@@ -1,10 +1,10 @@
-## CURRENT — TB158 immutable cut-binding full gate GREEN; independent Review next (2026-11-21 UTC)
+## CURRENT — TB-REV-158 qualified PASS; CB-175 separate Code + Build next (2026-11-21 UTC)
 
-[TB158 report](.agents/Directional/Architecture_M6_CP3_TB158_P13_Slide_Contact_Cut_Binding_Full_Gate_Execution_Report_20261121.md): TB158 immutable gate **976/976 PASS**, CP2 **491/491**, 975/975 baseline N1–N3 MATCH (empty allowance), zero new `InvalidCutGraphBinding`; [run 44952039401](https://github.com/akashskypatel/Directional/actions/runs/44952039401) artifact `14725784889` SHA-256 `b50d32d0892cbc8e19db5f827512cdda2cd2d3698e86335bd77d2da1296554e5`. Census **3/3 MATCH** TB157 N1–N4: Cylinder PASS, BunnyRandom and Vase expected RED; [run 44954165527](https://github.com/akashskypatel/Directional/actions/runs/44954165527) artifact `14727495926` SHA-256 `5b3012ca2a3ca8e9f3e5d4d8bc84c27601fb455913d15b67393998e1f57eb8bc`. Direct package `14724824631`, exact source `5190b0e759146342998e3f380f7e5fe4eabd1714`; no recompile, source/test/selector edits. Stable 66/17/49, debt1, deferred81, sphere χ+4, producer stop switch unwired, CP3/497/D0/H4 not promoted.
+[TB158 independent Review](Architecture_M6_CP3_TB158_P13_Slide_Contact_Cut_Binding_Full_Gate_Independent_Review_20261121.md): TB158 independently upheld 976/976 PASS, CP2 491/491, TB157 975/975 empty-allowance match, and 3/3 production census match. Row976 tests the consumer helper only; production reaching remains unwitnessed. Stable 66/17/49, debt1, deferred81. Sphere χ6 vs χ2 and four unowned contacts persist; Amendment 14 and CP3/497/D0/H4 hold.
 
-> **NEXT_TURN:** `M6-CP3-TB-REV-158-P13-SLIDE-CONTACT-CUT-BINDING-FULL-GATE` — independent evidence review, no runtime or source edit in this Test + Benchmark turn. If upheld, freeze CB-175 Later-only producer predicate, queued event and V3b reaching proof; keep Amendment 14 and sphere χ+4 until a later separately verified turn.
+> **NEXT_TURN:** `M6-CP3-CB-175-P13-LATER-SLIDE-CONTACT-STOP-SWITCH` — compile-only Later-only producer switch. Predicate shared by both loops and receipt, reuse queued carrier event, require actual V3b producer reaching and preregister row predictions. Do not run the switch in this review.
 
-**Sequence:** independent TB158 REVIEW → CB-175 → TB159 EXEC/REV → slide-start subdivision R1 → RA-275 S4a → O48. Preserve all prior task history below.
+**Sequence:** CB-175 → TB-EXEC-159/TB-REV-159 → slide-start subdivision R1 → RA-275 S4a → O48. The independent TB158 Review is complete; preserve the history below.
 
 ## HISTORY — TB-REV-157 independent Review; CB-174 v3 helper (withdrawn) (2026-11-21 UTC)
 

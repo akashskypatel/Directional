@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB157 scoped gate 975/975 PASS, baseline 972/972 and census 3/3 match, CP2 491/491 accepted, sphere χ+4 and four unowned contacts unresolved; CP3/497/D0/H4 held) · **Reviewed:** `M6-CP3-TB-REV-157-P13-EDGE-LOCUS-ALONG-EDGE-RAY-KEY-FULL-GATE` complete. [Source-level V3 finding](Architecture_M6_CP3_TB_REV_157_V3_Reaching_Test_Feasibility_20261121.md): integrated `(0,2)` test requires canonical stop-switch wiring; its [adversarial continuation](Architecture_M6_CP3_TB_REV_157_Adversarial_Review_20261121.md) withdrew the v3 stop helper · **Next turn:** `M6-CP3-CB-174-P13-SLIDE-CONTACT-CUT-BINDING` (exact consumer diff, compile only) → TB-EXEC-158 → TB-REV-158 freezes producer switch CB-175 (V3b) · **Later milestones:** M7 and M8.
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB158 scoped 976/976 independently upheld; TB157 975/975 and census 3/3 match; CP2 accepted 491/491; sphere χ+4/four contacts unresolved; CP3/497/D0/H4 held) · **Reviewed:** [TB158 independent Review](Architecture_M6_CP3_TB158_P13_Slide_Contact_Cut_Binding_Full_Gate_Independent_Review_20261121.md) · **Next turn:** `M6-CP3-CB-175-P13-LATER-SLIDE-CONTACT-STOP-SWITCH` (compile-only; shared Later stop predicate, V3b producer proof), then TB-EXEC-159/TB-REV-159 · **Later:** slide-start subdivision R1, M7 and M8.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
