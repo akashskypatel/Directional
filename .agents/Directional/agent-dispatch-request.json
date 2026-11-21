@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb157-docs-apply-20261121-v1",
-  "mailbox_key": "m6-cp3-tb157-docs-apply-v1",
-  "file_id": "1IN3XzJ4kXnwdNz06On3edYvwRWzmbS5a",
-  "patch_sha256": "efba54f7cb65c728cbad8f8ca2b67bedbe7ffb224aedd76068780e968d043aa2",
-  "base_sha": "3fb03720991b79f16371543f1b835a0bb2c0b7a1",
+  "request_id": "m6-cp3-tb-rev157-orientation-20261121-v1",
+  "mailbox_key": "m6-cp3-tb-rev157-orientation-v1",
+  "file_id": "1U335vfxn0R0OfIwqqmCKf4I9l2aVMhfS",
+  "patch_sha256": "8a1eda18a2330f20dc334107d483534c8dc858625cb9156a2763ecb18613abfd",
+  "base_sha": "1bcc8d79b699c3ef933ab20e5d5f6026924d7de5",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb157): record full-gate and production-census green evidence",
+  "commit_message": "docs(tb-rev-157): update current orientation during independent review",
   "retention_days": 14
 }
