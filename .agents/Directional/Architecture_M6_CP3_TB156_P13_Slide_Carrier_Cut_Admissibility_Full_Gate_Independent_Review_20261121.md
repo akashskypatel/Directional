@@ -1,6 +1,6 @@
 # TB156 independent review — slide-carrier cut admissibility
 
-**Canonical turn:** `M6-CP3-TB-REV-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE` · 2026-11-21 UTC. **Verdict: qualified PASS of TB156; no CP3 or D0 promotion.** The review uses the packaged source and immutable original gate/census outputs, not a reconstructed run. No runtime, build, source, test, fixture, selector, or benchmark execution/change occurred.
+**Canonical turn:** `M6-CP3-TB-REV-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE` · 2026-11-21 UTC. **Verdict: qualified PASS of TB156; no CP3 or D0 promotion.** Immutable original gate/census evidence, no new runtime, build or product/test/selector mutation.
 
 ## Situation
 
@@ -19,11 +19,11 @@ TB155 failed its formerly accepted row858 and emitted the prohibited shared-edge
 
 1. **Full-gate counts:** TB154 971/971 PASS; TB155 970/971 PASS, row858 RED; TB156 972/972 PASS, with no missing, duplicate, or skipped cases. The accepted CP2 prefix is 491/491 PASS. This does not promote the additional frozen 497 identities.
 2. **Normalized gate differences:** TB156's 960/960 non-A records match TB154 exactly under frozen N1–N3. A set is 644, 645, 648, 669, 686, 698, 858, 963, 966, 968, 971. Only row966 differs from TB154, by one additional `SourcePieceCountOracle traceArcs=3 segments=9 transitSegments=0` line. Row686 stays the real-piece oracle and stays at V18/E30/F18 (Euler χ=6) against source χ=2. Other A rows normalize to TB154. No unauthorized normalization was applied.
-3. **Census:** TB156 matches TB151 in all three representative cases under frozen N1, N2, N4. Cylinder PASS; BunnyRandom RED and Vase RED at their existing sites. Pointer-object display is masked only by N4; platform digests remain equal and unmasked. This is a **3/3 baseline match**, not 3/3 production successes.
+3. **Census:** TB156 matches TB151 in all three representative cases under frozen N1, N2, N4. Cylinder PASS; BunnyRandom RED and Vase RED at their existing sites. Pointer-object display is masked only by N4; platform digests remain equal and unmasked. This is **3/3 baseline match**, not production success.
 4. **Regression guard:** No gate or census log contains `RotationTraceRaysAlongSharedEdge`, `RayRunsAlongLocusEdge`, or `FirstPieceNotLeavingLocusIntoFace`. Row858 now passes its original accepted source-face assertion; no assertion was removed.
 5. **New row972 is non-vacuous within its scope.** It independently gathers non-mandatory slide-carrier source edges from real trace segments, requires a nonempty set, matches every `TraceSlideCarrier` certificate to that set, and rejects any selected slide carrier. Actual receipt: `carriers=10 classified=10 selected=0 outcome=CutSearchExhaustedBeforeCellularity`. Deleting classification or allowing a carrier in the cut plan would fail this check. **Limitation:** it does not prove an alternative cut exists, that the later stop switch works, or that the sphere is cellular.
 6. **Actual producer boundary:** The sphere still exhausts cut search at rows644/669/698, and row686 χ+4 remains. The four slide-interior contacts remain without shared graph events. No false production success is claimed.
-7. **RA-280 STOP criteria:** All TB156 gate/census/non-A/forbidden-guard preconditions pass; no observed regression requires re-opening CB-172B. The next step may be authorized in a separate turn. RA-281 Amendment 14 R2 stays an **interim** restriction, not the completed total-cut-set guarantee.
+7. **RA-280 STOP criteria:** TB156 stop-gate conditions pass; CB-172B remains accepted only in scope. RA-281 Amendment 14 R2 stays an **interim** restriction, not the completed total-cut-set guarantee.
 
 ## Prior obligations and disposition
 
@@ -42,7 +42,7 @@ TB155 failed its formerly accepted row858 and emitted the prohibited shared-edge
 
 Authorize only `M6-CP3-CB-173-P13-STOP-SWITCH-RAY-HELPERS` as a **Code + Build, compile-only** turn. It may implement and compile a reusable, **unwired** edge-locus ray key/helper with exact orientation, no-ray distinction, and independent positive/negative proof controls. The helper must preserve CB-171 strict equal-edge coincidence rejection and real edgeRayCount ranking. Full stop-switch wiring, slide-start subdivision, cut repair, or production acceptance is forbidden in that turn. The bounded design, independent falsifiers and stop rules are in [Architecture_M6_CP3_CB173_P13_Stop_Switch_Ray_Helpers_Code_Build_Plan_20261121.md](Architecture_M6_CP3_CB173_P13_Stop_Switch_Ray_Helpers_Code_Build_Plan_20261121.md).
 
-**Process note:** At this review's start, five direct source/document reads preceded the explicit snapshot-mode choice, contrary to the mandatory conservation pre-read gate. This was reported, direct piecemeal inspection stopped, and the source review continued from the verified exact snapshot `1dc0ca9834ef202606e5d24da2afa352a4be6da2`, 5,677/5,677 source hashes. This process error did not change product or test bytes; it is not represented as a successful policy read-mode sequence.
+**Process note:** Five direct reads preceded the snapshot decision: a reported policy error. The remaining review used verified exact snapshot `1dc0ca9834ef202606e5d24da2afa352a4be6da2` (5,677/5,677 hashes). No product/test mutation.
 
 ## Review closeout
 
@@ -63,6 +63,6 @@ Authorize only `M6-CP3-CB-173-P13-STOP-SWITCH-RAY-HELPERS` as a **Code + Build, 
 | Consolidation under CLEAN_UP_POLICY | n/a: no historical record superseded for deletion; TB156, RA-280/281 remain live evidence. |
 | Successor frozen | `M6-CP3-CB-173-P13-STOP-SWITCH-RAY-HELPERS` in [Architecture_M6_CP3_CB173_P13_Stop_Switch_Ray_Helpers_Code_Build_Plan_20261121.md](Architecture_M6_CP3_CB173_P13_Stop_Switch_Ray_Helpers_Code_Build_Plan_20261121.md) with falsifiers and stop rules. |
 | Turn boundary held | Review-only, no runtime or product/test/fixture/selector/benchmark/build-source mutation. |
-| review_check.py boundary | Local snapshot check: product/test/selector boundary PASS; historical rewrite ancestry and three baseline-source checks cannot pass because the exact snapshot excludes Git history and rewrite base `8b7299b43`. This is an unverified document-history check, not a clean full PASS. |
-| `STATUS` lifecycle maintained | Entry beacon set for `M6-CP3-TB-REV-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE` with preserved start; final direct write after document/cleanup workflow and final state decision. |
-| Pushed to origin, branch in sync | Pending verified GitHub patch transport; if not confirmed, this review remains IN_PROGRESS and its exact patch is preserved. |
+| review_check.py boundary | Product/test/selector boundary PASS. Historical rewrite ancestry and three baseline-source checks UNVERIFIED; snapshot lacks Git history and `8b7299b43`. Six protected headings preserved against snapshot. Script FAIL is disclosed. |
+| `STATUS` lifecycle maintained | Entry beacon set; final direct write follows all document and cleanup actions. |
+| Pushed to origin, branch in sync | Dispatcher run `44928787534` pushed eight reviewed document paths. PR #8 head checked after cleanup. Local `git status -sb` cannot confirm remote sync from the no-clone snapshot. |
