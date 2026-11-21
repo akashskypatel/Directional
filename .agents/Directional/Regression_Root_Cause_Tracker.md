@@ -1,3 +1,7 @@
+## 2026-11-21 — TB154 full gate and census (no new stable event or candidate)
+
+[TB154 execution](Architecture_M6_CP3_TB154_P13_Trace_Piece_Ray_Helpers_Full_Gate_Execution_Report_20261121.md) verified immutable CB169: 971/971 gate PASS, first 968/968 MATCH TB153 N1–N3 (including row686), CP2 491/491; census 3/3 MATCH TB151 N1–N4 (Cylinder PASS; BunnyRandom/Vase expected RED at `:493`). No new failed previously accepted case, changed fingerprint, or novel product regression; the two RED cases are retained O47/C5 observations, not new stable events. **Stable totals unchanged: 66 events / 17 categories / 49 recurrences**, one produced-witness debt, 81 deferred. Sphere χ+4, four slide contacts, O47/C5/O49/H4 and rows669/698 remain open; no product promotion. Review successor: `M6-CP3-TB-REV-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE`.
+
 ## 2026-11-21 — CB169 compiled (no new stable event or candidate)
 
 [CB169 record](Architecture_M6_CP3_CB169_P13_Trace_Piece_Ray_Helpers_Code_Build_Record_20261121.md): the unwired piece-ray helpers compiled (`ef86370d0`, artifact `14694154267`); nothing ran and nothing changed in the stable accounting (66 events / 17 categories / 49 recurrences, debt 1, 81 deferred). The three behaviour-preserving block moves are unverified at runtime until the TB154 gate MATCH (rows 1–968 vs TB153, census vs TB151). Next: TB154 EXEC.
