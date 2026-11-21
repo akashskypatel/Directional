@@ -1,18 +1,22 @@
-## CURRENT — RA-277 qualified PASS; test-oracle gap carried (2026-11-21 UTC)
+## CURRENT — CB169S compile-only producer cutover complete (2026-11-21 UTC)
+
+[CB169S record](.agents/Directional/Architecture_M6_CP3_CB169S_P13_Trace_Piece_Producer_Switch_Code_Build_Record_20261121.md): exact producer, vertex/edge ray, per-segment count and digest cutover is committed at `ee0f478ad95debeb3ab5a14010a7b24ea78757f6` and compiled in 44888239711 / package 14700703142. New independent RA-277-NV1 sphere guards are compiled **but not executed**. The following Test + Benchmark authority must check full immutable gate, ordinary rays, all-edge-only paths, opposite-face ownership, digest mutation and accepted 491 prefix. No stop switch, acceptance or product improvement is claimed. Next canonical turn remains subject to separate authorization.
+
+## HISTORY — RA-277 qualified PASS; test-oracle gap carried (2026-11-21 UTC)
 
 [RA-277 adversarial review](.agents/Directional/Architecture_M6_CP3_RA277_TB154_Adversarial_ReReview_20261121.md) independently upheld the immutable 971/971 PASS, accepted 491/491 prefix and unchanged census. It corrected row971 non-vacuity: ten along-edge rays and zero failures are observed but not fully asserted. **RA-277-NV1** requires independent slide identity, type, carrier, full coverage, ordinary-ray and collision controls in the next bounded compile-only CB; later TB must execute them. The existing next turn and STOP remain unchanged. No producer or successor work was started by RA-277.
 
-## CURRENT — TB154 Review upheld; bounded producer switch next (2026-11-21 UTC)
+## HISTORY — TB154 Review upheld; bounded producer switch next (2026-11-21 UTC)
 
 [Independent TB154 Review](.agents/Directional/Architecture_M6_CP3_TB154_P13_Trace_Piece_Ray_Helpers_Full_Gate_Independent_Review_20261121.md) re-derived the 971/971 gate, 968/968 TB153 N1–N3 match, census 3/3 TB151 N1–N4 match and CP2 491/491 from immutable logs. Row971 confirms ten along-edge slide ends, no edge coincidences and zero ordinary-ray changes. The helper is not production-wired; the four sphere slide contacts and χ+4 are unresolved. Stable 66/17/49, one witness debt, 81 deferred. No checkpoint, selector497, D0 or H4 promotion.
 
-> **NEXT_TURN:** `M6-CP3-CB-169S-P13-TRACE-PIECE-PRODUCER-SWITCH` (Code + Build, compile-only). Exact scope and independent falsifiers in [TB154 Review](.agents/Directional/Architecture_M6_CP3_TB154_P13_Trace_Piece_Ray_Helpers_Full_Gate_Independent_Review_20261121.md#recommendation--one-frozen-successor).
+> **PREVIOUS_TURN:** `M6-CP3-CB-169S-P13-TRACE-PIECE-PRODUCER-SWITCH` (Code + Build, compile-only). Scope and independent falsifiers in [TB154 Review](.agents/Directional/Architecture_M6_CP3_TB154_P13_Trace_Piece_Ray_Helpers_Full_Gate_Independent_Review_20261121.md#recommendation--one-frozen-successor).
 > - Wire piece-path producer/counts and piece-ray ranking together, include counts in digest, and retain all source/sheet/face/edge ownership. Address accepted chord-pinning assertions with independent controls instead of weakening them.
 > - Do not start the stop switch, sphere repair, tests, benchmark, or any CP3/selector promotion in this turn.
 
 - [x] `M6-CP3-TB-EXEC-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` — 971/971 PASS; first 968/968 N1–N3 MATCH; census 3/3 N1–N4 MATCH.
 - [x] `M6-CP3-TB-REV-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` — independent PASS, ray predictions checked, RA-274 S5 reviewed; producer switch scoped.
-- [ ] **NEXT:** `M6-CP3-CB-169S-P13-TRACE-PIECE-PRODUCER-SWITCH` — compile-only bounded producer switch, no stop switch.
+- [x] **COMPLETE:** `M6-CP3-CB-169S-P13-TRACE-PIECE-PRODUCER-SWITCH` — compiled cutover, no tests or stop switch.
 - Prospective: producer-switch TB/independent Review → stop switch CB → TB/Review (sphere χ2 and rows669/698 plus suffix/conformity evidence) → CB-170 → CB-171 → CB-172 (O48). O49 held. FC-6, TERMINAL-CUT-OUTCOME, row858 held; CB145 parked. D11=A, D12=A.
 
 ## RA-276 (2026-11-20 UTC) — RA-275 realigned

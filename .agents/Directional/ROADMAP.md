@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB154 gate 971/971 PASS, prior 968/968 MATCH TB153, census 3/3 MATCH TB151; CB169 ray helpers remain unwired; independent TB154 Review PASS; compile-only producer switch next. Sphere χ+4 and four slide contacts unresolved; no CP3 acceptance) · **Next milestone:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB154 gate 971/971 PASS, prior 968/968 MATCH TB153, census 3/3 MATCH TB151; CB169S producer cutover compiled (source `ee0f478ad95debeb3ab5a14010a7b24ea78757f6`, package `14700703142`), runtime not executed; next separate TB required. Sphere χ+4 and four slide contacts unresolved; no CP3 acceptance) · **Next milestone:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
