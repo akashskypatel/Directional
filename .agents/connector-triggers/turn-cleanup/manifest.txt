@@ -1,2 +1,0 @@
-# TB-REV-156 reviewed temporary state cleanup
-.agents/connector-triggers/source-snapshot/tb-rev-156-20261121.txt
