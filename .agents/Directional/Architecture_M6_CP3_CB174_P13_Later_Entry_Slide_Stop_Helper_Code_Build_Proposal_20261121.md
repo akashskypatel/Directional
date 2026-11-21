@@ -1,7 +1,7 @@
-# CB-174 — later entry into a committed slide: exact Code + Build plan
+# CB-174 — later entry into a committed slide: exact authorized Code + Build plan
 
-**Proposed successor:** `M6-CP3-CB-174-P13-LATER-ENTRY-SLIDE-STOP-HELPER`.
-**Type:** Code + Build; compile and package only. Do not execute Directional runtime. This plan is conditional on TB-REV-157 explicitly separating the impossible pre-wiring graph-reaching clause from its helper requirement. Do not start CB-174 while the current review is open.
+**Authorized successor (not started):** `M6-CP3-CB-174-P13-LATER-ENTRY-SLIDE-STOP-HELPER`.
+**Type:** Code + Build; compile and package only. Do not execute Directional runtime. TB-REV-157 completed the V3a/V3b sequencing decision and passed full-Git review boundary verification in [run 44946170911](https://github.com/akashskypatel/Directional/actions/runs/44946170911). CB-174 is authorized as the **next separate turn** only after the terminal TB-REV-157 `STATUS` beacon. Do not execute tests or start later producer wiring in this CB.
 **Source authority:** `47a874ee8baa86284eeee11b4a28f9cca06d73f9` (CB-173 compiled package). The repository `src/`, `include/`, `tests/`, `benchmarks/`, build paths, and selectors must remain unchanged since that commit before applying the patch.
 
 ## Frozen prospective source patch
@@ -29,4 +29,4 @@ The proposed helper is `surface_cell_tracing_detail::later_entry_stop_on_committ
 
 The subsequent stop-switch **wiring** Code + Build and its artifact-only full gate must publish a source-edge contact node and wall-division arcs from the canonical producer. It must then call `build_rotation_system` on the actual graph and assert a `(0,2)` composition with distinct directions (primaries 0 and 2), valid face rays, and full source support. A same-direction mutation must produce `RotationTraceRaysAlongSharedEdge`; a removed contact must fail the reach test. Neither calling pure classification helpers nor changing a candidate passed to `make_from_candidate` is an acceptable substitute, because that factory reconstructs the canonical product. This obligation stays open until the wiring gate proves it.
 
-**No changes are authorized to the frozen test rules, M6 CP2 acceptance or the current production STOP conditions.** Next Code + Build work must begin only after TB-REV-157 completes and names this exact successor in `STATUS`.
+**No changes are authorized to the frozen test rules, M6 CP2 acceptance or the current production STOP conditions.** This Code + Build may begin only after TB-REV-157 is COMPLETE in `STATUS` and names this exact successor.
