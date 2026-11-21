@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb174-slide-contact-cut-binding-20261121-v1",
-  "mailbox_key": "m6-cp3-cb174-slide-contact-cut-binding-v1",
-  "file_id": "1cZ1E39uoTDEFWU0t4wq5iyUg0DFfYSX-",
-  "patch_sha256": "c19b5bebd7d47342b70149c7edacd0fcf1917cdc2cc56fedd62c52cd27f19690",
-  "base_sha": "36917d2cabc1dad49bef54c86bba0df1235c3b58",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): bind slide-contact cuts at exact struck parameter",
-  "retention_days": 14
+  "operation": "compile",
+  "request_id": "m6-cp3-cb174-slide-contact-compile-20261121-v1",
+  "mailbox_key": "m6-cp3-cb174-slide-contact-compile-v1",
+  "source_sha": "5190b0e759146342998e3f380f7e5fe4eabd1714",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb174-slide-contact-cut-binding"
 }
