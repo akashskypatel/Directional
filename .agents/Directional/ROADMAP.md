@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB155 970/971 RED, row858 accepted-source-face regression, prohibited shared-edge guard; independent [M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE](Architecture_M6_CP3_TB155_P13_Trace_Piece_Producer_Switch_Full_Gate_Independent_Review_20261121.md) rejects promotion and freezes only CB-172A compile correction. TB154 971/971 last green gate; sphere χ+4 and four contacts unresolved. CP2 491/491 accepted; no CP3 acceptance) · **Next milestone:** M7 · **Later:** M8.
+**Completed:** M0–M5 · **Now:** M6 / CP3 (independent [M6-CP3-TB-REV-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE](Architecture_M6_CP3_TB156_P13_Slide_Carrier_Cut_Admissibility_Full_Gate_Independent_Review_20261121.md) verifies TB156 972/972 GREEN, row858 restored, census 3/3 baseline match, not three production successes; sphere χ+4 and four unowned contacts unresolved; CP2 491/491 accepted; CP3/497/D0 held) · **Next turn:** `M6-CP3-CB-173-P13-STOP-SWITCH-RAY-HELPERS` helper-only, compile-only · **Later milestones:** M7 and M8.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

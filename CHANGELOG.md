@@ -1,3 +1,7 @@
+## 2026-11-21 — TB-REV-156 qualified PASS; next helper-only CB-173
+
+[Independent review](.agents/Directional/Architecture_M6_CP3_TB156_P13_Slide_Carrier_Cut_Admissibility_Full_Gate_Independent_Review_20261121.md) re-hashed original TB156/TB155/TB154 and both census artifacts, re-derived 972/972, immutable 971-case selector prefix, 960/960 non-A matching, sole row966 A difference, unchanged row686 χ+4, ten excluded slide carriers and census 3/3 baseline match. Row858 restored, no forbidden shared-edge guard. RA-279-C1/C2 narrowly discharged; RA-281 F1/F2/F3, RA-275 S4a and sphere obligations carried. [Helper plan](.agents/Directional/Architecture_M6_CP3_CB173_P13_Stop_Switch_Ray_Helpers_Code_Build_Plan_20261121.md) freezes exactly one compiler-only successor `M6-CP3-CB-173-P13-STOP-SWITCH-RAY-HELPERS`. No product, test, selector or benchmark mutation in Review; CP3/497/D0 not promoted.
+
 ## 2026-11-21 — TB156 immutable slide-carrier full gate (GREEN)
 
 [TB156 report](.agents/Directional/Architecture_M6_CP3_TB156_P13_Slide_Carrier_Cut_Admissibility_Full_Gate_Execution_Report_20261121.md): exact CB-172B package `14713691307` executed with no rebuild, source or test change. [Gate 44924009495](https://github.com/akashskypatel/Directional/actions/runs/44924009495) 972/972; [census 44924025914](https://github.com/akashskypatel/Directional/actions/runs/44924025914) 3/3 baseline match; CP2 491/491; forbidden {}. Stable 66/17/49 unchanged pending independent TB-REV-156; no promotion.
