@@ -99,6 +99,12 @@ turn resolves something you or a predecessor flagged, edit that bullet — do no
    is in sync. Pushing a different ref can exit 0 while landing nothing (`LESSONS.md` mechanics 79).
    Record this as the confirmation action, not as a commit hash: a record cannot name the commit that
    contains it, and attempts to do so produce corrective churn rather than evidence.
+6. **Name every successor and turn in the delimited ID form — user-authorized 2026-11-21.** The turn type
+   token and its sequence number are separated by `-` (`CB-216R`, not `CB216R`; `TB-123R`, not `TB123R`;
+   likewise `DEFN-` and `PLAN-`). TB execution turns use `TB-EXEC` and TB Review turns use `TB-REV`, with
+   nothing between `TB` and `EXEC`/`REV`; the sequence number and every further identifier follow:
+   `TB-EXEC-123R-FULL-GATE` (not `TB123R-FULL-GATE-EXEC`), `TB-REV-123R-FULL-GATE`. The milestone prefix
+   still leads (`M6-CP3-TB-EXEC-154-P13-...`). Canonical statement: `Turn_Cadence.md`.
 
 ## 5. Mandatory closeout block
 

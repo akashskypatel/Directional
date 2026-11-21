@@ -4,20 +4,20 @@
 
 [CB169 record](.agents/Directional/Architecture_M6_CP3_CB169_P13_Trace_Piece_Ray_Helpers_Code_Build_Record_20261121.md): the unwired piece-ray helpers (`ef86370d0`) compiled in run 44871935919, artifact `14694154267` (ZIP SHA-256 `ad39099e…0d77`), eight GMP targets, `runtimeExecution=false`. Nothing ran; the three block moves are checked at TB154.
 
-> **NEXT_TURN:** `M6-CP3-TB154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE-EXEC` (Test + Benchmark, artifact only).
+> **NEXT_TURN:** `M6-CP3-TB-EXEC-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` (Test + Benchmark, artifact only).
 > - Gate manifest `.agents/Directional/gates/Architecture_M6_TB154_P13_Trace_Piece_Ray_Helpers_Full_Gate_Case_Manifest.tsv` SHA-256 `0f9c417c6bb4b563abc90e5707eee98656210df322f5e0d00af1efc8f9f4e305` (971 + 81), package `14694154267` at `ef86370d0`; baseline TB153 result `14692372657`.
 > - Plus a census reproducing TB151's (manifest `gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv`, harness `78b8002c…3e94`, baseline artifact `14621727104`).
 > - STOP rules: rows 969–971 PASS with row 971's `SpherePieceRayReceipt`, `SpherePieceRaySlideEnd` and `SpherePieceRay` lines verbatim; rows 1–968 MATCH TB153 under N1–N3, row 686 included; census 3/3 MATCH TB151 under N1–N4; CP2 491/491.
-> - On success: `M6-CP3-TB154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE-REV`. On blocker: UNKNOWN, STOP, STATUS BLOCKED, return to Review.
+> - On success: `M6-CP3-TB-REV-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE`. On blocker: UNKNOWN, STOP, STATUS BLOCKED, return to Review.
 
 - [x] `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-EXEC` (Test + Benchmark): PASS, 968/968.
 - [x] `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-REV` (Review): PASS upheld; CB169 frozen.
 - [x] `M6-CP3-CB169-P13-TRACE-PIECE-RAY-HELPERS` (Code + Build): compiled, not executed.
-- [ ] **NEXT:** `M6-CP3-TB154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE-EXEC` (see NEXT_TURN above), then `M6-CP3-TB154-…-FULL-GATE-REV` (checks the row 971 predictions; freezes the producer switch CB).
+- [ ] **NEXT:** `M6-CP3-TB-EXEC-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` (see NEXT_TURN above), then `M6-CP3-TB-REV-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` (checks the row 971 predictions; freezes the producer switch CB).
 - Prospective:
   - producer switch → TB;
   - → stop switch CB (+ suffix-separation receipt) → TB (row 686 χ=2, rows 669/698);
-  - → CB170 → CB171 → CB172 (O48).
+  - → CB-170 → CB-171 → CB-172 (O48).
   - O49 is held. Held: FC-6, TERMINAL-CUT-OUTCOME, row 858 DEFN. Parked: CB145. D11=A, D12=A.
 
 ## RA-276 (2026-11-20 UTC) — RA-275 realigned

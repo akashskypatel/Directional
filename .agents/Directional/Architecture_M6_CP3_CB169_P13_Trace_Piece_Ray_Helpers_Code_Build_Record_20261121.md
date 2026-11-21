@@ -23,4 +23,4 @@
   - the TB153 manifest (header plus 968 rows, 145,036 bytes) is an exact byte prefix of it (`head -c 145036 | cmp`); the three added rows are 969–971;
   - census manifest `gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv` SHA-256 `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`;
   - harness `tools/m6_cp3_targeted_artifact_harness.sh` SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`, equal to the recorded value.
-- Next authorized turn only: `M6-CP3-TB154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE-EXEC` (Test + Benchmark, artifact only; gate 971 plus a TB151-reproducing census; STOP rules in the TB153 Review S4).
+- Next authorized turn only: `M6-CP3-TB-EXEC-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` (Test + Benchmark, artifact only; gate 971 plus a TB151-reproducing census; STOP rules in the TB153 Review S4).

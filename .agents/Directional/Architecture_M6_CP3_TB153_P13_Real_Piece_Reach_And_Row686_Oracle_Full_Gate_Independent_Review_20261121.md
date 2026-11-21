@@ -72,7 +72,7 @@ It has three tests (rows 969–971): two hand-built tests with exact expected va
 
 Patch facts: `-fsyntax-only` (clang, project include and GMP defines) gives 0 errors; warnings and text are identical to HEAD in `EmbeddedGraphTopology.cpp` (22), `GlobalTopologyPlan.cpp` (24), `SurfaceCutGraph.cpp` (27) and the tests file (42).
 
-**Predictions** (falsifiable; TB154-REV checks them against row 971):
+**Predictions** (falsifiable; TB-REV-154 checks them against row 971):
 
 - every slide arc end classifies along its `outgoingCarrier`;
 - `coincidentAlongEdge=0`, because each wall pair arrives on two different edges;
@@ -92,8 +92,8 @@ Patch facts: `-fsyntax-only` (clang, project include and GMP defines) gives 0 er
 | Order | Turn | Exact content |
 |---|---|---|
 | NEXT | `M6-CP3-CB169-P13-TRACE-PIECE-RAY-HELPERS` (Code + Build, compile only) | [Diff](Architecture_M6_CP3_CB169_P13_Trace_Piece_Ray_Helpers_Exact.diff) SHA-256 `dd08cd28094c371a6eb63ae6b5c4161f3d94376a023e4fa71288558048966b45`, numstat EGT.cpp 173/54, EGT.h 123/0, tests 806/0. Precheck `git diff --quiet 203150dff HEAD -- src include tests`, the three preimages, and `git apply --check`. Compile the eight RA-245 targets with `runtimeExecution=false`. |
-| Then | `M6-CP3-TB154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE-EXEC` | [Manifest](gates/Architecture_M6_TB154_P13_Trace_Piece_Ray_Helpers_Full_Gate_Case_Manifest.tsv) SHA-256 `0f9c417c6bb4b563abc90e5707eee98656210df322f5e0d00af1efc8f9f4e305` (TB153 byte prefix plus rows 969–971; 971 + 81 = 1052), plus a census reproducing TB151's (3 fixtures, N1–N4 vs TB151). CB169 changes product source, although only by behaviour-preserving moves, so the census is required. |
-| Then | `M6-CP3-TB154-…-FULL-GATE-REV` | Checks the predictions and freezes the producer switch CB: `build_arcs` onto `exact_trace_piece_path_between` with counts; rays and ranks mapped from the piece-ray helpers (EPO-4: along-edge rays use the edge-supported comparator; no new tie-break); counts into `candidate_semantic_digest`. Before freezing it runs the RA-274 S5 checks, including grepping the accepted chord-pinning tests (tests 3611–3669, 12970–13030, 13130), which must be addressed explicitly. |
+| Then | `M6-CP3-TB-EXEC-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` | [Manifest](gates/Architecture_M6_TB154_P13_Trace_Piece_Ray_Helpers_Full_Gate_Case_Manifest.tsv) SHA-256 `0f9c417c6bb4b563abc90e5707eee98656210df322f5e0d00af1efc8f9f4e305` (TB153 byte prefix plus rows 969–971; 971 + 81 = 1052), plus a census reproducing TB151's (3 fixtures, N1–N4 vs TB151). CB169 changes product source, although only by behaviour-preserving moves, so the census is required. |
+| Then | `M6-CP3-TB-REV-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` | Checks the predictions and freezes the producer switch CB: `build_arcs` onto `exact_trace_piece_path_between` with counts; rays and ranks mapped from the piece-ray helpers (EPO-4: along-edge rays use the edge-supported comparator; no new tie-break); counts into `candidate_semantic_digest`. Before freezing it runs the RA-274 S5 checks, including grepping the accepted chord-pinning tests (tests 3611–3669, 12970–13030, 13130), which must be addressed explicitly. |
 
 **TB154 STOP rules (all must hold):**
 
@@ -104,7 +104,7 @@ Patch facts: `-fsyntax-only` (clang, project include and GMP defines) gives 0 er
 
 **Census recipe** (TB151 run `44719007530`, result artifact `14621727104`, ZIP SHA-256 `4eacb6f3d9d272a2ee380527fc8f7abab516508a596d3dea3f955e8086a4c611`; request `m6-cp3-tb151-census-20261120-v1`): census manifest `gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv` (SHA-256 `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`; 3 OBSERVE cases: `UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/{Cylinder,BunnyRandom,Vase}`); harness `tools/m6_cp3_targeted_artifact_harness.sh` (SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`). Expected: Cylinder PASS, BunnyRandom and Vase RED at `SurfaceCellDesignAcceptanceTests.cpp:493`. N4 removes only the four process-varying `GetParam()` 16-byte address contents (two per RED test). The baseline for TB154 is TB151's census artifact above (TB152 and TB153 ran no census, because their product source was unchanged).
 
-**Prospective after that:** switch, then TB, then stop-switch CB (with the suffix-separation receipt), then TB (row 686 chi=2, rows 669/698), then CB170, CB171, CB172 (O48).
+**Prospective after that:** switch, then TB, then stop-switch CB (with the suffix-separation receipt), then TB (row 686 chi=2, rows 669/698), then CB-170, CB-171, CB-172 (O48).
 
 **Held/parked unchanged:** O49, FC-6, TERMINAL-CUT-OUTCOME, row 858 DEFN; CB145 parked; D11=A, D12=A.
 
@@ -120,7 +120,7 @@ Patch facts: `-fsyntax-only` (clang, project include and GMP defines) gives 0 er
 | Accepted selector prefix re-hashed | TB152 manifest `cab375d0…` is a byte prefix of TB153 `fc075b4c33e0f934d8636a4c9c4186d19fea24e5cd6ae88e516c5c6ff1514116`, and TB153 of TB154 `0f9c417c6bb4b563abc90e5707eee98656210df322f5e0d00af1efc8f9f4e305` (checked with `cmp` on the leading bytes, plus rows 968–971). CP2 491/491 accepted; selector497 not promoted. |
 | Decisive claims independently re-derived | By a second agent with fresh scripts: ZIP and SHA256SUMS 1944/1944; 968/968 PASS and membership 1049; 966/966 MATCH under N1–N3 with 706 byte-identical and 1,742 M3 records; row 686 two-ring and torus byte-equal; 528 = 504 + 24 arrival lines; row 968 lines; S1 slide table and S2 attribution from rows 963 and 686. Patch SHA, numstat, preimages and postimages verified here (postimages in a removed scratch worktree). |
 | Non-vacuity checked | Row 968 asserts at least 4 slide segments and its zero counts cover 182 real segments, so a receipt that reached nothing would fail. CB169's hand-built tests carry exact values that separate the piece ray from the chord ray (2/3 vs 0; along-locus vs incoming-carrier rank 4). The sphere receipt is non-gating, so its predictions are stated before the run. |
-| Prior obligations discharged/carried | Discharged: RA-276 TB153 STOP rules and the row 968 reach decision (switch precondition holds). Carried: RA-274 S5 (accepted chord-pinning tests, conformity readers) to the TB154-REV switch freeze; RA-275 S4 across-face side of a faceThenEdge slide; disc-phase-front admission of all-edge-only arcs at the switch; `EdgeOnly` validator names if O49 lands; O49 held pending the suffix-separation measurement at the stop-switch TB. |
+| Prior obligations discharged/carried | Discharged: RA-276 TB153 STOP rules and the row 968 reach decision (switch precondition holds). Carried: RA-274 S5 (accepted chord-pinning tests, conformity readers) to the TB-REV-154 switch freeze; RA-275 S4 across-face side of a faceThenEdge slide; disc-phase-front admission of all-edge-only arcs at the switch; `EdgeOnly` validator names if O49 lands; O49 held pending the suffix-separation measurement at the stop-switch TB. |
 | Stable accounting | 66 events / 17 categories / 49 recurrences; one produced-witness debt; 81 deferred; CP2 491/491; selector unchanged. |
 | New candidates/obligations recorded | No new stable event or candidate. Tracker entry for this Review added. |
 | ORIENTATION currency line | TB153 Review, 2026-11-21 UTC. |
@@ -130,7 +130,7 @@ Patch facts: `-fsyntax-only` (clang, project include and GMP defines) gives 0 er
 | Selector manifest | n/a: no acceptance and no identity change in a Review. The TB154 case manifest is a gate manifest, frozen for the TB. |
 | LESSONS | Two entries added (S5). |
 | Consolidation under CLEAN_UP_POLICY | n/a: no newly superseded standalone Review artifact eligible for safe folding. |
-| Successor frozen | Exactly one: `M6-CP3-CB169-P13-TRACE-PIECE-RAY-HELPERS`. Its precheck, hashes and scope are in S4 and the handoff; the TB154 and TB154-REV turns are later frozen edges, not concurrent. |
+| Successor frozen | Exactly one: `M6-CP3-CB169-P13-TRACE-PIECE-RAY-HELPERS`. Its precheck, hashes and scope are in S4 and the handoff; the TB154 and TB-REV-154 turns are later frozen edges, not concurrent. |
 | Turn boundary held | Runtime-free. The diff was verified in a removed scratch worktree; no product, test, selector or fixture source changed in the tree. |
 | review_check.py boundary | ALL CHECKS PASSED. |
 | `STATUS` lifecycle maintained | IN_PROGRESS entry beacon, then COMPLETE final beacon with successor CB169, Started at `2026-11-21T04:58:32Z`, Resumed at empty, true UTC Ended at. |

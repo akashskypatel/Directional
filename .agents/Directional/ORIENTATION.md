@@ -109,7 +109,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-TB154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE-EXEC` (Test + Benchmark, artifact only; CB169 compiled, [record](Architecture_M6_CP3_CB169_P13_Trace_Piece_Ray_Helpers_Code_Build_Record_20261121.md)) with a census, then TB154-REV, which checks the row 971 predictions and freezes the producer switch. The helpers cover both vertex and edge loci, because `build_node_loci` gives non-port mesh vertices an edge locus. Arc-piece ownership (O49) is held until the stop-switch TB measures whether a wall suffix separates. No producer or stop switch is authorized yet. Four slide contacts, χ+4 and rows 669/698 remain unresolved.
+**Current priority:** `M6-CP3-TB-EXEC-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` (Test + Benchmark, artifact only; CB169 compiled, [record](Architecture_M6_CP3_CB169_P13_Trace_Piece_Ray_Helpers_Code_Build_Record_20261121.md)) with a census, then TB-REV-154, which checks the row 971 predictions and freezes the producer switch. The helpers cover both vertex and edge loci, because `build_node_loci` gives non-port mesh vertices an edge locus. Arc-piece ownership (O49) is held until the stop-switch TB measures whether a wall suffix separates. No producer or stop switch is authorized yet. Four slide contacts, χ+4 and rows 669/698 remain unresolved.
 
 - **Historical priority (superseded by RA-273):** [RA-272](Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md) had authorized a prose CB168M, now withdrawn.
 

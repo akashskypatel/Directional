@@ -45,6 +45,7 @@ At the end of every turn:
     Rules, all binding:
 
     - **Exactly these six fields, in this order, between these delimiters.** Do not add package, selector, accounting, verdict, blocker, boundary, commit, or digest fields; those facts already have authoritative homes.
+    - `<TURN_ID>` uses the delimited form (user-authorized 2026-11-21): `-` between turn type and sequence number, `TB-EXEC-<n>` / `TB-REV-<n>` for TB turns, additional identifiers after the number (`CB-216R`, `TB-EXEC-123R-FULL-GATE`; never `CB216R` or `TB123R-FULL-GATE-EXEC`). Canonical statement: `Turn_Cadence.md`.
     - All non-empty timestamps use UTC exactly as `YYYY-MM-DDTHH:MM:SSZ`.
     - `Started at` is set once when the turn is first entered and is preserved for the lifetime of that turn.
     - `Resumed at` is empty on the initial attempt. When the same incomplete turn is resumed, preserve `Started at` and immediately replace `Resumed at` with the current UTC timestamp. A resumed turn doing work is `IN_PROGRESS`; if it must yield blocked again, publish `BLOCKED` before yielding.

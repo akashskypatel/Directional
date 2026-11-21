@@ -37,9 +37,9 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Current census | [TB151 run 44719007530](https://github.com/akashskypatel/Directional/actions/runs/44719007530), artifact `14621727104` (ZIP SHA-256 `4eacb6f3d9d272a2ee380527fc8f7abab516508a596d3dea3f955e8086a4c611`); Cylinder PASS, BunnyRandom/Vase expected RED at `:493`, 3/3 MATCH TB150 N1–N4. |
 | Accepted history | CP2 491/491, package `11391685901`. TB125 scoped 950/950, package `14289730737`/`14289927334`; TB127 gate 951/951. CP3's 497 identities remain frozen/unpromoted. |
 | Regression/debt | Stable 66 events / 17 categories / 49 recurrences; one produced-witness debt; 81 deferred. [Tracker](Regression_Root_Cause_Tracker.md). C5/O42/O43/O46/O47/O48/O49 open; C3/O44/C1 and O45 narrow proxy closed. D11=A, D12=A, D10 deferred, D6 pending. `chainRimSchedules=false`. |
-| Active boundary | Row 686: sphere χ6 vs 2 (+4 = four unowned slide contacts), producer `CutSearchExhaustedBeforeCellularity`; the real-piece oracle keeps χ6. Rows 669/698 exhaust the same way. No gate row reaches source-face ownership, which needs a disc embedding. Production arcs still write slides as face chords; the switch waits for TB154 and TB154-REV (CB169 helpers landed). The stop switch waits for the producer switch. |
+| Active boundary | Row 686: sphere χ6 vs 2 (+4 = four unowned slide contacts), producer `CutSearchExhaustedBeforeCellularity`; the real-piece oracle keeps χ6. Rows 669/698 exhaust the same way. No gate row reaches source-face ownership, which needs a disc embedding. Production arcs still write slides as face chords; the switch waits for TB154 and TB-REV-154 (CB169 helpers landed). The stop switch waits for the producer switch. |
 
-## Mandatory next turn — `M6-CP3-TB154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE-EXEC` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB-EXEC-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` — EXACT NEXT
 
 - **Type / owner:** Test + Benchmark (artifact only), implementation agent.
 - **Objective:** run the immutable CB169 package through the 971-row gate and a TB151-reproducing census, to check that the helpers are inert and the three block moves preserve behaviour.
@@ -49,7 +49,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
   - census: `gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv` (SHA-256 `3af1dc0d…e793`), harness `tools/m6_cp3_targeted_artifact_harness.sh` (`78b8002c…3e94`), baseline TB151 census artifact `14621727104`.
 - **Out of scope:** any rebuild, source, test, fixture or manifest change; interpretation beyond the STOP rules.
 - **Success evidence:** rows 969–971 PASS with row 971's `SpherePieceRayReceipt`, `SpherePieceRaySlideEnd` and `SpherePieceRay` lines verbatim; rows 1–968 MATCH TB153 under N1–N3, row 686 included; census 3/3 MATCH TB151 under N1–N4; CP2 491/491.
-- **On success:** `M6-CP3-TB154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE-REV`: checks the row 971 predictions and freezes the producer switch CB, with the RA-274 S5 checks.
+- **On success:** `M6-CP3-TB-REV-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE`: checks the row 971 predictions and freezes the producer switch CB, with the RA-274 S5 checks.
 - **On failure/blocker:** UNKNOWN — STOP; STATUS BLOCKED; return to Review; do not repair inside the gate.
 
 ## Turn Sequence
@@ -67,11 +67,11 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | COMPLETE (Test + Benchmark) | `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-EXEC` | TB153 EXEC COMPLETE: [run 44867242174](https://github.com/akashskypatel/Directional/actions/runs/44867242174), artifact `14692372657`; 968/968 PASS, rows MATCH TB152 except 686, sphere record changed (finding). |
 | COMPLETE (Review) | `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-REV` | PASS upheld; row 686 attributed; CB169 frozen; arc-piece ownership held until the stop-switch TB measures suffix separation. |
 | COMPLETE (Code + Build) | `M6-CP3-CB169-P13-TRACE-PIECE-RAY-HELPERS` | `ef86370d0`, pkg `14694154267`; compiled, not executed. |
-| NEXT (Test + Benchmark) | `M6-CP3-TB154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE-EXEC` | Gate 971 + census. |
-| Then | `M6-CP3-TB154-…-FULL-GATE-REV` | Checks the row 971 predictions and freezes the producer switch CB. |
-| Prospective | Producer switch (paths + counts + rays + ranks, counts in the digest) → TB → stop switch CB (+ suffix-separation receipt) (`carrier_contact_slide_position`) → TB (row 686 χ=2, rows 669/698, four nodes, real-piece conformity) → CB170 → CB171 → CB172 (O48) | Paths and rays switch together (RA-261). O49 ownership is off the switch path (RA-276 S2.3); needed only if a wall suffix separates, measured at the stop-switch TB. |
+| NEXT (Test + Benchmark) | `M6-CP3-TB-EXEC-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` | Gate 971 + census. |
+| Then | `M6-CP3-TB-REV-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` | Checks the row 971 predictions and freezes the producer switch CB. |
+| Prospective | Producer switch (paths + counts + rays + ranks, counts in the digest) → TB → stop switch CB (+ suffix-separation receipt) (`carrier_contact_slide_position`) → TB (row 686 χ=2, rows 669/698, four nodes, real-piece conformity) → CB-170 → CB-171 → CB-172 (O48) | Paths and rays switch together (RA-261). O49 ownership is off the switch path (RA-276 S2.3); needed only if a wall suffix separates, measured at the stop-switch TB. |
 | Held | `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`; `M6-CP3-DEFN-P13-FACE-CONTACT-OUTCOME` (FC-6); row 858 face-witness DEFN | 858 after the sphere repair. |
-| Parked | `M6-CP3-CB145-P13-VERTEX-FOLLOW-BOUNDARY` | C4/exact grazing parked. |
+| Parked | `M6-CP3-CB-145-P13-VERTEX-FOLLOW-BOUNDARY` | C4/exact grazing parked. |
 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
