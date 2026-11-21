@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb174-closeout-docs-20261121-v1",
-  "mailbox_key": "m6-cp3-cb174-closeout-docs-v1",
-  "file_id": "18HA7jV4-S8NY2HiLUMwMCJkMapKKXojj",
-  "patch_sha256": "7f59f417952c43e6028057a14e8b941f17d81aaeb177a1313fb566a679427d63",
-  "base_sha": "36917d2cabc1dad49bef54c86bba0df1235c3b58",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cb174): record compiled cut binding and authorize TB158",
+  "operation": "test_benchmark",
+  "request_id": "m6-cp3-tb158-slide-contact-cut-binding-gate-20261121-v1",
+  "mailbox_key": "m6-cp3-tb158-slide-contact-cut-binding-gate-v1",
+  "executor_sha": "55215405941f52225aa1b6f7aa0d174f0207eee1",
+  "semantic_source_sha": "5190b0e759146342998e3f380f7e5fe4eabd1714",
+  "turn_id": "M6-CP3-TB-EXEC-158-P13-SLIDE-CONTACT-CUT-BINDING-FULL-GATE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "14724824631",
+    "EXPECTED_SOURCE_SHA": "5190b0e759146342998e3f380f7e5fe4eabd1714",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "d97f3c7ee36a7cec12ede2c73955b1348c3320951e5dbdce71aed5a4db5de205",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "39f0499694131e38ff3b8bc3e05218d69dd173a4b6692ba92592151fb7696941",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "89a31d18c643d44ff30cfa8e2ed680c5be6523d0bfe8f55399b439ccafc856c4",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB158_P13_Slide_Contact_Cut_Binding_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "6a37e4612a6b463eac3de4b5da4ed86f5bba52ac54bfbb1e472ca7508b7caf0f",
+    "EXPECTED_CASE_COUNT": "976",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  },
+  "artifact_prefix": "m6-cp3-tb158-slide-contact-cut-binding-gate",
   "retention_days": 14
 }
