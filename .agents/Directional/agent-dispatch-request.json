@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb156-review-20261121-v1",
-  "mailbox_key": "m6-cp3-tb156-review-v1",
-  "file_id": "1DHxnilIq7943EbUCMbVEUGk6oNmwDBra",
-  "patch_sha256": "3e83f0d518598f366c2b060c51668a06e7bb076bedfda335b4489a53b0126b9a",
-  "base_sha": "1dc0ca9834ef202606e5d24da2afa352a4be6da2",
+  "request_id": "m6-cp3-cb173-edge-locus-20261121-v1",
+  "mailbox_key": "m6-cp3-cb173-edge-locus-v1",
+  "file_id": "1UKFYJ4zXKBTt1HE2_lppA8i23K2tvO7q",
+  "patch_sha256": "c009836c24693edb343473fb707e03c100cdfdd7fcf35621620ce47a66b8093d",
+  "base_sha": "d5bb98b934f5d2c925cc0192ed13f0d6ed9322ed",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb-rev-156): independently verify gate and freeze stop-switch helper",
+  "commit_message": "fix(p13): apply exact edge-locus along-edge ray key patch",
   "retention_days": 30
 }
