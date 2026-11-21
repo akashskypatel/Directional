@@ -6,15 +6,15 @@
 
 ## Frozen prospective source patch
 
-An unapplied three-file unified diff is retained in the [Directional-CI patch store](https://drive.google.com/file/d/1GTWkooHbXJPvi8UI55eJYbcMrdF_u2Bq/view): SHA-256 `cb65e1e9686323583e77ec3e01a56b366f17f59ae8ee83ee98e67670911c443c`, 11,286 bytes. `git apply --check` and `git diff --check` passed on the exact CB-173 snapshot. The patch is frozen as bytes; do not generate an equivalent-looking replacement.
+An unapplied three-file unified diff is retained in the [Directional-CI patch store](https://drive.google.com/file/d/1ZssZep4xVhe6l3AXEHyaEIaiU57Q2nwJ/view): SHA-256 `684d53d681f1e1ba82730e52239042a6947d6f5a6f035b70d0f252c41807d238`, 13,342 bytes. `git apply --check` and `git diff --check` passed on the exact CB-173 snapshot. The patch is frozen as bytes; do not generate an equivalent-looking replacement.
 
 | File | SHA-256 before | SHA-256 after |
 |---|---|---|
 | `include/directional/geometry/SurfaceCellTracing.h` | `bab90bdcd0f566a89b06fa464a9cd5fdc5e005fbfb153926dda26c0d37778fbc` | `5808e54155344aad1224ed2b6af3c86a95a210c52bb5b3a366f7b2fa352dab71` |
 | `src/geometry/SurfaceCellTracing.cpp` | `69b448ea4c4869ff4e327c36fb0ae045fd7a24852a9b550392509d4d12ec6c66` | `15a5d0f00926e8a26b198d967d670ad83bca395a857739a7f43b3ddaec2f63c0` |
-| `tests/FieldAlignedCurveNetworkTests.cpp` | `20a11166bb1a29a3689baf2e1c6aa8bb0a230d9b94e627b9200a56e276a8824c` | `faba37654412d251a7d09992727781851532c653ba7b6b9e8393fd27352b7b54` |
+| `tests/FieldAlignedCurveNetworkTests.cpp` | `20a11166bb1a29a3689baf2e1c6aa8bb0a230d9b94e627b9200a56e276a8824c` | `944015751090fea39c893750881ac82a62d175d60e3aeb868b65b62248cba4a3` |
 
-The proposed helper is `surface_cell_tracing_detail::later_entry_stop_on_committed_slide`. It only returns the exact pending-entry terminal contact and struck wall segment if the wall already has a committed slide and its arrival comes first under the existing priority policy. It retains source-component and topology-region identity and strict interior tests. It does not change published trace events or graph arc ownership. The test `FieldAlignedCarrierOccupancy.LaterEntryOnCommittedSlideReturnsExactUnwiredStopAndCutPosition` checks the exact carrier parameter 1/2, wall split fraction 4/9, opposite oriented edge pieces, and negative contact cases. The negative component/region tests use metadata changes, not a full two-sheet fixture; do not claim otherwise.
+The proposed helper is `surface_cell_tracing_detail::later_entry_stop_on_committed_slide`. It only returns the exact pending-entry terminal contact and struck wall segment if the wall already has a committed slide and its arrival comes first under the existing priority policy. It retains source-component and topology-region identity and strict interior tests. It does not change published trace events or graph arc ownership. The test `FieldAlignedCarrierOccupancy.LaterEntryOnCommittedSlideReturnsExactUnwiredStopAndCutPosition` checks the exact carrier parameter 1/2, wall split fraction 4/9, opposite oriented edge pieces, and negative contact cases. The negative component/region tests use metadata changes, not a full two-sheet fixture; do not claim otherwise. The revised exact test also rejects equal arrival, same-trace identity, absent committed moving segment, endpoint-only slide contact, inconsistent previous carrier and out-of-range wall segment index. Each is a separate negative control; these tests are proposed, not executed. Local Clang `-fsyntax-only` returned exit 0 with six existing warning cases, and `git apply --check` plus `git diff --check` returned exit 0 after restoring an accidentally overwritten local snapshot file to its artifact-verified SHA-256.
 
 ## Required Code + Build checks and STOP rules
 
