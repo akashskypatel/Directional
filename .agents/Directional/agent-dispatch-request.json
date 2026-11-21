@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb173-compile-20261121-v1",
-  "mailbox_key": "m6-cp3-cb173-compile-v1",
-  "source_sha": "47a874ee8baa86284eeee11b4a28f9cca06d73f9",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb173-code-build"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb173-doc-closeout-20261121-v1",
+  "mailbox_key": "m6-cp3-cb173-docs-v1",
+  "file_id": "1YYhTL5TH1vj5RtoC9TCTp0ih0UhH6yFF",
+  "patch_sha256": "418bd79e586a3c47fa844e7332ec33185839a8dd968e93110823086b4d8edb23",
+  "base_sha": "878730f7c91d20ae30bd317d6235525bee2e6aa0",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cb-173): record compile evidence and hand off TB157",
+  "retention_days": 30
 }
