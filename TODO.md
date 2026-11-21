@@ -1,4 +1,10 @@
-## CURRENT — CB-173 compile complete; TB-EXEC-157 next (2026-11-21 UTC)
+## CURRENT — TB157 full gate GREEN; TB-REV-157 independent review next (2026-11-21 UTC)
+
+TB157 immutable artifact-only execution: 975/975 PASS, CP2 491/491, rows 1–972 exactly MATCH TB156 under N1–N3 (empty allowance), census 3/3 MATCH TB156 under N1–N4 (Cylinder PASS, BunnyRandom/Vase expected RED), forbidden reasons 0; no compile/configure/relink/benchmark; stable 66/17/49, debt 1, deferred 81 unchanged. [gate run 44934860027](https://github.com/akashskypatel/Directional/actions/runs/44934860027) artifact `14719149475` SHA-256 `9609b0e0eb8b51d692118859fef7f0556f7de5e69c336c1bb5033d2694194d11`; [census run 44934894555](https://github.com/akashskypatel/Directional/actions/runs/44934894555) artifact `14719268782` SHA-256 `9e8f561953ba4ad552a5c30cd2430d0e23c22230e074abd3e2c4ce60b92ebd63`. Sphere remains χ6 vs χ2 and stop switch unwired; no CP3/497/D0 promotion.
+
+> **NEXT_TURN:** `M6-CP3-TB-REV-157-P13-EDGE-LOCUS-ALONG-EDGE-RAY-KEY-FULL-GATE` — Review only. Independently recheck exact immutable artifacts; do not start the stop-switch helper CB or change source, tests, selectors or manifests. The separate stop-switch definition remains unfrozen (V3).
+
+## HISTORY — CB-173 compiled; TB-EXEC-157 executed (2026-11-21 UTC)
 
 [RA-280](.agents/Directional/Architecture_M6_CP3_RA280_TB_REV_155_Adversarial_Review_20261121.md) upholds the [TB-REV-155](.agents/Directional/Architecture_M6_CP3_TB155_P13_Trace_Piece_Producer_Switch_Full_Gate_Independent_Review_20261121.md) STOP on TB155 (970/971; row858 RED; `RotationTraceRaysAlongSharedEdge` rows 644/669/698). Cause: on the all-disc sphere, cut-search saturation adds every source edge, including the ten slid carriers; cut nodes exist only at segment entry points, so the Cut arc on 0–69 overlaps trace 14's slide piece. The guard was right. CB-172A (compile-only turn deciding on runtime evidence) withdrawn. RA-278's C3 prediction ("sphere has none") was wrong: row 971 measures the network before any cut.
 
@@ -15,8 +21,8 @@ Turn sequence:
 - [x] **COMPLETE:** `M6-CP3-TB-EXEC-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE` — [TB156 manifest](.agents/Directional/gates/Architecture_M6_TB156_P13_Slide_Carrier_Cut_Admissibility_Full_Gate_Case_Manifest.tsv) `cbba9e76fa436f1e2e6ef34d50bb377b931c19fc4780660412a9f6072128dc6a` (972 rows); STOP criteria in RA-280.
 - [x] **COMPLETE:** `M6-CP3-TB-REV-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE` — independently verified 972/972, census 3/3 baseline match; RA-279-C1/C2 narrowly discharged, RA-281 F3 carried. [Record](.agents/Directional/Architecture_M6_CP3_TB156_P13_Slide_Carrier_Cut_Admissibility_Full_Gate_Independent_Review_20261121.md). Continued after handover: prose CB-173 plan withdrawn, exact diff frozen.
 - [x] **COMPLETE:** `M6-CP3-CB-173-P13-STOP-SWITCH-RAY-HELPERS` — exact frozen three-file diff on `47a874ee8baa86284eeee11b4a28f9cca06d73f9`; [compile 44932960771](https://github.com/akashskypatel/Directional/actions/runs/44932960771), artifact `14718074764`; no runtime. [Record](.agents/Directional/Architecture_M6_CP3_CB173_P13_Edge_Locus_Along_Edge_Ray_Key_Code_Build_Record_20261121.md).
-- [ ] **NEXT:** `M6-CP3-TB-EXEC-157-P13-EDGE-LOCUS-ALONG-EDGE-RAY-KEY-FULL-GATE` — 975 rows; rows 1–972 MATCH TB156, empty allowance; census 3/3.
-- [ ] `M6-CP3-TB-REV-157-P13-EDGE-LOCUS-ALONG-EDGE-RAY-KEY-FULL-GATE` — on green, freeze the stop-switch helper CB exactly.
+- [x] **COMPLETE:** `M6-CP3-TB-EXEC-157-P13-EDGE-LOCUS-ALONG-EDGE-RAY-KEY-FULL-GATE` — 975/975 PASS; 972/972 N1–N3 MATCH; census 3/3 N1–N4 MATCH; no forbidden guards.
+- [ ] **NEXT:** `M6-CP3-TB-REV-157-P13-EDGE-LOCUS-ALONG-EDGE-RAY-KEY-FULL-GATE` — independent review; on green freeze the stop-switch helper CB exactly.
 - Prospective: stop-switch helper CB → stop-switch wiring CB → TB/REV → slide-start subdivision CB (R1, deletes the Amendment 14 interim restriction) → TB/REV → slide-plan conformity (RA-275 S4a) → O48 carrier turns. O49 held; FC-6, terminal-cut outcome and row858 face-witness DEFNs held; CB-145 parked. D11=A, D12=A.
 - Withdrawn: `M6-CP3-CB-172A-P13-CUT-CANDIDATE-SHARED-EDGE-INCIDENCE` (RA-280 D3); prose CB-173 plan (TB-REV-156 adversarial V1).
 
