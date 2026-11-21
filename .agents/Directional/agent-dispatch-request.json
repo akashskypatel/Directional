@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-ra277-closeout-amendment-20261121-v2",
-  "mailbox_key": "m6-cp3-ra277-closeout-amendment",
-  "file_id": "1otndaeDPL3-1YSLkOgYtPKKcWlg3fxAu",
-  "patch_sha256": "90a8921781a85f4b6bc610fd465e7f786f7a9f437ccd447a3a6d2e95192032e5",
-  "base_sha": "ba048949bcf1d07ca23df48c8c73612a254894ed",
+  "request_id": "m6-cp3-cb169s-drive-apply-20261121-v1",
+  "mailbox_key": "m6-cp3-cb169s-drive-apply",
+  "file_id": "1QcnXfdFSuHapwIfGc3piS-uaj0bUguNU",
+  "patch_sha256": "7a6daa009357db3ccd0ac62cad5e996f3165f037c682cf0cb24d921bb1369514",
+  "base_sha": "c3c945947c0e330d5b518b344e8241df2800b707",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(ra277): verify review push and resolve handoff size warning",
+  "commit_message": "feat(surface-cells): switch trace piece producer and exact ray readers",
   "retention_days": 30
 }
