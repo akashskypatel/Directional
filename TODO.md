@@ -1,26 +1,10 @@
-## CURRENT — TB-REV-157 adversarial continuation: CB-174 v3 withdrawn; exact CB-174 cut binding next (2026-11-21 UTC)
+## CURRENT — CB-174 exact slide-contact cut binding compiled; TB158 next (2026-11-21 UTC)
 
-The [adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_157_Adversarial_Review_20261121.md) upholds TB157 after re-reading artifact `14719149475`: 975/975 PASS, and 564 slide-contact receipts, all `later`. It withdraws the CB-174 v3 stop helper for four reasons:
-- W1: it duplicates `field_aligned_carrier_stop_contact` and the queued carrier-event stop.
-- W2: it accepts committed walls only.
-- W3: `build_cut_node_bindings` is entry-only and `build_arcs` cuts only at segment boundaries, so a slide-interior stop would be rejected.
-- W5: the patch was Drive-only.
+[CB-174 code/build record](.agents/Directional/Architecture_M6_CP3_CB174_P13_Slide_Contact_Cut_Binding_Code_Build_Record_20261121.md) verifies the frozen three-file diff SHA-256 `236290050270f19b56d849915cfb727a87551477d0be726ac294fd0603fe1c44` at source `5190b0e759146342998e3f380f7e5fe4eabd1714`, [eight-target GMP compile 44950215403](https://github.com/akashskypatel/Directional/actions/runs/44950215403) artifact `14724824631`, ZIP SHA-256 `d97f3c7ee36a7cec12ede2c73955b1348c3320951e5dbdce71aed5a4db5de205`; packaged checksum verification and `runtimeExecution=false`. The withdrawn CB-174 v3 helper was not applied. The slide-contact cut position, struck parameter and exact wall cut are wired; the producer stop switch is not. One row-976 test was added but **not run**. TB157 remains the last green runtime gate (975/975, census 3/3; CP2 491/491). No CP3/497/D0/H4 promotion.
 
-The consumer lands first.
+> **NEXT_TURN:** `M6-CP3-TB-EXEC-158-P13-SLIDE-CONTACT-CUT-BINDING-FULL-GATE` — artifact-only Test + Benchmark. Use the [frozen 976-row manifest](.agents/Directional/gates/Architecture_M6_TB158_P13_Slide_Contact_Cut_Binding_Full_Gate_Case_Manifest.tsv) and exact package `14724824631`. Do not rebuild or modify tests, fixtures, selectors, or benchmarks. STOP unless 976/976 PASS, CP2 491/491, rows 1–975 MATCH TB157 artifact `14719149475` under N1–N3 with EMPTY allowance, census 3/3 MATCH TB157 artifact `14719268782` under N1–N4, and no new `InvalidCutGraphBinding`.
 
-> **NEXT_TURN:** `M6-CP3-CB-174-P13-SLIDE-CONTACT-CUT-BINDING`
-> - Code + Build, compile only. Apply exactly [the diff](.agents/Directional/Architecture_M6_CP3_CB174_P13_Slide_Contact_Cut_Binding_Exact.diff), SHA-256 `236290050270f19b56d849915cfb727a87551477d0be726ac294fd0603fe1c44`; the record has the pre- and postimage hashes.
-> - Content: `carrier_contact_cut_position`, `CarrierContactBinding::struckParameter`, the parametric wall cut in `build_arcs`, a fail-closed slide contact on a selected cut, and test row 976.
-> - Do not run tests, touch the tracer, change selectors or promote CP3/D0/H4.
-
-**Turn sequence:**
-1. **NEXT:** CB-174 (exact, compile only).
-2. `M6-CP3-TB-EXEC-158-P13-SLIDE-CONTACT-CUT-BINDING-FULL-GATE`: manifest `6a37e461…af0f`, 976 rows. STOP unless 976/976 PASS, CP2 491/491, rows 1–975 MATCH TB157 under N1–N3 with an empty allowance, census 3/3 under N1–N4, and no new `InvalidCutGraphBinding`.
-3. `M6-CP3-TB-REV-158-P13-SLIDE-CONTACT-CUT-BINDING-FULL-GATE`: if green, freeze the CB-175 producer switch exactly. It is Later-only, uses one predicate shared by the wall loop and the pair loop, queues the existing carrier event, feeds the receipt from that predicate, and carries the V3b test and per-row predictions.
-4. CB-175 → TB-EXEC-159 and TB-REV-159.
-5. Slide-start subdivision (R1).
-6. RA-275 S4a.
-7. O48.
+**Sequence:** TB158 EXEC → independent TB158 REVIEW (if green, freeze CB-175 producer stop switch with V3b and per-row predictions) → CB-175 → TB159 EXEC/REV → slide-start subdivision R1 → RA-275 S4a → O48. Sphere χ+4, RA-281 F1/F2/F3, V3b, and other debt remain open; stable 66/17/49, debt1, deferred81.
 
 ## HISTORY — TB-REV-157 independent Review; CB-174 v3 helper (withdrawn) (2026-11-21 UTC)
 

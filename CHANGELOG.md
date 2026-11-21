@@ -1,3 +1,7 @@
+## 2026-11-21 — CB-174 exact slide-contact cut binding (Code + Build only)
+
+[CB-174 code/build record](.agents/Directional/Architecture_M6_CP3_CB174_P13_Slide_Contact_Cut_Binding_Code_Build_Record_20261121.md): exact frozen three-file consumer diff applied at `5190b0e759146342998e3f380f7e5fe4eabd1714` ([Drive apply 44950083696](https://github.com/akashskypatel/Directional/actions/runs/44950083696)). `carrier_contact_cut_position` resolves entry or slide interior; binding records `struckParameter`; wall arcs cut at the exact parameter; selected-cut slide stays fail-closed. Test row 976 added, not executed. [GMP eight-target compile 44950215403](https://github.com/akashskypatel/Directional/actions/runs/44950215403) artifact `14724824631` ZIP SHA-256 `d97f3c7ee36a7cec12ede2c73955b1348c3320951e5dbdce71aed5a4db5de205`, packaged checksum validation and `runtimeExecution=false`. TB157 remains the last green runtime gate, 975/975 and census 3/3. The v3 helper was withdrawn and not applied; producer switch remains unwired, CP3/497/D0/H4 remain unpromoted. Next separate turn is TB-EXEC-158, 976-row empty-allowance gate.
+
 ## 2026-11-21 — TB-REV-157 adversarial continuation: CB-174 v3 withdrawn, exact cut-binding CB-174 frozen
 
 The [record](.agents/Directional/Architecture_M6_CP3_TB_REV_157_Adversarial_Review_20261121.md) upholds TB157: artifact `14719149475` re-read, 975/975, and 564 `later` slide-contact receipts.
