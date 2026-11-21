@@ -1,0 +1,2 @@
+# CB170 temporary source snapshot trigger
+.agents/connector-triggers/source-snapshot/M6-CP3-CB170-20261121-0947.txt
