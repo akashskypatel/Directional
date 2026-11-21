@@ -1,0 +1,175 @@
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 94bd3c8f8..dbfa20120 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -3127,6 +3127,101 @@ using FieldAlignedTraceProposalResult =
+     std::variant<FieldAlignedTraceProposal, FieldAlignedLimitCycleTermination,
+                  FieldAlignedCurveNetworkError>;
+ 
++// P13-e (RA-239): the vertex-star owner is elected from geometry alone
++// (Amendment 22). When the owner's own field has a negative weight on a corner
++// other than the vertex, the next step enters at the vertex with exit time
++// zero (BranchContinuationDegenerateEntry). Print the owner and every sector's
++// field so the star can be read against the source mesh.
++void report_field_vertex_transit_without_outflow(
++    const authority::FieldBranchTopology &topology,
++    const FieldAlignedCandidateTrace &trace,
++    const authority::SourceVertexId vertex,
++    const FieldVertexArrivalMode arrivalMode,
++    const authority::SourceFaceTopologyKey &arrivalFace,
++    const authority::FieldBranch arrivalBranch,
++    const authority::SourceEdgeTopologyKey &carrier,
++    const FieldVertexTransitDecision &transit) {
++  const auto pairing_of = [&](const authority::SourceFaceTopologyKey &face,
++                              const authority::FieldBranch branch)
++      -> const authority::FieldBranchBoundaryPairing * {
++    const authority::FieldFaceBranchFrame *frame = topology.find_frame(face);
++    return frame == nullptr ? nullptr
++                            : field_aligned_branch_pairing(*frame, branch);
++  };
++  const auto *owner = pairing_of(transit.nextFace, transit.nextBranch);
++  if (owner == nullptr) return;
++  const auto zero = authority::FieldExactRational::from_integer(0);
++  const auto &ownerVertices = transit.nextFace.vertices();
++  bool leaves = true;
++  for (std::size_t index = 0U; index < ownerVertices.size(); ++index) {
++    if (ownerVertices[index] != vertex && owner->direction[index] < zero) {
++      leaves = false;
++    }
++  }
++  if (leaves) return;
++
++  const auto face_text = [](const authority::SourceFaceTopologyKey &face) {
++    const auto &vertices = face.vertices();
++    std::ostringstream out;
++    out << '(' << vertices[0].index() << ',' << vertices[1].index() << ','
++        << vertices[2].index() << ')';
++    return out.str();
++  };
++  const auto direction_text =
++      [](const authority::SourceFaceTopologyKey &face,
++         const authority::FieldBranchBoundaryPairing *pairing) {
++        std::ostringstream out;
++        if (pairing == nullptr || !pairing->direction.is_barycentric()) {
++          out << " direction=none";
++          return out.str();
++        }
++        const auto &vertices = face.vertices();
++        for (std::size_t index = 0U; index < vertices.size(); ++index) {
++          out << " w" << vertices[index].index() << '='
++              << static_cast<double>(pairing->direction[index].to_double());
++        }
++        return out.str();
++      };
++  const auto &audit = transit.vertexStarTransit;
++  std::clog << "FieldAlignedCurveNetwork.vertexTransitWithoutOutflow singularity="
++            << trace.singularity.index()
++            << " sourceVertex=" << trace.sourceVertex.index()
++            << " trace=" << trace.id.index()
++            << " step=" << trace.segments.size() << " vertex=" << vertex.index()
++            << " mode="
++            << (arrivalMode == FieldVertexArrivalMode::EdgeTransit
++                    ? "EdgeTransit"
++                    : "FaceInterior")
++            << " arrival=" << face_text(arrivalFace)
++            << " arrivalBranch=" << static_cast<int>(arrivalBranch.value())
++            << " carrier=(" << carrier.first().index() << ','
++            << carrier.second().index() << ") owner="
++            << face_text(transit.nextFace)
++            << " ownerBranch=" << static_cast<int>(transit.nextBranch.value())
++            << direction_text(transit.nextFace, owner) << " onRadialRay="
++            << (audit.has_value() && audit->onRadialRay ? 1 : 0)
++            << " closedFan=" << (audit.has_value() && audit->closedFan ? 1 : 0)
++            << " sectors=" << (audit.has_value() ? audit->sectors.size() : 0U)
++            << '\n';
++  if (!audit.has_value()) return;
++  for (std::size_t index = 0U; index < audit->sectors.size(); ++index) {
++    const VertexStarSectorAudit &sector = audit->sectors[index];
++    std::clog << "FieldAlignedCurveNetwork.vertexTransitSector vertex="
++              << vertex.index() << " trace=" << trace.id.index()
++              << " step=" << trace.segments.size() << " index=" << index
++              << " face=" << face_text(sector.sourceFace)
++              << " branch=" << static_cast<int>(sector.branch.value())
++              << " next=" << sector.nextRadialVertex.index()
++              << " previous=" << sector.previousRadialVertex.index()
++              << " owner=" << (sector.containsContinuation ? 1 : 0)
++              << " inOwnSector="
++              << (sector.candidateRepresentativeInOwnSector ? 1 : 0)
++              << direction_text(sector.sourceFace,
++                                pairing_of(sector.sourceFace, sector.branch))
++              << '\n';
++  }
++}
++
+ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
+     const TriMesh &sourceMesh,
+     const authority::FieldTransportAtlas &fieldTransportAtlas,
+@@ -3250,6 +3345,10 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
+     }
+     const FieldVertexTransitDecision vertexTransit =
+         std::get<FieldVertexTransitDecision>(transit);
++    report_field_vertex_transit_without_outflow(
++        topology, trace, *decision.sourceVertex,
++        FieldVertexArrivalMode::FaceInterior, runtime.currentFace,
++        runtime.currentBranch, decision.outgoingCarrier, vertexTransit);
+     const auto nextEntryPoint = field_boundary_point_at_vertex(
+         vertexTransit.nextFace, *decision.sourceVertex);
+     if (!nextEntryPoint.has_value()) {
+@@ -3399,6 +3498,10 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
+     }
+     const FieldVertexTransitDecision next =
+         std::get<FieldVertexTransitDecision>(vertexTransit);
++    report_field_vertex_transit_without_outflow(
++        topology, trace, *edgeTransit.sourceVertex,
++        FieldVertexArrivalMode::EdgeTransit, runtime.currentFace,
++        runtime.currentBranch, decision.outgoingCarrier, next);
+     const auto nextEntryPoint =
+         field_boundary_point_at_vertex(next.nextFace, *edgeTransit.sourceVertex);
+     if (!nextEntryPoint.has_value()) {
+diff --git a/tests/SurfaceCellDesignAcceptanceTests.cpp b/tests/SurfaceCellDesignAcceptanceTests.cpp
+index 52caaca02..302ce62df 100644
+--- a/tests/SurfaceCellDesignAcceptanceTests.cpp
++++ b/tests/SurfaceCellDesignAcceptanceTests.cpp
+@@ -41,6 +41,32 @@ const directional::bench::BenchmarkCase &find_benchmark_case(
+   return *found;
+ }
+ 
++// Where the terminal failure stopped, from the published failure locus.
++std::string failure_locus(const directional::pipeline::RemeshResult &result) {
++  const auto &locus = result.diagnostics.terminalFailureLocus;
++  std::ostringstream out;
++  out << " locus";
++  if (locus.sourceFace.has_value()) {
++    out << " face=(" << (*locus.sourceFace)[0] << ',' << (*locus.sourceFace)[1]
++        << ',' << (*locus.sourceFace)[2] << ')';
++  }
++  if (locus.branch.has_value()) out << " branch=" << *locus.branch;
++  if (locus.sourceEdge.has_value()) {
++    out << " edge=(" << (*locus.sourceEdge)[0] << ',' << (*locus.sourceEdge)[1]
++        << ')';
++  }
++  if (locus.parameter.has_value()) out << " parameter=" << *locus.parameter;
++  for (const std::string &value : locus.exactValues) out << " exact=" << value;
++  if (locus.traceSeedVertex.has_value()) {
++    out << " seedVertex=" << *locus.traceSeedVertex;
++  }
++  if (locus.traceSeedSingularity.has_value()) {
++    out << " seedSingularity=" << *locus.traceSeedSingularity;
++  }
++  out << " history=" << locus.traceHistoryCount;
++  return out.str();
++}
++
+ std::string failure_context(const directional::pipeline::RemeshResult &result) {
+   return "terminal=" + result.diagnostics.terminalFailureCode + ":" +
+          result.diagnostics.terminalFailureStage + " detail=" +
+@@ -50,7 +76,8 @@ std::string failure_context(const directional::pipeline::RemeshResult &result) {
+          std::to_string(result.diagnostics.surfaceCellArrangementCellCount) +
+          " completedQuads=" +
+          std::to_string(result.diagnostics.surfaceCellCompletedQuadCount) +
+-         " completion=" + result.surfaceCellContext.completionFailure;
++         " completion=" + result.surfaceCellContext.completionFailure +
++         failure_locus(result);
+ }
+ 
+ std::string hex64(const std::uint64_t value) {

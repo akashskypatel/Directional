@@ -1,0 +1,142 @@
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 498e7df8a..5804b2a52 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -4053,6 +4053,9 @@ struct FieldAlignedQueueEvent {
+       FieldAlignedArrivalOrdering::Inconclusive;
+   authority::SourceFaceTopologyKey sourceFace;
+   std::array<authority::FieldExactRational, 3> barycentric{};
++  // Set for a contact at both pending segments' shared entry crossing: a
++  // terminating trace stops there, before entering its pending segment.
++  std::optional<authority::FieldBoundaryPoint> carrierLocus;
+ };
+ 
+ struct FieldAlignedQueueEventLaterFirst {
+@@ -4080,6 +4083,28 @@ void field_aligned_commit_current_proposal(
+   trace.segments.push_back(runtime.proposal->segment);
+ }
+ 
++// The terminal record of a trace that stops at `locus` before entering its
++// pending segment: the end of its last committed segment, which leaves that
++// segment's face through the locus edge. Empty when there is no such segment.
++std::optional<FieldAlignedTerminalContact> field_aligned_carrier_stop_contact(
++    const FieldAlignedCandidateTrace &trace,
++    const authority::FieldBoundaryPoint &locus,
++    const authority::TraceId struckTrace, const std::size_t struckSegment) {
++  if (trace.segments.empty() ||
++      trace.segments.back().outgoingCarrier != locus.edge ||
++      trace.segments.back().edgeTransitExit.has_value()) {
++    return std::nullopt;
++  }
++  const authority::SourceFaceTopologyKey &face =
++      trace.segments.back().sourceFace;
++  const auto barycentric = field_boundary_point_barycentric(face, locus);
++  if (!barycentric.has_value()) return std::nullopt;
++  FieldAlignedTerminalContact contact{face, *barycentric, struckTrace,
++                                      struckSegment};
++  contact.carrierLocus = locus;
++  return contact;
++}
++
+ std::optional<FieldAlignedCurveNetworkError> field_aligned_publish_contact(
+     FieldAlignedCurveNetworkCandidate &candidate,
+     std::vector<FieldAlignedTraceRuntime> &runtimes,
+@@ -4107,13 +4132,26 @@ std::optional<FieldAlignedCurveNetworkError> field_aligned_publish_contact(
+     }
+     const std::size_t struckSegment =
+         event.secondIsProposal ? secondPendingSegmentIndex : event.secondSegment;
+-    field_aligned_commit_current_proposal(candidate, runtimes, firstIndex);
++    FieldAlignedTerminalContact record{event.sourceFace, event.barycentric,
++                                       secondTrace.id, struckSegment};
++    if (event.carrierLocus.has_value()) {
++      const auto stop = field_aligned_carrier_stop_contact(
++          firstTrace, *event.carrierLocus, secondTrace.id, struckSegment);
++      if (!stop.has_value()) {
++        return trace_scoped_field_aligned_error(
++            FieldAlignedCurveNetworkErrorCode::InvalidNetworkEventBinding,
++            firstTrace.sourceVertex, firstTrace.singularity, std::nullopt,
++            event.carrierLocus->edge, event.sourceFace);
++      }
++      record = *stop;
++    } else {
++      field_aligned_commit_current_proposal(candidate, runtimes, firstIndex);
++    }
+     firstTrace.terminalBarrier.reset();
+     firstTrace.terminalPoint.reset();
+     firstTrace.terminalSingularity.reset();
+     firstTrace.terminalLimitCycle.reset();
+-    firstTrace.terminalContact = FieldAlignedTerminalContact{
+-        event.sourceFace, event.barycentric, secondTrace.id, struckSegment};
++    firstTrace.terminalContact = record;
+     firstRuntime.active = false;
+     firstRuntime.proposal.reset();
+   }
+@@ -4126,13 +4164,26 @@ std::optional<FieldAlignedCurveNetworkError> field_aligned_publish_contact(
+             secondTrace.sourceVertex, secondTrace.singularity);
+       }
+       const std::size_t struckSegment = firstPendingSegmentIndex;
+-      field_aligned_commit_current_proposal(candidate, runtimes, secondIndex);
++      FieldAlignedTerminalContact record{event.sourceFace, event.barycentric,
++                                         firstTrace.id, struckSegment};
++      if (event.carrierLocus.has_value()) {
++        const auto stop = field_aligned_carrier_stop_contact(
++            secondTrace, *event.carrierLocus, firstTrace.id, struckSegment);
++        if (!stop.has_value()) {
++          return trace_scoped_field_aligned_error(
++              FieldAlignedCurveNetworkErrorCode::InvalidNetworkEventBinding,
++              secondTrace.sourceVertex, secondTrace.singularity, std::nullopt,
++              event.carrierLocus->edge, event.sourceFace);
++        }
++        record = *stop;
++      } else {
++        field_aligned_commit_current_proposal(candidate, runtimes, secondIndex);
++      }
+       secondTrace.terminalBarrier.reset();
+       secondTrace.terminalPoint.reset();
+       secondTrace.terminalSingularity.reset();
+       secondTrace.terminalLimitCycle.reset();
+-      secondTrace.terminalContact = FieldAlignedTerminalContact{
+-          event.sourceFace, event.barycentric, firstTrace.id, struckSegment};
++      secondTrace.terminalContact = record;
+       secondRuntime.active = false;
+       secondRuntime.proposal.reset();
+     } else {
+@@ -4452,6 +4503,38 @@ canonical_field_aligned_traces_and_events(
+                                {secondIndex, secondTrace.segments.size()},
+                                secondRuntime.proposal->segment,
+                                secondRuntime.arrival);
++        // Two pending segments that enter different faces at one interior
++        // point of their shared incoming edge cross there. With an
++        // inconclusive arrival this is the frozen symmetric case at an edge
++        // point: both traces stop before entering.
++        if (const auto entry = first_field_aligned_carrier_contact(
++                firstRuntime.proposal->segment,
++                secondRuntime.proposal->segment);
++            entry.has_value() && !entry->movingInSlide &&
++            !entry->wallInSlide &&
++            firstRuntime.proposal->segment.sourceFace !=
++                secondRuntime.proposal->segment.sourceFace &&
++            field_aligned_compare_priority_arrivals(
++                priority, firstRuntime.arrival, secondRuntime.arrival,
++                firstIndex, secondIndex) ==
++                FieldAlignedArrivalOrdering::Inconclusive) {
++          FieldAlignedQueueEvent event(firstRuntime.proposal->segment.sourceFace);
++          event.kind = FieldAlignedQueueEventKind::Contact;
++          event.firstTrace = firstIndex;
++          event.secondTrace = secondIndex;
++          event.secondSegment = secondTrace.segments.size();
++          event.secondIsProposal = true;
++          event.ordering = FieldAlignedArrivalOrdering::Inconclusive;
++          event.key = std::min(
++              field_aligned_priority_key(priority, firstRuntime.arrival,
++                                         firstIndex),
++              field_aligned_priority_key(priority, secondRuntime.arrival,
++                                         secondIndex));
++          event.carrierLocus = authority::FieldBoundaryPoint{
++              entry->carrier, authority::ExactUnitParameter{entry->parameter}};
++          queue.push(std::move(event));
++          continue;
++        }
+         const auto contact = classify_field_aligned_segment_contact_impl(
+             topology, firstRuntime.proposal->segment,
+             secondRuntime.proposal->segment);

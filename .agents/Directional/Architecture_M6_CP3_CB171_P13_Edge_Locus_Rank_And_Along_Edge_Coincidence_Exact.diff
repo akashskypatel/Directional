@@ -1,0 +1,601 @@
+diff --git a/include/directional/geometry/GlobalTopologyPlan.h b/include/directional/geometry/GlobalTopologyPlan.h
+index 64a6a07db95079d239140f8763575e238f3b665e..4a8a8f0858440261347c61963b53681170ff0e07 100644
+--- a/include/directional/geometry/GlobalTopologyPlan.h
++++ b/include/directional/geometry/GlobalTopologyPlan.h
+@@ -266,67 +266,73 @@ enum class RotationSystemInconsistencyReason : std::uint8_t {
+   FaceWalkCurrentDartOutOfRange = 45,
+   FaceWalkOrbitReenteredAtDifferentStart = 46,
+   FaceWalkCycleDidNotCloseWithinDartBudget = 47,
+   FaceWalkBoundaryEmpty = 48,
+   ExteriorBoundaryDartOutOfRange = 49,
+   FragmentCornerForwardDartOutOfRange = 50,
+   FragmentCornerReverseDartOutOfRange = 51,
+   FragmentCornerSourceCornerMismatch = 52,
+   FragmentCornerRayOrdinalDuplicate = 53,
+   FragmentCornerOrbitChainMismatch = 54,
+   MandatoryBoundaryInteriorDartOutOfRange = 55,
+   CutBoundaryInteriorDartOutOfRange = 56,
+   TraceBoundaryForwardDartOutOfRange = 57,
+   TraceBoundaryReverseDartOutOfRange = 58,
+   RegionFragmentIncomingDartOutOfRange = 59,
+   RegionOrbitMissing = 60,
+   CandidateRotationSystemMismatch = 61,
+   RotationVertexTraceRaysExactlyCoincident = 62,
+   VertexTraceSecondaryParameterUnavailable = 63,
+   /** A face-interior contact node lacks a consistent exact binding. */
+   FaceContactBindingInvalid = 64,
+   /** Two rays leave a face-interior contact node in the same direction. */
+   FaceContactRayDirectionCollision = 65,
+   /** A non-trace arc or a foreign-face ray reaches a face-interior node. */
+   FaceContactRayUnsupported = 66,
++  /** Two rays at one node run along the same mesh edge; their order is not exact. */
++  RotationTraceRaysAlongSharedEdge = 67,
+ };
+ 
+ enum class VertexTraceSecondaryParameterFailureReason : std::uint8_t {
+   TraceRayFaceUnavailable = 0,
+   SourceFaceRecordUnavailable = 1,
+   LocusCornerUnavailable = 2,
+   SecondPointUnavailable = 3,
+   InvalidDenominator = 4,
+ };
+ 
+ enum class EdgeTraceSecondaryRankFailureReason : std::uint8_t {
+   TraceRayFaceUnavailable = 0,
+   SourceFaceRecordUnavailable = 1,
+   ContactEdgeUnavailable = 2,
+   OppositeCarrierNotInFace = 3,
+   CoincidentLocalEdgeIndex = 4,
+   SourceVertexFallbackUnbound = 5,
++  /** The arc's first source piece does not leave the edge locus into the face. */
++  FirstPieceNotLeavingLocusIntoFace = 6,
++  /** The trace ray runs along the edge locus itself; no exact order is defined. */
++  RayRunsAlongLocusEdge = 7,
+ };
+ 
+ enum class TraceEventPositionFailureReason : std::uint8_t {
+   NoCarrierMatch = 0,
+   AmbiguousCarrierMatch = 1,
+ };
+ 
+ enum class TraceEventPositionPass : std::uint8_t {
+   FaceRestricted = 0,
+   WideningFallback = 1,
+   SourceEdgeUnavailable = 2,
+ };
+ 
+ /** Exact authority used to bind a carrier-less trace segment to a face corner. */
+ enum class TraceCornerBindingProvenance : std::uint8_t {
+   TraceOrigin = 0,
+   SegmentEntrySupport = 1,
+ };
+ 
+ enum class TraceEventPositionCarrierRole : std::uint8_t {
+   Incoming = 0,
+   Outgoing = 1,
+ };
+ 
+ struct TraceEventPositionCandidate {
+diff --git a/src/geometry/EmbeddedGraphTopology.cpp b/src/geometry/EmbeddedGraphTopology.cpp
+index 7fb2f011752d6a7bd8d5287bebe7d5d800b19d49..8f24b3179194883cb114e66a6025370a0ddb6dff 100644
+--- a/src/geometry/EmbeddedGraphTopology.cpp
++++ b/src/geometry/EmbeddedGraphTopology.cpp
+@@ -2248,82 +2248,50 @@ std::optional<authority::SourceFaceTopologyKey> trace_ray_face(
+     const FieldAlignedCandidateTrace &trace) {
+   if (arc.firstSegment >= arc.onePastLastSegment ||
+       arc.onePastLastSegment > trace.segments.size()) {
+     return std::nullopt;
+   }
+   return orientation == authority::Orientation::Forward
+              ? std::optional<authority::SourceFaceTopologyKey>{
+                    trace.segments[arc.firstSegment].sourceFace}
+              : std::optional<authority::SourceFaceTopologyKey>{
+                    trace.segments[arc.onePastLastSegment - 1U].sourceFace};
+ }
+ 
+ // The committed source path is the single owner of each outgoing trace ray.
+ // Read it rather than reconstructing a chord or a second trace cut.
+ std::optional<authority::ExactSourceSupportPiece> trace_arc_ray_piece(
+     const GlobalTopologyArc &arc, const authority::Orientation orientation) {
+   if (arc.kind != GlobalTopologyArcKind::Trace || arc.sourcePath.empty())
+     return std::nullopt;
+   if (orientation == authority::Orientation::Forward)
+     return arc.sourcePath.front();
+   const auto &last = arc.sourcePath.back();
+   return authority::ExactSourceSupportPiece{last.carrier, last.second,
+                                             last.first};
+ }
+ 
+-// An edge-locus ray that enters a face is ranked by the exact carrier at its
+-// far end. An unsupported interior contact has no invented boundary rank.
+-std::optional<std::size_t> edge_piece_into_face_rank(
+-    const SourceFaceRecord &face,
+-    const authority::SourceEdgeTopologyKey &locus,
+-    const authority::ExactSourceSupportPiece &piece,
+-    const EdgePieceRayIntoFace &ray) {
+-  const auto contact = local_edge_index(face, locus);
+-  if (!contact.has_value()) return std::nullopt;
+-  std::optional<authority::SourceEdgeTopologyKey> other;
+-  if (const auto *carrier =
+-          std::get_if<authority::SourceEdgeSupport>(&piece.carrier)) {
+-    other = carrier->edge;
+-  } else if (const auto *edge =
+-                 std::get_if<authority::ExactSourceEdgePoint>(&ray.farEnd)) {
+-    other = edge->edge;
+-  }
+-  if (other.has_value()) {
+-    const auto index = local_edge_index(face, *other);
+-    if (!index.has_value() || *index == *contact) return std::nullopt;
+-    return 2U * ((*index + 3U - *contact) % 3U);
+-  }
+-  if (const auto *vertex =
+-          std::get_if<authority::SourceVertexId>(&ray.farEnd)) {
+-    for (std::size_t corner = 0U; corner < face.vertices.size(); ++corner) {
+-      if (face.vertices[corner] == *vertex)
+-        return 1U + 2U * ((corner + 2U + 3U - *contact) % 3U);
+-    }
+-  }
+-  return std::nullopt;
+-}
+-
+ std::optional<authority::ExactUnitParameter> cut_node_parameter(
+     const authority::NetworkNodeId node,
+     const authority::SourceEdgeTopologyKey &sourceEdge,
+     const CutNodeBindings &cutNodes) {
+   const auto first = cutNodes.nodeByVertex.find(sourceEdge.first());
+   const auto second = cutNodes.nodeByVertex.find(sourceEdge.second());
+   if (first != cutNodes.nodeByVertex.end() && first->second == node) {
+     return authority::ExactUnitParameter{
+         authority::FieldExactRational::from_integer(0)};
+   }
+   if (second != cutNodes.nodeByVertex.end() && second->second == node) {
+     return authority::ExactUnitParameter{
+         authority::FieldExactRational::from_integer(1)};
+   }
+   const auto crossing = cutNodes.syntheticCrossings.find(node);
+   if (crossing != cutNodes.syntheticCrossings.end() &&
+       crossing->second.key.sourceEdge == sourceEdge) {
+     return crossing->second.parameter;
+   }
+   return std::nullopt;
+ }
+ 
+ std::optional<bool> edge_ray_points_to_second_endpoint(
+     const GlobalTopologyArc &arc, const authority::Orientation orientation,
+     const authority::SourceEdgeTopologyKey &sourceEdge,
+@@ -2804,50 +2772,52 @@ RotationBuildResult build_rotation_system(
+         GlobalTopologyOrientedArc{arc.id, authority::Orientation::Reverse});
+   }
+ 
+   std::map<authority::NetworkArcId, const GlobalTopologyArc *> arcById;
+   for (const auto &arc : arcs) arcById.emplace(arc.id, &arc);
+ 
+   std::vector<GlobalTopologyNodeRotation> rotations;
+   rotations.reserve(incidences.size());
+   for (auto &[node, outgoing] : incidences) {
+     if (outgoing.empty()) {
+       GlobalTopologyPlanError result =
+           rotation_error(RotationSystemInconsistencyReason::RotationNodeOutgoingIncidenceEmpty);
+       return result;
+     }
+     const auto locusIt = loci.find(node);
+     if (locusIt == loci.end()) {
+       return rotation_error(RotationSystemInconsistencyReason::RotationNodeLocusMissing);
+     }
+ 
+     std::vector<std::pair<RayOrderKey, GlobalTopologyOrientedArc>> keyed;
+     keyed.reserve(outgoing.size());
+     std::map<GlobalTopologyOrientedArc, RotationRayOrderDiagnostic>
+         rayDiagnostics;
+     std::map<GlobalTopologyOrientedArc, authority::FieldExactRational>
+         vertexTraceSecondaryParameters;
++    std::map<GlobalTopologyOrientedArc, authority::SourceEdgeTopologyKey>
++        vertexTraceAlongEdges;
+     const auto base_ray_diagnostic = [](const RayOrderKey &key) {
+       RotationRayOrderDiagnostic diagnostic(key.arc);
+       diagnostic.kind = key.kind;
+       diagnostic.primary = key.primary;
+       diagnostic.secondary = key.secondary;
+       diagnostic.arc = key.arc;
+       diagnostic.trace = key.trace;
+       diagnostic.orientation = key.orientation;
+       return diagnostic;
+     };
+     if (locusIt->second.vertex.has_value()) {
+       const auto slots =
+           build_vertex_fan_slots(topology, *locusIt->second.vertex);
+       if (!slots.has_value()) {
+         GlobalTopologyPlanError result =
+             rotation_error(RotationSystemInconsistencyReason::RotationVertexFanSlotsUnavailable);
+         result.sourceVertex = locusIt->second.vertex;
+         return result;
+       }
+       for (const auto incidence : outgoing) {
+         const auto arcIt = arcById.find(incidence.arc);
+         if (arcIt == arcById.end()) {
+           return rotation_error(RotationSystemInconsistencyReason::RotationVertexArcBindingMissing);
+         }
+         const GlobalTopologyArc &arc = *arcIt->second;
+@@ -2910,86 +2880,107 @@ RotationBuildResult build_rotation_system(
+                 RotationSystemInconsistencyReason::VertexTracePortOrdinalInvalid;
+             return result;
+           }
+           const auto sourceFace = topology.faces.find(*face);
+           const auto piece = trace_arc_ray_piece(arc, incidence.orientation);
+           VertexPieceRay ray = VertexPieceRayFailure::FarEndOffCarrier;
+           if (sourceFace != topology.faces.end() && piece.has_value()) {
+             ray = vertex_piece_ray(sourceFace->second,
+                                    *locusIt->second.vertex, *piece);
+           }
+           RotationRayOrderDiagnostic diagnostic = base_ray_diagnostic(key);
+           diagnostic.sourceFace = *face;
+           diagnostic.originPortOrdinal = port->ordinal;
+           diagnostic.originPortSourceVertex = port->sourceVertex;
+           if (const auto *along = std::get_if<VertexPieceRayAlongEdge>(&ray)) {
+             const auto slot = slots->edgeSlots.find(along->edge);
+             if (slot == slots->edgeSlots.end()) {
+               GlobalTopologyPlanError result = rotation_error(
+                   RotationSystemInconsistencyReason::RotationVertexSourceEdgeMissingFromFan);
+               result.sourceVertex = locusIt->second.vertex;
+               result.sourceEdge = along->edge;
+               return result;
+             }
+             key.primary = 2U * slot->second;
+             key.secondary = 0U;
++            vertexTraceAlongEdges.emplace(incidence, along->edge);
+             diagnostic.fanSlot = slot->second;
+           } else if (const auto *wedge =
+                          std::get_if<VertexPieceRayInWedge>(&ray)) {
+             const auto slot = slots->faceSlots.find(wedge->face);
+             if (slot == slots->faceSlots.end()) {
+               GlobalTopologyPlanError result = rotation_error(
+                   RotationSystemInconsistencyReason::VertexTraceFaceMissingFromFan);
+               result.sourceVertex = locusIt->second.vertex;
+               result.sourceFace = face;
+               return result;
+             }
+             key.primary = 2U * slot->second + 1U;
+             key.secondary = 0U;
+             vertexTraceSecondaryParameters.emplace(incidence, wedge->parameter);
+             diagnostic.fanSlot = slot->second;
+           } else {
+             GlobalTopologyPlanError result = rotation_error(
+                 RotationSystemInconsistencyReason::VertexTraceSecondaryParameterUnavailable);
+             result.sourceVertex = locusIt->second.vertex;
+             result.sourceFace = face;
+             result.vertexTraceSecondaryParameterFailureReason =
+                 VertexTraceSecondaryParameterFailureReason::SecondPointUnavailable;
+             result.arc = arc.id;
+             result.trace = trace->id;
+             result.rotationTraceOrientation = incidence.orientation;
+             result.traceFirstSegment = arc.firstSegment;
+             result.traceOnePastLastSegment = arc.onePastLastSegment;
+             return result;
+           }
+           diagnostic.primary = key.primary;
+           diagnostic.secondary = key.secondary;
+           rayDiagnostics.emplace(incidence, std::move(diagnostic));
+         }
+         keyed.emplace_back(key, incidence);
+       }
+ 
++      // A ray along a mesh edge is ordered only by its edge slot, so another
++      // incidence with that primary has no exact order. Fail closed before
++      // any wedge parameter is looked up.
++      for (std::size_t index = 0U; index < keyed.size(); ++index) {
++        const auto along = vertexTraceAlongEdges.find(keyed[index].second);
++        if (along == vertexTraceAlongEdges.end()) continue;
++        for (std::size_t other = 0U; other < keyed.size(); ++other) {
++          if (other == index ||
++              keyed[other].first.primary != keyed[index].first.primary)
++            continue;
++          GlobalTopologyPlanError result = rotation_error(
++              RotationSystemInconsistencyReason::RotationTraceRaysAlongSharedEdge);
++          result.sourceVertex = locusIt->second.vertex;
++          result.sourceEdge = along->second;
++          result.arc = keyed[index].first.arc;
++          result.trace = keyed[index].first.trace;
++          return result;
++        }
++      }
++
+       std::map<std::size_t, std::vector<std::size_t>> traceRaysByWedge;
+       for (std::size_t index = 0U; index < keyed.size(); ++index) {
+         if (keyed[index].first.kind == GlobalTopologyArcKind::Trace &&
+             vertexTraceSecondaryParameters.count(keyed[index].second) != 0U) {
+           traceRaysByWedge[keyed[index].first.primary].push_back(index);
+         }
+       }
+       for (auto &[primary, indices] : traceRaysByWedge) {
+         (void)primary;
+         std::vector<authority::FieldExactRational> parameters;
+         parameters.reserve(indices.size());
+         for (const std::size_t index : indices) {
+           parameters.push_back(
+               vertexTraceSecondaryParameters.at(keyed[index].second));
+         }
+         const auto ranks = vertex_trace_secondary_ranks(parameters);
+         for (std::size_t position = 0U; position < indices.size(); ++position) {
+           RayOrderKey &key = keyed[indices[position]].first;
+           key.secondary = ranks[position];
+           const auto diagnostic = rayDiagnostics.find(keyed[indices[position]].second);
+           if (diagnostic != rayDiagnostics.end()) {
+             diagnostic->second.secondary = ranks[position];
+           }
+         }
+       }
+@@ -3044,66 +3035,62 @@ RotationBuildResult build_rotation_system(
+         if (arcIt == arcById.end()) return diagnostic;
+         const GlobalTopologyArc &arc = *arcIt->second;
+         diagnostic.kind = arc.kind;
+         diagnostic.trace = arc.trace;
+ 
+         if (arc.kind == GlobalTopologyArcKind::Mandatory ||
+             arc.kind == GlobalTopologyArcKind::Cut) {
+           const auto towardSecond = edge_ray_points_to_second_endpoint(
+               arc, incidence.orientation, *locusIt->second.edge, network,
+               cutNodes);
+           if (towardSecond.has_value()) {
+             diagnostic.primary = *towardSecond ? 0U : 2U;
+           }
+           return diagnostic;
+         }
+ 
+         diagnostic.secondaryAvailable = false;
+         if (!arc.trace.has_value()) return diagnostic;
+         const auto *trace = find_trace(network, *arc.trace);
+         if (trace == nullptr) return diagnostic;
+         const auto face = trace_ray_face(arc, incidence.orientation, *trace);
+         if (!face.has_value()) return diagnostic;
+         diagnostic.sourceFace = *face;
+         const auto side = sideRank.find(*face);
+         if (side == sideRank.end()) return diagnostic;
+-        const auto piece = trace_arc_ray_piece(arc, incidence.orientation);
++        diagnostic.primary = edgeRayCount == 0U ? side->second
++                                                : 2U * side->second + 1U;
+         std::optional<std::size_t> secondary;
++        const auto piece = trace_arc_ray_piece(arc, incidence.orientation);
+         const auto sourceFace = topology.faces.find(*face);
+         if (piece.has_value() && sourceFace != topology.faces.end()) {
+           const auto ray = edge_piece_ray(sourceFace->second,
+                                           *locusIt->second.edge, *piece);
+-          if (std::holds_alternative<EdgePieceRayAlongLocusEdge>(ray)) {
+-            secondary = 0U;
+-            diagnostic.primary =
+-                std::get<EdgePieceRayAlongLocusEdge>(ray).towardSecondEndpoint
+-                    ? 0U : 2U;
+-          } else if (const auto *into =
+-                         std::get_if<EdgePieceRayIntoFace>(&ray)) {
+-            secondary = edge_piece_into_face_rank(
+-                sourceFace->second, *locusIt->second.edge, *piece, *into);
+-            diagnostic.primary = 2U * side->second + 1U;
++          if (std::holds_alternative<EdgePieceRayIntoFace>(ray)) {
++            secondary = edge_locus_secondary_rank(
++                topology, *locusIt->second.edge, arc, incidence.orientation,
++                *trace);
+           }
+         }
+         if (secondary.has_value()) {
+           diagnostic.secondary = *secondary;
+           diagnostic.secondaryAvailable = true;
+         }
+         return diagnostic;
+       };
+       const auto publish_edge_locus_census = [&](GlobalTopologyPlanError &result) {
+         constexpr std::size_t kRotationFanCensusLimit = 16U;
+         result.rotationFanCensus.totalRayCount = outgoing.size();
+         const std::size_t censusCount =
+             std::min(outgoing.size(), kRotationFanCensusLimit);
+         result.rotationFanCensus.rays.reserve(censusCount);
+         for (std::size_t censusIndex = 0U; censusIndex < censusCount;
+              ++censusIndex) {
+           result.rotationFanCensus.rays.push_back(
+               edge_ray_diagnostic(outgoing[censusIndex]));
+         }
+         result.rotationFanCensus.truncated = censusCount < outgoing.size();
+       };
+ 
+       for (const auto incidence : outgoing) {
+         const auto arcIt = arcById.find(incidence.arc);
+         if (arcIt == arcById.end()) {
+@@ -3157,88 +3144,92 @@ RotationBuildResult build_rotation_system(
+           GlobalTopologyPlanError result =
+               rotation_error(RotationSystemInconsistencyReason::RotationEdgeTraceBindingMissing);
+           result.sourceEdge = locusIt->second.edge;
+           return result;
+         }
+         const auto *trace = find_trace(network, *arc.trace);
+         if (trace == nullptr) {
+           return rotation_error(RotationSystemInconsistencyReason::RotationEdgeTraceMissing);
+         }
+         const auto face = trace_ray_face(arc, incidence.orientation, *trace);
+         if (!face.has_value() || sideRank.count(*face) == 0U) {
+           GlobalTopologyPlanError result =
+               error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+           result.sourceEdge = locusIt->second.edge;
+           result.sourceFace = face;
+           result.rotationSystemInconsistencyReason =
+               RotationSystemInconsistencyReason::EdgeTraceFaceSideInvalid;
+           return result;
+         }
+         EdgeTraceSecondaryRankFailureReason secondaryFailure =
+             EdgeTraceSecondaryRankFailureReason::SourceVertexFallbackUnbound;
+         EdgeLocusSecondaryRankDiagnosticContext secondaryContext;
+         const auto piece = trace_arc_ray_piece(arc, incidence.orientation);
+         const auto sourceFace = topology.faces.find(*face);
+         std::optional<std::size_t> secondary;
+-        std::optional<bool> alongEdge;
+         if (piece.has_value() && sourceFace != topology.faces.end()) {
+           const auto ray = edge_piece_ray(sourceFace->second,
+                                           *locusIt->second.edge, *piece);
+-          if (const auto *along =
+-                  std::get_if<EdgePieceRayAlongLocusEdge>(&ray)) {
+-            alongEdge = along->towardSecondEndpoint;
+-            secondary = 0U;
+-          } else if (const auto *into =
+-                         std::get_if<EdgePieceRayIntoFace>(&ray)) {
+-            secondary = edge_piece_into_face_rank(
+-                sourceFace->second, *locusIt->second.edge, *piece, *into);
++          if (std::holds_alternative<EdgePieceRayAlongLocusEdge>(ray)) {
++            secondaryFailure =
++                EdgeTraceSecondaryRankFailureReason::RayRunsAlongLocusEdge;
++          } else if (std::holds_alternative<EdgePieceRayIntoFace>(ray)) {
++            secondary = edge_locus_secondary_rank(
++                topology, *locusIt->second.edge, arc, incidence.orientation,
++                *trace, &secondaryFailure, &secondaryContext);
++          } else {
++            secondaryFailure = EdgeTraceSecondaryRankFailureReason::
++                FirstPieceNotLeavingLocusIntoFace;
+           }
++        } else {
++          secondaryFailure = EdgeTraceSecondaryRankFailureReason::
++              FirstPieceNotLeavingLocusIntoFace;
+         }
+         if (!secondary.has_value()) {
+           GlobalTopologyPlanError result =
+               error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+           result.sourceEdge = locusIt->second.edge;
+           result.sourceFace = face;
+           result.sourceVertex = trace->sourceVertex;
+           result.rotationSystemInconsistencyReason =
+               RotationSystemInconsistencyReason::EdgeTraceSecondaryRankInvalid;
+           result.edgeTraceSecondaryRankFailureReason = secondaryFailure;
+           result.arc = arc.id;
+           result.trace = trace->id;
+           result.rotationTraceOrientation = incidence.orientation;
+           result.traceFirstSegment = arc.firstSegment;
+           result.traceOnePastLastSegment = arc.onePastLastSegment;
+           result.traceIncomingCarrier = secondaryContext.incomingCarrier;
+           result.traceOutgoingCarrier = secondaryContext.outgoingCarrier;
+           result.edgeTraceContactIndex = secondaryContext.contactIndex;
+           result.edgeTraceOtherCarrier = secondaryContext.otherCarrier;
+           result.edgeTraceFaceCorners = secondaryContext.faceCorners;
+           publish_edge_locus_census(result);
+           return result;
+         }
+-        key.primary = alongEdge.has_value()
+-                          ? (*alongEdge ? 0U : 2U)
++        key.primary = edgeRayCount == 0U
++                          ? sideRank.at(*face)
+                           : 2U * sideRank.at(*face) + 1U;
+         key.secondary = *secondary;
+         keyed.emplace_back(key, incidence);
+       }
+     } else if (const auto contact = faceContacts.find(node);
+                contact != faceContacts.end()) {
+       // FC-5: order the rays counter-clockwise around the exact contact
+       // point, in the face's oriented corner order (Amendment 26).
+       const authority::SourceFaceTopologyKey &faceKey = contact->second.face;
+       const auto unsupported = [&](const std::optional<authority::TraceId> trace) {
+         return face_contact_error(
+             RotationSystemInconsistencyReason::FaceContactRayUnsupported,
+             faceKey, trace);
+       };
+       const auto faceIt = topology.faces.find(faceKey);
+       if (faceIt == topology.faces.end()) return unsupported(std::nullopt);
+       const auto &canonicalVertices = faceKey.vertices();
+       std::array<std::size_t, 3> canonicalCorner{3U, 3U, 3U};
+       for (std::size_t corner = 0U; corner < 3U; ++corner) {
+         for (std::size_t index = 0U; index < 3U; ++index) {
+           if (faceIt->second.vertices[corner] == canonicalVertices[index]) {
+             canonicalCorner[corner] = index;
+           }
+         }
+         if (canonicalCorner[corner] >= 3U) return unsupported(std::nullopt);
+diff --git a/src/geometry/GlobalTopologyPlan.cpp b/src/geometry/GlobalTopologyPlan.cpp
+index 5f4a36c71b91485bc4c05c76d031812338eac8f7..9e6b13f1b39201cafede99ed85764223ed6371c9 100644
+--- a/src/geometry/GlobalTopologyPlan.cpp
++++ b/src/geometry/GlobalTopologyPlan.cpp
+@@ -3447,86 +3447,92 @@ const char *rotation_system_inconsistency_reason_name(
+     return "FragmentCornerOrbitChainMismatch";
+   case RotationSystemInconsistencyReason::MandatoryBoundaryInteriorDartOutOfRange:
+     return "MandatoryBoundaryInteriorDartOutOfRange";
+   case RotationSystemInconsistencyReason::CutBoundaryInteriorDartOutOfRange:
+     return "CutBoundaryInteriorDartOutOfRange";
+   case RotationSystemInconsistencyReason::TraceBoundaryForwardDartOutOfRange:
+     return "TraceBoundaryForwardDartOutOfRange";
+   case RotationSystemInconsistencyReason::TraceBoundaryReverseDartOutOfRange:
+     return "TraceBoundaryReverseDartOutOfRange";
+   case RotationSystemInconsistencyReason::RegionFragmentIncomingDartOutOfRange:
+     return "RegionFragmentIncomingDartOutOfRange";
+   case RotationSystemInconsistencyReason::RegionOrbitMissing:
+     return "RegionOrbitMissing";
+   case RotationSystemInconsistencyReason::CandidateRotationSystemMismatch:
+     return "CandidateRotationSystemMismatch";
+   case RotationSystemInconsistencyReason::RotationVertexTraceRaysExactlyCoincident:
+     return "RotationVertexTraceRaysExactlyCoincident";
+   case RotationSystemInconsistencyReason::VertexTraceSecondaryParameterUnavailable:
+     return "VertexTraceSecondaryParameterUnavailable";
+   case RotationSystemInconsistencyReason::FaceContactBindingInvalid:
+     return "FaceContactBindingInvalid";
+   case RotationSystemInconsistencyReason::FaceContactRayDirectionCollision:
+     return "FaceContactRayDirectionCollision";
+   case RotationSystemInconsistencyReason::FaceContactRayUnsupported:
+     return "FaceContactRayUnsupported";
++  case RotationSystemInconsistencyReason::RotationTraceRaysAlongSharedEdge:
++    return "RotationTraceRaysAlongSharedEdge";
+   }
+   return "Unknown";
+ }
+ 
+ const char *vertex_trace_secondary_parameter_failure_reason_name(
+     const VertexTraceSecondaryParameterFailureReason reason) noexcept {
+   switch (reason) {
+   case VertexTraceSecondaryParameterFailureReason::TraceRayFaceUnavailable:
+     return "TraceRayFaceUnavailable";
+   case VertexTraceSecondaryParameterFailureReason::SourceFaceRecordUnavailable:
+     return "SourceFaceRecordUnavailable";
+   case VertexTraceSecondaryParameterFailureReason::LocusCornerUnavailable:
+     return "LocusCornerUnavailable";
+   case VertexTraceSecondaryParameterFailureReason::SecondPointUnavailable:
+     return "SecondPointUnavailable";
+   case VertexTraceSecondaryParameterFailureReason::InvalidDenominator:
+     return "InvalidDenominator";
+   }
+   return "Unknown";
+ }
+ 
+ const char *edge_trace_secondary_rank_failure_reason_name(
+     const EdgeTraceSecondaryRankFailureReason reason) noexcept {
+   switch (reason) {
+   case EdgeTraceSecondaryRankFailureReason::TraceRayFaceUnavailable:
+     return "TraceRayFaceUnavailable";
+   case EdgeTraceSecondaryRankFailureReason::SourceFaceRecordUnavailable:
+     return "SourceFaceRecordUnavailable";
+   case EdgeTraceSecondaryRankFailureReason::ContactEdgeUnavailable:
+     return "ContactEdgeUnavailable";
+   case EdgeTraceSecondaryRankFailureReason::OppositeCarrierNotInFace:
+     return "OppositeCarrierNotInFace";
+   case EdgeTraceSecondaryRankFailureReason::CoincidentLocalEdgeIndex:
+     return "CoincidentLocalEdgeIndex";
+   case EdgeTraceSecondaryRankFailureReason::SourceVertexFallbackUnbound:
+     return "SourceVertexFallbackUnbound";
++  case EdgeTraceSecondaryRankFailureReason::FirstPieceNotLeavingLocusIntoFace:
++    return "FirstPieceNotLeavingLocusIntoFace";
++  case EdgeTraceSecondaryRankFailureReason::RayRunsAlongLocusEdge:
++    return "RayRunsAlongLocusEdge";
+   }
+   return "Unknown";
+ }
+ 
+ const char *trace_event_position_failure_reason_name(
+     const TraceEventPositionFailureReason reason) noexcept {
+   switch (reason) {
+   case TraceEventPositionFailureReason::NoCarrierMatch:
+     return "NoCarrierMatch";
+   case TraceEventPositionFailureReason::AmbiguousCarrierMatch:
+     return "AmbiguousCarrierMatch";
+   }
+   return "Unknown";
+ }
+ 
+ const char *trace_event_position_pass_name(
+     const TraceEventPositionPass pass) noexcept {
+   switch (pass) {
+   case TraceEventPositionPass::FaceRestricted:
+     return "FaceRestricted";
+   case TraceEventPositionPass::WideningFallback:
+     return "WideningFallback";
+   case TraceEventPositionPass::SourceEdgeUnavailable:
+     return "SourceEdgeUnavailable";
+   }

@@ -1,0 +1,423 @@
+diff --git a/include/directional/geometry/GlobalConformityBaseline.h b/include/directional/geometry/GlobalConformityBaseline.h
+index 67e4a7f5c..69d17f106 100644
+--- a/include/directional/geometry/GlobalConformityBaseline.h
++++ b/include/directional/geometry/GlobalConformityBaseline.h
+@@ -252,6 +252,10 @@ public:
+   find_schedule(ConformitySpanId span) const noexcept;
+   [[nodiscard]] std::optional<ConformityBreakpointLocation>
+   breakpoint_location(ConformitySpanId span, const EInt &exactOrdinal) const;
++  /** O37: the span's breakpoints 0..count in one pass, each equal to
++   *  breakpoint_location for its ordinal. */
++  [[nodiscard]] std::optional<std::vector<ConformityBreakpointLocation>>
++  breakpoint_locations(ConformitySpanId span) const;
+   [[nodiscard]] const BaselineConformityArcBinding *
+   find_arc_binding(authority::NetworkArcId arc) const noexcept;
+   [[nodiscard]] GlobalConformityBaselineValidationCandidate
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index f5a1d8517..cba6afcc4 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -2385,6 +2385,10 @@ struct SurfaceCellTracingOptions {
+   /// Accepted A2b/A3 authority consumed by the production A4 shared-boundary cutover.
+   const GlobalTopologyPlan *globalTopologyPlan = nullptr;
+   const GlobalConformityBaselinePlan *globalConformityBaselinePlan = nullptr;
++  /// D4: under a plan the uniform producer declines every region, so a
++  /// producer that reads the plan builds it. Off by default until the
++  /// production switch.
++  bool declinePlannedUniformRegions = false;
+   [[nodiscard]] bool has_legacy_raw_singularity_ingress() const noexcept {
+     return !singularityVertices.empty() || !singularityIndexNumerators.empty();
+   }
+@@ -3024,6 +3028,15 @@ derive_boundary_field_corner_vertices(
+     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+     const authority::FieldTransportAtlas *fieldTransportAtlas = nullptr);
+ 
++/**
++ * D4 annulus rims (RA-228): every endpoint of a boundary edge of a region with
++ * Euler characteristic 0 and two boundary loops, the regions the periodic
++ * annulus producer can take. A chained A3 schedule stops at these vertices,
++ * so each annulus rim edge keeps a breakpoint at both ends. Sorted, unique.
++ */
++[[nodiscard]] std::vector<authority::SourceVertexId>
++derive_annulus_rim_stop_vertices(const SourceTopologyRegions &regions);
++
+ SurfaceCellTracingOverlay make_surface_cell_tracing_overlay(
+     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+diff --git a/include/directional/pipeline/RemeshPipeline.h b/include/directional/pipeline/RemeshPipeline.h
+index bb39c422d..3f6750d6a 100644
+--- a/include/directional/pipeline/RemeshPipeline.h
++++ b/include/directional/pipeline/RemeshPipeline.h
+@@ -165,6 +165,11 @@ struct SurfaceCellOptions {
+   /// may relax the requested final edge size. Recovery has fixed connectivity;
+   /// requests outside this bound remain visible as validation failures.
+   double maxSourceGridRecoveryTargetRelaxation = 2.0;
++  /// A3 schedules each source-boundary rail as chains, stopped at boundary
++  /// field corners and annulus rim vertices, and the uniform producer declines
++  /// every planned region. Off: one span per arc. Off by default until the
++  /// production switch is accepted.
++  bool chainRimSchedules = false;
+   bool useSkeletonHints = false;
+   /// Performance is a closeout/benchmark disposition by default, not a mesh
+   /// validity invariant. Enable this only when a caller intentionally wants a
+diff --git a/src/geometry/GlobalConformityBaseline.cpp b/src/geometry/GlobalConformityBaseline.cpp
+index 169955581..e06d40618 100644
+--- a/src/geometry/GlobalConformityBaseline.cpp
++++ b/src/geometry/GlobalConformityBaseline.cpp
+@@ -789,6 +789,16 @@ GlobalConformityBaselinePlan::breakpoint_location(
+       exactOrdinal);
+ }
+ 
++std::optional<std::vector<ConformityBreakpointLocation>>
++GlobalConformityBaselinePlan::breakpoint_locations(ConformitySpanId span) const {
++  const auto *entry = find_schedule(span);
++  if (entry == nullptr) return std::nullopt;
++  const auto index = static_cast<std::size_t>(entry - schedule_.data());
++  if (index >= metricRuns_.size()) return std::nullopt;
++  return global_conformity_baseline_detail::derive_metric_breakpoint_locations(
++      span, entry->supportPieces.size(), metricRuns_[index], entry->count);
++}
++
+ const BaselineConformityArcBinding *
+ GlobalConformityBaselinePlan::find_arc_binding(
+     authority::NetworkArcId arc) const noexcept {
+diff --git a/src/geometry/GlobalConformityBaselineSupport.cpp b/src/geometry/GlobalConformityBaselineSupport.cpp
+index 2ee6445fc..e557eddae 100644
+--- a/src/geometry/GlobalConformityBaselineSupport.cpp
++++ b/src/geometry/GlobalConformityBaselineSupport.cpp
+@@ -365,6 +365,61 @@ std::optional<ConformityBreakpointLocation> derive_metric_breakpoint_location(
+   return std::nullopt;
+ }
+ 
++std::optional<std::vector<ConformityBreakpointLocation>>
++derive_metric_breakpoint_locations(
++    ConformitySpanId span, std::size_t pieceCount,
++    const std::vector<BaselineConformityMetricRun> &runs, const EInt &count) {
++  const EInt zero(0);
++  // Ordinal 0 checks the span and its runs as every ordinal would.
++  auto first =
++      derive_metric_breakpoint_location(span, pieceCount, runs, count, zero);
++  if (!first) return std::nullopt;
++  std::vector<ConformityBreakpointLocation> locations;
++  locations.push_back(std::move(*first));
++  const EInt scale = exact_power(EInt(2), kPartitionStableMetricFractionalBits);
++  std::vector<EInt> weights;
++  EInt total(0);
++  if (pieceCount > 1U) {
++    for (const auto &run : runs) {
++      weights.push_back(scaled_metric_ceiling(run.squaredMetric, scale));
++      total += weights.back();
++    }
++  }
++  const auto exactOne = exact_integer(1);
++  std::size_t r = 0U;
++  EInt prefix(0);
++  for (EInt ordinal(1); ordinal <= count; ordinal += EInt(1)) {
++    const ConformityBreakpointId id{span, ordinal};
++    if (ordinal == count) {
++      locations.push_back(ConformityBreakpointLocation{
++          id, pieceCount - 1U, EInt(1), EInt(1), false, true});
++      continue;
++    }
++    if (pieceCount == 1U) {
++      locations.push_back(
++          ConformityBreakpointLocation{id, 0U, ordinal, count, false, false});
++      continue;
++    }
++    // The owning run never moves back as the ordinal rises.
++    const EInt target = ordinal * total;
++    while (r < runs.size() && !(target < count * (prefix + weights[r]))) {
++      prefix += weights[r];
++      ++r;
++    }
++    if (r == runs.size()) return std::nullopt;
++    const auto t = exact_ratio(target - count * prefix, count * weights[r]);
++    const auto &starts = runs[r].pieceStarts;
++    const auto piece = static_cast<std::size_t>(
++        std::upper_bound(starts.begin(), starts.end(), t) - starts.begin() - 1);
++    const auto end = piece + 1U < starts.size() ? starts[piece + 1U] : exactOne;
++    const auto local = (t - starts[piece]) / (end - starts[piece]);
++    locations.push_back(ConformityBreakpointLocation{
++        id, runs[r].firstPiece + piece, local.exact_numerator(),
++        local.exact_denominator(), false, false});
++  }
++  return locations;
++}
++
+ std::optional<std::vector<BaselineMandatoryChain>>
+ derive_mandatory_chain_partition(
+     const std::vector<GlobalTopologyArc> &arcs,
+diff --git a/src/geometry/GlobalConformityBaselineSupport.h b/src/geometry/GlobalConformityBaselineSupport.h
+index 801a071ba..ba00d998d 100644
+--- a/src/geometry/GlobalConformityBaselineSupport.h
++++ b/src/geometry/GlobalConformityBaselineSupport.h
+@@ -41,6 +41,14 @@ derive_metric_breakpoint_location(
+     const std::vector<BaselineConformityMetricRun> &runs, const EInt &count,
+     const EInt &ordinal);
+ 
++// O37: every breakpoint 0..count of the span, equal to calling
++// derive_metric_breakpoint_location for each ordinal, with the run weights
++// computed once.
++[[nodiscard]] std::optional<std::vector<ConformityBreakpointLocation>>
++derive_metric_breakpoint_locations(
++    ConformitySpanId span, std::size_t pieceCount,
++    const std::vector<BaselineConformityMetricRun> &runs, const EInt &count);
++
+ // D5 maximal Mandatory chain (RA-218): consecutive oriented A2b arcs, each
+ // starting at the node where the previous one ends.
+ struct BaselineMandatoryChain {
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index e896df979..edec8e3e0 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -13357,17 +13357,16 @@ std::optional<EdgeArcSchedule> edge_arc_schedule(
+   const ConformitySpanId span = binding.span;
+   auto located = spanBreakpoints.find(span);
+   if (located == spanBreakpoints.end()) {
+-    std::vector<ConformityBreakpointLocation> locations;
+-    locations.reserve(*count + 1U);
+-    for (std::size_t ordinal = 0U; ordinal <= *count; ++ordinal) {
+-      auto location = baseline.breakpoint_location(
+-          span, EInt(static_cast<long long>(ordinal)));
+-      if (!location || location->localDenominator == EInt(0)) {
+-        return std::nullopt;
+-      }
+-      locations.push_back(std::move(*location));
++    // O37: one pass over the span's runs.
++    auto locations = baseline.breakpoint_locations(span);
++    if (!locations || locations->size() != *count + 1U ||
++        std::any_of(locations->begin(), locations->end(),
++                    [](const ConformityBreakpointLocation &location) {
++                      return location.localDenominator == EInt(0);
++                    })) {
++      return std::nullopt;
+     }
+-    located = spanBreakpoints.emplace(span, std::move(locations)).first;
++    located = spanBreakpoints.emplace(span, std::move(*locations)).first;
+   }
+   const std::vector<ConformityBreakpointLocation> &locations = located->second;
+   // A Mandatory arc is one piece of its span's support.
+@@ -13647,7 +13646,8 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
+       options.globalConformityBaselinePlan->schedule().size() !=
+           options.globalTopologyPlan->arcs().size();
+   if (options.globalConformityBaselinePlan != nullptr &&
+-      (chainedPlan || region_has_hard_feature())) {
++      (chainedPlan || options.declinePlannedUniformRegions ||
++       region_has_hard_feature())) {
+     return result;
+   }
+   UniformPhaseFrame applicabilityFrame;
+@@ -21793,6 +21793,23 @@ SurfaceCellNetwork build_surface_cell_network(
+                                     &crossField.edgeTransitions);
+ }
+ 
++std::vector<authority::SourceVertexId> derive_annulus_rim_stop_vertices(
++    const SourceTopologyRegions &regions) {
++  std::vector<authority::SourceVertexId> stops;
++  for (const SurfaceTopologyRegion &region : regions.regions()) {
++    if (region.euler_characteristic() != 0 || region.boundary_loop_count() != 2) {
++      continue;
++    }
++    for (const authority::SourceEdgeTopologyKey &edge : region.boundary_edges()) {
++      stops.push_back(edge.first());
++      stops.push_back(edge.second());
++    }
++  }
++  std::sort(stops.begin(), stops.end());
++  stops.erase(std::unique(stops.begin(), stops.end()), stops.end());
++  return stops;
++}
++
+ std::vector<authority::SourceVertexId> derive_boundary_field_corner_vertices(
+     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+diff --git a/src/pipeline/RemeshPipeline.cpp b/src/pipeline/RemeshPipeline.cpp
+index 9e09e1d02..39b840a68 100644
+--- a/src/pipeline/RemeshPipeline.cpp
++++ b/src/pipeline/RemeshPipeline.cpp
+@@ -13012,11 +13012,38 @@ remesh_from_raw_cross_field_impl_with_stage_products(
+                 globalTopologyPlanProduct->rotation_system().size()),
+         true);
+ 
+-    const geometry::GlobalConformityBaselineInput conformityBaselineInput =
+-        remesh_pipeline_detail::make_global_conformity_baseline_input(
+-            meshWhole.V, targetSize.targetSize, *globalTopologyPlanProduct);
++    std::optional<geometry::GlobalConformityBaselineInput> conformityBaselineInput;
++    if (options.surfaceCells.chainRimSchedules) {
++      // Rim chains stop where the field turns (D5 corners) and at every
++      // annulus rim vertex (RA-228), and the uniform producer declines every
++      // planned region (D4).
++      std::vector<authority::SourceVertexId> rimStops =
++          geometry::derive_boundary_field_corner_vertices(
++              meshWhole.V, meshWhole.F, faceAxisX, faceAxisY,
++              &*fieldTransportAtlasProduct);
++      const std::vector<authority::SourceVertexId> annulusStops =
++          geometry::derive_annulus_rim_stop_vertices(*sourceTopologyRegionsProduct);
++      rimStops.insert(rimStops.end(), annulusStops.begin(), annulusStops.end());
++      std::sort(rimStops.begin(), rimStops.end());
++      rimStops.erase(std::unique(rimStops.begin(), rimStops.end()),
++                     rimStops.end());
++      conformityBaselineInput =
++          geometry::make_chained_global_conformity_baseline_input(
++              meshWhole.V, targetSize.targetSize, *globalTopologyPlanProduct,
++              *fieldAlignedNetworkProduct, featureMap.curves, rimStops);
++      if (!conformityBaselineInput) {
++        return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
++                                  "global-conformity-baseline/chained-input",
++                                  "chained-input");
++      }
++      tracingOptions.declinePlannedUniformRegions = true;
++    } else {
++      conformityBaselineInput =
++          remesh_pipeline_detail::make_global_conformity_baseline_input(
++              meshWhole.V, targetSize.targetSize, *globalTopologyPlanProduct);
++    }
+     auto conformityBaselineBuild = geometry::build_global_conformity_baseline(
+-        *globalTopologyPlanProduct, conformityBaselineInput);
++        *globalTopologyPlanProduct, *conformityBaselineInput);
+     if (!conformityBaselineBuild) {
+       const auto &error = conformityBaselineBuild.error();
+       return fail_surface_cells(
+diff --git a/tests/SurfaceCellDesignAcceptanceTests.cpp b/tests/SurfaceCellDesignAcceptanceTests.cpp
+index a1b99a3d8..d46bf898e 100644
+--- a/tests/SurfaceCellDesignAcceptanceTests.cpp
++++ b/tests/SurfaceCellDesignAcceptanceTests.cpp
+@@ -121,6 +121,26 @@ void print_platform_digest(const char *testName,
+             << std::endl;
+ }
+ 
++// O36 staging (RA-230): what one pipeline run built, so the per-arc and the
++// chained rim schedules can be compared on the same input.
++void print_switch_receipt(const std::string &testName, const char *schedule,
++                          const directional::pipeline::RemeshResult &result) {
++  const auto &diagnostics = result.diagnostics;
++  std::cout << "switch-run case=" << testName << " schedule=" << schedule
++            << " produced=" << (result.is_produced() ? 1 : 0) << " faces="
++            << (result.is_produced() ? result.product().faces.rows() : 0)
++            << " failure=" << diagnostics.terminalFailureCode << '/'
++            << diagnostics.terminalFailureStage
++            << " phaseFront=" << diagnostics.surfaceCellAuthoritativeProducerDisposition
++            << " invalid=" << diagnostics.surfaceCellFirstInvalidProducerStage
++            << '/' << diagnostics.surfaceCellFirstInvalidProducerReason
++            << " a3=" << diagnostics.surfaceCellA3ScheduledSpans << '/'
++            << diagnostics.surfaceCellA3CoveredSpans << '/'
++            << diagnostics.surfaceCellA3PartialSpans << '/'
++            << diagnostics.surfaceCellA3UnrecordedSpans << '/'
++            << diagnostics.surfaceCellA3ForeignIntervalEdges << std::endl;
++}
++
+ 
+ struct FixtureTopologyStats {
+   int boundaryEdges = 0;
+@@ -345,6 +365,17 @@ TEST_P(SurfaceCellDesignD4RimCensus, ReportsRimCountsAgainstTheA3Schedules) {
+       directional::pipeline::remesh_from_raw_cross_field(
+           mesh.vertices, mesh.faces, field.raw, options);
+ 
++  // O36 staging (RA-230): the same input with chained rim schedules.
++  print_switch_receipt(GetParam().testName, "perArc", result);
++  {
++    directional::pipeline::RemeshOptions chainedOptions = options;
++    chainedOptions.surfaceCells.chainRimSchedules = true;
++    print_switch_receipt(GetParam().testName, "chained",
++                         directional::pipeline::remesh_from_raw_cross_field(
++                             mesh.vertices, mesh.faces, field.raw,
++                             chainedOptions));
++  }
++
+   const auto &context = result.surfaceCellContext;
+   const auto &snapshots = context.productSnapshots;
+   ASSERT_TRUE(snapshots.globalTopologyPlan.has_value());
+@@ -646,6 +677,31 @@ TEST_P(SurfaceCellDesignD4RimCensus, ReportsRimCountsAgainstTheA3Schedules) {
+   report_rim_schedule("perArc", perArc);
+   report_rim_schedule("chained", *chained);
+   report_rim_schedule("stopped", stoppedBuilt.value());
++
++  // O37: the one-pass locator gives every span's breakpoints exactly as the
++  // per-ordinal locator does, on all three schedules.
++  using PlanPointer = const directional::geometry::GlobalConformityBaselinePlan *;
++  for (const PlanPointer plan : std::initializer_list<PlanPointer>{
++           &perArc, &*chained, &stoppedBuilt.value()}) {
++    for (const auto &entry : plan->schedule()) {
++      const auto batch = plan->breakpoint_locations(entry.span);
++      ASSERT_TRUE(batch.has_value());
++      ASSERT_EQ(std::stoull(entry.count.to_string()) + 1U, batch->size());
++      for (std::size_t ordinal = 0U; ordinal < batch->size(); ++ordinal) {
++        const auto single = plan->breakpoint_location(
++            entry.span, EInt(static_cast<long long>(ordinal)));
++        ASSERT_TRUE(single.has_value());
++        const auto &located = (*batch)[ordinal];
++        EXPECT_TRUE(located.id == single->id &&
++                    located.supportPieceIndex == single->supportPieceIndex &&
++                    located.localNumerator == single->localNumerator &&
++                    located.localDenominator == single->localDenominator &&
++                    located.firstEndpoint == single->firstEndpoint &&
++                    located.lastEndpoint == single->lastEndpoint)
++            << entry.span.network_arc().index() << '/' << ordinal;
++      }
++    }
++  }
+ }
+ 
+ INSTANTIATE_TEST_SUITE_P(
+@@ -660,4 +716,61 @@ INSTANTIATE_TEST_SUITE_P(
+       return info.param.testName;
+     });
+ 
++// O36 staging (RA-230): a flat disc whose rim is smooth, so only the field
++// corners can cut it into sides. No gate fixture has one. Receipt only.
++TEST(SurfaceCellDesignSwitchReceipt, SmoothRimDiscUnderBothRimSchedules) {
++  constexpr int kSegments = 32;
++  constexpr int kRings = 6;
++  const double pi = std::acos(-1.0);
++  const auto vertex = [](const int ring, const int segment) {
++    return 1 + (ring - 1) * kSegments + (segment % kSegments);
++  };
++  Eigen::MatrixXd vertices(1 + kRings * kSegments, 3);
++  vertices.row(0) << 0.0, 0.0, 0.0;
++  for (int ring = 1; ring <= kRings; ++ring) {
++    for (int segment = 0; segment < kSegments; ++segment) {
++      const double angle = 2.0 * pi * segment / kSegments;
++      const double radius = static_cast<double>(ring) / kRings;
++      vertices.row(vertex(ring, segment)) << radius * std::cos(angle),
++          radius * std::sin(angle), 0.0;
++    }
++  }
++  Eigen::MatrixXi faces(kSegments * (2 * kRings - 1), 3);
++  int face = 0;
++  for (int segment = 0; segment < kSegments; ++segment) {
++    faces.row(face++) << 0, vertex(1, segment), vertex(1, segment + 1);
++  }
++  for (int ring = 1; ring < kRings; ++ring) {
++    for (int segment = 0; segment < kSegments; ++segment) {
++      const int a = vertex(ring, segment);
++      const int b = vertex(ring, segment + 1);
++      const int c = vertex(ring + 1, segment + 1);
++      const int d = vertex(ring + 1, segment);
++      faces.row(face++) << a, d, c;
++      faces.row(face++) << a, c, b;
++    }
++  }
++  ASSERT_EQ(faces.rows(), face);
++  Eigen::MatrixXd raw(faces.rows(), 12);
++  for (int row = 0; row < faces.rows(); ++row) {
++    raw.row(row) << 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0,
++        0.0;
++  }
++
++  directional::pipeline::RemeshOptions options;
++  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
++  options.surfaceCells.enabled = true;
++  options.surfaceCells.fallbackPolicy =
++      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
++  options.surfaceCells.allowSourceGridRecovery = false;
++  options.lengthRatio = 0.2;
++  print_switch_receipt("SmoothRimDisc", "perArc",
++                       directional::pipeline::remesh_from_raw_cross_field(
++                           vertices, faces, raw, options));
++  options.surfaceCells.chainRimSchedules = true;
++  print_switch_receipt("SmoothRimDisc", "chained",
++                       directional::pipeline::remesh_from_raw_cross_field(
++                           vertices, faces, raw, options));
++}
++
+ } // namespace

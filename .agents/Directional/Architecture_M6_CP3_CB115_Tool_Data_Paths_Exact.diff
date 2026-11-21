@@ -1,0 +1,169 @@
+diff --git a/.agents/Directional/tools/m6_cp3_r4_endpoint39_census_harness.sh b/.agents/Directional/tools/m6_cp3_r4_endpoint39_census_harness.sh
+index a885f3269..d658c43ca 100644
+--- a/.agents/Directional/tools/m6_cp3_r4_endpoint39_census_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r4_endpoint39_census_harness.sh
+@@ -42,7 +42,7 @@ done
+ cp -a "$p/bin/." "$r/v/bin/"
+ mkdir -p "$r/v/test-data/benchmarks"; cp -a "$s/benchmarks/fixtures" "$r/v/test-data/benchmarks/"
+ (cd "$r/v"; find . -type f -print0 | sort -z | xargs -0 sha256sum) > "$r/v0"
+-inventory="$GITHUB_WORKSPACE/.agents/Directional/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
++inventory="$GITHUB_WORKSPACE/.agents/Directional/tools/data/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
+ [[ -f "$inventory" ]] || die 'census inventory missing'
+ [[ "$(sha "$inventory")" == de05a7bd5ca27eb243156ecd38434fbc69d06f4b791bdd3dbcfc5982c273a865 ]] || die 'census inventory drift'
+ mapfile -t tests < <(tail -n +2 "$inventory" | cut -f2)
+diff --git a/.agents/Directional/tools/m6_cp3_r4_endpoint_chart_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_r4_endpoint_chart_harvest_harness.sh
+index e60ab79fd..a40d87279 100644
+--- a/.agents/Directional/tools/m6_cp3_r4_endpoint_chart_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r4_endpoint_chart_harvest_harness.sh
+@@ -42,7 +42,7 @@ done
+ cp -a "$p/bin/." "$r/v/bin/"
+ mkdir -p "$r/v/test-data/benchmarks"; cp -a "$s/benchmarks/fixtures" "$r/v/test-data/benchmarks/"
+ (cd "$r/v"; find . -type f -print0 | sort -z | xargs -0 sha256sum) > "$r/v0"
+-inventory="$GITHUB_WORKSPACE/.agents/Directional/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
++inventory="$GITHUB_WORKSPACE/.agents/Directional/tools/data/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
+ [[ -f "$inventory" ]] || die 'census inventory missing'
+ [[ "$(sha "$inventory")" == de05a7bd5ca27eb243156ecd38434fbc69d06f4b791bdd3dbcfc5982c273a865 ]] || die 'census inventory drift'
+ mapfile -t tests < <(tail -n +2 "$inventory" | cut -f2)
+diff --git a/.agents/Directional/tools/m6_cp3_r4_interior_witness_harness.sh b/.agents/Directional/tools/m6_cp3_r4_interior_witness_harness.sh
+index 85b036a01..e1d09014c 100644
+--- a/.agents/Directional/tools/m6_cp3_r4_interior_witness_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r4_interior_witness_harness.sh
+@@ -42,7 +42,7 @@ done
+ cp -a "$p/bin/." "$r/v/bin/"
+ mkdir -p "$r/v/test-data/benchmarks"; cp -a "$s/benchmarks/fixtures" "$r/v/test-data/benchmarks/"
+ (cd "$r/v"; find . -type f -print0 | sort -z | xargs -0 sha256sum) > "$r/v0"
+-inventory="$GITHUB_WORKSPACE/.agents/Directional/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
++inventory="$GITHUB_WORKSPACE/.agents/Directional/tools/data/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
+ [[ -f "$inventory" ]] || die 'census inventory missing'
+ [[ "$(sha "$inventory")" == de05a7bd5ca27eb243156ecd38434fbc69d06f4b791bdd3dbcfc5982c273a865 ]] || die 'census inventory drift'
+ mapfile -t tests < <(tail -n +2 "$inventory" | cut -f2)
+diff --git a/.agents/Directional/tools/m6_cp3_r4_probe_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_r4_probe_harvest_harness.sh
+index 9342cb9d2..7bd41cdab 100644
+--- a/.agents/Directional/tools/m6_cp3_r4_probe_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r4_probe_harvest_harness.sh
+@@ -42,7 +42,7 @@ done
+ cp -a "$p/bin/." "$r/v/bin/"
+ mkdir -p "$r/v/test-data/benchmarks"; cp -a "$s/benchmarks/fixtures" "$r/v/test-data/benchmarks/"
+ (cd "$r/v"; find . -type f -print0 | sort -z | xargs -0 sha256sum) > "$r/v0"
+-inventory="$GITHUB_WORKSPACE/.agents/Directional/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
++inventory="$GITHUB_WORKSPACE/.agents/Directional/tools/data/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
+ [[ -f "$inventory" ]] || die 'census inventory missing'
+ [[ "$(sha "$inventory")" == de05a7bd5ca27eb243156ecd38434fbc69d06f4b791bdd3dbcfc5982c273a865 ]] || die 'census inventory drift'
+ mapfile -t tests < <(tail -n +2 "$inventory" | cut -f2)
+diff --git a/.agents/Directional/tools/m6_cp3_r5_route_path_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_r5_route_path_harvest_harness.sh
+index 9cce2ebb0..598916342 100644
+--- a/.agents/Directional/tools/m6_cp3_r5_route_path_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r5_route_path_harvest_harness.sh
+@@ -42,7 +42,7 @@ done
+ cp -a "$p/bin/." "$r/v/bin/"
+ mkdir -p "$r/v/test-data/benchmarks"; cp -a "$s/benchmarks/fixtures" "$r/v/test-data/benchmarks/"
+ (cd "$r/v"; find . -type f -print0 | sort -z | xargs -0 sha256sum) > "$r/v0"
+-inventory="$GITHUB_WORKSPACE/.agents/Directional/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
++inventory="$GITHUB_WORKSPACE/.agents/Directional/tools/data/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
+ [[ -f "$inventory" ]] || die 'census inventory missing'
+ [[ "$(sha "$inventory")" == de05a7bd5ca27eb243156ecd38434fbc69d06f4b791bdd3dbcfc5982c273a865 ]] || die 'census inventory drift'
+ mapfile -t tests < <(tail -n +2 "$inventory" | cut -f2)
+diff --git a/.agents/Directional/tools/m6_cp3_r7_admissible_face_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_r7_admissible_face_harvest_harness.sh
+index 36684460c..fc2cc5581 100644
+--- a/.agents/Directional/tools/m6_cp3_r7_admissible_face_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r7_admissible_face_harvest_harness.sh
+@@ -59,7 +59,7 @@ try:
+  v0=inventory(view)
+  exe=view/"bin/directional_surface_cell_producer_tests"
+  check(exe.exists(),"producer executable absent")
+- inv=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
++ inv=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/tools/data/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
+  check(hashfile(inv)=="de05a7bd5ca27eb243156ecd38434fbc69d06f4b791bdd3dbcfc5982c273a865","inventory drift")
+  rows=list(csv.reader(inv.open(),delimiter="\t"))[1:]
+  check(len(rows)==39,"inventory count")
+diff --git a/.agents/Directional/tools/m6_cp3_r7_lattice_uv_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_r7_lattice_uv_harvest_harness.sh
+index 93b0cff6d..dfd3d3de8 100644
+--- a/.agents/Directional/tools/m6_cp3_r7_lattice_uv_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r7_lattice_uv_harvest_harness.sh
+@@ -59,7 +59,7 @@ try:
+  v0=inventory(view)
+  exe=view/"bin/directional_surface_cell_producer_tests"
+  check(exe.exists(),"producer executable absent")
+- inv=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
++ inv=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/tools/data/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
+  check(hashfile(inv)=="de05a7bd5ca27eb243156ecd38434fbc69d06f4b791bdd3dbcfc5982c273a865","inventory drift")
+  rows=list(csv.reader(inv.open(),delimiter="\t"))[1:]
+  check(len(rows)==39,"inventory count")
+diff --git a/.agents/Directional/tools/m6_cp3_r8_source_entity_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_r8_source_entity_harvest_harness.sh
+index a15b2e121..722b7c4a1 100644
+--- a/.agents/Directional/tools/m6_cp3_r8_source_entity_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r8_source_entity_harvest_harness.sh
+@@ -55,7 +55,7 @@ try:
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+  shutil.copytree(src/"benchmarks/fixtures",view/"test-data/benchmarks")
+  initial=(inventory(pkg),inventory(src),inventory(view))
+- test_inv=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
++ test_inv=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/tools/data/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
+  check(sha256(test_inv)=="de05a7bd5ca27eb243156ecd38434fbc69d06f4b791bdd3dbcfc5982c273a865","test inventory drift")
+  history=list(csv.reader(test_inv.open(),delimiter="\t"))[1:]
+  check(len(history)==39,"historical inventory count")
+diff --git a/.agents/Directional/tools/m6_cp3_r9_terminal_star_path_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_r9_terminal_star_path_harvest_harness.sh
+index 8ee5df1ea..451210c3c 100644
+--- a/.agents/Directional/tools/m6_cp3_r9_terminal_star_path_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_r9_terminal_star_path_harvest_harness.sh
+@@ -55,7 +55,7 @@ try:
+  for exe in (pkg/"bin").iterdir():shutil.copy2(exe,view/"bin"/exe.name)
+  shutil.copytree(src/"benchmarks/fixtures",view/"test-data/benchmarks")
+  initial=(inventory(pkg),inventory(src),inventory(view))
+- test_inv=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
++ test_inv=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/tools/data/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv"
+  check(sha256(test_inv)=="de05a7bd5ca27eb243156ecd38434fbc69d06f4b791bdd3dbcfc5982c273a865","test inventory drift")
+  history=list(csv.reader(test_inv.open(),delimiter="\t"))[1:]
+  check(len(history)==39,"historical inventory count")
+diff --git a/.agents/Directional/tools/m6_cp3_tb34_a3_cycle_locus_harvest_harness.sh b/.agents/Directional/tools/m6_cp3_tb34_a3_cycle_locus_harvest_harness.sh
+index 3c7537c18..1dcac86cb 100644
+--- a/.agents/Directional/tools/m6_cp3_tb34_a3_cycle_locus_harvest_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb34_a3_cycle_locus_harvest_harness.sh
+@@ -24,7 +24,7 @@ def files(root):return {str(p.relative_to(root)):sha(p) for p in root.rglob("*")
+ state={"planned":12,"executed":0,"red":0,"pass":0,"missing":0,"locus_bad":0,"control_bad":0,"postflight":False}
+ rows=[]; rc=90
+ try:
+- manifest=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/Architecture_M6_CP3_TB34_A3_Cycle_Locus_Cases.tsv"
++ manifest=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/tools/data/Architecture_M6_CP3_TB34_A3_Cycle_Locus_Cases.tsv"
+  require(sha(manifest)==manifesthash,"TB34 manifest drift")
+  with manifest.open(newline="") as f:cases=list(csv.DictReader(f,delimiter="\t"))
+  require(len(cases)==12 and [int(c["row"]) for c in cases]==list(range(1,13)),"TB34 12 rows")
+diff --git a/.agents/Directional/tools/m6_cp3_tb35_periodic_route_gauge_harness.sh b/.agents/Directional/tools/m6_cp3_tb35_periodic_route_gauge_harness.sh
+index 066a04e18..83bdd05aa 100644
+--- a/.agents/Directional/tools/m6_cp3_tb35_periodic_route_gauge_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb35_periodic_route_gauge_harness.sh
+@@ -24,7 +24,7 @@ def files(root):return {str(p.relative_to(root)):sha(p) for p in root.rglob("*")
+ state={"planned":13,"executed":0,"red":0,"pass":0,"missing":0,"locus_bad":0,"control_bad":0,"postflight":False}
+ rows=[]; rc=90
+ try:
+- manifest=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Case_Manifest.tsv"
++ manifest=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/tools/data/Architecture_M6_CP3_TB35_Periodic_Route_Gauge_Case_Manifest.tsv"
+  require(sha(manifest)==manifesthash,"TB35 manifest drift")
+  with manifest.open(newline="") as f:cases=list(csv.DictReader(f,delimiter="\t"))
+  require(len(cases)==13 and [int(c["row"]) for c in cases]==list(range(1,14)),"TB35 13 rows")
+diff --git a/.agents/Directional/tools/m6_cp3_tb36_periodic_monodromy_baseline_harness.sh b/.agents/Directional/tools/m6_cp3_tb36_periodic_monodromy_baseline_harness.sh
+index d1526eee3..acd152750 100644
+--- a/.agents/Directional/tools/m6_cp3_tb36_periodic_monodromy_baseline_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb36_periodic_monodromy_baseline_harness.sh
+@@ -24,7 +24,7 @@ def files(root):return {str(p.relative_to(root)):sha(p) for p in root.rglob("*")
+ state={"planned":5,"executed":0,"red":0,"pass":0,"missing":0,"postflight":False,"stopped_after":None,"stop_reason":None}
+ rows=[]; rc=90
+ try:
+- manifest=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/Architecture_M6_CP3_TB36_Periodic_Monodromy_Baseline_Case_Manifest.tsv"
++ manifest=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/tools/data/Architecture_M6_CP3_TB36_Periodic_Monodromy_Baseline_Case_Manifest.tsv"
+  require(sha(manifest)==manifesthash,"TB36 manifest drift")
+  with manifest.open(newline="") as f:cases=list(csv.DictReader(f,delimiter="\t"))
+  require(len(cases)==5 and [int(c["row"]) for c in cases]==list(range(1,6)),"TB36 five rows")
+diff --git a/.agents/Directional/tools/m6_cp3_tb37_periodic_route_atlas_verify_harness.sh b/.agents/Directional/tools/m6_cp3_tb37_periodic_route_atlas_verify_harness.sh
+index 0ddf7d71e..6daf7215a 100644
+--- a/.agents/Directional/tools/m6_cp3_tb37_periodic_route_atlas_verify_harness.sh
++++ b/.agents/Directional/tools/m6_cp3_tb37_periodic_route_atlas_verify_harness.sh
+@@ -24,7 +24,7 @@ def files(root):return {str(p.relative_to(root)):sha(p) for p in root.rglob("*")
+ state={"planned":16,"executed":0,"red":0,"pass":0,"missing":0,"locus_bad":0,"control_bad":0,"postflight":False,"review_stop":[]}
+ rows=[]; rc=90
+ try:
+- manifest=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Case_Manifest.tsv"
++ manifest=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/".agents/Directional/tools/data/Architecture_M6_CP3_TB37_Periodic_Route_Atlas_Verification_Case_Manifest.tsv"
+  require(sha(manifest)==manifesthash,"TB37 manifest drift")
+  with manifest.open(newline="") as f:cases=list(csv.DictReader(f,delimiter="\t"))
+  require(len(cases)==16 and [int(c["row"]) for c in cases]==list(range(1,17)),"TB37 16 rows")

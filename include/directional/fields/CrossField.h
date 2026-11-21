@@ -10,10 +10,12 @@
 #ifndef DIRECTIONAL_FIELDS_CROSS_FIELD_H
 #define DIRECTIONAL_FIELDS_CROSS_FIELD_H
 
+#include <compare>
 #include <vector>
 
 #include <Eigen/Core>
 
+#include <directional/authority/AuthorityIds.h>
 #include <directional/core/Export.h>
 #include <directional/util/Progress.h>
 
@@ -53,6 +55,16 @@ struct CrossFieldEdgeTransition {
   double effort = 0.0;
 };
 
+/** @brief Producer-owned index fact for one complete source boundary cycle. */
+struct CrossFieldSourceBoundaryCycleFact {
+  authority::SourceBoundaryCycleId id;
+  std::vector<authority::SourceVertexId> canonicalVertices;
+  std::vector<authority::SourceEdgeTopologyKey> sourceEdges;
+  int indexNumerator = 0;
+
+  auto operator<=>(const CrossFieldSourceBoundaryCycleFact &) const = default;
+};
+
 /** @brief Extracted face-based degree-4 cross field and diagnostics. */
 struct CrossFieldResult {
   int degree = kCrossFieldDegree;
@@ -64,10 +76,12 @@ struct CrossFieldResult {
   std::vector<CrossFieldEdgeTransition> edgeTransitions;
   Eigen::VectorXi singularCycles;
   Eigen::VectorXi singularIndices;
+  std::vector<CrossFieldSourceBoundaryCycleFact> sourceBoundaryCycles;
   Eigen::VectorXd confidence;
   Eigen::VectorXi uncoveredFaces;
   bool matchingComputed = false;
   bool singularitiesComputed = false;
+  bool sourceBoundaryCyclesComputed = false;
   bool confidenceComputed = false;
   bool uncoveredFacePolicyApplied = false;
 };

@@ -1,0 +1,2 @@
+Turn: M6-CP3-TB100B-P13-A3-BOUNDARY-FIELD-CORNERS-CORRECTED-GATE-EXEC
+Purpose: one exact source snapshot for artifact-only test and benchmark evidence.

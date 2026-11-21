@@ -1,0 +1,110 @@
+diff --git a/tests/GlobalConformityBaselineTests.cpp b/tests/GlobalConformityBaselineTests.cpp
+index 2477ef90c..11058b27e 100644
+--- a/tests/GlobalConformityBaselineTests.cpp
++++ b/tests/GlobalConformityBaselineTests.cpp
+@@ -1875,6 +1875,105 @@ TEST(GlobalConformityBaseline, StopNodesReadBoundaryFieldCorners) {
+   EXPECT_EQ("0F,1F|2F", shape({vertex(0), vertex(5)}));
+ }
+ 
++// The derived-corner witness (RA-225). The rim is an octagon whose edges run
++// at 30, 60, 120, 150, 210, 240, 300 and 330 degrees: it turns by 30 degrees
++// at vertices 1, 3, 5, 7 and by 60 degrees at vertices 0, 2, 4, 6. Vertex 8 is
++// the centre of the face fan. Under a field along the axes the rim's branch
++// changes at the four gentle turns, which a geometric corner test reads as
++// smooth, and at none of the sharp ones. A field that follows each face's rim
++// edge reverses that. The derived corners, and no declared stop, then cut the
++// rim's chains. Rim arc k runs from node k to node k + 1, on those vertices.
++TEST(GlobalConformityBaseline, DerivedBoundaryFieldCornersSplitRimChains) {
++  const double pi = std::acos(-1.0);
++  Eigen::MatrixXd vertices = Eigen::MatrixXd::Zero(9, 3);
++  Eigen::MatrixXi faces(8, 3);
++  Eigen::MatrixXd rimAxisX(8, 3);
++  Eigen::MatrixXd rimAxisY(8, 3);
++  ChainGraph graph;
++  std::vector<FieldAlignedCurveNetworkNode> nodes;
++  for (int k = 0; k < 8; ++k) {
++    const double angle = (30.0 + 90.0 * (k / 2) + 30.0 * (k % 2)) * pi / 180.0;
++    const Eigen::RowVector3d edge(std::cos(angle), std::sin(angle), 0.0);
++    if (k < 7) vertices.row(k + 1) = vertices.row(k) + edge;
++    vertices.row(8) += vertices.row(k) / 8.0;
++    faces.row(k) << 8, k, (k + 1) % 8;
++    rimAxisX.row(k) = edge;
++    rimAxisY.row(k) << -edge(1), edge(0), 0.0;
++    add_arc(graph, k, (k + 1) % 8);
++    nodes.push_back(stop_node(k, k));
++  }
++  const Eigen::MatrixXd axisX = Eigen::RowVector3d(1.0, 0.0, 0.0).replicate(8, 1);
++  const Eigen::MatrixXd axisY = Eigen::RowVector3d(0.0, 1.0, 0.0).replicate(8, 1);
++  // The same field with every odd face's representative turned a quarter.
++  Eigen::MatrixXd turnedX = axisX;
++  Eigen::MatrixXd turnedY = axisY;
++  for (int k = 1; k < 8; k += 2) {
++    turnedX.row(k) = axisY.row(k);
++    turnedY.row(k) = -axisX.row(k);
++  }
++
++  using Corners = std::vector<SourceVertexId>;
++  const auto indices = [](const Corners &corners) {
++    std::vector<int> out;
++    for (const auto corner : corners) out.push_back(static_cast<int>(corner.index()));
++    return out;
++  };
++  const auto shape = [&](const Corners &corners) {
++    return chain_shape(derive_mandatory_chain_partition(
++        graph.arcs, rotations_of(graph.arcs), graph.edges,
++        derive_mandatory_chain_stop_nodes(nodes, {}, graph.edges, {}, corners)));
++  };
++
++  const Corners axisCorners =
++      directional::geometry::derive_boundary_field_corner_vertices(
++          vertices, faces, axisX, axisY);
++  const Corners rimCorners =
++      directional::geometry::derive_boundary_field_corner_vertices(
++          vertices, faces, rimAxisX, rimAxisY);
++  EXPECT_EQ((std::vector<int>{1, 3, 5, 7}), indices(axisCorners));
++  EXPECT_EQ((std::vector<int>{0, 2, 4, 6}), indices(rimCorners));
++  // A corner belongs to the field, not to the representative stored per face.
++  EXPECT_EQ(indices(axisCorners),
++            indices(directional::geometry::derive_boundary_field_corner_vertices(
++                vertices, faces, turnedX, turnedY)));
++
++  // With no stop the closed rim stays one arc per span (O34).
++  EXPECT_EQ("0F|1F|2F|3F|4F|5F|6F|7F", shape({}));
++  EXPECT_EQ("0R,7R|1F,2F|3F,4F|5F,6F", shape(axisCorners));
++  EXPECT_EQ("0F,1F|2F,3F|4F,5F|6F,7F", shape(rimCorners));
++  // Without its corner at vertex 1 the chain runs on through that node.
++  EXPECT_EQ("2R,1R,0R,7R|3F,4F|5F,6F",
++            shape(Corners(axisCorners.begin() + 1, axisCorners.end())));
++  std::cout << "DERIVED_CORNER_RECEIPT axis=" << shape(axisCorners)
++            << " rim=" << shape(rimCorners) << "\n";
++}
++
++// Why a corner needs no face-fan identity (RA-225). The network holds one node
++// per source vertex, so a vertex shared by two face fans, each with two rim
++// edges, is one node with four incidences. A chain joins only through a node
++// with exactly two. No chain passes the shared node, on one rail or on two,
++// so a corner there cannot cut another fan's chain.
++TEST(GlobalConformityBaseline, RimChainsNeverJoinAtANodeSharedByTwoFans) {
++  // Fan one is the rim path 0-4-1 and fan two is 2-4-3.
++  for (const int secondRail : {0, 1}) {
++    ChainGraph shared;
++    add_arc(shared, 0, 4);
++    add_arc(shared, 4, 1);
++    add_arc(shared, 2, 4, GlobalTopologyArcKind::Mandatory, secondRail);
++    add_arc(shared, 4, 3, GlobalTopologyArcKind::Mandatory, secondRail);
++    EXPECT_EQ("0F|1F|2F|3F", partition_shape(shared, {}));
++    EXPECT_EQ("0F|1F|2F|3F", partition_shape(shared, {4}));
++  }
++  // The same two paths through separate nodes join, and stop separately.
++  ChainGraph apart;
++  add_arc(apart, 0, 4);
++  add_arc(apart, 4, 1);
++  add_arc(apart, 2, 5);
++  add_arc(apart, 5, 3);
++  EXPECT_EQ("0F,1F|2F,3F", partition_shape(apart, {}));
++  EXPECT_EQ("0F,1F|2F|3F", partition_shape(apart, {5}));
++}
++
+ namespace {
+ 
+ using directional::geometry::BaselineConformityArcBinding;

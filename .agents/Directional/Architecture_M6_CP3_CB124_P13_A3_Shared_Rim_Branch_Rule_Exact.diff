@@ -1,0 +1,172 @@
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 5cd827d02..d84cf1858 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -15543,6 +15543,52 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
+ }
+ 
+ 
++namespace {
++
++// The field branch of `face` that follows the directed source edge a -> b;
++// nothing when no branch follows it unambiguously. The bounded-disk producer's
++// side starts and the boundary field corners both read this one rule.
++std::optional<int> boundary_edge_field_branch(
++    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
++    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
++    const int face, const int a, const int b) {
++  using namespace surface_cell_tracing_detail;
++  constexpr double kBoundaryAlignment = 0.7;
++  const Eigen::RowVector3d normal = face_normal(vertices, faces, face);
++  const Eigen::RowVector3d edgeDirection =
++      project_tangent(row3(vertices, b) - row3(vertices, a), normal);
++  if (edgeDirection.squaredNorm() == 0.0) return std::nullopt;
++  double bestAlignment = -std::numeric_limits<double>::infinity();
++  double secondAlignment = -std::numeric_limits<double>::infinity();
++  int bestBranch = -1;
++  for (int branch = 0; branch < 4; ++branch) {
++    int family = 0;
++    int sign = 1;
++    family_sign_from_branch(branch, family, sign);
++    const Eigen::RowVector3d fieldDirection = project_tangent(
++        axis_for_family(faceAxisX, faceAxisY, face, family, sign), normal);
++    if (fieldDirection.squaredNorm() == 0.0) continue;
++    const double alignment = fieldDirection.dot(edgeDirection);
++    if (alignment > bestAlignment) {
++      secondAlignment = bestAlignment;
++      bestAlignment = alignment;
++      bestBranch = branch;
++    } else if (alignment > secondAlignment) {
++      secondAlignment = alignment;
++    }
++  }
++  const double ambiguityTolerance = 256.0 *
++                                    std::numeric_limits<double>::epsilon() *
++                                    std::max(1.0, std::abs(bestAlignment));
++  if (bestBranch < 0 || bestAlignment < kBoundaryAlignment ||
++      std::abs(bestAlignment - secondAlignment) <= ambiguityTolerance) {
++    return std::nullopt;
++  }
++  return bestBranch;
++}
++
++} // namespace
++
+ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+@@ -16682,7 +16728,6 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+   }
+ 
+   std::vector<int> boundaryBranches(boundaryCycle.size(), -1);
+-  constexpr double kBoundaryAlignment = 0.7;
+   for (std::size_t index = 0; index < boundaryCycle.size(); ++index) {
+     const int a = source_vertex_for_occurrence(boundaryCycle[index]);
+     const int b = source_vertex_for_occurrence(
+@@ -16710,48 +16755,17 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+       return result;
+     }
+     const int face = *faceRow;
+-    const Eigen::RowVector3d edgeDirection = project_tangent(
+-        row3(vertices, b) - row3(vertices, a), face_normal(vertices, faces, face));
+-    if (edgeDirection.squaredNorm() == 0.0) {
+-      result.disposition = SurfaceCellProducerDisposition::Rejected;
+-      set_phase_front_failure(
+-          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase,
+-          -1, -1, face);
+-      return result;
+-    }
+-    double bestAlignment = -std::numeric_limits<double>::infinity();
+-    double secondAlignment = -std::numeric_limits<double>::infinity();
+-    int bestGlobalBranch = -1;
+-    for (int localBranch = 0; localBranch < 4; ++localBranch) {
+-      int family = 0;
+-      int sign = 1;
+-      family_sign_from_branch(localBranch, family, sign);
+-      const Eigen::RowVector3d fieldDirection = project_tangent(
+-          axis_for_family(faceAxisX, faceAxisY, face, family, sign),
+-          face_normal(vertices, faces, face));
+-      if (fieldDirection.squaredNorm() == 0.0) continue;
+-      const double alignment = fieldDirection.dot(edgeDirection);
+-      if (alignment > bestAlignment) {
+-        secondAlignment = bestAlignment;
+-        bestAlignment = alignment;
+-        bestGlobalBranch = normalized_branch(
+-            localBranch - faceBranchRotation[static_cast<std::size_t>(face)]);
+-      } else if (alignment > secondAlignment) {
+-        secondAlignment = alignment;
+-      }
+-    }
+-    const double ambiguityTolerance =
+-        256.0 * std::numeric_limits<double>::epsilon() *
+-        std::max(1.0, std::abs(bestAlignment));
+-    if (bestGlobalBranch < 0 || bestAlignment < kBoundaryAlignment ||
+-        std::abs(bestAlignment - secondAlignment) <= ambiguityTolerance) {
++    const std::optional<int> localBranch = boundary_edge_field_branch(
++        vertices, faces, faceAxisX, faceAxisY, face, a, b);
++    if (!localBranch.has_value()) {
+       result.disposition = SurfaceCellProducerDisposition::Rejected;
+       set_phase_front_failure(
+           result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase,
+           -1, -1, face);
+       return result;
+     }
+-    boundaryBranches[index] = bestGlobalBranch;
++    boundaryBranches[index] = normalized_branch(
++        *localBranch - faceBranchRotation[static_cast<std::size_t>(face)]);
+   }
+ 
+   const auto rebuild_run_starts = [&](const std::vector<int> &branches) {
+@@ -21533,52 +21547,6 @@ SurfaceCellNetwork build_surface_cell_network(
+                                     &crossField.edgeTransitions);
+ }
+ 
+-namespace {
+-
+-// The field branch of `face` that follows the directed source edge a -> b, by
+-// the bounded-disk producer's boundary-phase rule; nothing when no branch
+-// follows it unambiguously.
+-std::optional<int> boundary_edge_field_branch(
+-    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+-    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+-    const int face, const int a, const int b) {
+-  using namespace surface_cell_tracing_detail;
+-  constexpr double kBoundaryAlignment = 0.7;
+-  const Eigen::RowVector3d normal = face_normal(vertices, faces, face);
+-  const Eigen::RowVector3d edgeDirection =
+-      project_tangent(row3(vertices, b) - row3(vertices, a), normal);
+-  if (edgeDirection.squaredNorm() == 0.0) return std::nullopt;
+-  double bestAlignment = -std::numeric_limits<double>::infinity();
+-  double secondAlignment = -std::numeric_limits<double>::infinity();
+-  int bestBranch = -1;
+-  for (int branch = 0; branch < 4; ++branch) {
+-    int family = 0;
+-    int sign = 1;
+-    family_sign_from_branch(branch, family, sign);
+-    const Eigen::RowVector3d fieldDirection = project_tangent(
+-        axis_for_family(faceAxisX, faceAxisY, face, family, sign), normal);
+-    if (fieldDirection.squaredNorm() == 0.0) continue;
+-    const double alignment = fieldDirection.dot(edgeDirection);
+-    if (alignment > bestAlignment) {
+-      secondAlignment = bestAlignment;
+-      bestAlignment = alignment;
+-      bestBranch = branch;
+-    } else if (alignment > secondAlignment) {
+-      secondAlignment = alignment;
+-    }
+-  }
+-  const double ambiguityTolerance = 256.0 *
+-                                    std::numeric_limits<double>::epsilon() *
+-                                    std::max(1.0, std::abs(bestAlignment));
+-  if (bestBranch < 0 || bestAlignment < kBoundaryAlignment ||
+-      std::abs(bestAlignment - secondAlignment) <= ambiguityTolerance) {
+-    return std::nullopt;
+-  }
+-  return bestBranch;
+-}
+-
+-} // namespace
+-
+ std::vector<authority::SourceVertexId> derive_boundary_field_corner_vertices(
+     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,

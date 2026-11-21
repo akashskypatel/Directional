@@ -1,0 +1,169 @@
+diff --git a/src/geometry/GlobalTopologyPlan.cpp b/src/geometry/GlobalTopologyPlan.cpp
+index da500441191c61753db4acc8deebe922433eca1d..5f4a36c71b91485bc4c05c76d031812338eac8f7 100644
+--- a/src/geometry/GlobalTopologyPlan.cpp
++++ b/src/geometry/GlobalTopologyPlan.cpp
+@@ -2497,52 +2497,50 @@ std::uint64_t candidate_semantic_digest(
+     const GlobalTopologyPlanCandidate &candidate,
+     const FieldAlignedCurveNetwork &network) noexcept {
+   std::uint64_t hash = kFnvOffset;
+   hash_consume(hash, candidate.sourceDigest);
+   // cutGraphDigest and network.semantic_digest() are semantic identities.
+   // Exact network/atlas provenance lives in candidate.networkDigest, while
+   // exact cut-graph provenance remains on SurfaceCutGraph::provenance_digest().
+   hash_consume(hash, candidate.cutGraphDigest);
+   hash_consume(hash, network.semantic_digest());
+   hash_consume(hash, candidate.arcs.size());
+   for (const auto &arc : candidate.arcs) {
+     hash_id(hash, arc.id);
+     hash_consume(hash, static_cast<std::uint64_t>(arc.kind));
+     hash_id(hash, arc.firstNode);
+     hash_id(hash, arc.secondNode);
+     hash_consume(hash, arc.mandatoryEdge.has_value());
+     if (arc.mandatoryEdge.has_value()) hash_id(hash, *arc.mandatoryEdge);
+     hash_consume(hash, arc.trace.has_value());
+     if (arc.trace.has_value()) hash_id(hash, *arc.trace);
+     hash_consume(hash, arc.cutEdge.has_value());
+     if (arc.cutEdge.has_value()) hash_edge(hash, *arc.cutEdge);
+     hash_consume(hash, arc.firstSegment);
+     hash_consume(hash, arc.onePastLastSegment);
+     hash_consume(hash, arc.sourceFaces.size());
+     for (const auto &face : arc.sourceFaces) hash_face(hash, face);
+-    hash_consume(hash, arc.sourcePieceCounts.size());
+-    for (const auto count : arc.sourcePieceCounts) hash_consume(hash, count);
+     hash_exact_source_path(hash, arc.sourcePath);
+   }
+   hash_consume(hash, candidate.rotations.size());
+   for (const auto &rotation : candidate.rotations) {
+     hash_id(hash, rotation.node);
+     hash_consume(hash, rotation.counterClockwise.size());
+     for (const auto incidence : rotation.counterClockwise) {
+       hash_id(hash, incidence.arc);
+       hash_consume(hash, static_cast<std::uint64_t>(incidence.orientation));
+     }
+   }
+   hash_consume(hash, candidate.regions.size());
+   for (const auto &region : candidate.regions) {
+     hash_id(hash, region.id);
+     hash_consume(hash, region.boundary.size());
+     for (const auto incidence : region.boundary) {
+       hash_id(hash, incidence.arc);
+       hash_consume(hash, static_cast<std::uint64_t>(incidence.orientation));
+     }
+     hash_consume(hash, region.sourceFaces.size());
+     for (const auto &face : region.sourceFaces) hash_face(hash, face);
+   }
+   hash_consume(hash, candidate.regionCertificates.size());
+   for (const auto &certificate : candidate.regionCertificates) {
+     hash_id(hash, certificate.region);
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 4dd74f41a206c1583046b4471c6cca1ebec1eb32..49efe66b96783e9575029e016ee79cb9e24a043a 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -3584,73 +3584,107 @@ TEST(GlobalTopologyPlan,
+   subintervalTamper.arcs[splitIndex].sourcePath.front().second = support->edge.second();
+   expectRejected(std::move(subintervalTamper), "split subinterval");
+ }
+ 
+ TEST(GlobalTopologyPlan,
+      IndependentValidationBindsTraceSegmentsToSourcePieceCounts) {
+   namespace authority = directional::authority;
+   using directional::geometry::GlobalTopologyArcKind;
+   using directional::geometry::GlobalTopologyPlanCandidate;
+   using directional::geometry::GlobalTopologyPlanErrorCode;
+   Cp3bEventFixture fixture = build_cp3b_event_fixture();
+   ASSERT_TRUE(fixture.sourceAuthority.has_value());
+   ASSERT_TRUE(fixture.atlas.has_value());
+   ASSERT_TRUE(fixture.network.has_value());
+   const auto plan = build_topology_plan(
+       fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
+   const auto rebuild = [&](GlobalTopologyPlanCandidate candidate) {
+     return rebuild_topology_plan(fixture.mesh, *fixture.sourceAuthority,
+                                  *fixture.atlas, *fixture.network,
+                                  std::move(candidate));
+   };
+ 
+   // Binding must describe the actual number of source pieces per segment.
+   std::optional<std::size_t> traceIndex;
+   std::optional<std::size_t> edgeArcIndex;
++  // Independent oracle: each segment's count is read off the trace record's
++  // recorded slide transits, not off the piece-path producer.
++  const auto &traces = fixture.network->candidate_traces();
++  std::size_t traceArcCount = 0U;
++  std::size_t segmentCount = 0U;
++  std::size_t transitSegmentCount = 0U;
+   for (std::size_t index = 0U; index < plan.arcs().size(); ++index) {
+     const auto &arc = plan.arcs()[index];
+     if (arc.kind != GlobalTopologyArcKind::Trace) {
+       EXPECT_TRUE(arc.sourcePieceCounts.empty()) << index;
+       if (!edgeArcIndex.has_value()) edgeArcIndex = index;
+       continue;
+     }
+     ASSERT_EQ(arc.sourceFaces.size(), arc.sourcePieceCounts.size()) << index;
+     EXPECT_EQ(arc.sourcePath.size(),
+               std::accumulate(arc.sourcePieceCounts.begin(),
+                               arc.sourcePieceCounts.end(), std::size_t{0}))
+         << index;
+     EXPECT_FALSE(embedded::source_piece_binding_failure(
+         arc.sourceFaces, arc.sourcePieceCounts, arc.sourcePath)) << index;
++    ASSERT_TRUE(arc.trace.has_value()) << index;
++    const auto traceRecord = std::find_if(
++        traces.begin(), traces.end(),
++        [&](const auto &candidate) { return candidate.id == *arc.trace; });
++    ASSERT_NE(traceRecord, traces.end()) << index;
++    ASSERT_LE(arc.firstSegment, arc.onePastLastSegment) << index;
++    ASSERT_LE(arc.onePastLastSegment, traceRecord->segments.size()) << index;
++    ASSERT_EQ(arc.onePastLastSegment - arc.firstSegment,
++              arc.sourcePieceCounts.size())
++        << index;
++    ++traceArcCount;
++    for (std::size_t segment = arc.firstSegment;
++         segment < arc.onePastLastSegment; ++segment) {
++      const auto &record = traceRecord->segments[segment];
++      const std::size_t count =
++          arc.sourcePieceCounts[segment - arc.firstSegment];
++      ++segmentCount;
++      if (!record.edgeTransitEntry.has_value() &&
++          !record.edgeTransitExit.has_value()) {
++        EXPECT_EQ(1U, count) << index << ' ' << segment;
++        continue;
++      }
++      EXPECT_TRUE(count == 1U || count == 2U) << index << ' ' << segment;
++      ++transitSegmentCount;
++    }
+     if (!traceIndex.has_value() && !arc.sourcePieceCounts.empty() &&
+         arc.sourcePieceCounts.back() == 1U &&
+         std::holds_alternative<authority::SourceFaceInteriorSupport>(
+             arc.sourcePath.back().carrier) &&
+         std::holds_alternative<authority::ExactSourceEdgePoint>(
+             arc.sourcePath.back().second)) {
+       traceIndex = index;
+     }
+   }
++  std::cout << "SourcePieceCountOracle traceArcs=" << traceArcCount
++            << " segments=" << segmentCount
++            << " transitSegments=" << transitSegmentCount << '\n';
+   ASSERT_TRUE(traceIndex.has_value());
+   ASSERT_TRUE(edgeArcIndex.has_value());
+   ASSERT_TRUE(rebuild(plan.validation_candidate()));
+ 
+   const auto expectBindingRejected = [&](GlobalTopologyPlanCandidate candidate,
+                                          const std::size_t arcIndex,
+                                          const char *label) {
+     const auto rejected = rebuild(std::move(candidate));
+     ASSERT_FALSE(rejected) << label;
+     EXPECT_EQ(GlobalTopologyPlanErrorCode::InvalidSourceBinding,
+               rejected.error().code)
+         << label << ' '
+         << directional::geometry::global_topology_plan_error_code_name(
+                rejected.error().code);
+     EXPECT_EQ(plan.arcs()[arcIndex].id, rejected.error().arc) << label;
+   };
+   auto missing = plan.validation_candidate();
+   missing.arcs[*traceIndex].sourcePieceCounts.clear();
+   expectBindingRejected(std::move(missing), *traceIndex, "missing counts");
+   auto extra = plan.validation_candidate();
+   extra.arcs[*traceIndex].sourcePieceCounts.push_back(1U);
+   expectBindingRejected(std::move(extra), *traceIndex, "extra count");
+   auto doubled = plan.validation_candidate();
+   ++doubled.arcs[*traceIndex].sourcePieceCounts.front();
+   expectBindingRejected(std::move(doubled), *traceIndex, "count sum");

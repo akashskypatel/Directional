@@ -1,19 +1,43 @@
 #include <directional/geometry/SurfaceMeshOptimizer.h>
+#include <directional/geometry/SurfaceCellTracing.h>
 #include <directional/geometry/SurfaceOptimizationRailConstraints.h>
 #include <directional/validation/SourceAuthoritativeMeshValidator.h>
 
 #include <algorithm>
+#include <chrono>
+#include <cmath>
+#include <cstdint>
+#include <memory>
+#include <set>
+#include <type_traits>
 #include <vector>
 
 #include <gtest/gtest.h>
+#include "TestAuthorityIds.h"
 
 namespace {
+
+const directional::geometry::SourceTopologyRegions *test_source_authority(
+    const Eigen::MatrixXi &faces, const std::vector<int> &components,
+    const std::vector<int> &sheets) {
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.sourceFaceComponents = components;
+  tracing.sourceFaceSheets = sheets;
+  auto authority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(faces, tracing);
+  if (!authority.has_value()) throw std::runtime_error("Failed to construct typed test source authority.");
+  static std::vector<std::unique_ptr<directional::geometry::SourceTopologyRegions>> arena;
+  arena.push_back(std::make_unique<directional::geometry::SourceTopologyRegions>(std::move(*authority)));
+  return arena.back().get();
+}
 
 using directional::geometry::SurfaceOptimizationConstraints;
 using directional::geometry::SurfaceOptimizationResult;
 using directional::geometry::SurfacePoint;
 using directional::validation::MeshValidationFailureCode;
+using directional::validation::SourceHardRailChartEquivalence;
 using directional::validation::SourceAuthoritativeMeshValidatorOptions;
+using directional::validation::SourceVertexChartAuthority;
 
 bool has_code(
     const directional::validation::SourceAuthoritativeMeshValidationResult &result,
@@ -69,8 +93,8 @@ SourceAuthoritativeMeshValidatorOptions make_options(
   SourceAuthoritativeMeshValidatorOptions options;
   options.sourceVertices = &sourceVertices;
   options.sourceFaces = &sourceFaces;
-  options.sourceFaceComponents = &components;
-  options.sourceFaceSheets = &sheets;
+  options.sourceAuthority =
+      test_source_authority(sourceFaces, components, sheets);
   options.vertexProvenance = &provenance;
   options.authoritativeBoundaryLoops = std::move(boundaryLoops);
   return options;
@@ -82,7 +106,6 @@ SurfaceOptimizationConstraints make_final_constraints(
   SurfaceOptimizationConstraints constraints;
   constraints.sourceVertices = sourceVertices;
   constraints.sourceFaces = sourceFaces;
-  constraints.sourcePositions = sourceVertices;
   constraints.sourceNormals = Eigen::MatrixXd::Zero(sourceFaces.rows(), 3);
   constraints.sourceFieldX = Eigen::MatrixXd::Zero(sourceFaces.rows(), 3);
   constraints.sourceFieldY = Eigen::MatrixXd::Zero(sourceFaces.rows(), 3);
@@ -91,16 +114,14 @@ SurfaceOptimizationConstraints make_final_constraints(
     constraints.sourceFieldX.row(face) << 1.0, 0.0, 0.0;
     constraints.sourceFieldY.row(face) << 0.0, 1.0, 0.0;
   }
-  constraints.sourceFaceComponent.assign(
-      static_cast<std::size_t>(sourceFaces.rows()), 0);
-  constraints.sourceFaceSheet.assign(
-      static_cast<std::size_t>(sourceFaces.rows()), 0);
+  const std::vector<int> sourceComponents(static_cast<std::size_t>(sourceFaces.rows()), 0);
+  const std::vector<int> sourceSheets(static_cast<std::size_t>(sourceFaces.rows()), 0);
+  constraints.sourceAuthority = test_source_authority(sourceFaces, sourceComponents, sourceSheets);
   constraints.localTargetSize = Eigen::VectorXd::Ones(sourceVertices.rows());
   constraints.vertexProvenance = provenance;
   constraints.authoritativeBoundaryLoop = {0, 1, 2, 3};
   constraints.authoritativeBoundaryLoops = {{0, 1, 2, 3}};
   constraints.authoritativeBoundaryEdges = {{0, 1}, {1, 2}, {2, 3}, {0, 3}};
-  constraints.requireSourceAuthoritativeValidation = true;
   return constraints;
 }
 
@@ -126,6 +147,343 @@ void make_annulus(Eigen::MatrixXd &vertices, Eigen::MatrixXi &triangles,
     triangles.row(row++) << quads(face, 0), quads(face, 1), quads(face, 2);
     triangles.row(row++) << quads(face, 0), quads(face, 2), quads(face, 3);
   }
+}
+
+directional::authority::SourceEdgeTopologyKey source_edge_key(
+    const int first, const int second) {
+  const auto topology = directional::authority::SourceEdgeTopologyKey::from_indices(
+      first, second, static_cast<std::size_t>(std::max({first + 1, second + 1, 1})));
+  if (!topology) throw std::runtime_error("Invalid test source-edge topology.");
+  return topology.value();
+}
+
+SurfacePoint source_vertex_point(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::vector<int> &components, const std::vector<int> &sheets,
+    const int vertex, const int face) {
+  SurfacePoint point;
+  point.face = face;
+  point.component = components[static_cast<std::size_t>(face)];
+  point.sheet = sheets[static_cast<std::size_t>(face)];
+  point.position = vertices.row(vertex).transpose();
+  point.squaredDistance = 0.0;
+  for (int corner = 0; corner < 3; ++corner) {
+    if (faces(face, corner) == vertex) {
+      point.barycentric(corner) = 1.0;
+    }
+  }
+  return point;
+}
+
+directional::geometry::SourceProjectionChart source_chart(
+    const int face, const Eigen::MatrixXi &sourceFaces,
+    const std::vector<int> &components, const std::vector<int> &sheets,
+    const std::set<directional::authority::SourceEdgeTopologyKey> *hardEdges = nullptr) {
+  const auto *sourceAuthority = test_source_authority(sourceFaces, components, sheets);
+  directional::geometry::SourceChartTransitionGraph graph(
+      sourceFaces, *sourceAuthority,
+      hardEdges != nullptr ? *hardEdges
+                           : directional::geometry::empty_hard_feature_edges());
+  const auto chart = graph.chart(face);
+  if (!chart.has_value()) {
+    throw std::runtime_error("Invalid source-chart test authority.");
+  }
+  return chart.value();
+}
+
+
+void remap_source_charts(
+    std::vector<SourceVertexChartAuthority> &authority,
+    const std::vector<int> &faceRemap, const Eigen::MatrixXi &sourceFaces,
+    const std::vector<int> &components, const std::vector<int> &sheets,
+    const std::set<directional::authority::SourceEdgeTopologyKey> *hardEdges = nullptr) {
+  const auto *sourceAuthority = test_source_authority(sourceFaces, components, sheets);
+  directional::geometry::SourceChartTransitionGraph graph(
+      sourceFaces, *sourceAuthority,
+      hardEdges != nullptr ? *hardEdges
+                           : directional::geometry::empty_hard_feature_edges());
+  (void)faceRemap;
+  for (SourceVertexChartAuthority &vertexAuthority : authority) {
+    for (auto &chart : vertexAuthority.sourceCharts) {
+      const auto row = graph.source_face_row(chart);
+      if (!row.has_value()) {
+        throw std::runtime_error(
+            "Row-permuted source chart changed semantic authority.");
+      }
+      const auto verified = graph.chart(static_cast<int>(row->index()));
+      if (!verified.has_value() || verified.value() != chart) {
+        throw std::runtime_error("Invalid row-independent source-chart authority.");
+      }
+    }
+    std::sort(vertexAuthority.sourceCharts.begin(),
+              vertexAuthority.sourceCharts.end());
+  }
+}
+
+directional::authority::CanonicalRoute hard_rail_route(
+    const directional::authority::SourceEdgeTopologyKey &topology) {
+  const auto transition =
+      directional::authority::InteriorTransitionId::from_index(0, 1);
+  if (!transition) {
+    throw std::runtime_error("Invalid hard-rail test authority.");
+  }
+  const auto step = directional::authority::TransitionStep::interior(
+      topology, transition.value(),
+      directional::authority::GridAutomorphism::identity(),
+      directional::authority::Orientation::Forward);
+  if (!step) throw std::runtime_error("Invalid hard-rail test route step.");
+  return directional::authority::CanonicalRoute::from_observed_steps(
+      {step.value()});
+}
+
+SourceHardRailChartEquivalence hard_rail_equivalence(
+    const int railId, const int firstFrontEdge, const int secondFrontEdge,
+    const directional::authority::SourceEdgeTopologyKey &topology) {
+  SourceHardRailChartEquivalence equivalence;
+  const auto rail = directional::authority::HardRailId::from_index(
+      railId, 4096);
+  if (!rail) {
+    throw std::runtime_error("Invalid hard-rail test identity.");
+  }
+  equivalence.rail = rail.value();
+  equivalence.firstFrontEdge = firstFrontEdge;
+  equivalence.secondFrontEdge = secondFrontEdge;
+  equivalence.route = hard_rail_route(topology);
+  return equivalence;
+}
+
+struct HardRailValidationFixture {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi sourceFaces;
+  Eigen::MatrixXi quads;
+  std::vector<int> components;
+  std::vector<int> sheets;
+  std::vector<SurfacePoint> provenance;
+  std::vector<SourceVertexChartAuthority> authority;
+  std::set<directional::authority::SourceEdgeTopologyKey> hardEdges;
+};
+
+HardRailValidationFixture make_hard_rail_validation_fixture() {
+  HardRailValidationFixture fixture;
+  fixture.vertices.resize(6, 3);
+  fixture.vertices << 0.0, 0.0, 0.0,
+      1.0, 0.0, 0.0,
+      2.0, 0.0, 0.0,
+      0.0, 1.0, 0.0,
+      1.0, 1.0, 0.0,
+      2.0, 1.0, 0.0;
+  fixture.sourceFaces.resize(4, 3);
+  fixture.sourceFaces << 0, 1, 4,
+      0, 4, 3,
+      1, 2, 5,
+      1, 5, 4;
+  fixture.quads.resize(2, 4);
+  fixture.quads << 0, 1, 4, 3,
+      1, 2, 5, 4;
+  fixture.components = {0, 0, 0, 0};
+  fixture.sheets = {0, 0, 1, 1};
+  const auto railTopology = source_edge_key(1, 4);
+  fixture.hardEdges.insert(railTopology);
+  fixture.provenance = {
+      source_vertex_point(fixture.vertices, fixture.sourceFaces,
+                          fixture.components, fixture.sheets, 0, 0),
+      source_vertex_point(fixture.vertices, fixture.sourceFaces,
+                          fixture.components, fixture.sheets, 1, 0),
+      source_vertex_point(fixture.vertices, fixture.sourceFaces,
+                          fixture.components, fixture.sheets, 2, 2),
+      source_vertex_point(fixture.vertices, fixture.sourceFaces,
+                          fixture.components, fixture.sheets, 3, 1),
+      source_vertex_point(fixture.vertices, fixture.sourceFaces,
+                          fixture.components, fixture.sheets, 4, 0),
+      source_vertex_point(fixture.vertices, fixture.sourceFaces,
+                          fixture.components, fixture.sheets, 5, 2)};
+  fixture.authority.resize(fixture.provenance.size());
+  for (std::size_t vertex = 0; vertex < fixture.authority.size(); ++vertex) {
+    SourceVertexChartAuthority &authority = fixture.authority[vertex];
+    authority.retained = true;
+    authority.sourceCharts.push_back(source_chart(
+        fixture.provenance[vertex].face, fixture.sourceFaces,
+        fixture.components, fixture.sheets, &fixture.hardEdges));
+  }
+  const SourceHardRailChartEquivalence equivalence =
+      hard_rail_equivalence(7, 10, 11, railTopology);
+  for (const int vertex : {1, 4}) {
+    SourceVertexChartAuthority &authority =
+        fixture.authority[static_cast<std::size_t>(vertex)];
+    authority.sourceCharts.push_back(
+        source_chart(3, fixture.sourceFaces, fixture.components, fixture.sheets,
+                     &fixture.hardEdges));
+    std::sort(authority.sourceCharts.begin(), authority.sourceCharts.end());
+    authority.hardRailEquivalences.push_back(equivalence);
+  }
+  return fixture;
+}
+
+HardRailValidationFixture make_multi_rail_validation_fixture() {
+  HardRailValidationFixture fixture;
+  constexpr int outerVertexCount = 16;
+  constexpr double pi = 3.14159265358979323846;
+  fixture.vertices.resize(outerVertexCount + 1, 3);
+  fixture.vertices.row(0).setZero();
+  for (int outer = 0; outer < outerVertexCount; ++outer) {
+    const double angle = 2.0 * pi * static_cast<double>(outer) /
+                         static_cast<double>(outerVertexCount);
+    fixture.vertices.row(outer + 1) << std::cos(angle), std::sin(angle), 0.0;
+  }
+  fixture.sourceFaces.resize(outerVertexCount, 3);
+  for (int face = 0; face < outerVertexCount; ++face) {
+    fixture.sourceFaces.row(face) << 0, face + 1,
+        face + 1 == outerVertexCount ? 1 : face + 2;
+  }
+  fixture.quads.resize(1, 4);
+  fixture.quads << 0, 2, 3, 4;
+  fixture.components.assign(outerVertexCount, 0);
+  fixture.sheets = {2, 2, 2, 2, 1, 1, 1, 1,
+                    0, 0, 0, 0, 3, 3, 3, 3};
+  fixture.hardEdges.insert(source_edge_key(0, 9));
+  fixture.hardEdges.insert(source_edge_key(0, 5));
+  fixture.hardEdges.insert(source_edge_key(0, 13));
+  fixture.provenance.reserve(static_cast<std::size_t>(outerVertexCount + 1));
+  fixture.provenance.push_back(source_vertex_point(
+      fixture.vertices, fixture.sourceFaces, fixture.components,
+      fixture.sheets, 0, 8));
+  for (int vertex = 1; vertex <= outerVertexCount; ++vertex) {
+    fixture.provenance.push_back(source_vertex_point(
+        fixture.vertices, fixture.sourceFaces, fixture.components,
+        fixture.sheets, vertex, vertex - 1));
+  }
+
+  fixture.authority.resize(fixture.provenance.size());
+  for (std::size_t vertex = 0; vertex < fixture.authority.size(); ++vertex) {
+    SourceVertexChartAuthority &authority = fixture.authority[vertex];
+    authority.retained = true;
+    authority.sourceCharts.push_back(source_chart(
+        fixture.provenance[vertex].face, fixture.sourceFaces,
+        fixture.components, fixture.sheets, &fixture.hardEdges));
+  }
+
+  const SourceHardRailChartEquivalence aToB =
+      hard_rail_equivalence(20, 40, 41, source_edge_key(0, 9));
+  const SourceHardRailChartEquivalence bToC =
+      hard_rail_equivalence(21, 42, 43, source_edge_key(0, 5));
+  const SourceHardRailChartEquivalence unusedAToD =
+      hard_rail_equivalence(22, 44, 45, source_edge_key(0, 13));
+
+  SourceVertexChartAuthority &center = fixture.authority[0];
+  center.sourceCharts.push_back(
+      source_chart(4, fixture.sourceFaces, fixture.components, fixture.sheets,
+                   &fixture.hardEdges));
+  center.sourceCharts.push_back(
+      source_chart(0, fixture.sourceFaces, fixture.components, fixture.sheets,
+                   &fixture.hardEdges));
+  center.sourceCharts.push_back(
+      source_chart(12, fixture.sourceFaces, fixture.components, fixture.sheets,
+                   &fixture.hardEdges));
+  center.hardRailEquivalences = {aToB, bToC, unusedAToD};
+
+  SourceVertexChartAuthority &bToCPeer = fixture.authority[5];
+  bToCPeer.sourceCharts.push_back(
+      source_chart(3, fixture.sourceFaces, fixture.components, fixture.sheets,
+                     &fixture.hardEdges));
+  bToCPeer.hardRailEquivalences.push_back(bToC);
+
+  SourceVertexChartAuthority &aToBPeer = fixture.authority[9];
+  aToBPeer.sourceCharts.push_back(
+      source_chart(7, fixture.sourceFaces, fixture.components, fixture.sheets,
+                   &fixture.hardEdges));
+  aToBPeer.hardRailEquivalences.push_back(aToB);
+
+  SourceVertexChartAuthority &aToDPeer = fixture.authority[13];
+  aToDPeer.sourceCharts.push_back(
+      source_chart(11, fixture.sourceFaces, fixture.components, fixture.sheets,
+                   &fixture.hardEdges));
+  aToDPeer.hardRailEquivalences.push_back(unusedAToD);
+
+  for (SourceVertexChartAuthority &authority : fixture.authority) {
+    std::sort(authority.sourceCharts.begin(), authority.sourceCharts.end());
+    std::sort(authority.hardRailEquivalences.begin(),
+              authority.hardRailEquivalences.end());
+  }
+  for (const int railVertex : {1, 5, 9, 13}) {
+    fixture.hardEdges.insert(source_edge_key(0, railVertex));
+  }
+  return fixture;
+}
+
+SourceAuthoritativeMeshValidatorOptions hard_rail_options(
+    const HardRailValidationFixture &fixture) {
+  auto options = make_options(
+      fixture.vertices, fixture.sourceFaces, fixture.components,
+      fixture.sheets, fixture.provenance, {{0, 1, 2, 5, 4, 3}});
+  options.vertexChartAuthority = &fixture.authority;
+  options.sourceHardFeatureEdges = fixture.hardEdges;
+  return options;
+}
+
+SourceAuthoritativeMeshValidatorOptions multi_rail_options(
+    const HardRailValidationFixture &fixture) {
+  auto options = make_options(fixture.vertices, fixture.sourceFaces,
+                              fixture.components, fixture.sheets,
+                              fixture.provenance, {{0, 2, 3, 4}});
+  options.vertexChartAuthority = &fixture.authority;
+  options.sourceHardFeatureEdges = fixture.hardEdges;
+  return options;
+}
+
+SurfaceOptimizationConstraints hard_rail_constraints(
+    const HardRailValidationFixture &fixture) {
+  SurfaceOptimizationConstraints constraints;
+  constraints.sourceVertices = fixture.vertices;
+  constraints.sourceFaces = fixture.sourceFaces;
+  constraints.sourceNormals =
+      Eigen::MatrixXd::Zero(fixture.sourceFaces.rows(), 3);
+  constraints.sourceFieldX =
+      Eigen::MatrixXd::Zero(fixture.sourceFaces.rows(), 3);
+  constraints.sourceFieldY =
+      Eigen::MatrixXd::Zero(fixture.sourceFaces.rows(), 3);
+  for (int face = 0; face < fixture.sourceFaces.rows(); ++face) {
+    constraints.sourceNormals.row(face) << 0.0, 0.0, 1.0;
+    constraints.sourceFieldX.row(face) << 1.0, 0.0, 0.0;
+    constraints.sourceFieldY.row(face) << 0.0, 1.0, 0.0;
+  }
+  constraints.sourceAuthority = test_source_authority(
+      fixture.sourceFaces, fixture.components, fixture.sheets);
+  constraints.sourceHardFeatureEdges = fixture.hardEdges;
+  constraints.vertexProvenance = fixture.provenance;
+  constraints.vertexChartAuthority = fixture.authority;
+  constraints.outputQuadSourceFaces.assign(
+      static_cast<std::size_t>(fixture.quads.rows()), -1);
+  constraints.localTargetSize =
+      Eigen::VectorXd::Ones(fixture.vertices.rows());
+  constraints.authoritativeBoundaryLoop = {0, 1, 2, 5, 4, 3};
+  constraints.authoritativeBoundaryLoops = {{0, 1, 2, 5, 4, 3}};
+  for (std::size_t index = 0;
+       index < constraints.authoritativeBoundaryLoop.size(); ++index) {
+    const int first = constraints.authoritativeBoundaryLoop[index];
+    const int second = constraints.authoritativeBoundaryLoop[
+        (index + 1U) % constraints.authoritativeBoundaryLoop.size()];
+    constraints.authoritativeBoundaryEdges.insert(
+        {std::min(first, second), std::max(first, second)});
+  }
+  return constraints;
+}
+
+directional::validation::source_authoritative_detail::SourceChartCompatibility
+resolve_quad_chart(const HardRailValidationFixture &fixture, const int face) {
+  const directional::validation::source_authoritative_detail::
+      SourcePointLabelSupport support(
+          &fixture.sourceFaces, test_source_authority(fixture.sourceFaces, fixture.components, fixture.sheets),
+          &fixture.hardEdges);
+  std::vector<const SurfacePoint *> points;
+  std::vector<const SourceVertexChartAuthority *> authority;
+  for (int corner = 0; corner < 4; ++corner) {
+    const int vertex = fixture.quads(face, corner);
+    points.push_back(&fixture.provenance[static_cast<std::size_t>(vertex)]);
+    authority.push_back(&fixture.authority[static_cast<std::size_t>(vertex)]);
+  }
+  return support.resolve_compatible_chart(points, authority,
+                                          &fixture.provenance,
+                                          &fixture.authority);
 }
 
 } // namespace
@@ -315,15 +673,22 @@ TEST(SurfaceMeshOptimizerPhase22,
   EXPECT_TRUE(
       has_code(mixedResult, MeshValidationFailureCode::LocalSheetMismatch));
 
-  provenance[0].component = 1;
-  const auto wrongLabel =
+  provenance[0].component = 77;
+  provenance[0].sheet = 88;
+  const auto rawProjectionTampered =
       directional::validation::validate_source_authoritative_surface_mesh(
           mixed, one_quad(),
           make_options(source, sourceFaces, components, sheets, provenance,
                        {{0, 1, 2, 3}}));
-  EXPECT_FALSE(wrongLabel.accepted);
-  EXPECT_TRUE(has_code(wrongLabel,
-                       MeshValidationFailureCode::SourceComponentMismatch));
+  EXPECT_EQ(mixedResult.accepted, rawProjectionTampered.accepted);
+  EXPECT_EQ(mixedResult.localSheetCompatibilityPassed,
+            rawProjectionTampered.localSheetCompatibilityPassed);
+  EXPECT_TRUE(has_code(rawProjectionTampered,
+                       MeshValidationFailureCode::LocalSheetMismatch));
+  EXPECT_FALSE(has_code(rawProjectionTampered,
+                        MeshValidationFailureCode::SourceComponentMismatch));
+  EXPECT_FALSE(has_code(rawProjectionTampered,
+                        MeshValidationFailureCode::SourceSheetMismatch));
 }
 
 TEST(SurfaceMeshOptimizerPhase22,
@@ -383,7 +748,6 @@ TEST(SurfaceMeshOptimizerPhase22,
       provenance_for(output, sourceVertices, sourceFaces, components, sheets);
   auto constraints = make_final_constraints(sourceVertices, sourceFaces,
                                              provenance);
-  constraints.requireSourceAuthoritativeValidation = true;
 
   EXPECT_FALSE(
       directional::geometry::source_authoritative_hard_invariants_valid(
@@ -392,14 +756,77 @@ TEST(SurfaceMeshOptimizerPhase22,
 
 
 
+
+TEST(SurfaceMeshOptimizerPhase22,
+     SourceAuthoritativeEntryPointsFailClosedWithoutTypedAuthority) {
+  const Eigen::MatrixXd vertices = square_vertices();
+  const Eigen::MatrixXi quads = one_quad();
+  SurfaceOptimizationConstraints constraints;
+  constraints.sourceVertices = vertices;
+  constraints.sourceFaces = square_triangles();
+  constraints.vertexProvenance = provenance_for(
+      vertices, constraints.sourceVertices, constraints.sourceFaces,
+      {0, 0}, {0, 0});
+
+  const auto optimization =
+      directional::geometry::optimize_source_authoritative_surface_mesh(
+          vertices, quads, constraints);
+  EXPECT_TRUE(optimization.rolledBackToInput);
+  EXPECT_FALSE(optimization.projectionHasCompleteProvenance);
+  ASSERT_FALSE(optimization.lastHardInvariantIssues.empty());
+  EXPECT_EQ(MeshValidationFailureCode::MissingSourceAuthority,
+            optimization.lastHardInvariantIssues.front().code);
+
+  const auto validation =
+      directional::geometry::validate_source_authoritative_final_surface_mesh(
+          vertices, quads, constraints, optimization);
+  EXPECT_FALSE(validation.accepted);
+  ASSERT_FALSE(validation.strictValidationIssues.empty());
+  EXPECT_EQ(MeshValidationFailureCode::MissingSourceAuthority,
+            validation.strictValidationIssues.front().code);
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     GenericMeshValidationIsInvariantToRawProjectionSheetLabels) {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0,
+      2.0, 0.0, 0.0,
+      0.0, 1.0, 0.0,
+      1.0, 0.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+  directional::validation::MeshValidatorOptions options;
+  options.requireVertexProvenanceForGeometry = true;
+  options.vertexProvenance.resize(4);
+  for (int vertex = 0; vertex < 4; ++vertex) {
+    auto &point = options.vertexProvenance[static_cast<std::size_t>(vertex)];
+    point.face = vertex == 3 ? 1 : 0;
+    point.component = 7;
+    point.sheet = 9;
+    point.barycentric << 1.0, 0.0, 0.0;
+    point.position = vertices.row(vertex).transpose();
+    point.squaredDistance = 0.0;
+  }
+  const auto baseline = directional::validation::MeshValidator::
+      validate_surface_mesh(vertices, faces, options);
+  options.vertexProvenance[3].component = 701;
+  options.vertexProvenance[3].sheet = 907;
+  const auto tampered = directional::validation::MeshValidator::
+      validate_surface_mesh(vertices, faces, options);
+  EXPECT_EQ(baseline.accepted, tampered.accepted);
+  ASSERT_EQ(baseline.issues.size(), tampered.issues.size());
+  for (std::size_t issue = 0; issue < baseline.issues.size(); ++issue) {
+    EXPECT_EQ(baseline.issues[issue].code, tampered.issues[issue].code);
+  }
+}
+
 TEST(SurfaceMeshOptimizerPhase22,
      RailConstraintBuilderUsesOutputVertexSequencesForBoundaryAndFeatures) {
   using directional::geometry::SurfaceCellRail;
   using directional::geometry::SurfaceCellRailKind;
   using directional::geometry::SurfaceCellRailSample;
 
-  SurfaceCellRail boundary;
-  boundary.id = 1;
+  SurfaceCellRail boundary(directional::tests::test_hard_rail_id(1));
   boundary.curveId = 1;
   boundary.component = 0;
   boundary.kind = SurfaceCellRailKind::Boundary;
@@ -417,8 +844,7 @@ TEST(SurfaceMeshOptimizerPhase22,
     boundary.samples.push_back(end);
   }
 
-  SurfaceCellRail feature;
-  feature.id = 2;
+  SurfaceCellRail feature(directional::tests::test_hard_rail_id(2));
   feature.curveId = 7;
   feature.component = 0;
   feature.kind = SurfaceCellRailKind::HardFeature;
@@ -438,7 +864,10 @@ TEST(SurfaceMeshOptimizerPhase22,
   const auto provenance = provenance_for(output, output, sourceFaces,
                                          components, sheets);
   SurfaceOptimizationConstraints boundaryConstraints;
-  boundaryConstraints.sourceFaceSheet = sheets;
+  boundaryConstraints.sourceVertices = output;
+  boundaryConstraints.sourceFaces = sourceFaces;
+  boundaryConstraints.sourceAuthority =
+      test_source_authority(sourceFaces, components, sheets);
   directional::geometry::fill_surface_optimization_rail_constraints(
       {boundary}, output, provenance, boundaryConstraints);
 
@@ -449,7 +878,10 @@ TEST(SurfaceMeshOptimizerPhase22,
   EXPECT_EQ(boundaryConstraints.authoritativeBoundaryEdges.size(), 4U);
 
   SurfaceOptimizationConstraints featureConstraints;
-  featureConstraints.sourceFaceSheet = sheets;
+  featureConstraints.sourceVertices = output;
+  featureConstraints.sourceFaces = sourceFaces;
+  featureConstraints.sourceAuthority =
+      test_source_authority(sourceFaces, components, sheets);
   directional::geometry::fill_surface_optimization_rail_constraints(
       {feature}, output, provenance, featureConstraints);
   EXPECT_TRUE(featureConstraints.featureRailAuthorityProvided);
@@ -540,19 +972,19 @@ TEST(SurfaceMeshOptimizerPhase22,
   SurfaceOptimizationConstraints constraints;
   constraints.sourceVertices = vertices;
   constraints.sourceFaces = sourceFaces;
-  constraints.sourcePositions = vertices;
   constraints.sourceNormals.resize(4, 3);
   constraints.sourceNormals << 0.0, 0.0, 1.0,
       0.0, 0.0, 1.0,
       1.0, 0.0, 0.0,
       1.0, 0.0, 0.0;
-  constraints.sourceFaceComponent = {0, 0, 1, 1};
-  constraints.sourceFaceSheet = {0, 0, 0, 0};
+  const std::vector<int> sourceComponents = {0, 0, 1, 1};
+  const std::vector<int> sourceSheets = {0, 0, 0, 0};
+  constraints.sourceAuthority = test_source_authority(sourceFaces, sourceComponents, sourceSheets);
 
   directional::geometry::SurfaceProjectionBvh bvh(vertices, sourceFaces);
   directional::geometry::SurfaceProjectionOptions projectionOptions;
-  projectionOptions.faceComponents = &constraints.sourceFaceComponent;
-  projectionOptions.faceSheets = &constraints.sourceFaceSheet;
+  projectionOptions.faceComponents = &sourceComponents;
+  projectionOptions.faceSheets = &sourceSheets;
   std::vector<SurfacePoint> provenance;
   provenance.reserve(8);
   for (int vertex = 0; vertex < vertices.rows(); ++vertex) {
@@ -579,4 +1011,968 @@ TEST(SurfaceMeshOptimizerPhase22,
   flipped.row(1) << 4, 7, 6, 5;
   EXPECT_FALSE(directional::geometry::local_orientation_valid(
       vertices, flipped, &constraints, &provenance));
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     ReciprocalHardRailAuthorityResolvesOneExactChartSidePerQuad) {
+  const HardRailValidationFixture fixture =
+      make_hard_rail_validation_fixture();
+  const auto validation =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          fixture.vertices, fixture.quads, hard_rail_options(fixture));
+  EXPECT_TRUE(validation.accepted);
+  EXPECT_TRUE(validation.localSheetCompatibilityPassed);
+
+  const auto left = resolve_quad_chart(fixture, 0);
+  const auto right = resolve_quad_chart(fixture, 1);
+  ASSERT_TRUE(left.valid());
+  ASSERT_TRUE(right.valid());
+  EXPECT_NE(left.semanticSide, right.semanticSide);
+
+  const SurfaceOptimizationConstraints constraints =
+      hard_rail_constraints(fixture);
+  const auto rightScope = directional::geometry::surface_optimizer_detail::
+      consistent_source_scope(fixture.quads, 1, fixture.provenance,
+                              &constraints);
+  ASSERT_TRUE(rightScope.has_value());
+  const SurfacePoint rightReference =
+      directional::geometry::surface_optimizer_detail::
+          quad_reference_surface_point(fixture.vertices, fixture.quads, 1,
+                                       constraints, fixture.provenance);
+  ASSERT_TRUE(rightReference.valid());
+  const auto rightReferenceScope =
+      directional::geometry::surface_optimizer_detail::source_face_scope(
+          constraints, rightReference.face);
+  ASSERT_TRUE(rightReferenceScope.has_value());
+  EXPECT_EQ(rightReferenceScope, rightScope);
+  EXPECT_TRUE(directional::geometry::source_authoritative_hard_invariants_valid(
+      fixture.vertices, fixture.quads, constraints, fixture.provenance));
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     MultiRailChainReachesSelectedChartWithoutConsumingUnusedRelation) {
+  const HardRailValidationFixture fixture =
+      make_multi_rail_validation_fixture();
+  const auto selected = resolve_quad_chart(fixture, 0);
+  ASSERT_TRUE(selected.valid());
+  EXPECT_TRUE(std::binary_search(selected.chartFaces.begin(),
+                                 selected.chartFaces.end(), 0));
+  EXPECT_TRUE(std::binary_search(selected.chartFaces.begin(),
+                                 selected.chartFaces.end(), 3));
+
+  const auto validation =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          fixture.vertices, fixture.quads, multi_rail_options(fixture));
+  EXPECT_TRUE(validation.accepted);
+  EXPECT_TRUE(validation.localSheetCompatibilityPassed);
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     MultiRailReciprocityMayBeCarriedOutsideTheSelectedFace) {
+  HardRailValidationFixture fixture =
+      make_multi_rail_validation_fixture();
+  for (int corner = 0; corner < fixture.quads.cols(); ++corner) {
+    EXPECT_NE(fixture.quads(0, corner), 5);
+    EXPECT_NE(fixture.quads(0, corner), 9);
+    EXPECT_NE(fixture.quads(0, corner), 13);
+  }
+  ASSERT_TRUE(resolve_quad_chart(fixture, 0).valid());
+
+  auto &offFacePeer = fixture.authority[5].hardRailEquivalences;
+  offFacePeer.erase(
+      std::remove_if(offFacePeer.begin(), offFacePeer.end(),
+                     [](const SourceHardRailChartEquivalence &equivalence) {
+                       return equivalence.rail.has_value() &&
+                              equivalence.rail->index() == 21U;
+                     }),
+      offFacePeer.end());
+  const auto validation =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          fixture.vertices, fixture.quads, multi_rail_options(fixture));
+  EXPECT_FALSE(validation.accepted);
+  EXPECT_TRUE(
+      has_code(validation, MeshValidationFailureCode::LocalSheetMismatch));
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     MissingMultiRailGraphLinkLeavesSelectedChartUnreachable) {
+  HardRailValidationFixture fixture =
+      make_multi_rail_validation_fixture();
+  for (const int vertex : {0, 5}) {
+    auto &relations =
+        fixture.authority[static_cast<std::size_t>(vertex)]
+            .hardRailEquivalences;
+    relations.erase(
+        std::remove_if(relations.begin(), relations.end(),
+                       [](const SourceHardRailChartEquivalence &equivalence) {
+                         return equivalence.rail.has_value() &&
+                              equivalence.rail->index() == 21U;
+                       }),
+        relations.end());
+  }
+  auto &peerCharts = fixture.authority[5].sourceCharts;
+  const auto removedChart = source_chart(
+      3, fixture.sourceFaces, fixture.components, fixture.sheets,
+      &fixture.hardEdges);
+  peerCharts.erase(
+      std::remove_if(peerCharts.begin(), peerCharts.end(),
+                     [&](const auto &chart) {
+                       return chart.face == removedChart.face;
+                     }),
+      peerCharts.end());
+
+  const auto validation =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          fixture.vertices, fixture.quads, multi_rail_options(fixture));
+  EXPECT_FALSE(validation.accepted);
+  EXPECT_TRUE(
+      has_code(validation, MeshValidationFailureCode::LocalSheetMismatch));
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     MissingOrMisalignedHardRailChartAuthorityFailsClosed) {
+  HardRailValidationFixture missing = make_hard_rail_validation_fixture();
+  missing.authority[1].hardRailEquivalences.clear();
+  const auto missingResult =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          missing.vertices, missing.quads, hard_rail_options(missing));
+  EXPECT_FALSE(missingResult.accepted);
+  EXPECT_TRUE(
+      has_code(missingResult, MeshValidationFailureCode::LocalSheetMismatch));
+
+  HardRailValidationFixture misaligned = make_hard_rail_validation_fixture();
+  misaligned.authority.pop_back();
+  const auto misalignedResult =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          misaligned.vertices, misaligned.quads,
+          hard_rail_options(misaligned));
+  EXPECT_FALSE(misalignedResult.accepted);
+  EXPECT_TRUE(has_code(misalignedResult,
+                       MeshValidationFailureCode::LocalSheetMismatch));
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     TamperedHardRailIdentityRouteAndChartAuthorityFailClosed) {
+  const auto expect_local_sheet_mismatch = [](const auto &fixture) {
+    const auto result =
+        directional::validation::validate_source_authoritative_surface_mesh(
+            fixture.vertices, fixture.quads, hard_rail_options(fixture));
+    EXPECT_FALSE(result.accepted);
+    EXPECT_TRUE(
+        has_code(result, MeshValidationFailureCode::LocalSheetMismatch));
+  };
+
+  HardRailValidationFixture wrongRail = make_hard_rail_validation_fixture();
+  {
+    const auto rail = directional::authority::HardRailId::from_index(8, 4096);
+    ASSERT_TRUE(rail.has_value());
+    wrongRail.authority[1].hardRailEquivalences[0].rail = rail.value();
+  }
+  expect_local_sheet_mismatch(wrongRail);
+
+  HardRailValidationFixture wrongRoute = make_hard_rail_validation_fixture();
+  wrongRoute.authority[1]
+      .hardRailEquivalences[0]
+      .route = hard_rail_route(source_edge_key(0, 1));
+  expect_local_sheet_mismatch(wrongRoute);
+
+  HardRailValidationFixture nonreciprocal =
+      make_hard_rail_validation_fixture();
+  nonreciprocal.authority[1].hardRailEquivalences[0].secondFrontEdge = 12;
+  expect_local_sheet_mismatch(nonreciprocal);
+
+  HardRailValidationFixture unsupported = make_hard_rail_validation_fixture();
+  unsupported.authority[1].sourceCharts.push_back(
+      source_chart(1, unsupported.sourceFaces, unsupported.components,
+                   unsupported.sheets, &unsupported.hardEdges));
+  std::sort(unsupported.authority[1].sourceCharts.begin(),
+            unsupported.authority[1].sourceCharts.end());
+  expect_local_sheet_mismatch(unsupported);
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     AmbiguousHardRailChartSidesAreRejectedInsteadOfOrdered) {
+  Eigen::MatrixXd sourceVertices(9, 3);
+  sourceVertices << -1.0, -1.0, 0.0,
+      1.0, -1.0, 0.0,
+      1.0, 1.0, 0.0,
+      -1.0, 1.0, 0.0,
+      0.0, 0.0, 0.0,
+      -2.0, -2.0, 0.0,
+      2.0, -2.0, 0.0,
+      2.0, 2.0, 0.0,
+      -2.0, 2.0, 0.0;
+  Eigen::MatrixXi sourceFaces(12, 3);
+  sourceFaces << 4, 0, 1,
+      4, 1, 2,
+      4, 2, 3,
+      4, 3, 0,
+      5, 6, 1,
+      5, 1, 0,
+      6, 7, 2,
+      6, 2, 1,
+      7, 8, 3,
+      7, 3, 2,
+      8, 5, 0,
+      8, 0, 3;
+  const std::vector<int> components(12, 0);
+  const std::vector<int> sheets = {0, 0, 0, 0, 1, 1,
+                                   1, 1, 1, 1, 1, 1};
+  Eigen::MatrixXd output = sourceVertices.topRows(4);
+  const Eigen::MatrixXi quads = one_quad();
+  std::vector<SurfacePoint> provenance = {
+      source_vertex_point(sourceVertices, sourceFaces, components, sheets,
+                          0, 0),
+      source_vertex_point(sourceVertices, sourceFaces, components, sheets,
+                          1, 0),
+      source_vertex_point(sourceVertices, sourceFaces, components, sheets,
+                          2, 1),
+      source_vertex_point(sourceVertices, sourceFaces, components, sheets,
+                          3, 2)};
+  std::set<directional::authority::SourceEdgeTopologyKey> hardEdges = {
+      source_edge_key(0, 1), source_edge_key(1, 2),
+      source_edge_key(2, 3), source_edge_key(3, 0)};
+  std::vector<SourceVertexChartAuthority> authority(4);
+  for (std::size_t vertex = 0; vertex < authority.size(); ++vertex) {
+    authority[vertex].retained = true;
+    authority[vertex].sourceCharts.push_back(
+        source_chart(provenance[vertex].face, sourceFaces, components, sheets,
+                     &hardEdges));
+  }
+  const auto add_relation = [&](const int firstVertex, const int secondVertex,
+                                const int targetFace, const int railId,
+                                const int firstFrontEdge) {
+    const auto topology = source_edge_key(firstVertex, secondVertex);
+    const SourceHardRailChartEquivalence equivalence =
+        hard_rail_equivalence(railId, firstFrontEdge, firstFrontEdge + 1,
+                              topology);
+    for (const int vertex : {firstVertex, secondVertex}) {
+      authority[static_cast<std::size_t>(vertex)].sourceCharts.push_back(
+          source_chart(targetFace, sourceFaces, components, sheets, &hardEdges));
+      authority[static_cast<std::size_t>(vertex)]
+          .hardRailEquivalences.push_back(equivalence);
+    }
+  };
+  add_relation(0, 1, 5, 10, 20);
+  add_relation(1, 2, 7, 11, 22);
+  add_relation(2, 3, 9, 12, 24);
+  add_relation(3, 0, 11, 13, 26);
+  for (SourceVertexChartAuthority &vertexAuthority : authority) {
+    std::sort(vertexAuthority.sourceCharts.begin(),
+              vertexAuthority.sourceCharts.end());
+    std::sort(vertexAuthority.hardRailEquivalences.begin(),
+              vertexAuthority.hardRailEquivalences.end());
+  }
+  auto options = make_options(sourceVertices, sourceFaces, components, sheets,
+                              provenance, {{0, 1, 2, 3}});
+  options.vertexChartAuthority = &authority;
+  options.sourceHardFeatureEdges = hardEdges;
+
+  const auto result =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          output, quads, options);
+  EXPECT_FALSE(result.accepted);
+  EXPECT_TRUE(has_code(result, MeshValidationFailureCode::LocalSheetMismatch));
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     DisconnectedCloseSheetsRejectInjectedChartAuthority) {
+  Eigen::MatrixXd source(8, 3);
+  source << 0.0, 0.0, 0.0,
+      1.0, 0.0, 0.0,
+      1.0, 1.0, 0.0,
+      0.0, 1.0, 0.0,
+      0.0, 0.0, 0.001,
+      1.0, 0.0, 0.001,
+      1.0, 1.0, 0.001,
+      0.0, 1.0, 0.001;
+  Eigen::MatrixXi sourceFaces(4, 3);
+  sourceFaces << 0, 1, 2,
+      0, 2, 3,
+      4, 6, 5,
+      4, 7, 6;
+  const std::vector<int> components = {0, 0, 1, 1};
+  const std::vector<int> sheets = {0, 0, 1, 1};
+  Eigen::MatrixXd mixed(4, 3);
+  mixed << source.row(0), source.row(1), source.row(6), source.row(7);
+  const auto provenance =
+      provenance_for(mixed, source, sourceFaces, components, sheets);
+  std::vector<SourceVertexChartAuthority> authority(provenance.size());
+  for (std::size_t vertex = 0; vertex < authority.size(); ++vertex) {
+    authority[vertex].retained = true;
+    authority[vertex].sourceCharts.push_back(
+        source_chart(provenance[vertex].face, sourceFaces, components, sheets));
+  }
+  authority[0].sourceCharts.push_back(
+      source_chart(2, sourceFaces, components, sheets));
+  std::sort(authority[0].sourceCharts.begin(),
+            authority[0].sourceCharts.end());
+  auto options = make_options(source, sourceFaces, components, sheets,
+                              provenance, {{0, 1, 2, 3}});
+  options.vertexChartAuthority = &authority;
+
+  const auto result =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          mixed, one_quad(), options);
+  EXPECT_FALSE(result.accepted);
+  EXPECT_TRUE(has_code(result, MeshValidationFailureCode::LocalSheetMismatch));
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     HardRailChartResolutionIsInvariantToSourceFaceRows) {
+  const HardRailValidationFixture original =
+      make_hard_rail_validation_fixture();
+  const auto originalValidation =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          original.vertices, original.quads, hard_rail_options(original));
+  ASSERT_TRUE(originalValidation.accepted);
+  const auto originalLeft = resolve_quad_chart(original, 0);
+  const auto originalRight = resolve_quad_chart(original, 1);
+  ASSERT_TRUE(originalLeft.valid());
+  ASSERT_TRUE(originalRight.valid());
+  for (const int vertex : {1, 4}) {
+    const auto &charts =
+        original.authority[static_cast<std::size_t>(vertex)].sourceCharts;
+    ASSERT_GE(charts.size(), 2U);
+    EXPECT_NE(charts.front().face, charts.back().face);
+  }
+
+  HardRailValidationFixture reversed = original;
+  std::vector<int> remap(
+      static_cast<std::size_t>(original.sourceFaces.rows()), -1);
+  for (int oldFace = 0; oldFace < original.sourceFaces.rows(); ++oldFace) {
+    const int newFace = original.sourceFaces.rows() - 1 - oldFace;
+    reversed.sourceFaces.row(newFace) = original.sourceFaces.row(oldFace);
+    reversed.components[static_cast<std::size_t>(newFace)] =
+        original.components[static_cast<std::size_t>(oldFace)];
+    reversed.sheets[static_cast<std::size_t>(newFace)] =
+        original.sheets[static_cast<std::size_t>(oldFace)];
+    remap[static_cast<std::size_t>(oldFace)] = newFace;
+  }
+  for (SurfacePoint &point : reversed.provenance) {
+    point.face = remap[static_cast<std::size_t>(point.face)];
+  }
+  remap_source_charts(reversed.authority, remap, reversed.sourceFaces,
+                      reversed.components, reversed.sheets,
+                      &reversed.hardEdges);
+
+  const auto reversedValidation =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          reversed.vertices, reversed.quads, hard_rail_options(reversed));
+  EXPECT_TRUE(reversedValidation.accepted);
+  const auto reversedLeft = resolve_quad_chart(reversed, 0);
+  const auto reversedRight = resolve_quad_chart(reversed, 1);
+  ASSERT_TRUE(reversedLeft.valid());
+  ASSERT_TRUE(reversedRight.valid());
+  EXPECT_EQ(originalLeft.semanticSide, reversedLeft.semanticSide);
+  EXPECT_EQ(originalRight.semanticSide, reversedRight.semanticSide);
+  for (const int vertex : {1, 4}) {
+    EXPECT_EQ(original.authority[static_cast<std::size_t>(vertex)].sourceCharts,
+              reversed.authority[static_cast<std::size_t>(vertex)].sourceCharts);
+  }
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     MultiRailChartReachabilityIsInvariantToSourceFaceRows) {
+  const HardRailValidationFixture original =
+      make_multi_rail_validation_fixture();
+  const auto originalChart = resolve_quad_chart(original, 0);
+  ASSERT_TRUE(originalChart.valid());
+
+  HardRailValidationFixture reversed = original;
+  std::vector<int> remap(
+      static_cast<std::size_t>(original.sourceFaces.rows()), -1);
+  for (int oldFace = 0; oldFace < original.sourceFaces.rows(); ++oldFace) {
+    const int newFace = original.sourceFaces.rows() - 1 - oldFace;
+    reversed.sourceFaces.row(newFace) = original.sourceFaces.row(oldFace);
+    reversed.components[static_cast<std::size_t>(newFace)] =
+        original.components[static_cast<std::size_t>(oldFace)];
+    reversed.sheets[static_cast<std::size_t>(newFace)] =
+        original.sheets[static_cast<std::size_t>(oldFace)];
+    remap[static_cast<std::size_t>(oldFace)] = newFace;
+  }
+  for (SurfacePoint &point : reversed.provenance) {
+    point.face = remap[static_cast<std::size_t>(point.face)];
+  }
+  remap_source_charts(reversed.authority, remap, reversed.sourceFaces,
+                      reversed.components, reversed.sheets,
+                      &reversed.hardEdges);
+
+  const auto reversedChart = resolve_quad_chart(reversed, 0);
+  ASSERT_TRUE(reversedChart.valid());
+  EXPECT_EQ(originalChart.semanticSide, reversedChart.semanticSide);
+  const auto reversedValidation =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          reversed.vertices, reversed.quads, multi_rail_options(reversed));
+  EXPECT_TRUE(reversedValidation.accepted);
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     HardRailChartAuthorityIgnoresRawProjectionLabelsButNotGeometryFailures) {
+  const auto expect_code = [](const auto &fixture,
+                              const MeshValidationFailureCode code) {
+    const auto result =
+        directional::validation::validate_source_authoritative_surface_mesh(
+            fixture.vertices, fixture.quads, hard_rail_options(fixture));
+    EXPECT_FALSE(result.accepted);
+    EXPECT_TRUE(has_code(result, code));
+  };
+
+  HardRailValidationFixture barycentric =
+      make_hard_rail_validation_fixture();
+  barycentric.provenance[2].barycentric << 2.0, -1.0, 0.0;
+  expect_code(barycentric, MeshValidationFailureCode::InvalidProvenance);
+
+  HardRailValidationFixture position = make_hard_rail_validation_fixture();
+  position.provenance[2].position.z() = 0.25;
+  expect_code(position, MeshValidationFailureCode::SourcePositionMismatch);
+
+  HardRailValidationFixture rawProjection =
+      make_hard_rail_validation_fixture();
+  rawProjection.provenance[2].component = 91;
+  rawProjection.provenance[2].sheet = 92;
+  const auto rawProjectionResult =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          rawProjection.vertices, rawProjection.quads,
+          hard_rail_options(rawProjection));
+  EXPECT_TRUE(rawProjectionResult.accepted);
+  EXPECT_FALSE(has_code(rawProjectionResult,
+                        MeshValidationFailureCode::SourceComponentMismatch));
+  EXPECT_FALSE(has_code(rawProjectionResult,
+                        MeshValidationFailureCode::SourceSheetMismatch));
+}
+
+namespace {
+
+using RailContainsVertexFn = bool (*)(
+    const Eigen::MatrixXi &, directional::authority::SourceFaceId,
+    directional::authority::SourceVertexId);
+
+static_assert(std::is_same_v<
+              decltype(&directional::geometry::surface_optimization_rail_detail::
+                           source_face_contains_vertex),
+              RailContainsVertexFn>);
+static_assert(!std::is_invocable_r_v<
+              bool, RailContainsVertexFn, const Eigen::MatrixXi &,
+              directional::authority::SourceVertexId,
+              directional::authority::SourceFaceId>);
+
+directional::geometry::SurfaceOptimizationConstraints
+make_m1b_sheet_constraints() {
+  directional::geometry::SurfaceOptimizationConstraints constraints;
+  constraints.sourceVertices = Eigen::MatrixXd::Zero(7, 3);
+  constraints.sourceFaces.resize(3, 3);
+  constraints.sourceFaces << 0, 1, 2,
+      0, 2, 3,
+      4, 5, 6;
+  constraints.sourceAuthority = test_source_authority(constraints.sourceFaces, {7, 7, 7}, {0, 1, 1});
+  return constraints;
+}
+
+directional::geometry::SurfacePoint m1b_provenance(
+    const Eigen::Vector3d &barycentric) {
+  directional::geometry::SurfacePoint point;
+  point.face = 0;
+  point.component = 7;
+  point.sheet = 0;
+  point.barycentric = barycentric;
+  point.squaredDistance = 0.0;
+  return point;
+}
+
+directional::geometry::SurfaceFeatureCurveInterval m1b_interval(
+    const int sourceFace) {
+  directional::geometry::SurfaceFeatureCurveInterval interval;
+  interval.sourceFace = sourceFace;
+  return interval;
+}
+
+} // namespace
+
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     SameSheetRailAssignmentRemainsAccepted) {
+  auto constraints = make_m1b_sheet_constraints();
+  constraints.sourceAuthority = test_source_authority(constraints.sourceFaces, {7, 7, 7}, {0, 0, 1});
+
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(5));
+  rail.curveId = 9;
+  rail.component = 7;
+  rail.samples.resize(2);
+  rail.samples[0].sourceFace = 0;
+  rail.samples[0].railParameter = 0.0;
+  rail.samples[0].position << 0.0, 0.0, 0.0;
+  rail.samples[1].sourceFace = 0;
+  rail.samples[1].railParameter = 1.0;
+  rail.samples[1].position << 1.0, 0.0, 0.0;
+
+  Eigen::MatrixXd output(1, 3);
+  output << 0.5, 0.0, 0.0;
+  auto provenance = m1b_provenance(Eigen::Vector3d(0.5, 0.5, 0.0));
+  provenance.sheet = 0;
+
+  directional::geometry::fill_surface_optimization_rail_constraints(
+      {rail}, output, {provenance}, constraints);
+
+  ASSERT_EQ(constraints.featureVertices, std::vector<int>({0}));
+  ASSERT_EQ(constraints.featureCurveIds.size(), 1);
+  EXPECT_EQ(constraints.featureCurveIds(0), 9);
+  EXPECT_EQ(constraints.featureRailIds[0], directional::tests::test_hard_rail_id(5));
+}
+
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     CrossSheetExactVertexAndEdgeIncidenceRemainAccepted) {
+  const auto constraints = make_m1b_sheet_constraints();
+  const auto interval = m1b_interval(1);
+
+  EXPECT_TRUE(directional::geometry::surface_optimization_rail_detail::
+                  provenance_supports_interval_sheet(
+                      m1b_provenance(Eigen::Vector3d(1.0, 0.0, 0.0)),
+                      interval, constraints));
+  EXPECT_TRUE(directional::geometry::surface_optimization_rail_detail::
+                  provenance_supports_interval_sheet(
+                      m1b_provenance(Eigen::Vector3d(0.5, 0.0, 0.5)),
+                      interval, constraints));
+}
+
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     CrossSheetInteriorProvenanceRemainsRejected) {
+  const auto constraints = make_m1b_sheet_constraints();
+  EXPECT_FALSE(directional::geometry::surface_optimization_rail_detail::
+                   provenance_supports_interval_sheet(
+                       m1b_provenance(Eigen::Vector3d(0.2, 0.3, 0.5)),
+                       m1b_interval(1), constraints));
+}
+
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     InvalidSourceFaceLocatorsRemainRejected) {
+  const auto constraints = make_m1b_sheet_constraints();
+  const auto point = m1b_provenance(Eigen::Vector3d(1.0, 0.0, 0.0));
+
+  EXPECT_FALSE(directional::geometry::surface_optimization_rail_detail::
+                   provenance_supports_interval_sheet(point, m1b_interval(-1),
+                                                       constraints));
+  EXPECT_FALSE(directional::geometry::surface_optimization_rail_detail::
+                   provenance_supports_interval_sheet(point, m1b_interval(3),
+                                                       constraints));
+  auto invalidPoint = point;
+  invalidPoint.face = 3;
+  EXPECT_FALSE(directional::geometry::surface_optimization_rail_detail::
+                   provenance_supports_interval_sheet(
+                       invalidPoint, m1b_interval(1), constraints));
+}
+
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     WrongSourceFaceWithoutTypedSupportRemainsRejected) {
+  const auto constraints = make_m1b_sheet_constraints();
+  EXPECT_FALSE(directional::geometry::surface_optimization_rail_detail::
+                   provenance_supports_interval_sheet(
+                       m1b_provenance(Eigen::Vector3d(0.5, 0.0, 0.5)),
+                       m1b_interval(2), constraints));
+}
+
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     TypedSourceComponentMismatchRemainsRejected) {
+  const auto point = m1b_provenance(Eigen::Vector3d(1.0, 0.0, 0.0));
+  const auto interval = m1b_interval(1);
+
+  auto componentMismatch = make_m1b_sheet_constraints();
+  componentMismatch.sourceAuthority = test_source_authority(
+      componentMismatch.sourceFaces, {7, 8, 7}, {0, 1, 1});
+  EXPECT_FALSE(directional::geometry::surface_optimization_rail_detail::
+                   provenance_supports_interval_sheet(
+                       point, interval, componentMismatch));
+}
+
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     RawProjectionLabelsDoNotAffectTypedRailCompatibility) {
+  const auto constraints = make_m1b_sheet_constraints();
+  const auto baselinePoint =
+      m1b_provenance(Eigen::Vector3d(1.0, 0.0, 0.0));
+  const auto baselineInterval = m1b_interval(1);
+  const bool baseline =
+      directional::geometry::surface_optimization_rail_detail::
+          provenance_supports_interval_sheet(
+              baselinePoint, baselineInterval, constraints);
+  ASSERT_TRUE(baseline);
+
+  auto tamperedPoint = baselinePoint;
+  tamperedPoint.component = 101;
+  tamperedPoint.sheet = 102;
+  auto tamperedInterval = baselineInterval;
+  EXPECT_EQ(baseline,
+            directional::geometry::surface_optimization_rail_detail::
+                provenance_supports_interval_sheet(
+                    tamperedPoint, tamperedInterval, constraints));
+}
+
+namespace {
+
+// A planar n x n grid of 2 n^2 source triangles on [0, 1]^2 with one
+// component and one sheet. Sized so that one source binding check, BVH or
+// chart graph per output vertex, rail interval or quad costs seconds, while
+// one per stage costs milliseconds (RA-201).
+SurfaceOptimizationConstraints make_source_grid_constraints(const int n) {
+  SurfaceOptimizationConstraints constraints;
+  constraints.sourceVertices.resize((n + 1) * (n + 1), 3);
+  for (int j = 0; j <= n; ++j) {
+    for (int i = 0; i <= n; ++i) {
+      constraints.sourceVertices.row(j * (n + 1) + i)
+          << static_cast<double>(i) / n,
+          static_cast<double>(j) / n, 0.0;
+    }
+  }
+  constraints.sourceFaces.resize(2 * n * n, 3);
+  for (int j = 0; j < n; ++j) {
+    for (int i = 0; i < n; ++i) {
+      const int v = j * (n + 1) + i;
+      constraints.sourceFaces.row(2 * (j * n + i)) << v, v + 1, v + n + 2;
+      constraints.sourceFaces.row(2 * (j * n + i) + 1) << v, v + n + 2,
+          v + n + 1;
+    }
+  }
+  const int faces = static_cast<int>(constraints.sourceFaces.rows());
+  constraints.sourceNormals = Eigen::MatrixXd::Zero(faces, 3);
+  constraints.sourceFieldX = Eigen::MatrixXd::Zero(faces, 3);
+  constraints.sourceFieldY = Eigen::MatrixXd::Zero(faces, 3);
+  constraints.sourceNormals.col(2).setOnes();
+  constraints.sourceFieldX.col(0).setOnes();
+  constraints.sourceFieldY.col(1).setOnes();
+  const std::vector<int> zeros(static_cast<std::size_t>(faces), 0);
+  constraints.sourceAuthority =
+      test_source_authority(constraints.sourceFaces, zeros, zeros);
+  constraints.localTargetSize =
+      Eigen::VectorXd::Ones(constraints.sourceVertices.rows());
+  return constraints;
+}
+
+double seconds_since(const std::chrono::steady_clock::time_point start) {
+  return std::chrono::duration<double>(std::chrono::steady_clock::now() - start)
+      .count();
+}
+
+} // namespace
+
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     RailFillAssignsNoVertexWithoutBoundSourceAuthority) {
+  // The authority carries the same labels but was built for another face
+  // matrix of the same size, so only the source binding check rejects it.
+  auto constraints = make_m1b_sheet_constraints();
+  Eigen::MatrixXi otherFaces(3, 3);
+  otherFaces << 0, 1, 3,
+      0, 2, 3,
+      4, 5, 6;
+  constraints.sourceAuthority =
+      test_source_authority(otherFaces, {7, 7, 7}, {0, 0, 1});
+  ASSERT_FALSE(constraints.sourceAuthority->matches_source_faces(
+      constraints.sourceFaces,
+      static_cast<std::size_t>(constraints.sourceVertices.rows())));
+
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(5));
+  rail.curveId = 9;
+  rail.component = 7;
+  rail.samples.resize(2);
+  rail.samples[0].sourceFace = 0;
+  rail.samples[0].railParameter = 0.0;
+  rail.samples[0].position << 0.0, 0.0, 0.0;
+  rail.samples[1].sourceFace = 0;
+  rail.samples[1].railParameter = 1.0;
+  rail.samples[1].position << 1.0, 0.0, 0.0;
+
+  Eigen::MatrixXd output(1, 3);
+  output << 0.5, 0.0, 0.0;
+  auto provenance = m1b_provenance(Eigen::Vector3d(0.5, 0.5, 0.0));
+  provenance.sheet = 0;
+
+  directional::geometry::fill_surface_optimization_rail_constraints(
+      {rail}, output, {provenance}, constraints);
+
+  EXPECT_TRUE(constraints.featureVertices.empty());
+  ASSERT_EQ(constraints.featureCurveIds.size(), 1);
+  EXPECT_EQ(constraints.featureCurveIds(0), -1);
+}
+
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     RailFillChecksSourceBindingOncePerFill) {
+  // 20,000 source faces, 600 rail intervals and 600 output vertices: a
+  // binding check per (vertex, interval) pair reads every source face 720,000
+  // times.
+  auto constraints = make_source_grid_constraints(100);
+  constexpr int intervals = 600;
+  constexpr int count = 600;
+  directional::geometry::SurfaceCellRail rail(
+      directional::tests::test_hard_rail_id(1));
+  rail.curveId = 1;
+  rail.component = 0;
+  for (int k = 0; k < intervals; ++k) {
+    for (const int end : {k, k + 1}) {
+      directional::geometry::SurfaceCellRailSample sample;
+      sample.sourceFace = 0;
+      sample.railParameter = static_cast<double>(end);
+      sample.position << static_cast<double>(end) / intervals, 0.0, 0.0;
+      rail.samples.push_back(sample);
+    }
+  }
+  Eigen::MatrixXd output(count, 3);
+  std::vector<SurfacePoint> provenance;
+  for (int vertex = 0; vertex < count; ++vertex) {
+    output.row(vertex) << (vertex + 0.5) / count, 0.0, 0.0;
+    SurfacePoint point;
+    point.face = 0;
+    point.component = 0;
+    point.sheet = 0;
+    point.barycentric = Eigen::Vector3d::Constant(1.0 / 3.0);
+    point.squaredDistance = 0.0;
+    provenance.push_back(point);
+  }
+
+  const auto start = std::chrono::steady_clock::now();
+  directional::geometry::fill_surface_optimization_rail_constraints(
+      {rail}, output, provenance, constraints);
+  const double seconds = seconds_since(start);
+  EXPECT_EQ(constraints.featureVertices.size(), static_cast<std::size_t>(count));
+  EXPECT_LT(seconds, 2.0);
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     LentProjectionCacheAnswersOnlyForItsOwnConstraints) {
+  const Eigen::MatrixXd source = square_vertices();
+  const Eigen::MatrixXi triangles = square_triangles();
+  const std::vector<int> labels(2, 0);
+  const auto provenance =
+      provenance_for(source, source, triangles, labels, labels);
+  const SurfaceOptimizationConstraints lower =
+      make_final_constraints(source, triangles, provenance);
+  SurfaceOptimizationConstraints upper = lower;
+  upper.sourceVertices.col(2).array() += 5.0;
+  const Eigen::RowVector3d query(0.25, 0.75, 4.0);
+
+  const SurfacePoint own = directional::geometry::surface_optimizer_detail::
+      nearest_source_point(query, upper);
+  ASSERT_TRUE(own.valid());
+  ASSERT_NEAR(own.position.z(), 5.0, 1.0e-12);
+
+  // A cache built for other constraints is ignored, not trusted.
+  directional::geometry::surface_optimizer_detail::SourceProjectionCache
+      lowerCache(lower);
+  const SurfacePoint ignored = directional::geometry::surface_optimizer_detail::
+      nearest_source_point(query, upper, std::nullopt, &lowerCache);
+  EXPECT_EQ(lowerCache.queryCount, 0U);
+  EXPECT_EQ(ignored.face, own.face);
+  EXPECT_TRUE(ignored.position.isApprox(own.position));
+
+  // A cache built for these constraints answers the query itself.
+  directional::geometry::surface_optimizer_detail::SourceProjectionCache
+      upperCache(upper);
+  const SurfacePoint lent = directional::geometry::surface_optimizer_detail::
+      nearest_source_point(query, upper, std::nullopt, &upperCache);
+  EXPECT_EQ(upperCache.queryCount, 1U);
+  EXPECT_EQ(lent.face, own.face);
+  EXPECT_TRUE(lent.position.isApprox(own.position));
+}
+
+TEST(SurfaceMeshOptimizerPhase22, LentProjectionCacheBuildsNoSourceBvhPerQuery) {
+  // 20,000 source faces and 10,000 queries: a source authority check and BVH
+  // per query take tens of seconds; the lent cache answers them all.
+  const SurfaceOptimizationConstraints constraints =
+      make_source_grid_constraints(100);
+  directional::geometry::surface_optimizer_detail::SourceProjectionCache cache(
+      constraints);
+  constexpr int queries = 10000;
+  const auto start = std::chrono::steady_clock::now();
+  for (int query = 0; query < queries; ++query) {
+    const Eigen::RowVector3d point((query + 0.5) / queries, 0.37, 0.25);
+    ASSERT_TRUE(directional::geometry::surface_optimizer_detail::
+                    nearest_source_point(point, constraints, std::nullopt,
+                                         &cache)
+                        .valid());
+  }
+  const double seconds = seconds_since(start);
+  EXPECT_EQ(cache.queryCount, static_cast<std::size_t>(queries));
+  EXPECT_LT(seconds, 2.0);
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     LentLabelSupportIsUsedOnlyWhenItBorrowsTheConstraintSources) {
+  const HardRailValidationFixture fixture =
+      make_hard_rail_validation_fixture();
+  const SurfaceOptimizationConstraints constraints =
+      hard_rail_constraints(fixture);
+  using directional::validation::source_authoritative_detail::
+      SourcePointLabelSupport;
+  namespace detail = directional::geometry::surface_optimizer_detail;
+  // Built over the same faces and authority but without the hard rail, so it
+  // does not borrow the constraints' hard-edge set and must be ignored.
+  const SourcePointLabelSupport railBlind(
+      &constraints.sourceFaces, constraints.sourceAuthority, nullptr);
+  const SourcePointLabelSupport borrowed(
+      &constraints.sourceFaces, constraints.sourceAuthority,
+      &constraints.sourceHardFeatureEdges);
+  ASSERT_FALSE(railBlind.transitionGraph.borrows(
+      &constraints.sourceFaces, constraints.sourceAuthority,
+      constraints.sourceHardFeatureEdges));
+  ASSERT_TRUE(borrowed.transitionGraph.borrows(
+      &constraints.sourceFaces, constraints.sourceAuthority,
+      constraints.sourceHardFeatureEdges));
+
+  for (int face = 0; face < fixture.quads.rows(); ++face) {
+    const auto own = detail::consistent_source_scope(
+        fixture.quads, face, fixture.provenance, &constraints);
+    ASSERT_TRUE(own.has_value());
+    EXPECT_EQ(detail::consistent_source_scope(fixture.quads, face,
+                                              fixture.provenance, &constraints,
+                                              &railBlind),
+              own);
+    EXPECT_EQ(detail::consistent_source_scope(fixture.quads, face,
+                                              fixture.provenance, &constraints,
+                                              &borrowed),
+              own);
+
+    const SurfacePoint reference = detail::quad_reference_surface_point(
+        fixture.vertices, fixture.quads, face, constraints, fixture.provenance);
+    ASSERT_TRUE(reference.valid());
+    for (const SourcePointLabelSupport *lent : {&railBlind, &borrowed}) {
+      const SurfacePoint shared = detail::quad_reference_surface_point(
+          fixture.vertices, fixture.quads, face, constraints,
+          fixture.provenance, nullptr, lent);
+      EXPECT_EQ(shared.face, reference.face);
+      EXPECT_TRUE(shared.position.isApprox(reference.position));
+    }
+  }
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     OutputProjectionLendsOneLabelSupportToEveryQuad) {
+  // 20,000 source faces and 1,600 output quads: a label support (and its
+  // chart graph) per quad, or a binding check per chart face, costs seconds.
+  const SurfaceOptimizationConstraints constraints =
+      make_source_grid_constraints(100);
+  constexpr int m = 40;
+  Eigen::MatrixXd vertices((m + 1) * (m + 1), 3);
+  for (int j = 0; j <= m; ++j) {
+    for (int i = 0; i <= m; ++i) {
+      vertices.row(j * (m + 1) + i) << static_cast<double>(i) / m,
+          static_cast<double>(j) / m, 0.0;
+    }
+  }
+  Eigen::MatrixXi quads(m * m, 4);
+  for (int j = 0; j < m; ++j) {
+    for (int i = 0; i < m; ++i) {
+      const int v = j * (m + 1) + i;
+      quads.row(j * m + i) << v, v + 1, v + m + 2, v + m + 1;
+    }
+  }
+  const std::vector<int> zeros(
+      static_cast<std::size_t>(constraints.sourceFaces.rows()), 0);
+  const auto provenance = provenance_for(
+      vertices, constraints.sourceVertices, constraints.sourceFaces, zeros,
+      zeros);
+
+  const auto start = std::chrono::steady_clock::now();
+  const directional::geometry::surface_optimizer_detail::OutputProjectionCache
+      projection(vertices, quads, provenance, &constraints);
+  const double seconds = seconds_since(start);
+  for (int face = 0; face < quads.rows(); ++face) {
+    EXPECT_EQ(projection.faceScopes[static_cast<std::size_t>(2 * face)].size(),
+              1U);
+  }
+  EXPECT_LT(seconds, 2.0);
+
+  directional::geometry::surface_optimizer_detail::SourceProjectionCache cache(
+      constraints);
+  const auto orientationStart = std::chrono::steady_clock::now();
+  EXPECT_TRUE(directional::geometry::local_orientation_valid(
+      vertices, quads, &constraints, &provenance, &cache));
+  EXPECT_LT(seconds_since(orientationStart), 2.0);
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     LabelSupportQueriesDoNotRecheckTheSourceBinding) {
+  // 20,000 source faces and 100,000 point queries: re-checking the source
+  // binding on each query reads every source face 100,000 times.
+  const SurfaceOptimizationConstraints constraints =
+      make_source_grid_constraints(100);
+  const directional::validation::source_authoritative_detail::
+      SourcePointLabelSupport support(&constraints.sourceFaces,
+                                      constraints.sourceAuthority,
+                                      &constraints.sourceHardFeatureEdges);
+  ASSERT_TRUE(support.available());
+  SurfacePoint point;
+  point.face = 0;
+  point.component = 0;
+  point.sheet = 0;
+  point.barycentric = Eigen::Vector3d::Constant(1.0 / 3.0);
+  point.squaredDistance = 0.0;
+  constexpr int queries = 100000;
+  std::size_t supported = 0;
+  const auto start = std::chrono::steady_clock::now();
+  for (int query = 0; query < queries; ++query) {
+    supported += support.supported_faces(point).size();
+  }
+  const double seconds = seconds_since(start);
+  EXPECT_EQ(supported, static_cast<std::size_t>(queries));
+  EXPECT_LT(seconds, 2.0);
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     FinalValidationReadsSourceRowLabelsAfterOneBindingCheck) {
+  // 28,800 source faces: each full source-binding check reads every source
+  // face, so one per sample, vertex or quad makes validation O(source x
+  // output) (RA-202, RA-206). Count the checks for a 100-quad and a 400-quad
+  // output on the same source; the count must not grow with the output.
+  const SurfaceOptimizationConstraints constraints =
+      make_source_grid_constraints(120);
+  const std::vector<int> zeros(
+      static_cast<std::size_t>(constraints.sourceFaces.rows()), 0);
+  struct Run {
+    std::uint64_t bindingChecks = 0;
+    double seconds = 0.0;
+    bool sourceAuthoritative = false;
+  };
+  const auto validate_grid = [&](const int m) {
+    Eigen::MatrixXd vertices((m + 1) * (m + 1), 3);
+    for (int j = 0; j <= m; ++j) {
+      for (int i = 0; i <= m; ++i) {
+        vertices.row(j * (m + 1) + i) << static_cast<double>(i) / m,
+            static_cast<double>(j) / m, 0.0;
+      }
+    }
+    Eigen::MatrixXi quads(m * m, 4);
+    for (int j = 0; j < m; ++j) {
+      for (int i = 0; i < m; ++i) {
+        const int v = j * (m + 1) + i;
+        quads.row(j * m + i) << v, v + 1, v + m + 2, v + m + 1;
+      }
+    }
+    directional::geometry::SurfaceOptimizationResult optimization;
+    optimization.vertices = vertices;
+    optimization.quads = quads;
+    optimization.vertexProvenance = provenance_for(
+        vertices, constraints.sourceVertices, constraints.sourceFaces, zeros,
+        zeros);
+    const std::uint64_t checksBefore =
+        directional::geometry::source_binding_check_count();
+    const auto start = std::chrono::steady_clock::now();
+    const auto report = directional::geometry::validate_final_surface_mesh(
+        vertices, quads, constraints, optimization);
+    Run run;
+    run.seconds = seconds_since(start);
+    run.bindingChecks =
+        directional::geometry::source_binding_check_count() - checksBefore;
+    run.sourceAuthoritative = report.sourceAuthoritativeValidationUsed;
+    return run;
+  };
+
+  const Run small = validate_grid(10);
+  const Run large = validate_grid(20);
+
+  EXPECT_TRUE(small.sourceAuthoritative);
+  EXPECT_TRUE(large.sourceAuthoritative);
+  // A fixed handful of stage-level checks (9 at RA-206), never one per
+  // source face, output vertex or sample.
+  EXPECT_GT(large.bindingChecks, 0U);
+  EXPECT_LE(large.bindingChecks, 16U);
+  EXPECT_EQ(small.bindingChecks, large.bindingChecks);
+  // Coarse backstop only: the Linux runner takes up to 3.5 times macOS here
+  // (TB80), so a tight wall-clock bound is not a portable witness.
+  EXPECT_LT(large.seconds, 5.0);
 }

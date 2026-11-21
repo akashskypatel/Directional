@@ -1,0 +1,270 @@
+diff --git a/src/geometry/EmbeddedGraphTopology.cpp b/src/geometry/EmbeddedGraphTopology.cpp
+index dfedf9beee23134b63357d05bdff2f2c399e792a..bf38170a053d1fa1e5bf7a0ff26f1df8f7453b1d 100644
+--- a/src/geometry/EmbeddedGraphTopology.cpp
++++ b/src/geometry/EmbeddedGraphTopology.cpp
+@@ -138,13 +138,6 @@ std::uint64_t network_binding_digest(
+   return hash;
+ }
+ 
+-struct TraceCut {
+-  std::size_t position = 0U;
+-  authority::NetworkNodeId node;
+-
+-  auto operator<=>(const TraceCut &) const = default;
+-};
+-
+ struct TraceEventPositionDiagnostics {
+   std::optional<TraceEventPositionFailureReason> failureReason;
+   std::optional<TraceEventPositionPass> pass;
+@@ -969,6 +962,15 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
+   for (const auto &port : network.singularity_ports()) {
+     originByPort.emplace(port.id, port.node);
+   }
++  const FaceContactNodeResult faceContactBuild =
++      collect_face_contact_nodes(network);
++  if (const auto *failure =
++          std::get_if<GlobalTopologyPlanError>(&faceContactBuild)) {
++    return *failure;
++  }
++  const auto &faceContacts =
++      std::get<std::map<authority::NetworkNodeId, FaceContactNode>>(
++          faceContactBuild);
+ 
+   for (const auto &trace : network.candidate_traces()) {
+     const auto origin = originByPort.find(trace.port);
+@@ -979,8 +981,8 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
+       return result;
+     }
+ 
+-    std::map<std::size_t, authority::NetworkNodeId> cuts;
+-    cuts.emplace(0U, origin->second);
++    std::map<TraceCutPosition, authority::NetworkNodeId> cuts;
++    cuts.emplace(TraceCutPosition{0U, std::nullopt}, origin->second);
+     for (const auto &[key, crossing] : cutNodes.crossingByKey) {
+       if (key.trace != trace.id) continue;
+       if (key.segmentPosition == 0U ||
+@@ -991,7 +993,8 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
+         result.sourceEdge = key.sourceEdge;
+         return result;
+       }
+-      const auto inserted = cuts.emplace(key.segmentPosition, crossing.node);
++      const auto inserted = cuts.emplace(
++          TraceCutPosition{key.segmentPosition, std::nullopt}, crossing.node);
+       if (!inserted.second && inserted.first->second != crossing.node) {
+         GlobalTopologyPlanError result =
+             error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+@@ -1001,9 +1004,36 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
+       }
+     }
+     bool hasTerminal = false;
++    // A face-contact node's positions come from its exact contact record:
++    // the trace's end where it terminates, an interior cut where it is struck.
++    for (const auto &[node, contact] : faceContacts) {
++      std::vector<TraceCutPosition> positions;
++      if (contact.terminating.count(trace.id) != 0U) {
++        positions.push_back(
++            TraceCutPosition{trace.segments.size(), std::nullopt});
++        hasTerminal = true;
++      }
++      const auto interior = contact.interior.find(trace.id);
++      if (interior != contact.interior.end()) {
++        positions.push_back(interior->second);
++      }
++      for (const TraceCutPosition &position : positions) {
++        const auto inserted = cuts.emplace(position, node);
++        if (!inserted.second && inserted.first->second != node) {
++          GlobalTopologyPlanError result =
++              error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
++          result.trace = trace.id;
++          result.sourceFace = contact.face;
++          result.rotationSystemInconsistencyReason =
++              RotationSystemInconsistencyReason::TraceEventPositionNodeConflict;
++          return result;
++        }
++      }
++    }
+     for (std::size_t eventIndex = 0U; eventIndex < network.events().size();
+          ++eventIndex) {
+       const auto &event = network.events()[eventIndex];
++      if (faceContacts.count(event.node) != 0U) continue;
+       for (const auto &incidence : event.incidences) {
+         if (incidence.trace != trace.id) continue;
+         TraceEventPositionDiagnostics positionDiagnostics;
+@@ -1025,7 +1055,8 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
+               std::move(positionDiagnostics.candidates);
+           return result;
+         }
+-        const auto inserted = cuts.emplace(*position, event.node);
++        const auto inserted =
++            cuts.emplace(TraceCutPosition{*position, std::nullopt}, event.node);
+         if (!inserted.second && inserted.first->second != event.node) {
+           GlobalTopologyPlanError result =
+               error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+@@ -1039,39 +1070,40 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
+                       incidence.role == FieldAlignedTraceEventRole::Terminal;
+       }
+     }
+-    if (!hasTerminal || cuts.rbegin()->first != trace.segments.size()) {
++    if (!hasTerminal ||
++        cuts.rbegin()->first !=
++            TraceCutPosition{trace.segments.size(), std::nullopt}) {
+       GlobalTopologyPlanError result =
+           rotation_error(!hasTerminal ? RotationSystemInconsistencyReason::ArcTraceTerminalEventMissing : RotationSystemInconsistencyReason::ArcTraceTerminalCutPositionMismatch);
+       result.sourceVertex = trace.sourceVertex;
+       return result;
+     }
+ 
+-    std::vector<TraceCut> ordered;
+-    ordered.reserve(cuts.size());
+-    for (const auto &[position, node] : cuts) {
+-      ordered.push_back(TraceCut{position, node});
+-    }
++    const std::vector<std::pair<TraceCutPosition, authority::NetworkNodeId>>
++        ordered(cuts.begin(), cuts.end());
+     for (std::size_t cutIndex = 0U; cutIndex + 1U < ordered.size(); ++cutIndex) {
+-      const TraceCut &first = ordered[cutIndex];
+-      const TraceCut &second = ordered[cutIndex + 1U];
+-      if (first.position >= second.position) continue;
+-      ArcDraft draft(first.node, second.node);
++      const auto &[firstPosition, firstNode] = ordered[cutIndex];
++      const auto &[secondPosition, secondNode] = ordered[cutIndex + 1U];
++      const auto [firstSegment, onePastLastSegment] =
++          trace_cut_segment_range(firstPosition, secondPosition);
++      if (firstSegment >= onePastLastSegment) continue;
++      ArcDraft draft(firstNode, secondNode);
+       draft.kind = GlobalTopologyArcKind::Trace;
+       draft.trace = trace.id;
+-      draft.firstSegment = first.position;
+-      draft.onePastLastSegment = second.position;
+-      draft.sourceFaces.reserve(second.position - first.position);
+-      for (std::size_t segment = first.position; segment < second.position;
++      draft.firstSegment = firstSegment;
++      draft.onePastLastSegment = onePastLastSegment;
++      draft.sourceFaces.reserve(onePastLastSegment - firstSegment);
++      for (std::size_t segment = firstSegment; segment < onePastLastSegment;
+            ++segment) {
+         draft.sourceFaces.push_back(trace.segments[segment].sourceFace);
+       }
+       const auto path =
+-          exact_trace_path(trace, first.position, second.position);
++          exact_trace_path_between(trace, firstPosition, secondPosition);
+       if (!path.has_value()) {
+         GlobalTopologyPlanError result =
+             error(GlobalTopologyPlanErrorCode::InvalidNetworkBinding);
+         result.trace = trace.id;
+-        result.sourceFace = trace.segments[first.position].sourceFace;
++        result.sourceFace = trace.segments[firstSegment].sourceFace;
+         return result;
+       }
+       draft.sourcePath = *path;
+@@ -1205,7 +1237,11 @@ NodeLocusResult build_node_loci(const FieldAlignedCurveNetwork &network,
+     }
+   }
+ 
++  // A face-contact node has neither a vertex nor an edge locus; rotation
++  // reads its face and exact point from collect_face_contact_nodes.
++  const std::set<authority::NetworkNodeId> ports = port_nodes(network);
+   for (const auto &event : network.events()) {
++    if (is_face_contact_event(event, ports)) continue;
+     auto found = loci.find(event.node);
+     if (found == loci.end()) {
+       GlobalTopologyPlanError result =
+@@ -1741,6 +1777,15 @@ RotationBuildResult build_rotation_system(
+   }
+   const auto &loci =
+       std::get<std::map<authority::NetworkNodeId, NodeLocus>>(locusResult);
++  const FaceContactNodeResult faceContactBuild =
++      collect_face_contact_nodes(network);
++  if (const auto *failure =
++          std::get_if<GlobalTopologyPlanError>(&faceContactBuild)) {
++    return *failure;
++  }
++  const auto &faceContacts =
++      std::get<std::map<authority::NetworkNodeId, FaceContactNode>>(
++          faceContactBuild);
+ 
+   std::map<authority::NetworkNodeId,
+            std::vector<GlobalTopologyOrientedArc>>
+@@ -2134,6 +2179,82 @@ RotationBuildResult build_rotation_system(
+         key.secondary = *secondary;
+         keyed.emplace_back(key, incidence);
+       }
++    } else if (const auto contact = faceContacts.find(node);
++               contact != faceContacts.end()) {
++      // FC-5: order the rays counter-clockwise around the exact contact
++      // point, in the face's oriented corner order (Amendment 26).
++      const authority::SourceFaceTopologyKey &faceKey = contact->second.face;
++      const auto unsupported = [&](const std::optional<authority::TraceId> trace) {
++        return face_contact_error(
++            RotationSystemInconsistencyReason::FaceContactRayUnsupported,
++            faceKey, trace);
++      };
++      const auto faceIt = topology.faces.find(faceKey);
++      if (faceIt == topology.faces.end()) return unsupported(std::nullopt);
++      const auto &canonicalVertices = faceKey.vertices();
++      std::array<std::size_t, 3> canonicalCorner{3U, 3U, 3U};
++      for (std::size_t corner = 0U; corner < 3U; ++corner) {
++        for (std::size_t index = 0U; index < 3U; ++index) {
++          if (faceIt->second.vertices[corner] == canonicalVertices[index]) {
++            canonicalCorner[corner] = index;
++          }
++        }
++        if (canonicalCorner[corner] >= 3U) return unsupported(std::nullopt);
++      }
++      const auto oriented = [&](const FaceChartPoint &point) {
++        FaceChartPoint result = point;
++        for (std::size_t corner = 0U; corner < 3U; ++corner) {
++          result[corner] = point[canonicalCorner[corner]];
++        }
++        return result;
++      };
++      std::vector<FaceChartPoint> targets;
++      targets.reserve(outgoing.size());
++      for (const auto incidence : outgoing) {
++        const auto arcIt = arcById.find(incidence.arc);
++        if (arcIt == arcById.end() ||
++            arcIt->second->kind != GlobalTopologyArcKind::Trace ||
++            !arcIt->second->trace.has_value()) {
++          return unsupported(std::nullopt);
++        }
++        const GlobalTopologyArc &arc = *arcIt->second;
++        const FieldAlignedCandidateTrace *trace = find_trace(network, *arc.trace);
++        if (trace == nullptr || arc.firstSegment >= arc.onePastLastSegment ||
++            arc.onePastLastSegment > trace->segments.size()) {
++          return unsupported(arc.trace);
++        }
++        // A trace segment is straight in its face, so the ray from the
++        // contact point along it heads to the segment's exit (forward) or
++        // entry (reverse).
++        const bool forward = incidence.orientation == authority::Orientation::Forward;
++        const std::size_t segment =
++            forward ? arc.firstSegment : arc.onePastLastSegment - 1U;
++        if (trace->segments[segment].sourceFace != faceKey) {
++          return unsupported(arc.trace);
++        }
++        const auto second = forward
++                                ? trace_segment_canonical_exit(*trace, segment)
++                                : trace_segment_canonical_entry(*trace, segment);
++        if (!second.has_value()) return unsupported(arc.trace);
++        targets.push_back(oriented(*second));
++      }
++      const auto order = face_chart_counter_clockwise_ray_order(
++          oriented(contact->second.point), targets);
++      if (!order.has_value()) {
++        return face_contact_error(
++            RotationSystemInconsistencyReason::FaceContactRayDirectionCollision,
++            faceKey, std::nullopt);
++      }
++      for (std::size_t rank = 0U; rank < order->size(); ++rank) {
++        const GlobalTopologyOrientedArc incidence = outgoing[(*order)[rank]];
++        const GlobalTopologyArc &arc = *arcById.at(incidence.arc);
++        RayOrderKey key(arc.id);
++        key.kind = arc.kind;
++        key.trace = arc.trace;
++        key.orientation = incidence.orientation;
++        key.primary = rank;
++        keyed.emplace_back(key, incidence);
++      }
+     } else {
+       return rotation_error(RotationSystemInconsistencyReason::RotationNodeLocusUnsupported);
+     }

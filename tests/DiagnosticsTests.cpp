@@ -112,9 +112,9 @@ TEST(DiagnosticsPhase00, SyntheticRemeshDiagnosticsArePopulatedWithoutVerbose) {
   const directional::pipeline::RemeshResult result =
       run_tiny_synthetic_remesh();
 
-  ASSERT_TRUE(result.success);
-  EXPECT_GT(result.vertices.rows(), 0);
-  EXPECT_GT(result.faces.rows(), 0);
+  ASSERT_TRUE(result.is_produced());
+  EXPECT_GT(result.product().vertices.rows(), 0);
+  EXPECT_GT(result.product().faces.rows(), 0);
 
   const directional::IntegrationDiagnostics &integration =
       result.diagnostics.integration;
@@ -145,7 +145,7 @@ TEST(DiagnosticsPhase00, RemeshDiagnosticsContainNestedStageTotals) {
   const directional::pipeline::RemeshResult result =
       run_tiny_synthetic_remesh();
 
-  ASSERT_TRUE(result.success);
+  ASSERT_TRUE(result.is_produced());
   const directional::RemeshDiagnostics &diagnostics = result.diagnostics;
   EXPECT_TRUE(diagnostics.overallPipelineTimeAvailable);
   expect_nonnegative_finite(diagnostics.overallPipelineSeconds);
@@ -171,14 +171,14 @@ TEST(DiagnosticsPhase00, DiagnosticsDoNotChangeSyntheticSignature) {
   const directional::pipeline::RemeshResult second =
       run_tiny_synthetic_remesh();
 
-  ASSERT_TRUE(first.success);
-  ASSERT_TRUE(second.success);
-  ASSERT_EQ(first.vertices.rows(), second.vertices.rows());
-  ASSERT_EQ(first.faces.rows(), second.faces.rows());
-  ASSERT_EQ(first.degrees.size(), second.degrees.size());
-  EXPECT_EQ(first.degrees.sum(), second.degrees.sum());
-  EXPECT_EQ((first.degrees.array() == 4).count(),
-            (second.degrees.array() == 4).count());
+  ASSERT_TRUE(first.is_produced());
+  ASSERT_TRUE(second.is_produced());
+  ASSERT_EQ(first.product().vertices.rows(), second.product().vertices.rows());
+  ASSERT_EQ(first.product().faces.rows(), second.product().faces.rows());
+  ASSERT_EQ(first.product().degrees.size(), second.product().degrees.size());
+  EXPECT_EQ(first.product().degrees.sum(), second.product().degrees.sum());
+  EXPECT_EQ((first.product().degrees.array() == 4).count(),
+            (second.product().degrees.array() == 4).count());
 }
 
 TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
@@ -210,18 +210,18 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
         "overallPipelineTimeAvailable": true,
         "remeshBackend": "SurfaceCells",
         "requestedBackend": "SurfaceCells",
-        "executedBackend": "LegacyInteger",
-        "surfaceCellFallbackPolicy": "TryLegacy",
-        "surfaceCellFallbackCause": "NotProductionReady",
+        "executedBackend": "SurfaceCells",
+        "surfaceCellFallbackPolicy": "Fail",
+        "surfaceCellFallbackCause": "",
         "originalSurfaceCellFailureCode": "NotProductionReady",
         "originalSurfaceCellFailureStage": "production-gate",
-        "terminalFailureCode": "None",
-        "terminalFailureStage": "",
-        "surfaceCellFallbackAttempted": true,
-        "surfaceCellUsedLegacyFallback": true,
+        "terminalFailureCode": "NotProductionReady",
+        "terminalFailureStage": "production-gate",
+        "surfaceCellFallbackAttempted": false,
+        "surfaceCellUsedLegacyFallback": false,
         "surfaceCellReturnedInputMeshFallback": false,
         "surfaceCellRemeshOccurred": false,
-        "surfaceCellOutputOrigin": "LegacyFallback",
+        "surfaceCellOutputOrigin": "None",
         "surfaceCellStageLineage": [{
           "stage": "completion",
           "inputObjectHash": "simplification:count=1",

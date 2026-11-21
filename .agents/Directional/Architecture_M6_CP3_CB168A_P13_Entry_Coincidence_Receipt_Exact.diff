@@ -1,0 +1,72 @@
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 9b4ec25c1..feb65a47e 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -18,6 +18,7 @@
+ #include <limits>
+ #include <optional>
+ #include <queue>
++#include <set>
+ #include <sstream>
+ 
+ namespace directional::geometry::surface_cell_tracing_detail {
+@@ -4350,6 +4351,37 @@ canonical_field_aligned_traces_and_events(
+                   << '\n';
+       };
+ 
++  // Diagnostic only: two different traces that enter one carrier at the same
++  // interior exact parameter, measured by the carrier-contact rule itself
++  // (neither occupancy is a slide). Each unordered (trace, segment) pair is
++  // reported once; contact scheduling is unchanged.
++  using EntryCoincidenceEnd = std::pair<std::size_t, std::size_t>;
++  std::set<std::pair<EntryCoincidenceEnd, EntryCoincidenceEnd>>
++      reportedEntryCoincidences;
++  const auto reportEntryCoincidence =
++      [&](const EntryCoincidenceEnd first,
++          const FieldAlignedCandidateTraceSegment &firstSegment,
++          const EntryCoincidenceEnd second,
++          const FieldAlignedCandidateTraceSegment &secondSegment) {
++        if (first.first == second.first) return;
++        const auto contact =
++            first_field_aligned_carrier_contact(firstSegment, secondSegment);
++        if (!contact.has_value() || contact->movingInSlide ||
++            contact->wallInSlide) {
++          return;
++        }
++        const auto key = first < second ? std::pair{first, second}
++                                        : std::pair{second, first};
++        if (!reportedEntryCoincidences.insert(key).second) return;
++        std::clog << "FieldAlignedCurveNetwork.entryCoincidence first="
++                  << key.first.first << ':' << key.first.second
++                  << " second=" << key.second.first << ':' << key.second.second
++                  << " carrier=(" << contact->carrier.first().index() << ','
++                  << contact->carrier.second().index() << ") parameter="
++                  << contact->parameter.numerator_string() << '/'
++                  << contact->parameter.denominator_string() << '\n';
++      };
++
+   while (std::any_of(runtimes.begin(), runtimes.end(),
+                      [](const auto &runtime) { return runtime.active; })) {
+     for (std::size_t traceIndex = 0U; traceIndex < runtimes.size(); ++traceIndex) {
+@@ -4391,6 +4423,10 @@ canonical_field_aligned_traces_and_events(
+             firstTrace.sourceVertex == secondTrace.sourceVertex) {
+           continue;
+         }
++        reportEntryCoincidence({firstIndex, firstTrace.segments.size()},
++                               firstRuntime.proposal->segment,
++                               {secondIndex, secondTrace.segments.size()},
++                               secondRuntime.proposal->segment);
+         const auto contact = classify_field_aligned_segment_contact_impl(
+             topology, firstRuntime.proposal->segment,
+             secondRuntime.proposal->segment);
+@@ -4463,6 +4499,10 @@ canonical_field_aligned_traces_and_events(
+                       ? std::optional<std::array<authority::FieldExactRational, 3>>{
+                             wallTrace.terminalContact->barycentric}
+                       : std::nullopt;
++          reportEntryCoincidence({movingIndex, movingTrace.segments.size()},
++                                 movingRuntime.proposal->segment,
++                                 {wallIndex, wallSegmentIndex},
++                                 wallTrace.segments[wallSegmentIndex]);
+           const auto contact =
+               classify_field_aligned_segment_contact_with_second_exit(
+                   topology, movingRuntime.proposal->segment,

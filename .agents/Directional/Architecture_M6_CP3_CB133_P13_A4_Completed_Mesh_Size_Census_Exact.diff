@@ -1,0 +1,129 @@
+diff --git a/tests/SurfaceCellDesignAcceptanceTests.cpp b/tests/SurfaceCellDesignAcceptanceTests.cpp
+index da3b55fd8..a19026cae 100644
+--- a/tests/SurfaceCellDesignAcceptanceTests.cpp
++++ b/tests/SurfaceCellDesignAcceptanceTests.cpp
+@@ -173,6 +173,80 @@ void print_switch_receipt(const std::string &testName, const char *schedule,
+             << std::endl;
+ }
+ 
++// RA-232 (O41): the mesh the final gate measured, its edge length over the
++// local target split into boundary edges (one quad) and interior edges, and
++// the target's range on the source. The gate counts a fixed rail edge as on
++// target, so a low size percentile comes from interior edges; this shows how
++// low and against which target. Each undirected edge counts once.
++void print_switch_size_receipt(const std::string &testName, const char *schedule,
++                               const Eigen::MatrixXi &sourceFaces,
++                               const directional::pipeline::RemeshResult &result) {
++  const auto &snapshots = result.surfaceCellContext.productSnapshots;
++  const Eigen::VectorXd &target = result.surfaceCellContext.metricField.targetSize;
++  if (!snapshots.hasOptimizationResult || target.size() == 0) return;
++  const auto &checked = snapshots.optimizationResult;
++  const auto local_target = [&](const int vertex) {
++    if (vertex < 0 ||
++        vertex >= static_cast<int>(checked.vertexProvenance.size())) {
++      return 0.0;
++    }
++    const auto &point = checked.vertexProvenance[static_cast<std::size_t>(vertex)];
++    if (point.face < 0 || point.face >= sourceFaces.rows()) return 0.0;
++    double value = 0.0;
++    for (int corner = 0; corner < 3; ++corner) {
++      const int source = sourceFaces(point.face, corner);
++      if (source >= 0 && source < target.size()) {
++        value += point.barycentric(corner) * target(source);
++      }
++    }
++    return value;
++  };
++  std::map<std::pair<int, int>, std::pair<int, double>> edges;
++  for (int quad = 0; quad < checked.quads.rows(); ++quad) {
++    for (int corner = 0; corner < 4; ++corner) {
++      const int a = checked.quads(quad, corner);
++      const int b = checked.quads(quad, (corner + 1) % 4);
++      if (a < 0 || b < 0 || a >= checked.vertices.rows() ||
++          b >= checked.vertices.rows()) {
++        continue;
++      }
++      const double length = (checked.vertices.row(b) - checked.vertices.row(a)).norm();
++      const double localTarget = 0.5 * (local_target(a) + local_target(b));
++      auto &entry = edges[{std::min(a, b), std::max(a, b)}];
++      ++entry.first;
++      entry.second = localTarget > 0.0 ? length / localTarget : 0.0;
++    }
++  }
++  std::vector<double> boundary;
++  std::vector<double> interior;
++  for (const auto &[key, entry] : edges) {
++    (entry.first == 1 ? boundary : interior).push_back(entry.second);
++  }
++  const auto summary = [](std::vector<double> values) {
++    std::ostringstream text;
++    text << values.size();
++    if (values.empty()) return text.str();
++    std::sort(values.begin(), values.end());
++    const auto at = [&](const double q) {
++      return values[static_cast<std::size_t>(q * static_cast<double>(values.size() - 1U))];
++    };
++    text << ':' << at(0.05) << '/' << at(0.5) << '/' << at(0.95);
++    return text.str();
++  };
++  const auto belowHalf = std::count_if(interior.begin(), interior.end(),
++                                       [](const double ratio) { return ratio < 0.5; });
++  std::vector<double> sourceTarget(target.data(), target.data() + target.size());
++  std::sort(sourceTarget.begin(), sourceTarget.end());
++  std::cout << "switch-size case=" << testName << " schedule=" << schedule
++            << " quads=" << checked.quads.rows()
++            << " boundary=" << summary(boundary)
++            << " interior=" << summary(interior)
++            << " interiorBelowHalf=" << belowHalf
++            << " target=" << sourceTarget.front() << '/'
++            << sourceTarget[sourceTarget.size() / 2U] << '/'
++            << sourceTarget.back() << std::endl;
++}
++
+ 
+ struct FixtureTopologyStats {
+   int boundaryEdges = 0;
+@@ -399,13 +473,16 @@ TEST_P(SurfaceCellDesignD4RimCensus, ReportsRimCountsAgainstTheA3Schedules) {
+ 
+   // O36 staging (RA-230): the same input with chained rim schedules.
+   print_switch_receipt(GetParam().testName, "perArc", result);
++  print_switch_size_receipt(GetParam().testName, "perArc", mesh.faces, result);
+   {
+     directional::pipeline::RemeshOptions chainedOptions = options;
+     chainedOptions.surfaceCells.chainRimSchedules = true;
+-    print_switch_receipt(GetParam().testName, "chained",
+-                         directional::pipeline::remesh_from_raw_cross_field(
+-                             mesh.vertices, mesh.faces, field.raw,
+-                             chainedOptions));
++    const directional::pipeline::RemeshResult chainedResult =
++        directional::pipeline::remesh_from_raw_cross_field(
++            mesh.vertices, mesh.faces, field.raw, chainedOptions);
++    print_switch_receipt(GetParam().testName, "chained", chainedResult);
++    print_switch_size_receipt(GetParam().testName, "chained", mesh.faces,
++                              chainedResult);
+   }
+ 
+   const auto &context = result.surfaceCellContext;
+@@ -734,6 +811,22 @@ TEST_P(SurfaceCellDesignD4RimCensus, ReportsRimCountsAgainstTheA3Schedules) {
+       }
+     }
+   }
++
++  // RA-232 (O41): how far the parity solve moved the field-corner-stopped
++  // spans from their preferred counts.
++  std::size_t raised = 0U;
++  std::size_t lowered = 0U;
++  std::ostringstream moved;
++  for (const auto &entry : stoppedBuilt.value().schedule()) {
++    if (entry.count == entry.preferredCount) continue;
++    (entry.preferredCount < entry.count ? raised : lowered) += 1U;
++    moved << (moved.tellp() > 0 ? "," : "") << entry.preferredCount.to_string()
++          << "->" << entry.count.to_string();
++  }
++  std::cout << "switch-spans case=" << GetParam().testName << " schedule=stopped"
++            << " spans=" << stoppedBuilt.value().schedule().size()
++            << " raised=" << raised << " lowered=" << lowered
++            << " moved=" << (moved.tellp() > 0 ? moved.str() : "-") << std::endl;
+ }
+ 
+ INSTANTIATE_TEST_SUITE_P(

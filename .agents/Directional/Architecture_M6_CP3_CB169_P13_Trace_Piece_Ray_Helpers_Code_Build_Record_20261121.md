@@ -1,0 +1,26 @@
+# CB169 — Trace piece-ray helpers Code + Build record (2026-11-21 UTC)
+
+- Canonical turn: `M6-CP3-CB169-P13-TRACE-PIECE-RAY-HELPERS`. Scope: Code + Build, compile only. Authority: [TB153 Review S4](Architecture_M6_CP3_TB153_P13_Real_Piece_Reach_And_Row686_Oracle_Full_Gate_Independent_Review_20261121.md#s4--realignment-exact).
+- Exact frozen patch: `Architecture_M6_CP3_CB169_P13_Trace_Piece_Ray_Helpers_Exact.diff`; SHA-256 `dd08cd28094c371a6eb63ae6b5c4161f3d94376a023e4fa71288558048966b45`. Numstat: `src/geometry/EmbeddedGraphTopology.cpp` 173/54, `src/geometry/EmbeddedGraphTopology.h` 123/0, `tests/FieldAlignedCurveNetworkTests.cpp` 806/0.
+- Precheck base: `203150dff` (`git diff --quiet 203150dff HEAD -- src include tests` clean before the patch).
+- Preimages: `EmbeddedGraphTopology.cpp` `8b86e46f…6ac9`, `EmbeddedGraphTopology.h` `78437758…76bf`, tests `632a147f…cc59`.
+- Postimages at `ef86370d0a1436250bdc8417b6b1abdeb1df5a74` (re-hashed from `git show`):
+  - `src/geometry/EmbeddedGraphTopology.cpp` `ce1d0f20534f8fd2688cdfde82902130c6ab11efddcec93d4fb02a5be42810f2`
+  - `src/geometry/EmbeddedGraphTopology.h` `cf6d041a72c55773784ae2e7cdc6ede755a27fb2e5bdb9a2f14b11ff23c9834f`
+  - `tests/FieldAlignedCurveNetworkTests.cpp` `9149cf5b8b5a439d1de8a11474457c1af9d6dbd44feb71deaa3734ef2122c873`
+- Commits: semantic `ef86370d0a1436250bdc8417b6b1abdeb1df5a74` (diff to the STATUS-entry commit `1b098339c` touches only STATUS, the three files above); dispatch request `5e73c7417` (touches only `.agents/Directional/agent-dispatch-request.json`; operation `compile`, request ID `m6-cp3-cb169-compile-20261121-v1`, mailbox key `m6-cp3-cb169-compile`).
+- New tests (gate rows 969–971 of the TB154 manifest), all in `directional_surface_cell_producer_tests`:
+  - row 969 `FieldAlignedCarrierOccupancy.VertexPieceRayLeavesAlongTheArcsRealSourcePiece`;
+  - row 970 `FieldAlignedCarrierOccupancy.EdgePieceRayLeavesAnEdgeLocusAlongItOrIntoTheFace`;
+  - row 971 `TraceTerminationCorrection.PrescribedSphereTracePieceRaysArePublishedNonGating` (non-gating sphere receipt: `SpherePieceRayReceipt`, `SpherePieceRaySlideEnd`, `SpherePieceRay`).
+- [Compile run 44871935919](https://github.com/akashskypatel/Directional/actions/runs/44871935919) succeeded (validate-dispatcher, validate-test-benchmark-reusable, parse, compile, mailbox success; drive_apply, noop and test_benchmark skipped). Event SHA `5e73c7417`. All eight RA-245 targets built: `directional_core`, `directional_pipeline`, `directional_surface_cell_authority_kernel_tests`, `directional_surface_cell_producer_tests`, `directional_surface_cell_completion_tests`, `directional_surface_cell_validation_tests`, `directional_compiled_api_tests`, `directional_benchmarks`.
+- Compile result artifact `14694154267` (`m6-cp3-cb169-compile-result-44871935919`, 44,140,306 bytes, expires 2026-11-28T05:43:12Z), ZIP SHA-256 `ad39099eba5b02262c9287613d2c5921bdabd24442a47ed21fdd70c9e0340d77` (computed on the downloaded ZIP; equals the GitHub digest). Metadata: source commit `ef86370d0…`; preflight and build exit codes 0; all `source-status-*` files empty (clean); SHA256SUMS 28/28 OK; `libgmpxx.so` and `libgmp.so` on the `directional_surface_cell_authority_kernel_tests` link command; `exactArithmeticBackend=GMP`, `runtimeExecution=false`, `turnBoundary=Code+Build-only`. Log artifact `14694715624`. Mailbox record on `workflow-mailbox` for key `m6-cp3-cb169-compile`: run 44871935919, source_sha `ef86370d0…`, success.
+- The helpers are unwired. `exact_trace_arc_ray_piece`, `exact_source_point_barycentric`, `vertex_piece_ray` and `edge_piece_ray` are referenced in `src` and `include` only in their own definitions, the header and each other; no production caller. The diff also makes three block moves, which must be behaviour-preserving: the `exact_edge_parameter` lambda, the `source_face_point_barycentric` remap and the `vertex_wedge_parameter` formula. They were compiled, not executed. The runtime check of that claim is the gate MATCH of rows 1–968 against TB153 (and the census against TB151) at TB154.
+- No tests, benchmarks or binaries ran. No production graph, selector or acceptance change. The new tests are compiled, not executed.
+- Baseline unchanged: TB153 968/968 PASS, 966/966 MATCH TB152 N1–N3, CP2 491/491. Stable 66/17/49, debt one, 81 deferred.
+- TB154 read-only re-verification at HEAD `5e73c7417` (nothing run):
+  - manifest `gates/Architecture_M6_TB154_P13_Trace_Piece_Ray_Helpers_Full_Gate_Case_Manifest.tsv` SHA-256 `0f9c417c6bb4b563abc90e5707eee98656210df322f5e0d00af1efc8f9f4e305`; header plus 971 rows (971 required, 971 + 81 deferred = 1052);
+  - the TB153 manifest (header plus 968 rows, 145,036 bytes) is an exact byte prefix of it (`head -c 145036 | cmp`); the three added rows are 969–971;
+  - census manifest `gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv` SHA-256 `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`;
+  - harness `tools/m6_cp3_targeted_artifact_harness.sh` SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`, equal to the recorded value.
+- Next authorized turn only: `M6-CP3-TB-EXEC-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE` (Test + Benchmark, artifact only; gate 971 plus a TB151-reproducing census; STOP rules in the TB153 Review S4).

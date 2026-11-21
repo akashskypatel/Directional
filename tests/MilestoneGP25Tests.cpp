@@ -52,6 +52,7 @@ directional::pipeline::RemeshOptions surface_options() {
   options.surfaceCells.enabled = true;
   options.surfaceCells.fallbackPolicy =
       directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = true;
   options.parallelizeComponents = true;
   options.lengthRatio = 0.2;
   return options;
@@ -60,70 +61,68 @@ directional::pipeline::RemeshOptions surface_options() {
 void expect_same_structure(
     const directional::pipeline::RemeshResult &lhs,
     const directional::pipeline::RemeshResult &rhs) {
-  EXPECT_EQ(lhs.success, rhs.success);
-  EXPECT_EQ(lhs.vertices, rhs.vertices);
-  EXPECT_EQ(lhs.faces, rhs.faces);
-  EXPECT_EQ(lhs.degrees, rhs.degrees);
-  EXPECT_EQ(lhs.rawCrossField, rhs.rawCrossField);
-  EXPECT_EQ(lhs.crossFieldMatching, rhs.crossFieldMatching);
-  EXPECT_EQ(lhs.crossFieldEffort, rhs.crossFieldEffort);
-  EXPECT_EQ(lhs.crossFieldSingularCycles, rhs.crossFieldSingularCycles);
-  EXPECT_EQ(lhs.crossFieldSingularIndices, rhs.crossFieldSingularIndices);
-  ASSERT_EQ(lhs.outputVertexProvenance.size(),
-            rhs.outputVertexProvenance.size());
-  for (std::size_t index = 0; index < lhs.outputVertexProvenance.size();
+  EXPECT_EQ(lhs.is_produced(), rhs.is_produced());
+  EXPECT_EQ(lhs.product().vertices, rhs.product().vertices);
+  EXPECT_EQ(lhs.product().faces, rhs.product().faces);
+  EXPECT_EQ(lhs.product().degrees, rhs.product().degrees);
+  EXPECT_EQ(lhs.product().rawCrossField, rhs.product().rawCrossField);
+  EXPECT_EQ(lhs.product().crossFieldMatching, rhs.product().crossFieldMatching);
+  EXPECT_EQ(lhs.product().crossFieldEffort, rhs.product().crossFieldEffort);
+  EXPECT_EQ(lhs.product().crossFieldSingularCycles, rhs.product().crossFieldSingularCycles);
+  EXPECT_EQ(lhs.product().crossFieldSingularIndices, rhs.product().crossFieldSingularIndices);
+  ASSERT_EQ(lhs.product().outputVertexProvenance.size(),
+            rhs.product().outputVertexProvenance.size());
+  for (std::size_t index = 0; index < lhs.product().outputVertexProvenance.size();
        ++index) {
-    const auto &a = lhs.outputVertexProvenance[index];
-    const auto &b = rhs.outputVertexProvenance[index];
+    const auto &a = lhs.product().outputVertexProvenance[index];
+    const auto &b = rhs.product().outputVertexProvenance[index];
     EXPECT_EQ(a.face, b.face);
     EXPECT_EQ(a.component, b.component);
     EXPECT_EQ(a.sheet, b.sheet);
     EXPECT_TRUE(a.barycentric.isApprox(b.barycentric, 1.0e-12));
     EXPECT_TRUE(a.position.isApprox(b.position, 1.0e-12));
   }
-  ASSERT_EQ(lhs.outputVertexLineage.size(), rhs.outputVertexLineage.size());
-  for (std::size_t index = 0; index < lhs.outputVertexLineage.size(); ++index) {
-    EXPECT_EQ(lhs.outputVertexLineage[index].outputVertex,
-              rhs.outputVertexLineage[index].outputVertex);
-    EXPECT_EQ(lhs.outputVertexLineage[index].sourcePoint.face,
-              rhs.outputVertexLineage[index].sourcePoint.face);
-    EXPECT_EQ(lhs.outputVertexLineage[index].sourcePoint.component,
-              rhs.outputVertexLineage[index].sourcePoint.component);
+  ASSERT_EQ(lhs.product().outputVertexLineage.size(), rhs.product().outputVertexLineage.size());
+  for (std::size_t index = 0; index < lhs.product().outputVertexLineage.size(); ++index) {
+    EXPECT_EQ(lhs.product().outputVertexLineage[index].outputVertex,
+              rhs.product().outputVertexLineage[index].outputVertex);
+    EXPECT_EQ(lhs.product().outputVertexLineage[index].sourcePoint.face,
+              rhs.product().outputVertexLineage[index].sourcePoint.face);
+    EXPECT_EQ(lhs.product().outputVertexLineage[index].sourcePoint.component,
+              rhs.product().outputVertexLineage[index].sourcePoint.component);
   }
-  ASSERT_EQ(lhs.outputQuadLineage.size(), rhs.outputQuadLineage.size());
-  for (std::size_t index = 0; index < lhs.outputQuadLineage.size(); ++index) {
-    EXPECT_EQ(lhs.outputQuadLineage[index].outputQuad,
-              rhs.outputQuadLineage[index].outputQuad);
-    EXPECT_EQ(lhs.outputQuadLineage[index].sourcePatch,
-              rhs.outputQuadLineage[index].sourcePatch);
-    EXPECT_EQ(lhs.outputQuadLineage[index].operationLocalQuad,
-              rhs.outputQuadLineage[index].operationLocalQuad);
+  ASSERT_EQ(lhs.product().outputQuadLineage.size(), rhs.product().outputQuadLineage.size());
+  for (std::size_t index = 0; index < lhs.product().outputQuadLineage.size(); ++index) {
+    EXPECT_EQ(lhs.product().outputQuadLineage[index].outputQuad,
+              rhs.product().outputQuadLineage[index].outputQuad);
+    EXPECT_EQ(lhs.product().outputQuadLineage[index].sourcePatch,
+              rhs.product().outputQuadLineage[index].sourcePatch);
+    EXPECT_EQ(lhs.product().outputQuadLineage[index].operationLocalQuad,
+              rhs.product().outputQuadLineage[index].operationLocalQuad);
   }
 
-  EXPECT_EQ(lhs.surfaceCellContext.sourceGridRecoveryUsed,
-            rhs.surfaceCellContext.sourceGridRecoveryUsed);
-  EXPECT_EQ(lhs.surfaceCellContext.hasSourceGridRecoveryTargetSize,
-            rhs.surfaceCellContext.hasSourceGridRecoveryTargetSize);
-  EXPECT_EQ(lhs.surfaceCellContext.sourceGridRecoveryTargetSizeRelaxed,
-            rhs.surfaceCellContext.sourceGridRecoveryTargetSizeRelaxed);
+  EXPECT_EQ(lhs.surfaceCellContext.productSnapshots.sourceGridRecoveryUsed,
+            rhs.surfaceCellContext.productSnapshots.sourceGridRecoveryUsed);
+  EXPECT_EQ(lhs.surfaceCellContext.productSnapshots.hasSourceGridRecoveryTargetSize,
+            rhs.surfaceCellContext.productSnapshots.hasSourceGridRecoveryTargetSize);
+  EXPECT_EQ(lhs.surfaceCellContext.productSnapshots.sourceGridRecoveryTargetSizeRelaxed,
+            rhs.surfaceCellContext.productSnapshots.sourceGridRecoveryTargetSizeRelaxed);
   EXPECT_DOUBLE_EQ(
-      lhs.surfaceCellContext
-          .sourceGridRecoveryTargetSizeMaxRelaxationRatio,
-      rhs.surfaceCellContext
-          .sourceGridRecoveryTargetSizeMaxRelaxationRatio);
-  if (lhs.surfaceCellContext.hasSourceGridRecoveryTargetSize &&
-      rhs.surfaceCellContext.hasSourceGridRecoveryTargetSize) {
-    EXPECT_EQ(lhs.surfaceCellContext.sourceGridRecoveryTargetSize,
-              rhs.surfaceCellContext.sourceGridRecoveryTargetSize);
+      lhs.surfaceCellContext.productSnapshots.sourceGridRecoveryTargetSizeMaxRelaxationRatio,
+      rhs.surfaceCellContext.productSnapshots.sourceGridRecoveryTargetSizeMaxRelaxationRatio);
+  if (lhs.surfaceCellContext.productSnapshots.hasSourceGridRecoveryTargetSize &&
+      rhs.surfaceCellContext.productSnapshots.hasSourceGridRecoveryTargetSize) {
+    EXPECT_EQ(lhs.surfaceCellContext.productSnapshots.sourceGridRecoveryTargetSize,
+              rhs.surfaceCellContext.productSnapshots.sourceGridRecoveryTargetSize);
   }
 
-  EXPECT_EQ(lhs.surfaceCellContext.hasOptimizationResult,
-            rhs.surfaceCellContext.hasOptimizationResult);
-  if (lhs.surfaceCellContext.hasOptimizationResult) {
+  EXPECT_EQ(lhs.surfaceCellContext.productSnapshots.hasOptimizationResult,
+            rhs.surfaceCellContext.productSnapshots.hasOptimizationResult);
+  if (lhs.surfaceCellContext.productSnapshots.hasOptimizationResult) {
     const auto &aOptimization =
-        lhs.surfaceCellContext.optimizationResult;
+        lhs.surfaceCellContext.productSnapshots.optimizationResult;
     const auto &bOptimization =
-        rhs.surfaceCellContext.optimizationResult;
+        rhs.surfaceCellContext.productSnapshots.optimizationResult;
     EXPECT_EQ(aOptimization.vertices, bOptimization.vertices);
     EXPECT_EQ(aOptimization.quads, bOptimization.quads);
     EXPECT_EQ(aOptimization.topologyHash, bOptimization.topologyHash);
@@ -136,11 +135,11 @@ void expect_same_structure(
     EXPECT_EQ(aOptimization.projectionStayedOnSheets,
               bOptimization.projectionStayedOnSheets);
   }
-  EXPECT_EQ(lhs.surfaceCellContext.hasValidationResult,
-            rhs.surfaceCellContext.hasValidationResult);
-  if (lhs.surfaceCellContext.hasValidationResult) {
-    const auto &aValidation = lhs.surfaceCellContext.validationResult;
-    const auto &bValidation = rhs.surfaceCellContext.validationResult;
+  EXPECT_EQ(lhs.surfaceCellContext.productSnapshots.hasValidationResult,
+            rhs.surfaceCellContext.productSnapshots.hasValidationResult);
+  if (lhs.surfaceCellContext.productSnapshots.hasValidationResult) {
+    const auto &aValidation = lhs.surfaceCellContext.productSnapshots.validationResult;
+    const auto &bValidation = rhs.surfaceCellContext.productSnapshots.validationResult;
     EXPECT_EQ(aValidation.accepted, bValidation.accepted);
     EXPECT_EQ(aValidation.tJunctions, bValidation.tJunctions);
     EXPECT_EQ(aValidation.nonManifold, bValidation.nonManifold);
@@ -257,25 +256,24 @@ TEST(MilestoneGP25, SequentialAndParallelSchedulesAreStructurallyIdentical) {
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, parallel);
 
-  ASSERT_TRUE(sequentialResult.success);
-  ASSERT_TRUE(parallelResult.success);
-  ASSERT_TRUE(sequentialResult.surfaceCellContext.hasOptimizationResult);
-  ASSERT_TRUE(sequentialResult.surfaceCellContext.hasValidationResult);
-  ASSERT_TRUE(sequentialResult.surfaceCellContext.sourceGridRecoveryUsed);
+  ASSERT_TRUE(sequentialResult.is_produced());
+  ASSERT_TRUE(parallelResult.is_produced());
+  ASSERT_TRUE(sequentialResult.surfaceCellContext.productSnapshots.hasOptimizationResult);
+  ASSERT_TRUE(sequentialResult.surfaceCellContext.productSnapshots.hasValidationResult);
+  ASSERT_TRUE(sequentialResult.surfaceCellContext.productSnapshots.sourceGridRecoveryUsed);
   ASSERT_TRUE(
-      sequentialResult.surfaceCellContext.hasSourceGridRecoveryTargetSize);
+      sequentialResult.surfaceCellContext.productSnapshots.hasSourceGridRecoveryTargetSize);
   ASSERT_EQ(mesh.vertices.rows(),
-            sequentialResult.surfaceCellContext
-                .sourceGridRecoveryTargetSize.size());
-  ASSERT_TRUE(parallelResult.surfaceCellContext.sourceGridRecoveryUsed);
+            sequentialResult.surfaceCellContext.productSnapshots.sourceGridRecoveryTargetSize.size());
+  ASSERT_TRUE(parallelResult.surfaceCellContext.productSnapshots.sourceGridRecoveryUsed);
   ASSERT_TRUE(
-      parallelResult.surfaceCellContext.hasSourceGridRecoveryTargetSize);
-  EXPECT_EQ(sequentialResult.vertices,
-            sequentialResult.surfaceCellContext.optimizationResult.vertices);
-  EXPECT_EQ(sequentialResult.faces,
-            sequentialResult.surfaceCellContext.optimizationResult.quads);
-  EXPECT_EQ(sequentialResult.outputVertexProvenance.size(),
-            sequentialResult.surfaceCellContext.optimizationResult
+      parallelResult.surfaceCellContext.productSnapshots.hasSourceGridRecoveryTargetSize);
+  EXPECT_EQ(sequentialResult.product().vertices,
+            sequentialResult.surfaceCellContext.productSnapshots.optimizationResult.vertices);
+  EXPECT_EQ(sequentialResult.product().faces,
+            sequentialResult.surfaceCellContext.productSnapshots.optimizationResult.quads);
+  EXPECT_EQ(sequentialResult.product().outputVertexProvenance.size(),
+            sequentialResult.surfaceCellContext.productSnapshots.optimizationResult
                 .vertexProvenance.size());
   expect_same_structure(sequentialResult, parallelResult);
   EXPECT_EQ(1U, sequentialResult.diagnostics.componentThreadsUsed);
@@ -290,11 +288,11 @@ TEST(MilestoneGP25, RepeatedParallelSchedulesAreDeterministic) {
 
   const auto reference = directional::pipeline::remesh_from_raw_cross_field(
       mesh.vertices, mesh.faces, raw, options);
-  ASSERT_TRUE(reference.success);
+  ASSERT_TRUE(reference.is_produced());
   for (int run = 0; run < 8; ++run) {
     const auto result = directional::pipeline::remesh_from_raw_cross_field(
         mesh.vertices, mesh.faces, raw, options);
-    ASSERT_TRUE(result.success) << run;
+    ASSERT_TRUE(result.is_produced()) << run;
     expect_same_structure(reference, result);
   }
 }
@@ -307,20 +305,20 @@ TEST(MilestoneGP25, ProvenanceAndLineageAreRemappedToOriginalMesh) {
       mesh.vertices, mesh.faces, constant_raw_field(mesh.faces.rows()),
       options);
 
-  ASSERT_TRUE(result.success);
-  ASSERT_EQ(static_cast<std::size_t>(result.vertices.rows()),
-            result.outputVertexProvenance.size());
-  for (const auto &point : result.outputVertexProvenance) {
+  ASSERT_TRUE(result.is_produced());
+  ASSERT_EQ(static_cast<std::size_t>(result.product().vertices.rows()),
+            result.product().outputVertexProvenance.size());
+  for (const auto &point : result.product().outputVertexProvenance) {
     EXPECT_GE(point.face, 0);
     EXPECT_LT(point.face, mesh.faces.rows());
     EXPECT_GE(point.component, 0);
     EXPECT_LT(point.component, 2);
   }
-  ASSERT_EQ(static_cast<std::size_t>(result.vertices.rows()),
-            result.outputVertexLineage.size());
-  for (std::size_t index = 0; index < result.outputVertexLineage.size();
+  ASSERT_EQ(static_cast<std::size_t>(result.product().vertices.rows()),
+            result.product().outputVertexLineage.size());
+  for (std::size_t index = 0; index < result.product().outputVertexLineage.size();
        ++index) {
-    const auto &lineage = result.outputVertexLineage[index];
+    const auto &lineage = result.product().outputVertexLineage[index];
     EXPECT_EQ(static_cast<int>(index), lineage.outputVertex);
     if (lineage.kind ==
         directional::geometry::PureQuadVertexLineageKind::SourceTriangle) {
@@ -333,11 +331,11 @@ TEST(MilestoneGP25, ProvenanceAndLineageAreRemappedToOriginalMesh) {
       EXPECT_LT(lineage.featureInterval.end.face, mesh.faces.rows());
     }
   }
-  ASSERT_EQ(static_cast<std::size_t>(result.faces.rows()),
-            result.outputQuadLineage.size());
-  for (std::size_t index = 0; index < result.outputQuadLineage.size(); ++index) {
+  ASSERT_EQ(static_cast<std::size_t>(result.product().faces.rows()),
+            result.product().outputQuadLineage.size());
+  for (std::size_t index = 0; index < result.product().outputQuadLineage.size(); ++index) {
     EXPECT_EQ(static_cast<int>(index),
-              result.outputQuadLineage[index].outputQuad);
+              result.product().outputQuadLineage[index].outputQuad);
   }
 }
 
@@ -358,13 +356,8 @@ TEST(MilestoneGP25, InjectedFailuresAreAtomicAndIdentifyComponentAndStage) {
     const auto result = directional::pipeline::remesh_from_raw_cross_field(
         mesh.vertices, mesh.faces, raw, options);
 
-    ASSERT_FALSE(result.success) << stage;
-    EXPECT_EQ(0, result.vertices.rows()) << stage;
-    EXPECT_EQ(0, result.faces.rows()) << stage;
-    EXPECT_EQ(0, result.degrees.size()) << stage;
-    EXPECT_TRUE(result.outputVertexProvenance.empty()) << stage;
-    EXPECT_TRUE(result.outputVertexLineage.empty()) << stage;
-    EXPECT_TRUE(result.outputQuadLineage.empty()) << stage;
+    ASSERT_FALSE(result.is_produced()) << stage;
+    EXPECT_EQ(nullptr, result.produced_product()) << stage;
     EXPECT_EQ(1U, result.diagnostics.failedComponentIndex) << stage;
     EXPECT_EQ(1U, result.diagnostics.failedComponentMinimumOriginalFace)
         << stage;
@@ -403,27 +396,27 @@ TEST(MilestoneGP25, MixedFallbackMergeSupportsDifferentFaceDegrees) {
       mesh.vertices, mesh.faces, constant_raw_field(mesh.faces.rows()),
       options);
 
-  ASSERT_TRUE(result.success);
+  ASSERT_TRUE(result.is_produced());
   EXPECT_EQ(directional::SurfaceCellOutputOrigin::Mixed,
             result.diagnostics.surfaceCellOutputOrigin);
   EXPECT_EQ("Mixed", result.diagnostics.executedBackend);
   EXPECT_TRUE(result.diagnostics.surfaceCellFallbackAttempted);
   EXPECT_TRUE(result.diagnostics.surfaceCellReturnedInputMeshFallback);
   EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
-  ASSERT_EQ(result.faces.rows(), result.degrees.size());
-  EXPECT_GE(result.faces.cols(), 4);
+  ASSERT_EQ(result.product().faces.rows(), result.product().degrees.size());
+  EXPECT_GE(result.product().faces.cols(), 4);
   bool sawTriangle = false;
   bool sawQuad = false;
-  for (int face = 0; face < result.faces.rows(); ++face) {
-    sawTriangle = sawTriangle || result.degrees(face) == 3;
-    sawQuad = sawQuad || result.degrees(face) == 4;
-    for (int corner = 0; corner < result.degrees(face); ++corner) {
-      EXPECT_GE(result.faces(face, corner), 0);
-      EXPECT_LT(result.faces(face, corner), result.vertices.rows());
+  for (int face = 0; face < result.product().faces.rows(); ++face) {
+    sawTriangle = sawTriangle || result.product().degrees(face) == 3;
+    sawQuad = sawQuad || result.product().degrees(face) == 4;
+    for (int corner = 0; corner < result.product().degrees(face); ++corner) {
+      EXPECT_GE(result.product().faces(face, corner), 0);
+      EXPECT_LT(result.product().faces(face, corner), result.product().vertices.rows());
     }
-    for (int corner = result.degrees(face); corner < result.faces.cols();
+    for (int corner = result.product().degrees(face); corner < result.product().faces.cols();
          ++corner) {
-      EXPECT_EQ(-1, result.faces(face, corner));
+      EXPECT_EQ(-1, result.product().faces(face, corner));
     }
   }
   EXPECT_TRUE(sawTriangle);

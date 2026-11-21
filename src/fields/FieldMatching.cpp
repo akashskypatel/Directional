@@ -33,6 +33,7 @@ void effort_to_indices(directional::CartesianField &field) {
   directional::effort_to_indices(field.tb->cycles, effortInner,
                                  field.tb->cycleCurvatures, field.N,
                                  fullIndices);
+  field.cycleIndices = fullIndices;
 
   Eigen::VectorXi indices(field.tb->local2Cycle.size());
   for (int i = 0; i < field.tb->local2Cycle.size(); i++)

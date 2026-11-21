@@ -83,10 +83,10 @@ int connected_component_count(const Eigen::MatrixXi &faces) {
 }
 
 std::string structural_signature(const directional::pipeline::RemeshResult &r) {
-  return std::to_string(r.vertices.rows()) + "/" +
-         std::to_string(r.faces.rows()) + "/" +
-         std::to_string(r.degrees.size()) + "/" +
-         std::to_string(r.degrees.sum());
+  return std::to_string(r.product().vertices.rows()) + "/" +
+         std::to_string(r.product().faces.rows()) + "/" +
+         std::to_string(r.product().degrees.size()) + "/" +
+         std::to_string(r.product().degrees.sum());
 }
 
 directional::pipeline::RemeshOptions test_options() {
@@ -136,8 +136,8 @@ TEST(ComponentParallelismPhase08,
   const auto componentParallel = directional::pipeline::remesh_from_raw_cross_field(
       mesh.vertices, mesh.faces, raw, options);
 
-  ASSERT_TRUE(componentSequential.success);
-  ASSERT_TRUE(componentParallel.success);
+  ASSERT_TRUE(componentSequential.is_produced());
+  ASSERT_TRUE(componentParallel.is_produced());
   EXPECT_EQ(structural_signature(componentSequential),
             structural_signature(componentParallel));
 }
@@ -151,12 +151,12 @@ TEST(ComponentParallelismPhase08, ParallelMergeOffsetsFaceIndicesCorrectly) {
       mesh.vertices, mesh.faces, constant_raw_field(mesh.faces.rows()),
       options);
 
-  ASSERT_TRUE(result.success);
-  ASSERT_GT(result.faces.rows(), 0);
-  for (int face = 0; face < result.degrees.size(); ++face) {
-    for (int corner = 0; corner < result.degrees(face); ++corner) {
-      EXPECT_GE(result.faces(face, corner), 0);
-      EXPECT_LT(result.faces(face, corner), result.vertices.rows());
+  ASSERT_TRUE(result.is_produced());
+  ASSERT_GT(result.product().faces.rows(), 0);
+  for (int face = 0; face < result.product().degrees.size(); ++face) {
+    for (int corner = 0; corner < result.product().degrees(face); ++corner) {
+      EXPECT_GE(result.product().faces(face, corner), 0);
+      EXPECT_LT(result.product().faces(face, corner), result.product().vertices.rows());
     }
   }
   EXPECT_EQ(result.diagnostics.componentCount, 2U);
@@ -173,8 +173,8 @@ TEST(ComponentParallelismPhase08, ParallelMergeIsDeterministic) {
   const auto second = directional::pipeline::remesh_from_raw_cross_field(
       mesh.vertices, mesh.faces, raw, options);
 
-  ASSERT_TRUE(first.success);
-  ASSERT_TRUE(second.success);
+  ASSERT_TRUE(first.is_produced());
+  ASSERT_TRUE(second.is_produced());
   EXPECT_EQ(structural_signature(first), structural_signature(second));
 }
 
@@ -188,7 +188,7 @@ TEST(ComponentParallelismPhase08, ParallelFailureReportsFailingComponent) {
   const auto result = directional::pipeline::remesh_from_raw_cross_field(
       mesh.vertices, mesh.faces, raw, options);
 
-  EXPECT_FALSE(result.success);
+  EXPECT_FALSE(result.is_produced());
   EXPECT_EQ(result.diagnostics.failedComponentIndex, 1U);
   EXPECT_EQ(result.diagnostics.failedComponentMinimumOriginalFace, 2U);
   ASSERT_EQ(result.diagnostics.components.size(), 2U);

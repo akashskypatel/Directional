@@ -1,0 +1,221 @@
+diff --git a/src/geometry/EmbeddedGraphTopology.cpp b/src/geometry/EmbeddedGraphTopology.cpp
+index 9c94bb57c..39102c47a 100644
+--- a/src/geometry/EmbeddedGraphTopology.cpp
++++ b/src/geometry/EmbeddedGraphTopology.cpp
+@@ -360,6 +360,9 @@ CutNodeBindingResult build_cut_node_bindings(
+   // the segment carrier_contact_struck_position names. On a selected cut edge
+   // that point is the struck trace's crossing, which then keeps this node.
+   std::map<CutCrossingKey, authority::NetworkNodeId> carrierContactCrossings;
++  // Two traces that stopped together at a carrier locus both end at the
++  // event node; nothing crosses there, so a selected cut edge is split at it.
++  std::map<authority::NetworkNodeId, CutCrossingBinding> mutualCrossings;
+   for (const auto &event : network.events()) {
+     if (event.kind != FieldAlignedNetworkEventKind::TraceIntersection) continue;
+     for (const auto &incidence : event.incidences) {
+@@ -375,6 +378,28 @@ CutNodeBindingResult build_cut_node_bindings(
+           record.carrierLocus->edge;
+       const FieldAlignedCandidateTrace *struck =
+           find_trace(network, record.struckTrace);
++      if (struck != nullptr && carrier_contact_is_mutual(*ending, *struck)) {
++        if (event.sourceEdge != carrier) {
++          GlobalTopologyPlanError failure =
++              error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
++          failure.sourceEdge = carrier;
++          failure.trace = ending->id;
++          failure.secondTrace = record.struckTrace;
++          return failure;
++        }
++        if (selectedCuts.count(carrier) != 0U) {
++          const authority::TraceId lower =
++              ending->id < struck->id ? ending->id : struck->id;
++          const FieldAlignedCandidateTrace &owner =
++              lower == ending->id ? *ending : *struck;
++          mutualCrossings.emplace(
++              event.node,
++              CutCrossingBinding{
++                  CutCrossingKey{carrier, lower, owner.segments.size()},
++                  record.carrierLocus->parameter, event.node});
++        }
++        continue;
++      }
+       const auto position =
+           struck == nullptr ? std::nullopt
+                             : carrier_contact_struck_position(*struck, record);
+@@ -484,6 +509,15 @@ CutNodeBindingResult build_cut_node_bindings(
+       return failure;
+     }
+   }
++  for (const auto &[node, binding] : mutualCrossings) {
++    if (!result.syntheticCrossings.emplace(node, binding).second) {
++      GlobalTopologyPlanError failure =
++          error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
++      failure.sourceEdge = binding.key.sourceEdge;
++      failure.trace = binding.key.trace;
++      return failure;
++    }
++  }
+   result.combinedNodeExtent = extent;
+   return result;
+ }
+@@ -805,6 +839,33 @@ std::optional<TraceCutPosition> carrier_contact_struck_position(
+   return TraceCutPosition{record.struckSegmentIndex, std::nullopt};
+ }
+ 
++bool carrier_contact_is_mutual(const FieldAlignedCandidateTrace &ending,
++                               const FieldAlignedCandidateTrace &struck) {
++  const auto namesAtEnd = [](const FieldAlignedCandidateTrace &trace,
++                             const FieldAlignedCandidateTrace &other) {
++    if (trace.segments.empty() || !trace.terminalContact.has_value()) {
++      return false;
++    }
++    const FieldAlignedTerminalContact &record = *trace.terminalContact;
++    const FieldAlignedCandidateTraceSegment &last = trace.segments.back();
++    return record.carrierLocus.has_value() && record.struckTrace == other.id &&
++           record.struckSegmentIndex == other.segments.size() &&
++           record.sourceFace == last.sourceFace &&
++           last.outgoingCarrier == record.carrierLocus->edge &&
++           !last.edgeTransitExit.has_value();
++  };
++  if (ending.id == struck.id || !namesAtEnd(ending, struck) ||
++      !namesAtEnd(struck, ending) ||
++      ending.terminalContact->carrierLocus !=
++          struck.terminalContact->carrierLocus) {
++    return false;
++  }
++  const authority::FieldExactRational &parameter =
++      ending.terminalContact->carrierLocus->parameter.value;
++  return authority::FieldExactRational::from_integer(0) < parameter &&
++         parameter < authority::FieldExactRational::from_integer(1);
++}
++
+ std::optional<authority::FieldExactRational> trace_segment_contact_parameter(
+     const FieldAlignedCandidateTrace &trace, const std::size_t segment,
+     const FaceChartPoint &point) {
+@@ -1763,9 +1824,9 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
+         authority::ExactUnitParameter{
+             authority::FieldExactRational::from_integer(0)},
+         first->second);
+-    for (const auto &[key, crossing] : cutNodes.crossingByKey) {
+-      if (key.sourceEdge == cutEdge) {
+-        orderedPoints.emplace_back(crossing.parameter, crossing.node);
++    for (const auto &[node, crossing] : cutNodes.syntheticCrossings) {
++      if (crossing.key.sourceEdge == cutEdge) {
++        orderedPoints.emplace_back(crossing.parameter, node);
+       }
+     }
+     orderedPoints.emplace_back(
+diff --git a/src/geometry/EmbeddedGraphTopology.h b/src/geometry/EmbeddedGraphTopology.h
+index c7527c878..09c220eef 100644
+--- a/src/geometry/EmbeddedGraphTopology.h
++++ b/src/geometry/EmbeddedGraphTopology.h
+@@ -76,7 +76,9 @@ struct CutNodeBindings {
+   std::map<authority::NetworkNodeId, authority::SourceVertexId> syntheticVertices;
+   std::map<CutCrossingKey, CutCrossingBinding> crossingByKey;
+   /** Crossing by node. A crossing struck by a carrier contact keeps the
+-   * contact's network node instead of a cut-created one. */
++   * contact's network node instead of a cut-created one. A mutual carrier
++   * contact on a selected cut edge splits it at the contact's network node,
++   * listed here only, since neither trace crosses there. */
+   std::map<authority::NetworkNodeId, CutCrossingBinding> syntheticCrossings;
+   std::map<authority::NetworkNodeId, CarrierContactBinding> carrierContacts;
+   std::size_t combinedNodeExtent = 0U;
+@@ -286,6 +288,18 @@ trace_segment_contact_parameter(const FieldAlignedCandidateTrace &trace,
+     const FieldAlignedCandidateTrace &struck,
+     const FieldAlignedTerminalContact &record);
+ 
++/**
++ * True when `ending` and `struck` stopped together at one carrier locus, the
++ * outcome of an inconclusive arrival at a shared entry crossing: neither trace
++ * entered its next segment there. Each record names the other trace at that
++ * trace's end (`struckSegmentIndex` equal to its segment count) at the same
++ * edge and interior parameter, and each trace's last segment lies in its
++ * record's face and leaves it through that edge without a slide.
++ */
++[[nodiscard]] bool carrier_contact_is_mutual(
++    const FieldAlignedCandidateTrace &ending,
++    const FieldAlignedCandidateTrace &struck);
++
+ /**
+  * The exact source path segment `segment` of `trace` traverses. A segment
+  * without an edge transit is one face piece to its end. A segment with an edge
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 3f117c59d..11a2f2462 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -19256,6 +19256,76 @@ TEST(FieldAlignedCarrierOccupancy,
+   EXPECT_FALSE(embedded::carrier_contact_struck_position(sliding, inSlide));
+ }
+ 
++TEST(FieldAlignedCarrierOccupancy,
++     MutualCarrierContactNamesEachTraceAtItsEndOnOneLocus) {
++  using directional::authority::FieldBranch;
++  using directional::authority::TopologyRegionId;
++  using directional::authority::TraceId;
++  using directional::geometry::FieldAlignedCandidateTrace;
++  using directional::geometry::FieldAlignedTerminalContact;
++  // Edge (0,2) is shared by faces (0,1,2) and (0,2,3). Trace 0 crosses (0,1)
++  // into the lower face and trace 1 crosses (2,3) into the upper face; both
++  // leave through the carrier at 1/3 and stop there before entering.
++  const auto carrier = topology_edge(0, 2, 4U);
++  const auto ab = topology_edge(0, 1, 4U);
++  const auto cd = topology_edge(2, 3, 4U);
++  const auto lower = topology_face(0, 1, 2, 4U);
++  const auto upper = topology_face(0, 2, 3, 4U);
++  const auto branch = FieldBranch::from_integer(0);
++  const auto makeTrace = [](const std::size_t index) {
++    return FieldAlignedCandidateTrace(
++        TraceId::from_index(index, 2U).value(),
++        SingularityPortId::from_index(0, 1).value(),
++        FieldSingularityId::from_index(0, 1).value(),
++        SourceVertexId::from_index(1, 4).value(),
++        SourceComponentId::from_index(0, 1).value(),
++        TopologyRegionId::from_index(0, 1).value());
++  };
++  FieldAlignedCandidateTrace first = makeTrace(0U);
++  first.segments.emplace_back(lower, branch, boundary_point(ab, 1, 2), ab,
++                              carrier, std::nullopt);
++  FieldAlignedCandidateTrace second = makeTrace(1U);
++  second.segments.emplace_back(upper, branch, boundary_point(cd, 1, 2), cd,
++                               carrier, std::nullopt);
++  first.terminalContact = FieldAlignedTerminalContact{
++      lower, {exact_ratio(2, 3), exact_ratio(0, 1), exact_ratio(1, 3)},
++      second.id, 1U, boundary_point(carrier, 1, 3)};
++  second.terminalContact = FieldAlignedTerminalContact{
++      upper, {exact_ratio(2, 3), exact_ratio(1, 3), exact_ratio(0, 1)},
++      first.id, 1U, boundary_point(carrier, 1, 3)};
++  EXPECT_TRUE(embedded::carrier_contact_is_mutual(first, second));
++  EXPECT_TRUE(embedded::carrier_contact_is_mutual(second, first));
++  EXPECT_FALSE(embedded::carrier_contact_is_mutual(first, first));
++  // The struck trace's existing entry is not its end: the one-sided rule
++  // (carrier_contact_struck_position) owns that record.
++  auto continuing = second;
++  continuing.terminalContact.reset();
++  EXPECT_FALSE(embedded::carrier_contact_is_mutual(first, continuing));
++  auto beforeEnd = second;
++  beforeEnd.terminalContact->struckSegmentIndex = 0U;
++  EXPECT_FALSE(embedded::carrier_contact_is_mutual(first, beforeEnd));
++  auto otherParameter = second;
++  otherParameter.terminalContact->carrierLocus = boundary_point(carrier, 1, 2);
++  EXPECT_FALSE(embedded::carrier_contact_is_mutual(first, otherParameter));
++  auto otherFace = second;
++  otherFace.terminalContact->sourceFace = lower;
++  EXPECT_FALSE(embedded::carrier_contact_is_mutual(first, otherFace));
++  auto otherExit = second;
++  otherExit.segments[0].outgoingCarrier = ab;
++  EXPECT_FALSE(embedded::carrier_contact_is_mutual(first, otherExit));
++  auto sliding = second;
++  sliding.segments[0].edgeTransitEntry = boundary_point(carrier, 1, 10);
++  sliding.segments[0].edgeTransitExit = boundary_point(carrier, 1, 3);
++  EXPECT_FALSE(embedded::carrier_contact_is_mutual(first, sliding));
++  // A meeting at the carrier's end vertex is a vertex meeting, not this rule.
++  auto firstAtVertex = first;
++  auto secondAtVertex = second;
++  firstAtVertex.terminalContact->carrierLocus = boundary_point(carrier, 0, 1);
++  secondAtVertex.terminalContact->carrierLocus = boundary_point(carrier, 0, 1);
++  EXPECT_FALSE(
++      embedded::carrier_contact_is_mutual(firstAtVertex, secondAtVertex));
++}
++
+ TEST(FieldAlignedCarrierOccupancy,
+      FirstSharedParameterFollowsTheMovingTraceAlongOneCarrier) {
+   using directional::authority::FieldBranch;

@@ -1,0 +1,248 @@
+diff --git a/include/directional/geometry/GlobalConformityBaseline.h b/include/directional/geometry/GlobalConformityBaseline.h
+index d5c9a4000..d878ea625 100644
+--- a/include/directional/geometry/GlobalConformityBaseline.h
++++ b/include/directional/geometry/GlobalConformityBaseline.h
+@@ -314,13 +314,16 @@ build_global_conformity_baseline(const GlobalTopologyPlan &topology,
+ 
+ /** D5 A3 input over an A2b plan (RA-220): one span per arc, with each arc's
+  *  support copied verbatim, except that the source-boundary arcs of one rail
+- *  between stops form one chained span. Nothing when the plan and the network
+- *  do not describe one graph. */
++ *  between stops form one chained span. `fieldCornerVertices` are the
++ *  boundary field corners (derive_boundary_field_corner_vertices); a rail
++ *  stops at each. Nothing when the plan and the network do not describe one
++ *  graph. */
+ [[nodiscard]] std::optional<GlobalConformityBaselineInput>
+ make_chained_global_conformity_baseline_input(
+     const Eigen::MatrixXd &sourceVertices, const Eigen::VectorXd &targetSize,
+     const GlobalTopologyPlan &topology, const FieldAlignedCurveNetwork &network,
+-    const std::vector<AdaptiveFeatureCurve> &featureCurves);
++    const std::vector<AdaptiveFeatureCurve> &featureCurves,
++    const std::vector<authority::SourceVertexId> &fieldCornerVertices = {});
+ 
+ [[nodiscard]] std::optional<GlobalConformityPlanError>
+ validate_global_conformity_baseline_candidate(
+diff --git a/src/geometry/GlobalConformityBaseline.cpp b/src/geometry/GlobalConformityBaseline.cpp
+index 8105f7f24..169955581 100644
+--- a/src/geometry/GlobalConformityBaseline.cpp
++++ b/src/geometry/GlobalConformityBaseline.cpp
+@@ -800,13 +800,14 @@ std::optional<GlobalConformityBaselineInput>
+ make_chained_global_conformity_baseline_input(
+     const Eigen::MatrixXd &sourceVertices, const Eigen::VectorXd &targetSize,
+     const GlobalTopologyPlan &topology, const FieldAlignedCurveNetwork &network,
+-    const std::vector<AdaptiveFeatureCurve> &featureCurves) {
++    const std::vector<AdaptiveFeatureCurve> &featureCurves,
++    const std::vector<authority::SourceVertexId> &fieldCornerVertices) {
+   const auto chains =
+       global_conformity_baseline_detail::derive_mandatory_chain_partition(
+           topology.arcs(), topology.rotation_system(), network.mandatory_edges(),
+           global_conformity_baseline_detail::derive_mandatory_chain_stop_nodes(
+               network.nodes(), network.singularity_ports(),
+-              network.mandatory_edges(), featureCurves));
++              network.mandatory_edges(), featureCurves, fieldCornerVertices));
+   if (!chains) return std::nullopt;
+   GlobalConformityBaselineInput input;
+   input.sourceVertices = sourceVertices;
+diff --git a/src/geometry/GlobalConformityBaselineSupport.cpp b/src/geometry/GlobalConformityBaselineSupport.cpp
+index 6781291a7..2ee6445fc 100644
+--- a/src/geometry/GlobalConformityBaselineSupport.cpp
++++ b/src/geometry/GlobalConformityBaselineSupport.cpp
+@@ -483,7 +483,8 @@ std::set<authority::NetworkNodeId> derive_mandatory_chain_stop_nodes(
+     const std::vector<FieldAlignedCurveNetworkNode> &nodes,
+     const std::vector<FieldAlignedSingularityPort> &ports,
+     const std::vector<FieldAlignedMandatoryEdge> &mandatoryEdges,
+-    const std::vector<AdaptiveFeatureCurve> &curves) {
++    const std::vector<AdaptiveFeatureCurve> &curves,
++    const std::vector<authority::SourceVertexId> &fieldCornerVertices) {
+   std::set<authority::NetworkNodeId> stops;
+   for (const auto &port : ports) stops.insert(port.node);
+   for (const auto &edge : mandatoryEdges) {
+@@ -491,13 +492,16 @@ std::set<authority::NetworkNodeId> derive_mandatory_chain_stop_nodes(
+     stops.insert(edge.firstNode);
+     stops.insert(edge.secondNode);
+   }
+-  std::set<std::int64_t> featureVertices;
++  std::set<std::int64_t> stopVertices;
+   for (const auto &curve : curves) {
+-    featureVertices.insert(curve.corners.begin(), curve.corners.end());
+-    featureVertices.insert(curve.junctions.begin(), curve.junctions.end());
++    stopVertices.insert(curve.corners.begin(), curve.corners.end());
++    stopVertices.insert(curve.junctions.begin(), curve.junctions.end());
++  }
++  for (const auto vertex : fieldCornerVertices) {
++    stopVertices.insert(static_cast<std::int64_t>(vertex.index()));
+   }
+   for (const auto &node : nodes) {
+-    if (featureVertices.count(
++    if (stopVertices.count(
+             static_cast<std::int64_t>(node.sourceVertex.index())) != 0U) {
+       stops.insert(node.id);
+     }
+diff --git a/src/geometry/GlobalConformityBaselineSupport.h b/src/geometry/GlobalConformityBaselineSupport.h
+index 55daf0447..801a071ba 100644
+--- a/src/geometry/GlobalConformityBaselineSupport.h
++++ b/src/geometry/GlobalConformityBaselineSupport.h
+@@ -68,14 +68,16 @@ derive_mandatory_chain_support(const BaselineMandatoryChain &chain,
+ 
+ // D5 stop nodes (RA-219): the nodes where a chain ends whatever their
+ // rotation. They are the singularity-port nodes, the nodes on a corner or
+-// junction vertex of an upstream feature curve, and both ends of every
+-// hard-feature edge, so only source-boundary rails join.
++// junction vertex of an upstream feature curve, the nodes on a boundary field
++// corner (RA-224), and both ends of every hard-feature edge, so only
++// source-boundary rails join.
+ [[nodiscard]] std::set<authority::NetworkNodeId>
+ derive_mandatory_chain_stop_nodes(
+     const std::vector<FieldAlignedCurveNetworkNode> &nodes,
+     const std::vector<FieldAlignedSingularityPort> &ports,
+     const std::vector<FieldAlignedMandatoryEdge> &mandatoryEdges,
+-    const std::vector<AdaptiveFeatureCurve> &curves);
++    const std::vector<AdaptiveFeatureCurve> &curves,
++    const std::vector<authority::SourceVertexId> &fieldCornerVertices = {});
+ 
+ // D5 arc bindings (RA-219): the span that schedules each A2b arc. A span
+ // without a chain covers only its identifying arc. Returns nothing unless the
+diff --git a/tests/GlobalConformityBaselineTests.cpp b/tests/GlobalConformityBaselineTests.cpp
+index a8988642e..be3c375f6 100644
+--- a/tests/GlobalConformityBaselineTests.cpp
++++ b/tests/GlobalConformityBaselineTests.cpp
+@@ -1846,6 +1846,33 @@ TEST(GlobalConformityBaseline, D5StopNodesKeepHardFeatureRailsPerArc) {
+             << " port2=0F,1F|2F|3F|4F\n";
+ }
+ 
++// A boundary field corner (RA-224) stops a chain as a feature corner does,
++// through the node on its source vertex.
++TEST(GlobalConformityBaseline, StopNodesReadBoundaryFieldCorners) {
++  // Rail 0 is a source boundary 0-1-2-3; node k sits on source vertex 7 - k.
++  ChainGraph graph;
++  add_arc(graph, 0, 1);
++  add_arc(graph, 1, 2);
++  add_arc(graph, 2, 3);
++  std::vector<FieldAlignedCurveNetworkNode> nodes;
++  for (int k = 0; k < 4; ++k) nodes.push_back(stop_node(k, 7 - k));
++  const auto vertex = [](const int index) {
++    return SourceVertexId::from_index(index, kChainExtent).value();
++  };
++  const auto shape = [&](const std::vector<SourceVertexId> &fieldCorners) {
++    return chain_shape(derive_mandatory_chain_partition(
++        graph.arcs, rotations_of(graph.arcs), graph.edges,
++        derive_mandatory_chain_stop_nodes(nodes, {}, graph.edges, {},
++                                          fieldCorners)));
++  };
++  EXPECT_EQ("0F,1F,2F", shape({}));
++  // Vertex 5 carries node 2 and vertex 6 node 1; vertex 0 carries no node.
++  EXPECT_EQ("0F,1F|2F", shape({vertex(5)}));
++  EXPECT_EQ("0F|1F|2F", shape({vertex(5), vertex(6)}));
++  EXPECT_EQ("0F|1F|2F", shape({vertex(6), vertex(5)}));
++  EXPECT_EQ("0F,1F,2F", shape({vertex(0)}));
++}
++
+ namespace {
+ 
+ using directional::geometry::BaselineConformityArcBinding;
+diff --git a/tests/SurfaceCellDesignAcceptanceTests.cpp b/tests/SurfaceCellDesignAcceptanceTests.cpp
+index 6ab9dd447..45ca3b054 100644
+--- a/tests/SurfaceCellDesignAcceptanceTests.cpp
++++ b/tests/SurfaceCellDesignAcceptanceTests.cpp
+@@ -476,6 +476,40 @@ TEST_P(SurfaceCellDesignD4RimCensus, ReportsRimCountsAgainstTheA3Schedules) {
+             << " unresolved=" << unresolved
+             << " arcs:perArc/chained/output/recorded=" << list.str()
+             << std::endl;
++
++  // RA-224: the chained schedule once rim rails also stop at the boundary
++  // field corners. `chains` and `spans` read without/with those stops.
++  if (!chainedInput.has_value() || !snapshots.fieldTransportAtlas.has_value()) {
++    std::cout << "d4-corner case=" << GetParam().testName << " inputs=foreign"
++              << std::endl;
++    return;
++  }
++  Eigen::MatrixXd faceAxisX;
++  Eigen::MatrixXd faceAxisY;
++  directional::geometry::cross_field_axes(snapshots.crossField, faceAxisX,
++                                          faceAxisY);
++  const auto fieldCorners =
++      directional::geometry::derive_boundary_field_corner_vertices(
++          mesh.vertices, mesh.faces, faceAxisX, faceAxisY,
++          &*snapshots.fieldTransportAtlas);
++  const auto stoppedInput =
++      directional::geometry::make_chained_global_conformity_baseline_input(
++          mesh.vertices, targetSize, topology, network,
++          context.featureMap.curves, fieldCorners);
++  ASSERT_TRUE(stoppedInput.has_value());
++  const auto stoppedBuilt = directional::geometry::build_global_conformity_baseline(
++      topology, *stoppedInput);
++  ASSERT_TRUE(stoppedBuilt);
++  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline(
++      topology, *stoppedInput, stoppedBuilt.value()));
++  // A stop only ever splits a span.
++  EXPECT_GE(stoppedInput->spans.size(), chainedInput->spans.size());
++  std::cout << "d4-corner case=" << GetParam().testName << " inputs=own"
++            << " fieldCorners=" << fieldCorners.size()
++            << " chains=" << chainedInput->chains.size() << '/'
++            << stoppedInput->chains.size()
++            << " spans=" << chainedInput->spans.size() << '/'
++            << stoppedInput->spans.size() << std::endl;
+ }
+ 
+ INSTANTIATE_TEST_SUITE_P(
+diff --git a/tests/SurfaceCellsPhase10Tests.cpp b/tests/SurfaceCellsPhase10Tests.cpp
+index f344bdfdc..b080bfc19 100644
+--- a/tests/SurfaceCellsPhase10Tests.cpp
++++ b/tests/SurfaceCellsPhase10Tests.cpp
+@@ -8438,6 +8438,56 @@ TEST(SurfaceCellAuthorityContractCutover,
+   }
+ }
+ 
++// The chained factory stops a rim rail at every boundary field corner
++// (RA-224). The fixture's field corners are its feature corners, so the
++// derived corners change nothing; a corner declared on vertex 3, the middle of
++// the first square's left side, splits the chain through it.
++TEST(SurfaceCellAuthorityContractCutover,
++     ChainedInputStopsAtBoundaryFieldCorners) {
++  const auto fixture = build_rectangular_hard_rail_phase_front();
++  ASSERT_TRUE(fixture.topologyPlan.has_value());
++  ASSERT_TRUE(fixture.fieldNetwork.has_value());
++  ASSERT_TRUE(fixture.atlas.has_value());
++  const auto &topology = *fixture.topologyPlan;
++  Eigen::MatrixXd faceAxisX;
++  Eigen::MatrixXd faceAxisY;
++  directional::geometry::cross_field_axes(fixture.crossField, faceAxisX,
++                                          faceAxisY);
++  const auto fieldCorners =
++      directional::geometry::derive_boundary_field_corner_vertices(
++          fixture.mesh.V, fixture.mesh.F, faceAxisX, faceAxisY,
++          &*fixture.atlas);
++  const auto input =
++      [&](const std::vector<directional::authority::SourceVertexId> &corners) {
++        return directional::geometry::
++            make_chained_global_conformity_baseline_input(
++                fixture.mesh.V, fixture.targetSize, topology,
++                *fixture.fieldNetwork, fixture.featureCurves, corners);
++      };
++  const auto unstopped = input({});
++  const auto stopped = input(fieldCorners);
++  ASSERT_TRUE(unstopped.has_value());
++  ASSERT_TRUE(stopped.has_value());
++  ASSERT_EQ(4U, unstopped->chains.size());
++  EXPECT_TRUE(stopped->chains == unstopped->chains);
++
++  const auto split = input({directional::authority::SourceVertexId::from_index(
++                                3, static_cast<std::size_t>(fixture.mesh.V.rows()))
++                                .value()});
++  ASSERT_TRUE(split.has_value());
++  EXPECT_EQ(3U, split->chains.size());
++  EXPECT_EQ(unstopped->spans.size() + 1U, split->spans.size());
++  const auto built =
++      directional::geometry::build_global_conformity_baseline(topology, *split);
++  ASSERT_TRUE(built);
++  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline(
++      topology, *split, built.value()));
++  std::cout << "FIELD_CORNER_STOP_RECEIPT fieldCorners=" << fieldCorners.size()
++            << " chains=" << unstopped->chains.size() << '/'
++            << stopped->chains.size() << " splitChains=" << split->chains.size()
++            << " splitSpans=" << split->spans.size() << "\n";
++}
++
+ TEST(SurfaceCellAuthorityContractCutover,
+      FixedConformityPlanTargetPerturbationPreservesSharedBoundaryIntervals) {
+   const auto fixture = build_rectangular_hard_rail_phase_front();

@@ -1,0 +1,51 @@
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index 4ab90295f..bdf947602 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -422,6 +422,11 @@ struct FieldAlignedCandidateTraceSegment {
+   std::optional<authority::SourceEdgeTopologyKey> incomingCarrier;
+   authority::SourceEdgeTopologyKey outgoingCarrier;
+   std::optional<FieldAlignedCandidateTraceTransition> entryTransport;
++  // Point of outgoingCarrier where the trace reaches the carrier and starts
++  // sliding along it to edgeTransitExit; the slide length is measured from
++  // it. Set together with edgeTransitExit. Not part of the candidate digest:
++  // it comes from the same exact face-exit decision as outgoingCarrier.
++  std::optional<authority::FieldBoundaryPoint> edgeTransitEntry;
+   std::optional<authority::FieldBoundaryPoint> edgeTransitExit;
+ 
+   auto operator<=>(const FieldAlignedCandidateTraceSegment &) const = default;
+diff --git a/src/geometry/EmbeddedGraphTopology.cpp b/src/geometry/EmbeddedGraphTopology.cpp
+index 045498473..2ccad3f4a 100644
+--- a/src/geometry/EmbeddedGraphTopology.cpp
++++ b/src/geometry/EmbeddedGraphTopology.cpp
+@@ -1050,6 +1050,10 @@ void print_trace_path(const FieldAlignedCandidateTrace *trace,
+     print_edge(segment.incomingCarrier);
+     std::clog << " to=";
+     print_edge(segment.outgoingCarrier);
++    if (segment.edgeTransitEntry.has_value()) {
++      std::clog << " slide=";
++      print_boundary_point(*segment.edgeTransitEntry);
++    }
+     if (segment.edgeTransitExit.has_value()) {
+       std::clog << " transit=";
+       print_boundary_point(*segment.edgeTransitExit);
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 8f58a2bd6..e5b15ec57 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -2781,6 +2781,7 @@ FieldAlignedCandidateTraceResult legacy_canonical_field_aligned_traces(
+               port.sourceVertex, port.singularity, std::nullopt,
+               decision.outgoingCarrier, currentFace, currentBranch));
+         }
++        trace.segments.back().edgeTransitEntry = decision.exitPoint;
+         trace.segments.back().edgeTransitExit = edgeTransit.exitPoint;
+         trace.terminalPoint = edgeTransit.exitPoint;
+         const authority::FieldSingularityFact *terminalSingularity =
+@@ -3760,6 +3761,7 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
+                 << ',' << decision.outgoingCarrier.second().index()
+                 << ") slideEnd=" << edgeTransit.sourceVertex->index() << '\n';
+     }
++    proposal.segment.edgeTransitEntry = decision.exitPoint;
+     proposal.segment.edgeTransitExit = edgeTransit.exitPoint;
+     proposal.terminalPoint = edgeTransit.exitPoint;
+     const auto transitExitBarycentric = field_boundary_point_barycentric(

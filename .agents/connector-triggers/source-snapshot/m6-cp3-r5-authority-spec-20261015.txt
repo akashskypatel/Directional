@@ -1,0 +1,1 @@
+R5 document-only source snapshot. Exact push event SHA is source authority; no code or tests run.

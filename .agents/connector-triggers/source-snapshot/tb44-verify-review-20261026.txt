@@ -1,0 +1,4 @@
+Purpose: immutable source snapshot for independent TB44-REV static review.
+Semantic source (pre-trigger): d9f1f607f6c77d8dd784bee847f0ab52518da73b
+Review turn: M6-CP3-TB44-RP01-SELECTOR405-FIXED-PLAN-VERIFY-REV
+Temporary workflow trigger; retire through authorized cleanup workflow.

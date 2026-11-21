@@ -1,0 +1,2 @@
+row	kind	identity	test	binary	expect	asserted_site
+1	OBSERVE	tb101a:field-corner-stop-nodes	GlobalConformityBaseline.StopNodesReadBoundaryFieldCorners	directional_surface_cell_producer_tests	OBSERVE	-

@@ -3,11 +3,19 @@
 #include <cstddef>
 #include <filesystem>
 #include <functional>
+#include <optional>
+#include <string>
 #include <string_view>
 
 #include <Eigen/Core>
 
 #include <directional/fields/CompareCrossFields.h>
+#include <directional/visualization/CutGraphDisplay.h>
+#include <directional/visualization/FieldAlignedNetworkPolylines.h>
+#include <directional/visualization/MaterializationDiagnosticsDisplay.h>
+#include <directional/visualization/SourceRegionDisplay.h>
+#include <directional/visualization/SurfaceCellTracingDisplay.h>
+#include <directional/visualization/TargetSizeDisplay.h>
 
 namespace directional::gui {
 
@@ -119,6 +127,25 @@ struct AutoRemeshResult {
   QuadMeshData quadMesh;
 };
 
+/// Display data for the SurfaceCells products retained by one run. A product
+/// is absent when the run stopped before publishing it.
+struct SurfaceCellDiagnosticsData {
+  std::optional<visualization::SourceRegionDisplay> regions;
+  std::optional<visualization::FieldAlignedNetworkPolylines> network;
+  /// The A2a' cut graph and A2b disc regions, when either was published.
+  std::optional<visualization::CutGraphDisplay> cutGraph;
+  /// The A5-A7 occurrences, quotient classes and source-attached geometry,
+  /// when the run completed them.
+  std::optional<visualization::MaterializationDiagnosticsDisplay>
+      materialization;
+  /// Where the run stopped and, when quad tracing produced them, its cells.
+  visualization::SurfaceCellTracingDisplay tracing;
+  bool pipelineProduced = false;
+  /// The run stopped after quad tracing because the caller asked it to.
+  bool stoppedOnRequest = false;
+  std::string pipelineStage;
+};
+
 MeshData load_mesh(const std::filesystem::path &path);
 
 FieldData load_field(const std::filesystem::path &path, FieldFormat format,
@@ -153,6 +180,25 @@ AutoRemeshResult auto_remesh(const MeshData &mesh,
 QuadMeshData remesh_with_field(const MeshData &mesh, const FieldData &field,
                                const RemeshOptions &options,
                                ProgressCallback progress = {});
+/// Runs the SurfaceCells backend and returns display data for the products
+/// it retains, which are published even when a later stage rejects the remesh.
+/// Target edge length and feature map from the first SurfaceCells stages.
+struct TargetSizeData {
+  visualization::TargetSizeDisplay display;
+  std::string pipelineStage;
+};
+
+/// Runs SurfaceCells only through its "metric" stage, where the target edge
+/// length and the feature map are computed.
+TargetSizeData compute_target_size(const MeshData &mesh, const FieldData &field,
+                                   const RemeshOptions &options,
+                                   ProgressCallback progress = {});
+
+/// With `stopAfterQuadTracing`, the run ends right after quad tracing (A4),
+/// which skips the slow later stages that diagnostics do not display.
+SurfaceCellDiagnosticsData run_surface_cell_diagnostics(
+    const MeshData &mesh, const FieldData &field, const RemeshOptions &options,
+    bool stopAfterQuadTracing, ProgressCallback progress = {});
 void save_mesh(const std::filesystem::path &path, const MeshData &mesh);
 void save_quad_mesh(const std::filesystem::path &path,
                     const QuadMeshData &mesh);

@@ -180,8 +180,8 @@ TEST(IntegerBatchSelectorPhase02,
   const directional::pipeline::RemeshResult coupling =
       run_batching_integration(directional::IntegerBatchStrategy::CouplingAware);
 
-  ASSERT_TRUE(residual.success);
-  ASSERT_TRUE(coupling.success);
+  ASSERT_TRUE(residual.is_produced());
+  ASSERT_TRUE(coupling.is_produced());
   EXPECT_LE(coupling.diagnostics.integration.finalConstraintResidualNorm,
             residual.diagnostics.integration.finalConstraintResidualNorm +
                 1.0e-8);
@@ -197,8 +197,8 @@ TEST(IntegerBatchSelectorPhase02,
   const directional::pipeline::RemeshResult coupling =
       run_batching_integration(directional::IntegerBatchStrategy::CouplingAware);
 
-  ASSERT_TRUE(residual.success);
-  ASSERT_TRUE(coupling.success);
+  ASSERT_TRUE(residual.is_produced());
+  ASSERT_TRUE(coupling.is_produced());
   EXPECT_LE(coupling.diagnostics.integration.factorizationFailures,
             residual.diagnostics.integration.factorizationFailures);
   EXPECT_LE(coupling.diagnostics.integration.solveFailures,
@@ -212,11 +212,11 @@ TEST(IntegerBatchSelectorPhase02,
   const directional::pipeline::RemeshResult coupling =
       run_batching_integration(directional::IntegerBatchStrategy::CouplingAware);
 
-  ASSERT_TRUE(residual.success);
-  ASSERT_TRUE(coupling.success);
-  EXPECT_EQ(coupling.faces.rows(), residual.faces.rows());
-  EXPECT_EQ(coupling.degrees.size(), residual.degrees.size());
-  for (int face = 0; face < coupling.degrees.size(); ++face) {
-    EXPECT_EQ(coupling.degrees(face), residual.degrees(face));
+  ASSERT_TRUE(residual.is_produced());
+  ASSERT_TRUE(coupling.is_produced());
+  EXPECT_EQ(coupling.product().faces.rows(), residual.product().faces.rows());
+  EXPECT_EQ(coupling.product().degrees.size(), residual.product().degrees.size());
+  for (int face = 0; face < coupling.product().degrees.size(); ++face) {
+    EXPECT_EQ(coupling.product().degrees(face), residual.product().degrees(face));
   }
 }

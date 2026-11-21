@@ -1,0 +1,4 @@
+Turn: M6-CP3-CB1-ENTRY-R3
+Requested source authority: 666d23c8c7dd727d9ff8f6eb735895f9a238fd93
+Purpose: inspect RA-40 factory-bound atlas re-derivation implementation and 12 call sites
+Runtime execution: false

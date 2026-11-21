@@ -1,0 +1,110 @@
+diff --git a/tests/SurfaceCellDesignAcceptanceTests.cpp b/tests/SurfaceCellDesignAcceptanceTests.cpp
+index cee59dad3..f937d4d76 100644
+--- a/tests/SurfaceCellDesignAcceptanceTests.cpp
++++ b/tests/SurfaceCellDesignAcceptanceTests.cpp
+@@ -539,6 +539,105 @@ TEST_P(SurfaceCellDesignD4RimCensus, ReportsRimCountsAgainstTheA3Schedules) {
+   std::cout << "rim-branch case=" << GetParam().testName
+             << " rimEdges=" << sourceRimEdges << " decided=" << decided
+             << " undecided=" << sourceRimEdges - decided << std::endl;
++
++  // 64D: what each schedule places on every rim network edge, against the
++  // output rim edges there. The annulus lattice puts a breakpoint at every
++  // rim vertex and splits each rim edge evenly, so it can read a schedule
++  // only on edges where both hold.
++  std::map<directional::authority::NetworkEdgeId,
++           std::vector<const directional::geometry::GlobalTopologyArc *>>
++      rimArcsOnEdge;
++  for (const auto &arc : topology.arcs()) {
++    if (arc.mandatoryEdge.has_value() && arcOfEdge.count(*arc.mandatoryEdge) != 0U) {
++      rimArcsOnEdge[*arc.mandatoryEdge].push_back(&arc);
++    }
++  }
++  std::map<directional::authority::NetworkEdgeId, long long> outputOnEdge;
++  if (produced) {
++    for (const auto &edge : phaseFront.product().edges()) {
++      if (edge.boundaryKind !=
++              directional::geometry::SurfaceFrontBoundaryKind::GenuineSourceBoundary ||
++          edge.route.steps().empty()) {
++        continue;
++      }
++      const auto *mandatory =
++          network.find_mandatory_edge(edge.route.steps().front().topology());
++      if (mandatory != nullptr) ++outputOnEdge[mandatory->id];
++    }
++  }
++  const std::size_t periodic =
++      produced ? phaseFront.product().periodicHolonomies().size() : 0U;
++  const auto report_rim_schedule =
++      [&](const char *schedule,
++          const directional::geometry::GlobalConformityBaselinePlan &plan) {
++        std::size_t split = 0U;
++        std::size_t vertexBreaks = 0U;
++        std::size_t equalOutput = 0U;
++        std::size_t evenSplit = 0U;
++        for (const auto &[edge, arcs] : rimArcsOnEdge) {
++          if (arcs.size() > 1U) ++split;
++          bool breaks = true;
++          bool even = true;
++          long long intervals = 0;
++          for (const auto *arc : arcs) {
++            const auto *binding = plan.find_arc_binding(arc->id);
++            ASSERT_NE(nullptr, binding);
++            const auto *entry = plan.find_schedule(binding->span);
++            ASSERT_NE(nullptr, entry);
++            // An arc is one support piece. A breakpoint on its far end is
++            // located at the start of the next piece, the span's last one at
++            // the end of its last piece.
++            const std::size_t piece = binding->firstSupportPiece;
++            const long long count = std::stoll(entry->count.to_string());
++            bool startBreak = false;
++            bool endBreak = false;
++            std::vector<std::pair<EInt, EInt>> inside;
++            for (long long ordinal = 0; ordinal <= count; ++ordinal) {
++              const auto location =
++                  plan.breakpoint_location(binding->span, EInt(ordinal));
++              ASSERT_TRUE(location.has_value());
++              const bool atStart = location->localNumerator == EInt(0);
++              if (location->supportPieceIndex == piece) {
++                if (atStart) {
++                  startBreak = true;
++                } else if (location->localNumerator == location->localDenominator) {
++                  endBreak = true;
++                } else {
++                  inside.emplace_back(location->localNumerator,
++                                      location->localDenominator);
++                }
++              } else if (location->supportPieceIndex == piece + 1U && atStart) {
++                endBreak = true;
++              }
++            }
++            breaks = breaks && startBreak && endBreak;
++            intervals += static_cast<long long>(inside.size()) + 1;
++            const EInt parts(static_cast<long long>(inside.size()) + 1);
++            for (std::size_t k = 0U; k < inside.size(); ++k) {
++              const EInt step(static_cast<long long>(k) + 1);
++              if (!(inside[k].first * parts == inside[k].second * step)) {
++                even = false;
++              }
++            }
++          }
++          if (!breaks) continue;
++          ++vertexBreaks;
++          const auto output = outputOnEdge.find(edge);
++          if (output != outputOnEdge.end() && output->second == intervals) {
++            ++equalOutput;
++          }
++          if (even) ++evenSplit;
++        }
++        std::cout << "annulus-rim case=" << GetParam().testName
++                  << " schedule=" << schedule << " periodic=" << periodic
++                  << " rimEdges=" << rimArcsOnEdge.size() << " split=" << split
++                  << " vertexBreaks=" << vertexBreaks
++                  << " equalOutput=" << equalOutput
++                  << " evenSplit=" << evenSplit << std::endl;
++      };
++  report_rim_schedule("perArc", perArc);
++  report_rim_schedule("chained", *chained);
++  report_rim_schedule("stopped", stoppedBuilt.value());
+ }
+ 
+ INSTANTIATE_TEST_SUITE_P(

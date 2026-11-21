@@ -1,0 +1,3 @@
+Source snapshot request for M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS
+Initial authority: 2b51f7020d2fd72a44ee1bf4eb483e6d0c8955dc
+Purpose: exact source snapshot for artifact-only test/benchmark turn.

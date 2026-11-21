@@ -1,0 +1,3 @@
+turn=M6-CP3-TB13C-R10-SELECTOR-497-CENSUS
+purpose=materialize one exact source snapshot before artifact-only selector census
+utc=2026-10-18T12:26:08Z

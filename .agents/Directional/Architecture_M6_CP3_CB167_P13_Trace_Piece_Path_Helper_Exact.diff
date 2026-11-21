@@ -1,0 +1,316 @@
+diff --git a/src/geometry/EmbeddedGraphTopology.cpp b/src/geometry/EmbeddedGraphTopology.cpp
+index e793de5b6f1b241a275a8561c3d4ed015dbf0d18..a79bd740f8e29a14ba99e97b9ef0eb3fcc94c8f2 100644
+--- a/src/geometry/EmbeddedGraphTopology.cpp
++++ b/src/geometry/EmbeddedGraphTopology.cpp
+@@ -725,9 +725,21 @@ std::optional<authority::ExactSourcePath> exact_trace_segment_pieces(
+     const FieldAlignedCandidateTrace &trace, const std::size_t segmentIndex) {
+   if (segmentIndex >= trace.segments.size()) return std::nullopt;
+   const FieldAlignedCandidateTraceSegment &segment = trace.segments[segmentIndex];
++  const auto face_piece_to_end = [&]() -> std::optional<authority::ExactSourcePath> {
++    const auto first = authority::canonical_exact_source_boundary_point(
++        segment.entryPoint);
++    const auto second = exact_trace_segment_end(trace, segmentIndex);
++    if (!first.has_value() || !second.has_value()) return std::nullopt;
++    authority::ExactSourcePath path{authority::ExactSourceSupportPiece{
++        authority::SourceFaceInteriorSupport{segment.sourceFace}, *first,
++        *second}};
++    return authority::exact_source_path_is_canonical(path)
++               ? std::optional<authority::ExactSourcePath>{std::move(path)}
++               : std::nullopt;
++  };
+   if (!segment.edgeTransitEntry.has_value() &&
+       !segment.edgeTransitExit.has_value()) {
+-    return exact_trace_path(trace, segmentIndex, segmentIndex + 1U);
++    return face_piece_to_end();
+   }
+   if (!segment.edgeTransitEntry.has_value() ||
+       !segment.edgeTransitExit.has_value() ||
+@@ -750,7 +762,7 @@ std::optional<authority::ExactSourcePath> exact_trace_segment_pieces(
+              .has_value()) {
+       return std::nullopt;
+     }
+-    return exact_trace_path(trace, segmentIndex, segmentIndex + 1U);
++    return face_piece_to_end();
+   }
+   const auto entry =
+       authority::canonical_exact_source_boundary_point(segment.entryPoint);
+@@ -786,6 +798,25 @@ std::pair<std::size_t, std::size_t> trace_cut_segment_range(
+                                                       : second.segment};
+ }
+
++static std::optional<authority::ExactSourcePoint> exact_trace_interior_point(
++    const FieldAlignedCandidateTrace &trace, const TraceCutPosition &position) {
++  const auto entry = trace_segment_canonical_entry(trace, position.segment);
++  const auto exit = trace_segment_canonical_exit(trace, position.segment);
++  const auto zero = authority::FieldExactRational::from_integer(0);
++  const auto one = authority::FieldExactRational::from_integer(1);
++  const authority::FieldExactRational &t = *position.parameter;
++  if (!entry.has_value() || !exit.has_value() || !(t > zero) ||
++      !(t < one)) {
++    return std::nullopt;
++  }
++  FaceChartPoint point = *entry;
++  for (std::size_t index = 0U; index < 3U; ++index) {
++    point[index] = (*entry)[index] + t * ((*exit)[index] - (*entry)[index]);
++  }
++  return authority::canonical_exact_source_face_point(
++      trace.segments[position.segment].sourceFace, point);
++}
++
+ std::optional<authority::ExactSourcePath> exact_trace_path_between(
+     const FieldAlignedCandidateTrace &trace, const TraceCutPosition &first,
+     const TraceCutPosition &second) {
+@@ -795,35 +826,17 @@ std::optional<authority::ExactSourcePath> exact_trace_path_between(
+   }
+   const auto [begin, end] = trace_cut_segment_range(first, second);
+   if (begin >= end || end > trace.segments.size()) return std::nullopt;
+-  const auto interior_point = [&](const TraceCutPosition &position)
+-      -> std::optional<authority::ExactSourcePoint> {
+-    const auto entry = trace_segment_canonical_entry(trace, position.segment);
+-    const auto exit = trace_segment_canonical_exit(trace, position.segment);
+-    const auto zero = authority::FieldExactRational::from_integer(0);
+-    const auto one = authority::FieldExactRational::from_integer(1);
+-    const authority::FieldExactRational &t = *position.parameter;
+-    if (!entry.has_value() || !exit.has_value() || !(t > zero) ||
+-        !(t < one)) {
+-      return std::nullopt;
+-    }
+-    FaceChartPoint point = *entry;
+-    for (std::size_t index = 0U; index < 3U; ++index) {
+-      point[index] = (*entry)[index] + t * ((*exit)[index] - (*entry)[index]);
+-    }
+-    return authority::canonical_exact_source_face_point(
+-        trace.segments[position.segment].sourceFace, point);
+-  };
+   authority::ExactSourcePath path;
+   path.reserve(end - begin);
+   for (std::size_t segmentIndex = begin; segmentIndex < end; ++segmentIndex) {
+     const auto &segment = trace.segments[segmentIndex];
+     const auto start =
+         segmentIndex == begin && first.parameter.has_value()
+-            ? interior_point(first)
++            ? exact_trace_interior_point(trace, first)
+             : authority::canonical_exact_source_boundary_point(
+                   segment.entryPoint);
+     const auto finish = segmentIndex + 1U == end && second.parameter.has_value()
+-                            ? interior_point(second)
++                            ? exact_trace_interior_point(trace, second)
+                             : exact_trace_segment_end(trace, segmentIndex);
+     if (!start.has_value() || !finish.has_value()) return std::nullopt;
+     path.push_back(authority::ExactSourceSupportPiece{
+@@ -835,6 +848,40 @@ std::optional<authority::ExactSourcePath> exact_trace_path_between(
+              : std::nullopt;
+ }
+
++std::optional<authority::ExactSourcePath> exact_trace_piece_path_between(
++    const FieldAlignedCandidateTrace &trace, const TraceCutPosition &first,
++    const TraceCutPosition &second) {
++  if (!(first < second)) return std::nullopt;
++  const auto [begin, end] = trace_cut_segment_range(first, second);
++  if (begin >= end || end > trace.segments.size()) return std::nullopt;
++  authority::ExactSourcePath path;
++  for (std::size_t segmentIndex = begin; segmentIndex < end; ++segmentIndex) {
++    auto pieces = exact_trace_segment_pieces(trace, segmentIndex);
++    if (!pieces.has_value()) return std::nullopt;
++    const bool clipFirst = segmentIndex == begin && first.parameter.has_value();
++    const bool clipLast = segmentIndex + 1U == end && second.parameter.has_value();
++    if (clipFirst || clipLast) {
++      const auto &segment = trace.segments[segmentIndex];
++      if (segment.edgeTransitEntry.has_value() || segment.edgeTransitExit.has_value() ||
++          pieces->size() != 1U) return std::nullopt;
++      if (clipFirst) {
++        const auto point = exact_trace_interior_point(trace, first);
++        if (!point.has_value()) return std::nullopt;
++        pieces->front().first = *point;
++      }
++      if (clipLast) {
++        const auto point = exact_trace_interior_point(trace, second);
++        if (!point.has_value()) return std::nullopt;
++        pieces->back().second = *point;
++      }
++    }
++    path.insert(path.end(), pieces->begin(), pieces->end());
++  }
++  return authority::exact_source_path_is_canonical(path)
++             ? std::optional<authority::ExactSourcePath>{std::move(path)}
++             : std::nullopt;
++}
++
+ FaceContactNodeResult collect_face_contact_nodes(
+     const FieldAlignedCurveNetwork &network) {
+   constexpr RotationSystemInconsistencyReason kInvalid =
+diff --git a/src/geometry/EmbeddedGraphTopology.h b/src/geometry/EmbeddedGraphTopology.h
+index 431e3b0539e4ed144f1a859404d6c0abe515c114..326e407c85bd35ceddf648bc3d9f5096536a857b 100644
+--- a/src/geometry/EmbeddedGraphTopology.h
++++ b/src/geometry/EmbeddedGraphTopology.h
+@@ -288,6 +288,15 @@ exact_trace_path_between(const FieldAlignedCandidateTrace &trace,
+                          const TraceCutPosition &first,
+                          const TraceCutPosition &second);
+
++/**
++ * Concatenate the real segment pieces in [first, second). Interior cuts
++ * clip only ordinary face pieces. Unwired until the coordinated graph cutover.
++ */
++[[nodiscard]] std::optional<authority::ExactSourcePath>
++exact_trace_piece_path_between(const FieldAlignedCandidateTrace &trace,
++                               const TraceCutPosition &first,
++                               const TraceCutPosition &second);
++
+ /**
+  * A network node at a trace-trace contact strictly inside a source face: a
+  * non-port node with a TraceIntersection or TraceSelfClosure event, or with
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 99c497ce3b78496b12fcc82da1b879f95b08ffea..f24ffd7d14a259a0e65d4b212f22a50b48da649a 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -19030,6 +19030,150 @@ TEST(FieldAlignedCarrierOccupancy,
+   EXPECT_FALSE(embedded::exact_trace_segment_pieces(emptySlide, 0U));
+ }
+
++TEST(FieldAlignedCarrierOccupancy,
++     TracePiecePathKeepsNonLastSlideAndCanonicalContactEndpoints) {
++  namespace authority = directional::authority;
++  using directional::authority::FieldBranch;
++  using directional::authority::TopologyRegionId;
++  using directional::authority::TraceId;
++  using directional::geometry::FieldAlignedCandidateTrace;
++  using directional::geometry::FieldAlignedTerminalContact;
++  using Path = authority::ExactSourcePath;
++  using Piece = authority::ExactSourceSupportPiece;
++  using Position = embedded::TraceCutPosition;
++  const auto first = topology_face(0, 1, 4, 5U);
++  const auto second = topology_face(1, 2, 4, 5U);
++  const auto incoming = topology_edge(0, 4, 5U);
++  const auto carrier = topology_edge(0, 1, 5U);
++  const auto next = topology_edge(1, 4, 5U);
++  const auto outgoing = topology_edge(2, 4, 5U);
++  const auto entry = boundary_point(incoming, 1, 1);
++  const auto slideStart = boundary_point(carrier, 1, 4);
++  const auto slideEnd = boundary_point(carrier, 1, 1);
++  const auto nextEntry = boundary_point(next, 0, 1);
++  const auto finish = boundary_point(outgoing, 1, 2);
++  const authority::ExactSourcePoint v0{SourceVertexId::from_index(0, 5).value()};
++  const authority::ExactSourcePoint v1{SourceVertexId::from_index(1, 5).value()};
++  const authority::ExactSourcePoint v2{SourceVertexId::from_index(2, 5).value()};
++  const authority::ExactSourcePoint v4{SourceVertexId::from_index(4, 5).value()};
++  const authority::ExactSourcePoint edgeStart{
++      authority::ExactSourceEdgePoint{carrier, exact_ratio(1, 4)}};
++  const authority::ExactSourcePoint edgeFinish{
++      authority::ExactSourceEdgePoint{outgoing, exact_ratio(1, 2)}};
++  FieldAlignedCandidateTrace trace(
++      TraceId::from_index(0U, 2U).value(),
++      SingularityPortId::from_index(0, 1).value(),
++      FieldSingularityId::from_index(0, 1).value(),
++      SourceVertexId::from_index(4, 5).value(),
++      SourceComponentId::from_index(0, 1).value(),
++      TopologyRegionId::from_index(0, 1).value());
++  const auto branch = FieldBranch::from_integer(0);
++  trace.segments.emplace_back(first, branch, entry, incoming, carrier,
++                              std::nullopt);
++  trace.segments[0].edgeTransitEntry = slideStart;
++  trace.segments[0].edgeTransitExit = slideEnd;
++  trace.segments.emplace_back(second, branch, nextEntry, next, outgoing,
++                              std::nullopt);
++  trace.terminalPoint = finish;
++  const Position start{0U, std::nullopt};
++  const Position middle{1U, std::nullopt};
++  const Position end{2U, std::nullopt};
++  const auto half = exact_ratio(1, 2);
++  const Position cut{1U, half};
++  const Piece facePiece{authority::SourceFaceInteriorSupport{first},
++                        v4, edgeStart};
++  const Piece edgePiece{authority::SourceEdgeSupport{carrier},
++                        edgeStart, v1};
++  const Piece lastPiece{authority::SourceFaceInteriorSupport{second},
++                        v1, edgeFinish};
++  const authority::ExactSourcePoint midpoint{authority::ExactSourceFacePoint{
++      second, {half, exact_ratio(1, 4), exact_ratio(1, 4)}}};
++  const Piece before{lastPiece.carrier, lastPiece.first, midpoint};
++  const Piece after{lastPiece.carrier, midpoint, lastPiece.second};
++  EXPECT_EQ((Path{facePiece, edgePiece, lastPiece}),
++            embedded::exact_trace_piece_path_between(trace, start, end));
++  EXPECT_EQ((Path{facePiece, edgePiece, before}),
++            embedded::exact_trace_piece_path_between(trace, start, cut));
++  EXPECT_EQ((Path{after}),
++            embedded::exact_trace_piece_path_between(trace, cut, end));
++  EXPECT_EQ((Path{facePiece, edgePiece}),
++            embedded::exact_trace_piece_path_between(trace, start, middle));
++  EXPECT_EQ((Path{lastPiece}),
++            embedded::exact_trace_piece_path_between(trace, middle, end));
++  const Position slideCut{0U, half};
++  EXPECT_FALSE(embedded::exact_trace_piece_path_between(trace, start, slideCut));
++  EXPECT_FALSE(embedded::exact_trace_piece_path_between(trace, slideCut, end));
++  EXPECT_FALSE(embedded::exact_trace_piece_path_between(trace, end, start));
++  EXPECT_FALSE(embedded::exact_trace_piece_path_between(trace, cut, cut));
++  EXPECT_FALSE(embedded::exact_trace_piece_path_between(
++      trace, middle, Position{1U, exact_ratio(1, 1)}));
++  EXPECT_FALSE(embedded::exact_trace_piece_path_between(
++      trace, middle, Position{1U, exact_ratio(0, 1)}));
++  EXPECT_FALSE(embedded::exact_trace_piece_path_between(
++      trace, start, Position{3U, std::nullopt}));
++  auto incomplete = trace;
++  incomplete.segments[0].edgeTransitEntry.reset();
++  EXPECT_FALSE(embedded::exact_trace_piece_path_between(incomplete, start, end));
++  auto discontinuous = trace;
++  discontinuous.segments[1].entryPoint = boundary_point(next, 1, 2);
++  EXPECT_FALSE(embedded::exact_trace_piece_path_between(discontinuous, start, end));
++
++  // Non-last departure: entry and slide start are v0 on different carriers.
++  auto departure = trace;
++  departure.sourceVertex = SourceVertexId::from_index(0, 5).value();
++  departure.segments[0].entryPoint = boundary_point(incoming, 0, 1);
++  departure.segments[0].edgeTransitEntry = boundary_point(carrier, 0, 1);
++  const Piece edgeOnly{edgePiece.carrier, v0, v1};
++  EXPECT_EQ((Path{edgeOnly, lastPiece}),
++            embedded::exact_trace_piece_path_between(departure, start, end));
++
++  // A retained slide on the terminal segment is not traversed when the
++  // exact terminal contact is strictly before its start.
++  auto clipped = trace;
++  clipped.segments.pop_back();
++  clipped.terminalPoint.reset();
++  clipped.terminalContact = FieldAlignedTerminalContact{
++      first, {exact_ratio(3, 8), exact_ratio(1, 8), half},
++      TraceId::from_index(1U, 2U).value(), 0U};
++  const authority::ExactSourcePoint clippedEnd{authority::ExactSourceFacePoint{
++      first, {exact_ratio(3, 8), exact_ratio(1, 8), half}}};
++  EXPECT_EQ((Path{Piece{facePiece.carrier, v4, clippedEnd}}),
++            embedded::exact_trace_piece_path_between(clipped, start, middle));
++
++  // These are exact endpoint conversion controls, not permission for the
++  // producer to classify edge or vertex encounters as interior contacts.
++  auto contact = trace;
++  contact.terminalPoint.reset();
++  contact.terminalContact = FieldAlignedTerminalContact{
++      second, {exact_ratio(0, 1), half, half},
++      TraceId::from_index(1U, 2U).value(), 0U};
++  EXPECT_EQ((Path{facePiece, edgePiece, lastPiece}),
++            embedded::exact_trace_piece_path_between(contact, start, end));
++  contact.terminalContact->barycentric = {
++      exact_ratio(0, 1), exact_ratio(1, 1), exact_ratio(0, 1)};
++  const Piece vertexPiece{
++      lastPiece.carrier, lastPiece.first, v2};
++  EXPECT_EQ((Path{facePiece, edgePiece, vertexPiece}),
++            embedded::exact_trace_piece_path_between(contact, start, end));
++  // Ordinary path remains exactly the legacy path, not only a valid path.
++  auto ordinary = trace;
++  ordinary.segments[0].edgeTransitEntry.reset();
++  ordinary.segments[0].edgeTransitExit.reset();
++  EXPECT_EQ(embedded::exact_trace_path_between(ordinary, start, end),
++            embedded::exact_trace_piece_path_between(ordinary, start, end));
++  EXPECT_EQ((Path{Piece{facePiece.carrier, v4, v1},
++                  lastPiece}),
++            embedded::exact_trace_piece_path_between(ordinary, start, end));
++  EXPECT_EQ(embedded::exact_trace_path_between(ordinary, cut, end),
++            embedded::exact_trace_piece_path_between(ordinary, cut, end));
++  const auto threeQuarters = exact_ratio(3, 4);
++  const authority::ExactSourcePoint later{authority::ExactSourceFacePoint{
++      second, {exact_ratio(1, 4), exact_ratio(3, 8), exact_ratio(3, 8)}}};
++  EXPECT_EQ((Path{Piece{lastPiece.carrier, midpoint, later}}),
++            embedded::exact_trace_piece_path_between(
++                ordinary, cut, Position{1U, threeQuarters}));
++}
++
+ TEST(FieldAlignedCarrierOccupancy,
+      FirstSharedParameterFollowsTheMovingTraceAlongOneCarrier) {
+   using directional::authority::FieldBranch;

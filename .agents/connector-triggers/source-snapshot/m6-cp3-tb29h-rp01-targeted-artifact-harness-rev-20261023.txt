@@ -1,0 +1,3 @@
+Snapshot request for M6-CP3-TB29H-RP01-TARGETED-ARTIFACT-HARNESS-REV
+Entry beacon source: eb3a86a56048ea2d9da4ece6406048304dbb047d
+Snapshot the immutable trigger commit as event source SHA.

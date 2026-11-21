@@ -1,14 +1,37 @@
 #include <directional/validation/SourceAuthoritativeMeshValidator.h>
+#include <directional/geometry/SurfaceCellTracing.h>
 
 #include <algorithm>
+#include <chrono>
+#include <cstdint>
+#include <set>
 #include <vector>
 
 #include <gtest/gtest.h>
 
 namespace {
 
+const std::set<directional::authority::SourceEdgeTopologyKey> &no_hard_feature_edges() {
+  static const std::set<directional::authority::SourceEdgeTopologyKey> edges;
+  return edges;
+}
+
 using directional::geometry::SurfacePoint;
 using directional::validation::MeshValidationFailureCode;
+
+directional::geometry::SourceTopologyRegions test_source_authority(
+    const Eigen::MatrixXi &faces, const std::vector<int> &components,
+    const std::vector<int> &sheets) {
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.sourceFaceComponents = components;
+  tracing.sourceFaceSheets = sheets;
+  auto authority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(faces, tracing);
+  if (!authority.has_value()) {
+    throw std::runtime_error("Failed to construct typed test source authority.");
+  }
+  return std::move(*authority);
+}
 
 directional::validation::source_authoritative_detail::TrianglePrimitive
 make_triangle_primitive(const Eigen::MatrixXd &vertices, const int a,
@@ -76,6 +99,136 @@ TEST(SourceAuthoritativeMeshValidatorPhase22,
 }
 
 TEST(SourceAuthoritativeMeshValidatorPhase22,
+     CoplanarContactIsMeasuredInLengthUnits) {
+  using directional::validation::source_authoritative_detail::triangles_intersect;
+  // Two coplanar triangles whose facing edges are 1e-2 long and 5e-6 apart.
+  // The orientation determinant of the gap is 5e-8, below the 6.4e-8
+  // position tolerance, but the gap is 78 times that tolerance: the triangles
+  // do not touch. CB96 Vase output faces 55 and 15372 were rejected the same
+  // way (gap 5.7e-5, determinant 1.6e-8). Moving the second triangle 2e-3
+  // into the first makes them overlap (RA-210).
+  const double tolerance = 6.4e-8;
+  const auto pair = [](const double offset) {
+    Eigen::MatrixXd vertices(6, 3);
+    vertices << 0.0, 0.0, 0.0,
+        1.0e-2, 0.0, 0.0,
+        5.0e-3, -1.0e-2, 0.0,
+        0.0, offset, 0.0,
+        1.0e-2, offset, 0.0,
+        5.0e-3, offset + 1.0e-2, 0.0;
+    return vertices;
+  };
+  const Eigen::MatrixXd apart = pair(5.0e-6);
+  EXPECT_FALSE(triangles_intersect(
+      apart, make_triangle_primitive(apart, 0, 1, 2, 0),
+      make_triangle_primitive(apart, 3, 4, 5, 1), tolerance));
+  const Eigen::MatrixXd overlapping = pair(-2.0e-3);
+  EXPECT_TRUE(triangles_intersect(
+      overlapping, make_triangle_primitive(overlapping, 0, 1, 2, 0),
+      make_triangle_primitive(overlapping, 3, 4, 5, 1), tolerance));
+}
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
+     ConcaveQuadContactUsesTrianglesInsideTheQuad) {
+  using directional::validation::source_authoritative_detail::TrianglePrimitive;
+  using directional::validation::source_authoritative_detail::triangles_intersect;
+  using directional::validation::source_authoritative_detail::triangulate_faces;
+  // Quad 0 is concave with its reflex corner at index 1, so its fan from
+  // corner 0 covers the notch. A square inside the notch does not touch the
+  // quad; a square inside the quad overlaps it. CB96 Vase faces 4304 and 4308
+  // were rejected through such a fan (RA-210).
+  Eigen::MatrixXd vertices(12, 3);
+  vertices << 4.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 4.0, 0.0, 0.0, 0.0, 0.0,
+      1.6, 1.6, 0.0, 1.9, 1.6, 0.0, 1.9, 1.9, 0.0, 1.6, 1.9, 0.0,
+      0.3, 0.3, 0.0, 0.6, 0.3, 0.0, 0.6, 0.6, 0.0, 0.3, 0.6, 0.0;
+  const auto collide = [&](const int square) {
+    Eigen::MatrixXi faces(2, 4);
+    faces << 0, 1, 2, 3, square, square + 1, square + 2, square + 3;
+    const std::vector<TrianglePrimitive> triangles =
+        triangulate_faces(vertices, faces, 1.0e-9);
+    for (const TrianglePrimitive &first : triangles) {
+      for (const TrianglePrimitive &second : triangles) {
+        if (first.parentFace < second.parentFace &&
+            triangles_intersect(vertices, first, second, 1.0e-9)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+  EXPECT_FALSE(collide(4));
+  EXPECT_TRUE(collide(8));
+}
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
+     MissingSourceAuthorityRejectsEvenWhenOptionalGatesAreDisabled) {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0,
+      1.0, 0.0, 0.0,
+      1.0, 1.0, 0.0,
+      0.0, 1.0, 0.0;
+  Eigen::MatrixXi sourceFaces(2, 3);
+  sourceFaces << 0, 1, 2,
+      0, 2, 3;
+  Eigen::MatrixXi quads(1, 4);
+  quads << 0, 1, 2, 3;
+  const std::vector<SurfacePoint> provenance = square_provenance(vertices);
+
+  directional::validation::SourceAuthoritativeMeshValidatorOptions options;
+  options.sourceVertices = &vertices;
+  options.sourceFaces = &sourceFaces;
+  options.vertexProvenance = &provenance;
+  options.requireBoundaryAuthority = false;
+  options.requireFeatureRailAuthority = false;
+  options.requireLocalSheetCompatibility = false;
+
+  const auto result =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          vertices, quads, options);
+  EXPECT_FALSE(result.accepted);
+  EXPECT_FALSE(result.sourceAuthorityUsed);
+  EXPECT_TRUE(has_code(result, MeshValidationFailureCode::MissingSourceAuthority));
+}
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
+     SameExtentForeignSourceAuthorityRejectsBeforeOptionalGates) {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0,
+      1.0, 0.0, 0.0,
+      1.0, 1.0, 0.0,
+      0.0, 1.0, 0.0;
+  Eigen::MatrixXi sourceFaces(2, 3);
+  sourceFaces << 0, 1, 2,
+      0, 2, 3;
+  Eigen::MatrixXi foreignFaces(2, 3);
+  foreignFaces << 0, 1, 3,
+      1, 2, 3;
+  Eigen::MatrixXi quads(1, 4);
+  quads << 0, 1, 2, 3;
+  const std::vector<SurfacePoint> provenance = square_provenance(vertices);
+  const auto foreignAuthority =
+      test_source_authority(foreignFaces, {0, 0}, {0, 0});
+  ASSERT_FALSE(foreignAuthority.matches_source_faces(
+      sourceFaces, static_cast<std::size_t>(vertices.rows())));
+
+  directional::validation::SourceAuthoritativeMeshValidatorOptions options;
+  options.sourceVertices = &vertices;
+  options.sourceFaces = &sourceFaces;
+  options.sourceAuthority = &foreignAuthority;
+  options.vertexProvenance = &provenance;
+  options.requireBoundaryAuthority = false;
+  options.requireFeatureRailAuthority = false;
+  options.requireLocalSheetCompatibility = false;
+
+  const auto result =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          vertices, quads, options);
+  EXPECT_FALSE(result.accepted);
+  EXPECT_FALSE(result.sourceAuthorityUsed);
+  EXPECT_TRUE(has_code(result, MeshValidationFailureCode::MissingSourceAuthority));
+}
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
      SourceOrientationRemainsAuthoritativeWhenSheetGateIsDisabled) {
   Eigen::MatrixXd vertices(4, 3);
   vertices << 0.0, 0.0, 0.0,
@@ -91,11 +244,12 @@ TEST(SourceAuthoritativeMeshValidatorPhase22,
   const std::vector<int> sheets = {0, 0};
   const std::vector<SurfacePoint> provenance = square_provenance(vertices);
 
+  const auto sourceAuthority =
+      test_source_authority(sourceFaces, components, sheets);
   directional::validation::SourceAuthoritativeMeshValidatorOptions options;
   options.sourceVertices = &vertices;
   options.sourceFaces = &sourceFaces;
-  options.sourceFaceComponents = &components;
-  options.sourceFaceSheets = &sheets;
+  options.sourceAuthority = &sourceAuthority;
   options.vertexProvenance = &provenance;
   options.authoritativeBoundaryLoops = {{0, 1, 2, 3}};
   options.requireLocalSheetCompatibility = false;
@@ -120,7 +274,7 @@ TEST(SourceAuthoritativeMeshValidatorPhase22,
   Eigen::MatrixXi quads(1, 4);
   quads << 0, 1, 2, 3;
   const std::vector<int> components = {0, 0};
-  const std::vector<int> sheets = {0, 1};
+  const std::vector<int> sheets = {0, 0};
 
   std::vector<SurfacePoint> provenance(4);
   const auto assign = [&](const int outputVertex, const int sourceFace,
@@ -139,11 +293,12 @@ TEST(SourceAuthoritativeMeshValidatorPhase22,
   assign(2, 0, 2);
   assign(3, 1, 2);
 
+  const auto sourceAuthority =
+      test_source_authority(sourceFaces, components, sheets);
   directional::validation::SourceAuthoritativeMeshValidatorOptions options;
   options.sourceVertices = &vertices;
   options.sourceFaces = &sourceFaces;
-  options.sourceFaceComponents = &components;
-  options.sourceFaceSheets = &sheets;
+  options.sourceAuthority = &sourceAuthority;
   options.vertexProvenance = &provenance;
   options.authoritativeBoundaryLoops = {{0, 1, 2, 3}};
 
@@ -183,11 +338,152 @@ TEST(SourceAuthoritativeMeshValidatorPhase22,
     point.squaredDistance = 0.0;
   }
 
+  const auto sourceAuthority =
+      test_source_authority(sourceFaces, components, sheets);
   const directional::validation::source_authoritative_detail::
-      SourcePointLabelSupport support(&sourceFaces, &components, &sheets);
+      SourcePointLabelSupport support(&sourceFaces, &sourceAuthority,
+                                      &no_hard_feature_edges());
   std::vector<const SurfacePoint *> points;
   for (const SurfacePoint &point : provenance) {
     points.push_back(&point);
   }
   EXPECT_FALSE(support.have_compatible_chart(points));
+}
+
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
+     HardRailPreventsChartCompatibilityAcrossSharedSourceEdge) {
+  Eigen::MatrixXi sourceFaces(2, 3);
+  sourceFaces << 0, 1, 2,
+      2, 1, 3;
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {0, 0};
+  const auto hardEdge = directional::authority::SourceEdgeTopologyKey::from_indices(
+      1, 2, 4);
+  ASSERT_TRUE(hardEdge);
+  const std::set<directional::authority::SourceEdgeTopologyKey> hardEdges = {
+      hardEdge.value()};
+
+  SurfacePoint first;
+  first.face = 0;
+  first.component = 0;
+  first.sheet = 0;
+  first.barycentric << 0.0, 0.5, 0.5;
+  SurfacePoint second = first;
+  second.face = 1;
+  second.barycentric << 0.5, 0.5, 0.0;
+
+  const auto sourceAuthority =
+      test_source_authority(sourceFaces, components, sheets);
+  const directional::validation::source_authoritative_detail::
+      SourcePointLabelSupport support(&sourceFaces, &sourceAuthority, &hardEdges);
+  const std::vector<const SurfacePoint *> points = {&first, &second};
+  EXPECT_FALSE(support.have_compatible_chart(points));
+}
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
+     NonConsecutiveChartsReconcileThroughOneIntrinsicVertexFan) {
+  Eigen::MatrixXi sourceFaces(4, 3);
+  sourceFaces << 0, 1, 2,
+      0, 2, 3,
+      0, 3, 4,
+      0, 4, 1;
+  const std::vector<int> components = {0, 0, 0, 0};
+  const std::vector<int> sheets = {0, 0, 0, 0};
+
+  SurfacePoint first;
+  first.face = 0;
+  first.component = 0;
+  first.sheet = 0;
+  first.barycentric << 1.0, 0.0, 0.0;
+  SurfacePoint opposite = first;
+  opposite.face = 2;
+
+  const auto sourceAuthority =
+      test_source_authority(sourceFaces, components, sheets);
+  const directional::validation::source_authoritative_detail::
+      SourcePointLabelSupport support(&sourceFaces, &sourceAuthority,
+                                      &no_hard_feature_edges());
+  const std::vector<const SurfacePoint *> points = {&first, &opposite};
+  EXPECT_TRUE(support.have_compatible_chart(points));
+}
+
+namespace {
+
+bool has_bow_tie(const directional::validation::MeshValidationResult &result,
+                 const int vertex) {
+  return std::any_of(result.issues.begin(), result.issues.end(),
+                     [&](const auto &issue) {
+                       return issue.code ==
+                                  MeshValidationFailureCode::BowTieVertex &&
+                              issue.vertex == vertex;
+                     });
+}
+
+} // namespace
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
+     BowTieVertexReadsEdgesNamingItFirstOrSecond) {
+  // Vertex 2 is the centre of a closed four-triangle fan. Its edges to
+  // vertices 0 and 1 name it second and its edges to 3 and 4 name it first,
+  // so a vertex that reads only one end of its edges sees a split fan
+  // (RA-202).
+  Eigen::MatrixXd vertices(5, 3);
+  vertices << -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+      0.0, 1.0, 0.0;
+  Eigen::MatrixXi fan(4, 3);
+  fan << 2, 0, 1,
+         2, 1, 3,
+         2, 3, 4,
+         2, 4, 0;
+  directional::validation::MeshValidatorOptions options;
+  options.topologyOnly = true;
+  const auto fanResult =
+      directional::validation::MeshValidator::validate_surface_mesh(
+          vertices, fan, options);
+  EXPECT_FALSE(has_bow_tie(fanResult, 2));
+
+  // Two triangles that share only vertex 2.
+  Eigen::MatrixXi bowTie(2, 3);
+  bowTie << 2, 0, 1,
+            2, 3, 4;
+  const auto bowTieResult =
+      directional::validation::MeshValidator::validate_surface_mesh(
+          vertices, bowTie, options);
+  EXPECT_TRUE(has_bow_tie(bowTieResult, 2));
+}
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
+     BowTieCheckReadsOnlyTheEdgesOfEachVertex) {
+  // A 150 x 150 quad grid: 22,801 vertices and 45,300 edges. Reading every
+  // edge for every vertex visits about 10^9 map entries; reading each
+  // vertex's own edges visits about 10^5 (RA-202).
+  constexpr int n = 150;
+  Eigen::MatrixXd vertices((n + 1) * (n + 1), 3);
+  for (int j = 0; j <= n; ++j) {
+    for (int i = 0; i <= n; ++i) {
+      vertices.row(j * (n + 1) + i) << static_cast<double>(i) / n,
+          static_cast<double>(j) / n, 0.0;
+    }
+  }
+  Eigen::MatrixXi quads(n * n, 4);
+  for (int j = 0; j < n; ++j) {
+    for (int i = 0; i < n; ++i) {
+      const int v = j * (n + 1) + i;
+      quads.row(j * n + i) << v, v + 1, v + n + 2, v + n + 1;
+    }
+  }
+  directional::validation::MeshValidatorOptions options;
+  options.topologyOnly = true;
+
+  const auto start = std::chrono::steady_clock::now();
+  const auto result =
+      directional::validation::MeshValidator::validate_surface_mesh(
+          vertices, quads, options);
+  const double seconds =
+      std::chrono::duration<double>(std::chrono::steady_clock::now() - start)
+          .count();
+
+  EXPECT_TRUE(result.accepted);
+  EXPECT_LT(seconds, 2.0);
 }

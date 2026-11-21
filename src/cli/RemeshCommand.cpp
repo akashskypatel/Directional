@@ -9,6 +9,7 @@
 
 #include <cmath>
 #include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <optional>
 #include <stdexcept>
@@ -16,6 +17,7 @@
 
 #include <directional/fields/RegularizedCurvatureCrossField.h>
 #include <directional/pipeline/RemeshPipeline.h>
+#include <directional/visualization/MaterializationDiagnosticsDisplay.h>
 
 namespace directional::cli {
 namespace {
@@ -167,12 +169,13 @@ int run_remesh(const int argc, char **argv) {
     } else if (option == "--surface-cell-fallback") {
       if (++argument >= argc) {
         throw std::runtime_error(
-            "--surface-cell-fallback requires Fail, ReturnInputMesh, or TryLegacy.");
+            "--surface-cell-fallback requires Fail or ReturnInputMesh.");
       }
       options.surfaceCells.fallbackPolicy =
           pipeline::parse_surface_cell_fallback_policy(argv[argument]);
     } else if (option == "--surface-cell-preserve-debug-artifacts") {
       options.surfaceCells.preserveDebugArtifacts = true;
+      options.surfaceCells.retainIntermediateGeometry = true;
     } else if (option == "--surface-cell-skeleton-hints") {
       options.surfaceCells.useSkeletonHints = true;
     } else if (option ==
@@ -403,7 +406,17 @@ int run_remesh(const int argc, char **argv) {
     result = pipeline::remesh_from_mesh(mesh.vertices, mesh.faces, options);
   }
 
-  if (!result.success) {
+  // A rejected SurfaceCells run is where the retained A5-A7 products matter
+  // most, so their dump is written before the produced-result check.
+  const auto &snapshots = result.surfaceCellContext.productSnapshots;
+  if (diagnosticsPrefix.has_value() &&
+      (snapshots.occurrenceComplex || snapshots.quotientProduct ||
+       snapshots.sourceAttachedGeometry)) {
+    std::ofstream dump(diagnosticsPrefix->string() + ".materialization.txt");
+    visualization::write_materialization_diagnostics(dump, snapshots);
+  }
+
+  if (!result.is_produced()) {
     throw std::runtime_error(
         "Remeshing failed while simplifying or assembling the output mesh"
         " (backend=" + result.diagnostics.remeshBackend +
@@ -412,23 +425,23 @@ int run_remesh(const int argc, char **argv) {
   }
 
   progress.update(95, progressTotal, "Writing remeshed output");
-  write_remeshed_mesh(outputPath, result.vertices, result.degrees,
-                      result.faces);
+  write_remeshed_mesh(outputPath, result.product().vertices, result.product().degrees,
+                      result.product().faces);
 
   if (diagnosticsPrefix.has_value()) {
     write_remesh_diagnostics(
-        *diagnosticsPrefix, outputPath.extension().string(), result.degrees, result.cutVertices,
-        result.cutFaces, result.cutFunctions, result.cutCornerFunctions,
-        result.rawCrossField, result.crossFieldMatching,
-        result.crossFieldEffort, result.crossFieldSingularCycles,
-        result.crossFieldSingularIndices, result.diagnostics);
+        *diagnosticsPrefix, outputPath.extension().string(), result.product().degrees, result.product().cutVertices,
+        result.product().cutFaces, result.product().cutFunctions, result.product().cutCornerFunctions,
+        result.product().rawCrossField, result.product().crossFieldMatching,
+        result.product().crossFieldEffort, result.product().crossFieldSingularCycles,
+        result.product().crossFieldSingularIndices, result.diagnostics);
   }
 
   progress.update(100, progressTotal, "Finalizing remesh pipeline");
   progress.finish();
 
   std::cout << "Remeshed " << mesh.faces.rows() << " source triangles into "
-            << result.faces.rows() << " polygons.\n";
+            << result.product().faces.rows() << " polygons.\n";
   std::cout << "Wrote " << outputPath.string() << '\n';
   return 0;
 }

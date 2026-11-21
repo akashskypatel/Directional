@@ -336,12 +336,17 @@ public:
 
     V = _V;
     F = _F;
-    if (_EV.rows() == 0) {
-      compute_edge_quantities(verbose);
-    } else {
-      EV = _EV;
-      FE = _FE;
-      EF = _EF;
+    compute_edge_quantities(verbose);
+    if (_EV.size() != 0 || _FE.size() != 0 || _EF.size() != 0) {
+      const auto matches = [](const Eigen::MatrixXi &provided,
+                              const Eigen::MatrixXi &derived) {
+        return provided.rows() == derived.rows() &&
+               provided.cols() == derived.cols() &&
+               (provided.array() == derived.array()).all();
+      };
+      if (!matches(_EV, EV) || !matches(_FE, FE) || !matches(_EF, EF)) {
+        throw std::runtime_error("set_mesh(): injected edge topology disagrees with faces");
+      }
     }
 
     compute_geometric_quantities();
