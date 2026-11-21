@@ -23,7 +23,7 @@ Re-read six original immutable ZIP artifacts and independently recomputed their 
 
 The TB157 source manifest is exactly 975 cases, SHA-256 `92eb18e8aaf2881d933c88dfde1a86b957334fe6785fd88f404459812cdc50c7`; its first 972 rows equal the complete TB156 manifest byte-for-byte (SHA-256 `cbba9e76fa436f1e2e6ef34d50bb377b931c19fc4780660412a9f6072128dc6a`). Rows 973–975 are the three named edge-locus helper cases and independently pass. The 491 accepted CP2 result rows pass. The accepted focused selector source has SHA-256 `2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed`; no selector mutation was made.
 
-An independent script checked all 975 result rows and per-case raw-log digests; 972 earlier rows have matching identity, result and normalized output under frozen N1–N3 with **zero exceptional allowances**. Of these, 563 logs are byte-identical and 1,750 complete region-support records match under N3. No gate log contains `RotationTraceRaysAlongSharedEdge`, `RayRunsAlongLocusEdge`, or `FirstPieceNotLeavingLocusIntoFace`.
+The independent verifier was re-executed on 2026-11-21 in this continuation and returned exit 0. An independent script checked all 975 result rows and per-case raw-log digests; 972 earlier rows have matching identity, result and normalized output under frozen N1–N3 with **zero exceptional allowances**. Of these, 563 logs are byte-identical and 1,750 complete region-support records match under N3. No gate log contains `RotationTraceRaysAlongSharedEdge`, `RayRunsAlongLocusEdge`, or `FirstPieceNotLeavingLocusIntoFace`.
 
 Census157 matches Census156 on all 3/3 cases under frozen N1–N4, retaining the *unmasked* `platform-digest`. Cylinder passes; BunnyRandom and Vase remain RED at their established sites. Neither the current review nor TB157 reran a benchmark. Execution-boundary records confirm artifact `14718074764`, source `47a874ee8baa86284eeee11b4a28f9cca06d73f9`, with configure/compile/relink/benchmark **false**, exit 0 and postflight true. `compare_commits` from that source to the review-entry branch head recorded **no change** in `src/`, `include/`, `tests/`, `benchmarks/`, CMake surfaces, or frozen selectors.
 
@@ -62,16 +62,16 @@ The TB157 evidence portion is independently upheld. Do not start a successor cod
 | Non-vacuity checked | Three arithmetic helpers have meaningful assertions; integrated `(0,2)` rotation node is still unwitnessed |
 | Prior obligations discharged/carried | V3, RA-281 F1/F2/F3, RA-275 S4a, O47/C5/O48/O49 and sphere carried; RA-279 C1/C2 remain narrowly discharged |
 | Stable accounting | 66/17/49, debt 1, deferred 81; CP2 491/491 only |
-| New candidates/obligations recorded | Guarded candidate plus conditional CB-174 proposal preserved; V3a helper and V3b full producer-reaching test separated by source evidence; no new stable regression |
+| New candidates/obligations recorded | Guarded candidate plus conditional CB-174 proposal preserved; V3a/V3b source proof recorded in the regression tracker with falsifier and owner; no new stable regression |
 | ORIENTATION currency line | Updated to TB-REV-157, 2026-11-21; current review remains open |
 | ORIENTATION §3 / §4 / §7 / §8 | §3, §7 updated; §4 n/a (no new production witness), §8 n/a (known non-vacuity defect) |
-| CHANGELOG | Pending same-turn closeout |
-| ROADMAP | n/a — checkpoint has not advanced |
+| CHANGELOG | WIP entry patch sent through Drive dispatcher; verify application before treating as published |
+| ROADMAP | Current-turn pointer corrected to active TB-REV-157; checkpoint status unchanged |
 | Selector manifest | n/a — no selector added or accepted |
 | LESSONS | Existing evidence/non-vacuity rule; no new general lesson yet |
 | Consolidation under CLEAN_UP_POLICY | n/a — active scoped record, no redundant history folded |
 | Successor frozen | **Pending**: CB-174 proposal is exact but conditional; no successor is authorized before the inherited V3 sequence and review checks are resolved |
 | Turn boundary held | Yes; Review only, no product/test/selector mutation or runtime |
-| `review_check.py boundary` | Pending: GitHub snapshot lacks `.git`; static compare confirms no source/selector drift but is not the script's full repository check |
+| `review_check.py boundary` | Pending: snapshot lacks `.git`, and GitHub source is inaccessible to local Git; GitHub commit comparison shows no protected code/test/selector/workflow change, but cannot replace the required script |
 | `STATUS` lifecycle maintained | Entry and resume beacons written; next final beacon remains IN_PROGRESS until V3 is resolved |
 | Pushed to origin, branch in sync | Review record and ORIENTATION committed on branch; no source/selector drift confirmed by compare; full `git status -sb` not available locally |
