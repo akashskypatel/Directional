@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-cb170-docs-apply-20261121-v1",
-  "mailbox_key": "m6-cp3-cb170-docs-apply",
-  "file_id": "1HEpNnvdJLvH9vmBnsrGcWK_OHIqjDyab",
-  "patch_sha256": "927b4ff4f00142b440bcfa37b6d0729b07ec402a21ec4503a12389430c5758ac",
-  "base_sha": "9e4bd863a3e825371c6d4ce551dd7badd196ad4d",
+  "request_id": "m6-cp3-cb171-source-apply-20261121-v1",
+  "mailbox_key": "m6-cp3-cb171-source-apply",
+  "file_id": "1h2M5jQ__ioyWiTWFvwxJOMLx2yljrVR0",
+  "patch_sha256": "a65e5d57ec09c6fcee103af690e7ba7943a90b9ad191c5bf6be2e78e28143f8e",
+  "base_sha": "ea2ff7a4faadc12f4ea8d5cde04fa3bc6e5dcea3",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cb170): preserve compiled digest and oracle restoration evidence",
+  "commit_message": "fix(cb171): restore edge-locus rank and reject unsupported edge coincidences",
   "retention_days": 30
 }
