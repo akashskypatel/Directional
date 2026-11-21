@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb169s-drive-apply-20261121-v1",
-  "mailbox_key": "m6-cp3-cb169s-drive-apply",
-  "file_id": "1QcnXfdFSuHapwIfGc3piS-uaj0bUguNU",
-  "patch_sha256": "7a6daa009357db3ccd0ac62cad5e996f3165f037c682cf0cb24d921bb1369514",
-  "base_sha": "c3c945947c0e330d5b518b344e8241df2800b707",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(surface-cells): switch trace piece producer and exact ray readers",
-  "retention_days": 30
+  "operation": "compile",
+  "request_id": "m6-cp3-cb169s-compile-20261121-v1",
+  "mailbox_key": "m6-cp3-cb169s-compile",
+  "source_sha": "ee0f478ad95debeb3ab5a14010a7b24ea78757f6",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb169s-compile"
 }
