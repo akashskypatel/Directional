@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-21 UTC; [M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE](Architecture_M6_CP3_TB155_P13_Trace_Piece_Producer_Switch_Full_Gate_Independent_Review_20261121.md)):** TB-EXEC-155 is RED (970/971, row858 previously accepted assertion RED; prohibited shared-edge rotation guard at rows644/669/698). This independent Review rejects acceptance and freezes only M6-CP3-CB-172A-P13-CUT-CANDIDATE-SHARED-EDGE-INCIDENCE. The 960 protected cases and three-case census retain baseline matching; accepted CP2 491/491, stable 66/17/49, debt1, deferred81. Sphere χ6 vs χ2/four contacts and RA-275 S4a remain open. No stop-switch or CP3/selector497/D0/H4 promotion.
+**Current currency (2026-11-21 UTC; [M6-CP3-RA-280-TB-REV-155-ADVERSARIAL-REVIEW](Architecture_M6_CP3_RA280_TB_REV_155_Adversarial_Review_20261121.md)):** TB-EXEC-155 stays RED; RA-280 decides the cause: cut-search saturation adds a Cut arc on every slid carrier and no cut node splits it at the slide start, so the guard (rightly) stops rows644/669/698 and row858 loses its source face. CB-172A withdrawn; exact CB-172B (slide carriers are never cut candidates) and TB-EXEC-156 next. Accepted CP2 491/491, stable 66/17/49, debt1, deferred81. Sphere χ6 vs χ2/four contacts and RA-275 S4a remain open. No stop-switch or CP3/selector497/D0/H4 promotion.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-21; [M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE](Architecture_M6_CP3_TB155_P13_Trace_Piece_Producer_Switch_Full_Gate_Independent_Review_20261121.md)):** Review rejects TB155 (970 PASS/1 RED) and the forbidden shared-edge reason on rows644/669/698. Source-face display row858 is a genuine accepted failure. Verified 960/960 non-A match, census 3/3 match, CP2 491/491; one bounded CB-172A correction next, before any stop-switch or promotion.
+**Currency (2026-11-21; [M6-CP3-RA-280-TB-REV-155-ADVERSARIAL-REVIEW](Architecture_M6_CP3_RA280_TB_REV_155_Adversarial_Review_20261121.md)):** RA-280 upholds the TB155 STOP, attributes it to saturated cuts on slid carriers, withdraws CB-172A and freezes exact CB-172B plus the TB156 manifest. Row858 is restored only by product behaviour, never by weakening its assertion.
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.

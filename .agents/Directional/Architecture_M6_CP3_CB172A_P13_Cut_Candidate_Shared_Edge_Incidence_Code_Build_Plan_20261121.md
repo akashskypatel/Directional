@@ -1,5 +1,7 @@
 # M6-CP3-CB-172A-P13-CUT-CANDIDATE-SHARED-EDGE-INCIDENCE — bounded Code + Build plan (frozen at TB-REV-155)
 
+> **WITHDRAWN by [RA-280](Architecture_M6_CP3_RA280_TB_REV_155_Adversarial_Review_20261121.md) (D3):** a compile-only turn whose deciding step needs runtime evidence. Replaced by the exact diff turn `M6-CP3-CB-172B-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY`. Do not execute this plan.
+
 **Authority:** M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE ([independent review](Architecture_M6_CP3_TB155_P13_Trace_Piece_Producer_Switch_Full_Gate_Independent_Review_20261121.md)). Source starting point: verified current working branch after this Review; immutable TB155 semantic source `65ae140e49db5bd04d202390e71b50f455ff152e`. **Next separate turn only.** Do not start implementation in TB-REV-155.
 
 ## Requirement

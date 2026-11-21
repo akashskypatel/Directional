@@ -1,3 +1,7 @@
+## 2026-11-21 — RA-280 adversarial review of TB-REV-155 (review only)
+
+M6-CP3-RA-280-TB-REV-155-ADVERSARIAL-REVIEW: TB-REV-155 STOP upheld; cause decided (saturated cut on slid carrier 0–69, no cut node at the slide start); CB-172A withdrawn; RA-278 C3 prediction corrected; CB-172B (slide carriers never cut candidates) and TB156 manifest (TB154 + row 972) frozen. No product change in this turn. [Record](.agents/Directional/Architecture_M6_CP3_RA280_TB_REV_155_Adversarial_Review_20261121.md).
+
 ## 2026-11-21 — TB-REV-155 independent gate rejection (Review only)
 
 [TB155 Review](.agents/Directional/Architecture_M6_CP3_TB155_P13_Trace_Piece_Producer_Switch_Full_Gate_Independent_Review_20261121.md) independently verified 971 immutable cases (970 PASS, row858 RED), seven allowed A differences, all 960 non-A matching TB154, forbidden `RotationTraceRaysAlongSharedEdge` rows644/669/698, and 3/3 census baseline match. The guard's second competing incidence is not logged, so source cause is unproved; accepted source-face assertion remains mandatory. Sphere χ+4 and RA-275 S4a open. Stable 66/17/49 and CP2 491/491 unchanged. **Next separate turn:** `M6-CP3-CB-172A-P13-CUT-CANDIDATE-SHARED-EDGE-INCIDENCE` compile-only; no stop-switch, selector or release promotion.

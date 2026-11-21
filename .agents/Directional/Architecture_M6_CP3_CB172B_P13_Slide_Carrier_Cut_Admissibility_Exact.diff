@@ -1,0 +1,186 @@
+diff --git a/include/directional/geometry/SurfaceCutGraph.h b/include/directional/geometry/SurfaceCutGraph.h
+index dae375006..b1a70ee42 100644
+--- a/include/directional/geometry/SurfaceCutGraph.h
++++ b/include/directional/geometry/SurfaceCutGraph.h
+@@ -41,6 +41,10 @@ enum class SurfaceCutCandidateClass : std::uint8_t {
+   Admissible = 0,
+   MandatoryAlreadyPresent = 1,
+   TraceInteriorCrossing = 2,
++  // A trace slides along this edge (segment edgeTransitEntry..edgeTransitExit
++  // on its outgoingCarrier). Cut arcs are split only at segment entry points,
++  // so a cut here would overlap the slide piece. Never selected.
++  TraceSlideCarrier = 3,
+ };
+ 
+ struct SurfaceCutCandidateEvidence {
+diff --git a/src/geometry/SurfaceCutGraph.cpp b/src/geometry/SurfaceCutGraph.cpp
+index 71ce4a7f5..ec31c2630 100644
+--- a/src/geometry/SurfaceCutGraph.cpp
++++ b/src/geometry/SurfaceCutGraph.cpp
+@@ -284,6 +284,23 @@ TraceCrossingResult trace_crossed_source_edges(
+   return crossed;
+ }
+ 
++// Source edges a trace slides along. A cut arc is split only at segment entry
++// points (build_cut_node_bindings), never at a slide start, so a cut on one of
++// these edges would overlap the slide piece. They are never cut candidates.
++std::set<authority::SourceEdgeTopologyKey> trace_slide_carrier_source_edges(
++    const FieldAlignedCurveNetwork &network) {
++  std::set<authority::SourceEdgeTopologyKey> carriers;
++  for (const auto &trace : network.candidate_traces()) {
++    for (const auto &segment : trace.segments) {
++      if (segment.edgeTransitEntry.has_value() ||
++          segment.edgeTransitExit.has_value()) {
++        carriers.insert(segment.outgoingCarrier);
++      }
++    }
++  }
++  return carriers;
++}
++
+ std::set<authority::SourceEdgeTopologyKey> mandatory_source_edges(
+     const FieldAlignedCurveNetwork &network) {
+   std::set<authority::SourceEdgeTopologyKey> result;
+@@ -295,6 +312,7 @@ std::vector<SurfaceCutCandidateEvidence> classify_cut_candidates(
+     const SourceTopologyIndex &topology,
+     const std::set<authority::SourceEdgeTopologyKey> &mandatory,
+     const std::set<authority::SourceEdgeTopologyKey> &traceCrossed,
++    const std::set<authority::SourceEdgeTopologyKey> &slideCarriers,
+     const std::set<authority::SourceEdgeTopologyKey> &selected) {
+   std::vector<SurfaceCutCandidateEvidence> result;
+   result.reserve(topology.incidentFaces.size());
+@@ -303,6 +321,8 @@ std::vector<SurfaceCutCandidateEvidence> classify_cut_candidates(
+     SurfaceCutCandidateClass classification = SurfaceCutCandidateClass::Admissible;
+     if (mandatory.count(edge) != 0U)
+       classification = SurfaceCutCandidateClass::MandatoryAlreadyPresent;
++    else if (slideCarriers.count(edge) != 0U)
++      classification = SurfaceCutCandidateClass::TraceSlideCarrier;
+     else if (traceCrossed.count(edge) != 0U)
+       classification = SurfaceCutCandidateClass::TraceInteriorCrossing;
+     result.push_back({edge, classification, selected.count(edge) != 0U});
+@@ -999,13 +1019,13 @@ CandidateResult canonical_candidate(
+     if(*boundaryLoops==0U&&!topology->faces.empty()){auto failure=cut_error(SurfaceCutGraphErrorCode::EmptyNetworkOnClosedSurface);failure.sourceFace=topology->faces.begin()->first;return failure;}
+   }
+   const auto mandatory=mandatory_source_edges(network); for(const auto &edge:mandatory)if(topology->incidentFaces.count(edge)==0U){auto failure=cut_error(SurfaceCutGraphErrorCode::InvalidNetworkBinding);failure.sourceEdge=edge;return failure;}
+-  const auto crossedBuild=trace_crossed_source_edges(*topology,network);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&crossedBuild))return *failure;const auto &traceCrossed=std::get<std::set<authority::SourceEdgeTopologyKey>>(crossedBuild);
++  const auto crossedBuild=trace_crossed_source_edges(*topology,network);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&crossedBuild))return *failure;const auto &traceCrossed=std::get<std::set<authority::SourceEdgeTopologyKey>>(crossedBuild);const auto slideCarriers=trace_slide_carrier_source_edges(network);
+   std::set<authority::SourceEdgeTopologyKey> cuts;
+   bool saturationUsed=false;std::optional<authority::SourceFaceTopologyKey> saturationLocus;std::size_t saturationPromotedEdgeCount=0U;
+   std::size_t certificationAttemptIndex = 0U;
+   while (true) {
+     const auto evidence =
+-        classify_cut_candidates(*topology, mandatory, traceCrossed, cuts);
++        classify_cut_candidates(*topology, mandatory, traceCrossed, slideCarriers, cuts);
+     const std::vector<authority::SourceEdgeTopologyKey> cutVector(cuts.begin(),
+                                                                   cuts.end());
+     const auto embeddedBuild = build_embedded_graph_topology(
+@@ -1067,19 +1087,20 @@ CandidateResult canonical_candidate(
+ 
+     ++certificationAttemptIndex;
+     std::set<authority::SourceEdgeTopologyKey> barriers=mandatory;barriers.insert(traceCrossed.begin(),traceCrossed.end());barriers.insert(cuts.begin(),cuts.end());const auto components=proposal_components(*topology,barriers);bool added=false;std::optional<authority::SourceFaceTopologyKey> blockedLocus;std::vector<std::vector<authority::SourceFaceTopologyKey>> nonDiscComponents;
+-    for(const auto &component:components){const auto disc=proposal_component_is_disc(*topology,component,barriers);if(!disc.has_value())return cut_error(SurfaceCutGraphErrorCode::NonManifoldSource);if(*disc)continue;nonDiscComponents.push_back(component);if(!component.empty()&&!blockedLocus.has_value())blockedLocus=component.front();const auto proposed=proposal_tree_cotree_cut_edges(*topology,component,barriers);if(!proposed.has_value())continue;for(const auto &edge:*proposed){if(mandatory.count(edge))continue;added=cuts.insert(edge).second||added;}}
++    for(const auto &component:components){const auto disc=proposal_component_is_disc(*topology,component,barriers);if(!disc.has_value())return cut_error(SurfaceCutGraphErrorCode::NonManifoldSource);if(*disc)continue;nonDiscComponents.push_back(component);if(!component.empty()&&!blockedLocus.has_value())blockedLocus=component.front();const auto proposed=proposal_tree_cotree_cut_edges(*topology,component,barriers);if(!proposed.has_value())continue;for(const auto &edge:*proposed){if(mandatory.count(edge)||slideCarriers.count(edge))continue;added=cuts.insert(edge).second||added;}}
+     if(added)continue;
+ 
+     // The source-face barrier partition is only a conservative proposal
+     // heuristic. If it cannot propose progress, saturate the offending
+     // components with every remaining source edge that is not already a graph
+-    // arc. This includes exact trace-crossed edges under Amendment 14. The
+-    // subsequent actual-complex certificate, not this heuristic, is authority.
++    // arc. This includes exact trace-crossed edges under Amendment 14, but not
++    // slide carriers, which a trace arc already partly covers. The subsequent
++    // actual-complex certificate, not this heuristic, is authority.
+     std::set<authority::SourceFaceTopologyKey> nonDiscFaces;
+     for(const auto &component:nonDiscComponents)nonDiscFaces.insert(component.begin(),component.end());
+     std::vector<authority::SourceEdgeTopologyKey> saturationEdges;
+     for(const auto &[edge,incident]:topology->incidentFaces){
+-      if(mandatory.count(edge)||cuts.count(edge))continue;
++      if(mandatory.count(edge)||cuts.count(edge)||slideCarriers.count(edge))continue;
+       const bool touches=nonDiscFaces.empty()||std::any_of(incident.begin(),incident.end(),[&](const auto face){return nonDiscFaces.count(face)!=0U;});
+       if(touches)saturationEdges.push_back(edge);
+     }
+@@ -1216,7 +1237,7 @@ SurfaceCutGraphBuildResult SurfaceCutGraph::make_from_candidate(
+ }
+ 
+ const char *surface_cut_graph_error_code_name(const SurfaceCutGraphErrorCode code) noexcept {switch(code){case SurfaceCutGraphErrorCode::InvalidSourceBinding:return "InvalidSourceBinding";case SurfaceCutGraphErrorCode::InvalidAtlasBinding:return "InvalidAtlasBinding";case SurfaceCutGraphErrorCode::InvalidNetworkBinding:return "InvalidNetworkBinding";case SurfaceCutGraphErrorCode::NonManifoldSource:return "NonManifoldSource";case SurfaceCutGraphErrorCode::CellularityNotEstablished:return "CellularityNotEstablished";case SurfaceCutGraphErrorCode::CutSearchExhaustedBeforeCellularity:return "CutSearchExhaustedBeforeCellularity";case SurfaceCutGraphErrorCode::EmptyNetworkOnClosedSurface:return "EmptyNetworkOnClosedSurface";case SurfaceCutGraphErrorCode::SourceFaceOwnershipNotEstablished:return "SourceFaceOwnershipNotEstablished";}return "Unknown";}
+-const char *surface_cut_candidate_class_name(const SurfaceCutCandidateClass c) noexcept {switch(c){case SurfaceCutCandidateClass::Admissible:return "Admissible";case SurfaceCutCandidateClass::MandatoryAlreadyPresent:return "MandatoryAlreadyPresent";case SurfaceCutCandidateClass::TraceInteriorCrossing:return "TraceInteriorCrossing";}return "Unknown";}
++const char *surface_cut_candidate_class_name(const SurfaceCutCandidateClass c) noexcept {switch(c){case SurfaceCutCandidateClass::Admissible:return "Admissible";case SurfaceCutCandidateClass::MandatoryAlreadyPresent:return "MandatoryAlreadyPresent";case SurfaceCutCandidateClass::TraceInteriorCrossing:return "TraceInteriorCrossing";case SurfaceCutCandidateClass::TraceSlideCarrier:return "TraceSlideCarrier";}return "Unknown";}
+ const char *surface_cut_graph_complex_kind_name(const SurfaceCutGraphComplexKind kind) noexcept {switch(kind){case SurfaceCutGraphComplexKind::ActualEmbeddedGraph:return "actualEmbeddedGraph";}return "Unknown";}
+ const char *surface_cut_graph_source_face_ownership_status_name(
+     const SurfaceCutGraphSourceFaceOwnershipStatus status) noexcept {
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 49efe66b9..cab1b9c47 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -15120,6 +15120,71 @@ TEST(ResolvedBranchCorrection,
+ }
+ 
+ 
++TEST(SurfaceCutGraph, PrescribedSphereSlideCarriersAreNeverCutCandidates) {
++  const Cp4cNetworkOnlyFixture fixture = cp4c_network_only_fixture(
++      "sphere_prescribed", Cp4cRailAuthority::PipelineAuthoritative);
++  ASSERT_TRUE(fixture.sourceAuthority.has_value()) << fixture.error;
++  ASSERT_TRUE(fixture.atlas.has_value()) << fixture.error;
++  ASSERT_TRUE(fixture.network.has_value()) << fixture.error;
++
++  // Independent oracle from the published trace records.
++  const auto &network = *fixture.network;
++  std::set<SourceEdgeTopologyKey> mandatory;
++  for (const auto &edge : network.mandatory_edges())
++    mandatory.insert(edge.sourceEdge);
++  std::set<SourceEdgeTopologyKey> expectedCarriers;
++  for (const auto &trace : network.candidate_traces()) {
++    for (const auto &segment : trace.segments) {
++      if ((segment.edgeTransitEntry.has_value() ||
++           segment.edgeTransitExit.has_value()) &&
++          mandatory.count(segment.outgoingCarrier) == 0U) {
++        expectedCarriers.insert(segment.outgoingCarrier);
++      }
++    }
++  }
++  ASSERT_FALSE(expectedCarriers.empty());
++
++  auto cutGraph = directional::geometry::SurfaceCutGraph::make(
++      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
++      *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
++  const std::vector<directional::geometry::SurfaceCutCandidateEvidence>
++      *evidence = nullptr;
++  std::string outcome = "cellular";
++  if (cutGraph) {
++    evidence = &cutGraph.value().certificate().cutCandidates;
++  } else {
++    evidence = &cutGraph.error().cutCandidates;
++    outcome = directional::geometry::surface_cut_graph_error_code_name(
++        cutGraph.error().code);
++    EXPECT_NE(std::optional<directional::geometry::RotationSystemInconsistencyReason>(
++                  directional::geometry::RotationSystemInconsistencyReason::
++                      RotationTraceRaysAlongSharedEdge),
++              cutGraph.error().originatingRotationSystemInconsistencyReason)
++        << outcome;
++  }
++  ASSERT_FALSE(evidence->empty());
++
++  std::size_t classified = 0U, selected = 0U;
++  for (const auto &candidate : *evidence) {
++    const bool carrier = expectedCarriers.count(candidate.sourceEdge) != 0U;
++    EXPECT_EQ(carrier,
++              candidate.classification ==
++                  directional::geometry::SurfaceCutCandidateClass::
++                      TraceSlideCarrier)
++        << "edge=" << candidate.sourceEdge.first().index() << '-'
++        << candidate.sourceEdge.second().index() << " outcome=" << outcome;
++    if (carrier) {
++      ++classified;
++      if (candidate.selected) ++selected;
++    }
++  }
++  EXPECT_EQ(expectedCarriers.size(), classified);
++  EXPECT_EQ(0U, selected);
++  std::cout << "SlideCarrierCutReceipt carriers=" << expectedCarriers.size()
++            << " classified=" << classified << " selected=" << selected
++            << " outcome=" << outcome << '\n';
++}
++
+ TEST(M4CPScaleS4Prereq,
+      IndependentTopologyOracleIsReachableAndDecisionNeutral) {
+   const Cp4cProductionFixture torus =

@@ -227,6 +227,13 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - A structural check that the validator already enforces is weaker than the exact assertion it replaced. Restore exactness from an independent record.
 - Before adding a field to a semantic digest, check whether an exact replay already pins it. A defaulted `operator<=>` over the record means it does.
 
+**RA-280**
+
+- A receipt measured before a stage cannot clear a guard that the stage feeds. Before predicting a guard never fires, list every stage that adds incidences of the guarded kind (here the cut search's saturation adds edge arcs).
+- When a guard names only one side of a conflict, decide the other side by elimination over the code paths that can produce that key before ordering new diagnostics.
+- A compile-only turn cannot own a decision that needs runtime evidence. Decide statically in the Review, or schedule a receipt turn and its TB first.
+- When a representation becomes exact, re-check every candidate generator for configurations the old approximation hid (chord paths hid cuts overlapping slides).
+
 ## Geometry, topology, and mathematical obligations
 
 - **Use the exact complex named by the claim.** Source triangles, split face fragments, embedded arcs,

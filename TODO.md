@@ -1,19 +1,22 @@
-## CURRENT — TB-REV-155 rejects gate; CB-172A next (2026-11-21 UTC)
+## CURRENT — RA-280 decides TB155 cause; CB-172B next (2026-11-21 UTC)
 
-[TB155 immutable execution](.agents/Directional/Architecture_M6_CP3_TB155_P13_Trace_Piece_Producer_Switch_Full_Gate_Execution_Report_20261121.md) ran CB-171 semantic source `65ae140e49db5bd04d202390e71b50f455ff152e`, artifact `14702459291`, without a rebuild. [Gate 44895154802](https://github.com/akashskypatel/Directional/actions/runs/44895154802): **970/971**, row 858 RED at `SurfaceCellTracingDisplayTests.cpp:155`; rows 644/669/698 contain prohibited `RotationTraceRaysAlongSharedEdge`, trace 14 edge 0–69. All 960 non-A rows MATCH TB154 under N1–N3; A rows 644/645/669/686/698/858/966 DIFF, 648/963/968/971 MATCH. [Census 44895169959](https://github.com/akashskypatel/Directional/actions/runs/44895169959): **3/3 MATCH** TB151 N1–N4 including platform digests. CP2 491/491 unchanged; stable totals 66/17/49 pending Review, one witness debt, 81 deferred. The direct producer still fails before the sphere χ+4 repair. No promotion or stop switch.
+[RA-280](.agents/Directional/Architecture_M6_CP3_RA280_TB_REV_155_Adversarial_Review_20261121.md) upholds the [TB-REV-155](.agents/Directional/Architecture_M6_CP3_TB155_P13_Trace_Piece_Producer_Switch_Full_Gate_Independent_Review_20261121.md) STOP on TB155 (970/971; row858 RED; `RotationTraceRaysAlongSharedEdge` rows 644/669/698). Cause: on the all-disc sphere, cut-search saturation adds every source edge, including the ten slid carriers; cut nodes exist only at segment entry points, so the Cut arc on 0–69 overlaps trace 14's slide piece. The guard was right. CB-172A (compile-only turn deciding on runtime evidence) withdrawn. RA-278's C3 prediction ("sphere has none") was wrong: row 971 measures the network before any cut.
 
-> **NEXT_TURN:** `M6-CP3-CB-172A-P13-CUT-CANDIDATE-SHARED-EDGE-INCIDENCE` (**Code + Build, compile only**) under [independent TB155 Review](.agents/Directional/Architecture_M6_CP3_TB155_P13_Trace_Piece_Producer_Switch_Full_Gate_Independent_Review_20261121.md) and [frozen plan](.agents/Directional/Architecture_M6_CP3_CB172A_P13_Cut_Candidate_Shared_Edge_Incidence_Code_Build_Plan_20261121.md). Exact two-incidence witness first; preserve guard and row858 assertion. Stop switch/O48/O49 held.
+> **NEXT_TURN:** `M6-CP3-CB-172B-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY` (**Code + Build, compile only**). Apply exactly [CB-172B diff](.agents/Directional/Architecture_M6_CP3_CB172B_P13_Slide_Carrier_Cut_Admissibility_Exact.diff), SHA-256 `7d0e0f0a7765cf23ec22aa35894c54433caccf0bb31c7b7c72657c7d71b395ef`. Eight GMP/GMPXX targets, `runtimeExecution=false`. On failure → BLOCKED, return to Review.
 
+Turn sequence:
+- [x] `M6-CP3-TB-EXEC-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE` — RED 970/971; census 3/3; CP2 491/491.
+- [x] `M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE` — STOP; cause left open.
+- [x] `M6-CP3-RA-280-TB-REV-155-ADVERSARIAL-REVIEW` — cause decided; R2 frozen; CB-172A withdrawn.
+- [ ] **NEXT:** `M6-CP3-CB-172B-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY` — exact diff, compile only.
+- [ ] `M6-CP3-TB-EXEC-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE` — [TB156 manifest](.agents/Directional/gates/Architecture_M6_TB156_P13_Slide_Carrier_Cut_Admissibility_Full_Gate_Case_Manifest.tsv) `cbba9e76fa436f1e2e6ef34d50bb377b931c19fc4780660412a9f6072128dc6a` (972 rows); STOP criteria in RA-280.
+- [ ] `M6-CP3-TB-REV-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE` — attribute A-row DIFFs; row686 vs TB154 real-piece oracle; stop-switch helper CB only on a green gate.
+- Prospective: stop-switch helper CB → stop-switch CB → TB → slide-plan conformity → O48 carrier turns (χ+4 is the next blocker). O49 held; RA-275 S4a carried; FC-6, terminal-cut outcome and row858 face-witness DEFNs held; CB-145 parked. D11=A, D12=A.
+- Withdrawn: `M6-CP3-CB-172A-P13-CUT-CANDIDATE-SHARED-EDGE-INCIDENCE` (RA-280 D3).
 
-- [x] `M6-CP3-RA-277-TB-REV-154-ADVERSARIAL-REVIEW` — qualified PASS; RA-277-NV1.
-- [x] `M6-CP3-CB-169S-P13-TRACE-PIECE-PRODUCER-SWITCH` — compiled `ee0f478ad`, package `14700703142`, now executed as part of the CB-171 source in TB155.
-- [x] `M6-CP3-RA-278-RA-277-AND-CB-169S-ADVERSARIAL-REVIEW` — C1–C4 corrections frozen before TB155.
-- [x] `M6-CP3-CB-170-P13-SEMANTIC-DIGEST-AND-PIECE-COUNT-ORACLE-RESTORE` — compile only, source `9e4bd863a3e825371c6d4ce551dd7badd196ad4d`.
-- [x] `M6-CP3-CB-171-P13-EDGE-LOCUS-RANK-AND-ALONG-EDGE-COINCIDENCE` — compile only, source `65ae140e49db5bd04d202390e71b50f455ff152e`, artifact `14702459291`.
-- [x] **RED, execution complete:** `M6-CP3-TB-EXEC-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE` — 970/971; row858 RED, forbidden reason rows644/669/698; 960/960 non-A unchanged, census 3/3 baseline match, CP2 491/491. Do not claim checkpoint acceptance.
-- [x] **REVIEW REJECTED:** `M6-CP3-TB-REV-155-P13-TRACE-PIECE-PRODUCER-SWITCH-FULL-GATE` — immutable evidence classified; no promotion.
-- [ ] **NEXT:** `M6-CP3-CB-172A-P13-CUT-CANDIDATE-SHARED-EDGE-INCIDENCE` — cut-candidate exact shared-edge incidence proof, compile only, no runtime.
-- Prospective stop-switch helper CB → stop-switch CB → TB → slide-plan conformity → O48 carrier turns are **held** pending RED Review; O49 held. FC-6, terminal-cut outcome and independent row858 face-witness obligations remain open; CB-145 parked. D11=A, D12=A.
+## HISTORY — TB-REV-155 rejects gate (2026-11-21 UTC)
+
+TB155 970/971 on CB-171 source `65ae140e4`; row858 RED; guard rows 644/669/698; 960/960 non-A MATCH; census 3/3; CP2 491/491. Successor CB-172A withdrawn by RA-280.
 
 ## HISTORY — RA-277 qualified PASS; test-oracle gap carried (2026-11-21 UTC)
 
