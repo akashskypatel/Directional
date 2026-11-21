@@ -1,16 +1,19 @@
-## CURRENT — TB153 Review complete; CB169 next (2026-11-21 UTC)
+## CURRENT — CB169 compiled; TB154 next (2026-11-21 UTC)
 
 [TB153 Review](.agents/Directional/Architecture_M6_CP3_TB153_P13_Real_Piece_Reach_And_Row686_Oracle_Full_Gate_Independent_Review_20261121.md) upheld TB153 PASS and re-derived it independently (968/968; 966/966 MATCH TB152 N1–N3; 528 `slideContactArrival` lines = 504 + 24 from row 968). Row 686 sphere: the four wall faces lose a fragment (376→372) because the moving entry now touches the wall's edge piece instead of crossing its chord; χ6 unchanged, the +4 attribution stands. Row 968 shows real pieces reachable on every sphere trace, so the switch precondition holds. Arc-piece ownership (O49) is needed only if a wall's suffix separates, measured at the stop-switch TB.
 
-> **NEXT_TURN:** `M6-CP3-CB169-P13-TRACE-PIECE-RAY-HELPERS` (Code + Build, compile only; implementation agent).
-> - Apply [`Architecture_M6_CP3_CB169_P13_Trace_Piece_Ray_Helpers_Exact.diff`](.agents/Directional/Architecture_M6_CP3_CB169_P13_Trace_Piece_Ray_Helpers_Exact.diff), SHA-256 `dd08cd28094c371a6eb63ae6b5c4161f3d94376a023e4fa71288558048966b45` (numstat EGT.cpp 173/54, EGT.h 123/0, tests 806/0).
-> - Precheck `git diff --quiet 203150dff HEAD -- src include tests`, the three preimages, and `git apply --check`; compile the eight RA-245 targets with `runtimeExecution=false`.
-> - On success: `M6-CP3-TB154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE-EXEC` (manifest `0f9c417c…e305`, 971 + 81, plus a TB151-style census). On blocker: UNKNOWN, STOP, STATUS BLOCKED, return to Review; do not adapt the diff.
+[CB169 record](.agents/Directional/Architecture_M6_CP3_CB169_P13_Trace_Piece_Ray_Helpers_Code_Build_Record_20261121.md): the unwired piece-ray helpers (`ef86370d0`) compiled in run 44871935919, artifact `14694154267` (ZIP SHA-256 `ad39099e…0d77`), eight GMP targets, `runtimeExecution=false`. Nothing ran; the three block moves are checked at TB154.
+
+> **NEXT_TURN:** `M6-CP3-TB154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE-EXEC` (Test + Benchmark, artifact only).
+> - Gate manifest `.agents/Directional/gates/Architecture_M6_TB154_P13_Trace_Piece_Ray_Helpers_Full_Gate_Case_Manifest.tsv` SHA-256 `0f9c417c6bb4b563abc90e5707eee98656210df322f5e0d00af1efc8f9f4e305` (971 + 81), package `14694154267` at `ef86370d0`; baseline TB153 result `14692372657`.
+> - Plus a census reproducing TB151's (manifest `gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv`, harness `78b8002c…3e94`, baseline artifact `14621727104`).
+> - STOP rules: rows 969–971 PASS with row 971's `SpherePieceRayReceipt`, `SpherePieceRaySlideEnd` and `SpherePieceRay` lines verbatim; rows 1–968 MATCH TB153 under N1–N3, row 686 included; census 3/3 MATCH TB151 under N1–N4; CP2 491/491.
+> - On success: `M6-CP3-TB154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE-REV`. On blocker: UNKNOWN, STOP, STATUS BLOCKED, return to Review.
 
 - [x] `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-EXEC` (Test + Benchmark): PASS, 968/968.
 - [x] `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-REV` (Review): PASS upheld; CB169 frozen.
-- [ ] **NEXT:** `M6-CP3-CB169-P13-TRACE-PIECE-RAY-HELPERS` (see NEXT_TURN above).
-- [ ] `M6-CP3-TB154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE-EXEC`, then `M6-CP3-TB154-…-FULL-GATE-REV` (checks the row 971 predictions; freezes the producer switch CB).
+- [x] `M6-CP3-CB169-P13-TRACE-PIECE-RAY-HELPERS` (Code + Build): compiled, not executed.
+- [ ] **NEXT:** `M6-CP3-TB154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE-EXEC` (see NEXT_TURN above), then `M6-CP3-TB154-…-FULL-GATE-REV` (checks the row 971 predictions; freezes the producer switch CB).
 - Prospective:
   - producer switch → TB;
   - → stop switch CB (+ suffix-separation receipt) → TB (row 686 χ=2, rows 669/698);

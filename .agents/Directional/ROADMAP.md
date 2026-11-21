@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (RA-276: TB152 967/967 stands. Two test-only CBs (compiled) measure real-piece reach on the sphere and switch the row 686 oracle to real pieces; TB153 (968/968 PASS; real pieces reachable on every sphere trace) executed; its Review is complete (PASS upheld) and froze the unwired piece-ray helpers (CB169, next), then TB154, then the producer switch. O49 is off the switch path; χ+4 and four slide contacts unresolved; no CP3 acceptance) · **Next milestone:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
+**Completed:** M0–M5 · **Now:** M6 / CP3 (RA-276: TB152 967/967 stands. Two test-only CBs (compiled) measure real-piece reach on the sphere and switch the row 686 oracle to real pieces; TB153 (968/968 PASS; real pieces reachable on every sphere trace) executed; its Review is complete (PASS upheld) and froze the unwired piece-ray helpers (CB169, now compiled, not executed), so TB154 is next, then the producer switch. O49 is off the switch path; χ+4 and four slide contacts unresolved; no CP3 acceptance) · **Next milestone:** M7 (verified disposition and degradation) · **Later:** M8 (production hardening).
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
