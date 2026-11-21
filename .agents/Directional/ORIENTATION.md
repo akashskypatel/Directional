@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-21 UTC; CB168Q compiled, RA-276 authority):** CB168R (`7061c8b84`) and CB168Q (`203150dff`, artifact `14692425922`) compiled; row 968 and the row 686 oracle change are not executed. TB152 967/967 PASS stands; CP2 491/491. [RA-276](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc) withdrew RA-275's CB168P for four reasons: its test would fail; it wired one of three ownership readers; O49 does not gate the producer switch; and the switch's precondition is unmeasured. Next is one TB153 (gate only, 968+81, no census). The four sphere walls slide on their last segment. Sphere χ+4, rows 669/698 exhaustion, four unowned slide contacts and H4 remain. Stable 66/17/49, debt1, deferred81.
+**Current currency (2026-11-21 UTC; TB153 PASS, RA-276 authority):** TB153 executed the CB168Q package (`203150dff`, artifact `14692425922`; [run 44867242174](https://github.com/akashskypatel/Directional/actions/runs/44867242174), result `14692372657`): 968/968 PASS, 966/966 MATCH TB152 N1–N3 (row 686 excluded), CP2 491/491. Row 968 shows all 24 sphere traces' real pieces reachable (182 segments, 0 rejected, 0 path or binding failures); the 10 slides are all `terminalBarrier=0` at the last segment. Row 686's sphere record changed under the real-piece oracle (fragments 376→372, χ6 unchanged). [Execution](Architecture_M6_CP3_TB153_P13_Real_Piece_Reach_And_Row686_Oracle_Full_Gate_Execution_Report_20261121.md). Sphere χ+4, rows 669/698 exhaustion, four unowned slide contacts and H4 remain. Stable 66/17/49, debt1, deferred81.
 
 ## 1. What the project is
 
@@ -109,7 +109,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-EXEC` (gate only; [CB168Q record](Architecture_M6_CP3_CB168Q_P13_Row686_Real_Piece_Oracle_Code_Build_Record_20261121.md)), then its Review ([RA-276 S3](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc)). No producer or stop switch is authorized yet. Four slide contacts, χ+4 and rows 669/698 remain unresolved.
+**Current priority:** `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-REV` (Review; [TB153 execution](Architecture_M6_CP3_TB153_P13_Real_Piece_Reach_And_Row686_Oracle_Full_Gate_Execution_Report_20261121.md)): attribute the row 686 sphere record, freeze an unwired piece-ray helper then the switch CB, and decide arc-piece ownership from the walls' `terminalBarrier=0`. No producer or stop switch is authorized yet. Four slide contacts, χ+4 and rows 669/698 remain unresolved.
 
 - **Historical priority (superseded by RA-273):** [RA-272](Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md) had authorized a prose CB168M, now withdrawn.
 

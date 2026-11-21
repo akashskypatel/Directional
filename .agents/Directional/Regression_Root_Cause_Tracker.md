@@ -1,3 +1,7 @@
+## 2026-11-21 — TB153 immutable full gate (no new stable event or candidate)
+
+[TB153 execution](Architecture_M6_CP3_TB153_P13_Real_Piece_Reach_And_Row686_Oracle_Full_Gate_Execution_Report_20261121.md) verified result ZIP `14692372657` (SHA-256 `5e102074ae1bbfcf9c1a94a928e8d354725b484c67fa7dc53410d887a12f8147`), [run 44867242174](https://github.com/akashskypatel/Directional/actions/runs/44867242174). All 968/968 selected gates PASS; 966/966 rows (1–967 except 686) MATCH TB152 under N1–N3 with 1,742 M3 and 492 unmasked slide-contact records; CP2 491/491; no census (`src`/`include` unchanged since CB168O). Row 968 reports 182 segments, 0 rejected, 0 path or binding failures and 10 slides (traces 0, 1, 9–14, 21, 22 at segment 6 of 7), all `terminalBarrier=0`. Row 686: two-ring and torus equal TB152; the sphere record changed under the real-piece oracle (fragments 376→372, ΣV +12, ΣE +8, χ6 and `oracleAvailable` unchanged), a finding about test instrumentation, not a regression. No new observed RED, changed prior fingerprint or lost accepted case: **no new stable regression or candidate**. O47/C5/O49/H4, sphere χ+4 and rows 669/698 remain open. Stable **66 events / 17 categories / 49 recurrences**, debt **1**, deferred **81**, CP2 491/491. Next TB153-REV (Review).
+
 ## 2026-11-20 — RA-276 re-review of RA-275 (no new stable event)
 
 [RA-276](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc): TB152 PASS stands, with no regression event or candidate. These are design corrections only:
@@ -6,7 +10,7 @@
 - O49 does not gate the producer switch;
 - the switch precondition is unmeasured.
 
-Row 963's four walls slide on their last segment. CB168R and CB168Q compiled (row 968 at 7061c8b84, package 14691194223; row 686 real-piece oracle at 203150dff, package 14692425922; not executed). Next: TB153. O47/C5/O49/H4 open. Stable 66/17/49, debt one, 81 deferred, CP2 491/491.
+Row 963's four walls slide on their last segment. CB168R and CB168Q compiled (row 968 at 7061c8b84, package 14691194223; row 686 real-piece oracle at 203150dff, package 14692425922; not executed; TB153 then executed them, see the entry above). O47/C5/O49/H4 open. Stable 66/17/49, debt one, 81 deferred, CP2 491/491.
 
 ## 2026-11-20 — RA-275 re-review of the TB152 Review (no new stable event)
 

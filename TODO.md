@@ -1,28 +1,18 @@
-## CURRENT — CB168Q complete; TB153 full gate next (2026-11-21 UTC)
+## CURRENT — TB153 complete; TB153-REV Review next (2026-11-21 UTC)
 
-CB168Q (`203150dff`, [compile run 44866324323](https://github.com/akashskypatel/Directional/actions/runs/44866324323), artifact `14692425922`, ZIP SHA-256 `fccfe7103494854c1c7bbcc761fb2e3aaa0d119bc5d044ffa52bcf672307f5a0`) compiled the eight RA-245 targets with `runtimeExecution=false`. Row 968 and the row 686 real-piece oracle are compiled, not executed. [Record](.agents/Directional/Architecture_M6_CP3_CB168Q_P13_Row686_Real_Piece_Oracle_Code_Build_Record_20261121.md). Authority: [RA-276](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc).
+TB153 executed the immutable CB168Q package ([run 44867242174](https://github.com/akashskypatel/Directional/actions/runs/44867242174), result artifact `14692372657`, ZIP SHA-256 `5e102074ae1bbfcf9c1a94a928e8d354725b484c67fa7dc53410d887a12f8147`): **968/968 PASS**, 966/966 rows MATCH TB152 under N1–N3 (row 686 excluded), CP2 491/491, product source unchanged since CB168O (no census). Row 968: 182 segments, 0 rejected, 0 path failures, 0 binding failures, 10 slides (traces 0, 1, 9–14, 21, 22 at segment 6 of 7), all `terminalBarrier=0`. Row 686: two-ring and torus equal; sphere record changed (fragments 376→372, χ6 unchanged), `oracleAvailable` true. [Execution](.agents/Directional/Architecture_M6_CP3_TB153_P13_Real_Piece_Reach_And_Row686_Oracle_Full_Gate_Execution_Report_20261121.md).
 
-> **NEXT_TURN:** `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-EXEC` (Test + Benchmark, artifact only; gate 968+81, no census).
-> - Package artifact `14692425922` at `203150dff`; manifest `.agents/Directional/gates/Architecture_M6_TB153_P13_Real_Piece_Reach_And_Row686_Oracle_Full_Gate_Case_Manifest.tsv`, SHA-256 `fc075b4c33e0f934d8636a4c9c4186d19fea24e5cd6ae88e516c5c6ff1514116` (TB152 byte prefix plus row 968); harness SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`; baseline TB152 run 44739657527.
-> - STOP unless row 968 PASS (lines verbatim); rows 1–967 except 686 MATCH TB152 under N1–N3; row 686 two-ring and torus records equal TB152, sphere `oracleAvailable` true and all `boundaryCyclesValid=true`; CP2 491/491. Sphere record reported (χ6 predicted).
-> - On failure or mismatch: STATUS `BLOCKED`, return to a Review. Do not adapt the gate.
+> **NEXT_TURN:** `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-REV` (Review, Review agent; runtime-free).
+> - Re-derive the TB153 comparison from artifacts `14692372657` and `14691849432`; attribute the row 686 sphere record.
+> - Row 968 shows no failures: freeze an unwired piece-based ray helper with its test, then the switch CB (paths, rays, ranks, counts in the digest, after the RA-274 S5 checks).
+> - From the four walls' `terminalBarrier=0` on their last segment, decide whether the stop switch needs arc-piece ownership in all three readers.
+> - On blocker: a named stop routed to the next Review.
 
 - [x] RA-276 re-review of `M6-CP3-RA-275-TB152-REV-ADVERSARIAL-REVIEW`.
-- [x] Closeout repair (2026-11-20 16:35 UTC): policy closeout block for RA-275 and RA-276; handoff next-turn section follows the template.
-- [x] `M6-CP3-CB168R-P13-SPHERE-REAL-PIECE-REACH-RECEIPT` (Code + Build, test-only, compile only): diff `5aee7b09…bfec` (`86 0` tests), postimage `db2bd6f0…`, matched; row 968 `TraceTerminationCorrection.PrescribedSphereRealTracePieceReachIsPublishedNonGating` compiled, not executed.
-- [x] `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` (Code + Build, test-only, compile only): diff `0c096c94…d2e5` (`72 4` tests), postimage `632a147f…cdfdcc59`, matched; compiled, not executed.
-- [ ] **NEXT:** `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-EXEC` (see NEXT_TURN above).
-  - Manifest `.agents/Directional/gates/Architecture_M6_TB153_P13_Real_Piece_Reach_And_Row686_Oracle_Full_Gate_Case_Manifest.tsv`, SHA-256 `fc075b4c33e0f934d8636a4c9c4186d19fea24e5cd6ae88e516c5c6ff1514116` (TB152 + row 968; 968+81).
-  - **No census**: product source is unchanged, and the TB shows this by diff grep.
-  - STOP unless:
-    - row 968 PASS, with its lines reported verbatim;
-    - rows 1–967 except 686 MATCH TB152 under N1–N3, receipts raw;
-    - row 686: two-ring and torus records equal TB152 (whole records); sphere `oracleAvailable` true and all `boundaryCyclesValid=true`; sphere record reported (χ6 predicted; a change is reported, not a STOP);
-    - 491/491.
-- [ ] **Then:** `M6-CP3-TB153-…-FULL-GATE-REV`:
-  - attribute the row 686 sphere record;
-  - if row 968 shows no rejected segments and no path or binding failures, freeze an unwired piece-ray helper with a test, then the switch CB; otherwise freeze the producer-rule fix first;
-  - decide from the walls' `terminalBarrier` whether arc-piece ownership is needed before the stop switch.
+- [x] `M6-CP3-CB168R-P13-SPHERE-REAL-PIECE-REACH-RECEIPT` (Code + Build, test-only): row 968 compiled at `7061c8b84`.
+- [x] `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` (Code + Build, test-only): compiled at `203150dff`.
+- [x] `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-EXEC` (Test + Benchmark): PASS, 968/968; see above.
+- [ ] **NEXT:** `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-REV` (see NEXT_TURN above).
 - Prospective:
   - producer switch → TB;
   - → [arc-piece ownership helper → three readers, only if needed];
