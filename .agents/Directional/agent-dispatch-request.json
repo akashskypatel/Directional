@@ -1,25 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "test_benchmark",
-  "request_id": "m6-cp3-tb153-full-gate-20261121-v1",
-  "mailbox_key": "m6-cp3-tb153-full-gate",
-  "executor_sha": "203150dffb9e98b707ec4dd28835dbb148835338",
-  "semantic_source_sha": "203150dffb9e98b707ec4dd28835dbb148835338",
-  "turn_id": "M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-EXEC",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "14692425922",
-    "EXPECTED_SOURCE_SHA": "203150dffb9e98b707ec4dd28835dbb148835338",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "fccfe7103494854c1c7bbcc761fb2e3aaa0d119bc5d044ffa52bcf672307f5a0",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "199f5f8aae13ffd3e31c8106276c0b3df18695a4390de39efc167f0412ccddad",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "27943cb93a906e8fbdb9c2a5f33c84294ad1fa74403a2a6a04a1ff396bda0b9e",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB153_P13_Real_Piece_Reach_And_Row686_Oracle_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "fc075b4c33e0f934d8636a4c9c4186d19fea24e5cd6ae88e516c5c6ff1514116",
-    "EXPECTED_CASE_COUNT": "968",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
-  },
-  "artifact_prefix": "m6-cp3-tb153-gate",
-  "retention_days": 30
+  "operation": "compile",
+  "request_id": "m6-cp3-cb169-compile-20261121-v1",
+  "mailbox_key": "m6-cp3-cb169-compile",
+  "source_sha": "ef86370d0a1436250bdc8417b6b1abdeb1df5a74",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb169-compile"
 }
