@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb172b-compile-20261121-v2",
-  "mailbox_key": "m6-cp3-cb172b-slide-carrier-cut-compile",
-  "source_sha": "23c43e6fa01a132b23553302a083d41b01130710",
-  "targets": [
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks",
-    "directional_core",
-    "directional_pipeline"
-  ],
-  "artifact_prefix": "m6-cp3-cb172b-slide-carrier-cut"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb172b-doc-closeout-20261121-v1",
+  "mailbox_key": "m6-cp3-cb172b-doc-closeout",
+  "file_id": "1Bl2CwWSWk0_sQPHDjcY_dcInxe5a3_ow",
+  "patch_sha256": "0c0e70e55a38a05e367d0ef2cd877aade816f527ba9883f741ec3d0f83270ba5",
+  "base_sha": "e2c3433aeb8e1c170798a9f39f2fac6197ed6ce0",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cb172b): close verified slide-carrier code and compile turn",
+  "retention_days": 30
 }
