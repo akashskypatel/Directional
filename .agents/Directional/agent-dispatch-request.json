@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb169s-compile-20261121-v1",
-  "mailbox_key": "m6-cp3-cb169s-compile",
-  "source_sha": "ee0f478ad95debeb3ab5a14010a7b24ea78757f6",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb169s-compile"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb169s-closeout-20261121-v1",
+  "mailbox_key": "m6-cp3-cb169s-closeout",
+  "file_id": "17UWx2Sr5guL3ZrqlX9_lMRtzKLt06gSy",
+  "patch_sha256": "d1792b705b08215b84aa6dc2b0eaa11ac1aa505d5032e8017aa7fbdd69d3a1f4",
+  "base_sha": "c3c945947c0e330d5b518b344e8241df2800b707",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cb169s): record verified compile and next immutable gate requirements",
+  "retention_days": 30
 }
