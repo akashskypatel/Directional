@@ -20345,6 +20345,83 @@ TEST(FieldAlignedCarrierOccupancy,
 }
 
 TEST(FieldAlignedCarrierOccupancy,
+     CarrierContactCutPositionTakesTheEntryElseTheSlideInterior) {
+  using directional::authority::FieldBranch;
+  using directional::authority::TopologyRegionId;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+  using directional::geometry::FieldAlignedTerminalContact;
+  using Position = embedded::TraceCutPosition;
+  // The struck trace enters face (0,1,4) across (1,4) at 1/2, then slides
+  // along (0,1) from 3/4 down to vertex 0, where it ends.
+  const auto face = topology_face(0, 1, 4, 5U);
+  const auto incoming = topology_edge(1, 4, 5U);
+  const auto carrier = topology_edge(0, 1, 5U);
+  FieldAlignedCandidateTrace struck(
+      TraceId::from_index(1U, 2U).value(),
+      SingularityPortId::from_index(0, 1).value(),
+      FieldSingularityId::from_index(0, 1).value(),
+      SourceVertexId::from_index(4, 5).value(),
+      SourceComponentId::from_index(0, 1).value(),
+      TopologyRegionId::from_index(0, 1).value());
+  struck.segments.emplace_back(face, FieldBranch::from_integer(0),
+                               boundary_point(incoming, 1, 2), incoming,
+                               carrier, std::nullopt);
+  struck.segments[0].edgeTransitEntry = boundary_point(carrier, 3, 4);
+  struck.segments[0].edgeTransitExit = boundary_point(carrier, 0, 1);
+  struck.terminalPoint = boundary_point(carrier, 0, 1);
+
+  // A slide contact at 3/8 (fraction 1/2) and an entry contact at the
+  // midpoint of (1,4), which is the struck segment's own entry.
+  const FieldAlignedTerminalContact slideRecord{
+      face, {exact_ratio(5, 8), exact_ratio(3, 8), exact_ratio(0, 1)},
+      struck.id, 0U, boundary_point(carrier, 3, 8)};
+  const FieldAlignedTerminalContact entryRecord{
+      face, {exact_ratio(0, 1), exact_ratio(1, 2), exact_ratio(1, 2)},
+      struck.id, 0U, boundary_point(incoming, 1, 2)};
+
+  // A slide contact cuts inside the slide; it has no entry position.
+  const Position slideCut{0U, exact_ratio(1, 2)};
+  EXPECT_EQ(embedded::carrier_contact_cut_position(struck, slideRecord),
+            slideCut);
+  EXPECT_EQ(embedded::carrier_contact_cut_position(struck, slideRecord),
+            embedded::carrier_contact_slide_position(struck, slideRecord));
+  EXPECT_FALSE(embedded::carrier_contact_struck_position(struck, slideRecord));
+
+  // An entry contact cuts at the boundary before the segment; it has no slide
+  // position.
+  const Position entryCut{0U, std::nullopt};
+  EXPECT_EQ(embedded::carrier_contact_cut_position(struck, entryRecord),
+            entryCut);
+  EXPECT_EQ(embedded::carrier_contact_cut_position(struck, entryRecord),
+            embedded::carrier_contact_struck_position(struck, entryRecord));
+  EXPECT_FALSE(embedded::carrier_contact_slide_position(struck, entryRecord));
+
+  // The slide's start and end, another trace and a segment past the end are
+  // not a cut position.
+  auto slideStart = slideRecord;
+  slideStart.carrierLocus = boundary_point(carrier, 3, 4);
+  EXPECT_FALSE(embedded::carrier_contact_cut_position(struck, slideStart));
+  auto slideEnd = slideRecord;
+  slideEnd.carrierLocus = boundary_point(carrier, 0, 1);
+  EXPECT_FALSE(embedded::carrier_contact_cut_position(struck, slideEnd));
+  auto otherTrace = slideRecord;
+  otherTrace.struckTrace = TraceId::from_index(0U, 2U).value();
+  EXPECT_FALSE(embedded::carrier_contact_cut_position(struck, otherTrace));
+  auto pastEnd = slideRecord;
+  pastEnd.struckSegmentIndex = 1U;
+  EXPECT_FALSE(embedded::carrier_contact_cut_position(struck, pastEnd));
+
+  // The binding keeps the slide fraction, so an entry binding and a slide
+  // binding on the same segment differ. The production binding and arc wiring
+  // are not reached by this test: no producer emits a contact inside a slide
+  // yet.
+  EXPECT_NE(
+      (embedded::CarrierContactBinding{struck.id, 0U, std::nullopt}),
+      (embedded::CarrierContactBinding{struck.id, 0U, exact_ratio(1, 2)}));
+}
+
+TEST(FieldAlignedCarrierOccupancy,
      SourcePieceCountsBindEachTraceSegmentToItsRealPieces) {
   namespace authority = directional::authority;
   using directional::authority::FieldBranch;

@@ -61,11 +61,14 @@ struct CutCrossingBinding {
 
 /**
  * A trace that ends with a carrier locus: the struck trace is cut at the
- * boundary before `struckSegment`, the segment it enters at that locus.
+ * boundary before `struckSegment` for an entry contact, or inside
+ * `struckSegment`'s slide at fraction `struckParameter` for a contact inside
+ * that slide.
  */
 struct CarrierContactBinding {
   authority::TraceId struckTrace;
   std::size_t struckSegment = 0U;
+  std::optional<authority::FieldExactRational> struckParameter;
 
   auto operator<=>(const CarrierContactBinding &) const = default;
 };
@@ -312,6 +315,15 @@ trace_segment_contact_parameter(const FieldAlignedCandidateTrace &trace,
  * strictly between the slide's ends.
  */
 [[nodiscard]] std::optional<TraceCutPosition> carrier_contact_slide_position(
+    const FieldAlignedCandidateTrace &struck,
+    const FieldAlignedTerminalContact &record);
+
+/**
+ * Where a terminal carrier contact cuts the struck trace: the entry position
+ * when the record names the struck segment's entry, otherwise the slide
+ * position. Empty when neither applies.
+ */
+[[nodiscard]] std::optional<TraceCutPosition> carrier_contact_cut_position(
     const FieldAlignedCandidateTrace &struck,
     const FieldAlignedTerminalContact &record);
 

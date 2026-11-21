@@ -394,9 +394,9 @@ CutNodeBindingResult build_cut_node_bindings(
     cutVertices.insert(edge.second());
   }
 
-  // A carrier contact's node lies on its carrier where the struck trace enters
-  // the segment carrier_contact_struck_position names. On a selected cut edge
-  // that point is the struck trace's crossing, which then keeps this node.
+  // A carrier contact's node lies on its carrier at the struck trace's cut
+  // position. On a selected cut edge an entry contact's point is the struck
+  // trace's crossing, which then keeps this node.
   std::map<CutCrossingKey, authority::NetworkNodeId> carrierContactCrossings;
   // Two traces that stopped together at a carrier locus both end at the
   // event node; nothing crosses there, so a selected cut edge is split at it.
@@ -440,9 +440,10 @@ CutNodeBindingResult build_cut_node_bindings(
       }
       const auto position =
           struck == nullptr ? std::nullopt
-                            : carrier_contact_struck_position(*struck, record);
+                            : carrier_contact_cut_position(*struck, record);
       const CarrierContactBinding contact{
-          record.struckTrace, position.has_value() ? position->segment : 0U};
+          record.struckTrace, position.has_value() ? position->segment : 0U,
+          position.has_value() ? position->parameter : std::nullopt};
       const auto [stored, inserted] =
           result.carrierContacts.emplace(event.node, contact);
       if (!position.has_value() || event.sourceEdge != carrier ||
@@ -455,6 +456,16 @@ CutNodeBindingResult build_cut_node_bindings(
         return failure;
       }
       if (selectedCuts.count(carrier) != 0U) {
+        // A slide carrier is never a cut candidate, so a contact inside a slide
+        // has no crossing key on a selected cut edge.
+        if (position->parameter.has_value()) {
+          GlobalTopologyPlanError failure =
+              error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+          failure.sourceEdge = carrier;
+          failure.trace = ending->id;
+          failure.secondTrace = record.struckTrace;
+          return failure;
+        }
         carrierContactCrossings.emplace(
             CutCrossingKey{carrier, record.struckTrace, position->segment},
             event.node);
@@ -899,6 +910,14 @@ std::optional<TraceCutPosition> carrier_contact_slide_position(
     return std::nullopt;
   }
   return TraceCutPosition{record.struckSegmentIndex, fraction};
+}
+
+std::optional<TraceCutPosition> carrier_contact_cut_position(
+    const FieldAlignedCandidateTrace &struck,
+    const FieldAlignedTerminalContact &record) {
+  const auto entry = carrier_contact_struck_position(struck, record);
+  if (entry.has_value()) return entry;
+  return carrier_contact_slide_position(struck, record);
 }
 
 bool carrier_contact_is_mutual(const FieldAlignedCandidateTrace &ending,
@@ -1861,14 +1880,16 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
       for (const auto &incidence : event.incidences) {
         if (incidence.trace != trace.id) continue;
         TraceEventPositionDiagnostics positionDiagnostics;
-        const auto position =
+        const bool carrierCut =
             carrierContact != cutNodes.carrierContacts.end() &&
-                    carrierContact->second.struckTrace == trace.id &&
-                    incidence.role != FieldAlignedTraceEventRole::Terminal
-                ? std::optional<std::size_t>{carrierContact->second
-                                                 .struckSegment}
-                : trace_event_position(trace, event, incidence.role,
-                                       origin->second, &positionDiagnostics);
+            carrierContact->second.struckTrace == trace.id &&
+            incidence.role != FieldAlignedTraceEventRole::Terminal;
+        const auto position =
+            carrierCut ? std::optional<std::size_t>{carrierContact->second
+                                                        .struckSegment}
+                       : trace_event_position(trace, event, incidence.role,
+                                              origin->second,
+                                              &positionDiagnostics);
         if (!position.has_value() || *position > trace.segments.size()) {
           GlobalTopologyPlanError result =
               error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
@@ -1885,8 +1906,11 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
               std::move(positionDiagnostics.candidates);
           return result;
         }
+        const std::optional<authority::FieldExactRational> cutParameter =
+            carrierCut ? carrierContact->second.struckParameter
+                       : std::nullopt;
         const auto inserted =
-            cuts.emplace(TraceCutPosition{*position, std::nullopt}, event.node);
+            cuts.emplace(TraceCutPosition{*position, cutParameter}, event.node);
         if (!inserted.second && inserted.first->second != event.node) {
           GlobalTopologyPlanError result =
               error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
