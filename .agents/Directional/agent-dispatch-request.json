@@ -1,12 +1,19 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb172b-drive-apply-20261121-v1",
-  "mailbox_key": "m6-cp3-cb172b-slide-carrier-cut-apply",
-  "file_id": "1maREGEO0ShBaSGNs2e7zkvmaHZ83NIUM",
-  "patch_sha256": "ef833bc93597a12a27c74d1a120c251c46531b35c55b2837787a13161da3d9e1",
-  "base_sha": "e2c3433aeb8e1c170798a9f39f2fac6197ed6ce0",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cut): exclude trace-slide carriers from cut candidates",
+  "operation": "compile",
+  "request_id": "m6-cp3-cb172b-compile-20261121-v1",
+  "mailbox_key": "m6-cp3-cb172b-slide-carrier-cut-compile",
+  "source_sha": "23c43e6fa01a132b23553302a083d41b01130710",
+  "targets": [
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks",
+    "directional_core",
+    "directional_pipeline"
+  ],
+  "artifact_prefix": "m6-cp3-cb172b-slide-carrier-cut",
   "retention_days": 30
 }
