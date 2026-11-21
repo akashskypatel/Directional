@@ -1,0 +1,99 @@
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index bda8c2062..f8676cf9d 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -4416,6 +4416,52 @@ canonical_field_aligned_traces_and_events(
+   // in its own stream, in call order (moving end first), with both slide flags.
+   std::set<std::pair<EntryCoincidenceEnd, EntryCoincidenceEnd>>
+       reportedSlideCoincidences;
++  // Diagnostic only: an entry onto another trace's slide, classified by the
++  // predicate the slide-entry stop uses (the moving end that enters first),
++  // with whether the stop record could be built for a pending moving end.
++  // Contact scheduling is unchanged.
++  const auto reportSlideEntryArrival =
++      [&](const EntryCoincidenceEnd moving,
++          const FieldAlignedCandidateTraceSegment &movingSegment,
++          const FieldAlignedArrivalMeasure &movingArrival,
++          const EntryCoincidenceEnd wall,
++          const FieldAlignedCandidateTraceSegment &wallSegment,
++          const FieldAlignedArrivalMeasure &wallStart) {
++        const auto entry = field_aligned_slide_entry_contact(
++            sourceMesh, priority, movingSegment, movingArrival, moving.first,
++            wallSegment, wallStart, wall.first);
++        if (!entry.has_value()) return;
++        const FieldAlignedCandidateTrace &movingTrace =
++            candidate.candidateTraces[moving.first];
++        const FieldAlignedCandidateTrace &wallTrace =
++            candidate.candidateTraces[wall.first];
++        const bool movingCommitted = moving.second < movingTrace.segments.size();
++        std::clog << "FieldAlignedCurveNetwork.slideContactArrival moving="
++                  << moving.first << ':' << moving.second
++                  << " wall=" << wall.first << ':' << wall.second
++                  << " wallCommitted=" << (wall.second < wallTrace.segments.size())
++                  << " movingArrival="
++                  << (!entry->movingArrival.has_value() ? "unavailable"
++                      : *entry->movingArrival ==
++                              FieldAlignedArrivalOrdering::Earlier
++                          ? "earlier"
++                      : *entry->movingArrival ==
++                              FieldAlignedArrivalOrdering::Later
++                          ? "later"
++                          : "inconclusive")
++                  << " movingCommitted=" << movingCommitted
++                  << " interior=" << entry->slideInterior << " stop="
++                  << field_aligned_slide_entry_stops_moving_trace(*entry)
++                  << " stopRecord=";
++        if (movingCommitted) {
++          std::clog << '-';
++        } else {
++          std::clog << field_aligned_carrier_stop_contact(
++                           movingTrace, entry->locus, wallTrace.id, wall.second)
++                           .has_value();
++        }
++        std::clog << '\n';
++      };
+   const auto reportEntryCoincidence =
+       [&](const EntryCoincidenceEnd first,
+           const FieldAlignedCandidateTraceSegment &firstSegment,
+@@ -4444,34 +4490,13 @@ canonical_field_aligned_traces_and_events(
+                             ? "same"
+                             : "different")
+                     << '\n';
+-          // An entry onto another trace's slide: the moving end's arrival at
+-          // its entry ordered against the wall's arrival along its slide at
+-          // the same point, by the rule the wall loop uses for crossings.
+-          if (!contact->movingInSlide && contact->wallInSlide) {
+-            const auto wallAtContact = field_aligned_arrival_at_slide_parameter(
+-                sourceMesh, secondSegment, secondArrival, contact->parameter);
+-            std::clog << "FieldAlignedCurveNetwork.slideContactArrival moving="
+-                      << first.first << ':' << first.second
+-                      << " wall=" << second.first << ':' << second.second
+-                      << " wallCommitted="
+-                      << (second.second <
+-                          candidate.candidateTraces[second.first].segments.size())
+-                      << " movingArrival=";
+-            if (!wallAtContact.has_value()) {
+-              std::clog << "unavailable";
+-            } else {
+-              const FieldAlignedArrivalOrdering ordering =
+-                  field_aligned_compare_priority_arrivals(
+-                      priority, firstArrival, *wallAtContact, first.first,
+-                      second.first);
+-              std::clog << (ordering == FieldAlignedArrivalOrdering::Earlier
+-                                ? "earlier"
+-                            : ordering == FieldAlignedArrivalOrdering::Later
+-                                ? "later"
+-                                : "inconclusive");
+-            }
+-            std::clog << '\n';
+-          }
++          // An entry onto another trace's slide, in either role: the
++          // classifier names the end that enters, and each loop visits a
++          // segment pair in one order only.
++          reportSlideEntryArrival(first, firstSegment, firstArrival, second,
++                                  secondSegment, secondArrival);
++          reportSlideEntryArrival(second, secondSegment, secondArrival, first,
++                                  firstSegment, firstArrival);
+           return;
+         }
+         const bool inOrder = first < second;

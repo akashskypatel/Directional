@@ -253,6 +253,13 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - A test that calls an unwired consumer by hand proves nothing about production; grep that function's production callers first.
 - Keep a helper's domain as wide as the receipts: a committed-only signature silently excludes an observed pending-wall contact.
 
+**TB-REV-158 (adversarial continuation)**
+
+- Before freezing a switch at a loop that visits each pair once, check whether the classifier it calls is role-symmetric; if not, receipt both roles first. A "100% later" census over one role is not evidence for the other.
+- Put a precondition the publisher enforces (stop-record constructibility) into the switch's receipt before switching.
+- Share a predicate across layers by moving it into the lower layer; never tell a producer to "reuse" a consumer function it cannot call.
+- Per-row Euler predictions come from a receipt TB; a compile-only CB cannot be asked to derive them.
+
 ## Geometry, topology, and mathematical obligations
 
 - **Use the exact complex named by the claim.** Source triangles, split face fragments, embedded arcs,

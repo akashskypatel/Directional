@@ -1,4 +1,21 @@
-## CURRENT — TB-REV-158 qualified PASS; CB-175 separate Code + Build next (2026-11-21 UTC)
+## CURRENT — TB-REV-158 adversarial continuation; exact CB-175 → CB-176 → TB-EXEC/REV-159 (2026-11-21 UTC)
+
+[TB-REV-158 adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_158_Adversarial_Review_20261121.md): TB158 GREEN is upheld.
+- **T1:** the prose `M6-CP3-CB-175-P13-LATER-SLIDE-CONTACT-STOP-SWITCH` is withdrawn. It bundled the predicate, wiring, V3b and Review-owned predictions into one compile-only turn.
+- **T2:** the pending-pair receipt saw one role only. BunnyRandom `87:0/142:2` has no arrival ordering, which corrects TB-REV-157 W4.
+- **T3 and T4:** slide interiority and stop-record constructibility were unmeasured.
+- **T5:** a pending wall's struck index can dangle. Carried.
+
+> **NEXT_TURN:** `M6-CP3-CB-175-P13-SLIDE-ENTRY-STOP-PREDICATE`. Code + Build, compile only. Apply exactly `.agents/Directional/Architecture_M6_CP3_CB175_P13_Slide_Entry_Stop_Predicate_Exact.diff`, SHA-256 `9e75cff8cd50a8a4e1f084b69445f982331617b3b3b7e5843dafc0a2cb480a4c`. Preimages and postimages are in the record.
+
+**Turn sequence:**
+1. CB-175 (exact): shared strict-interior rule, Later-only slide-entry predicate, test row 977.
+2. `M6-CP3-CB-176-P13-SLIDE-ENTRY-ARRIVAL-RECEIPT` (exact `079161b7…5878`, stacked on CB-175): the receipt calls the predicate in both roles.
+3. `M6-CP3-TB-EXEC-159-P13-SLIDE-ENTRY-STOP-PREDICATE-FULL-GATE`: manifest `993c663f…d63b`, 977 rows, allowance limited to the receipt.
+4. `M6-CP3-TB-REV-159-P13-SLIDE-ENTRY-STOP-PREDICATE-FULL-GATE`: freeze the CB-177 switch exactly from the receipts.
+5. CB-177 → TB-EXEC/REV-160 → R1 slide-start subdivision → RA-275 S4a → O48.
+
+## HISTORY — TB-REV-158 qualified PASS; prose CB-175 (withdrawn by the adversarial continuation) (2026-11-21 UTC)
 
 [TB158 independent Review](Architecture_M6_CP3_TB158_P13_Slide_Contact_Cut_Binding_Full_Gate_Independent_Review_20261121.md): TB158 independently upheld 976/976 PASS, CP2 491/491, TB157 975/975 empty-allowance match, and 3/3 production census match. Row976 tests the consumer helper only; production reaching remains unwitnessed. Stable 66/17/49, debt1, deferred81. Sphere χ6 vs χ2 and four unowned contacts persist; Amendment 14 and CP3/497/D0/H4 hold.
 

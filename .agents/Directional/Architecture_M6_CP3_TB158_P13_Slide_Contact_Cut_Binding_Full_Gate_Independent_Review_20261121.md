@@ -1,5 +1,7 @@
 # TB-REV-158 — independent slide-contact cut-binding full-gate review (2026-11-21 UTC)
 
+> **Successor superseded (2026-11-21, adversarial continuation):** the prose CB-175 frozen below is WITHDRAWN. See [TB-REV-158 adversarial record](Architecture_M6_CP3_TB_REV_158_Adversarial_Review_20261121.md) (T1–T5). The next turn is exact `M6-CP3-CB-175-P13-SLIDE-ENTRY-STOP-PREDICATE`.
+
 ## Situation
 
 **Qualified PASS for the immutable scoped TB158 gate.** The review independently verified the CB-174 packaged source, the 976-case gate, the unchanged 975-case TB157 prefix, and the three-case production census. This is **not** proof of a production slide stop, sphere cellularity, or M6-CP3 completion. The separate successor is `M6-CP3-CB-175-P13-LATER-SLIDE-CONTACT-STOP-SWITCH` (Code + Build only); this review did not start it.

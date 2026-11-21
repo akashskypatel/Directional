@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-21 UTC; [TB158 independent Review](Architecture_M6_CP3_TB158_P13_Slide_Contact_Cut_Binding_Full_Gate_Independent_Review_20261121.md)):** TB158 independently upheld 976/976 PASS, CP2 491/491, TB157 975/975 empty-allowance match, and 3/3 production census match. Row976 tests the consumer helper only; production reaching remains unwitnessed. Stable 66/17/49, debt1, deferred81. Sphere χ6 vs χ2 and four unowned contacts persist; Amendment 14 and CP3/497/D0/H4 hold. Next separate turn `M6-CP3-CB-175-P13-LATER-SLIDE-CONTACT-STOP-SWITCH`; no producer code changed during the Review.
+**Current currency (2026-11-21 UTC; [TB-REV-158 adversarial record](Architecture_M6_CP3_TB_REV_158_Adversarial_Review_20261121.md)):** TB158 upheld (976/976, CP2 491/491, census 3/3). The prose CB-175 switch is withdrawn. The pending-pair receipt saw one role only, and slide interiority and stop-record constructibility were unmeasured. Next: exact `M6-CP3-CB-175-P13-SLIDE-ENTRY-STOP-PREDICATE`, then CB-176 receipt, then TB-EXEC/REV-159; CB-177 switch after the receipts. Stable 66/17/49, debt1, deferred81; sphere χ6 vs χ2; Amendment 14 and CP3/497/D0/H4 hold.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-21; [TB158 independent Review](Architecture_M6_CP3_TB158_P13_Slide_Contact_Cut_Binding_Full_Gate_Independent_Review_20261121.md)):** TB158 independently upheld 976/976 PASS, CP2 491/491, TB157 975/975 empty-allowance match, and 3/3 production census match. Row976 tests the consumer helper only; production reaching remains unwitnessed. Stable 66/17/49, debt1, deferred81. Sphere χ6 vs χ2 and four unowned contacts persist; Amendment 14 and CP3/497/D0/H4 hold. Next `M6-CP3-CB-175-P13-LATER-SLIDE-CONTACT-STOP-SWITCH` must compile only and later independently prove canonical `(0,2)` reaching.
+**Currency (2026-11-21 UTC; [TB-REV-158 adversarial record](Architecture_M6_CP3_TB_REV_158_Adversarial_Review_20261121.md)):** TB158 upheld (976/976, CP2 491/491, census 3/3). The prose CB-175 switch is withdrawn. The pending-pair receipt saw one role only, and slide interiority and stop-record constructibility were unmeasured. Next: exact `M6-CP3-CB-175-P13-SLIDE-ENTRY-STOP-PREDICATE`, then CB-176 receipt, then TB-EXEC/REV-159; CB-177 switch after the receipts. Stable 66/17/49, debt1, deferred81; sphere χ6 vs χ2; Amendment 14 and CP3/497/D0/H4 hold.
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.

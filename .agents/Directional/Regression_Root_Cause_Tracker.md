@@ -1,3 +1,13 @@
+## 2026-11-21 — TB-REV-158 adversarial continuation (non-stable review obligations)
+
+[TB-REV-158 adversarial record](Architecture_M6_CP3_TB_REV_158_Adversarial_Review_20261121.md). No stable event; counts stay at 66/17/49, debt 1, deferred 81. New obligations:
+- **TB-REV-158-T2:** pending-pair role asymmetry. CB-176 adds a receipt for both roles; CB-177 must switch in both roles.
+- **TB-REV-158-T3:** strict interiority. CB-175 adds the shared rule; the TB159 receipt measures it.
+- **TB-REV-158-T4:** stop-record precondition. The TB159 `stopRecord` field measures it; CB-177 must fail closed or resolve it.
+- **TB-REV-158-T5:** a pending wall's struck index can dangle. Checked at TB-REV-159 on every `wallCommitted=0 stop=1` line.
+
+TB-REV-157-W3 production wiring and W4 move from the withdrawn CB-175 to CB-177. W4 is corrected: the Later-only evidence covered one role only.
+
 ## 2026-11-21 — TB-REV-158 independent gate adjudication (no new stable event)
 
 [TB158 independent Review](Architecture_M6_CP3_TB158_P13_Slide_Contact_Cut_Binding_Full_Gate_Independent_Review_20261121.md): 976/976 PASS, 975/975 N1–N3 accepted baseline match under empty allowance, and 3/3 census N1–N4 match; no new `InvalidCutGraphBinding`. No new regression root cause or candidate: stable **66/17/49**, debt **1**, deferred **81**; CP2 **491/491**. TB-REV-157-W3 consumer portion discharged only to helper level; its **production reaching** remains assigned to `M6-CP3-CB-175-P13-LATER-SLIDE-CONTACT-STOP-SWITCH` and separate TB159. W4 Later-only shared predicate, V3b, RA-281-F3 and row-by-row predictions have the same owner; RA-281-F1/F2/A14 remain assigned to slide-start subdivision R1; RA-275 S4a/O47/C5/O48/O49 remain carried. Falsifiers: new accepted failure, wrong two-ray composition, absent real queued event, changed earlier/inconclusive behavior, wrong receipt, incomplete split. No CP3/497/D0/H4 promotion.
@@ -17,7 +27,7 @@ The CB-174 v3 helper is withdrawn:
 
 New obligations:
 - **TB-REV-157-W3:** owned by the exact CB-174 cut-binding diff. Its production wiring is unwitnessed until CB-175.
-- **TB-REV-157-W4:** owned by TB-REV-158 and CB-175. The producer switch is Later-only, uses one predicate shared by the wall loop and the pair loop, and drives the receipt.
+- **TB-REV-157-W4:** owned by TB-REV-158 and CB-175. The producer switch is Later-only, uses one predicate shared by the wall loop and the pair loop, and drives the receipt. (TB-REV-158 continuation: ownership moved to CB-175 predicate, CB-176 receipt and CB-177 switch; the evidence covered one role only.)
 
 V3b moves to CB-175 and TB-EXEC-159. The selected-cut slide fail-closed is replaced inside R1. Stable counts are unchanged at 66/17/49.
 
