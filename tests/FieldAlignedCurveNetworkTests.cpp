@@ -3606,6 +3606,12 @@ TEST(GlobalTopologyPlan,
   // Binding must describe the actual number of source pieces per segment.
   std::optional<std::size_t> traceIndex;
   std::optional<std::size_t> edgeArcIndex;
+  // Independent oracle: each segment's count is read off the trace record's
+  // recorded slide transits, not off the piece-path producer.
+  const auto &traces = fixture.network->candidate_traces();
+  std::size_t traceArcCount = 0U;
+  std::size_t segmentCount = 0U;
+  std::size_t transitSegmentCount = 0U;
   for (std::size_t index = 0U; index < plan.arcs().size(); ++index) {
     const auto &arc = plan.arcs()[index];
     if (arc.kind != GlobalTopologyArcKind::Trace) {
@@ -3620,6 +3626,31 @@ TEST(GlobalTopologyPlan,
         << index;
     EXPECT_FALSE(embedded::source_piece_binding_failure(
         arc.sourceFaces, arc.sourcePieceCounts, arc.sourcePath)) << index;
+    ASSERT_TRUE(arc.trace.has_value()) << index;
+    const auto traceRecord = std::find_if(
+        traces.begin(), traces.end(),
+        [&](const auto &candidate) { return candidate.id == *arc.trace; });
+    ASSERT_NE(traceRecord, traces.end()) << index;
+    ASSERT_LE(arc.firstSegment, arc.onePastLastSegment) << index;
+    ASSERT_LE(arc.onePastLastSegment, traceRecord->segments.size()) << index;
+    ASSERT_EQ(arc.onePastLastSegment - arc.firstSegment,
+              arc.sourcePieceCounts.size())
+        << index;
+    ++traceArcCount;
+    for (std::size_t segment = arc.firstSegment;
+         segment < arc.onePastLastSegment; ++segment) {
+      const auto &record = traceRecord->segments[segment];
+      const std::size_t count =
+          arc.sourcePieceCounts[segment - arc.firstSegment];
+      ++segmentCount;
+      if (!record.edgeTransitEntry.has_value() &&
+          !record.edgeTransitExit.has_value()) {
+        EXPECT_EQ(1U, count) << index << ' ' << segment;
+        continue;
+      }
+      EXPECT_TRUE(count == 1U || count == 2U) << index << ' ' << segment;
+      ++transitSegmentCount;
+    }
     if (!traceIndex.has_value() && !arc.sourcePieceCounts.empty() &&
         arc.sourcePieceCounts.back() == 1U &&
         std::holds_alternative<authority::SourceFaceInteriorSupport>(
@@ -3629,6 +3660,9 @@ TEST(GlobalTopologyPlan,
       traceIndex = index;
     }
   }
+  std::cout << "SourcePieceCountOracle traceArcs=" << traceArcCount
+            << " segments=" << segmentCount
+            << " transitSegments=" << transitSegmentCount << '\n';
   ASSERT_TRUE(traceIndex.has_value());
   ASSERT_TRUE(edgeArcIndex.has_value());
   ASSERT_TRUE(rebuild(plan.validation_candidate()));

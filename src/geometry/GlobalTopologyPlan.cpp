@@ -2519,8 +2519,6 @@ std::uint64_t candidate_semantic_digest(
     hash_consume(hash, arc.onePastLastSegment);
     hash_consume(hash, arc.sourceFaces.size());
     for (const auto &face : arc.sourceFaces) hash_face(hash, face);
-    hash_consume(hash, arc.sourcePieceCounts.size());
-    for (const auto count : arc.sourcePieceCounts) hash_consume(hash, count);
     hash_exact_source_path(hash, arc.sourcePath);
   }
   hash_consume(hash, candidate.rotations.size());
