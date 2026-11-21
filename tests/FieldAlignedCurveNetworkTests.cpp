@@ -17454,6 +17454,92 @@ TEST(TraceTerminationCorrection,
   }
 }
 
+// What the producer's real-piece decomposition makes of every trace on the
+// prescribed sphere, before any graph reads it. Each segment is one face
+// piece, a face piece then a slide, a slide alone, or rejected; each whole
+// trace has a piece path whose counts bind it, or not. Every slide and every
+// rejected segment is listed with how its trace ends. Reported, not asserted.
+TEST(TraceTerminationCorrection,
+     PrescribedSphereRealTracePieceReachIsPublishedNonGating) {
+  namespace authority = directional::authority;
+  using Counts = std::vector<std::size_t>;
+  using Faces = std::vector<SourceFaceTopologyKey>;
+  using Position = embedded::TraceCutPosition;
+  const Cp4cReachabilityObservation sphere =
+      observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
+  ASSERT_TRUE(sphere.network.has_value()) << sphere.report;
+  const auto &traces = sphere.network->candidate_traces();
+  ASSERT_EQ(24U, traces.size()) << sphere.report;
+
+  std::size_t segments = 0U;
+  std::size_t slideSegments = 0U;
+  std::size_t face = 0U;
+  std::size_t faceThenEdge = 0U;
+  std::size_t edgeOnly = 0U;
+  std::size_t rejected = 0U;
+  std::size_t pathFailures = 0U;
+  std::size_t bindingFailures = 0U;
+  std::ostringstream details;
+  for (std::size_t index = 0U; index < traces.size(); ++index) {
+    const auto &trace = traces[index];
+    for (std::size_t segment = 0U; segment < trace.segments.size(); ++segment) {
+      ++segments;
+      const auto &record = trace.segments[segment];
+      const bool slides = record.edgeTransitEntry.has_value() ||
+                          record.edgeTransitExit.has_value();
+      if (slides) ++slideSegments;
+      const auto pieces = embedded::exact_trace_segment_pieces(trace, segment);
+      const char *kind = "rejected";
+      if (!pieces.has_value()) {
+        ++rejected;
+      } else if (pieces->size() == 2U) {
+        ++faceThenEdge;
+        kind = "faceThenEdge";
+      } else if (std::holds_alternative<authority::SourceEdgeSupport>(
+                     pieces->front().carrier)) {
+        ++edgeOnly;
+        kind = "edgeOnly";
+      } else {
+        ++face;
+        kind = "face";
+      }
+      if (slides || !pieces.has_value()) {
+        details << "SphereRealPieceSegment trace=" << index << ':' << segment
+                << " segments=" << trace.segments.size() << " kind=" << kind
+                << " slides=" << slides
+                << " terminalBarrier=" << trace.terminalBarrier.has_value()
+                << " terminalContact=" << trace.terminalContact.has_value()
+                << " terminalPoint=" << trace.terminalPoint.has_value()
+                << '\n';
+      }
+    }
+    Counts counts;
+    const auto path = embedded::exact_trace_piece_path_between(
+        trace, Position{0U, std::nullopt},
+        Position{trace.segments.size(), std::nullopt}, &counts);
+    if (!path.has_value()) {
+      ++pathFailures;
+      details << "SphereRealPiecePathFailure trace=" << index << '\n';
+      continue;
+    }
+    Faces faces;
+    for (const auto &record : trace.segments) faces.push_back(record.sourceFace);
+    if (embedded::source_piece_binding_failure(faces, counts, *path)) {
+      ++bindingFailures;
+      details << "SphereRealPieceBindingFailure trace=" << index << '\n';
+    }
+  }
+  // Row 963's four walls (traces 0, 1, 21 and 22) slide on segment 6.
+  EXPECT_LE(4U, slideSegments);
+  std::cout << "SphereRealPieceReach traces=" << traces.size()
+            << " segments=" << segments << " slideSegments=" << slideSegments
+            << " face=" << face << " faceThenEdge=" << faceThenEdge
+            << " edgeOnly=" << edgeOnly << " rejected=" << rejected
+            << " pathFailures=" << pathFailures
+            << " bindingFailures=" << bindingFailures << '\n'
+            << details.str();
+}
+
 TEST(TraceTerminationCorrection,
      TerminalContactTamperIsRejectedAtExactLocusBinding) {
   const Cp4cReachabilityObservation sphere =
