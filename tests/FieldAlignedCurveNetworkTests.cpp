@@ -15120,6 +15120,71 @@ TEST(ResolvedBranchCorrection,
 }
 
 
+TEST(SurfaceCutGraph, PrescribedSphereSlideCarriersAreNeverCutCandidates) {
+  const Cp4cNetworkOnlyFixture fixture = cp4c_network_only_fixture(
+      "sphere_prescribed", Cp4cRailAuthority::PipelineAuthoritative);
+  ASSERT_TRUE(fixture.sourceAuthority.has_value()) << fixture.error;
+  ASSERT_TRUE(fixture.atlas.has_value()) << fixture.error;
+  ASSERT_TRUE(fixture.network.has_value()) << fixture.error;
+
+  // Independent oracle from the published trace records.
+  const auto &network = *fixture.network;
+  std::set<SourceEdgeTopologyKey> mandatory;
+  for (const auto &edge : network.mandatory_edges())
+    mandatory.insert(edge.sourceEdge);
+  std::set<SourceEdgeTopologyKey> expectedCarriers;
+  for (const auto &trace : network.candidate_traces()) {
+    for (const auto &segment : trace.segments) {
+      if ((segment.edgeTransitEntry.has_value() ||
+           segment.edgeTransitExit.has_value()) &&
+          mandatory.count(segment.outgoingCarrier) == 0U) {
+        expectedCarriers.insert(segment.outgoingCarrier);
+      }
+    }
+  }
+  ASSERT_FALSE(expectedCarriers.empty());
+
+  auto cutGraph = directional::geometry::SurfaceCutGraph::make(
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
+  const std::vector<directional::geometry::SurfaceCutCandidateEvidence>
+      *evidence = nullptr;
+  std::string outcome = "cellular";
+  if (cutGraph) {
+    evidence = &cutGraph.value().certificate().cutCandidates;
+  } else {
+    evidence = &cutGraph.error().cutCandidates;
+    outcome = directional::geometry::surface_cut_graph_error_code_name(
+        cutGraph.error().code);
+    EXPECT_NE(std::optional<directional::geometry::RotationSystemInconsistencyReason>(
+                  directional::geometry::RotationSystemInconsistencyReason::
+                      RotationTraceRaysAlongSharedEdge),
+              cutGraph.error().originatingRotationSystemInconsistencyReason)
+        << outcome;
+  }
+  ASSERT_FALSE(evidence->empty());
+
+  std::size_t classified = 0U, selected = 0U;
+  for (const auto &candidate : *evidence) {
+    const bool carrier = expectedCarriers.count(candidate.sourceEdge) != 0U;
+    EXPECT_EQ(carrier,
+              candidate.classification ==
+                  directional::geometry::SurfaceCutCandidateClass::
+                      TraceSlideCarrier)
+        << "edge=" << candidate.sourceEdge.first().index() << '-'
+        << candidate.sourceEdge.second().index() << " outcome=" << outcome;
+    if (carrier) {
+      ++classified;
+      if (candidate.selected) ++selected;
+    }
+  }
+  EXPECT_EQ(expectedCarriers.size(), classified);
+  EXPECT_EQ(0U, selected);
+  std::cout << "SlideCarrierCutReceipt carriers=" << expectedCarriers.size()
+            << " classified=" << classified << " selected=" << selected
+            << " outcome=" << outcome << '\n';
+}
+
 TEST(M4CPScaleS4Prereq,
      IndependentTopologyOracleIsReachableAndDecisionNeutral) {
   const Cp4cProductionFixture torus =

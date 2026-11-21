@@ -41,6 +41,10 @@ enum class SurfaceCutCandidateClass : std::uint8_t {
   Admissible = 0,
   MandatoryAlreadyPresent = 1,
   TraceInteriorCrossing = 2,
+  // A trace slides along this edge (segment edgeTransitEntry..edgeTransitExit
+  // on its outgoingCarrier). Cut arcs are split only at segment entry points,
+  // so a cut here would overlap the slide piece. Never selected.
+  TraceSlideCarrier = 3,
 };
 
 struct SurfaceCutCandidateEvidence {
