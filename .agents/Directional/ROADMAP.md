@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB157 scoped gate 975/975 PASS, baseline 972/972 and census 3/3 match, CP2 491/491 accepted, sphere χ+4 and four unowned contacts unresolved; CP3/497/D0/H4 held) · **Current turn:** `M6-CP3-TB-REV-157-P13-EDGE-LOCUS-ALONG-EDGE-RAY-KEY-FULL-GATE` remains in progress. [Source-level V3 finding](Architecture_M6_CP3_TB_REV_157_V3_Reaching_Test_Feasibility_20261121.md): integrated `(0,2)` test requires canonical stop-switch wiring; exact CB-174 unwired helper successor is frozen but cannot start before review closeout; later wiring gate retains the full builder witness · **Later milestones:** M7 and M8.
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB157 scoped gate 975/975 PASS, baseline 972/972 and census 3/3 match, CP2 491/491 accepted, sphere χ+4 and four unowned contacts unresolved; CP3/497/D0/H4 held) · **Reviewed:** `M6-CP3-TB-REV-157-P13-EDGE-LOCUS-ALONG-EDGE-RAY-KEY-FULL-GATE` complete. [Source-level V3 finding](Architecture_M6_CP3_TB_REV_157_V3_Reaching_Test_Feasibility_20261121.md): integrated `(0,2)` test requires canonical stop-switch wiring; **Next turn:** `M6-CP3-CB-174-P13-LATER-ENTRY-SLIDE-STOP-HELPER` exact helper-only Code + Build; later wiring gate retains the full builder witness · **Later milestones:** M7 and M8.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
