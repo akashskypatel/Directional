@@ -1,3 +1,7 @@
+## 2026-11-21 — CB-173 exact edge-locus ray key (Code + Build only)
+
+[CB-173 record](.agents/Directional/Architecture_M6_CP3_CB173_P13_Edge_Locus_Along_Edge_Ray_Key_Code_Build_Record_20261121.md): exact frozen three-file diff applied as `47a874ee8baa86284eeee11b4a28f9cca06d73f9`; [GMP compile 44932960771](https://github.com/akashskypatel/Directional/actions/runs/44932960771) packaged eight targets as `14718074764` (ZIP SHA-256 `cad613506dbadff3179f17a8492a57062d31cf27cfff6d1378417f351ab5ad09`), `runtimeExecution=false`. Edge-locus along-edge trace rays now consume their oriented edge slots and count toward edge rays, with fail-closed collision/composition. Three focused tests added but **not executed**. TB156 GREEN 972/972 and census 3/3 remain the last runtime evidence; CP2 491/491 accepted and stable 66/17/49 unchanged. Next separate turn: TB-EXEC-157 (975 rows, empty allowance).
+
 ## 2026-11-21 — TB-REV-156 adversarial continuation: exact CB-173 (review only)
 
 M6-CP3-TB-REV-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE (continued after handover): TB156 GREEN upheld; prose CB-173 plan withdrawn; CB-173 frozen as an exact diff (along-locus-edge trace rays take edge-arc slots 0/2 and count as edge rays; composition (0,0)/(2,0)/(0,2); same-direction pair fails closed) with TB157 manifest (TB156 + rows 973–975). No product change. [Record](.agents/Directional/Architecture_M6_CP3_TB_REV_156_Adversarial_Review_20261121.md)
