@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-21 UTC; [M6-CP3-TB-REV-156-P13-SLIDE-CARRIER-CUT-ADMISSIBILITY-FULL-GATE, adversarial continuation](Architecture_M6_CP3_TB_REV_156_Adversarial_Review_20261121.md)):** TB156 GREEN 972/972 upheld in scope. The prose CB-173 plan is withdrawn; CB-173 is an exact diff giving along-locus-edge trace rays edge-arc slots, then TB-EXEC-157 (empty allowance) and TB-REV-157, which freezes the stop switch. Accepted CP2 491/491, stable 66/17/49, debt1, deferred81. Sphere χ6 vs χ2 / four contacts and RA-275 S4a open. No stop-switch or CP3/selector497/D0/H4 promotion.
+**Current currency (2026-11-21 UTC; [TB-REV-157 independent review](Architecture_M6_CP3_TB157_P13_Edge_Locus_Along_Edge_Ray_Key_Independent_Review_20261121.md)):** TB157 gate independently re-derived 975/975 PASS, rows 1–972 match TB156 under N1–N3, census 3/3 baseline match under N1–N4, accepted CP2 491/491. The Review remains IN_PROGRESS: the uncommitted stop-switch helper has no source-attached `(0,2)` witness through the full rotation builder. Stable 66/17/49, debt1, deferred81. Sphere χ6 vs sourceχ2, four unowned contacts, RA-275 S4a remain open. No CP3/selector497/D0/H4 promotion.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-21; [TB-REV-156 adversarial continuation](Architecture_M6_CP3_TB_REV_156_Adversarial_Review_20261121.md)):** exact CB-173 (edge-locus along-edge ray key) replaces the prose helper plan; the stop switch is frozen next by TB-REV-157.
+**Currency (2026-11-21; [TB-REV-157 independent review](Architecture_M6_CP3_TB157_P13_Edge_Locus_Along_Edge_Ray_Key_Independent_Review_20261121.md)):** TB157 independently rechecked GREEN 975/975 and preserved TB156 972/972 without an allowance. The stop-switch helper remains a guarded, unapplied candidate; an actual rotation-builder reaching test is still required before the next Code + Build can be frozen.
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.
@@ -48,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active** | TB156 independently reviewed GREEN 972/972 (after TB155 970/971 RED); row858 restored; census 3/3 baseline match, not three successes. Sphere χ6 vs sourceχ2, four contacts and cut-search exhaustion persist. Next helper-only `M6-CP3-CB-173-P13-STOP-SWITCH-RAY-HELPERS`. CP2 491/491 accepted; no CP3/497/D0/H4 promotion. |
+| **M6-CP3 — active** | TB157 gate independently rechecked 975/975 PASS; TB156 972/972 baseline matches, census 3/3 baseline match (Cylinder PASS, BunnyRandom/Vase RED), accepted CP2 491/491. The current TB-REV-157 Review remains unfinished because no full rotation-builder reaching test exists for two along-edge slide rays. Sphere χ6 vs sourceχ2, four unowned contacts and cut-search exhaustion persist. No CP3/497/D0/H4 promotion. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -112,7 +112,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB-173-P13-STOP-SWITCH-RAY-HELPERS` (separate Code + Build, compile only), scope in [Architecture_M6_CP3_CB173_P13_Stop_Switch_Ray_Helpers_Code_Build_Plan_20261121.md](Architecture_M6_CP3_CB173_P13_Stop_Switch_Ray_Helpers_Code_Build_Plan_20261121.md). CB-172A is withdrawn, CB-172B/TB156 complete; stop switch, slide-start cut subdivision and RA-275 S4a remain separate downstream owners. O49 held; sphere χ+4 and four contacts remain open.
+**Current priority:** finish `M6-CP3-TB-REV-157-P13-EDGE-LOCUS-ALONG-EDGE-RAY-KEY-FULL-GATE` with a source-attached test that reaches the actual edge-locus rotation builder for two opposite slide trace rays. The independent gate evidence is upheld, but the exact stop-switch helper Code + Build successor is not yet frozen. A defensive candidate patch is retained outside the repository; it must not be applied as an accepted fix. CB-173 and TB157 execution are complete, and the old prose CB-173 plan is withdrawn. The stop switch, slide-start cut subdivision and RA-275 S4a remain separate downstream owners. O49 held; sphere χ+4 and four contacts remain open.
 
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
