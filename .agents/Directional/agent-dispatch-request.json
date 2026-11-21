@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb175-p13-slide-entry-stop-v2",
-  "mailbox_key": "m6-cp3-cb175-p13-slide-entry-stop-apply-v2",
-  "file_id": "12n3jXbshGqbzrmyrpOFkR9XyIiMVMNMb",
-  "patch_sha256": "0f9bc4d583f7ca64c954c3b9e5f5e0ee8ba307e8ca2f7548fd7f38f427de4e8b",
-  "base_sha": "206012ec8e6ae6d1e6f805368cfca45b7d0eca47",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(surface-cells): add shared slide-entry stop predicate",
-  "retention_days": 14
+  "operation": "compile",
+  "request_id": "m6-cp3-cb175-compile-v1",
+  "mailbox_key": "m6-cp3-cb175-p13-slide-entry-stop-compile",
+  "source_sha": "94727ea50f7c4a1cc7acfdb578a4ce41d948fa54",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb175-compile"
 }
