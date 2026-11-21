@@ -1,2 +1,0 @@
-Turn: M6-CP3-TB-REV-154-P13-TRACE-PIECE-RAY-HELPERS-FULL-GATE
-Purpose: read-only source snapshot; no build or execution
