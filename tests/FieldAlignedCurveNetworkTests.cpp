@@ -8657,7 +8657,8 @@ bool cp4c_oracle_angle_less(const Cp4cOraclePoint &origin,
 
 std::optional<std::vector<Cp4cOracleFragment>> cp4c_oracle_fragments(
     const TriMesh &mesh, const FieldAlignedCurveNetwork &network,
-    const std::vector<SourceEdgeTopologyKey> &cutEdges = {}) {
+    const std::vector<SourceEdgeTopologyKey> &cutEdges = {},
+    const bool useRealPieces = false) {
   using ContactKind =
       directional::geometry::surface_cell_tracing_detail::
           FieldAlignedSegmentContactKind;
@@ -8676,6 +8677,71 @@ std::optional<std::vector<Cp4cOracleFragment>> cp4c_oracle_fragments(
     for (std::size_t segmentIndex = 0U; segmentIndex < trace.segments.size();
          ++segmentIndex) {
       const auto &segment = trace.segments[segmentIndex];
+      // Only row 686 selects this independent source-piece reconstruction.
+      // The old chord-based oracle stays unchanged for all other callers.
+      if (useRealPieces &&
+          (segment.edgeTransitEntry.has_value() ||
+           segment.edgeTransitExit.has_value())) {
+        if (!segment.edgeTransitEntry.has_value() ||
+            !segment.edgeTransitExit.has_value() ||
+            segment.edgeTransitEntry->edge != segment.outgoingCarrier ||
+            segment.edgeTransitExit->edge != segment.outgoingCarrier)
+          return std::nullopt;
+        const auto firstPoint = cp4c_oracle_boundary_point(
+            segment.sourceFace, segment.entryPoint);
+        const auto slideStart = cp4c_oracle_boundary_point(
+            segment.sourceFace, *segment.edgeTransitEntry);
+        if (!firstPoint || !slideStart) return std::nullopt;
+        // A face piece lying along a face edge has no planar reading here.
+        if (*firstPoint != *slideStart &&
+            cp4c_oracle_common_face_edge(segment.sourceFace, *firstPoint,
+                                         *slideStart)
+                .has_value())
+          return std::nullopt;
+        // An authoritative terminal contact ends the face chord before the
+        // committed slide, strictly inside the face piece. It does not
+        // publish that slide as a trace piece.
+        const bool terminalContact =
+            segmentIndex + 1U == trace.segments.size() &&
+            trace.terminalContact.has_value();
+        if (terminalContact) {
+          const auto terminal =
+              cp4c_oracle_trace_segment_exit(trace, segmentIndex);
+          if (!terminal || !embedded::face_chart_segment_parameter(
+                               *firstPoint, *slideStart, *terminal))
+            return std::nullopt;
+          drafts[segment.sourceFace].traces.push_back(
+              Cp4cOracleTracePiece{*firstPoint, *terminal});
+          continue;
+        }
+        // Otherwise the segment leaves where its slide ends.
+        const auto slideEnd = cp4c_oracle_boundary_point(
+            segment.sourceFace, *segment.edgeTransitExit);
+        const auto segmentExit =
+            cp4c_oracle_trace_segment_exit(trace, segmentIndex);
+        if (!slideEnd || !segmentExit || *slideEnd != *segmentExit)
+          return std::nullopt;
+        if (*firstPoint != *slideStart)
+          drafts[segment.sourceFace].traces.push_back(
+              Cp4cOracleTracePiece{*firstPoint, *slideStart});
+        const auto &carrier = segment.outgoingCarrier;
+        const auto firstParameter = cp4c_oracle_edge_parameter(
+            segment.sourceFace, carrier, *slideStart);
+        const auto secondParameter =
+            cp4c_oracle_edge_parameter(segment.sourceFace, carrier, *slideEnd);
+        if (!firstParameter || !secondParameter ||
+            *firstParameter == *secondParameter)
+          return std::nullopt;
+        // The slide lies on the carrier, so both incident faces split there.
+        const auto incident = topology->incidentFaces.find(carrier);
+        if (incident == topology->incidentFaces.end()) return std::nullopt;
+        for (const auto &face : incident->second) {
+          drafts[face].networkBoundaryIntervals.push_back(
+              Cp4cOracleBoundaryInterval{carrier, *firstParameter,
+                                         *secondParameter});
+        }
+        continue;
+      }
       const auto first =
           cp4c_oracle_boundary_point(segment.sourceFace, segment.entryPoint);
       const auto second = cp4c_oracle_trace_segment_exit(trace, segmentIndex);
@@ -9106,12 +9172,14 @@ std::size_t cp4c_actual_source_component_count(
 std::optional<Cp4cActualEmbeddedGraphOracle>
 cp4c_independent_actual_embedded_graph_oracle(
     const TriMesh &mesh, const FieldAlignedCurveNetwork &network,
-    const std::vector<SourceEdgeTopologyKey> &cutEdges) {
+    const std::vector<SourceEdgeTopologyKey> &cutEdges,
+    const bool useRealPieces = false) {
   const auto topology = independent_source_topology(mesh);
   if (!topology.has_value()) return std::nullopt;
   const auto cutCrossings = cp4c_independent_cut_crossings(network, cutEdges);
   if (!cutCrossings.has_value()) return std::nullopt;
-  const auto fragments = cp4c_oracle_fragments(mesh, network, cutEdges);
+  const auto fragments =
+      cp4c_oracle_fragments(mesh, network, cutEdges, useRealPieces);
   if (!fragments.has_value() || fragments->empty()) return std::nullopt;
 
   // Independent per-face planar rotation construction above produces local
@@ -14989,7 +15057,7 @@ TEST(ResolvedBranchCorrection,
         cutGraph ? cutGraph.value().cut_edges()
                  : std::vector<SourceEdgeTopologyKey>{};
     const auto oracle = cp4c_independent_actual_embedded_graph_oracle(
-        fixture.mesh, *fixture.network, cuts);
+        fixture.mesh, *fixture.network, cuts, true);
     if (!oracle.has_value()) {
       std::cout << "m3Cp4c2ActualGraphOracle;witness=" << witnessName
                 << ";complex=actualEmbeddedGraph;oracleAvailable=false"
