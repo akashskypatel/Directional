@@ -1,2 +1,0 @@
-# CB-173 temporary source-snapshot trigger, created 2026-11-21 UTC
-.agents/connector-triggers/source-snapshot/cb173-20261121-1752.txt

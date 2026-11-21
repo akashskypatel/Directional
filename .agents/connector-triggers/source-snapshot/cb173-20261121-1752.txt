@@ -1,3 +1,0 @@
-Purpose: CB-173 exact source snapshot for bounded Code + Build turn.
-Expected source: push-trigger SHA, includes fresh CB-173 entry STATUS beacon.
-No test/benchmark execution.
