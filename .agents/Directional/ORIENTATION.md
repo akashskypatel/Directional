@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-20 UTC; RA-276):** TB152 967/967 PASS stands; CP2 491/491. [RA-276](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc) withdrew RA-275's CB168P for four reasons: its test would fail; it wired one of three ownership readers; O49 does not gate the producer switch; and the switch's precondition is unmeasured. Next are two test-only CBs, CB168R (sphere real-piece reach receipt) and CB168Q (row 686 fail-closed oracle), then one TB153 (gate only). The four sphere walls slide on their last segment. Sphere χ+4, rows 669/698 exhaustion, four unowned slide contacts and H4 remain. Stable 66/17/49, debt1, deferred81.
+**Current currency (2026-11-21 UTC; CB168R compiled, RA-276 authority):** CB168R (`7061c8b84`, artifact `14691194223`) compiled; row 968 is not executed. TB152 967/967 PASS stands; CP2 491/491. [RA-276](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc) withdrew RA-275's CB168P for four reasons: its test would fail; it wired one of three ownership readers; O49 does not gate the producer switch; and the switch's precondition is unmeasured. Next are CB168Q (row 686 fail-closed oracle, test-only), then one TB153 (gate only). The four sphere walls slide on their last segment. Sphere χ+4, rows 669/698 exhaustion, four unowned slide contacts and H4 remain. Stable 66/17/49, debt1, deferred81.
 
 ## 1. What the project is
 
@@ -109,7 +109,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB168R-P13-SPHERE-REAL-PIECE-REACH-RECEIPT` ([diff](Architecture_M6_CP3_CB168R_P13_Sphere_Real_Piece_Reach_Receipt_Exact.diff), test-only), then `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` ([diff](Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_On_Receipt_Exact.diff), test-only), then one TB153 ([RA-276 S3](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc)). No producer or stop switch is authorized yet. Four slide contacts, χ+4 and rows 669/698 remain unresolved.
+**Current priority:** `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` ([diff](Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_On_Receipt_Exact.diff), test-only), then one TB153 ([RA-276 S3](Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc)). No producer or stop switch is authorized yet. Four slide contacts, χ+4 and rows 669/698 remain unresolved.
 
 - **Historical priority (superseded by RA-273):** [RA-272](Architecture_M6_CP3_TB150_P13_Slide_Interior_Cut_Position_Full_Gate_Independent_Review_20261120.md) had authorized a prose CB168M, now withdrawn.
 

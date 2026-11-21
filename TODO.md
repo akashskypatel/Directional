@@ -1,23 +1,17 @@
-## CURRENT — RA-276: RA-275 realigned; sphere real-piece reach receipt next (2026-11-20 UTC)
+## CURRENT — CB168R complete; row 686 real-piece oracle next (2026-11-21 UTC)
 
-[RA-276](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc) re-reviewed RA-275. TB152 PASS stands. RA-275's CB168P is withdrawn (retained in Git at `41b94c585`):
-- Its row 968 asserted a chord path from inside a slide, which `trace_segment_canonical_exit` makes impossible, so it would fail.
-- It wired one of three ownership readers. The other two are plan fragments (`GlobalTopologyPlan.cpp:1259–1283`) and corner incidence (`:458–704`).
-- O49's readers read trace segments, so the producer switch does not change them.
-- The switch's precondition, that real pieces exist for every sphere trace, was never measured.
+CB168R (`7061c8b84`, [compile run 44865315185](https://github.com/akashskypatel/Directional/actions/runs/44865315185), artifact `14691194223`, ZIP SHA-256 `188b54e25897db479edac1bf5330d4c1b2788e94b7b1431354aefd8854b01861`) compiled the eight RA-245 targets with `runtimeExecution=false`. Row 968 is compiled, not executed. [Record](.agents/Directional/Architecture_M6_CP3_CB168R_P13_Sphere_Real_Piece_Reach_Receipt_Code_Build_Record_20261121.md). Authority: [RA-276](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc), which withdrew RA-275's CB168P (retained in Git at `41b94c585`).
 
-The four sphere walls slide on their last segment (row 963), so whether the stop switch needs arc-piece ownership depends on each wall trace's `terminalBarrier`. The new receipt prints it.
+> **NEXT_TURN:** `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` (Code + Build, test-only, compile only; eight RA-245 targets, `runtimeExecution=false`).
+> - Diff `.agents/Directional/Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_On_Receipt_Exact.diff`, SHA-256 `0c096c94c8124dbf541e96abc07b4c5810d4705dd6ffd6e7f066ecd6aa91d2e5` (`72 4` tests).
+> - Precheck `git diff --quiet 7061c8b84 HEAD -- src include tests`; tests preimage `db2bd6f04cca09ddb61804a2ec92feb7165ab82381ecba90928bbeb1fc691cb3`; `git apply --check`; postimage `632a147f1929ec45a2087176fb8196283e21295fe3dd2f437263a1f7cdfdcc59`.
+> - Read-only re-verified at `a12daccf2`: numstat `72 4`, apply check clean, preimage and postimage match, manifest `fc075b4c…4116` matches.
+> - On failure or mismatch: STATUS `BLOCKED`, return to a Review. Do not adapt the diff.
 
 - [x] RA-276 re-review of `M6-CP3-RA-275-TB152-REV-ADVERSARIAL-REVIEW`.
-- [x] Closeout repair (2026-11-20 16:35 UTC): policy closeout block added for RA-275 and RA-276 (the earlier block named the withdrawn CB168P); the handoff next-turn section now follows the template (exactly one next turn, with success and failure edges).
-- [x] Next-turn confirmations (2026-11-20 15:31 and 16:03 UTC). Origin has no new commits and no CI run has started since 13:53 UTC. Haiku re-verified at `f2d511c37`: the precheck passes, both diffs apply stacked, the manifest is a TB152 byte prefix plus row 968, and the routing agrees. Expected tests hash after CB168Q: `632a147f1929ec45a2087176fb8196283e21295fe3dd2f437263a1f7cdfdcc59`.
-- [ ] **NEXT:** `M6-CP3-CB168R-P13-SPHERE-REAL-PIECE-REACH-RECEIPT` (Code + Build, test-only, compile only; eight RA-245 targets, `runtimeExecution=false`).
-  - Diff `.agents/Directional/Architecture_M6_CP3_CB168R_P13_Sphere_Real_Piece_Reach_Receipt_Exact.diff`, SHA-256 `5aee7b0984444dd35aff935764beabd10070b5ed766b25dbe19b882f7739bfec` (`86 0` tests).
-  - Precheck `git diff --quiet 1df6a09ad HEAD -- src include tests`; tests preimage `f19009d7aa42c9b1fd5a02b2d1e8988f5a9153baff64368658e797bd26f42658`; `git apply --check`.
-  - Adds row 968 `TraceTerminationCorrection.PrescribedSphereRealTracePieceReachIsPublishedNonGating`.
-- [ ] **Then (successor on CB168R success; not concurrent):** `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` (Code + Build, test-only).
-  - Diff `.agents/Directional/Architecture_M6_CP3_CB168Q_Row686_Real_Piece_Oracle_On_Receipt_Exact.diff`, SHA-256 `0c096c94c8124dbf541e96abc07b4c5810d4705dd6ffd6e7f066ecd6aa91d2e5` (`72 4` tests).
-  - Preimage: tests after CB168R, `db2bd6f04cca09ddb61804a2ec92feb7165ab82381ecba90928bbeb1fc691cb3`.
+- [x] Closeout repair (2026-11-20 16:35 UTC): policy closeout block for RA-275 and RA-276; handoff next-turn section follows the template.
+- [x] `M6-CP3-CB168R-P13-SPHERE-REAL-PIECE-REACH-RECEIPT` (Code + Build, test-only, compile only): diff `5aee7b09…bfec` (`86 0` tests), postimage `db2bd6f0…`, matched; row 968 `TraceTerminationCorrection.PrescribedSphereRealTracePieceReachIsPublishedNonGating` compiled, not executed.
+- [ ] **NEXT:** `M6-CP3-CB168Q-P13-ROW686-REAL-PIECE-ORACLE` (see NEXT_TURN above).
 - [ ] **Then:** `M6-CP3-TB153-P13-REAL-PIECE-REACH-AND-ROW686-ORACLE-FULL-GATE-EXEC`.
   - Manifest `.agents/Directional/gates/Architecture_M6_TB153_P13_Real_Piece_Reach_And_Row686_Oracle_Full_Gate_Case_Manifest.tsv`, SHA-256 `fc075b4c33e0f934d8636a4c9c4186d19fea24e5cd6ae88e516c5c6ff1514116` (TB152 + row 968; 968+81).
   - **No census**: product source is unchanged, and the TB shows this by diff grep.
@@ -36,6 +30,14 @@ The four sphere walls slide on their last segment (row 963), so whether the stop
   - → stop switch CB → TB (row 686 χ=2, rows 669/698, four nodes, real-piece conformity);
   - → CB170 → CB171 → CB172 (O48).
   - O49 is held until a witness exists. Held: FC-6, TERMINAL-CUT-OUTCOME, row 858 DEFN. Parked: CB145. D11=A, D12=A.
+
+## RA-276 (2026-11-20 UTC) — RA-275 realigned
+
+RA-276 withdrew RA-275's CB168P for four reasons:
+- Its row 968 asserted a chord path from inside a slide, which `trace_segment_canonical_exit` makes impossible, so it would fail.
+- It wired one of three ownership readers. The other two are plan fragments (`GlobalTopologyPlan.cpp:1259–1283`) and corner incidence (`:458–704`).
+- O49's readers read trace segments, so the producer switch does not change them.
+- The switch's precondition, that real pieces exist for every sphere trace, was never measured.
 
 ## RA-275 (2026-11-20 UTC) — CB168P/TB153 plan withdrawn by RA-276
 

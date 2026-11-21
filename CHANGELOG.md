@@ -1,3 +1,7 @@
+## 2026-11-21 UTC — CB168R: sphere real-piece reach receipt compiled
+
+Applied the frozen test-only diff (`5aee7b09…bfec`, `86 0` tests) as source `7061c8b84`, adding row 968 `TraceTerminationCorrection.PrescribedSphereRealTracePieceReachIsPublishedNonGating`. [Compile run 44865315185](https://github.com/akashskypatel/Directional/actions/runs/44865315185) built the eight RA-245 targets (artifact `14691194223`, ZIP SHA-256 `188b54e2…1b01861`), `runtimeExecution=false`; row 968 is compiled, not executed. [Record](.agents/Directional/Architecture_M6_CP3_CB168R_P13_Sphere_Real_Piece_Reach_Receipt_Code_Build_Record_20261121.md). Next: CB168Q (`0c096c94…d2e5`), then TB153. Stable 66/17/49.
+
 ## 2026-11-20 UTC — RA-276: RA-275 realigned; real-piece reach receipt and rebased row 686 oracle frozen
 
 [RA-276](.agents/Directional/Architecture_M6_CP3_TB152_P13_Edge_Piece_Face_Side_Full_Gate_Independent_Review_20261120.md#ra-276--adversarial-re-review-of-ra-275-2026-11-20-utc) withdrew RA-275's CB168P (`ddc146d1…`, retained in Git at `41b94c585`) for four reasons:
