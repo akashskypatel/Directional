@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev157-orientation-20261121-v1",
-  "mailbox_key": "m6-cp3-tb-rev157-orientation-v1",
-  "file_id": "1U335vfxn0R0OfIwqqmCKf4I9l2aVMhfS",
-  "patch_sha256": "8a1eda18a2330f20dc334107d483534c8dc858625cb9156a2763ecb18613abfd",
-  "base_sha": "1bcc8d79b699c3ef933ab20e5d5f6026924d7de5",
+  "request_id": "m6-cp3-tb-rev157-changelog-20261121-v1",
+  "mailbox_key": "m6-cp3-tb-rev157-changelog-v1",
+  "file_id": "13M9cBO5UJDmkiQdvPmeF-mtOQaVhe6pg",
+  "patch_sha256": "34c3b9cbf4358c8d5abe6c4b9491f2df36089590b90f1faf87446e39e53974ed",
+  "base_sha": "a09656810c92634165ef34843bdc7b496a24c054",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb-rev-157): update current orientation during independent review",
+  "commit_message": "docs(review): add TB-REV-157 V3 investigation to append-only changelog",
   "retention_days": 14
 }
