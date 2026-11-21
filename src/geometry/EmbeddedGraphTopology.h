@@ -368,6 +368,19 @@ exact_trace_piece_path_between(const FieldAlignedCandidateTrace &trace,
                                const TraceCutPosition &second,
                                std::vector<std::size_t> *pieceCounts = nullptr);
 
+/**
+ * The source piece along which the ray of the trace arc between `first` and
+ * `second` leaves its node: for the Forward ray the first piece of
+ * exact_trace_piece_path_between, for the Reverse ray its last piece with the
+ * endpoints swapped, so the piece always starts at the ray's node. Empty when
+ * that path is. Unwired until the coordinated graph cutover.
+ */
+[[nodiscard]] std::optional<authority::ExactSourceSupportPiece>
+exact_trace_arc_ray_piece(const FieldAlignedCandidateTrace &trace,
+                          const TraceCutPosition &first,
+                          const TraceCutPosition &second,
+                          authority::Orientation orientation);
+
 /** Where a trace arc's source path fails to split into its segments' pieces. */
 struct SourcePieceBindingFailure {
   /** The failing segment; empty when the counts do not partition the path. */
@@ -437,6 +450,116 @@ vertex_locus_secondary_parameter(
     const GlobalTopologyArc &arc, authority::Orientation orientation,
     const FieldAlignedCandidateTrace &trace,
     VertexTraceSecondaryParameterFailureReason *failureReason = nullptr);
+
+/**
+ * Exact barycentric coordinates of `point` in the oriented corner order of
+ * `face`: a source vertex is its unit corner, an edge point weights the two
+ * corners of its edge, and a face point's canonical coordinates are listed in
+ * corner order. Empty when the point is not on the closure of `face`: a vertex
+ * that is not a corner, an edge point off the face's edges, or a point of
+ * another face. Coordinate signs are not checked. Unwired until the
+ * coordinated graph cutover.
+ */
+[[nodiscard]] std::optional<FaceChartPoint> exact_source_point_barycentric(
+    const SourceFaceRecord &face, const authority::ExactSourcePoint &point);
+
+/** A trace ray that leaves a vertex locus along a mesh edge. */
+struct VertexPieceRayAlongEdge {
+  authority::SourceEdgeTopologyKey edge;
+
+  bool operator==(const VertexPieceRayAlongEdge &) const = default;
+};
+
+/**
+ * A trace ray that leaves a vertex locus into the wedge of `face`, with the
+ * within-wedge parameter of vertex_locus_secondary_parameter.
+ */
+struct VertexPieceRayInWedge {
+  authority::SourceFaceTopologyKey face;
+  authority::FieldExactRational parameter;
+
+  bool operator==(const VertexPieceRayInWedge &) const = default;
+};
+
+enum class VertexPieceRayFailure : std::uint8_t {
+  /** The piece does not start at the locus. */
+  PieceStartsElsewhere,
+  /** The carrier is neither the face's interior, with the locus as a corner,
+   * nor an edge of the face through the locus. */
+  CarrierNotAtLocus,
+  /** The far end lies off the carrier, or an edge piece ends at the locus. */
+  FarEndOffCarrier,
+  /** The far end gives no within-wedge parameter: the condition
+   * vertex_locus_secondary_parameter reports as InvalidDenominator. */
+  InvalidDenominator,
+};
+
+using VertexPieceRay = std::variant<VertexPieceRayAlongEdge,
+                                    VertexPieceRayInWedge, VertexPieceRayFailure>;
+
+/**
+ * How a trace ray leaves the vertex `locus` in its source face `face`, read
+ * from the ray's source piece oriented away from the locus (see
+ * exact_trace_arc_ray_piece). An edge piece runs along its mesh edge, which
+ * must be an edge of `face` through `locus` and hold the piece's far end. A
+ * face piece of `face` lies in the face's wedge at `locus`; its parameter is
+ * the far end's exact opposite-edge parameter, by the formula and failure
+ * condition of vertex_locus_secondary_parameter. Assigns no rotation key.
+ * Unwired until the coordinated graph cutover.
+ */
+[[nodiscard]] VertexPieceRay vertex_piece_ray(
+    const SourceFaceRecord &face, authority::SourceVertexId locus,
+    const authority::ExactSourceSupportPiece &piece);
+
+/** A trace ray that leaves an edge locus along the locus edge itself. */
+struct EdgePieceRayAlongLocusEdge {
+  /** True toward the edge's second endpoint, false toward its first. */
+  bool towardSecondEndpoint = false;
+
+  bool operator==(const EdgePieceRayAlongLocusEdge &) const = default;
+};
+
+/**
+ * A trace ray that leaves an edge locus into `face`, through its interior or
+ * along another of its edges from an endpoint of the locus edge, toward
+ * `farEnd`.
+ */
+struct EdgePieceRayIntoFace {
+  authority::SourceFaceTopologyKey face;
+  authority::ExactSourcePoint farEnd;
+
+  bool operator==(const EdgePieceRayIntoFace &) const = default;
+};
+
+enum class EdgePieceRayFailure : std::uint8_t {
+  /** The piece does not start on the locus edge: neither at a point of it
+   * nor at one of its endpoints. */
+  PieceStartsOffLocus,
+  /** The carrier is neither the interior of the face nor one of its edges;
+   * on the locus edge, that edge does not bound the face. */
+  CarrierNotOfFace,
+  /** An end of the piece lies off its carrier. */
+  PieceOffCarrier,
+  /** The piece does not leave its start. */
+  ZeroLength,
+};
+
+using EdgePieceRay = std::variant<EdgePieceRayAlongLocusEdge,
+                                  EdgePieceRayIntoFace, EdgePieceRayFailure>;
+
+/**
+ * How a trace ray leaves a node on the source edge `locus` in its source face
+ * `face`, read from the ray's source piece oriented away from the node (see
+ * exact_trace_arc_ray_piece). An edge piece on the locus edge runs along it,
+ * toward the endpoint its exact parameters advance to. A face piece of `face`,
+ * or an edge piece on another edge of `face` (the node then sits at an
+ * endpoint of the locus edge), leaves into `face` toward the piece's far end.
+ * Exposes geometry only and assigns no rotation key. Unwired until the
+ * coordinated graph cutover.
+ */
+[[nodiscard]] EdgePieceRay edge_piece_ray(
+    const SourceFaceRecord &face, const authority::SourceEdgeTopologyKey &locus,
+    const authority::ExactSourceSupportPiece &piece);
 
 struct EdgeLocusSecondaryRankDiagnosticContext {
   std::optional<authority::SourceFaceTopologyKey> sourceFace;

@@ -17608,6 +17608,352 @@ TEST(TraceTerminationCorrection,
             << details.str();
 }
 
+// How every trace ray at a vertex or edge locus of the prescribed sphere's
+// graph leaves along its arc's real source piece, beside what the rotation
+// reads from the trace record today: the within-wedge parameter at a vertex,
+// the within-side rank at an edge. The graph is the one SurfaceCutGraph::make
+// builds first, with no cut edge, before the sphere fails at
+// CutSearchExhaustedBeforeCellularity; its arcs, node loci and face contacts
+// come from the production builders. Every ray carried by a mesh edge, every
+// changed vertex parameter and every failure is listed, and every slide
+// segment with its end node's locus and classification. Asserted only: a
+// slide traversed to an arc's end reaches that node along its carrier, the
+// node's classifier accepts the ray, and at least one such end exists.
+TEST(TraceTerminationCorrection,
+     PrescribedSphereTracePieceRaysArePublishedNonGating) {
+  namespace authority = directional::authority;
+  using directional::authority::NetworkNodeId;
+  using directional::authority::Orientation;
+  using directional::authority::TraceId;
+  using directional::geometry::GlobalTopologyArc;
+  using directional::geometry::GlobalTopologyArcKind;
+  using EdgeRayKey = std::tuple<NetworkNodeId, SourceEdgeTopologyKey, bool>;
+  using Position = embedded::TraceCutPosition;
+  const Cp4cReachabilityObservation sphere =
+      observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
+  ASSERT_TRUE(sphere.network.has_value()) << sphere.report;
+  ASSERT_TRUE(sphere.sourceAuthority.has_value()) << sphere.report;
+  const FieldAlignedCurveNetwork &network = *sphere.network;
+  const auto topology = embedded::build_source_index(
+      sphere.mesh.F, static_cast<std::size_t>(sphere.mesh.V.rows()),
+      *sphere.sourceAuthority);
+  ASSERT_TRUE(topology.has_value());
+  const auto cutNodeBuild = embedded::build_cut_node_bindings(network, {});
+  const auto *cutNodes = std::get_if<embedded::CutNodeBindings>(&cutNodeBuild);
+  ASSERT_NE(nullptr, cutNodes);
+  const auto arcBuild = embedded::build_arcs(network, {}, *cutNodes);
+  const auto *arcs = std::get_if<std::vector<GlobalTopologyArc>>(&arcBuild);
+  ASSERT_NE(nullptr, arcs);
+  const auto lociBuild = embedded::build_node_loci(network, *cutNodes);
+  const auto *loci =
+      std::get_if<std::map<NetworkNodeId, embedded::NodeLocus>>(&lociBuild);
+  ASSERT_NE(nullptr, loci);
+  const auto contactBuild = embedded::collect_face_contact_nodes(network);
+  const auto *contacts =
+      std::get_if<std::map<NetworkNodeId, embedded::FaceContactNode>>(
+          &contactBuild);
+  ASSERT_NE(nullptr, contacts);
+
+  // build_arcs cuts a trace inside a segment only at a face-contact node,
+  // which records the trace's interior position there.
+  const auto arcEnd = [&](const NetworkNodeId node, const TraceId trace,
+                          const std::size_t boundary,
+                          const std::size_t segment) -> Position {
+    const auto contact = contacts->find(node);
+    if (contact != contacts->end()) {
+      const auto interior = contact->second.interior.find(trace);
+      if (interior != contact->second.interior.end() &&
+          interior->second.segment == segment) {
+        return interior->second;
+      }
+    }
+    return Position{boundary, std::nullopt};
+  };
+  const auto locusText = [&](const NetworkNodeId node) -> std::string {
+    const auto locus = loci->find(node);
+    if (locus == loci->end()) return "missing";
+    if (locus->second.vertex.has_value()) {
+      return "vertex:" + std::to_string(locus->second.vertex->index());
+    }
+    if (locus->second.edge.has_value()) {
+      return "edge:" + source_edge_locus(*locus->second.edge);
+    }
+    return "none";
+  };
+  const auto vertexFailureName =
+      [](const embedded::VertexPieceRayFailure failure) {
+        switch (failure) {
+        case embedded::VertexPieceRayFailure::PieceStartsElsewhere:
+          return "PieceStartsElsewhere";
+        case embedded::VertexPieceRayFailure::CarrierNotAtLocus:
+          return "CarrierNotAtLocus";
+        case embedded::VertexPieceRayFailure::FarEndOffCarrier:
+          return "FarEndOffCarrier";
+        case embedded::VertexPieceRayFailure::InvalidDenominator:
+          return "InvalidDenominator";
+        }
+        return "Unknown";
+      };
+  const auto edgeFailureName = [](const embedded::EdgePieceRayFailure failure) {
+    switch (failure) {
+    case embedded::EdgePieceRayFailure::PieceStartsOffLocus:
+      return "PieceStartsOffLocus";
+    case embedded::EdgePieceRayFailure::CarrierNotOfFace:
+      return "CarrierNotOfFace";
+    case embedded::EdgePieceRayFailure::PieceOffCarrier:
+      return "PieceOffCarrier";
+    case embedded::EdgePieceRayFailure::ZeroLength:
+      return "ZeroLength";
+    }
+    return "Unknown";
+  };
+  // A ray carried by a mesh edge, keyed by its node, its edge and whether it
+  // runs toward the edge's second endpoint (its exact parameter grows).
+  const auto edgeParameter =
+      [](const SourceEdgeTopologyKey &edge,
+         const authority::ExactSourcePoint &point)
+      -> std::optional<authority::FieldExactRational> {
+    if (const auto *vertex = std::get_if<SourceVertexId>(&point)) {
+      if (*vertex == edge.first()) return exact_integer(0);
+      if (*vertex == edge.second()) return exact_integer(1);
+      return std::nullopt;
+    }
+    const auto *edgePoint =
+        std::get_if<authority::ExactSourceEdgePoint>(&point);
+    if (edgePoint == nullptr || edgePoint->edge != edge) return std::nullopt;
+    return edgePoint->parameter;
+  };
+  const auto edgeRayKey =
+      [&](const NetworkNodeId node,
+          const authority::ExactSourceSupportPiece &piece)
+      -> std::optional<EdgeRayKey> {
+    const auto *carrier =
+        std::get_if<authority::SourceEdgeSupport>(&piece.carrier);
+    if (carrier == nullptr) return std::nullopt;
+    const auto from = edgeParameter(carrier->edge, piece.first);
+    const auto to = edgeParameter(carrier->edge, piece.second);
+    if (!from.has_value() || !to.has_value() || *from == *to) {
+      return std::nullopt;
+    }
+    return EdgeRayKey{node, carrier->edge, *from < *to};
+  };
+  // The rays of mandatory and cut arcs, which run along their source edges.
+  std::set<EdgeRayKey> edgeArcRays;
+  for (const GlobalTopologyArc &arc : *arcs) {
+    if (arc.kind == GlobalTopologyArcKind::Trace || arc.sourcePath.empty()) {
+      continue;
+    }
+    const auto &front = arc.sourcePath.front();
+    const auto &back = arc.sourcePath.back();
+    if (const auto key = edgeRayKey(arc.firstNode, front)) {
+      edgeArcRays.insert(*key);
+    }
+    if (const auto key = edgeRayKey(
+            arc.secondNode, authority::ExactSourceSupportPiece{
+                                back.carrier, back.second, back.first})) {
+      edgeArcRays.insert(*key);
+    }
+  }
+
+  std::size_t vertexRays = 0U;
+  std::size_t alongEdge = 0U;
+  std::size_t inWedge = 0U;
+  std::size_t edgeRays = 0U;
+  std::size_t alongLocusEdge = 0U;
+  std::size_t intoFace = 0U;
+  std::size_t changedVertexParameter = 0U;
+  std::size_t changedOrdinary = 0U;
+  std::size_t failures = 0U;
+  std::size_t coincidentWithEdgeArc = 0U;
+  std::size_t slideArcEnds = 0U;
+  std::map<EdgeRayKey, std::size_t> traceEdgeRays;
+  std::map<std::pair<TraceId, std::size_t>, std::string> slideEnds;
+  std::ostringstream details;
+  for (const GlobalTopologyArc &arc : *arcs) {
+    if (arc.kind != GlobalTopologyArcKind::Trace || !arc.trace.has_value()) {
+      continue;
+    }
+    const auto *trace = embedded::find_trace(network, *arc.trace);
+    ASSERT_NE(nullptr, trace);
+    const Position first =
+        arcEnd(arc.firstNode, trace->id, arc.firstSegment, arc.firstSegment);
+    const Position second =
+        arcEnd(arc.secondNode, trace->id, arc.onePastLastSegment,
+               arc.onePastLastSegment - 1U);
+    for (const Orientation orientation :
+         {Orientation::Forward, Orientation::Reverse}) {
+      const bool forward = orientation == Orientation::Forward;
+      const NetworkNodeId node = forward ? arc.firstNode : arc.secondNode;
+      const std::size_t segment =
+          forward ? arc.firstSegment : arc.onePastLastSegment - 1U;
+      const auto &record = trace->segments[segment];
+      const bool slides = record.edgeTransitEntry.has_value() ||
+                          record.edgeTransitExit.has_value();
+      const auto face = topology->faces.find(record.sourceFace);
+      const auto piece = embedded::exact_trace_arc_ray_piece(*trace, first,
+                                                             second, orientation);
+      const std::string where = std::to_string(trace->id.index()) + ':' +
+                                std::to_string(segment);
+      // The record says a slide traversed to the arc's end reaches its node
+      // along the outgoing carrier.
+      const bool slideArcEnd =
+          !forward && slides && !second.parameter.has_value() &&
+          !(segment + 1U == trace->segments.size() &&
+            trace->terminalContact.has_value());
+      if (slideArcEnd) {
+        ++slideArcEnds;
+        EXPECT_TRUE(piece.has_value() &&
+                    piece->carrier ==
+                        authority::SourceSupport{authority::SourceEdgeSupport{
+                            record.outgoingCarrier}})
+            << "trace=" << where;
+      }
+      const auto locus = loci->find(node);
+      const bool atVertex =
+          locus != loci->end() && locus->second.vertex.has_value();
+      const bool atEdge = locus != loci->end() && !atVertex &&
+                          locus->second.edge.has_value();
+      if (!atVertex && !atEdge) {
+        if (slideArcEnd) {
+          ADD_FAILURE() << "slide end without a vertex or edge locus: trace="
+                        << where;
+          slideEnds[{trace->id, segment}] = locusText(node) + " kind=none";
+        }
+        continue;
+      }
+      std::string kind = "pieceUnavailable";
+      bool failed = face == topology->faces.end() || !piece.has_value();
+      bool listed = false;
+      std::optional<authority::FieldExactRational> oldParameter;
+      std::optional<authority::FieldExactRational> newParameter;
+      std::optional<std::size_t> oldRank;
+      if (atVertex) {
+        ++vertexRays;
+        oldParameter = embedded::vertex_locus_secondary_parameter(
+            *topology, *locus->second.vertex, arc, orientation, *trace);
+        if (!failed) {
+          const auto ray = embedded::vertex_piece_ray(
+              face->second, *locus->second.vertex, *piece);
+          if (std::holds_alternative<embedded::VertexPieceRayAlongEdge>(ray)) {
+            ++alongEdge;
+            kind = "alongEdge";
+          } else if (const auto *wedge =
+                         std::get_if<embedded::VertexPieceRayInWedge>(&ray)) {
+            ++inWedge;
+            kind = "inWedge";
+            newParameter = wedge->parameter;
+            // An ordinary segment's piece ends where its chord does, but the
+            // chord reader can pick another far point: when the next entry is
+            // a vertex given on an edge outside the face, it falls through to
+            // the trace's terminal point or contact. Such rays are counted as
+            // changedOrdinary and listed, not asserted; the switch Review
+            // decides on them.
+            if (!oldParameter.has_value() || *oldParameter != wedge->parameter) {
+              ++changedVertexParameter;
+              if (!slides) ++changedOrdinary;
+              listed = true;
+            }
+          } else {
+            failed = true;
+            kind = std::string("failure:") +
+                   vertexFailureName(
+                       std::get<embedded::VertexPieceRayFailure>(ray));
+          }
+        }
+      } else {
+        ++edgeRays;
+        oldRank = embedded::edge_locus_secondary_rank(
+            *topology, *locus->second.edge, arc, orientation, *trace);
+        if (!failed) {
+          const auto ray = embedded::edge_piece_ray(
+              face->second, *locus->second.edge, *piece);
+          if (const auto *along =
+                  std::get_if<embedded::EdgePieceRayAlongLocusEdge>(&ray)) {
+            ++alongLocusEdge;
+            kind = along->towardSecondEndpoint ? "alongLocusEdge:towardSecond"
+                                               : "alongLocusEdge:towardFirst";
+          } else if (std::holds_alternative<embedded::EdgePieceRayIntoFace>(
+                         ray)) {
+            ++intoFace;
+            kind = "intoFace";
+          } else {
+            failed = true;
+            kind = std::string("failure:") +
+                   edgeFailureName(std::get<embedded::EdgePieceRayFailure>(ray));
+          }
+        }
+      }
+      if (failed) {
+        ++failures;
+        listed = true;
+      }
+      std::string carrierEdge = "none";
+      if (piece.has_value()) {
+        if (const auto key = edgeRayKey(node, *piece)) {
+          ++traceEdgeRays[*key];
+          if (edgeArcRays.count(*key) != 0U) ++coincidentWithEdgeArc;
+          carrierEdge = source_edge_locus(std::get<1>(*key));
+          listed = true;
+        }
+      }
+      if (slideArcEnd) {
+        EXPECT_FALSE(failed) << "trace=" << where << " kind=" << kind;
+        slideEnds[{trace->id, segment}] = locusText(node) + " kind=" + kind;
+      }
+      if (listed) {
+        details << "SpherePieceRay trace=" << where
+                << " end=" << (forward ? "Forward" : "Reverse")
+                << " locus=" << locusText(node) << " kind=" << kind
+                << " edge=" << carrierEdge << " oldParameter="
+                << (oldParameter.has_value()
+                        ? exact_rational_locus(*oldParameter)
+                        : std::string("none"))
+                << " newParameter="
+                << (newParameter.has_value()
+                        ? exact_rational_locus(*newParameter)
+                        : std::string("none"))
+                << " oldRank="
+                << (oldRank.has_value() ? std::to_string(*oldRank)
+                                        : std::string("none"))
+                << '\n';
+      }
+    }
+  }
+  std::size_t coincidentAlongEdge = 0U;
+  for (const auto &[key, count] : traceEdgeRays) {
+    (void)key;
+    coincidentAlongEdge += count * (count - 1U) / 2U;
+  }
+  // Every slide segment, with the locus and classification of the node at
+  // its end.
+  for (const auto &trace : network.candidate_traces()) {
+    for (std::size_t segment = 0U; segment < trace.segments.size(); ++segment) {
+      const auto &record = trace.segments[segment];
+      if (!record.edgeTransitEntry.has_value() &&
+          !record.edgeTransitExit.has_value()) {
+        continue;
+      }
+      const auto end = slideEnds.find({trace.id, segment});
+      details << "SpherePieceRaySlideEnd trace=" << trace.id.index() << ':'
+              << segment << " locus="
+              << (end != slideEnds.end() ? end->second
+                                         : std::string("noNode kind=none"))
+              << '\n';
+    }
+  }
+  EXPECT_LT(0U, slideArcEnds);
+  std::cout << "SpherePieceRayReceipt vertexRays=" << vertexRays
+            << " alongEdge=" << alongEdge << " inWedge=" << inWedge
+            << " edgeRays=" << edgeRays << " alongLocusEdge=" << alongLocusEdge
+            << " intoFace=" << intoFace
+            << " changedVertexParameter=" << changedVertexParameter
+            << " changedOrdinary=" << changedOrdinary
+            << " failures=" << failures
+            << " coincidentAlongEdge=" << coincidentAlongEdge
+            << " coincidentWithEdgeArc=" << coincidentWithEdgeArc << '\n'
+            << details.str();
+}
+
 TEST(TraceTerminationCorrection,
      TerminalContactTamperIsRejectedAtExactLocusBinding) {
   const Cp4cReachabilityObservation sphere =
@@ -20062,6 +20408,466 @@ TEST(FieldAlignedCarrierOccupancy,
       faceA, Piece{slide.carrier, v0,
                    authority::ExactSourcePoint{authority::ExactSourceEdgePoint{
                        incoming, exact_ratio(1, 2)}}}));
+}
+
+// A trace ray at a vertex leaves along its arc's real source piece: the face
+// piece toward the slide start, or the slide's edge piece back from the slide
+// end. A ray of an ordinary segment keeps the within-wedge parameter the
+// trace record gives it.
+TEST(FieldAlignedCarrierOccupancy,
+     VertexPieceRayLeavesAlongTheArcsRealSourcePiece) {
+  namespace authority = directional::authority;
+  using directional::authority::FieldBranch;
+  using directional::authority::NetworkArcId;
+  using directional::authority::NetworkNodeId;
+  using directional::authority::Orientation;
+  using directional::authority::TopologyRegionId;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+  using directional::geometry::FieldAlignedTerminalContact;
+  using directional::geometry::GlobalTopologyArc;
+  using directional::geometry::GlobalTopologyArcKind;
+  using Chart = embedded::FaceChartPoint;
+  using Failure = embedded::VertexPieceRayFailure;
+  using Piece = authority::ExactSourceSupportPiece;
+  using Position = embedded::TraceCutPosition;
+  using Ray = embedded::VertexPieceRay;
+  const TriMesh mesh = make_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto topology = embedded::build_source_index(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority);
+  ASSERT_TRUE(topology.has_value());
+  const auto vertex = [](const int index) {
+    return SourceVertexId::from_index(index, 5U).value();
+  };
+  // Row 3 of the fan winds [3,0,4], against the canonical order 0, 3, 4 of
+  // its key; row 0 winds [0,1,4] in canonical order. The expected values
+  // below are read from these windings.
+  const SourceFaceTopologyKey wedge = topology_face(0, 3, 4, 5U);
+  const SourceFaceTopologyKey canonicalWound = topology_face(0, 1, 4, 5U);
+  const embedded::SourceFaceRecord &face = topology->faces.at(wedge);
+  const embedded::SourceFaceRecord &other = topology->faces.at(canonicalWound);
+  ASSERT_EQ((std::array<SourceVertexId, 3>{vertex(3), vertex(0), vertex(4)}),
+            face.vertices);
+  ASSERT_EQ((std::array<SourceVertexId, 3>{vertex(0), vertex(1), vertex(4)}),
+            other.vertices);
+
+  // Each trace starts at vertex 4 and heads for (0,3), the edge opposite 4.
+  const auto carrier = topology_edge(0, 3, 5U);
+  const auto port = SingularityPortId::from_index(0, 1).value();
+  const auto singularity = FieldSingularityId::from_index(0, 1).value();
+  const auto component = SourceComponentId::from_index(0, 1).value();
+  const auto region = TopologyRegionId::from_index(0, 1).value();
+  const auto branch = FieldBranch::from_integer(0);
+  const auto makeTrace = [&](const std::size_t index) {
+    FieldAlignedCandidateTrace trace(TraceId::from_index(index, 3U).value(),
+                                     port, singularity, vertex(4), component,
+                                     region);
+    trace.segments.emplace_back(wedge, branch,
+                                boundary_point(topology_edge(0, 4, 5U), 1, 1),
+                                std::nullopt, carrier, std::nullopt);
+    return trace;
+  };
+  const auto makeArc = [&](const TraceId trace) {
+    return GlobalTopologyArc{NetworkArcId::from_index(0, 1).value(),
+                             GlobalTopologyArcKind::Trace,
+                             NetworkNodeId::from_index(0, 2).value(),
+                             NetworkNodeId::from_index(1, 2).value(),
+                             std::nullopt, trace, std::nullopt, 0U, 1U,
+                             {wedge}, {}, {}};
+  };
+  const Position start{0U, std::nullopt};
+  const Position end{1U, std::nullopt};
+  const authority::ExactSourcePoint v0{vertex(0)};
+  const authority::ExactSourcePoint v1{vertex(1)};
+  const authority::ExactSourcePoint v3{vertex(3)};
+  const authority::ExactSourcePoint v4{vertex(4)};
+  const authority::ExactSourcePoint slideStart{
+      authority::ExactSourceEdgePoint{carrier, exact_ratio(1, 3)}};
+  const std::array<authority::FieldExactRational, 3> contactCoordinates{
+      exact_ratio(1, 2), exact_ratio(1, 4), exact_ratio(1, 4)};
+  const authority::ExactSourcePoint contact{
+      authority::ExactSourceFacePoint{wedge, contactCoordinates}};
+  const authority::ExactSourcePoint elsewhere{
+      authority::ExactSourceFacePoint{canonicalWound, contactCoordinates}};
+
+  // (i) The trace meets (0,3) at 1/3 from vertex 0, slides to vertex 3 and
+  // stops there. The Forward ray at 4 is the face piece to the slide start.
+  FieldAlignedCandidateTrace slide = makeTrace(0U);
+  slide.segments[0].edgeTransitEntry = boundary_point(carrier, 1, 3);
+  slide.segments[0].edgeTransitExit = boundary_point(carrier, 1, 1);
+  slide.terminalPoint = boundary_point(carrier, 1, 1);
+  const GlobalTopologyArc slideArc = makeArc(slide.id);
+  const auto forward = embedded::exact_trace_arc_ray_piece(
+      slide, start, end, Orientation::Forward);
+  ASSERT_TRUE(forward.has_value());
+  EXPECT_EQ((Piece{authority::SourceFaceInteriorSupport{wedge}, v4, slideStart}),
+            *forward);
+  // The wedge at 4 runs from the edge to the next corner 3 (parameter 0) to
+  // the edge from the previous corner 0 (parameter 1). The slide start is
+  // (1/3, 2/3, 0) in corner order: (2/3) / (1/3 + 2/3) = 2/3.
+  EXPECT_EQ((Ray{embedded::VertexPieceRayInWedge{wedge, exact_ratio(2, 3)}}),
+            embedded::vertex_piece_ray(face, vertex(4), *forward));
+  // The chord reader aims at the slide end, vertex 3 = (1, 0, 0):
+  // 0 / (1 + 0) = 0.
+  const auto chord = embedded::vertex_locus_secondary_parameter(
+      *topology, vertex(4), slideArc, Orientation::Forward, slide);
+  ASSERT_TRUE(chord.has_value());
+  EXPECT_EQ(exact_integer(0), *chord);
+
+  // (ii) The Reverse ray at vertex 3 runs back along the slide's carrier.
+  const auto reverse = embedded::exact_trace_arc_ray_piece(
+      slide, start, end, Orientation::Reverse);
+  ASSERT_TRUE(reverse.has_value());
+  EXPECT_EQ((Piece{authority::SourceEdgeSupport{carrier}, v3, slideStart}),
+            *reverse);
+  EXPECT_EQ((Ray{embedded::VertexPieceRayAlongEdge{
+                slide.segments[0].outgoingCarrier}}),
+            embedded::vertex_piece_ray(face, vertex(3), *reverse));
+  // The chord reader puts that ray inside the wedge at 3, from the edge to
+  // the next corner 0 (parameter 0) to the edge from the previous corner 4
+  // (parameter 1), aimed back at the entry, vertex 4 = (0, 0, 1):
+  // 1 / (0 + 1) = 1.
+  const auto chordBack = embedded::vertex_locus_secondary_parameter(
+      *topology, vertex(3), slideArc, Orientation::Reverse, slide);
+  ASSERT_TRUE(chordBack.has_value());
+  EXPECT_EQ(exact_integer(1), *chordBack);
+
+  // (iii) Ordinary segments keep the chord reader's parameter. One stops on
+  // (0,3) at 1/4 from vertex 0, (1/4, 3/4, 0) in corner order:
+  // (3/4) / (1/4 + 3/4) = 3/4. One stops at a contact with canonical
+  // coordinates (1/2, 1/4, 1/4) over 0, 3, 4, which is (1/4, 1/2, 1/4) in
+  // corner order: (1/2) / (1/4 + 1/2) = 2/3.
+  FieldAlignedCandidateTrace edgeStop = makeTrace(1U);
+  edgeStop.terminalPoint = boundary_point(carrier, 1, 4);
+  FieldAlignedCandidateTrace contactStop = makeTrace(2U);
+  contactStop.terminalContact =
+      FieldAlignedTerminalContact{wedge, contactCoordinates, slide.id, 0U};
+  const auto expectOrdinary =
+      [&](const FieldAlignedCandidateTrace &trace,
+          const authority::FieldExactRational &expected) {
+        const auto piece = embedded::exact_trace_arc_ray_piece(
+            trace, start, end, Orientation::Forward);
+        ASSERT_TRUE(piece.has_value());
+        EXPECT_EQ((Ray{embedded::VertexPieceRayInWedge{wedge, expected}}),
+                  embedded::vertex_piece_ray(face, vertex(4), *piece));
+        const auto parameter = embedded::vertex_locus_secondary_parameter(
+            *topology, vertex(4), makeArc(trace.id), Orientation::Forward,
+            trace);
+        ASSERT_TRUE(parameter.has_value());
+        EXPECT_EQ(expected, *parameter);
+      };
+  expectOrdinary(edgeStop, exact_ratio(3, 4));
+  expectOrdinary(contactStop, exact_ratio(2, 3));
+
+  // (iv) Typed failures. A piece that does not start at the locus, such as
+  // the slide's edge piece read without reversal.
+  EXPECT_EQ((Ray{Failure::PieceStartsElsewhere}),
+            embedded::vertex_piece_ray(
+                face, vertex(3),
+                Piece{authority::SourceEdgeSupport{carrier}, slideStart, v3}));
+  EXPECT_EQ((Ray{Failure::PieceStartsElsewhere}),
+            embedded::vertex_piece_ray(face, vertex(3), *forward));
+  // An edge piece on an edge that misses the locus or is not an edge of the
+  // face, a face piece of another face or not at the locus, a vertex support.
+  EXPECT_EQ((Ray{Failure::CarrierNotAtLocus}),
+            embedded::vertex_piece_ray(
+                face, vertex(4),
+                Piece{authority::SourceEdgeSupport{carrier}, v4, v3}));
+  EXPECT_EQ((Ray{Failure::CarrierNotAtLocus}),
+            embedded::vertex_piece_ray(
+                face, vertex(4),
+                Piece{authority::SourceEdgeSupport{topology_edge(1, 4, 5U)},
+                      v4, v1}));
+  EXPECT_EQ((Ray{Failure::CarrierNotAtLocus}),
+            embedded::vertex_piece_ray(
+                face, vertex(4),
+                Piece{authority::SourceFaceInteriorSupport{canonicalWound}, v4,
+                      elsewhere}));
+  EXPECT_EQ((Ray{Failure::CarrierNotAtLocus}),
+            embedded::vertex_piece_ray(
+                face, vertex(1),
+                Piece{authority::SourceFaceInteriorSupport{wedge}, v1,
+                      contact}));
+  EXPECT_EQ((Ray{Failure::CarrierNotAtLocus}),
+            embedded::vertex_piece_ray(
+                face, vertex(4),
+                Piece{authority::SourceVertexSupport{vertex(4)}, v4, v4}));
+  // A far end off the carrier: a face point outside the face, a vertex off
+  // the edge, an edge piece that does not leave the locus.
+  EXPECT_EQ((Ray{Failure::FarEndOffCarrier}),
+            embedded::vertex_piece_ray(
+                face, vertex(4),
+                Piece{authority::SourceFaceInteriorSupport{wedge}, v4,
+                      elsewhere}));
+  EXPECT_EQ((Ray{Failure::FarEndOffCarrier}),
+            embedded::vertex_piece_ray(
+                face, vertex(3),
+                Piece{authority::SourceEdgeSupport{carrier}, v3, v4}));
+  EXPECT_EQ((Ray{Failure::FarEndOffCarrier}),
+            embedded::vertex_piece_ray(
+                face, vertex(3),
+                Piece{authority::SourceEdgeSupport{carrier}, v3, v3}));
+  // A face piece that stays at the locus has no wedge parameter, as in
+  // vertex_locus_secondary_parameter: the locus corner gives 0 / (0 + 0).
+  EXPECT_EQ((Ray{Failure::InvalidDenominator}),
+            embedded::vertex_piece_ray(
+                face, vertex(4),
+                Piece{authority::SourceFaceInteriorSupport{wedge}, v4, v4}));
+  // No piece path, no ray piece.
+  EXPECT_FALSE(embedded::exact_trace_arc_ray_piece(slide, end, start,
+                                                   Orientation::Forward)
+                   .has_value());
+
+  // (v) Corner-order coordinates of each point kind in [3,0,4]: vertex 0 is
+  // corner 1; the slide start weights 0 by 2/3 and 3 by 1/3; the contact's
+  // canonical coordinates over 0, 3, 4 move to corners 1, 0, 2.
+  EXPECT_EQ((Chart{exact_integer(0), exact_integer(1), exact_integer(0)}),
+            embedded::exact_source_point_barycentric(face, v0));
+  EXPECT_EQ((Chart{exact_ratio(1, 3), exact_ratio(2, 3), exact_integer(0)}),
+            embedded::exact_source_point_barycentric(face, slideStart));
+  EXPECT_EQ((Chart{exact_ratio(1, 4), exact_ratio(1, 2), exact_ratio(1, 4)}),
+            embedded::exact_source_point_barycentric(face, contact));
+  // In a face wound in canonical order the coordinates stay in place.
+  EXPECT_EQ((Chart{exact_ratio(1, 2), exact_ratio(1, 4), exact_ratio(1, 4)}),
+            embedded::exact_source_point_barycentric(other, elsewhere));
+  // Off the closure of [3,0,4]: vertex 1, a point of (0,1), a point of
+  // [0,1,4].
+  EXPECT_FALSE(embedded::exact_source_point_barycentric(face, v1).has_value());
+  EXPECT_FALSE(embedded::exact_source_point_barycentric(
+                   face, authority::ExactSourcePoint{
+                             authority::ExactSourceEdgePoint{
+                                 topology_edge(0, 1, 5U), exact_ratio(1, 2)}})
+                   .has_value());
+  EXPECT_FALSE(
+      embedded::exact_source_point_barycentric(face, elsewhere).has_value());
+}
+
+// A trace ray at an edge locus leaves along the locus edge, toward the
+// endpoint its piece advances to, or into the ray's face toward the piece's
+// far end. From the trace's entry into a face, the legacy within-side rank
+// names the outgoing carrier the piece ends on; at a slide's end on its
+// carrier, it names the incoming carrier while the piece runs along the
+// locus edge.
+TEST(FieldAlignedCarrierOccupancy,
+     EdgePieceRayLeavesAnEdgeLocusAlongItOrIntoTheFace) {
+  namespace authority = directional::authority;
+  using directional::authority::FieldBranch;
+  using directional::authority::NetworkArcId;
+  using directional::authority::NetworkNodeId;
+  using directional::authority::Orientation;
+  using directional::authority::TopologyRegionId;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+  using directional::geometry::FieldAlignedTerminalContact;
+  using directional::geometry::GlobalTopologyArc;
+  using directional::geometry::GlobalTopologyArcKind;
+  using Failure = embedded::EdgePieceRayFailure;
+  using Piece = authority::ExactSourceSupportPiece;
+  using Position = embedded::TraceCutPosition;
+  using Ray = embedded::EdgePieceRay;
+  using Rank = std::optional<std::size_t>;
+  const TriMesh mesh = make_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto topology = embedded::build_source_index(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority);
+  ASSERT_TRUE(topology.has_value());
+  const auto vertex = [](const int index) {
+    return SourceVertexId::from_index(index, 5U).value();
+  };
+  // Row 3 of the fan winds [3,0,4]; its edges (0,3), (0,4), (3,4) have local
+  // indices 0, 1, 2, from which the legacy ranks below are read.
+  const SourceFaceTopologyKey wedge = topology_face(0, 3, 4, 5U);
+  const SourceFaceTopologyKey beyond = topology_face(2, 3, 4, 5U);
+  const SourceFaceTopologyKey across = topology_face(0, 1, 4, 5U);
+  const embedded::SourceFaceRecord &face = topology->faces.at(wedge);
+  const auto entryEdge = topology_edge(0, 4, 5U);
+  const auto exitEdge = topology_edge(3, 4, 5U);
+  ASSERT_EQ(Rank{1U}, embedded::local_edge_index(face, entryEdge));
+  ASSERT_EQ(Rank{2U}, embedded::local_edge_index(face, exitEdge));
+
+  // Each trace enters [3,0,4] across (0,4) at 1/2, heading for (3,4).
+  const auto port = SingularityPortId::from_index(0, 1).value();
+  const auto singularity = FieldSingularityId::from_index(0, 1).value();
+  const auto component = SourceComponentId::from_index(0, 1).value();
+  const auto region = TopologyRegionId::from_index(0, 1).value();
+  const auto branch = FieldBranch::from_integer(0);
+  const auto makeTrace = [&](const std::size_t index) {
+    FieldAlignedCandidateTrace trace(TraceId::from_index(index, 3U).value(),
+                                     port, singularity, vertex(1), component,
+                                     region);
+    trace.segments.emplace_back(wedge, branch, boundary_point(entryEdge, 1, 2),
+                                entryEdge, exitEdge, std::nullopt);
+    return trace;
+  };
+  const auto makeArc = [&](const TraceId trace) {
+    return GlobalTopologyArc{NetworkArcId::from_index(0, 1).value(),
+                             GlobalTopologyArcKind::Trace,
+                             NetworkNodeId::from_index(0, 2).value(),
+                             NetworkNodeId::from_index(1, 2).value(),
+                             std::nullopt, trace, std::nullopt, 0U, 1U,
+                             {wedge}, {}, {}};
+  };
+  const Position start{0U, std::nullopt};
+  const Position end{1U, std::nullopt};
+  const authority::ExactSourcePoint v0{vertex(0)};
+  const authority::ExactSourcePoint v1{vertex(1)};
+  const authority::ExactSourcePoint v3{vertex(3)};
+  const authority::ExactSourcePoint v4{vertex(4)};
+  const authority::ExactSourcePoint entry{
+      authority::ExactSourceEdgePoint{entryEdge, exact_ratio(1, 2)}};
+  const authority::ExactSourcePoint exit{
+      authority::ExactSourceEdgePoint{exitEdge, exact_ratio(1, 2)}};
+  const std::array<authority::FieldExactRational, 3> contactCoordinates{
+      exact_ratio(1, 2), exact_ratio(1, 4), exact_ratio(1, 4)};
+  const authority::ExactSourcePoint contact{
+      authority::ExactSourceFacePoint{wedge, contactCoordinates}};
+  const authority::ExactSourcePoint elsewhere{
+      authority::ExactSourceFacePoint{across, contactCoordinates}};
+
+  // An ordinary crossing to (3,4) at 1/2, on into [2,3,4]: the Forward ray at
+  // the entry node leaves into the face toward the exit point. The legacy
+  // rank names the outgoing carrier (3,4), index 2, from the contact edge at
+  // index 1: 2 * ((2 + 3 - 1) mod 3) = 2, the carrier the piece ends on.
+  FieldAlignedCandidateTrace crossing = makeTrace(0U);
+  crossing.segments.emplace_back(beyond, branch, boundary_point(exitEdge, 1, 2),
+                                 exitEdge, topology_edge(2, 4, 5U),
+                                 std::nullopt);
+  crossing.terminalPoint = boundary_point(topology_edge(2, 4, 5U), 1, 2);
+  const auto crossingRay = embedded::exact_trace_arc_ray_piece(
+      crossing, start, end, Orientation::Forward);
+  ASSERT_TRUE(crossingRay.has_value());
+  EXPECT_EQ((Piece{authority::SourceFaceInteriorSupport{wedge}, entry, exit}),
+            *crossingRay);
+  EXPECT_EQ((Ray{embedded::EdgePieceRayIntoFace{wedge, exit}}),
+            embedded::edge_piece_ray(face, entryEdge, *crossingRay));
+  EXPECT_EQ(Rank{2U}, embedded::edge_locus_secondary_rank(
+                          *topology, entryEdge, makeArc(crossing.id),
+                          Orientation::Forward, crossing));
+
+  // The same entry with a slide: the trace meets (3,4) at 1/2 and slides to
+  // vertex 3. The Forward ray is the face piece to the slide start, on the
+  // carrier the legacy rank names, 2 as above.
+  FieldAlignedCandidateTrace slide = makeTrace(1U);
+  slide.segments[0].edgeTransitEntry = boundary_point(exitEdge, 1, 2);
+  slide.segments[0].edgeTransitExit = boundary_point(exitEdge, 0, 1);
+  slide.terminalPoint = boundary_point(exitEdge, 0, 1);
+  const GlobalTopologyArc slideArc = makeArc(slide.id);
+  const auto slideForward = embedded::exact_trace_arc_ray_piece(
+      slide, start, end, Orientation::Forward);
+  ASSERT_TRUE(slideForward.has_value());
+  EXPECT_EQ((Piece{authority::SourceFaceInteriorSupport{wedge}, entry, exit}),
+            *slideForward);
+  EXPECT_EQ((Ray{embedded::EdgePieceRayIntoFace{wedge, exit}}),
+            embedded::edge_piece_ray(face, entryEdge, *slideForward));
+  EXPECT_EQ(Rank{2U}, embedded::edge_locus_secondary_rank(
+                          *topology, entryEdge, slideArc, Orientation::Forward,
+                          slide));
+
+  // At the slide end, vertex 3, a node whose locus is the carrier (3,4) is
+  // reached along it. The Reverse piece runs from parameter 0 to 1/2, toward
+  // the second endpoint 4. The legacy rank instead names the incoming
+  // carrier (0,4), index 1, from the contact edge at index 2:
+  // 2 * ((1 + 3 - 2) mod 3) = 4.
+  const auto slideReverse = embedded::exact_trace_arc_ray_piece(
+      slide, start, end, Orientation::Reverse);
+  ASSERT_TRUE(slideReverse.has_value());
+  EXPECT_EQ((Piece{authority::SourceEdgeSupport{exitEdge}, v3, exit}),
+            *slideReverse);
+  EXPECT_EQ((Ray{embedded::EdgePieceRayAlongLocusEdge{true}}),
+            embedded::edge_piece_ray(face, exitEdge, *slideReverse));
+  EXPECT_EQ(Rank{4U}, embedded::edge_locus_secondary_rank(
+                          *topology, exitEdge, slideArc, Orientation::Reverse,
+                          slide));
+  // The slide's own edge piece, read from its start inside (3,4), runs from
+  // 1/2 to 0, toward the first endpoint 3.
+  const auto slidePath =
+      embedded::exact_trace_piece_path_between(slide, start, end);
+  ASSERT_TRUE(slidePath.has_value());
+  EXPECT_EQ((Piece{authority::SourceEdgeSupport{exitEdge}, exit, v3}),
+            slidePath->back());
+  EXPECT_EQ((Ray{embedded::EdgePieceRayAlongLocusEdge{false}}),
+            embedded::edge_piece_ray(face, exitEdge, slidePath->back()));
+
+  // A trace stopping at a contact inside the face leaves the entry node into
+  // the face toward that contact.
+  FieldAlignedCandidateTrace contactStop = makeTrace(2U);
+  contactStop.terminalContact =
+      FieldAlignedTerminalContact{wedge, contactCoordinates, crossing.id, 0U};
+  const auto contactRay = embedded::exact_trace_arc_ray_piece(
+      contactStop, start, end, Orientation::Forward);
+  ASSERT_TRUE(contactRay.has_value());
+  EXPECT_EQ((Piece{authority::SourceFaceInteriorSupport{wedge}, entry, contact}),
+            *contactRay);
+  EXPECT_EQ((Ray{embedded::EdgePieceRayIntoFace{wedge, contact}}),
+            embedded::edge_piece_ray(face, entryEdge, *contactRay));
+
+  // A node at vertex 4 whose locus is (0,4), with a ray along (3,4), the
+  // face's other edge at 4, leaves into the face toward the third corner 3.
+  EXPECT_EQ((Ray{embedded::EdgePieceRayIntoFace{wedge, v3}}),
+            embedded::edge_piece_ray(
+                face, entryEdge,
+                Piece{authority::SourceEdgeSupport{exitEdge}, v4, v3}));
+
+  // Typed failures. A piece that starts off the locus edge.
+  EXPECT_EQ((Ray{Failure::PieceStartsOffLocus}),
+            embedded::edge_piece_ray(
+                face, entryEdge,
+                Piece{authority::SourceFaceInteriorSupport{wedge}, v3,
+                      contact}));
+  EXPECT_EQ((Ray{Failure::PieceStartsOffLocus}),
+            embedded::edge_piece_ray(
+                face, entryEdge,
+                Piece{authority::SourceEdgeSupport{exitEdge}, exit, v3}));
+  // A carrier not of the face: another face, an edge off the face, a vertex
+  // support, and a locus edge that does not bound the face.
+  EXPECT_EQ((Ray{Failure::CarrierNotOfFace}),
+            embedded::edge_piece_ray(
+                face, entryEdge,
+                Piece{authority::SourceFaceInteriorSupport{across}, entry,
+                      elsewhere}));
+  EXPECT_EQ((Ray{Failure::CarrierNotOfFace}),
+            embedded::edge_piece_ray(
+                face, entryEdge,
+                Piece{authority::SourceEdgeSupport{topology_edge(1, 4, 5U)},
+                      v4, v1}));
+  EXPECT_EQ((Ray{Failure::CarrierNotOfFace}),
+            embedded::edge_piece_ray(
+                face, entryEdge,
+                Piece{authority::SourceVertexSupport{vertex(4)}, v4, v4}));
+  EXPECT_EQ((Ray{Failure::CarrierNotOfFace}),
+            embedded::edge_piece_ray(
+                face, topology_edge(1, 4, 5U),
+                Piece{authority::SourceEdgeSupport{topology_edge(1, 4, 5U)},
+                      v4, v1}));
+  // An end off the carrier: a vertex off the locus edge, a point of another
+  // face, a start off the other edge.
+  EXPECT_EQ((Ray{Failure::PieceOffCarrier}),
+            embedded::edge_piece_ray(
+                face, entryEdge,
+                Piece{authority::SourceEdgeSupport{entryEdge}, entry, v3}));
+  EXPECT_EQ((Ray{Failure::PieceOffCarrier}),
+            embedded::edge_piece_ray(
+                face, entryEdge,
+                Piece{authority::SourceFaceInteriorSupport{wedge}, entry,
+                      elsewhere}));
+  EXPECT_EQ((Ray{Failure::PieceOffCarrier}),
+            embedded::edge_piece_ray(
+                face, entryEdge,
+                Piece{authority::SourceEdgeSupport{exitEdge}, v0, v3}));
+  // A piece that does not leave its start, along the locus edge or into the
+  // face.
+  EXPECT_EQ((Ray{Failure::ZeroLength}),
+            embedded::edge_piece_ray(
+                face, entryEdge,
+                Piece{authority::SourceEdgeSupport{entryEdge}, entry, entry}));
+  EXPECT_EQ((Ray{Failure::ZeroLength}),
+            embedded::edge_piece_ray(
+                face, entryEdge,
+                Piece{authority::SourceFaceInteriorSupport{wedge}, entry,
+                      entry}));
 }
 
 TEST(FieldAlignedCarrierOccupancy,

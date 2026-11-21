@@ -129,6 +129,27 @@ std::optional<std::size_t> local_edge_index(
   return std::nullopt;
 }
 
+// The exact parameter of `point` along `edge`: 0 at its first endpoint, 1 at
+// its second, an edge point's own parameter on it. Empty off the edge.
+std::optional<authority::FieldExactRational> exact_edge_parameter(
+    const authority::SourceEdgeTopologyKey &edge,
+    const authority::ExactSourcePoint &point) {
+  if (const auto *vertex = std::get_if<authority::SourceVertexId>(&point)) {
+    if (*vertex == edge.first()) {
+      return authority::FieldExactRational::from_integer(0);
+    }
+    if (*vertex == edge.second()) {
+      return authority::FieldExactRational::from_integer(1);
+    }
+    return std::nullopt;
+  }
+  const auto *edgePoint = std::get_if<authority::ExactSourceEdgePoint>(&point);
+  if (edgePoint == nullptr || edgePoint->edge != edge) {
+    return std::nullopt;
+  }
+  return edgePoint->parameter;
+}
+
 std::optional<authority::Orientation> edge_piece_face_side(
     const SourceFaceRecord &face,
     const authority::ExactSourceSupportPiece &piece) {
@@ -137,26 +158,8 @@ std::optional<authority::Orientation> edge_piece_face_side(
   if (carrier == nullptr || !local_edge_index(face, carrier->edge)) {
     return std::nullopt;
   }
-  const auto parameter = [&](const authority::ExactSourcePoint &point)
-      -> std::optional<authority::FieldExactRational> {
-    if (const auto *vertex = std::get_if<authority::SourceVertexId>(&point)) {
-      if (*vertex == carrier->edge.first()) {
-        return authority::FieldExactRational::from_integer(0);
-      }
-      if (*vertex == carrier->edge.second()) {
-        return authority::FieldExactRational::from_integer(1);
-      }
-      return std::nullopt;
-    }
-    const auto *edgePoint =
-        std::get_if<authority::ExactSourceEdgePoint>(&point);
-    if (edgePoint == nullptr || edgePoint->edge != carrier->edge) {
-      return std::nullopt;
-    }
-    return edgePoint->parameter;
-  };
-  const auto first = parameter(piece.first);
-  const auto second = parameter(piece.second);
+  const auto first = exact_edge_parameter(carrier->edge, piece.first);
+  const auto second = exact_edge_parameter(carrier->edge, piece.second);
   if (!first || !second || *first == *second) return std::nullopt;
   return face_orients_edge_forward(face, carrier->edge) == (*first < *second)
              ? authority::Orientation::Forward
@@ -1131,6 +1134,17 @@ std::optional<authority::ExactSourcePath> exact_trace_piece_path_between(
   if (!authority::exact_source_path_is_canonical(path)) return std::nullopt;
   if (pieceCounts != nullptr) *pieceCounts = std::move(counts);
   return path;
+}
+
+std::optional<authority::ExactSourceSupportPiece> exact_trace_arc_ray_piece(
+    const FieldAlignedCandidateTrace &trace, const TraceCutPosition &first,
+    const TraceCutPosition &second, const authority::Orientation orientation) {
+  const auto path = exact_trace_piece_path_between(trace, first, second);
+  if (!path.has_value()) return std::nullopt;
+  if (orientation == authority::Orientation::Forward) return path->front();
+  const authority::ExactSourceSupportPiece &last = path->back();
+  return authority::ExactSourceSupportPiece{last.carrier, last.second,
+                                            last.first};
 }
 
 std::optional<SourcePieceBindingFailure> source_piece_binding_failure(
@@ -2334,6 +2348,54 @@ source_vertex_barycentric(const SourceFaceRecord &face,
   return std::nullopt;
 }
 
+// Lists a barycentric given in the canonical vertex order of face.topology in
+// the face's oriented corner order.
+std::optional<std::array<authority::FieldExactRational, 3>>
+source_face_point_barycentric(
+    const SourceFaceRecord &face,
+    const std::array<authority::FieldExactRational, 3> &canonicalBarycentric) {
+  const auto canonicalVertices = face.topology.vertices();
+  auto orientedBarycentric = canonicalBarycentric;
+  std::array<bool, 3> assigned{false, false, false};
+  for (std::size_t canonicalCorner = 0U; canonicalCorner < 3U;
+       ++canonicalCorner) {
+    bool mapped = false;
+    for (std::size_t orientedCorner = 0U; orientedCorner < 3U;
+         ++orientedCorner) {
+      if (face.vertices[orientedCorner] != canonicalVertices[canonicalCorner])
+        continue;
+      if (assigned[orientedCorner]) return std::nullopt;
+      orientedBarycentric[orientedCorner] =
+          canonicalBarycentric[canonicalCorner];
+      assigned[orientedCorner] = true;
+      mapped = true;
+      break;
+    }
+    if (!mapped) return std::nullopt;
+  }
+  for (const bool wasAssigned : assigned) {
+    if (!wasAssigned) return std::nullopt;
+  }
+  return orientedBarycentric;
+}
+
+std::optional<FaceChartPoint> exact_source_point_barycentric(
+    const SourceFaceRecord &face, const authority::ExactSourcePoint &point) {
+  if (const auto *vertex = std::get_if<authority::SourceVertexId>(&point)) {
+    return source_vertex_barycentric(face, *vertex);
+  }
+  if (const auto *edgePoint =
+          std::get_if<authority::ExactSourceEdgePoint>(&point)) {
+    return field_boundary_point_barycentric(
+        face, authority::FieldBoundaryPoint{
+                  edgePoint->edge,
+                  authority::ExactUnitParameter{edgePoint->parameter}});
+  }
+  const auto &facePoint = std::get<authority::ExactSourceFacePoint>(point);
+  if (facePoint.face != face.topology) return std::nullopt;
+  return source_face_point_barycentric(face, facePoint.barycentric);
+}
+
 std::optional<std::array<authority::FieldExactRational, 3>>
 vertex_trace_ray_second_point(
     const SourceFaceRecord &face, const GlobalTopologyArc &arc,
@@ -2364,29 +2426,8 @@ vertex_trace_ray_second_point(
   }
   if (trace.terminalContact.has_value() &&
       trace.terminalContact->sourceFace == face.topology) {
-    const auto canonicalVertices = trace.terminalContact->sourceFace.vertices();
-    auto orientedBarycentric = trace.terminalContact->barycentric;
-    std::array<bool, 3> assigned{false, false, false};
-    for (std::size_t canonicalCorner = 0U; canonicalCorner < 3U;
-         ++canonicalCorner) {
-      bool mapped = false;
-      for (std::size_t orientedCorner = 0U; orientedCorner < 3U;
-           ++orientedCorner) {
-        if (face.vertices[orientedCorner] != canonicalVertices[canonicalCorner])
-          continue;
-        if (assigned[orientedCorner]) return std::nullopt;
-        orientedBarycentric[orientedCorner] =
-            trace.terminalContact->barycentric[canonicalCorner];
-        assigned[orientedCorner] = true;
-        mapped = true;
-        break;
-      }
-      if (!mapped) return std::nullopt;
-    }
-    for (const bool wasAssigned : assigned) {
-      if (!wasAssigned) return std::nullopt;
-    }
-    return orientedBarycentric;
+    return source_face_point_barycentric(face,
+                                         trace.terminalContact->barycentric);
   }
   if (trace.terminalPoint.has_value()) {
     const auto terminal =
@@ -2411,6 +2452,24 @@ vertex_trace_ray_second_point(
     }
   }
   return std::nullopt;
+}
+
+// build_vertex_fan_slots orders a face wedge from the oriented edge
+// (v,next) to (previous,v).  Projecting a ray from v to the opposite edge
+// preserves angular order, so the exact opposite-edge parameter below is a
+// canonical within-wedge order key.  No metric geometry is involved.
+std::optional<authority::FieldExactRational> vertex_wedge_parameter(
+    const std::size_t corner,
+    const std::array<authority::FieldExactRational, 3> &secondPoint) {
+  const std::size_t next = (corner + 1U) % 3U;
+  const std::size_t previous = (corner + 2U) % 3U;
+  const auto zero = authority::FieldExactRational::from_integer(0);
+  const auto denominator = secondPoint[next] + secondPoint[previous];
+  if (denominator <= zero || secondPoint[next] < zero ||
+      secondPoint[previous] < zero) {
+    return std::nullopt;
+  }
+  return secondPoint[previous] / denominator;
 }
 
 std::optional<authority::FieldExactRational> vertex_locus_secondary_parameter(
@@ -2454,21 +2513,81 @@ std::optional<authority::FieldExactRational> vertex_locus_secondary_parameter(
     return fail(
         VertexTraceSecondaryParameterFailureReason::SecondPointUnavailable);
   }
-  const std::size_t next = (corner + 1U) % 3U;
-  const std::size_t previous = (corner + 2U) % 3U;
-  const auto zero = authority::FieldExactRational::from_integer(0);
-  const auto denominator = (*secondPoint)[next] + (*secondPoint)[previous];
-  if (denominator <= zero || (*secondPoint)[next] < zero ||
-      (*secondPoint)[previous] < zero) {
+  const auto parameter = vertex_wedge_parameter(corner, *secondPoint);
+  if (!parameter.has_value()) {
     return fail(
         VertexTraceSecondaryParameterFailureReason::InvalidDenominator);
   }
+  return parameter;
+}
 
-  // build_vertex_fan_slots orders a face wedge from the oriented edge
-  // (v,next) to (previous,v).  Projecting a ray from v to the opposite edge
-  // preserves angular order, so the exact opposite-edge parameter below is a
-  // canonical within-wedge order key.  No metric geometry is involved.
-  return (*secondPoint)[previous] / denominator;
+VertexPieceRay vertex_piece_ray(
+    const SourceFaceRecord &face, const authority::SourceVertexId locus,
+    const authority::ExactSourceSupportPiece &piece) {
+  const auto *start = std::get_if<authority::SourceVertexId>(&piece.first);
+  if (start == nullptr || *start != locus) {
+    return VertexPieceRayFailure::PieceStartsElsewhere;
+  }
+  if (const auto *carrier =
+          std::get_if<authority::SourceEdgeSupport>(&piece.carrier)) {
+    if (!local_edge_index(face, carrier->edge) ||
+        (carrier->edge.first() != locus && carrier->edge.second() != locus)) {
+      return VertexPieceRayFailure::CarrierNotAtLocus;
+    }
+    if (piece.second == piece.first ||
+        !authority::exact_source_point_is_canonical(piece.second) ||
+        !authority::exact_source_support_contains_point(piece.carrier,
+                                                        piece.second)) {
+      return VertexPieceRayFailure::FarEndOffCarrier;
+    }
+    return VertexPieceRayAlongEdge{carrier->edge};
+  }
+  const auto *interior =
+      std::get_if<authority::SourceFaceInteriorSupport>(&piece.carrier);
+  const auto corner =
+      std::find(face.vertices.begin(), face.vertices.end(), locus);
+  if (interior == nullptr || interior->face != face.topology ||
+      corner == face.vertices.end()) {
+    return VertexPieceRayFailure::CarrierNotAtLocus;
+  }
+  const auto farEnd = exact_source_point_barycentric(face, piece.second);
+  if (!farEnd.has_value()) return VertexPieceRayFailure::FarEndOffCarrier;
+  const auto parameter = vertex_wedge_parameter(
+      static_cast<std::size_t>(std::distance(face.vertices.begin(), corner)),
+      *farEnd);
+  if (!parameter.has_value()) return VertexPieceRayFailure::InvalidDenominator;
+  return VertexPieceRayInWedge{face.topology, *parameter};
+}
+
+EdgePieceRay edge_piece_ray(const SourceFaceRecord &face,
+                            const authority::SourceEdgeTopologyKey &locus,
+                            const authority::ExactSourceSupportPiece &piece) {
+  const auto start = exact_edge_parameter(locus, piece.first);
+  if (!start.has_value()) return EdgePieceRayFailure::PieceStartsOffLocus;
+  const auto *edge = std::get_if<authority::SourceEdgeSupport>(&piece.carrier);
+  if (edge != nullptr && edge->edge == locus) {
+    if (!local_edge_index(face, locus)) {
+      return EdgePieceRayFailure::CarrierNotOfFace;
+    }
+    const auto end = exact_edge_parameter(locus, piece.second);
+    if (!end.has_value()) return EdgePieceRayFailure::PieceOffCarrier;
+    if (*start == *end) return EdgePieceRayFailure::ZeroLength;
+    return EdgePieceRayAlongLocusEdge{*start < *end};
+  }
+  const auto *interior =
+      std::get_if<authority::SourceFaceInteriorSupport>(&piece.carrier);
+  if (!(interior != nullptr && interior->face == face.topology) &&
+      !(edge != nullptr && local_edge_index(face, edge->edge))) {
+    return EdgePieceRayFailure::CarrierNotOfFace;
+  }
+  if (!authority::exact_source_support_contains_point(piece.carrier,
+                                                      piece.first) ||
+      !authority::exact_source_support_contains_point(piece.carrier,
+                                                      piece.second)) {
+    return EdgePieceRayFailure::PieceOffCarrier;
+  }
+  if (piece.first == piece.second) return EdgePieceRayFailure::ZeroLength;
+  return EdgePieceRayIntoFace{face.topology, piece.second};
 }
 
 std::vector<std::size_t> vertex_trace_secondary_ranks(
