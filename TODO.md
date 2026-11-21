@@ -1,3 +1,7 @@
+## CURRENT — RA-277 qualified PASS; test-oracle gap carried (2026-11-21 UTC)
+
+[RA-277 adversarial review](.agents/Directional/Architecture_M6_CP3_RA277_TB154_Adversarial_ReReview_20261121.md) independently upheld the immutable 971/971 PASS, accepted 491/491 prefix and unchanged census. It corrected row971 non-vacuity: ten along-edge rays and zero failures are observed but not fully asserted. **RA-277-NV1** requires independent slide identity, type, carrier, full coverage, ordinary-ray and collision controls in the next bounded compile-only CB; later TB must execute them. The existing next turn and STOP remain unchanged. No producer or successor work was started by RA-277.
+
 ## CURRENT — TB154 Review upheld; bounded producer switch next (2026-11-21 UTC)
 
 [Independent TB154 Review](.agents/Directional/Architecture_M6_CP3_TB154_P13_Trace_Piece_Ray_Helpers_Full_Gate_Independent_Review_20261121.md) re-derived the 971/971 gate, 968/968 TB153 N1–N3 match, census 3/3 TB151 N1–N4 match and CP2 491/491 from immutable logs. Row971 confirms ten along-edge slide ends, no edge coincidences and zero ordinary-ray changes. The helper is not production-wired; the four sphere slide contacts and χ+4 are unresolved. Stable 66/17/49, one witness debt, 81 deferred. No checkpoint, selector497, D0 or H4 promotion.
