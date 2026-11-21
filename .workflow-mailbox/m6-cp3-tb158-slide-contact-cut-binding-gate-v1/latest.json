@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "workflow_key": "m6-cp3-tb158-slide-contact-cut-binding-gate-v1",
+  "workflow": "Agent Durable Operation Dispatcher",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/agent-operation-dispatcher.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "8399fb52cf48d3ae518a39767a99736fbf2b8c25",
+  "source_sha": "5190b0e759146342998e3f380f7e5fe4eabd1714",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 44952039401,
+  "run_attempt": 1,
+  "run_number": 1961,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/44952039401",
+  "result": "success",
+  "summary": "durable-dispatch request_id=m6-cp3-tb158-slide-contact-cut-binding-gate-20261121-v1 operation=test_benchmark request_sha256=86174e5d5d7ce6abe86f3dd3f6043fc4c1ee4339899e8cca6b9f49d0db83992c",
+  "reported_at": "2026-11-21T21:44:41Z",
+  "mailbox_branch": "workflow-mailbox",
+  "artifacts": [
+    {
+      "id": 14726477033,
+      "name": "m6-cp3-tb158-slide-contact-cut-binding-gate-log-44952039401",
+      "size_in_bytes": 7268,
+      "digest": "sha256:f0b329674c512cafb9264058800d539735560832316e546b9fd64c8a1be71b50",
+      "expired": false,
+      "created_at": "2026-11-21T21:44:21Z",
+      "expires_at": "2026-12-05T21:44:20Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/44952039401/artifacts/14726477033",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14726477033/zip"
+    },
+    {
+      "id": 14726460364,
+      "name": "agent-operation-dispatcher-log-44952039401",
+      "size_in_bytes": 523,
+      "digest": "sha256:787cedc9ca5728fba661d40524e1440971a4536b21a67d2e210eb9427484f7d0",
+      "expired": false,
+      "created_at": "2026-11-21T21:32:43Z",
+      "expires_at": "2026-12-05T21:32:42Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/44952039401/artifacts/14726460364",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14726460364/zip"
+    },
+    {
+      "id": 14726250492,
+      "name": "agent-workflow-schema-validation-44952039401",
+      "size_in_bytes": 443,
+      "digest": "sha256:180a9c48635ad9098ad294211c273c6c57b6956f7a9608f9169aa38670d684fe",
+      "expired": false,
+      "created_at": "2026-11-21T21:32:28Z",
+      "expires_at": "2026-11-28T21:32:26Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/44952039401/artifacts/14726250492",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14726250492/zip"
+    },
+    {
+      "id": 14726186419,
+      "name": "agent-workflow-schema-validation-44952039401",
+      "size_in_bytes": 446,
+      "digest": "sha256:54a01992148bb1c8edaff6702d0e8d5a057d1165155bf172b6d004a81d55e4ad",
+      "expired": false,
+      "created_at": "2026-11-21T21:32:22Z",
+      "expires_at": "2026-11-28T21:32:21Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/44952039401/artifacts/14726186419",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14726186419/zip"
+    },
+    {
+      "id": 14726126470,
+      "name": "agent-workflow-schema-validator-log-44952039401",
+      "size_in_bytes": 500,
+      "digest": "sha256:02081c7c32e32b369269561906e3fe3045aa63b54edb1e2ee1fd8e0730d66acc",
+      "expired": false,
+      "created_at": "2026-11-21T21:32:23Z",
+      "expires_at": "2026-11-28T21:32:22Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/44952039401/artifacts/14726126470",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14726126470/zip"
+    },
+    {
+      "id": 14725994149,
+      "name": "agent-test-benchmark-reusable-log-44952039401",
+      "size_in_bytes": 718,
+      "digest": "sha256:52f69de58b038bd2d1ee51e4286e3abf6b70473e9d144036198c602b180ca49e",
+      "expired": false,
+      "created_at": "2026-11-21T21:44:22Z",
+      "expires_at": "2026-12-05T21:44:21Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/44952039401/artifacts/14725994149",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14725994149/zip"
+    },
+    {
+      "id": 14725784889,
+      "name": "m6-cp3-tb158-slide-contact-cut-binding-gate-result-44952039401",
+      "size_in_bytes": 1765973,
+      "digest": "sha256:b50d32d0892cbc8e19db5f827512cdda2cd2d3698e86335bd77d2da1296554e5",
+      "expired": false,
+      "created_at": "2026-11-21T21:44:20Z",
+      "expires_at": "2026-12-05T21:44:17Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/44952039401/artifacts/14725784889",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14725784889/zip"
+    },
+    {
+      "id": 14725343975,
+      "name": "agent-workflow-schema-validator-log-44952039401",
+      "size_in_bytes": 491,
+      "digest": "sha256:30f56b5d7e9ea2f4433ae03eeebf0c7f54b392a0fff47e9ad2e83a994d37c463",
+      "expired": false,
+      "created_at": "2026-11-21T21:32:29Z",
+      "expires_at": "2026-11-28T21:32:28Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/44952039401/artifacts/14725343975",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/14725343975/zip"
+    }
+  ]
+}
