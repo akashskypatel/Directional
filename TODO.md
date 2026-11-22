@@ -1,22 +1,21 @@
-## CURRENT — TB-REV-162 adversarial continuation; exact uncut-owner census receipt CB-180 next (2026-11-22 UTC)
+## CURRENT — CB-180 compiled; TB-EXEC-163 immutable owner-census gate next (2026-11-22 UTC)
 
-[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_162_Adversarial_Review_20261122.md) (X1–X6): TB162 PASS and H1 upheld (16 `Unavailable` faces = uncut components 1 and 5, the stars of source vertices 12 and 37). The prose owner-certification CB-180 is withdrawn: it was monolithic, named no rule and left a runtime decision to a compile-only turn (X2). From code: uncut faces get owners only from mandatory/cut arc sides and a boundary seed that needs a non-barrier edge, and trace carriers pass no orbit to the component side, so `Unavailable` can be a rule gap (X3). Candidate H5: the terminal-slit rule treats meeting terminal pieces with different side orbits as free slits (trace 0's terminal arc has orbits 0 and 2; it shares end node 1 with trace 9) (X4).
+[CB-180 code/build record](.agents/Directional/Architecture_M6_CP3_CB180_P13_Staged_Uncut_Owner_Census_Receipt_Code_Build_Record_20261122.md); [adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_162_Adversarial_Review_20261122.md) (X1–X6): TB162 PASS and H1 upheld (16 `Unavailable` faces = uncut components 1 and 5, the stars of source vertices 12 and 37). The prose owner-certification CB-180 is withdrawn: it was monolithic, named no rule and left a runtime decision to a compile-only turn (X2). From code: uncut faces get owners only from mandatory/cut arc sides and a boundary seed that needs a non-barrier edge, and trace carriers pass no orbit to the component side, so `Unavailable` can be a rule gap (X3). Candidate H5: the terminal-slit rule treats meeting terminal pieces with different side orbits as free slits (trace 0's terminal arc has orbits 0 and 2; it shares end node 1 with trace 9) (X4).
 
 ```
-NEXT_TURN: M6-CP3-CB-180-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT
-Owner: implementation agent (Code + Build, compile only)
-Apply exactly: .agents/Directional/Architecture_M6_CP3_CB180_P13_Staged_Uncut_Owner_Census_Receipt_Exact.diff
-  SHA-256 b5161a4659f8a68bfaea6a6e982462e6e8f007de93bf373936859f22776d2b32 (tests only, +68/-0)
-  tests/FieldAlignedCurveNetworkTests.cpp: 98154a1fdffe...665e -> fedadbd318ad4754e7790c4232ccca055d8f97c64159c908dc7475aab7e82ef1
-Build: dispatcher compile, GMP/GMPXX targets, runtimeExecution=false
-Then: TB-EXEC-163 under the adversarial record's TB163 rules (TB161 manifest e15d616c..., 979 rows; no census)
-On failure: hash mismatch or compile failure -> STATUS BLOCKED
-Do not: edit beyond the diff; run tests; switch production; change selectors/manifests
+NEXT_TURN: M6-CP3-TB-EXEC-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE
+Owner: test/benchmark agent (artifact-only, no rebuild or source mutation)
+Semantic source: 23d66f60d87329e178d9fc3963489cbef088555e
+GMP/GMPXX package: 14749353214; compile run 45010876980; ZIP SHA-256 fdcba4479936b7e8b1d3ee955bd1ac069715f4fa513ec874bc4e535a8872a668
+Manifest: unchanged TB161 979 rows, SHA-256 e15d616c9af2855b803dea8b5cfc4f5a0529f129c41df0c4fb0131e4ff4e7e8a
+Gate: 979/979 and CP2 491/491; rows 1–978 identical to TB162 under N1–N3; row979 all 60 old lines retained after stripping only the five new diagnostic prefixes
+No production census; next independent TB-REV-163 decides R-a versus H5 versus typed STOP
+Do not: rebuild, edit source/tests/manifest, change selectors, switch production
 ```
 
 Turn sequence:
 - [x] CB-179, TB-EXEC-162, TB-REV-162 (independent review and adversarial continuation).
-- [ ] `M6-CP3-CB-180-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT` — exact test-only receipt, compile only.
+- [x] `M6-CP3-CB-180-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT` — exact test-only receipt, eight-target GMP/GMPXX compile only.
 - [ ] `M6-CP3-TB-EXEC-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE` — 979/979, rows 1–978 = TB162 (N1–N3), all 60 TB162 row 979 lines verbatim, new lines published.
 - [ ] `M6-CP3-TB-REV-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE` — apply the decision map (R-a edge-side owner vs H5 terminal-slit classification vs typed STOP); freeze exact CB-181 and CB-182.
 - [ ] CB-181: pure helper with positive and negative tests, unwired.
