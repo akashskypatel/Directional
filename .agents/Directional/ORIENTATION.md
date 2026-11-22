@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-22 UTC; [TB-REV-163 independent review](Architecture_M6_CP3_TB_REV_163_Staged_Uncut_Owner_Census_Receipt_Independent_Review_20261122.md)):** TB163 immutable 979/979 PASS, CP2 491/491 accepted, 60 prior row979 lines retained and 48 new receipts verified. Two eight-face uncut components lack seeds; all 16 boundary `sideOwner=1` values show *presence*, not a proven unique edge-side owner. Neither R-a nor H5 predicate holds. **Typed review STOP** (REV163-O1) before CB-181/CB-182; no CP3/497/D0/H4 promotion.
+**Current currency (2026-11-22 UTC; [TB-REV-163 adversarial record](Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md)):** TB163 979/979 and CP2 491/491. TB-REV-163 independent typed STOP upheld against the old map. The adversarial continuation resolves REV163-O1: the uncut components' orbits {6}/{12} are proved from TB163 data (Y3); root cause is site C over-recording nested chords (Y4); H5 excluded there (Y2). Exact CB-181 helper → CB-182 census-only → TB-EXEC-164 frozen. No activation or selector promotion.
 
 ## 1. What the project is
 
@@ -122,7 +122,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority — REVIEW STOP REV163-O1:** [TB-REV-163 independent review](Architecture_M6_CP3_TB_REV_163_Staged_Uncut_Owner_Census_Receipt_Independent_Review_20261122.md). No CB-181/CB-182 is authorized: prove oriented edge-side/trace-side owner cardinality and face-to-chord separation for uncut components 1 and 5, or retain typed refusal. Existing CB-180 test-only census and TB-EXEC-163 gate are complete. After independent proof, freeze a separate pure helper with positive/negative tests and a distinct wiring turn; no production/selector promotion before later gates.
+**Current priority — CB-181 (exact nearest-chord helper):** [TB-REV-163 adversarial record](Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md) (Y1–Y7). NEXT `M6-CP3-CB-181-P13-THIRD-EDGE-SIDE-OWNER-HELPER` (compile only), then CB-182 census-only publication, TB-EXEC-164 (982 rows + census; predictions `nearest=6`/`12`), TB-REV-164 freezes the CB-183 seed switch. No production/selector promotion.
 
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.

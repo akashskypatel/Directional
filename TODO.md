@@ -1,9 +1,45 @@
-## CURRENT — TB-REV-163 independently VERIFIED; typed owner-proof STOP (2026-11-22 UTC)
+## CURRENT — TB-REV-163 adversarial continuation: REV163-O1 resolved by realignment; CB-181 next (2026-11-22 UTC)
+
+[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md) (Y1–Y7).
+- The typed STOP stands against the frozen map, but my TB-REV-162 R-a row was wrong: it expected `sideOwner=0` (Y1).
+- H5 is excluded for components 1 and 5: no arc or vertex transit touches them (Y2).
+- Unique component orbits are proved from TB163 data alone, by intersecting the opposite faces' orbit sets: {6} and {12} (Y3).
+- Root cause: site C (`SurfaceCutGraph.cpp:607–621`) writes every nested chord's third-edge side, so each boundary set is {middle, true} and never seeds (Y4).
+- Repair: an exact nearest-chord rule on source carrier parameters, first published only, with the seed switch frozen in TB-REV-164 after measurement.
+
+```
+NEXT_TURN: M6-CP3-CB-181-P13-THIRD-EDGE-SIDE-OWNER-HELPER
+Owner: implementation agent (Code + Build, compile only)
+Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md (Y1–Y7)
+Apply exactly: .agents/Directional/Architecture_M6_CP3_CB181_P13_Third_Edge_Side_Owner_Helper_Exact.diff
+  SHA-256 624492b23b225776cb3cfaeeb6615ba91a34e523184ac6ae15529a0fec8451bc (new src/geometry/ThirdEdgeSideOwner.h + 3 tests; unwired)
+  tests/FieldAlignedCurveNetworkTests.cpp: fedadbd318ad…ef1 -> 6f0b6fbb413f3951c145d497b537ef669a7b353dadfa400efcde051cf83bed6f
+  src/geometry/ThirdEdgeSideOwner.h: new -> 7a055f24fb7cdea0013b4f77692ef6c8f52fa89a276512baefae1e8b5cbefb02
+Build: dispatcher compile, GMP/GMPXX targets, runtimeExecution=false
+Then: M6-CP3-CB-182-P13-THIRD-EDGE-SIDE-OWNER-CENSUS (exact stacked diff, census-only, compile only)
+  -> M6-CP3-TB-EXEC-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE (982-row manifest ed615c22…517b + 3-case census)
+  -> M6-CP3-TB-REV-164-… (decision map; freeze CB-183 seed switch)
+On failure/blocker: hash mismatch or compile failure -> STATUS BLOCKED; return to Review
+Do not: edit beyond the diff; wire the helper; run tests; change seeds, selectors or manifests; promote CP3/497/D0/H4
+```
+
+Turn sequence:
+- [x] CB-180, TB-EXEC-163, TB-REV-163 independent review (typed STOP) and adversarial continuation (Y1–Y7).
+- [ ] **NEXT** `M6-CP3-CB-181-P13-THIRD-EDGE-SIDE-OWNER-HELPER`: pure helper and 3 tests, unwired, compile only.
+- [ ] `M6-CP3-CB-182-P13-THIRD-EDGE-SIDE-OWNER-CENSUS`: exact diff `094f663a4dd706e35f873e590861059f6c1d3ad5c05ffa8ca66dba0404ef8592`. It adds census-only boundary fields and site-C chord candidates, plus row 979 `SphereStagedUncutSideOwner` lines. Seeds are unchanged; compile only.
+- [ ] `M6-CP3-TB-EXEC-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE`: 982/982; rows 1–978 equal TB163 `14750681733` under N1–N3; row 979 keeps all 108 TB163 lines; census 3/3 equal TB161 `14741883606` under N1–N4. Publish the 16 new lines against the predictions (`nearest=6` / `12`).
+- [ ] `M6-CP3-TB-REV-164-…`: decision map; freeze CB-183 (seed reads the selection) after the Y6 premise rows and the Y7 fan check.
+- [ ] CB-183 seed switch → TB-EXEC/REV-165 (staged plan `built`, or the next stage).
+- [ ] CB-184 activation (V3/V4/V5/V10/V11) → TB-EXEC/REV-166 → CB-185 V3b → R1 → RA-275 S4a → O48.
+
+Carried: Y7 (site-D fan over-record), X4/H5 (open lead elsewhere), TB-REV-159-U3, V3–V11, W6, W7, X5, X6, RA-281 F1–F3, RA-275 S4a, Amendment 14; CP3/497/D0/H4 unpromoted. Stable 66/17/49, debt1, deferred81.
+
+## HISTORY — TB-REV-163 independent review; typed owner-proof STOP (resolved by the adversarial continuation) (2026-11-22 UTC)
 
 [CB-180 code/build record](.agents/Directional/Architecture_M6_CP3_CB180_P13_Staged_Uncut_Owner_Census_Receipt_Code_Build_Record_20261122.md); [adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_162_Adversarial_Review_20261122.md) (X1–X6): TB162 PASS and H1 upheld (16 `Unavailable` faces = uncut components 1 and 5, the stars of source vertices 12 and 37). The prose owner-certification CB-180 is withdrawn: it was monolithic, named no rule and left a runtime decision to a compile-only turn (X2). From code: uncut faces get owners only from mandatory/cut arc sides and a boundary seed that needs a non-barrier edge, and trace carriers pass no orbit to the component side, so `Unavailable` can be a rule gap (X3). Candidate H5: the terminal-slit rule treats meeting terminal pieces with different side orbits as free slits (trace 0's terminal arc has orbits 0 and 2; it shares end node 1 with trace 9) (X4).
 
 ```
-CURRENT_REVIEW: M6-CP3-TB-REV-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE
+SUPERSEDED_REVIEW_STOP: M6-CP3-TB-REV-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE
 Owner: independent review; typed STOP pending REV163-O1 orientation-aware owner proof
 Semantic source: 23d66f60d87329e178d9fc3963489cbef088555e
 GMP/GMPXX package: 14749353214; compile run 45010876980; ZIP SHA-256 fdcba4479936b7e8b1d3ee955bd1ac069715f4fa513ec874bc4e535a8872a668
@@ -18,9 +54,9 @@ Turn sequence:
 - [x] `M6-CP3-CB-180-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT` — exact test-only receipt, eight-target GMP/GMPXX compile only.
 - [x] `M6-CP3-TB-EXEC-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE` — [report](.agents/Directional/Architecture_M6_CP3_TB163_P13_Staged_Uncut_Owner_Census_Receipt_Full_Gate_Execution_Report_20261122.md) 979/979 and 491/491; all strict comparisons PASS; 48 new lines published.
 - [x] `M6-CP3-TB-REV-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE` — independently verified TB163 full gate; **typed STOP**: neither R-a nor H5 proved; [review](.agents/Directional/Architecture_M6_CP3_TB_REV_163_Staged_Uncut_Owner_Census_Receipt_Independent_Review_20261122.md).
-- [ ] **REV163-O1 REVIEW BLOCKER:** prove directed source-edge-side candidate owner sets, cardinality, component-facing orbit and terminal-slit separation (positive/negative counterexamples); no CB-181/182 until this proof is reviewed.
-- [ ] **CONDITIONAL ONLY** CB-181: pure helper with positive and negative tests, unwired; not authorized by current evidence.
-- [ ] **CONDITIONAL ONLY** CB-182: wiring at the single writer → TB-EXEC/REV-164 (staged plan `built` or the next measured stage).
+- [x] (RESOLVED by adversarial Y3/Y4) **REV163-O1 REVIEW BLOCKER:** prove directed source-edge-side candidate owner sets, cardinality, component-facing orbit and terminal-slit separation (positive/negative counterexamples); no CB-181/182 until this proof is reviewed.
+- [ ] (SUPERSEDED by CURRENT) CB-181: pure helper with positive and negative tests, unwired.
+- [ ] (SUPERSEDED by CURRENT: CB-182 is census-only) CB-182: wiring at the single writer → TB-EXEC/REV-164 (staged plan `built` or the next measured stage).
 - [ ] CB-183 activation (V11 single-source flag; rows 393/648/858/971/972 from receipts; V5 BunnyRandom falsifier; V10 row 971 STOP-on-red) → TB-EXEC/REV-165.
 - [ ] CB-184 V3b node test → R1 slide-start subdivision → RA-275 S4a → O48.
 

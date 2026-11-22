@@ -1,5 +1,7 @@
 # TB-REV-163 — independent staged uncut-owner census review (2026-11-22 UTC)
 
+> **Continued after handover:** [adversarial record](Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md) (Y1–Y7). It resolves REV163-O1 by realignment: orbits {6}/{12} are proved, the root cause is site C over-recording nested chords, and the exact CB-181/CB-182 are frozen. The successor is CB-181.
+
 ## Situation and verdict
 
 **TB163 immutable full gate independently VERIFIED: 979/979 PASS. Accepted CP2 prefix: 491/491 PASS. Typed STOP on owner repair.** The exact predeclared R-a and H5 predicates are both absent from the new evidence. This review does not authorize an owner-repair helper, wiring, or production/selector promotion. Its source-backed decision remains a **REVIEW_BLOCKER**: an oriented source-edge-side owner must be proved, not selected by preference.

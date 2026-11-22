@@ -1,3 +1,15 @@
+## 2026-11-22 — TB-REV-163 adversarial continuation: REV163-O1 resolved; exact CB-181/CB-182 frozen
+
+[TB-REV-163 adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md) (Y1–Y7):
+- The typed STOP is upheld against the old map. My TB-REV-162 R-a row was wrong.
+- Uncut components 1 and 5 have unique orbits {6} and {12}, proved from TB163 data.
+- Root cause: site C over-records the third-edge side for nested chords.
+- Frozen:
+  - exact pure helper CB-181 (`624492b2…51bc`);
+  - census-only CB-182 (`094f663a…8592`);
+  - 982-row TB164 manifest (`ed615c22…517b`).
+- No source change was made in this review.
+
 ## 2026-11-22 — TB-REV-163 independently verified; typed STOP on uncut owner proof
 
 [Architecture_M6_CP3_TB_REV_163_Staged_Uncut_Owner_Census_Receipt_Independent_Review_20261122.md](.agents/Directional/Architecture_M6_CP3_TB_REV_163_Staged_Uncut_Owner_Census_Receipt_Independent_Review_20261122.md): both archived full gates verified 979/979; CP2 accepted 491/491, all 60 old row979 lines retained and exactly 48 new diagnostic lines proved. Uncut components 1 and 5 still have 16 unavailable source faces. All sixteen boundary records have `barrier=0 oppositeTraceCut=1 sideOwner=1` but the receipt's `sideOwner` is only a nonempty map check, not a unique oriented orbit. Neither R-a nor H5 decision predicate holds; typed STOP REV163-O1 requires explicit directed source-edge-side owner cardinalities and source separation before CB-181/CB-182. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 unpromoted. No runtime or product/test/selector change.

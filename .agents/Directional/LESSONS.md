@@ -345,6 +345,11 @@ This document records **reusable failure-derived engineering lessons**, not an e
 
 ## Diagnostics, classifiers, and causal investigation
 
+- **A presence flag cannot separate missing from over-full (TB-REV-163 adversarial).** Before freezing
+  a decision branch on a census flag, read whether its writer can over-record as well as under-record,
+  and publish the set itself. Where several chords cross one triangle, an uncrossed edge sees only the
+  nearest chord. Prove a unique owner independently (for example by intersecting neighbour orbit sets
+  around a trace-free component) and use that proof as the oracle for the local rule.
 - **Reduce a guard to its producers before measuring (RA-250).** Before freezing a receipt for a
   guard, list every producer that can feed it. For each one, derive from the code whether it can
   reach the guarded state; exclude unreachable branches, and name the deterministic ones as

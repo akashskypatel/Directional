@@ -1,3 +1,12 @@
+## TB-REV-163 adversarial — REV163-O1 resolved by realignment (2026-11-22 UTC)
+
+[TB-REV-163 adversarial record](Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md) (Y1–Y7).
+- **Root cause:** site C in `build_source_face_ownership` (`SurfaceCutGraph.cpp:607–621`) writes every nested chord's third-edge side, so each of the 16 boundary sets is {middle, true} and never seeds. This is over-recording, not a missing rule or a terminal-slit error.
+- **Falsifier:** TB-EXEC-164 `SphereStagedUncutSideOwner` lines (`nearest=6`/`12`, `sideOrbits` as predicted).
+- **Owner:** CB-181 helper → CB-182 census → TB-REV-164 → CB-183 seed switch.
+- **Prohibitions:** no first/lowest orbit, no loosened `proves_cellularity()`, no plan acceptance of missing owners.
+- **Carried:** Y7 (site-D fan). Non-stable; accounting unchanged 66/17/49.
+
 ## TB-REV-163 — REV163-O1 typed owner-proof STOP (2026-11-22 UTC)
 
 [Independent review](Architecture_M6_CP3_TB_REV_163_Staged_Uncut_Owner_Census_Receipt_Independent_Review_20261122.md) re-derived TB163 979/979, TB162 979/979 and CP2 491/491, 1966/1966 hashes in each artifact, 979/979 matching normalized raw logs, 60 old and 48 new row979 lines. **Root evidence gap:** `SurfaceCutGraph::build_source_face_ownership` only seeds a singleton trace or boundary side; `sideOwner=1` in the receipt says nonempty map, not unique. Sixteen boundary edges have `barrier=0 oppositeTraceCut=1 sideOwner=1`; both eight-face uncut components lack seeds and interior arcs. **Falsifier / required evidence:** print and prove each direction-aware source-edge-side owner's candidate orbit set and cardinality, the side facing each uncut component, and the terminal-slit separating-side decision. A unique singleton must be proved against competing-orbit and absent-orbit controls before R-a or H5 may be selected. **Owner:** current TB-REV-163 stop / independent definition-review authority, not CB-181/182. **Prohibited:** lowest/first orbit, owner defaults, false barrier assumption, validation or selector weakening, production switch. No new stable event: 66/17/49, debt1, deferred81, CP2 491/491 accepted; CP3/497/D0/H4 held.
