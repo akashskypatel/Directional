@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb166-docs-20261122-a",
-  "mailbox_key": "m6-cp3-tb166-docs-apply",
-  "file_id": "1eXi236RNk3Oz-5fxu17qeh9ROYkdZTKb",
-  "patch_sha256": "bee92c602ad86e2f2cfc9913f8a198c2d08d6f85f43681f3ba3a3fbc1bc15f21",
-  "base_sha": "fe4556853e75571801f6018d7626777812314db1",
+  "request_id": "m6-cp3-tbrev166-docs-20261122-a",
+  "mailbox_key": "m6-cp3-tbrev166-docs-apply",
+  "file_id": "16zqYnYbQ1pHDWm_b29sLIo-5S95LoYJC",
+  "patch_sha256": "82902b90bfe002f8310df00644de5686c05b2269cee077d31f951d91fc7f7123",
+  "base_sha": "67248d6828be41d2b97fcf12e9cd20856e9cbe46",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cp3): record immutable TB166 full gate and review handoff",
+  "commit_message": "docs(cp3): adjudicate TB-REV-166 K5 and freeze exact corner partition helper",
   "retention_days": 14
 }
