@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev163-stop-20261122-a",
-  "mailbox_key": "m6-cp3-tb-rev163-stop",
-  "file_id": "1Uu5TgOqcoaOwQ4L8SPRj1h_hYSHFv9DS",
-  "patch_sha256": "0db4ed162b43537ceb43e78c0936181b20cfdfb0102ecd32579052dba396d283",
-  "base_sha": "55a771666ed531270051a9eb8e0ec5a29393970c",
+  "request_id": "m6-cp3-cb181-apply-20261122-a",
+  "mailbox_key": "m6-cp3-cb181-apply",
+  "file_id": "1ZakwdedgbXqclg6GH5Aba9gj0KD9HiZf",
+  "patch_sha256": "624492b23b225776cb3cfaeeb6615ba91a34e523184ac6ae15529a0fec8451bc",
+  "base_sha": "81005cb56b3a6725472a3f61e5c56eddd181f894",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cp3): independently review TB163 and preserve typed owner proof stop",
+  "commit_message": "feat(cp3): add exact third-edge side owner helper and focused tests",
   "retention_days": 14
 }
