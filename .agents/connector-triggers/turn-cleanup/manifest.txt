@@ -1,2 +1,0 @@
-# CB182 turn temporary files; checked source snapshot and compile evidence preserved
-.agents/connector-triggers/source-snapshot/cb182-third-edge-side-owner-census-20261122.txt
