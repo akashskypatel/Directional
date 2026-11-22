@@ -1,3 +1,7 @@
+## TB165-F1 — nearest-chord seed census exceeds frozen scope (non-stable STOP, 2026-11-22 UTC)
+
+[TB165 immutable execution report](Architecture_M6_CP3_TB165_P13_Nearest_Chord_Seed_Full_Gate_Execution_Report_20261122.md): all 984 gated tests PASS and CP2 491/491, 981 unchanged predecessor rows, 3/3 unchanged production census. **Frozen TB-REV-164 rule 3 fails**: 37 `SphereStagedNearestChordSeed` records with `status=0` rather than precisely 16 with `status=2`. Components 1 and 5 produce the 16 expected edges (orbits 6 and 12) but the other 21 belong to components 0/2/3/4. Staged source-face owners improve 176→192 and `sourceFaceCellularity` 0→1; the plan stops at `SourceFaceCarriesMultipleTraceCuts` on `6-8-9`, rather than earlier `UncutFaceComponentOrbitSeedNotUnique` on `2-5-12`. Production cut and 3-case outcomes do not improve. Classification: **new non-stable witness/acceptance-falsifier TB165-F1**, no proof of a separate production regression and no new stable regression ID. Independent TB-REV-165 must review the source and the frozen prediction; it cannot rewrite this executed gate. Stable totals **66/17/49**, witness debt **1**, deferred **81**. No CP3/497/D0/H4 promotion.
+
 ## TB-REV-164 adversarial continuation — prose CB-183 withdrawn; two seed hazards closed before wiring (2026-11-22 UTC)
 
 [Adversarial record](Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md) Z1–Z6. No stable regression and no runtime change. Accounting is unchanged at 66/17/49, debt1, deferred81.

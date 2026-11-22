@@ -1,4 +1,10 @@
-## CURRENT — CB-184 compiled; TB-EXEC-165 next (2026-11-22 UTC)
+## CURRENT — TB165 acceptance STOP; independent Review required (2026-11-22 UTC)
+
+Canonical `M6-CP3-TB-EXEC-165-P13-NEAREST-CHORD-SEED-FULL-GATE` executed existing immutable package without rebuild. Full gate **984/984 PASS** (CP2 491/491), other 981 predecessor rows unchanged; census **3/3** unchanged. Frozen acceptance **rule 3 fails**: 37 `SphereStagedNearestChordSeed` lines, all `status=0`; frozen prediction requires 16, `status=2`. The target 16 edges have orbit 6/12, but components 0/2/3/4 supply 21 more. Owners 192 established, sourceFaceCellularity=1; staged plan now fails `SourceFaceCarriesMultipleTraceCuts` at `6-8-9`. [Exact report](.agents/Directional/Architecture_M6_CP3_TB165_P13_Nearest_Chord_Seed_Full_Gate_Execution_Report_20261122.md). **TB165-F1** is a non-stable acceptance-falsifier; stable 66/17/49, debt1, deferred81 unchanged. No CP3/497/D0/H4 or production promotion.
+
+Required route: **STOP and independent `M6-CP3-TB-REV-165-P13-NEAREST-CHORD-SEED-FULL-GATE`**, adjudicate frozen predictions versus actual 37 statuses, source scope Z2/Z3/Z5, singularity risk Z6 and new plan locus. Do not start review or CB-185 in the TB165 execution turn; only Review can freeze any corrective plan.
+
+## HISTORY — CB-184 compiled; TB-EXEC-165 was next (2026-11-22 UTC)
 
 [Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md), Z1–Z6. TB164 PASS and Y1–Y5 are upheld.
 - Z1: the prose site-C seed contract is withdrawn.
