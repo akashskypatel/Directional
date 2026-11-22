@@ -1,12 +1,10 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb182-census-apply-20261122-a",
-  "mailbox_key": "m6-cp3-cb182-census-apply",
-  "file_id": "1bIsYZDkbX3qfyXDz667DeLSZpSxDQerf",
-  "patch_sha256": "25bf3624c1a0e820430668eebef2766bcc66c24852a25d5fe3a5ffa6ca5a9ff4",
-  "base_sha": "8d1907a6dec0ffca87585ccc54ef6901148ad38b",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(cp3): publish exact third-edge side-owner census only",
+  "operation": "compile",
+  "request_id": "m6-cp3-cb182-compile-20261122-a",
+  "mailbox_key": "m6-cp3-cb182-compile",
+  "source_sha": "a8f7dc13a737487080095fa1aad1901b346ddacb",
+  "targets": "directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks",
+  "artifact_prefix": "m6-cp3-cb182-compile",
   "retention_days": 14
 }
