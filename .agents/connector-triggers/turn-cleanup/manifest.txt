@@ -1,2 +1,0 @@
-# TB165 temporary-state cleanup
-.agents/connector-triggers/source-snapshot/tb165-20261122-source-authority.txt
