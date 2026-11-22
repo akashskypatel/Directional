@@ -27,7 +27,11 @@ The independent evidence review accepts the **TB-EXEC-167 helper-only gate**. Th
 
 The current `GlobalTopologyPlan.cpp` `build_fragment_corner_incidence` still uses whole trace segments and port ordinal rays, and still reports `SourceFaceCarriesMultipleTraceCuts` on sphere face `6-8-9`. CB-187 must get exact face-interior pieces from **each clipped `GlobalTopologyArc.sourcePath`** and its `sourcePieceCounts`, not from whole trace segment carriers; skip edge-only slide pieces. Convert canonical source vertices/edge parameters to the face's local oriented boundary order; map true interior endpoints to missing boundary ends. A non-separating equal-sided terminal slit must not create a spurious tie rejection. Key **all certified fragment orbits** per cut face, including corner-free strips, before inserting helper-derived corner sets. `build_region_certificate` requires both all orbit keys and appropriate corner ownership. Map each helper rejection to a distinct typed plan error and preserve arc/face locus.
 
-No reader-level test has yet proved that these contracts hold on the **actual** row979 split arcs and singular corner. The exact CB-187 implementation/test diff, frozen expected row979 receipt changes and complete review closeout are **not yet ready**; CB-187 is **not authorized**. The TB167 result alone does not justify a product, CP3/497/D0/H4, or selector promotion.
+**CB-187 candidate prepared but not frozen.** Independent source reading confirmed `EmbeddedGraphTopology.cpp:1167–1205` binds each trace arc's face to one face-interior piece plus an optional edge-only piece. `GlobalTopologyPlan.cpp:458–673` presently reads the whole trace instead. The locally preserved candidate replaces this reader, preserves the trace-port binding check, removes ordinal ray inference, and keys both orbit sides before mapping corners. It skips only an equal-orbit terminal slit. It adds six typed reader errors and strengthens the already governed sphere row 979. It also proposes a separate, strict disc-certified sphere test in a new **990-row** case manifest, whose first 989 rows are unchanged.
+
+Candidate patch: `Architecture_M6_CP3_CB187_P13_Face_Cut_Corner_Reader_Switch_Candidate.diff`, SHA-256 `015c175be176ff9fd49485df9aede85f11a6c715307fcc0982dcc1d737a23bdc`, base source snapshot `76151f60ae0961cd0a7ab777918ff4ed4e080ef0`, four proposed paths (GlobalTopologyPlan.h, GlobalTopologyPlan.cpp, FieldAlignedCurveNetworkTests.cpp, new TB168 gate manifest). New manifest SHA-256 `02b833e2e86bd26040b6b9f52f59efeeef6db498b9bed715f34f34b0e692a946`. `git diff --check` and `git apply --check` on the independent snapshot passed. No syntax-only compile, build, or test was run. The candidate is preserved in the ChatGPT Library `/Directional/Recovery/`, not applied to the working branch. **Do not treat it as an authorized exact diff.**
+
+The complete independent reader-level check remains open. In particular, the staged sphere test is a *falsifier*, not execution evidence. Its full disc-certificate expectation may fail at another real stage even when the reader is correct. Before freezing, independently decide whether the next Test + Benchmark gate should require this strict success or instead record and classify a distinct downstream typed stage without relaxing the owner/corner obligations. Test changes must be made only in Code + Build.
 
 ## Regression and carried obligations
 
@@ -35,7 +39,7 @@ No new PASS-to-RED regression or stable event. Stable **66 events / 17 categorie
 
 ## Recommendation
 
-Continue **this same TB-REV-167**. Finish and verify the exact CB-187 diff and its non-vacuous reader tests, update mandatory durable documents, run the review boundary tool, and complete document consolidation. Do not start CB-187 or execute tests/builds in this Review.
+Continue **this same TB-REV-167**. Independently audit and either correct or reject the preserved CB-187 candidate, choose the non-vacuous full-gate exit rule, finish mandatory review closeout and consolidation. No CB-187 activation, build, product edit, or test execution in this Review.
 
 ## Review closeout — incomplete, must finish before COMPLETE
 
@@ -43,19 +47,19 @@ Continue **this same TB-REV-167**. Finish and verify the exact CB-187 diff and i
 |---|---|
 | Accepted selector prefix re-hashed | Verified 30/12/449 source selectors, 491 order and hashes above |
 | Decisive claims independently re-derived | 989 ledgers/logs; 984 N1–N3 pairs; 1070 membership; five new cases; both ZIP checksums |
-| Non-vacuity checked | Five helper test cases have value assertions and typed failure controls; reader not tested |
+| Non-vacuity checked | Five helper tests assert exact orbits and typed failures; proposed reader test unrun |
 | Prior obligations discharged/carried | K5 specific witness discharged; remaining duties carried as above |
 | Stable accounting | 66/17/49; debt1; deferred81; CP2 491/491 accepted; no CP3 promotion |
-| New candidates/obligations recorded | Reader integration proof not complete; no new stable candidate |
-| ORIENTATION currency line | Pending |
-| ORIENTATION §3 / §4 / §7 / §8 | Pending |
-| CHANGELOG | Pending |
+| New candidates/obligations recorded | Unverified exact reader candidate; no new stable failure |
+| ORIENTATION currency line | Updated to TB-REV-167 in progress |
+| ORIENTATION §3 / §4 / §7 / §8 | Prior WIP update applied; final review closeout remains pending |
+| CHANGELOG | WIP entry applied |
 | ROADMAP | n/a — milestone has not moved |
-| Selector manifest | n/a — selector unchanged |
+| Selector manifest | n/a — accepted selector unchanged; prospective TB168 manifest is uncommitted |
 | LESSONS | Existing source authority and non-vacuity rules apply |
 | Consolidation under CLEAN_UP_POLICY | Pending |
-| Successor frozen | **Not yet**; CB-187 prospective |
-| Turn boundary held | Review runtime-free; source/selector unchanged |
-| review_check.py boundary | Pending |
-| STATUS lifecycle maintained | Entry beacon published; final same-turn beacon pending |
-| Pushed to origin, branch in sync | Pending final confirmation |
+| Successor frozen | Not yet; CB-187 only prospective |
+| Turn boundary held | Review runtime-free; no working-branch product/test/selector changes |
+| review_check.py boundary | Pending; source snapshot has no git history |
+| STATUS lifecycle maintained | Same-turn resumed beacon; final same-turn beacon required |
+| Pushed to origin, branch in sync | Final confirmation pending |
