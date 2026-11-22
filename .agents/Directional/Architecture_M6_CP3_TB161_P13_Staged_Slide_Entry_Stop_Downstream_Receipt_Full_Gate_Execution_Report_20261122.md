@@ -20,6 +20,8 @@ The exact Test + Benchmark turn `M6-CP3-TB-EXEC-161-P13-STAGED-SLIDE-ENTRY-STOP-
 
 ## Assessment
 
+Unchanged accepted authority: M6-CP2 491/491; CP3's 497 identities frozen and unpromoted; stable regression totals 66 events / 17 categories / 49 recurrences, one produced-witness debt, 81 deferred. These remain TB160 baseline figures, not new TB161 runtime findings.
+
 Immutable package, manifests, deferred ledger, exact source snapshot, and TB160 reference artifacts were verified. Test launcher self-checks passed; no local Directional binary ran. GitHub runtime jobs must finish before claiming any TB161 gate or census outcome. The separately run read-only document audit reported zero errors and one existing `ORIENTATION.md` size warning.
 
 When artifacts are terminal, download **each** GitHub Action's result and diagnostic artifacts, verify outer ZIP and all inner checksums, confirm `configure=false`, `compile=false`, `relink=false`, `benchmark=false`, `postflight=true`, compare all 978 preceding gate rows and complete raw logs with TB160 using only frozen N1–N3, and compare all three census rows/logs with TB160 using N1–N4. The exact TB161 row 979 must PASS. Publish verbatim `SphereStagedCutGraph`, `SphereStagedPlan`, 24 `SphereStagedTrace`, all `SphereStagedSlidePiece`, and `SphereStagedSlidePieces` lines. Predictions are informational, not substitute assertions.
