@@ -1,3 +1,7 @@
+## 2026-11-22 — CB-182 exact third-edge side-owner census compiled (Code + Build only)
+
+[CB-182 record](.agents/Directional/Architecture_M6_CP3_CB182_P13_Third_Edge_Side_Owner_Census_Code_Build_Record_20261122.md): frozen census-only diff `094f663a…8592` applied via [run 45023069908](https://github.com/akashskypatel/Directional/actions/runs/45023069908) to semantic source `a8f7dc13a737487080095fa1aad1901b346ddacb`, exactly 3 files (+73/−1), no owner seed or production activation. Eight-target GMP/GMPXX [compile 45023580643](https://github.com/akashskypatel/Directional/actions/runs/45023580643), package `14755496064` ZIP SHA-256 `69fff98ad8203b7e2151fed48aa49100bc2a61d14eeb05b85b38a71f7a736aa5`, `runtimeExecution=false`; no tests/benchmarks executed. TB163 979/979 and CP2 491/491 remain latest runtime authorities; stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 unpromoted. **Next separate turn:** `M6-CP3-TB-EXEC-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE`, then independent TB-REV-164.
+
 ## 2026-11-22 — TB-REV-163 adversarial continuation: REV163-O1 resolved; exact CB-181/CB-182 frozen
 
 [TB-REV-163 adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md) (Y1–Y7):

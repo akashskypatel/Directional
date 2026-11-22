@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-22 UTC; CB-181 Code + Build complete; [TB-REV-163 adversarial record](Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md)):** TB163 979/979 and CP2 491/491. TB-REV-163 independent typed STOP upheld against the old map. The adversarial continuation resolves REV163-O1: the uncut components' orbits {6}/{12} are proved from TB163 data (Y3); root cause is site C over-recording nested chords (Y4); H5 excluded there (Y2). CB-181 helper compiled on `45021187657` (GMP/GMPXX, no runtime). Next: CB-182 census-only → TB-EXEC-164 frozen. No activation or selector promotion.
+**Current currency (2026-11-22 UTC; CB-182 Code + Build complete; [record](Architecture_M6_CP3_CB182_P13_Third_Edge_Side_Owner_Census_Code_Build_Record_20261122.md)):** TB163 979/979, CP2 491/491 remain latest runtime. TB-REV-163 adversarial review Y1–Y7 established exact nearest-chord scope. CB-181 helper and CB-182 census compiled with GMP/GMPXX; CB-182 semantic source `a8f7dc13a737487080095fa1aad1901b346ddacb`, compile run `45023580643`, package `14755496064`, no runtime. **Next separate turn:** TB-EXEC-164 frozen 982-row gate plus three-case census; independent TB-REV-164 follows. No production, seed, selector or acceptance promotion.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-22 UTC; [TB-REV-162](Architecture_M6_CP3_TB_REV_162_Staged_Plan_Owner_Evidence_Receipt_Independent_Review_20261122.md)):** 979/979 gate, CP2 491/491 accepted. 978 predecessor logs match N1–N3; row 979 preserves 41 old lines and adds 19 classified owner lines. Six uncut components; two have no owner seeds and together account for 16 unavailable faces. Review confirms H1, does not prove H2, excludes H3/H4 for this fixture. CB-180 is next.
+**Currency (2026-11-22 UTC; CB-182 compiled):** Latest runtime TB163 979/979 and CP2 491/491; the sixteen unavailable faces and two uncut components are still unresolved for production. CB-182 adds exact side-owner candidate measurement without changing the seed. Compile `45023580643` with GMP/GMPXX only; TB-EXEC-164 owns the next runtime evidence. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 remain unpromoted.
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.
@@ -122,7 +122,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority — CB-181 (exact nearest-chord helper):** [TB-REV-163 adversarial record](Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md) (Y1–Y7). NEXT `M6-CP3-CB-181-P13-THIRD-EDGE-SIDE-OWNER-HELPER` (compile only), then CB-182 census-only publication, TB-EXEC-164 (982 rows + census; predictions `nearest=6`/`12`), TB-REV-164 freezes the CB-183 seed switch. No production/selector promotion.
+**Current priority — TB-EXEC-164 (third-edge side-owner census runtime):** [TB-REV-163 adversarial record](Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md) (Y1–Y7). CB-181 helper and CB-182 census compiled (no runtime), then **NEXT TB-EXEC-164** (982 rows + census; predictions `nearest=6`/`12`), TB-REV-164 freezes the CB-183 seed switch. No production/selector promotion.
 
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
