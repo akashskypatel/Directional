@@ -1,6 +1,8 @@
-## 2026-11-22 — TB-REV-167 independent helper gate re-check (same-turn WIP)
+## 2026-11-22 — TB-REV-167 independent Review COMPLETE; CB-187 frozen as Code + Build
 
 [Review WIP](.agents/Directional/Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md) independently verified the TB167 helper gate: 989/989 PASS, CP2 491/491, membership 1070, 984 predecessor N1–N3 logs unchanged, all five new cases PASS; both result archives' complete checksum manifests valid. No stable regression or product promotion. The exact CB-187 switch is not yet frozen. Resume this Review; no successor work began.
+
+**Review verdict and successor (2026-11-22 UTC):** Independently verified immutable TB167 989/989 PASS, CP2 491/491, 1070 membership, unchanged 984 predecessor cases under N1–N3 and five new pure helper tests. The helper remains unwired; accepted source and frozen selector unchanged. Source review found S1–S6 clipped-piece/face-orbit and S7 mismatch-evidence replay risks in **uncompiled** CB-187 candidate v5. Review **does not accept v5 as product code**. It freezes one next turn, `M6-CP3-CB-187-P13-EXACT-FACE-CUT-READER`, with [Code + Build plan](.agents/Directional/Architecture_M6_CP3_CB187_P13_Exact_Face_Cut_Reader_Code_Build_Plan_20261122.md), exact negative tests and a strict staged-sphere disc-certified gate. The existing run `45074805426` independently passed full-history authority and boundary checks; later Review edits were documentation only and source drift was checked against CB-186. Stable 66 events / 17 categories / 49 recurrences, debt1, deferred81; CP3/497/D0/H4 held. No Review-time product/test/build/selector mutation or generated binary execution.
 
 ## 2026-11-22 — TB-EXEC-167 immutable face-cut corner helper full gate PASS
 
