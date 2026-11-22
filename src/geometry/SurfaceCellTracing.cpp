@@ -4291,7 +4291,8 @@ canonical_field_aligned_traces_and_events(
                    const authority::FieldNonTraversableEdge *> &mandatoryByEdge,
     FieldAlignedCurveNetworkCandidate &candidate,
     const FieldTraceArrivalPriority priority,
-    FieldAlignedTraceScaleCensus *scaleCensus) {
+    FieldAlignedTraceScaleCensus *scaleCensus,
+    const bool stopAtLaterSlideEntry) {
   const authority::FieldBranchTopology &topology =
       fieldTransportAtlas.branch_topology();
   candidate.arrivalPriority = priority;
@@ -4529,6 +4530,35 @@ canonical_field_aligned_traces_and_events(
                           : "different")
                   << '\n';
       };
+  // The staged slide-entry stop: a pending moving end whose entry crossing
+  // lies strictly inside the wall segment's slide and is reached later than
+  // the wall reaches it stops at that crossing, before entering. Only the
+  // moving trace ends, when it arrives, as at any conclusive crash.
+  const auto slideEntryStop =
+      [&](const std::size_t movingIndex, const std::size_t wallIndex,
+          const FieldAlignedCandidateTraceSegment &wallSegment,
+          const FieldAlignedArrivalMeasure &wallStart,
+          const std::size_t wallSegmentIndex, const bool wallIsProposal)
+      -> std::optional<FieldAlignedQueueEvent> {
+    const FieldAlignedTraceRuntime &moving = runtimes[movingIndex];
+    const auto entry = field_aligned_slide_entry_contact(
+        sourceMesh, priority, moving.proposal->segment, moving.arrival,
+        movingIndex, wallSegment, wallStart, wallIndex);
+    if (!entry.has_value() ||
+        !field_aligned_slide_entry_stops_moving_trace(*entry)) {
+      return std::nullopt;
+    }
+    FieldAlignedQueueEvent event(moving.proposal->segment.sourceFace);
+    event.kind = FieldAlignedQueueEventKind::Contact;
+    event.firstTrace = movingIndex;
+    event.secondTrace = wallIndex;
+    event.secondSegment = wallSegmentIndex;
+    event.secondIsProposal = wallIsProposal;
+    event.ordering = FieldAlignedArrivalOrdering::Later;
+    event.key = field_aligned_priority_key(priority, moving.arrival, movingIndex);
+    event.carrierLocus = entry->locus;
+    return event;
+  };
 
   while (std::any_of(runtimes.begin(), runtimes.end(),
                      [](const auto &runtime) { return runtime.active; })) {
@@ -4577,6 +4607,24 @@ canonical_field_aligned_traces_and_events(
                                {secondIndex, secondTrace.segments.size()},
                                secondRuntime.proposal->segment,
                                secondRuntime.arrival);
+        // A pending entry onto the other pending trace's slide, in either
+        // role: the struck segment is the wall's pending one.
+        if (stopAtLaterSlideEntry) {
+          auto stop = slideEntryStop(firstIndex, secondIndex,
+                                     secondRuntime.proposal->segment,
+                                     secondRuntime.arrival,
+                                     secondTrace.segments.size(), true);
+          if (!stop.has_value()) {
+            stop = slideEntryStop(secondIndex, firstIndex,
+                                  firstRuntime.proposal->segment,
+                                  firstRuntime.arrival,
+                                  firstTrace.segments.size(), true);
+          }
+          if (stop.has_value()) {
+            queue.push(std::move(*stop));
+            continue;
+          }
+        }
         // Two pending segments that enter different faces at one interior
         // point of their shared incoming edge cross there. With an
         // inconclusive arrival this is the frozen symmetric case at an edge
@@ -4687,6 +4735,20 @@ canonical_field_aligned_traces_and_events(
                                  {wallIndex, wallSegmentIndex},
                                  wallTrace.segments[wallSegmentIndex],
                                  wallRuntime.segmentStarts[wallSegmentIndex]);
+          // A pending entry onto a laid slide of another trace. A wall that
+          // ended on a contact inside that segment may not reach the entry,
+          // so its last segment is not a slide wall here.
+          if (stopAtLaterSlideEntry && movingIndex != wallIndex &&
+              !wallTerminalContact.has_value()) {
+            if (auto stop = slideEntryStop(
+                    movingIndex, wallIndex, wallTrace.segments[wallSegmentIndex],
+                    wallRuntime.segmentStarts[wallSegmentIndex],
+                    wallSegmentIndex, false);
+                stop.has_value()) {
+              queue.push(std::move(*stop));
+              continue;
+            }
+          }
           const auto contact =
               classify_field_aligned_segment_contact_with_second_exit(
                   topology, movingRuntime.proposal->segment,
@@ -5175,7 +5237,8 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
     FieldAlignedContactCensus *contactCensus = nullptr,
     const FieldTraceArrivalPriority priority =
         FieldTraceArrivalPriority::ArcLengthFiltered,
-    FieldAlignedTraceScaleCensus *scaleCensus = nullptr) {
+    FieldAlignedTraceScaleCensus *scaleCensus = nullptr,
+    const bool stopAtLaterSlideEntry = false) {
   if (scaleCensus != nullptr) *scaleCensus = FieldAlignedTraceScaleCensus{};
   const Eigen::MatrixXi &sourceFaces = sourceMesh.F;
   const std::size_t sourceVertexCount =
@@ -5442,7 +5505,7 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
 
   if (const auto tracingError = canonical_field_aligned_traces_and_events(
           sourceMesh, fieldTransportAtlas, mandatoryByEdge, candidate,
-          priority, scaleCensus);
+          priority, scaleCensus, stopAtLaterSlideEntry);
       tracingError.has_value()) {
     return *tracingError;
   }
@@ -6191,12 +6254,14 @@ FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
     const SourceTopologyRegions &sourceAuthority,
     const authority::FieldTransportAtlas &fieldTransportAtlas,
     const std::vector<SurfaceCellRail> &authoritativeRails,
-    const FieldTraceArrivalPriority priority) {
+    const FieldTraceArrivalPriority priority,
+    const bool stopAtLaterSlideEntry) {
   try {
     const auto canonical =
         surface_cell_tracing_detail::canonical_field_aligned_candidate(
             sourceMesh, sourceAuthority, fieldTransportAtlas,
-            authoritativeRails, nullptr, priority);
+            authoritativeRails, nullptr, priority, nullptr,
+            stopAtLaterSlideEntry);
     if (const auto *error =
             std::get_if<FieldAlignedCurveNetworkError>(&canonical)) {
       return FieldAlignedCurveNetworkBuildResult(*error);

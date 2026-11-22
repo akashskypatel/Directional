@@ -615,13 +615,18 @@ public:
 
   // Diagnostic/offline comparison surface only. Production `make` has no
   // priority parameter and always selects ArcLengthFiltered.
+  // `stopAtLaterSlideEntry` stages the slide-entry stop: a pending trace whose
+  // entry crossing lies strictly inside another trace's slide, reached later
+  // than that trace reaches it, stops at the crossing before entering
+  // (`field_aligned_slide_entry_stops_moving_trace`). Production `make` never
+  // stops there.
   [[nodiscard]] static FieldAlignedCurveNetworkBuildResult
   diagnose_with_arrival_priority(
       const TriMesh &sourceMesh,
       const SourceTopologyRegions &sourceAuthority,
       const authority::FieldTransportAtlas &fieldTransportAtlas,
       const std::vector<SurfaceCellRail> &authoritativeRails,
-      FieldTraceArrivalPriority priority);
+      FieldTraceArrivalPriority priority, bool stopAtLaterSlideEntry = false);
 
   [[nodiscard]] const std::vector<FieldAlignedCurveNetworkNode> &nodes() const
       noexcept {

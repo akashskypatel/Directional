@@ -17628,6 +17628,158 @@ TEST(TraceTerminationCorrection,
   }
 }
 
+// The staged slide-entry stop on the prescribed sphere. Unstaged, the
+// diagnostic producer is the production network. Staged, each of the four
+// later entries strictly inside a laid wall slide (above) ends its trace at
+// the entry crossing, before the entered segment, with a terminal contact on
+// the wall's slide and one trace-intersection event on that carrier. What the
+// cut graph makes of the staged network is reported, not asserted.
+TEST(TraceTerminationCorrection,
+     PrescribedSphereStagedSlideEntryStopEndsTheFourLaterEntriesOnTheirWalls) {
+  using directional::geometry::FieldAlignedNetworkEventKind;
+  using directional::geometry::surface_cell_tracing_detail::
+      field_aligned_production_arrival_priority;
+  const Cp4cReachabilityObservation sphere =
+      observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
+  ASSERT_TRUE(sphere.sourceAuthority.has_value()) << sphere.report;
+  ASSERT_TRUE(sphere.atlas.has_value()) << sphere.report;
+  ASSERT_TRUE(sphere.network.has_value()) << sphere.report;
+
+  const auto unstaged = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
+      sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails,
+      field_aligned_production_arrival_priority());
+  ASSERT_TRUE(unstaged);
+  EXPECT_EQ(sphere.network->semantic_digest(),
+            unstaged.value().semantic_digest());
+
+  const auto staged = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
+      sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails,
+      field_aligned_production_arrival_priority(), true);
+  ASSERT_TRUE(staged) << directional::geometry::
+                             field_aligned_curve_network_error_code_name(
+                                 staged.error().code);
+  const FieldAlignedCurveNetwork &network = staged.value();
+  const auto &traces = network.candidate_traces();
+  const auto &unstagedTraces = unstaged.value().candidate_traces();
+  ASSERT_EQ(24U, traces.size());
+  ASSERT_EQ(24U, unstagedTraces.size());
+
+  struct SlideEntry {
+    std::size_t moving, movingSegment, wall, wallSegment, first, second;
+    std::int64_t numerator, denominator;
+  };
+  const std::array<SlideEntry, 4> entries{{
+      {17U, 8U, 0U, 6U, 6U, 8U, 4038890029339747LL, 4503599627370496LL},
+      {20U, 8U, 1U, 6U, 16U, 21U, 4038890029339747LL, 4503599627370496LL},
+      {5U, 8U, 21U, 6U, 33U, 34U, 1009722507334937LL, 1125899906842624LL},
+      {8U, 8U, 22U, 6U, 45U, 46U, 464709598030749LL, 4503599627370496LL}}};
+  for (const SlideEntry &entry : entries) {
+    const auto &moving = traces[entry.moving];
+    const auto &wall = traces[entry.wall];
+    ASSERT_EQ(entry.moving, moving.id.index());
+    ASSERT_EQ(entry.wall, wall.id.index());
+    // Unstaged, the moving trace enters the segment and goes on.
+    EXPECT_LT(entry.movingSegment,
+              unstagedTraces[entry.moving].segments.size());
+    EXPECT_EQ(entry.movingSegment, moving.segments.size());
+    ASSERT_TRUE(moving.terminalContact.has_value()) << entry.moving;
+    EXPECT_FALSE(moving.terminalPoint.has_value());
+    EXPECT_FALSE(moving.terminalSingularity.has_value());
+    EXPECT_FALSE(moving.terminalBarrier.has_value());
+    const auto &record = *moving.terminalContact;
+    EXPECT_EQ(wall.id, record.struckTrace);
+    EXPECT_EQ(entry.wallSegment, record.struckSegmentIndex);
+    ASSERT_TRUE(record.carrierLocus.has_value());
+    EXPECT_EQ(entry.first, record.carrierLocus->edge.first().index());
+    EXPECT_EQ(entry.second, record.carrierLocus->edge.second().index());
+    EXPECT_EQ(exact_ratio(entry.numerator, entry.denominator),
+              record.carrierLocus->parameter.value);
+    ASSERT_LT(entry.wallSegment, wall.segments.size());
+    EXPECT_TRUE(wall.segments[entry.wallSegment].edgeTransitEntry.has_value());
+    EXPECT_TRUE(wall.segments[entry.wallSegment].edgeTransitExit.has_value());
+    std::size_t stops = 0U;
+    for (const auto &event : network.events()) {
+      if (event.kind != FieldAlignedNetworkEventKind::TraceIntersection ||
+          event.sourceEdge != record.carrierLocus->edge) {
+        continue;
+      }
+      const auto role = [&](const auto &id) {
+        const auto found = std::find_if(
+            event.incidences.begin(), event.incidences.end(),
+            [&](const auto &incidence) { return incidence.trace == id; });
+        return found == event.incidences.end()
+                   ? std::optional<FieldAlignedTraceEventRole>{}
+                   : std::optional<FieldAlignedTraceEventRole>{found->role};
+      };
+      stops += role(moving.id) == FieldAlignedTraceEventRole::Terminal &&
+                       role(wall.id) == FieldAlignedTraceEventRole::Interior
+                   ? 1U
+                   : 0U;
+    }
+    EXPECT_EQ(1U, stops) << entry.moving;
+  }
+
+  std::size_t slideStops = 0U;
+  std::size_t slideSegments = 0U;
+  std::ostringstream carrierEnds;
+  for (const auto &trace : traces) {
+    for (const auto &segment : trace.segments) {
+      slideSegments += segment.edgeTransitEntry.has_value() ||
+                               segment.edgeTransitExit.has_value()
+                           ? 1U
+                           : 0U;
+    }
+    if (!trace.terminalContact.has_value() ||
+        !trace.terminalContact->carrierLocus.has_value()) {
+      continue;
+    }
+    carrierEnds << (carrierEnds.tellp() > 0 ? "," : "") << trace.id.index();
+    const std::size_t struck = trace.terminalContact->struckTrace.index();
+    const std::size_t segment = trace.terminalContact->struckSegmentIndex;
+    slideStops += struck < traces.size() &&
+                          segment < traces[struck].segments.size() &&
+                          traces[struck].segments[segment].edgeTransitExit
+                              .has_value()
+                      ? 1U
+                      : 0U;
+  }
+  std::ostringstream receipt;
+  receipt << "SphereStagedSlideEntryStop traces=" << traces.size()
+          << " events=" << network.events().size()
+          << " slideStops=" << slideStops << " carrierEnds=" << carrierEnds.str()
+          << " slideSegments=" << slideSegments << " cutGraph=";
+  const auto cutGraph = directional::geometry::SurfaceCutGraph::make(
+      sphere.mesh.F, static_cast<std::size_t>(sphere.mesh.V.rows()),
+      *sphere.sourceAuthority, *sphere.atlas, network);
+  if (cutGraph) {
+    receipt << "built";
+  } else {
+    receipt << directional::geometry::surface_cut_graph_error_code_name(
+                   cutGraph.error().code)
+            << " rotationReason=";
+    if (cutGraph.error()
+            .originatingRotationSystemInconsistencyReason.has_value()) {
+      receipt << directional::geometry::rotation_system_inconsistency_reason_name(
+          *cutGraph.error().originatingRotationSystemInconsistencyReason);
+    } else {
+      receipt << "none";
+    }
+    receipt << " trace=";
+    if (cutGraph.error().trace.has_value()) {
+      receipt << cutGraph.error().trace->index();
+    } else {
+      receipt << '-';
+    }
+    receipt << " sourceEdge=";
+    if (cutGraph.error().sourceEdge.has_value()) {
+      receipt << source_edge_locus(*cutGraph.error().sourceEdge);
+    } else {
+      receipt << '-';
+    }
+  }
+  std::cout << receipt.str() << '\n';
+}
+
 // What the producer's real-piece decomposition makes of every trace on the
 // prescribed sphere, before any graph reads it. Each segment is one face
 // piece, a face piece then a slide, a slide alone, or rejected; each whole
