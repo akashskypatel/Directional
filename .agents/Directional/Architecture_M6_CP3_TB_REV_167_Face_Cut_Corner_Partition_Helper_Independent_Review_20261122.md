@@ -127,12 +127,12 @@ Continue **this same TB-REV-167**. Independently audit and either correct or rej
 
 | Duty | Answer |
 |---|---|
-| Accepted selector prefix re-hashed | Verified 30/12/449 source selectors, 491 order and hashes above |
+| Accepted selector prefix re-hashed | CP2 30/12/449 source selectors and 491 identity order verified; prospective v5 manifest's first 989 rows plus header rehashed to accepted TB167 SHA-256 `5c0841993d9b9c5537a3b78a3f7df39e61ee82e09b1ce9b4be3f4510ff088c50` |
 | Decisive claims independently re-derived | 989 ledgers/logs; 984 N1–N3 pairs; 1070 membership; five new cases; both ZIP checksums |
 | Non-vacuity checked | Five accepted helper tests assert exact orbits and typed failures. V5 unexecuted; mandatory future negative S5 interior node, S6 forward/reverse vertex exit and S3 wrong-arc attribution must fail on wrong behavior. Row990 remains strict full disc proof |
 | Prior obligations discharged/carried | K5 specific witness discharged; remaining duties carried as above |
 | Stable accounting | 66/17/49; debt1; deferred81; CP2 491/491 accepted; no CP3 promotion |
-| New candidates/obligations recorded | S1 four-face orbit discrepancy independently proved; S2 first-arc culprit removed in uncompiled v4; S3 real four-face direct test proposed; S4 exact endpoint diagnostic under review; S5 interior-node piece-count proof missing. Zero new stable failures |
+| New candidates/obligations recorded | S1 four-face edge-only orbit miscount; S2 false-first-arc blame removed in uncompiled v5; S3 negative attribution test missing; S4 clipped diagnostic; S5 typed interior-node STOP proposed, exact graph proof absent; S6 vertex-exit edge assignment proposed but untested. Tracker updated; no new stable failure |
 | ORIENTATION currency line | Updated for v2 reader defect and strict staged-sphere test proposal |
 | ORIENTATION §3 / §4 / §7 / §8 | Updated: accepted gate unchanged; witness remains unproved; edge-only reader mistake recorded in recurring defect patterns |
 | CHANGELOG | Existing TB-REV-167 WIP entry retained; final closeout entry pending |
