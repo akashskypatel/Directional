@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB167 989/989 PASS, accepted CP2 491/491; face-cut helper still unwired; staged sphere plan still stops at multi-cut face `6-8-9`; CP3/497/D0/H4 held) · **Reviewed:** [TB-REV-167 ongoing](Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md) accepts pure helper evidence, rejects candidate CB-187 v1 for misreading edge-only slide segments · **Next:** finish TB-REV-167 exact reader review and mandatory closeout; candidate CB-187 v2 remains unapproved · **Later:** separate CB-187 reader Code + Build, TB168 execution/review, conditional activation, M7 and M8.
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB167 **989/989 PASS**, accepted CP2 **491/491**; face-cut helper still unwired, staged sphere still stops at multi-cut face `6-8-9`; CP3/497/D0/H4 held) · **Reviewed:** [TB-REV-167 complete](Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md), independent helper gate accepted; exact reader source defects S1–S7 carried into frozen work. · **Next:** [CB-187 exact face-cut reader Code + Build](Architecture_M6_CP3_CB187_P13_Exact_Face_Cut_Reader_Code_Build_Plan_20261122.md) (compile-only; add negative tests and preserve 989-row prefix). · **Later:** separate TB-EXEC/REV-168 strict sphere-disc gate, conditional activation, M7 and M8.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
