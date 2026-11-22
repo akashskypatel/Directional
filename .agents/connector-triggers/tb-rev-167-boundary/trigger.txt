@@ -1,3 +1,0 @@
-TB-REV-167 history-backed boundary and source authority check
-Read-only checker: no build, test, benchmark, source, or selector changes.
-One execution; use exact marker-trigger commit SHA.
