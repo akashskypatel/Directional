@@ -38,19 +38,26 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Regression/debt | REV163-O1 resolved by Y3/Y4 and TB164 nearest=6/12 measurement; Y7 site-D fan over-record carried; X4/H5 open lead elsewhere; TB-REV-159-U3/V3/V4 premises → activation CB-184 after seed switch CB-183; V3b → CB-185 (V6); V5 BunnyRandom falsifier after activation; TB-REV-157-W3/W4, RA-281 F1–F3, RA-275 S4a, O47/C5/O48/O49, sphere χ+4 carried. Stable 66/17/49, debt1, deferred81. |
 | Active boundary | Production sphere stops at `CutSearchExhaustedBeforeCellularity`, `sourceFaceCellularity=0`; staged row979 plan stops `UncutFaceComponentOrbitSeedNotUnique` at `2-5-12`. New TB162 owner evidence: 192 owners, 176 established, 16 unavailable, 0 conflicting, 16 violations, 6 uncut censuses. [Verbatim receipt](evidence/Architecture_M6_CP3_TB162_P13_Staged_Plan_Owner_Evidence_Receipt_Raw_20261122.txt). No activation or promotion. |
 
-**Independent review decision (2026-11-22):** [TB-REV-164](Architecture_M6_CP3_TB_REV_164_Third_Edge_Side_Owner_Census_Independent_Review_20261122.md) re-derived 982/982, census 3/3, every 16 side-owner prediction, and exact prior logs. A Y6 named production cellularity test is DEFERRED/known RED; do not report it as a gate PASS. Y7 site-D fan remains unproved. **Next exact turn:** `M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED` (compile-only site-C seed).
+**TB-REV-164 (2026-11-22):** the [independent review](Architecture_M6_CP3_TB_REV_164_Third_Edge_Side_Owner_Census_Independent_Review_20261122.md) re-derived 982/982, census 3/3 and all 16 nearest=6/12 lines. Its prose CB-183 was withdrawn by the [adversarial continuation](Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md) (Z1–Z6):
+- Z2: the CB-182 collection drops uncertified chords.
+- Z3: faces with site-D or other unordered segments must not seed.
+- Z4: the cut search reads no owners; only `GlobalTopologyPlan` moves.
+- Z6: the vertex-12/37 singularity question stays open.
 
 ## Mandatory next turn
 
-- **Authority:** [TB-REV-163 adversarial record](Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md) (Y1–Y7). The independent typed STOP is upheld against the old map; REV163-O1 is resolved by realignment.
-  - Y3: unique orbits {6}/{12} proved from TB163 data.
-  - Y4: root cause is site C over-recording nested chords.
-  - Y2: H5 excluded for these components.
-- **COMPLETE:** `M6-CP3-CB-181-P13-THIRD-EDGE-SIDE-OWNER-HELPER`: [code/build record](Architecture_M6_CP3_CB181_P13_Third_Edge_Side_Owner_Helper_Code_Build_Record_20261122.md); exact frozen code patch `624492b2…51bc`, new helper and three unexecuted tests. Eight-target GMP/GMPXX compile succeeded. Production remains unchanged.
-- **COMPLETE:** `M6-CP3-CB-182-P13-THIRD-EDGE-SIDE-OWNER-CENSUS`: [code/build record](Architecture_M6_CP3_CB182_P13_Third_Edge_Side_Owner_Census_Code_Build_Record_20261122.md); exact frozen [census diff](Architecture_M6_CP3_CB182_P13_Third_Edge_Side_Owner_Census_Exact.diff) `094f663a…8592`; census only, existing seeds unchanged, eight-target GMP/GMPXX compile, no test run.
-- **COMPLETE:** `M6-CP3-TB-EXEC-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE`: [execution report](Architecture_M6_CP3_TB164_P13_Third_Edge_Side_Owner_Census_Full_Gate_Execution_Report_20261122.md); 982/982, CP2 491/491, three-case census 3/3. All 16 predictions match. No source, seed, selector or manifest mutation.
-- **COMPLETE (Review):** `M6-CP3-TB-REV-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE`. [Independent review](Architecture_M6_CP3_TB_REV_164_Third_Edge_Side_Owner_Census_Independent_Review_20261122.md) verifies 45/45 artifact checks and freezes site-C only. **NEXT** `M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED` compile-only; no production, site-D or selector mutation.
-- **On failure:** hash mismatch or compile failure → STATUS BLOCKED, return to Review. Do not wire the helper, change seeds, run tests in CB, or edit selectors or manifests.
+- **Authority:** [TB-REV-164 adversarial record](Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md) Z1–Z6, plus [TB-REV-163](Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md) Y1–Y7.
+- **NEXT:** `M6-CP3-CB-183-P13-NEAREST-CHORD-SEED-DECISION-HELPER` (Code + Build, compile only).
+  - Apply exactly [CB-183 diff](Architecture_M6_CP3_CB183_P13_Nearest_Chord_Seed_Decision_Helper_Exact.diff) `5230d097…77b9`, +77/−0: a pure `nearest_chord_edge_side_seed` (unwired) and two tests.
+  - Postimages: test `0a752b82…9592`, `ThirdEdgeSideOwner.h` `2887ed0c…6265`.
+- **Then:** `M6-CP3-CB-184-P13-NEAREST-CHORD-SEED-SWITCH`.
+  - Apply exactly the stacked [CB-184 diff](Architecture_M6_CP3_CB184_P13_Nearest_Chord_Seed_Switch_Exact.diff) `fe9576d8…758a`: the third seed branch, chords collected regardless of certification, unordered-face exclusion, and the row-979 `SphereStagedNearestChordSeed` print.
+  - Compile only.
+- **Then:** `M6-CP3-TB-EXEC-165-P13-NEAREST-CHORD-SEED-FULL-GATE`.
+  - Manifest `8d56ee1d…1e69`, 984 rows, plus the 3-case census.
+  - Rules 1–5 are in the adversarial record.
+  - Predicted: 16 seed lines with orbit 6/12 and `status=2`; `established=192`; `sourceFaceCellularity=1`. The plan stage is measured, not predicted.
+- **On failure:** a hash mismatch or compile failure means STATUS BLOCKED and a return to Review. Never edit beyond the diffs, run tests in a CB, or change selectors or manifests.
 
 ## Turn Sequence
 
@@ -60,13 +67,13 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | COMPLETE | TB-EXEC/REV-159 → CB-177 → TB-EXEC/REV-160 → CB-178 → TB-EXEC/REV-161 | [TB-REV-159 adv.](Architecture_M6_CP3_TB_REV_159_Adversarial_Review_20261122.md); [TB-REV-160 adv.](Architecture_M6_CP3_TB_REV_160_Adversarial_Review_20261122.md); [TB161](Architecture_M6_CP3_TB161_P13_Staged_Slide_Entry_Stop_Downstream_Receipt_Full_Gate_Execution_Report_20261122.md) 979/979; [TB-REV-161 adv.](Architecture_M6_CP3_TB_REV_161_Adversarial_Review_20261122.md). |
 | COMPLETE | CB-179 → TB-EXEC/REV-162 → CB-180 → TB-EXEC-163 | [CB-179](Architecture_M6_CP3_CB179_P13_Staged_Plan_Owner_Evidence_Receipt_Code_Build_Record_20261122.md); [TB162](Architecture_M6_CP3_TB162_P13_Staged_Plan_Owner_Evidence_Receipt_Full_Gate_Execution_Report_20261122.md); [TB-REV-162 adv.](Architecture_M6_CP3_TB_REV_162_Adversarial_Review_20261122.md); [CB-180](Architecture_M6_CP3_CB180_P13_Staged_Uncut_Owner_Census_Receipt_Code_Build_Record_20261122.md); [TB163](Architecture_M6_CP3_TB163_P13_Staged_Uncut_Owner_Census_Receipt_Full_Gate_Execution_Report_20261122.md) 979/979. |
 | COMPLETE (Review) | `M6-CP3-TB-REV-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE` | [Independent](Architecture_M6_CP3_TB_REV_163_Staged_Uncut_Owner_Census_Receipt_Independent_Review_20261122.md) typed STOP; continued after handover: [adversarial record](Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md) (Y1–Y7). |
-| COMPLETE (Code + Build) | `M6-CP3-CB-181-P13-THIRD-EDGE-SIDE-OWNER-HELPER` | [Record](Architecture_M6_CP3_CB181_P13_Third_Edge_Side_Owner_Helper_Code_Build_Record_20261122.md); exact helper + 3 tests; GMP/GMPXX compile only. |
-| COMPLETE (Code + Build) | `M6-CP3-CB-182-P13-THIRD-EDGE-SIDE-OWNER-CENSUS` | [Record](Architecture_M6_CP3_CB182_P13_Third_Edge_Side_Owner_Census_Code_Build_Record_20261122.md); exact census-only diff, row979 `SphereStagedUncutSideOwner`; GMP/GMPXX compile only. |
-| COMPLETE (Test + Benchmark) | `M6-CP3-TB-EXEC-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE` | [Report](Architecture_M6_CP3_TB164_P13_Third_Edge_Side_Owner_Census_Full_Gate_Execution_Report_20261122.md); 982/982, census 3/3, N1–N4 comparisons and all 16 nearest=6/12 predictions verified. |
-| COMPLETE (Review) | `M6-CP3-TB-REV-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE` | [Independent](Architecture_M6_CP3_TB_REV_164_Third_Edge_Side_Owner_Census_Independent_Review_20261122.md); 45/45 checks, known RED/deferred Y6 premise, site-D Y7 carried. |
-| **NEXT (Code + Build)** | `M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED` | Exact site-C only seed switch with predeclared negative falsifiers; compile only. |
-| Prospective | CB-183 (site-C seed only) → TB/REV-165 → CB-184 activation (V3–V5, V10, V11) → TB/REV-166 → CB-185 V3b → R1 → RA-275 S4a → O48 | O49 off the switch path. |
-| Withdrawn | prose CB-180 (X2); DEFN-161A (W3); prose CB-178 activation (V2); DEFN-159A (U1); prose CB-175; CB-174 v3 helper; CB-172A; prose CB-173; old conditional CB-181/CB-182 wiring plan (Y1) | — |
+| COMPLETE | CB-181 → CB-182 → TB-EXEC-164 → TB-REV-164 | [CB-181](Architecture_M6_CP3_CB181_P13_Third_Edge_Side_Owner_Helper_Code_Build_Record_20261122.md); [CB-182](Architecture_M6_CP3_CB182_P13_Third_Edge_Side_Owner_Census_Code_Build_Record_20261122.md); [TB164](Architecture_M6_CP3_TB164_P13_Third_Edge_Side_Owner_Census_Full_Gate_Execution_Report_20261122.md) 982/982; [independent](Architecture_M6_CP3_TB_REV_164_Third_Edge_Side_Owner_Census_Independent_Review_20261122.md) and [adversarial](Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md) reviews (Z1–Z6). |
+| **NEXT (Code + Build)** | `M6-CP3-CB-183-P13-NEAREST-CHORD-SEED-DECISION-HELPER` | Exact pure helper + 2 tests; compile only. |
+| Then (Code + Build) | `M6-CP3-CB-184-P13-NEAREST-CHORD-SEED-SWITCH` | Exact stacked seed switch + row979 witness; compile only. |
+| Then (Test + Benchmark) | `M6-CP3-TB-EXEC-165-P13-NEAREST-CHORD-SEED-FULL-GATE` | 984 rows + 3-case census; rules 1–5. |
+| Then (Review) | `M6-CP3-TB-REV-165-P13-NEAREST-CHORD-SEED-FULL-GATE` | Decision map; Z5/Z6 checks; freezes activation. |
+| Prospective | CB-185 activation (V3–V5, V10, V11) → TB/REV-166 → CB-186 V3b → R1 → RA-275 S4a → O48 | O49 off the switch path. |
+| Withdrawn | prose CB-180 (X2); DEFN-161A (W3); prose CB-178 activation (V2); DEFN-159A (U1); prose CB-175; CB-174 v3 helper; CB-172A; prose CB-173; old conditional CB-181/CB-182 wiring plan (Y1); prose CB-183 site-C seed (Z1) | — |
 | Held / Parked | `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`, `…-FACE-CONTACT-OUTCOME` (FC-6), row 858 face DEFN; `M6-CP3-CB-145-P13-VERTEX-FOLLOW-BOUNDARY` | 858 after the sphere repair. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE

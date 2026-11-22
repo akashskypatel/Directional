@@ -345,6 +345,12 @@ This document records **reusable failure-derived engineering lessons**, not an e
 
 ## Diagnostics, classifiers, and causal investigation
 
+- **Select over all the geometry, then certify; exclude keys other writers reach (TB-REV-164 adversarial).**
+  A certification filter applied before a geometric selection changes what the selection sees: an
+  uncertified outermost chord silently promotes an inner one. Select first, then require the result to
+  be certified. A seed rule that reads one writer's record must refuse keys another writer can reach
+  (here, site-D vertex fans and turn-backs) unless the two provably cannot nest. Before scoping an owner
+  switch, check whether the producer's search predicate reads owners at all.
 - **A presence flag cannot separate missing from over-full (TB-REV-163 adversarial).** Before freezing
   a decision branch on a census flag, read whether its writer can over-record as well as under-record,
   and publish the set itself. Where several chords cross one triangle, an uncrossed edge sees only the

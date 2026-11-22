@@ -1,3 +1,12 @@
+## 2026-11-22 — TB-REV-164 adversarial continuation: exact nearest-chord seed CBs
+
+[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md). The prose site-C seed contract is withdrawn and replaced by:
+- exact CB-183 (`5230d097…77b9`): a pure `nearest_chord_edge_side_seed` and two tests;
+- stacked CB-184 (`fe9576d8…758a`): every chord collected, faces with unordered segments excluded, the third seed branch `NearestThirdEdgeChord`, and the row-979 witness;
+- the TB165 manifest (`8d56ee1d…1e69`, 984 rows).
+
+Both diffs pass apply-check and `-fsyntax-only` with no new warnings. No runtime, selector or production change.
+
 ## 2026-11-22 — TB-REV-164 independent third-edge owner census review
 
 [Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_164_Third_Edge_Side_Owner_Census_Independent_Review_20261122.md) re-derived TB164 full gate 982/982, census 3/3 and all 16 nearest=6/12 receipts from four immutable archives (45/45 independent checks). The Y6 production cellularity row is DEFERRED known RED, not part of the gate. Site-C only CB-183 seed switch was frozen with negative controls and compile-only boundary; Y7 site-D fan and X4/H5 elsewhere remain open. No source, selector, acceptance or production change. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 held.

@@ -1,0 +1,191 @@
+diff --git a/include/directional/geometry/SurfaceCutGraph.h b/include/directional/geometry/SurfaceCutGraph.h
+index 743cb055e..49f2e9e23 100644
+--- a/include/directional/geometry/SurfaceCutGraph.h
++++ b/include/directional/geometry/SurfaceCutGraph.h
+@@ -152,6 +152,9 @@ enum class SurfaceCutGraphUncutComponentArcKind : std::uint8_t {
+ enum class SurfaceCutGraphUncutComponentSeedRule : std::uint8_t {
+   SingleFaceOwner = 0,
+   EdgeSideOwner = 1,
++  /** The opposite face's chord nearest the shared edge, by exact carrier
++   * order, when the face holds no segment that order cannot place. */
++  NearestThirdEdgeChord = 2,
+ };
+ 
+ enum class SurfaceCutGraphTraceCutExclusionReason : std::uint8_t {
+@@ -175,11 +178,16 @@ struct SurfaceCutGraphUncutComponentBoundaryEdgeCensus {
+   /** Every orbit recorded for the opposite face's side of this edge. */
+   std::vector<std::size_t> sideOwnerOrbits;
+   /** Third-edge orbit of each opposite-face chord that crosses the face's two
+-   * other edges, in recording order. */
++   * other edges, in recording order, whether or not the orbit is certified. */
+   std::vector<std::size_t> thirdEdgeChordOrbits;
+   /** Orbit of the chord nearest this edge, when the chords' exact carrier
+-   * order decides it. Published only; it does not seed ownership. */
++   * order decides it. It seeds the component only when it is also a recorded
++   * side orbit and the opposite face has no unordered segment. */
+   std::optional<std::size_t> thirdEdgeChordSideOwner;
++  /** The opposite face holds a trace segment that the chord order cannot
++   * place (a vertex entry, a turn back through one edge, or no incoming
++   * carrier). */
++  bool oppositeFaceHasUnorderedSegment = false;
+   auto operator<=>(
+       const SurfaceCutGraphUncutComponentBoundaryEdgeCensus &) const = default;
+ };
+diff --git a/src/geometry/SurfaceCutGraph.cpp b/src/geometry/SurfaceCutGraph.cpp
+index 529a9ba90..e46a6cf9f 100644
+--- a/src/geometry/SurfaceCutGraph.cpp
++++ b/src/geometry/SurfaceCutGraph.cpp
+@@ -444,6 +444,9 @@ OwnershipBuildResult build_source_face_ownership(
+   std::map<std::pair<SourceFace, SourceEdge>,
+            std::vector<detail::ThirdEdgeChordCandidate>>
+       thirdEdgeChords;
++  // Trace-crossed faces holding a segment that site C cannot order against
++  // the third edge's chords.
++  std::set<SourceFace> unorderedSegmentFaces;
+   std::set<SourceFace> traceCutFaces;
+   std::map<authority::NetworkArcId,
+            std::map<SourceFace, SurfaceCutGraphTraceCutExclusionReason>>
+@@ -614,8 +617,10 @@ OwnershipBuildResult build_source_face_ownership(
+         const auto outgoing =
+             local_edge_index(faceIt->second, segment.outgoingCarrier);
+         if (!incoming.has_value() || !outgoing.has_value() ||
+-            *incoming == *outgoing)
++            *incoming == *outgoing) {
++          unorderedSegmentFaces.insert(segment.sourceFace);
+           continue;
++        }
+         const std::size_t turn = (*outgoing + 3U - *incoming) % 3U;
+         if (turn != 1U && turn != 2U) continue;
+         std::size_t third = 0U;
+@@ -624,37 +629,36 @@ OwnershipBuildResult build_source_face_ownership(
+             turn == 1U ? forwardOrbit : reverseOrbit;
+         add_owner(segment.sourceFace, faceIt->second.edges[third],
+                   thirdEdgeOrbit);
+-        if (certificateFaceOrbits.count(thirdEdgeOrbit) != 0U) {
+-          const auto &record = faceIt->second;
+-          const SourceEdge &firstCarrier = record.edges[(third + 1U) % 3U];
+-          const SourceEdge &secondCarrier = record.edges[(third + 2U) % 3U];
+-          const authority::SourceVertexId apex =
+-              record.vertices[(third + 2U) % 3U];
+-          detail::ThirdEdgeChordCandidate chord{thirdEdgeOrbit, std::nullopt,
+-                                                std::nullopt};
+-          const auto place = [&](const authority::FieldBoundaryPoint &point) {
+-            if (point.edge == firstCarrier) {
+-              chord.firstCarrierApexDistance =
+-                  detail::carrier_apex_distance(point, apex);
+-            } else if (point.edge == secondCarrier) {
+-              chord.secondCarrierApexDistance =
+-                  detail::carrier_apex_distance(point, apex);
+-            }
+-          };
+-          if (segment.entryPoint.edge == *segment.incomingCarrier)
+-            place(segment.entryPoint);
+-          if (!segment.edgeTransitEntry.has_value() &&
+-              segmentIndex + 1U < trace->segments.size() &&
+-              trace->segments[segmentIndex + 1U].entryPoint.edge ==
+-                  segment.outgoingCarrier) {
+-            place(trace->segments[segmentIndex + 1U].entryPoint);
++        const auto &record = faceIt->second;
++        const SourceEdge &firstCarrier = record.edges[(third + 1U) % 3U];
++        const SourceEdge &secondCarrier = record.edges[(third + 2U) % 3U];
++        const authority::SourceVertexId apex =
++            record.vertices[(third + 2U) % 3U];
++        detail::ThirdEdgeChordCandidate chord{thirdEdgeOrbit, std::nullopt,
++                                              std::nullopt};
++        const auto place = [&](const authority::FieldBoundaryPoint &point) {
++          if (point.edge == firstCarrier) {
++            chord.firstCarrierApexDistance =
++                detail::carrier_apex_distance(point, apex);
++          } else if (point.edge == secondCarrier) {
++            chord.secondCarrierApexDistance =
++                detail::carrier_apex_distance(point, apex);
+           }
+-          thirdEdgeChords[{segment.sourceFace, record.edges[third]}].push_back(
+-              std::move(chord));
++        };
++        if (segment.entryPoint.edge == *segment.incomingCarrier)
++          place(segment.entryPoint);
++        if (!segment.edgeTransitEntry.has_value() &&
++            segmentIndex + 1U < trace->segments.size() &&
++            trace->segments[segmentIndex + 1U].entryPoint.edge ==
++                segment.outgoingCarrier) {
++          place(trace->segments[segmentIndex + 1U].entryPoint);
+         }
++        thirdEdgeChords[{segment.sourceFace, record.edges[third]}].push_back(
++            std::move(chord));
+         continue;
+       }
+ 
++      unorderedSegmentFaces.insert(segment.sourceFace);
+       const auto entrySupport = segment.entryPoint.source_support();
+       if (!entrySupport.has_value()) continue;
+       const auto *entryVertex =
+@@ -770,6 +774,8 @@ OwnershipBuildResult build_source_face_ownership(
+             boundary.sideOwnerOrbits.assign(edgeOwner->second.begin(),
+                                             edgeOwner->second.end());
+           }
++          boundary.oppositeFaceHasUnorderedSegment =
++              unorderedSegmentFaces.count(other) != 0U;
+           const auto chords = thirdEdgeChords.find({other, edge});
+           if (chords != thirdEdgeChords.end()) {
+             for (const auto &chord : chords->second)
+@@ -791,6 +797,13 @@ OwnershipBuildResult build_source_face_ownership(
+                        edgeOwner->second.size() == 1U) {
+               seed = *edgeOwner->second.begin();
+               rule = SurfaceCutGraphUncutComponentSeedRule::EdgeSideOwner;
++            } else if (edgeOwner != directOwnersByEdgeSide.end() &&
++                       chords != thirdEdgeChords.end()) {
++              seed = detail::nearest_chord_edge_side_seed(
++                  edgeOwner->second, chords->second,
++                  boundary.oppositeFaceHasUnorderedSegment);
++              rule = SurfaceCutGraphUncutComponentSeedRule::
++                  NearestThirdEdgeChord;
+             }
+             if (seed.has_value()) {
+               owners.insert(*seed);
+@@ -1345,6 +1358,8 @@ const char *surface_cut_graph_uncut_component_seed_rule_name(
+     return "SingleFaceOwner";
+   case SurfaceCutGraphUncutComponentSeedRule::EdgeSideOwner:
+     return "EdgeSideOwner";
++  case SurfaceCutGraphUncutComponentSeedRule::NearestThirdEdgeChord:
++    return "NearestThirdEdgeChord";
+   }
+   return "Unknown";
+ }
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index f0f16cdb4..b3ff7dcf5 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -18074,6 +18074,7 @@ TEST(TraceTerminationCorrection,
+                 << (edge.thirdEdgeChordSideOwner.has_value()
+                         ? std::to_string(*edge.thirdEdgeChordSideOwner)
+                         : std::string("-"))
++                << " unordered=" << (edge.oppositeFaceHasUnorderedSegment ? 1 : 0)
+                 << '\n';
+     }
+     for (const auto &arc : census.interiorArcIncidences) {
+@@ -18095,6 +18096,24 @@ TEST(TraceTerminationCorrection,
+     }
+   }
+ 
++  // Every seed the nearest third-edge chord contributed, whatever the
++  // component's resulting status.
++  for (const auto &census : certificate.uncutComponentCensuses) {
++    for (const auto &seed : census.seedAttributions) {
++      if (seed.rule != directional::geometry::
++                           SurfaceCutGraphUncutComponentSeedRule::
++                               NearestThirdEdgeChord)
++        continue;
++      std::cout << "SphereStagedNearestChordSeed component=" << census.component
++                << " edge=" << source_edge_locus(seed.sourceEdge)
++                << " face=" << source_face_locus(seed.componentFace)
++                << " opposite=" << source_face_locus(seed.oppositeFace)
++                << " orbit=" << seed.orbit
++                << " status=" << static_cast<int>(census.ownershipStatus)
++                << '\n';
++    }
++  }
++
+   // Per-trace end: the quantities the twenty-four-trace row reads.
+   for (const auto &trace : traces) {
+     std::size_t slides = 0U;

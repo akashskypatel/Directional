@@ -1,3 +1,12 @@
+## TB-REV-164 adversarial continuation — prose CB-183 withdrawn; two seed hazards closed before wiring (2026-11-22 UTC)
+
+[Adversarial record](Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md) Z1–Z6. No stable regression and no runtime change. Accounting is unchanged at 66/17/49, debt1, deferred81.
+- **Z2 (non-stable, mine):** the CB-182 chord collection skipped uncertified chords. This is census-only today; wiring it would mis-seed on a disc whose outermost chord faces an exterior orbit. Owner: CB-184 collects every chord; CB-183 requires the selected orbit to be recorded.
+- **Z3:** faces with unordered segments (site D, turn-back, no incoming carrier) are excluded from nearest-chord seeding. Y7 is narrowed to that exclusion.
+- **Z5 (carried):** the singleton `EdgeSideOwner` branch can still follow an inner chord when the outer one is uncertified. There is no observed instance; TB-REV-165 checks it.
+- **Z6 (open):** the component 1/5 stars around vertices 12/37 might hide a singularity.
+- **Falsifiers (TB165):** 16 `SphereStagedNearestChordSeed` lines with orbit 6/12 and `status=2`; `established=192`; `sourceFaceCellularity=1`. Any other orbit, a `Conflicting` status, or an off-fixture change means STOP.
+
 ## TB-REV-164 independent site-C owner decision — non-stable, site-D carried (2026-11-22 UTC)
 
 [Review](Architecture_M6_CP3_TB_REV_164_Third_Edge_Side_Owner_Census_Independent_Review_20261122.md) re-derived 982/982 gate and unchanged 3/3 production outcomes from raw archives, with 16/16 predicted nearest=6/12. Root remains site-C over-record of nested chord orbit candidates; the compiled helper is not yet a seed. **Next owner:** `M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED` site-C-only producer handoff; **falsifiers:** a wrong/nonunique orbit, missing/tied/disagreeing carrier order yielding a forced unique owner, source sheet mismatch, conflict silently overwritten, or site-D mutation. **Separate Y7 obligation:** vertex-fan site-D may over-record and is outside CB-183; it requires an intrinsic angular-fan owner proof. **Y6 qualification:** `CellularityCertificatePublishesTotalSourceFaceOwnershipOnProductionFixtures` is DEFERRED known RED and must not be promoted or claimed PASS on this gate. **Prohibited:** production activation, changed frozen selector/manifest, validator bypass, synthetic owner or accepting sphere before TB-EXEC/REV-165 independent runtime proof. Stable 66/17/49, debt1, deferred81, CP3/497/D0/H4 unchanged.

@@ -1,5 +1,7 @@
 # TB-REV-164 — independent third-edge side-owner census review (2026-11-22)
 
+> **Continued after handover:** the [adversarial record](Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md) (Z1–Z6) withdraws the prose CB-183 below. It replaces it with exact CB-183 (helper) and CB-184 (switch), then TB-EXEC-165.
+
 ## Situation and decision
 
 **TB-EXEC-164 evidence accepted for its defined diagnostic scope.** The independently measured full gate is **982/982 PASS**, accepted M6-CP2 **491/491 PASS**; the separate production census preserves **Cylinder PASS, BunnyRandom RED, Vase RED**. This does **not** prove the production sphere, source-face cellularity, CP3/497, or D0.

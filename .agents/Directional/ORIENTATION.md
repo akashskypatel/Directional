@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-22 UTC; M6-CP3-TB-REV-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE independently verified):** TB164 982/982 and separate census 3/3 match exact archives; accepted CP2 491/491. All 16 side-owner predictions are 6/12. The production seed remains unwired, sphere cellularity is unresolved, and one Y6 premise is DEFERRED/known RED. **Next separate Code + Build:** `M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED` site-C-only seed, compile only; Y7 site-D fan remains open. No selector, CP3/497/D0/H4 or production promotion. [Review](Architecture_M6_CP3_TB_REV_164_Third_Edge_Side_Owner_Census_Independent_Review_20261122.md).
+**Current currency (2026-11-22 UTC; M6-CP3-TB-REV-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE, continued after handover):** TB164 982/982, census 3/3, CP2 491/491; all 16 side-owner predictions are 6/12. The [adversarial record](Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md) (Z1–Z6) withdraws the prose CB-183. It freezes exact `M6-CP3-CB-183-P13-NEAREST-CHORD-SEED-DECISION-HELPER` (pure helper) and stacked `M6-CP3-CB-184-P13-NEAREST-CHORD-SEED-SWITCH`, both compile only, then TB-EXEC-165 (984 rows). The seed excludes unordered faces (Z3) and uncertified outermost chords (Z2). No selector, CP3/497/D0/H4 or production promotion.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-22 UTC; TB-REV-164):** TB164 982/982 and 3/3 census verified independently; CP2 491/491. Site-C nested chord candidates resolve 6/12 but do not yet seed product ownership. CB-183 is the next separate code/compile turn; site-D Y7 and the DEFERRED source-face cellularity test remain open. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 not promoted.
+**Currency (2026-11-22 UTC; TB-REV-164 adversarial):** TB164 982/982 and census 3/3 verified; CP2 491/491. Site-C nearest chords resolve 6/12. The exact seed switch is frozen as CB-183 (helper) and CB-184 (wiring); the cut search reads no owners (Z4). Y7 is narrowed to an exclusion (Z3); Z5, Z6 and the DEFERRED source-face cellularity test stay open. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 not promoted.
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.
@@ -122,7 +122,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority — M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED (site-C seed, compile-only):** TB164 and [TB-REV-164](Architecture_M6_CP3_TB_REV_164_Third_Edge_Side_Owner_Census_Independent_Review_20261122.md) confirm 16/16 `nearest=6/12` predictions. Preserve Y6 deferred RED and Y7 site-D fan; CB-183 may consume exact site-C owner but not activate production or claim cellularity until TB-EXEC/REV-165. No production/selector promotion.
+**Current priority — M6-CP3-CB-183-P13-NEAREST-CHORD-SEED-DECISION-HELPER, then CB-184 seed switch (compile only), then TB-EXEC-165:** the [adversarial record](Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md) predicts 16 `SphereStagedNearestChordSeed` lines with orbit 6/12, `established=192` and `sourceFaceCellularity=1`; the plan stage is measured. Z6: if vertex 12 or 37 is a singularity, the owner repair only moves the failure. No production or selector promotion.
 
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.

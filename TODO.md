@@ -1,14 +1,52 @@
-## CURRENT — TB-REV-164 independently verified TB164; CB-183 next (2026-11-22 UTC)
+## CURRENT — TB-REV-164 adversarial continuation: prose CB-183 withdrawn, exact CB-183/CB-184 frozen (2026-11-22 UTC)
+
+[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md), Z1–Z6. TB164 PASS and Y1–Y5 are upheld.
+- Z1: the prose site-C seed contract is withdrawn.
+- Z2: my CB-182 collection dropped uncertified chords. Fixed by collecting every chord and requiring the selected orbit to be recorded (certified).
+- Z3: a face with site-D, turn-back or no-incoming-carrier segments must not seed, so Y7 becomes an exclusion.
+- Z4: the cut search reads no owners (`SurfaceCutGraph.cpp:1120`, `:1161`); only `GlobalTopologyPlan` moves. Rows 662 and 788 do not require failure.
+- Z5: the singleton `EdgeSideOwner` uncertified-outer hazard is carried.
+- Z6: whether vertices 12 and 37 are singularities stays open.
+
+```
+NEXT_TURN: M6-CP3-CB-183-P13-NEAREST-CHORD-SEED-DECISION-HELPER
+Owner: implementation agent (Code + Build, compile only)
+Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md (Z1–Z6)
+Apply exactly: .agents/Directional/Architecture_M6_CP3_CB183_P13_Nearest_Chord_Seed_Decision_Helper_Exact.diff
+  SHA-256 5230d0973376639ff49ff844f198314a0294729000695101682a3174303377b9 (+77/−0; unwired)
+  tests/FieldAlignedCurveNetworkTests.cpp: f70a9f8c…383c -> 0a752b82ad20c836c0109a477bcac624c2f7259c51537e8b59d0cdd3556d9592
+  src/geometry/ThirdEdgeSideOwner.h: 7a055f24…2efb02 -> 2887ed0c80610ab20835a7f0cdc22c182fb840bdbf25dc92353d195738ae6265
+Build: dispatcher compile, GMP/GMPXX targets, runtimeExecution=false
+Then: M6-CP3-CB-184-P13-NEAREST-CHORD-SEED-SWITCH (stacked diff fe9576d84e79d125712b847cd345bfe4308ba26a0c88b9ff48e9291c1a6f758a; compile only)
+  -> M6-CP3-TB-EXEC-165-P13-NEAREST-CHORD-SEED-FULL-GATE (manifest 8d56ee1d…1e69, 984 rows + 3-case census; rules 1–5)
+  -> M6-CP3-TB-REV-165-P13-NEAREST-CHORD-SEED-FULL-GATE (decision map; Z5/Z6; freeze activation CB-185)
+On failure/blocker: hash mismatch or compile failure -> STATUS BLOCKED; return to Review
+Do not: edit beyond the diff; wire the helper in CB-183; run tests; change selectors or manifests; promote CP3/497/D0/H4
+```
+
+Turn sequence:
+- [x] CB-181 → CB-182 → TB-EXEC-164 → TB-REV-164 (independent + adversarial)
+- [ ] **NEXT** CB-183: pure seed-decision helper + 2 tests, compile only
+- [ ] CB-184: stacked seed switch + row-979 `SphereStagedNearestChordSeed` witness, compile only
+- [ ] TB-EXEC-165: 984 rows + census
+  - predicted: 16 seeds with orbit 6/12 and `status=2`; `established=192`; `sourceFaceCellularity=1`
+  - measured, not predicted: the plan stage
+- [ ] TB-REV-165
+- [ ] CB-185 activation (V3–V5, V10, V11) → TB-EXEC/REV-166 → CB-186 V3b → R1 → RA-275 S4a → O48
+
+Carried: Y7 (narrowed by Z3), Z5, Z6, X4/H5 elsewhere, TB-REV-159-U3/V3–V11, W3/W4/W6/W7, RA-281 F1–F3, RA-275 S4a, Amendment 14, O47/C5/O48/O49, sphere χ+4. No selector or production promotion.
+
+## HISTORY — TB-REV-164 independent review; prose CB-183 (withdrawn by the adversarial continuation) (2026-11-22 UTC)
 
 [Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_164_Third_Edge_Side_Owner_Census_Independent_Review_20261122.md): immutable TB164 full gate **982/982 PASS**, CP2 **491/491**, census 3/3 unchanged (Cylinder PASS; BunnyRandom/Vase expected RED). All 16 third-edge candidate order predictions match: component1 nearest=6, component5 nearest=12. A Y6 production cellularity premise is **DEFERRED/known RED**, not passed. Site-D Y7 fan evidence is not covered. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 held.
 
-NEXT_TURN: M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED — only site-C seed use of exact `third_edge_side_owner`, compile/package without runtime; STOP on ambiguous, changed original singleton, foreign-sheet owner, conflict or site-D change. Independent TB-EXEC/REV-165 must separately prove sourceFaceCellularity=1 and full gates, or report RED. No selector or production promotion in Review.
+SUPERSEDED (Z1) — M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED — only site-C seed use of exact `third_edge_side_owner`, compile/package without runtime; STOP on ambiguous, changed original singleton, foreign-sheet owner, conflict or site-D change. Independent TB-EXEC/REV-165 must separately prove sourceFaceCellularity=1 and full gates, or report RED. No selector or production promotion in Review.
 
 - [x] CB-181 exact helper + negative tests, compiled only.
 - [x] CB-182 census-only integration, compiled only.
 - [x] TB-EXEC-164 982/982 and 3/3 census, immutable source.
 - [x] TB-REV-164 independent archive and owner-set review, frozen CB-183 boundary.
-- [ ] **NEXT** M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED — compile-only site-C owner seed.
+- [~] ~~M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED~~ withdrawn (Z1).
 - [ ] TB-EXEC/REV-165; CB-184 later activation; TB-EXEC/REV-166; CB-185 V3b after activation.
 
 Carried: Y7 site-D fan, X4/H5 elsewhere, TB-REV-159-U3/V3–V11, W3/W4/W6/W7, RA-281 F1–F3, RA-275 S4a, Amendment14, O47/C5/O48/O49, sphere χ+4. No selector or production promotion.
