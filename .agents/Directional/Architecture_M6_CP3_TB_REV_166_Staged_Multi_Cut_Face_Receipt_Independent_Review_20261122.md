@@ -58,6 +58,6 @@
 | Consolidation under CLEAN_UP_POLICY | Inventory current TB165/TB166 primary reports, K1–K6 adversarial decision map and next authority. These still carry unique source/receipt/decision facts or current references; no safe superseded per-turn deletion was identified in this bounded review. Historical consolidated index retained unchanged. |
 | Successor frozen | `M6-CP3-CB-186-P13-EXACT-BOUNDARY-WALK-CORNER-PARTITION-HELPER` only, with exact falsifiers and STOP boundary above. |
 | Turn boundary held | Review static only; no Directional binary, compile, source, test, benchmark, selector or manifest mutation. |
-| review_check.py boundary | Pending static boundary verification at publication; report in final status if checker cannot run. |
+| review_check.py boundary | **Executed**. Code/test/selector path checks PASS, but historical rewrite-baseline ancestry and three source checks FAIL because the verified downloaded snapshot excludes `.git` history. The exact committed-code history cannot be checked locally; no PASS for those checks is claimed. Independent patch path audit and `git apply --check`/`git diff --check` PASS. |
 | `STATUS` lifecycle maintained | Started as current Review, closed only after all durable writes; separate final beacon. |
-| Pushed to origin, branch in sync | Pending remote patch application and final write; verify workflow result and branch ref before claiming complete. |
+| Pushed to origin, branch in sync | GitHub Drive-apply workflow and remote file readback verify the documentation push. The downloaded snapshot is not a tracking checkout, so `git status -sb` cannot establish remote ahead/behind; this specific subcheck remains unverified. |
