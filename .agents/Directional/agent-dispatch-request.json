@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb178-compile-20261122-a",
-  "mailbox_key": "m6-cp3-cb178-compile",
-  "source_sha": "d9d685edf372573c6b07a3be06dc75e2bbec67e7",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb178-staged-receipt"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb178-docs-closeout-20261122-a",
+  "mailbox_key": "m6-cp3-cb178-docs-closeout",
+  "file_id": "1kgnvd8qc3TvOSS_flpbYEsNtAjvKhErz",
+  "patch_sha256": "8bf63a25147e70b5c3e08da6eb5e9d28e5d9f7678305a4c4a57d7f58d74f78b1",
+  "base_sha": "84ee6d04ad1191cb01f06b6519ddfe66bf9d665d",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cp3): close CB178 receipt and hand off immutable TB161",
+  "retention_days": 14
 }
