@@ -1,25 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "test_benchmark",
-  "request_id": "m6-cp3-tb166-gate-20261122-a",
-  "mailbox_key": "m6-cp3-tb166-full-gate",
-  "executor_sha": "fe4556853e75571801f6018d7626777812314db1",
-  "semantic_source_sha": "2c1ec9ab370ed0e9d533d7694e03b486916b9b1a",
-  "turn_id": "M6-CP3-TB-EXEC-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "14765117630",
-    "EXPECTED_SOURCE_SHA": "2c1ec9ab370ed0e9d533d7694e03b486916b9b1a",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "288b8a7c15719f0b5eb82521ef95b1c2c23e9fa51ca77d4caebdec2a7056548d",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "cf9b482c78b81cef66b444419cbd922e565eee760bd608d5f57e199b11375fb1",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "41beeb6665a27e0e20af8407bfb88dfc762d95363dd2fc4721533f0217d65b44",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB165_P13_Nearest_Chord_Seed_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "8d56ee1d911daa1bd3cab9f824e79131ce9f75bd7a57b31b5882d3f4f52b1e69",
-    "EXPECTED_CASE_COUNT": "984",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
-  },
-  "artifact_prefix": "m6-cp3-tb166-full-gate",
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-tb166-docs-20261122-a",
+  "mailbox_key": "m6-cp3-tb166-docs-apply",
+  "file_id": "1eXi236RNk3Oz-5fxu17qeh9ROYkdZTKb",
+  "patch_sha256": "bee92c602ad86e2f2cfc9913f8a198c2d08d6f85f43681f3ba3a3fbc1bc15f21",
+  "base_sha": "fe4556853e75571801f6018d7626777812314db1",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cp3): record immutable TB166 full gate and review handoff",
   "retention_days": 14
 }
