@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb161-docs-closeout-20261122-a",
-  "mailbox_key": "m6-cp3-tb161-docs-closeout",
-  "file_id": "14QM3HmFXBdNfEaS4_WyKlfcoumZARW5I",
-  "patch_sha256": "090b8a0a24f47edf8b48ffdbe2506d81ac30c6448fe7dd9c7c06af55105f7256",
-  "base_sha": "85d932564966c51120b89f6afe549ef3e3bdb8d1",
+  "request_id": "m6-cp3-tb-rev161-docs-20261122-a",
+  "mailbox_key": "m6-cp3-tb-rev161-docs",
+  "file_id": "1NkwQeuIBSOzLFf5ewRRpz4rsMQpjL7F6",
+  "patch_sha256": "d1e734f1deb87c60e9dfb81704b7de9308f7df616b91e83fe38dd214b60d3753",
+  "base_sha": "f9e912a0bed5d1ed233e2d554b85fc35b60ec1b0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cp3): close TB161 gate and hand off independent review",
+  "commit_message": "docs(cp3): independently review TB161 and hold activation for owner definition",
   "retention_days": 14
 }
