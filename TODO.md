@@ -1,12 +1,12 @@
-## CURRENT — TB-REV-160 continued after handover; exact CB-178 downstream receipt next (2026-11-22 UTC)
+## CURRENT — CB-178 compile only complete; TB-EXEC-161 immutable downstream receipt next (2026-11-22 UTC)
 
 [Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_160_Adversarial_Review_20261122.md) (V1–V11): TB160 upheld; staged `cutGraph=built` is the canonical cellularity certificate; prose activation CB-178 WITHDRAWN (compile-only turn cannot derive premise values; monolithic).
 
-> **NEXT_TURN:** `M6-CP3-CB-178-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT` — compile only. Apply exactly [diff](.agents/Directional/Architecture_M6_CP3_CB178_P13_Staged_Slide_Entry_Stop_Downstream_Receipt_Exact.diff) `37ed30f6d8db4934febf3b0dab9b36d6b44adc0296437c0eb60f7590fa22c2a9` (tests only, preimage `82a1ec49…a87c`, postimage `d8b1413c…63f3`).
+> **NEXT_TURN:** `M6-CP3-TB-EXEC-161-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT-FULL-GATE` — immutable artifact-only 979-case gate, source `d9d685edf372573c6b07a3be06dc75e2bbec67e7`, [compile 44990307918](https://github.com/akashskypatel/Directional/actions/runs/44990307918) package `14741239012` SHA-256 `b7f8a16f8e8c816ccd1df571d6e98c78770da0b319543cfb131353fd71a6d190`. [CB-178 record](.agents/Directional/Architecture_M6_CP3_CB178_P13_Staged_Slide_Entry_Stop_Downstream_Receipt_Code_Build_Record_20261122.md); test source only, production stop OFF; do not rebuild.
 
 Turn sequence:
 - [x] `M6-CP3-TB-REV-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE` — independent review + adversarial continuation.
-- [ ] `M6-CP3-CB-178-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT` — exact test-only row 979, compile only.
+- [x] `M6-CP3-CB-178-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT` — exact test-only row 979, compile only.
 - [ ] `M6-CP3-TB-EXEC-161-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT-FULL-GATE` — manifest `e15d616c…7e8a` (979 rows); rows 1–978 and census equal TB160, zero allowance; row 979 receipt verbatim.
 - [ ] `M6-CP3-TB-REV-161-…` — freeze exact activation CB-179 from row 979 (single-source flag V11; row 971 derived or STOP-on-red V10; or plan-stage DEFN if the plan fails); BunnyRandom pending-wall census falsifier.
 - [ ] CB-179 → TB-EXEC/REV-162 → CB-180 V3b node test → R1 slide-start subdivision → RA-275 S4a → O48.
