@@ -1,10 +1,10 @@
-## CURRENT — TB162 979/979 verified, independent TB-REV-162 next (2026-11-22 UTC)
+## CURRENT — TB-REV-162 independently verified, CB-180 owner certification next (2026-11-22 UTC)
 
 [Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_161_Adversarial_Review_20261122.md) (W1–W8): TB161 PASS upheld. Row 979 already printed `sourceFaceCellularity=0`, so the first broken invariant is the cut-graph certificate's source-face ownership (single writer `build_source_face_ownership`); the plan's `UncutFaceComponentOrbitSeedNotUnique` is the consumer reporting it (W1). The owner evidence is already computed and formatted by the product (W2), so DEFN-161A (no reachable exit) is withdrawn (W3). TB-REV-160 V8's receipt gap is corrected (W4). Hypotheses H1–H4 with discriminating lines (W5).
 
 ```
-NEXT_TURN: M6-CP3-TB-REV-162-P13-STAGED-PLAN-OWNER-EVIDENCE-RECEIPT-FULL-GATE
-Owner: independent Review agent (classify H1–H4 from TB162 receipts; no code change)
+NEXT_TURN: M6-CP3-CB-180-P13-SOURCE-FACE-ORBIT-OWNER-CERTIFICATION
+Owner: Code + Build agent (source-attached owner proof at SurfaceCutGraph certificate; compile only; [review](.agents/Directional/Architecture_M6_CP3_TB_REV_162_Staged_Plan_Owner_Evidence_Receipt_Independent_Review_20261122.md))
 Exact CB-179 package source: e7318b4ad1f8034f80f9665cf8f4b4a407b20719
 Compile: 45001238913, package: 14746066992, ZIP SHA-256: 71fee9687b09b9f15b36adac7bca70ea389bbe4604b97f110499a877ea9846a0
 Manifest: gates/Architecture_M6_TB161_P13_Staged_Slide_Entry_Stop_Downstream_Receipt_Full_Gate_Case_Manifest.tsv
@@ -12,14 +12,15 @@ SHA-256: e15d616c9af2855b803dea8b5cfc4f5a0529f129c41df0c4fb0131e4ff4e7e8a; 979 r
 Gate: TB162 PASS 979/979, CP2 491/491, rows 1–978 and row979 N1–N3 + five allowed prefixes; run 45002897420 artifact 14746794132
 Row979: 41 old lines verbatim; 19 new (16 unavailable owner violations, locus, plan face, summary); full raw receipt evidence in .agents/Directional/evidence
 No census (TB161 census authority 14741883606), production change, selector change, or repair
-Then TB-REV-162 independent H1–H4 classification; CB-180 only after Review authorization; production still STOPPED
+TB-REV-162 classified H1 observed, H2 unproven, H3/H4 absent; CB-180 authorized for unique source-supported owner evidence; production still STOPPED
 ```
 
 Turn sequence:
 - [x] `M6-CP3-TB-EXEC-161-…-FULL-GATE`, `M6-CP3-TB-REV-161-…-FULL-GATE` (independent review and adversarial continuation).
 - [x] `M6-CP3-CB-179-P13-STAGED-PLAN-OWNER-EVIDENCE-RECEIPT` — exact test-only receipt, eight-target GMP/GMPXX compile only; [build record](.agents/Directional/Architecture_M6_CP3_CB179_P13_Staged_Plan_Owner_Evidence_Receipt_Code_Build_Record_20261122.md).
 - [x] `M6-CP3-TB-EXEC-162-P13-STAGED-PLAN-OWNER-EVIDENCE-RECEIPT-FULL-GATE` — 979/979, rows 1–978 = TB161 (N1–N3), all 41 old row 979 lines verbatim and 19 new lines published; [report](.agents/Directional/Architecture_M6_CP3_TB162_P13_Staged_Plan_Owner_Evidence_Receipt_Full_Gate_Execution_Report_20261122.md).
-- [ ] `M6-CP3-TB-REV-162-P13-STAGED-PLAN-OWNER-EVIDENCE-RECEIPT-FULL-GATE` — classify H1–H4; freeze the exact owner repair CB-180 at the single writer, with positive and negative oracles.
+- [x] `M6-CP3-TB-REV-162-P13-STAGED-PLAN-OWNER-EVIDENCE-RECEIPT-FULL-GATE` — [independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_162_Staged_Plan_Owner_Evidence_Receipt_Independent_Review_20261122.md) reverified gate, classified H1, froze CB-180.
+- [ ] `M6-CP3-CB-180-P13-SOURCE-FACE-ORBIT-OWNER-CERTIFICATION` — unique source-supported owner witness, negatives and compile-only build.
 - [ ] CB-180 owner repair → TB-EXEC/REV-163 (staged plan `built` or next measured stage).
 - [ ] CB-181 activation (single-source flag V11; rows 393/648/858/971/972 from receipts; BunnyRandom falsifier V5; row 971 STOP-on-red V10) → TB-EXEC/REV-164.
 - [ ] CB-182 V3b node test → R1 slide-start subdivision → RA-275 S4a → O48.
