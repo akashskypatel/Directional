@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev161-closeout-20261122-b",
-  "mailbox_key": "m6-cp3-tb-rev161-closeout",
-  "file_id": "1Db8u_YRRY9wJA9F-cr6MUDb5ombRPSZh",
-  "patch_sha256": "fc0059f03e22201a723bb6439e61f0a515820dcabb942a4cd40041bc8bfbc079",
-  "base_sha": "892d45e313ba63c672931c2c735503a6856f8fa7",
+  "request_id": "m6-cp3-cb179-apply-20261122-0805",
+  "mailbox_key": "m6-cp3-cb179-apply",
+  "file_id": "19rj_DwbeQsyo0sg7tNyqEtrewuhkZg3f",
+  "patch_sha256": "3c747fb2bc9c240cc08958f824715a7babac4647a4424719c526c4f3f92862dc",
+  "base_sha": "790b53073f5e873278ef8859b0a8eee0a562c10a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cp3): record independent history and remote review boundary evidence",
+  "commit_message": "test(cp3): receipt staged plan source-face owner evidence",
   "retention_days": 14
 }
