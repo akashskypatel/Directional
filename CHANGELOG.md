@@ -1,3 +1,7 @@
+## 2026-11-22 — CB-183 nearest-chord decision helper compiled (Code + Build only)
+
+[CB-183 record](.agents/Directional/Architecture_M6_CP3_CB183_P13_Nearest_Chord_Seed_Decision_Helper_Code_Build_Record_20261122.md): exact 77-addition frozen patch applied at `639f665942906d02f0dbc4b826ef4d56e3829d5a` ([run 45035319039](https://github.com/akashskypatel/Directional/actions/runs/45035319039)); eight GMP/GMPXX targets compiled ([run 45035527412](https://github.com/akashskypatel/Directional/actions/runs/45035527412), package `14758973225`, ZIP SHA-256 `4ac5ea648239ded2f752574cdea8d067f2c1b583c87bdb3e28a81e1bf4fcffca`). `nearest_chord_edge_side_seed` is unwired. Two tests compiled, not executed. No selectors, manifests, production seed, runtime, acceptance, or stable regression totals changed. Next separate Code + Build turn is `M6-CP3-CB-184-P13-NEAREST-CHORD-SEED-SWITCH`.
+
 ## 2026-11-22 — TB-REV-164 adversarial continuation: exact nearest-chord seed CBs
 
 [Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md). The prose site-C seed contract is withdrawn and replaced by:

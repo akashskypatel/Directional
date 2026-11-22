@@ -1,4 +1,4 @@
-## CURRENT — TB-REV-164 adversarial continuation: prose CB-183 withdrawn, exact CB-183/CB-184 frozen (2026-11-22 UTC)
+## CURRENT — CB-183 complete; CB-184 stacked seed switch next (2026-11-22 UTC)
 
 [Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md), Z1–Z6. TB164 PASS and Y1–Y5 are upheld.
 - Z1: the prose site-C seed contract is withdrawn.
@@ -9,11 +9,12 @@
 - Z6: whether vertices 12 and 37 are singularities stays open.
 
 ```
-NEXT_TURN: M6-CP3-CB-183-P13-NEAREST-CHORD-SEED-DECISION-HELPER
+NEXT_TURN: M6-CP3-CB-184-P13-NEAREST-CHORD-SEED-SWITCH
 Owner: implementation agent (Code + Build, compile only)
 Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md (Z1–Z6)
-Apply exactly: .agents/Directional/Architecture_M6_CP3_CB183_P13_Nearest_Chord_Seed_Decision_Helper_Exact.diff
-  SHA-256 5230d0973376639ff49ff844f198314a0294729000695101682a3174303377b9 (+77/−0; unwired)
+CB-183 compiled: .agents/Directional/Architecture_M6_CP3_CB183_P13_Nearest_Chord_Seed_Decision_Helper_Code_Build_Record_20261122.md
+Apply exactly next: .agents/Directional/Architecture_M6_CP3_CB184_P13_Nearest_Chord_Seed_Switch_Exact.diff
+  SHA-256 fe9576d84e79d125712b847cd345bfe4308ba26a0c88b9ff48e9291c1a6f758a (stacked CB-184; compile only)
   tests/FieldAlignedCurveNetworkTests.cpp: f70a9f8c…383c -> 0a752b82ad20c836c0109a477bcac624c2f7259c51537e8b59d0cdd3556d9592
   src/geometry/ThirdEdgeSideOwner.h: 7a055f24…2efb02 -> 2887ed0c80610ab20835a7f0cdc22c182fb840bdbf25dc92353d195738ae6265
 Build: dispatcher compile, GMP/GMPXX targets, runtimeExecution=false
@@ -26,8 +27,8 @@ Do not: edit beyond the diff; wire the helper in CB-183; run tests; change selec
 
 Turn sequence:
 - [x] CB-181 → CB-182 → TB-EXEC-164 → TB-REV-164 (independent + adversarial)
-- [ ] **NEXT** CB-183: pure seed-decision helper + 2 tests, compile only
-- [ ] CB-184: stacked seed switch + row-979 `SphereStagedNearestChordSeed` witness, compile only
+- [x] CB-183: pure seed-decision helper + 2 tests, [compiled](.agents/Directional/Architecture_M6_CP3_CB183_P13_Nearest_Chord_Seed_Decision_Helper_Code_Build_Record_20261122.md) at source `639f665942906d02f0dbc4b826ef4d56e3829d5a`
+- [ ] **NEXT** CB-184: stacked seed switch + row-979 `SphereStagedNearestChordSeed` witness, compile only
 - [ ] TB-EXEC-165: 984 rows + census
   - predicted: 16 seeds with orbit 6/12 and `status=2`; `established=192`; `sourceFaceCellularity=1`
   - measured, not predicted: the plan stage
