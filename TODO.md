@@ -1,4 +1,30 @@
-## CURRENT — TB-REV-159 qualified gate PASS, CB-177 STOP; definition next (2026-11-22 UTC)
+## CURRENT — TB-REV-159 adversarial continuation; staged CB-177 frozen (2026-11-22 UTC)
+
+[TB-REV-159 adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_159_Adversarial_Review_20261122.md):
+- TB159 PASS upheld.
+- DEFN-159A withdrawn: no reachable exit, since its topology items need a run.
+- T5 closed by argument plus the consumer's fail-closed check.
+- 24-row premise inventory: rows 393/648/858/971/972 pin the current sphere network, so the stop is staged off by default first.
+
+> **NEXT_TURN:** `M6-CP3-CB-177-P13-STAGED-SLIDE-ENTRY-STOP`
+> - Type: Code + Build, compile only.
+> - Apply exactly [diff](.agents/Directional/Architecture_M6_CP3_CB177_P13_Staged_Slide_Entry_Stop_Exact.diff) SHA-256 `4a16ee6fed7587d00b42418f906b48d2f4ee804d473842fbb6201eb3a143bd8b` to the CB-176 postimages.
+> - Build the eight GMP/GMPXX targets with `runtimeExecution=false`.
+> - On a hash mismatch or compile failure: BLOCKED, return to Review.
+
+Turn sequence:
+- [x] `M6-CP3-TB-EXEC-159-P13-SLIDE-ENTRY-STOP-PREDICATE-FULL-GATE` — 977/977, census 3/3.
+- [x] `M6-CP3-TB-REV-159-P13-SLIDE-ENTRY-STOP-PREDICATE-FULL-GATE` — independent review, then continued after handover by the adversarial record (U1–U5).
+- [ ] **NEXT:** `M6-CP3-CB-177-P13-STAGED-SLIDE-ENTRY-STOP` — compile only.
+- [ ] `M6-CP3-TB-EXEC-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE`
+  - [Manifest](.agents/Directional/gates/Architecture_M6_TB160_P13_Staged_Slide_Entry_Stop_Full_Gate_Case_Manifest.tsv) `d7eb3c35…a5a`, 978 rows.
+  - STOP unless 978/978, CP2 491/491, rows 1–977 and census equal TB159 with zero allowance, and the row 978 receipt is published.
+- [ ] `M6-CP3-TB-REV-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE` — freeze activation CB-178 from the receipt: production default, staging parameter deleted, exact U3 replacements, V3b assertion.
+- [ ] CB-178 → TB-EXEC/REV-161 → slide-start subdivision R1 → RA-275 S4a → O48.
+
+**Carried:** TB-REV-159-U3, V3b, sphere χ+4, Amendment 14, RA-281 F1/F2/F3, RA-275 S4a, CP3/497/D0/H4. Stable 66/17/49, debt1, deferred81.
+
+## HISTORY — TB-REV-159 independent review; DEFN-159A (withdrawn by the adversarial continuation) (2026-11-22 UTC)
 
 [TB-REV-159 independent review](.agents/Directional/Architecture_M6_CP3_TB159_P13_Slide_Entry_Stop_Predicate_Full_Gate_Independent_Review_20261122.md) re-derived the immutable 977/977 gate, CP2 491/491, 976/976 frozen normalized predecessor, and the three-case census. A helper receipt is not a producer stop event. Six BunnyRandom pending-wall records require T5 ownership and lifetime proof; V3b canonical production reaching and sphere V/E/F deltas are unproved.
 

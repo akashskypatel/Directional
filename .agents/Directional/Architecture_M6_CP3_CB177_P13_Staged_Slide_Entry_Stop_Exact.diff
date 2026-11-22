@@ -1,0 +1,319 @@
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index 5c3676418502563ef285f859a2051becc9a96ff7..f865b0b2a25a2a0cf68fc3653326a7af66c2edae 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -615,13 +615,18 @@ public:
+ 
+   // Diagnostic/offline comparison surface only. Production `make` has no
+   // priority parameter and always selects ArcLengthFiltered.
++  // `stopAtLaterSlideEntry` stages the slide-entry stop: a pending trace whose
++  // entry crossing lies strictly inside another trace's slide, reached later
++  // than that trace reaches it, stops at the crossing before entering
++  // (`field_aligned_slide_entry_stops_moving_trace`). Production `make` never
++  // stops there.
+   [[nodiscard]] static FieldAlignedCurveNetworkBuildResult
+   diagnose_with_arrival_priority(
+       const TriMesh &sourceMesh,
+       const SourceTopologyRegions &sourceAuthority,
+       const authority::FieldTransportAtlas &fieldTransportAtlas,
+       const std::vector<SurfaceCellRail> &authoritativeRails,
+-      FieldTraceArrivalPriority priority);
++      FieldTraceArrivalPriority priority, bool stopAtLaterSlideEntry = false);
+ 
+   [[nodiscard]] const std::vector<FieldAlignedCurveNetworkNode> &nodes() const
+       noexcept {
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index f8676cf9d69eb0ca00ececa7e43218e673054cc3..a7af367bf91a8a24e899e313381b49c23eb79b60 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -4291,7 +4291,8 @@ canonical_field_aligned_traces_and_events(
+                    const authority::FieldNonTraversableEdge *> &mandatoryByEdge,
+     FieldAlignedCurveNetworkCandidate &candidate,
+     const FieldTraceArrivalPriority priority,
+-    FieldAlignedTraceScaleCensus *scaleCensus) {
++    FieldAlignedTraceScaleCensus *scaleCensus,
++    const bool stopAtLaterSlideEntry) {
+   const authority::FieldBranchTopology &topology =
+       fieldTransportAtlas.branch_topology();
+   candidate.arrivalPriority = priority;
+@@ -4529,6 +4530,35 @@ canonical_field_aligned_traces_and_events(
+                           : "different")
+                   << '\n';
+       };
++  // The staged slide-entry stop: a pending moving end whose entry crossing
++  // lies strictly inside the wall segment's slide and is reached later than
++  // the wall reaches it stops at that crossing, before entering. Only the
++  // moving trace ends, when it arrives, as at any conclusive crash.
++  const auto slideEntryStop =
++      [&](const std::size_t movingIndex, const std::size_t wallIndex,
++          const FieldAlignedCandidateTraceSegment &wallSegment,
++          const FieldAlignedArrivalMeasure &wallStart,
++          const std::size_t wallSegmentIndex, const bool wallIsProposal)
++      -> std::optional<FieldAlignedQueueEvent> {
++    const FieldAlignedTraceRuntime &moving = runtimes[movingIndex];
++    const auto entry = field_aligned_slide_entry_contact(
++        sourceMesh, priority, moving.proposal->segment, moving.arrival,
++        movingIndex, wallSegment, wallStart, wallIndex);
++    if (!entry.has_value() ||
++        !field_aligned_slide_entry_stops_moving_trace(*entry)) {
++      return std::nullopt;
++    }
++    FieldAlignedQueueEvent event(moving.proposal->segment.sourceFace);
++    event.kind = FieldAlignedQueueEventKind::Contact;
++    event.firstTrace = movingIndex;
++    event.secondTrace = wallIndex;
++    event.secondSegment = wallSegmentIndex;
++    event.secondIsProposal = wallIsProposal;
++    event.ordering = FieldAlignedArrivalOrdering::Later;
++    event.key = field_aligned_priority_key(priority, moving.arrival, movingIndex);
++    event.carrierLocus = entry->locus;
++    return event;
++  };
+ 
+   while (std::any_of(runtimes.begin(), runtimes.end(),
+                      [](const auto &runtime) { return runtime.active; })) {
+@@ -4577,6 +4607,24 @@ canonical_field_aligned_traces_and_events(
+                                {secondIndex, secondTrace.segments.size()},
+                                secondRuntime.proposal->segment,
+                                secondRuntime.arrival);
++        // A pending entry onto the other pending trace's slide, in either
++        // role: the struck segment is the wall's pending one.
++        if (stopAtLaterSlideEntry) {
++          auto stop = slideEntryStop(firstIndex, secondIndex,
++                                     secondRuntime.proposal->segment,
++                                     secondRuntime.arrival,
++                                     secondTrace.segments.size(), true);
++          if (!stop.has_value()) {
++            stop = slideEntryStop(secondIndex, firstIndex,
++                                  firstRuntime.proposal->segment,
++                                  firstRuntime.arrival,
++                                  firstTrace.segments.size(), true);
++          }
++          if (stop.has_value()) {
++            queue.push(std::move(*stop));
++            continue;
++          }
++        }
+         // Two pending segments that enter different faces at one interior
+         // point of their shared incoming edge cross there. With an
+         // inconclusive arrival this is the frozen symmetric case at an edge
+@@ -4687,6 +4735,20 @@ canonical_field_aligned_traces_and_events(
+                                  {wallIndex, wallSegmentIndex},
+                                  wallTrace.segments[wallSegmentIndex],
+                                  wallRuntime.segmentStarts[wallSegmentIndex]);
++          // A pending entry onto a laid slide of another trace. A wall that
++          // ended on a contact inside that segment may not reach the entry,
++          // so its last segment is not a slide wall here.
++          if (stopAtLaterSlideEntry && movingIndex != wallIndex &&
++              !wallTerminalContact.has_value()) {
++            if (auto stop = slideEntryStop(
++                    movingIndex, wallIndex, wallTrace.segments[wallSegmentIndex],
++                    wallRuntime.segmentStarts[wallSegmentIndex],
++                    wallSegmentIndex, false);
++                stop.has_value()) {
++              queue.push(std::move(*stop));
++              continue;
++            }
++          }
+           const auto contact =
+               classify_field_aligned_segment_contact_with_second_exit(
+                   topology, movingRuntime.proposal->segment,
+@@ -5175,7 +5237,8 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
+     FieldAlignedContactCensus *contactCensus = nullptr,
+     const FieldTraceArrivalPriority priority =
+         FieldTraceArrivalPriority::ArcLengthFiltered,
+-    FieldAlignedTraceScaleCensus *scaleCensus = nullptr) {
++    FieldAlignedTraceScaleCensus *scaleCensus = nullptr,
++    const bool stopAtLaterSlideEntry = false) {
+   if (scaleCensus != nullptr) *scaleCensus = FieldAlignedTraceScaleCensus{};
+   const Eigen::MatrixXi &sourceFaces = sourceMesh.F;
+   const std::size_t sourceVertexCount =
+@@ -5442,7 +5505,7 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
+ 
+   if (const auto tracingError = canonical_field_aligned_traces_and_events(
+           sourceMesh, fieldTransportAtlas, mandatoryByEdge, candidate,
+-          priority, scaleCensus);
++          priority, scaleCensus, stopAtLaterSlideEntry);
+       tracingError.has_value()) {
+     return *tracingError;
+   }
+@@ -6191,12 +6254,14 @@ FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
+     const SourceTopologyRegions &sourceAuthority,
+     const authority::FieldTransportAtlas &fieldTransportAtlas,
+     const std::vector<SurfaceCellRail> &authoritativeRails,
+-    const FieldTraceArrivalPriority priority) {
++    const FieldTraceArrivalPriority priority,
++    const bool stopAtLaterSlideEntry) {
+   try {
+     const auto canonical =
+         surface_cell_tracing_detail::canonical_field_aligned_candidate(
+             sourceMesh, sourceAuthority, fieldTransportAtlas,
+-            authoritativeRails, nullptr, priority);
++            authoritativeRails, nullptr, priority, nullptr,
++            stopAtLaterSlideEntry);
+     if (const auto *error =
+             std::get_if<FieldAlignedCurveNetworkError>(&canonical)) {
+       return FieldAlignedCurveNetworkBuildResult(*error);
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index ce3a3e93512ddd2830e07d95565642ddb9b4c65e..deb9aa93839fc044ba9fa1d604284032ce75f537 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -17628,6 +17628,158 @@ TEST(TraceTerminationCorrection,
+   }
+ }
+ 
++// The staged slide-entry stop on the prescribed sphere. Unstaged, the
++// diagnostic producer is the production network. Staged, each of the four
++// later entries strictly inside a laid wall slide (above) ends its trace at
++// the entry crossing, before the entered segment, with a terminal contact on
++// the wall's slide and one trace-intersection event on that carrier. What the
++// cut graph makes of the staged network is reported, not asserted.
++TEST(TraceTerminationCorrection,
++     PrescribedSphereStagedSlideEntryStopEndsTheFourLaterEntriesOnTheirWalls) {
++  using directional::geometry::FieldAlignedNetworkEventKind;
++  using directional::geometry::surface_cell_tracing_detail::
++      field_aligned_production_arrival_priority;
++  const Cp4cReachabilityObservation sphere =
++      observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
++  ASSERT_TRUE(sphere.sourceAuthority.has_value()) << sphere.report;
++  ASSERT_TRUE(sphere.atlas.has_value()) << sphere.report;
++  ASSERT_TRUE(sphere.network.has_value()) << sphere.report;
++
++  const auto unstaged = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
++      sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails,
++      field_aligned_production_arrival_priority());
++  ASSERT_TRUE(unstaged);
++  EXPECT_EQ(sphere.network->semantic_digest(),
++            unstaged.value().semantic_digest());
++
++  const auto staged = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
++      sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails,
++      field_aligned_production_arrival_priority(), true);
++  ASSERT_TRUE(staged) << directional::geometry::
++                             field_aligned_curve_network_error_code_name(
++                                 staged.error().code);
++  const FieldAlignedCurveNetwork &network = staged.value();
++  const auto &traces = network.candidate_traces();
++  const auto &unstagedTraces = unstaged.value().candidate_traces();
++  ASSERT_EQ(24U, traces.size());
++  ASSERT_EQ(24U, unstagedTraces.size());
++
++  struct SlideEntry {
++    std::size_t moving, movingSegment, wall, wallSegment, first, second;
++    std::int64_t numerator, denominator;
++  };
++  const std::array<SlideEntry, 4> entries{{
++      {17U, 8U, 0U, 6U, 6U, 8U, 4038890029339747LL, 4503599627370496LL},
++      {20U, 8U, 1U, 6U, 16U, 21U, 4038890029339747LL, 4503599627370496LL},
++      {5U, 8U, 21U, 6U, 33U, 34U, 1009722507334937LL, 1125899906842624LL},
++      {8U, 8U, 22U, 6U, 45U, 46U, 464709598030749LL, 4503599627370496LL}}};
++  for (const SlideEntry &entry : entries) {
++    const auto &moving = traces[entry.moving];
++    const auto &wall = traces[entry.wall];
++    ASSERT_EQ(entry.moving, moving.id.index());
++    ASSERT_EQ(entry.wall, wall.id.index());
++    // Unstaged, the moving trace enters the segment and goes on.
++    EXPECT_LT(entry.movingSegment,
++              unstagedTraces[entry.moving].segments.size());
++    EXPECT_EQ(entry.movingSegment, moving.segments.size());
++    ASSERT_TRUE(moving.terminalContact.has_value()) << entry.moving;
++    EXPECT_FALSE(moving.terminalPoint.has_value());
++    EXPECT_FALSE(moving.terminalSingularity.has_value());
++    EXPECT_FALSE(moving.terminalBarrier.has_value());
++    const auto &record = *moving.terminalContact;
++    EXPECT_EQ(wall.id, record.struckTrace);
++    EXPECT_EQ(entry.wallSegment, record.struckSegmentIndex);
++    ASSERT_TRUE(record.carrierLocus.has_value());
++    EXPECT_EQ(entry.first, record.carrierLocus->edge.first().index());
++    EXPECT_EQ(entry.second, record.carrierLocus->edge.second().index());
++    EXPECT_EQ(exact_ratio(entry.numerator, entry.denominator),
++              record.carrierLocus->parameter.value);
++    ASSERT_LT(entry.wallSegment, wall.segments.size());
++    EXPECT_TRUE(wall.segments[entry.wallSegment].edgeTransitEntry.has_value());
++    EXPECT_TRUE(wall.segments[entry.wallSegment].edgeTransitExit.has_value());
++    std::size_t stops = 0U;
++    for (const auto &event : network.events()) {
++      if (event.kind != FieldAlignedNetworkEventKind::TraceIntersection ||
++          event.sourceEdge != record.carrierLocus->edge) {
++        continue;
++      }
++      const auto role = [&](const auto &id) {
++        const auto found = std::find_if(
++            event.incidences.begin(), event.incidences.end(),
++            [&](const auto &incidence) { return incidence.trace == id; });
++        return found == event.incidences.end()
++                   ? std::optional<FieldAlignedTraceEventRole>{}
++                   : std::optional<FieldAlignedTraceEventRole>{found->role};
++      };
++      stops += role(moving.id) == FieldAlignedTraceEventRole::Terminal &&
++                       role(wall.id) == FieldAlignedTraceEventRole::Interior
++                   ? 1U
++                   : 0U;
++    }
++    EXPECT_EQ(1U, stops) << entry.moving;
++  }
++
++  std::size_t slideStops = 0U;
++  std::size_t slideSegments = 0U;
++  std::ostringstream carrierEnds;
++  for (const auto &trace : traces) {
++    for (const auto &segment : trace.segments) {
++      slideSegments += segment.edgeTransitEntry.has_value() ||
++                               segment.edgeTransitExit.has_value()
++                           ? 1U
++                           : 0U;
++    }
++    if (!trace.terminalContact.has_value() ||
++        !trace.terminalContact->carrierLocus.has_value()) {
++      continue;
++    }
++    carrierEnds << (carrierEnds.tellp() > 0 ? "," : "") << trace.id.index();
++    const std::size_t struck = trace.terminalContact->struckTrace.index();
++    const std::size_t segment = trace.terminalContact->struckSegmentIndex;
++    slideStops += struck < traces.size() &&
++                          segment < traces[struck].segments.size() &&
++                          traces[struck].segments[segment].edgeTransitExit
++                              .has_value()
++                      ? 1U
++                      : 0U;
++  }
++  std::ostringstream receipt;
++  receipt << "SphereStagedSlideEntryStop traces=" << traces.size()
++          << " events=" << network.events().size()
++          << " slideStops=" << slideStops << " carrierEnds=" << carrierEnds.str()
++          << " slideSegments=" << slideSegments << " cutGraph=";
++  const auto cutGraph = directional::geometry::SurfaceCutGraph::make(
++      sphere.mesh.F, static_cast<std::size_t>(sphere.mesh.V.rows()),
++      *sphere.sourceAuthority, *sphere.atlas, network);
++  if (cutGraph) {
++    receipt << "built";
++  } else {
++    receipt << directional::geometry::surface_cut_graph_error_code_name(
++                   cutGraph.error().code)
++            << " rotationReason=";
++    if (cutGraph.error()
++            .originatingRotationSystemInconsistencyReason.has_value()) {
++      receipt << directional::geometry::rotation_system_inconsistency_reason_name(
++          *cutGraph.error().originatingRotationSystemInconsistencyReason);
++    } else {
++      receipt << "none";
++    }
++    receipt << " trace=";
++    if (cutGraph.error().trace.has_value()) {
++      receipt << cutGraph.error().trace->index();
++    } else {
++      receipt << '-';
++    }
++    receipt << " sourceEdge=";
++    if (cutGraph.error().sourceEdge.has_value()) {
++      receipt << source_edge_locus(*cutGraph.error().sourceEdge);
++    } else {
++      receipt << '-';
++    }
++  }
++  std::cout << receipt.str() << '\n';
++}
++
+ // What the producer's real-piece decomposition makes of every trace on the
+ // prescribed sphere, before any graph reads it. Each segment is one face
+ // piece, a face piece then a slide, a slide alone, or rejected; each whole

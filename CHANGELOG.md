@@ -1,3 +1,7 @@
+## 2026-11-22 — TB-REV-159 adversarial continuation; staged CB-177 frozen
+
+[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_159_Adversarial_Review_20261122.md): TB159 PASS upheld and every TB-REV-158 receipt prediction held. Definition turn DEFN-159A withdrawn (no reachable exit: its topology items need a run). T5 closed by argument: accepted pending-pair crossings already strike pending segments, the production arrival-keyed sweep orders any wall-ending event first, and the consumers reject a dangling struck index. A 24-row premise-assertion inventory shows an unconditional switch contradicts pinned sphere assertions (rows 393/648/858/971/972), so CB-177 is an exact staged diff: off by default, diagnostic-only, plus gate row 978 asserting the four sphere stops. Next: CB-177 → TB-EXEC-160 → TB-REV-160 (freezes activation CB-178).
+
 ## 2026-11-22 — TB159 immutable slide-entry stop-predicate gate
 
 ## 2026-11-22 — TB-REV-159 independent gate review; CB-177 STOP

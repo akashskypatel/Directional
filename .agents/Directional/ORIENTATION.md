@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-22 UTC; [TB-REV-159 independent review](Architecture_M6_CP3_TB159_P13_Slide_Entry_Stop_Predicate_Full_Gate_Independent_Review_20261122.md)):** TB159 immutable gate 977/977 and three-case census independently verified; the new two-role slide receipt has six BunnyRandom pending-wall occurrences. Producer CB-177 is STOP pending T5 lifetime proof, V3b canonical event reaching and measurable sphere topology predictions. Next `M6-CP3-DEFN-159A-P13-SLIDE-STOP-OWNERSHIP-AND-REACHABILITY` (definition only). Stable 66/17/49, debt1, deferred81; sphere χ6 vs χ2; Amendment 14 and CP3/497/D0/H4 hold.
+**Current currency (2026-11-22 UTC; [TB-REV-159 adversarial continuation](Architecture_M6_CP3_TB_REV_159_Adversarial_Review_20261122.md)):** TB159 977/977 and census 3/3 upheld; DEFN-159A withdrawn; T5 closed by argument; CB-177 frozen as an exact staged (off-by-default, diagnostic-only) slide-entry stop with gate row 978. Next CB-177 → TB-EXEC-160 → TB-REV-160 (freezes activation CB-178). No product promotion.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-22 UTC; [TB-REV-159](Architecture_M6_CP3_TB159_P13_Slide_Entry_Stop_Predicate_Full_Gate_Independent_Review_20261122.md)):** TB159 977/977 PASS, 976/976 normalized baseline match, census 3/3 unchanged. Receipt: 564 gate lines and 18 census lines (three new reversed-role); six BunnyRandom pending-wall cases are not a lifetime proof. CB-177 STOP; next definition `M6-CP3-DEFN-159A-P13-SLIDE-STOP-OWNERSHIP-AND-REACHABILITY`. Stable 66/17/49, debt1, deferred81; sphere χ6 vs χ2; Amendment 14 and CP3/497/D0/H4 hold.
+**Currency (2026-11-22 UTC; [TB-REV-159 adversarial](Architecture_M6_CP3_TB_REV_159_Adversarial_Review_20261122.md)):** TB159 977/977 PASS, census 3/3; all 582 slide receipts Later, interior, stop-record constructible. Activation would contradict pinned sphere assertions (rows 393/648/858/971/972), so the stop is staged first (CB-177, row 978).
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.

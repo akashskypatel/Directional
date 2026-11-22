@@ -1,5 +1,7 @@
 # TB-REV-159 — independent slide-entry stop-predicate full-gate review (2026-11-22 UTC)
 
+> **Continued after handover (2026-11-22):** the [TB-REV-159 adversarial record](Architecture_M6_CP3_TB_REV_159_Adversarial_Review_20261122.md) withdraws successor `M6-CP3-DEFN-159A-P13-SLIDE-STOP-OWNERSHIP-AND-REACHABILITY` (no reachable exit) and replaces it with exact staged `M6-CP3-CB-177-P13-STAGED-SLIDE-ENTRY-STOP` → TB-EXEC/REV-160.
+
 ## Situation
 
 **Qualified PASS of the immutable TB159 test gate; STOP on the proposed CB-177 producer switch.** This Review independently checks the accepted gate and census evidence. It does not create or execute producer events. An accepted receipt is not an authorization to change runtime topology. The single next turn is **`M6-CP3-DEFN-159A-P13-SLIDE-STOP-OWNERSHIP-AND-REACHABILITY`** (definition and plan only). Do not begin it inside this Review.

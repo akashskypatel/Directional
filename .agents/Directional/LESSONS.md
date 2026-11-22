@@ -260,6 +260,12 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - Share a predicate across layers by moving it into the lower layer; never tell a producer to "reuse" a consumer function it cannot call.
 - Per-row Euler predictions come from a receipt TB; a compile-only CB cannot be asked to derive them.
 
+**TB-REV-159 (adversarial continuation)**
+
+- Withdraw a definition turn whose remaining items need a run; freeze the staged measurement instead (a DEFN cannot measure).
+- Before calling a lifetime hazard new, find the accepted path that already makes the same reference and the consumer check that fails closed on it.
+- Before activating a switch on a witnessing fixture, inventory every pinned or premise assertion on that fixture; if any would move, stage the switch off by default with a receipt row.
+
 ## Geometry, topology, and mathematical obligations
 
 - **Use the exact complex named by the claim.** Source triangles, split face fragments, embedded arcs,

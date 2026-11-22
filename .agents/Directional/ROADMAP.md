@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB159 scoped 977/977 independently upheld, three-case census unchanged, CP2 accepted 491/491; six pending-wall T5 records and V3b remain unproved; sphere χ+4/four contacts unresolved; CP3/497/D0/H4 held) · **Reviewed:** [TB-REV-159](Architecture_M6_CP3_TB159_P13_Slide_Entry_Stop_Predicate_Full_Gate_Independent_Review_20261122.md) (qualified gate PASS, producer CB-177 STOP) · **Next:** `M6-CP3-DEFN-159A-P13-SLIDE-STOP-OWNERSHIP-AND-REACHABILITY` (definition only) · **Later:** CB-177 after exact plan proof, slide-start subdivision R1, M7 and M8.
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB159 scoped 977/977 upheld; T5 closed; staged slide-entry stop CB-177 frozen with row 978, activation CB-178 after TB-REV-160; sphere χ+4 unresolved; CP3/497/D0/H4 held) · **Reviewed:** [TB-REV-159](Architecture_M6_CP3_TB159_P13_Slide_Entry_Stop_Predicate_Full_Gate_Independent_Review_20261122.md) (qualified gate PASS, producer CB-177 STOP) · **Next:** `M6-CP3-DEFN-159A-P13-SLIDE-STOP-OWNERSHIP-AND-REACHABILITY` (definition only) · **Later:** CB-177 after exact plan proof, slide-start subdivision R1, M7 and M8.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
