@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb178-receipt-apply-20261122-a",
-  "mailbox_key": "m6-cp3-cb178-receipt-apply",
-  "file_id": "1zh9_nLX1E4vi1aZwJl2Srm8KnGESB2TR",
-  "patch_sha256": "206ed2229d66d8bb365078245de21ab8f0d2952dccebc2746a5af16ff5f05364",
-  "base_sha": "a8a97be9ca46d3dabe218bb6409e93fe25ab0e2f",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(cp3): publish staged slide-entry downstream receipt",
-  "retention_days": 14
+  "operation": "compile",
+  "request_id": "m6-cp3-cb178-compile-20261122-a",
+  "mailbox_key": "m6-cp3-cb178-compile",
+  "source_sha": "d9d685edf372573c6b07a3be06dc75e2bbec67e7",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb178-staged-receipt"
 }
