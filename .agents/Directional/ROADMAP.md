@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB-EXEC-166 984/984, CP2 accepted 491/491, new 179-line receipt; staged sphere plan still stops at multi-cut face `6-8-9`; CP3/497/D0/H4 held) · **Reviewed:** [TB-REV-166 adversarial](Architecture_M6_CP3_TB_REV_166_Adversarial_Review_20261122.md): exact CB-186 helper next; [TB-REV-166](Architecture_M6_CP3_TB_REV_166_Staged_Multi_Cut_Face_Receipt_Independent_Review_20261122.md) K5 radial-port co-trace absent · **Next:** `M6-CP3-CB-186-P13-EXACT-BOUNDARY-WALK-CORNER-PARTITION-HELPER` (pure exact helper, compile-only) · **Later:** separate CB-187 reader, TB-EXEC/REV-167, conditional activation, M7 and M8.
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB167 989/989 PASS, accepted CP2 491/491; face-cut helper still unwired; staged sphere plan still stops at multi-cut face `6-8-9`; CP3/497/D0/H4 held) · **Reviewed:** [TB-REV-167 ongoing](Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md) accepts pure helper evidence, rejects candidate CB-187 v1 for misreading edge-only slide segments · **Next:** finish TB-REV-167 exact reader review and mandatory closeout; candidate CB-187 v2 remains unapproved · **Later:** separate CB-187 reader Code + Build, TB168 execution/review, conditional activation, M7 and M8.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
