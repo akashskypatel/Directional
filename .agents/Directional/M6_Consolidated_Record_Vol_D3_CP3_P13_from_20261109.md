@@ -5866,3 +5866,22 @@ The two patches stack on HEAD (`git apply --check` in order). Stop on any preche
   - the `TraceIntersection` event's `sourceEdge` equals the locus edge (CB168D rejects anything else);
   - the predicate is `first_field_aligned_carrier_contact` with both slide flags false and `faces=different`;
   - same-face merges are left to O48 (CB171/CB172).
+
+
+## Additional folded document index — TB-REV-167 (2026-11-22 UTC)
+
+This entry preserves a superseded TB165 in-progress note. Its pending runs are not final execution outcomes. The later TB165 execution report and review remain authoritative. Do not replay the old turn instructions.
+
+| Original file | Original lines | Role | SHA-256 (original bytes) |
+|---|---:|---|---|
+| [Architecture_M6_CP3_TB165_Same_Turn_Continuation_20261122.md](#architecture_m6_cp3_tb165_same_turn_continuation_20261122md) | 5 | Historical TB165 pending-run continuation (superseded by verified TB165 gate) | `2be558cbec2e987f60266e6adf6f616782b115b39998781e37dacf6b0e549bc2` |
+
+### Architecture_M6_CP3_TB165_Same_Turn_Continuation_20261122.md
+
+```markdown
+# TB165 same-turn continuation — current turn remains IN_PROGRESS
+
+Canonical turn `M6-CP3-TB-EXEC-165-P13-NEAREST-CHORD-SEED-FULL-GATE`; do not start its successor. Immutable GMP source `5b5cdf15a670236635d74a15f3791422b182ffe0`; compiled artifact `14760674864`, ZIP SHA256 `e1717c5959346978cff3fee531fb387c26a296572cdee6698c2017e973b9bec3`. TB165 full-gate run `45041398551` (984 rows, request commit `316eb9b5bd96b5c3d61edec8ca9e660e047a3633`, mailbox key `m6-cp3-tb165-full-gate`), census run `45041524093` (3 cases, request commit `2346aa97b0465a9b44c21d9a5b0b3429d3120b17`, key `m6-cp3-tb165-census`). Started remotely; check terminal states and evidence, no results verified as of this record. Full manifest SHA256 `8d56ee1d911daa1bd3cab9f824e79131ce9f75bd7a57b31b5882d3f4f52b1e69`; census manifest SHA256 `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`. TB164 baseline full artifact `14757020531`, census `14757007212`. Follow `Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md` rules 1–5 exactly; compare case ledgers/logs under N1–N4, row979 seed and plan receipts verbatim. Any gate failure means typed STOP and Review; preserve fail-closed semantics. No source/test/selector/manifest edits or recompilation. If tests remain pending at response boundary, stay IN_PROGRESS. On success, commit evidence/tracker/handoff updates, publish final STATUS COMPLETE with authorized `M6-CP3-TB-REV-165-P13-NEAREST-CHORD-SEED-FULL-GATE`. No successor work in this session.
+
+Source snapshot: run `45041853656`, source control-plane commit `ec1e68eaf4c1f7be35e73edbca973cb985cc41f6`, artifact `14762086886`. This snapshot commit is not the semantic compiled source SHA. Beginning-of-turn read-mode selection was delayed; workflow and snapshot checks later completed. See downloadable chat continuation for detailed evidence and instructions.
+```
