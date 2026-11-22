@@ -1,3 +1,7 @@
+## 2026-11-22 — TB-REV-167 independent helper gate re-check (same-turn WIP)
+
+[Review WIP](.agents/Directional/Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md) independently verified the TB167 helper gate: 989/989 PASS, CP2 491/491, membership 1070, 984 predecessor N1–N3 logs unchanged, all five new cases PASS; both result archives' complete checksum manifests valid. No stable regression or product promotion. The exact CB-187 switch is not yet frozen. Resume this Review; no successor work began.
+
 ## 2026-11-22 — TB-EXEC-167 immutable face-cut corner helper full gate PASS
 
 [TB167 report](.agents/Directional/Architecture_M6_CP3_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Execution_Report_20261122.md): [run 45063416334](https://github.com/akashskypatel/Directional/actions/runs/45063416334), CB-186 source `b500c425063dbc5c09f13cd08b811cacba0e3afe`, immutable GMP/GMPXX package `14769469723`; result `14770748728` (`446eff8a01b4895030a3c969896f97976b57dcb03624a03acf88a2308ad09f93`). **989/989 PASS**, CP2 491/491, membership 1070, rows 1–984 exactly match TB166 under only N1–N3 and five new helper cases PASS. No census, compile/relink/benchmark or source/test/manifest/selector change. Existing sphere plan and cut-search failures persist; no production promotion. Stable 66/17/49, debt1, deferred81. Next independent TB-REV-167; no successor work begun.

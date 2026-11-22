@@ -1,13 +1,13 @@
-## CURRENT — TB-EXEC-167 complete; independent TB-REV-167 next (2026-11-22 UTC)
+## CURRENT — TB-REV-167 independent review in progress (2026-11-22 UTC)
 
 - [x] CB-186 pure face-cut corner helper and five test cases compiled, source `b500c425063dbc5c09f13cd08b811cacba0e3afe`, package `14769469723`, GMP/GMPXX.
 - [x] TB-EXEC-167: [TB167 report](.agents/Directional/Architecture_M6_CP3_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Execution_Report_20261122.md); 989/989 PASS, CP2 491/491, 1070 membership, TB166 rows 1–984 unchanged under N1–N3, last five PASS, no census or rebuild.
-- [ ] **1 NEXT** `M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE`: independent re-verification; only Review can freeze the CB-187 reader switch.
+- [~] **CURRENT SAME TURN** `M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE`: 989/989, 491/491, membership 1070, 984 N1–N3 equality and five helper tests independently rechecked ([review WIP](.agents/Directional/Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md)). Exact CB-187 reader diff and tests, consolidation and closeout remain. Do not start CB-187.
 - [ ] Prospective: CB-187 → TB-EXEC/REV-168 → CB-188 activation → TB-EXEC/REV-169 → CB-189 V3b → R1 → O48. Do not advance this turn.
 - Held: G2/G3 and RA-275 S4a, `SourceFaceCarriesMultipleTraceCuts` at `6-8-9`, sphere production `CutSearchExhaustedBeforeCellularity`, CP3/497/D0/H4. Stable 66/17/49, debt1, deferred81.
 
 ```
-NEXT_TURN: M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE
+CURRENT_TURN: M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE
 Owner: Independent Review
 Authority: .agents/Directional/Architecture_M6_CP3_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Execution_Report_20261122.md
 Run: 45063416334; result artifact 14770748728; source b500c425063dbc5c09f13cd08b811cacba0e3afe

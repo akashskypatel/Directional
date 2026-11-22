@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-22 UTC; TB-REV-166 adversarial continuation, [L1–L8](Architecture_M6_CP3_TB_REV_166_Adversarial_Review_20261122.md)):** [TB166 full gate](Architecture_M6_CP3_TB166_P13_Staged_Multi_Cut_Face_Receipt_Full_Gate_Execution_Report_20261122.md) passed **984/984**, CP2 **491/491**, with 1065 membership. All prior rows agree under N1–N3 and **179** new row979 receipts satisfy the frozen rules. The staged sphere plan remains at `SourceFaceCarriesMultipleTraceCuts` face `6-8-9`; production sphere remains at cut-search exhaustion. [TB-REV-166 independent review](Architecture_M6_CP3_TB_REV_166_Staged_Multi_Cut_Face_Receipt_Independent_Review_20261122.md) discharges K5 edge-supported co-trace for this witness (all 24 outgoing port carriers are opposite-edge face departures); CB-186 exact corner partition helper is next, followed by separate CB-187 reader switch. No selector, CP3/497/D0/H4 or production promotion.
+**Current currency (2026-11-22 UTC; TB-REV-167 independent Review in progress):** [TB167](Architecture_M6_CP3_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Execution_Report_20261122.md) passed **989/989**, accepted CP2 **491/491**, membership **1070**. [Independent Review WIP](Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md) rehashed both result archives and all prior 984 rows, which agree under N1–N3. Five new helper tests pass; helper remains unwired. The exact CB-187 reader switch is not frozen or started. The staged sphere plan still fails at `SourceFaceCarriesMultipleTraceCuts` face `6-8-9`, while production remains at cut-search exhaustion. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 and selector not promoted.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-22 UTC; TB-REV-166):** immutable 984/984 PASS and 491/491 CP2. The 179 new raw row979 receipts measure 136 visits across 55 multi-cut faces, 24 ports, 10 singular arrivals and 8 node valences. Printed first-port edges do not match the 10 incoming slide edges at the same nodes. Independent TB-REV-166 found no edge-supported departing port among 24; the specific K5 overlap is absent. Exact multi-cut plan corner partition remains unimplemented. Stable 66/17/49, debt1, deferred81. No production acceptance.
+**Currency (2026-11-22 UTC; TB-REV-167 same-turn WIP):** 989/989 PASS; CP2 491/491; membership 1070. 984 predecessor rows unchanged under N1–N3, five new synthetic helper tests PASS. CB-187 exact reader work is not frozen; the helper is not connected to production. Sphere failures persist. Stable 66/17/49, debt1, deferred81; no CP3/497/D0/H4 promotion.
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.
@@ -124,13 +124,15 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority — `M6-CP3-CB-186-P13-FACE-CUT-CORNER-PARTITION-HELPER` (Code + Build, compile only):** the [TB-REV-166 adversarial continuation](Architecture_M6_CP3_TB_REV_166_Adversarial_Review_20261122.md) withdrew the prose CB-186 and froze the exact diff `Architecture_M6_CP3_CB186_P13_Face_Cut_Corner_Partition_Helper_Exact.diff` (`a89c7a9c…b4b7`). It adds the pure, unwired `FaceCutCornerPartition.h`, a local boundary-end orbit walk that accepts interior ends and orders ties at a shared point geometrically, plus five gated tests. Next come TB-EXEC-167 (989 rows, manifest `5c084199…8c50`) and TB-REV-167, which freezes the exact CB-187 reader switch (every fragment orbit keyed).
+**Current priority — finish `M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE` (Review only):** [independent review WIP](Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md) verifies TB167's five helper tests and exact 989/989 gate. Freeze no CB-187 reader switch until its exact source-path diff and non-vacuous reader tests are reviewed. Preserve split arc ends, edge-only exclusions, corner-free orbit keys and typed error loci. The stage and production sphere failures remain open.
 
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).
 
 ## 8. Recurring defect patterns
+
+TB-REV-167: synthetic helper PASS results do not exercise the production reader. Require independent source-path and downstream certificate checks before connecting the helper. This is an application of existing non-vacuity and single-writer lessons, not a new stable regression.
 
 TB-REV-166: an opposite-edge face departure must not be confused with an edge-supported singular port. `FieldTransportAtlas` attaches edge ports to radial edges containing the source vertex and `SurfaceCellTracing` sets `edgePortCarrier` only for these attachments. All 24 TB166 departures exclude the source vertex, so the K5 edge-port co-trace does not occur; a later matching radial-edge arrival must still cause A2a STOP. This applies existing source-authority/identity and non-vacuity lessons, not a new generalized rule.
 
