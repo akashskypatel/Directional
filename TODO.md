@@ -1,9 +1,34 @@
-## CURRENT — TB-REV-166 complete; CB-186 pure exact helper next (2026-11-22 UTC)
+## CURRENT — TB-REV-166 adversarial: prose CB-186 withdrawn; exact CB-186 helper next (2026-11-22 UTC)
+
+- [x] TB-REV-166 adversarial continuation ([record](.agents/Directional/Architecture_M6_CP3_TB_REV_166_Adversarial_Review_20261122.md), L1–L8). Upheld: TB166 and the K5 edge-port discharge (24/24 port carriers exclude their vertex; no shared slide edge). Withdrawn: the prose CB-186, because it would reject the sphere's own interior ends (10 slits; arcs 11/12 and 16/17 split inside faces), ties at singular corners (6-8-9) and corner-free strips (`RegionSourceFaceOwningFragmentMissing`), and its tests were ungated. Replaced by the exact diff `a89c7a9c…b4b7` and the 989-row TB167 manifest `5c084199…8c50`.
+- [ ] **1 NEXT** `M6-CP3-CB-186-P13-FACE-CUT-CORNER-PARTITION-HELPER`: apply the exact diff, compile only.
+- [ ] 2 `M6-CP3-TB-EXEC-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE`: 989 rows; rows 1–984 = TB166 under N1–N3; no census.
+- [ ] 3 `M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE`: freeze the exact CB-187 reader switch.
+- [ ] Prospective: 4 CB-187 → 5 TB-EXEC/REV-168 → 6 CB-188 activation → 7 TB-EXEC/REV-169 → 8 CB-189 V3b → 9 R1 → O48.
+
+```
+NEXT_TURN: M6-CP3-CB-186-P13-FACE-CUT-CORNER-PARTITION-HELPER
+Owner: implementation agent (Code + Build, compile only)
+Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_166_Adversarial_Review_20261122.md (L1–L8); supersedes the prose CB-186 in the TB-REV-166 independent review
+Apply exactly: .agents/Directional/Architecture_M6_CP3_CB186_P13_Face_Cut_Corner_Partition_Helper_Exact.diff
+  SHA-256 a89c7a9ce54bfea2f893868550fe5250e4bf4aaa5f3db72da0951cd8a01eb4b7 (+400/−0)
+  new src/geometry/FaceCutCornerPartition.h -> cea681185d69a83001999360ea37d173b6780c2a7ed3adac3caa42e49016ce4e (pure, unwired)
+  tests/FieldAlignedCurveNetworkTests.cpp: c62c51b0…ffe2 -> 8ccfc38b237322e65962644593a81308142bee9f963ab3330784c094a98c1e24
+Build: dispatcher compile, GMP/GMPXX targets incl. directional_surface_cell_producer_tests, runtimeExecution=false
+Then: M6-CP3-TB-EXEC-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE
+  manifest .agents/Directional/gates/Architecture_M6_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Case_Manifest.tsv (5c0841993d9b9c5537a3b78a3f7df39e61ee82e09b1ce9b4be3f4510ff088c50, 989 rows)
+  rules: 989/989 PASS; CP2 491/491; membership 1070; rows 1–984 = TB166 result 14765434765 under N1–N3 (row 979 included), zero allowance; rows 985–989 PASS; no census
+  -> M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE (freeze exact CB-187 reader switch)
+On failure/blocker: hash mismatch, compile failure or any helper-test failure -> STATUS BLOCKED, report verbatim, return to Review
+Do not: edit beyond the diff; wire the helper; change build_fragment_corner_incidence; edit tests to pass; change other selectors/manifests; activate; promote CP3/497/D0/H4
+```
+
+## HISTORY — TB-REV-166 independent review; prose CB-186 (withdrawn by the adversarial continuation) (2026-11-22 UTC)
 
 - [x] `M6-CP3-CB-185-P13-STAGED-MULTI-CUT-FACE-RECEIPT`: test-only receipt compiled at `2c1ec9ab370ed0e9d533d7694e03b486916b9b1a`, GMP/GMPXX package `14765117630` ([record](.agents/Directional/Architecture_M6_CP3_CB185_P13_Staged_Multi_Cut_Face_Receipt_Code_Build_Record_20261122.md)).
 - [x] `M6-CP3-TB-EXEC-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE`: [run 45052316075](https://github.com/akashskypatel/Directional/actions/runs/45052316075), result `14765434765` ZIP SHA-256 `9826a9219fc73b691048cff02913ebd500dc842df73700aa39eaf3126316f044`. **984/984 PASS; CP2 491/491; 1065 membership; 983/983 unchanged rows N1–N3; row979 179 new verbatim lines; all six frozen rules PASS**. No census, rebuild or product edit. [Report](.agents/Directional/Architecture_M6_CP3_TB166_P13_Staged_Multi_Cut_Face_Receipt_Full_Gate_Execution_Report_20261122.md) and [raw evidence](.agents/Directional/evidence/Architecture_M6_CP3_TB166_P13_Staged_Multi_Cut_Face_Receipt_Raw_20261122.txt).
 - [x] `M6-CP3-TB-REV-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE`: [Architecture_M6_CP3_TB_REV_166_Staged_Multi_Cut_Face_Receipt_Independent_Review_20261122.md](.agents/Directional/Architecture_M6_CP3_TB_REV_166_Staged_Multi_Cut_Face_Receipt_Independent_Review_20261122.md) independently verified 984/984, 179 receipt lines and K5. No departing port is edge-supported; 10 arrivals terminate at singular nodes. No source/runtime edit.
-- [ ] **NEXT** `M6-CP3-CB-186-P13-EXACT-BOUNDARY-WALK-CORNER-PARTITION-HELPER`: pure exact boundary-walk helper with 6-8-9, nested-chord and strict invalid-negative cases; GMP compile-only. Separate `M6-CP3-CB-187-P13-STAGED-MULTI-CUT-CORNER-READER-SWITCH` is prospective, not part of this turn.
+- [ ] ~~NEXT~~ WITHDRAWN (L2–L7) `M6-CP3-CB-186-P13-EXACT-BOUNDARY-WALK-CORNER-PARTITION-HELPER`: pure exact boundary-walk helper with 6-8-9, nested-chord and strict invalid-negative cases; GMP compile-only. Separate `M6-CP3-CB-187-P13-STAGED-MULTI-CUT-CORNER-READER-SWITCH` is prospective, not part of this turn.
 - [ ] Prospective only: CB-187 → TB-EXEC/REV-167 → CB-188 activation → TB-EXEC/REV-168 → CB-189 V3b → R1 → O48.
 
 Sphere staged plan remains `SourceFaceCarriesMultipleTraceCuts` on face `6-8-9`; production sphere still fails `CutSearchExhaustedBeforeCellularity`. K5 edge-supported overlap discharged for the current witness; carried G2/G3, RA-274/RA-275 S4a, Y7, Z5, X4/H5, TB-REV-159-U3/V3–V11, W3/W4/W6/W7, RA-281 F1–F3, Amendment 14, O47/C5/O48/O49 and sphere χ+4. Stable **66/17/49**, debt **1**, deferred **81**. CP3/497/D0/H4 remain unpromoted.

@@ -342,6 +342,9 @@ This document records **reusable failure-derived engineering lessons**, not an e
   failed it on arm64 from identical source. `atan2` plus a tolerance decided exact ties (branches lying
   exactly on star edges), and FMA contraction moved the outcome. RA-175 read the split as a stale
   fixture. Compute the exact answer first; neither platform is the oracle (RA-176). Attribute a split by changing one file's flags through the build system and confirming the change in the built object (ninja ≥1.13 silently rebuilds a hand-replaced object). List the affected rows by tracing fixture accessors, not by literal grep (RA-179).
+- Before freezing a replacement for a reader, read every check the consumer applies to that reader's output. The region certificate needs a key for each fragment orbit, including strips that touch no corner, not only the corner owners (TB-REV-166 adversarial L3).
+- Check a shape premise such as "every piece has two boundary ends" against every visit in the receipt. Terminal slits and arcs split inside a face are normal. A labelling that is local to each boundary end needs no special case for them (L4).
+- Check a tie rule against the required positive cases before freezing it. Cuts sharing a boundary point are ordered exactly by where their other ends lie (L5).
 
 ## Diagnostics, classifiers, and causal investigation
 

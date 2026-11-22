@@ -40,11 +40,31 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Mandatory next turn
 
-- **Authority:** [TB-REV-166 independent K5 review](Architecture_M6_CP3_TB_REV_166_Staged_Multi_Cut_Face_Receipt_Independent_Review_20261122.md), [TB166 full-gate execution report](Architecture_M6_CP3_TB166_P13_Staged_Multi_Cut_Face_Receipt_Full_Gate_Execution_Report_20261122.md), [179 exact row979 lines](evidence/Architecture_M6_CP3_TB166_P13_Staged_Multi_Cut_Face_Receipt_Raw_20261122.txt) and [TB-REV-165 adversarial decision map](Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md#tb-rev-166-decision-map).
-- **NEXT:** `M6-CP3-CB-186-P13-EXACT-BOUNDARY-WALK-CORNER-PARTITION-HELPER` — separate **Code + Build** turn. Implement the *pure* exact boundary-walk corner-partition helper; add focused positive and invalid-negative guards; compile with GMP/GMPXX via approved workflow, **no Directional runtime and no production reader activation**.
-  - Exact preconditions and falsifiers: [Architecture_M6_CP3_TB_REV_166_Staged_Multi_Cut_Face_Receipt_Independent_Review_20261122.md](Architecture_M6_CP3_TB_REV_166_Staged_Multi_Cut_Face_Receipt_Independent_Review_20261122.md). One canonical face-boundary walk must preserve RA-274 `turn` sidedness; treat crossings, ties, malformed source support, missing or conflicting orbit ownership, and radial edge co-trace as typed STOP. The `6-8-9` mixed FE/E/F case and nested opposite-face chords are required positive cases.
-  - Only after the independent CB-186 package may the separate `M6-CP3-CB-187-P13-STAGED-MULTI-CUT-CORNER-READER-SWITCH` wire `build_fragment_corner_incidence` to arc face pieces, compile-only. TB-EXEC/REV-167 must independently prove a staged plan before CB-188 activation. No successor work starts in this Review.
-  - Preserve 984/984, CP2 491/491, stable 66/17/49, debt1, deferred81, 497/CP3/D0/H4 unpromoted; production sphere still fails closed.
+- **Authority:** [TB-REV-166 adversarial continuation](Architecture_M6_CP3_TB_REV_166_Adversarial_Review_20261122.md) (L1–L8), which upholds TB166 and the K5 discharge of the [independent review](Architecture_M6_CP3_TB_REV_166_Staged_Multi_Cut_Face_Receipt_Independent_Review_20261122.md) and **withdraws its prose CB-186** (not exact; would reject interior ends, ties at singular corners and corner-free strips on the sphere witness itself).
+- **NEXT:** `M6-CP3-CB-186-P13-FACE-CUT-CORNER-PARTITION-HELPER` (Code + Build, compile only). Apply exactly `Architecture_M6_CP3_CB186_P13_Face_Cut_Corner_Partition_Helper_Exact.diff`, SHA-256 `a89c7a9ce54bfea2f893868550fe5250e4bf4aaa5f3db72da0951cd8a01eb4b7`. It adds the pure, unwired `src/geometry/FaceCutCornerPartition.h` (`cea68118…ce4e`) and five `FaceCutCornerPartition.*` tests (test file `c62c51b0…ffe2` → `8ccfc38b…1e24`). GMP/GMPXX dispatcher compile, runtimeExecution=false.
+  - Then `M6-CP3-TB-EXEC-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE` with manifest `gates/Architecture_M6_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Case_Manifest.tsv` (`5c084199…8c50`, 989 rows). Rules:
+    - 989/989 PASS; membership 1070;
+    - rows 1–984 equal TB166 `14765434765` under N1–N3, with zero allowance;
+    - no census.
+  - Then `M6-CP3-TB-REV-167-…` freezes an exact CB-187 reader switch: arc-own face pieces with node-locus ends, every fragment orbit keyed, typed failures.
+  - Preserve CP2 491/491, stable 66/17/49, debt1, deferred81 and 497/CP3/D0/H4 unpromoted. The production sphere still fails closed.
+
+```
+NEXT_TURN: M6-CP3-CB-186-P13-FACE-CUT-CORNER-PARTITION-HELPER
+Owner: implementation agent (Code + Build, compile only)
+Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_166_Adversarial_Review_20261122.md (L1–L8); supersedes the prose CB-186 in the TB-REV-166 independent review
+Apply exactly: .agents/Directional/Architecture_M6_CP3_CB186_P13_Face_Cut_Corner_Partition_Helper_Exact.diff
+  SHA-256 a89c7a9ce54bfea2f893868550fe5250e4bf4aaa5f3db72da0951cd8a01eb4b7 (+400/−0)
+  new src/geometry/FaceCutCornerPartition.h -> cea681185d69a83001999360ea37d173b6780c2a7ed3adac3caa42e49016ce4e (pure, unwired)
+  tests/FieldAlignedCurveNetworkTests.cpp: c62c51b0…ffe2 -> 8ccfc38b237322e65962644593a81308142bee9f963ab3330784c094a98c1e24
+Build: dispatcher compile, GMP/GMPXX targets incl. directional_surface_cell_producer_tests, runtimeExecution=false
+Then: M6-CP3-TB-EXEC-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE
+  manifest .agents/Directional/gates/Architecture_M6_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Case_Manifest.tsv (5c0841993d9b9c5537a3b78a3f7df39e61ee82e09b1ce9b4be3f4510ff088c50, 989 rows)
+  rules: 989/989 PASS; CP2 491/491; membership 1070; rows 1–984 = TB166 result 14765434765 under N1–N3 (row 979 included), zero allowance; rows 985–989 PASS; no census
+  -> M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE (freeze exact CB-187 reader switch)
+On failure/blocker: hash mismatch, compile failure or any helper-test failure -> STATUS BLOCKED, report verbatim, return to Review
+Do not: edit beyond the diff; wire the helper; change build_fragment_corner_incidence; edit tests to pass; change other selectors/manifests; activate; promote CP3/497/D0/H4
+```
 
 ## Turn Sequence
 
@@ -56,10 +76,12 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | COMPLETE | CB-183 → CB-184 → TB-EXEC-165 (STOP) → TB-REV-165 (+ [TB-REV-165 adversarial](Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md)) | [CB-183](Architecture_M6_CP3_CB183_P13_Nearest_Chord_Seed_Decision_Helper_Code_Build_Record_20261122.md); [CB-184](Architecture_M6_CP3_CB184_P13_Nearest_Chord_Seed_Switch_Code_Build_Record_20261122.md); [TB165](Architecture_M6_CP3_TB165_P13_Nearest_Chord_Seed_Full_Gate_Execution_Report_20261122.md); [TB-REV-165 review](Architecture_M6_CP3_TB_REV_165_Nearest_Chord_Seed_Full_Gate_Review_20261122.md) accepts the seed switch. |
 | COMPLETE (Code + Build) | `M6-CP3-CB-185-P13-STAGED-MULTI-CUT-FACE-RECEIPT` | Exact v2 test-only receipt (`a7a5922b…935a`); [GMP/GMPXX compiled](Architecture_M6_CP3_CB185_P13_Staged_Multi_Cut_Face_Receipt_Code_Build_Record_20261122.md). |
 | COMPLETE (Test + Benchmark) | `M6-CP3-TB-EXEC-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE` | [TB166](Architecture_M6_CP3_TB166_P13_Staged_Multi_Cut_Face_Receipt_Full_Gate_Execution_Report_20261122.md): all six frozen rules PASS, no census, no source changes. |
-| COMPLETE (Review) | `M6-CP3-TB-REV-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE` | [Independent K5 decision](Architecture_M6_CP3_TB_REV_166_Staged_Multi_Cut_Face_Receipt_Independent_Review_20261122.md): no edge-supported port; K5 specific overlap discharged, other defects carried; no runtime. |
-| **NEXT (Code + Build)** | `M6-CP3-CB-186-P13-EXACT-BOUNDARY-WALK-CORNER-PARTITION-HELPER` | Pure exact face boundary-walk corner-partition helper with positive/negative tests; compile-only. |
-| Prospective | CB-187 → TB-EXEC/REV-167 (staged plan built) → CB-188 activation (V3–V5, V10, V11) → TB-EXEC/REV-168 → CB-189 V3b → R1 → O48 | O49 off the switch path. |
-| Withdrawn | prose CB-180 (X2); DEFN-161A (W3); prose CB-178 activation (V2); DEFN-159A (U1); prose CB-175; CB-174 v3 helper; CB-172A; prose CB-173; old CB-181/CB-182 wiring plan (Y1); prose CB-183 (Z1); activation-before-plan order (G5); CB-185 v1 and per-class corner helpers (K3/K4) | — |
+| COMPLETE (Review) | `M6-CP3-TB-REV-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE` | [Independent K5 decision](Architecture_M6_CP3_TB_REV_166_Staged_Multi_Cut_Face_Receipt_Independent_Review_20261122.md) + [adversarial continuation](Architecture_M6_CP3_TB_REV_166_Adversarial_Review_20261122.md) (L1–L8): K5 discharge upheld; prose CB-186 withdrawn for an exact diff + 989-row manifest. |
+| **1 NEXT (Code + Build)** | `M6-CP3-CB-186-P13-FACE-CUT-CORNER-PARTITION-HELPER` | Exact diff `a89c7a9c…b4b7`: pure unwired helper + 5 tests; compile only. |
+| 2 (Test + Benchmark) | `M6-CP3-TB-EXEC-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE` | 989 rows (`5c084199…8c50`); rows 1–984 = TB166 under N1–N3; no census. |
+| 3 (Review) | `M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE` | Freeze exact CB-187 reader switch (Review-only follow-on, RA-219). |
+| Prospective | 4 CB-187 → 5 TB-EXEC/REV-168 (staged plan built or next stage) → 6 CB-188 activation (V3–V5, V10, V11) → 7 TB-EXEC/REV-169 → 8 CB-189 V3b → 9 R1 → O48 | O49 off the switch path. |
+| Withdrawn | prose CB-180 (X2); DEFN-161A (W3); prose CB-178 activation (V2); DEFN-159A (U1); prose CB-175; CB-174 v3 helper; CB-172A; prose CB-173; old CB-181/CB-182 wiring plan (Y1); prose CB-183 (Z1); activation-before-plan order (G5); CB-185 v1 and per-class corner helpers (K3/K4); prose CB-186 `…-EXACT-BOUNDARY-WALK-…` (L2–L7) | — |
 | Held / Parked | `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`, `…-FACE-CONTACT-OUTCOME` (FC-6), row 858 face DEFN; `M6-CP3-CB-145-P13-VERTEX-FOLLOW-BOUNDARY` | 858 after the sphere repair. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE

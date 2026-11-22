@@ -1,3 +1,18 @@
+## 2026-11-22 — TB-REV-166 adversarial continuation
+
+- [Record](.agents/Directional/Architecture_M6_CP3_TB_REV_166_Adversarial_Review_20261122.md) (L1–L8). It upholds TB166 (984/984) and the K5 edge-port discharge.
+- It withdraws the prose CB-186, which would have rejected:
+  - the sphere witness's 10 interior slit ends;
+  - the arcs split inside faces;
+  - the tie at singular corner `6-8-9`;
+  - the corner-free strips that `RegionSourceFaceOwningFragmentMissing` requires keys for.
+
+  Its tests were also ungated.
+- New exact artifacts:
+  - CB-186 diff `a89c7a9c…b4b7`: pure unwired `FaceCutCornerPartition.h` with five tests;
+  - TB167 989-row manifest `5c084199…8c50`.
+- No product, test or runtime change in this Review.
+
 ## 2026-11-22 — TB-REV-166 independent staged multi-cut face review
 
 [Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_166_Staged_Multi_Cut_Face_Receipt_Independent_Review_20261122.md) re-derived TB166 984/984, all 984 raw SHA-256 records and N1–N3 equality, the 1,750 complete fragment records, and the 179/179 exact row979 receipts. K5 specific edge-supported overlap is absent: all 24 departing port carriers exclude the originating singular vertex and source sets no `edgePortCarrier` for them; the ten arrivals terminate at singularities. No general producer co-trace claim is made. Frozen next M6-CP3-CB-186-P13-EXACT-BOUNDARY-WALK-CORNER-PARTITION-HELPER pure boundary-walk helper; M6-CP3-CB-187-P13-STAGED-MULTI-CUT-CORNER-READER-SWITCH future reader only. No runtime, build, product or selector change; stable 66/17/49, debt1, deferred81; CP2 491/491 accepted, CP3/497/D0/H4 held.

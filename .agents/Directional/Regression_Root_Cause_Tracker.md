@@ -23,7 +23,7 @@
 - **Accepted:** the nearest-chord seed repair, with 192/192 established and `sourceFaceCellularity=1`.
 - **Z6 closed:** no port singularity sits in the vertex-12/37 stars.
 - **New non-stable candidate G2/G3:** `build_fragment_corner_incidence` (`GlobalTopologyPlan.cpp:458–676`) allows one chord, or a corner fan, per face. It reads segment carriers, not the arc's own pieces. It rejects `6-8-9` (singular corner node 1, a slide segment split at node 12), and it would next reject the 16 nested-chord opposite faces.
-  - Owner: CB-185 receipt → TB-REV-166 → CB-186 helper + CB-187 switch.
+  - Owner: CB-185 receipt → TB-REV-166 → exact CB-186 helper (TB-REV-166 adversarial L3–L5: interior ends, geometric tie order, strip keys) → TB-EXEC/REV-167 → exact CB-187 switch.
   - Falsifier: the staged plan builds, or stops at a later typed stage.
 - Accounting is unchanged at 66/17/49, debt1, deferred81.
 
