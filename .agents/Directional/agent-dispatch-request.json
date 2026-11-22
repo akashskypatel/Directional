@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb177-apply-20261122-a",
-  "mailbox_key": "m6-cp3-cb177-apply",
-  "file_id": "1bHV0mUKC6FmRes8aJOV1uogZ9WpUxI5G",
-  "patch_sha256": "c04d8f86d3a9ba5da8441958bcb063649d050ebaf6d8af258649308f4e398956",
-  "base_sha": "fc07bb5f42ff43115f44e85d63b883f308f6c85a",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(surface-cells): stage later slide-entry stop in diagnostic tracing",
-  "retention_days": 14
+  "operation": "compile",
+  "request_id": "m6-cp3-cb177-compile-20261122-a",
+  "mailbox_key": "m6-cp3-cb177-compile",
+  "source_sha": "eeecf23339345f9efa295e94ffd764f4f4e5f3fa",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb177"
 }
