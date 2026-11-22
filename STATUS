@@ -1,10 +1,8 @@
 ---TURN_STATUS---
-Turn: M6-CP3-TB-EXEC-165-P13-NEAREST-CHORD-SEED-FULL-GATE
-Status: BLOCKED
-Successor: M6-CP3-TB-REV-165-P13-NEAREST-CHORD-SEED-FULL-GATE
-Started at: 2026-11-22T15:57:35Z
-Resumed at: 2026-11-22T16:23:48Z
+Turn: M6-CP3-TB-REV-165-P13-NEAREST-CHORD-SEED-FULL-GATE
+Status: IN_PROGRESS
+Successor: UNDECIDED
+Started at: 2026-11-22T16:45:55Z
+Resumed at: 
 Ended at: 
-Blocker Type: REVIEW_BLOCKER
-Blocker Details: Frozen TB165 rule 3 failed: 37 nearest-chord seed records with status=0 instead of 16 with status=2; independent TB-REV-165 adjudication is required before activation.
 ---END_TURN_STATUS---
