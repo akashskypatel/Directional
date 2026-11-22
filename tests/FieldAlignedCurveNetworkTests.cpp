@@ -17779,6 +17779,235 @@ TEST(TraceTerminationCorrection,
   }
   std::cout << receipt.str() << '\n';
 }
+// What the stages after the tracer make of the staged slide-entry-stop sphere
+// network. The staged cut graph was measured built (row 978 receipt); this row
+// asserts that measurement and the production failure it replaces, and prints
+// every downstream quantity the sphere premise tests read, so the activation's
+// replacement expectations are taken from data rather than predicted.
+TEST(TraceTerminationCorrection,
+     PrescribedSphereStagedSlideEntryStopDownstreamStagesArePublished) {
+  using directional::geometry::FieldAlignedNetworkEventKind;
+  using directional::geometry::FieldAlignedTraceEventRole;
+  using directional::geometry::GlobalTopologyArc;
+  using directional::geometry::GlobalTopologyArcKind;
+  using directional::geometry::surface_cell_tracing_detail::
+      field_aligned_production_arrival_priority;
+  const Cp4cReachabilityObservation sphere =
+      observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
+  ASSERT_TRUE(sphere.sourceAuthority.has_value()) << sphere.report;
+  ASSERT_TRUE(sphere.atlas.has_value()) << sphere.report;
+  ASSERT_TRUE(sphere.network.has_value()) << sphere.report;
+  const std::size_t vertexCount =
+      static_cast<std::size_t>(sphere.mesh.V.rows());
+
+  // Without the stop the canonical cut search is exhausted before cellularity.
+  const auto productionCut = directional::geometry::SurfaceCutGraph::make(
+      sphere.mesh.F, vertexCount, *sphere.sourceAuthority, *sphere.atlas,
+      *sphere.network);
+  ASSERT_FALSE(productionCut);
+  EXPECT_EQ(directional::geometry::SurfaceCutGraphErrorCode::
+                CutSearchExhaustedBeforeCellularity,
+            productionCut.error().code);
+
+  const auto staged = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
+      sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails,
+      field_aligned_production_arrival_priority(), true);
+  ASSERT_TRUE(staged) << directional::geometry::
+                             field_aligned_curve_network_error_code_name(
+                                 staged.error().code);
+  const FieldAlignedCurveNetwork &network = staged.value();
+  const auto &traces = network.candidate_traces();
+  ASSERT_EQ(24U, traces.size());
+
+  // With the stop the canonical cut graph is certified cellular.
+  const auto cutGraph = directional::geometry::SurfaceCutGraph::make(
+      sphere.mesh.F, vertexCount, *sphere.sourceAuthority, *sphere.atlas,
+      network);
+  ASSERT_TRUE(cutGraph) << directional::geometry::
+                               surface_cut_graph_error_code_name(
+                                   cutGraph.error().code);
+  const auto &certificate = cutGraph.value().certificate();
+  EXPECT_TRUE(certificate.proves_embedded_cellularity());
+  EXPECT_EQ(2, certificate.sourceEulerCharacteristic);
+  EXPECT_EQ(certificate.sourceEulerCharacteristic,
+            certificate.eulerCharacteristic);
+
+  // Slide carriers by the same trace-record oracle as the slide-carrier row.
+  std::set<SourceEdgeTopologyKey> mandatory;
+  for (const auto &edge : network.mandatory_edges())
+    mandatory.insert(edge.sourceEdge);
+  std::set<SourceEdgeTopologyKey> slideCarriers;
+  for (const auto &trace : traces) {
+    for (const auto &segment : trace.segments) {
+      if ((segment.edgeTransitEntry.has_value() ||
+           segment.edgeTransitExit.has_value()) &&
+          mandatory.count(segment.outgoingCarrier) == 0U) {
+        slideCarriers.insert(segment.outgoingCarrier);
+      }
+    }
+  }
+  std::size_t selected = 0U, slideClassified = 0U, slideSelected = 0U;
+  for (const auto &candidate : certificate.cutCandidates) {
+    selected += candidate.selected ? 1U : 0U;
+    if (candidate.classification ==
+        directional::geometry::SurfaceCutCandidateClass::TraceSlideCarrier) {
+      ++slideClassified;
+      slideSelected += candidate.selected ? 1U : 0U;
+    }
+  }
+  std::size_t slideCutEdges = 0U;
+  for (const auto &edge : cutGraph.value().cut_edges())
+    slideCutEdges += slideCarriers.count(edge);
+  std::cout << "SphereStagedCutGraph productionCut="
+            << directional::geometry::surface_cut_graph_error_code_name(
+                   productionCut.error().code)
+            << " V=" << certificate.vertexCount
+            << " E=" << certificate.edgeCount
+            << " F=" << certificate.faceCount
+            << " orbits=" << certificate.totalOrbitCount
+            << " chi=" << certificate.eulerCharacteristic
+            << " sourceChi=" << certificate.sourceEulerCharacteristic
+            << " components=" << certificate.graphComponentCount
+            << " cutEdges=" << cutGraph.value().cut_edges().size()
+            << " candidates=" << certificate.cutCandidates.size()
+            << " selected=" << selected
+            << " slideCarriers=" << slideCarriers.size()
+            << " slideClassified=" << slideClassified
+            << " slideSelected=" << slideSelected
+            << " slideCutEdges=" << slideCutEdges
+            << " sourceFaceCellularity=" << certificate.proves_cellularity()
+            << '\n';
+
+  const auto plan = directional::geometry::GlobalTopologyPlan::make(
+      sphere.mesh.F, vertexCount, *sphere.sourceAuthority, network,
+      cutGraph.value());
+  // The plan error's locus is what the pipeline publishes as the stop location.
+  const auto count = [](const std::optional<std::size_t> &value) {
+    return value.has_value() ? std::to_string(*value) : std::string("-");
+  };
+  std::ostringstream planLine;
+  planLine << "SphereStagedPlan outcome=";
+  if (plan) {
+    planLine << "built";
+  } else {
+    const auto &error = plan.error();
+    planLine << directional::geometry::global_topology_plan_error_code_name(
+                    error.code)
+             << " sourceFace="
+             << (error.sourceFace.has_value()
+                     ? source_face_locus(*error.sourceFace)
+                     : std::string("-"))
+             << " sourceEdge="
+             << (error.sourceEdge.has_value()
+                     ? source_edge_locus(*error.sourceEdge)
+                     : std::string("-"))
+             << " trace="
+             << (error.trace.has_value() ? std::to_string(error.trace->index())
+                                         : std::string("-"))
+             << " secondTrace="
+             << (error.secondTrace.has_value()
+                     ? std::to_string(error.secondTrace->index())
+                     : std::string("-"))
+             << " chi="
+             << (error.eulerCharacteristic.has_value()
+                     ? std::to_string(*error.eulerCharacteristic)
+                     : std::string("-"))
+             << " V=" << count(error.vertexCount)
+             << " E=" << count(error.edgeCount)
+             << " F=" << count(error.faceCount)
+             << " fragmentOrbits=" << count(error.fragmentOrbitCount)
+             << " tracePieces=" << count(error.tracePieceCount)
+             << " expectedFragments=" << count(error.expectedFragmentCount);
+  }
+  std::cout << planLine.str() << '\n';
+
+  // Per-trace end: the quantities the twenty-four-trace row reads.
+  for (const auto &trace : traces) {
+    std::size_t slides = 0U;
+    for (const auto &segment : trace.segments) {
+      slides += segment.edgeTransitEntry.has_value() ||
+                        segment.edgeTransitExit.has_value()
+                    ? 1U
+                    : 0U;
+    }
+    std::ostringstream line;
+    line << "SphereStagedTrace id=" << trace.id.index()
+         << " segments=" << trace.segments.size() << " slides=" << slides
+         << " end=";
+    if (trace.terminalContact.has_value()) {
+      const auto &contact = *trace.terminalContact;
+      line << "contact struck=" << contact.struckTrace.index() << ':'
+           << contact.struckSegmentIndex << " carrier=";
+      if (contact.carrierLocus.has_value()) {
+        line << '(' << contact.carrierLocus->edge.first().index() << ','
+             << contact.carrierLocus->edge.second().index() << ")@"
+             << contact.carrierLocus->parameter.value.numerator_string() << '/'
+             << contact.carrierLocus->parameter.value.denominator_string();
+      } else {
+        line << '-';
+      }
+      line << " node=";
+      std::optional<std::size_t> node;
+      for (const auto &event : network.events()) {
+        if (event.kind != FieldAlignedNetworkEventKind::TraceIntersection)
+          continue;
+        for (const auto &incidence : event.incidences) {
+          if (incidence.trace == trace.id &&
+              incidence.role == FieldAlignedTraceEventRole::Terminal)
+            node = event.node.index();
+        }
+      }
+      if (node.has_value()) {
+        line << *node;
+      } else {
+        line << '-';
+      }
+    } else if (trace.terminalPoint.has_value()) {
+      line << "point";
+    } else if (trace.terminalSingularity.has_value()) {
+      line << "singularity";
+    } else if (trace.terminalBarrier.has_value()) {
+      line << "barrier";
+    } else {
+      line << "none";
+    }
+    std::cout << line.str() << '\n';
+  }
+
+  // Source pieces of every slide segment, as the piece-ray row reads them.
+  const auto cutNodeBuild = embedded::build_cut_node_bindings(network, {});
+  const auto *cutNodes = std::get_if<embedded::CutNodeBindings>(&cutNodeBuild);
+  ASSERT_NE(nullptr, cutNodes);
+  const auto arcBuild = embedded::build_arcs(network, {}, *cutNodes);
+  const auto *arcs = std::get_if<std::vector<GlobalTopologyArc>>(&arcBuild);
+  ASSERT_NE(nullptr, arcs);
+  std::size_t slidePieces = 0U;
+  for (const auto &arc : *arcs) {
+    if (arc.kind != GlobalTopologyArcKind::Trace || !arc.trace.has_value())
+      continue;
+    const auto *trace = embedded::find_trace(network, *arc.trace);
+    ASSERT_NE(nullptr, trace);
+    ASSERT_EQ(arc.onePastLastSegment - arc.firstSegment,
+              arc.sourcePieceCounts.size());
+    for (std::size_t i = 0U; i < arc.sourcePieceCounts.size(); ++i) {
+      const auto &segment = trace->segments[arc.firstSegment + i];
+      if (!segment.edgeTransitEntry.has_value() &&
+          !segment.edgeTransitExit.has_value())
+        continue;
+      ++slidePieces;
+      std::cout << "SphereStagedSlidePiece trace=" << trace->id.index()
+                << " segment=" << (arc.firstSegment + i)
+                << " arc=[" << arc.firstSegment << ','
+                << arc.onePastLastSegment << ") nodes=("
+                << arc.firstNode.index() << ',' << arc.secondNode.index()
+                << ") pieces="
+                << arc.sourcePieceCounts[i] << '\n';
+    }
+  }
+  std::cout << "SphereStagedSlidePieces arcs=" << arcs->size()
+            << " slidePieces=" << slidePieces << '\n';
+}
+
 
 // What the producer's real-piece decomposition makes of every trace on the
 // prescribed sphere, before any graph reads it. Each segment is one face
