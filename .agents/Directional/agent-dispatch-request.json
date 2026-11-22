@@ -1,12 +1,19 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb186-face-cut-corner-partition-20261122-a",
-  "mailbox_key": "m6-cp3-cb186-face-cut-corner-partition-apply",
-  "file_id": "1oWR26E0I77URh-2exZWxJtKwNUYHe3ko",
-  "patch_sha256": "c2cc84ae51423a3572edf7658e744a5401936abe9672eb954aa127d3c66ee5bc",
-  "base_sha": "3b258437eaa958effc7e061d92d9a801da9410e2",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(surface-cells): add exact face cut corner partition helper and gated tests",
+  "operation": "compile",
+  "request_id": "m6-cp3-cb186-face-cut-corner-partition-compile-20261122-a",
+  "mailbox_key": "m6-cp3-cb186-face-cut-corner-partition-compile",
+  "source_sha": "b500c425063dbc5c09f13cd08b811cacba0e3afe",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb186-face-cut-partition",
   "retention_days": 14
 }
