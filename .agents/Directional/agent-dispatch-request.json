@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev162-audit-20261122-a",
-  "mailbox_key": "m6-cp3-tb-rev162-audit",
-  "file_id": "1Yb2wBbNUTYFYciPq7epMuzQnBB5BnRCL",
-  "patch_sha256": "98952b5f1e950a56affdc6d919b8294ad78cc16103228c2cd2460813bc776886",
-  "base_sha": "5d510692f10b5713f6bd217f7b336615f32335e8",
+  "request_id": "m6-cp3-cb180-apply-20261122-a",
+  "mailbox_key": "m6-cp3-cb180-apply",
+  "file_id": "1I35Wkr8ukLOMILJ82OkyCxP4VEvGxqYA",
+  "patch_sha256": "e1fc3e1d707d03fbea3c99603c8bd9c2d4d95a6f3e2d8f511a702a6fb600ed5b",
+  "base_sha": "ed6eaf8d813522ac64826ccfb1b2ccb3881c69d6",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cp3): qualify synthetic-checkout review boundary evidence",
+  "commit_message": "test(cp3): publish staged uncut owner census receipt",
   "retention_days": 14
 }
