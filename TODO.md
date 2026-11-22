@@ -1,10 +1,10 @@
-## CURRENT — TB-EXEC-163 passed; independent TB-REV-163 next (2026-11-22 UTC)
+## CURRENT — TB-REV-163 independently VERIFIED; typed owner-proof STOP (2026-11-22 UTC)
 
 [CB-180 code/build record](.agents/Directional/Architecture_M6_CP3_CB180_P13_Staged_Uncut_Owner_Census_Receipt_Code_Build_Record_20261122.md); [adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_162_Adversarial_Review_20261122.md) (X1–X6): TB162 PASS and H1 upheld (16 `Unavailable` faces = uncut components 1 and 5, the stars of source vertices 12 and 37). The prose owner-certification CB-180 is withdrawn: it was monolithic, named no rule and left a runtime decision to a compile-only turn (X2). From code: uncut faces get owners only from mandatory/cut arc sides and a boundary seed that needs a non-barrier edge, and trace carriers pass no orbit to the component side, so `Unavailable` can be a rule gap (X3). Candidate H5: the terminal-slit rule treats meeting terminal pieces with different side orbits as free slits (trace 0's terminal arc has orbits 0 and 2; it shares end node 1 with trace 9) (X4).
 
 ```
-NEXT_TURN: M6-CP3-TB-REV-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE
-Owner: test/benchmark agent (artifact-only, no rebuild or source mutation)
+CURRENT_REVIEW: M6-CP3-TB-REV-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE
+Owner: independent review; typed STOP pending REV163-O1 orientation-aware owner proof
 Semantic source: 23d66f60d87329e178d9fc3963489cbef088555e
 GMP/GMPXX package: 14749353214; compile run 45010876980; ZIP SHA-256 fdcba4479936b7e8b1d3ee955bd1ac069715f4fa513ec874bc4e535a8872a668
 Manifest: unchanged TB161 979 rows, SHA-256 e15d616c9af2855b803dea8b5cfc4f5a0529f129c41df0c4fb0131e4ff4e7e8a
@@ -17,9 +17,10 @@ Turn sequence:
 - [x] CB-179, TB-EXEC-162, TB-REV-162 (independent review and adversarial continuation).
 - [x] `M6-CP3-CB-180-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT` — exact test-only receipt, eight-target GMP/GMPXX compile only.
 - [x] `M6-CP3-TB-EXEC-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE` — [report](.agents/Directional/Architecture_M6_CP3_TB163_P13_Staged_Uncut_Owner_Census_Receipt_Full_Gate_Execution_Report_20261122.md) 979/979 and 491/491; all strict comparisons PASS; 48 new lines published.
-- [ ] `M6-CP3-TB-REV-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE` — apply the decision map (R-a edge-side owner vs H5 terminal-slit classification vs typed STOP); freeze exact CB-181 and CB-182.
-- [ ] CB-181: pure helper with positive and negative tests, unwired.
-- [ ] CB-182: wiring at the single writer → TB-EXEC/REV-164 (staged plan `built` or the next measured stage).
+- [x] `M6-CP3-TB-REV-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE` — independently verified TB163 full gate; **typed STOP**: neither R-a nor H5 proved; [review](.agents/Directional/Architecture_M6_CP3_TB_REV_163_Staged_Uncut_Owner_Census_Receipt_Independent_Review_20261122.md).
+- [ ] **REV163-O1 REVIEW BLOCKER:** prove directed source-edge-side candidate owner sets, cardinality, component-facing orbit and terminal-slit separation (positive/negative counterexamples); no CB-181/182 until this proof is reviewed.
+- [ ] **CONDITIONAL ONLY** CB-181: pure helper with positive and negative tests, unwired; not authorized by current evidence.
+- [ ] **CONDITIONAL ONLY** CB-182: wiring at the single writer → TB-EXEC/REV-164 (staged plan `built` or the next measured stage).
 - [ ] CB-183 activation (V11 single-source flag; rows 393/648/858/971/972 from receipts; V5 BunnyRandom falsifier; V10 row 971 STOP-on-red) → TB-EXEC/REV-165.
 - [ ] CB-184 V3b node test → R1 slide-start subdivision → RA-275 S4a → O48.
 
