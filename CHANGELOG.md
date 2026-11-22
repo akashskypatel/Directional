@@ -1,3 +1,7 @@
+## 2026-11-22 — CB-186 exact face-cut corner partition helper compiled (Code + Build only)
+
+[CB-186 record](.agents/Directional/Architecture_M6_CP3_CB186_P13_Face_Cut_Corner_Partition_Helper_Code_Build_Record_20261122.md): frozen diff `a89c7a9c…b4b7` applied exactly at source `b500c425063dbc5c09f13cd08b811cacba0e3afe`, +400/−0, pure unwired helper + five gated tests. GMP/GMPXX [compile 45061915460](https://github.com/akashskypatel/Directional/actions/runs/45061915460) built eight targets, immutable package `14769469723` ZIP SHA-256 `1290d5ed50df98056b5eaed34f0d81ca4d156dbcd026589db10f9d271b985ddf`, `runtimeExecution=false`. No tests, benchmarks, product wiring, selector/manifest changes or production promotion. TB166 984/984 and CP2 491/491 remain latest runtime acceptance; stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 held. Next separate artifact-only `M6-CP3-TB-EXEC-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE` uses frozen 989-row manifest, then independent `M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE`.
+
 ## 2026-11-22 — TB-REV-166 adversarial continuation
 
 - [Record](.agents/Directional/Architecture_M6_CP3_TB_REV_166_Adversarial_Review_20261122.md) (L1–L8). It upholds TB166 (984/984) and the K5 edge-port discharge.

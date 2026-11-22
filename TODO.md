@@ -1,26 +1,22 @@
-## CURRENT — TB-REV-166 adversarial: prose CB-186 withdrawn; exact CB-186 helper next (2026-11-22 UTC)
+## CURRENT — CB-186 compiled, TB-EXEC-167 next (2026-11-22 UTC)
 
-- [x] TB-REV-166 adversarial continuation ([record](.agents/Directional/Architecture_M6_CP3_TB_REV_166_Adversarial_Review_20261122.md), L1–L8). Upheld: TB166 and the K5 edge-port discharge (24/24 port carriers exclude their vertex; no shared slide edge). Withdrawn: the prose CB-186, because it would reject the sphere's own interior ends (10 slits; arcs 11/12 and 16/17 split inside faces), ties at singular corners (6-8-9) and corner-free strips (`RegionSourceFaceOwningFragmentMissing`), and its tests were ungated. Replaced by the exact diff `a89c7a9c…b4b7` and the 989-row TB167 manifest `5c084199…8c50`.
-- [ ] **1 NEXT** `M6-CP3-CB-186-P13-FACE-CUT-CORNER-PARTITION-HELPER`: apply the exact diff, compile only.
-- [ ] 2 `M6-CP3-TB-EXEC-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE`: 989 rows; rows 1–984 = TB166 under N1–N3; no census.
-- [ ] 3 `M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE`: freeze the exact CB-187 reader switch.
-- [ ] Prospective: 4 CB-187 → 5 TB-EXEC/REV-168 → 6 CB-188 activation → 7 TB-EXEC/REV-169 → 8 CB-189 V3b → 9 R1 → O48.
+- [x] TB-REV-166 adversarial continuation ([record](.agents/Directional/Architecture_M6_CP3_TB_REV_166_Adversarial_Review_20261122.md), L1–L8): prose CB-186 withdrawn; exact helper and 989-row TB167 frozen.
+- [x] `M6-CP3-CB-186-P13-FACE-CUT-CORNER-PARTITION-HELPER`: [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB186_P13_Face_Cut_Corner_Partition_Helper_Code_Build_Record_20261122.md), exact +400/−0 helper/test diff, source `b500c425063dbc5c09f13cd08b811cacba0e3afe`, eight-target GMP/GMPXX [compile 45061915460](https://github.com/akashskypatel/Directional/actions/runs/45061915460), package `14769469723` (`1290d5ed50df98056b5eaed34f0d81ca4d156dbcd026589db10f9d271b985ddf`), `runtimeExecution=false`.
+- [ ] **1 NEXT** `M6-CP3-TB-EXEC-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE`: 989 rows; first 984 = TB166 under N1–N3, 5 new helper tests, 1070 membership, no census.
+- [ ] 2 `M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE`: independent verification and exact CB-187 reader-switch freeze.
+- [ ] Prospective: 3 CB-187 → 4 TB-EXEC/REV-168 → 5 CB-188 activation → 6 TB-EXEC/REV-169 → 7 CB-189 V3b → 8 R1 → O48.
 
 ```
-NEXT_TURN: M6-CP3-CB-186-P13-FACE-CUT-CORNER-PARTITION-HELPER
-Owner: implementation agent (Code + Build, compile only)
-Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_166_Adversarial_Review_20261122.md (L1–L8); supersedes the prose CB-186 in the TB-REV-166 independent review
-Apply exactly: .agents/Directional/Architecture_M6_CP3_CB186_P13_Face_Cut_Corner_Partition_Helper_Exact.diff
-  SHA-256 a89c7a9ce54bfea2f893868550fe5250e4bf4aaa5f3db72da0951cd8a01eb4b7 (+400/−0)
-  new src/geometry/FaceCutCornerPartition.h -> cea681185d69a83001999360ea37d173b6780c2a7ed3adac3caa42e49016ce4e (pure, unwired)
-  tests/FieldAlignedCurveNetworkTests.cpp: c62c51b0…ffe2 -> 8ccfc38b237322e65962644593a81308142bee9f963ab3330784c094a98c1e24
-Build: dispatcher compile, GMP/GMPXX targets incl. directional_surface_cell_producer_tests, runtimeExecution=false
-Then: M6-CP3-TB-EXEC-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE
-  manifest .agents/Directional/gates/Architecture_M6_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Case_Manifest.tsv (5c0841993d9b9c5537a3b78a3f7df39e61ee82e09b1ce9b4be3f4510ff088c50, 989 rows)
-  rules: 989/989 PASS; CP2 491/491; membership 1070; rows 1–984 = TB166 result 14765434765 under N1–N3 (row 979 included), zero allowance; rows 985–989 PASS; no census
-  -> M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE (freeze exact CB-187 reader switch)
-On failure/blocker: hash mismatch, compile failure or any helper-test failure -> STATUS BLOCKED, report verbatim, return to Review
-Do not: edit beyond the diff; wire the helper; change build_fragment_corner_incidence; edit tests to pass; change other selectors/manifests; activate; promote CP3/497/D0/H4
+NEXT_TURN: M6-CP3-TB-EXEC-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE
+Owner: Test + Benchmark agent (artifact-only; no source edits, compile, relink or repair)
+Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_166_Adversarial_Review_20261122.md L1–L8 and .agents/Directional/Architecture_M6_CP3_CB186_P13_Face_Cut_Corner_Partition_Helper_Code_Build_Record_20261122.md
+Immutable package: 14769469723; exact source b500c425063dbc5c09f13cd08b811cacba0e3afe; compile run 45061915460; ZIP SHA-256 1290d5ed50df98056b5eaed34f0d81ca4d156dbcd026589db10f9d271b985ddf
+Manifest: .agents/Directional/gates/Architecture_M6_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Case_Manifest.tsv
+  SHA-256 5c0841993d9b9c5537a3b78a3f7df39e61ee82e09b1ce9b4be3f4510ff088c50; 989 rows
+Rules: 989/989 PASS; CP2 491/491; membership 1070; rows 1–984 equal TB166 result 14765434765 under N1–N3 with zero allowance, row 979 included; rows 985–989 PASS; no census
+On failure: BLOCKED and return to Review, do not edit helper or tests
+Then: M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE (independent verification; CB-187 frozen only afterward)
+Do not: rebuild, change source or tests, touch selectors/manifests, run census, activate, or promote CP3/497/D0/H4
 ```
 
 ## HISTORY — TB-REV-166 independent review; prose CB-186 (withdrawn by the adversarial continuation) (2026-11-22 UTC)
