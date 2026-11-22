@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev-167-docs-wip-20261122-a",
-  "mailbox_key": "m6-cp3-tb-rev167-wip-docs-apply",
+  "request_id": "m6-cp3-tb-rev-167-docs-wip-20261122-b",
+  "mailbox_key": "m6-cp3-tb-rev167-wip-docs-apply-retry",
   "file_id": "1_O4ANCE4h5Ir_TPnFczNM9sw0k_jMUxN",
   "patch_sha256": "a5ff4c75e4ce26f437e9bca1b890e7b629729596d279c8e1cf71bd3d8b0f1d19",
   "base_sha": "76151f60ae0961cd0a7ab777918ff4ed4e080ef0",
