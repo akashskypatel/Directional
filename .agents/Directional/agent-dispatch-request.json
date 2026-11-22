@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb176-slide-arrival-source-20261122-1",
-  "mailbox_key": "m6-cp3-cb176-source-apply",
-  "file_id": "1GT5eSRwBzoPmSUiYg3ZDhV64zhykMHp7",
-  "patch_sha256": "ed2527c704bf8c0a1b3e3e904f3739ca4260339641f7a875561f4c176c6ed108",
-  "base_sha": "751a33a531d6133dd7e600e612776c02e0590509",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(tracing): receipt both slide-entry arrival roles",
-  "retention_days": 14
+  "operation": "compile",
+  "request_id": "m6-cp3-cb176-compile-20261122-v1",
+  "mailbox_key": "m6-cp3-cb176-compile",
+  "source_sha": "7c9517fd956bf72847688ee99146bd877137ceb7",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-cb176"
 }
