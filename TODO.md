@@ -1,4 +1,4 @@
-## CURRENT — TB-REV-163 adversarial continuation: REV163-O1 resolved by realignment; CB-181 next (2026-11-22 UTC)
+## CURRENT — CB-181 helper compiled, CB-182 census-only next (2026-11-22 UTC)
 
 [Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md) (Y1–Y7).
 - The typed STOP stands against the frozen map, but my TB-REV-162 R-a row was wrong: it expected `sideOwner=0` (Y1).
@@ -8,15 +8,10 @@
 - Repair: an exact nearest-chord rule on source carrier parameters, first published only, with the seed switch frozen in TB-REV-164 after measurement.
 
 ```
-NEXT_TURN: M6-CP3-CB-181-P13-THIRD-EDGE-SIDE-OWNER-HELPER
-Owner: implementation agent (Code + Build, compile only)
-Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md (Y1–Y7)
-Apply exactly: .agents/Directional/Architecture_M6_CP3_CB181_P13_Third_Edge_Side_Owner_Helper_Exact.diff
-  SHA-256 624492b23b225776cb3cfaeeb6615ba91a34e523184ac6ae15529a0fec8451bc (new src/geometry/ThirdEdgeSideOwner.h + 3 tests; unwired)
-  tests/FieldAlignedCurveNetworkTests.cpp: fedadbd318ad…ef1 -> 6f0b6fbb413f3951c145d497b537ef669a7b353dadfa400efcde051cf83bed6f
-  src/geometry/ThirdEdgeSideOwner.h: new -> 7a055f24fb7cdea0013b4f77692ef6c8f52fa89a276512baefae1e8b5cbefb02
-Build: dispatcher compile, GMP/GMPXX targets, runtimeExecution=false
-Then: M6-CP3-CB-182-P13-THIRD-EDGE-SIDE-OWNER-CENSUS (exact stacked diff, census-only, compile only)
+COMPLETE: M6-CP3-CB-181-P13-THIRD-EDGE-SIDE-OWNER-HELPER
+Exact code patch: 624492b23b225776cb3cfaeeb6615ba91a34e523184ac6ae15529a0fec8451bc; semantic source c22be25d0c8d13cb5eed4f83e3befea65b8f39c3
+GMP/GMPXX compile: 45021187657; package 14753841747; ZIP SHA-256 ad04d41466ae8a1a65553aa6de304bb77fc3b03478bae15edd12fd02c19c2705; no tests executed; no production wiring
+NEXT_TURN: M6-CP3-CB-182-P13-THIRD-EDGE-SIDE-OWNER-CENSUS (frozen exact stacked diff, census-only, compile only)
   -> M6-CP3-TB-EXEC-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE (982-row manifest ed615c22…517b + 3-case census)
   -> M6-CP3-TB-REV-164-… (decision map; freeze CB-183 seed switch)
 On failure/blocker: hash mismatch or compile failure -> STATUS BLOCKED; return to Review
@@ -25,8 +20,8 @@ Do not: edit beyond the diff; wire the helper; run tests; change seeds, selector
 
 Turn sequence:
 - [x] CB-180, TB-EXEC-163, TB-REV-163 independent review (typed STOP) and adversarial continuation (Y1–Y7).
-- [ ] **NEXT** `M6-CP3-CB-181-P13-THIRD-EDGE-SIDE-OWNER-HELPER`: pure helper and 3 tests, unwired, compile only.
-- [ ] `M6-CP3-CB-182-P13-THIRD-EDGE-SIDE-OWNER-CENSUS`: exact diff `094f663a4dd706e35f873e590861059f6c1d3ad5c05ffa8ca66dba0404ef8592`. It adds census-only boundary fields and site-C chord candidates, plus row 979 `SphereStagedUncutSideOwner` lines. Seeds are unchanged; compile only.
+- [x] `M6-CP3-CB-181-P13-THIRD-EDGE-SIDE-OWNER-HELPER`: pure helper and 3 tests, unwired, compiled GMP/GMPXX; [record](.agents/Directional/Architecture_M6_CP3_CB181_P13_Third_Edge_Side_Owner_Helper_Code_Build_Record_20261122.md).
+- [ ] **NEXT** `M6-CP3-CB-182-P13-THIRD-EDGE-SIDE-OWNER-CENSUS`: exact diff `094f663a4dd706e35f873e590861059f6c1d3ad5c05ffa8ca66dba0404ef8592`. It adds census-only boundary fields and site-C chord candidates, plus row 979 `SphereStagedUncutSideOwner` lines. Seeds are unchanged; compile only.
 - [ ] `M6-CP3-TB-EXEC-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE`: 982/982; rows 1–978 equal TB163 `14750681733` under N1–N3; row 979 keeps all 108 TB163 lines; census 3/3 equal TB161 `14741883606` under N1–N4. Publish the 16 new lines against the predictions (`nearest=6` / `12`).
 - [ ] `M6-CP3-TB-REV-164-…`: decision map; freeze CB-183 (seed reads the selection) after the Y6 premise rows and the Y7 fan check.
 - [ ] CB-183 seed switch → TB-EXEC/REV-165 (staged plan `built`, or the next stage).

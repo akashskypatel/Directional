@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-22 UTC; [TB-REV-163 adversarial record](Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md)):** TB163 979/979 and CP2 491/491. TB-REV-163 independent typed STOP upheld against the old map. The adversarial continuation resolves REV163-O1: the uncut components' orbits {6}/{12} are proved from TB163 data (Y3); root cause is site C over-recording nested chords (Y4); H5 excluded there (Y2). Exact CB-181 helper → CB-182 census-only → TB-EXEC-164 frozen. No activation or selector promotion.
+**Current currency (2026-11-22 UTC; CB-181 Code + Build complete; [TB-REV-163 adversarial record](Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md)):** TB163 979/979 and CP2 491/491. TB-REV-163 independent typed STOP upheld against the old map. The adversarial continuation resolves REV163-O1: the uncut components' orbits {6}/{12} are proved from TB163 data (Y3); root cause is site C over-recording nested chords (Y4); H5 excluded there (Y2). CB-181 helper compiled on `45021187657` (GMP/GMPXX, no runtime). Next: CB-182 census-only → TB-EXEC-164 frozen. No activation or selector promotion.
 
 ## 1. What the project is
 
