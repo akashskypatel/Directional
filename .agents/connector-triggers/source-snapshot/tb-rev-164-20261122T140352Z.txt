@@ -1,0 +1,3 @@
+Purpose: read-only exact source snapshot for independent TB-REV-164 review.
+Turn: M6-CP3-TB-REV-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE
+No project binary execution authorized.
