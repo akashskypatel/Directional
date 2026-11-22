@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb162-docs-20261122-a",
-  "mailbox_key": "m6-cp3-tb162-docs",
-  "file_id": "15FZcFcPoLHRYdnz-OPHSsVC-GIWb3QOK",
-  "patch_sha256": "765a65532088d0e972cd8809c3fd0500c331b4baa58a0d07d01e6accb321a778",
-  "base_sha": "4c9fe4b11d8969ffc2e3ab977180a33652cfb4ce",
+  "request_id": "m6-cp3-tb-rev162-docs-20261122-a",
+  "mailbox_key": "m6-cp3-tb-rev162-docs",
+  "file_id": "1hi1uPveTd9euzsK3mXgUwe10zT_k4GH7",
+  "patch_sha256": "b5f91e61ec68070bfe8c35a6dde8e6fce7069ba4070e5565df5b5736fcf18538",
+  "base_sha": "990d43296a7db5be7d7bd6f7d0ddcface874f54b",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cp3): record TB162 verified owner receipt evidence and Review handoff",
+  "commit_message": "docs(cp3): independently review TB162 owner evidence and freeze CB-180",
   "retention_days": 14
 }
