@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tbrev166-supplement-20261122-a",
-  "mailbox_key": "m6-cp3-tbrev166-supplement-apply",
-  "file_id": "1CYi8jdD14vUPtGsnjG5UliLiXCe0Rbgx",
-  "patch_sha256": "aeaebcbeec686cf04ccc63d7e42bcee458efa9b4b9bff93fda29e10f58181ba6",
-  "base_sha": "7d5046f272111b99a4323a11e9abf2f8e2da0b41",
+  "request_id": "m6-cp3-cb186-face-cut-corner-partition-20261122-a",
+  "mailbox_key": "m6-cp3-cb186-face-cut-corner-partition-apply",
+  "file_id": "1oWR26E0I77URh-2exZWxJtKwNUYHe3ko",
+  "patch_sha256": "c2cc84ae51423a3572edf7658e744a5401936abe9672eb954aa127d3c66ee5bc",
+  "base_sha": "3b258437eaa958effc7e061d92d9a801da9410e2",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cp3): add TB166 witness and disclose review checker limit",
+  "commit_message": "feat(surface-cells): add exact face cut corner partition helper and gated tests",
   "retention_days": 14
 }
