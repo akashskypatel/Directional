@@ -1,3 +1,7 @@
+## 2026-11-22 — TB-REV-164 independent third-edge owner census review
+
+[Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_164_Third_Edge_Side_Owner_Census_Independent_Review_20261122.md) re-derived TB164 full gate 982/982, census 3/3 and all 16 nearest=6/12 receipts from four immutable archives (45/45 independent checks). The Y6 production cellularity row is DEFERRED known RED, not part of the gate. Site-C only CB-183 seed switch was frozen with negative controls and compile-only boundary; Y7 site-D fan and X4/H5 elsewhere remain open. No source, selector, acceptance or production change. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 held.
+
 ## 2026-11-22 — TB-EXEC-164 immutable third-edge owner census full gate PASS
 
 [TB164 execution report](.agents/Directional/Architecture_M6_CP3_TB164_P13_Third_Edge_Side_Owner_Census_Full_Gate_Execution_Report_20261122.md): immutable CB-182 package, 982/982 required cases PASS, CP2 491/491. All 978 predecessor rows and 108 old row979 lines match TB163 under N1–N3, plus 16 new third-edge receipts with `nearest=6/12`. Separate three-case production census 3/3 matches TB161 under N1–N4, with Cylinder PASS and unchanged expected BunnyRandom/Vase RED. No rebuild or product/selector/manifest mutation. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 unpromoted. Next is separate `M6-CP3-TB-REV-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE`; no CB-183 seed switch in this turn.

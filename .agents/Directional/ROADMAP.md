@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB-REV-162 verified 979/979, H1 16 unavailable source-face owners in two unseeded components; source owner proof CB-180 next, activation CB-181 later; sphere χ+4 unresolved; CP3/497/D0/H4 held) · **Reviewed:** [TB-REV-159](Architecture_M6_CP3_TB159_P13_Slide_Entry_Stop_Predicate_Full_Gate_Independent_Review_20261122.md) (qualified gate PASS, producer CB-177 STOP) · **Next:** `M6-CP3-DEFN-159A-P13-SLIDE-STOP-OWNERSHIP-AND-REACHABILITY` (definition only) · **Later:** CB-177 after exact plan proof, slide-start subdivision R1, M7 and M8.
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB-REV-164 independently verified TB164 982/982 and 3/3 census; site-C third-edge candidates give nearest 6/12; Y6 deferred production cellularity and site-D Y7 remain open; CP3/497/D0/H4 held) · **Reviewed:** [TB-REV-164](Architecture_M6_CP3_TB_REV_164_Third_Edge_Side_Owner_Census_Independent_Review_20261122.md) · **Next:** `M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED` (site-C-only seed, compile-only) · **Later:** TB-EXEC/REV-165, CB-184 activation, CB-185 V3b, M7 and M8.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-22 UTC; CB-182 Code + Build complete; [record](Architecture_M6_CP3_CB182_P13_Third_Edge_Side_Owner_Census_Code_Build_Record_20261122.md)):** TB163 979/979, CP2 491/491 remain latest runtime. TB-REV-163 adversarial review Y1–Y7 established exact nearest-chord scope. CB-181 helper and CB-182 census compiled with GMP/GMPXX; CB-182 semantic source `a8f7dc13a737487080095fa1aad1901b346ddacb`, compile run `45023580643`, package `14755496064`, no runtime. **Next separate turn:** TB-EXEC-164 frozen 982-row gate plus three-case census; independent TB-REV-164 follows. No production, seed, selector or acceptance promotion.
+**Current currency (2026-11-22 UTC; M6-CP3-TB-REV-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE independently verified):** TB164 982/982 and separate census 3/3 match exact archives; accepted CP2 491/491. All 16 side-owner predictions are 6/12. The production seed remains unwired, sphere cellularity is unresolved, and one Y6 premise is DEFERRED/known RED. **Next separate Code + Build:** `M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED` site-C-only seed, compile only; Y7 site-D fan remains open. No selector, CP3/497/D0/H4 or production promotion. [Review](Architecture_M6_CP3_TB_REV_164_Third_Edge_Side_Owner_Census_Independent_Review_20261122.md).
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-22 UTC; CB-182 compiled):** Latest runtime TB163 979/979 and CP2 491/491; the sixteen unavailable faces and two uncut components are still unresolved for production. CB-182 adds exact side-owner candidate measurement without changing the seed. Compile `45023580643` with GMP/GMPXX only; TB-EXEC-164 owns the next runtime evidence. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 remain unpromoted.
+**Currency (2026-11-22 UTC; TB-REV-164):** TB164 982/982 and 3/3 census verified independently; CP2 491/491. Site-C nested chord candidates resolve 6/12 but do not yet seed product ownership. CB-183 is the next separate code/compile turn; site-D Y7 and the DEFERRED source-face cellularity test remain open. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 not promoted.
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.
@@ -48,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active, typed review STOP** | TB163 independent 979/979 PASS (TB162 predecessor all 979 normalized logs equal, 60 prior row979 lines retained, 48 new); CP2 accepted 491/491. Two uncut components have 16 unavailable owners; no unique oriented source-side proof (REV163-O1); neither R-a nor H5 repair authorized. T5 lifetime remains closed; staged plan fails exact source-face ownership, production sphere still cut-search exhausted, `(0,2)` V3b and χ+4 output obligations remain. No CP3/497/D0/H4 promotion. |
+| **M6-CP3 — active; site-C change pending** | TB164 independently verified 982/982 and census 3/3; CP2 491/491. Two eight-face uncut components have measured unique outer side owners 6/12, but source-face seeds remain unchanged; M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED may wire site-C only. Y7 site-D and deferred production cellularity are open; production sphere cut-search, `(0,2)` V3b and χ+4 remain. No CP3/497/D0/H4 promotion. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -122,7 +122,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority — TB-EXEC-164 (third-edge side-owner census runtime):** [TB-REV-163 adversarial record](Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md) (Y1–Y7). CB-181 helper and CB-182 census compiled (no runtime), then **NEXT TB-EXEC-164** (982 rows + census; predictions `nearest=6`/`12`), TB-REV-164 freezes the CB-183 seed switch. No production/selector promotion.
+**Current priority — M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED (site-C seed, compile-only):** TB164 and [TB-REV-164](Architecture_M6_CP3_TB_REV_164_Third_Edge_Side_Owner_Census_Independent_Review_20261122.md) confirm 16/16 `nearest=6/12` predictions. Preserve Y6 deferred RED and Y7 site-D fan; CB-183 may consume exact site-C owner but not activate production or claim cellularity until TB-EXEC/REV-165. No production/selector promotion.
 
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.

@@ -1,21 +1,17 @@
-## CURRENT — TB164 executed, independent TB-REV-164 next (2026-11-22 UTC)
+## CURRENT — TB-REV-164 independently verified TB164; CB-183 next (2026-11-22 UTC)
 
-[TB164 execution report](.agents/Directional/Architecture_M6_CP3_TB164_P13_Third_Edge_Side_Owner_Census_Full_Gate_Execution_Report_20261122.md) and [raw 16-line receipt](.agents/Directional/evidence/Architecture_M6_CP3_TB164_P13_Third_Edge_Side_Owner_Census_Raw_20261122.txt) establish:
-- Full gate **982/982 PASS**, CP2 **491/491**; rows 1–978 unchanged under N1–N3, all 108 row979 prior receipts preserved.
-- Every new side-owner census line matches the exact predicted `nearest=6/12`; source-face owner production was not switched.
-- Three-case census **3/3**, matches TB161 under N1–N4, with Cylinder PASS and BunnyRandom/Vase expected RED.
-- Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 remain unpromoted.
+[Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_164_Third_Edge_Side_Owner_Census_Independent_Review_20261122.md): immutable TB164 full gate **982/982 PASS**, CP2 **491/491**, census 3/3 unchanged (Cylinder PASS; BunnyRandom/Vase expected RED). All 16 third-edge candidate order predictions match: component1 nearest=6, component5 nearest=12. A Y6 production cellularity premise is **DEFERRED/known RED**, not passed. Site-D Y7 fan evidence is not covered. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 held.
 
-NEXT_TURN: M6-CP3-TB-REV-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE (independent evidence and Y6/Y7 decision map; no implementation in Review).
+NEXT_TURN: M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED — only site-C seed use of exact `third_edge_side_owner`, compile/package without runtime; STOP on ambiguous, changed original singleton, foreign-sheet owner, conflict or site-D change. Independent TB-EXEC/REV-165 must separately prove sourceFaceCellularity=1 and full gates, or report RED. No selector or production promotion in Review.
 
-Turn sequence:
-- [x] CB-181 pure helper and three regressions (compiled only); [record](.agents/Directional/Architecture_M6_CP3_CB181_P13_Third_Edge_Side_Owner_Helper_Code_Build_Record_20261122.md).
-- [x] CB-182 census-only integration (compiled only); [record](.agents/Directional/Architecture_M6_CP3_CB182_P13_Third_Edge_Side_Owner_Census_Code_Build_Record_20261122.md).
-- [x] M6-CP3-TB-EXEC-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE (982/982 plus 3/3 census, exact archive comparisons).
-- [ ] **NEXT** M6-CP3-TB-REV-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE: independently verify TB164, decide whether the Y6 and Y7 premises authorize a separately scoped CB-183 seed switch.
-- [ ] CB-183 seed switch only if separately authorized → TB-EXEC/REV-165; CB-184 Later stop activation → TB-EXEC/REV-166; CB-185 V3b → R1 → RA-275 S4a → O48.
+- [x] CB-181 exact helper + negative tests, compiled only.
+- [x] CB-182 census-only integration, compiled only.
+- [x] TB-EXEC-164 982/982 and 3/3 census, immutable source.
+- [x] TB-REV-164 independent archive and owner-set review, frozen CB-183 boundary.
+- [ ] **NEXT** M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED — compile-only site-C owner seed.
+- [ ] TB-EXEC/REV-165; CB-184 later activation; TB-EXEC/REV-166; CB-185 V3b after activation.
 
-Carried: Y7 site-D fan over-record, X4/H5 other-face lead, TB-REV-159-U3/V3–V11, W6/W7, RA-281 F1–F3, RA-275 S4a, Amendment 14, sphere χ+4. No selector or production promotion.
+Carried: Y7 site-D fan, X4/H5 elsewhere, TB-REV-159-U3/V3–V11, W3/W4/W6/W7, RA-281 F1–F3, RA-275 S4a, Amendment14, O47/C5/O48/O49, sphere χ+4. No selector or production promotion.
 
 ## HISTORY — TB-REV-163 independent review; typed owner-proof STOP (resolved by the adversarial continuation) (2026-11-22 UTC)
 
