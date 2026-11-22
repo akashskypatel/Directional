@@ -1,4 +1,0 @@
-TB159 source snapshot request
-Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
-Authority before trigger: cde1db2036e3d796b48832cf197f1026e63525cc
-Turn: M6-CP3-TB-EXEC-159-P13-SLIDE-ENTRY-STOP-PREDICATE-FULL-GATE
