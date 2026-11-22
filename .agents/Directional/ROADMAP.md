@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB-REV-164 independently verified TB164 982/982 and 3/3 census; site-C third-edge candidates give nearest 6/12; Y6 deferred production cellularity and site-D Y7 remain open; CP3/497/D0/H4 held) · **Reviewed:** [TB-REV-164](Architecture_M6_CP3_TB_REV_164_Third_Edge_Side_Owner_Census_Independent_Review_20261122.md) · **Next:** `M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED` (site-C-only seed, compile-only) · **Later:** TB-EXEC/REV-165, CB-184 activation, CB-185 V3b, M7 and M8.
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB-EXEC-166 984/984, CP2 accepted 491/491, new 179-line receipt; staged sphere plan still stops at multi-cut face `6-8-9`; CP3/497/D0/H4 held) · **Reviewed:** [TB-REV-166](Architecture_M6_CP3_TB_REV_166_Staged_Multi_Cut_Face_Receipt_Independent_Review_20261122.md) K5 radial-port co-trace absent · **Next:** `M6-CP3-CB-186-P13-EXACT-BOUNDARY-WALK-CORNER-PARTITION-HELPER` (pure exact helper, compile-only) · **Later:** separate CB-187 reader, TB-EXEC/REV-167, conditional activation, M7 and M8.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

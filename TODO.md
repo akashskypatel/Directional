@@ -1,11 +1,12 @@
-## CURRENT — TB-EXEC-166 complete; independent TB-REV-166 next (2026-11-22 UTC)
+## CURRENT — TB-REV-166 complete; CB-186 pure exact helper next (2026-11-22 UTC)
 
 - [x] `M6-CP3-CB-185-P13-STAGED-MULTI-CUT-FACE-RECEIPT`: test-only receipt compiled at `2c1ec9ab370ed0e9d533d7694e03b486916b9b1a`, GMP/GMPXX package `14765117630` ([record](.agents/Directional/Architecture_M6_CP3_CB185_P13_Staged_Multi_Cut_Face_Receipt_Code_Build_Record_20261122.md)).
 - [x] `M6-CP3-TB-EXEC-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE`: [run 45052316075](https://github.com/akashskypatel/Directional/actions/runs/45052316075), result `14765434765` ZIP SHA-256 `9826a9219fc73b691048cff02913ebd500dc842df73700aa39eaf3126316f044`. **984/984 PASS; CP2 491/491; 1065 membership; 983/983 unchanged rows N1–N3; row979 179 new verbatim lines; all six frozen rules PASS**. No census, rebuild or product edit. [Report](.agents/Directional/Architecture_M6_CP3_TB166_P13_Staged_Multi_Cut_Face_Receipt_Full_Gate_Execution_Report_20261122.md) and [raw evidence](.agents/Directional/evidence/Architecture_M6_CP3_TB166_P13_Staged_Multi_Cut_Face_Receipt_Raw_20261122.txt).
-- [ ] **NEXT** `M6-CP3-TB-REV-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE`: independently assess K5 arrival/port overlap using TB166 179-line exact receipt. If co-traced, type A2a STOP; otherwise freeze CB-186 boundary-walk corner partition and CB-187 reader switch. No implementation in this TB turn.
-- [ ] Prospective only: CB-186 → CB-187 → TB-EXEC/REV-167 → CB-188 activation → TB-EXEC/REV-168 → CB-189 V3b → R1 → O48.
+- [x] `M6-CP3-TB-REV-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE`: [Architecture_M6_CP3_TB_REV_166_Staged_Multi_Cut_Face_Receipt_Independent_Review_20261122.md](.agents/Directional/Architecture_M6_CP3_TB_REV_166_Staged_Multi_Cut_Face_Receipt_Independent_Review_20261122.md) independently verified 984/984, 179 receipt lines and K5. No departing port is edge-supported; 10 arrivals terminate at singular nodes. No source/runtime edit.
+- [ ] **NEXT** `M6-CP3-CB-186-P13-EXACT-BOUNDARY-WALK-CORNER-PARTITION-HELPER`: pure exact boundary-walk helper with 6-8-9, nested-chord and strict invalid-negative cases; GMP compile-only. Separate `M6-CP3-CB-187-P13-STAGED-MULTI-CUT-CORNER-READER-SWITCH` is prospective, not part of this turn.
+- [ ] Prospective only: CB-187 → TB-EXEC/REV-167 → CB-188 activation → TB-EXEC/REV-168 → CB-189 V3b → R1 → O48.
 
-Sphere staged plan remains `SourceFaceCarriesMultipleTraceCuts` on face `6-8-9`; production sphere still fails `CutSearchExhaustedBeforeCellularity`. Carried K5, G2/G3, Y7, Z5, X4/H5, TB-REV-159-U3/V3–V11, W3/W4/W6/W7, RA-281 F1–F3, Amendment 14, O47/C5/O48/O49 and sphere χ+4. Stable **66/17/49**, debt **1**, deferred **81**. CP3/497/D0/H4 remain unpromoted.
+Sphere staged plan remains `SourceFaceCarriesMultipleTraceCuts` on face `6-8-9`; production sphere still fails `CutSearchExhaustedBeforeCellularity`. K5 edge-supported overlap discharged for the current witness; carried G2/G3, RA-274/RA-275 S4a, Y7, Z5, X4/H5, TB-REV-159-U3/V3–V11, W3/W4/W6/W7, RA-281 F1–F3, Amendment 14, O47/C5/O48/O49 and sphere χ+4. Stable **66/17/49**, debt **1**, deferred **81**. CP3/497/D0/H4 remain unpromoted.
 
 ## HISTORY — TB-REV-165 review record: seed switch accepted; CB-185 v1 (withdrawn by the adversarial continuation) (2026-11-22 UTC)
 
@@ -25,7 +26,7 @@ Apply exactly: .agents/Directional/Architecture_M6_CP3_CB185_P13_Staged_Multi_Cu
   tests/FieldAlignedCurveNetworkTests.cpp: fea486ed…68e27 -> d417d635e1bcd887d4f3eefce27513464ff6e316c38525e26ed41e76ad960e0d
 Build: dispatcher compile, GMP/GMPXX targets, runtimeExecution=false
 Then: M6-CP3-TB-EXEC-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE (manifest 8d56ee1d…1e69, 984 rows; no census; rules 1–6)
-  -> M6-CP3-TB-REV-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE (classify faces; freeze CB-186 corner-partition helper + CB-187 reader switch)
+  -> M6-CP3-CB-186-P13-EXACT-BOUNDARY-WALK-CORNER-PARTITION-HELPER (exact face-boundary partition; no face-type classifier)
 On failure/blocker: hash mismatch or compile failure -> STATUS BLOCKED; return to Review
 Do not: edit beyond the diff; change product source; run tests; change selectors or manifests; activate; promote CP3/497/D0/H4
 ```
@@ -34,7 +35,7 @@ Turn sequence:
 - [x] CB-183 → CB-184 → TB-EXEC-165 (STOP) → TB-REV-165 (seed switch accepted)
 - [ ] **NEXT** CB-185: test-only multi-cut face receipt, compile only
 - [ ] TB-EXEC-166: 984 rows, row-979 receipt, no census
-- [ ] TB-REV-166: freezes CB-186 (pure corner-partition helper) + CB-187 (plan corner reader reads arc pieces)
+- [x] TB-REV-166: freezes CB-186 pure exact boundary partition and later CB-187 arc-piece reader; K5 edge-supported co-trace absent on current witness.
 - [ ] CB-186 → CB-187 → TB-EXEC/REV-167 (staged plan built, or next stage)
 - [ ] CB-188 activation (V3–V5, V10, V11) → TB-EXEC/REV-168 → CB-189 V3b → R1 → O48
 

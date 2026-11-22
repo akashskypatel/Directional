@@ -2,13 +2,17 @@
 
 [TB166 immutable execution report](Architecture_M6_CP3_TB166_P13_Staged_Multi_Cut_Face_Receipt_Full_Gate_Execution_Report_20261122.md): run 45052316075 and artifact 14765434765 establish **984/984 PASS**, CP2 **491/491**, 1065 membership, 983/983 predecessor rows N1–N3 match and 179 verbatim new row-979 receipt lines. All six frozen TB-REV-165 adversarial rules pass. The existing staged plan still rejects `SourceFaceCarriesMultipleTraceCuts` at `6-8-9`; production sphere cut search is unchanged. **Classification:** no new PASS-to-RED regression and no new non-stable failure candidate. Existing G2/G3, K5 and RA-275 S4a remain open pending independent `TB-REV-166` K5 decision. Root cause is not decided from diagnostic lines alone. The current receipt compares ten incoming slides to the 24 printed first-port segments but cannot replace the independent geometry decision. Falsifiers: a changed normalized prior row, incorrect face/valence receipt, previously accepted RED or verified producer co-trace. Stable **66 events / 17 categories / 49 recurrences**, witness debt **1**, deferred **81** unchanged. No CP3/497/D0/H4 promotion.
 
+## TB-REV-166 — K5 witness-specific disposition and G2/G3 reader obligation (2026-11-22 UTC)
+
+[Independent review](Architecture_M6_CP3_TB_REV_166_Staged_Multi_Cut_Face_Receipt_Independent_Review_20261122.md): all 24 printed port outgoing carriers exclude their singular source vertex; `FieldTransportAtlas` records radial edge-supported port departure with an incident carrier, and `SurfaceCellTracing` sets `edgePortCarrier` only in that case. All ten singular arrivals have `terminalSingularity=1`; no paired port uses the same radial edge. **K5 edge-supported co-trace is absent for this witness**; it is not a general no-overlap proof. No stable regression added. **G2/G3 and RA-275 S4a remain open**: root cause is the one-cut/corner-fan face-reader assumption, which cannot assign general non-crossing multi-cut corner intervals; next owner M6-CP3-CB-186-P13-EXACT-BOUNDARY-WALK-CORNER-PARTITION-HELPER pure exact boundary-walk helper, then M6-CP3-CB-187-P13-STAGED-MULTI-CUT-CORNER-READER-SWITCH separate reader switch. Falsifiers: contradictory exact segment ownership, crossed/tied cuts, malformed oriented side-orbit mapping, edge-only piece treated as face cut, failure to preserve `turn` convention, or producer radial co-trace. These stay typed STOP, not guessed repair. Stable 66/17/49, debt1, deferred81; CP2 491/491 and full TB166 984/984; no CP3/497/D0/H4 promotion.
+
 ## TB-REV-165 adversarial — K5 candidate: singular-node valence above port count (2026-11-22 UTC)
 
-[Adversarial record](Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md). This is a non-stable, open candidate.
+[Adversarial record](Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md). This was a non-stable candidate; its *specific current-witness edge-supported overlap* is discharged by TB-REV-166, while the general A2a no-co-trace obligation remains.
 - Singular nodes 0–7 have arc ends 4,5,5,3,3,5,5,4 against 3 ports each, from 10 slide arrivals (traces 0, 1, 9, 10, 11, 12, 13, 14, 21, 22).
 - DESIGN permits arrivals at a singularity, and no stage checks valence.
 - An arrival co-traced with a departing edge-supported port (same slide edge) would be a zero-area overlap and an A2a defect.
-- Owner: CB-185 v2 receipt → TB-REV-166.
+- Owner: discharged on the TB166 witness by independent TB-REV-166; future real edge-supported co-trace routes back to A2a.
 - Falsifier: no arrival shares a slide edge with a departing port.
 - Also corrected: `end=point` in row 979 cannot tell a singularity termination from a point stop.
 
