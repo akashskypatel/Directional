@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb182-compile-20261122-b",
-  "mailbox_key": "m6-cp3-cb182-compile",
-  "source_sha": "a8f7dc13a737487080095fa1aad1901b346ddacb",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb182-compile"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb182-doc-closeout-20261122-a",
+  "mailbox_key": "m6-cp3-cb182-doc-closeout",
+  "file_id": "1iFjgrWGMRFz71flf_JQe0XekBAtiEIWK",
+  "patch_sha256": "44017cf313e8c77f4d738b589c9d9a5d79e11a66d860600d36b7c0d27023e5f9",
+  "base_sha": "8d1907a6dec0ffca87585ccc54ef6901148ad38b",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cp3): complete CB182 census compile record and handoff",
+  "retention_days": 14
 }
