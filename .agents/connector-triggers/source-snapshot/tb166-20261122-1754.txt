@@ -1,3 +1,0 @@
-TB166 repository source inspection snapshot.
-Requested initial authority: a0180f14cc8df07b29ca792002ba54d0bd1ad9c5
-Canonical turn: M6-CP3-TB-EXEC-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE
