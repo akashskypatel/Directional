@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb159-docs-20261122-a",
-  "mailbox_key": "m6-cp3-tb159-docs",
-  "file_id": "1B1sCYHWqcNM50hfkL5gKTgrKrey9b2up",
-  "patch_sha256": "ec051449064c85aaa2597cb044721386cd94d7fdb7cda26119c2822ef4bd936f",
-  "base_sha": "159feaafae6fec1190f1d5b59a5f0fb94a80eb2c",
+  "request_id": "m6-cp3-tb-rev159-docs-20261122-a",
+  "mailbox_key": "m6-cp3-tb-rev159-docs",
+  "file_id": "1JFe9wK7AVZixAPG5yBkFhxj-xgUhARkQ",
+  "patch_sha256": "71ea6e63c695e1975f11efe78408c4ea3789c8d0735d61a40164d9fa24c10b18",
+  "base_sha": "42209c93afc5aff85dbba9495a038b596518cbb9",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record TB159 immutable gate and receipt evidence",
+  "commit_message": "docs: independently review TB159 and stop CB177 switch",
   "retention_days": 14
 }
