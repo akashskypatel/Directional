@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb163-report-20261122-a",
-  "mailbox_key": "m6-cp3-tb163-report",
-  "file_id": "1n0d84gE3PUOpI8ahXhXWXxlKT_BVNS8E",
-  "patch_sha256": "e0f2fb4a3af6880a6360dd203b44402ed884a85b0a356e1c9021a224d884eb18",
-  "base_sha": "36862ac6ac789b68666829c73ee2ed2298c2bac3",
+  "request_id": "m6-cp3-tb-rev163-stop-20261122-a",
+  "mailbox_key": "m6-cp3-tb-rev163-stop",
+  "file_id": "1Uu5TgOqcoaOwQ4L8SPRj1h_hYSHFv9DS",
+  "patch_sha256": "0db4ed162b43537ceb43e78c0936181b20cfdfb0102ecd32579052dba396d283",
+  "base_sha": "55a771666ed531270051a9eb8e0ec5a29393970c",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cp3): close TB163 with immutable evidence and review handoff",
+  "commit_message": "docs(cp3): independently review TB163 and preserve typed owner proof stop",
   "retention_days": 14
 }
