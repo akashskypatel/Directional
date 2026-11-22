@@ -1,3 +1,7 @@
+## TB160 scoped regression evidence (2026-11-22 UTC)
+
+[TB160 report](Architecture_M6_CP3_TB160_P13_Staged_Slide_Entry_Stop_Full_Gate_Execution_Report_20261122.md): immutable CB-177 package. All 978 gate rows PASS and prior 977 raw/ledger records match TB159 under frozen N1–N3, zero allowance (1,750 whole N3 records). All three census identities match TB159 under N1–N4: Cylinder PASS, BunnyRandom/Vase same previously accepted RED. No new regression candidate or stable root-cause class is supported; stable **66 events / 17 categories / 49 recurrences**, one witness debt, deferred 81. The row978 staged diagnostic stop reached `cutGraph=built`; this is not production acceptance. TB-REV-159-U3/V3b, sphere χ+4, Amendment14, CP3/497/D0/H4 remain subject to independent TB-REV-160 and later proof.
+
 ## TB159 scoped regression evidence (2026-11-22 UTC)
 
 [Architecture_M6_CP3_TB159_P13_Slide_Entry_Stop_Predicate_Full_Gate_Execution_Report_20261122.md](Architecture_M6_CP3_TB159_P13_Slide_Entry_Stop_Predicate_Full_Gate_Execution_Report_20261122.md) accepted 977/977, CP2 491/491, and 3/3 census (Cylinder PASS, BunnyRandom and Vase expected RED). All 976 prior case logs and three production cases match TB158 under frozen N1–N4 with strictly bounded new slide-arrival receipts. No independent new regression or stability-promoting witness. Stable 66 events/17 categories/49 recurrences; witness debt 1; deferred 81; sphere chi 6 vs 2 and CP3/497/D0/H4 unchanged. Candidate T2–T5 and V3b await TB-REV-159; do not recategorize as stable without review.

@@ -1,18 +1,17 @@
-## CURRENT — CB-177 exact staged slide-entry stop compiled; TB-EXEC-160 next (2026-11-22 UTC)
+## CURRENT — TB160 immutable 978-case full gate PASS; TB-REV-160 next (2026-11-22 UTC)
 
-[CB-177 record](.agents/Directional/Architecture_M6_CP3_CB177_P13_Staged_Slide_Entry_Stop_Code_Build_Record_20261122.md): applied exactly the frozen three-file CB-177 diff with verified preimage and postimage SHA-256 to source `eeecf23339345f9efa295e94ffd764f4f4e5f3fa`. [Compile 44976087482](https://github.com/akashskypatel/Directional/actions/runs/44976087482), package `14735988461` ZIP SHA-256 `4d9bd00f2b73fcf3b2ff10d57ec047dcd30babe0593010b3297e743bccd63456`: eight mandatory GMP/GMPXX targets, compile only, no test or benchmark execution. Staged stop remains diagnostic-only/off in production. TB159 977/977, CP2 491/491, and 3/3 census are the last accepted runtime results.
+[TB160 report](.agents/Directional/Architecture_M6_CP3_TB160_P13_Staged_Slide_Entry_Stop_Full_Gate_Execution_Report_20261122.md): unchanged CB-177 source `eeecf23339345f9efa295e94ffd764f4f4e5f3fa`/package `14735988461`; [gate 44979621996](https://github.com/akashskypatel/Directional/actions/runs/44979621996) artifact `14737647064` **978/978 PASS**, 977/977 exact prior log comparison under N1–N3, CP2 491/491. [census run 44979645520](https://github.com/akashskypatel/Directional/actions/runs/44979645520) artifact `14737279153` SHA-256 `94341d1128af1794f33ece3f61a7f13257fb716378ea693a1b0c54d2c368657e` (9 verified files): Cylinder PASS and both expected RED cases match TB159 under N1–N4. Staged slide-entry stop remains OFF in production; no producer promotion.
 
-> **NEXT_TURN:** `M6-CP3-TB-EXEC-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE`
-> - Type: Test + Benchmark, immutable compiled CB-177 package; no rebuild or source/test edits.
-> - Exact [978-row manifest](.agents/Directional/gates/Architecture_M6_TB160_P13_Staged_Slide_Entry_Stop_Full_Gate_Case_Manifest.tsv) SHA-256 `d7eb3c355cdc3febd35f20cb8d2178489f8cb6d2aecf1f600ef8dd2b6151ca5a`.
-> - STOP unless 978/978, CP2 491/491, all 977 predecessor rows and census unchanged under frozen N1–N4 normalization with zero allowance; publish full row 978 receipt. No conditional producer activation without TB-REV-160.
+> **NEXT_TURN:** `M6-CP3-TB-REV-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE`
+> - Type: independent Review of TB160; rederive immutable gate, census, zero-allowance normalized logs and exact row978 receipt.
+> - Decide the separately gated CB-178 producer activation or consumer correction. Do not activate production stops, repair tests, change selectors or begin any code/build in TB160.
 
 Turn sequence:
 - [x] `M6-CP3-TB-EXEC-159-P13-SLIDE-ENTRY-STOP-PREDICATE-FULL-GATE` — 977/977, census 3/3.
 - [x] `M6-CP3-TB-REV-159-P13-SLIDE-ENTRY-STOP-PREDICATE-FULL-GATE` — independent and adversarial review, frozen exact CB-177.
 - [x] `M6-CP3-CB-177-P13-STAGED-SLIDE-ENTRY-STOP` — code applied, GMP/GMPXX compile-only package, `runtimeExecution=false`.
-- [ ] **NEXT:** `M6-CP3-TB-EXEC-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE` — immutable artifact-only gate, 978 rows.
-- [ ] `M6-CP3-TB-REV-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE` — independently inspect row 978 and decide CB-178 activation or consumer correction.
+- [x] `M6-CP3-TB-EXEC-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE` — 978/978 PASS; 977/977 predecessor match, census 3/3 match, row 978 receipt published.
+- [ ] **NEXT:** `M6-CP3-TB-REV-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE` — independently inspect row 978 and decide CB-178 activation or consumer correction.
 - [ ] CB-178 (only if separately authorized) → TB-EXEC/REV-161 → slide-start subdivision R1 → RA-275 S4a → O48.
 
 **Carried:** TB-REV-159-U3, V3b, sphere χ+4, Amendment 14, RA-281 F1/F2/F3, RA-275 S4a, CP3/497/D0/H4. Stable 66/17/49, debt1, deferred81.
