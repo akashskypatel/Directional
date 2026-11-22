@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-22 UTC; M6-CP3-TB-REV-165-P13-NEAREST-CHORD-SEED-FULL-GATE):** TB165 984/984, CP2 491/491, census 3/3. [TB-REV-165](Architecture_M6_CP3_TB_REV_165_Nearest_Chord_Seed_Full_Gate_Review_20261122.md) accepts the nearest-chord seed switch: 192/192 established, `sourceFaceCellularity=1`. The rule-3 STOP was a defective oracle on my part (Established=0; 21 agreeing seeds). The staged plan now stops at `SourceFaceCarriesMultipleTraceCuts` at `6-8-9` (G2/G3). **Next:** exact test-only `M6-CP3-CB-185-P13-STAGED-MULTI-CUT-FACE-RECEIPT`, then TB-EXEC-166. Activation is held until the staged plan builds. No selector, CP3/497/D0/H4 or production promotion.
+**Current currency (2026-11-22 UTC; M6-CP3-TB-REV-165-P13-NEAREST-CHORD-SEED-FULL-GATE, continued after handover):** TB165 984/984, CP2 491/491, census 3/3; the nearest-chord seed switch is accepted (192/192, `sourceFaceCellularity=1`). The [adversarial record](Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md) (K1–K6) corrects `end=point` (it hides singularity terminations) and replaces per-class corner helpers with one boundary-walk partition. It freezes the v2 test-only `M6-CP3-CB-185-P13-STAGED-MULTI-CUT-FACE-RECEIPT` (`a7a5922b…935a`), then TB-EXEC-166. K5 (co-traced arrivals at singular nodes) is open. No selector, CP3/497/D0/H4 or production promotion.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-22 UTC; TB-REV-165):** the seed repair is accepted, and Z6 is closed (G1). The plan corner reader assumes one cut per face and reads whole segments rather than arc pieces (RA-275 S4a site); it is measured next by CB-185/TB166. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 not promoted.
+**Currency (2026-11-22 UTC; TB-REV-165 adversarial):** the seed repair is accepted. The plan corner reader needs one exact boundary-walk partition over arc face pieces (K3). Singular valence 4,5,5,3,3,5,5,4 against 3 ports: 10 designed slide arrivals, with overlap with ports unmeasured (K5). Stable 66/17/49, debt1, deferred81.
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.
@@ -122,7 +122,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority — M6-CP3-CB-185-P13-STAGED-MULTI-CUT-FACE-RECEIPT (test-only, compile only), then TB-EXEC-166 and TB-REV-166:** list every multi-cut face with each visit's own pieces. Then freeze an exact corner-partition helper (nested chords by carrier order, corner fans, edge-only pieces) and switch `build_fragment_corner_incidence` to read arc pieces, before activation. No production or selector promotion.
+**Current priority — M6-CP3-CB-185-P13-STAGED-MULTI-CUT-FACE-RECEIPT v2 (test-only), then TB-EXEC-166 and TB-REV-166:** publish every multi-cut face with entry and exit, plus singular ports and arrivals. Then decide K5 and freeze the CB-186 boundary-walk helper and the CB-187 reader switch before activation.
 
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.

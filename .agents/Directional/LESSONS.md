@@ -345,6 +345,11 @@ This document records **reusable failure-derived engineering lessons**, not an e
 
 ## Diagnostics, classifiers, and causal investigation
 
+- **Read the printer before its label; one decomposition before per-class rules (TB-REV-165 adversarial).**
+  A printer that tests `terminalPoint` before `terminalSingularity` labels singularity terminations as
+  `point`. When a reader fails on several configurations (one chord, nested chords, rays, mixed), look for the
+  single decomposition they share (here a boundary walk over non-crossing cuts) before freezing class rules.
+  Before admitting extra valence at a singular node downstream, measure whether an arrival overlaps a port.
 - **Predict outcomes by name, read the enum, and predict every line a print can emit (TB-REV-165).**
   A numeric status in a frozen prediction must come from the enum's definition (Established was 0, not 2).
   When a print covers all components, predict the agreeing lines on already-decided components too; they are

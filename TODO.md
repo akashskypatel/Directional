@@ -1,4 +1,38 @@
-## CURRENT — TB-REV-165: seed switch accepted, rule-3 STOP traced to my oracle; multi-cut face receipt next (2026-11-22 UTC)
+## CURRENT — TB-REV-165 adversarial continuation: CB-185 v2 receipt, boundary-walk corner partition next (2026-11-22 UTC)
+
+[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md), K1–K6. The seed-switch acceptance, the F1 correction, G1 and G5 are upheld.
+- **K2:** `end=point` hides singularity terminations. The printer tests `terminalPoint` first, and every singular setter sets both. The 10 slide arrivals at nodes 0–7 are designed terminations (DESIGN §7.2 step 5, :152).
+- **K3:** per-class corner helpers are withdrawn. One exact boundary-walk partition (face pieces as non-crossing cuts; corners own their adjacent boundary intervals' orbits) covers one chord, nested chords, rays and mixed faces.
+- **K4:** v1 receipt withdrawn, v2 frozen. It adds entry/exit with edge parameter, singular ports, arrivals with `terminalSingularity`, and valence.
+- **K5 (open):** singular valence is 4,5,5,3,3,5,5,4 against 3 ports. An arrival sliding along a departing edge-supported port's edge would be a co-traced overlap; that routes to A2a and is not a plan-reader change.
+
+```
+NEXT_TURN: M6-CP3-CB-185-P13-STAGED-MULTI-CUT-FACE-RECEIPT
+Owner: implementation agent (Code + Build, compile only)
+Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md (K1–K6) + Architecture_M6_CP3_TB_REV_165_Nearest_Chord_Seed_Full_Gate_Review_20261122.md (G1–G5)
+Apply exactly (v2; v1 77e025a8…159d withdrawn): .agents/Directional/Architecture_M6_CP3_CB185_P13_Staged_Multi_Cut_Face_Receipt_Exact.diff
+  SHA-256 a7a5922b791ab57d473fc0a8004785977110e8c74922eff39e73df14fcb9935a (test-only, +156/−0)
+  tests/FieldAlignedCurveNetworkTests.cpp: fea486ed…68e27 -> c62c51b0d549b4a41cce5e7e1b9d087d968b5881a794fb4c460950c8d143ffe2
+Build: dispatcher compile, GMP/GMPXX targets, runtimeExecution=false
+Then: M6-CP3-TB-EXEC-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE (manifest 8d56ee1d…1e69, 984 rows; no census; adversarial rules 1–6)
+  -> M6-CP3-TB-REV-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE (decide K5; freeze CB-186 boundary-walk helper + CB-187 reader switch)
+On failure/blocker: hash mismatch or compile failure -> STATUS BLOCKED; return to Review
+Do not: edit beyond the diff; change product source; run tests; change selectors or manifests; activate; promote CP3/497/D0/H4
+```
+
+Turn sequence:
+- [x] CB-183 → CB-184 → TB-EXEC-165 (STOP) → TB-REV-165 (review + adversarial)
+- [ ] **NEXT** CB-185 v2: test-only receipt, compile only
+- [ ] TB-EXEC-166: 984 rows, no census
+- [ ] TB-REV-166: K5 decision; freeze CB-186 + CB-187
+- [ ] CB-186: pure boundary-walk corner partition helper + tests
+- [ ] CB-187: `build_fragment_corner_incidence` reads arc face pieces through it
+- [ ] TB-EXEC/REV-167: staged plan built, or the next stage
+- [ ] CB-188 activation (V3–V5, V10, V11) → TB-EXEC/REV-168 → CB-189 V3b → R1 → O48
+
+Carried: K5, Y7 (narrowed by Z3), Z5, X4/H5, TB-REV-159-U3/V3–V11, W3/W4/W6/W7, RA-281 F1–F3, Amendment 14, O47/C5/O48/O49, sphere χ+4.
+
+## HISTORY — TB-REV-165 review record: seed switch accepted; CB-185 v1 (withdrawn by the adversarial continuation) (2026-11-22 UTC)
 
 [TB-REV-165 review](.agents/Directional/Architecture_M6_CP3_TB_REV_165_Nearest_Chord_Seed_Full_Gate_Review_20261122.md), G1–G5:
 - **F1 fault:** the TB165 STOP comes from my TB-REV-164 rule 3, not the product. Established is encoded as 0, not 2 (`SurfaceCutGraph.h:84`). The 21 extra lines are nearest-chord seeds that agree with components 0, 2, 3 and 4, which were already established.
@@ -8,7 +42,7 @@
 - **G4/G5:** measure every multi-cut face before defining the rule; activation waits until the staged plan builds.
 
 ```
-NEXT_TURN: M6-CP3-CB-185-P13-STAGED-MULTI-CUT-FACE-RECEIPT
+SUPERSEDED (K4) — M6-CP3-CB-185 v1
 Owner: implementation agent (Code + Build, compile only)
 Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_165_Nearest_Chord_Seed_Full_Gate_Review_20261122.md (G1–G5)
 Apply exactly: .agents/Directional/Architecture_M6_CP3_CB185_P13_Staged_Multi_Cut_Face_Receipt_Exact.diff

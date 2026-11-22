@@ -40,15 +40,18 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Mandatory next turn
 
-- **Authority:** [TB-REV-165 review](Architecture_M6_CP3_TB_REV_165_Nearest_Chord_Seed_Full_Gate_Review_20261122.md) G1–G5.
+- **Authority:** [TB-REV-165 adversarial](Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md) K1–K6, on top of the review record's G1–G5.
 - **NEXT:** `M6-CP3-CB-185-P13-STAGED-MULTI-CUT-FACE-RECEIPT` (Code + Build, compile only).
-  - Apply exactly the [CB-185 diff](Architecture_M6_CP3_CB185_P13_Staged_Multi_Cut_Face_Receipt_Exact.diff) `77e025a8…159d`: test-only, +81/−0, row-979 `SphereStagedMultiCutVisit` / `SphereStagedMultiCutFaces`.
-  - Test `fea486ed…68e27` → `d417d635e1bcd887d4f3eefce27513464ff6e316c38525e26ed41e76ad960e0d`.
+  - Apply exactly the **v2** [CB-185 diff](Architecture_M6_CP3_CB185_P13_Staged_Multi_Cut_Face_Receipt_Exact.diff) `a7a5922b…935a`: test-only, +156/−0. It prints multi-cut visits with entry and exit, singular ports, arrivals and valence.
+  - Test `fea486ed…68e27` → `c62c51b0d549b4a41cce5e7e1b9d087d968b5881a794fb4c460950c8d143ffe2`.
+  - v1 `77e025a8…159d` is withdrawn.
 - **Then:** `M6-CP3-TB-EXEC-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE`.
-  - Run the TB165 manifest `8d56ee1d…1e69` (984 rows), no census.
-  - Apply rules 1–6 from the review.
-  - Predicted: face `6-8-9` with arcs 0/1/5/6/12, and all 16 component-1/5 opposite faces with at least two visits.
-- **Then:** `M6-CP3-TB-REV-166-…`, which freezes the corner-partition helper CB-186 and the reader switch CB-187.
+  - Run manifest `8d56ee1d…1e69` (984 rows), no census.
+  - Apply rules 1–6 from the adversarial record.
+  - Predicted: `6-8-9` visits from arcs 0/1/5/6/12; 16 opposite faces with at least two visits; 24 ports; valence arrivals 1,2,2,0,0,2,2,1 at nodes 0–7; 10 arrivals with `terminalSingularity=1`.
+- **Then:** `M6-CP3-TB-REV-166-…`.
+  - Decide K5: whether any arrival is co-traced with a departing port.
+  - Freeze the CB-186 boundary-walk corner partition helper and the CB-187 reader switch.
 - **On failure:** a hash mismatch or compile failure means STATUS BLOCKED and a return to Review. Never edit beyond the diff, change product source, run tests in a CB, or change selectors or manifests.
 
 ## Turn Sequence
@@ -58,12 +61,12 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | COMPLETE | TB128–TB-REV-161, RA-250–RA-281, CB150–CB-178 | [Folded index](M6_Consolidated_Record.md#tb128-review-folded-execution-record-index-2026-11-17); adversarial records TB-REV-157 to TB-REV-161. |
 | COMPLETE | CB-179 → TB-EXEC/REV-162 → CB-180 → TB-EXEC/REV-163 | [TB-REV-162 adv.](Architecture_M6_CP3_TB_REV_162_Adversarial_Review_20261122.md); [TB-REV-163 adv.](Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md) (Y1–Y7). |
 | COMPLETE | CB-181 → CB-182 → TB-EXEC/REV-164 | [TB164](Architecture_M6_CP3_TB164_P13_Third_Edge_Side_Owner_Census_Full_Gate_Execution_Report_20261122.md); [TB-REV-164 adv.](Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md) (Z1–Z6). |
-| COMPLETE | CB-183 → CB-184 → TB-EXEC-165 (STOP) → TB-REV-165 | [CB-183](Architecture_M6_CP3_CB183_P13_Nearest_Chord_Seed_Decision_Helper_Code_Build_Record_20261122.md); [CB-184](Architecture_M6_CP3_CB184_P13_Nearest_Chord_Seed_Switch_Code_Build_Record_20261122.md); [TB165](Architecture_M6_CP3_TB165_P13_Nearest_Chord_Seed_Full_Gate_Execution_Report_20261122.md); [TB-REV-165 review](Architecture_M6_CP3_TB_REV_165_Nearest_Chord_Seed_Full_Gate_Review_20261122.md) accepts the seed switch. |
-| **NEXT (Code + Build)** | `M6-CP3-CB-185-P13-STAGED-MULTI-CUT-FACE-RECEIPT` | Exact test-only receipt; compile only. |
+| COMPLETE | CB-183 → CB-184 → TB-EXEC-165 (STOP) → TB-REV-165 (+ [TB-REV-165 adversarial](Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md)) | [CB-183](Architecture_M6_CP3_CB183_P13_Nearest_Chord_Seed_Decision_Helper_Code_Build_Record_20261122.md); [CB-184](Architecture_M6_CP3_CB184_P13_Nearest_Chord_Seed_Switch_Code_Build_Record_20261122.md); [TB165](Architecture_M6_CP3_TB165_P13_Nearest_Chord_Seed_Full_Gate_Execution_Report_20261122.md); [TB-REV-165 review](Architecture_M6_CP3_TB_REV_165_Nearest_Chord_Seed_Full_Gate_Review_20261122.md) accepts the seed switch. |
+| **NEXT (Code + Build)** | `M6-CP3-CB-185-P13-STAGED-MULTI-CUT-FACE-RECEIPT` | Exact v2 test-only receipt (`a7a5922b…935a`); compile only. |
 | Then (Test + Benchmark) | `M6-CP3-TB-EXEC-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE` | 984 rows; row-979 receipt; no census. |
-| Then (Review) | `M6-CP3-TB-REV-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE` | Classify faces; freeze CB-186 helper + CB-187 switch. |
+| Then (Review) | `M6-CP3-TB-REV-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE` | Decide K5 (co-traced arrivals → A2a); freeze CB-186 boundary-walk helper + CB-187 switch. |
 | Prospective | CB-186 → CB-187 → TB-EXEC/REV-167 (staged plan built) → CB-188 activation (V3–V5, V10, V11) → TB-EXEC/REV-168 → CB-189 V3b → R1 → O48 | O49 off the switch path. |
-| Withdrawn | prose CB-180 (X2); DEFN-161A (W3); prose CB-178 activation (V2); DEFN-159A (U1); prose CB-175; CB-174 v3 helper; CB-172A; prose CB-173; old CB-181/CB-182 wiring plan (Y1); prose CB-183 (Z1); activation-before-plan order (G5) | — |
+| Withdrawn | prose CB-180 (X2); DEFN-161A (W3); prose CB-178 activation (V2); DEFN-159A (U1); prose CB-175; CB-174 v3 helper; CB-172A; prose CB-173; old CB-181/CB-182 wiring plan (Y1); prose CB-183 (Z1); activation-before-plan order (G5); CB-185 v1 and per-class corner helpers (K3/K4) | — |
 | Held / Parked | `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`, `…-FACE-CONTACT-OUTCOME` (FC-6), row 858 face DEFN; `M6-CP3-CB-145-P13-VERTEX-FOLLOW-BOUNDARY` | 858 after the sphere repair. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE

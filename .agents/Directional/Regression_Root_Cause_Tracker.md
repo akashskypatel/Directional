@@ -1,3 +1,13 @@
+## TB-REV-165 adversarial — K5 candidate: singular-node valence above port count (2026-11-22 UTC)
+
+[Adversarial record](Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md). This is a non-stable, open candidate.
+- Singular nodes 0–7 have arc ends 4,5,5,3,3,5,5,4 against 3 ports each, from 10 slide arrivals (traces 0, 1, 9, 10, 11, 12, 13, 14, 21, 22).
+- DESIGN permits arrivals at a singularity, and no stage checks valence.
+- An arrival co-traced with a departing edge-supported port (same slide edge) would be a zero-area overlap and an A2a defect.
+- Owner: CB-185 v2 receipt → TB-REV-166.
+- Falsifier: no arrival shares a slide edge with a departing port.
+- Also corrected: `end=point` in row 979 cannot tell a singularity termination from a point stop.
+
 ## TB-REV-165 — TB165-F1 reclassified as a defective review oracle; new plan-stage candidate G2/G3 (2026-11-22 UTC)
 
 [Review](Architecture_M6_CP3_TB_REV_165_Nearest_Chord_Seed_Full_Gate_Review_20261122.md) G1–G5. There is **no product regression**.

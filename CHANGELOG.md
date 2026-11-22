@@ -1,3 +1,13 @@
+## 2026-11-22 — TB-REV-165 adversarial continuation: CB-185 v2 receipt, boundary-walk corner partition
+
+[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md): the seed acceptance is upheld. The corrections:
+- `end=point` hides singularity terminations;
+- one boundary-walk corner partition replaces per-class helpers;
+- CB-185 v1 is replaced by v2 (`a7a5922b…935a`, test-only), which adds entry/exit, singular ports, arrivals and valence;
+- K5 (co-traced arrivals) is open for TB-REV-166.
+
+Apply-check and `-fsyntax-only` are clean; nothing was run.
+
 ## 2026-11-22 — TB-REV-165: nearest-chord seed switch accepted; multi-cut face receipt frozen
 
 [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_165_Nearest_Chord_Seed_Full_Gate_Review_20261122.md): the TB165 rule-3 STOP traces to a defective oracle (the Established encoding and agreeing seeds), not to the product.

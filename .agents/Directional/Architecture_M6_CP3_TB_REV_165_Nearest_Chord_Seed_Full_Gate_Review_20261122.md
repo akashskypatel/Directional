@@ -1,5 +1,7 @@
 # TB-REV-165 — nearest-chord seed full gate review (2026-11-22 UTC)
 
+> **Continued after handover:** the [adversarial record](Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md) (K1–K6) upholds the seed acceptance, G1 and G5. It corrects G2 (`end=point` hides singularity terminations) and withdraws the per-class plan in G4 in favour of one boundary-walk partition. It replaces CB-185 v1 and the TB166 rules below with v2 (`a7a5922b…935a`).
+
 Review of `M6-CP3-TB-EXEC-165-P13-NEAREST-CHORD-SEED-FULL-GATE` ([report](Architecture_M6_CP3_TB165_P13_Nearest_Chord_Seed_Full_Gate_Execution_Report_20261122.md), [raw receipt](evidence/Architecture_M6_CP3_TB165_P13_Nearest_Chord_Seed_Raw_20261122.txt)). Runtime-free: source reading, the TB162–TB165 receipts, Haiku read-only checks, `git apply --check` and `-fsyntax-only` only.
 
 ## Verdict
