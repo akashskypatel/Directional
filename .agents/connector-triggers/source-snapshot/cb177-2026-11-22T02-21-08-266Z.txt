@@ -1,0 +1,1 @@
+M6-CP3-CB-177-P13-STAGED-SLIDE-ENTRY-STOP source snapshot; exact event SHA is snapshot source.
