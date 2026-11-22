@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb181-apply-20261122-b",
-  "mailbox_key": "m6-cp3-cb181-apply-b",
-  "file_id": "1tzdzydd-uni4EgnaVVr_AmkgBFXoqxz-",
-  "patch_sha256": "a3b34703a40a478dc9696b74c60a65dc35a113e84749530628e88e81a422d434",
-  "base_sha": "81005cb56b3a6725472a3f61e5c56eddd181f894",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(cp3): add exact third-edge side owner helper and focused tests",
-  "retention_days": 14
+  "operation": "compile",
+  "request_id": "m6-cp3-cb181-compile-20261122-a",
+  "mailbox_key": "m6-cp3-cb181-compile",
+  "source_sha": "c22be25d0c8d13cb5eed4f83e3befea65b8f39c3",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb181-compile"
 }
