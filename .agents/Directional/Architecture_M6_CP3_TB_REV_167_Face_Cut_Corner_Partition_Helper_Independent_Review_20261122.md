@@ -51,15 +51,15 @@ Continue **this same TB-REV-167**. Independently audit and either correct or rej
 | Prior obligations discharged/carried | K5 specific witness discharged; remaining duties carried as above |
 | Stable accounting | 66/17/49; debt1; deferred81; CP2 491/491 accepted; no CP3 promotion |
 | New candidates/obligations recorded | Unverified exact reader candidate; no new stable failure |
-| ORIENTATION currency line | Updated to TB-REV-167 in progress |
-| ORIENTATION §3 / §4 / §7 / §8 | Prior WIP update applied; final review closeout remains pending |
-| CHANGELOG | WIP entry applied |
-| ROADMAP | n/a — milestone has not moved |
+| ORIENTATION currency line | Updated for v2 reader defect and strict staged-sphere test proposal |
+| ORIENTATION §3 / §4 / §7 / §8 | Updated: accepted gate unchanged; witness remains unproved; edge-only reader mistake recorded in recurring defect patterns |
+| CHANGELOG | Existing TB-REV-167 WIP entry retained; final closeout entry pending |
+| ROADMAP | Corrected stale at-a-glance next-turn reference; M6-CP3 remains active and unaccepted |
 | Selector manifest | n/a — accepted selector unchanged; prospective TB168 manifest is uncommitted |
 | LESSONS | Existing source authority and non-vacuity rules apply |
 | Consolidation under CLEAN_UP_POLICY | Folded obsolete 5-line TB165 continuation into `M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md`, preserving full text and SHA-256 `2be558cbec2e987f60266e6adf6f616782b115b39998781e37dacf6b0e549bc2`; remaining folded-index census pending |
 | Successor frozen | Not yet. Proposed CB-187 reader switch with strict 990-row TB168 gate is candidate only |
-| Turn boundary held | Review runtime-free; no working-branch product/test/selector changes |
+| Turn boundary held | Verified through GitHub compare: no `src/`, `include/`, `tests/`, `benchmarks/`, `cmake/`, or `CMakeLists.txt` changes against CB-186 compiled source |
 | review_check.py boundary | Literal checker pending; downloaded source snapshot has no `.git`. GitHub compared CB186 source commit to review working branch and found **zero** changed product/test/build paths; durable baseline `8b7299b43` is an ancestor, but its large historical diff is truncated at 300 paths. These checks do not substitute for the literal boundary tool |
 | STATUS lifecycle maintained | Same-turn resumed beacon; final same-turn beacon required |
-| Pushed to origin, branch in sync | Final confirmation pending |
+| Pushed to origin, branch in sync | Verified GitHub PR #8 branch head after doc writes; GitHub compare from CB-186 compiled source shows no product/test/build changes |
