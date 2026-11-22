@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "test_benchmark",
-  "request_id": "m6-cp3-tb159-census-20261122-a",
-  "mailbox_key": "m6-cp3-tb159-census",
-  "executor_sha": "159feaafae6fec1190f1d5b59a5f0fb94a80eb2c",
-  "semantic_source_sha": "7c9517fd956bf72847688ee99146bd877137ceb7",
-  "turn_id": "M6-CP3-TB-EXEC-159-P13-SLIDE-ENTRY-STOP-PREDICATE-CENSUS",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "14732005980",
-    "EXPECTED_SOURCE_SHA": "7c9517fd956bf72847688ee99146bd877137ceb7",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "24e453f9860b7f089e996b5867edea6b82366a3caf1211855257a283a865168f",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "9ca7c33d9d36751059c3040881266fd17fed37df6fe164423243efa0ea046ede",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "e0ab7ab37bc24b23ef8d3658769e69f614d621079206db4149e4070ae42f72e5",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793",
-    "EXPECTED_CASE_COUNT": "3"
-  },
-  "artifact_prefix": "m6-cp3-tb159-census",
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-tb159-docs-20261122-a",
+  "mailbox_key": "m6-cp3-tb159-docs",
+  "file_id": "1B1sCYHWqcNM50hfkL5gKTgrKrey9b2up",
+  "patch_sha256": "ec051449064c85aaa2597cb044721386cd94d7fdb7cda26119c2822ef4bd936f",
+  "base_sha": "159feaafae6fec1190f1d5b59a5f0fb94a80eb2c",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record TB159 immutable gate and receipt evidence",
   "retention_days": 14
 }
