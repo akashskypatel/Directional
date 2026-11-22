@@ -1,0 +1,2 @@
+# TB167 source snapshot marker completed and verified
+.agents/connector-triggers/source-snapshot/tb167-20261122.txt
