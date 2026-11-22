@@ -1,10 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP3-TB-REV-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE
-Status: BLOCKED
+Status: IN_PROGRESS
 Successor: UNKNOWN
 Started at: 2026-11-22T11:16:15Z
-Resumed at: 
+Resumed at: 2026-11-22T11:50:02Z
 Ended at: 
-Blocker Type: REVIEW_BLOCKER
-Blocker Details: TB163 proves neither R-a nor H5; 16 boundaries have nonunique-presence sideOwner=1, no interior arcs or seeds. REV163-O1 requires a source-backed oriented edge-side owner and separation proof before CB-181/CB-182.
 ---END_TURN_STATUS---
