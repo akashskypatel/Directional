@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev161-docs-20261122-a",
-  "mailbox_key": "m6-cp3-tb-rev161-docs",
-  "file_id": "1NkwQeuIBSOzLFf5ewRRpz4rsMQpjL7F6",
-  "patch_sha256": "d1e734f1deb87c60e9dfb81704b7de9308f7df616b91e83fe38dd214b60d3753",
-  "base_sha": "f9e912a0bed5d1ed233e2d554b85fc35b60ec1b0",
+  "request_id": "m6-cp3-tb-rev161-closeout-20261122-b",
+  "mailbox_key": "m6-cp3-tb-rev161-closeout",
+  "file_id": "1Db8u_YRRY9wJA9F-cr6MUDb5ombRPSZh",
+  "patch_sha256": "fc0059f03e22201a723bb6439e61f0a515820dcabb942a4cd40041bc8bfbc079",
+  "base_sha": "892d45e313ba63c672931c2c735503a6856f8fa7",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cp3): independently review TB161 and hold activation for owner definition",
+  "commit_message": "docs(cp3): record independent history and remote review boundary evidence",
   "retention_days": 14
 }
