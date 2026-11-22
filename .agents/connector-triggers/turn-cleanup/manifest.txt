@@ -1,2 +1,0 @@
-# CB177 turn temporary state cleanup
-.agents/connector-triggers/source-snapshot/cb177-2026-11-22T02-21-08-266Z.txt
