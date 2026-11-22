@@ -76,4 +76,27 @@ third_edge_side_owner(const std::vector<ThirdEdgeChordCandidate> &candidates) {
   return {candidates[outermost].thirdEdgeOrbit};
 }
 
+/** Orbit a trace-crossed triangle offers, through its third edge, as the seed
+ * of the uncut neighbour across that edge, or nothing.
+ *
+ * `chords` must hold every chord recorded against the edge, whether or not
+ * its third-edge orbit is certified, so that an uncertified outermost chord
+ * is never skipped in favour of an inner one. The selected orbit must also be
+ * among the orbits recorded for the edge side, which holds only certified
+ * orbits. A triangle that a trace segment crosses without a carrier order
+ * (a vertex fan, a turn back through one edge, a segment without an incoming
+ * carrier) is never decided here, since that segment may lie nearer the edge
+ * than every ordered chord. */
+inline std::optional<std::size_t> nearest_chord_edge_side_seed(
+    const std::set<std::size_t> &recordedEdgeSideOrbits,
+    const std::vector<ThirdEdgeChordCandidate> &chords,
+    const bool triangleHasUnorderedSegment) {
+  if (triangleHasUnorderedSegment) return std::nullopt;
+  const auto selected = third_edge_side_owner(chords);
+  if (selected.size() != 1U) return std::nullopt;
+  const std::size_t orbit = *selected.begin();
+  if (recordedEdgeSideOrbits.count(orbit) == 0U) return std::nullopt;
+  return orbit;
+}
+
 } // namespace directional::geometry::detail
