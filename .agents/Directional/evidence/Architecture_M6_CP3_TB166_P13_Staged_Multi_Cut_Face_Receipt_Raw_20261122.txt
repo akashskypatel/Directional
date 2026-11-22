@@ -1,0 +1,179 @@
+SphereStagedMultiCutVisit face=0-1-2 arc=0 trace=0 segment=0 pieces=F incoming=- outgoing=1-2 slide=- entry=v0 exit=1-2@0.151774 last=0
+SphereStagedMultiCutVisit face=0-1-2 arc=6 trace=4 segment=6 pieces=F incoming=1-2 outgoing=0-2 slide=- entry=1-2@0.259918 exit=- last=1
+SphereStagedMultiCutVisit face=0-2-3 arc=2 trace=1 segment=0 pieces=F incoming=- outgoing=2-3 slide=- entry=v0 exit=2-3@0.848226 last=0
+SphereStagedMultiCutVisit face=0-2-3 arc=8 trace=6 segment=6 pieces=F incoming=2-3 outgoing=0-2 slide=- entry=2-3@0.740082 exit=- last=1
+SphereStagedMultiCutVisit face=1-2-5 arc=0 trace=0 segment=1 pieces=F incoming=1-2 outgoing=1-5 slide=- entry=1-2@0.151774 exit=1-5@0.179562 last=0
+SphereStagedMultiCutVisit face=1-2-5 arc=6 trace=4 segment=5 pieces=F incoming=1-5 outgoing=1-2 slide=- entry=1-5@0.307506 exit=1-2@0.259918 last=0
+SphereStagedMultiCutVisit face=1-4-5 arc=0 trace=0 segment=2 pieces=F incoming=1-5 outgoing=4-5 slide=- entry=1-5@0.179562 exit=4-5@0.191295 last=0
+SphereStagedMultiCutVisit face=1-4-5 arc=6 trace=4 segment=4 pieces=F incoming=4-5 outgoing=1-5 slide=- entry=4-5@0.317409 exit=1-5@0.307506 last=0
+SphereStagedMultiCutVisit face=2-3-10 arc=2 trace=1 segment=1 pieces=F incoming=2-3 outgoing=3-10 slide=- entry=2-3@0.848226 exit=3-10@0.179562 last=0
+SphereStagedMultiCutVisit face=2-3-10 arc=8 trace=6 segment=5 pieces=F incoming=3-10 outgoing=2-3 slide=- entry=3-10@0.307506 exit=2-3@0.740082 last=0
+SphereStagedMultiCutVisit face=3-10-11 arc=2 trace=1 segment=2 pieces=F incoming=3-10 outgoing=10-11 slide=- entry=3-10@0.179562 exit=10-11@0.808705 last=0
+SphereStagedMultiCutVisit face=3-10-11 arc=8 trace=6 segment=4 pieces=F incoming=10-11 outgoing=3-10 slide=- entry=10-11@0.682591 exit=3-10@0.307506 last=0
+SphereStagedMultiCutVisit face=4-5-7 arc=0 trace=0 segment=3 pieces=F incoming=4-5 outgoing=4-7 slide=- entry=4-5@0.191295 exit=4-7@0.195556 last=0
+SphereStagedMultiCutVisit face=4-5-7 arc=6 trace=4 segment=3 pieces=F incoming=4-7 outgoing=4-5 slide=- entry=4-7@0.324479 exit=4-5@0.317409 last=0
+SphereStagedMultiCutVisit face=4-6-7 arc=0 trace=0 segment=4 pieces=F incoming=4-7 outgoing=6-7 slide=- entry=4-7@0.195556 exit=6-7@0.068450 last=0
+SphereStagedMultiCutVisit face=4-6-7 arc=6 trace=4 segment=2 pieces=F incoming=6-7 outgoing=4-7 slide=- entry=6-7@0.217743 exit=4-7@0.324479 last=0
+SphereStagedMultiCutVisit face=6-7-9 arc=0 trace=0 segment=5 pieces=F incoming=6-7 outgoing=6-9 slide=- entry=6-7@0.068450 exit=6-9@0.063005 last=0
+SphereStagedMultiCutVisit face=6-7-9 arc=5 trace=3 segment=1 pieces=F incoming=6-9 outgoing=7-9 slide=- entry=6-9@0.799576 exit=7-9@0.782257 last=0
+SphereStagedMultiCutVisit face=6-7-9 arc=6 trace=4 segment=1 pieces=F incoming=6-9 outgoing=6-7 slide=- entry=6-9@0.200424 exit=6-7@0.217743 last=0
+SphereStagedMultiCutVisit face=6-7-9 arc=12 trace=9 segment=5 pieces=F incoming=7-9 outgoing=6-9 slide=- entry=7-9@0.931550 exit=6-9@0.936995 last=0
+SphereStagedMultiCutVisit face=6-8-9 arc=0 trace=0 segment=6 pieces=FE incoming=6-9 outgoing=6-8 slide=6-8 entry=6-9@0.063005 exit=v8 last=1
+SphereStagedMultiCutVisit face=6-8-9 arc=1 trace=0 segment=6 pieces=E incoming=6-9 outgoing=6-8 slide=6-8 entry=6-9@0.063005 exit=v8 last=1
+SphereStagedMultiCutVisit face=6-8-9 arc=5 trace=3 segment=0 pieces=F incoming=- outgoing=6-9 slide=- entry=v8 exit=6-9@0.799576 last=0
+SphereStagedMultiCutVisit face=6-8-9 arc=6 trace=4 segment=0 pieces=F incoming=- outgoing=6-9 slide=- entry=v8 exit=6-9@0.200424 last=0
+SphereStagedMultiCutVisit face=6-8-9 arc=12 trace=9 segment=6 pieces=FE incoming=6-9 outgoing=8-9 slide=8-9 entry=6-9@0.936995 exit=v8 last=1
+SphereStagedMultiCutVisit face=7-9-14 arc=5 trace=3 segment=2 pieces=F incoming=7-9 outgoing=7-14 slide=- entry=7-9@0.782257 exit=7-14@0.675521 last=0
+SphereStagedMultiCutVisit face=7-9-14 arc=12 trace=9 segment=4 pieces=F incoming=7-14 outgoing=7-9 slide=- entry=7-14@0.804444 exit=7-9@0.931550 last=0
+SphereStagedMultiCutVisit face=7-13-14 arc=5 trace=3 segment=3 pieces=F incoming=7-14 outgoing=13-14 slide=- entry=7-14@0.675521 exit=13-14@0.682591 last=0
+SphereStagedMultiCutVisit face=7-13-14 arc=12 trace=9 segment=3 pieces=F incoming=13-14 outgoing=7-14 slide=- entry=13-14@0.808705 exit=7-14@0.804444 last=0
+SphereStagedMultiCutVisit face=10-11-15 arc=2 trace=1 segment=3 pieces=F incoming=10-11 outgoing=11-15 slide=- entry=10-11@0.808705 exit=11-15@0.195556 last=0
+SphereStagedMultiCutVisit face=10-11-15 arc=8 trace=6 segment=3 pieces=F incoming=11-15 outgoing=10-11 slide=- entry=11-15@0.324479 exit=10-11@0.682591 last=0
+SphereStagedMultiCutVisit face=11-15-16 arc=2 trace=1 segment=4 pieces=F incoming=11-15 outgoing=15-16 slide=- entry=11-15@0.195556 exit=15-16@0.931550 last=0
+SphereStagedMultiCutVisit face=11-15-16 arc=8 trace=6 segment=2 pieces=F incoming=15-16 outgoing=11-15 slide=- entry=15-16@0.782257 exit=11-15@0.324479 last=0
+SphereStagedMultiCutVisit face=13-14-19 arc=5 trace=3 segment=4 pieces=F incoming=13-14 outgoing=13-19 slide=- entry=13-14@0.682591 exit=13-19@0.692494 last=0
+SphereStagedMultiCutVisit face=13-14-19 arc=12 trace=9 segment=2 pieces=F incoming=13-19 outgoing=13-14 slide=- entry=13-19@0.820438 exit=13-14@0.808705 last=0
+SphereStagedMultiCutVisit face=13-18-19 arc=5 trace=3 segment=5 pieces=F incoming=13-19 outgoing=18-19 slide=- entry=13-19@0.692494 exit=18-19@0.740082 last=0
+SphereStagedMultiCutVisit face=13-18-19 arc=12 trace=9 segment=1 pieces=F incoming=18-19 outgoing=13-19 slide=- entry=18-19@0.848226 exit=13-19@0.820438 last=0
+SphereStagedMultiCutVisit face=15-16-20 arc=2 trace=1 segment=5 pieces=F incoming=15-16 outgoing=16-20 slide=- entry=15-16@0.931550 exit=16-20@0.063005 last=0
+SphereStagedMultiCutVisit face=15-16-20 arc=8 trace=6 segment=1 pieces=F incoming=16-20 outgoing=15-16 slide=- entry=16-20@0.200424 exit=15-16@0.782257 last=0
+SphereStagedMultiCutVisit face=15-16-20 arc=9 trace=7 segment=1 pieces=F incoming=16-20 outgoing=15-20 slide=- entry=16-20@0.799576 exit=15-20@0.782257 last=0
+SphereStagedMultiCutVisit face=15-16-20 arc=14 trace=11 segment=5 pieces=F incoming=15-20 outgoing=16-20 slide=- entry=15-20@0.931550 exit=16-20@0.936995 last=0
+SphereStagedMultiCutVisit face=15-17-22 arc=9 trace=7 segment=3 pieces=F incoming=15-22 outgoing=17-22 slide=- entry=15-22@0.675521 exit=17-22@0.682591 last=0
+SphereStagedMultiCutVisit face=15-17-22 arc=14 trace=11 segment=3 pieces=F incoming=17-22 outgoing=15-22 slide=- entry=17-22@0.808705 exit=15-22@0.804444 last=0
+SphereStagedMultiCutVisit face=15-20-22 arc=9 trace=7 segment=2 pieces=F incoming=15-20 outgoing=15-22 slide=- entry=15-20@0.782257 exit=15-22@0.675521 last=0
+SphereStagedMultiCutVisit face=15-20-22 arc=14 trace=11 segment=4 pieces=F incoming=15-22 outgoing=15-20 slide=- entry=15-22@0.804444 exit=15-20@0.931550 last=0
+SphereStagedMultiCutVisit face=16-20-21 arc=2 trace=1 segment=6 pieces=FE incoming=16-20 outgoing=16-21 slide=16-21 entry=16-20@0.063005 exit=v21 last=1
+SphereStagedMultiCutVisit face=16-20-21 arc=3 trace=1 segment=6 pieces=E incoming=16-20 outgoing=16-21 slide=16-21 entry=16-20@0.063005 exit=v21 last=1
+SphereStagedMultiCutVisit face=16-20-21 arc=8 trace=6 segment=0 pieces=F incoming=- outgoing=16-20 slide=- entry=v21 exit=16-20@0.200424 last=0
+SphereStagedMultiCutVisit face=16-20-21 arc=9 trace=7 segment=0 pieces=F incoming=- outgoing=16-20 slide=- entry=v21 exit=16-20@0.799576 last=0
+SphereStagedMultiCutVisit face=16-20-21 arc=14 trace=11 segment=6 pieces=FE incoming=16-20 outgoing=20-21 slide=20-21 entry=16-20@0.936995 exit=v21 last=1
+SphereStagedMultiCutVisit face=17-18-23 arc=9 trace=7 segment=5 pieces=F incoming=17-23 outgoing=18-23 slide=- entry=17-23@0.692494 exit=18-23@0.740082 last=0
+SphereStagedMultiCutVisit face=17-18-23 arc=14 trace=11 segment=1 pieces=F incoming=18-23 outgoing=17-23 slide=- entry=18-23@0.848226 exit=17-23@0.820438 last=0
+SphereStagedMultiCutVisit face=17-22-23 arc=9 trace=7 segment=4 pieces=F incoming=17-22 outgoing=17-23 slide=- entry=17-22@0.682591 exit=17-23@0.692494 last=0
+SphereStagedMultiCutVisit face=17-22-23 arc=14 trace=11 segment=2 pieces=F incoming=17-23 outgoing=17-22 slide=- entry=17-23@0.820438 exit=17-22@0.808705 last=0
+SphereStagedMultiCutVisit face=18-19-24 arc=5 trace=3 segment=6 pieces=F incoming=18-19 outgoing=18-24 slide=- entry=18-19@0.740082 exit=- last=1
+SphereStagedMultiCutVisit face=18-19-24 arc=9 trace=7 segment=7 pieces=F incoming=18-24 outgoing=19-24 slide=- entry=18-24@0.872506 exit=- last=1
+SphereStagedMultiCutVisit face=18-19-24 arc=11 trace=9 segment=0 pieces=F incoming=- outgoing=18-19 slide=- entry=v24 exit=18-19@0.848226 last=0
+SphereStagedMultiCutVisit face=18-19-24 arc=12 trace=9 segment=0 pieces=F incoming=- outgoing=18-19 slide=- entry=v24 exit=18-19@0.848226 last=0
+SphereStagedMultiCutVisit face=18-19-24 arc=29 trace=23 segment=8 pieces=F incoming=19-24 outgoing=18-24 slide=- entry=19-24@0.896814 exit=- last=1
+SphereStagedMultiCutVisit face=18-23-24 arc=9 trace=7 segment=6 pieces=F incoming=18-23 outgoing=18-24 slide=- entry=18-23@0.740082 exit=18-24@0.872506 last=0
+SphereStagedMultiCutVisit face=18-23-24 arc=14 trace=11 segment=0 pieces=F incoming=- outgoing=18-23 slide=- entry=v24 exit=18-23@0.848226 last=0
+SphereStagedMultiCutVisit face=24-61-64 arc=13 trace=10 segment=0 pieces=F incoming=- outgoing=61-64 slide=- entry=v24 exit=61-64@0.848226 last=0
+SphereStagedMultiCutVisit face=24-61-64 arc=29 trace=23 segment=6 pieces=F incoming=61-64 outgoing=24-61 slide=- entry=61-64@0.740082 exit=24-61@0.127494 last=0
+SphereStagedMultiCutVisit face=25-26-27 arc=15 trace=12 segment=0 pieces=F incoming=- outgoing=26-27 slide=- entry=v25 exit=26-27@0.151774 last=0
+SphereStagedMultiCutVisit face=25-26-27 arc=23 trace=19 segment=6 pieces=F incoming=26-27 outgoing=25-27 slide=- entry=26-27@0.259918 exit=- last=1
+SphereStagedMultiCutVisit face=25-27-28 arc=4 trace=2 segment=8 pieces=F incoming=25-28 outgoing=25-27 slide=- entry=25-28@0.103186 exit=- last=1
+SphereStagedMultiCutVisit face=25-27-28 arc=16 trace=13 segment=0 pieces=F incoming=- outgoing=27-28 slide=- entry=v25 exit=27-28@0.848226 last=0
+SphereStagedMultiCutVisit face=25-27-28 arc=17 trace=13 segment=0 pieces=F incoming=- outgoing=27-28 slide=- entry=v25 exit=27-28@0.848226 last=0
+SphereStagedMultiCutVisit face=25-27-28 arc=19 trace=15 segment=6 pieces=F incoming=27-28 outgoing=25-27 slide=- entry=27-28@0.740082 exit=- last=1
+SphereStagedMultiCutVisit face=26-27-36 arc=15 trace=12 segment=1 pieces=F incoming=26-27 outgoing=26-36 slide=- entry=26-27@0.151774 exit=26-36@0.179562 last=0
+SphereStagedMultiCutVisit face=26-27-36 arc=23 trace=19 segment=5 pieces=F incoming=26-36 outgoing=26-27 slide=- entry=26-36@0.307506 exit=26-27@0.259918 last=0
+SphereStagedMultiCutVisit face=26-35-36 arc=15 trace=12 segment=2 pieces=F incoming=26-36 outgoing=35-36 slide=- entry=26-36@0.179562 exit=35-36@0.191295 last=0
+SphereStagedMultiCutVisit face=26-35-36 arc=23 trace=19 segment=4 pieces=F incoming=35-36 outgoing=26-36 slide=- entry=35-36@0.317409 exit=26-36@0.307506 last=0
+SphereStagedMultiCutVisit face=27-28-29 arc=17 trace=13 segment=1 pieces=F incoming=27-28 outgoing=28-29 slide=- entry=27-28@0.848226 exit=28-29@0.179562 last=0
+SphereStagedMultiCutVisit face=27-28-29 arc=19 trace=15 segment=5 pieces=F incoming=28-29 outgoing=27-28 slide=- entry=28-29@0.307506 exit=27-28@0.740082 last=0
+SphereStagedMultiCutVisit face=28-29-30 arc=17 trace=13 segment=2 pieces=F incoming=28-29 outgoing=29-30 slide=- entry=28-29@0.179562 exit=29-30@0.808705 last=0
+SphereStagedMultiCutVisit face=28-29-30 arc=19 trace=15 segment=4 pieces=F incoming=29-30 outgoing=28-29 slide=- entry=29-30@0.682591 exit=28-29@0.307506 last=0
+SphereStagedMultiCutVisit face=29-30-31 arc=17 trace=13 segment=3 pieces=F incoming=29-30 outgoing=30-31 slide=- entry=29-30@0.808705 exit=30-31@0.195556 last=0
+SphereStagedMultiCutVisit face=29-30-31 arc=19 trace=15 segment=3 pieces=F incoming=30-31 outgoing=29-30 slide=- entry=30-31@0.324479 exit=29-30@0.682591 last=0
+SphereStagedMultiCutVisit face=30-31-32 arc=17 trace=13 segment=4 pieces=F incoming=30-31 outgoing=31-32 slide=- entry=30-31@0.195556 exit=31-32@0.931550 last=0
+SphereStagedMultiCutVisit face=30-31-32 arc=19 trace=15 segment=2 pieces=F incoming=31-32 outgoing=30-31 slide=- entry=31-32@0.782257 exit=30-31@0.324479 last=0
+SphereStagedMultiCutVisit face=31-32-33 arc=17 trace=13 segment=5 pieces=F incoming=31-32 outgoing=32-33 slide=- entry=31-32@0.931550 exit=32-33@0.063005 last=0
+SphereStagedMultiCutVisit face=31-32-33 arc=19 trace=15 segment=1 pieces=F incoming=32-33 outgoing=31-32 slide=- entry=32-33@0.200424 exit=31-32@0.782257 last=0
+SphereStagedMultiCutVisit face=31-32-33 arc=20 trace=16 segment=1 pieces=F incoming=32-33 outgoing=31-33 slide=- entry=32-33@0.799576 exit=31-33@0.782257 last=0
+SphereStagedMultiCutVisit face=31-32-33 arc=25 trace=21 segment=5 pieces=F incoming=31-33 outgoing=32-33 slide=- entry=31-33@0.931550 exit=32-33@0.936995 last=0
+SphereStagedMultiCutVisit face=31-33-39 arc=20 trace=16 segment=2 pieces=F incoming=31-33 outgoing=31-39 slide=- entry=31-33@0.782257 exit=31-39@0.675521 last=0
+SphereStagedMultiCutVisit face=31-33-39 arc=25 trace=21 segment=4 pieces=F incoming=31-39 outgoing=31-33 slide=- entry=31-39@0.804444 exit=31-33@0.931550 last=0
+SphereStagedMultiCutVisit face=31-38-39 arc=20 trace=16 segment=3 pieces=F incoming=31-39 outgoing=38-39 slide=- entry=31-39@0.675521 exit=38-39@0.682591 last=0
+SphereStagedMultiCutVisit face=31-38-39 arc=25 trace=21 segment=3 pieces=F incoming=38-39 outgoing=31-39 slide=- entry=38-39@0.808705 exit=31-39@0.804444 last=0
+SphereStagedMultiCutVisit face=32-33-34 arc=17 trace=13 segment=6 pieces=FE incoming=32-33 outgoing=32-34 slide=32-34 entry=32-33@0.063005 exit=v34 last=1
+SphereStagedMultiCutVisit face=32-33-34 arc=19 trace=15 segment=0 pieces=F incoming=- outgoing=32-33 slide=- entry=v34 exit=32-33@0.200424 last=0
+SphereStagedMultiCutVisit face=32-33-34 arc=20 trace=16 segment=0 pieces=F incoming=- outgoing=32-33 slide=- entry=v34 exit=32-33@0.799576 last=0
+SphereStagedMultiCutVisit face=32-33-34 arc=25 trace=21 segment=6 pieces=FE incoming=32-33 outgoing=33-34 slide=33-34 entry=32-33@0.936995 exit=v34 last=1
+SphereStagedMultiCutVisit face=32-33-34 arc=26 trace=21 segment=6 pieces=E incoming=32-33 outgoing=33-34 slide=33-34 entry=32-33@0.936995 exit=v34 last=1
+SphereStagedMultiCutVisit face=35-36-41 arc=15 trace=12 segment=3 pieces=F incoming=35-36 outgoing=35-41 slide=- entry=35-36@0.191295 exit=35-41@0.195556 last=0
+SphereStagedMultiCutVisit face=35-36-41 arc=23 trace=19 segment=3 pieces=F incoming=35-41 outgoing=35-36 slide=- entry=35-41@0.324479 exit=35-36@0.317409 last=0
+SphereStagedMultiCutVisit face=35-40-41 arc=15 trace=12 segment=4 pieces=F incoming=35-41 outgoing=40-41 slide=- entry=35-41@0.195556 exit=40-41@0.068450 last=0
+SphereStagedMultiCutVisit face=35-40-41 arc=23 trace=19 segment=2 pieces=F incoming=40-41 outgoing=35-41 slide=- entry=40-41@0.217743 exit=35-41@0.324479 last=0
+SphereStagedMultiCutVisit face=38-39-44 arc=20 trace=16 segment=4 pieces=F incoming=38-39 outgoing=38-44 slide=- entry=38-39@0.682591 exit=38-44@0.692494 last=0
+SphereStagedMultiCutVisit face=38-39-44 arc=25 trace=21 segment=2 pieces=F incoming=38-44 outgoing=38-39 slide=- entry=38-44@0.820438 exit=38-39@0.808705 last=0
+SphereStagedMultiCutVisit face=38-43-44 arc=20 trace=16 segment=5 pieces=F incoming=38-44 outgoing=43-44 slide=- entry=38-44@0.692494 exit=43-44@0.740082 last=0
+SphereStagedMultiCutVisit face=38-43-44 arc=25 trace=21 segment=1 pieces=F incoming=43-44 outgoing=38-44 slide=- entry=43-44@0.848226 exit=38-44@0.820438 last=0
+SphereStagedMultiCutVisit face=40-41-46 arc=15 trace=12 segment=5 pieces=F incoming=40-41 outgoing=40-46 slide=- entry=40-41@0.068450 exit=40-46@0.063005 last=0
+SphereStagedMultiCutVisit face=40-41-46 arc=22 trace=18 segment=1 pieces=F incoming=40-46 outgoing=41-46 slide=- entry=40-46@0.799576 exit=41-46@0.782257 last=0
+SphereStagedMultiCutVisit face=40-41-46 arc=23 trace=19 segment=1 pieces=F incoming=40-46 outgoing=40-41 slide=- entry=40-46@0.200424 exit=40-41@0.217743 last=0
+SphereStagedMultiCutVisit face=40-41-46 arc=27 trace=22 segment=5 pieces=F incoming=41-46 outgoing=40-46 slide=- entry=41-46@0.931550 exit=40-46@0.936995 last=0
+SphereStagedMultiCutVisit face=40-45-46 arc=15 trace=12 segment=6 pieces=FE incoming=40-46 outgoing=40-45 slide=40-45 entry=40-46@0.063005 exit=v45 last=1
+SphereStagedMultiCutVisit face=40-45-46 arc=22 trace=18 segment=0 pieces=F incoming=- outgoing=40-46 slide=- entry=v45 exit=40-46@0.799576 last=0
+SphereStagedMultiCutVisit face=40-45-46 arc=23 trace=19 segment=0 pieces=F incoming=- outgoing=40-46 slide=- entry=v45 exit=40-46@0.200424 last=0
+SphereStagedMultiCutVisit face=40-45-46 arc=27 trace=22 segment=6 pieces=FE incoming=40-46 outgoing=45-46 slide=45-46 entry=40-46@0.936995 exit=v45 last=1
+SphereStagedMultiCutVisit face=40-45-46 arc=28 trace=22 segment=6 pieces=E incoming=40-46 outgoing=45-46 slide=45-46 entry=40-46@0.936995 exit=v45 last=1
+SphereStagedMultiCutVisit face=41-42-47 arc=22 trace=18 segment=3 pieces=F incoming=41-47 outgoing=42-47 slide=- entry=41-47@0.675521 exit=42-47@0.682591 last=0
+SphereStagedMultiCutVisit face=41-42-47 arc=27 trace=22 segment=3 pieces=F incoming=42-47 outgoing=41-47 slide=- entry=42-47@0.808705 exit=41-47@0.804444 last=0
+SphereStagedMultiCutVisit face=41-46-47 arc=22 trace=18 segment=2 pieces=F incoming=41-46 outgoing=41-47 slide=- entry=41-46@0.782257 exit=41-47@0.675521 last=0
+SphereStagedMultiCutVisit face=41-46-47 arc=27 trace=22 segment=4 pieces=F incoming=41-47 outgoing=41-46 slide=- entry=41-47@0.804444 exit=41-46@0.931550 last=0
+SphereStagedMultiCutVisit face=42-43-48 arc=22 trace=18 segment=5 pieces=F incoming=42-48 outgoing=43-48 slide=- entry=42-48@0.692494 exit=43-48@0.740082 last=0
+SphereStagedMultiCutVisit face=42-43-48 arc=27 trace=22 segment=1 pieces=F incoming=43-48 outgoing=42-48 slide=- entry=43-48@0.848226 exit=42-48@0.820438 last=0
+SphereStagedMultiCutVisit face=42-47-48 arc=22 trace=18 segment=4 pieces=F incoming=42-47 outgoing=42-48 slide=- entry=42-47@0.682591 exit=42-48@0.692494 last=0
+SphereStagedMultiCutVisit face=42-47-48 arc=27 trace=22 segment=2 pieces=F incoming=42-48 outgoing=42-47 slide=- entry=42-48@0.820438 exit=42-47@0.808705 last=0
+SphereStagedMultiCutVisit face=43-44-49 arc=20 trace=16 segment=6 pieces=F incoming=43-44 outgoing=43-49 slide=- entry=43-44@0.740082 exit=43-49@0.872506 last=0
+SphereStagedMultiCutVisit face=43-44-49 arc=25 trace=21 segment=0 pieces=F incoming=- outgoing=43-44 slide=- entry=v49 exit=43-44@0.848226 last=0
+SphereStagedMultiCutVisit face=43-48-49 arc=20 trace=16 segment=7 pieces=F incoming=43-49 outgoing=48-49 slide=- entry=43-49@0.872506 exit=- last=1
+SphereStagedMultiCutVisit face=43-48-49 arc=22 trace=18 segment=6 pieces=F incoming=43-48 outgoing=43-49 slide=- entry=43-48@0.740082 exit=- last=1
+SphereStagedMultiCutVisit face=43-48-49 arc=27 trace=22 segment=0 pieces=F incoming=- outgoing=43-48 slide=- entry=v49 exit=43-48@0.848226 last=0
+SphereStagedMultiCutVisit face=44-49-62 arc=13 trace=10 segment=6 pieces=FE incoming=44-62 outgoing=49-62 slide=49-62 entry=44-62@0.936995 exit=v49 last=1
+SphereStagedMultiCutVisit face=44-49-62 arc=29 trace=23 segment=0 pieces=F incoming=- outgoing=44-62 slide=- entry=v49 exit=44-62@0.799576 last=0
+SphereStagedMultiCutVisit face=44-59-62 arc=13 trace=10 segment=5 pieces=F incoming=59-62 outgoing=44-62 slide=- entry=59-62@0.931550 exit=44-62@0.936995 last=0
+SphereStagedMultiCutVisit face=44-59-62 arc=29 trace=23 segment=1 pieces=F incoming=44-62 outgoing=59-62 slide=- entry=44-62@0.799576 exit=59-62@0.782257 last=0
+SphereStagedMultiCutVisit face=59-60-63 arc=13 trace=10 segment=3 pieces=F incoming=60-63 outgoing=59-63 slide=- entry=60-63@0.808705 exit=59-63@0.804444 last=0
+SphereStagedMultiCutVisit face=59-60-63 arc=29 trace=23 segment=3 pieces=F incoming=59-63 outgoing=60-63 slide=- entry=59-63@0.675521 exit=60-63@0.682591 last=0
+SphereStagedMultiCutVisit face=59-62-63 arc=13 trace=10 segment=4 pieces=F incoming=59-63 outgoing=59-62 slide=- entry=59-63@0.804444 exit=59-62@0.931550 last=0
+SphereStagedMultiCutVisit face=59-62-63 arc=29 trace=23 segment=2 pieces=F incoming=59-62 outgoing=59-63 slide=- entry=59-62@0.782257 exit=59-63@0.675521 last=0
+SphereStagedMultiCutVisit face=60-61-64 arc=13 trace=10 segment=1 pieces=F incoming=61-64 outgoing=60-64 slide=- entry=61-64@0.848226 exit=60-64@0.820438 last=0
+SphereStagedMultiCutVisit face=60-61-64 arc=29 trace=23 segment=5 pieces=F incoming=60-64 outgoing=61-64 slide=- entry=60-64@0.692494 exit=61-64@0.740082 last=0
+SphereStagedMultiCutVisit face=60-63-64 arc=13 trace=10 segment=2 pieces=F incoming=60-64 outgoing=60-63 slide=- entry=60-64@0.820438 exit=60-63@0.808705 last=0
+SphereStagedMultiCutVisit face=60-63-64 arc=29 trace=23 segment=4 pieces=F incoming=60-63 outgoing=60-64 slide=- entry=60-63@0.682591 exit=60-64@0.692494 last=0
+SphereStagedMultiCutFaces faces=55 visits=136 visitedFaces=103
+SphereStagedSingularPort node=0 vertex=0 index=1 ordinal=0 trace=0 face=0-1-2 outgoing=1-2 slide=-
+SphereStagedSingularPort node=0 vertex=0 index=1 ordinal=1 trace=1 face=0-2-3 outgoing=2-3 slide=-
+SphereStagedSingularPort node=0 vertex=0 index=1 ordinal=2 trace=2 face=0-1-69 outgoing=1-69 slide=-
+SphereStagedSingularPort node=1 vertex=8 index=1 ordinal=0 trace=3 face=6-8-9 outgoing=6-9 slide=-
+SphereStagedSingularPort node=1 vertex=8 index=1 ordinal=1 trace=4 face=6-8-9 outgoing=6-9 slide=-
+SphereStagedSingularPort node=1 vertex=8 index=1 ordinal=2 trace=5 face=8-9-55 outgoing=9-55 slide=-
+SphereStagedSingularPort node=2 vertex=21 index=1 ordinal=0 trace=6 face=16-20-21 outgoing=16-20 slide=-
+SphereStagedSingularPort node=2 vertex=21 index=1 ordinal=1 trace=7 face=16-20-21 outgoing=16-20 slide=-
+SphereStagedSingularPort node=2 vertex=21 index=1 ordinal=2 trace=8 face=20-21-79 outgoing=20-79 slide=-
+SphereStagedSingularPort node=3 vertex=24 index=1 ordinal=0 trace=9 face=18-19-24 outgoing=18-19 slide=-
+SphereStagedSingularPort node=3 vertex=24 index=1 ordinal=1 trace=10 face=24-61-64 outgoing=61-64 slide=-
+SphereStagedSingularPort node=3 vertex=24 index=1 ordinal=2 trace=11 face=18-23-24 outgoing=18-23 slide=-
+SphereStagedSingularPort node=4 vertex=25 index=1 ordinal=0 trace=12 face=25-26-27 outgoing=26-27 slide=-
+SphereStagedSingularPort node=4 vertex=25 index=1 ordinal=1 trace=13 face=25-27-28 outgoing=27-28 slide=-
+SphereStagedSingularPort node=4 vertex=25 index=1 ordinal=2 trace=14 face=25-65-66 outgoing=65-66 slide=-
+SphereStagedSingularPort node=5 vertex=34 index=1 ordinal=0 trace=15 face=32-33-34 outgoing=32-33 slide=-
+SphereStagedSingularPort node=5 vertex=34 index=1 ordinal=1 trace=16 face=32-33-34 outgoing=32-33 slide=-
+SphereStagedSingularPort node=5 vertex=34 index=1 ordinal=2 trace=17 face=32-34-51 outgoing=32-51 slide=-
+SphereStagedSingularPort node=6 vertex=45 index=1 ordinal=0 trace=18 face=40-45-46 outgoing=40-46 slide=-
+SphereStagedSingularPort node=6 vertex=45 index=1 ordinal=1 trace=19 face=40-45-46 outgoing=40-46 slide=-
+SphereStagedSingularPort node=6 vertex=45 index=1 ordinal=2 trace=20 face=40-45-77 outgoing=40-77 slide=-
+SphereStagedSingularPort node=7 vertex=49 index=1 ordinal=0 trace=21 face=43-44-49 outgoing=43-44 slide=-
+SphereStagedSingularPort node=7 vertex=49 index=1 ordinal=1 trace=22 face=43-48-49 outgoing=43-48 slide=-
+SphereStagedSingularPort node=7 vertex=49 index=1 ordinal=2 trace=23 face=44-49-62 outgoing=44-62 slide=-
+SphereStagedSingularArrival node=1 trace=0 arc=1 face=6-8-9 slide=6-8 terminalSingularity=1
+SphereStagedSingularArrival node=2 trace=1 arc=3 face=16-20-21 slide=16-21 terminalSingularity=1
+SphereStagedSingularArrival node=1 trace=9 arc=12 face=6-8-9 slide=8-9 terminalSingularity=1
+SphereStagedSingularArrival node=7 trace=10 arc=13 face=44-49-62 slide=49-62 terminalSingularity=1
+SphereStagedSingularArrival node=2 trace=11 arc=14 face=16-20-21 slide=20-21 terminalSingularity=1
+SphereStagedSingularArrival node=6 trace=12 arc=15 face=40-45-46 slide=40-45 terminalSingularity=1
+SphereStagedSingularArrival node=5 trace=13 arc=17 face=32-33-34 slide=32-34 terminalSingularity=1
+SphereStagedSingularArrival node=0 trace=14 arc=18 face=0-3-69 slide=0-69 terminalSingularity=1
+SphereStagedSingularArrival node=5 trace=21 arc=26 face=32-33-34 slide=33-34 terminalSingularity=1
+SphereStagedSingularArrival node=6 trace=22 arc=28 face=40-45-46 slide=45-46 terminalSingularity=1
+SphereStagedSingularValence node=0 ports=3 arrivals=1 arcEnds=4
+SphereStagedSingularValence node=1 ports=3 arrivals=2 arcEnds=5
+SphereStagedSingularValence node=2 ports=3 arrivals=2 arcEnds=5
+SphereStagedSingularValence node=3 ports=3 arrivals=0 arcEnds=3
+SphereStagedSingularValence node=4 ports=3 arrivals=0 arcEnds=3
+SphereStagedSingularValence node=5 ports=3 arrivals=2 arcEnds=5
+SphereStagedSingularValence node=6 ports=3 arrivals=2 arcEnds=5
+SphereStagedSingularValence node=7 ports=3 arrivals=1 arcEnds=4

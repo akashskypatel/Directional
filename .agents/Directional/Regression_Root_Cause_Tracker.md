@@ -1,3 +1,7 @@
+## TB-EXEC-166 — measured multi-cut face receipts, no new regression (2026-11-22 UTC)
+
+[TB166 immutable execution report](Architecture_M6_CP3_TB166_P13_Staged_Multi_Cut_Face_Receipt_Full_Gate_Execution_Report_20261122.md): run 45052316075 and artifact 14765434765 establish **984/984 PASS**, CP2 **491/491**, 1065 membership, 983/983 predecessor rows N1–N3 match and 179 verbatim new row-979 receipt lines. All six frozen TB-REV-165 adversarial rules pass. The existing staged plan still rejects `SourceFaceCarriesMultipleTraceCuts` at `6-8-9`; production sphere cut search is unchanged. **Classification:** no new PASS-to-RED regression and no new non-stable failure candidate. Existing G2/G3, K5 and RA-275 S4a remain open pending independent `TB-REV-166` K5 decision. Root cause is not decided from diagnostic lines alone. The current receipt compares ten incoming slides to the 24 printed first-port segments but cannot replace the independent geometry decision. Falsifiers: a changed normalized prior row, incorrect face/valence receipt, previously accepted RED or verified producer co-trace. Stable **66 events / 17 categories / 49 recurrences**, witness debt **1**, deferred **81** unchanged. No CP3/497/D0/H4 promotion.
+
 ## TB-REV-165 adversarial — K5 candidate: singular-node valence above port count (2026-11-22 UTC)
 
 [Adversarial record](Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md). This is a non-stable, open candidate.

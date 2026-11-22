@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-22 UTC; M6-CP3-TB-REV-165-P13-NEAREST-CHORD-SEED-FULL-GATE, continued after handover):** TB165 984/984, CP2 491/491, census 3/3; the nearest-chord seed switch is accepted (192/192, `sourceFaceCellularity=1`). The [adversarial record](Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md) (K1–K6) corrects `end=point` (it hides singularity terminations) and replaces per-class corner helpers with one boundary-walk partition. It freezes the v2 test-only `M6-CP3-CB-185-P13-STAGED-MULTI-CUT-FACE-RECEIPT` (`a7a5922b…935a`), then TB-EXEC-166. K5 (co-traced arrivals at singular nodes) is open. No selector, CP3/497/D0/H4 or production promotion.
+**Current currency (2026-11-22 UTC; TB-EXEC-166 complete):** [TB166 full gate](Architecture_M6_CP3_TB166_P13_Staged_Multi_Cut_Face_Receipt_Full_Gate_Execution_Report_20261122.md) passed **984/984**, CP2 **491/491**, with 1065 membership. All prior rows agree under N1–N3 and **179** new row979 receipts satisfy the frozen rules. The staged sphere plan remains at `SourceFaceCarriesMultipleTraceCuts` face `6-8-9`; production sphere remains at cut-search exhaustion. K5 (singular-arrival co-trace) now belongs to independent `M6-CP3-TB-REV-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE`. No selector, CP3/497/D0/H4 or production promotion.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-22 UTC; TB-REV-165 adversarial):** the seed repair is accepted. The plan corner reader needs one exact boundary-walk partition over arc face pieces (K3). Singular valence 4,5,5,3,3,5,5,4 against 3 ports: 10 designed slide arrivals, with overlap with ports unmeasured (K5). Stable 66/17/49, debt1, deferred81.
+**Currency (2026-11-22 UTC; TB-EXEC-166):** immutable 984/984 PASS and 491/491 CP2. The 179 new raw row979 receipts measure 136 visits across 55 multi-cut faces, 24 ports, 10 singular arrivals and 8 node valences. Printed first-port edges do not match the 10 incoming slide edges at the same nodes. Independent TB-REV-166 must still decide K5. Stable 66/17/49, debt1, deferred81. No production acceptance.
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.
@@ -48,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; site-C change pending** | TB164 independently verified 982/982 and census 3/3; CP2 491/491. Two eight-face uncut components have measured unique outer side owners 6/12, but source-face seeds remain unchanged; M6-CP3-CB-183-P13-THIRD-EDGE-SIDE-OWNER-SEED may wire site-C only. Y7 site-D and deferred production cellularity are open; production sphere cut-search, `(0,2)` V3b and χ+4 remain. No CP3/497/D0/H4 promotion. |
+| **M6-CP3 — active; multi-cut plan remains open** | TB166 immutable 984/984 PASS, CP2 491/491, 179 new exact multi-cut/singularity receipts. The prior nearest-chord seed switch is accepted (192/192 owners, source-face cellularity 1). The staged plan still rejects face 6-8-9 with multiple cuts; production sphere cut-search, Y7, V3b and χ+4 remain open. TB-REV-166 must decide K5 before any plan-reader implementation. No CP3/497/D0/H4 promotion. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -122,7 +122,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority — M6-CP3-CB-185-P13-STAGED-MULTI-CUT-FACE-RECEIPT v2 (test-only), then TB-EXEC-166 and TB-REV-166:** publish every multi-cut face with entry and exit, plus singular ports and arrivals. Then decide K5 and freeze the CB-186 boundary-walk helper and the CB-187 reader switch before activation.
+**Current priority — `M6-CP3-TB-REV-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE` (independent Review):** examine the 179-line immutable TB166 receipt; decide whether singular arrivals co-trace outgoing ports (K5). If no overlap, freeze CB-186 boundary-walk corner partition and CB-187 reader switch. Activation remains held until the staged plan builds.
 
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
