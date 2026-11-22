@@ -345,6 +345,11 @@ This document records **reusable failure-derived engineering lessons**, not an e
 
 ## Diagnostics, classifiers, and causal investigation
 
+- **Predict outcomes by name, read the enum, and predict every line a print can emit (TB-REV-165).**
+  A numeric status in a frozen prediction must come from the enum's definition (Established was 0, not 2).
+  When a print covers all components, predict the agreeing lines on already-decided components too; they are
+  falsification checks, not surplus. After an owner repair lets a plan advance, check whether the next reader
+  still assumes the configuration the repair just admitted (here, one cut per face).
 - **Select over all the geometry, then certify; exclude keys other writers reach (TB-REV-164 adversarial).**
   A certification filter applied before a geometric selection changes what the selection sees: an
   uncertified outermost chord silently promotes an inner one. Select first, then require the result to

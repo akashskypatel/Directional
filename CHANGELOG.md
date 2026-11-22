@@ -1,3 +1,11 @@
+## 2026-11-22 — TB-REV-165: nearest-chord seed switch accepted; multi-cut face receipt frozen
+
+[Review](.agents/Directional/Architecture_M6_CP3_TB_REV_165_Nearest_Chord_Seed_Full_Gate_Review_20261122.md): the TB165 rule-3 STOP traces to a defective oracle (the Established encoding and agreeing seeds), not to the product.
+- Seed switch accepted: 192/192 owners established, `sourceFaceCellularity=1`.
+- The staged plan now stops in the plan's fragment-corner reader at face `6-8-9`.
+- Frozen: exact test-only CB-185 (`77e025a8…159d`), a row-979 `SphereStagedMultiCutVisit` receipt.
+- TB-EXEC-166 reuses the 984-row manifest, with no census. Activation is held until the staged plan builds.
+
 ## 2026-11-22 — TB-EXEC-165 immutable nearest-chord seed gate: 984/984 tests PASS, frozen acceptance STOP
 
 [Execution report](.agents/Directional/Architecture_M6_CP3_TB165_P13_Nearest_Chord_Seed_Full_Gate_Execution_Report_20261122.md): CB-184 package `14760674864` at source `5b5cdf15a670236635d74a15f3791422b182ffe0`. Full-gate run `45041398551`, result `14762295772` (`67b5e27d…bc92d5`), 984/984 and CP2 491/491; rows 1–978 and 980–982 match prior TB164 under N1–N3. Census run `45041524093`, result `14762602145` (`892bd5cc…fc1b`), unchanged 3-case outcomes (Cylinder PASS, BunnyRandom/Vase RED). **Rule 3 STOP:** row979 has 37 nearest-chord seeds with `status=0`, not frozen 16 with `status=2`. Component 1 and 5 orbits are 6/12, but 21 additional seeds appear in components 0/2/3/4. Owners 192/192 and sourceFaceCellularity=1; plan advances to `SourceFaceCarriesMultipleTraceCuts` at 6-8-9, without production acceptance. TB165-F1 remains non-stable. Stable 66/17/49, debt1, deferred81, CP3/497/D0/H4 unchanged. Next separate independent TB-REV-165 review required before any activation.

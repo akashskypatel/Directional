@@ -1,4 +1,37 @@
-## CURRENT — TB165 acceptance STOP; independent Review required (2026-11-22 UTC)
+## CURRENT — TB-REV-165: seed switch accepted, rule-3 STOP traced to my oracle; multi-cut face receipt next (2026-11-22 UTC)
+
+[TB-REV-165 review](.agents/Directional/Architecture_M6_CP3_TB_REV_165_Nearest_Chord_Seed_Full_Gate_Review_20261122.md), G1–G5:
+- **F1 fault:** the TB165 STOP comes from my TB-REV-164 rule 3, not the product. Established is encoded as 0, not 2 (`SurfaceCutGraph.h:84`). The 21 extra lines are nearest-chord seeds that agree with components 0, 2, 3 and 4, which were already established.
+- **Seed switch accepted:** components 1 and 5 got orbit 6/12; 192/192 established; `sourceFaceCellularity=1`; all other rows and the census unchanged.
+- **G1:** Z6 is closed. The 8 singularities each start 3 traces, and none touches the vertex-12/37 stars.
+- **G2/G3:** the next stop is the plan's one-cut-per-face corner reader (`GlobalTopologyPlan.cpp:531`) at `6-8-9`. That face holds a singular corner with rays, slide arrivals, and a segment split by a node. The reader takes carriers from whole segments, not each arc's own pieces (an RA-275 S4a site).
+- **G4/G5:** measure every multi-cut face before defining the rule; activation waits until the staged plan builds.
+
+```
+NEXT_TURN: M6-CP3-CB-185-P13-STAGED-MULTI-CUT-FACE-RECEIPT
+Owner: implementation agent (Code + Build, compile only)
+Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_165_Nearest_Chord_Seed_Full_Gate_Review_20261122.md (G1–G5)
+Apply exactly: .agents/Directional/Architecture_M6_CP3_CB185_P13_Staged_Multi_Cut_Face_Receipt_Exact.diff
+  SHA-256 77e025a862f82348765765d64c8af89a0c5d42c99e4375a2b1b1d6ea8ba7159d (test-only, +81/−0)
+  tests/FieldAlignedCurveNetworkTests.cpp: fea486ed…68e27 -> d417d635e1bcd887d4f3eefce27513464ff6e316c38525e26ed41e76ad960e0d
+Build: dispatcher compile, GMP/GMPXX targets, runtimeExecution=false
+Then: M6-CP3-TB-EXEC-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE (manifest 8d56ee1d…1e69, 984 rows; no census; rules 1–6)
+  -> M6-CP3-TB-REV-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE (classify faces; freeze CB-186 corner-partition helper + CB-187 reader switch)
+On failure/blocker: hash mismatch or compile failure -> STATUS BLOCKED; return to Review
+Do not: edit beyond the diff; change product source; run tests; change selectors or manifests; activate; promote CP3/497/D0/H4
+```
+
+Turn sequence:
+- [x] CB-183 → CB-184 → TB-EXEC-165 (STOP) → TB-REV-165 (seed switch accepted)
+- [ ] **NEXT** CB-185: test-only multi-cut face receipt, compile only
+- [ ] TB-EXEC-166: 984 rows, row-979 receipt, no census
+- [ ] TB-REV-166: freezes CB-186 (pure corner-partition helper) + CB-187 (plan corner reader reads arc pieces)
+- [ ] CB-186 → CB-187 → TB-EXEC/REV-167 (staged plan built, or next stage)
+- [ ] CB-188 activation (V3–V5, V10, V11) → TB-EXEC/REV-168 → CB-189 V3b → R1 → O48
+
+Carried: Y7 (narrowed by Z3), Z5 (disc fixtures), X4/H5, TB-REV-159-U3/V3–V11, W3/W4/W6/W7, RA-281 F1–F3, Amendment 14, O47/C5/O48/O49, sphere χ+4. No selector or production promotion.
+
+## HISTORY — TB165 acceptance STOP; Review required (2026-11-22 UTC)
 
 Canonical `M6-CP3-TB-EXEC-165-P13-NEAREST-CHORD-SEED-FULL-GATE` executed existing immutable package without rebuild. Full gate **984/984 PASS** (CP2 491/491), other 981 predecessor rows unchanged; census **3/3** unchanged. Frozen acceptance **rule 3 fails**: 37 `SphereStagedNearestChordSeed` lines, all `status=0`; frozen prediction requires 16, `status=2`. The target 16 edges have orbit 6/12, but components 0/2/3/4 supply 21 more. Owners 192 established, sourceFaceCellularity=1; staged plan now fails `SourceFaceCarriesMultipleTraceCuts` at `6-8-9`. [Exact report](.agents/Directional/Architecture_M6_CP3_TB165_P13_Nearest_Chord_Seed_Full_Gate_Execution_Report_20261122.md). **TB165-F1** is a non-stable acceptance-falsifier; stable 66/17/49, debt1, deferred81 unchanged. No CP3/497/D0/H4 or production promotion.
 

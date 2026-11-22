@@ -1,3 +1,14 @@
+## TB-REV-165 — TB165-F1 reclassified as a defective review oracle; new plan-stage candidate G2/G3 (2026-11-22 UTC)
+
+[Review](Architecture_M6_CP3_TB_REV_165_Nearest_Chord_Seed_Full_Gate_Review_20261122.md) G1–G5. There is **no product regression**.
+- **TB165-F1:** my TB-REV-164 rule 3 used `status=2` for Established, which is encoded as 0 (Conflicting is 2). It also predicted only 16 lines from a print that covers every component. The 21 extra seeds agree with already-established components.
+- **Accepted:** the nearest-chord seed repair, with 192/192 established and `sourceFaceCellularity=1`.
+- **Z6 closed:** no port singularity sits in the vertex-12/37 stars.
+- **New non-stable candidate G2/G3:** `build_fragment_corner_incidence` (`GlobalTopologyPlan.cpp:458–676`) allows one chord, or a corner fan, per face. It reads segment carriers, not the arc's own pieces. It rejects `6-8-9` (singular corner node 1, a slide segment split at node 12), and it would next reject the 16 nested-chord opposite faces.
+  - Owner: CB-185 receipt → TB-REV-166 → CB-186 helper + CB-187 switch.
+  - Falsifier: the staged plan builds, or stops at a later typed stage.
+- Accounting is unchanged at 66/17/49, debt1, deferred81.
+
 ## TB165-F1 — nearest-chord seed census exceeds frozen scope (non-stable STOP, 2026-11-22 UTC)
 
 [TB165 immutable execution report](Architecture_M6_CP3_TB165_P13_Nearest_Chord_Seed_Full_Gate_Execution_Report_20261122.md): all 984 gated tests PASS and CP2 491/491, 981 unchanged predecessor rows, 3/3 unchanged production census. **Frozen TB-REV-164 rule 3 fails**: 37 `SphereStagedNearestChordSeed` records with `status=0` rather than precisely 16 with `status=2`. Components 1 and 5 produce the 16 expected edges (orbits 6 and 12) but the other 21 belong to components 0/2/3/4. Staged source-face owners improve 176→192 and `sourceFaceCellularity` 0→1; the plan stops at `SourceFaceCarriesMultipleTraceCuts` on `6-8-9`, rather than earlier `UncutFaceComponentOrbitSeedNotUnique` on `2-5-12`. Production cut and 3-case outcomes do not improve. Classification: **new non-stable witness/acceptance-falsifier TB165-F1**, no proof of a separate production regression and no new stable regression ID. Independent TB-REV-165 must review the source and the frozen prediction; it cannot rewrite this executed gate. Stable totals **66/17/49**, witness debt **1**, deferred **81**. No CP3/497/D0/H4 promotion.

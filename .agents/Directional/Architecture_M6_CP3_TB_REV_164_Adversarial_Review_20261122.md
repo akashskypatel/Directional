@@ -73,6 +73,12 @@ Checks (Haiku, worktree at `e7c046d30`): all four preimages match. `git apply --
 
 ## TB165 rules (STOP unless all hold)
 
+> **Correction (TB-REV-165 G-verdict):** rule 3 below is defective in two ways.
+> - `status=2` should read `status=0`: Established is 0 and Conflicting is 2.
+> - It omits the agreeing nearest-chord seeds on already-established components, 21 lines in TB165.
+>
+> The decision-map value `status=3` does not exist. See the [TB-REV-165 review](Architecture_M6_CP3_TB_REV_165_Nearest_Chord_Seed_Full_Gate_Review_20261122.md).
+
 1. **Pass counts:** 984/984 PASS, and CP2 491/491.
 2. **Rows 1–978 and 980–982** must equal TB164 artifact `14757020531` under N1–N3. The only allowance is lines in rows 662 and 788 (mechanical owner and seed publications), and the report must list each differing line verbatim. A difference in any other row, or in any other line, means STOP.
 3. **Row 979**, compared with TB164 row 979 under N1–N3. Predicted:

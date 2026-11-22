@@ -1,0 +1,92 @@
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index b3ff7dcf5..50a3d5e93 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -18212,6 +18212,87 @@ TEST(TraceTerminationCorrection,
+               << arc.firstNode.index() << ',' << arc.secondNode.index()
+               << ")\n";
+   }
++
++  // Every source face that more than one trace-arc segment visit reaches, as
++  // the plan's fragment-corner reader visits them: each visit with its own
++  // source pieces (F face, E edge), carriers, slide edge and entry support.
++  struct MultiCutVisit {
++    std::size_t arc = 0U;
++    std::size_t trace = 0U;
++    std::size_t segment = 0U;
++    std::string pieces;
++    std::string incoming;
++    std::string outgoing;
++    std::string slide;
++    std::string entry;
++    bool lastSegment = false;
++  };
++  std::map<directional::authority::SourceFaceTopologyKey,
++           std::vector<MultiCutVisit>>
++      visitsByFace;
++  for (const auto &arc : *arcs) {
++    if (arc.kind != GlobalTopologyArcKind::Trace || !arc.trace.has_value())
++      continue;
++    const auto *trace = embedded::find_trace(network, *arc.trace);
++    ASSERT_NE(nullptr, trace);
++    std::size_t pieceOffset = 0U;
++    for (std::size_t i = 0U; i < arc.sourcePieceCounts.size(); ++i) {
++      const std::size_t segmentIndex = arc.firstSegment + i;
++      const auto &segment = trace->segments[segmentIndex];
++      MultiCutVisit visit;
++      visit.arc = arc.id.index();
++      visit.trace = trace->id.index();
++      visit.segment = segmentIndex;
++      for (std::size_t piece = 0U; piece < arc.sourcePieceCounts[i]; ++piece) {
++        ASSERT_LT(pieceOffset + piece, arc.sourcePath.size());
++        const auto kind = directional::authority::support_kind(
++            arc.sourcePath[pieceOffset + piece].carrier);
++        visit.pieces +=
++            kind == directional::authority::SourceSupportKind::FaceInterior
++                ? 'F'
++                : kind == directional::authority::SourceSupportKind::Edge ? 'E'
++                                                                         : 'V';
++      }
++      pieceOffset += arc.sourcePieceCounts[i];
++      visit.incoming = segment.incomingCarrier.has_value()
++                           ? source_edge_locus(*segment.incomingCarrier)
++                           : std::string("-");
++      visit.outgoing = source_edge_locus(segment.outgoingCarrier);
++      visit.slide = segment.edgeTransitEntry.has_value()
++                        ? source_edge_locus(segment.edgeTransitEntry->edge)
++                        : std::string("-");
++      const auto entrySupport = segment.entryPoint.source_support();
++      const auto *entryVertex =
++          entrySupport.has_value()
++              ? std::get_if<directional::authority::SourceVertexSupport>(
++                    &*entrySupport)
++              : nullptr;
++      visit.entry = entryVertex != nullptr
++                        ? "v" + std::to_string(entryVertex->vertex.index())
++                        : source_edge_locus(segment.entryPoint.edge);
++      visit.lastSegment = segmentIndex + 1U == trace->segments.size();
++      visitsByFace[segment.sourceFace].push_back(std::move(visit));
++    }
++  }
++  std::size_t multiCutFaces = 0U;
++  std::size_t multiCutVisits = 0U;
++  for (const auto &[face, visits] : visitsByFace) {
++    if (visits.size() < 2U) continue;
++    ++multiCutFaces;
++    multiCutVisits += visits.size();
++    for (const auto &visit : visits) {
++      std::cout << "SphereStagedMultiCutVisit face=" << source_face_locus(face)
++                << " arc=" << visit.arc << " trace=" << visit.trace
++                << " segment=" << visit.segment << " pieces=" << visit.pieces
++                << " incoming=" << visit.incoming
++                << " outgoing=" << visit.outgoing << " slide=" << visit.slide
++                << " entry=" << visit.entry
++                << " last=" << (visit.lastSegment ? 1 : 0) << '\n';
++    }
++  }
++  std::cout << "SphereStagedMultiCutFaces faces=" << multiCutFaces
++            << " visits=" << multiCutVisits
++            << " visitedFaces=" << visitsByFace.size() << '\n';
+ }
+ 
+ 
