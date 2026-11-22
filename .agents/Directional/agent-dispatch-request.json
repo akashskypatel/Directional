@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev164-doc-review-20261122-a",
-  "mailbox_key": "m6-cp3-tb-rev164-doc-review",
-  "file_id": "1ymZsoj_iLpf_ctnbNC_oBri4IMVjy-fG",
-  "patch_sha256": "87171d1ac6da516ee82d999654c3afe122c47290c4a97957ab6d83715f25fe60",
-  "base_sha": "8589cb76e419344cd105166b4c7b549548ee397d",
+  "request_id": "m6-cp3-cb183-drive-apply-20261122-a",
+  "mailbox_key": "m6-cp3-cb183-drive-apply",
+  "file_id": "1WiUDVHkAvRqNT5rkgLdXwx0U7Vt5G_3X",
+  "patch_sha256": "667a1d32efea033b49a0f300a45609af0daa6485485c2e603897dedd568557fe",
+  "base_sha": "7712f3faaeef55d92544777884945b24e6936f5f",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cp3): independently review third-edge side owner census and freeze CB-183",
+  "commit_message": "feat(cp3): add nearest-chord edge-side seed decision helper",
   "retention_days": 14
 }
