@@ -1,26 +1,19 @@
-## CURRENT — TB-REV-159 adversarial continuation; staged CB-177 frozen (2026-11-22 UTC)
+## CURRENT — CB-177 exact staged slide-entry stop compiled; TB-EXEC-160 next (2026-11-22 UTC)
 
-[TB-REV-159 adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_159_Adversarial_Review_20261122.md):
-- TB159 PASS upheld.
-- DEFN-159A withdrawn: no reachable exit, since its topology items need a run.
-- T5 closed by argument plus the consumer's fail-closed check.
-- 24-row premise inventory: rows 393/648/858/971/972 pin the current sphere network, so the stop is staged off by default first.
+[CB-177 record](.agents/Directional/Architecture_M6_CP3_CB177_P13_Staged_Slide_Entry_Stop_Code_Build_Record_20261122.md): applied exactly the frozen three-file CB-177 diff with verified preimage and postimage SHA-256 to source `eeecf23339345f9efa295e94ffd764f4f4e5f3fa`. [Compile 44976087482](https://github.com/akashskypatel/Directional/actions/runs/44976087482), package `14735988461` ZIP SHA-256 `4d9bd00f2b73fcf3b2ff10d57ec047dcd30babe0593010b3297e743bccd63456`: eight mandatory GMP/GMPXX targets, compile only, no test or benchmark execution. Staged stop remains diagnostic-only/off in production. TB159 977/977, CP2 491/491, and 3/3 census are the last accepted runtime results.
 
-> **NEXT_TURN:** `M6-CP3-CB-177-P13-STAGED-SLIDE-ENTRY-STOP`
-> - Type: Code + Build, compile only.
-> - Apply exactly [diff](.agents/Directional/Architecture_M6_CP3_CB177_P13_Staged_Slide_Entry_Stop_Exact.diff) SHA-256 `4a16ee6fed7587d00b42418f906b48d2f4ee804d473842fbb6201eb3a143bd8b` to the CB-176 postimages.
-> - Build the eight GMP/GMPXX targets with `runtimeExecution=false`.
-> - On a hash mismatch or compile failure: BLOCKED, return to Review.
+> **NEXT_TURN:** `M6-CP3-TB-EXEC-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE`
+> - Type: Test + Benchmark, immutable compiled CB-177 package; no rebuild or source/test edits.
+> - Exact [978-row manifest](.agents/Directional/gates/Architecture_M6_TB160_P13_Staged_Slide_Entry_Stop_Full_Gate_Case_Manifest.tsv) SHA-256 `d7eb3c355cdc3febd35f20cb8d2178489f8cb6d2aecf1f600ef8dd2b6151ca5a`.
+> - STOP unless 978/978, CP2 491/491, all 977 predecessor rows and census unchanged under frozen N1–N4 normalization with zero allowance; publish full row 978 receipt. No conditional producer activation without TB-REV-160.
 
 Turn sequence:
 - [x] `M6-CP3-TB-EXEC-159-P13-SLIDE-ENTRY-STOP-PREDICATE-FULL-GATE` — 977/977, census 3/3.
-- [x] `M6-CP3-TB-REV-159-P13-SLIDE-ENTRY-STOP-PREDICATE-FULL-GATE` — independent review, then continued after handover by the adversarial record (U1–U5).
-- [ ] **NEXT:** `M6-CP3-CB-177-P13-STAGED-SLIDE-ENTRY-STOP` — compile only.
-- [ ] `M6-CP3-TB-EXEC-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE`
-  - [Manifest](.agents/Directional/gates/Architecture_M6_TB160_P13_Staged_Slide_Entry_Stop_Full_Gate_Case_Manifest.tsv) `d7eb3c35…a5a`, 978 rows.
-  - STOP unless 978/978, CP2 491/491, rows 1–977 and census equal TB159 with zero allowance, and the row 978 receipt is published.
-- [ ] `M6-CP3-TB-REV-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE` — freeze activation CB-178 from the receipt: production default, staging parameter deleted, exact U3 replacements, V3b assertion.
-- [ ] CB-178 → TB-EXEC/REV-161 → slide-start subdivision R1 → RA-275 S4a → O48.
+- [x] `M6-CP3-TB-REV-159-P13-SLIDE-ENTRY-STOP-PREDICATE-FULL-GATE` — independent and adversarial review, frozen exact CB-177.
+- [x] `M6-CP3-CB-177-P13-STAGED-SLIDE-ENTRY-STOP` — code applied, GMP/GMPXX compile-only package, `runtimeExecution=false`.
+- [ ] **NEXT:** `M6-CP3-TB-EXEC-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE` — immutable artifact-only gate, 978 rows.
+- [ ] `M6-CP3-TB-REV-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE` — independently inspect row 978 and decide CB-178 activation or consumer correction.
+- [ ] CB-178 (only if separately authorized) → TB-EXEC/REV-161 → slide-start subdivision R1 → RA-275 S4a → O48.
 
 **Carried:** TB-REV-159-U3, V3b, sphere χ+4, Amendment 14, RA-281 F1/F2/F3, RA-275 S4a, CP3/497/D0/H4. Stable 66/17/49, debt1, deferred81.
 
