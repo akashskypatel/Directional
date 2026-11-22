@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-22 UTC; TB-REV-167 independent Review in progress):** [TB167](Architecture_M6_CP3_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Execution_Report_20261122.md) passed **989/989**, accepted CP2 **491/491**, membership **1070**. [Independent Review WIP](Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md) rehashed both result archives and all prior 984 rows, which agree under N1–N3. Five new helper tests pass; helper remains unwired. The exact CB-187 reader switch is not frozen or started. The staged sphere plan still fails at `SourceFaceCarriesMultipleTraceCuts` face `6-8-9`, while production remains at cut-search exhaustion. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 and selector not promoted.
+**Current currency (2026-11-22 UTC; TB-REV-167 independent Review in progress):** [TB167](Architecture_M6_CP3_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Execution_Report_20261122.md) passed **989/989**, accepted CP2 **491/491**, membership **1070**. [Independent Review WIP](Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md) rehashed both result archives and all prior 984 rows, which agree under N1–N3. Five new helper tests pass; helper remains unwired. CB-187 v1 was rejected because it misclassified a valid edge-only slide piece. Revised v2 is preserved with strict staged-sphere tests, but remains unapproved and unstarted. The staged sphere plan still fails at `SourceFaceCarriesMultipleTraceCuts` face `6-8-9`, while production remains at cut-search exhaustion. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 and selector not promoted.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-22 UTC; TB-REV-167 same-turn WIP):** 989/989 PASS; CP2 491/491; membership 1070. 984 predecessor rows unchanged under N1–N3, five new synthetic helper tests PASS. CB-187 exact reader work is not frozen; the helper is not connected to production. Sphere failures persist. Stable 66/17/49, debt1, deferred81; no CP3/497/D0/H4 promotion.
+**Currency (2026-11-22 UTC; TB-REV-167 same-turn WIP):** 989/989 PASS; CP2 491/491; membership 1070. 984 predecessor rows unchanged under N1–N3, five new synthetic helper tests PASS. CB-187 candidate v1 has a source-binding defect; corrected v2 and strict 990-row test proposal remain unreviewed by runtime and not frozen. The helper is not connected to production. Sphere failures persist. Stable 66/17/49, debt1, deferred81; no CP3/497/D0/H4 promotion.
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.
@@ -54,6 +54,8 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
 
 ## 4. Fixtures and witnesses
+
+**TB167 helper and proposed reader witness:** Five synthetic helper tests PASS under the 989-row gate. Proposed TB168 row990 demands real staged-sphere arcs, both face-interior and edge-only piece evidence, and a disc-certified plan. No row990 runtime receipt exists; production and staged sphere failures remain unchanged. [TB-REV-167](Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md).
 
 **TB166 singularity-port witness (independent TB-REV-166):** Row979 contains 24 departing port records on eight singular nodes. Every `outgoing` carrier is opposite the source vertex, so `SurfaceCellTracing` creates no radial `edgePortCarrier` for any of them; each also prints `slide=-`. The ten incoming singular arrivals all report `terminalSingularity=1` and have slide carriers distinct from the outgoing first carriers at their nodes. K5's particular edge-supported co-trace is absent in this witness; other crossings or reader errors are not excluded. Face `6-8-9` still has five recorded visits (FE/E/F/F/FE); its staged plan is not yet constructible. [TB-REV-166](Architecture_M6_CP3_TB_REV_166_Staged_Multi_Cut_Face_Receipt_Independent_Review_20261122.md).
 
@@ -124,13 +126,15 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority — finish `M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE` (Review only):** [independent review WIP](Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md) verifies TB167's five helper tests and exact 989/989 gate. Freeze no CB-187 reader switch until its exact source-path diff and non-vacuous reader tests are reviewed. Preserve split arc ends, edge-only exclusions, corner-free orbit keys and typed error loci. The stage and production sphere failures remain open.
+**Current priority — finish `M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE` (Review only):** [independent review WIP](Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md) verifies TB167's five helper tests and exact 989/989 gate. CB-187 v1 is rejected: a valid canonical edge-only slide segment was read as an invalid face cut. Corrected candidate v2 skips this segment after binding validation. Require final independent audit, strict real-path reader evidence, cleanup and boundary checks before freezing CB-187. Preserve split arc ends, edge-only exclusions, corner-free orbit keys and typed error loci. The stage and production sphere failures remain open.
 
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).
 
 ## 8. Recurring defect patterns
+
+TB-REV-167 continuation: a reader that assumes every source-piece segment begins in a face rejects a valid edge-only slide piece. Inspect exact per-segment canonical carriers before assigning a face cut; do not infer source binding from topology. This is a candidate review finding, not a new stable regression.
 
 TB-REV-167: synthetic helper PASS results do not exercise the production reader. Require independent source-path and downstream certificate checks before connecting the helper. This is an application of existing non-vacuity and single-writer lessons, not a new stable regression.
 
