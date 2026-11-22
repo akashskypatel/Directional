@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev162-docs-20261122-b",
-  "mailbox_key": "m6-cp3-tb-rev162-docs-retry",
-  "file_id": "1DppJ-ssJ4VqL7HlAVNdRrZqdWFdcIesK",
-  "patch_sha256": "264fb72006e614eed51c80ad5b409b8ca3aea09c8aed6b91ed3a548e5737c81c",
-  "base_sha": "990d43296a7db5be7d7bd6f7d0ddcface874f54b",
+  "request_id": "m6-cp3-tb-rev162-audit-20261122-a",
+  "mailbox_key": "m6-cp3-tb-rev162-audit",
+  "file_id": "1Yb2wBbNUTYFYciPq7epMuzQnBB5BnRCL",
+  "patch_sha256": "98952b5f1e950a56affdc6d919b8294ad78cc16103228c2cd2460813bc776886",
+  "base_sha": "5d510692f10b5713f6bd217f7b336615f32335e8",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cp3): independently review TB162 owner evidence and freeze CB-180",
+  "commit_message": "docs(cp3): qualify synthetic-checkout review boundary evidence",
   "retention_days": 14
 }
