@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb167-docs-20261122-a",
+  "request_id": "m6-cp3-tb167-docs-20261122-b",
   "mailbox_key": "m6-cp3-tb167-docs-apply",
-  "file_id": "18cT2pXQvlJtP4g6lwXbevGuhCSvLBaF8",
-  "patch_sha256": "35dc8ec0e1999c67e62c7fb0a40cac051bce8b38e5e2b7b79c0824e42f5a96e5",
+  "file_id": "1KXTIbRVIX97gxQPU_RAnxcH9Zx6b0Utf",
+  "patch_sha256": "fe234e1a6cd75ec824f2a45a9679c89b35f603dfc0f4ae440ca4e258916ca2ce",
   "base_sha": "983488381a46ed084034043f427cdda7a03dca38",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "docs(cp3): close TB167 immutable full-gate execution",
