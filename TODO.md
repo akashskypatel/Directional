@@ -1,14 +1,14 @@
-## CURRENT — CB-178 compile only complete; TB-EXEC-161 immutable downstream receipt next (2026-11-22 UTC)
+## CURRENT — TB-EXEC-161 complete; TB-REV-161 independent review next (2026-11-22 UTC)
 
 [Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_160_Adversarial_Review_20261122.md) (V1–V11): TB160 upheld; staged `cutGraph=built` is the canonical cellularity certificate; prose activation CB-178 WITHDRAWN (compile-only turn cannot derive premise values; monolithic).
 
-> **NEXT_TURN:** `M6-CP3-TB-EXEC-161-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT-FULL-GATE` — immutable artifact-only 979-case gate, source `d9d685edf372573c6b07a3be06dc75e2bbec67e7`, [compile 44990307918](https://github.com/akashskypatel/Directional/actions/runs/44990307918) package `14741239012` SHA-256 `b7f8a16f8e8c816ccd1df571d6e98c78770da0b319543cfb131353fd71a6d190`. [CB-178 record](.agents/Directional/Architecture_M6_CP3_CB178_P13_Staged_Slide_Entry_Stop_Downstream_Receipt_Code_Build_Record_20261122.md); test source only, production stop OFF; do not rebuild.
+> **NEXT_TURN:** `M6-CP3-TB-REV-161-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT-FULL-GATE` — independently review [TB161 report](.agents/Directional/Architecture_M6_CP3_TB161_P13_Staged_Slide_Entry_Stop_Downstream_Receipt_Full_Gate_Execution_Report_20261122.md), gate [run 44993753731](https://github.com/akashskypatel/Directional/actions/runs/44993753731) artifact `14743677304` SHA-256 `a3adc1c1de4aca07aa34c2e937c50f57510408d0ae0861e270c071340f830ea0`. 979/979 PASS; CP2 491/491, 978/978 unchanged predecessors, 3/3 unchanged census, 81 deferred. Interpret row979 plan `SphereStagedPlan outcome=UncutFaceComponentOrbitSeedNotUnique sourceFace=2-5-12 sourceEdge=- trace=- secondTrace=- chi=- V=- E=- F=- fragmentOrbits=- tracePieces=- expectedFragments=-` without assuming production topology; freeze CB-179 activation or plan-stage DEFN under V1–V11. No source or selector mutations in Review.
 
 Turn sequence:
 - [x] `M6-CP3-TB-REV-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE` — independent review + adversarial continuation.
 - [x] `M6-CP3-CB-178-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT` — exact test-only row 979, compile only.
-- [ ] `M6-CP3-TB-EXEC-161-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT-FULL-GATE` — manifest `e15d616c…7e8a` (979 rows); rows 1–978 and census equal TB160, zero allowance; row 979 receipt verbatim.
-- [ ] `M6-CP3-TB-REV-161-…` — freeze exact activation CB-179 from row 979 (single-source flag V11; row 971 derived or STOP-on-red V10; or plan-stage DEFN if the plan fails); BunnyRandom pending-wall census falsifier.
+- [x] `M6-CP3-TB-EXEC-161-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT-FULL-GATE` — 979/979 PASS, 978/978 predecessors MATCH, 3/3 census MATCH; row979 receipt published in [report](.agents/Directional/Architecture_M6_CP3_TB161_P13_Staged_Slide_Entry_Stop_Downstream_Receipt_Full_Gate_Execution_Report_20261122.md).
+- [ ] `M6-CP3-TB-REV-161-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT-FULL-GATE` — independently re-derive evidence and decide CB-179/plan-stage DEFN; preserve V5, V10, V11 and STOP rules.
 - [ ] CB-179 → TB-EXEC/REV-162 → CB-180 V3b node test → R1 slide-start subdivision → RA-275 S4a → O48.
 
 Carried: U3 (→CB-179), V3b (→CB-180), W3/W4, RA-281 F1/F2/F3, RA-275 S4a, sphere χ+4 at plan/output, Amendment14, CP3/497/D0/H4. Stable 66/17/49, debt1, deferred81.
