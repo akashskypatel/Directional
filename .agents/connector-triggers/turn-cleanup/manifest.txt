@@ -1,2 +1,0 @@
-# TB164 temporary source-snapshot marker
-.agents/connector-triggers/source-snapshot/tb164-doc-closeout-20261122.txt
