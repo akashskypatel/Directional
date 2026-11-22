@@ -1,4 +1,17 @@
-## CURRENT — TB160 immutable 978-case full gate PASS; TB-REV-160 next (2026-11-22 UTC)
+## CURRENT — TB-REV-160 independently upheld; CB-178 next (2026-11-22 UTC)
+
+[Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_160_Staged_Slide_Entry_Stop_Full_Gate_Independent_Review_20261122.md): TB160 immutable 978/978 PASS, 977/977 complete predecessor log equality under frozen N1–N3 (1,750 N3 records), 3/3 census equality under N1–N4, accepted CP2 491/491 unchanged. Row978 staged receipt: `traces=24 events=56 slideStops=4 carrierEnds=4,5,6,8,15,17,19,20 slideSegments=10 cutGraph=built`. Cut graph outcome is measured and **not asserted**; no production or sphere topology acceptance.
+
+> **NEXT_TURN:** `M6-CP3-CB-178-P13-SLIDE-ENTRY-STOP-PRODUCTION-ACTIVATION` — separate compile-only Code + Build. Move the exact Later stop into production; update U3 sphere premises only from actual producer observations; assert full canonical cut graph and `(0,2)` V3b reaching plus same-direction negative control; preserve T5 lifetime and fail-closed consumers. Five prospective falsifiers/stop rules in review. No implementation in this Review.
+
+- [x] `M6-CP3-TB-REV-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE` — independent gate/census acceptance and CB-178 decision recorded.
+- [ ] `M6-CP3-CB-178-P13-SLIDE-ENTRY-STOP-PRODUCTION-ACTIVATION` — source/test changes and GMP/GMPXX compile only.
+- [ ] TB-EXEC/REV-161 independent immutable full gate; then R1 → RA-275 S4a → O48 only if reviewed.
+
+Carried: U3, V3b, W3/W4, RA-281 F1/F2/F3, RA-275 S4a, sphere χ+4, Amendment14, CP3/497/D0/H4; T2–T5 remain closed. Stable 66/17/49, debt1, deferred81.
+
+## HISTORY — TB160 execution (2026-11-22 UTC)
+### TB160 evidence retained
 
 [TB160 report](.agents/Directional/Architecture_M6_CP3_TB160_P13_Staged_Slide_Entry_Stop_Full_Gate_Execution_Report_20261122.md): unchanged CB-177 source `eeecf23339345f9efa295e94ffd764f4f4e5f3fa`/package `14735988461`; [gate 44979621996](https://github.com/akashskypatel/Directional/actions/runs/44979621996) artifact `14737647064` **978/978 PASS**, 977/977 exact prior log comparison under N1–N3, CP2 491/491. [census run 44979645520](https://github.com/akashskypatel/Directional/actions/runs/44979645520) artifact `14737279153` SHA-256 `94341d1128af1794f33ece3f61a7f13257fb716378ea693a1b0c54d2c368657e` (9 verified files): Cylinder PASS and both expected RED cases match TB159 under N1–N4. Staged slide-entry stop remains OFF in production; no producer promotion.
 
