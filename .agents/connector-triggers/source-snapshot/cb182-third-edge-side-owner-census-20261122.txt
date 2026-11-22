@@ -1,0 +1,2 @@
+CB182 exact source snapshot for third-edge side-owner census
+Workflow event commit is frozen snapshot source authority.
