@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev160-docs-20261122-a",
-  "mailbox_key": "m6-cp3-tb-rev160-docs",
-  "file_id": "1XSnPo1rxTwf_YDFOarKFFn2gRlBmj6Zz",
-  "patch_sha256": "cfc17eccd8f6ce9e3044d8cdc564493b5cf156a94e7a0ea6067667c2a7017e6c",
-  "base_sha": "1db51b7c59b894c446e724ae4008d7959e0f9e87",
+  "request_id": "m6-cp3-tb-rev160-resume-docs-20261122-a",
+  "mailbox_key": "m6-cp3-tb-rev160-resume-docs",
+  "file_id": "1b2HZMQJxP_jSwx7J2bTjVXACX2dialxL",
+  "patch_sha256": "dc2d0b84a095cb81fcff07034d892a3c81d1132ab0f2f0560fcceaba83c296ae",
+  "base_sha": "dbb48df4079b1f6493ffe5bb48bd76b8e52a2db8",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(review): independently adjudicate TB160 and freeze CB178 activation",
+  "commit_message": "docs(review): verify TB-REV-160 historical conservation on resume",
   "retention_days": 14
 }
