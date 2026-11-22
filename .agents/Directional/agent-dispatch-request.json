@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb160-docs-20261122-a",
-  "mailbox_key": "m6-cp3-tb160-docs",
-  "file_id": "1LEKBFWVsg7WMW7MmN2dHIisitQh-v5pj",
-  "patch_sha256": "9ac28c98e6fd1124ece466dfc18e12fa7221d18bfb4cf33cd692783a74b60550",
-  "base_sha": "a355f815b1be24509df1baa757544fdc9105fade",
+  "request_id": "m6-cp3-tb-rev160-docs-20261122-a",
+  "mailbox_key": "m6-cp3-tb-rev160-docs",
+  "file_id": "1XSnPo1rxTwf_YDFOarKFFn2gRlBmj6Zz",
+  "patch_sha256": "cfc17eccd8f6ce9e3044d8cdc564493b5cf156a94e7a0ea6067667c2a7017e6c",
+  "base_sha": "1db51b7c59b894c446e724ae4008d7959e0f9e87",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close TB160 full-gate execution and transfer to independent review",
+  "commit_message": "docs(review): independently adjudicate TB160 and freeze CB178 activation",
   "retention_days": 14
 }
