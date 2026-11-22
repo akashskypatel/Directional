@@ -1,2 +1,0 @@
-Current-authority source snapshot for resumed independent review TB-REV-160.
-Review only; no runtime execution.

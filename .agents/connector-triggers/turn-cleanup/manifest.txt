@@ -1,2 +1,0 @@
-# Same-turn TB-REV-160 resumed session temporary snapshot marker; remove only this marker.
-.agents/connector-triggers/source-snapshot/m6-cp3-tb-rev160-resume-20261122-0448.txt
