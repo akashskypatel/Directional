@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb165-stop-docs-20261122-a",
-  "mailbox_key": "m6-cp3-tb165-stop-docs",
-  "file_id": "1489jckkaXYD8jgco2lXpIXwXuVEgglP4",
-  "patch_sha256": "7247879870c17da86a5196b3dc8d753cec11ebbf119532f6be78c0ce18628624",
-  "base_sha": "ec1e68eaf4c1f7be35e73edbca973cb985cc41f6",
+  "request_id": "m6-cp3-tb165-handoff-current-20261122-a",
+  "mailbox_key": "m6-cp3-tb165-handoff-current",
+  "file_id": "1SaBm11_JQVDax5hziQiN4ZlcP2yEIqz8",
+  "patch_sha256": "5f411fe53a44eeb06ca2ca8aeae2789abbe5466332c9a440ecf3df2f34af5659",
+  "base_sha": "0eeee5b42f37918817ac5af937e11dbb829e9df3",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cp3): record TB165 frozen rule-3 STOP and exact gate evidence",
+  "commit_message": "docs(cp3): correct TB165 current handoff authority and next review",
   "retention_days": 14
 }
