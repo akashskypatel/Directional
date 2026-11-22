@@ -1,4 +1,0 @@
-Purpose: frozen source snapshot for M6-CP3-TB-REV-166 independent review.
-Requested predecessor semantic source: 2c1ec9ab370ed0e9d533d7694e03b486916b9b1a
-Target: marker-trigger commit source tree; no runtime or compilation.
-Retry: 0
