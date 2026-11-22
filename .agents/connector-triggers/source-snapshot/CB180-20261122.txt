@@ -1,0 +1,2 @@
+Source snapshot request for CB-180 exact test-only patch.
+Base status head: ca476c0ffaf21fd3fe7e6a1fcb1f35da81dbe7e7
