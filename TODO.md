@@ -1,17 +1,16 @@
-## CURRENT — TB-EXEC-161 complete; TB-REV-161 independent review next (2026-11-22 UTC)
+## CURRENT — TB-REV-161 independently upheld; owner-consistency definition next (2026-11-22 UTC)
 
-[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_160_Adversarial_Review_20261122.md) (V1–V11): TB160 upheld; staged `cutGraph=built` is the canonical cellularity certificate; prose activation CB-178 WITHDRAWN (compile-only turn cannot derive premise values; monolithic).
+[Independent Review](.agents/Directional/Architecture_M6_CP3_TB_REV_161_Staged_Slide_Entry_Stop_Downstream_Receipt_Independent_Review_20261122.md): TB161 full gate **979/979 PASS**, 978/978 TB160 predecessor raw logs identical under N1–N3, CP2 491/491 unchanged, census 3/3 identical under N1–N4. Row979 staged graph V18/E30/F14 χ2 has embedded-cell certificate, but staged `GlobalTopologyPlan` fails `UncutFaceComponentOrbitSeedNotUnique` at `sourceFace=2-5-12`. This name does not distinguish absent/invalid/multiple certified face owners; direct production still fails cut search. No production, selector, D0, H4 or CP3 promotion.
 
-> **NEXT_TURN:** `M6-CP3-TB-REV-161-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT-FULL-GATE` — independently review [TB161 report](.agents/Directional/Architecture_M6_CP3_TB161_P13_Staged_Slide_Entry_Stop_Downstream_Receipt_Full_Gate_Execution_Report_20261122.md), gate [run 44993753731](https://github.com/akashskypatel/Directional/actions/runs/44993753731) artifact `14743677304` SHA-256 `a3adc1c1de4aca07aa34c2e937c50f57510408d0ae0861e270c071340f830ea0`. 979/979 PASS; CP2 491/491, 978/978 unchanged predecessors, 3/3 unchanged census, 81 deferred. Interpret row979 plan `SphereStagedPlan outcome=UncutFaceComponentOrbitSeedNotUnique sourceFace=2-5-12 sourceEdge=- trace=- secondTrace=- chi=- V=- E=- F=- fragmentOrbits=- tracePieces=- expectedFragments=-` without assuming production topology; freeze CB-179 activation or plan-stage DEFN under V1–V11. No source or selector mutations in Review.
+> **NEXT_TURN:** `M6-CP3-DEFN-161A-P13-SOURCE-FACE-OWNER-CONSISTENCY` — definition/review only. Disambiguate exact uncut source-face component owner evidence (missing, invalid, multiple), establish which upstream producer or downstream partition precondition fails, prescribe one falsifiable minimal repair or diagnostic-only measurement, and retain STOP rules. No CB-179 production switch before this gate. [Full criteria and carried V1–V11](.agents/Directional/Architecture_M6_CP3_TB_REV_161_Staged_Slide_Entry_Stop_Downstream_Receipt_Independent_Review_20261122.md).
 
 Turn sequence:
-- [x] `M6-CP3-TB-REV-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE` — independent review + adversarial continuation.
-- [x] `M6-CP3-CB-178-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT` — exact test-only row 979, compile only.
-- [x] `M6-CP3-TB-EXEC-161-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT-FULL-GATE` — 979/979 PASS, 978/978 predecessors MATCH, 3/3 census MATCH; row979 receipt published in [report](.agents/Directional/Architecture_M6_CP3_TB161_P13_Staged_Slide_Entry_Stop_Downstream_Receipt_Full_Gate_Execution_Report_20261122.md).
-- [ ] `M6-CP3-TB-REV-161-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT-FULL-GATE` — independently re-derive evidence and decide CB-179/plan-stage DEFN; preserve V5, V10, V11 and STOP rules.
-- [ ] CB-179 → TB-EXEC/REV-162 → CB-180 V3b node test → R1 slide-start subdivision → RA-275 S4a → O48.
+- [x] `M6-CP3-TB-EXEC-161-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT-FULL-GATE` — immutable 979/979 PASS, 978 prior logs and 3/3 census unchanged.
+- [x] `M6-CP3-TB-REV-161-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT-FULL-GATE` — independent byte/log/receipt review; plan-stage defect unclassified; CB-179 held.
+- [ ] `M6-CP3-DEFN-161A-P13-SOURCE-FACE-OWNER-CONSISTENCY` — exact owner/partition definition and independent falsifiers, no runtime or product edit.
+- [ ] Prospective: separately scoped Code + Build → immutable TB/REV → CB-179 activation if independently authorized → CB-180 V3b → R1 slide-start subdivision → RA-275 S4a → O48.
 
-Carried: U3 (→CB-179), V3b (→CB-180), W3/W4, RA-281 F1/F2/F3, RA-275 S4a, sphere χ+4 at plan/output, Amendment14, CP3/497/D0/H4. Stable 66/17/49, debt1, deferred81.
+Carried: TB-REV-159-U3, V3–V11 (V1 staged-only), V3b, W3/W4, RA-281 F1/F2/F3, RA-275 S4a, sphere χ+4 at production plan/output, Amendment14, CP3/497/D0/H4. Stable 66/17/49, debt1, deferred81.
 
 ## HISTORY — TB-REV-160 independent review (2026-11-22 UTC)
 
