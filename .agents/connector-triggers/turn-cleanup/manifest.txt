@@ -1,2 +1,0 @@
-# TB-REV-160 transient source-snapshot marker. Retain durable workflows, request slot, mailbox history.
-.agents/connector-triggers/source-snapshot/m6-cp3-tb-rev160-20261122-0357.txt
