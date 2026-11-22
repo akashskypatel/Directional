@@ -1,9 +1,37 @@
-## CURRENT — TB-REV-162 independently verified, CB-180 owner certification next (2026-11-22 UTC)
+## CURRENT — TB-REV-162 adversarial continuation; exact uncut-owner census receipt CB-180 next (2026-11-22 UTC)
+
+[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_162_Adversarial_Review_20261122.md) (X1–X6): TB162 PASS and H1 upheld (16 `Unavailable` faces = uncut components 1 and 5, the stars of source vertices 12 and 37). The prose owner-certification CB-180 is withdrawn: it was monolithic, named no rule and left a runtime decision to a compile-only turn (X2). From code: uncut faces get owners only from mandatory/cut arc sides and a boundary seed that needs a non-barrier edge, and trace carriers pass no orbit to the component side, so `Unavailable` can be a rule gap (X3). Candidate H5: the terminal-slit rule treats meeting terminal pieces with different side orbits as free slits (trace 0's terminal arc has orbits 0 and 2; it shares end node 1 with trace 9) (X4).
+
+```
+NEXT_TURN: M6-CP3-CB-180-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT
+Owner: implementation agent (Code + Build, compile only)
+Apply exactly: .agents/Directional/Architecture_M6_CP3_CB180_P13_Staged_Uncut_Owner_Census_Receipt_Exact.diff
+  SHA-256 b5161a4659f8a68bfaea6a6e982462e6e8f007de93bf373936859f22776d2b32 (tests only, +68/-0)
+  tests/FieldAlignedCurveNetworkTests.cpp: 98154a1fdffe...665e -> fedadbd318ad4754e7790c4232ccca055d8f97c64159c908dc7475aab7e82ef1
+Build: dispatcher compile, GMP/GMPXX targets, runtimeExecution=false
+Then: TB-EXEC-163 under the adversarial record's TB163 rules (TB161 manifest e15d616c..., 979 rows; no census)
+On failure: hash mismatch or compile failure -> STATUS BLOCKED
+Do not: edit beyond the diff; run tests; switch production; change selectors/manifests
+```
+
+Turn sequence:
+- [x] CB-179, TB-EXEC-162, TB-REV-162 (independent review and adversarial continuation).
+- [ ] `M6-CP3-CB-180-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT` — exact test-only receipt, compile only.
+- [ ] `M6-CP3-TB-EXEC-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE` — 979/979, rows 1–978 = TB162 (N1–N3), all 60 TB162 row 979 lines verbatim, new lines published.
+- [ ] `M6-CP3-TB-REV-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE` — apply the decision map (R-a edge-side owner vs H5 terminal-slit classification vs typed STOP); freeze exact CB-181 and CB-182.
+- [ ] CB-181: pure helper with positive and negative tests, unwired.
+- [ ] CB-182: wiring at the single writer → TB-EXEC/REV-164 (staged plan `built` or the next measured stage).
+- [ ] CB-183 activation (V11 single-source flag; rows 393/648/858/971/972 from receipts; V5 BunnyRandom falsifier; V10 row 971 STOP-on-red) → TB-EXEC/REV-165.
+- [ ] CB-184 V3b node test → R1 slide-start subdivision → RA-275 S4a → O48.
+
+Carried: TB-REV-159-U3, V3–V11, W6, W7, X5 (H2 labels are hard-coded), X6 owner-repair constraints, RA-281 F1–F3, RA-275 S4a, Amendment 14; CP3/497/D0/H4 unpromoted. Stable 66/17/49, debt1, deferred81.
+
+## HISTORY — TB-REV-162 independent review; prose CB-180 (withdrawn by the adversarial continuation) (2026-11-22 UTC)
 
 [Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_161_Adversarial_Review_20261122.md) (W1–W8): TB161 PASS upheld. Row 979 already printed `sourceFaceCellularity=0`, so the first broken invariant is the cut-graph certificate's source-face ownership (single writer `build_source_face_ownership`); the plan's `UncutFaceComponentOrbitSeedNotUnique` is the consumer reporting it (W1). The owner evidence is already computed and formatted by the product (W2), so DEFN-161A (no reachable exit) is withdrawn (W3). TB-REV-160 V8's receipt gap is corrected (W4). Hypotheses H1–H4 with discriminating lines (W5).
 
 ```
-NEXT_TURN: M6-CP3-CB-180-P13-SOURCE-FACE-ORBIT-OWNER-CERTIFICATION
+NEXT_TURN (WITHDRAWN, TB-REV-162 X2): M6-CP3-CB-180-P13-SOURCE-FACE-ORBIT-OWNER-CERTIFICATION
 Owner: Code + Build agent (source-attached owner proof at SurfaceCutGraph certificate; compile only; [review](.agents/Directional/Architecture_M6_CP3_TB_REV_162_Staged_Plan_Owner_Evidence_Receipt_Independent_Review_20261122.md))
 Exact CB-179 package source: e7318b4ad1f8034f80f9665cf8f4b4a407b20719
 Compile: 45001238913, package: 14746066992, ZIP SHA-256: 71fee9687b09b9f15b36adac7bca70ea389bbe4604b97f110499a877ea9846a0

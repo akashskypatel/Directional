@@ -1,0 +1,86 @@
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 6755a2f8076cad447fd5b76a7efd906cb3c027c3..78868b742d3a1be3088a5ce69d40a704fe93bb8f 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -18021,6 +18021,61 @@ TEST(TraceTerminationCorrection,
+                     : std::string("unpublished"))
+             << '\n';
+ 
++  // Why the certificate found no owner: its own census for every uncut
++  // component it left without an established owner. Barrier class: 0 None,
++  // 1 TraceOutgoingCarrier, 2 TraceIncomingCarrier, 3 MandatoryEdge, 4 CutEdge.
++  for (const auto &census : certificate.uncutComponentCensuses) {
++    if (census.ownershipStatus == OwnerStatus::Established) continue;
++    const bool truncated =
++        census.boundaryEdgesTruncated || census.interiorArcIncidencesTruncated ||
++        census.vertexTransitsTruncated || census.seedAttributionsTruncated;
++    std::cout << "SphereStagedUncutCensus component=" << census.component
++              << " faces=" << census.faces.size()
++              << " status=" << static_cast<int>(census.ownershipStatus)
++              << " boundaryEdges=" << census.boundaryEdgeCount
++              << " interiorArcs=" << census.interiorArcIncidenceCount
++              << " vertexTransits=" << census.vertexTransitCount
++              << " seedAttributions=" << census.seedAttributionCount
++              << " truncated=" << (truncated ? 1 : 0) << '\n';
++    for (const auto &edge : census.boundaryEdges) {
++      const auto *opposite =
++          edge.oppositeFace.has_value()
++              ? certificate.find_source_face_owner(*edge.oppositeFace)
++              : nullptr;
++      std::cout << "SphereStagedUncutBoundary component=" << census.component
++                << " edge=" << source_edge_locus(edge.sourceEdge)
++                << " face=" << source_face_locus(edge.componentFace)
++                << " opposite="
++                << (edge.oppositeFace.has_value()
++                        ? source_face_locus(*edge.oppositeFace)
++                        : std::string("-"))
++                << " barrier=" << (edge.barrierPresent ? 1 : 0)
++                << " class=" << static_cast<int>(edge.barrierClass)
++                << " oppositeTraceCut=" << (edge.oppositeFaceTraceCut ? 1 : 0)
++                << " sideOwner=" << (edge.sideOwnerExists ? 1 : 0)
++                << (opposite == nullptr ? std::string(" oppositeOwner=absent")
++                                        : owner_text(*opposite))
++                << '\n';
++    }
++    for (const auto &arc : census.interiorArcIncidences) {
++      std::cout << "SphereStagedUncutInteriorArc component="
++                << census.component << " arc=" << arc.arc.index()
++                << " kind=" << static_cast<int>(arc.kind)
++                << " forward=" << arc.forwardOrbit
++                << " reverse=" << arc.reverseOrbit
++                << " crossedFaces=" << arc.crossedFaceCount << '\n';
++    }
++    for (const auto &transit : census.vertexTransits) {
++      std::cout << "SphereStagedUncutVertexTransit component="
++                << census.component << " trace=" << transit.trace.index()
++                << " segment=" << transit.segmentIndex
++                << " vertex=" << transit.sourceVertex.index()
++                << " incidentUncutFaces=" << transit.incidentUncutFaces.size()
++                << " acrossNonBarrier="
++                << (transit.adjacentAcrossNonBarrierEdge ? 1 : 0) << '\n';
++    }
++  }
++
+   // Per-trace end: the quantities the twenty-four-trace row reads.
+   for (const auto &trace : traces) {
+     std::size_t slides = 0U;
+@@ -18106,6 +18161,19 @@ TEST(TraceTerminationCorrection,
+   }
+   std::cout << "SphereStagedSlidePieces arcs=" << arcs->size()
+             << " slidePieces=" << slidePieces << '\n';
++
++  // Every embedded arc's end nodes, so terminal pieces that share an end node
++  // can be told apart from free slits.
++  for (const auto &arc : *arcs) {
++    std::cout << "SphereStagedArc arc=" << arc.id.index()
++              << " kind=" << static_cast<int>(arc.kind) << " trace="
++              << (arc.trace.has_value() ? std::to_string(arc.trace->index())
++                                        : std::string("-"))
++              << " segments=[" << arc.firstSegment << ','
++              << arc.onePastLastSegment << ") nodes=("
++              << arc.firstNode.index() << ',' << arc.secondNode.index()
++              << ")\n";
++  }
+ }
+ 
+ 

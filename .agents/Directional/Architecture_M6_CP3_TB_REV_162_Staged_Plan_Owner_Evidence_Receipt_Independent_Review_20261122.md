@@ -1,5 +1,7 @@
 # M6-CP3-TB-REV-162-P13-STAGED-PLAN-OWNER-EVIDENCE-RECEIPT-FULL-GATE — independent review, 2026-11-22 UTC
 
+> **Continued after handover:** [adversarial record](Architecture_M6_CP3_TB_REV_162_Adversarial_Review_20261122.md). The prose successor CB-180 below is WITHDRAWN (X2), and exact test-only CB-180 replaces it.
+
 ## Situation
 
 **The immutable TB162 full gate is verified PASS (979/979), but the staged sphere plan is still RED.** The certificate has no established owner for 16 source faces in two uncut components. This is **H1: unavailable source-face ownership**. H3 (competing owners) and H4 (only a plan-side multiple-seed error) are contradicted by the measured counts. H2 (domain mismatch) is **not observed in this fixture**, although the certificate and plan use distinct published domain-rule labels and barrier-flag contracts. The exact owner of corrective work is the `SurfaceCutGraph` source-face certificate producer, not the plan's rejection guard. No production activation, source edit, selector change, or acceptance promotion is authorized here.

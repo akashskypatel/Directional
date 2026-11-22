@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-22 UTC; [TB-REV-162 independent review](Architecture_M6_CP3_TB_REV_162_Staged_Plan_Owner_Evidence_Receipt_Independent_Review_20261122.md)):** TB162 immutable gate independently verified 979/979 and CP2 491/491; two seedless eight-face source components expose 16 unavailable certified owners, not competing owners. CB-180 is the sole next Code + Build turn; no CP3/497/D0/H4 promotion.
+**Current currency (2026-11-22 UTC; [TB-REV-162 independent review](Architecture_M6_CP3_TB_REV_162_Staged_Plan_Owner_Evidence_Receipt_Independent_Review_20261122.md)):** TB162 immutable gate independently verified 979/979 and CP2 491/491; two seedless eight-face source components expose 16 unavailable certified owners, not competing owners. CB-180 is the sole next Code + Build turn; no CP3/497/D0/H4 promotion. [Adversarial continuation](Architecture_M6_CP3_TB_REV_162_Adversarial_Review_20261122.md): prose owner-certification CB-180 withdrawn; exact test-only census receipt CB-180 next; H5 terminal-slit candidate.
 
 ## 1. What the project is
 
@@ -120,7 +120,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB-180-P13-SOURCE-FACE-ORBIT-OWNER-CERTIFICATION` (source-attached unique orbit proof for two seedless eight-face uncut components; exact positive/negative owner oracles; compile only). [TB-REV-162](Architecture_M6_CP3_TB_REV_162_Staged_Plan_Owner_Evidence_Receipt_Independent_Review_20261122.md) independently confirms 979/979 PASS and H1 (16 unavailable owners), not H3/H4; H2 mismatch remains unproven on this fixture. Then TB-EXEC/REV-163 → CB-181 activation (V3–V5, V10, V11) → TB/REV-164 → CB-182 V3b → R1 → RA-275 S4a → O48. DEFN-161A remains withdrawn. No CP3/497/D0/H4 promotion.
+**Current priority:** `M6-CP3-CB-180-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT` (exact test-only diff, compile only): print the certificate's per-edge census for seedless uncut components 1 and 5, plus every arc's end nodes, so TB-REV-163 can choose between repair R-a (an edge-side owner) and H5 (terminal-slit classification) without inventing an owner. Then TB-EXEC/REV-163 → CB-181 helper → CB-182 wiring → TB/REV-164 → CB-183 activation → TB/REV-165 → CB-184 V3b → R1 → RA-275 S4a → O48. No CP3/497/D0/H4 promotion. [Adversarial record](Architecture_M6_CP3_TB_REV_162_Adversarial_Review_20261122.md).
 
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.

@@ -260,6 +260,12 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - Share a predicate across layers by moving it into the lower layer; never tell a producer to "reuse" a consumer function it cannot call.
 - Per-row Euler predictions come from a receipt TB; a compile-only CB cannot be asked to derive them.
 
+**TB-REV-162 (adversarial continuation)**
+
+- Before freezing an owner derivation, list every site that writes the owner map and every gate on its seed path; "Unavailable" can be a rule gap, not real ambiguity.
+- Check that a "free slit" assumption matches the orbits printed on both sides of the piece.
+- A hard-coded published domain label is not evidence of a domain difference.
+
 **TB-REV-161 (adversarial continuation)**
 
 - When a receipt shows a downstream guard failing, read the upstream certificate flag the same receipt already printed before blaming the guard's stage.
