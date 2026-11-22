@@ -1,8 +1,35 @@
-## CURRENT — TB-REV-161 independently upheld; owner-consistency definition next (2026-11-22 UTC)
+## CURRENT — TB-REV-161 adversarial continuation; exact owner-evidence receipt CB-179 next (2026-11-22 UTC)
+
+[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_161_Adversarial_Review_20261122.md) (W1–W8): TB161 PASS upheld. Row 979 already printed `sourceFaceCellularity=0`, so the first broken invariant is the cut-graph certificate's source-face ownership (single writer `build_source_face_ownership`); the plan's `UncutFaceComponentOrbitSeedNotUnique` is the consumer reporting it (W1). The owner evidence is already computed and formatted by the product (W2), so DEFN-161A (no reachable exit) is withdrawn (W3). TB-REV-160 V8's receipt gap is corrected (W4). Hypotheses H1–H4 with discriminating lines (W5).
+
+```
+NEXT_TURN: M6-CP3-CB-179-P13-STAGED-PLAN-OWNER-EVIDENCE-RECEIPT
+Owner: implementation agent (Code + Build, compile only)
+Apply exactly: .agents/Directional/Architecture_M6_CP3_CB179_P13_Staged_Plan_Owner_Evidence_Receipt_Exact.diff
+  SHA-256 5069145783b7f57eaeee7b28e895abd9178f8ab4e338568b92c24e93c189d493 (tests only, +100/-0)
+  tests/FieldAlignedCurveNetworkTests.cpp: d8b1413cde95...63f3 -> 98154a1fdffecf748d52fc3bef1c3923b3e350794a8c367ddafeeaa29ef9665e
+Build: dispatcher compile, GMP/GMPXX targets, runtimeExecution=false
+Then: TB-EXEC-162 under the adversarial record's TB162 rules (TB161 manifest e15d616c..., 979 rows; no census)
+On failure: hash mismatch or compile failure -> STATUS BLOCKED
+Do not: edit beyond the diff; run tests; switch production; change selectors/manifests
+```
+
+Turn sequence:
+- [x] `M6-CP3-TB-EXEC-161-…-FULL-GATE`, `M6-CP3-TB-REV-161-…-FULL-GATE` (independent review and adversarial continuation).
+- [ ] `M6-CP3-CB-179-P13-STAGED-PLAN-OWNER-EVIDENCE-RECEIPT` — exact test-only receipt, compile only.
+- [ ] `M6-CP3-TB-EXEC-162-P13-STAGED-PLAN-OWNER-EVIDENCE-RECEIPT-FULL-GATE` — 979/979, rows 1–978 = TB161 (N1–N3), the 41 old row 979 lines verbatim, all new lines published.
+- [ ] `M6-CP3-TB-REV-162-P13-STAGED-PLAN-OWNER-EVIDENCE-RECEIPT-FULL-GATE` — classify H1–H4; freeze the exact owner repair CB-180 at the single writer, with positive and negative oracles.
+- [ ] CB-180 owner repair → TB-EXEC/REV-163 (staged plan `built` or next measured stage).
+- [ ] CB-181 activation (single-source flag V11; rows 393/648/858/971/972 from receipts; BunnyRandom falsifier V5; row 971 STOP-on-red V10) → TB-EXEC/REV-164.
+- [ ] CB-182 V3b node test → R1 slide-start subdivision → RA-275 S4a → O48.
+
+Carried: TB-REV-159-U3, V3–V11, W6 locus-kind label, W7 cut acceptance question, RA-281 F1–F3, W3/W4, RA-275 S4a, Amendment 14, CP3/497/D0/H4 unpromoted. Stable 66/17/49, debt1, deferred81.
+
+## HISTORY — TB-REV-161 independent review; DEFN-161A (withdrawn by the adversarial continuation) (2026-11-22 UTC)
 
 [Independent Review](.agents/Directional/Architecture_M6_CP3_TB_REV_161_Staged_Slide_Entry_Stop_Downstream_Receipt_Independent_Review_20261122.md): TB161 full gate **979/979 PASS**, 978/978 TB160 predecessor raw logs identical under N1–N3, CP2 491/491 unchanged, census 3/3 identical under N1–N4. Row979 staged graph V18/E30/F14 χ2 has embedded-cell certificate, but staged `GlobalTopologyPlan` fails `UncutFaceComponentOrbitSeedNotUnique` at `sourceFace=2-5-12`. This name does not distinguish absent/invalid/multiple certified face owners; direct production still fails cut search. No production, selector, D0, H4 or CP3 promotion.
 
-> **NEXT_TURN:** `M6-CP3-DEFN-161A-P13-SOURCE-FACE-OWNER-CONSISTENCY` — definition/review only. Disambiguate exact uncut source-face component owner evidence (missing, invalid, multiple), establish which upstream producer or downstream partition precondition fails, prescribe one falsifiable minimal repair or diagnostic-only measurement, and retain STOP rules. No CB-179 production switch before this gate. [Full criteria and carried V1–V11](.agents/Directional/Architecture_M6_CP3_TB_REV_161_Staged_Slide_Entry_Stop_Downstream_Receipt_Independent_Review_20261122.md).
+> **NEXT_TURN (WITHDRAWN by the adversarial continuation, W3):** `M6-CP3-DEFN-161A-P13-SOURCE-FACE-OWNER-CONSISTENCY` — definition/review only. Disambiguate exact uncut source-face component owner evidence (missing, invalid, multiple), establish which upstream producer or downstream partition precondition fails, prescribe one falsifiable minimal repair or diagnostic-only measurement, and retain STOP rules. No CB-179 production switch before this gate. [Full criteria and carried V1–V11](.agents/Directional/Architecture_M6_CP3_TB_REV_161_Staged_Slide_Entry_Stop_Downstream_Receipt_Independent_Review_20261122.md).
 
 Turn sequence:
 - [x] `M6-CP3-TB-EXEC-161-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT-FULL-GATE` — immutable 979/979 PASS, 978 prior logs and 3/3 census unchanged.

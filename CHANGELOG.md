@@ -1,3 +1,7 @@
+## 2026-11-22 — TB-REV-161 adversarial continuation; DEFN-161A withdrawn for exact owner-evidence receipt
+
+[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_161_Adversarial_Review_20261122.md): TB161 PASS upheld. The staged plan failure's first broken invariant is the cut-graph certificate's source-face ownership (`sourceFaceCellularity=0`), and the owner evidence is already computed and formatted by the product, so the runtime-free DEFN-161A is replaced by the exact test-only `M6-CP3-CB-179-P13-STAGED-PLAN-OWNER-EVIDENCE-RECEIPT` (row 979 gains print lines; manifest unchanged). Corrects TB-REV-160 V8's receipt gap. Activation moves to CB-181. No product, selector or runtime change.
+
 ## 2026-11-22 — TB-REV-161 independent gate and owner-consistency review
 
 - Independently verified immutable TB161 979/979 gate, 978/978 frozen predecessor logs under N1–N3, accepted CP2 491/491, and 3/3 census under N1–N4. Artifact and all manifest hashes matched; no runtime or code was changed.

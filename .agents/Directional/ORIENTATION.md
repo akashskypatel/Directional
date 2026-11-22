@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-22 UTC; [TB-REV-161 independent review](Architecture_M6_CP3_TB_REV_161_Staged_Slide_Entry_Stop_Downstream_Receipt_Independent_Review_20261122.md)):** TB161 979/979 and 3/3 census independently verified; 978 predecessor logs unchanged, CP2 491/491. Staged graph has embedded-cell certificate but plan `UncutFaceComponentOrbitSeedNotUnique` (face 2-5-12) is unclassified among missing, invalid or multiple owners. Production stop OFF; next M6-CP3-DEFN-161A-P13-SOURCE-FACE-OWNER-CONSISTENCY (definition only); CB-179 held.
+**Current currency (2026-11-22 UTC; [TB-REV-161 independent review](Architecture_M6_CP3_TB_REV_161_Staged_Slide_Entry_Stop_Downstream_Receipt_Independent_Review_20261122.md)):** TB161 979/979 and 3/3 census independently verified; 978 predecessor logs unchanged, CP2 491/491. Staged graph has embedded-cell certificate but plan `UncutFaceComponentOrbitSeedNotUnique` (face 2-5-12) is unclassified among missing, invalid or multiple owners. Production stop OFF. [Adversarial continuation](Architecture_M6_CP3_TB_REV_161_Adversarial_Review_20261122.md): certificate `sourceFaceCellularity=0` is the first broken invariant; DEFN-161A withdrawn; next exact test-only CB-179 owner-evidence receipt; activation CB-181.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-22 UTC; [TB-REV-161](Architecture_M6_CP3_TB_REV_161_Staged_Slide_Entry_Stop_Downstream_Receipt_Independent_Review_20261122.md)):** 979/979 PASS; CP2 491/491; 978/978 predecessors, census 3/3 unchanged. Staged χ2 embedded cut graph passes but `GlobalTopologyPlan` rejects the uncut source-face owner component. Plan/output and production stop remain unresolved. M6-CP3-DEFN-161A-P13-SOURCE-FACE-OWNER-CONSISTENCY precedes any CB-179 activation. Stable 66/17/49, debt1, deferred81.
+**Currency (2026-11-22 UTC; [TB-REV-161](Architecture_M6_CP3_TB_REV_161_Staged_Slide_Entry_Stop_Downstream_Receipt_Independent_Review_20261122.md)):** 979/979 PASS; CP2 491/491; 978/978 predecessors, census 3/3 unchanged. Staged χ2 embedded cut graph passes but `GlobalTopologyPlan` rejects the uncut source-face owner component. Plan/output and production stop remain unresolved. Certificate source-face ownership fails first (adversarial W1); CB-179 receipt → TB-EXEC/REV-162 → owner repair CB-180 precede activation CB-181. Stable 66/17/49, debt1, deferred81.
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.
@@ -118,7 +118,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-DEFN-161A-P13-SOURCE-FACE-OWNER-CONSISTENCY` — disambiguate the staged uncut source-face owner consistency rejection before any CB-179 production activation. The completed CB-178/TB161 sequence proved the staged graph, **not** the plan or output. Retain frozen V1–V11 falsifiers, especially stop-ON BunnyRandom pending-wall, row971 STOP-on-red, and single shared producer default. Then only separately gated CB-179 → TB/REV → CB-180 V3b → R1 → RA-275 S4a → O48. No CP3/497/D0/H4 promotion. [Review](Architecture_M6_CP3_TB_REV_161_Staged_Slide_Entry_Stop_Downstream_Receipt_Independent_Review_20261122.md).
+**Current priority:** `M6-CP3-CB-179-P13-STAGED-PLAN-OWNER-EVIDENCE-RECEIPT` (exact test-only diff, compile only) — print the plan-locus and certificate owner records row 979 omitted, so TB-REV-162 can classify H1–H4 and freeze the owner repair CB-180 at the certificate producer or shared domain rule. Then TB-EXEC/REV-162 → CB-180 → TB/REV-163 → activation CB-181 (V3–V5, V10, V11) → TB/REV-164 → CB-182 V3b → R1 → RA-275 S4a → O48. DEFN-161A withdrawn. No CP3/497/D0/H4 promotion. [Adversarial record](Architecture_M6_CP3_TB_REV_161_Adversarial_Review_20261122.md).
 
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.

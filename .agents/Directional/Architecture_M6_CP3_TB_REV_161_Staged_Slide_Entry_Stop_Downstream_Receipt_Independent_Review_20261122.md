@@ -1,5 +1,7 @@
 # TB-REV-161 — independent immutable gate and downstream owner review
 
+> **Continued after handover:** [adversarial record](Architecture_M6_CP3_TB_REV_161_Adversarial_Review_20261122.md). The successor DEFN-161A below is WITHDRAWN (W3), and exact test-only CB-179 replaces it.
+
 ## Situation
 
 **PASS for the immutable TB161 test-and-benchmark gate; STOP for production activation CB-179.** This review does not approve a product change. It freezes one definition-only successor, `M6-CP3-DEFN-161A-P13-SOURCE-FACE-OWNER-CONSISTENCY`. The staged graph proves embedded cellularity, but the staged `GlobalTopologyPlan` fails before a valid region plan exists. No new stable regression, product acceptance, or selector promotion is claimed.

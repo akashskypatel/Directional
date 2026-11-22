@@ -260,6 +260,12 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - Share a predicate across layers by moving it into the lower layer; never tell a producer to "reuse" a consumer function it cannot call.
 - Per-row Euler predictions come from a receipt TB; a compile-only CB cannot be asked to derive them.
 
+**TB-REV-161 (adversarial continuation)**
+
+- When a receipt shows a downstream guard failing, read the upstream certificate flag the same receipt already printed before blaming the guard's stage.
+- Receipt a stage's error through the pipeline's existing locus formatter, never a hand-picked field list (TB-REV-160 V8 missed the uncut-component evidence).
+- Before freezing "diagnostic instrumentation", grep the error struct and test helpers for fields that already exist; a print-only test CB replaces a definition turn.
+
 **TB-REV-160 (adversarial continuation)**
 
 - Read what a "built" receipt certifies before calling it reachability: a canonical constructor's success predicate is a measured invariant.
