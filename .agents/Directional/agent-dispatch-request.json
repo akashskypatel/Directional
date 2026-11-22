@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev167-handoff-candidate-20261122-a",
-  "mailbox_key": "m6-cp3-tb-rev167-handoff-candidate-apply",
-  "file_id": "1ocJA_bh2BkUaYsbczsWEct11OQ3VZC3Y",
-  "patch_sha256": "e2792190d5ec698a4203ff05334542442a3b33665b0031aa1a08ef4e5c768050",
-  "base_sha": "0e500d487c15fd6bc6b0d8d5325035b05204f1cc",
+  "request_id": "m6-cp3-tb-rev-167-fold-tb165-note-20261122",
+  "mailbox_key": "m6-cp3-tb-rev-167-fold-tb165",
+  "file_id": "1b9dJjVQGrPeTetJjRDjBcz1xgtMxB4wp",
+  "patch_sha256": "e317b0d01abbc8df14299ba73aeed4e34145aeed08935f68959ea0240e680222",
+  "base_sha": "77a805dfe7f2626657e19c389bb881e9df5ecb84",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(review): preserve proposed CB-187 patch and bounded gate in handoff",
+  "commit_message": "docs(review): fold superseded TB165 pending-run note with full historical text",
   "retention_days": 14
 }
