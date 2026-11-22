@@ -1,2 +1,0 @@
-# TB-REV-163 temporary source snapshot marker; no durable files.
-.agents/connector-triggers/source-snapshot/tb-rev-163-20261122-1119.txt
