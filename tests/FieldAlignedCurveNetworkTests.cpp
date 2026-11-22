@@ -43,6 +43,7 @@
 #include "../src/geometry/CertifiedOwnerConflictCensus.h"
 #include "../src/geometry/UncutComponentCertificateCensus.h"
 #include "../src/geometry/ThirdEdgeSideOwner.h"
+#include "../src/geometry/FaceCutCornerPartition.h"
 #include "TestFixturePaths.h"
 #include "support/SkewSingularFieldWitness.h"
 
@@ -22606,4 +22607,169 @@ TEST(SurfaceCutGraph, NearestChordEdgeSideSeedRefusesUndecidedOrUnrecordedSides)
                    .has_value());
   // No chord means no seed from this rule.
   EXPECT_FALSE(nearest_chord_edge_side_seed(recorded, {}, false).has_value());
+}
+
+namespace face_cut_partition_test {
+
+using directional::authority::FieldExactRational;
+using directional::geometry::detail::FaceBoundaryPosition;
+using directional::geometry::detail::FaceCornerOrbits;
+using directional::geometry::detail::FaceCutPartitionFailure;
+using directional::geometry::detail::FaceCutPiece;
+using directional::geometry::detail::partition_face_corners;
+
+FaceBoundaryPosition at(const std::size_t edge, const std::int64_t numerator,
+                        const std::int64_t denominator) {
+  return FaceBoundaryPosition{
+      edge, FieldExactRational::from_ratio(numerator, denominator).value()};
+}
+
+FaceBoundaryPosition corner(const std::size_t index) { return at(index, 0, 1); }
+
+FaceCutPiece cut(std::optional<FaceBoundaryPosition> entry,
+                 std::optional<FaceBoundaryPosition> exit,
+                 const std::size_t forwardOrbit,
+                 const std::size_t reverseOrbit) {
+  return FaceCutPiece{std::move(entry), std::move(exit), forwardOrbit,
+                      reverseOrbit};
+}
+
+FaceCornerOrbits corners_of(const std::vector<FaceCutPiece> &pieces) {
+  const auto result = partition_face_corners(pieces);
+  EXPECT_TRUE(std::holds_alternative<FaceCornerOrbits>(result));
+  if (const auto *corners = std::get_if<FaceCornerOrbits>(&result)) {
+    return *corners;
+  }
+  return FaceCornerOrbits{};
+}
+
+std::optional<FaceCutPartitionFailure>
+failure_of(const std::vector<FaceCutPiece> &pieces) {
+  const auto result = partition_face_corners(pieces);
+  if (const auto *failure = std::get_if<FaceCutPartitionFailure>(&result)) {
+    return *failure;
+  }
+  return std::nullopt;
+}
+
+// Face 6-8-9 of the staged sphere (row 979 receipt) with corners 0, 1, 2 =
+// vertices 6, 8, 9. Trace 0 cuts off corner 6 and slides along edge 6-8 into
+// the singular corner 8; trace 9 cuts off corner 9 and slides along edge 8-9
+// into corner 8; ports (traces 4 and 3) leave corner 8 for edge 9-6. Arc 1,
+// trace 0's edge-only slide, cuts no face interior and is not passed. Orbits:
+// 10 holds corner 6, 11 lies between trace 0 and port 4, 12 between the
+// ports, 13 between port 3 and trace 9, 14 holds corner 9.
+std::vector<FaceCutPiece> singular_corner_face() {
+  return {cut(at(2, 15, 16), at(0, 1, 2), 11U, 10U),
+          cut(corner(1), at(2, 4, 5), 11U, 12U),
+          cut(corner(1), at(2, 1, 5), 12U, 13U),
+          cut(at(2, 1, 16), at(1, 1, 2), 14U, 13U)};
+}
+
+} // namespace face_cut_partition_test
+
+TEST(FaceCutCornerPartition, SingleChordsAndCornerFanMatchTheTurnAndRayRules) {
+  using namespace face_cut_partition_test;
+  // Turn 1 (incoming edge 0, outgoing edge 1): the forward orbit owns the
+  // corners away from the shared corner 1.
+  EXPECT_EQ((FaceCornerOrbits{{{7U}, {4U}, {7U}}}),
+            corners_of({cut(at(0, 1, 3), at(1, 1, 2), 7U, 4U)}));
+  // Turn 2 (incoming edge 1, outgoing edge 0): the forward orbit owns the
+  // shared corner 1.
+  EXPECT_EQ((FaceCornerOrbits{{{4U}, {7U}, {4U}}}),
+            corners_of({cut(at(1, 1, 2), at(0, 1, 3), 7U, 4U)}));
+  // Rays from corner 0: the source corner touches every orbit, the ray
+  // nearest corner 1 gives it its reverse orbit and the ray nearest corner 2
+  // its forward orbit, and each sector is one ray's forward orbit and the
+  // next ray's reverse orbit.
+  const std::vector<FaceCutPiece> fan{cut(corner(0), at(1, 1, 4), 2U, 1U),
+                                      cut(corner(0), at(1, 3, 4), 3U, 2U)};
+  EXPECT_EQ((FaceCornerOrbits{{{1U, 2U, 3U}, {1U}, {3U}}}), corners_of(fan));
+  EXPECT_EQ(corners_of(fan), corners_of({fan[1], fan[0]}));
+}
+
+TEST(FaceCutCornerPartition, NestedChordsLeaveTheStripOrbitWithoutCorners) {
+  using namespace face_cut_partition_test;
+  // Both chords cut off corner 1. The strip between them (orbit 5) touches
+  // no corner, so the caller must key it from the face's own orbit list.
+  const std::vector<FaceCutPiece> nested{
+      cut(at(0, 3, 4), at(1, 1, 4), 5U, 6U),
+      cut(at(0, 1, 4), at(1, 3, 4), 8U, 5U)};
+  const FaceCornerOrbits corners = corners_of(nested);
+  EXPECT_EQ((FaceCornerOrbits{{{8U}, {6U}, {8U}}}), corners);
+  EXPECT_EQ(corners, corners_of({nested[1], nested[0]}));
+}
+
+TEST(FaceCutCornerPartition, SingularCornerWithRaysAndSlideArrivalsTouchesEverySector) {
+  using namespace face_cut_partition_test;
+  const std::vector<FaceCutPiece> face = singular_corner_face();
+  const FaceCornerOrbits expected{{{10U}, {11U, 12U, 13U}, {14U}}};
+  EXPECT_EQ(expected, corners_of(face));
+  EXPECT_EQ(expected, corners_of({face.rbegin(), face.rend()}));
+  EXPECT_EQ(expected, corners_of({face[2], face[0], face[3], face[1]}));
+  // Renumbering the corners cyclically (corner k becomes corner k + 1) moves
+  // the attribution with them.
+  std::vector<FaceCutPiece> renumbered;
+  for (FaceCutPiece piece : face) {
+    if (piece.entry.has_value()) piece.entry->edge = (piece.entry->edge + 1U) % 3U;
+    if (piece.exit.has_value()) piece.exit->edge = (piece.exit->edge + 1U) % 3U;
+    renumbered.push_back(piece);
+  }
+  EXPECT_EQ((FaceCornerOrbits{{{14U}, {10U}, {11U, 12U, 13U}}}),
+            corners_of(renumbered));
+}
+
+TEST(FaceCutCornerPartition, InteriorEndsSplitRegionsThroughTheirBoundaryEnds) {
+  using namespace face_cut_partition_test;
+  // A chord across corner 1 is split at an interior node where a slit from
+  // edge 2 ends, as when a trace stops on another trace inside the face.
+  const std::vector<FaceCutPiece> junction{
+      cut(at(0, 1, 2), std::nullopt, 21U, 20U),
+      cut(std::nullopt, at(1, 1, 2), 22U, 20U),
+      cut(at(2, 1, 2), std::nullopt, 22U, 21U)};
+  EXPECT_EQ((FaceCornerOrbits{{{21U}, {20U}, {22U}}}), corners_of(junction));
+  // A terminal slit with one orbit on both sides separates nothing.
+  EXPECT_EQ((FaceCornerOrbits{{{7U}, {4U}, {7U}}}),
+            corners_of({cut(at(0, 1, 3), at(1, 1, 2), 7U, 4U),
+                        cut(at(2, 1, 2), std::nullopt, 7U, 7U)}));
+}
+
+TEST(FaceCutCornerPartition, RejectsMalformedCrossingUnorderedAndInconsistentCuts) {
+  using namespace face_cut_partition_test;
+  using Failure = FaceCutPartitionFailure;
+  const auto expect = [](const Failure failure) {
+    return std::optional<Failure>(failure);
+  };
+  EXPECT_EQ(expect(Failure::MalformedBoundaryPosition),
+            failure_of({cut(at(3, 1, 2), at(1, 1, 2), 1U, 2U)}));
+  EXPECT_EQ(expect(Failure::MalformedBoundaryPosition),
+            failure_of({cut(at(0, 1, 1), at(1, 1, 2), 1U, 2U)}));
+  // From a corner to the edge that ends at it, or within one edge.
+  EXPECT_EQ(expect(Failure::CutAlongOneEdge),
+            failure_of({cut(corner(1), at(0, 1, 2), 1U, 2U)}));
+  EXPECT_EQ(expect(Failure::CutAlongOneEdge),
+            failure_of({cut(at(0, 1, 4), at(0, 3, 4), 1U, 2U)}));
+  EXPECT_EQ(expect(Failure::NoBoundaryEndpoint), failure_of({}));
+  EXPECT_EQ(expect(Failure::NoBoundaryEndpoint),
+            failure_of({cut(std::nullopt, std::nullopt, 1U, 2U)}));
+  // Interleaved ends: the cuts cross inside the face without a node.
+  EXPECT_EQ(expect(Failure::CrossingCuts),
+            failure_of({cut(at(0, 1, 2), at(1, 1, 2), 1U, 2U),
+                        cut(at(0, 3, 4), at(2, 1, 2), 2U, 1U)}));
+  // Two rays to the same point, and a chord sharing an end with a slit that
+  // stops inside the face, cannot be ordered at the shared point.
+  EXPECT_EQ(expect(Failure::UnorderedSharedEndpoint),
+            failure_of({cut(corner(0), at(1, 1, 2), 2U, 1U),
+                        cut(corner(0), at(1, 1, 2), 3U, 2U)}));
+  EXPECT_EQ(expect(Failure::UnorderedSharedEndpoint),
+            failure_of({cut(at(0, 1, 2), at(1, 1, 2), 1U, 2U),
+                        cut(at(0, 1, 2), std::nullopt, 1U, 1U)}));
+  // Nested chords whose sides disagree on the strip between them.
+  EXPECT_EQ(expect(Failure::InconsistentSideOrbits),
+            failure_of({cut(at(0, 3, 4), at(1, 1, 4), 5U, 6U),
+                        cut(at(0, 1, 4), at(1, 3, 4), 8U, 9U)}));
+  // A slit with two orbits must end on another cut of the face; alone it
+  // would need its region to wrap around it.
+  EXPECT_EQ(expect(Failure::InconsistentSideOrbits),
+            failure_of({cut(at(2, 1, 2), std::nullopt, 7U, 4U)}));
 }
