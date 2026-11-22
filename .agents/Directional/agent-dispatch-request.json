@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tbrev166-docs-20261122-a",
-  "mailbox_key": "m6-cp3-tbrev166-docs-apply",
-  "file_id": "16zqYnYbQ1pHDWm_b29sLIo-5S95LoYJC",
-  "patch_sha256": "82902b90bfe002f8310df00644de5686c05b2269cee077d31f951d91fc7f7123",
-  "base_sha": "67248d6828be41d2b97fcf12e9cd20856e9cbe46",
+  "request_id": "m6-cp3-tbrev166-supplement-20261122-a",
+  "mailbox_key": "m6-cp3-tbrev166-supplement-apply",
+  "file_id": "1CYi8jdD14vUPtGsnjG5UliLiXCe0Rbgx",
+  "patch_sha256": "aeaebcbeec686cf04ccc63d7e42bcee458efa9b4b9bff93fda29e10f58181ba6",
+  "base_sha": "7d5046f272111b99a4323a11e9abf2f8e2da0b41",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cp3): adjudicate TB-REV-166 K5 and freeze exact corner partition helper",
+  "commit_message": "docs(cp3): add TB166 witness and disclose review checker limit",
   "retention_days": 14
 }
