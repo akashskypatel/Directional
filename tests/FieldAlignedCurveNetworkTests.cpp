@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <limits>
 #include <numbers>
@@ -18211,6 +18212,161 @@ TEST(TraceTerminationCorrection,
               << arc.onePastLastSegment << ") nodes=("
               << arc.firstNode.index() << ',' << arc.secondNode.index()
               << ")\n";
+  }
+
+  // Every source face that more than one trace-arc segment visit reaches, as
+  // the plan's fragment-corner reader visits them: each visit with its own
+  // source pieces (F face, E edge), carriers, slide edge, and its entry and
+  // exit support with the edge parameter from the edge's first vertex
+  // (rounded, for ordering by eye only).
+  const auto boundary_text =
+      [](const directional::authority::FieldBoundaryPoint &point) {
+        const auto support = point.source_support();
+        const auto *vertex =
+            support.has_value()
+                ? std::get_if<directional::authority::SourceVertexSupport>(
+                      &*support)
+                : nullptr;
+        std::ostringstream text;
+        if (vertex != nullptr) {
+          text << 'v' << vertex->vertex.index();
+        } else {
+          text << source_edge_locus(point.edge) << '@' << std::fixed
+               << std::setprecision(6)
+               << static_cast<double>(point.parameter.value.to_double());
+        }
+        return text.str();
+      };
+  struct MultiCutVisit {
+    std::size_t arc = 0U;
+    std::size_t trace = 0U;
+    std::size_t segment = 0U;
+    std::string pieces;
+    std::string incoming;
+    std::string outgoing;
+    std::string slide;
+    std::string entry;
+    std::string exit;
+    bool lastSegment = false;
+  };
+  std::map<directional::authority::SourceFaceTopologyKey,
+           std::vector<MultiCutVisit>>
+      visitsByFace;
+  for (const auto &arc : *arcs) {
+    if (arc.kind != GlobalTopologyArcKind::Trace || !arc.trace.has_value())
+      continue;
+    const auto *trace = embedded::find_trace(network, *arc.trace);
+    ASSERT_NE(nullptr, trace);
+    std::size_t pieceOffset = 0U;
+    for (std::size_t i = 0U; i < arc.sourcePieceCounts.size(); ++i) {
+      const std::size_t segmentIndex = arc.firstSegment + i;
+      const auto &segment = trace->segments[segmentIndex];
+      MultiCutVisit visit;
+      visit.arc = arc.id.index();
+      visit.trace = trace->id.index();
+      visit.segment = segmentIndex;
+      for (std::size_t piece = 0U; piece < arc.sourcePieceCounts[i]; ++piece) {
+        ASSERT_LT(pieceOffset + piece, arc.sourcePath.size());
+        const auto kind = directional::authority::support_kind(
+            arc.sourcePath[pieceOffset + piece].carrier);
+        visit.pieces +=
+            kind == directional::authority::SourceSupportKind::FaceInterior
+                ? 'F'
+                : kind == directional::authority::SourceSupportKind::Edge ? 'E'
+                                                                         : 'V';
+      }
+      pieceOffset += arc.sourcePieceCounts[i];
+      visit.incoming = segment.incomingCarrier.has_value()
+                           ? source_edge_locus(*segment.incomingCarrier)
+                           : std::string("-");
+      visit.outgoing = source_edge_locus(segment.outgoingCarrier);
+      visit.slide = segment.edgeTransitEntry.has_value()
+                        ? source_edge_locus(segment.edgeTransitEntry->edge)
+                        : std::string("-");
+      visit.entry = boundary_text(segment.entryPoint);
+      visit.lastSegment = segmentIndex + 1U == trace->segments.size();
+      if (!visit.lastSegment) {
+        visit.exit = boundary_text(trace->segments[segmentIndex + 1U].entryPoint);
+      } else if (trace->terminalPoint.has_value()) {
+        visit.exit = boundary_text(*trace->terminalPoint);
+      } else {
+        visit.exit = "-";
+      }
+      visitsByFace[segment.sourceFace].push_back(std::move(visit));
+    }
+  }
+  std::size_t multiCutFaces = 0U;
+  std::size_t multiCutVisits = 0U;
+  for (const auto &[face, visits] : visitsByFace) {
+    if (visits.size() < 2U) continue;
+    ++multiCutFaces;
+    multiCutVisits += visits.size();
+    for (const auto &visit : visits) {
+      std::cout << "SphereStagedMultiCutVisit face=" << source_face_locus(face)
+                << " arc=" << visit.arc << " trace=" << visit.trace
+                << " segment=" << visit.segment << " pieces=" << visit.pieces
+                << " incoming=" << visit.incoming
+                << " outgoing=" << visit.outgoing << " slide=" << visit.slide
+                << " entry=" << visit.entry << " exit=" << visit.exit
+                << " last=" << (visit.lastSegment ? 1 : 0) << '\n';
+    }
+  }
+  std::cout << "SphereStagedMultiCutFaces faces=" << multiCutFaces
+            << " visits=" << multiCutVisits
+            << " visitedFaces=" << visitsByFace.size() << '\n';
+
+  // Each singularity node: its ports' departing first segments and every
+  // trace whose last arc ends there (an arrival), so a departure and an
+  // arrival in the same face or on the same edge can be read side by side.
+  std::map<std::size_t, std::size_t> arcEndsByNode;
+  for (const auto &arc : *arcs) {
+    ++arcEndsByNode[arc.firstNode.index()];
+    ++arcEndsByNode[arc.secondNode.index()];
+  }
+  std::map<std::size_t, std::size_t> portsByNode;
+  std::map<std::size_t, std::size_t> arrivalsByNode;
+  for (const auto &port : network.singularity_ports()) {
+    ++portsByNode[port.node.index()];
+    for (const auto &trace : traces) {
+      if (trace.port != port.id || trace.segments.empty()) continue;
+      const auto &first = trace.segments.front();
+      std::cout << "SphereStagedSingularPort node=" << port.node.index()
+                << " vertex=" << port.sourceVertex.index()
+                << " index=" << port.indexNumerator
+                << " ordinal=" << port.ordinal
+                << " trace=" << trace.id.index()
+                << " face=" << source_face_locus(first.sourceFace)
+                << " outgoing=" << source_edge_locus(first.outgoingCarrier)
+                << " slide="
+                << (first.edgeTransitEntry.has_value()
+                        ? source_edge_locus(first.edgeTransitEntry->edge)
+                        : std::string("-"))
+                << '\n';
+    }
+  }
+  for (const auto &arc : *arcs) {
+    if (arc.kind != GlobalTopologyArcKind::Trace || !arc.trace.has_value() ||
+        portsByNode.count(arc.secondNode.index()) == 0U)
+      continue;
+    const auto *trace = embedded::find_trace(network, *arc.trace);
+    ASSERT_NE(nullptr, trace);
+    if (arc.onePastLastSegment != trace->segments.size()) continue;
+    ++arrivalsByNode[arc.secondNode.index()];
+    const auto &last = trace->segments.back();
+    std::cout << "SphereStagedSingularArrival node=" << arc.secondNode.index()
+              << " trace=" << trace->id.index() << " arc=" << arc.id.index()
+              << " face=" << source_face_locus(last.sourceFace)
+              << " slide="
+              << (last.edgeTransitEntry.has_value()
+                      ? source_edge_locus(last.edgeTransitEntry->edge)
+                      : std::string("-"))
+              << " terminalSingularity="
+              << (trace->terminalSingularity.has_value() ? 1 : 0) << '\n';
+  }
+  for (const auto &[node, ports] : portsByNode) {
+    std::cout << "SphereStagedSingularValence node=" << node
+              << " ports=" << ports << " arrivals=" << arrivalsByNode[node]
+              << " arcEnds=" << arcEndsByNode[node] << '\n';
   }
 }
 
