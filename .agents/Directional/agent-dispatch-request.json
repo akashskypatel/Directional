@@ -1,12 +1,9 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb184-seed-apply-20261122-a",
-  "mailbox_key": "m6-cp3-cb184-seed-apply",
-  "file_id": "11dHPuQMcRs7CoOga08OK_hOvnXA0klrx",
-  "patch_sha256": "cdb0163963c7f29163180b67eef60fad6d7d7923bec938073b40a0915a1fb1f8",
-  "base_sha": "72676b7ea829c4fd6e7149b2eab1cb098e2e5786",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): select certified nearest chord for uncut seed",
-  "retention_days": 14
+  "operation": "compile",
+  "request_id": "m6-cp3-cb184-compile-20261122-a",
+  "mailbox_key": "m6-cp3-cb184-compile",
+  "source_sha": "5b5cdf15a670236635d74a15f3791422b182ffe0",
+  "targets": "directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks",
+  "artifact_prefix": "m6-cp3-cb184-compile"
 }
