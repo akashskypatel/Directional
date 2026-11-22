@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb165-handoff-current-20261122-a",
-  "mailbox_key": "m6-cp3-tb165-handoff-current",
-  "file_id": "1SaBm11_JQVDax5hziQiN4ZlcP2yEIqz8",
-  "patch_sha256": "5f411fe53a44eeb06ca2ca8aeae2789abbe5466332c9a440ecf3df2f34af5659",
-  "base_sha": "0eeee5b42f37918817ac5af937e11dbb829e9df3",
+  "request_id": "m6-cp3-cb185-apply-20261122-a",
+  "mailbox_key": "m6-cp3-cb185-apply",
+  "file_id": "14Mt-29hrgBdcOKp1DZ1iqYDkQSVYMpEi",
+  "patch_sha256": "794358ab5e3fe0d44ebe21b5b3e89c7cebdf5fbdc4faaeea3f3249ec2cf44b5e",
+  "base_sha": "5c2e2d43aaf7ac6420a47414e15554384faa0b94",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cp3): correct TB165 current handoff authority and next review",
+  "commit_message": "test(cp3): add exact staged multi-cut face and singular receipt",
   "retention_days": 14
 }
