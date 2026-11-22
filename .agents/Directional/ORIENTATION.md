@@ -132,6 +132,8 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
 - **M6-CP3 and later:** achieve the required representative direct matrix and independently verify all acceptance criteria before promotion. The D0 ladder and production hardening remain later milestones. See [ROADMAP.md](ROADMAP.md).
 
+TB-REV-167 S6: exact source-face piece traversal must assign oriented vertex-end edge evidence as well as source-vertex start evidence. The v4 review-only proposal does not yet cover edge-to-vertex face-piece endpoints. It is a static concern, not a measured runtime or stable regression.
+
 ## 8. Recurring defect patterns
 
 TB-REV-167 S5: two source pieces joined at a real face-interior node need not create two independent face fragments. A count of exact support pieces is not a certificate of planar region count. Retain typed STOP until the graph-derived fragment count is independently verified. This is a review-stage risk, not a new stable regression.
