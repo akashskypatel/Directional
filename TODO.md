@@ -1,36 +1,11 @@
-## CURRENT — TB-REV-165 adversarial continuation: CB-185 v2 receipt, boundary-walk corner partition next (2026-11-22 UTC)
+## CURRENT — CB-185 compiled; TB-EXEC-166 immutable full gate next (2026-11-22 UTC)
 
-[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md), K1–K6. The seed-switch acceptance, the F1 correction, G1 and G5 are upheld.
-- **K2:** `end=point` hides singularity terminations. The printer tests `terminalPoint` first, and every singular setter sets both. The 10 slide arrivals at nodes 0–7 are designed terminations (DESIGN §7.2 step 5, :152).
-- **K3:** per-class corner helpers are withdrawn. One exact boundary-walk partition (face pieces as non-crossing cuts; corners own their adjacent boundary intervals' orbits) covers one chord, nested chords, rays and mixed faces.
-- **K4:** v1 receipt withdrawn, v2 frozen. It adds entry/exit with edge parameter, singular ports, arrivals with `terminalSingularity`, and valence.
-- **K5 (open):** singular valence is 4,5,5,3,3,5,5,4 against 3 ports. An arrival sliding along a departing edge-supported port's edge would be a co-traced overlap; that routes to A2a and is not a plan-reader change.
+- [x] `M6-CP3-CB-185-P13-STAGED-MULTI-CUT-FACE-RECEIPT`: exact v2 test-only +156/−0 patch; semantic source `2c1ec9ab370ed0e9d533d7694e03b486916b9b1a`, [apply 45050327964](https://github.com/akashskypatel/Directional/actions/runs/45050327964), [GMP/GMPXX compile 45050530173](https://github.com/akashskypatel/Directional/actions/runs/45050530173) package `14765117630`, ZIP SHA-256 `288b8a7c15719f0b5eb82521ef95b1c2c23e9fa51ca77d4caebdec2a7056548d`. [Record](.agents/Directional/Architecture_M6_CP3_CB185_P13_Staged_Multi_Cut_Face_Receipt_Code_Build_Record_20261122.md). No runtime execution or product edits.
+- [ ] **NEXT** `M6-CP3-TB-EXEC-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE`: execute immutable CB-185 package, 984-row manifest (`8d56ee1d…1e69`), no census. Apply [TB-REV-165 adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md) rules 1–6; preserve row-979 old logs and print new full visit, port, arrival and valence receipts.
+- [ ] Then `M6-CP3-TB-REV-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE`: decide K5 co-traced arrival (A2a STOP if overlap), else freeze CB-186 exact boundary-walk partition and CB-187 reader switch.
+- [ ] Prospective: CB-186 → CB-187 → TB-EXEC/REV-167 → CB-188 activation → TB-EXEC/REV-168 → CB-189 V3b → R1 → O48.
 
-```
-NEXT_TURN: M6-CP3-CB-185-P13-STAGED-MULTI-CUT-FACE-RECEIPT
-Owner: implementation agent (Code + Build, compile only)
-Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md (K1–K6) + Architecture_M6_CP3_TB_REV_165_Nearest_Chord_Seed_Full_Gate_Review_20261122.md (G1–G5)
-Apply exactly (v2; v1 77e025a8…159d withdrawn): .agents/Directional/Architecture_M6_CP3_CB185_P13_Staged_Multi_Cut_Face_Receipt_Exact.diff
-  SHA-256 a7a5922b791ab57d473fc0a8004785977110e8c74922eff39e73df14fcb9935a (test-only, +156/−0)
-  tests/FieldAlignedCurveNetworkTests.cpp: fea486ed…68e27 -> c62c51b0d549b4a41cce5e7e1b9d087d968b5881a794fb4c460950c8d143ffe2
-Build: dispatcher compile, GMP/GMPXX targets, runtimeExecution=false
-Then: M6-CP3-TB-EXEC-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE (manifest 8d56ee1d…1e69, 984 rows; no census; adversarial rules 1–6)
-  -> M6-CP3-TB-REV-166-P13-STAGED-MULTI-CUT-FACE-RECEIPT-FULL-GATE (decide K5; freeze CB-186 boundary-walk helper + CB-187 reader switch)
-On failure/blocker: hash mismatch or compile failure -> STATUS BLOCKED; return to Review
-Do not: edit beyond the diff; change product source; run tests; change selectors or manifests; activate; promote CP3/497/D0/H4
-```
-
-Turn sequence:
-- [x] CB-183 → CB-184 → TB-EXEC-165 (STOP) → TB-REV-165 (review + adversarial)
-- [ ] **NEXT** CB-185 v2: test-only receipt, compile only
-- [ ] TB-EXEC-166: 984 rows, no census
-- [ ] TB-REV-166: K5 decision; freeze CB-186 + CB-187
-- [ ] CB-186: pure boundary-walk corner partition helper + tests
-- [ ] CB-187: `build_fragment_corner_incidence` reads arc face pieces through it
-- [ ] TB-EXEC/REV-167: staged plan built, or the next stage
-- [ ] CB-188 activation (V3–V5, V10, V11) → TB-EXEC/REV-168 → CB-189 V3b → R1 → O48
-
-Carried: K5, Y7 (narrowed by Z3), Z5, X4/H5, TB-REV-159-U3/V3–V11, W3/W4/W6/W7, RA-281 F1–F3, Amendment 14, O47/C5/O48/O49, sphere χ+4.
+Nearest-chord seed is accepted (192/192 owners, `sourceFaceCellularity=1`), but staged `SourceFaceCarriesMultipleTraceCuts` at face `6-8-9` and production `CutSearchExhaustedBeforeCellularity` remain. Carried: K5, Y7, Z5, X4/H5, TB-REV-159-U3/V3–V11, W3/W4/W6/W7, RA-281 F1–F3, Amendment 14, O47/C5/O48/O49, sphere χ+4. Stable 66/17/49, debt1, deferred81; no CP3/497/D0/H4 promotion.
 
 ## HISTORY — TB-REV-165 review record: seed switch accepted; CB-185 v1 (withdrawn by the adversarial continuation) (2026-11-22 UTC)
 
