@@ -67,6 +67,10 @@ The successor cannot declare sphere χ6→χ2 or direct pure-quad acceptance. Co
 
 Freeze `M6-CP3-CB-178-P13-SLIDE-ENTRY-STOP-PRODUCTION-ACTIVATION` with these stop gates. Maintain production stop OFF, Amendment 14, CP3/497/D0/H4 and all stable accounting until a later independent test and review show a valid production result.
 
+### Historical review-check verification on same-turn resume
+
+The local `review_check.py boundary` command still has a **nonzero** result: a source snapshot has no historical `.git` objects, so the original command could not read the rewrite baseline or its three protected documents. Independent GitHub `compare_commits` at exact reviewed snapshot `dbb48df4079b1f6493ffe5bb48bd76b8e52a2db8` confirms the rewrite baseline `8b7299b43764a6ba3444e5bc774a2f1b65e99731` is the merge base (ahead 7,250; behind 0). Historical blobs were retrieved from that exact baseline: handoff `ad73c549ab9764e9391025bca4cab0cdcd5010fc`, orientation `36c0683642ec035da3b4f1f2543fcea083b01b5a`, and regression tracker `afa8d7dc1b47f92b3a0340bfab5e46fcf1285b85`. Applying the unmodified checker heading pattern to the verified 5,710-file review-resume snapshot preserves all baseline protected headings (handoff 4/4; orientation 1/1; tracker 0/0). The source snapshot run `44986682607`, artifact `14739772109`, ZIP SHA-256 `c3af133a48b6e987189f5a2a990cc8cdb37f2b78acf556dff3790ac5e78ead2b`, and all 5,710 SHA-256 entries verify. A remote compare from semantic source `eeecf23339345f9efa295e94ffd764f4f4e5f3fa` to this snapshot shows **no** product, test, fixture, or build-file changes. A compare from the previously completed review status commit `c7201481c0e128bd8489c24724d03cc74c5fa165` shows only `STATUS` and the newly requested temporary source-snapshot marker changed. This is remote verification of the historical predicates, **not** a local full-history checker PASS or a complete intermediate append-only ledger-history scan. Neither the independent review decision nor the CB-178 stop gates changes.
+
 ## Review closeout
 
 | Duty | Answer |
@@ -86,6 +90,6 @@ Freeze `M6-CP3-CB-178-P13-SLIDE-ENTRY-STOP-PRODUCTION-ACTIVATION` with these sto
 | Consolidation under CLEAN_UP_POLICY | No historical record removed: evidence and Review records retain distinct indispensable source/decision authority; consolidation deferred, with no destructive loss |
 | Successor frozen | `M6-CP3-CB-178-P13-SLIDE-ENTRY-STOP-PRODUCTION-ACTIVATION`; five prospective stop gates above |
 | Turn boundary held | Runtime-free; no product/test/selector/build/fixture edits |
-| review_check.py boundary | Attempted against snapshot-only synthetic checkout; full Git historical checks unavailable (no remote history); content-boundary check independently verified by exact modified-path diff; unresolved history verification noted |
+| review_check.py boundary | Local command FAIL on absent historical Git objects; remote merge-base/ancestor confirmed and protected headings independently verified 4/4 + 1/1 + 0/0. No synthetic full-history PASS claimed. See historical verification above. |
 | `STATUS` lifecycle maintained | Entry set at 2026-11-22T03:57:19Z; terminal direct-write after documentation and cleanup, final repository action |
 | Pushed to origin, branch in sync | Must be verified after patch application; do not claim Git history or `git status -sb` against the snapshot-only container tree |
