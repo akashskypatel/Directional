@@ -18057,6 +18057,24 @@ TEST(TraceTerminationCorrection,
                 << (opposite == nullptr ? std::string(" oppositeOwner=absent")
                                         : owner_text(*opposite))
                 << '\n';
+      const auto orbit_list = [](const std::vector<std::size_t> &orbits) {
+        if (orbits.empty()) return std::string("-");
+        std::string text;
+        for (std::size_t index = 0U; index < orbits.size(); ++index) {
+          if (index != 0U) text += ',';
+          text += std::to_string(orbits[index]);
+        }
+        return text;
+      };
+      std::cout << "SphereStagedUncutSideOwner component=" << census.component
+                << " edge=" << source_edge_locus(edge.sourceEdge)
+                << " sideOrbits=" << orbit_list(edge.sideOwnerOrbits)
+                << " chordOrbits=" << orbit_list(edge.thirdEdgeChordOrbits)
+                << " nearest="
+                << (edge.thirdEdgeChordSideOwner.has_value()
+                        ? std::to_string(*edge.thirdEdgeChordSideOwner)
+                        : std::string("-"))
+                << '\n';
     }
     for (const auto &arc : census.interiorArcIncidences) {
       std::cout << "SphereStagedUncutInteriorArc component="

@@ -172,6 +172,14 @@ struct SurfaceCutGraphUncutComponentBoundaryEdgeCensus {
   bool barrierPresent = false;
   bool oppositeFaceTraceCut = false;
   bool sideOwnerExists = false;
+  /** Every orbit recorded for the opposite face's side of this edge. */
+  std::vector<std::size_t> sideOwnerOrbits;
+  /** Third-edge orbit of each opposite-face chord that crosses the face's two
+   * other edges, in recording order. */
+  std::vector<std::size_t> thirdEdgeChordOrbits;
+  /** Orbit of the chord nearest this edge, when the chords' exact carrier
+   * order decides it. Published only; it does not seed ownership. */
+  std::optional<std::size_t> thirdEdgeChordSideOwner;
   auto operator<=>(
       const SurfaceCutGraphUncutComponentBoundaryEdgeCensus &) const = default;
 };

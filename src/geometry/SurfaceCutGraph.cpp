@@ -10,6 +10,7 @@
 #include "CertifiedOwnerConflictCensus.h"
 #include "SourceFaceComponentPartition.h"
 #include "UncutComponentCertificateCensus.h"
+#include "ThirdEdgeSideOwner.h"
 
 #include <algorithm>
 #include <map>
@@ -440,6 +441,9 @@ OwnershipBuildResult build_source_face_ownership(
       directOwnersByEdgeSide;
   std::map<SourceFace, std::vector<SurfaceCutGraphTraceFragmentSideOwner>>
       traceSides;
+  std::map<std::pair<SourceFace, SourceEdge>,
+           std::vector<detail::ThirdEdgeChordCandidate>>
+      thirdEdgeChords;
   std::set<SourceFace> traceCutFaces;
   std::map<authority::NetworkArcId,
            std::map<SourceFace, SurfaceCutGraphTraceCutExclusionReason>>
@@ -616,8 +620,38 @@ OwnershipBuildResult build_source_face_ownership(
         if (turn != 1U && turn != 2U) continue;
         std::size_t third = 0U;
         while (third == *incoming || third == *outgoing) ++third;
+        const std::size_t thirdEdgeOrbit =
+            turn == 1U ? forwardOrbit : reverseOrbit;
         add_owner(segment.sourceFace, faceIt->second.edges[third],
-                  turn == 1U ? forwardOrbit : reverseOrbit);
+                  thirdEdgeOrbit);
+        if (certificateFaceOrbits.count(thirdEdgeOrbit) != 0U) {
+          const auto &record = faceIt->second;
+          const SourceEdge &firstCarrier = record.edges[(third + 1U) % 3U];
+          const SourceEdge &secondCarrier = record.edges[(third + 2U) % 3U];
+          const authority::SourceVertexId apex =
+              record.vertices[(third + 2U) % 3U];
+          detail::ThirdEdgeChordCandidate chord{thirdEdgeOrbit, std::nullopt,
+                                                std::nullopt};
+          const auto place = [&](const authority::FieldBoundaryPoint &point) {
+            if (point.edge == firstCarrier) {
+              chord.firstCarrierApexDistance =
+                  detail::carrier_apex_distance(point, apex);
+            } else if (point.edge == secondCarrier) {
+              chord.secondCarrierApexDistance =
+                  detail::carrier_apex_distance(point, apex);
+            }
+          };
+          if (segment.entryPoint.edge == *segment.incomingCarrier)
+            place(segment.entryPoint);
+          if (!segment.edgeTransitEntry.has_value() &&
+              segmentIndex + 1U < trace->segments.size() &&
+              trace->segments[segmentIndex + 1U].entryPoint.edge ==
+                  segment.outgoingCarrier) {
+            place(trace->segments[segmentIndex + 1U].entryPoint);
+          }
+          thirdEdgeChords[{segment.sourceFace, record.edges[third]}].push_back(
+              std::move(chord));
+        }
         continue;
       }
 
@@ -732,6 +766,18 @@ OwnershipBuildResult build_source_face_ownership(
           boundary.sideOwnerExists =
               edgeOwner != directOwnersByEdgeSide.end() &&
               !edgeOwner->second.empty();
+          if (edgeOwner != directOwnersByEdgeSide.end()) {
+            boundary.sideOwnerOrbits.assign(edgeOwner->second.begin(),
+                                            edgeOwner->second.end());
+          }
+          const auto chords = thirdEdgeChords.find({other, edge});
+          if (chords != thirdEdgeChords.end()) {
+            for (const auto &chord : chords->second)
+              boundary.thirdEdgeChordOrbits.push_back(chord.thirdEdgeOrbit);
+            const auto selected = detail::third_edge_side_owner(chords->second);
+            if (selected.size() == 1U)
+              boundary.thirdEdgeChordSideOwner = *selected.begin();
+          }
 
           if (!boundary.barrierPresent && boundary.oppositeFaceTraceCut) {
             std::optional<std::size_t> seed;
