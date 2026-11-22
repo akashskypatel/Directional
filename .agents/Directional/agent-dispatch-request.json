@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb167-docs-20261122-b",
-  "mailbox_key": "m6-cp3-tb167-docs-apply",
-  "file_id": "1KXTIbRVIX97gxQPU_RAnxcH9Zx6b0Utf",
-  "patch_sha256": "fe234e1a6cd75ec824f2a45a9679c89b35f603dfc0f4ae440ca4e258916ca2ce",
-  "base_sha": "983488381a46ed084034043f427cdda7a03dca38",
+  "request_id": "m6-cp3-tb-rev-167-docs-wip-20261122-a",
+  "mailbox_key": "m6-cp3-tb-rev167-wip-docs-apply",
+  "file_id": "1_O4ANCE4h5Ir_TPnFczNM9sw0k_jMUxN",
+  "patch_sha256": "a5ff4c75e4ce26f437e9bca1b890e7b629729596d279c8e1cf71bd3d8b0f1d19",
+  "base_sha": "76151f60ae0961cd0a7ab777918ff4ed4e080ef0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cp3): close TB167 immutable full-gate execution",
+  "commit_message": "docs(review): preserve TB-REV-167 same-turn progress and authority",
   "retention_days": 14
 }
