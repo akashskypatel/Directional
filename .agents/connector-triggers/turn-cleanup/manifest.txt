@@ -1,2 +1,0 @@
-# TB162 temporary repository state; preserve all durable files and workflow mailbox records.
-.agents/connector-triggers/source-snapshot/tb162-source-20261122.txt
