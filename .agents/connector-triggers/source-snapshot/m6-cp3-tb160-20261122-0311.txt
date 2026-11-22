@@ -1,0 +1,4 @@
+Turn: M6-CP3-TB-EXEC-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE
+Purpose: snapshot current exact source for artifact-only gate plan and policy inspection.
+Expected previous authority: 4ed84324c7eb13a510e0a7baff0b60e5fc2c0f8b
+Retry: 0
