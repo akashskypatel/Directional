@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb180-compile-20261122-a",
-  "mailbox_key": "m6-cp3-cb180-compile",
-  "source_sha": "23d66f60d87329e178d9fc3963489cbef088555e",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "cb180-p13-uncut-owner-census"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb180-docs-20261122-a",
+  "mailbox_key": "m6-cp3-cb180-docs",
+  "file_id": "1qF0_5PemMYgNhyrFadBflzgYrfebFqKD",
+  "patch_sha256": "65d945822c22f82d4a4ec6e94491a4dc78caca48879d702758d1835b4edca087",
+  "base_sha": "921ac2c8d86ae0fe37e594d439ecc45f99e42d76",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cp3): close CB-180 and hand off immutable TB163",
+  "retention_days": 14
 }
