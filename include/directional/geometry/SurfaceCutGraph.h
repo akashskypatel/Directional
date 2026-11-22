@@ -152,6 +152,9 @@ enum class SurfaceCutGraphUncutComponentArcKind : std::uint8_t {
 enum class SurfaceCutGraphUncutComponentSeedRule : std::uint8_t {
   SingleFaceOwner = 0,
   EdgeSideOwner = 1,
+  /** The opposite face's chord nearest the shared edge, by exact carrier
+   * order, when the face holds no segment that order cannot place. */
+  NearestThirdEdgeChord = 2,
 };
 
 enum class SurfaceCutGraphTraceCutExclusionReason : std::uint8_t {
@@ -175,11 +178,16 @@ struct SurfaceCutGraphUncutComponentBoundaryEdgeCensus {
   /** Every orbit recorded for the opposite face's side of this edge. */
   std::vector<std::size_t> sideOwnerOrbits;
   /** Third-edge orbit of each opposite-face chord that crosses the face's two
-   * other edges, in recording order. */
+   * other edges, in recording order, whether or not the orbit is certified. */
   std::vector<std::size_t> thirdEdgeChordOrbits;
   /** Orbit of the chord nearest this edge, when the chords' exact carrier
-   * order decides it. Published only; it does not seed ownership. */
+   * order decides it. It seeds the component only when it is also a recorded
+   * side orbit and the opposite face has no unordered segment. */
   std::optional<std::size_t> thirdEdgeChordSideOwner;
+  /** The opposite face holds a trace segment that the chord order cannot
+   * place (a vertex entry, a turn back through one edge, or no incoming
+   * carrier). */
+  bool oppositeFaceHasUnorderedSegment = false;
   auto operator<=>(
       const SurfaceCutGraphUncutComponentBoundaryEdgeCensus &) const = default;
 };

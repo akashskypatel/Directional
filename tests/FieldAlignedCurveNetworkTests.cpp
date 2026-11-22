@@ -18074,6 +18074,7 @@ TEST(TraceTerminationCorrection,
                 << (edge.thirdEdgeChordSideOwner.has_value()
                         ? std::to_string(*edge.thirdEdgeChordSideOwner)
                         : std::string("-"))
+                << " unordered=" << (edge.oppositeFaceHasUnorderedSegment ? 1 : 0)
                 << '\n';
     }
     for (const auto &arc : census.interiorArcIncidences) {
@@ -18092,6 +18093,24 @@ TEST(TraceTerminationCorrection,
                 << " incidentUncutFaces=" << transit.incidentUncutFaces.size()
                 << " acrossNonBarrier="
                 << (transit.adjacentAcrossNonBarrierEdge ? 1 : 0) << '\n';
+    }
+  }
+
+  // Every seed the nearest third-edge chord contributed, whatever the
+  // component's resulting status.
+  for (const auto &census : certificate.uncutComponentCensuses) {
+    for (const auto &seed : census.seedAttributions) {
+      if (seed.rule != directional::geometry::
+                           SurfaceCutGraphUncutComponentSeedRule::
+                               NearestThirdEdgeChord)
+        continue;
+      std::cout << "SphereStagedNearestChordSeed component=" << census.component
+                << " edge=" << source_edge_locus(seed.sourceEdge)
+                << " face=" << source_face_locus(seed.componentFace)
+                << " opposite=" << source_face_locus(seed.oppositeFace)
+                << " orbit=" << seed.orbit
+                << " status=" << static_cast<int>(census.ownershipStatus)
+                << '\n';
     }
   }
 
