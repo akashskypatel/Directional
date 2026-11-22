@@ -1,10 +1,10 @@
-## CURRENT — CB-175 compiled; CB-176 exact receipt is next (2026-11-21 UTC)
+## CURRENT — CB-176 compiled; immutable TB159 is next (2026-11-22 UTC)
 
-[CB-175 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB175_P13_Slide_Entry_Stop_Predicate_Code_Build_Record_20261121.md): the frozen four-file postimages match exact SHA-256 authority; eight GMP/GMPXX targets compiled in run `44962750268`, artifact `14730573208`, all 28 internal hashes verified, `runtimeExecution=false`. Row 977 was compiled, not run. TB158 976/976 and CP2 491/491 remain the last independent runtime evidence. Stop switch is still disabled.
+[CB-176 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB176_P13_Slide_Entry_Arrival_Receipt_Code_Build_Record_20261122.md): exact single-file CB-176 postimage SHA-256 matches frozen review authority. [Compile run 44966553428](https://github.com/akashskypatel/Directional/actions/runs/44966553428) packaged source `7c9517fd956bf72847688ee99146bd877137ceb7` with eight GMP/GMPXX targets; artifact `14732005980`, ZIP SHA-256 `24e453f9860b7f089e996b5867edea6b82366a3caf1211855257a283a865168f`, 28/28 verified internal hashes; `runtimeExecution=false`. Row 977 was compiled but not run. TB158 976/976 and CP2 491/491 are the last independent runtime evidence; production stop switch remains unwired.
 
-> **NEXT_TURN:** `M6-CP3-CB-176-P13-SLIDE-ENTRY-ARRIVAL-RECEIPT`. Code + Build, compile only. Apply exactly `.agents/Directional/Architecture_M6_CP3_CB176_P13_Slide_Entry_Arrival_Receipt_Exact.diff`, SHA-256 `079161b74780a14e7baa7508a84cc3c27892c7c166c6c9c31bf887ceeb9e5878`, stacked on CB-175. No source change outside the frozen diff, no runtime, no selector edit or producer switch.
+> **NEXT_TURN:** `M6-CP3-TB-EXEC-159-P13-SLIDE-ENTRY-STOP-PREDICATE-FULL-GATE`. Immutable compiled-artifact Test + Benchmark turn only. Use the frozen 977-row selector `993c663f…d63b`, the receipt-only allowance and independent wall/moving role checks. No rebuild, source, test, selector, or producer-switch changes.
 
-**Next sequence:** CB-176 exact receipt → TB-EXEC-159 (977-row gate) → TB-REV-159 (freeze CB-177) → CB-177 stop switch → TB-EXEC/REV-160 → R1 slide-start subdivision → RA-275 S4a → O48. Carry TB-REV-158 T2–T5, V3b, sphere χ+4, Amendment 14 and CP3/497/D0/H4 holds. Stable 66/17/49, debt1, deferred81 unchanged.
+**Next sequence:** TB-EXEC-159 → TB-REV-159 (freeze CB-177) → CB-177 stop switch → TB-EXEC/REV-160 → R1 slide-start subdivision → RA-275 S4a → O48. Carry TB-REV-158 T2–T5, V3b, sphere χ+4, Amendment 14 and CP3/497/D0/H4 holds. Stable 66/17/49, debt1, deferred81 unchanged.
 
 ## HISTORY — TB-REV-158 qualified PASS; prose CB-175 (withdrawn by the adversarial continuation) (2026-11-21 UTC)
 
