@@ -1,6 +1,6 @@
 # TB-REV-160 — independent staged slide-entry stop full-gate review (2026-11-22 UTC)
 
-> **Continued after handover:** [adversarial record](Architecture_M6_CP3_TB_REV_160_Adversarial_Review_20261122.md) (V1–V7). The successor frozen below (prose CB-178 production activation) is WITHDRAWN (V2); the next turn is the exact test-only `M6-CP3-CB-178-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT`.
+> **Continued after handover:** [adversarial record](Architecture_M6_CP3_TB_REV_160_Adversarial_Review_20261122.md) (V1–V11). The successor frozen below (prose CB-178 production activation) is WITHDRAWN (V2); the next turn is the exact test-only `M6-CP3-CB-178-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT`.
 
 ## Situation
 

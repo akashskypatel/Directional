@@ -1,6 +1,6 @@
 ## 2026-11-22 — TB-REV-160 adversarial continuation; prose CB-178 withdrawn for exact downstream receipt
 
-[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_160_Adversarial_Review_20261122.md): TB160 upheld. Staged `cutGraph=built` is the canonical cellularity certificate (χ = source χ). Prose activation CB-178 withdrawn (compile-only turn cannot derive premise values). Exact test-only CB-178 diff `d26394449baa92ede456d4a3400ada7e4a109d546bdedc1add50ba5a4deb5b0f` adds row 979 (production cut failure, staged certificate, plan outcome, per-trace ends, slide pieces); TB161 manifest `e15d616c9af2855b803dea8b5cfc4f5a0529f129c41df0c4fb0131e4ff4e7e8a` (979 rows).
+[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_160_Adversarial_Review_20261122.md): TB160 upheld. Staged `cutGraph=built` is the canonical cellularity certificate (χ = source χ). Prose activation CB-178 withdrawn (compile-only turn cannot derive premise values). Exact test-only CB-178 diff `37ed30f6d8db4934febf3b0dab9b36d6b44adc0296437c0eb60f7590fa22c2a9` adds row 979 (production cut failure, staged certificate, plan outcome with error locus, per-trace ends, slide pieces with arc end nodes; v2 supersedes the unapplied v1 `d2639444…`); TB161 manifest `e15d616c9af2855b803dea8b5cfc4f5a0529f129c41df0c4fb0131e4ff4e7e8a` (979 rows).
 
 ## 2026-11-22 — TB-REV-160 independent staged stop review; CB-178 bounded
 

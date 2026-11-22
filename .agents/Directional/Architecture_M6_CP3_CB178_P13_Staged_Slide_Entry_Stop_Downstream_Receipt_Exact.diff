@@ -1,11 +1,11 @@
 diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
-index deb9aa93839fc044ba9fa1d604284032ce75f537..d074d59540411123a43e07f09e809aff19b0ff97 100644
+index deb9aa93839fc044ba9fa1d604284032ce75f537..98989156eaed2cf7d92e3805193b0ef37447621c 100644
 --- a/tests/FieldAlignedCurveNetworkTests.cpp
 +++ b/tests/FieldAlignedCurveNetworkTests.cpp
-@@ -17780,6 +17780,199 @@ TEST(TraceTerminationCorrection,
+@@ -17779,6 +17779,235 @@ TEST(TraceTerminationCorrection,
+   }
    std::cout << receipt.str() << '\n';
  }
- 
 +// What the stages after the tracer make of the staged slide-entry-stop sphere
 +// network. The staged cut graph was measured built (row 978 receipt); this row
 +// asserts that measurement and the production failure it replaces, and prints
@@ -108,11 +108,45 @@ index deb9aa93839fc044ba9fa1d604284032ce75f537..d074d59540411123a43e07f09e809aff
 +  const auto plan = directional::geometry::GlobalTopologyPlan::make(
 +      sphere.mesh.F, vertexCount, *sphere.sourceAuthority, network,
 +      cutGraph.value());
-+  std::cout << "SphereStagedPlan outcome="
-+            << (plan ? "built"
-+                     : directional::geometry::global_topology_plan_error_code_name(
-+                           plan.error().code))
-+            << '\n';
++  // The plan error's locus is what the pipeline publishes as the stop location.
++  const auto count = [](const std::optional<std::size_t> &value) {
++    return value.has_value() ? std::to_string(*value) : std::string("-");
++  };
++  std::ostringstream planLine;
++  planLine << "SphereStagedPlan outcome=";
++  if (plan) {
++    planLine << "built";
++  } else {
++    const auto &error = plan.error();
++    planLine << directional::geometry::global_topology_plan_error_code_name(
++                    error.code)
++             << " sourceFace="
++             << (error.sourceFace.has_value()
++                     ? source_face_locus(*error.sourceFace)
++                     : std::string("-"))
++             << " sourceEdge="
++             << (error.sourceEdge.has_value()
++                     ? source_edge_locus(*error.sourceEdge)
++                     : std::string("-"))
++             << " trace="
++             << (error.trace.has_value() ? std::to_string(error.trace->index())
++                                         : std::string("-"))
++             << " secondTrace="
++             << (error.secondTrace.has_value()
++                     ? std::to_string(error.secondTrace->index())
++                     : std::string("-"))
++             << " chi="
++             << (error.eulerCharacteristic.has_value()
++                     ? std::to_string(*error.eulerCharacteristic)
++                     : std::string("-"))
++             << " V=" << count(error.vertexCount)
++             << " E=" << count(error.edgeCount)
++             << " F=" << count(error.faceCount)
++             << " fragmentOrbits=" << count(error.fragmentOrbitCount)
++             << " tracePieces=" << count(error.tracePieceCount)
++             << " expectedFragments=" << count(error.expectedFragmentCount);
++  }
++  std::cout << planLine.str() << '\n';
 +
 +  // Per-trace end: the quantities the twenty-four-trace row reads.
 +  for (const auto &trace : traces) {
@@ -191,7 +225,9 @@ index deb9aa93839fc044ba9fa1d604284032ce75f537..d074d59540411123a43e07f09e809aff
 +      std::cout << "SphereStagedSlidePiece trace=" << trace->id.index()
 +                << " segment=" << (arc.firstSegment + i)
 +                << " arc=[" << arc.firstSegment << ','
-+                << arc.onePastLastSegment << ") pieces="
++                << arc.onePastLastSegment << ") nodes=("
++                << arc.firstNode.index() << ',' << arc.secondNode.index()
++                << ") pieces="
 +                << arc.sourcePieceCounts[i] << '\n';
 +    }
 +  }
@@ -199,6 +235,6 @@ index deb9aa93839fc044ba9fa1d604284032ce75f537..d074d59540411123a43e07f09e809aff
 +            << " slidePieces=" << slidePieces << '\n';
 +}
 +
+ 
  // What the producer's real-piece decomposition makes of every trace on the
  // prescribed sphere, before any graph reads it. Each segment is one face
- // piece, a face piece then a slide, a slide alone, or rejected; each whole

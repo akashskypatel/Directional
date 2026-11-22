@@ -68,11 +68,36 @@ Continues `M6-CP3-TB-REV-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE` after the [i
   - per-slide-segment source-piece counts.
 - Together these cover what rows 393, 648, 858 (plan error), 971 (pieces) and 972 read.
 
+## Second pass (same turn, before CB-178 was applied)
+
+**V8 — my v1 row 979 under-measured the plan stage. Corrected to v2.**
+- The pipeline projects the plan error's locus into `terminalFailureLocus` (`project_global_topology_plan_failure_locus`, `RemeshPipeline.cpp:559`, applied at `:12962–12970`).
+- Row 858 reads the stop face from it, and row 648 reads the Euler census fields. v1 printed only the error code.
+- v2 prints the plan error's `sourceFace`, `sourceEdge`, `trace`, `secondTrace`, χ, and the V/E/F/fragment/trace-piece counts.
+- v2 also prints each slide piece's arc end nodes. TB-REV-161 can then see which wall arcs split at the four contact nodes, by joining them to `SphereStagedTrace … node=`.
+- Same test name and manifest row, so the TB161 manifest is unchanged.
+
+**V9 — the production cut assertion is backed by evidence.**
+- Row 979 asserts `CutSearchExhaustedBeforeCellularity` on the production network.
+- The TB156 report already published `SlideCarrierCutReceipt carriers=10 classified=10 selected=0 outcome=CutSearchExhaustedBeforeCellularity` for the same pipeline-authoritative sphere network.
+
+**V10 — row 971: residual risk stated, not hidden.**
+- The four stops land on exactly the slide carriers of walls 0/1/21/22: (6,8), (16,21), (33,34), (45,46) (`expectedSlideRays`, `tests:18068`).
+- Its `slideArcEnd` predicate (`tests:18100`) counts only reverse arc ends without an interior-contact parameter. The split wall arcs therefore probably keep the ten slide ends.
+- The four new edge-locus contact nodes do enter its edge-ray census, which is asserted zero for `changedOrdinary`, failures and both coincidence counts.
+- Row 979 does not print rays; replicating row 971's 400-line ray oracle is out of scope for a receipt.
+- TB-REV-161 must either derive row 971's outcome from the arc and node lines plus the code, or leave row 971 unchanged in CB-179 under a STOP-on-red rule. It must not loosen row 971.
+
+**V11 — a constraint on activation, recorded now for TB-REV-161.**
+- Production `make`, the replay validator `validate_field_aligned_candidate` (`SurfaceCellTracing.cpp:5728`), both census entries (`:6159`, `:6200`) and `make_from_candidate` (`:6306`) all call `canonical_field_aligned_candidate` without the flag. Its default is `false` (`:5241`).
+- CB-179 must change the behavior at that single source, or delete the parameter.
+- Switching only `make` would make replay validation reject every production candidate that has a slide stop.
+
 ## Frozen artifacts
 
 | Artifact | SHA-256 | Notes |
 |---|---|---|
-| `Architecture_M6_CP3_CB178_P13_Staged_Slide_Entry_Stop_Downstream_Receipt_Exact.diff` | `d26394449baa92ede456d4a3400ada7e4a109d546bdedc1add50ba5a4deb5b0f` (9,709 B) | tests only, +193/−0. Preimage = CB-177 postimage `82a1ec498d7ba7fea877cfeda78aedea9457e0124c124b48c69546892ebba87c`; postimage `58f9493591084628a51d9e4519938c49a67bf73745e7f290c61857afeeb5f4ae`. `git apply --check` OK; `-fsyntax-only` 0 errors, 9 warnings = HEAD. |
+| `Architecture_M6_CP3_CB178_P13_Staged_Slide_Entry_Stop_Downstream_Receipt_Exact.diff` | `37ed30f6d8db4934febf3b0dab9b36d6b44adc0296437c0eb60f7590fa22c2a9` (11,345 B; v2 of this Review) | tests only, +229/−0. Preimage = CB-177 postimage `82a1ec498d7ba7fea877cfeda78aedea9457e0124c124b48c69546892ebba87c`; postimage `d8b1413cde9561a00ed17bbe8d2fc34b0833ee82bbdd7dd2a447d25619ae63f3`. `git apply --check` OK; `-fsyntax-only` 0 errors, 9 warnings = HEAD (all outside the insertion). v1 `d2639444…5b0f` (+193) superseded before application (V8). |
 | `gates/Architecture_M6_TB161_P13_Staged_Slide_Entry_Stop_Downstream_Receipt_Full_Gate_Case_Manifest.tsv` | `e15d616c9af2855b803dea8b5cfc4f5a0529f129c41df0c4fb0131e4ff4e7e8a` (146,958 B) | 979 rows; rows 1–978 byte-equal to TB160 `d7eb3c35…ca5a`; census manifest unchanged `3af1dc0d…e793` |
 
 ## TB161 rules (STOP unless all hold)
@@ -80,7 +105,7 @@ Continues `M6-CP3-TB-REV-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE` after the [i
 1. 979/979 PASS; CP2 491/491.
 2. Rows 1–978 raw logs equal TB160 under N1–N3, with a zero allowance.
 3. Census 3/3 equal TB160 artifact `14737279153` under N1–N4, with a zero allowance.
-4. Row 979 passes, and all its receipt lines are published verbatim. The lines are `SphereStagedCutGraph`, `SphereStagedPlan`, 24 `SphereStagedTrace`, every `SphereStagedSlidePiece`, and `SphereStagedSlidePieces`.
+4. Row 979 passes, and all its receipt lines are published verbatim (v2 `SphereStagedPlan` carries the plan error locus; `SphereStagedSlidePiece` carries arc end nodes). The lines are `SphereStagedCutGraph`, `SphereStagedPlan`, 24 `SphereStagedTrace`, every `SphereStagedSlidePiece`, and `SphereStagedSlidePieces`.
    - Predictions (a mismatch is reported, not a STOP): `productionCut=CutSearchExhaustedBeforeCellularity chi=2 sourceChi=2`.
    - Traces 17/20/5/8: `segments=8`, ending on contacts at `0:6`/`1:6`/`21:6`/`22:6` with row 978's carriers.
    - Everything else is a measurement.
