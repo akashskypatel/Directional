@@ -1,8 +1,8 @@
-# TB-REV-167 — independent face-cut corner helper review (same-turn WIP)
+# TB-REV-167 — independent face-cut corner helper Review (COMPLETE)
 
 ## Situation
 
-The independent evidence review accepts the **TB-EXEC-167 helper-only gate**. The new helper remains **unwired**. This record does not close the Review or authorize CB-187. No product, test, build, benchmark, selector, or manifest source was changed in this Review.
+The independent evidence review accepts the **TB-EXEC-167 helper-only gate**. The new helper remains **unwired**. This Review accepts the independently verified TB167 helper-only evidence and freezes exactly one bounded **Code + Build** successor. It does **not** approve v5 as correct product code. No product, test, build, benchmark, selector, or manifest source was changed in this Review.
 
 ## Background
 
@@ -113,7 +113,15 @@ The full source snapshot remains the exact code authority `76151f60ae0961cd0a7ab
 
 **Proven static checks:** v5 full four-path diff SHA-256 `c72e19adc30f69c39cba6e5d2e473de2047d57325fbc3273df80710deba3f959`; complete transport/work-preservation patch SHA-256 `b06258eead74905f35df483b7f6414f261d0490cd5ba783554b8c1c5b556d8da`, base `76151f60ae0961cd0a7ab777918ff4ed4e080ef0`, body hash `c72e19ad…f959`. `git diff --check`, patch header/body hash, `git apply --check` against the original source snapshot, and a byte comparison of the first 989 accepted manifest rows passed. Accepted 989-row prefix SHA-256 `5c0841993d9b9c5537a3b78a3f7df39e61ee82e09b1ce9b4be3f4510ff088c50`; complete prospective 990-row hash `02b833e2e86bd26040b6b9f52f59efeeef6db498b9bed715f34f34b0e692a946`. Recovery ZIP SHA-256 `23fad7c70ac0e815e1011de0ff4930f9736af93a3617dc199d372542dda82194` is retained in ChatGPT Library `/Directional/Recovery/TB_REV_167_CB187_v5_Review_Recovery.zip`. Latest mandatory recovery patch is at `/Directional/Recovery/Directional__M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE__base-76151f60ae09__work-preservation.patch`.
 
-**Still missing:** no C++ compile, build, or runtime evidence; no real S5 interior-node typed-stop test, S6 reversed vertex-end face-edge test, or S3 later-pair conflict attribution test. The v5 patch might turn an earlier accepted deficit into RED; no accepted test result is available to exclude this. The strict staged sphere test must return a disc-certified plan; an interior-node typed STOP is RED under this rule. The old TB167 five-label set per affected face is an **observed orbit set**, not proof that five source-face fragments exist without exact local graph validation. **V5 is not frozen or authorized for Code + Build.** Do not promote CP3/497/D0/H4 or report a new stable failure.
+**Still missing:** no C++ compile, build, or runtime evidence; no real S5 interior-node typed-stop test, S6 reversed vertex-end face-edge test, or S3 later-pair conflict attribution test. The v5 patch might turn an earlier accepted deficit into RED; no accepted test result is available to exclude this. The strict staged sphere test must return a disc-certified plan; an interior-node typed STOP is RED under this rule. The old TB167 five-label set per affected face is an **observed orbit set**, not proof that five source-face fragments exist without exact local graph validation. **The v5 exact patch is not approved as correct code.** Its proposed changes, S7 repair, exact negative tests and strict full gate are requirements of the separate authorized CB-187. Do not promote CP3/497/D0/H4 or report a new stable failure.
+
+## S7 — failure evidence must use the same clipped piece authority
+
+The v5 candidate's `build_regions` counts face-interior source pieces at `GlobalTopologyPlan.cpp:1288–1304`, and the candidate rejects a fragment-count mismatch at `:1594–1600`. But the **error-only replay** at `:1602–1641` walks every original `trace->segments[segmentIndex]` with `segment.sourceFace == faceKey`, without testing whether that arc group's published `sourcePath` contains any `SourceFaceInteriorSupport`. Its `fragmentIncidenceCount` and `fragmentIncidences` can therefore include the four edge-only TB167 visits (arcs 1, 3, 26, 28) as face cuts even when the new count and region orbit logic exclude them. The diagnostic is potentially inconsistent with the failure that caused it. This is a **source-level conditional error**, not a measured new runtime failure.
+
+**Correction frozen for CB-187:** Replay the published arc `sourceFaces` / `sourcePieceCounts` groups and exact face-interior support, using the **same terminal-slit exclusion** as the admission path. Keep original trace/arc/segment IDs and exact orbit evidence as references, but do not count an edge-only visit as a face chord or supply unsupported clipped carrier geometry. Make a real four-face mismatch test fail when `fragmentIncidenceCount` disagrees with the exact face support count. This is a diagnostic root-source correction, not a change to immutable TB167 evidence.
+
+**Review and successor adjudication:** Accepted TB167 selector SHA-256 `5c0841993d9b9c5537a3b78a3f7df39e61ee82e09b1ce9b4be3f4510ff088c50`; locally rechecked prospective v5 prefix is byte-identical for all 989 accepted rows, but proposed row990 is **unexecuted**. The review confirms evidence of the **unwired helper only**. [Frozen CB-187 requirements](Architecture_M6_CP3_CB187_P13_Exact_Face_Cut_Reader_Code_Build_Plan_20261122.md) name every S1–S7 falsifier, source boundary, test obligation, compile-only limit and strict staged-sphere disc oracle. The new Code + Build successor is authorized to implement and compile, not to claim test PASS. A typed interior STOP is RED at TB168; no CP3/497/D0/H4 promotion. The next-turn plan, not a turn identifier, defines implementation concepts and code names.
 
 ## Regression and carried obligations
 
@@ -121,9 +129,9 @@ No new PASS-to-RED regression or stable event. Stable **66 events / 17 categorie
 
 ## Recommendation
 
-Continue **this same TB-REV-167**. Independently audit and either correct or reject the preserved CB-187 candidate, choose the non-vacuous full-gate exit rule, finish mandatory review closeout and consolidation. No CB-187 activation, build, product edit, or test execution in this Review.
+**Complete TB-REV-167** with independent TB167 989/989 PASS and reviewed, bounded CB-187 Code + Build requirements. The frozen successor is `M6-CP3-CB-187-P13-EXACT-FACE-CUT-READER`, owned by [the CB-187 plan](Architecture_M6_CP3_CB187_P13_Exact_Face_Cut_Reader_Code_Build_Plan_20261122.md). The uncompiled v5 patch remains recovery/reference material only, not an accepted implementation. The Code + Build owner must repair S7, implement S1–S6 safeguards and create discriminating tests before compile-only packaging. TB168 then executes a separate immutable gate. No product edit, build or test execution occurred in this Review.
 
-## Review closeout — incomplete, must finish before COMPLETE
+## Review closeout
 
 | Duty | Answer |
 |---|---|
@@ -132,16 +140,16 @@ Continue **this same TB-REV-167**. Independently audit and either correct or rej
 | Non-vacuity checked | Five accepted helper tests assert exact orbits and typed failures. V5 unexecuted; mandatory future negative S5 interior node, S6 forward/reverse vertex exit and S3 wrong-arc attribution must fail on wrong behavior. Row990 remains strict full disc proof |
 | Prior obligations discharged/carried | K5 specific witness discharged; remaining duties carried as above |
 | Stable accounting | 66/17/49; debt1; deferred81; CP2 491/491 accepted; no CP3 promotion |
-| New candidates/obligations recorded | S1 four-face edge-only orbit miscount; S2 false-first-arc blame removed in uncompiled v5; S3 negative attribution test missing; S4 clipped diagnostic; S5 typed interior-node STOP proposed, exact graph proof absent; S6 vertex-exit edge assignment proposed but untested. Tracker updated; no new stable failure |
-| ORIENTATION currency line | Updated for v2 reader defect and strict staged-sphere test proposal |
-| ORIENTATION §3 / §4 / §7 / §8 | Updated: accepted gate unchanged; witness remains unproved; edge-only reader mistake recorded in recurring defect patterns |
-| CHANGELOG | Existing TB-REV-167 WIP entry retained; final closeout entry pending |
-| ROADMAP | Corrected stale at-a-glance next-turn reference; M6-CP3 remains active and unaccepted |
-| Selector manifest | n/a — accepted selector unchanged; prospective TB168 manifest is uncommitted |
+| New candidates/obligations recorded | S1–S6 reviewed and carried to CB-187, plus S7 exact-piece diagnostic replay defect. No new accepted-green failure or stable event. Tracker updated with owners and falsifiers |
+| ORIENTATION currency line | Updated to TB-REV-167 complete and the one frozen CB-187 successor, 2026-11-22 UTC |
+| ORIENTATION §3 / §4 / §7 / §8 | §3 accepted 989/989 and scope; §4 no witness status changed; §7 next CB-187 priorities and strict STOP; §8 S1–S7 recurrent source-path evidence; all superseded current-next warnings reconciled |
+| CHANGELOG | Existing TB-REV-167 WIP entry amended to independent PASS review verdict and CB-187 successor; no competing entry |
+| ROADMAP | Updated current stage: TB-REV-167 closed, CB-187 next; M6-CP3/497/D0/H4 still not accepted |
+| Selector manifest | n/a: accepted 989 selector and manifest bytes unchanged. Prospective TB168 manifest remains uncommitted and expands in CB-187 to contain the new negative cases |
 | LESSONS | Reused existing RA-274, RA-275 and RA-276 rules for the source-path geometry/traversal reader boundary, and TB-REV-166 L3 for corner-free orbit keys. No new generalized lesson or new stable regression |
 | Consolidation under CLEAN_UP_POLICY | Folded obsolete five-line TB165 continuation into the D3 consolidated record with full text and original hash `2be558cbec2e987f60266e6adf6f616782b115b39998781e37dacf6b0e549bc2`. GitHub b500-to-review diff confirms this was the only removed per-turn Markdown in scope; older historical census remains separate |
-| Successor frozen | Not yet. V5 is a clean, uncompiled source proposal with typed unsupported interior-graph STOP, S6 vertex exit and deficit check, but the negative tests and strict staged-sphere PASS proof remain missing; CB-187 remains prospective |
+| Successor frozen | Exactly one: `M6-CP3-CB-187-P13-EXACT-FACE-CUT-READER`, [frozen plan](Architecture_M6_CP3_CB187_P13_Exact_Face_Cut_Reader_Code_Build_Plan_20261122.md), with S1–S7 counterexamples, negative tests, strict row990 and compile-only STOP rules |
 | Turn boundary held | Verified through GitHub compare: no `src/`, `include/`, `tests/`, `benchmarks/`, `cmake/`, or `CMakeLists.txt` changes against CB-186 compiled source |
 | review_check.py boundary | **PASS** in full-history GitHub Actions run 45074805426, artifact 14774482152 SHA-256 8f3ea48cd874ce4c96f35e127856eb9e97047b92c70894f64724029a8f5a34b6. Source authority and boundary both exit 0. Later documentation writes require a final confirmation at closeout |
-| STATUS lifecycle maintained | Same-turn resumed beacon; final same-turn beacon required |
-| Pushed to origin, branch in sync | Verified GitHub PR #8 branch head after doc writes; GitHub compare from CB-186 compiled source shows no product/test/build changes |
+| STATUS lifecycle maintained | Entry and resumption beacon preserved; final COMPLETE beacon is last GitHub write after all Review document closeout |
+| Pushed to origin, branch in sync | GitHub Contents API writes commit directly to configured branch; PR #8 current head and GitHub compare prove no product/test/selector/build drift; final source sync check before STATUS |
