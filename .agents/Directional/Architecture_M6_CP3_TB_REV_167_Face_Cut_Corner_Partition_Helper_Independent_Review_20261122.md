@@ -33,6 +33,18 @@ Rejected v1 patch: `Architecture_M6_CP3_CB187_P13_Face_Cut_Corner_Reader_Switch_
 
 The full-gate exit rule is **strict**: proposed TB168 row990 must construct the real staged sphere embedded graph, show more than one distinct trace arc with a face-interior piece at source face (6,8,9), show at least one canonical edge-only slide piece, verify per-arc segment counts, and obtain a fully disc-certified plan with independent disc-oracle confirmation. If any part fails, record a typed RED and return to independent Review; do not reclassify a downstream failure as a reader PASS or loosen the oracle. This remains an **unrun falsifier**, not execution evidence. Implement tests only in Code + Build. The code candidate and exact successor are not frozen because the v2 source change has not had a complete adversarial audit.
 
+## Independent v2 static review — candidate still fails approval
+
+These are static source defects or missing proofs in an **unexecuted proposal**, not measured runtime regressions. The production branch remains at the accepted CB-186 source.
+
+**S1: Disagreement between face-cut readers (corrective action required).** V2 in GlobalTopologyPlan.cpp lines 590–597 skips a valid clipped edge-only arc when it builds corner incidence. The unchanged build_regions function (lines 1208–1371) still reads the original whole trace segment, increments tracePieceCount, inserts side orbits and publishes edge evidence for that segment. EmbeddedGraphTopology.cpp lines 1100–1204 permits an arc that owns only the edge part after a cut in a slide. This gives the two readers different definitions of a face-interior cut. Repair all affected consumption paths at their shared exact sourcePath/sourcePieceCounts boundary, not by changing an expected count or hiding diagnostics. Prove on a real clipped edge-only arc that the face-chord count excludes it while region ownership, orbits and touched-edge evidence stay valid. This is a source-level risk, not a reproduced failure.
+
+**S2: Unproved error arc attribution.** The v2 firstArcByFace map (lines 524–527, 633, 645–652) always reports the first arc for a face if the multi-cut partition fails. If cuts B and C conflict, a preceding valid cut A need not cause that failure. Retain the exact face locus, and either identify a provably involved cut arc from the failure or leave the arc field empty. A targeted three-cut negative case must reject the false-first-arc label.
+
+**S3: Proposed positive case does not independently detect S1 or S2.** The v2 990-row candidate manifest exactly preserves all 989 previous rows (byte-for-byte verified); its new last row is a real staged-sphere full-disc proof requirement. The single new test counts edge-only segments globally and at least two face arcs on face 6-8-9, but it does not assert both readers agree on exact face-interior piece counts or the culprit arc for invalid cuts. Freeze explicit reader-level positive/negative falsifiers plus the independent downstream disc proof before approval. A downstream typed stop must remain RED, not be relabeled success. The candidate's source and test changes belong only in a later Code + Build turn.
+
+**History-backed repository check is now complete.** GitHub Actions run 45074805426 used commit 7aff4e22acac732df076ff9879cdc7744a921a82 and full Git history. Artifact 14774482152 ZIP SHA-256 8f3ea48cd874ce4c96f35e127856eb9e97047b92c70894f64724029a8f5a34b6 was downloaded and independently rehashed. The read-only `review_check.py authority b500c425063dbc5c09f13cd08b811cacba0e3afe` and `review_check.py boundary` both returned 0. The check confirmed 39 numbered selector hashes, a clean work tree, no code/source drift, the rewrite baseline as an ancestor, and all protected durable headings. The branch matched origin. The temporary workflow and trigger were deleted after evidence capture. A later documentation commit does not change the production-source verdict; if the review closes, perform the final boundary check again.
+
 ## Regression and carried obligations
 
 No new PASS-to-RED regression or stable event. Stable **66 events / 17 categories / 49 recurrences**, debt **1**, deferred **81**. TB-REV-166 K5 edge-supported overlap is discharged for this witness, but the general A2a guard remains. Carry G2/G3, RA-275 S4a and G5 (plan before activation), Y7, Z5, X4/H5, V3–V11, W3/W4/W6/W7, RA-281 F1–F3, Amendment 14, O47/C5/O48/O49 and sphere χ+4 with their existing owners. Staged sphere still stops at `SourceFaceCarriesMultipleTraceCuts`; production sphere still stops at `CutSearchExhaustedBeforeCellularity`.
@@ -50,7 +62,7 @@ Continue **this same TB-REV-167**. Independently audit and either correct or rej
 | Non-vacuity checked | Five helper tests assert exact orbits and typed failures; proposed reader test unrun |
 | Prior obligations discharged/carried | K5 specific witness discharged; remaining duties carried as above |
 | Stable accounting | 66/17/49; debt1; deferred81; CP2 491/491 accepted; no CP3 promotion |
-| New candidates/obligations recorded | Unverified exact reader candidate; no new stable failure |
+| New candidates/obligations recorded | S1 cross-reader face-cut count, S2 incorrect arc locus, S3 missing reader-level falsifiers; tracker updated; zero new stable failure |
 | ORIENTATION currency line | Updated for v2 reader defect and strict staged-sphere test proposal |
 | ORIENTATION §3 / §4 / §7 / §8 | Updated: accepted gate unchanged; witness remains unproved; edge-only reader mistake recorded in recurring defect patterns |
 | CHANGELOG | Existing TB-REV-167 WIP entry retained; final closeout entry pending |
@@ -58,8 +70,8 @@ Continue **this same TB-REV-167**. Independently audit and either correct or rej
 | Selector manifest | n/a — accepted selector unchanged; prospective TB168 manifest is uncommitted |
 | LESSONS | Existing source authority and non-vacuity rules apply |
 | Consolidation under CLEAN_UP_POLICY | Folded obsolete 5-line TB165 continuation into `M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md`, preserving full text and SHA-256 `2be558cbec2e987f60266e6adf6f616782b115b39998781e37dacf6b0e549bc2`; remaining folded-index census pending |
-| Successor frozen | Not yet. Proposed CB-187 reader switch with strict 990-row TB168 gate is candidate only |
+| Successor frozen | Not yet: v2 is rejected as a final exact switch until S1/S2 are corrected and S3 has a non-vacuous reader-level falsifier. Do not start CB-187 |
 | Turn boundary held | Verified through GitHub compare: no `src/`, `include/`, `tests/`, `benchmarks/`, `cmake/`, or `CMakeLists.txt` changes against CB-186 compiled source |
-| review_check.py boundary | Literal checker pending; downloaded source snapshot has no `.git`. GitHub compared CB186 source commit to review working branch and found **zero** changed product/test/build paths; durable baseline `8b7299b43` is an ancestor, but its large historical diff is truncated at 300 paths. These checks do not substitute for the literal boundary tool |
+| review_check.py boundary | **PASS** in full-history GitHub Actions run 45074805426, artifact 14774482152 SHA-256 8f3ea48cd874ce4c96f35e127856eb9e97047b92c70894f64724029a8f5a34b6. Source authority and boundary both exit 0. Later documentation writes require a final confirmation at closeout |
 | STATUS lifecycle maintained | Same-turn resumed beacon; final same-turn beacon required |
 | Pushed to origin, branch in sync | Verified GitHub PR #8 branch head after doc writes; GitHub compare from CB-186 compiled source shows no product/test/build changes |
