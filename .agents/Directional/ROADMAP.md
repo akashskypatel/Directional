@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB158 scoped 976/976 independently upheld; TB157 975/975 and census 3/3 match; CP2 accepted 491/491; sphere χ+4/four contacts unresolved; CP3/497/D0/H4 held) · **Reviewed:** [TB158 independent Review](Architecture_M6_CP3_TB158_P13_Slide_Contact_Cut_Binding_Full_Gate_Independent_Review_20261121.md) · **Reviewed (continuation):** [TB-REV-158 adversarial record](Architecture_M6_CP3_TB_REV_158_Adversarial_Review_20261121.md) · **Next turn:** `M6-CP3-CB-175-P13-SLIDE-ENTRY-STOP-PREDICATE` (exact diff, compile only), then `M6-CP3-CB-176-P13-SLIDE-ENTRY-ARRIVAL-RECEIPT`, TB-EXEC/REV-159, then CB-177 stop switch · **Later:** slide-start subdivision R1, M7 and M8.
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB158 scoped 976/976 independently upheld; TB157 975/975 and census 3/3 match; CP2 accepted 491/491; sphere χ+4/four contacts unresolved; CP3/497/D0/H4 held) · **Reviewed:** [TB158 independent Review](Architecture_M6_CP3_TB158_P13_Slide_Contact_Cut_Binding_Full_Gate_Independent_Review_20261121.md) · **Reviewed (continuation):** [TB-REV-158 adversarial record](Architecture_M6_CP3_TB_REV_158_Adversarial_Review_20261121.md) · **Compiled:** CB-175 exact predicate (no runtime; artifact `14730573208`) · **Next turn:** `M6-CP3-CB-176-P13-SLIDE-ENTRY-ARRIVAL-RECEIPT` (exact diff, compile only), TB-EXEC/REV-159, then CB-177 stop switch · **Later:** slide-start subdivision R1, M7 and M8.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
