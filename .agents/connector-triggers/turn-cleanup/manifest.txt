@@ -1,2 +1,0 @@
-# CB-180 temporary source snapshot trigger
-.agents/connector-triggers/source-snapshot/CB180-20261122.txt
