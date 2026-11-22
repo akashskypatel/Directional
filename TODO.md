@@ -1,10 +1,10 @@
-## CURRENT — CB-176 compiled; immutable TB159 is next (2026-11-22 UTC)
+## CURRENT — TB159 accepted, TB-REV-159 independent review next (2026-11-22 UTC)
 
-[CB-176 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB176_P13_Slide_Entry_Arrival_Receipt_Code_Build_Record_20261122.md): exact single-file CB-176 postimage SHA-256 matches frozen review authority. [Compile run 44966553428](https://github.com/akashskypatel/Directional/actions/runs/44966553428) packaged source `7c9517fd956bf72847688ee99146bd877137ceb7` with eight GMP/GMPXX targets; artifact `14732005980`, ZIP SHA-256 `24e453f9860b7f089e996b5867edea6b82366a3caf1211855257a283a865168f`, 28/28 verified internal hashes; `runtimeExecution=false`. Row 977 was compiled but not run. TB158 976/976 and CP2 491/491 are the last independent runtime evidence; production stop switch remains unwired.
+[TB159 execution report](.agents/Directional/Architecture_M6_CP3_TB159_P13_Slide_Entry_Stop_Predicate_Full_Gate_Execution_Report_20261122.md): 977/977 PASS, CP2 491/491, census 3/3 baseline MATCH with only the approved receipt allowance. Immutable package and both execution run IDs are in the report. Every prior gate and census case was compared independently. No new stable regression.
 
-> **NEXT_TURN:** `M6-CP3-TB-EXEC-159-P13-SLIDE-ENTRY-STOP-PREDICATE-FULL-GATE`. Immutable compiled-artifact Test + Benchmark turn only. Use the frozen 977-row selector `993c663f…d63b`, the receipt-only allowance and independent wall/moving role checks. No rebuild, source, test, selector, or producer-switch changes.
+> **NEXT_TURN:** `M6-CP3-TB-REV-159-P13-SLIDE-ENTRY-STOP-PREDICATE-FULL-GATE` — independent evidence review. Resolve both receipt roles, V3b, stop-record constructibility and T5 before authorizing any CB-177 producer wiring. No implementation in this TB turn.
 
-**Next sequence:** TB-EXEC-159 → TB-REV-159 (freeze CB-177) → CB-177 stop switch → TB-EXEC/REV-160 → R1 slide-start subdivision → RA-275 S4a → O48. Carry TB-REV-158 T2–T5, V3b, sphere χ+4, Amendment 14 and CP3/497/D0/H4 holds. Stable 66/17/49, debt1, deferred81 unchanged.
+**Carried:** Sphere chi +4, Amendment 14, TB-REV-158 T2–T5, RA-281 F1/F2/F3 and CP3/497/D0/H4 holds. Stable 66/17/49, debt1, deferred81 unchanged.
 
 ## HISTORY — TB-REV-158 qualified PASS; prose CB-175 (withdrawn by the adversarial continuation) (2026-11-21 UTC)
 

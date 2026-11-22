@@ -1,3 +1,7 @@
+## TB159 scoped regression evidence (2026-11-22 UTC)
+
+[Architecture_M6_CP3_TB159_P13_Slide_Entry_Stop_Predicate_Full_Gate_Execution_Report_20261122.md](Architecture_M6_CP3_TB159_P13_Slide_Entry_Stop_Predicate_Full_Gate_Execution_Report_20261122.md) accepted 977/977, CP2 491/491, and 3/3 census (Cylinder PASS, BunnyRandom and Vase expected RED). All 976 prior case logs and three production cases match TB158 under frozen N1–N4 with strictly bounded new slide-arrival receipts. No independent new regression or stability-promoting witness. Stable 66 events/17 categories/49 recurrences; witness debt 1; deferred 81; sphere chi 6 vs 2 and CP3/497/D0/H4 unchanged. Candidate T2–T5 and V3b await TB-REV-159; do not recategorize as stable without review.
+
 ## 2026-11-21 — TB-REV-158 adversarial continuation (non-stable review obligations)
 
 [TB-REV-158 adversarial record](Architecture_M6_CP3_TB_REV_158_Adversarial_Review_20261121.md). No stable event; counts stay at 66/17/49, debt 1, deferred 81. New obligations:
