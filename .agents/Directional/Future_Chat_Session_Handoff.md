@@ -44,6 +44,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 - **Scope:** Correct only `SurfaceCutGraph::build_source_face_ownership` or a demonstrated shared source-domain rule. Require a genuine oriented, source-attached unique face-walk witness before assigning an otherwise unavailable component owner. Never choose by hash, lowest orbit, proximity or plan consumer. Keep missing/ambiguous/cross-component claims fail closed; no cut-search or plan guard weakening.
 - **Required falsifiers:** Independent positive fixture must fail if owner derivation removed; ambiguous, no-witness, wrong-side/sheet negatives must fail if validation removed; preserve 103 crossed and 73 previously single-un-cut owner decisions; maintain accepted CP2, frozen 979-case gate and row979 original receipts. After exact compile/GMP/GMPXX package only, separate TB-EXEC-163 verifies runtime. If no authoritative proof can be found, publish typed failure and stop; do not invent one.
 - **Held:** All production activation, CP3/497/D0/H4 acceptance, V3–V11 and later tasks remain separate.
+- **Review check limitation:** Local `review_check.py boundary` passed file-surface and selector tests, but the rewritten-base ancestry checks could not pass on the history-free source snapshot. Do not claim the real-history boundary test passed until verified in a real Git checkout; no runtime was run.
 
 ## Turn Sequence
 

@@ -64,9 +64,9 @@ The cut graph reports embedded topology χ=2 but `sourceFaceCellularity=0`. `Sur
 | ROADMAP | M6-CP3 remains active and unaccepted; current text corrected for current turn, no milestone promotion. |
 | Selector manifest | n/a: unchanged frozen selector and accepted prefix. |
 | LESSONS | Existing single-writer evidence/independent-oracle rules reused; no new pattern. |
-| Consolidation under CLEAN_UP_POLICY | Current TB162 report and current review retained as live authority; no historic document folded without a verified retired-document census; preserved prior records and indexes. |
+| Consolidation under CLEAN_UP_POLICY | Reviewed the TB161 report and predecessor reviews as active immutable comparison authority for TB162; no safe superseded candidate was found within this bounded review. Preserved retained facts and existing historical indexes. |
 | Successor frozen | Exactly `M6-CP3-CB-180-P13-SOURCE-FACE-ORBIT-OWNER-CERTIFICATION`; positive, negative and stopping falsifiers above. |
 | Turn boundary held | Review only: no Directional source, tests, selector, fixture, build, benchmark or runtime changes. |
-| review_check.py boundary | Run after local diff creation; report its exact result in turn handoff. |
+| review_check.py boundary | Executed in a local synthetic checkout. Source/test/build/selector boundaries and selector-byte checks passed. Rewrite-baseline ancestry and three durable-source comparisons failed because the snapshot has no original Git history or rewrite commit `8b7299b43`; **real-history boundary gate remains unverified**. No PASS claimed. |
 | `STATUS` lifecycle maintained | Entry beacon on review start; final beacon must match final turn state; no successor work started. |
-| Pushed to origin, branch in sync | Repository mutation through approved patch dispatcher, subject to workflow verification; no false local `git status -sb` claim. |
+| Pushed to origin, branch in sync | Documentation patch submitted through the approved GitHub dispatcher. Verify the workflow push and PR head; no local `git status -sb` claim because the source was obtained as a history-free snapshot. |
