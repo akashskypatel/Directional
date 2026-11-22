@@ -12,6 +12,7 @@ The frozen, census-only change was applied on the working branch. The eight requ
 - Changes: `include/directional/geometry/SurfaceCutGraph.h`, `src/geometry/SurfaceCutGraph.cpp`, and `tests/FieldAlignedCurveNetworkTests.cpp` (+73/−1). Verified postimage SHA-256 values respectively: `07ceeb176f240115e42807ac094c7bbe76f66c6afcbae356b500aa692429c927`, `1fb1ae213dbdfd090308e7311193ee61986aab5bac7e0da1e5c34d24723cf1a5`, and `f70a9f8cf4d96e0a7b9a33ba5cef0aab213d5bf70d365b5b09202e72db63383c`.
 - [Patch application run 45023069908](https://github.com/akashskypatel/Directional/actions/runs/45023069908) applied the exact patch and committed semantic source `a8f7dc13a737487080095fa1aad1901b346ddacb`. Google Drive patch transport was retired by owner-authorized deletion after verified success.
 - [Compile workflow run 45023580643](https://github.com/akashskypatel/Directional/actions/runs/45023580643): eight targets; package artifact `14755496064`, ZIP SHA-256 `69fff98ad8203b7e2151fed48aa49100bc2a61d14eeb05b85b38a71f7a736aa5`; `runtimeExecution=false`.
+- The first compile dispatcher request was invalid (target list supplied as text and an unsupported retention field). Corrected dispatcher event `9abedf60fa91cb7de4e04109dee4611d59a83464` selected the eight named targets as an array. This was an orchestration-input error, not a source compile failure.
 
 ## Assessment
 
