@@ -1,5 +1,10 @@
 ## 2026-11-22 — TB159 immutable slide-entry stop-predicate gate
 
+## 2026-11-22 — TB-REV-159 independent gate review; CB-177 STOP
+
+[Review](.agents/Directional/Architecture_M6_CP3_TB159_P13_Slide_Entry_Stop_Predicate_Full_Gate_Independent_Review_20261122.md) independently verified TB159's 977/977 accepted scope, CP2 491/491, unchanged 976-row baseline and census 3/3, with four artifact outer digests and complete internal checksums. The 564 gate and 18 census slide-entry receipts show both roles and strict-interior stop-record eligibility; six BunnyRandom pending-wall entries do not prove struck-segment survival. The canonical V3b producer event and predicted sphere V/E/F repairs remain unproved. No source or selector change, no CP3/497/D0/H4 promotion; stable 66/17/49, debt1, deferred81. The bounded successor is `M6-CP3-DEFN-159A-P13-SLIDE-STOP-OWNERSHIP-AND-REACHABILITY` (definition only); CB-177 is not authorized.
+
+
 [TB159 report](.agents/Directional/Architecture_M6_CP3_TB159_P13_Slide_Entry_Stop_Predicate_Full_Gate_Execution_Report_20261122.md): 977/977 PASS, CP2 491/491, census 3/3 MATCH TB158 with only frozen slide-arrival suffix/role allowance; gate run 44968515856 artifact `14732983057`, census run 44968542188 artifact `14733451393`. No compile/relink/source/test/selector mutation, no product switch, no new stable count. Next TB-REV-159 independent review.
 
 ## 2026-11-22 — CB-176 exact slide-entry arrival receipt (Code + Build only)

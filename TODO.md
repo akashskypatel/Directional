@@ -1,10 +1,10 @@
-## CURRENT — TB159 accepted, TB-REV-159 independent review next (2026-11-22 UTC)
+## CURRENT — TB-REV-159 qualified gate PASS, CB-177 STOP; definition next (2026-11-22 UTC)
 
-[TB159 execution report](.agents/Directional/Architecture_M6_CP3_TB159_P13_Slide_Entry_Stop_Predicate_Full_Gate_Execution_Report_20261122.md): 977/977 PASS, CP2 491/491, census 3/3 baseline MATCH with only the approved receipt allowance. Immutable package and both execution run IDs are in the report. Every prior gate and census case was compared independently. No new stable regression.
+[TB-REV-159 independent review](.agents/Directional/Architecture_M6_CP3_TB159_P13_Slide_Entry_Stop_Predicate_Full_Gate_Independent_Review_20261122.md) re-derived the immutable 977/977 gate, CP2 491/491, 976/976 frozen normalized predecessor, and the three-case census. A helper receipt is not a producer stop event. Six BunnyRandom pending-wall records require T5 ownership and lifetime proof; V3b canonical production reaching and sphere V/E/F deltas are unproved.
 
-> **NEXT_TURN:** `M6-CP3-TB-REV-159-P13-SLIDE-ENTRY-STOP-PREDICATE-FULL-GATE` — independent evidence review. Resolve both receipt roles, V3b, stop-record constructibility and T5 before authorizing any CB-177 producer wiring. No implementation in this TB turn.
+> **NEXT_TURN:** `M6-CP3-DEFN-159A-P13-SLIDE-STOP-OWNERSHIP-AND-REACHABILITY` — definition/review only. Derive the pending-wall segment lifetime, V3b real event test, and exact topology predictions before authorizing a CB-177 source patch. Do not start CB-177 here.
 
-**Carried:** Sphere chi +4, Amendment 14, TB-REV-158 T2–T5, RA-281 F1/F2/F3 and CP3/497/D0/H4 holds. Stable 66/17/49, debt1, deferred81 unchanged.
+**Carried:** Sphere χ+4, Amendment 14, TB-REV-158 T5, V3b, RA-281 F1/F2/F3, RA-275 S4a and CP3/497/D0/H4 holds. Stable 66/17/49, debt1, deferred81 unchanged. No producer success or code promotion.
 
 ## HISTORY — TB-REV-158 qualified PASS; prose CB-175 (withdrawn by the adversarial continuation) (2026-11-21 UTC)
 

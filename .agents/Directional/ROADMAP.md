@@ -2,13 +2,13 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Updated:** 2026-11-21 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
+**Updated:** 2026-11-22 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
 
 This roadmap answers **what is done, what comes next, and what each milestone delivers**. It is not a turn log, task queue, test ledger, definition spec, or implementation handoff. The product and acceptance contract is [DESIGN.md](DESIGN.md) (especially §§2 and 14); status, detailed plans, unresolved findings, and exact next-turn authorization live in [ORIENTATION.md](ORIENTATION.md), [Future_Chat_Session_Handoff.md](Future_Chat_Session_Handoff.md), [TODO.md](../../TODO.md), and [Regression_Root_Cause_Tracker.md](Regression_Root_Cause_Tracker.md).
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB158 scoped 976/976 independently upheld; TB157 975/975 and census 3/3 match; CP2 accepted 491/491; sphere χ+4/four contacts unresolved; CP3/497/D0/H4 held) · **Reviewed:** [TB158 independent Review](Architecture_M6_CP3_TB158_P13_Slide_Contact_Cut_Binding_Full_Gate_Independent_Review_20261121.md) · **Reviewed (continuation):** [TB-REV-158 adversarial record](Architecture_M6_CP3_TB_REV_158_Adversarial_Review_20261121.md) · **Compiled:** CB-175 exact predicate (no runtime; artifact `14730573208`) · **Next turn:** `M6-CP3-CB-176-P13-SLIDE-ENTRY-ARRIVAL-RECEIPT` (exact diff, compile only), TB-EXEC/REV-159, then CB-177 stop switch · **Later:** slide-start subdivision R1, M7 and M8.
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB159 scoped 977/977 independently upheld, three-case census unchanged, CP2 accepted 491/491; six pending-wall T5 records and V3b remain unproved; sphere χ+4/four contacts unresolved; CP3/497/D0/H4 held) · **Reviewed:** [TB-REV-159](Architecture_M6_CP3_TB159_P13_Slide_Entry_Stop_Predicate_Full_Gate_Independent_Review_20261122.md) (qualified gate PASS, producer CB-177 STOP) · **Next:** `M6-CP3-DEFN-159A-P13-SLIDE-STOP-OWNERSHIP-AND-REACHABILITY` (definition only) · **Later:** CB-177 after exact plan proof, slide-start subdivision R1, M7 and M8.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
