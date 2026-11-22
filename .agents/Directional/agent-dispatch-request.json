@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb164-doc-closeout-20261122-a",
-  "mailbox_key": "m6-cp3-tb164-doc-closeout",
-  "file_id": "1mq6haLY4bvJshHcFacmp_1JybOwNFBAH",
-  "patch_sha256": "a7f3661d09e1c0cb94ed136c63522901744217dac8ac428734b40e0994444ff8",
-  "base_sha": "ec9f41432f1d61b4da91305f7b545b9c49485503",
+  "request_id": "m6-cp3-tb-rev164-doc-review-20261122-a",
+  "mailbox_key": "m6-cp3-tb-rev164-doc-review",
+  "file_id": "1ymZsoj_iLpf_ctnbNC_oBri4IMVjy-fG",
+  "patch_sha256": "87171d1ac6da516ee82d999654c3afe122c47290c4a97957ab6d83715f25fe60",
+  "base_sha": "8589cb76e419344cd105166b4c7b549548ee397d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cp3): record verified TB164 full gate and census, set independent review",
+  "commit_message": "docs(cp3): independently review third-edge side owner census and freeze CB-183",
   "retention_days": 14
 }
