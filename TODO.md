@@ -1,22 +1,18 @@
-## CURRENT — CB-186 compiled, TB-EXEC-167 next (2026-11-22 UTC)
+## CURRENT — TB-EXEC-167 complete; independent TB-REV-167 next (2026-11-22 UTC)
 
-- [x] TB-REV-166 adversarial continuation ([record](.agents/Directional/Architecture_M6_CP3_TB_REV_166_Adversarial_Review_20261122.md), L1–L8): prose CB-186 withdrawn; exact helper and 989-row TB167 frozen.
-- [x] `M6-CP3-CB-186-P13-FACE-CUT-CORNER-PARTITION-HELPER`: [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB186_P13_Face_Cut_Corner_Partition_Helper_Code_Build_Record_20261122.md), exact +400/−0 helper/test diff, source `b500c425063dbc5c09f13cd08b811cacba0e3afe`, eight-target GMP/GMPXX [compile 45061915460](https://github.com/akashskypatel/Directional/actions/runs/45061915460), package `14769469723` (`1290d5ed50df98056b5eaed34f0d81ca4d156dbcd026589db10f9d271b985ddf`), `runtimeExecution=false`.
-- [ ] **1 NEXT** `M6-CP3-TB-EXEC-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE`: 989 rows; first 984 = TB166 under N1–N3, 5 new helper tests, 1070 membership, no census.
-- [ ] 2 `M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE`: independent verification and exact CB-187 reader-switch freeze.
-- [ ] Prospective: 3 CB-187 → 4 TB-EXEC/REV-168 → 5 CB-188 activation → 6 TB-EXEC/REV-169 → 7 CB-189 V3b → 8 R1 → O48.
+- [x] CB-186 pure face-cut corner helper and five test cases compiled, source `b500c425063dbc5c09f13cd08b811cacba0e3afe`, package `14769469723`, GMP/GMPXX.
+- [x] TB-EXEC-167: [TB167 report](.agents/Directional/Architecture_M6_CP3_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Execution_Report_20261122.md); 989/989 PASS, CP2 491/491, 1070 membership, TB166 rows 1–984 unchanged under N1–N3, last five PASS, no census or rebuild.
+- [ ] **1 NEXT** `M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE`: independent re-verification; only Review can freeze the CB-187 reader switch.
+- [ ] Prospective: CB-187 → TB-EXEC/REV-168 → CB-188 activation → TB-EXEC/REV-169 → CB-189 V3b → R1 → O48. Do not advance this turn.
+- Held: G2/G3 and RA-275 S4a, `SourceFaceCarriesMultipleTraceCuts` at `6-8-9`, sphere production `CutSearchExhaustedBeforeCellularity`, CP3/497/D0/H4. Stable 66/17/49, debt1, deferred81.
 
 ```
-NEXT_TURN: M6-CP3-TB-EXEC-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE
-Owner: Test + Benchmark agent (artifact-only; no source edits, compile, relink or repair)
-Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_166_Adversarial_Review_20261122.md L1–L8 and .agents/Directional/Architecture_M6_CP3_CB186_P13_Face_Cut_Corner_Partition_Helper_Code_Build_Record_20261122.md
-Immutable package: 14769469723; exact source b500c425063dbc5c09f13cd08b811cacba0e3afe; compile run 45061915460; ZIP SHA-256 1290d5ed50df98056b5eaed34f0d81ca4d156dbcd026589db10f9d271b985ddf
-Manifest: .agents/Directional/gates/Architecture_M6_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Case_Manifest.tsv
-  SHA-256 5c0841993d9b9c5537a3b78a3f7df39e61ee82e09b1ce9b4be3f4510ff088c50; 989 rows
-Rules: 989/989 PASS; CP2 491/491; membership 1070; rows 1–984 equal TB166 result 14765434765 under N1–N3 with zero allowance, row 979 included; rows 985–989 PASS; no census
-On failure: BLOCKED and return to Review, do not edit helper or tests
-Then: M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE (independent verification; CB-187 frozen only afterward)
-Do not: rebuild, change source or tests, touch selectors/manifests, run census, activate, or promote CP3/497/D0/H4
+NEXT_TURN: M6-CP3-TB-REV-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE
+Owner: Independent Review
+Authority: .agents/Directional/Architecture_M6_CP3_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Execution_Report_20261122.md
+Run: 45063416334; result artifact 14770748728; source b500c425063dbc5c09f13cd08b811cacba0e3afe
+Rules accepted: 989/989, CP2 491/491, 1070 membership, N1–N3 predecessor equality, five helper cases PASS
+Scope: review exact evidence; freeze CB-187 only after independent validation. No source edit, build or runtime in Review.
 ```
 
 ## HISTORY — TB-REV-166 independent review; prose CB-186 (withdrawn by the adversarial continuation) (2026-11-22 UTC)
