@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb181-compile-20261122-a",
-  "mailbox_key": "m6-cp3-cb181-compile",
-  "source_sha": "c22be25d0c8d13cb5eed4f83e3befea65b8f39c3",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb181-compile"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb181-closeout-docs-20261122-a",
+  "mailbox_key": "m6-cp3-cb181-closeout-docs",
+  "file_id": "1zOO6oDXSRP3xV8u8kU32slzjhmG7qiU1",
+  "patch_sha256": "bd73f731bf5cbf45195697a3cb12e6dd5fdea3c82d59f75aea3ccccd4250908d",
+  "base_sha": "08b26af5fdb676e8557b053e9f2ee93ab4c05d5a",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cp3): close CB181 GMP compile record and advance handoff to CB182",
+  "retention_days": 14
 }
