@@ -1,22 +1,22 @@
-## CURRENT — CB-180 compiled; TB-EXEC-163 immutable owner-census gate next (2026-11-22 UTC)
+## CURRENT — TB-EXEC-163 passed; independent TB-REV-163 next (2026-11-22 UTC)
 
 [CB-180 code/build record](.agents/Directional/Architecture_M6_CP3_CB180_P13_Staged_Uncut_Owner_Census_Receipt_Code_Build_Record_20261122.md); [adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_162_Adversarial_Review_20261122.md) (X1–X6): TB162 PASS and H1 upheld (16 `Unavailable` faces = uncut components 1 and 5, the stars of source vertices 12 and 37). The prose owner-certification CB-180 is withdrawn: it was monolithic, named no rule and left a runtime decision to a compile-only turn (X2). From code: uncut faces get owners only from mandatory/cut arc sides and a boundary seed that needs a non-barrier edge, and trace carriers pass no orbit to the component side, so `Unavailable` can be a rule gap (X3). Candidate H5: the terminal-slit rule treats meeting terminal pieces with different side orbits as free slits (trace 0's terminal arc has orbits 0 and 2; it shares end node 1 with trace 9) (X4).
 
 ```
-NEXT_TURN: M6-CP3-TB-EXEC-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE
+NEXT_TURN: M6-CP3-TB-REV-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE
 Owner: test/benchmark agent (artifact-only, no rebuild or source mutation)
 Semantic source: 23d66f60d87329e178d9fc3963489cbef088555e
 GMP/GMPXX package: 14749353214; compile run 45010876980; ZIP SHA-256 fdcba4479936b7e8b1d3ee955bd1ac069715f4fa513ec874bc4e535a8872a668
 Manifest: unchanged TB161 979 rows, SHA-256 e15d616c9af2855b803dea8b5cfc4f5a0529f129c41df0c4fb0131e4ff4e7e8a
-Gate: 979/979 and CP2 491/491; rows 1–978 identical to TB162 under N1–N3; row979 all 60 old lines retained after stripping only the five new diagnostic prefixes
-No production census; next independent TB-REV-163 decides R-a versus H5 versus typed STOP
+Gate: TB163 979/979 PASS and CP2 491/491; rows 1–978 identical to TB162 under N1–N3; row979 all 60 old lines retained, 48 new lines published
+TB163 979/979 PASS, no production census; independent TB-REV-163 decides R-a versus H5 versus typed STOP
 Do not: rebuild, edit source/tests/manifest, change selectors, switch production
 ```
 
 Turn sequence:
 - [x] CB-179, TB-EXEC-162, TB-REV-162 (independent review and adversarial continuation).
 - [x] `M6-CP3-CB-180-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT` — exact test-only receipt, eight-target GMP/GMPXX compile only.
-- [ ] `M6-CP3-TB-EXEC-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE` — 979/979, rows 1–978 = TB162 (N1–N3), all 60 TB162 row 979 lines verbatim, new lines published.
+- [x] `M6-CP3-TB-EXEC-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE` — [report](.agents/Directional/Architecture_M6_CP3_TB163_P13_Staged_Uncut_Owner_Census_Receipt_Full_Gate_Execution_Report_20261122.md) 979/979 and 491/491; all strict comparisons PASS; 48 new lines published.
 - [ ] `M6-CP3-TB-REV-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE` — apply the decision map (R-a edge-side owner vs H5 terminal-slit classification vs typed STOP); freeze exact CB-181 and CB-182.
 - [ ] CB-181: pure helper with positive and negative tests, unwired.
 - [ ] CB-182: wiring at the single writer → TB-EXEC/REV-164 (staged plan `built` or the next measured stage).

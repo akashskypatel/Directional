@@ -1,0 +1,48 @@
+SphereStagedUncutCensus component=1 faces=8 status=1 boundaryEdges=8 interiorArcs=0 vertexTransits=0 seedAttributions=0 truncated=0
+SphereStagedUncutBoundary component=1 edge=2-5 face=2-5-12 opposite=1-2-5 barrier=0 class=0 oppositeTraceCut=1 sideOwner=1 status=0 orbits=0,1,6 sides=0:1:r:1,0:1:f:0,4:5:r:6,4:5:f:0
+SphereStagedUncutBoundary component=1 edge=2-10 face=2-10-12 opposite=2-3-10 barrier=0 class=0 oppositeTraceCut=1 sideOwner=1 status=0 orbits=0,3,6 sides=1:1:r:0,1:1:f:3,6:5:r:0,6:5:f:6
+SphereStagedUncutBoundary component=1 edge=5-7 face=5-7-13 opposite=4-5-7 barrier=0 class=0 oppositeTraceCut=1 sideOwner=1 status=0 orbits=0,1,6 sides=0:3:r:1,0:3:f:0,4:3:r:6,4:3:f:0
+SphereStagedUncutBoundary component=1 edge=7-13 face=5-7-13 opposite=7-13-14 barrier=0 class=0 oppositeTraceCut=1 sideOwner=1 status=0 orbits=6,7,8 sides=3:3:r:7,3:3:f:6,9:3:r:7,9:3:f:8
+SphereStagedUncutBoundary component=1 edge=10-15 face=10-15-17 opposite=10-11-15 barrier=0 class=0 oppositeTraceCut=1 sideOwner=1 status=0 orbits=0,3,6 sides=1:3:r:0,1:3:f:3,6:3:r:0,6:3:f:6
+SphereStagedUncutBoundary component=1 edge=13-18 face=12-13-18 opposite=13-18-19 barrier=0 class=0 oppositeTraceCut=1 sideOwner=1 status=0 orbits=6,7,8 sides=3:5:r:7,3:5:f:6,9:1:r:7,9:1:f:8
+SphereStagedUncutBoundary component=1 edge=15-17 face=10-15-17 opposite=15-17-22 barrier=0 class=0 oppositeTraceCut=1 sideOwner=1 status=0 orbits=6,7,9 sides=7:3:r:6,7:3:f:7,11:3:r:9,11:3:f:7
+SphereStagedUncutBoundary component=1 edge=17-18 face=12-17-18 opposite=17-18-23 barrier=0 class=0 oppositeTraceCut=1 sideOwner=1 status=0 orbits=6,7,9 sides=7:5:r:6,7:5:f:7,11:1:r:9,11:1:f:7
+SphereStagedUncutCensus component=5 faces=8 status=1 boundaryEdges=8 interiorArcs=0 vertexTransits=0 seedAttributions=0 truncated=0
+SphereStagedUncutBoundary component=5 edge=27-29 face=27-29-37 opposite=27-28-29 barrier=0 class=0 oppositeTraceCut=1 sideOwner=1 status=0 orbits=1,11,12 sides=13:1:r:11,13:1:f:1,15:5:r:11,15:5:f:12
+SphereStagedUncutBoundary component=5 edge=27-36 face=27-36-37 opposite=26-27-36 barrier=0 class=0 oppositeTraceCut=1 sideOwner=1 status=0 orbits=3,11,12 sides=12:1:r:3,12:1:f:11,19:5:r:12,19:5:f:11
+SphereStagedUncutBoundary component=5 edge=29-31 face=29-31-38 opposite=29-30-31 barrier=0 class=0 oppositeTraceCut=1 sideOwner=1 status=0 orbits=1,11,12 sides=13:3:r:11,13:3:f:1,15:3:r:11,15:3:f:12
+SphereStagedUncutBoundary component=5 edge=31-38 face=29-31-38 opposite=31-38-39 barrier=0 class=0 oppositeTraceCut=1 sideOwner=1 status=0 orbits=8,12,13 sides=16:3:r:12,16:3:f:13,21:3:r:8,21:3:f:13
+SphereStagedUncutBoundary component=5 edge=36-41 face=36-41-42 opposite=35-36-41 barrier=0 class=0 oppositeTraceCut=1 sideOwner=1 status=0 orbits=3,11,12 sides=12:3:r:3,12:3:f:11,19:3:r:12,19:3:f:11
+SphereStagedUncutBoundary component=5 edge=38-43 face=37-38-43 opposite=38-43-44 barrier=0 class=0 oppositeTraceCut=1 sideOwner=1 status=0 orbits=8,12,13 sides=16:5:r:12,16:5:f:13,21:1:r:8,21:1:f:13
+SphereStagedUncutBoundary component=5 edge=41-42 face=36-41-42 opposite=41-42-47 barrier=0 class=0 oppositeTraceCut=1 sideOwner=1 status=0 orbits=9,12,13 sides=18:3:r:13,18:3:f:12,22:3:r:13,22:3:f:9
+SphereStagedUncutBoundary component=5 edge=42-43 face=37-42-43 opposite=42-43-48 barrier=0 class=0 oppositeTraceCut=1 sideOwner=1 status=0 orbits=9,12,13 sides=18:5:r:13,18:5:f:12,22:1:r:13,22:1:f:9
+SphereStagedArc arc=0 kind=1 trace=0 segments=[0,7) nodes=(0,12)
+SphereStagedArc arc=1 kind=1 trace=0 segments=[6,7) nodes=(12,1)
+SphereStagedArc arc=2 kind=1 trace=1 segments=[0,7) nodes=(0,13)
+SphereStagedArc arc=3 kind=1 trace=1 segments=[6,7) nodes=(13,2)
+SphereStagedArc arc=4 kind=1 trace=2 segments=[0,9) nodes=(0,17)
+SphereStagedArc arc=5 kind=1 trace=3 segments=[0,7) nodes=(1,8)
+SphereStagedArc arc=6 kind=1 trace=4 segments=[0,7) nodes=(1,9)
+SphereStagedArc arc=7 kind=1 trace=5 segments=[0,8) nodes=(1,14)
+SphereStagedArc arc=8 kind=1 trace=6 segments=[0,7) nodes=(2,9)
+SphereStagedArc arc=9 kind=1 trace=7 segments=[0,8) nodes=(2,8)
+SphereStagedArc arc=10 kind=1 trace=8 segments=[0,8) nodes=(2,15)
+SphereStagedArc arc=11 kind=1 trace=9 segments=[0,1) nodes=(3,16)
+SphereStagedArc arc=12 kind=1 trace=9 segments=[0,7) nodes=(16,1)
+SphereStagedArc arc=13 kind=1 trace=10 segments=[0,7) nodes=(3,7)
+SphereStagedArc arc=14 kind=1 trace=11 segments=[0,7) nodes=(3,2)
+SphereStagedArc arc=15 kind=1 trace=12 segments=[0,7) nodes=(4,6)
+SphereStagedArc arc=16 kind=1 trace=13 segments=[0,1) nodes=(4,17)
+SphereStagedArc arc=17 kind=1 trace=13 segments=[0,7) nodes=(17,5)
+SphereStagedArc arc=18 kind=1 trace=14 segments=[0,7) nodes=(4,0)
+SphereStagedArc arc=19 kind=1 trace=15 segments=[0,7) nodes=(5,10)
+SphereStagedArc arc=20 kind=1 trace=16 segments=[0,8) nodes=(5,11)
+SphereStagedArc arc=21 kind=1 trace=17 segments=[0,8) nodes=(5,12)
+SphereStagedArc arc=22 kind=1 trace=18 segments=[0,7) nodes=(6,11)
+SphereStagedArc arc=23 kind=1 trace=19 segments=[0,7) nodes=(6,10)
+SphereStagedArc arc=24 kind=1 trace=20 segments=[0,8) nodes=(6,13)
+SphereStagedArc arc=25 kind=1 trace=21 segments=[0,7) nodes=(7,14)
+SphereStagedArc arc=26 kind=1 trace=21 segments=[6,7) nodes=(14,5)
+SphereStagedArc arc=27 kind=1 trace=22 segments=[0,7) nodes=(7,15)
+SphereStagedArc arc=28 kind=1 trace=22 segments=[6,7) nodes=(15,6)
+SphereStagedArc arc=29 kind=1 trace=23 segments=[0,9) nodes=(7,16)
