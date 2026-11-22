@@ -1,25 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "test_benchmark",
-  "request_id": "m6-cp3-tb163-gate-20261122-a",
-  "mailbox_key": "m6-cp3-tb163-full-gate",
-  "executor_sha": "23d66f60d87329e178d9fc3963489cbef088555e",
-  "semantic_source_sha": "23d66f60d87329e178d9fc3963489cbef088555e",
-  "turn_id": "M6-CP3-TB-EXEC-163-P13-STAGED-UNCUT-OWNER-CENSUS-RECEIPT-FULL-GATE",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "artifact_prefix": "m6-cp3-tb163-gate",
-  "retention_days": 14,
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "14749353214",
-    "EXPECTED_SOURCE_SHA": "23d66f60d87329e178d9fc3963489cbef088555e",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "fdcba4479936b7e8b1d3ee955bd1ac069715f4fa513ec874bc4e535a8872a668",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "afbab9fb6895db4214bb401d3629bfc424d865ea0c50cab2270fe5a6e2fb091a",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "c0b92ea35006d7e3d43bde6d2fad0be4c902a1ab327a37d180136bc298106e46",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB161_P13_Staged_Slide_Entry_Stop_Downstream_Receipt_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "e15d616c9af2855b803dea8b5cfc4f5a0529f129c41df0c4fb0131e4ff4e7e8a",
-    "EXPECTED_CASE_COUNT": "979",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
-  }
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-tb163-report-20261122-a",
+  "mailbox_key": "m6-cp3-tb163-report",
+  "file_id": "1n0d84gE3PUOpI8ahXhXWXxlKT_BVNS8E",
+  "patch_sha256": "e0f2fb4a3af6880a6360dd203b44402ed884a85b0a356e1c9021a224d884eb18",
+  "base_sha": "36862ac6ac789b68666829c73ee2ed2298c2bac3",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cp3): close TB163 with immutable evidence and review handoff",
+  "retention_days": 14
 }
