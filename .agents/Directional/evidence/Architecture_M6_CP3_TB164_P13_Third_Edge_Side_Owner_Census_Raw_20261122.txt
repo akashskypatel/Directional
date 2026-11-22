@@ -1,0 +1,16 @@
+SphereStagedUncutSideOwner component=1 edge=2-5 sideOrbits=0,6 chordOrbits=0,6 nearest=6
+SphereStagedUncutSideOwner component=1 edge=2-10 sideOrbits=0,6 chordOrbits=0,6 nearest=6
+SphereStagedUncutSideOwner component=1 edge=5-7 sideOrbits=0,6 chordOrbits=0,6 nearest=6
+SphereStagedUncutSideOwner component=1 edge=7-13 sideOrbits=6,7 chordOrbits=6,7 nearest=6
+SphereStagedUncutSideOwner component=1 edge=10-15 sideOrbits=0,6 chordOrbits=0,6 nearest=6
+SphereStagedUncutSideOwner component=1 edge=13-18 sideOrbits=6,7 chordOrbits=6,7 nearest=6
+SphereStagedUncutSideOwner component=1 edge=15-17 sideOrbits=6,7 chordOrbits=6,7 nearest=6
+SphereStagedUncutSideOwner component=1 edge=17-18 sideOrbits=6,7 chordOrbits=6,7 nearest=6
+SphereStagedUncutSideOwner component=5 edge=27-29 sideOrbits=11,12 chordOrbits=11,12 nearest=12
+SphereStagedUncutSideOwner component=5 edge=27-36 sideOrbits=11,12 chordOrbits=11,12 nearest=12
+SphereStagedUncutSideOwner component=5 edge=29-31 sideOrbits=11,12 chordOrbits=11,12 nearest=12
+SphereStagedUncutSideOwner component=5 edge=31-38 sideOrbits=12,13 chordOrbits=12,13 nearest=12
+SphereStagedUncutSideOwner component=5 edge=36-41 sideOrbits=11,12 chordOrbits=11,12 nearest=12
+SphereStagedUncutSideOwner component=5 edge=38-43 sideOrbits=12,13 chordOrbits=12,13 nearest=12
+SphereStagedUncutSideOwner component=5 edge=41-42 sideOrbits=12,13 chordOrbits=12,13 nearest=12
+SphereStagedUncutSideOwner component=5 edge=42-43 sideOrbits=12,13 chordOrbits=12,13 nearest=12

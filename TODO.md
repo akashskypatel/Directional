@@ -1,34 +1,21 @@
-## CURRENT — CB-182 census compiled, TB-EXEC-164 next (2026-11-22 UTC)
+## CURRENT — TB164 executed, independent TB-REV-164 next (2026-11-22 UTC)
 
-[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md) (Y1–Y7).
-- The typed STOP stands against the frozen map, but my TB-REV-162 R-a row was wrong: it expected `sideOwner=0` (Y1).
-- H5 is excluded for components 1 and 5: no arc or vertex transit touches them (Y2).
-- Unique component orbits are proved from TB163 data alone, by intersecting the opposite faces' orbit sets: {6} and {12} (Y3).
-- Root cause: site C (`SurfaceCutGraph.cpp:607–621`) writes every nested chord's third-edge side, so each boundary set is {middle, true} and never seeds (Y4).
-- Repair: an exact nearest-chord rule on source carrier parameters, first published only, with the seed switch frozen in TB-REV-164 after measurement.
+[TB164 execution report](.agents/Directional/Architecture_M6_CP3_TB164_P13_Third_Edge_Side_Owner_Census_Full_Gate_Execution_Report_20261122.md) and [raw 16-line receipt](.agents/Directional/evidence/Architecture_M6_CP3_TB164_P13_Third_Edge_Side_Owner_Census_Raw_20261122.txt) establish:
+- Full gate **982/982 PASS**, CP2 **491/491**; rows 1–978 unchanged under N1–N3, all 108 row979 prior receipts preserved.
+- Every new side-owner census line matches the exact predicted `nearest=6/12`; source-face owner production was not switched.
+- Three-case census **3/3**, matches TB161 under N1–N4, with Cylinder PASS and BunnyRandom/Vase expected RED.
+- Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 remain unpromoted.
 
-```
-COMPLETE: M6-CP3-CB-181-P13-THIRD-EDGE-SIDE-OWNER-HELPER
-COMPLETE: M6-CP3-CB-182-P13-THIRD-EDGE-SIDE-OWNER-CENSUS
-Frozen diff SHA-256: 094f663a4dd706e35f873e590861059f6c1d3ad5c05ffa8ca66dba0404ef8592
-Semantic source: a8f7dc13a737487080095fa1aad1901b346ddacb; apply workflow 45023069908
-GMP/GMPXX eight-target compile: 45023580643; package 14755496064; ZIP SHA-256 69fff98ad8203b7e2151fed48aa49100bc2a61d14eeb05b85b38a71f7a736aa5; no runtime
-NEXT_TURN: M6-CP3-TB-EXEC-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE (frozen 982-row manifest ed615c22…517b + 3-case census)
-  -> M6-CP3-TB-REV-164-… (independent adjudication; freeze CB-183 seed switch)
-No test or benchmark execution in CB-182; no seeds, selectors, manifests, or production change
-Do not: activate helper; promote CP3/497/D0/H4; start TB164 inside CB182
-```
+NEXT_TURN: M6-CP3-TB-REV-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE (independent evidence and Y6/Y7 decision map; no implementation in Review).
 
 Turn sequence:
-- [x] CB-180, TB-EXEC-163, TB-REV-163 independent review (typed STOP) and adversarial continuation (Y1–Y7).
-- [x] `M6-CP3-CB-181-P13-THIRD-EDGE-SIDE-OWNER-HELPER`: pure helper and 3 tests, unwired, compiled GMP/GMPXX; [record](.agents/Directional/Architecture_M6_CP3_CB181_P13_Third_Edge_Side_Owner_Helper_Code_Build_Record_20261122.md).
-- [x] `M6-CP3-CB-182-P13-THIRD-EDGE-SIDE-OWNER-CENSUS`: exact diff `094f663a4dd706e35f873e590861059f6c1d3ad5c05ffa8ca66dba0404ef8592`. It adds census-only boundary fields and site-C chord candidates, plus row 979 `SphereStagedUncutSideOwner` lines. Seeds are unchanged; compile only.
-- [ ] **NEXT** `M6-CP3-TB-EXEC-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE`: 982/982; rows 1–978 equal TB163 `14750681733` under N1–N3; row 979 keeps all 108 TB163 lines; census 3/3 equal TB161 `14741883606` under N1–N4. Publish the 16 new lines against the predictions (`nearest=6` / `12`).
-- [ ] `M6-CP3-TB-REV-164-…`: decision map; freeze CB-183 (seed reads the selection) after the Y6 premise rows and the Y7 fan check.
-- [ ] CB-183 seed switch → TB-EXEC/REV-165 (staged plan `built`, or the next stage).
-- [ ] CB-184 activation (V3/V4/V5/V10/V11) → TB-EXEC/REV-166 → CB-185 V3b → R1 → RA-275 S4a → O48.
+- [x] CB-181 pure helper and three regressions (compiled only); [record](.agents/Directional/Architecture_M6_CP3_CB181_P13_Third_Edge_Side_Owner_Helper_Code_Build_Record_20261122.md).
+- [x] CB-182 census-only integration (compiled only); [record](.agents/Directional/Architecture_M6_CP3_CB182_P13_Third_Edge_Side_Owner_Census_Code_Build_Record_20261122.md).
+- [x] M6-CP3-TB-EXEC-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE (982/982 plus 3/3 census, exact archive comparisons).
+- [ ] **NEXT** M6-CP3-TB-REV-164-P13-THIRD-EDGE-SIDE-OWNER-CENSUS-FULL-GATE: independently verify TB164, decide whether the Y6 and Y7 premises authorize a separately scoped CB-183 seed switch.
+- [ ] CB-183 seed switch only if separately authorized → TB-EXEC/REV-165; CB-184 Later stop activation → TB-EXEC/REV-166; CB-185 V3b → R1 → RA-275 S4a → O48.
 
-Carried: Y7 (site-D fan over-record), X4/H5 (open lead elsewhere), TB-REV-159-U3, V3–V11, W6, W7, X5, X6, RA-281 F1–F3, RA-275 S4a, Amendment 14; CP3/497/D0/H4 unpromoted. Stable 66/17/49, debt1, deferred81.
+Carried: Y7 site-D fan over-record, X4/H5 other-face lead, TB-REV-159-U3/V3–V11, W6/W7, RA-281 F1–F3, RA-275 S4a, Amendment 14, sphere χ+4. No selector or production promotion.
 
 ## HISTORY — TB-REV-163 independent review; typed owner-proof STOP (resolved by the adversarial continuation) (2026-11-22 UTC)
 

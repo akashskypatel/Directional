@@ -1,3 +1,7 @@
+## TB164 immutable third-edge owner census — candidate measured, no stable regression (2026-11-22 UTC)
+
+[TB164 report](Architecture_M6_CP3_TB164_P13_Third_Edge_Side_Owner_Census_Full_Gate_Execution_Report_20261122.md) verifies 982/982 full-gate PASS, 491/491 CP2, 978/978 predecessor normalized raw logs, all 108 prior row979 receipts, and 16/16 new third-edge owner lines. The separate census is 3/3 with Cylinder PASS and unchanged expected BunnyRandom/Vase RED, and matches TB161 under N1–N4. **Candidate:** site C over-records nested chords in `build_source_face_ownership`. **New falsifier result:** each of the 16 boundary edges has two candidate orbits but the nearest-chord selection returns component 1 orbit 6 or component 5 orbit 12, as predicted. **Root/correction owner:** TB-REV-164 must check Y6 premise rows and site-D Y7 before any CB-183 seed switch. The helper remains unwired; production sphere source-face owner failure remains unresolved. No newly observed stable failure or accepted-green loss; retain **66 events / 17 categories / 49 recurrences**, debt **1**, deferred **81**, CP3/497/D0/H4 unpromoted. Do not change selectors or producer output in this TB turn.
+
 ## TB-REV-163 adversarial — REV163-O1 resolved by realignment (2026-11-22 UTC)
 
 [TB-REV-163 adversarial record](Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md) (Y1–Y7).
