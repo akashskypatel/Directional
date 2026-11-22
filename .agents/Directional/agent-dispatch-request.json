@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-cb175-docs-closeout-v1-20261122",
-  "mailbox_key": "m6-cp3-cb175-docs-closeout",
-  "file_id": "15DjV06ZWVOQOvlgUE3v047hCpX-dpoeo",
-  "patch_sha256": "913bbca4eb014cb052ad3b84fa5734cdafb81c9e98768b1200ebcb55e3e1d482",
-  "base_sha": "570b62edad2cc9cab41a3f21f023a41289e70f4a",
+  "request_id": "m6-cp3-cb176-slide-arrival-source-20261122-1",
+  "mailbox_key": "m6-cp3-cb176-source-apply",
+  "file_id": "1GT5eSRwBzoPmSUiYg3ZDhV64zhykMHp7",
+  "patch_sha256": "ed2527c704bf8c0a1b3e3e904f3739ca4260339641f7a875561f4c176c6ed108",
+  "base_sha": "751a33a531d6133dd7e600e612776c02e0590509",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close CB175 compile evidence and set CB176 handoff",
+  "commit_message": "feat(tracing): receipt both slide-entry arrival roles",
   "retention_days": 14
 }
