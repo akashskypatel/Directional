@@ -1,0 +1,2 @@
+# TB161 exact one-time snapshot trigger; no durable files.
+.agents/connector-triggers/source-snapshot/m6-cp3-tb161-20261122-0602.txt
