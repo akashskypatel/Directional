@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-cb183-docs-20261122-a",
-  "mailbox_key": "m6-cp3-cb183-docs",
-  "file_id": "1S-HLpnuSyCkuxK1KbRby6O_g558_xSXN",
-  "patch_sha256": "85cd60ff461c1df48e8a9c75cdbffc715fb30acf21ccf4c33bdc7b7f11f7d79e",
-  "base_sha": "7712f3faaeef55d92544777884945b24e6936f5f",
+  "request_id": "m6-cp3-cb184-seed-apply-20261122-a",
+  "mailbox_key": "m6-cp3-cb184-seed-apply",
+  "file_id": "11dHPuQMcRs7CoOga08OK_hOvnXA0klrx",
+  "patch_sha256": "cdb0163963c7f29163180b67eef60fad6d7d7923bec938073b40a0915a1fb1f8",
+  "base_sha": "72676b7ea829c4fd6e7149b2eab1cb098e2e5786",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(cp3): close CB-183 and prepare CB-184 handoff",
+  "commit_message": "fix(surface-cells): select certified nearest chord for uncut seed",
   "retention_days": 14
 }
