@@ -1,0 +1,4 @@
+CB-179 source snapshot
+Freeze source for exact test-only owner-evidence receipt.
+Prior branch SHA: e7e044f3d7b9963a8ce83d4974ade257dc5b72e9
+No runtime execution.
