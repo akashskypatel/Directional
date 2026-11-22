@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb179-compile-20261122-0807",
-  "mailbox_key": "m6-cp3-cb179-compile",
-  "source_sha": "e7318b4ad1f8034f80f9665cf8f4b4a407b20719",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb179-compile"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb179-docs-apply-20261122-0812",
+  "mailbox_key": "m6-cp3-cb179-docs-apply",
+  "file_id": "1f2_qNsUOfubh5KqnrlUqXQ8tKHYSZ9z2",
+  "patch_sha256": "0112bf95c9640c75f3d8c97d58660cbde896b6f6c71ac678b38520dadb7d54dd",
+  "base_sha": "e7318b4ad1f8034f80f9665cf8f4b4a407b20719",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cp3): close CB-179 with exact compile and TB162 handoff",
+  "retention_days": 14
 }
