@@ -1,25 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "test_benchmark",
-  "request_id": "m6-cp3-tb167-face-cut-corner-20261122-a",
-  "mailbox_key": "m6-cp3-tb167-face-cut-corner-full-gate",
-  "executor_sha": "983488381a46ed084034043f427cdda7a03dca38",
-  "semantic_source_sha": "b500c425063dbc5c09f13cd08b811cacba0e3afe",
-  "turn_id": "M6-CP3-TB-EXEC-167-P13-FACE-CUT-CORNER-PARTITION-HELPER-FULL-GATE",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "14769469723",
-    "EXPECTED_SOURCE_SHA": "b500c425063dbc5c09f13cd08b811cacba0e3afe",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "1290d5ed50df98056b5eaed34f0d81ca4d156dbcd026589db10f9d271b985ddf",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "27ca857f7d0042356ce20fa3034b026a723a5e0c279843c74b4fa7c02d5b0891",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "13a4e2a7aa6735dec117ba489388c5be7b65fe2ae7adfa0b74fe59b7f84d89e9",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "5c0841993d9b9c5537a3b78a3f7df39e61ee82e09b1ce9b4be3f4510ff088c50",
-    "EXPECTED_CASE_COUNT": "989",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
-  },
-  "artifact_prefix": "m6-cp3-tb167-face-cut-corner",
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-tb167-docs-20261122-a",
+  "mailbox_key": "m6-cp3-tb167-docs-apply",
+  "file_id": "18cT2pXQvlJtP4g6lwXbevGuhCSvLBaF8",
+  "patch_sha256": "35dc8ec0e1999c67e62c7fb0a40cac051bce8b38e5e2b7b79c0824e42f5a96e5",
+  "base_sha": "983488381a46ed084034043f427cdda7a03dca38",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(cp3): close TB167 immutable full-gate execution",
   "retention_days": 14
 }
