@@ -26,6 +26,8 @@ When artifacts are terminal, download **each** GitHub Action's result and diagno
 
 Frozen STOP rules: [TB-REV-160 adversarial record](Architecture_M6_CP3_TB_REV_160_Adversarial_Review_20261122.md), especially V7/V8, its 'TB161 rules'. Any substantive failed gate must be accurately classified for independent Review; never weaken tests or rerun using changed package. No CP3, selector497, product default, or D0 acceptance is authorized here.
 
+Operational procedure deviation: before the turn-local READ_MODE=snapshot was selected and materialized, several authority documents were read directly through GitHub. This violated the policy's pre-read ordering requirement. No product code was changed, and the exact source snapshot was then acquired and verified; future continuations must select READ_MODE before document/source inspection. No additional piecemeal source reads are authorized.
+
 ## Recommendation
 
 **Resume this same TB-EXEC-161**, recover the confirmed runs by exact ID/mailbox, examine immutable results, compare and document them, update regression tracker as warranted, update the handoff and task index, retire only temporary control files, and write the root `STATUS` as the last repository mutation. Only a completed and independently documented Test + Benchmark turn may designate `M6-CP3-TB-REV-161-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT-FULL-GATE` as its successor. Do not start that Review in the same turn.
