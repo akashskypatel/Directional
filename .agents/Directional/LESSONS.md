@@ -260,6 +260,12 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - Share a predicate across layers by moving it into the lower layer; never tell a producer to "reuse" a consumer function it cannot call.
 - Per-row Euler predictions come from a receipt TB; a compile-only CB cannot be asked to derive them.
 
+**TB-REV-160 (adversarial continuation)**
+
+- Read what a "built" receipt certifies before calling it reachability: a canonical constructor's success predicate is a measured invariant.
+- A compile-only turn cannot derive expectations from data; withdraw any CB whose stop gate needs a run and freeze the measuring receipt instead.
+- Grep premise tests for early-return branches: a dormant branch a switch makes live is new coverage, not a premise replacement.
+
 **TB-REV-159 (adversarial continuation)**
 
 - Withdraw a definition turn whose remaining items need a run; freeze the staged measurement instead (a DEFN cannot measure).

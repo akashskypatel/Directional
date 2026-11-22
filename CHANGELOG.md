@@ -1,3 +1,7 @@
+## 2026-11-22 — TB-REV-160 adversarial continuation; prose CB-178 withdrawn for exact downstream receipt
+
+[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_160_Adversarial_Review_20261122.md): TB160 upheld. Staged `cutGraph=built` is the canonical cellularity certificate (χ = source χ). Prose activation CB-178 withdrawn (compile-only turn cannot derive premise values). Exact test-only CB-178 diff `d26394449baa92ede456d4a3400ada7e4a109d546bdedc1add50ba5a4deb5b0f` adds row 979 (production cut failure, staged certificate, plan outcome, per-trace ends, slide pieces); TB161 manifest `e15d616c9af2855b803dea8b5cfc4f5a0529f129c41df0c4fb0131e4ff4e7e8a` (979 rows).
+
 ## 2026-11-22 — TB-REV-160 independent staged stop review; CB-178 bounded
 
 [Independent Review](.agents/Directional/Architecture_M6_CP3_TB_REV_160_Staged_Slide_Entry_Stop_Full_Gate_Independent_Review_20261122.md) verifies TB160 978/978 PASS, unchanged full logs for all 977 prior rows (N1–N3, no extra allowance, 1,750 region-support records), unchanged three-case census (N1–N4), CP2 accepted 491/491, and real staged row978 `cutGraph=built` measurement. The builder result was printed but not asserted; it does not establish production topology or complete sphere repair. One bounded CB-178 production activation, U3 premise corrections, full-builder V3b assertions and pending-wall safety gates frozen. Production stop remains OFF; T2–T5 closed; stable 66/17/49, debt1, deferred81; χ+4 and CP3/497/D0/H4 held. No product/test/selector changed in Review.

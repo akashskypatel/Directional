@@ -1,8 +1,23 @@
-## CURRENT — TB-REV-160 independently upheld; CB-178 next (2026-11-22 UTC)
+## CURRENT — TB-REV-160 continued after handover; exact CB-178 downstream receipt next (2026-11-22 UTC)
+
+[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_160_Adversarial_Review_20261122.md) (V1–V7): TB160 upheld; staged `cutGraph=built` is the canonical cellularity certificate; prose activation CB-178 WITHDRAWN (compile-only turn cannot derive premise values; monolithic).
+
+> **NEXT_TURN:** `M6-CP3-CB-178-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT` — compile only. Apply exactly [diff](.agents/Directional/Architecture_M6_CP3_CB178_P13_Staged_Slide_Entry_Stop_Downstream_Receipt_Exact.diff) `d26394449baa92ede456d4a3400ada7e4a109d546bdedc1add50ba5a4deb5b0f` (tests only, preimage `82a1ec49…a87c`, postimage `58f94935…f4ae`).
+
+Turn sequence:
+- [x] `M6-CP3-TB-REV-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE` — independent review + adversarial continuation.
+- [ ] `M6-CP3-CB-178-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT` — exact test-only row 979, compile only.
+- [ ] `M6-CP3-TB-EXEC-161-P13-STAGED-SLIDE-ENTRY-STOP-DOWNSTREAM-RECEIPT-FULL-GATE` — manifest `e15d616c…7e8a` (979 rows); rows 1–978 and census equal TB160, zero allowance; row 979 receipt verbatim.
+- [ ] `M6-CP3-TB-REV-161-…` — freeze exact activation CB-179 from row 979 (or plan-stage DEFN if the plan fails); BunnyRandom pending-wall census falsifier.
+- [ ] CB-179 → TB-EXEC/REV-162 → CB-180 V3b node test → R1 slide-start subdivision → RA-275 S4a → O48.
+
+Carried: U3 (→CB-179), V3b (→CB-180), W3/W4, RA-281 F1/F2/F3, RA-275 S4a, sphere χ+4 at plan/output, Amendment14, CP3/497/D0/H4. Stable 66/17/49, debt1, deferred81.
+
+## HISTORY — TB-REV-160 independent review (2026-11-22 UTC)
 
 [Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_160_Staged_Slide_Entry_Stop_Full_Gate_Independent_Review_20261122.md): TB160 immutable 978/978 PASS, 977/977 complete predecessor log equality under frozen N1–N3 (1,750 N3 records), 3/3 census equality under N1–N4, accepted CP2 491/491 unchanged. Row978 staged receipt: `traces=24 events=56 slideStops=4 carrierEnds=4,5,6,8,15,17,19,20 slideSegments=10 cutGraph=built`. Cut graph outcome is measured and **not asserted**; no production or sphere topology acceptance.
 
-> **NEXT_TURN:** `M6-CP3-CB-178-P13-SLIDE-ENTRY-STOP-PRODUCTION-ACTIVATION` — separate compile-only Code + Build. Move the exact Later stop into production; update U3 sphere premises only from actual producer observations; assert full canonical cut graph and `(0,2)` V3b reaching plus same-direction negative control; preserve T5 lifetime and fail-closed consumers. Five prospective falsifiers/stop rules in review. No implementation in this Review.
+> **WITHDRAWN (TB-REV-160 adversarial V2) — superseded NEXT_TURN:** `M6-CP3-CB-178-P13-SLIDE-ENTRY-STOP-PRODUCTION-ACTIVATION` — separate compile-only Code + Build. Move the exact Later stop into production; update U3 sphere premises only from actual producer observations; assert full canonical cut graph and `(0,2)` V3b reaching plus same-direction negative control; preserve T5 lifetime and fail-closed consumers. Five prospective falsifiers/stop rules in review. No implementation in this Review.
 
 - [x] `M6-CP3-TB-REV-160-P13-STAGED-SLIDE-ENTRY-STOP-FULL-GATE` — independent gate/census acceptance and CB-178 decision recorded.
 - [ ] `M6-CP3-CB-178-P13-SLIDE-ENTRY-STOP-PRODUCTION-ACTIVATION` — source/test changes and GMP/GMPXX compile only.
