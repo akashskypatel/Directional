@@ -1,4 +1,8 @@
 ## 2026-11-23 — TB-EXEC-169 region-visit reader full gate PASS
+## 2026-11-23 — TB-REV-169 independent region-reader gate accepted; CB-189 next
+
+[Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_169_Region_Visit_Reader_Independent_Review_20261123.md) reopened both immutable TB168/TB169 archives, verified **1,994/1,994** member hashes per archive, **993/993** exact ledger/log comparisons under N1–N3 and only the four approved row-979 face-count changes. CP2 **491/491**, membership **1,074**, stable **66/17/49**, debt **1**, deferred **81** unchanged. Staged sphere still reports `SourceFaceCarriesMultipleTraceCuts`; production sphere still fails cut-search. Review was runtime-free; no product/selector change or CP3/497/D0/H4 promotion. Exactly one later successor is frozen: `M6-CP3-CB-189-P13-CORNER-VISIT-READER` (amended diff `6e391678…e3b8`; compile-only).
+
 
 [TB169 report](.agents/Directional/Architecture_M6_CP3_TB169_P13_Region_Visit_Reader_Full_Gate_Execution_Report_20261123.md): immutable CB-188 package `14786260085` source `b2e976f204fa5b2988a9cbe5a77defd106a96aad`; [run 45104059492](https://github.com/akashskypatel/Directional/actions/runs/45104059492), result `14787082075` (`dc15a8df…04e5`). **993/993 PASS**, CP2 **491/491**, membership **1074**; **1994/1994** internal hashes. Compared with TB168, all ledger fields and N1–N3-normalized raw transcripts agree except the four authorized row979 face-count receipts (4 chords, 5 fragments, 5 owners, 0 deficit). No census, rebuild or source/test/selector changes; staged `SourceFaceCarriesMultipleTraceCuts` and production sphere `CutSearchExhaustedBeforeCellularity` persist. Stable **66/17/49**, debt1, deferred81; CP3/497/D0/H4 held. Next only independent TB-REV-169.
 

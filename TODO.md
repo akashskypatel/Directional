@@ -1,25 +1,25 @@
-## CURRENT — TB-EXEC-169 993/993 PASS; independent TB-REV-169 next (2026-11-23 UTC)
+## CURRENT — TB-REV-169 independent review COMPLETE; CB-189 NEXT (2026-11-23 UTC)
 
 - [x] `M6-CP3-CB-188-P13-REGION-VISIT-READER`: exact 5171-byte diff `5f06c14b…5944`, only `src/geometry/GlobalTopologyPlan.cpp`. Source `b2e976f204fa5b2988a9cbe5a77defd106a96aad`. Eight-target GMP/GMPXX [compile run 45101939539](https://github.com/akashskypatel/Directional/actions/runs/45101939539) PASS; package `14786260085`, ZIP SHA-256 `d877a0ea4c05cfe93275506823652abb6b0e012dd3a5925103606e28e69625a5`, `runtimeExecution=false`. See [CB-188 record](.agents/Directional/Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md). No tests or benchmarks executed.
 - [x] `M6-CP3-TB-EXEC-169-P13-REGION-VISIT-READER-FULL-GATE`: immutable package `14786260085`, [run 45104059492](https://github.com/akashskypatel/Directional/actions/runs/45104059492), result `14787082075` (`dc15a8df…04e5`), **993/993 PASS**, CP2 **491/491**, membership **1074**, 1994/1994 internal hashes. All 993 rows identical to TB168 under N1–N3 with only four approved row979 face-count changes (4 chords, 5 fragments, 5 owners, 0 deficit); staged `SourceFaceCarriesMultipleTraceCuts` remains. No census, source/test/selector mutation or rebuild. [Report](.agents/Directional/Architecture_M6_CP3_TB169_P13_Region_Visit_Reader_Full_Gate_Execution_Report_20261123.md).
-- [ ] **1 NEXT** `M6-CP3-TB-REV-169-P13-REGION-VISIT-READER-FULL-GATE`: independent review of immutable TB169 result, exact four row979 count changes, no other N1–N3 differences; freeze whether CB-189 may proceed later.
-- [ ] 3 `M6-CP3-CB-189-P13-CORNER-VISIT-READER`: separate later turn, amended frozen diff `6e391678…e3b8` against CB-188 postimage, compile only.
+- [x] `M6-CP3-TB-REV-169-P13-REGION-VISIT-READER-FULL-GATE`: [independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_169_Region_Visit_Reader_Independent_Review_20261123.md) accepts the exact TB169 narrow count correction after full immutable 993-row N1–N3 check. No product or CP3 promotion.
+- [ ] **1 NEXT** `M6-CP3-CB-189-P13-CORNER-VISIT-READER`: one separate Code + Build turn; amended frozen diff `6e391678…e3b8` on exact CB-188 postimage, six enum guards, compile only, no runtime.
 - [ ] 4 TB-EXEC-170 → TB-REV-170. Row 979 must build the staged plan or reach the next typed stage; row 652 remains PASS. C1/C2 count as witnessed only when printed.
 - [ ] 5 CB-190 diagnostics S4/S6/S7, off critical path.
 - [ ] 6 Activation (V3/V4/V5/V10/V11) → TB → V3b → R1 → O48, only after the staged plan builds.
 - Held: CP3/497/D0/H4; production sphere `CutSearchExhaustedBeforeCellularity`. Stable 66/17/49, debt1, deferred81; TB169 is the latest executed gate; no new regression candidate.
 
 ```
-NEXT_TURN: M6-CP3-TB-REV-169-P13-REGION-VISIT-READER-FULL-GATE
-Owner: Independent Review; no implementation, build or test execution
-Authority: .agents/Directional/Architecture_M6_CP3_TB169_P13_Region_Visit_Reader_Full_Gate_Execution_Report_20261123.md and TB-REV-168 Q1-Q7
+NEXT_TURN: M6-CP3-CB-189-P13-CORNER-VISIT-READER
+Owner: Code + Build; apply only the frozen amended corner reader and compile, no test execution
+Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_169_Region_Visit_Reader_Independent_Review_20261123.md; TB-REV-168 Q1-Q7; exact diff .agents/Directional/Architecture_M6_CP3_CB189_P13_Corner_Visit_Reader_Exact.diff SHA-256 6e391678934f776d83b1bbae6652724e080763329d6171c7cdb1c5663259e3b8
 Tested source: b2e976f204fa5b2988a9cbe5a77defd106a96aad
 Immutable package: 14786260085, compile run 45101939539
 Result: run 45104059492, artifact 14787082075, 993/993 PASS, CP2 491/491, membership 1074
 Gate: 993 row-by-row N1-N3 predecessor matches; four row979 faces exactly 4 chords, 5 expected, 5 owned, 0 deficit
 Typed stop: SourceFaceCarriesMultipleTraceCuts on 6-8-9; production sphere still CutSearchExhaustedBeforeCellularity
 Regression: stable 66/17/49, debt1, deferred81; no new observed candidate; no census
-Do not: execute CB-189, run a build, edit implementation/tests/selectors, activate or promote CP3/497/D0/H4
+Stop: preimage/hash mismatch or compile failure; no runtime. Do not edit tests/selectors, activate or promote CP3/497/D0/H4
 ```
 
 ## HISTORY — TB-EXEC-168 993/993 PASS; TB-REV-168 was next (2026-11-23 UTC)

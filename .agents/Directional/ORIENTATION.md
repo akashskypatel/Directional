@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-23 UTC; TB-REV-168 independent review COMPLETE; CB-188 region visit reader NEXT):** TB168 993/993 PASS, accepted CP2 491/491, membership 1074. TB167 prior 989 rows match under N1–N3. Four pure adapter tests pass, but adapter is not yet wired. Independent Review froze exact, separate CB-188 and CB-189 diffs without applying them; see [review](Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md). The [adversarial continuation](Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md) upheld CB-188 and amended CB-189 to `6e391678…e3b8`. CB-188 region reader goes first; only then separate TB169 and CB-189. Production sphere still fails cut-search; staged sphere stops at multi-cut face 6-8-9. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 held.
+**Current currency (2026-11-23 UTC; M6-CP3-TB-REV-169-P13-REGION-VISIT-READER-FULL-GATE COMPLETE; M6-CP3-CB-189-P13-CORNER-VISIT-READER NEXT):** [Independent review](Architecture_M6_CP3_TB_REV_169_Region_Visit_Reader_Independent_Review_20261123.md) rechecked TB169 `14787082075` against TB168 `14781634158`: **993/993 PASS**, CP2 **491/491**, membership **1,074**, 1,994 checksum entries per archive, and no unexpected N1–N3 differences. Only four authorized row-979 face counts change to 4 chords, 5 expected fragments, 5 owners, zero deficit. CB-188 region reader is verified for this narrow gate; CB-189 corner reader (`6e391678…e3b8`) remains separate. Staged sphere still stops at `SourceFaceCarriesMultipleTraceCuts` face 6-8-9; production sphere still fails cut-search. Stable **66/17/49**, debt **1**, deferred **81**; CP3/497/D0/H4 held.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-23 UTC; TB-REV-168 COMPLETE incl. [adversarial](Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md), CB-188 NEXT, CB-189 amended `6e391678…e3b8`):** TB168 993/993 PASS, CP2 491/491, 1074 membership (993 gated + 81 deferred). Prior TB167 989/989 match under N1–N3. CB-187 adapter is unwired; separate exact deferred CB-188 region and CB-189 corner diffs are frozen in [review](Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md). No production recovery or CP3/497/D0/H4 promotion. Stable 66/17/49, debt1, deferred81.
+**Currency (2026-11-23 UTC; TB-REV-169 COMPLETE, CB-189 NEXT):** Frozen TB169 **993/993 PASS**, CP2 **491/491**, membership **1,074** (993 gated + 81 deferred), no other normalized raw difference relative to TB168. [Independent review](Architecture_M6_CP3_TB_REV_169_Region_Visit_Reader_Independent_Review_20261123.md) accepts the exact four-face count correction, not a staged plan or production mesh. CB-189's amended exact patch follows in its own compile-only turn. No CP3/497/D0/H4 promotion; stable **66/17/49**, debt **1**, deferred **81**.
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.
@@ -48,12 +48,14 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; multi-cut plan remains open** | TB166 immutable 984/984 PASS, CP2 491/491, 179 new exact multi-cut/singularity receipts. The prior nearest-chord seed switch is accepted (192/192 owners, source-face cellularity 1). The staged plan still rejects face 6-8-9 with multiple cuts; production sphere cut-search, Y7, V3b and χ+4 remain open. TB-REV-166 discharged the edge-supported K5 witness; CB-186 pure helper and then separately CB-187 reader switch must be proved before activation. No CP3/497/D0/H4 promotion. |
+| **M6-CP3 — active; multi-cut plan remains open** | Independently reviewed TB169 **993/993 PASS**, CP2 **491/491**; CB-188 corrected four measured region face counts but did not build a staged sphere. CB-189 corner reader is next (separate compile-only turn). Staged face 6-8-9, production sphere cut-search, Y7, V3b and χ+4 remain open. No CP3/497/D0/H4 promotion. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
 
 ## 4. Fixtures and witnesses
+
+**TB169 region-reader witness (independently reviewed):** Four row-979 face receipts show 4 chords, 5 expected fragments, 5 owner orbits, zero deficit, with all other 993 records equal to TB168 under N1–N3. Staged `SourceFaceCarriesMultipleTraceCuts` remains. [TB-REV-169](Architecture_M6_CP3_TB_REV_169_Region_Visit_Reader_Independent_Review_20261123.md).
 
 **TB168 adapter witness:** Four isolated `ArcFaceVisits` tests PASS under 993-row gate; existing 989 TB167 raw logs match N1–N3. The helper remains unwired and does not establish sphere output. [Independent review](Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md).
 
@@ -126,7 +128,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** Apply only the frozen CB-188 region reader patch (R1–R4), then execute the independent TB169 gate; CB-189 corner reader follows in a separate turn (C1–C4). [Current review](Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md). The prior prose CB-187 plan and S5 STOP were withdrawn by TB-REV-167 adversarial P2–P7; they are not live tasks. Staged multi-cut and production sphere failures remain open; no CP3 promotion.
+**Current priority:** `M6-CP3-CB-189-P13-CORNER-VISIT-READER` is the only next turn; apply the frozen amended CB-189 corner reader patch on the exact CB-188 postimage, compile only, then a separate TB-EXEC-170 gate. [Current independent review](Architecture_M6_CP3_TB_REV_169_Region_Visit_Reader_Independent_Review_20261123.md). TB-REV-168 Q6 still warns that C1/C2 are unwitnessed until a log prints the typed code. The prior prose CB-187 plan and S5 STOP remain withdrawn. CB-190 diagnostics S4/S6/S7 remain deferred. Staged multi-cut and production sphere failures remain open; no CP3 promotion.
 
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
 - **Other obligations and parked work:** source topology/fixture limitations (including genus>0), platform portability, witness debt, deferred identities, chain/fan/rim ownership, diagnostics, verification and production-quality gates remain governed by their precise dispositions in [regression tracker](Regression_Root_Cause_Tracker.md), [TODO](../../TODO.md), [DESIGN.md](DESIGN.md) and the retained normative definitions. Do not treat a historical next-turn label as current authorization or infer that a condensed entry is closed.
