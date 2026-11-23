@@ -31,8 +31,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-23 UTC. TB-REV-168 independently reviewed TB-EXEC-168: [TB168 report](Architecture_M6_CP3_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Execution_Report_20261123.md), 993/993 PASS, CP2 491/491, membership 1074. Four new `ArcFaceVisits` tests PASS; TB167 rows 1–989 unchanged under N1–N3. CB-187 adapter remains unwired. The adversarial continuation upheld CB-188 and amended CB-189 to `6e391678…e3b8`. CB-188 is next. Stable 66/17/49, debt1, deferred81. |
-| Branch and latest compiled package | `agent/surface_cell_quad/p5-recover-bridge-healing`. CB-187 source `486704038a6bf659a253a2e2f99edde5d03c7ffe`, package `14781561211`, compile run `45090657623`, ZIP SHA-256 `fa9781a710f29c926c9fd60a39cf6868d15b8d3e50ea5b7989b17aebd59b67a6`, GMP/GMPXX, runtimeExecution=false ([record](Architecture_M6_CP3_CB187_P13_Arc_Face_Visit_Adapter_Code_Build_Record_20261123.md)); predecessor CB-186 source `b500c425063dbc5c09f13cd08b811cacba0e3afe`, package `14769469723`, compile run `45061915460`, ZIP `1290d5ed50df98056b5eaed34f0d81ca4d156dbcd026589db10f9d271b985ddf`, GMP/GMPXX; prior CB-185 exact source `2c1ec9ab370ed0e9d533d7694e03b486916b9b1a`, compile run `45050530173`, package `14765117630`, ZIP `288b8a7c1571…7056548d`, GMP/GMPXX ([record](Architecture_M6_CP3_CB185_P13_Staged_Multi_Cut_Face_Receipt_Code_Build_Record_20261122.md)). |
+| Currency | 2026-11-23 UTC. CB-188 exact region reader was compiled from source `b2e976f204fa5b2988a9cbe5a77defd106a96aad` in eight-target GMP/GMPXX run `45101939539`; package `14786260085`. No runtime tests ran in CB-188. Last acceptance TB168 remains 993/993 PASS, CP2 491/491, membership 1074; stable 66/17/49, debt1, deferred81. TB-EXEC-169 is next. CB-189 remains separate and held. |
+| Branch and latest compiled package | `agent/surface_cell_quad/p5-recover-bridge-healing`. CB-188 source `b2e976f204fa5b2988a9cbe5a77defd106a96aad`, eight-target compile run `45101939539`, package `14786260085`, ZIP SHA-256 `d877a0ea4c05cfe93275506823652abb6b0e012dd3a5925103606e28e69625a5`, GMP/GMPXX, `runtimeExecution=false` ([record](Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md)). CB-187 predecessor source `486704038a6bf659a253a2e2f99edde5d03c7ffe`, package `14781561211`, run `45090657623` ([record](Architecture_M6_CP3_CB187_P13_Arc_Face_Visit_Adapter_Code_Build_Record_20261123.md)). |
 | Current gate / census | [TB168 report](Architecture_M6_CP3_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Execution_Report_20261123.md): [run 45092627119](https://github.com/akashskypatel/Directional/actions/runs/45092627119), result `14781634158` (ZIP SHA-256 `db2f8f2981c7c2ac914f59598a1e40c553ea8b94b21a23e41b84e74dd1aafb09`), 993/993 PASS, CP2 491/491, membership 1074. TB167 artifact `14770748728` rows 1–989 agree under N1–N3: zero ledger/raw/complete-record differences. No census; most recent three-case census remains TB165 unchanged. |
 | Accepted history | CP2 491/491, package `11391685901`. CP3's 497 identities are frozen and unpromoted. |
 | Regression/debt | TB168 observed no new regression candidate or PASS-to-RED change. Stable totals 66/17/49, produced-witness debt1, deferred81 unchanged. Carried: G2/G3, RA-275 S4a, Y7/Z3, Z5, X4/H5, TB-REV-159-U3/V3–V11, W3/W4/W6/W7, RA-281 F1–F3, Amendment 14, O47/C5/O48/O49 and sphere χ+4. No CP3/497/D0/H4 promotion. |
@@ -40,30 +40,22 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Mandatory next turn
 
-- **COMPLETE (Review):** `M6-CP3-TB-REV-168-P13-ARC-FACE-VISIT-ADAPTER-FULL-GATE`, covered by the [independent review](Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md) and the [adversarial continuation](Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md) (Q1–Q7).
-  - TB168 993/993 upheld; CB-188 diff upheld unchanged.
-  - CB-189 amended to `6e391678…e3b8` (enum `static_assert`s).
-  - Performance hold withdrawn. C1/C2 have no gated-test witness.
-  - Census: none of the deleted corner codes appears in TB168 logs except row 979.
-- **NEXT:** CB-188 only, compile only. Then TB-EXEC-169 under the frozen adversarial rules.
+- **COMPLETE (Code + Build):** `M6-CP3-CB-188-P13-REGION-VISIT-READER`, exact frozen diff `5f06c14b…005d05944`, source `b2e976f204fa5b2988a9cbe5a77defd106a96aad`. Eight-target GMP/GMPXX [compile run 45101939539](https://github.com/akashskypatel/Directional/actions/runs/45101939539) PASS. [Record](Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md). No compiled binary executed.
+- **NEXT:** `M6-CP3-TB-EXEC-169-P13-REGION-VISIT-READER-FULL-GATE`, artifact-only on immutable package `14786260085`; then independent TB-REV-169. CB-189 is a later Code + Build turn.
 - **HOLD:** no CP3/497/D0/H4 or production promotion; activation awaits staged plan G5.
 
 ```
-NEXT_TURN: M6-CP3-CB-188-P13-REGION-VISIT-READER
-Owner: implementation agent (Code + Build, compile only)
-Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md (Q1-Q7) + Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md; contract R1-R4
-Apply exactly: .agents/Directional/Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Exact.diff
-  SHA-256 5f06c14baca2c35874ae74d48ea98809fe7eeefb57276b0be94c918005d05944 (5171 B)
-  src/geometry/GlobalTopologyPlan.cpp e1e18654...b459 -> 5af71bc023c494a1a5a8ddeb3bb150c347941faa14e64e1e508b0113a8650aae
-  header GlobalTopologyPlan.h unchanged (277cde20...8f19)
-Build: dispatcher compile, GMP/GMPXX targets incl. directional_surface_cell_producer_tests, runtimeExecution=false
-Then: M6-CP3-TB-EXEC-169-P13-REGION-VISIT-READER-FULL-GATE (TB168 manifest, 993 rows, unchanged)
-  rules: 993/993 PASS; CP2 491/491; membership 1074; rows != 979 = TB168 result 14781634158 under N1-N3, zero allowance;
-  row 979: fragmentOwnerFace 6-8-9,16-20-21,32-33-34,40-45-46 -> traceChordCount=4 expectedFragmentCount=5 ownerCount=5 ownerDeficit=0;
-  outcome stays SourceFaceCarriesMultipleTraceCuts sourceFace=6-8-9; any other changed line -> STOP to Review; no census
-  -> M6-CP3-TB-REV-169-... -> CB-189 (amended diff 6e391678934f776d83b1bbae6652724e080763329d6171c7cdb1c5663259e3b8, preimage = CB-188 postimage)
-On failure/blocker: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
-Do not: apply CB-189 in this turn; edit beyond the diff; edit tests/selectors/manifests; run tests; activate; promote CP3/497/D0/H4
+NEXT_TURN: M6-CP3-TB-EXEC-169-P13-REGION-VISIT-READER-FULL-GATE
+Owner: Test + Benchmark agent; do not rebuild or edit source/tests/selectors/manifests
+Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md (Q1-Q7) + Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md
+Exact source: b2e976f204fa5b2988a9cbe5a77defd106a96aad
+Immutable compiled artifact: 14786260085; ZIP SHA-256 d877a0ea4c05cfe93275506823652abb6b0e012dd3a5925103606e28e69625a5; compile run 45101939539; runtimeExecution=false
+Manifest: unchanged TB168 993 rows
+Gate: 993/993 PASS, CP2 491/491, membership 1074; rows other than 979 equal TB168 artifact 14781634158 under N1-N3 with zero allowance
+Row 979: fragmentOwnerFace 6-8-9,16-20-21,32-33-34,40-45-46 each traceChordCount=4, expectedFragmentCount=5, ownerCount=5, ownerDeficit=0
+Outcome: SourceFaceCarriesMultipleTraceCuts sourceFace=6-8-9 remains; every other row-979 line unchanged; any other change STOP to Review
+No census. On completion: M6-CP3-TB-REV-169-P13-REGION-VISIT-READER-FULL-GATE
+Do not execute CB-189, run a build, activate, or promote CP3/497/D0/H4
 ```
 
 ## Turn Sequence
@@ -77,7 +69,8 @@ Do not: apply CB-189 in this turn; edit beyond the diff; edit tests/selectors/ma
 | COMPLETE (Code + Build) | `M6-CP3-CB-187-P13-ARC-FACE-VISIT-ADAPTER` | Exact diff `806a64fe…96ac`; compiled in [run 45090657623](https://github.com/akashskypatel/Directional/actions/runs/45090657623); package `14781561211`; no runtime. |
 | COMPLETE (Test + Benchmark) | `M6-CP3-TB-EXEC-168-P13-ARC-FACE-VISIT-ADAPTER-FULL-GATE` | [TB168](Architecture_M6_CP3_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Execution_Report_20261123.md) 993/993; CP2 491/491; membership 1074; prior 989 unchanged. |
 | COMPLETE (Review) | `M6-CP3-TB-REV-168-…` | [Independent](Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md) + [adversarial](Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md) (Q1–Q7). CB-188 `5f06c14b…5944`; CB-189 amended `6e391678…e3b8`. |
-| **NEXT** | CB-188 → TB-EXEC-169 → TB-REV-169 | Region reader on visits. Row 979's four faces show chords 4, owners 5 and deficit 0; the stop is unchanged; all other rows unchanged (adversarial rules). |
+| COMPLETE (Code + Build) | CB-188 | [Record](Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md), exact source `b2e976f204fa5b2988a9cbe5a77defd106a96aad`; compile run `45101939539`, package `14786260085`, no runtime. |
+| **NEXT** | TB-EXEC-169 → TB-REV-169 | Immutable package `14786260085`. Row 979 expected 4 chords, 5 owners and zero deficit on four faces; all other rows unchanged. |
 | 3 | CB-189 → TB-EXEC-170 → TB-REV-170 | Amended diff `6e391678…e3b8`. Row 979 builds the staged plan or prints the next typed stage. Row 652 still passes. C1/C2 count as witnessed only if printed. |
 | 4 | CB-190 | S4/S6/S7 diagnostic conformity (off critical path). |
 | 5 | Activation → TB → V3b → R1 → O48 | After the staged plan builds. |
@@ -86,7 +79,7 @@ Do not: apply CB-189 in this turn; edit beyond the diff; edit tests/selectors/ma
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: [TB-REV-168 independent review](Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md), [CB-188 manifest](gates/Architecture_M6_CP3_CB188_P13_Visit_Reader_Exact_Manifest.md), [CB-189 manifest](gates/Architecture_M6_CP3_CB189_P13_Visit_Reader_Exact_Manifest.md), [TB168 execution report](Architecture_M6_CP3_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Execution_Report_20261123.md), [CB-187 code/build record](Architecture_M6_CP3_CB187_P13_Arc_Face_Visit_Adapter_Code_Build_Record_20261123.md), [TB-REV-167 adversarial record](Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md), [TB-REV-167 independent review](Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md), [TB167 report](Architecture_M6_CP3_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Execution_Report_20261122.md).
+`load_next`: [CB-188 record](Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md), [TB-REV-168 independent review](Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md), [CB-188 manifest](gates/Architecture_M6_CP3_CB188_P13_Visit_Reader_Exact_Manifest.md), [CB-189 manifest](gates/Architecture_M6_CP3_CB189_P13_Visit_Reader_Exact_Manifest.md), [TB168 execution report](Architecture_M6_CP3_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Execution_Report_20261123.md), [CB-187 code/build record](Architecture_M6_CP3_CB187_P13_Arc_Face_Visit_Adapter_Code_Build_Record_20261123.md), [TB-REV-167 adversarial record](Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md), [TB-REV-167 independent review](Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md), [TB167 report](Architecture_M6_CP3_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Execution_Report_20261122.md).
 
 0. [ORIENTATION.md](ORIENTATION.md) — project context, read first.
 1. [ROADMAP.md](ROADMAP.md) — milestone position only.

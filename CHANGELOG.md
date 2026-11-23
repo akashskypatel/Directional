@@ -1,3 +1,7 @@
+## 2026-11-23 — CB-188 exact region reader compiled; no runtime
+
+[CB-188 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md): frozen 5171-byte diff `5f06c14b…5944` applied only to `src/geometry/GlobalTopologyPlan.cpp`; source [`b2e976f204fa5b2988a9cbe5a77defd106a96aad`](https://github.com/akashskypatel/Directional/commit/b2e976f204fa5b2988a9cbe5a77defd106a96aad). [Compile run 45101939539](https://github.com/akashskypatel/Directional/actions/runs/45101939539) passed all eight targets with GNU Multiple Precision (GMP) and its C++ library (GMPXX); package `14786260085` ZIP SHA-256 `d877a0ea4c05cfe93275506823652abb6b0e012dd3a5925103606e28e69625a5`. Both exit codes zero; `runtimeExecution=false`. No tests, benchmarks, test source, selectors, manifests or CB-189 edits. Last runtime acceptance stays TB168 993/993, CP2 491/491, membership 1074; stable 66/17/49, debt1, deferred81, no CP3/497/D0/H4 promotion. Next separate TB-EXEC-169 with frozen comparison rules.
+
 ## 2026-11-23 — TB-REV-168 adversarial continuation: CB-188 upheld, CB-189 amended
 
 [Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md) (Q1–Q7).
