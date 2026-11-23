@@ -27,3 +27,9 @@ A source-read procedure miss occurred: repository files were read through the co
 3. Compare every one of the first 1,000 raw process logs and ledger fields against TB175. Permit only N1/N2 timing and line-ending variation and N3 whole-record reorder of the exact 24 row-179 fragment records. Validate new row 1001 separately. The predicted 994 PASS and seven RED is not evidence.
 4. Record actual result, historical regression classification, independent comparisons, artifacts and hashes in this report, `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, and `Future_Chat_Session_Handoff.md` as required. Carry out temporary trigger cleanup and the document-drift audit. Do not start TB-REV-176.
 5. Direct-write repository-root `STATUS` as the final repository action, `COMPLETE` only once the execution and closeout evidence are verified; otherwise keep the same turn `IN_PROGRESS`.
+
+## Verified workflow and temporary-state cleanup (same turn)
+
+- [Run 45263429563](https://github.com/akashskypatel/Directional/actions/runs/45263429563) was confirmed **in progress**. Event SHA `a8ca498eaf18dd370d1e7eaec0332ab24a01da74` matches the request. Validator and parser jobs passed. Runtime job `138004160862` reached `Execute immutable artifact-only gate` and remains unverified until terminal output. Compile and Drive-apply jobs were skipped.
+- Cleanup [run 45264413782](https://github.com/akashskypatel/Directional/actions/runs/45264413782) completed successfully at commit `1e1de5ba04e67b8c337dc483c7f9364369bad848`. Artifact `14862695525` confirms removal of the sole TB176 temporary snapshot marker and `runtimeExecution=false`; the durable dispatcher slot and orphan mailbox were not listed for deletion.
+- Continue this SAME turn from its running process. Do not trigger the same test again merely because the terminal mailbox is pending. A response timer does not establish runtime success or failure.
