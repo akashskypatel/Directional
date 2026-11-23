@@ -28,6 +28,8 @@
 
 **Procedural deviation:** initial direct handoff/policy reads preceded the required snapshot-mode gate. The review switched to the exact source snapshot for all substantive code inspection. This process defect does not change the immutable test evidence.
 
+**Patch application correction:** The first Drive application failed `git diff --check` because the two archived `.diff` files contain valid blank-context lines. A narrow `.agents/Directional/.gitattributes` marks only those two stored diff artifacts as binary for Git whitespace checks. This does not modify their bytes or future application contracts. The corrected patch passed local apply/whitespace checks and remote run 45098209515; both temporary Drive staging files were retired after the successful push.
+
 ## Recommendation — one next turn
 
 `M6-CP3-CB-188-P13-REGION-VISIT-READER`: apply **only** the CB-188 exact diff after checking its preimage and manifest; compile-only through the mandatory GMP/GMPXX workflow, without running test binaries. Stop on a changed preimage, an unplanned edit, a compile failure or incomplete evidence. Then schedule separate `M6-CP3-TB-EXEC-169-P13-REGION-VISIT-READER-FULL-GATE` with the independent 993-row artifact-only oracle. **Do not start CB-189 during CB-188.**
@@ -51,6 +53,6 @@
 | Consolidation under CLEAN_UP_POLICY | No deletion or folding of fresh unconsumed TB168/CB187 evidence; retained for pending code and test turns. Historical consolidation remains a separate maintenance item. |
 | Successor frozen | Exactly `M6-CP3-CB-188-P13-REGION-VISIT-READER`, with manifest stop rules. |
 | Turn boundary held | Runtime-free; original product/tests/selectors/manifest/build source untouched; only deferred diff artifacts and documents. |
-| review_check.py boundary | Local snapshot lacks Git ancestry; static no-live-code-change audit passed. Remote full-history boundary must be checked by normal workflow when available. |
+| review_check.py boundary | Executed read-only: exit 1 only because the snapshot omits Git history (`8b7299b43` unavailable locally); product, selector, and current-file checks passed. Independent GitHub compare proves rewrite base is an ancestor (ahead 7628, behind 0); semantic source `48670403` to cleanup `5d8472fb` changed no product/test/build/selector paths. Full-history local check remains unavailable. |
 | `STATUS` lifecycle maintained | Entry beacon written; final beacon must be written last after remote patch confirmation. |
-| Pushed to origin, branch in sync | Pending Drive patch transport and remote verification. Must update this row with actual result before completion. |
+| Pushed to origin, branch in sync | Corrected Drive apply [run 45098209515](https://github.com/akashskypatel/Directional/actions/runs/45098209515) SUCCESS; exact patch pushed as commit `b43539b4c4e06e61a333d9acdb3ca23afe9520a0`, marker retired in `5d8472fbd649fde8261fb59ce0a30ac5fea448d9`. GitHub compare verifies intended documents and no product/test/selector changes; local `git status -sb` cannot be run against the browser's history-free snapshot. |
