@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb194-exact-source-path-20261123-b",
-  "mailbox_key": "m6-cp3-cb194-exact-source-path-apply-b",
-  "file_id": "1r9QPPW6lbRtVLdzJovqo1sAzlzCBrZ-g",
-  "patch_sha256": "82a6cdc5b41e129974ca7c486c0f6251d61be31700ba82c79b5d7c589a96b757",
-  "base_sha": "97a0a606b4edd7bb95b8ac3398e39cab61c6d842",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(surface-cells): add exact source-path shared-edge oracle",
-  "retention_days": 14
+  "operation": "compile",
+  "request_id": "m6-cp3-cb194-exact-source-path-compile-20261123-a",
+  "mailbox_key": "m6-cp3-cb194-exact-source-path-compile",
+  "source_sha": "fae9eb71bb5806d71901cc2ccb8c925201be0c0a",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "cb194-exact-source-path-compile"
 }
