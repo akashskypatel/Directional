@@ -1,3 +1,7 @@
+## 2026-11-23 — CB-187 exact arc-face-visit adapter compiled; no runtime
+
+[CB-187 record](.agents/Directional/Architecture_M6_CP3_CB187_P13_Arc_Face_Visit_Adapter_Code_Build_Record_20261123.md): applied frozen diff `806a64feba6d58d6333c4bd14b7ab465eb85b5ec4a6091afaac3cca2e48996ac` at source `486704038a6bf659a253a2e2f99edde5d03c7ffe`. The only source/test changes were `src/geometry/ArcFaceVisits.h` and four test cases in `tests/FieldAlignedCurveNetworkTests.cpp` (+348/−0). The adapter remains unwired. Eight-target GMP/GMPXX [compile run 45090657623](https://github.com/akashskypatel/Directional/actions/runs/45090657623) produced package `14781561211` (ZIP SHA-256 `fa9781a710f29c926c9fd60a39cf6868d15b8d3e50ea5b7989b17aebd59b67a6`), `runtimeExecution=false`. No test or benchmark executable ran; the last accepted gate remains TB167 989/989. Stable 66/17/49, debt1, deferred81 and CP3/497/D0/H4 remain unchanged. The separate next turn is artifact-only TB-EXEC-168 with 993 rows.
+
 ## 2026-11-23 — TB-REV-167 adversarial continuation; prose CB-187 plan withdrawn, exact adapter frozen
 
 [Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md) (P1–P8).
