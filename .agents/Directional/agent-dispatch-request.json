@@ -1,25 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "test_benchmark",
-  "request_id": "m6-cp3-tb176-exec-20261123-a",
-  "mailbox_key": "m6-cp3-tb176-piece-builder-ordered-retrace-full-gate",
-  "executor_sha": "a523df11e8a7b19b070aa0463df0df564d03994b",
-  "semantic_source_sha": "8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3",
-  "turn_id": "M6-CP3-TB-EXEC-176-P13-PIECE-BUILDER-AND-ORDERED-RETRACE-FULL-GATE",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "14859356205",
-    "EXPECTED_SOURCE_SHA": "8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "e6111ff21530f107ab8b1db724155aa2c4fbbe4a2765342fbfabbd4a9c4fc664",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "4d6523cc38f6a5051f44589eae6a42016a61fe8b1f1831a6dc381ba414cc3c26",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "44f478b25abf63f79d77b2c84fd0e3b70bd61b259f3c6323a377daf93cab278f",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB176_P13_Piece_Builder_And_Ordered_Retrace_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "0f85400ff9713fc8a835f308304ded1db9830e668211bab71c88d580b2e84642",
-    "EXPECTED_CASE_COUNT": "1001",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
-  },
-  "artifact_prefix": "m6-cp3-tb176-piece-builder-ordered-retrace",
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-tb176-docs-closeout-20261123-b",
+  "mailbox_key": "m6-cp3-tb176-docs",
+  "file_id": "17DCLn2FIs38EhybBVbglbfCRSEQeuEvD",
+  "patch_sha256": "e182ba8d13c619c1910c8b78a9d6d3c5eca5f2fd5d79f7c21b2fbbbdb9867022",
+  "base_sha": "a523df11e8a7b19b070aa0463df0df564d03994b",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close TB176 immutable gate and schedule independent TB-REV-176",
   "retention_days": 14
 }
