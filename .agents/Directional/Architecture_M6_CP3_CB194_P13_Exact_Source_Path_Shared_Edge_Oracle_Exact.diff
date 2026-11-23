@@ -1,0 +1,148 @@
+diff --git a/include/directional/authority/ExactSourcePath.h b/include/directional/authority/ExactSourcePath.h
+index c13c13efc3489d6477e5c7a14a06d75068a6ec68..8daf7694716b9050581ba040ee4bfe2133ffc481 100644
+--- a/include/directional/authority/ExactSourcePath.h
++++ b/include/directional/authority/ExactSourcePath.h
+@@ -190,6 +190,80 @@ reverse_exact_source_path(const ExactSourcePath &path) {
+                                               : reverse_exact_source_path(path);
+ }
+ 
++/** The stretch of one closed source edge that a straight piece runs along,
++ * as the parameters of its two ends measured from `edge.first()` (0) toward
++ * `edge.second()` (1), in the piece's direction. */
++struct ExactSourceEdgeInterval {
++  SourceEdgeTopologyKey edge;
++  FieldExactRational first;
++  FieldExactRational second;
++};
++
++/** The edge stretch a piece runs along: an edge piece, or a face-interior
++ * piece whose two ends lie on one closed edge of its face. Empty for a piece
++ * that leaves every edge of its face. */
++[[nodiscard]] inline std::optional<ExactSourceEdgeInterval>
++exact_source_piece_edge_interval(const ExactSourceSupportPiece &piece) {
++  const auto parameter_on =
++      [](const SourceEdgeTopologyKey &edge,
++         const ExactSourcePoint &point) -> std::optional<FieldExactRational> {
++    if (const auto *vertex = std::get_if<SourceVertexId>(&point)) {
++      if (*vertex == edge.first()) return FieldExactRational::from_integer(0);
++      if (*vertex == edge.second()) return FieldExactRational::from_integer(1);
++      return std::nullopt;
++    }
++    if (const auto *edgePoint = std::get_if<ExactSourceEdgePoint>(&point)) {
++      if (edgePoint->edge == edge) return edgePoint->parameter;
++    }
++    return std::nullopt;
++  };
++  std::vector<SourceEdgeTopologyKey> edges;
++  if (const auto *edge = std::get_if<SourceEdgeSupport>(&piece.carrier)) {
++    edges.push_back(edge->edge);
++  } else if (const auto *face =
++                 std::get_if<SourceFaceInteriorSupport>(&piece.carrier)) {
++    const auto &vertices = face->face.vertices();
++    for (std::size_t corner = 0U; corner < 3U; ++corner) {
++      const auto edge = SourceEdgeTopologyKey::make(
++          vertices[corner], vertices[(corner + 1U) % 3U]);
++      if (edge) edges.push_back(edge.value());
++    }
++  }
++  for (const auto &edge : edges) {
++    const auto first = parameter_on(edge, piece.first);
++    const auto second = parameter_on(edge, piece.second);
++    if (first && second && *first != *second) {
++      return ExactSourceEdgeInterval{edge, *first, *second};
++    }
++  }
++  return std::nullopt;
++}
++
++/** The source edges along which both paths run for a positive length, in
++ * either direction, sorted and unique. Stretches that only touch at a point
++ * are not shared, and a piece that crosses a face interior shares nothing. */
++[[nodiscard]] inline std::vector<SourceEdgeTopologyKey>
++exact_source_paths_shared_edges(const ExactSourcePath &a,
++                                const ExactSourcePath &b) {
++  std::vector<SourceEdgeTopologyKey> shared;
++  for (const auto &pieceA : a) {
++    const auto stretchA = exact_source_piece_edge_interval(pieceA);
++    if (!stretchA) continue;
++    for (const auto &pieceB : b) {
++      const auto stretchB = exact_source_piece_edge_interval(pieceB);
++      if (!stretchB || stretchB->edge != stretchA->edge) continue;
++      const auto low = std::max(std::min(stretchA->first, stretchA->second),
++                                std::min(stretchB->first, stretchB->second));
++      const auto high = std::min(std::max(stretchA->first, stretchA->second),
++                                 std::max(stretchB->first, stretchB->second));
++      if (low < high) shared.push_back(stretchA->edge);
++    }
++  }
++  std::sort(shared.begin(), shared.end());
++  shared.erase(std::unique(shared.begin(), shared.end()), shared.end());
++  return shared;
++}
++
+ } // namespace directional::authority
+ 
+ #endif // DIRECTIONAL_AUTHORITY_EXACT_SOURCE_PATH_H
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index dbee0e4ead77689f60e6ba6d137246819926c098..00133ec707e9f8e161cb85404688b6debe598d50 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -23134,3 +23134,58 @@ TEST(ArcFaceVisits, RejectsUnboundUnknownOffFaceAndStationaryPieces) {
+             failure_of({lower}, {1U},
+                        {edge_piece(1, 2, at_vertex(1), at_vertex(1))}));
+ }
++
++TEST(ExactSourcePathSharedEdges, TracesRunningOneEdgeChainBothWaysShareEveryEdge) {
++  using namespace arc_face_visit_test;
++  using directional::authority::exact_source_paths_shared_edges;
++  const auto lower = topology_face(0, 1, 2, 5U);
++  const auto upper = topology_face(1, 3, 2, 5U);
++  // One trace runs 0 -> 1 -> 2 as corner-to-corner face pieces of [0,1,2];
++  // the other runs back 2 -> 1 -> 0 on the far face of (1,2) and as an edge
++  // piece. Carriers differ; the curve is the same.
++  const ExactSourcePath forward{
++      face_piece(lower, at_vertex(0), at_vertex(1)),
++      face_piece(lower, at_vertex(1), at_vertex(2))};
++  const ExactSourcePath backward{
++      face_piece(upper, at_vertex(2), at_vertex(1)),
++      edge_piece(0, 1, at_vertex(1), at_vertex(0))};
++  const std::vector<SourceEdgeTopologyKey> both{topology_edge(0, 1, 5U),
++                                                topology_edge(1, 2, 5U)};
++  EXPECT_EQ(both, exact_source_paths_shared_edges(forward, backward));
++  EXPECT_EQ(both, exact_source_paths_shared_edges(backward, forward));
++  // Stretches [0, 2/3] and [1/3, 1] of (1,2), run in opposite directions,
++  // overlap on [1/3, 2/3].
++  const std::vector<SourceEdgeTopologyKey> oneTwo{topology_edge(1, 2, 5U)};
++  EXPECT_EQ(oneTwo,
++            exact_source_paths_shared_edges(
++                {edge_piece(1, 2, at_vertex(1), on_edge(1, 2, 2, 3))},
++                {edge_piece(1, 2, at_vertex(2), on_edge(1, 2, 1, 3))}));
++}
++
++TEST(ExactSourcePathSharedEdges, TouchingAndCrossingPathsShareNoEdge) {
++  using namespace arc_face_visit_test;
++  using directional::authority::exact_source_paths_shared_edges;
++  using directional::authority::exact_source_piece_edge_interval;
++  const auto lower = topology_face(0, 1, 2, 5U);
++  // Two halves of (1,2) meet only at its middle.
++  EXPECT_TRUE(exact_source_paths_shared_edges(
++                  {edge_piece(1, 2, at_vertex(1), on_edge(1, 2, 1, 2))},
++                  {edge_piece(1, 2, on_edge(1, 2, 1, 2), at_vertex(2))})
++                  .empty());
++  // A chord from corner 0 to the middle of (1,2) crosses the face and runs
++  // along no edge, so it shares nothing with a slide along (1,2).
++  const auto chord = face_piece(lower, at_vertex(0), on_edge(1, 2, 1, 2));
++  EXPECT_FALSE(exact_source_piece_edge_interval(chord).has_value());
++  EXPECT_TRUE(exact_source_paths_shared_edges(
++                  {chord}, {edge_piece(1, 2, at_vertex(1), at_vertex(2))})
++                  .empty());
++  // A face piece from a corner to a point of the same edge runs along it,
++  // with its ends measured from the edge's first vertex.
++  const auto along =
++      exact_source_piece_edge_interval(
++          face_piece(lower, at_vertex(2), on_edge(1, 2, 1, 3)));
++  ASSERT_TRUE(along.has_value());
++  EXPECT_EQ(topology_edge(1, 2, 5U), along->edge);
++  EXPECT_EQ(exact_ratio(1, 1), along->first);
++  EXPECT_EQ(exact_ratio(1, 3), along->second);
++}

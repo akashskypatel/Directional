@@ -1,4 +1,15 @@
-## CURRENT — TB-REV-172 independent and adversarial rejection; CB-194 all-piece interval receipt next (2026-11-23 UTC)
+## CURRENT — TB-REV-172 second adversarial continuation: co-traced digons, A2a root cause; CB-194 shared-edge oracle next (2026-11-23 UTC)
+
+- [x] TB-REV-172 [second adversarial continuation](.agents/Directional/Architecture_M6_CP3_TB_REV_172_Adversarial_Continuation_Shared_Edge_20261123.md) C1–C7: lenses 1/3/4/5 are exactly co-traced zero-area digons (digon face walk + single-vertex transitions + canonical-path rules); owner is A2a (seeds every port, drops CollinearOverlap/EndpointTouch, loses arrival port; DESIGN §4.5/§4.6/:449). Interval-receipt CB-194 (both forms) withdrawn. My TB-EXEC-172 rule 2 omitted diff-proven line moves (RA-247); verdict unchanged.
+- [ ] **D13 PENDING (user)** — trace arriving along a singularity's own port: A arrival owns port (recommended) / B head-on mutual stop / C downstream merge / D drop empty regions. Re-ask at TB-REV-173 start.
+- [ ] **1 NEXT** `M6-CP3-CB-194-P13-EXACT-SOURCE-PATH-SHARED-EDGE-ORACLE` — exact diff `7913097b…65e5`, unwired authority helper + 2 tests, compile only.
+- [ ] **2** `M6-CP3-TB-EXEC-173-P13-SHARED-EDGE-ORACLE-FULL-GATE` — 996-row manifest `b54de0b2…ff6e`; 989 PASS, same 7 RED; others = TB172 under N1–N3 + diff-proven line moves.
+- [ ] **3** TB-REV-173 (re-ask D13) → CB-195 A2a helpers (arrival-port record, mechanical no-shared-edge premise) → TB → CB-196 D13 wiring + every-region-owns-a-face assertion → TB.
+- [ ] **4 HELD** row979, Branch A activation, CB-190.
+
+NEXT_TURN: M6-CP3-CB-194-P13-EXACT-SOURCE-PATH-SHARED-EDGE-ORACLE
+
+## HISTORY — TB-REV-172 independent and adversarial rejection; CB-194 all-piece interval receipt next (2026-11-23 UTC)
 
 - [x] CB-193 applied the exact test-only along-edge visit receipt; GMP/GMPXX compiled artifact `14805640405`, source `587b8ba7b1a52409d2fd95cff99dbb9d1da8f881`.
 - [x] TB-EXEC-172 — immutable artifact-only 994-case [run 45149928894](https://github.com/akashskypatel/Directional/actions/runs/45149928894), result `14805479282`; **987/994**, 7 mechanical RED, CP2 490/491, membership 1075; row652 exact receipt and independent comparison in [execution report](.agents/Directional/Architecture_M6_CP3_TB172_P13_Along_Edge_Visit_Region_Receipt_Full_Gate_Execution_Report_20261123.md). Semantic gate remains rejected. No production acceptance.

@@ -1,3 +1,7 @@
+## 2026-11-23 — TB-REV-172 second adversarial continuation: co-traced digons, A2a root cause
+
+[Record](.agents/Directional/Architecture_M6_CP3_TB_REV_172_Adversarial_Continuation_Shared_Edge_20261123.md). TB172 rejection upheld. Lens orbits are exactly co-traced zero-area digons, decided from printed data; the A2a network producer breaks DESIGN first-contact/port-ownership rules. CB-194 interval receipt withdrawn; exact unwired shared-edge oracle CB-194 (`7913097b…65e5`) and 996-row TB173 manifest frozen. D13 pending with the user.
+
 ## 2026-11-23 — TB-REV-172 independent and adversarial reviews reject TB172; freeze all-piece interval evidence
 
 [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md): immutable 994-row gate 987/994, seven mechanical RED, five nonallowed assertion-location drifts despite unchanged 1,450 diagnostic records. Four orbit pairs 1/3/4/5 have reversed **opening-piece** source-edge labels and swapped source/opposite face records. [Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_172_Adversarial_Review_20261123.md) proves that the receipt omits optional second pieces and edge uniqueness/positive-length evidence. No complete path, exact interval or area proof; no opposite-face/region ownership repair. Next `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` is test-receipt-only compile with GMP/GMPXX, no runtime; accepted TB169 993/993, CP2 491/491 and stable 67/17/50 remain unchanged.
