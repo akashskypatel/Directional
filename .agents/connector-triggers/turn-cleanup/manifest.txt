@@ -1,0 +1,2 @@
+# Remove this review's temporary source-snapshot trigger only.
+.agents/connector-triggers/source-snapshot/m6-cp3-tb-rev-171-20261123.txt
