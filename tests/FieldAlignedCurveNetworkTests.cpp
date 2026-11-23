@@ -8159,6 +8159,113 @@ void append_along_edge_visit_receipt(std::ostringstream &out,
       << (count > kAlongEdgeVisitLimit ? "true" : "false");
 }
 
+// Read-only receipt for a mechanical plan that elected an empty region: the
+// traces `exact_source_retraced_traces` removes because they run back over an
+// earlier trace along source edges, read from each trace's exact source pieces
+// in port order. A trace whose pieces cannot be read, or do not join end to
+// end, makes the selection unavailable instead of counting as no retrace.
+// Every pair of traces sharing a source edge is listed with whether it is a
+// retrace, how the ends meet and how many face pieces each has, so a missing
+// pair shows which condition failed. It never changes the failure.
+void append_retraced_trace_selection_receipt(
+    std::ostringstream &out, const Cp4cProductionFixture &fixture) {
+  constexpr std::size_t kSharedEdgePairLimit = 64U;
+  namespace authority = directional::authority;
+  const auto &traces = fixture.network->candidate_traces();
+  std::vector<authority::ExactSourcePath> paths;
+  paths.reserve(traces.size());
+  for (const auto &trace : traces) {
+    authority::ExactSourcePath path;
+    for (std::size_t segment = 0U; segment < trace.segments.size(); ++segment) {
+      const auto pieces = embedded::exact_trace_segment_pieces(trace, segment);
+      if (!pieces.has_value() || pieces->empty() ||
+          (!path.empty() && path.back().second != pieces->front().first)) {
+        out << ";retracedTraceSelection=pathUnavailable{trace="
+            << trace.id.index() << ",segment=" << segment
+            << ",read="
+            << (!pieces.has_value() ? "none"
+                : pieces->empty()   ? "empty"
+                                    : "disjoint")
+            << '}';
+        return;
+      }
+      path.insert(path.end(), pieces->begin(), pieces->end());
+    }
+    if (path.empty()) {
+      out << ";retracedTraceSelection=pathUnavailable{trace="
+          << trace.id.index() << ",segment=none,read=noSegments}";
+      return;
+    }
+    paths.push_back(std::move(path));
+  }
+  const auto singularity =
+      [](const std::optional<authority::FieldSingularityId> &id) {
+        return id.has_value() ? std::to_string(id->index())
+                              : std::string{"none"};
+      };
+  const auto retraced = authority::exact_source_retraced_traces(paths);
+  out << ";retracedTraceSelection=available;retracedTraceCount="
+      << retraced.size();
+  for (std::size_t index = 0U; index < retraced.size(); ++index) {
+    const auto &kept = traces[retraced[index].kept];
+    const auto &removed = traces[retraced[index].removed];
+    out << ";retracedTrace[" << index << "]={kept=" << kept.id.index()
+        << ",keptPort=" << kept.port.index()
+        << ",keptSingularity=" << kept.singularity.index()
+        << ",keptArrival=" << singularity(kept.terminalSingularity)
+        << ",removed=" << removed.id.index()
+        << ",removedPort=" << removed.port.index()
+        << ",removedSingularity=" << removed.singularity.index()
+        << ",removedArrival=" << singularity(removed.terminalSingularity)
+        << ",sharedEdges=";
+    for (const auto &edge : authority::exact_source_paths_shared_edges(
+             paths[retraced[index].kept], paths[retraced[index].removed])) {
+      out << source_edge_locus(edge);
+    }
+    out << '}';
+  }
+  const auto facePieces = [](const authority::ExactSourcePath &path) {
+    return std::count_if(path.begin(), path.end(), [](const auto &piece) {
+      return !authority::exact_source_piece_edge_interval(piece).has_value();
+    });
+  };
+  std::size_t pairs = 0U;
+  for (std::size_t earlier = 0U; earlier < paths.size(); ++earlier) {
+    for (std::size_t later = earlier + 1U; later < paths.size(); ++later) {
+      const auto &a = paths[earlier];
+      const auto &b = paths[later];
+      const auto shared = authority::exact_source_paths_shared_edges(a, b);
+      if (shared.empty()) continue;
+      ++pairs;
+      if (pairs > kSharedEdgePairLimit) continue;
+      const char *ends = "other";
+      if (a.front().first == b.back().second &&
+          a.back().second == b.front().first) {
+        ends = "reversed";
+      } else if (a.front().first == b.front().first &&
+                 a.back().second == b.back().second) {
+        ends = "same";
+      } else if (a.front().first == b.front().first) {
+        ends = "sharedStart";
+      } else if (a.back().second == b.back().second) {
+        ends = "sharedEnd";
+      }
+      out << ";sharedEdgeTracePair[" << (pairs - 1U) << "]={traces="
+          << traces[earlier].id.index() << '/' << traces[later].id.index()
+          << ",sharedEdges=" << shared.size() << ",retrace="
+          << (authority::exact_source_paths_retrace_along_edges(a, b)
+                  ? "true"
+                  : "false")
+          << ",ends=" << ends << ",facePieces=" << facePieces(a) << '/'
+          << facePieces(b) << ",pieces=" << a.size() << '/' << b.size()
+          << '}';
+    }
+  }
+  out << ";sharedEdgeTracePairCount=" << pairs
+      << ";sharedEdgeTracePairsTruncated="
+      << (pairs > kSharedEdgePairLimit ? "true" : "false");
+}
+
 Cp4cProductionFixture build_cp4c_production_fixture(
     const std::string &fixtureStem, const std::string &fixtureName) {
   Cp4cProductionFixture fixture =
@@ -8188,6 +8295,7 @@ Cp4cProductionFixture build_cp4c_production_fixture(
         fixture.sourceAuthority.has_value() && fixture.network.has_value() &&
         fixture.cutGraph.has_value()) {
       append_along_edge_visit_receipt(failure, fixture);
+      append_retraced_trace_selection_receipt(failure, fixture);
     }
     throw std::runtime_error(
         failure.str());
