@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb168-roadmap-restoration-20261123-a",
-  "mailbox_key": "m6-cp3-tb168-roadmap-restoration",
-  "file_id": "1_xOOTosjY40cQ3DiO0SxU9et8ccufE2z",
-  "patch_sha256": "01a8514e2e50dd7b82f0aa74890e566d42a6f542c56343a5031d287e790fd2e3",
-  "base_sha": "433c36ca25ed9b6051ffe35f7b0a5cf969e3f2d8",
+  "request_id": "m6-cp3-tbrev168-independent-review-diff-freeze-20261123-a",
+  "mailbox_key": "m6-cp3-tbrev168-review-freeze",
+  "file_id": "1BvTy66FR-YyXDNxz757oYc1TDmlL0p_c",
+  "patch_sha256": "d3ec8bd2296bdca71abc4137d4090796c76d7ccd9aa1982434d54077495a5743",
+  "base_sha": "f19319477f9fc6b073b9c048063c43f02a0a4278",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(surface-cells): preserve retained roadmap milestone table",
+  "commit_message": "docs(surface-cells): independent TB-REV-168 and exact CB188 CB189 diff freeze",
   "retention_days": 14
 }
