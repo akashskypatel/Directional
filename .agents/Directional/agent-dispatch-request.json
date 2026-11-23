@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-cb196-code-20261123-a",
-  "mailbox_key": "m6-cp3-cb196-code",
-  "file_id": "1Lp2P66rSK-PWE27vjMIkmizPkCr1DRY-",
-  "patch_sha256": "d95f414457af1ff45dda04611b02ff53271cd55d325c7eb266dba514203e1499",
-  "base_sha": "b389996c690dad8ee3be80fdd15aae158019a770",
+  "request_id": "m6-cp3-cb196-code-20261123-b-wrapper",
+  "mailbox_key": "m6-cp3-cb196-code-v2",
+  "file_id": "1LZz5P0UlcERWZKeyI2RMA1UqVBwvs5U0",
+  "patch_sha256": "26afa5e54dc59ce0b6c5117074819d908ee0a7cec8080aaabb84565ae7ca7cb2",
+  "base_sha": "ab3825ec6c65fbce7290640bb6957f5270c730f6",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "feat(directional): add exact source retraced trace selection helper",
   "retention_days": 14
