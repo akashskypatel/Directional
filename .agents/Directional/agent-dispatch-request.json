@@ -1,25 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "test_benchmark",
-  "request_id": "m6-cp3-tb177-exec-20261123-a",
-  "mailbox_key": "m6-cp3-tb177-mechanical-retrace-selection-receipt-full-gate",
-  "executor_sha": "a523df11e8a7b19b070aa0463df0df564d03994b",
-  "semantic_source_sha": "6cdd23a10ac6f6fbc6c741fb1e18ccff2038871c",
-  "turn_id": "M6-CP3-TB-EXEC-177-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT-FULL-GATE",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "14868834752",
-    "EXPECTED_SOURCE_SHA": "6cdd23a10ac6f6fbc6c741fb1e18ccff2038871c",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "b5a7104d41e103e3d31094b4d889af1097ffa52edac6ff11fe120acfdb4ee0c9",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "1aa2a7e5e4a9dfb21202415d568e8652bed4e76fc945d2c3a29f0b6afb411a0a",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "84fc4d262996476f2aac1964fb1e757c6c17fcfa37951397fbf11e7e3e286efe",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB176_P13_Piece_Builder_And_Ordered_Retrace_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "0f85400ff9713fc8a835f308304ded1db9830e668211bab71c88d580b2e84642",
-    "EXPECTED_CASE_COUNT": "1001",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
-  },
-  "artifact_prefix": "m6-cp3-tb177-mechanical-retrace-receipt",
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-tb177-docs-apply-20261123-v1",
+  "mailbox_key": "m6-cp3-tb177-docs-apply",
+  "file_id": "1R1Pk8WUfFdEaV1QGTpW6_EY0E8aaqu88",
+  "patch_sha256": "632d68978fbc30aca848e322204326bef7deeb07ef1da7aa610af1df733ba229",
+  "base_sha": "f43d9aa7b0a931b681c89cdfed0a26452658b3a1",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record TB177 strict gate comparison stop",
   "retention_days": 14
 }
