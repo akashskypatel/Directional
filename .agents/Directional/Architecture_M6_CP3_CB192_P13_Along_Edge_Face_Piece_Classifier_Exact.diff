@@ -1,0 +1,139 @@
+diff --git a/src/geometry/ArcFaceVisits.h b/src/geometry/ArcFaceVisits.h
+index d8320652ed891953b9dc7077edaf71307551c978..1d406ae5ba78108e16153a75b0394c7d04cae882 100644
+--- a/src/geometry/ArcFaceVisits.h
++++ b/src/geometry/ArcFaceVisits.h
+@@ -41,13 +41,41 @@ namespace directional::geometry::detail {
+   return std::nullopt;
+ }
+ 
++/** For a straight piece whose two ends lie on one closed edge of a face, the
++ * side of that edge the face lies on: Forward when the piece runs in corner
++ * order (from corner k toward corner k + 1 on local edge k), which is the
++ * side `FaceCutPiece` gives the forward dart. Such a piece runs along the
++ * edge and cuts no face interior. Empty when the ends share no closed edge.
++ * The two positions must differ. */
++[[nodiscard]] inline std::optional<authority::Orientation> along_edge_face_side(
++    const FaceBoundaryPosition &first, const FaceBoundaryPosition &second) {
++  if (!face_cut_partition_detail::on_one_closed_edge(first, second)) {
++    return std::nullopt;
++  }
++  // Local edge k holds its own points and corner k + 1, which is encoded as
++  // offset 0 on edge k + 1.
++  std::size_t edge = first.edge;
++  if (first.edge != second.edge && first.offset.is_zero() &&
++      (first.edge + 2U) % 3U == second.edge) {
++    edge = second.edge;
++  }
++  const auto along = [&](const FaceBoundaryPosition &position) {
++    return position.edge == edge
++               ? position.offset
++               : authority::FieldExactRational::from_integer(1);
++  };
++  return along(first) < along(second) ? authority::Orientation::Forward
++                                      : authority::Orientation::Reverse;
++}
++
+ /** One visit of a trace arc to a source face, read from the arc's own exact
+  * pieces: visit k owns the next `sourcePieceCounts[k]` pieces of
+  * `sourcePath`. A visit that opens with a face piece cuts the face interior
+  * along the arc's forward orientation, with the arc's two face-walk orbits as
+- * sides; a trailing edge piece adds nothing. A visit made of one edge piece
+- * runs along an edge of the face without entering it: it cuts nothing and
+- * touches the face only with the dart on the face's side of that edge. */
++ * sides; a trailing edge piece adds nothing. A visit that runs along an edge
++ * of the face without entering it, as one edge piece or as a face piece whose
++ * ends lie on one closed edge, cuts nothing and touches the face only with
++ * the dart on the face's side of that edge. */
+ struct ArcFaceVisit {
+   authority::SourceFaceTopologyKey face;
+   /** Position in the arc's `sourceFaces`. */
+@@ -109,9 +137,21 @@ using ArcFaceVisitsResult =
+       if (!on_closure(entry) || !on_closure(exit)) {
+         return ArcFaceVisitFailure::PointOffFace;
+       }
+-      row.cut = FaceCutPiece{face_boundary_position(*entry),
+-                             face_boundary_position(*exit), forwardOrbit,
+-                             reverseOrbit};
++      auto entryPosition = face_boundary_position(*entry);
++      auto exitPosition = face_boundary_position(*exit);
++      const auto alongEdge =
++          entryPosition.has_value() && exitPosition.has_value()
++              ? along_edge_face_side(*entryPosition, *exitPosition)
++              : std::nullopt;
++      if (alongEdge.has_value()) {
++        row.edgeSideOrbit = *alongEdge == authority::Orientation::Forward
++                                ? forwardOrbit
++                                : reverseOrbit;
++      } else {
++        row.cut = FaceCutPiece{std::move(entryPosition),
++                               std::move(exitPosition), forwardOrbit,
++                               reverseOrbit};
++      }
+     } else {
+       const auto side = embedded::edge_piece_face_side(face, opening);
+       if (!side.has_value()) return ArcFaceVisitFailure::EdgeSideUndetermined;
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 6d3711ec463436fea2d550775175e5320b2bb505..936e8269b6eeb24a795f40c9b740761aac43f0e9 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -22942,6 +22942,60 @@ TEST(ArcFaceVisits, SlideSideFollowsFaceWindingAndDirection) {
+   EXPECT_EQ(std::optional<std::size_t>{kForward}, partial[0].edgeSideOrbit);
+ }
+ 
++TEST(ArcFaceVisits, FacePiecesAlongOneEdgeReadAsSlides) {
++  using namespace arc_face_visit_test;
++  const auto lower = topology_face(0, 1, 2, 5U);
++  const auto upper = topology_face(1, 3, 2, 5U);
++  const auto read = [&](const SourceFaceTopologyKey &face,
++                        const ExactSourceSupportPiece &piece) {
++    const auto visits = visits_of({face}, {1U}, {piece});
++    return visits.size() == 1U ? std::optional<ArcFaceVisit>{visits[0]}
++                               : std::nullopt;
++  };
++  // A face piece between two corners of one edge runs along that edge. It
++  // cuts nothing and takes the side an edge piece in the same direction
++  // takes, in both windings of the shared edge.
++  for (const auto &face : {lower, upper}) {
++    for (const auto &[from, to] : {std::pair{1, 2}, std::pair{2, 1}}) {
++      const auto alongFace =
++          read(face, face_piece(face, at_vertex(from), at_vertex(to)));
++      const auto slide =
++          read(face, edge_piece(1, 2, at_vertex(from), at_vertex(to)));
++      ASSERT_TRUE(alongFace.has_value());
++      ASSERT_TRUE(slide.has_value());
++      EXPECT_FALSE(alongFace->cut.has_value());
++      ASSERT_TRUE(slide->edgeSideOrbit.has_value());
++      EXPECT_EQ(slide->edgeSideOrbit, alongFace->edgeSideOrbit);
++    }
++  }
++  const auto lowerForward =
++      read(lower, face_piece(lower, at_vertex(1), at_vertex(2)));
++  ASSERT_TRUE(lowerForward.has_value());
++  EXPECT_EQ(std::optional<std::size_t>{kForward}, lowerForward->edgeSideOrbit);
++  const auto upperForward =
++      read(upper, face_piece(upper, at_vertex(1), at_vertex(2)));
++  ASSERT_TRUE(upperForward.has_value());
++  EXPECT_EQ(std::optional<std::size_t>{kReverse}, upperForward->edgeSideOrbit);
++  // A piece from a corner, or from inside an edge, to another point of the
++  // same closed edge is read the same way.
++  const auto fromCorner =
++      read(lower, face_piece(lower, at_vertex(0), on_edge(0, 1, 1, 2)));
++  ASSERT_TRUE(fromCorner.has_value());
++  EXPECT_FALSE(fromCorner->cut.has_value());
++  EXPECT_EQ(std::optional<std::size_t>{kForward}, fromCorner->edgeSideOrbit);
++  const auto toCorner =
++      read(lower, face_piece(lower, on_edge(1, 2, 1, 2), at_vertex(2)));
++  ASSERT_TRUE(toCorner.has_value());
++  EXPECT_FALSE(toCorner->cut.has_value());
++  EXPECT_EQ(std::optional<std::size_t>{kForward}, toCorner->edgeSideOrbit);
++  // Control: a corner to a point on the opposite edge still cuts the face.
++  const auto chord =
++      read(lower, face_piece(lower, at_vertex(0), on_edge(1, 2, 1, 2)));
++  ASSERT_TRUE(chord.has_value());
++  EXPECT_TRUE(chord->cut.has_value());
++  EXPECT_FALSE(chord->edgeSideOrbit.has_value());
++}
++
+ TEST(ArcFaceVisits, InteriorEndsHaveNoBoundaryPosition) {
+   using namespace arc_face_visit_test;
+   const auto lower = topology_face(0, 1, 2, 5U);

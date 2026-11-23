@@ -1,11 +1,21 @@
-## CURRENT — TB-REV-170 independent review: rejected gate (2026-11-23 UTC)
+## CURRENT — TB-REV-170 adversarial continuation: cause found, CB-192 repair frozen (2026-11-23 UTC)
+
+- [x] Adversarial continuation ([record](.agents/Directional/Architecture_M6_CP3_TB_REV_170_Adversarial_Review_20261123.md), A1–A7): the row-652 exception already prints `fragmentOwnerFace[3]` (one cut, orbits 0/0) → reason = `CutAlongOneEdge` by elimination. Mechanical arc 15 walks vertices 8→6→4→1 as corner-to-corner face pieces; `arc_face_visits` typed them as cuts by carrier. CB-191 receipt **withdrawn** (never run). All 21 off-row changes trace to this face. My TB-REV-168 Q3 / TB-REV-169 W4 "row 652 passes" prediction was wrong (A5).
+- [ ] **1 NEXT:** `M6-CP3-CB-192-P13-ALONG-EDGE-FACE-PIECE-CLASSIFIER` — Code + Build, compile only; exact [diff](.agents/Directional/Architecture_M6_CP3_CB192_P13_Along_Edge_Face_Piece_Classifier_Exact.diff) `527dd0b8…d7e6` ([manifest](.agents/Directional/gates/Architecture_M6_CP3_CB192_P13_Along_Edge_Face_Piece_Exact_Manifest.md)).
+- [ ] **2:** `M6-CP3-TB-EXEC-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE` — 994-row manifest `704dcf6c…09c6`; 994/994, CP2 491/491, membership 1075; rows ≠979/994 = TB169 under N1–N3; row 979 measurement.
+- [ ] **3:** `M6-CP3-TB-REV-171-…` — green → read row979 `RegionContainsInteriorSingularity` (vertex 8) locus, freeze receipt **or** narrow repair.
+- [ ] **4A (after staged plan builds):** activation CB → census TB → parameter deletion → V3b → R1 → O48. **5:** CB-190 off critical path.
+
+NEXT_TURN: M6-CP3-CB-192-P13-ALONG-EDGE-FACE-PIECE-CLASSIFIER
+
+## HISTORY — TB-REV-170 independent review: rejected gate (2026-11-23 UTC)
 
 - [x] `M6-CP3-TB-REV-170-P13-CORNER-VISIT-READER-FULL-GATE`: independent artifacts and row comparison, full gate rejected at **986/993**, 7 RED incl accepted CP2 row445. Row 979 later-stage sphere receipt remains unpromoted. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_170_Corner_Visit_Reader_Independent_Review_20261123.md).
-- [ ] **1 NEXT:** `M6-CP3-CB-191-P13-MECHANICAL-FACE-CUT-REASON-RECEIPT` — Code + Build measurement-only exact partition reason and source face at `(1,4,139)` from frozen 1,708-byte [diff](.agents/Directional/Architecture_M6_CP3_CB191_P13_Mechanical_Face_Cut_Reason_Receipt_Exact.diff) SHA-256 `aa2ff1852292bdcda1d0fcd16088400e6c56f8f3faadc051b1794d2a36d0792f`; full piece lineage deferred if reason is insufficient; no source behavior change, test execution, selector, activation or unrelated diagnostics. Fix requires a later reviewed diff. Exact patch frozen; compile only in CB-191.
+- [x] ~~**1 NEXT:** `M6-CP3-CB-191-P13-MECHANICAL-FACE-CUT-REASON-RECEIPT`~~ (withdrawn by adversarial A1) — Code + Build measurement-only exact partition reason and source face at `(1,4,139)` from frozen 1,708-byte [diff](.agents/Directional/Architecture_M6_CP3_CB191_P13_Mechanical_Face_Cut_Reason_Receipt_Exact.diff) SHA-256 `aa2ff1852292bdcda1d0fcd16088400e6c56f8f3faadc051b1794d2a36d0792f`; full piece lineage deferred if reason is insufficient; no source behavior change, test execution, selector, activation or unrelated diagnostics. Fix requires a later reviewed diff. Exact patch frozen; compile only in CB-191.
 - [ ] **2 LATER:** artifact-only full 993-case TB, then independent Review to separate failure reason from repair. Maintain W5 Branch B and preserve TB169 993/993 as latest accepted full gate.
 - [ ] **Held:** CB-190 S4/S6/S7 diagnostic comments, CP3/497/D0/H4, production sphere, V3b, Y7, activations. Counts **67/17/50**, debt1, deferred81; accepted CP2 selector still frozen at 491 identities, TB170 is nonaccepted 490/491.
 
-NEXT_TURN: M6-CP3-CB-191-P13-MECHANICAL-FACE-CUT-REASON-RECEIPT
+(superseded) NEXT_TURN: M6-CP3-CB-191-P13-MECHANICAL-FACE-CUT-REASON-RECEIPT
 
 ## HISTORY — CB-189 exact corner reader compiled; TB-EXEC-170 NEXT (2026-11-23 UTC)
 

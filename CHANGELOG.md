@@ -1,3 +1,7 @@
+## 2026-11-23 — TB-REV-170 adversarial continuation: along-edge face pieces; CB-192 frozen
+
+[Record](.agents/Directional/Architecture_M6_CP3_TB_REV_170_Adversarial_Review_20261123.md): the TB170 mechanical RED at `(1,4,139)` is `CutAlongOneEdge`, decided by elimination from the region records already printed in the exception. `arc_face_visits` typed corner-to-corner face pieces running along mesh edges as cuts. The CB-191 receipt is withdrawn; exact repair CB-192 (`527dd0b8…d7e6`, classifier + falsifier test) and the 994-row TB171 manifest are frozen. No product change in this review.
+
 ## 2026-11-23 — TB-REV-170 independent review: reject CB-189 full gate
 
 [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_170_Corner_Visit_Reader_Independent_Review_20261123.md) independently checked both ZIP SHA-256 values and 1,994 member hashes per artifact, 993 immutable row logs, N1–N3, 1,074 membership and source error mapping. TB170 is **986/993** with seven accepted-PASS mechanical failures (including CP2 row445), 21 unauthorized off-row normalized changes and 300 lost complete diagnostic records. Row979 reaches staged `RegionContainsInteriorSingularity` at vertex 8 without a plan. One new accepted-green recurrence is classified: **67/17/50**, debt1, deferred81. No production/test/selector/fixture/build changes in Review; no CP3/497/D0/H4 promotion. Next bounded CB-191 is **measurement-only** mechanical face-cut partition reason/lineage, followed by a separate TB; no unproved repair authorized.

@@ -31,30 +31,35 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-23 UTC. Independent TB-REV-170 **REJECTS** TB170 986/993; seven mechanical controls RED, 21 changed off-row normalized logs. Latest accepted full gate remains TB169 993/993. [Review](Architecture_M6_CP3_TB_REV_170_Corner_Visit_Reader_Independent_Review_20261123.md). |
+| Currency | 2026-11-23 UTC. TB-REV-170 **REJECTS** TB170 986/993 (independent) and its adversarial continuation finds the cause: `arc_face_visits` reads corner-to-corner face pieces along mesh edges as cuts → `CutAlongOneEdge` at `(1,4,139)` (A1–A2). CB-191 receipt **withdrawn**; exact repair CB-192 frozen. Latest accepted full gate TB169 993/993. [Independent](Architecture_M6_CP3_TB_REV_170_Corner_Visit_Reader_Independent_Review_20261123.md) + [adversarial](Architecture_M6_CP3_TB_REV_170_Adversarial_Review_20261123.md). |
 | Branch and package | `agent/surface_cell_quad/p5-recover-bridge-healing`; CB-189 compiled source `178f17dd59aa9c61c2e6462e2378e3a42b0ee4f7`; compile run `45113944225`, package `14790917101`, SHA-256 `0432359393d37cf00b9654339c832263f648733237005171ff3a8eb9cfa1ddfd`; GMP/GMPXX, `runtimeExecution=false`. |
 | Latest gate / census | TB170 run `45118730914`, result `14793023424`, SHA-256 `930a4a42cd5f15c1479fd0ba098ff21e5860d5fbcf37520e2c1d7bb5ca652d55`; **986/993 PASS**, CP2 **490/491**. N1–N3 mismatch 21 off-row records, 300 absent diagnostics. Row979 `RegionContainsInteriorSingularity` vertex 8. No new production census; latest production census TB165. |
 | Accepted history | TB169 independent acceptance 993/993, result `14787082075`; CP2 491 identities remain frozen but TB170 loses accepted row445. CP3 497 identities not promoted. |
-| Regression / debt | Independent TB-REV-170 confirms one accepted-green recurrence: **67 events / 17 categories / 50 recurrences**, one produced-witness debt, 81 deferred. Inner mechanical partition reason still needs exact receipt. CP3/497/D0/H4 held. |
-| Active boundary | Mechanical face `(1,4,139)` now triggers `SourceFaceCutPartitionFailed` after CB-189; precise partition reason and cut identity absent. Production sphere last measured `CutSearchExhaustedBeforeCellularity`. Staged row979 is not an accepted plan. |
+| Regression / debt | Independent TB-REV-170 confirms one accepted-green recurrence: **67 events / 17 categories / 50 recurrences**, one produced-witness debt, 81 deferred. Reason decided by elimination (`CutAlongOneEdge`, adversarial A1); repair CB-192 frozen. CP3/497/D0/H4 held. |
+| Active boundary | Mechanical arc 15 (trace 1) walks vertex chain 8→6→4→1 as face pieces; CB-189 correctly rejects the first counted one at `(1,4,139)`, reason decided by elimination from printed `fragmentOwnerFace[3]` (one cut, orbits 0/0). All 21 off-row changes trace to it (A4). Row979 next stage `RegionContainsInteriorSingularity` vertex 8 (staged only). Production sphere last measured `CutSearchExhaustedBeforeCellularity`. |
 
 ## Mandatory next turn
 
-**NEXT (separate turn only):** `M6-CP3-CB-191-P13-MECHANICAL-FACE-CUT-REASON-RECEIPT` — Code + Build, test/measurement-only receipt. This Review does **not** start the successor. Apply only the frozen one-file test-only [CB-191 diff](Architecture_M6_CP3_CB191_P13_Mechanical_Face_Cut_Reason_Receipt_Exact.diff), SHA-256 `aa2ff1852292bdcda1d0fcd16088400e6c56f8f3faadc051b1794d2a36d0792f` (1,708 bytes, exact Git preimage `6d3711ec463436fea2d550775175e5320b2bb505`). It replays the already failing mechanical plan inside the test-local exception reporter and prints `faceCutPartitionReason` plus source face `(1,4,139)` without changing the product or test result. Compile GMP/GMPXX only. It does not emit every cut piece; require an additional separately reviewed receipt if the reason is not decisive. Next separate TB executes the same 993-row artifact-only gate, retaining all previous names and failure verdicts until independent Review. STOP on unverified source preimage, unexpected first failure, bad package or changed source semantics. Do not bundle a repair with the receipt. [Review authority](Architecture_M6_CP3_TB_REV_170_Corner_Visit_Reader_Independent_Review_20261123.md).
+- **COMPLETE:** TB-REV-170 independent (rejection, 67/17/50) + adversarial continuation (A1–A7): CB-191 withdrawn unexecuted; CB-192 exact diff and 994-row TB171 manifest frozen; `git apply --check`, postimages and `-fsyntax-only` (both TUs, 0 errors) verified.
 
-**Accepted control:** TB169 `14787082075` 993/993 PASS. TB170 is a rejected candidate, not a new selector. **Forbidden:** test execution inside Code + Build; source behavior fix before exact cause, new selector, fallback, validator relaxation, CP3/497/D0/H4 activation.
+**NEXT (separate turn):** `M6-CP3-CB-192-P13-ALONG-EDGE-FACE-PIECE-CLASSIFIER` — Code + Build, compile only. [Manifest](gates/Architecture_M6_CP3_CB192_P13_Along_Edge_Face_Piece_Exact_Manifest.md). Then TB-EXEC-171 under the adversarial record's frozen rules.
 
 ```text
-NEXT_TURN: M6-CP3-CB-191-P13-MECHANICAL-FACE-CUT-REASON-RECEIPT
-Owner: Code + Build, receipt only; apply exact 1,708-byte source diff aa2ff1852292bdcda1d0fcd16088400e6c56f8f3faadc051b1794d2a36d0792f before compilation
-Source: 178f17dd59aa9c61c2e6462e2378e3a42b0ee4f7 (CB-189)
-Package: 14790917101; GMP/GMPXX; runtimeExecution=false
-Baseline: TB169 14787082075, 993/993 accepted
-Failed gate: TB170 14793023424, 986/993, CP2 490/491, seven mechanical RED, 21 off-row changes
-First failure: SourceFaceCutPartitionFailed at (1,4,139); reason and cut lineage unknown
-Row979: RegionContainsInteriorSingularity at vertex8, staged only
-Stable: 67/17/50, debt1, deferred81
-Stop: no product fix, no test execution in CB, no acceptance/selector promotion
+NEXT_TURN: M6-CP3-CB-192-P13-ALONG-EDGE-FACE-PIECE-CLASSIFIER
+Owner: implementation agent (Code + Build, compile only)
+Authority: Architecture_M6_CP3_TB_REV_170_Adversarial_Review_20261123.md (A1-A7) + TB-REV-170 independent review; CB-191 receipt withdrawn (never run)
+Apply exactly: .agents/Directional/Architecture_M6_CP3_CB192_P13_Along_Edge_Face_Piece_Classifier_Exact.diff
+  SHA-256 527dd0b82db1b6d9539a04ef5c7f09c88867f069ba3c2dadd9dd38b5bba0d7e6 (7105 B, +100/-6)
+  src/geometry/ArcFaceVisits.h git d8320652ed891953b9dc7077edaf71307551c978 -> sha256 0838e637c620252886ec75a6c85bdcd036b623e5cd7c2f405adcec5000028a9e
+  tests/FieldAlignedCurveNetworkTests.cpp git 6d3711ec463436fea2d550775175e5320b2bb505 -> sha256 5d0493dd5d979672dc68c1df4ae0cafb2f6cadc61ecf1425ceede5ce40b493fd
+Build: dispatcher compile, GMP/GMPXX targets incl. directional_surface_cell_producer_tests, runtimeExecution=false
+Then: M6-CP3-TB-EXEC-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE
+  manifest gates/Architecture_M6_TB171_P13_Along_Edge_Face_Piece_Full_Gate_Case_Manifest.tsv sha256 704dcf6c5525d244c09f3ba0fd1c93a860daa194d4381d6b427dddc3be6209c6 (TB168 993 + row 994)
+  rules: 994/994 PASS; CP2 491/491; membership 1075; rows != 979,994 = TB169 14787082075 under N1-N3, zero allowance (rows 445/652/653/656/658/660/786 PASS again, 300 records restored);
+  row 979 SphereStagedPlan = measurement vs TB170 RegionContainsInteriorSingularity sourceVertex=8; any other difference -> STOP to Review; no census
+  -> M6-CP3-TB-REV-171-...: if green, read row979 printed locus, freeze receipt OR narrow repair (W5 Branch B)
+On failure/blocker: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
+Do not: edit beyond the diff; edit tests/selectors/manifests; run tests; change partition_face_corners or the corner/region readers; activate; promote CP3/497/D0/H4
 ```
 
 ## Turn Sequence
@@ -67,11 +72,13 @@ Stop: no product fix, no test execution in CB, no acceptance/selector promotion
 | COMPLETE | TB-REV-167 ([adv.](Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md)) → CB-187 → TB-EXEC-168 → TB-REV-168 ([adv.](Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md)) | CB-187 package `14781561211`; TB168 993/993. CB-188 `5f06c14b…5944`; CB-189 amended `6e391678…e3b8`. |
 | COMPLETE (Code + Build) | CB-188 | [Record](Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md), exact source `b2e976f204fa5b2988a9cbe5a77defd106a96aad`; compile run `45101939539`, package `14786260085`, no runtime. |
 | COMPLETE TB / Review | TB-EXEC-169 → TB-REV-169 | [TB169 report](Architecture_M6_CP3_TB169_P13_Region_Visit_Reader_Full_Gate_Execution_Report_20261123.md), [independent](Architecture_M6_CP3_TB_REV_169_Region_Visit_Reader_Independent_Review_20261123.md) + [adversarial](Architecture_M6_CP3_TB_REV_169_Adversarial_Review_20261123.md) (W1–W6): 993/993 PASS, four exact row979 face changes; no promotion. |
-| **COMPLETE CB-189, TB-EXEC-170 / independent TB-REV-170 rejected** | CB-189 → TB-EXEC-170 → TB-REV-170 | Amended diff `6e391678…e3b8`. Rows other than 979 equal TB169; row 652 passes. Row 979 is a measurement: predicted to clear the corner stage (W2), and a new-code outcome falsifies W2. TB-REV-170 freezes exact diffs for Branch A or B (W5). |
-| 4A | Branch A (plan built): activation CB → TB (BunnyRandom census, V5) → parameter-deletion CB → V3b → R1 → O48 | Activation = single-source default (V11) + exact premise rows 393/648/858/971/972/978 only. Nothing else bundled. |
-| 4B | Branch B (next typed stage): receipt CB **or** narrow repair CB → TB | Read the existing locus first (RA-235). W3's piece receipt only if a corner-stage RED is ambiguous. |
+| COMPLETE | CB-189 → TB-EXEC-170 → TB-REV-170 ([independent](Architecture_M6_CP3_TB_REV_170_Corner_Visit_Reader_Independent_Review_20261123.md) + [adversarial](Architecture_M6_CP3_TB_REV_170_Adversarial_Review_20261123.md)) | TB170 986/993 rejected; cause = along-edge face pieces misread as cuts (A1–A2); CB-191 withdrawn. |
+| **NEXT** | CB-192 (classifier repair + falsifier test, compile only) | Exact diff `527dd0b8…d7e6`. |
+| 2 | TB-EXEC-171 (994-row manifest) | Rules in the adversarial record; row 979 is a measurement. |
+| 3 | TB-REV-171 | Green → row979 `RegionContainsInteriorSingularity` locus read, then receipt **or** narrow repair (Branch B). |
+| 4A | Branch A (only after the staged plan builds): activation CB → TB (BunnyRandom census, V5) → parameter-deletion CB → V3b → R1 → O48 | Activation = single-source default (V11) + exact premise rows 393/648/858/971/972/978 only. |
 | 5 | CB-190 | S4/S6/S7 diagnostic conformity plus W6 obsolete-code comments (off critical path). |
-| Withdrawn | prose CB-180 (X2); DEFN-161A (W3); prose CB-178 (V2); DEFN-159A (U1); prose CB-175; CB-174 v3; CB-172A; prose CB-173; old CB-181/182 plan (Y1); prose CB-183 (Z1); activation-before-plan (G5); CB-185 v1 (K3/K4); prose CB-186 (L2–L7); prose CB-187 `…-EXACT-FACE-CUT-READER`, v1–v5, S5 STOP (P2–P7) | — |
+| Withdrawn | CB-191 reason receipt (TB-REV-170 adv. A1/A6); prose CB-180 (X2); DEFN-161A (W3); prose CB-178 (V2); DEFN-159A (U1); prose CB-175; CB-174 v3; CB-172A; prose CB-173; old CB-181/182 plan (Y1); prose CB-183 (Z1); activation-before-plan (G5); CB-185 v1 (K3/K4); prose CB-186 (L2–L7); prose CB-187 `…-EXACT-FACE-CUT-READER`, v1–v5, S5 STOP (P2–P7) | — |
 | Held / Parked | `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`, `…-FACE-CONTACT-OUTCOME` (FC-6), row 858 face DEFN; `M6-CP3-CB-145-P13-VERTEX-FOLLOW-BOUNDARY` | 858 after the sphere repair. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
