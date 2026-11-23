@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb187-arc-face-visit-compile-20261123",
-  "mailbox_key": "m6-cp3-cb187-arc-face-visit-compile",
-  "source_sha": "486704038a6bf659a253a2e2f99edde5d03c7ffe",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb187-arc-face-visits"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb187-documentation-apply-20261123",
+  "mailbox_key": "m6-cp3-cb187-documentation-apply",
+  "file_id": "11KVZGEiiLqyc31FF3khIJIZRf8eMuMl_",
+  "patch_sha256": "ec2c0c3b89d305a9aa47654ceb0ff12032f91dcb20b41c8a890a8131ff1aefa9",
+  "base_sha": "20b7e8da0c03901c86a70ffe629e6f99feb72ce9",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(surface-cells): record CB-187 compile and advance handoff to TB-168",
+  "retention_days": 14
 }
