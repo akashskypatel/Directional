@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb172-docs-closeout-20261123-a",
-  "mailbox_key": "m6-cp3-tb172-docs-closeout-apply",
-  "file_id": "1iyKAqcrFqSzu58wP8GBYlmKD_vZrmix6",
-  "patch_sha256": "ffb9d208c7c8827e890fef9587323c335ef482485672ed81d976c690182ae943",
+  "request_id": "m6-cp3-tb172-docs-closeout-20261123-b",
+  "mailbox_key": "m6-cp3-tb172-docs-closeout-apply-v2",
+  "file_id": "17jA-WgsQF_LYlMbWpZAbL7-vwqIgMVDd",
+  "patch_sha256": "74548bbf0720097c568f90e34e3aed45facedb7331fe9fe3ef94c447d7e83ba4",
   "base_sha": "15040776b03388d90b46cc5c62597aa81193c7c8",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(surface-cells): record TB172 receipt gate and hand off independent review",
+  "commit_message": "docs(surface-cells): record TB172 receipt and next independent review",
   "retention_days": 14
 }
