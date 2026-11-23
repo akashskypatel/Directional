@@ -1,3 +1,7 @@
+## 2026-11-23 — CB-198 exact test-only mechanical retrace receipt compiled
+
+[CB-198 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB198_P13_Mechanical_Retrace_Selection_Receipt_Code_Build_Record_20261123.md): frozen +108/−0 test-only patch committed as `6cdd23a10ac6f6fbc6c741fb1e18ccff2038871c`. [run 45280023495](https://github.com/akashskypatel/Directional/actions/runs/45280023495) compiled eight GMP/GMPXX targets, artifact `14868834752` ZIP SHA-256 `b5a7104d41e103e3d31094b4d889af1097ffa52edac6ff11fe120acfdb4ee0c9` (28/28), `runtimeExecution=false`. No project test, benchmark or binary executed. TB176 remains 994/1001 (seven existing RED); TB169 993/993 and CP2 491/491 accepted; stable 67/17/50, witness debt1, deferred81. Next only `M6-CP3-TB-EXEC-177-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT-FULL-GATE` in a separate turn; no CP3/497/D0/H4 promotion.
+
 ## 2026-11-23 — M6-CP3-TB-REV-176 adversarial continuation: exact CB-198 receipt frozen
 
 [Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_176_Adversarial_Review_20261123.md) upholds the TB176 rejection (994/1001). It withdraws the prose CB-198 and freezes it as an exact, test-only failure-branch receipt: `Architecture_M6_CP3_CB198_P13_Mechanical_Retraced_Trace_Selection_Receipt_Exact.diff`, SHA-256 `c30811fc…391b`, +108/−0. The receipt:
