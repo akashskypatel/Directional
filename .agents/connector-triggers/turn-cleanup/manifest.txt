@@ -1,2 +1,0 @@
-# CB192 temporary snapshot request only; durable dispatcher and mailbox retained
-.agents/connector-triggers/source-snapshot/cb192-20261123.txt
