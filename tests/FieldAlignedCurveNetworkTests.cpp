@@ -23189,3 +23189,50 @@ TEST(ExactSourcePathSharedEdges, TouchingAndCrossingPathsShareNoEdge) {
   EXPECT_EQ(exact_ratio(1, 1), along->first);
   EXPECT_EQ(exact_ratio(1, 3), along->second);
 }
+
+TEST(ExactSourcePathRetrace, ChainRunBackOnOtherCarriersAndBreaksRetracesIt) {
+  using namespace arc_face_visit_test;
+  using directional::authority::exact_source_paths_retrace_along_edges;
+  const auto lower = topology_face(0, 1, 2, 5U);
+  const auto upper = topology_face(1, 3, 2, 5U);
+  const ExactSourcePath forward{
+      face_piece(lower, at_vertex(0), at_vertex(1)),
+      face_piece(lower, at_vertex(1), at_vertex(2))};
+  // Back from 2 to 0 over the same two edges: (1,2) on the far face and broken
+  // at its middle, (0,1) as an edge piece.
+  const ExactSourcePath backward{
+      face_piece(upper, at_vertex(2), on_edge(1, 2, 1, 2)),
+      edge_piece(1, 2, on_edge(1, 2, 1, 2), at_vertex(1)),
+      edge_piece(0, 1, at_vertex(1), at_vertex(0))};
+  EXPECT_TRUE(exact_source_paths_retrace_along_edges(forward, backward));
+  EXPECT_TRUE(exact_source_paths_retrace_along_edges(backward, forward));
+}
+
+TEST(ExactSourcePathRetrace, SameWayOtherEdgeOrFaceCrossingPathsDoNotRetrace) {
+  using namespace arc_face_visit_test;
+  using directional::authority::exact_source_paths_retrace_along_edges;
+  const auto lower = topology_face(0, 1, 2, 5U);
+  const ExactSourcePath forward{
+      edge_piece(0, 1, at_vertex(0), at_vertex(1)),
+      edge_piece(1, 2, at_vertex(1), at_vertex(2))};
+  // The same chain in the same direction: the ends do not swap.
+  EXPECT_FALSE(exact_source_paths_retrace_along_edges(forward, forward));
+  // From 2 back to 0 over edge (0,2): swapped ends, other edges.
+  EXPECT_FALSE(exact_source_paths_retrace_along_edges(
+      forward, {edge_piece(0, 2, at_vertex(2), at_vertex(0))}));
+  // From 2 back to 0 over (1,2) and (0,1) with a detour out and back along
+  // (1,3): swapped ends, every piece on an edge, one stretch too many.
+  EXPECT_FALSE(exact_source_paths_retrace_along_edges(
+      forward, {edge_piece(1, 2, at_vertex(2), at_vertex(1)),
+                edge_piece(1, 3, at_vertex(1), at_vertex(3)),
+                edge_piece(1, 3, at_vertex(3), at_vertex(1)),
+                edge_piece(0, 1, at_vertex(1), at_vertex(0))}));
+  // A path that crosses the face from 0 to the middle of (1,2) and slides to
+  // 2 is a different curve, whatever runs back over its edge stretches.
+  const ExactSourcePath crossing{
+      face_piece(lower, at_vertex(0), on_edge(1, 2, 1, 2)),
+      edge_piece(1, 2, on_edge(1, 2, 1, 2), at_vertex(2))};
+  EXPECT_FALSE(exact_source_paths_retrace_along_edges(
+      crossing, {edge_piece(1, 2, at_vertex(2), at_vertex(1)),
+                 edge_piece(0, 1, at_vertex(1), at_vertex(0))}));
+}

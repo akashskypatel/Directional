@@ -10,7 +10,9 @@
 
 #include <algorithm>
 #include <array>
+#include <map>
 #include <optional>
+#include <utility>
 #include <variant>
 #include <vector>
 
@@ -262,6 +264,48 @@ exact_source_paths_shared_edges(const ExactSourcePath &a,
   std::sort(shared.begin(), shared.end());
   shared.erase(std::unique(shared.begin(), shared.end()), shared.end());
   return shared;
+}
+
+/** Whether `b` runs back over `a` along source edges only: `b` starts where
+ * `a` ends and ends where `a` starts, every piece of both runs along an edge,
+ * and both cover exactly the same stretches of the same edges, whatever their
+ * carriers and piece breaks. False when either path crosses a face interior,
+ * so a retrace through a face is not recognized here. */
+[[nodiscard]] inline bool
+exact_source_paths_retrace_along_edges(const ExactSourcePath &a,
+                                       const ExactSourcePath &b) {
+  if (a.empty() || b.empty() || a.front().first != b.back().second ||
+      a.back().second != b.front().first) {
+    return false;
+  }
+  using Stretch = std::pair<FieldExactRational, FieldExactRational>;
+  using Coverage = std::map<SourceEdgeTopologyKey, std::vector<Stretch>>;
+  const auto coverage = [](const ExactSourcePath &path) -> std::optional<Coverage> {
+    Coverage stretches;
+    for (const auto &piece : path) {
+      const auto interval = exact_source_piece_edge_interval(piece);
+      if (!interval) return std::nullopt;
+      stretches[interval->edge].emplace_back(
+          std::min(interval->first, interval->second),
+          std::max(interval->first, interval->second));
+    }
+    for (auto &entry : stretches) {
+      std::vector<Stretch> &list = entry.second;
+      std::sort(list.begin(), list.end());
+      std::vector<Stretch> merged;
+      for (const auto &stretch : list) {
+        if (!merged.empty() && !(merged.back().second < stretch.first)) {
+          merged.back().second = std::max(merged.back().second, stretch.second);
+        } else {
+          merged.push_back(stretch);
+        }
+      }
+      list = std::move(merged);
+    }
+    return stretches;
+  };
+  const auto coveredByA = coverage(a);
+  return coveredByA.has_value() && coveredByA == coverage(b);
 }
 
 } // namespace directional::authority
