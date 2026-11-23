@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP3-TB-REV-176
-Status: COMPLETE
-Successor: M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT
+Status: IN_PROGRESS
+Successor: 
 Started at: 2026-11-23T21:33:33Z
-Resumed at: 
-Ended at: 2026-11-23T21:52:14Z
+Resumed at: 2026-11-23T21:56:52Z
+Ended at: 
 ---END_TURN_STATUS---
