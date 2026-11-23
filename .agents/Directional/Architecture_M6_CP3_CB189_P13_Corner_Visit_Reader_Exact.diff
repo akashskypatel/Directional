@@ -1,5 +1,5 @@
 diff --git a/include/directional/geometry/GlobalTopologyPlan.h b/include/directional/geometry/GlobalTopologyPlan.h
-index 4a8a8f0858440261347c61963b53681170ff0e07..93f645e0bf3a8fb1a83bdacf4f424c908ce6bdd3 100644
+index 4a8a8f085..93f645e0b 100644
 --- a/include/directional/geometry/GlobalTopologyPlan.h
 +++ b/include/directional/geometry/GlobalTopologyPlan.h
 @@ -147,6 +147,19 @@ enum class GlobalTopologyPlanErrorCode : std::uint8_t {
@@ -31,10 +31,29 @@ index 4a8a8f0858440261347c61963b53681170ff0e07..93f645e0bf3a8fb1a83bdacf4f424c90
    std::optional<authority::SourceVertexId> sourceVertex;
    std::optional<int> eulerCharacteristic;
 diff --git a/src/geometry/GlobalTopologyPlan.cpp b/src/geometry/GlobalTopologyPlan.cpp
-index cd30589ac532168dc1fefdc5194f98693e8847cb..5b4437b1a49e25dc9056f4346fce9a6ffa0b9c51 100644
+index cd30589ac..f4aed45b0 100644
 --- a/src/geometry/GlobalTopologyPlan.cpp
 +++ b/src/geometry/GlobalTopologyPlan.cpp
-@@ -460,23 +460,24 @@ FragmentCornerBuildResult build_fragment_corner_incidence(
+@@ -456,27 +456,43 @@ using FragmentCornerIncidence =
+ using FragmentCornerBuildResult =
+     std::variant<FragmentCornerIncidence, GlobalTopologyPlanError>;
+ 
++// FaceCutPartitionReason is a by-value public mirror of the private
++// detail::FaceCutPartitionFailure; the corner reader converts by cast.
++static_assert(static_cast<int>(FaceCutPartitionReason::MalformedBoundaryPosition) ==
++              static_cast<int>(detail::FaceCutPartitionFailure::MalformedBoundaryPosition));
++static_assert(static_cast<int>(FaceCutPartitionReason::CutAlongOneEdge) ==
++              static_cast<int>(detail::FaceCutPartitionFailure::CutAlongOneEdge));
++static_assert(static_cast<int>(FaceCutPartitionReason::NoBoundaryEndpoint) ==
++              static_cast<int>(detail::FaceCutPartitionFailure::NoBoundaryEndpoint));
++static_assert(static_cast<int>(FaceCutPartitionReason::UnorderedSharedEndpoint) ==
++              static_cast<int>(detail::FaceCutPartitionFailure::UnorderedSharedEndpoint));
++static_assert(static_cast<int>(FaceCutPartitionReason::CrossingCuts) ==
++              static_cast<int>(detail::FaceCutPartitionFailure::CrossingCuts));
++static_assert(static_cast<int>(FaceCutPartitionReason::InconsistentSideOrbits) ==
++              static_cast<int>(detail::FaceCutPartitionFailure::InconsistentSideOrbits));
++
+ FragmentCornerBuildResult build_fragment_corner_incidence(
      const SourceTopologyIndex &topology,
      const FieldAlignedCurveNetwork &network,
      const std::vector<GlobalTopologyArc> &arcs,
@@ -74,7 +93,7 @@ index cd30589ac532168dc1fefdc5194f98693e8847cb..5b4437b1a49e25dc9056f4346fce9a6f
      if (trace == nullptr || arc.firstSegment >= arc.onePastLastSegment ||
          arc.onePastLastSegment > trace->segments.size()) {
        GlobalTopologyPlanError failure =
-@@ -495,185 +496,72 @@ FragmentCornerBuildResult build_fragment_corner_incidence(
+@@ -495,185 +511,72 @@ FragmentCornerBuildResult build_fragment_corner_incidence(
        failure.singularity = trace->singularity;
        return failure;
      }
@@ -308,7 +327,7 @@ index cd30589ac532168dc1fefdc5194f98693e8847cb..5b4437b1a49e25dc9056f4346fce9a6f
    return result;
  }
  
-@@ -2456,6 +2344,10 @@ RegionCertificatesBuildResult build_region_certificates(
+@@ -2456,6 +2359,10 @@ RegionCertificatesBuildResult build_region_certificates(
      const std::vector<GlobalTopologyRegion> &regions,
      const std::map<authority::SourceFaceTopologyKey, std::size_t>
          *tracePieceCounts,
@@ -319,7 +338,7 @@ index cd30589ac532168dc1fefdc5194f98693e8847cb..5b4437b1a49e25dc9056f4346fce9a6f
      const bool emitEulerDiagnostics,
      const FragmentDiagnosticEvidence *diagnostics) {
    const NodeLocusResult locusBuild = build_node_loci(network, cutNodes);
-@@ -2474,7 +2366,7 @@ RegionCertificatesBuildResult build_region_certificates(
+@@ -2474,7 +2381,7 @@ RegionCertificatesBuildResult build_region_certificates(
      }
    }
    const FragmentCornerBuildResult cornerBuild =
@@ -328,7 +347,7 @@ index cd30589ac532168dc1fefdc5194f98693e8847cb..5b4437b1a49e25dc9056f4346fce9a6f
    if (const auto *failure =
            std::get_if<GlobalTopologyPlanError>(&cornerBuild)) {
      return *failure;
-@@ -2702,7 +2594,8 @@ CandidateBuildResult canonical_candidate(
+@@ -2702,7 +2609,8 @@ CandidateBuildResult canonical_candidate(
        build_region_certificates(
            embedded.sourceTopology, network, cutGraph, embedded.cutNodes,
            candidate.arcs, embedded.faceWalk, candidate.regions,
@@ -338,7 +357,7 @@ index cd30589ac532168dc1fefdc5194f98693e8847cb..5b4437b1a49e25dc9056f4346fce9a6f
    if (const auto *failure =
            std::get_if<GlobalTopologyPlanError>(&certificateBuild)) {
      GlobalTopologyPlanError annotated = *failure;
-@@ -2938,12 +2831,24 @@ std::optional<GlobalTopologyPlanError> validate_candidate_structure(
+@@ -2938,12 +2846,24 @@ std::optional<GlobalTopologyPlanError> validate_candidate_structure(
            std::get_if<GlobalTopologyPlanError>(&validationFaceWalk)) {
      return *failure;
    }
@@ -364,7 +383,7 @@ index cd30589ac532168dc1fefdc5194f98693e8847cb..5b4437b1a49e25dc9056f4346fce9a6f
    if (const auto *failure =
            std::get_if<GlobalTopologyPlanError>(&certificateBuild)) {
      return *failure;
-@@ -3241,6 +3146,10 @@ const char *global_topology_plan_error_code_name(
+@@ -3241,6 +3161,10 @@ const char *global_topology_plan_error_code_name(
      return "MandatoryEdgeTerminalOrderUnresolved";
    case GlobalTopologyPlanErrorCode::RegionOwnedBoundaryEdgeMissingFromWalk:
      return "RegionOwnedBoundaryEdgeMissingFromWalk";

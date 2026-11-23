@@ -1,4 +1,45 @@
-## CURRENT — TB-EXEC-168 993/993 PASS; TB-REV-168 next (2026-11-23 UTC)
+## CURRENT — TB-REV-168 complete (independent + adversarial); CB-188 next (2026-11-23 UTC)
+
+- [x] `M6-CP3-TB-REV-168-P13-ARC-FACE-VISIT-ADAPTER-FULL-GATE`: [independent](.agents/Directional/Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md) + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md) (Q1–Q7).
+  - TB168 993/993 upheld. CB-188 diff `5f06c14b…5944` upheld unchanged.
+  - CB-189 amended to `6e391678…e3b8`: six `static_assert`s on the `FaceCutPartitionReason` cast.
+  - Performance hold withdrawn: validation runs once per `make`.
+  - Census: deleted corner codes reach only row 979. C1/C2 have no gated-test witness.
+
+**Turn sequence:**
+- [ ] **1 NEXT** `M6-CP3-CB-188-P13-REGION-VISIT-READER`: exact diff, compile only.
+- [ ] 2 `M6-CP3-TB-EXEC-169-P13-REGION-VISIT-READER-FULL-GATE`: 993 rows.
+  - Rows other than 979 equal TB168 under N1–N3.
+  - Row 979: the four faces show chords 4, expected 5, owners 5, deficit 0; the stop is unchanged.
+- [ ] 3 `M6-CP3-TB-REV-169-…`: Review; accept the region switch.
+- [ ] 4 `M6-CP3-CB-189-P13-CORNER-VISIT-READER`: amended diff `6e391678…e3b8` on the CB-188 postimage, compile only.
+- [ ] 5 TB-EXEC-170 → TB-REV-170.
+  - Row 979: staged plan built, or the next typed stage.
+  - Row 652 still passes.
+  - The new codes count as witnessed only if printed.
+- [ ] 6 CB-190: S4/S6/S7 diagnostics, off the critical path.
+- [ ] 7 Activation (V3/V4/V5/V10/V11) → TB → V3b → R1 → O48.
+- Held: CP3/497/D0/H4; production sphere `CutSearchExhaustedBeforeCellularity`. Stable 66/17/49, debt1, deferred81.
+
+```
+NEXT_TURN: M6-CP3-CB-188-P13-REGION-VISIT-READER
+Owner: implementation agent (Code + Build, compile only)
+Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md (Q1-Q7) + Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md; contract R1-R4
+Apply exactly: .agents/Directional/Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Exact.diff
+  SHA-256 5f06c14baca2c35874ae74d48ea98809fe7eeefb57276b0be94c918005d05944 (5171 B)
+  src/geometry/GlobalTopologyPlan.cpp e1e18654...b459 -> 5af71bc023c494a1a5a8ddeb3bb150c347941faa14e64e1e508b0113a8650aae
+  header GlobalTopologyPlan.h unchanged (277cde20...8f19)
+Build: dispatcher compile, GMP/GMPXX targets incl. directional_surface_cell_producer_tests, runtimeExecution=false
+Then: M6-CP3-TB-EXEC-169-P13-REGION-VISIT-READER-FULL-GATE (TB168 manifest, 993 rows, unchanged)
+  rules: 993/993 PASS; CP2 491/491; membership 1074; rows != 979 = TB168 result 14781634158 under N1-N3, zero allowance;
+  row 979: fragmentOwnerFace 6-8-9,16-20-21,32-33-34,40-45-46 -> traceChordCount=4 expectedFragmentCount=5 ownerCount=5 ownerDeficit=0;
+  outcome stays SourceFaceCarriesMultipleTraceCuts sourceFace=6-8-9; any other changed line -> STOP to Review; no census
+  -> M6-CP3-TB-REV-169-... -> CB-189 (amended diff 6e391678934f776d83b1bbae6652724e080763329d6171c7cdb1c5663259e3b8, preimage = CB-188 postimage)
+On failure/blocker: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
+Do not: apply CB-189 in this turn; edit beyond the diff; edit tests/selectors/manifests; run tests; activate; promote CP3/497/D0/H4
+```
+
+## HISTORY — TB-EXEC-168 993/993 PASS; TB-REV-168 was next (2026-11-23 UTC)
 
 - [x] TB-REV-167 adversarial continuation: [record](.agents/Directional/Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md) (P1–P8).
   - Upheld: TB167 989/989 and the S1 coupling.

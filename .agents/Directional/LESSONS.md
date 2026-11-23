@@ -350,6 +350,10 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - A count that is not exact can still be a sound bound: check which side the consumer enforces before calling it unsafe (F = 1 + E − V + C0 ≤ E + 1; TB-REV-167 adversarial P4).
 - Separate what a switch decides from what it only prints; diagnostics-only repairs stay off the critical path (TB-REV-167 adversarial P5).
 
+- Before deleting a reader's error branches, grep the last gate's logs for each code. A code that no row reaches cannot move a row's failure stage (TB-REV-168 adv. Q3).
+- A cast between a private enumeration and its public mirror needs a per-value `static_assert` (TB-REV-168 adv. Q4).
+- Before calling an added recomputation a performance risk, check how often its path runs and what that path already recomputes (TB-REV-168 adv. Q5).
+
 ## Diagnostics, classifiers, and causal investigation
 
 - **Read the printer before its label; one decomposition before per-class rules (TB-REV-165 adversarial).**

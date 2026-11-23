@@ -1,3 +1,13 @@
+## 2026-11-23 — TB-REV-168 adversarial continuation: CB-188 upheld, CB-189 amended
+
+[Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md) (Q1–Q7).
+- CB-188 matches R1–R4 and cannot raise owners above `k+1`.
+- Census: of the corner-reader codes CB-189 deletes, only one appears in the TB168 logs, at row 979.
+- The CB-189 diff is amended to `6e391678…e3b8` with `static_assert`s on the public mirror of the partition failure enum.
+- The CB-189 performance hold is withdrawn: validation runs once per `make`.
+- C1/C2 are recorded as unwitnessed by gated tests.
+- The TB-EXEC-169 rules are frozen. CB-188 is next.
+
 ## 2026-11-23 — TB-REV-168 independent review and exact CB-188/CB-189 diff freeze
 
 [Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md) re-derived TB168 993/993 PASS and 1074 membership, with 989/989 TB167 prefix results identical under N1–N3 and no observed regression. The CB-187 adapter remains unwired. Two distinct future implementation patches and their own preimage manifests were frozen: CB-188 region reader (`5f06c14b…005d05944`), CB-189 corner reader (stacked after CB-188; exact SHA in its manifest). Both pass static syntax/check-only verification; no production/test/selector code changed in this review, no binary run or build, no CP3/497/D0/H4 promotion. Next only CB-188 Code + Build; then separate TB169, CB189 and TB170.

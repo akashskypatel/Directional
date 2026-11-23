@@ -2,7 +2,7 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
-**Current currency (2026-11-23 UTC; TB-REV-168 independent review COMPLETE; CB-188 region visit reader NEXT):** TB168 993/993 PASS, accepted CP2 491/491, membership 1074. TB167 prior 989 rows match under N1–N3. Four pure adapter tests pass, but adapter is not yet wired. Independent Review froze exact, separate CB-188 and CB-189 diffs without applying them; see [review](Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md). CB-188 region reader goes first; only then separate TB169 and CB-189. Production sphere still fails cut-search; staged sphere stops at multi-cut face 6-8-9. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 held.
+**Current currency (2026-11-23 UTC; TB-REV-168 independent review COMPLETE; CB-188 region visit reader NEXT):** TB168 993/993 PASS, accepted CP2 491/491, membership 1074. TB167 prior 989 rows match under N1–N3. Four pure adapter tests pass, but adapter is not yet wired. Independent Review froze exact, separate CB-188 and CB-189 diffs without applying them; see [review](Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md). The [adversarial continuation](Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md) upheld CB-188 and amended CB-189 to `6e391678…e3b8`. CB-188 region reader goes first; only then separate TB169 and CB-189. Production sphere still fails cut-search; staged sphere stops at multi-cut face 6-8-9. Stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 held.
 
 ## 1. What the project is
 
@@ -33,7 +33,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-23 UTC; TB-REV-168 COMPLETE, CB-188 NEXT):** TB168 993/993 PASS, CP2 491/491, 1074 membership (993 gated + 81 deferred). Prior TB167 989/989 match under N1–N3. CB-187 adapter is unwired; separate exact deferred CB-188 region and CB-189 corner diffs are frozen in [review](Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md). No production recovery or CP3/497/D0/H4 promotion. Stable 66/17/49, debt1, deferred81.
+**Currency (2026-11-23 UTC; TB-REV-168 COMPLETE incl. [adversarial](Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md), CB-188 NEXT, CB-189 amended `6e391678…e3b8`):** TB168 993/993 PASS, CP2 491/491, 1074 membership (993 gated + 81 deferred). Prior TB167 989/989 match under N1–N3. CB-187 adapter is unwired; separate exact deferred CB-188 region and CB-189 corner diffs are frozen in [review](Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md). No production recovery or CP3/497/D0/H4 promotion. Stable 66/17/49, debt1, deferred81.
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.

@@ -1,5 +1,7 @@
 # TB-REV-168 — independent arc-face-visit adapter review (2026-11-23 UTC)
 
+> **Continued by the [adversarial review](Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md).** CB-188 is upheld unchanged. The CB-189 diff is amended to `6e391678…e3b8` (Q4, enum `static_assert`s). The CB-189 performance hold is withdrawn (Q5). C1/C2 are unwitnessed by gated tests (Q6). The TB-EXEC-169 rules are frozen there.
+
 ## Situation
 
 **TB168 evidence independently upheld for its frozen scope.** 993/993 gated cases PASS; CB-187 adapter still unwired. This is not an accepted direct sphere result. The two subsequent source switches are frozen as **separate unapplied diffs**, not implemented in this Review.
