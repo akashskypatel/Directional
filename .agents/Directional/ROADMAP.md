@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB169 **993/993** and CP2 **491/491** remain last accepted; TB171 new local guard PASS but full gate **987/994** with seven mechanical RED, no sphere production or CP3/497 promotion) · **Reviewed:** [TB-REV-171 independent](Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md) rejects the new gate · **Next:** separate measurement-only `M6-CP3-CB-193-P13-EMPTY-REGION-DRAFT-OWNERSHIP-RECEIPT` Code + Build, exact empty-draft ownership cause receipt, compile only · **Later:** artifact-only validation and independent Review before any source repair/activation.
+**Completed:** M0–M5 · **Now:** M6 / CP3; TB169 **993/993** and CP2 **491/491** remain last accepted. TB173 **989/996**, seven mechanical RED despite two new isolated oracle PASS cases. **Reviewed:** [TB-REV-173](Architecture_M6_CP3_TB_REV_173_Shared_Edge_Oracle_Independent_Review_20261123.md) rejects the gate and confirms A2a still has a source-edge co-trace/port-ownership defect. **Next decision:** user D13 singularity arrival-port ownership; CB-195/196 and production activation remain held, not authorized.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

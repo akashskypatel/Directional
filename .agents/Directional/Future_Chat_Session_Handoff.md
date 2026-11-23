@@ -31,7 +31,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-23 UTC. TB-EXEC-173 completed as a **rejected** full gate: 989/996 PASS, 7 mechanical RED. Both CB-194 oracle cases 995/996 PASS; all 994 TB172 shared rows and normalized logs unchanged. Independent TB-REV-173 is next. D13 remains pending. |
+| Currency | 2026-11-23 UTC. TB-REV-173 independently reverified TB173 989/996 rejected, same seven mechanical RED; 491/994 manifest prefixes, source helper non-vacuity, and all TB172 common transcripts. D13 owner decision remains pending; no executable successor authorized. |
 | Branch / source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 open/draft; immutable CB-194 source `fae9eb71bb5806d71901cc2ccb8c925201be0c0a`, GMP/GMPXX build run `45173887503`, artifact `14820355596` (`817583b75f8d9a5f7b9e7300426756d1044d535e9f63ebf3ec5d5cf88fe45ec6`), `runtimeExecution=false`; TB173 no rebuild. |
 | Current TB evidence | TB173 [run `45180338549`](https://github.com/akashskypatel/Directional/actions/runs/45180338549), result artifact `14821438542` ZIP SHA-256 `22851acd9b27eb56ff504f038f9e9761f5b9d07fda854682da512f5022bb223d`, 2000/2000 members verified, **989/996**, CP2 candidate 490/491, membership 1077. TB172 [run `45149928894`](https://github.com/akashskypatel/Directional/actions/runs/45149928894), artifact `14805479282` (`e9ddc7fd80d3e33b25b18901c783fbb21ec2eaf5c1b86438f887e93cee03edbc`), 1996/1996, 987/994. All common 994 logs and verdicts match under N1/N2 alone; no N3 or assertion-location exception. [TB173 report](Architecture_M6_CP3_TB173_P13_Shared_Edge_Oracle_Full_Gate_Execution_Report_20261123.md). |
 | Accepted comparison | TB169 run `45104059492`, result ZIP `14787082075` (`dc15a8df5226fc209717f6df2fd15140e9e04abb6e73f831d8285992e72f04e5`), 993/993 accepted; CP2 491/491 accepted. Frozen prefix SHA-256 `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`. |
@@ -41,11 +41,11 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 ## Mandatory next turn
 
 - **COMPLETE (rejected semantic gate):** `M6-CP3-TB-EXEC-173-P13-SHARED-EDGE-ORACLE-FULL-GATE`. Immutable artifact-only 996-case gate executed with no build or source mutation. Two new oracle tests PASS; seven mechanical controls remain RED. [Report](Architecture_M6_CP3_TB173_P13_Shared_Edge_Oracle_Full_Gate_Execution_Report_20261123.md).
-- **NEXT (separate independent review):** `M6-CP3-TB-REV-173-P13-SHARED-EDGE-ORACLE-FULL-GATE` — reopen both TB172/TB173 result archives, recheck N1–N3 and oracle evidence, and re-ask D13 for singularity-port arrival before any code repair. Do not activate CP3/497/D0/H4 or start CB-195/CB-196 without that decision.
+- **INDEPENDENT REVIEW performed:** [TB-REV-173](Architecture_M6_CP3_TB_REV_173_Shared_Edge_Oracle_Independent_Review_20261123.md) rejects gate and establishes only isolated shared-edge oracle non-vacuity; no production integration. **OWNER D13 decision pending:** specify how to assign a singularity port reached by another trace; option A recommended but not approved. Do not activate CP3/497/D0/H4 or start CB-195/CB-196. Conditional CB-195 exact proof is described in the review.
 - **Held:** CB-195/CB-196; row979 sphere stage; Branch A activation and production sphere; CB-190 and CP3/497/D0/H4. TB169/CP2 remain accepted.
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-173-P13-SHARED-EDGE-ORACLE-FULL-GATE
+NEXT_TURN: UNKNOWN — D13 owner approval required; no successor execution
 ```
 
 ## Turn Sequence

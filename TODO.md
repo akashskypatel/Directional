@@ -1,13 +1,14 @@
-## CURRENT — TB-EXEC-173 measured RED; TB-REV-173 next (2026-11-23 UTC)
+## CURRENT — TB-REV-173 independent review; D13 user decision pending (2026-11-23 UTC)
 
 - [x] `M6-CP3-CB-194-P13-EXACT-SOURCE-PATH-SHARED-EDGE-ORACLE` — GMP/GMPXX compiled source `fae9eb71bb5806d71901cc2ccb8c925201be0c0a`, package `14820355596`, `runtimeExecution=false`.
 - [x] `M6-CP3-TB-EXEC-173-P13-SHARED-EDGE-ORACLE-FULL-GATE` — immutable 996-case [run 45180338549](https://github.com/akashskypatel/Directional/actions/runs/45180338549), artifact `14821438542`, **989/996 PASS, seven mechanical RED**, membership 1077, new oracle rows 995/996 PASS, TB172 shared 994-row logs/results unchanged under N1–N2. **Rejected**, not production acceptance. [Execution report](.agents/Directional/Architecture_M6_CP3_TB173_P13_Shared_Edge_Oracle_Full_Gate_Execution_Report_20261123.md).
-- [ ] **1 NEXT:** `M6-CP3-TB-REV-173-P13-SHARED-EDGE-ORACLE-FULL-GATE` — independent artifact review, source-path helper non-vacuity and D13 owner decision. No producer repair before D13 is resolved; no rebuild or rerun in this TB.
+- [x] **Independent review:** `M6-CP3-TB-REV-173-P13-SHARED-EDGE-ORACLE-FULL-GATE` — 996-case rejected gate, exact 491/994 selector-prefix hashes and 994 normalized transcript identities independently verified; source-path oracle passes isolated non-vacuity but is not wired in production. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_173_Shared_Edge_Oracle_Independent_Review_20261123.md).
+- [ ] **OWNER D13 DECISION REQUIRED:** when a trace arrives on its singularity port, choose the arrival-ownership rule; option A recommended, not approved. Do not start CB-195/CB-196 or activate. Conditional CB-195 arrival-port receipt and shared-edge producer proof has falsifiers in the review.
 - [ ] **D13 PENDING (user):** review must re-ask trace arrival along its singularity port before A2a change authorization.
 - [ ] **HELD:** CB-195/CB-196, row979, Branch A activation, CB-190, CP3/497/D0/H4.
 - Baseline TB169 accepted **993/993**, CP2 accepted **491/491**; stable **67/17/50**, debt1, deferred81 unchanged.
 
-NEXT_TURN: M6-CP3-TB-REV-173-P13-SHARED-EDGE-ORACLE-FULL-GATE
+NEXT_TURN: UNKNOWN — D13 owner decision required; CB-195/CB-196 held
 
 ## HISTORY — TB-REV-172 independent and adversarial rejection; CB-194 all-piece interval receipt next (2026-11-23 UTC)
 
