@@ -1,3 +1,18 @@
+## CURRENT — M6-CP3-TB-REV-175 rejected TB175; one extract-only CB successor (2026-11-23 UTC)
+
+- [x] Independent verification: 1000 executed, 993 PASS, seven known RED; 2008/2008 TB175 and 2004/2004 TB174 checks; 998 prior cases stable under N1–N3; helper cases 999/1000 PASS but unwired. [M6-CP3-TB-REV-175 review](.agents/Directional/Architecture_M6_CP3_TB_REV_175_Retraced_Trace_Selection_Independent_Review_20261123.md).
+- [ ] **NEXT ONLY** `M6-CP3-CB-197A-P13-EXACT-TRACE-PIECE-BUILDER-EXTRACTION` — extract piece-accurate path builder to A2a-accessible lower layer, compile only, no tests. Review record states exact falsifiers.
+- [ ] Later separate artifact-only TB must show no semantic drift; per-fixture selection receipt and exact path simplicity proof before CB-197b selection/remap.
+- [ ] CB-197b / CB-198, row979, CB-190 remain held; no CP3/497/D0/H4 promotion. Accepted TB169 993/993, CP2 491/491. Stable 67/17/50; debt1/deferred81.
+
+```text
+NEXT_TURN: M6-CP3-CB-197A-P13-EXACT-TRACE-PIECE-BUILDER-EXTRACTION
+Owner: Code + Build, extract-only, compile eight GMP/GMPXX targets; runtimeExecution=false
+Source authority: f4acd5d1f29d55f36c427e88fed8f5ca09ae7ee5; review at .agents/Directional/Architecture_M6_CP3_TB_REV_175_Retraced_Trace_Selection_Independent_Review_20261123.md
+Required: preserve exact_trace_segment_pieces face/slide behavior, no product mutation; separate TB verifies original 1000 cases
+STOP: missing exact path, changed pieces, changed product/selectors/tests or cross-layer dependency; no CB-197b work
+```
+
 ## CURRENT — TB-EXEC-175 full gate rejected; TB-REV-175 next (2026-11-23 UTC)
 
 - [x] TB-REV-174 [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_174_Adversarial_Review_20261123.md): TB174 rejection upheld; prose CB-196 receipt withdrawn (arrival port = removed trace's own port); reference remap (F3) and piece-accurate path (F4) scoped.

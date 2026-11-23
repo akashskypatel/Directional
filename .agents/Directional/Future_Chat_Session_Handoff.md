@@ -31,7 +31,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-23 UTC. TB-EXEC-175 complete, rejected 993/1000 (seven known mechanical RED). TB-REV-175 is the one next separate turn. CB-196 helper remains unwired. |
+| Currency | 2026-11-23 UTC. M6-CP3-TB-REV-175 independent Review upheld TB175 rejection 993/1000; CB-196 selector unwired. Exactly next M6-CP3-CB-197A-P13-EXACT-TRACE-PIECE-BUILDER-EXTRACTION, extract-only. |
 | Branch / source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 open/draft; immutable CB-196 source `f4acd5d1f29d55f36c427e88fed8f5ca09ae7ee5`; GMP/GMPXX compile [run `45225040406`](https://github.com/akashskypatel/Directional/actions/runs/45225040406), artifact `14845101702` (SHA-256 `9afbf9c90c96697c49e97669ba108d68e61f57d0182cff3f42807d133be6034f`), log `14844220690` (SHA-256 `c9fe20e317b2cb8ab3d985af6171d38ce691df23ba15cc7ab239e425f15b945b`), 28/28 internal hashes, eight targets, clean source, `runtimeExecution=false`. |
 | Current TB evidence | TB175 [run `45233825958`](https://github.com/akashskypatel/Directional/actions/runs/45233825958), result artifact `14849271506` ZIP SHA-256 `be7a0f783d0afb025ccee2353921a765c340766340553f2d70b4b5c32992b347`, 2008/2008 checksums, **993/1000** (seven RED), 1081 membership, 998/998 TB174 inherited cases match (757 exact, 240 N1/N2, row179 N3). [TB175 report](Architecture_M6_CP3_TB175_P13_Retraced_Trace_Selection_Full_Gate_Execution_Report_20261123.md). TB174 [run `45206305297`](https://github.com/akashskypatel/Directional/actions/runs/45206305297), result `14833644440` SHA-256 `f77730c1896c346b15de704c90326a5a6543816a3e8ab553d4d8a70b9e11d5a3`, 2004/2004 checksums, 991/998. |
 | Accepted comparison | TB169 run `45104059492`, result ZIP `14787082075` (`dc15a8df5226fc209717f6df2fd15140e9e04abb6e73f831d8285992e72f04e5`), 993/993 accepted; CP2 491/491 accepted. Frozen prefix SHA-256 `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`. |
@@ -40,20 +40,18 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Mandatory next turn
 
-- **COMPLETE:** TB-EXEC-175 [report](Architecture_M6_CP3_TB175_P13_Retraced_Trace_Selection_Full_Gate_Execution_Report_20261123.md): immutable 1000-case gate rejected 993/1000, seven known RED; rows 999/1000 PASS; 998 inherited cases match TB174 under N1-N3.
-- **COMPLETE:** TB-REV-174 [independent](Architecture_M6_CP3_TB_REV_174_Retrace_Oracle_Independent_Review_20261123.md) + [adversarial](Architecture_M6_CP3_TB_REV_174_Adversarial_Review_20261123.md): TB174 rejected 991/998 (same seven RED, predicted). Prose CB-196 receipt withdrawn: arrival port of a retraced duplicate = its own `Y.port` (F1).
-- Removing a duplicate after tracing must remap `struckTrace` and event incidences naming it (F3); path builder must be piece-accurate `exact_trace_segment_pieces` (F4); missing path fails closed (F5).
+- **COMPLETE:** `M6-CP3-TB-REV-175` [review](Architecture_M6_CP3_TB_REV_175_Retraced_Trace_Selection_Independent_Review_20261123.md), independent 998-row raw comparison and two helper non-vacuity checks; TB175 rejected, stable counts unchanged.
+- **ONE NEXT:** `M6-CP3-CB-197A-P13-EXACT-TRACE-PIECE-BUILDER-EXTRACTION` — extract-only Code + Build. Move `exact_trace_segment_pieces` and required exact helpers from embedded-graph layer to A2a-accessible lower layer without changing output. Compile only via GMP/GMPXX eight-target dispatcher; do not run tests.
+- **STOP:** no selector, fixture, validation, trace removal/remap or production correction, and no CP3/497/D0/H4 promotion in this CB. Separate TB must compare all 1000 original cases. Later per-fixture selection receipt and edge-visit proof precede CB-197b.
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-175
-Owner: independent Review agent, runtime-free, no source/test/fixture/selector mutation
+NEXT_TURN: M6-CP3-CB-197A-P13-EXACT-TRACE-PIECE-BUILDER-EXTRACTION
+Owner: Code + Build, extraction only; compile-only GMP/GMPXX
+Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_175_Retraced_Trace_Selection_Independent_Review_20261123.md
 Source: f4acd5d1f29d55f36c427e88fed8f5ca09ae7ee5
-Compile: run 45225040406 GMP/GMPXX, package 14845101702, 28/28 checksums
-TB175: run 45233825958, result 14849271506, ZIP SHA-256 be7a0f783d0afb025ccee2353921a765c340766340553f2d70b4b5c32992b347
-Observed: 993/1000 PASS, known mechanical RED rows 445/652/653/656/658/660/786; postflight=true, 1000 executed, 81 deferred
-Compare: 998/998 TB174 inherited metadata matches, 757 byte-identical logs, 240 N1/N2-only, row179 N3 24-record reorder
-Required: reopen full raw evidence and check helper non-vacuity; decide whether CB-197a source piece-builder extraction and fixture receipt is justified
-STOP: do not promote CP3/497/D0/H4; CB-197a/b/CB-198 and production wiring remain held pending this Review
+Evidence: TB175 45233825958, artifact 14849271506; 993/1000 rejected, unchanged seven RED, helper tests PASS but unwired
+Falsifiers: exact face/edge piece sequence, terminal-contact case and missing-path outcome must be unchanged; no higher-layer dependency or product/selector/test edits
+Then: separate artifact-only TB for original 1000-case full gate; NOT this Review
 ```
 
 ## Turn Sequence
@@ -69,7 +67,8 @@ STOP: do not promote CP3/497/D0/H4; CB-197a/b/CB-198 and production wiring remai
 | COMPLETE | TB-REV-174 | Independent + [adversarial](Architecture_M6_CP3_TB_REV_174_Adversarial_Review_20261123.md) F1–F5. |
 | COMPLETE | CB-196 exact retraced-trace selection helper | GMP/GMPXX compile run `45225040406`, package `14845101702`, unwired; no runtime. |
 | COMPLETE (rejected) | TB-EXEC-175 (993/1000 PASS, seven known RED) | [Report](Architecture_M6_CP3_TB175_P13_Retraced_Trace_Selection_Full_Gate_Execution_Report_20261123.md). New helper tests PASS but unwired. |
-| **NEXT** 2 | TB-REV-175 → CB-197a extract `exact_trace_segment_pieces` to A2a layer (product-neutral) → TB | Decide per-fixture selection receipt (row652 predicted 4 pairs). |
+| COMPLETE | M6-CP3-TB-REV-175 | [Independent review](Architecture_M6_CP3_TB_REV_175_Retraced_Trace_Selection_Independent_Review_20261123.md); 993/1000 REJECTED, same seven RED, next extraction only. |
+| **NEXT** 2 | `M6-CP3-CB-197A-P13-EXACT-TRACE-PIECE-BUILDER-EXTRACTION` extraction only → separate TB | Per-fixture receipt required before CB-197b (row652 predicted four pairs, not yet measured). |
 | 3 | TB-REV → CB-197b selection in `canonical_field_aligned_candidate` + remap `struckTrace`/incidences + arrival owns `Y.port`, fail-closed missing path → TB | — |
 | 3B | CB-198 port-set readers (EmbeddedGraphTopology 1793, GlobalTopologyPlan 410/2117, origin events) + every-region-owns-a-face assertion → TB | Mechanical controls green, row652 2 regions. |
 | 4 | Row979 `RegionContainsInteriorSingularity` (vertex 8) | After mechanical controls green; read printed locus first. |
