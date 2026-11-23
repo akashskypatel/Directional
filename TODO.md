@@ -1,3 +1,5 @@
+**Current turn outcome (2026-11-23):** `M6-CP3-TB-REV-176` independently rejects TB176 at 994/1001; seven unchanged RED. Exactly one next turn: `M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT` test-only per-fixture source-retrace receipt. CB-197A/B and TB-EXEC-176 are complete. Production selection, accepted selector, CP3/497/D0/H4 promotion remain held. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_176_P13_Piece_Builder_And_Ordered_Retrace_Independent_Review_20261123.md).
+
 ## CURRENT — TB-EXEC-176 measured, rejected; TB-REV-176 next (2026-11-23 UTC)
 
 - [x] CB-197A/CB-197B completed as separate GMP/GMPXX compile-only turns; immutable CB-197B source `8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3`, package `14859356205` SHA-256 `e6111ff21530f107ab8b1db724155aa2c4fbbe4a2765342fbfabbd4a9c4fc664` (28/28 hashes).

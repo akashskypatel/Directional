@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3; accepted TB169 **993/993** and CP2 **491/491** unchanged. TB175 rejected **993/1000**, with seven known mechanical RED. CB-197B exact ordered-stretch retrace compiled (source `8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3`, [run 45255304770](https://github.com/akashskypatel/Directional/actions/runs/45255304770), 28/28 package checks, `runtimeExecution=false`). **Next:** immutable separate TB-EXEC-176 1001-row full gate; 994 PASS and seven RED are predictions only. No CP3/497/D0/H4 promotion. [CB-197B Code + Build record](Architecture_M6_CP3_CB197B_P13_Exact_Source_Retrace_Ordered_Stretches_Code_Build_Record_20261123.md).
+**Completed:** M0–M5 · **Now:** M6 / CP3; accepted TB169 **993/993** and CP2 **491/491** unchanged. Independent M6-CP3-TB-REV-176 rejects TB176 **994/1001** with seven unchanged mechanical RED. Ordered retrace is tested but not wired into A2a. Next M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT is a test-only fixture receipt; no CP3/497/D0/H4 promotion.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

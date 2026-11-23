@@ -31,7 +31,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-23 UTC. **TB-EXEC-176 COMPLETE / GATE REJECTED**: 994/1001 PASS, seven existing RED, [run 45263429563](https://github.com/akashskypatel/Directional/actions/runs/45263429563), result artifact `14861444963`. Next separate turn: independent **M6-CP3-TB-REV-176**. CB-197B source and compiled package unchanged. |
+| Currency | 2026-11-23 UTC. **M6-CP3-TB-REV-176 COMPLETE / GATE REJECTED**: independent archive review confirms TB176 994/1001 PASS, seven unchanged RED, run `45263429563`, artifact `14861444963`. Next **M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT** test-only receipt. CB-197B source and GMP package remain unchanged. [Review](Architecture_M6_CP3_TB_REV_176_P13_Piece_Builder_And_Ordered_Retrace_Independent_Review_20261123.md). |
 | Branch / source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 open/draft; immutable CB-197B source `8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3`, GMP/GMPXX [run 45255304770](https://github.com/akashskypatel/Directional/actions/runs/45255304770), artifact `14859356205` SHA-256 `e6111ff21530f107ab8b1db724155aa2c4fbbe4a2765342fbfabbd4a9c4fc664`, log `14858416869` SHA-256 `724f34a99244c44b3b7fa1b613d64f395e18cd046e95a9c3dc564d9c1e36d860`, 28/28 checks, eight targets, `runtimeExecution=false`. [Code + Build record](Architecture_M6_CP3_CB197B_P13_Exact_Source_Retrace_Ordered_Stretches_Code_Build_Record_20261123.md). |
 | Current TB evidence | TB176 [run `45263429563`](https://github.com/akashskypatel/Directional/actions/runs/45263429563), result `14861444963` SHA-256 `202cb81282d9e8a0bb6b711020af80450e407feb12b71de613b1be8cca110453`, **994/1001 PASS**, seven RED, **2010/2010** checksums, 1082 members. Against TB175: 1000/1000 inherited ledger fields match; 778 exact and 222 N1/N2 normalized logs, no unapproved changes. New row1001 PASS. [TB176 report](Architecture_M6_CP3_TB176_P13_Piece_Builder_And_Ordered_Retrace_Full_Gate_Execution_Report_20261123.md). TB175 [run `45233825958`](https://github.com/akashskypatel/Directional/actions/runs/45233825958), result `14849271506` SHA-256 `be7a0f783d0afb025ccee2353921a765c340766340553f2d70b4b5c32992b347`, 993/1000, seven RED; 2008/2008 hashes. |
 | Accepted comparison | TB169 run `45104059492`, result ZIP `14787082075` (`dc15a8df5226fc209717f6df2fd15140e9e04abb6e73f831d8285992e72f04e5`), 993/993 accepted; CP2 491/491 accepted. Frozen prefix SHA-256 `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`. |
@@ -47,13 +47,14 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 - **COMPLETE / REJECTED:** TB-EXEC-176 [execution report](Architecture_M6_CP3_TB176_P13_Piece_Builder_And_Ordered_Retrace_Full_Gate_Execution_Report_20261123.md), [run 45263429563](https://github.com/akashskypatel/Directional/actions/runs/45263429563), artifact `14861444963` SHA-256 `202cb81282d9e8a0bb6b711020af80450e407feb12b71de613b1be8cca110453`: 994/1001 PASS, seven existing RED, 2010/2010 hashes, all 1000 inherited rows identical after N1/N2 normalization, row1001 PASS. No source/test/selector/build changes. A2a remains unwired; no production acceptance.
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-176
-Owner: independent read-only TB176 Review, separate turn.
-Authority: TB176 immutable result, TB175 result for complete comparison, TB-REV-175 adversarial G1–G4, CB-197A/B exact manifest and CB-197B compile record.
-Use source: 8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3
-Use TB176 run: 45263429563, result 14861444963 sha256 202cb81282d9e8a0bb6b711020af80450e407feb12b71de613b1be8cca110453
-Verify 1001/1001 execution, 994 PASS and seven unchanged RED; replay independent 1000-row log/ledger comparison and row1001 exact ordered-stretch negative premise; decide next CB-198 scope separately.
-No CP3/497/D0/H4 promotion or A2a producer wiring in this execution turn.
+NEXT_TURN: M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT
+Owner: separate Code + Build turn. Test-only receipt proving per-fixture exact source-pieces selection, no A2a product mutation.
+Authority: M6-CP3-TB-REV-176 independent review and TB-REV-175 adversarial G1–G4.
+Use source: 8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3; review snapshot: 6240ea392114da3d8be5ae9a7cbe019a880a782e
+Test-only per-fixture selected/removed exact directed source path pairs; require positive-length reverse overlap and retain every lineage; missing path fails closed. Row652 four pair removals are predicted, not assumed.
+Stop on absent source path, changed production output, new acceptance/regression, or false/unsupported ownership claim; return to Review rather than silently adjusting.
+Compile-only GMP/GMPXX; no test/benchmark runtime in CB-198. After CB-198 the separately authorized TB-EXEC-177 is next, not part of this turn.
+No CP3/497/D0/H4 promotion, selector edit, or A2a production wiring in this Review.
 ```
 
 ## Turn Sequence
@@ -65,8 +66,8 @@ No CP3/497/D0/H4 promotion or A2a producer wiring in this execution turn.
 | COMPLETE | CB-185 → … → TB-EXEC-172 | Records: adversarial TB-REV-166…171 files; TB169 993/993 accepted; TB170 986/993, TB171/TB172 987/994 rejected; CB-192 package `14797941489`, CB-193 package `14805640405` (source `587b8ba7…f881`). |
 | COMPLETE (rejected) | TB-REV-172 | [Independent](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md), [adv. 1](Architecture_M6_CP3_TB_REV_172_Adversarial_Review_20261123.md), [adv. 2](Architecture_M6_CP3_TB_REV_172_Adversarial_Continuation_Shared_Edge_20261123.md): co-traced digons, A2a root cause, D13 pending. |
 | COMPLETE | CB-194 → TB-EXEC-173 → CB-195 → TB-EXEC-174 → CB-196 → TB-EXEC-175 (993/1000) | Unwired helpers; same 7 RED. Reviews TB-REV-173 ([D13](Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md)), [174 adv.](Architecture_M6_CP3_TB_REV_174_Adversarial_Review_20261123.md), [175 adv.](Architecture_M6_CP3_TB_REV_175_Adversarial_Review_20261123.md). |
-| **COMPLETE** CB-197A, CB-197B and TB-EXEC-176 (rejected); **NEXT** TB-REV-176 | CB-197B source `8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3` measured 994/1001 PASS; the seven known RED remain. | Immutable run 45263429563 / artifact 14861444963, all 2010 checksums valid; full TB175 comparison matches under N1/N2. |
-| 2 | TB-REV-176 → CB-198 test-only per-fixture selection receipt → TB-EXEC-177 | Row652 predicted 4 pairs; missing path fails closed. |
+| **COMPLETE** CB-197A, CB-197B and TB-EXEC-176 (rejected); **COMPLETE** TB-REV-176; **NEXT** CB-198 | CB-197B source `8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3` measured 994/1001 PASS; the seven known RED remain. | Immutable run 45263429563 / artifact 14861444963, all 2010 checksums valid; full TB175 comparison matches under N1/N2. |
+| 2 | TB-REV-176 COMPLETE → CB-198 test-only per-fixture selection receipt → TB-EXEC-177 | Row652 predicted 4 pairs; missing path fails closed. |
 | 3 | TB-REV → CB-199 selection in `canonical_field_aligned_candidate` + remap `struckTrace`/incidences + arrival owns `Y.port`, fail-closed → TB | — |
 | 3B | CB-200 port-set readers (EmbeddedGraphTopology 1793, GlobalTopologyPlan 410/2117, origin events) + every-region-owns-a-face assertion → TB | Mechanical controls green, row652 2 regions. |
 | 4 | Row979 `RegionContainsInteriorSingularity` (vertex 8) | After mechanical controls green; read printed locus first. |
