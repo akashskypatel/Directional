@@ -46,4 +46,4 @@ Freeze **`M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT`** as a **test-
 | Turn boundary held | Review inspected source and archives; no product, test, fixture, selector, benchmark, build or runtime mutations |
 | review_check.py boundary | Executed on verified source snapshot; selector-content checks pass, but `boundary` reports FAIL for Git ancestry baseline and three durable rewrite sources because downloaded source archive excludes `.git`; no claim of actual remote ancestry from synthetic tree |
 | `STATUS` lifecycle maintained | Entry beacon `M6-CP3-TB-REV-176` opened 2026-11-23T21:33:33Z; final state to be set only after docs publication and cleanup |
-| Pushed to origin, branch in sync | Apply and branch-head checks required after publication; synthetic snapshot has no real `origin` tracking, so cannot itself prove branch synchronization |
+| Pushed to origin, branch in sync | GitHub workflow drive_apply confirmed success and remote commit, and PR head included that commit; `git status -sb` synchronization check unavailable from `.git`-free snapshot; no local-origin claim |

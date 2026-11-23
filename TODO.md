@@ -1,22 +1,22 @@
 **Current turn outcome (2026-11-23):** `M6-CP3-TB-REV-176` independently rejects TB176 at 994/1001; seven unchanged RED. Exactly one next turn: `M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT` test-only per-fixture source-retrace receipt. CB-197A/B and TB-EXEC-176 are complete. Production selection, accepted selector, CP3/497/D0/H4 promotion remain held. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_176_P13_Piece_Builder_And_Ordered_Retrace_Independent_Review_20261123.md).
 
-## CURRENT — TB-EXEC-176 measured, rejected; TB-REV-176 next (2026-11-23 UTC)
+## CURRENT — TB-REV-176 independently rejected; CB-198 test-only receipt next (2026-11-23 UTC)
 
 - [x] CB-197A/CB-197B completed as separate GMP/GMPXX compile-only turns; immutable CB-197B source `8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3`, package `14859356205` SHA-256 `e6111ff21530f107ab8b1db724155aa2c4fbbe4a2765342fbfabbd4a9c4fc664` (28/28 hashes).
 - [x] **COMPLETE / REJECTED** `M6-CP3-TB-EXEC-176-P13-PIECE-BUILDER-AND-ORDERED-RETRACE-FULL-GATE` — [run 45263429563](https://github.com/akashskypatel/Directional/actions/runs/45263429563), result `14861444963` ZIP SHA-256 `202cb81282d9e8a0bb6b711020af80450e407feb12b71de613b1be8cca110453`, **994/1001 PASS, seven known RED**, 2010/2010 result checksums, membership 1001 gated +81 deferred, no rebuild. First 1000 TB175 rows unchanged (778 exact logs, 222 permitted N1/N2-only, no N3 or unexpected differences). New row 1001 PASS. [Execution report](.agents/Directional/Architecture_M6_CP3_TB176_P13_Piece_Builder_And_Ordered_Retrace_Full_Gate_Execution_Report_20261123.md).
-- [ ] **NEXT** `M6-CP3-TB-REV-176` — independently inspect TB176 and TB175 immutable archives, all original log and ledger comparisons, row 1001, the unchanged seven mechanical failures, and the absence of product acceptance. Review must decide CB-198 scope separately.
-- [ ] CB-198 test-only per-fixture selection receipt → TB-EXEC-177; **not authorized in this execution turn**.
+- [x] **COMPLETE** `M6-CP3-TB-REV-176` — independently verified TB176/TB175 archives, 1,000 inherited records, row1001 negative, same seven RED and no production acceptance. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_176_P13_Piece_Builder_And_Ordered_Retrace_Independent_Review_20261123.md).
+- [ ] **NEXT** `M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT` — test-only exact per-fixture selection and nonvacuity receipt; no A2a production mutation. TB-EXEC-177 follows in a separate turn.
 - [ ] CB-199 production selection + reference remap + arrival owns `Y.port` (fail closed) → TB.
 - [ ] CB-200 port-set readers + every-region-owns-a-face assertion → TB; row652 predicts two regions only after mechanical repair and independent review.
 - [ ] Row979, Branch A, CB-190; deferred CollinearOverlap/EndpointTouch and per-grazing-edge receipt.
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-176
-Owner: independent read-only Review of frozen TB176 artifact and TB175 comparison.
-Authority: .agents/Directional/Architecture_M6_CP3_TB176_P13_Piece_Builder_And_Ordered_Retrace_Full_Gate_Execution_Report_20261123.md; TB-REV-175 adversarial G1–G4, CB-197A/B manifest, TB175 report.
-Source: 8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3; compile package 14859356205. TB176 run 45263429563, result 14861444963.
-Review exact 1001-row result and raw files; 994 PASS, known RED 445/652/653/656/658/660/786, 81 deferred; prior 1000 unchanged under N1/N2 only.
-STOP: no new benchmark/rebuild, source/selector/fixture repair, CB-198 implementation, A2a wiring, or CP3/497/D0/H4 promotion during TB-EXEC-176. Determine the next authorized code turn only in TB-REV-176.
+NEXT_TURN: M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT
+Owner: separate Code + Build, test-only exact per-fixture selection proof.
+Authority: M6-CP3-TB-REV-176 independent review and TB-REV-175 adversarial G1–G4.
+Use CB-197B source: 8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3; prior gate TB176 994/1001 RED.
+Prove every path source-piece identity and positive reverse-overlap before removing a pair; row652 four removals predicted only, missing paths fail closed.
+STOP: product mutation, unproved path, selector/fixture edits or acceptance promotion; no runtime in this Code + Build turn. Complete compile-only GMP/GMPXX; separate TB-EXEC-177 follows.
 ```
 
 ## HISTORY — M6-CP3-TB-REV-175 rejected TB175; one extract-only CB successor (2026-11-23 UTC)
