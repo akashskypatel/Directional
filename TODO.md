@@ -1,6 +1,35 @@
-**Current turn outcome (2026-11-23):** `M6-CP3-TB-REV-176` independently rejects TB176 at 994/1001; seven unchanged RED. Exactly one next turn: `M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT` test-only per-fixture source-retrace receipt. CB-197A/B and TB-EXEC-176 are complete. Production selection, accepted selector, CP3/497/D0/H4 promotion remain held. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_176_P13_Piece_Builder_And_Ordered_Retrace_Independent_Review_20261123.md).
+**Current turn outcome (2026-11-23):** `M6-CP3-TB-REV-176` (independent + adversarial) rejects TB176 at 994/1001 with seven unchanged RED. The prose CB-198 is withdrawn; the next turn is the exact test-only `M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT`, then TB-EXEC-177. [Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_176_Adversarial_Review_20261123.md).
 
-## CURRENT — TB-REV-176 independently rejected; CB-198 test-only receipt next (2026-11-23 UTC)
+## CURRENT — TB-REV-176 adversarial: exact CB-198 receipt next (2026-11-23 UTC)
+
+- [x] **COMPLETE** TB-REV-176 adversarial continuation (H1–H4): prose CB-198 withdrawn (RA-261); exact failure-branch receipt frozen (`…CB198…Receipt_Exact.diff` `c30811fc…391b`); H2 arrival check (`keptArrival = removedSingularity`) for the D13 = A `Y.port` rule; TB-EXEC-177 rules frozen (TB176 manifest unchanged).
+- [ ] **1 NEXT** CB-198 exact test-only receipt (compile only).
+- [ ] **2** TB-EXEC-177: 994/1001, same 7 RED; only the inserted receipt text may differ; record row652 receipt.
+- [ ] **3** TB-REV-177 → CB-199A unwired remap helper (`struckTrace`/incidences → kept trace, arrival owns `Y.port`) + unit test → TB. Only if the receipt prediction holds; otherwise the producer first.
+- [ ] **4** CB-199B selection switch in `canonical_field_aligned_candidate`, fail closed on a missing path → TB.
+- [ ] **5** CB-200 port-set readers + every-region-owns-a-face assertion → TB; mechanical controls green, row652 two regions.
+- [ ] **6** Row979, Branch A, CB-190; deferred CollinearOverlap/EndpointTouch (E5).
+
+```text
+NEXT_TURN: M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT
+Owner: implementation agent (Code + Build, compile only, test-only)
+Authority: Architecture_M6_CP3_TB_REV_176_Adversarial_Review_20261123.md (H1-H4); prose CB-198 withdrawn; manifest gates/Architecture_M6_CP3_CB198_P13_Exact_Manifest.md
+Apply exactly: .agents/Directional/Architecture_M6_CP3_CB198_P13_Mechanical_Retraced_Trace_Selection_Receipt_Exact.diff
+  SHA-256 c30811fca14154427a41d5e90f3fb565bbbbfe0b5601eec8bcec36e845e6391b (6026 B, +108/-0)
+  tests/FieldAlignedCurveNetworkTests.cpp git e21c3362d2a049769ad376b1e79bf59fa6db1999 -> sha256 75ae997a94d766bcc9cda56f37abbb3bb9e655758d141003cfbf51c6cb638cc6
+Build: dispatcher compile, GMP/GMPXX eight targets incl. directional_surface_cell_producer_tests, runtimeExecution=false
+Then: M6-CP3-TB-EXEC-177-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT-FULL-GATE
+  manifest unchanged TB176 0f85400ff9713fc8a835f308304ded1db9830e668211bab71c88d580b2e84642 (1001 rows, membership 1082)
+  expected 994 PASS, same 7 RED (445/652/653/656/658/660/786)
+  compare to TB176 14861444963 under N1-N3; only allowed change: after each ';alongEdgeVisitsTruncated=<bool>' one inserted text starting ';retracedTraceSelection=' and ending ';sharedEdgeTracePairsTruncated=<bool>' (or '}' after pathUnavailable{...}); else STOP
+  record row652 receipt verbatim; prediction (not forced): available, retracedTraceCount=4, keptArrival=removedSingularity and removedArrival=keptSingularity, singularities in {10,35,47,71}
+  -> M6-CP3-TB-REV-177: read receipt; freeze CB-199A unwired remap helper (struckTrace/incidences, arrival owns Y.port) or return to producer
+On failure/blocker: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
+Do not: edit beyond the diff; add tests/manifest rows; wire selection; change producer/region/validator code; run tests in a CB; activate; promote CP3/497/D0/H4
+```
+
+
+## HISTORY — TB-REV-176 independently rejected; prose CB-198 (withdrawn by the adversarial continuation) (2026-11-23 UTC)
 
 - [x] CB-197A/CB-197B completed as separate GMP/GMPXX compile-only turns; immutable CB-197B source `8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3`, package `14859356205` SHA-256 `e6111ff21530f107ab8b1db724155aa2c4fbbe4a2765342fbfabbd4a9c4fc664` (28/28 hashes).
 - [x] **COMPLETE / REJECTED** `M6-CP3-TB-EXEC-176-P13-PIECE-BUILDER-AND-ORDERED-RETRACE-FULL-GATE` — [run 45263429563](https://github.com/akashskypatel/Directional/actions/runs/45263429563), result `14861444963` ZIP SHA-256 `202cb81282d9e8a0bb6b711020af80450e407feb12b71de613b1be8cca110453`, **994/1001 PASS, seven known RED**, 2010/2010 result checksums, membership 1001 gated +81 deferred, no rebuild. First 1000 TB175 rows unchanged (778 exact logs, 222 permitted N1/N2-only, no N3 or unexpected differences). New row 1001 PASS. [Execution report](.agents/Directional/Architecture_M6_CP3_TB176_P13_Piece_Builder_And_Ordered_Retrace_Full_Gate_Execution_Report_20261123.md).
@@ -11,7 +40,7 @@
 - [ ] Row979, Branch A, CB-190; deferred CollinearOverlap/EndpointTouch and per-grazing-edge receipt.
 
 ```text
-NEXT_TURN: M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT
+SUPERSEDED (H1) — NEXT_TURN: M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT
 Owner: separate Code + Build, test-only exact per-fixture selection proof.
 Authority: M6-CP3-TB-REV-176 independent review and TB-REV-175 adversarial G1–G4.
 Use CB-197B source: 8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3; prior gate TB176 994/1001 RED.

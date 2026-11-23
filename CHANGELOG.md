@@ -1,3 +1,13 @@
+## 2026-11-23 — M6-CP3-TB-REV-176 adversarial continuation: exact CB-198 receipt frozen
+
+[Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_176_Adversarial_Review_20261123.md) upholds the TB176 rejection (994/1001). It withdraws the prose CB-198 and freezes it as an exact, test-only failure-branch receipt: `Architecture_M6_CP3_CB198_P13_Mechanical_Retraced_Trace_Selection_Receipt_Exact.diff`, SHA-256 `c30811fc…391b`, +108/−0. The receipt:
+- reads per-trace exact pieces and fails closed on a missing or broken path;
+- calls `exact_source_retraced_traces`;
+- prints each pair's arrival singularities (H2, which checks the D13 = A `Y.port` premise);
+- lists every shared-edge trace pair with its retrace, ends and face-piece evidence.
+
+TB-EXEC-177 reuses the TB176 manifest; the only allowed log change is the inserted receipt text.
+
 ## 2026-11-23 — M6-CP3-TB-REV-176: immutable gate independently rejected; CB-198 test receipt next
 
 [Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_176_P13_Piece_Builder_And_Ordered_Retrace_Independent_Review_20261123.md) verified TB175 (993/1000) and TB176 (994/1001) archive hashes, 2,008/2,010 internal hashes, frozen 491-row selector prefix, inherited 1,000/1,000 ledger records and 778 byte-equal / 222 N1/N2-only raw log pairs. New row1001 is a nonvacuous negative ordered-stretch predicate test, but remains unwired in production. Seven mechanical RED persist; stable 67/17/50, accepted TB169 993/993 and CP2 491/491, debt1/deferred81. No promotion. Frozen sole successor: `M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT` (test-only exact selection receipt).
