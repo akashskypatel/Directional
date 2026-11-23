@@ -1,13 +1,12 @@
-## CURRENT — CB-192 compiled; TB-EXEC-171 next (2026-11-23 UTC)
+## CURRENT — TB-EXEC-171 RED; independent TB-REV-171 next (2026-11-23 UTC)
 
-- [x] Adversarial TB-REV-170 A1–A7: `CutAlongOneEdge` identified from printed face-piece witness; CB-191 was withdrawn without execution. Mechanical arc 15 along-edge face pieces were being misclassified as cuts.
-- [x] `M6-CP3-CB-192-P13-ALONG-EDGE-FACE-PIECE-CLASSIFIER`: applied the exact 7,105-byte two-file reviewed classifier and falsifier diff (`527dd0b8…d7e6`) at semantic source `462010254fa90bf6c853768019bcfc9132b5c631`; eight-target GMP/GMPXX compile [run 45130510704](https://github.com/akashskypatel/Directional/actions/runs/45130510704), package `14797941489` (`49824e664c79d13fc1b2ba047bd044303683f41b28df7a3344902e74d84b41cf`), `runtimeExecution=false`. [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB192_P13_Along_Edge_Face_Piece_Classifier_Code_Build_Record_20261123.md).
-- [ ] **1 NEXT:** `M6-CP3-TB-EXEC-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE` — immutable package only; 994-row manifest `704dcf6c…09c6`; 994/994 PASS, CP2 491/491, membership 1,075. All rows except 979/994 must match TB169 under N1–N3; row 979 measured. No census, source edits or rebuild.
-- [ ] **2:** `M6-CP3-TB-REV-171-…` — only after valid TB result, read row979 printed sphere locus and freeze a receipt **or** one narrow correction, not both.
-- [ ] **3 (conditional):** staged plan build → activation CB → census TB → parameter deletion → V3b → R1 → O48. CB-190 remains off the critical path.
-- Held: CP3/497/D0/H4, production sphere. Latest accepted TB169 993/993, CP2 491/491; rejected TB170 986/993. Stable 67/17/50, debt1, deferred81. CB-192 compiled but its new test was not executed.
+- [x] `M6-CP3-CB-192-P13-ALONG-EDGE-FACE-PIECE-CLASSIFIER`: exact reviewed classifier and falsifier compiled under GMP/GMPXX, source `462010254fa90bf6c853768019bcfc9132b5c631`, artifact `14797941489`; compile-only, no prior runtime in CB.
+- [x] `M6-CP3-TB-EXEC-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE`: immutable artifact-only 994-case [run 45133081384](https://github.com/akashskypatel/Directional/actions/runs/45133081384), result `14799346720` (`b79b5cc2…43d0c`), **987/994 PASS, 7 RED**, CP2 **490/491**, membership **1075**, internal hashes **1996/1996**. Row994 PASS; seven mechanical controls 445/652/653/656/658/660/786 still RED. N1–N3 yields **21 unauthorized off-row differences**, **300 missing diagnostic records**. Row652 moves to `RegionElectedCutComponentEmpty` at `RegionConstruction`; row979 remains staged `RegionContainsInteriorSingularity`. No build, rerun, census, selector, fixture, source/test edit or promotion. [Execution report](.agents/Directional/Architecture_M6_CP3_TB171_P13_Along_Edge_Face_Piece_Full_Gate_Execution_Report_20261123.md).
+- [ ] **1 NEXT:** `M6-CP3-TB-REV-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE` — independent, runtime-free Review of both immutable TB169 and TB171 archives, seven mechanical REDs, 21 changed rows, 300 lost complete records, row994 and new typed row652 stop. Determine a single narrow reviewed correction or further evidence requirement. This rejected gate **does not** authorize activation or another TB execution.
+- [ ] **2 CONDITIONAL, held:** only after review and a later successful corrective Code + Build / full Test + Benchmark gate, reconsider sphere staged plan; activation CB → production census TB → parameter deletion CB → V3b → R1 → O48 remain conditional, not authorized now. CB-190 diagnostics remain off the critical path.
+- Historical stable **67 events / 17 categories / 50 recurrences**, produced-witness debt **1**, deferred **81**; same TB170 accepted-green mechanical regression remains unresolved, without a new stable count. Latest accepted gate TB169 **993/993**, CP2 **491/491**; CP3/497/D0/H4 and production sphere held.
 
-NEXT_TURN: M6-CP3-TB-EXEC-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE
+NEXT_TURN: M6-CP3-TB-REV-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE
 
 ## HISTORY — TB-REV-170 independent review: rejected gate (2026-11-23 UTC)
 
