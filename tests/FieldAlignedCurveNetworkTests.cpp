@@ -8077,6 +8077,88 @@ Cp4cProductionFixture build_cp4c_pipeline_products_fixture(
   return fixture;
 }
 
+// Read-only receipt for a mechanical plan that elected an empty region: every
+// trace-arc visit that touches its face only from one side of a source edge
+// (an edge piece, or a face piece along one closed edge), with the edge and
+// the face across it. Recomputed from the same embedded graph and classifier
+// the plan uses; it never changes the failure.
+void append_along_edge_visit_receipt(std::ostringstream &out,
+                                     const Cp4cProductionFixture &fixture) {
+  constexpr std::size_t kAlongEdgeVisitLimit = 160U;
+  const auto build = embedded::build_embedded_graph_topology(
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      *fixture.sourceAuthority, *fixture.network,
+      fixture.cutGraph->cut_edges());
+  const auto *topology = std::get_if<embedded::EmbeddedGraphTopology>(&build);
+  if (topology == nullptr) {
+    out << ";alongEdgeVisitReceipt=embeddedGraphUnavailable";
+    return;
+  }
+  const auto &faces = topology->sourceTopology.faces;
+  const auto &orbitByDart = topology->faceWalk.orbitByDart;
+  std::size_t count = 0U;
+  for (const auto &arc : topology->arcs) {
+    if (arc.kind != directional::geometry::GlobalTopologyArcKind::Trace ||
+        !arc.trace.has_value()) {
+      continue;
+    }
+    const std::size_t forwardDart = 2U * arc.id.index();
+    if (forwardDart + 1U >= orbitByDart.size()) continue;
+    const std::size_t forwardOrbit = orbitByDart[forwardDart];
+    const std::size_t reverseOrbit = orbitByDart[forwardDart + 1U];
+    const auto read = directional::geometry::detail::arc_face_visits(
+        faces, arc.sourceFaces, arc.sourcePieceCounts, arc.sourcePath,
+        forwardOrbit, reverseOrbit);
+    const auto *visits =
+        std::get_if<std::vector<directional::geometry::detail::ArcFaceVisit>>(
+            &read);
+    if (visits == nullptr) {
+      out << ";alongEdgeVisitArc" << arc.id.index() << "=unreadable";
+      continue;
+    }
+    std::size_t piece = 0U;
+    for (const auto &visit : *visits) {
+      const auto &opening = arc.sourcePath[piece];
+      piece += arc.sourcePieceCounts[visit.visit];
+      if (visit.cut.has_value()) continue;
+      ++count;
+      if (count > kAlongEdgeVisitLimit) continue;
+      std::optional<SourceEdgeTopologyKey> edge;
+      for (const auto &candidate : faces.at(visit.face).edges) {
+        const directional::authority::SourceSupport support{
+            directional::authority::SourceEdgeSupport{candidate}};
+        if (directional::authority::exact_source_support_contains_point(
+                support, opening.first) &&
+            directional::authority::exact_source_support_contains_point(
+                support, opening.second)) {
+          edge = candidate;
+        }
+      }
+      out << ";alongEdgeVisit[" << (count - 1U) << "]={trace="
+          << arc.trace->index() << ",arc=" << arc.id.index()
+          << ",visit=" << visit.visit
+          << ",face=" << source_face_locus(visit.face) << ",edge="
+          << (edge.has_value() ? source_edge_locus(*edge) : std::string{"none"})
+          << ",sideOrbit=" << *visit.edgeSideOrbit
+          << ",forwardOrbit=" << forwardOrbit
+          << ",reverseOrbit=" << reverseOrbit << ",oppositeFace=";
+      std::string opposite = "none";
+      if (edge.has_value()) {
+        const auto incident = topology->sourceTopology.incidentFaces.find(*edge);
+        if (incident != topology->sourceTopology.incidentFaces.end()) {
+          for (const auto &face : incident->second) {
+            if (face != visit.face) opposite = source_face_locus(face);
+          }
+        }
+      }
+      out << opposite << '}';
+    }
+  }
+  out << ";alongEdgeVisitCount=" << count
+      << ";alongEdgeVisitsTruncated="
+      << (count > kAlongEdgeVisitLimit ? "true" : "false");
+}
+
 Cp4cProductionFixture build_cp4c_production_fixture(
     const std::string &fixtureStem, const std::string &fixtureName) {
   Cp4cProductionFixture fixture =
@@ -8101,6 +8183,11 @@ Cp4cProductionFixture build_cp4c_production_fixture(
     if (fixture.atlasError.has_value()) {
       failure << ';';
       append_atlas_error(failure, *fixture.atlasError);
+    }
+    if (fixture.terminalFailureDetailCode == "RegionElectedCutComponentEmpty" &&
+        fixture.sourceAuthority.has_value() && fixture.network.has_value() &&
+        fixture.cutGraph.has_value()) {
+      append_along_edge_visit_receipt(failure, fixture);
     }
     throw std::runtime_error(
         failure.str());
