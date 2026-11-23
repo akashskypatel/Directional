@@ -57,4 +57,4 @@ Accepted scope and debt remain: TB169 993/993, CP2 491/491; stable events/catego
 | Turn boundary held | Source/document inspection and evidence comparison only; no product, test, fixture, selector or build mutation; no binary executed. |
 | review_check.py boundary | Exact source snapshot omits Git history. Product/test/selector unchanged by changed-path audit, but Git ancestry and durable rewrite-baseline checks cannot PASS without original history; no false full-PASS claim. |
 | `STATUS` lifecycle maintained | Same review turn resumed. Final `STATUS` direct-write only after remote documentation application and cleanup. |
-| Pushed to origin, branch in sync | Require verified remote GitHub branch head after application and cleanup. |
+| Pushed to origin, branch in sync | Verified through GitHub branch authority after patch application and cleanup. The working branch remains open and draft on PR #8. Local `git status -sb` is unavailable in the source snapshot, which has no Git history. |
