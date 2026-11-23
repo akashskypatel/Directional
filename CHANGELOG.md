@@ -1,3 +1,11 @@
+## 2026-11-23 — TB-REV-169 adversarial continuation: CB-189 corner stage predicted clear on row 979
+
+[Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_169_Adversarial_Review_20261123.md) (W1–W6).
+- TB169 and the amended CB-189 are upheld.
+- `partition_face_corners` was replayed on row 979's published visit receipts, in both face windings. All 55 faces with more than one cut partition consistently in exactly one winding, and the windings agree across shared edges.
+- TB-EXEC-170 rules sharpened: row 979 is a measurement, and either new corner code falsifies the prediction.
+- The activation step after TB-REV-170 is pre-split: a single-source default change plus premise rows only, with parameter deletion, V3b and R1 as separate turns.
+
 ## 2026-11-23 — TB-EXEC-169 region-visit reader full gate PASS
 ## 2026-11-23 — TB-REV-169 independent region-reader gate accepted; CB-189 next
 

@@ -354,6 +354,9 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - A cast between a private enumeration and its public mirror needs a per-value `static_assert` (TB-REV-168 adv. Q4).
 - Before calling an added recomputation a performance risk, check how often its path runs and what that path already recomputes (TB-REV-168 adv. Q5).
 
+- Before a switch TB, replay the pure helper on the published receipt in both face windings. A real face accepts exactly one winding, and the accepted windings must agree across shared edges (TB-REV-169 adv. W2).
+- A receipt that prints segment-level ends cannot witness a reader that consumes arc-piece ends. Add the finer print only when a RED is ambiguous (TB-REV-169 adv. W3).
+
 ## Diagnostics, classifiers, and causal investigation
 
 - **Read the printer before its label; one decomposition before per-class rules (TB-REV-165 adversarial).**

@@ -1,4 +1,41 @@
-## CURRENT — TB-REV-169 independent review COMPLETE; CB-189 NEXT (2026-11-23 UTC)
+## CURRENT — TB-REV-169 complete (independent + adversarial); CB-189 NEXT (2026-11-23 UTC)
+
+- [x] TB-REV-169 adversarial continuation: [record](.agents/Directional/Architecture_M6_CP3_TB_REV_169_Adversarial_Review_20261123.md) (W1–W6).
+  - TB169 993/993 and CB-189 `6e391678…e3b8` upheld.
+  - W2: replaying `partition_face_corners` on row 979's 136 visit lines gives a consistent partition on all 55 faces with more than one cut, each in one winding, with windings that agree across shared edges.
+  - W3: the receipt prints segment-level ends; the finer print is only for an ambiguous corner RED.
+  - W5: activation is pre-split.
+
+**Turn sequence:**
+- [ ] **1 NEXT** `M6-CP3-CB-189-P13-CORNER-VISIT-READER`: amended diff on the live CB-188 postimage, compile only.
+- [ ] 2 `M6-CP3-TB-EXEC-170-P13-CORNER-VISIT-READER-FULL-GATE`.
+  - Rows other than 979 equal TB169 under N1–N3; row 652 passes.
+  - Row 979 is a measurement, predicted to clear the corner stage.
+- [ ] 3 `M6-CP3-TB-REV-170-…`: freeze exact diffs for Branch A or B.
+- [ ] 4A Plan built: activation CB (V11 default + premise rows only) → TB with BunnyRandom census → parameter-deletion CB → V3b → R1 → O48.
+- [ ] 4B Next typed stage: receipt CB **or** narrow repair CB → TB.
+- [ ] 5 CB-190: S4/S6/S7 plus W6 obsolete-code comments, off the critical path.
+- Held: CP3/497/D0/H4; production sphere `CutSearchExhaustedBeforeCellularity`. Stable 66/17/49, debt1, deferred81.
+
+```
+NEXT_TURN: M6-CP3-CB-189-P13-CORNER-VISIT-READER
+Owner: implementation agent (Code + Build, compile only)
+Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_169_Adversarial_Review_20261123.md (W1-W6) + TB-REV-169 independent review + TB-REV-168 adversarial (Q1-Q7); contract C1-C4
+Apply exactly: .agents/Directional/Architecture_M6_CP3_CB189_P13_Corner_Visit_Reader_Exact.diff
+  SHA-256 6e391678934f776d83b1bbae6652724e080763329d6171c7cdb1c5663259e3b8 (19255 B, +117/-179)
+  src/geometry/GlobalTopologyPlan.cpp 5af71bc0...0aae (CB-188 postimage = live) -> 44395316a518c0cef8cd9afabdc622d69900496c1f6e4a290c37715602fb366f
+  include/directional/geometry/GlobalTopologyPlan.h 277cde20...8f19 -> 87831e100b5f05d2adcbf2a8aea89063d8b63a26939da314eb5896aeeacca16c
+Build: dispatcher compile, GMP/GMPXX targets incl. directional_surface_cell_producer_tests, runtimeExecution=false
+Then: M6-CP3-TB-EXEC-170-P13-CORNER-VISIT-READER-FULL-GATE (TB168 manifest, 993 rows, unchanged)
+  rules: 993/993 PASS; CP2 491/491; membership 1074; rows != 979 = TB169 result 14787082075 under N1-N3, zero allowance; row 652 PASS without throw;
+  row 979 SphereStagedPlan is a measurement; predicted (W2): not SourceFaceCarriesMultipleTraceCuts, not SourceFaceCutPartitionFailed, not SourceFaceCutOrbitNotOwned;
+  a new-code outcome falsifies W2 (report, no STOP); any other difference -> STOP to Review; no census
+  -> M6-CP3-TB-REV-170-... freezes Branch A (activation switch only) or Branch B (receipt OR narrow repair) as exact diffs (W5)
+On failure/blocker: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
+Do not: edit beyond the diff; edit tests/selectors/manifests; run tests; activate; delete the staging parameter; promote CP3/497/D0/H4
+```
+
+## HISTORY — TB-REV-169 independent review complete; CB-189 was next (2026-11-23 UTC)
 
 - [x] `M6-CP3-CB-188-P13-REGION-VISIT-READER`: exact 5171-byte diff `5f06c14b…5944`, only `src/geometry/GlobalTopologyPlan.cpp`. Source `b2e976f204fa5b2988a9cbe5a77defd106a96aad`. Eight-target GMP/GMPXX [compile run 45101939539](https://github.com/akashskypatel/Directional/actions/runs/45101939539) PASS; package `14786260085`, ZIP SHA-256 `d877a0ea4c05cfe93275506823652abb6b0e012dd3a5925103606e28e69625a5`, `runtimeExecution=false`. See [CB-188 record](.agents/Directional/Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md). No tests or benchmarks executed.
 - [x] `M6-CP3-TB-EXEC-169-P13-REGION-VISIT-READER-FULL-GATE`: immutable package `14786260085`, [run 45104059492](https://github.com/akashskypatel/Directional/actions/runs/45104059492), result `14787082075` (`dc15a8df…04e5`), **993/993 PASS**, CP2 **491/491**, membership **1074**, 1994/1994 internal hashes. All 993 rows identical to TB168 under N1–N3 with only four approved row979 face-count changes (4 chords, 5 fragments, 5 owners, 0 deficit); staged `SourceFaceCarriesMultipleTraceCuts` remains. No census, source/test/selector mutation or rebuild. [Report](.agents/Directional/Architecture_M6_CP3_TB169_P13_Region_Visit_Reader_Full_Gate_Execution_Report_20261123.md).
