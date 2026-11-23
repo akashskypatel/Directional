@@ -31,35 +31,29 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-23 UTC. TB-REV-170 **REJECTS** TB170 986/993 (independent) and its adversarial continuation finds the cause: `arc_face_visits` reads corner-to-corner face pieces along mesh edges as cuts → `CutAlongOneEdge` at `(1,4,139)` (A1–A2). CB-191 receipt **withdrawn**; exact repair CB-192 frozen. Latest accepted full gate TB169 993/993. [Independent](Architecture_M6_CP3_TB_REV_170_Corner_Visit_Reader_Independent_Review_20261123.md) + [adversarial](Architecture_M6_CP3_TB_REV_170_Adversarial_Review_20261123.md). |
-| Branch and package | `agent/surface_cell_quad/p5-recover-bridge-healing`; CB-189 compiled source `178f17dd59aa9c61c2e6462e2378e3a42b0ee4f7`; compile run `45113944225`, package `14790917101`, SHA-256 `0432359393d37cf00b9654339c832263f648733237005171ff3a8eb9cfa1ddfd`; GMP/GMPXX, `runtimeExecution=false`. |
-| Latest gate / census | TB170 run `45118730914`, result `14793023424`, SHA-256 `930a4a42cd5f15c1479fd0ba098ff21e5860d5fbcf37520e2c1d7bb5ca652d55`; **986/993 PASS**, CP2 **490/491**. N1–N3 mismatch 21 off-row records, 300 absent diagnostics. Row979 `RegionContainsInteriorSingularity` vertex 8. No new production census; latest production census TB165. |
-| Accepted history | TB169 independent acceptance 993/993, result `14787082075`; CP2 491 identities remain frozen but TB170 loses accepted row445. CP3 497 identities not promoted. |
-| Regression / debt | Independent TB-REV-170 confirms one accepted-green recurrence: **67 events / 17 categories / 50 recurrences**, one produced-witness debt, 81 deferred. Reason decided by elimination (`CutAlongOneEdge`, adversarial A1); repair CB-192 frozen. CP3/497/D0/H4 held. |
-| Active boundary | Mechanical arc 15 (trace 1) walks vertex chain 8→6→4→1 as face pieces; CB-189 correctly rejects the first counted one at `(1,4,139)`, reason decided by elimination from printed `fragmentOwnerFace[3]` (one cut, orbits 0/0). All 21 off-row changes trace to it (A4). Row979 next stage `RegionContainsInteriorSingularity` vertex 8 (staged only). Production sphere last measured `CutSearchExhaustedBeforeCellularity`. |
+| Currency | 2026-11-23 UTC. CB-192's exact along-edge face-piece classifier and falsifier patch applied and compiled. No tests executed. TB170 remains rejected 986/993; last accepted gate TB169 993/993. [CB-192 Code + Build record](Architecture_M6_CP3_CB192_P13_Along_Edge_Face_Piece_Classifier_Code_Build_Record_20261123.md); [TB-REV-170 adversarial authority](Architecture_M6_CP3_TB_REV_170_Adversarial_Review_20261123.md). |
+| Branch and package | `agent/surface_cell_quad/p5-recover-bridge-healing`; exact source `462010254fa90bf6c853768019bcfc9132b5c631`, compile run `45130510704`, package `14797941489` (ZIP SHA-256 `49824e664c79d13fc1b2ba047bd044303683f41b28df7a3344902e74d84b41cf`), 8 targets, GMP/GMPXX, `runtimeExecution=false`. |
+| Latest gate / census | TB170 result 14793023424: 986/993, CP2 490/491, seven mechanical failures and 21 off-row differences. Row979 `RegionContainsInteriorSingularity` vertex 8. No new production census; TB165 latest. |
+| Accepted history | TB169 independently accepted 993/993, result 14787082075. CP2 491 accepted identities frozen, CP3 497 identities not promoted. |
+| Regression / debt | Independent TB-REV-170: 67 events / 17 categories / 50 recurrences; 1 produced-witness debt, 81 deferred. No runtime measurement from CB-192. CP3/497/D0/H4 held. |
+| Active boundary | CB-192 makes along-edge face pieces publish edge-side ownership, not face cuts. Mechanical arc 15's 8→6→4→1 vertex chain was the documented cause; whether the repair restores seven controls must be measured in TB-EXEC-171. Sphere row979 is still a staged measurement, not production acceptance. |
 
 ## Mandatory next turn
 
-- **COMPLETE:** TB-REV-170 independent (rejection, 67/17/50) + adversarial continuation (A1–A7): CB-191 withdrawn unexecuted; CB-192 exact diff and 994-row TB171 manifest frozen; `git apply --check`, postimages and `-fsyntax-only` (both TUs, 0 errors) verified.
+**COMPLETE Code + Build:** `M6-CP3-CB-192-P13-ALONG-EDGE-FACE-PIECE-CLASSIFIER`. The exact reviewed 7,105-byte patch on `ArcFaceVisits.h` and `FieldAlignedCurveNetworkTests.cpp` was applied to `462010254fa90bf6c853768019bcfc9132b5c631` and built. [Code + Build record](Architecture_M6_CP3_CB192_P13_Along_Edge_Face_Piece_Classifier_Code_Build_Record_20261123.md). No binary ran.
 
-**NEXT (separate turn):** `M6-CP3-CB-192-P13-ALONG-EDGE-FACE-PIECE-CLASSIFIER` — Code + Build, compile only. [Manifest](gates/Architecture_M6_CP3_CB192_P13_Along_Edge_Face_Piece_Exact_Manifest.md). Then TB-EXEC-171 under the adversarial record's frozen rules.
+**NEXT (separate turn):** `M6-CP3-TB-EXEC-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE`. Immutable 994-row manifest [TB171](gates/Architecture_M6_TB171_P13_Along_Edge_Face_Piece_Full_Gate_Case_Manifest.tsv), SHA-256 `704dcf6c5525d244c09f3ba0fd1c93a860daa194d4381d6b427dddc3be6209c6`. Require 994/994 PASS, CP2 491/491, membership 1075. All rows except 979 and 994 must match independently accepted TB169 `14787082075` under N1–N3, no allowance; mechanical rows 445/652/653/656/658/660/786 must PASS, and 300 diagnostic records return. Row979 is a measurement versus TB170 `RegionContainsInteriorSingularity sourceVertex=8`. Any other difference: STOP, Review. No census, rebuild, new edits, selector modification or activation. After valid TB result, TB-REV-171 reads row979 for a single receipt **or** narrow repair. Do not start that turn now.
 
 ```text
-NEXT_TURN: M6-CP3-CB-192-P13-ALONG-EDGE-FACE-PIECE-CLASSIFIER
-Owner: implementation agent (Code + Build, compile only)
-Authority: Architecture_M6_CP3_TB_REV_170_Adversarial_Review_20261123.md (A1-A7) + TB-REV-170 independent review; CB-191 receipt withdrawn (never run)
-Apply exactly: .agents/Directional/Architecture_M6_CP3_CB192_P13_Along_Edge_Face_Piece_Classifier_Exact.diff
-  SHA-256 527dd0b82db1b6d9539a04ef5c7f09c88867f069ba3c2dadd9dd38b5bba0d7e6 (7105 B, +100/-6)
-  src/geometry/ArcFaceVisits.h git d8320652ed891953b9dc7077edaf71307551c978 -> sha256 0838e637c620252886ec75a6c85bdcd036b623e5cd7c2f405adcec5000028a9e
-  tests/FieldAlignedCurveNetworkTests.cpp git 6d3711ec463436fea2d550775175e5320b2bb505 -> sha256 5d0493dd5d979672dc68c1df4ae0cafb2f6cadc61ecf1425ceede5ce40b493fd
-Build: dispatcher compile, GMP/GMPXX targets incl. directional_surface_cell_producer_tests, runtimeExecution=false
-Then: M6-CP3-TB-EXEC-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE
-  manifest gates/Architecture_M6_TB171_P13_Along_Edge_Face_Piece_Full_Gate_Case_Manifest.tsv sha256 704dcf6c5525d244c09f3ba0fd1c93a860daa194d4381d6b427dddc3be6209c6 (TB168 993 + row 994)
-  rules: 994/994 PASS; CP2 491/491; membership 1075; rows != 979,994 = TB169 14787082075 under N1-N3, zero allowance (rows 445/652/653/656/658/660/786 PASS again, 300 records restored);
-  row 979 SphereStagedPlan = measurement vs TB170 RegionContainsInteriorSingularity sourceVertex=8; any other difference -> STOP to Review; no census
-  -> M6-CP3-TB-REV-171-...: if green, read row979 printed locus, freeze receipt OR narrow repair (W5 Branch B)
-On failure/blocker: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
-Do not: edit beyond the diff; edit tests/selectors/manifests; run tests; change partition_face_corners or the corner/region readers; activate; promote CP3/497/D0/H4
+NEXT_TURN: M6-CP3-TB-EXEC-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE
+Owner: Test + Benchmark agent, artifact-only; no build or source mutation
+Immutable source: 462010254fa90bf6c853768019bcfc9132b5c631
+Compile run: 45130510704; package: 14797941489; package ZIP SHA-256: 49824e664c79d13fc1b2ba047bd044303683f41b28df7a3344902e74d84b41cf
+Manifest: gates/Architecture_M6_TB171_P13_Along_Edge_Face_Piece_Full_Gate_Case_Manifest.tsv; SHA-256 704dcf6c5525d244c09f3ba0fd1c93a860daa194d4381d6b427dddc3be6209c6
+Gate: 994/994 PASS, CP2 491/491, membership 1075; rows != 979,994 equal TB169 14787082075 under N1-N3 with zero allowance
+Row 979: report actual SphereStagedPlan vs TB170 RegionContainsInteriorSingularity sourceVertex=8
+Next after TB: M6-CP3-TB-REV-171-... only after accepted run, not in CB-192
+Do not: rebuild, run source, run census, modify selectors/fixtures/tests, activate CP3/497/D0/H4
 ```
 
 ## Turn Sequence
@@ -73,8 +67,8 @@ Do not: edit beyond the diff; edit tests/selectors/manifests; run tests; change 
 | COMPLETE (Code + Build) | CB-188 | [Record](Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md), exact source `b2e976f204fa5b2988a9cbe5a77defd106a96aad`; compile run `45101939539`, package `14786260085`, no runtime. |
 | COMPLETE TB / Review | TB-EXEC-169 → TB-REV-169 | [TB169 report](Architecture_M6_CP3_TB169_P13_Region_Visit_Reader_Full_Gate_Execution_Report_20261123.md), [independent](Architecture_M6_CP3_TB_REV_169_Region_Visit_Reader_Independent_Review_20261123.md) + [adversarial](Architecture_M6_CP3_TB_REV_169_Adversarial_Review_20261123.md) (W1–W6): 993/993 PASS, four exact row979 face changes; no promotion. |
 | COMPLETE | CB-189 → TB-EXEC-170 → TB-REV-170 ([independent](Architecture_M6_CP3_TB_REV_170_Corner_Visit_Reader_Independent_Review_20261123.md) + [adversarial](Architecture_M6_CP3_TB_REV_170_Adversarial_Review_20261123.md)) | TB170 986/993 rejected; cause = along-edge face pieces misread as cuts (A1–A2); CB-191 withdrawn. |
-| **NEXT** | CB-192 (classifier repair + falsifier test, compile only) | Exact diff `527dd0b8…d7e6`. |
-| 2 | TB-EXEC-171 (994-row manifest) | Rules in the adversarial record; row 979 is a measurement. |
+| COMPLETE | CB-192 (classifier repair + falsifier, compile only) | Exact diff `527dd0b8…d7e6`; GMP/GMPXX compile run `45130510704`, package `14797941489`. |
+| **NEXT** | TB-EXEC-171 (994-row manifest) | Rules in the adversarial record; row 979 is a measurement. |
 | 3 | TB-REV-171 | Green → row979 `RegionContainsInteriorSingularity` locus read, then receipt **or** narrow repair (Branch B). |
 | 4A | Branch A (only after the staged plan builds): activation CB → TB (BunnyRandom census, V5) → parameter-deletion CB → V3b → R1 → O48 | Activation = single-source default (V11) + exact premise rows 393/648/858/971/972/978 only. |
 | 5 | CB-190 | S4/S6/S7 diagnostic conformity plus W6 obsolete-code comments (off critical path). |

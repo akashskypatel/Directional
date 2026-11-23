@@ -1,12 +1,13 @@
-## CURRENT — TB-REV-170 adversarial continuation: cause found, CB-192 repair frozen (2026-11-23 UTC)
+## CURRENT — CB-192 compiled; TB-EXEC-171 next (2026-11-23 UTC)
 
-- [x] Adversarial continuation ([record](.agents/Directional/Architecture_M6_CP3_TB_REV_170_Adversarial_Review_20261123.md), A1–A7): the row-652 exception already prints `fragmentOwnerFace[3]` (one cut, orbits 0/0) → reason = `CutAlongOneEdge` by elimination. Mechanical arc 15 walks vertices 8→6→4→1 as corner-to-corner face pieces; `arc_face_visits` typed them as cuts by carrier. CB-191 receipt **withdrawn** (never run). All 21 off-row changes trace to this face. My TB-REV-168 Q3 / TB-REV-169 W4 "row 652 passes" prediction was wrong (A5).
-- [ ] **1 NEXT:** `M6-CP3-CB-192-P13-ALONG-EDGE-FACE-PIECE-CLASSIFIER` — Code + Build, compile only; exact [diff](.agents/Directional/Architecture_M6_CP3_CB192_P13_Along_Edge_Face_Piece_Classifier_Exact.diff) `527dd0b8…d7e6` ([manifest](.agents/Directional/gates/Architecture_M6_CP3_CB192_P13_Along_Edge_Face_Piece_Exact_Manifest.md)).
-- [ ] **2:** `M6-CP3-TB-EXEC-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE` — 994-row manifest `704dcf6c…09c6`; 994/994, CP2 491/491, membership 1075; rows ≠979/994 = TB169 under N1–N3; row 979 measurement.
-- [ ] **3:** `M6-CP3-TB-REV-171-…` — green → read row979 `RegionContainsInteriorSingularity` (vertex 8) locus, freeze receipt **or** narrow repair.
-- [ ] **4A (after staged plan builds):** activation CB → census TB → parameter deletion → V3b → R1 → O48. **5:** CB-190 off critical path.
+- [x] Adversarial TB-REV-170 A1–A7: `CutAlongOneEdge` identified from printed face-piece witness; CB-191 was withdrawn without execution. Mechanical arc 15 along-edge face pieces were being misclassified as cuts.
+- [x] `M6-CP3-CB-192-P13-ALONG-EDGE-FACE-PIECE-CLASSIFIER`: applied the exact 7,105-byte two-file reviewed classifier and falsifier diff (`527dd0b8…d7e6`) at semantic source `462010254fa90bf6c853768019bcfc9132b5c631`; eight-target GMP/GMPXX compile [run 45130510704](https://github.com/akashskypatel/Directional/actions/runs/45130510704), package `14797941489` (`49824e664c79d13fc1b2ba047bd044303683f41b28df7a3344902e74d84b41cf`), `runtimeExecution=false`. [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB192_P13_Along_Edge_Face_Piece_Classifier_Code_Build_Record_20261123.md).
+- [ ] **1 NEXT:** `M6-CP3-TB-EXEC-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE` — immutable package only; 994-row manifest `704dcf6c…09c6`; 994/994 PASS, CP2 491/491, membership 1,075. All rows except 979/994 must match TB169 under N1–N3; row 979 measured. No census, source edits or rebuild.
+- [ ] **2:** `M6-CP3-TB-REV-171-…` — only after valid TB result, read row979 printed sphere locus and freeze a receipt **or** one narrow correction, not both.
+- [ ] **3 (conditional):** staged plan build → activation CB → census TB → parameter deletion → V3b → R1 → O48. CB-190 remains off the critical path.
+- Held: CP3/497/D0/H4, production sphere. Latest accepted TB169 993/993, CP2 491/491; rejected TB170 986/993. Stable 67/17/50, debt1, deferred81. CB-192 compiled but its new test was not executed.
 
-NEXT_TURN: M6-CP3-CB-192-P13-ALONG-EDGE-FACE-PIECE-CLASSIFIER
+NEXT_TURN: M6-CP3-TB-EXEC-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE
 
 ## HISTORY — TB-REV-170 independent review: rejected gate (2026-11-23 UTC)
 

@@ -1,3 +1,7 @@
+## 2026-11-23 — CB-192 exact along-edge classifier compiled; TB-EXEC-171 next
+
+[Code + Build record](.agents/Directional/Architecture_M6_CP3_CB192_P13_Along_Edge_Face_Piece_Classifier_Code_Build_Record_20261123.md): two-file reviewed patch `527dd0b8…d7e6` was applied at source `462010254fa90bf6c853768019bcfc9132b5c631`. GMP/GMPXX compile [run 45130510704](https://github.com/akashskypatel/Directional/actions/runs/45130510704), package `14797941489` (`49824e664c79d13fc1b2ba047bd044303683f41b28df7a3344902e74d84b41cf`), `runtimeExecution=false`; no tests, benchmarks, selector or activation changes. Latest accepted gate remains TB169 993/993, CP2 491/491. Rejected TB170 986/993 remains recorded; stable 67/17/50, debt1, deferred81. Next only `M6-CP3-TB-EXEC-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE` (994-row immutable gate).
+
 ## 2026-11-23 — TB-REV-170 adversarial continuation: along-edge face pieces; CB-192 frozen
 
 [Record](.agents/Directional/Architecture_M6_CP3_TB_REV_170_Adversarial_Review_20261123.md): the TB170 mechanical RED at `(1,4,139)` is `CutAlongOneEdge`, decided by elimination from the region records already printed in the exception. `arc_face_visits` typed corner-to-corner face pieces running along mesh edges as cuts. The CB-191 receipt is withdrawn; exact repair CB-192 (`527dd0b8…d7e6`, classifier + falsifier test) and the 994-row TB171 manifest are frozen. No product change in this review.
