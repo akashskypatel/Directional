@@ -293,35 +293,6 @@ std::optional<authority::ExactSourcePath> exact_edge_interval_path(
              : std::nullopt;
 }
 
-std::optional<authority::ExactSourcePoint> exact_trace_segment_end(
-    const FieldAlignedCandidateTrace &trace, const std::size_t segmentIndex) {
-  if (segmentIndex >= trace.segments.size()) return std::nullopt;
-  const auto &segment = trace.segments[segmentIndex];
-  if (segmentIndex + 1U == trace.segments.size()) {
-    if (trace.terminalContact.has_value()) {
-      if (trace.terminalContact->sourceFace != segment.sourceFace) {
-        return std::nullopt;
-      }
-      return authority::canonical_exact_source_face_point(
-          trace.terminalContact->sourceFace,
-          trace.terminalContact->barycentric);
-    }
-    if (trace.terminalPoint.has_value()) {
-      return authority::canonical_exact_source_boundary_point(
-          *trace.terminalPoint);
-    }
-  }
-  if (segment.edgeTransitExit.has_value()) {
-    return authority::canonical_exact_source_boundary_point(
-        *segment.edgeTransitExit);
-  }
-  if (segmentIndex + 1U < trace.segments.size()) {
-    return authority::canonical_exact_source_boundary_point(
-        trace.segments[segmentIndex + 1U].entryPoint);
-  }
-  return std::nullopt;
-}
-
 std::optional<authority::ExactSourcePath> exact_trace_path(
     const FieldAlignedCandidateTrace &trace, const std::size_t firstSegment,
     const std::size_t onePastLastSegment) {
@@ -666,32 +637,6 @@ int face_chart_orientation(const FaceChartPoint &a, const FaceChartPoint &b,
   return 0;
 }
 
-std::optional<authority::FieldExactRational> face_chart_segment_parameter(
-    const FaceChartPoint &entry, const FaceChartPoint &exit,
-    const FaceChartPoint &point) {
-  std::optional<std::size_t> axis;
-  for (std::size_t index = 0U; index < 3U; ++index) {
-    if (exit[index] != entry[index]) {
-      axis = index;
-      break;
-    }
-  }
-  if (!axis.has_value()) return std::nullopt;
-  const authority::FieldExactRational parameter =
-      (point[*axis] - entry[*axis]) / (exit[*axis] - entry[*axis]);
-  for (std::size_t index = 0U; index < 3U; ++index) {
-    if (entry[index] + parameter * (exit[index] - entry[index]) !=
-        point[index]) {
-      return std::nullopt;
-    }
-  }
-  if (!(parameter > authority::FieldExactRational::from_integer(0)) ||
-      !(parameter < authority::FieldExactRational::from_integer(1))) {
-    return std::nullopt;
-  }
-  return parameter;
-}
-
 std::optional<std::vector<std::size_t>> face_chart_counter_clockwise_ray_order(
     const FaceChartPoint &origin, const std::vector<FaceChartPoint> &targets) {
   for (const FaceChartPoint &target : targets) {
@@ -748,26 +693,6 @@ std::optional<std::vector<std::size_t>> face_chart_counter_clockwise_ray_order(
 }
 
 namespace {
-
-std::optional<FaceChartPoint> canonical_boundary_barycentric(
-    const authority::SourceFaceTopologyKey &face,
-    const authority::FieldBoundaryPoint &point) {
-  const auto &vertices = face.vertices();
-  FaceChartPoint barycentric{authority::FieldExactRational::from_integer(0),
-                             authority::FieldExactRational::from_integer(0),
-                             authority::FieldExactRational::from_integer(0)};
-  std::optional<std::size_t> firstIndex;
-  std::optional<std::size_t> secondIndex;
-  for (std::size_t index = 0U; index < vertices.size(); ++index) {
-    if (vertices[index] == point.edge.first()) firstIndex = index;
-    if (vertices[index] == point.edge.second()) secondIndex = index;
-  }
-  if (!firstIndex.has_value() || !secondIndex.has_value()) return std::nullopt;
-  barycentric[*firstIndex] =
-      authority::FieldExactRational::from_integer(1) - point.parameter.value;
-  barycentric[*secondIndex] = point.parameter.value;
-  return barycentric;
-}
 
 std::set<authority::NetworkNodeId> port_nodes(
     const FieldAlignedCurveNetwork &network) {
@@ -950,77 +875,6 @@ std::optional<authority::FieldExactRational> trace_segment_contact_parameter(
   const auto exit = trace_segment_canonical_exit(trace, segment);
   if (!entry.has_value() || !exit.has_value()) return std::nullopt;
   return face_chart_segment_parameter(*entry, *exit, point);
-}
-
-std::optional<authority::ExactSourcePath> exact_trace_segment_pieces(
-    const FieldAlignedCandidateTrace &trace, const std::size_t segmentIndex) {
-  if (segmentIndex >= trace.segments.size()) return std::nullopt;
-  const FieldAlignedCandidateTraceSegment &segment = trace.segments[segmentIndex];
-  const auto face_piece_to_end = [&]() -> std::optional<authority::ExactSourcePath> {
-    const auto first = authority::canonical_exact_source_boundary_point(
-        segment.entryPoint);
-    const auto second = exact_trace_segment_end(trace, segmentIndex);
-    if (!first.has_value() || !second.has_value()) return std::nullopt;
-    authority::ExactSourcePath path{authority::ExactSourceSupportPiece{
-        authority::SourceFaceInteriorSupport{segment.sourceFace}, *first,
-        *second}};
-    return authority::exact_source_path_is_canonical(path)
-               ? std::optional<authority::ExactSourcePath>{std::move(path)}
-               : std::nullopt;
-  };
-  if (!segment.edgeTransitEntry.has_value() &&
-      !segment.edgeTransitExit.has_value()) {
-    return face_piece_to_end();
-  }
-  if (!segment.edgeTransitEntry.has_value() ||
-      !segment.edgeTransitExit.has_value() ||
-      segment.edgeTransitEntry->edge != segment.outgoingCarrier ||
-      segment.edgeTransitExit->edge != segment.outgoingCarrier) {
-    return std::nullopt;
-  }
-  const bool last = segmentIndex + 1U == trace.segments.size();
-  if (last && trace.terminalContact.has_value()) {
-    // A contact is published after its whole proposal is committed, so the
-    // record keeps the slide although the trace stops on the face piece.
-    const auto entry =
-        canonical_boundary_barycentric(segment.sourceFace, segment.entryPoint);
-    const auto slideStart = canonical_boundary_barycentric(
-        segment.sourceFace, *segment.edgeTransitEntry);
-    if (!entry.has_value() || !slideStart.has_value() ||
-        trace.terminalContact->sourceFace != segment.sourceFace ||
-        !face_chart_segment_parameter(*entry, *slideStart,
-                                      trace.terminalContact->barycentric)
-             .has_value()) {
-      return std::nullopt;
-    }
-    return face_piece_to_end();
-  }
-  const auto entry =
-      authority::canonical_exact_source_boundary_point(segment.entryPoint);
-  const auto slideStart =
-      authority::canonical_exact_source_boundary_point(*segment.edgeTransitEntry);
-  const auto slideEnd =
-      authority::canonical_exact_source_boundary_point(*segment.edgeTransitExit);
-  if (!entry.has_value() || !slideStart.has_value() || !slideEnd.has_value()) {
-    return std::nullopt;
-  }
-  if (last && trace.terminalPoint.has_value() &&
-      authority::canonical_exact_source_boundary_point(*trace.terminalPoint) !=
-          slideEnd) {
-    return std::nullopt;
-  }
-  authority::ExactSourcePath path;
-  if (*entry != *slideStart) {
-    path.push_back(authority::ExactSourceSupportPiece{
-        authority::SourceFaceInteriorSupport{segment.sourceFace}, *entry,
-        *slideStart});
-  }
-  path.push_back(authority::ExactSourceSupportPiece{
-      authority::SourceEdgeSupport{segment.outgoingCarrier}, *slideStart,
-      *slideEnd});
-  return authority::exact_source_path_is_canonical(path)
-             ? std::optional<authority::ExactSourcePath>{std::move(path)}
-             : std::nullopt;
 }
 
 std::pair<std::size_t, std::size_t> trace_cut_segment_range(

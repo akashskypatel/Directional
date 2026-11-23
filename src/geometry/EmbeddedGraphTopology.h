@@ -20,6 +20,8 @@
 
 #include <directional/geometry/GlobalTopologyPlan.h>
 
+#include "ExactTraceSegmentPieces.h"
+
 namespace directional::geometry::embedded_graph_topology_detail {
 
 /** Exact source-triangle record used by the shared embedded-graph authority. */
@@ -222,13 +224,6 @@ using MandatoryEdgeSplit =
     std::vector<MandatoryEdgeTerminalCut> cuts);
 
 /**
- * Exact barycentric coordinates of a point of one source face, listed in that
- * face's oriented corner order. Every predicate below is affine-invariant, so
- * no metric geometry is read.
- */
-using FaceChartPoint = std::array<authority::FieldExactRational, 3>;
-
-/**
  * Orientation of `a`, `b`, `c` in one face chart: +1 when they run
  * counter-clockwise in the corner order of their coordinates, -1 when
  * clockwise, 0 when collinear. Exact.
@@ -236,16 +231,6 @@ using FaceChartPoint = std::array<authority::FieldExactRational, 3>;
 [[nodiscard]] int face_chart_orientation(const FaceChartPoint &a,
                                          const FaceChartPoint &b,
                                          const FaceChartPoint &c);
-
-/**
- * The exact t with point = entry + t * (exit - entry), when the point lies
- * strictly inside the straight segment from `entry` to `exit`. Empty when the
- * segment is degenerate, the point is off its line, or t is not in (0, 1).
- */
-[[nodiscard]] std::optional<authority::FieldExactRational>
-face_chart_segment_parameter(const FaceChartPoint &entry,
-                             const FaceChartPoint &exit,
-                             const FaceChartPoint &point);
 
 /**
  * Counter-clockwise order of the rays leaving `origin` through each target,
@@ -338,19 +323,6 @@ trace_segment_contact_parameter(const FieldAlignedCandidateTrace &trace,
 [[nodiscard]] bool carrier_contact_is_mutual(
     const FieldAlignedCandidateTrace &ending,
     const FieldAlignedCandidateTrace &struck);
-
-/**
- * The exact source path segment `segment` of `trace` traverses. A segment
- * without an edge transit is one face piece to its end. A segment with an edge
- * transit is a face piece from its entry to the slide start, omitted when the
- * two are the same point, then an edge piece along its outgoing carrier to the
- * slide end. A terminal face contact on the last segment ends it on its face
- * piece, so the slide is not traversed. Empty when the record is incomplete or
- * inconsistent.
- */
-[[nodiscard]] std::optional<authority::ExactSourcePath>
-exact_trace_segment_pieces(const FieldAlignedCandidateTrace &trace,
-                           std::size_t segment);
 
 /** Segment range [first, onePastLast) of the arc between two positions. */
 [[nodiscard]] std::pair<std::size_t, std::size_t>
