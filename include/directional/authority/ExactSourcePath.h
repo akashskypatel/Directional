@@ -10,6 +10,8 @@
 
 #include <algorithm>
 #include <array>
+#include <compare>
+#include <cstddef>
 #include <map>
 #include <optional>
 #include <utility>
@@ -306,6 +308,39 @@ exact_source_paths_retrace_along_edges(const ExactSourcePath &a,
   };
   const auto coveredByA = coverage(a);
   return coveredByA.has_value() && coveredByA == coverage(b);
+}
+
+/** A trace that runs back over an earlier trace along source edges, and the
+ * earlier trace it repeats. Both are positions in the list given to
+ * `exact_source_retraced_traces`, and `kept < removed`. */
+struct ExactSourceRetracedTrace {
+  std::size_t kept = 0U;
+  std::size_t removed = 0U;
+
+  auto operator<=>(const ExactSourceRetracedTrace &) const = default;
+};
+
+/** The traces that repeat an earlier trace of `paths` backwards along source
+ * edges (`exact_source_paths_retrace_along_edges`), in increasing order of
+ * `removed`. Each is paired with the first earlier trace it retraces that is
+ * not itself removed, so a kept trace is never removed. An empty path
+ * retraces nothing. */
+[[nodiscard]] inline std::vector<ExactSourceRetracedTrace>
+exact_source_retraced_traces(const std::vector<ExactSourcePath> &paths) {
+  std::vector<ExactSourceRetracedTrace> retraced;
+  std::vector<bool> removed(paths.size(), false);
+  for (std::size_t later = 1U; later < paths.size(); ++later) {
+    for (std::size_t earlier = 0U; earlier < later; ++earlier) {
+      if (removed[earlier] ||
+          !exact_source_paths_retrace_along_edges(paths[earlier], paths[later])) {
+        continue;
+      }
+      removed[later] = true;
+      retraced.push_back(ExactSourceRetracedTrace{earlier, later});
+      break;
+    }
+  }
+  return retraced;
 }
 
 } // namespace directional::authority

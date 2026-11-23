@@ -23236,3 +23236,50 @@ TEST(ExactSourcePathRetrace, SameWayOtherEdgeOrFaceCrossingPathsDoNotRetrace) {
       crossing, {edge_piece(1, 2, at_vertex(2), at_vertex(1)),
                  edge_piece(0, 1, at_vertex(1), at_vertex(0))}));
 }
+
+TEST(ExactSourceRetracedTraces, EachLaterRetraceIsRemovedInFavourOfItsEarliestKeptTrace) {
+  using namespace arc_face_visit_test;
+  using directional::authority::exact_source_retraced_traces;
+  using directional::authority::ExactSourceRetracedTrace;
+  const auto lower = topology_face(0, 1, 2, 5U);
+  const auto upper = topology_face(1, 3, 2, 5U);
+  // Two saddle connections, 0 -> 1 -> 2 and 2 -> 3, each traced from both
+  // ends on different carriers, interleaved with a trace across [0,1,2].
+  const ExactSourcePath chainForward{
+      face_piece(lower, at_vertex(0), at_vertex(1)),
+      edge_piece(1, 2, at_vertex(1), at_vertex(2))};
+  const ExactSourcePath chainBackward{
+      face_piece(upper, at_vertex(2), at_vertex(1)),
+      edge_piece(0, 1, at_vertex(1), at_vertex(0))};
+  const ExactSourcePath crossing{
+      face_piece(lower, at_vertex(0), on_edge(1, 2, 1, 2))};
+  const ExactSourcePath spurForward{
+      face_piece(upper, at_vertex(2), at_vertex(3))};
+  const ExactSourcePath spurBackward{
+      edge_piece(2, 3, at_vertex(3), at_vertex(2))};
+  const std::vector<ExactSourceRetracedTrace> expected{{0U, 3U}, {2U, 4U}};
+  EXPECT_EQ(expected,
+            exact_source_retraced_traces({chainForward, crossing, spurBackward,
+                                          chainBackward, spurForward}));
+  // The earlier trace of each pair is kept, whichever direction it runs.
+  const std::vector<ExactSourceRetracedTrace> swapped{{0U, 1U}};
+  EXPECT_EQ(swapped,
+            exact_source_retraced_traces({chainBackward, chainForward}));
+}
+
+TEST(ExactSourceRetracedTraces, SameWayOtherEdgeAndEmptyPathsAreKept) {
+  using namespace arc_face_visit_test;
+  using directional::authority::exact_source_retraced_traces;
+  const auto lower = topology_face(0, 1, 2, 5U);
+  const ExactSourcePath chain{edge_piece(0, 1, at_vertex(0), at_vertex(1)),
+                              edge_piece(1, 2, at_vertex(1), at_vertex(2))};
+  // A same-way copy, a path back from 2 to 0 along the other edge (0,2), and
+  // an empty path are no retrace.
+  EXPECT_TRUE(exact_source_retraced_traces(
+                  {chain, chain,
+                   {face_piece(lower, at_vertex(2), at_vertex(0))},
+                   ExactSourcePath{}})
+                  .empty());
+  EXPECT_TRUE(exact_source_retraced_traces({}).empty());
+  EXPECT_TRUE(exact_source_retraced_traces({chain}).empty());
+}
