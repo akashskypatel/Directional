@@ -1,0 +1,3 @@
+Purpose: exact source snapshot for CB-195 patch preimage verification.
+Frozen prior head: 7689384752cadf7ed24975b62d6fefc4afc87fe9
+Turn: M6-CP3-CB-195-P13-EXACT-SOURCE-PATH-RETRACE-ALONG-EDGES
