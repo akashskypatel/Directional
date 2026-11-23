@@ -1,21 +1,20 @@
-## CURRENT — CB-197B compiled; TB-EXEC-176 next (2026-11-23 UTC)
+## CURRENT — TB-EXEC-176 measured, rejected; TB-REV-176 next (2026-11-23 UTC)
 
-- [x] TB-REV-175 adversarial: approved exact, disjoint CB-197A and CB-197B diffs; TB175 rejected 993/1000, seven mechanical RED.
-- [x] `M6-CP3-CB-197A-P13-EXACT-TRACE-PIECE-BUILDER-EXTRACTION` — GMP/GMPXX compile-only run 45250530743. [Record](.agents/Directional/Architecture_M6_CP3_CB197A_P13_Exact_Trace_Piece_Builder_Extraction_Code_Build_Record_20261123.md).
-- [x] **COMPLETE** `M6-CP3-CB-197B-P13-EXACT-SOURCE-RETRACE-ORDERED-STRETCHES` — exactly `1fe85e27…25be8d` (+57/−27, two files), source `8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3`, GMP/GMPXX [run 45255304770](https://github.com/akashskypatel/Directional/actions/runs/45255304770), 28/28 checks, `runtimeExecution=false`. [Record](.agents/Directional/Architecture_M6_CP3_CB197B_P13_Exact_Source_Retrace_Ordered_Stretches_Code_Build_Record_20261123.md).
-- [ ] **NEXT** `M6-CP3-TB-EXEC-176-P13-PIECE-BUILDER-AND-ORDERED-RETRACE-FULL-GATE` — immutable 1001-row frozen manifest (`0f85400f…2b84642`); predicted 994 PASS and seven known RED. Measure, then separate TB-REV-176.
-- [ ] TB-REV-176 → CB-198 test-only per-fixture selection receipt → TB-EXEC-177.
-- [ ] CB-199 selection + reference remap + arrival owns `Y.port` (fail closed) → TB.
-- [ ] CB-200 port-set readers + every-region-owns-a-face assertion → TB; row652 expected two regions after mechanical repairs.
+- [x] CB-197A/CB-197B completed as separate GMP/GMPXX compile-only turns; immutable CB-197B source `8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3`, package `14859356205` SHA-256 `e6111ff21530f107ab8b1db724155aa2c4fbbe4a2765342fbfabbd4a9c4fc664` (28/28 hashes).
+- [x] **COMPLETE / REJECTED** `M6-CP3-TB-EXEC-176-P13-PIECE-BUILDER-AND-ORDERED-RETRACE-FULL-GATE` — [run 45263429563](https://github.com/akashskypatel/Directional/actions/runs/45263429563), result `14861444963` ZIP SHA-256 `202cb81282d9e8a0bb6b711020af80450e407feb12b71de613b1be8cca110453`, **994/1001 PASS, seven known RED**, 2010/2010 result checksums, membership 1001 gated +81 deferred, no rebuild. First 1000 TB175 rows unchanged (778 exact logs, 222 permitted N1/N2-only, no N3 or unexpected differences). New row 1001 PASS. [Execution report](.agents/Directional/Architecture_M6_CP3_TB176_P13_Piece_Builder_And_Ordered_Retrace_Full_Gate_Execution_Report_20261123.md).
+- [ ] **NEXT** `M6-CP3-TB-REV-176` — independently inspect TB176 and TB175 immutable archives, all original log and ledger comparisons, row 1001, the unchanged seven mechanical failures, and the absence of product acceptance. Review must decide CB-198 scope separately.
+- [ ] CB-198 test-only per-fixture selection receipt → TB-EXEC-177; **not authorized in this execution turn**.
+- [ ] CB-199 production selection + reference remap + arrival owns `Y.port` (fail closed) → TB.
+- [ ] CB-200 port-set readers + every-region-owns-a-face assertion → TB; row652 predicts two regions only after mechanical repair and independent review.
 - [ ] Row979, Branch A, CB-190; deferred CollinearOverlap/EndpointTouch and per-grazing-edge receipt.
 
 ```text
-NEXT_TURN: M6-CP3-TB-EXEC-176-P13-PIECE-BUILDER-AND-ORDERED-RETRACE-FULL-GATE
-Owner: immutable artifact-only Test + Benchmark (new separate turn).
-Frozen authority: .agents/Directional/gates/Architecture_M6_CP3_CB197AB_P13_Exact_Manifest.md and TB-REV-175 adversarial.
-Source: 8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3; compile run 45255304770; package 14859356205 sha256 e6111ff21530f107ab8b1db724155aa2c4fbbe4a2765342fbfabbd4a9c4fc664.
-Execute frozen 1001 rows; expected 994 PASS, seven known RED (445/652/653/656/658/660/786). Do not preclaim PASS.
-STOP: package, hash, manifest, membership, extraction-mode, or immutable evidence mismatch. No rebuild, no source/selector/fixture repair, no CP3/497/D0/H4 promotion. TB-REV-176 follows in its own turn.
+NEXT_TURN: M6-CP3-TB-REV-176
+Owner: independent read-only Review of frozen TB176 artifact and TB175 comparison.
+Authority: .agents/Directional/Architecture_M6_CP3_TB176_P13_Piece_Builder_And_Ordered_Retrace_Full_Gate_Execution_Report_20261123.md; TB-REV-175 adversarial G1–G4, CB-197A/B manifest, TB175 report.
+Source: 8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3; compile package 14859356205. TB176 run 45263429563, result 14861444963.
+Review exact 1001-row result and raw files; 994 PASS, known RED 445/652/653/656/658/660/786, 81 deferred; prior 1000 unchanged under N1/N2 only.
+STOP: no new benchmark/rebuild, source/selector/fixture repair, CB-198 implementation, A2a wiring, or CP3/497/D0/H4 promotion during TB-EXEC-176. Determine the next authorized code turn only in TB-REV-176.
 ```
 
 ## HISTORY — M6-CP3-TB-REV-175 rejected TB175; one extract-only CB successor (2026-11-23 UTC)
