@@ -1,27 +1,26 @@
-**Current turn outcome (2026-11-23):** CB-198 exact test-only receipt compiled and committed ([run 45280023495](https://github.com/akashskypatel/Directional/actions/runs/45280023495), package `14868834752`, 28/28); no runtime. TB176 remains rejected at 994/1001 with seven unchanged RED. Next only `M6-CP3-TB-EXEC-177-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT-FULL-GATE`. [Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_176_Adversarial_Review_20261123.md).
+**Current turn outcome (2026-11-23):** TB-EXEC-177 immutable full gate [run 45283342400](https://github.com/akashskypatel/Directional/actions/runs/45283342400), artifact `14871900641`: 994/1001 PASS, seven existing RED. H4 comparison STOP: five +108 source-line shifts and row172 N3-like reordering beyond two new authorized receipts; no acceptance. Next only `M6-CP3-TB-REV-177`. [Report](.agents/Directional/Architecture_M6_CP3_TB177_P13_Mechanical_Retrace_Selection_Receipt_Full_Gate_Execution_Report_20261123.md).
 
-## CURRENT — CB-198 compile-only complete; TB-EXEC-177 immutable gate next (2026-11-23 UTC)
+## CURRENT — TB-EXEC-177 immutable gate rejected; TB-REV-177 independent review next (2026-11-23 UTC)
 
 - [x] **COMPLETE** TB-REV-176 adversarial continuation (H1–H4): prose CB-198 withdrawn (RA-261); exact failure-branch receipt frozen (`…CB198…Receipt_Exact.diff` `c30811fc…391b`); H2 arrival check (`keptArrival = removedSingularity`) for the D13 = A `Y.port` rule; TB-EXEC-177 rules frozen (TB176 manifest unchanged).
 - [x] **COMPLETE** CB-198 exact test-only receipt: [run 45280023495](https://github.com/akashskypatel/Directional/actions/runs/45280023495), package `14868834752` (28/28), `runtimeExecution=false`; [CB-198 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB198_P13_Mechanical_Retrace_Selection_Receipt_Code_Build_Record_20261123.md).
-- [ ] **1 NEXT** TB-EXEC-177: predicted 994/1001 and same seven RED, not yet executed; only the inserted receipt text may differ; record row652 receipt.
+- [x] **COMPLETE / REJECTED** TB-EXEC-177: [run 45283342400](https://github.com/akashskypatel/Directional/actions/runs/45283342400), artifact `14871900641`, 994/1001 and same seven RED, two receipts; strict H4 comparison STOP (row172 order, five +108 test-line shifts).
+- [ ] **1 NEXT** independent `M6-CP3-TB-REV-177` adjudicates immutable diagnostics and comparison. No CB-199 before Review.
 - [ ] **3** TB-REV-177 → CB-199A unwired remap helper (`struckTrace`/incidences → kept trace, arrival owns `Y.port`) + unit test → TB. Only if the receipt prediction holds; otherwise the producer first.
 - [ ] **4** CB-199B selection switch in `canonical_field_aligned_candidate`, fail closed on a missing path → TB.
 - [ ] **5** CB-200 port-set readers + every-region-owns-a-face assertion → TB; mechanical controls green, row652 two regions.
 - [ ] **6** Row979, Branch A, CB-190; deferred CollinearOverlap/EndpointTouch (E5).
 
 ```text
-NEXT_TURN: M6-CP3-TB-EXEC-177-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT-FULL-GATE
-Owner: Test + Benchmark agent (immutable compiled artifact only; no rebuild)
-Exact source: 6cdd23a10ac6f6fbc6c741fb1e18ccff2038871c
-Compile: 45280023495; GMP/GMPXX package: 14868834752; ZIP SHA-256 b5a7104d41e103e3d31094b4d889af1097ffa52edac6ff11fe120acfdb4ee0c9
-Authority: Architecture_M6_CP3_TB_REV_176_Adversarial_Review_20261123.md H1-H4 and CB-198 Code + Build record
-Manifest unchanged: 0f85400ff9713fc8a835f308304ded1db9830e668211bab71c88d580b2e84642 (1001 rows; membership 1082)
-TB176 baseline: artifact 14861444963, 994/1001, RED rows 445/652/653/656/658/660/786
-Compare N1-N3; only permitted new output is one retracedTraceSelection receipt after alongEdgeVisitsTruncated in affected diagnostics
-Record row652 receipt verbatim; predicted 4 pairs/arrival relation NOT accepted until test evidence; on deviation STOP
-Then independent M6-CP3-TB-REV-177 reviews result and decides CB-199A or returns to producer
-Do not rebuild/repair, edit source/selector/fixture, wire production selection, or promote CP3/497/D0/H4
+NEXT_TURN: M6-CP3-TB-REV-177
+Owner: independent Test + Benchmark Review (runtime-free; no source, test, fixture, selector, manifest mutation)
+TB177: run 45283342400; result 14871900641; ZIP SHA-256 8c5bce907f59b77207833153912805cccca6fa122c70ff9f299a64f68102b068, 2010/2010 hashes
+CB-198 source: 6cdd23a10ac6f6fbc6c741fb1e18ccff2038871c; GMP/GMPXX compile package 14868834752
+TB176 baseline: artifact 14861444963; unchanged manifest 0f85400ff9713fc8a835f308304ded1db9830e668211bab71c88d580b2e84642
+Observed: 994/1001 PASS, RED 445/652/653/656/658/660/786; row652 receipt verbatim in TB177 report
+STOP H4 strict comparison: +108 assertion-line shifts at 445/653/658/660/786; row172 N3-like record reordering
+Review recorded 4 retraces and both arrival equalities, and singularity IDs 1/3/5/7 to sourceVertex 10/35/47/71 mapping
+No CB-199, CP3/497/D0/H4 or selector promotion before independent review
 ```
 
 

@@ -31,31 +31,32 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-23 UTC. **CB-198 complete (Code + Build, compile-only)**: exact test-only failure-branch receipt [CB-198 Code + Build record](Architecture_M6_CP3_CB198_P13_Mechanical_Retrace_Selection_Receipt_Code_Build_Record_20261123.md); next only `M6-CP3-TB-EXEC-177-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT-FULL-GATE`. TB176 still rejected 994/1001 with seven mechanical RED; no production or selector promotion. |
+| Currency | 2026-11-23 UTC. **TB-EXEC-177 execution complete, strict H4 comparison STOP, gate rejected** (994/1001; seven existing RED). Two receipt insertions at 652/656; five +108 source-line shifts and row172 reordered diagnostic require independent Review. [TB177 report](Architecture_M6_CP3_TB177_P13_Mechanical_Retrace_Selection_Receipt_Full_Gate_Execution_Report_20261123.md). Next only `M6-CP3-TB-REV-177`. |
 | Branch / source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; exact test-only CB-198 source `6cdd23a10ac6f6fbc6c741fb1e18ccff2038871c`, GMP/GMPXX [run 45280023495](https://github.com/akashskypatel/Directional/actions/runs/45280023495), package `14868834752` SHA-256 `b5a7104d41e103e3d31094b4d889af1097ffa52edac6ff11fe120acfdb4ee0c9`, 28/28 hashes, eight targets, `runtimeExecution=false`. [CB-198 Code + Build record](Architecture_M6_CP3_CB198_P13_Mechanical_Retrace_Selection_Receipt_Code_Build_Record_20261123.md). |
-| Current TB evidence | TB176 [run `45263429563`](https://github.com/akashskypatel/Directional/actions/runs/45263429563), result `14861444963` SHA-256 `202cb81282d9e8a0bb6b711020af80450e407feb12b71de613b1be8cca110453`, **994/1001 PASS**, seven RED, **2010/2010** checksums, 1082 members. Against TB175: 1000/1000 inherited ledger fields match; 778 exact and 222 N1/N2 normalized logs, no unapproved changes. New row1001 PASS. [TB176 report](Architecture_M6_CP3_TB176_P13_Piece_Builder_And_Ordered_Retrace_Full_Gate_Execution_Report_20261123.md). TB175 [run `45233825958`](https://github.com/akashskypatel/Directional/actions/runs/45233825958), result `14849271506` SHA-256 `be7a0f783d0afb025ccee2353921a765c340766340553f2d70b4b5c32992b347`, 993/1000, seven RED; 2008/2008 hashes. |
+| Current TB evidence | TB177 [run 45283342400](https://github.com/akashskypatel/Directional/actions/runs/45283342400), result `14871900641` ZIP SHA-256 `8c5bce907f59b77207833153912805cccca6fa122c70ff9f299a64f68102b068`, 2010/2010 checks; 1001/1001 executed, 994 PASS, seven existing RED, two new receipts. H4 strict comparison STOP on 6 off-receipt rows. [Report](Architecture_M6_CP3_TB177_P13_Mechanical_Retrace_Selection_Receipt_Full_Gate_Execution_Report_20261123.md). TB176 baseline `14861444963`, 994/1001, 2010/2010. |
 | Accepted comparison | TB169 run `45104059492`, result ZIP `14787082075` (`dc15a8df5226fc209717f6df2fd15140e9e04abb6e73f831d8285992e72f04e5`), 993/993 accepted; CP2 491/491 accepted. Frozen prefix SHA-256 `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`. |
 | Regression / debt | Existing seven accepted-green mechanical failures at rows 445/652/653/656/658/660/786 remain RED. No new stable event; historical 67 events / 17 categories / 50 recurrences; witness debt1, deferred81. |
 | First unresolved failure | Row652 `RegionElectedCutComponentEmpty`, four co-traced zero-area lens orbits 1/3/4/5 from A2a; D13 = A (DESIGN); repair = A2a step-7 selection (CB-197). Row979 staged `RegionContainsInteriorSingularity` at source vertex8; not production success. |
 
 ## Mandatory next turn
 
+- **COMPLETE / REJECTED:** TB-EXEC-177 full immutable 1001-row execution. Seven pre-existing RED; two new diagnostic receipts; six off-receipt comparison deviations (row172 record reordering, five +108 line shifts) require H4 STOP. [Report](Architecture_M6_CP3_TB177_P13_Mechanical_Retrace_Selection_Receipt_Full_Gate_Execution_Report_20261123.md).
+- **ONE NEXT:** `M6-CP3-TB-REV-177`, independent review of both immutable archives and the exact receipt; no code or selector changes in TB.
+
 - **COMPLETE:** CB-197A, CB-197B (source `8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3`, [run 45255304770](https://github.com/akashskypatel/Directional/actions/runs/45255304770)); TB-EXEC-176 rejected 994/1001, seven RED ([report](Architecture_M6_CP3_TB176_P13_Piece_Builder_And_Ordered_Retrace_Full_Gate_Execution_Report_20261123.md)).
 - **COMPLETE:** CB-198 exact test-only failure-branch receipt; [run 45280023495](https://github.com/akashskypatel/Directional/actions/runs/45280023495), package `14868834752` (SHA-256 `b5a7104d41e103e3d31094b4d889af1097ffa52edac6ff11fe120acfdb4ee0c9`, 28/28), `runtimeExecution=false`. [CB-198 Code + Build record](Architecture_M6_CP3_CB198_P13_Mechanical_Retrace_Selection_Receipt_Code_Build_Record_20261123.md).
 - **COMPLETE:** TB-REV-176 [independent](Architecture_M6_CP3_TB_REV_176_P13_Piece_Builder_And_Ordered_Retrace_Independent_Review_20261123.md) + [adversarial](Architecture_M6_CP3_TB_REV_176_Adversarial_Review_20261123.md) (H1–H4): prose CB-198 withdrawn → exact test-only failure-branch receipt; H2 adds the arrival check (`keptArrival = removedSingularity`) that D13 = A's `Y.port` rule needs.
 
 ```text
-NEXT_TURN: M6-CP3-TB-EXEC-177-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT-FULL-GATE
-Owner: Test + Benchmark agent (immutable compiled artifact only; no rebuild)
-Exact source: 6cdd23a10ac6f6fbc6c741fb1e18ccff2038871c
-Compile: 45280023495; GMP/GMPXX package: 14868834752; ZIP SHA-256 b5a7104d41e103e3d31094b4d889af1097ffa52edac6ff11fe120acfdb4ee0c9
-Authority: Architecture_M6_CP3_TB_REV_176_Adversarial_Review_20261123.md H1-H4 and CB-198 Code + Build record
-Manifest unchanged: 0f85400ff9713fc8a835f308304ded1db9830e668211bab71c88d580b2e84642 (1001 rows; membership 1082)
-TB176 baseline: artifact 14861444963, 994/1001, RED rows 445/652/653/656/658/660/786
-Compare N1-N3; only permitted new output is one retracedTraceSelection receipt after alongEdgeVisitsTruncated in affected diagnostics
-Record row652 receipt verbatim; predicted 4 pairs/arrival relation NOT accepted until test evidence; on deviation STOP
-Then independent M6-CP3-TB-REV-177 reviews result and decides CB-199A or returns to producer
-Do not rebuild/repair, edit source/selector/fixture, wire production selection, or promote CP3/497/D0/H4
+NEXT_TURN: M6-CP3-TB-REV-177
+Owner: independent Test + Benchmark Review (runtime-free; no source, test, fixture, selector, manifest mutation)
+TB177: run 45283342400; result 14871900641; ZIP SHA-256 8c5bce907f59b77207833153912805cccca6fa122c70ff9f299a64f68102b068, 2010/2010 hashes
+CB-198 source: 6cdd23a10ac6f6fbc6c741fb1e18ccff2038871c; GMP/GMPXX compile package 14868834752
+TB176 baseline: artifact 14861444963; unchanged manifest 0f85400ff9713fc8a835f308304ded1db9830e668211bab71c88d580b2e84642
+Observed: 994/1001 PASS, RED 445/652/653/656/658/660/786; row652 receipt verbatim in TB177 report
+STOP H4 strict comparison: +108 assertion-line shifts at 445/653/658/660/786; row172 N3-like record reordering
+Review recorded 4 retraces and both arrival equalities, and singularity IDs 1/3/5/7 to sourceVertex 10/35/47/71 mapping
+No CB-199, CP3/497/D0/H4 or selector promotion before independent review
 ```
 
 ## Turn Sequence
@@ -69,8 +70,8 @@ Do not rebuild/repair, edit source/selector/fixture, wire production selection, 
 | COMPLETE | CB-194 → TB-EXEC-173 → CB-195 → TB-EXEC-174 → CB-196 → TB-EXEC-175 (993/1000) | Unwired helpers; same 7 RED. Reviews TB-REV-173 ([D13](Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md)), [174 adv.](Architecture_M6_CP3_TB_REV_174_Adversarial_Review_20261123.md), [175 adv.](Architecture_M6_CP3_TB_REV_175_Adversarial_Review_20261123.md). |
 | COMPLETE | CB-197A → CB-197B → TB-EXEC-176 (994/1001, rejected) → TB-REV-176 (independent + [adv.](Architecture_M6_CP3_TB_REV_176_Adversarial_Review_20261123.md)) | Same 7 RED; helpers unwired. |
 | COMPLETE | CB-198 exact test-only receipt | [run 45280023495](https://github.com/akashskypatel/Directional/actions/runs/45280023495), package `14868834752`, GMP/GMPXX, no runtime. |
-| **1 NEXT** | TB-EXEC-177 immutable full gate | 1001-row manifest, compare TB176, no rebuild, exact receipt only. |
-| 2 | TB-REV-177 → CB-199A unwired remap helper (`struckTrace`/incidences → kept, arrival owns `Y.port`) + unit test → TB | Only if receipt prediction holds; else producer first. |
+| COMPLETE / rejected | TB-EXEC-177 immutable full gate | [Run 45283342400](https://github.com/akashskypatel/Directional/actions/runs/45283342400), 994/1001; H4 strict comparison STOP. |
+| **1 NEXT** | TB-REV-177 → CB-199A unwired remap helper (`struckTrace`/incidences → kept, arrival owns `Y.port`) + unit test → TB | Only if receipt prediction holds; else producer first. |
 | 3 | CB-199B selection switch in `canonical_field_aligned_candidate` (fail-closed) → TB | — |
 | 3B | CB-200 port-set readers (EmbeddedGraphTopology 1793, GlobalTopologyPlan 410/2117, origin events) + every-region-owns-a-face assertion → TB | Mechanical controls green, row652 2 regions. |
 | 4 | Row979 `RegionContainsInteriorSingularity` (vertex 8) | After mechanical controls green; read printed locus first. |
