@@ -1,0 +1,377 @@
+diff --git a/include/directional/geometry/GlobalTopologyPlan.h b/include/directional/geometry/GlobalTopologyPlan.h
+index 4a8a8f0858440261347c61963b53681170ff0e07..93f645e0bf3a8fb1a83bdacf4f424c908ce6bdd3 100644
+--- a/include/directional/geometry/GlobalTopologyPlan.h
++++ b/include/directional/geometry/GlobalTopologyPlan.h
+@@ -147,6 +147,19 @@ enum class GlobalTopologyPlanErrorCode : std::uint8_t {
+   RegionSourceFaceOwningFragmentMissing = 36,
+   RegionInteriorVertexCornerOwnerMissing = 37,
+   InvalidCutGraphBinding = 38,
++  SourceFaceCutPartitionFailed = 39,
++  SourceFaceCutOrbitNotOwned = 40,
++};
++
++// One-to-one public mirror of detail::FaceCutPartitionFailure. The public
++// error contract must not expose a private source-header type.
++enum class FaceCutPartitionReason : std::uint8_t {
++  MalformedBoundaryPosition = 0,
++  CutAlongOneEdge = 1,
++  NoBoundaryEndpoint = 2,
++  UnorderedSharedEndpoint = 3,
++  CrossingCuts = 4,
++  InconsistentSideOrbits = 5,
+ };
+ 
+ enum class UncutFaceComponentSeedState : std::uint8_t {
+@@ -540,6 +553,7 @@ struct GlobalTopologyPlanError {
+   std::optional<authority::SourceEdgeTopologyKey> sourceEdge;
+   std::optional<authority::SourceFaceTopologyKey> sourceFace;
+   std::optional<authority::SourceFaceTopologyKey> secondSourceFace;
++  std::optional<FaceCutPartitionReason> faceCutPartitionReason;
+   std::optional<authority::FieldSingularityId> singularity;
+   std::optional<authority::SourceVertexId> sourceVertex;
+   std::optional<int> eulerCharacteristic;
+diff --git a/src/geometry/GlobalTopologyPlan.cpp b/src/geometry/GlobalTopologyPlan.cpp
+index cd30589ac532168dc1fefdc5194f98693e8847cb..5b4437b1a49e25dc9056f4346fce9a6ffa0b9c51 100644
+--- a/src/geometry/GlobalTopologyPlan.cpp
++++ b/src/geometry/GlobalTopologyPlan.cpp
+@@ -460,23 +460,24 @@ FragmentCornerBuildResult build_fragment_corner_incidence(
+     const SourceTopologyIndex &topology,
+     const FieldAlignedCurveNetwork &network,
+     const std::vector<GlobalTopologyArc> &arcs,
+-    const FaceWalkResult &walk) {
+-  struct RayCut {
+-    int ordinal = 0;
+-    std::size_t forwardOrbit = 0U;
+-    std::size_t reverseOrbit = 0U;
+-    std::size_t sourceCorner = 0U;
+-  };
+-
+-  FragmentCornerIncidence result;
+-  std::map<authority::SourceFaceTopologyKey, bool> hasFullChord;
+-  std::map<authority::SourceFaceTopologyKey, std::vector<RayCut>> raysByFace;
+-
++    const std::map<authority::NetworkArcId, std::vector<detail::ArcFaceVisit>>
++        &arcVisits,
++    const std::map<authority::SourceFaceTopologyKey, std::set<std::size_t>>
++        &fragmentOrbits) {
++  // The region reader classified every exact arc visit once. This reader
++  // consumes that immutable classification; it must never revisit whole
++  // trace segments to infer face-cut geometry.
++  std::map<authority::SourceFaceTopologyKey, std::vector<detail::FaceCutPiece>>
++      cutsByFace;
+   for (const GlobalTopologyArc &arc : arcs) {
+-    if (arc.kind != GlobalTopologyArcKind::Trace || !arc.trace.has_value()) {
+-      continue;
++    if (arc.kind != GlobalTopologyArcKind::Trace) continue;
++    if (!arc.trace.has_value()) {
++      GlobalTopologyPlanError failure =
++          error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
++      failure.arc = arc.id;
++      return failure;
+     }
+-    const FieldAlignedCandidateTrace *trace = find_trace(network, *arc.trace);
++    const auto *trace = find_trace(network, *arc.trace);
+     if (trace == nullptr || arc.firstSegment >= arc.onePastLastSegment ||
+         arc.onePastLastSegment > trace->segments.size()) {
+       GlobalTopologyPlanError failure =
+@@ -495,185 +496,72 @@ FragmentCornerBuildResult build_fragment_corner_incidence(
+       failure.singularity = trace->singularity;
+       return failure;
+     }
+-    const std::size_t forwardDart = dart_index(
+-        GlobalTopologyOrientedArc{arc.id, authority::Orientation::Forward});
+-    const std::size_t reverseDart = dart_index(
+-        GlobalTopologyOrientedArc{arc.id, authority::Orientation::Reverse});
+-    if (forwardDart >= walk.orbitByDart.size() ||
+-        reverseDart >= walk.orbitByDart.size()) {
+-      return rotation_error(forwardDart >= walk.orbitByDart.size() ? RotationSystemInconsistencyReason::FragmentCornerForwardDartOutOfRange : RotationSystemInconsistencyReason::FragmentCornerReverseDartOutOfRange);
++    const auto found = arcVisits.find(arc.id);
++    if (found == arcVisits.end()) {
++      GlobalTopologyPlanError failure =
++          error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
++      failure.arc = arc.id;
++      return failure;
+     }
+-    const std::size_t forwardOrbit = walk.orbitByDart[forwardDart];
+-    const std::size_t reverseOrbit = walk.orbitByDart[reverseDart];
+-
+-    for (std::size_t segmentIndex = arc.firstSegment;
+-         segmentIndex < arc.onePastLastSegment; ++segmentIndex) {
+-      const FieldAlignedCandidateTraceSegment &segment =
+-          trace->segments[segmentIndex];
+-      const auto faceIt = topology.faces.find(segment.sourceFace);
+-      if (faceIt == topology.faces.end()) {
+-        GlobalTopologyPlanError failure =
+-            error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
+-        failure.arc = arc.id;
+-        failure.sourceFace = segment.sourceFace;
+-        return failure;
+-      }
+-      if (is_terminal_slit(*trace, segmentIndex) &&
+-          forwardOrbit == reverseOrbit) {
+-        // The retained outgoing carrier is only a hypothetical continuation
+-        // when both certified face-walk sides share one orbit. Distinct-orbit
+-        // terminal sides are separating ownership and must be retained.
+-        continue;
+-      }
+-      // FragmentCornerIncidence is an ownership map keyed by certified face
+-      // orbit, not a fragment identity. When both dart sides share one orbit,
+-      // the full-chord writes below intentionally merge all face corners into
+-      // that single owner's entry (DEFN-R4.1/R4.2).
+-      const SourceFaceRecord &face = faceIt->second;
+-      if (segment.incomingCarrier.has_value()) {
+-        if (hasFullChord[segment.sourceFace] ||
+-            !raysByFace[segment.sourceFace].empty()) {
+-          GlobalTopologyPlanError failure =
+-              error(GlobalTopologyPlanErrorCode::SourceFaceCarriesMultipleTraceCuts);
+-          failure.arc = arc.id;
+-          failure.sourceFace = segment.sourceFace;
+-          return failure;
+-        }
+-        const auto incoming =
+-            local_edge_index(face, *segment.incomingCarrier);
+-        const auto outgoing = local_edge_index(face, segment.outgoingCarrier);
+-        if (!incoming.has_value() || !outgoing.has_value() ||
+-            *incoming == *outgoing) {
+-          GlobalTopologyPlanError failure =
+-              error(GlobalTopologyPlanErrorCode::TraceSegmentCarriersCoincide);
+-          failure.arc = arc.id;
+-          failure.sourceFace = segment.sourceFace;
+-          return failure;
+-        }
+-        const std::size_t turn = (*outgoing + 3U - *incoming) % 3U;
+-        if (turn != 1U && turn != 2U) {
+-          GlobalTopologyPlanError failure =
+-              error(GlobalTopologyPlanErrorCode::TraceSegmentTurnNotAdmissible);
+-          failure.arc = arc.id;
+-          failure.sourceFace = segment.sourceFace;
+-          return failure;
+-        }
+-        std::optional<std::size_t> sharedCorner;
+-        for (std::size_t corner = 0U; corner < face.vertices.size(); ++corner) {
+-          const authority::SourceVertexId vertex = face.vertices[corner];
+-          const bool onIncoming =
+-              vertex == segment.incomingCarrier->first() ||
+-              vertex == segment.incomingCarrier->second();
+-          const bool onOutgoing =
+-              vertex == segment.outgoingCarrier.first() ||
+-              vertex == segment.outgoingCarrier.second();
+-          if (onIncoming && onOutgoing) {
+-            if (sharedCorner.has_value()) {
+-              GlobalTopologyPlanError failure = error(
+-                  GlobalTopologyPlanErrorCode::TraceSegmentCarriersShareMultipleCorners);
+-              failure.arc = arc.id;
+-              failure.sourceFace = segment.sourceFace;
+-              return failure;
+-            }
+-            sharedCorner = corner;
+-          }
+-        }
+-        if (!sharedCorner.has_value()) {
+-          GlobalTopologyPlanError failure =
+-              error(GlobalTopologyPlanErrorCode::TraceSegmentCarriersShareNoCorner);
+-          failure.arc = arc.id;
+-          failure.sourceFace = segment.sourceFace;
+-          return failure;
+-        }
+-        const std::size_t sideOrbit =
+-            turn == 1U ? forwardOrbit : reverseOrbit;
+-        const std::size_t cornerOrbit =
+-            sideOrbit == forwardOrbit ? reverseOrbit : forwardOrbit;
+-        result[segment.sourceFace][cornerOrbit].insert(
+-            face.vertices[*sharedCorner]);
+-        for (std::size_t corner = 0U; corner < face.vertices.size(); ++corner) {
+-          if (corner != *sharedCorner) {
+-            result[segment.sourceFace][sideOrbit].insert(face.vertices[corner]);
+-          }
+-        }
+-        hasFullChord[segment.sourceFace] = true;
+-        continue;
+-      }
+-
+-      if (hasFullChord[segment.sourceFace]) {
+-        GlobalTopologyPlanError failure =
+-            error(GlobalTopologyPlanErrorCode::SourcePortFaceAlreadyCarriesTraceChord);
+-        failure.arc = arc.id;
+-        failure.sourceFace = segment.sourceFace;
+-        return failure;
+-      }
+-      const auto binding = resolve_carrierless_corner_binding(
+-          face, *trace, segmentIndex, segment);
+-      const auto outgoing = local_edge_index(face, segment.outgoingCarrier);
+-      if (!binding.has_value() || !outgoing.has_value() ||
+-          *outgoing != (binding->sourceCorner + 1U) % 3U) {
+-        GlobalTopologyPlanError failure =
+-            error(GlobalTopologyPlanErrorCode::TraceSourcePortCarrierNotAdmissible);
+-        failure.sourceFace = segment.sourceFace;
+-        annotate_trace_segment_incidence(failure, arc, *trace, segmentIndex,
+-                                         segment, binding);
+-        return failure;
+-      }
+-      raysByFace[segment.sourceFace].push_back(
+-          RayCut{port->ordinal, forwardOrbit, reverseOrbit,
+-                 binding->sourceCorner});
++    for (const auto &visit : found->second) {
++      if (!visit.cut.has_value()) continue;
++      if (is_terminal_slit(*trace, arc.firstSegment + visit.visit) &&
++          visit.cut->forwardOrbit == visit.cut->reverseOrbit) continue;
++      cutsByFace[visit.face].push_back(*visit.cut);
+     }
+   }
+ 
+-  for (auto &[faceKey, rays] : raysByFace) {
+-    if (rays.empty()) continue;
+-    if (hasFullChord[faceKey]) {
++  FragmentCornerIncidence result;
++  for (const auto &[faceKey, cuts] : cutsByFace) {
++    const auto faceIt = topology.faces.find(faceKey);
++    if (faceIt == topology.faces.end()) {
+       GlobalTopologyPlanError failure =
+-          error(GlobalTopologyPlanErrorCode::SourceFaceCarriesTraceChordAndRays);
++          error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
+       failure.sourceFace = faceKey;
+       return failure;
+     }
+-    const auto faceIt = topology.faces.find(faceKey);
+-    if (faceIt == topology.faces.end()) {
+-      return error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
++    const auto partition = detail::partition_face_corners(cuts);
++    if (const auto *reason =
++            std::get_if<detail::FaceCutPartitionFailure>(&partition)) {
++      GlobalTopologyPlanError failure =
++          error(GlobalTopologyPlanErrorCode::SourceFaceCutPartitionFailed);
++      failure.sourceFace = faceKey;
++      failure.faceCutPartitionReason = static_cast<FaceCutPartitionReason>(*reason);
++      return failure;
+     }
+-    std::map<std::size_t, std::vector<RayCut>> raysByCorner;
+-    for (const RayCut &ray : rays) {
+-      raysByCorner[ray.sourceCorner].push_back(ray);
+-    }
+-    const SourceFaceRecord &face = faceIt->second;
+-    for (auto &[sourceCorner, cornerRays] : raysByCorner) {
+-      std::sort(cornerRays.begin(), cornerRays.end(),
+-                [](const RayCut &first, const RayCut &second) {
+-                  return first.ordinal < second.ordinal;
+-                });
+-      for (std::size_t index = 1U; index < cornerRays.size(); ++index) {
+-        if (cornerRays[index - 1U].ordinal == cornerRays[index].ordinal) {
+-          GlobalTopologyPlanError failure = rotation_error(
+-              RotationSystemInconsistencyReason::FragmentCornerRayOrdinalDuplicate);
++    auto &owners = result[faceKey];
++    // Every counted side orbit is a key, including an owner of an interior
++    // strip that contains no source corner.
++    for (const auto &cut : cuts) {
++      owners.try_emplace(cut.forwardOrbit);
++      owners.try_emplace(cut.reverseOrbit);
++    }
++    const auto &corners = std::get<detail::FaceCornerOrbits>(partition);
++    for (std::size_t corner = 0U; corner < 3U; ++corner) {
++      for (const std::size_t orbit : corners[corner]) {
++        const auto owner = owners.find(orbit);
++        if (owner == owners.end()) {
++          GlobalTopologyPlanError failure =
++              error(GlobalTopologyPlanErrorCode::SourceFaceCutOrbitNotOwned);
+           failure.sourceFace = faceKey;
+           return failure;
+         }
+-        if (cornerRays[index - 1U].forwardOrbit !=
+-            cornerRays[index].reverseOrbit) {
+-          GlobalTopologyPlanError failure = rotation_error(
+-              RotationSystemInconsistencyReason::FragmentCornerOrbitChainMismatch);
++        owner->second.insert(faceIt->second.vertices[corner]);
++      }
++    }
++    const auto fragment = fragmentOrbits.find(faceKey);
++    if (fragment != fragmentOrbits.end()) {
++      for (const std::size_t orbit : fragment->second) {
++        if (owners.count(orbit) == 0U) {
++          GlobalTopologyPlanError failure =
++              error(GlobalTopologyPlanErrorCode::SourceFaceCutOrbitNotOwned);
+           failure.sourceFace = faceKey;
+           return failure;
+         }
+       }
+-      const authority::SourceVertexId sourceVertex = face.vertices[sourceCorner];
+-      for (const RayCut &ray : cornerRays) {
+-        result[faceKey][ray.forwardOrbit].insert(sourceVertex);
+-        result[faceKey][ray.reverseOrbit].insert(sourceVertex);
+-      }
+-      result[faceKey][cornerRays.front().reverseOrbit].insert(
+-          face.vertices[(sourceCorner + 1U) % 3U]);
+-      result[faceKey][cornerRays.back().forwardOrbit].insert(
+-          face.vertices[(sourceCorner + 2U) % 3U]);
+     }
+   }
+-
++  // Faces with no counted interior cut must remain unkeyed.
+   return result;
+ }
+ 
+@@ -2456,6 +2344,10 @@ RegionCertificatesBuildResult build_region_certificates(
+     const std::vector<GlobalTopologyRegion> &regions,
+     const std::map<authority::SourceFaceTopologyKey, std::size_t>
+         *tracePieceCounts,
++    const std::map<authority::NetworkArcId, std::vector<detail::ArcFaceVisit>>
++        &arcVisits,
++    const std::map<authority::SourceFaceTopologyKey, std::set<std::size_t>>
++        &fragmentOrbits,
+     const bool emitEulerDiagnostics,
+     const FragmentDiagnosticEvidence *diagnostics) {
+   const NodeLocusResult locusBuild = build_node_loci(network, cutNodes);
+@@ -2474,7 +2366,7 @@ RegionCertificatesBuildResult build_region_certificates(
+     }
+   }
+   const FragmentCornerBuildResult cornerBuild =
+-      build_fragment_corner_incidence(topology, network, arcs, walk);
++      build_fragment_corner_incidence(topology, network, arcs, arcVisits, fragmentOrbits);
+   if (const auto *failure =
+           std::get_if<GlobalTopologyPlanError>(&cornerBuild)) {
+     return *failure;
+@@ -2702,7 +2594,8 @@ CandidateBuildResult canonical_candidate(
+       build_region_certificates(
+           embedded.sourceTopology, network, cutGraph, embedded.cutNodes,
+           candidate.arcs, embedded.faceWalk, candidate.regions,
+-          &regionSuccess.tracePieceCount, true, diagnostics);
++          &regionSuccess.tracePieceCount, regionSuccess.arcVisits,
++          regionSuccess.fragmentOrbits, true, diagnostics);
+   if (const auto *failure =
+           std::get_if<GlobalTopologyPlanError>(&certificateBuild)) {
+     GlobalTopologyPlanError annotated = *failure;
+@@ -2938,12 +2831,24 @@ std::optional<GlobalTopologyPlanError> validate_candidate_structure(
+           std::get_if<GlobalTopologyPlanError>(&validationFaceWalk)) {
+     return *failure;
+   }
++  // Validation reconstructs the same exact visit and fragment ownership
++  // evidence for the supplied candidate before checking certificates.
++  const auto validationRegions = build_regions(
++      *topology, sourceAuthority, network, cutGraph, candidate.arcs,
++      std::get<FaceWalkResult>(validationFaceWalk), nullptr, nullptr);
++  if (const auto *failure =
++          std::get_if<GlobalTopologyPlanError>(&validationRegions)) {
++    return *failure;
++  }
++  const auto &validationEvidence =
++      std::get<RegionBuildSuccess>(validationRegions);
+   const RegionCertificatesBuildResult certificateBuild =
+       build_region_certificates(
+           *topology, network, cutGraph,
+           std::get<CutNodeBindings>(validationCutNodes), candidate.arcs,
+           std::get<FaceWalkResult>(validationFaceWalk), candidate.regions,
+-          nullptr, false, nullptr);
++          nullptr, validationEvidence.arcVisits,
++          validationEvidence.fragmentOrbits, false, nullptr);
+   if (const auto *failure =
+           std::get_if<GlobalTopologyPlanError>(&certificateBuild)) {
+     return *failure;
+@@ -3241,6 +3146,10 @@ const char *global_topology_plan_error_code_name(
+     return "MandatoryEdgeTerminalOrderUnresolved";
+   case GlobalTopologyPlanErrorCode::RegionOwnedBoundaryEdgeMissingFromWalk:
+     return "RegionOwnedBoundaryEdgeMissingFromWalk";
++  case GlobalTopologyPlanErrorCode::SourceFaceCutPartitionFailed:
++    return "SourceFaceCutPartitionFailed";
++  case GlobalTopologyPlanErrorCode::SourceFaceCutOrbitNotOwned:
++    return "SourceFaceCutOrbitNotOwned";
+   case GlobalTopologyPlanErrorCode::InvalidCutGraphBinding:
+     return "InvalidCutGraphBinding";
+   }

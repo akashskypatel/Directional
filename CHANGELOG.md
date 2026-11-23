@@ -1,3 +1,7 @@
+## 2026-11-23 — TB-REV-168 independent review and exact CB-188/CB-189 diff freeze
+
+[Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md) re-derived TB168 993/993 PASS and 1074 membership, with 989/989 TB167 prefix results identical under N1–N3 and no observed regression. The CB-187 adapter remains unwired. Two distinct future implementation patches and their own preimage manifests were frozen: CB-188 region reader (`5f06c14b…005d05944`), CB-189 corner reader (stacked after CB-188; exact SHA in its manifest). Both pass static syntax/check-only verification; no production/test/selector code changed in this review, no binary run or build, no CP3/497/D0/H4 promotion. Next only CB-188 Code + Build; then separate TB169, CB189 and TB170.
+
 ## 2026-11-23 — TB-EXEC-168 arc-face-visit adapter full gate PASS
 
 [TB168 execution report](.agents/Directional/Architecture_M6_CP3_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Execution_Report_20261123.md): immutable CB-187 source `486704038a6b`, package `14781561211`; [run 45092627119](https://github.com/akashskypatel/Directional/actions/runs/45092627119), result `14781634158` (`db2f8f29…aafb09`). Independent verification: **993/993 PASS**, CP2 **491/491**, membership **1074** (993 gated + 81 deferred), all four `ArcFaceVisits` cases PASS; TB167 rows 1–989 unchanged under N1–N3. All archive hashes and per-row logs verified; no build, relink, configure, benchmark or census. No new regression; stable 66/17/49, debt 1. Next: TB-REV-168 only; no CP3/497/D0/H4 promotion.

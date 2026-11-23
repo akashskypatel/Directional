@@ -1,0 +1,116 @@
+diff --git a/src/geometry/GlobalTopologyPlan.cpp b/src/geometry/GlobalTopologyPlan.cpp
+index 9e6b13f1b39201cafede99ed85764223ed6371c9..cd30589ac532168dc1fefdc5194f98693e8847cb 100644
+--- a/src/geometry/GlobalTopologyPlan.cpp
++++ b/src/geometry/GlobalTopologyPlan.cpp
+@@ -9,6 +9,7 @@
+ #include "SourceFaceComponentPartition.h"
+ #include "CertifiedSourceFaceOwnerConsistency.h"
+ #include "EmbeddedGraphTopology.h"
++#include "ArcFaceVisits.h"
+ 
+ #include <algorithm>
+ #include <array>
+@@ -700,6 +701,9 @@ struct RegionBuildSuccess {
+   std::vector<GlobalTopologyRegion> regions;
+   RegionFrontierEvidence frontier;
+   std::map<authority::SourceFaceTopologyKey, std::size_t> tracePieceCount;
++  // The same exact per-arc classification is passed to the corner reader.
++  std::map<authority::NetworkArcId, std::vector<detail::ArcFaceVisit>> arcVisits;
++  std::map<authority::SourceFaceTopologyKey, std::set<std::size_t>> fragmentOrbits;
+ };
+ 
+ [[nodiscard]] bool contains_all_faces(
+@@ -1089,6 +1093,7 @@ RegionBuildResult build_regions(
+   std::map<authority::SourceFaceTopologyKey, std::set<std::size_t>>
+       fragmentOrbits;
+   std::map<authority::SourceFaceTopologyKey, std::size_t> tracePieceCount;
++  std::map<authority::NetworkArcId, std::vector<detail::ArcFaceVisit>> arcVisits;
+   std::set<authority::SourceEdgeTopologyKey> traceTouchedEdges;
+   std::map<std::pair<authority::SourceFaceTopologyKey,
+                      authority::SourceEdgeTopologyKey>,
+@@ -1245,6 +1250,65 @@ RegionBuildResult build_regions(
+     const std::size_t reverseOrbit = walk.orbitByDart[reverseDart];
+     const bool separatesCertifiedFaces = forwardOrbit != reverseOrbit;
+ 
++    // Region and corner readers must use one classification of exact arc
++    // pieces. Reject mismatched visit-to-segment bindings before publishing
++    // any ownership facts for this arc.
++    if (arc.sourceFaces.size() != arc.onePastLastSegment - arc.firstSegment) {
++      GlobalTopologyPlanError failure =
++          error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
++      failure.arc = arc.id;
++      return failure;
++    }
++    for (std::size_t visit = 0U; visit < arc.sourceFaces.size(); ++visit) {
++      if (arc.sourceFaces[visit] !=
++          trace->segments[arc.firstSegment + visit].sourceFace) {
++        GlobalTopologyPlanError failure =
++            error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
++        failure.arc = arc.id;
++        failure.sourceFace = arc.sourceFaces[visit];
++        return failure;
++      }
++    }
++    const auto visitResult = detail::arc_face_visits(
++        topology.faces, arc.sourceFaces, arc.sourcePieceCounts,
++        arc.sourcePath, forwardOrbit, reverseOrbit);
++    if (const auto *visitFailure =
++            std::get_if<detail::ArcFaceVisitFailure>(&visitResult)) {
++      GlobalTopologyPlanError failure =
++          error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
++      failure.arc = arc.id;
++      // The adapter's failure variant is not indexed. Unknown faces can be
++      // attributed here; other errors retain exact arc-level ownership.
++      if (*visitFailure == detail::ArcFaceVisitFailure::UnknownFace) {
++        for (const auto &face : arc.sourceFaces) {
++          if (topology.faces.count(face) == 0U) {
++            failure.sourceFace = face;
++            break;
++          }
++        }
++      }
++      return failure;
++    }
++    const auto &visits = std::get<std::vector<detail::ArcFaceVisit>>(visitResult);
++    for (const auto &visit : visits) {
++      if (visit.cut.has_value()) {
++        const std::size_t segmentIndex = arc.firstSegment + visit.visit;
++        if (is_terminal_slit(*trace, segmentIndex) &&
++            !separatesCertifiedFaces) continue;
++        ++tracePieceCount[visit.face];
++        add_fragment_orbit(visit.face, forwardOrbit);
++        add_fragment_orbit(visit.face, reverseOrbit);
++      } else {
++        add_fragment_orbit(visit.face, *visit.edgeSideOrbit);
++      }
++    }
++    if (!arcVisits.emplace(arc.id, visits).second) {
++      GlobalTopologyPlanError failure =
++          error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
++      failure.arc = arc.id;
++      return failure;
++    }
++
+     std::optional<authority::SourceVertexId> sourcePortVertex;
+     if (diagnostics != nullptr) {
+       const auto port = std::find_if(
+@@ -1276,9 +1340,6 @@ RegionBuildResult build_regions(
+         // evidence.
+         continue;
+       }
+-      ++tracePieceCount[segment.sourceFace];
+-      add_fragment_orbit(segment.sourceFace, forwardOrbit);
+-      add_fragment_orbit(segment.sourceFace, reverseOrbit);
+       traceTouchedEdges.insert(segment.outgoingCarrier);
+       if (segment.incomingCarrier.has_value()) {
+         traceTouchedEdges.insert(*segment.incomingCarrier);
+@@ -1714,7 +1775,8 @@ RegionBuildResult build_regions(
+     }
+   }
+   return RegionBuildSuccess{std::move(regions), frontier,
+-                            std::move(tracePieceCount)};
++                            std::move(tracePieceCount), std::move(arcVisits),
++                            std::move(fragmentOrbits)};
+ }
+ 
+ std::pair<authority::NetworkNodeId, authority::NetworkNodeId>
