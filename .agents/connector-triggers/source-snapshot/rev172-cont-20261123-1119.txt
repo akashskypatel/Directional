@@ -1,2 +1,0 @@
-Resume current canonical review M6-CP3-TB-REV-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE
-Source authority before trigger: 8ff63cec3ee21254b150e8cfc16cc9ba55ebbfdb
