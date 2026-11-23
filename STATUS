@@ -1,10 +1,10 @@
 ---TURN_STATUS---
 Turn: M6-CP3-TB-REV-173-P13-SHARED-EDGE-ORACLE-FULL-GATE
-Status: BLOCKED
+Status: IN_PROGRESS
 Successor: UNKNOWN
 Started at: 2026-11-23T13:51:03Z
-Resumed at: 
+Resumed at: 2026-11-23T14:14:03Z
 Ended at: 
-Blocker Type: REVIEW_BLOCKER
-Blocker Details: Owner D13 decision on singularity arrival-port ownership is required before final review authorization of the next Code + Build turn.
+Blocker Type: 
+Blocker Details: 
 ---END_TURN_STATUS---
