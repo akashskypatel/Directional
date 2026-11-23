@@ -1,25 +1,22 @@
-## CURRENT — CB-195 compiled; TB-EXEC-174 next (2026-11-23 UTC)
+## CURRENT — TB-EXEC-174 rejected; TB-REV-174 next (2026-11-23 UTC)
 
-- [x] TB-REV-173 D13 = A from DESIGN. See [D13 resolution](.agents/Directional/Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md). Its seven mechanical controls remain RED.
-- [x] `M6-CP3-CB-195-P13-EXACT-SOURCE-PATH-RETRACE-ALONG-EDGES` — exact approved +91/-0 diff `72fa4fa6…d315`; compiled source `29415df1ca8d76825a531092f65ff85e4ecd3b9d`, GMP/GMPXX run `45198338115`, package `14832291155` SHA-256 `7a06da51b899ba73f7e9b2375275be87dceeab86dba469cae5bad5be6cf6350c`; `runtimeExecution=false`. Two tests compiled, not executed. [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB195_P13_Exact_Source_Path_Retrace_Along_Edges_Progress_20261123.md).
-- [ ] **NEXT 1** `M6-CP3-TB-EXEC-174-P13-RETRACE-ORACLE-FULL-GATE` — frozen 998-row manifest `f98436b2…8db8e7`, expected 991 PASS, same seven RED; no rebuild.
-- [ ] 2 `M6-CP3-TB-REV-174-P13-RETRACE-ORACLE-FULL-GATE` — independent review then exact CB-196 freeze.
-- [ ] 3 CB-196 arrival-port receipt → TB-EXEC-175 → TB-REV-175.
-- [ ] 4 CB-197 A2a step-7 selection + port-set readers + region-owns-face assertion → TB-EXEC-176, after TB-REV-175.
-- [ ] 5 Row979, Branch A, CB-190. Obligation E5: unwitnessed dropped `CollinearOverlap`/`EndpointTouch` and per-grazing-edge count.
+- [x] CB-195 source `29415df1ca8d76825a531092f65ff85e4ecd3b9d` compiled GMP/GMPXX, artifact `14832291155`; no CB runtime.
+- [x] `M6-CP3-TB-EXEC-174-P13-RETRACE-ORACLE-FULL-GATE` — artifact-only [run 45206305297](https://github.com/akashskypatel/Directional/actions/runs/45206305297), result `14833644440` SHA-256 `f77730c1896c346b15de704c90326a5a6543816a3e8ab553d4d8a70b9e11d5a3`; **991/998 PASS, same seven mechanical RED**, 1079 membership, 2004/2004 checksums. Rows 997/998 PASS; 996/996 inherited rows agree with TB173 under N1–N3 (row179 record reorder proven). Rejected, not production acceptance. [Report](.agents/Directional/Architecture_M6_CP3_TB174_P13_Retrace_Oracle_Full_Gate_Execution_Report_20261123.md).
+- [ ] **NEXT 1** `M6-CP3-TB-REV-174-P13-RETRACE-ORACLE-FULL-GATE` — independent review of immutable result/previous archives and owner decisions; **do not start during TB174**.
+- [ ] 2 CB-196 arrival-port receipt (only if frozen by TB-REV-174) → TB-EXEC-175 → TB-REV-175.
+- [ ] 3 CB-197 A2a step-7 selection + port-set readers + region-owns-face assertion → TB-EXEC-176 (after authorized Review).
+- [ ] 4 Row979 staged `RegionContainsInteriorSingularity` vertex8, Branch A activation, CB-190; E5 dropped overlap/touch and per-grazing-edge count remain deferred.
 
 ```text
-NEXT_TURN: M6-CP3-TB-EXEC-174-P13-RETRACE-ORACLE-FULL-GATE
-Owner: Test + Benchmark (artifact only)
-Compile source: 29415df1ca8d76825a531092f65ff85e4ecd3b9d
-Compile: run 45198338115, package 14832291155, SHA-256 7a06da51b899ba73f7e9b2375275be87dceeab86dba469cae5bad5be6cf6350c, GMP/GMPXX, runtimeExecution=false
-Manifest: .agents/Directional/gates/Architecture_M6_TB174_P13_Retrace_Oracle_Full_Gate_Case_Manifest.tsv
-  SHA-256 f98436b2744dea6f9a0f1a490463d158ac657e9e7ed20343e0b89b188e9db8e7 (998 rows; membership 1079)
-  Prefix hashes: 483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038 / 704dcf6c...09c6
-Expected 991 PASS; rows 995-998 PASS; seven RED rows 445/652/653/656/658/660/786
-Compare every other row to TB173 artifact 14821438542 under N1-N3 and only proved assertion-line moves (none expected). Other drift -> STOP/Review; no census.
-Successor: M6-CP3-TB-REV-174-P13-RETRACE-ORACLE-FULL-GATE
-Do not rebuild, patch, change selectors/manifests, or promote CP3/497/D0/H4. No tests were run during CB-195.
+NEXT_TURN: M6-CP3-TB-REV-174-P13-RETRACE-ORACLE-FULL-GATE
+Owner: independent Test + Benchmark Review; do not mutate source, tests, fixtures, selectors or manifests
+TB174 execution: 45206305297; result 14833644440, ZIP SHA-256 f77730c1896c346b15de704c90326a5a6543816a3e8ab553d4d8a70b9e11d5a3
+Exact source: 29415df1ca8d76825a531092f65ff85e4ecd3b9d; package 14832291155; GMP/GMPXX, runtimeExecution=false in CB195
+Full gate: 998 executed, 991 PASS, 7 RED rows 445/652/653/656/658/660/786; membership 1079; internal hashes 2004/2004
+Comparison: TB173 artifact 14821438542, 996 identical ledger identities/verdicts; raw 741 identical, 254 N1/N2, row179 N3 24 exact record reorder; rows 997/998 PASS
+Accepted authority: TB169 993/993, CP2 491/491; TB174 CP2 candidate 490/491; stable 67/17/50 debt1 deferred81
+Review: reject promotion; independently verify N3 and unchanged RED; freeze or refuse CB-196 arrival-port receipt; do not run CB196 in Review
+No production census, CB/patch, or CP3/497/D0/H4 promotion.
 ```
 
 ## HISTORY — TB-REV-173 independent review; D13 then marked user-pending (2026-11-23 UTC)
