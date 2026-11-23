@@ -1,0 +1,2 @@
+# CB188 source snapshot temporary trigger; durable dispatcher and mailbox preserved
+.agents/connector-triggers/source-snapshot/cb188-region-visit-reader.txt
