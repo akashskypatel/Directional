@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3; TB169 **993/993** and CP2 **491/491** remain last accepted. TB173 **989/996**, seven mechanical RED despite two new isolated oracle PASS cases. **Reviewed:** [TB-REV-173](Architecture_M6_CP3_TB_REV_173_Shared_Edge_Oracle_Independent_Review_20261123.md) rejects the gate and confirms A2a still has a source-edge co-trace/port-ownership defect. **Next decision:** user D13 singularity arrival-port ownership; CB-195/196 and production activation remain held, not authorized.
+**Completed:** M0–M5 · **Now:** M6 / CP3; accepted TB169 **993/993** and CP2 **491/491** unchanged. TB175 rejected **993/1000**, with seven known mechanical RED. CB-197B exact ordered-stretch retrace compiled (source `8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3`, [run 45255304770](https://github.com/akashskypatel/Directional/actions/runs/45255304770), 28/28 package checks, `runtimeExecution=false`). **Next:** immutable separate TB-EXEC-176 1001-row full gate; 994 PASS and seven RED are predictions only. No CP3/497/D0/H4 promotion. [CB-197B Code + Build record](Architecture_M6_CP3_CB197B_P13_Exact_Source_Retrace_Ordered_Stretches_Code_Build_Record_20261123.md).
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
