@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb169-documentation-commit-20261123-a",
-  "mailbox_key": "m6-cp3-tb169-documentation-apply",
-  "file_id": "154GGm1d5lokUXMcRY6DEAWu9BiOAvtDL",
-  "patch_sha256": "ce90477bb2215b5158b3c78b5399e1c155b81074e1ff6f225d92bc76dd48aea1",
-  "base_sha": "554c29a8327dd3f41b79e293c68aeeac086713b2",
+  "request_id": "m6-cp3-tbrev169-documentation-20261123-a",
+  "mailbox_key": "m6-cp3-tbrev169-documentation-apply",
+  "file_id": "1GOUTKkw59j2VUBFymXbWOLjZEuxO2v6j",
+  "patch_sha256": "0d775e6ee05cf4acf275fee675b9fbfd5b82b9e24fab7006082eb908517c6b1a",
+  "base_sha": "a80ef82200601a915c19b7124b3115baf3d82ca8",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(tb169): record immutable region reader full gate evidence",
+  "commit_message": "docs(tb-rev169): independently accept region reader gate and freeze corner turn",
   "retention_days": 14
 }
