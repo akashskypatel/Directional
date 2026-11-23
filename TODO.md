@@ -1,29 +1,27 @@
-## CURRENT — TB-REV-174 adversarial: exact CB-196 selection helper next (2026-11-23 UTC)
+## CURRENT — CB-196 exact helper compiled; TB-EXEC-175 next (2026-11-23 UTC)
 
 - [x] TB-REV-174 [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_174_Adversarial_Review_20261123.md): TB174 rejection upheld; prose CB-196 receipt withdrawn (arrival port = removed trace's own port); reference remap (F3) and piece-accurate path (F4) scoped.
-- [ ] **NEXT 1** `M6-CP3-CB-196-P13-EXACT-SOURCE-RETRACED-TRACE-SELECTION` — exact diff `d95f4144…1499`, compile only.
-- [ ] 2 `M6-CP3-TB-EXEC-175-P13-RETRACED-TRACE-SELECTION-FULL-GATE` — 1000 rows `e1d77fd2…3e35`; 993 PASS, same 7 RED.
+- [x] `M6-CP3-CB-196-P13-EXACT-SOURCE-RETRACED-TRACE-SELECTION` — exact +82/−0 source/test diff `d95f4144…1499` applied; GMP/GMPXX compile run `45225040406`, eight targets, package `14845101702`, 28/28 checksums, `runtimeExecution=false`. [Record](.agents/Directional/Architecture_M6_CP3_CB196_P13_Exact_Source_Retraced_Trace_Selection_Code_Build_Record_20261123.md).
+- [ ] **NEXT 1** `M6-CP3-TB-EXEC-175-P13-RETRACED-TRACE-SELECTION-FULL-GATE` — immutable artifact `14845101702`, 1000 rows `e1d77fd2…3e35`; expected 993 PASS, same 7 RED. Do not rebuild.
 - [ ] 3 TB-REV-175 → CB-197a path-builder extract (product-neutral) → TB.
 - [ ] 4 TB-REV → CB-197b selection + reference remap + arrival owns `Y.port` (fail closed on missing path) → TB.
 - [ ] 5 CB-198 port-set readers + every-region-owns-a-face assertion → TB (mechanical controls green, row652 2 regions).
 - [ ] 6 Row979, Branch A, CB-190. Obligation: dropped CollinearOverlap/EndpointTouch + per-grazing-edge count (TB-REV-173 E5).
 
 ```text
-NEXT_TURN: M6-CP3-CB-196-P13-EXACT-SOURCE-RETRACED-TRACE-SELECTION
-Owner: implementation agent (Code + Build, compile only)
-Authority: Architecture_M6_CP3_TB_REV_174_Adversarial_Review_20261123.md (F1-F5); prose CB-196 ARRIVAL-PORT-OWNERSHIP-RECEIPT withdrawn
-Apply exactly: .agents/Directional/Architecture_M6_CP3_CB196_P13_Exact_Source_Retraced_Trace_Selection_Exact.diff
-  SHA-256 d95f414457af1ff45dda04611b02ff53271cd55d325c7eb266dba514203e1499 (4910 B, +82/-0)
-  include/directional/authority/ExactSourcePath.h git a968576efdc02027c7e1c5c2ec2cb7cf19edeeb7 -> sha256 0285981f850ca852ee2c172847381a1524b74bb1cd1a42d66e81e51fa443b19e
-  tests/FieldAlignedCurveNetworkTests.cpp git bfc99a2232412ce0edafc0a2de66ae30aa2c1023 -> sha256 2b9cde9a37f89fa0ff8866938b9d7ff50845f47a4125fc304488840017d60d29
-Build: dispatcher compile, GMP/GMPXX targets incl. directional_surface_cell_producer_tests, runtimeExecution=false
-Then: M6-CP3-TB-EXEC-175-P13-RETRACED-TRACE-SELECTION-FULL-GATE
-  manifest gates/Architecture_M6_TB175_P13_Retraced_Trace_Selection_Full_Gate_Case_Manifest.tsv e1d77fd2a10b67e71ecbc6712a92eec48713e91e0006c7282652dc2391b43e35 (1000 rows; first 998 = TB174 manifest f98436b2...8e7); membership 1081
-  expected 993 PASS: rows 995-1000 PASS, same 7 RED (445/652/653/656/658/660/786)
-  rules: every other row = TB174 14833644440 under N1-N3 + diff-proven assertion-line moves (none expected); any other difference -> STOP to Review; no census
-  -> M6-CP3-TB-REV-175: freeze CB-197a (move exact_trace_segment_pieces to the A2a layer, product-neutral); decide per-fixture selection receipt
-On failure/blocker: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
-Do not: edit beyond the diff; wire the helper; change producer/region/validator code; edit selectors/manifests; run tests; revert CB-192; activate; promote CP3/497/D0/H4
+NEXT_TURN: M6-CP3-TB-EXEC-175-P13-RETRACED-TRACE-SELECTION-FULL-GATE
+Owner: artifact-only Test + Benchmark execution agent; no source changes or rebuild
+Source: f4acd5d1f29d55f36c427e88fed8f5ca09ae7ee5
+Compile: run 45225040406, GMP/GMPXX, eight targets, 28/28 internal SHA-256 checks, runtimeExecution=false
+Package: artifact 14845101702, ZIP SHA-256 9afbf9c90c96697c49e97669ba108d68e61f57d0182cff3f42807d133be6034f
+Log: artifact 14844220690, ZIP SHA-256 c9fe20e317b2cb8ab3d985af6171d38ce691df23ba15cc7ab239e425f15b945b
+Manifest: gates/Architecture_M6_TB175_P13_Retraced_Trace_Selection_Full_Gate_Case_Manifest.tsv
+  SHA-256 e1d77fd2a10b67e71ecbc6712a92eec48713e91e0006c7282652dc2391b43e35, 1000 rows, membership 1081
+Expect: 993 PASS, only seven known RED rows 445/652/653/656/658/660/786; new rows 999-1000 PASS
+Compare: all 998 TB174 rows against immutable result 14833644440 under N1-N3; only diff-proven assertion-line shifts allowed (none expected)
+STOP: any unexpected behavior difference; report to TB-REV-175; do not promote CP3/497/D0/H4
+Then: M6-CP3-TB-REV-175 (decide CB-197a exact source piece-builder extraction and per-fixture receipt)
+No CB-197a/CB-197b/CB-198 work, production wiring, selector edits, or tests during CB-196.
 ```
 
 ## HISTORY — TB-REV-174 rejects TB174; CB-196 diagnostic receipt next (2026-11-23 UTC)

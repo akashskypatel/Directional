@@ -31,8 +31,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-23 UTC. TB-REV-174 complete (independent + adversarial): TB174 991/998 rejected, same seven RED; next exact CB-196 retraced-trace selection helper. |
-| Branch / source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 open/draft; immutable CB-195 source `29415df1ca8d76825a531092f65ff85e4ecd3b9d`, GMP/GMPXX compile run `45198338115`, artifact `14832291155` (`7a06da51b899ba73f7e9b2375275be87dceeab86dba469cae5bad5be6cf6350c`), `runtimeExecution=false`; no CB-195 runtime. |
+| Currency | 2026-11-23 UTC. CB-196 exact retraced-trace selection helper compiled (GMP/GMPXX, no runtime); TB-EXEC-175 is the one next turn. TB174 remains rejected 991/998 (same seven RED). |
+| Branch / source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 open/draft; immutable CB-196 source `f4acd5d1f29d55f36c427e88fed8f5ca09ae7ee5`; GMP/GMPXX compile [run `45225040406`](https://github.com/akashskypatel/Directional/actions/runs/45225040406), artifact `14845101702` (SHA-256 `9afbf9c90c96697c49e97669ba108d68e61f57d0182cff3f42807d133be6034f`), log `14844220690` (SHA-256 `c9fe20e317b2cb8ab3d985af6171d38ce691df23ba15cc7ab239e425f15b945b`), 28/28 internal hashes, eight targets, clean source, `runtimeExecution=false`. |
 | Current TB evidence | TB174 [run `45206305297`](https://github.com/akashskypatel/Directional/actions/runs/45206305297), result `14833644440` SHA-256 `f77730c1896c346b15de704c90326a5a6543816a3e8ab553d4d8a70b9e11d5a3`, 2004/2004 checksums, **991/998** (seven RED), CP2 candidate 490/491, membership 1079. TB173 result `14821438542` SHA-256 `22851acd9b27eb56ff504f038f9e9761f5b9d07fda854682da512f5022bb223d`, 2000/2000, 989/996. Complete 996-row comparison: 741 identical raw logs, 254 N1/N2, row179 N3 (24 exact diagnostic records reordered); no other drift. [TB174 report](Architecture_M6_CP3_TB174_P13_Retrace_Oracle_Full_Gate_Execution_Report_20261123.md). |
 | Accepted comparison | TB169 run `45104059492`, result ZIP `14787082075` (`dc15a8df5226fc209717f6df2fd15140e9e04abb6e73f831d8285992e72f04e5`), 993/993 accepted; CP2 491/491 accepted. Frozen prefix SHA-256 `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`. |
 | Regression / debt | Existing seven accepted-green mechanical failures at rows 445/652/653/656/658/660/786 remain RED. No new stable event; historical 67 events / 17 categories / 50 recurrences; witness debt1, deferred81. |
@@ -44,21 +44,19 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 - Removing a duplicate after tracing must remap `struckTrace` and event incidences naming it (F3); path builder must be piece-accurate `exact_trace_segment_pieces` (F4); missing path fails closed (F5).
 
 ```text
-NEXT_TURN: M6-CP3-CB-196-P13-EXACT-SOURCE-RETRACED-TRACE-SELECTION
-Owner: implementation agent (Code + Build, compile only)
-Authority: Architecture_M6_CP3_TB_REV_174_Adversarial_Review_20261123.md (F1-F5); prose CB-196 ARRIVAL-PORT-OWNERSHIP-RECEIPT withdrawn
-Apply exactly: .agents/Directional/Architecture_M6_CP3_CB196_P13_Exact_Source_Retraced_Trace_Selection_Exact.diff
-  SHA-256 d95f414457af1ff45dda04611b02ff53271cd55d325c7eb266dba514203e1499 (4910 B, +82/-0)
-  include/directional/authority/ExactSourcePath.h git a968576efdc02027c7e1c5c2ec2cb7cf19edeeb7 -> sha256 0285981f850ca852ee2c172847381a1524b74bb1cd1a42d66e81e51fa443b19e
-  tests/FieldAlignedCurveNetworkTests.cpp git bfc99a2232412ce0edafc0a2de66ae30aa2c1023 -> sha256 2b9cde9a37f89fa0ff8866938b9d7ff50845f47a4125fc304488840017d60d29
-Build: dispatcher compile, GMP/GMPXX targets incl. directional_surface_cell_producer_tests, runtimeExecution=false
-Then: M6-CP3-TB-EXEC-175-P13-RETRACED-TRACE-SELECTION-FULL-GATE
-  manifest gates/Architecture_M6_TB175_P13_Retraced_Trace_Selection_Full_Gate_Case_Manifest.tsv e1d77fd2a10b67e71ecbc6712a92eec48713e91e0006c7282652dc2391b43e35 (1000 rows; first 998 = TB174 manifest f98436b2...8e7); membership 1081
-  expected 993 PASS: rows 995-1000 PASS, same 7 RED (445/652/653/656/658/660/786)
-  rules: every other row = TB174 14833644440 under N1-N3 + diff-proven assertion-line moves (none expected); any other difference -> STOP to Review; no census
-  -> M6-CP3-TB-REV-175: freeze CB-197a (move exact_trace_segment_pieces to the A2a layer, product-neutral); decide per-fixture selection receipt
-On failure/blocker: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
-Do not: edit beyond the diff; wire the helper; change producer/region/validator code; edit selectors/manifests; run tests; revert CB-192; activate; promote CP3/497/D0/H4
+NEXT_TURN: M6-CP3-TB-EXEC-175-P13-RETRACED-TRACE-SELECTION-FULL-GATE
+Owner: artifact-only Test + Benchmark execution agent; no source changes or rebuild
+Source: f4acd5d1f29d55f36c427e88fed8f5ca09ae7ee5
+Compile: run 45225040406, GMP/GMPXX, eight targets, 28/28 internal SHA-256 checks, runtimeExecution=false
+Package: artifact 14845101702, ZIP SHA-256 9afbf9c90c96697c49e97669ba108d68e61f57d0182cff3f42807d133be6034f
+Log: artifact 14844220690, ZIP SHA-256 c9fe20e317b2cb8ab3d985af6171d38ce691df23ba15cc7ab239e425f15b945b
+Manifest: gates/Architecture_M6_TB175_P13_Retraced_Trace_Selection_Full_Gate_Case_Manifest.tsv
+  SHA-256 e1d77fd2a10b67e71ecbc6712a92eec48713e91e0006c7282652dc2391b43e35, 1000 rows, membership 1081
+Expect: 993 PASS, only seven known RED rows 445/652/653/656/658/660/786; new rows 999-1000 PASS
+Compare: all 998 TB174 rows against immutable result 14833644440 under N1-N3; only diff-proven assertion-line shifts allowed (none expected)
+STOP: any unexpected behavior difference; report to TB-REV-175; do not promote CP3/497/D0/H4
+Then: M6-CP3-TB-REV-175 (decide CB-197a exact source piece-builder extraction and per-fixture receipt)
+No CB-197a/CB-197b/CB-198 work, production wiring, selector edits, or tests during CB-196.
 ```
 
 ## Turn Sequence
@@ -72,7 +70,8 @@ Do not: edit beyond the diff; wire the helper; change producer/region/validator 
 | COMPLETE | CB-194 → TB-EXEC-173 (989/996) → CB-195 → TB-EXEC-174 (991/998) | Unwired helpers; same 7 RED; CB-195 source `29415df1…3b9d`. |
 | COMPLETE | TB-REV-173 | Independent + [D13 resolution](Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md): D13 = A by DESIGN. |
 | COMPLETE | TB-REV-174 | Independent + [adversarial](Architecture_M6_CP3_TB_REV_174_Adversarial_Review_20261123.md) F1–F5. |
-| **NEXT** 1 | CB-196 retraced-trace selection helper (exact diff, compile only) → TB-EXEC-175 (1000 rows, 993 PASS, same 7 RED) | Unwired. |
+| COMPLETE | CB-196 exact retraced-trace selection helper | GMP/GMPXX compile run `45225040406`, package `14845101702`, unwired; no runtime. |
+| **NEXT** 1 | TB-EXEC-175 (1000 rows, 993 expected PASS, same 7 RED) | Artifact-only immutable gate. |
 | 2 | TB-REV-175 → CB-197a extract `exact_trace_segment_pieces` to A2a layer (product-neutral) → TB | Decide per-fixture selection receipt (row652 predicted 4 pairs). |
 | 3 | TB-REV → CB-197b selection in `canonical_field_aligned_candidate` + remap `struckTrace`/incidences + arrival owns `Y.port`, fail-closed missing path → TB | — |
 | 3B | CB-198 port-set readers (EmbeddedGraphTopology 1793, GlobalTopologyPlan 410/2117, origin events) + every-region-owns-a-face assertion → TB | Mechanical controls green, row652 2 regions. |
@@ -84,7 +83,7 @@ Do not: edit beyond the diff; wire the helper; change producer/region/validator 
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: [TB174 execution report](Architecture_M6_CP3_TB174_P13_Retrace_Oracle_Full_Gate_Execution_Report_20261123.md), [CB-195 Code + Build evidence](Architecture_M6_CP3_CB195_P13_Exact_Source_Path_Retrace_Along_Edges_Progress_20261123.md), [TB-REV-173 D13 resolution](Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md), [TB-REV-173 independent](Architecture_M6_CP3_TB_REV_173_Shared_Edge_Oracle_Independent_Review_20261123.md), [TB173 execution report](Architecture_M6_CP3_TB173_P13_Shared_Edge_Oracle_Full_Gate_Execution_Report_20261123.md), [CB-194 Code + Build record](Architecture_M6_CP3_CB194_P13_Exact_Source_Path_Shared_Edge_Oracle_Code_Build_Record_20261123.md), [TB-REV-172 second adversarial continuation](Architecture_M6_CP3_TB_REV_172_Adversarial_Continuation_Shared_Edge_20261123.md), [TB171 RED report](Architecture_M6_CP3_TB171_P13_Along_Edge_Face_Piece_Full_Gate_Execution_Report_20261123.md), [TB-REV-170 adversarial review](Architecture_M6_CP3_TB_REV_170_Adversarial_Review_20261123.md), [CB-192 Code + Build](Architecture_M6_CP3_CB192_P13_Along_Edge_Face_Piece_Classifier_Code_Build_Record_20261123.md), [CB-189 Code + Build](Architecture_M6_CP3_CB189_P13_Corner_Visit_Reader_Code_Build_Record_20261123.md), [TB-REV-169 review](Architecture_M6_CP3_TB_REV_169_Region_Visit_Reader_Independent_Review_20261123.md), [TB169 report](Architecture_M6_CP3_TB169_P13_Region_Visit_Reader_Full_Gate_Execution_Report_20261123.md), [CB-188 record](Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md), [TB-REV-168 independent review](Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md), [CB-188 manifest](gates/Architecture_M6_CP3_CB188_P13_Visit_Reader_Exact_Manifest.md), [CB-189 manifest](gates/Architecture_M6_CP3_CB189_P13_Visit_Reader_Exact_Manifest.md), [TB168 execution report](Architecture_M6_CP3_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Execution_Report_20261123.md), [CB-187 code/build record](Architecture_M6_CP3_CB187_P13_Arc_Face_Visit_Adapter_Code_Build_Record_20261123.md), [TB-REV-167 adversarial record](Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md), [TB-REV-167 independent review](Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md), [TB167 report](Architecture_M6_CP3_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Execution_Report_20261122.md).
+`load_next`: [CB-196 Code + Build record](Architecture_M6_CP3_CB196_P13_Exact_Source_Retraced_Trace_Selection_Code_Build_Record_20261123.md), [TB174 execution report](Architecture_M6_CP3_TB174_P13_Retrace_Oracle_Full_Gate_Execution_Report_20261123.md), [CB-195 Code + Build evidence](Architecture_M6_CP3_CB195_P13_Exact_Source_Path_Retrace_Along_Edges_Progress_20261123.md), [TB-REV-173 D13 resolution](Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md), [TB-REV-173 independent](Architecture_M6_CP3_TB_REV_173_Shared_Edge_Oracle_Independent_Review_20261123.md), [TB173 execution report](Architecture_M6_CP3_TB173_P13_Shared_Edge_Oracle_Full_Gate_Execution_Report_20261123.md), [CB-194 Code + Build record](Architecture_M6_CP3_CB194_P13_Exact_Source_Path_Shared_Edge_Oracle_Code_Build_Record_20261123.md), [TB-REV-172 second adversarial continuation](Architecture_M6_CP3_TB_REV_172_Adversarial_Continuation_Shared_Edge_20261123.md), [TB171 RED report](Architecture_M6_CP3_TB171_P13_Along_Edge_Face_Piece_Full_Gate_Execution_Report_20261123.md), [TB-REV-170 adversarial review](Architecture_M6_CP3_TB_REV_170_Adversarial_Review_20261123.md), [CB-192 Code + Build](Architecture_M6_CP3_CB192_P13_Along_Edge_Face_Piece_Classifier_Code_Build_Record_20261123.md), [CB-189 Code + Build](Architecture_M6_CP3_CB189_P13_Corner_Visit_Reader_Code_Build_Record_20261123.md), [TB-REV-169 review](Architecture_M6_CP3_TB_REV_169_Region_Visit_Reader_Independent_Review_20261123.md), [TB169 report](Architecture_M6_CP3_TB169_P13_Region_Visit_Reader_Full_Gate_Execution_Report_20261123.md), [CB-188 record](Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md), [TB-REV-168 independent review](Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md), [CB-188 manifest](gates/Architecture_M6_CP3_CB188_P13_Visit_Reader_Exact_Manifest.md), [CB-189 manifest](gates/Architecture_M6_CP3_CB189_P13_Visit_Reader_Exact_Manifest.md), [TB168 execution report](Architecture_M6_CP3_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Execution_Report_20261123.md), [CB-187 code/build record](Architecture_M6_CP3_CB187_P13_Arc_Face_Visit_Adapter_Code_Build_Record_20261123.md), [TB-REV-167 adversarial record](Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md), [TB-REV-167 independent review](Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md), [TB167 report](Architecture_M6_CP3_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Execution_Report_20261122.md).
 
 0. [ORIENTATION.md](ORIENTATION.md) — project context, read first.
 1. [ROADMAP.md](ROADMAP.md) — milestone position only.
