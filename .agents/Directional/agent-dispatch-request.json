@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb174-review-20261123-b",
-  "mailbox_key": "m6-cp3-tb174-review-v2",
-  "file_id": "1DvfOYFTotXmAaMtrij86ycA0I9YXWrlq",
-  "patch_sha256": "18b663741029f0592ee164db4bbc5f6387079c2fc873bdfef31540065540ef76",
-  "base_sha": "f386134d76e7267a4ad6570af2dc794f7aad8900",
+  "request_id": "m6-cp3-cb196-code-20261123-a",
+  "mailbox_key": "m6-cp3-cb196-code",
+  "file_id": "1Lp2P66rSK-PWE27vjMIkmizPkCr1DRY-",
+  "patch_sha256": "d95f414457af1ff45dda04611b02ff53271cd55d325c7eb266dba514203e1499",
+  "base_sha": "b389996c690dad8ee3be80fdd15aae158019a770",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): independent TB174 review and diagnostic successor",
+  "commit_message": "feat(directional): add exact source retraced trace selection helper",
   "retention_days": 14
 }
