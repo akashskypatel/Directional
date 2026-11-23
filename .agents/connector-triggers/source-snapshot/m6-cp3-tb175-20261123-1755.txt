@@ -1,0 +1,2 @@
+Canonical turn: M6-CP3-TB-EXEC-175-P13-RETRACED-TRACE-SELECTION-FULL-GATE
+Purpose: exact source snapshot for artifact-only full-gate turn.
