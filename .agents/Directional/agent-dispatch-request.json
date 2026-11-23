@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb170-document-closeout-20261123-a",
-  "mailbox_key": "m6-cp3-tb170-document-closeout",
-  "file_id": "10N9YnBzpFJrJgiHlzGOrSRYPUNRDqlR_",
-  "patch_sha256": "af7f981e2e2a41cc594c3b0cda227a019686fb7e505bb827c449f85d334da206",
-  "base_sha": "8d7da1aef780389084a7fa8abc59ff7ce8b7a1de",
+  "request_id": "m6-cp3-tbrev170-review-docs-20261123-a",
+  "mailbox_key": "m6-cp3-tbrev170-review-docs",
+  "file_id": "1zanmILmhwPL7a-GYGoXnBgFK6TM8MSJm",
+  "patch_sha256": "8026d6a46feed88d505fd587224d7bbf18538c822df2aa6e6527edfd5c70d904",
+  "base_sha": "c9ed7f64b7b3b3e719426a11612fe2f5208cf64f",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(surface-cells): record TB170 RED frozen gate evidence",
+  "commit_message": "docs(surface-cells): independently review TB170 regression and freeze CB191 receipt",
   "retention_days": 14
 }
