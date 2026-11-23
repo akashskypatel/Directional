@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev-172-docs-20261123-v2",
-  "mailbox_key": "m6-cp3-tb-rev-172-docs-apply-v2",
-  "file_id": "104s6CeHhyAEhc4tNuRGbMy4ToL3TuKaq",
-  "patch_sha256": "475ce5b31616f725b17a4acf303d22cab9d2a27e178ddc2dc4fa30634787eaa1",
-  "base_sha": "a430ef8bc2b3ae18724c72dc0bc34c1f586f8bc0",
+  "request_id": "m6-cp3-tb-rev-172-adversarial-20261123-a",
+  "mailbox_key": "m6-cp3-tb-rev-172-adversarial-apply",
+  "file_id": "1fSuCG9-CmpWmebXnsQ0qaCGYwV_f_wMS",
+  "patch_sha256": "13c77c6d5a5f0060ef4dff80e10e6cf8831f8eb7029fbbb5de00b737e0c9d31f",
+  "base_sha": "5954c8bf111f62b8307552c4162a60546fcd3dec",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(surface-cells): independently review TB172 edge-carrier evidence",
+  "commit_message": "docs(surface-cells): correct TB-REV-172 first-piece carrier inference",
   "retention_days": 14
 }
