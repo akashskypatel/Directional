@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb195-retrace-apply-20261123-v2",
-  "mailbox_key": "m6-cp3-cb195-retrace-apply-v2",
-  "file_id": "1llbmJD7WKeeKhgUSCs9h0yJjF0dYTaeA",
-  "patch_sha256": "193f5e24e980a94843b966e90b03020e1049202e767cd025865e5148bb4fdcd4",
-  "base_sha": "e6c1555f0ceb531d35ee46c7093da1f8068eed9c",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(authority): add exact source-edge retrace predicate and focused checks",
-  "retention_days": 14
+  "operation": "compile",
+  "request_id": "m6-cp3-cb195-compile-20261123-v1",
+  "mailbox_key": "m6-cp3-cb195-compile",
+  "source_sha": "29415df1ca8d76825a531092f65ff85e4ecd3b9d",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb195-gmp"
 }
