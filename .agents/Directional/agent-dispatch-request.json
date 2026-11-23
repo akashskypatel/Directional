@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb197b-compile-20261123-a",
-  "mailbox_key": "m6-cp3-cb197b-compile",
-  "source_sha": "8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "agent-cb197b-compile"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb197b-docs-closeout-20261123-a",
+  "mailbox_key": "m6-cp3-cb197b-docs",
+  "file_id": "1i12wZd3Q_yrcbFC0NrxkdB8Njoi0SVgk",
+  "patch_sha256": "de8ceb38d15ef908391502f9dee5bf7172b0b025a94716d7ff816949be4dd313",
+  "base_sha": "b15d70102aec9b03378f63996a48f08188966ea0",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB197B GMP compilation and freeze TB176",
+  "retention_days": 14
 }
