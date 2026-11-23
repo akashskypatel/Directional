@@ -1,0 +1,3 @@
+# CB-195 temporary state cleanup
+# Only the CB-195 source snapshot trigger is temporary.
+.agents/connector-triggers/source-snapshot/m6-cp3-cb195-20261123.txt
