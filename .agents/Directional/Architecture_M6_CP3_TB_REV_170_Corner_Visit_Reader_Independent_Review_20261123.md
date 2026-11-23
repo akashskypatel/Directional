@@ -1,0 +1,61 @@
+# Independent TB-REV-170 — corner-visit reader full gate (2026-11-23 UTC)
+
+## Situation
+
+**REJECT TB170 full-gate acceptance.** The immutable CB-189 execution is **986/993 PASS**, not 993/993. Seven previously green controls are RED; row 445 belongs to the previously accepted 491-case CP2 prefix. This is a newly observed **stable accepted-green regression** in the existing global-topology source-face-partition failure family, counted as one new recurrence, not seven independent events. The historical 66 events / 17 categories / 49 recurrences becomes **67 / 17 / 50** with one produced-witness debt and 81 deferred identities. The particular partition failure subtype and the exact responsible cut remain unproved. No stable category is invented for an unproved subtype.
+
+## Background and immutable authority
+
+- Canonical Review: `M6-CP3-TB-REV-170-P13-CORNER-VISIT-READER-FULL-GATE`; working branch `agent/surface_cell_quad/p5-recover-bridge-healing`, pull request #8 open/draft. Review only: no compiled execution, source/test/selector/build edits or production activation.
+- Source `178f17dd59aa9c61c2e6462e2378e3a42b0ee4f7`; CB-189 GNU Multiple Precision (GMP/GMPXX) compile run `45113944225`, package `14790917101`, exact outer SHA-256 `0432359393d37cf00b9654339c832263f648733237005171ff3a8eb9cfa1ddfd`, compile-boundary `runtimeExecution=false`.
+- TB170 [run 45118730914](https://github.com/akashskypatel/Directional/actions/runs/45118730914), artifact `14793023424`, ZIP SHA-256 `930a4a42cd5f15c1479fd0ba098ff21e5860d5fbcf37520e2c1d7bb5ca652d55`.
+- Frozen baseline TB169 [run 45104059492](https://github.com/akashskypatel/Directional/actions/runs/45104059492), artifact `14787082075`, ZIP SHA-256 `dc15a8df5226fc209717f6df2fd15140e9e04abb6e73f831d8285992e72f04e5`.
+- Both ZIP outer hashes independently agree. Both extracted result archives independently pass **1,994/1,994** `SHA256SUMS` member hashes. The source-snapshot ZIP `14794031038` at commit `c9ed7f64b7b3b3e719426a11612fe2f5208cf64f` verified its outer digest `947873c6f10d44e9dd8cc031d9c809d0a33edc1cba59ffc50aa7163401753804`, inner source tar, and **5,780** source file checksums. It is a documentation snapshot taken after the TB170 report; the compiled semantic source remains the CB-189 SHA above.
+
+## Independent assessment
+
+1. Frozen manifest `gates/Architecture_M6_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Case_Manifest.tsv` independently SHA-256 `82581dd14064efe3729923cfd94333ef70113b0bb84e6bb8eabfb2ec61cce436`. Header and first 491 selected rows SHA-256 `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`. Two immutable result ledgers carry exactly 993 identical distinct identities and byte-identical membership (1,074 = 993 required + 81 deferred). TB169 passes all 993; TB170 passes **986**, fails **7**, and has CP2 **490/491**. No missing or skipped rows. Tests run from the package without configure, compile, relink or benchmark; TB170 has exit 90 and completed postflight.
+2. Independent Python comparator read all 993 raw log pairs. It applied only N1 Google Test time fields (including `ms total`), N2 CR/LF line endings, and N3 unordered **whole** `M3_CP4AB_FRAGMENT_DIAG` records. There are **225** byte-different rows, **22** different normalized rows including row979, and exactly **21** unauthorized changes outside 979: `396,397,445,637,638,649,650,652,653,656,658,660,662,665,669,687,784,786,787,788,857`. There are 1,750 baseline versus 1,450 candidate complete N3 records (**300 missing**); row669 changes a non-N3 line. Fourteen of these 21 still PASS but fail the byte-frozen transcript comparison. No records were discarded by the comparator except the permitted duration normalization; N3 retained complete field values.
+3. RED controls: `445` — `RemeshPipeline.PublishesOneValidatedGlobalConformityBaselineImmediatelyAfterA2b`; `652` — `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`; `653` — `GlobalTopologyPlan.MechanicalProjectionEvidencePublishesMinorityRowsAndFaithfulnessResidual`; `656` — `GlobalTopologyPlan.RotationSystemAndFaceWalkAgreeOnProducedWitnesses`; `658` — `GlobalTopologyPlan.UncutComponentCensusNamesThePartitionItDescribesAndWhetherItMatchesTheFailingComponent`; `660` — `GlobalTopologyPlan.UncutFaceComponentBoundaryOrbitAttributionPublishesThroughMechanicalProductionFailure`; `786` — `SurfaceCutGraph.InteriorArcCensusNamesCrossedFacesAndTheirComponentsInBothPartitions`. Rows 652 and 656 throw `NotProductionReady/global-topology-plan/SourceFaceCutPartitionFailed` with first source face `(1,4,139)`; the other five lose the mechanical plan prerequisite. The seven cases form one causal family, but their complete inner failure reason cannot be derived from the printed exception. This is an actual accepted-green regression, **not only a test-authority candidate**.
+4. CB-189 source `src/geometry/GlobalTopologyPlan.cpp` builds the `cutsByFace` set from the authoritative `arcVisits` and applies `detail::partition_face_corners(cuts)`; a returned `FaceCutPartitionFailure` maps to `SourceFaceCutPartitionFailed` and stores `faceCutPartitionReason` internally. The mechanical tests print the outer error and face, not this reason or the exact `FaceCutPiece` endpoints/orbits. The code defines distinct `MalformedBoundaryPosition`, `CutAlongOneEdge`, `NoBoundaryEndpoint`, `UnorderedSharedEndpoint`, `CrossingCuts`, and `InconsistentSideOrbits`. **Do not infer one of these from the outer label.** Restoration must be sourced from the smallest failing producer, not from weakening `partition_face_corners` or the existing controls.
+5. Row979 **PASS** is diagnostic-only. The staged sphere moved from `SourceFaceCarriesMultipleTraceCuts` at face `6-8-9` to `RegionContainsInteriorSingularity` with `sourceVertex=8` and `regionFrontierFailureStage=RegionCertification`; its already built embedded graph records `V=18,E=30,F=14,chi=2`, not a fully accepted plan. This is evidence of **later-stage reach** after the corner reader, but no constructed sphere mesh. No production census occurred; the production sphere still has last measured `CutSearchExhaustedBeforeCellularity`. W2's particular prediction (no new corner-code RED on row979) was not falsified on row979; W4 full-gate acceptance **was** falsified by mechanical controls.
+6. **Non-vacuity:** every failed prior control was green in the immutable TB169 baseline; the exact-row comparison rejects missing diagnostic records even when the row still passes. Row979 is not treated as a plan-validity oracle. Removing the corner-reader switch would change its stage result; however the current evidence cannot establish a corrected implementation because the required mechanical controls fail. Negative controls remain required for any future repair.
+
+## Previous review obligations and disposition
+
+- TB-REV-169 / TB-REV-168 Q1–Q2, CB-188 R1–R4: **carry accepted** region counts and exact source, no new count regression proved on row979.
+- TB-REV-169 W1: **discharged** previous TB169 baseline equality; both immutable result archives rechecked.
+- W2: **upheld narrowly** only on sphere row979; new later-region failure is not an accepted sphere construction.
+- W3 / RA-235: **activate for the mechanical locus**, where the inner reason and exact face-cut pieces are absent; no speculative fix.
+- W4: **failed full-gate control** (row652 and six others); CP2 accepted prefix regression confirmed.
+- W5: **Branch B** is required. First obtain the existing failure reason and piece evidence, then authorize a separate narrow repair; do not combine receipt and repair in one CB.
+- W6, TB-REV-167 S4/S6/S7: **carry** CB-190 as later off-critical documentation/diagnostics; public error values unchanged.
+- TB-REV-168 Q6 / C1/C2: **unwitnessed**. Neither error code is printed in current row979. Do not claim a typed-code witness.
+- CP3/497/D0/H4, V3b, Y7 and production sphere: **held**. No acceptance or activation permitted.
+
+## One bounded successor and STOP conditions
+
+**Only next turn:** `M6-CP3-CB-191-P13-MECHANICAL-FACE-CUT-REASON-RECEIPT` (**Code + Build, compile only**). Apply only the pre-frozen **measurement-only** diff [`Architecture_M6_CP3_CB191_P13_Mechanical_Face_Cut_Reason_Receipt_Exact.diff`](Architecture_M6_CP3_CB191_P13_Mechanical_Face_Cut_Reason_Receipt_Exact.diff) SHA-256 `aa2ff1852292bdcda1d0fcd16088400e6c56f8f3faadc051b1794d2a36d0792f` (1,708 bytes, one `tests/FieldAlignedCurveNetworkTests.cpp` file, full Git preimage `6d3711ec463436fea2d550775175e5320b2bb505`). It reruns the failed plan in the test-local exception report and prints the existing `faceCutPartitionReason` numeric enum plus its exact source-face key; the failure remains an exception. This first reason receipt does **not** print full cut-piece lineage. If the reason cannot identify the responsible piece, a subsequent independently reviewed receipt must be frozen before any source behavior change. Do not change the producer decision, expected test results, validators, or selector. This review does not authorize an unproved ownership repair. It also does not authorize running tests in Code + Build. Compile with GMP/GMPXX; the later independent artifact-only TB must preserve all 993 prior identities, capture the reason, show mechanical rows remain RED until a separately reviewed repair, and retain the row979 typed stage. Stop and return to Review if the exact preimage, compiler, or result authority fails or the first failure differs. Any subsequent repair requires a distinct reviewed exact source diff and falsifiers. The exact diagnostic-only diff has been frozen in this Review. The next CB may compile it but must not execute a binary; the current Review does not execute it.
+
+## Review closeout
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | Manifest `82581dd1…e436`; header + first 491 rows `483f1101…038`; selector unchanged |
+| Decisive claims independently re-derived | Both outer hashes, 1,994 member hashes each, 993 identities and paired logs, 1,074 membership, 21 off-row changes, CP2 loss, seven REDs, row979 and source error mapping |
+| Non-vacuity checked | TB169 PASS controls fail on TB170; full-record N3 comparison detects 300 missing entries; row979 is a stage receipt only |
+| Prior obligations discharged/carried | W1–W6, Q1–Q6, C1/C2, S4/S6/S7 and CP3 held above |
+| Stable accounting | One new accepted-green recurrence: **67 / 17 / 50**; debt 1, deferred 81; CB-189 package `14790917101`, frozen 993-row manifest |
+| New candidates/obligations recorded | One stable mechanical partition event; first failure subtype and exact cut open; tracker updated in this review patch |
+| ORIENTATION currency line | `M6-CP3-TB-REV-170-P13-CORNER-VISIT-READER-FULL-GATE`, 2026-11-23 UTC; updated in this review patch |
+| ORIENTATION §3 / §4 / §7 / §8 | Update required; remove superseded CB-189 next-turn warning |
+| CHANGELOG | Review entry prepared in this patch |
+| ROADMAP | n/a: CP3 checkpoint remains open |
+| Selector manifest | n/a: no selector change or new required-green row |
+| LESSONS | Existing independence and source-locus rules apply; no new generalized rule established |
+| Consolidation under CLEAN_UP_POLICY | No current primary evidence removed; latest TB170 report and this review remain live and cited; cleanup audit pending |
+| Successor frozen | `M6-CP3-CB-191-P13-MECHANICAL-FACE-CUT-REASON-RECEIPT`; scope and STOP criteria above; exact 1,708-byte one-file diff SHA-256 `aa2ff1852292bdcda1d0fcd16088400e6c56f8f3faadc051b1794d2a36d0792f` frozen |
+| Turn boundary held | Read-only review; no product/test/fixture/selector/build changes; artifact hashes and local source reading only |
+| review_check.py boundary | Invoked on history-free source snapshot: product/test/selector check clean, but historical ancestry/durable-baseline checks FAIL because `.git` history is absent; no full PASS claimed |
+| `STATUS` lifecycle maintained | Entry beacon committed; final beacon is the last required repository write after documentation application |
+| Pushed to origin, branch in sync | Review patch transport and final beacon not yet confirmed; no remote-sync PASS claimed |

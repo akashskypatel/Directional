@@ -1,10 +1,11 @@
-## CURRENT — TB-EXEC-170 recorded; TB-REV-170 NEXT (2026-11-23 UTC)
+## CURRENT — TB-REV-170 independent review: rejected gate (2026-11-23 UTC)
 
-- [x] **TB-EXEC-170:** immutable CB-189 package `14790917101` source `178f17dd59aa9c61c2e6462e2378e3a42b0ee4f7`; [run 45118730914](https://github.com/akashskypatel/Directional/actions/runs/45118730914), result `14793023424` SHA-256 `930a4a42cd5f15c1479fd0ba098ff21e5860d5fbcf37520e2c1d7bb5ca652d55`; **986/993 PASS**, CP2 **490/491**, membership **1074**. N1–N3 comparison against TB169: **21** off-row differences. Row 652 RED. Row 979: `SphereStagedPlan outcome=RegionContainsInteriorSingularity sourceFace=- sourceEdge=- trace=- secondTrace=- chi=- V=- E=- F=- fragmentOrbits=- tracePieces=- expectedFragments=-`. Independent approval outstanding. [Report](.agents/Directional/Architecture_M6_CP3_TB170_P13_Corner_Visit_Reader_Full_Gate_Execution_Report_20261123.md).
-- [ ] **1 NEXT:** `M6-CP3-TB-REV-170-P13-CORNER-VISIT-READER-FULL-GATE`. Independently verify the two packages, all 993 rows, W1–W6 premises and row979's exact typed stage and the seven mechanical failures; decide whether CB-189's shared corner-reader path violated required plan ownership before authorizing any later branch.
-- [ ] 2 No activation/CP3/497/D0/H4 promotion. Production sphere remains RED; the separate test turn does not run a production census. Stable 66/17/49, witness debt 1, 81 deferred.
+- [x] `M6-CP3-TB-REV-170-P13-CORNER-VISIT-READER-FULL-GATE`: independent artifacts and row comparison, full gate rejected at **986/993**, 7 RED incl accepted CP2 row445. Row 979 later-stage sphere receipt remains unpromoted. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_170_Corner_Visit_Reader_Independent_Review_20261123.md).
+- [ ] **1 NEXT:** `M6-CP3-CB-191-P13-MECHANICAL-FACE-CUT-REASON-RECEIPT` — Code + Build measurement-only exact partition reason and source face at `(1,4,139)` from frozen 1,708-byte [diff](.agents/Directional/Architecture_M6_CP3_CB191_P13_Mechanical_Face_Cut_Reason_Receipt_Exact.diff) SHA-256 `aa2ff1852292bdcda1d0fcd16088400e6c56f8f3faadc051b1794d2a36d0792f`; full piece lineage deferred if reason is insufficient; no source behavior change, test execution, selector, activation or unrelated diagnostics. Fix requires a later reviewed diff. Exact patch frozen; compile only in CB-191.
+- [ ] **2 LATER:** artifact-only full 993-case TB, then independent Review to separate failure reason from repair. Maintain W5 Branch B and preserve TB169 993/993 as latest accepted full gate.
+- [ ] **Held:** CB-190 S4/S6/S7 diagnostic comments, CP3/497/D0/H4, production sphere, V3b, Y7, activations. Counts **67/17/50**, debt1, deferred81; accepted CP2 selector still frozen at 491 identities, TB170 is nonaccepted 490/491.
 
-NEXT_TURN: M6-CP3-TB-REV-170-P13-CORNER-VISIT-READER-FULL-GATE
+NEXT_TURN: M6-CP3-CB-191-P13-MECHANICAL-FACE-CUT-REASON-RECEIPT
 
 ## HISTORY — CB-189 exact corner reader compiled; TB-EXEC-170 NEXT (2026-11-23 UTC)
 
