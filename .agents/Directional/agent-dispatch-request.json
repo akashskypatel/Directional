@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb196-code-20261123-b-wrapper",
-  "mailbox_key": "m6-cp3-cb196-code-v2",
-  "file_id": "1LZz5P0UlcERWZKeyI2RMA1UqVBwvs5U0",
-  "patch_sha256": "26afa5e54dc59ce0b6c5117074819d908ee0a7cec8080aaabb84565ae7ca7cb2",
-  "base_sha": "ab3825ec6c65fbce7290640bb6957f5270c730f6",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(directional): add exact source retraced trace selection helper",
-  "retention_days": 14
+  "operation": "compile",
+  "request_id": "m6-cp3-cb196-compile-20261123-a",
+  "mailbox_key": "m6-cp3-cb196-compile",
+  "source_sha": "f4acd5d1f29d55f36c427e88fed8f5ca09ae7ee5",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "agent-cb196-compile"
 }
