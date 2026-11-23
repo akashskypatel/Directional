@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb173-doc-closeout-20261123-a",
-  "mailbox_key": "m6-cp3-tb173-doc-closeout-apply",
-  "file_id": "1zS5eHfbPZs4bCEz02_Ulf5JGWmJCkndE",
-  "patch_sha256": "8c5d11e2c6f1f7385b835c2644eab48217b2eb8f040646910ebd12734b6f0e5c",
-  "base_sha": "912483879274ca32a066b1bc517fe965286507e2",
+  "request_id": "m6-cp3-tb-rev-173-doc-20261123-v1",
+  "mailbox_key": "m6-cp3-tb-rev-173-doc-apply",
+  "file_id": "1zPMpquBsfMMQ-5OehshGORau188TKyBf",
+  "patch_sha256": "7f776b2ac29dce0091b00901947d8438d374b155afff00b787625e40d07da086",
+  "base_sha": "9de745e0e8298353c2e3f0c75edbcbe1c44c6606",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB173 immutable gate and hand off review",
+  "commit_message": "docs(directional): record independent TB173 review and D13 decision gate",
   "retention_days": 14
 }
