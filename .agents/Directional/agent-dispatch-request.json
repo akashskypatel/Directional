@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb174-doc-closeout-20261123-a",
-  "mailbox_key": "m6-cp3-tb174-doc-closeout",
-  "file_id": "1anEZ96sldduN2w643BXRbi1zKQsRxKww",
-  "patch_sha256": "823bc46c1c0fd0b03794b3eb3854fdc87132a0d5d66dc4487b2dfa74050ff3aa",
-  "base_sha": "3b5315ab66058dbc0c69ba5e6b8cf14037d1bd8a",
+  "request_id": "m6-cp3-tb174-review-20261123-a",
+  "mailbox_key": "m6-cp3-tb174-review",
+  "file_id": "1Tnd91frV0LJkPfkv2g73WdIB6IMoUTvJ",
+  "patch_sha256": "1a0356a3384eca550fcebf11eb94cd4a102a26e2e0d083d36c14042552c7342a",
+  "base_sha": "f386134d76e7267a4ad6570af2dc794f7aad8900",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB174 and route independent review",
+  "commit_message": "docs(directional): independent TB174 review and diagnostic successor",
   "retention_days": 14
 }
