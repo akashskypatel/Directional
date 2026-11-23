@@ -1,8 +1,8 @@
-# CB-195 recovery record — compile pending (2026-11-23 UTC)
+# CB-195 exact source-path retrace — Code + Build record (2026-11-23 UTC)
 
 Canonical turn: `M6-CP3-CB-195-P13-EXACT-SOURCE-PATH-RETRACE-ALONG-EDGES`.
 
-This record preserves a partially completed Code + Build turn. It is NOT a compile acceptance record and does not authorize TB-EXEC-174.
+This record includes the earlier recovery checkpoint and the verified compile-only closeout. The checkpoint below is historical, not current authority.
 
 ## Source and patch authority
 
@@ -15,7 +15,7 @@ This record preserves a partially completed Code + Build turn. It is NOT a compi
 - Exact recovery patch (v2): `Directional__M6-CP3-CB-195-P13-EXACT-SOURCE-PATH-RETRACE-ALONG-EDGES__base-e6c1555f0ceb__work-preservation-v2.patch`, SHA-256 `193f5e24e980a94843b966e90b03020e1049202e767cd025865e5148bb4fdcd4`, diff body SHA-256 `9f43ba4b788492c1dd9af9d0298b1524286ccf8b19acd344b6a6ef608839a72e`. The wrapper separates intended paths with semicolons.
 - Initial application run `45197492357` failed without pushing code because its wrapper separated intended paths with a comma. The corrected application run `45198021085` succeeded; result artifact `14830580338`. Both transient Google Drive staging files were permanently deleted by the owner-authorized connector after the successful push.
 
-## Compile request — awaiting terminal evidence
+## Compile request — earlier pending state
 
 - Dispatcher request commit `dbb00b334ab1c6e68f7c3835d662c431274573d3`.
 - Mailbox key `m6-cp3-cb195-compile` on orphan branch `workflow-mailbox`.
@@ -25,6 +25,15 @@ This record preserves a partially completed Code + Build turn. It is NOT a compi
 - At 2026-11-23T14:53 UTC, `.workflow-mailbox/m6-cp3-cb195-compile/latest.json` was not yet published. Do not treat this as a failure or success.
 - No executable tests, benchmarks, runtime invocations, or successor work were performed in this turn.
 
-## Continuation action
+## Continuation action (historical, now discharged)
 
 Remain on CB-195. Read the existing compile mailbox and exact run/artifact when it becomes available; verify every target, GMP/GMPXX linkage, packaged source, and `runtimeExecution=false`. On a real compile failure follow the Review stop rule and report exact logs. On verified success finish Code + Build documentation and cleanup, update handoff/TODO and close the SAME CB-195 turn with its final STATUS write. Only a later turn may begin TB-EXEC-174. The temporary source-snapshot trigger file `.agents/connector-triggers/source-snapshot/m6-cp3-cb195-20261123.txt` still needs authorized cleanup. Avoid deleting it directly if that retriggers snapshot automation.
+
+## Verified closeout — 2026-11-23 UTC
+
+- Build workflow [run 45198338115](https://github.com/akashskypatel/Directional/actions/runs/45198338115), exact compilation source `29415df1ca8d76825a531092f65ff85e4ecd3b9d`, result artifact `14832291155`, ZIP SHA-256 `7a06da51b899ba73f7e9b2375275be87dceeab86dba469cae5bad5be6cf6350c` (45,307,488 bytes). Workload and mailbox jobs succeeded. Build log artifact `14830921550`, digest `3fbf2c0faad1111f270782ab9a8848356b644525fd495fd6d460c1aa3477fc85`.
+- Package `SHA256SUMS`: **28/28** checked and matched. Preflight/build exit codes both `0`; source status clean at each packaged checkpoint. All eight requested targets were present under `bin/` or `lib/` and recorded in `compiled-targets.txt`. Packaged source archive contains exact two approved postimage blobs (header `a968576efdc02027c7e1c5c2ec2cb7cf19edeeb7`; test `bfc99a2232412ce0edafc0a2de66ae30aa2c1023`).
+- The CMake cache records `DIRECTIONAL_ENABLE_GMP:BOOL=ON`. Generated link evidence names both `libgmpxx.so` and `libgmp.so`. `metadata/command-boundary.txt` states `exactArithmeticBackend=GMP`, `runtimeExecution=false`, and `turnBoundary=Code+Build-only`. Compiled test binaries were **not executed**. No test pass claim applies to CB-195.
+- The new predicate `exact_source_paths_retrace_along_edges` remains unwired. There were no producer, region, validator, selector or manifest edits beyond the frozen two-file source diff. TB173 remains **989/996 with seven mechanical RED**. TB169 993/993 and CP2 491/491 remain the accepted comparisons; no product gate promotion.
+- Documentation-only apply run [45202280064](https://github.com/akashskypatel/Directional/actions/runs/45202280064) succeeded, update commit `89662f404158582ddd2cc7a45940d0ad3c4b1e1a`. The three target documentation blobs match the locally prepared full-index patch. Documentation backup SHA-256 `315732a5d24a864edbcd74a442d9f71e68d3c14121e396faa22bdd9decd15281`; diff-body hash `add6e1fb488c7412c1b8c586a5034d1137910e853da36c0b85bae3d1a3531a07`. The transient Drive documentation patch was permanently deleted after success.
+- The only authorized next turn is `M6-CP3-TB-EXEC-174-P13-RETRACE-ORACLE-FULL-GATE`. It uses the frozen 998-row manifest and the immutable compile artifact. No successor operation was started in CB-195.
