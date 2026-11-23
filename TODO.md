@@ -1,26 +1,25 @@
-## CURRENT — CB-188 exact source compiled; TB-EXEC-169 next (2026-11-23 UTC)
+## CURRENT — TB-EXEC-169 993/993 PASS; independent TB-REV-169 next (2026-11-23 UTC)
 
 - [x] `M6-CP3-CB-188-P13-REGION-VISIT-READER`: exact 5171-byte diff `5f06c14b…5944`, only `src/geometry/GlobalTopologyPlan.cpp`. Source `b2e976f204fa5b2988a9cbe5a77defd106a96aad`. Eight-target GMP/GMPXX [compile run 45101939539](https://github.com/akashskypatel/Directional/actions/runs/45101939539) PASS; package `14786260085`, ZIP SHA-256 `d877a0ea4c05cfe93275506823652abb6b0e012dd3a5925103606e28e69625a5`, `runtimeExecution=false`. See [CB-188 record](.agents/Directional/Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md). No tests or benchmarks executed.
-- [ ] **1 NEXT** `M6-CP3-TB-EXEC-169-P13-REGION-VISIT-READER-FULL-GATE`: artifact-only, unchanged TB168 993-row manifest. Require 993/993 PASS, CP2 491/491, membership 1074. Compare rows other than 979 against TB168 artifact `14781634158` under N1–N3, with zero allowance. Row 979's four faces `6-8-9`, `16-20-21`, `32-33-34`, `40-45-46` each require chord count 4, expected fragments 5, owners 5, deficit 0. The staged stop stays `SourceFaceCarriesMultipleTraceCuts sourceFace=6-8-9`; every other line stays unchanged. Changed line elsewhere → STOP to Review. No census, source edits, or rebuild.
-- [ ] 2 `M6-CP3-TB-REV-169-P13-REGION-VISIT-READER-FULL-GATE`: independent review and exact gate comparison.
+- [x] `M6-CP3-TB-EXEC-169-P13-REGION-VISIT-READER-FULL-GATE`: immutable package `14786260085`, [run 45104059492](https://github.com/akashskypatel/Directional/actions/runs/45104059492), result `14787082075` (`dc15a8df…04e5`), **993/993 PASS**, CP2 **491/491**, membership **1074**, 1994/1994 internal hashes. All 993 rows identical to TB168 under N1–N3 with only four approved row979 face-count changes (4 chords, 5 fragments, 5 owners, 0 deficit); staged `SourceFaceCarriesMultipleTraceCuts` remains. No census, source/test/selector mutation or rebuild. [Report](.agents/Directional/Architecture_M6_CP3_TB169_P13_Region_Visit_Reader_Full_Gate_Execution_Report_20261123.md).
+- [ ] **1 NEXT** `M6-CP3-TB-REV-169-P13-REGION-VISIT-READER-FULL-GATE`: independent review of immutable TB169 result, exact four row979 count changes, no other N1–N3 differences; freeze whether CB-189 may proceed later.
 - [ ] 3 `M6-CP3-CB-189-P13-CORNER-VISIT-READER`: separate later turn, amended frozen diff `6e391678…e3b8` against CB-188 postimage, compile only.
 - [ ] 4 TB-EXEC-170 → TB-REV-170. Row 979 must build the staged plan or reach the next typed stage; row 652 remains PASS. C1/C2 count as witnessed only when printed.
 - [ ] 5 CB-190 diagnostics S4/S6/S7, off critical path.
 - [ ] 6 Activation (V3/V4/V5/V10/V11) → TB → V3b → R1 → O48, only after the staged plan builds.
-- Held: CP3/497/D0/H4; production sphere `CutSearchExhaustedBeforeCellularity`. Stable 66/17/49, debt1, deferred81; TB168 remains the latest executed gate.
+- Held: CP3/497/D0/H4; production sphere `CutSearchExhaustedBeforeCellularity`. Stable 66/17/49, debt1, deferred81; TB169 is the latest executed gate; no new regression candidate.
 
 ```
-NEXT_TURN: M6-CP3-TB-EXEC-169-P13-REGION-VISIT-READER-FULL-GATE
-Owner: Test + Benchmark agent, immutable artifact-only execution
-Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md (Q1-Q7), .agents/Directional/Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md
-Source: b2e976f204fa5b2988a9cbe5a77defd106a96aad
-Package: 14786260085; SHA-256 d877a0ea4c05cfe93275506823652abb6b0e012dd3a5925103606e28e69625a5; compile run 45101939539; runtimeExecution=false
-Manifest: unchanged TB168 993-row selector; last result reference 14781634158
-Required: 993/993 PASS; CP2 491/491; membership 1074; rows != 979 equal TB168 under N1-N3, zero allowance
-Row 979: four named faces each 4 chords, 5 expected, 5 owners, 0 deficit; keep staged stop and all other rows unchanged
-On any other changed line: STOP to Review; no census
-Then: M6-CP3-TB-REV-169-P13-REGION-VISIT-READER-FULL-GATE
-Do not: rebuild, change source/tests/selector/manifest, execute CB-189, activate, or promote CP3/497/D0/H4
+NEXT_TURN: M6-CP3-TB-REV-169-P13-REGION-VISIT-READER-FULL-GATE
+Owner: Independent Review; no implementation, build or test execution
+Authority: .agents/Directional/Architecture_M6_CP3_TB169_P13_Region_Visit_Reader_Full_Gate_Execution_Report_20261123.md and TB-REV-168 Q1-Q7
+Tested source: b2e976f204fa5b2988a9cbe5a77defd106a96aad
+Immutable package: 14786260085, compile run 45101939539
+Result: run 45104059492, artifact 14787082075, 993/993 PASS, CP2 491/491, membership 1074
+Gate: 993 row-by-row N1-N3 predecessor matches; four row979 faces exactly 4 chords, 5 expected, 5 owned, 0 deficit
+Typed stop: SourceFaceCarriesMultipleTraceCuts on 6-8-9; production sphere still CutSearchExhaustedBeforeCellularity
+Regression: stable 66/17/49, debt1, deferred81; no new observed candidate; no census
+Do not: execute CB-189, run a build, edit implementation/tests/selectors, activate or promote CP3/497/D0/H4
 ```
 
 ## HISTORY — TB-EXEC-168 993/993 PASS; TB-REV-168 was next (2026-11-23 UTC)

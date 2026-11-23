@@ -31,31 +31,31 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-23 UTC. CB-188 exact region reader was compiled from source `b2e976f204fa5b2988a9cbe5a77defd106a96aad` in eight-target GMP/GMPXX run `45101939539`; package `14786260085`. No runtime tests ran in CB-188. Last acceptance TB168 remains 993/993 PASS, CP2 491/491, membership 1074; stable 66/17/49, debt1, deferred81. TB-EXEC-169 is next. CB-189 remains separate and held. |
+| Currency | 2026-11-23 UTC. The immutable CB-188 source `b2e976f204fa5b2988a9cbe5a77defd106a96aad` passed TB169 full gate 993/993 in run `45104059492`, result artifact `14787082075`. CP2 491/491 and membership 1074; no prior normalized differences outside four approved row979 face counts. Stable 66/17/49, debt1, deferred81. Independent TB-REV-169 is next; CB-189 held. |
 | Branch and latest compiled package | `agent/surface_cell_quad/p5-recover-bridge-healing`. CB-188 source `b2e976f204fa5b2988a9cbe5a77defd106a96aad`, eight-target compile run `45101939539`, package `14786260085`, ZIP SHA-256 `d877a0ea4c05cfe93275506823652abb6b0e012dd3a5925103606e28e69625a5`, GMP/GMPXX, `runtimeExecution=false` ([record](Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md)). CB-187 predecessor source `486704038a6bf659a253a2e2f99edde5d03c7ffe`, package `14781561211`, run `45090657623` ([record](Architecture_M6_CP3_CB187_P13_Arc_Face_Visit_Adapter_Code_Build_Record_20261123.md)). |
-| Current gate / census | [TB168 report](Architecture_M6_CP3_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Execution_Report_20261123.md): [run 45092627119](https://github.com/akashskypatel/Directional/actions/runs/45092627119), result `14781634158` (ZIP SHA-256 `db2f8f2981c7c2ac914f59598a1e40c553ea8b94b21a23e41b84e74dd1aafb09`), 993/993 PASS, CP2 491/491, membership 1074. TB167 artifact `14770748728` rows 1–989 agree under N1–N3: zero ledger/raw/complete-record differences. No census; most recent three-case census remains TB165 unchanged. |
+| Current gate / census | [TB169 report](Architecture_M6_CP3_TB169_P13_Region_Visit_Reader_Full_Gate_Execution_Report_20261123.md): [run 45104059492](https://github.com/akashskypatel/Directional/actions/runs/45104059492), result `14787082075` ZIP SHA-256 `dc15a8df5226fc209717f6df2fd15140e9e04abb6e73f831d8285992e72f04e5`, 993/993 PASS, CP2 491/491, membership 1074, 1,994 hashes, all normalized TB168 rows identical except four approved count changes. No production census; latest three-case census remains TB165. |
 | Accepted history | CP2 491/491, package `11391685901`. CP3's 497 identities are frozen and unpromoted. |
-| Regression/debt | TB168 observed no new regression candidate or PASS-to-RED change. Stable totals 66/17/49, produced-witness debt1, deferred81 unchanged. Carried: G2/G3, RA-275 S4a, Y7/Z3, Z5, X4/H5, TB-REV-159-U3/V3–V11, W3/W4/W6/W7, RA-281 F1–F3, Amendment 14, O47/C5/O48/O49 and sphere χ+4. No CP3/497/D0/H4 promotion. |
+| Regression/debt | TB169 adds no new regression or candidate and no PASS-to-RED change. Stable 66 events/17 categories/49 recurrences, produced-witness debt 1, deferred 81. Staged sphere remains at `SourceFaceCarriesMultipleTraceCuts`; production sphere still at `CutSearchExhaustedBeforeCellularity`. CP3/497/D0/H4 held. |
 | Active boundary | The production sphere still stops at `CutSearchExhaustedBeforeCellularity`. The staged row-979 plan stops at `SourceFaceCarriesMultipleTraceCuts`, `6-8-9`: a singular corner (node 1) with rays from traces 3 and 4, slide arrivals from traces 0 and 9, and trace 0's segment 6 split at node 12 into arcs 0 and 1. Activation is held until the staged plan builds (G5). |
 
 ## Mandatory next turn
 
-- **COMPLETE (Code + Build):** `M6-CP3-CB-188-P13-REGION-VISIT-READER`, exact frozen diff `5f06c14b…005d05944`, source `b2e976f204fa5b2988a9cbe5a77defd106a96aad`. Eight-target GMP/GMPXX [compile run 45101939539](https://github.com/akashskypatel/Directional/actions/runs/45101939539) PASS. [Record](Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md). No compiled binary executed.
-- **NEXT:** `M6-CP3-TB-EXEC-169-P13-REGION-VISIT-READER-FULL-GATE`, artifact-only on immutable package `14786260085`; then independent TB-REV-169. CB-189 is a later Code + Build turn.
-- **HOLD:** no CP3/497/D0/H4 or production promotion; activation awaits staged plan G5.
+- **COMPLETE (Code + Build):** CB-188 exact region reader, source `b2e976f204fa5b2988a9cbe5a77defd106a96aad`, compiled eight targets with GMP/GMPXX; package `14786260085`.
+- **COMPLETE (Test + Benchmark):** `M6-CP3-TB-EXEC-169-P13-REGION-VISIT-READER-FULL-GATE`, [report](Architecture_M6_CP3_TB169_P13_Region_Visit_Reader_Full_Gate_Execution_Report_20261123.md), [run 45104059492](https://github.com/akashskypatel/Directional/actions/runs/45104059492), result `14787082075`, 993/993 PASS; CP2 491/491; membership 1074; four expected count changes, no other allowed comparison change; no census or rebuild.
+- **NEXT (independent Review only):** `M6-CP3-TB-REV-169-P13-REGION-VISIT-READER-FULL-GATE`. Recheck full immutable evidence and determine the reviewed disposition. No runtime or source changes.
+- **HOLD:** CB-189 corner reader until its separate authorized turn. No CP3/497/D0/H4 or production promotion.
 
 ```
-NEXT_TURN: M6-CP3-TB-EXEC-169-P13-REGION-VISIT-READER-FULL-GATE
-Owner: Test + Benchmark agent; do not rebuild or edit source/tests/selectors/manifests
-Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md (Q1-Q7) + Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md
-Exact source: b2e976f204fa5b2988a9cbe5a77defd106a96aad
-Immutable compiled artifact: 14786260085; ZIP SHA-256 d877a0ea4c05cfe93275506823652abb6b0e012dd3a5925103606e28e69625a5; compile run 45101939539; runtimeExecution=false
-Manifest: unchanged TB168 993 rows
-Gate: 993/993 PASS, CP2 491/491, membership 1074; rows other than 979 equal TB168 artifact 14781634158 under N1-N3 with zero allowance
-Row 979: fragmentOwnerFace 6-8-9,16-20-21,32-33-34,40-45-46 each traceChordCount=4, expectedFragmentCount=5, ownerCount=5, ownerDeficit=0
-Outcome: SourceFaceCarriesMultipleTraceCuts sourceFace=6-8-9 remains; every other row-979 line unchanged; any other change STOP to Review
-No census. On completion: M6-CP3-TB-REV-169-P13-REGION-VISIT-READER-FULL-GATE
-Do not execute CB-189, run a build, activate, or promote CP3/497/D0/H4
+NEXT_TURN: M6-CP3-TB-REV-169-P13-REGION-VISIT-READER-FULL-GATE
+Owner: Independent Review agent; no build or runtime execution
+Authority: Architecture_M6_CP3_TB169_P13_Region_Visit_Reader_Full_Gate_Execution_Report_20261123.md; Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md
+Tested source: b2e976f204fa5b2988a9cbe5a77defd106a96aad
+Package: 14786260085; compile run 45101939539; runtimeExecution=false
+Result: run 45104059492; artifact 14787082075; SHA-256 dc15a8df5226fc209717f6df2fd15140e9e04abb6e73f831d8285992e72f04e5
+Gate: 993/993 PASS, CP2 491/491, membership 1074; all TB168 rows equal under N1-N3 except four approved row979 face-count changes
+Outcome: SourceFaceCarriesMultipleTraceCuts sourceFace=6-8-9 remains; production sphere CutSearchExhaustedBeforeCellularity
+Regression: no new candidate; stable 66/17/49, debt1, deferred81; no census
+Do not: start CB-189, rebuild, mutate tests/selectors, activate or promote CP3/497/D0/H4 in review
 ```
 
 ## Turn Sequence
@@ -70,7 +70,7 @@ Do not execute CB-189, run a build, activate, or promote CP3/497/D0/H4
 | COMPLETE (Test + Benchmark) | `M6-CP3-TB-EXEC-168-P13-ARC-FACE-VISIT-ADAPTER-FULL-GATE` | [TB168](Architecture_M6_CP3_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Execution_Report_20261123.md) 993/993; CP2 491/491; membership 1074; prior 989 unchanged. |
 | COMPLETE (Review) | `M6-CP3-TB-REV-168-…` | [Independent](Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md) + [adversarial](Architecture_M6_CP3_TB_REV_168_Adversarial_Review_20261123.md) (Q1–Q7). CB-188 `5f06c14b…5944`; CB-189 amended `6e391678…e3b8`. |
 | COMPLETE (Code + Build) | CB-188 | [Record](Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md), exact source `b2e976f204fa5b2988a9cbe5a77defd106a96aad`; compile run `45101939539`, package `14786260085`, no runtime. |
-| **NEXT** | TB-EXEC-169 → TB-REV-169 | Immutable package `14786260085`. Row 979 expected 4 chords, 5 owners and zero deficit on four faces; all other rows unchanged. |
+| COMPLETE TB / NEXT Review | TB-EXEC-169 → TB-REV-169 | [TB169 report](Architecture_M6_CP3_TB169_P13_Region_Visit_Reader_Full_Gate_Execution_Report_20261123.md): 993/993 PASS, 1074 membership, four approved row979 face changes; independent Review next. |
 | 3 | CB-189 → TB-EXEC-170 → TB-REV-170 | Amended diff `6e391678…e3b8`. Row 979 builds the staged plan or prints the next typed stage. Row 652 still passes. C1/C2 count as witnessed only if printed. |
 | 4 | CB-190 | S4/S6/S7 diagnostic conformity (off critical path). |
 | 5 | Activation → TB → V3b → R1 → O48 | After the staged plan builds. |
@@ -79,7 +79,7 @@ Do not execute CB-189, run a build, activate, or promote CP3/497/D0/H4
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: [CB-188 record](Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md), [TB-REV-168 independent review](Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md), [CB-188 manifest](gates/Architecture_M6_CP3_CB188_P13_Visit_Reader_Exact_Manifest.md), [CB-189 manifest](gates/Architecture_M6_CP3_CB189_P13_Visit_Reader_Exact_Manifest.md), [TB168 execution report](Architecture_M6_CP3_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Execution_Report_20261123.md), [CB-187 code/build record](Architecture_M6_CP3_CB187_P13_Arc_Face_Visit_Adapter_Code_Build_Record_20261123.md), [TB-REV-167 adversarial record](Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md), [TB-REV-167 independent review](Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md), [TB167 report](Architecture_M6_CP3_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Execution_Report_20261122.md).
+`load_next`: [TB169 report](Architecture_M6_CP3_TB169_P13_Region_Visit_Reader_Full_Gate_Execution_Report_20261123.md), [CB-188 record](Architecture_M6_CP3_CB188_P13_Region_Visit_Reader_Code_Build_Record_20261123.md), [TB-REV-168 independent review](Architecture_M6_CP3_TB_REV_168_Independent_Review_20261123.md), [CB-188 manifest](gates/Architecture_M6_CP3_CB188_P13_Visit_Reader_Exact_Manifest.md), [CB-189 manifest](gates/Architecture_M6_CP3_CB189_P13_Visit_Reader_Exact_Manifest.md), [TB168 execution report](Architecture_M6_CP3_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Execution_Report_20261123.md), [CB-187 code/build record](Architecture_M6_CP3_CB187_P13_Arc_Face_Visit_Adapter_Code_Build_Record_20261123.md), [TB-REV-167 adversarial record](Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md), [TB-REV-167 independent review](Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md), [TB167 report](Architecture_M6_CP3_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Execution_Report_20261122.md).
 
 0. [ORIENTATION.md](ORIENTATION.md) — project context, read first.
 1. [ROADMAP.md](ROADMAP.md) — milestone position only.
