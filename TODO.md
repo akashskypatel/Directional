@@ -1,28 +1,26 @@
-## CURRENT — CB-187 exact arc-face-visit adapter compiled; TB-EXEC-168 next (2026-11-23 UTC)
+## CURRENT — TB-EXEC-168 993/993 PASS; TB-REV-168 next (2026-11-23 UTC)
 
 - [x] TB-REV-167 adversarial continuation: [record](.agents/Directional/Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md) (P1–P8).
   - Upheld: TB167 989/989 and the S1 coupling.
   - Withdrawn: the prose CB-187 plan, the v1–v5 candidates and the S5 STOP. The STOP fires on sphere faces `18-19-24` and `25-27-28`; the `k+1` ceiling is sound.
   - S4/S6/S7 are diagnostics only and move to CB-190.
 - [x] `M6-CP3-CB-187-P13-ARC-FACE-VISIT-ADAPTER`: exact diff `806a64fe…96ac` (pure, unwired `arc_face_visits` and 4 tests) committed as `486704038a6bf659a253a2e2f99edde5d03c7ffe`; eight-target GMP/GMPXX compile run 45090657623, package `14781561211`; see [CB-187 record](.agents/Directional/Architecture_M6_CP3_CB187_P13_Arc_Face_Visit_Adapter_Code_Build_Record_20261123.md). No runtime.
-- [ ] **1 NEXT** `M6-CP3-TB-EXEC-168-P13-ARC-FACE-VISIT-ADAPTER-FULL-GATE`: 993 rows (manifest `82581dd1…e436`); rows 1–989 = TB167 `14770748728` under N1–N3; membership 1074; no census.
-- [ ] 2 `M6-CP3-TB-REV-168-P13-ARC-FACE-VISIT-ADAPTER-FULL-GATE`: freeze exact CB-188 and CB-189 diffs from contracts R1–R4 and C1–C4.
-- [ ] 3 CB-188 (region reader on visits) → TB-EXEC/REV-169: row 979's four slide faces show chords 4 and owners 5; every other row unchanged.
-- [ ] 4 CB-189 (corner reader via `partition_face_corners`, every cut-side orbit keyed) → TB-EXEC/REV-170: staged plan built, or the next typed stage.
-- [ ] 5 CB-190: S4/S6/S7 diagnostic conformity, off the critical path.
-- [ ] 6 Activation (V3/V4/V5/V10/V11) → TB → V3b → R1 → O48.
+- [x] `M6-CP3-TB-EXEC-168-P13-ARC-FACE-VISIT-ADAPTER-FULL-GATE`: 993/993 PASS, CP2 491/491, membership 1074; 989 predecessor rows unchanged under N1–N3, four new tests PASS; run 45092627119; [report](.agents/Directional/Architecture_M6_CP3_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Execution_Report_20261123.md). No census.
+- [ ] **1 NEXT** `M6-CP3-TB-REV-168-P13-ARC-FACE-VISIT-ADAPTER-FULL-GATE`: freeze exact CB-188 and CB-189 diffs from contracts R1–R4 and C1–C4.
+- [ ] 2 CB-188 (region reader on visits) → TB-EXEC/REV-169: row 979's four slide faces show chords 4 and owners 5; every other row unchanged.
+- [ ] 3 CB-189 (corner reader via `partition_face_corners`, every cut-side orbit keyed) → TB-EXEC/REV-170: staged plan built, or the next typed stage.
+- [ ] 4 CB-190: S4/S6/S7 diagnostic conformity, off the critical path.
+- [ ] 5 Activation (V3/V4/V5/V10/V11) → TB → V3b → R1 → O48.
 - Held: CP3/497/D0/H4; production sphere `CutSearchExhaustedBeforeCellularity`. Stable 66/17/49, debt1, deferred81.
 
 ```
-NEXT_TURN: M6-CP3-TB-EXEC-168-P13-ARC-FACE-VISIT-ADAPTER-FULL-GATE
-Owner: independent Test + Benchmark execution agent; immutable compiled package only; no rebuild
-Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md (P1–P8) and .agents/Directional/Architecture_M6_CP3_CB187_P13_Arc_Face_Visit_Adapter_Code_Build_Record_20261123.md
-Code source: 486704038a6bf659a253a2e2f99edde5d03c7ffe; compile run 45090657623; package 14781561211; ZIP SHA-256 fa9781a710f29c926c9fd60a39cf6868d15b8d3e50ea5b7989b17aebd59b67a6; GMP/GMPXX; runtimeExecution=false
-Manifest: .agents/Directional/gates/Architecture_M6_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Case_Manifest.tsv, SHA-256 82581dd14064efe3729923cfd94333ef70113b0bb84e6bb8eabfb2ec61cce436
-Rules: 993/993 PASS; CP2 491/491; membership 1074; rows 1–989 = TB167 artifact 14770748728 under only N1–N3, zero allowance; rows 990–993 PASS; no census
-Then: M6-CP3-TB-REV-168-P13-ARC-FACE-VISIT-ADAPTER-FULL-GATE (independent review; freeze exact CB-188 + CB-189 from R1–R4 and C1–C4)
-On failure: report exact failure and return to independent Review; do not change tests or source in TB
-Do not: rebuild, modify source/tests/manifests/selectors, execute production, activate, or promote CP3/497/D0/H4
+NEXT_TURN: M6-CP3-TB-REV-168-P13-ARC-FACE-VISIT-ADAPTER-FULL-GATE
+Owner: independent Review agent; runtime-free re-derivation, freeze exact CB-188 and CB-189 diffs
+Authority: .agents/Directional/Architecture_M6_CP3_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Execution_Report_20261123.md and .agents/Directional/Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md (R1–R4, C1–C4)
+Evidence: source 486704038a6bf659a253a2e2f99edde5d03c7ffe; package 14781561211; execution run 45092627119; artifact 14781634158; ZIP SHA-256 db2f8f2981c7c2ac914f59598a1e40c553ea8b94b21a23e41b84e74dd1aafb09
+Accepted gate: 993/993 PASS; CP2 491/491; membership 1074; TB167 prefix 989 rows unchanged under N1–N3, four new ArcFaceVisits PASS, no census
+Then: CB-188 Code + Build only after TB-REV-168 exact-diff review; CB-189 remains a separate later turn
+Do not: execute successor in this TB168 turn, rebuild, edit tests or selectors, activate or promote CP3/497/D0/H4
 ```
 
 ## HISTORY — TB-REV-167 independent review; prose CB-187 plan (withdrawn by the adversarial continuation) (2026-11-22 UTC)

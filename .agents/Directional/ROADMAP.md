@@ -2,27 +2,13 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Updated:** 2026-11-22 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
+**Updated:** 2026-11-23 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
 
 This roadmap answers **what is done, what comes next, and what each milestone delivers**. It is not a turn log, task queue, test ledger, definition spec, or implementation handoff. The product and acceptance contract is [DESIGN.md](DESIGN.md) (especially §§2 and 14); status, detailed plans, unresolved findings, and exact next-turn authorization live in [ORIENTATION.md](ORIENTATION.md), [Future_Chat_Session_Handoff.md](Future_Chat_Session_Handoff.md), [TODO.md](../../TODO.md), and [Regression_Root_Cause_Tracker.md](Regression_Root_Cause_Tracker.md).
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (TB-REV-167 adversarial: exact CB-187 arc-face-visit adapter next; region then corner reader switch before activation; TB167 **989/989 PASS**, accepted CP2 **491/491**; face-cut helper still unwired, staged sphere still stops at multi-cut face `6-8-9`; CP3/497/D0/H4 held) · **Reviewed:** [TB-REV-167 complete](Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md), independent helper gate accepted; exact reader source defects S1–S7 carried into frozen work. · **Next:** [CB-187 exact face-cut reader Code + Build](Architecture_M6_CP3_CB187_P13_Exact_Face_Cut_Reader_Code_Build_Plan_20261122.md) (compile-only; add negative tests and preserve 989-row prefix). · **Later:** separate TB-EXEC/REV-168 strict sphere-disc gate, conditional activation, M7 and M8.
-
-| Milestone | Outcome | Status | Accepted milestone evidence |
-|---|---|---|---|
-| **M0 — Evidence baseline** | Preserve regression fixtures, reference behavior, and independent comparison artifacts. | **Complete** | Historical T1/M0 prerequisite |
-| **M1 — Single semantic authority** | Typed source/chart/transport/region identities; no competing semantic owners. | **Closed** | [Closure](M1_Closure_Record.md) · **234/234** |
-| **M2 — Closed stage products** | Immutable single-writer products and exhaustive typed outcomes across stages. | **Closed** | [Closure](M2_Closure_Record.md) · **275/275** |
-| **M3 — Field-aligned curve network** | Typed, branch-consistent tracing and certified network-derived topology regions. | **Closed** | [Closure](M3_Closure_Record.md) · accepted prefix **365/365** |
-| **M4 — Global conformity** | Exact shared-rail scheduling, certificate/typed infeasibility, producer cutover, conditioning, and scale proofs. | **Closed** | [Closure](M4_Closure_Record.md) · **430/430** |
-| **M5 — Chart and quotient certificates** | Canonical periodic-relation identity, selected paths, typed failure handling, and produced quotient evidence. | **Closed** | [Closure](M5_Closure_Record.md) · **449/449** |
-| **M6 — Occurrence, embedding, verification** | Separate occurrence/quotient/embedding products; independent verification and direct-production re-proof. | **In progress** | CP1 **479/479**, CP2 **491/491**; CP3 **not accepted** |
-| **M7 — Graded disposition** | Verifier-assigned D0–D4 outcomes and explicitly certified, bounded degradation. | **Planned** | Definition and acceptance gates not yet frozen |
-| **M8 — Production hardening** | Module isolation, resources, diagnostics, reproducible builds, and representative certified acceptance. | **Planned** | Production-readiness exit not yet met |
-
-**Status interpretation:** “Closed” means the milestone's *frozen* acceptance criteria passed, **not** that the complete product is production-ready. Gate counts are the milestone's accepted evidence, not a universal measure of feature completeness. For M3, the later selector409 audit recorded **405 PASS / 4 RED**; those separately owned REDs did not change its frozen 365-row required-green acceptance.
+**Completed:** M0–M5 · **Now:** M6 / CP3 (CB-187 pure arc-face-visit adapter compiled; TB168 **993/993 PASS**, CP2 **491/491**, membership **1074**; no production-path reader switch yet; CP3/497/D0/H4 held) · **Reviewed:** [TB-REV-167 adversarial](Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md), contracts R1–R4 and C1–C4 frozen · **Next:** independent TB-REV-168, to freeze exact CB-188 + CB-189 diffs from [TB168](Architecture_M6_CP3_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Execution_Report_20261123.md) · **Later:** CB-188 region reader then TB-169, CB-189 corner reader then TB-170; activation only after staged plan G5.
 
 ## Completed checkpoints
 
