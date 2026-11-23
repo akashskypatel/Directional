@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb194-exact-source-path-compile-20261123-a",
-  "mailbox_key": "m6-cp3-cb194-exact-source-path-compile",
-  "source_sha": "fae9eb71bb5806d71901cc2ccb8c925201be0c0a",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "cb194-exact-source-path-compile"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb194-durable-handoff-20261123-a",
+  "mailbox_key": "m6-cp3-cb194-durable-handoff-apply",
+  "file_id": "12WRsy8DBdGwNo4JZ1aQ9IqnuNaK730Oi",
+  "patch_sha256": "c12fca5d16ad90694dfea6319e3eaa055a1668a11258b1be4a8a2390046b7c4a",
+  "base_sha": "fae9eb71bb5806d71901cc2ccb8c925201be0c0a",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB194 compile evidence and handoff to TB173",
+  "retention_days": 14
 }
