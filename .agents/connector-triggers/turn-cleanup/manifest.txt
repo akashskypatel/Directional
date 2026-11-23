@@ -1,0 +1,2 @@
+# CB-193 temporary state; preserve durable dispatcher and workflow mailbox
+.agents/connector-triggers/source-snapshot/cb193-20261123T092148.txt
