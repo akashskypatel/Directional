@@ -1,3 +1,11 @@
+## 2026-11-23 — TB-REV-175 adversarial: exact CB-197A extraction and CB-197B ordered retrace replace the prose extraction
+
+The [adversarial continuation](.agents/Directional/Architecture_M6_CP3_TB_REV_175_Adversarial_Review_20261123.md) upholds the TB175 rejection (993/1000) and withdraws the prose CB-197A. Two exact diffs replace it:
+- **CB-197A** moves `exact_trace_segment_pieces` and its three helpers, unchanged, into `src/geometry/ExactTraceSegmentPieces.h`. The curve-network stage can then read the same piece-accurate paths.
+- **CB-197B** fixes `exact_source_paths_retrace_along_edges`. It used to compare merged edge coverage, which accepted a path that runs back and forth along an edge. It now compares ordered, directed edge stretches.
+
+TB-EXEC-176 (1001 rows) follows both.
+
 ## 2026-11-23 — M6-CP3-TB-REV-175 independent review rejects TB175; CB-197A extraction next
 
 [M6-CP3-TB-REV-175 review](.agents/Directional/Architecture_M6_CP3_TB_REV_175_Retraced_Trace_Selection_Independent_Review_20261123.md) independently verifies TB175 archive checks 2008/2008, TB174 2004/2004, all 1000 verdicts, full 998-case N1–N3 equivalence (757 exact, 240 normalized, one 24-record permutation), and two isolated helper PASS results. Seven mechanical RED persist; no new stable event (67/17/50), accepted TB169 993/993 and CP2 491/491 unchanged. It freezes only `M6-CP3-CB-197A-P13-EXACT-TRACE-PIECE-BUILDER-EXTRACTION` (product-neutral exact piece-builder extraction and compile-only), with path-equality falsifiers and a separate later TB. Production selector/remap and CP3/497/D0/H4 promotion remain held. Read-only Review, no Directional runtime.
