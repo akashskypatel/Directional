@@ -1,3 +1,7 @@
+## 2026-11-23 — TB-EXEC-173 immutable shared-edge oracle gate rejected
+
+[Execution report](.agents/Directional/Architecture_M6_CP3_TB173_P13_Shared_Edge_Oracle_Full_Gate_Execution_Report_20261123.md): frozen CB-194 source `fae9eb71bb5806d71901cc2ccb8c925201be0c0a`, package `14820355596`; [run 45180338549](https://github.com/akashskypatel/Directional/actions/runs/45180338549), result `14821438542` ZIP SHA-256 `22851acd9b27eb56ff504f038f9e9761f5b9d07fda854682da512f5022bb223d`, **989/996 PASS, 7 RED**, 1077 membership, 2000/2000 internal checksums. Both new oracle tests passed; all TB172 994 shared rows and complete normalized logs are unchanged (N1/N2 only). Seven accepted-green mechanical controls still RED; no production wiring, no rebuild, no source/test/selector edits, no CP3/497/D0/H4 promotion. TB169 993/993 and CP2 491/491 remain accepted, stable 67/17/50 debt1 deferred81 unchanged. Next independent `M6-CP3-TB-REV-173-P13-SHARED-EDGE-ORACLE-FULL-GATE` must re-ask D13 before producer changes.
+
 ## 2026-11-23 — CB-194 exact shared-edge oracle (compile only)
 
 - Applied the exact reviewed +129/-0 source diff to the authority header and its two producer tests; semantic source `fae9eb71bb5806d71901cc2ccb8c925201be0c0a`. Added a source-edge shared interval oracle without production wiring.
