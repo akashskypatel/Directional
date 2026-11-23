@@ -31,3 +31,9 @@ Stable regression account remains unmodified pending evidence: 66 events / 17 ca
 2. Verify both ZIP and internal checksums. Execute the independent **offline comparator** on the two immutable evidence directories. No local Directional binary, rebuild or relink is authorized.
 3. If full gate matches, publish TB169 execution report, update regression tracker/hand-off/TODO/CHANGELOG, clean only temporary source snapshot trigger, and publish final repository-root STATUS `COMPLETE` with exact successor `M6-CP3-TB-REV-169-P13-REGION-VISIT-READER-FULL-GATE`. Do **not** begin successor work in the TB169 turn.
 4. If evidence is incomplete at response closeout, keep `STATUS: IN_PROGRESS`, preserve the same canonical turn and its original start time. Resume this run without duplicate execution.
+
+## Preservation verification
+
+- Baseline result internal SHA256SUMS verified in full (all listed entries PASS).
+- A negative control ran the offline comparator with TB168 as both baseline and candidate. It **rejected** the unchanged old row-979 values on all four required faces and the incorrect package/source. The verifier is not vacuous and has **not** run on TB169 result.
+- Temporary snapshot trigger `.agents/connector-triggers/source-snapshot/tb169-20261123-0302.txt` was deleted by isolated GitHub commit `76b2ddcb71ee09efca63830ac64f7dc81ea3649a`; no broader PR-comment cleanup was invoked.
