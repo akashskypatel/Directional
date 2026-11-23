@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb175-exec-docs-20261123-a",
-  "mailbox_key": "m6-cp3-tb175-closeout-docs",
-  "file_id": "1rY6HyIG3uSBmrUM7YAOIUGQi-uZl5hWN",
-  "patch_sha256": "6d1cd7950b7433aed38a1d1188a1f13604bb30230eea9dc1df8fefe3cfdf78b8",
-  "base_sha": "0a2fb0b276b683f8d0da429c7b79b8833c518789",
+  "request_id": "m6-cp3-tbrev175-review-docs-20261123-a",
+  "mailbox_key": "m6-cp3-tbrev175-review-docs",
+  "file_id": "1dB76v6Hm-GyWhQJkpRrpUP-VR3R_AqWo",
+  "patch_sha256": "c8f5c9d38e36c33290f7e530c1d1942a8592e2f56b46a2bf2af207a3ee1489e4",
+  "base_sha": "1eb0acaab499220832f4d05248756e665810966f",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record rejected TB175 1000-case gate and hand off review",
+  "commit_message": "docs(directional): independently review rejected TB175 and freeze extraction",
   "retention_days": 14
 }
