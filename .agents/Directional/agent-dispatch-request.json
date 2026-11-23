@@ -1,25 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "test_benchmark",
-  "request_id": "m6-cp3-tb170-corner-visit-reader-full-gate-20261123-a",
-  "mailbox_key": "m6-cp3-tb170-corner-visit-reader-full-gate",
-  "executor_sha": "8cd169210fee847bc608e87ee8af4d797983c64a",
-  "semantic_source_sha": "178f17dd59aa9c61c2e6462e2378e3a42b0ee4f7",
-  "turn_id": "M6-CP3-TB-EXEC-170-P13-CORNER-VISIT-READER-FULL-GATE",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "14790917101",
-    "EXPECTED_SOURCE_SHA": "178f17dd59aa9c61c2e6462e2378e3a42b0ee4f7",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "0432359393d37cf00b9654339c832263f648733237005171ff3a8eb9cfa1ddfd",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "4f4e0b45f73c7c56d3a4b00c729b059d3f1401b671e5b3328a2e93c109acb1f7",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "e3a8335cffb3c90a210f18d2c875a1cdcaf69af7c1a3f7d7812c6d14c03d1a10",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "82581dd14064efe3729923cfd94333ef70113b0bb84e6bb8eabfb2ec61cce436",
-    "EXPECTED_CASE_COUNT": "993",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
-  },
-  "artifact_prefix": "m6-cp3-tb170-corner-visit-reader-full-gate",
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-tb170-document-closeout-20261123-a",
+  "mailbox_key": "m6-cp3-tb170-document-closeout",
+  "file_id": "10N9YnBzpFJrJgiHlzGOrSRYPUNRDqlR_",
+  "patch_sha256": "af7f981e2e2a41cc594c3b0cda227a019686fb7e505bb827c449f85d334da206",
+  "base_sha": "8d7da1aef780389084a7fa8abc59ff7ce8b7a1de",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(surface-cells): record TB170 RED frozen gate evidence",
   "retention_days": 14
 }
