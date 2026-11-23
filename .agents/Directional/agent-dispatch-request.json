@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tbrev170-review-docs-20261123-b",
-  "mailbox_key": "m6-cp3-tbrev170-review-docs",
-  "file_id": "1WgL2EQOdvrp8cN1LaR60s0CVhJwcWa5o",
-  "patch_sha256": "4b565d10d4de88e3308612ebffda68977010fd0cfc7d7a9764f66dc5c600531e",
-  "base_sha": "c9ed7f64b7b3b3e719426a11612fe2f5208cf64f",
+  "request_id": "m6-cp3-tbrev170-closeout-20261123-c",
+  "mailbox_key": "m6-cp3-tbrev170-closeout",
+  "file_id": "140ZhDc8mCbEl89vFOP7FpvqzjGhsyH_9",
+  "patch_sha256": "02313ba4b6e567183bff24d1f21591ee7593e2b05b9b20d1bb5f5e8c83d0e4e2",
+  "base_sha": "2dea8816f856b9c53adea239295984216602da83",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(surface-cells): independently review TB170 regression and freeze CB191 receipt",
+  "commit_message": "docs(surface-cells): complete TB-REV-170 evidence closeout",
   "retention_days": 14
 }
