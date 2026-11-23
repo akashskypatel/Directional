@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev-167-fold-tb165-note-20261122-retry",
-  "mailbox_key": "m6-cp3-tb-rev-167-fold-tb165-retry",
-  "file_id": "1I-xd7Wk4wU8adcGIEL69gYctlAUoAeH_",
-  "patch_sha256": "8c2dd98980d17b12c49fc99dde6d99ec2637d503428172f71d4e2ae5b7dc5064",
-  "base_sha": "77a805dfe7f2626657e19c389bb881e9df5ecb84",
+  "request_id": "m6-cp3-cb187-arc-face-visit-apply-20261123",
+  "mailbox_key": "m6-cp3-cb187-arc-face-visit-apply",
+  "file_id": "1fKin3ibuGuI-Fe3Qsz3iMPvveOUnhdRS",
+  "patch_sha256": "802c32ed04298a5e3108736e9bc1cec68e9e801bb7410859d1f48fcb9045580b",
+  "base_sha": "20b7e8da0c03901c86a70ffe629e6f99feb72ce9",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(review): fold superseded TB165 pending-run note with full historical text",
+  "commit_message": "feat(surface-cells): add exact arc face visit adapter and gated tests",
   "retention_days": 14
 }
