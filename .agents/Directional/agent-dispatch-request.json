@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev-173-doc-20261123-v1",
-  "mailbox_key": "m6-cp3-tb-rev-173-doc-apply",
-  "file_id": "1zPMpquBsfMMQ-5OehshGORau188TKyBf",
-  "patch_sha256": "7f776b2ac29dce0091b00901947d8438d374b155afff00b787625e40d07da086",
-  "base_sha": "9de745e0e8298353c2e3f0c75edbcbe1c44c6606",
+  "request_id": "m6-cp3-cb195-retrace-apply-20261123-v1",
+  "mailbox_key": "m6-cp3-cb195-retrace-apply",
+  "file_id": "1gHc45T-TVRhcUAWCMX0R5iHxvnkBPy5y",
+  "patch_sha256": "f38912746425ab7c8dbd8db6de8558204de011bf4652e4c264aecd7273cafdf4",
+  "base_sha": "e6c1555f0ceb531d35ee46c7093da1f8068eed9c",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record independent TB173 review and D13 decision gate",
+  "commit_message": "feat(authority): add exact source-edge retrace predicate and focused checks",
   "retention_days": 14
 }
