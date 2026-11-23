@@ -1,0 +1,2 @@
+# TB-EXEC-177 temporary source snapshot trigger
+.agents/connector-triggers/source-snapshot/m6-cp3-tb177-20261123-2250.txt
