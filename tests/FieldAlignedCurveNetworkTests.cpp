@@ -44,6 +44,7 @@
 #include "../src/geometry/UncutComponentCertificateCensus.h"
 #include "../src/geometry/ThirdEdgeSideOwner.h"
 #include "../src/geometry/FaceCutCornerPartition.h"
+#include "../src/geometry/ArcFaceVisits.h"
 #include "TestFixturePaths.h"
 #include "support/SkewSingularFieldWitness.h"
 
@@ -22772,4 +22773,223 @@ TEST(FaceCutCornerPartition, RejectsMalformedCrossingUnorderedAndInconsistentCut
   // would need its region to wrap around it.
   EXPECT_EQ(expect(Failure::InconsistentSideOrbits),
             failure_of({cut(at(2, 1, 2), std::nullopt, 7U, 4U)}));
+}
+
+namespace arc_face_visit_test {
+
+using directional::authority::ExactSourceEdgePoint;
+using directional::authority::ExactSourceFacePoint;
+using directional::authority::ExactSourcePath;
+using directional::authority::ExactSourcePoint;
+using directional::authority::ExactSourceSupportPiece;
+using directional::authority::SourceEdgeSupport;
+using directional::authority::SourceFaceInteriorSupport;
+using directional::authority::TopologyRegionId;
+using directional::geometry::detail::arc_face_visits;
+using directional::geometry::detail::ArcFaceVisit;
+using directional::geometry::detail::ArcFaceVisitFailure;
+using directional::geometry::detail::FaceBoundaryPosition;
+
+constexpr std::size_t kForward = 7U;
+constexpr std::size_t kReverse = 8U;
+
+SourceVertexId vertex(const int index) {
+  return SourceVertexId::from_index(index, 5U).value();
+}
+
+// Faces [0,1,2] and [1,3,2] share edge (1,2) and are wound as one mesh:
+// [0,1,2] runs it 1 -> 2 and [1,3,2] runs it 2 -> 1. Face [2,3,4] is named
+// by no record.
+embedded::SourceFaceRecord record(const int row, const int a, const int b,
+                                  const int c) {
+  return embedded::SourceFaceRecord{
+      topology_face(a, b, c, 5U),
+      SourceFaceId::from_index(row, 2U).value(),
+      {vertex(a), vertex(b), vertex(c)},
+      {topology_edge(a, b, 5U), topology_edge(b, c, 5U),
+       topology_edge(c, a, 5U)},
+      SourceComponentId::from_index(0, 1U).value(),
+      TopologyRegionId::from_index(0, 1U).value()};
+}
+
+std::map<SourceFaceTopologyKey, embedded::SourceFaceRecord> faces() {
+  return {{topology_face(0, 1, 2, 5U), record(0, 0, 1, 2)},
+          {topology_face(1, 3, 2, 5U), record(1, 1, 3, 2)}};
+}
+
+ExactSourcePoint at_vertex(const int index) { return ExactSourcePoint{vertex(index)}; }
+
+ExactSourcePoint on_edge(const int first, const int second,
+                         const std::int64_t numerator,
+                         const std::int64_t denominator) {
+  return ExactSourcePoint{ExactSourceEdgePoint{
+      topology_edge(first, second, 5U), exact_ratio(numerator, denominator)}};
+}
+
+ExactSourceSupportPiece face_piece(const SourceFaceTopologyKey &face,
+                                   ExactSourcePoint first,
+                                   ExactSourcePoint second) {
+  return ExactSourceSupportPiece{SourceFaceInteriorSupport{face},
+                                 std::move(first), std::move(second)};
+}
+
+ExactSourceSupportPiece edge_piece(const int a, const int b,
+                                   ExactSourcePoint first,
+                                   ExactSourcePoint second) {
+  return ExactSourceSupportPiece{SourceEdgeSupport{topology_edge(a, b, 5U)},
+                                 std::move(first), std::move(second)};
+}
+
+std::vector<ArcFaceVisit> visits_of(
+    const std::vector<SourceFaceTopologyKey> &sourceFaces,
+    const std::vector<std::size_t> &counts, const ExactSourcePath &path) {
+  const auto result =
+      arc_face_visits(faces(), sourceFaces, counts, path, kForward, kReverse);
+  EXPECT_TRUE(std::holds_alternative<std::vector<ArcFaceVisit>>(result));
+  if (const auto *visits = std::get_if<std::vector<ArcFaceVisit>>(&result)) {
+    return *visits;
+  }
+  return {};
+}
+
+std::optional<ArcFaceVisitFailure> failure_of(
+    const std::vector<SourceFaceTopologyKey> &sourceFaces,
+    const std::vector<std::size_t> &counts, const ExactSourcePath &path) {
+  const auto result =
+      arc_face_visits(faces(), sourceFaces, counts, path, kForward, kReverse);
+  if (const auto *failure = std::get_if<ArcFaceVisitFailure>(&result)) {
+    return *failure;
+  }
+  return std::nullopt;
+}
+
+::testing::AssertionResult is_position(
+    const std::optional<FaceBoundaryPosition> &actual, const std::size_t edge,
+    const std::int64_t numerator, const std::int64_t denominator) {
+  if (!actual.has_value()) {
+    return ::testing::AssertionFailure() << "no boundary position";
+  }
+  if (actual->edge != edge ||
+      !(actual->offset == exact_ratio(numerator, denominator))) {
+    return ::testing::AssertionFailure()
+           << "edge " << actual->edge << " instead of " << edge
+           << " or offset differs from " << numerator << '/' << denominator;
+  }
+  return ::testing::AssertionSuccess();
+}
+
+} // namespace arc_face_visit_test
+
+TEST(ArcFaceVisits, ReadFacePiecesAsBoundaryCutsAndSlidesAsOneSide) {
+  using namespace arc_face_visit_test;
+  const auto lower = topology_face(0, 1, 2, 5U);
+  const auto upper = topology_face(1, 3, 2, 5U);
+  // Corner 0 of [0,1,2] to the middle of (1,2); across [1,3,2] to (1,3) at
+  // 1/3 from vertex 1, then a slide back to vertex 1; then a slide along
+  // (1,2) seen from [0,1,2] only.
+  const ExactSourcePath path{
+      face_piece(lower, at_vertex(0), on_edge(1, 2, 1, 2)),
+      face_piece(upper, on_edge(1, 2, 1, 2), on_edge(1, 3, 1, 3)),
+      edge_piece(1, 3, on_edge(1, 3, 1, 3), at_vertex(1)),
+      edge_piece(1, 2, at_vertex(1), at_vertex(2))};
+  const auto visits = visits_of({lower, upper, lower}, {1U, 2U, 1U}, path);
+  ASSERT_EQ(3U, visits.size());
+
+  EXPECT_EQ(lower, visits[0].face);
+  EXPECT_EQ(0U, visits[0].visit);
+  ASSERT_TRUE(visits[0].cut.has_value());
+  EXPECT_FALSE(visits[0].edgeSideOrbit.has_value());
+  EXPECT_TRUE(is_position(visits[0].cut->entry, 0U, 0, 1));
+  EXPECT_TRUE(is_position(visits[0].cut->exit, 1U, 1, 2));
+  EXPECT_EQ(kForward, visits[0].cut->forwardOrbit);
+  EXPECT_EQ(kReverse, visits[0].cut->reverseOrbit);
+
+  // [1,3,2]: corners 1, 3, 2. (1,2) is local edge 2 (2 -> 1); (1,3) at 1/3
+  // from vertex 1 is local edge 0 at offset 1/3. The trailing slide adds
+  // nothing to the visit.
+  EXPECT_EQ(upper, visits[1].face);
+  EXPECT_EQ(1U, visits[1].visit);
+  ASSERT_TRUE(visits[1].cut.has_value());
+  EXPECT_FALSE(visits[1].edgeSideOrbit.has_value());
+  EXPECT_TRUE(is_position(visits[1].cut->entry, 2U, 1, 2));
+  EXPECT_TRUE(is_position(visits[1].cut->exit, 0U, 1, 3));
+
+  // [0,1,2] runs (1,2) in the slide's direction: the forward dart's side.
+  EXPECT_EQ(lower, visits[2].face);
+  EXPECT_EQ(2U, visits[2].visit);
+  EXPECT_FALSE(visits[2].cut.has_value());
+  EXPECT_EQ(std::optional<std::size_t>{kForward}, visits[2].edgeSideOrbit);
+}
+
+TEST(ArcFaceVisits, SlideSideFollowsFaceWindingAndDirection) {
+  using namespace arc_face_visit_test;
+  const auto lower = topology_face(0, 1, 2, 5U);
+  const auto upper = topology_face(1, 3, 2, 5U);
+  const auto side = [&](const SourceFaceTopologyKey &face, const int from,
+                        const int to) {
+    const auto visits = visits_of(
+        {face}, {1U}, {edge_piece(1, 2, at_vertex(from), at_vertex(to))});
+    return visits.size() == 1U ? visits[0].edgeSideOrbit : std::nullopt;
+  };
+  EXPECT_EQ(std::optional<std::size_t>{kForward}, side(lower, 1, 2));
+  EXPECT_EQ(std::optional<std::size_t>{kReverse}, side(lower, 2, 1));
+  EXPECT_EQ(std::optional<std::size_t>{kReverse}, side(upper, 1, 2));
+  EXPECT_EQ(std::optional<std::size_t>{kForward}, side(upper, 2, 1));
+  // A slide that starts inside the edge keeps the side of its direction.
+  const auto partial =
+      visits_of({upper}, {1U}, {edge_piece(1, 2, on_edge(1, 2, 1, 4), at_vertex(1))});
+  ASSERT_EQ(1U, partial.size());
+  EXPECT_EQ(std::optional<std::size_t>{kForward}, partial[0].edgeSideOrbit);
+}
+
+TEST(ArcFaceVisits, InteriorEndsHaveNoBoundaryPosition) {
+  using namespace arc_face_visit_test;
+  const auto lower = topology_face(0, 1, 2, 5U);
+  const ExactSourcePoint centre{ExactSourceFacePoint{
+      lower, {exact_ratio(1, 3), exact_ratio(1, 3), exact_ratio(1, 3)}}};
+  // A slit from the middle of (0,1) that stops inside the face, and the
+  // same cut read from its interior end.
+  const auto slit = visits_of({lower}, {1U},
+                              {face_piece(lower, on_edge(0, 1, 1, 2), centre)});
+  ASSERT_EQ(1U, slit.size());
+  ASSERT_TRUE(slit[0].cut.has_value());
+  EXPECT_TRUE(is_position(slit[0].cut->entry, 0U, 1, 2));
+  EXPECT_FALSE(slit[0].cut->exit.has_value());
+  const auto reversed = visits_of(
+      {lower}, {1U}, {face_piece(lower, centre, on_edge(0, 1, 1, 2))});
+  ASSERT_EQ(1U, reversed.size());
+  ASSERT_TRUE(reversed[0].cut.has_value());
+  EXPECT_FALSE(reversed[0].cut->entry.has_value());
+  EXPECT_TRUE(is_position(reversed[0].cut->exit, 0U, 1, 2));
+}
+
+TEST(ArcFaceVisits, RejectsUnboundUnknownOffFaceAndStationaryPieces) {
+  using namespace arc_face_visit_test;
+  const auto lower = topology_face(0, 1, 2, 5U);
+  const auto unnamed = topology_face(2, 3, 4, 5U);
+  const auto expect = [](const ArcFaceVisitFailure failure) {
+    return std::optional<ArcFaceVisitFailure>{failure};
+  };
+  const auto chord = face_piece(lower, at_vertex(0), on_edge(1, 2, 1, 2));
+  // Counts that do not partition the path, and two face pieces in one visit.
+  EXPECT_EQ(expect(ArcFaceVisitFailure::PieceBinding),
+            failure_of({lower}, {1U}, {chord, chord}));
+  EXPECT_EQ(expect(ArcFaceVisitFailure::PieceBinding),
+            failure_of({lower}, {2U}, {chord, chord}));
+  EXPECT_EQ(expect(ArcFaceVisitFailure::UnknownFace),
+            failure_of({unnamed}, {1U},
+                       {face_piece(unnamed, at_vertex(2), on_edge(3, 4, 1, 2))}));
+  // Vertex 3 is not a corner of [0,1,2]; a face point with a negative
+  // coordinate lies outside the face although its coordinates sum to one.
+  EXPECT_EQ(expect(ArcFaceVisitFailure::PointOffFace),
+            failure_of({lower}, {1U},
+                       {face_piece(lower, at_vertex(0), at_vertex(3))}));
+  const ExactSourcePoint outside{ExactSourceFacePoint{
+      lower, {exact_ratio(-1, 3), exact_ratio(2, 3), exact_ratio(2, 3)}}};
+  EXPECT_EQ(expect(ArcFaceVisitFailure::PointOffFace),
+            failure_of({lower}, {1U},
+                       {face_piece(lower, on_edge(0, 1, 1, 2), outside)}));
+  EXPECT_EQ(expect(ArcFaceVisitFailure::EdgeSideUndetermined),
+            failure_of({lower}, {1U},
+                       {edge_piece(1, 2, at_vertex(1), at_vertex(1))}));
 }
