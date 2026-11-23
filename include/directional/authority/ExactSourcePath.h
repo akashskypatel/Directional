@@ -268,11 +268,14 @@ exact_source_paths_shared_edges(const ExactSourcePath &a,
   return shared;
 }
 
-/** Whether `b` runs back over `a` along source edges only: `b` starts where
- * `a` ends and ends where `a` starts, every piece of both runs along an edge,
- * and both cover exactly the same stretches of the same edges, whatever their
- * carriers and piece breaks. False when either path crosses a face interior,
- * so a retrace through a face is not recognized here. */
+/** Whether `b` runs back over `a` along source edges only: every piece of
+ * both runs along an edge, and `b` passes the same stretches of the same
+ * edges as `a`, in the reverse order and direction, whatever their carriers
+ * and piece breaks. Consecutive pieces that continue along one edge in one
+ * direction count as one stretch, so a path that runs over a stretch twice
+ * or turns back along an edge is not a retrace of a path that does not.
+ * False when either path crosses a face interior, so a retrace through a
+ * face is not recognized here. */
 [[nodiscard]] inline bool
 exact_source_paths_retrace_along_edges(const ExactSourcePath &a,
                                        const ExactSourcePath &b) {
@@ -280,34 +283,38 @@ exact_source_paths_retrace_along_edges(const ExactSourcePath &a,
       a.back().second != b.front().first) {
     return false;
   }
-  using Stretch = std::pair<FieldExactRational, FieldExactRational>;
-  using Coverage = std::map<SourceEdgeTopologyKey, std::vector<Stretch>>;
-  const auto coverage = [](const ExactSourcePath &path) -> std::optional<Coverage> {
-    Coverage stretches;
+  const auto stretches = [](const ExactSourcePath &path)
+      -> std::optional<std::vector<ExactSourceEdgeInterval>> {
+    std::vector<ExactSourceEdgeInterval> run;
     for (const auto &piece : path) {
       const auto interval = exact_source_piece_edge_interval(piece);
       if (!interval) return std::nullopt;
-      stretches[interval->edge].emplace_back(
-          std::min(interval->first, interval->second),
-          std::max(interval->first, interval->second));
-    }
-    for (auto &entry : stretches) {
-      std::vector<Stretch> &list = entry.second;
-      std::sort(list.begin(), list.end());
-      std::vector<Stretch> merged;
-      for (const auto &stretch : list) {
-        if (!merged.empty() && !(merged.back().second < stretch.first)) {
-          merged.back().second = std::max(merged.back().second, stretch.second);
-        } else {
-          merged.push_back(stretch);
-        }
+      if (!run.empty() && run.back().edge == interval->edge &&
+          run.back().second == interval->first &&
+          (run.back().first < run.back().second) ==
+              (interval->first < interval->second)) {
+        run.back().second = interval->second;
+      } else {
+        run.push_back(*interval);
       }
-      list = std::move(merged);
     }
-    return stretches;
+    return run;
   };
-  const auto coveredByA = coverage(a);
-  return coveredByA.has_value() && coveredByA == coverage(b);
+  const auto forward = stretches(a);
+  const auto backward = stretches(b);
+  if (!forward || !backward || forward->size() != backward->size()) {
+    return false;
+  }
+  for (std::size_t index = 0U; index < forward->size(); ++index) {
+    const ExactSourceEdgeInterval &there = (*forward)[index];
+    const ExactSourceEdgeInterval &back =
+        (*backward)[backward->size() - 1U - index];
+    if (there.edge != back.edge || there.first != back.second ||
+        there.second != back.first) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /** A trace that runs back over an earlier trace along source edges, and the

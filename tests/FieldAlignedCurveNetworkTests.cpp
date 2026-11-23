@@ -23283,3 +23283,26 @@ TEST(ExactSourceRetracedTraces, SameWayOtherEdgeAndEmptyPathsAreKept) {
   EXPECT_TRUE(exact_source_retraced_traces({}).empty());
   EXPECT_TRUE(exact_source_retraced_traces({chain}).empty());
 }
+
+TEST(ExactSourcePathRetrace, PathRunningOverAStretchTwiceDoesNotRetrace) {
+  using namespace arc_face_visit_test;
+  using directional::authority::exact_source_paths_retrace_along_edges;
+  const ExactSourcePath forward{
+      edge_piece(0, 1, at_vertex(0), at_vertex(1)),
+      edge_piece(1, 2, at_vertex(1), at_vertex(2))};
+  // From 2 back to 0 over the same edges, but along (0,1) three times: the
+  // edges covered and the ends agree, the traversal does not.
+  const ExactSourcePath backAndForth{
+      edge_piece(1, 2, at_vertex(2), at_vertex(1)),
+      edge_piece(0, 1, at_vertex(1), at_vertex(0)),
+      edge_piece(0, 1, at_vertex(0), at_vertex(1)),
+      edge_piece(0, 1, at_vertex(1), at_vertex(0))};
+  EXPECT_FALSE(exact_source_paths_retrace_along_edges(forward, backAndForth));
+  EXPECT_FALSE(exact_source_paths_retrace_along_edges(backAndForth, forward));
+  // Turning back part way along (1,2) is not running along it once.
+  EXPECT_FALSE(exact_source_paths_retrace_along_edges(
+      forward, {edge_piece(1, 2, at_vertex(2), on_edge(1, 2, 1, 3)),
+                edge_piece(1, 2, on_edge(1, 2, 1, 3), on_edge(1, 2, 2, 3)),
+                edge_piece(1, 2, on_edge(1, 2, 2, 3), at_vertex(1)),
+                edge_piece(0, 1, at_vertex(1), at_vertex(0))}));
+}
