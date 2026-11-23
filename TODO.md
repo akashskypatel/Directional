@@ -1,12 +1,13 @@
-## CURRENT — CB-193 compiled; TB-EXEC-172 next (2026-11-23 UTC)
+## CURRENT — TB-EXEC-172 RED; TB-REV-172 next (2026-11-23 UTC)
 
-- [x] Adversarial continuation ([record](.agents/Directional/Architecture_M6_CP3_TB_REV_171_Adversarial_Review_20261123.md), B1–B6): CB-192 removed 52 false chords that had credited far-side orbits (owners 114→76); trace-bounded lens orbits 1/3/4/5 own no face → `RegionElectedCutComponentEmpty`. Along-edge visits credit one side only, unlike cut arcs (`GlobalTopologyPlan.cpp:1061–1098`). My TB-REV-170 A3 "owner set unchanged" was wrong. TB169 green rested on the false chords; CB-192 is not reverted. Prose CB-193 withdrawn.
-- [x] **1 COMPLETE:** `M6-CP3-CB-193-P13-ALONG-EDGE-VISIT-REGION-RECEIPT` — exact test-only [diff](.agents/Directional/Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Exact.diff) `5fdea657…5edc` applied, GMP/GMPXX eight-target compile, no runtime; [record](.agents/Directional/Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Code_Build_Record_20261123.md).
-- [ ] **2 NEXT:** `M6-CP3-TB-EXEC-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE` — TB171 manifest; 987/994 expected, only appended `alongEdgeVisit*` fields differ.
-- [ ] **3:** `M6-CP3-TB-REV-172-…` — per lens orbit: different edges → exact opposite-face crediting repair CB → TB; same edges → upstream co-traced decision.
-- [ ] **4:** row979 `RegionContainsInteriorSingularity` after mechanical green; **4A** activation chain only after staged plan builds; **5** CB-190 off path.
+- [x] CB-193 applied the exact test-only along-edge visit receipt; GMP/GMPXX compiled artifact `14805640405`, source `587b8ba7b1a52409d2fd95cff99dbb9d1da8f881`.
+- [x] TB-EXEC-172 — immutable artifact-only 994-case [run 45149928894](https://github.com/akashskypatel/Directional/actions/runs/45149928894), result `14805479282`; **987/994**, 7 mechanical RED, CP2 490/491, membership 1075; row652 exact receipt and independent comparison in [execution report](.agents/Directional/Architecture_M6_CP3_TB172_P13_Along_Edge_Visit_Region_Receipt_Full_Gate_Execution_Report_20261123.md). Semantic gate remains rejected. No production acceptance.
+- [ ] **1 NEXT** `M6-CP3-TB-REV-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE` — reopen TB171/TB172 immutable evidence, verify N1–N3 and receipt fields, decide H-strip opposite-face vs H-lens upstream co-traced cause per orbit; freeze one narrow correction or further exact evidence.
+- [ ] **2 HELD** row979 staged `RegionContainsInteriorSingularity`; production sphere, CP3/497/D0/H4 activation, CB-190 and further source work require a separate authorized turn.
 
-NEXT_TURN: M6-CP3-TB-EXEC-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE
+Historical accepted TB169 993/993, CP2 491/491; stable **67/17/50**, debt1, deferred81. No new accepted event.
+
+NEXT_TURN: M6-CP3-TB-REV-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE
 
 ## HISTORY — TB-REV-171 independently REJECTED; narrow CB-193 receipt next (2026-11-23 UTC)
 

@@ -31,26 +31,28 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-23 UTC. CB-193 exact test-only along-edge visit receipt compiled under GMP/GMPXX, no runtime; next is immutable artifact-only TB-EXEC-172. TB171 remains rejected 987/994; TB169 remains accepted 993/993. [CB-193 record](Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Code_Build_Record_20261123.md); [adversarial authority](Architecture_M6_CP3_TB_REV_171_Adversarial_Review_20261123.md). |
-| Branch / source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; CB192 source `462010254fa90bf6c853768019bcfc9132b5c631`, GMP/GMPXX compile `45130510704`, immutable package `14797941489` (`49824e66…41cf`), `runtimeExecution=false`. |
-| Current TB evidence | TB171 run `45133081384`, ZIP artifact `14799346720` SHA-256 `b79b5cc26044acd357243c3c8fe7350e6a68e450171400aad6228e059e143d0c`, internal **1996/1996** verified, 987/994 PASS, CP2 candidate 490/491, membership 1075. |
+| Currency | 2026-11-23 UTC. TB-EXEC-172 immutable full gate completed 987/994 (7 mechanical RED); exact along-edge visit receipt now printed for row652. Next independent TB-REV-172. TB169 remains accepted 993/993. [CB-193 record](Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Code_Build_Record_20261123.md); [adversarial authority](Architecture_M6_CP3_TB_REV_171_Adversarial_Review_20261123.md). |
+| Branch / source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; CB193 source `587b8ba7b1a52409d2fd95cff99dbb9d1da8f881`, GMP/GMPXX compile `45147339047`, package `14805640405` (`58a49461…2cb`), `runtimeExecution=false`; TB172 no rebuild. |
+| Current TB evidence | TB172 [run `45149928894`](https://github.com/akashskypatel/Directional/actions/runs/45149928894), artifact `14805479282` SHA-256 `e9ddc7fd80d3e33b25b18901c783fbb21ec2eaf5c1b86438f887e93cee03edbc`, internal **1996/1996** verified, 987/994 PASS, CP2 candidate 490/491, membership 1075; compare TB171 `14799346720` (987/994). [TB172 report](Architecture_M6_CP3_TB172_P13_Along_Edge_Visit_Region_Receipt_Full_Gate_Execution_Report_20261123.md). |
 | Accepted comparison | TB169 run `45104059492`, ZIP artifact `14787082075` SHA-256 `dc15a8df5226fc209717f6df2fd15140e9e04abb6e73f831d8285992e72f04e5`, internal **1994/1994**, **993/993** accepted, CP2 **491/491** accepted. Frozen prefix SHA-256 `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`. |
 | Regression / debt | Historical **67 events / 17 categories / 50 recurrences**; witness debt1, deferred81. Same seven accepted-green mechanical controls 445/652/653/656/658/660/786 still RED; new empty-elected-draft subtype not new stable event. |
 | First unresolved failure | `RegionElectedCutComponentEmpty` row652: 6 orbits, unlabeled seeds only 0/2; lens orbits 1/3/4/5 bounded by trace pairs 0/3, 8/2, 4/11, 9/7 lost all faces (52 chords removed, owners 114→76). Undecided: lens has area (H-strip → credit opposite face, mirror `GlobalTopologyPlan.cpp:1061–1098`) or zero area (H-lens, co-traced → upstream decision). TB169 green rested on the false chords; do not revert CB-192. Row979 staged `RegionContainsInteriorSingularity` vertex8 |
 
 ## Mandatory next turn
 
-- **COMPLETE:** TB-REV-171 independent (rejection) + adversarial continuation (B1–B6): mechanism located, H-strip/H-lens decision rule frozen, prose CB-193 withdrawn, exact CB-193 receipt frozen ([manifest](gates/Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Receipt_Exact_Manifest.md)); `-fsyntax-only` 0 errors.
-- **COMPLETE:** CB-193 applied only the frozen test-only receipt, compiled eight GMP/GMPXX targets; see [CB-193 Code + Build](Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Code_Build_Record_20261123.md). No runtime or selector change.
+- **COMPLETE:** CB-193 exact diagnostic-only receipt compiled with GMP/GMPXX (no runtime in CB).
+- **COMPLETE:** TB-EXEC-172 ran immutable artifact-only 994-case gate ([evidence](Architecture_M6_CP3_TB172_P13_Along_Edge_Visit_Region_Receipt_Full_Gate_Execution_Report_20261123.md)); 987 PASS, 7 RED, unchanged acceptance. No rebuild or repair.
 
 ```text
-NEXT_TURN: M6-CP3-TB-EXEC-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE
-Owner: artifact-only Test + Benchmark agent (NEXT TURN ONLY; not started in CB-193)
+NEXT_TURN: M6-CP3-TB-REV-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE
+Owner: independent Review agent, runtime-free re-derivation; do not execute this successor in TB-EXEC-172.
 Source: 587b8ba7b1a52409d2fd95cff99dbb9d1da8f881
-Package: compile run 45147339047, immutable artifact 14805640405 (ZIP SHA-256 58a49461e3d6cdc0480c3a2ecd8a40ac038b48595b88eb2a0f9e7015b70fe2cb)
-Manifest: gates/Architecture_M6_TB171_P13_Along_Edge_Face_Piece_Full_Gate_Case_Manifest.tsv SHA-256 704dcf6c5525d244c09f3ba0fd1c93a860daa194d4381d6b427dddc3be6209c6 (994 rows)
-Use unchanged TB171 14799346720 comparison; 987 PASS/7 mechanical RED expected, membership 1075. Only alongEdgeVisit* exception-field additions on RegionElectedCutComponentEmpty are allowed under N1-N3; all other differences STOP to Review. Report row652 receipt verbatim. No census, repair, rebuild, or gate promotion.
-Then: M6-CP3-TB-REV-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE
+Package: compile run 45147339047, artifact 14805640405, sha256 58a49461e3d6cdc0480c3a2ecd8a40ac038b48595b88eb2a0f9e7015b70fe2cb
+TB execution: run 45149928894, result 14805479282, ZIP sha256 e9ddc7fd80d3e33b25b18901c783fbb21ec2eaf5c1b86438f887e93cee03edbc
+Manifest: gates/Architecture_M6_TB171_P13_Along_Edge_Face_Piece_Full_Gate_Case_Manifest.tsv sha256 704dcf6c5525d244c09f3ba0fd1c93a860daa194d4381d6b427dddc3be6209c6; 994 rows
+Compare against TB171 14799346720 under N1-N3 with only appended alongEdgeVisit* exception fields allowed.
+Review row652 complete receipt, classify each lens orbit's opposite-face and source-edge evidence; decide H-strip versus H-lens from exact logs. Freeze narrowly scoped correction or further evidence; do not infer area from orbit indices alone.
+Accepted: TB169 993/993; CP2 491/491. Held: CP3/497/D0/H4, production sphere, row979, activation and CB190. No test rerun or source repair in this Review.
 ```
 
 ## Turn Sequence
@@ -68,8 +70,8 @@ Then: M6-CP3-TB-REV-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE
 | COMPLETE — RED | TB-EXEC-171 (994-row manifest) | 987/994; seven mechanical RED, 21 off-row changes and 300 missing records; row994 PASS; staged row979 unchanged. [Report](Architecture_M6_CP3_TB171_P13_Along_Edge_Face_Piece_Full_Gate_Execution_Report_20261123.md). |
 | COMPLETE | TB-REV-171 ([independent](Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md) + [adversarial](Architecture_M6_CP3_TB_REV_171_Adversarial_Review_20261123.md)) | Rejected; lens-orbit mechanism (B1–B3); prose CB-193 withdrawn. |
 | COMPLETE | CB-193 (test-only receipt, compile only) | [Record](Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Code_Build_Record_20261123.md), exact source `587b8ba7b1a52409d2fd95cff99dbb9d1da8f881`, compile `45147339047`, package `14805640405`. |
-| **NEXT** | TB-EXEC-172 (artifact-only 994 rows) | Same TB171 manifest; only appended alongEdgeVisit* exception fields allowed. |
-| 2 | TB-EXEC-172 (TB171 manifest, 994 rows) | Only appended `alongEdgeVisit*` fields may differ. |
+| COMPLETE — RED | TB-EXEC-172 (artifact-only 994 rows) | [Report](Architecture_M6_CP3_TB172_P13_Along_Edge_Visit_Region_Receipt_Full_Gate_Execution_Report_20261123.md), 987/994, next independent review. |
+| **NEXT** | TB-REV-172 | Independently review exact row652 receipt and TB171→TB172 comparisons; no runtime or repair. |
 | 3 | TB-REV-172 → repair CB → TB | H-strip: opposite-face crediting (exact CB). H-lens: upstream co-traced decision. |
 | 4 | Row979 `RegionContainsInteriorSingularity` (vertex 8) | After mechanical controls green; read printed locus first. |
 | 4A | Branch A (only after the staged plan builds): activation CB → TB (BunnyRandom census, V5) → parameter-deletion CB → V3b → R1 → O48 | Activation = single-source default (V11) + exact premise rows 393/648/858/971/972/978 only. |
