@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tbrev170-review-docs-20261123-a",
+  "request_id": "m6-cp3-tbrev170-review-docs-20261123-b",
   "mailbox_key": "m6-cp3-tbrev170-review-docs",
-  "file_id": "1zanmILmhwPL7a-GYGoXnBgFK6TM8MSJm",
-  "patch_sha256": "8026d6a46feed88d505fd587224d7bbf18538c822df2aa6e6527edfd5c70d904",
+  "file_id": "1WgL2EQOdvrp8cN1LaR60s0CVhJwcWa5o",
+  "patch_sha256": "4b565d10d4de88e3308612ebffda68977010fd0cfc7d7a9764f66dc5c600531e",
   "base_sha": "c9ed7f64b7b3b3e719426a11612fe2f5208cf64f",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "docs(surface-cells): independently review TB170 regression and freeze CB191 receipt",
