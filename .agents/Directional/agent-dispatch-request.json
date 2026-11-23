@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb197b-exact-apply-20261123-a",
-  "mailbox_key": "m6-cp3-cb197b-drive-apply",
-  "file_id": "1T7ZLTs8PEyPef5GNkm4uvOaPpepNPY68",
-  "patch_sha256": "857d9a66fc7ebf8cdb349c67a38a183f999f6d132a0759a00c8e08dc5d551a13",
-  "base_sha": "17c8aa6114522297ecd991e08b51925ee6e949ee",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): compare exact retraces as ordered directed stretches",
-  "retention_days": 14
+  "operation": "compile",
+  "request_id": "m6-cp3-cb197b-compile-20261123-a",
+  "mailbox_key": "m6-cp3-cb197b-compile",
+  "source_sha": "8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "agent-cb197b-compile"
 }
