@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb187-documentation-apply-20261123",
-  "mailbox_key": "m6-cp3-cb187-documentation-apply",
-  "file_id": "11KVZGEiiLqyc31FF3khIJIZRf8eMuMl_",
-  "patch_sha256": "ec2c0c3b89d305a9aa47654ceb0ff12032f91dcb20b41c8a890a8131ff1aefa9",
-  "base_sha": "20b7e8da0c03901c86a70ffe629e6f99feb72ce9",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(surface-cells): record CB-187 compile and advance handoff to TB-168",
+  "operation": "test_benchmark",
+  "request_id": "m6-cp3-tb168-arc-face-visits-20261123-a",
+  "mailbox_key": "m6-cp3-tb168-arc-face-visits-full-gate",
+  "executor_sha": "8cd169210fee847bc608e87ee8af4d797983c64a",
+  "semantic_source_sha": "486704038a6bf659a253a2e2f99edde5d03c7ffe",
+  "turn_id": "M6-CP3-TB-EXEC-168-P13-ARC-FACE-VISIT-ADAPTER-FULL-GATE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "14781561211",
+    "EXPECTED_SOURCE_SHA": "486704038a6bf659a253a2e2f99edde5d03c7ffe",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "fa9781a710f29c926c9fd60a39cf6868d15b8d3e50ea5b7989b17aebd59b67a6",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "e5dc2cd545d757dbe6a2de149774c6517aa592b6574ae319f17ccfdfc2a7665a",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "8ca98165a1c3d4cc621b691a377a51fa72ff14e1ed08d2e1da44db077ec6ee72",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "82581dd14064efe3729923cfd94333ef70113b0bb84e6bb8eabfb2ec61cce436",
+    "EXPECTED_CASE_COUNT": "993",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  },
+  "artifact_prefix": "m6-cp3-tb168-arc-face-visits",
   "retention_days": 14
 }
