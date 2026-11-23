@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb171-docs-closeout-20261123-a",
-  "mailbox_key": "m6-cp3-tb171-docs-closeout",
-  "file_id": "1GBQy3ygR0N_3Te8cSVyVhmdHHg4RZQBx",
-  "patch_sha256": "298c8ac4731591673a7865ae6c6b3afa2783ac9d5f9c6c3eaf2ec411389b55a9",
-  "base_sha": "e91cf92341dfa2895df0c91daf8a537d6c4d4f2e",
+  "request_id": "m6-cp3-tb-rev171-docs-20261123-a",
+  "mailbox_key": "m6-cp3-tb-rev171-docs-apply",
+  "file_id": "1bZ4AbJS87Vg0_hEyYYGXI9pAPj1PnGVE",
+  "patch_sha256": "4ab58f5da1ebb411427d1e926b9d771b06d0b6977b693992a6324da0fb890d7c",
+  "base_sha": "643ec10c3a324326d56d57a8eacf3e47ad74f4e9",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(surface-cells): close TB171 red full-gate evidence and handoff",
+  "commit_message": "docs(surface-cells): independently reject TB171 full gate and freeze exact receipt",
   "retention_days": 14
 }
