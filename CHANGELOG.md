@@ -1,3 +1,7 @@
+## 2026-11-23 — CB-193 exact along-edge visit receipt compiled; TB-EXEC-172 next
+
+[CB-193 record](.agents/Directional/Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Code_Build_Record_20261123.md): exact test-only patch `5fdea657…5edc` applied to `tests/FieldAlignedCurveNetworkTests.cpp`; source `587b8ba7b1a52409d2fd95cff99dbb9d1da8f881`; GMP/GMPXX eight-target compile [run 45147339047](https://github.com/akashskypatel/Directional/actions/runs/45147339047), package `14805640405` (ZIP SHA-256 `58a49461e3d6cdc0480c3a2ecd8a40ac038b48595b88eb2a0f9e7015b70fe2cb`), `runtimeExecution=false`. No test/benchmark, selector, manifest, production or recovery changes. Next only artifact-only TB-EXEC-172 on unchanged TB171 994-row manifest; seven mechanical controls remain RED pending independent evidence. Stable 67/17/50, debt1, deferred81; CP3/497/D0/H4 held.
+
 ## 2026-11-23 — TB-REV-171 adversarial continuation: lens orbits lost faces; exact CB-193 receipt
 
 [Record](.agents/Directional/Architecture_M6_CP3_TB_REV_171_Adversarial_Review_20261123.md): TB171's `RegionElectedCutComponentEmpty` comes from trace-bounded lens orbits that lost all face evidence when CB-192 removed false chords; along-edge visits credit only the visited side. The prose CB-193 is replaced by an exact test-only receipt (`5fdea657…5edc`) printing each along-edge visit's edge and opposite face, which decides between opposite-face crediting and an upstream co-traced-arc decision. No product change.

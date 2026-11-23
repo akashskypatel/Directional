@@ -1,12 +1,12 @@
-## CURRENT — TB-REV-171 adversarial continuation: lens-orbit mechanism, exact CB-193 receipt (2026-11-23 UTC)
+## CURRENT — CB-193 compiled; TB-EXEC-172 next (2026-11-23 UTC)
 
 - [x] Adversarial continuation ([record](.agents/Directional/Architecture_M6_CP3_TB_REV_171_Adversarial_Review_20261123.md), B1–B6): CB-192 removed 52 false chords that had credited far-side orbits (owners 114→76); trace-bounded lens orbits 1/3/4/5 own no face → `RegionElectedCutComponentEmpty`. Along-edge visits credit one side only, unlike cut arcs (`GlobalTopologyPlan.cpp:1061–1098`). My TB-REV-170 A3 "owner set unchanged" was wrong. TB169 green rested on the false chords; CB-192 is not reverted. Prose CB-193 withdrawn.
-- [ ] **1 NEXT:** `M6-CP3-CB-193-P13-ALONG-EDGE-VISIT-REGION-RECEIPT` — exact test-only [diff](.agents/Directional/Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Exact.diff) `5fdea657…5edc`, compile only.
-- [ ] **2:** `M6-CP3-TB-EXEC-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE` — TB171 manifest; 987/994 expected, only appended `alongEdgeVisit*` fields differ.
+- [x] **1 COMPLETE:** `M6-CP3-CB-193-P13-ALONG-EDGE-VISIT-REGION-RECEIPT` — exact test-only [diff](.agents/Directional/Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Exact.diff) `5fdea657…5edc` applied, GMP/GMPXX eight-target compile, no runtime; [record](.agents/Directional/Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Code_Build_Record_20261123.md).
+- [ ] **2 NEXT:** `M6-CP3-TB-EXEC-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE` — TB171 manifest; 987/994 expected, only appended `alongEdgeVisit*` fields differ.
 - [ ] **3:** `M6-CP3-TB-REV-172-…` — per lens orbit: different edges → exact opposite-face crediting repair CB → TB; same edges → upstream co-traced decision.
 - [ ] **4:** row979 `RegionContainsInteriorSingularity` after mechanical green; **4A** activation chain only after staged plan builds; **5** CB-190 off path.
 
-NEXT_TURN: M6-CP3-CB-193-P13-ALONG-EDGE-VISIT-REGION-RECEIPT
+NEXT_TURN: M6-CP3-TB-EXEC-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE
 
 ## HISTORY — TB-REV-171 independently REJECTED; narrow CB-193 receipt next (2026-11-23 UTC)
 

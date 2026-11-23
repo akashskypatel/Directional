@@ -31,7 +31,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-23 UTC. TB-REV-171 **REJECTS** TB171 987/994 (independent); adversarial continuation locates the mechanism: CB-192 removed false chords that had credited far-side orbits, so a trace-bounded lens orbit (1/3/4/5) owns no face → `RegionElectedCutComponentEmpty` (B1–B3). Prose CB-193 withdrawn → exact test-only CB-193 receipt. [Independent](Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md) + [adversarial](Architecture_M6_CP3_TB_REV_171_Adversarial_Review_20261123.md) |
+| Currency | 2026-11-23 UTC. CB-193 exact test-only along-edge visit receipt compiled under GMP/GMPXX, no runtime; next is immutable artifact-only TB-EXEC-172. TB171 remains rejected 987/994; TB169 remains accepted 993/993. [CB-193 record](Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Code_Build_Record_20261123.md); [adversarial authority](Architecture_M6_CP3_TB_REV_171_Adversarial_Review_20261123.md). |
 | Branch / source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; CB192 source `462010254fa90bf6c853768019bcfc9132b5c631`, GMP/GMPXX compile `45130510704`, immutable package `14797941489` (`49824e66…41cf`), `runtimeExecution=false`. |
 | Current TB evidence | TB171 run `45133081384`, ZIP artifact `14799346720` SHA-256 `b79b5cc26044acd357243c3c8fe7350e6a68e450171400aad6228e059e143d0c`, internal **1996/1996** verified, 987/994 PASS, CP2 candidate 490/491, membership 1075. |
 | Accepted comparison | TB169 run `45104059492`, ZIP artifact `14787082075` SHA-256 `dc15a8df5226fc209717f6df2fd15140e9e04abb6e73f831d8285992e72f04e5`, internal **1994/1994**, **993/993** accepted, CP2 **491/491** accepted. Frozen prefix SHA-256 `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`. |
@@ -41,21 +41,16 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 ## Mandatory next turn
 
 - **COMPLETE:** TB-REV-171 independent (rejection) + adversarial continuation (B1–B6): mechanism located, H-strip/H-lens decision rule frozen, prose CB-193 withdrawn, exact CB-193 receipt frozen ([manifest](gates/Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Receipt_Exact_Manifest.md)); `-fsyntax-only` 0 errors.
+- **COMPLETE:** CB-193 applied only the frozen test-only receipt, compiled eight GMP/GMPXX targets; see [CB-193 Code + Build](Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Code_Build_Record_20261123.md). No runtime or selector change.
 
 ```text
-NEXT_TURN: M6-CP3-CB-193-P13-ALONG-EDGE-VISIT-REGION-RECEIPT
-Owner: implementation agent (Code + Build, compile only)
-Authority: Architecture_M6_CP3_TB_REV_171_Adversarial_Review_20261123.md (B1-B6) + TB-REV-171 independent review; independent review's prose CB-193 withdrawn
-Apply exactly: .agents/Directional/Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Exact.diff
-  SHA-256 5fdea657d79d6ae2b6e3e02c31c8efb59520309c444d069f22a90bd8cae55edc (4897 B, +87/-0, test file only)
-  tests/FieldAlignedCurveNetworkTests.cpp git 936e8269b6eeb24a795f40c9b740761aac43f0e9 -> sha256 294a54f64b8a228dda05c17c342dc8da434275122da6582fb45ebdc43d2008f3
-Build: dispatcher compile, GMP/GMPXX targets incl. directional_surface_cell_producer_tests, runtimeExecution=false
-Then: M6-CP3-TB-EXEC-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE
-  manifest TB171 704dcf6c5525d244c09f3ba0fd1c93a860daa194d4381d6b427dddc3be6209c6 unchanged (994 rows); membership 1075; expected 987 PASS, same 7 RED (445/652/653/656/658/660/786)
-  rules: every row = TB171 14799346720 under N1-N3, zero allowance, except appended alongEdgeVisit* fields on exceptions with detailCode=RegionElectedCutComponentEmpty; report row652 receipt verbatim; any other difference -> STOP to Review; no census
-  -> M6-CP3-TB-REV-172-...: per lens orbit 1/3/4/5: different edges -> exact opposite-face crediting repair CB; same edges -> upstream co-traced decision (user if contract changes)
-On failure/blocker: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
-Do not: edit beyond the diff; change product source; edit selectors/manifests; run tests; revert CB-192; activate; promote CP3/497/D0/H4
+NEXT_TURN: M6-CP3-TB-EXEC-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE
+Owner: artifact-only Test + Benchmark agent (NEXT TURN ONLY; not started in CB-193)
+Source: 587b8ba7b1a52409d2fd95cff99dbb9d1da8f881
+Package: compile run 45147339047, immutable artifact 14805640405 (ZIP SHA-256 58a49461e3d6cdc0480c3a2ecd8a40ac038b48595b88eb2a0f9e7015b70fe2cb)
+Manifest: gates/Architecture_M6_TB171_P13_Along_Edge_Face_Piece_Full_Gate_Case_Manifest.tsv SHA-256 704dcf6c5525d244c09f3ba0fd1c93a860daa194d4381d6b427dddc3be6209c6 (994 rows)
+Use unchanged TB171 14799346720 comparison; 987 PASS/7 mechanical RED expected, membership 1075. Only alongEdgeVisit* exception-field additions on RegionElectedCutComponentEmpty are allowed under N1-N3; all other differences STOP to Review. Report row652 receipt verbatim. No census, repair, rebuild, or gate promotion.
+Then: M6-CP3-TB-REV-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE
 ```
 
 ## Turn Sequence
@@ -72,7 +67,8 @@ Do not: edit beyond the diff; change product source; edit selectors/manifests; r
 | COMPLETE | CB-192 (classifier repair + falsifier, compile only) | Exact diff `527dd0b8…d7e6`; GMP/GMPXX compile run `45130510704`, package `14797941489`. |
 | COMPLETE — RED | TB-EXEC-171 (994-row manifest) | 987/994; seven mechanical RED, 21 off-row changes and 300 missing records; row994 PASS; staged row979 unchanged. [Report](Architecture_M6_CP3_TB171_P13_Along_Edge_Face_Piece_Full_Gate_Execution_Report_20261123.md). |
 | COMPLETE | TB-REV-171 ([independent](Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md) + [adversarial](Architecture_M6_CP3_TB_REV_171_Adversarial_Review_20261123.md)) | Rejected; lens-orbit mechanism (B1–B3); prose CB-193 withdrawn. |
-| **NEXT** | CB-193 (test-only receipt, compile only) | Exact diff `5fdea657…5edc`. |
+| COMPLETE | CB-193 (test-only receipt, compile only) | [Record](Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Code_Build_Record_20261123.md), exact source `587b8ba7b1a52409d2fd95cff99dbb9d1da8f881`, compile `45147339047`, package `14805640405`. |
+| **NEXT** | TB-EXEC-172 (artifact-only 994 rows) | Same TB171 manifest; only appended alongEdgeVisit* exception fields allowed. |
 | 2 | TB-EXEC-172 (TB171 manifest, 994 rows) | Only appended `alongEdgeVisit*` fields may differ. |
 | 3 | TB-REV-172 → repair CB → TB | H-strip: opposite-face crediting (exact CB). H-lens: upstream co-traced decision. |
 | 4 | Row979 `RegionContainsInteriorSingularity` (vertex 8) | After mechanical controls green; read printed locus first. |
