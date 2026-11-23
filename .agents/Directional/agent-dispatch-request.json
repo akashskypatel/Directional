@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb188-region-visit-reader-compile-20261123-a",
-  "mailbox_key": "m6-cp3-cb188-region-visit-reader-compile",
-  "source_sha": "b2e976f204fa5b2988a9cbe5a77defd106a96aad",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb188-region-visit-reader"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb188-region-visit-reader-docs-20261123-a",
+  "mailbox_key": "m6-cp3-cb188-region-visit-reader-docs",
+  "file_id": "1ZwGW47uYNGjEVSn45hJQkqFuf1oMo3Bu",
+  "patch_sha256": "962e08a1ac870f01a07a87b5d5411d5575236a978f5c6e6fbc460cb30e1947a5",
+  "base_sha": "658b4c9a83ada4fe6ffb008ad0359f64eddf5f72",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(surface-cells): close CB188 compile and hand off TB169",
+  "retention_days": 14
 }
