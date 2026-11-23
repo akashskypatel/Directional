@@ -1,0 +1,2 @@
+# TB173 snapshot-only temporary state
+.agents/connector-triggers/source-snapshot/m6-cp3-tb173-closeout-20261123-1327.txt
