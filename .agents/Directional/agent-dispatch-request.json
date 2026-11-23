@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb172-docs-closeout-20261123-b",
-  "mailbox_key": "m6-cp3-tb172-docs-closeout-apply-v2",
-  "file_id": "17jA-WgsQF_LYlMbWpZAbL7-vwqIgMVDd",
-  "patch_sha256": "74548bbf0720097c568f90e34e3aed45facedb7331fe9fe3ef94c447d7e83ba4",
-  "base_sha": "15040776b03388d90b46cc5c62597aa81193c7c8",
+  "request_id": "m6-cp3-tb-rev-172-docs-20261123-a",
+  "mailbox_key": "m6-cp3-tb-rev-172-docs-apply",
+  "file_id": "1N2JkeNXJoZWVyVyaD04KL_juYBWwI1fb",
+  "patch_sha256": "337fe565a9cec570a2f6cad199d5e10df487a5c5e317763349c79f1673f1fb41",
+  "base_sha": "a430ef8bc2b3ae18724c72dc0bc34c1f586f8bc0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(surface-cells): record TB172 receipt and next independent review",
+  "commit_message": "docs(surface-cells): independently review TB172 edge-carrier evidence",
   "retention_days": 14
 }
