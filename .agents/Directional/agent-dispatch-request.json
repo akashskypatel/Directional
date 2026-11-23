@@ -1,25 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "test_benchmark",
-  "request_id": "m6-cp3-tb169-region-visit-reader-full-gate-20261123-a",
-  "mailbox_key": "m6-cp3-tb169-region-visit-reader-full-gate",
-  "executor_sha": "8cd169210fee847bc608e87ee8af4d797983c64a",
-  "semantic_source_sha": "b2e976f204fa5b2988a9cbe5a77defd106a96aad",
-  "turn_id": "M6-CP3-TB-EXEC-169-P13-REGION-VISIT-READER-FULL-GATE",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "14786260085",
-    "EXPECTED_SOURCE_SHA": "b2e976f204fa5b2988a9cbe5a77defd106a96aad",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "d877a0ea4c05cfe93275506823652abb6b0e012dd3a5925103606e28e69625a5",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "97785b598697fa74a458ea1e1209a2873d78cb1063efae6753bbcc06e57df485",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "f08633e893f3460f237547809bc7b6e7ff107f42fce7ce78d70f4ac11fce44b6",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "82581dd14064efe3729923cfd94333ef70113b0bb84e6bb8eabfb2ec61cce436",
-    "EXPECTED_CASE_COUNT": "993",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
-  },
-  "artifact_prefix": "m6-cp3-tb169-region-visit-reader-full-gate",
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-tb169-documentation-commit-20261123-a",
+  "mailbox_key": "m6-cp3-tb169-documentation-apply",
+  "file_id": "154GGm1d5lokUXMcRY6DEAWu9BiOAvtDL",
+  "patch_sha256": "ce90477bb2215b5158b3c78b5399e1c155b81074e1ff6f225d92bc76dd48aea1",
+  "base_sha": "554c29a8327dd3f41b79e293c68aeeac086713b2",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(tb169): record immutable region reader full gate evidence",
   "retention_days": 14
 }
