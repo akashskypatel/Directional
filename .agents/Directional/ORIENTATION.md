@@ -4,6 +4,8 @@
 
 > This rewrite was expressly requested on 2026-10-16.
 
+**Current currency (2026-11-23 UTC; TB-REV-171 independent):** [Review](Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md) rejects immutable TB171 **987/994** despite row994 PASS: seven accepted-green mechanical RED, **21** changed off-row normalized transcripts, **300** missing diagnostics, CP2 candidate **490/491**. Accepted TB169 **993/993** and CP2 **491/491** remain frozen, stable **67/17/50**, debt1, deferred81. `RegionElectedCutComponentEmpty` is an elected draft without source-face ownership; the exact draft/orbit cause has not been printed. Only next `M6-CP3-CB-193-P13-EMPTY-REGION-DRAFT-OWNERSHIP-RECEIPT` measurement-only compile; CP3/497/D0/H4, sphere production held. Supersedes historical CB191/CB192-next currency below.
+
 **Prior currency (2026-11-23 UTC; TB-REV-169 [adversarial](Architecture_M6_CP3_TB_REV_169_Adversarial_Review_20261123.md) W1–W6: CB-189 corner stage predicted clear on row 979; M6-CP3-TB-REV-169-P13-REGION-VISIT-READER-FULL-GATE COMPLETE; M6-CP3-CB-189-P13-CORNER-VISIT-READER NEXT):** [Independent review](Architecture_M6_CP3_TB_REV_169_Region_Visit_Reader_Independent_Review_20261123.md) rechecked TB169 `14787082075` against TB168 `14781634158`: **993/993 PASS**, CP2 **491/491**, membership **1,074**, 1,994 checksum entries per archive, and no unexpected N1–N3 differences. Only four authorized row-979 face counts change to 4 chords, 5 expected fragments, 5 owners, zero deficit. CB-188 region reader is verified for this narrow gate; CB-189 corner reader (`6e391678…e3b8`) remains separate. Staged sphere still stops at `SourceFaceCarriesMultipleTraceCuts` face 6-8-9; production sphere still fails cut-search. Stable **66/17/49**, debt **1**, deferred **81**; CP3/497/D0/H4 held.
 
 ## 1. What the project is
@@ -35,7 +37,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 
 ## 3. Where we are
 
-**Currency (2026-11-23 UTC; TB-REV-169 COMPLETE, CB-189 NEXT):** Frozen TB169 **993/993 PASS**, CP2 **491/491**, membership **1,074** (993 gated + 81 deferred), no other normalized raw difference relative to TB168. [Independent review](Architecture_M6_CP3_TB_REV_169_Region_Visit_Reader_Independent_Review_20261123.md) accepts the exact four-face count correction, not a staged plan or production mesh. CB-189's amended exact patch follows in its own compile-only turn. No CP3/497/D0/H4 promotion; stable **66/17/49**, debt **1**, deferred **81**.
+**Historical currency (2026-11-23 UTC; TB-REV-169 COMPLETE, CB-189 NEXT):** Frozen TB169 **993/993 PASS**, CP2 **491/491**, membership **1,074** (993 gated + 81 deferred), no other normalized raw difference relative to TB168. [Independent review](Architecture_M6_CP3_TB_REV_169_Region_Visit_Reader_Independent_Review_20261123.md) accepts the exact four-face count correction, not a staged plan or production mesh. CB-189's amended exact patch follows in its own compile-only turn. No CP3/497/D0/H4 promotion; stable **66/17/49**, debt **1**, deferred **81**.
 
 
 **Historical M6-CP3 evidence (2026-11-20):** [TB148 independent Review](Architecture_M6_CP3_TB148_P13_Sphere_Entry_On_Sliding_Wall_Full_Gate_Independent_Review_20261120.md) re-derived 963/963 PASS, accepted 491/491, prior 962/962 MATCH. Four distinct source-edge interior sliding-wall contacts have no shared graph event. Row686 remains V18/E30/F18, χ6 vs source2, and rows669/698 still exhaust. Earlier TB147 census is 1/3 (Cylinder PASS; BunnyRandom/Vase RED), not rerun by TB148. Stable 66/17/49, debt1, deferred81; CP3/selector497/D0/row858 remain unpromoted.
@@ -50,12 +52,14 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; multi-cut plan remains open** | TB169 remains independently accepted 993/993; TB170 rejected 986/993, CP2 accepted-prefix loss 490/491. Sphere staged RegionContainsInteriorSingularity at vertex 8; production sphere remains unaccepted. CB-191 receipt-only next. CP3/497/D0/H4 held. |
+| **M6-CP3 — active; multi-cut plan remains open** | TB169 remains independently accepted 993/993; TB170 rejected 986/993, CP2 accepted-prefix loss 490/491. Sphere staged RegionContainsInteriorSingularity at vertex 8; production sphere remains unaccepted. TB171 is rejected 987/994; CB-193 exact empty-draft receipt next. CP3/497/D0/H4 held. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting now includes the TB170 accepted-green recurrence: **67 events / 17 categories / 50 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
 
 ## 4. Fixtures and witnesses
+
+**TB171 independent gate witness:** New along-edge guard row994 PASS, but seven mechanical controls still RED and row652 stops at `RegionElectedCutComponentEmpty` after a draft has no source-face owner. Row979 staged-only; [review](Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md).
 
 **TB170 independently reviewed mechanical regression and sphere-stage witness:** Seven former PASS controls fail from the new source-face partition path, first mechanical face `(1,4,139)`; internal `FaceCutPartitionReason` remains hidden. Row979 has later staged `RegionContainsInteriorSingularity` at vertex 8, not a plan. No accepted production output; [TB-REV-170](Architecture_M6_CP3_TB_REV_170_Corner_Visit_Reader_Independent_Review_20261123.md).
 
@@ -132,6 +136,8 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
+**Current priority (supersedes prior CB191 instructions):** only `M6-CP3-CB-193-P13-EMPTY-REGION-DRAFT-OWNERSHIP-RECEIPT`. This compile-only receipt must print the empty elected draft exact index/orbit, source-face ownership assignments and reason; no repair or test in the CB. The later independent artifact-only TB must distinguish an invalid elected orbit from missing face ownership. No speculative owner insertion or validation weakening. [Review](Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md).
+
 **Current priority:** `M6-CP3-CB-191-P13-MECHANICAL-FACE-CUT-REASON-RECEIPT` is the only next turn, a separate compile-only Code + Build for the frozen 1,708-byte test-only [diff](Architecture_M6_CP3_CB191_P13_Mechanical_Face_Cut_Reason_Receipt_Exact.diff) SHA-256 `aa2ff1852292bdcda1d0fcd16088400e6c56f8f3faadc051b1794d2a36d0792f`. The next artifact-only TB must verify the existing face `(1,4,139)` and print its six-value `faceCutPartitionReason` enum without changing failed outcomes or the accepted selector. Do not infer the cause or bypass the plan validator. If the reason alone does not identify the cut, require a later exact piece-lineage receipt before any repair. CB-190 S4/S6/S7 diagnostic comments remain deferred; staged multi-cut and production sphere remain open. No CP3/497/D0/H4 promotion.
 
 - **Other open product work:** Vase completion remains RED (P13); A4 must consume the correct A3 plan per A2b disc. O42/O43 remain open; O44/C1 closed. The C4/CB145 branch is parked. D11=A, D12=A, D10 deferred, D6 pending. The production rail schedule remains per-arc (`chainRimSchedules=false`); do not activate the chain switch without its frozen preconditions and independent evidence.
@@ -141,6 +147,8 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 TB-REV-167 S6 (carried to CB-190): terminal-vertex edge-side diagnostics require a direct two-orientation witness. Diagnostic-only; no new stable regression.
 
 ## 8. Recurring defect patterns
+
+**TB171 continuation of TB170 regression:** A local along-edge classifier PASS is not a global face-to-region ownership proof. First mechanical `RegionElectedCutComponentEmpty` names an empty draft, not its cause; retain rejected 21 off-row transcripts and 300 lost records as the full gate boundary. Same stable recurrence, no new event. See [review](Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md).
 
 **TB170 recurrence (independently reviewed):** Changing a shared exact face-cut reader exposed `SourceFaceCutPartitionFailed` in seven previously green mechanical controls. Retain the full failure, print the internal reason and affected piece lineage before repair, and never count an isolated sphere-stage advance as a green full gate. One accepted-green recurrence, same topology-plan failure family; no unproved finer root subtype is assigned.
 

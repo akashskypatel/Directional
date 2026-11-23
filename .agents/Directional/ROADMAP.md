@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3 (CB-187 pure arc-face-visit adapter compiled; TB168 **993/993 PASS**, CP2 **491/491**, membership **1074**; no production-path reader switch yet; CP3/497/D0/H4 held) · **Reviewed:** [TB-REV-167 adversarial](Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md), contracts R1–R4 and C1–C4 frozen · **Next:** independent TB-REV-168, to freeze exact CB-188 + CB-189 diffs from [TB168](Architecture_M6_CP3_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Execution_Report_20261123.md) · **Later:** CB-188 region reader then TB-169, CB-189 corner reader then TB-170; activation only after staged plan G5.
+**Completed:** M0–M5 · **Now:** M6 / CP3 (TB169 **993/993** and CP2 **491/491** remain last accepted; TB171 new local guard PASS but full gate **987/994** with seven mechanical RED, no sphere production or CP3/497 promotion) · **Reviewed:** [TB-REV-171 independent](Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md) rejects the new gate · **Next:** separate measurement-only `M6-CP3-CB-193-P13-EMPTY-REGION-DRAFT-OWNERSHIP-RECEIPT` Code + Build, exact empty-draft ownership cause receipt, compile only · **Later:** artifact-only validation and independent Review before any source repair/activation.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

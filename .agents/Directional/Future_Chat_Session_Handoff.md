@@ -31,30 +31,29 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-23 UTC. **TB-EXEC-171 completed RED**: 987/994. The seven mechanical controls remain RED; no additional stable event is accepted. [TB171 report](Architecture_M6_CP3_TB171_P13_Along_Edge_Face_Piece_Full_Gate_Execution_Report_20261123.md), [TB-REV-170 adversarial authority](Architecture_M6_CP3_TB_REV_170_Adversarial_Review_20261123.md). |
-| Branch and immutable source | `agent/surface_cell_quad/p5-recover-bridge-healing`; CB-192 source `462010254fa90bf6c853768019bcfc9132b5c631`, compile run `45130510704`, package `14797941489`, ZIP SHA-256 `49824e664c79d13fc1b2ba047bd044303683f41b28df7a3344902e74d84b41cf`, 8 targets, GMP/GMPXX, `runtimeExecution=false`. |
-| Latest gate / census | TB171 [run 45133081384](https://github.com/akashskypatel/Directional/actions/runs/45133081384), result `14799346720` (`b79b5cc26044acd357243c3c8fe7350e6a68e450171400aad6228e059e143d0c`). **987/994**, CP2 **490/491**, membership **1075**. Seven mechanical RED, 21 changed off-row N1–N3 transcripts, 300 missing diagnostics. No new production census; TB165 latest. |
-| Accepted history | TB169 independently accepted **993/993**, result `14787082075`. Its CP2 491 accepted identities remain frozen; CP3 497 not promoted. TB170 986/993 and TB171 987/994 are rejected. |
-| Regression / debt | Inherited independent TB-REV-170 **67 events / 17 categories / 50 recurrences**, produced-witness debt **1**, deferred **81**; TB171 is the same unresolved mechanical regression, with no independently established additional stable entry. CP3/497/D0/H4 held. |
-| Active boundary | Row994 classifier test PASS; mechanical row652 now first fails at `RegionElectedCutComponentEmpty`, `RegionConstruction`, not TB170's `SourceFaceCutPartitionFailed`. Face `(1,4,139)` records `traceChordCount=0`, `ownerDeficit=0`; face `(0,1,102)` still `ownerDeficit=1`. This is evidence, **not** a proved cause. Sphere row979 retains staged `RegionContainsInteriorSingularity`; no production success. |
+| Currency | 2026-11-23 UTC. **TB-REV-171 independently REJECTS the TB171 full gate**. [Review](Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md); candidate 987/994, seven RED and 21 off-row N1–N3 differences / 300 lost complete records. No production or CP3 promotion. |
+| Branch / source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; CB192 source `462010254fa90bf6c853768019bcfc9132b5c631`, GMP/GMPXX compile `45130510704`, immutable package `14797941489` (`49824e66…41cf`), `runtimeExecution=false`. |
+| Current TB evidence | TB171 run `45133081384`, ZIP artifact `14799346720` SHA-256 `b79b5cc26044acd357243c3c8fe7350e6a68e450171400aad6228e059e143d0c`, internal **1996/1996** verified, 987/994 PASS, CP2 candidate 490/491, membership 1075. |
+| Accepted comparison | TB169 run `45104059492`, ZIP artifact `14787082075` SHA-256 `dc15a8df5226fc209717f6df2fd15140e9e04abb6e73f831d8285992e72f04e5`, internal **1994/1994**, **993/993** accepted, CP2 **491/491** accepted. Frozen prefix SHA-256 `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`. |
+| Regression / debt | Historical **67 events / 17 categories / 50 recurrences**; witness debt1, deferred81. Same seven accepted-green mechanical controls 445/652/653/656/658/660/786 still RED; new empty-elected-draft subtype not new stable event. |
+| First unresolved failure | `RegionElectedCutComponentEmpty`, row652 `RegionConstruction`: elected draft `owned[index]` empty, exact draft index/orbit **not printed**. Face `(1,4,139)` edge-only chord0 deficit0; `(0,1,102)` chord1 deficit1; neither proves cause. Row994 PASS; sphere row979 staged `RegionContainsInteriorSingularity` vertex8 only. |
 
 ## Mandatory next turn
 
-**COMPLETE Test + Benchmark (RED):** `M6-CP3-TB-EXEC-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE`. The immutable, uninterrupted, artifact-only full gate ran all 994 manifest identities from CB-192 package `14797941489`; result `14799346720`, 987 PASS and seven mechanical RED. Strict N1–N3 comparison to TB169 found 21 unauthorized differences outside row979/994 and 300 absent complete diagnostics. New row994 PASS does not restore mechanical production. No rebuild, rerun, census, source/test/fixture/selector mutation or activation.
+**CURRENT Review completed (rejected gate):** `M6-CP3-TB-REV-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE`. Exact archive re-verification and 993-row comparison in [Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md](Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md); no test/compile/product source mutation. CB192's row994 classifier passes, but seven mechanical controls and 21 off-row transcripts still fail. Candidate CP2 490/491 does not change accepted CP2 491/491.
 
-**NEXT (separate Review turn only):** `M6-CP3-TB-REV-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE`. Independently reopen TB169 `14787082075` and TB171 `14799346720` and confirm all ZIP/member hashes, exact row verdicts, 21 changed non-979 rows, missing 300 diagnostics, row994 PASS, row979 staged result and first mechanical `RegionElectedCutComponentEmpty` evidence. Review must classify whether a narrow correction is justified or one exact further receipt is required; it must not run a binary or patch code. The failed full gate prohibits activation and another TB execution until independent review and later authorized Code + Build. No production acceptance or CP3/497/D0/H4 promotion.
+**NEXT — only one Code + Build:** `M6-CP3-CB-193-P13-EMPTY-REGION-DRAFT-OWNERSHIP-RECEIPT`. Measurement-only exact elected empty-draft index/orbit and source-face fragment ownership reasons in the existing mechanical failure. No behavior, validator, test assertions, selector or source-feature changes; GMP/GMPXX compile only, no generated runtime. Preserve current RED until separately authorized artifact-only TB and independent Review. STOP if receipt cannot be source-grounded or changes a verdict. No new full gate, correction, activation, CP3/497/D0/H4 claim or production sphere claim in this Review.
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE
-Owner: independent Review, runtime-free; no rebuild, tests, source or selector mutation
-Sources: CB192 462010254fa90bf6c853768019bcfc9132b5c631; package 14797941489 SHA256 49824e664c79d13fc1b2ba047bd044303683f41b28df7a3344902e74d84b41cf
-TB171: run 45133081384; result 14799346720 SHA256 b79b5cc26044acd357243c3c8fe7350e6a68e450171400aad6228e059e143d0c; harness log 14799391760 SHA256 6fb935ba4b4d331570ed4af75e61aa164e58ddfc6bed24327eebe0aaaf49ec48
-Baseline: accepted TB169 result 14787082075 SHA256 dc15a8df5226fc209717f6df2fd15140e9e04abb6e73f831d8285992e72f04e5
-Gate: 987/994 PASS; CP2 490/491; membership 1075; internal hashes 1996/1996; seven RED 445,652,653,656,658,660,786
-Comparator: 21 unauthorized N1-N3 normalized non-979 changes; 300 missing M3_CP4AB_FRAGMENT_DIAG records
-Row652: RegionElectedCutComponentEmpty at RegionConstruction; cause not proved. Row994 PASS. Row979 remains staged RegionContainsInteriorSingularity
-Stable: 67 events / 17 categories / 50 recurrences; debt1; deferred81, no new stable event accepted in TB171
-Do not: start implementation before Review, rerun gate, edit selectors/tests, build, census, promote CP3/497/D0/H4
+NEXT_TURN: M6-CP3-CB-193-P13-EMPTY-REGION-DRAFT-OWNERSHIP-RECEIPT
+Owner: separate Code + Build, receipt-only / compile-only, source comparison against frozen CB192 `462010254fa90bf6c853768019bcfc9132b5c631`
+Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md
+Baseline: TB169 993/993, CP2 491/491, 1,994 checksum members, artifact 14787082075
+Rejected: TB171 987/994, 7 RED, 21 off-row changes and 300 lost records, artifact 14799346720
+Required receipt: exact elected empty draft index + canonical orbit + boundary/exterior classification + complete source-face-orbit ownership/rejection reasons
+Falsifiers: identify true cause with independently selected positive owner draft and negative contrast; keep seven mechanical RED until a reviewed repair; no change to runtime or checks in measurement-only CB
+Stop: any source/test/selector decision change, missing original typed failure, or insufficient exact authority returns to Review; no CB runtime
+Later: separate TB artifact-only and separate independent Review, then only a proven correction
 ```
 
 ## Turn Sequence

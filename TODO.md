@@ -1,3 +1,11 @@
+## CURRENT — TB-REV-171 independently REJECTED; narrow CB-193 receipt next (2026-11-23 UTC)
+
+- [x] `M6-CP3-TB-REV-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE`: independent immutable TB169/TB171 archive checks and N1–N3 comparison confirm **987/994**, 7 mechanical RED, 21 off-row changes, 300 absent diagnostic records, CP2 candidate 490/491, row994 PASS, row979 staged-only. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md). TB169 remains accepted **993/993**, CP2 **491/491**; stable **67/17/50**, debt1, deferred81. No production acceptance.
+- [ ] **ONLY NEXT:** `M6-CP3-CB-193-P13-EMPTY-REGION-DRAFT-OWNERSHIP-RECEIPT` — Code + Build, measurement-only exact empty-elected-region draft index/orbit, face-fragment ownership and non-exterior selection; compile only with GMP/GMPXX; independent TB and Review required before any correction or promotion. No tests in CB. No broad cleanup, new selector or activation.
+- [ ] Held: CB190 diagnostic-only debt, CP3/497/D0/H4, sphere production, V3b/Y7, activation, and M7/M8. The seven mechanical controls remain RED until a separately justified source repair passes a new full gate.
+
+NEXT_TURN: M6-CP3-CB-193-P13-EMPTY-REGION-DRAFT-OWNERSHIP-RECEIPT
+
 ## CURRENT — TB-EXEC-171 RED; independent TB-REV-171 next (2026-11-23 UTC)
 
 - [x] `M6-CP3-CB-192-P13-ALONG-EDGE-FACE-PIECE-CLASSIFIER`: exact reviewed classifier and falsifier compiled under GMP/GMPXX, source `462010254fa90bf6c853768019bcfc9132b5c631`, artifact `14797941489`; compile-only, no prior runtime in CB.
