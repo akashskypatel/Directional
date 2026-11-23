@@ -1,3 +1,9 @@
+## 2026-11-23 — CB-194 exact shared-edge oracle (compile only)
+
+- Applied the exact reviewed +129/-0 source diff to the authority header and its two producer tests; semantic source `fae9eb71bb5806d71901cc2ccb8c925201be0c0a`. Added a source-edge shared interval oracle without production wiring.
+- GMP/GMPXX eight-target compile run `45173887503`, artifact `14820355596`, ZIP SHA-256 `817583b75f8d9a5f7b9e7300426756d1044d535e9f63ebf3ec5d5cf88fe45ec6`; `runtimeExecution=false`. No tests/benchmarks executed, and TB172/CP3 acceptance unchanged. Next `M6-CP3-TB-EXEC-173-P13-SHARED-EDGE-ORACLE-FULL-GATE`.
+- [Code + Build record](Architecture_M6_CP3_CB194_P13_Exact_Source_Path_Shared_Edge_Oracle_Code_Build_Record_20261123.md) preserves snapshot, patch and apply evidence, including corrected transport metadata after a failed first attempt.
+
 ## 2026-11-23 — TB-REV-172 second adversarial continuation: co-traced digons, A2a root cause
 
 [Record](.agents/Directional/Architecture_M6_CP3_TB_REV_172_Adversarial_Continuation_Shared_Edge_20261123.md). TB172 rejection upheld. Lens orbits are exactly co-traced zero-area digons, decided from printed data; the A2a network producer breaks DESIGN first-contact/port-ownership rules. CB-194 interval receipt withdrawn; exact unwired shared-edge oracle CB-194 (`7913097b…65e5`) and 996-row TB173 manifest frozen. D13 pending with the user.

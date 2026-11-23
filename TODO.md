@@ -1,13 +1,11 @@
-## CURRENT — TB-REV-172 second adversarial continuation: co-traced digons, A2a root cause; CB-194 shared-edge oracle next (2026-11-23 UTC)
+## CURRENT — CB-194 compiled; TB-EXEC-173 next (2026-11-23 UTC)
 
-- [x] TB-REV-172 [second adversarial continuation](.agents/Directional/Architecture_M6_CP3_TB_REV_172_Adversarial_Continuation_Shared_Edge_20261123.md) C1–C7: lenses 1/3/4/5 are exactly co-traced zero-area digons (digon face walk + single-vertex transitions + canonical-path rules); owner is A2a (seeds every port, drops CollinearOverlap/EndpointTouch, loses arrival port; DESIGN §4.5/§4.6/:449). Interval-receipt CB-194 (both forms) withdrawn. My TB-EXEC-172 rule 2 omitted diff-proven line moves (RA-247); verdict unchanged.
-- [ ] **D13 PENDING (user)** — trace arriving along a singularity's own port: A arrival owns port (recommended) / B head-on mutual stop / C downstream merge / D drop empty regions. Re-ask at TB-REV-173 start.
-- [ ] **1 NEXT** `M6-CP3-CB-194-P13-EXACT-SOURCE-PATH-SHARED-EDGE-ORACLE` — exact diff `7913097b…65e5`, unwired authority helper + 2 tests, compile only.
-- [ ] **2** `M6-CP3-TB-EXEC-173-P13-SHARED-EDGE-ORACLE-FULL-GATE` — 996-row manifest `b54de0b2…ff6e`; 989 PASS, same 7 RED; others = TB172 under N1–N3 + diff-proven line moves.
-- [ ] **3** TB-REV-173 (re-ask D13) → CB-195 A2a helpers (arrival-port record, mechanical no-shared-edge premise) → TB → CB-196 D13 wiring + every-region-owns-a-face assertion → TB.
-- [ ] **4 HELD** row979, Branch A activation, CB-190.
+- [x] `M6-CP3-CB-194-P13-EXACT-SOURCE-PATH-SHARED-EDGE-ORACLE` — exact 7,432-byte two-file oracle diff, source `fae9eb71bb5806d71901cc2ccb8c925201be0c0a`; GMP/GMPXX eight-target compile [run 45173887503](https://github.com/akashskypatel/Directional/actions/runs/45173887503), artifact `14820355596`, `runtimeExecution=false`; helper unwired, two tests not executed. [Record](.agents/Directional/Architecture_M6_CP3_CB194_P13_Exact_Source_Path_Shared_Edge_Oracle_Code_Build_Record_20261123.md).
+- [ ] **1 NEXT:** `M6-CP3-TB-EXEC-173-P13-SHARED-EDGE-ORACLE-FULL-GATE` — immutable artifact-only 996-row manifest `b54de0b2…ff6e`, expected 989 PASS, same seven mechanical RED; all remaining records match TB172 N1–N3 with diff-proven line moves. No compile, implementation edit or activation in TB.
+- [ ] **D13 PENDING (user):** TB-REV-173 must re-ask trace arrival along its singularity port before the A2a change decision.
+- [ ] **HELD:** CB-195/CB-196, row979, Branch A activation, CB-190, CP3/497/D0/H4.
 
-NEXT_TURN: M6-CP3-CB-194-P13-EXACT-SOURCE-PATH-SHARED-EDGE-ORACLE
+NEXT_TURN: M6-CP3-TB-EXEC-173-P13-SHARED-EDGE-ORACLE-FULL-GATE
 
 ## HISTORY — TB-REV-172 independent and adversarial rejection; CB-194 all-piece interval receipt next (2026-11-23 UTC)
 
