@@ -1,0 +1,3 @@
+CB188 source snapshot request
+canonical_turn=M6-CP3-CB-188-P13-REGION-VISIT-READER
+base_entry_sha=a6830a4fb28ff10143bf3345134e0f3bcb0013e4
