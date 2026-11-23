@@ -1,1 +1,0 @@
-.agents/connector-triggers/source-snapshot/cb194-20261123T1213Z.txt
