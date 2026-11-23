@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb177-docs-apply-20261123-v1",
-  "mailbox_key": "m6-cp3-tb177-docs-apply",
-  "file_id": "1R1Pk8WUfFdEaV1QGTpW6_EY0E8aaqu88",
-  "patch_sha256": "632d68978fbc30aca848e322204326bef7deeb07ef1da7aa610af1df733ba229",
+  "request_id": "m6-cp3-tb177-docs-apply-20261123-v2",
+  "mailbox_key": "m6-cp3-tb177-docs-apply-v2",
+  "file_id": "1CDzSb0wAZP1yKIcRy3vIVPaYv2KI3BzM",
+  "patch_sha256": "f45f6db19d0e1248736bc5cac703d5a378f4db52e164474004763771fbabe7e5",
   "base_sha": "f43d9aa7b0a931b681c89cdfed0a26452658b3a1",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record TB177 strict gate comparison stop",
+  "commit_message": "docs(directional): record TB177 comparison STOP and review handoff",
   "retention_days": 14
 }
