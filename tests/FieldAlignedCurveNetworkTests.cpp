@@ -22942,6 +22942,60 @@ TEST(ArcFaceVisits, SlideSideFollowsFaceWindingAndDirection) {
   EXPECT_EQ(std::optional<std::size_t>{kForward}, partial[0].edgeSideOrbit);
 }
 
+TEST(ArcFaceVisits, FacePiecesAlongOneEdgeReadAsSlides) {
+  using namespace arc_face_visit_test;
+  const auto lower = topology_face(0, 1, 2, 5U);
+  const auto upper = topology_face(1, 3, 2, 5U);
+  const auto read = [&](const SourceFaceTopologyKey &face,
+                        const ExactSourceSupportPiece &piece) {
+    const auto visits = visits_of({face}, {1U}, {piece});
+    return visits.size() == 1U ? std::optional<ArcFaceVisit>{visits[0]}
+                               : std::nullopt;
+  };
+  // A face piece between two corners of one edge runs along that edge. It
+  // cuts nothing and takes the side an edge piece in the same direction
+  // takes, in both windings of the shared edge.
+  for (const auto &face : {lower, upper}) {
+    for (const auto &[from, to] : {std::pair{1, 2}, std::pair{2, 1}}) {
+      const auto alongFace =
+          read(face, face_piece(face, at_vertex(from), at_vertex(to)));
+      const auto slide =
+          read(face, edge_piece(1, 2, at_vertex(from), at_vertex(to)));
+      ASSERT_TRUE(alongFace.has_value());
+      ASSERT_TRUE(slide.has_value());
+      EXPECT_FALSE(alongFace->cut.has_value());
+      ASSERT_TRUE(slide->edgeSideOrbit.has_value());
+      EXPECT_EQ(slide->edgeSideOrbit, alongFace->edgeSideOrbit);
+    }
+  }
+  const auto lowerForward =
+      read(lower, face_piece(lower, at_vertex(1), at_vertex(2)));
+  ASSERT_TRUE(lowerForward.has_value());
+  EXPECT_EQ(std::optional<std::size_t>{kForward}, lowerForward->edgeSideOrbit);
+  const auto upperForward =
+      read(upper, face_piece(upper, at_vertex(1), at_vertex(2)));
+  ASSERT_TRUE(upperForward.has_value());
+  EXPECT_EQ(std::optional<std::size_t>{kReverse}, upperForward->edgeSideOrbit);
+  // A piece from a corner, or from inside an edge, to another point of the
+  // same closed edge is read the same way.
+  const auto fromCorner =
+      read(lower, face_piece(lower, at_vertex(0), on_edge(0, 1, 1, 2)));
+  ASSERT_TRUE(fromCorner.has_value());
+  EXPECT_FALSE(fromCorner->cut.has_value());
+  EXPECT_EQ(std::optional<std::size_t>{kForward}, fromCorner->edgeSideOrbit);
+  const auto toCorner =
+      read(lower, face_piece(lower, on_edge(1, 2, 1, 2), at_vertex(2)));
+  ASSERT_TRUE(toCorner.has_value());
+  EXPECT_FALSE(toCorner->cut.has_value());
+  EXPECT_EQ(std::optional<std::size_t>{kForward}, toCorner->edgeSideOrbit);
+  // Control: a corner to a point on the opposite edge still cuts the face.
+  const auto chord =
+      read(lower, face_piece(lower, at_vertex(0), on_edge(1, 2, 1, 2)));
+  ASSERT_TRUE(chord.has_value());
+  EXPECT_TRUE(chord->cut.has_value());
+  EXPECT_FALSE(chord->edgeSideOrbit.has_value());
+}
+
 TEST(ArcFaceVisits, InteriorEndsHaveNoBoundaryPosition) {
   using namespace arc_face_visit_test;
   const auto lower = topology_face(0, 1, 2, 5U);

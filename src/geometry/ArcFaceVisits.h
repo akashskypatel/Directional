@@ -41,13 +41,41 @@ namespace directional::geometry::detail {
   return std::nullopt;
 }
 
+/** For a straight piece whose two ends lie on one closed edge of a face, the
+ * side of that edge the face lies on: Forward when the piece runs in corner
+ * order (from corner k toward corner k + 1 on local edge k), which is the
+ * side `FaceCutPiece` gives the forward dart. Such a piece runs along the
+ * edge and cuts no face interior. Empty when the ends share no closed edge.
+ * The two positions must differ. */
+[[nodiscard]] inline std::optional<authority::Orientation> along_edge_face_side(
+    const FaceBoundaryPosition &first, const FaceBoundaryPosition &second) {
+  if (!face_cut_partition_detail::on_one_closed_edge(first, second)) {
+    return std::nullopt;
+  }
+  // Local edge k holds its own points and corner k + 1, which is encoded as
+  // offset 0 on edge k + 1.
+  std::size_t edge = first.edge;
+  if (first.edge != second.edge && first.offset.is_zero() &&
+      (first.edge + 2U) % 3U == second.edge) {
+    edge = second.edge;
+  }
+  const auto along = [&](const FaceBoundaryPosition &position) {
+    return position.edge == edge
+               ? position.offset
+               : authority::FieldExactRational::from_integer(1);
+  };
+  return along(first) < along(second) ? authority::Orientation::Forward
+                                      : authority::Orientation::Reverse;
+}
+
 /** One visit of a trace arc to a source face, read from the arc's own exact
  * pieces: visit k owns the next `sourcePieceCounts[k]` pieces of
  * `sourcePath`. A visit that opens with a face piece cuts the face interior
  * along the arc's forward orientation, with the arc's two face-walk orbits as
- * sides; a trailing edge piece adds nothing. A visit made of one edge piece
- * runs along an edge of the face without entering it: it cuts nothing and
- * touches the face only with the dart on the face's side of that edge. */
+ * sides; a trailing edge piece adds nothing. A visit that runs along an edge
+ * of the face without entering it, as one edge piece or as a face piece whose
+ * ends lie on one closed edge, cuts nothing and touches the face only with
+ * the dart on the face's side of that edge. */
 struct ArcFaceVisit {
   authority::SourceFaceTopologyKey face;
   /** Position in the arc's `sourceFaces`. */
@@ -109,9 +137,21 @@ using ArcFaceVisitsResult =
       if (!on_closure(entry) || !on_closure(exit)) {
         return ArcFaceVisitFailure::PointOffFace;
       }
-      row.cut = FaceCutPiece{face_boundary_position(*entry),
-                             face_boundary_position(*exit), forwardOrbit,
-                             reverseOrbit};
+      auto entryPosition = face_boundary_position(*entry);
+      auto exitPosition = face_boundary_position(*exit);
+      const auto alongEdge =
+          entryPosition.has_value() && exitPosition.has_value()
+              ? along_edge_face_side(*entryPosition, *exitPosition)
+              : std::nullopt;
+      if (alongEdge.has_value()) {
+        row.edgeSideOrbit = *alongEdge == authority::Orientation::Forward
+                                ? forwardOrbit
+                                : reverseOrbit;
+      } else {
+        row.cut = FaceCutPiece{std::move(entryPosition),
+                               std::move(exitPosition), forwardOrbit,
+                               reverseOrbit};
+      }
     } else {
       const auto side = embedded::edge_piece_face_side(face, opening);
       if (!side.has_value()) return ArcFaceVisitFailure::EdgeSideUndetermined;
