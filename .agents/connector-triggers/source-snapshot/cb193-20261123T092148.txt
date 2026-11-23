@@ -1,0 +1,2 @@
+M6-CP3-CB-193-P13-ALONG-EDGE-VISIT-REGION-RECEIPT
+Snapshot trigger only. No source mutation.
