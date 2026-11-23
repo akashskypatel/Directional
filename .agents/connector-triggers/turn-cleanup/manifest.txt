@@ -1,2 +1,0 @@
-# TB176 temporary snapshot marker only; preserve dispatcher request and workflow mailbox.
-.agents/connector-triggers/source-snapshot/tb176-20261123T204600Z.txt
