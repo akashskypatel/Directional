@@ -1,8 +1,8 @@
-## CURRENT — TB-REV-175 adversarial: exact CB-197A + CB-197B, then TB-EXEC-176 (2026-11-23 UTC)
+## CURRENT — CB-197A compiled; CB-197B exact diff next, then TB-EXEC-176 (2026-11-23 UTC)
 
 - [x] TB-REV-175 [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_175_Adversarial_Review_20261123.md): rejection upheld; prose CB-197A withdrawn; retrace coverage equality too weak (G1).
-- [ ] **NEXT 1** `M6-CP3-CB-197A-P13-EXACT-TRACE-PIECE-BUILDER-EXTRACTION` — exact diff `bf679210…7eb7fc6`, compile only.
-- [ ] 2 `M6-CP3-CB-197B-P13-EXACT-SOURCE-RETRACE-ORDERED-STRETCHES` — exact diff `1fe85e27…25be8d`, compile only.
+- [x] **COMPLETE** `M6-CP3-CB-197A-P13-EXACT-TRACE-PIECE-BUILDER-EXTRACTION` — exact diff `bf679210…7eb7fc6`, source `13bf6131fba0c31a289247b11d10f65b69d1fd92`, GMP/GMPXX [compile run 45250530743](https://github.com/akashskypatel/Directional/actions/runs/45250530743), runtimeExecution=false. [Record](.agents/Directional/Architecture_M6_CP3_CB197A_P13_Exact_Trace_Piece_Builder_Extraction_Code_Build_Record_20261123.md).
+- [ ] **NEXT 2** `M6-CP3-CB-197B-P13-EXACT-SOURCE-RETRACE-ORDERED-STRETCHES` — exact diff `1fe85e27…25be8d`, compile only.
 - [ ] 3 `M6-CP3-TB-EXEC-176-P13-PIECE-BUILDER-AND-ORDERED-RETRACE-FULL-GATE` — 1001 rows `0f85400f…2b84642`; 994 PASS, same 7 RED.
 - [ ] 4 TB-REV-176 → CB-198 test-only per-fixture selection receipt → TB-EXEC-177.
 - [ ] 5 CB-199 selection + reference remap + arrival owns `Y.port` (fail closed) → TB.
@@ -10,26 +10,14 @@
 - [ ] 7 Row979, Branch A, CB-190. Obligation: CollinearOverlap/EndpointTouch + per-grazing-edge count (TB-REV-173 E5).
 
 ```text
-NEXT_TURN: M6-CP3-CB-197A-P13-EXACT-TRACE-PIECE-BUILDER-EXTRACTION
+NEXT_TURN: M6-CP3-CB-197B-P13-EXACT-SOURCE-RETRACE-ORDERED-STRETCHES
 Owner: implementation agent (Code + Build, compile only)
-Authority: Architecture_M6_CP3_TB_REV_175_Adversarial_Review_20261123.md (G1-G4); prose CB-197A withdrawn; manifest gates/Architecture_M6_CP3_CB197AB_P13_Exact_Manifest.md
-Apply exactly: .agents/Directional/Architecture_M6_CP3_CB197A_P13_Exact_Trace_Piece_Builder_Extraction_Exact.diff
-  SHA-256 bf679210a15d0f1005b540c09972909e9f47c41db11ae0cc977c24d467eb7fc6 (20023 B, +197/-176)
-  src/geometry/EmbeddedGraphTopology.cpp git 8547f53692443e5201547e5cf28dd2db2cf5bc64 -> sha256 61a0fbac4ada9b7a5efbb83c725122af78479411a2a1af2d2f02c8f9ebdead30
-  src/geometry/EmbeddedGraphTopology.h git d46f39d0142d925bafade7286f958ddee5720eb8 -> sha256 bb2c298f7e2353a6cc9949228db729b5bb84d5ea266413b849a5ba23b311b2a6
-  src/geometry/ExactTraceSegmentPieces.h (new) -> sha256 6279c6d6e08a14d2b80dff799231249d2e8a9939c09fa88bf2b52eb314bac9da
-Build: dispatcher compile, GMP/GMPXX targets incl. directional_surface_cell_producer_tests, runtimeExecution=false
-Then: M6-CP3-CB-197B-P13-EXACT-SOURCE-RETRACE-ORDERED-STRETCHES (compile only)
-  .agents/Directional/Architecture_M6_CP3_CB197B_P13_Exact_Source_Retrace_Ordered_Stretches_Exact.diff 1fe85e273a1c997fc976f4cbc7779f3a7711d19b511cfc6824a5809a2325be8d (5687 B, +57/-27)
-  include/directional/authority/ExactSourcePath.h git fbae34c6472b708a46a2def2320ad7167c577f32 -> sha256 8a7a9306b55627fe35bad25bca19b040de0e1b87e1f6630b207847625e761b34
-  tests/FieldAlignedCurveNetworkTests.cpp git 92fe1c3858d3865448fb70343e35baa7a7b0219b -> sha256 e0eb98956f09793c8e9676e6188e8d7163566793f7a92a6355772c2a1bdf259c
-Then: M6-CP3-TB-EXEC-176-P13-PIECE-BUILDER-AND-ORDERED-RETRACE-FULL-GATE
-  manifest gates/Architecture_M6_TB176_P13_Piece_Builder_And_Ordered_Retrace_Full_Gate_Case_Manifest.tsv 0f85400ff9713fc8a835f308304ded1db9830e668211bab71c88d580b2e84642 (1001 rows; first 1000 = TB175 e1d77fd2...3e35); membership 1082
-  expected 994 PASS: rows 995-1001 PASS, same 7 RED (445/652/653/656/658/660/786)
-  rules: every other row = TB175 14849271506 under N1-N3 + diff-proven assertion-line moves (none expected); any other difference -> STOP to Review; no census
-  -> M6-CP3-TB-REV-176: freeze CB-198 test-only per-fixture selection receipt (row652 predicted 4 pairs, missing path fails closed)
-On failure/blocker: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
-Do not: edit beyond the diffs; include the new header in SurfaceCellTracing.cpp; wire any helper; change producer/region/validator code; edit selectors/manifests; run tests in a CB; activate; promote CP3/497/D0/H4
+Authority: TB-REV-175 adversarial G1–G4 and gates/Architecture_M6_CP3_CB197AB_P13_Exact_Manifest.md.
+Apply exactly: .agents/Directional/Architecture_M6_CP3_CB197B_P13_Exact_Source_Retrace_Ordered_Stretches_Exact.diff
+SHA-256 1fe85e273a1c997fc976f4cbc7779f3a7711d19b511cfc6824a5809a2325be8d (5687 B; +57/-27, two files).
+Exact preimages and postimages are in the frozen CB197AB manifest. GMP/GMPXX compile only, eight targets including producer tests. Do not run binaries.
+Then: M6-CP3-TB-EXEC-176-P13-PIECE-BUILDER-AND-ORDERED-RETRACE-FULL-GATE (1001 rows, 994 expected PASS, seven known RED) in a separate turn.
+STOP: preimage/hash mismatch or compile failure goes to Review. No other source, selector, manifest, or behavior changes; no CP3/497/D0/H4 promotion.
 ```
 
 ## HISTORY — M6-CP3-TB-REV-175 rejected TB175; one extract-only CB successor (2026-11-23 UTC)

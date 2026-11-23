@@ -1,3 +1,7 @@
+## 2026-11-23 — CB-197A exact trace-piece extraction compiled; CB-197B next
+
+[Code + Build record](.agents/Directional/Architecture_M6_CP3_CB197A_P13_Exact_Trace_Piece_Builder_Extraction_Code_Build_Record_20261123.md): the reviewed `bf679210…7eb7fc6` three-file diff was applied exactly as source `13bf6131fba0c31a289247b11d10f65b69d1fd92`. GMP/GMPXX compile-only [run 45250530743](https://github.com/akashskypatel/Directional/actions/runs/45250530743) passed eight targets; package `14856397006` SHA-256 `bf43ab6ca48319a05b38a922b4f4f531d9f4ac7c419df5316acbe2d3c5eebee2` (28/28 checks), log `14855516711` SHA-256 `dd2c4c13cc912d8eaad5eae7b09433c095a3fb88e5ebf9d4116331abe24be043`. No test, benchmark, selector or production behavior changed. TB175 remains rejected 993/1000, seven RED. Next only CB-197B in a separate turn; no CP3/497/D0/H4 promotion.
+
 ## 2026-11-23 — TB-REV-175 adversarial: exact CB-197A extraction and CB-197B ordered retrace replace the prose extraction
 
 The [adversarial continuation](.agents/Directional/Architecture_M6_CP3_TB_REV_175_Adversarial_Review_20261123.md) upholds the TB175 rejection (993/1000) and withdraws the prose CB-197A. Two exact diffs replace it:
