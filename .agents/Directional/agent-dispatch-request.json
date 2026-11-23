@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb168-documentation-apply-20261123-a",
-  "mailbox_key": "m6-cp3-tb168-documentation-apply",
-  "file_id": "1OpZLw6h66oziA3517UPemq34EEStVL4O",
-  "patch_sha256": "09e62fb3991e833911a650ce941d4a8b97244448e08ffc73e30cf0dbd91394ad",
-  "base_sha": "eba435330b5e692c3334cad4bfa691dd6442b69e",
+  "request_id": "m6-cp3-tb168-roadmap-restoration-20261123-a",
+  "mailbox_key": "m6-cp3-tb168-roadmap-restoration",
+  "file_id": "1_xOOTosjY40cQ3DiO0SxU9et8ccufE2z",
+  "patch_sha256": "01a8514e2e50dd7b82f0aa74890e566d42a6f542c56343a5031d287e790fd2e3",
+  "base_sha": "433c36ca25ed9b6051ffe35f7b0a5cf969e3f2d8",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(surface-cells): record verified TB168 full gate and review handoff",
+  "commit_message": "docs(surface-cells): preserve retained roadmap milestone table",
   "retention_days": 14
 }
