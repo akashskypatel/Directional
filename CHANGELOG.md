@@ -1,3 +1,7 @@
+## 2026-11-23 — TB-REV-174 adversarial: exact CB-196 retraced-trace selection helper replaces the prose receipt
+
+The [adversarial continuation](.agents/Directional/Architecture_M6_CP3_TB_REV_174_Adversarial_Review_20261123.md) upholds the TB174 rejection (991/998) and withdraws the prose CB-196 arrival-port receipt. A retraced duplicate's arrival port is the duplicate's own origin port, so the receipt's data was already decided. In its place is the unwired exact `exact_source_retraced_traces`. The wiring is scoped as three CBs: CB-197a moves the path builder, CB-197b removes duplicates and remaps `struckTrace` and event incidences, and CB-198 updates the port-set readers and adds the region-owns-face check.
+
 # 2026-11-23 — TB-REV-174 independent retrace-oracle gate review
 
 [Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_174_Retrace_Oracle_Independent_Review_20261123.md): rejected TB174 991/998, same seven RED, no new stable event. Rechecked 996 shared identities and results against TB173; 741 byte-identical logs, 254 N1/N2, one N3 row179 (24 complete records reordered); both archive checksum manifests verified. Helper cases 997/998 PASS but unwired, no production acceptance. D13=A from DESIGN. Next separate diagnostic-only CB-196 arrival-port receipt with falsifiers; CB-197 selection conditional. No runtime/build/source/selector change during review.
