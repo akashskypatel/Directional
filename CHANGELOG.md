@@ -1,3 +1,9 @@
+## 2026-11-23 — CB-195 exact edge-retrace helper compiled; TB-EXEC-174 next
+
+Applied the frozen +91/-0 exact diff `72fa4fa63c38e831fe6b1a03dd21f166a180fb255395c84cacd7e3454ba8d315` to two files on source `29415df1ca8d76825a531092f65ff85e4ecd3b9d`. The unwired `exact_source_paths_retrace_along_edges` helper and two focused test cases are now compiled. The first Google Drive apply run rejected comma-separated path metadata before commit. The corrected semicolon-separated wrapper applied the unchanged source diff in run `45198021085`; both staged patches were retired.
+
+GMP/GMPXX compile-only [run 45198338115](https://github.com/akashskypatel/Directional/actions/runs/45198338115), result artifact `14832291155`, SHA-256 `7a06da51b899ba73f7e9b2375275be87dceeab86dba469cae5bad5be6cf6350c`, 28/28 internal checksums, all eight requested targets, preflight/build exit zero, clean final source, and `runtimeExecution=false`. No tests, benchmarks, or runtime execution occurred. [Code + Build evidence](.agents/Directional/Architecture_M6_CP3_CB195_P13_Exact_Source_Path_Retrace_Along_Edges_Progress_20261123.md). TB173 remains rejected 989/996, seven mechanical RED; accepted TB169 993/993 and CP2 491/491 unchanged. Next independent artifact-only TB-EXEC-174, not started in CB-195.
+
 ## 2026-11-23 — TB-REV-173 D13 resolved from DESIGN; exact CB-195 retrace helper next
 
 The [D13 resolution](.agents/Directional/Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md) closes TB-REV-173. DESIGN §7.2 already rules out every option except A, so D13 was not a decision for the user. A trace that arrives at a singularity along one of its ports owns that port: a redundant co-traced trace is removed at A2a step 7, and port topology is unchanged. The prose CB-195 proof is withdrawn. The exact CB-195 `exact_source_paths_retrace_along_edges` (unwired) is next, then the 998-row TB-EXEC-174.
