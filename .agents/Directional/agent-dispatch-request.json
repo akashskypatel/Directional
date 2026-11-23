@@ -1,12 +1,1 @@
-{
-  "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-tb176-docs-closeout-20261123-b",
-  "mailbox_key": "m6-cp3-tb176-docs",
-  "file_id": "17DCLn2FIs38EhybBVbglbfCRSEQeuEvD",
-  "patch_sha256": "e182ba8d13c619c1910c8b78a9d6d3c5eca5f2fd5d79f7c21b2fbbbdb9867022",
-  "base_sha": "a523df11e8a7b19b070aa0463df0df564d03994b",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB176 immutable gate and schedule independent TB-REV-176",
-  "retention_days": 14
-}
+{"schema_version":1,"operation":"drive_apply","request_id":"m6-cp3-tb-rev176-review-docs-20261123-a","mailbox_key":"m6-cp3-tb-rev176-review-docs","file_id":"1dL7-HazbtTGk8uFZuMxtlrPsHCFMv-M1","patch_sha256":"1c70a34a9788960bb5a20837778fb3909569690c610cfe3a93e9dddaf624dc10","base_sha":"6240ea392114da3d8be5ae9a7cbe019a880a782e","target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing","commit_message":"docs(directional): independently review TB176 and freeze CB-198","retention_days":14}
