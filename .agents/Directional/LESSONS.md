@@ -858,3 +858,5 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - Before switching to a stricter reader, check each new rejection against the inputs the old reader accepted on every gate row, not only the deleted codes (TB-REV-170 adv. A5).
 - Read every field of a RED's exception line before freezing a receipt; a per-face record can decide the reason by elimination (TB-REV-170 adv. A1).
 - A classifier that types pieces by carrier must share the geometric predicate its consumer rejects on (TB-REV-170 adv. A2).
+- When a repair removes a misreading, list what the misreading supplied by accident before predicting the gate (TB-REV-171 adv. B2).
+- An edge-coincident arc separates two faces: credit both incident faces, each with its own side, as cut arcs already are (TB-REV-171 adv. B3).

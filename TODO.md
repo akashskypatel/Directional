@@ -1,10 +1,20 @@
-## CURRENT — TB-REV-171 independently REJECTED; narrow CB-193 receipt next (2026-11-23 UTC)
+## CURRENT — TB-REV-171 adversarial continuation: lens-orbit mechanism, exact CB-193 receipt (2026-11-23 UTC)
+
+- [x] Adversarial continuation ([record](.agents/Directional/Architecture_M6_CP3_TB_REV_171_Adversarial_Review_20261123.md), B1–B6): CB-192 removed 52 false chords that had credited far-side orbits (owners 114→76); trace-bounded lens orbits 1/3/4/5 own no face → `RegionElectedCutComponentEmpty`. Along-edge visits credit one side only, unlike cut arcs (`GlobalTopologyPlan.cpp:1061–1098`). My TB-REV-170 A3 "owner set unchanged" was wrong. TB169 green rested on the false chords; CB-192 is not reverted. Prose CB-193 withdrawn.
+- [ ] **1 NEXT:** `M6-CP3-CB-193-P13-ALONG-EDGE-VISIT-REGION-RECEIPT` — exact test-only [diff](.agents/Directional/Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Exact.diff) `5fdea657…5edc`, compile only.
+- [ ] **2:** `M6-CP3-TB-EXEC-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE` — TB171 manifest; 987/994 expected, only appended `alongEdgeVisit*` fields differ.
+- [ ] **3:** `M6-CP3-TB-REV-172-…` — per lens orbit: different edges → exact opposite-face crediting repair CB → TB; same edges → upstream co-traced decision.
+- [ ] **4:** row979 `RegionContainsInteriorSingularity` after mechanical green; **4A** activation chain only after staged plan builds; **5** CB-190 off path.
+
+NEXT_TURN: M6-CP3-CB-193-P13-ALONG-EDGE-VISIT-REGION-RECEIPT
+
+## HISTORY — TB-REV-171 independently REJECTED; narrow CB-193 receipt next (2026-11-23 UTC)
 
 - [x] `M6-CP3-TB-REV-171-P13-ALONG-EDGE-FACE-PIECE-FULL-GATE`: independent immutable TB169/TB171 archive checks and N1–N3 comparison confirm **987/994**, 7 mechanical RED, 21 off-row changes, 300 absent diagnostic records, CP2 candidate 490/491, row994 PASS, row979 staged-only. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md). TB169 remains accepted **993/993**, CP2 **491/491**; stable **67/17/50**, debt1, deferred81. No production acceptance.
 - [ ] **ONLY NEXT:** `M6-CP3-CB-193-P13-EMPTY-REGION-DRAFT-OWNERSHIP-RECEIPT` — Code + Build, measurement-only exact empty-elected-region draft index/orbit, face-fragment ownership and non-exterior selection; compile only with GMP/GMPXX; independent TB and Review required before any correction or promotion. No tests in CB. No broad cleanup, new selector or activation.
 - [ ] Held: CB190 diagnostic-only debt, CP3/497/D0/H4, sphere production, V3b/Y7, activation, and M7/M8. The seven mechanical controls remain RED until a separately justified source repair passes a new full gate.
 
-NEXT_TURN: M6-CP3-CB-193-P13-EMPTY-REGION-DRAFT-OWNERSHIP-RECEIPT
+(superseded) NEXT_TURN: M6-CP3-CB-193-P13-EMPTY-REGION-DRAFT-OWNERSHIP-RECEIPT
 
 ## CURRENT — TB-EXEC-171 RED; independent TB-REV-171 next (2026-11-23 UTC)
 

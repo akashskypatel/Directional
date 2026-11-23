@@ -1,3 +1,7 @@
+## 2026-11-23 — TB-REV-171 adversarial continuation: lens orbits lost faces; exact CB-193 receipt
+
+[Record](.agents/Directional/Architecture_M6_CP3_TB_REV_171_Adversarial_Review_20261123.md): TB171's `RegionElectedCutComponentEmpty` comes from trace-bounded lens orbits that lost all face evidence when CB-192 removed false chords; along-edge visits credit only the visited side. The prose CB-193 is replaced by an exact test-only receipt (`5fdea657…5edc`) printing each along-edge visit's edge and opposite face, which decides between opposite-face crediting and an upstream co-traced-arc decision. No product change.
+
 ## 2026-11-23 — TB-REV-171 independent full-gate rejection (no source or test mutation)
 
 Reverified TB169 and TB171 archive hashes and all 1,994/1,996 members. TB171 new row994 PASS, but 987/994 overall, seven repeated mechanical RED, CP2 490/491, 21 off-row N1–N3 changes and 300 lost complete diagnostics; TB169 993/993, CP2 491/491 remain accepted. Rejected production/selector promotion. The typed `RegionElectedCutComponentEmpty` at row652 is a real empty elected ownership draft; precise index/orbit and missing face assignment remain unprinted. Stable 67/17/50, debt1, deferred81. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md) freezes only `M6-CP3-CB-193-P13-EMPTY-REGION-DRAFT-OWNERSHIP-RECEIPT` receipt-only GMP/GMPXX compile next, without runtime or behavior change.
