@@ -1,2 +1,0 @@
-# TB168 temporary source-snapshot trigger; preserve durable dispatcher and workflow-mailbox state.
-.agents/connector-triggers/source-snapshot/m6-cp3-tb168-20261123-0129.txt
