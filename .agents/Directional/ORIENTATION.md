@@ -1,6 +1,8 @@
+**Current currency — TB-REV-174 independent Review (2026-11-23 UTC):** TB174 rejected 991/998 (seven known mechanical RED), helper cases 997/998 PASS without production A2a wiring. D13=A by DESIGN; isolated retrace proof does not repair the co-traced lens. Accepted TB169 993/993 and CP2 491/491, stable 67/17/50, debt1/deferred81. Exactly one next Code + Build: `M6-CP3-CB-196-P13-ARRIVAL-PORT-OWNERSHIP-RECEIPT`, a diagnostic-only arrival-port receipt. [Review](Architecture_M6_CP3_TB_REV_174_Retrace_Oracle_Independent_Review_20261123.md).
+
 **Current currency — M6-CP3-TB-REV-173 D13 resolution (2026-11-23 UTC):** TB173 is rejected at 989/996, with the same seven RED. D13 = A, decided by DESIGN: arrival owns the port, and the duplicate is removed at A2a step 7, which does not exist yet in code. Next is the exact **M6-CP3-CB-195-P13-EXACT-SOURCE-PATH-RETRACE-ALONG-EDGES**, then TB-EXEC-174, then CB-196 (arrival-port record) and CB-197 (selection). [Record](Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md).
 
-**Prior currency — M6-CP3-TB-REV-173-P13-SHARED-EDGE-ORACLE-FULL-GATE (2026-11-23 UTC):** TB173 independent review rejects 989/996 (seven mechanical RED); two isolated oracle tests PASS but no production wiring. TB169 accepted 993/993 and CP2 accepted 491/491; stable 67/17/50, debt1/deferred81. **D13 owner arrival-port decision pending; no CB-195/196 authorization.** [Review](Architecture_M6_CP3_TB_REV_173_Shared_Edge_Oracle_Independent_Review_20261123.md).
+**Prior currency — M6-CP3-TB-REV-173-P13-SHARED-EDGE-ORACLE-FULL-GATE (2026-11-23 UTC):** TB173 independent review rejects 989/996 (seven mechanical RED); two isolated oracle tests PASS but no production wiring. TB169 accepted 993/993 and CP2 accepted 491/491; stable 67/17/50, debt1/deferred81. **Historical, superseded by D13=A in DESIGN; CB-195 completed.** [Review](Architecture_M6_CP3_TB_REV_173_Shared_Edge_Oracle_Independent_Review_20261123.md).
 
 **Historical currency — TB-REV-172 second adversarial continuation (2026-11-23 UTC):** TB172 rejected 987/994. Lens orbits 1/3/4/5 are exactly co-traced zero-area digons; root cause is the A2a producer (port seeding without arrival check, collinear contacts dropped, arrival port lost). Next **M6-CP3-CB-194-P13-EXACT-SOURCE-PATH-SHARED-EDGE-ORACLE**; D13 pending (user). TB169 accepted 993/993. [Record](Architecture_M6_CP3_TB_REV_172_Adversarial_Continuation_Shared_Edge_20261123.md).
 
@@ -58,14 +60,14 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; multi-cut plan remains open** | TB169 remains independently accepted 993/993, CP2 491/491. TB173 rejected 989/996 with seven mechanical RED; isolated oracle 2/2 PASS is not production evidence. A2a co-traced lens producer remains invalid; D13 owner decision pending. Row979 staged-only and CP3/497/D0/H4 held. |
+| **M6-CP3 — active; multi-cut plan remains open** | TB169 remains independently accepted 993/993, CP2 491/491. TB173 rejected 989/996 with seven mechanical RED; isolated oracle 2/2 PASS is not production evidence. A2a co-traced lens producer remains invalid; D13=A by DESIGN; CB-196 diagnostic-only receipt next. Row979 staged-only and CP3/497/D0/H4 held. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting now includes the TB170 accepted-green recurrence: **67 events / 17 categories / 50 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
 
 ## 4. Fixtures and witnesses
 
-**TB173 independent oracle review:** source-edge positive-length overlap helper has meaningful positive and negative cases (2/2 new cases PASS) but no production A2a call; seven mechanical RED persist. The four lens digons remain co-traced zero-area orbits. D13 is a pending owner design decision, not a chosen behavior. [Review](Architecture_M6_CP3_TB_REV_173_Shared_Edge_Oracle_Independent_Review_20261123.md).
+**TB173 independent oracle review:** source-edge positive-length overlap helper has meaningful positive and negative cases (2/2 new cases PASS) but no production A2a call; seven mechanical RED persist. The four lens digons remain co-traced zero-area orbits. This is a historical statement; D13=A was resolved from DESIGN before TB174. [Review](Architecture_M6_CP3_TB_REV_173_Shared_Edge_Oracle_Independent_Review_20261123.md).
 
 
 **TB172 independent/adversarial visit-region receipt:** All four disputed lens orbits have reversed matching opening-piece source-edge labels and opposite-face swaps. Visits can contain a trailing second piece that is not printed. No full-path match, exact edge interval or region area is proved; five nonallowed source-line shifts remain. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).
@@ -147,7 +149,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority (TB-REV-173):** D13 owner decision is outstanding: arrival ownership of a singularity port versus noncanonical alternatives. No producer repair or new Code + Build turn may begin until the owner decides. CB-195 exact arrival-port and shared-edge proof is a conditional plan only; CB-196 wiring and all activation remain held. See [review](Architecture_M6_CP3_TB_REV_173_Shared_Edge_Oracle_Independent_Review_20261123.md).
+**Current priority (TB-REV-174):** D13=A by DESIGN. TB174 remains rejected (991/998); narrow next action is diagnostic-only CB-196 arrival-port receipt. A2a step-7 selection CB-197, all production activation, and CP3/497/D0/H4 promotion remain held. [Review](Architecture_M6_CP3_TB_REV_174_Retrace_Oracle_Independent_Review_20261123.md).
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).
@@ -164,7 +166,7 @@ TB-REV-167 S6 (carried to CB-190): terminal-vertex edge-side diagnostics require
 
 ## 8. Recurring defect patterns
 
-**TB173 non-vacuity pattern:** new pure shared-edge oracle tests independently discriminate positive overlap from point-only contact but are not called by the A2a producer. Helper success does not validate network construction; the same seven mechanical failures persist. This is the same accepted-green recurrence, not a new stable event.
+**TB174 confirmation of TB173 non-vacuity pattern:** new pure shared-edge oracle tests independently discriminate positive overlap from point-only contact but are not called by the A2a producer. Helper success does not validate network construction; the same seven mechanical failures persist. This is the same accepted-green recurrence, not a new stable event.
 
 
 **TB172 continuation of the same regression:** Four orbit-pairs share opening-piece edge IDs but not yet proved complete visit geometry or exact intervals; a descriptive edge label cannot establish topological co-tracing. Five assertion line-location drift changes are not part of the receipt allowance. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).

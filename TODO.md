@@ -1,8 +1,14 @@
-## CURRENT — TB-EXEC-174 rejected; TB-REV-174 next (2026-11-23 UTC)
+## CURRENT — TB-REV-174 rejects TB174; CB-196 diagnostic receipt next (2026-11-23 UTC)
+
+- [x] `M6-CP3-TB-REV-174-P13-RETRACE-ORACLE-FULL-GATE` independent artifact review: TB174 991/998, same seven RED, no unauthorized inherited drift; 2004/2004 + 2000/2000 archive checksum entries, 996 inherited verdicts stable. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_174_Retrace_Oracle_Independent_Review_20261123.md). D13=A by DESIGN.
+- [ ] **ONE NEXT:** `M6-CP3-CB-196-P13-ARRIVAL-PORT-OWNERSHIP-RECEIPT` — read-only terminal arrival-port identity receipt in A2a, compile only with GMP/GMPXX, no test/selector, no behavior changes. See frozen falsifiers in Review.
+- [ ] **SEPARATE LATER:** TB-EXEC-175 → TB-REV-175; then conditional CB-197 step-7 ownership repair. Row979 staged-only, CP3/497/D0/H4, production acceptance and activation held. Stable 67/17/50, debt1/deferred81.
+
+## HISTORY — TB-EXEC-174 rejected; TB-REV-174 review completed (2026-11-23 UTC)
 
 - [x] CB-195 source `29415df1ca8d76825a531092f65ff85e4ecd3b9d` compiled GMP/GMPXX, artifact `14832291155`; no CB runtime.
 - [x] `M6-CP3-TB-EXEC-174-P13-RETRACE-ORACLE-FULL-GATE` — artifact-only [run 45206305297](https://github.com/akashskypatel/Directional/actions/runs/45206305297), result `14833644440` SHA-256 `f77730c1896c346b15de704c90326a5a6543816a3e8ab553d4d8a70b9e11d5a3`; **991/998 PASS, same seven mechanical RED**, 1079 membership, 2004/2004 checksums. Rows 997/998 PASS; 996/996 inherited rows agree with TB173 under N1–N3 (row179 record reorder proven). Rejected, not production acceptance. [Report](.agents/Directional/Architecture_M6_CP3_TB174_P13_Retrace_Oracle_Full_Gate_Execution_Report_20261123.md).
-- [ ] **NEXT 1** `M6-CP3-TB-REV-174-P13-RETRACE-ORACLE-FULL-GATE` — independent review of immutable result/previous archives and owner decisions; **do not start during TB174**.
+- [x] **DONE 1** `M6-CP3-TB-REV-174-P13-RETRACE-ORACLE-FULL-GATE` — independent review of immutable result/previous archives and owner decisions; **do not start during TB174**.
 - [ ] 2 CB-196 arrival-port receipt (only if frozen by TB-REV-174) → TB-EXEC-175 → TB-REV-175.
 - [ ] 3 CB-197 A2a step-7 selection + port-set readers + region-owns-face assertion → TB-EXEC-176 (after authorized Review).
 - [ ] 4 Row979 staged `RegionContainsInteriorSingularity` vertex8, Branch A activation, CB-190; E5 dropped overlap/touch and per-grazing-edge count remain deferred.

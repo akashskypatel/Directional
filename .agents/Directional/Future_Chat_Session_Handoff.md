@@ -31,7 +31,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-23 UTC. TB-EXEC-174 finished as a rejected immutable 998-row gate (991 PASS, seven same mechanical RED); TB-REV-174 independent review next. D13 = A from DESIGN. |
+| Currency | 2026-11-23 UTC. TB-REV-174 independently rejects TB174 (991/998); seven original mechanical RED remain. D13=A by DESIGN. The narrow diagnostic-only CB-196 arrival-port receipt is next; no production promotion. |
 | Branch / source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 open/draft; immutable CB-195 source `29415df1ca8d76825a531092f65ff85e4ecd3b9d`, GMP/GMPXX compile run `45198338115`, artifact `14832291155` (`7a06da51b899ba73f7e9b2375275be87dceeab86dba469cae5bad5be6cf6350c`), `runtimeExecution=false`; no CB-195 runtime. |
 | Current TB evidence | TB174 [run `45206305297`](https://github.com/akashskypatel/Directional/actions/runs/45206305297), result `14833644440` SHA-256 `f77730c1896c346b15de704c90326a5a6543816a3e8ab553d4d8a70b9e11d5a3`, 2004/2004 checksums, **991/998** (seven RED), CP2 candidate 490/491, membership 1079. TB173 result `14821438542` SHA-256 `22851acd9b27eb56ff504f038f9e9761f5b9d07fda854682da512f5022bb223d`, 2000/2000, 989/996. Complete 996-row comparison: 741 identical raw logs, 254 N1/N2, row179 N3 (24 exact diagnostic records reordered); no other drift. [TB174 report](Architecture_M6_CP3_TB174_P13_Retrace_Oracle_Full_Gate_Execution_Report_20261123.md). |
 | Accepted comparison | TB169 run `45104059492`, result ZIP `14787082075` (`dc15a8df5226fc209717f6df2fd15140e9e04abb6e73f831d8285992e72f04e5`), 993/993 accepted; CP2 491/491 accepted. Frozen prefix SHA-256 `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`. |
@@ -40,22 +40,21 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Mandatory next turn
 
-- **COMPLETE (rejected gate):** TB-EXEC-174, artifact-only; all 998 frozen cases ran, 991 PASS/7 RED, with rows 997/998 PASS. Exact report [here](Architecture_M6_CP3_TB174_P13_Retrace_Oracle_Full_Gate_Execution_Report_20261123.md). Its isolated helper is still unwired. No code/selector/manifest changes or rebuild occurred. Accepted TB169 993/993 and CP2 491/491 unchanged.
-- **NEXT:** `M6-CP3-TB-REV-174-P13-RETRACE-ORACLE-FULL-GATE`, **independent Review only**. Reopen TB173 and TB174 archives and compare every inherited raw log and verdict; review the single permitted N3 reorder at row179. Adjudicate seven persistent mechanical failures and only then freeze or refuse CB-196 arrival-port receipt.
-- D13 = A by DESIGN; A2a step-7 owner selection is not implemented. No production acceptance or CP3/497/D0/H4 promotion.
+- **COMPLETE:** `M6-CP3-TB-REV-174-P13-RETRACE-ORACLE-FULL-GATE` independently rechecked both immutable TB173/TB174 evidence archives; 996 inherited ledger identities/verdicts unchanged, 741 logs byte-identical, 254 N1/N2-only, row179 one complete 24-record N3 permutation. No unexplained differences. TB174 rejected **991/998**, seven mechanical RED, oracle-only rows997/998 PASS; accepted TB169 993/993 and CP2 491/491 retained. [Review](Architecture_M6_CP3_TB_REV_174_Retrace_Oracle_Independent_Review_20261123.md).
+- **NEXT (separate Code + Build):** `M6-CP3-CB-196-P13-ARRIVAL-PORT-OWNERSHIP-RECEIPT`. Add a deterministic, read-only A2a terminal singularity arrival-port identity receipt; no selection, classification, geometry, test, selector or benchmark changes. Compile/package only with GMP/GMPXX. Frozen falsifiers/stop rules are in the linked review. Then TB-EXEC-175 artifact-only and TB-REV-175 independent, separately.
+- **HELD:** CB-197 A2a step-7 owner selection remains conditional on independent receipt review. Row979 vertex8, source-grid activation, production acceptance and CP3/497/D0/H4 remain held. D13=A is settled by DESIGN, not a new user gate.
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-174-P13-RETRACE-ORACLE-FULL-GATE
-Owner: independent Test + Benchmark Review (no runtime/compile/source mutation)
-Source: 29415df1ca8d76825a531092f65ff85e4ecd3b9d; build package 14832291155; GMP/GMPXX compile-only CB195
-Runtime: https://github.com/akashskypatel/Directional/actions/runs/45206305297
-Result: 14833644440, SHA-256 f77730c1896c346b15de704c90326a5a6543816a3e8ab553d4d8a70b9e11d5a3; 2004/2004 member checksums
-Manifest: gates/Architecture_M6_TB174_P13_Retrace_Oracle_Full_Gate_Case_Manifest.tsv SHA-256 f98436b2744dea6f9a0f1a490463d158ac657e9e7ed20343e0b89b188e9db8e7; 998 cases, membership 1079
-Observed: 991 PASS, 7 RED 445/652/653/656/658/660/786; new rows 997/998 PASS
-Compare: 996 common TB173 logs = 741 identical + 254 N1/N2 + row179 N3 24 records; no assertion-line exception
-Regression: same TB170 family; 67 events / 17 categories / 50 recurrences, debt1, deferred81; CP2 accepted 491/491, candidate 490/491
-Next conditional: CB-196 arrival-port receipt after Review; then TB-EXEC-175, TB-REV-175, CB-197 owner selection
-Do not start CB-196 or other successor work during TB-EXEC-174 or TB-REV-174; no census or CP3/497/D0/H4 promotion.
+NEXT_TURN: M6-CP3-CB-196-P13-ARRIVAL-PORT-OWNERSHIP-RECEIPT
+Owner: separate Code + Build, compile/package only; no executable runtime
+Authority: Architecture_M6_CP3_TB_REV_174_Retrace_Oracle_Independent_Review_20261123.md
+Source: 29415df1ca8d76825a531092f65ff85e4ecd3b9d; frozen CB195 artifact 14832291155
+TB174: run 45206305297; result 14833644440; 991/998 PASS; seven RED rows 445/652/653/656/658/660/786
+Comparison: 996 inherited identical ledger verdicts; 741 byte-identical logs, 254 N1/N2, one row179 N3 complete 24-record order permutation
+Accepted: TB169 993/993; CP2 491/491. Stable 67/17/50; debt1; deferred81; membership1079
+Purpose: exact arrival-port ownership and carrier interval evidence only; do not repair A2a or run tests
+Falsifiers: no skipped arrival, no port conflation, no invalid source path, no changed production outcome or selector; stop at any violation
+After CB196: separate TB-EXEC-175, TB-REV-175; CB197 only after independent review
 ```
 
 ## Turn Sequence
@@ -71,7 +70,7 @@ Do not start CB-196 or other successor work during TB-EXEC-174 or TB-REV-174; no
 | COMPLETE | TB-REV-173 | Independent + [D13 resolution](Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md): D13 = A by DESIGN. |
 | COMPLETE | CB-195 retrace-along-edges helper (exact diff, compile only) | Source `29415df1…3b9d`; GMP compile artifact `14832291155`; no runtime. |
 | COMPLETE (rejected) | TB-EXEC-174 | 998 rows; 991 PASS, same 7 RED; 997/998 PASS; 996 inherited logs agree under N1–N3. |
-| **NEXT** | TB-REV-174 → conditional CB-196 arrival-port record (receipt-only) → TB-EXEC-175 | Independent review first; products unchanged. |
+| **NEXT** | CB-196 receipt-only → TB-EXEC-175 → TB-REV-175 | TB-REV-174 rejected TB174; receipt must preserve behavior. |
 | 3B | TB-REV-175 → CB-197 step-7 selection + port-set readers + region-owns-face assertion → TB-EXEC-176 | Mechanical controls green, row652 2 regions; re-grep `trace.port` readers first. |
 | 4 | Row979 `RegionContainsInteriorSingularity` (vertex 8) | After mechanical controls green; read printed locus first. |
 | 4A | Branch A (only after the staged plan builds): activation CB → TB (BunnyRandom census, V5) → parameter-deletion CB → V3b → R1 → O48 | Activation = single-source default (V11) + exact premise rows 393/648/858/971/972/978 only. |
