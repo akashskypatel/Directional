@@ -1,4 +1,12 @@
-## CURRENT — CB-189 exact corner reader compiled; TB-EXEC-170 NEXT (2026-11-23 UTC)
+## CURRENT — TB-EXEC-170 recorded; TB-REV-170 NEXT (2026-11-23 UTC)
+
+- [x] **TB-EXEC-170:** immutable CB-189 package `14790917101` source `178f17dd59aa9c61c2e6462e2378e3a42b0ee4f7`; [run 45118730914](https://github.com/akashskypatel/Directional/actions/runs/45118730914), result `14793023424` SHA-256 `930a4a42cd5f15c1479fd0ba098ff21e5860d5fbcf37520e2c1d7bb5ca652d55`; **986/993 PASS**, CP2 **490/491**, membership **1074**. N1–N3 comparison against TB169: **21** off-row differences. Row 652 RED. Row 979: `SphereStagedPlan outcome=RegionContainsInteriorSingularity sourceFace=- sourceEdge=- trace=- secondTrace=- chi=- V=- E=- F=- fragmentOrbits=- tracePieces=- expectedFragments=-`. Independent approval outstanding. [Report](.agents/Directional/Architecture_M6_CP3_TB170_P13_Corner_Visit_Reader_Full_Gate_Execution_Report_20261123.md).
+- [ ] **1 NEXT:** `M6-CP3-TB-REV-170-P13-CORNER-VISIT-READER-FULL-GATE`. Independently verify the two packages, all 993 rows, W1–W6 premises and row979's exact typed stage and the seven mechanical failures; decide whether CB-189's shared corner-reader path violated required plan ownership before authorizing any later branch.
+- [ ] 2 No activation/CP3/497/D0/H4 promotion. Production sphere remains RED; the separate test turn does not run a production census. Stable 66/17/49, witness debt 1, 81 deferred.
+
+NEXT_TURN: M6-CP3-TB-REV-170-P13-CORNER-VISIT-READER-FULL-GATE
+
+## HISTORY — CB-189 exact corner reader compiled; TB-EXEC-170 NEXT (2026-11-23 UTC)
 
 - [x] CB-189 applied the exact reviewed 19,255-byte diff `6e391678…e3b8` to the two `GlobalTopologyPlan` source files. Source `178f17dd59aa9c61c2e6462e2378e3a42b0ee4f7`. Eight-target GNU Multiple Precision (GMP/GMPXX) compile run `45113944225` passed with `runtimeExecution=false`, package `14790917101` (SHA-256 `0432359393d37cf00b9654339c832263f648733237005171ff3a8eb9cfa1ddfd`). [Record](.agents/Directional/Architecture_M6_CP3_CB189_P13_Corner_Visit_Reader_Code_Build_Record_20261123.md).
 - [ ] **1 NEXT** `M6-CP3-TB-EXEC-170-P13-CORNER-VISIT-READER-FULL-GATE`: artifact-only 993-row test gate, no rebuild. All rows except 979 equal TB169 under N1–N3; row 652 PASS. Row 979 is a measurement of the corner-stage result. Compare strictly and report any new typed failure. No census.
