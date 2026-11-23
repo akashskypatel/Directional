@@ -23134,3 +23134,58 @@ TEST(ArcFaceVisits, RejectsUnboundUnknownOffFaceAndStationaryPieces) {
             failure_of({lower}, {1U},
                        {edge_piece(1, 2, at_vertex(1), at_vertex(1))}));
 }
+
+TEST(ExactSourcePathSharedEdges, TracesRunningOneEdgeChainBothWaysShareEveryEdge) {
+  using namespace arc_face_visit_test;
+  using directional::authority::exact_source_paths_shared_edges;
+  const auto lower = topology_face(0, 1, 2, 5U);
+  const auto upper = topology_face(1, 3, 2, 5U);
+  // One trace runs 0 -> 1 -> 2 as corner-to-corner face pieces of [0,1,2];
+  // the other runs back 2 -> 1 -> 0 on the far face of (1,2) and as an edge
+  // piece. Carriers differ; the curve is the same.
+  const ExactSourcePath forward{
+      face_piece(lower, at_vertex(0), at_vertex(1)),
+      face_piece(lower, at_vertex(1), at_vertex(2))};
+  const ExactSourcePath backward{
+      face_piece(upper, at_vertex(2), at_vertex(1)),
+      edge_piece(0, 1, at_vertex(1), at_vertex(0))};
+  const std::vector<SourceEdgeTopologyKey> both{topology_edge(0, 1, 5U),
+                                                topology_edge(1, 2, 5U)};
+  EXPECT_EQ(both, exact_source_paths_shared_edges(forward, backward));
+  EXPECT_EQ(both, exact_source_paths_shared_edges(backward, forward));
+  // Stretches [0, 2/3] and [1/3, 1] of (1,2), run in opposite directions,
+  // overlap on [1/3, 2/3].
+  const std::vector<SourceEdgeTopologyKey> oneTwo{topology_edge(1, 2, 5U)};
+  EXPECT_EQ(oneTwo,
+            exact_source_paths_shared_edges(
+                {edge_piece(1, 2, at_vertex(1), on_edge(1, 2, 2, 3))},
+                {edge_piece(1, 2, at_vertex(2), on_edge(1, 2, 1, 3))}));
+}
+
+TEST(ExactSourcePathSharedEdges, TouchingAndCrossingPathsShareNoEdge) {
+  using namespace arc_face_visit_test;
+  using directional::authority::exact_source_paths_shared_edges;
+  using directional::authority::exact_source_piece_edge_interval;
+  const auto lower = topology_face(0, 1, 2, 5U);
+  // Two halves of (1,2) meet only at its middle.
+  EXPECT_TRUE(exact_source_paths_shared_edges(
+                  {edge_piece(1, 2, at_vertex(1), on_edge(1, 2, 1, 2))},
+                  {edge_piece(1, 2, on_edge(1, 2, 1, 2), at_vertex(2))})
+                  .empty());
+  // A chord from corner 0 to the middle of (1,2) crosses the face and runs
+  // along no edge, so it shares nothing with a slide along (1,2).
+  const auto chord = face_piece(lower, at_vertex(0), on_edge(1, 2, 1, 2));
+  EXPECT_FALSE(exact_source_piece_edge_interval(chord).has_value());
+  EXPECT_TRUE(exact_source_paths_shared_edges(
+                  {chord}, {edge_piece(1, 2, at_vertex(1), at_vertex(2))})
+                  .empty());
+  // A face piece from a corner to a point of the same edge runs along it,
+  // with its ends measured from the edge's first vertex.
+  const auto along =
+      exact_source_piece_edge_interval(
+          face_piece(lower, at_vertex(2), on_edge(1, 2, 1, 3)));
+  ASSERT_TRUE(along.has_value());
+  EXPECT_EQ(topology_edge(1, 2, 5U), along->edge);
+  EXPECT_EQ(exact_ratio(1, 1), along->first);
+  EXPECT_EQ(exact_ratio(1, 3), along->second);
+}
