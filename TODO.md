@@ -1,4 +1,31 @@
-## CURRENT — TB-REV-173 independent review; D13 user decision pending (2026-11-23 UTC)
+## CURRENT — TB-REV-173 complete; D13 = A resolved from DESIGN; CB-195 next (2026-11-23 UTC)
+
+- [x] TB-REV-173 [D13 resolution](.agents/Directional/Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md): DESIGN §7.2 inv. 1/8, the no-tiny-region-collapse stop and §10.1 determinism leave only A; prose CB-195 proof withdrawn; A2a has no step-7 selection (E2).
+- [ ] **NEXT 1** `M6-CP3-CB-195-P13-EXACT-SOURCE-PATH-RETRACE-ALONG-EDGES` — exact diff `72fa4fa6…d315`, compile only.
+- [ ] 2 `M6-CP3-TB-EXEC-174-P13-RETRACE-ORACLE-FULL-GATE` — 998 rows `f98436b2…e8db8e7`; 991 PASS, same 7 RED.
+- [ ] 3 TB-REV-174 → CB-196 arrival-port record (receipt-only) → TB-EXEC-175.
+- [ ] 4 TB-REV-175 → CB-197 step-7 duplicate selection + port-set readers + every-region-owns-a-face assertion → TB-EXEC-176 (mechanical controls green).
+- [ ] 5 Row979, Branch A, CB-190. Obligation (E5): dropped CollinearOverlap/EndpointTouch + per-grazing-edge count, unwitnessed.
+
+```text
+NEXT_TURN: M6-CP3-CB-195-P13-EXACT-SOURCE-PATH-RETRACE-ALONG-EDGES
+Owner: implementation agent (Code + Build, compile only)
+Authority: Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md (E1-E5); D13 = A by DESIGN; prose CB-195 ARRIVAL-PORT-OWNERSHIP-PROOF withdrawn
+Apply exactly: .agents/Directional/Architecture_M6_CP3_CB195_P13_Exact_Source_Path_Retrace_Along_Edges_Exact.diff
+  SHA-256 72fa4fa63c38e831fe6b1a03dd21f166a180fb255395c84cacd7e3454ba8d315 (5498 B, +91/-0)
+  include/directional/authority/ExactSourcePath.h git 8daf7694716b9050581ba040ee4bfe2133ffc481 -> sha256 59b0c21dfe297f8e62721944331e41fbbc6fc84e4c580d4827670f57d35ff92b
+  tests/FieldAlignedCurveNetworkTests.cpp git 00133ec707e9f8e161cb85404688b6debe598d50 -> sha256 d668792653674d537b3509a92a0699d3b566d005acfed62bb8ff1f6590786d0e
+Build: dispatcher compile, GMP/GMPXX targets incl. directional_surface_cell_producer_tests, runtimeExecution=false
+Then: M6-CP3-TB-EXEC-174-P13-RETRACE-ORACLE-FULL-GATE
+  manifest gates/Architecture_M6_TB174_P13_Retrace_Oracle_Full_Gate_Case_Manifest.tsv f98436b2744dea6f9a0f1a490463d158ac657e9e7ed20343e0b89b188e9db8e7 (998 rows; prefixes 483f1101...038 / 704dcf6c...09c6); membership 1079
+  expected 991 PASS: rows 995-998 PASS, same 7 RED (445/652/653/656/658/660/786)
+  rules: every other row = TB173 14821438542 under N1-N3 + diff-proven assertion-line moves (none expected); any other difference -> STOP to Review; no census
+  -> M6-CP3-TB-REV-174: freeze CB-196 (arrival-port record, receipt-only) exactly; CB-197 (step-7 selection + port-set readers + region-owns-face assertion) after TB-REV-175
+On failure/blocker: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
+Do not: edit beyond the diff; wire the helper; change producer/region/validator code; edit selectors/manifests; run tests; revert CB-192; activate; promote CP3/497/D0/H4
+```
+
+## HISTORY — TB-REV-173 independent review; D13 then marked user-pending (2026-11-23 UTC)
 
 - [x] `M6-CP3-CB-194-P13-EXACT-SOURCE-PATH-SHARED-EDGE-ORACLE` — GMP/GMPXX compiled source `fae9eb71bb5806d71901cc2ccb8c925201be0c0a`, package `14820355596`, `runtimeExecution=false`.
 - [x] `M6-CP3-TB-EXEC-173-P13-SHARED-EDGE-ORACLE-FULL-GATE` — immutable 996-case [run 45180338549](https://github.com/akashskypatel/Directional/actions/runs/45180338549), artifact `14821438542`, **989/996 PASS, seven mechanical RED**, membership 1077, new oracle rows 995/996 PASS, TB172 shared 994-row logs/results unchanged under N1–N2. **Rejected**, not production acceptance. [Execution report](.agents/Directional/Architecture_M6_CP3_TB173_P13_Shared_Edge_Oracle_Full_Gate_Execution_Report_20261123.md).
@@ -8,7 +35,7 @@
 - [ ] **HELD:** CB-195/CB-196, row979, Branch A activation, CB-190, CP3/497/D0/H4.
 - Baseline TB169 accepted **993/993**, CP2 accepted **491/491**; stable **67/17/50**, debt1, deferred81 unchanged.
 
-NEXT_TURN: UNKNOWN — D13 owner decision required; CB-195/CB-196 held
+(Superseded by the D13 resolution above.)
 
 ## HISTORY — TB-REV-172 independent and adversarial rejection; CB-194 all-piece interval receipt next (2026-11-23 UTC)
 

@@ -1,3 +1,7 @@
+## 2026-11-23 — TB-REV-173 D13 resolved from DESIGN; exact CB-195 retrace helper next
+
+The [D13 resolution](.agents/Directional/Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md) closes TB-REV-173. DESIGN §7.2 already rules out every option except A, so D13 was not a decision for the user. A trace that arrives at a singularity along one of its ports owns that port: a redundant co-traced trace is removed at A2a step 7, and port topology is unchanged. The prose CB-195 proof is withdrawn. The exact CB-195 `exact_source_paths_retrace_along_edges` (unwired) is next, then the 998-row TB-EXEC-174.
+
 ## 2026-11-23 — TB-REV-173 independent gate rejection; D13 decision pending
 
 [Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_173_Shared_Edge_Oracle_Independent_Review_20261123.md) reverified immutable TB169/TB172/TB173 archives, 491/994 accepted selector prefixes, TB173 989/996 with seven old mechanical RED, 994/994 normalized common logs and source-path helper non-vacuity. Oracle is unwired; A2a port arrival ownership D13 remains a required user decision. No production acceptance, no source/test/selector change or new stable regression (67/17/50, debt1, deferred81). CB-195/196 held.

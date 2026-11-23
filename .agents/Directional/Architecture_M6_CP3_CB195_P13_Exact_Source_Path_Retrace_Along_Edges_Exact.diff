@@ -1,0 +1,118 @@
+diff --git a/include/directional/authority/ExactSourcePath.h b/include/directional/authority/ExactSourcePath.h
+index 8daf76947..a968576ef 100644
+--- a/include/directional/authority/ExactSourcePath.h
++++ b/include/directional/authority/ExactSourcePath.h
+@@ -10,7 +10,9 @@
+ 
+ #include <algorithm>
+ #include <array>
++#include <map>
+ #include <optional>
++#include <utility>
+ #include <variant>
+ #include <vector>
+ 
+@@ -264,6 +266,48 @@ exact_source_paths_shared_edges(const ExactSourcePath &a,
+   return shared;
+ }
+ 
++/** Whether `b` runs back over `a` along source edges only: `b` starts where
++ * `a` ends and ends where `a` starts, every piece of both runs along an edge,
++ * and both cover exactly the same stretches of the same edges, whatever their
++ * carriers and piece breaks. False when either path crosses a face interior,
++ * so a retrace through a face is not recognized here. */
++[[nodiscard]] inline bool
++exact_source_paths_retrace_along_edges(const ExactSourcePath &a,
++                                       const ExactSourcePath &b) {
++  if (a.empty() || b.empty() || a.front().first != b.back().second ||
++      a.back().second != b.front().first) {
++    return false;
++  }
++  using Stretch = std::pair<FieldExactRational, FieldExactRational>;
++  using Coverage = std::map<SourceEdgeTopologyKey, std::vector<Stretch>>;
++  const auto coverage = [](const ExactSourcePath &path) -> std::optional<Coverage> {
++    Coverage stretches;
++    for (const auto &piece : path) {
++      const auto interval = exact_source_piece_edge_interval(piece);
++      if (!interval) return std::nullopt;
++      stretches[interval->edge].emplace_back(
++          std::min(interval->first, interval->second),
++          std::max(interval->first, interval->second));
++    }
++    for (auto &entry : stretches) {
++      std::vector<Stretch> &list = entry.second;
++      std::sort(list.begin(), list.end());
++      std::vector<Stretch> merged;
++      for (const auto &stretch : list) {
++        if (!merged.empty() && !(merged.back().second < stretch.first)) {
++          merged.back().second = std::max(merged.back().second, stretch.second);
++        } else {
++          merged.push_back(stretch);
++        }
++      }
++      list = std::move(merged);
++    }
++    return stretches;
++  };
++  const auto coveredByA = coverage(a);
++  return coveredByA.has_value() && coveredByA == coverage(b);
++}
++
+ } // namespace directional::authority
+ 
+ #endif // DIRECTIONAL_AUTHORITY_EXACT_SOURCE_PATH_H
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 00133ec70..bfc99a223 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -23189,3 +23189,50 @@ TEST(ExactSourcePathSharedEdges, TouchingAndCrossingPathsShareNoEdge) {
+   EXPECT_EQ(exact_ratio(1, 1), along->first);
+   EXPECT_EQ(exact_ratio(1, 3), along->second);
+ }
++
++TEST(ExactSourcePathRetrace, ChainRunBackOnOtherCarriersAndBreaksRetracesIt) {
++  using namespace arc_face_visit_test;
++  using directional::authority::exact_source_paths_retrace_along_edges;
++  const auto lower = topology_face(0, 1, 2, 5U);
++  const auto upper = topology_face(1, 3, 2, 5U);
++  const ExactSourcePath forward{
++      face_piece(lower, at_vertex(0), at_vertex(1)),
++      face_piece(lower, at_vertex(1), at_vertex(2))};
++  // Back from 2 to 0 over the same two edges: (1,2) on the far face and broken
++  // at its middle, (0,1) as an edge piece.
++  const ExactSourcePath backward{
++      face_piece(upper, at_vertex(2), on_edge(1, 2, 1, 2)),
++      edge_piece(1, 2, on_edge(1, 2, 1, 2), at_vertex(1)),
++      edge_piece(0, 1, at_vertex(1), at_vertex(0))};
++  EXPECT_TRUE(exact_source_paths_retrace_along_edges(forward, backward));
++  EXPECT_TRUE(exact_source_paths_retrace_along_edges(backward, forward));
++}
++
++TEST(ExactSourcePathRetrace, SameWayOtherEdgeOrFaceCrossingPathsDoNotRetrace) {
++  using namespace arc_face_visit_test;
++  using directional::authority::exact_source_paths_retrace_along_edges;
++  const auto lower = topology_face(0, 1, 2, 5U);
++  const ExactSourcePath forward{
++      edge_piece(0, 1, at_vertex(0), at_vertex(1)),
++      edge_piece(1, 2, at_vertex(1), at_vertex(2))};
++  // The same chain in the same direction: the ends do not swap.
++  EXPECT_FALSE(exact_source_paths_retrace_along_edges(forward, forward));
++  // From 2 back to 0 over edge (0,2): swapped ends, other edges.
++  EXPECT_FALSE(exact_source_paths_retrace_along_edges(
++      forward, {edge_piece(0, 2, at_vertex(2), at_vertex(0))}));
++  // From 2 back to 0 over (1,2) and (0,1) with a detour out and back along
++  // (1,3): swapped ends, every piece on an edge, one stretch too many.
++  EXPECT_FALSE(exact_source_paths_retrace_along_edges(
++      forward, {edge_piece(1, 2, at_vertex(2), at_vertex(1)),
++                edge_piece(1, 3, at_vertex(1), at_vertex(3)),
++                edge_piece(1, 3, at_vertex(3), at_vertex(1)),
++                edge_piece(0, 1, at_vertex(1), at_vertex(0))}));
++  // A path that crosses the face from 0 to the middle of (1,2) and slides to
++  // 2 is a different curve, whatever runs back over its edge stretches.
++  const ExactSourcePath crossing{
++      face_piece(lower, at_vertex(0), on_edge(1, 2, 1, 2)),
++      edge_piece(1, 2, on_edge(1, 2, 1, 2), at_vertex(2))};
++  EXPECT_FALSE(exact_source_paths_retrace_along_edges(
++      crossing, {edge_piece(1, 2, at_vertex(2), at_vertex(1)),
++                 edge_piece(0, 1, at_vertex(1), at_vertex(0))}));
++}
