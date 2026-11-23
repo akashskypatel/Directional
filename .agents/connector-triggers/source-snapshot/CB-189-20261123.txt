@@ -1,3 +1,0 @@
-Purpose: M6-CP3-CB-189 source inspection snapshot
-Requested: 2026-11-23 UTC
-Runtime execution: false

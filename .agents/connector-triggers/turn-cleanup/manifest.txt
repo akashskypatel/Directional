@@ -1,2 +1,0 @@
-# CB-189 temporary-state cleanup
-.agents/connector-triggers/source-snapshot/CB-189-20261123.txt
