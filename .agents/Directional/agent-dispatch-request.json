@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tbrev175-review-docs-20261123-a",
-  "mailbox_key": "m6-cp3-tbrev175-review-docs",
-  "file_id": "1dB76v6Hm-GyWhQJkpRrpUP-VR3R_AqWo",
-  "patch_sha256": "c8f5c9d38e36c33290f7e530c1d1942a8592e2f56b46a2bf2af207a3ee1489e4",
-  "base_sha": "1eb0acaab499220832f4d05248756e665810966f",
+  "request_id": "m6-cp3-cb197a-apply-20261123-a",
+  "mailbox_key": "m6-cp3-cb197a-drive-apply",
+  "file_id": "1hJyzBajbKxc3ymq7FN0Foq9q4MkLf1e-",
+  "patch_sha256": "322b2c23aa878ba4824f3f670e96ac1df68add89deeecf6d6f11ee6dbaca867f",
+  "base_sha": "d64f97951aad051297c73427bf8d0159f282ebb5",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): independently review rejected TB175 and freeze extraction",
+  "commit_message": "refactor(surface-cells): extract exact trace piece builders (CB197A)",
   "retention_days": 14
 }
