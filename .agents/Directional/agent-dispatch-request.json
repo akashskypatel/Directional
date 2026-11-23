@@ -1,25 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "test_benchmark",
-  "request_id": "m6-cp3-tb172-along-edge-visit-receipt-20261123-a",
-  "mailbox_key": "m6-cp3-tb172-along-edge-visit-receipt-full-gate",
-  "executor_sha": "587b8ba7b1a52409d2fd95cff99dbb9d1da8f881",
-  "semantic_source_sha": "587b8ba7b1a52409d2fd95cff99dbb9d1da8f881",
-  "turn_id": "M6-CP3-TB-EXEC-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "14805640405",
-    "EXPECTED_SOURCE_SHA": "587b8ba7b1a52409d2fd95cff99dbb9d1da8f881",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "58a49461e3d6cdc0480c3a2ecd8a40ac038b48595b88eb2a0f9e7015b70fe2cb",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "28a6a575dab58879216b7dcea83c5e3bf9682b912ec28e9407698f626edb7fd9",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "2d3f97346c0da66b5bce94a48e38dbbdee321caff7479ae93b3c9e39f7dbbb94",
-    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB171_P13_Along_Edge_Face_Piece_Full_Gate_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "704dcf6c5525d244c09f3ba0fd1c93a860daa194d4381d6b427dddc3be6209c6",
-    "EXPECTED_CASE_COUNT": "994",
-    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
-    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
-  },
-  "artifact_prefix": "m6-cp3-tb172-along-edge-visit-receipt-full-gate",
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-tb172-docs-closeout-20261123-a",
+  "mailbox_key": "m6-cp3-tb172-docs-closeout-apply",
+  "file_id": "1iyKAqcrFqSzu58wP8GBYlmKD_vZrmix6",
+  "patch_sha256": "ffb9d208c7c8827e890fef9587323c335ef482485672ed81d976c690182ae943",
+  "base_sha": "15040776b03388d90b46cc5c62597aa81193c7c8",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(surface-cells): record TB172 receipt gate and hand off independent review",
   "retention_days": 14
 }
