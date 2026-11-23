@@ -31,12 +31,12 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-23 UTC. TB-EXEC-172 immutable full gate completed 987/994 (7 mechanical RED); exact along-edge visit receipt now printed for row652. Next independent TB-REV-172. TB169 remains accepted 993/993. [CB-193 record](Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Code_Build_Record_20261123.md); [adversarial authority](Architecture_M6_CP3_TB_REV_171_Adversarial_Review_20261123.md). |
+| Currency | 2026-11-23 UTC. TB-REV-172 independently rejected TB172 987/994 (7 mechanical RED), five nonallowed line-number drifts. Four lens orbits share opposite reversed source-edge carriers; exact intervals and area not proved. Next `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` measurement-only Code + Build. [Review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md). TB169 remains accepted 993/993. [CB-193 record](Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Code_Build_Record_20261123.md); [adversarial authority](Architecture_M6_CP3_TB_REV_171_Adversarial_Review_20261123.md). |
 | Branch / source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; CB193 source `587b8ba7b1a52409d2fd95cff99dbb9d1da8f881`, GMP/GMPXX compile `45147339047`, package `14805640405` (`58a49461…2cb`), `runtimeExecution=false`; TB172 no rebuild. |
 | Current TB evidence | TB172 [run `45149928894`](https://github.com/akashskypatel/Directional/actions/runs/45149928894), artifact `14805479282` SHA-256 `e9ddc7fd80d3e33b25b18901c783fbb21ec2eaf5c1b86438f887e93cee03edbc`, internal **1996/1996** verified, 987/994 PASS, CP2 candidate 490/491, membership 1075; compare TB171 `14799346720` (987/994). [TB172 report](Architecture_M6_CP3_TB172_P13_Along_Edge_Visit_Region_Receipt_Full_Gate_Execution_Report_20261123.md). |
 | Accepted comparison | TB169 run `45104059492`, ZIP artifact `14787082075` SHA-256 `dc15a8df5226fc209717f6df2fd15140e9e04abb6e73f831d8285992e72f04e5`, internal **1994/1994**, **993/993** accepted, CP2 **491/491** accepted. Frozen prefix SHA-256 `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`. |
 | Regression / debt | Historical **67 events / 17 categories / 50 recurrences**; witness debt1, deferred81. Same seven accepted-green mechanical controls 445/652/653/656/658/660/786 still RED; new empty-elected-draft subtype not new stable event. |
-| First unresolved failure | `RegionElectedCutComponentEmpty` row652: 6 orbits, unlabeled seeds only 0/2; lens orbits 1/3/4/5 bounded by trace pairs 0/3, 8/2, 4/11, 9/7 lost all faces (52 chords removed, owners 114→76). Undecided: lens has area (H-strip → credit opposite face, mirror `GlobalTopologyPlan.cpp:1061–1098`) or zero area (H-lens, co-traced → upstream decision). TB169 green rested on the false chords; do not revert CB-192. Row979 staged `RegionContainsInteriorSingularity` vertex8 |
+| First unresolved failure | `RegionElectedCutComponentEmpty` row652: 6 orbits, unlabeled seeds only 0/2; lens orbits 1/3/4/5 bounded by trace pairs 0/3, 8/2, 4/11, 9/7 lost all faces (52 chords removed, owners 114→76). TB-REV-172 refutes H-strip (different source-edge carriers): each lens pair shares five reversed source edges and opposite-face swaps. Exact subinterval co-tracing and area remain unproved. Do not credit opposite faces or change region election. TB169 green rested on the false chords; do not revert CB-192. Row979 staged `RegionContainsInteriorSingularity` vertex8 |
 
 ## Mandatory next turn
 
@@ -44,15 +44,14 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 - **COMPLETE:** TB-EXEC-172 ran immutable artifact-only 994-case gate ([evidence](Architecture_M6_CP3_TB172_P13_Along_Edge_Visit_Region_Receipt_Full_Gate_Execution_Report_20261123.md)); 987 PASS, 7 RED, unchanged acceptance. No rebuild or repair.
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE
-Owner: independent Review agent, runtime-free re-derivation; do not execute this successor in TB-EXEC-172.
-Source: 587b8ba7b1a52409d2fd95cff99dbb9d1da8f881
-Package: compile run 45147339047, artifact 14805640405, sha256 58a49461e3d6cdc0480c3a2ecd8a40ac038b48595b88eb2a0f9e7015b70fe2cb
-TB execution: run 45149928894, result 14805479282, ZIP sha256 e9ddc7fd80d3e33b25b18901c783fbb21ec2eaf5c1b86438f887e93cee03edbc
-Manifest: gates/Architecture_M6_TB171_P13_Along_Edge_Face_Piece_Full_Gate_Case_Manifest.tsv sha256 704dcf6c5525d244c09f3ba0fd1c93a860daa194d4381d6b427dddc3be6209c6; 994 rows
-Compare against TB171 14799346720 under N1-N3 with only appended alongEdgeVisit* exception fields allowed.
-Review row652 complete receipt, classify each lens orbit's opposite-face and source-edge evidence; decide H-strip versus H-lens from exact logs. Freeze narrowly scoped correction or further evidence; do not infer area from orbit indices alone.
-Accepted: TB169 993/993; CP2 491/491. Held: CP3/497/D0/H4, production sphere, row979, activation and CB190. No test rerun or source repair in this Review.
+NEXT_TURN: M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT
+Owner: Code + Build agent, diagnostic-only exact interval receipt, compile only with GMP/GMPXX; do not execute binaries.
+Authority: [TB-REV-172](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md) independent evidence and explicit falsifiers.
+Source: verified snapshot a430ef8bc2b3ae18724c72dc0bc34c1f586f8bc0; preserve CB-193 semantic source and 994-row frozen manifest.
+Required: exact paired source-edge endpoint parameters, orientation, source sheet and trace/arc/visit lineage for lens orbits 1/3/4/5.
+STOP: any production/source-topology modification, assertion/selector change, unapproved N1-N3 normalization, missing exact values manufactured, or unconditional opposite-face crediting.
+TB+Review: subsequent separate turns; no review gate approval or source repair authorized here.
+Accepted: TB169 993/993; CP2 491/491. Held: CP3/497/D0/H4, production sphere, row979, activation, CB190.
 ```
 
 ## Turn Sequence
@@ -71,8 +70,9 @@ Accepted: TB169 993/993; CP2 491/491. Held: CP3/497/D0/H4, production sphere, ro
 | COMPLETE | TB-REV-171 ([independent](Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md) + [adversarial](Architecture_M6_CP3_TB_REV_171_Adversarial_Review_20261123.md)) | Rejected; lens-orbit mechanism (B1–B3); prose CB-193 withdrawn. |
 | COMPLETE | CB-193 (test-only receipt, compile only) | [Record](Architecture_M6_CP3_CB193_P13_Along_Edge_Visit_Region_Receipt_Code_Build_Record_20261123.md), exact source `587b8ba7b1a52409d2fd95cff99dbb9d1da8f881`, compile `45147339047`, package `14805640405`. |
 | COMPLETE — RED | TB-EXEC-172 (artifact-only 994 rows) | [Report](Architecture_M6_CP3_TB172_P13_Along_Edge_Visit_Region_Receipt_Full_Gate_Execution_Report_20261123.md), 987/994, next independent review. |
-| **NEXT** | TB-REV-172 | Independently review exact row652 receipt and TB171→TB172 comparisons; no runtime or repair. |
-| 3 | TB-REV-172 → repair CB → TB | H-strip: opposite-face crediting (exact CB). H-lens: upstream co-traced decision. |
+| COMPLETE (rejected) | TB-REV-172 | [Independent review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md) rejects gate and identifies four shared source-edge pairs; exact subintervals unresolved. |
+| **NEXT** | CB-194 | Compile-only exact interval receipt; no source repair or runtime. |
+| 3 | CB-194 → separate TB → separate Review | H-lens carrier identified; obtain exact interval overlap before any region-contract decision. No automatic repair. |
 | 4 | Row979 `RegionContainsInteriorSingularity` (vertex 8) | After mechanical controls green; read printed locus first. |
 | 4A | Branch A (only after the staged plan builds): activation CB → TB (BunnyRandom census, V5) → parameter-deletion CB → V3b → R1 → O48 | Activation = single-source default (V11) + exact premise rows 393/648/858/971/972/978 only. |
 | 5 | CB-190 | S4/S6/S7 diagnostic conformity plus W6 obsolete-code comments (off critical path). |

@@ -1,13 +1,14 @@
-## CURRENT — TB-EXEC-172 RED; TB-REV-172 next (2026-11-23 UTC)
+## CURRENT — TB-REV-172 rejected full gate; CB-194 interval receipt next (2026-11-23 UTC)
 
 - [x] CB-193 applied the exact test-only along-edge visit receipt; GMP/GMPXX compiled artifact `14805640405`, source `587b8ba7b1a52409d2fd95cff99dbb9d1da8f881`.
 - [x] TB-EXEC-172 — immutable artifact-only 994-case [run 45149928894](https://github.com/akashskypatel/Directional/actions/runs/45149928894), result `14805479282`; **987/994**, 7 mechanical RED, CP2 490/491, membership 1075; row652 exact receipt and independent comparison in [execution report](.agents/Directional/Architecture_M6_CP3_TB172_P13_Along_Edge_Visit_Region_Receipt_Full_Gate_Execution_Report_20261123.md). Semantic gate remains rejected. No production acceptance.
-- [ ] **1 NEXT** `M6-CP3-TB-REV-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE` — reopen TB171/TB172 immutable evidence, verify N1–N3 and receipt fields, decide H-strip opposite-face vs H-lens upstream co-traced cause per orbit; freeze one narrow correction or further exact evidence.
+- [x] TB-REV-172 independently verified TB171/TB172 ZIP/member hashes, N1–N3 (5 nonallowed assertion-location shifts), seven RED, and 58 edge visits. Four lens pairs share exact reversed **edge IDs** with face/opposite-face swaps; no exact edge intervals or positive/zero-area proof. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).
+- [ ] **1 NEXT** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — compile-only, test-receipt-only exact endpoint parameters, interval orientation and trace pairing for the four H-lens carriers. No code repair, runtime, test assertion, selector, or opposite-face credit change. STOP on unavailable exact source values; independent TB/Review follows.
 - [ ] **2 HELD** row979 staged `RegionContainsInteriorSingularity`; production sphere, CP3/497/D0/H4 activation, CB-190 and further source work require a separate authorized turn.
 
 Historical accepted TB169 993/993, CP2 491/491; stable **67/17/50**, debt1, deferred81. No new accepted event.
 
-NEXT_TURN: M6-CP3-TB-REV-172-P13-ALONG-EDGE-VISIT-REGION-RECEIPT-FULL-GATE
+NEXT_TURN: M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT
 
 ## HISTORY — TB-REV-171 independently REJECTED; narrow CB-193 receipt next (2026-11-23 UTC)
 
