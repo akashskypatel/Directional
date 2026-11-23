@@ -1,7 +1,7 @@
 ---TURN_STATUS---
 Turn: M6-CP3-TB-EXEC-175-P13-RETRACED-TRACE-SELECTION-FULL-GATE
 Status: IN_PROGRESS
-Successor: UNKNOWN
+Successor: M6-CP3-TB-REV-175
 Started at: 2026-11-23T17:55:28Z
 Resumed at: 
 Ended at: 
