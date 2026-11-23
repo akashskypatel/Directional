@@ -1,38 +1,22 @@
-## CURRENT — TB-REV-169 complete (independent + adversarial); CB-189 NEXT (2026-11-23 UTC)
+## CURRENT — CB-189 exact corner reader compiled; TB-EXEC-170 NEXT (2026-11-23 UTC)
 
-- [x] TB-REV-169 adversarial continuation: [record](.agents/Directional/Architecture_M6_CP3_TB_REV_169_Adversarial_Review_20261123.md) (W1–W6).
-  - TB169 993/993 and CB-189 `6e391678…e3b8` upheld.
-  - W2: replaying `partition_face_corners` on row 979's 136 visit lines gives a consistent partition on all 55 faces with more than one cut, each in one winding, with windings that agree across shared edges.
-  - W3: the receipt prints segment-level ends; the finer print is only for an ambiguous corner RED.
-  - W5: activation is pre-split.
-
-**Turn sequence:**
-- [ ] **1 NEXT** `M6-CP3-CB-189-P13-CORNER-VISIT-READER`: amended diff on the live CB-188 postimage, compile only.
-- [ ] 2 `M6-CP3-TB-EXEC-170-P13-CORNER-VISIT-READER-FULL-GATE`.
-  - Rows other than 979 equal TB169 under N1–N3; row 652 passes.
-  - Row 979 is a measurement, predicted to clear the corner stage.
-- [ ] 3 `M6-CP3-TB-REV-170-…`: freeze exact diffs for Branch A or B.
-- [ ] 4A Plan built: activation CB (V11 default + premise rows only) → TB with BunnyRandom census → parameter-deletion CB → V3b → R1 → O48.
-- [ ] 4B Next typed stage: receipt CB **or** narrow repair CB → TB.
-- [ ] 5 CB-190: S4/S6/S7 plus W6 obsolete-code comments, off the critical path.
-- Held: CP3/497/D0/H4; production sphere `CutSearchExhaustedBeforeCellularity`. Stable 66/17/49, debt1, deferred81.
+- [x] CB-189 applied the exact reviewed 19,255-byte diff `6e391678…e3b8` to the two `GlobalTopologyPlan` source files. Source `178f17dd59aa9c61c2e6462e2378e3a42b0ee4f7`. Eight-target GNU Multiple Precision (GMP/GMPXX) compile run `45113944225` passed with `runtimeExecution=false`, package `14790917101` (SHA-256 `0432359393d37cf00b9654339c832263f648733237005171ff3a8eb9cfa1ddfd`). [Record](.agents/Directional/Architecture_M6_CP3_CB189_P13_Corner_Visit_Reader_Code_Build_Record_20261123.md).
+- [ ] **1 NEXT** `M6-CP3-TB-EXEC-170-P13-CORNER-VISIT-READER-FULL-GATE`: artifact-only 993-row test gate, no rebuild. All rows except 979 equal TB169 under N1–N3; row 652 PASS. Row 979 is a measurement of the corner-stage result. Compare strictly and report any new typed failure. No census.
+- [ ] 2 `M6-CP3-TB-REV-170-P13-CORNER-VISIT-READER-FULL-GATE`: independent review and one exact later plan.
+- [ ] 3 Branch A (staged plan built): activation CB then TB then separate parameter-deletion CB, V3b, R1, O48; or Branch B (next typed stage): independent receipt or narrow repair. Neither branch starts in CB-189.
+- [ ] 4 CB-190 S4/S6/S7 diagnostic conformity, off critical path.
+- Held: CP3/497/D0/H4; production sphere `CutSearchExhaustedBeforeCellularity`. Latest accepted test TB169 993/993, CP2 491/491, membership 1074; stable 66/17/49, debt1, deferred81.
 
 ```
-NEXT_TURN: M6-CP3-CB-189-P13-CORNER-VISIT-READER
-Owner: implementation agent (Code + Build, compile only)
-Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_169_Adversarial_Review_20261123.md (W1-W6) + TB-REV-169 independent review + TB-REV-168 adversarial (Q1-Q7); contract C1-C4
-Apply exactly: .agents/Directional/Architecture_M6_CP3_CB189_P13_Corner_Visit_Reader_Exact.diff
-  SHA-256 6e391678934f776d83b1bbae6652724e080763329d6171c7cdb1c5663259e3b8 (19255 B, +117/-179)
-  src/geometry/GlobalTopologyPlan.cpp 5af71bc0...0aae (CB-188 postimage = live) -> 44395316a518c0cef8cd9afabdc622d69900496c1f6e4a290c37715602fb366f
-  include/directional/geometry/GlobalTopologyPlan.h 277cde20...8f19 -> 87831e100b5f05d2adcbf2a8aea89063d8b63a26939da314eb5896aeeacca16c
-Build: dispatcher compile, GMP/GMPXX targets incl. directional_surface_cell_producer_tests, runtimeExecution=false
-Then: M6-CP3-TB-EXEC-170-P13-CORNER-VISIT-READER-FULL-GATE (TB168 manifest, 993 rows, unchanged)
-  rules: 993/993 PASS; CP2 491/491; membership 1074; rows != 979 = TB169 result 14787082075 under N1-N3, zero allowance; row 652 PASS without throw;
-  row 979 SphereStagedPlan is a measurement; predicted (W2): not SourceFaceCarriesMultipleTraceCuts, not SourceFaceCutPartitionFailed, not SourceFaceCutOrbitNotOwned;
-  a new-code outcome falsifies W2 (report, no STOP); any other difference -> STOP to Review; no census
-  -> M6-CP3-TB-REV-170-... freezes Branch A (activation switch only) or Branch B (receipt OR narrow repair) as exact diffs (W5)
-On failure/blocker: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
-Do not: edit beyond the diff; edit tests/selectors/manifests; run tests; activate; delete the staging parameter; promote CP3/497/D0/H4
+NEXT_TURN: M6-CP3-TB-EXEC-170-P13-CORNER-VISIT-READER-FULL-GATE
+Owner: Test + Benchmark agent, artifact-only full gate; do not rebuild
+Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_169_Adversarial_Review_20261123.md W1-W6 and the frozen TB168 993-row manifest
+Source: 178f17dd59aa9c61c2e6462e2378e3a42b0ee4f7
+Compile: 45113944225; package 14790917101; SHA-256 0432359393d37cf00b9654339c832263f648733237005171ff3a8eb9cfa1ddfd; runtimeExecution=false
+Test comparator: TB169 run 45104059492, artifact 14787082075; 993/993 PASS, CP2 491/491, membership 1074; N1-N3 equivalence for all rows other than 979; row 652 PASS
+Row 979: measure actual typed result; W2 prediction is not an accepted fact; report a new-code outcome; other differences STOP to Review; no census
+Then: M6-CP3-TB-REV-170-P13-CORNER-VISIT-READER-FULL-GATE (separate turn)
+Do not: run CB-189 successor in this turn, modify test source or selectors, activate or promote CP3/497/D0/H4
 ```
 
 ## HISTORY — TB-REV-169 independent review complete; CB-189 was next (2026-11-23 UTC)

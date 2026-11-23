@@ -1,3 +1,7 @@
+## 2026-11-23 — CB-189 frozen corner reader compiled; no runtime
+
+[CB-189 record](.agents/Directional/Architecture_M6_CP3_CB189_P13_Corner_Visit_Reader_Code_Build_Record_20261123.md): applied only the two-source-file amended diff `6e391678…e3b8` in exact source `178f17dd59aa9c61c2e6462e2378e3a42b0ee4f7`. Eight-target GMP/GMPXX [compile run 45113944225](https://github.com/akashskypatel/Directional/actions/runs/45113944225) succeeded, package `14790917101`, ZIP SHA-256 `0432359393d37cf00b9654339c832263f648733237005171ff3a8eb9cfa1ddfd`, `runtimeExecution=false`. No test, benchmark, fixture, selector or production activation. Latest accepted gate remains TB169 993/993, CP2 491/491, membership 1074; stable 66/17/49, debt1, deferred81; CP3/497/D0/H4 held. Next turn only `M6-CP3-TB-EXEC-170-P13-CORNER-VISIT-READER-FULL-GATE`.
+
 ## 2026-11-23 — TB-REV-169 adversarial continuation: CB-189 corner stage predicted clear on row 979
 
 [Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_169_Adversarial_Review_20261123.md) (W1–W6).
