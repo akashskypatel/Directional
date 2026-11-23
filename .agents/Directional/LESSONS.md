@@ -346,6 +346,10 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - Check a shape premise such as "every piece has two boundary ends" against every visit in the receipt. Terminal slits and arcs split inside a face are normal. A labelling that is local to each boundary end needs no special case for them (L4).
 - Check a tie rule against the required positive cases before freezing it. Cuts sharing a boundary point are ordered exactly by where their other ends lie (L5).
 
+- Before freezing a typed STOP, check the published receipt for the configuration it stops; a STOP the witness must hit makes the gate RED by construction (TB-REV-167 adversarial P3).
+- A count that is not exact can still be a sound bound: check which side the consumer enforces before calling it unsafe (F = 1 + E − V + C0 ≤ E + 1; TB-REV-167 adversarial P4).
+- Separate what a switch decides from what it only prints; diagnostics-only repairs stay off the critical path (TB-REV-167 adversarial P5).
+
 ## Diagnostics, classifiers, and causal investigation
 
 - **Read the printer before its label; one decomposition before per-class rules (TB-REV-165 adversarial).**

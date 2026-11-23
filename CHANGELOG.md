@@ -1,3 +1,14 @@
+## 2026-11-23 — TB-REV-167 adversarial continuation; prose CB-187 plan withdrawn, exact adapter frozen
+
+[Adversarial record](.agents/Directional/Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md) (P1–P8).
+- Upheld: TB167 989/989 and the S1 coupling (the region reader counts edge-only arc visits as chords).
+- Withdrawn: the prose CB-187 plan and the v1–v5 candidates. Reasons:
+  - The plan is monolithic and its patch sits off the repository.
+  - Its S5 STOP fires on sphere faces `18-19-24` and `25-27-28`, where arcs 11/12 and 16/17 split face pieces at interior nodes.
+  - Its equality rule contradicts the sound `k+1` ceiling.
+  - S4/S6/S7 are diagnostics only.
+- Frozen: exact CB-187 (`ArcFaceVisits.h`, pure and unwired, plus 4 tests; diff `806a64fe…96ac`) and the 993-row TB168 manifest (`82581dd1…e436`), together with the contracts for the stacked CB-188 region switch and CB-189 corner switch.
+
 ## 2026-11-22 — TB-REV-167 independent Review COMPLETE; CB-187 frozen as Code + Build
 
 [Review WIP](.agents/Directional/Architecture_M6_CP3_TB_REV_167_Face_Cut_Corner_Partition_Helper_Independent_Review_20261122.md) independently verified the TB167 helper gate: 989/989 PASS, CP2 491/491, membership 1070, 984 predecessor N1–N3 logs unchanged, all five new cases PASS; both result archives' complete checksum manifests valid. No stable regression or product promotion. The exact CB-187 switch is not yet frozen. Resume this Review; no successor work began.

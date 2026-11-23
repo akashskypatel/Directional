@@ -1,5 +1,7 @@
 # CB-187 — exact face-cut region and corner reader: Code + Build plan
 
+> **WITHDRAWN (2026-11-23 UTC)** by the [TB-REV-167 adversarial continuation](Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md) (P2–P7). Do not implement. It was prose and monolithic, and it rested on an off-repository patch. Its S5 STOP fires on the sphere witness, and its equality rule contradicts the accepted ceiling. S4/S6/S7 are diagnostics only. It is replaced by the exact CB-187 adapter diff `806a64fe…96ac` and the stacked CB-188/CB-189 contracts.
+
 **Status:** Frozen implementation requirements by TB-REV-167 on 2026-11-22 UTC. This document does **not** accept a code patch, test result, or region plan.
 
 **Turn:** `M6-CP3-CB-187-P13-EXACT-FACE-CUT-READER`.

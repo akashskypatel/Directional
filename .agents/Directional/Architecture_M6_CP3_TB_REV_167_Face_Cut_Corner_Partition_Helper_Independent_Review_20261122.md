@@ -1,5 +1,7 @@
 # TB-REV-167 — independent face-cut corner helper Review (COMPLETE)
 
+> **Continued after handover:** the [adversarial record](Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md) (P1–P8) upholds TB167 acceptance and the S1 reader coupling. It withdraws the prose CB-187 plan, the S5 STOP and count-equality rule, and S4/S6/S7 on the critical path. It freezes an exact CB-187 adapter and a 993-row TB168 manifest.
+
 ## Situation
 
 The independent evidence review accepts the **TB-EXEC-167 helper-only gate**. The new helper remains **unwired**. This Review accepts the independently verified TB167 helper-only evidence and freezes exactly one bounded **Code + Build** successor. It does **not** approve v5 as correct product code. No product, test, build, benchmark, selector, or manifest source was changed in this Review.

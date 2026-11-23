@@ -1,4 +1,36 @@
-## CURRENT — CB-187 exact face-cut reader Code + Build next (2026-11-22 UTC)
+## CURRENT — TB-REV-167 adversarial: exact CB-187 arc-face-visit adapter next (2026-11-23 UTC)
+
+- [x] TB-REV-167 adversarial continuation: [record](.agents/Directional/Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md) (P1–P8).
+  - Upheld: TB167 989/989 and the S1 coupling.
+  - Withdrawn: the prose CB-187 plan, the v1–v5 candidates and the S5 STOP. The STOP fires on sphere faces `18-19-24` and `25-27-28`; the `k+1` ceiling is sound.
+  - S4/S6/S7 are diagnostics only and move to CB-190.
+- [ ] **1 NEXT** `M6-CP3-CB-187-P13-ARC-FACE-VISIT-ADAPTER`: apply exact diff `806a64fe…96ac` (pure, unwired `arc_face_visits` + 4 tests); compile only.
+- [ ] 2 `M6-CP3-TB-EXEC-168-P13-ARC-FACE-VISIT-ADAPTER-FULL-GATE`: 993 rows (manifest `82581dd1…e436`); rows 1–989 = TB167 `14770748728` under N1–N3; membership 1074; no census.
+- [ ] 3 `M6-CP3-TB-REV-168-P13-ARC-FACE-VISIT-ADAPTER-FULL-GATE`: freeze exact CB-188 and CB-189 diffs from contracts R1–R4 and C1–C4.
+- [ ] 4 CB-188 (region reader on visits) → TB-EXEC/REV-169: row 979's four slide faces show chords 4 and owners 5; every other row unchanged.
+- [ ] 5 CB-189 (corner reader via `partition_face_corners`, every cut-side orbit keyed) → TB-EXEC/REV-170: staged plan built, or the next typed stage.
+- [ ] 6 CB-190: S4/S6/S7 diagnostic conformity, off the critical path.
+- [ ] 7 Activation (V3/V4/V5/V10/V11) → TB → V3b → R1 → O48.
+- Held: CP3/497/D0/H4; production sphere `CutSearchExhaustedBeforeCellularity`. Stable 66/17/49, debt1, deferred81.
+
+```
+NEXT_TURN: M6-CP3-CB-187-P13-ARC-FACE-VISIT-ADAPTER
+Owner: implementation agent (Code + Build, compile only)
+Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_167_Adversarial_Review_20261123.md (P1–P8); supersedes the withdrawn plan M6-CP3-CB-187-P13-EXACT-FACE-CUT-READER
+Apply exactly: .agents/Directional/Architecture_M6_CP3_CB187_P13_Arc_Face_Visit_Adapter_Exact.diff
+  SHA-256 806a64feba6d58d6333c4bd14b7ab465eb85b5ec4a6091afaac3cca2e48996ac (+348/−0)
+  new src/geometry/ArcFaceVisits.h -> 1cee9c3f71c1f24bd6ad0411379fd5679f7a4d06f29f5641e7aaf94448747f31 (pure, unwired)
+  tests/FieldAlignedCurveNetworkTests.cpp: 8ccfc38b…1e24 -> bc1f6270c9990c260bcbc881e448a41d34eaa544ae0717ec26f5bd88dee89754
+Build: dispatcher compile, GMP/GMPXX targets incl. directional_surface_cell_producer_tests, runtimeExecution=false
+Then: M6-CP3-TB-EXEC-168-P13-ARC-FACE-VISIT-ADAPTER-FULL-GATE
+  manifest .agents/Directional/gates/Architecture_M6_TB168_P13_Arc_Face_Visit_Adapter_Full_Gate_Case_Manifest.tsv (82581dd14064efe3729923cfd94333ef70113b0bb84e6bb8eabfb2ec61cce436, 993 rows)
+  rules: 993/993 PASS; CP2 491/491; membership 1074; rows 1–989 = TB167 result 14770748728 under N1–N3, zero allowance; rows 990–993 PASS; no census
+  -> M6-CP3-TB-REV-168-P13-ARC-FACE-VISIT-ADAPTER-FULL-GATE (freeze exact CB-188 region switch + CB-189 corner switch from the frozen contracts)
+On failure/blocker: hash mismatch, compile failure or any adapter-test failure -> STATUS BLOCKED, report verbatim, return to Review
+Do not: edit beyond the diff; wire the adapter; change build_regions or build_fragment_corner_incidence; apply any v1–v5 candidate; edit tests to pass; change other selectors/manifests; activate; promote CP3/497/D0/H4
+```
+
+## HISTORY — TB-REV-167 independent review; prose CB-187 plan (withdrawn by the adversarial continuation) (2026-11-22 UTC)
 
 - [x] CB-186 pure face-cut corner helper and five test cases compiled, source `b500c425063dbc5c09f13cd08b811cacba0e3afe`, package `14769469723`, GMP/GMPXX.
 - [x] TB-EXEC-167: [TB167 report](.agents/Directional/Architecture_M6_CP3_TB167_P13_Face_Cut_Corner_Partition_Helper_Full_Gate_Execution_Report_20261122.md); 989/989 PASS, CP2 491/491, 1070 membership, TB166 rows 1–984 unchanged under N1–N3, last five PASS, no census or rebuild.
@@ -6,12 +38,12 @@
 - [ ] **Measured S1 follow-up (TB167 staged, unpromoted):** TB167 row979 independently confirms four affected faces: `6-8-9` (edge-only arc1), `16-20-21` (arc3), `32-33-34` (arc26), `40-45-46` (arc28). Every face has 4 face-interior piece visits plus 1 edge-only visit, while the original region diagnostic reports 5 trace chords and 6 expected/owned fragments. Raw log SHA-256 `9ba93a4f1d005b84d1d39f771f2c8764bc31d415a5e1c9e94e65d8b421f0b471`. This is a measured staged discrepancy, not a new accepted-green failure. The old owner labels are measured; the true count of planar source-face fragments remains unproved without the independent exact contact graph. Do not treat an equal erroneous fragment count and owner count as evidence of a correct partition.
 - [ ] **S6 vertex-end regression test still required:** The CB-187 requirements assign forward/left edge j and reverse/right edge (j+2) at a true directed source-vertex exit. The code remains uncompiled and unexecuted. Add a real edge-to-vertex path with both traversal directions and face orientations; prove the exact two incident edge owners or report a typed STOP. No stable regression has been observed.
 - [ ] **CB-187 exact negative tests — Code + Build scope:** Reuse exact published `GlobalTopologyArc.sourcePath` and its grouping. Derive the independent local graph fragment count `F=1+E-V+C0`. Require exact node/crossing/overlap validation. Extend fragment reconciliation to detect deficits as well as excess owners after the correct expected count is independently proved. Verify the reversed vertex-exit edge assignment (forward→edge j, reverse→edge j+2), including reversed travel and source face orientation. TB167 `exit=-` is not proof of a face-interior endpoint: inspect canonical `sourcePath`. The existing source-contact producer test is not a plan oracle. Preserved independent source reasoning `/Directional/Recovery/TB_REV_167_S5_S6_Exact_Interior_Graph_And_Vertex_Sides_Review_20261122.md`, SHA-256 `2ed4551c94713d80e7932c1a93431c46635229231e1ab37ea81b3705692c0e8c`. Freeze CB-187 only after a verified exact implementation and strict falsifiers, including full staged-sphere disc certification. A typed unsupported interior graph must remain RED in that gate. No changes to accepted 989 selector rows, stable 66/17/49, debt1, deferred81.
-- [ ] **NEXT (one Code + Build turn):** `M6-CP3-CB-187-P13-EXACT-FACE-CUT-READER`. Implement S1–S7 from the [frozen plan](.agents/Directional/Architecture_M6_CP3_CB187_P13_Exact_Face_Cut_Reader_Code_Build_Plan_20261122.md). Preserve TB167 accepted header plus 989 rows byte-identically (SHA-256 `5c0841993d9b9c5537a3b78a3f7df39e61ee82e09b1ce9b4be3f4510ff088c50`); keep strict staged-sphere row990, add non-vacuous negative rows for interior-node STOP, source-vertex exit, later-pair conflict, and clipped-edge mismatch replay. Build/link with GMP/GMPXX through GitHub compile workflow ONLY (`runtimeExecution=false`), then package. No test runtime in CB. Candidate v5 recovery ZIP SHA-256 `23fad7c70ac0e815e1011de0ff4930f9736af93a3617dc199d372542dda82194` is uncompiled reference and must be corrected before any claimed success.
+- [ ] ~~NEXT~~ WITHDRAWN (P2–P7) `M6-CP3-CB-187-P13-EXACT-FACE-CUT-READER`. Implement S1–S7 from the [frozen plan](.agents/Directional/Architecture_M6_CP3_CB187_P13_Exact_Face_Cut_Reader_Code_Build_Plan_20261122.md). Preserve TB167 accepted header plus 989 rows byte-identically (SHA-256 `5c0841993d9b9c5537a3b78a3f7df39e61ee82e09b1ce9b4be3f4510ff088c50`); keep strict staged-sphere row990, add non-vacuous negative rows for interior-node STOP, source-vertex exit, later-pair conflict, and clipped-edge mismatch replay. Build/link with GMP/GMPXX through GitHub compile workflow ONLY (`runtimeExecution=false`), then package. No test runtime in CB. Candidate v5 recovery ZIP SHA-256 `23fad7c70ac0e815e1011de0ff4930f9736af93a3617dc199d372542dda82194` is uncompiled reference and must be corrected before any claimed success.
 - [ ] **After CB-187 COMPLETE only:** TB-EXEC-168 artifact-only full gate → independent TB-REV-168. Conditional CB-188 activation / TB169 / CB-189 V3b / R1 / O48 remain future, not authorized to start now.
 - Held: G2/G3 and RA-275 S4a, `SourceFaceCarriesMultipleTraceCuts` at `6-8-9`, sphere production `CutSearchExhaustedBeforeCellularity`, CP3/497/D0/H4. Stable 66/17/49, debt1, deferred81.
 
 ```
-CURRENT_TURN: M6-CP3-CB-187-P13-EXACT-FACE-CUT-READER
+SUPERSEDED (P2–P7) — CURRENT_TURN: M6-CP3-CB-187-P13-EXACT-FACE-CUT-READER
 Owner: Code + Build
 Authority: .agents/Directional/Architecture_M6_CP3_CB187_P13_Exact_Face_Cut_Reader_Code_Build_Plan_20261122.md
 Run: 45063416334; result artifact 14770748728; source b500c425063dbc5c09f13cd08b811cacba0e3afe
