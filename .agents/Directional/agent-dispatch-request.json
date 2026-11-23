@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb189-corner-reader-apply-20261123-a",
-  "mailbox_key": "m6-cp3-cb189-corner-reader-apply",
-  "file_id": "14lGB01AIzOBHnzXAgGwu9ObMLAdJsL5w",
-  "patch_sha256": "131185200bfa8eac90befacfc6b90612a60e869730514ed73420b8af82039b77",
-  "base_sha": "cf93b212a5c47deb11d6c13b2baa7342a330302d",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(surface-cells): consume exact corner cut visits",
-  "retention_days": 14
+  "operation": "compile",
+  "request_id": "m6-cp3-cb189-compile-20261123-a",
+  "mailbox_key": "m6-cp3-cb189-compile",
+  "source_sha": "178f17dd59aa9c61c2e6462e2378e3a42b0ee4f7",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb189-corner-reader"
 }
