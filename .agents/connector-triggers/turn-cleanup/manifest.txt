@@ -1,0 +1,2 @@
+# TB171 snapshot trigger only; all other legacy paths remain unchanged.
+.agents/connector-triggers/source-snapshot/tb171-closeout-20261123.txt
