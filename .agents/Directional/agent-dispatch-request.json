@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb188-region-visit-reader-apply-20261123-a",
-  "mailbox_key": "m6-cp3-cb188-region-visit-reader-apply",
-  "file_id": "1ucqgrZBV3FPlK52FL0Jpa9f_iWmkXyMv",
-  "patch_sha256": "6d5bae8a945f08b1f5b43c7dfe46d86c40561992517376a974695d43f1ca6eeb",
-  "base_sha": "7d6aaf65f7178cd514afcc38d36397b8e7da575c",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): use exact face visits in region reader (CB188)",
-  "retention_days": 14
+  "operation": "compile",
+  "request_id": "m6-cp3-cb188-region-visit-reader-compile-20261123-a",
+  "mailbox_key": "m6-cp3-cb188-region-visit-reader-compile",
+  "source_sha": "b2e976f204fa5b2988a9cbe5a77defd106a96aad",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb188-region-visit-reader"
 }
