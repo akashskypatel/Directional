@@ -1,0 +1,2 @@
+# M6-CP3-TB-EXEC-175 temporary source snapshot marker only
+.agents/connector-triggers/source-snapshot/m6-cp3-tb175-20261123-1755.txt
