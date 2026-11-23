@@ -1,2 +1,0 @@
-# CB-198 cleanup; retain dispatcher slot, reusable workflows, workflow-mailbox
-.agents/connector-triggers/source-snapshot/m6-cp3-cb198-20261123-2223.txt

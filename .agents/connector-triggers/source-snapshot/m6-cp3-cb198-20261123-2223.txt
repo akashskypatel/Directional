@@ -1,5 +1,0 @@
-Turn: M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT
-Purpose: one source snapshot for code/build turn review
-Entry status commit: 6c105a634960ab12f518dd3e8fab86692c52c801
-Requested UTC: 2026-11-23T22:23:00Z
-Read mode: snapshot
