@@ -147,6 +147,19 @@ enum class GlobalTopologyPlanErrorCode : std::uint8_t {
   RegionSourceFaceOwningFragmentMissing = 36,
   RegionInteriorVertexCornerOwnerMissing = 37,
   InvalidCutGraphBinding = 38,
+  SourceFaceCutPartitionFailed = 39,
+  SourceFaceCutOrbitNotOwned = 40,
+};
+
+// One-to-one public mirror of detail::FaceCutPartitionFailure. The public
+// error contract must not expose a private source-header type.
+enum class FaceCutPartitionReason : std::uint8_t {
+  MalformedBoundaryPosition = 0,
+  CutAlongOneEdge = 1,
+  NoBoundaryEndpoint = 2,
+  UnorderedSharedEndpoint = 3,
+  CrossingCuts = 4,
+  InconsistentSideOrbits = 5,
 };
 
 enum class UncutFaceComponentSeedState : std::uint8_t {
@@ -540,6 +553,7 @@ struct GlobalTopologyPlanError {
   std::optional<authority::SourceEdgeTopologyKey> sourceEdge;
   std::optional<authority::SourceFaceTopologyKey> sourceFace;
   std::optional<authority::SourceFaceTopologyKey> secondSourceFace;
+  std::optional<FaceCutPartitionReason> faceCutPartitionReason;
   std::optional<authority::FieldSingularityId> singularity;
   std::optional<authority::SourceVertexId> sourceVertex;
   std::optional<int> eulerCharacteristic;
