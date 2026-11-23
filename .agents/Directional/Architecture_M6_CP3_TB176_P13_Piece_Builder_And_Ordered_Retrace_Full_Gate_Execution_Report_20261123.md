@@ -1,35 +1,44 @@
-# TB-EXEC-176 — immutable full-gate execution (in progress)
+# TB-EXEC-176 — immutable piece-builder and ordered-retrace full gate (2026-11-23 UTC)
 
 ## Situation
 
-Canonical turn `M6-CP3-TB-EXEC-176-P13-PIECE-BUILDER-AND-ORDERED-RETRACE-FULL-GATE` is **IN PROGRESS**. The immutable test-and-benchmark operation was dispatched. As of 2026-11-23T20:54:00Z, the terminal workflow mailbox has not been published. **No TB176 runtime result, test count, accepted comparison, or pass/fail verdict is claimed.** Do not start the separate TB-REV-176 review until this turn is closed.
+**COMPLETE as an execution turn; GATE REJECTED: 994/1001 PASS, seven existing RED.** All 1,001 required cases executed. No required case was missing, skipped, duplicated, or abnormal. The seven failures remained at the same historical test identities and assertion sites. The direct producer is not accepted, and the separate TB-REV-176 must review the immutable evidence before any successor code turn.
 
-## Background — frozen evidence
+## Background — exact authority and verified artifacts
 
-- Repository: `akashskypatel/Directional`; source branch `agent/surface_cell_quad/p5-recover-bridge-healing`; PR #8 open and draft.
-- Immutable semantic source: `8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3`.
-- GMP/GMPXX compiled package: artifact `14859356205` from run `45255304770`; outer SHA-256 `e6111ff21530f107ab8b1db724155aa2c4fbbe4a2765342fbfabbd4a9c4fc664`. Independently downloaded and checked; 28/28 internal checksums valid. Package metadata: source archive SHA-256 `44f478b25abf63f79d77b2c84fd0e3b70bd61b259f3c6323a377daf93cab278f`; root manifest SHA-256 `4d6523cc38f6a5051f44589eae6a42016a61fe8b1f1831a6dc381ba414cc3c26`; compilation boundary `runtimeExecution=false`.
-- Frozen 1,001-case gate manifest: `.agents/Directional/gates/Architecture_M6_TB176_P13_Piece_Builder_And_Ordered_Retrace_Full_Gate_Case_Manifest.tsv`; SHA-256 `0f85400ff9713fc8a835f308304ded1db9830e668211bab71c88d580b2e84642`; first 1,000 entries byte-equivalent to TB175. Deferred membership ledger SHA-256 `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`; predicted 1,082 total members (1,001 gated plus 81 deferred).
-- Immutable TB175 reference: run `45233825958`, result artifact `14849271506`, SHA-256 `be7a0f783d0afb025ccee2353921a765c340766340553f2d70b4b5c32992b347`. Downloaded and verified 2,008/2,008 checksum entries; recorded result 993/1,000 PASS plus seven known RED.
-- Source-snapshot run `45262742839` fetched exact commit `a523df11e8a7b19b070aa0463df0df564d03994b`; ZIP artifact `14861835422`, SHA-256 `947af3ac4ced492ed108e06c429d3a9b0fac8f36a32790cd9d171353012c3459`; extracted source archive SHA-256 `c73e94c9aacd7efcee350ee5c08809c4db9cfc27605f2941b972d8d57529adca`.
-- Test harness SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`.
+- Canonical turn: `M6-CP3-TB-EXEC-176-P13-PIECE-BUILDER-AND-ORDERED-RETRACE-FULL-GATE`.
+- Semantic source: `8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3`. Existing GMP/GMPXX compile-only [run 45255304770](https://github.com/akashskypatel/Directional/actions/runs/45255304770), package `14859356205`, outer ZIP SHA-256 `e6111ff21530f107ab8b1db724155aa2c4fbbe4a2765342fbfabbd4a9c4fc664`. Package verification: 28/28 checksums. Source archive SHA-256 `44f478b25abf63f79d77b2c84fd0e3b70bd61b259f3c6323a377daf93cab278f`. Root package manifest SHA-256 `4d6523cc38f6a5051f44589eae6a42016a61fe8b1f1831a6dc381ba414cc3c26`.
+- Frozen 1001-case manifest: `gates/Architecture_M6_TB176_P13_Piece_Builder_And_Ordered_Retrace_Full_Gate_Case_Manifest.tsv`, SHA-256 `0f85400ff9713fc8a835f308304ded1db9830e668211bab71c88d580b2e84642`. Off-gate deferred ledger SHA-256 `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`.
+- Dispatcher request: `m6-cp3-tb176-exec-20261123-a`, commit `a8ca498eaf18dd370d1e7eaec0332ab24a01da74`. Executor authority `a523df11e8a7b19b070aa0463df0df564d03994b`. Harness SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`.
+- Immutable test [run 45263429563](https://github.com/akashskypatel/Directional/actions/runs/45263429563), runtime job `138004160862`, mailbox `.workflow-mailbox/m6-cp3-tb176-piece-builder-ordered-retrace-full-gate/latest.json` on orphan branch `workflow-mailbox`. Mailbox event and source SHAs match the request and compiled source. GitHub run conclusion: failure, because the seven mandatory controls remain RED.
+- Result artifact **`14861444963`**, ZIP SHA-256 **`202cb81282d9e8a0bb6b711020af80450e407feb12b71de613b1be8cca110453`**. Independent complete internal SHA-256 verification **2010/2010 PASS**. Diagnostic-log artifact `14862267054`, ZIP SHA-256 `e8637354a176041c88508794411cf06e2805d412fcd0f34abc26c8b6cd5f1d37`.
+- Immutable TB175 reference: [run 45233825958](https://github.com/akashskypatel/Directional/actions/runs/45233825958), result `14849271506`, ZIP SHA-256 `be7a0f783d0afb025ccee2353921a765c340766340553f2d70b4b5c32992b347`, **2008/2008** member hashes valid. TB175 measured 993/1000 PASS and seven existing RED.
 
-## Assessment — active operation
+## Assessment — independent execution and comparison
 
-The validated `test_benchmark` request was written to the durable `.agents/Directional/agent-dispatch-request.json` at commit `a8ca498eaf18dd370d1e7eaec0332ab24a01da74`. Request ID `m6-cp3-tb176-exec-20261123-a`; mailbox key `m6-cp3-tb176-piece-builder-ordered-retrace-full-gate`; executor SHA `a523df11e8a7b19b070aa0463df0df564d03994b`. This request must not be dispatched a second time merely because the final mailbox is not yet present.
+| Measure | TB175 | TB176 |
+|---|---:|---:|
+| Planned / executed | 1000 / 1000 | **1001 / 1001** |
+| PASS / RED | 993 / 7 | **994 / 7** |
+| Missing / skipped / duplicate / abnormal | 0 / 0 / 0 / 0 | **0 / 0 / 0 / 0** |
+| Bad required controls / unexpected PASS / wrong RED site | 7 / 0 / 0 | **7 / 0 / 0** |
+| Gated / deferred membership | 1000 / 81 | **1001 / 81** |
+| Internal result SHA-256 checks | 2008 / 2008 | **2010 / 2010** |
 
-A source-read procedure miss occurred: repository files were read through the connector before the required snapshot-mode gate. This was recorded and corrected by taking one exact workflow snapshot. No semantic source, tests, selectors, fixtures, workflows, or binaries were changed in this test turn. The snapshot trigger and request file are control-plane changes only.
+The first **1000/1000** TB176 ledger entries match TB175 field by field, excluding the expected log-content SHA values. The independent comparison read all 1000 corresponding raw process logs. **778 logs are byte-identical; 222 differ only by allowed Google Test elapsed-time or line-ending normalization (N1/N2); zero need N3 reordering; zero are unapproved.** In particular, row179 retains the full fragment diagnostic record order without a new reordering exception. The 1,081 existing membership entries are unchanged. The sole new member is row1001, `ExactSourcePathRetrace.PathRunningOverAStretchTwiceDoesNotRetrace`, from the producer test executable. It executed once and **PASS**.
 
-## Recommendation — resume the SAME turn
+The seven historical RED rows are **445, 652, 653, 656, 658, 660, 786**. They retain their TB175 identities, verdicts, first failure sites, and normalized raw diagnostic text. Row652 still fails at production with `RegionElectedCutComponentEmpty`; the later staged row979 remains diagnostic-only with `RegionContainsInteriorSingularity` at source vertex8. The candidate CP2 total remains **490/491**, below the separately accepted **491/491**. Neither the row1001 helper PASS nor compilation proves A2a producer selection or runtime repair.
 
-1. Read the authoritative terminal mailbox at `.workflow-mailbox/m6-cp3-tb176-piece-builder-ordered-retrace-full-gate/latest.json` on orphan ref `workflow-mailbox`. Validate the request event SHA `a8ca498eaf18dd370d1e7eaec0332ab24a01da74`, semantic source `8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3`, and successful artifact publication. If not yet present, allow the existing workflow to complete; do not issue a duplicate request.
-2. Use its run ID to fetch jobs and artifact inventory once; download the immutable result. Verify outer and all internal hashes, execution boundary, exact 1,001 executions, 1,082 membership, no rebuild/mutation, and all seven historical RED sites.
-3. Compare every one of the first 1,000 raw process logs and ledger fields against TB175. Permit only N1/N2 timing and line-ending variation and N3 whole-record reorder of the exact 24 row-179 fragment records. Validate new row 1001 separately. The predicted 994 PASS and seven RED is not evidence.
-4. Record actual result, historical regression classification, independent comparisons, artifacts and hashes in this report, `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, and `Future_Chat_Session_Handoff.md` as required. Carry out temporary trigger cleanup and the document-drift audit. Do not start TB-REV-176.
-5. Direct-write repository-root `STATUS` as the final repository action, `COMPLETE` only once the execution and closeout evidence are verified; otherwise keep the same turn `IN_PROGRESS`.
+The `execution-boundary.json` record confirms exact artifact/source, `postflight=true`, `error=ValueError: required controls failed`, harness exit **90**, `configure=false`, `compile=false`, `relink=false`, and `benchmark=false`. The workflow had no build or Drive-apply activity. No source, test, fixture, benchmark, selector, or acceptance change was authorized or made in this test execution.
 
-## Verified workflow and temporary-state cleanup (same turn)
+**Regression classification:** existing TB170 accepted-green mechanical recurrence; no new stable event, category, or recurrence. Historical totals remain **67 events / 17 categories / 50 recurrences**, produced-witness debt **1**, deferred **81**. Accepted TB169 (993/993) and CP2 (491/491) remain separate authorities. No CP3/497/D0/H4 or production promotion is claimed.
 
-- [Run 45263429563](https://github.com/akashskypatel/Directional/actions/runs/45263429563) was confirmed **in progress**. Event SHA `a8ca498eaf18dd370d1e7eaec0332ab24a01da74` matches the request. Validator and parser jobs passed. Runtime job `138004160862` reached `Execute immutable artifact-only gate` and remains unverified until terminal output. Compile and Drive-apply jobs were skipped.
-- Cleanup [run 45264413782](https://github.com/akashskypatel/Directional/actions/runs/45264413782) completed successfully at commit `1e1de5ba04e67b8c337dc483c7f9364369bad848`. Artifact `14862695525` confirms removal of the sole TB176 temporary snapshot marker and `runtimeExecution=false`; the durable dispatcher slot and orphan mailbox were not listed for deletion.
-- Continue this SAME turn from its running process. Do not trigger the same test again merely because the terminal mailbox is pending. A response timer does not establish runtime success or failure.
+## Control-plane cleanup and procedure evidence
+
+- The exact source snapshot used run `45262742839`, artifact `14861835422`, frozen at `a523df11e8a7b19b070aa0463df0df564d03994b`. An initial direct-read-before-snapshot sequence violated the project's read-order rule; the original attempt documented it. The corrected snapshot was verified and used for the remaining analysis. This is a procedure error, not a runtime defect.
+- Temporary snapshot trigger cleanup completed with [run 45264413782](https://github.com/akashskypatel/Directional/actions/runs/45264413782) and commit `1e1de5ba04e67b8c337dc483c7f9364369bad848`, result artifact `14862695525`. The durable dispatcher request and orphan mailbox remain owned by the repository.
+- This continuation used read-only local archive and text comparison. It did not execute Directional binaries. The tool-call ledger spans a prior ChatGPT session and is incomplete; no exact all-session count is claimed.
+
+## Recommendation
+
+The **exact next separate turn is `M6-CP3-TB-REV-176`**, an independent Review. It must reopen the immutable TB175 and TB176 archives, repeat all 1000 inherited ledger/log comparisons, verify new row1001 and its negative-control premise, inspect all seven unchanged mechanical RED witnesses, and decide CB-198 selection-receipt authority separately. Do not start CB-198, CB-199, any production wiring, or CP3/497/D0/H4 promotion during this execution turn.
