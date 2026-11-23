@@ -1,0 +1,2 @@
+Turn: M6-CP3-TB-EXEC-176-P13-PIECE-BUILDER-AND-ORDERED-RETRACE-FULL-GATE
+Purpose: exact source snapshot for TB176 read-only verification.
