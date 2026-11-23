@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb194-durable-handoff-20261123-a",
-  "mailbox_key": "m6-cp3-cb194-durable-handoff-apply",
-  "file_id": "12WRsy8DBdGwNo4JZ1aQ9IqnuNaK730Oi",
-  "patch_sha256": "c12fca5d16ad90694dfea6319e3eaa055a1668a11258b1be4a8a2390046b7c4a",
-  "base_sha": "fae9eb71bb5806d71901cc2ccb8c925201be0c0a",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB194 compile evidence and handoff to TB173",
+  "operation": "test_benchmark",
+  "request_id": "m6-cp3-tb173-shared-edge-oracle-20261123-a",
+  "mailbox_key": "m6-cp3-tb173-shared-edge-oracle-full-gate",
+  "executor_sha": "fae9eb71bb5806d71901cc2ccb8c925201be0c0a",
+  "semantic_source_sha": "fae9eb71bb5806d71901cc2ccb8c925201be0c0a",
+  "turn_id": "M6-CP3-TB-EXEC-173-P13-SHARED-EDGE-ORACLE-FULL-GATE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "14820355596",
+    "EXPECTED_SOURCE_SHA": "fae9eb71bb5806d71901cc2ccb8c925201be0c0a",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "817583b75f8d9a5f7b9e7300426756d1044d535e9f63ebf3ec5d5cf88fe45ec6",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "b4b812c0c63a21267bff49f994eddd30fc8a49ab25d9001b06fdda35444eb35a",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "386205e0cb51c7a85f9c657454cb54c233e6f4a8118510c054d88c65a92d0985",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB173_P13_Shared_Edge_Oracle_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "b54de0b28dc646b465daae0d40dd7874f550567fb904647c7dff36a4f2e2ff6e",
+    "EXPECTED_CASE_COUNT": "996",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  },
+  "artifact_prefix": "m6-cp3-tb173-shared-edge-oracle-full-gate",
   "retention_days": 14
 }
