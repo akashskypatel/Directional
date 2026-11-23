@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb196-compile-20261123-a",
-  "mailbox_key": "m6-cp3-cb196-compile",
-  "source_sha": "f4acd5d1f29d55f36c427e88fed8f5ca09ae7ee5",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "agent-cb196-compile"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb196-docs-closeout-20261123-a",
+  "mailbox_key": "m6-cp3-cb196-docs",
+  "file_id": "1LoND5RHaqBbBE4j76h0ZACVb05yLKxqc",
+  "patch_sha256": "a3cfcbb672748cc9875c1d216b28b9db57443be9c2945188e88fa3b0f0ec9eb3",
+  "base_sha": "da8dfa5152f6a3b9805ed170c1182814ee95812c",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB196 build and hand off immutable TB175 package",
+  "retention_days": 14
 }
