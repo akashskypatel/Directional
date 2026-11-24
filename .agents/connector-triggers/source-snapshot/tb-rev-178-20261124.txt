@@ -1,1 +1,0 @@
-M6-CP3-TB-REV-178: immutable source snapshot for runtime-free review and documentation closeout.
