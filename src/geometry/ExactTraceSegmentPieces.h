@@ -17,7 +17,7 @@
 // The exact source pieces of a traced segment, read from the candidate trace
 // record alone. Both the curve-network stage and the embedded-graph stage
 // read traces this way, so it sits below both.
-namespace directional::geometry::embedded_graph_topology_detail {
+namespace directional::geometry::exact_trace_segment_detail {
 
 /**
  * Exact barycentric coordinates of a point of one source face, listed in that
@@ -192,4 +192,4 @@ using FaceChartPoint = std::array<authority::FieldExactRational, 3>;
              : std::nullopt;
 }
 
-} // namespace directional::geometry::embedded_graph_topology_detail
+} // namespace directional::geometry::exact_trace_segment_detail

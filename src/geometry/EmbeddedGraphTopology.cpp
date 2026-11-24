@@ -307,7 +307,7 @@ std::optional<authority::ExactSourcePath> exact_trace_path(
     const auto &segment = trace.segments[segmentIndex];
     const auto first = authority::canonical_exact_source_boundary_point(
         segment.entryPoint);
-    const auto second = exact_trace_segment_end(trace, segmentIndex);
+    const auto second = exact_trace_segment_detail::exact_trace_segment_end(trace, segmentIndex);
     if (!first.has_value() || !second.has_value()) return std::nullopt;
     path.push_back(authority::ExactSourceSupportPiece{
         authority::SourceFaceInteriorSupport{segment.sourceFace}, *first,
@@ -626,8 +626,8 @@ MandatoryEdgeSplit split_mandatory_edge_at_terminals(
   return pieces;
 }
 
-int face_chart_orientation(const FaceChartPoint &a, const FaceChartPoint &b,
-                           const FaceChartPoint &c) {
+int face_chart_orientation(const exact_trace_segment_detail::FaceChartPoint &a, const exact_trace_segment_detail::FaceChartPoint &b,
+                           const exact_trace_segment_detail::FaceChartPoint &c) {
   const authority::FieldExactRational determinant =
       a[0] * (b[1] * c[2] - b[2] * c[1]) - a[1] * (b[0] * c[2] - b[2] * c[0]) +
       a[2] * (b[0] * c[1] - b[1] * c[0]);
@@ -638,8 +638,8 @@ int face_chart_orientation(const FaceChartPoint &a, const FaceChartPoint &b,
 }
 
 std::optional<std::vector<std::size_t>> face_chart_counter_clockwise_ray_order(
-    const FaceChartPoint &origin, const std::vector<FaceChartPoint> &targets) {
-  for (const FaceChartPoint &target : targets) {
+    const exact_trace_segment_detail::FaceChartPoint &origin, const std::vector<exact_trace_segment_detail::FaceChartPoint> &targets) {
+  for (const exact_trace_segment_detail::FaceChartPoint &target : targets) {
     if (target == origin) return std::nullopt;
   }
   std::vector<std::size_t> order(targets.size());
@@ -651,8 +651,8 @@ std::optional<std::vector<std::size_t>> face_chart_counter_clockwise_ray_order(
   // clockwise half. Two collinear rays leave in the same direction exactly
   // when the second displacement is a positive multiple of the first.
   const auto zero = authority::FieldExactRational::from_integer(0);
-  const auto same_direction = [&](const FaceChartPoint &first,
-                                  const FaceChartPoint &second) {
+  const auto same_direction = [&](const exact_trace_segment_detail::FaceChartPoint &first,
+                                  const exact_trace_segment_detail::FaceChartPoint &second) {
     for (std::size_t index = 0U; index < 3U; ++index) {
       const authority::FieldExactRational step = first[index] - origin[index];
       if (step.is_zero()) continue;
@@ -763,20 +763,20 @@ GlobalTopologyPlanError face_contact_error(
 
 } // namespace
 
-std::optional<FaceChartPoint> trace_segment_canonical_entry(
+std::optional<exact_trace_segment_detail::FaceChartPoint> trace_segment_canonical_entry(
     const FieldAlignedCandidateTrace &trace, const std::size_t segment) {
   if (segment >= trace.segments.size()) return std::nullopt;
-  return canonical_boundary_barycentric(trace.segments[segment].sourceFace,
+  return exact_trace_segment_detail::canonical_boundary_barycentric(trace.segments[segment].sourceFace,
                                         trace.segments[segment].entryPoint);
 }
 
-std::optional<FaceChartPoint> trace_segment_canonical_exit(
+std::optional<exact_trace_segment_detail::FaceChartPoint> trace_segment_canonical_exit(
     const FieldAlignedCandidateTrace &trace, const std::size_t segment) {
   if (segment >= trace.segments.size()) return std::nullopt;
   const FieldAlignedCandidateTraceSegment &current = trace.segments[segment];
   if (current.edgeTransitExit.has_value()) return std::nullopt;
   if (segment + 1U < trace.segments.size()) {
-    return canonical_boundary_barycentric(
+    return exact_trace_segment_detail::canonical_boundary_barycentric(
         current.sourceFace, trace.segments[segment + 1U].entryPoint);
   }
   if (trace.terminalContact.has_value()) {
@@ -786,7 +786,7 @@ std::optional<FaceChartPoint> trace_segment_canonical_exit(
     return trace.terminalContact->barycentric;
   }
   if (trace.terminalPoint.has_value()) {
-    return canonical_boundary_barycentric(current.sourceFace,
+    return exact_trace_segment_detail::canonical_boundary_barycentric(current.sourceFace,
                                           *trace.terminalPoint);
   }
   return std::nullopt;
@@ -870,11 +870,11 @@ bool carrier_contact_is_mutual(const FieldAlignedCandidateTrace &ending,
 
 std::optional<authority::FieldExactRational> trace_segment_contact_parameter(
     const FieldAlignedCandidateTrace &trace, const std::size_t segment,
-    const FaceChartPoint &point) {
+    const exact_trace_segment_detail::FaceChartPoint &point) {
   const auto entry = trace_segment_canonical_entry(trace, segment);
   const auto exit = trace_segment_canonical_exit(trace, segment);
   if (!entry.has_value() || !exit.has_value()) return std::nullopt;
-  return face_chart_segment_parameter(*entry, *exit, point);
+  return exact_trace_segment_detail::face_chart_segment_parameter(*entry, *exit, point);
 }
 
 std::pair<std::size_t, std::size_t> trace_cut_segment_range(
@@ -894,7 +894,7 @@ static std::optional<authority::ExactSourcePoint> exact_trace_interior_point(
       !(t < one)) {
     return std::nullopt;
   }
-  FaceChartPoint point = *entry;
+  exact_trace_segment_detail::FaceChartPoint point = *entry;
   for (std::size_t index = 0U; index < 3U; ++index) {
     point[index] = (*entry)[index] + t * ((*exit)[index] - (*entry)[index]);
   }
@@ -940,7 +940,7 @@ std::optional<authority::ExactSourcePath> exact_trace_path_between(
                   segment.entryPoint);
     const auto finish = segmentIndex + 1U == end && second.parameter.has_value()
                             ? exact_trace_interior_point(trace, second)
-                            : exact_trace_segment_end(trace, segmentIndex);
+                            : exact_trace_segment_detail::exact_trace_segment_end(trace, segmentIndex);
     if (!start.has_value() || !finish.has_value()) return std::nullopt;
     path.push_back(authority::ExactSourceSupportPiece{
         authority::SourceFaceInteriorSupport{segment.sourceFace}, *start,
@@ -960,7 +960,7 @@ std::optional<authority::ExactSourcePath> exact_trace_piece_path_between(
   authority::ExactSourcePath path;
   std::vector<std::size_t> counts;
   for (std::size_t segmentIndex = begin; segmentIndex < end; ++segmentIndex) {
-    auto pieces = exact_trace_segment_pieces(trace, segmentIndex);
+    auto pieces = exact_trace_segment_detail::exact_trace_segment_pieces(trace, segmentIndex);
     if (!pieces.has_value()) return std::nullopt;
     const bool clipFirst = segmentIndex == begin && first.parameter.has_value();
     const bool clipLast = segmentIndex + 1U == end && second.parameter.has_value();
@@ -1084,7 +1084,7 @@ FaceContactNodeResult collect_face_contact_nodes(
   for (const auto &[node, face] : faces) {
     const std::set<authority::TraceId> &ends = ending[node];
     if (ends.empty()) return face_contact_error(kInvalid, face, std::nullopt);
-    std::optional<FaceChartPoint> point;
+    std::optional<exact_trace_segment_detail::FaceChartPoint> point;
     for (const authority::TraceId id : ends) {
       const FieldAlignedCandidateTrace *trace = find_trace(network, id);
       if (trace == nullptr || !trace->terminalContact.has_value() ||
@@ -2266,7 +2266,7 @@ source_face_point_barycentric(
   return orientedBarycentric;
 }
 
-std::optional<FaceChartPoint> exact_source_point_barycentric(
+std::optional<exact_trace_segment_detail::FaceChartPoint> exact_source_point_barycentric(
     const SourceFaceRecord &face, const authority::ExactSourcePoint &point) {
   if (const auto *vertex = std::get_if<authority::SourceVertexId>(&point)) {
     return source_vertex_barycentric(face, *vertex);
@@ -3182,14 +3182,14 @@ RotationBuildResult build_rotation_system(
         }
         if (canonicalCorner[corner] >= 3U) return unsupported(std::nullopt);
       }
-      const auto oriented = [&](const FaceChartPoint &point) {
-        FaceChartPoint result = point;
+      const auto oriented = [&](const exact_trace_segment_detail::FaceChartPoint &point) {
+        exact_trace_segment_detail::FaceChartPoint result = point;
         for (std::size_t corner = 0U; corner < 3U; ++corner) {
           result[corner] = point[canonicalCorner[corner]];
         }
         return result;
       };
-      std::vector<FaceChartPoint> targets;
+      std::vector<exact_trace_segment_detail::FaceChartPoint> targets;
       targets.reserve(outgoing.size());
       for (const auto incidence : outgoing) {
         const auto arcIt = arcById.find(incidence.arc);

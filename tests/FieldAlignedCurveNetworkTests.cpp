@@ -70,7 +70,7 @@ using directional::geometry::SurfaceCellRail;
 using directional::geometry::SurfaceCellRailKind;
 using directional::geometry::SurfaceCellTracingOptions;
 namespace embedded = directional::geometry::embedded_graph_topology_detail;
-
+namespace trace_segment = directional::geometry::exact_trace_segment_detail;
 TriMesh make_square_mesh(const bool reverseFaceRows = false) {
   Eigen::MatrixXd vertices(4, 3);
   vertices << 0.0, 0.0, 0.0,
@@ -8242,7 +8242,7 @@ void append_retraced_trace_selection_receipt(
   for (const auto &trace : traces) {
     authority::ExactSourcePath path;
     for (std::size_t segment = 0U; segment < trace.segments.size(); ++segment) {
-      const auto pieces = embedded::exact_trace_segment_pieces(trace, segment);
+      const auto pieces = trace_segment::exact_trace_segment_pieces(trace, segment);
       if (!pieces.has_value() || pieces->empty() ||
           (!path.empty() && path.back().second != pieces->front().first)) {
         out << ";retracedTraceSelection=pathUnavailable{trace="
@@ -9012,7 +9012,7 @@ std::optional<std::vector<Cp4cOracleFragment>> cp4c_oracle_fragments(
         if (terminalContact) {
           const auto terminal =
               cp4c_oracle_trace_segment_exit(trace, segmentIndex);
-          if (!terminal || !embedded::face_chart_segment_parameter(
+          if (!terminal || !trace_segment::face_chart_segment_parameter(
                                *firstPoint, *slideStart, *terminal))
             return std::nullopt;
           drafts[segment.sourceFace].traces.push_back(
@@ -18667,7 +18667,7 @@ TEST(TraceTerminationCorrection,
       const bool slides = record.edgeTransitEntry.has_value() ||
                           record.edgeTransitExit.has_value();
       if (slides) ++slideSegments;
-      const auto pieces = embedded::exact_trace_segment_pieces(trace, segment);
+      const auto pieces = trace_segment::exact_trace_segment_pieces(trace, segment);
       const char *kind = "rejected";
       if (!pieces.has_value()) {
         ++rejected;
@@ -20749,7 +20749,7 @@ TEST(MandatoryEdgeTerminalSplit, SplitsAtOrderedDistinctCutsAndRejectsAmbiguousO
 }
 
 TEST(FaceChartExactGeometry, OrdersRaysAndContactsExactlyAroundAFaceInteriorPoint) {
-  using Point = embedded::FaceChartPoint;
+  using Point = trace_segment::FaceChartPoint;
   const auto zero = exact_ratio(0, 1);
   const auto one = exact_ratio(1, 1);
   // 2^-60: smaller than the distance from 1/3 and 2/3 to their neighbouring
@@ -20792,23 +20792,23 @@ TEST(FaceChartExactGeometry, OrdersRaysAndContactsExactlyAroundAFaceInteriorPoin
   };
   const auto third = exact_ratio(1, 3);
   const auto justAboveThird = third + epsilon;
-  EXPECT_EQ(third, embedded::face_chart_segment_parameter(entry, exit, along(third)));
-  const auto later = embedded::face_chart_segment_parameter(
+  EXPECT_EQ(third, trace_segment::face_chart_segment_parameter(entry, exit, along(third)));
+  const auto later = trace_segment::face_chart_segment_parameter(
       entry, exit, along(justAboveThird));
   ASSERT_TRUE(later.has_value());
   EXPECT_EQ(justAboveThird, *later);
   ASSERT_TRUE(sameDoubles(along(third), along(justAboveThird)));
   EXPECT_LT(third, *later) << "two contacts on one segment are ordered exactly";
-  EXPECT_FALSE(embedded::face_chart_segment_parameter(entry, exit, entry))
+  EXPECT_FALSE(trace_segment::face_chart_segment_parameter(entry, exit, entry))
       << "the segment's own entry is not an interior point";
-  EXPECT_FALSE(embedded::face_chart_segment_parameter(entry, exit, exit));
-  EXPECT_FALSE(embedded::face_chart_segment_parameter(entry, exit, along(exact_ratio(2, 1))));
-  EXPECT_FALSE(embedded::face_chart_segment_parameter(
+  EXPECT_FALSE(trace_segment::face_chart_segment_parameter(entry, exit, exit));
+  EXPECT_FALSE(trace_segment::face_chart_segment_parameter(entry, exit, along(exact_ratio(2, 1))));
+  EXPECT_FALSE(trace_segment::face_chart_segment_parameter(
       entry, exit,
       Point{exact_ratio(1, 3), exact_ratio(1, 2) + epsilon,
             exact_ratio(1, 6) - epsilon}))
       << "a point off the segment's line by 2^-60";
-  EXPECT_FALSE(embedded::face_chart_segment_parameter(entry, entry, entry));
+  EXPECT_FALSE(trace_segment::face_chart_segment_parameter(entry, entry, entry));
 
   // Rays from an interior point: a struck segment A -> B through the origin
   // and stubs towards e2 (one side) and the midpoint of (e0,e1) (other side).
@@ -20857,7 +20857,7 @@ TEST(FaceContactNode, SplitsAStruckSegmentAtAnExactInteriorContactPoint) {
   using directional::authority::TraceId;
   using directional::geometry::FieldAlignedCandidateTrace;
   using directional::geometry::RotationSystemInconsistencyReason;
-  using Point = embedded::FaceChartPoint;
+  using Point = trace_segment::FaceChartPoint;
   using Position = embedded::TraceCutPosition;
   const auto zero = exact_ratio(0, 1);
   const auto half = exact_ratio(1, 2);
@@ -21013,8 +21013,8 @@ TEST(FieldAlignedCarrierOccupancy,
   grazing.terminalPoint = v2;
   EXPECT_EQ((Path{Piece{inFace, point(entry), point(slideStart)},
                   Piece{alongAc, point(slideStart), point(v2)}}),
-            embedded::exact_trace_segment_pieces(grazing, 0U));
-  EXPECT_FALSE(embedded::exact_trace_segment_pieces(grazing, 1U));
+            trace_segment::exact_trace_segment_pieces(grazing, 0U));
+  EXPECT_FALSE(trace_segment::exact_trace_segment_pieces(grazing, 1U));
 
   // The slide runs in its own direction, here toward the carrier's first end.
   FieldAlignedCandidateTrace descending = grazing;
@@ -21022,7 +21022,7 @@ TEST(FieldAlignedCarrierOccupancy,
   descending.terminalPoint = v0;
   EXPECT_EQ((Path{Piece{inFace, point(entry), point(slideStart)},
                   Piece{alongAc, point(slideStart), point(v0)}}),
-            embedded::exact_trace_segment_pieces(descending, 0U));
+            trace_segment::exact_trace_segment_pieces(descending, 0U));
 
   // A departure enters at v2 under edge (1,2) and starts its slide at v2
   // under edge (0,2): one point, so there is no face piece.
@@ -21031,13 +21031,13 @@ TEST(FieldAlignedCarrierOccupancy,
   departure.segments[0].edgeTransitExit = v0;
   departure.terminalPoint = v0;
   EXPECT_EQ((Path{Piece{alongAc, point(v2), point(v0)}}),
-            embedded::exact_trace_segment_pieces(departure, 0U));
+            trace_segment::exact_trace_segment_pieces(departure, 0U));
 
   // Without a slide the segment is its one face piece to its end.
   FieldAlignedCandidateTrace ordinary = one_segment(entry, ab);
   ordinary.terminalPoint = boundary_point(bc, 1, 2);
   EXPECT_EQ((Path{Piece{inFace, point(entry), point(boundary_point(bc, 1, 2))}}),
-            embedded::exact_trace_segment_pieces(ordinary, 0U));
+            trace_segment::exact_trace_segment_pieces(ordinary, 0U));
 
   // A face contact committed with the whole proposal stops the trace on its
   // face piece; the recorded slide is not traversed.
@@ -21050,32 +21050,32 @@ TEST(FieldAlignedCarrierOccupancy,
   EXPECT_EQ((Path{Piece{inFace, point(entry),
                         *authority::canonical_exact_source_face_point(
                             face, midFacePiece)}}),
-            embedded::exact_trace_segment_pieces(contact, 0U));
+            trace_segment::exact_trace_segment_pieces(contact, 0U));
   FieldAlignedCandidateTrace offPiece = contact;
   offPiece.terminalContact->barycentric = {exact_ratio(1, 3), exact_ratio(1, 3),
                                            exact_ratio(1, 3)};
-  EXPECT_FALSE(embedded::exact_trace_segment_pieces(offPiece, 0U))
+  EXPECT_FALSE(trace_segment::exact_trace_segment_pieces(offPiece, 0U))
       << "a contact off the face piece is not on the traced path";
   FieldAlignedCandidateTrace atSlideStart = contact;
   atSlideStart.terminalContact->barycentric = {exact_ratio(5, 8), exact_ratio(0, 1),
                                                exact_ratio(3, 8)};
-  EXPECT_FALSE(embedded::exact_trace_segment_pieces(atSlideStart, 0U))
+  EXPECT_FALSE(trace_segment::exact_trace_segment_pieces(atSlideStart, 0U))
       << "a face contact lies strictly inside the face piece";
 
   // Incomplete or inconsistent slide records give no path.
   FieldAlignedCandidateTrace missingEnd = grazing;
   missingEnd.segments[0].edgeTransitExit.reset();
-  EXPECT_FALSE(embedded::exact_trace_segment_pieces(missingEnd, 0U));
+  EXPECT_FALSE(trace_segment::exact_trace_segment_pieces(missingEnd, 0U));
   FieldAlignedCandidateTrace otherEdge = grazing;
   otherEdge.segments[0].edgeTransitEntry = boundary_point(bc, 1, 2);
-  EXPECT_FALSE(embedded::exact_trace_segment_pieces(otherEdge, 0U));
+  EXPECT_FALSE(trace_segment::exact_trace_segment_pieces(otherEdge, 0U));
   FieldAlignedCandidateTrace endElsewhere = grazing;
   endElsewhere.terminalPoint = boundary_point(ac, 1, 2);
-  EXPECT_FALSE(embedded::exact_trace_segment_pieces(endElsewhere, 0U));
+  EXPECT_FALSE(trace_segment::exact_trace_segment_pieces(endElsewhere, 0U));
   FieldAlignedCandidateTrace emptySlide = grazing;
   emptySlide.segments[0].edgeTransitExit = slideStart;
   emptySlide.terminalPoint = slideStart;
-  EXPECT_FALSE(embedded::exact_trace_segment_pieces(emptySlide, 0U));
+  EXPECT_FALSE(trace_segment::exact_trace_segment_pieces(emptySlide, 0U));
 }
 
 TEST(FieldAlignedCarrierOccupancy,
@@ -21913,7 +21913,7 @@ TEST(FieldAlignedCarrierOccupancy,
   using directional::geometry::FieldAlignedTerminalContact;
   using directional::geometry::GlobalTopologyArc;
   using directional::geometry::GlobalTopologyArcKind;
-  using Chart = embedded::FaceChartPoint;
+  using Chart = trace_segment::FaceChartPoint;
   using Failure = embedded::VertexPieceRayFailure;
   using Piece = authority::ExactSourceSupportPiece;
   using Position = embedded::TraceCutPosition;
@@ -23608,7 +23608,7 @@ TEST(RetracedTraceReferences, RemapsExactStruckSegmentAndEndpointPortWithoutPubl
   removed.terminalPoint = v0;
   ending.segments.emplace_back(face, authority::FieldBranch::from_integer(0),
       boundary_point(otherEdge, 1, 1), std::nullopt, edge, std::nullopt);
-  const auto weights = embedded::canonical_boundary_barycentric(face, contactPoint);
+  const auto weights = trace_segment::canonical_boundary_barycentric(face, contactPoint);
   ASSERT_TRUE(weights);
   ending.terminalContact = geometry::FieldAlignedTerminalContact{
       face, *weights, removed.id, 0U, contactPoint};

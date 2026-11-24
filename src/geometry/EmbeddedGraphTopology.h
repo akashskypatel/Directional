@@ -228,9 +228,9 @@ using MandatoryEdgeSplit =
  * counter-clockwise in the corner order of their coordinates, -1 when
  * clockwise, 0 when collinear. Exact.
  */
-[[nodiscard]] int face_chart_orientation(const FaceChartPoint &a,
-                                         const FaceChartPoint &b,
-                                         const FaceChartPoint &c);
+[[nodiscard]] int face_chart_orientation(const exact_trace_segment_detail::FaceChartPoint &a,
+                                         const exact_trace_segment_detail::FaceChartPoint &b,
+                                         const exact_trace_segment_detail::FaceChartPoint &c);
 
 /**
  * Counter-clockwise order of the rays leaving `origin` through each target,
@@ -238,8 +238,8 @@ using MandatoryEdgeSplit =
  * the origin or two rays leave in the same direction.
  */
 [[nodiscard]] std::optional<std::vector<std::size_t>>
-face_chart_counter_clockwise_ray_order(const FaceChartPoint &origin,
-                                       const std::vector<FaceChartPoint> &targets);
+face_chart_counter_clockwise_ray_order(const exact_trace_segment_detail::FaceChartPoint &origin,
+                                       const std::vector<exact_trace_segment_detail::FaceChartPoint> &targets);
 
 /**
  * A position on a candidate trace. With no `parameter` it is the boundary
@@ -263,9 +263,9 @@ struct TraceCutPosition {
  * Empty when the point is not available; the end is also empty for a segment
  * that transits along an edge, which is not straight in its face.
  */
-[[nodiscard]] std::optional<FaceChartPoint> trace_segment_canonical_entry(
+[[nodiscard]] std::optional<exact_trace_segment_detail::FaceChartPoint> trace_segment_canonical_entry(
     const FieldAlignedCandidateTrace &trace, std::size_t segment);
-[[nodiscard]] std::optional<FaceChartPoint> trace_segment_canonical_exit(
+[[nodiscard]] std::optional<exact_trace_segment_detail::FaceChartPoint> trace_segment_canonical_exit(
     const FieldAlignedCandidateTrace &trace, std::size_t segment);
 
 /**
@@ -277,7 +277,7 @@ struct TraceCutPosition {
 [[nodiscard]] std::optional<authority::FieldExactRational>
 trace_segment_contact_parameter(const FieldAlignedCandidateTrace &trace,
                                 std::size_t segment,
-                                const FaceChartPoint &point);
+                                const exact_trace_segment_detail::FaceChartPoint &point);
 
 /**
  * Where a terminal carrier contact cuts the struck trace when the contact is
@@ -395,7 +395,7 @@ source_piece_binding_failure(
 struct FaceContactNode {
   authority::SourceFaceTopologyKey face;
   /** Exact contact point in the canonical chart of `face`. */
-  FaceChartPoint point;
+  exact_trace_segment_detail::FaceChartPoint point;
   /** Traces that end at this node. */
   std::set<authority::TraceId> terminating;
   /** Interior positions of the struck traces at this node. */
@@ -444,7 +444,7 @@ vertex_locus_secondary_parameter(
  * another face. Coordinate signs are not checked. Unwired until the
  * coordinated graph cutover.
  */
-[[nodiscard]] std::optional<FaceChartPoint> exact_source_point_barycentric(
+[[nodiscard]] std::optional<exact_trace_segment_detail::FaceChartPoint> exact_source_point_barycentric(
     const SourceFaceRecord &face, const authority::ExactSourcePoint &point);
 
 /** A trace ray that leaves a vertex locus along a mesh edge. */

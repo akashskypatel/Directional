@@ -19,7 +19,7 @@ namespace directional::geometry::detail {
  * point strictly inside the face. The coordinates must be non-negative and
  * sum to one. */
 [[nodiscard]] inline std::optional<FaceBoundaryPosition> face_boundary_position(
-    const embedded_graph_topology_detail::FaceChartPoint &barycentric) {
+    const exact_trace_segment_detail::FaceChartPoint &barycentric) {
   std::array<bool, 3> weighted{};
   std::size_t weightedCount = 0U;
   for (std::size_t corner = 0U; corner < 3U; ++corner) {
@@ -113,7 +113,7 @@ using ArcFaceVisitsResult =
                                              sourcePath)) {
     return ArcFaceVisitFailure::PieceBinding;
   }
-  const auto on_closure = [](const std::optional<embedded::FaceChartPoint> &point) {
+  const auto on_closure = [](const std::optional<exact_trace_segment_detail::FaceChartPoint> &point) {
     const auto zero = authority::FieldExactRational::from_integer(0);
     return point.has_value() &&
            std::none_of(point->begin(), point->end(),

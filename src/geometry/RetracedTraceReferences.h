@@ -34,7 +34,7 @@ struct RetracedTraceReferences {
     const FieldAlignedTerminalContact &contact) {
   if (index >= trace.segments.size()) return false;
   const auto &segment = trace.segments[index];
-  namespace exact = embedded_graph_topology_detail;
+  namespace exact = exact_trace_segment_detail;
   if (contact.carrierLocus) {
     const auto &locus = *contact.carrierLocus;
     const auto zero = authority::FieldExactRational::from_integer(0);
@@ -112,7 +112,7 @@ remap_retraced_trace_references(const FieldAlignedCurveNetworkCandidate &input,
     authority::ExactSourcePath result;
     for (std::size_t i = 0; i < trace.segments.size(); ++i) {
       const auto pieces =
-          embedded_graph_topology_detail::exact_trace_segment_pieces(trace, i);
+          exact_trace_segment_detail::exact_trace_segment_pieces(trace, i);
       if (!pieces || pieces->empty() ||
           (!result.empty() && result.back().second != pieces->front().first)) {
         return std::nullopt;

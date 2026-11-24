@@ -4311,7 +4311,7 @@ field_aligned_select_retraced_traces(FieldAlignedCurveNetworkCandidate &candidat
       const auto &trace = candidate.candidateTraces[index];
       authority::ExactSourcePath path;
       for (std::size_t segment = 0U; segment < trace.segments.size(); ++segment) {
-        const auto pieces = embedded_graph_topology_detail::exact_trace_segment_pieces(
+        const auto pieces = exact_trace_segment_detail::exact_trace_segment_pieces(
             trace, segment);
         if (!pieces || pieces->empty() ||
             (!path.empty() && path.back().second != pieces->front().first)) {
