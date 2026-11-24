@@ -1,2 +1,0 @@
-# CB-201 temporary snapshot trigger only
-.agents/connector-triggers/source-snapshot/cb201-20261124.txt
