@@ -1,29 +1,27 @@
-**Current turn outcome (2026-11-24):** TB-EXEC-178 executed 1,002 cases: 995 PASS, seven existing RED. New guard PASS; frozen comparison satisfied. [Report](.agents/Directional/Architecture_M6_CP3_TB178_P13_Retraced_Trace_Reference_Remap_Full_Gate_Execution_Report_20261124.md). Next only `M6-CP3-TB-REV-178`. No product acceptance.
+**Current turn outcome (2026-11-24):** TB-REV-178 independently upholds TB178 rejection: 995/1002 PASS, seven existing RED; row1002 PASS, inherited comparison satisfied. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_178_Retraced_Trace_Reference_Remap_Independent_Review_20261124.md). Next only `M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION`. No product acceptance.
 
-## CURRENT — TB-EXEC-178 rejected; TB-REV-178 next (2026-11-24 UTC)
+## CURRENT — TB-REV-178 complete; CB-199B next (2026-11-24 UTC)
 
-- [x] **COMPLETE** TB-REV-177 adversarial (J1–J6). J1: my TB-EXEC-177 rule wrongly said "no line moves" after a mid-file insert. J4: the original CB-199A `4f458361…` is withdrawn for overloading `sourcePort` and the junction role; the amended diff is `cd43c3f0…4c5a`. TB178 manifest `921bd04b…e8ed` frozen.
-- [x] **COMPLETE** CB-199A amended: unwired remap helper + guard row 1002 (compile only), [run 45312324524](https://github.com/akashskypatel/Directional/actions/runs/45312324524), package `14883418907`.
-- [x] **COMPLETE / REJECTED** TB-EXEC-178: 995/1002, same seven RED; comparison satisfied; no line moves; receipts byte-identical to TB177. [Report](.agents/Directional/Architecture_M6_CP3_TB178_P13_Retraced_Trace_Reference_Remap_Full_Gate_Execution_Report_20261124.md).
-- [ ] **1 NEXT ONLY** TB-REV-178: independent artifact comparison and guard-contract review; no runtime or production mutation.
-- [ ] **2 HELD** CB-199B, only if separately authorized: an explicit kept-trace `arrivalPort` field + digest; selection after the tracing loop; producer re-sort; all-or-nothing; fail closed → TB.
-- [ ] **4** CB-200: port-set readers read `trace.port ∪ arrivalPort`, plus the every-region-owns-a-face assertion → TB; mechanical controls green, row652 two regions.
-- [ ] **5** Row979, Branch A, CB-190; deferred CollinearOverlap/EndpointTouch (E5).
+- [x] **COMPLETE** TB-EXEC-178 (995/1002; seven unchanged RED) and independent TB-REV-178: accepted prefix and all raw records checked; new isolated guard non-vacuous; no runtime in Review.
+- [ ] **1 NEXT ONLY** `M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION` — [exact plan](.agents/Directional/gates/Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Exact_Manifest.md), compile only. Freeze SHA-256 `02cc43c4b4ed3144df4bb08d7a8a857afcb6ce6f0cfa582c08da0a3031411fe5`; exact three-path proposal, no downstream reader changes. No test execution.
+- [ ] **2 HELD** Separate TB-EXEC-179 after compile; 1,003 frozen cases plus 81 deferred. New row1003 proves A2a ownership; no new green-to-red loss; stop on unrelated difference or failed guard.
+- [ ] **3 HELD** CB-200: port-set readers and every-region-owns-a-face assertion, only after TB179 independent review.
+- [ ] **4 HELD** Row979, Branch A, CB-190; deferred CollinearOverlap/EndpointTouch (E5).
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-178
-Owner: Independent Review (runtime-free; no production mutation)
-Authority: Architecture_M6_CP3_TB178_P13_Retraced_Trace_Reference_Remap_Full_Gate_Execution_Report_20261124.md; Architecture_M6_CP3_TB_REV_177_Adversarial_Review_20261124.md; amended exact CB-199A manifest and code/build record
-Candidate: TB178 result 14885616510; source de65101eb04c73e08ea4b6b31968975f71d9d909; ZIP SHA-256 57260ad2ee62adb02bad56bc09d2ab7e2c4782b8ad4ef43faa76cb5e539600a6
-Baseline: TB177 result 14871900641; ZIP SHA-256 8c5bce907f59b77207833153912805cccca6fa122c70ff9f299a64f68102b068
-Review: independently verify both archives, all 1001 inherited comparisons under N1–N3, exact new row1002 guard, seven existing RED, unchanged receipts and failure sites; inspect amended helper contract. Record adjudication and freeze CB-199B only if supported.
-Hold: CB-199B and CB-200 require separate authorization; no runtime, repair, activation, or CP3/497/D0/H4 promotion.
+NEXT_TURN: M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION
+Owner: Code + Build (compile only, GMP/GMPXX; no runtime)
+Authority: Architecture_M6_CP3_TB_REV_178_Retraced_Trace_Reference_Remap_Independent_Review_20261124.md; gates/Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Exact_Manifest.md
+Source: de65101eb04c73e08ea4b6b31968975f71d9d909; exact preimages in plan
+Patch: Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Exact.diff; SHA-256 02cc43c4b4ed3144df4bb08d7a8a857afcb6ce6f0cfa582c08da0a3031411fe5; three paths; +172/−0
+Scope: exact producer selection, arrivalPort with checked equality/digest, one appended A2a guard. Do not alter CB-200 readers or region election.
+Stop: preimage, compile, membership, changed-path or package mismatch; return to Review. If compile succeeds, separate TB-EXEC-179 full gate 1003 rows; 81 deferred. See plan for falsifiers. No production acceptance or CP3/497/D0/H4 promotion.
 ```
 
 ## HISTORY — TB-REV-177 independent: original CB-199A (amended by the adversarial continuation) (2026-11-24 UTC)
 
 - [x] **COMPLETE** TB-REV-176 adversarial continuation (H1–H4): prose CB-198 withdrawn (RA-261); exact failure-branch receipt frozen (`…CB198…Receipt_Exact.diff` `c30811fc…391b`); H2 arrival check (`keptArrival = removedSingularity`) for the D13 = A `Y.port` rule; TB-EXEC-177 rules frozen (TB176 manifest unchanged).
-- [x] **COMPLETE** CB-198 exact test-only receipt: [run 45280023495](https://github.com/akashskypatel/Directional/actions/runs/45280023495), package `14868834752` (28/28), `runtimeExecution=false`; [CB-198 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB198_P13_Mechanical_Retrace_Selection_Receipt_Code_Build_Record_20261123.md).
+- [x] **COMPLETE** CB-198 exact test-only receipt: [run 45280023495](https://github.com/akashskypatel/Directional/actions/runs/45280023495), package `14868834752` (28/28), `runtimeExecution=false`; [CB-198 Code + Build record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-178-folded-records--2026-11-24-utc).
 - [x] **COMPLETE / REJECTED** TB-EXEC-177: [run 45283342400](https://github.com/akashskypatel/Directional/actions/runs/45283342400), artifact `14871900641`, 994/1001 and same seven RED, two receipts; strict H4 comparison STOP (five +108 test-line shifts; row172 independently conforms to N3).
 - [x] **COMPLETE** `M6-CP3-TB-REV-177`: independent artifact adjudication; exact CB-199A frozen. [Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md)
 - [ ] **1 NEXT ONLY** `M6-CP3-CB-199A-P13-RETRACED-TRACE-REFERENCE-REMAP` — apply the exact [diff](.agents/Directional/Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Exact.diff) `4f458361453186fdc9c7e0073b039fc3329f084d4b01b0eb6c2e193071d22bf7`, compile only, no production wiring. Separate TB and Review follow.

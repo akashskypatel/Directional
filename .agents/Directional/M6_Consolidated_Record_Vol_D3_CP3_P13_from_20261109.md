@@ -5885,3 +5885,52 @@ Canonical turn `M6-CP3-TB-EXEC-165-P13-NEAREST-CHORD-SEED-FULL-GATE`; do not sta
 
 Source snapshot: run `45041853656`, source control-plane commit `ec1e68eaf4c1f7be35e73edbca973cb985cc41f6`, artifact `14762086886`. This snapshot commit is not the semantic compiled source SHA. Beginning-of-turn read-mode selection was delayed; workflow and snapshot checks later completed. See downloadable chat continuation for detailed evidence and instructions.
 ```
+
+
+## TB-REV-178 folded records — 2026-11-24 UTC
+
+- `Architecture_M6_CP3_CB198_P13_Mechanical_Retrace_Selection_Receipt_Code_Build_Record_20261123.md` — 17 lines, SHA-256 `1cb3a2efab5597df61524db0f6f675b992e38139547514d46c66429ed2aaabcb`. CB-198 compile-only receipt; superseded by CB-199A and TB178. Full original text below; prior path resolves at snapshot `62be7ebc7649c4b5ba284f1097bf14473b01f8d6`.
+- `ORIENTATION.md` historical currency paragraphs above the main title — exact prior text preserved below; historical only, not live authority.
+
+### Architecture_M6_CP3_CB198_P13_Mechanical_Retrace_Selection_Receipt_Code_Build_Record_20261123.md
+
+# CB-198 — mechanical retrace selection receipt (2026-11-23 UTC)
+
+## Situation
+The test-only Code + Build turn `M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT` is complete. Its authorized successor is `M6-CP3-TB-EXEC-177-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT-FULL-GATE` in a separate turn; no successor work has begun.
+
+## Background
+TB-REV-176 H1–H4 and the frozen `gates/Architecture_M6_CP3_CB198_P13_Exact_Manifest.md` authorize exactly the test-only failure-branch diff `Architecture_M6_CP3_CB198_P13_Mechanical_Retraced_Trace_Selection_Receipt_Exact.diff`: SHA-256 `c30811fca14154427a41d5e90f3fb565bbbbfe0b5601eec8bcec36e845e6391b`, 6,026 bytes, +108/−0, one test file. No production selection is wired.
+
+## Assessment
+- Exact source snapshot: [run 45279094151](https://github.com/akashskypatel/Directional/actions/runs/45279094151), source `2f29803395cf7398234d1d3318fc53d4d26d9fa9`, artifact `14869013086` ZIP SHA-256 `7b1175c688d5cbe58866dc930b5ba58339a510217a17029e0656c7b94b334000`; source files 5,832/5,832 verified.
+- Frozen preimage `tests/FieldAlignedCurveNetworkTests.cpp` Git blob `e21c3362d2a049769ad376b1e79bf59fa6db1999`; exact postimage SHA-256 `75ae997a94d766bcc9cda56f37abbb3bb9e655758d141003cfbf51c6cb638cc6`. `git apply --check` and `git diff --check` pass.
+- Only the approved test file changed in [apply run 45279701397](https://github.com/akashskypatel/Directional/actions/runs/45279701397), commit `6cdd23a10ac6f6fbc6c741fb1e18ccff2038871c`; result artifact `14869445555` ZIP SHA-256 `1dcc9ab85161a68ddc5ac0fc3312410c60edd8337a7a8f774ad504653520149f`, `runtimeExecution=false`. Owner retired staged Drive file after successful application.
+- GMP/GMPXX compile-only: [run 45280023495](https://github.com/akashskypatel/Directional/actions/runs/45280023495), exact semantic source `6cdd23a10ac6f6fbc6c741fb1e18ccff2038871c`, eight required targets including `directional_surface_cell_producer_tests`. Package artifact `14868834752` ZIP SHA-256 `b5a7104d41e103e3d31094b4d889af1097ffa52edac6ff11fe120acfdb4ee0c9`, compile log artifact `14868729926` ZIP SHA-256 `70b1b0d412086d6a4d3834d04b84b32e3fa4bb6a696707d16e84d1b493075dd5`, internal checks 28/28; `exactArithmeticBackend=GMP`, `runtimeExecution=false`; no project binary, test or benchmark ran.
+- TB176 remains the latest runtime gate: 994/1001, seven RED (445/652/653/656/658/660/786). Accepted TB169 993/993; CP2 491/491; stable 67/17/50, witness debt1, deferred81. No CP3/497/D0/H4 promotion; no selector, fixture, product, manifest, or workflow mutation.
+
+## Recommendation
+Start only `M6-CP3-TB-EXEC-177-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT-FULL-GATE` in a new turn. Execute the unchanged 1001-row manifest `0f85400ff9713fc8a835f308304ded1db9830e668211bab71c88d580b2e84642` from immutable artifact `14868834752`; compare with TB176 under N1–N3. Permit only the inserted `retracedTraceSelection` receipt in diagnostics; record row652 verbatim and return to independent Review. Expected 994 PASS/seven RED is a prediction, not a tested result.
+
+
+### ORIENTATION historical currency (verbatim)
+
+**Historical currency — M6-CP3-CB-197B complete (2026-11-23 UTC):** Exact two-file ordered-stretch source `8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3` compiled with GMP/GMPXX in [run 45255304770](https://github.com/akashskypatel/Directional/actions/runs/45255304770); package `14859356205` (28/28 checks), `runtimeExecution=false`. Separate TB-EXEC-176 is next and has not executed. TB175 remains rejected at 993/1000, seven mechanical RED; accepted TB169 993/993, CP2 491/491, stable 67/17/50, debt1/deferred81 remain unchanged. No CP3/497/D0/H4 promotion. [CB-197B Code + Build record](Architecture_M6_CP3_CB197B_P13_Exact_Source_Retrace_Ordered_Stretches_Code_Build_Record_20261123.md).
+
+**Prior currency — M6-CP3-TB-REV-175 adversarial (2026-11-23 UTC):** TB175 is rejected at 993/1000, with the same seven RED. Next are the exact **CB-197A** (trace-piece builder extraction) and **CB-197B** (ordered retrace predicate), then TB-EXEC-176. After that come the CB-198 selection receipt, the CB-199 selection and the CB-200 readers. [Record](Architecture_M6_CP3_TB_REV_175_Adversarial_Review_20261123.md).
+
+**Prior currency — M6-CP3-TB-REV-175 (2026-11-23 UTC):** Independent full raw comparison upholds the TB175 REJECTED 993/1000 result; seven mechanical RED and no new regression event. New helper cases PASS but selector is unwired. Accepted TB169 993/993, CP2 491/491; stable 67/17/50, debt1/deferred81. Exactly next `M6-CP3-CB-197A-P13-EXACT-TRACE-PIECE-BUILDER-EXTRACTION` (extraction only, compile only). Production selection and CP3/497/D0/H4 remain held. [M6-CP3-TB-REV-175 review](Architecture_M6_CP3_TB_REV_175_Retraced_Trace_Selection_Independent_Review_20261123.md).
+
+**Historical currency — M6-CP3-TB-EXEC-175 (2026-11-23 UTC):** The immutable 1000-case gate is rejected at 993 PASS / seven known mechanical RED. New retraced-trace helper tests 999/1000 PASS, but remain unwired. All 998 prior TB174 cases retain their verdicts and normalized raw evidence (757 identical, 240 N1/N2, one 24-record N3 row179). [TB175 report](Architecture_M6_CP3_TB175_P13_Retraced_Trace_Selection_Full_Gate_Execution_Report_20261123.md). Accepted TB169 993/993, CP2 491/491; stable 67/17/50, debt1/deferred81. Exactly next TB-REV-175, independent Review. No CP3/497/D0/H4 promotion.
+
+**Historical currency — M6-CP3-TB-REV-174 adversarial (2026-11-23 UTC):** TB174 is rejected at 991/998, with the same seven RED. The prose arrival-port receipt is withdrawn. Next is the exact **M6-CP3-CB-196-P13-EXACT-SOURCE-RETRACED-TRACE-SELECTION**, then TB-EXEC-175 (1000 rows), then CB-197a/b and CB-198. [Record](Architecture_M6_CP3_TB_REV_174_Adversarial_Review_20261123.md).
+
+**Prior currency — TB-REV-174 independent Review (2026-11-23 UTC):** TB174 rejected 991/998 (seven known mechanical RED), helper cases 997/998 PASS without production A2a wiring. D13=A by DESIGN; isolated retrace proof does not repair the co-traced lens. Accepted TB169 993/993 and CP2 491/491, stable 67/17/50, debt1/deferred81. Exactly one next Code + Build: `M6-CP3-CB-196-P13-ARRIVAL-PORT-OWNERSHIP-RECEIPT`, a diagnostic-only arrival-port receipt. [Review](Architecture_M6_CP3_TB_REV_174_Retrace_Oracle_Independent_Review_20261123.md).
+
+**Historical currency — M6-CP3-TB-REV-173 D13 resolution (2026-11-23 UTC):** TB173 is rejected at 989/996, with the same seven RED. D13 = A, decided by DESIGN: arrival owns the port, and the duplicate is removed at A2a step 7, which does not exist yet in code. Next is the exact **M6-CP3-CB-195-P13-EXACT-SOURCE-PATH-RETRACE-ALONG-EDGES**, then TB-EXEC-174, then CB-196 (arrival-port record) and CB-197 (selection). [Record](Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md).
+
+**Prior currency — M6-CP3-TB-REV-173-P13-SHARED-EDGE-ORACLE-FULL-GATE (2026-11-23 UTC):** TB173 independent review rejects 989/996 (seven mechanical RED); two isolated oracle tests PASS but no production wiring. TB169 accepted 993/993 and CP2 accepted 491/491; stable 67/17/50, debt1/deferred81. **Historical, superseded by D13=A in DESIGN; CB-195 completed.** [Review](Architecture_M6_CP3_TB_REV_173_Shared_Edge_Oracle_Independent_Review_20261123.md).
+
+**Historical currency — TB-REV-172 second adversarial continuation (2026-11-23 UTC):** TB172 rejected 987/994. Lens orbits 1/3/4/5 are exactly co-traced zero-area digons; root cause is the A2a producer (port seeding without arrival check, collinear contacts dropped, arrival port lost). Next **M6-CP3-CB-194-P13-EXACT-SOURCE-PATH-SHARED-EDGE-ORACLE**; D13 pending (user). TB169 accepted 993/993. [Record](Architecture_M6_CP3_TB_REV_172_Adversarial_Continuation_Shared_Edge_20261123.md).
+
+**Prior currency — TB-REV-172 independent (2026-11-23 UTC):** TB172 rejected **987/994**, seven mechanical RED, five nonallowed assertion-line shifts; four H-lens candidates (1/3/4/5) share reversed **opening-piece** source-edge labels and swapped face/opposite-face records. The receipt examines only the first of up to two pieces per visit. Full path identity, exact interval identity and area remain unproved. Next **M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT** diagnostic-only Code + Build; TB169 accepted **993/993**, CP2 **491/491**, stable **67/17/50**, debt1/deferred81. CP3/497/D0/H4 and production sphere held. [Review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).

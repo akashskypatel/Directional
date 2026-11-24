@@ -1,24 +1,4 @@
-**Current currency — TB-EXEC-178 (2026-11-24 UTC):** 995/1002 PASS, same seven mechanical RED. New remap guard PASS; frozen comparison satisfied; helper remains unwired. [Execution report](Architecture_M6_CP3_TB178_P13_Retraced_Trace_Reference_Remap_Full_Gate_Execution_Report_20261124.md). Next only TB-REV-178. Accepted TB169 993/993, CP2 491/491; no promotion.
-
-**Historical currency — M6-CP3-CB-197B complete (2026-11-23 UTC):** Exact two-file ordered-stretch source `8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3` compiled with GMP/GMPXX in [run 45255304770](https://github.com/akashskypatel/Directional/actions/runs/45255304770); package `14859356205` (28/28 checks), `runtimeExecution=false`. Separate TB-EXEC-176 is next and has not executed. TB175 remains rejected at 993/1000, seven mechanical RED; accepted TB169 993/993, CP2 491/491, stable 67/17/50, debt1/deferred81 remain unchanged. No CP3/497/D0/H4 promotion. [CB-197B Code + Build record](Architecture_M6_CP3_CB197B_P13_Exact_Source_Retrace_Ordered_Stretches_Code_Build_Record_20261123.md).
-
-**Prior currency — M6-CP3-TB-REV-175 adversarial (2026-11-23 UTC):** TB175 is rejected at 993/1000, with the same seven RED. Next are the exact **CB-197A** (trace-piece builder extraction) and **CB-197B** (ordered retrace predicate), then TB-EXEC-176. After that come the CB-198 selection receipt, the CB-199 selection and the CB-200 readers. [Record](Architecture_M6_CP3_TB_REV_175_Adversarial_Review_20261123.md).
-
-**Prior currency — M6-CP3-TB-REV-175 (2026-11-23 UTC):** Independent full raw comparison upholds the TB175 REJECTED 993/1000 result; seven mechanical RED and no new regression event. New helper cases PASS but selector is unwired. Accepted TB169 993/993, CP2 491/491; stable 67/17/50, debt1/deferred81. Exactly next `M6-CP3-CB-197A-P13-EXACT-TRACE-PIECE-BUILDER-EXTRACTION` (extraction only, compile only). Production selection and CP3/497/D0/H4 remain held. [M6-CP3-TB-REV-175 review](Architecture_M6_CP3_TB_REV_175_Retraced_Trace_Selection_Independent_Review_20261123.md).
-
-**Historical currency — M6-CP3-TB-EXEC-175 (2026-11-23 UTC):** The immutable 1000-case gate is rejected at 993 PASS / seven known mechanical RED. New retraced-trace helper tests 999/1000 PASS, but remain unwired. All 998 prior TB174 cases retain their verdicts and normalized raw evidence (757 identical, 240 N1/N2, one 24-record N3 row179). [TB175 report](Architecture_M6_CP3_TB175_P13_Retraced_Trace_Selection_Full_Gate_Execution_Report_20261123.md). Accepted TB169 993/993, CP2 491/491; stable 67/17/50, debt1/deferred81. Exactly next TB-REV-175, independent Review. No CP3/497/D0/H4 promotion.
-
-**Historical currency — M6-CP3-TB-REV-174 adversarial (2026-11-23 UTC):** TB174 is rejected at 991/998, with the same seven RED. The prose arrival-port receipt is withdrawn. Next is the exact **M6-CP3-CB-196-P13-EXACT-SOURCE-RETRACED-TRACE-SELECTION**, then TB-EXEC-175 (1000 rows), then CB-197a/b and CB-198. [Record](Architecture_M6_CP3_TB_REV_174_Adversarial_Review_20261123.md).
-
-**Prior currency — TB-REV-174 independent Review (2026-11-23 UTC):** TB174 rejected 991/998 (seven known mechanical RED), helper cases 997/998 PASS without production A2a wiring. D13=A by DESIGN; isolated retrace proof does not repair the co-traced lens. Accepted TB169 993/993 and CP2 491/491, stable 67/17/50, debt1/deferred81. Exactly one next Code + Build: `M6-CP3-CB-196-P13-ARRIVAL-PORT-OWNERSHIP-RECEIPT`, a diagnostic-only arrival-port receipt. [Review](Architecture_M6_CP3_TB_REV_174_Retrace_Oracle_Independent_Review_20261123.md).
-
-**Historical currency — M6-CP3-TB-REV-173 D13 resolution (2026-11-23 UTC):** TB173 is rejected at 989/996, with the same seven RED. D13 = A, decided by DESIGN: arrival owns the port, and the duplicate is removed at A2a step 7, which does not exist yet in code. Next is the exact **M6-CP3-CB-195-P13-EXACT-SOURCE-PATH-RETRACE-ALONG-EDGES**, then TB-EXEC-174, then CB-196 (arrival-port record) and CB-197 (selection). [Record](Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md).
-
-**Prior currency — M6-CP3-TB-REV-173-P13-SHARED-EDGE-ORACLE-FULL-GATE (2026-11-23 UTC):** TB173 independent review rejects 989/996 (seven mechanical RED); two isolated oracle tests PASS but no production wiring. TB169 accepted 993/993 and CP2 accepted 491/491; stable 67/17/50, debt1/deferred81. **Historical, superseded by D13=A in DESIGN; CB-195 completed.** [Review](Architecture_M6_CP3_TB_REV_173_Shared_Edge_Oracle_Independent_Review_20261123.md).
-
-**Historical currency — TB-REV-172 second adversarial continuation (2026-11-23 UTC):** TB172 rejected 987/994. Lens orbits 1/3/4/5 are exactly co-traced zero-area digons; root cause is the A2a producer (port seeding without arrival check, collinear contacts dropped, arrival port lost). Next **M6-CP3-CB-194-P13-EXACT-SOURCE-PATH-SHARED-EDGE-ORACLE**; D13 pending (user). TB169 accepted 993/993. [Record](Architecture_M6_CP3_TB_REV_172_Adversarial_Continuation_Shared_Edge_20261123.md).
-
-**Prior currency — TB-REV-172 independent (2026-11-23 UTC):** TB172 rejected **987/994**, seven mechanical RED, five nonallowed assertion-line shifts; four H-lens candidates (1/3/4/5) share reversed **opening-piece** source-edge labels and swapped face/opposite-face records. The receipt examines only the first of up to two pieces per visit. Full path identity, exact interval identity and area remain unproved. Next **M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT** diagnostic-only Code + Build; TB169 accepted **993/993**, CP2 **491/491**, stable **67/17/50**, debt1/deferred81. CP3/497/D0/H4 and production sphere held. [Review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).
+**Current currency — TB-REV-178 (2026-11-24 UTC):** Independent review upholds TB178 rejection (995/1002, seven existing RED), all 1,001 inherited comparisons match under N1–N3; isolated remap guard PASS, production unwired. [Review](Architecture_M6_CP3_TB_REV_178_Retraced_Trace_Reference_Remap_Independent_Review_20261124.md). Accepted TB169 993/993 and CP2 491/491 unchanged; stable 67/17/50, debt1/deferred81. Exact next `M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION` (compile only; no successor work in review).
 
 # Directional — Project Orientation
 
@@ -72,14 +52,14 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; multi-cut plan remains open** | Accepted TB169 993/993 and CP2 491/491. TB178 rejected 995/1002 with seven unchanged mechanical RED; new isolated remap guard PASS; all inherited comparisons satisfy frozen rules. TB-REV-178 next; no CP3/497/D0/H4 acceptance. Row979 remains staged-only. |
+| **M6-CP3 — active; multi-cut plan remains open** | Accepted TB169 993/993 and CP2 491/491. TB178 rejected 995/1002 with seven unchanged mechanical RED; new isolated remap guard PASS; all inherited comparisons satisfy frozen rules. TB-REV-178 independently upholds the rejection; CB-199B exact selection is next. No CP3/497/D0/H4 acceptance. Row979 remains staged-only. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting now includes the TB170 accepted-green recurrence: **67 events / 17 categories / 50 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
 
 ## 4. Fixtures and witnesses
 
-**TB177 independent witness:** rows652/656 show four exact reverse path pairs (0/3, 2/8, 7/9, 4/11), both arrival equalities, five pieces per trace; row652 still elects an empty region. No production repair. [Independent review progress](Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md)
+**TB178 independent witness:** rows652/656 retain the byte-identical TB177 receipt: four exact reverse path pairs (0/3, 2/8, 7/9, 4/11), both arrival equalities, five pieces per trace; row652 still elects an empty region. Row1002 remap guard PASS; production contact remap and selection remain unproved. [Independent review progress](Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md)
 
 **TB173 independent oracle review:** source-edge positive-length overlap helper has meaningful positive and negative cases (2/2 new cases PASS) but no production A2a call; seven mechanical RED persist. The four lens digons remain co-traced zero-area orbits. This is a historical statement; D13=A was resolved from DESIGN before TB174. [Review](Architecture_M6_CP3_TB_REV_173_Shared_Edge_Oracle_Independent_Review_20261123.md).
 
@@ -163,7 +143,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority (TB-EXEC-178 complete):** `M6-CP3-TB-REV-178`, independent artifact and guard-contract review; [execution report](Architecture_M6_CP3_TB178_P13_Retraced_Trace_Reference_Remap_Full_Gate_Execution_Report_20261124.md). Production wiring and port-set readers remain held until separate authorized turns.
+**Current priority (TB-REV-178 complete):** `M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION` — [exact plan](gates/Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Exact_Manifest.md), compile only. Select reciprocal edge retraces after tracing, store the kept arrival port and validate exact port ownership. CB-200 port-set readers remain held until independent review of TB179; no production acceptance.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).
@@ -180,7 +160,7 @@ TB-REV-167 S6 (carried to CB-190): terminal-vertex edge-side diagnostics require
 
 ## 8. Recurring defect patterns
 
-**TB177 continuation:** The fixture receipt verifies reverse-path selection but does not modify the production network. Remapping only a trace ID can leave its struck-segment index invalid. No new measured regression or acceptance. [Independent review progress](Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md)
+**TB178 continuation:** The fixture receipt verifies reverse-path selection, but the new isolated guard is still unwired. Remapping only a trace ID can leave its struck-segment index invalid; explicit arrival ownership must enter checked equality and semantic digest. No new measured regression or acceptance. [Independent review progress](Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md)
 
 **TB176 confirms the unwired-helper evidence pattern:** Row1001 proves the isolated ordered-retrace negative; TB175 and TB176 both repeat the seven production RED. Same existing regression, not a new stable event.
 
