@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb178-closeout-20261124",
-  "mailbox_key": "m6-cp3-tb178-closeout-20261124",
-  "file_id": "12nGQ8G3aSSo01AZp7QL7WmOjAKM-BBaV",
-  "patch_sha256": "cd3981e49d7e3eabc30b74629e029dc318afc23b72ff618f72b46354e7ba9acd",
-  "base_sha": "c7402c0b77852fdeedecc7fc901da7bb55fd7bcd",
+  "request_id": "m6-cp3-tb-rev178-closeout-20261124",
+  "mailbox_key": "m6-cp3-tb-rev178-closeout-20261124",
+  "file_id": "1akwsga6_VrQ_UvVMXT60cYyInwSnCqb5",
+  "patch_sha256": "a98e136e573a293067a15ab9400b7667ee358cb7a1ea2bf963694ec0411182ad",
+  "base_sha": "62be7ebc7649c4b5ba284f1097bf14473b01f8d6",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record TB-EXEC-178 immutable gate and next review",
+  "commit_message": "docs: close TB-REV-178 and freeze exact CB-199B selection plan",
   "retention_days": 14
 }
