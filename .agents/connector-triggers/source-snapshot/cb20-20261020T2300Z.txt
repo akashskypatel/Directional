@@ -1,1 +1,0 @@
-CB20 source snapshot trigger; source authority is this commit SHA.

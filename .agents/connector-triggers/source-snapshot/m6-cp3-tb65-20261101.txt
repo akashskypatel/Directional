@@ -1,3 +1,0 @@
-M6-CP3-TB65-P13-SLIT-FULL-GATE-EXEC
-Read-only source snapshot for artifact-only TB65 executor and policy/manifest verification.
-No source, test, or selector edits authorized.

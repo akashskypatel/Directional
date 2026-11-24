@@ -1,2 +1,0 @@
-Source snapshot for canonical turn M6-CP3-CB168F-P13-MUTUAL-CARRIER-CONTACT-CONSUMER.
-Snapshot the exact trigger commit; no local build or runtime execution.
