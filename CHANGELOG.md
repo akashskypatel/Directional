@@ -1,3 +1,7 @@
+## 2026-11-24 — M6-CP3-TB-REV-177 independent review progress
+
+[Independent review progress](.agents/Directional/Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md). TB-REV-177 independently confirms TB177 rejected 994/1001; 650 identical, 343 N1/N2, row172 permitted N3, two authorized receipts, five unapproved +108 assertion-location shifts. Four reverse pairs and both arrival equalities verified. Exact struck-segment/endpoint-incidence remap freeze remains pending; no CB-199A authorization. No product changes or new test execution. Stable counts unchanged.
+
 ## 2026-11-23 — TB-EXEC-177 immutable diagnostic gate rejected
 
 [TB177 report](.agents/Directional/Architecture_M6_CP3_TB177_P13_Mechanical_Retrace_Selection_Receipt_Full_Gate_Execution_Report_20261123.md); [run 45283342400](https://github.com/akashskypatel/Directional/actions/runs/45283342400), artifact `14871900641` ZIP `8c5bce907f59b77207833153912805cccca6fa122c70ff9f299a64f68102b068`, 2010/2010 checks. Full 1001/1001 execution with 994 PASS and seven established mechanical RED. Two inserted receipts at 652/656 prove four paired retraces and arrival equalities in their test diagnostic. Frozen H4 comparison **STOP**: five +108 assertion-line/ledger shifts and row172 N3-like record reorder. No source/test/fixture/selector/workflow change in TB, no acceptance or stable-accounting promotion (67/17/50, debt1/deferred81). Next only separate `M6-CP3-TB-REV-177`.
