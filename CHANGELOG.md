@@ -1,3 +1,12 @@
+## 2026-11-24 — M6-CP3-TB-REV-177 adversarial continuation: CB-199A amended
+
+[Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_177_Adversarial_Review_20261124.md):
+- **Upheld:** the TB177 rejection and the receipt evidence (four row-652 pairs, arrivals confirmed).
+- **Corrected:** my own TB-EXEC-177 line-move rule (J1).
+- **Compiled:** the independent review's CB-199A, which it had not compiled: 0 errors.
+- **Amended:** CB-199A no longer records port ownership by rewriting `sourcePort` or junction roles (J4). The amended diff is `cd43c3f0…4c5a`, +463/−0. Ownership is returned as a binding, which CB-199B must store as an explicit field.
+- **Frozen:** the TB178 manifest, `921bd04b…e8ed`, 1002 rows.
+
 ## 2026-11-24 — M6-CP3-TB-REV-177 independent review; exact CB-199A frozen
 
 [Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md). TB-REV-177 confirms TB177 rejected 994/1001, same seven RED; row172 conforms to N3 and five +108 assertion-location shifts retain H4 STOP. Four reverse pairs and both arrival equalities verified. Next only `M6-CP3-CB-199A-P13-RETRACED-TRACE-REFERENCE-REMAP` (pure unwired helper + one guard; compile only). Exact [diff](.agents/Directional/Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Exact.diff) `4f458361453186fdc9c7e0073b039fc3329f084d4b01b0eb6c2e193071d22bf7`; no implementation, compilation or new test execution in Review. Stable counts unchanged.
