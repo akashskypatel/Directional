@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev178-closeout-20261124",
-  "mailbox_key": "m6-cp3-tb-rev178-closeout-20261124",
-  "file_id": "1akwsga6_VrQ_UvVMXT60cYyInwSnCqb5",
-  "patch_sha256": "a98e136e573a293067a15ab9400b7667ee358cb7a1ea2bf963694ec0411182ad",
-  "base_sha": "62be7ebc7649c4b5ba284f1097bf14473b01f8d6",
+  "request_id": "m6-cp3-cb199b-source-20261124",
+  "mailbox_key": "m6-cp3-cb199b-source-20261124",
+  "file_id": "1GWk0t4POT4Rqce5yQbhX5jPaYFmKaSr7",
+  "patch_sha256": "eee92cea2dc398f49ef5a345f547c171a95527ea9d6b77bb99d3cd458cc9fdf5",
+  "base_sha": "9c732898f72ea101043491f46e918eb8086390e2",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close TB-REV-178 and freeze exact CB-199B selection plan",
+  "commit_message": "Select exact reciprocal retraced traces and preserve arrival port ownership",
   "retention_days": 14
 }
