@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP3-TB-REV-178
-Status: IN_PROGRESS
-Successor: 
+Status: COMPLETE
+Successor: M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION
 Started at: 2026-11-24T04:27:38Z
 Resumed at: 2026-11-24T04:57:08Z
-Ended at: 
+Ended at: 2026-11-24T04:58:31Z
 ---END_TURN_STATUS---
