@@ -1,21 +1,21 @@
-**Current turn outcome (2026-11-24):** TB-EXEC-179 completed, gate rejected 1,002/1,003, row786 RED at later predicate. Six existing failures recovered, no green-to-red loss, row1003 PASS. [Report](.agents/Directional/Architecture_M6_CP3_TB179_P13_Retraced_Trace_Selection_Full_Gate_Execution_Report_20261124.md). Next only `M6-CP3-TB-REV-179`. No product acceptance.
+**Current turn outcome (2026-11-24):** TB-REV-179 complete, TB179 gate rejected 1,002/1,003. Six existing failures recovered, row1003 PASS; row786 stale witness premise. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_179_Retraced_Trace_Selection_Independent_Review_20261124.md). Next only `M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST`. No product acceptance.
 
-## CURRENT — TB-EXEC-179 complete; TB-REV-179 next (2026-11-24 UTC)
+## CURRENT — TB-REV-179 complete; CB-200 next (2026-11-24 UTC)
 
-- [x] **COMPLETE** TB-EXEC-178 (995/1002; seven unchanged RED) and TB-REV-178 independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_178_Adversarial_Review_20261124.md): CB-199B pre/postimages match and both patched TUs syntax-compile (K1); J4/J5 met (K2); CB-200 reader premise unproven (K5).
+- [x] **COMPLETE** TB-EXEC-178 (995/1002; seven unchanged RED) and TB-REV-178 independent + [adversarial](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-179-folded-records--2026-11-24-utc): CB-199B pre/postimages match and both patched TUs syntax-compile (K1); J4/J5 met (K2); CB-200 reader premise unproven (K5).
 - [x] **COMPLETE (compile only)** `M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION` — [build record](.agents/Directional/Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Code_Build_Record_20261124.md), package `14893165901`, eight targets, 28/28 checks, no runtime.
 - [x] **COMPLETE / REJECTED** `M6-CP3-TB-EXEC-179-P13-RETRACED-TRACE-SELECTION-FULL-GATE`: 1,003 cases + 81 deferred. Row1003 PASS, no green-to-red, 21 changed inherited rows itemized; no committedSlide changes. [Report](.agents/Directional/Architecture_M6_CP3_TB179_P13_Retraced_Trace_Selection_Full_Gate_Execution_Report_20261124.md).
-- [ ] **1 NEXT ONLY** `M6-CP3-TB-REV-179`: independently adjudicate comparisons, row1003, two row652 regions and remaining row786 predicate; K1–K6/J6; freeze CB-200 only from evidence.
-- [ ] **3 HELD** CB-200 exact scope after TB-REV-179 plus every-region-owns-a-face assertion → TB. All mechanical controls green; preserve row652 two regions.
+- [x] **COMPLETE** `M6-CP3-TB-REV-179`: [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_179_Retraced_Trace_Selection_Independent_Review_20261124.md); independent comparison, two anchored regions, row786 stale cross-partition premise, J6 unexercised.
+- [ ] **1 NEXT ONLY** `M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST`: [frozen test-only compile plan](.agents/Directional/gates/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Test_Plan.md); exact membership oracle and every-region-owns-a-face assertion. Separate full TB and Review follow.
 - [ ] **3A HELD** Digest-neutral rename of exact piece helpers out of `embedded_graph_topology_detail` (K6), byte-identical gate.
 - [ ] **4 HELD** Row979, Branch A, CB-190; deferred CollinearOverlap/EndpointTouch (E5).
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-179
-Owner: independent Test + Benchmark Review; runtime-free, no source changes
-Authority: Architecture_M6_CP3_TB179_P13_Retraced_Trace_Selection_Full_Gate_Execution_Report_20261124.md; TB-REV-178 K1–K6; source 5d9468d168ee3c9eed086bd787979ced7f86843b
-Scope: independently adjudicate 1,002 inherited comparisons and row1003; preserve exact before/after evidence, row652 two-region certificate, and every-region-owns-a-face obligation. Identify row786 cause and freeze only a demonstrated correction.
-Stop: unexplained record, missing proof, violated contract, or authority mismatch. No implementation or promotion during Review.
+NEXT_TURN: M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST
+Owner: Code + Build; compile only, eight GMP/GMPXX targets, runtimeExecution=false
+Authority: .agents/Directional/gates/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Test_Plan.md
+Scope: one test file, exact two-partition arc membership and C4 owner assertion. Preserve every existing semantic requirement; no production readers or fixture changes.
+Stop: missing non-vacuous witness or exact correspondence, failed compile, scope drift. Separate immutable TB and Review follow.
 ```
 
 ## HISTORY — TB-REV-177 independent: original CB-199A (amended by the adversarial continuation) (2026-11-24 UTC)
@@ -26,7 +26,7 @@ Stop: unexplained record, missing proof, violated contract, or authority mismatc
 - [x] **COMPLETE** `M6-CP3-TB-REV-177`: independent artifact adjudication; exact CB-199A frozen. [Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md)
 - [ ] **1 NEXT ONLY** `M6-CP3-CB-199A-P13-RETRACED-TRACE-REFERENCE-REMAP` — apply the exact [diff](.agents/Directional/Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Exact.diff) `4f458361453186fdc9c7e0073b039fc3329f084d4b01b0eb6c2e193071d22bf7`, compile only, no production wiring. Separate TB and Review follow.
 - [ ] **4** CB-199B selection switch in `canonical_field_aligned_candidate`, fail closed on a missing path → TB.
-- [ ] **5** CB-200 port-set readers + every-region-owns-a-face assertion → TB; mechanical controls green, row652 two regions.
+- [ ] **5 HISTORICAL — superseded by TB-REV-179** CB-200 port-set readers + every-region-owns-a-face assertion → TB; mechanical controls green, row652 two regions.
 - [ ] **6** Row979, Branch A, CB-190; deferred CollinearOverlap/EndpointTouch (E5).
 
 ```text
@@ -47,7 +47,7 @@ STOP: any mismatch, compilation failure, production wiring, validation weakening
 - [x] **COMPLETE** `M6-CP3-TB-REV-176` — independently verified TB176/TB175 archives, 1,000 inherited records, row1001 negative, same seven RED and no production acceptance. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_176_P13_Piece_Builder_And_Ordered_Retrace_Independent_Review_20261123.md).
 - [ ] **NEXT** `M6-CP3-CB-198-P13-MECHANICAL-RETRACE-SELECTION-RECEIPT` — test-only exact per-fixture selection and nonvacuity receipt; no A2a production mutation. TB-EXEC-177 follows in a separate turn.
 - [ ] CB-199 production selection + reference remap + arrival owns `Y.port` (fail closed) → TB.
-- [ ] CB-200 port-set readers + every-region-owns-a-face assertion → TB; row652 predicts two regions only after mechanical repair and independent review.
+- [ ] HISTORICAL — superseded by TB-REV-179: CB-200 port-set readers + every-region-owns-a-face assertion → TB; row652 predicts two regions only after mechanical repair and independent review.
 - [ ] Row979, Branch A, CB-190; deferred CollinearOverlap/EndpointTouch and per-grazing-edge receipt.
 
 ```text

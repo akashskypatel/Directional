@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3; accepted TB169 **993/993** and CP2 **491/491** unchanged. TB178 rejected 995/1002, same seven mechanical RED; isolated remap guard PASS, frozen comparison satisfied. TB-REV-178 upheld the rejection; CB-199B compiled. Next only `M6-CP3-TB-EXEC-179-P13-RETRACED-TRACE-SELECTION-FULL-GATE` (artifact-only gate). No CP3/497/D0/H4 promotion.
+**Completed:** M0–M5 · **Now:** M6 / CP3; accepted TB169 **993/993** and CP2 **491/491** unchanged. TB179 rejected 1,002/1,003, six mechanical controls recovered, row1003 PASS; row786 stale witness premise. Next only `M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST` (test-only compile). No CP3/497/D0/H4 promotion.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
