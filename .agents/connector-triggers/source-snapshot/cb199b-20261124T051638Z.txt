@@ -1,3 +1,0 @@
-M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION
-Expected parent: df27c603a9ec52ad21a4e3de93d4da4babc16c84
-Snapshot the exact trigger commit; the source preimages must match the approved manifest.
