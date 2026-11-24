@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb199a-remap-compile-20261124",
-  "mailbox_key": "m6-cp3-cb199a-remap-compile-20261124",
-  "source_sha": "de65101eb04c73e08ea4b6b31968975f71d9d909",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb199a-remap"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb199a-remap-closeout-20261124",
+  "mailbox_key": "m6-cp3-cb199a-remap-closeout-20261124",
+  "file_id": "1qSmXrWsilhvQA25zd43TMjgD1aC_ZYTd",
+  "patch_sha256": "ac1f5d851a1fee15ed34d03146d73719fca8f2a8c55eecbb0bdeecdf59d22bd3",
+  "base_sha": "de65101eb04c73e08ea4b6b31968975f71d9d909",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record CB-199A compile evidence and frozen TB178 handoff",
+  "retention_days": 14
 }
