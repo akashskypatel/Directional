@@ -1,12 +1,1 @@
-{
-  "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev-179-closeout-20261124",
-  "mailbox_key": "m6-cp3-tb-rev-179-closeout-20261124",
-  "file_id": "1vX7kHlPN_QsayR9giRoxvsfHWhmMDZRf",
-  "patch_sha256": "1680e54bad0e07872a130c6006e56eb9c5815ab505cecfa0ead14e4d50fabcdd",
-  "base_sha": "0151eb6e9dc94e06987820d570a1fe83b654c30a",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Review TB179 and freeze test-only cross-partition census correction",
-  "retention_days": 14
-}
+{"schema_version":1,"operation":"drive_apply","request_id":"m6-cp3-cb200-apply-20261124","mailbox_key":"m6-cp3-cb200-apply-20261124","file_id":"1LefrM0jUWSzIAsX7r0X5G3Pm-s2GT1BG","patch_sha256":"c1ea232468855f641e9ffde907f83217bc82fa33af1baf469b434ef7fea6c2d8","base_sha":"fa9e16310925d69e53d88401ae19dd018eb8bc8e","target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing","commit_message":"Check cross-partition arc census membership independently","retention_days":14}
