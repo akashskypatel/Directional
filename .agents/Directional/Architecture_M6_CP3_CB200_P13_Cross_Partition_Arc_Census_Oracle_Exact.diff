@@ -1,0 +1,216 @@
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index ef6a0b1a31ea283fde076333cb0c00ae0f48f166..dddbb96acedf4a0f9b225888e7611f0433f6a20d 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -5548,29 +5548,93 @@ bool region_frontier_projection_coverage_is_valid(
+   return covered == faces;
+ }
+ 
+-bool region_frontier_interior_arc_census_is_valid(
+-    const RegionFrontierRow &row) {
++// Ordinal 407: each crossed face publishes its component in each named
++// partition where defined. The plan subject is a subset of the certifier
++// component, and the certifier admits every trace arc that meets its own
++// component, so an arc need not cross a face of the plan subject. Each
++// published label is checked against membership derived from that partition's
++// own component face lists; the projected labels never build the oracle.
++// Returns the first failed invariant, or nullopt when the census is valid.
++std::optional<std::string> region_frontier_interior_arc_census_failure(
++    const RegionFrontierRow &row,
++    const std::vector<RegionFrontierRow> &planComponents,
++    const std::vector<UncutComponentCensus> &certifierComponents) {
++  using FaceLocus = std::array<std::size_t, 3>;
+   if (!region_frontier_partition_correspondence_is_valid(row) ||
+       !row.interiorArcIncidenceCensusPublished ||
+       row.interiorArcIncidenceCount != row.interiorArcIncidences.size() ||
+       row.interiorArcIncidencesTruncated ||
+       row.interiorArcIncidences.empty()) {
+-    return false;
++    return "census";
++  }
++
++  std::map<FaceLocus, std::size_t> planByFace;
++  for (const auto &component : planComponents) {
++    if (component.partitionIdentity.domainRule !=
++        row.partitionIdentity.domainRule) {
++      return "planPartition";
++    }
++    for (const auto &face : component.faces) {
++      if (!planByFace.emplace(face, component.component).second) {
++        return "planMembership";
++      }
++    }
++  }
++  std::map<FaceLocus, std::size_t> certifierByFace;
++  for (const auto &component : certifierComponents) {
++    for (const auto &face : component.faces) {
++      const auto vertices = face.vertices();
++      const FaceLocus locus{vertices[0].index(), vertices[1].index(),
++                            vertices[2].index()};
++      if (!certifierByFace.emplace(locus, component.component).second) {
++        return "certifierMembership";
++      }
++    }
++  }
++  const auto label = [](const std::map<FaceLocus, std::size_t> &membership,
++                        const FaceLocus &face) -> std::optional<std::size_t> {
++    const auto found = membership.find(face);
++    if (found == membership.end()) return std::nullopt;
++    return found->second;
++  };
++
++  const std::set<FaceLocus> subject(row.faces.begin(), row.faces.end());
++  std::set<FaceLocus> planSubject;
++  for (const auto &[face, component] : planByFace) {
++    if (component == row.component) planSubject.insert(face);
++  }
++  if (subject.size() != row.faces.size() || planSubject != subject) {
++    return "planSubject";
++  }
++  std::set<FaceLocus> certifierSubject;
++  for (const auto &[face, component] : certifierByFace) {
++    if (component == *row.censusComponent) certifierSubject.insert(face);
++  }
++  if (!std::includes(certifierSubject.begin(), certifierSubject.end(),
++                     subject.begin(), subject.end()) ||
++      (row.censusCorrespondence == "Exact") != (certifierSubject == subject)) {
++    return "certifierSubject";
+   }
+ 
+-  bool touchesPlanSubject = false;
+   for (const auto &arc : row.interiorArcIncidences) {
+     if (arc.crossedFaceCount != arc.crossedFaces.size() ||
+         arc.crossedFacesTruncated || arc.crossedFaces.empty()) {
+-      return false;
++      return "arcFaceCount";
+     }
++    std::set<FaceLocus> crossed;
++    bool crossesCertifierSubject = false;
+     for (const auto &face : arc.crossedFaces) {
+-      if (face.planComponent.has_value() &&
+-          *face.planComponent == row.component) {
+-        touchesPlanSubject = true;
++      if (!crossed.insert(face.sourceFace).second) return "arcFaceDuplicate";
++      if (face.planComponent != label(planByFace, face.sourceFace)) {
++        return "planLabel";
++      }
++      if (face.certifierComponent != label(certifierByFace, face.sourceFace)) {
++        return "certifierLabel";
++      }
++      if (face.certifierComponent == row.censusComponent) {
++        crossesCertifierSubject = true;
+       }
+       if (face.certifierComponent.has_value()) {
+-        if (face.notTraceCutReason.empty()) return false;
+         const bool typedReason =
+             face.notTraceCutReason == "TerminalSlit" ||
+             face.notTraceCutReason == "SegmentRangeInvalid" ||
+@@ -5578,11 +5642,12 @@ bool region_frontier_interior_arc_census_is_valid(
+             face.notTraceCutReason == "DartOutOfRange" ||
+             face.notTraceCutReason == "FaceNotFound" ||
+             face.notTraceCutReason == "Other";
+-        if (!typedReason) return false;
++        if (!typedReason) return "reason";
+       }
+     }
++    if (!crossesCertifierSubject) return "certifierSubjectNotCrossed";
+   }
+-  return touchesPlanSubject;
++  return std::nullopt;
+ }
+ 
+ bool region_fragment_owner_relation_is_valid(
+@@ -20098,14 +20163,85 @@ TEST(SurfaceCutGraph,
+   const RegionFrontierRow *row =
+       find_creditable_region_frontier_row(locus, true);
+   ASSERT_NE(nullptr, row);
+-  ASSERT_TRUE(region_frontier_interior_arc_census_is_valid(*row));
+-
+-  auto corrupted = *row;
+-  ASSERT_FALSE(corrupted.interiorArcIncidences.empty());
+-  ++corrupted.interiorArcIncidences.front().crossedFaceCount;
+-  const bool corruptionRejected =
+-      !region_frontier_interior_arc_census_is_valid(corrupted);
+-  EXPECT_TRUE(corruptionRejected);
++  ASSERT_FALSE(locus.regionFrontierComponentsTruncated);
++  const auto &certificate = mechanical.cutGraph->certificate();
++  ASSERT_TRUE(certificate.uncutComponentCensusPublished);
++  const auto census_failure = [&](const RegionFrontierRow &candidate) {
++    return region_frontier_interior_arc_census_failure(
++        candidate, locus.regionFrontierComponents,
++        certificate.uncutComponentCensuses);
++  };
++  const auto failure = census_failure(*row);
++  ASSERT_FALSE(failure.has_value()) << failure.value_or("");
++
++  // Each corruption must be rejected by the invariant it violates. Every
++  // reported arc crosses the certifier subject, so each copy below exists.
++  const auto first_certifier_face = [](RegionFrontierRow &candidate)
++      -> directional::SurfaceCellUncutComponentArcFaceDiagnostics * {
++    for (auto &arc : candidate.interiorArcIncidences) {
++      for (auto &face : arc.crossedFaces) {
++        if (face.certifierComponent.has_value()) return &face;
++      }
++    }
++    return nullptr;
++  };
++  std::map<std::string, std::optional<std::string>> corruptions;
++  {
++    auto corrupted = *row;
++    ++corrupted.interiorArcIncidences.front().crossedFaceCount;
++    corruptions["crossedFaceCount"] = census_failure(corrupted);
++  }
++  {
++    auto corrupted = *row;
++    auto &arc = corrupted.interiorArcIncidences.front();
++    arc.crossedFaces.push_back(arc.crossedFaces.front());
++    ++arc.crossedFaceCount;
++    corruptions["duplicateFace"] = census_failure(corrupted);
++  }
++  {
++    auto corrupted = *row;
++    auto &face = corrupted.interiorArcIncidences.front().crossedFaces.front();
++    face.planComponent = face.planComponent.has_value()
++                             ? std::optional<std::size_t>{}
++                             : std::optional<std::size_t>{row->component};
++    corruptions["planLabel"] = census_failure(corrupted);
++  }
++  {
++    auto corrupted = *row;
++    auto *face = first_certifier_face(corrupted);
++    ASSERT_NE(nullptr, face);
++    face->certifierComponent.reset();
++    corruptions["certifierLabelErased"] = census_failure(corrupted);
++  }
++  {
++    auto corrupted = *row;
++    auto *face = first_certifier_face(corrupted);
++    ASSERT_NE(nullptr, face);
++    face->certifierComponent = *face->certifierComponent +
++                               certificate.uncutComponentCensuses.size();
++    corruptions["certifierLabelWrong"] = census_failure(corrupted);
++  }
++  {
++    auto corrupted = *row;
++    auto *face = first_certifier_face(corrupted);
++    ASSERT_NE(nullptr, face);
++    face->notTraceCutReason.clear();
++    corruptions["reasonMissing"] = census_failure(corrupted);
++  }
++  const std::map<std::string, std::optional<std::string>> expectedCorruptions{
++      {"certifierLabelErased", "certifierLabel"},
++      {"certifierLabelWrong", "certifierLabel"},
++      {"crossedFaceCount", "arcFaceCount"},
++      {"duplicateFace", "arcFaceDuplicate"},
++      {"planLabel", "planLabel"},
++      {"reasonMissing", "reason"}};
++  EXPECT_EQ(expectedCorruptions, corruptions);
++  const bool corruptionRejected = corruptions == expectedCorruptions;
++  std::cout << "m3Cp4c3PlanInteriorArcCensusCorruptions";
++  for (const auto &[name, rejectedBy] : corruptions) {
++    std::cout << ';' << name << '=' << rejectedBy.value_or("accepted");
++  }
++  std::cout << '\n';
+ 
+   constexpr const char *terminalSubjectBranch = "PlanFrontier";
+ 

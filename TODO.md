@@ -1,22 +1,39 @@
-**Current turn outcome (2026-11-24):** TB-REV-179 complete, TB179 gate rejected 1,002/1,003. Six existing failures recovered, row1003 PASS; row786 stale witness premise. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_179_Retraced_Trace_Selection_Independent_Review_20261124.md). Next only `M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST`. No product acceptance.
+**Current turn outcome (2026-11-24):** TB-REV-179 independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_179_Adversarial_Review_20261124.md) complete: TB179 rejected 1,002/1,003 (six recoveries); row786 premise not in ordinal 407; exact one-file CB-200 oracle diff frozen. Next only `M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST`. No product acceptance.
 
-## CURRENT — TB-REV-179 complete; CB-200 next (2026-11-24 UTC)
+## CURRENT — TB-REV-179 independent + adversarial complete; exact CB-200 next (2026-11-24 UTC)
+
+- [x] **COMPLETE** CB-199B → TB-EXEC-179 (1002/1003; six controls recovered, row1003 PASS, no green loss) → TB-REV-179 [independent](.agents/Directional/Architecture_M6_CP3_TB_REV_179_Retraced_Trace_Selection_Independent_Review_20261124.md) + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_179_Adversarial_Review_20261124.md): L2 upheld against ordinal 407 (M1); prose plan and C4 withdrawn (M2); exact oracle diff compiles (0 errors / 9 warnings).
+- [ ] **1 NEXT ONLY** `M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST` — [exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact_Manifest.md), diff SHA-256 `d4cba179cec0d1971fac3c775b64cf8bb6ffcd913a8c464bb53b9bc0df2ebb26`, test file only, compile only.
+- [ ] **2 HELD** TB-EXEC-180: TB179 manifest unchanged; 1003/1003 PASS; only row786 may change (six named corruption rejections); line moves +65/+136 frozen; STOP otherwise.
+- [ ] **3 HELD** TB-REV-180: adjudicate full green gate, TB170 recurrence closure, new accepted baseline.
+- [ ] **4 HELD** CB-201 digest-neutral rename out of `embedded_graph_topology_detail` (K6) → byte-identical TB.
+- [ ] **5 HELD** Row979, Branch A, CB-190; J6 production struck-reference witness debt; E5.
+
+```text
+NEXT_TURN: M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST
+Owner: implementation agent (Code + Build, compile only; eight GMP/GMPXX targets, runtimeExecution=false)
+Authority: Architecture_M6_CP3_TB_REV_179_Adversarial_Review_20261124.md (M1-M5); manifest gates/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact_Manifest.md; prose plan ..._Arc_Census_Test_Plan.md WITHDRAWN (M2)
+Apply exactly: .agents/Directional/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact.diff
+  SHA-256 d4cba179cec0d1971fac3c775b64cf8bb6ffcd913a8c464bb53b9bc0df2ebb26 (9209 B, +155/-19, one file)
+  tests/FieldAlignedCurveNetworkTests.cpp git ef6a0b1a31ea283fde076333cb0c00ae0f48f166 -> sha256 6e83fc338d7632c4540691cb12403d7b495ecd0ddea52f31d792c29c267e0b7b
+Then: M6-CP3-TB-EXEC-180-P13-CROSS-PARTITION-ARC-CENSUS-FULL-GATE
+  manifest TB179 unchanged 2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724 (1003 rows, 81 deferred, membership 1084)
+  expected 1003/1003 PASS; row786 receipt m3Cp4c3PlanInteriorArcCensusCorruptions shows all six expected invariants
+  compare to TB179 14895572803 under N1-N3: only row786 may change; test lines move +65 after 5585, +136 after old 20108; any changed record containing FieldAlignedCurveNetworkTests.cpp: or any other difference -> STOP to Review
+  -> M6-CP3-TB-REV-180: adjudicate full green gate (TB170 recurrence closure, seven controls, new accepted baseline)
+On failure/blocker: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
+Do not: edit beyond the diff; change production/selectors/manifests; add C4 assertion (withdrawn M2: production 1618-1627 already fails closed); run tests in a CB; promote CP3/497/D0/H4
+```
+
+## HISTORY — TB-REV-179 independent: prose CB-200 plan (withdrawn by adversarial M2) (2026-11-24 UTC)
 
 - [x] **COMPLETE** TB-EXEC-178 (995/1002; seven unchanged RED) and TB-REV-178 independent + [adversarial](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-179-folded-records--2026-11-24-utc): CB-199B pre/postimages match and both patched TUs syntax-compile (K1); J4/J5 met (K2); CB-200 reader premise unproven (K5).
 - [x] **COMPLETE (compile only)** `M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION` — [build record](.agents/Directional/Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Code_Build_Record_20261124.md), package `14893165901`, eight targets, 28/28 checks, no runtime.
 - [x] **COMPLETE / REJECTED** `M6-CP3-TB-EXEC-179-P13-RETRACED-TRACE-SELECTION-FULL-GATE`: 1,003 cases + 81 deferred. Row1003 PASS, no green-to-red, 21 changed inherited rows itemized; no committedSlide changes. [Report](.agents/Directional/Architecture_M6_CP3_TB179_P13_Retraced_Trace_Selection_Full_Gate_Execution_Report_20261124.md).
 - [x] **COMPLETE** `M6-CP3-TB-REV-179`: [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_179_Retraced_Trace_Selection_Independent_Review_20261124.md); independent comparison, two anchored regions, row786 stale cross-partition premise, J6 unexercised.
-- [ ] **1 NEXT ONLY** `M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST`: [frozen test-only compile plan](.agents/Directional/gates/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Test_Plan.md); exact membership oracle and every-region-owns-a-face assertion. Separate full TB and Review follow.
+- [ ] **SUPERSEDED (M2)** `M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST`: [frozen test-only compile plan](.agents/Directional/gates/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Test_Plan.md); exact membership oracle and every-region-owns-a-face assertion. Separate full TB and Review follow.
 - [ ] **3A HELD** Digest-neutral rename of exact piece helpers out of `embedded_graph_topology_detail` (K6), byte-identical gate.
 - [ ] **4 HELD** Row979, Branch A, CB-190; deferred CollinearOverlap/EndpointTouch (E5).
-
-```text
-NEXT_TURN: M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST
-Owner: Code + Build; compile only, eight GMP/GMPXX targets, runtimeExecution=false
-Authority: .agents/Directional/gates/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Test_Plan.md
-Scope: one test file, exact two-partition arc membership and C4 owner assertion. Preserve every existing semantic requirement; no production readers or fixture changes.
-Stop: missing non-vacuous witness or exact correspondence, failed compile, scope drift. Separate immutable TB and Review follow.
-```
 
 ## HISTORY — TB-REV-177 independent: original CB-199A (amended by the adversarial continuation) (2026-11-24 UTC)
 

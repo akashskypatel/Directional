@@ -1,5 +1,7 @@
 # M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST — frozen scope
 
+**WITHDRAWN (TB-REV-179 adversarial M2):** replaced by the exact diff in `Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact_Manifest.md`. Do not implement from this prose.
+
 **Owner:** Code + Build only. Source `5d9468d168ee3c9eed086bd787979ced7f86843b`; preimage test SHA-256 `2b32275e271299da175317aa1d70514ede85926f8976fb5ff083ece975c2650a`. [Review](../Architecture_M6_CP3_TB_REV_179_Retraced_Trace_Selection_Independent_Review_20261124.md). No execution in CB. Prior CB-200 reader plan withdrawn; no product reader needs modification on present evidence.
 
 ## Required change
