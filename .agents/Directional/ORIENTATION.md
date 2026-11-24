@@ -1,4 +1,4 @@
-**Current currency — TB-REV-179 (2026-11-24 UTC):** [Adversarial](Architecture_M6_CP3_TB_REV_179_Adversarial_Review_20261124.md) M1–M5: exact one-file CB-200 oracle diff replaces the prose plan; C4 withdrawn. [Review](Architecture_M6_CP3_TB_REV_179_Retraced_Trace_Selection_Independent_Review_20261124.md) independently upholds TB179 rejection, 1,002/1,003; six mechanical controls recover, no green loss, row1003 PASS. Row786 stale cross-partition witness premise identified. Accepted TB169 993/993 and CP2 491/491 unchanged; stable 67/17/50, debt1/deferred81. Next only `M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST`, test-only compile. No product promotion.
+**Current currency — TB-EXEC-180 (2026-11-24 UTC):** [TB180 report](Architecture_M6_CP3_TB180_P13_Cross_Partition_Arc_Census_Full_Gate_Execution_Report_20261124.md): 1003/1003 PASS, seven mechanical controls pass. Row786 only material difference from TB179. All six expected corruption classifications observed. Accepted TB169 993/993 and CP2 491/491 unchanged; stable 67/17/50, debt1/deferred81. Next only `M6-CP3-TB-REV-180`, independent Review. No product promotion.
 
 # Directional — Project Orientation
 
@@ -48,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; multi-cut plan remains open** | Accepted TB169 993/993 and CP2 491/491. TB179 rejected 1,002/1,003; six of seven mechanical RED recover, row1003 PASS; row786 stale witness premise independently established. Next `M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST`; no CP3/497/D0/H4 acceptance. Row979 remains staged-only. |
+| **M6-CP3 — active; multi-cut plan remains open** | Accepted TB169 993/993 and CP2 491/491. TB180 1003/1003 PASS; seven mechanical controls pass. Next `M6-CP3-TB-REV-180`; independent recurrence closure and baseline acceptance pending. No CP3/497/D0/H4 acceptance. Row979 remains staged-only. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting now includes the TB170 accepted-green recurrence: **67 events / 17 categories / 50 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -139,7 +139,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST` — [frozen test-only plan](gates/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Test_Plan.md). Verify exact cross-partition arc membership, both presence and absence, and every-region-owns-a-face; compile only. No production reader modification. J6 and K6 carried; row979/Branch A/E5/CB-190 held.
+**Current priority:** `M6-CP3-TB-REV-180` — independently adjudicate [TB180 report](Architecture_M6_CP3_TB180_P13_Cross_Partition_Arc_Census_Full_Gate_Execution_Report_20261124.md), the six corruption rejections, all seven mechanical controls and TB170 recurrence closure. J6 and K6 carried; row979/Branch A/E5/CB-190 held. No runtime or source changes in Review.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).

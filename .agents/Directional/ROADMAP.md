@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3; accepted TB169 **993/993** and CP2 **491/491** unchanged. TB179 rejected 1,002/1,003, six mechanical controls recovered, row1003 PASS; row786 stale witness premise. CB-200 test-only compile complete. Next only `M6-CP3-TB-EXEC-180-P13-CROSS-PARTITION-ARC-CENSUS-FULL-GATE` (artifact-only gate). No CP3/497/D0/H4 promotion.
+**Completed:** M0–M5 · **Now:** M6 / CP3; accepted TB169 **993/993** and CP2 **491/491** unchanged. TB180 **1003/1003 PASS**, seven mechanical controls pass, row786 only material change. Next only `M6-CP3-TB-REV-180` (independent adjudication). No CP3/497/D0/H4 promotion.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
