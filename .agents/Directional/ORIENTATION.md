@@ -1,4 +1,4 @@
-**Current currency — TB-REV-180 (2026-11-24 UTC):** [Independent review](Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md) accepts TB180 **1003/1003** as the cumulative runtime baseline; all seven TB170 mechanical controls pass and the recurrence is closed at that boundary. CP2 **491/491**, stable 67/17/50, debt1/deferred81. Next only `M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE`, namespace-only Code + Build. [Adversarial continuation](Architecture_M6_CP3_TB_REV_180_Adversarial_Review_20261124.md): row979 unclassified, candidate P1 (face-granular interior-singularity reach); CB-202 after TB-REV-181. No CP3/497/D0/H4 or production promotion.
+**Current currency — TB-REV-181 (2026-11-24 UTC):** [Independent review](Architecture_M6_CP3_TB_REV_181_Region_Corner_Ownership_Independent_Review_20261124.md) accepts TB181 **1003/1003**, closes K6; CP2 **491/491**, stable 67/17/50, debt1/deferred81. Next only `M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH`, compile only. Row979 unclassified; no CP3/497/D0/H4 or production promotion.
 
 # Directional — Project Orientation
 
@@ -48,14 +48,14 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; multi-cut plan remains open** | Accepted TB180 1003/1003 and CP2 491/491; TB170 mechanical recurrence closed. Next `M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE`. Row979 staged-only; no CP3/497/D0/H4 acceptance. |
+| **M6-CP3 — active; multi-cut plan remains open** | Accepted TB181 1003/1003 and CP2 491/491; TB170 mechanical recurrence and K6 closed. Next `M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH`. Row979 staged-only; no CP3/497/D0/H4 acceptance. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting now includes the TB170 accepted-green recurrence: **67 events / 17 categories / 50 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
 
 ## 4. Fixtures and witnesses
 
-**TB180 independent witness:** The four reciprocal pairs (0/3, 2/8, 4/11, 7/9) remain selected: eight traces, twelve ports owned once, row652 two region certificates, graph/source Euler 2. Row786 now validates both partition labels and rejects six corruptions at their specified invariants. Both terminal faces are certifier-only TerminalSlits, not plan-subject members. All seven controls pass. J6 contact termination remains unexercised; isolated row1002 proof retained. [Review](Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md).
+**TB181 independent witness (unchanged from TB180):** The four reciprocal pairs (0/3, 2/8, 4/11, 7/9) remain selected: eight traces, twelve ports owned once, row652 two region certificates, graph/source Euler 2. Row786 now validates both partition labels and rejects six corruptions at their specified invariants. Both terminal faces are certifier-only TerminalSlits, not plan-subject members. All seven controls pass. J6 contact termination remains unexercised; isolated row1002 proof retained. [Review](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc).
 
 **TB173 independent oracle review:** source-edge positive-length overlap helper has meaningful positive and negative cases (2/2 new cases PASS) but no production A2a call; seven mechanical RED persist. The four lens digons remain co-traced zero-area orbits. This is a historical statement; D13=A was resolved from DESIGN before TB174. [Review](Architecture_M6_CP3_TB_REV_173_Shared_Edge_Oracle_Independent_Review_20261123.md).
 
@@ -139,7 +139,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE` — [exact namespace-only plan](gates/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact_Manifest.md); compile only, separate full TB against accepted TB180. K6 remains open until the independent review of that gate. J6, row979, Branch A, E5 and CB-190 held; no activation or production promotion.
+**Current priority:** `M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH` — [exact plan](gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md). P1: region singularity reach must consume the owning-orbit corner set, not whole source faces. Compile only; separate TB182 against accepted TB181. K6 discharged. J6, Branch A, E5 and CB-190 held; no activation or production promotion.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).
@@ -156,6 +156,8 @@ TB-REV-167 S6 (carried to CB-190): terminal-vertex edge-side diagnostics require
 
 ## 8. Recurring defect patterns
 
+**TB181 review:** one exact region-fragment corner owner must serve both certification and singularity reach. A whole-face membership proxy is not authoritative for a cut fragment. The same-reader correction is frozen; row979 remains unclassified. [Review](Architecture_M6_CP3_TB_REV_181_Region_Corner_Ownership_Independent_Review_20261124.md).
+
 **TB179 review:** Producer selection now passes six mechanical controls. A valid strict superset census need not contain a crossed face in the plan subject; test actual membership separately instead of forcing partition equality. The isolated contact remap guard does not prove a production contact witness. Existing membership and non-vacuity rules apply. [Review](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-180-folded-records--2026-11-24-utc).
 
 **TB176 confirms the unwired-helper evidence pattern:** Row1001 proves the isolated ordered-retrace negative; TB175 and TB176 both repeat the seven production RED. Same existing regression, not a new stable event.
@@ -170,7 +172,7 @@ TB-REV-167 S6 (carried to CB-190): terminal-vertex edge-side diagnostics require
 
 **Historical TB171 continuation of TB170 regression:** A local along-edge classifier PASS is not a global face-to-region ownership proof. First mechanical `RegionElectedCutComponentEmpty` names an empty draft, not its cause; retain rejected 21 off-row transcripts and 300 lost records as the full gate boundary. Same stable recurrence, no new event. See [review](Architecture_M6_CP3_TB_REV_171_Along_Edge_Face_Piece_Independent_Review_20261123.md).
 
-**TB170 recurrence (closed at the control boundary by [TB-REV-180](Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md)):** A shared exact face-cut reader exposed seven accepted-green mechanical failures. Exact reciprocal retrace selection restored six; the last RED was an invalid test-local cross-partition intersection premise. The corrected membership oracle retains typed reasons and six specific negative checks. Historical counts remain unchanged; no inference of general production success.
+**TB170 recurrence (closed at the control boundary by [TB-REV-180](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc)):** A shared exact face-cut reader exposed seven accepted-green mechanical failures. Exact reciprocal retrace selection restored six; the last RED was an invalid test-local cross-partition intersection premise. The corrected membership oracle retains typed reasons and six specific negative checks. Historical counts remain unchanged; no inference of general production success.
 
 TB-REV-167 S7 (carried to CB-190): exact clipped-arc diagnostics must not replay whole original segments. This is diagnostic conformity, not current stage ownership.
 

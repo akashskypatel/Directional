@@ -3,7 +3,7 @@
 **Review artifact only.** The proposed diff is not applied or compiled in TB-REV-180.
 
 - Owner: `M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE` (Code + Build only).
-- Authority: [TB-REV-180](../Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md), K6 of [TB-REV-178](../M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-179-folded-records--2026-11-24-utc). The seven mechanical controls are green; the rename condition is met.
+- Authority: [TB-REV-180](../M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc), K6 of [TB-REV-178](../M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-179-folded-records--2026-11-24-utc). The seven mechanical controls are green; the rename condition is met.
 - Semantic preimage: `4c2b4cf16732cddb58252d5e758ea0b24449ed2a`. Verified review snapshot `9e38e162eec9d61db0cc35cb8eab030ede3a8329` has identical product/test/build bytes.
 - Exact [diff](../Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact.diff) SHA-256 `0da2ffe20ff5f0b4913acba5fa5dfd3e18c0e23ef1f6965d9d94098696d8d91c`, 27,844 bytes, 7 paths, +66/−66. `git apply --check` and `git diff --check` passed in an isolated scratch copy. Source lines are preserved. No compile or project runtime executed in Review.
 

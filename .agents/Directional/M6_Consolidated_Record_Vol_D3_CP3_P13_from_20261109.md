@@ -6304,3 +6304,554 @@ The projections use the same `vertices()` order on every side (`RemeshPipeline.c
 
 - Before freezing a test correction, read the frozen contract text. A test-local non-vacuity check can encode a fixture shape the contract never required.
 - Before freezing a "new" assertion, check whether production already fails closed on the same condition.
+
+
+## TB-REV-181 folded records — 2026-11-24 UTC
+
+- `Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md` — 84 lines, SHA-256 `f88f1b76e85f8889f7a6df90066111de7d105df3dfe1afda6b6f4aa91b28c128`; TB180 independent acceptance; recurrence/L2 closed; CB201 frozen. Original path `.agents/Directional/Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md`, exact preimage at `1aebcd183113512cce435d45b7ae373164f1b8f7`. Full text below.
+- `Architecture_M6_CP3_TB_REV_180_Adversarial_Review_20261124.md` — 84 lines, SHA-256 `da371ce8ab788f988ed75fdbd43c5fb800da4c45edccd71ed4a904551abc3721`; N1–N5, P1 candidate and exact CB202 requirements 1–6. Original path `.agents/Directional/Architecture_M6_CP3_TB_REV_180_Adversarial_Review_20261124.md`, exact preimage at `1aebcd183113512cce435d45b7ae373164f1b8f7`. Full text below.
+- `Architecture_M6_CP3_TB180_P13_Cross_Partition_Arc_Census_Full_Gate_Execution_Report_20261124.md` — 61 lines, SHA-256 `1f0c73a85877d22a79aa2a49ddabdbb98b9b24f2a3b5221c308fd8910dadd66d`; TB180 immutable 1003/1003 and row786 evidence. Original path `.agents/Directional/Architecture_M6_CP3_TB180_P13_Cross_Partition_Arc_Census_Full_Gate_Execution_Report_20261124.md`, exact preimage at `1aebcd183113512cce435d45b7ae373164f1b8f7`. Full text below.
+- `Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Code_Build_Record_20261124.md` — 61 lines, SHA-256 `495347fffef4912562d3c7fa4f7fef48557b51ee7068076b1cede697f8743a2f`; CB200 exact compile and immutable source/package evidence. Original path `.agents/Directional/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Code_Build_Record_20261124.md`, exact preimage at `1aebcd183113512cce435d45b7ae373164f1b8f7`. Full text below.
+- `Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact_Manifest.md` — 27 lines, SHA-256 `47b9e886aa5c61594beeb6237a814eb236b87837b6b2a4de7b189da8d2417984`; CB200 frozen exact oracle manifest. Original path `.agents/Directional/gates/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact_Manifest.md`, exact preimage at `1aebcd183113512cce435d45b7ae373164f1b8f7`. Full text below.
+- `Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact.diff` — 216 lines, SHA-256 `d4cba179cec0d1971fac3c775b64cf8bb6ffcd913a8c464bb53b9bc0df2ebb26`; CB200 consumed exact oracle diff. Original path `.agents/Directional/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact.diff`, exact preimage at `1aebcd183113512cce435d45b7ae373164f1b8f7`. Full text below.
+- `Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Test_Plan.md` — 22 lines, SHA-256 `bcc1bafafb596c80fedf73907136df39821ccba00c5610dc09519274c96ecf75`; Withdrawn prose CB200 plan; M2 supersedes. Original path `.agents/Directional/gates/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Test_Plan.md`, exact preimage at `1aebcd183113512cce435d45b7ae373164f1b8f7`. Full text below.
+
+Original links and turn labels in the following archived records are historical, not live authority. The exact preimages are recoverable at the named snapshot.
+
+
+### Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md
+
+# M6-CP3-TB-REV-180 — independent cross-partition arc census review (2026-11-24 UTC)
+
+## Situation
+
+**Accept TB180 as the 1,003-case cumulative runtime baseline.** Close the TB170 accepted-green mechanical recurrence for the seven specified controls. This is not CP3 closure, selector497 promotion, D0/H4 acceptance or a certified production mesh. No benchmark was run and no new stable regression occurred.
+
+## Background — immutable authority
+
+- [TB180 execution report](Architecture_M6_CP3_TB180_P13_Cross_Partition_Arc_Census_Full_Gate_Execution_Report_20261124.md): source `4c2b4cf16732cddb58252d5e758ea0b24449ed2a`, compile run `45351329597`, package `14901170173`, ZIP SHA-256 `8f4be71c9121cb0735ca07c1bc1dd83a66be20f4ab489b674a852dd122b6889f`. Independently checked 28/28 package members, source archive SHA-256 `c039e9bfb527ff8ffef0f2b687e0ebb555200593da46fdcc2309ac016c14e88d`, eight targets, empty final source status, explicit GMP/GMPXX link receipt, and `runtimeExecution=false`.
+- TB179 rejected baseline: run `45338168889`, result `14895572803`, ZIP SHA-256 `aeaacb099ea7d51292706802ccf3a9a64702abf70575d01bd8c52847acb0c636`; TB180 [run](https://github.com/akashskypatel/Directional/actions/runs/45457449013) `45457449013`, result `14951803089`, ZIP SHA-256 `67e784747b1c8d04bf781b69b486f3310876fde101b7935f0207fd2fd36a39f8`. Both result ZIP digests, exact file inventories, all 2,014 members per archive, all 1,003 raw-log hashes per archive independently verified. TB180 root manifest `00d69a06641b6c0dade139d8e5d44fa87b8da04301d36558e4fd6d0f51fff75c`.
+- Snapshot `9e38e162eec9d61db0cc35cb8eab030ede3a8329`, run `45475773142`, artifact `14959397486`, ZIP SHA-256 `624d4eea091b1f88eb0dbd2fede3e7259c2b99680e26752ef8212f3c2f135b79`; source archive `6ce5c838144a0cf96acb4da3c59f0d76f825b3adb30d681b07019ead38ce3c84`. All 5,815 listed file hashes match. Independent comparison of all files in src (162), include (146), tests (68), benchmarks (30), cmake (12), and root CMakeLists against the packaged source found zero differences. GitHub compare to resumed head `ac70e21d5fd06a5634c8130a69ba97bf2066b342` confirms 22 descendant commits, no code drift. Test postimage SHA-256 `6e83fc338d7632c4540691cb12403d7b495ecd0ddea52f31d792c29c267e0b7b` matches the CB-200 exact manifest. PR #8 remains open/draft/unmerged.
+- The initial attempt read multiple documents before snapshot acquisition; this was a procedure miss, corrected by using the verified snapshot for subsequent static review. No source discrepancy. The snapshot contains no original Git history.
+
+## Assessment — independently re-derived gate
+
+| Check | Result |
+|---|---|
+| Frozen full manifest (header + 1,003 rows) | `2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724` |
+| Historical accepted TB169 prefix (header + 993 rows) | `82581dd14064efe3729923cfd94333ef70113b0bb84e6bb8eabfb2ec61cce436` |
+| Accepted CP2 prefix (header + 491 rows) | `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038` |
+| Deferred ledger | `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`; 81 identities |
+| Membership | 1,003 gated + 81 deferred = 1,084; both archives equal, no duplicated binary/test identities |
+| TB179 → TB180 verdict | 1,002/1,003 → 1,003/1,003; exact manifest identity/order/expectation agrees with every ledger row |
+| Raw comparison | 639 byte-equal, 363 equal after N1/N2, 0 N3-only, row786 sole material change |
+| Fragment diagnostics | 1,554 → 1,554 complete `M3_CP4AB_FRAGMENT_DIAG` records; identical per-row multisets |
+| Ledger comparison | Row786 RED → PASS, exit 1 → 0, pass 0 → 1, failure-site removed; all other non-log-hash fields equal |
+| Execution boundary | Exact package/source, 1,003 executed once, no missing/skipped/duplicate/control_bad/unexpected_pass/later_positive_red/red_site_bad; immutable postflight, no compile/configure/relink/benchmark |
+| Accepted prefixes | All first 993 and first 491 rows PASS |
+
+The comparison was computed from the archived bytes, not copied from the execution report. N1 removes only GoogleTest elapsed time; N2 normalizes line endings; N3 allows reordering complete counted fragment records. No assertion-location or semantic-record normalization. No unexplained off-row difference.
+
+### M1–M4 adjudication: ordinal 407, not a requirement reduction
+
+`M3_Closure_Record.md:8250–8258` requires each crossed source face and its component in each named partition where defined. It does not require a crossed face in the plan subject. `SurfaceCutGraph.cpp:824–870` admits each arc by its own certifier component, and `GlobalTopologyPlan.cpp:800–815` copies that census and adds independent plan labels. Equal-orbit terminal slits remain in the certifier NotTraceCut partition; the plan assigns their edge-side owner, excluding them from the unowned-face subject. No partition unification or inserted ownership is justified.
+
+Row786 raw SHA-256 `5d9b538105b5b84e1d2209cd3a164c8f951b56cdc239bb8ccbcab0226516a0e2`. Its actual positive row is the nontruncated plan component 0 with `Superset` correspondence, arcs 19 and 21, each five unique crossed faces. Face (36,38,39) and face (66,67,120) have certifierComponent=0, planComponent=absent, reason=TerminalSlit. The other eight have both labels absent, reason=none. These are the predicted witness identities from the prior independent/adversarial review, not an assertion introduced to force the fixture's shape.
+
+The helper at `FieldAlignedCurveNetworkTests.cpp:5558–5643` derives maps independently from plan component face lists and certifier component face lists, rejects duplicate membership, checks the selected plan subject and certifier superset, compares each optional label to its own map, rejects duplicate crossed faces, checks certifier crossing and requires a typed reason when certifier membership exists. The caller at row786 uses real production data, requires complete plan evidence and a published certifier census, asserts the positive, constructs six independently corrupted copies, and compares a full name-to-rejection map at lines20230–20238. Wrong-reason rejection fails the test, as does accepting a corrupt copy. The raw receipt confirms all six:
+
+| Mutation | Exact rejection |
+|---|---|
+| Increment crossed-face count | `arcFaceCount` |
+| Duplicate crossed face, adjust count | `arcFaceDuplicate` |
+| Toggle plan label | `planLabel` |
+| Erase certifier label | `certifierLabel` |
+| Wrong certifier label | `certifierLabel` |
+| Clear reason | `reason` |
+
+M1–M4 satisfied for the frozen witness. No new generalized claim about all possible partition or contact fixtures. C4 remains withdrawn: production already rejects a region draft with no owned face; the two-region mechanical plan and its controls provide real production-path evidence.
+
+### M5 — obligations and recurrence disposition
+
+All seven controls (445, 652, 653, 656, 658, 660, 786) PASS. Six were recovered by CB-199B/TB179 through the exact reciprocal retrace selection; row786 was still RED on a test-local stale premise. The test-only CB-200 removes that false premise while adding six discriminating negative checks. No other raw semantic change. TB170 recurrence and L2 non-stable witness defect are closed at their specified control boundary; retain the recorded history and cause. Stable totals remain **67 events / 17 categories / 50 recurrences**; produced-witness debt **1**, deferred **81**. No new stable event. Promote only the cumulative runtime baseline to TB180 (CB-200 package `14901170173`); CP2 acceptance remains 491/491.
+
+- K1 compile evidence preserved; K2/J4/J5 production selection/port ownership remains proved for the selected path; K3/K4 full gate and comparison accepted; K5 unproved reader change remains withdrawn. M1–M4 discharged. C4 withdrawn, not a new assertion obligation.
+- J6: row1003 and row669 are unchanged under allowed normalization. The mechanical witness contains no production struck-reference contact; isolated row1002 remains a valid helper proof, not a production witness. Debt stays 1. Do not invent a positive counter or modify the fixture to obtain credit.
+- K6: condition met for the shared trace-segment namespace correction; exact next plan only. Row979 remains a staged `RegionContainsInteriorSingularity` at vertex8, not a valid sphere plan. E5 (CollinearOverlap/EndpointTouch), Branch A, CB-190 S4/S6/S7/W6 and CP3/497/D0/H4 remain held.
+
+## Recommendation
+
+Freeze only [`M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE`](gates/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact_Manifest.md) — namespace-only exact patch, compile-only. Seven files, +66/−66, verified scratch pre/postimages and unchanged source line counts. Separate TB must reproduce all 1,003 TB180 normalized raw records and pass all frozen tests. Any preimage, scope, compile, membership, semantic record or digest difference is STOP. No successor implementation, compilation or runtime in this Review.
+
+## Review closeout
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | Header + 993 and 491 rows match full historical hashes above; all 1,003 manifest and ledger identities checked. |
+| Decisive claims independently re-derived | Both result ZIPs, exact file/raw-log hashes, counts, complete diagnostic multisets, manifests, package and source snapshot, seven controls, six rejection receipts. |
+| Non-vacuity checked | Six corruptions require exact expected rejection, real production positive passes. J6 not exercised; debt retained. |
+| Prior obligations discharged/carried | M1–M4 and TB170/L2 closed at control boundary; K1–K5/J4/J5 dispositions retained, C4 withdrawn; J6/K6/E5/row979/Branch A/CB-190 carried. |
+| Stable accounting | 67/17/50, debt1/deferred81; TB180 1003/1003 accepted runtime baseline, CP2 491/491 unchanged. |
+| New candidates/obligations recorded | No new regression. K6 exact successor manifest and tracker updated. |
+| ORIENTATION currency line | TB-REV-180, 2026-11-24 UTC. |
+| ORIENTATION §3 / §4 / §7 / §8 | Current state, witness, priority and recurrence disposition updated; no product promotion. |
+| CHANGELOG | Entry added. |
+| ROADMAP | Current status and next updated. |
+| Selector manifest | Full-gate baseline index updated, no selector byte changed. |
+| LESSONS | Existing membership/non-vacuity and source-authority lessons apply; no new generalized rule. |
+| Consolidation under CLEAN_UP_POLICY | TB179 independent and adversarial reviews preserved verbatim with hashes and original source location in consolidated volume D3; live links redirected. |
+| Successor frozen | `M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE`, exact manifest and falsifiers above. |
+| Turn boundary held | Runtime-free, no product/test/build/fixture/selector mutation; only review documents and proposed patch. |
+| review_check.py boundary | Executed: product/test/build and selector boundaries PASS; 39 numbered selector hashes match snapshot HEAD. Four history-dependent checks FAIL because the source snapshot lacks Git history. Fetched the three documents at historical rewrite baseline `8b7299b43` through GitHub and matched all durable headings (handoff 4/4, orientation 1/1, tracker 0/0). This is a separate check, not a clean history-dependent exit. Document drift audit: 0 errors, two size and three protected-landing-file warnings; the Review closeout changes are authorized, existing orientation bloat is not a new semantic defect. |
+| STATUS lifecycle maintained | Entry IN_PROGRESS, Started at 2026-11-24T19:57:29Z; Resumed at 2026-11-24T20:21:04Z; final beacon only after verified patch and cleanup. |
+| Pushed to origin, branch in sync | Drive apply and GitHub ref verification required; local snapshot is not an origin checkout. No push claimed in this pre-application record. |
+
+
+
+### Architecture_M6_CP3_TB_REV_180_Adversarial_Review_20261124.md
+
+# TB-REV-180 — adversarial continuation (2026-11-24 UTC)
+
+This continues turn `M6-CP3-TB-REV-180` after the [independent review](Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md).
+
+The review was runtime-free. It used:
+- source reading;
+- Haiku read-only work: the CB-201 pre/postimage and apply check, `clang++ -fsyntax-only` on three patched TUs, an inventory of the held items, an API inventory, and extraction of the TB180 row-979 raw log (`raw/979.log`, SHA-256 `c361e049…c608`, matching the ledger).
+
+## Verdict
+
+- **Upheld:** TB180 accepted at 1003/1003, with the seven controls green and the TB170 recurrence closed at the control boundary.
+- **Upheld:** CB-201 exact diff, unamended (N1).
+- **Realigned:** the trajectory after CB-201. "Row979 — read printed locus first" was not a turn. The printed evidence already exists in TB180 and is read here (N2). It points at a granularity disagreement between two plan readers (N3). The successor after the CB-201 gate is now a narrow product correction with a falsifier, not an open-ended investigation.
+
+## Findings
+
+**N1 — CB-201 is mechanically sound and namespace-only.**
+- The diff hash `0da2ffe2…d91c` and all seven pre- and postimages match the manifest. It applies cleanly at HEAD: +66/−66, and `git diff --check` is clean.
+- `clang++ -fsyntax-only` on the patched `EmbeddedGraphTopology.cpp`, `SurfaceCellTracing.cpp` and the test TU gives 0 errors, with warning counts equal to HEAD (3/3/9).
+- None of the moved names is still qualified by the downstream namespace. ArcFaceVisits.h keeps `embedded::` only for symbols that stay downstream (`SourceFaceRecord`, `source_piece_binding_failure`, `exact_source_point_barycentric`).
+- `GlobalTopologyPlan.cpp:428` and `SurfaceCutGraph.cpp:206,434,940,1071` contain `using namespace embedded_graph_topology_detail`, and none of them uses a moved symbol unqualified. These TUs were not syntax-checked here, and the CB compile is the falsifier.
+- `FaceChartPoint` is an alias of `std::array<FieldExactRational,3>`, so moving its namespace changes no ADL associated namespace. No same-named overloads exist in both namespaces, so overload resolution cannot change.
+- The one non-rename line replaces a blank line with the test alias `trace_segment` (`tests/…:70–73`), which keeps line numbers fixed.
+
+**N2 — the row-979 printed locus is already published, and it rules out a missing port.**
+
+TB180 row 979 (identical to TB179 apart from timing):
+- `SphereStagedPlan outcome=RegionContainsInteriorSingularity`, with `sourceVertex=8`, failure stage `RegionCertification`, and a failing region of 46 source faces.
+- Vertex 8 is network node 1, with `SingularValence node=1 ports=3 arrivals=2 arcEnds=5`:
+  - departures: arcs 5, 6 and 7 (traces 3, 4 and 5);
+  - arrivals: arc 1 (trace 0, slide 6-8) and arc 12 (trace 9, slide 8-9).
+- Traces 3 and 4 both leave through face `6-8-9` across edge `6-9`. Nodes 2, 5 and 6 have the same shape.
+
+So the port node is on the graph and bounds every sector around vertex 8. A region can still be reported as containing vertex 8 if it reaches the vertex only by face-level membership.
+
+**N3 — candidate product defect P1: the interior-singularity check reads regions at face granularity, but regions are fragment-granular.**
+
+How each reader decides which vertices a region contains:
+
+| Reader | Rule | Where |
+|---|---|---|
+| Contract | `GlobalTopologyRegion::sourceFaces` is fragment support: "A source face crossed by traces may therefore occur in multiple regions." | `GlobalTopologyPlan.h:78–81` |
+| `validate_region_interior_singularities` | A vertex "reaches" the region when *any incident source face* is in `regionFaces`. | `GlobalTopologyPlan.cpp:1791–1806` |
+| `build_region_certificate` | A cut face contributes only the corners owned by the region's orbit, through `fragmentCorners[face][owningOrbit]`. | `GlobalTopologyPlan.cpp:2196–2222` |
+
+- The singularity check runs before the owning orbit is known (`:2394` versus `region_orbit` at `:2400`). It is never given `fragmentCorners`, although that is built at `:2389`.
+- So a region that owns only a strip of a cut face that misses vertex v's corner is reported as containing v, even though its boundary correctly omits v's port node.
+- This is the same class as S1 (TB-REV-167): two readers of one fact disagree.
+- **Not proven as the row-979 cause.** The error's projected locus does not name the failing region (`RemeshPipeline.cpp:684–686` projects the region only in one case), so the faces involved are unknown.
+- The correction is justified by the contract alone. The TB decides whether it is also the cause.
+
+**N4 — independent-review gap.** It records row 979 as "not a valid sphere plan". That presumes the rejection is lawful. N3 shows the rejecting predicate disagrees with the plan's own region contract, so row 979 stays *unclassified* until CB-202's TB.
+
+**N5 — carried.** J6 (production struck-reference witness), E5, Branch A and CB-190 stay held. CP3/497/D0/H4 are not promoted.
+
+## CB-202 requirements, to be frozen as an exact diff by TB-REV-181
+
+These requirements bind the Review. The implementation agent receives only the exact diff.
+
+1. **One source.** Extract the region-vertex derivation from `build_region_certificate` (`:2185–2222`) into one helper: an uncut face contributes all its vertices; a cut face contributes `fragmentCorners[face][owningOrbit]`. Both the singularity check and the certificate use that helper.
+2. **Corner-granular check.** A singular vertex is interior when it is in that set and no port node of its singularity is on the region's boundary. The helper keeps the existing `RegionSourceFaceOwningFragmentMissing` failure.
+3. **Precedence preserved.** Before freezing, census every test that asserts `RegionOrbitMissing`, a boundary-walk error, or `RegionContainsInteriorSingularity`. Either keep the reported-error order, or itemize each row whose code changes.
+4. **Falsifiers.** Add one appended unit guard:
+   - (a) A region that owns only a non-corner fragment of a singular-vertex-incident face is *not* rejected.
+   - (b) A region that owns the corner, with no port node on its boundary, *is* rejected with `RegionContainsInteriorSingularity`.
+   - The existing `GlobalTopologyPlan.RejectsRegionWithWrongEulerCharacteristicOrInteriorSingularity` (`tests/…:4277`) must stay unchanged and PASS.
+5. **Locus.** The row-979 `SphereStagedPlan` line also prints `error.region` (test-only, an append within the row-979 body).
+6. **TB rule.**
+   - Only row 979 and the new guard row may change.
+   - Prediction: row 979 moves past `RegionContainsInteriorSingularity`.
+   - If it does not, P1 is falsified as the cause: the rejection is lawful, and the route is A2a network topology at node 1 (two departures through `6-8-9`/`6-9`).
+
+## Turn sequence
+
+1. `M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE`: exact diff, compile only.
+2. `M6-CP3-TB-EXEC-181-P13-TRACE-SEGMENT-NAMESPACE-FULL-GATE`: TB179 manifest unchanged; all 1003 rows N1–N3-identical to TB180.
+3. `M6-CP3-TB-REV-181`: close K6 and freeze the exact CB-202 diff against the requirements above.
+4. CB-202 (corner-granular interior-singularity reach) → TB-EXEC-182 → TB-REV-182: classify row 979.
+5. Then the row-979 successor (built plan → Branch A, or A2a), then CB-190.
+
+## Lessons
+
+- Before scheduling "read the locus", read the receipts already in the latest gate artifact. TB180 row 979 already published the singular-node valence.
+- When a predicate tests membership in a fragment-granular set, check that it reads fragments rather than whole faces, and that no other reader of the same fact decides it differently.
+
+
+
+### Architecture_M6_CP3_TB180_P13_Cross_Partition_Arc_Census_Full_Gate_Execution_Report_20261124.md
+
+# TB-EXEC-180 — cross-partition arc census full gate (2026-11-24 UTC)
+
+## Situation
+
+The immutable full gate passed 1,003 of 1,003 tests. All seven mechanical controls pass. Row786 is the only material change from TB179. This is execution evidence, not independent acceptance. Only `M6-CP3-TB-REV-180` follows.
+
+## Background — exact authority
+
+| Item | Evidence |
+|---|---|
+| Source and executor | `4c2b4cf16732cddb58252d5e758ea0b24449ed2a` |
+| Compile | [CB-200 record](Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Code_Build_Record_20261124.md), GMP/GMPXX run `45351329597`, package `14901170173`, ZIP SHA-256 `8f4be71c9121cb0735ca07c1bc1dd83a66be20f4ab489b674a852dd122b6889f`, 28/28 checks |
+| Package root manifest / source archive | `2699d635c1ffc298a73aa7468e885e05b535f821c92fe8b98e82d2d0ab6ab168` / `c039e9bfb527ff8ffef0f2b687e0ebb555200593da46fdcc2309ac016c14e88d` |
+| Frozen case manifest | `gates/Architecture_M6_TB179_P13_Retraced_Trace_Selection_Full_Gate_Case_Manifest.tsv`, SHA-256 `2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724`, 1003 cases |
+| Deferred ledger | `gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv`, SHA-256 `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`, 81 identities |
+| Harness | `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh`, SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94` |
+| Request | `m6-cp3-tb180-exec`, event commit `c8740ffb8df810da9a1f440d0c311c925a5fe526`, request SHA-256 `c85a3a0356f07f66064c2b5a8477cf84af769dbf57d69c837299733097478d9f` |
+| Runtime | [run 45457449013](https://github.com/akashskypatel/Directional/actions/runs/45457449013), job `138670947143`, wrapper 18:15:34Z–18:29:45Z, exit 0; both schema checks, parse and mailbox success. Compile, Drive apply and noop skipped. |
+| Result | [14951803089](https://github.com/akashskypatel/Directional/actions/runs/45457449013/artifacts/14951803089), ZIP SHA-256 `67e784747b1c8d04bf781b69b486f3310876fde101b7935f0207fd2fd36a39f8`; 2014/2014 member hashes, root manifest SHA-256 `00d69a06641b6c0dade139d8e5d44fa87b8da04301d36558e4fd6d0f51fff75c` |
+| Harness log | `14951863064`, ZIP SHA-256 `b22170cba95807e4afb66e6217e04f935ac149f39a0283952adc0d4c5d2e5fe3` |
+| Wrapper log | `14951509916`, ZIP SHA-256 `2abf61f472e4f9aae32e5f5819f312ca6de0a4d31ec7cc674221eb6a5f2a49c6` |
+| Mailbox | `workflow-mailbox:.workflow-mailbox/m6-cp3-tb180-exec/runs/45457449013-attempt-1.json`, success, reported 18:30:07Z |
+| Baseline | [TB179 report](Architecture_M6_CP3_TB179_P13_Retraced_Trace_Selection_Full_Gate_Execution_Report_20261124.md), run `45338168889`, result `14895572803`, ZIP SHA-256 `aeaacb099ea7d51292706802ccf3a9a64702abf70575d01bd8c52847acb0c636`, 2014/2014 member hashes |
+
+The result and log ZIP digests match the mailbox and artifact API. Both result archives have exact member inventories. All 1,003 raw-log hashes in each archive match their ledgers. The harness verifies the unchanged case manifest and deferred membership. Each case ran once. Postflight passed. There was no configure, compile, relink, repair, benchmark or fixture, selector, manifest, product or test mutation. The execution used the packaged binaries with their archived modes.
+
+## Assessment — full comparison
+
+| Check | Result |
+|---|---|
+| Verdict | 1003 PASS, 0 RED; 0 abnormal, missing, skipped, duplicate, control_bad, unexpected_pass, later_positive_red, red_site_bad |
+| Membership | 1003 gated + 81 deferred = 1084, identical to TB179 |
+| Raw logs | 639 byte-identical, 363 N1/N2 only, 0 N3-only, one material change (786) |
+| Complete `M3_CP4AB_FRAGMENT_DIAG` records | 1554 → 1554 across all rows; zero changed multisets |
+| Ledger | Row786 RED → PASS; other rows unchanged except raw hashes |
+| Mechanical controls | 445, 652, 653, 656, 658, 660, 786: all PASS |
+| CP2 candidate | 491/491; accepted CP2 remains 491/491 |
+| Row1003 / row979 | Both unchanged in substance. Row1003 PASS; row979 staged `RegionContainsInteriorSingularity`, vertex8, not production acceptance. |
+| Comparison inventory / exact raw diff | SHA-256 `4bc6bdfff9671fdf9c360b7f200681ab163f5e59abff98f1e98ec1393bf437b2` / `1527cbedacdc30b8ddfcc82b2211b9b027efa3f3d6105ee219e9df2032680b68` (reconstruct from immutable raw logs) |
+
+N1 permits GoogleTest elapsed times. N2 permits line endings. N3 permits only reordering complete counted fragment records. No assertion-line normalization is permitted. The old row786 failure at `FieldAlignedCurveNetworkTests.cpp:20101` is removed by the expected RED-to-PASS change. No candidate material record contains an assertion location. No other row changes in substance.
+
+### Row786 — exact receipt
+
+`SurfaceCutGraph.InteriorArcCensusNamesCrossedFacesAndTheirComponentsInBothPartitions`, producer binary, exit 0. Raw SHA-256 `5d9b538105b5b84e1d2209cd3a164c8f951b56cdc239bb8ccbcab0226516a0e2`.
+
+```text
+m3Cp4c3PlanInteriorArcCensusCorruptions;certifierLabelErased=certifierLabel;certifierLabelWrong=certifierLabel;crossedFaceCount=arcFaceCount;duplicateFace=arcFaceDuplicate;planLabel=planLabel;reasonMissing=reason
+m3Cp4c3PlanInteriorArcCensus;component=0;interiorArcs=2;truncated=false;correspondence=Superset
+m3Cp4c3PlanInteriorArcFace;component=0;arcRow=0;faceRow=0;arc=19;sourceFace=36,38,39;certifierComponent=0;planComponent=absent;notTraceCutReason=TerminalSlit
+m3Cp4c3PlanInteriorArcFace;component=0;arcRow=1;faceRow=0;arc=21;sourceFace=66,67,120;certifierComponent=0;planComponent=absent;notTraceCutReason=TerminalSlit
+m3Cp4c3R8Receipt;ordinal=407;branch=UncutCensus;censusPredicateExecuted=yes;terminalSubjectRelation=NotApplicable;sameDomainCorruptionRejected=yes;terminalSubjectBranch=PlanFrontier;planFrontierEvidenceBranchExecuted=yes
+```
+
+The other eight printed crossed faces have absent labels in both partitions and `notTraceCutReason=none`. Each arc has five crossed faces. The new test derives each partition's membership independently. All six corruptions fail the expected invariant, not an unrelated condition. The observed terminal faces agree with M1 and M4 of the [adversarial review](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-180-folded-records--2026-11-24-utc). The test-local subject-intersection premise caused the last TB179 RED, not an additional observed production failure.
+
+No new accepted-green loss or stable regression event occurred. Keep historical totals 67 events, 17 categories, 50 recurrences, witness debt1 and deferred81. TB170 recurrence disposition and candidate acceptance require independent Review. Accepted TB169 993/993 and CP2 491/491 remain unchanged until then. J6 is not exercised by the mechanical contact fixture. K6, row979, E5, Branch A and CB-190 remain held. No CP3/497/D0/H4 promotion.
+
+## Recommendation
+
+Only `M6-CP3-TB-REV-180` is next. Re-open both immutable result archives and exact CB-200 source. Independently re-derive all case and ledger comparisons, six corruption rejection checks and seven recovered controls. Decide TB170 recurrence closure and the new accepted baseline only if the evidence satisfies M1–M5. The Review is runtime-free. Do not start CB-201 or downstream work.
+
+
+
+### Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Code_Build_Record_20261124.md
+
+# CB-200 — cross-partition arc census test (2026-11-24 UTC)
+
+## Situation
+
+`M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST` satisfies the compile-only gate. The exact reviewed test-only change is committed. The eight required targets compile with GNU Multiple Precision arithmetic libraries (GMP and GMPXX). No Directional executable ran. Only `M6-CP3-TB-EXEC-180-P13-CROSS-PARTITION-ARC-CENSUS-FULL-GATE` is authorized next, in a separate turn.
+
+## Background
+
+[Adversarial review](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-180-folded-records--2026-11-24-utc) M1–M5 and [exact manifest](gates/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact_Manifest.md) replace the withdrawn prose plan. Row786 must independently establish membership of the certifier and plan partitions. Six corruptions must each fail the specified invariant. C4 is withdrawn. No production reader, region election, selector, manifest, build logic or test identity changed.
+
+## Assessment
+
+| Evidence | Exact authority |
+|---|---|
+| Reviewed patch | `Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact.diff`; SHA-256 `d4cba179cec0d1971fac3c775b64cf8bb6ffcd913a8c464bb53b9bc0df2ebb26`, 9209 bytes, +155/−19, one file. |
+| Source application | [Run 45350394518](https://github.com/akashskypatel/Directional/actions/runs/45350394518), base `fa9e16310925d69e53d88401ae19dd018eb8bc8e`, request `91ed008440d161153c89f69c47a69f64a3e5132c`, applied source `4c2b4cf16732cddb58252d5e758ea0b24449ed2a`. Patch SHA-256 `c1ea232468855f641e9ffde907f83217bc82fa33af1baf469b434ef7fea6c2d8`; result `14899837598` ZIP SHA-256 `f93faf36ea9a7f4f43b6c703c997844a5fdde5ce230cd507c4a69a6f0a9e02cd`; log `14899504448` ZIP SHA-256 `b0b629075d281ea05b68afa88568754ee444d4d8e303081326413cde1ab9b0d5`. Apply and push exit 0. |
+| Compile | [Run 45351329597](https://github.com/akashskypatel/Directional/actions/runs/45351329597), job `138298392758`, request `93f421633a53f1aa6918677dd6fd4e31742e8ab1`, exact source `4c2b4cf16732cddb58252d5e758ea0b24449ed2a`. Configure, preflight and build succeeded. Test/benchmark job skipped. |
+| Package | [14901170173](https://github.com/akashskypatel/Directional/actions/runs/45351329597/artifacts/14901170173), ZIP SHA-256 `8f4be71c9121cb0735ca07c1bc1dd83a66be20f4ab489b674a852dd122b6889f`, 28/28 internal checksums. Root `SHA256SUMS` SHA-256 `2699d635c1ffc298a73aa7468e885e05b535f821c92fe8b98e82d2d0ab6ab168`; source archive SHA-256 `c039e9bfb527ff8ffef0f2b687e0ebb555200593da46fdcc2309ac016c14e88d`. |
+| Compile log | [14899953385](https://github.com/akashskypatel/Directional/actions/runs/45351329597/artifacts/14899953385), ZIP SHA-256 `0c2d9aa669d4d0a3cb305490f9269b194cdcd73593b72794fccf75904139360c`. Both compile ZIP hashes match the mailbox and artifact API. Expires 2026-12-01 UTC. |
+| Mailbox | `workflow-mailbox:.workflow-mailbox/m6-cp3-cb200-compile-20261124/runs/45351329597-attempt-1.json`, blob `251a7c2c0f31c4ddf054d86ad42a7a457b06c74a`, result success. |
+| Scope and clean state | `runtimeExecution=false`; `semanticContracts=compiled-not-executed`; five source status files empty. Preflight and build exit 0. `DIRECTIONAL_ENABLE_GMP=ON`; link uses `libgmpxx.so` and `libgmp.so`. |
+
+The sole changed file `tests/FieldAlignedCurveNetworkTests.cpp` has preimage git blob `ef6a0b1a31ea283fde076333cb0c00ae0f48f166`, preimage SHA-256 `2b32275e271299da175317aa1d70514ede85926f8976fb5ff083ece975c2650a`, postimage SHA-256 `6e83fc338d7632c4540691cb12403d7b495ecd0ddea52f31d792c29c267e0b7b`. Source package postimage matches. The reviewed patch passes reverse-application check. The eight targets are `directional_core`, `directional_pipeline`, `directional_surface_cell_authority_kernel_tests`, `directional_surface_cell_producer_tests`, `directional_surface_cell_completion_tests`, `directional_surface_cell_validation_tests`, `directional_compiled_api_tests`, and `directional_benchmarks`. The package contains two libraries and six executables. No local compile, project binary execution, membership discovery or benchmark occurred. Static manifest, deferred ledger and harness identities match.
+
+TB179 remains rejected at 1002/1003, six controls recovered, row786 RED. Accepted TB169 993/993, CP2 491/491, stable 67 events / 17 categories / 50 recurrences, witness debt1/deferred81 remain unchanged. No production acceptance or CP3/497/D0/H4 promotion.
+
+## Recommendation — separate TB-EXEC-180
+
+Use the immutable package above. Submit this request only in the next turn after its entry STATUS write. No rebuild, repair, relink, test modification or benchmark is authorized.
+
+```json
+{
+  "schema_version": 1,
+  "operation": "test_benchmark",
+  "request_id": "m6-cp3-tb180-exec",
+  "mailbox_key": "m6-cp3-tb180-exec",
+  "executor_sha": "4c2b4cf16732cddb58252d5e758ea0b24449ed2a",
+  "semantic_source_sha": "4c2b4cf16732cddb58252d5e758ea0b24449ed2a",
+  "turn_id": "M6-CP3-TB-EXEC-180-P13-CROSS-PARTITION-ARC-CENSUS-FULL-GATE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "14901170173",
+    "EXPECTED_SOURCE_SHA": "4c2b4cf16732cddb58252d5e758ea0b24449ed2a",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "8f4be71c9121cb0735ca07c1bc1dd83a66be20f4ab489b674a852dd122b6889f",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "2699d635c1ffc298a73aa7468e885e05b535f821c92fe8b98e82d2d0ab6ab168",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "c039e9bfb527ff8ffef0f2b687e0ebb555200593da46fdcc2309ac016c14e88d",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB179_P13_Retraced_Trace_Selection_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724",
+    "EXPECTED_CASE_COUNT": "1003",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  },
+  "artifact_prefix": "m6-cp3-tb180-cross-partition-arc-census",
+  "retention_days": 14
+}
+```
+
+The unchanged TB179 manifest has 1003 rows and 81 deferred names; expected membership 1084. Runtime membership is a TB preflight obligation. All 1003 cases must PASS. Row786 receipt `m3Cp4c3PlanInteriorArcCensusCorruptions` must record `certifierLabelErased=certifierLabel`, `certifierLabelWrong=certifierLabel`, `crossedFaceCount=arcFaceCount`, `duplicateFace=arcFaceDuplicate`, `planLabel=planLabel`, and `reasonMissing=reason`.
+
+Compare all 1003 raw records and ledger rows with TB179 result `14895572803`, ZIP SHA-256 `aeaacb099ea7d51292706802ccf3a9a64702abf70575d01bd8c52847acb0c636`. Apply only N1 (elapsed time), N2 (line endings), N3 (counted complete `M3_CP4AB_FRAGMENT_DIAG` records). Only row786 may change. Line locations move +65 after old 5585 and +136 after old 20108. Any changed record containing `FieldAlignedCurveNetworkTests.cpp:` or any other difference means STOP. Review must adjudicate recurrence closure, seven controls and new accepted baseline. J6, K6, row979, Branch A, CB-190 and E5 remain held. No promotion.
+
+
+
+### Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact_Manifest.md
+
+# CB-200 exact manifest — cross-partition arc census oracle (2026-11-24 UTC)
+
+**This file is a review artifact. The diff is not applied to live source.**
+
+- **Authority:** [TB-REV-179 adversarial continuation](../M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-180-folded-records--2026-11-24-utc), M1–M4.
+  - It replaces the prose plan `Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Test_Plan.md`, which is withdrawn (M2).
+- **Patch:** `Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact.diff`.
+  - SHA-256 `d4cba179cec0d1971fac3c775b64cf8bb6ffcd913a8c464bb53b9bc0df2ebb26`.
+  - 9,209 B, +155/−19, one file.
+- **`tests/FieldAlignedCurveNetworkTests.cpp`:**
+  - git preimage `ef6a0b1a31ea283fde076333cb0c00ae0f48f166`, SHA-256 `2b32275e…650a` (the CB-199B postimage);
+  - postimage SHA-256 `6e83fc338d7632c4540691cb12403d7b495ecd0ddea52f31d792c29c267e0b7b`.
+- **Scope:**
+  - Replaces `region_frontier_interior_arc_census_is_valid` with `region_frontier_interior_arc_census_failure`. The new helper returns the name of the first failed invariant.
+  - Changes the body of row 786 to six corruption checks, each tied to the invariant it must trip, plus one receipt line, `m3Cp4c3PlanInteriorArcCensusCorruptions`.
+  - Changes no production, selector, manifest or CMake file, and adds no test.
+- **Verified in this review:**
+  - `git apply --check` and `git diff --check` are clean.
+  - `clang++ -fsyntax-only` (C++20, `USE_GMP_ENABLED`, local `-include iterator` workaround) on the test TU gives 0 errors and the same 9 warnings as before.
+- **TB manifest:** reuse the TB179 manifest unchanged.
+  - `Architecture_M6_TB179_P13_Retraced_Trace_Selection_Full_Gate_Case_Manifest.tsv`.
+  - SHA-256 `2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724`, 1,003 rows, 81 deferred, membership 1,084.
+- **Line moves (J1 rule):**
+  - Test lines after 5585 move by +65.
+  - Lines after the row-786 assertion block (old 20108) move by +136.
+  - All rows are expected to PASS, so no failure-location line should appear. Any changed raw record that contains `FieldAlignedCurveNetworkTests.cpp:` means STOP.
+- **Strict stop:** a preimage mismatch, compile failure, or any diff outside this one path means BLOCKED; return to Review.
+
+
+
+### Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact.diff
+
+Exact bytes encoded as Base64 to preserve patch context whitespace. Decode with a standard Base64 decoder; verify the SHA-256 in the index before use.
+
+````text
+ZGlmZiAtLWdpdCBhL3Rlc3RzL0ZpZWxkQWxpZ25lZEN1cnZlTmV0d29ya1Rlc3RzLmNwcCBiL3Rl
+c3RzL0ZpZWxkQWxpZ25lZEN1cnZlTmV0d29ya1Rlc3RzLmNwcAppbmRleCBlZjZhMGIxYTMxZWEy
+ODNmZGUwNzYzMzNjYjBjMDBhZTBmNDhmMTY2Li5kZGRiYjk2YWNlZGY0YTBmOWIyMjU4ODhlNzYx
+MWYwNDMzZjZhMjBkIDEwMDY0NAotLS0gYS90ZXN0cy9GaWVsZEFsaWduZWRDdXJ2ZU5ldHdvcmtU
+ZXN0cy5jcHAKKysrIGIvdGVzdHMvRmllbGRBbGlnbmVkQ3VydmVOZXR3b3JrVGVzdHMuY3BwCkBA
+IC01NTQ4LDI5ICs1NTQ4LDkzIEBAIGJvb2wgcmVnaW9uX2Zyb250aWVyX3Byb2plY3Rpb25fY292
+ZXJhZ2VfaXNfdmFsaWQoCiAgIHJldHVybiBjb3ZlcmVkID09IGZhY2VzOwogfQogCi1ib29sIHJl
+Z2lvbl9mcm9udGllcl9pbnRlcmlvcl9hcmNfY2Vuc3VzX2lzX3ZhbGlkKAotICAgIGNvbnN0IFJl
+Z2lvbkZyb250aWVyUm93ICZyb3cpIHsKKy8vIE9yZGluYWwgNDA3OiBlYWNoIGNyb3NzZWQgZmFj
+ZSBwdWJsaXNoZXMgaXRzIGNvbXBvbmVudCBpbiBlYWNoIG5hbWVkCisvLyBwYXJ0aXRpb24gd2hl
+cmUgZGVmaW5lZC4gVGhlIHBsYW4gc3ViamVjdCBpcyBhIHN1YnNldCBvZiB0aGUgY2VydGlmaWVy
+CisvLyBjb21wb25lbnQsIGFuZCB0aGUgY2VydGlmaWVyIGFkbWl0cyBldmVyeSB0cmFjZSBhcmMg
+dGhhdCBtZWV0cyBpdHMgb3duCisvLyBjb21wb25lbnQsIHNvIGFuIGFyYyBuZWVkIG5vdCBjcm9z
+cyBhIGZhY2Ugb2YgdGhlIHBsYW4gc3ViamVjdC4gRWFjaAorLy8gcHVibGlzaGVkIGxhYmVsIGlz
+IGNoZWNrZWQgYWdhaW5zdCBtZW1iZXJzaGlwIGRlcml2ZWQgZnJvbSB0aGF0IHBhcnRpdGlvbidz
+CisvLyBvd24gY29tcG9uZW50IGZhY2UgbGlzdHM7IHRoZSBwcm9qZWN0ZWQgbGFiZWxzIG5ldmVy
+IGJ1aWxkIHRoZSBvcmFjbGUuCisvLyBSZXR1cm5zIHRoZSBmaXJzdCBmYWlsZWQgaW52YXJpYW50
+LCBvciBudWxsb3B0IHdoZW4gdGhlIGNlbnN1cyBpcyB2YWxpZC4KK3N0ZDo6b3B0aW9uYWw8c3Rk
+OjpzdHJpbmc+IHJlZ2lvbl9mcm9udGllcl9pbnRlcmlvcl9hcmNfY2Vuc3VzX2ZhaWx1cmUoCisg
+ICAgY29uc3QgUmVnaW9uRnJvbnRpZXJSb3cgJnJvdywKKyAgICBjb25zdCBzdGQ6OnZlY3RvcjxS
+ZWdpb25Gcm9udGllclJvdz4gJnBsYW5Db21wb25lbnRzLAorICAgIGNvbnN0IHN0ZDo6dmVjdG9y
+PFVuY3V0Q29tcG9uZW50Q2Vuc3VzPiAmY2VydGlmaWVyQ29tcG9uZW50cykgeworICB1c2luZyBG
+YWNlTG9jdXMgPSBzdGQ6OmFycmF5PHN0ZDo6c2l6ZV90LCAzPjsKICAgaWYgKCFyZWdpb25fZnJv
+bnRpZXJfcGFydGl0aW9uX2NvcnJlc3BvbmRlbmNlX2lzX3ZhbGlkKHJvdykgfHwKICAgICAgICFy
+b3cuaW50ZXJpb3JBcmNJbmNpZGVuY2VDZW5zdXNQdWJsaXNoZWQgfHwKICAgICAgIHJvdy5pbnRl
+cmlvckFyY0luY2lkZW5jZUNvdW50ICE9IHJvdy5pbnRlcmlvckFyY0luY2lkZW5jZXMuc2l6ZSgp
+IHx8CiAgICAgICByb3cuaW50ZXJpb3JBcmNJbmNpZGVuY2VzVHJ1bmNhdGVkIHx8CiAgICAgICBy
+b3cuaW50ZXJpb3JBcmNJbmNpZGVuY2VzLmVtcHR5KCkpIHsKLSAgICByZXR1cm4gZmFsc2U7Cisg
+ICAgcmV0dXJuICJjZW5zdXMiOworICB9CisKKyAgc3RkOjptYXA8RmFjZUxvY3VzLCBzdGQ6OnNp
+emVfdD4gcGxhbkJ5RmFjZTsKKyAgZm9yIChjb25zdCBhdXRvICZjb21wb25lbnQgOiBwbGFuQ29t
+cG9uZW50cykgeworICAgIGlmIChjb21wb25lbnQucGFydGl0aW9uSWRlbnRpdHkuZG9tYWluUnVs
+ZSAhPQorICAgICAgICByb3cucGFydGl0aW9uSWRlbnRpdHkuZG9tYWluUnVsZSkgeworICAgICAg
+cmV0dXJuICJwbGFuUGFydGl0aW9uIjsKKyAgICB9CisgICAgZm9yIChjb25zdCBhdXRvICZmYWNl
+IDogY29tcG9uZW50LmZhY2VzKSB7CisgICAgICBpZiAoIXBsYW5CeUZhY2UuZW1wbGFjZShmYWNl
+LCBjb21wb25lbnQuY29tcG9uZW50KS5zZWNvbmQpIHsKKyAgICAgICAgcmV0dXJuICJwbGFuTWVt
+YmVyc2hpcCI7CisgICAgICB9CisgICAgfQorICB9CisgIHN0ZDo6bWFwPEZhY2VMb2N1cywgc3Rk
+OjpzaXplX3Q+IGNlcnRpZmllckJ5RmFjZTsKKyAgZm9yIChjb25zdCBhdXRvICZjb21wb25lbnQg
+OiBjZXJ0aWZpZXJDb21wb25lbnRzKSB7CisgICAgZm9yIChjb25zdCBhdXRvICZmYWNlIDogY29t
+cG9uZW50LmZhY2VzKSB7CisgICAgICBjb25zdCBhdXRvIHZlcnRpY2VzID0gZmFjZS52ZXJ0aWNl
+cygpOworICAgICAgY29uc3QgRmFjZUxvY3VzIGxvY3Vze3ZlcnRpY2VzWzBdLmluZGV4KCksIHZl
+cnRpY2VzWzFdLmluZGV4KCksCisgICAgICAgICAgICAgICAgICAgICAgICAgICAgdmVydGljZXNb
+Ml0uaW5kZXgoKX07CisgICAgICBpZiAoIWNlcnRpZmllckJ5RmFjZS5lbXBsYWNlKGxvY3VzLCBj
+b21wb25lbnQuY29tcG9uZW50KS5zZWNvbmQpIHsKKyAgICAgICAgcmV0dXJuICJjZXJ0aWZpZXJN
+ZW1iZXJzaGlwIjsKKyAgICAgIH0KKyAgICB9CisgIH0KKyAgY29uc3QgYXV0byBsYWJlbCA9IFtd
+KGNvbnN0IHN0ZDo6bWFwPEZhY2VMb2N1cywgc3RkOjpzaXplX3Q+ICZtZW1iZXJzaGlwLAorICAg
+ICAgICAgICAgICAgICAgICAgICAgY29uc3QgRmFjZUxvY3VzICZmYWNlKSAtPiBzdGQ6Om9wdGlv
+bmFsPHN0ZDo6c2l6ZV90PiB7CisgICAgY29uc3QgYXV0byBmb3VuZCA9IG1lbWJlcnNoaXAuZmlu
+ZChmYWNlKTsKKyAgICBpZiAoZm91bmQgPT0gbWVtYmVyc2hpcC5lbmQoKSkgcmV0dXJuIHN0ZDo6
+bnVsbG9wdDsKKyAgICByZXR1cm4gZm91bmQtPnNlY29uZDsKKyAgfTsKKworICBjb25zdCBzdGQ6
+OnNldDxGYWNlTG9jdXM+IHN1YmplY3Qocm93LmZhY2VzLmJlZ2luKCksIHJvdy5mYWNlcy5lbmQo
+KSk7CisgIHN0ZDo6c2V0PEZhY2VMb2N1cz4gcGxhblN1YmplY3Q7CisgIGZvciAoY29uc3QgYXV0
+byAmW2ZhY2UsIGNvbXBvbmVudF0gOiBwbGFuQnlGYWNlKSB7CisgICAgaWYgKGNvbXBvbmVudCA9
+PSByb3cuY29tcG9uZW50KSBwbGFuU3ViamVjdC5pbnNlcnQoZmFjZSk7CisgIH0KKyAgaWYgKHN1
+YmplY3Quc2l6ZSgpICE9IHJvdy5mYWNlcy5zaXplKCkgfHwgcGxhblN1YmplY3QgIT0gc3ViamVj
+dCkgeworICAgIHJldHVybiAicGxhblN1YmplY3QiOworICB9CisgIHN0ZDo6c2V0PEZhY2VMb2N1
+cz4gY2VydGlmaWVyU3ViamVjdDsKKyAgZm9yIChjb25zdCBhdXRvICZbZmFjZSwgY29tcG9uZW50
+XSA6IGNlcnRpZmllckJ5RmFjZSkgeworICAgIGlmIChjb21wb25lbnQgPT0gKnJvdy5jZW5zdXND
+b21wb25lbnQpIGNlcnRpZmllclN1YmplY3QuaW5zZXJ0KGZhY2UpOworICB9CisgIGlmICghc3Rk
+OjppbmNsdWRlcyhjZXJ0aWZpZXJTdWJqZWN0LmJlZ2luKCksIGNlcnRpZmllclN1YmplY3QuZW5k
+KCksCisgICAgICAgICAgICAgICAgICAgICBzdWJqZWN0LmJlZ2luKCksIHN1YmplY3QuZW5kKCkp
+IHx8CisgICAgICAocm93LmNlbnN1c0NvcnJlc3BvbmRlbmNlID09ICJFeGFjdCIpICE9IChjZXJ0
+aWZpZXJTdWJqZWN0ID09IHN1YmplY3QpKSB7CisgICAgcmV0dXJuICJjZXJ0aWZpZXJTdWJqZWN0
+IjsKICAgfQogCi0gIGJvb2wgdG91Y2hlc1BsYW5TdWJqZWN0ID0gZmFsc2U7CiAgIGZvciAoY29u
+c3QgYXV0byAmYXJjIDogcm93LmludGVyaW9yQXJjSW5jaWRlbmNlcykgewogICAgIGlmIChhcmMu
+Y3Jvc3NlZEZhY2VDb3VudCAhPSBhcmMuY3Jvc3NlZEZhY2VzLnNpemUoKSB8fAogICAgICAgICBh
+cmMuY3Jvc3NlZEZhY2VzVHJ1bmNhdGVkIHx8IGFyYy5jcm9zc2VkRmFjZXMuZW1wdHkoKSkgewot
+ICAgICAgcmV0dXJuIGZhbHNlOworICAgICAgcmV0dXJuICJhcmNGYWNlQ291bnQiOwogICAgIH0K
+KyAgICBzdGQ6OnNldDxGYWNlTG9jdXM+IGNyb3NzZWQ7CisgICAgYm9vbCBjcm9zc2VzQ2VydGlm
+aWVyU3ViamVjdCA9IGZhbHNlOwogICAgIGZvciAoY29uc3QgYXV0byAmZmFjZSA6IGFyYy5jcm9z
+c2VkRmFjZXMpIHsKLSAgICAgIGlmIChmYWNlLnBsYW5Db21wb25lbnQuaGFzX3ZhbHVlKCkgJiYK
+LSAgICAgICAgICAqZmFjZS5wbGFuQ29tcG9uZW50ID09IHJvdy5jb21wb25lbnQpIHsKLSAgICAg
+ICAgdG91Y2hlc1BsYW5TdWJqZWN0ID0gdHJ1ZTsKKyAgICAgIGlmICghY3Jvc3NlZC5pbnNlcnQo
+ZmFjZS5zb3VyY2VGYWNlKS5zZWNvbmQpIHJldHVybiAiYXJjRmFjZUR1cGxpY2F0ZSI7CisgICAg
+ICBpZiAoZmFjZS5wbGFuQ29tcG9uZW50ICE9IGxhYmVsKHBsYW5CeUZhY2UsIGZhY2Uuc291cmNl
+RmFjZSkpIHsKKyAgICAgICAgcmV0dXJuICJwbGFuTGFiZWwiOworICAgICAgfQorICAgICAgaWYg
+KGZhY2UuY2VydGlmaWVyQ29tcG9uZW50ICE9IGxhYmVsKGNlcnRpZmllckJ5RmFjZSwgZmFjZS5z
+b3VyY2VGYWNlKSkgeworICAgICAgICByZXR1cm4gImNlcnRpZmllckxhYmVsIjsKKyAgICAgIH0K
+KyAgICAgIGlmIChmYWNlLmNlcnRpZmllckNvbXBvbmVudCA9PSByb3cuY2Vuc3VzQ29tcG9uZW50
+KSB7CisgICAgICAgIGNyb3NzZXNDZXJ0aWZpZXJTdWJqZWN0ID0gdHJ1ZTsKICAgICAgIH0KICAg
+ICAgIGlmIChmYWNlLmNlcnRpZmllckNvbXBvbmVudC5oYXNfdmFsdWUoKSkgewotICAgICAgICBp
+ZiAoZmFjZS5ub3RUcmFjZUN1dFJlYXNvbi5lbXB0eSgpKSByZXR1cm4gZmFsc2U7CiAgICAgICAg
+IGNvbnN0IGJvb2wgdHlwZWRSZWFzb24gPQogICAgICAgICAgICAgZmFjZS5ub3RUcmFjZUN1dFJl
+YXNvbiA9PSAiVGVybWluYWxTbGl0IiB8fAogICAgICAgICAgICAgZmFjZS5ub3RUcmFjZUN1dFJl
+YXNvbiA9PSAiU2VnbWVudFJhbmdlSW52YWxpZCIgfHwKQEAgLTU1NzgsMTEgKzU2NDIsMTIgQEAg
+Ym9vbCByZWdpb25fZnJvbnRpZXJfaW50ZXJpb3JfYXJjX2NlbnN1c19pc192YWxpZCgKICAgICAg
+ICAgICAgIGZhY2Uubm90VHJhY2VDdXRSZWFzb24gPT0gIkRhcnRPdXRPZlJhbmdlIiB8fAogICAg
+ICAgICAgICAgZmFjZS5ub3RUcmFjZUN1dFJlYXNvbiA9PSAiRmFjZU5vdEZvdW5kIiB8fAogICAg
+ICAgICAgICAgZmFjZS5ub3RUcmFjZUN1dFJlYXNvbiA9PSAiT3RoZXIiOwotICAgICAgICBpZiAo
+IXR5cGVkUmVhc29uKSByZXR1cm4gZmFsc2U7CisgICAgICAgIGlmICghdHlwZWRSZWFzb24pIHJl
+dHVybiAicmVhc29uIjsKICAgICAgIH0KICAgICB9CisgICAgaWYgKCFjcm9zc2VzQ2VydGlmaWVy
+U3ViamVjdCkgcmV0dXJuICJjZXJ0aWZpZXJTdWJqZWN0Tm90Q3Jvc3NlZCI7CiAgIH0KLSAgcmV0
+dXJuIHRvdWNoZXNQbGFuU3ViamVjdDsKKyAgcmV0dXJuIHN0ZDo6bnVsbG9wdDsKIH0KIAogYm9v
+bCByZWdpb25fZnJhZ21lbnRfb3duZXJfcmVsYXRpb25faXNfdmFsaWQoCkBAIC0yMDA5OCwxNCAr
+MjAxNjMsODUgQEAgVEVTVChTdXJmYWNlQ3V0R3JhcGgsCiAgIGNvbnN0IFJlZ2lvbkZyb250aWVy
+Um93ICpyb3cgPQogICAgICAgZmluZF9jcmVkaXRhYmxlX3JlZ2lvbl9mcm9udGllcl9yb3cobG9j
+dXMsIHRydWUpOwogICBBU1NFUlRfTkUobnVsbHB0ciwgcm93KTsKLSAgQVNTRVJUX1RSVUUocmVn
+aW9uX2Zyb250aWVyX2ludGVyaW9yX2FyY19jZW5zdXNfaXNfdmFsaWQoKnJvdykpOwotCi0gIGF1
+dG8gY29ycnVwdGVkID0gKnJvdzsKLSAgQVNTRVJUX0ZBTFNFKGNvcnJ1cHRlZC5pbnRlcmlvckFy
+Y0luY2lkZW5jZXMuZW1wdHkoKSk7Ci0gICsrY29ycnVwdGVkLmludGVyaW9yQXJjSW5jaWRlbmNl
+cy5mcm9udCgpLmNyb3NzZWRGYWNlQ291bnQ7Ci0gIGNvbnN0IGJvb2wgY29ycnVwdGlvblJlamVj
+dGVkID0KLSAgICAgICFyZWdpb25fZnJvbnRpZXJfaW50ZXJpb3JfYXJjX2NlbnN1c19pc192YWxp
+ZChjb3JydXB0ZWQpOwotICBFWFBFQ1RfVFJVRShjb3JydXB0aW9uUmVqZWN0ZWQpOworICBBU1NF
+UlRfRkFMU0UobG9jdXMucmVnaW9uRnJvbnRpZXJDb21wb25lbnRzVHJ1bmNhdGVkKTsKKyAgY29u
+c3QgYXV0byAmY2VydGlmaWNhdGUgPSBtZWNoYW5pY2FsLmN1dEdyYXBoLT5jZXJ0aWZpY2F0ZSgp
+OworICBBU1NFUlRfVFJVRShjZXJ0aWZpY2F0ZS51bmN1dENvbXBvbmVudENlbnN1c1B1Ymxpc2hl
+ZCk7CisgIGNvbnN0IGF1dG8gY2Vuc3VzX2ZhaWx1cmUgPSBbJl0oY29uc3QgUmVnaW9uRnJvbnRp
+ZXJSb3cgJmNhbmRpZGF0ZSkgeworICAgIHJldHVybiByZWdpb25fZnJvbnRpZXJfaW50ZXJpb3Jf
+YXJjX2NlbnN1c19mYWlsdXJlKAorICAgICAgICBjYW5kaWRhdGUsIGxvY3VzLnJlZ2lvbkZyb250
+aWVyQ29tcG9uZW50cywKKyAgICAgICAgY2VydGlmaWNhdGUudW5jdXRDb21wb25lbnRDZW5zdXNl
+cyk7CisgIH07CisgIGNvbnN0IGF1dG8gZmFpbHVyZSA9IGNlbnN1c19mYWlsdXJlKCpyb3cpOwor
+ICBBU1NFUlRfRkFMU0UoZmFpbHVyZS5oYXNfdmFsdWUoKSkgPDwgZmFpbHVyZS52YWx1ZV9vcigi
+Iik7CisKKyAgLy8gRWFjaCBjb3JydXB0aW9uIG11c3QgYmUgcmVqZWN0ZWQgYnkgdGhlIGludmFy
+aWFudCBpdCB2aW9sYXRlcy4gRXZlcnkKKyAgLy8gcmVwb3J0ZWQgYXJjIGNyb3NzZXMgdGhlIGNl
+cnRpZmllciBzdWJqZWN0LCBzbyBlYWNoIGNvcHkgYmVsb3cgZXhpc3RzLgorICBjb25zdCBhdXRv
+IGZpcnN0X2NlcnRpZmllcl9mYWNlID0gW10oUmVnaW9uRnJvbnRpZXJSb3cgJmNhbmRpZGF0ZSkK
+KyAgICAgIC0+IGRpcmVjdGlvbmFsOjpTdXJmYWNlQ2VsbFVuY3V0Q29tcG9uZW50QXJjRmFjZURp
+YWdub3N0aWNzICogeworICAgIGZvciAoYXV0byAmYXJjIDogY2FuZGlkYXRlLmludGVyaW9yQXJj
+SW5jaWRlbmNlcykgeworICAgICAgZm9yIChhdXRvICZmYWNlIDogYXJjLmNyb3NzZWRGYWNlcykg
+eworICAgICAgICBpZiAoZmFjZS5jZXJ0aWZpZXJDb21wb25lbnQuaGFzX3ZhbHVlKCkpIHJldHVy
+biAmZmFjZTsKKyAgICAgIH0KKyAgICB9CisgICAgcmV0dXJuIG51bGxwdHI7CisgIH07CisgIHN0
+ZDo6bWFwPHN0ZDo6c3RyaW5nLCBzdGQ6Om9wdGlvbmFsPHN0ZDo6c3RyaW5nPj4gY29ycnVwdGlv
+bnM7CisgIHsKKyAgICBhdXRvIGNvcnJ1cHRlZCA9ICpyb3c7CisgICAgKytjb3JydXB0ZWQuaW50
+ZXJpb3JBcmNJbmNpZGVuY2VzLmZyb250KCkuY3Jvc3NlZEZhY2VDb3VudDsKKyAgICBjb3JydXB0
+aW9uc1siY3Jvc3NlZEZhY2VDb3VudCJdID0gY2Vuc3VzX2ZhaWx1cmUoY29ycnVwdGVkKTsKKyAg
+fQorICB7CisgICAgYXV0byBjb3JydXB0ZWQgPSAqcm93OworICAgIGF1dG8gJmFyYyA9IGNvcnJ1
+cHRlZC5pbnRlcmlvckFyY0luY2lkZW5jZXMuZnJvbnQoKTsKKyAgICBhcmMuY3Jvc3NlZEZhY2Vz
+LnB1c2hfYmFjayhhcmMuY3Jvc3NlZEZhY2VzLmZyb250KCkpOworICAgICsrYXJjLmNyb3NzZWRG
+YWNlQ291bnQ7CisgICAgY29ycnVwdGlvbnNbImR1cGxpY2F0ZUZhY2UiXSA9IGNlbnN1c19mYWls
+dXJlKGNvcnJ1cHRlZCk7CisgIH0KKyAgeworICAgIGF1dG8gY29ycnVwdGVkID0gKnJvdzsKKyAg
+ICBhdXRvICZmYWNlID0gY29ycnVwdGVkLmludGVyaW9yQXJjSW5jaWRlbmNlcy5mcm9udCgpLmNy
+b3NzZWRGYWNlcy5mcm9udCgpOworICAgIGZhY2UucGxhbkNvbXBvbmVudCA9IGZhY2UucGxhbkNv
+bXBvbmVudC5oYXNfdmFsdWUoKQorICAgICAgICAgICAgICAgICAgICAgICAgICAgICA/IHN0ZDo6
+b3B0aW9uYWw8c3RkOjpzaXplX3Q+e30KKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgOiBz
+dGQ6Om9wdGlvbmFsPHN0ZDo6c2l6ZV90Pntyb3ctPmNvbXBvbmVudH07CisgICAgY29ycnVwdGlv
+bnNbInBsYW5MYWJlbCJdID0gY2Vuc3VzX2ZhaWx1cmUoY29ycnVwdGVkKTsKKyAgfQorICB7Cisg
+ICAgYXV0byBjb3JydXB0ZWQgPSAqcm93OworICAgIGF1dG8gKmZhY2UgPSBmaXJzdF9jZXJ0aWZp
+ZXJfZmFjZShjb3JydXB0ZWQpOworICAgIEFTU0VSVF9ORShudWxscHRyLCBmYWNlKTsKKyAgICBm
+YWNlLT5jZXJ0aWZpZXJDb21wb25lbnQucmVzZXQoKTsKKyAgICBjb3JydXB0aW9uc1siY2VydGlm
+aWVyTGFiZWxFcmFzZWQiXSA9IGNlbnN1c19mYWlsdXJlKGNvcnJ1cHRlZCk7CisgIH0KKyAgewor
+ICAgIGF1dG8gY29ycnVwdGVkID0gKnJvdzsKKyAgICBhdXRvICpmYWNlID0gZmlyc3RfY2VydGlm
+aWVyX2ZhY2UoY29ycnVwdGVkKTsKKyAgICBBU1NFUlRfTkUobnVsbHB0ciwgZmFjZSk7CisgICAg
+ZmFjZS0+Y2VydGlmaWVyQ29tcG9uZW50ID0gKmZhY2UtPmNlcnRpZmllckNvbXBvbmVudCArCisg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY2VydGlmaWNhdGUudW5jdXRDb21wb25lbnRD
+ZW5zdXNlcy5zaXplKCk7CisgICAgY29ycnVwdGlvbnNbImNlcnRpZmllckxhYmVsV3JvbmciXSA9
+IGNlbnN1c19mYWlsdXJlKGNvcnJ1cHRlZCk7CisgIH0KKyAgeworICAgIGF1dG8gY29ycnVwdGVk
+ID0gKnJvdzsKKyAgICBhdXRvICpmYWNlID0gZmlyc3RfY2VydGlmaWVyX2ZhY2UoY29ycnVwdGVk
+KTsKKyAgICBBU1NFUlRfTkUobnVsbHB0ciwgZmFjZSk7CisgICAgZmFjZS0+bm90VHJhY2VDdXRS
+ZWFzb24uY2xlYXIoKTsKKyAgICBjb3JydXB0aW9uc1sicmVhc29uTWlzc2luZyJdID0gY2Vuc3Vz
+X2ZhaWx1cmUoY29ycnVwdGVkKTsKKyAgfQorICBjb25zdCBzdGQ6Om1hcDxzdGQ6OnN0cmluZywg
+c3RkOjpvcHRpb25hbDxzdGQ6OnN0cmluZz4+IGV4cGVjdGVkQ29ycnVwdGlvbnN7CisgICAgICB7
+ImNlcnRpZmllckxhYmVsRXJhc2VkIiwgImNlcnRpZmllckxhYmVsIn0sCisgICAgICB7ImNlcnRp
+ZmllckxhYmVsV3JvbmciLCAiY2VydGlmaWVyTGFiZWwifSwKKyAgICAgIHsiY3Jvc3NlZEZhY2VD
+b3VudCIsICJhcmNGYWNlQ291bnQifSwKKyAgICAgIHsiZHVwbGljYXRlRmFjZSIsICJhcmNGYWNl
+RHVwbGljYXRlIn0sCisgICAgICB7InBsYW5MYWJlbCIsICJwbGFuTGFiZWwifSwKKyAgICAgIHsi
+cmVhc29uTWlzc2luZyIsICJyZWFzb24ifX07CisgIEVYUEVDVF9FUShleHBlY3RlZENvcnJ1cHRp
+b25zLCBjb3JydXB0aW9ucyk7CisgIGNvbnN0IGJvb2wgY29ycnVwdGlvblJlamVjdGVkID0gY29y
+cnVwdGlvbnMgPT0gZXhwZWN0ZWRDb3JydXB0aW9uczsKKyAgc3RkOjpjb3V0IDw8ICJtM0NwNGMz
+UGxhbkludGVyaW9yQXJjQ2Vuc3VzQ29ycnVwdGlvbnMiOworICBmb3IgKGNvbnN0IGF1dG8gJltu
+YW1lLCByZWplY3RlZEJ5XSA6IGNvcnJ1cHRpb25zKSB7CisgICAgc3RkOjpjb3V0IDw8ICc7JyA8
+PCBuYW1lIDw8ICc9JyA8PCByZWplY3RlZEJ5LnZhbHVlX29yKCJhY2NlcHRlZCIpOworICB9Cisg
+IHN0ZDo6Y291dCA8PCAnXG4nOwogCiAgIGNvbnN0ZXhwciBjb25zdCBjaGFyICp0ZXJtaW5hbFN1
+YmplY3RCcmFuY2ggPSAiUGxhbkZyb250aWVyIjsKIAo=
+````
+
+
+### Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Test_Plan.md
+
+# M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST — frozen scope
+
+**WITHDRAWN (TB-REV-179 adversarial M2):** replaced by the exact diff in `Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact_Manifest.md`. Do not implement from this prose.
+
+**Owner:** Code + Build only. Source `5d9468d168ee3c9eed086bd787979ced7f86843b`; preimage test SHA-256 `2b32275e271299da175317aa1d70514ede85926f8976fb5ff083ece975c2650a`. [Review](../M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-180-folded-records--2026-11-24-utc). No execution in CB. Prior CB-200 reader plan withdrawn; no product reader needs modification on present evidence.
+
+## Required change
+
+Only `tests/FieldAlignedCurveNetworkTests.cpp` may change. Keep row786 identity, existing preconditions and receipt. Correct `region_frontier_interior_arc_census_is_valid` and its sole positive/corruption call site from actual plan and certifier data. The plan's EmptyFragmentOrbits and certifier's NotTraceCut partition domains are lawfully distinct (R8.4/5, ordinal407). Do not require their reported crossed-face sets to intersect. Replace the false intersection requirement with these stricter checks, not a simple deletion:
+
+1. Establish the selected actual nonempty plan subject and its Exact/Superset correspondence by membership of canonical source-face keys, not equal component ordinals. Bind the matching certifier row by named partition identity, component and face digest; independently compare face sets and verify exact/superset relation. Retain complete, nonempty, untruncated arc and face counts and all typed exclusion-reason checks.
+2. Derive a face-to-component lookup for each complete published partition separately from its component face lists. Reject duplicate membership and absent selected subject; validate membership/digests. For each reported arc, require an exact unique matching certifier arc, source-path face set (canonical unique source faces from the actual plan arc), count, orbit and kind. For each crossed face compare actual optional plan and certifier labels against the independently derived membership lookups, including absence. Require at least one crossed face in the matched certifier subject; do not require one in the plan subset. Validate the exclusion reason against the certifier record and its typed vocabulary wherever the certifier domain admits the face. Do not use the projected `planComponent` field to build the oracle.
+3. Keep the positive real mechanical census non-vacuous: selected plan subject exists, exact corresponding certifier row exists, at least one nonempty reported arc and at least one named certifier face. Receipt must print both labels, including absence, before fatal failure or with specific failed predicate evidence; after all checks pass emit the existing ordinal407 receipt. On the observed witness the two terminal faces (36,38,39) and (66,67,120) are certifier members but not plan subject members. This is a prediction to check, not a hard-coded required shape for all valid future fixtures.
+4. Apply the same predicate to the valid baseline and separate corrupted copies: crossed-face count (existing negative), wrong/erased present certifier membership, inserted plan membership on a face absent from plan (and wrong or erased present plan membership when a real positive exists), wrong face key/duplicate face, and missing/incorrect typed exclusion reason. Report which invariant rejected each corruption. Do not claim a branch exercised when no actual witness exists; use a separate test-local valid comparison input only if necessary to prove a legitimate present-plan-member case, not a replacement for the real witness. Keep every existing protected check. Test code must not mutate any product.
+5. Add the carried C4 assertion in `expect_cp4c_plan_disc_proofs` for each region: at least one source face with that region's owning orbit in the certifier's established source-face owner map, and a nonempty region source-face list. Verify actual anchor-bound orbit, not region ID equality or vector size alone. This protects the original zero-area elected region failure. Do not change topology/owner construction.
+
+## Gates and stop conditions
+
+- CB compiles only all eight required GNU Multiple Precision (GMP/GMPXX) targets using normal reusable workflow; immutable package, `runtimeExecution=false`. No test, fixture, selector, harness or production source change other than the specified test file. Preserve exact 1,003-row manifest `2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724`, its accepted prefixes and 81 deferred. No new selector identity.
+- Separate TB execution must use the full immutable gate. Expected 1,003/1,003 PASS, row786 real positive + all reached corruption negatives, row652 exactly two valid nonempty owned regions, row1003 unchanged. No inherited PASS→RED. No changed raw record except row786 new receipt and expressly enumerated C4 evidence (if any); N1–N3 as previously frozen. If test source line drift affects any raw record, itemize and stop for review, never normalize assertion locations. Record exact before/after evidence.
+- Stop before compile if the real plan/certifier correspondence cannot support a discriminating oracle or required C4 assertion; do not invent membership or widen either partition. Stop at later TB if predicted membership or any other structural premise is false, any corrupt copy passes, any accepted-green loss or unexplained raw change occurs. A green full gate still requires independent adjudication; no CP3/497/D0/H4 promotion.
+- J6 remains unproved on the production mechanical fixture, isolated row1002 remap proof retained; K6 digest-neutral helper rename, E5, row979, Branch A and CB-190 held. Do not combine any of these with the test correction.

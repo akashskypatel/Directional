@@ -9,7 +9,7 @@ The immutable TB-181 gate passed all 1,003 cases. All 1,003 records equal the ac
 - Entry STATUS commit `7e936851dadac90004a84f184dd4f214c841fdd6`; Started at `2026-11-24T21:32:07Z`.
 - [CB-201 record](Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Code_Build_Record_20261124.md): exact source/executor `b9d79c4d9e951cab787d3bfdc3b8f20aaf7195c3`, compile run 45488907549, package 14966635283, ZIP SHA-256 `fbad076e0d30e099ece6e197191f7a5ec98016a8713a286a4a391ede0cdb644a`; 28/28 member checks.
 - Root manifest SHA-256 `0641144df8b7d0b957a800fbc9d5853b79521daa3fdc760593acfa07594fe1ef`; source archive `b0f867441b2ef0e00fa08764a7aa2eda41b350541e7dab5bd35bdeb3893d7248`.
-- Accepted [TB180 report](Architecture_M6_CP3_TB180_P13_Cross_Partition_Arc_Census_Full_Gate_Execution_Report_20261124.md), result 14951803089, ZIP SHA-256 `67e784747b1c8d04bf781b69b486f3310876fde101b7935f0207fd2fd36a39f8`; 2014/2014 member checks.
+- Accepted [TB180 report](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc), result 14951803089, ZIP SHA-256 `67e784747b1c8d04bf781b69b486f3310876fde101b7935f0207fd2fd36a39f8`; 2014/2014 member checks.
 - Exact frozen harness, TB179 manifest and deferred ledger hashes match CB-201 authority. Historical 491-row and 993-row selector prefixes also match.
 - Request `m6-cp3-tb181-exec`, event commit `f9389e18494cbc8460c133d57d430810654da4bd`, request SHA-256 `8fd1f9e9972c3704f02fceebcee8dc82a9abfef93e4d67609a4775160dfd9c2b`.
 - [Run 45492294397](https://github.com/akashskypatel/Directional/actions/runs/45492294397), runtime job `138793718042`. Both schema validations, parse, exact executor checkout and harness contract validation passed. Runtime job and mailbox publication succeeded. Compile, Drive apply and noop jobs skipped. Mailbox `workflow-mailbox:.workflow-mailbox/m6-cp3-tb181-exec/latest.json` confirms the exact event and source authority.
@@ -39,4 +39,4 @@ The File Library contains `Directional/TB181_VERIFICATION_EVIDENCE.zip`, SHA-256
 
 ## Recommendation
 
-Next only `M6-CP3-TB-REV-181`. Independently repeat the archive, ledger, membership and N1–N3 checks. Adjudicate K6 and freeze CB-202 only if the requirements in [TB-REV-180 adversarial continuation](Architecture_M6_CP3_TB_REV_180_Adversarial_Review_20261124.md) are met. No runtime or implementation in that review. Keep J6, E5, row979, Branch A and CB-190 held until their authorized boundaries. No successor work occurred in TB181.
+Next only `M6-CP3-TB-REV-181`. Independently repeat the archive, ledger, membership and N1–N3 checks. Adjudicate K6 and freeze CB-202 only if the requirements in [TB-REV-180 adversarial continuation](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc) are met. No runtime or implementation in that review. Keep J6, E5, row979, Branch A and CB-190 held until their authorized boundaries. No successor work occurred in TB181.

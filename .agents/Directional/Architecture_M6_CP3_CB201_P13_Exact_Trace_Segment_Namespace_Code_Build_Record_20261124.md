@@ -6,7 +6,7 @@
 
 ## Background
 
-[Exact manifest](gates/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact_Manifest.md) and [TB-REV-180](Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md) authorize the K6 namespace correction. Move five shared trace-segment operations/types to `exact_trace_segment_detail`: `FaceChartPoint`, `face_chart_segment_parameter`, `exact_trace_segment_end`, `canonical_boundary_barycentric`, and `exact_trace_segment_pieces`. Update consumer qualifications without changing semantics, test identities or source line counts. K6 remains open until the independent TB-REV-181 verdict.
+[Exact manifest](gates/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact_Manifest.md) and [TB-REV-180](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc) authorize the K6 namespace correction. Move five shared trace-segment operations/types to `exact_trace_segment_detail`: `FaceChartPoint`, `face_chart_segment_parameter`, `exact_trace_segment_end`, `canonical_boundary_barycentric`, and `exact_trace_segment_pieces`. Update consumer qualifications without changing semantics, test identities or source line counts. K6 remains open until the independent TB-REV-181 verdict.
 
 ## Assessment
 
