@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb199a-remap-closeout-20261124",
-  "mailbox_key": "m6-cp3-cb199a-remap-closeout-20261124",
-  "file_id": "1qSmXrWsilhvQA25zd43TMjgD1aC_ZYTd",
-  "patch_sha256": "ac1f5d851a1fee15ed34d03146d73719fca8f2a8c55eecbb0bdeecdf59d22bd3",
-  "base_sha": "de65101eb04c73e08ea4b6b31968975f71d9d909",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record CB-199A compile evidence and frozen TB178 handoff",
+  "operation": "test_benchmark",
+  "request_id": "m6-cp3-tb178-exec",
+  "mailbox_key": "m6-cp3-tb178-exec",
+  "executor_sha": "de65101eb04c73e08ea4b6b31968975f71d9d909",
+  "semantic_source_sha": "de65101eb04c73e08ea4b6b31968975f71d9d909",
+  "turn_id": "M6-CP3-TB-EXEC-178-P13-RETRACED-TRACE-REFERENCE-REMAP-FULL-GATE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "14883418907",
+    "EXPECTED_SOURCE_SHA": "de65101eb04c73e08ea4b6b31968975f71d9d909",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "8452d0bbfad23c464c7ad29de2c9b92a4acde9bdbb96347a55aeb84917ef8beb",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "32a46319cff53f42c3ca6b938227cc8fdee0a304adf03d3c008d38d10c52f7e9",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "fab1353b6bdf5c4f5a057dc1aa3996353f5257ace2c738df4c5caee0d164b4bd",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB178_P13_Retraced_Trace_Reference_Remap_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "921bd04bbfab596da6679083d5880d3f4893126e19a91c4687ba5ba63827e8ed",
+    "EXPECTED_CASE_COUNT": "1002",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  },
+  "artifact_prefix": "m6-cp3-tb178-retraced-trace-reference-remap",
   "retention_days": 14
 }
