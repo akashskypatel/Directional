@@ -40,15 +40,12 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Mandatory next turn
 
-- **COMPLETE:** CB-198 receipt ([run 45280023495](https://github.com/akashskypatel/Directional/actions/runs/45280023495)); TB-EXEC-177 rejected 994/1001, seven RED, H4 STOP from five +108 line moves that my rule failed to allow (J1) ([report](Architecture_M6_CP3_TB177_P13_Mechanical_Retrace_Selection_Receipt_Full_Gate_Execution_Report_20261123.md)).
-- **COMPLETE:** TB-REV-177 [independent](Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md) + [adversarial](Architecture_M6_CP3_TB_REV_177_Adversarial_Review_20261124.md): four pairs and arrivals confirmed; CB-199A amended so ownership is not encoded in `sourcePort`/junction roles (J4); TB178 manifest frozen.
-
-- **COMPLETE:** CB-199A exact amended helper and guard; [compile-only record](Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Code_Build_Record_20261124.md). No production caller.
+- **COMPLETE:** CB-199A helper (compile only); TB-EXEC-178 995/1002 rejected, comparison satisfied; TB-REV-178 [independent](Architecture_M6_CP3_TB_REV_178_Retraced_Trace_Reference_Remap_Independent_Review_20261124.md) + [adversarial](Architecture_M6_CP3_TB_REV_178_Adversarial_Review_20261124.md): CB-199B compiles (K1) and is accepted unamended; CB-200 reader premise unproven (K5), so CB-200 is scoped by TB-REV-179.
 
 ```text
 NEXT_TURN: M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION
 Owner: Code + Build (compile only, GMP/GMPXX; no runtime)
-Authority: Architecture_M6_CP3_TB_REV_178_Retraced_Trace_Reference_Remap_Independent_Review_20261124.md; gates/Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Exact_Manifest.md
+Authority: TB-REV-178 independent + Architecture_M6_CP3_TB_REV_178_Adversarial_Review_20261124.md (K1-K6); gates/Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Exact_Manifest.md
 Source: de65101eb04c73e08ea4b6b31968975f71d9d909; exact preimages in plan
 Patch: Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Exact.diff; SHA-256 02cc43c4b4ed3144df4bb08d7a8a857afcb6ce6f0cfa582c08da0a3031411fe5; three paths; +172/−0
 Scope: exact producer selection, arrivalPort with checked equality/digest, one appended A2a guard. Do not alter CB-200 readers or region election.
@@ -67,9 +64,11 @@ Stop: preimage, compile, membership, changed-path or package mismatch; return to
 | COMPLETE | CB-197A → … → TB-REV-177 (TB176 994/1001, TB177 994/1001 rejected) | Adversarial records TB-REV-176/177; four row-652 pairs confirmed. |
 | COMPLETE | CB-199A amended unwired remap helper + guard (compile only) | [Record](Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Code_Build_Record_20261124.md). |
 | COMPLETE (rejected) | TB-EXEC-178 (995/1002, comparison satisfied) | [Execution report](Architecture_M6_CP3_TB178_P13_Retraced_Trace_Reference_Remap_Full_Gate_Execution_Report_20261124.md). |
-| COMPLETE | TB-REV-178 | [Independent review](Architecture_M6_CP3_TB_REV_178_Retraced_Trace_Reference_Remap_Independent_Review_20261124.md); rejection upheld. |
+| COMPLETE | TB-REV-178 | [Independent](Architecture_M6_CP3_TB_REV_178_Retraced_Trace_Reference_Remap_Independent_Review_20261124.md) + [adversarial](Architecture_M6_CP3_TB_REV_178_Adversarial_Review_20261124.md); rejection upheld, CB-199B accepted. |
 | **1 NEXT** | `M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION` | [Exact plan](gates/Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Exact_Manifest.md); compile only; separate TB179. |
-| 3 | CB-200 port-set readers read `trace.port ∪ arrivalPort` (EmbeddedGraphTopology 1793, GlobalTopologyPlan 503/2115) + every-region-owns-a-face assertion → TB | Mechanical controls green, row652 2 regions. |
+| 2 | TB-EXEC-179 (1003 rows) → TB-REV-179 | Row1003 PASS, no green→red, every changed raw record itemized (incl. `committedSlide`, K4); TB-REV-179 freezes CB-200 from row652's first failure. |
+| 3 | CB-200 scoped from TB179 evidence (K5: no reader yet shown to need `arrivalPort`) + every-region-owns-a-face assertion → TB | Mechanical controls green, row652 2 regions. |
+| 3A | Digest-neutral rename of exact piece helpers out of `embedded_graph_topology_detail` (K6) → byte-identical TB | After controls green. |
 | 4 | Row979 `RegionContainsInteriorSingularity` (vertex 8) | After mechanical controls green; read printed locus first. |
 | 4A | Branch A (only after the staged plan builds): activation CB → TB (BunnyRandom census, V5) → parameter-deletion CB → V3b → R1 → O48 | Activation = single-source default (V11) + exact premise rows 393/648/858/971/972/978 only. |
 | 5 | CB-190 | S4/S6/S7 diagnostic conformity plus W6 obsolete-code comments (off critical path). |
