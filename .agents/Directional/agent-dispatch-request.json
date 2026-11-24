@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb199b-compile-20261124",
-  "mailbox_key": "m6-cp3-cb199b-compile-20261124",
-  "source_sha": "5d9468d168ee3c9eed086bd787979ced7f86843b",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb199b"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb199b-closeout-20261124",
+  "mailbox_key": "m6-cp3-cb199b-closeout-20261124",
+  "file_id": "19A0vKFlGHR1NErwY2N2ok90EGchiAqWz",
+  "patch_sha256": "4a28effb1c28c984c8555f33105da0d6173a8acbe1a61ae1434c109e6782e5e0",
+  "base_sha": "aa27ace389dfe016e3f20132ddb692cd03dbc5a1",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "Record CB-199B compile evidence and freeze separate TB179 request",
+  "retention_days": 14
 }
