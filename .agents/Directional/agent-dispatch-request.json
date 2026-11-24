@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb180-closeout-20261124",
-  "mailbox_key": "m6-cp3-tb180-closeout-20261124",
-  "file_id": "16Be8yBNR2W9mGfu8ReigP14k6el7CBXN",
-  "patch_sha256": "4d1adac9964747095f6622e2b1be4d71951c898c2e0a735137c1bd59f20b5258",
-  "base_sha": "74807a6e29d2ad0cff8abb3cb16dd69ba00ec298",
+  "request_id": "m6-cp3-tb-rev180-closeout-20261124",
+  "mailbox_key": "m6-cp3-tb-rev180-closeout-20261124",
+  "file_id": "15Jk6m2sEoyPqgov1m8y4MjxyfcALaHfP",
+  "patch_sha256": "7ae7d3c74e00eebd038b72809213457dd946ea05cd71a341d3343d045fbbf99d",
+  "base_sha": "9e38e162eec9d61db0cc35cb8eab030ede3a8329",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record TB180 full gate and authorize independent review",
+  "commit_message": "docs: close independent TB180 review and freeze CB201 scope",
   "retention_days": 14
 }
