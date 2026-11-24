@@ -1,3 +1,7 @@
+## 2026-11-24 — CB-200 exact cross-partition arc census test compiled
+
+[Code + Build record](.agents/Directional/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Code_Build_Record_20261124.md). Exact +155/−19 test-only patch applied as `4c2b4cf16732cddb58252d5e758ea0b24449ed2a` in run 45350394518. GMP/GMPXX [compile run 45351329597](https://github.com/akashskypatel/Directional/actions/runs/45351329597) succeeded for eight targets; package `14901170173` SHA-256 `8f4be71c9121cb0735ca07c1bc1dd83a66be20f4ab489b674a852dd122b6889f`, 28/28 checks; frozen postimage matches. `runtimeExecution=false`. TB179 remains rejected 1002/1003. Accepted TB169/CP2 and 67/17/50, debt1/deferred81 unchanged. Next only `M6-CP3-TB-EXEC-180-P13-CROSS-PARTITION-ARC-CENSUS-FULL-GATE`.
+
 ## 2026-11-24 — M6-CP3-TB-REV-179 adversarial continuation; exact CB-200 oracle frozen
 
 [Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_179_Adversarial_Review_20261124.md) M1–M5: row786's `touchesPlanSubject` is test-local; ordinal 407 requires labels "where defined", and certifier-only TerminalSlit faces lie lawfully outside the plan subset. Prose CB-200 plan withdrawn; C4 withdrawn (production `GlobalTopologyPlan.cpp:1618–1627` already rejects an empty region). Exact one-file oracle diff (`d4cba179…bb26`, +155/−19) derives both partitions' membership from their own component lists and rejects six named corruptions; syntax check 0 errors. Next only `M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST`, compile only.

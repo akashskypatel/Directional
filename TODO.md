@@ -1,28 +1,24 @@
-**Current turn outcome (2026-11-24):** TB-REV-179 independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_179_Adversarial_Review_20261124.md) complete: TB179 rejected 1,002/1,003 (six recoveries); row786 premise not in ordinal 407; exact one-file CB-200 oracle diff frozen. Next only `M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST`. No product acceptance.
+**Current turn outcome (2026-11-24):** CB-200 exact test-only compile complete, eight GMP/GMPXX targets, package `14901170173` (28/28), no runtime. TB179 remains rejected 1,002/1,003. Next only `M6-CP3-TB-EXEC-180-P13-CROSS-PARTITION-ARC-CENSUS-FULL-GATE`. No product acceptance.
 
-## CURRENT — TB-REV-179 independent + adversarial complete; exact CB-200 next (2026-11-24 UTC)
+## CURRENT — CB-200 compile complete; TB-EXEC-180 next (2026-11-24 UTC)
 
 - [x] **COMPLETE** CB-199B → TB-EXEC-179 (1002/1003; six controls recovered, row1003 PASS, no green loss) → TB-REV-179 [independent](.agents/Directional/Architecture_M6_CP3_TB_REV_179_Retraced_Trace_Selection_Independent_Review_20261124.md) + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_179_Adversarial_Review_20261124.md): L2 upheld against ordinal 407 (M1); prose plan and C4 withdrawn (M2); exact oracle diff compiles (0 errors / 9 warnings).
-- [ ] **1 NEXT ONLY** `M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST` — [exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact_Manifest.md), diff SHA-256 `d4cba179cec0d1971fac3c775b64cf8bb6ffcd913a8c464bb53b9bc0df2ebb26`, test file only, compile only.
-- [ ] **2 HELD** TB-EXEC-180: TB179 manifest unchanged; 1003/1003 PASS; only row786 may change (six named corruption rejections); line moves +65/+136 frozen; STOP otherwise.
+- [x] **COMPLETE (compile only)** `M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST` — [build record](.agents/Directional/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Code_Build_Record_20261124.md), package `14901170173`, eight targets, 28/28 checks, no runtime.
+- [ ] **1 NEXT ONLY** `M6-CP3-TB-EXEC-180-P13-CROSS-PARTITION-ARC-CENSUS-FULL-GATE`: TB179 manifest unchanged; 1003/1003 PASS; only row786 may change (six named corruption rejections); line moves +65/+136 frozen; STOP otherwise.
 - [ ] **3 HELD** TB-REV-180: adjudicate full green gate, TB170 recurrence closure, new accepted baseline.
 - [ ] **4 HELD** CB-201 digest-neutral rename out of `embedded_graph_topology_detail` (K6) → byte-identical TB.
 - [ ] **5 HELD** Row979, Branch A, CB-190; J6 production struck-reference witness debt; E5.
 
 ```text
-NEXT_TURN: M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST
-Owner: implementation agent (Code + Build, compile only; eight GMP/GMPXX targets, runtimeExecution=false)
-Authority: Architecture_M6_CP3_TB_REV_179_Adversarial_Review_20261124.md (M1-M5); manifest gates/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact_Manifest.md; prose plan ..._Arc_Census_Test_Plan.md WITHDRAWN (M2)
-Apply exactly: .agents/Directional/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact.diff
-  SHA-256 d4cba179cec0d1971fac3c775b64cf8bb6ffcd913a8c464bb53b9bc0df2ebb26 (9209 B, +155/-19, one file)
-  tests/FieldAlignedCurveNetworkTests.cpp git ef6a0b1a31ea283fde076333cb0c00ae0f48f166 -> sha256 6e83fc338d7632c4540691cb12403d7b495ecd0ddea52f31d792c29c267e0b7b
-Then: M6-CP3-TB-EXEC-180-P13-CROSS-PARTITION-ARC-CENSUS-FULL-GATE
+NEXT_TURN: M6-CP3-TB-EXEC-180-P13-CROSS-PARTITION-ARC-CENSUS-FULL-GATE
+Owner: execution agent (Test + Benchmark; artifact only, no rebuild or benchmark)
+Authority: Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Code_Build_Record_20261124.md; Architecture_M6_CP3_TB_REV_179_Adversarial_Review_20261124.md M1–M5
+Package: 14901170173, source 4c2b4cf16732cddb58252d5e758ea0b24449ed2a, ZIP SHA-256 8f4be71c9121cb0735ca07c1bc1dd83a66be20f4ab489b674a852dd122b6889f
   manifest TB179 unchanged 2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724 (1003 rows, 81 deferred, membership 1084)
   expected 1003/1003 PASS; row786 receipt m3Cp4c3PlanInteriorArcCensusCorruptions shows all six expected invariants
   compare to TB179 14895572803 under N1-N3: only row786 may change; test lines move +65 after 5585, +136 after old 20108; any changed record containing FieldAlignedCurveNetworkTests.cpp: or any other difference -> STOP to Review
   -> M6-CP3-TB-REV-180: adjudicate full green gate (TB170 recurrence closure, seven controls, new accepted baseline)
-On failure/blocker: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
-Do not: edit beyond the diff; change production/selectors/manifests; add C4 assertion (withdrawn M2: production 1618-1627 already fails closed); run tests in a CB; promote CP3/497/D0/H4
+Do not: rebuild, repair, relink, change source/selectors/manifests, run benchmarks, promote CP3/497/D0/H4
 ```
 
 ## HISTORY — TB-REV-179 independent: prose CB-200 plan (withdrawn by adversarial M2) (2026-11-24 UTC)
