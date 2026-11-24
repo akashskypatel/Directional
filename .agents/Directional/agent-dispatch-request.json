@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb177-docs-apply-20261123-v2",
-  "mailbox_key": "m6-cp3-tb177-docs-apply-v2",
-  "file_id": "1CDzSb0wAZP1yKIcRy3vIVPaYv2KI3BzM",
-  "patch_sha256": "f45f6db19d0e1248736bc5cac703d5a378f4db52e164474004763771fbabe7e5",
-  "base_sha": "f43d9aa7b0a931b681c89cdfed0a26452658b3a1",
+  "request_id": "m6-cp3-tb-rev177-progress-20261124",
+  "mailbox_key": "m6-cp3-tb-rev177-progress-20261124",
+  "file_id": "1TKcum41rPom0miK_fyCs-ODzIaKWMj4Q",
+  "patch_sha256": "bb7b3e7e169ef58f0bbe77a75fbefebd52e71c84f9facd184457e1962a3b8444",
+  "base_sha": "defabd83aade7e70a2f10214f773f03b21e7eb5d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record TB177 comparison STOP and review handoff",
+  "commit_message": "docs(directional): preserve TB-REV-177 independent review progress",
   "retention_days": 14
 }
