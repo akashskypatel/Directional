@@ -1,12 +1,25 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb200-closeout-20261124",
-  "mailbox_key": "m6-cp3-cb200-closeout-20261124",
-  "file_id": "19gNOfO_WBhrAdMWncaWuCovz_QIqi7ey",
-  "patch_sha256": "62c066efad750ac942dcc04c7f39d39fdaf2ad0ac729c9a5e65252c979bf7474",
-  "base_sha": "93f421633a53f1aa6918677dd6fd4e31742e8ab1",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record CB-200 compile evidence and authorize separate TB180 gate",
+  "operation": "test_benchmark",
+  "request_id": "m6-cp3-tb180-exec",
+  "mailbox_key": "m6-cp3-tb180-exec",
+  "executor_sha": "4c2b4cf16732cddb58252d5e758ea0b24449ed2a",
+  "semantic_source_sha": "4c2b4cf16732cddb58252d5e758ea0b24449ed2a",
+  "turn_id": "M6-CP3-TB-EXEC-180-P13-CROSS-PARTITION-ARC-CENSUS-FULL-GATE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "14901170173",
+    "EXPECTED_SOURCE_SHA": "4c2b4cf16732cddb58252d5e758ea0b24449ed2a",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "8f4be71c9121cb0735ca07c1bc1dd83a66be20f4ab489b674a852dd122b6889f",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "2699d635c1ffc298a73aa7468e885e05b535f821c92fe8b98e82d2d0ab6ab168",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "c039e9bfb527ff8ffef0f2b687e0ebb555200593da46fdcc2309ac016c14e88d",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB179_P13_Retraced_Trace_Selection_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724",
+    "EXPECTED_CASE_COUNT": "1003",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  },
+  "artifact_prefix": "m6-cp3-tb180-cross-partition-arc-census",
   "retention_days": 14
 }
