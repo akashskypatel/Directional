@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb200-compile-20261124",
-  "mailbox_key": "m6-cp3-cb200-compile-20261124",
-  "source_sha": "4c2b4cf16732cddb58252d5e758ea0b24449ed2a",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb200"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb200-closeout-20261124",
+  "mailbox_key": "m6-cp3-cb200-closeout-20261124",
+  "file_id": "19gNOfO_WBhrAdMWncaWuCovz_QIqi7ey",
+  "patch_sha256": "62c066efad750ac942dcc04c7f39d39fdaf2ad0ac729c9a5e65252c979bf7474",
+  "base_sha": "93f421633a53f1aa6918677dd6fd4e31742e8ab1",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record CB-200 compile evidence and authorize separate TB180 gate",
+  "retention_days": 14
 }
