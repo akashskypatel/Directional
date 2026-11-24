@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb179-closeout-20261124",
-  "mailbox_key": "m6-cp3-tb179-closeout-20261124",
-  "file_id": "19opkdixW6eXfRfX3cnFNeBLW75DSGGLj",
-  "patch_sha256": "98dc0e68fdd0d4a0b29bfebe5fee55ef8f9cb25e14f55a1af48adf2023b39376",
-  "base_sha": "acd7d8a0fe74443f9cc3adcd024f9bb0b71305c4",
+  "request_id": "m6-cp3-tb-rev-179-closeout-20261124",
+  "mailbox_key": "m6-cp3-tb-rev-179-closeout-20261124",
+  "file_id": "1vX7kHlPN_QsayR9giRoxvsfHWhmMDZRf",
+  "patch_sha256": "1680e54bad0e07872a130c6006e56eb9c5815ab505cecfa0ead14e4d50fabcdd",
+  "base_sha": "0151eb6e9dc94e06987820d570a1fe83b654c30a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Record TB179 immutable gate evidence and route to independent review",
+  "commit_message": "Review TB179 and freeze test-only cross-partition census correction",
   "retention_days": 14
 }
