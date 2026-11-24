@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev177-exact-freeze-20261124",
-  "mailbox_key": "m6-cp3-tb-rev177-exact-freeze-20261124",
-  "file_id": "1fsfjWWWe7yKRjkAFoLpYHIg_CX1jwAhH",
-  "patch_sha256": "fe68c66bd4f8581212785713e35e195572369fa7e592f71c79c5f16959c3d05b",
-  "base_sha": "f9e2c977418ac978d9ac0d88e16f78ff440f0877",
+  "request_id": "m6-cp3-cb199a-remap-apply-20261124",
+  "mailbox_key": "m6-cp3-cb199a-remap-apply-20261124",
+  "file_id": "1x0Y9MtudVsVSJsrmC4951-BdgGBk__qr",
+  "patch_sha256": "1d6c20d147b3409753e8d945f25d34db827e0ef04589f6c99c8c1043890dfd1a",
+  "base_sha": "5bad4742599824c5bab233d23f18650fd17ca48d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB-REV-177 with exact CB-199A freeze",
+  "commit_message": "geometry: add exact retraced trace reference remapping helper and guard",
   "retention_days": 14
 }
