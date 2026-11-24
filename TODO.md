@@ -1,21 +1,21 @@
-**Current turn outcome (2026-11-24):** CB-199B compile gate satisfied. [Build record](.agents/Directional/Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Code_Build_Record_20261124.md). TB178 remains rejected 995/1002, seven existing RED. Next only `M6-CP3-TB-EXEC-179-P13-RETRACED-TRACE-SELECTION-FULL-GATE`. No product acceptance.
+**Current turn outcome (2026-11-24):** TB-EXEC-179 completed, gate rejected 1,002/1,003, row786 RED at later predicate. Six existing failures recovered, no green-to-red loss, row1003 PASS. [Report](.agents/Directional/Architecture_M6_CP3_TB179_P13_Retraced_Trace_Selection_Full_Gate_Execution_Report_20261124.md). Next only `M6-CP3-TB-REV-179`. No product acceptance.
 
-## CURRENT — CB-199B compile complete; TB-EXEC-179 next (2026-11-24 UTC)
+## CURRENT — TB-EXEC-179 complete; TB-REV-179 next (2026-11-24 UTC)
 
 - [x] **COMPLETE** TB-EXEC-178 (995/1002; seven unchanged RED) and TB-REV-178 independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_178_Adversarial_Review_20261124.md): CB-199B pre/postimages match and both patched TUs syntax-compile (K1); J4/J5 met (K2); CB-200 reader premise unproven (K5).
 - [x] **COMPLETE (compile only)** `M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION` — [build record](.agents/Directional/Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Code_Build_Record_20261124.md), package `14893165901`, eight targets, 28/28 checks, no runtime.
-- [ ] **1 NEXT ONLY** `M6-CP3-TB-EXEC-179-P13-RETRACED-TRACE-SELECTION-FULL-GATE`: 1,003 frozen cases + 81 deferred. Row1003 PASS; no green-to-red loss; itemize every changed raw record, including dropped `committedSlide` lines (K4); STOP on unrelated difference.
-- [ ] **3 HELD** TB-REV-179 freezes CB-200 from row652's actual first failure (K5), plus the every-region-owns-a-face assertion → TB.
+- [x] **COMPLETE / REJECTED** `M6-CP3-TB-EXEC-179-P13-RETRACED-TRACE-SELECTION-FULL-GATE`: 1,003 cases + 81 deferred. Row1003 PASS, no green-to-red, 21 changed inherited rows itemized; no committedSlide changes. [Report](.agents/Directional/Architecture_M6_CP3_TB179_P13_Retraced_Trace_Selection_Full_Gate_Execution_Report_20261124.md).
+- [ ] **1 NEXT ONLY** `M6-CP3-TB-REV-179`: independently adjudicate comparisons, row1003, two row652 regions and remaining row786 predicate; K1–K6/J6; freeze CB-200 only from evidence.
+- [ ] **3 HELD** CB-200 exact scope after TB-REV-179 plus every-region-owns-a-face assertion → TB. All mechanical controls green; preserve row652 two regions.
 - [ ] **3A HELD** Digest-neutral rename of exact piece helpers out of `embedded_graph_topology_detail` (K6), byte-identical gate.
 - [ ] **4 HELD** Row979, Branch A, CB-190; deferred CollinearOverlap/EndpointTouch (E5).
 
 ```text
-NEXT_TURN: M6-CP3-TB-EXEC-179-P13-RETRACED-TRACE-SELECTION-FULL-GATE
-Owner: Test + Benchmark (artifact only, no rebuild or benchmark)
-Authority: Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Code_Build_Record_20261124.md and TB-REV-178 exact plan / adversarial K1–K6
-Source: 5d9468d168ee3c9eed086bd787979ced7f86843b; compile package 14893165901, ZIP SHA-256 0ff23208d9329a02951d1aea83c0631ac7790b92bb3bfb46639d52d33e7c225c
-Scope: 1,003 frozen gate rows + 81 deferred; expected membership 1,084. Row1003 must PASS; no green-to-red loss. Compare all 1,002 inherited raw records to TB178 under N1–N3 and itemize every changed record including committedSlide (K4).
-Stop: failed guard, new A2a failure, lost port, stale reference, unrelated difference or missing evidence. Row652 must advance past RegionElectedCutComponentEmpty or the prediction is false. Return to TB-REV-179; no CB-200 reader work or acceptance promotion.
+NEXT_TURN: M6-CP3-TB-REV-179
+Owner: independent Test + Benchmark Review; runtime-free, no source changes
+Authority: Architecture_M6_CP3_TB179_P13_Retraced_Trace_Selection_Full_Gate_Execution_Report_20261124.md; TB-REV-178 K1–K6; source 5d9468d168ee3c9eed086bd787979ced7f86843b
+Scope: independently adjudicate 1,002 inherited comparisons and row1003; preserve exact before/after evidence, row652 two-region certificate, and every-region-owns-a-face obligation. Identify row786 cause and freeze only a demonstrated correction.
+Stop: unexplained record, missing proof, violated contract, or authority mismatch. No implementation or promotion during Review.
 ```
 
 ## HISTORY — TB-REV-177 independent: original CB-199A (amended by the adversarial continuation) (2026-11-24 UTC)
