@@ -1,6 +1,6 @@
-## 2026-11-24 — M6-CP3-TB-REV-177 independent review progress
+## 2026-11-24 — M6-CP3-TB-REV-177 independent review; exact CB-199A frozen
 
-[Independent review progress](.agents/Directional/Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md). TB-REV-177 independently confirms TB177 rejected 994/1001; 650 identical, 343 N1/N2, row172 permitted N3, two authorized receipts, five unapproved +108 assertion-location shifts. Four reverse pairs and both arrival equalities verified. Exact struck-segment/endpoint-incidence remap freeze remains pending; no CB-199A authorization. No product changes or new test execution. Stable counts unchanged.
+[Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md). TB-REV-177 confirms TB177 rejected 994/1001, same seven RED; row172 conforms to N3 and five +108 assertion-location shifts retain H4 STOP. Four reverse pairs and both arrival equalities verified. Next only `M6-CP3-CB-199A-P13-RETRACED-TRACE-REFERENCE-REMAP` (pure unwired helper + one guard; compile only). Exact [diff](.agents/Directional/Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Exact.diff) `4f458361453186fdc9c7e0073b039fc3329f084d4b01b0eb6c2e193071d22bf7`; no implementation, compilation or new test execution in Review. Stable counts unchanged.
 
 ## 2026-11-23 — TB-EXEC-177 immutable diagnostic gate rejected
 

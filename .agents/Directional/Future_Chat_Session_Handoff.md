@@ -31,7 +31,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-24 UTC. **M6-CP3-TB-REV-177 IN PROGRESS.** TB-REV-177 independently confirms TB177 rejected 994/1001; 650 identical, 343 N1/N2, row172 permitted N3, two authorized receipts, five unapproved +108 assertion-location shifts. Four reverse pairs and both arrival equalities verified. Exact struck-segment/endpoint-incidence remap freeze remains pending; no CB-199A authorization. [Independent review progress](Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md) |
+| Currency | 2026-11-24 UTC. TB-REV-177 confirms TB177 rejected 994/1001, same seven RED; row172 conforms to N3 and five +108 assertion-location shifts retain H4 STOP. Four reverse pairs and both arrival equalities verified. Next only `M6-CP3-CB-199A-P13-RETRACED-TRACE-REFERENCE-REMAP` (pure unwired helper + one guard; compile only). [Independent review](Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md) |
 | Branch / source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; exact test-only CB-198 source `6cdd23a10ac6f6fbc6c741fb1e18ccff2038871c`, GMP/GMPXX [run 45280023495](https://github.com/akashskypatel/Directional/actions/runs/45280023495), package `14868834752` SHA-256 `b5a7104d41e103e3d31094b4d889af1097ffa52edac6ff11fe120acfdb4ee0c9`, 28/28 hashes, eight targets, `runtimeExecution=false`. [CB-198 Code + Build record](Architecture_M6_CP3_CB198_P13_Mechanical_Retrace_Selection_Receipt_Code_Build_Record_20261123.md). |
 | Current TB evidence | TB177 [run 45283342400](https://github.com/akashskypatel/Directional/actions/runs/45283342400), result `14871900641` ZIP SHA-256 `8c5bce907f59b77207833153912805cccca6fa122c70ff9f299a64f68102b068`, 2010/2010 checks; 1001/1001 executed, 994 PASS, seven existing RED, two new receipts. H4 strict comparison STOP on five unapproved assertion-location shifts; row172 conforms to N3. [Report](Architecture_M6_CP3_TB177_P13_Mechanical_Retrace_Selection_Receipt_Full_Gate_Execution_Report_20261123.md). TB176 baseline `14861444963`, 994/1001, 2010/2010. |
 | Accepted comparison | TB169 run `45104059492`, result ZIP `14787082075` (`dc15a8df5226fc209717f6df2fd15140e9e04abb6e73f831d8285992e72f04e5`), 993/993 accepted; CP2 491/491 accepted. Frozen prefix SHA-256 `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`. |
@@ -40,23 +40,21 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Mandatory next turn
 
-- **COMPLETE / REJECTED:** TB-EXEC-177 full immutable 1001-row execution. Seven pre-existing RED; two new diagnostic receipts; six off-receipt comparison deviations (row172 record reordering, five +108 line shifts) require H4 STOP. [Report](Architecture_M6_CP3_TB177_P13_Mechanical_Retrace_Selection_Receipt_Full_Gate_Execution_Report_20261123.md).
-- **CONTINUE ONLY:** `M6-CP3-TB-REV-177`. Independent archive comparison and receipt adjudication complete. Freeze the exact pure unwired reference-remap helper plus unit test, complete review closeout; no source or selector changes in Review. [Independent review progress](Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md)
+- **COMPLETE / REJECTED:** TB-EXEC-177 full immutable 1001-row execution. Seven pre-existing RED; two new diagnostic receipts; five unapproved +108 line shifts require H4 STOP; row172 conforms to N3. [Report](Architecture_M6_CP3_TB177_P13_Mechanical_Retrace_Selection_Receipt_Full_Gate_Execution_Report_20261123.md).
+- **COMPLETE:** `M6-CP3-TB-REV-177`. Four reverse pairs and arrival ownership premise verified; frozen H4 STOP retained. [Independent review](Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md)
+- **ONE NEXT:** `M6-CP3-CB-199A-P13-RETRACED-TRACE-REFERENCE-REMAP`, exact [Exact proposed diff](Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Exact.diff) `4f458361453186fdc9c7e0073b039fc3329f084d4b01b0eb6c2e193071d22bf7`. Compile only, no runtime or production wiring; separate TB and Review follow.
 
 - **COMPLETE:** CB-197A, CB-197B (source `8d2dd3d42ecb6b2f36d6934f72e43bdf8bb6efe3`, [run 45255304770](https://github.com/akashskypatel/Directional/actions/runs/45255304770)); TB-EXEC-176 rejected 994/1001, seven RED ([report](Architecture_M6_CP3_TB176_P13_Piece_Builder_And_Ordered_Retrace_Full_Gate_Execution_Report_20261123.md)).
 - **COMPLETE:** CB-198 exact test-only failure-branch receipt; [run 45280023495](https://github.com/akashskypatel/Directional/actions/runs/45280023495), package `14868834752` (SHA-256 `b5a7104d41e103e3d31094b4d889af1097ffa52edac6ff11fe120acfdb4ee0c9`, 28/28), `runtimeExecution=false`. [CB-198 Code + Build record](Architecture_M6_CP3_CB198_P13_Mechanical_Retrace_Selection_Receipt_Code_Build_Record_20261123.md).
 - **COMPLETE:** TB-REV-176 [independent](Architecture_M6_CP3_TB_REV_176_P13_Piece_Builder_And_Ordered_Retrace_Independent_Review_20261123.md) + [adversarial](Architecture_M6_CP3_TB_REV_176_Adversarial_Review_20261123.md) (H1–H4): prose CB-198 withdrawn → exact test-only failure-branch receipt; H2 adds the arrival check (`keptArrival = removedSingularity`) that D13 = A's `Y.port` rule needs.
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-177
-Owner: independent Test + Benchmark Review (runtime-free; no source, test, fixture, selector, manifest mutation)
-TB177: run 45283342400; result 14871900641; ZIP SHA-256 8c5bce907f59b77207833153912805cccca6fa122c70ff9f299a64f68102b068, 2010/2010 hashes
-CB-198 source: 6cdd23a10ac6f6fbc6c741fb1e18ccff2038871c; GMP/GMPXX compile package 14868834752
-TB176 baseline: artifact 14861444963; unchanged manifest 0f85400ff9713fc8a835f308304ded1db9830e668211bab71c88d580b2e84642
-Observed: 994/1001 PASS, RED 445/652/653/656/658/660/786; row652 receipt verbatim in TB177 report
-STOP H4: five +108 assertion-line shifts at 445/653/658/660/786; row172 conforms to N3. Exact remap freeze pending.
-Review recorded 4 retraces and both arrival equalities, and singularity IDs 1/3/5/7 to sourceVertex 10/35/47/71 mapping
-No CB-199, CP3/497/D0/H4 or selector promotion before independent review
+NEXT_TURN: M6-CP3-CB-199A-P13-RETRACED-TRACE-REFERENCE-REMAP
+Owner: Code + Build, compile only, eight GMP/GMPXX targets, runtimeExecution=false.
+Exact diff: .agents/Directional/Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Exact.diff; SHA-256 4f458361453186fdc9c7e0073b039fc3329f084d4b01b0eb6c2e193071d22bf7
+Semantic source: 6cdd23a10ac6f6fbc6c741fb1e18ccff2038871c; intended-path preimage must match.
+Scope: pure unwired reference helper and one appended guard, no production caller, reader, selector, manifest or fixture change.
+STOP on mismatch or compile failure. Separate artifact-only TB and Review; CP3/497/D0/H4 held.
 ```
 
 ## Turn Sequence
@@ -71,7 +69,8 @@ No CB-199, CP3/497/D0/H4 or selector promotion before independent review
 | COMPLETE | CB-197A → CB-197B → TB-EXEC-176 (994/1001, rejected) → TB-REV-176 (independent + [adv.](Architecture_M6_CP3_TB_REV_176_Adversarial_Review_20261123.md)) | Same 7 RED; helpers unwired. |
 | COMPLETE | CB-198 exact test-only receipt | [run 45280023495](https://github.com/akashskypatel/Directional/actions/runs/45280023495), package `14868834752`, GMP/GMPXX, no runtime. |
 | COMPLETE / rejected | TB-EXEC-177 immutable full gate | [Run 45283342400](https://github.com/akashskypatel/Directional/actions/runs/45283342400), 994/1001; H4 strict comparison STOP. |
-| **1 NEXT** | TB-REV-177 → CB-199A unwired remap helper (`struckTrace`/incidences → kept, arrival owns `Y.port`) + unit test → TB | Only if receipt prediction holds; else producer first. |
+| COMPLETE | TB-REV-177 | [Independent review](Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md); H4 STOP retained; exact four pairs and arrival premise verified. |
+| **1 NEXT** | `M6-CP3-CB-199A-P13-RETRACED-TRACE-REFERENCE-REMAP` | [Exact proposed diff](Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Exact.diff); compile only, then separate TB/Review. |
 | 3 | CB-199B selection switch in `canonical_field_aligned_candidate` (fail-closed) → TB | — |
 | 3B | CB-200 port-set readers (EmbeddedGraphTopology 1793, GlobalTopologyPlan 410/2117, origin events) + every-region-owns-a-face assertion → TB | Mechanical controls green, row652 2 regions. |
 | 4 | Row979 `RegionContainsInteriorSingularity` (vertex 8) | After mechanical controls green; read printed locus first. |
@@ -82,7 +81,7 @@ No CB-199, CP3/497/D0/H4 or selector promotion before independent review
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: [TB176 execution report](Architecture_M6_CP3_TB176_P13_Piece_Builder_And_Ordered_Retrace_Full_Gate_Execution_Report_20261123.md), [CB-197B Code + Build record](Architecture_M6_CP3_CB197B_P13_Exact_Source_Retrace_Ordered_Stretches_Code_Build_Record_20261123.md), [TB-REV-175 adversarial](Architecture_M6_CP3_TB_REV_175_Adversarial_Review_20261123.md), [CB-197A/B manifest](gates/Architecture_M6_CP3_CB197AB_P13_Exact_Manifest.md), [TB175 execution report](Architecture_M6_CP3_TB175_P13_Retraced_Trace_Selection_Full_Gate_Execution_Report_20261123.md), [CB-196 Code + Build record](Architecture_M6_CP3_CB196_P13_Exact_Source_Retraced_Trace_Selection_Code_Build_Record_20261123.md), [TB174 execution report](Architecture_M6_CP3_TB174_P13_Retrace_Oracle_Full_Gate_Execution_Report_20261123.md), [CB-195 Code + Build evidence](Architecture_M6_CP3_CB195_P13_Exact_Source_Path_Retrace_Along_Edges_Progress_20261123.md), [TB-REV-173 D13 resolution](Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md). Older Reviews resolve through [the folded index](M6_Consolidated_Record.md#tb128-review-folded-execution-record-index-2026-11-17) and the Turn Sequence links.
+`load_next`: [Independent review](Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md), [Exact proposed diff](Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Exact.diff), [TB176 execution report](Architecture_M6_CP3_TB176_P13_Piece_Builder_And_Ordered_Retrace_Full_Gate_Execution_Report_20261123.md), [CB-197B Code + Build record](Architecture_M6_CP3_CB197B_P13_Exact_Source_Retrace_Ordered_Stretches_Code_Build_Record_20261123.md), [TB-REV-175 adversarial](Architecture_M6_CP3_TB_REV_175_Adversarial_Review_20261123.md), [CB-197A/B manifest](gates/Architecture_M6_CP3_CB197AB_P13_Exact_Manifest.md), [TB175 execution report](Architecture_M6_CP3_TB175_P13_Retraced_Trace_Selection_Full_Gate_Execution_Report_20261123.md), [CB-196 Code + Build record](Architecture_M6_CP3_CB196_P13_Exact_Source_Retraced_Trace_Selection_Code_Build_Record_20261123.md), [TB174 execution report](Architecture_M6_CP3_TB174_P13_Retrace_Oracle_Full_Gate_Execution_Report_20261123.md), [CB-195 Code + Build evidence](Architecture_M6_CP3_CB195_P13_Exact_Source_Path_Retrace_Along_Edges_Progress_20261123.md), [TB-REV-173 D13 resolution](Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md). Older Reviews resolve through [the folded index](M6_Consolidated_Record.md#tb128-review-folded-execution-record-index-2026-11-17) and the Turn Sequence links.
 
 0. [ORIENTATION.md](ORIENTATION.md) — project context, read first.
 1. [ROADMAP.md](ROADMAP.md) — milestone position only.

@@ -1,26 +1,24 @@
-**Current review progress (2026-11-24 UTC):** TB-REV-177 independently confirms TB177 rejected 994/1001; 650 identical, 343 N1/N2, row172 permitted N3, two authorized receipts, five unapproved +108 assertion-location shifts. Four reverse pairs and both arrival equalities verified. Exact struck-segment/endpoint-incidence remap freeze remains pending; no CB-199A authorization. [Independent review progress](.agents/Directional/Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md)
+**Current review decision (2026-11-24 UTC):** TB-REV-177 confirms TB177 rejected 994/1001, same seven RED; row172 conforms to N3 and five +108 assertion-location shifts retain H4 STOP. Four reverse pairs and both arrival equalities verified. Next only `M6-CP3-CB-199A-P13-RETRACED-TRACE-REFERENCE-REMAP` (pure unwired helper + one guard; compile only). [Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md)
 
-## CURRENT — TB-EXEC-177 immutable gate rejected; TB-REV-177 independent review next (2026-11-23 UTC)
+## CURRENT — TB-REV-177 rejected TB177; exact CB-199A next (2026-11-24 UTC)
 
 - [x] **COMPLETE** TB-REV-176 adversarial continuation (H1–H4): prose CB-198 withdrawn (RA-261); exact failure-branch receipt frozen (`…CB198…Receipt_Exact.diff` `c30811fc…391b`); H2 arrival check (`keptArrival = removedSingularity`) for the D13 = A `Y.port` rule; TB-EXEC-177 rules frozen (TB176 manifest unchanged).
 - [x] **COMPLETE** CB-198 exact test-only receipt: [run 45280023495](https://github.com/akashskypatel/Directional/actions/runs/45280023495), package `14868834752` (28/28), `runtimeExecution=false`; [CB-198 Code + Build record](.agents/Directional/Architecture_M6_CP3_CB198_P13_Mechanical_Retrace_Selection_Receipt_Code_Build_Record_20261123.md).
-- [x] **COMPLETE / REJECTED** TB-EXEC-177: [run 45283342400](https://github.com/akashskypatel/Directional/actions/runs/45283342400), artifact `14871900641`, 994/1001 and same seven RED, two receipts; strict H4 comparison STOP (row172 order, five +108 test-line shifts).
-- [ ] **1 IN PROGRESS** `M6-CP3-TB-REV-177`: artifact adjudication done; freeze exact unwired remap helper/unit test, then publish review closeout. No CB-199 before Review.
-- [ ] **3** TB-REV-177 → CB-199A unwired remap helper (`struckTrace`/incidences → kept trace, arrival owns `Y.port`) + unit test → TB. Only if the receipt prediction holds; otherwise the producer first.
+- [x] **COMPLETE / REJECTED** TB-EXEC-177: [run 45283342400](https://github.com/akashskypatel/Directional/actions/runs/45283342400), artifact `14871900641`, 994/1001 and same seven RED, two receipts; strict H4 comparison STOP (five +108 test-line shifts; row172 independently conforms to N3).
+- [x] **COMPLETE** `M6-CP3-TB-REV-177`: independent artifact adjudication; exact CB-199A frozen. [Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_177_Mechanical_Retrace_Selection_Independent_Review_20261124.md)
+- [ ] **1 NEXT ONLY** `M6-CP3-CB-199A-P13-RETRACED-TRACE-REFERENCE-REMAP` — apply the exact [diff](.agents/Directional/Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Exact.diff) `4f458361453186fdc9c7e0073b039fc3329f084d4b01b0eb6c2e193071d22bf7`, compile only, no production wiring. Separate TB and Review follow.
 - [ ] **4** CB-199B selection switch in `canonical_field_aligned_candidate`, fail closed on a missing path → TB.
 - [ ] **5** CB-200 port-set readers + every-region-owns-a-face assertion → TB; mechanical controls green, row652 two regions.
 - [ ] **6** Row979, Branch A, CB-190; deferred CollinearOverlap/EndpointTouch (E5).
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-177
-Owner: independent Test + Benchmark Review (runtime-free; no source, test, fixture, selector, manifest mutation)
-TB177: run 45283342400; result 14871900641; ZIP SHA-256 8c5bce907f59b77207833153912805cccca6fa122c70ff9f299a64f68102b068, 2010/2010 hashes
-CB-198 source: 6cdd23a10ac6f6fbc6c741fb1e18ccff2038871c; GMP/GMPXX compile package 14868834752
-TB176 baseline: artifact 14861444963; unchanged manifest 0f85400ff9713fc8a835f308304ded1db9830e668211bab71c88d580b2e84642
-Observed: 994/1001 PASS, RED 445/652/653/656/658/660/786; row652 receipt verbatim in TB177 report
-STOP H4: five +108 assertion-line shifts at 445/653/658/660/786; row172 independently conforms to N3. Exact remap freeze pending.
-Review recorded 4 retraces and both arrival equalities, and singularity IDs 1/3/5/7 to sourceVertex 10/35/47/71 mapping
-No CB-199, CP3/497/D0/H4 or selector promotion before independent review
+NEXT_TURN: M6-CP3-CB-199A-P13-RETRACED-TRACE-REFERENCE-REMAP
+Owner: Code + Build, compile only, eight GMP/GMPXX targets, runtimeExecution=false.
+Exact diff: .agents/Directional/Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Exact.diff
+SHA-256: 4f458361453186fdc9c7e0073b039fc3329f084d4b01b0eb6c2e193071d22bf7
+Semantic source: 6cdd23a10ac6f6fbc6c741fb1e18ccff2038871c; exact intended-path preimage required.
+Scope: pure unwired reference helper and one appended guard. No production caller, reader, selector, manifest, fixture or acceptance change. Separate artifact-only TB and Review follow.
+STOP: any mismatch, compilation failure, production wiring, validation weakening, unexpected path or output; no successor work in Review.
 ```
 
 
