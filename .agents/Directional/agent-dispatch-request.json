@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb199a-remap-apply-20261124",
-  "mailbox_key": "m6-cp3-cb199a-remap-apply-20261124",
-  "file_id": "1x0Y9MtudVsVSJsrmC4951-BdgGBk__qr",
-  "patch_sha256": "1d6c20d147b3409753e8d945f25d34db827e0ef04589f6c99c8c1043890dfd1a",
-  "base_sha": "5bad4742599824c5bab233d23f18650fd17ca48d",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "geometry: add exact retraced trace reference remapping helper and guard",
-  "retention_days": 14
+  "operation": "compile",
+  "request_id": "m6-cp3-cb199a-remap-compile-20261124",
+  "mailbox_key": "m6-cp3-cb199a-remap-compile-20261124",
+  "source_sha": "de65101eb04c73e08ea4b6b31968975f71d9d909",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb199a-remap"
 }
