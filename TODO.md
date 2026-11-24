@@ -1,24 +1,23 @@
-**Current turn outcome (2026-11-24):** CB-199A exact amended helper and guard compiled (eight GMP/GMPXX targets, no runtime). [Record](.agents/Directional/Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Code_Build_Record_20261124.md). TB177 rejected 994/1001, seven RED; no promotion. Next only `M6-CP3-TB-EXEC-178-P13-RETRACED-TRACE-REFERENCE-REMAP-FULL-GATE`.
+**Current turn outcome (2026-11-24):** TB-EXEC-178 executed 1,002 cases: 995 PASS, seven existing RED. New guard PASS; frozen comparison satisfied. [Report](.agents/Directional/Architecture_M6_CP3_TB178_P13_Retraced_Trace_Reference_Remap_Full_Gate_Execution_Report_20261124.md). Next only `M6-CP3-TB-REV-178`. No product acceptance.
 
-## CURRENT — CB-199A compiled; TB-EXEC-178 next (2026-11-24 UTC)
+## CURRENT — TB-EXEC-178 rejected; TB-REV-178 next (2026-11-24 UTC)
 
 - [x] **COMPLETE** TB-REV-177 adversarial (J1–J6). J1: my TB-EXEC-177 rule wrongly said "no line moves" after a mid-file insert. J4: the original CB-199A `4f458361…` is withdrawn for overloading `sourcePort` and the junction role; the amended diff is `cd43c3f0…4c5a`. TB178 manifest `921bd04b…e8ed` frozen.
 - [x] **COMPLETE** CB-199A amended: unwired remap helper + guard row 1002 (compile only), [run 45312324524](https://github.com/akashskypatel/Directional/actions/runs/45312324524), package `14883418907`.
-- [ ] **1 NEXT** TB-EXEC-178: 995/1002, same 7 RED; no line moves; receipts byte-identical to TB177.
-- [ ] **3** TB-REV-178 → CB-199B: an explicit kept-trace `arrivalPort` field + digest; selection after the tracing loop; producer re-sort; all-or-nothing; fail closed → TB.
+- [x] **COMPLETE / REJECTED** TB-EXEC-178: 995/1002, same seven RED; comparison satisfied; no line moves; receipts byte-identical to TB177. [Report](.agents/Directional/Architecture_M6_CP3_TB178_P13_Retraced_Trace_Reference_Remap_Full_Gate_Execution_Report_20261124.md).
+- [ ] **1 NEXT ONLY** TB-REV-178: independent artifact comparison and guard-contract review; no runtime or production mutation.
+- [ ] **2 HELD** CB-199B, only if separately authorized: an explicit kept-trace `arrivalPort` field + digest; selection after the tracing loop; producer re-sort; all-or-nothing; fail closed → TB.
 - [ ] **4** CB-200: port-set readers read `trace.port ∪ arrivalPort`, plus the every-region-owns-a-face assertion → TB; mechanical controls green, row652 two regions.
 - [ ] **5** Row979, Branch A, CB-190; deferred CollinearOverlap/EndpointTouch (E5).
 
 ```text
-NEXT_TURN: M6-CP3-TB-EXEC-178-P13-RETRACED-TRACE-REFERENCE-REMAP-FULL-GATE
-Owner: Test + Benchmark execution agent (artifact only; no rebuild or repair)
-Authority: Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Code_Build_Record_20261124.md; Architecture_M6_CP3_TB_REV_177_Adversarial_Review_20261124.md TB-EXEC-178 rules
-Package: 14883418907; semantic source/executor de65101eb04c73e08ea4b6b31968975f71d9d909; ZIP SHA-256 8452d0bbfad23c464c7ad29de2c9b92a4acde9bdbb96347a55aeb84917ef8beb
-Manifest: gates/Architecture_M6_TB178_P13_Retraced_Trace_Reference_Remap_Full_Gate_Case_Manifest.tsv SHA-256 921bd04bbfab596da6679083d5880d3f4893126e19a91c4687ba5ba63827e8ed (1002 rows; 1001 prefix unchanged); membership 1083
-Required: 995 PASS; row1002 executed and PASS; same seven RED (445/652/653/656/658/660/786)
-Compare: TB177 14871900641 under N1-N3; no assertion-line moves; row652/656 receipts byte-identical; any other difference -> STOP to Review
-Then: M6-CP3-TB-REV-178; CB-199B and CB-200 remain held until separately authorized
-Do not: rebuild, repair, change source/fixture/selector/manifest, activate, or promote CP3/497/D0/H4
+NEXT_TURN: M6-CP3-TB-REV-178
+Owner: Independent Review (runtime-free; no production mutation)
+Authority: Architecture_M6_CP3_TB178_P13_Retraced_Trace_Reference_Remap_Full_Gate_Execution_Report_20261124.md; Architecture_M6_CP3_TB_REV_177_Adversarial_Review_20261124.md; amended exact CB-199A manifest and code/build record
+Candidate: TB178 result 14885616510; source de65101eb04c73e08ea4b6b31968975f71d9d909; ZIP SHA-256 57260ad2ee62adb02bad56bc09d2ab7e2c4782b8ad4ef43faa76cb5e539600a6
+Baseline: TB177 result 14871900641; ZIP SHA-256 8c5bce907f59b77207833153912805cccca6fa122c70ff9f299a64f68102b068
+Review: independently verify both archives, all 1001 inherited comparisons under N1–N3, exact new row1002 guard, seven existing RED, unchanged receipts and failure sites; inspect amended helper contract. Record adjudication and freeze CB-199B only if supported.
+Hold: CB-199B and CB-200 require separate authorization; no runtime, repair, activation, or CP3/497/D0/H4 promotion.
 ```
 
 ## HISTORY — TB-REV-177 independent: original CB-199A (amended by the adversarial continuation) (2026-11-24 UTC)
