@@ -1,26 +1,25 @@
-**Current turn outcome (2026-11-24):** TB-REV-180 [independent](.agents/Directional/Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md) + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_180_Adversarial_Review_20261124.md): TB180 **1003/1003** accepted; CB-201 upheld; row979 unclassified (candidate P1). Sequence CB-201 → TB-EXEC-181 → TB-REV-181 → CB-202 → TB-EXEC-182 → TB-REV-182. No CP3/497/D0/H4 promotion.
+**Current turn outcome (2026-11-24):** CB-201 compile-only complete, package `14966635283`; runtime not executed. TB-REV-180 [independent](.agents/Directional/Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md) + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_180_Adversarial_Review_20261124.md): TB180 **1003/1003** accepted; CB-201 upheld; row979 unclassified (candidate P1). Sequence CB-201 → TB-EXEC-181 → TB-REV-181 → CB-202 → TB-EXEC-182 → TB-REV-182. No CP3/497/D0/H4 promotion.
 
-## CURRENT — TB-REV-180 adversarial: CB-201 upheld; row979 realigned (2026-11-24 UTC)
+## CURRENT — CB-201 complete; TB-EXEC-181 next (2026-11-24 UTC)
 
 - [x] **COMPLETE** TB-REV-180 [adversarial continuation](.agents/Directional/Architecture_M6_CP3_TB_REV_180_Adversarial_Review_20261124.md): TB180 1003/1003 upheld; CB-201 hashes/apply/syntax verified unamended (N1); TB180 row979 receipt read — vertex8 = node1, 3 departures + 2 arrivals, 5 arc ends (N2); candidate P1: `validate_region_interior_singularities` reads face-granular `regionFaces` (GlobalTopologyPlan.cpp:1791–1806) while regions are fragment support (GlobalTopologyPlan.h:78–81) and the certificate reads owning-orbit corners (:2196–2222) (N3); row979 unclassified (N4).
-- [ ] **1 NEXT ONLY** `M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE` — exact diff `0da2ffe2…d91c`, compile only.
-- [ ] **2** `M6-CP3-TB-EXEC-181-P13-TRACE-SEGMENT-NAMESPACE-FULL-GATE` — TB179 manifest `2928fd31…f2724` unchanged; every row N1–N3-equal to TB180 `14951803089`; no line moves; any difference STOP.
+- [x] **COMPLETE (compile only)** `M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE` — [build record](.agents/Directional/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Code_Build_Record_20261124.md); exact seven-file diff, eight targets, 28/28 checksums; no runtime.
+- [ ] **1 NEXT ONLY** `M6-CP3-TB-EXEC-181-P13-TRACE-SEGMENT-NAMESPACE-FULL-GATE` — TB179 manifest `2928fd31…f2724` unchanged; every row N1–N3-equal to TB180 `14951803089`; no line moves; any difference STOP.
 - [ ] **3** `M6-CP3-TB-REV-181` — close K6; freeze exact CB-202 against adversarial requirements 1–6 (one region-vertex helper, corner-granular reach, precedence census, guard a/b, row979 prints region, TB rule).
 - [ ] **4** CB-202 → TB-EXEC-182 → TB-REV-182 — only row979 + new guard may change; row979 built → Branch A (4A); still rejected → A2a at node1.
 - [ ] **5 HELD** Branch A, CB-190; J6 production struck-reference witness debt; E5. No CP3/497/D0/H4 promotion.
 
 ```text
-NEXT_TURN: M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE
-Owner: Code + Build, compile only
-Authority: gates/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact_Manifest.md; Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md + Architecture_M6_CP3_TB_REV_180_Adversarial_Review_20261124.md (N1 verified); K6
-  exact proposed diff Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact.diff
-  SHA-256 0da2ffe20ff5f0b4913acba5fa5dfd3e18c0e23ef1f6965d9d94098696d8d91c; seven paths +66/-66; pre/postimages in manifest
-  namespace-only move of five exact trace-segment operations/types and their qualifications
-  verify preimage and postimage, compile eight durable GMP/GMPXX targets; runtimeExecution=false
-  preserve manifest 2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724, accepted TB180 1003/1003; separate immutable TB requires N1-N3 equivalence for every row
-Then: M6-CP3-TB-EXEC-181-P13-TRACE-SEGMENT-NAMESPACE-FULL-GATE (TB179 manifest unchanged; every row N1-N3-equal to TB180 14951803089, no line moves) -> M6-CP3-TB-REV-181 (close K6; freeze exact CB-202)
-On failure: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
-Do not: change semantics, add tests, execute binaries, change selectors, activate Branch A, promote CP3/497/D0/H4 or repair row979/J6/E5/CB-190
+NEXT_TURN: M6-CP3-TB-EXEC-181-P13-TRACE-SEGMENT-NAMESPACE-FULL-GATE
+Owner: Test + Benchmark, immutable artifact only
+Authority: Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Code_Build_Record_20261124.md; gates/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact_Manifest.md; TB-REV-180
+  exact candidate source b9d79c4d9e951cab787d3bfdc3b8f20aaf7195c3; compile run 45488907549; package 14966635283, SHA-256 fbad076e0d30e099ece6e197191f7a5ec98016a8713a286a4a391ede0cdb644a
+  same TB179 manifest 2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724; 1003 cases + 81 deferred, expected membership 1084
+  baseline TB180 14951803089, ZIP SHA-256 67e784747b1c8d04bf781b69b486f3310876fde101b7935f0207fd2fd36a39f8; 1003/1003 accepted
+  every case PASS; every ledger field except raw-log hash matches; all normalized raw bytes match under N1-N3 only; no line normalization or receipt exception
+Then: M6-CP3-TB-REV-181 (adjudicate K6, freeze CB-202 under prior adversarial requirements)
+On failure: material difference, new RED, missing/duplicate result or changed membership -> STOP; independent Review decides
+Do not: rebuild, repair, relink, modify tests/fixtures/manifest, run benchmarks, activate Branch A, promote CP3/497/D0/H4 or repair row979/J6/E5/CB-190
 ```
 
 ## HISTORY — TB-REV-180 adjudicated; CB-201 frozen (2026-11-24 UTC)
@@ -29,20 +28,10 @@ Do not: change semantics, add tests, execute binaries, change selectors, activat
 - [x] **COMPLETE (compile only)** `M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST` — [build record](.agents/Directional/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Code_Build_Record_20261124.md), package `14901170173`, eight targets, 28/28 checks, no runtime.
 - [x] **COMPLETE (execution)** `M6-CP3-TB-EXEC-180-P13-CROSS-PARTITION-ARC-CENSUS-FULL-GATE`: 1003/1003 PASS, only row786 changes, six named corruption rejections. [Report](.agents/Directional/Architecture_M6_CP3_TB180_P13_Cross_Partition_Arc_Census_Full_Gate_Execution_Report_20261124.md).
 - [x] **COMPLETE (independent Review)** `M6-CP3-TB-REV-180`: [review](.agents/Directional/Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md); accepted TB180 1003/1003, all seven controls, closed recurrence; historical counts unchanged.
-- [ ] **1 NEXT ONLY** `M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE` — [exact namespace-only compile plan](.agents/Directional/gates/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact_Manifest.md), then separate artifact-only full TB. K6 is not closed until that TB Review.
+- [x] **COMPLETE (compile only)** `M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE` — [build record](.agents/Directional/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Code_Build_Record_20261124.md); K6 is not closed until TB-REV-181.
 - [ ] **5 HELD** Row979, Branch A, CB-190; J6 production struck-reference witness debt; E5.
 
-```text
-NEXT_TURN: M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE
-Owner: Code + Build, compile only
-Authority: gates/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact_Manifest.md; Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md + Architecture_M6_CP3_TB_REV_180_Adversarial_Review_20261124.md (N1 verified); K6
-  exact proposed diff Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact.diff
-  SHA-256 0da2ffe20ff5f0b4913acba5fa5dfd3e18c0e23ef1f6965d9d94098696d8d91c; seven paths +66/-66; pre/postimages in manifest
-  namespace-only move of five exact trace-segment operations/types and their qualifications
-  verify preimage and postimage, compile eight durable GMP/GMPXX targets; runtimeExecution=false
-  preserve manifest 2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724, accepted TB180 1003/1003; separate immutable TB requires N1-N3 equivalence for every row
-Do not: change semantics, add tests, execute binaries, change selectors, activate Branch A, promote CP3/497/D0/H4 or repair row979/J6/E5/CB-190
-```
+Historical CB-201 plan executed without amendment; see [exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact_Manifest.md) and [build record](.agents/Directional/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Code_Build_Record_20261124.md).
 
 ## HISTORY — TB-REV-179 independent: prose CB-200 plan (withdrawn by adversarial M2) (2026-11-24 UTC)
 

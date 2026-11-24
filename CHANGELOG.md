@@ -1,3 +1,7 @@
+## 2026-11-24 — CB-201 exact trace-segment namespace compiled
+
+[Code + Build record](.agents/Directional/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Code_Build_Record_20261124.md). The exact namespace-only seven-file patch (+66/−66) applied as `b9d79c4d9e951cab787d3bfdc3b8f20aaf7195c3` in run 45488678425. GMP/GMPXX [compile run 45488907549](https://github.com/akashskypatel/Directional/actions/runs/45488907549) succeeded for eight targets; package `14966635283` SHA-256 `fbad076e0d30e099ece6e197191f7a5ec98016a8713a286a4a391ede0cdb644a`, 28/28 checksums, seven packaged postimages match. `runtimeExecution=false`. Accepted TB180 1003/1003, CP2 491/491 and 67/17/50, debt1/deferred81 unchanged. K6 open until TB-REV-181; no CP3/497/D0/H4 promotion. Next only `M6-CP3-TB-EXEC-181-P13-TRACE-SEGMENT-NAMESPACE-FULL-GATE`.
+
 ## 2026-11-24 — TB-REV-180 adversarial continuation: CB-201 upheld, row979 realigned
 
 [Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_180_Adversarial_Review_20261124.md): TB180 1003/1003 upheld; CB-201 exact diff verified (hashes, apply, 0-error syntax checks) and unamended. TB180 row979 receipt shows vertex 8 = node 1 with five arc ends, so the port is on the graph. Candidate product defect P1: the interior-singularity check reads whole source faces although regions are fragment support and the certificate reads owning-orbit corners. Row979 is unclassified; CB-202 requirements bind TB-REV-181. Sequence: CB-201 → TB-EXEC-181 → TB-REV-181 → CB-202 → TB-EXEC-182 → TB-REV-182.
