@@ -1,4 +1,4 @@
-**Current currency — TB-REV-178 (2026-11-24 UTC):** Independent review upholds TB178 rejection (995/1002, seven existing RED), all 1,001 inherited comparisons match under N1–N3; isolated remap guard PASS, production unwired. [Review](Architecture_M6_CP3_TB_REV_178_Retraced_Trace_Reference_Remap_Independent_Review_20261124.md). Accepted TB169 993/993 and CP2 491/491 unchanged; stable 67/17/50, debt1/deferred81. [Adversarial](Architecture_M6_CP3_TB_REV_178_Adversarial_Review_20261124.md) K1–K6: CB-199B syntax-compiles and is accepted unamended; CB-200 scoped from TB179 first failure. Exact next `M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION` (compile only; no successor work in review).
+**Current currency — CB-199B (2026-11-24 UTC):** Exact selection compiled, eight GMP/GMPXX targets, 28/28 package hashes. [Build record](Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Code_Build_Record_20261124.md). TB178 remains rejected (995/1002, seven existing RED), all 1,001 inherited comparisons match under N1–N3. Accepted TB169 993/993 and CP2 491/491 unchanged; stable 67/17/50, debt1/deferred81. Next only `M6-CP3-TB-EXEC-179-P13-RETRACED-TRACE-SELECTION-FULL-GATE`. CB-200 remains held until TB-REV-179.
 
 # Directional — Project Orientation
 
@@ -52,7 +52,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; multi-cut plan remains open** | Accepted TB169 993/993 and CP2 491/491. TB178 rejected 995/1002 with seven unchanged mechanical RED; new isolated remap guard PASS; all inherited comparisons satisfy frozen rules. TB-REV-178 independently upholds the rejection; CB-199B exact selection is next. No CP3/497/D0/H4 acceptance. Row979 remains staged-only. |
+| **M6-CP3 — active; multi-cut plan remains open** | Accepted TB169 993/993 and CP2 491/491. TB178 rejected 995/1002 with seven unchanged mechanical RED; new isolated remap guard PASS; all inherited comparisons satisfy frozen rules. TB-REV-178 independently upholds the rejection; CB-199B exact selection compiled. TB179 is next. No CP3/497/D0/H4 acceptance. Row979 remains staged-only. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting now includes the TB170 accepted-green recurrence: **67 events / 17 categories / 50 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -143,7 +143,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority (TB-REV-178 complete):** `M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION` — [exact plan](gates/Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Exact_Manifest.md), compile only. Select reciprocal edge retraces after tracing, store the kept arrival port and validate exact port ownership. CB-200 port-set readers remain held until independent review of TB179; no production acceptance.
+**Current priority (CB-199B compile complete):** `M6-CP3-TB-EXEC-179-P13-RETRACED-TRACE-SELECTION-FULL-GATE` — [exact build record and gate request](Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Code_Build_Record_20261124.md). Execute 1,003 frozen cases and verify membership. Row1003 must pass. CB-200 readers remain held until independent review of TB179. No production acceptance.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).

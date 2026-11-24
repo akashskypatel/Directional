@@ -1,22 +1,21 @@
-**Current turn outcome (2026-11-24):** TB-REV-178 independently upholds TB178 rejection: 995/1002 PASS, seven existing RED; row1002 PASS, inherited comparison satisfied. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_178_Retraced_Trace_Reference_Remap_Independent_Review_20261124.md). [Adversarial continuation](.agents/Directional/Architecture_M6_CP3_TB_REV_178_Adversarial_Review_20261124.md) compiles CB-199B (0 errors), accepts it unamended, and re-scopes CB-200 from TB179 evidence (K5). Next only `M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION`. No product acceptance.
+**Current turn outcome (2026-11-24):** CB-199B compile gate satisfied. [Build record](.agents/Directional/Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Code_Build_Record_20261124.md). TB178 remains rejected 995/1002, seven existing RED. Next only `M6-CP3-TB-EXEC-179-P13-RETRACED-TRACE-SELECTION-FULL-GATE`. No product acceptance.
 
-## CURRENT — TB-REV-178 independent + adversarial complete; CB-199B next (2026-11-24 UTC)
+## CURRENT — CB-199B compile complete; TB-EXEC-179 next (2026-11-24 UTC)
 
 - [x] **COMPLETE** TB-EXEC-178 (995/1002; seven unchanged RED) and TB-REV-178 independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_178_Adversarial_Review_20261124.md): CB-199B pre/postimages match and both patched TUs syntax-compile (K1); J4/J5 met (K2); CB-200 reader premise unproven (K5).
-- [ ] **1 NEXT ONLY** `M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION` — [exact plan](.agents/Directional/gates/Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Exact_Manifest.md), compile only, SHA-256 `02cc43c4b4ed3144df4bb08d7a8a857afcb6ce6f0cfa582c08da0a3031411fe5`, accepted unamended.
-- [ ] **2 HELD** TB-EXEC-179: 1,003 frozen cases + 81 deferred. Row1003 PASS; no green-to-red loss; itemize every changed raw record, including dropped `committedSlide` lines (K4); STOP on unrelated difference.
+- [x] **COMPLETE (compile only)** `M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION` — [build record](.agents/Directional/Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Code_Build_Record_20261124.md), package `14893165901`, eight targets, 28/28 checks, no runtime.
+- [ ] **1 NEXT ONLY** `M6-CP3-TB-EXEC-179-P13-RETRACED-TRACE-SELECTION-FULL-GATE`: 1,003 frozen cases + 81 deferred. Row1003 PASS; no green-to-red loss; itemize every changed raw record, including dropped `committedSlide` lines (K4); STOP on unrelated difference.
 - [ ] **3 HELD** TB-REV-179 freezes CB-200 from row652's actual first failure (K5), plus the every-region-owns-a-face assertion → TB.
 - [ ] **3A HELD** Digest-neutral rename of exact piece helpers out of `embedded_graph_topology_detail` (K6), byte-identical gate.
 - [ ] **4 HELD** Row979, Branch A, CB-190; deferred CollinearOverlap/EndpointTouch (E5).
 
 ```text
-NEXT_TURN: M6-CP3-CB-199B-P13-RETRACED-TRACE-SELECTION
-Owner: Code + Build (compile only, GMP/GMPXX; no runtime)
-Authority: TB-REV-178 independent + Architecture_M6_CP3_TB_REV_178_Adversarial_Review_20261124.md (K1-K6); gates/Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Exact_Manifest.md
-Source: de65101eb04c73e08ea4b6b31968975f71d9d909; exact preimages in plan
-Patch: Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Exact.diff; SHA-256 02cc43c4b4ed3144df4bb08d7a8a857afcb6ce6f0cfa582c08da0a3031411fe5; three paths; +172/−0
-Scope: exact producer selection, arrivalPort with checked equality/digest, one appended A2a guard. Do not alter CB-200 readers or region election.
-Stop: preimage, compile, membership, changed-path or package mismatch; return to Review. If compile succeeds, separate TB-EXEC-179 full gate 1003 rows; 81 deferred. See plan for falsifiers. No production acceptance or CP3/497/D0/H4 promotion.
+NEXT_TURN: M6-CP3-TB-EXEC-179-P13-RETRACED-TRACE-SELECTION-FULL-GATE
+Owner: Test + Benchmark (artifact only, no rebuild or benchmark)
+Authority: Architecture_M6_CP3_CB199B_P13_Retraced_Trace_Selection_Code_Build_Record_20261124.md and TB-REV-178 exact plan / adversarial K1–K6
+Source: 5d9468d168ee3c9eed086bd787979ced7f86843b; compile package 14893165901, ZIP SHA-256 0ff23208d9329a02951d1aea83c0631ac7790b92bb3bfb46639d52d33e7c225c
+Scope: 1,003 frozen gate rows + 81 deferred; expected membership 1,084. Row1003 must PASS; no green-to-red loss. Compare all 1,002 inherited raw records to TB178 under N1–N3 and itemize every changed record including committedSlide (K4).
+Stop: failed guard, new A2a failure, lost port, stale reference, unrelated difference or missing evidence. Row652 must advance past RegionElectedCutComponentEmpty or the prediction is false. Return to TB-REV-179; no CB-200 reader work or acceptance promotion.
 ```
 
 ## HISTORY — TB-REV-177 independent: original CB-199A (amended by the adversarial continuation) (2026-11-24 UTC)
