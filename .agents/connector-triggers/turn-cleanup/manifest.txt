@@ -1,0 +1,2 @@
+.agents/connector-triggers/source-snapshot/m6-cp3-r5-authority-spec-20261015.txt
+.agents/connector-triggers/source-snapshot/tb-rev-180-20261124.txt
