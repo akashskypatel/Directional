@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb201-compile-20261124",
-  "mailbox_key": "m6-cp3-cb201-compile-20261124",
-  "source_sha": "b9d79c4d9e951cab787d3bfdc3b8f20aaf7195c3",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb201-exact-trace-segment-namespace"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb201-closeout-20261124",
+  "mailbox_key": "m6-cp3-cb201-closeout-20261124",
+  "file_id": "1ShLb2cTtAaYWcfot5exXfsumOTpoSWts",
+  "patch_sha256": "2c84eeacedcb5bd3cf70c11d7632f261c58c2879acf342ff4097286adce0a980",
+  "base_sha": "c7fb614bae17726a43ce8cf888fe40fd93cfafbc",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "Record CB-201 compile evidence and freeze TB-181 handoff",
+  "retention_days": 14
 }
