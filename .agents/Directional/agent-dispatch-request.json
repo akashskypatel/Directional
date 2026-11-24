@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb199b-source-20261124",
-  "mailbox_key": "m6-cp3-cb199b-source-20261124",
-  "file_id": "1GWk0t4POT4Rqce5yQbhX5jPaYFmKaSr7",
-  "patch_sha256": "eee92cea2dc398f49ef5a345f547c171a95527ea9d6b77bb99d3cd458cc9fdf5",
-  "base_sha": "9c732898f72ea101043491f46e918eb8086390e2",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Select exact reciprocal retraced traces and preserve arrival port ownership",
-  "retention_days": 14
+  "operation": "compile",
+  "request_id": "m6-cp3-cb199b-compile-20261124",
+  "mailbox_key": "m6-cp3-cb199b-compile-20261124",
+  "source_sha": "5d9468d168ee3c9eed086bd787979ced7f86843b",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb199b"
 }
