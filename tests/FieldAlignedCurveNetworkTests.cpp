@@ -47,7 +47,7 @@
 #include "../src/geometry/ArcFaceVisits.h"
 #include "TestFixturePaths.h"
 #include "support/SkewSingularFieldWitness.h"
-
+#include "../src/geometry/RegionCornerOwnership.h"
 
 namespace {
 
@@ -18181,7 +18181,7 @@ TEST(TraceTerminationCorrection,
              << " F=" << count(error.faceCount)
              << " fragmentOrbits=" << count(error.fragmentOrbitCount)
              << " tracePieces=" << count(error.tracePieceCount)
-             << " expectedFragments=" << count(error.expectedFragmentCount);
+             << " expectedFragments=" << count(error.expectedFragmentCount) << " region=" << (error.region.has_value() ? std::to_string(error.region->index()) : std::string("-"));
   }
   std::cout << planLine.str() << '\n';
 
@@ -23789,4 +23789,90 @@ TEST(FieldAlignedCurveNetwork, MechanicalRetracesPublishBothPortsBeforeTopologyR
   ASSERT_FALSE(rejected);
   EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
             rejected.error().code);
+}
+
+TEST(GlobalTopologyPlan, SingularityReachUsesOwningFragmentCorners) {
+  using namespace directional::authority;
+  using namespace directional::geometry;
+  namespace corners = directional::geometry::global_topology_plan_detail;
+  const auto vertex = [](int i) { return SourceVertexId::from_index(i, 3U).value(); };
+  const auto node = [](int i) { return NetworkNodeId::from_index(i, 4U).value(); };
+  const auto arc = [](int i) { return NetworkArcId::from_index(i, 3U).value(); };
+  const auto face = topology_face(0, 1, 2, 3U);
+  embedded::SourceTopologyIndex topology;
+  topology.faces.emplace(face, embedded::SourceFaceRecord{
+      face, SourceFaceId::from_index(0, 1U).value(),
+      {vertex(0), vertex(1), vertex(2)},
+      {topology_edge(0, 1), topology_edge(1, 2), topology_edge(2, 0)},
+      SourceComponentId::from_index(0, 1U).value(),
+      TopologyRegionId::from_index(0, 1U).value()});
+  for (int i = 0; i < 3; ++i) topology.incidentFacesByVertex[vertex(i)] = {face};
+  const auto singularity = FieldSingularityId::from_index(0, 1U).value();
+  const std::vector<FieldAlignedSingularityPort> ports{
+      {SingularityPortId::from_index(0, 1U).value(), singularity, node(0),
+       vertex(0), SourceComponentId::from_index(0, 1U).value(),
+       TopologyRegionId::from_index(0, 1U).value(), 1, 0}};
+  const std::vector<GlobalTopologyArc> arcs{
+      {arc(0), GlobalTopologyArcKind::Trace, node(1), node(2)},
+      {arc(1), GlobalTopologyArcKind::Trace, node(2), node(3)},
+      {arc(2), GlobalTopologyArcKind::Trace, node(3), node(1)}};
+  std::map<NetworkArcId, const GlobalTopologyArc *> arcById;
+  for (const auto &value : arcs) arcById.emplace(value.id, &value);
+  const GlobalTopologyRegion region{NetworkRegionId::from_index(0, 1U).value(),
+      {{arc(0), Orientation::Forward}, {arc(1), Orientation::Forward},
+       {arc(2), Orientation::Forward}}, {face}};
+  // The region always names the same source face. Only its certified corner
+  // owner changes. The singular node is absent from the closed boundary.
+  const corners::FragmentCornerIncidence incidence{
+      {face, {{0U, {vertex(1), vertex(2)}}, {1U, {vertex(0)}}, {2U, {}}}}};
+  const auto positive = corners::region_corner_vertices(topology, region, 0U, incidence);
+  const auto *noncorner = std::get_if<std::set<SourceVertexId>>(&positive);
+  ASSERT_NE(nullptr, noncorner);
+  EXPECT_EQ((std::set<SourceVertexId>{vertex(1), vertex(2)}), *noncorner);
+  const auto allowed = corners::validate_region_interior_singularities(
+      ports, region, arcById, *noncorner);
+  const auto *boundary = std::get_if<std::vector<FieldSingularityId>>(&allowed);
+  ASSERT_NE(nullptr, boundary);
+  EXPECT_TRUE(boundary->empty());
+  const auto negative = corners::region_corner_vertices(topology, region, 1U, incidence);
+  const auto *owned = std::get_if<std::set<SourceVertexId>>(&negative);
+  ASSERT_NE(nullptr, owned);
+  EXPECT_EQ((std::set<SourceVertexId>{vertex(0)}), *owned);
+  const auto denied = corners::validate_region_interior_singularities(
+      ports, region, arcById, *owned);
+  const auto *failure = std::get_if<GlobalTopologyPlanError>(&denied);
+  ASSERT_NE(nullptr, failure);
+  EXPECT_EQ(GlobalTopologyPlanErrorCode::RegionContainsInteriorSingularity, failure->code);
+  EXPECT_EQ(region.id, failure->region);
+  EXPECT_EQ(singularity, failure->singularity);
+  EXPECT_EQ(vertex(0), failure->sourceVertex);
+  const auto strip = corners::region_corner_vertices(topology, region, 2U, incidence);
+  const auto *stripVertices = std::get_if<std::set<SourceVertexId>>(&strip);
+  ASSERT_NE(nullptr, stripVertices);
+  EXPECT_TRUE(stripVertices->empty());
+  EXPECT_TRUE(std::holds_alternative<std::vector<FieldSingularityId>>(
+      corners::validate_region_interior_singularities(ports, region, arcById,
+                                                       *stripVertices)));
+  auto boundaryPorts = ports;
+  boundaryPorts.front().node = node(1);
+  const auto onBoundary = corners::validate_region_interior_singularities(
+      boundaryPorts, region, arcById, *owned);
+  const auto *boundaryIds = std::get_if<std::vector<FieldSingularityId>>(&onBoundary);
+  ASSERT_NE(nullptr, boundaryIds);
+  EXPECT_EQ((std::vector<FieldSingularityId>{singularity}), *boundaryIds);
+  const auto uncut = corners::region_corner_vertices(topology, region, 0U, {});
+  const auto *uncutVertices = std::get_if<std::set<SourceVertexId>>(&uncut);
+  ASSERT_NE(nullptr, uncutVertices);
+  EXPECT_EQ((std::set<SourceVertexId>{vertex(0), vertex(1), vertex(2)}),
+            *uncutVertices);
+  const auto missing = corners::region_corner_vertices(topology, region, 3U, incidence);
+  const auto *missingFailure = std::get_if<GlobalTopologyPlanError>(&missing);
+  ASSERT_NE(nullptr, missingFailure);
+  EXPECT_EQ(GlobalTopologyPlanErrorCode::RegionSourceFaceOwningFragmentMissing,
+            missingFailure->code);
+  EXPECT_EQ(face, missingFailure->sourceFace);
+  EXPECT_EQ(3U, missingFailure->regionOwningFragmentOrbit);
+  EXPECT_EQ((std::vector<std::size_t>{0U, 1U, 2U}),
+            missingFailure->regionOwningFragmentOrbitIds);
+  EXPECT_EQ(false, missingFailure->regionOwningFragmentOrbitPresent);
 }

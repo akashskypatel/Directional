@@ -10,6 +10,7 @@
 #include "CertifiedSourceFaceOwnerConsistency.h"
 #include "EmbeddedGraphTopology.h"
 #include "ArcFaceVisits.h"
+#include "RegionCornerOwnership.h"
 
 #include <algorithm>
 #include <array>
@@ -450,9 +451,6 @@ std::vector<std::size_t> mandatory_arc_indices(
   return result;
 }
 
-using FragmentCornerIncidence =
-    std::map<authority::SourceFaceTopologyKey,
-             std::map<std::size_t, std::set<authority::SourceVertexId>>>;
 using FragmentCornerBuildResult =
     std::variant<FragmentCornerIncidence, GlobalTopologyPlanError>;
 
@@ -1764,69 +1762,6 @@ std::optional<GlobalTopologyPlanError> validate_single_boundary_walk(
 using RegionCertificateBuildResult =
     std::variant<GlobalTopologyRegionDiscCertificate, GlobalTopologyPlanError>;
 
-using RegionSingularityValidationResult =
-    std::variant<std::vector<authority::FieldSingularityId>,
-                 GlobalTopologyPlanError>;
-
-RegionSingularityValidationResult validate_region_interior_singularities(
-    const SourceTopologyIndex &topology,
-    const FieldAlignedCurveNetwork &network,
-    const GlobalTopologyRegion &region,
-    const std::map<authority::NetworkArcId, const GlobalTopologyArc *> &arcById) {
-  std::set<authority::NetworkNodeId> boundaryNodes;
-  for (const auto incidence : region.boundary) {
-    const auto found = arcById.find(incidence.arc);
-    if (found == arcById.end()) {
-      GlobalTopologyPlanError failure =
-          error(GlobalTopologyPlanErrorCode::RegionBoundaryArcNotOwnedByNetwork);
-      failure.region = region.id;
-      failure.arc = incidence.arc;
-      return failure;
-    }
-    const auto nodes = oriented_arc_nodes(*found->second, incidence.orientation);
-    boundaryNodes.insert(nodes.first);
-    boundaryNodes.insert(nodes.second);
-  }
-
-  const std::set<authority::SourceFaceTopologyKey> regionFaces(
-      region.sourceFaces.begin(), region.sourceFaces.end());
-  std::map<authority::SourceVertexId, authority::FieldSingularityId>
-      singularityAtVertex;
-  for (const auto &port : network.singularity_ports()) {
-    singularityAtVertex.emplace(port.sourceVertex, port.singularity);
-  }
-
-  std::vector<authority::FieldSingularityId> boundarySingularities;
-  for (const auto &[sourceVertex, singularity] : singularityAtVertex) {
-    const auto incident = topology.incidentFacesByVertex.find(sourceVertex);
-    if (incident == topology.incidentFacesByVertex.end()) continue;
-    const bool reachesRegion = std::any_of(
-        incident->second.begin(), incident->second.end(),
-        [&](const auto &face) { return regionFaces.count(face) != 0U; });
-    if (!reachesRegion) continue;
-    const bool onBoundary = std::any_of(
-        network.singularity_ports().begin(), network.singularity_ports().end(),
-        [&](const auto &port) {
-          return port.singularity == singularity &&
-                 boundaryNodes.count(port.node) != 0U;
-        });
-    if (!onBoundary) {
-      GlobalTopologyPlanError failure =
-          error(GlobalTopologyPlanErrorCode::RegionContainsInteriorSingularity);
-      failure.region = region.id;
-      failure.singularity = singularity;
-      failure.sourceVertex = sourceVertex;
-      return failure;
-    }
-    boundarySingularities.push_back(singularity);
-  }
-  std::sort(boundarySingularities.begin(), boundarySingularities.end());
-  boundarySingularities.erase(
-      std::unique(boundarySingularities.begin(), boundarySingularities.end()),
-      boundarySingularities.end());
-  return boundarySingularities;
-}
-
 struct RegionSupportProjectionDiagnostics {
   bool sourceFacesConnected = false;
   std::size_t interiorVertexCount = 0U;
@@ -1974,6 +1909,7 @@ RegionCertificateBuildResult build_region_certificate(
     const std::map<authority::NetworkNodeId, NodeLocus> &nodeLoci,
     std::vector<authority::FieldSingularityId> boundarySingularities,
     const FragmentCornerIncidence &fragmentCorners,
+    const std::set<authority::SourceVertexId> &candidateVertices,
     const std::map<authority::SourceFaceTopologyKey, std::size_t>
         *tracePieceCounts,
     const bool emitEulerDiagnostics,
@@ -2175,7 +2111,6 @@ RegionCertificateBuildResult build_region_certificate(
     meshBoundaryVertices.insert(sourceEdge.second());
   }
 
-  std::set<authority::SourceVertexId> candidateVertices;
   std::set<authority::SourceVertexId> interiorVertices;
   std::set<authority::SourceVertexId> submeshVertices;
   std::set<authority::SourceEdgeTopologyKey> submeshEdges;
@@ -2193,33 +2128,6 @@ RegionCertificateBuildResult build_region_certificate(
     submeshVertices.insert(face->second.vertices.begin(),
                            face->second.vertices.end());
     submeshEdges.insert(face->second.edges.begin(), face->second.edges.end());
-    const auto cutFace = fragmentCorners.find(faceKey);
-    if (cutFace == fragmentCorners.end()) {
-      candidateVertices.insert(face->second.vertices.begin(),
-                               face->second.vertices.end());
-      continue;
-    }
-    const auto fragment = cutFace->second.find(owningOrbit);
-    if (fragment == cutFace->second.end()) {
-      GlobalTopologyPlanError failure =
-          error(GlobalTopologyPlanErrorCode::RegionSourceFaceOwningFragmentMissing);
-      failure.region = region.id;
-      failure.sourceFace = faceKey;
-      failure.regionOwningFragmentOrbit = owningOrbit;
-      failure.regionOwningFragmentOrbitIds.reserve(cutFace->second.size());
-      for (const auto &[orbit, corners] : cutFace->second) {
-        (void)corners;
-        failure.regionOwningFragmentOrbitIds.push_back(orbit);
-      }
-      failure.regionOwningFragmentOrbitCount =
-          failure.regionOwningFragmentOrbitIds.size();
-      failure.regionOwningFragmentOrbitPresent =
-          std::binary_search(failure.regionOwningFragmentOrbitIds.begin(),
-                             failure.regionOwningFragmentOrbitIds.end(),
-                             owningOrbit);
-      return failure;
-    }
-    candidateVertices.insert(fragment->second.begin(), fragment->second.end());
   }
 
   for (const authority::SourceVertexId vertex : candidateVertices) {
@@ -2349,6 +2257,33 @@ using RegionCertificatesBuildResult =
     std::variant<std::vector<GlobalTopologyRegionDiscCertificate>,
                  GlobalTopologyPlanError>;
 
+// A validation candidate can claim the union of the complete partition. Its
+// exterior arc census is exact, but the union is not an individual region.
+// Retain the interior-singularity diagnostic for this invalid claim only.
+bool claims_complete_partition_union(
+    const GlobalTopologyRegion &region,
+    const std::vector<GlobalTopologyRegion> &partition) {
+  std::set<authority::SourceFaceTopologyKey> faces;
+  std::map<authority::NetworkArcId, std::size_t> arcCounts;
+  for (const auto &part : partition) {
+    faces.insert(part.sourceFaces.begin(), part.sourceFaces.end());
+    for (const auto &incidence : part.boundary) ++arcCounts[incidence.arc];
+  }
+  if (region.sourceFaces.size() != faces.size() ||
+      !std::equal(region.sourceFaces.begin(), region.sourceFaces.end(),
+                  faces.begin())) return false;
+  std::set<authority::NetworkArcId> exterior;
+  for (const auto &[arc, count] : arcCounts) {
+    if (count == 1U) exterior.insert(arc);
+    else if (count != 2U) return false;
+  }
+  std::set<authority::NetworkArcId> boundary;
+  for (const auto &incidence : region.boundary) {
+    if (!boundary.insert(incidence.arc).second) return false;
+  }
+  return boundary == exterior;
+}
+
 RegionCertificatesBuildResult build_region_certificates(
     const SourceTopologyIndex &topology,
     const FieldAlignedCurveNetwork &network,
@@ -2364,7 +2299,8 @@ RegionCertificatesBuildResult build_region_certificates(
     const std::map<authority::SourceFaceTopologyKey, std::set<std::size_t>>
         &fragmentOrbits,
     const bool emitEulerDiagnostics,
-    const FragmentDiagnosticEvidence *diagnostics) {
+    const FragmentDiagnosticEvidence *diagnostics,
+    const std::vector<GlobalTopologyRegion> *validationPartition = nullptr) {
   const NodeLocusResult locusBuild = build_node_loci(network, cutNodes);
   if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&locusBuild)) {
     return *failure;
@@ -2391,12 +2327,6 @@ RegionCertificatesBuildResult build_region_certificates(
   std::vector<GlobalTopologyRegionDiscCertificate> certificates;
   certificates.reserve(regions.size());
   for (const auto &region : regions) {
-    const auto singularities = validate_region_interior_singularities(
-        topology, network, region, arcById);
-    if (const auto *failure =
-            std::get_if<GlobalTopologyPlanError>(&singularities)) {
-      return *failure;
-    }
     const auto orbit = region_orbit(region, walk);
     const RegionBoundaryProvenance boundaryProvenance =
         orbit.has_value() ? RegionBoundaryProvenance::FaceWalkOrbit
@@ -2416,16 +2346,62 @@ RegionCertificatesBuildResult build_region_certificates(
           }
           return failure;
         };
+    if (validationPartition != nullptr && regions.size() == 1U &&
+        validationPartition->size() > 1U &&
+        claims_complete_partition_union(region, *validationPartition)) {
+      std::set<authority::SourceVertexId> unionVertices;
+      for (const auto &part : *validationPartition) {
+        const auto partOrbit = region_orbit(part, walk);
+        if (!partOrbit.has_value()) {
+          GlobalTopologyPlanError failure = rotation_error(
+              RotationSystemInconsistencyReason::RegionOrbitMissing);
+          failure.region = part.id;
+          return annotate_boundary_walk_evidence(std::move(failure));
+        }
+        const auto corners = region_corner_vertices(
+            topology, part, *partOrbit, fragmentCorners);
+        if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&corners)) {
+          return annotate_boundary_walk_evidence(*failure);
+        }
+        const auto &vertices =
+            std::get<std::set<authority::SourceVertexId>>(corners);
+        unionVertices.insert(vertices.begin(), vertices.end());
+      }
+      const auto singularities = validate_region_interior_singularities(
+          network.singularity_ports(), region, arcById, unionVertices);
+      if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&singularities)) {
+        return annotate_boundary_walk_evidence(*failure);
+      }
+      // The complete partition union is not a valid individual orbit, even
+      // when it contains no interior singularity.
+      GlobalTopologyPlanError failure =
+          rotation_error(RotationSystemInconsistencyReason::RegionOrbitMissing);
+      failure.region = region.id;
+      return annotate_boundary_walk_evidence(std::move(failure));
+    }
     if (!orbit.has_value()) {
       GlobalTopologyPlanError failure =
           rotation_error(RotationSystemInconsistencyReason::RegionOrbitMissing);
       failure.region = region.id;
       return annotate_boundary_walk_evidence(std::move(failure));
     }
+    const auto corners = region_corner_vertices(topology, region, *orbit,
+                                                fragmentCorners);
+    if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&corners)) {
+      return annotate_boundary_walk_evidence(*failure);
+    }
+    const auto &candidateVertices =
+        std::get<std::set<authority::SourceVertexId>>(corners);
+    const auto singularities = validate_region_interior_singularities(
+        network.singularity_ports(), region, arcById, candidateVertices);
+    if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&singularities)) {
+      return annotate_boundary_walk_evidence(*failure);
+    }
     const auto built = build_region_certificate(
         topology, network, cutGraph, region, *orbit, arcById, nodeLoci,
         std::get<std::vector<authority::FieldSingularityId>>(singularities),
-        fragmentCorners, tracePieceCounts, emitEulerDiagnostics, diagnostics);
+        fragmentCorners, candidateVertices, tracePieceCounts,
+        emitEulerDiagnostics, diagnostics);
     if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&built)) {
       return annotate_boundary_walk_evidence(*failure);
     }
@@ -2863,7 +2839,8 @@ std::optional<GlobalTopologyPlanError> validate_candidate_structure(
           std::get<CutNodeBindings>(validationCutNodes), candidate.arcs,
           std::get<FaceWalkResult>(validationFaceWalk), candidate.regions,
           nullptr, validationEvidence.arcVisits,
-          validationEvidence.fragmentOrbits, false, nullptr);
+          validationEvidence.fragmentOrbits, false, nullptr,
+          &validationEvidence.regions);
   if (const auto *failure =
           std::get_if<GlobalTopologyPlanError>(&certificateBuild)) {
     return *failure;
