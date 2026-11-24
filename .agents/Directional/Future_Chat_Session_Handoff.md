@@ -41,15 +41,18 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 ## Mandatory next turn
 
 - **COMPLETE:** [TB-REV-181 independent review](Architecture_M6_CP3_TB_REV_181_Region_Corner_Ownership_Independent_Review_20261124.md): TB181 accepted, K6 closed, row979 remains unclassified.
+- **COMPLETE:** [TB-REV-181 adversarial](Architecture_M6_CP3_TB_REV_181_Adversarial_Review_20261124.md): CB-202 upheld unamended — syntax 0 errors/no new warnings (O1); TB181 census: plan codes only in row979 (O2); union branch = bounded debt D-U (O3); certificate digest risk caught by STOP (O4).
 
 ```text
 NEXT_TURN: M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH
 Owner: Code + Build only, eight GMP/GMPXX targets, runtimeExecution=false
-Authority: gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md
-  exact proposed diff Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact.diff; SHA-256 26ec484d0434afd3f0376661e945bdbd73d1c9a1fc206e7b589be34bb3ba5332
-  semantic preimage b9d79c4d9e951cab787d3bfdc3b8f20aaf7195c3; exact three preimages/postimages
-  build only; new guard and row979 receipt frozen. Separate TB182 then TB-REV-182.
-Do not: execute runtime, broaden diff, activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
+Authority: gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md; TB-REV-181 independent + Architecture_M6_CP3_TB_REV_181_Adversarial_Review_20261124.md (O1 compile verified, O2 census)
+  exact proposed diff Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact.diff; SHA-256 26ec484d0434afd3f0376661e945bdbd73d1c9a1fc206e7b589be34bb3ba5332 (25159 B, 3 paths, +297/-105)
+  semantic preimage b9d79c4d9e951cab787d3bfdc3b8f20aaf7195c3; GlobalTopologyPlan.cpp 44395316... -> 37b7cd52...; RegionCornerOwnership.h ABSENT -> c5d376fe...; tests af320470... -> 9f08edd7...
+  build only; new guard (row1004) and row979 region= receipt frozen
+Then: M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE (manifest d778afbe65e181391116a67ada06f4482e9786917ca58dd2a17f7b7459d8ca5f, 1004+81=1085; expect 1004/1004 PASS; vs TB181 14967943314 under N1-N3 only row979 raw receipt + row1004 may differ; no line moves; anything else STOP) -> M6-CP3-TB-REV-182 (classify row979: built -> Branch A activation CB; new error -> one exact receipt/correction; still RegionContainsInteriorSingularity -> A2a node1 + D-U removal)
+On failure: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
+Do not: execute runtime, broaden diff, edit row355 or any existing assertion, activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190
 ```
 
 ## Turn Sequence
@@ -62,9 +65,10 @@ Do not: execute runtime, broaden diff, activate Branch A, promote CP3/497/D0/H4 
 | COMPLETE | CB-200 → TB-EXEC-180 → TB-REV-180 | [TB180 report](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc) 1003/1003; [independent](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc) + [adversarial](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc) reviews. |
 | COMPLETE | `M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE` | [Build record](Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Code_Build_Record_20261124.md); compile only. |
 | COMPLETE | `M6-CP3-TB-EXEC-181-P13-TRACE-SEGMENT-NAMESPACE-FULL-GATE` | 1003 rows N1–N3-equal to TB180; zero material differences. |
-| COMPLETE | `M6-CP3-TB-REV-181` | K6 closed; CB-202 frozen per [TB-REV-180 adv.](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc) requirements 1–6. |
+| COMPLETE | `M6-CP3-TB-REV-181` | Independent + [adversarial](Architecture_M6_CP3_TB_REV_181_Adversarial_Review_20261124.md); K6 closed; CB-202 frozen per [TB-REV-180 adv.](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc) requirements 1–6. |
 | **1 NEXT ONLY** | `M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH` | [Exact manifest](gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md); compile only. |
-| 4 | TB-EXEC-182 → TB-REV-182 | 1004 cases, only row979 and new guard may differ; classify the earliest failure before any Branch A activation. |
+| 2 | TB-EXEC-182 | 1004 cases (`d778afbe…a5ca`), only row979 receipt + row1004 may differ under N1–N3; else STOP. |
+| 3 | TB-REV-182 | Classify row979 by `region=`/outcome: (a) built → Branch A activation CB (4A); (b) new earliest error → one exact receipt/correction; (c) still interior singularity → A2a node1 + remove D-U ([adv. O3](Architecture_M6_CP3_TB_REV_181_Adversarial_Review_20261124.md)). |
 | 4A | Branch A (only after the staged plan builds): activation CB → TB (BunnyRandom census, V5) → parameter-deletion CB → V3b → R1 → O48 | Activation = single-source default (V11) + exact premise rows 393/648/858/971/972/978 only. |
 | 5 | CB-190 | S4/S6/S7 diagnostic conformity plus W6 obsolete-code comments (off critical path). |
 | Withdrawn | prose CB-200 plan + C4 assertion (TB-REV-179 adv. M2); CB-199A `4f458361…` (TB-REV-177 adv. J4); prose CB-198 (176 H1); prose CB-197A/196/195/193/187/186/183/180/178/175/173, CB-194, CB-191, DEFN-161A/159A, CB-185 v1, activation-before-plan — see TB-REV-162…177 adversarial records | — |
