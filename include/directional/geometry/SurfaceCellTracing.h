@@ -477,6 +477,8 @@ struct FieldAlignedCandidateTrace {
   std::optional<authority::FieldSingularityId> terminalSingularity;
   std::optional<FieldAlignedTerminalContact> terminalContact;
   std::optional<FieldAlignedLimitCycleTermination> terminalLimitCycle;
+  // The opposite departure port owned by this arrival after exact retrace selection.
+  std::optional<authority::SingularityPortId> arrivalPort;
 
   auto operator<=>(const FieldAlignedCandidateTrace &) const = default;
 };

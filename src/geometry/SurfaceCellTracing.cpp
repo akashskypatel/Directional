@@ -3,6 +3,8 @@
 #include <directional/geometry/GlobalConformityBaseline.h>
 #include <directional/geometry/GlobalTopologyPlan.h>
 
+#include "RetracedTraceReferences.h"
+
 #include <directional/authority/CanonicalRoute.h>
 #include <directional/authority/GridAutomorphism.h>
 #include <directional/core/TriMesh.h>
@@ -4283,6 +4285,96 @@ std::optional<FieldAlignedCurveNetworkError> field_aligned_publish_contact(
   return std::nullopt;
 }
 
+// Only reciprocal singularity arrivals can own a removed departure port.
+// Read exact paths in port order, within the same topology region. The
+// published candidate changes only if every selected pair can be remapped.
+std::optional<FieldAlignedCurveNetworkError>
+field_aligned_select_retraced_traces(FieldAlignedCurveNetworkCandidate &candidate) {
+  using Group = std::pair<authority::SourceComponentId, authority::TopologyRegionId>;
+  using Pair = std::pair<authority::TraceId, authority::TraceId>;
+  std::map<Group, std::vector<std::size_t>> groups;
+  for (std::size_t i = 0U; i < candidate.candidateTraces.size(); ++i) {
+    const auto &trace = candidate.candidateTraces[i];
+    if (trace.terminalSingularity.has_value()) {
+      groups[{trace.sourceComponent, trace.sourceTopologyRegion}].push_back(i);
+    }
+  }
+  std::vector<Pair> selected;
+  for (auto &[group, indices] : groups) {
+    (void)group;
+    std::sort(indices.begin(), indices.end(), [&](std::size_t a, std::size_t b) {
+      return candidate.candidateTraces[a].port < candidate.candidateTraces[b].port;
+    });
+    std::vector<authority::ExactSourcePath> paths;
+    paths.reserve(indices.size());
+    for (const auto index : indices) {
+      const auto &trace = candidate.candidateTraces[index];
+      authority::ExactSourcePath path;
+      for (std::size_t segment = 0U; segment < trace.segments.size(); ++segment) {
+        const auto pieces = embedded_graph_topology_detail::exact_trace_segment_pieces(
+            trace, segment);
+        if (!pieces || pieces->empty() ||
+            (!path.empty() && path.back().second != pieces->front().first)) {
+          return field_aligned_error(
+              FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+              trace.sourceVertex, std::nullopt, std::nullopt, trace.singularity);
+        }
+        path.insert(path.end(), pieces->begin(), pieces->end());
+      }
+      if (path.empty() || !trace.terminalPoint ||
+          path.front().first != authority::ExactSourcePoint{trace.sourceVertex} ||
+          authority::canonical_exact_source_boundary_point(*trace.terminalPoint) !=
+              std::optional<authority::ExactSourcePoint>{path.back().second}) {
+        return field_aligned_error(
+            FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+            trace.sourceVertex, std::nullopt, std::nullopt, trace.singularity);
+      }
+      paths.push_back(std::move(path));
+    }
+    for (const auto &pair : authority::exact_source_retraced_traces(paths)) {
+      selected.emplace_back(candidate.candidateTraces[indices[pair.kept]].id,
+                            candidate.candidateTraces[indices[pair.removed]].id);
+    }
+  }
+  if (selected.empty()) return std::nullopt;
+  std::sort(selected.begin(), selected.end());
+  std::set<authority::TraceId> used;
+  for (const auto &[kept, removed] : selected) {
+    if (!used.insert(kept).second || !used.insert(removed).second) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding);
+    }
+  }
+  auto transaction = candidate;
+  for (const auto &[kept, removed] : selected) {
+    auto remapped = remap_retraced_trace_references(transaction, kept, removed);
+    if (!remapped) {
+      const auto trace = std::find_if(
+          transaction.candidateTraces.begin(), transaction.candidateTraces.end(),
+          [&](const auto &value) { return value.id == kept; });
+      if (trace == transaction.candidateTraces.end()) {
+        return field_aligned_error(
+            FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding);
+      }
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
+          trace->sourceVertex, std::nullopt, std::nullopt, trace->singularity);
+    }
+    auto &traces = remapped->candidate.candidateTraces;
+    const auto arrival = std::find_if(traces.begin(), traces.end(), [&](const auto &trace) {
+      return trace.id == remapped->arrivalTrace;
+    });
+    if (arrival == traces.end() || arrival->arrivalPort) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding);
+    }
+    arrival->arrivalPort = remapped->arrivalPort;
+    transaction = std::move(remapped->candidate);
+  }
+  candidate = std::move(transaction);
+  return std::nullopt;
+}
+
 std::optional<FieldAlignedCurveNetworkError>
 canonical_field_aligned_traces_and_events(
     const TriMesh &sourceMesh,
@@ -4882,6 +4974,10 @@ canonical_field_aligned_traces_and_events(
           FieldAlignedCurveNetworkErrorCondition::TraceTerminalKindInvalid,
           trace.sourceVertex, trace.singularity);
     }
+  }
+
+  if (const auto error = field_aligned_select_retraced_traces(candidate)) {
+    return *error;
   }
 
   // P13 (RA-262): every slide segment a finished trace keeps, so a gate run
@@ -5615,6 +5711,12 @@ std::uint64_t field_aligned_candidate_digest(
   for (const FieldAlignedCandidateTrace &trace : candidate.candidateTraces) {
     field_aligned_hash_id(hash, trace.id);
     field_aligned_hash_id(hash, trace.port);
+    if (trace.arrivalPort) {
+      constexpr std::uint64_t kArrivalPortHashDomain =
+          0x4152524956504f52ULL; // "ARRIVPOR"
+      field_aligned_hash_consume(hash, kArrivalPortHashDomain);
+      field_aligned_hash_id(hash, *trace.arrivalPort);
+    }
     field_aligned_hash_id(hash, trace.singularity);
     field_aligned_hash_id(hash, trace.sourceVertex);
     field_aligned_hash_id(hash, trace.sourceComponent);
@@ -5838,6 +5940,7 @@ std::optional<FieldAlignedCurveNetworkError> validate_field_aligned_candidate(
     const FieldAlignedCandidateTrace &actual = candidate.candidateTraces[index];
     const FieldAlignedCandidateTrace &wanted = expected.candidateTraces[index];
     if (actual.id != wanted.id || actual.port != wanted.port ||
+        actual.arrivalPort != wanted.arrivalPort ||
         actual.singularity != wanted.singularity ||
         actual.sourceVertex != wanted.sourceVertex ||
         actual.sourceComponent != wanted.sourceComponent ||

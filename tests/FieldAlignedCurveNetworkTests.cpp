@@ -23587,3 +23587,70 @@ TEST(RetracedTraceReferences, RemapsExactStruckSegmentAndEndpointPortWithoutPubl
   EXPECT_EQ(original.candidateTraces, input.candidateTraces);
   EXPECT_EQ(original.events, input.events);
 }
+
+TEST(FieldAlignedCurveNetwork, MechanicalRetracesPublishBothPortsBeforeTopologyReaders) {
+  const auto &fixture = cp4c_mechanical_atlas_fixture();
+  ASSERT_TRUE(fixture.sourceAuthority);
+  ASSERT_TRUE(fixture.atlas);
+  ASSERT_TRUE(fixture.network) << fixture.terminalFailureCode << '/'
+                               << fixture.terminalFailureDetailCode;
+  const auto &network = *fixture.network;
+  const std::map<std::size_t, std::size_t> expected{{0U, 3U}, {2U, 8U},
+                                                    {4U, 11U}, {7U, 9U}};
+  std::map<std::size_t, std::size_t> arrivals;
+  std::map<directional::authority::SingularityPortId, std::size_t> owners;
+  std::set<directional::authority::TraceId> traceIds;
+  for (const auto &trace : network.candidate_traces()) {
+    ASSERT_TRUE(traceIds.insert(trace.id).second);
+    ++owners[trace.port];
+    if (trace.arrivalPort) {
+      ++owners[*trace.arrivalPort];
+      arrivals.emplace(trace.id.index(), trace.arrivalPort->index());
+      const auto port = std::find_if(network.singularity_ports().begin(),
+          network.singularity_ports().end(), [&](const auto &value) {
+            return value.id == *trace.arrivalPort;
+          });
+      ASSERT_NE(port, network.singularity_ports().end());
+      EXPECT_EQ(trace.terminalSingularity, port->singularity);
+    }
+  }
+  EXPECT_EQ(expected, arrivals);
+  EXPECT_EQ(8U, network.candidate_traces().size());
+  for (const auto &trace : network.candidate_traces()) {
+    EXPECT_EQ(trace.id.index(), trace.port.index());
+    EXPECT_NE(3U, trace.id.index());
+    EXPECT_NE(8U, trace.id.index());
+    EXPECT_NE(9U, trace.id.index());
+    EXPECT_NE(11U, trace.id.index());
+  }
+  EXPECT_EQ(12U, network.singularity_ports().size());
+  EXPECT_EQ(network.singularity_ports().size(), owners.size());
+  for (const auto &port : network.singularity_ports()) EXPECT_EQ(1U, owners[port.id]);
+  for (const auto &trace : network.candidate_traces()) {
+    if (trace.terminalContact) EXPECT_EQ(1U, traceIds.count(trace.terminalContact->struckTrace));
+  }
+  for (const auto &event : network.events()) {
+    for (const auto &incidence : event.incidences) {
+      const auto trace = std::find_if(network.candidate_traces().begin(),
+          network.candidate_traces().end(), [&](const auto &value) {
+            return value.id == incidence.trace;
+          });
+      ASSERT_NE(trace, network.candidate_traces().end());
+      EXPECT_EQ(trace->port, incidence.sourcePort);
+    }
+  }
+  auto candidate = network.validation_candidate();
+  const auto rebuilt = FieldAlignedCurveNetwork::make_from_candidate(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, fixture.rails, candidate);
+  ASSERT_TRUE(rebuilt);
+  EXPECT_EQ(network.semantic_digest(), rebuilt.value().semantic_digest());
+  const auto arrival = std::find_if(candidate.candidateTraces.begin(),
+      candidate.candidateTraces.end(), [](const auto &trace) { return trace.arrivalPort.has_value(); });
+  ASSERT_NE(arrival, candidate.candidateTraces.end());
+  arrival->arrivalPort.reset();
+  const auto rejected = FieldAlignedCurveNetwork::make_from_candidate(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, fixture.rails, std::move(candidate));
+  ASSERT_FALSE(rejected);
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
+            rejected.error().code);
+}
