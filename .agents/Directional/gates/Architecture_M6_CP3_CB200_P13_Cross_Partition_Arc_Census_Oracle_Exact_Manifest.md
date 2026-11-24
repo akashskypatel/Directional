@@ -2,7 +2,7 @@
 
 **This file is a review artifact. The diff is not applied to live source.**
 
-- **Authority:** [TB-REV-179 adversarial continuation](../Architecture_M6_CP3_TB_REV_179_Adversarial_Review_20261124.md), M1–M4.
+- **Authority:** [TB-REV-179 adversarial continuation](../M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-180-folded-records--2026-11-24-utc), M1–M4.
   - It replaces the prose plan `Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Test_Plan.md`, which is withdrawn (M2).
 - **Patch:** `Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact.diff`.
   - SHA-256 `d4cba179cec0d1971fac3c775b64cf8bb6ffcd913a8c464bb53b9bc0df2ebb26`.

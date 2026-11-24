@@ -863,6 +863,10 @@ TB3 run/job `35470130614 / 105969470184` then executes the exact selector430 as 
 `M1_Full_Required_Green_Selector.txt` — **234** identities, LF SHA-256 `dd8ba17ccf67fd3d184ae87272b97028e1debf70b00eab262c3a2aae812de687`. This is the M1 milestone's full
 selector and is **not** part of the CP4c prefix chain above. It is retained under `M1_Closure_Record.md`.
 
+## Accepted M6 cumulative runtime baseline — not a selector promotion
+
+TB-REV-180 accepts TB180 package `14901170173`, result `14951803089`, source `4c2b4cf16732cddb58252d5e758ea0b24449ed2a`, full gate **1003/1003**, 81 deferred. [`Architecture_M6_TB179_P13_Retraced_Trace_Selection_Full_Gate_Case_Manifest.tsv`](gates/Architecture_M6_TB179_P13_Retraced_Trace_Selection_Full_Gate_Case_Manifest.tsv) SHA-256 `2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724`; header + historical accepted 993 rows `82581dd14064efe3729923cfd94333ef70113b0bb84e6bb8eabfb2ec61cce436`; header + CP2 accepted 491 rows `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`. See [review](Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md). No selector bytes changed; CP3 selector497 and product acceptance remain unpromoted.
+
 ## Regenerating this manifest
 
 Every column is derived. `tools/selector_probe.py` computes counts, LF hashes, prefix relations and appended

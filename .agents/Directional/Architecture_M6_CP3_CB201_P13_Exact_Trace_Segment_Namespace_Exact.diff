@@ -1,0 +1,483 @@
+diff --git a/src/geometry/ArcFaceVisits.h b/src/geometry/ArcFaceVisits.h
+index 1d406ae5ba78108e16153a75b0394c7d04cae882..dbb9e1ceda155a979572c6ac1de5326ab4370324 100644
+--- a/src/geometry/ArcFaceVisits.h
++++ b/src/geometry/ArcFaceVisits.h
+@@ -19,7 +19,7 @@ namespace directional::geometry::detail {
+  * point strictly inside the face. The coordinates must be non-negative and
+  * sum to one. */
+ [[nodiscard]] inline std::optional<FaceBoundaryPosition> face_boundary_position(
+-    const embedded_graph_topology_detail::FaceChartPoint &barycentric) {
++    const exact_trace_segment_detail::FaceChartPoint &barycentric) {
+   std::array<bool, 3> weighted{};
+   std::size_t weightedCount = 0U;
+   for (std::size_t corner = 0U; corner < 3U; ++corner) {
+@@ -113,7 +113,7 @@ using ArcFaceVisitsResult =
+                                              sourcePath)) {
+     return ArcFaceVisitFailure::PieceBinding;
+   }
+-  const auto on_closure = [](const std::optional<embedded::FaceChartPoint> &point) {
++  const auto on_closure = [](const std::optional<exact_trace_segment_detail::FaceChartPoint> &point) {
+     const auto zero = authority::FieldExactRational::from_integer(0);
+     return point.has_value() &&
+            std::none_of(point->begin(), point->end(),
+diff --git a/src/geometry/EmbeddedGraphTopology.cpp b/src/geometry/EmbeddedGraphTopology.cpp
+index 3efe64624b01d7e2fbad11631c943876e49e80a8..168a04c3ae84291287c4ec8b2e49011a57679897 100644
+--- a/src/geometry/EmbeddedGraphTopology.cpp
++++ b/src/geometry/EmbeddedGraphTopology.cpp
+@@ -307,7 +307,7 @@ std::optional<authority::ExactSourcePath> exact_trace_path(
+     const auto &segment = trace.segments[segmentIndex];
+     const auto first = authority::canonical_exact_source_boundary_point(
+         segment.entryPoint);
+-    const auto second = exact_trace_segment_end(trace, segmentIndex);
++    const auto second = exact_trace_segment_detail::exact_trace_segment_end(trace, segmentIndex);
+     if (!first.has_value() || !second.has_value()) return std::nullopt;
+     path.push_back(authority::ExactSourceSupportPiece{
+         authority::SourceFaceInteriorSupport{segment.sourceFace}, *first,
+@@ -626,8 +626,8 @@ MandatoryEdgeSplit split_mandatory_edge_at_terminals(
+   return pieces;
+ }
+
+-int face_chart_orientation(const FaceChartPoint &a, const FaceChartPoint &b,
+-                           const FaceChartPoint &c) {
++int face_chart_orientation(const exact_trace_segment_detail::FaceChartPoint &a, const exact_trace_segment_detail::FaceChartPoint &b,
++                           const exact_trace_segment_detail::FaceChartPoint &c) {
+   const authority::FieldExactRational determinant =
+       a[0] * (b[1] * c[2] - b[2] * c[1]) - a[1] * (b[0] * c[2] - b[2] * c[0]) +
+       a[2] * (b[0] * c[1] - b[1] * c[0]);
+@@ -638,8 +638,8 @@ int face_chart_orientation(const FaceChartPoint &a, const FaceChartPoint &b,
+ }
+
+ std::optional<std::vector<std::size_t>> face_chart_counter_clockwise_ray_order(
+-    const FaceChartPoint &origin, const std::vector<FaceChartPoint> &targets) {
+-  for (const FaceChartPoint &target : targets) {
++    const exact_trace_segment_detail::FaceChartPoint &origin, const std::vector<exact_trace_segment_detail::FaceChartPoint> &targets) {
++  for (const exact_trace_segment_detail::FaceChartPoint &target : targets) {
+     if (target == origin) return std::nullopt;
+   }
+   std::vector<std::size_t> order(targets.size());
+@@ -651,8 +651,8 @@ std::optional<std::vector<std::size_t>> face_chart_counter_clockwise_ray_order(
+   // clockwise half. Two collinear rays leave in the same direction exactly
+   // when the second displacement is a positive multiple of the first.
+   const auto zero = authority::FieldExactRational::from_integer(0);
+-  const auto same_direction = [&](const FaceChartPoint &first,
+-                                  const FaceChartPoint &second) {
++  const auto same_direction = [&](const exact_trace_segment_detail::FaceChartPoint &first,
++                                  const exact_trace_segment_detail::FaceChartPoint &second) {
+     for (std::size_t index = 0U; index < 3U; ++index) {
+       const authority::FieldExactRational step = first[index] - origin[index];
+       if (step.is_zero()) continue;
+@@ -763,20 +763,20 @@ GlobalTopologyPlanError face_contact_error(
+
+ } // namespace
+
+-std::optional<FaceChartPoint> trace_segment_canonical_entry(
++std::optional<exact_trace_segment_detail::FaceChartPoint> trace_segment_canonical_entry(
+     const FieldAlignedCandidateTrace &trace, const std::size_t segment) {
+   if (segment >= trace.segments.size()) return std::nullopt;
+-  return canonical_boundary_barycentric(trace.segments[segment].sourceFace,
++  return exact_trace_segment_detail::canonical_boundary_barycentric(trace.segments[segment].sourceFace,
+                                         trace.segments[segment].entryPoint);
+ }
+
+-std::optional<FaceChartPoint> trace_segment_canonical_exit(
++std::optional<exact_trace_segment_detail::FaceChartPoint> trace_segment_canonical_exit(
+     const FieldAlignedCandidateTrace &trace, const std::size_t segment) {
+   if (segment >= trace.segments.size()) return std::nullopt;
+   const FieldAlignedCandidateTraceSegment &current = trace.segments[segment];
+   if (current.edgeTransitExit.has_value()) return std::nullopt;
+   if (segment + 1U < trace.segments.size()) {
+-    return canonical_boundary_barycentric(
++    return exact_trace_segment_detail::canonical_boundary_barycentric(
+         current.sourceFace, trace.segments[segment + 1U].entryPoint);
+   }
+   if (trace.terminalContact.has_value()) {
+@@ -786,7 +786,7 @@ std::optional<FaceChartPoint> trace_segment_canonical_exit(
+     return trace.terminalContact->barycentric;
+   }
+   if (trace.terminalPoint.has_value()) {
+-    return canonical_boundary_barycentric(current.sourceFace,
++    return exact_trace_segment_detail::canonical_boundary_barycentric(current.sourceFace,
+                                           *trace.terminalPoint);
+   }
+   return std::nullopt;
+@@ -870,11 +870,11 @@ bool carrier_contact_is_mutual(const FieldAlignedCandidateTrace &ending,
+
+ std::optional<authority::FieldExactRational> trace_segment_contact_parameter(
+     const FieldAlignedCandidateTrace &trace, const std::size_t segment,
+-    const FaceChartPoint &point) {
++    const exact_trace_segment_detail::FaceChartPoint &point) {
+   const auto entry = trace_segment_canonical_entry(trace, segment);
+   const auto exit = trace_segment_canonical_exit(trace, segment);
+   if (!entry.has_value() || !exit.has_value()) return std::nullopt;
+-  return face_chart_segment_parameter(*entry, *exit, point);
++  return exact_trace_segment_detail::face_chart_segment_parameter(*entry, *exit, point);
+ }
+
+ std::pair<std::size_t, std::size_t> trace_cut_segment_range(
+@@ -894,7 +894,7 @@ static std::optional<authority::ExactSourcePoint> exact_trace_interior_point(
+       !(t < one)) {
+     return std::nullopt;
+   }
+-  FaceChartPoint point = *entry;
++  exact_trace_segment_detail::FaceChartPoint point = *entry;
+   for (std::size_t index = 0U; index < 3U; ++index) {
+     point[index] = (*entry)[index] + t * ((*exit)[index] - (*entry)[index]);
+   }
+@@ -940,7 +940,7 @@ std::optional<authority::ExactSourcePath> exact_trace_path_between(
+                   segment.entryPoint);
+     const auto finish = segmentIndex + 1U == end && second.parameter.has_value()
+                             ? exact_trace_interior_point(trace, second)
+-                            : exact_trace_segment_end(trace, segmentIndex);
++                            : exact_trace_segment_detail::exact_trace_segment_end(trace, segmentIndex);
+     if (!start.has_value() || !finish.has_value()) return std::nullopt;
+     path.push_back(authority::ExactSourceSupportPiece{
+         authority::SourceFaceInteriorSupport{segment.sourceFace}, *start,
+@@ -960,7 +960,7 @@ std::optional<authority::ExactSourcePath> exact_trace_piece_path_between(
+   authority::ExactSourcePath path;
+   std::vector<std::size_t> counts;
+   for (std::size_t segmentIndex = begin; segmentIndex < end; ++segmentIndex) {
+-    auto pieces = exact_trace_segment_pieces(trace, segmentIndex);
++    auto pieces = exact_trace_segment_detail::exact_trace_segment_pieces(trace, segmentIndex);
+     if (!pieces.has_value()) return std::nullopt;
+     const bool clipFirst = segmentIndex == begin && first.parameter.has_value();
+     const bool clipLast = segmentIndex + 1U == end && second.parameter.has_value();
+@@ -1084,7 +1084,7 @@ FaceContactNodeResult collect_face_contact_nodes(
+   for (const auto &[node, face] : faces) {
+     const std::set<authority::TraceId> &ends = ending[node];
+     if (ends.empty()) return face_contact_error(kInvalid, face, std::nullopt);
+-    std::optional<FaceChartPoint> point;
++    std::optional<exact_trace_segment_detail::FaceChartPoint> point;
+     for (const authority::TraceId id : ends) {
+       const FieldAlignedCandidateTrace *trace = find_trace(network, id);
+       if (trace == nullptr || !trace->terminalContact.has_value() ||
+@@ -2266,7 +2266,7 @@ source_face_point_barycentric(
+   return orientedBarycentric;
+ }
+
+-std::optional<FaceChartPoint> exact_source_point_barycentric(
++std::optional<exact_trace_segment_detail::FaceChartPoint> exact_source_point_barycentric(
+     const SourceFaceRecord &face, const authority::ExactSourcePoint &point) {
+   if (const auto *vertex = std::get_if<authority::SourceVertexId>(&point)) {
+     return source_vertex_barycentric(face, *vertex);
+@@ -3182,14 +3182,14 @@ RotationBuildResult build_rotation_system(
+         }
+         if (canonicalCorner[corner] >= 3U) return unsupported(std::nullopt);
+       }
+-      const auto oriented = [&](const FaceChartPoint &point) {
+-        FaceChartPoint result = point;
++      const auto oriented = [&](const exact_trace_segment_detail::FaceChartPoint &point) {
++        exact_trace_segment_detail::FaceChartPoint result = point;
+         for (std::size_t corner = 0U; corner < 3U; ++corner) {
+           result[corner] = point[canonicalCorner[corner]];
+         }
+         return result;
+       };
+-      std::vector<FaceChartPoint> targets;
++      std::vector<exact_trace_segment_detail::FaceChartPoint> targets;
+       targets.reserve(outgoing.size());
+       for (const auto incidence : outgoing) {
+         const auto arcIt = arcById.find(incidence.arc);
+diff --git a/src/geometry/EmbeddedGraphTopology.h b/src/geometry/EmbeddedGraphTopology.h
+index 338cf4bc037f807904b48a0a8389e17617c5c29d..7874e2091a1062693f6fab486e1e2d2051b89a8d 100644
+--- a/src/geometry/EmbeddedGraphTopology.h
++++ b/src/geometry/EmbeddedGraphTopology.h
+@@ -228,9 +228,9 @@ using MandatoryEdgeSplit =
+  * counter-clockwise in the corner order of their coordinates, -1 when
+  * clockwise, 0 when collinear. Exact.
+  */
+-[[nodiscard]] int face_chart_orientation(const FaceChartPoint &a,
+-                                         const FaceChartPoint &b,
+-                                         const FaceChartPoint &c);
++[[nodiscard]] int face_chart_orientation(const exact_trace_segment_detail::FaceChartPoint &a,
++                                         const exact_trace_segment_detail::FaceChartPoint &b,
++                                         const exact_trace_segment_detail::FaceChartPoint &c);
+
+ /**
+  * Counter-clockwise order of the rays leaving `origin` through each target,
+@@ -238,8 +238,8 @@ using MandatoryEdgeSplit =
+  * the origin or two rays leave in the same direction.
+  */
+ [[nodiscard]] std::optional<std::vector<std::size_t>>
+-face_chart_counter_clockwise_ray_order(const FaceChartPoint &origin,
+-                                       const std::vector<FaceChartPoint> &targets);
++face_chart_counter_clockwise_ray_order(const exact_trace_segment_detail::FaceChartPoint &origin,
++                                       const std::vector<exact_trace_segment_detail::FaceChartPoint> &targets);
+
+ /**
+  * A position on a candidate trace. With no `parameter` it is the boundary
+@@ -263,9 +263,9 @@ struct TraceCutPosition {
+  * Empty when the point is not available; the end is also empty for a segment
+  * that transits along an edge, which is not straight in its face.
+  */
+-[[nodiscard]] std::optional<FaceChartPoint> trace_segment_canonical_entry(
++[[nodiscard]] std::optional<exact_trace_segment_detail::FaceChartPoint> trace_segment_canonical_entry(
+     const FieldAlignedCandidateTrace &trace, std::size_t segment);
+-[[nodiscard]] std::optional<FaceChartPoint> trace_segment_canonical_exit(
++[[nodiscard]] std::optional<exact_trace_segment_detail::FaceChartPoint> trace_segment_canonical_exit(
+     const FieldAlignedCandidateTrace &trace, std::size_t segment);
+
+ /**
+@@ -277,7 +277,7 @@ struct TraceCutPosition {
+ [[nodiscard]] std::optional<authority::FieldExactRational>
+ trace_segment_contact_parameter(const FieldAlignedCandidateTrace &trace,
+                                 std::size_t segment,
+-                                const FaceChartPoint &point);
++                                const exact_trace_segment_detail::FaceChartPoint &point);
+
+ /**
+  * Where a terminal carrier contact cuts the struck trace when the contact is
+@@ -395,7 +395,7 @@ source_piece_binding_failure(
+ struct FaceContactNode {
+   authority::SourceFaceTopologyKey face;
+   /** Exact contact point in the canonical chart of `face`. */
+-  FaceChartPoint point;
++  exact_trace_segment_detail::FaceChartPoint point;
+   /** Traces that end at this node. */
+   std::set<authority::TraceId> terminating;
+   /** Interior positions of the struck traces at this node. */
+@@ -444,7 +444,7 @@ vertex_locus_secondary_parameter(
+  * another face. Coordinate signs are not checked. Unwired until the
+  * coordinated graph cutover.
+  */
+-[[nodiscard]] std::optional<FaceChartPoint> exact_source_point_barycentric(
++[[nodiscard]] std::optional<exact_trace_segment_detail::FaceChartPoint> exact_source_point_barycentric(
+     const SourceFaceRecord &face, const authority::ExactSourcePoint &point);
+
+ /** A trace ray that leaves a vertex locus along a mesh edge. */
+diff --git a/src/geometry/ExactTraceSegmentPieces.h b/src/geometry/ExactTraceSegmentPieces.h
+index 2c544238e727a990dc41fba349db74d601f23c19..e8fef70ad4d6ca656fb1fa405556e60fa2de265d 100644
+--- a/src/geometry/ExactTraceSegmentPieces.h
++++ b/src/geometry/ExactTraceSegmentPieces.h
+@@ -17,7 +17,7 @@
+ // The exact source pieces of a traced segment, read from the candidate trace
+ // record alone. Both the curve-network stage and the embedded-graph stage
+ // read traces this way, so it sits below both.
+-namespace directional::geometry::embedded_graph_topology_detail {
++namespace directional::geometry::exact_trace_segment_detail {
+
+ /**
+  * Exact barycentric coordinates of a point of one source face, listed in that
+@@ -192,4 +192,4 @@ using FaceChartPoint = std::array<authority::FieldExactRational, 3>;
+              : std::nullopt;
+ }
+
+-} // namespace directional::geometry::embedded_graph_topology_detail
++} // namespace directional::geometry::exact_trace_segment_detail
+diff --git a/src/geometry/RetracedTraceReferences.h b/src/geometry/RetracedTraceReferences.h
+index 1bdeb3da16761060bc92c2859cbff706be4a960c..03986a5d6a7081785f18d7e02aa2181522275f74 100644
+--- a/src/geometry/RetracedTraceReferences.h
++++ b/src/geometry/RetracedTraceReferences.h
+@@ -34,7 +34,7 @@ struct RetracedTraceReferences {
+     const FieldAlignedTerminalContact &contact) {
+   if (index >= trace.segments.size()) return false;
+   const auto &segment = trace.segments[index];
+-  namespace exact = embedded_graph_topology_detail;
++  namespace exact = exact_trace_segment_detail;
+   if (contact.carrierLocus) {
+     const auto &locus = *contact.carrierLocus;
+     const auto zero = authority::FieldExactRational::from_integer(0);
+@@ -112,7 +112,7 @@ remap_retraced_trace_references(const FieldAlignedCurveNetworkCandidate &input,
+     authority::ExactSourcePath result;
+     for (std::size_t i = 0; i < trace.segments.size(); ++i) {
+       const auto pieces =
+-          embedded_graph_topology_detail::exact_trace_segment_pieces(trace, i);
++          exact_trace_segment_detail::exact_trace_segment_pieces(trace, i);
+       if (!pieces || pieces->empty() ||
+           (!result.empty() && result.back().second != pieces->front().first)) {
+         return std::nullopt;
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 21ba4688db9453cbbe4f61f85db5bd664d40cccd..29936bc53515031077d45ea2b46d9553d0cd9c4a 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -4311,7 +4311,7 @@ field_aligned_select_retraced_traces(FieldAlignedCurveNetworkCandidate &candidat
+       const auto &trace = candidate.candidateTraces[index];
+       authority::ExactSourcePath path;
+       for (std::size_t segment = 0U; segment < trace.segments.size(); ++segment) {
+-        const auto pieces = embedded_graph_topology_detail::exact_trace_segment_pieces(
++        const auto pieces = exact_trace_segment_detail::exact_trace_segment_pieces(
+             trace, segment);
+         if (!pieces || pieces->empty() ||
+             (!path.empty() && path.back().second != pieces->front().first)) {
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index dddbb96acedf4a0f9b225888e7611f0433f6a20d..f241f507c0309398520c9b67805f8855c7364f7e 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -70,7 +70,7 @@ using directional::geometry::SurfaceCellRail;
+ using directional::geometry::SurfaceCellRailKind;
+ using directional::geometry::SurfaceCellTracingOptions;
+ namespace embedded = directional::geometry::embedded_graph_topology_detail;
+-
++namespace trace_segment = directional::geometry::exact_trace_segment_detail;
+ TriMesh make_square_mesh(const bool reverseFaceRows = false) {
+   Eigen::MatrixXd vertices(4, 3);
+   vertices << 0.0, 0.0, 0.0,
+@@ -8242,7 +8242,7 @@ void append_retraced_trace_selection_receipt(
+   for (const auto &trace : traces) {
+     authority::ExactSourcePath path;
+     for (std::size_t segment = 0U; segment < trace.segments.size(); ++segment) {
+-      const auto pieces = embedded::exact_trace_segment_pieces(trace, segment);
++      const auto pieces = trace_segment::exact_trace_segment_pieces(trace, segment);
+       if (!pieces.has_value() || pieces->empty() ||
+           (!path.empty() && path.back().second != pieces->front().first)) {
+         out << ";retracedTraceSelection=pathUnavailable{trace="
+@@ -9012,7 +9012,7 @@ std::optional<std::vector<Cp4cOracleFragment>> cp4c_oracle_fragments(
+         if (terminalContact) {
+           const auto terminal =
+               cp4c_oracle_trace_segment_exit(trace, segmentIndex);
+-          if (!terminal || !embedded::face_chart_segment_parameter(
++          if (!terminal || !trace_segment::face_chart_segment_parameter(
+                                *firstPoint, *slideStart, *terminal))
+             return std::nullopt;
+           drafts[segment.sourceFace].traces.push_back(
+@@ -18667,7 +18667,7 @@ TEST(TraceTerminationCorrection,
+       const bool slides = record.edgeTransitEntry.has_value() ||
+                           record.edgeTransitExit.has_value();
+       if (slides) ++slideSegments;
+-      const auto pieces = embedded::exact_trace_segment_pieces(trace, segment);
++      const auto pieces = trace_segment::exact_trace_segment_pieces(trace, segment);
+       const char *kind = "rejected";
+       if (!pieces.has_value()) {
+         ++rejected;
+@@ -20749,7 +20749,7 @@ TEST(MandatoryEdgeTerminalSplit, SplitsAtOrderedDistinctCutsAndRejectsAmbiguousO
+ }
+
+ TEST(FaceChartExactGeometry, OrdersRaysAndContactsExactlyAroundAFaceInteriorPoint) {
+-  using Point = embedded::FaceChartPoint;
++  using Point = trace_segment::FaceChartPoint;
+   const auto zero = exact_ratio(0, 1);
+   const auto one = exact_ratio(1, 1);
+   // 2^-60: smaller than the distance from 1/3 and 2/3 to their neighbouring
+@@ -20792,23 +20792,23 @@ TEST(FaceChartExactGeometry, OrdersRaysAndContactsExactlyAroundAFaceInteriorPoin
+   };
+   const auto third = exact_ratio(1, 3);
+   const auto justAboveThird = third + epsilon;
+-  EXPECT_EQ(third, embedded::face_chart_segment_parameter(entry, exit, along(third)));
+-  const auto later = embedded::face_chart_segment_parameter(
++  EXPECT_EQ(third, trace_segment::face_chart_segment_parameter(entry, exit, along(third)));
++  const auto later = trace_segment::face_chart_segment_parameter(
+       entry, exit, along(justAboveThird));
+   ASSERT_TRUE(later.has_value());
+   EXPECT_EQ(justAboveThird, *later);
+   ASSERT_TRUE(sameDoubles(along(third), along(justAboveThird)));
+   EXPECT_LT(third, *later) << "two contacts on one segment are ordered exactly";
+-  EXPECT_FALSE(embedded::face_chart_segment_parameter(entry, exit, entry))
++  EXPECT_FALSE(trace_segment::face_chart_segment_parameter(entry, exit, entry))
+       << "the segment's own entry is not an interior point";
+-  EXPECT_FALSE(embedded::face_chart_segment_parameter(entry, exit, exit));
+-  EXPECT_FALSE(embedded::face_chart_segment_parameter(entry, exit, along(exact_ratio(2, 1))));
+-  EXPECT_FALSE(embedded::face_chart_segment_parameter(
++  EXPECT_FALSE(trace_segment::face_chart_segment_parameter(entry, exit, exit));
++  EXPECT_FALSE(trace_segment::face_chart_segment_parameter(entry, exit, along(exact_ratio(2, 1))));
++  EXPECT_FALSE(trace_segment::face_chart_segment_parameter(
+       entry, exit,
+       Point{exact_ratio(1, 3), exact_ratio(1, 2) + epsilon,
+             exact_ratio(1, 6) - epsilon}))
+       << "a point off the segment's line by 2^-60";
+-  EXPECT_FALSE(embedded::face_chart_segment_parameter(entry, entry, entry));
++  EXPECT_FALSE(trace_segment::face_chart_segment_parameter(entry, entry, entry));
+
+   // Rays from an interior point: a struck segment A -> B through the origin
+   // and stubs towards e2 (one side) and the midpoint of (e0,e1) (other side).
+@@ -20857,7 +20857,7 @@ TEST(FaceContactNode, SplitsAStruckSegmentAtAnExactInteriorContactPoint) {
+   using directional::authority::TraceId;
+   using directional::geometry::FieldAlignedCandidateTrace;
+   using directional::geometry::RotationSystemInconsistencyReason;
+-  using Point = embedded::FaceChartPoint;
++  using Point = trace_segment::FaceChartPoint;
+   using Position = embedded::TraceCutPosition;
+   const auto zero = exact_ratio(0, 1);
+   const auto half = exact_ratio(1, 2);
+@@ -21013,8 +21013,8 @@ TEST(FieldAlignedCarrierOccupancy,
+   grazing.terminalPoint = v2;
+   EXPECT_EQ((Path{Piece{inFace, point(entry), point(slideStart)},
+                   Piece{alongAc, point(slideStart), point(v2)}}),
+-            embedded::exact_trace_segment_pieces(grazing, 0U));
+-  EXPECT_FALSE(embedded::exact_trace_segment_pieces(grazing, 1U));
++            trace_segment::exact_trace_segment_pieces(grazing, 0U));
++  EXPECT_FALSE(trace_segment::exact_trace_segment_pieces(grazing, 1U));
+
+   // The slide runs in its own direction, here toward the carrier's first end.
+   FieldAlignedCandidateTrace descending = grazing;
+@@ -21022,7 +21022,7 @@ TEST(FieldAlignedCarrierOccupancy,
+   descending.terminalPoint = v0;
+   EXPECT_EQ((Path{Piece{inFace, point(entry), point(slideStart)},
+                   Piece{alongAc, point(slideStart), point(v0)}}),
+-            embedded::exact_trace_segment_pieces(descending, 0U));
++            trace_segment::exact_trace_segment_pieces(descending, 0U));
+
+   // A departure enters at v2 under edge (1,2) and starts its slide at v2
+   // under edge (0,2): one point, so there is no face piece.
+@@ -21031,13 +21031,13 @@ TEST(FieldAlignedCarrierOccupancy,
+   departure.segments[0].edgeTransitExit = v0;
+   departure.terminalPoint = v0;
+   EXPECT_EQ((Path{Piece{alongAc, point(v2), point(v0)}}),
+-            embedded::exact_trace_segment_pieces(departure, 0U));
++            trace_segment::exact_trace_segment_pieces(departure, 0U));
+
+   // Without a slide the segment is its one face piece to its end.
+   FieldAlignedCandidateTrace ordinary = one_segment(entry, ab);
+   ordinary.terminalPoint = boundary_point(bc, 1, 2);
+   EXPECT_EQ((Path{Piece{inFace, point(entry), point(boundary_point(bc, 1, 2))}}),
+-            embedded::exact_trace_segment_pieces(ordinary, 0U));
++            trace_segment::exact_trace_segment_pieces(ordinary, 0U));
+
+   // A face contact committed with the whole proposal stops the trace on its
+   // face piece; the recorded slide is not traversed.
+@@ -21050,32 +21050,32 @@ TEST(FieldAlignedCarrierOccupancy,
+   EXPECT_EQ((Path{Piece{inFace, point(entry),
+                         *authority::canonical_exact_source_face_point(
+                             face, midFacePiece)}}),
+-            embedded::exact_trace_segment_pieces(contact, 0U));
++            trace_segment::exact_trace_segment_pieces(contact, 0U));
+   FieldAlignedCandidateTrace offPiece = contact;
+   offPiece.terminalContact->barycentric = {exact_ratio(1, 3), exact_ratio(1, 3),
+                                            exact_ratio(1, 3)};
+-  EXPECT_FALSE(embedded::exact_trace_segment_pieces(offPiece, 0U))
++  EXPECT_FALSE(trace_segment::exact_trace_segment_pieces(offPiece, 0U))
+       << "a contact off the face piece is not on the traced path";
+   FieldAlignedCandidateTrace atSlideStart = contact;
+   atSlideStart.terminalContact->barycentric = {exact_ratio(5, 8), exact_ratio(0, 1),
+                                                exact_ratio(3, 8)};
+-  EXPECT_FALSE(embedded::exact_trace_segment_pieces(atSlideStart, 0U))
++  EXPECT_FALSE(trace_segment::exact_trace_segment_pieces(atSlideStart, 0U))
+       << "a face contact lies strictly inside the face piece";
+
+   // Incomplete or inconsistent slide records give no path.
+   FieldAlignedCandidateTrace missingEnd = grazing;
+   missingEnd.segments[0].edgeTransitExit.reset();
+-  EXPECT_FALSE(embedded::exact_trace_segment_pieces(missingEnd, 0U));
++  EXPECT_FALSE(trace_segment::exact_trace_segment_pieces(missingEnd, 0U));
+   FieldAlignedCandidateTrace otherEdge = grazing;
+   otherEdge.segments[0].edgeTransitEntry = boundary_point(bc, 1, 2);
+-  EXPECT_FALSE(embedded::exact_trace_segment_pieces(otherEdge, 0U));
++  EXPECT_FALSE(trace_segment::exact_trace_segment_pieces(otherEdge, 0U));
+   FieldAlignedCandidateTrace endElsewhere = grazing;
+   endElsewhere.terminalPoint = boundary_point(ac, 1, 2);
+-  EXPECT_FALSE(embedded::exact_trace_segment_pieces(endElsewhere, 0U));
++  EXPECT_FALSE(trace_segment::exact_trace_segment_pieces(endElsewhere, 0U));
+   FieldAlignedCandidateTrace emptySlide = grazing;
+   emptySlide.segments[0].edgeTransitExit = slideStart;
+   emptySlide.terminalPoint = slideStart;
+-  EXPECT_FALSE(embedded::exact_trace_segment_pieces(emptySlide, 0U));
++  EXPECT_FALSE(trace_segment::exact_trace_segment_pieces(emptySlide, 0U));
+ }
+
+ TEST(FieldAlignedCarrierOccupancy,
+@@ -21913,7 +21913,7 @@ TEST(FieldAlignedCarrierOccupancy,
+   using directional::geometry::FieldAlignedTerminalContact;
+   using directional::geometry::GlobalTopologyArc;
+   using directional::geometry::GlobalTopologyArcKind;
+-  using Chart = embedded::FaceChartPoint;
++  using Chart = trace_segment::FaceChartPoint;
+   using Failure = embedded::VertexPieceRayFailure;
+   using Piece = authority::ExactSourceSupportPiece;
+   using Position = embedded::TraceCutPosition;
+@@ -23608,7 +23608,7 @@ TEST(RetracedTraceReferences, RemapsExactStruckSegmentAndEndpointPortWithoutPubl
+   removed.terminalPoint = v0;
+   ending.segments.emplace_back(face, authority::FieldBranch::from_integer(0),
+       boundary_point(otherEdge, 1, 1), std::nullopt, edge, std::nullopt);
+-  const auto weights = embedded::canonical_boundary_barycentric(face, contactPoint);
++  const auto weights = trace_segment::canonical_boundary_barycentric(face, contactPoint);
+   ASSERT_TRUE(weights);
+   ending.terminalContact = geometry::FieldAlignedTerminalContact{
+       face, *weights, removed.id, 0U, contactPoint};

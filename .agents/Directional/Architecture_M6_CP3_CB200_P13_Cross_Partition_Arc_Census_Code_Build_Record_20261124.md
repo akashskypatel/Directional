@@ -6,7 +6,7 @@
 
 ## Background
 
-[Adversarial review](Architecture_M6_CP3_TB_REV_179_Adversarial_Review_20261124.md) M1–M5 and [exact manifest](gates/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact_Manifest.md) replace the withdrawn prose plan. Row786 must independently establish membership of the certifier and plan partitions. Six corruptions must each fail the specified invariant. C4 is withdrawn. No production reader, region election, selector, manifest, build logic or test identity changed.
+[Adversarial review](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-180-folded-records--2026-11-24-utc) M1–M5 and [exact manifest](gates/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact_Manifest.md) replace the withdrawn prose plan. Row786 must independently establish membership of the certifier and plan partitions. Six corruptions must each fail the specified invariant. C4 is withdrawn. No production reader, region election, selector, manifest, build logic or test identity changed.
 
 ## Assessment
 

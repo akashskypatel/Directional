@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3; accepted TB169 **993/993** and CP2 **491/491** unchanged. TB180 **1003/1003 PASS**, seven mechanical controls pass, row786 only material change. Next only `M6-CP3-TB-REV-180` (independent adjudication). No CP3/497/D0/H4 promotion.
+**Completed:** M0–M5 · **Now:** M6 / CP3; accepted TB180 **1003/1003**, CP2 **491/491**. TB170 seven-control mechanical recurrence closed. Next only `M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE` (namespace-only Code + Build). No CP3/497/D0/H4 promotion.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
