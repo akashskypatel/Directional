@@ -36,21 +36,23 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Current TB evidence | TB180 [run 45457449013](https://github.com/akashskypatel/Directional/actions/runs/45457449013), result `14951803089` ZIP SHA-256 `67e784747b1c8d04bf781b69b486f3310876fde101b7935f0207fd2fd36a39f8`, 2014/2014 checks, 1003/1003 PASS, 639 exact + 363 N1/N2 + row786 only. [TB180 report](Architecture_M6_CP3_TB180_P13_Cross_Partition_Arc_Census_Full_Gate_Execution_Report_20261124.md). TB179 `14895572803` remains the comparison baseline. |
 | Accepted comparison | TB180 result `14951803089`, package `14901170173`, 1003/1003 accepted. Manifest `2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724`; historic TB169 prefix `82581dd14064efe3729923cfd94333ef70113b0bb84e6bb8eabfb2ec61cce436`; CP2 491/491 prefix `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`. TB169 remains historical authority. |
 | Regression / debt | TB170 mechanical recurrence closed: controls 445/652/653/656/658/660/786 PASS; no new accepted-green loss. Historical 67 events / 17 categories / 50 recurrences; witness debt1/deferred81. J6 production contact case not exercised. K6 namespace correction pending. |
-| First unresolved failure | Row979 staged `RegionContainsInteriorSingularity` (vertex8) remains held; no production sphere plan. Row786 stale premise resolved, all six named corruptions reject correctly. |
+| First unresolved failure | Row979 staged `RegionContainsInteriorSingularity` (vertex8 = node1, 5 arc ends) **unclassified**: candidate P1 face-granular singularity reach vs fragment regions ([TB-REV-180 adv.](Architecture_M6_CP3_TB_REV_180_Adversarial_Review_20261124.md) N2–N4). |
 
 ## Mandatory next turn
 
-- **COMPLETE:** TB-REV-179 [independent](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-180-folded-records--2026-11-24-utc) + [adversarial](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-180-folded-records--2026-11-24-utc): L2 upheld (M1); prose CB-200 and C4 withdrawn; exact oracle diff frozen (M2–M4).
+- **COMPLETE:** TB-REV-180 independent + [adversarial](Architecture_M6_CP3_TB_REV_180_Adversarial_Review_20261124.md): TB180 upheld; CB-201 verified unamended (N1); row979 locus read, candidate P1 (N3); CB-202 requirements bound to TB-REV-181.
 
 ```text
 NEXT_TURN: M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE
 Owner: Code + Build, compile only
-Authority: gates/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact_Manifest.md; Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md; K6
+Authority: gates/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact_Manifest.md; Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md + Architecture_M6_CP3_TB_REV_180_Adversarial_Review_20261124.md (N1 verified); K6
   exact proposed diff Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact.diff
   SHA-256 0da2ffe20ff5f0b4913acba5fa5dfd3e18c0e23ef1f6965d9d94098696d8d91c; seven paths +66/-66; pre/postimages in manifest
   namespace-only move of five exact trace-segment operations/types and their qualifications
   verify preimage and postimage, compile eight durable GMP/GMPXX targets; runtimeExecution=false
   preserve manifest 2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724, accepted TB180 1003/1003; separate immutable TB requires N1-N3 equivalence for every row
+Then: M6-CP3-TB-EXEC-181-P13-TRACE-SEGMENT-NAMESPACE-FULL-GATE (TB179 manifest unchanged; every row N1-N3-equal to TB180 14951803089, no line moves) -> M6-CP3-TB-REV-181 (close K6; freeze exact CB-202)
+On failure: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
 Do not: change semantics, add tests, execute binaries, change selectors, activate Branch A, promote CP3/497/D0/H4 or repair row979/J6/E5/CB-190
 ```
 
@@ -59,17 +61,13 @@ Do not: change semantics, add tests, execute binaries, change selectors, activat
 | Step | Canonical turn | Boundary |
 |---|---|---|
 | COMPLETE | TB128–TB-REV-161, RA-250–RA-281, CB150–CB-178 | [Folded index](M6_Consolidated_Record.md#tb128-review-folded-execution-record-index-2026-11-17); adversarial records TB-REV-157 to TB-REV-161. |
-| COMPLETE | CB-179 → … → TB-EXEC/REV-165 | Adversarial records [TB-REV-162](Architecture_M6_CP3_TB_REV_162_Adversarial_Review_20261122.md), [163](Architecture_M6_CP3_TB_REV_163_Adversarial_Review_20261122.md), [164](Architecture_M6_CP3_TB_REV_164_Adversarial_Review_20261122.md), [165](Architecture_M6_CP3_TB_REV_165_Adversarial_Review_20261122.md). |
-| COMPLETE | CB-185 → … → TB-EXEC-172 | Records: adversarial TB-REV-166…171 files; TB169 993/993 accepted; TB170 986/993, TB171/TB172 987/994 rejected; CB-192 package `14797941489`, CB-193 package `14805640405` (source `587b8ba7…f881`). |
-| COMPLETE (rejected) | TB-REV-172 | [Independent](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md), [adv. 1](Architecture_M6_CP3_TB_REV_172_Adversarial_Review_20261123.md), [adv. 2](Architecture_M6_CP3_TB_REV_172_Adversarial_Continuation_Shared_Edge_20261123.md): co-traced digons, A2a root cause, D13 pending. |
-| COMPLETE | CB-194 → TB-EXEC-173 → CB-195 → TB-EXEC-174 → CB-196 → TB-EXEC-175 (993/1000) | Unwired helpers; same 7 RED. Reviews TB-REV-173 ([D13](Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md)), [174 adv.](Architecture_M6_CP3_TB_REV_174_Adversarial_Review_20261123.md), [175 adv.](Architecture_M6_CP3_TB_REV_175_Adversarial_Review_20261123.md). |
-| COMPLETE | CB-197A → … → TB-REV-177 (TB176 994/1001, TB177 994/1001 rejected) | Adversarial records TB-REV-176/177; four row-652 pairs confirmed. |
+| COMPLETE | CB-179 → … → TB-REV-177 | Adversarial records TB-REV-162…177 (`Architecture_M6_CP3_TB_REV_1NN_Adversarial_Review_*.md`); TB169 993/993 accepted; TB170–TB177 rejected (same 7 RED); D13 = A ([TB-REV-173](Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md)). |
 | COMPLETE | CB-199A → TB-EXEC-178 (995/1002) → TB-REV-178 → CB-199B → TB-EXEC-179 (1002/1003, six recoveries) → TB-REV-179 | [TB179 report](Architecture_M6_CP3_TB179_P13_Retraced_Trace_Selection_Full_Gate_Execution_Report_20261124.md); reviews linked above. |
-| COMPLETE | `M6-CP3-CB-200-P13-CROSS-PARTITION-ARC-CENSUS-TEST` | [Exact manifest](gates/Architecture_M6_CP3_CB200_P13_Cross_Partition_Arc_Census_Oracle_Exact_Manifest.md); test-only compile. |
-| COMPLETE | TB-EXEC-180 | 1003/1003 PASS, only row786 changes; [TB180 report](Architecture_M6_CP3_TB180_P13_Cross_Partition_Arc_Census_Full_Gate_Execution_Report_20261124.md). |
-| COMPLETE | TB-REV-180 | [Independent review](Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md); accepted 1003/1003, seven controls, recurrence closed. |
-| **1 NEXT ONLY** | `M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE` | [Exact plan](gates/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact_Manifest.md); compile only, separate full TB. |
-| 4 | Row979 `RegionContainsInteriorSingularity` (vertex 8) | After mechanical controls green; read printed locus first. |
+| COMPLETE | CB-200 → TB-EXEC-180 → TB-REV-180 | [TB180 report](Architecture_M6_CP3_TB180_P13_Cross_Partition_Arc_Census_Full_Gate_Execution_Report_20261124.md) 1003/1003; [independent](Architecture_M6_CP3_TB_REV_180_Cross_Partition_Arc_Census_Independent_Review_20261124.md) + [adversarial](Architecture_M6_CP3_TB_REV_180_Adversarial_Review_20261124.md) reviews. |
+| **1 NEXT ONLY** | `M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE` | [Exact plan](gates/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact_Manifest.md); compile only. |
+| 2 | TB-EXEC-181 | 1003 rows N1–N3-equal to TB180; any difference STOP. |
+| 3 | TB-REV-181 | Close K6; freeze exact CB-202 per [TB-REV-180 adv.](Architecture_M6_CP3_TB_REV_180_Adversarial_Review_20261124.md) requirements 1–6. |
+| 4 | CB-202 → TB-EXEC-182 → TB-REV-182 | Corner-granular interior-singularity reach (one helper with the certificate) + guard; only row979 + guard may change; classifies row979 (built → 4A, else A2a node1). |
 | 4A | Branch A (only after the staged plan builds): activation CB → TB (BunnyRandom census, V5) → parameter-deletion CB → V3b → R1 → O48 | Activation = single-source default (V11) + exact premise rows 393/648/858/971/972/978 only. |
 | 5 | CB-190 | S4/S6/S7 diagnostic conformity plus W6 obsolete-code comments (off critical path). |
 | Withdrawn | prose CB-200 plan + C4 assertion (TB-REV-179 adv. M2); CB-199A `4f458361…` (TB-REV-177 adv. J4); prose CB-198 (176 H1); prose CB-197A/196/195/193/187/186/183/180/178/175/173, CB-194, CB-191, DEFN-161A/159A, CB-185 v1, activation-before-plan — see TB-REV-162…177 adversarial records | — |
