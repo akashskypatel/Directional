@@ -1,2 +1,0 @@
-# M6-CP3-TB-REV-177 temporary source snapshot marker
-.agents/connector-triggers/source-snapshot/tb-rev-177-20261123.txt
