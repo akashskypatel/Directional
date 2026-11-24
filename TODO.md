@@ -1,30 +1,24 @@
-**Current turn outcome (2026-11-24):** `M6-CP3-TB-REV-177` (independent + adversarial) rejects TB177 at 994/1001, seven RED. The receipt confirms four row-652 pairs and their arrivals. CB-199A is amended so port ownership is not encoded in event fields. Next: the amended exact `M6-CP3-CB-199A-P13-RETRACED-TRACE-REFERENCE-REMAP`, then TB-EXEC-178. [Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_177_Adversarial_Review_20261124.md).
+**Current turn outcome (2026-11-24):** CB-199A exact amended helper and guard compiled (eight GMP/GMPXX targets, no runtime). [Record](.agents/Directional/Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Code_Build_Record_20261124.md). TB177 rejected 994/1001, seven RED; no promotion. Next only `M6-CP3-TB-EXEC-178-P13-RETRACED-TRACE-REFERENCE-REMAP-FULL-GATE`.
 
-## CURRENT — TB-REV-177 adversarial: amended CB-199A next (2026-11-24 UTC)
+## CURRENT — CB-199A compiled; TB-EXEC-178 next (2026-11-24 UTC)
 
 - [x] **COMPLETE** TB-REV-177 adversarial (J1–J6). J1: my TB-EXEC-177 rule wrongly said "no line moves" after a mid-file insert. J4: the original CB-199A `4f458361…` is withdrawn for overloading `sourcePort` and the junction role; the amended diff is `cd43c3f0…4c5a`. TB178 manifest `921bd04b…e8ed` frozen.
-- [ ] **1 NEXT** CB-199A amended: unwired remap helper + guard row 1002 (compile only).
-- [ ] **2** TB-EXEC-178: 995/1002, same 7 RED; no line moves; receipts byte-identical to TB177.
+- [x] **COMPLETE** CB-199A amended: unwired remap helper + guard row 1002 (compile only), [run 45312324524](https://github.com/akashskypatel/Directional/actions/runs/45312324524), package `14883418907`.
+- [ ] **1 NEXT** TB-EXEC-178: 995/1002, same 7 RED; no line moves; receipts byte-identical to TB177.
 - [ ] **3** TB-REV-178 → CB-199B: an explicit kept-trace `arrivalPort` field + digest; selection after the tracing loop; producer re-sort; all-or-nothing; fail closed → TB.
 - [ ] **4** CB-200: port-set readers read `trace.port ∪ arrivalPort`, plus the every-region-owns-a-face assertion → TB; mechanical controls green, row652 two regions.
 - [ ] **5** Row979, Branch A, CB-190; deferred CollinearOverlap/EndpointTouch (E5).
 
 ```text
-NEXT_TURN: M6-CP3-CB-199A-P13-RETRACED-TRACE-REFERENCE-REMAP
-Owner: implementation agent (Code + Build, compile only)
-Authority: Architecture_M6_CP3_TB_REV_177_Adversarial_Review_20261124.md (J1-J6); original CB-199A diff 4f458361... withdrawn (J4); manifest gates/Architecture_M6_CP3_CB199A_P13_Amended_Exact_Manifest.md
-Apply exactly: .agents/Directional/Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Amended_Exact.diff
-  SHA-256 cd43c3f002d890745701eff5f00de4cb8a658585d9ef414614fdbbcc875d4c5a (24726 B, +463/-0)
-  src/geometry/RetracedTraceReferences.h (new) -> sha256 bcab2d6292b9f1317471c0659e714b4afd7339e1def7c07d5d409f85b2356944
-  tests/FieldAlignedCurveNetworkTests.cpp git 943187e3a732eca91bd3a824b9c05f9e8ca15bcb -> sha256 e13d7182355d071e0fe6bd0dc645b8288037af0bf609eb59437711dda7d29b89
-Build: dispatcher compile, GMP/GMPXX eight targets incl. directional_surface_cell_producer_tests, runtimeExecution=false
-Then: M6-CP3-TB-EXEC-178-P13-RETRACED-TRACE-REFERENCE-REMAP-FULL-GATE
-  manifest gates/Architecture_M6_TB178_P13_Retraced_Trace_Reference_Remap_Full_Gate_Case_Manifest.tsv 921bd04bbfab596da6679083d5880d3f4893126e19a91c4687ba5ba63827e8ed (1002 rows; first 1001 = TB176/TB177 0f85400f...4642); membership 1083
-  expected 995 PASS: row1002 executed and PASS, same 7 RED (445/652/653/656/658/660/786)
-  compare to TB177 14871900641 under N1-N3; test appended at EOF so NO assertion-line moves allowed; row652/656 receipts byte-identical; any other difference -> STOP to Review
-  -> M6-CP3-TB-REV-178: freeze CB-199B (explicit kept-trace arrivalPort field + digest, selection after tracing, producer re-sort, all-or-nothing, fail closed)
-On failure/blocker: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
-Do not: edit beyond the diff; add a production caller; change producer/reader/validator code; edit selectors/manifests; run tests in a CB; activate; promote CP3/497/D0/H4
+NEXT_TURN: M6-CP3-TB-EXEC-178-P13-RETRACED-TRACE-REFERENCE-REMAP-FULL-GATE
+Owner: Test + Benchmark execution agent (artifact only; no rebuild or repair)
+Authority: Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Code_Build_Record_20261124.md; Architecture_M6_CP3_TB_REV_177_Adversarial_Review_20261124.md TB-EXEC-178 rules
+Package: 14883418907; semantic source/executor de65101eb04c73e08ea4b6b31968975f71d9d909; ZIP SHA-256 8452d0bbfad23c464c7ad29de2c9b92a4acde9bdbb96347a55aeb84917ef8beb
+Manifest: gates/Architecture_M6_TB178_P13_Retraced_Trace_Reference_Remap_Full_Gate_Case_Manifest.tsv SHA-256 921bd04bbfab596da6679083d5880d3f4893126e19a91c4687ba5ba63827e8ed (1002 rows; 1001 prefix unchanged); membership 1083
+Required: 995 PASS; row1002 executed and PASS; same seven RED (445/652/653/656/658/660/786)
+Compare: TB177 14871900641 under N1-N3; no assertion-line moves; row652/656 receipts byte-identical; any other difference -> STOP to Review
+Then: M6-CP3-TB-REV-178; CB-199B and CB-200 remain held until separately authorized
+Do not: rebuild, repair, change source/fixture/selector/manifest, activate, or promote CP3/497/D0/H4
 ```
 
 ## HISTORY — TB-REV-177 independent: original CB-199A (amended by the adversarial continuation) (2026-11-24 UTC)

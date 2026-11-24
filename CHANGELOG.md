@@ -1,3 +1,7 @@
+## 2026-11-24 — CB-199A exact retraced trace reference remap compiled
+
+[Code + Build record](.agents/Directional/Architecture_M6_CP3_CB199A_P13_Retraced_Trace_Reference_Remap_Code_Build_Record_20261124.md): exact amended +463/−0 helper and one guard, source `de65101eb04c73e08ea4b6b31968975f71d9d909`, [run 45312324524](https://github.com/akashskypatel/Directional/actions/runs/45312324524), package `14883418907` SHA-256 `8452d0bbfad23c464c7ad29de2c9b92a4acde9bdbb96347a55aeb84917ef8beb` (28/28), eight GMP/GMPXX targets, `runtimeExecution=false`. No production wiring or runtime. TB177 rejected 994/1001; same seven RED. Accepted TB169 993/993, CP2 491/491; 67/17/50, debt1/deferred81; no promotion. Next only `M6-CP3-TB-EXEC-178-P13-RETRACED-TRACE-REFERENCE-REMAP-FULL-GATE` in a separate turn.
+
 ## 2026-11-24 — M6-CP3-TB-REV-177 adversarial continuation: CB-199A amended
 
 [Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_177_Adversarial_Review_20261124.md):
