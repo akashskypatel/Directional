@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "operation": "drive_apply",
-  "request_id": "m6-cp3-tb-rev177-progress-20261124",
-  "mailbox_key": "m6-cp3-tb-rev177-progress-20261124",
-  "file_id": "1TKcum41rPom0miK_fyCs-ODzIaKWMj4Q",
-  "patch_sha256": "bb7b3e7e169ef58f0bbe77a75fbefebd52e71c84f9facd184457e1962a3b8444",
-  "base_sha": "defabd83aade7e70a2f10214f773f03b21e7eb5d",
+  "request_id": "m6-cp3-tb-rev177-exact-freeze-20261124",
+  "mailbox_key": "m6-cp3-tb-rev177-exact-freeze-20261124",
+  "file_id": "1fsfjWWWe7yKRjkAFoLpYHIg_CX1jwAhH",
+  "patch_sha256": "fe68c66bd4f8581212785713e35e195572369fa7e592f71c79c5f16959c3d05b",
+  "base_sha": "f9e2c977418ac978d9ac0d88e16f78ff440f0877",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): preserve TB-REV-177 independent review progress",
+  "commit_message": "docs(directional): close TB-REV-177 with exact CB-199A freeze",
   "retention_days": 14
 }
