@@ -1,1 +1,19 @@
-{"schema_version":1,"operation":"drive_apply","request_id":"m6-cp3-cb200-apply-20261124","mailbox_key":"m6-cp3-cb200-apply-20261124","file_id":"1LefrM0jUWSzIAsX7r0X5G3Pm-s2GT1BG","patch_sha256":"c1ea232468855f641e9ffde907f83217bc82fa33af1baf469b434ef7fea6c2d8","base_sha":"fa9e16310925d69e53d88401ae19dd018eb8bc8e","target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing","commit_message":"Check cross-partition arc census membership independently","retention_days":14}
+{
+  "schema_version": 1,
+  "operation": "compile",
+  "request_id": "m6-cp3-cb200-compile-20261124",
+  "mailbox_key": "m6-cp3-cb200-compile-20261124",
+  "source_sha": "4c2b4cf16732cddb58252d5e758ea0b24449ed2a",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb200",
+  "retention_days": 14
+}
