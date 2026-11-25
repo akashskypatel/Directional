@@ -1,31 +1,29 @@
-**Current turn outcome (2026-11-25 UTC):** TB-EXEC-185V TB185V 1006/1006 PASS; 773 exact + 232 N1/N2 + 0 N3/material against TB184, 1087 members, 10 predicted receipts, row1006 52.17 s; sphere/sphere selection. Candidate pending independent review. [Execution report](.agents/Directional/Architecture_M6_CP3_TB185V_Reach_Receipt_Reader_Selection_Scope_Full_Gate_Execution_Report_20261125.md). TB184 1005/1005 remains independently accepted. QF1 separate; no activation or CP3/497/D0/H4 promotion.
+**Current turn outcome (2026-11-25 UTC):** M6-CP3-TB-REV-185 independently accepts TB185V 1006/1006 preactivation. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_185_Slide_Entry_Activation_Reach_Independent_Review_20261125.md); [exact CB-206 plan](.agents/Directional/gates/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Exact_Manifest.md). QF1 separate; no activation or promotion.
 
-## CURRENT — TB185V passed: independent review next, QF1 track held (2026-11-25 UTC)
+## CURRENT — TB185V accepted: exact activation compile next, QF1 track held (2026-11-25 UTC)
 
 - [x] **COMPLETE** TB185T (bounded diagnostic) → `M6-CP3-TB-REV-185T` independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_185T_Adversarial_Review_20261125.md): only the sphere changes under staging, sphere stays polyline-eligible (W1); close_sheets stall is outside reader scope → CB-205V (W2); prose CB-205U withdrawn, it missed the verifier K×F loop (W3); exact CB-207A/B frozen (W4); syntax-clean (W5).
 - [x] **COMPLETE** `M6-CP3-CB-205V-P13-REACH-RECEIPT-READER-SELECTION-SCOPE` — exact one-file test change; eight targets compiled; [record](.agents/Directional/Architecture_M6_CP3_CB205V_P13_Reach_Receipt_Reader_Selection_Scope_Code_Build_Record_20261125.md).
 - [x] **COMPLETE** `M6-CP3-TB-EXEC-185V` — 1006/1006; comparison and 10-receipt prediction PASS. [Report](.agents/Directional/Architecture_M6_CP3_TB185V_Reach_Receipt_Reader_Selection_Scope_Full_Gate_Execution_Report_20261125.md).
-- [ ] **3 NEXT** `M6-CP3-TB-REV-185` — independently accept evidence; classify readers; freeze CB-206 (flip `SurfaceCellTracing.cpp:5336`, rows 648/978/979, row979 label, row1006 transcript).
-- [ ] **4A** CB-206 → TB-EXEC-186 (V5 BunnyRandom; full compare vs TB185V; STOP-on-RED) → TB-REV-186 (one correction CB per RED family).
+- [x] **COMPLETE (adjudication)** `M6-CP3-TB-REV-185` — [independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_185_Slide_Entry_Activation_Reach_Independent_Review_20261125.md); exact activation plan frozen.
+- [ ] **4A NEXT** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` ([exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Exact_Manifest.md)) → TB-EXEC-186 (V5 BunnyRandom; full compare vs TB185V; STOP-on-RED) → TB-REV-186 (one correction CB per RED family).
 - [ ] **4B** QF1: CB-207A → CB-207B (exact, [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB207_QF1_Quotient_Forest_Cost_Exact_Manifest.md)) → CB-207C (close_sheets termination + N/K/R/F/max-class receipt) → TB-EXEC-187 → TB-REV-187.
 - [ ] **5** parameter-deletion CB → V3b → R1 → O48. **HELD:** CB-190, J6, E5.
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-185
-Owner: Independent Review + Plan only; runtime/compile-free. Reopen primary immutable evidence and independently re-derive the gate and reach receipts; classify measured readers and record unmeasured scope. No activation.
-Authority: .agents/Directional/Architecture_M6_CP3_TB185V_Reach_Receipt_Reader_Selection_Scope_Full_Gate_Execution_Report_20261125.md; gates/Architecture_M6_CP3_CB205V_P13_Reach_Receipt_Reader_Selection_Scope_Exact_Manifest.md; Architecture_M6_CP3_TB_REV_185T_Adversarial_Review_20261125.md; Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md.
-  TB185V source/executor eee220e7e37f409eb5150f436e80e51a534c037a; candidate 15064166049; run 45704661116; result 15066180913 ZIP 16983f7e40ac9f5934b3a50ffd556925d582e857e41aaf34aae8f5fb3b181082; 2020/2020 checks, 1006/1006 PASS, 1087 members, 81 deferred; first 1005 N1–N3-equal to accepted TB184; own raw hashes and immutable postflight verified.
-  Row1006 52.17 s, raw SHA-256 9c694a5eb947f23f2e2d4e0f0c9126baceb10d6d879e46a37c4285683bac70e1; exactly 10 predicted receipts + sphere/sphere selection. No reader classification or independent acceptance in execution.
-  Freeze CB-206 only after independent acceptance: flip SurfaceCellTracing.cpp:5336 + rows 648/978/979 + row979 label + row1006 transcript. STOP on evidence mismatch; preserve all frozen falsifiers.
-Then: CB-206 -> TB-EXEC-186 (V5; full compare vs TB185V; STOP-on-RED) -> TB-REV-186 -> QF1 track: CB-207A -> CB-207B (exact, frozen) -> CB-207C (close_sheets termination+size receipt) -> TB-EXEC-187 -> TB-REV-187
-Withdrawn: prose CB-205U (TB-REV-185T adversarial W3/W4)
-Do not: activate Branch A during Review, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
+NEXT_TURN: M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION
+Owner: Code + Build only; apply exact two-path diff after verifying source hashes; compile eight GMP/GMPXX targets, runtimeExecution=false. Do not run tests or benchmarks.
+Authority: .agents/Directional/gates/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Exact_Manifest.md; .agents/Directional/Architecture_M6_CP3_TB_REV_185_Slide_Entry_Activation_Reach_Independent_Review_20261125.md; .agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Exact.diff.
+  Accepted preactivation baseline TB185V source eee220e7e37f409eb5150f436e80e51a534c037a, package 15064166049, result 15066180913, 1006/1006, 1087 members, 81 deferred. Gate and receipts independently verified.
+  Exact default flip, rows 648/978/979 and row979 label. Preserve row1006 source; exact prospective receipt lines frozen in manifest. STOP on hash, path or compile mismatch.
+Then: TB-EXEC-186 (V5; full compare vs TB185V; STOP-on-RED) -> TB-REV-186 -> QF1 CB-207A/B/C -> TB-EXEC-187 -> TB-REV-187.
+Do not: run successor TB during CB, repair unrelated REDs, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
 ```
 
 ## HISTORY — TB-REV-185T independent causal review; CB-205U withdrawn by adversarial W3 (2026-11-25 UTC)
 
 - [x] **COMPLETE** `M6-CP3-TB-REV-184` independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md): CB-205 upheld, syntax-clean (U1); activation reaches ~239 gated tests, not 14 readers (U2, corrects TB-REV-182 R5 / TB-REV-183 S4); receipt diagnostic only, no CB-205B (U3); CB-206 freezes row1006 transcript (U4).
-- [x] **COMPLETE** `M6-CP3-CB-205-P13-SLIDE-ENTRY-ACTIVATION-REACH` — exact test append row1006; eight targets compiled; [record](.agents/Directional/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md).
+- [x] **COMPLETE** `M6-CP3-CB-205-P13-SLIDE-ENTRY-ACTIVATION-REACH` — exact test append row1006; eight targets compiled; [record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb205_p13_slide_entry_activation_reach_code_build_record_20261125md).
 - [x] **COMPLETE (invalid attempt)** `M6-CP3-TB-EXEC-185` — timeout, row1006 INVALID; preserve evidence, no semantic acceptance.
 - [x] **COMPLETE** `M6-CP3-CB-205R-HARNESS-TIMEOUT` — full-gate wait has no cutoff; bounded census unchanged; runtime-free; no rebuild. [Record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb205r_harness_timeout_correction_record_20261125md).
 - [x] **COMPLETE (invalid attempt)** `M6-CP3-TB-EXEC-185R` — 1005 PASS, row1006 interrupted after approximately 5 h 42 min, no semantic authority. [Record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb185r_p13_slide_entry_activation_reach_full_gate_execution_report_20261125md).

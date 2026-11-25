@@ -1,3 +1,7 @@
+## 2026-11-25 — TB-REV-185 independently accepts preactivation gate; freezes CB-206
+
+[Review](.agents/Directional/Architecture_M6_CP3_TB_REV_185_Slide_Entry_Activation_Reach_Independent_Review_20261125.md). TB185V source `eee220e7e37f409eb5150f436e80e51a534c037a`, package 15064166049, result 15066180913; independent 1006/1006, 2020/2020 checks; exact 1005 prefix, 773 exact + 232 N1/N2 + 0 material; 1087 members, 81 deferred. Ten receipts and sphere selection match prediction. No production activation, CP3/497/D0/H4 promotion or new stable event; 67/17/50, debt1/deferred81. [Exact CB-206 manifest](.agents/Directional/gates/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Exact_Manifest.md) frozen; compile only next, V5 and full gate separate. QF1 separate.
+
 ## 2026-11-25 — TB-EXEC-185V immutable reach receipt gate PASS
 
 [Execution report](.agents/Directional/Architecture_M6_CP3_TB185V_Reach_Receipt_Reader_Selection_Scope_Full_Gate_Execution_Report_20261125.md). Source `eee220e7e37f409eb5150f436e80e51a534c037a`, artifact `15064166049`, [run 45704661116](https://github.com/akashskypatel/Directional/actions/runs/45704661116), result `15066180913`, 2020/2020 checks. 1006/1006 PASS, first 1005 comparison 773 exact + 232 N1/N2 + 0 N3/material, membership 1087, immutable postflight PASS. Row1006 52.17 s; ten exact predicted receipts and sphere/sphere selection. Stable 67/17/50, debt1/deferred81. TB184 remains accepted; next only `M6-CP3-TB-REV-185`. No activation or promotion.
@@ -44,7 +48,7 @@
 
 ## 2026-11-25 — CB-205 slide-entry activation reach compiled
 
-[Code + Build record](.agents/Directional/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md). Exact one-file test append (+169/−0), application [run 45554541672](https://github.com/akashskypatel/Directional/actions/runs/45554541672), GMP/GMPXX [compile run 45554728034](https://github.com/akashskypatel/Directional/actions/runs/45554728034). Source `21087c8285a5dd367cc16f610386accc061bd194`, candidate package `14995401750` ZIP SHA-256 `7e66ef7b3b16e76618a60b250a76038e65bf2e092601958f8252ac993b778da9`, 28/28 checks, eight targets, `runtimeExecution=false`. Accepted TB184 1005/1005 and CP2 491/491 unchanged. Stable 67/17/50, debt1/deferred81. No activation or CP3/497/D0/H4 promotion. Next only `M6-CP3-TB-EXEC-185`.
+[Code + Build record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb205_p13_slide_entry_activation_reach_code_build_record_20261125md). Exact one-file test append (+169/−0), application [run 45554541672](https://github.com/akashskypatel/Directional/actions/runs/45554541672), GMP/GMPXX [compile run 45554728034](https://github.com/akashskypatel/Directional/actions/runs/45554728034). Source `21087c8285a5dd367cc16f610386accc061bd194`, candidate package `14995401750` ZIP SHA-256 `7e66ef7b3b16e76618a60b250a76038e65bf2e092601958f8252ac993b778da9`, 28/28 checks, eight targets, `runtimeExecution=false`. Accepted TB184 1005/1005 and CP2 491/491 unchanged. Stable 67/17/50, debt1/deferred81. No activation or CP3/497/D0/H4 promotion. Next only `M6-CP3-TB-EXEC-185`.
 
 ## 2026-11-25 — TB-REV-184 adversarial continuation: CB-205 upheld, activation reach corrected
 

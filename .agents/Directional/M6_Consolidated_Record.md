@@ -2165,3 +2165,8 @@ The three superseded CB168D/E records below are preserved verbatim in Volume D3.
 - [Architecture_M6_CP3_TB185R_P13_Slide_Entry_Activation_Reach_Full_Gate_Execution_Report_20261125.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb185r_p13_slide_entry_activation_reach_full_gate_execution_report_20261125md) — TB185R invalid full gate (runner cancellation); 1005 PASS not accepted as new gate.
 - [Architecture_M6_CP3_CB205S_Reach_Termination_Diagnostic_Preparation_Record_20261125.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb205s_reach_termination_diagnostic_preparation_record_20261125md) — CB-205S diagnostic preparation; superseded by actual TB185T observation.
 - [Architecture_M6_CP3_TB185S_Reach_Termination_Diagnostic_Execution_Report_20261125.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb185s_reach_termination_diagnostic_execution_report_20261125md) — TB185S invalid before product launch (GDB unavailable).
+
+
+## TB-REV-185 folded record index — 2026-11-25 UTC
+
+- [Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb205_p13_slide_entry_activation_reach_code_build_record_20261125md) — superseded original CB205 compile record, 67 lines, SHA-256 `480f9cae0eb14c767be03d4081d7758901ff4519a5c619e0a19fdc9c34b8dc69`, original `.agents/Directional/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md` at `aa65fce6d6fa4e7e5fd2955b65542e75cb7d153c`.
