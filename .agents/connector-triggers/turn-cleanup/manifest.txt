@@ -1,0 +1,2 @@
+# CB-202 verified snapshot trigger retirement
+.agents/connector-triggers/source-snapshot/cb202-20261124-230755.txt
