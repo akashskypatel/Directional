@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP3-TB-EXEC-184
-Status: IN_PROGRESS
-Successor: UNKNOWN
+Status: COMPLETE
+Successor: M6-CP3-TB-REV-184
 Started at: 2026-11-25T04:22:19Z
 Resumed at: 
-Ended at: 
+Ended at: 2026-11-25T04:40:00Z
 ---END_TURN_STATUS---
