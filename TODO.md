@@ -1,24 +1,24 @@
-**Current turn outcome (2026-11-25 UTC):** CB-203 compile-only passed, source `58baa583770dba7c4c2f88537ba4c7c317f47573`, package `14984948549`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB203_P13_Display_Stop_Locus_Contract_Code_Build_Record_20261125.md). TB182 1004/1004 remains accepted. No Branch A activation or CP3/497/D0/H4 promotion.
+**Current turn outcome (2026-11-25 UTC):** TB183 1005/1005 PASS, 1086 members, 636 exact + 363 N1/N2 + 4 N3 (164, 172, 176, 179), one authorized row858 receipt; row1005 new guard PASS; exact source `58baa583770dba7c4c2f88537ba4c7c317f47573`, package `14984948549`, result `14986349003`. [execution report](.agents/Directional/Architecture_M6_CP3_TB183_P13_Display_Stop_Locus_Contract_Full_Gate_Execution_Report_20261125.md). TB182 1004/1004 remains accepted; independent TB-REV-183 next. No Branch A activation or CP3/497/D0/H4 promotion.
 
-## CURRENT — CB-203 compile-only passed; TB-EXEC-183 next (2026-11-25 UTC)
+## CURRENT — TB183 execution PASS; TB-REV-183 next (2026-11-25 UTC)
 
 - [x] **COMPLETE** `M6-CP3-TB-REV-182` — [independent](.agents/Directional/Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md) (TB182 accepted, STOP A1) + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_182_Adversarial_Review_20261125.md) (A1 resolved).
 - [x] **COMPLETE** `M6-CP3-CB-203-P13-DISPLAY-STOP-LOCUS-CONTRACT` — [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB203_P13_Display_Stop_Locus_Contract_Code_Build_Record_20261125.md), exact test-only diff, eight targets, no runtime.
-- [ ] **1 NEXT** `M6-CP3-TB-EXEC-183-P13-DISPLAY-STOP-LOCUS-CONTRACT-FULL-GATE` — 1005+81=1086; 1005/1005; only row858 receipt + row1005 differ.
-- [ ] **3** `M6-CP3-TB-REV-183` — accept; freeze CB-204 (test-only pre-staging: row979 explicit unstaged negative + production≡unstaged; row978 explicit flag).
+- [x] **COMPLETE** `M6-CP3-TB-EXEC-183-P13-DISPLAY-STOP-LOCUS-CONTRACT-FULL-GATE` — [execution report](.agents/Directional/Architecture_M6_CP3_TB183_P13_Display_Stop_Locus_Contract_Full_Gate_Execution_Report_20261125.md); 1005/1005 PASS, 1086 members, 636 exact + 363 N1/N2 + 4 N3 (164, 172, 176, 179), one authorized row858 receipt; row1005 new guard PASS.
+- [ ] **1 NEXT** `M6-CP3-TB-REV-183` — independently accept or stop; freeze CB-204 (test-only pre-staging: row979 explicit unstaged negative + production≡unstaged; row978 explicit flag).
 - [ ] **4** CB-204 → TB-EXEC-184 → TB-REV-184 — freeze CB-205 from receipts (row393 eight carrier ends, row648 built-plan certificate).
 - [ ] **5** CB-205 activation (single-source `stopAtLaterSlideEntry` default flip + certain-flip rows 393/648/858/978/979 only) → TB-EXEC-185 (V5 BunnyRandom census; STOP-on-RED for 394/396/397/644/645/693/694/843/844/963/968/971/972) → TB-REV-185.
 - [ ] **6** parameter-deletion CB → V3b → R1 → O48, each separate. **HELD:** CB-190 (off path; add `<iterator>` gap at SourceChartTransitions.h:529), J6, E5. No CP3/497/D0/H4 promotion.
 
 ```text
-NEXT_TURN: M6-CP3-TB-EXEC-183-P13-DISPLAY-STOP-LOCUS-CONTRACT-FULL-GATE
-Owner: Test + Benchmark, artifact-only; no rebuild, relink, mutation or benchmarks
-Authority: Architecture_M6_CP3_CB203_P13_Display_Stop_Locus_Contract_Code_Build_Record_20261125.md; exact manifest gates/Architecture_M6_CP3_CB203_P13_Display_Stop_Locus_Contract_Exact_Manifest.md
-  exact source 58baa583770dba7c4c2f88537ba4c7c317f47573; package 14984948549; ZIP SHA-256 aecef095ea5ebc5dcfbf1828a1fefb6424dbc772f87ddc10b74409871ddc7465
-  manifest 94f02d6bd2d599f02bbc7dc7cd317e490cdb00e18827596acac2cfdd827460be = TB182 d778afbe... + row1005; 1005+81=1086; expect 1005/1005 PASS
-  vs TB182 14979452472 under N1-N3 only row858 receipt + row1005 may differ; SphereDisplayStop must show the existing cut-graph stop with sourceFace; anything else STOP
-Then: M6-CP3-TB-REV-183 (freeze CB-204 test-only pre-staging of rows 979/978) -> TB-EXEC-184 -> TB-REV-184 (freeze CB-205 activation) -> CB-205 -> TB-EXEC-185 (+V5 BunnyRandom; STOP-on-RED for R5 static-unknown readers) -> TB-REV-185
-Do not: rebuild, relink, mutate tests, activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190
+NEXT_TURN: M6-CP3-TB-REV-183
+Owner: Review + Plan; independent primary-evidence re-derivation, no runtime or code changes
+Authority: Architecture_M6_CP3_TB183_P13_Display_Stop_Locus_Contract_Full_Gate_Execution_Report_20261125.md; CB-203 exact manifest gates/Architecture_M6_CP3_CB203_P13_Display_Stop_Locus_Contract_Exact_Manifest.md; TB-REV-182 adversarial R1/R3/R4
+  exact source 58baa583770dba7c4c2f88537ba4c7c317f47573; package 14984948549; run 45535492280; result 14986349003; ZIP SHA-256 95b49af95c09e1bca461198c798db57e506b4daf7e09da1466c0fbd2b76a9742
+  1005/1005 PASS; membership 1086; only row858 receipt and new row1005 under N1–N3
+  verify receipt and independent corner-face guard; freeze CB-204 test-only pre-staging of rows979/978 only if accepted
+Then: CB-204 -> TB-EXEC-184 -> TB-REV-184 (freeze CB-205 activation) -> CB-205 -> TB-EXEC-185 (+V5 BunnyRandom; STOP-on-RED for R5 static-unknown readers) -> TB-REV-185
+Do not: rebuild, relink, run tests, activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190
 ```
 
 ## HISTORY — TB-REV-182 activation authorization stop (2026-11-25 UTC)
