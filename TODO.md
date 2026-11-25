@@ -1,21 +1,19 @@
-**Current turn outcome (2026-11-25 UTC):** CB-202 compile-only passed, source `ea7dc19db6a953354b065dabc6b67baff8163b57`, package `14976770449`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. Accepted TB181 1003/1003, CP2 491/491, stable 67/17/50 and debt1/deferred81 unchanged. Row979 remains unclassified; no CP3/497/D0/H4 promotion. Next only `M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE`.
+**Current turn outcome (2026-11-25 UTC):** TB182 1004/1004 PASS, result `14979452472`, 2016/2016 checks; only authorized row979 receipt and new row1004. CP2 491/491, accepted TB181 1003/1003, stable 67/17/50 and debt1/deferred81 unchanged. Row979 staged plan built; independent classification pending. No CP3/497/D0/H4 promotion. Next only `M6-CP3-TB-REV-182`.
 
-## CURRENT — CB-202 compile-only complete (2026-11-25 UTC)
+## CURRENT — TB182 execution complete (2026-11-25 UTC)
 
-- [x] **COMPLETE** TB-REV-181 [adversarial continuation](.agents/Directional/Architecture_M6_CP3_TB_REV_181_Adversarial_Review_20261124.md): CB-202 hashes/apply/syntax verified (0 errors, no new warnings, header self-contained) (O1); TB181 log census — every reordered plan code and `Plan outcome=` occur only in row979, so the only-row979 rule is sound (O2); complete-partition-union branch accepted as bounded reject-only validation debt D-U with removal condition (O3); certificate `boundarySingularities` digest risk predicted nil, STOP rule retained (O4).
+- [x] **COMPLETE** TB-REV-181 [adversarial continuation](.agents/Directional/Architecture_M6_CP3_TB_REV_181_Adversarial_Review_20261124.md): exact CB-202 upheld, D-U bounded reject-only debt and strict comparison rule retained.
 - [x] **COMPLETE** `M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH` — [build record](.agents/Directional/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Code_Build_Record_20261124.md); exact [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md), compile only.
-- [ ] **1 NEXT ONLY** `M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE` — 1004+81; only row979 receipt + row1004 may differ vs TB181; else STOP.
-- [ ] **2** `M6-CP3-TB-REV-182` — classify row979: (a) built → Branch A activation CB; (b) new error → one exact receipt/correction; (c) still interior singularity → A2a node1 + remove D-U.
-- [ ] **3 HELD** Branch A (after a built plan and independent review), CB-190; J6, E5. No CP3/497/D0/H4 promotion.
+- [x] **COMPLETE** `M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE` — [execution report](.agents/Directional/Architecture_M6_CP3_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Execution_Report_20261125.md); 1004/1004 PASS, only authorized changes.
+- [ ] **1 NEXT ONLY** `M6-CP3-TB-REV-182` — independently verify the full gate; classify row979, adjudicate P1/D-U and freeze conditional successor only if justified by exact evidence.
+- [ ] **2 HELD** Branch A (only after independent authorization), CB-190; J6, E5. No CP3/497/D0/H4 promotion.
 
 ```text
-NEXT_TURN: M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE
-Owner: Test + Benchmark, immutable artifact-only full gate; no rebuild, repair, relink or benchmark
-Authority: .agents/Directional/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Code_Build_Record_20261124.md; gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md; TB-REV-181 independent + adversarial
-Source: ea7dc19db6a953354b065dabc6b67baff8163b57; package 14976770449; SHA-256 c6c02b1803f596cda42bfbdddd344ec900c7438e5c0e8ed4d59326be7f6bb836
-Manifest: gates/Architecture_M6_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Case_Manifest.tsv; SHA-256 d778afbe65e181391116a67ada06f4482e9786917ca58dd2a17f7b7459d8ca5f; 1004 gated + 81 deferred = 1085
-Compare: accepted TB181 result 14967943314; N1–N3 only; only row979 raw receipt and new row1004 may differ; 1004/1004 PASS required; anything else STOP
-Then: M6-CP3-TB-REV-182 (classify row979: built -> possible Branch A activation CB; new error -> one exact receipt/correction; still RegionContainsInteriorSingularity -> A2a node1 + D-U removal)
+NEXT_TURN: M6-CP3-TB-REV-182
+Owner: independent Review, no runtime or implementation
+Authority: .agents/Directional/Architecture_M6_CP3_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Execution_Report_20261125.md; CB-202 exact manifest; TB-REV-181 independent and adversarial reviews
+Evidence: run 45517814731, result 14979452472, SHA-256 bbbc344b8213b16c9259eb4e5edc24b8a8aadbc8390df32137e239fb113420b7; accepted TB181 result 14967943314
+Review: independently verify 1004/1004, 1085 membership, only N1–N3 and row979/new row1004 differences. Classify staged built plan and P1/D-U. Freeze Branch A activation CB only if the reviewed requirements permit; otherwise STOP.
 Do not: activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190
 ```
 

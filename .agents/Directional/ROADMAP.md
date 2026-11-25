@@ -2,13 +2,13 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Updated:** 2026-11-24 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
+**Updated:** 2026-11-25 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
 
 This roadmap answers **what is done, what comes next, and what each milestone delivers**. It is not a turn log, task queue, test ledger, definition spec, or implementation handoff. The product and acceptance contract is [DESIGN.md](DESIGN.md) (especially §§2 and 14); status, detailed plans, unresolved findings, and exact next-turn authorization live in [ORIENTATION.md](ORIENTATION.md), [Future_Chat_Session_Handoff.md](Future_Chat_Session_Handoff.md), [TODO.md](../../TODO.md), and [Regression_Root_Cause_Tracker.md](Regression_Root_Cause_Tracker.md).
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3; accepted TB181 **1003/1003**, CP2 **491/491**. TB170 seven-control recurrence and K6 closed. CB-202 compiled; next only `M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE` (immutable test gate). No CP3/497/D0/H4 promotion.
+**Completed:** M0–M5 · **Now:** M6 / CP3; accepted TB181 **1003/1003**, CP2 **491/491**. TB170 seven-control recurrence and K6 closed. TB182 **1004/1004** execution PASS, staged plan built; next only `M6-CP3-TB-REV-182` (independent review). No CP3/497/D0/H4 promotion.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
