@@ -40,10 +40,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Mandatory next turn
 
-- **COMPLETE:** TB-REV-182 ([adv.](Architecture_M6_CP3_TB_REV_182_Adversarial_Review_20261125.md), A1 resolved) → [CB-203](Architecture_M6_CP3_CB203_P13_Display_Stop_Locus_Contract_Code_Build_Record_20261125.md) → [TB183](Architecture_M6_CP3_TB183_P13_Display_Stop_Locus_Contract_Full_Gate_Execution_Report_20261125.md) 1005/1005 → [TB-REV-183](Architecture_M6_CP3_TB_REV_183_Display_Stop_Locus_Contract_Independent_Review_20261125.md) (CB-204 frozen).
-- **COMPLETE:** [TB-REV-183 adversarial](Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md): CB-204 upheld (S1); row393 is a whitelist oracle, SAFE, eight-ends replacement withdrawn (S2); activation must flip the canonical signature default, row669 is the V11 falsifier (S3); reach unmeasured → test-only activation-reach receipt CB-205 inserted before activation CB-206 (S4).
-
-- **COMPLETE:** [CB-204](Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Code_Build_Record_20261125.md) exact test-only patch, eight targets compiled, runtime not executed.
+- **COMPLETE:** TB-REV-182/183 (+ [183 adv.](Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md)) → [CB-204](Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Code_Build_Record_20261125.md) → TB184 1005/1005 → [TB-REV-184](Architecture_M6_CP3_TB_REV_184_Slide_Entry_Pre_Staging_Independent_Review_20261125.md) (CB-205 frozen).
+- **COMPLETE:** [TB-REV-184 adversarial](Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md): CB-205 upheld and syntax-clean (U1); reach is ~239 gated tests, not 14 readers (U2); receipt is diagnostic, activation gate decides, no CB-205B (U3); CB-206 must freeze row1006 transcript (U4).
 
 ```text
 NEXT_TURN: M6-CP3-CB-205-P13-SLIDE-ENTRY-ACTIVATION-REACH
@@ -51,7 +49,8 @@ Owner: Code + Build only; apply the frozen one-file test append for row1006 and 
 Authority: Architecture_M6_CP3_TB_REV_184_Slide_Entry_Pre_Staging_Independent_Review_20261125.md; gates/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact_Manifest.md; Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact.diff
   Semantic preimage 754369dfb9e98d209e79802d8b13855f42a77f26; exact diff SHA-256 d39216d278b42dd9ee72c62afe3c5826d080c03089fabfd805329347dd6f777f. Accepted TB184 result 14992995631, 1005/1005, 81 deferred. Prospective 1006-case manifest has exact accepted prefix.
   STOP on preimage/postimage/path/build/package mismatch. No default flip, existing test or selector mutation. Preserve explicit false sphere control, thirteen recipe keys and production/staged receipts.
-Then: only after compile evidence, separate TB-EXEC-185 -> TB-REV-185; CB-206 activation remains held pending reach classification and exact replacements. Do not start a successor in this Review.
+Then: TB-EXEC-185 (1006/1006; record row1006 elapsed) -> TB-REV-185 (classify 13 recipes + readers incl. 380/388/688/689/691/695/698-700/702; other families UNMEASURED; freeze CB-206 = flip :5336 + rows 648/978/979 + row979 label + row1006 transcript) -> CB-206 -> TB-EXEC-186 (V5; full compare vs TB185; STOP-on-RED) -> TB-REV-186 (one correction CB per RED family)
+Realigned by: Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md (U1-U4)
 Do not: activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
 ```
 
@@ -69,15 +68,15 @@ Do not: activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
 | COMPLETE | `M6-CP3-TB-EXEC-184` | 1005/1005 PASS; comparison PASS. [execution report](Architecture_M6_CP3_TB184_P13_Slide_Entry_Pre_Staging_Full_Gate_Execution_Report_20261125.md). |
 | COMPLETE | `M6-CP3-TB-REV-184` | Independently accepted 1005/1005; [review](Architecture_M6_CP3_TB_REV_184_Slide_Entry_Pre_Staging_Independent_Review_20261125.md). |
 | **1 NEXT** | `M6-CP3-CB-205-P13-SLIDE-ENTRY-ACTIVATION-REACH` | Exact test-only receipt, [manifest](gates/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact_Manifest.md); compile only. |
-| 3 | TB-EXEC-185 → TB-REV-185 | Per-recipe production/staged digests/counts; classify readers; freeze CB-206 only from measured evidence. |
-| 4A | CB-206 activation → TB-EXEC-186 (V5 BunnyRandom; STOP-on-RED) → TB-REV-186 → parameter-deletion CB → V3b → R1 → O48 | Signature-default flip `SurfaceCellTracing.cpp:5336` (row669 falsifier) + exact rows 648/978/979; separate turns. |
+| 2–3 | TB-EXEC-185 → TB-REV-185 | 13-recipe digests/counts; classify readers on them (S4 + [U2](Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md)); other families UNMEASURED; freeze CB-206 incl. row979 label + row1006 transcript (U4). |
+| 4A | CB-206 activation → TB-EXEC-186 (V5 BunnyRandom; full compare vs TB185; STOP-on-RED) → TB-REV-186 (one correction CB per RED family) → parameter-deletion CB → V3b → R1 → O48 | Signature-default flip `SurfaceCellTracing.cpp:5336` (row669 falsifier) + exact rows 648/978/979; separate turns. |
 | 5 | CB-190 | S4/S6/S7 diagnostic conformity plus W6 obsolete-code comments (off critical path). |
 | Withdrawn | prose CB-200 plan + C4 assertion (TB-REV-179 adv. M2); CB-199A `4f458361…` (TB-REV-177 adv. J4); prose CB-198 (176 H1); prose CB-197A/196/195/193/187/186/183/180/178/175/173, CB-194, CB-191, DEFN-161A/159A, CB-185 v1, activation-before-plan — see TB-REV-162…177 adversarial records | — |
 | Held / Parked | `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`, `…-FACE-CONTACT-OUTCOME` (FC-6), row 858 face DEFN; `M6-CP3-CB-145-P13-VERTEX-FOLLOW-BOUNDARY` | 858 after the sphere repair. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: [TB-REV-184 review](Architecture_M6_CP3_TB_REV_184_Slide_Entry_Pre_Staging_Independent_Review_20261125.md), [CB-205 exact manifest](gates/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact_Manifest.md), [exact diff](Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact.diff), [prospective TB185 gate](gates/Architecture_M6_TB185_P13_Slide_Entry_Activation_Reach_Full_Gate_Case_Manifest.tsv), [TB184 execution report](Architecture_M6_CP3_TB184_P13_Slide_Entry_Pre_Staging_Full_Gate_Execution_Report_20261125.md), [CB-204 Code + Build record](Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Code_Build_Record_20261125.md), [TB-REV-183 adversarial](Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md), [LESSONS.md](LESSONS.md). Historical evidence: folded index and Turn Sequence.
+`load_next`: [TB-REV-184 review](Architecture_M6_CP3_TB_REV_184_Slide_Entry_Pre_Staging_Independent_Review_20261125.md) + [adversarial](Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md), [CB-205 exact manifest](gates/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact_Manifest.md), [exact diff](Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact.diff), [prospective TB185 gate](gates/Architecture_M6_TB185_P13_Slide_Entry_Activation_Reach_Full_Gate_Case_Manifest.tsv), [TB184 execution report](Architecture_M6_CP3_TB184_P13_Slide_Entry_Pre_Staging_Full_Gate_Execution_Report_20261125.md), [CB-204 Code + Build record](Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Code_Build_Record_20261125.md), [TB-REV-183 adversarial](Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md), [LESSONS.md](LESSONS.md). Historical evidence: folded index and Turn Sequence.
 
 0. [ORIENTATION.md](ORIENTATION.md) — project context, read first.
 1. [ROADMAP.md](ROADMAP.md) — milestone position only.
