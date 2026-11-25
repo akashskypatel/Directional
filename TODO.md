@@ -1,24 +1,25 @@
-**Current turn outcome (2026-11-25 UTC):** TB185R invalid execution; [terminal record](.agents/Directional/Architecture_M6_CP3_TB185R_P13_Slide_Entry_Activation_Reach_Full_Gate_Execution_Report_20261125.md). TB184 1005/1005 remains independently accepted. Next `M6-CP3-CB-205S-REACH-TERMINATION-DIAGNOSTIC`. No activation or CP3/497/D0/H4 promotion.
+**Current turn outcome (2026-11-25 UTC):** CB-205S diagnostic preparation;  [terminal record](.agents/Directional/Architecture_M6_CP3_TB185R_P13_Slide_Entry_Activation_Reach_Full_Gate_Execution_Report_20261125.md). TB184 1005/1005 remains independently accepted. Next `M6-CP3-TB-EXEC-185S-REACH-TERMINATION-DIAGNOSTIC`. No activation or CP3/497/D0/H4 promotion.
 
-## CURRENT — TB185R invalid execution complete (2026-11-25 UTC)
+## CURRENT — CB-205S diagnostic preparation complete (2026-11-25 UTC)
 
 - [x] **COMPLETE** `M6-CP3-TB-REV-184` independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md): CB-205 upheld, syntax-clean (U1); activation reaches ~239 gated tests, not 14 readers (U2, corrects TB-REV-182 R5 / TB-REV-183 S4); receipt diagnostic only, no CB-205B (U3); CB-206 freezes row1006 transcript (U4).
 - [x] **COMPLETE** `M6-CP3-CB-205-P13-SLIDE-ENTRY-ACTIVATION-REACH` — exact test append row1006; eight targets compiled; [record](.agents/Directional/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md).
 - [x] **COMPLETE (invalid attempt)** `M6-CP3-TB-EXEC-185` — timeout, row1006 INVALID; preserve evidence, no semantic acceptance.
 - [x] **COMPLETE** `M6-CP3-CB-205R-HARNESS-TIMEOUT` — full-gate wait has no cutoff; bounded census unchanged; runtime-free; no rebuild. [Record](.agents/Directional/Architecture_M6_CP3_CB205R_Harness_Timeout_Correction_Record_20261125.md).
 - [x] **COMPLETE (invalid attempt)** `M6-CP3-TB-EXEC-185R` — 1005 PASS, row1006 interrupted after approximately 5 h 42 min, no semantic authority. [Record](.agents/Directional/Architecture_M6_CP3_TB185R_P13_Slide_Entry_Activation_Reach_Full_Gate_Execution_Report_20261125.md).
-- [ ] **1 NEXT** `M6-CP3-CB-205S-REACH-TERMINATION-DIAGNOSTIC` — inspect exact operation following genus_two; prepare bounded immutable diagnostic without runtime in CB. No blind rerun, timeout increase, oracle weakening or activation.
+- [x] **COMPLETE** `M6-CP3-CB-205S-REACH-TERMINATION-DIAGNOSTIC` — close_sheets construction is next; exact nested call unmeasured; [diagnostic preparation](.agents/Directional/Architecture_M6_CP3_CB205S_Reach_Termination_Diagnostic_Preparation_Record_20261125.md). No runtime or rebuild.
+- [ ] **1 NEXT** `M6-CP3-TB-EXEC-185S-REACH-TERMINATION-DIAGNOSTIC` — one bounded external observation of exact row1006; no gate credit.
 - [ ] **2 HELD** Separate diagnosis/correction and full immutable re-execution, with all 1006 cases and original acceptance requirements.
 - [ ] **3** `M6-CP3-TB-REV-185` — classify 13 recipes and their readers (S4 list + 380/388/688/689/691/695/698–700/702); plane, multi_face_seam and synthetic builders UNMEASURED; freeze CB-206 (flip `SurfaceCellTracing.cpp:5336`, rows 648/978/979, row979 label, row1006 transcript).
 - [ ] **4** CB-206 → TB-EXEC-186 (V5 BunnyRandom; full compare vs TB185; STOP-on-RED) → TB-REV-186 (one correction CB per RED family).
 - [ ] **5** parameter-deletion CB → V3b → R1 → O48, each separate. **HELD:** CB-190, J6, E5. No CP3/497/D0/H4 promotion.
 
 ```text
-NEXT_TURN: M6-CP3-CB-205S-REACH-TERMINATION-DIAGNOSTIC
-Owner: Code + Build correction only; no Directional runtime.
-Authority: .agents/Directional/Architecture_M6_CP3_TB185R_P13_Slide_Entry_Activation_Reach_Full_Gate_Execution_Report_20261125.md; Turn_Cadence.md item 5; original CB-205 exact manifest.
-  Locate the non-completing operation after genus_two; prefer external bounded diagnostic of immutable package 14995401750. Preserve 1006-case gate, 81 deferred, original assertions and workflow permissions. Freeze separate diagnostic execution as needed; no runtime in CB, no blind rerun or stitched acceptance. Product correction requires causal evidence and applicable Review boundary.
-Then: valid full-gate re-execution -> TB-REV-185 -> conditional CB-206 -> TB-EXEC-186 -> TB-REV-186.
+NEXT_TURN: M6-CP3-TB-EXEC-185S-REACH-TERMINATION-DIAGNOSTIC
+Owner: artifact-only external diagnostic, no rebuild or product mutation.
+Authority: .agents/Directional/Architecture_M6_CP3_CB205S_Reach_Termination_Diagnostic_Preparation_Record_20261125.md
+  Run only the frozen diagnostic once; verify package/view and selection, retain stack/resource/receipt evidence and report cause or inconclusive. No gate credit, no blind full rerun, no timeout increase or oracle change. Product correction requires causal evidence and applicable Review boundary.
+Then: justified correction -> valid full 1006-case gate -> TB-REV-185 -> conditional CB-206.
 Do not: classify readers from invalid evidence, activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
 ```
 

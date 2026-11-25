@@ -396,6 +396,217 @@ if MODE == 'self-check':
         sys.exit(1)
     sys.exit(0)
 
+def observe_termination(executable, test, workdir, output):
+    """One bounded debugger-owned inferior; never a gate or a retry."""
+    import errno
+    import pty
+    import select
+    import time
+    import tty
+
+    gdb = shutil.which('gdb')
+    require(gdb is not None, 'GNU debugger unavailable')
+    require(hasattr(os, 'pidfd_open') and hasattr(signal, 'pidfd_send_signal'),
+            'Linux PID file descriptor support unavailable')
+    env = {key: os.environ[key] for key in ('PATH', 'HOME', 'LANG', 'LC_ALL', 'TMPDIR')
+           if key in os.environ}
+    env.update(GTEST_COLOR='no', GTEST_FAIL_IF_NO_TEST_SELECTED='1', LC_ALL='C')
+    log_path = output / 'raw/1006.log'
+    start = time.monotonic()
+    deadline = start + 600
+    master, slave = pty.openpty()
+    tty.setraw(slave)
+    terminal = os.ttyname(slave)
+    pid = None
+    pidfd = None
+    stopped = None
+    responses = {}
+    pending = b''
+    sample_count = 0
+    next_token = 0
+    result = {'mode': 'non-gating-external-observation', 'test': test,
+              'budget_seconds': 600, 'sample_interval_seconds': 30,
+              'samples': [], 'outcome': 'observer-error', 'semanticAcceptance': False}
+    process = None
+    try:
+        with log_path.open('wb') as raw, (output / 'gdb-mi.log').open('wb') as transcript:
+            process = subprocess.Popen([gdb, '--nx', '--nh', '--quiet', '--interpreter=mi2',
+                                        '-iex', 'set auto-load off', str(executable)],
+                                       cwd=workdir, env=env, stdin=subprocess.PIPE,
+                                       stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                       start_new_session=True)
+            def pump(until):
+                nonlocal pending, pid, pidfd, stopped
+                require(process.poll() is None, 'debugger exited unexpectedly')
+                ready, _, _ = select.select([process.stdout, master], [], [],
+                                            max(0, min(0.2, until - time.monotonic())))
+                for fd in ready:
+                    try:
+                        data = os.read(fd if isinstance(fd, int) else fd.fileno(), 65536)
+                    except OSError as error:
+                        if fd == master and error.errno == errno.EIO:
+                            continue
+                        raise
+                    if fd == master:
+                        raw.write(data)
+                        raw.flush()
+                        continue
+                    require(bool(data), 'debugger output closed')
+                    transcript.write(data)
+                    transcript.flush()
+                    pending += data
+                    while b'\n' in pending:
+                        line, pending = pending.split(b'\n', 1)
+                        line = line.decode(errors='replace').rstrip('\r')
+                        match = re.match(r'^(\d+)\^(.*)$', line)
+                        if match:
+                            responses[int(match[1])] = match[2]
+                        if line.startswith('=thread-group-started,'):
+                            match = re.search(r'pid="([0-9]+)"', line)
+                            require(match is not None and pid is None, 'unexpected inferior identity')
+                            pid = int(match[1])
+                            try:
+                                pidfd = os.pidfd_open(pid)
+                            except ProcessLookupError:
+                                pass  # An organic exit can precede receipt of this event.
+                        if line.startswith('*stopped,'):
+                            stopped = line
+
+            def wait(predicate, until, label):
+                while not predicate():
+                    require(time.monotonic() < until, f'observer deadline: {label}')
+                    pump(until)
+
+            def command(text, expected='done', limit=15):
+                nonlocal next_token
+                next_token += 1
+                token = next_token
+                transcript.write(f'# command {token}{text}\n'.encode())
+                transcript.flush()
+                process.stdin.write(f'{token}{text}\n'.encode())
+                process.stdin.flush()
+                wait(lambda: token in responses, min(deadline, time.monotonic() + limit), text)
+                response = responses.pop(token)
+                require(response.split(',', 1)[0] == expected, f'debugger command failed: {text}: {response}')
+
+            command('-gdb-version')
+            for setting in ('pagination off', 'confirm off', 'disable-randomization off',
+                            'mi-async on', 'startup-with-shell off', 'print frame-arguments none', 'debuginfod enabled off'):
+                command('-gdb-set ' + setting)
+            command('-inferior-tty-set ' + json.dumps(terminal))
+            command('-exec-arguments --gtest_filter=' + test)
+            command('-exec-run', 'running')
+            wait(lambda: pid is not None, min(deadline, time.monotonic() + 15), 'inferior PID')
+            next_sample = time.monotonic() + 30
+            # Reserve time for the final sample and cleanup inside the diagnostic budget.
+            while time.monotonic() < deadline - 25:
+                if stopped is not None:
+                    break
+                pump(min(next_sample, deadline - 25))
+                if time.monotonic() < next_sample or stopped is not None:
+                    continue
+                data = log_path.read_bytes()
+                sample = {'elapsed_seconds': round(time.monotonic() - start, 3),
+                          'pid': pid, 'log_bytes': len(data),
+                          'log_sha256': hashlib.sha256(data).hexdigest(),
+                          'receipts': [line.decode(errors='replace') for line in data.splitlines()
+                                       if line.startswith(b'SlideEntryActivationReach recipe=')]}
+                # Observe scheduler/resource counters before interruption, not debugger-stop state.
+                for name in ('stat', 'status', 'wchan'):
+                    try:
+                        sample[name] = (Path('/proc') / str(pid) / name).read_text()
+                    except OSError as error:
+                        sample[name] = f'unavailable: {type(error).__name__}'
+                tasks = Path('/proc') / str(pid) / 'task'
+                sample['threads'] = {}
+                for task in sorted(tasks.glob('[0-9]*')):
+                    try:
+                        sample['threads'][task.name] = {name: (task / name).read_text()
+                                                        for name in ('stat', 'wchan')}
+                    except OSError:
+                        continue  # A thread may finish during observation.
+                result['samples'].append(sample)
+                sample_count += 1
+                (output / 'observation.json').write_text(json.dumps(result, indent=2) + '\n')
+                print(f'OBSERVE sample={sample_count} log_bytes={len(data)} receipts={len(sample["receipts"])}', flush=True)
+                command('-exec-interrupt --all')
+                wait(lambda: stopped is not None, min(deadline, time.monotonic() + 10), 'inferior stop')
+                if 'reason="signal-received"' not in stopped or 'signal-name="SIGINT"' not in stopped:
+                    break
+                sample['pc_command_token'] = next_token + 1
+                command('-interpreter-exec console "info registers pc"')
+                sample['stack_command_token'] = next_token + 1
+                command('-interpreter-exec console "thread apply all bt 40"')
+                if sample_count == 1:
+                    command('-interpreter-exec console "info proc mappings"')
+                sample['stack_completed'] = True
+                stopped = None
+                command('-exec-continue', 'running')
+                next_sample = time.monotonic() + 30
+            # A late organic exit is distinguished from a deliberate observer cutoff.
+            pump(min(deadline, time.monotonic() + 0.2))
+            result['stop_record'] = stopped
+            if stopped and 'reason="exited-normally"' in stopped:
+                result['outcome'] = 'organic-exit-zero'
+                code = 0
+            elif stopped and 'reason="exited"' in stopped:
+                result['outcome'] = 'organic-nonzero-exit'
+                match = re.search(r'exit-code="([0-7]+)"', stopped)
+                code = int(match[1], 8) if match else 90
+            elif stopped:
+                result['outcome'] = 'unexpected-inferior-stop'
+                code = 90
+            else:
+                result['outcome'] = 'bounded-observation-ended'
+                code = 124
+            # Drain pending inferior output before closing the raw receipt.
+            while time.monotonic() < deadline and select.select([master], [], [], 0)[0]:
+                try:
+                    data = os.read(master, 65536)
+                except OSError as error:
+                    if error.errno == errno.EIO:
+                        break
+                    raise
+                if not data:
+                    break
+                raw.write(data)
+            result['observer_exit_code'] = code
+            if result['outcome'].startswith('organic-'):
+                result['inferior_exit_code'] = code
+            return code
+    except Exception as error:
+        result['error'] = f'{type(error).__name__}: {error}'
+        print('OBSERVER_FAILURE', result['error'], flush=True)
+        return 90
+    finally:
+        # A PID file descriptor identifies the exact inferior, even if GDB
+        # gives it a separate session. Do not signal an unrelated process.
+        if process is not None:
+            if pidfd is not None:
+                try:
+                    signal.pidfd_send_signal(pidfd, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+                finally:
+                    os.close(pidfd)
+            if process.poll() is None:
+                try:
+                    process.stdin.write(b'-gdb-exit\n')
+                    process.stdin.flush()
+                    process.wait(timeout=3)
+                except (BrokenPipeError, subprocess.TimeoutExpired):
+                    try:
+                        os.killpg(process.pid, signal.SIGKILL)
+                    except ProcessLookupError:
+                        pass
+                    process.wait(timeout=10)
+            result['debugger_exit_code'] = process.returncode
+        os.close(master)
+        os.close(slave)
+        result['elapsed_seconds'] = round(time.monotonic() - start, 3)
+        result['inferior_pid'] = pid
+        (output / 'observation.json').write_text(json.dumps(result, indent=2) + '\n')
+
 ROOT = Path(os.environ['RUNNER_TEMP']) / os.environ['TURN_ID']
 OUT = Path(str(ROOT) + '-result')
 (OUT / 'raw').mkdir(parents=True, exist_ok=True)
@@ -409,8 +620,10 @@ exit_code = 90
 source_sha = ''
 artifact_id = None
 error_message = ''
+diagnostic = os.environ.get('REACH_TERMINATION_DIAGNOSTIC', '')
 
 try:
+    require(diagnostic in ('', '1'), 'invalid diagnostic mode')
     required = ['CANDIDATE_ARTIFACT_ID', 'EXPECTED_SOURCE_SHA',
                 'EXPECTED_CANDIDATE_ZIP_SHA256', 'EXPECTED_ROOT_MANIFEST_SHA256',
                 'EXPECTED_SOURCE_ARCHIVE_SHA256', 'CASE_MANIFEST', 'CASE_MANIFEST_SHA256',
@@ -443,6 +656,22 @@ try:
     ledger = read_ledger(repo_file(os.environ['MEMBERSHIP_LEDGER'], os.environ.get('MEMBERSHIP_LEDGER_SHA256', ''),
                                    'deferred ledger'), cases) if gate else []
     state['planned'] = len(cases)
+    if diagnostic:
+        require(values == {
+            'CANDIDATE_ARTIFACT_ID': '14995401750',
+            'EXPECTED_SOURCE_SHA': '21087c8285a5dd367cc16f610386accc061bd194',
+            'EXPECTED_CANDIDATE_ZIP_SHA256': '7e66ef7b3b16e76618a60b250a76038e65bf2e092601958f8252ac993b778da9',
+            'EXPECTED_ROOT_MANIFEST_SHA256': '255e344116e2faa2d351b637cdfc6d11805b83352965f794b8bddaf56409f5d3',
+            'EXPECTED_SOURCE_ARCHIVE_SHA256': 'bba6f2ce82c27a1481dad5fb16952b88476fca25411840a3e6d588ad67d2502e',
+            'CASE_MANIFEST': '.agents/Directional/gates/Architecture_M6_TB185_P13_Slide_Entry_Activation_Reach_Full_Gate_Case_Manifest.tsv',
+            'CASE_MANIFEST_SHA256': 'a9b8083269ebd0786f0584d66c1f89f43362d884840ab95b95c3d0fa59ca0587',
+            'EXPECTED_CASE_COUNT': '1006'}, 'diagnostic package/gate authority mismatch')
+        require(os.environ['MEMBERSHIP_LEDGER_SHA256'] == 'fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce'
+                and len(ledger) == 81, 'diagnostic deferred authority mismatch')
+        require(cases[-1] == ['1006', 'GUARD', 'tb-rev-184:slide-entry-activation-reach',
+                'TraceTerminationCorrection.SlideEntryActivationReachByReaderRecipe',
+                'directional_surface_cell_producer_tests', 'PASS', '-'], 'diagnostic row mismatch')
+        state['planned'] = 0  # No gate cases are executed in this mode.
     print(f'PREFLIGHT cases={len(cases)} deferred={len(ledger)} source={source_sha} artifact={artifact_id}', flush=True)
 
     api = f'https://api.github.com/repos/{repo}/actions/artifacts/{artifact_id}'
@@ -489,7 +718,7 @@ try:
         deps_text = deps.stdout + deps.stderr
         require('not found' not in deps_text and 'libgmp' in deps_text, f'GMP dependency missing for {binary}')
         (OUT / f'dependencies-{binary}.txt').write_text(deps_text)
-    if gate:
+    if gate and not diagnostic:
         listings = {}
         for entry in sorted(view_bin.iterdir()):
             if entry.is_file() and entry.name.endswith('_tests'):
@@ -503,7 +732,13 @@ try:
         state['membership'] = len(members)
         print(f'MEMBERSHIP binaries={len(listings)} tests={len(members)}', flush=True)
 
-    for case in cases:
+    if diagnostic:
+        row, _, _, test, binary, _, _ = cases[-1]
+        workdir = ROOT / 'run' / row
+        workdir.mkdir(parents=True, exist_ok=True)
+        diagnostic_code = observe_termination(view_bin / binary, test, workdir, OUT)
+        # Never convert diagnostic results into gate ledger rows or PASS counts.
+    for case in ([] if diagnostic else cases):
         row, kind, identity, test, binary, expect, site = case
         executable = view_bin / binary
         workdir = ROOT / 'run' / row
@@ -551,10 +786,17 @@ try:
     after = {str(path.relative_to(view)): digest(path) for path in view.rglob('*') if path.is_file()}
     require(before == after, 'staged view mutated')
     state['postflight'] = True
+    if diagnostic:
+        data = (OUT / 'raw/1006.log').read_text(errors='replace')
+        require(re.findall(r'(?m)^\[ RUN      \] ([^\r\n]+)', data) == [test],
+                'diagnostic did not select exactly the frozen test')
+        if diagnostic_code == 0:
+            require(classify_case(data, test, 0)[0] == 'PASS',
+                    'organic zero exit without exact terminal Google Test evidence')
     require(state['executed'] == state['planned'] and state['missing'] == 0 and
             state['duplicate'] == 0 and state['skipped'] == 0, 'selection failure')
     require(state['control_bad'] == 0, 'required controls failed')
-    exit_code = 0
+    exit_code = diagnostic_code if diagnostic else 0
 except Exception as error:
     error_message = f'{type(error).__name__}: {error}'
     print('TARGETED_HARNESS_FAILURE', error_message, file=sys.stderr)
@@ -567,7 +809,8 @@ finally:
     (OUT / 'execution-boundary.json').write_text(json.dumps({
         'artifact': artifact_id, 'source': source_sha, 'state': state,
         'error': error_message, 'compile': False, 'relink': False,
-        'configure': False, 'benchmark': False, 'exit': exit_code}, indent=2) + '\n')
+        'configure': False, 'benchmark': False, 'exit': exit_code,
+        **({'nonGatingDiagnostic': True} if diagnostic else {})}, indent=2) + '\n')
     with (OUT / 'SHA256SUMS').open('w') as stream:
         for path in sorted(OUT.rglob('*')):
             if path.is_file() and path.name != 'SHA256SUMS':

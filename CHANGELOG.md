@@ -1,3 +1,7 @@
+## 2026-11-25 — CB-205S reach termination diagnostic prepared
+
+[Record](.agents/Directional/Architecture_M6_CP3_CB205S_Reach_Termination_Diagnostic_Preparation_Record_20261125.md). Close_sheets fixture construction follows genus_two; exact nested non-completing call unmeasured. Pinned external debugger observation mode reuses immutable package 14995401750, original gate and dependency checks, without gate credit. No Directional runtime, rebuild, test/product/fixture change or activation. TB184 remains accepted 1005/1005; stable 67/17/50, debt1/deferred81. Next only `M6-CP3-TB-EXEC-185S-REACH-TERMINATION-DIAGNOSTIC`.
+
 ## 2026-11-25 — TB-EXEC-185R invalid execution
 
 [Terminal record](.agents/Directional/Architecture_M6_CP3_TB185R_P13_Slide_Entry_Activation_Reach_Full_Gate_Execution_Report_20261125.md). Run 45565763558, result 15023679215; 1005 PASS, case1006 incomplete at hosted job cancellation. All 11 printed receipts match prior invalid attempt byte-for-byte. No final selection, elapsed or postflight; no semantic authority. TB184 remains accepted 1005/1005, stable 67/17/50, debt1/deferred81. Next `M6-CP3-CB-205S-REACH-TERMINATION-DIAGNOSTIC` under cadence item 5; no activation or promotion.
