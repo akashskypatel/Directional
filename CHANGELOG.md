@@ -1,3 +1,7 @@
+## 2026-11-25 — TB-REV-185 adversarial continuation reorders QF1 before activation
+
+[Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_185_Adversarial_Review_20261125.md). TB185V acceptance and CB-206 diff bytes upheld; CB-206 syntax-only clean (0 errors, no new warnings in both files). Activation lets the sphere pass its cut failure into quotient production, where QF1 stalled close_sheets; gated rows 648/843/844/858/1006 newly reach it, and row858 asserts the sphere still fails somewhere. New order: CB-207A → CB-207B → TB-EXEC-187Q → TB-REV-187Q → CB-206 → TB-EXEC-186T (bounded) → TB-REV-186T → TB-EXEC-186 → TB-REV-186. No product, test or selector change.
+
 ## 2026-11-25 — TB-REV-185 independently accepts preactivation gate; freezes CB-206
 
 [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_185_Slide_Entry_Activation_Reach_Independent_Review_20261125.md). TB185V source `eee220e7e37f409eb5150f436e80e51a534c037a`, package 15064166049, result 15066180913; independent 1006/1006, 2020/2020 checks; exact 1005 prefix, 773 exact + 232 N1/N2 + 0 material; 1087 members, 81 deferred. Ten receipts and sphere selection match prediction. No production activation, CP3/497/D0/H4 promotion or new stable event; 67/17/50, debt1/deferred81. [Exact CB-206 manifest](.agents/Directional/gates/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Exact_Manifest.md) frozen; compile only next, V5 and full gate separate. QF1 separate.

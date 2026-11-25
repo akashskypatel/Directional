@@ -2,6 +2,8 @@
 
 **Owner:** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION`. Code + Build only. This review does not apply, compile or run the patch. [Independent review](../Architecture_M6_CP3_TB_REV_185_Slide_Entry_Activation_Reach_Independent_Review_20261125.md).
 
+**Sequencing amended by [TB-REV-185 adversarial](../Architecture_M6_CP3_TB_REV_185_Adversarial_Review_20261125.md) X1/X2:** diff bytes upheld (syntax-only clean, X4), but CB-206 runs only after CB-207A/B and TB-REV-187Q; TB-EXEC-186T (bounded rows 648/843/844/858/979/1006) and TB-REV-186T precede the full gate in step 2 below. Activation newly sends the sphere into quotient production (`RemeshPipeline.cpp:13316`); row858 (`SurfaceCellTracingDisplayTests.cpp:194`) asserts the sphere still stops somewhere.
+
 - Preimage: verified TB185V source `eee220e7e37f409eb5150f436e80e51a534c037a`; working snapshot `aa65fce6d6fa4e7e5fd2955b65542e75cb7d153c` has the same product and test bytes.
 - [Exact diff](../Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Exact.diff): 6621 B; SHA-256 `e1be85e05c505490b6025c9982b5857e612b7c28cfc1cc9198cefba669339cdb`. Two paths, +17/−35. Blank context-only lines omit their leading space to keep the review artifact whitespace-clean; exact postimages verified. `git apply --check` and `git diff --check` pass. Scratch edits restored. No syntax check, compile or product execution in Review.
 

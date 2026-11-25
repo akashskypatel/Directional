@@ -1,6 +1,6 @@
 # CB-207A / CB-207B exact manifest: QF1 quotient-forest cost (2026-11-25 UTC)
 
-**Review artifact only.** No apply, build or runtime is authorized here. These turns sit on a separate product track, scheduled after the activation track (see the [adversarial review](../Architecture_M6_CP3_TB_REV_185T_Adversarial_Review_20261125.md) W3/W4). They replace the prose CB-205U.
+**Review artifact only.** No apply, build or runtime is authorized here. **Rescheduled by [TB-REV-185 adversarial](../Architecture_M6_CP3_TB_REV_185_Adversarial_Review_20261125.md) X1: CB-207A/B now precede CB-206, followed by behaviour-preservation gate TB-EXEC-187Q (all 1006 rows N1–N3-equal to TB185V) and TB-REV-187Q; preimage `57c22511…4a02` still equals HEAD.** Originally these turns sat on a separate product track, scheduled after the activation track (see the [adversarial review](../Architecture_M6_CP3_TB_REV_185T_Adversarial_Review_20261125.md) W3/W4). They replace the prose CB-205U.
 
 ## CB-207A `M6-CP3-CB-207A-QF1-QUOTIENT-FOREST-ADJACENCY-ONCE-PER-OWNER`
 
