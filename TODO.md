@@ -1,29 +1,30 @@
-**Current turn outcome (2026-11-25 UTC):** TB185T: Valid bounded observation: 19/19 samples; all 17 after receipt 11 in `quotient_forest_path`; exit124; no gate credit. Repeated whole-forest adjacency reconstruction is a cost candidate, not a proven infinite loop. [Report](.agents/Directional/Architecture_M6_CP3_TB185T_Reach_Termination_Diagnostic_Execution_Report_20261125.md) TB184 1005/1005 remains independently accepted; next `M6-CP3-TB-REV-185T-REACH-TERMINATION-DIAGNOSTIC` after closeout. No activation or CP3/497/D0/H4 promotion.
+**Current turn outcome (2026-11-25 UTC):** TB-REV-185T independently accepts the bounded diagnostic only: both A6 producer path calls repeatedly rebuild the whole forest; five total call sites. QF1 non-stable; exact call counts and correction sufficiency unmeasured. TB184 1005/1005 remains accepted, stable 67/17/50, debt1/deferred81. No activation or CP3/497/D0/H4 promotion. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_185T_Reach_Termination_Diagnostic_Independent_Review_20261125.md). Next `M6-CP3-CB-205U-QUOTIENT-FOREST-PATH-REUSE` only.
 
-## CURRENT — TB185T reach termination diagnostic (2026-11-25 UTC)
+## CURRENT — TB-REV-185T causal review (2026-11-25 UTC)
 
 - [x] **COMPLETE** `M6-CP3-TB-REV-184` independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md): CB-205 upheld, syntax-clean (U1); activation reaches ~239 gated tests, not 14 readers (U2, corrects TB-REV-182 R5 / TB-REV-183 S4); receipt diagnostic only, no CB-205B (U3); CB-206 freezes row1006 transcript (U4).
 - [x] **COMPLETE** `M6-CP3-CB-205-P13-SLIDE-ENTRY-ACTIVATION-REACH` — exact test append row1006; eight targets compiled; [record](.agents/Directional/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md).
 - [x] **COMPLETE (invalid attempt)** `M6-CP3-TB-EXEC-185` — timeout, row1006 INVALID; preserve evidence, no semantic acceptance.
-- [x] **COMPLETE** `M6-CP3-CB-205R-HARNESS-TIMEOUT` — full-gate wait has no cutoff; bounded census unchanged; runtime-free; no rebuild. [Record](.agents/Directional/Architecture_M6_CP3_CB205R_Harness_Timeout_Correction_Record_20261125.md).
-- [x] **COMPLETE (invalid attempt)** `M6-CP3-TB-EXEC-185R` — 1005 PASS, row1006 interrupted after approximately 5 h 42 min, no semantic authority. [Record](.agents/Directional/Architecture_M6_CP3_TB185R_P13_Slide_Entry_Activation_Reach_Full_Gate_Execution_Report_20261125.md).
-- [x] **COMPLETE** `M6-CP3-CB-205S-REACH-TERMINATION-DIAGNOSTIC` — close_sheets construction is next; exact nested call unmeasured; [diagnostic preparation](.agents/Directional/Architecture_M6_CP3_CB205S_Reach_Termination_Diagnostic_Preparation_Record_20261125.md). No runtime or rebuild.
-- [x] **COMPLETE (invalid attempt)** `M6-CP3-TB-EXEC-185S-REACH-TERMINATION-DIAGNOSTIC` — GDB unavailable, no test process launched; [report](.agents/Directional/Architecture_M6_CP3_TB185S_Reach_Termination_Diagnostic_Execution_Report_20261125.md).
+- [x] **COMPLETE** `M6-CP3-CB-205R-HARNESS-TIMEOUT` — full-gate wait has no cutoff; bounded census unchanged; runtime-free; no rebuild. [Record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb205r_harness_timeout_correction_record_20261125md).
+- [x] **COMPLETE (invalid attempt)** `M6-CP3-TB-EXEC-185R` — 1005 PASS, row1006 interrupted after approximately 5 h 42 min, no semantic authority. [Record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb185r_p13_slide_entry_activation_reach_full_gate_execution_report_20261125md).
+- [x] **COMPLETE** `M6-CP3-CB-205S-REACH-TERMINATION-DIAGNOSTIC` — close_sheets construction is next; exact nested call unmeasured; [diagnostic preparation](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb205s_reach_termination_diagnostic_preparation_record_20261125md). No runtime or rebuild.
+- [x] **COMPLETE (invalid attempt)** `M6-CP3-TB-EXEC-185S-REACH-TERMINATION-DIAGNOSTIC` — GDB unavailable, no test process launched; [report](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb185s_reach_termination_diagnostic_execution_report_20261125md).
 - [x] **COMPLETE** `M6-CP3-CB-205T-DEBUGGER-PROVISIONING` — hosted debugger control verified; [record](.agents/Directional/Architecture_M6_CP3_CB205T_Debugger_Provisioning_Record_20261125.md); no Directional runtime or rebuild.
 - [x] **COMPLETE (diagnostic execution)** `M6-CP3-TB-EXEC-185T-REACH-TERMINATION-DIAGNOSTIC` — Valid bounded observation: 19/19 samples; all 17 after receipt 11 in `quotient_forest_path`; exit124; no gate credit. Repeated whole-forest adjacency reconstruction is a cost candidate, not a proven infinite loop. [Report](.agents/Directional/Architecture_M6_CP3_TB185T_Reach_Termination_Diagnostic_Execution_Report_20261125.md)
-- [ ] **1 NEXT** `M6-CP3-TB-REV-185T-REACH-TERMINATION-DIAGNOSTIC` — independent causal Review + Plan after TB185T closeout.
-- [ ] **2 HELD** Separate diagnosis/correction and full immutable re-execution, with all 1006 cases and original acceptance requirements.
+- [x] **COMPLETE (diagnostic review)** `M6-CP3-TB-REV-185T-REACH-TERMINATION-DIAGNOSTIC` — [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_185T_Reach_Termination_Diagnostic_Independent_Review_20261125.md); QF1, no gate credit.
+- [ ] **1 NEXT** `M6-CP3-CB-205U-QUOTIENT-FOREST-PATH-REUSE` — private adjacency index reuse, compile only, frozen source and falsifiers in Review.
+- [ ] **2 HELD** `M6-CP3-TB-EXEC-185U` — full immutable 1006-case execution only after valid compile; original acceptance requirements.
 - [ ] **3** `M6-CP3-TB-REV-185` — classify 13 recipes and their readers (S4 list + 380/388/688/689/691/695/698–700/702); plane, multi_face_seam and synthetic builders UNMEASURED; freeze CB-206 (flip `SurfaceCellTracing.cpp:5336`, rows 648/978/979, row979 label, row1006 transcript).
 - [ ] **4** CB-206 → TB-EXEC-186 (V5 BunnyRandom; full compare vs TB185; STOP-on-RED) → TB-REV-186 (one correction CB per RED family).
 - [ ] **5** parameter-deletion CB → V3b → R1 → O48, each separate. **HELD:** CB-190, J6, E5. No CP3/497/D0/H4 promotion.
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-185T-REACH-TERMINATION-DIAGNOSTIC
-Owner: independent Review + Plan; runtime-free under applicable Review authority.
-Authority: .agents/Directional/Architecture_M6_CP3_TB185T_Reach_Termination_Diagnostic_Execution_Report_20261125.md; exact candidate 14995401750/source 21087c8285a5dd367cc16f610386accc061bd194.
-  Reopen the valid bounded diagnostic. Derive the exact cost owner, repeated whole-forest work and certificate storage, preserve path and transport semantics, freeze a justified correction and falsifier only. No blind rerun, test weakening or activation.
-Then: justified correction -> valid full 1006-case immutable gate -> TB-REV-185 -> conditional CB-206.
-Do not: classify readers from incomplete evidence, activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
+NEXT_TURN: M6-CP3-CB-205U-QUOTIENT-FOREST-PATH-REUSE
+Owner: Code + Build only; eight existing GMP/GMPXX targets; runtimeExecution=false.
+Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_185T_Reach_Termination_Diagnostic_Independent_Review_20261125.md; candidate source 21087c8285a5dd367cc16f610386accc061bd194 and current exact snapshot; QF1.
+  Change only private forest adjacency construction in src/pipeline/RemeshPipeline.cpp. Index once per producer/publication/verifier lifetime; preserve joining order, traversal, full path/transport/certificates, typed failures and independent validation. All five callers. Static falsifiers and separate immutable gate in Review.
+Then: valid compile -> separate TB-EXEC-185U full 1006-case immutable gate -> TB-REV-185 -> conditional CB-206.
+Do not: change tests, selectors, harness, certificate identity, unrelated costs, activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
 ```
 
 ## HISTORY — TB-REV-184 independent: CB-205 frozen; sequence amended by adversarial U2–U4 (2026-11-25 UTC)

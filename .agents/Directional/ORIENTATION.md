@@ -1,4 +1,4 @@
-**Current currency — TB185T valid bounded diagnostic (2026-11-25 UTC):** [Report](Architecture_M6_CP3_TB185T_Reach_Termination_Diagnostic_Execution_Report_20261125.md) Valid bounded observation: 19/19 samples; all 17 after receipt 11 in `quotient_forest_path`; exit124; no gate credit. Repeated whole-forest adjacency reconstruction is a cost candidate, not a proven infinite loop. TB185R case1006 still has no terminal verdict. TB184 remains independently accepted 1005/1005. Next `M6-CP3-TB-REV-185T-REACH-TERMINATION-DIAGNOSTIC` after closeout. No activation or checkpoint promotion. CP2 491/491 accepted; P1 supported, D-U carried. Stable 67/17/50, debt1/deferred81; TB170/K6 closed.
+**Current currency — TB-REV-185T (2026-11-25 UTC):** [Independent review](Architecture_M6_CP3_TB_REV_185T_Reach_Termination_Diagnostic_Independent_Review_20261125.md). TB-REV-185T independently accepts the bounded diagnostic only: both A6 producer path calls repeatedly rebuild the whole forest; five total call sites. QF1 non-stable; exact call counts and correction sufficiency unmeasured. TB184 1005/1005 remains accepted, stable 67/17/50, debt1/deferred81. No activation or CP3/497/D0/H4 promotion. Next `M6-CP3-CB-205U-QUOTIENT-FOREST-PATH-REUSE`. CP2 491/491 accepted; P1 supported, D-U carried, TB170/K6 closed.
 
 # Directional — Project Orientation
 
@@ -48,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; multi-cut plan remains open** | TB184 independently accepted 1005/1005; TB183 historical 1005/1005; CP2 491/491 accepted. TB170 recurrence and K6 closed. Row979 staged plan built; P1 supported. Activation held pending case1006 termination diagnosis, valid full-gate re-execution and independent review. No CP3/497/D0/H4 acceptance. |
+| **M6-CP3 — active; multi-cut plan remains open** | TB184 independently accepted 1005/1005; TB183 historical 1005/1005; CP2 491/491 accepted. TB170 recurrence and K6 closed. Row979 staged plan built; P1 supported. QF1 correction next, then valid full 1006-case gate and independent review. Activation held; no CP3/497/D0/H4 acceptance. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting now includes the TB170 accepted-green recurrence: **67 events / 17 categories / 50 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -143,7 +143,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-TB-REV-185T-REACH-TERMINATION-DIAGNOSTIC` — independent review of the valid bounded observation; freeze a justified correction and falsifier only. [Report](Architecture_M6_CP3_TB185T_Reach_Termination_Diagnostic_Execution_Report_20261125.md) No activation or promotion.
+**Current priority:** `M6-CP3-CB-205U-QUOTIENT-FOREST-PATH-REUSE` — [bounded correction and falsifiers](Architecture_M6_CP3_TB_REV_185T_Reach_Termination_Diagnostic_Independent_Review_20261125.md). Remove repeated selected-forest adjacency reconstruction at all five call sites without altering path order, transport, certificate contents or independent validation. Runtime sufficiency unproved. Full gate and activation remain held.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).

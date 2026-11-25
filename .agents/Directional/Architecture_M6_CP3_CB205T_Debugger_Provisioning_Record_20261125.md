@@ -2,11 +2,11 @@
 
 ## Situation
 
-TB185S was invalid before inferior launch: GDB (GNU Debugger) was unavailable on the hosted runner. The cause of row1006 non-completion is still unknown. [Invalid attempt](Architecture_M6_CP3_TB185S_Reach_Termination_Diagnostic_Execution_Report_20261125.md). TB184 remains independently accepted, 1005/1005.
+TB185S was invalid before inferior launch: GDB (GNU Debugger) was unavailable on the hosted runner. The cause of row1006 non-completion is still unknown. [Invalid attempt](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb185s_reach_termination_diagnostic_execution_report_20261125md). TB184 remains independently accepted, 1005/1005.
 
 ## Background
 
-- Snapshot `e2829fc4ca325776bc7706dd0c3c916fde45f679`, run `45634669586`, artifact `15030799091`, ZIP SHA-256 `5da75a889d168e56e03c7135ea32663b89cac19ffd4dcba647dd7147f9d0a80d`, source archive SHA-256 `9b757ce0e5a97ce42f0ade44a6a841f10fcbd12f451c7c0829030d03383a094d`; 5835/5835 file checks. Exact package authority remains `14995401750`/`21087c8285a5dd367cc16f610386accc061bd194`; see [preparation](Architecture_M6_CP3_CB205S_Reach_Termination_Diagnostic_Preparation_Record_20261125.md).
+- Snapshot `e2829fc4ca325776bc7706dd0c3c916fde45f679`, run `45634669586`, artifact `15030799091`, ZIP SHA-256 `5da75a889d168e56e03c7135ea32663b89cac19ffd4dcba647dd7147f9d0a80d`, source archive SHA-256 `9b757ce0e5a97ce42f0ade44a6a841f10fcbd12f451c7c0829030d03383a094d`; 5835/5835 file checks. Exact package authority remains `14995401750`/`21087c8285a5dd367cc16f610386accc061bd194`; see [preparation](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb205s_reach_termination_diagnostic_preparation_record_20261125md).
 - Only `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh` changed. Patch SHA-256 `ee94f592a73cb7cb58f750190bf9a2fc32e352a9a5444a5190726d7b2ac5b798`, base `e2829fc4ca325776bc7706dd0c3c916fde45f679`. Apply run `45635605830`, applied executor `90319deb1dc277a2b0ab8bba70c8aa2cf3f2f6a1`; evidence result `15032588097` SHA-256 `de4952ccf1c517b2970da1f989b6f39fa0084f68349ba2ad1ef5191b42ce311b`, log `15032682892` SHA-256 `770de0c3bd92bc2301dbf136f72307f6f16620a297edfbabc55a598bc687c515`; both ZIPs verified. Library recovery patch retained; staging deleted through the owner connector.
 - Provisioning runs only in diagnostic or preflight mode. If GDB is absent, install the Ubuntu `gdb` package with noninteractive apt-get and bounded command times. Record actual version, executable and package version. No workflow permission changes or product/test/fixture changes. Package versions are not pinned to a repository snapshot; repeat the control on every diagnostic runner. Initial policy/handoff reads preceded the snapshot-mode selection and the mailbox was polled too frequently. Source inspection and editing used the verified snapshot; these process misses do not change product authority.
 
@@ -33,7 +33,7 @@ Stable 67 events / 17 categories / 50 recurrences; witness debt1/deferred81. CP2
 
 ## Recommendation — next turn only
 
-Authorize `M6-CP3-TB-EXEC-185T-REACH-TERMINATION-DIAGNOSTIC`. Do not start it in CB-205T. Freeze the following replacement executor authority; all immutable package inputs, selection, evidence and diagnostic stop conditions in [CB-205S preparation](Architecture_M6_CP3_CB205S_Reach_Termination_Diagnostic_Preparation_Record_20261125.md) remain binding.
+Authorize `M6-CP3-TB-EXEC-185T-REACH-TERMINATION-DIAGNOSTIC`. Do not start it in CB-205T. Freeze the following replacement executor authority; all immutable package inputs, selection, evidence and diagnostic stop conditions in [CB-205S preparation](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb205s_reach_termination_diagnostic_preparation_record_20261125md) remain binding.
 
 | Field | Value |
 |---|---|
@@ -46,7 +46,7 @@ Authorize `M6-CP3-TB-EXEC-185T-REACH-TERMINATION-DIAGNOSTIC`. Do not start it in
 | Frozen gate / deferred counts | 1006 / 81 |
 | Diagnostic | One row1006 `TraceTerminationCorrection.SlideEntryActivationReachByReaderRecipe`, 600 seconds, 30-second samples, no gate credit |
 
-Provision and verify the real debugger on the new runner before candidate download; retain the control receipt separately from product observations. On failure stop without Directional execution. Reuse exact hashes from [CB-205S preparation](Architecture_M6_CP3_CB205S_Reach_Termination_Diagnostic_Preparation_Record_20261125.md). Keep immutable postflight and classify the actual observation without inferring a root cause from the previous invalid attempts. Then valid diagnostic → justified correction under applicable Review authority → uninterrupted full immutable 1006-case gate → TB-REV-185 → conditional CB-206. No blind retry or successor execution in this turn.
+Provision and verify the real debugger on the new runner before candidate download; retain the control receipt separately from product observations. On failure stop without Directional execution. Reuse exact hashes from [CB-205S preparation](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb205s_reach_termination_diagnostic_preparation_record_20261125md). Keep immutable postflight and classify the actual observation without inferring a root cause from the previous invalid attempts. Then valid diagnostic → justified correction under applicable Review authority → uninterrupted full immutable 1006-case gate → TB-REV-185 → conditional CB-206. No blind retry or successor execution in this turn.
 
 ## Closeout evidence
 

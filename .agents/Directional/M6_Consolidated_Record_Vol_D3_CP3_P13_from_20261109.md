@@ -7342,3 +7342,254 @@ No rebuild, source/test/fixture/selector/workflow mutation or local Directional 
 ## Recommendation — separate review
 
 Next only `M6-CP3-TB-REV-182`. Independently re-derive the archive, member, manifest, ledger, N1–N3 and row979/1004 comparisons; classify the observed built staged plan and adjudicate P1 and D-U under CB-202 exact manifest and TB-REV-181 adversarial requirements. Only Review may freeze the conditional Branch A activation CB if independently warranted. No runtime or implementation in Review, and no production promotion. Do not run another TB182 or start its successor in this response.
+
+
+## TB-REV-185T folded records — 2026-11-25 UTC
+
+Historical only. The current candidate CB-205 build, CB-205T executor and TB185T observation remain standalone. The exact original files below are recoverable at `06e95da0f4e73b615fd9a02c00dc974e5a47ae3c` (`git show <sha>:.agents/Directional/<filename>`). Full original record text retained below, with trailing whitespace removed only for patch hygiene. Earlier next-turn labels are historical, not current authorization.
+
+| Original file | Lines | Verdict / role | SHA-256 (original bytes) |
+|---|---:|---|---|
+| [Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md](#architecture_m6_cp3_tb185_p13_slide_entry_activation_reach_orchestration_failure_report_20261125md) | 57 | TB185 invalid full gate (per-case timeout); no semantic acceptance | `919fea30ac6ff6cfe4fd99f3fcc11a69af44462e3c5508e267bbca4334b9f843` |
+| [Architecture_M6_CP3_CB205R_Harness_Timeout_Correction_Record_20261125.md](#architecture_m6_cp3_cb205r_harness_timeout_correction_record_20261125md) | 32 | CB-205R timeout correction, no runtime; superseded executor | `eb2feaf8e34bdaec11b9e1a9f2a3131571689d44933f3a0d6e71fcc7ae375368` |
+| [Architecture_M6_CP3_TB185R_P13_Slide_Entry_Activation_Reach_Full_Gate_Execution_Report_20261125.md](#architecture_m6_cp3_tb185r_p13_slide_entry_activation_reach_full_gate_execution_report_20261125md) | 48 | TB185R invalid full gate (runner cancellation); 1005 PASS not accepted as new gate | `a6696e796fed07a23521c9cf22778f54288d63d1be50871e883a53e3bd21e82b` |
+| [Architecture_M6_CP3_CB205S_Reach_Termination_Diagnostic_Preparation_Record_20261125.md](#architecture_m6_cp3_cb205s_reach_termination_diagnostic_preparation_record_20261125md) | 48 | CB-205S diagnostic preparation; superseded by actual TB185T observation | `54a3ff0743f93a2ae1dad72ed0228910ccd3920a3923ea4e3dbf3170042bde2c` |
+| [Architecture_M6_CP3_TB185S_Reach_Termination_Diagnostic_Execution_Report_20261125.md](#architecture_m6_cp3_tb185s_reach_termination_diagnostic_execution_report_20261125md) | 28 | TB185S invalid before product launch (GDB unavailable) | `1905f9c30faf86292d0f7ad0c0a03e418f8322d61409cf752b3b7a7f077256ba` |
+
+### Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md
+
+~~~~markdown
+# TB-EXEC-185 — invalid slide-entry reach execution (2026-11-25 UTC)
+
+## Situation
+
+`M6-CP3-TB-EXEC-185` stopped on invalid execution. The gate executed 1006 selected cases: 1005 PASS, one INVALID, zero semantic RED. The harness killed row1006 after its 600-second timeout. This attempt is invalid-attempt provenance, not semantic runtime authority. TB184 remains independently accepted at 1005/1005. No production activation or checkpoint promotion.
+
+## Background — exact authority
+
+| Evidence | Exact value |
+|---|---|
+| Candidate | Source `21087c8285a5dd367cc16f610386accc061bd194`, package [14995401750](https://github.com/akashskypatel/Directional/actions/runs/45554728034/artifacts/14995401750), ZIP SHA-256 `7e66ef7b3b16e76618a60b250a76038e65bf2e092601958f8252ac993b778da9`, root manifest `255e344116e2faa2d351b637cdfc6d11805b83352965f794b8bddaf56409f5d3`, source archive `bba6f2ce82c27a1481dad5fb16952b88476fca25411840a3e6d588ad67d2502e`, 28/28 checks. [CB-205 record](Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md). |
+| Gate | [Exact manifest](gates/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact_Manifest.md); [1006-case manifest](gates/Architecture_M6_TB185_P13_Slide_Entry_Activation_Reach_Full_Gate_Case_Manifest.tsv) SHA-256 `a9b8083269ebd0786f0584d66c1f89f43362d884840ab95b95c3d0fa59ca0587`, first 1005 rows with header `94f02d6bd2d599f02bbc7dc7cd317e490cdb00e18827596acac2cfdd827460be`; deferred ledger v5 `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`, 81 deferred. |
+| Execution | [Run 45557127344](https://github.com/akashskypatel/Directional/actions/runs/45557127344), job `139011954262`, request `m6-cp3-tb185-exec`, event `940ef038fd8841b0730a8515449d5ab1d0e9fe11`, request SHA-256 `78d82be8d9ae27b51654267df52701942eb161ca788b733dd8876813ebbb8075`, harness SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`. Final orphan mailbox `.workflow-mailbox/m6-cp3-tb185-exec/latest.json`: failure. |
+| Result | [14997312958](https://github.com/akashskypatel/Directional/actions/runs/45557127344/artifacts/14997312958), ZIP SHA-256 `a203a59e2a7becfaa66fd43fa6c2035e4c47c6d05ed2158c8f50ed3dbe381477`, 2020/2020 internal member hashes. |
+| Harness log | [14996494547](https://github.com/akashskypatel/Directional/actions/runs/45557127344/artifacts/14996494547), ZIP SHA-256 `ffab6b1aaf81bfd18b60979dc4f53bd4e2b1fe5a028c52f1cf94148e13edbba7`. |
+| Wrapper log | [14996404710](https://github.com/akashskypatel/Directional/actions/runs/45557127344/artifacts/14996404710), ZIP SHA-256 `cc6697455963443a4e99bb4c815c4c076500296d2eae8446558666601b0f57d1`. |
+| Accepted baseline | TB184 [14992995631](https://github.com/akashskypatel/Directional/actions/runs/45546583508/artifacts/14992995631), ZIP SHA-256 `8686e64c07fed5e72a5285fa6071a50944f1ea0b24c4b9e61eea831c46e0dd9c`, 2018/2018 hashes. |
+| Inspection source | Snapshot run `45556950597`, artifact `14994904623`, source `aaa6a22e58c3d653d3d84d73f568826adea9a3e6`, ZIP SHA-256 `acab04e4f57212a01d0785f456e3e1cb15b7089f6a04fa75edc5a44aedcd2460`, archive `a430758a93380a4f1e6af44f324a3660d0dcd749f0e821bfa4aeb392fab6cbfe`, 5830/5830 checks. |
+
+## Assessment
+
+- Exact execution boundary: `{"planned":1006,"executed":1006,"passed":1005,"red":0,"abnormal":0,"missing":1,"skipped":0,"duplicate":0,"control_bad":1,"unexpected_pass":0,"later_positive_red":0,"red_site_bad":0,"membership":1087,"postflight":true}`. Harness exit 90, `ValueError: selection failure`. No configure, compile, relink or benchmark. Immutable postflight passed. Membership is exactly 1006 gated + 81 deferred, one addition versus TB184 and no removed member.
+- First 1005 ledger fields except raw-log hash equal to TB184; all named tests PASS with matching resource commands, verified log hashes and exit 0. Comparison: 774 exact, 231 N1/N2, zero N3/material; 1582 complete projection records in each. Negative controls reject removed, duplicated or altered complete records and non-record byte changes. No new allowance for row979 or any prior row. This is invalid-attempt evidence only.
+- Row1006 ran once but has no terminal GTest verdict. Raw SHA-256 `184bd104f0ace186944e92de7f7af6fd29b70ac3a762c1f9a79859f32e530ab2`; last marker `HARNESS_TIMEOUT 600s`, process exit 124, verdict INVALID. Resource file empty (SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`), so actual completed test elapsed time is unknown. `m6_cp3_targeted_artifact_harness.sh:520` calls `process.wait(timeout=600)` for every case, including the full gate; lines 521–531 kill/reap the process group and force exit 124. This contradicts the full-suite timeout policy in `GitHub_Workflow_Policy.md`. The runner stopped after ~22 min overall, including the 600 s case window. A product hang or runtime cost defect is not established.
+- Last complete recipe: `polyline-defaults/genus_two`; next recipe in source order is `close_sheets`, then `cylinder` (`FieldAlignedCurveNetworkTests.cpp:24035–24054`). The log does not prove the exact blocked producer or that either recipe would finish. No missing recipe or final polyline-selection receipt may be inferred. No semantic acceptance from partial records.
+
+### Partial receipt inventory (invalid attempt only)
+
+| Recipe | Fixture | Production digest | Staged digest | Later-entry stops (production / staged) | Published digest |
+|---|---|---:|---:|---:|---|
+| observe | sphere_prescribed | 9084693800288509401 | 12659562395504099178 | 0 / 4 | 9084693800288509401 |
+| observe | torus | 13466378781049494490 | 13466378781049494490 | 0 / 0 | 13466378781049494490 |
+| observe | mechanical_feature | 7059319813685616393 | 7059319813685616393 | 0 / 0 | 7059319813685616393 |
+| pipeline-products | sphere_prescribed | 9084693800288509401 | 12659562395504099178 | 0 / 4 | 9084693800288509401 |
+| pipeline-products | torus | 13466378781049494490 | 13466378781049494490 | 0 / 0 | 13466378781049494490 |
+| atlas-census | two-ring | 4155612135388465130 | 4155612135388465130 | 0 / 0 | not-applicable |
+| atlas-census | four-triangle-fan | 4544773262561843459 | 4544773262561843459 | 0 / 0 | not-applicable |
+| atlas-census | sphere_prescribed | 9084693800288509401 | 12659562395504099178 | 0 / 4 | not-applicable |
+| atlas-census | torus | 4209930161671820097 | 4209930161671820097 | 0 / 0 | not-applicable |
+| polyline-defaults | sphere_prescribed | 9084693800288509401 | 12659562395504099178 | 0 / 4 | 9084693800288509401 |
+| polyline-defaults | genus_two | 9472719824482522776 | 9472719824482522776 | 0 / 0 | 9472719824482522776 |
+| polyline-defaults | close_sheets | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED |
+| polyline-defaults | cylinder | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED |
+
+Explicit unstaged sphere digest `9084693800288509401` equals production; staged `12659562395504099178` differs, with four later-entry stops. All 11 printed records have successful production and staged builds; published digests bind where present. Atlas-census serialization concatenates `not-applicable` directly after the equality bit; local evidence parser decodes that exact source format without changing raw bytes. These facts do not authorize reader classification; the whole receipt and selection control are incomplete.
+
+The failure is a non-stable orchestration candidate, not a stable product regression. Historical accounting unchanged: 67 events / 17 categories / 50 recurrences, witness debt1/deferred81. TB170 and K6 closed; P1 supported, D-U carried. J6/E5/CB-190 and CP3/497/D0/H4 promotion held.
+
+## Recommendation — bounded successor
+
+[Turn Cadence](Turn_Cadence.md) item 5 requires a separate control-plane-only correction, then a full immutable re-execution. Authorize `M6-CP3-CB-205R-HARNESS-TIMEOUT` as the correction identity and `M6-CP3-TB-EXEC-185R` as the re-execution identity. Do not perform either in this execution turn.
+
+1. Correct the full-gate branch of `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh` so selected gate cases wait for organic process results, without a per-case or whole-gate elapsed cutoff. Retain a justified bounded timeout only for non-gate diagnostic/census work; preserve abnormal-exit, selection, membership, resource, checksum, postflight and STOP semantics. Inspect the reusable workflow for any additional imposed gate timeout. Do not increase a fixed full-gate timeout as a substitute. Do not modify production, test, fixture, selector, case/deferred manifest or workflow permissions.
+2. Verify the correction statically and with control-plane-only checks (no Directional runtime). Freeze exact executor SHA and harness hash separately from immutable candidate source. Reuse package 14995401750 unchanged; no configure, compile, relink or repackage required.
+3. `M6-CP3-TB-EXEC-185R` runs all 1006 frozen cases afresh with identical candidate package and inputs. No row-only rerun, stitched ledger, or new comparison allowance. Require the exact 13 recipe keys, sphere binding, selection receipt, resource time and frozen prior-row comparison. Route subsequent semantic RED to review; route orchestration failure per cadence. `M6-CP3-TB-REV-185` remains held until a valid gate; CB-206 activation remains held.
+
+Snapshot cleanup run `45557205982` succeeded, result `14994949864`, commit `c9fba96a65e55201fc27d4f0e30ba0db2c85c313`. Dispatcher slot and orphan mailbox retained. No local Directional runtime or source/test edits. Initial-attempt document reads preceded snapshot acquisition; the named library skills were not found; complete pre-work LESSONS review and whole-turn tool ledger were not established. The earlier PASS-only generator was not used. The invalid-attempt verifier permits the observed empty resource file only as a recorded failure and returns nonzero.
+~~~~
+
+### Architecture_M6_CP3_CB205R_Harness_Timeout_Correction_Record_20261125.md
+
+~~~~markdown
+# CB-205R — full-gate timeout correction (2026-11-25 UTC)
+
+## Situation
+
+`M6-CP3-CB-205R-HARNESS-TIMEOUT` corrects only the execution harness. TB185 is invalid-attempt evidence: row1006 was killed after 600 seconds, with 11 of 13 recipe receipts and no completed elapsed time or final selection receipt. No product hang or semantic failure is established. TB184 remains independently accepted (1005/1005). See [invalid execution record](Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md).
+
+## Background — exact authority
+
+| Evidence | Value |
+|---|---|
+| Inspection | Snapshot `2cb0b4e62bc68ccca438a780e61a956650690f1f`, [run 45562839730](https://github.com/akashskypatel/Directional/actions/runs/45562839730), job `139030501668`, artifact `14998418037`, ZIP SHA-256 `641b9098a5c6664586687c28470e7f2bf82b3a44c3b0e042111dae34b086a1aa`, source archive SHA-256 `a4adf12794d620926446c6c499bea19e48caedf1f4fc733e70e6e96306efd5ba`, 5831/5831 member checks. |
+| Application | [Run 45563209845](https://github.com/akashskypatel/Directional/actions/runs/45563209845), job `139031821156`, event `b83b7a26b9674fc79d839b0366650e940a665bca`; result `14998224060` SHA-256 `aa8e7e7a086d3b3a41b5e8d90ab731a0297c27b7a8a6253822808c6b9066030c`; log `14998757845` SHA-256 `e91b3fbc9cc127650190a195493574ccbb01e774035686a6548f14feac953059`. Both archives verified; application and push exit 0; compile and test jobs skipped; Drive transport copy moved to Trash after push. |
+| Patch | One path, +1/−1, 1453 bytes, SHA-256 `6d3d968fae668d32423dc78c55ee7cbaaea2642ea71491f82d3fdf1343da5a95`, diff-body SHA-256 `ac74d64eef96864e6cee9673332f35a6fe683057cba1b67b5e31ed5a8f74b302`. File-Library recovery copy retained. |
+| Executor | `57a4a755944e611df4998c9f00b010cae683a5b4`; `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh` SHA-256 `688db110dc11f33331caa9a151ea348731de2a82983442bb52818b8dc8594090`, Git blob `7b04e126134cc7a570273098371d6e937563fc4b` (verified on remote executor). Old SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`. |
+| Workflow | Unchanged `agent-test-benchmark-reusable.yml` SHA-256 `81249e23a162152aace51f84ae1bffc0c0770420a19e2832fd2cd58a93b1511b`; dispatcher SHA-256 `91bacf466c65611a1ed615d045092435a7cb811bc905d853a5bf9b995d5ce6fa`. |
+| Candidate | Semantic source `21087c8285a5dd367cc16f610386accc061bd194`, [compile run 45554728034](https://github.com/akashskypatel/Directional/actions/runs/45554728034), package `14995401750`, ZIP SHA-256 `7e66ef7b3b16e76618a60b250a76038e65bf2e092601958f8252ac993b778da9`, root manifest `255e344116e2faa2d351b637cdfc6d11805b83352965f794b8bddaf56409f5d3`, source archive `bba6f2ce82c27a1481dad5fb16952b88476fca25411840a3e6d588ad67d2502e`. Prior GMP/GMPXX build: eight targets and 28/28 checks; no new build or package. |
+| Accepted baseline | TB184 result `14992995631`, ZIP SHA-256 `8686e64c07fed5e72a5285fa6071a50944f1ea0b24c4b9e61eea831c46e0dd9c`. Invalid TB185 result `14997312958` remains provenance only. |
+
+## Assessment
+
+At harness line 520, replace `process.wait(timeout=600)` with `process.wait() if gate else process.wait(timeout=600)`. The existing manifest contract derives `gate` from the homogeneous case kinds and requires the membership ledger for gates. The change removes the elapsed cutoff for every gate case, not just row1006. The 600-second non-gate census timeout, process-group kill, reap, exit 124 and timeout marker remain unchanged. The separately bounded test-listing preflight remains unchanged. The reusable execution workflow imposes no additional gate elapsed cutoff. GitHub service limits still apply.
+
+Verification (control plane only):
+
+- `bash -n`: PASS; harness `--self-test`: PASS, 30 cases; `--self-check`: PASS, 1006 gate cases and 81 deferred cases.
+- Independently extract the real wait/timeout exception block from each harness version. A process double rejects the old gate wait (timeout argument). The corrected gate wait has no timeout argument and propagates organic exit 7. Non-gate wait retains 600 seconds and propagates exit 7. A forced non-gate timeout retains SIGKILL of the process group, reap, exit 124 and `HARNESS_TIMEOUT 600s` marker.
+- Exact diff applicability and whitespace checks passed. Remote compare from snapshot to executor shows only the dispatcher request and the one-line harness change. Remote harness blob matches the local postimage. No production, test, fixture, selector, membership manifest, package, or workflow permission changes. No configure, compile, relink, repackage or Directional runtime: `runtimeExecution=false`.
+- No new stable event or semantic acceptance. Stable 67 events / 17 categories / 50 recurrences; witness debt1, deferred81. TB170/K6 closed; P1 supported, D-U carried. J6/E5/CB-190 and CP3/497/D0/H4 held.
+
+## Recommendation — next turn only
+
+`M6-CP3-TB-EXEC-185R` must execute all 1006 frozen cases afresh, with no stitched results or row-only rerun. Use the exact executor and semantic source above; use the same immutable package and inputs as TB185. Set `EXPECTED_CASE_COUNT=1006`. Use [case manifest](gates/Architecture_M6_TB185_P13_Slide_Entry_Activation_Reach_Full_Gate_Case_Manifest.tsv), SHA-256 `a9b8083269ebd0786f0584d66c1f89f43362d884840ab95b95c3d0fa59ca0587`, first 1005 rows including header SHA-256 `94f02d6bd2d599f02bbc7dc7cd317e490cdb00e18827596acac2cfdd827460be`; [deferred ledger v5](gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv), SHA-256 `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`. Require membership 1087, exact single execution of each gate case, fail-closed controls and immutable postflight. Verify first 1005 against TB184 with the existing comparison contract; no new allowance. Require all 13 recipe keys, sphere explicit false binding and true difference/four later-entry stops, other required baseline builds, final selection receipt and resource elapsed time. Follow [exact manifest](gates/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact_Manifest.md) for receipt and reader obligations. Invalid-attempt partial evidence cannot substitute for any measurement. Route semantic RED to Review; route invalid orchestration per cadence. TB-REV-185 and conditional CB-206 follow only under their existing authority. Do not activate Branch A or start the successor in this turn.
+~~~~
+
+### Architecture_M6_CP3_TB185R_P13_Slide_Entry_Activation_Reach_Full_Gate_Execution_Report_20261125.md
+
+~~~~markdown
+# TB-EXEC-185R — slide-entry activation reach full gate (2026-11-25 UTC)
+
+## Situation
+
+**COMPLETE as an invalid execution attempt.** GitHub cancelled the full gate after approximately six hours. The last case did not terminate. No semantic acceptance or reader classification is authorized.
+
+## Background — exact authority
+
+- Request `m6-cp3-tb185r-exec`, event `d7754c4fbbab622461a462bc8bca98a077a1c68d`, SHA-256 `125286f11f41ef626cf18d579e80f58957cb8843a785c6291fd3a3786f0481ba`.
+- [Run 45565763558](https://github.com/akashskypatel/Directional/actions/runs/45565763558), runtime job `139040247156`; exact event confirmed by repository Actions API. Dispatcher/reusable schema checks, request parse, executor checkout and harness validation passed. Runtime step concluded cancelled. Result and log uploads and mailbox publication succeeded. Compile and Drive-apply jobs skipped.
+- Candidate source `21087c8285a5dd367cc16f610386accc061bd194`, package `14995401750`, executor `57a4a755944e611df4998c9f00b010cae683a5b4`; [correction record](Architecture_M6_CP3_CB205R_Harness_Timeout_Correction_Record_20261125.md), [exact manifest](gates/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact_Manifest.md). Harness SHA-256 `688db110dc11f33331caa9a151ea348731de2a82983442bb52818b8dc8594090`; gate SHA-256 `a9b8083269ebd0786f0584d66c1f89f43362d884840ab95b95c3d0fa59ca0587`; first 1005 plus header `94f02d6bd2d599f02bbc7dc7cd317e490cdb00e18827596acac2cfdd827460be`; deferred SHA-256 `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`.
+
+## Background — retained preparation evidence
+
+- Accepted TB184 artifact `14992995631` outer SHA-256 `8686e64c07fed5e72a5285fa6071a50944f1ea0b24c4b9e61eea831c46e0dd9c`; 2018/2018 member hashes, 1005 unique PASS ledger rows, 1005 raw log bindings and resource commands, exact 1005 gated plus 81 deferred membership verified. Complete projection record count 1582. Baseline remains accepted.
+- Inspection snapshot source `8c6410deb5ada36926bde3806bfb9d7f761a6ff0`, run `45568803253`, artifact `15001896165`, ZIP SHA-256 `0fc1b1609538c9dc34634bd97e1d7736f2a1578cde27b01e44aee3aa5020e7f3`, source archive SHA-256 `a32629d45234a0b3f89fc78360390139ab15ced37fc0a0ffaf5b9e87aad676d5`, 5832/5832 member checks, runtimeExecution=false. Harness and both manifests match frozen hashes; test source matches CB-205 postimage `03abb0a6abcd8dbafb40bfe4dfbc56c0a2744a5eca9353749c1bf08b9cf3d72d`.
+- Offline verifier prepared, not committed to source. Controls reject missing, duplicated or altered complete projection records and changes to non-record bytes. Historical invalid result `14997312958`, ZIP SHA-256 `a203a59e2a7becfaa66fd43fa6c2035e4c47c6d05ed2158c8f50ed3dbe381477`, 2020 checks, rejected: 11/13 receipts, missing selection and row1006 resource/result. Re-derived historical comparison 774 exact + 231 N1/N2 + zero material. Invalid result remains negative control/provenance only.
+- [Cleanup run 45569257352](https://github.com/akashskypatel/Directional/actions/runs/45569257352), result `15000673111`, ZIP SHA-256 `b6d247bb11d1c7fc58304e51e12fa9f80cf419112db67bf18d6cb3a5f47c815c`, cleanup commit `f03d04ab3080f62e422e18664ac7d90ef07ef348`. Removed snapshot marker; zero PR comments deleted. Snapshot contained no source-branch mailbox or legacy observation/turn-payload directories. Durable request retained. Documentation drift audit: zero errors, two existing size warnings (handoff and orientation).
+- Preparation established no new regression evidence or stable-count change. 67 events / 17 categories / 50 recurrences; witness debt1/deferred81. No rebuild, production/test/fixture edits, activation or successor work.
+
+## Terminal evidence — invalid execution attempt
+
+Run [45565763558](https://github.com/akashskypatel/Directional/actions/runs/45565763558), job [139040247156](https://github.com/akashskypatel/Directional/actions/runs/45565763558/job/139040247156), completed with `cancelled`. The orphan mailbox `.workflow-mailbox/m6-cp3-tb185r-exec/latest.json` records the expected request, event, candidate source and request SHA-256. Both schema checks and request validation passed. Compile, Drive apply and noop jobs were skipped. The runtime step started at 07:08:38 UTC. Row 1005 passed at 07:26:49.7156364 UTC. The job log reports cancellation at 13:08:49.4810766 UTC. The six-hour duration agrees with the [GitHub-hosted job limit](https://docs.github.com/en/actions/reference/limits). The log identifies cancellation, not its initiator. Runner cleanup terminated the surviving `directional_surface_cell_producer_tests` process (PID 4705) and its parent `time` process (PID 4704).
+
+| Artifact | SHA-256 (verified archive bytes) |
+|---|---|
+| [Result 15023679215](https://github.com/akashskypatel/Directional/actions/runs/45565763558/artifacts/15023679215) | `86cbf7b6b9b5ae33fcb49ca06289ff8d2a0869f97829b3dcc6e319e234cdc701` |
+| [Harness log 15025090166](https://github.com/akashskypatel/Directional/actions/runs/45565763558/artifacts/15025090166) | `3c1f27496c7841d03c7f46310a1ebf2ee85e4ab54f7ea0703bde0d3bc1f8db00` |
+| [Wrapper log 15024760537](https://github.com/akashskypatel/Directional/actions/runs/45565763558/artifacts/15024760537) | `27f7ec42a61aa270b3e7d75ed5af8807ad433362b62331c1b860b6d2adbbcaa7` |
+
+All three archives pass ZIP integrity checks. Result contains 2018 files: 1006 raw logs, 1006 resource files, five dependency files and membership.tsv. It has no final checksum manifest, ledger or execution-boundary.json. No internal checksum verification or immutable postflight can be claimed. Harness exit is absent. No rebuild, relink, repair or source/test/fixture mutation was performed by this agent.
+
+The harness reports 1005 unique PASS cases. Each of those 1005 raw logs contains exactly the expected TB184 test name and one passed-test marker. Each resource file records exit 0. The membership table contains 1006 GATED and 81 DEFERRED entries, all unique. Compared with verified TB184 result 14992995631, it adds only `TraceTerminationCorrection.SlideEntryActivationReachByReaderRecipe` and removes none. Frozen transcript comparison against TB184: 575 exact, 425 equal after N1/N2 (Google Test elapsed suffixes and CRLF framing), five equal under N3 (rows 164, 172, 174, 176, 179), zero material differences. Both sides contain 1582 complete region-support projection records. The parser checks the literal prefix count against full record matches and preserves the ordered non-record remainder. No new allowance. The final harness ledger and checksum manifest are missing, so this comparison does not establish full-gate acceptance. The partial results are invalid-attempt evidence, not a semantic ledger.
+
+Row1006 raw log SHA-256 `06226ad145730dafed92a6cc8381299ac36e5d72062a69b77c468cedbaf7e8f0`, 335720 bytes. It is an exact byte prefix of the verified prior invalid TB185 row1006 log. The only remaining prior bytes are `\nHARNESS_TIMEOUT 600s\n`. All 11 recipe records are identical to the prior attempt. The final record is `polyline-defaults/genus_two`, followed by four region-support projection records for two regions with 18 source fragments each. `close_sheets`, `cylinder`, final selection and terminal verdict are absent. The resource file is empty. The final case remained incomplete for approximately 5 h 42 min after row1005 passed. No additional log bytes appeared after the earlier 600-second frontier. This is a repeatable non-completion candidate, not proof of an infinite loop, a specific defective function, or a semantic RED.
+
+The full-gate wait correction removed the repository's per-case cutoff. The runner cancellation invalidates this attempt independently of that correction. Do not repeat the unchanged full gate, stitch results, partition acceptance, weaken tests or change time limits to conceal the problem. TB184 remains accepted. Stable counts remain 67 events / 17 categories / 50 recurrences, witness debt1/deferred81. TB170 and K6 remain closed. P1 supported, D-U carried. Branch A activation, TB-REV-185, CB-206 and CP3/497/D0/H4 promotion remain held. J6/E5/CB-190 remain held.
+
+Closeout inspection snapshot `f545a3061072912dfc514332b3f3ffa3756c141c`, run `45621744506`, artifact `15023109764`, ZIP SHA-256 `e28d8c5ca21e67aff5c9c53190a939b071f40c43e902c97857d3754c55a7d1fe`, source archive SHA-256 `878f1051466ef612e27e950af87016d808015464fe070f25ced2921034694c61`, 5833/5833 file checks. The continuation initially used direct control-plane and document reads before acquiring the exact snapshot. This is a read-mode policy miss, not an acceptance claim. No local runtime or implementation changes.
+
+## Recommendation — next turn only
+
+Under [Turn Cadence](Turn_Cadence.md) item 5, close TB185R as an invalid execution attempt. Authorize `M6-CP3-CB-205S-REACH-TERMINATION-DIAGNOSTIC` as the next Code + Build correction turn. The ID follows the existing CB-205 revision sequence. Do not execute that successor in TB185R.
+
+- Inspect the exact row1006 recipe sequence and existing diagnostic harness. Determine which operation follows the last complete receipt. Prepare the smallest bounded diagnostic that distinguishes non-termination, resource cost and a runner problem. Prefer external observation of the existing immutable package with per-operation progress or stack evidence. Do not assume a product defect or change the test oracle to obtain a verdict.
+- No Directional runtime in the Code + Build correction turn. Keep the existing package if only the execution contract changes. If a source change is necessary, record the exact reason and compile only under GMP/GMPXX policy. Do not activate Branch A or change reusable permissions.
+- Freeze a separate diagnostic execution if needed. A focused bounded diagnostic is not the full acceptance gate. Require evidence of the exact blocking operation before a product correction. Route any semantic RED through Review. Do not blindly rerun the same six-hour execution or use a longer timeout as the remedy.
+- Only after the correction is justified, execute the complete frozen 1006-case gate in a fresh immutable run. Preserve all 81 deferred entries, the 13 recipe receipts, sphere controls, final selection, elapsed resource record, exact prior-row comparison and immutable postflight. Do not stitch or substitute diagnostic results. TB-REV-185 stays held until valid full-gate evidence. Conditional CB-206 remains held.
+~~~~
+
+### Architecture_M6_CP3_CB205S_Reach_Termination_Diagnostic_Preparation_Record_20261125.md
+
+~~~~markdown
+# M6-CP3-CB-205S-REACH-TERMINATION-DIAGNOSTIC — diagnostic preparation
+
+## Situation
+
+The two TB185 attempts did not complete row1006. TB185R was cancelled at the hosted job limit. TB184 remains the latest independently accepted gate (1005/1005). No new semantic verdict or stable regression event exists. [Terminal record](Architecture_M6_CP3_TB185R_P13_Slide_Entry_Activation_Reach_Full_Gate_Execution_Report_20261125.md).
+
+## Background — source and evidence
+
+- Candidate source `21087c8285a5dd367cc16f610386accc061bd194`, compile run `45554728034`, package `14995401750`. ZIP SHA-256 `7e66ef7b3b16e76618a60b250a76038e65bf2e092601958f8252ac993b778da9`; root checksum list `255e344116e2faa2d351b637cdfc6d11805b83352965f794b8bddaf56409f5d3`; source archive `bba6f2ce82c27a1481dad5fb16952b88476fca25411840a3e6d588ad67d2502e`. All 28 member hashes verified. Archived executable modes retained. Package metadata establishes GMP (GNU Multiple Precision arithmetic) and runtime-free build; no new build.
+- Invalid TB185R result `15023679215`, ZIP SHA-256 `86cbf7b6b9b5ae33fcb49ca06289ff8d2a0869f97829b3dcc6e319e234cdc701`; raw row1006 SHA-256 `06226ad145730dafed92a6cc8381299ac36e5d72062a69b77c468cedbaf7e8f0`, 335720 bytes, 11 complete recipe receipts. Four region-support projection records follow the last `polyline-defaults/genus_two` receipt. `close_sheets`, `cylinder`, final selection and terminal verdict are absent. No final manifest/postflight in the invalid result.
+- Inspection snapshot `adc8ecb44d5c311cead822e82a1f017369a5b677`, run `45626051965`, artifact `15026684438`, ZIP SHA-256 `99bd5cf2cc5ea46f31f662e9542a10a8d45fa0ff68db898be9500f25e3c77962`, archive SHA-256 `887ea3f9c2165e434ae9953e4d427215cf68a6e7444a2e11a8a3aebac8ffea6f`, 5833/5833 file checks. Initial direct document reads preceded the required snapshot mode; corrected by obtaining the snapshot before source inspection. This is a procedural miss, not a product finding.
+
+## Assessment — earliest unmeasured operation
+
+Exact packaged `tests/FieldAlignedCurveNetworkTests.cpp` SHA-256 `03abb0a6abcd8dbafb40bfe4dfbc56c0a2744a5eca9353749c1bf08b9cf3d72d` matches the snapshot. At lines 24037–24048 the polyline-defaults loop calls `build_cp4c_pipeline_products_fixture` for sphere_prescribed, genus_two, close_sheets and cylinder, in that order. The helper at 8100 reads the mesh and raw field and calls `remesh_from_raw_cross_field`, then copies its products. Only after the helper returns does `measure` (23919) calculate production/staged network evidence and print the complete receipt. The next operation after genus_two is therefore **close_sheets fixture construction**, followed by its measurement. The receipt is not a per-operation start/stop marker. The four last projection lines come from `emit_region_euler_certificate_diagnostics` (`GlobalTopologyPlan.cpp:1867,2241`); that emitter can run during plan construction/validation. The pipeline calls `GlobalTopologyPlan::make` at `RemeshPipeline.cpp:12958`. These lines are evidence of completed projection work, not proof that the next call or that emitter is the blocker. The exact nested operation, cost, loop and cause are unmeasured. A root-cause correction or an oracle shortcut is not justified.
+
+## Recommendation — frozen external diagnostic
+
+Authorize only `M6-CP3-TB-EXEC-185S-REACH-TERMINATION-DIAGNOSTIC` after this preparation is committed and the current turn closes. Use the existing dispatcher `test_benchmark` operation and unchanged artifact-only reusable. Do not dispatch it in this Code + Build turn. Reuse the common package, manifest, dependency and immutable postflight checks in `tools/m6_cp3_targeted_artifact_harness.sh`. The new mode is opt-in and pinned to the original candidate and exact case. The original full gate runs without this opt-in; its 1006 cases, membership, assertions and uninterrupted wait remain unchanged.
+
+| Field | Frozen value |
+|---|---|
+| Executor commit | `c737a40d56bd928c9dc8e67bd6c02458ef0ce548` (exact applied executor, not candidate or mailbox). |
+| Harness path | `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh` |
+| Harness SHA-256 | `f5780458e5717a2d1e0b5434b260e8c538c238a117b8d295c7df5a0b4587e2c0` |
+| Artifact prefix / mailbox key | `m6-cp3-tb185s-reach-termination` |
+| Mode | `REACH_TERMINATION_DIAGNOSTIC=1`; one invocation, exact row1006 only; no membership listing or gate ledger credit. |
+| Case manifest | `.agents/Directional/gates/Architecture_M6_TB185_P13_Slide_Entry_Activation_Reach_Full_Gate_Case_Manifest.tsv` |
+| Case manifest SHA-256 | `a9b8083269ebd0786f0584d66c1f89f43362d884840ab95b95c3d0fa59ca0587` |
+| Count / frozen prefix | 1006; first 1005 plus header `94f02d6bd2d599f02bbc7dc7cd317e490cdb00e18827596acac2cfdd827460be` |
+| Membership ledger | `.agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv`; SHA-256 `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`; 81 entries |
+| Exact selection | `directional_surface_cell_producer_tests --gtest_filter=TraceTerminationCorrection.SlideEntryActivationReachByReaderRecipe`; `GTEST_COLOR=no`, `GTEST_FAIL_IF_NO_TEST_SELECTED=1` |
+
+Supply all existing `CANDIDATE_ARTIFACT_ID`, `EXPECTED_SOURCE_SHA`, `EXPECTED_CANDIDATE_ZIP_SHA256`, `EXPECTED_ROOT_MANIFEST_SHA256`, `EXPECTED_SOURCE_ARCHIVE_SHA256`, `CASE_MANIFEST`, `CASE_MANIFEST_SHA256`, `EXPECTED_CASE_COUNT`, `MEMBERSHIP_LEDGER`, `MEMBERSHIP_LEDGER_SHA256` inputs from the values above. Keep the dispatcher schema and permissions unchanged. The mode rejects wrong identities before download. Extract with `unzip` to preserve modes; use the packaged source archive only for the executable-relative fixture view. Verify package and view hashes after observation.
+
+The GNU Debugger (GDB) starts the immutable executable as its child; no elevated attach permission or executable changes. Machine interface (MI) commands asynchronously interrupt and resume one inferior. Every 30 seconds record elapsed time, complete receipt lines, log size/hash, process and thread scheduler counters, wait channel, memory status, and a bounded all-thread backtrace (40 frames); record process mappings on the first sample. Preserve the MI transcript and raw pseudo-terminal output; its buffering can differ from the full gate. Use a 600-second maximum observation budget (same prior focused cutoff; reserves cleanup time). A deadline ends only this diagnostic and returns 124, not PASS/SKIP; an organic exit and unexpected stop are distinct. Missing debugger, command timeout, wrong selection or missing stack evidence are infrastructure/diagnostic failures. Exact package and view postflight, `observation.json`, `gdb-mi.log`, raw log, dependency evidence, execution-boundary and result checksums must be retained. A zero diagnostic exit does not accept the gate. No product/test/fixture changes, no rebuild, no gate comparison normalization from debugger timing.
+
+Required diagnostic assessment: compare at least three completed samples after the same 11-receipt frontier if it recurs, including stack, instruction address, CPU tick deltas, thread wait channels and memory trend. A repeated stack alone is not proof of an infinite loop; rising CPU ticks may indicate an expensive operation or non-terminating computation, stationary ticks plus wait channels may indicate blocking, and missing/failed observation may indicate infrastructure failure. Record the deepest reliable product call chain and its exact packaged source owner; report inconclusive if the frontier or reliable frames are not obtained. If organic completion occurs, retain all 13 receipts and final selection without claiming a full gate. No blind rerun. A causal product correction requires applicable Review authority. Only after justified correction may a fresh full uninterrupted 1006-case gate run; no partition or stitched acceptance. TB-REV-185, CB-206 and activation stay held.
+
+## Verification boundary
+
+- Existing control-plane `bash -n`, `--self-test` (30) and `--self-check` (1006 + 81) passed. Incorrect package ID rejected before download/launch, exit90. Mock MI control exercised an interrupt, receipt/stack capture and organic completion on a synthetic process, not a Directional test. Real GDB is absent in the local container; the actual hosted debugger protocol, runtime stack and non-completion cause are not verified. Require real debugger compatibility in the diagnostic execution; if it fails, report it without semantic claims.
+- `runtimeExecution=false` for this Code + Build correction. No product compile because this is control-plane-only. No product source, test source, fixtures, gate manifest, deferred ledger, reusable workflow, dispatcher schema or permissions changed. Stable 67 events / 17 categories / 50 recurrences, witness debt1/deferred81. P1 supported, D-U carried, TB170/K6 closed; no activation, J6/E5/CB-190 repair or CP3/497/D0/H4 promotion.
+
+## Application and closeout evidence
+
+- [Apply run 45627553825](https://github.com/akashskypatel/Directional/actions/runs/45627553825): result `15028906550`, log `15027618878`; ZIP digests matched mailbox. Exact six-path patch SHA-256 `25095fecc4c5510368f3607877e2c2d942bf256037da4c3688ca54c269173a81`; apply/push PASS, compile/TB skipped, `runtimeExecution=false`. Harness Git blob `00867aa3c31f5eb9f574b49d45563b702117f1ef` matches local bytes. Staging Drive file deleted by owner connector; Library backup retained.
+- [Cleanup run 45627862557](https://github.com/akashskypatel/Directional/actions/runs/45627862557), result `15029606478`, log `15029796419`, verified ZIPs; commit `540f1e76a3caad1e167d1cfcfffb83d171b79045` removed only snapshot marker and cleanup manifest. Zero PR comments removed. Documentation drift audit zero errors, two existing size warnings.
+~~~~
+
+### Architecture_M6_CP3_TB185S_Reach_Termination_Diagnostic_Execution_Report_20261125.md
+
+~~~~markdown
+# TB-EXEC-185S — reach termination diagnostic execution (2026-11-25 UTC)
+
+## Situation
+
+The diagnostic request reached the hosted runner but did not start the inferior (the test process under debugger control). The execution attempt is invalid, not semantic RED. The root cause of the earlier case1006 non-completion remains unknown. TB184 remains independently accepted, 1005/1005.
+
+## Background — exact authority
+
+- Candidate source `21087c8285a5dd367cc16f610386accc061bd194`; GMP/GMPXX compile run `45554728034`; immutable package `14995401750`, ZIP SHA-256 `7e66ef7b3b16e76618a60b250a76038e65bf2e092601958f8252ac993b778da9`, root manifest `255e344116e2faa2d351b637cdfc6d11805b83352965f794b8bddaf56409f5d3`, source archive `bba6f2ce82c27a1481dad5fb16952b88476fca25411840a3e6d588ad67d2502e`. Local archive and 28/28 member hashes verified; no local runtime.
+- Frozen executor `c737a40d56bd928c9dc8e67bd6c02458ef0ce548`; harness SHA-256 `f5780458e5717a2d1e0b5434b260e8c538c238a117b8d295c7df5a0b4587e2c0`; gate SHA-256 `a9b8083269ebd0786f0584d66c1f89f43362d884840ab95b95c3d0fa59ca0587`, first 1005 plus header `94f02d6bd2d599f02bbc7dc7cd317e490cdb00e18827596acac2cfdd827460be`; deferred SHA-256 `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`. All local manifest hashes match. The diagnostic selects only `TraceTerminationCorrection.SlideEntryActivationReachByReaderRecipe`, no gate credit.
+- Request `m6-cp3-tb185s-reach-termination`; event `e639742c6be553762fba2ae703b1cf85623d0070`; request SHA-256 `7a7e7947668d91820071a118a29fcd39897bb0a212edd5ed5e2ca85def5cddd8`; orphan mailbox `.workflow-mailbox/m6-cp3-tb185s-reach-termination/latest.json` matched event, request and source. [Run 45630473352](https://github.com/akashskypatel/Directional/actions/runs/45630473352), runtime job `139262198486`. Both schema validations, request parse, executor checkout, harness validation and evidence uploads passed. Compile/Drive/noop skipped. The final propagation step failed; mailbox publication passed.
+- Exact inspection snapshot `8bc1999a12da75b1528bdf0e1a6cdf8baad6f3c3`, run `45630105267`, artifact `15029659085`, ZIP SHA-256 `88f345358ab050688259d9113a5d6ed7bb2de8e3c8ab1d49fdf7abcdfae97427`, archive SHA-256 `92d6976e3766a413e0ece1db53833140fbd83576f1135acf20b6a08ae4dfcefe`, 5834/5834 hashes. Initial direct policy/handoff reads preceded snapshot selection; corrected before source inspection. No product finding follows from this procedural miss.
+
+## Assessment — terminal evidence
+
+| Artifact | Verified ZIP SHA-256 |
+|---|---|
+| Result `15030422476` | `c860b0bf6d81863460f38bff8f0b556216cbbde42e56dc4cacd681636772005e` |
+| Harness log `15030636172` | `09aa370b074ad731461bba6db1da5ad7fc787f18bbdb9aabb405a49b4d5b3e6c` |
+| Wrapper log `15030222943` | `b8252ec14614d3404948288590f45c5c1871c1635780c02e30a6577b9efc9c69` |
+
+All three ZIPs passed integrity checks; result 7/7 member hashes passed. Harness log: `PREFLIGHT cases=1006 deferred=81 source=21087c8285a5dd367cc16f610386accc061bd194 artifact=14995401750`, then `TARGETED_HARNESS_FAILURE ValueError: GNU debugger unavailable`, exit 90. Exact harness `observe_termination` calls `shutil.which('gdb')` and fails its requirement before opening the inferior log, creating the debugger child, or collecting observations. This establishes that GDB (GNU Debugger) was not resolvable on the runner PATH; it does not establish whether any debugger exists elsewhere on the runner. The wrapper's `runtimeExecution=true` describes the requested runtime job, not actual test launch. Its intermediate status success precedes the failure-propagation step. `execution-boundary.json`: all counters zero, `postflight=false`, `compile=false`, `relink=false`, `configure=false`, `benchmark=false`, `nonGatingDiagnostic=true`. Header-only ledger; no raw row1006 log, `observation.json`, MI (machine interface) transcript, stack, CPU, wait-channel, memory or process-exit evidence. No semantic ledger or immutable remote postflight claim.
+
+The earlier TB185R result `15023679215` was independently reopened; ZIP SHA-256 `86cbf7b6b9b5ae33fcb49ca06289ff8d2a0869f97829b3dcc6e319e234cdc701`; row1006 log SHA-256 `06226ad145730dafed92a6cc8381299ac36e5d72062a69b77c468cedbaf7e8f0`, 335720 bytes, 11 complete receipts. Next fixture is close_sheets; see [preparation](Architecture_M6_CP3_CB205S_Reach_Termination_Diagnostic_Preparation_Record_20261125.md). No new samples support a causal inference. No stable regression addition: 67 events / 17 categories / 50 recurrences, witness debt1/deferred81. CP2 491/491 accepted. P1 supported, D-U carried, TB170/K6 closed. No activation, J6/E5/CB-190 repair, CP3/497/D0/H4 promotion, test/product/fixture edits or rebuild.
+
+## Recommendation — next turn only
+
+Under [Turn Cadence](Turn_Cadence.md) item 5, close TB185S as an invalid orchestration attempt. Authorize `M6-CP3-CB-205T-DEBUGGER-PROVISIONING` (CB-205 revision sequence) to establish a reproducible GDB prerequisite on the hosted runner, preferably only for the diagnostic mode. Verify GDB availability/version, supported Linux PID file descriptor and MI interrupt/continue protocol with a non-Directional control. Preserve reusable permissions, immutable candidate and frozen case selection, 600-second budget, 30-second sampling, all 1006 cases and 81 deferred entries. Do not rebuild or run Directional in CB. Do not weaken the test or modify product semantics. Freeze a separate diagnostic TB only after the prerequisite is established. Do not rerun the unchanged failed request. A causal product correction still requires applicable Review authority, and a fresh uninterrupted full 1006-case gate must precede TB-REV-185 and conditional CB-206. No successor implementation in this turn.
+~~~~

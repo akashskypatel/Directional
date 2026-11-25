@@ -1,3 +1,7 @@
+## 2026-11-25 — TB-REV-185T independent reach termination diagnosis
+
+[Review](.agents/Directional/Architecture_M6_CP3_TB_REV_185T_Reach_Termination_Diagnostic_Independent_Review_20261125.md). Reopened immutable result 15035995368 (15/15), package 14995401750 (28/28), and exact source. Both sampled A6 producer call sites confirmed by static binary and source inspection. Five path queries rebuild whole-forest adjacency; symbolic work and certificate storage bounds recorded. QF1 non-stable; no gate verdict or activation. TB184 1005/1005 accepted; 67/17/50, debt1/deferred81 unchanged. Next only `M6-CP3-CB-205U-QUOTIENT-FOREST-PATH-REUSE` compile-only, preserve original semantic checks; later separate full 1006 gate. No product/test/fixture/selector/build edits or runtime.
+
 ## 2026-11-25 — TB-EXEC-185T bounded reach termination diagnostic
 
 [Report](.agents/Directional/Architecture_M6_CP3_TB185T_Reach_Termination_Diagnostic_Execution_Report_20261125.md). Run `45639470951`, result `15035995368`; Valid bounded observation: 19/19 samples; all 17 after receipt 11 in `quotient_forest_path`; exit124; no gate credit. Repeated whole-forest adjacency reconstruction is a cost candidate, not a proven infinite loop. TB184 1005/1005 remains accepted, stable 67/17/50, debt1/deferred81. Next `M6-CP3-TB-REV-185T-REACH-TERMINATION-DIAGNOSTIC` after closeout. No rebuild or successor execution.
@@ -8,23 +12,23 @@
 
 ## 2026-11-25 — TB-EXEC-185S invalid diagnostic
 
-[Report](.agents/Directional/Architecture_M6_CP3_TB185S_Reach_Termination_Diagnostic_Execution_Report_20261125.md). Run 45630473352, result 15030422476; GDB unavailable before test launch. No new product measurements, semantic acceptance or stable regression. TB184 remains 1005/1005; next `M6-CP3-CB-205T-DEBUGGER-PROVISIONING`. No rebuild or successor implementation.
+[Report](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb185s_reach_termination_diagnostic_execution_report_20261125md). Run 45630473352, result 15030422476; GDB unavailable before test launch. No new product measurements, semantic acceptance or stable regression. TB184 remains 1005/1005; next `M6-CP3-CB-205T-DEBUGGER-PROVISIONING`. No rebuild or successor implementation.
 
 ## 2026-11-25 — CB-205S reach termination diagnostic prepared
 
-[Record](.agents/Directional/Architecture_M6_CP3_CB205S_Reach_Termination_Diagnostic_Preparation_Record_20261125.md). Close_sheets fixture construction follows genus_two; exact nested non-completing call unmeasured. Pinned external debugger observation mode reuses immutable package 14995401750, original gate and dependency checks, without gate credit. No Directional runtime, rebuild, test/product/fixture change or activation. TB184 remains accepted 1005/1005; stable 67/17/50, debt1/deferred81. Next only `M6-CP3-TB-EXEC-185S-REACH-TERMINATION-DIAGNOSTIC`.
+[Record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb205s_reach_termination_diagnostic_preparation_record_20261125md). Close_sheets fixture construction follows genus_two; exact nested non-completing call unmeasured. Pinned external debugger observation mode reuses immutable package 14995401750, original gate and dependency checks, without gate credit. No Directional runtime, rebuild, test/product/fixture change or activation. TB184 remains accepted 1005/1005; stable 67/17/50, debt1/deferred81. Next only `M6-CP3-TB-EXEC-185S-REACH-TERMINATION-DIAGNOSTIC`.
 
 ## 2026-11-25 — TB-EXEC-185R invalid execution
 
-[Terminal record](.agents/Directional/Architecture_M6_CP3_TB185R_P13_Slide_Entry_Activation_Reach_Full_Gate_Execution_Report_20261125.md). Run 45565763558, result 15023679215; 1005 PASS, case1006 incomplete at hosted job cancellation. All 11 printed receipts match prior invalid attempt byte-for-byte. No final selection, elapsed or postflight; no semantic authority. TB184 remains accepted 1005/1005, stable 67/17/50, debt1/deferred81. Next `M6-CP3-CB-205S-REACH-TERMINATION-DIAGNOSTIC` under cadence item 5; no activation or promotion.
+[Terminal record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb185r_p13_slide_entry_activation_reach_full_gate_execution_report_20261125md). Run 45565763558, result 15023679215; 1005 PASS, case1006 incomplete at hosted job cancellation. All 11 printed receipts match prior invalid attempt byte-for-byte. No final selection, elapsed or postflight; no semantic authority. TB184 remains accepted 1005/1005, stable 67/17/50, debt1/deferred81. Next `M6-CP3-CB-205S-REACH-TERMINATION-DIAGNOSTIC` under cadence item 5; no activation or promotion.
 
 ## 2026-11-25 — CB-205R full-gate timeout correction
 
-[Correction record](.agents/Directional/Architecture_M6_CP3_CB205R_Harness_Timeout_Correction_Record_20261125.md). One-line harness correction at executor `57a4a755944e611df4998c9f00b010cae683a5b4`, SHA-256 `688db110dc11f33331caa9a151ea348731de2a82983442bb52818b8dc8594090`. Control-plane checks PASS; no Directional runtime or rebuild; package `14995401750` unchanged. TB185 remains invalid; TB184 accepted 1005/1005; stable 67/17/50, debt1/deferred81. Next only `M6-CP3-TB-EXEC-185R` (full 1006-case immutable gate). No activation or promotion.
+[Correction record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb205r_harness_timeout_correction_record_20261125md). One-line harness correction at executor `57a4a755944e611df4998c9f00b010cae683a5b4`, SHA-256 `688db110dc11f33331caa9a151ea348731de2a82983442bb52818b8dc8594090`. Control-plane checks PASS; no Directional runtime or rebuild; package `14995401750` unchanged. TB185 remains invalid; TB184 accepted 1005/1005; stable 67/17/50, debt1/deferred81. Next only `M6-CP3-TB-EXEC-185R` (full 1006-case immutable gate). No activation or promotion.
 
 ## 2026-11-25 — TB-EXEC-185 invalid execution
 
-[invalid execution record](.agents/Directional/Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md). 1005 PASS, row1006 INVALID due to hard-coded 600s full-gate timeout. No new semantic authority. TB184 remains accepted; control-plane correction `M6-CP3-CB-205R-HARNESS-TIMEOUT` next, then `M6-CP3-TB-EXEC-185R`. No activation or checkpoint promotion.
+[invalid execution record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb185_p13_slide_entry_activation_reach_orchestration_failure_report_20261125md). 1005 PASS, row1006 INVALID due to hard-coded 600s full-gate timeout. No new semantic authority. TB184 remains accepted; control-plane correction `M6-CP3-CB-205R-HARNESS-TIMEOUT` next, then `M6-CP3-TB-EXEC-185R`. No activation or checkpoint promotion.
 
 ## 2026-11-25 — CB-205 slide-entry activation reach compiled
 
