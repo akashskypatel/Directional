@@ -1,0 +1,38 @@
+diff --git a/src/pipeline/RemeshPipeline.cpp b/src/pipeline/RemeshPipeline.cpp
+index 4fc34f03a..7097063d2 100644
+--- a/src/pipeline/RemeshPipeline.cpp
++++ b/src/pipeline/RemeshPipeline.cpp
+@@ -8525,16 +8525,24 @@ VerificationReport SurfaceProductVerifier::verify_records(
+         VerificationFailureCode::QuotientMembershipMismatch,
+         "a6:relation-class");
+   }
+-  for (const auto &[classId, quotientClass] : classById) {
+-    std::vector<const QuotientForestEdge *> edges;
+-    for (const auto &edge : quotient.records.selectedForest) {
+-      const auto first = classByOccurrence.find(edge.first);
+-      const auto second = classByOccurrence.find(edge.second);
+-      if (first != classByOccurrence.end() && second != classByOccurrence.end() &&
+-          first->second == classId && second->second == classId) {
+-        edges.push_back(&edge);
+-      }
++  // Bucket forest edges by the class owning both endpoints in one pass, in
++  // forest order, so each class reads only its own edges.
++  std::map<SurfaceQuotientClassId, std::vector<const QuotientForestEdge *>>
++      forestEdgesByClass;
++  for (const auto &edge : quotient.records.selectedForest) {
++    const auto first = classByOccurrence.find(edge.first);
++    const auto second = classByOccurrence.find(edge.second);
++    if (first != classByOccurrence.end() && second != classByOccurrence.end() &&
++        first->second == second->second) {
++      forestEdgesByClass[first->second].push_back(&edge);
+     }
++  }
++  for (const auto &[classId, quotientClass] : classById) {
++    const auto bucket = forestEdgesByClass.find(classId);
++    const std::vector<const QuotientForestEdge *> edges =
++        bucket == forestEdgesByClass.end()
++            ? std::vector<const QuotientForestEdge *>{}
++            : bucket->second;
+     if (edges.size() + 1U != quotientClass->members.size()) {
+       add(VerificationStage::A6,
+           VerificationFailureCode::QuotientMembershipMismatch,

@@ -1,6 +1,28 @@
-**Current turn outcome (2026-11-25 UTC):** TB-REV-185T independently accepts the bounded diagnostic only: both A6 producer path calls repeatedly rebuild the whole forest; five total call sites. QF1 non-stable; exact call counts and correction sufficiency unmeasured. TB184 1005/1005 remains accepted, stable 67/17/50, debt1/deferred81. No activation or CP3/497/D0/H4 promotion. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_185T_Reach_Termination_Diagnostic_Independent_Review_20261125.md). Next `M6-CP3-CB-205U-QUOTIENT-FOREST-PATH-REUSE` only.
+**Current turn outcome (2026-11-25 UTC):** TB-REV-185T adversarial continuation withdraws prose CB-205U; test-only CB-205V (exact) unblocks activation; QF1 moves to its own exact CB-207A/B track ([adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_185T_Adversarial_Review_20261125.md)). No activation or CP3/497/D0/H4 promotion.
 
-## CURRENT — TB-REV-185T causal review (2026-11-25 UTC)
+## CURRENT — TB-REV-185T adversarial: CB-205V critical path, QF1 track (2026-11-25 UTC)
+
+- [x] **COMPLETE** TB185T (bounded diagnostic) → `M6-CP3-TB-REV-185T` independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_185T_Adversarial_Review_20261125.md): only the sphere changes under staging, sphere stays polyline-eligible (W1); close_sheets stall is outside reader scope → CB-205V (W2); prose CB-205U withdrawn, it missed the verifier K×F loop (W3); exact CB-207A/B frozen (W4); syntax-clean (W5).
+- [ ] **1 NEXT** `M6-CP3-CB-205V-P13-REACH-RECEIPT-READER-SELECTION-SCOPE` — exact test-only diff; compile only.
+- [ ] **2** `M6-CP3-TB-EXEC-185V` — 1006/1006; row1006 exactly 10 receipts (= TB185T lines 1–10 except census separator) + polyline sphere/sphere line.
+- [ ] **3** `M6-CP3-TB-REV-185` — classify readers; freeze CB-206 (flip `SurfaceCellTracing.cpp:5336`, rows 648/978/979, row979 label, row1006 transcript).
+- [ ] **4A** CB-206 → TB-EXEC-186 (V5 BunnyRandom; full compare vs TB185V; STOP-on-RED) → TB-REV-186 (one correction CB per RED family).
+- [ ] **4B** QF1: CB-207A → CB-207B (exact, [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB207_QF1_Quotient_Forest_Cost_Exact_Manifest.md)) → CB-207C (close_sheets termination + N/K/R/F/max-class receipt) → TB-EXEC-187 → TB-REV-187.
+- [ ] **5** parameter-deletion CB → V3b → R1 → O48. **HELD:** CB-190, J6, E5.
+
+```text
+NEXT_TURN: M6-CP3-CB-205V-P13-REACH-RECEIPT-READER-SELECTION-SCOPE
+Owner: Code + Build only; apply exact one-file test-only diff; compile eight GMP/GMPXX targets; runtimeExecution=false.
+Authority: Architecture_M6_CP3_TB_REV_185T_Adversarial_Review_20261125.md (W1/W2); gates/Architecture_M6_CP3_CB205V_P13_Reach_Receipt_Reader_Selection_Scope_Exact_Manifest.md; Architecture_M6_CP3_CB205V_P13_Reach_Receipt_Reader_Selection_Scope_Exact.diff
+  diff SHA-256 c9d66976d9d8f765f572de4f66fc00ee8a815abac8f3a04b3f51b39b67881178; tests/FieldAlignedCurveNetworkTests.cpp 03abb0a6...d72d -> 39b22f998b29b9662640e1212440db3d3f997bd1e1eba8c5492fa25b350efc48; one path only
+  row1006 polyline loop stops at first production+staged eligible fixture (reader scope); receipts 9+visited; ' published=not-applicable' separator; all other assertions unchanged
+  STOP on preimage/postimage/path/compile/package mismatch; no product change
+Then: M6-CP3-TB-EXEC-185V (1006/1006; row1006 exactly 10 receipts = TB185T lines 1-10 except census separator; polyline line sphere/sphere) -> M6-CP3-TB-REV-185 (classify readers; freeze CB-206 = flip SurfaceCellTracing.cpp:5336 + rows 648/978/979 + row979 label + row1006 transcript) -> CB-206 -> TB-EXEC-186 (V5; full compare; STOP-on-RED) -> TB-REV-186 -> QF1 track: CB-207A -> CB-207B (exact, frozen) -> CB-207C (close_sheets termination+size receipt) -> TB-EXEC-187 -> TB-REV-187
+Withdrawn: prose CB-205U (TB-REV-185T adversarial W3/W4)
+Do not: change product code in CB-205V, activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
+```
+
+## HISTORY — TB-REV-185T independent causal review; CB-205U withdrawn by adversarial W3 (2026-11-25 UTC)
 
 - [x] **COMPLETE** `M6-CP3-TB-REV-184` independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md): CB-205 upheld, syntax-clean (U1); activation reaches ~239 gated tests, not 14 readers (U2, corrects TB-REV-182 R5 / TB-REV-183 S4); receipt diagnostic only, no CB-205B (U3); CB-206 freezes row1006 transcript (U4).
 - [x] **COMPLETE** `M6-CP3-CB-205-P13-SLIDE-ENTRY-ACTIVATION-REACH` — exact test append row1006; eight targets compiled; [record](.agents/Directional/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md).
