@@ -1,8 +1,8 @@
 ---TURN_STATUS---
-Turn: M6-CP3-CB-204-P13-SLIDE-ENTRY-PRE-STAGING
-Status: COMPLETE
-Successor: M6-CP3-TB-EXEC-184
-Started at: 2026-11-25T03:58:39Z
+Turn: M6-CP3-TB-EXEC-184
+Status: IN_PROGRESS
+Successor: UNKNOWN
+Started at: 2026-11-25T04:22:19Z
 Resumed at: 
-Ended at: 2026-11-25T04:12:03Z
+Ended at: 
 ---END_TURN_STATUS---
