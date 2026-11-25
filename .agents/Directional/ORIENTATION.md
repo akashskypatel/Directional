@@ -1,4 +1,4 @@
-**Current currency — CB-205T debugger prerequisite verified (2026-11-25 UTC):** [Record](Architecture_M6_CP3_CB205T_Debugger_Provisioning_Record_20261125.md). TB185S was invalid before test launch. [Report](Architecture_M6_CP3_TB185S_Reach_Termination_Diagnostic_Execution_Report_20261125.md). TB185R case1006 still has no terminal verdict. TB184 remains independently accepted 1005/1005. Next `M6-CP3-TB-EXEC-185T-REACH-TERMINATION-DIAGNOSTIC` under cadence item 5. No activation or checkpoint promotion. CP2 491/491 accepted; P1 supported, D-U carried. Stable 67/17/50, debt1/deferred81; TB170/K6 closed.
+**Current currency — TB185T valid bounded diagnostic (2026-11-25 UTC):** [Report](Architecture_M6_CP3_TB185T_Reach_Termination_Diagnostic_Execution_Report_20261125.md) Valid bounded observation: 19/19 samples; all 17 after receipt 11 in `quotient_forest_path`; exit124; no gate credit. Repeated whole-forest adjacency reconstruction is a cost candidate, not a proven infinite loop. TB185R case1006 still has no terminal verdict. TB184 remains independently accepted 1005/1005. Next `M6-CP3-TB-REV-185T-REACH-TERMINATION-DIAGNOSTIC` after closeout. No activation or checkpoint promotion. CP2 491/491 accepted; P1 supported, D-U carried. Stable 67/17/50, debt1/deferred81; TB170/K6 closed.
 
 # Directional — Project Orientation
 
@@ -143,7 +143,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-TB-EXEC-185T-REACH-TERMINATION-DIAGNOSTIC` — [CB-205T record](Architecture_M6_CP3_CB205T_Debugger_Provisioning_Record_20261125.md). Repeat the debugger control and perform the bounded row1006 diagnostic only. TB184 accepted. Complete thirteen-recipe reach and later activated sphere stop/locus remain unmeasured. Activation/J6/E5/CB-190 held; no production promotion.
+**Current priority:** `M6-CP3-TB-REV-185T-REACH-TERMINATION-DIAGNOSTIC` — independent review of the valid bounded observation; freeze a justified correction and falsifier only. [Report](Architecture_M6_CP3_TB185T_Reach_Termination_Diagnostic_Execution_Report_20261125.md) No activation or promotion.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).

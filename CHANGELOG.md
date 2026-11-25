@@ -1,3 +1,7 @@
+## 2026-11-25 — TB-EXEC-185T bounded reach termination diagnostic
+
+[Report](.agents/Directional/Architecture_M6_CP3_TB185T_Reach_Termination_Diagnostic_Execution_Report_20261125.md). Run `45639470951`, result `15035995368`; Valid bounded observation: 19/19 samples; all 17 after receipt 11 in `quotient_forest_path`; exit124; no gate credit. Repeated whole-forest adjacency reconstruction is a cost candidate, not a proven infinite loop. TB184 1005/1005 remains accepted, stable 67/17/50, debt1/deferred81. Next `M6-CP3-TB-REV-185T-REACH-TERMINATION-DIAGNOSTIC` after closeout. No rebuild or successor execution.
+
 ## 2026-11-25 — CB-205T debugger provisioning
 
 [Record](.agents/Directional/Architecture_M6_CP3_CB205T_Debugger_Provisioning_Record_20261125.md). Hosted control run `45636089835`, verified GDB, pidfd and MI interrupt/continue. No Directional runtime or rebuild, no semantic acceptance. TB184 1005/1005 remains accepted; next `M6-CP3-TB-EXEC-185T-REACH-TERMINATION-DIAGNOSTIC`.

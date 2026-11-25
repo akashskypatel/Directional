@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3; TB184 **1005/1005** independently accepted; TB185 and TB185R invalid execution; TB185S invalid before launch (GDB unavailable); CB-205T debugger control verified; bounded row1006 diagnostic next; TB183 **1005/1005** historical comparison, CP2 **491/491** accepted. TB170 seven-control recurrence and K6 closed. Staged plan built; P1 supported. Activation held pending reach evidence. No CP3/497/D0/H4 promotion.
+**Completed:** M0–M5 · **Now:** M6 / CP3; TB184 **1005/1005** independently accepted; TB185 and TB185R invalid execution; TB185S invalid before launch (GDB unavailable); TB185T valid bounded row1006 observation, no gate credit; independent causal review next ([Report](Architecture_M6_CP3_TB185T_Reach_Termination_Diagnostic_Execution_Report_20261125.md)); TB183 **1005/1005** historical comparison, CP2 **491/491** accepted. TB170 seven-control recurrence and K6 closed. Staged plan built; P1 supported. Activation held pending reach evidence. No CP3/497/D0/H4 promotion.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
