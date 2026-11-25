@@ -31,12 +31,13 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-25 UTC. **TB184 1005/1005 independently accepted.** TB185 invalid orchestration attempt (1005 PASS, row1006 timeout/INVALID); [invalid execution record](Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md). Correction `M6-CP3-CB-205R-HARNESS-TIMEOUT` next; activation held. P1 supported, D-U carried, TB170/K6 closed. |
+| Currency | 2026-11-25 UTC. **TB184 1005/1005 independently accepted.** TB185 invalid orchestration attempt (1005 PASS, row1006 timeout/INVALID); [invalid execution record](Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md). Correction `M6-CP3-CB-205R-HARNESS-TIMEOUT` complete ([record](Architecture_M6_CP3_CB205R_Harness_Timeout_Correction_Record_20261125.md)); `M6-CP3-TB-EXEC-185R` next; activation held. P1 supported, D-U carried, TB170/K6 closed. |
 | Branch / source | PR #8 draft/open, `agent/surface_cell_quad/p5-recover-bridge-healing`. Candidate CB-205 source `21087c8285a5dd367cc16f610386accc061bd194`, GMP/GMPXX [run 45554728034](https://github.com/akashskypatel/Directional/actions/runs/45554728034), package `14995401750` ZIP SHA-256 `7e66ef7b3b16e76618a60b250a76038e65bf2e092601958f8252ac993b778da9`, 28/28 checks, eight targets, `runtimeExecution=false`. [Code + Build record](Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md). Candidate only. |
 | Current TB evidence | Accepted TB184 (CB-204 package `14990462714`, [record](Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Code_Build_Record_20261125.md)) [run 45546583508](https://github.com/akashskypatel/Directional/actions/runs/45546583508), result `14992995631` ZIP SHA-256 `8686e64c07fed5e72a5285fa6071a50944f1ea0b24c4b9e61eea831c46e0dd9c`, 2018/2018 checks, 1005/1005 PASS, 1086 members, 779 exact + 225 N1/N2 + one authorized row979 block, zero N3/material. [Execution](Architecture_M6_CP3_TB184_P13_Slide_Entry_Pre_Staging_Full_Gate_Execution_Report_20261125.md); [Review](Architecture_M6_CP3_TB_REV_184_Slide_Entry_Pre_Staging_Independent_Review_20261125.md). TB183 result `14986349003` ZIP SHA-256 `95b49af95c09e1bca461198c798db57e506b4daf7e09da1466c0fbd2b76a9742`, 1005/1005 historical comparison. TB185 invalid: result `14997312958`; see invalid execution record. |
 | Historical comparison | TB182 result `14979452472`, package `14976770449`, 1004/1004 accepted predecessor. Historical manifest `d778afbe65e181391116a67ada06f4482e9786917ca58dd2a17f7b7459d8ca5f`. TB181 result `14967943314`, package `14966635283`, 1003/1003 historical accepted. TB180 result `14951803089` is historical comparison authority. Manifest `2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724`; historic TB169 prefix `82581dd14064efe3729923cfd94333ef70113b0bb84e6bb8eabfb2ec61cce436`; CP2 491/491 prefix `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`. TB169 remains historical authority. |
 | Regression / debt | TB170 mechanical recurrence closed: controls 445/652/653/656/658/660/786 PASS; no new accepted-green loss. Historical 67 events / 17 categories / 50 recurrences; witness debt1/deferred81. J6 production contact case not exercised. K6 namespace correction independently accepted. |
-| First unresolved question | Full-gate timeout correction and complete re-execution. Close sheets, cylinder, final selection and elapsed remain unmeasured. |
+| Executor | `57a4a755944e611df4998c9f00b010cae683a5b4`; harness SHA-256 `688db110dc11f33331caa9a151ea348731de2a82983442bb52818b8dc8594090`. [Control-plane correction](Architecture_M6_CP3_CB205R_Harness_Timeout_Correction_Record_20261125.md); no rebuild. |
+| First unresolved question | Complete immutable re-execution. Close sheets, cylinder, final selection and elapsed remain unmeasured. |
 
 ## Mandatory next turn
 
@@ -44,11 +45,11 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 - **COMPLETE:** [TB-REV-184 adversarial](Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md): CB-205 upheld and syntax-clean (U1); reach is ~239 gated tests, not 14 readers (U2); receipt is diagnostic, activation gate decides, no CB-205B (U3); CB-206 must freeze row1006 transcript (U4).
 
 ```text
-NEXT_TURN: M6-CP3-CB-205R-HARNESS-TIMEOUT
-Owner: control-plane-only Code + Build (Turn_Cadence.md item 5); runtimeExecution=false. No rebuild; reuse candidate package 14995401750.
-Authority: Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md; GitHub_Workflow_Policy.md full-suite timeout policy.
-  Remove the full-gate 600s per-case wait in m6_cp3_targeted_artifact_harness.sh:520. Preserve bounded diagnostics, all fail-closed controls and immutable source/test/fixture/selector/package bytes. Verify without Directional runtime; freeze exact executor/harness identity.
-Then: M6-CP3-TB-EXEC-185R, full unchanged 1006-case gate (no stitched results) -> TB-REV-185 on valid evidence -> conditional CB-206 -> TB-EXEC-186 -> TB-REV-186.
+NEXT_TURN: M6-CP3-TB-EXEC-185R
+Owner: Test + Benchmark only; immutable full gate, no rebuild or repair.
+Authority: CB-205R correction record and CB-205 exact manifest (above/below).
+  Use exact executor, harness and candidate authority above. Run all 1006 cases, 81 deferred, membership 1087. No stitched results. Compare first 1005 to TB184; require all 13 receipts, sphere controls, selection, elapsed and postflight.
+Then: TB-REV-185 on valid evidence -> conditional CB-206 -> TB-EXEC-186 -> TB-REV-186.
 Do not: classify readers from invalid evidence, activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
 ```
 
@@ -67,7 +68,8 @@ Do not: classify readers from invalid evidence, activate Branch A, promote CP3/4
 | COMPLETE | `M6-CP3-TB-REV-184` | Independently accepted 1005/1005; [review](Architecture_M6_CP3_TB_REV_184_Slide_Entry_Pre_Staging_Independent_Review_20261125.md). |
 | COMPLETE | `M6-CP3-CB-205-P13-SLIDE-ENTRY-ACTIVATION-REACH` | Exact test-only receipt, [Code + Build record](Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md); compile-only passed. |
 | COMPLETE (invalid attempt) | `M6-CP3-TB-EXEC-185` | 1005 PASS, row1006 INVALID/600s; no semantic authority. |
-| **1 NEXT** | `M6-CP3-CB-205R-HARNESS-TIMEOUT` → `M6-CP3-TB-EXEC-185R` → TB-REV-185 | Control-plane correction only, then full immutable gate; review only on valid evidence. |
+| COMPLETE | `M6-CP3-CB-205R-HARNESS-TIMEOUT` | [Control-plane correction](Architecture_M6_CP3_CB205R_Harness_Timeout_Correction_Record_20261125.md); no runtime or rebuild. |
+| **1 NEXT** | `M6-CP3-TB-EXEC-185R` → TB-REV-185 | Full immutable gate; review only on valid evidence. |
 | 4A | CB-206 activation → TB-EXEC-186 (V5 BunnyRandom; full compare vs TB185; STOP-on-RED) → TB-REV-186 (one correction CB per RED family) → parameter-deletion CB → V3b → R1 → O48 | Signature-default flip `SurfaceCellTracing.cpp:5336` (row669 falsifier) + exact rows 648/978/979; separate turns. |
 | 5 | CB-190 | S4/S6/S7 diagnostic conformity plus W6 obsolete-code comments (off critical path). |
 | Withdrawn | prose CB-200 plan + C4 assertion (TB-REV-179 adv. M2); CB-199A `4f458361…` (TB-REV-177 adv. J4); prose CB-198 (176 H1); prose CB-197A/196/195/193/187/186/183/180/178/175/173, CB-194, CB-191, DEFN-161A/159A, CB-185 v1, activation-before-plan — see TB-REV-162…177 adversarial records | — |
@@ -75,7 +77,7 @@ Do not: classify readers from invalid evidence, activate Branch A, promote CP3/4
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: [invalid execution record](Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md), [CB-205 Code + Build record](Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md), [TB-REV-184 review](Architecture_M6_CP3_TB_REV_184_Slide_Entry_Pre_Staging_Independent_Review_20261125.md) + [adversarial](Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md), [CB-205 exact manifest](gates/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact_Manifest.md), [exact diff](Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact.diff), [prospective TB185 gate](gates/Architecture_M6_TB185_P13_Slide_Entry_Activation_Reach_Full_Gate_Case_Manifest.tsv), [TB184 execution report](Architecture_M6_CP3_TB184_P13_Slide_Entry_Pre_Staging_Full_Gate_Execution_Report_20261125.md), [CB-204 Code + Build record](Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Code_Build_Record_20261125.md), [TB-REV-183 adversarial](Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md), [LESSONS.md](LESSONS.md). Historical evidence: folded index and Turn Sequence.
+`load_next`: [timeout correction record](Architecture_M6_CP3_CB205R_Harness_Timeout_Correction_Record_20261125.md), [invalid execution record](Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md), [CB-205 Code + Build record](Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md), [TB-REV-184 review](Architecture_M6_CP3_TB_REV_184_Slide_Entry_Pre_Staging_Independent_Review_20261125.md) + [adversarial](Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md), [CB-205 exact manifest](gates/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact_Manifest.md), [exact diff](Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact.diff), [prospective TB185 gate](gates/Architecture_M6_TB185_P13_Slide_Entry_Activation_Reach_Full_Gate_Case_Manifest.tsv), [TB184 execution report](Architecture_M6_CP3_TB184_P13_Slide_Entry_Pre_Staging_Full_Gate_Execution_Report_20261125.md), [CB-204 Code + Build record](Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Code_Build_Record_20261125.md), [TB-REV-183 adversarial](Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md), [LESSONS.md](LESSONS.md). Historical evidence: folded index and Turn Sequence.
 
 0. [ORIENTATION.md](ORIENTATION.md) — project context, read first.
 1. [ROADMAP.md](ROADMAP.md) — milestone position only.

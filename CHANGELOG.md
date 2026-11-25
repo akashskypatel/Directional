@@ -1,3 +1,7 @@
+## 2026-11-25 — CB-205R full-gate timeout correction
+
+[Correction record](.agents/Directional/Architecture_M6_CP3_CB205R_Harness_Timeout_Correction_Record_20261125.md). One-line harness correction at executor `57a4a755944e611df4998c9f00b010cae683a5b4`, SHA-256 `688db110dc11f33331caa9a151ea348731de2a82983442bb52818b8dc8594090`. Control-plane checks PASS; no Directional runtime or rebuild; package `14995401750` unchanged. TB185 remains invalid; TB184 accepted 1005/1005; stable 67/17/50, debt1/deferred81. Next only `M6-CP3-TB-EXEC-185R` (full 1006-case immutable gate). No activation or promotion.
+
 ## 2026-11-25 — TB-EXEC-185 invalid execution
 
 [invalid execution record](.agents/Directional/Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md). 1005 PASS, row1006 INVALID due to hard-coded 600s full-gate timeout. No new semantic authority. TB184 remains accepted; control-plane correction `M6-CP3-CB-205R-HARNESS-TIMEOUT` next, then `M6-CP3-TB-EXEC-185R`. No activation or checkpoint promotion.

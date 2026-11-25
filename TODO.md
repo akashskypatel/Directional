@@ -1,24 +1,23 @@
-**Current turn outcome (2026-11-25 UTC):** TB185 invalid orchestration (1005 PASS, one INVALID at 600s); [invalid execution record](.agents/Directional/Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md). TB184 1005/1005 independently accepted. `M6-CP3-CB-205R-HARNESS-TIMEOUT` next; no activation or CP3/497/D0/H4 promotion.
+**Current turn outcome (2026-11-25 UTC):** TB185 invalid orchestration (1005 PASS, one INVALID at 600s); [invalid execution record](.agents/Directional/Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md). TB184 1005/1005 independently accepted. `M6-CP3-CB-205R-HARNESS-TIMEOUT` complete ([record](.agents/Directional/Architecture_M6_CP3_CB205R_Harness_Timeout_Correction_Record_20261125.md)); `M6-CP3-TB-EXEC-185R` next; no activation or CP3/497/D0/H4 promotion.
 
-## CURRENT — TB185 invalid orchestration (2026-11-25 UTC)
+## CURRENT — CB-205R control-plane correction complete (2026-11-25 UTC)
 
 - [x] **COMPLETE** `M6-CP3-TB-REV-184` independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md): CB-205 upheld, syntax-clean (U1); activation reaches ~239 gated tests, not 14 readers (U2, corrects TB-REV-182 R5 / TB-REV-183 S4); receipt diagnostic only, no CB-205B (U3); CB-206 freezes row1006 transcript (U4).
 - [x] **COMPLETE** `M6-CP3-CB-205-P13-SLIDE-ENTRY-ACTIVATION-REACH` — exact test append row1006; eight targets compiled; [record](.agents/Directional/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md).
 - [x] **COMPLETE (invalid attempt)** `M6-CP3-TB-EXEC-185` — timeout, row1006 INVALID; preserve evidence, no semantic acceptance.
-- [ ] **1 NEXT** `M6-CP3-CB-205R-HARNESS-TIMEOUT` — remove prohibited full-gate per-case timeout; preserve all other controls; runtime-free; no rebuild.
-- [ ] **2** `M6-CP3-TB-EXEC-185R` — rerun all 1006 cases on identical package and frozen manifests; all receipts and elapsed required.
+- [x] **COMPLETE** `M6-CP3-CB-205R-HARNESS-TIMEOUT` — full-gate wait has no cutoff; bounded census unchanged; runtime-free; no rebuild. [Record](.agents/Directional/Architecture_M6_CP3_CB205R_Harness_Timeout_Correction_Record_20261125.md).
+- [ ] **1 NEXT** `M6-CP3-TB-EXEC-185R` — rerun all 1006 cases on identical package and frozen manifests; all receipts and elapsed required.
 - [ ] **3** `M6-CP3-TB-REV-185` — classify 13 recipes and their readers (S4 list + 380/388/688/689/691/695/698–700/702); plane, multi_face_seam and synthetic builders UNMEASURED; freeze CB-206 (flip `SurfaceCellTracing.cpp:5336`, rows 648/978/979, row979 label, row1006 transcript).
 - [ ] **4** CB-206 → TB-EXEC-186 (V5 BunnyRandom; full compare vs TB185; STOP-on-RED) → TB-REV-186 (one correction CB per RED family).
 - [ ] **5** parameter-deletion CB → V3b → R1 → O48, each separate. **HELD:** CB-190, J6, E5. No CP3/497/D0/H4 promotion.
 
 ```text
-NEXT_TURN: M6-CP3-CB-205R-HARNESS-TIMEOUT
-Owner: Code + Build orchestration correction only (Turn_Cadence.md item 5); runtimeExecution=false. No rebuild/repackage required; reuse immutable CB-205 candidate 14995401750 at 21087c8285a5dd367cc16f610386accc061bd194.
-Authority: Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md; GitHub_Workflow_Policy.md full-suite timeout policy; gates/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact_Manifest.md.
-  TB185 invalid: 1005 PASS + row1006 INVALID, timeout 600s/124, harness 90, 11/13 receipts, no final selection/elapsed. First 1005 N1/N2-equal, no material difference; invalid provenance only. TB184 accepted baseline remains unchanged.
-  Correct the shared harness's hard-coded 600s per-case wait for full gates (line 520); wait for organic process completion; retain bounded diagnostic behavior only where allowed. Preserve all fail-closed controls and exact gate, fixture, test, source and package bytes. Verify control-plane change without running Directional. Freeze executor SHA/harness SHA separately from semantic source.
-Then: M6-CP3-TB-EXEC-185R full 1006-case re-execution (no stitched results) -> TB-REV-185 only after valid evidence -> conditional CB-206 activation -> TB-EXEC-186 (V5; full compare vs valid TB185 retry; STOP-on-RED) -> TB-REV-186 (one correction CB per RED family).
-Do not: activate Branch A, classify readers from the invalid attempt, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
+NEXT_TURN: M6-CP3-TB-EXEC-185R
+Owner: Test + Benchmark only; immutable full gate; no rebuild, repair, activation, or source/test/fixture change.
+Authority: Architecture_M6_CP3_CB205R_Harness_Timeout_Correction_Record_20261125.md; Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md; gates/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact_Manifest.md.
+  Executor 57a4a755944e611df4998c9f00b010cae683a5b4; harness SHA-256 688db110dc11f33331caa9a151ea348731de2a82983442bb52818b8dc8594090. Semantic source 21087c8285a5dd367cc16f610386accc061bd194; reuse package 14995401750 and exact frozen TB185 manifests. Full 1006-case gate, 81 deferred, membership 1087; no stitched results or row-only retry. Compare first 1005 to accepted TB184; no new allowance. Require all 13 recipe receipts, sphere controls, final selection, resource elapsed and immutable postflight.
+Then: TB-REV-185 on valid evidence -> conditional CB-206 -> TB-EXEC-186 (V5; full compare vs valid TB185 retry; STOP-on-RED) -> TB-REV-186.
+Do not: classify readers from invalid evidence, activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
 ```
 
 ## HISTORY — TB-REV-184 independent: CB-205 frozen; sequence amended by adversarial U2–U4 (2026-11-25 UTC)

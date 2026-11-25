@@ -1,4 +1,4 @@
-**Current currency — TB-EXEC-185 (2026-11-25 UTC):** [invalid execution record](Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md): 1005 PASS, one INVALID (timeout); TB184 **1005/1005** independently accepted. Control-plane correction and full immutable retry next. TB183 historical; CP2 491/491 accepted. P1 supported, D-U carried; activation held. Stable 67/17/50, debt1/deferred81; TB170/K6 closed. No CP3/497/D0/H4 or production promotion.
+**Current currency — CB-205R (2026-11-25 UTC):** [invalid execution record](Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md): 1005 PASS, one INVALID (timeout); TB184 **1005/1005** independently accepted. [Control-plane correction](Architecture_M6_CP3_CB205R_Harness_Timeout_Correction_Record_20261125.md) complete; full immutable retry next. TB183 historical; CP2 491/491 accepted. P1 supported, D-U carried; activation held. Stable 67/17/50, debt1/deferred81; TB170/K6 closed. No CP3/497/D0/H4 or production promotion.
 
 # Directional — Project Orientation
 
@@ -143,7 +143,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB-205R-HARNESS-TIMEOUT` — [invalid execution record](Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md). Correct the full-gate timeout; re-execute the immutable candidate. TB184 accepted. Complete thirteen-recipe reach and later activated sphere stop/locus remain unmeasured. Activation/J6/E5/CB-190 held; no production promotion.
+**Current priority:** `M6-CP3-TB-EXEC-185R` — [timeout correction record](Architecture_M6_CP3_CB205R_Harness_Timeout_Correction_Record_20261125.md). Re-execute all 1006 cases on the immutable candidate, without a full-gate elapsed cutoff. TB184 accepted. Complete thirteen-recipe reach and later activated sphere stop/locus remain unmeasured. Activation/J6/E5/CB-190 held; no production promotion.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).
