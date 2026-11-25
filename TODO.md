@@ -1,27 +1,29 @@
-**Current turn outcome (2026-11-25 UTC):** TB-REV-183 [adversarial continuation](.agents/Directional/Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md) upholds TB183 1005/1005 and exact CB-204; withdraws the row393 eight-carrier-ends replacement (whitelist oracle, SAFE); binds activation to the canonical signature default (row669 falsifier); inserts a test-only activation-reach receipt (CB-205) before activation (CB-206). No Branch A activation or CP3/497/D0/H4 promotion.
+**Current turn outcome (2026-11-25 UTC):** CB-204 exact test-only pre-staging compiled. [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Code_Build_Record_20261125.md). TB183 1005/1005 stays the accepted baseline. No activation or CP3/497/D0/H4 promotion.
 
-## CURRENT — TB-REV-183 adversarial; CB-204 next, reach receipt inserted (2026-11-25 UTC)
+## CURRENT — CB-204 compiled; TB-EXEC-184 next (2026-11-25 UTC)
 
 - [x] **COMPLETE** TB-REV-182 → CB-203 → TB-EXEC-183 (1005/1005) → `M6-CP3-TB-REV-183` ([independent](.agents/Directional/Architecture_M6_CP3_TB_REV_183_Display_Stop_Locus_Contract_Independent_Review_20261125.md) + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md)).
-- [ ] **1 NEXT** `M6-CP3-CB-204-P13-SLIDE-ENTRY-PRE-STAGING` — [exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Exact_Manifest.md); compile only.
-- [ ] **2** TB-EXEC-184 → TB-REV-184 — 1005/1005 (row979 +1 identical block); freeze CB-205 test-only activation-reach receipt (row1006).
+- [x] **COMPLETE** `M6-CP3-CB-204-P13-SLIDE-ENTRY-PRE-STAGING` — [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Code_Build_Record_20261125.md); eight targets compiled, no runtime.
+- [ ] **1 NEXT** `M6-CP3-TB-EXEC-184` → TB-REV-184 — 1005/1005 (row979 +1 identical block); freeze CB-205 test-only activation-reach receipt (row1006).
 - [ ] **3** CB-205 → TB-EXEC-185 → TB-REV-185 — per-fixture unstaged/staged digests and counts; classify readers 394/396/397/644/645/693/694/843/963/971; freeze CB-206.
 - [ ] **4** CB-206 activation (signature-default flip `SurfaceCellTracing.cpp:5336`; rows 648/978/979 exact; 393/669/844/968/972 unedited) → TB-EXEC-186 (V5 BunnyRandom; STOP-on-RED) → TB-REV-186.
 - [ ] **5** parameter-deletion CB → V3b → R1 → O48, each separate. **HELD:** CB-190 (off path; `<iterator>` gap at SourceChartTransitions.h:529), J6, E5. No CP3/497/D0/H4 promotion.
 
 ```text
-NEXT_TURN: M6-CP3-CB-204-P13-SLIDE-ENTRY-PRE-STAGING
-Owner: Code + Build only; apply exact one-file test-only pre-staging diff; compile eight GMP/GMPXX targets, no runtime
-Authority: Architecture_M6_CP3_TB_REV_183_Display_Stop_Locus_Contract_Independent_Review_20261125.md; gates/Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Exact_Manifest.md; Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Exact.diff
-  exact semantic preimage 58baa583770dba7c4c2f88537ba4c7c317f47573; accepted TB183 result 14986349003, package 14984948549; 1005/1005, membership 1086
-  verify exact patch and pre/postimage; explicit false in row978; row979 explicit unstaged negative and production equality; retain staged witnesses
-  do not activate stopAtLaterSlideEntry; STOP on any mismatch or compile failure
-Then: M6-CP3-TB-EXEC-184 (1005/1005; row979 +1 identical 30-line block only) -> M6-CP3-TB-REV-184 (freeze CB-205 test-only activation-reach receipt row1006) -> CB-205 -> TB-EXEC-185 -> TB-REV-185 (classify readers; freeze CB-206 activation = signature-default flip at SurfaceCellTracing.cpp:5336 + rows 648/978/979 only) -> CB-206 -> TB-EXEC-186 (+V5 BunnyRandom; STOP-on-RED) -> TB-REV-186
-Realigned by: Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md (S1 CB-204 upheld; S2 row393 eight-ends replacement withdrawn; S3 activation site binding, row669 falsifier; S4 reach receipt inserted)
-Do not: run tests in CB, activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190
+NEXT_TURN: M6-CP3-TB-EXEC-184
+Owner: Test + Benchmark only; run immutable CB-204 package 14990462714; no rebuild, repair or source mutation
+Authority: Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Code_Build_Record_20261125.md; gates/Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Exact_Manifest.md; Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md
+  candidate source 754369dfb9e98d209e79802d8b13855f42a77f26; ZIP SHA-256 08ce494de8fa93179e1db251a3440301959379137828f254142e03cefc4d154d; accepted TB183 result 14986349003, 1005/1005, membership 1086
+  exact dispatcher request and checksum preflight in Code + Build record; preserve archived executable modes
+  expected 1005/1005; row978 N1–N3 equal; row979 second contiguous interval +1 identical 30-line block only; STOP on any mismatch
+Then: M6-CP3-TB-REV-184 (freeze CB-205 test-only activation-reach receipt row1006 only after acceptance) -> CB-205 -> TB-EXEC-185 -> TB-REV-185 (classify readers; freeze CB-206 activation = signature-default flip at SurfaceCellTracing.cpp:5336 + rows 648/978/979 only) -> CB-206 -> TB-EXEC-186 (+V5 BunnyRandom; STOP-on-RED) -> TB-REV-186
+Realigned by: Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md (S2 row393 eight-ends replacement withdrawn; S3 activation site binding, row669 falsifier; S4 reach receipt inserted)
+Do not: compile, activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190
 ```
 
-## HISTORY — TB183 independently accepted; CB-204 next (2026-11-25 UTC)
+## HISTORY — TB183 independently accepted; superseded pre-staging plan (2026-11-25 UTC)
+
+Historical record only. The current section above supersedes its turn sequence and activation predictions.
 
 - [x] **COMPLETE** `M6-CP3-TB-REV-182` — [independent](.agents/Directional/Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md) (TB182 accepted, STOP A1) + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_182_Adversarial_Review_20261125.md) (A1 resolved).
 - [x] **COMPLETE** `M6-CP3-CB-203-P13-DISPLAY-STOP-LOCUS-CONTRACT` — [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB203_P13_Display_Stop_Locus_Contract_Code_Build_Record_20261125.md), exact test-only diff, eight targets, no runtime.

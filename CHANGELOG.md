@@ -1,3 +1,7 @@
+## 2026-11-25 — CB-204 slide-entry pre-staging compiled
+
+[Code + Build record](.agents/Directional/Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Code_Build_Record_20261125.md). Exact one-file test-only patch (+14/−6), application [run 45544085641](https://github.com/akashskypatel/Directional/actions/runs/45544085641), GMP/GMPXX [compile run 45544269420](https://github.com/akashskypatel/Directional/actions/runs/45544269420). Source `754369dfb9e98d209e79802d8b13855f42a77f26`, candidate package `14990462714` ZIP SHA-256 `08ce494de8fa93179e1db251a3440301959379137828f254142e03cefc4d154d`, 28/28 checks, eight targets, `runtimeExecution=false`. Explicit unstaged controls in rows978/979 retain the staged positive receipts. Accepted TB183 1005/1005 and CP2 491/491 stay unchanged. Stable 67/17/50, debt1/deferred81. No activation or CP3/497/D0/H4 promotion. Next only `M6-CP3-TB-EXEC-184`.
+
 ## 2026-11-25 — TB-REV-183 adversarial continuation: CB-204 upheld, activation realigned
 
 [Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md): CB-204 upheld; row393 oracle is a 4/6/15/19 whitelist (staged-safe), so the eight-carrier-ends replacement is withdrawn; activation must flip the `canonical_field_aligned_candidate` signature default (row669 falsifies a call-site flip); a test-only activation-reach receipt (CB-205) precedes activation (CB-206).
