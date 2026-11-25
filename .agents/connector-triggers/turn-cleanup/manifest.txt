@@ -1,2 +1,0 @@
-# TB-EXEC-184: verified snapshot temporary trigger only; preserve active dispatcher request and mailbox
-.agents/connector-triggers/source-snapshot/tb-exec-184-20261125T0422Z.txt
