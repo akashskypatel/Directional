@@ -1,2 +1,0 @@
-# TB-REV-182 temporary source snapshot trigger; retain dispatcher and durable records
-.agents/connector-triggers/source-snapshot/tb-rev-182-20261125.txt
