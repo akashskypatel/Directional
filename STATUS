@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP3-CB-205R-HARNESS-TIMEOUT
-Status: IN_PROGRESS
+Status: COMPLETE
 Successor: M6-CP3-TB-EXEC-185R
 Started at: 2026-11-25T06:44:00Z
 Resumed at: 
-Ended at: 
+Ended at: 2026-11-25T06:53:40Z
 ---END_TURN_STATUS---
