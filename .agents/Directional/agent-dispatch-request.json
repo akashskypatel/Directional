@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb204-compile",
-  "mailbox_key": "m6-cp3-cb204-compile",
-  "source_sha": "754369dfb9e98d209e79802d8b13855f42a77f26",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb204-slide-entry-pre-staging"
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb204-doc-closeout",
+  "mailbox_key": "m6-cp3-cb204-doc-closeout",
+  "file_id": "17Fzm6EyuYcQU2TuOt1JyL2iEPhdRo2za",
+  "patch_sha256": "c2c702c0ca9f702901d00594297a43d760a55646e28e547f94ca3cab6d3a7730",
+  "base_sha": "91d9baf5cb89d717b56343d4503cd378b91517cd",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record CB-204 compile evidence and freeze TB184 execution",
+  "retention_days": 7
 }
