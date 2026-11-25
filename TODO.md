@@ -1,22 +1,24 @@
-**Current turn outcome (2026-11-25 UTC):** TB184 1005/1005 PASS; frozen comparison PASS. [Execution report](.agents/Directional/Architecture_M6_CP3_TB184_P13_Slide_Entry_Pre_Staging_Full_Gate_Execution_Report_20261125.md). TB183 remains the independently accepted baseline. No activation or CP3/497/D0/H4 promotion.
+**Current turn outcome (2026-11-25 UTC):** TB-REV-184 accepts TB184 1005/1005 and the exact row979 transcript addition. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_184_Slide_Entry_Pre_Staging_Independent_Review_20261125.md). CB-205 receipt frozen, no activation or CP3/497/D0/H4 promotion.
 
-## CURRENT — TB-EXEC-184 executed; TB-REV-184 next (2026-11-25 UTC)
+## CURRENT — TB-REV-184 accepted; CB-205 next (2026-11-25 UTC)
 
 - [x] **COMPLETE** TB-REV-182 → CB-203 → TB-EXEC-183 (1005/1005) → `M6-CP3-TB-REV-183` ([independent](.agents/Directional/Architecture_M6_CP3_TB_REV_183_Display_Stop_Locus_Contract_Independent_Review_20261125.md) + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md)).
 - [x] **COMPLETE** `M6-CP3-CB-204-P13-SLIDE-ENTRY-PRE-STAGING` — [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Code_Build_Record_20261125.md); eight targets compiled, no runtime.
 - [x] **COMPLETE** `M6-CP3-TB-EXEC-184` — 1005/1005 PASS, comparison PASS. [Execution report](.agents/Directional/Architecture_M6_CP3_TB184_P13_Slide_Entry_Pre_Staging_Full_Gate_Execution_Report_20261125.md).
-- [ ] **1 NEXT** `M6-CP3-TB-REV-184` — independently adjudicate the frozen gate; freeze CB-205 test-only activation-reach receipt (row1006) only after acceptance.
-- [ ] **3** CB-205 → TB-EXEC-185 → TB-REV-185 — per-fixture unstaged/staged digests and counts; classify readers 394/396/397/644/645/693/694/843/963/971; freeze CB-206.
+- [x] **COMPLETE** `M6-CP3-TB-REV-184` — independently accepted TB184 1005/1005; [review](.agents/Directional/Architecture_M6_CP3_TB_REV_184_Slide_Entry_Pre_Staging_Independent_Review_20261125.md).
+- [ ] **1 NEXT** `M6-CP3-CB-205-P13-SLIDE-ENTRY-ACTIVATION-REACH` — [exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact_Manifest.md); compile-only test append row1006, no runtime.
+- [ ] **3** TB-EXEC-185 → TB-REV-185 — per-recipe production/staged digests and counts; classify readers 394/396/397/644/645/693/694/843/963/971; freeze CB-206 only from evidence.
 - [ ] **4** CB-206 activation (signature-default flip `SurfaceCellTracing.cpp:5336`; rows 648/978/979 exact; 393/669/844/968/972 unedited) → TB-EXEC-186 (V5 BunnyRandom; STOP-on-RED) → TB-REV-186.
 - [ ] **5** parameter-deletion CB → V3b → R1 → O48, each separate. **HELD:** CB-190 (off path; `<iterator>` gap at SourceChartTransitions.h:529), J6, E5. No CP3/497/D0/H4 promotion.
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-184
-Owner: independent Review only; adjudicate TB184 exact immutable package, result, ledger, membership and frozen transcript comparison. No compile or runtime.
-Authority: Architecture_M6_CP3_TB184_P13_Slide_Entry_Pre_Staging_Full_Gate_Execution_Report_20261125.md; gates/Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Exact_Manifest.md; Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md
-  TB183 remains independently accepted baseline until Review accepts TB184. STOP on missing authority, unauthorized transcript change or lost control.
-Then: only after acceptance, freeze CB-205 test-only activation-reach receipt row1006 -> CB-205 -> TB-EXEC-185 -> TB-REV-185. CB-206 activation remains held until the separate reach review. On rejection, Review assigns corrective work; no automatic retry.
-Do not: activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190 in this Review.
+NEXT_TURN: M6-CP3-CB-205-P13-SLIDE-ENTRY-ACTIVATION-REACH
+Owner: Code + Build only; apply the frozen one-file test append for row1006 and compile eight GMP/GMPXX targets; no runtime.
+Authority: Architecture_M6_CP3_TB_REV_184_Slide_Entry_Pre_Staging_Independent_Review_20261125.md; gates/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact_Manifest.md; Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact.diff
+  Semantic preimage 754369dfb9e98d209e79802d8b13855f42a77f26; exact diff SHA-256 d39216d278b42dd9ee72c62afe3c5826d080c03089fabfd805329347dd6f777f. Accepted TB184 result 14992995631, 1005/1005, 81 deferred. Prospective 1006-case manifest has exact accepted prefix.
+  STOP on preimage/postimage/path/build/package mismatch. No default flip, existing test or selector mutation. Preserve explicit false sphere control, thirteen recipe keys and production/staged receipts.
+Then: only after compile evidence, separate TB-EXEC-185 -> TB-REV-185; CB-206 activation remains held pending reach classification and exact replacements. Do not start a successor in this Review.
+Do not: activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
 ```
 
 ## HISTORY — TB183 independently accepted; superseded pre-staging plan (2026-11-25 UTC)
@@ -46,8 +48,8 @@ Do not: run tests in CB, activate Branch A, promote CP3/497/D0/H4 or repair J6/E
 ## HISTORY — TB-REV-182 activation authorization stop (2026-11-25 UTC)
 
 - [x] **COMPLETE** TB-REV-181 [adversarial continuation](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb_rev_181_adversarial_review_20261124md): exact CB-202 upheld, D-U bounded reject-only debt and strict comparison rule retained.
-- [x] **COMPLETE** `M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH` — [build record](.agents/Directional/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Code_Build_Record_20261124.md); exact [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md), compile only.
-- [x] **COMPLETE** `M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE` — [execution report](.agents/Directional/Architecture_M6_CP3_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Execution_Report_20261125.md); 1004/1004 PASS, only authorized changes.
+- [x] **COMPLETE** `M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH` — [build record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb202_p13_region_corner_singularity_reach_code_build_record_20261124md); exact [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md), compile only.
+- [x] **COMPLETE** `M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE` — [execution report](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb182_p13_region_corner_singularity_reach_full_gate_execution_report_20261125md); 1004/1004 PASS, only authorized changes.
 - [x] **COMPLETE — A1 resolved in adversarial continuation** `M6-CP3-TB-REV-182` — gate and P1/D-U adjudication complete; row979 premise amendment authorized, row858 contract and independent witness frozen; activation held pending pre-staging. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md).
 - [ ] **2 HELD** Branch A (only after independent authorization), CB-190; J6, E5. No CP3/497/D0/H4 promotion.
 

@@ -6870,7 +6870,7 @@ Current turn: `M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE`
 
 ## Background
 
-- [CB-202 frozen authority](Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Code_Build_Record_20261124.md) governs the run.
+- [CB-202 frozen authority](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb202_p13_region_corner_singularity_reach_code_build_record_20261124md) governs the run.
 - Exact semantic and executor source: `ea7dc19db6a953354b065dabc6b67baff8163b57`. Compile run 45511535974; package 14976770449; ZIP SHA-256 `c6c02b1803f596cda42bfbdddd344ec900c7438e5c0e8ed4d59326be7f6bb836`.
 - Local verification: 28/28 package checksums, exact root manifest and source archive hashes, executable mode bits, five empty source status records, eight compiled targets, GMP/GMPXX linkage. No local executable, configure, compile, relink or benchmark.
 - Accepted TB181 comparison artifact 14967943314; ZIP SHA-256 `877efb75d3ed801aab7fdc9931356254155162a114d9fc36a2f680f02ec9fa6b`; 2014/2014 internal checksums, 1003 PASS records, 1003 raw-log hashes, 1084 members.
@@ -7217,3 +7217,128 @@ Move `FaceChartPoint`, `face_chart_segment_parameter`, `exact_trace_segment_end`
 2. Compile only the eight durable-default GMP/GMPXX targets through `agent-compile-reusable.yml`, with exact source/package receipts, zero test/benchmark/discovery execution and `runtimeExecution=false`. A compile failure is STOP; do not silently broaden this frozen patch.
 3. Separate artifact-only TB after the successful CB. Reuse [`Architecture_M6_TB179_P13_Retraced_Trace_Selection_Full_Gate_Case_Manifest.tsv`](Architecture_M6_TB179_P13_Retraced_Trace_Selection_Full_Gate_Case_Manifest.tsv), SHA-256 `2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724`, 1,003 gated + 81 deferred. Baseline TB180 result `14951803089`, source `4c2b4cf16732cddb58252d5e758ea0b24449ed2a`, run `45457449013`, result ZIP SHA-256 `67e784747b1c8d04bf781b69b486f3310876fde101b7935f0207fd2fd36a39f8`. All 1,003 cases must PASS, every ledger field except raw-log hash must match, all normalized raw bytes must match under N1–N3 only. N1 GoogleTest elapsed time, N2 line endings, N3 counted complete fragment-record ordering; no source-line normalization or other receipt exception. No changed semantic digest, membership, diagnostic or corruption classification. Any material difference, new RED, missing/duplicate result or changed membership is STOP; independent Review decides.
 4. K6 remains open until that independent Review. J6 production struck-reference witness debt, E5, row979, Branch A, CB-190 and CP3/497/D0/H4 remain held. The full-gate baseline acceptance does not establish production sphere or mesh acceptance.
+
+
+## TB-REV-184 folded records — 2026-11-25 UTC
+
+Historical only; current authority is TB184. The original files remain in Git history at `ba9e62a22df066e6984e20c8a47b92b11f1d9807`. Complete text follows, with links resolved to the retained record where needed.
+
+| Original filename | Role / verdict | Original lines / SHA-256 |
+|---|---|---|
+| `Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Code_Build_Record_20261124.md` | Exact test/producer region-corner reach correction compiled; eight targets, no runtime. | 65 / `8b63cef92a612afd219ff737247a11d43603634b079170d40a7febeba0c7d6dc` |
+| `Architecture_M6_CP3_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Execution_Report_20261125.md` | TB182 1004/1004 execution PASS, independently accepted by TB-REV-182; P1 supported, D-U carried. | 43 / `c9d525af4c20bd3e78a2bea7f805eec4064cbbd51b9ca4c89b12b13706577660` |
+
+### Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Code_Build_Record_20261124.md
+
+# CB-202 — region-corner singularity reach (2026-11-24 UTC; closeout 2026-11-25 UTC)
+
+## Situation
+
+`M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH` satisfies the compile-only gate. The exact reviewed three-file change is committed. All eight required targets compile with GNU Multiple Precision arithmetic libraries (GMP and GMPXX). No Directional executable ran. Only `M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE` is authorized next, in a separate turn.
+
+## Background
+
+[Exact manifest](gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md) and [TB-REV-181 adversarial review](Architecture_M6_CP3_TB_REV_181_Adversarial_Review_20261124.md) authorize the change. A cut face contributes only the source corners of the owning orbit, which is the closed boundary traversal of the region. An uncut face contributes all three source vertices. The singularity check and disc certificate consume the same corner set. The complete-partition union path is rejection-only debt D-U. The row355 negative retains its original assertion; the new independent guard is row1004. Row979 prints the region ID on failure. No Branch A activation is authorized.
+
+## Assessment
+
+| Evidence | Exact authority |
+|---|---|
+| Reviewed diff | SHA-256 `26ec484d0434afd3f0376661e945bdbd73d1c9a1fc206e7b589be34bb3ba5332`, 25159 bytes, three paths, +297/−105. Semantic preimage `b9d79c4d9e951cab787d3bfdc3b8f20aaf7195c3`. |
+| Source snapshot | [Run 45507312904](https://github.com/akashskypatel/Directional/actions/runs/45507312904), job `138845818677`, exact source `7900820d5c087347f9a5a5f51b522cf6f8410b2d`; artifact `14974540563`, ZIP SHA-256 `c4467593f5817335132fb95cdb9b636a0a1730ad21e85ac9848622c151782343`, 5816/5816 member checks. |
+| Source application | [Run 45511284746](https://github.com/akashskypatel/Directional/actions/runs/45511284746), job `138859621651`, request `3ee759e5aa0703c0ac7ad1734493db0471770fa4`, applied source `ea7dc19db6a953354b065dabc6b67baff8163b57`. Transport SHA-256 `907ce754c467d4d15c6cf56277bda2a0d8f7507bfceb46c9af42ecb25073b3db`. Result `14975936557` ZIP SHA-256 `15a3560a6e699fc78c80578cc01422f72aebf34e5e837c635337b2457b6af5be`; log `14975697641` ZIP SHA-256 `ce3c524ef682dbb57f81076cff51d2852b7a418b5b100170ecafacb7f556d8fc`. Download/verify and apply/push exit 0; owner-authorized Drive retirement succeeded. |
+| Compile | [Run 45511535974](https://github.com/akashskypatel/Directional/actions/runs/45511535974), job `138860400671`, request `0e80454a8d52bc062d0afc53ae7c96be0e2842af`; exact source `ea7dc19db6a953354b065dabc6b67baff8163b57`. Configure, preflight and build passed; TB job skipped. |
+| Package | [14976770449](https://github.com/akashskypatel/Directional/actions/runs/45511535974/artifacts/14976770449), ZIP SHA-256 `c6c02b1803f596cda42bfbdddd344ec900c7438e5c0e8ed4d59326be7f6bb836`, 28/28 internal checksums. Root SHA256SUMS SHA-256 `9ebbc0cb55e68ad1104c4253f0345651c1abd03e56961e2f0656a2aed9b6e9d2`; source archive SHA-256 `91c3a7aaf4176140b0cae1e2c616f7fa57b9bcc30fdf2609cc8d0d1027ba9ec2`. Expires 2026-12-01 UTC. |
+| Compile log | [14976280979](https://github.com/akashskypatel/Directional/actions/runs/45511535974/artifacts/14976280979), ZIP SHA-256 `e84d2c32bebcf6d9f58faf57c1147f0995fcfd9fcf09592948d78ef9542be33a`. Both archive digests match the workflow mailbox. |
+| Boundary | `runtimeExecution=false`, `semanticContracts=compiled-not-executed`; five empty source status files, preflight and build exit 0, `DIRECTIONAL_ENABLE_GMP=ON`, generated link command contains `libgmpxx.so` and `libgmp.so`. |
+
+All three exact preimages and postimages passed the local checks. The packaged source independently matches all three postimages. The remote commit changed only the three reviewed paths. No existing assertion moved or changed. The frozen 1004-row case manifest, accepted 1003/993/491 prefixes and 81 deferred cases match their declared hashes. No test, benchmark, membership discovery, or local compile occurred. The package contains the two libraries and six executables required by the compile policy.
+
+The accepted TB181 baseline remains 1003/1003 and CP2 remains 491/491. Stable 67 events / 17 categories / 50 recurrences, witness debt1/deferred81 unchanged. Row979 remains unclassified until the separate runtime gate and independent review. No CP3/497/D0/H4 promotion.
+
+### Closeout checks
+
+- Temporary-state cleanup [run 45514595069](https://github.com/akashskypatel/Directional/actions/runs/45514595069), result artifact `14977277898`, ZIP SHA-256 `1198a9a3633afa1bee38d20bd689f6642cfb03c19efdf77af394a0f14a060d42`, cleanup commit `4f8f08f35aaa6e234b85db1e9cca84b27a626ddc`. The receipt records removal of only the CB-202 snapshot trigger, no PR comment deletions, and `runtimeExecution=false`. The cleanup workflow removes its own manifest and retains the durable dispatcher and mailbox branch.
+- Local documentation drift audit: zero errors, one existing `DOCUMENT_BLOAT` warning for ORIENTATION.md. Only current currency pointers were corrected; durable sections remain intact.
+- Process deviations: the first attempt read handoff/policy before the entry beacon; repeated premature mailbox reads returned stale records or HTTP 404; the first two attempts omitted the final beacon rewrite. The prior attempts did not retain an exact tool ledger. These deviations are procedural. They do not invalidate the independently checked source, application and build evidence. No duplicate build or patch application was necessary on resumption.
+
+## Recommendation — separate TB-EXEC-182
+
+The next turn uses the immutable package. Preserve archived executable mode bits with ordinary `unzip` or `tar`; do not repair package contents or permissions. Do not rebuild, relink, change tests, or run benchmarks. Submit the following request only after the separate successor entry beacon:
+
+```json
+{
+  "schema_version": 1,
+  "operation": "test_benchmark",
+  "request_id": "m6-cp3-tb182-exec",
+  "mailbox_key": "m6-cp3-tb182-exec",
+  "executor_sha": "ea7dc19db6a953354b065dabc6b67baff8163b57",
+  "semantic_source_sha": "ea7dc19db6a953354b065dabc6b67baff8163b57",
+  "turn_id": "M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "14976770449",
+    "EXPECTED_SOURCE_SHA": "ea7dc19db6a953354b065dabc6b67baff8163b57",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "c6c02b1803f596cda42bfbdddd344ec900c7438e5c0e8ed4d59326be7f6bb836",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "9ebbc0cb55e68ad1104c4253f0345651c1abd03e56961e2f0656a2aed9b6e9d2",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "91c3a7aaf4176140b0cae1e2c616f7fa57b9bcc30fdf2609cc8d0d1027ba9ec2",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "d778afbe65e181391116a67ada06f4482e9786917ca58dd2a17f7b7459d8ca5f",
+    "EXPECTED_CASE_COUNT": "1004",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  },
+  "artifact_prefix": "m6-cp3-tb182-region-corner-singularity-reach",
+  "retention_days": 14
+}
+```
+
+The expected gate is 1004/1004 PASS and membership is 1085 (1004 gated + 81 deferred). Compare with accepted TB181 result `14967943314`, ZIP SHA-256 `877efb75d3ed801aab7fdc9931356254155162a114d9fc36a2f680f02ec9fa6b`. All inherited ledger fields except raw-log hash must match. Normalize only N1 (elapsed time), N2 (line endings), N3 (counted complete fragment-record ordering). Only row979 raw receipt and new row1004 may differ. No line moves or semantic digest exception. Any other change, missing/duplicate/extra membership, new RED or lost negative means STOP. TB-REV-182 independently classifies row979: built → possible Branch A activation authorization; new earliest error → one exact receipt/correction; still `RegionContainsInteriorSingularity` → A2a node1 and D-U removal. J6/E5/CB-190 and CP3/497/D0/H4 remain held.
+
+
+### Architecture_M6_CP3_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Execution_Report_20261125.md
+
+# TB-EXEC-182 — region-corner singularity reach full gate (2026-11-25 UTC)
+
+## Situation
+
+The immutable TB182 execution and frozen comparison pass: 1,004/1,004 cases, with only the authorized raw receipt change at row979 and the new row1004. Row979 prints `SphereStagedPlan outcome=built`. This is staged plan evidence, not a production acceptance or independent root-cause adjudication. Next only `M6-CP3-TB-REV-182`.
+
+## Background — exact authority
+
+- Entry beacon `7d2f267dd4c31d8266d11aa360f1eaf04310f455`, start 2026-11-25T00:23:37Z; resume beacon `1bb124cd4f2a1b25cbf73c952acfcb4211cb0b58`, resume 2026-11-25T00:45:35Z. The [pending receipt](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb182_p13_region_corner_singularity_reach_full_gate_execution_pending_20261125md) is historical attempt provenance, superseded by this terminal report.
+- [CB-202 build record](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb202_p13_region_corner_singularity_reach_code_build_record_20261124md), exact source and executor `ea7dc19db6a953354b065dabc6b67baff8163b57`, compile run 45511535974, package 14976770449, ZIP SHA-256 `c6c02b1803f596cda42bfbdddd344ec900c7438e5c0e8ed4d59326be7f6bb836`, 28/28 checks. Root manifest `9ebbc0cb55e68ad1104c4253f0345651c1abd03e56961e2f0656a2aed9b6e9d2`; source archive `91c3a7aaf4176140b0cae1e2c616f7fa57b9bcc30fdf2609cc8d0d1027ba9ec2`.
+- Accepted [TB181 baseline](Architecture_M6_CP3_TB_REV_181_Region_Corner_Ownership_Independent_Review_20261124.md): result 14967943314, ZIP SHA-256 `877efb75d3ed801aab7fdc9931356254155162a114d9fc36a2f680f02ec9fa6b`, 2014/2014 checks. Exact 1004-row [manifest](gates/Architecture_M6_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Case_Manifest.tsv) SHA-256 `d778afbe65e181391116a67ada06f4482e9786917ca58dd2a17f7b7459d8ca5f`; 81-row deferred ledger `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`; historical 491/993/1003 prefixes match.
+- Request `m6-cp3-tb182-exec`, event `d750663497272f1f5b38037dee9b834e69305bb5`, request SHA-256 `96ae53de7a454a2d8fa91c95bce000557d30d193f99fe6d1703d4357b359af14`; harness SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`.
+- [Run 45517814731](https://github.com/akashskypatel/Directional/actions/runs/45517814731), runtime job `138881925137`, attempt 1; both schema validations, request parse, exact checkout, harness contract, execution, postflight, uploads and mailbox publication passed. Compile, Drive apply and noop skipped. Runtime wrapper started 00:24:53Z, finished 00:34:27Z, exit 0. Terminal mailbox `workflow-mailbox:.workflow-mailbox/m6-cp3-tb182-exec/latest.json` reports success for the exact event and source.
+- Source snapshot run 45517828664, artifact 14979406041, ZIP SHA-256 `d7800fa014ba8d75bd1336e00a07ff82edfdc2539d403512e0dd88d2e6d9d3bc`, 5818/5818 checks, source `1f1ea6f74f45fb0e58a04ab9aa60aac5626d52ff`. Compare to resume head shows only STATUS, the removed snapshot trigger and the historical pending receipt changed; all closeout document preimages match the snapshot. Cleanup run 45518137818, receipt 14978372904 SHA-256 `1c7cf8c5facc8e75a3a6dc3eae5907f119eea725efd677cd441bd3cea4881628`, commit `4ee3fe75c3a022326ce065324221d9d3d6cd0a02` removed only the trigger and cleanup manifest. No temporary state or PR metadata change authorized.
+
+## Assessment
+
+| Evidence | Observed result |
+|---|---|
+| Result archive | `14979452472`, ZIP SHA-256 `bbbc344b8213b16c9259eb4e5edc24b8a8aadbc8390df32137e239fb113420b7`, 2016/2016 member checks; exact self-excluding file set |
+| Harness log | `14979685900`, ZIP SHA-256 `9c4b839a63e380ab8b23e7b3b9be14a2328e3741180873df378cc6971a8f3a1e` |
+| Reusable wrapper log | `14979745858`, ZIP SHA-256 `b08c0a646be258e4680edfc810bbff552c434e0e88a11504f0b96e5b2f469334` |
+| Boundary | 1004 planned/executed/passed, zero RED/abnormal/missing/skipped/duplicate/control_bad/unexpected_pass/later_positive_red/red_site_bad, postflight true, exit 0; compile/relink/configure/benchmark false |
+| Membership | 1085 unique identities: exactly 1004 gated and 81 deferred; prior ordered membership unchanged except the added guard |
+| Ledger | 1003 inherited records equal in every field except raw-log hash; all 1004 raw-log hashes verified; each case one run/one pass/zero skips/exit 0 |
+| Raw comparison | 566 byte-identical, 434 N1/N2-equivalent, two N3-equivalent (172,179), one authorized material receipt change (979); row1004 new. No unauthorized material differences |
+| Controls | 445/652/653/656/658/660/786 all PASS; CP2 491/491; existing row355 negative PASS |
+
+All three ZIP hashes match the terminal mailbox. The wrapper identifies the exact executor, source and harness. The terminal harness counters equal the boundary receipt. The offline comparator verifies both archive manifests, full membership, exact manifest prefixes, inherited ledger fields and raw files. N1 changes only GoogleTest elapsed times; N2 changes CRLF to LF; N3 preserves positions of non-fragment lines and permits only permutation of complete counted fragment records. Row172 has six such records in both runs; row179 has 24 in both runs. Total fragment records 1554→1582, all 28 additions in the authorized row979. No additional normalization or semantic digest exception.
+
+### Row979 and new guard
+
+- Row979 (`TraceTerminationCorrection.PrescribedSphereStagedSlideEntryStopDownstreamStagesArePublished`) remains PASS. The baseline raw SHA-256 `da90a03eae7ec5f642fe33a8c5fab18f1da2f137014fa93ed4d944929324a4b0` records `RegionContainsInteriorSingularity` at source vertex8. Candidate raw SHA-256 `12921b12a0b6398eff88a4ebb4642e94294059a154638683c219e81f91026c98` prints `SphereStagedPlan outcome=built`. It records 192/192 established source-face owners, zero unavailable/conflicting owners and violations. The owner census matches the baseline. This result satisfies the allowed outcome change but does not classify P1 or authorize activation; independent Review owns that decision.
+- Row1004 `GlobalTopologyPlan.SingularityReachUsesOwningFragmentCorners` PASS, raw SHA-256 `bec82f73113c480f861cf8287fd31c80054d4541b68ebab54d93c05a0e032203`. Existing row355 `GlobalTopologyPlan.RejectsRegionWithWrongEulerCharacteristicOrInteriorSingularity` remains PASS with N1/N2-only raw change.
+- No new accepted-green loss, new stable event or new regression candidate. Historical 67 events / 17 categories / 50 recurrences; witness debt1/deferred81 unchanged. TB170 recurrence and K6 remain closed. TB181 remains accepted comparison pending independent TB182 review; P1 and D-U adjudication pending. No CP3/497/D0/H4 promotion, no Branch A activation, no J6/E5/CB-190 work.
+
+The Library file `Directional/TB182_VERIFICATION_EVIDENCE.zip`, SHA-256 `ae1ca87667b582a8462f3e6b23784dd28d0806838e4155a5803060e148fe70b2`, retains both result ZIPs, terminal logs, comparator, frozen manifests, per-row comparison, normalized differences, checksums and prior continuation receipt. The earlier pending record and resume bundle are historical evidence, not active turn authority.
+
+No rebuild, source/test/fixture/selector/workflow mutation or local Directional execution. The first attempt's policy/read-mode order and tool ledger were incomplete; the dispatch script initially failed before mutation and was corrected once. The continuation reused the verified snapshot (`READ_MODE=snapshot`) and exact run. Policy reads were late relative to initial mailbox observation. Local scratch Git initially rejected directory ownership; corrected only scratch ownership and reran preparation. These process deviations do not change the immutable execution evidence. Tool ledger partial across attempts. Documentation audit: zero errors; one pre-existing ORIENTATION size warning and three protected-document change warnings for the authorized current-state pointer updates in the handoff, ORIENTATION and ROADMAP. No durable sections removed.
+
+## Recommendation — separate review
+
+Next only `M6-CP3-TB-REV-182`. Independently re-derive the archive, member, manifest, ledger, N1–N3 and row979/1004 comparisons; classify the observed built staged plan and adjudicate P1 and D-U under CB-202 exact manifest and TB-REV-181 adversarial requirements. Only Review may freeze the conditional Branch A activation CB if independently warranted. No runtime or implementation in Review, and no production promotion. Do not run another TB182 or start its successor in this response.

@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3; TB183 **1005/1005** independently accepted; CB-204 test-only pre-staging next; TB182 **1004/1004** historical comparison, CP2 **491/491** accepted. TB170 seven-control recurrence and K6 closed. Staged plan built; P1 supported. Activation held until pre-staging. No CP3/497/D0/H4 promotion.
+**Completed:** M0–M5 · **Now:** M6 / CP3; TB184 **1005/1005** independently accepted; CB-205 test-only reach receipt next; TB183 **1005/1005** historical comparison, CP2 **491/491** accepted. TB170 seven-control recurrence and K6 closed. Staged plan built; P1 supported. Activation held pending reach evidence. No CP3/497/D0/H4 promotion.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

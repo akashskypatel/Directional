@@ -869,6 +869,8 @@ TB-REV-181 accepts TB181 package `14966635283`, result `14967943314`, source `b9
 
 TB-REV-183 accepts TB183 package `14984948549`, result `14986349003`, source `58baa583770dba7c4c2f88537ba4c7c317f47573`, **1005/1005**. [Frozen manifest](gates/Architecture_M6_TB183_P13_Display_Stop_Locus_Contract_Full_Gate_Case_Manifest.tsv) SHA-256 `94f02d6bd2d599f02bbc7dc7cd317e490cdb00e18827596acac2cfdd827460be`, exact TB182 prefix `d778afbe65e181391116a67ada06f4482e9786917ca58dd2a17f7b7459d8ca5f` plus row1005. Membership 1086 = 1005 gated + 81 deferred. [Independent review](Architecture_M6_CP3_TB_REV_183_Display_Stop_Locus_Contract_Independent_Review_20261125.md). No selector byte changed; CP3 selector497 remains unpromoted.
 
+TB-REV-184 accepts TB184 package `14990462714`, result `14992995631`, source `754369dfb9e98d209e79802d8b13855f42a77f26`, **1005/1005** with the same exact 1005-case manifest SHA-256 `94f02d6bd2d599f02bbc7dc7cd317e490cdb00e18827596acac2cfdd827460be`; membership 1086, 81 deferred. [Independent review](Architecture_M6_CP3_TB_REV_184_Slide_Entry_Pre_Staging_Independent_Review_20261125.md). [Prospective TB185 manifest](gates/Architecture_M6_TB185_P13_Slide_Entry_Activation_Reach_Full_Gate_Case_Manifest.tsv) SHA-256 `a9b8083269ebd0786f0584d66c1f89f43362d884840ab95b95c3d0fa59ca0587` appends row1006 only, not accepted. No frozen selector bytes changed; CP3 selector497 unpromoted.
+
 ## Regenerating this manifest
 
 Every column is derived. `tools/selector_probe.py` computes counts, LF hashes, prefix relations and appended

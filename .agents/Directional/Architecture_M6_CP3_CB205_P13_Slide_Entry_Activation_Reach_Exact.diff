@@ -1,0 +1,177 @@
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index b474a90389db7360d8a3031a0dedfc9a8bc63dca..b40ea4b82d6bccce521da20aceea2e0726b50399 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -23884,3 +23884,172 @@ TEST(GlobalTopologyPlan, SingularityReachUsesOwningFragmentCorners) {
+             missingFailure->regionOwningFragmentOrbitIds);
+   EXPECT_EQ(false, missingFailure->regionOwningFragmentOrbitPresent);
+ }
++
++// Measure the reach of the staged switch using each production-reader recipe.
++// A build failure is a measured outcome, not evidence of digest equality.
++TEST(TraceTerminationCorrection, SlideEntryActivationReachByReaderRecipe) {
++  using directional::geometry::FieldAlignedCurveNetworkBuildResult;
++  using directional::geometry::surface_cell_tracing_detail::
++      field_aligned_production_arrival_priority;
++  const auto laterEntryStops = [](const FieldAlignedCurveNetwork &network) {
++    const auto &traces = network.candidate_traces();
++    std::size_t count = 0U;
++    for (const auto &trace : traces) {
++      if (!trace.terminalContact || !trace.terminalContact->carrierLocus) {
++        continue;
++      }
++      const auto &contact = *trace.terminalContact;
++      const auto struck = contact.struckTrace.index();
++      const auto segment = contact.struckSegmentIndex;
++      if (struck < traces.size() && segment < traces[struck].segments.size() &&
++          traces[struck].segments[segment].edgeTransitExit.has_value()) {
++        ++count;
++      }
++    }
++    return count;
++  };
++  const auto eligible = [](const FieldAlignedCurveNetwork &network) {
++    return !network.singularity_ports().empty() &&
++           std::any_of(network.candidate_traces().begin(),
++                       network.candidate_traces().end(), [](const auto &trace) {
++                         return trace.segments.size() >= 2U;
++                       });
++  };
++  std::set<std::string> receipts;
++  const auto measure = [&](
++      const std::string &recipe, const std::string &name, const TriMesh &mesh,
++      const std::optional<SourceTopologyRegions> &source,
++      const std::optional<directional::authority::FieldTransportAtlas> &atlas,
++      const std::vector<SurfaceCellRail> &rails,
++      const std::optional<FieldAlignedCurveNetwork> *published,
++      const std::string &unavailableReason, bool requireBaseline,
++      bool sphereControl) -> std::pair<bool, bool> {
++    const std::string key = recipe + ":" + name;
++    EXPECT_TRUE(receipts.insert(key).second) << key;
++    std::ostringstream out;
++    out << "SlideEntryActivationReach recipe=" << recipe << " fixture=" << name;
++    if (!source || !atlas) {
++      EXPECT_FALSE(requireBaseline) << key << ' ' << unavailableReason;
++      out << " status=inputs-unavailable reason=" << unavailableReason;
++      std::cout << out.str() << '\n';
++      return {false, false};
++    }
++    const auto production = FieldAlignedCurveNetwork::make(mesh, *source, *atlas, rails);
++    const auto staged = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
++        mesh, *source, *atlas, rails, field_aligned_production_arrival_priority(), true);
++    const auto append = [&](const char *label,
++                            const FieldAlignedCurveNetworkBuildResult &result) {
++      out << ' ' << label << "={";
++      if (result) {
++        const auto &network = result.value();
++        out << "status=built,digest=" << network.semantic_digest()
++            << ",traces=" << network.candidate_traces().size()
++            << ",events=" << network.events().size()
++            << ",slideStops=" << laterEntryStops(network)
++            << ",polylineEligible=" << eligible(network);
++      } else {
++        out << "status=failed," << network_error_locus(result.error());
++      }
++      out << '}';
++    };
++    append("production", production);
++    append("staged", staged);
++    const bool bothBuilt = production && staged;
++    out << " productionStagedDigestEqual=";
++    if (bothBuilt) {
++      out << (production.value().semantic_digest() == staged.value().semantic_digest());
++    } else {
++      out << "unmeasured";
++    }
++    bool publishedEligible = false;
++    if (published != nullptr) {
++      out << " published=";
++      if (*published) {
++        EXPECT_TRUE(production) << key;
++        if (production) {
++          EXPECT_EQ((*published)->semantic_digest(), production.value().semantic_digest())
++              << key;
++        }
++        out << (*published)->semantic_digest();
++        publishedEligible = eligible(**published);
++      } else {
++        out << "absent";
++      }
++    } else {
++      out << "not-applicable";
++      publishedEligible = production && eligible(production.value());
++    }
++    if (requireBaseline) {
++      EXPECT_TRUE(production) << key;
++      if (published != nullptr) EXPECT_TRUE(published->has_value()) << key;
++    }
++    if (sphereControl) {
++      // Keep the measured negative control independent of the future default flip.
++      const auto explicitUnstaged =
++          FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
++              mesh, *source, *atlas, rails,
++              field_aligned_production_arrival_priority(), false);
++      append("explicitUnstaged", explicitUnstaged);
++      EXPECT_TRUE(explicitUnstaged && staged) << key;
++      if (explicitUnstaged && staged) {
++        EXPECT_NE(explicitUnstaged.value().semantic_digest(),
++                  staged.value().semantic_digest());
++        EXPECT_EQ(4U, laterEntryStops(staged.value()));
++      }
++    }
++    std::cout << out.str() << '\n';
++    return {publishedEligible, staged && eligible(staged.value())};
++  };
++
++  for (const std::string name : {"sphere_prescribed", "torus", "mechanical_feature"}) {
++    const auto witness = observe_cp4c_witness(name, name);
++    measure("observe", name, witness.mesh, witness.sourceAuthority, witness.atlas,
++            witness.rails, &witness.network, witness.report,
++            name == "sphere_prescribed", name == "sphere_prescribed");
++  }
++  for (const std::string name : {"sphere_prescribed", "torus"}) {
++    const auto fixture = build_cp4c_pipeline_products_fixture(name, name);
++    EXPECT_TRUE(fixture.loadError.empty()) << fixture.loadError;
++    EXPECT_TRUE(fixture.authoritativeRailsSnapshotAvailable) << name;
++    measure("pipeline-products", name, fixture.mesh, fixture.sourceAuthority,
++            fixture.atlas, fixture.rails, &fixture.network,
++            fixture.terminalFailureStage, true, false);
++  }
++  for_each_cp4c_census_witness(
++      [&](const Cp4cCensusWitnessMetadata &metadata, const TriMesh &mesh,
++          const CrossFieldResult &, const directional::authority::FieldTransportAtlas &atlas) {
++        measure("atlas-census", metadata.name, mesh, make_source_authority(mesh),
++                std::optional<directional::authority::FieldTransportAtlas>{atlas},
++                rails_from_atlas(mesh, atlas), nullptr, "source authority unavailable",
++                true, false);
++      });
++
++  // Match the options and selection order of produced_network() in
++  // FieldAlignedNetworkPolylinesTests.cpp, including its fallback fixtures.
++  directional::pipeline::RemeshOptions options;
++  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
++  options.surfaceCells.enabled = true;
++  options.surfaceCells.fallbackPolicy = directional::pipeline::SurfaceCellFallbackPolicy::Fail;
++  options.surfaceCells.allowSourceGridRecovery = false;
++  options.surfaceCells.retainIntermediateGeometry = true;
++  options.parallelizeComponents = false;
++  std::string firstProduction, firstStaged;
++  for (const std::string name : {"sphere_prescribed", "genus_two", "close_sheets", "cylinder"}) {
++    const auto fixture = build_cp4c_pipeline_products_fixture(name, name, options);
++    EXPECT_TRUE(fixture.loadError.empty()) << fixture.loadError;
++    if (fixture.sourceAuthority && fixture.atlas) {
++      EXPECT_TRUE(fixture.authoritativeRailsSnapshotAvailable) << name;
++    }
++    const auto [production, staged] = measure(
++        "polyline-defaults", name, fixture.mesh, fixture.sourceAuthority,
++        fixture.atlas, fixture.rails, &fixture.network, fixture.terminalFailureStage,
++        false, false);
++    if (firstProduction.empty() && production) firstProduction = name;
++    if (firstStaged.empty() && staged) firstStaged = name;
++  }
++  EXPECT_FALSE(firstProduction.empty());
++  std::cout << "SlideEntryActivationReachPolyline productionFirst=" << firstProduction
++            << " stagedDiagnosticFirst=" << (firstStaged.empty() ? "none" : firstStaged)
++            << '\n';
++  EXPECT_EQ(13U, receipts.size());
++}
