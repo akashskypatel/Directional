@@ -1,1 +1,0 @@
-.agents/connector-triggers/source-snapshot/cb205-20261125T053037Z.txt
