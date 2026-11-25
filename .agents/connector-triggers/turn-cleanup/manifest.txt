@@ -1,0 +1,2 @@
+# M6-CP3-TB-REV-183 temporary-state cleanup
+.agents/connector-triggers/source-snapshot/m6-cp3-tb-rev-183.txt
