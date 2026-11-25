@@ -1,6 +1,6 @@
-**Current turn outcome (2026-11-25 UTC):** TB185S invalid before launch; [report](.agents/Directional/Architecture_M6_CP3_TB185S_Reach_Termination_Diagnostic_Execution_Report_20261125.md). TB184 1005/1005 remains independently accepted. Next `M6-CP3-CB-205T-DEBUGGER-PROVISIONING`. No activation or CP3/497/D0/H4 promotion.
+**Current turn outcome (2026-11-25 UTC):** TB185S invalid before launch; [report](.agents/Directional/Architecture_M6_CP3_TB185S_Reach_Termination_Diagnostic_Execution_Report_20261125.md). TB184 1005/1005 remains independently accepted. CB-205T debugger control verified; [record](.agents/Directional/Architecture_M6_CP3_CB205T_Debugger_Provisioning_Record_20261125.md). Next `M6-CP3-TB-EXEC-185T-REACH-TERMINATION-DIAGNOSTIC`. No activation or CP3/497/D0/H4 promotion.
 
-## CURRENT — TB185S invalid diagnostic (2026-11-25 UTC)
+## CURRENT — CB-205T debugger prerequisite verified (2026-11-25 UTC)
 
 - [x] **COMPLETE** `M6-CP3-TB-REV-184` independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md): CB-205 upheld, syntax-clean (U1); activation reaches ~239 gated tests, not 14 readers (U2, corrects TB-REV-182 R5 / TB-REV-183 S4); receipt diagnostic only, no CB-205B (U3); CB-206 freezes row1006 transcript (U4).
 - [x] **COMPLETE** `M6-CP3-CB-205-P13-SLIDE-ENTRY-ACTIVATION-REACH` — exact test append row1006; eight targets compiled; [record](.agents/Directional/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md).
@@ -9,17 +9,18 @@
 - [x] **COMPLETE (invalid attempt)** `M6-CP3-TB-EXEC-185R` — 1005 PASS, row1006 interrupted after approximately 5 h 42 min, no semantic authority. [Record](.agents/Directional/Architecture_M6_CP3_TB185R_P13_Slide_Entry_Activation_Reach_Full_Gate_Execution_Report_20261125.md).
 - [x] **COMPLETE** `M6-CP3-CB-205S-REACH-TERMINATION-DIAGNOSTIC` — close_sheets construction is next; exact nested call unmeasured; [diagnostic preparation](.agents/Directional/Architecture_M6_CP3_CB205S_Reach_Termination_Diagnostic_Preparation_Record_20261125.md). No runtime or rebuild.
 - [x] **COMPLETE (invalid attempt)** `M6-CP3-TB-EXEC-185S-REACH-TERMINATION-DIAGNOSTIC` — GDB unavailable, no test process launched; [report](.agents/Directional/Architecture_M6_CP3_TB185S_Reach_Termination_Diagnostic_Execution_Report_20261125.md).
-- [ ] **1 NEXT** `M6-CP3-CB-205T-DEBUGGER-PROVISIONING` — establish and verify diagnostic GDB prerequisite; no Directional runtime or rebuild.
+- [x] **COMPLETE** `M6-CP3-CB-205T-DEBUGGER-PROVISIONING` — hosted debugger control verified; [record](.agents/Directional/Architecture_M6_CP3_CB205T_Debugger_Provisioning_Record_20261125.md); no Directional runtime or rebuild.
+- [ ] **1 NEXT** `M6-CP3-TB-EXEC-185T-REACH-TERMINATION-DIAGNOSTIC` — bounded exact row1006 observation only; no gate credit.
 - [ ] **2 HELD** Separate diagnosis/correction and full immutable re-execution, with all 1006 cases and original acceptance requirements.
 - [ ] **3** `M6-CP3-TB-REV-185` — classify 13 recipes and their readers (S4 list + 380/388/688/689/691/695/698–700/702); plane, multi_face_seam and synthetic builders UNMEASURED; freeze CB-206 (flip `SurfaceCellTracing.cpp:5336`, rows 648/978/979, row979 label, row1006 transcript).
 - [ ] **4** CB-206 → TB-EXEC-186 (V5 BunnyRandom; full compare vs TB185; STOP-on-RED) → TB-REV-186 (one correction CB per RED family).
 - [ ] **5** parameter-deletion CB → V3b → R1 → O48, each separate. **HELD:** CB-190, J6, E5. No CP3/497/D0/H4 promotion.
 
 ```text
-NEXT_TURN: M6-CP3-CB-205T-DEBUGGER-PROVISIONING
-Owner: control-plane-only orchestration correction; no Directional runtime or rebuild.
-Authority: .agents/Directional/Architecture_M6_CP3_TB185S_Reach_Termination_Diagnostic_Execution_Report_20261125.md; immutable package 14995401750/source 21087c8285a5dd367cc16f610386accc061bd194.
-  Establish reproducible GDB provisioning and verify executable availability, version, Linux PID file descriptor and machine-interface interrupt/continue on a non-Directional control. Preserve reusable permissions, frozen row1006, 600-second budget, 30-second samples, all 1006 gate cases and 81 deferred entries. Freeze a separate diagnostic TB only after preflight is sound. No blind rerun, product/test/fixture changes or gate credit.
+NEXT_TURN: M6-CP3-TB-EXEC-185T-REACH-TERMINATION-DIAGNOSTIC
+Owner: immutable artifact-only, non-gating diagnostic; no rebuild.
+Authority: .agents/Directional/Architecture_M6_CP3_CB205T_Debugger_Provisioning_Record_20261125.md; immutable package 14995401750/source 21087c8285a5dd367cc16f610386accc061bd194.
+  Execute only the bounded row1006 diagnostic on immutable package 14995401750 using the frozen executor/harness in the CB-205T record. Provision and verify GDB on the new runner before candidate download. Preserve reusable permissions, 600-second budget, 30-second samples, all 1006 gate cases and 81 deferred entries. No gate credit, blind rerun, rebuild, product/test/fixture changes or activation.
 Then: valid diagnostic -> justified correction -> valid full 1006-case immutable gate -> TB-REV-185 -> conditional CB-206.
 Do not: classify readers from invalid evidence, activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
 ```

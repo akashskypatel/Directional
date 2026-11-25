@@ -1,3 +1,7 @@
+## 2026-11-25 — CB-205T debugger provisioning
+
+[Record](.agents/Directional/Architecture_M6_CP3_CB205T_Debugger_Provisioning_Record_20261125.md). Hosted control run `45636089835`, verified GDB, pidfd and MI interrupt/continue. No Directional runtime or rebuild, no semantic acceptance. TB184 1005/1005 remains accepted; next `M6-CP3-TB-EXEC-185T-REACH-TERMINATION-DIAGNOSTIC`.
+
 ## 2026-11-25 — TB-EXEC-185S invalid diagnostic
 
 [Report](.agents/Directional/Architecture_M6_CP3_TB185S_Reach_Termination_Diagnostic_Execution_Report_20261125.md). Run 45630473352, result 15030422476; GDB unavailable before test launch. No new product measurements, semantic acceptance or stable regression. TB184 remains 1005/1005; next `M6-CP3-CB-205T-DEBUGGER-PROVISIONING`. No rebuild or successor implementation.
