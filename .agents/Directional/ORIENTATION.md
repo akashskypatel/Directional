@@ -1,4 +1,4 @@
-**Current currency — TB-REV-184 (2026-11-25 UTC):** [independent review](Architecture_M6_CP3_TB_REV_184_Slide_Entry_Pre_Staging_Independent_Review_20261125.md) accepts TB184 **1005/1005**. Only the authorized row979 trace block differs; row858 face receipt and row1005 guard unchanged. CB-205 test-only reach receipt next. TB183 1005/1005 historical comparison; CP2 491/491 accepted. P1 supported, D-U carried; activation held. Stable 67/17/50, debt1/deferred81; TB170 recurrence and K6 closed. No CP3/497/D0/H4 or production promotion.
+**Current currency — TB-REV-184 (2026-11-25 UTC):** [independent review](Architecture_M6_CP3_TB_REV_184_Slide_Entry_Pre_Staging_Independent_Review_20261125.md) accepts TB184 **1005/1005**. Only the authorized row979 trace block differs; row858 face receipt and row1005 guard unchanged. CB-205 test-only reach compiled; TB-EXEC-185 next. TB183 1005/1005 historical comparison; CP2 491/491 accepted. P1 supported, D-U carried; activation held. Stable 67/17/50, debt1/deferred81; TB170 recurrence and K6 closed. No CP3/497/D0/H4 or production promotion.
 
 # Directional — Project Orientation
 
@@ -48,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; multi-cut plan remains open** | TB184 independently accepted 1005/1005; TB183 historical 1005/1005; CP2 491/491 accepted. TB170 recurrence and K6 closed. Row979 staged plan built; P1 supported. Activation held pending CB-205 reach receipt and independent review. No CP3/497/D0/H4 acceptance. |
+| **M6-CP3 — active; multi-cut plan remains open** | TB184 independently accepted 1005/1005; TB183 historical 1005/1005; CP2 491/491 accepted. TB170 recurrence and K6 closed. Row979 staged plan built; P1 supported. Activation held pending TB-EXEC-185 reach receipt and independent review. No CP3/497/D0/H4 acceptance. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting now includes the TB170 accepted-green recurrence: **67 events / 17 categories / 50 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -143,7 +143,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB-205-P13-SLIDE-ENTRY-ACTIVATION-REACH` — [exact manifest](gates/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact_Manifest.md). Append one test-only row1006 to measure thirteen fixture recipes; compile only. TB184 accepted, P1 supported, D-U carried. Later activated sphere stop and fixture reach remain unmeasured; CB-206 activation held, K6 discharged, J6/E5/CB-190 held. No production promotion.
+**Current priority:** `M6-CP3-TB-EXEC-185` — [CB-205 Code + Build record](Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md), [exact manifest](gates/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact_Manifest.md). Execute the immutable 1006-case candidate gate and measure thirteen fixture recipes. No rebuild. TB184 accepted, P1 supported, D-U carried. Later activated sphere stop and fixture reach remain unmeasured; CB-206 activation held, K6 discharged, J6/E5/CB-190 held. No production promotion.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).

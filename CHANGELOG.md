@@ -1,3 +1,7 @@
+## 2026-11-25 — CB-205 slide-entry activation reach compiled
+
+[Code + Build record](.agents/Directional/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md). Exact one-file test append (+169/−0), application [run 45554541672](https://github.com/akashskypatel/Directional/actions/runs/45554541672), GMP/GMPXX [compile run 45554728034](https://github.com/akashskypatel/Directional/actions/runs/45554728034). Source `21087c8285a5dd367cc16f610386accc061bd194`, candidate package `14995401750` ZIP SHA-256 `7e66ef7b3b16e76618a60b250a76038e65bf2e092601958f8252ac993b778da9`, 28/28 checks, eight targets, `runtimeExecution=false`. Accepted TB184 1005/1005 and CP2 491/491 unchanged. Stable 67/17/50, debt1/deferred81. No activation or CP3/497/D0/H4 promotion. Next only `M6-CP3-TB-EXEC-185`.
+
 ## 2026-11-25 — TB-REV-184 adversarial continuation: CB-205 upheld, activation reach corrected
 
 [Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md). CB-205 exact diff upheld and syntax-clean (0 errors, warnings identical to HEAD); sphere stop count 4 is row978's own predicate (TB160 `slideStops=4`). Correction: activation reaches ~239 gated tests across ten fixture families plus synthetic builders, not the 14 sphere readers named in TB-REV-182 R5 / TB-REV-183 S4. Reach receipt is diagnostic; the activation gate (STOP-on-RED, full compare vs TB185) decides; no extra receipt turn. CB-206 must freeze row1006's post-activation transcript. Runtime-free; no product/test bytes changed.

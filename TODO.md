@@ -1,21 +1,21 @@
-**Current turn outcome (2026-11-25 UTC):** TB-REV-184 accepted TB184 1005/1005; adversarial continuation upholds CB-205 and corrects activation reach to ~239 gated tests ([adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md)). CB-205 next; no activation or CP3/497/D0/H4 promotion.
+**Current turn outcome (2026-11-25 UTC):** CB-205 compile-only passed; [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md). TB184 1005/1005 accepted; TB-EXEC-185 next. No activation or CP3/497/D0/H4 promotion.
 
-## CURRENT — TB-REV-184 adversarial: CB-205 upheld, reach corrected (2026-11-25 UTC)
+## CURRENT — CB-205 test-only reach compiled (2026-11-25 UTC)
 
 - [x] **COMPLETE** `M6-CP3-TB-REV-184` independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md): CB-205 upheld, syntax-clean (U1); activation reaches ~239 gated tests, not 14 readers (U2, corrects TB-REV-182 R5 / TB-REV-183 S4); receipt diagnostic only, no CB-205B (U3); CB-206 freezes row1006 transcript (U4).
-- [ ] **1 NEXT** `M6-CP3-CB-205-P13-SLIDE-ENTRY-ACTIVATION-REACH` — exact test append row1006; compile only.
-- [ ] **2** `M6-CP3-TB-EXEC-185` — 1006/1006; first 1005 N1–N3-equal to TB184; 13 keys; record row1006 elapsed.
+- [x] **COMPLETE** `M6-CP3-CB-205-P13-SLIDE-ENTRY-ACTIVATION-REACH` — exact test append row1006; eight targets compiled; [record](.agents/Directional/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md).
+- [ ] **1 NEXT** `M6-CP3-TB-EXEC-185` — 1006/1006; first 1005 N1–N3-equal to TB184; 13 keys; record row1006 elapsed.
 - [ ] **3** `M6-CP3-TB-REV-185` — classify 13 recipes and their readers (S4 list + 380/388/688/689/691/695/698–700/702); plane, multi_face_seam and synthetic builders UNMEASURED; freeze CB-206 (flip `SurfaceCellTracing.cpp:5336`, rows 648/978/979, row979 label, row1006 transcript).
 - [ ] **4** CB-206 → TB-EXEC-186 (V5 BunnyRandom; full compare vs TB185; STOP-on-RED) → TB-REV-186 (one correction CB per RED family).
 - [ ] **5** parameter-deletion CB → V3b → R1 → O48, each separate. **HELD:** CB-190, J6, E5. No CP3/497/D0/H4 promotion.
 
 ```text
-NEXT_TURN: M6-CP3-CB-205-P13-SLIDE-ENTRY-ACTIVATION-REACH
-Owner: Code + Build only; apply the frozen one-file test append for row1006 and compile eight GMP/GMPXX targets; no runtime.
-Authority: Architecture_M6_CP3_TB_REV_184_Slide_Entry_Pre_Staging_Independent_Review_20261125.md; gates/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact_Manifest.md; Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact.diff
-  Semantic preimage 754369dfb9e98d209e79802d8b13855f42a77f26; exact diff SHA-256 d39216d278b42dd9ee72c62afe3c5826d080c03089fabfd805329347dd6f777f. Accepted TB184 result 14992995631, 1005/1005, 81 deferred. Prospective 1006-case manifest has exact accepted prefix.
-  STOP on preimage/postimage/path/build/package mismatch. No default flip, existing test or selector mutation. Preserve explicit false sphere control, thirteen recipe keys and production/staged receipts.
-Then: TB-EXEC-185 (1006/1006; record row1006 elapsed) -> TB-REV-185 (classify 13 recipes + readers incl. 380/388/688/689/691/695/698-700/702; other families UNMEASURED; freeze CB-206 = flip :5336 + rows 648/978/979 + row979 label + row1006 transcript) -> CB-206 -> TB-EXEC-186 (V5; full compare vs TB185; STOP-on-RED) -> TB-REV-186 (one correction CB per RED family)
+NEXT_TURN: M6-CP3-TB-EXEC-185
+Owner: Test + Benchmark only; execute immutable candidate package 14995401750, source 21087c8285a5dd367cc16f610386accc061bd194, 1006 gated cases; no rebuild, repair or source change.
+Authority: Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md; gates/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Exact_Manifest.md; gates/Architecture_M6_TB185_P13_Slide_Entry_Activation_Reach_Full_Gate_Case_Manifest.tsv; Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md.
+  Candidate ZIP SHA-256 7e66ef7b3b16e76618a60b250a76038e65bf2e092601958f8252ac993b778da9; root manifest 255e344116e2faa2d351b637cdfc6d11805b83352965f794b8bddaf56409f5d3; source archive bba6f2ce82c27a1481dad5fb16952b88476fca25411840a3e6d588ad67d2502e. Accepted TB184 result 14992995631, 1005/1005, 81 deferred; exact prefix 94f02d6bd2d599f02bbc7dc7cd317e490cdb00e18827596acac2cfdd827460be.
+  STOP on RED, material difference, membership/receipt/control or immutable postflight failure. First 1005 compare N1–N3-equal to TB184, no new allowances. Require all 13 recipe keys, explicit false sphere binding, staged stop count 4, polyline selection and row1006 elapsed.
+Then: TB-REV-185 (classify 13 recipes + readers incl. 380/388/688/689/691/695/698-700/702; other families UNMEASURED; freeze CB-206 = flip :5336 + rows 648/978/979 + row979 label + row1006 transcript) -> CB-206 -> TB-EXEC-186 (V5; full compare vs TB185; STOP-on-RED) -> TB-REV-186 (one correction CB per RED family)
 Realigned by: Architecture_M6_CP3_TB_REV_184_Adversarial_Review_20261125.md (U1-U4)
 Do not: activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
 ```
