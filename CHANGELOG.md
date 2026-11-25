@@ -1,3 +1,7 @@
+## 2026-11-25 — TB-REV-182 adversarial continuation: A1 resolved, CB-203 frozen
+
+[Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_182_Adversarial_Review_20261125.md): owner authorized adding row979 to the Branch A premise set. Row858 cannot be measured before activation (no pipeline injection point), so its sphere sub-case becomes a stage-agnostic stop-locus display contract and a new pipeline-independent row1005 witnesses the corner-keyed face path ([CB-203 exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB203_P13_Display_Stop_Locus_Contract_Exact_Manifest.md), test-only). A production-sphere census adds certain flips (393/648/978/979) and static-unknown readers under STOP-on-RED. Activation split into CB-203 → CB-204 pre-staging → CB-205 activation.
+
 ## 2026-11-25 — TB-REV-182 independent acceptance; Branch A held
 
 [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md) independently verifies TB182 1004/1004, 2016/2016 members, exact inherited prefix and 1085 membership; 566 exact, 434 N1/N2, two N3, one authorized row979 change. P1 supported at staged plan boundary, D-U retained. A1: the frozen six-row scope omits row979 production-failure assertion; a successful activation contradicts it. Row858 later production locus unmeasured. No successor frozen, no source mutation, compile, runtime or CP3/497/D0/H4 promotion. Stable 67/17/50, debt1/deferred81.
