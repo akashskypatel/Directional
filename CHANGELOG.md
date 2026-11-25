@@ -1,3 +1,7 @@
+## 2026-11-25 — CB-202 region-corner singularity reach compiled
+
+[Code + Build record](.agents/Directional/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Code_Build_Record_20261124.md). Exact three-file reviewed patch (+297/−105), application [run 45511284746](https://github.com/akashskypatel/Directional/actions/runs/45511284746), GMP/GMPXX [compile run 45511535974](https://github.com/akashskypatel/Directional/actions/runs/45511535974). CB-202 compile-only passed, source `ea7dc19db6a953354b065dabc6b67baff8163b57`, package `14976770449`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. Accepted TB181 1003/1003, CP2 491/491, stable 67/17/50 and debt1/deferred81 unchanged. Row979 remains unclassified; no CP3/497/D0/H4 promotion. Next only `M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE`.
+
 ## 2026-11-24 — TB-REV-181 adversarial continuation: CB-202 upheld
 
 [Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_181_Adversarial_Review_20261124.md): CB-202 exact diff syntax-compiles with no new warnings; a census of all TB181 logs shows the reordered plan error codes occur only in row979, so the only-row979 TB182 rule is sound. The complete-partition-union validation branch is accepted as bounded, reject-only debt with a removal condition. Sequence: CB-202 → TB-EXEC-182 → TB-REV-182.

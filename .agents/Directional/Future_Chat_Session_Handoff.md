@@ -31,8 +31,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-11-24 UTC. **TB-REV-181 accepts TB181 1003/1003; K6 closed.** TB170 recurrence closed at seven-control boundary. [Independent review](Architecture_M6_CP3_TB_REV_181_Region_Corner_Ownership_Independent_Review_20261124.md). |
-| Branch / source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; exact CB-201 source `b9d79c4d9e951cab787d3bfdc3b8f20aaf7195c3`, GMP/GMPXX [run 45488907549](https://github.com/akashskypatel/Directional/actions/runs/45488907549), package `14966635283` SHA-256 `fbad076e0d30e099ece6e197191f7a5ec98016a8713a286a4a391ede0cdb644a`, 28/28 hashes, eight targets, `runtimeExecution=false`. [Code + Build record](Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Code_Build_Record_20261124.md). |
+| Currency | 2026-11-25 UTC. **CB-202 compile-only passed; TB182 pending. TB-REV-181 accepts TB181 1003/1003; K6 closed.** TB170 recurrence closed at seven-control boundary. [Independent review](Architecture_M6_CP3_TB_REV_181_Region_Corner_Ownership_Independent_Review_20261124.md). |
+| Branch / source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; CB-202 exact source `ea7dc19db6a953354b065dabc6b67baff8163b57`, GMP/GMPXX [run 45511535974](https://github.com/akashskypatel/Directional/actions/runs/45511535974), package `14976770449` SHA-256 `c6c02b1803f596cda42bfbdddd344ec900c7438e5c0e8ed4d59326be7f6bb836`, 28/28 checks, eight targets, `runtimeExecution=false`. [Code + Build record](Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Code_Build_Record_20261124.md). |
 | Current TB evidence | TB181 [run 45492294397](https://github.com/akashskypatel/Directional/actions/runs/45492294397), result `14967943314` ZIP SHA-256 `877efb75d3ed801aab7fdc9931356254155162a114d9fc36a2f680f02ec9fa6b`, 2014/2014 checks, 1003/1003 PASS, 607 exact + 393 N1/N2 + 3 N3 (164/172/176), zero material differences. [TB181 report](Architecture_M6_CP3_TB181_P13_Trace_Segment_Namespace_Full_Gate_Execution_Report_20261124.md). |
 | Accepted comparison | TB181 result `14967943314`, package `14966635283`, 1003/1003 accepted. TB180 result `14951803089` is historical comparison authority. Manifest `2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724`; historic TB169 prefix `82581dd14064efe3729923cfd94333ef70113b0bb84e6bb8eabfb2ec61cce436`; CP2 491/491 prefix `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`. TB169 remains historical authority. |
 | Regression / debt | TB170 mechanical recurrence closed: controls 445/652/653/656/658/660/786 PASS; no new accepted-green loss. Historical 67 events / 17 categories / 50 recurrences; witness debt1/deferred81. J6 production contact case not exercised. K6 namespace correction independently accepted. |
@@ -43,16 +43,17 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 - **COMPLETE:** [TB-REV-181 independent review](Architecture_M6_CP3_TB_REV_181_Region_Corner_Ownership_Independent_Review_20261124.md): TB181 accepted, K6 closed, row979 remains unclassified.
 - **COMPLETE:** [TB-REV-181 adversarial](Architecture_M6_CP3_TB_REV_181_Adversarial_Review_20261124.md): CB-202 upheld unamended — syntax 0 errors/no new warnings (O1); TB181 census: plan codes only in row979 (O2); union branch = bounded debt D-U (O3); certificate digest risk caught by STOP (O4).
 
+- **COMPLETE:** [CB-202 compile-only](Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Code_Build_Record_20261124.md); exact patch applied, eight targets passed; no runtime.
+
 ```text
-NEXT_TURN: M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH
-Owner: Code + Build only, eight GMP/GMPXX targets, runtimeExecution=false
-Authority: gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md; TB-REV-181 independent + Architecture_M6_CP3_TB_REV_181_Adversarial_Review_20261124.md (O1 compile verified, O2 census)
-  exact proposed diff Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact.diff; SHA-256 26ec484d0434afd3f0376661e945bdbd73d1c9a1fc206e7b589be34bb3ba5332 (25159 B, 3 paths, +297/-105)
-  semantic preimage b9d79c4d9e951cab787d3bfdc3b8f20aaf7195c3; GlobalTopologyPlan.cpp 44395316... -> 37b7cd52...; RegionCornerOwnership.h ABSENT -> c5d376fe...; tests af320470... -> 9f08edd7...
-  build only; new guard (row1004) and row979 region= receipt frozen
-Then: M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE (manifest d778afbe65e181391116a67ada06f4482e9786917ca58dd2a17f7b7459d8ca5f, 1004+81=1085; expect 1004/1004 PASS; vs TB181 14967943314 under N1-N3 only row979 raw receipt + row1004 may differ; no line moves; anything else STOP) -> M6-CP3-TB-REV-182 (classify row979: built -> Branch A activation CB; new error -> one exact receipt/correction; still RegionContainsInteriorSingularity -> A2a node1 + D-U removal)
-On failure: preimage/hash mismatch or compile failure -> STATUS BLOCKED, report verbatim, return to Review
-Do not: execute runtime, broaden diff, edit row355 or any existing assertion, activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190
+NEXT_TURN: M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE
+Owner: Test + Benchmark, immutable artifact-only full gate; no rebuild, repair, relink or benchmark
+Authority: Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Code_Build_Record_20261124.md; gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md; TB-REV-181 independent + adversarial
+Source: ea7dc19db6a953354b065dabc6b67baff8163b57; package 14976770449; SHA-256 c6c02b1803f596cda42bfbdddd344ec900c7438e5c0e8ed4d59326be7f6bb836
+Manifest: gates/Architecture_M6_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Case_Manifest.tsv; SHA-256 d778afbe65e181391116a67ada06f4482e9786917ca58dd2a17f7b7459d8ca5f; 1004 gated + 81 deferred = 1085
+Compare: accepted TB181 result 14967943314; N1–N3 only; only row979 raw receipt and new row1004 may differ; 1004/1004 PASS required; anything else STOP
+Then: M6-CP3-TB-REV-182 (classify row979: built -> possible Branch A activation CB; new error -> one exact receipt/correction; still RegionContainsInteriorSingularity -> A2a node1 + D-U removal)
+Do not: activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190
 ```
 
 ## Turn Sequence
@@ -66,8 +67,8 @@ Do not: execute runtime, broaden diff, edit row355 or any existing assertion, ac
 | COMPLETE | `M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE` | [Build record](Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Code_Build_Record_20261124.md); compile only. |
 | COMPLETE | `M6-CP3-TB-EXEC-181-P13-TRACE-SEGMENT-NAMESPACE-FULL-GATE` | 1003 rows N1–N3-equal to TB180; zero material differences. |
 | COMPLETE | `M6-CP3-TB-REV-181` | Independent + [adversarial](Architecture_M6_CP3_TB_REV_181_Adversarial_Review_20261124.md); K6 closed; CB-202 frozen per [TB-REV-180 adv.](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc) requirements 1–6. |
-| **1 NEXT ONLY** | `M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH` | [Exact manifest](gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md); compile only. |
-| 2 | TB-EXEC-182 | 1004 cases (`d778afbe…a5ca`), only row979 receipt + row1004 may differ under N1–N3; else STOP. |
+| COMPLETE | `M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH` | [Build record](Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Code_Build_Record_20261124.md); eight targets, 28/28 checks, no runtime. |
+| **1 NEXT ONLY** | TB-EXEC-182 | 1004 cases (`d778afbe…a5ca`), only row979 receipt + row1004 may differ under N1–N3; else STOP. |
 | 3 | TB-REV-182 | Classify row979 by `region=`/outcome: (a) built → Branch A activation CB (4A); (b) new earliest error → one exact receipt/correction; (c) still interior singularity → A2a node1 + remove D-U ([adv. O3](Architecture_M6_CP3_TB_REV_181_Adversarial_Review_20261124.md)). |
 | 4A | Branch A (only after the staged plan builds): activation CB → TB (BunnyRandom census, V5) → parameter-deletion CB → V3b → R1 → O48 | Activation = single-source default (V11) + exact premise rows 393/648/858/971/972/978 only. |
 | 5 | CB-190 | S4/S6/S7 diagnostic conformity plus W6 obsolete-code comments (off critical path). |
@@ -76,7 +77,7 @@ Do not: execute runtime, broaden diff, edit row355 or any existing assertion, ac
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: [Exact CB-202 manifest](gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md), [TB-REV-181](Architecture_M6_CP3_TB_REV_181_Region_Corner_Ownership_Independent_Review_20261124.md), [TB181 execution report](Architecture_M6_CP3_TB181_P13_Trace_Segment_Namespace_Full_Gate_Execution_Report_20261124.md), [CB201 compile record](Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Code_Build_Record_20261124.md), [TB182 frozen case manifest](gates/Architecture_M6_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Case_Manifest.tsv), [TB180 requirements and earlier records](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc), [LESSONS.md](LESSONS.md). Historical evidence resolves through the folded index and Turn Sequence.
+`load_next`: [CB-202 compile record](Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Code_Build_Record_20261124.md), [Exact CB-202 manifest](gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md), [TB-REV-181](Architecture_M6_CP3_TB_REV_181_Region_Corner_Ownership_Independent_Review_20261124.md), [TB181 execution report](Architecture_M6_CP3_TB181_P13_Trace_Segment_Namespace_Full_Gate_Execution_Report_20261124.md), [CB201 compile record](Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Code_Build_Record_20261124.md), [TB182 frozen case manifest](gates/Architecture_M6_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Case_Manifest.tsv), [TB180 requirements and earlier records](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc), [LESSONS.md](LESSONS.md). Historical evidence resolves through the folded index and Turn Sequence.
 
 0. [ORIENTATION.md](ORIENTATION.md) — project context, read first.
 1. [ROADMAP.md](ROADMAP.md) — milestone position only.
