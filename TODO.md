@@ -1,24 +1,22 @@
-**Current turn outcome (2026-11-25 UTC):** CB-204 exact test-only pre-staging compiled. [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Code_Build_Record_20261125.md). TB183 1005/1005 stays the accepted baseline. No activation or CP3/497/D0/H4 promotion.
+**Current turn outcome (2026-11-25 UTC):** TB184 1005/1005 PASS; frozen comparison PASS. [Execution report](.agents/Directional/Architecture_M6_CP3_TB184_P13_Slide_Entry_Pre_Staging_Full_Gate_Execution_Report_20261125.md). TB183 remains the independently accepted baseline. No activation or CP3/497/D0/H4 promotion.
 
-## CURRENT — CB-204 compiled; TB-EXEC-184 next (2026-11-25 UTC)
+## CURRENT — TB-EXEC-184 executed; TB-REV-184 next (2026-11-25 UTC)
 
 - [x] **COMPLETE** TB-REV-182 → CB-203 → TB-EXEC-183 (1005/1005) → `M6-CP3-TB-REV-183` ([independent](.agents/Directional/Architecture_M6_CP3_TB_REV_183_Display_Stop_Locus_Contract_Independent_Review_20261125.md) + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md)).
 - [x] **COMPLETE** `M6-CP3-CB-204-P13-SLIDE-ENTRY-PRE-STAGING` — [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Code_Build_Record_20261125.md); eight targets compiled, no runtime.
-- [ ] **1 NEXT** `M6-CP3-TB-EXEC-184` → TB-REV-184 — 1005/1005 (row979 +1 identical block); freeze CB-205 test-only activation-reach receipt (row1006).
+- [x] **COMPLETE** `M6-CP3-TB-EXEC-184` — 1005/1005 PASS, comparison PASS. [Execution report](.agents/Directional/Architecture_M6_CP3_TB184_P13_Slide_Entry_Pre_Staging_Full_Gate_Execution_Report_20261125.md).
+- [ ] **1 NEXT** `M6-CP3-TB-REV-184` — independently adjudicate the frozen gate; freeze CB-205 test-only activation-reach receipt (row1006) only after acceptance.
 - [ ] **3** CB-205 → TB-EXEC-185 → TB-REV-185 — per-fixture unstaged/staged digests and counts; classify readers 394/396/397/644/645/693/694/843/963/971; freeze CB-206.
 - [ ] **4** CB-206 activation (signature-default flip `SurfaceCellTracing.cpp:5336`; rows 648/978/979 exact; 393/669/844/968/972 unedited) → TB-EXEC-186 (V5 BunnyRandom; STOP-on-RED) → TB-REV-186.
 - [ ] **5** parameter-deletion CB → V3b → R1 → O48, each separate. **HELD:** CB-190 (off path; `<iterator>` gap at SourceChartTransitions.h:529), J6, E5. No CP3/497/D0/H4 promotion.
 
 ```text
-NEXT_TURN: M6-CP3-TB-EXEC-184
-Owner: Test + Benchmark only; run immutable CB-204 package 14990462714; no rebuild, repair or source mutation
-Authority: Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Code_Build_Record_20261125.md; gates/Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Exact_Manifest.md; Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md
-  candidate source 754369dfb9e98d209e79802d8b13855f42a77f26; ZIP SHA-256 08ce494de8fa93179e1db251a3440301959379137828f254142e03cefc4d154d; accepted TB183 result 14986349003, 1005/1005, membership 1086
-  exact dispatcher request and checksum preflight in Code + Build record; preserve archived executable modes
-  expected 1005/1005; row978 N1–N3 equal; row979 second contiguous interval +1 identical 30-line block only; STOP on any mismatch
-Then: M6-CP3-TB-REV-184 (freeze CB-205 test-only activation-reach receipt row1006 only after acceptance) -> CB-205 -> TB-EXEC-185 -> TB-REV-185 (classify readers; freeze CB-206 activation = signature-default flip at SurfaceCellTracing.cpp:5336 + rows 648/978/979 only) -> CB-206 -> TB-EXEC-186 (+V5 BunnyRandom; STOP-on-RED) -> TB-REV-186
-Realigned by: Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md (S2 row393 eight-ends replacement withdrawn; S3 activation site binding, row669 falsifier; S4 reach receipt inserted)
-Do not: compile, activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190
+NEXT_TURN: M6-CP3-TB-REV-184
+Owner: independent Review only; adjudicate TB184 exact immutable package, result, ledger, membership and frozen transcript comparison. No compile or runtime.
+Authority: Architecture_M6_CP3_TB184_P13_Slide_Entry_Pre_Staging_Full_Gate_Execution_Report_20261125.md; gates/Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Exact_Manifest.md; Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md
+  TB183 remains independently accepted baseline until Review accepts TB184. STOP on missing authority, unauthorized transcript change or lost control.
+Then: only after acceptance, freeze CB-205 test-only activation-reach receipt row1006 -> CB-205 -> TB-EXEC-185 -> TB-REV-185. CB-206 activation remains held until the separate reach review. On rejection, Review assigns corrective work; no automatic retry.
+Do not: activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190 in this Review.
 ```
 
 ## HISTORY — TB183 independently accepted; superseded pre-staging plan (2026-11-25 UTC)

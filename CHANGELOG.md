@@ -1,3 +1,7 @@
+## 2026-11-25 — TB-EXEC-184 slide-entry pre-staging full gate
+
+[Execution report](.agents/Directional/Architecture_M6_CP3_TB184_P13_Slide_Entry_Pre_Staging_Full_Gate_Execution_Report_20261125.md): 1005/1005 PASS, frozen comparison PASS; [run 45546583508](https://github.com/akashskypatel/Directional/actions/runs/45546583508), artifact `14992995631` ZIP SHA-256 `8686e64c07fed5e72a5285fa6071a50944f1ea0b24c4b9e61eea831c46e0dd9c`, 2018/2018 checks. TB183 remains independently accepted. No production activation or promotion; `M6-CP3-TB-REV-184` next. Stable accounting 67/17/50, debt1/deferred81.
+
 ## 2026-11-25 — CB-204 slide-entry pre-staging compiled
 
 [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Code_Build_Record_20261125.md). Exact one-file test-only patch (+14/−6), application [run 45544085641](https://github.com/akashskypatel/Directional/actions/runs/45544085641), GMP/GMPXX [compile run 45544269420](https://github.com/akashskypatel/Directional/actions/runs/45544269420). Source `754369dfb9e98d209e79802d8b13855f42a77f26`, candidate package `14990462714` ZIP SHA-256 `08ce494de8fa93179e1db251a3440301959379137828f254142e03cefc4d154d`, 28/28 checks, eight targets, `runtimeExecution=false`. Explicit unstaged controls in rows978/979 retain the staged positive receipts. Accepted TB183 1005/1005 and CP2 491/491 stay unchanged. Stable 67/17/50, debt1/deferred81. No activation or CP3/497/D0/H4 promotion. Next only `M6-CP3-TB-EXEC-184`.
