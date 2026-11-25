@@ -1,4 +1,4 @@
-**Current currency — CB-205V (2026-11-25 UTC):** [Code + Build record](Architecture_M6_CP3_CB205V_P13_Reach_Receipt_Reader_Selection_Scope_Code_Build_Record_20261125.md). Exact reader-scope test change compiled, candidate only. TB184 1005/1005 accepted, stable 67/17/50, debt1/deferred81. Next `M6-CP3-TB-EXEC-185V`; QF1 non-stable, exact CB-207A/B/C separate after TB-REV-186. No activation or CP3/497/D0/H4 promotion. CP2 491/491 accepted; P1 supported, D-U carried, TB170/K6 closed.
+**Current currency — TB-EXEC-185V (2026-11-25 UTC):** [TB185V execution report](Architecture_M6_CP3_TB185V_Reach_Receipt_Reader_Selection_Scope_Full_Gate_Execution_Report_20261125.md). TB185V 1006/1006 PASS; 773 exact + 232 N1/N2 + 0 N3/material against TB184, 1087 members, 10 predicted receipts, row1006 52.17 s; sphere/sphere selection. Candidate pending independent review. TB184 1005/1005 independently accepted, stable 67/17/50, debt1/deferred81. Next `M6-CP3-TB-REV-185`; QF1 non-stable, exact CB-207A/B/C separate after TB-REV-186. No activation or CP3/497/D0/H4 promotion. CP2 491/491 accepted; P1 supported, D-U carried, TB170/K6 closed.
 
 # Directional — Project Orientation
 
@@ -48,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; multi-cut plan remains open** | TB184 independently accepted 1005/1005; TB183 historical 1005/1005; CP2 491/491 accepted. TB170 recurrence and K6 closed. Row979 staged plan built; P1 supported. CB-205V compiled; full 1006-case gate and independent review next. QF1 separate. Activation held; no CP3/497/D0/H4 acceptance. |
+| **M6-CP3 — active; multi-cut plan remains open** | TB184 independently accepted 1005/1005; TB183 historical 1005/1005; CP2 491/491 accepted. TB170 recurrence and K6 closed. Row979 staged plan built; P1 supported. TB185V 1006/1006 and comparison PASS; independent review next. QF1 separate. Activation held; no CP3/497/D0/H4 acceptance. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting now includes the TB170 accepted-green recurrence: **67 events / 17 categories / 50 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -143,7 +143,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-TB-EXEC-185V` — [compiled candidate and exact receipt prediction](Architecture_M6_CP3_CB205V_P13_Reach_Receipt_Reader_Selection_Scope_Code_Build_Record_20261125.md). Full 1006-case immutable gate, then independent review. QF1 separate: [exact CB-207A/B and later CB-207C measurement](gates/Architecture_M6_CP3_CB207_QF1_Quotient_Forest_Cost_Exact_Manifest.md); sufficiency unproved. Activation held.
+**Current priority:** `M6-CP3-TB-REV-185` — independent review of [TB185V execution report](Architecture_M6_CP3_TB185V_Reach_Receipt_Reader_Selection_Scope_Full_Gate_Execution_Report_20261125.md), classify measured reader reach and freeze CB-206 only on accepted evidence. QF1 separate: [exact CB-207A/B and later CB-207C measurement](gates/Architecture_M6_CP3_CB207_QF1_Quotient_Forest_Cost_Exact_Manifest.md); sufficiency unproved. Activation held.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).

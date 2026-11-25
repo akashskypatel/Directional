@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3; TB184 **1005/1005** independently accepted; TB185/TB185R invalid, TB185S invalid before launch, TB185T bounded observation independently reviewed. CB-205V [compiled](Architecture_M6_CP3_CB205V_P13_Reach_Receipt_Reader_Selection_Scope_Code_Build_Record_20261125.md); TB185V full gate next. QF1 separate correction and measurement track; runtime sufficiency unproved. CP2 **491/491** accepted, TB170/K6 closed, P1 supported. Activation held pending valid full 1006-case gate and independent review. No CP3/497/D0/H4 promotion.
+**Completed:** M0–M5 · **Now:** M6 / CP3; TB184 **1005/1005** independently accepted; TB185/TB185R invalid, TB185S invalid before launch, TB185T bounded observation independently reviewed. [TB185V execution report](Architecture_M6_CP3_TB185V_Reach_Receipt_Reader_Selection_Scope_Full_Gate_Execution_Report_20261125.md): **1006/1006** PASS, comparison and receipt prediction PASS; independent review next. QF1 separate correction and measurement track; runtime sufficiency unproved. CP2 **491/491** accepted, TB170/K6 closed, P1 supported. Activation held pending independent review of valid full 1006-case gate. No CP3/497/D0/H4 promotion.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

@@ -1,3 +1,7 @@
+## 2026-11-25 — TB-EXEC-185V immutable reach receipt gate PASS
+
+[Execution report](.agents/Directional/Architecture_M6_CP3_TB185V_Reach_Receipt_Reader_Selection_Scope_Full_Gate_Execution_Report_20261125.md). Source `eee220e7e37f409eb5150f436e80e51a534c037a`, artifact `15064166049`, [run 45704661116](https://github.com/akashskypatel/Directional/actions/runs/45704661116), result `15066180913`, 2020/2020 checks. 1006/1006 PASS, first 1005 comparison 773 exact + 232 N1/N2 + 0 N3/material, membership 1087, immutable postflight PASS. Row1006 52.17 s; ten exact predicted receipts and sphere/sphere selection. Stable 67/17/50, debt1/deferred81. TB184 remains accepted; next only `M6-CP3-TB-REV-185`. No activation or promotion.
+
 ## 2026-11-25 — CB-205V reach receipt reader selection scope compiled
 
 [Record](.agents/Directional/Architecture_M6_CP3_CB205V_P13_Reach_Receipt_Reader_Selection_Scope_Code_Build_Record_20261125.md). Exact one-file test-only difference (+8/−3), [application run 45700917711](https://github.com/akashskypatel/Directional/actions/runs/45700917711). CB-205V source `eee220e7e37f409eb5150f436e80e51a534c037a`, package `15064166049` ZIP SHA-256 `a193085ae0a05edc0099404dc09433abb1d5e64e703091a1e5eb85edfdebfbcd`, [compile run 45701222684](https://github.com/akashskypatel/Directional/actions/runs/45701222684), 28/28 member checks, eight GMP/GMPXX targets, `runtimeExecution=false`. No runtime acceptance, activation, or production change. TB184 1005/1005, CP2 491/491, stable 67/17/50, debt1/deferred81 unchanged. Next only `M6-CP3-TB-EXEC-185V`.
