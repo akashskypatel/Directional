@@ -1,0 +1,27 @@
+# TB-EXEC-185V — reach receipt reader selection scope full gate (2026-11-25 UTC)
+
+## Situation
+
+Execution dispatched, result not yet available. This is a continuation record, not a test verdict. Resume `M6-CP3-TB-EXEC-185V` and collect the existing run; do not dispatch again or start TB-REV-185. TB184 remains independently accepted at 1005/1005.
+
+## Background — exact authority
+
+- Candidate CB-205V source and executor `eee220e7e37f409eb5150f436e80e51a534c037a`, artifact `15064166049` from compile run `45701222684`. ZIP SHA-256 `a193085ae0a05edc0099404dc09433abb1d5e64e703091a1e5eb85edfdebfbcd`, root manifest `3c62120fac196d5b9bbdbb11dc508c71ad3787d9ee5ddf9b67461350f9d7fc74`, source archive `4b566edbf23ab9197d1d2d3794d6a424374a9caf7ce7f4e0d0c530a35eb1eaf5`; 28/28 member checks, archived executable modes preserved. [Build record](Architecture_M6_CP3_CB205V_P13_Reach_Receipt_Reader_Selection_Scope_Code_Build_Record_20261125.md).
+- Frozen harness SHA-256 `423f385b73c3825ce9fe18fbd5ca395287620475deb621389f0efbaa601e572c`, [case manifest](gates/Architecture_M6_TB185_P13_Slide_Entry_Activation_Reach_Full_Gate_Case_Manifest.tsv) `a9b8083269ebd0786f0584d66c1f89f43362d884840ab95b95c3d0fa59ca0587`, deferred ledger `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`. Static harness self-check passed: 1006 cases + 81 deferred. No full-gate timeout.
+- Request `m6-cp3-tb185v-exec`, event `b79bfdae12094e83b93984f68c90077438ee26dd`, request SHA-256 `7af554b8f454e8625124a652113a6564817c2986af2601b6c9eab82b31c7e460`. [Run 45704661116](https://github.com/akashskypatel/Directional/actions/runs/45704661116), job `139523653516`. Both schema validators and parser PASS, runtime in progress, compile/Drive/noop skipped. Exact terminal rendezvous: `.workflow-mailbox/m6-cp3-tb185v-exec/latest.json` on ref `workflow-mailbox` only. Retain request slot; do not replay.
+- Inspection snapshot run `45704406622`, job `139522620797`, artifact `15065220481`, source `1b8e787906a7c8fc96b1790a444792bc59f831f1`, ZIP SHA-256 `2a36c0b3e1b919c11deca5d44d1591b9d3da448ba39c5b8a7e5a20e2dd2de02c`, archive SHA-256 `3e53ae0baa9321e92d3aa7eaeabb753ff3fe9b36e83556860ce95b897ae7eba7`, 5840/5840 checks. All 1157 candidate archived files compared with snapshot; 9 differences in documentation/status/control paths only, no product/test/fixture/harness changes.
+- Comparison baseline TB184 result `14992995631`, ZIP SHA-256 `8686e64c07fed5e72a5285fa6071a50944f1ea0b24c4b9e61eea831c46e0dd9c`, 2018/2018 checks. TB185T diagnostic artifact `15035995368`, ZIP SHA-256 `5f8900589df9acb99ad0e43f3edc314f79055728888e826994bf1d5a4c637bec`, 15/15 checks; raw/1006.log SHA-256 `661c9417f4a413d8f7d2d80f89a613e7a0c5daba3974f372003558b104dda550`.
+
+## Assessment — pending result
+
+No Directional build or executable ran locally. No full-gate result, regression verdict, or reader reach conclusion is claimed. The baseline elapsed times total 697.91 s before the additional row1006. The response yields while the hosted gate is active rather than applying a runtime limit or starting a duplicate run. Historical stable 67 events / 17 categories / 50 recurrences, debt1/deferred81; CP2 491/491 accepted; QF1 unmeasured sufficiency on separate track.
+
+The Directional File Library contains `TB-EXEC-185V-continuation.zip` SHA-256 `504e1f5b439a1f19b826d71c3c05960a1281986b87073ace9c851e4ebea1dd2c`, with exact request, artifact pins and offline comparator. Positive/negative N3 and N1/N2 controls passed; candidate comparison has not executed. The comparator is scratch analysis, not an independent review or gate change.
+
+Cleanup run `45705188795` job `139525300780` PASS; orphan mailbox confirms event `0fadd645e55aac7d4d74fe3ceb5d18d2d4a60ad8`, result artifact `15065505831` digest `a17499e1f8f046ddf115d4867e8383d65dd0e7f0b4ef8ef2e1a15edffb096d4d`. Cleanup commit `dd1c5cc59e6d8be7941307100ba26a0a5e5a16b9` removes exactly the snapshot trigger and cleanup manifest. Durable dispatcher and request unchanged.
+
+Process limitations: initial repository document reads preceded snapshot selection and full mandatory pre-work policy/LESSONS coverage is not established. Corrected by verified snapshot before further source inspection. Early empty/stale run/mailbox observation and an unsupported artifact metadata query were corrected by exact run inventory. Local Git ownership check corrected with scoped safe-directory. Exact tool ledger lost at context compaction. Static documentation drift audit before this continuation record: zero errors, existing ORIENTATION size warning. No gate criterion changed.
+
+## Recommendation — same current turn
+
+Obtain the terminal mailbox for run 45704661116; verify exact event, source, jobs, result/harness/wrapper artifacts and checksums. Require all 1006 organic PASS, 1087 exact members, immutable postflight, all non-raw-hash ledger fields and first 1005 logs N1–N3-equal to TB184, every own raw hash, row1006 elapsed and exactly ten receipts matching TB185T's first ten except census separator, and exact sphere/sphere selection. STOP on mismatch, RED or abnormal. Replace this interim assessment with measured evidence, record regressions/candidates in tracker, reconcile handoff/TODO/CHANGELOG, audit and commit documents, then final STATUS. The independent successor is TB-REV-185 only after formal completion. No activation, CP3/497/D0/H4 promotion, J6/E5/CB-190 repair or successor execution.
