@@ -1,10 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP3-TB-REV-182
-Status: BLOCKED
+Status: IN_PROGRESS
 Successor: UNKNOWN
 Started at: 2026-11-25T01:07:58Z
-Resumed at: 
+Resumed at: 2026-11-25T01:55:53Z
 Ended at: 
-Blocker Type: REVIEW_BLOCKER
-Blocker Details: Owner must authorize the Branch A activation premise amendment to include row 979; resolve the row 858 display evidence requirement before freezing the activation patch.
 ---END_TURN_STATUS---
