@@ -40,15 +40,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Mandatory next turn
 
-- **COMPLETE:** TB-REV-181 (independent + [adversarial](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb_rev_181_adversarial_review_20261124md)); [CB-202](Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Code_Build_Record_20261124.md) compile-only; [TB182](Architecture_M6_CP3_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Execution_Report_20261125.md) 1004/1004 PASS.
-- **COMPLETE:** [TB-REV-182 independent](Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md): TB182 accepted, P1 supported, D-U carried, STOP A1.
-- **COMPLETE:** [TB-REV-182 adversarial](Architecture_M6_CP3_TB_REV_182_Adversarial_Review_20261125.md): A1 resolved — owner authorized row979 premise amendment (R1); row858 decoupled by test-only stage-agnostic contract + new corner-face witness row1005, CB-203 frozen (R3/R4); census adds certain flips 393/648/978/979 and static-unknown production readers under STOP-on-RED (R5); V7 overclaim corrected (R2); flag is `stopAtLaterSlideEntry` (R6).
-
-- **COMPLETE:** [CB-203](Architecture_M6_CP3_CB203_P13_Display_Stop_Locus_Contract_Code_Build_Record_20261125.md): exact test-only patch, eight GMP/GMPXX targets, no runtime.
-
-- **COMPLETE:** [TB183](Architecture_M6_CP3_TB183_P13_Display_Stop_Locus_Contract_Full_Gate_Execution_Report_20261125.md) — 1005/1005 PASS, 1086 members, 636 exact + 363 N1/N2 + 4 N3 (164, 172, 176, 179), one authorized row858 receipt; row1005 new guard PASS.
-
-- **COMPLETE:** [TB-REV-183](Architecture_M6_CP3_TB_REV_183_Display_Stop_Locus_Contract_Independent_Review_20261125.md) — TB183 accepted; exact CB-204 frozen.
+- **COMPLETE:** TB-REV-182 ([adv.](Architecture_M6_CP3_TB_REV_182_Adversarial_Review_20261125.md), A1 resolved) → [CB-203](Architecture_M6_CP3_CB203_P13_Display_Stop_Locus_Contract_Code_Build_Record_20261125.md) → [TB183](Architecture_M6_CP3_TB183_P13_Display_Stop_Locus_Contract_Full_Gate_Execution_Report_20261125.md) 1005/1005 → [TB-REV-183](Architecture_M6_CP3_TB_REV_183_Display_Stop_Locus_Contract_Independent_Review_20261125.md) (CB-204 frozen).
+- **COMPLETE:** [TB-REV-183 adversarial](Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md): CB-204 upheld (S1); row393 is a whitelist oracle, SAFE, eight-ends replacement withdrawn (S2); activation must flip the canonical signature default, row669 is the V11 falsifier (S3); reach unmeasured → test-only activation-reach receipt CB-205 inserted before activation CB-206 (S4).
 
 ```text
 NEXT_TURN: M6-CP3-CB-204-P13-SLIDE-ENTRY-PRE-STAGING
@@ -57,7 +50,8 @@ Authority: Architecture_M6_CP3_TB_REV_183_Display_Stop_Locus_Contract_Independen
   exact semantic preimage 58baa583770dba7c4c2f88537ba4c7c317f47573; accepted TB183 result 14986349003, package 14984948549; 1005/1005, membership 1086
   verify exact patch and pre/postimage; explicit false in row978; row979 explicit unstaged negative and production equality; retain staged witnesses
   do not activate stopAtLaterSlideEntry; STOP on any mismatch or compile failure
-Then: TB-EXEC-184 -> TB-REV-184 (freeze CB-205 activation) -> CB-205 -> TB-EXEC-185 (+V5 BunnyRandom; STOP-on-RED for R5 static-unknown readers) -> TB-REV-185
+Then: M6-CP3-TB-EXEC-184 (1005/1005; row979 +1 identical 30-line block only) -> M6-CP3-TB-REV-184 (freeze CB-205 test-only activation-reach receipt row1006) -> CB-205 -> TB-EXEC-185 -> TB-REV-185 (classify readers; freeze CB-206 activation = signature-default flip at SurfaceCellTracing.cpp:5336 + rows 648/978/979 only) -> CB-206 -> TB-EXEC-186 (+V5 BunnyRandom; STOP-on-RED) -> TB-REV-186
+Realigned by: Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md (S1 CB-204 upheld; S2 row393 eight-ends replacement withdrawn; S3 activation site binding, row669 falsifier; S4 reach receipt inserted)
 Do not: run tests in CB, activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190
 ```
 
@@ -70,13 +64,11 @@ Do not: run tests in CB, activate Branch A, promote CP3/497/D0/H4 or repair J6/E
 | COMPLETE | CB-199A → TB-EXEC-178 (995/1002) → TB-REV-178 → CB-199B → TB-EXEC-179 (1002/1003, six recoveries) → TB-REV-179 | [TB179 report](Architecture_M6_CP3_TB179_P13_Retraced_Trace_Selection_Full_Gate_Execution_Report_20261124.md); reviews linked above. |
 | COMPLETE | CB-200 → TB-EXEC-180 → TB-REV-180 | [TB180 report](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc) 1003/1003; [independent](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc) + [adversarial](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc) reviews. |
 | COMPLETE | CB-201 → TB-EXEC-181 (1003, N1–N3-equal) → TB-REV-181 → CB-202 → TB-EXEC-182 (1004/1004) | [CB-201](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb201_p13_exact_trace_segment_namespace_code_build_record_20261124md), [TB-REV-181 adv.](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb_rev_181_adversarial_review_20261124md) (K6 closed), [CB-202](Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Code_Build_Record_20261124.md), [TB182](Architecture_M6_CP3_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Execution_Report_20261125.md). |
-| COMPLETE | TB-REV-182 | Independent (TB182 accepted, STOP A1) + [adversarial](Architecture_M6_CP3_TB_REV_182_Adversarial_Review_20261125.md) (A1 resolved, CB-203 frozen). |
-| COMPLETE | `M6-CP3-CB-203-P13-DISPLAY-STOP-LOCUS-CONTRACT` | [Code + Build record](Architecture_M6_CP3_CB203_P13_Display_Stop_Locus_Contract_Code_Build_Record_20261125.md); exact test-only diff, eight targets, no runtime. |
-| COMPLETE | `M6-CP3-TB-EXEC-183-P13-DISPLAY-STOP-LOCUS-CONTRACT-FULL-GATE` | [execution report](Architecture_M6_CP3_TB183_P13_Display_Stop_Locus_Contract_Full_Gate_Execution_Report_20261125.md); 1005/1005 PASS, 1086 members, 636 exact + 363 N1/N2 + 4 N3 (164, 172, 176, 179), one authorized row858 receipt; row1005 new guard PASS. |
-| COMPLETE | `M6-CP3-TB-REV-183` | [Review](Architecture_M6_CP3_TB_REV_183_Display_Stop_Locus_Contract_Independent_Review_20261125.md); TB183 accepted, CB-204 frozen. |
+| COMPLETE | TB-REV-182 → CB-203 → TB-EXEC-183 (1005/1005) → TB-REV-183 | [TB-REV-182 adv.](Architecture_M6_CP3_TB_REV_182_Adversarial_Review_20261125.md), [TB183](Architecture_M6_CP3_TB183_P13_Display_Stop_Locus_Contract_Full_Gate_Execution_Report_20261125.md), [TB-REV-183](Architecture_M6_CP3_TB_REV_183_Display_Stop_Locus_Contract_Independent_Review_20261125.md) + [adversarial](Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md). |
 | **1 NEXT** | `M6-CP3-CB-204-P13-SLIDE-ENTRY-PRE-STAGING` | [Exact manifest](gates/Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Exact_Manifest.md); compile-only pre-staging. |
-| 4 | TB-EXEC-184 → TB-REV-184 | TB-REV-184 freezes CB-205 from receipts (row393 eight ends, row648 built-plan certificate). |
-| 4A | CB-205 activation → TB-EXEC-185 (V5 BunnyRandom; STOP-on-RED for R5 static-unknown readers) → TB-REV-185 → parameter-deletion CB → V3b → R1 → O48 | Single-source `stopAtLaterSlideEntry` default flip (V11) + exact replacements for certain-flip rows 393/648/858/978/979 only; separate turns. |
+| 2 | TB-EXEC-184 → TB-REV-184 | 1005/1005; row979 +1 identical block. TB-REV-184 freezes CB-205 activation-reach receipt (row1006, test-only). |
+| 3 | CB-205 → TB-EXEC-185 → TB-REV-185 | Per-fixture unstaged vs staged digests/counts; classify readers; freeze CB-206. |
+| 4A | CB-206 activation → TB-EXEC-186 (V5 BunnyRandom; STOP-on-RED) → TB-REV-186 → parameter-deletion CB → V3b → R1 → O48 | Signature-default flip `SurfaceCellTracing.cpp:5336` (row669 falsifier) + exact rows 648/978/979; separate turns. |
 | 5 | CB-190 | S4/S6/S7 diagnostic conformity plus W6 obsolete-code comments (off critical path). |
 | Withdrawn | prose CB-200 plan + C4 assertion (TB-REV-179 adv. M2); CB-199A `4f458361…` (TB-REV-177 adv. J4); prose CB-198 (176 H1); prose CB-197A/196/195/193/187/186/183/180/178/175/173, CB-194, CB-191, DEFN-161A/159A, CB-185 v1, activation-before-plan — see TB-REV-162…177 adversarial records | — |
 | Held / Parked | `M6-CP3-DEFN-P13-TERMINAL-CUT-OUTCOME`, `…-FACE-CONTACT-OUTCOME` (FC-6), row 858 face DEFN; `M6-CP3-CB-145-P13-VERTEX-FOLLOW-BOUNDARY` | 858 after the sphere repair. |

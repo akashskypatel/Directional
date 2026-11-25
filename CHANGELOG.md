@@ -1,3 +1,7 @@
+## 2026-11-25 — TB-REV-183 adversarial continuation: CB-204 upheld, activation realigned
+
+[Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_183_Adversarial_Review_20261125.md): CB-204 upheld; row393 oracle is a 4/6/15/19 whitelist (staged-safe), so the eight-carrier-ends replacement is withdrawn; activation must flip the `canonical_field_aligned_candidate` signature default (row669 falsifies a call-site flip); a test-only activation-reach receipt (CB-205) precedes activation (CB-206).
+
 ## 2026-11-25 — TB-REV-183 independent acceptance; CB-204 frozen
 
 [Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_183_Display_Stop_Locus_Contract_Independent_Review_20261125.md) accepts TB183 1005/1005, 1086 members, exact source `58baa583770dba7c4c2f88537ba4c7c317f47573`, package `14984948549`, result `14986349003` SHA-256 `95b49af95c09e1bca461198c798db57e506b4daf7e09da1466c0fbd2b76a9742`. Independently verified 636 exact + 363 N1/N2 + 4 N3 + one authorized row858 receipt; row1005 independent corner-face guard PASS. Next only `M6-CP3-CB-204-P13-SLIDE-ENTRY-PRE-STAGING` ([exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB204_P13_Slide_Entry_Pre_Staging_Exact_Manifest.md)). Stable 67/17/50, witness debt1/deferred81; P1 supported, D-U carried. No compile, runtime, activation, selector promotion or checkpoint closure.
