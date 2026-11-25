@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3; accepted TB181 **1003/1003**, CP2 **491/491**. TB170 seven-control recurrence and K6 closed. TB182 **1004/1004** execution PASS, staged plan built; next only `M6-CP3-TB-REV-182` (independent review). No CP3/497/D0/H4 promotion.
+**Completed:** M0–M5 · **Now:** M6 / CP3; accepted TB182 **1004/1004**, CP2 **491/491**. TB170 seven-control recurrence and K6 closed. Staged plan built; P1 supported. `M6-CP3-TB-REV-182` holds activation at A1 (premise authority and later display evidence). No CP3/497/D0/H4 promotion.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

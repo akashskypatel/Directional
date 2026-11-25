@@ -67,6 +67,9 @@ The review was runtime-free. It used:
 2. `M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE`.
 3. `M6-CP3-TB-REV-182`: classify row 979 from its new `region=` field and outcome.
    - **(a) The plan builds.** Freeze the Branch A activation CB, with exact premise rows 393/648/858/971/972/978.
+
+> TB-REV-182 A1: this six-row scope is insufficient and is held, not silently expanded. Row979 has a conflicting production-failure assertion; row858 later stop unmeasured. See [TB-REV-182 review](Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md). Activation requires amended authority and exact evidence.
+
    - **(b) It advances to a new earliest error.** Freeze one exact receipt or correction for that error.
    - **(c) It is still `RegionContainsInteriorSingularity`.** The rejection is lawful, P1 is falsified as the cause, and the route is A2a at node 1. Schedule removal of D-U against row 979.
 4. CB-190, off the critical path.

@@ -1,19 +1,19 @@
-**Current turn outcome (2026-11-25 UTC):** TB182 1004/1004 PASS, result `14979452472`, 2016/2016 checks; only authorized row979 receipt and new row1004. CP2 491/491, accepted TB181 1003/1003, stable 67/17/50 and debt1/deferred81 unchanged. Row979 staged plan built; independent classification pending. No CP3/497/D0/H4 promotion. Next only `M6-CP3-TB-REV-182`.
+**Current turn outcome (2026-11-25 UTC):** TB182 independently accepted 1004/1004, CP2 491/491, stable 67/17/50 and debt1/deferred81. Row979 staged plan built; P1 supported, D-U carried. [TB-REV-182](.agents/Directional/Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md) holds Branch A at A1: frozen scope omits row979 production-failure premise; row858 later stop unmeasured. Current review remains held; no CP3/497/D0/H4 promotion.
 
-## CURRENT — TB182 execution complete (2026-11-25 UTC)
+## CURRENT — TB-REV-182 activation authorization stop (2026-11-25 UTC)
 
 - [x] **COMPLETE** TB-REV-181 [adversarial continuation](.agents/Directional/Architecture_M6_CP3_TB_REV_181_Adversarial_Review_20261124.md): exact CB-202 upheld, D-U bounded reject-only debt and strict comparison rule retained.
 - [x] **COMPLETE** `M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH` — [build record](.agents/Directional/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Code_Build_Record_20261124.md); exact [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md), compile only.
 - [x] **COMPLETE** `M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE` — [execution report](.agents/Directional/Architecture_M6_CP3_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Execution_Report_20261125.md); 1004/1004 PASS, only authorized changes.
-- [ ] **1 NEXT ONLY** `M6-CP3-TB-REV-182` — independently verify the full gate; classify row979, adjudicate P1/D-U and freeze conditional successor only if justified by exact evidence.
+- [ ] **1 CURRENT — STOP A1** `M6-CP3-TB-REV-182` — gate and P1/D-U adjudication complete; authorize row979 premise amendment and resolve row858 later stop evidence before exact activation freeze. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md).
 - [ ] **2 HELD** Branch A (only after independent authorization), CB-190; J6, E5. No CP3/497/D0/H4 promotion.
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-182
+NEXT_TURN: M6-CP3-TB-REV-182 (same canonical review, held)
 Owner: independent Review, no runtime or implementation
-Authority: .agents/Directional/Architecture_M6_CP3_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Execution_Report_20261125.md; CB-202 exact manifest; TB-REV-181 independent and adversarial reviews
-Evidence: run 45517814731, result 14979452472, SHA-256 bbbc344b8213b16c9259eb4e5edc24b8a8aadbc8390df32137e239fb113420b7; accepted TB181 result 14967943314
-Review: independently verify 1004/1004, 1085 membership, only N1–N3 and row979/new row1004 differences. Classify staged built plan and P1/D-U. Freeze Branch A activation CB only if the reviewed requirements permit; otherwise STOP.
+Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md
+Evidence: result 14979452472, 1004/1004 accepted; row979 plan built; P1 supported, D-U retained
+STOP A1: row979 is excluded from frozen activation premise scope but asserts production cut failure. Resolve exact scope amendment and row858 unmeasured stop/display evidence. No successor frozen.
 Do not: activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190
 ```
 

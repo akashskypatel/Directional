@@ -49,6 +49,9 @@ Continues turn `M6-CP3-TB-REV-169-P13-REGION-VISIT-READER-FULL-GATE` after the [
 4. No census, no rebuild. Any other difference → STOP and return to Review.
 
 **W5 — Post-TB-REV-170 turn split (realignment of the activation step).**
+
+> TB-REV-182 A1: this six-row scope is insufficient and is held, not silently expanded. Row979 has a conflicting production-failure assertion; row858 later stop unmeasured. See [TB-REV-182 review](Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md). Activation requires amended authority and exact evidence.
+
 - Branch A, staged plan built. Activation stays one exact switch, because the gate must stay green: a single-source default change (V11) plus exact premise-row replacements (393/648/858/971/972/978) taken from row 979's measured lines.
   - It must not bundle parameter deletion, V3b or R1. Each gets its own CB after the activation TB.
   - The activation TB carries the BunnyRandom census falsifier (V5).

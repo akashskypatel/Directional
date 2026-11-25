@@ -1,4 +1,4 @@
-**Current currency — TB182 (2026-11-25 UTC):** [TB182 execution report](Architecture_M6_CP3_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Execution_Report_20261125.md) **1004/1004 PASS**; staged row979 plan built, independent classification pending. Accepted TB181 **1003/1003**, CP2 **491/491**, stable 67/17/50, debt1/deferred81; TB170 recurrence and K6 closed. Next only `M6-CP3-TB-REV-182`. No CP3/497/D0/H4 or production promotion.
+**Current currency — TB-REV-182 (2026-11-25 UTC):** [TB-REV-182 review](Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md) independently accepts TB182 **1004/1004**, CP2 **491/491**; P1 supported, staged row979 plan built. Stable 67/17/50, debt1/deferred81; TB170 recurrence and K6 closed. Activation STOP A1: frozen six-row scope excludes row979 production-failure premise; row858 later stop not measured. Current review remains held. No CP3/497/D0/H4 or production promotion.
 
 # Directional — Project Orientation
 
@@ -48,12 +48,14 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; multi-cut plan remains open** | Accepted TB181 1003/1003 and CP2 491/491; TB170 mechanical recurrence and K6 closed. TB182 1004/1004 PASS; next `M6-CP3-TB-REV-182`. Row979 staged plan built, independent classification pending; no CP3/497/D0/H4 acceptance. |
+| **M6-CP3 — active; multi-cut plan remains open** | Accepted TB182 1004/1004 and CP2 491/491; TB170 mechanical recurrence and K6 closed. Row979 staged plan built; P1 supported. `M6-CP3-TB-REV-182` held at activation authorization A1; no CP3/497/D0/H4 acceptance. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting now includes the TB170 accepted-green recurrence: **67 events / 17 categories / 50 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
 
 ## 4. Fixtures and witnesses
+
+**TB182 independent staged witness:** Row979 built 14-region plan (V18/E30/F14, Euler 2, 192/192 established owners); P1 supported, row1004 corner-granular guard PASS. No production activation or later pipeline stop measured. [TB-REV-182 review](Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md).
 
 **TB181 independent witness (unchanged from TB180):** The four reciprocal pairs (0/3, 2/8, 4/11, 7/9) remain selected: eight traces, twelve ports owned once, row652 two region certificates, graph/source Euler 2. Row786 now validates both partition labels and rejects six corruptions at their specified invariants. Both terminal faces are certifier-only TerminalSlits, not plan-subject members. All seven controls pass. J6 contact termination remains unexercised; isolated row1002 proof retained. [Review](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc).
 
@@ -139,7 +141,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-TB-REV-182` — [TB182 execution report](Architecture_M6_CP3_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Execution_Report_20261125.md). Independently verify TB182 and classify the staged built plan, P1 and D-U. K6 discharged. J6, Branch A, E5 and CB-190 held; no activation or production promotion.
+**Current priority:** `M6-CP3-TB-REV-182` — [TB-REV-182 review](Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md). TB182 accepted; P1 supported, D-U carried. Resolve A1: scope excludes row979, whose production-failure assertion contradicts successful activation; row858 later stop remains unmeasured. Branch A not authorized until scope/evidence resolved. K6 discharged; J6/E5/CB-190 held; no production promotion.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).
@@ -155,6 +157,8 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 TB-REV-167 S6 (carried to CB-190): terminal-vertex edge-side diagnostics require a direct two-orientation witness. Diagnostic-only; no new stable regression.
 
 ## 8. Recurring defect patterns
+
+**TB-REV-182 A1:** A previously positive diagnostic with a negative production control is itself a premise row when the diagnostic behavior becomes production default. Preserve the explicit negative control; do not silently omit the test from the activation scope. Existing non-vacuity and premise rules apply. [TB-REV-182 review](Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md).
 
 **TB181 review:** one exact region-fragment corner owner must serve both certification and singularity reach. A whole-face membership proxy is not authoritative for a cut fragment. The same-reader correction is frozen; row979 remains unclassified. [Review](Architecture_M6_CP3_TB_REV_181_Region_Corner_Ownership_Independent_Review_20261124.md).
 

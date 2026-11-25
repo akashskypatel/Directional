@@ -2135,3 +2135,10 @@ The three superseded CB168D/E records below are preserved verbatim in Volume D3.
 | `Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Code_Build_Record_20261119.md` | 19 | CB168D compile-only PASS; source superseded; original SHA-256 `c4b570c2a90f85b1ea0584c1c1345e532dabe9cbb5180bd5e16ff31a1db222b3`; [complete text](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168d_p13_carrier_contact_edge_node_binding_code_build_record_20261119md) |
 | `Architecture_M6_CP3_CB168E_P13_Entry_Coincidence_Arrival_Receipt_Code_Build_Record_20261119.md` | 17 | CB168E compile-only PASS; source superseded; original SHA-256 `e76e60fe81809e8dd7bfb75c698deee989262e7b00744fd18c538695b448a110`; [complete text](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168e_p13_entry_coincidence_arrival_receipt_code_build_record_20261119md) |
 | `Architecture_M6_CP3_CB168D_P13_Carrier_Contact_Edge_Node_Binding_Plan_20261119.md` | 81 | Consumed RA-266 EC2b plan; TB145 reviewed by RA-267; original SHA-256 `79b8b9ba71dcb711dfbe311345967286b71f97142bba1099f74f057a28c95c00`; [complete text](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb168d_p13_carrier_contact_edge_node_binding_plan_20261119md) |
+
+
+## TB-REV-182 folded record (2026-11-25 UTC)
+
+| Folded original filename | Lines | Verdict / retained authority |
+|---|---:|---|
+| `Architecture_M6_CP3_TB182_P13_Region_Corner_Singularity_Reach_Full_Gate_Execution_Pending_20261125.md` | 31 | Superseded pending receipt; TB182 accepted. SHA-256 `8d7842e0c0a6bbdd2119b89dbdec1228f509e8e6ddcf7c56e6c95ec28e9922f3`. [Complete text](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb182_p13_region_corner_singularity_reach_full_gate_execution_pending_20261125md); original at `f10ca4e235ef0d083dedc95791ad4f55ecb503c7`. |
