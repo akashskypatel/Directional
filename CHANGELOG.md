@@ -1,3 +1,7 @@
+## 2026-11-25 — TB-EXEC-185 invalid execution
+
+[invalid execution record](.agents/Directional/Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md). 1005 PASS, row1006 INVALID due to hard-coded 600s full-gate timeout. No new semantic authority. TB184 remains accepted; control-plane correction `M6-CP3-CB-205R-HARNESS-TIMEOUT` next, then `M6-CP3-TB-EXEC-185R`. No activation or checkpoint promotion.
+
 ## 2026-11-25 — CB-205 slide-entry activation reach compiled
 
 [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md). Exact one-file test append (+169/−0), application [run 45554541672](https://github.com/akashskypatel/Directional/actions/runs/45554541672), GMP/GMPXX [compile run 45554728034](https://github.com/akashskypatel/Directional/actions/runs/45554728034). Source `21087c8285a5dd367cc16f610386accc061bd194`, candidate package `14995401750` ZIP SHA-256 `7e66ef7b3b16e76618a60b250a76038e65bf2e092601958f8252ac993b778da9`, 28/28 checks, eight targets, `runtimeExecution=false`. Accepted TB184 1005/1005 and CP2 491/491 unchanged. Stable 67/17/50, debt1/deferred81. No activation or CP3/497/D0/H4 promotion. Next only `M6-CP3-TB-EXEC-185`.
