@@ -20,7 +20,7 @@ Authorize only `M6-CP3-TB-EXEC-185S-REACH-TERMINATION-DIAGNOSTIC` after this pre
 
 | Field | Frozen value |
 |---|---|
-| Executor commit | Resolve the unique applied commit that introduced the harness bytes below (not the candidate source or mailbox commit). |
+| Executor commit | `c737a40d56bd928c9dc8e67bd6c02458ef0ce548` (exact applied executor, not candidate or mailbox). |
 | Harness path | `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh` |
 | Harness SHA-256 | `f5780458e5717a2d1e0b5434b260e8c538c238a117b8d295c7df5a0b4587e2c0` |
 | Artifact prefix / mailbox key | `m6-cp3-tb185s-reach-termination` |
@@ -41,3 +41,8 @@ Required diagnostic assessment: compare at least three completed samples after t
 
 - Existing control-plane `bash -n`, `--self-test` (30) and `--self-check` (1006 + 81) passed. Incorrect package ID rejected before download/launch, exit90. Mock MI control exercised an interrupt, receipt/stack capture and organic completion on a synthetic process, not a Directional test. Real GDB is absent in the local container; the actual hosted debugger protocol, runtime stack and non-completion cause are not verified. Require real debugger compatibility in the diagnostic execution; if it fails, report it without semantic claims.
 - `runtimeExecution=false` for this Code + Build correction. No product compile because this is control-plane-only. No product source, test source, fixtures, gate manifest, deferred ledger, reusable workflow, dispatcher schema or permissions changed. Stable 67 events / 17 categories / 50 recurrences, witness debt1/deferred81. P1 supported, D-U carried, TB170/K6 closed; no activation, J6/E5/CB-190 repair or CP3/497/D0/H4 promotion.
+
+## Application and closeout evidence
+
+- [Apply run 45627553825](https://github.com/akashskypatel/Directional/actions/runs/45627553825): result `15028906550`, log `15027618878`; ZIP digests matched mailbox. Exact six-path patch SHA-256 `25095fecc4c5510368f3607877e2c2d942bf256037da4c3688ca54c269173a81`; apply/push PASS, compile/TB skipped, `runtimeExecution=false`. Harness Git blob `00867aa3c31f5eb9f574b49d45563b702117f1ef` matches local bytes. Staging Drive file deleted by owner connector; Library backup retained.
+- [Cleanup run 45627862557](https://github.com/akashskypatel/Directional/actions/runs/45627862557), result `15029606478`, log `15029796419`, verified ZIPs; commit `540f1e76a3caad1e167d1cfcfffb83d171b79045` removed only snapshot marker and cleanup manifest. Zero PR comments removed. Documentation drift audit zero errors, two existing size warnings.
