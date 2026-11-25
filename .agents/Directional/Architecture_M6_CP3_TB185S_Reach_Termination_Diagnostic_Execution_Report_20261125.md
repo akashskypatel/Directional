@@ -1,0 +1,28 @@
+# TB-EXEC-185S — reach termination diagnostic execution (2026-11-25 UTC)
+
+## Situation
+
+The diagnostic request reached the hosted runner but did not start the inferior (the test process under debugger control). The execution attempt is invalid, not semantic RED. The root cause of the earlier case1006 non-completion remains unknown. TB184 remains independently accepted, 1005/1005.
+
+## Background — exact authority
+
+- Candidate source `21087c8285a5dd367cc16f610386accc061bd194`; GMP/GMPXX compile run `45554728034`; immutable package `14995401750`, ZIP SHA-256 `7e66ef7b3b16e76618a60b250a76038e65bf2e092601958f8252ac993b778da9`, root manifest `255e344116e2faa2d351b637cdfc6d11805b83352965f794b8bddaf56409f5d3`, source archive `bba6f2ce82c27a1481dad5fb16952b88476fca25411840a3e6d588ad67d2502e`. Local archive and 28/28 member hashes verified; no local runtime.
+- Frozen executor `c737a40d56bd928c9dc8e67bd6c02458ef0ce548`; harness SHA-256 `f5780458e5717a2d1e0b5434b260e8c538c238a117b8d295c7df5a0b4587e2c0`; gate SHA-256 `a9b8083269ebd0786f0584d66c1f89f43362d884840ab95b95c3d0fa59ca0587`, first 1005 plus header `94f02d6bd2d599f02bbc7dc7cd317e490cdb00e18827596acac2cfdd827460be`; deferred SHA-256 `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`. All local manifest hashes match. The diagnostic selects only `TraceTerminationCorrection.SlideEntryActivationReachByReaderRecipe`, no gate credit.
+- Request `m6-cp3-tb185s-reach-termination`; event `e639742c6be553762fba2ae703b1cf85623d0070`; request SHA-256 `7a7e7947668d91820071a118a29fcd39897bb0a212edd5ed5e2ca85def5cddd8`; orphan mailbox `.workflow-mailbox/m6-cp3-tb185s-reach-termination/latest.json` matched event, request and source. [Run 45630473352](https://github.com/akashskypatel/Directional/actions/runs/45630473352), runtime job `139262198486`. Both schema validations, request parse, executor checkout, harness validation and evidence uploads passed. Compile/Drive/noop skipped. The final propagation step failed; mailbox publication passed.
+- Exact inspection snapshot `8bc1999a12da75b1528bdf0e1a6cdf8baad6f3c3`, run `45630105267`, artifact `15029659085`, ZIP SHA-256 `88f345358ab050688259d9113a5d6ed7bb2de8e3c8ab1d49fdf7abcdfae97427`, archive SHA-256 `92d6976e3766a413e0ece1db53833140fbd83576f1135acf20b6a08ae4dfcefe`, 5834/5834 hashes. Initial direct policy/handoff reads preceded snapshot selection; corrected before source inspection. No product finding follows from this procedural miss.
+
+## Assessment — terminal evidence
+
+| Artifact | Verified ZIP SHA-256 |
+|---|---|
+| Result `15030422476` | `c860b0bf6d81863460f38bff8f0b556216cbbde42e56dc4cacd681636772005e` |
+| Harness log `15030636172` | `09aa370b074ad731461bba6db1da5ad7fc787f18bbdb9aabb405a49b4d5b3e6c` |
+| Wrapper log `15030222943` | `b8252ec14614d3404948288590f45c5c1871c1635780c02e30a6577b9efc9c69` |
+
+All three ZIPs passed integrity checks; result 7/7 member hashes passed. Harness log: `PREFLIGHT cases=1006 deferred=81 source=21087c8285a5dd367cc16f610386accc061bd194 artifact=14995401750`, then `TARGETED_HARNESS_FAILURE ValueError: GNU debugger unavailable`, exit 90. Exact harness `observe_termination` calls `shutil.which('gdb')` and fails its requirement before opening the inferior log, creating the debugger child, or collecting observations. This establishes that GDB (GNU Debugger) was not resolvable on the runner PATH; it does not establish whether any debugger exists elsewhere on the runner. The wrapper's `runtimeExecution=true` describes the requested runtime job, not actual test launch. Its intermediate status success precedes the failure-propagation step. `execution-boundary.json`: all counters zero, `postflight=false`, `compile=false`, `relink=false`, `configure=false`, `benchmark=false`, `nonGatingDiagnostic=true`. Header-only ledger; no raw row1006 log, `observation.json`, MI (machine interface) transcript, stack, CPU, wait-channel, memory or process-exit evidence. No semantic ledger or immutable remote postflight claim.
+
+The earlier TB185R result `15023679215` was independently reopened; ZIP SHA-256 `86cbf7b6b9b5ae33fcb49ca06289ff8d2a0869f97829b3dcc6e319e234cdc701`; row1006 log SHA-256 `06226ad145730dafed92a6cc8381299ac36e5d72062a69b77c468cedbaf7e8f0`, 335720 bytes, 11 complete receipts. Next fixture is close_sheets; see [preparation](Architecture_M6_CP3_CB205S_Reach_Termination_Diagnostic_Preparation_Record_20261125.md). No new samples support a causal inference. No stable regression addition: 67 events / 17 categories / 50 recurrences, witness debt1/deferred81. CP2 491/491 accepted. P1 supported, D-U carried, TB170/K6 closed. No activation, J6/E5/CB-190 repair, CP3/497/D0/H4 promotion, test/product/fixture edits or rebuild.
+
+## Recommendation — next turn only
+
+Under [Turn Cadence](Turn_Cadence.md) item 5, close TB185S as an invalid orchestration attempt. Authorize `M6-CP3-CB-205T-DEBUGGER-PROVISIONING` (CB-205 revision sequence) to establish a reproducible GDB prerequisite on the hosted runner, preferably only for the diagnostic mode. Verify GDB availability/version, supported Linux PID file descriptor and MI interrupt/continue protocol with a non-Directional control. Preserve reusable permissions, immutable candidate and frozen case selection, 600-second budget, 30-second sampling, all 1006 cases and 81 deferred entries. Do not rebuild or run Directional in CB. Do not weaken the test or modify product semantics. Freeze a separate diagnostic TB only after the prerequisite is established. Do not rerun the unchanged failed request. A causal product correction still requires applicable Review authority, and a fresh uninterrupted full 1006-case gate must precede TB-REV-185 and conditional CB-206. No successor implementation in this turn.
