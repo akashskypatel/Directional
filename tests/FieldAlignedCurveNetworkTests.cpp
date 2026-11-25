@@ -17911,7 +17911,7 @@ TEST(TraceTerminationCorrection,
 
   const auto unstaged = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
       sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails,
-      field_aligned_production_arrival_priority());
+      field_aligned_production_arrival_priority(), false);
   ASSERT_TRUE(unstaged);
   EXPECT_EQ(sphere.network->semantic_digest(),
             unstaged.value().semantic_digest());
@@ -18064,14 +18064,22 @@ TEST(TraceTerminationCorrection,
   const std::size_t vertexCount =
       static_cast<std::size_t>(sphere.mesh.V.rows());
 
+  // Keep the negative control independent of the production default.
+  const auto unstaged = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
+      sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails,
+      field_aligned_production_arrival_priority(), false);
+  ASSERT_TRUE(unstaged);
+  ASSERT_EQ(sphere.network->semantic_digest(),
+            unstaged.value().semantic_digest());
+
   // Without the stop the canonical cut search is exhausted before cellularity.
-  const auto productionCut = directional::geometry::SurfaceCutGraph::make(
+  const auto unstagedCut = directional::geometry::SurfaceCutGraph::make(
       sphere.mesh.F, vertexCount, *sphere.sourceAuthority, *sphere.atlas,
-      *sphere.network);
-  ASSERT_FALSE(productionCut);
+      unstaged.value());
+  ASSERT_FALSE(unstagedCut);
   EXPECT_EQ(directional::geometry::SurfaceCutGraphErrorCode::
                 CutSearchExhaustedBeforeCellularity,
-            productionCut.error().code);
+            unstagedCut.error().code);
 
   const auto staged = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
       sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails,
@@ -18124,7 +18132,7 @@ TEST(TraceTerminationCorrection,
     slideCutEdges += slideCarriers.count(edge);
   std::cout << "SphereStagedCutGraph productionCut="
             << directional::geometry::surface_cut_graph_error_code_name(
-                   productionCut.error().code)
+                   unstagedCut.error().code)
             << " V=" << certificate.vertexCount
             << " E=" << certificate.edgeCount
             << " F=" << certificate.faceCount
