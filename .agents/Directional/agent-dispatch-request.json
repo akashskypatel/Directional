@@ -1,1 +1,12 @@
-{"schema_version":1,"operation":"drive_apply","request_id":"m6-cp3-cb205r-harness-correction","mailbox_key":"m6-cp3-cb205r-harness-correction","file_id":"1s02YLIa88kZXuqb7QnCtWjIDWmnTYUV6","patch_sha256":"6d3d968fae668d32423dc78c55ee7cbaaea2642ea71491f82d3fdf1343da5a95","base_sha":"2cb0b4e62bc68ccca438a780e61a956650690f1f","target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing","commit_message":"fix(harness): wait without timeout for full acceptance gates","retention_days":14}
+{
+  "schema_version": 1,
+  "operation": "drive_apply",
+  "request_id": "m6-cp3-cb205r-closeout",
+  "mailbox_key": "m6-cp3-cb205r-closeout",
+  "file_id": "1oMYLIk2MepBxrFNXla0RapD-AG6BZTA1",
+  "patch_sha256": "029961462e7edd1183feaaef5708edd49113832b21f3cc8a405427cf9c600744",
+  "base_sha": "57a4a755944e611df4998c9f00b010cae683a5b4",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record CB-205R control-plane correction and immutable retry authority",
+  "retention_days": 14
+}
