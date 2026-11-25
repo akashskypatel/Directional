@@ -517,7 +517,7 @@ try:
             process = subprocess.Popen(command, cwd=workdir, stdout=stream,
                                        stderr=subprocess.STDOUT, start_new_session=True)
             try:
-                code = process.wait(timeout=600)
+                code = process.wait() if gate else process.wait(timeout=600)
             except subprocess.TimeoutExpired:
                 try:
                     os.killpg(process.pid, signal.SIGKILL)
