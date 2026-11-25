@@ -396,7 +396,7 @@ if MODE == 'self-check':
         sys.exit(1)
     sys.exit(0)
 
-def observe_termination(executable, test, workdir, output):
+def observe_termination(executable, test, workdir, output, *, control=False):
     """One bounded debugger-owned inferior; never a gate or a retry."""
     import errno
     import pty
@@ -411,9 +411,10 @@ def observe_termination(executable, test, workdir, output):
     env = {key: os.environ[key] for key in ('PATH', 'HOME', 'LANG', 'LC_ALL', 'TMPDIR')
            if key in os.environ}
     env.update(GTEST_COLOR='no', GTEST_FAIL_IF_NO_TEST_SELECTED='1', LC_ALL='C')
-    log_path = output / 'raw/1006.log'
+    log_path = output / ('raw/control.log' if control else 'raw/1006.log')
+    budget, interval = (60, 2) if control else (600, 30)
     start = time.monotonic()
-    deadline = start + 600
+    deadline = start + budget
     master, slave = pty.openpty()
     tty.setraw(slave)
     terminal = os.ttyname(slave)
@@ -425,7 +426,8 @@ def observe_termination(executable, test, workdir, output):
     sample_count = 0
     next_token = 0
     result = {'mode': 'non-gating-external-observation', 'test': test,
-              'budget_seconds': 600, 'sample_interval_seconds': 30,
+              'budget_seconds': budget, 'sample_interval_seconds': interval,
+              'control': control, 'pidfd_verified': False,
               'samples': [], 'outcome': 'observer-error', 'semanticAcceptance': False}
     process = None
     try:
@@ -494,10 +496,14 @@ def observe_termination(executable, test, workdir, output):
                             'mi-async on', 'startup-with-shell off', 'print frame-arguments none', 'debuginfod enabled off'):
                 command('-gdb-set ' + setting)
             command('-inferior-tty-set ' + json.dumps(terminal))
-            command('-exec-arguments --gtest_filter=' + test)
+            command('-exec-arguments 8' if control else '-exec-arguments --gtest_filter=' + test)
             command('-exec-run', 'running')
             wait(lambda: pid is not None, min(deadline, time.monotonic() + 15), 'inferior PID')
-            next_sample = time.monotonic() + 30
+            if control:
+                require(pidfd is not None, 'control inferior has no PID file descriptor')
+                signal.pidfd_send_signal(pidfd, 0)
+                result['pidfd_verified'] = True
+            next_sample = time.monotonic() + interval
             # Reserve time for the final sample and cleanup inside the diagnostic budget.
             while time.monotonic() < deadline - 25:
                 if stopped is not None:
@@ -542,7 +548,8 @@ def observe_termination(executable, test, workdir, output):
                 sample['stack_completed'] = True
                 stopped = None
                 command('-exec-continue', 'running')
-                next_sample = time.monotonic() + 30
+                sample['continued'] = True
+                next_sample = time.monotonic() + interval
             # A late organic exit is distinguished from a deliberate observer cutoff.
             pump(min(deadline, time.monotonic() + 0.2))
             result['stop_record'] = stopped
@@ -607,6 +614,37 @@ def observe_termination(executable, test, workdir, output):
         result['inferior_pid'] = pid
         (output / 'observation.json').write_text(json.dumps(result, indent=2) + '\n')
 
+def verify_debugger(workdir, output):
+    """Provision the hosted Ubuntu dependency and exercise the same MI observer on sleep."""
+    output.mkdir(parents=True, exist_ok=True)
+    (output / 'raw').mkdir(exist_ok=True)
+    receipt = {'runtimeExecution': False, 'control': '/usr/bin/sleep 8', 'verified': False}
+    try:
+        if shutil.which('gdb') is None:
+            with (output / 'provision.log').open('w') as log:
+                for args in (['update'], ['install', '-y', '--no-install-recommends', 'gdb']):
+                    subprocess.run(['sudo', '-n', 'apt-get', '-o', 'Acquire::Retries=2', *args],
+                                   stdout=log, stderr=subprocess.STDOUT, check=True, timeout=180)
+        gdb = shutil.which('gdb')
+        require(gdb is not None and os.access(gdb, os.X_OK), 'GDB provisioning did not produce an executable')
+        receipt['executable'] = str(Path(gdb).resolve())
+        receipt['version'] = subprocess.check_output([gdb, '--version'], text=True, timeout=15).splitlines()[0]
+        receipt['package_version'] = subprocess.check_output(
+            ['dpkg-query', '-W', '-f=${Version}', 'gdb'], text=True, timeout=15).strip()
+        require(bool(receipt['package_version']), 'GDB package version missing')
+        require(observe_termination(Path('/usr/bin/sleep'), 'debugger-control', workdir, output, control=True) == 0,
+                'debugger control did not exit normally')
+        observation = json.loads((output / 'observation.json').read_text())
+        require(observation['pidfd_verified'] and any(
+            sample.get('stack_completed') and sample.get('continued') for sample in observation['samples']),
+            'debugger control did not prove PID file descriptor and interrupt/continue')
+        require(observation['outcome'] == 'organic-exit-zero' and observation['inferior_exit_code'] == 0,
+                'debugger control lacks organic zero exit evidence')
+        receipt['verified'] = True
+        print('DEBUGGER_PREFLIGHT_PASS', receipt['version'], flush=True)
+    finally:
+        (output / 'provisioning.json').write_text(json.dumps(receipt, indent=2) + '\n')
+
 ROOT = Path(os.environ['RUNNER_TEMP']) / os.environ['TURN_ID']
 OUT = Path(str(ROOT) + '-result')
 (OUT / 'raw').mkdir(parents=True, exist_ok=True)
@@ -621,9 +659,15 @@ source_sha = ''
 artifact_id = None
 error_message = ''
 diagnostic = os.environ.get('REACH_TERMINATION_DIAGNOSTIC', '')
+preflight = os.environ.get('REACH_TERMINATION_PREFLIGHT', '')
 
 try:
-    require(diagnostic in ('', '1'), 'invalid diagnostic mode')
+    require(diagnostic in ('', '1') and preflight in ('', '1') and not (diagnostic and preflight),
+            'invalid or conflicting diagnostic modes')
+    if preflight:
+        verify_debugger(ROOT, OUT / 'debugger-control')
+        exit_code = 0
+        raise SystemExit(0)
     required = ['CANDIDATE_ARTIFACT_ID', 'EXPECTED_SOURCE_SHA',
                 'EXPECTED_CANDIDATE_ZIP_SHA256', 'EXPECTED_ROOT_MANIFEST_SHA256',
                 'EXPECTED_SOURCE_ARCHIVE_SHA256', 'CASE_MANIFEST', 'CASE_MANIFEST_SHA256',
@@ -672,6 +716,7 @@ try:
                 'TraceTerminationCorrection.SlideEntryActivationReachByReaderRecipe',
                 'directional_surface_cell_producer_tests', 'PASS', '-'], 'diagnostic row mismatch')
         state['planned'] = 0  # No gate cases are executed in this mode.
+        verify_debugger(ROOT, OUT / 'debugger-control')
     print(f'PREFLIGHT cases={len(cases)} deferred={len(ledger)} source={source_sha} artifact={artifact_id}', flush=True)
 
     api = f'https://api.github.com/repos/{repo}/actions/artifacts/{artifact_id}'
@@ -810,7 +855,8 @@ finally:
         'artifact': artifact_id, 'source': source_sha, 'state': state,
         'error': error_message, 'compile': False, 'relink': False,
         'configure': False, 'benchmark': False, 'exit': exit_code,
-        **({'nonGatingDiagnostic': True} if diagnostic else {})}, indent=2) + '\n')
+        **({'nonGatingDiagnostic': True} if diagnostic else {}),
+        **({'controlPreflight': True, 'runtimeExecution': False} if preflight else {})}, indent=2) + '\n')
     with (OUT / 'SHA256SUMS').open('w') as stream:
         for path in sorted(OUT.rglob('*')):
             if path.is_file() and path.name != 'SHA256SUMS':
