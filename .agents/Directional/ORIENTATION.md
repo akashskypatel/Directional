@@ -1,4 +1,4 @@
-**Current currency — CB-205R (2026-11-25 UTC):** [invalid execution record](Architecture_M6_CP3_TB185_P13_Slide_Entry_Activation_Reach_Orchestration_Failure_Report_20261125.md): 1005 PASS, one INVALID (timeout); TB184 **1005/1005** independently accepted. [Control-plane correction](Architecture_M6_CP3_CB205R_Harness_Timeout_Correction_Record_20261125.md) complete; full immutable retry next. TB183 historical; CP2 491/491 accepted. P1 supported, D-U carried; activation held. Stable 67/17/50, debt1/deferred81; TB170/K6 closed. No CP3/497/D0/H4 or production promotion.
+**Current currency — TB185R invalid execution (2026-11-25 UTC):** TB185R invalid execution: 1005 reported PASS, case1006 interrupted after approximately 5 h 42 min without a terminal verdict. [Report](Architecture_M6_CP3_TB185R_P13_Slide_Entry_Activation_Reach_Full_Gate_Execution_Report_20261125.md). TB184 remains independently accepted. Next `M6-CP3-CB-205S-REACH-TERMINATION-DIAGNOSTIC` under cadence item 5. No activation or checkpoint promotion. CP2 491/491 accepted; P1 supported, D-U carried. Stable 67/17/50, debt1/deferred81; TB170/K6 closed.
 
 # Directional — Project Orientation
 
@@ -48,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; multi-cut plan remains open** | TB184 independently accepted 1005/1005; TB183 historical 1005/1005; CP2 491/491 accepted. TB170 recurrence and K6 closed. Row979 staged plan built; P1 supported. Activation held pending valid TB185 re-execution and independent review. No CP3/497/D0/H4 acceptance. |
+| **M6-CP3 — active; multi-cut plan remains open** | TB184 independently accepted 1005/1005; TB183 historical 1005/1005; CP2 491/491 accepted. TB170 recurrence and K6 closed. Row979 staged plan built; P1 supported. Activation held pending case1006 termination diagnosis, valid full-gate re-execution and independent review. No CP3/497/D0/H4 acceptance. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting now includes the TB170 accepted-green recurrence: **67 events / 17 categories / 50 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
